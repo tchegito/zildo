@@ -1,0 +1,400 @@
+package zildo.monde.persos;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+
+import zildo.fwk.engine.EngineZildo;
+import zildo.monde.Angle;
+import zildo.monde.Point;
+import zildo.monde.Zone;
+import zildo.monde.decors.Element;
+import zildo.monde.decors.SpriteEntity;
+import zildo.monde.persos.utils.MouvementPerso;
+import zildo.monde.persos.utils.MouvementZildo;
+import zildo.monde.persos.utils.PersoDescription;
+
+public abstract class Perso extends Element {
+	
+
+
+
+	protected Zone zone_deplacement;
+    private int compte_dialogue;
+    private String nom;
+    protected int info;					// 0=Neutre  1=Ennemi  2=Zildo
+    protected boolean alerte;				// True=Zildo est reperé (Pieds dans l'eau si c'est Zildo)
+    protected MouvementPerso quel_deplacement;      // Script
+    protected PersoDescription quel_spr;				
+    protected int attente;				// =0 => pas d'attente
+    private int ajustedX,ajustedY;
+    protected int dx,dy,dz;				// Destination
+    private float px,py;				// Quand le perso est propulsé (touché)
+    protected Angle angle;
+    protected int pos_seqsprite;
+    private int en_bras;			// Si c'est Zildo, l'objet qu'il porte.Note : 10=poule
+    protected MouvementZildo mouvement;			// Situation du perso:debout,couché,attaque...
+    protected int cptMouvement;	// Un compteur pour les mouvements des PNJ
+    private int coming_map;		// 1 si Zildo entre sur une map,sinon 255
+    private int pv,maxpv;			// Points de vie du perso
+
+    private int money;
+
+    private boolean wounded;
+
+	// Liste des sprites complémentaires du perso (ex:bouclier+casque pour zildo)
+	List<Element>	persoSprites;
+
+	public Zone getZone_deplacement() {
+		return zone_deplacement;
+	}
+
+	public void setZone_deplacement(Zone zone_deplacement) {
+		this.zone_deplacement = zone_deplacement;
+	}
+
+	public int getCompte_dialogue() {
+		return compte_dialogue;
+	}
+
+	public void setCompte_dialogue(int compte_dialogue) {
+		this.compte_dialogue = compte_dialogue;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public int getInfo() {
+		return info;
+	}
+
+	public void setInfo(int info) {
+		this.info = info;
+	}
+
+	public boolean isAlerte() {
+		return alerte;
+	}
+
+	public void setAlerte(boolean alerte) {
+		this.alerte = alerte;
+	}
+
+	public MouvementPerso getQuel_deplacement() {
+		return quel_deplacement;
+	}
+
+	public void setQuel_deplacement(MouvementPerso quel_deplacement) {
+		this.quel_deplacement = quel_deplacement;
+	}
+
+	public PersoDescription getQuel_spr() {
+		return quel_spr;
+	}
+
+	public void setQuel_spr(PersoDescription quel_spr) {
+		this.quel_spr = quel_spr;
+	}
+	
+	public int getAttente() {
+		return attente;
+	}
+
+	public void setAttente(int attente) {
+		this.attente = attente;
+	}
+
+	public int getAjustedX() {
+		return ajustedX;
+	}
+
+	public void setAjustedX(int ajustedX) {
+		this.ajustedX = ajustedX;
+	}
+
+	public int getAjustedY() {
+		return ajustedY;
+	}
+
+	public void setAjustedY(int ajustedY) {
+		this.ajustedY = ajustedY;
+	}
+
+	public int getDx() {
+		return dx;
+	}
+
+	public void setDx(int dx) {
+		this.dx = dx;
+	}
+
+	public int getDy() {
+		return dy;
+	}
+
+	public void setDy(int dy) {
+		this.dy = dy;
+	}
+
+	public int getDz() {
+		return dz;
+	}
+
+	public void setDz(int dz) {
+		this.dz = dz;
+	}
+
+	public float getPx() {
+		return px;
+	}
+
+	public void setPx(float px) {
+		this.px = px;
+	}
+
+	public float getPy() {
+		return py;
+	}
+
+	public void setPy(float py) {
+		this.py = py;
+	}
+
+	public Angle getAngle() {
+		return angle;
+	}
+
+	public void setAngle(Angle angle) {
+		this.angle = angle;
+	}
+
+	public int getPos_seqsprite() {
+		return pos_seqsprite;
+	}
+
+	public void setPos_seqsprite(int pos_seqsprite) {
+		this.pos_seqsprite = pos_seqsprite;
+	}
+
+	public int getEn_bras() {
+		return en_bras;
+	}
+
+	public void setEn_bras(int en_bras) {
+		this.en_bras = en_bras;
+	}
+
+	public MouvementZildo getMouvement() {
+		return mouvement;
+	}
+
+	public void setMouvement(MouvementZildo mouvement) {
+		this.mouvement = mouvement;
+	}
+
+	public int getComing_map() {
+		return coming_map;
+	}
+
+	public void setComing_map(int coming_map) {
+		this.coming_map = coming_map;
+	}
+
+	public int getPv() {
+		return pv;
+	}
+
+	public void setPv(int pv) {
+		this.pv = pv;
+	}
+
+	public int getMaxpv() {
+		return maxpv;
+	}
+
+	public void setMaxpv(int maxpv) {
+		this.maxpv = maxpv;
+	}
+
+	public int getMoney() {
+		return money;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
+	}
+
+	public boolean isWounded() {
+		return wounded;
+	}
+
+	public void setWounded(boolean wounded) {
+		this.wounded = wounded;
+	}
+
+	public List<Element> getPersoSprites() {
+		return persoSprites;
+	}
+
+	public void setPersoSprites(List<Element> persoSprites) {
+		this.persoSprites = persoSprites;
+	}
+
+	public void addPersoSprites(Element elem) {
+		this.persoSprites.add(elem);
+	}
+	
+	public Perso() {
+		entityType=SpriteEntity.ENTITYTYPE_PERSO;
+	
+		money=(int)Math.random();
+	
+		wounded=false;
+		alerte=false;
+		px=0.0f;
+		py=0.0f;
+		compte_dialogue=0;
+		attente=0;
+		
+		quel_deplacement=MouvementPerso.SCRIPT_IMMOBILE;
+		
+		persoSprites=new ArrayList<Element>();
+	
+		logger.log(Level.INFO, "Creating Perso");
+	
+	}
+	
+	public void finalize() {
+		logger.log(Level.INFO, "Deleting Perso");
+		// Delete linked elements
+		if (this.persoSprites.size() > 0) {
+			for (Element e : persoSprites) {
+				EngineZildo.spriteManagement.deleteSprite(e);
+			}
+		}
+		persoSprites.clear();
+		logger.log(Level.OFF, " ... Ok");
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	// hide
+	///////////////////////////////////////////////////////////////////////////////////////
+	// Sets perso unvisible, and every linked sprites too.
+	///////////////////////////////////////////////////////////////////////////////////////
+	public void hide() {
+		this.visible=false;
+		if (this.persoSprites.size() > 0) {
+			for (Element e : persoSprites) {
+				e.setVisible(false);
+			}
+		}
+	}
+	
+	public void setSpecialEffect(int specialEffect) {
+		super.setSpecialEffect(specialEffect);
+		if (this.persoSprites.size() > 0) {
+			for (Element e : persoSprites) {
+				e.setSpecialEffect(specialEffect);
+			}
+		}
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	// determineDestination
+	///////////////////////////////////////////////////////////////////////////////////////
+	// Set a location (dx,dy) in the current perso, inside the movement area (zone_deplacement)
+	// This is where we assign a new position, horizontally and/or vertically depending on the
+	// character's script.
+	///////////////////////////////////////////////////////////////////////////////////////
+	void determineDestination() {
+		int j=13+3;
+		while (true) {
+			this.dx=(int) this.getX();
+			this.dy=(int) this.getY();
+	
+			// On déplace le perso soit horizontalement, soit verticalement,
+			// ou les 2 si c'est une poule. Car les poules ont la bougeotte.
+			if (j%2==0 || MouvementPerso.persoDiagonales.contains(quel_deplacement) )
+				this.dx+= (16*Math.random()*j) - 8*j;
+	
+			if (j%2==1 || MouvementPerso.persoDiagonales.contains(quel_deplacement) )
+				this.dy+= (16*Math.random()*j) - 8*j;
+	
+			j--; // On diminue le rayon jusqu'à être dans la zone
+	
+			if ((this.dx>=zone_deplacement.getX1() && this.dy>=zone_deplacement.getY1() &&
+				 this.dx<=zone_deplacement.getX2() && this.dy<=zone_deplacement.getY2()) ||
+				(j==-1) )
+				break;
+		}
+	
+	    if (j==-1) {  // En cas de pépin
+			this.dx=zone_deplacement.getX1();
+			this.dy=zone_deplacement.getY1();
+	    }
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	// getAttackTarget
+	///////////////////////////////////////////////////////////////////////////////////////
+	// -return the tile's coordinates immediately near the character
+	///////////////////////////////////////////////////////////////////////////////////////
+	public Point getAttackTarget() {
+		
+		final int add_anglex[]={0,1,0,-1};
+		final int add_angley[]={-1,0,1,0};
+	
+		Point p=new Point();
+		p.setX(((int)getX()+5*add_anglex[angle.value]) / 16);
+		p.setY(((int)getY()+5*add_angley[angle.value]) / 16);
+	
+		return p;
+	}
+	
+	public String toString() {
+		StringBuffer sb=new StringBuffer();
+		sb.append("Perso="+nom+"\nx="+x+"\ny="+y+"\ninfo="+info+"\nmvt="+mouvement);
+		return sb.toString();
+	}
+
+	public abstract boolean isZildo();
+	
+	public abstract void manageCollision();
+	
+	public abstract void initPersoFX();
+
+	public abstract boolean beingWounded(float cx, float cy);
+	
+	public abstract void stopBeingWounded();
+
+	public abstract void attack();
+	
+	public abstract void finaliseComportement(int compteur_animation);
+	
+	// Default function : nothing
+	public void animate(int compteur) {
+		
+	}
+	
+	// Default : nothing to do (only Zildo can take up objects for now)
+	public void takeSomething(int objX, int objY, int obj, Element object) {
+		
+	}
+	
+	public boolean linkedSpritesContains(SpriteEntity entity) {
+		return persoSprites.contains(entity);
+	}
+
+	public int getCptMouvement() {
+		return cptMouvement;
+	}
+
+	public void setCptMouvement(int cptMouvement) {
+		this.cptMouvement = cptMouvement;
+	}
+}
