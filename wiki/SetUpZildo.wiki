@@ -1,0 +1,20 @@
+#labels Start
+*bold*How set up a Zildo workspace*bold*
+
+I assumed that you're using Eclipse for developing Zildo, and you're a little bit familiar with.
+
+So this is the steps you should follow:
+
+#1) Install subclipse
+
+#2) Check out zildo project with this URL :
+   https://zildo.googlecode.com/svn
+
+#3) Create a run configuration on 'zildo.Zildo' class.
+   Put these lines in the VM arguments (Arguments tab):
+
+-Djava.library.path="c:\Code\Projets java\lwjgl-2.0.1\native\win32" -Xmx80M -Dsun.java2d.noddraw=false
+
+Where you replace the path with yours, indeed.
+
+#4) F11 or CTRL+F11 to debug/run, and you're up to work on this amazing project !
