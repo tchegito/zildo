@@ -14,4 +14,8 @@ So this is the steps you should follow:
     Put these lines in the VM arguments (Arguments tab):<br/>
     `-Djava.library.path="c:\Code\Projets java\lwjgl-2.0.1\native\win32" -Xmx80M -Dsun.java2d.noddraw=false`<br/><br/>
     Where you should replace the path with yours, indeed. 
+  # Edit the `Constantes.java` class at line 7 :<br/>
+    `public static final String DATA_PATH = "C:\\Data\\";`<br/>
+    And replace the path by the one where you store the Zildo's data folder.<br/>
+    If you haven't any one, please download the latest Zildoxxx.jar and the downloads section.
   # F11 or CTRL+F11 to debug/run, and you're up to work on this amazing project !
