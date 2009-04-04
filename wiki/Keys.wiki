@@ -2,8 +2,8 @@
 
 The game has a default key configuration. Here it is (on an AZERTY keyboard) :
 
- * Q : Talk/push/pick up
- * W : Attack
- * E : Topic (disabled for now)
- * Arrows : Move
- * Escape : Quit
+ * *Q* : Talk/push/pick up
+ * *W* : Attack
+ * *E* : Topic (disabled for now)
+ * *Arrows* : Move
+ * *Escape* : Quit
