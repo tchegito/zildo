@@ -1,5 +1,5 @@
 #labels Start
-*bold*How set up a Zildo workspace*bold*
+*How set up a Zildo workspace*
 
 I assumed that you're using Eclipse for developing Zildo, and you're a little bit familiar with.
 
