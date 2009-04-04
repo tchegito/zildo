@@ -6,7 +6,6 @@ I assumed that you're using Eclipse for developing Zildo, and you're a little bi
 So this is the steps you should follow:
 
   # Install subclipse
-  
   # Check out zildo project with this URL :
    https://zildo.googlecode.com/svn
 
