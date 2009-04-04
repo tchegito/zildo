@@ -1,3 +1,4 @@
+#labels ingame
 =Keys configuration=
 
 The game has a default key configuration. Here it is (on an AZERTY keyboard) :
