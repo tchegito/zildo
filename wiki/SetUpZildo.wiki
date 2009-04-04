@@ -10,6 +10,6 @@ So this is the steps you should follow:
    https://zildo.googlecode.com/svn
   # Create a run configuration on 'zildo.Zildo' class.
     Put these lines in the VM arguments (Arguments tab):
-`-Djava.library.path="c:\Code\Projets java\lwjgl-2.0.1\native\win32" -Xmx80M -Dsun.java2d.noddraw=false`
+ `-Djava.library.path="c:\Code\Projets java\lwjgl-2.0.1\native\win32" -Xmx80M  -Dsun.java2d.noddraw=false`
     Where you replace the path with yours, indeed.
   # F11 or CTRL+F11 to debug/run, and you're up to work on this amazing project !
