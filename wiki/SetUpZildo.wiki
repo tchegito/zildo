@@ -5,9 +5,9 @@ I assumed that you're using Eclipse for developing Zildo, and you're a little bi
 
 So this is the steps you should follow:
 
-  #1) Install subclipse
+  # Install subclipse
 
-  #2) Check out zildo project with this URL :
+  # Check out zildo project with this URL :
    https://zildo.googlecode.com/svn
 
   #3) Create a run configuration on 'zildo.Zildo' class.
