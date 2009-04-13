@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 public class BilinearFilter extends ScreenFilter {
 
 	@Override
-	public void renderFilter() {
+	public boolean renderFilter() {
 		endRenderingOnFBO();
 		
 		// Select right texture
@@ -20,10 +20,13 @@ public class BilinearFilter extends ScreenFilter {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0,-sizeY,1);
 
+		// Draw texture with depth
 		super.render();
 		GL11.glPopMatrix();
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		
+		return true;
 	}
 	
 	@Override

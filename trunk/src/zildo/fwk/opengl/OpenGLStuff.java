@@ -12,7 +12,10 @@ import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GLContext;
+import org.lwjgl.opengl.Util;
 import org.lwjgl.util.vector.Vector4f;
+
+import zildo.Zildo;
 
 public class OpenGLStuff {
 
@@ -70,7 +73,7 @@ public class OpenGLStuff {
 	// Texture utils
 	////////////////////////////////////////////////
     // color: TRUE=color texture / FALSE=depth texture
-    public int generateTexture(int sizeX, int sizeY, boolean color) {
+    public int generateTexture(int sizeX, int sizeY) {
 	    IntBuffer buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
 	    GL11.glGenTextures(buf); // Create Texture In OpenGL
 	    int textureID=buf.get(0);
@@ -78,20 +81,21 @@ public class OpenGLStuff {
 	    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 	    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 	    
-	    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_COMPARE_FUNC, GL11.GL_LEQUAL);
-	    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_DEPTH_TEXTURE_MODE, GL11.GL_LUMINANCE);
-	    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_COMPARE_MODE, GL14.GL_COMPARE_R_TO_TEXTURE);
-	    
-	    int texType=GL11.GL_RGBA;
-	    if (!color) {
-	    	GL11.glTexParameteri(GL11.GL_TEXTURE_2D, ARBDepthTexture.GL_DEPTH_TEXTURE_MODE_ARB, GL11.GL_INTENSITY);
-	    	texType=GL11.GL_DEPTH_COMPONENT;
-	    }
-	    GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, texType,  adjustTexSize(sizeX), adjustTexSize(sizeY), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
+	    GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA,  adjustTexSize(sizeX), adjustTexSize(sizeY), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
 	    
 	    return textureID;
 	}
-    
+
+    public int generateDepthBuffer() {
+	    IntBuffer buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
+	    EXTFramebufferObject.glGenRenderbuffersEXT(buf); // Create Texture In OpenGL
+    	int depthID=buf.get(0);
+    	
+	    EXTFramebufferObject.glBindRenderbufferEXT( EXTFramebufferObject.GL_RENDERBUFFER_EXT, depthID );
+    	EXTFramebufferObject.glRenderbufferStorageEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, GL11.GL_DEPTH_COMPONENT, adjustTexSize(Zildo.viewPortX), adjustTexSize(Zildo.viewPortY));
+    	
+    	return depthID;
+    }
 	////////////////////////////////////////////////
 	// FBO utils
 	////////////////////////////////////////////////
@@ -104,27 +108,27 @@ public class OpenGLStuff {
 	    	throw new RuntimeException("Unable to create FBO");
     	}
     }
-    
-    public void bindFBOToTexture(int myTextureId, int myFBOId, boolean color) {
-    	// On bind le FBO à la texture
-    	int texType=EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT;
-    	if (!color) {
-    		texType=EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT;
-    	}
-	    EXTFramebufferObject.glBindFramebufferEXT( EXTFramebufferObject.GL_FRAMEBUFFER_EXT, myFBOId );
-	    EXTFramebufferObject.glFramebufferTexture2DEXT( EXTFramebufferObject.GL_FRAMEBUFFER_EXT, texType,
-	                    GL11.GL_TEXTURE_2D, myTextureId, 0);
-	    // Puis on détache la texture de la vue
-    	EXTFramebufferObject.glBindFramebufferEXT( EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
 
+    public void bindFBOToTextureAndDepth(int myTextureId, int myDepthId, int myFBOId) {
+    	// On bind le FBO à la texture
+	    EXTFramebufferObject.glBindFramebufferEXT( EXTFramebufferObject.GL_FRAMEBUFFER_EXT, myFBOId );
+	    if (myDepthId > 0) {
+	        EXTFramebufferObject.glFramebufferRenderbufferEXT( EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT,
+		    		EXTFramebufferObject.GL_RENDERBUFFER_EXT, myDepthId);
+	    }
+    	EXTFramebufferObject.glFramebufferTexture2DEXT( EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT,
+                GL11.GL_TEXTURE_2D, myTextureId, 0);
+
+    	// Puis on détache la texture de la vue
+    	EXTFramebufferObject.glBindFramebufferEXT( EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
     }
  
     public void startRenderingOnFBO(int myFBOId, int sizeX, int sizeY) {
 	    EXTFramebufferObject.glBindFramebufferEXT( EXTFramebufferObject.GL_FRAMEBUFFER_EXT, myFBOId );
+
 	    GL11.glPushAttrib(GL11.GL_VIEWPORT_BIT);
-	    GL11.glViewport( 0, 0, 320, 240 );
+	    GL11.glViewport( 0, 0, Zildo.viewPortX, Zildo.viewPortY );
 	    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-	    GL11.glDepthMask(true);
 	}
     
     public void endRenderingOnFBO() {
@@ -180,5 +184,12 @@ public class OpenGLStuff {
 			return n;
 		}
 		return (n & 0xff00) + 256;
+	}
+	
+	public void cleanFBO(int id) {
+		IntBuffer buf=BufferUtils.createIntBuffer(1);
+		buf.put(id);
+		buf.rewind();
+		EXTFramebufferObject.glDeleteFramebuffersEXT(buf);
 	}
 }	

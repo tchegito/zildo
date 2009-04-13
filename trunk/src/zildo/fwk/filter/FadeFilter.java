@@ -5,8 +5,9 @@ import org.lwjgl.opengl.GL11;
 public class FadeFilter extends ScreenFilter {
 
 	
-	public void renderFilter()
+	public boolean renderFilter()
 	{
+		return true;
 	}
 	
 	public void preFilter() {

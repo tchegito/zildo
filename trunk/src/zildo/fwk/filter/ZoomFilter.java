@@ -10,7 +10,7 @@ import zildo.monde.persos.PersoZildo;
 public class ZoomFilter extends ScreenFilter {
 
 	
-	public void renderFilter()
+	public boolean renderFilter()
 	{
 		// Focus camera on Zildo, and zoom according to the 'fadeLevel'
 		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
@@ -23,5 +23,14 @@ public class ZoomFilter extends ScreenFilter {
 				
 		GL11.glDisable(GL11.GL_BLEND);
 
+		return true;
 	}
+	
+	
+	/**
+	 * Re-initialize z coordinate
+	 */
+	public void doOnInactive() {
+		EngineZildo.getOpenGLGestion().setZ(0);
+	}	
 }

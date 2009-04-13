@@ -58,24 +58,30 @@ public class FilterCommand {
 	 * Calculate fade level, and render active filters.
 	 */
 	public void doFilter() {
-		// Evaluate fade level
-		if (asked_FadeOut && fadeLevel < 255) {
-			fadeLevel+=Constantes.FADE_SPEED;
-		}
-		if (asked_FadeIn && fadeLevel > 0) {
-			fadeLevel-=Constantes.FADE_SPEED;
-		}
-	
+		boolean progressFadeLevel=true;
 		for (ScreenFilter filter : filters) {
 			if (filter.isActive()) {
-				filter.renderFilter();
+				progressFadeLevel&=filter.renderFilter();
 			}
 		}
+
+		if (progressFadeLevel) {
+			// Evaluate fade level
+			if (asked_FadeOut && fadeLevel < 255) {
+				fadeLevel+=Constantes.FADE_SPEED;
+			}
+			if (asked_FadeIn && fadeLevel > 0) {
+				fadeLevel-=Constantes.FADE_SPEED;
+			}
+		}
+
 	}
 
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// fadeIn
+	///////////////////////////////////////////////////////////////////////////////////////
+	// When lights comes back
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void fadeIn()
 	{
@@ -88,6 +94,8 @@ public class FilterCommand {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// fadeOut
 	///////////////////////////////////////////////////////////////////////////////////////
+	// When lights goes out
+	///////////////////////////////////////////////////////////////////////////////////////
 	public void fadeOut()
 	{
 		asked_FadeIn  = false;
@@ -95,6 +103,7 @@ public class FilterCommand {
 		active(null, false);
 		active(FadeFilter.class,true);
 		active(BlurFilter.class,true);
+		active(BilinearFilter.class, false);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -134,6 +143,12 @@ public class FilterCommand {
 		}
 		if (clazz == null) {
 			active(BilinearFilter.class, true);
+		}
+	}
+	
+	public void cleanUp() {
+		for (ScreenFilter filter : filters) {
+			filter.cleanUp();
 		}
 	}
 }

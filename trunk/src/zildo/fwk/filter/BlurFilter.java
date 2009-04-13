@@ -14,30 +14,24 @@ public class BlurFilter extends BilinearFilter {
 	final float incCoeff=0.1f;
 	int texBuffer[];
 	int currentImage;
+	int nImagesSaved;
 	
 	public BlurFilter() {
 		super();
 		texBuffer=new int[nImages];
 		texBuffer[0]=blankTextureID;
 		for (int i=1;i<nImages;i++) {
-			texBuffer[i]=generateTexture(sizeX, sizeY, true);
+			texBuffer[i]=generateTexture(sizeX, sizeY);
 		}
 		currentImage=0;
 	}
 	
 	@Override
-	public void renderFilter() {
+	public boolean renderFilter() {
 
-		endRenderingOnFBO();
+		boolean result=true;
 		
-		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
-		Point zildoPos=new Point(zildo.getScrX(), zildo.getScrY());
-		Sprite spr=zildo.getSprModel();
-		zildoPos.addX(spr.getTaille_x() / 2);
-		zildoPos.addY(spr.getTaille_y() / 2);
-		EngineZildo.getOpenGLGestion().setZoomPosition(zildoPos);
-		float z=2.0f * (float) Math.sin(getFadeLevel() * (0.25f*Math.PI / 256.0f));
-		EngineZildo.getOpenGLGestion().setZ(z);
+		endRenderingOnFBO();
 		
 		// Get on top of screen and disable blending
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -46,37 +40,57 @@ public class BlurFilter extends BilinearFilter {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0,-sizeY,0);
 
-		//GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glDisable(GL11.GL_BLEND);
-
-        // Draw each image, with intensified colors
-		for (int i=0;i<nImages;i++) {
-			float coeff=startCoeff+ (float)i*(incCoeff / (float) nImages);
-	   		GL11.glColor4f(coeff, coeff, coeff, 1.0f);
-	        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texBuffer[(i+currentImage+1) % nImages]);
+		//GL11.glDisable(GL11.GL_BLEND);
+		
+		if (nImagesSaved < nImages) {
+			// All images are not stored yet. So we just display the current one.
+			nImagesSaved++;
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texBuffer[currentImage]);
 			super.render();
-			if (i==0) {
-		        // Enable blend from second one
-				GL11.glEnable(GL11.GL_BLEND);
-				GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE); //_MINUS_SRC_ALPHA);
+			result=false;
+		} else {
+			PersoZildo zildo=EngineZildo.persoManagement.getZildo();
+			Point zildoPos=new Point(zildo.getScrX(), zildo.getScrY());
+			Sprite spr=zildo.getSprModel();
+			zildoPos.addX(spr.getTaille_x() / 2);
+			zildoPos.addY(spr.getTaille_y() / 2);
+			EngineZildo.getOpenGLGestion().setZoomPosition(zildoPos);
+			float z=2.0f * (float) Math.sin(getFadeLevel() * (0.25f*Math.PI / 256.0f));
+			EngineZildo.getOpenGLGestion().setZ(z);
+
+	
+	        // Draw each image, with intensified colors
+			for (int i=0;i<nImages;i++) {
+				float coeff=startCoeff+ (float)i*(incCoeff / (float) nImages);
+		   		GL11.glColor4f(coeff, coeff, coeff, 1.0f);
+		        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texBuffer[(i+currentImage+1) % nImages]);
+				super.render();
+				if (i==0) {
+			        // Enable blend from second one
+					GL11.glEnable(GL11.GL_BLEND);
+					GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE); //_MINUS_SRC_ALPHA);
+				}
 			}
+
 		}
         
 		GL11.glPopMatrix();
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glDisable(GL11.GL_BLEND);
-    	
+		
 		// Switch
 		currentImage=(currentImage + 1) % nImages;
-		bindFBOToTexture(texBuffer[currentImage], fboId, true);
+
+		return result;
 	}
 	
 	@Override
 	public void preFilter() {
 		// Copy last texture in TexBuffer
+		bindFBOToTextureAndDepth(texBuffer[currentImage], depthTextureID, fboId);
 		startRenderingOnFBO(fboId, sizeX, sizeY);
-
+   		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
 	}
 	
 	/**
@@ -84,5 +98,9 @@ public class BlurFilter extends BilinearFilter {
 	 */
 	public void doOnInactive() {
 		EngineZildo.getOpenGLGestion().setZ(0);
+   		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+   		nImagesSaved=0;
+   		currentImage=0;
 	}
+	
 }

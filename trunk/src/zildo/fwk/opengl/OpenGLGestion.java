@@ -124,9 +124,6 @@ public abstract class OpenGLGestion {
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
     }
 */    
-    private void cleanup() {
-        Display.destroy();
-    }
     
     /**
      * Texture loading directly from LWJGL examples
@@ -185,7 +182,16 @@ public abstract class OpenGLGestion {
             e.printStackTrace();
             System.exit(0);
         }
-        cleanup();
+        cleanUp();
+    }
+
+    public void cleanUp() {
+    	cleanUpExt();
+    	Display.destroy();
+    }
+    
+    protected void cleanUpExt() {
+    	
     }
     
     protected void mainloop() {
