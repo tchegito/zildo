@@ -682,6 +682,7 @@ public class MapManagement {
 					break;
 			}
 
+			zildo.finaliseComportement(compteur_animation);
 			return true;
 		}
 		return false;
