@@ -7,4 +7,5 @@ The game has a default keys configuration. Here it is (on an AZERTY keyboard) :
  * *W* : Attack
  * *E* : Topic (disabled for now)
  * *Arrows* : Move
+ * *Left Shift* : extra speed
  * *Escape* : Quit
