@@ -99,4 +99,8 @@ public class OpenGLZildo extends OpenGLGestion {
 	public void setZoomPosition(Point zoomPosition) {
 		this.zoomPosition = zoomPosition;
 	}
+	
+    protected void cleanUpExt() {
+    	engineZildo.cleanUp();
+    }
 }

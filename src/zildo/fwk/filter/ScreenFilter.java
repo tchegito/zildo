@@ -34,7 +34,7 @@ public abstract class ScreenFilter extends TilePrimitive {
 		this.endInitialization();
 	
 		// Create texture for alpha blending
-		this.createBlankTexture();
+		this.createBlankTexture(true);
 		
 		// Transmit filter commander
 		this.filterCommand=EngineZildo.filterCommand;
@@ -45,7 +45,7 @@ public abstract class ScreenFilter extends TilePrimitive {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Render filter on screen, after GUI done.
 	///////////////////////////////////////////////////////////////////////////////////////
-	public abstract void renderFilter();
+	public abstract boolean renderFilter();
 
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -73,10 +73,12 @@ public abstract class ScreenFilter extends TilePrimitive {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Create a OpenGL texture object, and attach a FBO to it.
 	///////////////////////////////////////////////////////////////////////////////////////
-	void createBlankTexture() {
+	void createBlankTexture(boolean p_withDepth) {
 		
-		blankTextureID=generateTexture(sizeX, sizeY, true);
-		//depthTextureID=generateTexture(sizeX, sizeY, false);
+		blankTextureID=generateTexture(sizeX, sizeY);
+		if (p_withDepth) {
+			depthTextureID=generateDepthBuffer();
+		}
 		
         attachTextureToFBO(blankTextureID, depthTextureID);
 	}
@@ -85,10 +87,9 @@ public abstract class ScreenFilter extends TilePrimitive {
 		if (fboId == -1) {
 			fboId=createFBO();
 		}
-        bindFBOToTexture(texId, fboId, true);
-        //bindFBOToTexture(texDepthId, fboId, false);
-        
+        bindFBOToTextureAndDepth(texId, texDepthId, fboId);
         checkCompleteness(fboId);
+        
 	}
 
 	protected void drawScene() {
@@ -118,6 +119,12 @@ public abstract class ScreenFilter extends TilePrimitive {
 	
 	public void doOnInactive() {
 		
+	}
+	
+	final public void cleanUp() {
+		if (fboId > 0) {
+			cleanFBO(fboId);
+		}
 	}
 	
 	final public void setActive(boolean activ) {

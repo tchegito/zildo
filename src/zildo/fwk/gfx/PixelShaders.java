@@ -231,7 +231,6 @@ public class PixelShaders extends OpenGLStuff {
 		ARBShaderObjects.glGetObjectParameterARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB, iVal);
  
 		int length = iVal.get();
-		System.out.println("Info log length:"+length);
 		if (length > 0)
 		{
 			// We have some info we need to output.

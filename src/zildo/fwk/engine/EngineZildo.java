@@ -10,7 +10,6 @@ import zildo.fwk.engine.debug.TileEngineDebug;
 import zildo.fwk.filter.BilinearFilter;
 import zildo.fwk.filter.BlurFilter;
 import zildo.fwk.filter.FadeFilter;
-import zildo.fwk.filter.ZoomFilter;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
@@ -87,8 +86,8 @@ public class EngineZildo {
 		tileEngine = new TileEngineDebug();
 		filterCommand = new FilterCommand();
 		filterCommand.addFilter(new BilinearFilter());
-		//filterCommand.addFilter(new BlurFilter());
-		//filterCommand.addFilter(new FadeFilter());
+		filterCommand.addFilter(new BlurFilter());
+		filterCommand.addFilter(new FadeFilter());
 		filterCommand.active(null, false);
 		pixelShaders = new PixelShaders();
 		if (pixelShaders.canDoPixelShader()) {
@@ -165,6 +164,10 @@ public class EngineZildo {
 	
 	}
 	
+	public void cleanUp() {
+		filterCommand.cleanUp();
+	}
+	
 	public void finalize()
 	{
 		// L'ordre des suppression est TRES important ! En effet, le vidage des cartes passe
@@ -217,10 +220,8 @@ public class EngineZildo {
 	
 		//// DISPLAY ////
 	
-		//openGLGestion.beginScene();
-	
 		// Display BACKGROUND tiles
-		//tileEngine.tileRender(true);
+		tileEngine.tileRender(true);
 	
 		// Display BACKGROUND sprites
 		spriteEngine.spriteRender(true);
@@ -235,13 +236,13 @@ public class EngineZildo {
 		if (dialogManagement.isDialoguing()) {
 			dialogManagement.manageDialog();
 		}
-
-		filterCommand.doFilter();
 	
 		if (Zildo.infoDebug) {
 			this.debug();
 		}
-	
+
+		filterCommand.doFilter();
+
 		openGLGestion.endScene();
 		//gfxBasics.EndRendering();
 	
