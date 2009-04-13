@@ -80,10 +80,12 @@ public class PlayerManagement {
 			keyReleaseAttack(heros);
 		}
 	
-		if (Keyboard.isKeyDown(KeysConfiguration.PLAYERKEY_TOPIC)) {
-			keyPressTopic(heros);
-		} else {
-			keyReleaseTopic(heros);
+		if (false) {	// Unable for now the Topic key (this will come later)
+			if (Keyboard.isKeyDown(KeysConfiguration.PLAYERKEY_TOPIC)) {
+				keyPressTopic(heros);
+			} else {
+				keyReleaseTopic(heros);
+			}
 		}
 	
 		if (Keyboard.isKeyDown(KeysConfiguration.PLAYERKEY_ACTION)) {
