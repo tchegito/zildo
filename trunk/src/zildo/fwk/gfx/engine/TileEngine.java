@@ -83,9 +83,14 @@ public class TileEngine extends TextureEngine {
 		meshBACK=new TilePrimitive[Constantes.NB_MOTIFBANK];
 	}
 	
-	public void finalize()
+	public void cleanUp()
 	{
-
+		for (TilePrimitive tp : meshFORE) {
+			tp.cleanUp();
+		}
+		for (TilePrimitive tp : meshBACK) {
+			tp.cleanUp();
+		}
 	}
 	
 	// Prepare vertices and indices for drawing tiles

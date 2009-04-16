@@ -4,40 +4,52 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
 
 import zildo.Zildo;
-import zildo.fwk.FilterCommand;
 import zildo.fwk.engine.EngineZildo;
 import zildo.fwk.gfx.TilePrimitive;
 
 
+/**
+ * Defines a screen filter.
+ * 
+ * Provides basically:
+ * -a FBO
+ * -a texture
+ * -a depth rendered buffer
+ * -a screen sized tile 
+ * 
+ * A simple super.render() from a derived class draw binded texture at screen.
+ * 
+ * @author tchegito
+ *
+ */
 public abstract class ScreenFilter extends TilePrimitive {
 
+	// Screen size
 	protected static final int sizeX=Zildo.viewPortX;
 	protected static final int sizeY=Zildo.viewPortY;
-
-	// Fade
-	protected int blankTextureID;
+	// Resizing for OpenGL storage
+	protected static final int realX=adjustTexSize(sizeX);
+	protected static final int realY=adjustTexSize(sizeY);
+	
+	// common members
+	protected int textureID;
 	protected int depthTextureID;
 	protected int fboId=-1;
 	protected boolean active=true;
-	protected FilterCommand filterCommand;
 	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
-
 	public ScreenFilter()
 	{
 		super(4,6, adjustTexSize(sizeX), adjustTexSize(sizeY));
 		// Create a screen sized quad
 		super.startInitialization();
-		this.addTileSized(0,0,0.0f,0.0f,sizeX, sizeY); //Constantes.SCREEN_SIZEX,Constantes.SCREEN_SIZEY);
+		this.addTileSized(0,0,0.0f,0.0f,sizeX, sizeY);
 		this.endInitialization();
 	
 		// Create texture for alpha blending
 		this.createBlankTexture(true);
-		
-		// Transmit filter commander
-		this.filterCommand=EngineZildo.filterCommand;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -73,23 +85,22 @@ public abstract class ScreenFilter extends TilePrimitive {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Create a OpenGL texture object, and attach a FBO to it.
 	///////////////////////////////////////////////////////////////////////////////////////
-	void createBlankTexture(boolean p_withDepth) {
+	private void createBlankTexture(boolean p_withDepth) {
 		
-		blankTextureID=generateTexture(sizeX, sizeY);
+		textureID=generateTexture(sizeX, sizeY);
 		if (p_withDepth) {
 			depthTextureID=generateDepthBuffer();
 		}
 		
-        attachTextureToFBO(blankTextureID, depthTextureID);
+        attachTextureToFBO(textureID, depthTextureID);
 	}
 	
-	void attachTextureToFBO(int texId, int texDepthId) {
+	private void attachTextureToFBO(int texId, int texDepthId) {
 		if (fboId == -1) {
 			fboId=createFBO();
 		}
         bindFBOToTextureAndDepth(texId, texDepthId, fboId);
         checkCompleteness(fboId);
-        
 	}
 
 	protected void drawScene() {
@@ -123,6 +134,8 @@ public abstract class ScreenFilter extends TilePrimitive {
 	
 	final public void cleanUp() {
 		if (fboId > 0) {
+			cleanTexture(textureID);
+			cleanDepthBuffer(depthTextureID);
 			cleanFBO(fboId);
 		}
 	}
@@ -139,6 +152,6 @@ public abstract class ScreenFilter extends TilePrimitive {
 	}
 	
 	final public int getFadeLevel() {
-		return filterCommand.getFadeLevel();
+		return EngineZildo.filterCommand.getFadeLevel();
 	}
 }

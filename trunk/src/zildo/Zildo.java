@@ -16,6 +16,11 @@ public class Zildo {
 	
 	public static void main(String[] args) {
 		
+		for (String arg : args) {
+			if ("fullscreen".equals(arg)) {
+				fullScreen=true;
+			}
+		}
 		if (!log) {	// Disable all logging
 			LogManager.getLogManager().reset();
 		}
@@ -23,12 +28,7 @@ public class Zildo {
 		OpenGLZildo glGestion=new OpenGLZildo(fullScreen);
 		EngineZildo engineZildo=new EngineZildo(glGestion);
 		glGestion.setEngineZildo(engineZildo);
-		
 
 		glGestion.run();
-
-		//MapManagement mapManagement=new MapManagement();
-		//mapManagement.charge_map("polaky.map");
-		
 	}
 }

@@ -4,15 +4,13 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.logging.Logger;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.ARBDepthTexture;
 import org.lwjgl.opengl.ARBVertexBufferObject;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GLContext;
-import org.lwjgl.opengl.Util;
 import org.lwjgl.util.vector.Vector4f;
 
 import zildo.Zildo;
@@ -21,6 +19,7 @@ public class OpenGLStuff {
 
 	protected OpenGLGestion m_oglGestion;
 
+	protected Logger logger=Logger.getLogger("MapManagement");
 	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
@@ -83,6 +82,7 @@ public class OpenGLStuff {
 	    
 	    GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA,  adjustTexSize(sizeX), adjustTexSize(sizeY), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
 	    
+	    logger.info("Created texture "+textureID);
 	    return textureID;
 	}
 
@@ -94,6 +94,7 @@ public class OpenGLStuff {
 	    EXTFramebufferObject.glBindRenderbufferEXT( EXTFramebufferObject.GL_RENDERBUFFER_EXT, depthID );
     	EXTFramebufferObject.glRenderbufferStorageEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, GL11.GL_DEPTH_COMPONENT, adjustTexSize(Zildo.viewPortX), adjustTexSize(Zildo.viewPortY));
     	
+	    logger.info("Created depth buffer "+depthID);
     	return depthID;
     }
 	////////////////////////////////////////////////
@@ -103,6 +104,7 @@ public class OpenGLStuff {
     	if (GLContext.getCapabilities().GL_EXT_framebuffer_object) {
 		    IntBuffer buffer = ByteBuffer.allocateDirect(1*4).order(ByteOrder.nativeOrder()).asIntBuffer(); // allocate a 1 int byte buffer
 		    EXTFramebufferObject.glGenFramebuffersEXT( buffer ); // generate 
+		    logger.info("Created FBO "+buffer.get(0));
 		    return buffer.get();
     	} else {
 	    	throw new RuntimeException("Unable to create FBO");
@@ -186,10 +188,24 @@ public class OpenGLStuff {
 		return (n & 0xff00) + 256;
 	}
 	
-	public void cleanFBO(int id) {
+	public IntBuffer getBufferWithId(int id) {
 		IntBuffer buf=BufferUtils.createIntBuffer(1);
 		buf.put(id);
 		buf.rewind();
-		EXTFramebufferObject.glDeleteFramebuffersEXT(buf);
+		return buf;
+	}
+	public void cleanFBO(int id) {
+		EXTFramebufferObject.glDeleteFramebuffersEXT(getBufferWithId(id));
+		logger.info("Deleted FBO "+id);
+	}
+	
+	public void cleanTexture(int id) {
+		GL11.glDeleteTextures(getBufferWithId(id));
+		logger.info("Deleted texture "+id);
+	}
+	
+	public void cleanDepthBuffer(int id) {
+		EXTFramebufferObject.glDeleteRenderbuffersEXT(getBufferWithId(id));
+		logger.info("Deleted depth buffer "+id);
 	}
 }	

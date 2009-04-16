@@ -90,7 +90,7 @@ public class PersoManagement {
 				if (EngineZildo.collideManagement.check_colli((int) x,(int) y,tx,ty,rayon,rayon)) {
 					if (perso != null && perso.isZildo() && perso.linkedSpritesContains(persoToCompare)) {
 						// Collision entre Zildo et l'objet qu'il porte dans les mains => on laisse
-					} else {
+					} else if (quelElement.getLinkedPerso() != persoToCompare) {
 						return persoToCompare;
 					}
 				}
@@ -102,7 +102,7 @@ public class PersoManagement {
 		if (quelPerso == null) {
 			return null;
 		} else {
-			return collidePerso(x, y, quelPerso, 6);
+			return collidePerso(x, y, quelPerso, 5);
 		}
 	}
 	

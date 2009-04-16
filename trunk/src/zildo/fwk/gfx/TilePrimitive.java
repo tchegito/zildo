@@ -69,6 +69,8 @@ public class TilePrimitive extends OpenGLStuff {
 		textureBufferId=createVBO();
 		indiceBufferId=createVBO();
 	
+		logger.info("Created VBO "+vertexBufferId+" (vertex+texture+normal+indice)");
+
 		// Allocate buffers
 		int numFaces=numIndices / 3;
 		vertices=BufferUtils.createFloatBuffer(3*numPoints);
@@ -89,7 +91,7 @@ public class TilePrimitive extends OpenGLStuff {
 		initialize(numPoints, numIndices);
 	}
 	
-	public void finalize()
+	public void cleanUp()
 	{
 		IntBuffer buf = BufferUtils.createIntBuffer(1);
 		buf.put(vertexBufferId);
@@ -107,7 +109,7 @@ public class TilePrimitive extends OpenGLStuff {
 		buf.put(indiceBufferId);
 		buf.flip();
 		ARBVertexBufferObject.glDeleteBuffersARB(buf);
-	
+		logger.info("Deleted VBO "+vertexBufferId+" (vertex+texture+normal+indice)");
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

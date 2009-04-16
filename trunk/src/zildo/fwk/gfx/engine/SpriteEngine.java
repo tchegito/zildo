@@ -34,7 +34,6 @@ public class SpriteEngine extends TextureEngine {
 
 
 	// 3D Objects (vertices and indices per bank)
-    int ppTexture[]=new int[Constantes.NB_SPRITEBANK];
 	SpritePrimitive meshSprites[]=new SpritePrimitive[Constantes.NB_SPRITEBANK];
 	
 	//////////////////////////////////////////////////////////////////////
@@ -47,9 +46,15 @@ public class SpriteEngine extends TextureEngine {
 		prepareSprites();
 	}
 	
-	public void finalize()
+	public void cleanUp()
 	{
-
+		for (SpritePrimitive sp : meshSprites) {
+			sp.cleanUp();
+		}
+		for (int i=0;i<n_Texture;i++) {
+			int id=textureTab[i];
+			cleanTexture(id);
+		}
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
