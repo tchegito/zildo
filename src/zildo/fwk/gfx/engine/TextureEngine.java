@@ -28,7 +28,7 @@ import zildo.prefs.Constantes;
  */
 public abstract class TextureEngine extends OpenGLStuff {
 
-    private int n_Texture;
+    protected int n_Texture;
 
     public int[] textureTab;
     private ByteBuffer scratch;

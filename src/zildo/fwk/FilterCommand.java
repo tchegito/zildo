@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.filter.BilinearFilter;
-import zildo.fwk.filter.BlurFilter;
-import zildo.fwk.filter.FadeFilter;
+import zildo.fwk.filter.BlendFilter;
 import zildo.fwk.filter.ScreenFilter;
 import zildo.prefs.Constantes;
 
@@ -88,7 +87,8 @@ public class FilterCommand {
 		asked_FadeIn  = true;
 		asked_FadeOut = false;
 		active(null, false);
-		active(FadeFilter.class,true);
+		//active(FadeFilter.class,true);
+		active(BlendFilter.class,true);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -101,9 +101,19 @@ public class FilterCommand {
 		asked_FadeIn  = false;
 		asked_FadeOut = true;
 		active(null, false);
-		active(FadeFilter.class,true);
-		active(BlurFilter.class,true);
-		active(BilinearFilter.class, false);
+		//active(FadeFilter.class,true);
+		//active(BlurFilter.class,true);
+		active(BlendFilter.class,true);
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	// fadeEnd
+	///////////////////////////////////////////////////////////////////////////////////////
+	// Fade is over, so put back in default position
+	///////////////////////////////////////////////////////////////////////////////////////
+	public void fadeEnd() {
+		active(null, false);
+		active(BilinearFilter.class, true);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -120,6 +130,7 @@ public class FilterCommand {
 		} else if (asked_FadeIn && fadeLevel <= 0) {
 			fadeLevel=0;
 			asked_FadeOut=false;
+			fadeEnd();
 			return true;
 		}
 		return false;
@@ -140,9 +151,6 @@ public class FilterCommand {
 			if (clazz == null || filter.getClass().equals(clazz)) {
 				filter.setActive(activ);
 			}
-		}
-		if (clazz == null) {
-			active(BilinearFilter.class, true);
 		}
 	}
 	

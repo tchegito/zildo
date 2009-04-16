@@ -8,8 +8,7 @@ import zildo.fwk.SoundManagement;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.engine.debug.TileEngineDebug;
 import zildo.fwk.filter.BilinearFilter;
-import zildo.fwk.filter.BlurFilter;
-import zildo.fwk.filter.FadeFilter;
+import zildo.fwk.filter.BlendFilter;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
@@ -62,6 +61,9 @@ public class EngineZildo {
 	private static int timeToWait=0;
 	private static int nFramesToWait=0;
 	
+	// For debug
+	public static int extraSpeed=1;
+	
 	public static void freeze() {
 		timeToWait=3000;
 		nFramesToWait=3;
@@ -86,9 +88,12 @@ public class EngineZildo {
 		tileEngine = new TileEngineDebug();
 		filterCommand = new FilterCommand();
 		filterCommand.addFilter(new BilinearFilter());
-		filterCommand.addFilter(new BlurFilter());
-		filterCommand.addFilter(new FadeFilter());
+		//filterCommand.addFilter(new BlurFilter());
+		filterCommand.addFilter(new BlendFilter());
+		//filterCommand.addFilter(new FadeFilter());
 		filterCommand.active(null, false);
+		filterCommand.active(BilinearFilter.class, true);
+		
 		pixelShaders = new PixelShaders();
 		if (pixelShaders.canDoPixelShader()) {
 			pixelShaders.preparePixelShader();
@@ -166,6 +171,8 @@ public class EngineZildo {
 	
 	public void cleanUp() {
 		filterCommand.cleanUp();
+		tileEngine.cleanUp();
+		spriteEngine.cleanUp();
 	}
 	
 	public void finalize()

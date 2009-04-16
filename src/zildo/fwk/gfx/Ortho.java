@@ -178,7 +178,8 @@ public class Ortho extends OpenGLStuff {
 	}
 	
 	/**
-	 * Draw a box on foreground (z=1) with desired color (palettized or not)
+	 * Draw a box on foreground (z=1) with desired color (palettized or not).
+	 * This is not the right way for many boxes. Prefer (@link #boxOpti).
 	 * @param x
 	 * @param y
 	 * @param w
@@ -187,22 +188,74 @@ public class Ortho extends OpenGLStuff {
 	 * @param color real color
 	 */
 	public void box(int x,int y, int w, int h, int palColor, Vector4f color) {
+		initDrawBox(false);
+		boxOpti(x, y, w, h, palColor, color);
+		endDraw();
+	}
+	
+	/**
+	 * Just draw the colored box, without managing glBegin/glEnd
+	 * @param x
+	 * @param y
+	 * @param w
+	 * @param h
+	 * @param palColor
+	 * @param color
+	 */
+	public void boxOpti(int x, int y, int w, int h, int palColor, Vector4f color) {
 		Vector4f col=color;
 		if (color == null) {
 			col=new Vector4f(GFXBasics.getColor(palColor));
 			col.scale(1.0f/256.0f);
 		}
 		GL11.glColor4f(col.x, col.y, col.z, col.w);
+		GL11.glVertex2d(x, y);
+		GL11.glVertex2d(x+w, y);
+		GL11.glVertex2d(x+w, y+h);
+		GL11.glVertex2d(x, y+h);
+	}
+	
+	/**
+	 * Just draw a textured box, without managing glBegin/glEnd
+	 * @param x
+	 * @param y
+	 * @param w
+	 * @param h
+	 * @param u
+	 * @param v
+	 * @param uw
+	 * @param vh
+	 */
+	public void boxTexturedOpti(int x, int y, int w, int h, float u, float v, float uw, float vh) {
+		GL11.glTexCoord2f(u, v);
+		GL11.glVertex2d(x, y);
+		GL11.glTexCoord2f(u+uw, v);
+		GL11.glVertex2d(x+w, y);
+		GL11.glTexCoord2f(u+uw, v+vh);
+		GL11.glVertex2d(x+w, y+h);
+		GL11.glTexCoord2f(u, v+vh);
+		GL11.glVertex2d(x, y+h);
+	}
+	
+	/**
+	 * Initialize the right matrix to draw quads, and do a glBegin.
+	 * @param withTexture
+	 */
+	public void initDrawBox(boolean withTexture) {
 		// On se met au premier plan et on annule le texturing
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0,0,1);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		if (!withTexture) {
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+		}
 		GL11.glBegin(GL11.GL_QUADS); 
-			GL11.glVertex2d(x, y);
-			GL11.glVertex2d(x+w, y);
-			GL11.glVertex2d(x+w, y+h);
-			GL11.glVertex2d(x, y+h);
+	}
+	
+	/**
+	 * Get back the original matrix, and go a glEnd.
+	 */
+	public void endDraw() {
 		GL11.glEnd();
 		// On se remet où on était et on réactive le texturing
 		GL11.glEnable(GL11.GL_TEXTURE_2D);

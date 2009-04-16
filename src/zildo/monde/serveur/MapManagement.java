@@ -39,23 +39,23 @@ public class MapManagement {
 
 	protected Logger logger=Logger.getLogger("MapManagement");
 
-	final IntSet passable =new IntSet(1,6,19,23,27,35,40,41,42,43,49,50,51,52,53,54,55,56,
+	final IntSet walkable =new IntSet(1,6,19,23,27,35,40,41,42,43,49,50,51,52,53,54,55,56,
 			57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,89,90,
 			91,99,139,140,141,142,143,144,145,146,
 			166,168,170,171,172,174,175,176,177,178,183);
 
-	final IntSet passable2=new IntSet(22,23,25,34,35,36,37,58,59,61,67,68,71,72,73,  // +256
+	final IntSet walkable2=new IntSet(22,23,25,34,35,36,37,58,59,61,67,68,71,72,73,  // +256
 			77,78,79,80,81,82,83,84,85,86,87,88,89,94,107,108,114,115,116,117,
 			118,119,120,121,122,123,124,126,127,128,130,139,140,141,142,143,144,
 			145,146,147,168,169,173,174,175,176,177,178);
 
-	final IntSet passable3=new IntSet(0,33,34,35,36,37,38,39,40,41,42,43,44,45,94,95,96,
-			97,98,99,100,101,102,217,218,219,220,221,222);
+	final IntSet walkable3=new IntSet(0,33,34,35,36,37,38,39,40,41,42,43,44,45,94,95,96, // +512
+			97,98,99,100,101,102,217,218,219,220,221,222,240);
 
-	final IntSet passable4=new IntSet(9,37,38,39,41,42,43,44,45,46,50,51,52,53,78,79,80,81,
+	final IntSet walkable4=new IntSet(9,37,38,39,41,42,43,44,45,46,50,51,52,53,78,79,80,81, // +768
 			82,83,84,155,156,157,158,159,160);
 
-	final IntSet passable5=new IntSet(45,81,82,135,137,147,173,178,210,212,213,227,228,229,
+	final IntSet walkable5=new IntSet(45,81,82,135,137,147,173,178,210,212,213,227,228,229, // +1024
 			230,231,239,240,241);
 	
 	
@@ -199,6 +199,7 @@ public class MapManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	Area loadMapFile(String mapname) 
 	{ 
+		System.out.println("Loading "+mapname);
 		SpriteManagement spriteManagement=EngineZildo.spriteManagement;
 	
 		Area map=new Area();
@@ -315,13 +316,12 @@ public class MapManagement {
 
 				perso.initPersoFX();
 	
-				//delete tempo;
 				spriteManagement.spawnPerso(perso);
 	
 			}
 		}
 	
-	// Les Phrases
+		// Les Phrases
 		int n_phrases=0;
 		if (!file.eof()) {
 			n_phrases=file.readUnsignedByte();
@@ -346,8 +346,6 @@ public class MapManagement {
 			}
 		}
 	
-		
-	
 		map.setName(mapname);
 		
 		this.logger.info("Map loaded: "+mapname);
@@ -355,24 +353,24 @@ public class MapManagement {
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
-	// is_passable
+	// isWalkable
 	///////////////////////////////////////////////////////////////////////////////////////
 	// IN:motif de map (motif+256*banque)
 	// OUT:True si c'est un motif franchissable par les persos
 	//     False si c'est un obstacle
 	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean is_passable(int on_map)
+	public boolean isWalkable(int on_map)
 	{
 		if (on_map<256)
-			return passable.contains(on_map);
+			return walkable.contains(on_map);
 		else if (on_map<512)
-			return passable2.contains(on_map-256);
+			return walkable2.contains(on_map-256);
 		else if (on_map<768)
-			return passable3.contains(on_map-512);
+			return walkable3.contains(on_map-512);
 		else if (on_map<1024)
-			return passable4.contains(on_map-768);
+			return walkable4.contains(on_map-768);
 		else
-			return passable5.contains(on_map-1024);
+			return walkable5.contains(on_map-1024);
 	}
 	
 	// Returns true if given character collides with the map
@@ -465,7 +463,7 @@ public class MapManagement {
 				// Les parties horizontales
 				case 39: case 107: case 179: case 185: case 194: case 278: case 314: case 424:
 				case 574: case 576: case 582: case 584:
-				case 749: case 751: case 753: case 755:
+				case 749: /*case 751:*/ case 753: case 755:
 				case 667: case 669:
 				case 857: case 859: case 861: case 863: case 873: case 879: case 918:
 				case 1027: case 1029: case 1031: case 1063: case 1097: case 1213: case 1275:
@@ -474,10 +472,10 @@ public class MapManagement {
 		
 				case 46: case 103: case 195: case 279: case 315: case 425:
 				case 575: case 577: case 583: case 585:
-				case 750: case 752: case 754: case 756:
+				case 750: /*case 752:*/ case 754: case 756:
 				case 858: case 860: case 862: case 864: case 874: case 880: case 914:
 				case 1064: case 1098: case 1214: case 1276:
-					if (modx>7) return true;
+					if (modx>7)	return true;
 					break;
 		
 				// Coins
@@ -509,7 +507,7 @@ public class MapManagement {
 					break;
 		
 				default:
-				    result=!(is_passable(on_map));
+				    result=!(isWalkable(on_map));
 					if (result)
 						return true;
 	
@@ -522,7 +520,7 @@ public class MapManagement {
 		if (EngineZildo.persoManagement.collidePerso(tx,ty,quelElement)!=null)
 			return true;
 	
-		if (EngineZildo.spriteManagement.collideSprite(tx,ty,quelElement)==true)
+		if (EngineZildo.spriteManagement.collideSprite(tx,ty,quelElement))
 			return true;
 			
 		

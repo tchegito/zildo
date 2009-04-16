@@ -184,7 +184,7 @@ public class SpriteManagement {
 	
 		Sprite spr=getSpriteBank(nBank).get_sprite(nSpr);
 
-		if (nSpr == 69 || nSpr == 70) {
+		if (nSpr == 69 || nSpr == 70 || nSpr == 28) {
 			// Particular sprite (Block that Zildo can move, chest...)
 			spawnElement(nBank, nSpr, x,y+spr.getTaille_y() / 2 - 3);
 			return;
@@ -500,7 +500,7 @@ public class SpriteManagement {
 				List<SpriteEntity> deads=element.animate();
 				if (deads!=null && !deads.isEmpty()) {
 					// L'élément est arrivé au terme de son existence : on le supprime de la liste
-					if (element.getLinkedPerso() != null) {
+					if (element.getLinkedPerso() != null && SpriteEntity.ENTITYTYPE_ELEMENT == element.getLinkedPerso().getEntityType()) {
 						toDelete.add(element.getLinkedPerso());
 					}
 					toDelete.addAll(deads);

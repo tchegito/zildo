@@ -10,7 +10,7 @@ public class BilinearFilter extends ScreenFilter {
 		endRenderingOnFBO();
 		
 		// Select right texture
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, blankTextureID);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
         // Disable blend
 		GL11.glDisable(GL11.GL_BLEND);
 
@@ -33,7 +33,6 @@ public class BilinearFilter extends ScreenFilter {
 	public void preFilter() {
 		startRenderingOnFBO(fboId, sizeX, sizeY);
    		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
-
 	}
 	
 }

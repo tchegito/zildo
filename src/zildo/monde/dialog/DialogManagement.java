@@ -221,6 +221,10 @@ public class DialogManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void launchDialog(Perso persoToTalk) {
 		Behavior behav=behaviors.get(persoToTalk.getNom());
+		if (behav == null) {
+			// This perso couldn't talk
+			return;
+		}
 		int compteDial=persoToTalk.getCompte_dialogue();
 		
 		currentSentence=getSentence(behav,compteDial);

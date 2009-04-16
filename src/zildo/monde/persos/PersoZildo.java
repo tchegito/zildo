@@ -22,6 +22,12 @@ public class PersoZildo extends Perso {
 	static int seq_1[]={0,1,2,1};
 	static int seq_2[]={0,1,2,1,0,3,4,3};
 	
+	// Positions in the 'PersoSprites' List
+	static int linkedSpr_SHIELD=0;
+	static int linkedSpr_SHADOW=1;
+	static int linkedSpr_WET_FEET=2;
+	static int linkedSpr_CARRIED=3;
+	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
@@ -41,7 +47,7 @@ public class PersoZildo extends Perso {
 		setNSpr(0);
 	
 		setX(805); //601-32;//-500);
-		setY(903); //684+220;//-110);
+		setY(973); //684+220;//-110);
 		setDx(0);
 		setDy(0);
 		setAngle(Angle.NORD);
@@ -488,6 +494,7 @@ public class PersoZildo extends Perso {
 		elem.setY(objY);
 		elem.setZ(4);
 		elem.setVisible(true);
+
 		persoSprites.add(elem);	// Link to Zildo
 		
 		if (object == null) {
@@ -499,6 +506,46 @@ public class PersoZildo extends Perso {
 		setAttente(20);
 		setEn_bras(obj);
 
+	}
+	
+	/**
+	 * Zildo throws what he got in his raised arms. (enBras)
+	 */
+	public void throwSomething() {
+		//On jette un objet
+		Element element=getPersoSprites().get(linkedSpr_CARRIED);
+		getPersoSprites().remove(linkedSpr_CARRIED);
+		setEn_bras(0);
+		setMouvement(MouvementZildo.MOUVEMENT_VIDE);
+		element.setX(getX());
+		element.setY(getY());
+		element.setZ(21.0f+1.0f);
+		element.setVx(0.0f);
+		element.setVy(0.0f);
+		element.setVz(0.0f);
+		element.setAx(0.0f);
+		element.setAy(0.0f);
+		element.setAz(-0.07f);
+		element.setLinkedPerso(this);	// Declare this element thrown by Zildo (so it can collide with him)
+		switch (getAngle()) {
+			case NORD:
+				element.setVy(-4.0f);
+				element.setFy(0.04f);
+				break;
+			case EST:
+				element.setVx(4.0f);
+				element.setFx(0.04f);
+				break;
+			case SUD:
+				element.setVy(4.0f);
+				element.setFy(0.04f);
+				break;
+			case OUEST:
+				element.setVx(-4.0f);
+				element.setFx(0.04f);
+				break;
+		}
+		EngineZildo.soundManagement.playSoundFX("ZildoLance");		
 	}
 	
 	/**

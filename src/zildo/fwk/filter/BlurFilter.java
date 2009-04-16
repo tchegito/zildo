@@ -3,11 +3,8 @@ package zildo.fwk.filter;
 import org.lwjgl.opengl.GL11;
 
 import zildo.fwk.engine.EngineZildo;
-import zildo.monde.Point;
-import zildo.monde.Sprite;
-import zildo.monde.persos.PersoZildo;
 
-public class BlurFilter extends BilinearFilter {
+public class BlurFilter extends ZoomFilter {
 
 	final int nImages=10;
 	final float startCoeff=0.3f;
@@ -19,7 +16,7 @@ public class BlurFilter extends BilinearFilter {
 	public BlurFilter() {
 		super();
 		texBuffer=new int[nImages];
-		texBuffer[0]=blankTextureID;
+		texBuffer[0]=textureID;
 		for (int i=1;i<nImages;i++) {
 			texBuffer[i]=generateTexture(sizeX, sizeY);
 		}
@@ -49,15 +46,7 @@ public class BlurFilter extends BilinearFilter {
 			super.render();
 			result=false;
 		} else {
-			PersoZildo zildo=EngineZildo.persoManagement.getZildo();
-			Point zildoPos=new Point(zildo.getScrX(), zildo.getScrY());
-			Sprite spr=zildo.getSprModel();
-			zildoPos.addX(spr.getTaille_x() / 2);
-			zildoPos.addY(spr.getTaille_y() / 2);
-			EngineZildo.getOpenGLGestion().setZoomPosition(zildoPos);
-			float z=2.0f * (float) Math.sin(getFadeLevel() * (0.25f*Math.PI / 256.0f));
-			EngineZildo.getOpenGLGestion().setZ(z);
-
+			super.focusOnZildo();
 	
 	        // Draw each image, with intensified colors
 			for (int i=0;i<nImages;i++) {

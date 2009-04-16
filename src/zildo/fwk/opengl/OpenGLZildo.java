@@ -43,6 +43,10 @@ public class OpenGLZildo extends OpenGLGestion {
         if (!Keyboard.isKeyDown(Keyboard.KEY_MULTIPLY) && pressed) {
         	pressed=false;
         }
+    	EngineZildo.extraSpeed=1;
+    	if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+        	EngineZildo.extraSpeed=2;
+        }
         xx+=0.5f / 8.0f;
     }
     

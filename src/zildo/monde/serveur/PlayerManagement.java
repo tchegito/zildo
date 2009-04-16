@@ -141,6 +141,9 @@ public class PlayerManagement {
 				}
 			}
 		}
+		
+		int zildoSpeed=Constantes.ZILDO_SPEED * EngineZildo.extraSpeed;
+		
 		if (heros.getMouvement() == MouvementZildo.MOUVEMENT_SAUTE) {
 	    	// Zildo est en train de sauter ! Il est donc inactif
 			if (heros.getEn_bras() == 32) {
@@ -186,24 +189,23 @@ public class PlayerManagement {
 			Angle sauvangle=heros.getAngle();
 			// ATTACK key
 	
-	
 			if (heros.getMouvement()!=MouvementZildo.MOUVEMENT_ATTAQUE_EPEE) {
 				// Zildo can move ONLY if he isn't attacking
 				// LEFT/RIGHT key
 				if (Keyboard.isKeyDown(KeysConfiguration.PLAYERKEY_LEFT)) {
-					xx-=Constantes.ZILDO_SPEED;
+					xx-=zildoSpeed;
 					heros.setAngle(Angle.OUEST);
 				} else if (Keyboard.isKeyDown(KeysConfiguration.PLAYERKEY_RIGHT)) {
-					xx+=Constantes.ZILDO_SPEED;
+					xx+=zildoSpeed;
 					heros.setAngle(Angle.EST);
 				}
 	
 				// UP/DOWN key
 				if (Keyboard.isKeyDown(KeysConfiguration.PLAYERKEY_UP)) {
-					yy-=Constantes.ZILDO_SPEED;
+					yy-=zildoSpeed;
 					heros.setAngle(Angle.NORD);
 				} else if (Keyboard.isKeyDown(KeysConfiguration.PLAYERKEY_DOWN)) {
-					yy+=Constantes.ZILDO_SPEED;
+					yy+=zildoSpeed;
 					heros.setAngle(Angle.SUD);
 				}
 			}
@@ -249,15 +251,15 @@ public class PlayerManagement {
 						// Déplacement latéral -. Déplacement diagonal}
 						if (diffx==0)
 						{
-							if (!mapManagement.collide(xx+Constantes.ZILDO_SPEED,yy,heros))
-								xx+=Constantes.ZILDO_SPEED;
-							else if (!mapManagement.collide(xx-Constantes.ZILDO_SPEED,yy,heros))
-								xx-=Constantes.ZILDO_SPEED;
+							if (!mapManagement.collide(xx+zildoSpeed,yy,heros))
+								xx+=zildoSpeed;
+							else if (!mapManagement.collide(xx-zildoSpeed,yy,heros))
+								xx-=zildoSpeed;
 						} else if (diffy==0) {
-							if (!mapManagement.collide(xx,yy+Constantes.ZILDO_SPEED,heros))
-								yy+=Constantes.ZILDO_SPEED;
-							else if (!mapManagement.collide(xx,yy-Constantes.ZILDO_SPEED,heros))
-								yy-=Constantes.ZILDO_SPEED;
+							if (!mapManagement.collide(xx,yy+zildoSpeed,heros))
+								yy+=zildoSpeed;
+							else if (!mapManagement.collide(xx,yy-zildoSpeed,heros))
+								yy-=zildoSpeed;
 						}
 					}
 				}
@@ -417,7 +419,7 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// keyPressAction
 	///////////////////////////////////////////////////////////////////////////////////////
-	void keyPressAction(Perso perso) {
+	void keyPressAction(PersoZildo perso) {
 	
 	    int cx,cy;
 	    Angle persoangle;
@@ -429,39 +431,7 @@ public class PlayerManagement {
 				EngineZildo.dialogManagement.actOnDialog(DialogManagement.ACTIONDIALOG_ACTION);
 			} else { //
 				if (perso.getMouvement()==MouvementZildo.MOUVEMENT_BRAS_LEVES) {
-					//On jette un objet
-					Element element=perso.getPersoSprites().get(3);
-					perso.getPersoSprites().remove(3);
-					perso.setEn_bras(0);
-					perso.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
-					element.setX(perso.getX());
-					element.setY(perso.getY());
-					element.setZ(21.0f+1.0f);
-					element.setVx(0.0f);
-					element.setVy(0.0f);
-					element.setVz(0.0f);
-					element.setAx(0.0f);
-					element.setAy(0.0f);
-					element.setAz(-0.07f);
-					switch (perso.getAngle()) {
-						case NORD:
-							element.setVy(-4.0f);
-							element.setFy(0.04f);
-							break;
-						case EST:
-							element.setVx(4.0f);
-							element.setFx(0.04f);
-							break;
-						case SUD:
-							element.setVy(4.0f);
-							element.setFy(0.04f);
-							break;
-						case OUEST:
-							element.setVx(-4.0f);
-							element.setFx(0.04f);
-							break;
-					}
-					EngineZildo.soundManagement.playSoundFX("ZildoLance");
+					perso.throwSomething();
 					//perso.setQuel_spr(perso.getEn_bras());
 					// TODO: On crée un sprite de l'objet que zildo lance
 					//spawn_sprite(temp);
@@ -552,7 +522,7 @@ public class PlayerManagement {
 							//Musique('c:\musique\midi\zelda\Trouve.mid');
 							EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_FROMCHEST,16*newx+8,16*newy+16,51, null);
 							//EngineZildo.setWaitingScene(20);
-						} else if (!EngineZildo.mapManagement.is_passable(on_map)) {
+						} else if (!EngineZildo.mapManagement.isWalkable(on_map)) {
 							perso.setMouvement(MouvementZildo.MOUVEMENT_TIRE);
 						}
 					}

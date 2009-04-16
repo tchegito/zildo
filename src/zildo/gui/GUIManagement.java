@@ -5,7 +5,6 @@ import java.util.Iterator;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.engine.EngineZildo;
-import zildo.fwk.filter.ScreenFilter;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.Sprite;
 import zildo.monde.decors.SpriteEntity;
@@ -318,10 +317,12 @@ public class GUIManagement {
 	
 		// Draw frame's bars
 		for (int i=0;i<5;i++) {
-			EngineZildo.ortho.box(47,170+i,233,1,couleur_cadre[i], null);
-			EngineZildo.ortho.box(47,236-i,233,1,couleur_cadre[i], null);
-			EngineZildo.ortho.box(40+i,177,1,53,couleur_cadre[i], null);
-			EngineZildo.ortho.box(286-i,177,1,53,couleur_cadre[i], null);
+			EngineZildo.ortho.initDrawBox(false);
+			EngineZildo.ortho.boxOpti(47,170+i,233,1,couleur_cadre[i], null);
+			EngineZildo.ortho.boxOpti(47,236-i,233,1,couleur_cadre[i], null);
+			EngineZildo.ortho.boxOpti(40+i,177,1,53,couleur_cadre[i], null);
+			EngineZildo.ortho.boxOpti(286-i,177,1,53,couleur_cadre[i], null);
+			EngineZildo.ortho.endDraw();
 		}
 	}
 	

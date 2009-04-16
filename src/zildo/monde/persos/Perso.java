@@ -265,12 +265,12 @@ public abstract class Perso extends Element {
 		
 		persoSprites=new ArrayList<Element>();
 	
-		logger.log(Level.INFO, "Creating Perso");
+		logger.info("Creating Perso");
 	
 	}
 	
 	public void finalize() {
-		logger.log(Level.INFO, "Deleting Perso");
+		logger.info("Deleting Perso");
 		// Delete linked elements
 		if (this.persoSprites.size() > 0) {
 			for (Element e : persoSprites) {
@@ -278,7 +278,7 @@ public abstract class Perso extends Element {
 			}
 		}
 		persoSprites.clear();
-		logger.log(Level.OFF, " ... Ok");
+		logger.info(" ... Ok");
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

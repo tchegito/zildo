@@ -14,13 +14,7 @@ import zildo.monde.persos.Perso;
 import zildo.monde.persos.PersoZildo;
 import zildo.monde.persos.utils.PersoDescription;
 
-/**
-// SpriteBank
-//////////////////////////////////////////////////////////////////////
-// Class defining a list of stored sprites, called 'sprite bank'
-//
-//////////////////////////////////////////////////////////////////////
-*/
+
 
 public class Element extends SpriteEntity {
 	
@@ -50,7 +44,7 @@ public class Element extends SpriteEntity {
 	protected char spe; //Spe est utilisé selon l'usage
 
 	protected int addSpr;	// Pour les animations (exemple:diamants qui brillent)
-	protected SpriteEntity linkedPerso;
+	protected SpriteEntity linkedPerso;	// When this element dies, any non-perso linked entity die too.
 
 	public Element() {
 		this.initialize();
@@ -198,6 +192,7 @@ public class Element extends SpriteEntity {
 		}
 		return false;
 	}
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// animate
 	///////////////////////////////////////////////////////////////////////////////////////
