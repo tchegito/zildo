@@ -16,7 +16,9 @@ Now you ready for it. Here is a brief manual to use it :
 ||*page up/page down*||Fait défiler les motifs/sprites à gauche||
 ||*Flèches directionnelles*||Fait défiler la carte||
 ||*R*||Affiche temporairement le numéro de chaque motif à l'écran||
-||*Clic Gauche*||#Sur les motifs à gauche -> sélectionne le motif#Sur la carte -> ajoute le motif en cours||
+||*Clic Gauche*||
+#Sur les motifs à gauche -> sélectionne le motif
+#Sur la carte -> ajoute le motif en cours||
 ||*Clic Droit*||Sur la carte  efface le motif||
 
 *Mode Sprite*
