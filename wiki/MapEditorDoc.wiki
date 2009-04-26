@@ -22,10 +22,10 @@ Now you ready for it. Here is a brief manual to use it :
 
 ==Mode Sprite==
 
-|| *E	Edition d'un personnage (nom, angle, dialogue...)
-	     MODE=(0:ami / 1:ennemi)
-|| *+/- (pavé numérique)	Changer de phrase
-     	En fin de phrase un '#n' renverra sur la phrase 'n' dans le jeu
+|| *E*||Edition d'un personnage (nom, angle, dialogue...)||
+|| ||MODE=(0:ami / 1:ennemi)||
+|| *+/- (pavé numérique)*||Changer de phrase||
+|| ||En fin de phrase un '#n' renverra sur la phrase 'n' dans le jeu||
 
 ==Explication des motifs prédéfinis==
 
