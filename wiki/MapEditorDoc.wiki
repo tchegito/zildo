@@ -50,7 +50,7 @@ Now you're ready for it. Here is a brief manual to use it :
 || S2||Souterrain plus large||Tracer||4||
 || AR||Arbre rouge|| ||5||
 || AJ||Arbre jaune|| ||5||
-|| `*R3*`||Route dans le désert||Tracer||6||
+|| `*`R3`*`||Route dans le désert||Tracer||6||
 
 ==Options==
 
