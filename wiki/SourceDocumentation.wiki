@@ -2,9 +2,9 @@
 =Documentation=
 
 Le projet se divise en 3 parties:
- *Fwk : framework
- *gui : l'interface utilisateur
- *monde : le "métier", ou modèle
+ * *fwk* : framework
+ * *gui* : l'interface utilisateur
+ * *monde* : le "métier", ou modèle
 
 Ca s'apparente un peu à du MVC, où le framework symboliserait la couche Contrôleur, mais il est avant tout le conteneur de tout ce qui est technique dans Zildo.
 La partie GUI, encore pauvre, représente de tout ce qui se rajoute au visuel des sprites et des tiles.
