@@ -10,9 +10,9 @@ Le projet se divise en 3 parties:
 
 Ca s'apparente un peu à du MVC, où le framework symboliserait la couche Contrôleur, mais il est avant tout le conteneur de tout ce qui est technique dans Zildo.
 
-La partie GUI, encore pauvre, représente de tout ce qui se rajoute au visuel des sprites et des tiles.
+La partie GUI, encore pauvre, représente tout ce qui se rajoute au visuel des tiles et des sprites.
 
-Tout le côté RPG, jeu de rôle, qualifié de "métier", est dans "monde".
+Tout le côté RPG, jeu de rôle, qualifié de "métier", est dans le package "monde".
 
 
 ==zildo.monde==
