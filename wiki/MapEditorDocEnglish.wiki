@@ -36,7 +36,7 @@ Now you're ready for it. Here is a brief manual to use it :
 || `CB`||Hill border||Fill||1||
 || `CM`||Brown hill||Fill||1||
 || `R1`||Small road||Trace||1||
-|| `R2`||Large road||Tracr||1||
+|| `R2`||Large road||Trace||1||
 || `O`||Water||Drag|| ||1||
 || `AR`||Tree|| ||1||
 || `S`||Stub|| ||1||
@@ -55,8 +55,8 @@ Now you're ready for it. Here is a brief manual to use it :
 ==Options==
 
 || *Masque*||Activated : Tiles/Sprites added on foreground (tree's leafs, or village arch  for example)||
-|| *Dim*||For sizing the map||
-|| *Point*||For placing a chaining point||
+|| *Dim*||Size the map||
+|| *Point*||Place a chaining point||
 || *Motifs / Sprite*||Switch mode||
 || *Load / Save*||type name (without .map) in the field and click load/save to load/save a map.||
 
