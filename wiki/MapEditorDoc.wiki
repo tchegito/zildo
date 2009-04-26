@@ -5,7 +5,7 @@ There is several things to know about it:
  * it only works in 256 colors full screen mode
  * you should copy this file into the directory where you unzipped the game, nearby zildo.jar.
 
-Now you ready for it. Here is a brief manual to use it :
+Now you're ready for it. Here is a brief manual to use it :
 
 ==Dans tous les modes==
 
