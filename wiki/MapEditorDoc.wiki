@@ -30,11 +30,11 @@ Now you're ready for it. Here is a brief manual to use it :
 ==Explication des motifs prédéfinis==
 
 || *Nom à l’écran*||Détail||Spécial||Banque||
-|| C1`||Colline||Faire glisser||1||
-|| CG`||Entrée de colline gauche|| ||1||
-|| CD`||Entrée de colline droite|| ||1||
-|| CB`||Bordure de colline||Colorie||1||
-|| CM`||Colline marron||Colorie||1||
+|| `C1`||Colline||Faire glisser||1||
+|| `CG`||Entrée de colline gauche|| ||1||
+|| `CD`||Entrée de colline droite|| ||1||
+|| `CB`||Bordure de colline||Colorie||1||
+|| `CM`||Colline marron||Colorie||1||
 || `R1`||Petit chemin||Tracer||1||
 || `R2`||Large chemin||Tracer||1||
 || `O`||Eau||Faire glisser|| ||1||
