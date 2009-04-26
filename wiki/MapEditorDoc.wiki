@@ -13,7 +13,7 @@ Now you ready for it. Here is a brief manual to use it :
 ||*D*||Vide la carte + mode intérieur||
 ||*F1..F9*||Charge/retire la nième banque de motifs||
 ||*ESC*||Quitter||
-||*`PgUp/PgDown`||Fait défiler les motifs/sprites à gauche||
+||*page up/page down||Fait défiler les motifs/sprites à gauche||
 ||*Flèches directionnelles*||Fait défiler la carte||
 ||*R*||Affiche temporairement le numéro de chaque motif à l'écran
 ||*Clic Gauche*	Sur les motifs à gauche -> sélectionne le motif||
