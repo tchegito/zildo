@@ -49,5 +49,5 @@ Ces classes de base s'étoffent par d'autres classes qui représentent des perso
 [http://lh4.ggpht.com/_q_5wHG9LsPk/SfRjrW3Cf_I/AAAAAAAABJE/Q02fzQO9vtk/s800/spriteClassesHierarchy.JPG]
 
 On voit que les personnages se scindent en 2 catégories:
- * les non joueurs (PersoNJ)
- * les joueurs (PersoZildo) qui n'existent qu'en un seul exemplaire pour l'instant.
+ * les non joueurs (`PersoNJ`)
+ * les joueurs (`PersoZildo`) qui n'existent qu'en un seul exemplaire pour l'instant
