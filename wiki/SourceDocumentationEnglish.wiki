@@ -28,9 +28,9 @@ The class that modelizing theses tiles is [http://code.google.com/p/zildo/source
 
 ===1.2) The sprites===
 
-La classe qui régit tout sprite, du plus statique au plus évolué, hérite de la classe `SpriteEntity`. Cette classe représente les infos minimales pour modéliser une entité quelconque sur une carte.
+The class that define every sprite, from the most static to the most evoluate is `SpriteEntity`. This class represents the minimal informations to modelize any entity on a map.
 
-Depuis cette classe, on déroule pour complexifier la notion d'entité et on observe la hiérarchie de classe suivante:
+From this class, we derive to complexify the entity concept and we can observe the following class hierarchy:
 {{{
 SpriteEntity
 |
@@ -38,30 +38,30 @@ SpriteEntity
    |
    +->Perso
 }}}
-On a là les 3 classes essentielles de toute entité qui peut se trouver sur une carte.
+We got here 3 main classes to design every entity that can be found on a map.
 
  ====a/ `SpriteEntity` [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/decors/SpriteEntity.java (SVN)]====
 
-La première représente les éléments statiques, qui ne se déplacent pas, et ne bloquent pas le passage. On trouvera par exemple : les feuilles des buissons qui s'éparpillent, la fumée qui se dissipe d'une cheminée, ...
+The first one stand for the static elements, that can't move, et don't block anybody. We have for example : the bushes leafs that are vanishing, the smoking pipes on house's roofs, ...
 
-Cette classe dispose de coordonnées (X, Y) à l'écran, d'informations sur son visuel, et divers indicateurs (visible, premier/arrière plan, effet spécial...)
+This class contains coordinates (X, Y) on the screen, graphic informations, and various flags (visible, fore/back ground, visual effects ...)
 
  ====b/ `Element` [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/decors/Element.java (SVN)]====
 
-Il s'agit d'une entité plus particulière, qui peut se mouvoir dans le monde. Elle est sujette aux lois de la mécanique. De plus, elle peut être bloquante pour les autres éléments de la carte.
+This is a more particular class, that represents a moving entity in the world. It's under the physic laws. Furthermore, it can block characters or elements coming right away.
 
-Elle dispose de coordonnées dans le monde (X, Y, Z), de vitesse, d'accélération, et de forces de frottements. Elle peut être liée à une autre entité.
+It has coordinates (X, Y, Z) on the map, speed, acceleration, and friction forces. It can be linked to another entity.
 
  ====c/ `Perso` [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/persos/Perso.java (SVN)]====
 
-La classe de base la plus évoluée pour représenter un personnage sur une carte. On a ici des infos sur le comportement, la zone d'action, le caractère hostile/amical, ou encore le dialogue du personnage.
+The most evoluated of the basic calsses represents a character on a map. We got here informations about behavior, action area, friendly/enemy attitude, or dialogs position.
 
- ====d/ Hiérarchie plus complète====
+ ====d/ More complete hierararchy====
 
-Ces classes de base s'étoffent par d'autres classes qui représentent des personnages plus précis, dans leur comportement, ou leur représentation graphique. Voici une hiérarchie plus détaillée.
+These basic classes can be filled out by another ones, for more precise elementst, or characters, about their behavior or graphic display. Here is a more complete hierarchy:
 
 [http://lh4.ggpht.com/_q_5wHG9LsPk/SfRjrW3Cf_I/AAAAAAAABJE/Q02fzQO9vtk/s800/spriteClassesHierarchy.JPG]
 
-On voit que les personnages se scindent en 2 catégories:
- * les non joueurs (`PersoNJ`)
- * les joueurs (`PersoZildo`) qui n'existent qu'en un seul exemplaire pour l'instant
+We can see that characters are divided into 2 categories :
+ * the unplayables (`PersoNJ`)
+ * the playable (`PersoZildo`) : there is just one for now
