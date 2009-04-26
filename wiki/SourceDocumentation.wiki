@@ -1,0 +1,47 @@
+#labels Phase-Implementation
+=Documentation=
+
+Le projet se divise en 3 parties:
+-Fwk : framework
+-gui : l'interface utilisateur
+-monde : le "métier", ou modèle
+
+Ca s'apparente un peu à du MVC, où le framework symboliserait la couche Contrôleur, mais il est avant tout le conteneur de tout ce qui est technique dans Zildo.
+La partie GUI, encore pauvre, représente de tout ce qui se rajoute au visuel des sprites et des tiles.
+Tout le côté RPG, jeu de rôle, qualifié de "métier", est dans "monde".
+
+
+==zildo.monde==
+
+===1.1) Les sprites===
+
+La classe qui régit tout sprite, du plus statique au plus évolué, hérite de la classe SpriteEntity. Cette classe représente les infos minimales pour modéliser une entité quelconque sur une carte.
+Depuis cette classe, on déroule pour complexifier la notion d'entité et on observe la hiérarchie de classe suivante:
+
+SpriteEntity
+|
++->Element
+   |
+   +->Perso
+
+On a là les 3 classes essentielles de toute entité qui peut se trouver sur une carte.
+
+ ====a/ SpriteEntity====
+
+La première représente les éléments statiques, qui ne se déplacent pas, et ne bloquent pas le passage. On trouvera par exemple : les feuilles des buissons qui s'éparpillent, la fumée qui se dissipe d'une cheminée, ...
+
+Cette classe dispose de coordonnées (X, Y) à l'écran, d'informations sur son visuel, et divers indicateurs (visible, premier/arrière plan, effet spécial...)
+
+ ====b/ Element====
+
+Il s'agit d'une entité plus particulière, qui peut se mouvoir dans le monde. Elle est sujette aux lois de la mécanique. De plus, elle peut être bloquante pour les autres éléments de la carte.
+
+Elle dispose de coordonnées dans le monde (X, Y, Z), de vitesse, d'accélération, et de forces de frottements. Elle peut être liée à une autre entité.
+
+ ====c/ Perso====
+
+La classe de base la plus évoluée pour représenter un personnage sur une carte. On a ici des infos sur le comportement, la zone d'action, le caractère hostile/amical, ou encore le dialogue du personnage.
+
+ ====d/ Hiérarchie plus complète====
+
+
