@@ -56,7 +56,7 @@ It has coordinates (X, Y, Z) on the map, speed, acceleration, and friction force
 
 The most evoluated of the basic calsses represents a character on a map. We got here informations about behavior, action area, friendly/enemy attitude, or dialogs position.
 
- ====d/ More complete hierararchy====
+ ====d/ More complete hierarchy====
 
 These basic classes can be filled out by another ones, for more precise elementst, or characters, about their behavior or graphic display. Here is a more complete hierarchy:
 
