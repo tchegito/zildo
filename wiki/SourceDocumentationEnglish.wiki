@@ -14,6 +14,14 @@ The GUI part, still short, stands for everything surrounding game visual, in add
 
 All the RPG side, qualified as "business", is in the [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/ "monde"] package.
 
+==zildo.fwk==
+
+Coming soon...
+
+==zildo.gui==
+
+Coming soon...
+
 ==zildo.monde==
 
 ===1.1) The tiles===
