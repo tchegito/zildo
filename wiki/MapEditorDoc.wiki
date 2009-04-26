@@ -11,7 +11,7 @@ Now you ready for it. Here is a brief manual to use it :
 
 || *C*||Vide la carte + mode extérieur||
 || *D*||Vide la carte + mode intérieur||
-|| *F1..F9*||Charge/retire la nième banque de motifs||
+|| *F1..F9*||Charge/retire la n-ième banque de motifs||
 || *ESC*||Quitter||
 || *page up/page down*||Fait défiler les motifs/sprites à gauche||
 || *Flèches directionnelles*||Fait défiler la carte||
@@ -21,36 +21,41 @@ Now you ready for it. Here is a brief manual to use it :
 || *Clic Droit*||Sur la carte -> efface le motif||
 
 *Mode Sprite*
-E	Edition d'un personnage (nom, angle, dialogue...)
+
+|| *E	Edition d'un personnage (nom, angle, dialogue...)
 	     MODE=(0:ami / 1:ennemi)
-+/- (pavé numérique)	Changer de phrase
+|| *+/- (pavé numérique)	Changer de phrase
      	En fin de phrase un '#n' renverra sur la phrase 'n' dans le jeu
-Explication des motifs prédéfinis
-Nom à l’écran	Détail	Spécial	Banque
-C1	Colline	Faire glisser	1
-CG	Entrée de colline gauche		1
-CD	Entrée de colline droite		1
-CB	Bordure de colline	Colorie	1
-CM	Colline marron	Colorie	1
-R1	Petit chemin	Tracer	1
-R2	Large chemin	Tracer	1
-O	Eau	Faire glisser	1
-AR	Arbre		1
-S	Souche		1
-ST	Statue		1
-V	Arche de village		2
-GP	Grosse pierre		2
-M	Maison de base (rouge)	Faire glisser	3
-MB	Maison bleue	Colorie	3
-MV	Maison verte	Colorie	3
-S	Souterrain	Tracer	4
-S2	Souterrain plus large	Tracer	4
-AR	Arbre rouge		5
-AJ	Arbre jaune		5
-R3	Route dans le désert	Tracer	6
-Options
-Masque	Activé : les motifs/sprites affichés sont « en l’air » (le feuillage d’un arbre, ou le haut de l’arche par exemple)
-Dim	Permet de délimiter le coin droit en bas de la carte
-Point	Permet de placer un point d’enchaînement
-Motifs / Sprite	Permet de basculer dans un mode ou dans l’autre
-Load / Save	Taper le nom (sans .map) dans le champ et faire load/save pour charger/sauvegarder une carte.
+
+*Explication des motifs prédéfinis*
+
+|| *Nom à l’écran	Détail	Spécial	Banque
+|| C1	Colline	Faire glisser	1
+|| CG	Entrée de colline gauche		1
+|| CD	Entrée de colline droite		1
+|| CB	Bordure de colline	Colorie	1
+|| CM	Colline marron	Colorie	1
+|| R1	Petit chemin	Tracer	1
+|| R2	Large chemin	Tracer	1
+|| O	Eau	Faire glisser	1
+|| AR	Arbre		1
+|| S	Souche		1
+|| ST	Statue		1
+|| V	Arche de village		2
+|| GP	Grosse pierre		2
+|| M	Maison de base (rouge)	Faire glisser	3
+|| MB	Maison bleue	Colorie	3
+|| MV	Maison verte	Colorie	3
+|| S	Souterrain	Tracer	4
+|| S2	Souterrain plus large	Tracer	4
+|| AR	Arbre rouge		5
+|| AJ	Arbre jaune		5
+|| R3	Route dans le désert	Tracer	6
+
+*Options*
+
+|| *Masque*||Activé : les motifs/sprites affichés sont « en l’air » (le feuillage d’un arbre, ou le haut de l’arche par exemple)||
+|| *Dim*||Permet de délimiter le coin droit en bas de la carte||
+|| *Point*||Permet de placer un point d’enchaînement||
+|| *Motifs / Sprite*||Permet de basculer dans un mode ou dans l’autre||
+|| *Load / Save*||Taper le nom (sans .map) dans le champ et faire load/save pour charger/sauvegarder une carte.||
