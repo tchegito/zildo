@@ -1,4 +1,4 @@
-#labels Phase-Implementation
+#labels Phase-Implementation,fr
 =Documentation=
 
 Le projet se divise en 3 parties:
