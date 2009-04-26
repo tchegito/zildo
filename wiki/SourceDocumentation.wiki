@@ -1,7 +1,7 @@
 #labels Phase-Implementation,fr
 =Documentation=
 
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="4" />
 
 Le projet se divise en 3 parties:
  * *fwk* : framework
