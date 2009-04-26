@@ -26,22 +26,20 @@ SpriteEntity
 
 On a là les 3 classes essentielles de toute entité qui peut se trouver sur une carte.
 
- ====a/ SpriteEntity====
+====a/ SpriteEntity====
 
 La première représente les éléments statiques, qui ne se déplacent pas, et ne bloquent pas le passage. On trouvera par exemple : les feuilles des buissons qui s'éparpillent, la fumée qui se dissipe d'une cheminée, ...
 
 Cette classe dispose de coordonnées (X, Y) à l'écran, d'informations sur son visuel, et divers indicateurs (visible, premier/arrière plan, effet spécial...)
 
- ====b/ Element====
+====b/ Element====
 
 Il s'agit d'une entité plus particulière, qui peut se mouvoir dans le monde. Elle est sujette aux lois de la mécanique. De plus, elle peut être bloquante pour les autres éléments de la carte.
 
 Elle dispose de coordonnées dans le monde (X, Y, Z), de vitesse, d'accélération, et de forces de frottements. Elle peut être liée à une autre entité.
 
- ====c/ Perso====
+====c/ Perso====
 
 La classe de base la plus évoluée pour représenter un personnage sur une carte. On a ici des infos sur le comportement, la zone d'action, le caractère hostile/amical, ou encore le dialogue du personnage.
 
- ====d/ Hiérarchie plus complète====
-
-
+====d/ Hiérarchie plus complète====
