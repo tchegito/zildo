@@ -1,7 +1,7 @@
 package zildo.monde.decors;
 
 import zildo.fwk.gfx.PixelShaders;
-import zildo.monde.Sprite;
+import zildo.monde.SpriteModel;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -27,7 +27,7 @@ public class SpriteEntity
 
 	// Class variable
 	private int scrX,scrY;	// Screen position (so with camera adjustment)
-	private Sprite sprModel;	// Reference to the sprite being rendered
+	private SpriteModel sprModel;	// Reference to the sprite being rendered
 	protected int nSpr;			// Pour les perso devient une interprétation de 'angle' et 'pos_seqsprite'
 	protected int nBank;
 	private boolean moved;			// True=need to synchronize the vertex buffer, False=no move this frame
@@ -56,11 +56,11 @@ public class SpriteEntity
 		this.scrY = scrY;
 	}
 
-	public Sprite getSprModel() {
+	public SpriteModel getSprModel() {
 		return sprModel;
 	}
 
-	public void setSprModel(Sprite sprModel) {
+	public void setSprModel(SpriteModel sprModel) {
 		this.sprModel = sprModel;
 	}
 

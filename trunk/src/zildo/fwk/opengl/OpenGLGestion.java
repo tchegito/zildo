@@ -107,7 +107,7 @@ public abstract class OpenGLGestion {
         
         //GL11.glEnable(GL11.GL_LIGHTING);
         
-        Display.setVSyncEnabled(true);
+        //Display.setVSyncEnabled(true);
 
     }
     

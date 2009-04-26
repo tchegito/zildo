@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import zildo.fwk.EasyFile;
-import zildo.monde.Sprite;
+import zildo.monde.SpriteModel;
 import zildo.prefs.Constantes;
 
 /**
@@ -33,7 +33,7 @@ public class SpriteBank {
 
 		// Class variables
 	private long spr_size;
-	private List<Sprite> tab_sprite;
+	private List<SpriteModel> tab_sprite;
 
 	private short[] sprites_buf;
 	private int nSprite;
@@ -43,13 +43,13 @@ public class SpriteBank {
 	{
 		this.nSprite=0;
 		this.spr_size=0;
-		tab_sprite=new ArrayList<Sprite>();
+		tab_sprite=new ArrayList<SpriteModel>();
 		this.sprites_buf=null;
 	
 		logger.log(Level.INFO, "Creating SpriteBank");
 	}
 
-	public SpriteBank(short[] sprites_buf_, long spr_size, List<Sprite> tab_sprite)
+	public SpriteBank(short[] sprites_buf_, long spr_size, List<SpriteModel> tab_sprite)
 	{
 		this.nSprite=tab_sprite.size();
 		this.sprites_buf=sprites_buf_;
@@ -109,7 +109,7 @@ public class SpriteBank {
 			b=file.readUnsignedByte();
 	
 			// Build a temporary sprite and add it to the list
-			Sprite spr=new Sprite(a, b, k);
+			SpriteModel spr=new SpriteModel(a, b, k);
 			tab_sprite.add(spr);
 	
 			int taille=b*a;
@@ -120,7 +120,7 @@ public class SpriteBank {
 		}
 	}
 	
-	public Sprite get_sprite(int nspr)
+	public SpriteModel get_sprite(int nspr)
 	{
 		// Get the right sprite
 		return tab_sprite.get(nspr);
@@ -146,7 +146,7 @@ public class SpriteBank {
 	 * @return short[]
 	 */
 	public short[] getSpriteGfx(int nSpr) {
-		Sprite spr=get_sprite(nSpr);
+		SpriteModel spr=get_sprite(nSpr);
 		
 		int size=spr.getTaille_x() * spr.getTaille_y();
 		short[] coupe=new short[size];
@@ -157,7 +157,7 @@ public class SpriteBank {
 	
 	public void addSpriteReference(int texPosX, int texPosY, int sizeX, int sizeY)
 	{
-		Sprite spr=new Sprite(sizeX, sizeY, texPosX, texPosY);
+		SpriteModel spr=new SpriteModel(sizeX, sizeY, texPosX, texPosY);
 		tab_sprite.add(spr);
 	
 		nSprite++;
@@ -171,11 +171,11 @@ public class SpriteBank {
 		this.spr_size = spr_size;
 	}
 
-	public List<Sprite> getTab_sprite() {
+	public List<SpriteModel> getTab_sprite() {
 		return tab_sprite;
 	}
 
-	public void setTab_sprite(List<Sprite> tab_sprite) {
+	public void setTab_sprite(List<SpriteModel> tab_sprite) {
 		this.tab_sprite = tab_sprite;
 	}
 

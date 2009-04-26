@@ -1,6 +1,5 @@
 package zildo.monde;
 
-import zildo.monde.decors.SpriteEntity;
 
 
 
@@ -17,7 +16,7 @@ import zildo.monde.decors.SpriteEntity;
 //-------------
 //* Contains informations about sprite location on the bank's texture.
 
-public class Sprite extends SpriteEntity {
+public class SpriteModel {
 	static public final int TEXTER_BORDGAUCHE = 50;
 	static public final int TEXTER_BORDDROIT = 270;
 
@@ -27,16 +26,16 @@ public class Sprite extends SpriteEntity {
 	private	int offset;
 
 	// Constructor
-	public Sprite() {
+	public SpriteModel() {
 	}
 
-	public Sprite(int taille_x, int taille_y, int offset) {
+	public SpriteModel(int taille_x, int taille_y, int offset) {
 		this.taille_x=taille_x;
 		this.taille_y=taille_y;
 		this.offset=offset;
 	}
 	
-	public Sprite(int taille_x, int taille_y, int texPos_x, int texPos_y) {
+	public SpriteModel(int taille_x, int taille_y, int texPos_x, int texPos_y) {
 		this.taille_x=taille_x;
 		this.taille_y=taille_y;
 		this.texPos_x=texPos_x;

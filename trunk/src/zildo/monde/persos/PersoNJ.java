@@ -7,7 +7,7 @@ import zildo.fwk.engine.EngineZildo;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.Angle;
 import zildo.monde.Hasard;
-import zildo.monde.Sprite;
+import zildo.monde.SpriteModel;
 import zildo.monde.decors.Element;
 import zildo.monde.persos.utils.MouvementPerso;
 import zildo.monde.persos.utils.MouvementZildo;
@@ -48,7 +48,7 @@ public class PersoNJ extends Perso {
 			elem.add(this);
 			elem.addAll(persoSprites);
 			for (Element e:elem) {
-				Sprite spr=e.getSprModel();
+				SpriteModel spr=e.getSprModel();
 				int size=(spr.getTaille_x() + spr.getTaille_y()) / 4;
 				EngineZildo.collideManagement.addCollision(false, (int) e.x-4, (int) e.y-(int)e.z-spr.getTaille_y()/2, size, getAngle(), this);
 			}

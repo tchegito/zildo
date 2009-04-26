@@ -12,7 +12,7 @@ import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.monde.Collision;
 import zildo.monde.Hasard;
-import zildo.monde.Sprite;
+import zildo.monde.SpriteModel;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.ElementAnimMort;
 import zildo.monde.decors.ElementGoodies;
@@ -182,7 +182,7 @@ public class SpriteManagement {
 	public void spawnSprite(int nBank, int nSpr, int x, int y)
 	{
 	
-		Sprite spr=getSpriteBank(nBank).get_sprite(nSpr);
+		SpriteModel spr=getSpriteBank(nBank).get_sprite(nSpr);
 
 		if (nSpr == 69 || nSpr == 70 || nSpr == 28) {
 			// Particular sprite (Block that Zildo can move, chest...)
@@ -269,7 +269,7 @@ public class SpriteManagement {
 		int nBank=entity.getNBank();
 		int nSpr=entity.getNSpr();
 	
-		Sprite spr=getSpriteBank(nBank).get_sprite(nSpr);
+		SpriteModel spr=getSpriteBank(nBank).get_sprite(nSpr);
 		SpriteEngine spriteEngine=EngineZildo.spriteEngine;
 	
 		entity.setSprModel(spr);
@@ -317,7 +317,7 @@ public class SpriteManagement {
 	{
 		Element element=null;
 		Element element2=null;
-		Sprite spr = null;
+		SpriteModel spr = null;
 		int j;
 	
 		switch (typeSprite)
@@ -471,7 +471,7 @@ public class SpriteManagement {
 				perso.setScrX ( perso.getAjustedX() - cameraXnew);
 				perso.setScrY ( perso.getAjustedY() - cameraYnew);
 				// Get sprite model
-				Sprite spr=getSpriteBank(entity.getNBank()).get_sprite(perso.getNSpr());
+				SpriteModel spr=getSpriteBank(entity.getNBank()).get_sprite(perso.getNSpr());
 				perso.setSprModel(spr);
 				if (!perso.isZildo()) {
 					// Non-zildo sprite haven't same way to display correctly (bad...)
@@ -506,7 +506,7 @@ public class SpriteManagement {
 					toDelete.addAll(deads);
 				} else {
 					if (element.isVisible()) {
-						Sprite spr=getSpriteBank(entity.getNBank()).get_sprite(entity.getNSpr() + element.getAddSpr());
+						SpriteModel spr=getSpriteBank(entity.getNBank()).get_sprite(entity.getNSpr() + element.getAddSpr());
 						entity.setSprModel(spr);
 					}
 				}
@@ -530,7 +530,7 @@ public class SpriteManagement {
 					entity.setScrX ((int) ( element.x - cameraXnew));
 					entity.setScrY ((int) ( element.y - cameraYnew));
 					// Center sprite
-					Sprite spr=entity.getSprModel();
+					SpriteModel spr=entity.getSprModel();
 					entity.setScrX(entity.getScrX() - (spr.getTaille_x() >> 1));
 					entity.setScrY(entity.getScrY() +  3-spr.getTaille_y());
 				}
@@ -574,7 +574,7 @@ public class SpriteManagement {
 		} else if (sprite.getEntityType()!=SpriteEntity.ENTITYTYPE_ENTITY) {
 			// To get the right comparison, delete the adjustment done by updateSprites
 			// just for filling the sort array
-			Sprite spr=sprite.getSprModel();
+			SpriteModel spr=sprite.getSprModel();
 			y+=spr.getTaille_y() - 3;
 		} else {
 			// Entity : make its always UNDER Zildo and other characters, at the same level
@@ -775,7 +775,7 @@ public class SpriteManagement {
 				 entity.getEntityType() == SpriteEntity.ENTITYTYPE_ENTITY)) {
 				isBlockable=blockable_sprite.contains(entity.getNSpr());
 				isGoodies=goodies_sprite.contains(entity.getNSpr());
-				Sprite sprModel=entity.getSprModel();
+				SpriteModel sprModel=entity.getSprModel();
 				int sx=sprModel.getTaille_x();
 				int sy=sprModel.getTaille_y();
 				if (isGoodies || isBlockable) {
