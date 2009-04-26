@@ -6,7 +6,7 @@ import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.engine.EngineZildo;
 import zildo.fwk.gfx.PixelShaders;
-import zildo.monde.Sprite;
+import zildo.monde.SpriteModel;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.persos.PersoZildo;
 import zildo.monde.serveur.PersoManagement;
@@ -168,7 +168,7 @@ public class GUIManagement {
 		//int* nSpr=(int*)malloc(sizeof(int) * (texte.length() + 3));	// 3 for each carriage return
 		int length=texte.length() + 10;
 		int[] nSpr=new int[length];
-		Sprite spr;
+		SpriteModel spr;
 		int nLettre=0;
 		int nLigne=0;
 		int sizeCurrentWord=0;

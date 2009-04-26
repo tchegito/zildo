@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import zildo.fwk.engine.EngineZildo;
 import zildo.monde.Point;
-import zildo.monde.Sprite;
+import zildo.monde.SpriteModel;
 import zildo.monde.persos.PersoZildo;
 
 public class ZoomFilter extends ScreenFilter {
@@ -23,7 +23,7 @@ public class ZoomFilter extends ScreenFilter {
 		// Focus camera on Zildo, and zoom according to the 'fadeLevel'
 		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
 		Point zildoPos=new Point(zildo.getScrX(), zildo.getScrY());
-		Sprite spr=zildo.getSprModel();
+		SpriteModel spr=zildo.getSprModel();
 		zildoPos.addX(spr.getTaille_x() / 2);
 		zildoPos.addY(spr.getTaille_y() / 2);
 		EngineZildo.getOpenGLGestion().setZoomPosition(zildoPos);

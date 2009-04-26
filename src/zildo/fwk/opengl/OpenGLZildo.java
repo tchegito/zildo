@@ -75,7 +75,7 @@ public class OpenGLZildo extends OpenGLGestion {
 
         EngineZildo.filterCommand.doPostFilter();
         
-       	Display.sync(framerate);
+       	//Display.sync(framerate);
         Display.update();
         
         //camera.place(new Vector3f(xx,0,z)); //EngineZildo.mapManagement.getCamerax(), 

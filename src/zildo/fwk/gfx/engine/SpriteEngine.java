@@ -10,7 +10,7 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.engine.EngineZildo;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.SpritePrimitive;
-import zildo.monde.Sprite;
+import zildo.monde.SpriteModel;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
 import zildo.prefs.Constantes;
@@ -77,7 +77,7 @@ public class SpriteEngine extends TextureEngine {
 		int x=0,y=0,highestLine=0;
 		for (int n=0;n<sBank.getNSprite();n++)
 		{
-			Sprite spr=sBank.get_sprite(n);
+			SpriteModel spr=sBank.get_sprite(n);
 			int longX=spr.getTaille_x();
 			int longY=spr.getTaille_y();
 			// Test de dépassement sur la texture
@@ -198,7 +198,7 @@ public class SpriteEngine extends TextureEngine {
 		if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT)
 			z=((Element)entity).z;
 	
-		Sprite spr=entity.getSprModel();
+		SpriteModel spr=entity.getSprModel();
 		entity.setLinkVertices(
 		meshSprites[entity.getNBank()].addSprite((float) entity.getScrX(),
 											  (float) entity.getScrY() - z,
@@ -221,7 +221,7 @@ public class SpriteEngine extends TextureEngine {
 				entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO)
 			z=((Element)entity).z;
 	
-		Sprite spr=entity.getSprModel();
+		SpriteModel spr=entity.getSprModel();
 		entity.setLinkVertices(
 		meshSprites[entity.getNBank()].synchronizeSprite((float) entity.getScrX(),
 				  									(float) entity.getScrY() - z,
