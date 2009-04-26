@@ -1,9 +1,9 @@
 =Documentation for MAPEDIT.EXE=
 
 There is several things to know about it:
- *it is very old
- *it only works in 256 colors full screen mode
- *you should copy this file into the directory where you unzipped the game, nearby zildo.jar.
+ * it is very old
+ * it only works in 256 colors full screen mode
+ * you should copy this file into the directory where you unzipped the game, nearby zildo.jar.
 
 Now you ready for it. Here is a brief manual to use it :
 
@@ -29,28 +29,28 @@ Now you ready for it. Here is a brief manual to use it :
 
 ==Explication des motifs prédéfinis==
 
-|| *Nom à l’écran	Détail	Spécial	Banque
-|| C1	Colline	Faire glisser	1
-|| CG	Entrée de colline gauche		1
-|| CD	Entrée de colline droite		1
-|| CB	Bordure de colline	Colorie	1
-|| CM	Colline marron	Colorie	1
-|| R1	Petit chemin	Tracer	1
-|| R2	Large chemin	Tracer	1
-|| O	Eau	Faire glisser	1
-|| AR	Arbre		1
-|| S	Souche		1
-|| ST	Statue		1
-|| V	Arche de village		2
-|| GP	Grosse pierre		2
-|| M	Maison de base (rouge)	Faire glisser	3
-|| MB	Maison bleue	Colorie	3
-|| MV	Maison verte	Colorie	3
-|| S	Souterrain	Tracer	4
-|| S2	Souterrain plus large	Tracer	4
-|| AR	Arbre rouge		5
-|| AJ	Arbre jaune		5
-|| R3	Route dans le désert	Tracer	6
+|| *Nom à l’écran*||Détail||Spécial||Banque||
+|| C1||Colline	Faire glisser	1
+|| CG||Entrée de colline gauche		1
+|| CD||Entrée de colline droite		1
+|| CB||Bordure de colline	Colorie	1
+|| CM||Colline marron	Colorie	1
+|| R1||Petit chemin	Tracer	1
+|| R2||Large chemin	Tracer	1
+|| O||Eau	Faire glisser	1
+|| AR||	Arbre		1
+|| S||Souche		1
+|| ST||	Statue		1
+|| V||Arche de village		2
+|| GP||Grosse pierre		2
+|| M||Maison de base (rouge)	Faire glisser	3
+|| MB||Maison bleue	Colorie	3
+|| MV||Maison verte	Colorie	3
+|| S||Souterrain	Tracer	4
+|| S2||Souterrain plus large	Tracer	4
+|| AR||Arbre rouge		5
+|| AJ||Arbre jaune		5
+|| R3||Route dans le désert	Tracer	6
 
 ==Options==
 
