@@ -61,13 +61,13 @@ Maintenant, vous êtes prêts. Voici un bref manuel d'utilisation :
 || *Motifs / Sprite*||Permet de basculer dans un mode ou dans l’autre||
 || *Load / Save*||Taper le nom (sans .map) dans le champ et faire load/save pour charger/sauvegarder une carte.||
 
-==Example==
+==Exemple==
 
-For example, to edit the Polaky map, do the following:
- * click on the 'NONAME' text on right-bottom corner
- * clear the field
- * type 'POLAKY'
- * click on load button
- * press F5 (for fifth tiles bank)
+Par exemple, pour travailler sur la carte de la Polaky :
+ * cliquer sur 'NONAME' en bas à droite de l'écran
+ * vider le champ
+ * taper 'POLAKY'
+ * cliquer sur le bouton 'Load'
+ * presser F5 (pour la 5è banque)
 
-And voilà ! You're viewing Polaky and can edit it !
+Et voilà ! Vous êtes sur la Polaky, et vous pouvez l'éditer !
