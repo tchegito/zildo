@@ -15,6 +15,14 @@ La partie GUI, encore pauvre, représente tout ce qui se rajoute au visuel des t
 Tout le côté RPG, jeu de rôle, qualifié de "métier", est dans le package [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/ "monde"].
 
 
+==zildo.fwk==
+
+Bientôt...
+
+==zildo.gui==
+
+Bientôt...
+
 ==zildo.monde==
 
 ===1.1) Les tiles===
