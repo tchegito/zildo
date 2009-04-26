@@ -23,6 +23,10 @@ Les tiles sont les "tuiles" de 16x16 qui composent la carte où les protagoniste
 
 On distingue les tiles de premier plan et d'arrière plan. Ce qui est au premier plan peut cacher une partie des éléments qui sont proches. Par exemple, si Zildo se trouve vers un arbre, c'est l'arbre qui cachera Zildo. De même pour une porte de maison, où l'entrée d'un village.
 
+Les tiles peuvent être animées, comme les fleurs, où l'eau sur le rivage.
+
+La classe qui modélise ces tiles est la classe [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/Case.java Case].
+
 ===1.2) Les sprites===
 
 La classe qui régit tout sprite, du plus statique au plus évolué, hérite de la classe `SpriteEntity`. Cette classe représente les infos minimales pour modéliser une entité quelconque sur une carte.
