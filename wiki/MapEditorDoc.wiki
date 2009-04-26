@@ -9,16 +9,16 @@ Now you ready for it. Here is a brief manual to use it :
 
 *Dans tous les modes*
 
-||C||Vide la carte + mode extérieur||
-||D||Vide la carte + mode intérieur||
-||F1..F9||Charge/retire la nième banque de motifs||
-||ESC||Quitter||
-||PgUp/PgDown||Fait défiler les motifs/sprites à gauche||
-||Flèches directionnelles||Fait défiler la carte||
-||R	Affiche temporairement le numéro de chaque motif à l'écran
-||ClicGauche	Sur les motifs à gauche -> sélectionne le motif||
+||*C*||Vide la carte + mode extérieur||
+||*D*||Vide la carte + mode intérieur||
+||*F1..F9*||Charge/retire la nième banque de motifs||
+||*ESC*||Quitter||
+||*PgUp/PgDown||Fait défiler les motifs/sprites à gauche||
+||*Flèches directionnelles*||Fait défiler la carte||
+||*R*||Affiche temporairement le numéro de chaque motif à l'écran
+||*ClicGauche*	Sur les motifs à gauche -> sélectionne le motif||
 Sur la carte  ajoute le motif en cours
-||ClicDroit	Sur la carte  efface le motif||
+||*ClicDroit*	Sur la carte  efface le motif||
 
 *Mode Sprite*
 E	Edition d'un personnage (nom, angle, dialogue...)
