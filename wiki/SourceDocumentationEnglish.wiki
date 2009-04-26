@@ -1,19 +1,18 @@
 #labels Phase-Implementation
-=Documentation technique=
+=Technic Documentation=
 
 <wiki:toc max_depth="4" />
 
-Le projet se divise en 3 parties:
+Project is divided into 3 parts:
  * *fwk* : framework
- * *gui* : l'interface utilisateur
- * *monde* : le "métier", ou modèle
+ * *gui* : user interface
+ * *monde* : "business", or model
 
-Ca s'apparente un peu à du MVC, où le framework symboliserait la couche Contrôleur, mais il est avant tout le conteneur de tout ce qui est technique dans Zildo.
+This is a little bit kind of a MVC, where framework represents the controler layer, but it is mainly the technical container for Zildo, first of all.
 
-La partie GUI, encore pauvre, représente tout ce qui se rajoute au visuel des tiles et des sprites.
+The GUI part, still short, stands for everything surrounding game visual, in addition of tiles and sprites.
 
-Tout le côté RPG, jeu de rôle, qualifié de "métier", est dans le package [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/ "monde"].
-
+All the RPG side, qualified as "business", is in the [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/ "monde"] package.
 
 ==zildo.monde==
 
