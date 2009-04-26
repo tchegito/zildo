@@ -59,3 +59,14 @@ Now you're ready for it. Here is a brief manual to use it :
 || *Point*||Permet de placer un point d’enchaînement||
 || *Motifs / Sprite*||Permet de basculer dans un mode ou dans l’autre||
 || *Load / Save*||Taper le nom (sans .map) dans le champ et faire load/save pour charger/sauvegarder une carte.||
+
+==Example==
+
+For example, to edit the Polaky map, do the following:
+ * click on the 'NONAME' text on right-bottom corner
+ * clear the field
+ * type 'POLAKY'
+ * click on load button
+ * press F5 (for fifth tiles bank)
+
+And voilà ! You're viewing Polaky and can edit it !
