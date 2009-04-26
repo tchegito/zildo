@@ -9,8 +9,8 @@ Now you ready for it. Here is a brief manual to use it :
 
 *Dans tous les modes*
 
-C	Vide la carte + mode extérieur
-D	Vide la carte + mode intérieur
+||C||Vide la carte + mode extérieur
+||D||Vide la carte + mode intérieur
 F1..F9	Charge/retire la nième banque de motifs
 ESC	Quitter
 PgUp/PgDown	Fait défiler les motifs/sprites à gauche
