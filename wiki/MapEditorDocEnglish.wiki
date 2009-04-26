@@ -37,7 +37,7 @@ Now you're ready for it. Here is a brief manual to use it :
 || `CM`||Brown hill||Fill||1||
 || `R1`||Small road||Trace||1||
 || `R2`||Large road||Trace||1||
-|| `O`||Water||Drag|| ||1||
+|| `O`||Water||Drag||1||
 || `AR`||Tree|| ||1||
 || `S`||Stub|| ||1||
 || `ST`||Statue|| ||1||
