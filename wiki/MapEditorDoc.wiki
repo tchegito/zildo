@@ -1,12 +1,12 @@
 #labels fr
-=Documentation for MAPEDIT.EXE=
+=Documentation pour MAPEDIT.EXE=
 
-There is several things to know about it:
- * it is very old
- * it only works in 256 colors full screen mode
- * you should copy this file into the directory where you unzipped the game, nearby zildo.jar.
+Il y a certaines petites choses à savoir à propos de l'éditeur:
+ * il est très vieux
+ * il ne fonctionne qu'en 256 couleurs plein écran
+ * il faut le copier dans le dossier où se trouve zildo.jar
 
-Now you're ready for it. Here is a brief manual to use it :
+Maintenant, vous êtes prêts. Voici un bref manuel d'utilisation :
 
 ==Dans tous les modes==
 
@@ -38,7 +38,7 @@ Now you're ready for it. Here is a brief manual to use it :
 || `CM`||Colline marron||Colorie||1||
 || `R1`||Petit chemin||Tracer||1||
 || `R2`||Large chemin||Tracer||1||
-|| `O`||Eau||Faire glisser|| ||1||
+|| `O`||Eau||Faire glisser||1||
 || `AR`||	Arbre|| ||1||
 || `S`||Souche|| ||1||
 || `ST`||	Statue|| ||1||
