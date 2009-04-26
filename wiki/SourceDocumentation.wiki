@@ -1,5 +1,5 @@
 #labels Phase-Implementation,fr
-=Documentation=
+=Documentation technique=
 
 <wiki:toc max_depth="4" />
 
@@ -15,7 +15,12 @@ Tout le côté RPG, jeu de rôle, qualifié de "métier", est dans "monde".
 
 ==zildo.monde==
 
-===1.1) Les sprites===
+===1.1) Les tiles===
+
+Les tiles sont les "tuiles" de 16x16 qui composent la carte où les protagonistes de Zildo se déplacent.
+On distingue les tiles de premier plan et d'arrière plan. Ce qui est au premier plan peut cacher une partie des éléments qui sont proches. Par exemple, si Zildo se trouve vers un arbre, c'est l'arbre qui cachera Zildo. De même pour une porte de maison, où l'entrée d'un village.
+
+===1.2) Les sprites===
 
 La classe qui régit tout sprite, du plus statique au plus évolué, hérite de la classe `SpriteEntity`. Cette classe représente les infos minimales pour modéliser une entité quelconque sur une carte.
 Depuis cette classe, on déroule pour complexifier la notion d'entité et on observe la hiérarchie de classe suivante:
