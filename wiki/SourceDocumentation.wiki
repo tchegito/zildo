@@ -43,3 +43,5 @@ Elle dispose de coordonnées dans le monde (X, Y, Z), de vitesse, d'accélérati
 La classe de base la plus évoluée pour représenter un personnage sur une carte. On a ici des infos sur le comportement, la zone d'action, le caractère hostile/amical, ou encore le dialogue du personnage.
 
 ====d/ Hiérarchie plus complète====
+
+[http://lh4.ggpht.com/_q_5wHG9LsPk/SfRjrW3Cf_I/AAAAAAAABJE/Q02fzQO9vtk/s800/spriteClassesHierarchy.JPG]
