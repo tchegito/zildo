@@ -3,6 +3,8 @@
 
 <wiki:toc max_depth="4" />
 
+----
+
 Le projet se divise en 3 parties:
  * *fwk* : framework
  * *gui* : l'interface utilisateur
