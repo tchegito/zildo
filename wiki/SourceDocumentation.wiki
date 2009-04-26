@@ -32,13 +32,13 @@ La première représente les éléments statiques, qui ne se déplacent pas, et 
 
 Cette classe dispose de coordonnées (X, Y) à l'écran, d'informations sur son visuel, et divers indicateurs (visible, premier/arrière plan, effet spécial...)
 
-====b/ Element====
+====b/ [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/decors/Element.java Element]====
 
 Il s'agit d'une entité plus particulière, qui peut se mouvoir dans le monde. Elle est sujette aux lois de la mécanique. De plus, elle peut être bloquante pour les autres éléments de la carte.
 
 Elle dispose de coordonnées dans le monde (X, Y, Z), de vitesse, d'accélération, et de forces de frottements. Elle peut être liée à une autre entité.
 
-====c/ Perso====
+====c/ [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/persos/Perso.java Perso]====
 
 La classe de base la plus évoluée pour représenter un personnage sur une carte. On a ici des infos sur le comportement, la zone d'action, le caractère hostile/amical, ou encore le dialogue du personnage.
 
