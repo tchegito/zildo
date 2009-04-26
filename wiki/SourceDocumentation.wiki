@@ -34,7 +34,7 @@ La première représente les éléments statiques, qui ne se déplacent pas, et 
 
 Cette classe dispose de coordonnées (X, Y) à l'écran, d'informations sur son visuel, et divers indicateurs (visible, premier/arrière plan, effet spécial...)
 
-====b/ Element [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/decors/Element.java (SVN)]====
+====b/ `Element` [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/decors/Element.java (SVN)]====
 
 Il s'agit d'une entité plus particulière, qui peut se mouvoir dans le monde. Elle est sujette aux lois de la mécanique. De plus, elle peut être bloquante pour les autres éléments de la carte.
 
