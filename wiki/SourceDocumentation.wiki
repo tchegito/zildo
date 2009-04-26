@@ -1,6 +1,8 @@
 #labels Phase-Implementation,fr
 =Documentation=
 
+<wiki:toc max_depth="1" />
+
 Le projet se divise en 3 parties:
  * *fwk* : framework
  * *gui* : l'interface utilisateur
