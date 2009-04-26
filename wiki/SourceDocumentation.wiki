@@ -12,7 +12,7 @@ Ca s'apparente un peu à du MVC, où le framework symboliserait la couche Contr�
 
 La partie GUI, encore pauvre, représente tout ce qui se rajoute au visuel des tiles et des sprites.
 
-Tout le côté RPG, jeu de rôle, qualifié de "métier", est dans le package "monde".
+Tout le côté RPG, jeu de rôle, qualifié de "métier", est dans le package [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/ "monde"].
 
 
 ==zildo.monde==
