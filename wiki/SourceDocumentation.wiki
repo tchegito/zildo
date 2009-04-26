@@ -15,7 +15,7 @@ Tout le côté RPG, jeu de rôle, qualifié de "métier", est dans "monde".
 
 ===1.1) Les sprites===
 
-La classe qui régit tout sprite, du plus statique au plus évolué, hérite de la classe SpriteEntity . Cette classe représente les infos minimales pour modéliser une entité quelconque sur une carte.
+La classe qui régit tout sprite, du plus statique au plus évolué, hérite de la classe `SpriteEntity`. Cette classe représente les infos minimales pour modéliser une entité quelconque sur une carte.
 Depuis cette classe, on déroule pour complexifier la notion d'entité et on observe la hiérarchie de classe suivante:
 {{{
 SpriteEntity
