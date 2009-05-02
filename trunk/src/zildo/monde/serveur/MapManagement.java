@@ -285,6 +285,7 @@ public class MapManagement {
 				case GARDE_CANARD:
 					perso=new PersoGarde();break;
 				case CORBEAU:
+				case SPECTRE:
 					perso=new PersoVolant();break;
 				default:
 					perso=new PersoNJ();break;

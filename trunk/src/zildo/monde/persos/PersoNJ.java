@@ -422,6 +422,10 @@ public class PersoNJ extends Perso {
 				//Persos à 3 sprite et 1 angle
 				add_spr=compteur_animation / 20;
 				break;
+			case SPECTRE:
+				//Perso à 2 sprites (gauche/droite)
+				add_spr=angle.value;
+				break;
 			case CORBEAU:
 			case CRABE:
 				//Persos à 3 sprites par angle
