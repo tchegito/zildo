@@ -1,6 +1,5 @@
-
 || *Charge du client* || *Interaction* || *Charge du serveur* ||
-|| Afficher la scène || ||
+|| Afficher la scène || || ||
 || || || Déplacer les PNJ ||
 || Recevoir les coords de tous les mobiles || <-- || Envoyer les coords de tous les mobiles ||
 || Recevoir la carte || <-- || envoyer la carte ||
