@@ -1,0 +1,36 @@
+#summary L'éditeur de cartes de Zildo
+#labels Phase-Implementation,fr
+
+=Sommaire=
+<wiki:toc max_depth="3" />
+
+=Zeditor c'est quoi?=
+Zeditor est le nouvel éditeur de cartes de Zildo.
+
+
+=Interface=
+<hr>
+==Vue générale==
+_Bientôt..._
+==Barre d'outils==
+_Bientôt..._
+==Panneau de gauche==
+===Onglet _Décors_===
+_Bientôt..._
+===Onglet _Sprites_===
+_Bientôt..._
+===Onglet _Personnages_===
+_Bientôt..._
+==Panneau de droite==
+_Bientôt..._
+
+=Fonctionnement=
+<hr>
+==Changer de tileSet, spriteSet et characterSet==
+_Bientôt..._
+==Placer une tuile sur la carte==
+_Bientôt..._
+==Placer un Sprite sur la carte==
+_Bientôt..._
+==Placer un personnage sur la carte==
+_Bientôt..._
