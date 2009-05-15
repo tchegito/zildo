@@ -11,7 +11,7 @@ Zeditor est le nouvel éditeur de cartes de Zildo.
 =Interface=
 <hr>
 ==Vue générale==
-_Bientôt..._
+[http://www.drakulo.com/images/zeditor/masterFrame.png]
 ==Barre d'outils==
 _Bientôt..._
 ==Panneau de gauche==
