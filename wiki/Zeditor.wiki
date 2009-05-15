@@ -1,5 +1,5 @@
 #summary L'éditeur de cartes de Zildo
-#labels Phase-Implementation,fr
+#labels fr
 
 =Sommaire=
 <wiki:toc max_depth="3" />
