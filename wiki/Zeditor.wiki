@@ -29,6 +29,8 @@ _Bientôt..._
 _Bientôt..._
 ==Panneau de droite==
 _Bientôt..._
+==Texte système==
+La partie basse de la fenêtre affiche des informations relatives aux actions réalisées dans l'éditeur.
 
 =Fonctionnement=
 <hr>
