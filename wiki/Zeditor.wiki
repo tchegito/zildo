@@ -13,7 +13,13 @@ Zeditor est le nouvel éditeur de cartes de Zildo.
 ==Vue générale==
 [http://www.drakulo.com/images/zeditor/masterFrame.png]
 ==Barre d'outils==
-_Bientôt..._
+La barre d'outil est composée de plusieurs raccourcis que voici :<br>
+[http://www.drakulo.com/images/zeditor/toolBarItemUnmapped.png]
+Affiche / masque les Tiles qui ne sont pas mappés avec les fichiers DEC
+
+[http://www.drakulo.com/images/zeditor/toolBarItemGrid.png]
+Affiche / masque la grille
+
 ==Panneau de gauche==
 ===Onglet _Décors_===
 _Bientôt..._
