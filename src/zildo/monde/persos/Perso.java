@@ -2,7 +2,6 @@ package zildo.monde.persos;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import zildo.fwk.engine.EngineZildo;
 import zildo.monde.Angle;

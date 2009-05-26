@@ -1,5 +1,7 @@
 package zildo.monde.serveur;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import zildo.fwk.EasyFile;
@@ -62,35 +64,32 @@ public class MapManagement {
     private int n_banquemotif;					// Nombre de banque de motifs en mémoire
 	private Area currentMap;
 
-    private int camerax,cameray;
     private boolean phasem;
-    private byte compteur_animation;
-    private boolean map_scrolling;			//Pour éviter de déplacer les objets quand
-								//on passe d'une map à l'autre
-
+	private byte compteur_animation;
+	
 	ChainingPoint changingMapPoint;
 	
-	public byte getCompteur_animation() {
-		return compteur_animation;
-	}
-
-	public void setCompteur_animation(byte compteur_animation) {
-		this.compteur_animation = compteur_animation;
-	}
+	List<MotifBank> motifBanks;
+	
+	static public String[] tileBankNames={"foret1.dec",
+			"village.dec",
+			"maison.dec",
+			"grotte.dec",
+			"foret2.dec",
+			"foret3.dec",
+			"foret4.dec",
+			"palais1.dec"};
 
 	public MapManagement()
 	{
-			
+		compteur_animation=0;
+		
 		// Init variables
 		currentMap=null;
 	
 		// Load graphs
+		motifBanks=new ArrayList<MotifBank>();
 		this.charge_tous_les_motifs();
-	
-		// Inits map parameters
-		camerax=0;
-		cameray=0;
-		compteur_animation=0;
 	}
 	
 	public void finalize()
@@ -105,17 +104,9 @@ public class MapManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	void charge_tous_les_motifs()
 	{
-		String bank_name[]={"foret1.dec",
-		"village.dec",
-		"maison.dec",
-		"grotte.dec",
-		"foret2.dec",
-		"foret3.dec",
-		"foret4.dec",
-		"palais1.dec"};
 		n_banquemotif=0;
 		for (int i=0;i<8;i++)
-			this.charge_motifs(bank_name[i]);
+			this.charge_motifs(tileBankNames[i]);
 	
 	}
 	
@@ -131,16 +122,18 @@ public class MapManagement {
 		chemin+=filename;
 	
 		motifBank.charge_motifs(chemin);
-		TileEngine tileEngine=EngineZildo.tileEngine;
 	
-		// Create a DirectX9 texture based on the current tiles
-		tileEngine.createTextureFromMotifBank(motifBank);
-	
+		motifBanks.add(motifBank);
+		
 		// Relase memory allocated for tile graphics, because it's in directX memory now. 
 		//delete motifBank;
 	
 		// Increase number of loaded banks
 		n_banquemotif++;
+	}
+	
+	public MotifBank getMotifBank(int n) {
+		return motifBanks.get(n);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -175,9 +168,6 @@ public class MapManagement {
 	
 		// Load a new one
 		currentMap=loadMapFile(mapname);
-	
-		TileEngine tileEngine=EngineZildo.tileEngine;
-		tileEngine.prepareTiles(currentMap);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -582,10 +572,6 @@ public class MapManagement {
 	{
 		TileEngine tileEngine=EngineZildo.tileEngine;
 	
-		compteur_animation=(byte) ((compteur_animation+1) % (3*20));
-	
-		// Tile engine
-		tileEngine.updateTiles(camerax,cameray,currentMap,compteur_animation);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -686,35 +672,6 @@ public class MapManagement {
 		}
 		return false;
 	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// centerCamera
-	///////////////////////////////////////////////////////////////////////////////////////
-	public void centerCamera() {
-		Perso zildo=EngineZildo.persoManagement.getZildo();
-		int x=(int) zildo.getX();
-		int y=(int) zildo.getY();
-		
-		camerax=x-16*10;
-	
-		cameray=y-16*6;
-	
-		// Overflow tests
-		if (camerax > (16*currentMap.getDim_x() - 16 * 20)) {
-			camerax=16*currentMap.getDim_x() - 16 * 20;
-		}
-		if (cameray > (16*currentMap.getDim_y() - 16 * 15 )) {	// marche avec 17
-			cameray=16*currentMap.getDim_y() - 16 * 15 ;
-		}
-	
-		if (camerax < 0) {
-			camerax=0;
-		}
-		if (cameray < 0) {
-			cameray=0;
-		}
-		
-	}
 
 	private int normalizeX(int x) {
 		if (x<0) {
@@ -750,22 +707,6 @@ public class MapManagement {
 	public Zone range(float x1, float y1, float x2, float y2) {
 		return new Zone((int) x1, (int) y1, (int) x2, (int) y2);
 	}
-	
-	public int getCamerax() {
-		return camerax;
-	}
-
-	public void setCamerax(int camerax) {
-		this.camerax = camerax;
-	}
-
-	public int getCameray() {
-		return cameray;
-	}
-
-	public void setCameray(int cameray) {
-		this.cameray = cameray;
-	}
 
 	public Area getCurrentMap() {
 		return currentMap;
@@ -773,5 +714,14 @@ public class MapManagement {
 
 	public void setCurrentMap(Area currentMap) {
 		this.currentMap = currentMap;
+	}
+	
+
+    public byte getCompteur_animation() {
+		return compteur_animation;
+	}
+
+	public void setCompteur_animation(byte compteur_animation) {
+		this.compteur_animation = compteur_animation;
 	}
 }

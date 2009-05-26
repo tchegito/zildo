@@ -1,6 +1,7 @@
 package zildo.monde.serveur;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -46,15 +47,8 @@ public class SpriteManagement {
 	private boolean perso_shooting;
 	private char[] tab_palette=new char[255];
 	private int camerax,cameray;
-	// For Y-sorting
-	private SpriteEntity[][] tab_tri=new SpriteEntity[Constantes.SORTY_REALMAX]
-	                                                 [Constantes.SORTY_ROW_PER_LINE];
-	private int quadOrder[][];
-	private int lastInBank[];
-	private int bankOrder[][];
 	
-	private boolean fillingMeshes;	// TRUE=We actually are in 'updateSprites', so it's the right time to spawn new sprite
-	
+	static public String[] sprBankName={"zildo.spr", "elem.spr", "pnj.spr", "font.spr", "pnj2.spr"};
 	// bankOrder works like this { (BanqueN,i) , (BanqueM,j) , (BanqueP,k) ... }
 
 //
@@ -70,9 +64,8 @@ public class SpriteManagement {
 		// Load sprite banks
 		banque_spr=new ArrayList<SpriteBank>();
 		n_bankspr=0;
-		String bankName[]=new String[]{"zildo.spr", "elem.spr", "pnj.spr", "font.spr", "pnj2.spr"};
-		for (int b=0;b<5;b++) {
-			charge_sprites(bankName[b]);
+		for (int b=0;b<sprBankName.length;b++) {
+			charge_sprites(sprBankName[b]);
 		}
 	
 		// Create another bank for thin dialog's font
@@ -83,24 +76,7 @@ public class SpriteManagement {
 	
 		camerax=0;
 		cameray=0;
-	
-		// Clear really the sort array
-		for (int i=0;i<Constantes.SORTY_REALMAX;i++) {
-			for (int j=0;j<Constantes.SORTY_ROW_PER_LINE;j++) {
-				tab_tri[i][j] = null;
-			}
-		}
-		
-		// Initialize structures associated with Y-sort
-	
-		quadOrder=new int[Constantes.NB_SPRITEBANK][Constantes.NB_SPRITE_PER_PRIMITIVE];
-		lastInBank=new int[Constantes.NB_SPRITEBANK];
-		bankOrder=new int[2][3 * Constantes.MAX_SPRITES_ON_SCREEN];
-	
-		bankOrder[0][0]=-1;	// Indicates no bank	
-		bankOrder[1][0]=-1;	// Indicates no bank	
-	
-		clearEntirelySortArray();
+
 	}
 	
 	public void finalize()
@@ -125,11 +101,6 @@ public class SpriteManagement {
 		sprBank.charge_sprites(filename);
 	
 		banque_spr.add(sprBank);
-	
-		SpriteEngine spriteEngine=EngineZildo.spriteEngine;
-	
-		// Create a DirectX9 texture based on the current tiles
-		spriteEngine.createTextureFromSpriteBank(sprBank);
 	
 		// Relase memory allocated for tile graphics, because it's in directX memory now. 
 		//delete (sprBank.sprites_buf);
@@ -191,16 +162,14 @@ public class SpriteManagement {
 		}
 
 		// SpriteEntity informations
-		SpriteEntity entity=new SpriteEntity();
+		SpriteEntity entity=new SpriteEntity(x, y);
 
-		entity.setScrX(x);
-		entity.setScrY(y);
 		entity.setNSpr(nSpr);
 		entity.setNBank(nBank);
 		entity.setMoved(false);
 	
-		entity.setScrX(entity.getScrX() - (spr.getTaille_x() >> 1));
-		entity.setScrY(entity.getScrY() - (spr.getTaille_y() >> 1));
+		entity.setScrX(x - (spr.getTaille_x() >> 1));
+		entity.setScrY(y - (spr.getTaille_y() >> 1));
 	
 		spawnSprite(entity);
 	}
@@ -217,7 +186,7 @@ public class SpriteManagement {
 	{
 	
 		// SpriteEntity informations
-		SpriteEntity entity=new SpriteEntity();
+		SpriteEntity entity=new SpriteEntity(x,y);
 		entity.setScrX(x);
 		entity.setScrY(y);
 		entity.setNSpr(nSpr);
@@ -274,9 +243,9 @@ public class SpriteManagement {
 	
 		entity.setSprModel(spr);
 	
-		if (entity.isVisible() && fillingMeshes) {
+		if (entity.isVisible()) { // TODO:test this : && fillingMeshes) {
 			// If the entity came here unvisible, we don't add it now to avoid flickering
-			spriteEngine.addSprite(entity);
+			//spriteEngine.addSprite(entity);
 		}
 	
 		spriteEntities.add(entity);
@@ -446,19 +415,10 @@ public class SpriteManagement {
 	// -move camera
 	// -animate sprites & persos
 	// -insert sprites into sort array
-	public void updateSprites(int cameraXnew, int cameraYnew)
+	public void updateSprites()
 	{
 		// Get useful pointers
-		SpriteEngine spriteEngine=EngineZildo.spriteEngine;
 		MapManagement mapManagement=EngineZildo.mapManagement;
-		
-		// Calculate camera diff
-		int diffx=cameraXnew - camerax;
-		int diffy=cameraYnew - cameray;
-	
-		// Reset the sort array used for sprites
-		clearSortArray();
-		fillingMeshes=true;
 		
 		// Do perso animations
 		// Mandatory to do that first, because one perso can be connected to other sprites
@@ -467,24 +427,12 @@ public class SpriteManagement {
 				// Animate persos
 				Perso perso=(Perso)entity;
 				perso.animate(mapManagement.getCompteur_animation());
-				// Camera moves
-				perso.setScrX ( perso.getAjustedX() - cameraXnew);
-				perso.setScrY ( perso.getAjustedY() - cameraYnew);
 				// Get sprite model
 				SpriteModel spr=getSpriteBank(entity.getNBank()).get_sprite(perso.getNSpr());
 				perso.setSprModel(spr);
-				if (!perso.isZildo()) {
-					// Non-zildo sprite haven't same way to display correctly (bad...)
-					perso.setScrX(perso.getScrX() - (spr.getTaille_x() >> 1) );
-					perso.setScrY(perso.getScrY() - (spr.getTaille_y() - 3) );
-				}
 				perso.manageCollision();
 			}
 		}
-	
-		// Iterate through every entities to synchronize data with vertex buffer
-		// spriteEntities list order correspond to the creation order with spawn*** methods.
-		spriteEngine.startInitialization();
 		
 		List<SpriteEntity> toDelete=new ArrayList<SpriteEntity>();
 		for (Iterator<SpriteEntity> it=spriteEntities.iterator();it.hasNext();) {
@@ -517,188 +465,12 @@ public class SpriteManagement {
 		for (SpriteEntity entity : toDelete) {
 			deleteSprite(entity);
 		}
-		
-		for (SpriteEntity entity : spriteEntities) {
-			if (entity != null) {
-				// Camera moves
-				if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ENTITY) {
-					// We have any x,y coordinates so just calculate a differential
-					entity.setScrX((int) (entity.getScrX() - (float)diffx));
-					entity.setScrY((int) (entity.getScrY() - (float)diffy));
-				} else if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
-					Element element = (Element)entity;
-					entity.setScrX ((int) ( element.x - cameraXnew));
-					entity.setScrY ((int) ( element.y - cameraYnew));
-					// Center sprite
-					SpriteModel spr=entity.getSprModel();
-					entity.setScrX(entity.getScrX() - (spr.getTaille_x() >> 1));
-					entity.setScrY(entity.getScrY() +  3-spr.getTaille_y());
-				}
-				// Manage sprite in the sort array
-				if (entity.isVisible()) {
-					// Add in the sort array
-					insertSpriteInSortArray(entity);
-					// Add in vertices buffer
-					spriteEngine.synchronizeSprite(entity);
-				}
-			}
-		}
-		spriteEngine.endInitialization();
-	
-		// Sort perso along the Y-axis
-		orderSpritesByBank();			// Fill the quadOrder and bankOrder arrays
-		spriteEngine.buildIndexBuffers(quadOrder);
-		spriteEngine.setBankOrder(bankOrder);
-	
+
 		//delete quadOrder;
-	
-		camerax=cameraXnew;
-		cameray=cameraYnew;
+
+
+	}
 		
-		fillingMeshes=false;
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// insertSpriteInSortArray
-	///////////////////////////////////////////////////////////////////////////////////////
-	// IN: sprite to insert
-	///////////////////////////////////////////////////////////////////////////////////////
-	// Declare a sprite at an Y position on screen
-	///////////////////////////////////////////////////////////////////////////////////////
-	void insertSpriteInSortArray(SpriteEntity sprite)
-	{
-		// Get the character's Y to check if it's on the screen
-		int y=sprite.getScrY();
-		if (sprite.getEntityType()==SpriteEntity.ENTITYTYPE_FONT) {
-			y=Constantes.SORTY_MAX;
-		} else if (sprite.getEntityType()!=SpriteEntity.ENTITYTYPE_ENTITY) {
-			// To get the right comparison, delete the adjustment done by updateSprites
-			// just for filling the sort array
-			SpriteModel spr=sprite.getSprModel();
-			y+=spr.getTaille_y() - 3;
-		} else {
-			// Entity : make its always UNDER Zildo and other characters, at the same level
-			// as the map tiles in fact.
-			y=0;
-		}
-	
-		// Find a placement for the entity in the sort array
-		// 1) Try all positions on a row
-		// 2) Go the next row and do it again, until we reach the last one
-		if (y>=0 && y<Constantes.SORTY_REALMAX) {
-			int position=0;
-			while (tab_tri[y][position] != null && y<Constantes.SORTY_REALMAX) {
-				position++;
-				if (position==Constantes.SORTY_ROW_PER_LINE) {
-					y++;
-					position=0;
-				}
-			}
-			if (y<Constantes.SORTY_REALMAX && position < Constantes.SORTY_ROW_PER_LINE) {
-				// Declare sprite at the right position
-				tab_tri[y][position] = sprite;
-				if (position < Constantes.SORTY_ROW_PER_LINE-1)
-					tab_tri[y][position+1]=null;
-			}
-		}
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// clearSortArray
-	///////////////////////////////////////////////////////////////////////////////////////
-	// Reset the sort array by setting to null the first column of each row
-	///////////////////////////////////////////////////////////////////////////////////////
-	void clearSortArray()
-	{
-		for (int i=0;i<Constantes.SORTY_REALMAX;i++) {
-			tab_tri[i][0]=null;
-		}
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// clearEntirelySortArray
-	///////////////////////////////////////////////////////////////////////////////////////
-	// Reset the sort array by setting to null each column of each row
-	///////////////////////////////////////////////////////////////////////////////////////
-	void clearEntirelySortArray()
-	{
-		for (int i=0;i<Constantes.SORTY_REALMAX;i++) {
-			for (int j=0;j<Constantes.SORTY_ROW_PER_LINE;j++) {
-				tab_tri[i][j]=null;
-			}
-		}
-	}
-	
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// orderSpritesByBank
-	///////////////////////////////////////////////////////////////////////////////////////
-	// IN : nothing
-	// OUT : array[nBank][nSprite] of resulting ordered sprites
-	///////////////////////////////////////////////////////////////////////////////////////
-	// Read the sort array to build two new arrays :
-	// -quadOrder : quad orders sorted by bank and by increasing Y
-	// -bankOrder : set of records from this model 
-	//				(numBank, nbQuads)
-	//              It will be the set to look over in order to display the sprites
-	//				correctly, in SpriteEngine.
-	///////////////////////////////////////////////////////////////////////////////////////
-	void orderSpritesByBank() {
-		// Initialize return array
-		for (int nBank=0;nBank<Constantes.NB_SPRITEBANK;nBank++) {
-			lastInBank[nBank]=0;
-		}
-	
-		// Iterate through sort array
-		for (int phase=0;phase<2;phase++) {
-			int bankOrderPosition=0;
-			int currentBank=-1;
-			int nbQuadFromSameBank=0;
-			int currentFX=PixelShaders.ENGINEFX_NO_EFFECT;
-			for (int i=0;i<Constantes.SORTY_REALMAX;i++) {
-				int position=0;
-				while (position < Constantes.SORTY_ROW_PER_LINE) {
-					SpriteEntity entity=tab_tri[i][position];
-					if (entity == null)
-						break;
-					if ((!entity.isForeground() && phase==0) ||
-						( entity.isForeground() && phase==1)) {
-						// We got an entity : store it into return array
-						int last=lastInBank[entity.getNBank()]++;
-						quadOrder[entity.getNBank()][last]=entity.getLinkVertices();
-						
-						// Check if we need a special effect
-						int persoFX=entity.getSpecialEffect();
-	
-						if ((currentBank != entity.getNBank() || persoFX != currentFX) && currentBank != -1) {
-							// We got a break into sprite sequence display on the bank level
-							bankOrder[phase][bankOrderPosition*3]  =currentBank;
-							bankOrder[phase][bankOrderPosition*3+1]=nbQuadFromSameBank;
-							bankOrder[phase][bankOrderPosition*3+2]=currentFX;;
-							bankOrderPosition++;
-							nbQuadFromSameBank=0;
-						}
-						currentBank = entity.getNBank();
-						currentFX = persoFX;
-						nbQuadFromSameBank++;
-					}
-	
-					position++;
-				}
-			}
-			// Save the last build sequence
-			bankOrder[phase][bankOrderPosition*3]  =currentBank;
-			bankOrder[phase][bankOrderPosition*3+1]=nbQuadFromSameBank;
-			bankOrder[phase][bankOrderPosition*3+2]=currentFX;;
-			// Mark the end of sequences
-			bankOrder[phase][bankOrderPosition*3+3]=-1;
-		}
-		for (int b=0;b<Constantes.NB_SPRITEBANK;b++) {
-			quadOrder[b][lastInBank[b]]=-1;
-		}
-	
-	}
-	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// clearSpritesWithoutZildo
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -741,8 +513,8 @@ public class SpriteManagement {
 			deleteSprite(entity);
 		}
 	
-		this.clearEntirelySortArray();
-	
+		// Here we used to clear sort array
+		
 		// To avoid sprite being drawn anywhere
 		setCamerax(0);
 		setCameray(0);
@@ -790,8 +562,8 @@ public class SpriteManagement {
 						}
 					} else {
 						// The entities
-						x=entity.getScrX() + mapManagement.getCamerax();
-						y=entity.getScrY() + mapManagement.getCameray();
+						x=(int) entity.x; //ScrX() + mapManagement.getCamerax();
+						y=(int) entity.y; //ScrY() + mapManagement.getCameray();
 						canDealWith=true;
 					}
 					if (canDealWith) {
@@ -843,5 +615,9 @@ public class SpriteManagement {
 
 	public void setCameray(int cameray) {
 		this.cameray = cameray;
+	}
+	
+	public List<SpriteEntity> getSpriteEntities() {
+		return spriteEntities;
 	}
 }

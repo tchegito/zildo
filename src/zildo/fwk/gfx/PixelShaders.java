@@ -15,14 +15,6 @@ import zildo.fwk.opengl.OpenGLStuff;
 
 public class PixelShaders extends OpenGLStuff {
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
@@ -39,6 +31,7 @@ public class PixelShaders extends OpenGLStuff {
 	
 	private int n_PixelShaders;
 	private int[] tabPixelShaders;
+	private ByteBuffer buff=BufferUtils.createByteBuffer(256);	// Used for setParameter
 	
 	public PixelShaders()
 	{
@@ -46,9 +39,11 @@ public class PixelShaders extends OpenGLStuff {
 		tabPixelShaders=new int[8];
 	}
 	
-	public void finalize()
-	{
-	
+	public void cleanUp() {
+		for (int i=0;i<n_PixelShaders;i++) {
+			int id=tabPixelShaders[i];
+			ARBShaderObjects.glDeleteObjectARB(id);
+		}
 	}
 	
 	public int getPixelShader(int n) {
@@ -215,7 +210,9 @@ public class PixelShaders extends OpenGLStuff {
 		int length = str.length();
 		if (isNullTerminated)
 			length++;
-		ByteBuffer buff = BufferUtils.createByteBuffer(length);
+		// Reuse the same buffer
+		buff.position(0);
+		buff.limit(buff.capacity());
 		buff.put( str.getBytes() );
  
 		if (isNullTerminated)

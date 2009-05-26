@@ -31,7 +31,12 @@ public class PersoManagement {
 	
 	public PersoZildo getZildo()
 	{
-		return (PersoZildo) tab_perso.get(0);
+		for (Perso p : tab_perso) {
+			if (p.isZildo()) {
+				return (PersoZildo) p;
+			}
+		}
+		throw new RuntimeException("Can't find Zildo !");
 	}
 	
 	public void clearPersos()

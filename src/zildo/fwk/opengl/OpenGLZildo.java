@@ -17,10 +17,14 @@ public class OpenGLZildo extends OpenGLGestion {
     private float xx;
     private Point zoomPosition;
     private boolean pressed=false;
-
+    
+    public OpenGLZildo() {
+    	
+    }
+    
 	public OpenGLZildo(boolean fullscreen) {
 		super(fullscreen);
-		
+    	
 		z=0.0f;
 	}
 	
@@ -63,37 +67,15 @@ public class OpenGLZildo extends OpenGLGestion {
         }
     	GL11.glScalef(1+zz , -1-zz, 1);
     	EngineZildo.filterCommand.doPreFilter();
-    	
-    	
-		//GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
-       // GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION,(FloatBuffer)temp.asFloatBuffer().put(lightPosition).flip());         // Position The Light
-
-        //lightPosition[2]+=0.1f;
-
-        engineZildo.render();
+        engineZildo.clientSide(!awt);
 
         EngineZildo.filterCommand.doPostFilter();
         
        	//Display.sync(framerate);
-        Display.update();
-        
-        //camera.place(new Vector3f(xx,0,z)); //EngineZildo.mapManagement.getCamerax(), 
-//            			EngineZildo.mapManagement.getCameray(),
-        			//80.0f));
-        //camera.rotateZ(0.01f);
-        //camera.rotateX(0.1f);
-        //camera.rotateY(-0.2f);
-        //camera.rotateZ(0.3f);
-    	
-    }
-    
-    /**
-     * Set orthographic projection, run.
-     */
-    public void run() {
-    	EngineZildo.ortho.setOrthographicProjection();
-    	super.run();
+        if (!awt) {
+        	Display.update();
+        }
     }
     
     public void setZ(float p_z) {

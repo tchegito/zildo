@@ -4,7 +4,11 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.devil.IL;
 import org.lwjgl.input.Keyboard;
@@ -41,11 +45,16 @@ public abstract class OpenGLGestion {
 
     protected int framerate;
     private boolean fullscreen;
-    private boolean done;
+    protected boolean awt=false;	// Default, no awt
+    
+    public OpenGLGestion() {
+    	awt=true;
+    }
     
     public OpenGLGestion(boolean fullscreen) {
     	try {
     		this.fullscreen = fullscreen;
+    		initDisplay();
     		init();
     	} catch (Exception e) {
     		throw new RuntimeException(e);
@@ -59,27 +68,55 @@ public abstract class OpenGLGestion {
     private void createWindow() throws Exception {
         Display.setFullscreen(fullscreen);
         DisplayMode d[] = Display.getAvailableDisplayModes();
+        List<DisplayMode> selecteds=new ArrayList<DisplayMode>();
         for (int i = 0; i < d.length; i++) {
             if (d[i].getWidth() == Zildo.viewPortX * 2
                 && d[i].getHeight() == Zildo.viewPortY * 2
-                && d[i].getBitsPerPixel() == 32) {
-                displayMode = d[i];
-            	showDisplayMode(d[i]);
-                break;
+                //&& d[i].getBitsPerPixel() == 32
+                ) {
+            	selecteds.add(d[i]);
             }
         }
-        Display.setDisplayMode(displayMode);
-        Display.setTitle(windowTitle);
-        framerate=Display.getDisplayMode().getFrequency();
-        Display.create();
+        
+        // Sort display modes from best to worse
+        Collections.sort(selecteds, new DisplayModeComparator());
+        
+        boolean success=false;
+        for (DisplayMode dm : selecteds) {
+            displayMode = dm;
+        	showDisplayMode(dm);
+            success=initDisplayMode(dm);
+        	if (success) {
+        		break;
+        	}
+        }
+        if (!success) {
+        	throw new RuntimeException("Unable to set up screen !");
+        }
     }
 
-    public void init() throws Exception {
+    public boolean initDisplayMode(DisplayMode d) {
+        
+    	try {
+	        Display.setDisplayMode(displayMode);
+	        Display.setTitle(windowTitle);
+	        framerate=Display.getDisplayMode().getFrequency();
+	        Display.create();
+    	} catch (LWJGLException e) {
+    		Display.destroy();
+    		return false;
+    	}
+    	return true;
+    }
+    
+    public void initDisplay() throws Exception {
         createWindow();
-        IL.create();
+    }
 
+    public void init() throws LWJGLException {
+        IL.create();
         loadTextures();
-        initGL();
+        initGL();   
     }
     
     private void loadTextures() {
@@ -169,22 +206,6 @@ public abstract class OpenGLGestion {
       return new int[]{ buf.get(0), buf.get(1), buf.get(2) };     // Return Image Addresses In Memory
     }    
 
-    public void run() {
-        try {
-            while (!done) {
-                mainloop();
-
-                this.render();
-
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            System.exit(0);
-        }
-        cleanUp();
-    }
-
     public void cleanUp() {
     	cleanUpExt();
     	Display.destroy();
@@ -194,15 +215,20 @@ public abstract class OpenGLGestion {
     	
     }
     
-    protected void mainloop() {
-    	if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {       // Exit if Escape is pressed
-            done = true;
-        }
-        if(Display.isCloseRequested()) {                     // Exit if window is closed
-            done = true;
-        }
-        
-        mainloopExt();
+    public boolean mainloop() {
+    	boolean done=false;
+    	if (!awt) {
+	    	if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {       // Exit if Escape is pressed
+	            done = true;
+	        }
+	        if(Display.isCloseRequested()) {                     // Exit if window is closed
+	            done = true;
+	        }
+	        
+	        mainloopExt();
+    	}
+    	
+        return done;
     }
     
     // Defautl main loop extended : nothing. Ready to override
