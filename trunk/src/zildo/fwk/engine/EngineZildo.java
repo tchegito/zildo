@@ -15,7 +15,11 @@ import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.opengl.OpenGLZildo;
 import zildo.gui.GUIManagement;
 import zildo.monde.Angle;
+import zildo.monde.Area;
 import zildo.monde.Collision;
+import zildo.monde.Game;
+import zildo.monde.client.MapDisplay;
+import zildo.monde.client.SpriteDisplay;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.persos.Perso;
 import zildo.monde.persos.PersoNJ;
@@ -28,9 +32,6 @@ import zildo.monde.serveur.PlayerManagement;
 import zildo.monde.serveur.SpriteManagement;
 import zildo.prefs.Constantes;
 
-
-
-
 public class EngineZildo {
 
 	// Time left to unblock player's moves
@@ -39,11 +40,11 @@ public class EngineZildo {
 	private int a;
 
 	// Link to directX object
-	private static OpenGLZildo openGLGestion;
+	private OpenGLZildo openGLGestion;
 	public static Ortho ortho;
 	public static FilterCommand filterCommand;
 	
-// Static definition
+	// Server
 	public static SpriteManagement spriteManagement;
 	public static MapManagement mapManagement;
 	public static CollideManagement collideManagement;
@@ -55,6 +56,10 @@ public class EngineZildo {
 	public static PixelShaders pixelShaders;
 	public static SpriteEngine spriteEngine;
 	public static TileEngineDebug tileEngine;
+	
+	// Client
+	public SpriteDisplay spriteDisplay;
+	public MapDisplay mapDisplay;
 	
 	private boolean wantDebug=false;
 	
@@ -79,32 +84,12 @@ public class EngineZildo {
 			nFramesToWait--;
 		}
 	}
-	public EngineZildo(OpenGLZildo p_openGLGestion)
-	{
-		// Lien avec DirectX
-		openGLGestion=p_openGLGestion;
 	
-		spriteEngine = new SpriteEngine();
-		tileEngine = new TileEngineDebug();
-		filterCommand = new FilterCommand();
-		filterCommand.addFilter(new BilinearFilter());
-		//filterCommand.addFilter(new BlurFilter());
-		filterCommand.addFilter(new BlendFilter());
-		//filterCommand.addFilter(new FadeFilter());
-		filterCommand.active(null, false);
-		filterCommand.active(BilinearFilter.class, true);
-		
-		pixelShaders = new PixelShaders();
-		if (pixelShaders.canDoPixelShader()) {
-			pixelShaders.preparePixelShader();
-		}
-		ortho=new Ortho(Zildo.viewPortX, Zildo.viewPortY);
-		
+	private void initializeServer(Game p_game) {
 		// Inits de départ
 		spriteManagement=new SpriteManagement();
 		mapManagement=new MapManagement();
 		persoManagement=new PersoManagement();
-		guiManagement=new GUIManagement();
 		dialogManagement=new DialogManagement();
 		soundManagement=new SoundManagement();
 		collideManagement=new CollideManagement();
@@ -112,14 +97,13 @@ public class EngineZildo {
 		a=0;
 	
 		// Charge une map
-		String mapName="polaky";
+		String mapName=p_game.mapName;
 	
-		spriteEngine.startInitialization();
 		// Zildo should be the first perso ( tab_perso[0] )
 		PersoZildo zildo=new PersoZildo();
-		spriteManagement.spawnPerso( zildo );
 		mapManagement.charge_map(mapName);
-	
+		spriteManagement.spawnPerso( zildo );
+
 		// Extra:
 		Perso perso=new PersoNJ();
 		//perso.setNSpr(0);
@@ -155,22 +139,74 @@ public class EngineZildo {
 		spriteManagement.spawnSpriteGeneric(SPR_FUMEE);
 		*/
 	
-	
-		String texttt="On attend le texte"; //Bienvenue en Polak... hic ... Et bien le bonjour au marquis ! Et dites lui ...hic ... Dites lui qu'il me rende mon peigne !";
-		guiManagement.setText(texttt, GUIManagement.DIALOGMODE_CLASSIC);
-	
-		spriteEngine.endInitialization();
-	
-		guiManagement.setToDisplay_generalGui(true);
-		initialiseCompteur();
-	
 		waitingScene=0;
 		engineEvent=Constantes.ENGINEEVENT_NOEVENT;
+	}
+
+	/**
+	 * Should be called after {@link #initializeServer}
+	 */
+	public void initializeClient() {
+		
+		// Cheat ! We can't have the map at this moment, in real client-server, but this will come later.
+		Area map=mapManagement.getCurrentMap();
+
+		guiManagement=new GUIManagement();
+		
+		spriteEngine = new SpriteEngine();
+		tileEngine = new TileEngineDebug();
+		tileEngine.prepareTiles(map);
+		
+		filterCommand = new FilterCommand();
+		/*
+		filterCommand.addFilter(new BilinearFilter());
+		//filterCommand.addFilter(new BlurFilter());
+		filterCommand.addFilter(new BlendFilter());
+		//filterCommand.addFilter(new FadeFilter());
+		filterCommand.active(null, false);
+		filterCommand.active(BilinearFilter.class, true);
+		*/
+		pixelShaders = new PixelShaders();
+		if (pixelShaders.canDoPixelShader()) {
+			pixelShaders.preparePixelShader();
+		}
+		ortho=new Ortho(Zildo.viewPortX, Zildo.viewPortY);
+		
+		spriteEngine.startInitialization();
+		
+		spriteEngine.endInitialization();
+
+		spriteDisplay=new SpriteDisplay(spriteEngine);
+		mapDisplay=new MapDisplay(map);
+		
+		// GUI
+		guiManagement.setToDisplay_generalGui(true);
+
+		ortho.setOrthographicProjection();
+		
+	}
 	
+
+	/**
+	 * Server intialization, with real network (doesn't work for now)
+	 * @param p_game
+	 * @param p_openGLGestion
+	 */
+	public EngineZildo(OpenGLZildo p_openGLGestion)
+	{
+		// Lien avec DirectX
+		openGLGestion=p_openGLGestion;
+	
+		//initializeServer(p_game);
+	}
+	
+	public EngineZildo(Game p_game) {
+		initializeServer(p_game);
 	}
 	
 	public void cleanUp() {
 		filterCommand.cleanUp();
+		pixelShaders.cleanUp();
 		tileEngine.cleanUp();
 		spriteEngine.cleanUp();
 	}
@@ -207,7 +243,7 @@ public class EngineZildo {
 		openGLGestion.beginScene();
 
 		// On centre le caméra sur le joueur
-		mapManagement.centerCamera();
+		mapDisplay.centerCamera();
 	
 		// Do sprite's stuff
 		// -move camera
@@ -216,7 +252,7 @@ public class EngineZildo {
 		collideManagement.initFrame();
 		guiManagement.draw();
 
-		spriteManagement.updateSprites(mapManagement.getCamerax(),mapManagement.getCameray());
+		spriteManagement.updateSprites();
 		collideManagement.manageCollisions();
 	
 		// Do map's stuff :
@@ -299,16 +335,16 @@ public class EngineZildo {
 		for (Collision c : EngineZildo.collideManagement.getTabColliz()) {
 			if (c != null) {
 				int rayon=c.getCr();
-				EngineZildo.ortho.box(c.getCx()-rayon/2-mapManagement.getCamerax(), 
-						c.getCy()-rayon/2-mapManagement.getCameray(), rayon*2, rayon*2,15, null);
+				EngineZildo.ortho.box(c.getCx()-rayon/2-mapDisplay.getCamerax(), 
+						c.getCy()-rayon/2-mapDisplay.getCameray(), rayon*2, rayon*2,15, null);
 			}
 		}
 		
 		for (Collision c : EngineZildo.collideManagement.getTabColli()) {
 			if (c != null) {
 				int rayon=c.getCr();
-				EngineZildo.ortho.box(c.getCx()-rayon/2-mapManagement.getCamerax(), 
-						c.getCy()-rayon/2-mapManagement.getCameray(), rayon*2, rayon*2,20, null);
+				EngineZildo.ortho.box(c.getCx()-rayon/2-mapDisplay.getCamerax(), 
+						c.getCy()-rayon/2-mapDisplay.getCameray(), rayon*2, rayon*2,20, null);
 			}
 		}
 		
@@ -413,7 +449,90 @@ public class EngineZildo {
 	*/
 	}
 	
-	void initialiseCompteur() {
+	public synchronized void serverSide() {
+		// Animate the world
+		spriteManagement.updateSprites();
+		collideManagement.manageCollisions();
+	
+		// Do map's stuff :
+		// -move camera
+		// -animate tiles
+		mapManagement.updateMap();		
+	}
+	
+	public synchronized void clientSide(boolean p_keyboardManagement) {
+		if (waitingScene == 0 && p_keyboardManagement) {
+			// Zildo moves by player
+			playerManagement.manageKeyboard();
+		} else {
+			// Scene is blocked by non-player animation
+	
+		}
+	
+		// Tile engine
+		tileEngine.updateTiles(mapDisplay.getCamerax(),mapDisplay.getCameray(),
+				mapDisplay.getCurrentMap(),mapManagement.getCompteur_animation());
+
+		spriteDisplay.updateSpritesClient(spriteManagement.getSpriteEntities(), 
+				mapDisplay.getCamerax(),mapDisplay.getCameray());
+		
+		openGLGestion.beginScene();
+
+		// On centre le caméra sur le joueur
+		mapDisplay.centerCamera();
+	
+		// Do sprite's stuff
+		// -move camera
+		// -animate sprites
+		// -fill sort array
+		collideManagement.initFrame();
+		guiManagement.draw();
+	
+	
+		//// DISPLAY ////
+	
+		// Display BACKGROUND tiles
+		tileEngine.tileRender(true);
+	
+		// Display BACKGROUND sprites
+		spriteEngine.spriteRender(true);
+	
+		// Display FOREGROUND tiles
+		tileEngine.tileRender(false);
+	
+		// Display FOREGROUND sprites
+		spriteEngine.spriteRender(false);
+	
+		// Is Zildo talking with somebody ?
+		if (dialogManagement.isDialoguing()) {
+			dialogManagement.manageDialog();
+		}
+	
+		if (Zildo.infoDebug) {
+			this.debug();
+		}
+
+		filterCommand.doFilter();
+
+		openGLGestion.endScene();
+		//gfxBasics.EndRendering();
+	
+		// Engine event management
+		if (engineEvent == Constantes.ENGINEEVENT_NOEVENT && mapManagement.isChangingMap()) {
+			// Changing map : 1/3 we launch the fade out
+			engineEvent=Constantes.ENGINEEVENT_CHANGINGMAP_FADEOUT;
+			waitingScene=1;
+			guiManagement.fadeOut();
+		} else if (engineEvent == Constantes.ENGINEEVENT_CHANGINGMAP_FADEOUT && guiManagement.isFadeOver()) {
+			// Changing map : 2/3 we load the new map and launch the fade in
+			engineEvent=Constantes.ENGINEEVENT_CHANGINGMAP_FADEIN;
+			mapManagement.processChangingMap();
+			guiManagement.fadeIn();
+		} else if (engineEvent == Constantes.ENGINEEVENT_CHANGINGMAP_FADEIN && guiManagement.isFadeOver()) {
+			// Changing map : 3/3 we unblock the player
+			engineEvent=Constantes.ENGINEEVENT_NOEVENT;
+			waitingScene=0;
+		}
 
 	}
 	
@@ -430,7 +549,11 @@ public class EngineZildo {
 		waitingScene=time;
 	}
 
-	public static OpenGLZildo getOpenGLGestion() {
+	public OpenGLZildo getOpenGLGestion() {
 		return openGLGestion;
+	}
+
+	public void setOpenGLGestion(OpenGLZildo p_openGLGestion) {
+		openGLGestion = p_openGLGestion;
 	}
 }

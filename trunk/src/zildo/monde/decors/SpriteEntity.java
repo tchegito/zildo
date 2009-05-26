@@ -24,8 +24,8 @@ public class SpriteEntity
 	public static final int ENTITYTYPE_PERSO =2;
 	public static final int ENTITYTYPE_FONT =3;
 
-
 	// Class variable
+	public float x,y,z;	// Real position (z is never initialized with entities)
 	private int scrX,scrY;	// Screen position (so with camera adjustment)
 	private SpriteModel sprModel;	// Reference to the sprite being rendered
 	protected int nSpr;			// Pour les perso devient une interprétation de 'angle' et 'pos_seqsprite'
@@ -130,6 +130,16 @@ public class SpriteEntity
 
 	// Constructor / Destructor
 	public SpriteEntity() {
+		initialize();
+	}
+
+	public SpriteEntity(int x, int y) {
+		initialize();
+		this.x=x;
+		this.y=y;
+	}
+	
+	private void initialize() {
 		entityType=ENTITYTYPE_ENTITY;
 
 		// Default : entity is visible
@@ -140,7 +150,7 @@ public class SpriteEntity
 
 		specialEffect=PixelShaders.ENGINEFX_NO_EFFECT;
 	}
-
+	
 	/**
 	 * Appelée lorsqu'on supprime cette entité
 	 */

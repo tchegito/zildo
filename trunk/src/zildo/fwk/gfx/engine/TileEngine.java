@@ -4,10 +4,12 @@ import org.lwjgl.opengl.GL11;
 
 import zildo.fwk.GFXBasics;
 import zildo.fwk.bank.MotifBank;
+import zildo.fwk.engine.EngineZildo;
 import zildo.fwk.engine.debug.TilePrimitiveDebug;
 import zildo.fwk.gfx.TilePrimitive;
 import zildo.monde.Area;
 import zildo.monde.Case;
+import zildo.monde.serveur.MapManagement;
 import zildo.prefs.Constantes;
 
 // V1.0
@@ -81,6 +83,8 @@ public class TileEngine extends TextureEngine {
 		
 		meshFORE=new TilePrimitive[Constantes.NB_MOTIFBANK];
 		meshBACK=new TilePrimitive[Constantes.NB_MOTIFBANK];
+		
+		loadTiles();
 	}
 	
 	public void cleanUp()
@@ -93,6 +97,14 @@ public class TileEngine extends TextureEngine {
 		}
 	}
 	
+	public void loadTiles() {
+		
+		// Create a DirectX9 texture based on the current tiles
+		for (int i=0;i<MapManagement.tileBankNames.length;i++) {
+			MotifBank motifBank=EngineZildo.mapManagement.getMotifBank(i);
+			this.createTextureFromMotifBank(motifBank);
+		}
+	}
 	// Prepare vertices and indices for drawing tiles
 	public void prepareTiles(Area theMap) {
 	
@@ -101,7 +113,7 @@ public class TileEngine extends TextureEngine {
 		tileEngineHeight=theMap.getDim_y();
 	
 		int i,x,y;
-	
+		
 		for (i=0;i<Constantes.NB_MOTIFBANK;i++) {
 			meshFORE[i] = new TilePrimitiveDebug(Constantes.TILEENGINE_MAXPOINTS,
 										6*Constantes.TILEENGINE_WIDTH * Constantes.TILEENGINE_HEIGHT);

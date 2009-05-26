@@ -3,8 +3,8 @@ package zildo.prefs;
 public class Constantes {
 
 	// File system data
-	public static final String DATA_PATH = ".\\Data\\";	// Pour livraison
-	//public static final String DATA_PATH = "C:\\Data\\";
+	//public static final String DATA_PATH = ".\\Data\\";	// Pour livraison
+	public static final String DATA_PATH = "C:\\ZildoDist\\Version 1.06\\Data\\";
 
 	// Screen size
 	public static final int SCREEN_SIZEX  =320;

@@ -13,6 +13,7 @@ import zildo.fwk.gfx.SpritePrimitive;
 import zildo.monde.SpriteModel;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
+import zildo.monde.serveur.SpriteManagement;
 import zildo.prefs.Constantes;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.
@@ -180,9 +181,14 @@ public class SpriteEngine extends TextureEngine {
 			meshSprites[i] = new SpritePrimitive(
 										Constantes.NB_SPRITE_PER_PRIMITIVE*4,
 										Constantes.NB_SPRITE_PER_PRIMITIVE*3*2);	//NB_SPRITE_PER_PRIMITIVE
-	
 		}
-	
+		// Load sprite banks
+		for (i=0;i<SpriteManagement.sprBankName.length;i++) {
+			SpriteBank sprBank=EngineZildo.spriteManagement.getSpriteBank(i);
+
+			// Create a DirectX9 texture based on the current tiles
+			createTextureFromSpriteBank(sprBank);
+		}
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

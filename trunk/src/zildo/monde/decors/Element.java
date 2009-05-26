@@ -15,6 +15,7 @@ import zildo.monde.persos.PersoZildo;
 import zildo.monde.persos.utils.PersoDescription;
 
 
+//TODO: Remove getter/setter for x,y,z
 
 public class Element extends SpriteEntity {
 	
@@ -37,7 +38,6 @@ public class Element extends SpriteEntity {
 
 	// Class variables
 	private float ancX, ancY, ancZ;
-	public float x,y,z;
 	public float ax,ay,az;
 	public float vx,vy,vz;
 	public float fx,fy,fz;	// Frottements
