@@ -12,8 +12,8 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ZildoCanvas() throws LWJGLException {
-		super(new ZildoRenderer());
+	public ZildoCanvas(String p_mapName) throws LWJGLException {
+		super(new ZildoRenderer(p_mapName));
 	}
 	
 	public void moveCamera(int p_cameraX, int p_cameraY) {

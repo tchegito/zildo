@@ -6,14 +6,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import org.lwjgl.LWJGLException;
-import org.lwjgl.Sys;
 
 import zildo.fwk.awt.AWTOpenGLCanvas;
 import zildo.fwk.awt.ZildoCanvas;
-import zildo.monde.client.ZildoRenderer;
 
 public class TestFrameZEditor extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	AWTOpenGLCanvas zildoCanvas;
 	
 	public TestFrameZEditor() {
@@ -24,7 +27,7 @@ public class TestFrameZEditor extends JFrame {
 	    
 	    // Zildo renderer
         try {
-            zildoCanvas = new ZildoCanvas();
+            zildoCanvas = new ZildoCanvas("polaky");
             zildoCanvas.setSize(640,480);
         } catch (LWJGLException lwjgle) {
             lwjgle.printStackTrace();
@@ -42,6 +45,11 @@ public class TestFrameZEditor extends JFrame {
 
 		new TestFrameZEditor();
 
+	}
+
+	public void dispose() {
+		super.dispose();
+		zildoCanvas.dispose();
 	}
 
 }

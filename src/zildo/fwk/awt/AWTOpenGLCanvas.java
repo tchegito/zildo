@@ -87,10 +87,10 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
             renderer.setInitialized(true);            
             initialize = true;
         }
-            try  {                
+            try  {
                 makeCurrent();
                 renderer.renderScene();     
-                swapBuffers();                
+                swapBuffers();
             } catch (LWJGLException lwjgle) {
                 // should not happen
                 lwjgle.printStackTrace();
@@ -133,5 +133,11 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
     
     public IRenderable getRenderer() {
         return this.renderer;
+    }
+    
+    public void dispose() {
+    	if (renderThread != null && renderThread.isAlive()) {
+   			renderThread=null;
+    	}
     }
 }
