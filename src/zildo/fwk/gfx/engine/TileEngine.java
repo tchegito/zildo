@@ -5,7 +5,6 @@ import org.lwjgl.opengl.GL11;
 import zildo.fwk.GFXBasics;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.engine.EngineZildo;
-import zildo.fwk.engine.debug.TilePrimitiveDebug;
 import zildo.fwk.gfx.TilePrimitive;
 import zildo.monde.Area;
 import zildo.monde.Case;
@@ -115,9 +114,9 @@ public class TileEngine extends TextureEngine {
 		int i,x,y;
 		
 		for (i=0;i<Constantes.NB_MOTIFBANK;i++) {
-			meshFORE[i] = new TilePrimitiveDebug(Constantes.TILEENGINE_MAXPOINTS,
+			meshFORE[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS,
 										6*Constantes.TILEENGINE_WIDTH * Constantes.TILEENGINE_HEIGHT);
-			meshBACK[i] = new TilePrimitiveDebug(Constantes.TILEENGINE_MAXPOINTS,
+			meshBACK[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS,
 										6*Constantes.TILEENGINE_WIDTH * Constantes.TILEENGINE_HEIGHT);
 			meshFORE[i].startInitialization();
 			meshBACK[i].startInitialization();

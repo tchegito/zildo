@@ -6,7 +6,6 @@ import zildo.monde.persos.Perso;
 
 public class MapDisplay {
 
-    private byte compteur_animation;
     private int camerax,cameray;
     private boolean map_scrolling;			// Pour éviter de déplacer les objets quand
 											// on passe d'une map à l'autre
@@ -19,11 +18,6 @@ public class MapDisplay {
 		camerax=0;
 		cameray=0;
     }
-
-	
-	public void updateMap() {
-		compteur_animation=(byte) ((compteur_animation+1) % (3*20));
-	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// centerCamera
@@ -72,5 +66,9 @@ public class MapDisplay {
 
 	public Area getCurrentMap() {
 		return currentMap;
+	}
+	
+	public void setCurrentMap(Area map) {
+		currentMap=map;
 	}
 }

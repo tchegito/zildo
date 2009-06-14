@@ -9,7 +9,6 @@ import zildo.fwk.IntSet;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.engine.EngineZildo;
-import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.Angle;
 import zildo.monde.Area;
 import zildo.monde.Case;
@@ -64,7 +63,6 @@ public class MapManagement {
     private int n_banquemotif;					// Nombre de banque de motifs en mémoire
 	private Area currentMap;
 
-    private boolean phasem;
 	private byte compteur_animation;
 	
 	ChainingPoint changingMapPoint;
@@ -566,15 +564,6 @@ public class MapManagement {
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
-	// updateMap
-	///////////////////////////////////////////////////////////////////////////////////////
-	public void updateMap()
-	{
-		TileEngine tileEngine=EngineZildo.tileEngine;
-	
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
 	// isChangingMap
 	///////////////////////////////////////////////////////////////////////////////////////
 	public boolean isChangingMap() {
@@ -715,7 +704,10 @@ public class MapManagement {
 	public void setCurrentMap(Area currentMap) {
 		this.currentMap = currentMap;
 	}
-	
+
+	public void updateMap() {
+        compteur_animation = (byte) ((compteur_animation + 1) % (3 * 20));
+    }
 
     public byte getCompteur_animation() {
 		return compteur_animation;

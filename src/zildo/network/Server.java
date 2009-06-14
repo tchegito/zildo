@@ -3,6 +3,8 @@ package zildo.network;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.Sys;
+
 import zildo.fwk.engine.EngineZildo;
 import zildo.monde.Game;
 
@@ -39,9 +41,9 @@ public class Server extends Thread {
 		// Timer
 		long time, timeRef;
 		long delta;
-		time=System.currentTimeMillis();
+		time=Sys.getTime();
 		while (gameRunning){
-			timeRef=System.currentTimeMillis();
+			timeRef=Sys.getTime(); //System.currentTimeMillis();
 			delta=timeRef - time;
 			if (delta > TIMER_DELAY) {
 				// Do the server job
@@ -50,10 +52,12 @@ public class Server extends Thread {
 				// Reinitialize timer
 				time=timeRef;
 			}
-			try {
-				sleep(TIMER_DELAY / 2);
-			} catch (InterruptedException e) {
-				
+			if (delta < TIMER_DELAY) {
+				try {
+					sleep(TIMER_DELAY-delta);
+				} catch (InterruptedException e) {
+					
+				}
 			}
 		}
 	}
