@@ -1,5 +1,6 @@
 package zildo.monde.client;
 
+import zildo.monde.Area;
 import zildo.monde.Game;
 import zildo.network.Client;
 import zildo.network.Server;
@@ -11,8 +12,8 @@ public class ZildoRenderer implements IRenderable {
 	boolean initialized=false;
 	Exception e=null;
 	
-	public ZildoRenderer() {
-		Game game=new Game("polaky", true);
+	public ZildoRenderer(String mapName) {
+		Game game=new Game(mapName, true);
 		server=new Server(game);
 		client=new Client(server.getEngineZildo(), true);
 	}
@@ -54,4 +55,7 @@ public class ZildoRenderer implements IRenderable {
 		this.initialized=initialized;
 	}
 
+	public Area getMap() {
+		return null; //server.getEngineZildo().map
+	}
 }

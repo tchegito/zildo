@@ -72,7 +72,10 @@ public class OpenGLZildo extends OpenGLGestion {
 
         EngineZildo.filterCommand.doPostFilter();
         
-       	Display.sync(framerate);
+       	if (framerate != 0) {
+       		Display.sync(framerate);
+       	}
+       	
         if (!awt) {
         	Display.update();
         }
