@@ -47,22 +47,17 @@ public class PersoManagement {
 	public void clearPersosWithoutZildo()
 	{
 		Iterator<Perso> it=tab_perso.iterator();
-		if (tab_perso.size() > 1) {
-			it.next();
-		} else {
+		if (tab_perso.size() <= 1) {
 			// We haven't enough characters to process this deletion
 			return;
 		}
 		// Destroy entities
 		while (it.hasNext()) {
 			Perso perso=it.next();
-			if (perso != null) {
+			if (perso != null && !perso.isZildo()) {
 				EngineZildo.spriteManagement.deleteSprite(perso);
+				it.remove();
 			}
-		}
-		// Clear perso's list except Zildo
-		while (tab_perso.size()!=1) {
-			tab_perso.remove(1);
 		}
 	}
 	

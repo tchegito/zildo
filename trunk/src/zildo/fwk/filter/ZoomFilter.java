@@ -26,9 +26,9 @@ public class ZoomFilter extends ScreenFilter {
 		SpriteModel spr=zildo.getSprModel();
 		zildoPos.addX(spr.getTaille_x() / 2);
 		zildoPos.addY(spr.getTaille_y() / 2);
-		EngineZildo.getOpenGLGestion().setZoomPosition(zildoPos);
+		EngineZildo.openGLGestion.setZoomPosition(zildoPos);
 		float z=2.0f * (float) Math.sin(getFadeLevel() * (0.25f*Math.PI / 256.0f));
-		EngineZildo.getOpenGLGestion().setZ(z);
+		EngineZildo.openGLGestion.setZ(z);
 		//EngineZildo.getOpenGLGestion().setZ((float) Math.sin(getFadeLevel() * (0.5f*Math.PI / 256.0f)));
 	}
 	
@@ -36,6 +36,6 @@ public class ZoomFilter extends ScreenFilter {
 	 * Re-initialize z coordinate
 	 */
 	public void doOnInactive() {
-		EngineZildo.getOpenGLGestion().setZ(0);
+		EngineZildo.openGLGestion.setZ(0);
 	}	
 }

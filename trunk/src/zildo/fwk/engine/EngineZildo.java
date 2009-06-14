@@ -12,6 +12,7 @@ import zildo.fwk.filter.BlendFilter;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
+import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.opengl.OpenGLZildo;
 import zildo.gui.GUIManagement;
 import zildo.monde.Angle;
@@ -40,7 +41,7 @@ public class EngineZildo {
 	private int a;
 
 	// Link to directX object
-	private OpenGLZildo openGLGestion;
+	public static OpenGLZildo openGLGestion;
 	public static Ortho ortho;
 	public static FilterCommand filterCommand;
 	
@@ -55,7 +56,7 @@ public class EngineZildo {
 	public static SoundManagement soundManagement;
 	public static PixelShaders pixelShaders;
 	public static SpriteEngine spriteEngine;
-	public static TileEngineDebug tileEngine;
+	public static TileEngine tileEngine;
 	
 	// Client
 	public SpriteDisplay spriteDisplay;
@@ -150,22 +151,21 @@ public class EngineZildo {
 		
 		// Cheat ! We can't have the map at this moment, in real client-server, but this will come later.
 		Area map=mapManagement.getCurrentMap();
-
-		guiManagement=new GUIManagement();
 		
 		spriteEngine = new SpriteEngine();
-		tileEngine = new TileEngineDebug();
+		tileEngine = new TileEngine();
 		tileEngine.prepareTiles(map);
 		
 		filterCommand = new FilterCommand();
-		/*
+		guiManagement=new GUIManagement();
+		
 		filterCommand.addFilter(new BilinearFilter());
 		//filterCommand.addFilter(new BlurFilter());
 		filterCommand.addFilter(new BlendFilter());
 		//filterCommand.addFilter(new FadeFilter());
 		filterCommand.active(null, false);
 		filterCommand.active(BilinearFilter.class, true);
-		*/
+		
 		pixelShaders = new PixelShaders();
 		if (pixelShaders.canDoPixelShader()) {
 			pixelShaders.preparePixelShader();
@@ -258,7 +258,7 @@ public class EngineZildo {
 		// Do map's stuff :
 		// -move camera
 		// -animate tiles
-		mapManagement.updateMap();
+		//mapManagement.updateMap();
 	
 	
 		//// DISPLAY ////
@@ -453,11 +453,7 @@ public class EngineZildo {
 		// Animate the world
 		spriteManagement.updateSprites();
 		collideManagement.manageCollisions();
-	
-		// Do map's stuff :
-		// -move camera
-		// -animate tiles
-		mapManagement.updateMap();		
+		mapManagement.updateMap();
 	}
 	
 	public synchronized void clientSide(boolean p_keyboardManagement) {
@@ -524,11 +520,14 @@ public class EngineZildo {
 			waitingScene=1;
 			guiManagement.fadeOut();
 		} else if (engineEvent == Constantes.ENGINEEVENT_CHANGINGMAP_FADEOUT && guiManagement.isFadeOver()) {
-			// Changing map : 2/3 we load the new map and launch the fade in
-			engineEvent=Constantes.ENGINEEVENT_CHANGINGMAP_FADEIN;
-			mapManagement.processChangingMap();
-			guiManagement.fadeIn();
-		} else if (engineEvent == Constantes.ENGINEEVENT_CHANGINGMAP_FADEIN && guiManagement.isFadeOver()) {
+            // Changing map : 2/3 we load the new map and launch the fade in
+            engineEvent = Constantes.ENGINEEVENT_CHANGINGMAP_FADEIN;
+            mapManagement.processChangingMap();
+            Area map = mapManagement.getCurrentMap();
+            tileEngine.prepareTiles(map);
+            mapDisplay.setCurrentMap(map);
+            guiManagement.fadeIn();
+        } else if (engineEvent == Constantes.ENGINEEVENT_CHANGINGMAP_FADEIN && guiManagement.isFadeOver()) {
 			// Changing map : 3/3 we unblock the player
 			engineEvent=Constantes.ENGINEEVENT_NOEVENT;
 			waitingScene=0;
