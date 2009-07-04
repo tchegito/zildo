@@ -8,6 +8,12 @@ import zildo.monde.Case;
 import zildo.monde.client.ZildoRenderer;
 import zildo.monde.serveur.MapManagement;
 
+/**
+ * Interface class between ZEditor and Zildo platform.
+ * 
+ * @author tchegito
+ *
+ */
 public class ZildoCanvas extends AWTOpenGLCanvas {
 
 	/**
@@ -32,5 +38,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
         MapManagement map = engineZildo.mapManagement;
         Area area = map.getCurrentMap();
         area.set_mapcase(p_x, p_y, c);
+    }
+    
+    public void saveMapFile(String p_mapName) {
+        MapManagement map = engineZildo.mapManagement;
+    	map.saveMapFile(p_mapName);
     }
 }
