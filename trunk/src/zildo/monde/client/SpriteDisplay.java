@@ -60,6 +60,8 @@ public class SpriteDisplay {
 		bankOrder[1][0]=-1;	// Indicates no bank	
 	
 		clearEntirelySortArray();
+		
+		initCamera();
 	}
 	
 	public void updateSpritesClient(List<SpriteEntity> spriteEntities, int cameraXnew, int cameraYnew) {
@@ -278,4 +280,8 @@ public class SpriteDisplay {
 	
 	}
 
+	public void initCamera() {
+		camerax=0;
+		cameray=0;
+	}
 }

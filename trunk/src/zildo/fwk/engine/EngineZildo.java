@@ -499,6 +499,7 @@ public class EngineZildo {
             Area map = mapManagement.getCurrentMap();
             tileEngine.prepareTiles(map);
             mapDisplay.setCurrentMap(map);
+			spriteDisplay.initCamera();
             guiManagement.fadeIn();
         } else if (engineEvent == Constantes.ENGINEEVENT_CHANGINGMAP_FADEIN && guiManagement.isFadeOver()) {
 			// Changing map : 3/3 we unblock the player
