@@ -5,9 +5,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
 import org.newdawn.slick.TrueTypeFont;
 
-import zildo.fwk.GFXBasics;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.engine.EngineZildo;
+import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.SpritePrimitive;
 import zildo.monde.SpriteModel;

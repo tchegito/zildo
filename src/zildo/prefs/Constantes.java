@@ -6,10 +6,6 @@ public class Constantes {
 	//public static final String DATA_PATH = ".\\Data\\";	// Pour livraison
 	public static final String DATA_PATH = "C:\\ZildoDist\\Version 1.06\\Data\\";
 
-	// Screen size
-	public static final int SCREEN_SIZEX  =320;
-	public static final int SCREEN_SIZEY = 240;
-
 	// Tile Engine
 	public static final int TILEENGINE_WIDTH = 64;		// Max Number of tiles
 														// on a row

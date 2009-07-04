@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import zildo.fwk.EasyReadingFile;
+import zildo.fwk.file.EasyReadingFile;
 import zildo.monde.SpriteModel;
 import zildo.prefs.Constantes;
 

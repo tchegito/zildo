@@ -94,21 +94,21 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
             renderer.setInitialized(true);            
             initialize = true;
         }
-            try  {
-                makeCurrent();
-                if (needToResize) {
-	        		Ortho ortho=((ZildoRenderer) renderer).getEngineZildo().ortho;
-	        		if (ortho != null) {
-	        			ortho.setSize(sizeX, sizeY);
-		        		needToResize=false;
-	        		}
-                }
-                renderer.renderScene();     
-                swapBuffers();
-            } catch (LWJGLException lwjgle) {
-                // should not happen
-                lwjgle.printStackTrace();
+        try  {
+            makeCurrent();
+            if (needToResize) {
+        		Ortho ortho=((ZildoRenderer) renderer).getEngineZildo().ortho;
+        		if (ortho != null) {
+        			ortho.setSize(sizeX, sizeY);
+	        		needToResize=false;
+        		}
             }
+            renderer.renderScene();     
+            swapBuffers();
+        } catch (LWJGLException lwjgle) {
+            // should not happen
+            lwjgle.printStackTrace();
+        }
     }
     
     private final void initRenderThread() {
@@ -159,9 +159,15 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
         return this.renderer;
     }
     
-    public void dispose() {
+    public void removeNotify() {
     	if (renderThread != null && renderThread.isAlive()) {
    			renderThread=null;
     	}
+    	cleanUp();
+    	super.removeNotify();
+    }
+    
+    public void cleanUp() {
+
     }
 }

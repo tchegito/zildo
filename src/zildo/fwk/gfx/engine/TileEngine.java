@@ -2,9 +2,9 @@ package zildo.fwk.gfx.engine;
 
 import org.lwjgl.opengl.GL11;
 
-import zildo.fwk.GFXBasics;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.engine.EngineZildo;
+import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.TilePrimitive;
 import zildo.monde.Area;
 import zildo.monde.Case;
