@@ -3,7 +3,7 @@ package zildo.fwk.bank;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import zildo.fwk.EasyReadingFile;
+import zildo.fwk.file.EasyReadingFile;
 
 
 public class MotifBank {

@@ -60,7 +60,7 @@ public class Client {
 		glGestion.setEngineZildo(p_engine);
 		p_engine.setOpenGLGestion(glGestion);
 		if (!p_awt) {
-			engineZildo.initializeClient();
+			engineZildo.initializeClient(false);
 		}
 	}
 	
@@ -74,7 +74,7 @@ public class Client {
 		} catch (LWJGLException e) {
 			throw new RuntimeException("Problem initializing ZildoRenderer !");
 		}
-		engineZildo.initializeClient();
+		engineZildo.initializeClient(true);
 	}
 	
 	public void render()
@@ -107,6 +107,10 @@ public class Client {
             System.exit(0);
         }
 
+        cleanUp();
+	}
+
+	public void cleanUp() {
 		glGestion.cleanUp();				
 	}
 

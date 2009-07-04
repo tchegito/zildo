@@ -1,4 +1,4 @@
-package zildo.fwk;
+package zildo.fwk.file;
 
 import java.io.File;
 import java.io.FileInputStream;

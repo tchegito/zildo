@@ -1,7 +1,6 @@
 package zildo.monde.client;
 
 import zildo.fwk.engine.EngineZildo;
-import zildo.monde.Area;
 import zildo.monde.Game;
 import zildo.network.Client;
 import zildo.network.Server;
@@ -51,6 +50,10 @@ public class ZildoRenderer implements IRenderable {
 		}
 	}
 
+	public void cleanUp() {
+		client.cleanUp();
+	}
+	
 	@Override
 	public void setInitialized(boolean initialized) {
 		this.initialized=initialized;

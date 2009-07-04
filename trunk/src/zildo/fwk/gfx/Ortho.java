@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import zildo.fwk.GFXBasics;
 import zildo.fwk.opengl.OpenGLStuff;
 
 /**
@@ -120,7 +119,16 @@ public class Ortho extends OpenGLStuff {
 		}
 	}
 
+	/**
+	 * Resize when using ZEditor
+	 * @param p_x
+	 * @param p_y
+	 */
 	public void setSize(int p_x, int p_y) {
+		// Change viewport
+		GL11.glViewport(0,0, p_x, p_y);
+		
+		// And adapt ortho
 		resetPerspectiveProjection();
 		w=p_x;
 		h=p_y;

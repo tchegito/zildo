@@ -47,9 +47,4 @@ public class TestFrameZEditor extends JFrame {
 
 	}
 
-	public void dispose() {
-		super.dispose();
-		zildoCanvas.dispose();
-	}
-
 }

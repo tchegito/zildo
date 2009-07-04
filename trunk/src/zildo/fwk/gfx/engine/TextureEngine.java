@@ -7,7 +7,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.devil.IL;
 import org.lwjgl.opengl.GL11;
 
-import zildo.fwk.GFXBasics;
+import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.opengl.OpenGLStuff;
 import zildo.prefs.Constantes;
 

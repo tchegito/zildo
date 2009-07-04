@@ -1,4 +1,4 @@
-package zildo.fwk;
+package zildo.fwk.gfx;
 
 import java.awt.GraphicsEnvironment;
 import java.io.File;

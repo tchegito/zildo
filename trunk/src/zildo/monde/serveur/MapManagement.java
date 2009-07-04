@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import zildo.fwk.EasyReadingFile;
-import zildo.fwk.EasyWritingFile;
 import zildo.fwk.IntSet;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.engine.EngineZildo;
+import zildo.fwk.file.EasyReadingFile;
+import zildo.fwk.file.EasyWritingFile;
 import zildo.monde.Angle;
 import zildo.monde.Area;
 import zildo.monde.Case;

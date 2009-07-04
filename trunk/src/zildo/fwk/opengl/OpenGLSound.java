@@ -9,7 +9,7 @@ import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 
-import zildo.fwk.EasyReadingFile;
+import zildo.fwk.file.EasyReadingFile;
 
 public class OpenGLSound {
 

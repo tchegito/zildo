@@ -5,7 +5,6 @@ import org.lwjgl.util.vector.Vector3f;
 import zildo.Zildo;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.SoundManagement;
-import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.engine.debug.TileEngineDebug;
 import zildo.fwk.filter.BilinearFilter;
 import zildo.fwk.filter.BlendFilter;
@@ -15,17 +14,13 @@ import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.opengl.OpenGLZildo;
 import zildo.gui.GUIManagement;
-import zildo.monde.Angle;
 import zildo.monde.Area;
 import zildo.monde.Collision;
 import zildo.monde.Game;
 import zildo.monde.client.MapDisplay;
 import zildo.monde.client.SpriteDisplay;
 import zildo.monde.dialog.DialogManagement;
-import zildo.monde.persos.Perso;
-import zildo.monde.persos.PersoNJ;
 import zildo.monde.persos.PersoZildo;
-import zildo.monde.persos.utils.PersoDescription;
 import zildo.monde.serveur.CollideManagement;
 import zildo.monde.serveur.MapManagement;
 import zildo.monde.serveur.PersoManagement;
@@ -121,7 +116,7 @@ public class EngineZildo {
 	/**
 	 * Should be called after {@link #initializeServer}
 	 */
-	public void initializeClient() {
+	public void initializeClient(boolean p_awt) {
 		
 		// Cheat ! We can't have the map at this moment, in real client-server, but this will come later.
 		Area map=mapManagement.getCurrentMap();
@@ -134,13 +129,15 @@ public class EngineZildo {
 		guiManagement=new GUIManagement();
 		soundManagement=new SoundManagement();
 
-		filterCommand.addFilter(new BilinearFilter());
-		//filterCommand.addFilter(new BlurFilter());
-		filterCommand.addFilter(new BlendFilter());
-		//filterCommand.addFilter(new FadeFilter());
-		filterCommand.active(null, false);
-		filterCommand.active(BilinearFilter.class, true);
-		
+		if (!p_awt) {
+			filterCommand.addFilter(new BilinearFilter());
+			//filterCommand.addFilter(new BlurFilter());
+			filterCommand.addFilter(new BlendFilter());
+			//filterCommand.addFilter(new FadeFilter());
+			filterCommand.active(null, false);
+			filterCommand.active(BilinearFilter.class, true);
+		}
+
 		pixelShaders = new PixelShaders();
 		if (pixelShaders.canDoPixelShader()) {
 			pixelShaders.preparePixelShader();
