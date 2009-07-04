@@ -246,6 +246,7 @@ public abstract class Perso extends Element {
 
 	public void addPersoSprites(Element elem) {
 		this.persoSprites.add(elem);
+		elem.setLinkedPerso(this);
 	}
 	
 	public Perso() {

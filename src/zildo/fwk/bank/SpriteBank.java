@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import zildo.fwk.EasyFile;
+import zildo.fwk.EasyReadingFile;
 import zildo.monde.SpriteModel;
 import zildo.prefs.Constantes;
 
@@ -94,7 +94,7 @@ public class SpriteBank {
 	{
 		String chemin=Constantes.DATA_PATH;
 		chemin+=filename;
-		EasyFile file=new EasyFile(chemin);
+		EasyReadingFile file=new EasyReadingFile(chemin);
 		short a,b;
 	    int k;
 	

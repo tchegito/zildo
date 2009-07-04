@@ -1,6 +1,7 @@
 package zildo.monde.dialog;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import zildo.fwk.engine.EngineZildo;
@@ -274,7 +275,7 @@ public class DialogManagement {
 		topicChoosing=false;
 		positionInSentence=-1;
 		numToScroll=0;
-		behaviors=new HashMap<String, Behavior>();
+		behaviors=new LinkedHashMap<String, Behavior>();	// LinkedHashMap to keep order
 	}
 
 	public int getN_phrases() {
@@ -315,5 +316,13 @@ public class DialogManagement {
 
 	public void setN_topics(int n_topics) {
 		this.n_topics = n_topics;
+	}
+	
+	public String[] getDialogs() {
+		return dialogs;
+	}
+	
+	public Map<String, Behavior> getBehaviors() {
+		return behaviors;
 	}
 }

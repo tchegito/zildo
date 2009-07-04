@@ -92,7 +92,6 @@ public class EngineZildo {
 		mapManagement=new MapManagement();
 		persoManagement=new PersoManagement();
 		dialogManagement=new DialogManagement();
-		soundManagement=new SoundManagement();
 		collideManagement=new CollideManagement();
 	
 		a=0;
@@ -104,31 +103,6 @@ public class EngineZildo {
 		PersoZildo zildo=new PersoZildo();
 		mapManagement.charge_map(mapName);
 		spriteManagement.spawnPerso( zildo );
-
-		// Extra:
-		Perso perso=new PersoNJ();
-		//perso.setNSpr(0);
-		perso.x=45.0f;
-		perso.y=280.0f;
-		perso.z=0;
-		perso.setNom("tigrou");
-		perso.setVisible(true);
-		perso.setInfo(0);
-		perso.setPv(1);
-		perso.setQuel_spr(PersoDescription.SORCIER_CAGOULE);
-		perso.setNBank(SpriteBank.BANK_PNJ);
-		perso.setAngle(Angle.NORD);
-		perso.setDx(0);
-		perso.setDy(0);
-		spriteManagement.spawnPerso(perso);
-	
-		int r=dialogManagement.getN_phrases()+1;
-		dialogManagement.addSentence("Je suis le grand prophete Ben Cristofalizm ! Mon pouvoir est immense !");
-		dialogManagement.addSentence("Je fais pleuvoir des avenants ! A chaque saison des pluies, j'arrose l'elite de la societe !");
-		dialogManagement.addSentence("Mais il faut etre patient, je sors ma plume en 3 mois et demi.");
-		dialogManagement.addSentence("Un conseil, venez me voir au moment du salon de l'auto. Je serai de bonne humeur.");
-		dialogManagement.addSentence("Ohh putainnnn ...");
-		dialogManagement.addBehavior("tigrou", new short[]{(short)r, (short) (r+1), (short) (r+2), (short) (r+3), (short) (r+4)});
 		
 		playerManagement=new PlayerManagement(zildo);
 	
@@ -158,7 +132,8 @@ public class EngineZildo {
 		
 		filterCommand = new FilterCommand();
 		guiManagement=new GUIManagement();
-		
+		soundManagement=new SoundManagement();
+
 		filterCommand.addFilter(new BilinearFilter());
 		//filterCommand.addFilter(new BlurFilter());
 		filterCommand.addFilter(new BlendFilter());
@@ -456,8 +431,8 @@ public class EngineZildo {
 		mapManagement.updateMap();
 	}
 	
-	public synchronized void clientSide(boolean p_keyboardManagement) {
-		if (waitingScene == 0 && p_keyboardManagement) {
+	public synchronized void clientSide(boolean p_editor) {
+		if (waitingScene == 0 && !p_editor) {
 			// Zildo moves by player
 			playerManagement.manageKeyboard();
 		} else {
@@ -474,15 +449,16 @@ public class EngineZildo {
 		
 		openGLGestion.beginScene();
 
-		// On centre le caméra sur le joueur
-		mapDisplay.centerCamera();
+		// Focus camera on player
+		if (!p_editor) {
+			mapDisplay.centerCamera();
+			guiManagement.draw();
+		}
 	
 		// Do sprite's stuff
 		// -move camera
-		// -animate sprites
 		// -fill sort array
 		collideManagement.initFrame();
-		guiManagement.draw();
 	
 	
 		//// DISPLAY ////

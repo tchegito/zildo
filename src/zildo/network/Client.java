@@ -1,5 +1,8 @@
 package zildo.network;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 
@@ -23,6 +26,8 @@ public class Client {
 	boolean awt;
 	boolean done=false;
 	
+	InetAddress address;
+	
 	/**
 	 * Client and server are on two differents PC.
 	 */
@@ -33,6 +38,11 @@ public class Client {
 		glGestion.setEngineZildo(engineZildo);
 		
 		awt=p_awt;
+		try {
+			address=InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			throw new RuntimeException("Can't determine local host address");
+		}
 	}
 	
 	/**
@@ -98,5 +108,9 @@ public class Client {
         }
 
 		glGestion.cleanUp();				
+	}
+
+	public InetAddress getAddress() {
+		return address;
 	}
 }

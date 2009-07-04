@@ -3,7 +3,7 @@ package zildo.fwk.bank;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import zildo.fwk.EasyFile;
+import zildo.fwk.EasyReadingFile;
 
 
 public class MotifBank {
@@ -54,7 +54,7 @@ public class MotifBank {
 	public void charge_motifs(String filename)
 	{
 		// On récupère la taille du fichier .DEC
-		EasyFile file=new EasyFile(filename);
+		EasyReadingFile file=new EasyReadingFile(filename);
 		int size=file.getSize();
 		if (!charge) {
 			//motifs_map=new short[size];

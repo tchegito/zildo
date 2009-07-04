@@ -12,11 +12,15 @@ import zildo.prefs.Constantes;
 
 /**
  * All client side sprite problematic.
- * 
+ *
  * Here, we take sprites positions, attributes, and so on, to display them correctly on the device.
- * 
+ *
  * This class acts as a layer between SpriteManagement and SpriteEngine.
- * 
+ *
+ * We should work only on SpriteEntity here, because SpriteManagament do all the calculating jobs, about speed, acceleration, and
+ * here, we just have to display a sprite at a given position. So, it remains one task to do:
+ * TODO: Remove all references to Element or Perso classes. We just have to use scrX and scrY to localize sprite.
+ *
  * @author tchegito
  *
  */
