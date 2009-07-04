@@ -3,16 +3,22 @@ package zildo.fwk;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class EasyFile {
+public class EasyReadingFile {
 
 	ByteBuffer buf;
 	int position;
 	
-	public EasyFile(String path) {
+	/**
+	 * Creates an EasyFile object for reading.
+	 * @param path file name with complete path.
+	 */
+	public EasyReadingFile(String path) {
 		FileInputStream stream;
 		try {
 			File file=new File(path);
@@ -30,7 +36,7 @@ public class EasyFile {
 		}
 		buf.flip();
 	}
-
+	
 	public String readString(int nChars) {
 		String result="";
 		int lengthPertinent=readUnsignedByte();
@@ -112,4 +118,5 @@ public class EasyFile {
 	public ByteBuffer getAll() {
 		return buf;
 	}
+
 }

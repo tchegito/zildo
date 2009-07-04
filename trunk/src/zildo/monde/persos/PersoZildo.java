@@ -78,9 +78,9 @@ public class PersoZildo extends Perso {
 		piedsMouilles.setNBank(SpriteBank.BANK_ZILDO);
 		piedsMouilles.setNSpr(103);
 	
-		this.persoSprites.add(bouclier);
-		this.persoSprites.add(ombre);
-		this.persoSprites.add(piedsMouilles);
+		addPersoSprites(bouclier);
+		addPersoSprites(ombre);
+		addPersoSprites(piedsMouilles);
 	}
 	
 	public boolean isZildo() {
@@ -526,7 +526,7 @@ public class PersoZildo extends Perso {
 		element.setAx(0.0f);
 		element.setAy(0.0f);
 		element.setAz(-0.07f);
-		element.setLinkedPerso(this);	// Declare this element thrown by Zildo (so it can collide with him)
+		element.setLinkedPerso(this);	// Declare this element thrown by Zildo (so it can't collide with him)
 		switch (getAngle()) {
 			case NORD:
 				element.setVy(-4.0f);

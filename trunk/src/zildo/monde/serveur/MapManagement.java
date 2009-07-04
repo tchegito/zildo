@@ -1,10 +1,14 @@
 package zildo.monde.serveur;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import zildo.fwk.EasyFile;
+import zildo.fwk.EasyReadingFile;
+import zildo.fwk.EasyWritingFile;
 import zildo.fwk.IntSet;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.bank.SpriteBank;
@@ -15,6 +19,8 @@ import zildo.monde.Case;
 import zildo.monde.ChainingPoint;
 import zildo.monde.Zone;
 import zildo.monde.decors.Element;
+import zildo.monde.decors.SpriteEntity;
+import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.persos.Perso;
 import zildo.monde.persos.PersoGarde;
@@ -25,15 +31,6 @@ import zildo.monde.persos.utils.MouvementPerso;
 import zildo.monde.persos.utils.MouvementZildo;
 import zildo.monde.persos.utils.PersoDescription;
 import zildo.prefs.Constantes;
-
-//////////////////////////////////////////////////////////////////////
-// MapManagement
-//////////////////////////////////////////////////////////////////////
-// Class managing low-level problematics about map.
-// -Load and clean map
-// -Load the 'motif' banks at start
-//////////////////////////////////////////////////////////////////////
-
 
 
 public class MapManagement {
@@ -197,7 +194,7 @@ public class MapManagement {
 		chemin+=".MAP";
 	
 		// Infos de base
-		EasyFile file=new EasyFile(chemin);
+		EasyReadingFile file=new EasyReadingFile(chemin);
 		map.setDim_x(file.readUnsignedByte());
 		map.setDim_y(file.readUnsignedByte());
 		map.setN_persos(file.readUnsignedByte());
@@ -341,6 +338,116 @@ public class MapManagement {
 		return map;
 	}
 
+	public void saveMapFile(String p_fileName) {
+		EasyWritingFile serializedMap = serializeMap();
+
+		serializedMap.saveFile(p_fileName);
+    }
+
+	/**
+	 * Serialize the map into an EasyWritingFile object.
+	 * @return EasyWritingFile
+	 */
+    public EasyWritingFile serializeMap() {
+
+    	EasyWritingFile file=new EasyWritingFile();
+    	
+        // 1) Header
+    	file.put((byte) currentMap.getDim_x());
+    	file.put((byte) currentMap.getDim_y());
+    	file.put((byte) currentMap.getN_persos());
+    	file.put((byte) currentMap.getN_sprites());
+    	file.put((byte) currentMap.getN_pe());
+
+        // 2) Save the map cases
+        for (int i = 0; i < currentMap.getDim_y(); i++) {
+            for (int j = 0; j < currentMap.getDim_x(); j++) {
+                Case temp = currentMap.get_mapcase(j, i + 4);
+
+                file.put((byte) temp.getN_motif());
+                file.put((byte) temp.getN_banque());
+                file.put((byte) temp.getN_motif_masque());
+                file.put((byte) temp.getN_banque_masque());
+            }
+        }
+
+        // 3) Chaining points
+        if (currentMap.getN_pe() != 0) {
+            for (ChainingPoint ch : currentMap.getListPointsEnchainement()) {
+            	file.put((byte) ch.getPx());
+            	file.put((byte) ch.getPy());
+            	file.put(ch.getMapname(),9);
+            }
+        }
+
+        // 4) Sprites
+		if (currentMap.getN_sprites()!=0) {
+			List<SpriteEntity> spriteEntities=EngineZildo.spriteManagement.getSpriteEntities();
+			int nSprites=0;
+			for (SpriteEntity entity : spriteEntities) {
+				int type=entity.getEntityType();
+				boolean ok=true;
+				if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+					Element elem=(Element) entity;
+					if (elem.getLinkedPerso() != null) {
+						ok=false;
+					}
+				}
+				if (entity.isVisible() && ok && (type == SpriteEntity.ENTITYTYPE_ELEMENT || type == SpriteEntity.ENTITYTYPE_ENTITY)) {
+					// Only element
+					file.put((int) entity.x);
+					file.put((int) entity.y);
+					file.put((byte) entity.getNSpr());
+					nSprites++;
+					if (nSprites > currentMap.getN_sprites()) {
+						System.out.println("Too much sprites ! ("+nSprites+")");
+					}
+				}
+
+			}
+		}
+        
+		// 5) Persos (characters)
+		if (currentMap.getN_persos()!=0) {
+			List<Perso> persos=EngineZildo.persoManagement.tab_perso;
+			for (Perso perso : persos) {
+				if (!perso.isZildo()) {
+					file.put((int) perso.x);
+					file.put((int) perso.y);
+					file.put((int) perso.z);
+					file.put((byte) perso.getQuel_spr().first());
+					file.put((byte) perso.getInfo());
+					file.put((byte) perso.getEn_bras());
+					file.put((byte) perso.getQuel_deplacement().ordinal());
+					file.put((byte) perso.getAngle().ordinal());
+					file.put(perso.getNom(),9);
+				}
+			}
+		}
+
+		// 6) Sentences
+		DialogManagement dialogManagement=EngineZildo.dialogManagement;
+		int nPhrases=dialogManagement.getN_phrases();
+		file.put((byte) nPhrases);
+		if (nPhrases > 0) {
+			// On lit les phrases
+			String[] dialogs=dialogManagement.getDialogs();
+			for (int i=0;i<nPhrases;i++) {
+				file.put(dialogs[i]);
+			}
+			// On lit le nom
+			Map<String, Behavior> behaviors=dialogManagement.getBehaviors();
+			for (Entry<String, Behavior> entry : behaviors.entrySet()) {
+				file.put(entry.getKey(), 9);
+				Behavior behav=entry.getValue();
+				for (int i : behav.replique) {
+					file.put((byte) i);
+				}
+			}
+		}
+        return file;
+    }
+    
 	///////////////////////////////////////////////////////////////////////////////////////
 	// isWalkable
 	///////////////////////////////////////////////////////////////////////////////////////

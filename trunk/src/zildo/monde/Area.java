@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import zildo.fwk.engine.EngineZildo;
 import zildo.monde.decors.Element;
@@ -13,6 +11,11 @@ import zildo.monde.decors.Element;
 
 public class Area {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	static public int M_MOTIF_MASQUE=128;
 	static private int M_MOTIF_ANIME=64;
 
@@ -34,20 +37,10 @@ public class Area {
 	private int n_persos,n_sprites,n_pe;
 	private List<ChainingPoint> listPointsEnchainement;
 
-
-	protected Logger logger=Logger.getLogger("Area");
-
-
 	public Area()
 	{
 		mapdata=new HashMap<Integer, Case>();
 		listPointsEnchainement=new ArrayList<ChainingPoint>();
-		logger.log(Level.INFO, "Creating Area");
-	}
-	
-	public void finalize()
-	{
-		logger.log(Level.INFO, "Deleting Area");
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

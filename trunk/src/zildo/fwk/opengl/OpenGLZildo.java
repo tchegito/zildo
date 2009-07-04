@@ -68,7 +68,7 @@ public class OpenGLZildo extends OpenGLGestion {
     	GL11.glScalef(1+zz , -1-zz, 1);
     	EngineZildo.filterCommand.doPreFilter();
 
-        engineZildo.clientSide(!awt);
+        engineZildo.clientSide(awt);
 
         EngineZildo.filterCommand.doPostFilter();
         

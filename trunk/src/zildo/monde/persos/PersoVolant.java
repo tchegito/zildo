@@ -16,7 +16,7 @@ public class PersoVolant extends PersoNJ {
 			ombre.setY(y-12);
 			ombre.setNBank(SpriteBank.BANK_ELEMENTS);
 			ombre.setNSpr(43);
-			persoSprites.add(ombre);
+			addPersoSprites(ombre);
 		//}
 	}
 	

@@ -1,20 +1,19 @@
 package zildo.monde;
 
-import java.util.logging.Level;
-// ChainingPoint.cpp: implementation of the ChainingPoint class.
-//
-//////////////////////////////////////////////////////////////////////
-import java.util.logging.Logger;
 
 
 
 public class ChainingPoint {
 	
-	protected Logger logger=Logger.getLogger("ChainingPoint");
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String mapname;	// max length=8
 	private short  px,py;
 
@@ -64,17 +63,10 @@ public class ChainingPoint {
 
 	public ChainingPoint()
 	{
-		logger.log(Level.INFO, "Creating ChainingPoint");
-	}
-	
-	public void finalize()
-	{
-		logger.log(Level.INFO, "Deleting ChainingPoint");
 	}
 	
 	// Assignment operator
 	public ChainingPoint(ChainingPoint original) {
-		logger.log(Level.INFO, "Copying ChainingPoint");
 		this.mapname=original.mapname;
 		this.px=original.px;
 		this.py=original.py;

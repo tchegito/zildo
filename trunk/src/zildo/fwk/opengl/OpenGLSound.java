@@ -9,7 +9,7 @@ import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 
-import zildo.fwk.EasyFile;
+import zildo.fwk.EasyReadingFile;
 
 public class OpenGLSound {
 
@@ -65,7 +65,7 @@ public class OpenGLSound {
 	    if(AL10.alGetError() != AL10.AL_NO_ERROR)
 	      return AL10.AL_FALSE;
 
-	    EasyFile file=new EasyFile(p_filename);
+	    EasyReadingFile file=new EasyReadingFile(p_filename);
 	    
 	    WaveData waveFile = WaveData.create(file.getAll());
 	    AL10.alBufferData(buffer.get(0), waveFile.format, waveFile.data, waveFile.samplerate);

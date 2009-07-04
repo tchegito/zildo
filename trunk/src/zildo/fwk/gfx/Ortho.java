@@ -120,6 +120,13 @@ public class Ortho extends OpenGLStuff {
 		}
 	}
 
+	public void setSize(int p_x, int p_y) {
+		resetPerspectiveProjection();
+		w=p_x;
+		h=p_y;
+		setOrthographicProjection();
+	}
+	
 	public void resetPerspectiveProjection() {
 		if (orthoSetUp) {
 			GL11.glMatrixMode(GL11.GL_PROJECTION);

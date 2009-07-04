@@ -24,6 +24,7 @@ public class Server extends Thread {
 	List<Client> clients;
 	boolean gameRunning;
 	Game game;
+	Send send;
 	
 	EngineZildo engineZildo;
 	
@@ -31,6 +32,7 @@ public class Server extends Thread {
 		engineZildo=new EngineZildo(p_game);
 		clients=new ArrayList<Client>();
 		gameRunning=true;
+		send=new Send(engineZildo);
 	}
 	
 	public EngineZildo getEngineZildo() {
@@ -68,6 +70,7 @@ public class Server extends Thread {
 	 */
 	public void connectClient(Client client) {
 		clients.add(client);
+		//sendStartingData();
 	}
 	
 	/**
@@ -80,5 +83,15 @@ public class Server extends Thread {
 			// No clients anymore, we shut down the server
 			gameRunning=false;
 		}
+	}
+	
+	/**
+	 * Send to all clients data they need to start the game:
+	 * -map
+	 * -sprites positions
+	 * -dialogs
+	 */
+	public void sendStartingData() {
+		send.sendStartingData(clients);
 	}
 }

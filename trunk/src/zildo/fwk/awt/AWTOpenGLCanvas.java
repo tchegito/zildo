@@ -13,7 +13,9 @@ import org.lwjgl.opengl.AWTGLCanvas;
 import org.lwjgl.opengl.Drawable;
 import org.lwjgl.opengl.PixelFormat;
 
+import zildo.fwk.gfx.Ortho;
 import zildo.monde.client.IRenderable;
+import zildo.monde.client.ZildoRenderer;
 
 /** 
  * @author Benjamin "Evil-Devil" Behrendt
@@ -30,6 +32,11 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
     private Thread renderThread = null;
     private boolean initialize = false;
 
+    private int sizeX;
+    private int sizeY;
+    
+    private boolean needToResize=false;
+    
     public AWTOpenGLCanvas() throws LWJGLException {
         super();
     }
@@ -89,6 +96,13 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
         }
             try  {
                 makeCurrent();
+                if (needToResize) {
+	        		Ortho ortho=((ZildoRenderer) renderer).getEngineZildo().ortho;
+	        		if (ortho != null) {
+	        			ortho.setSize(sizeX, sizeY);
+		        		needToResize=false;
+	        		}
+                }
                 renderer.renderScene();     
                 swapBuffers();
             } catch (LWJGLException lwjgle) {
@@ -117,6 +131,16 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
         }
     }
     
+	/**
+	 * User ask a resize. We plan it to next rendering.
+	 */
+	public void setSize(int width, int height) {
+		super.setSize(width, height);
+		sizeX=width;
+		sizeY=height;
+		needToResize=true;
+	}
+	
     /**
      * If the context is created and a IRenderable object is provided, then
      * IRenderable.initRenderer() will be called to setup the states etc that were used.
