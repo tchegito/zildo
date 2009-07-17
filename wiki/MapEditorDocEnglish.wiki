@@ -1,3 +1,4 @@
+#summary (deprecated)Map editor
 =Documentation for MAPEDIT.EXE=
 
 There is several things to know about it:
