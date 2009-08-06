@@ -34,6 +34,7 @@ public abstract class TextureEngine extends OpenGLStuff {
     private ByteBuffer scratch;
     
     public TextureEngine() {
+    	
 		// Initialize number of textures
 		n_Texture=0;
 	

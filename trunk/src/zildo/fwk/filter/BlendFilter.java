@@ -3,7 +3,7 @@ package zildo.fwk.filter;
 import org.lwjgl.opengl.GL11;
 
 import zildo.Zildo;
-import zildo.fwk.engine.EngineZildo;
+import zildo.client.ClientEngineZildo;
 
 /**
  * Draw boxes more and more large onto the screen, to get a soft focus effect.
@@ -45,7 +45,7 @@ public class BlendFilter extends ScreenFilter {
 		GL11.glBegin(GL11.GL_QUADS);
 		for (int i=0;i<nSquareY+1;i++) {
 			for (int j=0;j<nSquareX+1;j++) {
-				EngineZildo.ortho.boxTexturedOpti(j*currentSquareSize, i*currentSquareSize,
+				ClientEngineZildo.ortho.boxTexturedOpti(j*currentSquareSize, i*currentSquareSize,
 						              currentSquareSize, currentSquareSize, 
 						              (j*currentSquareSize) / (float) ScreenFilter.realX, 
 						              (i*currentSquareSize) / (float) ScreenFilter.realY,0, 0);

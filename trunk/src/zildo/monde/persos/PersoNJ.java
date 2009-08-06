@@ -3,7 +3,6 @@ package zildo.monde.persos;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.fwk.engine.EngineZildo;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.Angle;
 import zildo.monde.Hasard;
@@ -13,6 +12,7 @@ import zildo.monde.persos.utils.MouvementPerso;
 import zildo.monde.persos.utils.MouvementZildo;
 import zildo.monde.persos.utils.PersoDescription;
 import zildo.prefs.Constantes;
+import zildo.server.EngineZildo;
 
 
 
@@ -26,11 +26,6 @@ public class PersoNJ extends Perso {
 	public PersoNJ() {
 		super();
 		setPos_seqsprite(0);
-	}
-
-
-	public boolean isZildo() {
-		return false;
 	}
 	
 	public void attack() {
@@ -89,7 +84,7 @@ public class PersoNJ extends Perso {
 					  this);
 		}
 	
-		EngineZildo.soundManagement.playSoundFX("MonstreTouche");
+		EngineZildo.broadcastSound("MonstreTouche", this);
 	
 		return died;
 	}
@@ -229,7 +224,7 @@ public class PersoNJ extends Perso {
 								if (this.getAttente()==1 && cptMouvement<2) {
 									if (!alerte && lookForZildo(Angle.rotate(angle, PersoGardeVert.mouvetete[cptMouvement]))) {
 										alerte=true;
-										EngineZildo.soundManagement.playSoundFX("MonstreTrouve");
+										EngineZildo.broadcastSound("MonstreTrouve", this);
 									}
 									cptMouvement++;
 									setAttente(20);

@@ -4,14 +4,15 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
-import zildo.fwk.engine.EngineZildo;
+import zildo.client.ClientEngineZildo;
 import zildo.monde.Point;
+import zildo.server.EngineZildo;
 
 public class OpenGLZildo extends OpenGLGestion {
 
 	String windowTitle="Zildo OpenGL";
 
-    private EngineZildo engineZildo;
+    private ClientEngineZildo engineZildo;
 
     private float z;
     private float xx;
@@ -28,7 +29,7 @@ public class OpenGLZildo extends OpenGLGestion {
 		z=0.0f;
 	}
 	
-    public void setEngineZildo(EngineZildo p_engineZildo) {
+    public void setEngineZildo(ClientEngineZildo p_engineZildo) {
     	engineZildo=p_engineZildo;
     }
     
@@ -66,12 +67,16 @@ public class OpenGLZildo extends OpenGLGestion {
         	GL11.glTranslatef(-zoomPosition.getX()*zz, zoomPosition.getY()*zz,0.0f);
         }
     	GL11.glScalef(1+zz , -1-zz, 1);
-    	EngineZildo.filterCommand.doPreFilter();
+    	if (ClientEngineZildo.filterCommand != null) {
+    		ClientEngineZildo.filterCommand.doPreFilter();
+    	}
+    	
+        engineZildo.renderFrame(awt);
 
-        engineZildo.clientSide(awt);
-
-        EngineZildo.filterCommand.doPostFilter();
-        
+    	if (ClientEngineZildo.filterCommand != null) {
+    		ClientEngineZildo.filterCommand.doPostFilter();
+    	}
+    	
        	if (framerate != 0) {
        		Display.sync(framerate);
        	}

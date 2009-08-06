@@ -5,16 +5,17 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
 import org.newdawn.slick.TrueTypeFont;
 
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.engine.EngineZildo;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.SpritePrimitive;
 import zildo.monde.SpriteModel;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
-import zildo.monde.serveur.SpriteManagement;
+import zildo.monde.decors.SpriteStore;
 import zildo.prefs.Constantes;
+import zildo.server.SpriteManagement;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.
 //
@@ -37,16 +38,23 @@ public class SpriteEngine extends TextureEngine {
 	// 3D Objects (vertices and indices per bank)
 	SpritePrimitive meshSprites[]=new SpritePrimitive[Constantes.NB_SPRITEBANK];
 	
+    boolean pixelShaderSupported;
+    
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
 	
 	public SpriteEngine()
 	{
-		super();
-		prepareSprites();
-	}
+        super();
+
+        pixelShaderSupported = isPixelShaderSupported();
+    }
 	
+	public void init(SpriteStore p_spriteStore) {
+		prepareSprites(p_spriteStore);
+	}
+
 	public void cleanUp()
 	{
 		for (SpritePrimitive sp : meshSprites) {
@@ -173,7 +181,7 @@ public class SpriteEngine extends TextureEngine {
 	// IN: Bank to transform into texture
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Prepare vertices and indices for drawing tiles
-	void prepareSprites() {
+	void prepareSprites(SpriteStore p_spriteStore) {
 		int i;
 	
 		// Allocate meshes
@@ -184,7 +192,7 @@ public class SpriteEngine extends TextureEngine {
 		}
 		// Load sprite banks
 		for (i=0;i<SpriteManagement.sprBankName.length;i++) {
-			SpriteBank sprBank=EngineZildo.spriteManagement.getSpriteBank(i);
+			SpriteBank sprBank=p_spriteStore.getSpriteBank(i);
 
 			// Create a DirectX9 texture based on the current tiles
 			createTextureFromSpriteBank(sprBank);
@@ -225,7 +233,7 @@ public class SpriteEngine extends TextureEngine {
 		float z=0.0f;
 		if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT ||
 				entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO)
-			z=((Element)entity).z;
+			z=entity.z;
 	
 		SpriteModel spr=entity.getSprModel();
 		entity.setLinkVertices(
@@ -269,8 +277,6 @@ public class SpriteEngine extends TextureEngine {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void spriteRender(boolean backGround) {
 	
-		//pD3DDevice9.SetFVF(D3DFVF_TLVERTEX);
-	
 		// Display every sprites
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glEnable(GL11.GL_BLEND);
@@ -296,43 +302,39 @@ public class SpriteEngine extends TextureEngine {
 		        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[numBank]);
 
 				// Select the right pixel shader (if needed)
-				
-				int currentFX=bankOrder[phase][posBankOrder*3 + 2];
+                if (pixelShaderSupported) {
+					int currentFX=bankOrder[phase][posBankOrder*3 + 2];
+		
+					if (currentFX == PixelShaders.ENGINEFX_NO_EFFECT) {
+						ARBShaderObjects.glUseProgramObjectARB(0);
+					} else if (currentFX == PixelShaders.ENGINEFX_PERSO_HURT) {
+						// A sprite has been hurt
+						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(1));
+						ClientEngineZildo.pixelShaders.setParameter(1, "randomColor", new Vector4f((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
 	
-				if (currentFX == PixelShaders.ENGINEFX_NO_EFFECT) {
-					ARBShaderObjects.glUseProgramObjectARB(0);
-				} else if (currentFX == PixelShaders.ENGINEFX_PERSO_HURT) {
-					// A sprite has been hurt
-					ARBShaderObjects.glUseProgramObjectARB(EngineZildo.pixelShaders.getPixelShader(1));
-					EngineZildo.pixelShaders.setParameter(1, "randomColor", new Vector4f((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
-
-					// And enable the 'color addition' pixel shader
-				} else {
-					// This is a color replacement, so get the right ones
-					Vector4f[] tabColors=EngineZildo.pixelShaders.getConstantsForSpecialEffect(currentFX);
-
-					// And enable the 'color replacement' pixel shader
-					ARBShaderObjects.glUseProgramObjectARB(EngineZildo.pixelShaders.getPixelShader(0));
-					EngineZildo.pixelShaders.setParameter(0, "Color1", tabColors[2]);
-					EngineZildo.pixelShaders.setParameter(0, "Color2", tabColors[3]);
-					EngineZildo.pixelShaders.setParameter(0, "Color3", tabColors[0]);
-					EngineZildo.pixelShaders.setParameter(0, "Color4", tabColors[1]);
-				}
-				
+						// And enable the 'color addition' pixel shader
+					} else {
+						// This is a color replacement, so get the right ones
+						Vector4f[] tabColors=ClientEngineZildo.pixelShaders.getConstantsForSpecialEffect(currentFX);
+	
+						// And enable the 'color replacement' pixel shader
+						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(0));
+						ClientEngineZildo.pixelShaders.setParameter(0, "Color1", tabColors[2]);
+						ClientEngineZildo.pixelShaders.setParameter(0, "Color2", tabColors[3]);
+						ClientEngineZildo.pixelShaders.setParameter(0, "Color3", tabColors[0]);
+						ClientEngineZildo.pixelShaders.setParameter(0, "Color4", tabColors[1]);
+					}
+                }
 				meshSprites[numBank].render(nbQuads);
 				posBankOrder++;
 			}
 		}
 
 		// Deactivate pixel shader
-		ARBShaderObjects.glUseProgramObjectARB(0);
+		if (pixelShaderSupported) {
+			ARBShaderObjects.glUseProgramObjectARB(0);
+		}
 		GL11.glDisable(GL11.GL_BLEND);
-
-		/*pD3DDevice9.SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		pD3DDevice9.SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-		pD3DDevice9.SetRenderState(D3DRS_ALPHABLENDENABLE,0);
-		pD3DDevice9.SetPixelShader(null);
-		*/
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////

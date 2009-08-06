@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
 
 import zildo.Zildo;
-import zildo.fwk.engine.EngineZildo;
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.TilePrimitive;
 
 
@@ -105,7 +105,7 @@ public abstract class ScreenFilter extends TilePrimitive {
 
 	protected void drawScene() {
 		// On dessine un simple carré noir
-		EngineZildo.ortho.box(0, 0, sizeX, sizeY, 1, new Vector4f(0.0f,0.0f,0, getFadeLevel()/256.0f));
+		ClientEngineZildo.ortho.box(0, 0, sizeX, sizeY, 1, new Vector4f(0.0f,0.0f,0, getFadeLevel()/256.0f));
 		
 		/*
 		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
@@ -152,6 +152,6 @@ public abstract class ScreenFilter extends TilePrimitive {
 	}
 	
 	final public int getFadeLevel() {
-		return EngineZildo.filterCommand.getFadeLevel();
+		return ClientEngineZildo.filterCommand.getFadeLevel();
 	}
 }

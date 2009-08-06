@@ -3,7 +3,6 @@ package zildo.monde.persos;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.fwk.engine.EngineZildo;
 import zildo.monde.Angle;
 import zildo.monde.Point;
 import zildo.monde.Zone;
@@ -12,6 +11,7 @@ import zildo.monde.decors.SpriteEntity;
 import zildo.monde.persos.utils.MouvementPerso;
 import zildo.monde.persos.utils.MouvementZildo;
 import zildo.monde.persos.utils.PersoDescription;
+import zildo.server.EngineZildo;
 
 public abstract class Perso extends Element {
 	
@@ -26,7 +26,6 @@ public abstract class Perso extends Element {
     protected MouvementPerso quel_deplacement;      // Script
     protected PersoDescription quel_spr;				
     protected int attente;				// =0 => pas d'attente
-    private int ajustedX,ajustedY;
     protected int dx,dy,dz;				// Destination
     private float px,py;				// Quand le perso est propulsé (touché)
     protected Angle angle;
@@ -106,22 +105,6 @@ public abstract class Perso extends Element {
 
 	public void setAttente(int attente) {
 		this.attente = attente;
-	}
-
-	public int getAjustedX() {
-		return ajustedX;
-	}
-
-	public void setAjustedX(int ajustedX) {
-		this.ajustedX = ajustedX;
-	}
-
-	public int getAjustedY() {
-		return ajustedY;
-	}
-
-	public void setAjustedY(int ajustedY) {
-		this.ajustedY = ajustedY;
 	}
 
 	public int getDx() {
@@ -250,6 +233,7 @@ public abstract class Perso extends Element {
 	}
 	
 	public Perso() {
+		super();
 		entityType=SpriteEntity.ENTITYTYPE_PERSO;
 	
 		money=(int)Math.random();
@@ -362,8 +346,6 @@ public abstract class Perso extends Element {
 		return sb.toString();
 	}
 
-	public abstract boolean isZildo();
-	
 	public abstract void manageCollision();
 	
 	public abstract void initPersoFX();

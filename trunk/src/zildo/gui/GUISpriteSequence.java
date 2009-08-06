@@ -2,9 +2,9 @@ package zildo.gui;
 
 import java.util.ArrayList;
 
-import zildo.fwk.engine.EngineZildo;
+import zildo.client.ClientEngineZildo;
+import zildo.client.SpriteDisplay;
 import zildo.monde.decors.SpriteEntity;
-import zildo.monde.serveur.SpriteManagement;
 
 
 public class GUISpriteSequence extends ArrayList<SpriteEntity> {
@@ -41,8 +41,8 @@ public class GUISpriteSequence extends ArrayList<SpriteEntity> {
 	// -ask sprite management to add sprite in the engine with given parameters
 	///////////////////////////////////////////////////////////////////////////////////////
 	public SpriteEntity addSprite(int nBank, int nSpr, int x, int y, boolean visible) {
-		SpriteManagement spriteManagement=EngineZildo.spriteManagement;
-		SpriteEntity entity = spriteManagement.spawnFont(nBank, nSpr, x, y, visible);
+		SpriteDisplay spriteDisplay=ClientEngineZildo.spriteDisplay;
+		SpriteEntity entity = spriteDisplay.spawnFont(nBank, nSpr, x, y, visible);
 		
 		this.add(entity);
 	
@@ -61,9 +61,9 @@ public class GUISpriteSequence extends ArrayList<SpriteEntity> {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void clear()
 	{
-		SpriteManagement spriteManagement=EngineZildo.spriteManagement;
+		SpriteDisplay spriteDisplay=ClientEngineZildo.spriteDisplay;
 		for (SpriteEntity entity : this) {
-			spriteManagement.deleteSprite(entity);
+			spriteDisplay.deleteSprite(entity);
 		}
 		super.clear();
 	

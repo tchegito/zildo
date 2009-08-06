@@ -1,12 +1,14 @@
 package zildo.monde;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import zildo.fwk.engine.EngineZildo;
 import zildo.monde.decors.Element;
+import zildo.server.EngineZildo;
 
 
 public class Area {
@@ -37,10 +39,14 @@ public class Area {
 	private int n_persos,n_sprites,n_pe;
 	private List<ChainingPoint> listPointsEnchainement;
 
+	private Collection<Point> changes;
+	
 	public Area()
 	{
 		mapdata=new HashMap<Integer, Case>();
 		listPointsEnchainement=new ArrayList<ChainingPoint>();
+		
+		changes=new HashSet<Point>();
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +116,8 @@ public class Area {
 	 temp.setN_motif(quoi & 255);
 	 temp.setN_banque(quoi >> 8);
 	 this.set_mapcase(x,y+4,temp);
+	 
+	 changes.add(new Point(x,y));
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -263,10 +271,11 @@ public class Area {
 		// On teste si Zildo détruit un buisson
 		int on_Area=this.readmap(tileLocation.getX(),tileLocation.getY());
 		if (on_Area==165) {
+			Point spriteLocation=new Point(tileLocation.getX()*16+8, tileLocation.getY()*16+8);
 			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON,
-															  tileLocation.getX()*16+8,
-															  tileLocation.getY()*16+8,0, null);
-			EngineZildo.soundManagement.playSoundFX("CasseBuisson");
+															spriteLocation.getX(),
+															spriteLocation.getY(),0, null);
+			EngineZildo.broadcastSound("CasseBuisson", spriteLocation);
 	
 			this.writemap(tileLocation.getX(),tileLocation.getY(),166);
 		}
@@ -346,5 +355,17 @@ public class Area {
 
 	public void setListPointsEnchainement(List<ChainingPoint> listPointsEnchainement) {
 		this.listPointsEnchainement = listPointsEnchainement;
+	}
+	
+	public boolean isModified() {
+		return !changes.isEmpty();
+	}
+	
+	public Collection<Point> getChanges() {
+		return changes;
+	}
+	
+	public void resetChanges() {
+		changes.clear();
 	}
 }

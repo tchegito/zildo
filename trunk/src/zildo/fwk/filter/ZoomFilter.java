@@ -2,10 +2,11 @@ package zildo.fwk.filter;
 
 import org.lwjgl.opengl.GL11;
 
-import zildo.fwk.engine.EngineZildo;
+import zildo.client.ClientEngineZildo;
 import zildo.monde.Point;
 import zildo.monde.SpriteModel;
 import zildo.monde.persos.PersoZildo;
+import zildo.server.EngineZildo;
 
 public class ZoomFilter extends ScreenFilter {
 
@@ -26,9 +27,9 @@ public class ZoomFilter extends ScreenFilter {
 		SpriteModel spr=zildo.getSprModel();
 		zildoPos.addX(spr.getTaille_x() / 2);
 		zildoPos.addY(spr.getTaille_y() / 2);
-		EngineZildo.openGLGestion.setZoomPosition(zildoPos);
+		ClientEngineZildo.openGLGestion.setZoomPosition(zildoPos);
 		float z=2.0f * (float) Math.sin(getFadeLevel() * (0.25f*Math.PI / 256.0f));
-		EngineZildo.openGLGestion.setZ(z);
+		ClientEngineZildo.openGLGestion.setZ(z);
 		//EngineZildo.getOpenGLGestion().setZ((float) Math.sin(getFadeLevel() * (0.5f*Math.PI / 256.0f)));
 	}
 	
@@ -36,6 +37,6 @@ public class ZoomFilter extends ScreenFilter {
 	 * Re-initialize z coordinate
 	 */
 	public void doOnInactive() {
-		EngineZildo.openGLGestion.setZ(0);
+		ClientEngineZildo.openGLGestion.setZ(0);
 	}	
 }

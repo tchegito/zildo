@@ -2,8 +2,8 @@ package zildo.monde.decors;
 
 import java.util.List;
 
-import zildo.fwk.engine.EngineZildo;
 import zildo.monde.persos.Perso;
+import zildo.server.EngineZildo;
 
 public class ElementAnimMort extends Element {
 
@@ -40,7 +40,7 @@ public class ElementAnimMort extends Element {
 			}
 		}
 		if (vx >= 1.0f && vx<1.15f) {
-			EngineZildo.soundManagement.playSoundFX("MonstreMeurt");
+			EngineZildo.broadcastSound("MonstreMeurt", this);
 		}
 		nSpr=seq_mort[(byte) vx];
 		if (nSpr==0) {
