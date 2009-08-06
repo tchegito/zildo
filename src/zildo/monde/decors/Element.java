@@ -8,11 +8,11 @@ import java.util.logging.Logger;
 
 import zildo.fwk.IntSet;
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.engine.EngineZildo;
 import zildo.monde.Angle;
 import zildo.monde.persos.Perso;
 import zildo.monde.persos.PersoZildo;
 import zildo.monde.persos.utils.PersoDescription;
+import zildo.server.EngineZildo;
 
 
 //TODO: Remove getter/setter for x,y,z
@@ -47,6 +47,7 @@ public class Element extends SpriteEntity {
 	protected SpriteEntity linkedPerso;	// When this element dies, any non-perso linked entity die too.
 
 	public Element() {
+		super();
 		this.initialize();
 	}
 	
@@ -406,10 +407,10 @@ public class Element extends SpriteEntity {
 		if (nSpr==1) {
 			// Le buisson s'effeuille
 			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON,(int) x,(int) y,0, null);
-			EngineZildo.soundManagement.playSoundFX("CasseBuisson");
+			EngineZildo.broadcastSound("CasseBuisson", this);
 		} else if (nSpr==12 || nSpr==42) {
 			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_ECLATEPIERRE,(int) x,(int) y,0, null);
-			EngineZildo.soundManagement.playSoundFX("CassePierre");
+			EngineZildo.broadcastSound("CassePierre", this);
 		} else if (nSpr==32) {
 			// La poule reprend vie dans le tableau de perso
 			/*

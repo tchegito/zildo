@@ -1,4 +1,6 @@
 package zildo.monde;
+
+import zildo.fwk.file.EasyBuffering;
 //////////////////////////////////////////////////////////////////////
 // Case
 //////////////////////////////////////////////////////////////
@@ -125,5 +127,35 @@ public class Case {
 	
 		// Return computed motif
 		return motif;
+	}
+	
+
+
+	/**
+	 * Serialize useful fields from this map case.
+	 * @param p_buffer
+	 */
+	public void serializeEntity(EasyBuffering p_buffer) {
+		p_buffer.put(this.getN_banque());
+		p_buffer.put(this.getN_banque_masque());
+		p_buffer.put(this.getN_motif());
+		p_buffer.put(this.getN_motif_masque());
+		p_buffer.put(this.getN_tile());
+	}
+	
+	/**
+	 * Deserialize a byte buffer into a Case
+	 * @param p_buffer
+	 * @return SpriteEntity
+	 */
+	public static Case deserializeOneEntity(EasyBuffering p_buffer) {
+		Case mapCase=new Case();
+		mapCase.setN_banque(p_buffer.readInt());
+		mapCase.setN_banque_masque(p_buffer.readInt());
+		mapCase.setN_motif(p_buffer.readInt());
+		mapCase.setN_motif_masque(p_buffer.readInt());
+		mapCase.setN_tile(p_buffer.readInt());
+		
+		return mapCase;
 	}
 }

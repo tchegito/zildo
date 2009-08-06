@@ -2,7 +2,7 @@ package zildo.fwk.filter;
 
 import org.lwjgl.opengl.GL11;
 
-import zildo.fwk.engine.EngineZildo;
+import zildo.client.ClientEngineZildo;
 
 public class BlurFilter extends ZoomFilter {
 
@@ -86,7 +86,7 @@ public class BlurFilter extends ZoomFilter {
 	 * Re-initialize z coordinate
 	 */
 	public void doOnInactive() {
-		EngineZildo.openGLGestion.setZ(0);
+		ClientEngineZildo.openGLGestion.setZ(0);
    		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
    		nImagesSaved=0;
    		currentImage=0;

@@ -3,7 +3,6 @@ package zildo.monde.persos;
 import java.util.Iterator;
 
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.engine.EngineZildo;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.Angle;
 import zildo.monde.Point;
@@ -11,6 +10,7 @@ import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.persos.utils.MouvementZildo;
 import zildo.prefs.Constantes;
+import zildo.server.EngineZildo;
 
 
 public class PersoZildo extends Perso {
@@ -31,6 +31,10 @@ public class PersoZildo extends Perso {
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
+	
+	public PersoZildo(int p_id) {
+		id=p_id;
+	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// PersoZildo
@@ -99,7 +103,7 @@ public class PersoZildo extends Perso {
 	// attack
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void attack() {
-		EngineZildo.soundManagement.playSoundFX("ZildoAttaque");
+		EngineZildo.broadcastSound("ZildoAttaque", this);
 		setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_EPEE);
 		setAttente(6*3);
 	}
@@ -179,7 +183,7 @@ public class PersoZildo extends Perso {
 			elem.az=-0.07f;
 			setEn_bras(0);
 		}
-		EngineZildo.soundManagement.playSoundFX("ZildoTouche");
+		EngineZildo.broadcastSound("ZildoTouche", this);
 	
 		return (getPv() == 0);
 	}
@@ -466,10 +470,10 @@ public class PersoZildo extends Perso {
 		// Sound
 		switch (nSpr) {
 			case 48: case 51: case 54:
-				EngineZildo.soundManagement.playSoundFX("ZildoRecupArgent");
+				EngineZildo.broadcastSound("ZildoRecupArgent", this);
 				break;
 			case 10: case 40:
-				EngineZildo.soundManagement.playSoundFX("ZildoRecupCoeur");
+				EngineZildo.broadcastSound("ZildoRecupCoeur", this);
 				break;
 		}
 	}
@@ -480,7 +484,7 @@ public class PersoZildo extends Perso {
 	 * @param obj
 	 */
 	public void takeSomething(int objX, int objY, int obj, Element object) {
-		EngineZildo.soundManagement.playSoundFX("ZildoRamasse");
+		EngineZildo.broadcastSound("ZildoRamasse", this);
 
 		Element elem=object;
 		if (object == null) {
@@ -545,7 +549,7 @@ public class PersoZildo extends Perso {
 				element.setFx(0.04f);
 				break;
 		}
-		EngineZildo.soundManagement.playSoundFX("ZildoLance");		
+		EngineZildo.broadcastSound("ZildoLance", this);		
 	}
 	
 	/**

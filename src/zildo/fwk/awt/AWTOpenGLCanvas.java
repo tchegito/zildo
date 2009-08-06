@@ -13,9 +13,9 @@ import org.lwjgl.opengl.AWTGLCanvas;
 import org.lwjgl.opengl.Drawable;
 import org.lwjgl.opengl.PixelFormat;
 
+import zildo.client.ClientEngineZildo;
+import zildo.client.IRenderable;
 import zildo.fwk.gfx.Ortho;
-import zildo.monde.client.IRenderable;
-import zildo.monde.client.ZildoRenderer;
 
 /** 
  * @author Benjamin "Evil-Devil" Behrendt
@@ -97,7 +97,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
         try  {
             makeCurrent();
             if (needToResize) {
-        		Ortho ortho=((ZildoRenderer) renderer).getEngineZildo().ortho;
+        		Ortho ortho=ClientEngineZildo.ortho;
         		if (ortho != null) {
         			ortho.setSize(sizeX, sizeY);
 	        		needToResize=false;

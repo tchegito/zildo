@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import zildo.fwk.engine.EngineZildo;
-import zildo.gui.GUIManagement;
+import zildo.client.ClientEngineZildo;
+import zildo.client.GUIDisplay;
 import zildo.monde.persos.Perso;
 import zildo.prefs.Constantes;
+import zildo.server.EngineZildo;
 
 // DialogManagement.cpp: implementation of the DialogManagement class.
 //
@@ -119,7 +120,7 @@ public class DialogManagement {
 	// -quit dialog
 	///////////////////////////////////////////////////////////////////////////////////////
 	void manageConversation() {
-		GUIManagement guiManagement=EngineZildo.guiManagement;
+		GUIDisplay guiManagement=EngineZildo.guiManagement;
 	
 		boolean entireMessageDisplay=guiManagement.isEntireMessageDisplay();
 		boolean visibleMessageDisplay=guiManagement.isVisibleMessageDisplay();
@@ -135,7 +136,7 @@ public class DialogManagement {
 			// Draw sentences slowly (word are appearing one after another)
 			positionInSentence++;
 			if (positionInSentence % 3 ==0 && (Math.random()*10)>7) {
-				EngineZildo.soundManagement.playSoundFX("AfficheTexte");
+				ClientEngineZildo.soundPlay.playSoundFX("AfficheTexte");
 			}
 			guiManagement.displayTextParts(positionInSentence,currentSentence,(numToScroll!=0));
 		}
@@ -164,7 +165,7 @@ public class DialogManagement {
 	// manageTopic
 	///////////////////////////////////////////////////////////////////////////////////////
 	void manageTopic() {
-		GUIManagement guiManagement=EngineZildo.guiManagement;
+		GUIDisplay guiManagement=EngineZildo.guiManagement;
 		guiManagement.displayTopics(selectedTopic);
 	}
 	
@@ -177,7 +178,7 @@ public class DialogManagement {
 	// .Choose topic
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void actOnDialog(int actionDialog) {
-		GUIManagement guiManagement = EngineZildo.guiManagement;
+		GUIDisplay guiManagement = EngineZildo.guiManagement;
 		boolean entireMessageDisplay=guiManagement.isEntireMessageDisplay();
 		boolean visibleMessageDisplay=guiManagement.isVisibleMessageDisplay();
 	
@@ -229,7 +230,7 @@ public class DialogManagement {
 		int compteDial=persoToTalk.getCompte_dialogue();
 		
 		currentSentence=getSentence(behav,compteDial);
-		EngineZildo.guiManagement.setText(currentSentence, GUIManagement.DIALOGMODE_CLASSIC);
+		EngineZildo.guiManagement.setText(currentSentence, GUIDisplay.DIALOGMODE_CLASSIC);
 		EngineZildo.guiManagement.setToDisplay_dialoguing(true);
 		positionInSentence=0;
 		dialoguing=true;
@@ -253,7 +254,7 @@ public class DialogManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void launchTopicSelection() {
 		String currentSentence="La disparition\nLe mauvais temps\nLa dispute entre Henri et Lisa\nLa revolte des paysans\nLe prix des chaussures";
-		EngineZildo.guiManagement.setText(currentSentence, GUIManagement.DIALOGMODE_TOPIC);
+		EngineZildo.guiManagement.setText(currentSentence, GUIDisplay.DIALOGMODE_TOPIC);
 		positionInSentence=0;
 		selectedTopic=0;
 		nProposedTopics=5;

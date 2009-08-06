@@ -2,11 +2,11 @@ package zildo.fwk.awt;
 
 import org.lwjgl.LWJGLException;
 
-import zildo.fwk.engine.EngineZildo;
+import zildo.client.ZildoRenderer;
 import zildo.monde.Area;
 import zildo.monde.Case;
-import zildo.monde.client.ZildoRenderer;
-import zildo.monde.serveur.MapManagement;
+import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
 
 /**
  * Interface class between ZEditor and Zildo platform.

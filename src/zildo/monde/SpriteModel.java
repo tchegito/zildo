@@ -16,7 +16,7 @@ package zildo.monde;
 //-------------
 //* Contains informations about sprite location on the bank's texture.
 
-public class SpriteModel {
+public class SpriteModel extends Identified {
 	static public final int TEXTER_BORDGAUCHE = 50;
 	static public final int TEXTER_BORDDROIT = 270;
 
@@ -24,15 +24,12 @@ public class SpriteModel {
 	private int texPos_x,texPos_y;			// Position sur la texture de sprite
 
 	private	int offset;
-
-	// Constructor
-	public SpriteModel() {
-	}
-
+	
 	public SpriteModel(int taille_x, int taille_y, int offset) {
 		this.taille_x=taille_x;
 		this.taille_y=taille_y;
 		this.offset=offset;
+		initializeId();
 	}
 	
 	public SpriteModel(int taille_x, int taille_y, int texPos_x, int texPos_y) {
@@ -40,6 +37,7 @@ public class SpriteModel {
 		this.taille_y=taille_y;
 		this.texPos_x=texPos_x;
 		this.texPos_y=texPos_y;
+		initializeId();
 	}
 	
 	public int getTaille_x() {
