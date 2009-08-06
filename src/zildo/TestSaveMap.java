@@ -5,8 +5,9 @@ package zildo;
 
 import zildo.monde.Area;
 import zildo.monde.Game;
-import zildo.monde.serveur.MapManagement;
-import zildo.network.Server;
+import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
+import zildo.server.Server;
 
 /**
  * @author tchegito
@@ -19,7 +20,7 @@ public class TestSaveMap {
         Game game = new Game("polaky", false);
         Server server = new Server(game);
 
-        MapManagement mapManagement = server.getEngineZildo().mapManagement;
+        MapManagement mapManagement = EngineZildo.mapManagement;
 
         Area map = mapManagement.getCurrentMap();
 
