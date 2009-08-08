@@ -50,7 +50,7 @@ public class PersoZildo extends Perso {
 		this.setNBank(SpriteBank.BANK_ZILDO);
 		setNSpr(0);
 	
-		setX(306+0*5*16); //805); //601-32;//-500);
+		setX(306-id +0*5*16); //805); //601-32;//-500);
 		setY(260+0*15*16); //973); //684+220;//-110);
 		setDx(0);
 		setDy(0);

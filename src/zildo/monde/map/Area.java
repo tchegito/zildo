@@ -132,7 +132,7 @@ public class Area {
 	 temp.setN_banque(quoi >> 8);
 	 this.set_mapcase(x,y+4,temp);
 	 
-	 changes.add(new Point(x,y));
+	 changes.add(new Point(x,y+4));
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -388,7 +388,7 @@ public class Area {
 	 * Serialize the map into an EasyWritingFile object.
 	 * @return EasyWritingFile
 	 */
-    public EasyBuffering serializeMap() {
+    public EasyBuffering serialize() {
 
     	EasyBuffering file=new EasyBuffering();
     	
@@ -493,7 +493,7 @@ public class Area {
 	 * @param p_buffer
 	 * @return Area
 	 */
-	public static Area deserializeMap(EasyBuffering p_buffer, boolean p_spawn) {
+	public static Area deserialize(EasyBuffering p_buffer, boolean p_spawn) {
 		
 		Area map=new Area();
 		SpriteManagement spriteManagement=EngineZildo.spriteManagement;

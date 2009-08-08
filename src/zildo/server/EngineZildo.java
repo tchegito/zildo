@@ -2,7 +2,6 @@ package zildo.server;
 
 import java.util.Collection;
 
-import zildo.fwk.Identified;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
 import zildo.monde.decors.SpriteEntity;
