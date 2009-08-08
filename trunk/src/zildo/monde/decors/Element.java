@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import zildo.fwk.IntSet;
 import zildo.fwk.bank.SpriteBank;
-import zildo.monde.Angle;
+import zildo.monde.map.Angle;
 import zildo.monde.persos.Perso;
 import zildo.monde.persos.PersoZildo;
 import zildo.monde.persos.utils.PersoDescription;

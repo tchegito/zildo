@@ -77,7 +77,7 @@ public class TransferObject {
 			}
 		} catch (IOException e) {
 			log("Doesn't work");
-			e.printStackTrace();
+			//e.printStackTrace();
 			//throw new RuntimeException("Unable to get socket and channel for "+address.getAddress()+" on port "+address.getPort());
 		}
 	}

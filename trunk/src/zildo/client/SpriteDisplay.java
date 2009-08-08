@@ -21,7 +21,6 @@ import zildo.prefs.Constantes;
  *
  * We should work only on SpriteEntity here, because SpriteManagament do all the calculating jobs, about speed, acceleration, and
  * here, we just have to display a sprite at a given location. So, it remains one task to do:
- * TODO: Remove all references to Element or Perso classes. We just have to use scrX and scrY to localize sprite.
  *
  * @author tchegito
  *
@@ -110,13 +109,12 @@ public class SpriteDisplay extends SpriteStore {
 		for (SpriteEntity entity : entities) {
 			if (entity != null) {
 				// Camera moves
-				if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ENTITY) {
-					// We have any x,y coordinates so just calculate a differential
-					entity.setScrX((int) (entity.getScrX() - (float)diffx));
-					entity.setScrY((int) (entity.getScrY() - (float)diffy));
-				} else if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
-					entity.setScrX ((int) ( entity.x - cameraXnew));
-					entity.setScrY ((int) ( entity.y - cameraYnew));
+				if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ENTITY || 
+						entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
+					entity.setScrX((int) (entity.x - cameraXnew));
+					entity.setScrY((int) (entity.y - cameraYnew));
+				}
+				if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
 					// Center sprite
 					SpriteModel spr=entity.getSprModel();
 					entity.setScrX(entity.getScrX() - (spr.getTaille_x() >> 1));

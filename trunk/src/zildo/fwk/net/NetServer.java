@@ -4,17 +4,16 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Set;
 
-import zildo.fwk.KeyboardInstant;
 import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.Packet.PacketType;
 import zildo.fwk.net.packet.AcceptPacket;
 import zildo.fwk.net.packet.AskPacket;
 import zildo.fwk.net.packet.GetPacket;
 import zildo.fwk.net.packet.AskPacket.ResourceType;
-import zildo.monde.Area;
 import zildo.monde.WaitingSound;
-import zildo.server.ClientAlreadyInException;
+import zildo.monde.map.Area;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.Server;
@@ -45,37 +44,30 @@ public class NetServer extends NetSend {
 	
 	public void run() {
 		//System.out.println("server"+nFrame++);
-		boolean clientFound=false;
+
 		TransferObject source=null;
 		try {
 			if (isOpen()) {
 
 				PacketSet packets=receiveAll();
 
-				if (!clientFound) {
-					// Emits signal so then client could connect (every 20 frames)
-					if (counter % 20 == 0) {
-						sendPacket(PacketType.SERVER, null);
-					}
-					counter++;
-					
-					Packet clientConnect=packets.getUniqueTyped(PacketType.CLIENT_CONNECT);
-					if (clientConnect != null) {
-						source=clientConnect.getSource();
-						log("Serveur:Un client est arrivé !");
-						try {
-							int zildoId=server.connectClient(source);
-							clientFound=true;
-
-							AcceptPacket accept=new AcceptPacket(zildoId);
-							sendPacket(accept, source);
-							clientFound=false;	// Ready for another client
-						} catch (ClientAlreadyInException e) {
-							// Client already in, so we can't do anything.
-							System.out.println("deuxieme zildo");
-						}
-					}
+				// Emits signal so then client could connect (every 20 frames)
+				if (counter % 20 == 0) {
+					sendPacket(PacketType.SERVER, null);
 				}
+				counter++;
+				
+				Packet clientConnect=packets.getUniqueTyped(PacketType.CLIENT_CONNECT);
+				if (clientConnect != null) {
+					source=clientConnect.getSource();
+					log("Serveur:Un client est arrivé !"+source.address.getHostName()+" port:"+source.address.getPort());
+
+					int zildoId=server.connectClient(source);
+
+					AcceptPacket accept=new AcceptPacket(zildoId);
+					sendPacket(accept, source); 
+				}
+
 				if (server.isClients())  {
 					// We got one client
 					Packet askResource=packets.getUniqueTyped(PacketType.ASK_RESOURCE);
@@ -96,7 +88,7 @@ public class NetServer extends NetSend {
 								throw new RuntimeException("This resource type is not managed yet.");
 						}
                     }
-					sendEntities();
+					//sendEntities();
 					
 					sendSounds();
 					
@@ -141,9 +133,10 @@ public class NetServer extends NetSend {
 		MapManagement mapManagement=EngineZildo.mapManagement;
 		GetPacket getPacket=null;
 		EasyBuffering buffer;
-		buffer=mapManagement.serializeMap();
+		Area area=mapManagement.getCurrentMap();
+		buffer=area.serializeMap();
 		
-		getPacket=new GetPacket(ResourceType.MAP, buffer.getAll(), mapManagement.getCurrentMap().getName());
+		getPacket=new GetPacket(ResourceType.MAP, buffer.getAll(), area.getName());
 		log("Sending map ("+getPacket.length+" bytes)");
 		sendPacket(getPacket, p_client);
 	}
@@ -157,7 +150,7 @@ public class NetServer extends NetSend {
         	b.flip();
             buffer.put(b);
         }
-        if (buffer.getSize() != 0) {
+        if (queue.size() != 0) {
             // Send the sound info packet
             GetPacket getPacket = new GetPacket(ResourceType.SOUND, buffer.getAll(), null);
             broadcastPacketToAllCients(getPacket);
@@ -176,8 +169,9 @@ public class NetServer extends NetSend {
 		Area map=EngineZildo.mapManagement.getCurrentMap();
 		if (map.isModified()) {
 			// Map has changed, so we must diffuse to clients
+			int j=9;
 			//Collection<>
-			//map.resetChanges();
+			map.resetChanges();
 		}
 	}
 

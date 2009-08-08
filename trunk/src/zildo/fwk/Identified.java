@@ -1,4 +1,4 @@
-package zildo.monde;
+package zildo.fwk;
 
 import java.util.HashMap;
 import java.util.Map;

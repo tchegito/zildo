@@ -1,5 +1,6 @@
 package zildo.monde;
 
+import zildo.monde.map.Angle;
 import zildo.monde.persos.Perso;
 
 public class Collision {

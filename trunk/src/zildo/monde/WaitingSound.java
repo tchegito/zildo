@@ -4,7 +4,7 @@
 package zildo.monde;
 
 import zildo.fwk.file.EasyBuffering;
-import zildo.monde.Point;
+import zildo.monde.map.Point;
 
 /**
  * @author tchegito

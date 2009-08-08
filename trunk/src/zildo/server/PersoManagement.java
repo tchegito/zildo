@@ -21,7 +21,7 @@ import zildo.monde.persos.PersoZildo;
 public class PersoManagement {
 
 
-	List<Perso> tab_perso;
+	public List<Perso> tab_perso;
 	
 	public PersoManagement()
 	{

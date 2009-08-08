@@ -1,15 +1,16 @@
 package zildo.fwk.gfx.engine;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.TilePrimitive;
-import zildo.monde.Area;
-import zildo.monde.Case;
+import zildo.monde.map.Area;
+import zildo.monde.map.Case;
 import zildo.prefs.Constantes;
-import zildo.server.EngineZildo;
-import zildo.server.MapManagement;
 
 // V1.0
 // --------------------------------------------
@@ -68,7 +69,18 @@ public class TileEngine extends TextureEngine {
     protected TilePrimitive[] meshFORE;
     protected TilePrimitive[] meshBACK;
 
-    
+    List<MotifBank> motifBanks;
+    private int n_banquemotif; // Nombre de banque de motifs en mémoire
+
+	static public String[] tileBankNames={"foret1.dec",
+		"village.dec",
+		"maison.dec",
+		"grotte.dec",
+		"foret2.dec",
+		"foret3.dec",
+		"foret4.dec",
+		"palais1.dec"};
+            
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
@@ -83,8 +95,12 @@ public class TileEngine extends TextureEngine {
 		meshFORE=new TilePrimitive[Constantes.NB_MOTIFBANK];
 		meshBACK=new TilePrimitive[Constantes.NB_MOTIFBANK];
 		
-		loadTiles();
-	}
+        // Load graphs
+        motifBanks = new ArrayList<MotifBank>();
+        this.charge_tous_les_motifs();
+
+        loadTiles();
+    }
 	
 	public void cleanUp()
 	{
@@ -96,14 +112,51 @@ public class TileEngine extends TextureEngine {
 		}
 	}
 	
-	public void loadTiles() {
-		
-		// Create a DirectX9 texture based on the current tiles
-		for (int i=0;i<MapManagement.tileBankNames.length;i++) {
-			MotifBank motifBank=EngineZildo.mapManagement.getMotifBank(i);
-			this.createTextureFromMotifBank(motifBank);
-		}
-	}
+    // /////////////////////////////////////////////////////////////////////////////////////
+    // charge_tous_les_motifs
+    // /////////////////////////////////////////////////////////////////////////////////////
+    // Load every tile banks
+    // /////////////////////////////////////////////////////////////////////////////////////
+    void charge_tous_les_motifs() {
+        n_banquemotif = 0;
+        for (int i = 0; i < 8; i++)
+            this.charge_motifs(tileBankNames[i]);
+
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////
+    // charge_motifs
+    // /////////////////////////////////////////////////////////////////////////////////////
+    // IN:filename to load as a tile bank
+    // /////////////////////////////////////////////////////////////////////////////////////
+    void charge_motifs(String filename) {
+        MotifBank motifBank = new MotifBank();
+        String chemin = Constantes.DATA_PATH;
+        chemin += filename;
+
+        motifBank.charge_motifs(chemin);
+
+        motifBanks.add(motifBank);
+
+        // Relase memory allocated for tile graphics, because it's in directX memory now.
+        // delete motifBank;
+
+        // Increase number of loaded banks
+        n_banquemotif++;
+    }
+
+    public MotifBank getMotifBank(int n) {
+        return motifBanks.get(n);
+    }
+    
+    public void loadTiles() {
+        // Create a texture based on the current tiles
+        for (int i = 0; i < tileBankNames.length; i++) {
+            MotifBank motifBank = getMotifBank(i);
+            this.createTextureFromMotifBank(motifBank);
+        }
+    }
+
 	// Prepare vertices and indices for drawing tiles
 	public void prepareTiles(Area theMap) {
 	

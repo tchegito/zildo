@@ -3,11 +3,11 @@ package zildo.monde.persos;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.monde.Angle;
-import zildo.monde.Point;
-import zildo.monde.Zone;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
+import zildo.monde.map.Angle;
+import zildo.monde.map.Point;
+import zildo.monde.map.Zone;
 import zildo.monde.persos.utils.MouvementPerso;
 import zildo.monde.persos.utils.MouvementZildo;
 import zildo.monde.persos.utils.PersoDescription;

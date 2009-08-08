@@ -1,8 +1,8 @@
 package zildo.monde.decors;
 
+import zildo.fwk.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.gfx.PixelShaders;
-import zildo.monde.Identified;
 import zildo.monde.SpriteModel;
 import zildo.monde.persos.PersoZildo;
 

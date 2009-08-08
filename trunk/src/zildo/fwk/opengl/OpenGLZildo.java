@@ -5,7 +5,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
-import zildo.monde.Point;
+import zildo.monde.map.Point;
 import zildo.server.EngineZildo;
 
 public class OpenGLZildo extends OpenGLGestion {

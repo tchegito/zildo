@@ -2,11 +2,12 @@ package zildo.server;
 
 import java.util.Collection;
 
-import zildo.fwk.KeyboardInstant;
+import zildo.fwk.Identified;
+import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
-import zildo.monde.Point;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.dialog.DialogManagement;
+import zildo.monde.map.Point;
 import zildo.monde.persos.PersoZildo;
 
 public class EngineZildo {
@@ -50,7 +51,8 @@ public class EngineZildo {
 		dialogManagement=new DialogManagement();
 		collideManagement=new CollideManagement();
 		soundManagement=new SoundManagement();
-		
+		playerManagement=new PlayerManagement();
+
 		// Charge une map
 		String mapName=p_game.mapName;
 
@@ -72,7 +74,6 @@ public class EngineZildo {
 	 */
 	public int spawnClient() {
 		PersoZildo zildo=new PersoZildo();
-		playerManagement=new PlayerManagement(zildo);
 		spriteManagement.spawnPerso( zildo );
 		
 		return zildo.getId();
@@ -110,7 +111,8 @@ public class EngineZildo {
 			KeyboardInstant i=state.keys;
 			if (i != null) {
 				// If client has pressed keys, we manage them, then clear.
-				playerManagement.manageKeyboard(i);
+				PersoZildo zildo=(PersoZildo) Identified.fromId(SpriteEntity.class, state.zildoId);
+				playerManagement.manageKeyboard(zildo, i, state.keysState);
 				state.keys=null;
 			}
 		}

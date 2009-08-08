@@ -3,8 +3,8 @@ package zildo.prefs;
 public class Constantes {
 
 	// File system data
-	//public static final String DATA_PATH = ".\\Data\\";	// Pour livraison
-	public static final String DATA_PATH = "C:\\ZildoDist\\Version 1.06\\Data\\";
+	public static String DATA_PATH = ".\\Data\\";	// Pour livraison
+	//public static String DATA_PATH = "C:\\ZildoDist\\Version 1.06\\Data\\";
 
 	// Tile Engine
 	public static final int TILEENGINE_WIDTH = 64;		// Max Number of tiles

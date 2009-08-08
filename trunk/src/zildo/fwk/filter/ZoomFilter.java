@@ -3,8 +3,8 @@ package zildo.fwk.filter;
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
-import zildo.monde.Point;
 import zildo.monde.SpriteModel;
+import zildo.monde.map.Point;
 import zildo.monde.persos.PersoZildo;
 import zildo.server.EngineZildo;
 

@@ -1,4 +1,4 @@
-package zildo.monde;
+package zildo.monde.map;
 
 import zildo.fwk.file.EasyBuffering;
 //////////////////////////////////////////////////////////////////////

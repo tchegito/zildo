@@ -2,6 +2,7 @@ package zildo;
 import java.util.logging.LogManager;
 
 import zildo.monde.Game;
+import zildo.prefs.Constantes;
 
 
 public class Zildo {
@@ -25,8 +26,10 @@ public class Zildo {
 			LogManager.getLogManager().reset();
 		}
 		
+		Constantes.DATA_PATH="C:\\ZildoDist\\Version 1.06\\Data\\";
+		
         Game game = new Game("polaky", false);
         //new SinglePlayer(game);
-        new MultiPlayer(game);
+        new MultiPlayer(game, true);
 	}
 }
