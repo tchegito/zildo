@@ -265,6 +265,17 @@ public class SpriteEntity extends Identified
 		
 		return entity;
 	}
+	
+	public int hashCode() {
+		return id;
+	}
+	
+	public boolean equals(Object p_obj) {
+		if (p_obj == null || !SpriteEntity.class.isAssignableFrom(p_obj.getClass())) {
+			return false;
+		}
+		return hashCode() == p_obj.hashCode();
+	}
 }
 
 

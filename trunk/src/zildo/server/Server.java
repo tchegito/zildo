@@ -82,9 +82,9 @@ public class Server extends Thread {
 	 * @param client
 	 * @return new Zildo's id
 	 */
-	public int connectClient(TransferObject client) throws ClientAlreadyInException {
+	public int connectClient(TransferObject client) {
 		if (clients.get(client) != null) {
-			return clients.get(client).zildoId;
+			return clients.get(client).zildo.getId();
 		}
 		int zildoId=engineZildo.spawnClient();
 		clients.put(client, new ClientState(client, zildoId));

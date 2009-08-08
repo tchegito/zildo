@@ -111,15 +111,14 @@ public class EngineZildo {
 			KeyboardInstant i=state.keys;
 			if (i != null) {
 				// If client has pressed keys, we manage them, then clear.
-				PersoZildo zildo=(PersoZildo) Identified.fromId(SpriteEntity.class, state.zildoId);
-				playerManagement.manageKeyboard(zildo, i, state.keysState);
+				playerManagement.manageKeyboard(state);
 				state.keys=null;
 			}
 		}
 		// 2) Rest of the world
 		collideManagement.initFrame();
 		spriteManagement.updateSprites();
-		collideManagement.manageCollisions();
+		collideManagement.manageCollisions(p_clientStates);
 		mapManagement.updateMap();
 	}
 	
