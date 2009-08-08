@@ -1,12 +1,13 @@
 package zildo.server;
 
 import zildo.fwk.IntSet;
-import zildo.fwk.KeyboardInstant;
-import zildo.monde.Angle;
-import zildo.monde.Point;
+import zildo.fwk.input.KeyboardInstant;
+import zildo.fwk.input.KeyboardState;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.dialog.DialogManagement;
+import zildo.monde.map.Angle;
+import zildo.monde.map.Point;
 import zildo.monde.persos.Perso;
 import zildo.monde.persos.PersoZildo;
 import zildo.monde.persos.utils.MouvementZildo;
@@ -21,21 +22,10 @@ public class PlayerManagement {
 
 	private PersoZildo heros;
 	private KeyboardInstant instant;
+	private KeyboardState keysState;
 	
-	private boolean key_actionPressed;
-	private boolean key_attackPressed;
-	private boolean key_topicPressed;
-	
-	private boolean key_upPressed;
-	private boolean key_downPressed;
-	
-	public PlayerManagement(PersoZildo perso)
+	public PlayerManagement()
 	{
-		heros=perso;
-		
-		// Init keys
-		key_actionPressed=false;
-		key_attackPressed=false;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -49,10 +39,12 @@ public class PlayerManagement {
 	// *conversation
 	// *topic selection
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void manageKeyboard(KeyboardInstant p_instant) {
+	public void manageKeyboard(PersoZildo p_zildo, KeyboardInstant p_instant, KeyboardState p_keysState) {
 	
 		// Save key state
+		heros=p_zildo;
 		instant=p_instant;
+		keysState=p_keysState;
 		handleCommon();
 	
 		if (EngineZildo.dialogManagement.isDialoguing()) {
@@ -398,21 +390,21 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	void handleTopicSelection() {
 		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_UP)) {
-			if (!key_upPressed) {
+			if (!keysState.key_upPressed) {
 				EngineZildo.dialogManagement.actOnDialog(DialogManagement.ACTIONDIALOG_UP);
-				key_upPressed=true;
+				keysState.key_upPressed=true;
 			}
 		} else {
-			key_upPressed=false;
+			keysState.key_upPressed=false;
 		}
 	
 		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_DOWN)) {
-			if (!key_downPressed) {
+			if (!keysState.key_downPressed) {
 				EngineZildo.dialogManagement.actOnDialog(DialogManagement.ACTIONDIALOG_DOWN);
-				key_downPressed=true;
+				keysState.key_downPressed=true;
 			}
 		} else {
-			key_downPressed=false;
+			keysState.key_downPressed=false;
 		}
 	}
 	
@@ -426,17 +418,12 @@ public class PlayerManagement {
 	    boolean cestbon;
 	
 	
-		if (!key_actionPressed) {
+		if (!keysState.key_actionPressed) {
 			if (EngineZildo.dialogManagement.isDialoguing()) {
 				EngineZildo.dialogManagement.actOnDialog(DialogManagement.ACTIONDIALOG_ACTION);
 			} else { //
 				if (perso.getMouvement()==MouvementZildo.MOUVEMENT_BRAS_LEVES) {
 					perso.throwSomething();
-					//perso.setQuel_spr(perso.getEn_bras());
-					// TODO: On crée un sprite de l'objet que zildo lance
-					//spawn_sprite(temp);
-					//delete element;
-	
 				} else if (perso.getMouvement()!=MouvementZildo.MOUVEMENT_BRAS_LEVES) {
 					// On teste s'il y a un personnage à qui parler
 				/*    with_dialogue=0;
@@ -529,15 +516,15 @@ public class PlayerManagement {
 				}
 			}
 		}
-		key_actionPressed=true;
+		keysState.key_actionPressed=true;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// keyReleaseAction
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyReleaseAction(Perso perso) {
-		if (key_actionPressed) {
-			key_actionPressed=false;
+		if (keysState.key_actionPressed) {
+			keysState.key_actionPressed=false;
 			if (perso.getMouvement()==MouvementZildo.MOUVEMENT_TIRE) {
 				perso.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
 			}
@@ -548,7 +535,7 @@ public class PlayerManagement {
 	// keyPressAttack
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyPressAttack(Perso perso) {
-		if (!key_attackPressed && perso.getEn_bras() == 0 && !EngineZildo.dialogManagement.isDialoguing()) {
+		if (!keysState.key_attackPressed && perso.getEn_bras() == 0 && !EngineZildo.dialogManagement.isDialoguing()) {
 			// Set Zildo in attack stance
 			perso.attack();
 			// Get the attacked tile
@@ -556,15 +543,15 @@ public class PlayerManagement {
 			// And ask 'map' object to react
 			EngineZildo.mapManagement.getCurrentMap().attackTile(tileAttacked);
 		}
-		key_attackPressed=true;
+		keysState.key_attackPressed=true;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// keyReleaseAttack
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyReleaseAttack(Perso perso) {
-		if (key_attackPressed) {
-			key_attackPressed=false;
+		if (keysState.key_attackPressed) {
+			keysState.key_attackPressed=false;
 			if (perso.getMouvement()==MouvementZildo.MOUVEMENT_TIRE) {
 				perso.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
 			}
@@ -575,11 +562,11 @@ public class PlayerManagement {
 	// keyPressTopic
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyPressTopic(Perso perso) {
-		if (!key_topicPressed && !EngineZildo.dialogManagement.isDialoguing()) {
+		if (!keysState.key_topicPressed && !EngineZildo.dialogManagement.isDialoguing()) {
 			DialogManagement dialogManagement=EngineZildo.dialogManagement;
 			dialogManagement.launchTopicSelection();
 	
-			key_topicPressed=true;
+			keysState.key_topicPressed=true;
 		}
 	}
 	
@@ -587,8 +574,8 @@ public class PlayerManagement {
 	// keyReleaseTopic
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyReleaseTopic(Perso perso) {
-		if (key_topicPressed) {
-			key_topicPressed=false;
+		if (keysState.key_topicPressed) {
+			keysState.key_topicPressed=false;
 		}
 	}
 }

@@ -25,7 +25,7 @@ public class NetSend extends TransferObject {
 	private final static Map<InetSocketAddress, TransferObject> connexions=
 		new HashMap<InetSocketAddress, TransferObject>();
 
-	private final static TransferObject objectForBroadCast=new TransferObject("192.168.0.1", NET_PORT_CLIENT);
+	private final static TransferObject objectForBroadCast=new TransferObject("192.168.0.255", NET_PORT_CLIENT);
 	
 	public NetSend(Socket p_socket) {
 		super(p_socket.getInetAddress(), p_socket.getPort());		
@@ -55,7 +55,7 @@ public class NetSend extends TransferObject {
 	public static TransferObject getTransferObject(InetSocketAddress p_address, boolean p_create) {
 		TransferObject o=connexions.get(p_address);
 		if (o==null && p_create) {
-			o=new TransferObject(p_address.getAddress(), NET_PORT_SERVER);
+			o=new TransferObject(p_address.getAddress(), p_address.getPort());
 			connexions.put(p_address, o);
 		}
 		return o;
@@ -109,7 +109,7 @@ public class NetSend extends TransferObject {
 			bBuf.flip();
 			p=Packet.receive(bBuf);
 			if (p != null) {
-				TransferObject source=getTransferObject(srcSocket, false);
+				TransferObject source=getTransferObject(srcSocket, true);
 				p.setSource(source);
 			}
 		} catch (IOException ex) {

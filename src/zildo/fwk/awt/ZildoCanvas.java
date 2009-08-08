@@ -3,8 +3,8 @@ package zildo.fwk.awt;
 import org.lwjgl.LWJGLException;
 
 import zildo.client.ZildoRenderer;
-import zildo.monde.Area;
-import zildo.monde.Case;
+import zildo.monde.map.Area;
+import zildo.monde.map.Case;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 

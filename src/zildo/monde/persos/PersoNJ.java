@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.gfx.PixelShaders;
-import zildo.monde.Angle;
 import zildo.monde.Hasard;
 import zildo.monde.SpriteModel;
 import zildo.monde.decors.Element;
+import zildo.monde.map.Angle;
 import zildo.monde.persos.utils.MouvementPerso;
 import zildo.monde.persos.utils.MouvementZildo;
 import zildo.monde.persos.utils.PersoDescription;
@@ -111,6 +111,8 @@ public class PersoNJ extends Perso {
 	public void animate(int compteur_animation)
 	{
 		if (getPv() == 0) {
+			this.setAjustedX((int) getX());
+			this.setAjustedY((int) getY());
 			return;
 		}
 

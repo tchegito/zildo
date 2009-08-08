@@ -3,31 +3,37 @@ package zildo.monde.decors;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.fwk.Identified;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
-import zildo.monde.Identified;
 import zildo.monde.SpriteModel;
 import zildo.monde.persos.Perso;
 
 public class SpriteStore {
 
-	protected int n_bankspr;
-	protected List<SpriteBank> banque_spr;
+	static protected int n_bankspr;
+	static protected List<SpriteBank> banque_spr = null;
 
 	protected List<SpriteEntity> spriteEntities;
 
-	static public String[] sprBankName={"zildo.spr", "elem.spr", "pnj.spr", "font.spr", "pnj2.spr"};
+	static public final String[] sprBankName={"zildo.spr", 
+											  "elem.spr", 
+											  "pnj.spr", 
+											  "font.spr", 
+											  "pnj2.spr"};
 
 	public SpriteStore() {
 		
 		// Load sprite banks
-		banque_spr=new ArrayList<SpriteBank>();
-		n_bankspr=0;
-		Identified.resetCounter(SpriteModel.class);
-		for (int b=0;b<sprBankName.length;b++) {
-			charge_sprites(sprBankName[b]);
+		if (banque_spr == null) {
+			banque_spr=new ArrayList<SpriteBank>();
+			n_bankspr=0;
+			Identified.resetCounter(SpriteModel.class);
+			for (int b=0;b<sprBankName.length;b++) {
+				charge_sprites(sprBankName[b]);
+			}
 		}
-	
+		
 		// Create another bank for thin dialog's font
 		buildFontBank();
 		
@@ -45,9 +51,6 @@ public class SpriteStore {
 		sprBank.charge_sprites(filename);
 	
 		banque_spr.add(sprBank);
-	
-		// Relase memory allocated for tile graphics, because it's in directX memory now. 
-		//delete (sprBank.sprites_buf);
 		
 		// Increase number of loaded banks
 		n_bankspr++;

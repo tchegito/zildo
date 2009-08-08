@@ -1,11 +1,12 @@
 package zildo.server;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import zildo.fwk.KeyboardInstant;
 import zildo.fwk.ZUtils;
+import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.NetServer;
 import zildo.fwk.net.TransferObject;
 import zildo.monde.Game;
@@ -49,17 +50,14 @@ public class Server extends Thread {
 		long delta;
 		time=ZUtils.getTime();
 		while (gameRunning){
-			// Deals with network
-			if (netServer != null) {
-				netServer.run();
-			}
+			networkJob();
 			
 			timeRef=ZUtils.getTime();
 			delta=timeRef - time;
 			if (delta > TIMER_DELAY) {
 				if (isClients()) {
 					// 	Do the server job
-					engineZildo.renderFrame(clients.values());
+					engineZildo.renderFrame(getClientStates());
 				}
 				
 				// Reinitialize timer
@@ -68,8 +66,15 @@ public class Server extends Thread {
 			if (delta < TIMER_DELAY) {
 				ZUtils.sleep(TIMER_DELAY-delta);
 			}
+        }
+        cleanUp();
+    }
+	
+	public void networkJob() {
+		// Deals with network
+		if (netServer != null) {
+			netServer.run();
 		}
-		netServer.close();
 	}
 	
 	/**
@@ -79,7 +84,7 @@ public class Server extends Thread {
 	 */
 	public int connectClient(TransferObject client) throws ClientAlreadyInException {
 		if (clients.get(client) != null) {
-			throw new ClientAlreadyInException();
+			return clients.get(client).zildoId;
 		}
 		int zildoId=engineZildo.spawnClient();
 		clients.put(client, new ClientState(client, zildoId));
@@ -120,13 +125,11 @@ public class Server extends Thread {
 		clients.put(p_client, state);
 	}
 	
-	/**
-	 * Send to all clients data they need to start the game:
-	 * -map
-	 * -sprites positions
-	 * -dialogs
-	 */
-	public void sendStartingData() {
-		//send.sendStartingData(clients);
+	public Collection<ClientState> getClientStates() {
+		return clients.values();
 	}
+	
+    public void cleanUp() {
+        netServer.close();
+    }
 }

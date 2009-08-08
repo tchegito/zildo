@@ -245,8 +245,8 @@ public class SpriteManagement extends SpriteStore {
 		entity.setNBank(nBank);
 		entity.setMoved(false);
 	
-		entity.setScrX(x - (spr.getTaille_x() >> 1));
-		entity.setScrY(y - (spr.getTaille_y() >> 1));
+		entity.x=x - (spr.getTaille_x() >> 1);
+		entity.y=y - (spr.getTaille_y() >> 1);
 	
 		spawnSprite(entity);
 	}
@@ -314,10 +314,6 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : toDelete) {
 			deleteSprite(entity);
 		}
-
-		//delete quadOrder;
-
-
 	}
 		
 	///////////////////////////////////////////////////////////////////////////////////////

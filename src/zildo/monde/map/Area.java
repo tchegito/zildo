@@ -1,4 +1,4 @@
-package zildo.monde;
+package zildo.monde.map;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,9 +6,24 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.file.EasyBuffering;
 import zildo.monde.decors.Element;
+import zildo.monde.decors.SpriteEntity;
+import zildo.monde.dialog.Behavior;
+import zildo.monde.dialog.DialogManagement;
+import zildo.monde.persos.Perso;
+import zildo.monde.persos.PersoGarde;
+import zildo.monde.persos.PersoGardeVert;
+import zildo.monde.persos.PersoNJ;
+import zildo.monde.persos.PersoVolant;
+import zildo.monde.persos.utils.MouvementPerso;
+import zildo.monde.persos.utils.MouvementZildo;
+import zildo.monde.persos.utils.PersoDescription;
 import zildo.server.EngineZildo;
+import zildo.server.SpriteManagement;
 
 
 public class Area {
@@ -368,4 +383,262 @@ public class Area {
 	public void resetChanges() {
 		changes.clear();
 	}
+	
+	/**
+	 * Serialize the map into an EasyWritingFile object.
+	 * @return EasyWritingFile
+	 */
+    public EasyBuffering serializeMap() {
+
+    	EasyBuffering file=new EasyBuffering();
+    	
+        // 1) Header
+    	file.put((byte) this.getDim_x());
+    	file.put((byte) this.getDim_y());
+    	file.put((byte) this.getN_persos());
+    	file.put((byte) this.getN_sprites());
+    	file.put((byte) this.getN_pe());
+
+        // 2) Save the map cases
+        for (int i = 0; i < this.getDim_y(); i++) {
+            for (int j = 0; j < this.getDim_x(); j++) {
+                Case temp = this.get_mapcase(j, i + 4);
+
+                file.put((byte) temp.getN_motif());
+                file.put((byte) temp.getN_banque());
+                file.put((byte) temp.getN_motif_masque());
+                file.put((byte) temp.getN_banque_masque());
+            }
+        }
+
+        // 3) Chaining points
+        if (this.getN_pe() != 0) {
+            for (ChainingPoint ch : this.getListPointsEnchainement()) {
+            	file.put((byte) ch.getPx());
+            	file.put((byte) ch.getPy());
+            	file.put(ch.getMapname(),9);
+            }
+        }
+
+        // 4) Sprites
+		if (this.getN_sprites()!=0) {
+			List<SpriteEntity> spriteEntities=EngineZildo.spriteManagement.getSpriteEntities();
+			int nSprites=0;
+			for (SpriteEntity entity : spriteEntities) {
+				int type=entity.getEntityType();
+				boolean ok=true;
+				if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+					Element elem=(Element) entity;
+					if (elem.getLinkedPerso() != null) {
+						ok=false;
+					}
+				}
+				if (entity.isVisible() && ok && (type == SpriteEntity.ENTITYTYPE_ELEMENT || type == SpriteEntity.ENTITYTYPE_ENTITY)) {
+					// Only element
+					file.put((int) entity.x);
+					file.put((int) entity.y);
+					file.put((byte) entity.getNSpr());
+					nSprites++;
+					if (nSprites > this.getN_sprites()) {
+						System.out.println("Too much sprites ! ("+nSprites+")");
+					}
+				}
+
+			}
+		}
+        
+		// 5) Persos (characters)
+		if (this.getN_persos()!=0) {
+			List<Perso> persos=EngineZildo.persoManagement.tab_perso;
+			for (Perso perso : persos) {
+				if (!perso.isZildo()) {
+					file.put((int) perso.x);
+					file.put((int) perso.y);
+					file.put((int) perso.z);
+					file.put((byte) perso.getQuel_spr().first());
+					file.put((byte) perso.getInfo());
+					file.put((byte) perso.getEn_bras());
+					file.put((byte) perso.getQuel_deplacement().ordinal());
+					file.put((byte) perso.getAngle().ordinal());
+					file.put(perso.getNom(),9);
+				}
+			}
+		}
+
+		// 6) Sentences
+		DialogManagement dialogManagement=EngineZildo.dialogManagement;
+		int nPhrases=dialogManagement.getN_phrases();
+		file.put((byte) nPhrases);
+		if (nPhrases > 0) {
+			// On lit les phrases
+			String[] dialogs=dialogManagement.getDialogs();
+			for (int i=0;i<nPhrases;i++) {
+				file.put(dialogs[i]);
+			}
+			// On lit le nom
+			Map<String, Behavior> behaviors=dialogManagement.getBehaviors();
+			for (Entry<String, Behavior> entry : behaviors.entrySet()) {
+				file.put(entry.getKey(), 9);
+				Behavior behav=entry.getValue();
+				for (int i : behav.replique) {
+					file.put((byte) i);
+				}
+			}
+		}
+        return file;
+    }
+	
+	/**
+	 * 
+	 * @param p_buffer
+	 * @return Area
+	 */
+	public static Area deserializeMap(EasyBuffering p_buffer, boolean p_spawn) {
+		
+		Area map=new Area();
+		SpriteManagement spriteManagement=EngineZildo.spriteManagement;
+
+		map.setDim_x(p_buffer.readUnsignedByte());
+		map.setDim_y(p_buffer.readUnsignedByte());
+		map.setN_persos(p_buffer.readUnsignedByte());
+		map.setN_sprites(p_buffer.readUnsignedByte());
+		map.setN_pe(p_buffer.readUnsignedByte());
+		
+		// La map
+		for (int i=0;i<map.getDim_y();i++)
+			for (int j=0;j<map.getDim_x();j++)
+			{
+				//System.out.println("x="+j+"  y="+i);
+				Case temp=new Case();
+				temp.setN_motif(p_buffer.readUnsignedByte());
+				temp.setN_banque(p_buffer.readUnsignedByte());
+				temp.setN_motif_masque(p_buffer.readUnsignedByte());
+				temp.setN_banque_masque(p_buffer.readUnsignedByte());
+			
+				map.set_mapcase(j,i+4,temp);
+		
+				if (temp.getN_motif()==99 && temp.getN_banque()==1 && p_spawn) {
+					// Fumée de cheminée
+					spriteManagement.spawnSpriteGeneric(Element.SPR_FUMEE,j*16,i*16,0, null);
+				}
+			}
+		 /*
+	     with spr do begin
+	      x:=j*16+16;
+	      y:=i*16+28;
+	      z:=16;
+	      vx:=0.3+random(5)*0.01;vy:=0;vz:=0;
+	      ax:=-0.01;ay:=0;az:=0.01+random(5)*0.001;
+	      quelspr:=6;
+	     end;
+	     spawn_sprite(spr);
+	    end;*/
+	
+		// Les P.E
+		ChainingPoint pe;
+		if (map.getN_pe()!=0) {
+			for (int i=0;i<map.getN_pe();i++) {
+				pe=new ChainingPoint();
+				pe.setPx(p_buffer.readUnsignedByte());
+				pe.setPy(p_buffer.readUnsignedByte());
+				pe.setMapname(p_buffer.readString(9));
+				map.addPointEnchainement(pe);
+			}
+		}
+	
+		// Les sprites
+		if (map.getN_sprites()!=0) {
+			for (int i=0;i<map.getN_sprites();i++) {
+				int x=((int)(p_buffer.readUnsignedByte()) << 8) + p_buffer.readUnsignedByte();
+				int y=((int)p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
+				short nSpr;
+				nSpr=p_buffer.readUnsignedByte();
+				if (p_spawn) {
+					spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS,nSpr,x,y);
+				}
+			}
+		}
+	
+		// Les persos
+		if (map.getN_persos()!=0) {
+			for (int i=0;i<map.getN_persos();i++) {
+				PersoNJ perso;
+				int x=((int)p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
+				int y=((int)p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
+				int z=((int)p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
+	
+				PersoDescription desc=PersoDescription.fromNSpr(p_buffer.readUnsignedByte());
+				
+				switch (desc) {
+				case BAS_GARDEVERT:
+					perso=new PersoGardeVert();break;
+				case GARDE_CANARD:
+					perso=new PersoGarde();break;
+				case CORBEAU:
+				case SPECTRE:
+					perso=new PersoVolant();break;
+				default:
+					perso=new PersoNJ();break;
+				}
+				perso.setX((float)x);
+				perso.setY((float)y);
+				perso.setZ((float)z);
+				perso.setQuel_spr(desc);
+				perso.setInfo(p_buffer.readUnsignedByte());
+				perso.setEn_bras(p_buffer.readUnsignedByte());
+				perso.setQuel_deplacement(MouvementPerso.fromInt((int) p_buffer.readUnsignedByte()));
+				perso.setAngle(Angle.fromInt(p_buffer.readUnsignedByte()));
+				
+				perso.setNBank(SpriteBank.BANK_PNJ);
+				perso.setNom(p_buffer.readString(9));
+				Zone zo=new Zone();
+				zo.setX1(map.roundAndRange(perso.getX()-16*5, Area.ROUND_X));
+				zo.setY1(map.roundAndRange(perso.getY()-16*5, Area.ROUND_Y));
+				zo.setX2(map.roundAndRange(perso.getX()+16*5, Area.ROUND_X));
+				zo.setY2(map.roundAndRange(perso.getY()+16*5, Area.ROUND_Y));
+				perso.setZone_deplacement(zo);
+				perso.setPv(3);
+				perso.setDx(-1);
+				perso.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
+	
+				if (perso.getQuel_spr().first() >= 128) {
+					perso.setNBank(SpriteBank.BANK_PNJ2);
+				}
+
+				perso.initPersoFX();
+	
+				if (p_spawn) {
+					spriteManagement.spawnPerso(perso);
+				}
+			}
+		}
+	
+		// Les Phrases
+		int n_phrases=0;
+		if (!p_buffer.eof()) {
+			n_phrases=p_buffer.readUnsignedByte();
+			if (n_phrases > 0) {
+				DialogManagement dialogManagement=EngineZildo.dialogManagement;
+				// On lit les phrases
+				for (int i=0;i<n_phrases;i++) {
+		
+					String phrase=p_buffer.readString();
+					//dialogManagement.addSentence(phrase);
+				}
+				if (!p_buffer.eof()) {
+					while (!p_buffer.eof()) {
+						// On lit le nom
+						String nomPerso=p_buffer.readString(9);
+						// On lit le comportement
+						short[] comportement=new short[10];
+						p_buffer.readUnsignedBytes(comportement, 0, 10);
+						//dialogManagement.addBehavior(nomPerso,comportement);
+					}
+				}
+			}
+		}
+		
+		return map;
+	}
+
 }

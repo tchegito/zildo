@@ -3,8 +3,8 @@ package zildo.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.monde.Angle;
 import zildo.monde.Collision;
+import zildo.monde.map.Angle;
 import zildo.monde.persos.Perso;
 import zildo.monde.persos.PersoZildo;
 

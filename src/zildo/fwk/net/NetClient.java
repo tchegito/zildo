@@ -5,18 +5,17 @@ import java.util.List;
 
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
-import zildo.fwk.KeyboardInstant;
 import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.Packet.PacketType;
 import zildo.fwk.net.packet.AcceptPacket;
 import zildo.fwk.net.packet.AskPacket;
 import zildo.fwk.net.packet.GetPacket;
 import zildo.fwk.net.packet.AskPacket.ResourceType;
-import zildo.monde.Area;
 import zildo.monde.WaitingSound;
 import zildo.monde.decors.SpriteEntity;
-import zildo.server.EngineZildo;
+import zildo.monde.map.Area;
 import zildo.server.SpriteManagement;
 
 /**
@@ -110,6 +109,10 @@ public class NetClient extends NetSend {
                     switch (getPacket.resourceType) {
                         case MAP:
                             receiveMap(getPacket);
+                            if (!gotMap) {
+                            	// Ask entities for the first time
+                            	sendPacket(new AskPacket(ResourceType.ENTITY), server);
+                            }
                             gotMap = true;
                             break;
                         case ENTITY:
@@ -137,7 +140,7 @@ public class NetClient extends NetSend {
 	
 	public void receiveMap(GetPacket p_packet) {
 		EasyBuffering buffer=new EasyBuffering(p_packet.getBuffer());
-		Area map=EngineZildo.mapManagement.deserializeMap(buffer, false);
+		Area map=Area.deserializeMap(buffer, false);
 		
 		map.setName(p_packet.name);
 		ClientEngineZildo.mapDisplay.setCurrentMap(map);
@@ -152,6 +155,7 @@ public class NetClient extends NetSend {
         List<SpriteEntity> list = SpriteManagement.deserializeEntities(buffer);
         ClientEngineZildo.spriteDisplay.setEntities(list);
 
+        // Re-ask
         sendPacket(new AskPacket(ResourceType.ENTITY), server);
     }
 

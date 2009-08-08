@@ -22,7 +22,7 @@ public class ElementAnimMort extends Element {
 	
 	public List<SpriteEntity> animate() {
 		
-	    List<SpriteEntity> deads=super.animate();;
+	    List<SpriteEntity> deads=super.animate();
 	    byte seq_mort[]={33,35,34,36,37,38,39,0};
 
 		// Animation de la mort d'un perso

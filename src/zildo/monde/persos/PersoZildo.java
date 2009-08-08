@@ -4,10 +4,10 @@ import java.util.Iterator;
 
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
-import zildo.monde.Angle;
-import zildo.monde.Point;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
+import zildo.monde.map.Angle;
+import zildo.monde.map.Point;
 import zildo.monde.persos.utils.MouvementZildo;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
@@ -50,8 +50,8 @@ public class PersoZildo extends Perso {
 		this.setNBank(SpriteBank.BANK_ZILDO);
 		setNSpr(0);
 	
-		setX(270+0*5*16); //805); //601-32;//-500);
-		setY(800+0*15*16); //973); //684+220;//-110);
+		setX(306+0*5*16); //805); //601-32;//-500);
+		setY(260+0*15*16); //973); //684+220;//-110);
 		setDx(0);
 		setDy(0);
 		setAngle(Angle.NORD);

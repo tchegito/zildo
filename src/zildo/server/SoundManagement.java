@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import zildo.monde.Point;
 import zildo.monde.WaitingSound;
+import zildo.monde.map.Point;
 
 public class SoundManagement {
 

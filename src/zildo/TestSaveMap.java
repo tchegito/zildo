@@ -3,8 +3,8 @@
  */
 package zildo;
 
-import zildo.monde.Area;
 import zildo.monde.Game;
+import zildo.monde.map.Area;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.Server;

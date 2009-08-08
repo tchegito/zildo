@@ -1,4 +1,4 @@
-package zildo.fwk;
+package zildo.fwk.input;
 
 import java.util.EnumMap;
 
