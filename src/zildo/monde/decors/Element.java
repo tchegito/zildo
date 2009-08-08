@@ -242,7 +242,7 @@ public class Element extends SpriteEntity {
 					if (vx != 0 || vy != 0 || vz !=0) {
 						EngineZildo.collideManagement.addCollision(true, 
 								(int)x-3, 
-								(int)y-getSprModel().getTaille_y()/2-(int)z, 6, Angle.NORD, null);
+								(int)y-getSprModel().getTaille_y()/2-(int)z, 6, Angle.NORD, (Perso) linkedPerso);
 					}
 				}
 			}

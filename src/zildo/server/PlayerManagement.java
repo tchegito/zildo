@@ -39,12 +39,11 @@ public class PlayerManagement {
 	// *conversation
 	// *topic selection
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void manageKeyboard(PersoZildo p_zildo, KeyboardInstant p_instant, KeyboardState p_keysState) {
-	
+	public void manageKeyboard(ClientState p_state) {
 		// Save key state
-		heros=p_zildo;
-		instant=p_instant;
-		keysState=p_keysState;
+		heros=p_state.zildo;
+		instant=p_state.keys;
+		keysState=p_state.keysState;
 		handleCommon();
 	
 		if (EngineZildo.dialogManagement.isDialoguing()) {

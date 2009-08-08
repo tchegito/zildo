@@ -1,6 +1,7 @@
 package zildo.server;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import zildo.monde.Collision;
@@ -11,21 +12,14 @@ import zildo.monde.persos.PersoZildo;
 public class CollideManagement {
 	
     private List<Collision> tab_colli;	// Zones d'aggression des monstres
-    private List<Collision> tab_colliz;	// Zones d'aggression de Zildo
-
-    private int nbColli;
-	private int nbColliz;
 	
-//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
 	
 	public CollideManagement()
 	{
-		nbColli=0;
-		nbColliz=0;
 		tab_colli=new ArrayList<Collision>();
-		tab_colliz=new ArrayList<Collision>();
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -36,9 +30,6 @@ public class CollideManagement {
 	public void initFrame()
 	{
 		tab_colli.clear();
-		tab_colliz.clear();
-		nbColli=0;
-		nbColliz=0;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -46,17 +37,12 @@ public class CollideManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// IN:zildoAttack (TRUE if this collision is FROM Zildo, FALSE otherwise)
 	//    x,y,rayon,angle : collision parameters
+	//    perso : perso who create this collision
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void addCollision(boolean zildoAttack, int x, int y, int rayon, Angle angle, Perso perso)
 	{
 		Collision colli=new Collision(x,y,rayon,angle,perso);
-		if (zildoAttack) {
-			tab_colliz.add(colli);
-			nbColliz++;
-		} else {
-			tab_colli.add(colli);
-			nbColli++;
-		}
+		tab_colli.add(colli);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -65,49 +51,84 @@ public class CollideManagement {
 	// Here we detect which character is touched and call 'beingWounded' on Perso objects.
 	// Zildo or/and PersoNJ can be wounded
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void manageCollisions()
+	public void manageCollisions(Collection<ClientState> p_states)
 	{
-		Collision enemyCollision;
-		Collision zildoCollision;
-		PersoZildo zildo= EngineZildo.persoManagement.getZildo();
-		float zildoX=zildo.getX();
-		float zildoY=zildo.getY();
-		boolean died=false;
-	
-		for (int i=0;i<nbColli;i++) {
+		for (int i=0;i<tab_colli.size();i++) {
 			// 1) For each collision, check wether Zildo gets wounded
-			enemyCollision=tab_colli.get(i);
-			// If he's already wounded, don't check
-			if (!zildo.isWounded() && check_colli(enemyCollision.getCx(), enemyCollision.getCy(),
-							(int) zildoX, (int) zildoY,
-							enemyCollision.getCr(),
-							6) ) {
-				// Zildo gets wounded
-				zildo.beingWounded((float) enemyCollision.getCx(), (float) enemyCollision.getCy());
-			}
-			// 2) For each collision, check wether a monster gets wounded
-			for (int j=0;j<nbColliz;j++) {
-				zildoCollision=tab_colliz.get(j);
-				if (check_colli(enemyCollision.getCx(), enemyCollision.getCy(),
-								zildoCollision.getCx(), zildoCollision.getCy(),
-								enemyCollision.getCr(),
-								zildoCollision.getCr()) ) {
-					// Monster gets wounded, if it isn't yet
-					Perso perso=enemyCollision.getPerso();
-					if (!perso.isWounded()) {
-						died=perso.beingWounded((float) zildoCollision.getCx(), (float) zildoCollision.getCy());
-	
-						if (died) {
-							//EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_MORT,
-							//												  (int) perso.getX(),
-							//												  (int) perso.getY(),
-							//												  0,
-							//												  perso);
+			Collision collider=tab_colli.get(i);
+			
+			Perso damager=collider.getPerso();
+			int infoDamager=damager == null ? 2 : damager.getInfo();	// If no one, consider it's from a Zildo
+			
+			if (infoDamager == 1) {	// PNJ -> they attack zildo
+				checkAllZildoWound(p_states, collider);
+			} else if (infoDamager == 2) {	// ZILDO -> he attacks PNJ or another Zildo
+				// 2) For each collision, check wether a monster/zildo gets wounded
+				for (int j=0;j<tab_colli.size();j++) {
+					Collision collided=tab_colli.get(j);
+					Perso damaged=collided.getPerso();
+					if (damaged != null) {	// No one to damage : it's a bushes or rock
+						int infoDamaged=damaged.getInfo();
+						
+						if (j != i && !damaged.equals(damager)) {
+							if (infoDamaged == 1) {	// Zildo hit an enemy
+								checkEnemyWound(collider, collided);
+							} else if (infoDamaged == 2) {
+								checkZildoWound((PersoZildo) damaged, collider);
+							}
 						}
 					}
 				}
+				checkAllZildoWound(p_states, collider);
 			}
 		}
+	}
+	
+	public void checkAllZildoWound(Collection<ClientState> p_states, Collision p_colli) {
+		for (ClientState state : p_states) {
+			PersoZildo zildo=state.zildo;
+			Perso damager=p_colli.getPerso();
+			if (damager!=null && !damager.equals(zildo)) {
+				checkZildoWound(state.zildo, p_colli);
+			}
+		}
+	}
+	
+	/**
+	 * Check wether the given collision hit the given Zildo. Wound if needed.
+	 * @param p_zildo
+	 * @param p_colli
+	 */
+	public void checkZildoWound(PersoZildo p_zildo, Collision p_colli) {
+		float zildoX=p_zildo.getX();
+		float zildoY=p_zildo.getY();
+		// If he's already wounded, don't check
+		if (!p_zildo.isWounded() && check_colli(p_colli.getCx(), p_colli.getCy(),
+						(int) zildoX, (int) zildoY,
+						p_colli.getCr(),
+						6) ) {
+			// Zildo gets wounded
+			p_zildo.beingWounded((float) p_colli.getCx(), (float) p_colli.getCy());
+		}		
+	}
+	
+	/**
+	 * Check wether the given collision hit the another one. Wound if needed.
+	 * @param p_collider
+	 * @param p_collided
+	 */
+	public void checkEnemyWound(Collision p_collider, Collision p_collided) {
+		if (check_colli(p_collided.getCx(), p_collided.getCy(),
+				p_collider.getCx(), p_collider.getCy(),
+				p_collided.getCr(),
+				p_collider.getCr()) ) {
+			// Monster gets wounded, if it isn't yet
+			Perso perso=p_collided.getPerso();
+		
+			if (!perso.isWounded()) {
+				perso.beingWounded((float) p_collider.getCx(), (float) p_collider.getCy());
+			}
+		}		
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -136,10 +157,7 @@ public class CollideManagement {
 			return false;
 		}
 	}
-	
-	public List<Collision> getTabColliz() {
-		return tab_colliz;
-	}
+
 	public List<Collision> getTabColli() {
 		return tab_colli;
 	}
