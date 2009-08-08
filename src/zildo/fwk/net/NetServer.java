@@ -13,6 +13,7 @@ import zildo.fwk.net.packet.AcceptPacket;
 import zildo.fwk.net.packet.AskPacket;
 import zildo.fwk.net.packet.GetPacket;
 import zildo.fwk.net.packet.AskPacket.ResourceType;
+import zildo.monde.WaitingDialog;
 import zildo.monde.WaitingSound;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
@@ -91,11 +92,11 @@ public class NetServer extends NetSend {
 								throw new RuntimeException("This resource type is not managed yet.");
 						}
                     }
-					//sendEntities();
-					
 					sendSounds();
 					
 					sendMapChanges();
+					
+					sendDialogs();
 					
 					// Receive resource from client (keyboard commands)
 					Packet getResource=packets.getUniqueTyped(PacketType.GET_RESOURCE);
@@ -181,8 +182,25 @@ public class NetServer extends NetSend {
             GetPacket getPacket = new GetPacket(ResourceType.MAP_PART, buffer.getAll(), null);
             broadcastPacketToAllCients(getPacket);
 			
-			//Collection<>
 			map.resetChanges();
+		}
+	}
+	
+	/**
+	 * Send all waiting dialogs to clients (1 per client)
+	 */
+	public void sendDialogs() {
+		List<WaitingDialog> dialogQueue=EngineZildo.dialogManagement.getQueue();
+		EasyBuffering buffer = new EasyBuffering();
+		if( dialogQueue.size() !=0) {
+			for (WaitingDialog dial : dialogQueue) {
+				dial.serialize(buffer);
+				
+		        GetPacket getPacket = new GetPacket(ResourceType.DIALOG, buffer.getAll(), null);
+		        sendPacket(getPacket, dial.client);
+		        buffer.clear();
+			}
+			EngineZildo.dialogManagement.resetQueue();
 		}
 	}
 

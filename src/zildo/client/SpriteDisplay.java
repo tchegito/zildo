@@ -2,6 +2,7 @@ package zildo.client;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -44,10 +45,19 @@ public class SpriteDisplay extends SpriteStore {
 	Map<Integer, SpriteEntity> mapEntities=new HashMap<Integer, SpriteEntity>();
 	
 	public void setEntities(List<SpriteEntity> p_entities) {
-		mapEntities.clear();
-		spriteEntities=p_entities;
+		//mapEntities.clear();
+		// Remove all non-client sprite
+		for (Iterator<SpriteEntity> it=spriteEntities.iterator();it.hasNext();) {
+			SpriteEntity entity=it.next();
+			if (entity.getId() != -1) {
+				it.remove();
+			}
+		}
+		spriteEntities.addAll(p_entities);
 		for (SpriteEntity entity : p_entities) {
-			mapEntities.put(entity.getId(), entity);
+			if (entity.getId() != -1) {
+				mapEntities.put(entity.getId(), entity);
+			}
 		}
 	}
 	
@@ -88,10 +98,6 @@ public class SpriteDisplay extends SpriteStore {
 		// Reset the sort array used for sprites
 		clearSortArray();
 		
-		// Calculate camera diff
-		int diffx=cameraXnew - camerax;
-		int diffy=cameraYnew - cameray;
-		
 		Collection<SpriteEntity> entities=spriteEntities;
 		
 		// Do perso animations
@@ -113,6 +119,9 @@ public class SpriteDisplay extends SpriteStore {
 						entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
 					entity.setScrX((int) (entity.x - cameraXnew));
 					entity.setScrY((int) (entity.y - cameraYnew));
+				}
+				if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_FONT && entity.getNSpr() == 26+12+26+10) {
+					int j=9;
 				}
 				if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
 					// Center sprite

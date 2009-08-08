@@ -11,7 +11,7 @@ public class Zildo {
 	public static boolean fullScreen=false;
 	public static int viewPortX=320;
 	public static int viewPortY=240;
-	public static boolean infoDebug=true;
+	public static boolean infoDebug=false;
 	public static boolean log=false;
 	public static boolean logNetwork=false;
 
@@ -30,6 +30,6 @@ public class Zildo {
 		
         Game game = new Game("polaky", false);
         //new SinglePlayer(game);
-        new MultiPlayer(game, true);
+        new MultiPlayer(); //, true);
 	}
 }

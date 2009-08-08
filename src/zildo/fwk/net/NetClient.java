@@ -1,6 +1,7 @@
 package zildo.fwk.net;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import zildo.client.Client;
@@ -13,6 +14,7 @@ import zildo.fwk.net.packet.AcceptPacket;
 import zildo.fwk.net.packet.AskPacket;
 import zildo.fwk.net.packet.GetPacket;
 import zildo.fwk.net.packet.AskPacket.ResourceType;
+import zildo.monde.WaitingDialog;
 import zildo.monde.WaitingSound;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.map.Area;
@@ -119,6 +121,9 @@ public class NetClient extends NetSend {
                         case MAP_PART:
                         	receiveMapPart(getPacket);
                         	break;
+                        case DIALOG:
+                        	receiveDialog(getPacket);
+                        	break;
                         case ENTITY:
                             receiveEntities(getPacket);
                             refreshEntity = true;
@@ -182,6 +187,13 @@ public class NetClient extends NetSend {
             sounds.add(s);
         }
         ClientEngineZildo.soundPlay.playSounds(sounds);
+    }
+    
+    public void receiveDialog(GetPacket p_packet) {
+        EasyBuffering buffer = new EasyBuffering(p_packet.getBuffer());
+    	WaitingDialog dial=WaitingDialog.deserialize(buffer);
+    	
+    	ClientEngineZildo.dialogDisplay.launchDialog(Collections.singletonList(dial));
     }
     
 	public boolean isConnected() {

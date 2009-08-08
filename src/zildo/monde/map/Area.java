@@ -13,7 +13,7 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.dialog.Behavior;
-import zildo.monde.dialog.DialogManagement;
+import zildo.monde.dialog.MapDialog;
 import zildo.monde.persos.Perso;
 import zildo.monde.persos.PersoGarde;
 import zildo.monde.persos.PersoGardeVert;
@@ -53,7 +53,9 @@ public class Area {
 	private Map<Integer,Case> mapdata;
 	private int n_persos,n_sprites,n_pe;
 	private List<ChainingPoint> listPointsEnchainement;
-
+	private MapDialog dialogs;
+	
+	// To diffuse changes to clients
 	private Collection<Point> changes;
 	
 	public Area()
@@ -466,17 +468,16 @@ public class Area {
 		}
 
 		// 6) Sentences
-		DialogManagement dialogManagement=EngineZildo.dialogManagement;
-		int nPhrases=dialogManagement.getN_phrases();
+		int nPhrases=dialogs.getN_phrases();
 		file.put((byte) nPhrases);
 		if (nPhrases > 0) {
 			// On lit les phrases
-			String[] dialogs=dialogManagement.getDialogs();
+			String[] sentences=dialogs.getDialogs();
 			for (int i=0;i<nPhrases;i++) {
-				file.put(dialogs[i]);
+				file.put(sentences[i]);
 			}
 			// On lit le nom
-			Map<String, Behavior> behaviors=dialogManagement.getBehaviors();
+			Map<String, Behavior> behaviors=dialogs.getBehaviors();
 			for (Entry<String, Behavior> entry : behaviors.entrySet()) {
 				file.put(entry.getKey(), 9);
 				Behavior behav=entry.getValue();
@@ -618,12 +619,11 @@ public class Area {
 		if (!p_buffer.eof()) {
 			n_phrases=p_buffer.readUnsignedByte();
 			if (n_phrases > 0) {
-				DialogManagement dialogManagement=EngineZildo.dialogManagement;
+				map.dialogs=new MapDialog();
 				// On lit les phrases
 				for (int i=0;i<n_phrases;i++) {
-		
 					String phrase=p_buffer.readString();
-					//dialogManagement.addSentence(phrase);
+					map.dialogs.addSentence(phrase);
 				}
 				if (!p_buffer.eof()) {
 					while (!p_buffer.eof()) {
@@ -632,13 +632,17 @@ public class Area {
 						// On lit le comportement
 						short[] comportement=new short[10];
 						p_buffer.readUnsignedBytes(comportement, 0, 10);
-						//dialogManagement.addBehavior(nomPerso,comportement);
+						map.dialogs.addBehavior(nomPerso,comportement);
 					}
 				}
 			}
 		}
 		
 		return map;
+	}
+	
+	public MapDialog getMapDialog() {
+		return dialogs;
 	}
 
 }

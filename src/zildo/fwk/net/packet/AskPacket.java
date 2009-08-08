@@ -13,7 +13,7 @@ import zildo.fwk.net.Packet;
 public class AskPacket extends Packet {
 
     public enum ResourceType {
-        MAP, MAP_PART, ENTITY, KEYBOARD, SOUND; // Note: Keyboard, Map part and Sound are never asked, only sent.
+        MAP, MAP_PART, ENTITY, KEYBOARD, SOUND, DIALOG; // Note: Keyboard, Dialog, Map part and Sound are never asked, only sent.
 		
 		public static ResourceType fromString(String p_string) {
 			for (ResourceType rType : ResourceType.values()) {

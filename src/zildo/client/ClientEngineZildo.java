@@ -3,6 +3,8 @@ package zildo.client;
 import org.lwjgl.util.vector.Vector3f;
 
 import zildo.Zildo;
+import zildo.client.gui.DialogDisplay;
+import zildo.client.gui.GUIDisplay;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.filter.BilinearFilter;
 import zildo.fwk.filter.BlendFilter;
@@ -13,6 +15,7 @@ import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.opengl.OpenGLZildo;
 import zildo.monde.decors.SpriteEntity;
 import zildo.prefs.Constantes;
+import zildo.server.EngineZildo;
 
 public class ClientEngineZildo {
 
@@ -25,7 +28,8 @@ public class ClientEngineZildo {
 	public static MapDisplay mapDisplay;
 	
 	public static GUIDisplay guiDisplay;
-
+	public static DialogDisplay dialogDisplay;
+	
 	public static SpriteEngine spriteEngine;
 	public static TileEngine tileEngine;
 	public static SoundPlay soundPlay;
@@ -42,6 +46,7 @@ public class ClientEngineZildo {
 		
 		ClientEngineZildo.filterCommand = new FilterCommand();
 		guiDisplay=new GUIDisplay();
+		dialogDisplay=new DialogDisplay();
 		soundPlay=new SoundPlay();
 
 		if (!p_awt) {
@@ -107,6 +112,10 @@ public class ClientEngineZildo {
 		// Focus camera on player
 		if (!p_editor) {
 			mapDisplay.centerCamera();
+			
+			if (dialogDisplay.isDialoguing()) {
+				dialogDisplay.manageDialog();
+			}
 			guiDisplay.draw();
 		}
 		
@@ -136,11 +145,8 @@ public class ClientEngineZildo {
 	
 		// Is Zildo talking with somebody ?
 		//TODO: turn on the dialogs
-		/*
-		if (dialogManagement.isDialoguing()) {
-			dialogManagement.manageDialog();
-		}
-		*/
+
+		
 		
         if (Zildo.infoDebug && !p_editor) {
 			this.debug();

@@ -8,6 +8,7 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.SpriteModel;
 import zildo.monde.persos.Perso;
+import zildo.server.EngineZildo;
 
 public class SpriteStore {
 
@@ -170,6 +171,7 @@ public class SpriteStore {
 				element.finalize();
 			} else if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
 				Perso perso=(Perso)entity;
+				EngineZildo.persoManagement.removePerso(perso);
 				perso.finalize();
 			} else {
 				//entity.finalize();
