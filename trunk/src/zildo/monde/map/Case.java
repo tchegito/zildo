@@ -135,7 +135,7 @@ public class Case {
 	 * Serialize useful fields from this map case.
 	 * @param p_buffer
 	 */
-	public void serializeEntity(EasyBuffering p_buffer) {
+	public void serialize(EasyBuffering p_buffer) {
 		p_buffer.put(this.getN_banque());
 		p_buffer.put(this.getN_banque_masque());
 		p_buffer.put(this.getN_motif());
@@ -148,7 +148,7 @@ public class Case {
 	 * @param p_buffer
 	 * @return SpriteEntity
 	 */
-	public static Case deserializeOneEntity(EasyBuffering p_buffer) {
+	public static Case deserializeCase(EasyBuffering p_buffer) {
 		Case mapCase=new Case();
 		mapCase.setN_banque(p_buffer.readInt());
 		mapCase.setN_banque_masque(p_buffer.readInt());

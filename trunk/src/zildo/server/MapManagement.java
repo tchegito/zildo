@@ -119,7 +119,7 @@ public class MapManagement {
 	
 		// Infos de base
 		EasyReadingFile file=new EasyReadingFile(chemin);
-		Area map=Area.deserializeMap(file, true);
+		Area map=Area.deserialize(file, true);
 		
 		map.setName(mapname);
 		
@@ -129,7 +129,7 @@ public class MapManagement {
 	}
 
 	public void saveMapFile(String p_fileName) {
-		EasyWritingFile serializedMap = new EasyWritingFile(currentMap.serializeMap());
+		EasyWritingFile serializedMap = new EasyWritingFile(currentMap.serialize());
 
 		serializedMap.saveFile(p_fileName);
     }

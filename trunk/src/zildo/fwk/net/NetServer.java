@@ -1,6 +1,7 @@
 package zildo.fwk.net;
 
 import java.nio.ByteBuffer;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +15,8 @@ import zildo.fwk.net.packet.GetPacket;
 import zildo.fwk.net.packet.AskPacket.ResourceType;
 import zildo.monde.WaitingSound;
 import zildo.monde.map.Area;
+import zildo.monde.map.Case;
+import zildo.monde.map.Point;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.Server;
@@ -92,7 +95,7 @@ public class NetServer extends NetSend {
 					
 					sendSounds();
 					
-					checkAndSendMapChanges();
+					sendMapChanges();
 					
 					// Receive resource from client (keyboard commands)
 					Packet getResource=packets.getUniqueTyped(PacketType.GET_RESOURCE);
@@ -121,8 +124,6 @@ public class NetServer extends NetSend {
         EasyBuffering buffer = spriteManagement.serializeEntities();
         GetPacket getPacket = new GetPacket(ResourceType.ENTITY, buffer.getAll(), null);
         broadcastPacketToAllCients(getPacket);
-
-        log("Sending entities (" + getPacket.length + " bytes)");
     }
 	
 	/**
@@ -134,7 +135,7 @@ public class NetServer extends NetSend {
 		GetPacket getPacket=null;
 		EasyBuffering buffer;
 		Area area=mapManagement.getCurrentMap();
-		buffer=area.serializeMap();
+		buffer=area.serialize();
 		
 		getPacket=new GetPacket(ResourceType.MAP, buffer.getAll(), area.getName());
 		log("Sending map ("+getPacket.length+" bytes)");
@@ -165,11 +166,21 @@ public class NetServer extends NetSend {
         }
     }
     
-	public void checkAndSendMapChanges() {
+	public void sendMapChanges() {
 		Area map=EngineZildo.mapManagement.getCurrentMap();
 		if (map.isModified()) {
 			// Map has changed, so we must diffuse to clients
-			int j=9;
+			Collection<Point> changes=map.getChanges();
+			EasyBuffering buffer = new EasyBuffering();
+			for (Point p :changes) {
+				Case c=map.get_mapcase(p.getX(), p.getY());
+				buffer.put(p.getX());
+				buffer.put(p.getY());
+				c.serialize(buffer);
+			}
+            GetPacket getPacket = new GetPacket(ResourceType.MAP_PART, buffer.getAll(), null);
+            broadcastPacketToAllCients(getPacket);
+			
 			//Collection<>
 			map.resetChanges();
 		}
