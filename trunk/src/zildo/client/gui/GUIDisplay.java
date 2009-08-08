@@ -1,11 +1,12 @@
-package zildo.client;
+package zildo.client.gui;
 
 import java.util.Iterator;
 
+import zildo.client.ClientEngineZildo;
+import zildo.client.SpriteDisplay;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
-import zildo.gui.GUISpriteSequence;
 import zildo.monde.SpriteModel;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.persos.PersoZildo;
@@ -308,7 +309,7 @@ public class GUIDisplay {
 	void drawFrame()
 	{
 		// Draw corner frame
-		if ( !frameDialogSequence.isDrawn() ) {
+		if ( !frameDialogSequence.isDrawn()) {
 			frameDialogSequence.addSprite(SpriteBank.BANK_FONTES,26+12+26+10,  40,170);
 			frameDialogSequence.addSprite(SpriteBank.BANK_FONTES,26+12+26+10+1,  280,170);
 			frameDialogSequence.addSprite(SpriteBank.BANK_FONTES,26+12+26+10+2,  40,230);

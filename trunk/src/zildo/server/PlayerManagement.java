@@ -1,8 +1,10 @@
 package zildo.server;
 
+import zildo.client.gui.DialogDisplay;
 import zildo.fwk.IntSet;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.input.KeyboardState;
+import zildo.fwk.net.TransferObject;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.dialog.DialogManagement;
@@ -23,6 +25,7 @@ public class PlayerManagement {
 	private PersoZildo heros;
 	private KeyboardInstant instant;
 	private KeyboardState keysState;
+	private TransferObject clientLocation;
 	
 	public PlayerManagement()
 	{
@@ -44,6 +47,8 @@ public class PlayerManagement {
 		heros=p_state.zildo;
 		instant=p_state.keys;
 		keysState=p_state.keysState;
+		clientLocation=p_state.location;
+		
 		handleCommon();
 	
 		if (EngineZildo.dialogManagement.isDialoguing()) {
@@ -390,7 +395,7 @@ public class PlayerManagement {
 	void handleTopicSelection() {
 		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_UP)) {
 			if (!keysState.key_upPressed) {
-				EngineZildo.dialogManagement.actOnDialog(DialogManagement.ACTIONDIALOG_UP);
+				EngineZildo.dialogManagement.actOnDialog(DialogDisplay.ACTIONDIALOG_UP);
 				keysState.key_upPressed=true;
 			}
 		} else {
@@ -399,7 +404,7 @@ public class PlayerManagement {
 	
 		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_DOWN)) {
 			if (!keysState.key_downPressed) {
-				EngineZildo.dialogManagement.actOnDialog(DialogManagement.ACTIONDIALOG_DOWN);
+				EngineZildo.dialogManagement.actOnDialog(DialogDisplay.ACTIONDIALOG_DOWN);
 				keysState.key_downPressed=true;
 			}
 		} else {
@@ -419,7 +424,7 @@ public class PlayerManagement {
 	
 		if (!keysState.key_actionPressed) {
 			if (EngineZildo.dialogManagement.isDialoguing()) {
-				EngineZildo.dialogManagement.actOnDialog(DialogManagement.ACTIONDIALOG_ACTION);
+				EngineZildo.dialogManagement.actOnDialog(DialogDisplay.ACTIONDIALOG_ACTION);
 			} else { //
 				if (perso.getMouvement()==MouvementZildo.MOUVEMENT_BRAS_LEVES) {
 					perso.throwSomething();
@@ -468,7 +473,7 @@ public class PlayerManagement {
 		
 								// On demande la phrase du garde
 								DialogManagement dialogManagement=EngineZildo.dialogManagement;
-								dialogManagement.launchDialog(persoToTalk);
+								dialogManagement.launchDialog(clientLocation, persoToTalk);
 							}
 						}
 					} else {

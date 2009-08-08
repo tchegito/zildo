@@ -63,8 +63,9 @@ public class SinglePlayer {
                 states.addAll(server.getClientStates());
             }
             
-            // Reset sound queue
+            // Reset queues
         	EngineZildo.soundManagement.resetQueue();
+        	EngineZildo.dialogManagement.resetQueue();
 
             // Read keyboard
             KeyboardInstant instant = KeyboardInstant.getKeyboardInstant();
@@ -77,6 +78,9 @@ public class SinglePlayer {
             // Update client
             ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities());
 
+            // Dialogs
+            ClientEngineZildo.dialogDisplay.launchDialog(EngineZildo.dialogManagement.getQueue());
+            
             // Render client
             done = client.render();
             

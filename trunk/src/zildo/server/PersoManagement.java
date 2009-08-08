@@ -115,4 +115,8 @@ public class PersoManagement {
 		tab_perso.add(perso);
 	}
 	
+	public void removePerso(Perso perso) {
+		tab_perso.remove(perso);
+	}
+	
 }

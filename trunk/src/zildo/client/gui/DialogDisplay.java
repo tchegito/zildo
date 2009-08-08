@@ -1,0 +1,187 @@
+package zildo.client.gui;
+
+import java.util.List;
+
+import zildo.client.ClientEngineZildo;
+import zildo.monde.WaitingDialog;
+
+public class DialogDisplay {
+
+	public static final int ACTIONDIALOG_ACTION=0;
+	public static final int ACTIONDIALOG_UP=1;
+	public static final int ACTIONDIALOG_DOWN=2;
+	
+	public boolean dialoguing;
+	public boolean topicChoosing;
+	
+	private String currentSentence;
+	private int positionInSentence;
+	private int numToScroll;
+	private int selectedTopic;
+	private int nProposedTopics;
+
+	public DialogDisplay() {
+		dialoguing=false;
+	}
+	
+	public boolean isDialoguing() {
+		return dialoguing;
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	// manageDialog
+	///////////////////////////////////////////////////////////////////////////////////////
+	// Call the right method to manage interaction between Zildo and his human relative
+	///////////////////////////////////////////////////////////////////////////////////////
+	public void manageDialog() {
+		if (topicChoosing) {
+			manageTopic();
+		} else if (dialoguing) {
+			manageConversation();
+		}
+	}
+	
+	public void launchDialog(List<WaitingDialog> p_queue) {
+		for (WaitingDialog dial : p_queue) {
+			launchDialog(dial.sentence);
+		}
+	}
+	
+	/**
+	 * Ask GUI to display the current sentence.
+	 * @param p_sentence
+	 */
+	public void launchDialog(String p_sentence) {
+		
+		currentSentence=p_sentence;
+		ClientEngineZildo.guiDisplay.setText(currentSentence, GUIDisplay.DIALOGMODE_CLASSIC);
+		ClientEngineZildo.guiDisplay.setToDisplay_dialoguing(true);
+		positionInSentence=0;
+		dialoguing=true;
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	// launchTopicSelection
+	///////////////////////////////////////////////////////////////////////////////////////
+	public void launchTopicSelection() {
+		String currentSentence="La disparition\nLe mauvais temps\nLa dispute entre Henri et Lisa\nLa revolte des paysans\nLe prix des chaussures";
+		ClientEngineZildo.guiDisplay.setText(currentSentence, GUIDisplay.DIALOGMODE_TOPIC);
+		positionInSentence=0;
+		selectedTopic=0;
+		nProposedTopics=5;
+	
+		topicChoosing=true;
+		dialoguing=true;
+	}
+	
+	public void clearDialogs() {
+		positionInSentence=-1;
+		numToScroll=0;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	// manageConversation
+	///////////////////////////////////////////////////////////////////////////////////////
+	// Here, Zildo is talking with someone.We can :
+	// -go forward into conversation
+	// -select a sentence into multiple ones
+	// -quit dialog
+	///////////////////////////////////////////////////////////////////////////////////////
+	void manageConversation() {
+		GUIDisplay guiManagement=ClientEngineZildo.guiDisplay;
+	
+		boolean entireMessageDisplay=guiManagement.isEntireMessageDisplay();
+		boolean visibleMessageDisplay=guiManagement.isVisibleMessageDisplay();
+	
+		if (entireMessageDisplay || visibleMessageDisplay) {
+			if (numToScroll!=0) {
+				numToScroll--;
+				if (!entireMessageDisplay) {
+					guiManagement.scrollAndDisplayTextParts(positionInSentence,currentSentence);
+				}
+			}
+		} else if (!visibleMessageDisplay ) {
+			// Draw sentences slowly (word are appearing one after another)
+			positionInSentence++;
+			if (positionInSentence % 3 ==0 && (Math.random()*10)>7) {
+				ClientEngineZildo.soundPlay.playSoundFX("AfficheTexte");
+			}
+			guiManagement.displayTextParts(positionInSentence,currentSentence,(numToScroll!=0));
+		}
+	
+		// Debugging thing
+		/*
+		GFXBasics* gfxBasics = (GFXBasics*) EngineZildo::getGFXBasics();
+		gfxBasics.StartRendering();
+		String sent="position=       ";
+		String sent2="numToScroll=    ";
+		String sent3="entire=      visible=    ";
+		String sent4=currentSentence.subString(positionInSentence);
+		sent.ConvIntToStr(positionInSentence,9);
+		sent2.ConvIntToStr(numToScroll,13);
+		sent3.ConvIntToStr((int)entireMessageDisplay,7);
+		sent3.ConvIntToStr((int)visibleMessageDisplay,21);
+		gfxBasics.aff_texte(0,100,sent);
+		gfxBasics.aff_texte(0,120,sent2);
+		gfxBasics.aff_texte(0,140,sent3);
+		gfxBasics.aff_texte(0,160,sent4);
+		gfxBasics.EndRendering();
+		*/
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	// manageTopic
+	///////////////////////////////////////////////////////////////////////////////////////
+	void manageTopic() {
+		GUIDisplay guiManagement=ClientEngineZildo.guiDisplay;
+		guiManagement.displayTopics(selectedTopic);
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	// actOnDialog
+	///////////////////////////////////////////////////////////////////////////////////////
+	// -We came here when player clicks ACTION, UP or DOWN
+	// .Quit dialog
+	// .Move on dialog
+	// .Choose topic
+	///////////////////////////////////////////////////////////////////////////////////////
+	public void actOnDialog(int actionDialog) {
+		GUIDisplay guiManagement = ClientEngineZildo.guiDisplay;
+		boolean entireMessageDisplay=guiManagement.isEntireMessageDisplay();
+		boolean visibleMessageDisplay=guiManagement.isVisibleMessageDisplay();
+	
+		if (topicChoosing) {
+			// Topic
+			switch (actionDialog) {
+			case ACTIONDIALOG_ACTION:
+				guiManagement.setToRemove_dialoguing(true);
+				topicChoosing=false;
+				dialoguing=false;
+				break;
+			case ACTIONDIALOG_DOWN:
+				if (selectedTopic != nProposedTopics - 1) {
+					selectedTopic++;
+				}
+				break;
+			case ACTIONDIALOG_UP:
+				if (selectedTopic != 0) {
+					selectedTopic--;
+				}
+				break;
+			}
+		} else if (dialoguing) {
+			// Conversation
+			if (entireMessageDisplay || visibleMessageDisplay) {
+				// Two cases : continue or quit
+				if (!entireMessageDisplay) {
+					numToScroll=3;
+				} else {
+					// Quit dialog
+					guiManagement.setToRemove_dialoguing(true);
+					dialoguing=false;
+				}
+			}
+		}
+	}
+
+}

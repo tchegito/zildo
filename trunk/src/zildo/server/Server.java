@@ -1,7 +1,9 @@
 package zildo.server;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,6 +25,7 @@ import zildo.monde.Game;
 public class Server extends Thread {
 	
 	public static final long TIMER_DELAY = (long) (1000.f / 75f);
+	public static final int CLIENT_TIMEOUT = 300;
 	
     Map<TransferObject, ClientState> clients = new HashMap<TransferObject, ClientState>();
 
@@ -73,6 +76,9 @@ public class Server extends Thread {
 	public void networkJob() {
 		// Deals with network
 		if (netServer != null) {
+        	
+        	checkInactivity();
+
 			netServer.run();
 		}
 	}
@@ -96,6 +102,10 @@ public class Server extends Thread {
 	 * @param client
 	 */
 	public void disconnectClient(TransferObject p_client) {
+		// Delete the client's zildo
+		ClientState state=clients.get(p_client);
+		EngineZildo.spriteManagement.deleteSprite(state.zildo);
+		// Remove client from the list
 		clients.remove(p_client);
 		if (clients.isEmpty()) {
 			// No clients anymore, we shut down the server
@@ -122,9 +132,23 @@ public class Server extends Thread {
         	throw new RuntimeException("Client isn't registered on server !");
         }
         state.keys=p_instant;
+        state.inactivityTime=0;
 		clients.put(p_client, state);
 	}
 	
+	public void checkInactivity() {
+		List<TransferObject> clientsDisconnected=new ArrayList<TransferObject>();
+		for (ClientState state : clients.values()) {
+			if (state.inactivityTime > CLIENT_TIMEOUT) {
+				clientsDisconnected.add(state.location);
+			}
+			state.inactivityTime++;
+		}
+		for (TransferObject obj : clientsDisconnected) {
+			disconnectClient(obj);
+		}
+
+	}
 	public Collection<ClientState> getClientStates() {
 		return clients.values();
 	}

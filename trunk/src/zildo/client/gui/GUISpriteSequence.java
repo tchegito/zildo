@@ -1,4 +1,4 @@
-package zildo.gui;
+package zildo.client.gui;
 
 import java.util.ArrayList;
 

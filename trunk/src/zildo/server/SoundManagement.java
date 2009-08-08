@@ -4,9 +4,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import zildo.fwk.net.NetServer;
 import zildo.monde.WaitingSound;
 import zildo.monde.map.Point;
 
+/**
+ * We just manage here a sound queue.
+ * 
+ * It will be sent to all clients, every frame, then cleared.
+ * See {@link NetServer#sendSounds()}
+ * 
+ * @author tchegito
+ *
+ */
 public class SoundManagement {
 
 	List<WaitingSound> soundQueue=new ArrayList<WaitingSound>();

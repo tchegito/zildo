@@ -25,11 +25,15 @@ public class ClientState {
     public KeyboardInstant keys;
     public KeyboardState keysState;
     public PersoZildo zildo;
+    public int inactivityTime;
+    public boolean dialoguing;
     
     public ClientState(TransferObject p_location, int p_zildoId) {
         location = p_location;
         keys = null;
 		zildo=(PersoZildo) Identified.fromId(SpriteEntity.class, p_zildoId);
         keysState=new KeyboardState();
+        inactivityTime=0;
+        dialoguing=false;
     }
 }
