@@ -169,10 +169,10 @@ public class Ortho extends OpenGLStuff {
 					for (int j=0;j<5;j++) {
 						char pixel=fonts[aa][j][i];
 						if (pixel==1) {
-							GL11.glVertex2d(x+i, y+j);
-							GL11.glVertex2d(x+i+0.5f, y+j);
-							GL11.glVertex2d(x+i+0.5f, y+j+0.5f);
-							GL11.glVertex2d(x+i, y+j+0.5f);
+							GL11.glVertex2i(x+i, y+j);
+							GL11.glVertex2f(x+i+0.5f, y+j);
+							//GL11.glVertex2f(x+i+0.5f, y+j+0.5f);
+							//GL11.glVertex2f(x+i, y+j+0.5f);
 						}
 					}
 				}
@@ -187,9 +187,15 @@ public class Ortho extends OpenGLStuff {
 		}
 	}
 	public void drawText(int x, int y, String txt, Vector3f color) {
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		float factor=0.2f;
+		GL11.glColor3f(color.x*factor, color.y*factor, color.z*factor);
+		drawText(x+1,y+1,txt);
 		GL11.glColor3f(color.x, color.y, color.z);
 		drawText(x,y,txt);
 		GL11.glColor3f(1.0f, 1.0f, 1.0f);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+
 	}
 	
 	/**
