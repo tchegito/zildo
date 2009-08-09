@@ -5,12 +5,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import zildo.client.ClientEngineZildo;
+import zildo.client.gui.GUIDisplay;
 import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.Packet.PacketType;
 import zildo.fwk.net.packet.AcceptPacket;
 import zildo.fwk.net.packet.AskPacket;
+import zildo.fwk.net.packet.ConnectPacket;
 import zildo.fwk.net.packet.GetPacket;
 import zildo.fwk.net.packet.AskPacket.ResourceType;
 import zildo.monde.WaitingDialog;
@@ -48,7 +51,7 @@ public class NetServer extends NetSend {
 	
 	public void run() {
 		//System.out.println("server"+nFrame++);
-
+		
 		TransferObject source=null;
 		try {
 			if (isOpen()) {
@@ -63,13 +66,21 @@ public class NetServer extends NetSend {
 				
 				Packet clientConnect=packets.getUniqueTyped(PacketType.CLIENT_CONNECT);
 				if (clientConnect != null) {
+					boolean in=((ConnectPacket)clientConnect).isJoining();
 					source=clientConnect.getSource();
-					log("Serveur:Un client est arrivé !"+source.address.getHostName()+" port:"+source.address.getPort());
-
-					int zildoId=server.connectClient(source);
-
-					AcceptPacket accept=new AcceptPacket(zildoId);
-					sendPacket(accept, source); 
+					if (in) {
+						// Client is coming
+						log("Serveur:Un client est arrivé !"+source.address.getHostName()+" port:"+source.address.getPort());
+	
+						int zildoId=server.connectClient(source);
+	
+						AcceptPacket accept=new AcceptPacket(zildoId);
+						sendPacket(accept, source);
+					} else {
+						// Client is leaving
+						server.disconnectClient(source);
+					}
+					
 				}
 
 				if (server.isClients())  {

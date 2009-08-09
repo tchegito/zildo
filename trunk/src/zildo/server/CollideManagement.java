@@ -100,13 +100,13 @@ public class CollideManagement {
 	 * @param p_colli
 	 */
 	public void checkZildoWound(PersoZildo p_zildo, Collision p_colli) {
-		float zildoX=p_zildo.getX();
-		float zildoY=p_zildo.getY();
+		float zildoX=p_zildo.getX() - 4;
+		float zildoY=p_zildo.getY() - 10;
 		// If he's already wounded, don't check
 		if (!p_zildo.isWounded() && check_colli(p_colli.getCx(), p_colli.getCy(),
 						(int) zildoX, (int) zildoY,
 						p_colli.getCr(),
-						6) ) {
+						8) ) {
 			// Zildo gets wounded
 			p_zildo.beingWounded((float) p_colli.getCx(), (float) p_colli.getCy());
 		}		

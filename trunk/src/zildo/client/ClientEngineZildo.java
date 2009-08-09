@@ -13,7 +13,10 @@ import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.opengl.OpenGLZildo;
+import zildo.monde.Collision;
 import zildo.monde.decors.SpriteEntity;
+import zildo.monde.persos.Perso;
+import zildo.monde.persos.PersoZildo;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
 
@@ -50,6 +53,7 @@ public class ClientEngineZildo {
 		soundPlay=new SoundPlay();
 
 		if (!p_awt) {
+
 			ClientEngineZildo.filterCommand.addFilter(new BilinearFilter());
 			//filterCommand.addFilter(new BlurFilter());
 			ClientEngineZildo.filterCommand.addFilter(new BlendFilter());
@@ -113,6 +117,7 @@ public class ClientEngineZildo {
 		if (!p_editor) {
 			mapDisplay.centerCamera();
 			
+			// Is Zildo talking with somebody ?
 			if (dialogDisplay.isDialoguing()) {
 				dialogDisplay.manageDialog();
 			}
@@ -143,16 +148,15 @@ public class ClientEngineZildo {
 		// Display FOREGROUND sprites
 		spriteEngine.spriteRender(false);
 	
-		// Is Zildo talking with somebody ?
-		//TODO: turn on the dialogs
-
-		
-		
         if (Zildo.infoDebug && !p_editor) {
 			this.debug();
 		}
 
+        guiDisplay.drawMessages();
+
+
 		filterCommand.doFilter();
+
 
 		openGLGestion.endScene();
 		//gfxBasics.EndRendering();
@@ -192,39 +196,34 @@ public class ClientEngineZildo {
 	
 	void debug()
 	{
-		int fps=(int) ClientEngineZildo.openGLGestion.getFPS();
+		int fps=(int) openGLGestion.getFPS();
 		
 		ortho.drawText(1,50,"fps="+fps, new Vector3f(0.0f, 0.0f, 1.0f));
-		
 		
 		SpriteEntity zildo=spriteDisplay.getZildo();
 		ortho.drawText(1,80,"zildo: "+zildo.x, new Vector3f(1.0f, 0.0f, 1.0f));
 		ortho.drawText(43,86,""+zildo.y, new Vector3f(1.0f, 0.0f, 1.0f));
 		
-		
 		// Debug collision
-		/*
-		for (Collision c : EngineZildo.collideManagement.getTabColliz()) {
-			if (c != null) {
-				int rayon=c.getCr();
-				ortho.box(c.getCx()-rayon/2-mapDisplay.getCamerax(), 
-						c.getCy()-rayon/2-mapDisplay.getCameray(), rayon*2, rayon*2,15, null);
+		if (EngineZildo.collideManagement != null && Zildo.infoDebugCollision) {
+			for (Collision c : EngineZildo.collideManagement.getTabColli()) {
+				if (c != null) {
+					int rayon=c.getCr();
+					int color=15;
+					Perso damager=c.getPerso();
+					if (damager != null && damager.getInfo() == 1) {
+						color=20;
+					}
+					ortho.box(c.getCx()-rayon/2-mapDisplay.getCamerax(), 
+							c.getCy()-rayon/2-mapDisplay.getCameray(), rayon*2, rayon*2,color, null);
+				}
 			}
+			int x=(int) zildo.x-4;
+			int y=(int) zildo.y-10;
+			ortho.box(x-3-mapDisplay.getCamerax(), y-3-mapDisplay.getCameray(), 16, 16, 12, null);
 		}
-		*/
-		/*
-		for (Collision c : EngineZildo.collideManagement.getTabColli()) {
-			if (c != null) {
-				int rayon=c.getCr();
-				ClientEngineZildo.ortho.box(c.getCx()-rayon/2-mapDisplay.getCamerax(), 
-						c.getCy()-rayon/2-mapDisplay.getCameray(), rayon*2, rayon*2,20, null);
-			}
-		}
-		*/
+		
 	}
-    public OpenGLZildo getOpenGLGestion() {
-        return openGLGestion;
-    }
 
     public void setOpenGLGestion(OpenGLZildo p_openGLGestion) {
         	openGLGestion = p_openGLGestion;

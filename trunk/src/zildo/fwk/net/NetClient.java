@@ -12,6 +12,7 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.Packet.PacketType;
 import zildo.fwk.net.packet.AcceptPacket;
 import zildo.fwk.net.packet.AskPacket;
+import zildo.fwk.net.packet.ConnectPacket;
 import zildo.fwk.net.packet.GetPacket;
 import zildo.fwk.net.packet.AskPacket.ResourceType;
 import zildo.monde.WaitingDialog;
@@ -80,7 +81,8 @@ public class NetClient extends NetSend {
 					log("Serveur trouvé"+server.address.getHostName());
 					
 					serverFound=true;
-					sendPacket(PacketType.CLIENT_CONNECT, server);
+					ConnectPacket connectPacket=new ConnectPacket(true);
+					sendPacket(connectPacket, server);
 				}
 			} else if (!serverAccepted) {
 				// 2) Sending a request to the server in order to join game
@@ -196,6 +198,12 @@ public class NetClient extends NetSend {
     	ClientEngineZildo.dialogDisplay.launchDialog(Collections.singletonList(dial));
     }
     
+    public void close() {
+    	// Send a disconnect packet
+    	ConnectPacket connectPacket=new ConnectPacket(false);
+    	sendPacket(connectPacket, server);
+    	super.close();
+    }
 	public boolean isConnected() {
 		return serverAccepted && gotMap && gotEntities;
 	}

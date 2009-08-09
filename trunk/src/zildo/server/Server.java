@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.ZUtils;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.NetServer;
@@ -85,21 +86,24 @@ public class Server extends Thread {
 	
 	/**
 	 * A client is coming into the game.
-	 * @param client
+	 * @param p_client
 	 * @return new Zildo's id
 	 */
-	public int connectClient(TransferObject client) {
-		if (clients.get(client) != null) {
-			return clients.get(client).zildo.getId();
+	public int connectClient(TransferObject p_client) {
+		if (clients.get(p_client) != null) {
+			return clients.get(p_client).zildo.getId();
 		}
 		int zildoId=engineZildo.spawnClient();
-		clients.put(client, new ClientState(client, zildoId));
+		clients.put(p_client, new ClientState(p_client, zildoId));
+		
+		ClientEngineZildo.guiDisplay.displayMessage(p_client.address.getHostName()+" join the game");
+
 		return zildoId;
 	}
 	
 	/**
 	 * Client leave the game
-	 * @param client
+	 * @param p_client
 	 */
 	public void disconnectClient(TransferObject p_client) {
 		// Delete the client's zildo
@@ -111,6 +115,7 @@ public class Server extends Thread {
 			// No clients anymore, we shut down the server
 			gameRunning=false;
 		}
+		ClientEngineZildo.guiDisplay.displayMessage(p_client.address.getHostName()+" left the game");
 	}
 	
 	public Set<TransferObject> getClientsLocation() {

@@ -53,6 +53,9 @@ public class SinglePlayer {
         boolean done = false;
         Set<ClientState> states=new HashSet<ClientState>();
         ClientState state = new ClientState(null, zildoId);
+        
+		ClientEngineZildo.guiDisplay.displayMessage("server started");
+
         while (!done) {
         	states.clear();
 

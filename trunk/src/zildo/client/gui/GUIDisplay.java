@@ -1,6 +1,11 @@
 package zildo.client.gui;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
+
+import org.lwjgl.util.vector.Vector3f;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
@@ -47,6 +52,8 @@ public class GUIDisplay {
 	
 	private FilterCommand filterCommand;
 	
+	Stack<GameMessage> messageQueue;
+	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
@@ -65,6 +72,8 @@ public class GUIDisplay {
 		guiSpritesSequence=new GUISpriteSequence();
 		
 		countMoney=0;
+		
+		messageQueue=new Stack<GameMessage>();
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -90,10 +99,23 @@ public class GUIDisplay {
 			// Draw frame and text inside it
 			drawFrame();
 		};
-	
-
 	}
 	
+	public void drawMessages() {
+		int y=230;
+		List<GameMessage> toRemove=new ArrayList<GameMessage>();
+		for (GameMessage mess : messageQueue) {
+			ClientEngineZildo.ortho.drawText(0,y,mess.text, new Vector3f(1.0f, 1.0f, 1.0f));
+			if (mess.duration-- == 0) {
+				toRemove.add(mess);
+			}
+			y-=8;
+		}
+		for (GameMessage mess :toRemove) {
+			messageQueue.remove(mess);
+		}
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////
 	// setText
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -456,6 +478,10 @@ public class GUIDisplay {
 			j=j % 10;
 			guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,81+j,94+i*8,20);
 		}
+	}
+	
+	public void displayMessage(String text) {
+		messageQueue.add(new GameMessage(text));
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
