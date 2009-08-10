@@ -31,6 +31,6 @@ public class Zildo {
 		
         Game game = new Game("polaky", false);
         //new SinglePlayer(game);
-        new MultiPlayer(game); //, true);
+        new MultiPlayer(); //, true);
 	}
 }

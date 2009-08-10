@@ -59,7 +59,22 @@ public class TransferObject {
 		initialize();
 	}
 	
-	public void initialize() {
+    public static TransferObject createBroadCastObject(int p_port) {
+        byte[] b = { 0, 0, 0, 0 };
+        try {
+            b = InetAddress.getLocalHost().getAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        String adr = "";
+        for (int i = 0; i < 2; i++) {
+            adr += ((short) 0xff & b[i]) + ".";
+        }
+        adr += "255";
+        return new TransferObject(adr, p_port);
+    }
+
+    public void initialize() {
 		try {
 			log("Initializing: "+address);
 			TransferObject existingOnSameAddress=NetSend.getTransferObject(address, false);
@@ -115,7 +130,7 @@ public class TransferObject {
         if (hash == -1) {
             byte[] b = this.address.getAddress().getAddress();
             hash = 7;
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 4; i++) {
                 hash += 31 * hash + b[i];
             }
         }

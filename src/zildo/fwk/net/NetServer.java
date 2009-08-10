@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import zildo.client.ClientEngineZildo;
-import zildo.client.gui.GUIDisplay;
 import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.input.KeyboardInstant;
@@ -57,7 +55,6 @@ public class NetServer extends NetSend {
 			if (isOpen()) {
 
 				PacketSet packets=receiveAll();
-
 				// Emits signal so then client could connect (every 20 frames)
 				if (counter % 20 == 0) {
 					sendPacket(PacketType.SERVER, null);
@@ -84,11 +81,12 @@ public class NetServer extends NetSend {
 				}
 
 				if (server.isClients())  {
-					// We got one client
-					Packet askResource=packets.getUniqueTyped(PacketType.ASK_RESOURCE);
-					if (askResource != null) {
-						AskPacket askPacket=(AskPacket) askResource;
-						log("Somebody ask for a resource:"+askPacket.resourceType);
+					// We got clients
+					entitiesBuffer=null;	// Reset entities temporary buffer
+					PacketSet asks=packets.getTyped(PacketType.ASK_RESOURCE);
+					for (Packet packet : asks) {
+						AskPacket askPacket = (AskPacket) packet;
+						//log("Somebody ask for a resource:"+askPacket.resourceType);
 						
 						// Send the resource
 						switch (askPacket.resourceType) {
@@ -96,7 +94,7 @@ public class NetServer extends NetSend {
 							sendMap(askPacket.getSource());
 							break;
 						case ENTITY:
-							sendEntities();
+							sendEntities(askPacket.getSource());
 							break;
 							
 						default:
@@ -109,16 +107,7 @@ public class NetServer extends NetSend {
 					
 					sendDialogs();
 					
-					// Receive resource from client (keyboard commands)
-					Packet getResource=packets.getUniqueTyped(PacketType.GET_RESOURCE);
-                	if (getResource != null) {
-                        GetPacket getPacket = (GetPacket) getResource;
-                        EasyBuffering buffer = new EasyBuffering(getPacket.getBuffer());
-                        KeyboardInstant i = KeyboardInstant.deserialize(buffer);
-                        // Update clients command
-                        TransferObject client=getResource.getSource();
-                        server.updateClientKeyboard(client, i);
-                	}
+					receiveKeyboards(packets.getTyped(PacketType.GET_RESOURCE));
 				}
 				ZUtils.sleep(5);
 			}
@@ -128,14 +117,34 @@ public class NetServer extends NetSend {
 	}
 	
 	/**
-	 * Send entities location to the clients.
+	 * Receive keyboard from this GetResource's packet set.
+	 * @param p_packets
 	 */
-	
-    private void sendEntities() {
+	private void receiveKeyboards(PacketSet p_packets) {
+		// Receive resource from clients (keyboard commands)
+		for (Packet packet : p_packets) {
+			GetPacket getPacket=(GetPacket) packet;
+            EasyBuffering buffer = new EasyBuffering(getPacket.getBuffer());
+            KeyboardInstant i = KeyboardInstant.deserialize(buffer);
+            // Update clients command
+            TransferObject client=getPacket.getSource();
+            server.updateClientKeyboard(client, i);
+		}
+	}
+
+	/**
+	 * Send entities location to client.
+	 * @param p_client target
+	 */
+	private EasyBuffering entitiesBuffer;
+    private void sendEntities(TransferObject p_client) {
         SpriteManagement spriteManagement = EngineZildo.spriteManagement;
-        EasyBuffering buffer = spriteManagement.serializeEntities();
-        GetPacket getPacket = new GetPacket(ResourceType.ENTITY, buffer.getAll(), null);
-        broadcastPacketToAllCients(getPacket);
+        if (entitiesBuffer == null) {
+        	entitiesBuffer = spriteManagement.serializeEntities();
+        }
+        GetPacket getPacket = new GetPacket(ResourceType.ENTITY, entitiesBuffer.getAll(), null);
+        sendPacket(getPacket, p_client);
+        //broadcastPacketToAllCients(getPacket);
     }
 	
 	/**
@@ -154,7 +163,7 @@ public class NetServer extends NetSend {
 		sendPacket(getPacket, p_client);
 	}
 	
-    public void sendSounds() {
+	private void sendSounds() {
         List<WaitingSound> queue = EngineZildo.soundManagement.getQueue();
         EasyBuffering buffer = new EasyBuffering();
 
@@ -178,7 +187,7 @@ public class NetServer extends NetSend {
         }
     }
     
-	public void sendMapChanges() {
+    private void sendMapChanges() {
 		Area map=EngineZildo.mapManagement.getCurrentMap();
 		if (map.isModified()) {
 			// Map has changed, so we must diffuse to clients
@@ -200,7 +209,7 @@ public class NetServer extends NetSend {
 	/**
 	 * Send all waiting dialogs to clients (1 per client)
 	 */
-	public void sendDialogs() {
+    private void sendDialogs() {
 		List<WaitingDialog> dialogQueue=EngineZildo.dialogManagement.getQueue();
 		EasyBuffering buffer = new EasyBuffering();
 		if( dialogQueue.size() !=0) {

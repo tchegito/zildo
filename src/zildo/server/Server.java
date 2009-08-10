@@ -108,14 +108,16 @@ public class Server extends Thread {
 	public void disconnectClient(TransferObject p_client) {
 		// Delete the client's zildo
 		ClientState state=clients.get(p_client);
-		EngineZildo.spriteManagement.deleteSprite(state.zildo);
-		// Remove client from the list
-		clients.remove(p_client);
-		if (clients.isEmpty()) {
-			// No clients anymore, we shut down the server
-			gameRunning=false;
+		if (state != null) {
+			EngineZildo.spriteManagement.deleteSprite(state.zildo);
+			// Remove client from the list
+			clients.remove(p_client);
+			if (clients.isEmpty()) {
+				// No clients anymore, we shut down the server
+				gameRunning=false;
+			}
+			ClientEngineZildo.guiDisplay.displayMessage(p_client.address.getHostName()+" left the game");
 		}
-		ClientEngineZildo.guiDisplay.displayMessage(p_client.address.getHostName()+" left the game");
 	}
 	
 	public Set<TransferObject> getClientsLocation() {
