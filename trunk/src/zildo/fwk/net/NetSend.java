@@ -25,8 +25,9 @@ public class NetSend extends TransferObject {
 	private final static Map<InetSocketAddress, TransferObject> connexions=
 		new HashMap<InetSocketAddress, TransferObject>();
 
-	private final static TransferObject objectForBroadCast=new TransferObject("192.168.0.255", NET_PORT_CLIENT);
-	
+    // Create the broadcast adress
+    private final static TransferObject objectForBroadCast = TransferObject.createBroadCastObject(NET_PORT_CLIENT);
+    
 	public NetSend(Socket p_socket) {
 		super(p_socket.getInetAddress(), p_socket.getPort());		
 	}

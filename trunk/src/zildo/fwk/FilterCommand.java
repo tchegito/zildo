@@ -33,9 +33,11 @@ public class FilterCommand {
 		asked_FadeOut =false;
 	}
 	
-	public void addFilter(ScreenFilter filter) {
-		filters.add(filter);
-	}
+    public void addFilter(ScreenFilter filter) {
+        if (filter.isFBOSupported()) {
+            filters.add(filter);
+        }
+    }
 	
 	public void doPreFilter() {
 		for (ScreenFilter filter : filters) {
