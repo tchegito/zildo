@@ -110,7 +110,7 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void animate(int compteur_animation)
 	{
-		if (getPv() == 0 || EngineZildo.dialogManagement.isDialoguing()) {
+		if (getPv() == 0 || getDialoguingWith() != null) {
 			this.setAjustedX((int) getX());
 			this.setAjustedY((int) getY());
 			return;

@@ -261,7 +261,7 @@ public class GUIDisplay {
 				// Store sprite's index to display for this letter
 				nSpr[nLettre]=getIndexCharacter(a);
 				// Get sprite model to obtain horizontal size
-				spr=EngineZildo.spriteManagement.getSpriteBank(nBank).get_sprite(nSpr[nLettre]);
+				spr=ClientEngineZildo.spriteDisplay.getSpriteBank(nBank).get_sprite(nSpr[nLettre]);
 				sizeCurrentWord+=(spr.getTaille_x() + 1);
 			}
 			nLettre++;
@@ -451,14 +451,15 @@ public class GUIDisplay {
 		int i,j;
 		// Life
 		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,91,207,10);
-		for (i=1;i<zildo.getMaxpv() ;i++) {
-			if (i==zildo.getPv() >> 1 && (zildo.getPv() % 2 == 0)) {
-				j=14;
-			} else if (zildo.getPv() >> 1 < i) {
-				j=1;
-			} else {
-				j=0;
-			}
+        for (i = 0; i < zildo.getMaxpv(); i++) {
+            int pv = zildo.getPv();
+            if (i == pv >> 1 && pv % 2 == 1) {
+                j = 14; // Half heart
+            } else if (pv >> 1 <= i) {
+                j = 1; // Empty heart
+            } else {
+                j = 0; // Full heart
+            }
 			guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,78+j,190+((i-1) % 10) * 8,
 													20+8*((i-1) / 10));
 		}

@@ -15,6 +15,8 @@ import java.nio.ByteBuffer;
 public class EasyBuffering {
 
 
+	private static final String nullString="@nul#";
+	
 	ByteBuffer data;
 	
 	/**
@@ -60,6 +62,9 @@ public class EasyBuffering {
 	
 	public void put(String p_str, int p_nCharacters) {
 		int len=p_nCharacters;
+		if (p_str == null) {
+			p_str=nullString;
+		}
 		if (p_nCharacters == -1) {
 			len=p_str.length();
 		}
@@ -97,6 +102,9 @@ public class EasyBuffering {
 			if (!reachEnd && result.length()!=lengthPertinent) {
 				result+=(char) ((short)0xff & a);	// Remove sign bit
 			}
+		}
+		if (nullString.equals(result)) {
+			result=null;
 		}
 		return result;	
 	}

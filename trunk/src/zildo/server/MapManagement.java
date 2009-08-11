@@ -10,6 +10,7 @@ import zildo.monde.decors.Element;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.map.Point;
 import zildo.monde.map.Zone;
 import zildo.monde.persos.Perso;
 import zildo.prefs.Constantes;
@@ -490,6 +491,19 @@ public class MapManagement {
 		return new Zone((int) x1, (int) y1, (int) x2, (int) y2);
 	}
 
+    /**
+     * Return a respawn position, at an empty place. (temporary : this must be fixed in the map)
+     * @return
+     */
+    public Point getRespawnPosition() {
+        int x = 580;
+        int y = 900;
+        while (collide(x, y, null)) {
+            y -= 16;
+        }
+        return new Point(x, y);
+    }
+    
 	public Area getCurrentMap() {
 		return currentMap;
 	}

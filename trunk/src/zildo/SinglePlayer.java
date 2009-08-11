@@ -82,7 +82,9 @@ public class SinglePlayer {
             ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities());
 
             // Dialogs
-            ClientEngineZildo.dialogDisplay.launchDialog(EngineZildo.dialogManagement.getQueue());
+            if (ClientEngineZildo.dialogDisplay.launchDialog(EngineZildo.dialogManagement.getQueue())) {
+            	EngineZildo.dialogManagement.stopDialog(state);
+            }
             
             // Render client
             done = client.render();

@@ -6,6 +6,7 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.net.packet.AcceptPacket;
 import zildo.fwk.net.packet.AskPacket;
 import zildo.fwk.net.packet.ConnectPacket;
+import zildo.fwk.net.packet.EventPacket;
 import zildo.fwk.net.packet.GetPacket;
 import zildo.fwk.net.packet.ServerPacket;
 
@@ -17,7 +18,8 @@ public abstract class Packet {
 		CLIENT_CONNECT("CLNCONNE", ConnectPacket.class),
 		SERVER_ACCEPT("SRVACCEP", AcceptPacket.class),
 		ASK_RESOURCE("ASK_DATA", AskPacket.class),
-		GET_RESOURCE("GET_DATA", GetPacket.class);
+		GET_RESOURCE("GET_DATA", GetPacket.class),
+		EVENT("EVT_DATA", EventPacket.class);
 		
 		Class<? extends Packet> clazz;
 		String header;

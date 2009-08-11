@@ -6,6 +6,7 @@ package zildo.monde;
  * For now, it just describes two situations:
  * -simple game in a given map
  * -minimum management for map editing (ZEditor)
+ * -deathmatch/cooperative nature
  * 
  * @author tchegito
  *
@@ -13,6 +14,7 @@ package zildo.monde;
 public class Game {
 
 	public boolean editing;
+	public boolean deathmatch;	// Defines the game rules
 	public String mapName;
 	
 	public Game(String p_mapName, boolean p_editing) {

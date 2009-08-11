@@ -19,7 +19,7 @@ public class EngineZildo {
 	public static PersoManagement persoManagement;
 	public static DialogManagement dialogManagement;
 	public static SoundManagement soundManagement;
-	
+
 	private static int timeToWait=0;
 	private static int nFramesToWait=0;
 	
@@ -67,16 +67,25 @@ public class EngineZildo {
 
 	}
 
-	/**
-	 * Create a Zildo for a joining client.
-	 * @return zildo's id
-	 */
-	public int spawnClient() {
-		PersoZildo zildo=new PersoZildo();
-		spriteManagement.spawnPerso( zildo );
-		
-		return zildo.getId();
-	}
+    public int spawnClient() {
+
+        Point respawnLocation = mapManagement.getRespawnPosition();
+        PersoZildo zildo = new PersoZildo(respawnLocation.getX(), respawnLocation.getY());
+        spriteManagement.spawnPerso(zildo);
+
+        return zildo.getId();
+    }
+
+    /**
+     * Zildo comes to death, so respawn him another place.
+     * @param p_zildo
+     */
+    static public void respawnClient(PersoZildo p_zildo) {
+        Point respawnLocation = mapManagement.getRespawnPosition();
+        p_zildo.placeAt(respawnLocation);
+        p_zildo.setPv(13);
+        p_zildo.beingWounded(0, 0);
+    }
 
 	public EngineZildo(Game p_game) {
 		initializeServer(p_game);
