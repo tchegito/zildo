@@ -26,7 +26,7 @@ public class ClientState {
     public KeyboardState keysState;
     public PersoZildo zildo;
     public int inactivityTime;
-    public boolean dialoguing;
+    public DialogState dialogState;
     
     public ClientState(TransferObject p_location, int p_zildoId) {
         location = p_location;
@@ -34,6 +34,6 @@ public class ClientState {
 		zildo=(PersoZildo) Identified.fromId(SpriteEntity.class, p_zildoId);
         keysState=new KeyboardState();
         inactivityTime=0;
-        dialoguing=false;
+        dialogState=new DialogState();
     }
 }

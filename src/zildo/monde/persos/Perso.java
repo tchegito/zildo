@@ -39,7 +39,8 @@ public abstract class Perso extends Element {
     private int money;
 
     private boolean wounded;
-
+    private Perso dialoguingWith;
+    
 	// Liste des sprites complémentaires du perso (ex:bouclier+casque pour zildo)
 	List<Element>	persoSprites;
 
@@ -340,6 +341,21 @@ public abstract class Perso extends Element {
 		return p;
 	}
 	
+    public void placeAt(Point p_point) {
+        placeAt(p_point.getX(), p_point.getY());
+    }
+
+    public void placeAt(int p_posX, int p_posY) {
+        int diffX = (int) x - p_posX;
+        int diffY = (int) y - p_posY;
+        x = (int) p_posX;
+        y = (int) p_posY;
+        for (Element elem : persoSprites) {
+            elem.x += diffX;
+            elem.y += diffY;
+        }
+    }
+    
 	public String toString() {
 		StringBuffer sb=new StringBuffer();
 		sb.append("Perso="+nom+"\nx="+x+"\ny="+y+"\ninfo="+info+"\nmvt="+mouvement);
@@ -378,5 +394,13 @@ public abstract class Perso extends Element {
 
 	public void setCptMouvement(int cptMouvement) {
 		this.cptMouvement = cptMouvement;
+	}
+
+	public Perso getDialoguingWith() {
+		return dialoguingWith;
+	}
+
+	public void setDialoguingWith(Perso p_dialoguingWith) {
+		this.dialoguingWith = p_dialoguingWith;
 	}
 }

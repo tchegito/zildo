@@ -12,6 +12,7 @@ import zildo.fwk.net.Packet.PacketType;
 import zildo.fwk.net.packet.AcceptPacket;
 import zildo.fwk.net.packet.AskPacket;
 import zildo.fwk.net.packet.ConnectPacket;
+import zildo.fwk.net.packet.EventPacket;
 import zildo.fwk.net.packet.GetPacket;
 import zildo.fwk.net.packet.AskPacket.ResourceType;
 import zildo.monde.WaitingDialog;
@@ -19,6 +20,7 @@ import zildo.monde.WaitingSound;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
+import zildo.server.ClientState;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.Server;
@@ -108,6 +110,8 @@ public class NetServer extends NetSend {
 					sendDialogs();
 					
 					receiveKeyboards(packets.getTyped(PacketType.GET_RESOURCE));
+					
+					receiveEvents(packets.getTyped(PacketType.EVENT));
 				}
 				ZUtils.sleep(5);
 			}
@@ -144,7 +148,6 @@ public class NetServer extends NetSend {
         }
         GetPacket getPacket = new GetPacket(ResourceType.ENTITY, entitiesBuffer.getAll(), null);
         sendPacket(getPacket, p_client);
-        //broadcastPacketToAllCients(getPacket);
     }
 	
 	/**
@@ -214,14 +217,34 @@ public class NetServer extends NetSend {
 		EasyBuffering buffer = new EasyBuffering();
 		if( dialogQueue.size() !=0) {
 			for (WaitingDialog dial : dialogQueue) {
-				dial.serialize(buffer);
-				
-		        GetPacket getPacket = new GetPacket(ResourceType.DIALOG, buffer.getAll(), null);
-		        sendPacket(getPacket, dial.client);
-		        buffer.clear();
+				if (dial.client != null) {
+					dial.serialize(buffer);
+					
+			        GetPacket getPacket = new GetPacket(ResourceType.DIALOG, buffer.getAll(), null);
+			        sendPacket(getPacket, dial.client);
+			        buffer.clear();
+				}
 			}
 			EngineZildo.dialogManagement.resetQueue();
 		}
 	}
 
+    /**
+     * 
+     * @param p_events
+     */
+    private void receiveEvents(PacketSet p_events) {
+    	for (Packet p : p_events) {
+    		EventPacket event=(EventPacket) p;
+    		TransferObject source=event.getSource();
+    		switch (event.type) {
+    		case DIALOG_ENDED:
+    			ClientState client=Server.getClientState(source);
+    			EngineZildo.dialogManagement.stopDialog(client);
+    			break;
+    		default:
+    			throw new RuntimeException("This kind of event ("+event.type+") is unknown.");
+    		}
+    	}
+    }
 }

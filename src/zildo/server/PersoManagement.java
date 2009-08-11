@@ -75,35 +75,31 @@ public class PersoManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Checks wether two characters being collided
 	///////////////////////////////////////////////////////////////////////////////////////
-	public Perso collidePerso(int x,int y,Element quelElement,int rayon)
-	{
-		Perso perso=null;
-		if (quelElement.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
-			perso=(Perso) quelElement;
-		}
-		
-		for (Perso persoToCompare : tab_perso) {
-			if (persoToCompare.getPv()>0 && persoToCompare != quelElement) {
-				int tx=(int)persoToCompare.getX();
-				int ty=(int)persoToCompare.getY();
-				if (EngineZildo.collideManagement.check_colli((int) x,(int) y,tx,ty,rayon,rayon)) {
-					if (perso != null && perso.isZildo() && perso.linkedSpritesContains(persoToCompare)) {
-						// Collision entre Zildo et l'objet qu'il porte dans les mains => on laisse
-					} else if (quelElement.getLinkedPerso() != persoToCompare) {
-						return persoToCompare;
-					}
-				}
-			}
-		}
-		return null;
-	}
-	public Perso collidePerso(int x,int y,Element quelPerso) {
-		if (quelPerso == null) {
-			return null;
-		} else {
-			return collidePerso(x, y, quelPerso, 5);
-		}
-	}
+    public Perso collidePerso(int x, int y, Element quelElement, int rayon) {
+        Perso perso = null;
+        if (quelElement != null && quelElement.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+            perso = (Perso) quelElement;
+        }
+
+        for (Perso persoToCompare : tab_perso) {
+            if (persoToCompare.getPv() > 0 && persoToCompare != quelElement) {
+                int tx = (int) persoToCompare.getX();
+                int ty = (int) persoToCompare.getY();
+                if (EngineZildo.collideManagement.check_colli((int) x, (int) y, tx, ty, rayon, rayon)) {
+                    if (perso != null && perso.isZildo() && perso.linkedSpritesContains(persoToCompare)) {
+                        // Collision entre Zildo et l'objet qu'il porte dans les mains => on laisse
+                    } else if (quelElement == null || quelElement.getLinkedPerso() != persoToCompare) {
+                        return persoToCompare;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Perso collidePerso(int x, int y, Element quelPerso) {
+        return collidePerso(x, y, quelPerso, 5);
+    }
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// addPerso

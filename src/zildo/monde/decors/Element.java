@@ -176,10 +176,10 @@ public class Element extends SpriteEntity {
 	 */
 	protected boolean physicMoveWithCollision() {
 		physicMove();
-		if (isSolid() || elementsMobiles.contains(nSpr)) {
-			PersoZildo zildo=EngineZildo.persoManagement.getZildo();
-			if (!zildo.linkedSpritesContains(this) && EngineZildo.mapManagement.collide((int)x,(int)y,this)) {
-				// Collision : on stoppe le mouvement, on ne laisse plus que la chute pour finir au sol
+        if (isSolid() || elementsMobiles.contains(nSpr)) {
+            Perso perso = (Perso) this.getLinkedPerso();
+            boolean partOfPerso = perso == null ? false : perso.linkedSpritesContains(this);
+            if (!partOfPerso && EngineZildo.mapManagement.collide((int) x, (int) y, this)) {				// Collision : on stoppe le mouvement, on ne laisse plus que la chute pour finir au sol
 				EngineZildo.mapManagement.collide((int)x,(int)y,this);
 				x=ancX;
 				y=ancY;

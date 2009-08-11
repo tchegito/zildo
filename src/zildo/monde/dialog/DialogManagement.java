@@ -6,6 +6,8 @@ import java.util.List;
 import zildo.fwk.net.TransferObject;
 import zildo.monde.WaitingDialog;
 import zildo.monde.persos.Perso;
+import zildo.monde.persos.PersoZildo;
+import zildo.server.ClientState;
 import zildo.server.EngineZildo;
 
 // DialogManagement.cpp: implementation of the DialogManagement class.
@@ -36,18 +38,18 @@ public class DialogManagement {
 	// IN : p_zildo : Zildo who's talking
 	//      persoToTalk : perso to talk with
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void launchDialog(TransferObject p_location, Perso persoToTalk) {
+	public void launchDialog(ClientState p_client, Perso persoToTalk) {
 		MapDialog dialogs=EngineZildo.mapManagement.getCurrentMap().getMapDialog();
 		
 		Behavior behav=dialogs.getBehaviors().get(persoToTalk.getNom());
 		if (behav == null) {
-			// This perso couldn't talk
+			// This perso can't talk
 			return;
 		}
 		int compteDial=persoToTalk.getCompte_dialogue();
 		
 		String sentence=dialogs.getSentence(behav,compteDial);
-		dialogQueue.add(new WaitingDialog(sentence, p_location));
+		dialogQueue.add(new WaitingDialog(sentence, -1, p_client.location));
 		
 		// Update perso about next sentence he(she) will say
 		String sharp="#";
@@ -58,13 +60,21 @@ public class DialogManagement {
 		} else if (behav.replique[compteDial+1]!=0) {
 			// On passe à la suivante, puisqu'elle existe
 			persoToTalk.setCompte_dialogue(compteDial + 1);
-		} else if ("tigrou".equals(persoToTalk.getNom())) {
-			persoToTalk.beingWounded(0,0);
 		}
+		// Set the dialoguing states for each Perso
+		persoToTalk.setDialoguingWith(p_client.zildo);
+		p_client.zildo.setDialoguingWith(persoToTalk);
 	}
 	
-	public void actOnDialog(int actionDialog) {
-		
+	public void stopDialog(ClientState p_client) {
+		p_client.dialogState.dialoguing=false;
+		PersoZildo zildo=p_client.zildo;
+		Perso perso=p_client.zildo.getDialoguingWith();
+		perso.setDialoguingWith(null);
+		zildo.setDialoguingWith(null);
+	}
+	public void actOnDialog(TransferObject p_location, int p_actionDialog) {
+		dialogQueue.add(new WaitingDialog(null, p_actionDialog, p_location));
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

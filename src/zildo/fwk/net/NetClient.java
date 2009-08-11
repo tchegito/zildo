@@ -13,8 +13,10 @@ import zildo.fwk.net.Packet.PacketType;
 import zildo.fwk.net.packet.AcceptPacket;
 import zildo.fwk.net.packet.AskPacket;
 import zildo.fwk.net.packet.ConnectPacket;
+import zildo.fwk.net.packet.EventPacket;
 import zildo.fwk.net.packet.GetPacket;
 import zildo.fwk.net.packet.AskPacket.ResourceType;
+import zildo.fwk.net.packet.EventPacket.EventType;
 import zildo.monde.WaitingDialog;
 import zildo.monde.WaitingSound;
 import zildo.monde.decors.SpriteEntity;
@@ -195,7 +197,11 @@ public class NetClient extends NetSend {
         EasyBuffering buffer = new EasyBuffering(p_packet.getBuffer());
     	WaitingDialog dial=WaitingDialog.deserialize(buffer);
     	
-    	ClientEngineZildo.dialogDisplay.launchDialog(Collections.singletonList(dial));
+    	boolean dialogEnded=ClientEngineZildo.dialogDisplay.launchDialog(Collections.singletonList(dial));
+    	if (dialogEnded) {
+    		EventPacket packet=new EventPacket(EventType.DIALOG_ENDED);
+    		sendPacket(packet, server);
+    	}
     }
     
     public void close() {

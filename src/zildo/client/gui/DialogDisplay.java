@@ -41,11 +41,24 @@ public class DialogDisplay {
 		}
 	}
 	
-	public void launchDialog(List<WaitingDialog> p_queue) {
-		for (WaitingDialog dial : p_queue) {
-			launchDialog(dial.sentence);
-		}
-	}
+	/**
+	 * Act on a dialog. Launch, continue, or quit the dialog.
+	 * @param p_queue
+	 * @return boolean (TRUE if dialog ends)
+	 */
+    public boolean launchDialog(List<WaitingDialog> p_queue) {
+    	boolean result=false;
+        for (WaitingDialog dial : p_queue) {
+            if (dial.client == null) {
+            	if (dial.sentence != null) {
+            		launchDialog(dial.sentence);
+            	} else {
+            		result=actOnDialog(dial.action);
+            	}
+            }
+        }
+        return result;
+    }
 	
 	/**
 	 * Ask GUI to display the current sentence.
@@ -144,19 +157,22 @@ public class DialogDisplay {
 	// .Quit dialog
 	// .Move on dialog
 	// .Choose topic
+	// -Returns TRUE if dialog is finished
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void actOnDialog(int actionDialog) {
+	public boolean actOnDialog(int actionDialog) {
 		GUIDisplay guiManagement = ClientEngineZildo.guiDisplay;
 		boolean entireMessageDisplay=guiManagement.isEntireMessageDisplay();
 		boolean visibleMessageDisplay=guiManagement.isVisibleMessageDisplay();
 	
+		boolean result=false;
+		
 		if (topicChoosing) {
 			// Topic
 			switch (actionDialog) {
 			case ACTIONDIALOG_ACTION:
 				guiManagement.setToRemove_dialoguing(true);
 				topicChoosing=false;
-				dialoguing=false;
+				result=true;
 				break;
 			case ACTIONDIALOG_DOWN:
 				if (selectedTopic != nProposedTopics - 1) {
@@ -178,10 +194,11 @@ public class DialogDisplay {
 				} else {
 					// Quit dialog
 					guiManagement.setToRemove_dialoguing(true);
-					dialoguing=false;
+					result=true;
 				}
 			}
 		}
+		return result;
 	}
 
 }

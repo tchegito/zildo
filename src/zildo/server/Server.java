@@ -28,7 +28,7 @@ public class Server extends Thread {
 	public static final long TIMER_DELAY = (long) (1000.f / 75f);
 	public static final int CLIENT_TIMEOUT = 300;
 	
-    Map<TransferObject, ClientState> clients = new HashMap<TransferObject, ClientState>();
+    static Map<TransferObject, ClientState> clients = new HashMap<TransferObject, ClientState>();
 
 	boolean gameRunning;
 	Game game;
@@ -143,6 +143,9 @@ public class Server extends Thread {
 		clients.put(p_client, state);
 	}
 	
+	/**
+	 * Check client's inactivity. Disconnect the one who crosses the timeout line.
+	 */
 	public void checkInactivity() {
 		List<TransferObject> clientsDisconnected=new ArrayList<TransferObject>();
 		for (ClientState state : clients.values()) {
@@ -154,8 +157,12 @@ public class Server extends Thread {
 		for (TransferObject obj : clientsDisconnected) {
 			disconnectClient(obj);
 		}
-
 	}
+
+	static public ClientState getClientState(TransferObject p_object) {
+		return clients.get(p_object);
+	}
+	
 	public Collection<ClientState> getClientStates() {
 		return clients.values();
 	}

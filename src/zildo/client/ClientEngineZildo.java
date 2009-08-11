@@ -121,7 +121,7 @@ public class ClientEngineZildo {
 			if (dialogDisplay.isDialoguing()) {
 				dialogDisplay.manageDialog();
 			}
-			guiDisplay.draw();
+
 		}
 		
 		// Tile engine
@@ -153,7 +153,7 @@ public class ClientEngineZildo {
 		}
 
         guiDisplay.drawMessages();
-
+		guiDisplay.draw();
 
 		filterCommand.doFilter();
 

@@ -42,16 +42,16 @@ public class PersoZildo extends Perso {
 	// Return a perso named Zildo : this game's hero !
 	// with a temporary location.
 	///////////////////////////////////////////////////////////////////////////////////////
-	public PersoZildo() {
-		super();
-		this.setNom("Zildo");
-	
-		// We could maybe put that somewhere else
-		this.setNBank(SpriteBank.BANK_ZILDO);
-		setNSpr(0);
-	
-		setX(580+0*306 +0*5*16); //805); //601-32;//-500);
-		setY(900+0*15*16); //973); //684+220;//-110);
+    public PersoZildo(int p_posX, int p_posY) {
+        super();
+        this.setNom("Zildo");
+
+        // We could maybe put that somewhere else
+        this.setNBank(SpriteBank.BANK_ZILDO);
+        setNSpr(0);
+
+        setX(p_posX); // 805); //601-32;//-500);
+        setY(p_posY); // 973); //684+220;//-110);
 		setDx(0);
 		setDy(0);
 		setAngle(Angle.NORD);
@@ -497,10 +497,10 @@ public class PersoZildo extends Perso {
 		elem.setX(objX);
 		elem.setY(objY);
 		elem.setZ(4);
-		elem.setVisible(true);
+        elem.setVisible(true);
 
-		persoSprites.add(elem);	// Link to Zildo
-		
+        addPersoSprites(elem);	// Link to Zildo
+        
 		if (object == null) {
 			EngineZildo.spriteManagement.spawnSprite(elem);
 		}

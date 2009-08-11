@@ -67,7 +67,7 @@ public class TransferObject {
             e.printStackTrace();
         }
         String adr = "";
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             adr += ((short) 0xff & b[i]) + ".";
         }
         adr += "255";
