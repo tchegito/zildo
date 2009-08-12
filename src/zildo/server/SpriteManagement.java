@@ -81,7 +81,7 @@ public class SpriteManagement extends SpriteStore {
 	// Spawn an element with minimal requirements
 	// -build an element with given parameters
 	// -add it to the sprite engine
-	public void spawnElement(int nBank, int nSpr, int x, int y)
+	public Element spawnElement(int nBank, int nSpr, int x, int y)
 	{
 	
 		// SpriteEntity informations
@@ -93,6 +93,8 @@ public class SpriteManagement extends SpriteStore {
 		element.setMoved(false);
 	
 		spawnSprite(element);
+		
+		return element;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -227,15 +229,14 @@ public class SpriteManagement extends SpriteStore {
 	// Spawn a sprite with minimal requirements
 	// -build an entity with given parameters
 	// -add it to the sprite engine
-	public void spawnSprite(int nBank, int nSpr, int x, int y)
+	public SpriteEntity spawnSprite(int nBank, int nSpr, int x, int y)
 	{
 	
 		SpriteModel spr=getSpriteBank(nBank).get_sprite(nSpr);
 
 		if (nSpr == 69 || nSpr == 70 || nSpr == 28) {
 			// Particular sprite (Block that Zildo can move, chest...)
-			spawnElement(nBank, nSpr, x,y+spr.getTaille_y() / 2 - 3);
-			return;
+			return spawnElement(nBank, nSpr, x,y+spr.getTaille_y() / 2 - 3);
 		}
 
 		// SpriteEntity informations
@@ -249,6 +250,8 @@ public class SpriteManagement extends SpriteStore {
 		entity.y=y - (spr.getTaille_y() >> 1);
 	
 		spawnSprite(entity);
+		
+		return entity;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -291,7 +294,9 @@ public class SpriteManagement extends SpriteStore {
 			}
 			Element element = null;
 			// Calcul physique du sprite
-			if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
+			if (entity.dying) {
+				toDelete.add(entity);
+			} else if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
 				// X, vX, aX, ...
 				element = (Element)entity;
 				List<SpriteEntity> deads=element.animate();

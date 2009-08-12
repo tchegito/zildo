@@ -37,8 +37,6 @@ public class SpriteDisplay extends SpriteStore {
 	private int bankOrder[][];
 	// bankOrder works like this { (BanqueN,i) , (BanqueM,j) , (BanqueP,k) ... }
 
-	private int camerax;
-	private int cameray;
 	public int zildoId;
 	
 	// We use a map to ease the access to an entity with his ID
@@ -84,8 +82,6 @@ public class SpriteDisplay extends SpriteStore {
 		bankOrder[1][0]=-1;	// Indicates no bank	
 	
 		clearEntirelySortArray();
-		
-		initCamera();
 	}
 	
 	/**
@@ -107,8 +103,6 @@ public class SpriteDisplay extends SpriteStore {
 				// Camera moves
 				entity.setScrX ( entity.getAjustedX() - cameraXnew);
 				entity.setScrY ( entity.getAjustedY() - cameraYnew);
-
-				entity.calculated=true;
 			}
 		}
 		
@@ -119,9 +113,6 @@ public class SpriteDisplay extends SpriteStore {
 						entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
 					entity.setScrX((int) (entity.x - cameraXnew));
 					entity.setScrY((int) (entity.y - cameraYnew));
-				}
-				if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_FONT && entity.getNSpr() == 26+12+26+10) {
-					int j=9;
 				}
 				if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
 					// Center sprite
@@ -152,9 +143,6 @@ public class SpriteDisplay extends SpriteStore {
 		orderSpritesByBank();			// Fill the quadOrder and bankOrder arrays
 		spriteEngine.buildIndexBuffers(quadOrder);
 		spriteEngine.setBankOrder(bankOrder);
-		
-		camerax=cameraXnew;
-		cameray=cameraYnew;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -304,10 +292,5 @@ public class SpriteDisplay extends SpriteStore {
 	
 	public void setZildoId(int p_zildoId) {
 		zildoId=p_zildoId;
-	}
-	
-	public void initCamera() {
-		camerax=0;
-		cameray=0;
 	}
 }
