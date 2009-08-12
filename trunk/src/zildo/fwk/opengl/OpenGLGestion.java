@@ -115,6 +115,7 @@ public abstract class OpenGLGestion {
 
     public void init() throws LWJGLException {
         IL.create();
+        initAppIcon();
         loadTextures();
         initGL();   
     }
@@ -123,6 +124,13 @@ public abstract class OpenGLGestion {
         loadTexture(Constantes.DATA_PATH+"Marie.bmp");
     }
     
+    public void initAppIcon() {
+        ByteBuffer icon = ByteBuffer.allocate(16 * 16 * 4);
+        icon.put(OpenGLZildo.icon);
+        icon.flip();
+        Display.setIcon(new ByteBuffer[] { icon });
+    }
+
     private void initGL() {
         GL11.glEnable(GL11.GL_TEXTURE_2D); // Enable Texture Mapping
         GL11.glShadeModel(GL11.GL_SMOOTH); // Enable Smooth Shading

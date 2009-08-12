@@ -407,10 +407,10 @@ public class Element extends SpriteEntity {
 		if (nSpr==1) {
 			// Le buisson s'effeuille
 			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON,(int) x,(int) y,0, null);
-			EngineZildo.broadcastSound("CasseBuisson", this);
+			EngineZildo.soundManagement.broadcastSound("CasseBuisson", this);
 		} else if (nSpr==12 || nSpr==42) {
 			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_ECLATEPIERRE,(int) x,(int) y,0, null);
-			EngineZildo.broadcastSound("CassePierre", this);
+			EngineZildo.soundManagement.broadcastSound("CassePierre", this);
 		} else if (nSpr==32) {
 			// La poule reprend vie dans le tableau de perso
 			/*

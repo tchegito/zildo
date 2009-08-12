@@ -84,7 +84,7 @@ public class PersoNJ extends Perso {
 					  this);
 		}
 	
-		EngineZildo.broadcastSound("MonstreTouche", this);
+		EngineZildo.soundManagement.broadcastSound("MonstreTouche", this);
 	
 		return died;
 	}
@@ -225,7 +225,7 @@ public class PersoNJ extends Perso {
 							if (this.getAttente()==1 && cptMouvement<2) {
 								if (!alerte && lookForZildo(Angle.rotate(angle, PersoGardeVert.mouvetete[cptMouvement]))) {
 									alerte=true;
-									EngineZildo.broadcastSound("MonstreTrouve", this);
+									EngineZildo.soundManagement.broadcastSound("MonstreTrouve", this);
 								}
 								cptMouvement++;
 								setAttente(20);

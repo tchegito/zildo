@@ -40,7 +40,7 @@ public class ElementAnimMort extends Element {
 			}
 		}
 		if (vx >= 1.0f && vx<1.15f) {
-			EngineZildo.broadcastSound("MonstreMeurt", this);
+			EngineZildo.soundManagement.broadcastSound("MonstreMeurt", this);
 		}
 		nSpr=seq_mort[(byte) vx];
 		if (nSpr==0) {

@@ -292,7 +292,7 @@ public class Area {
 			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON,
 															spriteLocation.getX(),
 															spriteLocation.getY(),0, null);
-			EngineZildo.broadcastSound("CasseBuisson", spriteLocation);
+			EngineZildo.soundManagement.broadcastSound("CasseBuisson", spriteLocation);
 	
 			this.writemap(tileLocation.getX(),tileLocation.getY(),166);
 		}

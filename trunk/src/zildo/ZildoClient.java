@@ -2,8 +2,6 @@ package zildo;
 
 import java.util.logging.LogManager;
 
-import zildo.monde.Game;
-
 public class ZildoClient {
 
 	public static void main(String[] args) {
@@ -17,8 +15,6 @@ public class ZildoClient {
 			LogManager.getLogManager().reset();
 		}
 		
-        Game game = new Game("polaky", false);
-        //new SinglePlayer(game);
         new MultiPlayer();
 	}
 

@@ -49,7 +49,7 @@ public class DialogManagement {
 		int compteDial=persoToTalk.getCompte_dialogue();
 		
 		String sentence=dialogs.getSentence(behav,compteDial);
-		dialogQueue.add(new WaitingDialog(sentence, -1, p_client.location));
+		dialogQueue.add(new WaitingDialog(sentence, -1, false, p_client.location));
 		
 		// Update perso about next sentence he(she) will say
 		String sharp="#";
@@ -74,7 +74,11 @@ public class DialogManagement {
 		zildo.setDialoguingWith(null);
 	}
 	public void actOnDialog(TransferObject p_location, int p_actionDialog) {
-		dialogQueue.add(new WaitingDialog(null, p_actionDialog, p_location));
+		dialogQueue.add(new WaitingDialog(null, p_actionDialog, false, p_location));
+	}
+	
+	public void writeConsole(String p_sentence) {
+		dialogQueue.add(new WaitingDialog(p_sentence, 0, true, null));
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

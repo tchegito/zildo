@@ -17,27 +17,22 @@ public class ZildoRenderer implements IRenderable {
 		client=new Client(true);
 	}
 	
-	@Override
 	public void initRenderer() {
     	client.initGL();
 	}
 
-	@Override
 	public void initScene() {
 	}
 
-	@Override
 	public boolean isInitialized() {
 		return initialized;
 	}
 
-	@Override
 	public void preRenderScene() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void renderScene() {
 		if (e == null) {
 			try {
@@ -53,7 +48,6 @@ public class ZildoRenderer implements IRenderable {
 		client.cleanUp();
 	}
 	
-	@Override
 	public void setInitialized(boolean initialized) {
 		this.initialized=initialized;
 	}

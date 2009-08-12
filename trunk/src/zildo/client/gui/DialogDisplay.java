@@ -51,7 +51,11 @@ public class DialogDisplay {
         for (WaitingDialog dial : p_queue) {
             if (dial.client == null) {
             	if (dial.sentence != null) {
-            		launchDialog(dial.sentence);
+            		if (dial.console) {
+            			ClientEngineZildo.guiDisplay.displayMessage(dial.sentence);
+            		} else {
+            			launchDialog(dial.sentence);
+            		}
             	} else {
             		result=actOnDialog(dial.action);
             	}

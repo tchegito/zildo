@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
-import zildo.monde.decors.SpriteEntity;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.Point;
 import zildo.monde.persos.PersoZildo;
@@ -138,22 +137,4 @@ public class EngineZildo {
 		// Load map
 		mapManagement.charge_map(mapname);
 	}
-	
-    /**
-     * Send to all clients a sound from given entity's location
-     * @param p_soundName
-     * @param p_source
-     */
-    public static void broadcastSound(String p_soundName, SpriteEntity p_source) {
-        soundManagement.broadcastSound(p_soundName, (int) p_source.x / 16, (int) p_source.y / 16);
-    }
-
-    /**
-     * Send to all clients a sound from given entity's location
-     * @param p_soundName
-     * @param p_source
-     */
-    public static void broadcastSound(String p_soundName, Point p_point) {
-        soundManagement.broadcastSound(p_soundName, p_point);
-    }
 }
