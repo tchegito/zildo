@@ -217,11 +217,15 @@ public class NetServer extends NetSend {
 		EasyBuffering buffer = new EasyBuffering();
 		if( dialogQueue.size() !=0) {
 			for (WaitingDialog dial : dialogQueue) {
-				if (dial.client != null) {
+				if (dial.client != null || dial.console) {
 					dial.serialize(buffer);
 					
 			        GetPacket getPacket = new GetPacket(ResourceType.DIALOG, buffer.getAll(), null);
-			        sendPacket(getPacket, dial.client);
+			        if (!dial.console) {
+			        	sendPacket(getPacket, dial.client);
+			        } else {
+			        	broadcastPacketToAllCients(getPacket);
+			        }
 			        buffer.clear();
 				}
 			}

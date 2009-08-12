@@ -157,9 +157,9 @@ public class PlayerManagement {
 					heros.setX(zildoAvantSaut.getX());
 					heros.setY(zildoAvantSaut.getY());
 					heros.setPv(heros.getPv()-2);
-					EngineZildo.broadcastSound("ZildoPlonge", heros);
+					EngineZildo.soundManagement.broadcastSound("ZildoPlonge", heros);
 				} else {
-					EngineZildo.broadcastSound("ZildoAtterit", heros);
+					EngineZildo.soundManagement.broadcastSound("ZildoAtterit", heros);
 				}
 				heros.setEn_bras(0);
 			} else {
@@ -316,7 +316,7 @@ public class PlayerManagement {
 								heros.setY(yy);
 								heros.setEn_bras(0);
 								heros.setPosAvantSaut(zildoAvantSaut);
-								EngineZildo.broadcastSound("ZildoTombe", heros);
+								EngineZildo.soundManagement.broadcastSound("ZildoTombe", heros);
 							}
 						}	//if dx=15
 						heros.setPos_seqsprite(-1);
@@ -335,12 +335,12 @@ public class PlayerManagement {
 						case 278:
 							mapManagement.getCurrentMap().writemap(cx,cy,314);
 							mapManagement.getCurrentMap().writemap(cx+1,cy,315);
-							EngineZildo.broadcastSound("OuvrePorte", heros);
+							EngineZildo.soundManagement.broadcastSound("OuvrePorte", heros);
 							break;
 						case 279:
 							mapManagement.getCurrentMap().writemap(cx-1,cy,314);
 							mapManagement.getCurrentMap().writemap(cx,cy,315);
-							EngineZildo.broadcastSound("OuvrePorte", heros);
+							EngineZildo.soundManagement.broadcastSound("OuvrePorte", heros);
 							break;
 						case 857: case 858: case 859: case 860:
 						case 861: case 862: case 863: case 864:

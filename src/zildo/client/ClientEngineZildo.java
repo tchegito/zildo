@@ -152,11 +152,9 @@ public class ClientEngineZildo {
 			this.debug();
 		}
 
-        guiDisplay.drawMessages();
 		guiDisplay.draw();
 
 		filterCommand.doFilter();
-
 
 		openGLGestion.endScene();
 		//gfxBasics.EndRendering();

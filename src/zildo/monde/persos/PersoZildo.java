@@ -103,7 +103,7 @@ public class PersoZildo extends Perso {
 	// attack
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void attack() {
-		EngineZildo.broadcastSound("ZildoAttaque", this);
+		EngineZildo.soundManagement.broadcastSound("ZildoAttaque", this);
 		setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_EPEE);
 		setAttente(6*3);
 	}
@@ -183,7 +183,7 @@ public class PersoZildo extends Perso {
 			elem.az=-0.07f;
 			setEn_bras(0);
 		}
-		EngineZildo.broadcastSound("ZildoTouche", this);
+		EngineZildo.soundManagement.broadcastSound("ZildoTouche", this);
 	
 		return (getPv() == 0);
 	}
@@ -470,10 +470,10 @@ public class PersoZildo extends Perso {
 		// Sound
 		switch (nSpr) {
 			case 48: case 51: case 54:
-				EngineZildo.broadcastSound("ZildoRecupArgent", this);
+				EngineZildo.soundManagement.broadcastSound("ZildoRecupArgent", this);
 				break;
 			case 10: case 40:
-				EngineZildo.broadcastSound("ZildoRecupCoeur", this);
+				EngineZildo.soundManagement.broadcastSound("ZildoRecupCoeur", this);
 				break;
 		}
 	}
@@ -484,7 +484,7 @@ public class PersoZildo extends Perso {
 	 * @param obj
 	 */
 	public void takeSomething(int objX, int objY, int obj, Element object) {
-		EngineZildo.broadcastSound("ZildoRamasse", this);
+		EngineZildo.soundManagement.broadcastSound("ZildoRamasse", this);
 
 		Element elem=object;
 		if (object == null) {
@@ -549,7 +549,7 @@ public class PersoZildo extends Perso {
 				element.setFx(0.04f);
 				break;
 		}
-		EngineZildo.broadcastSound("ZildoLance", this);		
+		EngineZildo.soundManagement.broadcastSound("ZildoLance", this);		
 	}
 	
 	/**

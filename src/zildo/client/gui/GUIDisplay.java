@@ -99,9 +99,11 @@ public class GUIDisplay {
 			// Draw frame and text inside it
 			drawFrame();
 		};
+		
+        drawConsoleMessages();
 	}
 	
-	public void drawMessages() {
+	public void drawConsoleMessages() {
 		int y=230;
 		List<GameMessage> toRemove=new ArrayList<GameMessage>();
 		for (GameMessage mess : messageQueue) {
@@ -202,7 +204,7 @@ public class GUIDisplay {
 		// Interpret dialog Mode
 		int nBank;
 		int sizeLine;
-		int nMaxLigne;
+		//int nMaxLigne;
 		boolean visibleFont;
 		boolean center;
 		int i;
@@ -211,14 +213,14 @@ public class GUIDisplay {
 		default:
 			nBank=SpriteBank.BANK_FONTES;
 			sizeLine=Constantes.TEXTER_SIZELINE;
-			nMaxLigne=3;
+			//nMaxLigne=3;
 			visibleFont=false;
 			center=false;
 			break;
 		case DIALOGMODE_TOPIC:
 			nBank=SpriteBank.BANK_FONTES2;
 			sizeLine=Constantes.TEXTER_TOPIC_SIZELINE;
-			nMaxLigne=10;
+			//nMaxLigne=10;
 			visibleFont=true;
 			center=true;
 			break;
