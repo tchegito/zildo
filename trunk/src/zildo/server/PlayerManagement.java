@@ -60,6 +60,9 @@ public class PlayerManagement {
 				// Conversation
 				handleConversation();
 			}
+		} else if (heros.isInventoring()) {
+			// Inside the zildo's inventory
+			handleInventory();
 		} else {
 			// Regular moving on the map
 			handleRegularMoving();
@@ -72,23 +75,29 @@ public class PlayerManagement {
 	void handleCommon() {
 	
 		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ATTACK)) {
-			keyPressAttack(heros);
+			keyPressAttack();
 		} else {
-			keyReleaseAttack(heros);
+			keyReleaseAttack();
 		}
 	
 		if (false) {	// Unable for now the Topic key (this will come later)
 			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_TOPIC)) {
-				keyPressTopic(heros);
+				keyPressTopic();
 			} else {
-				keyReleaseTopic(heros);
+				keyReleaseTopic();
 			}
 		}
 	
 		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ACTION)) {
-			keyPressAction(heros);
+			keyPressAction();
 		} else {
-			keyReleaseAction(heros);
+			keyReleaseAction();
+		}
+		
+		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
+			keyPressInventory();
+		} else {
+			keyReleaseInventory();
 		}
 	}
 	
@@ -385,6 +394,19 @@ public class PlayerManagement {
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
+	// handleInventory
+	///////////////////////////////////////////////////////////////////////////////////////
+	void handleInventory() {
+		if (heros.guiCircle.isAvailable()) {
+			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_LEFT)) {
+				heros.guiCircle.rotate(true);
+			} else if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_RIGHT)) {
+				heros.guiCircle.rotate(false);
+			}
+		}
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
 	// handleConversation
 	///////////////////////////////////////////////////////////////////////////////////////
 	void handleConversation() {
@@ -416,7 +438,7 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// keyPressAction
 	///////////////////////////////////////////////////////////////////////////////////////
-	void keyPressAction(PersoZildo perso) {
+	void keyPressAction() {
 	
 	    int cx,cy;
 	    Angle persoangle;
@@ -426,10 +448,10 @@ public class PlayerManagement {
 		if (!keysState.key_actionPressed) {
 			if (dialogState.dialoguing) {
 				EngineZildo.dialogManagement.actOnDialog(client.location, DialogDisplay.ACTIONDIALOG_ACTION);
-			} else { //
-				if (perso.getMouvement()==MouvementZildo.MOUVEMENT_BRAS_LEVES) {
-					perso.throwSomething();
-				} else if (perso.getMouvement()!=MouvementZildo.MOUVEMENT_BRAS_LEVES) {
+			} else if (!heros.isInventoring()) { //
+				if (heros.getMouvement()==MouvementZildo.MOUVEMENT_BRAS_LEVES) {
+					heros.throwSomething();
+				} else if (heros.getMouvement()!=MouvementZildo.MOUVEMENT_BRAS_LEVES) {
 					// On teste s'il y a un personnage à qui parler
 				/*    with_dialogue=0;
 					i=0;
@@ -442,29 +464,29 @@ public class PlayerManagement {
 					until (with_dialogue<>0) or (i=MAX_PERSO-1);
 				*/
 					Perso persoToTalk=EngineZildo.persoManagement.
-						collidePerso((int) perso.getX(),(int) perso.getY(),perso,10);
+						collidePerso((int) heros.getX(),(int) heros.getY(),heros,10);
 		
 					if (persoToTalk!=null && !persoToTalk.isZildo()) {
 					 // On vérifie qu'il ne s'agit pas d'une poule
 						if (persoToTalk.getQuel_spr().equals(PersoDescription.POULE)) {
-							perso.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, 32, persoToTalk);
+							heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, 32, persoToTalk);
 						} else if (persoToTalk.getDialoguingWith() == null) {
 							// On vérifie que Zildo regarde la personne
 							cx=(int) persoToTalk.getX();
 							cy=(int) persoToTalk.getY();
 							cestbon=false;
-							switch (perso.getAngle()) {
-								case NORD:if (cy<perso.getY()) cestbon=true;break;
-								case EST:if (cx>perso.getX()) cestbon=true;break;
-								case SUD:if (cy>perso.getY()) cestbon=true;break;
-								case OUEST:if (cx<perso.getX()) cestbon=true;break;
+							switch (heros.getAngle()) {
+								case NORD:if (cy<heros.getY()) cestbon=true;break;
+								case EST:if (cx>heros.getX()) cestbon=true;break;
+								case SUD:if (cy>heros.getY()) cestbon=true;break;
+								case OUEST:if (cx<heros.getX()) cestbon=true;break;
 							}
 							if (cestbon) {
 								// On change l'angle du perso
-								if ( Math.abs(cx-perso.getX())>(Math.abs(cy-perso.getY())*0.7f) ) {
-									if (cx>perso.getX()) persoangle=Angle.OUEST; else persoangle=Angle.EST;
+								if ( Math.abs(cx-heros.getX())>(Math.abs(cy-heros.getY())*0.7f) ) {
+									if (cx>heros.getX()) persoangle=Angle.OUEST; else persoangle=Angle.EST;
 								} else {
-									if (cy>perso.getY()) persoangle=Angle.NORD; else persoangle=Angle.SUD;
+									if (cy>heros.getY()) persoangle=Angle.NORD; else persoangle=Angle.SUD;
 								}
 								//perso.setAngle((persoangle+2) % 4);
 								// Est-ce que ce perso/sprite a plusieurs angles ?
@@ -480,8 +502,8 @@ public class PlayerManagement {
 						//On teste s'il y a un objet
 						final int add_anglex[]={0,1,0,-1};
 						final int add_angley[]={-1,0,1,0};
-						int newx=((int)perso.x+5*add_anglex[perso.getAngle().value]) / 16;
-						int newy=((int)perso.y+3*add_angley[perso.getAngle().value]) / 16;
+						int newx=((int)heros.x+5*add_anglex[heros.getAngle().value]) / 16;
+						int newy=((int)heros.y+3*add_angley[heros.getAngle().value]) / 16;
 						int on_map=EngineZildo.mapManagement.getCurrentMap().readmap(newx,newy);
 						int enBras=-1;
 						if (new IntSet(165,167,169,751).contains(on_map)) {
@@ -498,7 +520,7 @@ public class PlayerManagement {
 							case 751:enBras=0;break;
 							}
 							if (enBras != -1) {
-								perso.takeSomething(newx*16+8, newy*16+14, enBras, null);
+								heros.takeSomething(newx*16+8, newy*16+14, enBras, null);
 							}
 							int j;
 							if (on_map==165) {
@@ -507,14 +529,14 @@ public class PlayerManagement {
 								j=752;
 							} else j=168;
 							EngineZildo.mapManagement.getCurrentMap().writemap(newx, newy, j);
-						} else if (on_map==743 && perso.getAngle()==Angle.NORD) {
+						} else if (on_map==743 && heros.getAngle()==Angle.NORD) {
 							//Zildo a trouvé un coffre ! C'est pas formidable ?
 							EngineZildo.mapManagement.getCurrentMap().writemap(newx, newy, 744);
 							//Musique('c:\musique\midi\zelda\Trouve.mid');
 							EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_FROMCHEST,16*newx+8,16*newy+16,51, null);
 							//EngineZildo.setWaitingScene(20);
 						} else if (!EngineZildo.mapManagement.isWalkable(on_map)) {
-							perso.setMouvement(MouvementZildo.MOUVEMENT_TIRE);
+							heros.setMouvement(MouvementZildo.MOUVEMENT_TIRE);
 						}
 					}
 				}
@@ -526,11 +548,11 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// keyReleaseAction
 	///////////////////////////////////////////////////////////////////////////////////////
-	void keyReleaseAction(Perso perso) {
+	void keyReleaseAction() {
 		if (keysState.key_actionPressed) {
 			keysState.key_actionPressed=false;
-			if (perso.getMouvement()==MouvementZildo.MOUVEMENT_TIRE) {
-				perso.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
+			if (heros.getMouvement()==MouvementZildo.MOUVEMENT_TIRE) {
+				heros.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
 			}
 		}
 	}
@@ -538,12 +560,12 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// keyPressAttack
 	///////////////////////////////////////////////////////////////////////////////////////
-	void keyPressAttack(Perso perso) {
-		if (!keysState.key_attackPressed && perso.getEn_bras() == 0 && !EngineZildo.dialogManagement.isDialoguing()) {
+	void keyPressAttack() {
+		if (!keysState.key_attackPressed && heros.getEn_bras() == 0 && !client.dialogState.dialoguing && !heros.isInventoring()) {
 			// Set Zildo in attack stance
-			perso.attack();
+			heros.attack();
 			// Get the attacked tile
-			Point tileAttacked=perso.getAttackTarget();
+			Point tileAttacked=heros.getAttackTarget();
 			// And ask 'map' object to react
 			EngineZildo.mapManagement.getCurrentMap().attackTile(tileAttacked);
 		}
@@ -553,11 +575,11 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// keyReleaseAttack
 	///////////////////////////////////////////////////////////////////////////////////////
-	void keyReleaseAttack(Perso perso) {
+	void keyReleaseAttack() {
 		if (keysState.key_attackPressed) {
 			keysState.key_attackPressed=false;
-			if (perso.getMouvement()==MouvementZildo.MOUVEMENT_TIRE) {
-				perso.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
+			if (heros.getMouvement()==MouvementZildo.MOUVEMENT_TIRE) {
+				heros.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
 			}
 		}
 	}
@@ -565,8 +587,8 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// keyPressTopic
 	///////////////////////////////////////////////////////////////////////////////////////
-	void keyPressTopic(Perso perso) {
-		if (!keysState.key_topicPressed && !EngineZildo.dialogManagement.isDialoguing()) {
+	void keyPressTopic() {
+		if (!keysState.key_topicPressed && !client.dialogState.dialoguing) {
 			DialogManagement dialogManagement=EngineZildo.dialogManagement;
 			dialogManagement.launchTopicSelection();
 	
@@ -577,9 +599,32 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// keyReleaseTopic
 	///////////////////////////////////////////////////////////////////////////////////////
-	void keyReleaseTopic(Perso perso) {
+	void keyReleaseTopic() {
 		if (keysState.key_topicPressed) {
 			keysState.key_topicPressed=false;
+		}
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	// keyPressInventory
+	///////////////////////////////////////////////////////////////////////////////////////
+	void keyPressInventory() {
+		if (!keysState.key_inventoryPressed && !client.dialogState.dialoguing && heros.getMouvement()==MouvementZildo.MOUVEMENT_VIDE) {
+			if (!heros.isInventoring()) {
+				heros.lookInventory();
+			} else {
+				heros.closeInventory();
+			}
+			keysState.key_inventoryPressed=true;
+		}
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	// keyReleaseTopic
+	///////////////////////////////////////////////////////////////////////////////////////
+	void keyReleaseInventory() {
+		if (keysState.key_inventoryPressed) {
+			keysState.key_inventoryPressed=false;
 		}
 	}
 }

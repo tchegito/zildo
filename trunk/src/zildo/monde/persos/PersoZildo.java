@@ -1,11 +1,16 @@
 package zildo.monde.persos;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemCircle;
+import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.persos.utils.MouvementZildo;
@@ -17,6 +22,10 @@ public class PersoZildo extends Perso {
 	
 	private SpriteEntity pushingSprite;
 	private Point posAvantSaut;
+	
+	private boolean inventoring=false; 
+	public ItemCircle guiCircle;
+	private List<Item> inventory;
 	
 	// Sequence for sprite animation
 	static int seq_1[]={0,1,2,1};
@@ -32,7 +41,7 @@ public class PersoZildo extends Perso {
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
 	
-	public PersoZildo(int p_id) {
+	public PersoZildo(int p_id) {	// Only used to create Zildo on a client
 		id=p_id;
 	}
 	
@@ -40,7 +49,7 @@ public class PersoZildo extends Perso {
 	// PersoZildo
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Return a perso named Zildo : this game's hero !
-	// with a temporary location.
+	// with a given location.
 	///////////////////////////////////////////////////////////////////////////////////////
     public PersoZildo(int p_posX, int p_posY) {
         super();
@@ -85,6 +94,11 @@ public class PersoZildo extends Perso {
 		addPersoSprites(bouclier);
 		addPersoSprites(ombre);
 		addPersoSprites(piedsMouilles);
+		
+		inventory=new ArrayList<Item>();
+		inventory.add(new Item(ItemKind.BOW));
+		inventory.add(new Item(ItemKind.BOOMERANG));
+		inventory.add(new Item(ItemKind.SWORD));
 	}
 	
 	public boolean isZildo() {
@@ -185,6 +199,12 @@ public class PersoZildo extends Perso {
 		}
 		EngineZildo.soundManagement.broadcastSound("ZildoTouche", this);
 	
+		if (guiCircle != null) {
+			guiCircle.kill();
+			inventoring=false;
+			guiCircle=null;
+		}
+		
 		return (getPv() == 0);
 	}
 	
@@ -390,6 +410,15 @@ public class PersoZildo extends Perso {
 			//spriteManagement.aff_sprite(BANK_ELEMENTS,en_bras,xx,yy-8);
 		}
 	
+		// GUI circle
+		if (guiCircle != null) {
+			guiCircle.animate();
+			if (guiCircle.isReduced()) {
+				inventoring=false;
+				guiCircle=null;
+			}
+		}
+		
 		zildo.setAjustedX(xx);
 		zildo.setAjustedY(yy);
 		zildo.setNSpr(nSpr);
@@ -550,6 +579,22 @@ public class PersoZildo extends Perso {
 				break;
 		}
 		EngineZildo.soundManagement.broadcastSound("ZildoLance", this);		
+	}
+	
+	public void lookInventory() {
+		if (inventory.size() > 0) {
+			inventoring=true;
+			guiCircle=new ItemCircle();
+			guiCircle.create(inventory, (int) x, (int) y-8);
+		}
+	}
+	
+	public void closeInventory() {
+		guiCircle.close();	// Ask for the circle to close
+	}
+	
+	public boolean isInventoring() {
+		return inventoring;
 	}
 	
 	/**

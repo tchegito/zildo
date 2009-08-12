@@ -38,9 +38,9 @@ public class SpriteEntity extends Identified
 	private int linkVertices;	// Index on VertexBuffer's position about quad describing this sprite
 	protected boolean visible;		// TRUE=visible FALSE=invisible
 	private boolean foreground;	// Drawn at last in display sequence. So always on foreground
-
+	public boolean dying;		// TRUE=we must remove them
+	
 	private int specialEffect;		// Utilisé pour changer la couleur d'un garde par exemple
-	public boolean calculated;		// Entity has been placed for camera
 	
 	// To identify which type of entity we're dealing with
 	protected int entityType;
@@ -260,8 +260,6 @@ public class SpriteEntity extends Identified
 		entity.setEntityType(p_buffer.readInt());
 		int idSprModel=p_buffer.readInt();
 		entity.setSprModel(Identified.fromId(SpriteModel.class, idSprModel));
-		
-		entity.calculated=false;
 		
 		return entity;
 	}

@@ -21,12 +21,12 @@ import zildo.monde.persos.PersoZildo;
  */
 public class ClientState {
 
-    public TransferObject location;
-    public KeyboardInstant keys;
-    public KeyboardState keysState;
-    public PersoZildo zildo;
-    public int inactivityTime;
-    public DialogState dialogState;
+    public TransferObject location;	// Information on physical location (IP, channel ...)
+    public KeyboardInstant keys;	// Keyboard input from client
+    public KeyboardState keysState;	// Keypressed (analysis from KeyboardInstant)
+    public PersoZildo zildo;		// Client's Zildo
+    public int inactivityTime;		// Number of frame where server gets nothing from this client
+    public DialogState dialogState;	// Client's dialoguing state
     
     public ClientState(TransferObject p_location, int p_zildoId) {
         location = p_location;

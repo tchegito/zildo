@@ -9,6 +9,7 @@ public enum KeysConfiguration {
 
 	PLAYERKEY_ACTION(Keyboard.KEY_Q),
 	PLAYERKEY_ATTACK(Keyboard.KEY_W),
+	PLAYERKEY_INVENTORY(Keyboard.KEY_X),
 	PLAYERKEY_UP(Keyboard.KEY_UP),
 	PLAYERKEY_DOWN(Keyboard.KEY_DOWN),
 	PLAYERKEY_RIGHT(Keyboard.KEY_RIGHT),
