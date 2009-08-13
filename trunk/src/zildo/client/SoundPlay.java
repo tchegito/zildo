@@ -39,7 +39,10 @@ public class SoundPlay {
 
 									{"AfficheTexte",    "texte1.wav"},
 									{"AfficheTexte2",   "texte2.wav"},
-									{"AfficheTexteFin", "textefin.wav"}
+									{"AfficheTexteFin", "textefin.wav"},
+
+									{"FlecheTir", "tire.wav"},
+									{"FlechePlante", "plante.wav"}
 
 								 };
 

@@ -28,7 +28,6 @@ public abstract class Perso extends Element {
     protected int attente;				// =0 => pas d'attente
     protected int dx,dy,dz;				// Destination
     private float px,py;				// Quand le perso est propulsé (touché)
-    protected Angle angle;
     protected int pos_seqsprite;
     private int en_bras;			// Si c'est Zildo, l'objet qu'il porte.Note : 10=poule
     protected MouvementZildo mouvement;			// Situation du perso:debout,couché,attaque...
@@ -146,14 +145,6 @@ public abstract class Perso extends Element {
 
 	public void setPy(float py) {
 		this.py = py;
-	}
-
-	public Angle getAngle() {
-		return angle;
-	}
-
-	public void setAngle(Angle angle) {
-		this.angle = angle;
 	}
 
 	public int getPos_seqsprite() {

@@ -22,7 +22,7 @@ public class Element extends SpriteEntity {
 	protected static Logger logger=Logger.getLogger("Element");
 
 	// Eléments que Zildo peut envoyer sur les ennemis
-	private static IntSet elementsSolides=new IntSet(0,1,11,12,2,38,42);
+	private static IntSet elementsSolides=new IntSet(0,1,11,12,2,38,42, 71,72,73,74);
 	// Eléments que Zildo peut pousser
 	private static IntSet elementsMobiles=new IntSet(28,69,70);
 	
@@ -42,6 +42,7 @@ public class Element extends SpriteEntity {
 	public float vx,vy,vz;
 	public float fx,fy,fz;	// Frottements
 	protected char spe; //Spe est utilisé selon l'usage
+    protected Angle angle;
 
 	protected int addSpr;	// Pour les animations (exemple:diamants qui brillent)
 	protected SpriteEntity linkedPerso;	// When this element dies, any non-perso linked entity die too.
@@ -124,8 +125,7 @@ public class Element extends SpriteEntity {
 			(a>=32 && a<=39) ||
 			(a>=40 && a<=42) ||
 			(a>=44 && a<=56) ||
-			(a==69) ||
-			(a==70)
+			(a>=69 || a<=74)
 			)
 			return true;
 		else
@@ -427,6 +427,8 @@ public class Element extends SpriteEntity {
 			end;
 			spawn_perso(pnj);
 			*/
+		} else if (nSpr>=ElementDescription.ARROW_UP.ordinal() && nSpr<=ElementDescription.ARROW_LEFT.ordinal()) {
+			EngineZildo.soundManagement.broadcastSound("FlechePlante", this);
 		}
 	}
 
@@ -483,5 +485,14 @@ public class Element extends SpriteEntity {
 
 	public void setFz(float fz) {
 		this.fz = fz;
+	}
+	
+
+	public Angle getAngle() {
+		return angle;
+	}
+
+	public void setAngle(Angle angle) {
+		this.angle = angle;
 	}
 }

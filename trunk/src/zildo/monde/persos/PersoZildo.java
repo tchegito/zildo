@@ -7,6 +7,7 @@ import java.util.List;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.decors.Element;
+import zildo.monde.decors.ElementArrow;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
@@ -26,6 +27,8 @@ public class PersoZildo extends Perso {
 	private boolean inventoring=false; 
 	public ItemCircle guiCircle;
 	private List<Item> inventory;
+	
+	public Item weapon;
 	
 	// Sequence for sprite animation
 	static int seq_1[]={0,1,2,1};
@@ -94,11 +97,14 @@ public class PersoZildo extends Perso {
 		addPersoSprites(bouclier);
 		addPersoSprites(ombre);
 		addPersoSprites(piedsMouilles);
-		
+
+		weapon=new Item(ItemKind.BOW);
+
 		inventory=new ArrayList<Item>();
-		inventory.add(new Item(ItemKind.BOW));
+		inventory.add(weapon);
 		inventory.add(new Item(ItemKind.BOOMERANG));
 		inventory.add(new Item(ItemKind.SWORD));
+		
 	}
 	
 	public boolean isZildo() {
@@ -117,9 +123,26 @@ public class PersoZildo extends Perso {
 	// attack
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void attack() {
-		EngineZildo.soundManagement.broadcastSound("ZildoAttaque", this);
-		setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_EPEE);
-		setAttente(6*3);
+		switch (weapon.kind) {
+		case SWORD:
+			EngineZildo.soundManagement.broadcastSound("ZildoAttaque", this);
+			setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_EPEE);
+			setAttente(6*3);
+		
+			// Get the attacked tile
+			Point tileAttacked=getAttackTarget();
+			// And ask 'map' object to react
+			EngineZildo.mapManagement.getCurrentMap().attackTile(tileAttacked);
+			break;
+		case BOW:
+			EngineZildo.soundManagement.broadcastSound("FlecheTir", this);
+			setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_ARC);
+			setAttente(3*5);
+			
+			Element arrow=new ElementArrow(angle, (int) x, (int) y, this);
+			EngineZildo.spriteManagement.spawnSprite(arrow);
+			break;
+		}
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -242,13 +265,19 @@ public class PersoZildo extends Perso {
 			objetEnMain=it.next();
 		}
 		
-		final int decalx[][]={
+		final int decalxSword[][]={
 			{1,-1,-1,-5,-10,-13},{0,2,3,2,1,1},
 			{-5,-6,-4,-4,-4,-4},{-2,-12,-18,-14,-13,-8}};
-		final int decaly[][]={
+		final int decalySword[][]={
 			{2,-6,-11,-6,-3,1},{1,0,3,3,2,2},
 			{1,2,2,6,2,2},{1,0,3,3,2,2}};
 	
+		final int decalxBow[][]={
+				{-2,-5,-5},{0,0,0},{0,0,0},{-1,-3,-4}
+		};
+		final int decalyBow[][]={
+				{2,3,2},{1,2,1},{3,2,2},{1,2,1}
+		};
 		int decalboucliery[]={0,0,0,-1,-2,-1};
 		int decalbouclier2y[]={0,-1,-1,0,-1,-1};
 	    int decalbouclier3y[]={0,0,-1,-2,0,-1};
@@ -333,11 +362,16 @@ public class PersoZildo extends Perso {
 				break;
 	
 			case MOUVEMENT_ATTAQUE_EPEE:
-				xx+=decalx[angle.value][nSpr-(54+6*angle.value)];
-				yy+=decaly[angle.value][nSpr-(54+6*angle.value)];
+				xx+=decalxSword[angle.value][nSpr-(54+6*angle.value)];
+				yy+=decalySword[angle.value][nSpr-(54+6*angle.value)];
 				bouclier.setVisible(false);
 				break;
 	
+			case MOUVEMENT_ATTAQUE_ARC:
+				xx+=decalxBow[angle.value][nSpr-(108+3*angle.value)];
+				yy+=decalyBow[angle.value][nSpr-(108+3*angle.value)];
+				bouclier.setVisible(false);
+				break;
 			case MOUVEMENT_TOUCHE:
 				nSpr=78+angle.value;
 				break;
@@ -473,6 +507,9 @@ public class PersoZildo extends Perso {
 		case MOUVEMENT_ATTAQUE_EPEE:
 		    setNSpr(angle.value*6 + (((6*3-getAttente()-1) % (6*3)) / 3) + 54);
 			break;
+		case MOUVEMENT_ATTAQUE_ARC:
+		    setNSpr(angle.value*3 + (((3*5-getAttente()-1) % (3*5)) / 5) + 108);
+		    break;
 		}
 	}
 	
@@ -585,12 +622,14 @@ public class PersoZildo extends Perso {
 		if (inventory.size() > 0) {
 			inventoring=true;
 			guiCircle=new ItemCircle();
-			guiCircle.create(inventory, (int) x, (int) y-8);
+			int sel=inventory.indexOf(weapon);
+			guiCircle.create(inventory, sel, (int) x, (int) y-8);
 		}
 	}
 	
 	public void closeInventory() {
 		guiCircle.close();	// Ask for the circle to close
+		weapon=inventory.get(guiCircle.getItemSelected());
 	}
 	
 	public boolean isInventoring() {
