@@ -17,6 +17,7 @@ import zildo.fwk.net.packet.GetPacket;
 import zildo.fwk.net.packet.AskPacket.ResourceType;
 import zildo.monde.WaitingDialog;
 import zildo.monde.WaitingSound;
+import zildo.monde.decors.SpriteEntity;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
@@ -141,13 +142,24 @@ public class NetServer extends NetSend {
 	 * @param p_client target
 	 */
 	private EasyBuffering entitiesBuffer;
+	private EasyBuffering entitiesSent;
     private void sendEntities(TransferObject p_client) {
         SpriteManagement spriteManagement = EngineZildo.spriteManagement;
         if (entitiesBuffer == null) {
         	entitiesBuffer = spriteManagement.serializeEntities();
         }
-        GetPacket getPacket = new GetPacket(ResourceType.ENTITY, entitiesBuffer.getAll(), null);
+        ClientState cl=Server.getClientState(p_client);
+        if (cl.zildo.isInventoring()) {
+        	// Extra sprites : only for this client
+        	List<SpriteEntity> sprites=cl.zildo.guiCircle.getSprites();
+        	entitiesSent=new EasyBuffering(entitiesBuffer, sprites.size() * 100);
+        	entitiesSent.put(spriteManagement.serializeEntities(sprites, true));
+        } else {
+        	entitiesSent=entitiesBuffer;
+        }
+        GetPacket getPacket = new GetPacket(ResourceType.ENTITY, entitiesSent.getAll(), null);
         sendPacket(getPacket, p_client);
+        
     }
 	
 	/**

@@ -41,6 +41,7 @@ public class SpriteEntity extends Identified
 	public boolean dying;		// TRUE=we must remove them
 	
 	private int specialEffect;		// Utilisé pour changer la couleur d'un garde par exemple
+	public boolean clientSpecific;	// TRUE if this entity should not appear on all client's screen
 	
 	// To identify which type of entity we're dealing with
 	protected int entityType;
@@ -93,6 +94,10 @@ public class SpriteEntity extends Identified
 		nSpr = spr;
 	}
 
+	public void setNSpr(ElementDescription p_elemDesc) {
+		nSpr = p_elemDesc.ordinal();
+	}
+	
 	public int getNBank() {
 		return nBank;
 	}

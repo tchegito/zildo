@@ -13,6 +13,7 @@ import zildo.monde.Hasard;
 import zildo.monde.SpriteModel;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.ElementAnimMort;
+import zildo.monde.decors.ElementDescription;
 import zildo.monde.decors.ElementGoodies;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.decors.SpriteStore;
@@ -42,7 +43,7 @@ public class SpriteManagement extends SpriteStore {
 	private char[] tab_palette=new char[255];
 	private int camerax,cameray;
 	
-
+	List<SpriteEntity> clientSpecificEntities;
 //
 
 /*float rnd()
@@ -55,7 +56,8 @@ public class SpriteManagement extends SpriteStore {
 
 		super();
 
-	
+		clientSpecificEntities=new ArrayList<SpriteEntity>();
+
 		camerax=0;
 		cameray=0;
 
@@ -133,12 +135,14 @@ public class SpriteManagement extends SpriteStore {
 		Element element=null;
 		Element element2=null;
 		SpriteModel spr = null;
+		ElementDescription elemDesc=null;
 		int j;
 	
 		switch (typeSprite)
 		{
 		case Element.SPR_FUMEE:
-			spr=getSpriteBank(SpriteBank.BANK_ELEMENTS).get_sprite(6);
+			elemDesc=ElementDescription.SMOKE_SMALL;
+			spr=getSpriteBank(SpriteBank.BANK_ELEMENTS).get_sprite(elemDesc);
 			element=new Element();
 			element.setX(50.0f+16.0f);
 			element.setY(50.0f+28.0f);
@@ -150,7 +154,7 @@ public class SpriteManagement extends SpriteStore {
 			element.setAy(0.0f);
 			element.setAz(0.01f); // + rnd()*0.005f);
 	
-			element.setNSpr(6);
+			element.setNSpr(elemDesc);
 			element.setSprModel(spr);
 	
 			element.setScrX ( (int) element.x);
@@ -168,7 +172,7 @@ public class SpriteManagement extends SpriteStore {
 				element.setVx(0.2f*(j-1));
 				element.setVz((float) (-0.5f+Math.random()*3*0.1f));
 				element.setAx(-0.05f*element.getVx());
-				element.setNSpr(3+(j % 2));
+				element.setNSpr(ElementDescription.LEAF1.ordinal()+(j % 2));
 				spawnSprite(element);
 				// Peut-être qu'un diamant va apparaitre !
 			}
@@ -187,12 +191,12 @@ public class SpriteManagement extends SpriteStore {
 			element.setZ(4.0f);
 			element.setVz(1.5f);
 			element.setAz(-0.1f);
-			element.setNSpr(48+misc*3);
+			element.setNSpr(ElementDescription.GREENMONEY1.ordinal()+misc*3);
 			// Ombre
 			element2=new Element();
 			element2.setX((float) x);
 			element2.setY((float) y-2);
-			element2.setNSpr(60);
+			element2.setNSpr(ElementDescription.SHADOW_MINUS);
 			spawnSprite(element2);
 			element.setLinkedPerso(element2);
 			spawnSprite(element);
@@ -206,7 +210,7 @@ public class SpriteManagement extends SpriteStore {
 			element.setVx(0.15f);
 			element.setVz(-0.04f);
 			element.setAx(-0.01f);
-			element.setNSpr(40);
+			element.setNSpr(ElementDescription.HEART_LEFT);
 			spawnSprite(element);
 			break;
 	
@@ -229,22 +233,22 @@ public class SpriteManagement extends SpriteStore {
 	// Spawn a sprite with minimal requirements
 	// -build an entity with given parameters
 	// -add it to the sprite engine
-	public SpriteEntity spawnSprite(int nBank, int nSpr, int x, int y)
-	{
-	
-		SpriteModel spr=getSpriteBank(nBank).get_sprite(nSpr);
+    public SpriteEntity spawnSprite(int nBank, int nSpr, int x, int y, boolean p_foreground) {
 
-		if (nSpr == 69 || nSpr == 70 || nSpr == 28) {
-			// Particular sprite (Block that Zildo can move, chest...)
-			return spawnElement(nBank, nSpr, x,y+spr.getTaille_y() / 2 - 3);
-		}
+        SpriteModel spr = getSpriteBank(nBank).get_sprite(nSpr);
 
-		// SpriteEntity informations
-		SpriteEntity entity=new SpriteEntity(x, y, true);
+        if (nSpr == 69 || nSpr == 70 || nSpr == 28) {
+            // Particular sprite (Block that Zildo can move, chest...)
+            return spawnElement(nBank, nSpr, x, y + spr.getTaille_y() / 2 - 3);
+        }
 
-		entity.setNSpr(nSpr);
-		entity.setNBank(nBank);
-		entity.setMoved(false);
+        // SpriteEntity informations
+        SpriteEntity entity = new SpriteEntity(x, y, true);
+
+        entity.setNSpr(nSpr);
+        entity.setNBank(nBank);
+        entity.setMoved(false);
+        entity.setForeground(p_foreground);
 	
 		entity.x=x - (spr.getTaille_x() >> 1);
 		entity.y=y - (spr.getTaille_y() >> 1);
@@ -464,14 +468,44 @@ public class SpriteManagement extends SpriteStore {
 	 * @return buffer
 	 */
 	public EasyBuffering serializeEntities() {
+		return serializeEntities(spriteEntities, false);
+	}
+	
+	/**
+	 * Serialize given entities into one unique ByteBuffer.
+	 * @param p_listEntities entities to serialize
+	 * @param p_clientSpecific FALSE=serialize only the common entities
+	 * @return buffer
+	 */
+	public EasyBuffering serializeEntities(List<SpriteEntity> p_listEntities, boolean p_clientSpecific) {
 		EasyBuffering b=new EasyBuffering();
-		for (SpriteEntity entity : spriteEntities) {
-			entity.serializeEntity(b);
+		for (SpriteEntity entity : p_listEntities) {
+			if (!entity.clientSpecific || p_clientSpecific) {
+				entity.serializeEntity(b);
+			}
 		}
 		return b;
 	}
-	
-	public List<SpriteEntity> getSpriteEntities() {
-		return spriteEntities;
+
+	/**
+	 * Return sprite entities according to the given client.
+	 * SpriteEntity which have 'clientSpecific' at TRUE are only transmitted if we have the right client.
+	 * @param p_cl
+	 * @return
+	 */
+	public List<SpriteEntity> getSpriteEntities(ClientState p_cl) {
+		// Filter the entities to keep only the common and those from given client
+		List<SpriteEntity> entities=new ArrayList<SpriteEntity>();
+		List<SpriteEntity> clSprites=new ArrayList<SpriteEntity>();
+		if (p_cl != null && p_cl.zildo.guiCircle != null) {
+			clSprites=p_cl.zildo.guiCircle.getSprites();
+		}
+		for (SpriteEntity entity : spriteEntities) {
+			if (!entity.clientSpecific || clSprites.contains(entity)) {
+				entities.add(entity);
+			}
+		}
+		return entities;
 	}
+ 
 }

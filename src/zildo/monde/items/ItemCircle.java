@@ -34,6 +34,10 @@ public class ItemCircle {
 		phase=CirclePhase.EXPANSION;
 	}
 	
+	public List<SpriteEntity> getSprites() {
+		return guiSprites;
+	}
+	
 	/**
 	 * Create the circle with given items
 	 * @param p_items
@@ -47,8 +51,9 @@ public class ItemCircle {
 		center=new Point(p_x, p_y);
 		for (Item item : p_items) {
 			int typ=item.kind.ordinal();
-			SpriteEntity e=EngineZildo.spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS, 4+typ, p_x, p_y);
-			guiSprites.add(e);
+            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS, 4 + typ, p_x, p_y, true);
+            e.clientSpecific=true;
+            guiSprites.add(e);
 		}
 		display();
 	}

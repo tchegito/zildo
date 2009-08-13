@@ -34,6 +34,20 @@ public class EasyBuffering {
 		data = b;
 	}
 	
+	/**
+	 * Allocates a new one from an original one.
+	 * @param original
+	 * @param supp
+	 */
+	public EasyBuffering(EasyBuffering original, int supp) {
+        data = ByteBuffer.allocate(original.getSize() + supp);
+        ByteBuffer orig=original.getAll();
+        int lim=orig.limit();
+        orig.flip();
+        data.put(orig);
+        orig.limit(lim);
+	}
+	
 	/*********************************************************************************
 	 * WRITE operations
 	 *********************************************************************************/
@@ -80,6 +94,11 @@ public class EasyBuffering {
 	
 	public void put(ByteBuffer p_buffer) {
 		data.put(p_buffer);
+	}
+	
+	public void put(EasyBuffering p_buffer) {
+		p_buffer.getAll().flip();
+		data.put(p_buffer.getAll());
 	}
 	
 	/*********************************************************************************

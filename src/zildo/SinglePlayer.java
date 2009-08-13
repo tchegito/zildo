@@ -79,7 +79,7 @@ public class SinglePlayer {
             engineZildo.renderFrame(states);
 
             // Update client
-            ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities());
+            ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(state));
 
             // Dialogs
             if (ClientEngineZildo.dialogDisplay.launchDialog(EngineZildo.dialogManagement.getQueue())) {
