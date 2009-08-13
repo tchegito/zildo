@@ -59,6 +59,6 @@ public class Constantes {
 	public static final int hazardBushes_Heart = 5;
 
 	// Sounds
-	public static final int MAX_SOUNDS = 20;
+	public static final int MAX_SOUNDS = 22;
 
 }

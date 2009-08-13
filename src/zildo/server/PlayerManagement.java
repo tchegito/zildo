@@ -7,6 +7,7 @@ import zildo.fwk.input.KeyboardState;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.dialog.DialogManagement;
+import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.persos.Perso;
@@ -184,10 +185,16 @@ public class PlayerManagement {
 				if (heros.getMouvement()!=MouvementZildo.MOUVEMENT_ATTAQUE_EPEE) {
 					needMovementAdjustment=false;
 				}
-			} else if (heros.getMouvement()==MouvementZildo.MOUVEMENT_SOULEVE) {
-				heros.setMouvement(MouvementZildo.MOUVEMENT_BRAS_LEVES);
-			} else if (heros.getMouvement()==MouvementZildo.MOUVEMENT_ATTAQUE_EPEE) {
-				heros.setMouvement(MouvementZildo.MOUVEMENT_VIDE);		// Awaiting for key pressed
+			} else {
+				switch (heros.getMouvement()) {
+					case MOUVEMENT_SOULEVE:
+						heros.setMouvement(MouvementZildo.MOUVEMENT_BRAS_LEVES);
+						break;
+					case MOUVEMENT_ATTAQUE_EPEE:
+					case MOUVEMENT_ATTAQUE_ARC:
+						heros.setMouvement(MouvementZildo.MOUVEMENT_VIDE);		// Awaiting for key pressed
+						break;
+				}
 			}
 	
 	
@@ -564,10 +571,6 @@ public class PlayerManagement {
 		if (!keysState.key_attackPressed && heros.getEn_bras() == 0 && !client.dialogState.dialoguing && !heros.isInventoring()) {
 			// Set Zildo in attack stance
 			heros.attack();
-			// Get the attacked tile
-			Point tileAttacked=heros.getAttackTarget();
-			// And ask 'map' object to react
-			EngineZildo.mapManagement.getCurrentMap().attackTile(tileAttacked);
 		}
 		keysState.key_attackPressed=true;
 	}

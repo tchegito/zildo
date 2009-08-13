@@ -9,6 +9,7 @@ public enum MouvementZildo {
 	MOUVEMENT_TIRE,			// Pas à l'arc : pousser/tirer
 	MOUVEMENT_POUSSE,
 	MOUVEMENT_ATTAQUE_EPEE,
+	MOUVEMENT_ATTAQUE_ARC,
 	MOUVEMENT_TOUCHE,   	// Quand Zildo se fait toucher
 	MOUVEMENT_SAUTE,   		// Zildo saute une colline ! -> inactif pendant le saut
 	MOUVEMENT_FIERTEOBJET;	// Zildo brandit fièrement un objet

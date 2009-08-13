@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.bank.SpriteBank;
+import zildo.monde.decors.ElementDescription;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.map.Point;
 import zildo.server.EngineZildo;
@@ -44,14 +45,26 @@ public class ItemCircle {
 	 * @param p_x
 	 * @param p_y
 	 */
-	public void create(List<Item> p_items, int p_x, int p_y) {
+	public void create(List<Item> p_items, int p_selected, int p_x, int p_y) {
 		count=0;
+		itemSelected=p_selected;
 		guiSprites.clear();
 
 		center=new Point(p_x, p_y);
 		for (Item item : p_items) {
 			int typ=item.kind.ordinal();
-            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS, 4 + typ, p_x, p_y, true);
+			switch (item.kind) {
+				case SWORD:
+					typ=ElementDescription.WOOD_BAR.ordinal();
+					break;
+				case BOW:
+					typ=ElementDescription.ARROW_DOWN.ordinal();
+					break;
+				default:
+					typ=ElementDescription.SMOKE.ordinal();
+					break;
+			}
+            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS, typ, p_x, p_y, true);
             e.clientSpecific=true;
             guiSprites.add(e);
 		}
@@ -99,9 +112,9 @@ public class ItemCircle {
 				count+=2;
 			} else {
 				if (phase==CirclePhase.ROTATE_LEFT) {
-					itemSelected--;
+					itemSelected= (itemSelected+guiSprites.size() -1) % guiSprites.size();
 				} else if (phase==CirclePhase.ROTATE_RIGHT) {
-					itemSelected++;
+					itemSelected= (itemSelected +1) % guiSprites.size();
 				}
 				phase=CirclePhase.FIXED;
 			}
@@ -142,6 +155,10 @@ public class ItemCircle {
 	 */
 	public void close() {
 		phase=CirclePhase.REDUCTION;
+	}
+	
+	public int getItemSelected() {
+		return itemSelected;
 	}
 	
 	/**
