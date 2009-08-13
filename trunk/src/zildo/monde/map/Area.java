@@ -424,7 +424,7 @@ public class Area {
 
         // 4) Sprites
 		if (this.getN_sprites()!=0) {
-			List<SpriteEntity> spriteEntities=EngineZildo.spriteManagement.getSpriteEntities();
+			List<SpriteEntity> spriteEntities=EngineZildo.spriteManagement.getSpriteEntities(null);
 			int nSprites=0;
 			for (SpriteEntity entity : spriteEntities) {
 				int type=entity.getEntityType();
@@ -555,7 +555,7 @@ public class Area {
 				short nSpr;
 				nSpr=p_buffer.readUnsignedByte();
 				if (p_spawn) {
-					spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS,nSpr,x,y);
+					spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS,nSpr,x,y, false);
 				}
 			}
 		}
