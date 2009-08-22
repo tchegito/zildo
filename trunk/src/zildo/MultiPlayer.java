@@ -25,6 +25,7 @@ public class MultiPlayer {
      * @param p_game
      */
     public MultiPlayer(Game p_game) {
+    	p_game.multiPlayer=true;
         Server server = new Server(p_game);
 
         SinglePlayer singlePlayer = new SinglePlayer(server);

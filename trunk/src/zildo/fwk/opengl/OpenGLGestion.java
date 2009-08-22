@@ -244,7 +244,7 @@ public abstract class OpenGLGestion {
     	
     }
     
-    protected abstract void render();
+    protected abstract void render(boolean p_clientReady);
     
     private double simulationTime=0;
     private double fps;

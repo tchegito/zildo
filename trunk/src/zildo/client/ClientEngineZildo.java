@@ -15,8 +15,10 @@ import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.opengl.OpenGLZildo;
 import zildo.monde.Collision;
 import zildo.monde.decors.SpriteEntity;
+import zildo.monde.map.Case;
+import zildo.monde.map.Point;
+import zildo.monde.map.Rectangle;
 import zildo.monde.persos.Perso;
-import zildo.monde.persos.PersoZildo;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
 
@@ -47,19 +49,23 @@ public class ClientEngineZildo {
 	 */
 	public void initializeClient(boolean p_awt) {
 		
-		ClientEngineZildo.filterCommand = new FilterCommand();
+		filterCommand = new FilterCommand();
 		guiDisplay=new GUIDisplay();
 		dialogDisplay=new DialogDisplay();
 		soundPlay=new SoundPlay();
 
+		ortho=new Ortho(Zildo.viewPortX, Zildo.viewPortY);
+		
 		if (!p_awt) {
 
-			ClientEngineZildo.filterCommand.addFilter(new BilinearFilter());
-			//filterCommand.addFilter(new BlurFilter());
-			ClientEngineZildo.filterCommand.addFilter(new BlendFilter());
-			//filterCommand.addFilter(new FadeFilter());
-			ClientEngineZildo.filterCommand.active(null, false);
-			ClientEngineZildo.filterCommand.active(BilinearFilter.class, true);
+			if (ortho.isFBOSupported()) {
+				filterCommand.addFilter(new BilinearFilter());
+				//filterCommand.addFilter(new BlurFilter());
+				filterCommand.addFilter(new BlendFilter());
+				//filterCommand.addFilter(new FadeFilter());
+				filterCommand.active(null, false);
+				filterCommand.active(BilinearFilter.class, true);
+			}
 
 			pixelShaders = new PixelShaders();
 			if (pixelShaders.canDoPixelShader()) {
@@ -67,8 +73,6 @@ public class ClientEngineZildo {
 			}
 		}
 
-		ClientEngineZildo.ortho=new Ortho(Zildo.viewPortX, Zildo.viewPortY);
-		
 		spriteEngine = new SpriteEngine();
 		tileEngine = new TileEngine();
 
@@ -79,7 +83,7 @@ public class ClientEngineZildo {
 		// GUI
 		guiDisplay.setToDisplay_generalGui(true);
 
-		ClientEngineZildo.ortho.setOrthographicProjection();
+		ortho.setOrthographicProjection();
 		
 	}
 	
@@ -154,8 +158,6 @@ public class ClientEngineZildo {
 
 		guiDisplay.draw();
 
-		filterCommand.doFilter();
-
 		openGLGestion.endScene();
 		//gfxBasics.EndRendering();
 	
@@ -212,13 +214,33 @@ public class ClientEngineZildo {
 					if (damager != null && damager.getInfo() == 1) {
 						color=20;
 					}
-					ortho.box(c.getCx()-rayon/2-mapDisplay.getCamerax(), 
-							c.getCy()-rayon/2-mapDisplay.getCameray(), rayon*2, rayon*2,color, null);
+					if (c.size==null) {
+						ortho.box(c.getCx()-rayon/2-mapDisplay.getCamerax(), 
+								c.getCy()-rayon/2-mapDisplay.getCameray(), rayon*2, rayon*2,color, null);
+					} else {
+						Rectangle rect=new Rectangle(new Point(c.cx-mapDisplay.getCamerax(), c.cy-mapDisplay.getCameray()), c.size);
+						ortho.box(rect, color, null);
+					}
 				}
 			}
 			int x=(int) zildo.x-4;
 			int y=(int) zildo.y-10;
 			ortho.box(x-3-mapDisplay.getCamerax(), y-3-mapDisplay.getCameray(), 16, 16, 12, null);
+		}
+		
+		for (int y=0;y<20;y++) {
+			for (int x=0;x<20;x++) {
+				int cx=x+mapDisplay.getCamerax() / 16;
+				int cy=y+mapDisplay.getCameray() / 16;
+				int px=x*16 - mapDisplay.getCamerax() % 16;
+				int py=y*16 - mapDisplay.getCameray() % 16;
+				if (cy < 64 && cx < 64) {
+					Case c=EngineZildo.mapManagement.getCurrentMap().get_mapcase(cx, cy+4);
+					int onmap=EngineZildo.mapManagement.getCurrentMap().readmap(cx, cy);
+					ortho.drawText(px, py+4, ""+c.getZ(), new Vector3f(0,1,0));
+					ortho.drawText(px, py, ""+onmap, new Vector3f(1,0,0));
+				}
+			}
 		}
 		
 	}

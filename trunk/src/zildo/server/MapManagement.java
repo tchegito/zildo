@@ -9,8 +9,10 @@ import zildo.fwk.file.EasyWritingFile;
 import zildo.monde.decors.Element;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
+import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
+import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
 import zildo.monde.persos.Perso;
 import zildo.prefs.Constantes;
@@ -20,29 +22,9 @@ public class MapManagement {
 
 	protected Logger logger=Logger.getLogger("MapManagement");
 
-	final IntSet walkable =new IntSet(1,6,19,23,27,35,40,41,42,43,49,50,51,52,53,54,55,56,
-			57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,89,90,
-			91,99,139,140,141,142,143,144,145,146,
-			166,168,170,171,172,174,175,176,177,178,183);
-
-	final IntSet walkable2=new IntSet(22,23,25,34,35,36,37,58,59,61,67,68,71,72,73,  // +256
-			77,78,79,80,81,82,83,84,85,86,87,88,89,94,107,108,114,115,116,117,
-			118,119,120,121,122,123,124,126,127,128,130,139,140,141,142,143,144,
-			145,146,147,168,169,173,174,175,176,177,178);
-
-	final IntSet walkable3=new IntSet(0,33,34,35,36,37,38,39,40,41,42,43,44,45,94,95,96, // +512
-			97,98,99,100,101,102,217,218,219,220,221,222,240);
-
-	final IntSet walkable4=new IntSet(9,37,38,39,41,42,43,44,45,46,50,51,52,53,78,79,80,81, // +768
-			82,83,84,155,156,157,158,159,160);
-
-	final IntSet walkable5=new IntSet(45,81,82,135,137,147,173,178,210,212,213,227,228,229, // +1024
-			230,231,239,240,241);
-	
-	
-    private int n_banquemotif;					// Nombre de banque de motifs en mémoire
 	private Area currentMap;
-
+	private TileCollision tileCollision;
+	
 	private byte compteur_animation;
 	
 	ChainingPoint changingMapPoint;
@@ -50,6 +32,8 @@ public class MapManagement {
 	public MapManagement()
 	{
 		compteur_animation=0;
+		
+		tileCollision=new TileCollision();
 		
 		// Init variables
 		currentMap=null;
@@ -91,6 +75,9 @@ public class MapManagement {
 	
 		// Load a new one
 		currentMap=loadMapFile(mapname);
+		
+		analyseAltitude();
+
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -134,36 +121,10 @@ public class MapManagement {
 
 		serializedMap.saveFile(p_fileName);
     }
-    
-	///////////////////////////////////////////////////////////////////////////////////////
-	// isWalkable
-	///////////////////////////////////////////////////////////////////////////////////////
-	// IN:motif de map (motif+256*banque)
-	// OUT:True si c'est un motif franchissable par les persos
-	//     False si c'est un obstacle
-	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean isWalkable(int on_map)
-	{
-		if (on_map<256)
-			return walkable.contains(on_map);
-		else if (on_map<512)
-			return walkable2.contains(on_map-256);
-		else if (on_map<768)
-			return walkable3.contains(on_map-512);
-		else if (on_map<1024)
-			return walkable4.contains(on_map-768);
-		else
-			return walkable5.contains(on_map-1024);
+
+	public boolean isWalkable(int p_onmap) {
+		return tileCollision.collide(p_onmap); 
 	}
-	
-	// Returns true if given character collides with the map
-	/*boolean collide(float tx,float ty,int quelperso)
-	{
-		int roundx=(int)(tx*10)/10;
-		int roundy=(int)(ty*10)/10;
-		return this.collide(roundx,roundy,quelperso);
-		//return this.collide((int)tx,(int)ty,quelperso);
-	}*/
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// collide
@@ -176,8 +137,35 @@ public class MapManagement {
 		int mx,my;            // Position map
 	    int modx,mody;
 	    int on_map;           // La case où se déplace le joueur
-	    boolean result;
-	
+	    
+	    Angle angleFlying=null;
+		Point size=new Point(8,4);	// Default size
+	    if (quelElement != null && quelElement.flying && quelElement.getAngle() != null) {
+		    angleFlying=quelElement.getAngle();
+
+	    	if (quelElement.getCollisionSize() != null) {
+	    		size=quelElement.getCollisionSize();
+	    	}
+    		ty-=quelElement.z;
+	    	int cx=(tx / 16);
+	    	int cy=(ty / 16);
+	    	int caseZ=currentMap.readAltitude(cx,cy);
+	    	on_map=currentMap.readmap(cx, cy);
+			int elemAltitude=quelElement.relativeZ+(int) quelElement.getZ()/16;
+
+			modx=tx%16;
+			mody=ty%16;
+	    	if (caseZ < elemAltitude) {	// We are too high => no collision
+	    		return false;
+	    	} else if( caseZ == elemAltitude && getAngleJump(angleFlying, cx, cy) != null) {
+	    		return false; // Same altitude but under the cliff => no collision
+	    	}  else if (caseZ > elemAltitude) {
+	    		return true;	// Obstacle
+	    	}
+	    	return tileCollision.collide(modx, mody, on_map);
+	    	
+	    }
+	    
 		final int[] tab_add={-1,-1,1,1,-1};
 	
 		if (tx<0 || ty<0 || 
@@ -186,117 +174,20 @@ public class MapManagement {
 			// On empêche la collision sur les bords de cartes
 			return false;
 	
+		
 		// On teste les 4 coins d'un carré de 4x4
-		result=false;
 		for (int i=0;i<4;i++)
 		{
-			mx=(tx+4*tab_add[i]);
-			my=(ty+2*tab_add[i+1]);
+			mx=(tx+(size.x / 2)*tab_add[i]);
+			my=(ty+(size.y / 2)*tab_add[i+1]);
 			on_map=currentMap.readmap((mx / 16),(my / 16));
 			modx=mx % 16;
 			mody=my % 16;
-		
-			// Les portes sont toujours sauvées selon le même schéma, donc un simple
-			// décalage dans le numéro de motif suffit pour toutes les traiter
-			if (on_map>=590 && on_map<=605)
-				on_map-=16;
-		
-			switch (on_map)
-			{
-				// Mi diagonal mi horizontal : collines bord du haut
-				case 2:if ((modx<8 && mody>=16-modx) || (modx>7 && mody>7)) return true;
-					break;
-				case 4:if ((modx>7 && mody>modx) || (modx<8 && mody>7)) return true;
-					break;
-				case 47:if ((modx>7 && mody>=16-modx) || (modx<8 && mody<8)) return true;
-					break;
-				case 48:if ((modx<8 && mody>modx) || (modx>7 && mody>7))  return true;
-					break;
-				// Les bords en diagonal (ex:collines)
-				case 5: case 8: case 35: case 79: case 106: case 723: case 787: case 917:
-					if (mody > modx) return true;
-					break;
-				case 7: case 0: case 27: case 77: case 104: case 721: case 788: case 915:
-					if (mody >= 16-modx) return true;
-					break;
-				case 13: case 23: case 84: case 102: case 156: case 719: case 786: case 913:
-					if (mody < modx) return true;
-					break;
-				case 11: case 19: case 85: case 100: case 157: case 717: case 785: case 911:
-					if (mody < 16-modx) return true;
-					break;
-		
-					
-				// Les parties verticales
-				case 101: case 323: case 324: case 327: case 328:
-				case 363: case 364: case 385: case 405: case 408:
-				case 578: case 579: case 586: case 587:
-				case 663: case 664: case 665: case 670: case 671: case 676: case 677:
-				case 865: case 870: case 912:
-				case 1037: case 1102: case 1103: case 1107: case 1108:
-					if (mody <8) return true;
-					break;
-		
-				case 3: case 105: case 329: case 580: case 581: case 588: case 589:
-				case 867: case 872: case 916:
-				case 1162: case 1163: case 1164: case 1175: case 1192: case 1201: case 1203:
-					if (mody>7) return true;
-					break;
-		
-				// Les parties horizontales
-				case 39: case 107: case 179: case 185: case 194: case 278: case 314: case 424:
-				case 574: case 576: case 582: case 584:
-				case 749: /*case 751:*/ case 753: case 755:
-				case 667: case 669:
-				case 857: case 859: case 861: case 863: case 873: case 879: case 918:
-				case 1027: case 1029: case 1031: case 1063: case 1097: case 1213: case 1275:
-					if (modx<8) return true;
-					break;
-		
-				case 46: case 103: case 195: case 279: case 315: case 425:
-				case 575: case 577: case 583: case 585:
-				case 750: /*case 752:*/ case 754: case 756:
-				case 858: case 860: case 862: case 864: case 874: case 880: case 914:
-				case 1064: case 1098: case 1214: case 1276:
-					if (modx>7)	return true;
-					break;
-		
-				// Coins
-		
-				case 155: case 946: case 954: case 958:
-					if (modx>7 && mody<8) return true;
-					break;
-				case 947:
-					if (modx<8 && mody>7) return true;
-					break;
-				case 948:
-					if (modx>7 && mody>7) return true;
-					break;
-				case 158: case 945: case 953: case 957:
-					if (modx<8 && mody<8) return true;
-					break;
-		
-				case 919:
-					if (modx<8 && mody<8) return true;
-					break;
-				case 920:                      
-					if (modx>7 && mody<8) return true;
-					break;
-				case 921: case 1171:                 
-					if (modx<8 || mody>7) return true;
-					break;
-				case 922: case 1172:                 
-					if (modx>7 || mody>7) return true;
-					break;
-		
-				default:
-				    result=!(isWalkable(on_map));
-					if (result)
-						return true;
 	
+			if (tileCollision.collide(modx, mody, on_map)) {
+				return true;
 			}
-	
-		};			// for (i)
+		}
 	
 	 
 	  // Collision avec les pnj alliés
@@ -305,56 +196,48 @@ public class MapManagement {
 	
 		if (EngineZildo.spriteManagement.collideSprite(tx,ty,quelElement))
 			return true;
-			
-		
-	  /*
-	  if (!result)
-	  {
-	   // Collision avec les sprites fixes impassables (ex:tonneau,rambarde...)
-	   i:=0;
-	   repeat
-	    if tab_elements[i].etat=true then
-	     // On teste si le sprite est fixe
-	     with tab_elements[i] do begin
-	      if quelspr in blockable_sprite+goodies_sprite begin
-	       // On teste si Zildo est dedans
-	       with banque_spr[BANK_ELEMENTS].tab_sprite[quelspr] do begin
-	        sx:=taille_x;
-	        sy:=taille_y;
-	       end;
-	       mx:=round(x)-(sx shr 1);my:=round(y)-(sy shr 1);
-	       j:=0;
-	       repeat
-	        px:=tx+4*tab_add[j];
-	        py:=ty+2*tab_add[j+1];
-	        if (px>=mx && py>=my && px<=mx+sx && py<=my+sy) return true;
-	        j:=j+1;
-	       until (bool=true || j=4);
-	       // On sauve le sprite si on a Zildo
-	       if (bool=true && quelperso=0) begin
-	        Sprite_Pousse_par_zildo:=i;
-	        sprite_pousse:=true;
-	       end;
-	       // Peut-être l'obstacle est-il un bonus pour Zildo ?
-	       if (bool=true && quelspr in goodies_sprite) begin
-	        result=false;
-	        if quelperso=0 begin
-	         // Il s'agit d'un bonus, et on teste Zildo, donc il le prend
-	         beneficie_goodies(quelspr);
-	         etat=false;
-	        end;
-	       end;
-	      end;
-	     end;
-	    inc(i);
-	   until (i=MAX_ELEMENTS || bool)
-	  end;
-	 end;
-	}
-	*/
-	
+
 		// Returns computed result
 		return false;
+	}
+	
+	public Angle getAngleJump(Angle angle, int cx,int cy) {
+		Area area=getCurrentMap();
+		int onMapCurrent=area.readmap(cx, cy);
+		int onMap=0;
+		Angle result=null;
+		switch (onMapCurrent) {
+			// Saut diagonal
+			case 35:case 106: result=Angle.SUDOUEST; break; //6
+			case 19:case 100: result=Angle.NORDOUEST; break; //7
+			case 23:case 102: result=Angle.SUDEST; break; //5
+			case 27:case 104:  result=Angle.NORDEST; break; //4
+			default:
+				// Saut latéral}
+				switch (angle) {
+				case NORD:
+					onMap=area.readmap(cx,cy-1);
+					if (onMap==21 || onMap==3 || onMap==839)
+						result=Angle.NORD;
+					break;
+				case EST:
+					onMap=area.readmap(cx+1,cy);
+					if (onMap==25 || onMap==9 || onMap==842 || onMapCurrent == 9)
+						result=Angle.EST;
+					break;
+				case SUD:
+					onMap=area.readmap(cx,cy+1);
+					if (onMap==32 || onMap==31 || onMap==844)
+						result=Angle.SUD;
+					break;
+				case OUEST:
+					onMap=area.readmap(cx-1,cy);
+					if (onMap==17 || onMap==15 || onMap==841 || onMapCurrent == 15)
+						result=Angle.OUEST;
+					break;
+				}
+		}	
+		return result;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -491,13 +374,39 @@ public class MapManagement {
 		return new Zone((int) x1, (int) y1, (int) x2, (int) y2);
 	}
 
+	// Hill boundaries
+	private final IntSet leftIncreaseZ=new IntSet(100, 106, 107); //17, 15, 841, 15);
+	private final IntSet rightDecreaseZ=new IntSet(102, 103, 104); //25, 9, 842, 9);
+	
+	/**
+	 * Update map with setting the altitude (z attribute)
+	 */
+	public void analyseAltitude() {
+		Area map=getCurrentMap();
+		for (int j=0;j<map.getDim_y();j++) {
+			Case c=map.get_mapcase(0,j+4);
+			int currentZ=c.getZ();
+			for (int i=0;i<map.getDim_x();i++) {
+				c=map.get_mapcase(i,j+4);
+				int onmap=map.readmap(i,j);
+				if (leftIncreaseZ.contains(onmap)) {
+					currentZ++;
+				}
+				c.setZ(currentZ);
+				if (rightDecreaseZ.contains(onmap)) {
+					currentZ--;
+				}
+			}
+		}
+	}
+	
     /**
      * Return a respawn position, at an empty place. (temporary : this must be fixed in the map)
      * @return
      */
     public Point getRespawnPosition() {
-        int x = 580;
-        int y = 900;
+        int x = 80;
+        int y = 880;
         while (collide(x, y, null)) {
             y -= 16;
         }

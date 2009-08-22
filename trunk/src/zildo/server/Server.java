@@ -13,6 +13,7 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.NetServer;
 import zildo.fwk.net.TransferObject;
 import zildo.monde.Game;
+import zildo.monde.persos.PersoZildo;
 
 /**
  * Server job:
@@ -28,6 +29,9 @@ public class Server extends Thread {
 	public static final long TIMER_DELAY = (long) (1000.f / 75f);
 	public static final int CLIENT_TIMEOUT = 300;
 	
+	// This map contains informations about all clients at the current instant in the game.
+	// The server is a special one, because he doesn't have any TransferObject. To get his state, we have to do :
+	// clients.get(null)
     static Map<TransferObject, ClientState> clients = new HashMap<TransferObject, ClientState>();
 
 	boolean gameRunning;
@@ -96,8 +100,10 @@ public class Server extends Thread {
 		int zildoId=engineZildo.spawnClient();
 		clients.put(p_client, new ClientState(p_client, zildoId));
 		
-		ClientEngineZildo.guiDisplay.displayMessage(p_client.address.getHostName()+" join the game");
-
+		if (p_client != null) {
+			ClientEngineZildo.guiDisplay.displayMessage(p_client.address.getHostName()+" join the game");
+		}
+		
 		return zildoId;
 	}
 	
@@ -143,25 +149,41 @@ public class Server extends Thread {
 		clients.put(p_client, state);
 	}
 	
-	/**
-	 * Check client's inactivity. Disconnect the one who crosses the timeout line.
-	 */
-	public void checkInactivity() {
-		List<TransferObject> clientsDisconnected=new ArrayList<TransferObject>();
-		for (ClientState state : clients.values()) {
-			if (state.inactivityTime > CLIENT_TIMEOUT) {
-				clientsDisconnected.add(state.location);
-			}
-			state.inactivityTime++;
-		}
-		for (TransferObject obj : clientsDisconnected) {
-			disconnectClient(obj);
-		}
-	}
+    /**
+     * Check client's inactivity. Disconnect the one who crosses the timeout line.
+     */
+    public void checkInactivity() {
+        List<TransferObject> clientsDisconnected = new ArrayList<TransferObject>();
+        for (ClientState state : clients.values()) {
+            if (state.location != null && state.inactivityTime > CLIENT_TIMEOUT) {
+                clientsDisconnected.add(state.location);
+            }
+            state.inactivityTime++;
+        }
+        for (TransferObject obj : clientsDisconnected) {
+            disconnectClient(obj);
+        }
+    }
 
-	static public ClientState getClientState(TransferObject p_object) {
-		return clients.get(p_object);
-	}
+    static public ClientState getClientState(TransferObject p_object) {
+        return clients.get(p_object);
+    }
+
+    static public ClientState getClientFromZildo(PersoZildo p_zildo) {
+    	if (!EngineZildo.game.multiPlayer) {
+    		return null;
+    	}
+        for (ClientState cl : clients.values()) {
+            if (cl.zildo == p_zildo) {
+                return cl;
+            }
+        }
+        throw new RuntimeException("This zildo isn't referenced anymore !");
+    }
+
+    public void registerServer(ClientState p_state) {
+        clients.put(null, p_state);
+    }
 	
 	public Collection<ClientState> getClientStates() {
 		return clients.values();

@@ -114,28 +114,36 @@ public class NetClient extends NetSend {
                     GetPacket getPacket = (GetPacket) packet;
 
                     switch (getPacket.resourceType) {
-                        case MAP:
+                    case MAP:
+                        try {
                             receiveMap(getPacket);
                             if (!gotMap) {
-                            	// Ask entities for the first time
-                            	sendPacket(new AskPacket(ResourceType.ENTITY), server);
+                                // Ask entities for the first time
+                                sendPacket(new AskPacket(ResourceType.ENTITY), server);
                             }
                             gotMap = true;
-                            break;
-                        case MAP_PART:
-                        	receiveMapPart(getPacket);
-                        	break;
-                        case DIALOG:
-                        	receiveDialog(getPacket);
-                        	break;
-                        case ENTITY:
-                            receiveEntities(getPacket);
-                            refreshEntity = true;
-                            gotEntities = true;
-                            break;
-                        case SOUND:
-                            receiveSounds(getPacket);
-                            break;
+                        } catch (RuntimeException e) {
+                            e.printStackTrace();
+                            // Map receiving has failed. So re-ask.
+                            sendPacket(new AskPacket(ResourceType.MAP), server);
+                        }
+                        break;
+                    case MAP_PART:
+                        if (gotMap) {
+                            receiveMapPart(getPacket);
+                        }
+                        break;
+                    case DIALOG:
+                    	receiveDialog(getPacket);
+                    	break;
+                    case ENTITY:
+                        receiveEntities(getPacket);
+                        refreshEntity = true;
+                        gotEntities = true;
+                        break;
+                    case SOUND:
+                        receiveSounds(getPacket);
+                        break;
                     }
                 }
 			}

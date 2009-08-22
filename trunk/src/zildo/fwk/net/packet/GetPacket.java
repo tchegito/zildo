@@ -29,12 +29,14 @@ public class GetPacket extends Packet {
 	}
 	
 	@Override
-	protected void buildPacket() {
-		b.put(resourceType.toString());
-		b.put(length);
-		b.put(name);
-		b.put(buffer);
-	}
+    protected void buildPacket() {
+        buffer.position(0);
+
+        b.put(resourceType.toString());
+        b.put(length);
+        b.put(name);
+        b.put(buffer);
+    }
 	
 	protected void deserialize(EasyBuffering p_buffer) {
 		resourceType=ResourceType.fromString(p_buffer.readString());

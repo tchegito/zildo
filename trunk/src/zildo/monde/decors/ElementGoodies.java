@@ -11,7 +11,6 @@ public class ElementGoodies extends Element {
 	
 	public ElementGoodies() {
 		super();
-		
 		spe=540;	// Durée de vie du goodies, en frames (on tourne en général à 60FPS : 540==9sec)
 	}
 	
@@ -63,6 +62,9 @@ public class ElementGoodies extends Element {
 		} else if (spe<60) {
 			visible=(spe%2==0);
 		}
+		
+		setAjustedX((int) x);
+		setAjustedY((int) y);
 		return deads;
 	}
 	

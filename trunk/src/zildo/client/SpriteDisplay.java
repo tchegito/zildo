@@ -109,16 +109,14 @@ public class SpriteDisplay extends SpriteStore {
 		for (SpriteEntity entity : entities) {
 			if (entity != null) {
 				// Camera moves
-				if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ENTITY || 
-						entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
+				if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ENTITY) { 
 					entity.setScrX((int) (entity.x - cameraXnew));
 					entity.setScrY((int) (entity.y - cameraYnew));
-				}
-				if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
+				} else if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
 					// Center sprite
 					SpriteModel spr=entity.getSprModel();
-					entity.setScrX(entity.getScrX() - (spr.getTaille_x() >> 1));
-					entity.setScrY(entity.getScrY() +  3-spr.getTaille_y());
+					entity.setScrX(entity.getAjustedX() - cameraXnew - (spr.getTaille_x() >> 1));
+					entity.setScrY(entity.getAjustedY() - cameraYnew +  3-spr.getTaille_y());
 				}
 			}
 		}

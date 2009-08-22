@@ -1,10 +1,13 @@
 package zildo.fwk.gfx;
 
+import zildo.monde.map.Point;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import zildo.fwk.opengl.OpenGLStuff;
+import zildo.monde.map.Rectangle;
 
 /**
  * Classe qui permet de dessiner directement sur l'écran de rendu dans un contexte orthographique.
@@ -198,6 +201,11 @@ public class Ortho extends OpenGLStuff {
 
 	}
 	
+	public void box(Rectangle p_rect, int palColor, Vector4f color) {
+		Point cornerTopLeft=p_rect.getCornerTopLeft();
+		Point size=p_rect.getSize();
+		box(cornerTopLeft.x, cornerTopLeft.y, size.x, size.y, palColor, color);
+	}
 	/**
 	 * Draw a box on foreground (z=1) with desired color (palettized or not).
 	 * This is not the right way for many boxes. Prefer (@link #boxOpti).

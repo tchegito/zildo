@@ -45,7 +45,7 @@ public class PersoNJ extends Perso {
 			for (Element e:elem) {
 				SpriteModel spr=e.getSprModel();
 				int size=(spr.getTaille_x() + spr.getTaille_y()) / 4;
-				EngineZildo.collideManagement.addCollision(false, (int) e.x-4, (int) e.y-(int)e.z-spr.getTaille_y()/2, size, getAngle(), this);
+				EngineZildo.collideManagement.addCollision((int) e.x-4, (int) e.y-(int)e.z-spr.getTaille_y()/2, size, null, getAngle(), this);
 			}
 		}
 	}
@@ -57,7 +57,7 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Invoked when this character gets wounded by any enemy (=ZILDO)
 	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean beingWounded(float cx, float cy) {
+	public boolean beingWounded(float cx, float cy, Perso p_shooter) {
 		// Project monster away from the enemy
 		float diffx=getX()-cx;
 		float diffy=getY()-cy;
@@ -76,12 +76,7 @@ public class PersoNJ extends Perso {
 	
 		boolean died=(getPv()==0);
 		if (died) {
-			// Death !
-			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_MORT,
-					  (int) x,
-					  (int) y,
-					  0,
-					  this);
+			die(true, p_shooter);
 		}
 	
 		EngineZildo.soundManagement.broadcastSound("MonstreTouche", this);

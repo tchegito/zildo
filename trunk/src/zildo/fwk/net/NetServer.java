@@ -180,16 +180,24 @@ public class NetServer extends NetSend {
 	
 	private void sendSounds() {
         List<WaitingSound> queue = EngineZildo.soundManagement.getQueue();
-        EasyBuffering buffer = new EasyBuffering();
+        EasyBuffering broadCastbuffer = new EasyBuffering();
+        EasyBuffering singleClientbuffer = new EasyBuffering();
 
         for (WaitingSound snd : queue) {
         	ByteBuffer b=snd.serialize().getAll();
         	b.flip();
-            buffer.put(b);
+        	if (snd.broadcast) {
+        		broadCastbuffer.put(b);
+        	} else if (snd.client != null){
+        		// Send sound to the given client
+        		singleClientbuffer.put(b);
+                GetPacket getPacket = new GetPacket(ResourceType.SOUND, singleClientbuffer.getAll(), null);
+                sendPacket(getPacket, snd.client);
+        	}
         }
         if (queue.size() != 0) {
             // Send the sound info packet
-            GetPacket getPacket = new GetPacket(ResourceType.SOUND, buffer.getAll(), null);
+            GetPacket getPacket = new GetPacket(ResourceType.SOUND, broadCastbuffer.getAll(), null);
             broadcastPacketToAllCients(getPacket);
         }
         EngineZildo.soundManagement.resetQueue();
@@ -198,7 +206,9 @@ public class NetServer extends NetSend {
     public void broadcastPacketToAllCients(Packet p_packet) {
         Set<TransferObject> clientsLocation = server.getClientsLocation();
         for (TransferObject cl : clientsLocation) {
-            sendPacket(p_packet, cl);
+            if (cl != null) {
+                sendPacket(p_packet, cl);
+            }
         }
     }
     
