@@ -1,81 +1,66 @@
 package zildo.monde;
 
 import zildo.monde.map.Angle;
+import zildo.monde.map.Point;
 import zildo.monde.persos.Perso;
 
 public class Collision {
 
-	private int cx,cy;
-	private int cr;
-	private Angle cangle;	// Rayon et angle du monstre
-    private Perso perso;	// Position dans la table de pnj
-	private int ctabpnj;
-	
-	public Collision() {
-	}
-	
-	public int getCx() {
-		return cx;
-	}
+    public int cx, cy;
+    public int cr;
+    public Angle cangle; // Rayon et angle du monstre
+    public Point size; // Exact object's size
+    public Perso perso; // Position dans la table de pnj
 
-	public void setCx(int cx) {
-		this.cx = cx;
-	}
+    public Collision() {
+    }
 
-	public int getCy() {
-		return cy;
-	}
+    public int getCx() {
+        return cx;
+    }
 
-	public void setCy(int cy) {
-		this.cy = cy;
-	}
+    public void setCx(int cx) {
+        this.cx = cx;
+    }
 
-	public int getCr() {
-		return cr;
-	}
+    public int getCy() {
+        return cy;
+    }
 
-	public void setCr(int cr) {
-		this.cr = cr;
-	}
+    public void setCy(int cy) {
+        this.cy = cy;
+    }
 
-	public Angle getCangle() {
-		return cangle;
-	}
+    public int getCr() {
+        return cr;
+    }
 
-	public void setCangle(Angle cangle) {
-		this.cangle = cangle;
-	}
+    public void setCr(int cr) {
+        this.cr = cr;
+    }
 
-	public Perso getPerso() {
-		return perso;
-	}
+    public Angle getCangle() {
+        return cangle;
+    }
 
-	public void setPerso(Perso perso) {
-		this.perso = perso;
-	}
+    public void setCangle(Angle cangle) {
+        this.cangle = cangle;
+    }
 
-	public int getCtabpnj() {
-		return ctabpnj;
-	}
+    public Perso getPerso() {
+        return perso;
+    }
 
-	public void setCtabpnj(int ctabpnj) {
-		this.ctabpnj = ctabpnj;
-	}
+    public void setPerso(Perso perso) {
+        this.perso = perso;
+    }
 
-	public Collision(int x, int y, int cr, Angle angle, Perso perso) {
-		this.cx=x;
-		this.cy=y;
-		this.cr=cr;
-		this.cangle=angle;
-		this.perso=perso;
-	}
-	
-	public Collision(int x, int y, int cr, Angle angle, Perso perso, int ctabpnj) {
-		this.cx=x;
-		this.cy=y;
-		this.cr=cr;
-		this.cangle=angle;
-		this.perso=perso;
-		this.ctabpnj=ctabpnj;
-	}	
+    public Collision(int x, int y, int cr, Point size, Angle angle, Perso perso) {
+        this.cx = x;
+        this.cy = y;
+        this.cr = cr;
+        this.size = size;
+        this.cangle = angle;
+        this.perso = perso;
+    }
 }

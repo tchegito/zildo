@@ -8,6 +8,7 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.ElementArrow;
+import zildo.monde.decors.ElementBoomerang;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
@@ -74,9 +75,10 @@ public class PersoZildo extends Perso {
 		setPv(12);
 		setAlerte(false);
 		setCompte_dialogue(0);
-		setMoney(0);
-	
-		Element bouclier=new Element(this);
+	    setMoney(0);
+	    pushingSprite = null;
+
+	    Element bouclier = new Element(this);
 		bouclier.setX(getX());
 		bouclier.setY(getY());
 		bouclier.setNBank(SpriteBank.BANK_ZILDO);
@@ -98,11 +100,11 @@ public class PersoZildo extends Perso {
 		addPersoSprites(ombre);
 		addPersoSprites(piedsMouilles);
 
-		weapon=new Item(ItemKind.BOW);
+		weapon=new Item(ItemKind.BOOMERANG);
 
 		inventory=new ArrayList<Item>();
 		inventory.add(weapon);
-		inventory.add(new Item(ItemKind.BOOMERANG));
+		inventory.add(new Item(ItemKind.BOW));
 		inventory.add(new Item(ItemKind.SWORD));
 		
 	}
@@ -135,13 +137,18 @@ public class PersoZildo extends Perso {
 			EngineZildo.mapManagement.getCurrentMap().attackTile(tileAttacked);
 			break;
 		case BOW:
-			EngineZildo.soundManagement.broadcastSound("FlecheTir", this);
-			setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_ARC);
-			setAttente(3*5);
-			
-			Element arrow=new ElementArrow(angle, (int) x, (int) y, this);
-			EngineZildo.spriteManagement.spawnSprite(arrow);
+			if (attente == 0) {
+				setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_ARC);
+				setAttente(4*8);
+			}
 			break;
+		case BOOMERANG:
+            if (attente == 0) {
+                setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_BOOMERANG);
+                EngineZildo.spriteManagement.spawnSprite(new ElementBoomerang(angle, (int) x, (int) y, (int) z, this));
+                setAttente(16);
+            }
+            break;
 		}
 	}
 	
@@ -187,7 +194,7 @@ public class PersoZildo extends Perso {
 			}
 	
 			// Add this collision record to collision engine
-			EngineZildo.collideManagement.addCollision(true, (int) cx, (int) cy, rayon, Angle.NORD, this);
+			EngineZildo.collideManagement.addCollision((int) cx, (int) cy, rayon, null, Angle.NORD, this);
 		}
 	}
 	
@@ -198,7 +205,7 @@ public class PersoZildo extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Invoked when Zildo got wounded by any enemy.
 	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean beingWounded(float cx, float cy) {
+	public boolean beingWounded(float cx, float cy, Perso p_shooter) {
 		// Project Zildo away from the enemy
 		float diffx=getX()-cx;
 		float diffy=getY()-cy;
@@ -228,8 +235,22 @@ public class PersoZildo extends Perso {
 			guiCircle=null;
 		}
 		
-		return (getPv() == 0);
-	}
+        boolean die = getPv() == 0;
+        if (die) {
+            die(false, p_shooter);
+        }
+
+        return die;
+    }
+
+    /**
+     * Zildo is dead ! Send messages and respawn (in multiplayer deathmatch)
+     */
+    public void die(boolean p_link, Perso p_shooter) {
+        super.die(p_link, p_shooter);
+        EngineZildo.messageManagement.displayDeathMessage(this, p_shooter);
+        EngineZildo.respawnClient(this);
+    }
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// stopBeingWounded
@@ -468,6 +489,7 @@ public class PersoZildo extends Perso {
 				{0,1,2,3,4,5,6},{0,1,2,3,4,5,6},
 				{0,1,2,3,4,5,6},{0,1,2,3,4,5,6}};
 		
+		final int[] seq_zildoBow={0,1,2,1};
 		switch (getMouvement())
 		{
 		case MOUVEMENT_VIDE:
@@ -508,7 +530,13 @@ public class PersoZildo extends Perso {
 		    setNSpr(angle.value*6 + (((6*3-getAttente()-1) % (6*3)) / 3) + 54);
 			break;
 		case MOUVEMENT_ATTAQUE_ARC:
-		    setNSpr(angle.value*3 + (((3*5-getAttente()-1) % (3*5)) / 5) + 108);
+			
+		    setNSpr(angle.value*3 + seq_zildoBow[(((4*8-getAttente()-1) % (4*8)) / 8)] + 108);
+			if (attente==2*8) {
+				EngineZildo.soundManagement.broadcastSound("FlecheTir", this);
+				Element arrow=new ElementArrow(angle, (int) x, (int) y, 0, this);
+				EngineZildo.spriteManagement.spawnSprite(arrow);
+			}
 		    break;
 		}
 	}
@@ -597,6 +625,10 @@ public class PersoZildo extends Perso {
 		element.setAy(0.0f);
 		element.setAz(-0.07f);
 		element.setLinkedPerso(this);	// Declare this element thrown by Zildo (so it can't collide with him)
+		element.setAngle(angle);
+		element.flying=true;
+		element.relativeZ=EngineZildo.mapManagement.getCurrentMap().readAltitude((int) x/16, (int) y/16);
+
 		switch (getAngle()) {
 			case NORD:
 				element.setVy(-4.0f);
@@ -620,14 +652,16 @@ public class PersoZildo extends Perso {
 	
 	public void lookInventory() {
 		if (inventory.size() > 0) {
+			EngineZildo.soundManagement.playSound("MenuOut", this);		
 			inventoring=true;
 			guiCircle=new ItemCircle();
 			int sel=inventory.indexOf(weapon);
-			guiCircle.create(inventory, sel, (int) x, (int) y-8);
+			guiCircle.create(inventory, sel, this);
 		}
 	}
 	
 	public void closeInventory() {
+		EngineZildo.soundManagement.playSound("MenuIn", this);		
 		guiCircle.close();	// Ask for the circle to close
 		weapon=inventory.get(guiCircle.getItemSelected());
 	}

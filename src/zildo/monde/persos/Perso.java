@@ -5,7 +5,6 @@ import java.util.List;
 
 import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
-import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.map.Zone;
 import zildo.monde.persos.utils.MouvementPerso;
@@ -357,12 +356,17 @@ public abstract class Perso extends Element {
 	
 	public abstract void initPersoFX();
 
-	public abstract boolean beingWounded(float cx, float cy);
-	
+    public abstract boolean beingWounded(float cx, float cy, Perso p_shooter);
+    
 	public abstract void stopBeingWounded();
 
 	public abstract void attack();
 	
+    public void die(boolean p_link, Perso p_shooter) {
+        // Death !
+        EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_MORT, (int) x, (int) y, 0, p_link ? this : null);
+    }
+    
 	public abstract void finaliseComportement(int compteur_animation);
 	
 	// Default function : nothing

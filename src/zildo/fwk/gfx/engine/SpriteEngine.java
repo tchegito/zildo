@@ -236,10 +236,6 @@ public class SpriteEngine extends TextureEngine {
 			z=entity.z;
 	
 		SpriteModel spr=entity.getSprModel();
-		if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT && entity.getScrY() > 0) {
-			int j=9;
-			j++;
-		}
 		entity.setLinkVertices(
 		meshSprites[entity.getNBank()].synchronizeSprite((float) entity.getScrX(),
 				  									(float) entity.getScrY() - z,

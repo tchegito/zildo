@@ -42,7 +42,14 @@ public class SoundPlay {
 									{"AfficheTexteFin", "textefin.wav"},
 
 									{"FlecheTir", "tire.wav"},
-									{"FlechePlante", "plante.wav"}
+									{"FlechePlante", "plante.wav"},
+									
+									{"Boomerang", "boomeran.wav"},
+									{"BoomerangTape", "argent2.wav"},
+									
+									{"MenuIn", "Menu1.wav"},
+									{"MenuOut", "Menu2.wav"},
+									{"MenuMove", "Bip.wav"}
 
 								 };
 
@@ -54,6 +61,7 @@ public class SoundPlay {
 	argent3			X				X
 	atterit			X
 	brise			X
+	boomeran		X				X
 	carte
 	choix
 	choixok
@@ -166,7 +174,9 @@ public class SoundPlay {
 	
 	public void playSounds(List<WaitingSound> p_sounds) {
 		for (WaitingSound sound : p_sounds) {
-			playSoundFX(sound.name);
+			if (sound.broadcast || sound.client==null) {
+				playSoundFX(sound.name);
+			}
 		}
 	}
 }

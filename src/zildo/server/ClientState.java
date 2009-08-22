@@ -27,6 +27,7 @@ public class ClientState {
     public PersoZildo zildo;		// Client's Zildo
     public int inactivityTime;		// Number of frame where server gets nothing from this client
     public DialogState dialogState;	// Client's dialoguing state
+    public String playerName;
     
     public ClientState(TransferObject p_location, int p_zildoId) {
         location = p_location;

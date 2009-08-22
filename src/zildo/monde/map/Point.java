@@ -2,38 +2,46 @@ package zildo.monde.map;
 
 public class Point {
 
-	private int x, y;
+    public int x, y;
 
-	public Point() {
-		
-	}
-	public Point(int x, int y) {
-		this.x=x;
-		this.y=y;
-	}
-	
-	public int getX() {
-		return x;
-	}
+    public Point() {
 
-	public void setX(int x) {
-		this.x = x;
-	}
+    }
 
-	public int getY() {
-		return y;
-	}
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	public void addX(int xPlus) {
-		this.x+= xPlus;
-	}
+    public int getX() {
+        return x;
+    }
 
-	public void addY(int yPlus) {
-		this.y+= yPlus;
-	}
+    public void setX(int x) {
+        this.x = x;
+    }
 
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void addX(int xPlus) {
+        this.x += xPlus;
+    }
+
+    public void addY(int yPlus) {
+        this.y += yPlus;
+    }
+
+    public Point translate(int addX, int addY) {
+        return new Point(x + addX, y + addY);
+    }
+    
+    public String toString() {
+    	return "("+x+", "+y+")";
+    }
 }

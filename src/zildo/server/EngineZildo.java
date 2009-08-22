@@ -18,7 +18,10 @@ public class EngineZildo {
 	public static PersoManagement persoManagement;
 	public static DialogManagement dialogManagement;
 	public static SoundManagement soundManagement;
+    public static MessageManagement messageManagement;
 
+    public static Game game;
+    
 	private static int timeToWait=0;
 	private static int nFramesToWait=0;
 	
@@ -50,20 +53,14 @@ public class EngineZildo {
 		collideManagement=new CollideManagement();
 		soundManagement=new SoundManagement();
 		playerManagement=new PlayerManagement();
-
+        messageManagement = new MessageManagement();
+        
 		// Charge une map
 		String mapName=p_game.mapName;
 
 		mapManagement.charge_map(mapName);
 	
-		/*
-		spriteManagement.spawnElement(BANK_ZILDO,4,30,90);
-		spriteManagement.spawnSprite(BANK_PNJ,0,30,150);
-		spriteManagement.spawnSprite(BANK_PNJ,0,30,140);
-		spriteManagement.spawnSprite(BANK_PNJ,0,30,130);
-		spriteManagement.spawnSpriteGeneric(SPR_FUMEE);
-		*/
-
+		game=p_game;
 	}
 
     public int spawnClient() {
@@ -83,7 +80,7 @@ public class EngineZildo {
         Point respawnLocation = mapManagement.getRespawnPosition();
         p_zildo.placeAt(respawnLocation);
         p_zildo.setPv(13);
-        p_zildo.beingWounded(0, 0);
+        p_zildo.beingWounded(0, 0, null);
     }
 
 	public EngineZildo(Game p_game) {

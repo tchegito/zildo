@@ -64,6 +64,7 @@ public class DialogManagement {
 		// Set the dialoguing states for each Perso
 		persoToTalk.setDialoguingWith(p_client.zildo);
 		p_client.zildo.setDialoguingWith(persoToTalk);
+		p_client.dialogState.dialoguing=true;
 	}
 	
 	public void stopDialog(ClientState p_client) {

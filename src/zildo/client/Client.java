@@ -21,7 +21,7 @@ import zildo.server.EngineZildo;
  */
 public class Client {
 
-	ClientEngineZildo engineZildo;
+	ClientEngineZildo clientEngineZildo;
 	OpenGLZildo glGestion;
 	boolean awt;
 	boolean done=false;
@@ -35,13 +35,14 @@ public class Client {
 	public Client() {
 		// On crée les objets OpenGL
 		glGestion=new OpenGLZildo(Zildo.fullScreen);
-		engineZildo=new ClientEngineZildo(glGestion, false);
-		glGestion.setEngineZildo(engineZildo);
+		clientEngineZildo=new ClientEngineZildo(glGestion, false);
+		glGestion.setEngineZildo(clientEngineZildo);
 		
 		awt=false;
 		connected=false;
 		
 		netClient=new NetClient(this);
+		
 	}
 	
 	/**
@@ -55,9 +56,9 @@ public class Client {
 		} else {
 			glGestion=new OpenGLZildo(Zildo.fullScreen);
 		}
-		engineZildo=new ClientEngineZildo(glGestion, p_awt);
-		glGestion.setEngineZildo(engineZildo);
-		engineZildo.setOpenGLGestion(glGestion);
+		clientEngineZildo=new ClientEngineZildo(glGestion, p_awt);
+		glGestion.setEngineZildo(clientEngineZildo);
+		clientEngineZildo.setOpenGLGestion(glGestion);
 
 		connected=true;	// We don't need to manage connection
 	}
@@ -72,7 +73,7 @@ public class Client {
 		} catch (LWJGLException e) {
 			throw new RuntimeException("Problem initializing ZildoRenderer !");
 		}
-		engineZildo.initializeClient(true);
+		clientEngineZildo.initializeClient(true);
         ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
     }
 	
@@ -86,7 +87,7 @@ public class Client {
 		}
 		
         // Display scene
-        glGestion.render();
+        glGestion.render(connected);
         
         return done;
 	}
@@ -111,7 +112,7 @@ public class Client {
                     netClient.sendKeyboard();
                 }
             }
-        	if (connected) {
+        	if (true || connected) {
         		render();
         	}
 
@@ -130,7 +131,7 @@ public class Client {
 	}
 
 	public ClientEngineZildo getEngineZildo() {
-		return engineZildo;
+		return clientEngineZildo;
 	}
 	
 	public TransferObject getNetClient() {

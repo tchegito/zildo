@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 import zildo.fwk.IntSet;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.map.Angle;
+import zildo.monde.map.Area;
+import zildo.monde.map.Point;
 import zildo.monde.persos.Perso;
 import zildo.monde.persos.PersoZildo;
 import zildo.monde.persos.utils.PersoDescription;
@@ -43,7 +45,9 @@ public class Element extends SpriteEntity {
 	public float fx,fy,fz;	// Frottements
 	protected char spe; //Spe est utilisé selon l'usage
     protected Angle angle;
-
+	public boolean flying;
+	
+    public int relativeZ;	// Simulate the altitude delta
 	protected int addSpr;	// Pour les animations (exemple:diamants qui brillent)
 	protected SpriteEntity linkedPerso;	// When this element dies, any non-perso linked entity die too.
 
@@ -79,6 +83,9 @@ public class Element extends SpriteEntity {
 		fx=0.0f;
 		fy=0.0f;
 		fz=0.0f;
+		
+		flying=false;
+
 		//logger.log(Level.INFO, "Creating Element");
 	}
 
@@ -125,7 +132,8 @@ public class Element extends SpriteEntity {
 			(a>=32 && a<=39) ||
 			(a>=40 && a<=42) ||
 			(a>=44 && a<=56) ||
-			(a>=69 || a<=74)
+			(a>=69 && a<=74) ||
+			(a>=ElementDescription.BOOMERANG1.ordinal() && a<=ElementDescription.BOOMERANG4.ordinal())
 			)
 			return true;
 		else
@@ -158,7 +166,7 @@ public class Element extends SpriteEntity {
 	 * Renvoie TRUE si l'élément est solide.
 	 * @return boolean
 	 */
-	private boolean isSolid() {
+	protected boolean isSolid() {
 		if (elementsSolides.contains(nSpr)) {
 			return true;
 		}
@@ -179,8 +187,8 @@ public class Element extends SpriteEntity {
         if (isSolid() || elementsMobiles.contains(nSpr)) {
             Perso perso = (Perso) this.getLinkedPerso();
             boolean partOfPerso = perso == null ? false : perso.linkedSpritesContains(this);
-            if (!partOfPerso && EngineZildo.mapManagement.collide((int) x, (int) y, this)) {				// Collision : on stoppe le mouvement, on ne laisse plus que la chute pour finir au sol
-				EngineZildo.mapManagement.collide((int)x,(int)y,this);
+            if (!partOfPerso && EngineZildo.mapManagement.collide((int) x, (int) y, this)) {
+            	// Collision : on stoppe le mouvement, on ne laisse plus que la chute pour finir au sol
 				x=ancX;
 				y=ancY;
 				z=ancZ;
@@ -191,11 +199,18 @@ public class Element extends SpriteEntity {
 				return true;
 			}
 		}
+	    // Out of the map
+	    Area map=EngineZildo.mapManagement.getCurrentMap();
+	    if (x<0 || y<0 || x>map.getDim_x()*16 || y>map.getDim_y()*16) {
+	    	return true;
+	    }
 		return false;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// animate
+	// -animate the current element, and we expect that arranged position is stored in
+	// ajustedX and ajustedY.
 	///////////////////////////////////////////////////////////////////////////////////////
 	// OUT : List of element which have to be removed from element's list
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -223,7 +238,7 @@ public class Element extends SpriteEntity {
 				if (az==0) {
 					deads.add(this);
 				}
-			} else if (isSolid()) {// Tous les sprites n'entrent pas en collision
+			} else if (isSolid() || flying) {// Tous les sprites n'entrent pas en collision
 				// On teste la collision avec le décor
 				if (nSpr==42) {
 					//Collision avec Zildo}
@@ -240,43 +255,50 @@ public class Element extends SpriteEntity {
 				} else {
 				  // Collision avec les ennemis (uniquement dans le cas où l'objet est en mouvement)
 					if (vx != 0 || vy != 0 || vz !=0) {
-						EngineZildo.collideManagement.addCollision(true, 
-								(int)x-3, 
-								(int)y-getSprModel().getTaille_y()/2-(int)z, 6, Angle.NORD, (Perso) linkedPerso);
+						Point size=getCollisionSize();
+						int addX=-3;
+						int addY=0;
+						addX=0; // On ne doit pas tester dans 4 carrés pour les objets volant
+						addY=2;
+						EngineZildo.collideManagement.addCollision((int)x+addX, 
+								(int)y-getSprModel().getTaille_y()/2-(int)z+addY, 
+								6, size, Angle.NORD, (Perso) linkedPerso);
 					}
 				}
 			}
 			// Débordement}
 			if (x<-4 || y<-4 || x>64*16 || y>64*16) {
-				return Arrays.asList((SpriteEntity) this);
-			}
+				die();
+				deads=Arrays.asList((SpriteEntity) this);
+			} else {
 	
-			if (elementsMobiles.contains(nSpr)) {
-				z=ancZ; //z-vz;
-				vz=vz-az;
-				if (az!=0) {
-					/*etat=false;              // Pour tromper collide, on supprime le sprite
-					colli=collide(round(x),round(y),0);
-					etat=true;               // Et on le remet
-					*/
-					if (colli || az==32) {
-						vx=0;vy=0;az=32;vz=0;
-					} else {
-						az=az+1;
+				if (elementsMobiles.contains(nSpr)) {
+					z=ancZ; //z-vz;
+					vz=vz-az;
+					if (az!=0) {
+						if (colli || az==32) {
+							vx=0;vy=0;az=32;vz=0;
+						} else {
+							az=az+1;
+						}
 					}
+	            } else if ((z < 4 && vz != 0.0f) || colli) {
+	            	if (!beingCollided()) {
+		            	// Le sprite doit 'mourir'
+						deads.add(this);
+	            	}
+				} else if (z>28 && nSpr==6) {
+					nSpr=5;         // Fumée de cheminée
+				} else if (z>48 && nSpr==5) {
+					z=16.0f;x=(int)(x / 16)*16 +16; // On remet la fumée à sa place
+					vx=0.2f;vz=0.0f;
+					nSpr=6;
 				}
-			} else if (z<4 || colli) {
-			 // Le sprite doit 'mourir'
-				deads.add(this);
-			} else if (z>28 && nSpr==6) {
-				nSpr=5;         // Fumée de cheminée
-			} else if (z>48 && nSpr==5) {
-				z=16.0f;x=(int)(x / 16)*16 +16; // On remet la fumée à sa place
-				vx=0.2f;vz=0.0f;
-				nSpr=6;
 			}
 		}
-	
+		
+		setAjustedX((int) x);
+		setAjustedY((int) y);
 		return deads;	// NULL ==> Element is still alive
 	}
 
@@ -427,11 +449,14 @@ public class Element extends SpriteEntity {
 			end;
 			spawn_perso(pnj);
 			*/
-		} else if (nSpr>=ElementDescription.ARROW_UP.ordinal() && nSpr<=ElementDescription.ARROW_LEFT.ordinal()) {
-			EngineZildo.soundManagement.broadcastSound("FlechePlante", this);
 		}
 	}
 
+	/**
+	 * Called when element is disappearing (in case of out of bounds, for example)
+	 */
+	protected void die() {}
+	
 	/**
 	 * Returns TRUE if zildo can push this element.
 	 * @return boolean
@@ -463,6 +488,18 @@ public class Element extends SpriteEntity {
 		az=1.0f;	
 	}
 
+	/**
+	 * Called when this element is collided by something.
+	 * @return FALSE if element must disappear, TRUE otherwise.
+	 */
+	protected boolean beingCollided() {
+		return false;
+	}
+	
+    public Point getCollisionSize() {
+        return null;
+    }
+    
 	public void setFx(float fx) {
 		this.fx = fx;
 	}

@@ -3,6 +3,7 @@ package zildo.fwk.opengl;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector3f;
 
 import zildo.client.ClientEngineZildo;
 import zildo.monde.map.Point;
@@ -92,7 +93,7 @@ public class OpenGLZildo extends OpenGLGestion {
         xx+=0.5f / 8.0f;
     }
     
-    public void render() {
+    public void render(boolean p_clientReady) {
 
    		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
 
@@ -108,9 +109,14 @@ public class OpenGLZildo extends OpenGLGestion {
     		ClientEngineZildo.filterCommand.doPreFilter();
     	}
     	
-        engineZildo.renderFrame(awt);
-
+    	if (p_clientReady) {
+    		engineZildo.renderFrame(awt);
+    	} else {
+    		ClientEngineZildo.ortho.drawText(0,4,"Awaiting server...", new Vector3f(1,1,1));
+    	}
+    	
     	if (ClientEngineZildo.filterCommand != null) {
+    		ClientEngineZildo.filterCommand.doFilter();
     		ClientEngineZildo.filterCommand.doPostFilter();
     	}
     	

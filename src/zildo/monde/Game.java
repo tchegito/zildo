@@ -14,11 +14,13 @@ package zildo.monde;
 public class Game {
 
 	public boolean editing;
+	public boolean multiPlayer;
 	public boolean deathmatch;	// Defines the game rules
 	public String mapName;
 	
 	public Game(String p_mapName, boolean p_editing) {
 		mapName=p_mapName;
 		editing=p_editing;
+		multiPlayer=false;
 	}
 }

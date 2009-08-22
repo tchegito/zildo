@@ -15,7 +15,11 @@ import zildo.server.EngineZildo;
 import zildo.server.Server;
 
 /**
- * @author eboussaton
+ * Represents the game owner core class. It could be :
+ * - a single player, with no network support
+ * - a first player, who can accept client in his game
+ * 
+ * @author tchegito
  */
 public class SinglePlayer {
 
@@ -29,6 +33,7 @@ public class SinglePlayer {
     }
 
     public SinglePlayer(Game p_game) {
+    	p_game.multiPlayer=false;
         engineZildo = new EngineZildo(p_game);
 
         launchGame();
@@ -43,18 +48,25 @@ public class SinglePlayer {
         Client client = new Client(false);
         ClientEngineZildo clientEngineZildo = client.getEngineZildo();
 
-        // Create Zildo !
-        int zildoId = engineZildo.spawnClient();
-        ClientEngineZildo.spriteDisplay.setZildoId(zildoId);
-
         // Initialize map
         ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
 
         boolean done = false;
         Set<ClientState> states=new HashSet<ClientState>();
-        ClientState state = new ClientState(null, zildoId);
+
+        // Create Zildo !
+        int zildoId;
+        ClientState state;
+        if (server != null) {
+        	zildoId=server.connectClient(null);
+        	state=server.getClientStates().iterator().next();
+    		ClientEngineZildo.guiDisplay.displayMessage("server started");
+        } else {
+        	zildoId = engineZildo.spawnClient();
+        	state = new ClientState(null, zildoId);
+        }
+        ClientEngineZildo.spriteDisplay.setZildoId(zildoId);
         
-		ClientEngineZildo.guiDisplay.displayMessage("server started");
 
         while (!done) {
         	states.clear();

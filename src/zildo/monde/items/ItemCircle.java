@@ -7,6 +7,7 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.monde.decors.ElementDescription;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.map.Point;
+import zildo.monde.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
 public class ItemCircle {
@@ -27,6 +28,7 @@ public class ItemCircle {
 	private CirclePhase phase;	// 0=create 1=fixed 2=remove 3=scroll
 	private int itemSelected;	// From 0 to guiSprites.size()
 	private int count;
+	private PersoZildo heros;	// The one at the center of the circle
 	
 	public ItemCircle() {
 		guiSprites=new ArrayList<SpriteEntity>();
@@ -45,12 +47,13 @@ public class ItemCircle {
 	 * @param p_x
 	 * @param p_y
 	 */
-	public void create(List<Item> p_items, int p_selected, int p_x, int p_y) {
+	public void create(List<Item> p_items, int p_selected, PersoZildo p_heros) {
 		count=0;
 		itemSelected=p_selected;
 		guiSprites.clear();
-
-		center=new Point(p_x, p_y);
+		heros=p_heros;
+		
+		center=new Point((int) heros.x, (int) heros.y-8);
 		for (Item item : p_items) {
 			int typ=item.kind.ordinal();
 			switch (item.kind) {
@@ -64,7 +67,7 @@ public class ItemCircle {
 					typ=ElementDescription.SMOKE.ordinal();
 					break;
 			}
-            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS, typ, p_x, p_y, true);
+            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS, typ, center.x, center.y, true);
             e.clientSpecific=true;
             guiSprites.add(e);
 		}
@@ -113,8 +116,10 @@ public class ItemCircle {
 			} else {
 				if (phase==CirclePhase.ROTATE_LEFT) {
 					itemSelected= (itemSelected+guiSprites.size() -1) % guiSprites.size();
+					EngineZildo.soundManagement.playSound("MenuMove", heros);
 				} else if (phase==CirclePhase.ROTATE_RIGHT) {
 					itemSelected= (itemSelected +1) % guiSprites.size();
+					EngineZildo.soundManagement.playSound("MenuMove", heros);
 				}
 				phase=CirclePhase.FIXED;
 			}

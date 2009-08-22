@@ -105,10 +105,14 @@ public class TileEngine extends TextureEngine {
 	public void cleanUp()
 	{
 		for (TilePrimitive tp : meshFORE) {
-			tp.cleanUp();
+			if (tp != null) {
+				tp.cleanUp();
+			}
 		}
 		for (TilePrimitive tp : meshBACK) {
-			tp.cleanUp();
+			if (tp != null) {
+				tp.cleanUp();
+			}
 		}
 	}
 	

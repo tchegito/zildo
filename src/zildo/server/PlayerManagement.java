@@ -7,7 +7,6 @@ import zildo.fwk.input.KeyboardState;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.dialog.DialogManagement;
-import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.persos.Perso;
@@ -114,7 +113,7 @@ public class PlayerManagement {
 	
 		final Point[] saut_angle={
 			new Point(0,-40), new Point(48,16),new Point(0,56),  new Point(-48,16),
-			new Point(32,-32),new Point(32,48),new Point(-32,48),new Point(-32,-32)};
+			new Point(32,48), new Point(32,-32),new Point(-32,48),new Point(-32,-32)};
 	
 		MapManagement mapManagement=EngineZildo.mapManagement;
 	
@@ -190,8 +189,9 @@ public class PlayerManagement {
 					case MOUVEMENT_SOULEVE:
 						heros.setMouvement(MouvementZildo.MOUVEMENT_BRAS_LEVES);
 						break;
-					case MOUVEMENT_ATTAQUE_EPEE:
-					case MOUVEMENT_ATTAQUE_ARC:
+                    case MOUVEMENT_ATTAQUE_EPEE:
+                    case MOUVEMENT_ATTAQUE_ARC:
+                    case MOUVEMENT_ATTAQUE_BOOMERANG:
 						heros.setMouvement(MouvementZildo.MOUVEMENT_VIDE);		// Awaiting for key pressed
 						break;
 				}
@@ -202,7 +202,7 @@ public class PlayerManagement {
 			Angle sauvangle=heros.getAngle();
 			// ATTACK key
 	
-			if (heros.getMouvement()!=MouvementZildo.MOUVEMENT_ATTAQUE_EPEE) {
+			if (heros.getMouvement()!=MouvementZildo.MOUVEMENT_ATTAQUE_EPEE && heros.getMouvement()!=MouvementZildo.MOUVEMENT_ATTAQUE_ARC) {
 				// Zildo can move ONLY if he isn't attacking
 				// LEFT/RIGHT key
 				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_LEFT)) {
@@ -286,40 +286,12 @@ public class PlayerManagement {
 							//On regarde si Zildo peut sauter
 							int cx=xx / 16;
 							int cy=yy / 16;
-							onMap=mapManagement.getCurrentMap().readmap(cx,cy);
-							heros.setDz(8);
-							switch (onMap) {
-								// Saut diagonal
-								case 35:case 106: heros.setDz(6); break;
-								case 19:case 100: heros.setDz(7); break;
-								case 23:case 102: heros.setDz(4); break;
-								case 27:case 104:  heros.setDz(5); break;
-								default:
-									// Saut latéral}
-									switch (heros.getAngle()) {
-									case NORD:
-										onMap=mapManagement.getCurrentMap().readmap(cx,cy-1);
-										if (onMap==21 || onMap==3 || onMap==839)
-											heros.setDz(0);
-										break;
-									case EST:
-										onMap=mapManagement.getCurrentMap().readmap(cx+1,cy);
-								// Display motif number
-										if (onMap==25 || onMap==9 || onMap==842)
-											heros.setDz(1);
-										break;
-									case SUD:
-										onMap=mapManagement.getCurrentMap().readmap(cx,cy+1);
-										if (onMap==32 || onMap==31 || onMap==844)
-											heros.setDz(2);
-										break;
-									case OUEST:
-										onMap=mapManagement.getCurrentMap().readmap(cx-1,cy);
-										if (onMap==17 || onMap==15 || onMap==841)
-											heros.setDz(3);
-										break;
-									}	// switch angle
-							}	// switch onmap
+							Angle angleResult=EngineZildo.mapManagement.getAngleJump(heros.getAngle(), cx, cy);
+							if (angleResult == null) {
+								heros.setDz(8);
+							} else {
+								heros.setDz(angleResult.value);
+							}
 							if (heros.getDz()!=8 && heros.getPushingSprite() == null)
 							{
 								// On sauve la position de Zildo avant son saut
@@ -501,7 +473,6 @@ public class PlayerManagement {
 									persoToTalk.setAngle(persoangle);
 		
 								// Launch the dialog
-								dialogState.dialoguing=true;
 								EngineZildo.dialogManagement.launchDialog(client, persoToTalk);
 							}
 						}

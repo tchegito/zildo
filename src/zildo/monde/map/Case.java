@@ -17,7 +17,8 @@ public class Case {
 	private int n_motif_masque;
 	private int n_banque_masque;
 	private int n_tile;	
-
+	private int z;	// Result of analysis
+	
 	public int getN_motif() {
 		return n_motif;
 	}
@@ -59,6 +60,7 @@ public class Case {
 	}
 
 	public Case() {
+		z=0;
 	}
 
 	public int getAnimatedMotif(int compteur_animation)
@@ -157,5 +159,13 @@ public class Case {
 		mapCase.setN_tile(p_buffer.readInt());
 		
 		return mapCase;
+	}
+
+	public int getZ() {
+		return z;
+	}
+
+	public void setZ(int z) {
+		this.z = z;
 	}
 }
