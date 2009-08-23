@@ -68,8 +68,8 @@ public class PersoNJ extends Perso {
 			norme=1.0f;           //Pour éviter le 'divide by zero'
 		}
 		// Et on l'envoie !
-		this.setPx((float) (4*(diffx/norme)));
-		this.setPy((float) (4*(diffy/norme)));
+		this.setPx((float) (8*(diffx/norme)));
+		this.setPy((float) (8*(diffy/norme)));
 		this.setMouvement(MouvementZildo.MOUVEMENT_TOUCHE);
 		this.setWounded(true);
 		this.setAlerte(true);				// Zildo is detected, if it wasn't done !
