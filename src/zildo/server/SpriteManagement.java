@@ -28,9 +28,6 @@ public class SpriteManagement extends SpriteStore {
     // Index des sprites fixes qui bloquent les persos (rambarde,tonneau)
 	static IntSet blockable_sprite=new IntSet(25,26,27,28,68,69,70);
 
-      // Index des sprites que Zildo peut prendre (argent,clé...)
-    static IntSet goodies_sprite=new IntSet(10,40,48,51,54);
-
     boolean spriteUpdating;
     
 	List<SpriteEntity> clientSpecificEntities;
@@ -162,7 +159,9 @@ public class SpriteManagement extends SpriteStore {
 				spawnSprite(element);
 				// Peut-être qu'un diamant va apparaitre !
 			}
-			if (Hasard.lanceDes(Constantes.hazardBushes_Diamant)) {
+			if (Hasard.lanceDes(Constantes.hazardBushes_Arrow)) {
+				spawnSpriteGeneric(Element.SPR_ARROW,x,y+2,0, null);
+			} else if (Hasard.lanceDes(Constantes.hazardBushes_Diamant)) {
 				spawnSpriteGeneric(Element.SPR_DIAMANT,x,y+2,0, null);
 			} else if (Hasard.lanceDes(Constantes.hazardBushes_Heart)) {
 				spawnSpriteGeneric(Element.SPR_COEUR,x+3,y+2,0, null);
@@ -170,6 +169,7 @@ public class SpriteManagement extends SpriteStore {
 			break;
 	
 		case Element.SPR_DIAMANT:
+		case Element.SPR_ARROW:
 			// Diamant
 			element=new ElementGoodies();
 			element.setX((float) x);
@@ -177,7 +177,11 @@ public class SpriteManagement extends SpriteStore {
 			element.setZ(4.0f);
 			element.setVz(1.5f);
 			element.setAz(-0.1f);
-			element.setSprModel(ElementDescription.GREENMONEY1, misc*3);
+			if (typeSprite == Element.SPR_DIAMANT) {
+				element.setSprModel(ElementDescription.GREENMONEY1, misc*3);
+			} else {
+				element.setSprModel(ElementDescription.ARROW_UP);
+			}
 			// Ombre
 			element2=new Element();
 			element2.setX((float) x);
@@ -199,7 +203,7 @@ public class SpriteManagement extends SpriteStore {
 			element.setSprModel(ElementDescription.HEART_LEFT);
 			spawnSprite(element);
 			break;
-	
+			
 		case Element.SPR_MORT:
 			element=new ElementAnimMort(miscPerso);
 			element.setX((float) x);
@@ -261,9 +265,6 @@ public class SpriteManagement extends SpriteStore {
 	// -animate sprites & persos
 	public void updateSprites()
 	{
-		// Get useful pointers
-		MapManagement mapManagement=EngineZildo.mapManagement;
-		
 		spriteUpdating=true;
 		spriteEntitiesToAdd.clear();
 		
@@ -396,7 +397,7 @@ public class SpriteManagement extends SpriteStore {
 				(entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT ||
 				 entity.getEntityType() == SpriteEntity.ENTITYTYPE_ENTITY)) {
 				isBlockable=blockable_sprite.contains(entity.getNSpr());
-				isGoodies=goodies_sprite.contains(entity.getNSpr());
+				isGoodies=entity.isGoodies();
 				SpriteModel sprModel=entity.getSprModel();
 				int sx=sprModel.getTaille_x();
 				int sy=sprModel.getTaille_y();

@@ -36,6 +36,7 @@ public class Element extends SpriteEntity {
 	public static final	int SPR_COEUR = 5;
 	public static final	int SPR_FROMCHEST = 6;
 	public static final	int SPR_FUMEE = 7;
+	public static final	int SPR_ARROW = 8;
 
 	// Class variables
 	private float ancX, ancY, ancZ;
@@ -177,7 +178,7 @@ public class Element extends SpriteEntity {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Move object, and stop it in case of collision.
 	 * @return boolean
@@ -185,8 +186,12 @@ public class Element extends SpriteEntity {
 	protected boolean physicMoveWithCollision() {
 		physicMove();
         if (isSolid() || elementsMobiles.contains(nSpr)) {
-            Perso perso = (Perso) this.getLinkedPerso();
-            boolean partOfPerso = perso == null ? false : perso.linkedSpritesContains(this);
+        	SpriteEntity linked=this.getLinkedPerso();
+        	boolean partOfPerso=false;
+        	if (linked != null && linked.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+        		Perso perso = (Perso) this.getLinkedPerso();
+        		partOfPerso = perso == null ? false : perso.linkedSpritesContains(this);
+        	}
             if (!partOfPerso && EngineZildo.mapManagement.collide((int) x, (int) y, this)) {
             	// Collision : on stoppe le mouvement, on ne laisse plus que la chute pour finir au sol
 				x=ancX;
@@ -252,7 +257,7 @@ public class Element extends SpriteEntity {
 						//spawnsprite_generic(SPR_ECLATEPIERRE,round(x),round(y),0);
 					}
 					*/
-				} else {
+				} else if (!isGoodies()){
 				  // Collision avec les ennemis (uniquement dans le cas où l'objet est en mouvement)
 					if (vx != 0 || vy != 0 || vz !=0) {
 						Point size=getCollisionSize();
@@ -260,9 +265,13 @@ public class Element extends SpriteEntity {
 						int addY=0;
 						addX=0; // On ne doit pas tester dans 4 carrés pour les objets volant
 						addY=2;
+						SpriteEntity linked=linkedPerso;
+						if (linked != null && linked.getEntityType() != SpriteEntity.ENTITYTYPE_PERSO) {
+							linked=null;
+						}
 						EngineZildo.collideManagement.addCollision((int)x+addX, 
 								(int)y-getSprModel().getTaille_y()/2-(int)z+addY, 
-								6, size, Angle.NORD, (Perso) linkedPerso);
+								6, size, Angle.NORD, (Perso) linked);
 					}
 				}
 			}

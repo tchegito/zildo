@@ -55,18 +55,7 @@ public class ItemCircle {
 		
 		center=new Point((int) heros.x, (int) heros.y-8);
 		for (Item item : p_items) {
-			int typ=item.kind.ordinal();
-			switch (item.kind) {
-				case SWORD:
-					typ=ElementDescription.WOOD_BAR.ordinal();
-					break;
-				case BOW:
-					typ=ElementDescription.ARROW_DOWN.ordinal();
-					break;
-				default:
-					typ=ElementDescription.SMOKE.ordinal();
-					break;
-			}
+			int typ=item.kind.representation.ordinal();
             SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS, typ, center.x, center.y, true);
             e.clientSpecific=true;
             guiSprites.add(e);
@@ -86,12 +75,12 @@ public class ItemCircle {
 			rayon=count;
 		} else if (phase.isRotating()) {
 			double diff=(pas * count / 32);
-			if (phase==CirclePhase.ROTATE_LEFT) {
+			if (phase==CirclePhase.ROTATE_RIGHT) {
 				diff=-diff;
 			}
 			alpha+=diff;
 		}
-		alpha+=pas*itemSelected;
+		alpha-=pas*itemSelected;
 		// Create the inventory sprites
 		for (SpriteEntity entity : guiSprites) {
 			int itemX=(int) (center.getX() + rayon*Math.sin(alpha));
@@ -139,9 +128,9 @@ public class ItemCircle {
 	public void rotate(boolean p_clockWise) {
 		if (!phase.isRotating()) {
 			if (p_clockWise) {
-				phase=CirclePhase.ROTATE_RIGHT;
-			} else {
 				phase=CirclePhase.ROTATE_LEFT;
+			} else {
+				phase=CirclePhase.ROTATE_RIGHT;
 			}
 			count=0;
 		}
