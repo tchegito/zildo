@@ -1,6 +1,17 @@
 package zildo.monde.items;
 
+import zildo.monde.decors.ElementDescription;
+
 public enum ItemKind {
 
-	SWORD, BOOMERANG, WHIP, BOW;
+	SWORD(ElementDescription.SMOKE), 
+	BOOMERANG(ElementDescription.BOOMERANG1), 
+	WHIP(ElementDescription.BAR_HORIZONTAL), 
+	BOW(ElementDescription.ARROW_UP);
+	
+	public ElementDescription representation;
+	
+	private ItemKind(ElementDescription p_itemRepresentation) {
+		representation=p_itemRepresentation;
+	}
 }

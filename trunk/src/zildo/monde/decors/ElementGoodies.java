@@ -22,7 +22,7 @@ public class ElementGoodies extends Element {
 		
 		spe--;
 		
-		if (nSpr == 40) {
+		if (nSpr == ElementDescription.HEART_LEFT.ordinal()) {
 			// Coeur voletant vers le sol
 			if (vx<=-0.15) {
 				ax=0.01f;
@@ -40,7 +40,7 @@ public class ElementGoodies extends Element {
 			}
 		}
 		
-		if (nSpr==10 || (nSpr>=48 && nSpr<=56)) {
+		if (nSpr==ElementDescription.HEART.ordinal() || (nSpr>=48 && nSpr<=56)) {
 			// Il s'agit d'un diamant ou du coeur (10)
 			x=x-vx;
 			vx=(int)(vx+1) % 100;
@@ -68,4 +68,7 @@ public class ElementGoodies extends Element {
 		return deads;
 	}
 	
+	public boolean isGoodies() {
+		return true;
+	}
 }

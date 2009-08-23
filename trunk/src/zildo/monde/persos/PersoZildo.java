@@ -9,6 +9,7 @@ import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.ElementArrow;
 import zildo.monde.decors.ElementBoomerang;
+import zildo.monde.decors.ElementDescription;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
@@ -556,25 +557,30 @@ public class PersoZildo extends Perso {
 		// Effect on perso
 		int money=this.getMoney();
 		int pv=this.getPv();
-		switch (nSpr) {
-		case 48:
+		ElementDescription desc=ElementDescription.fromInt(nSpr);
+		switch (desc) {
+		case GREENMONEY1:
 			setMoney(money+1);
 			break;
-		case 51:
+		case BLUEMONEY1:
 			setMoney(money+5);
 			break;
-		case 54:
+		case REDMONEY1:
 			setMoney(money+20);
 			break;
-		case 10: case 40:
+		case HEART: case HEART_LEFT:
 			setPv(pv+1);
+			break;
+		case ARROW_UP:
+			countArrow++;
 		}
 		// Sound
-		switch (nSpr) {
-			case 48: case 51: case 54:
+		switch (desc) {
+			case GREENMONEY1: case BLUEMONEY1: case REDMONEY1:
 				EngineZildo.soundManagement.broadcastSound("ZildoRecupArgent", this);
 				break;
-			case 10: case 40:
+			case HEART: case HEART_LEFT:
+				default:
 				EngineZildo.soundManagement.broadcastSound("ZildoRecupCoeur", this);
 				break;
 		}
