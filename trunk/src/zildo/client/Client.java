@@ -112,9 +112,7 @@ public class Client {
                     netClient.sendKeyboard();
                 }
             }
-        	if (true || connected) {
-        		render();
-        	}
+       		render();
 
         	ZUtils.sleep(5);
         }
