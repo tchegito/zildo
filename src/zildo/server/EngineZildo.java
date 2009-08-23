@@ -21,6 +21,7 @@ public class EngineZildo {
     public static MessageManagement messageManagement;
 
     public static Game game;
+    public static int compteur_animation;
     
 	private static int timeToWait=0;
 	private static int nFramesToWait=0;
@@ -124,6 +125,8 @@ public class EngineZildo {
 		spriteManagement.updateSprites();
 		collideManagement.manageCollisions(p_clientStates);
 		mapManagement.updateMap();
+		
+		compteur_animation++;
 	}
 	
 	void loadMap(String mapname)

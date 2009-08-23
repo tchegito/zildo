@@ -369,7 +369,7 @@ public class PlayerManagement {
 		}
 	
 		// Interpret animation paramaters to get the real sprite to display
-		heros.finaliseComportement(EngineZildo.mapManagement.getCompteur_animation());
+		heros.finaliseComportement(EngineZildo.compteur_animation);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

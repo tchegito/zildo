@@ -16,7 +16,6 @@ import zildo.monde.SpriteModel;
 import zildo.monde.decors.SpriteEntity;
 import zildo.monde.persos.PersoZildo;
 import zildo.prefs.Constantes;
-import zildo.server.EngineZildo;
 
 // Here we draw the Graphic User Interface. It means we paint screen in last moment,
 // after all engines : Tile and Sprite.
@@ -467,19 +466,33 @@ public class GUIDisplay {
 		}
 	
 		// Money
-		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,80,100,10);
+		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,80,72,10);
 		if (countMoney < zildo.getMoney()) {
 			countMoney++;
 		}
-		for (i=0;i<3;i++) {
-			j=countMoney;
-			if (i==0) {
+		displayNumber(countMoney, 3, 66, 20);
+		
+		// Bombs
+		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,93,110,10);
+		displayNumber(zildo.countBomb, 2, 107, 20);
+
+		// Arrows
+		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,94,149,10);
+		displayNumber(zildo.countArrow, 2, 148, 20);
+
+	}
+	
+	private void displayNumber(int p_number, int p_numDigit, int p_x, int p_y) {
+		int lastPos=p_x + p_numDigit * 7 - 7;
+		for (int i=0;i<p_numDigit;i++) {
+			int j=p_number;
+			if (i==2) {
 				j=j / 100;
 			} else if (i==1) {
 				j=j / 10;
 			}
 			j=j % 10;
-			guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,81+j,94+i*8,20);
+			guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,81+j,lastPos-i*7,p_y);
 		}
 	}
 	

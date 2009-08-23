@@ -228,21 +228,22 @@ public class ClientEngineZildo {
 			ortho.box(x-3-mapDisplay.getCamerax(), y-3-mapDisplay.getCameray(), 16, 16, 12, null);
 		}
 		
-		for (int y=0;y<20;y++) {
-			for (int x=0;x<20;x++) {
-				int cx=x+mapDisplay.getCamerax() / 16;
-				int cy=y+mapDisplay.getCameray() / 16;
-				int px=x*16 - mapDisplay.getCamerax() % 16;
-				int py=y*16 - mapDisplay.getCameray() % 16;
-				if (cy < 64 && cx < 64) {
-					Case c=EngineZildo.mapManagement.getCurrentMap().get_mapcase(cx, cy+4);
-					int onmap=EngineZildo.mapManagement.getCurrentMap().readmap(cx, cy);
-					ortho.drawText(px, py+4, ""+c.getZ(), new Vector3f(0,1,0));
-					ortho.drawText(px, py, ""+onmap, new Vector3f(1,0,0));
+		if (Zildo.infoDebugCase) {
+			for (int y=0;y<20;y++) {
+				for (int x=0;x<20;x++) {
+					int cx=x+mapDisplay.getCamerax() / 16;
+					int cy=y+mapDisplay.getCameray() / 16;
+					int px=x*16 - mapDisplay.getCamerax() % 16;
+					int py=y*16 - mapDisplay.getCameray() % 16;
+					if (cy < 64 && cx < 64) {
+						Case c=EngineZildo.mapManagement.getCurrentMap().get_mapcase(cx, cy+4);
+						int onmap=EngineZildo.mapManagement.getCurrentMap().readmap(cx, cy);
+						ortho.drawText(px, py+4, ""+c.getZ(), new Vector3f(0,1,0));
+						ortho.drawText(px, py, ""+onmap, new Vector3f(1,0,0));
+					}
 				}
 			}
 		}
-		
 	}
 
     public void setOpenGLGestion(OpenGLZildo p_openGLGestion) {

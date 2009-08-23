@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import zildo.fwk.IntSet;
-import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
-import zildo.monde.Collision;
 import zildo.monde.Hasard;
 import zildo.monde.SpriteModel;
 import zildo.monde.decors.Element;
@@ -33,17 +31,11 @@ public class SpriteManagement extends SpriteStore {
       // Index des sprites que Zildo peut prendre (argent,clé...)
     static IntSet goodies_sprite=new IntSet(10,40,48,51,54);
 
-	private Collision[] tab_colli=new Collision[30];	//Les monstres
-	private Collision[] tab_colliz=new Collision[30];	//Zones d'aggression de Zildo
-	private int n_Colliseur;		            //Le nb d'élément dans tab_colli
-	private int n_Colliseurz;					//Le nb d'élément dans tab_colliz
-	private char sauv_2eligne;                   //Pour le texter
-	private char sauv_3eligne;                   //Pour le texter
-	private boolean perso_shooting;
-	private char[] tab_palette=new char[255];
-	private int camerax,cameray;
-	
+    boolean spriteUpdating;
+    
 	List<SpriteEntity> clientSpecificEntities;
+	List<SpriteEntity> spriteEntitiesToAdd; // Used for sprites created during the animation phase
+	/** See {@link #updateSprites()} **/
 //
 
 /*float rnd()
@@ -57,10 +49,7 @@ public class SpriteManagement extends SpriteStore {
 		super();
 
 		clientSpecificEntities=new ArrayList<SpriteEntity>();
-
-		camerax=0;
-		cameray=0;
-
+		spriteEntitiesToAdd=new ArrayList<SpriteEntity>();
 	}
 	
 	public void finalize()
@@ -134,7 +123,6 @@ public class SpriteManagement extends SpriteStore {
 	{
 		Element element=null;
 		Element element2=null;
-		SpriteModel spr = null;
 		ElementDescription elemDesc=null;
 		int j;
 	
@@ -142,7 +130,6 @@ public class SpriteManagement extends SpriteStore {
 		{
 		case Element.SPR_FUMEE:
 			elemDesc=ElementDescription.SMOKE_SMALL;
-			spr=getSpriteBank(SpriteBank.BANK_ELEMENTS).get_sprite(elemDesc);
 			element=new Element();
 			element.setX(50.0f+16.0f);
 			element.setY(50.0f+28.0f);
@@ -154,8 +141,7 @@ public class SpriteManagement extends SpriteStore {
 			element.setAy(0.0f);
 			element.setAz(0.01f); // + rnd()*0.005f);
 	
-			element.setNSpr(elemDesc);
-			element.setSprModel(spr);
+			element.setSprModel(elemDesc);
 	
 			element.setScrX ( (int) element.x);
 			element.setScrY ( (int) element.y);
@@ -191,12 +177,12 @@ public class SpriteManagement extends SpriteStore {
 			element.setZ(4.0f);
 			element.setVz(1.5f);
 			element.setAz(-0.1f);
-			element.setNSpr(ElementDescription.GREENMONEY1.ordinal()+misc*3);
+			element.setSprModel(ElementDescription.GREENMONEY1, misc*3);
 			// Ombre
 			element2=new Element();
 			element2.setX((float) x);
 			element2.setY((float) y-2);
-			element2.setNSpr(ElementDescription.SHADOW_MINUS);
+			element2.setSprModel(ElementDescription.SHADOW_MINUS);
 			spawnSprite(element2);
 			element.setLinkedPerso(element2);
 			spawnSprite(element);
@@ -210,7 +196,7 @@ public class SpriteManagement extends SpriteStore {
 			element.setVx(0.15f);
 			element.setVz(-0.04f);
 			element.setAx(-0.01f);
-			element.setNSpr(ElementDescription.HEART_LEFT);
+			element.setSprModel(ElementDescription.HEART_LEFT);
 			spawnSprite(element);
 			break;
 	
@@ -258,6 +244,14 @@ public class SpriteManagement extends SpriteStore {
 		return entity;
 	}
 	
+	protected void addSpriteEntities(SpriteEntity p_entity) {
+		if (!spriteUpdating) {
+			spriteEntities.add(p_entity);
+		} else {
+			spriteEntitiesToAdd.add(p_entity);
+		}
+	}
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// updateSprites
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -270,13 +264,16 @@ public class SpriteManagement extends SpriteStore {
 		// Get useful pointers
 		MapManagement mapManagement=EngineZildo.mapManagement;
 		
+		spriteUpdating=true;
+		spriteEntitiesToAdd.clear();
+		
 		// Do perso animations
 		// Mandatory to do that first, because one perso can be connected to other sprites
 		for (SpriteEntity entity : spriteEntities) {
 			if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
 				// Animate persos
 				Perso perso=(Perso)entity;
-				perso.animate(mapManagement.getCompteur_animation());
+				perso.animate(EngineZildo.compteur_animation % (3*20));
 				// Get sprite model
 				SpriteModel spr=getSpriteBank(entity.getNBank()).get_sprite(perso.getNSpr());
 				perso.setSprModel(spr);
@@ -305,9 +302,10 @@ public class SpriteManagement extends SpriteStore {
 				element = (Element)entity;
 				List<SpriteEntity> deads=element.animate();
 				if (deads!=null && !deads.isEmpty()) {
+					SpriteEntity linkedOne=element.getLinkedPerso();
 					// L'élément est arrivé au terme de son existence : on le supprime de la liste
-					if (element.getLinkedPerso() != null && SpriteEntity.ENTITYTYPE_ELEMENT == element.getLinkedPerso().getEntityType()) {
-						toDelete.add(element.getLinkedPerso());
+					if (linkedOne != null && SpriteEntity.ENTITYTYPE_ELEMENT == linkedOne.getEntityType()) {
+						toDelete.add(linkedOne);
 					}
 					toDelete.addAll(deads);
 				} else {
@@ -323,6 +321,9 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : toDelete) {
 			deleteSprite(entity);
 		}
+		
+		spriteUpdating=false;
+		spriteEntities.addAll(spriteEntitiesToAdd);
 	}
 		
 	///////////////////////////////////////////////////////////////////////////////////////

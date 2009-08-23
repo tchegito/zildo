@@ -2,7 +2,6 @@ package zildo.monde.decors;
 
 import java.util.List;
 
-import zildo.fwk.bank.SpriteBank;
 import zildo.monde.map.Angle;
 import zildo.monde.persos.Perso;
 import zildo.server.EngineZildo;
@@ -12,7 +11,7 @@ import zildo.server.EngineZildo;
  * 
  * He throws it, then it came back. It has some miscellaneous properties :
  * -when it hits something, came back.
- * -when it cames back, it can collide any tile, but it can wound enemies. (see {@link #isSolid()}
+ * -when it cames back, it can't collide any tile, but it can wound enemies. (see {@link #isSolid()}
  * 
  * @author tchegito
  *
@@ -26,7 +25,7 @@ public class ElementBoomerang extends ElementThrown {
 	
     public ElementBoomerang(Angle p_angle, int p_startX, int p_startY, int p_startZ, Perso p_shooter) {
         super(p_angle, p_startX, p_startY, p_startZ, speed, p_shooter);
-        setSprModel(SpriteBank.BANK_ELEMENTS, ElementDescription.BOOMERANG1);
+        setSprModel(ElementDescription.BOOMERANG1);
         ax=-vx*0.015f;
         ay=-vy*0.015f;
 	}
@@ -46,6 +45,7 @@ public class ElementBoomerang extends ElementThrown {
     			// Zildo got it back
     			dying=true;
     		}
+    		// Calculate hypothenus between boomerang and zildo's location to get correct speed
     		double hypo=Math.sqrt(deltaY*deltaY + deltaX*deltaX);
     		float speedHypo=(float) (speed/hypo);
     		vx=-speedHypo*deltaX;
@@ -60,10 +60,11 @@ public class ElementBoomerang extends ElementThrown {
     	// Boomerang hit something, so give him back to Zildo
     	comingBack=true;
 		EngineZildo.soundManagement.broadcastSound("BoomerangTape", this);
+		EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y));
     	return true;
     }
     
-    protected boolean isSolid() {
+    public boolean isSolid() {
 		return !comingBack;
 	}
 }

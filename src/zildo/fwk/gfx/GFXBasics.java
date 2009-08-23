@@ -342,7 +342,7 @@ public class GFXBasics extends OpenGLStuff {
 			if (colorValue != null) {
 				color=colorValue;
 			} else {
-				if (colorIndex!=0)
+				//if (colorIndex!=255)
 					// Enable mask display with alpha key = 0
 					color.w=255.0f; //color.x; //|=(255 << 24);
 			}

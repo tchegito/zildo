@@ -1,7 +1,7 @@
 package zildo.monde.persos;
 
-import zildo.fwk.bank.SpriteBank;
 import zildo.monde.decors.Element;
+import zildo.monde.decors.ElementDescription;
 
 public class PersoVolant extends PersoNJ {
 
@@ -14,8 +14,7 @@ public class PersoVolant extends PersoNJ {
 			Element ombre=new Element();
 			ombre.setX(x);
 			ombre.setY(y-12);
-			ombre.setNBank(SpriteBank.BANK_ELEMENTS);
-			ombre.setNSpr(43);
+			ombre.setSprModel(ElementDescription.SHADOW_SMALL);
 			addPersoSprites(ombre);
 		//}
 	}

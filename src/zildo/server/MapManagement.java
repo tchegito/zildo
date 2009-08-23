@@ -25,14 +25,10 @@ public class MapManagement {
 	private Area currentMap;
 	private TileCollision tileCollision;
 	
-	private byte compteur_animation;
-	
 	ChainingPoint changingMapPoint;
 
 	public MapManagement()
 	{
-		compteur_animation=0;
-		
 		tileCollision=new TileCollision();
 		
 		// Init variables
@@ -305,7 +301,7 @@ public class MapManagement {
 					zildo.setX(8);
 				}
 				linkTwoMaps(newMapName);
-				zildo.finaliseComportement(compteur_animation);
+				zildo.finaliseComportement(EngineZildo.compteur_animation);
 				return true;
 			} else {
 				zildo.setX((chPointTarget.getPx() & 127) * 16 + 16);
@@ -333,7 +329,7 @@ public class MapManagement {
 					break;
 			}
 
-			zildo.finaliseComportement(compteur_animation);
+			zildo.finaliseComportement(EngineZildo.compteur_animation);
 			return true;
 		}
 		return false;
@@ -422,14 +418,5 @@ public class MapManagement {
 	}
 
 	public void updateMap() {
-        compteur_animation = (byte) ((compteur_animation + 1) % (3 * 20));
     }
-
-    public byte getCompteur_animation() {
-		return compteur_animation;
-	}
-
-	public void setCompteur_animation(byte compteur_animation) {
-		this.compteur_animation = compteur_animation;
-	}
 }
