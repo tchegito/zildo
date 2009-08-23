@@ -41,7 +41,7 @@ public class ElementBoomerang extends ElementThrown {
     		Perso p=(Perso) getLinkedPerso();
     		float deltaY=y-p.y;
     		float deltaX=x-p.x;
-    		if (Math.abs(deltaX)<=1.0f && Math.abs(deltaY)<=1.0f) {
+    		if (Math.abs(deltaX)<=speed && Math.abs(deltaY)<=speed) {
     			// Zildo got it back
     			dying=true;
     		}

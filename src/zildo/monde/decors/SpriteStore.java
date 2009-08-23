@@ -182,6 +182,7 @@ public class SpriteStore {
 			} else {
 				//entity.finalize();
 			}
+			entity.visible=false;
 		}
 	}
 	

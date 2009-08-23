@@ -32,6 +32,7 @@ public class PersoZildo extends Perso {
 	public Item weapon;
 	public int countArrow;
 	public int countBomb;
+	private SpriteEntity boomerang;
 	
 	// Sequence for sprite animation
 	static int seq_1[]={0,1,2,1};
@@ -148,9 +149,10 @@ public class PersoZildo extends Perso {
 			}
 			break;
 		case BOOMERANG:
-            if (attente == 0) {
+            if (attente == 0 && (boomerang == null || !boomerang.isVisible())) {
                 setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_BOOMERANG);
-                EngineZildo.spriteManagement.spawnSprite(new ElementBoomerang(angle, (int) x, (int) y, (int) z, this));
+                boomerang=new ElementBoomerang(angle, (int) x, (int) y, (int) z, this);
+                EngineZildo.spriteManagement.spawnSprite(boomerang);
                 setAttente(16);
             }
             break;
