@@ -142,10 +142,17 @@ public class SpriteStore {
 			// If the entity came here unvisible, we don't add it now to avoid flickering
 			//spriteEngine.addSprite(entity);
 		}
-
-		spriteEntities.add(entity);
+		addSpriteEntities(entity);
 	}
 	
+	/**
+	 * Every addition in 'spriteEntities' list is done here. So subclasses can override this.
+	 * @param p_entity
+	 */
+	protected void addSpriteEntities(SpriteEntity p_entity) {
+		spriteEntities.add(p_entity);
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////
 	// deleteSprite
 	///////////////////////////////////////////////////////////////////////////////////////

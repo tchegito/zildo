@@ -43,9 +43,11 @@ public class PersoNJ extends Perso {
 			elem.add(this);
 			elem.addAll(persoSprites);
 			for (Element e:elem) {
-				SpriteModel spr=e.getSprModel();
-				int size=(spr.getTaille_x() + spr.getTaille_y()) / 4;
-				EngineZildo.collideManagement.addCollision((int) e.x-4, (int) e.y-(int)e.z-spr.getTaille_y()/2, size, null, getAngle(), this);
+				if (e.isSolid()) {
+					SpriteModel spr=e.getSprModel();
+					int size=(spr.getTaille_x() + spr.getTaille_y()) / 4;
+					EngineZildo.collideManagement.addCollision((int) e.x-4, (int) e.y-(int)e.z-spr.getTaille_y()/2, size, null, getAngle(), this);
+				}
 			}
 		}
 	}

@@ -47,7 +47,7 @@ public class ElementArrow extends ElementThrown  {
         shadow.z = 0;
         shadow.nBank = SpriteBank.BANK_ELEMENTS;
         shadow.nSpr = ElementDescription.SHADOW_SMALL.ordinal();
-        shadow.setSprModel(SpriteBank.BANK_ELEMENTS, ElementDescription.SHADOW_SMALL);
+        shadow.setSprModel(ElementDescription.SHADOW_SMALL);
         EngineZildo.spriteManagement.spawnSprite(shadow);
 
     }
@@ -67,9 +67,16 @@ public class ElementArrow extends ElementThrown  {
     private List<SpriteEntity> animateFlying() {
         shadow.x = x;
         shadow.y = y;
-        if (getAngle() == Angle.EST) {
-            shadow.x += 2;
-        }
+        switch (angle) {
+        	case EST:
+        		shadow.x += 5;
+        		break;
+        	case OUEST:
+        		shadow.x -=3;
+        		break;
+        	default:
+        		shadow.x +=1;
+        } 
         // Shadow effect
 		int altitude=EngineZildo.mapManagement.getCurrentMap().readAltitude((int) x/16, (int) y/16);
 		if (altitude == relativeZ-1) {
@@ -105,16 +112,16 @@ public class ElementArrow extends ElementThrown  {
     	// 1: change sprite
     	switch (angle) {
     	case NORD:
-        	setSprModel(SpriteBank.BANK_ELEMENTS, ElementDescription.ARROW_LAND_UP1);
+        	setSprModel(ElementDescription.ARROW_LAND_UP1);
         	break;
     	case EST:
-        	setSprModel(SpriteBank.BANK_ELEMENTS, ElementDescription.ARROW_LAND_RIGHT1);
+        	setSprModel(ElementDescription.ARROW_LAND_RIGHT1);
     		break;
     	case SUD:
-        	setSprModel(SpriteBank.BANK_ELEMENTS, ElementDescription.ARROW_LAND_DOWN1);
+        	setSprModel(ElementDescription.ARROW_LAND_DOWN1);
     		break;
     	case OUEST:
-        	setSprModel(SpriteBank.BANK_ELEMENTS, ElementDescription.ARROW_LAND_LEFT1);
+        	setSprModel(ElementDescription.ARROW_LAND_LEFT1);
     		break;
     	}
     	int seq=seqLand[(int) vz % 5];

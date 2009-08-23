@@ -30,6 +30,8 @@ public class PersoZildo extends Perso {
 	private List<Item> inventory;
 	
 	public Item weapon;
+	public int countArrow;
+	public int countBomb;
 	
 	// Sequence for sprite animation
 	static int seq_1[]={0,1,2,1};
@@ -107,6 +109,9 @@ public class PersoZildo extends Perso {
 		inventory.add(new Item(ItemKind.BOW));
 		inventory.add(new Item(ItemKind.SWORD));
 		
+		countArrow=10;
+		countBomb=5;
+		
 	}
 	
 	public boolean isZildo() {
@@ -137,7 +142,7 @@ public class PersoZildo extends Perso {
 			EngineZildo.mapManagement.getCurrentMap().attackTile(tileAttacked);
 			break;
 		case BOW:
-			if (attente == 0) {
+			if (attente == 0 && countArrow > 0) {
 				setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_ARC);
 				setAttente(4*8);
 			}
@@ -536,6 +541,7 @@ public class PersoZildo extends Perso {
 				EngineZildo.soundManagement.broadcastSound("FlecheTir", this);
 				Element arrow=new ElementArrow(angle, (int) x, (int) y, 0, this);
 				EngineZildo.spriteManagement.spawnSprite(arrow);
+				countArrow--;
 			}
 		    break;
 		}

@@ -13,7 +13,6 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Point;
 import zildo.monde.persos.Perso;
 import zildo.monde.persos.PersoZildo;
-import zildo.monde.persos.utils.PersoDescription;
 import zildo.server.EngineZildo;
 
 
@@ -166,14 +165,15 @@ public class Element extends SpriteEntity {
 	 * Renvoie TRUE si l'élément est solide.
 	 * @return boolean
 	 */
-	protected boolean isSolid() {
+	public boolean isSolid() {
 		if (elementsSolides.contains(nSpr)) {
 			return true;
 		}
 		// S'il s'agit d'un personnage
 		if (entityType==SpriteEntity.ENTITYTYPE_PERSO) {
-			PersoDescription desc=((Perso)this).getQuel_spr();
-			return (desc.equals(PersoDescription.POULE));
+			return true;
+			//PersoDescription desc=((Perso)this).getQuel_spr();
+			//return (desc.equals(PersoDescription.POULE));
 		}
 		return false;
 	}
@@ -302,6 +302,17 @@ public class Element extends SpriteEntity {
 		return deads;	// NULL ==> Element is still alive
 	}
 
+    public void setSprModel(ElementDescription p_desc) {
+        this.setNBank(SpriteBank.BANK_ELEMENTS);
+        this.setNSpr(p_desc.ordinal());
+        this.setSprModel(EngineZildo.spriteManagement.getSpriteBank(nBank).get_sprite(p_desc.ordinal()));
+    }
+
+    public void setSprModel(ElementDescription p_desc, int p_addSpr) {
+    	setSprModel(p_desc);
+    	addSpr=p_addSpr;
+        this.setSprModel(EngineZildo.spriteManagement.getSpriteBank(nBank).get_sprite(p_desc.ordinal()+p_addSpr));
+    }
 
 	public float getX() {
 		return x;

@@ -5,7 +5,6 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.SpriteModel;
 import zildo.monde.persos.PersoZildo;
-import zildo.server.EngineZildo;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -86,23 +85,13 @@ public class SpriteEntity extends Identified
 	public void setSprModel(SpriteModel sprModel) {
 		this.sprModel = sprModel;
 	}
-
-    public void setSprModel(int p_nBank, ElementDescription p_desc) {
-        this.setNBank(p_nBank);
-        this.setNSpr(p_desc.ordinal());
-        this.setSprModel(EngineZildo.spriteManagement.getSpriteBank(p_nBank).get_sprite(p_desc.ordinal()));
-    }
-
+    
 	public int getNSpr() {
 		return nSpr;
 	}
 
 	public void setNSpr(int spr) {
 		nSpr = spr;
-	}
-
-	public void setNSpr(ElementDescription p_elemDesc) {
-		nSpr = p_elemDesc.ordinal();
 	}
 	
 	public int getNBank() {
