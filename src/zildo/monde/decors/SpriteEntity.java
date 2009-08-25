@@ -27,6 +27,9 @@ public class SpriteEntity extends Identified
 	public static final int ENTITYTYPE_PERSO =2;
 	public static final int ENTITYTYPE_FONT =3;
 
+	public static final int REVERSE_HORIZONTAL = 1;
+	public static final int REVERSE_VERTICAL = 2;
+	
 	// Class variable
 	public float x,y,z;	// Real position (z is never initialized with entities)
     private int ajustedX,ajustedY;
@@ -41,6 +44,7 @@ public class SpriteEntity extends Identified
 	public boolean dying;		// TRUE=we must remove them
 	
 	private int specialEffect;		// Utilisé pour changer la couleur d'un garde par exemple
+	public int reverse;		// Combination of REVERSE_HORIZONTAL/VERTICAL (or 0)
 	public boolean clientSpecific;	// TRUE if this entity should not appear on all client's screen
 	
 	// To identify which type of entity we're dealing with
@@ -180,6 +184,8 @@ public class SpriteEntity extends Identified
 
 		specialEffect=PixelShaders.ENGINEFX_NO_EFFECT;
 		
+		reverse=0;
+		
 		if (id == -1) {
 			// Initialize ID if it's not done yet
 			initializeId(SpriteEntity.class);
@@ -187,6 +193,10 @@ public class SpriteEntity extends Identified
 	}
 	
 	public boolean isZildo() {
+		return false;
+	}
+	
+	public boolean isGoodies() {
 		return false;
 	}
 	

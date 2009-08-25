@@ -234,15 +234,19 @@ public class SpriteEngine extends TextureEngine {
 		if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT ||
 				entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO)
 			z=entity.z;
-	
+
+		// Reverse attribute
+		int revX = (entity.reverse & SpriteEntity.REVERSE_HORIZONTAL)!=0 ? -1 : 1;
+		int revY = (entity.reverse & SpriteEntity.REVERSE_VERTICAL)!=0   ? -1 : 1;
+		
 		SpriteModel spr=entity.getSprModel();
 		entity.setLinkVertices(
 		meshSprites[entity.getNBank()].synchronizeSprite((float) entity.getScrX(),
 				  									(float) entity.getScrY() - z,
 				  									(float)spr.getTexPos_x(),
 				  									(float)spr.getTexPos_y(),
-				  									spr.getTaille_x(),
-				  									spr.getTaille_y()));
+				  									revX * spr.getTaille_x(),
+				  									revY * spr.getTaille_y()));
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

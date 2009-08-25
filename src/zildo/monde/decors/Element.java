@@ -102,7 +102,11 @@ public class Element extends SpriteEntity {
 		this.z=original.z;	this.vz=original.vz;	this.az=original.az;
 		this.spe=original.spe;
 		this.addSpr=original.addSpr;
+		this.clientSpecific=original.clientSpecific;
+		this.nSpr=original.nSpr;
+		this.setSprModel(original.getSprModel());
 		this.linkedPerso=original.linkedPerso;
+		this.nBank=original.nBank;
 	
 		this.entityType=ENTITYTYPE_ELEMENT;
 		//logger.log(Level.INFO, "Copying Element");
@@ -551,5 +555,13 @@ public class Element extends SpriteEntity {
 
 	public void setAngle(Angle angle) {
 		this.angle = angle;
+	}
+	
+	public String toString() {
+		String s=x+", "+y;
+		if (nBank == SpriteBank.BANK_ELEMENTS) {
+			return s+" ("+ElementDescription.fromInt(nSpr)+")";
+		}
+		return s+" ("+nSpr+" - bank "+nBank+")";
 	}
 }
