@@ -34,7 +34,12 @@ public enum ElementDescription {
 	ENEMYARC_DOWN1, ENEMYARC_DOWN2, 
 	ENEMYARC_LEFT1, ENEMYARC_LEFT2,
 	// 99
-	IMPACT1, IMPACT2, IMPACT3, IMPACT4;
+	IMPACT1, IMPACT2, IMPACT3, IMPACT4,
+	// 103
+	REDBALL1, REDBALL2, REDBALL3,
+	// 106
+	BOMB, EXPLO1, EXPLO2, EXPLO3, EXPLOSMOKE1, EXPLOSMOKE2, EXPLOSMOKE3;
+	
 	
 	public static ElementDescription fromInt(int p_value) {
 		return ElementDescription.values()[p_value];

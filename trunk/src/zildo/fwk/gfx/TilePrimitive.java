@@ -227,21 +227,27 @@ public class TilePrimitive extends OpenGLStuff {
             vertices.limit(vertices.position() + 3 * 4);
             textures.limit(textures.position() + 2 * 4);
         }
+        float pixSizeX=Math.abs(sizeX);
+        float pixSizeY=Math.abs(sizeY);
+        float texStartX=xTex;
+        float texStartY=yTex;
+        if (sizeX < 0) {
+        	texStartX-=sizeX;
+        }
+        if (sizeY < 0) {
+        	texStartY-=sizeY;
+        }
         for (int i = 0; i < 4; i++) {
-            vertices.put(x + sizeX * ((float) (i % 2))); // x
-            vertices.put(y + sizeY * ((float) (i / 2))); // y
+            vertices.put(x + pixSizeX * ((float) (i % 2))); // x
+            vertices.put(y + pixSizeY * ((float) (i / 2))); // y
             vertices.put(0.0f); // z
-            // tilePoints[quelPoint].color=D3DCOLOR_COLORVALUE(1,1,1,1);
 
             // Get right tile-texture
-            // float texPosX=xTex+0.5f+16.0f*(sizeX-1.0f/16.0f)*(float)(i%2);
-            // float texPosY=yTex+0.5f+16.0f*(sizeY-1.0f/16.0f)*(int)(i/2);
-            float texPosX = xTex + sizeX * (float) (i % 2);
-            float texPosY = yTex + sizeY * (int) (i / 2);
+            float texPosX = texStartX + sizeX * (float) (i % 2);
+            float texPosY = texStartY + sizeY * (int) (i / 2);
 
-            textures.put(texPosX / (float) textureSizeX); // i % 2;
-            // textures.put((float)(yTex+0.5f+(16*sizeY-1.0f)*(int)(i/2)) / 256.0f); //1 - (i % 2);
-            textures.put(texPosY / (float) textureSizeY); // 1 - (i % 2);
+            textures.put(texPosX / (float) textureSizeX);
+            textures.put(texPosY / (float) textureSizeY);
         }
     }
 

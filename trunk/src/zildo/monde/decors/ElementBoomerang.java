@@ -2,6 +2,7 @@ package zildo.monde.decors;
 
 import java.util.List;
 
+import zildo.monde.decors.ElementImpact.ImpactKind;
 import zildo.monde.map.Angle;
 import zildo.monde.persos.Perso;
 import zildo.server.EngineZildo;
@@ -60,7 +61,7 @@ public class ElementBoomerang extends ElementThrown {
     	// Boomerang hit something, so give him back to Zildo
     	comingBack=true;
 		EngineZildo.soundManagement.broadcastSound("BoomerangTape", this);
-		EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y));
+		EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT));
     	return true;
     }
     
