@@ -86,7 +86,7 @@ public class CollideManagement {
         for (ClientState state : p_states) {
             PersoZildo zildo = state.zildo;
             Perso damager = p_colli.getPerso();
-            if (damager != null && !damager.equals(zildo)) {
+            if (damager == null || !damager.equals(zildo)) {
                 checkZildoWound(state.zildo, p_colli);
             }
         }

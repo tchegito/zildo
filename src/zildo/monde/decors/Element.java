@@ -201,10 +201,6 @@ public class Element extends SpriteEntity {
 				x=ancX;
 				y=ancY;
 				z=ancZ;
-				if (!elementsMobiles.contains(nSpr)) {
-					ax=ay=0;
-					vx=vy=0;
-				}
 				return true;
 			}
 		}
@@ -225,95 +221,93 @@ public class Element extends SpriteEntity {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Be careful : we can animate an element which is declared as invisible (by VISIBLE boolean)
 	///////////////////////////////////////////////////////////////////////////////////////
-	public List<SpriteEntity> animate()
-	{
-	    //Perso pnj;
-	    boolean colli;
-	
-	    List<SpriteEntity> deads=new ArrayList<SpriteEntity>();
+	public List<SpriteEntity> animate() {
+        // Perso pnj;
+        boolean colli;
 
-	    //Si ce sprite est valide, est-il un sprite fixe ?
-		if (this.IsNotFixe())
-		{
-			// On a trouvé un sprite valide non fixe
-			// On calcule sa nouvelle position absolue
-			colli=physicMoveWithCollision();
-	
-			if (nSpr>=44 && nSpr<=47) { // Sprite d'animation
-				// Morceaux de pierres
-				z=z-vz;                         // On revient en arrière
-				vz=vz-az;
-				az=az-1;
-				if (az==0) {
-					deads.add(this);
-				}
-			} else if (isSolid() || flying) {// Tous les sprites n'entrent pas en collision
-				// On teste la collision avec le décor
-				if (nSpr==42) {
-					//Collision avec Zildo}
-					z=z-vz;
-					/*colli=collide(round(x+vx),round(y+vy-z),round(vz));
-					with tab_colli[n_colliseur] do begin
-					cx=round(x)-camerax;cy=round(y)-round(z)-cameray;
-					cr=8;
-					n_colliseur++;
-					if (colli) {
-						//spawnsprite_generic(SPR_ECLATEPIERRE,round(x),round(y),0);
-					}
-					*/
-				} else if (!isGoodies()){
-				  // Collision avec les ennemis (uniquement dans le cas où l'objet est en mouvement)
-					if (vx != 0 || vy != 0 || vz !=0) {
-						Point size=getCollisionSize();
-						int addX=-3;
-						int addY=0;
-						addX=0; // On ne doit pas tester dans 4 carrés pour les objets volant
-						addY=2;
-						SpriteEntity linked=linkedPerso;
-						if (linked != null && linked.getEntityType() != SpriteEntity.ENTITYTYPE_PERSO) {
-							linked=null;
-						}
-						EngineZildo.collideManagement.addCollision((int)x+addX, 
-								(int)y-getSprModel().getTaille_y()/2-(int)z+addY, 
-								6, size, Angle.NORD, (Perso) linked);
-					}
-				}
-			}
-			// Débordement}
-			if (x<-4 || y<-4 || x>64*16 || y>64*16) {
-				die();
-				deads=Arrays.asList((SpriteEntity) this);
-			} else {
-	
-				if (elementsMobiles.contains(nSpr)) {
-					z=ancZ; //z-vz;
-					vz=vz-az;
-					if (az!=0) {
-						if (colli || az==32) {
-							vx=0;vy=0;az=32;vz=0;
-						} else {
-							az=az+1;
-						}
-					}
-	            } else if ((z < 4 && vz != 0.0f) || colli) {
-	            	if (!beingCollided()) {
-		            	// Le sprite doit 'mourir'
-						deads.add(this);
-	            	}
-				} else if (z>28 && nSpr==6) {
-					nSpr=5;         // Fumée de cheminée
-				} else if (z>48 && nSpr==5) {
-					z=16.0f;x=(int)(x / 16)*16 +16; // On remet la fumée à sa place
-					vx=0.2f;vz=0.0f;
-					nSpr=6;
-				}
-			}
-		}
-		
-		setAjustedX((int) x);
-		setAjustedY((int) y);
-		return deads;	// NULL ==> Element is still alive
-	}
+        List<SpriteEntity> deads = new ArrayList<SpriteEntity>();
+
+        // Si ce sprite est valide, est-il un sprite fixe ?
+        if (this.IsNotFixe()) {
+            // On a trouvé un sprite valide non fixe
+            // On calcule sa nouvelle position absolue
+            colli = physicMoveWithCollision();
+
+            if (nSpr >= 44 && nSpr <= 47) { // Sprite d'animation
+                // Morceaux de pierres
+                z = z - vz; // On revient en arrière
+                vz = vz - az;
+                az = az - 1;
+                if (az == 0) {
+                    deads.add(this);
+                }
+            }
+            // Débordement}
+            if (x < -4 || y < -4 || x > 64 * 16 || y > 64 * 16) {
+                die();
+                deads = Arrays.asList((SpriteEntity) this);
+            } else {
+
+                if (elementsMobiles.contains(nSpr)) {
+                    z = ancZ; // z-vz;
+                    vz = vz - az;
+                    if (az != 0) {
+                        if (colli || az == 32) {
+                            vx = 0;
+                            vy = 0;
+                            az = 32;
+                            vz = 0;
+                        } else {
+                            az = az + 1;
+                        }
+                    }
+                } else if ((z < 4 && vz != 0.0f) || colli) {
+                    if (!beingCollided()) {
+                        // Le sprite doit 'mourir'
+                        deads.add(this);
+                    }
+                } else if (z > 28 && nSpr == 6) {
+                    nSpr = 5; // Fumée de cheminée
+                } else if (z > 48 && nSpr == 5) {
+                    z = 16.0f;
+                    x = (int) (x / 16) * 16 + 16; // On remet la fumée à sa place
+                    vx = 0.2f;
+                    vz = 0.0f;
+                    nSpr = 6;
+                }
+            }
+        }
+        if (isSolid() || flying) {// Tous les sprites n'entrent pas en collision
+            // On teste la collision avec le décor
+            if (nSpr == 42) {
+                // Collision avec Zildo}
+                z = z - vz;
+                /*
+                 * colli=collide(round(x+vx),round(y+vy-z),round(vz)); with tab_colli[n_colliseur] do begin
+                 * cx=round(x)-camerax;cy=round(y)-round(z)-cameray; cr=8; n_colliseur++; if (colli) {
+                 * //spawnsprite_generic(SPR_ECLATEPIERRE,round(x),round(y),0); }
+                 */
+            } else if (!isGoodies()) {
+                // Collision avec les ennemis (uniquement dans le cas où l'objet est en mouvement)
+                Point size = getCollisionSize();
+                if (vx != 0 || vy != 0 || vz != 0 || size != null) {
+                    int addX = -3;
+                    int addY = 0;
+                    addX = 0; // On ne doit pas tester dans 4 carrés pour les objets volant
+                    addY = 2;
+                    SpriteEntity linked = linkedPerso;
+                    if (linked != null && linked.getEntityType() != SpriteEntity.ENTITYTYPE_PERSO) {
+                        linked = null;
+                    }
+                    EngineZildo.collideManagement.addCollision((int) x + addX, (int) y - getSprModel().getTaille_y() / 2 - (int) z + addY,
+                            6, size, Angle.NORD, (Perso) linked);
+                }
+            }
+        }
+        setAjustedX((int) x);
+        setAjustedY((int) y);
+        return deads; // NULL ==> Element is still alive
+    }
 
     public void setSprModel(ElementDescription p_desc) {
         this.setNBank(SpriteBank.BANK_ELEMENTS);

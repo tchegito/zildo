@@ -61,6 +61,5 @@ public class Constantes {
 	
 
 	// Sounds
-	public static final int MAX_SOUNDS = 27;
-
+	public static final int MAX_SOUNDS = 28;
 }

@@ -8,6 +8,7 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.decors.Element;
 import zildo.monde.decors.ElementArrow;
+import zildo.monde.decors.ElementBomb;
 import zildo.monde.decors.ElementBoomerang;
 import zildo.monde.decors.ElementDescription;
 import zildo.monde.decors.SpriteEntity;
@@ -110,6 +111,7 @@ public class PersoZildo extends Perso {
 		inventory.add(weapon);
 		inventory.add(new Item(ItemKind.BOW));
 		inventory.add(new Item(ItemKind.SWORD));
+		inventory.add(new Item(ItemKind.BOMB));
 		
 		countArrow=10;
 		countBomb=5;
@@ -157,6 +159,13 @@ public class PersoZildo extends Perso {
                 setAttente(16);
             }
             break;
+		case BOMB:
+			if (attente == 0 && countBomb > 0) {
+                Element bomb=new ElementBomb((int) x, (int) y,0);
+                EngineZildo.spriteManagement.spawnSprite(bomb);
+				setAttente(1);
+			}
+			break;
 		}
 	}
 	
