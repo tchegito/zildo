@@ -7,7 +7,8 @@ public enum ItemKind {
 	SWORD(ElementDescription.SMOKE), 
 	BOOMERANG(ElementDescription.BOOMERANG1), 
 	WHIP(ElementDescription.BAR_HORIZONTAL), 
-	BOW(ElementDescription.ARROW_UP);
+	BOW(ElementDescription.ARROW_UP),
+	BOMB(ElementDescription.BOMB);
 	
 	public ElementDescription representation;
 	

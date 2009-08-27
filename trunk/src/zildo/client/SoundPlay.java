@@ -49,7 +49,9 @@ public class SoundPlay {
 									
 									{"MenuIn", "Menu1.wav"},
 									{"MenuOut", "Menu2.wav"},
-									{"MenuMove", "Bip.wav"}
+									{"MenuMove", "Bip.wav"},
+									
+									{"Explosion", "Explose.wav"}
 
 								 };
 
@@ -69,7 +71,7 @@ public class SoundPlay {
 	eau2			X
 	eau				X
 	epee			X				X
-	explose
+	explose			X				X
 	feuilles		X				X
 	flamme
 	herbe
@@ -84,8 +86,8 @@ public class SoundPlay {
 	textefin		X				X
 	tombe			X
 	touche			X				X
-	vie				X
-	zildoaie		X
+	vie				X				X
+	zildoaie		X				X
 	*/
 	
 	//CSoundManager* soundManager;

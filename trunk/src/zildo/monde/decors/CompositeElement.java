@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.monde.SpriteModel;
+import zildo.monde.map.Point;
 import zildo.server.EngineZildo;
 
 /**
@@ -145,4 +146,28 @@ public class CompositeElement {
 		}
 		shape=null;
 	}
+	
+    public Point getSize() {
+    	if (composite.size() == 0) {
+    		return null;
+    	}
+        Element refElement = composite.get(0);
+        // Determine the bottom right corner of composite
+        Point topLeft = new Point((int) refElement.x, (int) refElement.y);
+        Point bottomRight = new Point(topLeft);
+        for (Element elmt : composite) {
+            SpriteModel model = elmt.getSprModel();
+            int right = (int) elmt.x + model.getTaille_x();
+            int bottom = (int) elmt.y + model.getTaille_y();
+            if (right > bottomRight.x) {
+                bottomRight.x = right;
+            }
+            if (bottom > bottomRight.y) {
+                bottomRight.y = bottom;
+            }
+        }
+
+        Point size = new Point(bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
+        return size;
+    }
 }

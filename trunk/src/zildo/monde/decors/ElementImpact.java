@@ -2,13 +2,29 @@ package zildo.monde.decors;
 
 import java.util.List;
 
+import zildo.monde.map.Point;
+import zildo.server.EngineZildo;
+
 public class ElementImpact extends Element {
 
 	enum ImpactKind {
-		SIMPLEHIT, EXPLOSION;
+		SIMPLEHIT(ElementDescription.IMPACT1, 4,1), 
+		EXPLOSION(ElementDescription.EXPLO1, 3,1), 
+		FIRESMOKE(ElementDescription.EXPLOSMOKE1, 3,4);
+		
+		ElementDescription desc;
+		int seqLong;
+		int speed;
+		
+		private ImpactKind(ElementDescription p_desc, int p_seqLong, int p_speed) {
+			desc=p_desc;
+			seqLong=p_seqLong;
+			speed=p_speed;
+		}
 	}
 	
 	int counter;
+	int startX, startY;
 	ImpactKind kind;
 
 	CompositeElement composite;
@@ -23,34 +39,42 @@ public class ElementImpact extends Element {
 		kind=p_kind;
 		switch (p_kind) {
 			case SIMPLEHIT:
-				setSprModel(ElementDescription.IMPACT1);
+			case FIRESMOKE:
+				setSprModel(kind.desc);
 				break;
 			case EXPLOSION:
 				setSprModel(ElementDescription.EXPLO1);
 				y+=getSprModel().getTaille_y()/2;
 				composite=new CompositeElement(this);
+				EngineZildo.soundManagement.broadcastSound("Explosion", this);
 		}
 		addSpr=0;
+		// Stock the initial location
+		startX=p_startX;
+		startY=p_startY;
 	}
 	
 	public List<SpriteEntity> animate() {
 		counter++;
 		switch (kind) {
 			case SIMPLEHIT:
-				addSpr=counter;
-				if (addSpr == 4) {
+			case FIRESMOKE:
+				addSpr=counter / kind.speed;
+				if (addSpr == kind.seqLong) {
 					dying=true;
 					visible=false;
 				} else {
-					setSprModel(ElementDescription.IMPACT1, addSpr);
+					setSprModel(kind.desc, addSpr);
 				}
 				setAjustedX((int) x);
 				setAjustedY((int) y+getSprModel().getTaille_y()/2);
 				break;
 			case EXPLOSION:
 				int valCounter=counter;
-				if (valCounter == seqExplo.length) {
+				if (valCounter == seqExplo.length) {	// End of the sequence
 					composite.die(false);
+					// Create the ending smoke fog
+					EngineZildo.spriteManagement.spawnSprite(new ElementImpact(startX, startY, ImpactKind.FIRESMOKE));
 				} else {
 					addSpr=seqExplo[valCounter];
 					if (addSpr == 1) {
@@ -65,7 +89,21 @@ public class ElementImpact extends Element {
 						composite.setSprModel(ElementDescription.EXPLO1, addSpr);
 					}
 				}
+				return super.animate();
 		}
 		return null;
 	}
+	
+    @Override
+    public Point getCollisionSize() {
+        if (kind == ImpactKind.EXPLOSION) {
+            return composite.getSize();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return kind == ImpactKind.EXPLOSION;
+    }      
 }
