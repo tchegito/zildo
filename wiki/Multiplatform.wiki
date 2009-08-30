@@ -1,0 +1,13 @@
+*Multiplatform limitations*
+
+The technologies choice (Java, LWJGL) has been made in order to adress every platform (Windows, Linux, MacOS) but there still exist some limitations.
+
+Everything's fine on following configs:
+-Windows XP with any graphic card
+-Windows Vista/7 with NVIDIA card
+
+Not working on:
+-MacOS X (dependancy problem with DevIL, should be replaced by another library, to be continued...)
+
+Never tested on:
+-Linux
