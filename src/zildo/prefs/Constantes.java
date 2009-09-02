@@ -29,7 +29,7 @@ public class Constantes {
 	public static final int MAX_SPRITES_ON_SCREEN = SORTY_MAX * SORTY_ROW_PER_LINE;
 
 	// Perso
-	public static final	int speed = 5;
+	public static final	int speed = 3;
 	public static final	int MAX_PERSO = 80;
 	public static final	int ZILDO_SPEED = 1;
 	public static final	float MONSTER_SPEED = 0.85f; // Vitesse du monstre en alerte

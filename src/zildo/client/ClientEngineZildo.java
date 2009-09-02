@@ -14,11 +14,11 @@ import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.opengl.OpenGLZildo;
 import zildo.monde.Collision;
-import zildo.monde.decors.SpriteEntity;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
 import zildo.monde.map.Rectangle;
-import zildo.monde.persos.Perso;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.persos.Perso;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
 
@@ -218,7 +218,8 @@ public class ClientEngineZildo {
 						ortho.box(c.getCx()-rayon/2-mapDisplay.getCamerax(), 
 								c.getCy()-rayon/2-mapDisplay.getCameray(), rayon*2, rayon*2,color, null);
 					} else {
-						Rectangle rect=new Rectangle(new Point(c.cx-mapDisplay.getCamerax(), c.cy-mapDisplay.getCameray()), c.size);
+						Point center=new Point(c.cx-mapDisplay.getCamerax(), c.cy-mapDisplay.getCameray());
+						Rectangle rect=new Rectangle(center, c.size);
 						ortho.box(rect, color, null);
 					}
 				}

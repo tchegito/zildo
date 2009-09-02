@@ -8,15 +8,15 @@ import java.util.logging.Logger;
 import zildo.fwk.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Hasard;
-import zildo.monde.SpriteModel;
-import zildo.monde.decors.Element;
-import zildo.monde.decors.ElementAnimMort;
-import zildo.monde.decors.ElementDescription;
-import zildo.monde.decors.ElementGoodies;
-import zildo.monde.decors.SpriteEntity;
-import zildo.monde.decors.SpriteStore;
-import zildo.monde.persos.Perso;
-import zildo.monde.persos.PersoZildo;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.SpriteStore;
+import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementAnimMort;
+import zildo.monde.sprites.elements.ElementGoodies;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
 
 

@@ -19,9 +19,9 @@ import zildo.fwk.net.packet.AskPacket.ResourceType;
 import zildo.fwk.net.packet.EventPacket.EventType;
 import zildo.monde.WaitingDialog;
 import zildo.monde.WaitingSound;
-import zildo.monde.decors.SpriteEntity;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.server.SpriteManagement;
 
 /**
@@ -43,10 +43,10 @@ public class NetClient extends NetSend {
 	boolean askedMap;
 	boolean gotMap;
 	boolean gotEntities;
-	boolean refreshEntity;
-	
+
 	int delayConnect=0;
 	int nFrame=0;
+	int frameWithoutEntity=0;
 	
 	private static int TIMEOUT_CONNECT = 20;
 	
@@ -63,7 +63,6 @@ public class NetClient extends NetSend {
 		askedMap=false;
 		gotMap=false;
 		gotEntities=false;
-		refreshEntity=false;
 		
 		log("En attente d'un serveur...");
 	}
@@ -110,6 +109,7 @@ public class NetClient extends NetSend {
 			} else {
                 // 4) Server sent resources
                 PacketSet set = packets.getTyped(PacketType.GET_RESOURCE);
+                boolean refreshEntities=false;
                 for (Packet packet : set) {
                     GetPacket getPacket = (GetPacket) packet;
 
@@ -138,13 +138,24 @@ public class NetClient extends NetSend {
                     	break;
                     case ENTITY:
                         receiveEntities(getPacket);
-                        refreshEntity = true;
+                        refreshEntities = true;
                         gotEntities = true;
                         break;
                     case SOUND:
                         receiveSounds(getPacket);
                         break;
                     }
+                }
+                // Reask entities if we haven't anyone since a fixed number of frames
+                if (gotMap && !refreshEntities) {
+                	frameWithoutEntity++;
+                	if (frameWithoutEntity==5) {
+                        sendPacket(new AskPacket(ResourceType.ENTITY), server);
+                        frameWithoutEntity=0;
+                        log("Reask entities");
+                	}
+                } else {
+                	frameWithoutEntity=0;
                 }
 			}
 		} catch (Exception e) {

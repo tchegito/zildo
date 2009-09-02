@@ -7,8 +7,8 @@ import zildo.fwk.Identified;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.input.KeyboardState;
 import zildo.fwk.net.TransferObject;
-import zildo.monde.decors.SpriteEntity;
-import zildo.monde.persos.PersoZildo;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.persos.PersoZildo;
 
 /**
  * An object used by server to represent a client state. It consists of :

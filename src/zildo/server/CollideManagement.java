@@ -8,8 +8,8 @@ import zildo.monde.Collision;
 import zildo.monde.map.Point;
 import zildo.monde.map.Rectangle;
 import zildo.monde.map.Angle;
-import zildo.monde.persos.Perso;
-import zildo.monde.persos.PersoZildo;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoZildo;
 
 public class CollideManagement {
 
@@ -41,7 +41,11 @@ public class CollideManagement {
     // /////////////////////////////////////////////////////////////////////////////////////
     public void addCollision(int x, int y, int rayon, Point size, Angle angle, Perso perso) {
         Collision colli = new Collision(x, y, rayon, size, angle, perso);
-        tab_colli.add(colli);
+        addCollision(colli);
+    }
+    
+    public void addCollision(Collision p_colli) {
+    	tab_colli.add(p_colli);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////

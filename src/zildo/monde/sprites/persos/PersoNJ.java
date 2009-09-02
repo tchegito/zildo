@@ -1,16 +1,16 @@
-package zildo.monde.persos;
+package zildo.monde.sprites.persos;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.Hasard;
-import zildo.monde.SpriteModel;
-import zildo.monde.decors.Element;
 import zildo.monde.map.Angle;
-import zildo.monde.persos.utils.MouvementPerso;
-import zildo.monde.persos.utils.MouvementZildo;
-import zildo.monde.persos.utils.PersoDescription;
+import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
 

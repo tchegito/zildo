@@ -1,15 +1,15 @@
-package zildo.monde.persos;
+package zildo.monde.sprites.persos;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.monde.decors.Element;
-import zildo.monde.decors.SpriteEntity;
 import zildo.monde.map.Point;
 import zildo.monde.map.Zone;
-import zildo.monde.persos.utils.MouvementPerso;
-import zildo.monde.persos.utils.MouvementZildo;
-import zildo.monde.persos.utils.PersoDescription;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
 
 public abstract class Perso extends Element {

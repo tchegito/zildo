@@ -2,15 +2,15 @@ package zildo.monde;
 
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
-import zildo.monde.persos.Perso;
+import zildo.monde.sprites.persos.Perso;
 
 public class Collision {
 
-    public int cx, cy;
-    public int cr;
-    public Angle cangle; // Rayon et angle du monstre
-    public Point size; // Exact object's size
-    public Perso perso; // Position dans la table de pnj
+    public int cx, cy;	// Center
+    public int cr;		// Radius
+    public Angle cangle; // Shooter's angle
+    public Point size; // Exact object's size (if not null, radius will be ignored)
+    public Perso perso; // Shooter
 
     public Collision() {
     }
@@ -55,6 +55,14 @@ public class Collision {
         this.perso = perso;
     }
 
+    public Collision(Point p_center, Point p_size, Perso p_shooter) {
+    	this.cx=p_center.x;
+    	this.cy=p_center.y;
+    	this.size=p_size;
+    	this.cangle = Angle.NORD;	// Default
+    	this.perso=p_shooter;
+    }
+    
     public Collision(int x, int y, int cr, Point size, Angle angle, Perso perso) {
         this.cx = x;
         this.cy = y;

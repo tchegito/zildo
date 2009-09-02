@@ -33,12 +33,12 @@ public abstract class Packet {
 		}
 	}
 	
-	protected EasyBuffering b;
+    protected EasyBuffering b=new EasyBuffering(NetSend.PACKET_MAX_SIZE);
+    
 	TransferObject source;
 	PacketType type;
 	
     public Packet() {
-        b=new EasyBuffering(NetSend.PACKET_MAX_SIZE);
         // Initializes class
         for (PacketType typ : PacketType.values()) {
         	if (this.getClass().equals(typ.clazz)) {

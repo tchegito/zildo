@@ -1,7 +1,7 @@
 package zildo.client;
 
-import zildo.monde.decors.SpriteEntity;
 import zildo.monde.map.Area;
+import zildo.monde.sprites.SpriteEntity;
 
 public class MapDisplay {
 

@@ -1,7 +1,7 @@
-package zildo.monde.persos;
+package zildo.monde.sprites.persos;
 
-import zildo.monde.decors.Element;
-import zildo.monde.decors.ElementDescription;
+import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.elements.Element;
 
 public class PersoVolant extends PersoNJ {
 

@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import zildo.fwk.IntSet;
 import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
-import zildo.monde.decors.Element;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
@@ -14,7 +13,8 @@ import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
 import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
-import zildo.monde.persos.Perso;
+import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.persos.Perso;
 import zildo.prefs.Constantes;
 
 
@@ -139,8 +139,8 @@ public class MapManagement {
 	    if (quelElement != null && quelElement.flying && quelElement.getAngle() != null) {
 		    angleFlying=quelElement.getAngle();
 
-	    	if (quelElement.getCollisionSize() != null) {
-	    		size=quelElement.getCollisionSize();
+	    	if (quelElement.getCollision() != null) {
+	    		size=quelElement.getCollision().size;
 	    	}
     		ty-=quelElement.z;
 	    	int cx=(tx / 16);

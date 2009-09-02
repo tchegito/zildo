@@ -19,7 +19,7 @@ public class NetSend extends TransferObject {
 	public final static int NET_PORT_CLIENT = 81;
 	public final static int MAX_PACKET_PER_FRAME = 20;
 
-	public final static int PACKET_MAX_SIZE = 45000;
+	public final static int PACKET_MAX_SIZE = 20000;
 	
 	// Map to store the different packet senders
 	private final static Map<InetSocketAddress, TransferObject> connexions=
@@ -36,6 +36,8 @@ public class NetSend extends TransferObject {
 		super(p_address, p_port);
 	}
 	
+	private ByteBuffer bBuf=ByteBuffer.allocateDirect(PACKET_MAX_SIZE);
+	
 	/**
 	 * Receive all packets
 	 * @return List<Packet>
@@ -49,6 +51,9 @@ public class NetSend extends TransferObject {
 				break;
 			}
 			set.add(pp);
+		}
+		if (set.size() >= MAX_PACKET_PER_FRAME) {
+			System.out.println("Max packet !");
 		}
 		return set;
 	}
@@ -101,8 +106,9 @@ public class NetSend extends TransferObject {
 	 */
 	public Packet receive() {
 		Packet p=null;
-		ByteBuffer bBuf=ByteBuffer.allocateDirect(PACKET_MAX_SIZE);
+		
 		try {
+			bBuf.clear();
 			InetSocketAddress srcSocket = (InetSocketAddress)channel.receive(bBuf);
 			if (srcSocket == null) {
 				return null;

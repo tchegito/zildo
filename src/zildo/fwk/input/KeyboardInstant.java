@@ -13,6 +13,8 @@ public class KeyboardInstant {
 
 	private static int KEYS_LENGTH=KeysConfiguration.values().length;
     
+    private static EasyBuffering buf=new EasyBuffering(KEYS_LENGTH * 4);
+
 	public KeyboardInstant(EnumMap<KeysConfiguration, Boolean> p_keys) {
 		kbdInstant=p_keys;
 	}
@@ -39,11 +41,11 @@ public class KeyboardInstant {
 	 * @return EasyBuffering
 	 */
 	public EasyBuffering serialize() {
-        EasyBuffering b=new EasyBuffering(KEYS_LENGTH * 4);
+        buf.clear();
         for (KeysConfiguration key : KeysConfiguration.values()) {
-			b.put(kbdInstant.get(key));
+			buf.put(kbdInstant.get(key));
 		}
-		return b;
+		return buf;
 	}
 	
 	/**

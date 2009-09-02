@@ -6,8 +6,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import zildo.fwk.file.EasyReadingFile;
-import zildo.monde.SpriteModel;
-import zildo.monde.decors.ElementDescription;
+import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.prefs.Constantes;
 
 /**
