@@ -42,8 +42,9 @@ public class GetPacket extends Packet {
 		resourceType=ResourceType.fromString(p_buffer.readString());
 		length=p_buffer.readInt();
 		name=p_buffer.readString();
-		p_buffer.getAll().position();
-		buffer=p_buffer.getAll();
+		buffer=ByteBuffer.allocate(length);
+		buffer.put(p_buffer.getAll());
+		buffer.flip();
 	}
 	
 	public ByteBuffer getBuffer() {

@@ -13,7 +13,7 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.NetServer;
 import zildo.fwk.net.TransferObject;
 import zildo.monde.Game;
-import zildo.monde.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoZildo;
 
 /**
  * Server job:

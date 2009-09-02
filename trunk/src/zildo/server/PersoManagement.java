@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import zildo.monde.decors.Element;
-import zildo.monde.decors.SpriteEntity;
-import zildo.monde.persos.Perso;
-import zildo.monde.persos.PersoZildo;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoZildo;
 
 //////////////////////////////////////////////////////////////////////
 // PersoManagement

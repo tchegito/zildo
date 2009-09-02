@@ -1,10 +1,10 @@
-package zildo.monde.persos;
+package zildo.monde.sprites.persos;
 
 import java.util.Iterator;
 
 import zildo.fwk.bank.SpriteBank;
-import zildo.monde.decors.Element;
-import zildo.monde.persos.utils.PersoDescription;
+import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.prefs.Constantes;
 
 /**

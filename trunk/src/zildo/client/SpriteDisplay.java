@@ -8,9 +8,9 @@ import java.util.Map;
 
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
-import zildo.monde.SpriteModel;
-import zildo.monde.decors.SpriteEntity;
-import zildo.monde.decors.SpriteStore;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.SpriteStore;
 import zildo.prefs.Constantes;
 
 /**

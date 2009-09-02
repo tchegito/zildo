@@ -1,6 +1,6 @@
 package zildo.monde.items;
 
-import zildo.monde.decors.ElementDescription;
+import zildo.monde.sprites.desc.ElementDescription;
 
 public enum ItemKind {
 

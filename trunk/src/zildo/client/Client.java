@@ -87,8 +87,10 @@ public class Client {
 		}
 		
         // Display scene
-        glGestion.render(connected);
-        
+		if (connected) {
+			glGestion.render(connected);
+		}
+		
         return done;
 	}
 	

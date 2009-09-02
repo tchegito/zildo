@@ -1,7 +1,7 @@
 package zildo.server;
 
-import zildo.monde.persos.Perso;
-import zildo.monde.persos.PersoZildo;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoZildo;
 
 /**
  * @author tchegito

@@ -12,9 +12,9 @@ import zildo.client.SpriteDisplay;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
-import zildo.monde.SpriteModel;
-import zildo.monde.decors.SpriteEntity;
-import zildo.monde.persos.PersoZildo;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
 
 // Here we draw the Graphic User Interface. It means we paint screen in last moment,

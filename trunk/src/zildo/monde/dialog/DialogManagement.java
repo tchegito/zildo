@@ -5,8 +5,8 @@ import java.util.List;
 
 import zildo.fwk.net.TransferObject;
 import zildo.monde.WaitingDialog;
-import zildo.monde.persos.Perso;
-import zildo.monde.persos.PersoZildo;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.ClientState;
 import zildo.server.EngineZildo;
 

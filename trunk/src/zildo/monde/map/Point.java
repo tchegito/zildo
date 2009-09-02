@@ -50,4 +50,17 @@ public class Point {
     public String toString() {
     	return "("+x+", "+y+")";
     }
+    
+    /**
+     * Returns the distance between the current point and a given one.
+     * @param p_other
+     * @return float
+     */
+    public float distance(Point p_other) {
+        int c = Math.abs(x - p_other.x);
+        int d = Math.abs(y - p_other.y);
+        c = c * c;
+        c += d * d;
+        return (float) Math.sqrt((float) c);
+    }
 }

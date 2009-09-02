@@ -6,7 +6,7 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.Point;
-import zildo.monde.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoZildo;
 
 public class EngineZildo {
 

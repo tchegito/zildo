@@ -1,4 +1,4 @@
-package zildo.monde;
+package zildo.monde.sprites;
 
 import zildo.fwk.Identified;
 

@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.bank.SpriteBank;
-import zildo.monde.decors.ElementDescription;
-import zildo.monde.decors.SpriteEntity;
 import zildo.monde.map.Point;
-import zildo.monde.persos.PersoZildo;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
 public class ItemCircle {

@@ -1,4 +1,4 @@
-package zildo.monde.persos;
+package zildo.monde.sprites.persos;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,18 +6,19 @@ import java.util.List;
 
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
-import zildo.monde.decors.Element;
-import zildo.monde.decors.ElementArrow;
-import zildo.monde.decors.ElementBomb;
-import zildo.monde.decors.ElementBoomerang;
-import zildo.monde.decors.ElementDescription;
-import zildo.monde.decors.SpriteEntity;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
-import zildo.monde.persos.utils.MouvementZildo;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.ZildoDescription;
+import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementArrow;
+import zildo.monde.sprites.elements.ElementBomb;
+import zildo.monde.sprites.elements.ElementBoomerang;
+import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
 
@@ -113,8 +114,8 @@ public class PersoZildo extends Perso {
 		inventory.add(new Item(ItemKind.SWORD));
 		inventory.add(new Item(ItemKind.BOMB));
 		
-		countArrow=10;
-		countBomb=5;
+		countArrow=20;
+		countBomb=20;
 		
 	}
 	
@@ -138,7 +139,7 @@ public class PersoZildo extends Perso {
 		case SWORD:
 			EngineZildo.soundManagement.broadcastSound("ZildoAttaque", this);
 			setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_EPEE);
-			setAttente(6*3);
+			setAttente(6*2);
 		
 			// Get the attacked tile
 			Point tileAttacked=getAttackTarget();
@@ -163,6 +164,7 @@ public class PersoZildo extends Perso {
 			if (attente == 0 && countBomb > 0) {
                 Element bomb=new ElementBomb((int) x, (int) y,0);
                 EngineZildo.spriteManagement.spawnSprite(bomb);
+                countBomb--;
 				setAttente(1);
 			}
 			break;
@@ -308,7 +310,7 @@ public class PersoZildo extends Perso {
 			{-5,-6,-4,-4,-4,-4},{-2,-12,-18,-14,-13,-8}};
 		final int decalySword[][]={
 			{2,-6,-11,-6,-3,1},{1,0,3,3,2,2},
-			{1,2,2,6,2,2},{1,0,3,3,2,2}};
+			{1,3,3,6,3,3},{1,0,3,3,2,2}};
 	
 		final int decalxBow[][]={
 				{-2,-5,-5},{0,0,0},{0,0,0},{-1,-3,-4}
@@ -317,8 +319,8 @@ public class PersoZildo extends Perso {
 				{2,3,2},{1,2,1},{3,2,2},{1,2,1}
 		};
 		int decalboucliery[]={0,0,0,-1,-2,-1};
-		int decalbouclier2y[]={0,-1,-1,0,-1,-1};
-	    int decalbouclier3y[]={0,0,-1,-2,0,-1};
+		int decalbouclier2y[]={0,-1,-1,0,-1,-1,0,0};
+	    int decalbouclier3y[]={0,0,-1,-2,0,-1,0,0};
 	
 	    boolean touche;
 	
@@ -352,7 +354,7 @@ public class PersoZildo extends Perso {
 						break;
 					case EST:
 						bouclier.setX((float) (xx+9));	// PASCAL : +10
-						bouclier.setY((float) (yy-5+ decalbouclier2y[nSpr-7]));
+						bouclier.setY((float) (yy-5+ decalbouclier2y[nSpr-ZildoDescription.RIGHT_FIXED.ordinal()]));
 						bouclier.setZ(0.0f);
 						bouclier.setNSpr(104);
 						bouclier.setNBank(SpriteBank.BANK_ZILDO);
@@ -360,13 +362,13 @@ public class PersoZildo extends Perso {
 					case SUD:
 						bouclier.setX((float) (xx-4));	// PASCAL : -3)
 						bouclier.setY((float) (yy+1));
-						bouclier.setZ((float) (1+1-decalboucliery[nSpr-14]));
+						bouclier.setZ((float) (1+1-decalboucliery[nSpr-ZildoDescription.DOWN_FIXED.ordinal()]));
 						bouclier.setNSpr(105);
 						bouclier.setNBank(SpriteBank.BANK_ZILDO);
 						break;
 					case OUEST:
 						bouclier.setX((float) (xx-8));
-						bouclier.setY((float) (yy-5+ decalbouclier2y[nSpr-21]));
+						bouclier.setY((float) (yy-5+ decalbouclier2y[nSpr-ZildoDescription.LEFT_FIXED.ordinal()]));
 						bouclier.setZ(0.0f);
 						bouclier.setNSpr(106);
 						bouclier.setNBank(SpriteBank.BANK_ZILDO);
@@ -502,15 +504,13 @@ public class PersoZildo extends Perso {
 	// Manage character's graphic side, depending on the position in the animated sequence.
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void finaliseComportement(int compteur_animation) {
-		final int[][] seq_zildoDeplacement={
-				{0,1,2,3,4,5,6},{0,1,2,3,4,5,6},
-				{0,1,2,3,4,5,6},{0,1,2,3,4,5,6}};
 		
 		final int[] seq_zildoBow={0,1,2,1};
 		switch (getMouvement())
 		{
 		case MOUVEMENT_VIDE:
-			setNSpr(angle.value*7 + seq_zildoDeplacement[angle.value][((pos_seqsprite+1) % (5*Constantes.speed)) / Constantes.speed]);
+			setSpr(ZildoDescription.getMoving(angle, ((pos_seqsprite+1) % (8*Constantes.speed)) / Constantes.speed));
+			//setNSpr(angle.value*7 + seq_zildoDeplacement[angle.value][((pos_seqsprite+1) % (8*Constantes.speed)) / Constantes.speed]);
 			break;
 		case MOUVEMENT_SAUTE:
 			setNSpr(angle.value + 96);
@@ -544,7 +544,7 @@ public class PersoZildo extends Perso {
 			}
 			break;
 		case MOUVEMENT_ATTAQUE_EPEE:
-		    setNSpr(angle.value*6 + (((6*3-getAttente()-1) % (6*3)) / 3) + 54);
+		    setNSpr(angle.value*6 + (((6*2-getAttente()-1) % (6*2)) / 2) + 54);
 			break;
 		case MOUVEMENT_ATTAQUE_ARC:
 			

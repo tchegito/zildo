@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
-import zildo.monde.decors.SpriteEntity;
+import zildo.monde.sprites.SpriteEntity;
 
 
 public class GUISpriteSequence extends ArrayList<SpriteEntity> {

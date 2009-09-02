@@ -10,18 +10,18 @@ import java.util.Map.Entry;
 
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
-import zildo.monde.decors.Element;
-import zildo.monde.decors.SpriteEntity;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
-import zildo.monde.persos.Perso;
-import zildo.monde.persos.PersoGarde;
-import zildo.monde.persos.PersoGardeVert;
-import zildo.monde.persos.PersoNJ;
-import zildo.monde.persos.PersoVolant;
-import zildo.monde.persos.utils.MouvementPerso;
-import zildo.monde.persos.utils.MouvementZildo;
-import zildo.monde.persos.utils.PersoDescription;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoGarde;
+import zildo.monde.sprites.persos.PersoGardeVert;
+import zildo.monde.sprites.persos.PersoNJ;
+import zildo.monde.sprites.persos.PersoVolant;
+import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
 import zildo.server.SpriteManagement;
 
@@ -492,20 +492,24 @@ public class Area {
 
 				PersoDescription desc = PersoDescription.fromNSpr(p_buffer.readUnsignedByte());
 
-				switch (desc) {
-					case BAS_GARDEVERT:
-						perso = new PersoGardeVert();
-						break;
-					case GARDE_CANARD:
-						perso = new PersoGarde();
-						break;
-					case CORBEAU:
-					case SPECTRE:
-						perso = new PersoVolant();
-						break;
-					default:
-						perso = new PersoNJ();
-						break;
+				if (!p_spawn) {
+					perso = new PersoNJ();
+				} else {
+					switch (desc) {
+						case BAS_GARDEVERT:
+							perso = new PersoGardeVert();
+							break;
+						case GARDE_CANARD:
+							perso = new PersoGarde();
+							break;
+						case CORBEAU:
+						case SPECTRE:
+							perso = new PersoVolant();
+							break;
+						default:
+							perso = new PersoNJ();
+							break;
+					}
 				}
 				perso.setX((float) x);
 				perso.setY((float) y);

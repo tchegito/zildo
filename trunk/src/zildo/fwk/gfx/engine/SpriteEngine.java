@@ -10,10 +10,10 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.SpritePrimitive;
-import zildo.monde.SpriteModel;
-import zildo.monde.decors.Element;
-import zildo.monde.decors.SpriteEntity;
-import zildo.monde.decors.SpriteStore;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.SpriteStore;
+import zildo.monde.sprites.elements.Element;
 import zildo.prefs.Constantes;
 import zildo.server.SpriteManagement;
 

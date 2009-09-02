@@ -12,7 +12,8 @@ public class Zildo {
 	public static int viewPortX=320;
 	public static int viewPortY=240;
 	public static boolean infoDebug=false;
-	public static boolean infoDebugCollision=false;
+	public static boolean infoDebugCollision=true;
+	public static boolean infoDebugCase=false;
 	public static boolean log=false;
 	public static boolean logNetwork=true;
 
@@ -27,7 +28,7 @@ public class Zildo {
 			LogManager.getLogManager().reset();
 		}
 		
-		Constantes.DATA_PATH="C:\\ZildoDist\\Version 1.06\\Data\\";
+		Constantes.DATA_PATH="C:\\ZildoDist\\Version 1.07\\Data\\";
 		
         Game game = new Game("polaky", false);
         //new SinglePlayer(game);

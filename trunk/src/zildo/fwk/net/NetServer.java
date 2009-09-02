@@ -17,10 +17,10 @@ import zildo.fwk.net.packet.GetPacket;
 import zildo.fwk.net.packet.AskPacket.ResourceType;
 import zildo.monde.WaitingDialog;
 import zildo.monde.WaitingSound;
-import zildo.monde.decors.SpriteEntity;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.server.ClientState;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
@@ -149,16 +149,18 @@ public class NetServer extends NetSend {
         	entitiesBuffer = spriteManagement.serializeEntities();
         }
         ClientState cl=Server.getClientState(p_client);
-        if (cl.zildo.isInventoring()) {
-        	// Extra sprites : only for this client
-        	List<SpriteEntity> sprites=cl.zildo.guiCircle.getSprites();
-        	entitiesSent=new EasyBuffering(entitiesBuffer, sprites.size() * 100);
-        	entitiesSent.put(spriteManagement.serializeEntities(sprites, true));
-        } else {
-        	entitiesSent=entitiesBuffer;
+        if (cl != null) {
+	        if (cl.zildo.isInventoring()) {
+	        	// Extra sprites : only for this client
+	        	List<SpriteEntity> sprites=cl.zildo.guiCircle.getSprites();
+	        	entitiesSent=new EasyBuffering(entitiesBuffer, sprites.size() * 100);
+	        	entitiesSent.put(spriteManagement.serializeEntities(sprites, true));
+	        } else {
+	        	entitiesSent=entitiesBuffer;
+	        }
+	        GetPacket getPacket = new GetPacket(ResourceType.ENTITY, entitiesSent.getAll(), null);
+	        sendPacket(getPacket, p_client);
         }
-        GetPacket getPacket = new GetPacket(ResourceType.ENTITY, entitiesSent.getAll(), null);
-        sendPacket(getPacket, p_client);
         
     }
 	
@@ -175,6 +177,7 @@ public class NetServer extends NetSend {
 		
 		getPacket=new GetPacket(ResourceType.MAP, buffer.getAll(), area.getName());
 		log("Sending map ("+getPacket.length+" bytes)");
+		
 		sendPacket(getPacket, p_client);
 	}
 	
