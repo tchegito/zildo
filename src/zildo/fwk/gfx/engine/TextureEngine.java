@@ -4,7 +4,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
-import org.lwjgl.devil.IL;
 import org.lwjgl.opengl.GL11;
 
 import zildo.fwk.gfx.GFXBasics;
@@ -76,8 +75,8 @@ public abstract class TextureEngine extends OpenGLStuff {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filtering);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filtering);
         // Generate The Texture
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, IL.ilGetInteger(IL.IL_IMAGE_WIDTH), 
-                IL.ilGetInteger(IL.IL_IMAGE_HEIGHT), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, scratch);
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 256, 256, 0, GL11.GL_RGBA, 
+        		GL11.GL_UNSIGNED_BYTE, scratch);
         
         // Reset bytebuffer scratch
         scratch.clear();

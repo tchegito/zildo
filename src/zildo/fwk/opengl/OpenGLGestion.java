@@ -3,21 +3,18 @@ package zildo.fwk.opengl;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
-import org.lwjgl.devil.IL;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import zildo.Zildo;
-import zildo.prefs.Constantes;
 
 /**
  * Classe qui regroupe tous les comportements d'initialisation généraux d'OpenGL:
@@ -114,14 +111,8 @@ public abstract class OpenGLGestion {
     }
 
     public void init() throws LWJGLException {
-        IL.create();
         initAppIcon();
-        loadTextures();
         initGL();   
-    }
-    
-    private void loadTextures() {
-        loadTexture(Constantes.DATA_PATH+"Marie.bmp");
     }
     
     public void initAppIcon() {
@@ -155,64 +146,6 @@ public abstract class OpenGLGestion {
         Display.setVSyncEnabled(true);
 
     }
-    
-    /*
-    private void initProjectionScene() {
-        GL11.glMatrixMode(GL11.GL_PROJECTION); // Select The Projection Matrix
-        GL11.glLoadIdentity(); // Reset The Projection Matrix
-
-        // Calculate The Aspect Ratio Of The Window
-        GLU.gluPerspective(45.0f, (float) displayMode.getWidth() / (float) displayMode.getWidth(),0.1f,100.0f);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW); // Select The Modelview Matrix
-        
-        // Really Nice Perspective Calculations
-        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-    }
-*/    
-    
-    /**
-     * Texture loading directly from LWJGL examples
-     */
-    private int[] loadTexture(String path) {
-    	
-        //IntBuffer image = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
-        //IL.ilGenImages(image);
-        //IL.ilBindImage(image.get(0));
-        IL.ilLoadImage(path);
-        //IL.ilConvertImage(IL.IL_RGB, IL.IL_BYTE);
-        //ByteBuffer scratch = ByteBuffer.allocateDirect(IL.ilGetInteger(IL.IL_IMAGE_WIDTH) * IL.ilGetInteger(IL.IL_IMAGE_HEIGHT) * 3);
-        //IL.ilCopyPixels(0, 0, 0, IL.ilGetInteger(IL.IL_IMAGE_WIDTH), IL.ilGetInteger(IL.IL_IMAGE_HEIGHT), 1, IL.IL_RGB, IL.IL_BYTE, scratch);
-
-        // Create A IntBuffer For Image Address In Memory
-        IntBuffer buf = ByteBuffer.allocateDirect(12).order(ByteOrder.nativeOrder()).asIntBuffer();
-        //GL11.glGenTextures(buf); // Create Texture In OpenGL
-/*
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, buf.get(0));
-        // Typical Texture Generation Using Data From The Image
-
-        // Create Nearest Filtered Texture
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, buf.get(0));
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, IL.ilGetInteger(IL.IL_IMAGE_WIDTH), 
-                IL.ilGetInteger(IL.IL_IMAGE_HEIGHT), 0, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, scratch);
-
-        // Create Linear Filtered Texture
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, buf.get(1));
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, IL.ilGetInteger(IL.IL_IMAGE_WIDTH), 
-                IL.ilGetInteger(IL.IL_IMAGE_HEIGHT), 0, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, scratch);
-
-        // Create MipMapped Texture
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, buf.get(2));
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_NEAREST);
-        GLU.gluBuild2DMipmaps(GL11.GL_TEXTURE_2D, 3, IL.ilGetInteger(IL.IL_IMAGE_WIDTH), 
-                IL.ilGetInteger(IL.IL_IMAGE_HEIGHT), GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, scratch);
-*/
-      return new int[]{ buf.get(0), buf.get(1), buf.get(2) };     // Return Image Addresses In Memory
-    }    
 
     public void cleanUp() {
     	cleanUpExt();
