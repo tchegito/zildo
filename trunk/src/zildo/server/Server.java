@@ -35,7 +35,6 @@ public class Server extends Thread {
     static Map<TransferObject, ClientState> clients = new HashMap<TransferObject, ClientState>();
 
 	boolean gameRunning;
-	Game game;
 	
 	// The network server engine
 	NetServer netServer;
