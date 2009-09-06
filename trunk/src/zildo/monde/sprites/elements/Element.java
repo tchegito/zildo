@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.IntSet;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.Collision;
@@ -452,10 +453,10 @@ public class Element extends SpriteEntity {
 		if (nSpr==1) {
 			// Le buisson s'effeuille
 			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON,(int) x,(int) y,0, null);
-			EngineZildo.soundManagement.broadcastSound("CasseBuisson", this);
+			EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
 		} else if (nSpr==12 || nSpr==42) {
 			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_ECLATEPIERRE,(int) x,(int) y,0, null);
-			EngineZildo.soundManagement.broadcastSound("CassePierre", this);
+			EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
 		} else if (nSpr==32) {
 			// La poule reprend vie dans le tableau de perso
 			/*

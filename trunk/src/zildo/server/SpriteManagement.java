@@ -35,11 +35,6 @@ public class SpriteManagement extends SpriteStore {
 	/** See {@link #updateSprites()} **/
 //
 
-/*float rnd()
-{
-	return 1; //(float)rand() / RAND_MAX;
-}
-*/
 	public SpriteManagement()
 	{
 

@@ -3,6 +3,7 @@ package zildo.client.gui;
 import java.util.List;
 
 import zildo.client.ClientEngineZildo;
+import zildo.client.SoundPlay.BankSound;
 import zildo.monde.WaitingDialog;
 
 public class DialogDisplay {
@@ -121,7 +122,7 @@ public class DialogDisplay {
 			// Draw sentences slowly (word are appearing one after another)
 			positionInSentence++;
 			if (positionInSentence % 3 ==0 && (Math.random()*10)>7) {
-				ClientEngineZildo.soundPlay.playSoundFX("AfficheTexte");
+				ClientEngineZildo.soundPlay.playSoundFX(BankSound.AfficheTexte);
 			}
 			guiManagement.displayTextParts(positionInSentence,currentSentence,(numToScroll!=0));
 		}

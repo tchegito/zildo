@@ -39,12 +39,14 @@ public class NetServer extends NetSend {
 
 	Server server;
 	int counter;
+	boolean lan;	// TRUE=LAN network / FALSE=Internet (no broadcast)
 	
 	int nFrame=0;
 	
-	public NetServer(Server p_server) {
+	public NetServer(Server p_server, boolean p_lan) {
 		super(null, NetSend.NET_PORT_SERVER);
 		server=p_server;
+		lan=p_lan;
 	}
 	
 	protected void addClient(TransferObject client) {
@@ -58,11 +60,13 @@ public class NetServer extends NetSend {
 			if (isOpen()) {
 
 				PacketSet packets=receiveAll();
-				// Emits signal so then client could connect (every 20 frames)
-				if (counter % 20 == 0) {
-					sendPacket(PacketType.SERVER, null);
+				if (lan) {
+					// Emits signal so then client could connect (every 20 frames)
+					if (counter % 20 == 0) {
+						sendPacket(PacketType.SERVER, null);
+					}
+					counter++;
 				}
-				counter++;
 				
 				Packet clientConnect=packets.getUniqueTyped(PacketType.CLIENT_CONNECT);
 				if (clientConnect != null) {

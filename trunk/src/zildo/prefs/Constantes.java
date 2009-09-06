@@ -4,7 +4,7 @@ public class Constantes {
 
 	// File system data
 	public static String DATA_PATH = ".\\Data\\";	// Pour livraison
-	//public static String DATA_PATH = "C:\\ZildoDist\\Version 1.06\\Data\\";
+	//public static String DATA_PATH = "C:\\ZildoDist\\Version 1.07\\Data\\";
 
 	// Tile Engine
 	public static final int TILEENGINE_WIDTH = 64;		// Max Number of tiles
@@ -44,7 +44,8 @@ public class Constantes {
 	public static final int TEXTER_COORDINATE_X = 50;
 	public static final int TEXTER_COORDINATE_Y = 180;
 	public static final int TEXTER_TOPIC_SIZELINE = 12;
-
+	public static final int TEXTER_MENU_SIZEY = 16;
+	
 	// Engine events
 	public static final int ENGINEEVENT_NOEVENT = 0;
 	public static final int ENGINEEVENT_CHANGINGMAP_FADEOUT = 1;
@@ -61,5 +62,5 @@ public class Constantes {
 	
 
 	// Sounds
-	public static final int MAX_SOUNDS = 28;
+	public static final int MAX_SOUNDS = 30;
 }

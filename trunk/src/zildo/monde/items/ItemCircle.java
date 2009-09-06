@@ -3,6 +3,7 @@ package zildo.monde.items;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
@@ -104,10 +105,10 @@ public class ItemCircle {
 			} else {
 				if (phase==CirclePhase.ROTATE_LEFT) {
 					itemSelected= (itemSelected+guiSprites.size() -1) % guiSprites.size();
-					EngineZildo.soundManagement.playSound("MenuMove", heros);
+					EngineZildo.soundManagement.playSound(BankSound.MenuMove, heros);
 				} else if (phase==CirclePhase.ROTATE_RIGHT) {
 					itemSelected= (itemSelected +1) % guiSprites.size();
-					EngineZildo.soundManagement.playSound("MenuMove", heros);
+					EngineZildo.soundManagement.playSound(BankSound.MenuMove, heros);
 				}
 				phase=CirclePhase.FIXED;
 			}

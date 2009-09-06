@@ -5,6 +5,8 @@ import org.lwjgl.util.vector.Vector3f;
 import zildo.Zildo;
 import zildo.client.gui.DialogDisplay;
 import zildo.client.gui.GUIDisplay;
+import zildo.client.gui.menu.ItemMenu;
+import zildo.client.gui.menu.Menu;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.filter.BilinearFilter;
 import zildo.fwk.filter.BlendFilter;
@@ -40,6 +42,8 @@ public class ClientEngineZildo {
 	public static SoundPlay soundPlay;
 	public static PixelShaders pixelShaders;
 
+	private static Client client;
+	
 	// Time left to unblock player's moves
 	private int waitingScene;
 	private int engineEvent;
@@ -81,7 +85,7 @@ public class ClientEngineZildo {
 		spriteEngine.init(spriteDisplay);
 
 		// GUI
-		guiDisplay.setToDisplay_generalGui(true);
+		guiDisplay.setToDisplay_generalGui(false);
 
 		ortho.setOrthographicProjection();
 		
@@ -93,7 +97,7 @@ public class ClientEngineZildo {
 	 * @param p_game
 	 * @param p_openGLGestion
 	 */
-	public ClientEngineZildo(OpenGLZildo p_openGLGestion, boolean p_awt)
+	public ClientEngineZildo(OpenGLZildo p_openGLGestion, boolean p_awt, Client p_client)
 	{
 		// Lien avec DirectX
 		ClientEngineZildo.openGLGestion=p_openGLGestion;
@@ -102,6 +106,7 @@ public class ClientEngineZildo {
 			initializeClient(p_awt);
 		}
 		
+		client=p_client;
 		waitingScene=0;
 		engineEvent=Constantes.ENGINEEVENT_NOEVENT;
 	}
@@ -118,7 +123,7 @@ public class ClientEngineZildo {
 	
 
 		// Focus camera on player
-		if (!p_editor) {
+		if (!p_editor && client.connected) {
 			mapDisplay.centerCamera();
 			
 			// Is Zildo talking with somebody ?
@@ -186,13 +191,31 @@ public class ClientEngineZildo {
 
 	}
 	
+	/**
+	 * Render menu. Keys are managed directly from Menu object.
+	 */
+	public void renderMenu() {
+		Menu menu=client.currentMenu;
+		if (menu != null) {
+			ItemMenu item=menu.act();
+			if (item == null) {
+				guiDisplay.displayMenu(menu);
+			} else {
+				// Terminates menu and schedule selected action to execute
+				guiDisplay.endMenu();
+				client.currentMenu.displayed=false;
+				client.currentMenu=null;
+				client.action=item;
+			}
+		}
+	}
+	
 	public void cleanUp() {
 		filterCommand.cleanUp();
 		pixelShaders.cleanUp();
 		tileEngine.cleanUp();
 		spriteEngine.cleanUp();
 	}
-	
 	
 	void debug()
 	{
@@ -247,6 +270,18 @@ public class ClientEngineZildo {
 		}
 	}
 
+	/**
+	 * Return a Client object for launching game. Only one instance of this object is allowed in an execution.
+	 * @return Client
+	 */
+	public static Client getClientForGame() {
+		if (client == null) {
+			client=new Client(false);
+		}
+		guiDisplay.setToDisplay_generalGui(true);
+		return client;
+	}
+	
     public void setOpenGLGestion(OpenGLZildo p_openGLGestion) {
         	openGLGestion = p_openGLGestion;
     }

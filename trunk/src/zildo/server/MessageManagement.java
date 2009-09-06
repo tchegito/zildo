@@ -11,7 +11,7 @@ public class MessageManagement {
     public void displayDeathMessage(PersoZildo p_zildo, Perso p_shooter) {
         if (p_shooter != null) {
             String shooterName = null;
-            if (p_shooter.isZildo()) {
+            if (p_shooter .isZildo()) {
                 shooterName = Server.getClientFromZildo((PersoZildo) p_shooter).playerName;
             } else {
                 shooterName = "Neutral units";

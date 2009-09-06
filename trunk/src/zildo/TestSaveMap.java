@@ -18,7 +18,7 @@ public class TestSaveMap {
     public void testeSaveMap() {
 
         Game game = new Game("polaky", false);
-        Server server = new Server(game);
+        Server server = new Server(game, true);
 
         MapManagement mapManagement = EngineZildo.mapManagement;
 

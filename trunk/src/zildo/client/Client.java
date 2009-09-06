@@ -4,7 +4,10 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 
 import zildo.Zildo;
+import zildo.client.gui.menu.ItemMenu;
+import zildo.client.gui.menu.Menu;
 import zildo.fwk.ZUtils;
+import zildo.fwk.net.InternetClient;
 import zildo.fwk.net.NetClient;
 import zildo.fwk.net.TransferObject;
 import zildo.fwk.opengl.OpenGLZildo;
@@ -26,41 +29,54 @@ public class Client {
 	boolean awt;
 	boolean done=false;
 	boolean connected=false;	// TRUE so as a connection with a server is established
-	
+	boolean lan=false;
+	Menu currentMenu;
 	NetClient netClient;
 	
-	/**
-	 * Client and server are on two differents PC.
-	 */
-	public Client() {
-		// On crée les objets OpenGL
-		glGestion=new OpenGLZildo(Zildo.fullScreen);
-		clientEngineZildo=new ClientEngineZildo(glGestion, false);
-		glGestion.setEngineZildo(clientEngineZildo);
-		
-		awt=false;
-		connected=false;
-		
-		netClient=new NetClient(this);
-		
-	}
+	ItemMenu action=null;
 	
+	public enum ClientType {
+		SERVER_AND_CLIENT, CLIENT, ZEDITOR;
+	}
+
 	/**
-	 * Same PC for client and server.
-	 * @param p_engine
+	 * Create client with given parameter.
 	 */
 	public Client(boolean p_awt) {
 		awt=p_awt;
-		if (p_awt) {
+		initializeDisplay();
+
+	}
+
+	void initializeDisplay() {
+		if (awt) {
 			glGestion=new OpenGLZildo();
 		} else {
 			glGestion=new OpenGLZildo(Zildo.fullScreen);
 		}
-		clientEngineZildo=new ClientEngineZildo(glGestion, p_awt);
-		glGestion.setEngineZildo(clientEngineZildo);
+		clientEngineZildo=new ClientEngineZildo(glGestion, awt, this);
+		glGestion.setClientEngineZildo(clientEngineZildo);
 		clientEngineZildo.setOpenGLGestion(glGestion);
-
-		connected=true;	// We don't need to manage connection
+	}
+	
+	/**
+	 * Set up network things.
+	 * @param p_type ClientType
+	 * @param p_serverIp 
+	 * @param p_serverPort
+	 */
+	public void setUpNetwork(ClientType p_type, String p_serverIp, int p_serverPort) {
+		lan=p_serverIp == null;
+		if (ClientType.CLIENT == p_type) {
+			if (lan) {
+				netClient=new NetClient(this);
+			} else {
+				netClient=new InternetClient(this, p_serverIp, p_serverPort);
+			}
+			connected=false;
+		} else {
+			connected=true;	// We don't need to manage connection
+		}
 	}
 	
 	public void readKeyboard() {
@@ -87,15 +103,13 @@ public class Client {
 		}
 		
         // Display scene
-		if (connected) {
-			glGestion.render(connected);
-		}
+		glGestion.render(connected);
 		
         return done;
 	}
 	
-	public void updateEngine() {
-		
+	public void stop() {
+		done=true;
 	}
 	
 	/**
@@ -116,18 +130,26 @@ public class Client {
             }
        		render();
 
+       		if (action != null) {
+       			action.run();
+       			action=null;
+       		}
         	ZUtils.sleep(5);
         }
-
+	}
+	
+	public void handleMenu(Menu p_menu) {
+		currentMenu=p_menu;
+	}
+	
+	public void cleanUp() {
         if (netClient != null) {
         	netClient.close();
         }
-        
-        cleanUp();
-	}
-
-	public void cleanUp() {
-		glGestion.cleanUp();				
+        if (glGestion != null) {
+        	glGestion.cleanUp();
+        	glGestion=null;
+        }
 	}
 
 	public ClientEngineZildo getEngineZildo() {
@@ -136,5 +158,9 @@ public class Client {
 	
 	public TransferObject getNetClient() {
 		return netClient;
+	}
+	
+	public boolean isLAN() {
+		return lan;
 	}
 }

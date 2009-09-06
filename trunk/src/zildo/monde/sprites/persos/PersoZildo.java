@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.items.Item;
@@ -78,7 +79,7 @@ public class PersoZildo extends Perso {
 		setMouvement(MouvementZildo.MOUVEMENT_VIDE);
 		setInfo(2);
 		setMaxpv(10);
-		setPv(12);
+		setPv(1);
 		setAlerte(false);
 		setCompte_dialogue(0);
 	    setMoney(0);
@@ -137,7 +138,7 @@ public class PersoZildo extends Perso {
 	public void attack() {
 		switch (weapon.kind) {
 		case SWORD:
-			EngineZildo.soundManagement.broadcastSound("ZildoAttaque", this);
+			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAttaque, this);
 			setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_EPEE);
 			setAttente(6*2);
 		
@@ -246,7 +247,7 @@ public class PersoZildo extends Perso {
 			elem.az=-0.07f;
 			setEn_bras(0);
 		}
-		EngineZildo.soundManagement.broadcastSound("ZildoTouche", this);
+		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoTouche, this);
 	
 		if (guiCircle != null) {
 			guiCircle.kill();
@@ -550,7 +551,7 @@ public class PersoZildo extends Perso {
 			
 		    setNSpr(angle.value*3 + seq_zildoBow[(((4*8-getAttente()-1) % (4*8)) / 8)] + 108);
 			if (attente==2*8) {
-				EngineZildo.soundManagement.broadcastSound("FlecheTir", this);
+				EngineZildo.soundManagement.broadcastSound(BankSound.FlecheTir, this);
 				Element arrow=new ElementArrow(angle, (int) x, (int) y, 0, this);
 				EngineZildo.spriteManagement.spawnSprite(arrow);
 				countArrow--;
@@ -586,11 +587,11 @@ public class PersoZildo extends Perso {
 		// Sound
 		switch (desc) {
 			case GREENMONEY1: case BLUEMONEY1: case REDMONEY1:
-				EngineZildo.soundManagement.broadcastSound("ZildoRecupArgent", this);
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
 				break;
 			case HEART: case HEART_LEFT:
 				default:
-				EngineZildo.soundManagement.broadcastSound("ZildoRecupCoeur", this);
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupCoeur, this);
 				break;
 		}
 	}
@@ -601,7 +602,7 @@ public class PersoZildo extends Perso {
 	 * @param obj
 	 */
 	public void takeSomething(int objX, int objY, int obj, Element object) {
-		EngineZildo.soundManagement.broadcastSound("ZildoRamasse", this);
+		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRamasse, this);
 
 		Element elem=object;
 		if (object == null) {
@@ -670,12 +671,12 @@ public class PersoZildo extends Perso {
 				element.setFx(0.04f);
 				break;
 		}
-		EngineZildo.soundManagement.broadcastSound("ZildoLance", this);		
+		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoLance, this);		
 	}
 	
 	public void lookInventory() {
 		if (inventory.size() > 0) {
-			EngineZildo.soundManagement.playSound("MenuOut", this);		
+			EngineZildo.soundManagement.playSound(BankSound.MenuOut, this);		
 			inventoring=true;
 			guiCircle=new ItemCircle();
 			int sel=inventory.indexOf(weapon);
@@ -684,7 +685,7 @@ public class PersoZildo extends Perso {
 	}
 	
 	public void closeInventory() {
-		EngineZildo.soundManagement.playSound("MenuIn", this);		
+		EngineZildo.soundManagement.playSound(BankSound.MenuIn, this);		
 		guiCircle.close();	// Ask for the circle to close
 		weapon=inventory.get(guiCircle.getItemSelected());
 	}

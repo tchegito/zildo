@@ -2,6 +2,7 @@ package zildo.monde.sprites.elements;
 
 import java.util.List;
 
+import zildo.client.SoundPlay.BankSound;
 import zildo.monde.map.Angle;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -36,7 +37,7 @@ public class ElementBoomerang extends ElementThrown {
     public List<SpriteEntity> animate() {
     	addSpr=(count/5) % 4;
     	if (count % 9 == 0) {
-    		EngineZildo.soundManagement.broadcastSound("Boomerang", this);
+    		EngineZildo.soundManagement.broadcastSound(BankSound.Boomerang, this);
     	}
     	count+=1;
     	if (comingBack) {
@@ -62,7 +63,7 @@ public class ElementBoomerang extends ElementThrown {
     protected boolean beingCollided() {
     	// Boomerang hit something, so give him back to Zildo
     	comingBack=true;
-		EngineZildo.soundManagement.broadcastSound("BoomerangTape", this);
+		EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
 		EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT));
     	return true;
     }

@@ -7,8 +7,12 @@ import java.util.Stack;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
+import zildo.client.SoundPlay.BankSound;
+import zildo.client.gui.menu.ItemMenu;
+import zildo.client.gui.menu.Menu;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
@@ -33,6 +37,7 @@ public class GUIDisplay {
 
 	public static final int DIALOGMODE_CLASSIC=1;
 	public static final int DIALOGMODE_TOPIC=2;
+	public static final int DIALOGMODE_MENU=3;
 	
 	// External variables for interacting with GUI
 	private boolean toDisplay_dialoguing;
@@ -45,11 +50,15 @@ public class GUIDisplay {
 	private boolean entireMessageDisplay;	// FALSE=Entire sentence aren't display yet at screen.
 
 	private int countMoney;
+	
 	private GUISpriteSequence textFontSequence;
 	private GUISpriteSequence frameDialogSequence;
 	private GUISpriteSequence guiSpritesSequence;
+	private GUISpriteSequence menuSequence;
 	
 	private FilterCommand filterCommand;
+	
+	public float alpha;
 	
 	Stack<GameMessage> messageQueue;
 	
@@ -69,6 +78,7 @@ public class GUIDisplay {
 		textFontSequence=new GUISpriteSequence();
 		frameDialogSequence=new GUISpriteSequence();
 		guiSpritesSequence=new GUISpriteSequence();
+		menuSequence = new GUISpriteSequence();
 		
 		countMoney=0;
 		
@@ -127,7 +137,7 @@ public class GUIDisplay {
 	{
 		toDisplay_dialogMode=dialogMode;
 		removePreviousTextInFrame();
-		prepareTextInFrame(texte);
+		prepareTextInFrame(texte, Constantes.TEXTER_COORDINATE_X, Constantes.TEXTER_COORDINATE_Y);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -185,7 +195,7 @@ public class GUIDisplay {
 	//        '-2' as 'ENDOFLINE'
 	// -.Spawn fonts at text place
 	///////////////////////////////////////////////////////////////////////////////////////
-	void prepareTextInFrame(String texte)
+	public void prepareTextInFrame(String texte, int p_posX, int p_posY)
 	{
 		// 1) Split sequence into list of words
 		//    and measure size of text to render
@@ -215,6 +225,12 @@ public class GUIDisplay {
 			//nMaxLigne=3;
 			visibleFont=false;
 			center=false;
+			break;
+		case DIALOGMODE_MENU:
+			nBank=SpriteBank.BANK_FONTES;
+			sizeLine=Constantes.TEXTER_SIZELINE;
+			visibleFont=true;
+			center=true;
 			break;
 		case DIALOGMODE_TOPIC:
 			nBank=SpriteBank.BANK_FONTES2;
@@ -270,8 +286,8 @@ public class GUIDisplay {
 		sizesLine[nLigne]=sizeCurrentLine + sizeCurrentWord;
 	
 		// 2) Display prepared sprites
-		int x=Constantes.TEXTER_COORDINATE_X;;
-		int y=Constantes.TEXTER_COORDINATE_Y;
+		int x=p_posX;
+		int y=p_posY;
 		int offsetX=0;
 		int offsetY=0;
 		if (center) {
@@ -371,13 +387,13 @@ public class GUIDisplay {
 						entity.setVisible(true);
 						if (i==sentence.length()) {
 							entireMessageDisplay=true;
-							ClientEngineZildo.soundPlay.playSoundFX("AfficheTexteFin");
+							ClientEngineZildo.soundPlay.playSoundFX(BankSound.AfficheTexteFin);
 						}
 					} else {
 						visibleMessageDisplay=true;
 						// If the text has another line to scroll, don't play sound
 						if (!scrolling) {
-							ClientEngineZildo.soundPlay.playSoundFX("AfficheTexteFin");
+							ClientEngineZildo.soundPlay.playSoundFX(BankSound.AfficheTexteFin);
 						}
 					}
 				}
@@ -417,6 +433,37 @@ public class GUIDisplay {
 	
 	}
 	
+	/**
+	 * Display a menu
+	 * @param p_menu (can't be null)
+	 */
+	public void displayMenu(Menu p_menu) {
+		int sizeY=p_menu.items.size() * Constantes.TEXTER_MENU_SIZEY;
+		int startY=(Zildo.viewPortY - sizeY) / 2;
+		if (!p_menu.displayed) {
+			// Display menu's text
+			ClientEngineZildo.guiDisplay.setToDisplay_dialogMode(GUIDisplay.DIALOGMODE_MENU);
+			int posY=startY;
+			for (ItemMenu item : p_menu.items) {
+				prepareTextInFrame(item.text, Constantes.TEXTER_COORDINATE_X, posY);
+				posY+= Constantes.TEXTER_MENU_SIZEY;
+			}
+			p_menu.displayed=true;
+		}
+		menuSequence.clear();
+		int nSpr=26+12+26+10;
+		int y=startY + p_menu.selected * Constantes.TEXTER_MENU_SIZEY;
+		alpha+=0.1f;
+		int wave=(int) (10.0f*Math.sin(alpha));
+		menuSequence.addSprite(SpriteBank.BANK_FONTES, nSpr, 40+wave,y);
+		menuSequence.addSprite(SpriteBank.BANK_FONTES, nSpr+1, Zildo.viewPortX - 40-wave,y);
+	}
+
+	public void endMenu() {
+		menuSequence.clear();
+		removePreviousTextInFrame();
+	}
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// fadeIn
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -444,6 +491,9 @@ public class GUIDisplay {
 	void drawGeneralGUI() {
 		SpriteDisplay spriteDisplay = ClientEngineZildo.spriteDisplay;
 		PersoZildo zildo = (PersoZildo) spriteDisplay.getZildo();
+		if (zildo == null) {
+			return;
+		}
 		// Re-initialize the gui's sprites sequence.
 		// Each frame, we re-add the sprites to avoid doing test about what exactly changes
 		// from last frame.

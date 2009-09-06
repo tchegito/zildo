@@ -2,7 +2,6 @@ package zildo.fwk.net;
 
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -15,8 +14,8 @@ import zildo.fwk.net.Packet.PacketType;
 
 public class NetSend extends TransferObject {
 
-	public final static int NET_PORT_SERVER = 80;
-	public final static int NET_PORT_CLIENT = 81;
+	public final static int NET_PORT_SERVER = 8080;
+	public final static int NET_PORT_CLIENT = 80;
 	public final static int MAX_PACKET_PER_FRAME = 20;
 
 	public final static int PACKET_MAX_SIZE = 20000;
@@ -86,20 +85,6 @@ public class NetSend extends TransferObject {
 
 	}
 	
-	public void sendSerializedData(Object p_data, InetAddress p_address) {
-		try {
-			Socket s = new Socket(p_address, NET_PORT_SERVER);
-
-			ObjectOutputStream out = null;
-			out=new ObjectOutputStream(s.getOutputStream());
-			out.writeObject(p_data);
-			out.flush();
-			out.close();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-	}
-	
 	/**
 	 * Receive a packet and store the sender.
 	 * @return
@@ -148,7 +133,7 @@ public class NetSend extends TransferObject {
 	 */
 	public void sendPacket(Packet p_packet, TransferObject p_target) {
 		if (p_target == null) {
-			// Want to broadcast
+			// Want to broadcast (only for LAN)
 			p_target=objectForBroadCast;
 		}
 		ByteBuffer b=p_packet.getPacket();

@@ -2,6 +2,7 @@ package zildo.monde.sprites.elements;
 
 import java.util.List;
 
+import zildo.client.SoundPlay.BankSound;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
@@ -42,7 +43,7 @@ public class ElementAnimMort extends Element {
             }
         }
         if (vx >= 1.0f && vx < 1.15f) {
-            EngineZildo.soundManagement.broadcastSound("MonstreMeurt", this);
+            EngineZildo.soundManagement.broadcastSound(BankSound.MonstreMeurt, this);
         }
         nSpr = seq_mort[(byte) vx];
         if (nSpr == 0) {
