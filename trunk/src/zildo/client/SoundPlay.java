@@ -48,13 +48,14 @@ public class SoundPlay {
 		Boomerang("boomeran.wav"),
 		BoomerangTape("argent2.wav"),
 		
-		MenuIn("Menu1.wav"),
-		MenuOut("Menu2.wav"),
-		MenuMove("Bip.wav"),
+		MenuIn("menu1.wav"),
+		MenuOut("menu2.wav"),
+		MenuMove("bip.wav"),
 		MenuSelect("choix.wav"),
 		MenuSelectGame("choixok.wav"),
 		
-		Explosion("Explose.wav");
+		PlanteBombe("posebomb.wav"),
+		Explosion("explose.wav");
 
 		String filename;
 		
@@ -151,7 +152,7 @@ public class SoundPlay {
 		if (Zildo.soundEnabled) {
 			// Build entire file name
 			String chemin=Constantes.DATA_PATH;
-			chemin+="sounds\\";
+			chemin+="sounds"+Constantes.separator;
 			chemin+=soundName;
 	
 			OpenGLSound newSound=new OpenGLSound(chemin);
