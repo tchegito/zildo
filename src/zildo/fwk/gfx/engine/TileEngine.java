@@ -69,6 +69,7 @@ public class TileEngine extends TextureEngine {
     protected TilePrimitive[] meshFORE;
     protected TilePrimitive[] meshBACK;
 
+    private boolean initialized=false;
     List<MotifBank> motifBanks;
     private int n_banquemotif; // Nombre de banque de motifs en mémoire
 
@@ -124,7 +125,7 @@ public class TileEngine extends TextureEngine {
     void charge_tous_les_motifs() {
         n_banquemotif = 0;
         for (int i = 0; i < 8; i++)
-            this.charge_motifs(tileBankNames[i]);
+            this.charge_motifs(tileBankNames[i].toUpperCase());
 
     }
 
@@ -228,6 +229,8 @@ public class TileEngine extends TextureEngine {
 			meshFORE[i].endInitialization();
 			meshBACK[i].endInitialization();
 		}
+		
+		initialized=true;
 	}
 
 	public void createTextureFromMotifBank(MotifBank mBank) {
@@ -260,32 +263,32 @@ public class TileEngine extends TextureEngine {
 
 	public void tileRender(boolean backGround) {
 
-		// Small optimization: do not draw invisible faces ! (counterclock wise vertices)
-		//pD3DDevice9.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-		if (backGround) {
-			// Display BACKGROUND
-			for (int i=0;i<Constantes.NB_MOTIFBANK;i++) {
-				if (meshBACK[i].getNPoints()>0) {
-			        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]);                 // Select Our Second Texture
-					meshBACK[i].render();
+		if (initialized) {
+			// Small optimization: do not draw invisible faces ! (counterclock wise vertices)
+			//pD3DDevice9.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+			if (backGround) {
+				// Display BACKGROUND
+				for (int i=0;i<Constantes.NB_MOTIFBANK;i++) {
+					if (meshBACK[i].getNPoints()>0) {
+				        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]);                 // Select Our Second Texture
+						meshBACK[i].render();
+					}
 				}
 			}
-		}
-		else {
-			// Display FOREGROUND
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GL11.glEnable(GL11.GL_BLEND);
-
-			for (int i=0;i<Constantes.NB_MOTIFBANK;i++) {
-				if (meshFORE[i].getNPoints()>0) {
-			        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]);                 // Select Our Second Texture
-					meshFORE[i].render();
-				}
-			}
-			GL11.glDisable(GL11.GL_BLEND);
-		}
-		// pD3DDevice9.SetPixelShader(null);
+			else {
+				// Display FOREGROUND
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				GL11.glEnable(GL11.GL_BLEND);
 	
+				for (int i=0;i<Constantes.NB_MOTIFBANK;i++) {
+					if (meshFORE[i].getNPoints()>0) {
+				        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]);                 // Select Our Second Texture
+						meshFORE[i].render();
+					}
+				}
+				GL11.glDisable(GL11.GL_BLEND);
+			}
+		}
 	}
 	
 	// Redraw all tiles with updating VertexBuffers.
@@ -293,7 +296,7 @@ public class TileEngine extends TextureEngine {
 	// **BUT THIS COULD BE DANGEROUS WHEN A TILE SWITCHES FROM ONE BANK TO ANOTHER**
 	public void updateTiles(int cameraXnew, int cameraYnew, Area theMap, int compteur_animation) {
 	
-		if (cameraX!=-1 && cameraY!=-1) {
+		if (initialized && cameraX!=-1 && cameraY!=-1) {
 	
 			int i;
 			for (i=0;i<Constantes.NB_MOTIFBANK;i++) {

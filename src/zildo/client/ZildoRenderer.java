@@ -13,7 +13,7 @@ public class ZildoRenderer implements IRenderable {
 	
 	public ZildoRenderer(String mapName) {
 		Game game=new Game(mapName, true);
-		server=new Server(game);
+		server=new Server(game, true);
 		client=new Client(true);
 	}
 	

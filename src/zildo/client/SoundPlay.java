@@ -16,44 +16,52 @@ import zildo.prefs.Constantes;
 public class SoundPlay {
 
 
+	public enum BankSound {
+		ZildoAttaque("epee.wav"),
+		
+		ZildoTouche("zildoaie.wav"),
+		ZildoTombe("tombe.wav"),
+		ZildoAtterit("atterit.wav"),
+		ZildoLance("lance.wav"),
+		ZildoRamasse("ramasse.wav"),
+		ZildoPlonge("eau.wav"),
+		ZildoNage("eau2.wav"),
+		ZildoRecupVie("vie.wav"),
+		ZildoRecupCoeur("coeur.wav"),
+		ZildoRecupArgent("argent3.wav"),
 
-	static String bankSound[][]={   {"ZildoAttaque",    "epee.wav"},
-									{"ZildoTouche",     "zildoaie.wav"},
-									{"ZildoTombe",      "tombe.wav"},
-									{"ZildoAtterit",    "atterit.wav"},
-									{"ZildoLance",      "lance.wav"},
-									{"ZildoRamasse",    "ramasse.wav"},
-									{"ZildoPlonge",     "eau.wav"},
-									{"ZildoNage",       "eau2.wav"},
-									{"ZildoRecupVie",   "vie.wav"},
-									{"ZildoRecupCoeur", "coeur.wav"},
-									{"ZildoRecupArgent","argent3.wav"},
+		MonstreTouche("touche.wav"),
+		MonstreMeurt("meurt.wav"),
+		MonstreTrouve("alerte.wav"),
+		
+		CasseBuisson("feuilles.wav"),
+		CassePierre("brise.wav"),
+		OuvrePorte("porte.wav"),
 
-									{"MonstreTouche",	"touche.wav"},
-									{"MonstreMeurt",	"meurt.wav"},
-									{"MonstreTrouve",	"alerte.wav"},
-									
-									{"CasseBuisson",    "feuilles.wav"},
-									{"CassePierre",     "brise.wav"},
-									{"OuvrePorte",      "porte.wav"},
+		AfficheTexte("texte1.wav"),
+		AfficheTexte2("texte2.wav"),
+		AfficheTexteFin("textefin.wav"),
 
-									{"AfficheTexte",    "texte1.wav"},
-									{"AfficheTexte2",   "texte2.wav"},
-									{"AfficheTexteFin", "textefin.wav"},
+		FlecheTir("tire.wav"),
+		FlechePlante("plante.wav"),
+		
+		Boomerang("boomeran.wav"),
+		BoomerangTape("argent2.wav"),
+		
+		MenuIn("Menu1.wav"),
+		MenuOut("Menu2.wav"),
+		MenuMove("Bip.wav"),
+		MenuSelect("choix.wav"),
+		MenuSelectGame("choixok.wav"),
+		
+		Explosion("Explose.wav");
 
-									{"FlecheTir", "tire.wav"},
-									{"FlechePlante", "plante.wav"},
-									
-									{"Boomerang", "boomeran.wav"},
-									{"BoomerangTape", "argent2.wav"},
-									
-									{"MenuIn", "Menu1.wav"},
-									{"MenuOut", "Menu2.wav"},
-									{"MenuMove", "Bip.wav"},
-									
-									{"Explosion", "Explose.wav"}
-
-								 };
+		String filename;
+		
+		private BankSound(String p_filename) {
+			filename=p_filename;
+		}
+	 };
 
 	/*				Description		Utilisation
 	alarme		
@@ -130,10 +138,9 @@ public class SoundPlay {
 	// loadAllSoundFX
 	///////////////////////////////////////////////////////////////////////////////////////
 	void loadAllSoundFX() {
-		for (int i=0;i<(bankSound.length);i++) {
+		for (BankSound snd : BankSound.values()) {
 			// Load every sample from the sound's bank defined in SoundManagement.h
-			String[] sound=bankSound[i];
-			loadSoundFX(sound[1]);
+			loadSoundFX(snd.filename);
 		}
 	}
 	
@@ -162,18 +169,11 @@ public class SoundPlay {
 	// Play sound named 'soundName' from sound's tab
 	// If the given sound name isn't found, do nothing.
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void playSoundFX(String soundName) {
-		for (int i=0;i<nSounds;i++) {
-			String[] sound=bankSound[i];
-			String name=sound[0];
-			if (soundName.equals(name)) {
-				// Play desired sound and exit
-				tabSounds[i].play(); //0,0,-500);
-				return;
-			}
-		}
+	public void playSoundFX(BankSound snd) {
+		// Play desired sound and exit
+		tabSounds[snd.ordinal()].play(); //0,0,-500);
 	}
-	
+
 	public void playSounds(List<WaitingSound> p_sounds) {
 		for (WaitingSound sound : p_sounds) {
 			if (sound.broadcast || sound.client==null) {

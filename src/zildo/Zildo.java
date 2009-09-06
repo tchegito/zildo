@@ -1,7 +1,8 @@
 package zildo;
 import java.util.logging.LogManager;
 
-import zildo.monde.Game;
+import zildo.client.Client;
+import zildo.client.gui.menu.StartMenu;
 import zildo.prefs.Constantes;
 
 
@@ -30,8 +31,12 @@ public class Zildo {
 		
 		Constantes.DATA_PATH="C:\\ZildoDist\\Version 1.07\\Data\\";
 		
-        Game game = new Game("polaky", false);
-        //new SinglePlayer(game);
-        new MultiPlayer(game); //, true);
+        final Client client=new Client(false);
+
+        client.handleMenu(new StartMenu(client));
+        client.run();
+        client.cleanUp();
+        
+        System.exit(0);
 	}
 }

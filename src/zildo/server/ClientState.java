@@ -36,5 +36,8 @@ public class ClientState {
         keysState=new KeyboardState();
         inactivityTime=0;
         dialogState=new DialogState();
+        if (p_location != null) {
+        	playerName=p_location.address.getHostName();
+        }
     }
 }

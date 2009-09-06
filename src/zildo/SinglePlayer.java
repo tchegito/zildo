@@ -8,6 +8,7 @@ import java.util.Set;
 
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
+import zildo.client.Client.ClientType;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
 import zildo.server.ClientState;
@@ -45,7 +46,8 @@ public class SinglePlayer {
      * -the same, but in fake mode : we emulate a network traffic
      */
     public void launchGame() {
-        Client client = new Client(false);
+        Client client = ClientEngineZildo.getClientForGame();
+        client.setUpNetwork(ClientType.SERVER_AND_CLIENT, null, 0);
         ClientEngineZildo clientEngineZildo = client.getEngineZildo();
 
         // Initialize map

@@ -3,7 +3,6 @@ package zildo.fwk.opengl;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
 
 import zildo.client.ClientEngineZildo;
 import zildo.monde.map.Point;
@@ -13,7 +12,7 @@ public class OpenGLZildo extends OpenGLGestion {
 
 	String windowTitle="Zildo OpenGL";
 
-    private ClientEngineZildo engineZildo;
+    private ClientEngineZildo clientEngineZildo;
 
     private float z;
     private float xx;
@@ -67,8 +66,8 @@ public class OpenGLZildo extends OpenGLGestion {
 		z=0.0f;
 	}
 	
-    public void setEngineZildo(ClientEngineZildo p_engineZildo) {
-    	engineZildo=p_engineZildo;
+    public void setClientEngineZildo(ClientEngineZildo p_engineZildo) {
+    	clientEngineZildo=p_engineZildo;
     }
     
     protected void mainloopExt() {
@@ -109,10 +108,10 @@ public class OpenGLZildo extends OpenGLGestion {
     		ClientEngineZildo.filterCommand.doPreFilter();
     	}
     	
-    	if (p_clientReady) {
-    		engineZildo.renderFrame(awt);
-    	} else {
-    		ClientEngineZildo.ortho.drawText(0,4,"Awaiting server...", new Vector3f(1,1,1));
+		clientEngineZildo.renderFrame(awt);
+    	if (!p_clientReady) {
+    		//ClientEngineZildo.ortho.drawText(0,4,"Awaiting server...", new Vector3f(1,1,1));
+    		clientEngineZildo.renderMenu();
     	}
     	
     	if (ClientEngineZildo.filterCommand != null) {
@@ -138,6 +137,6 @@ public class OpenGLZildo extends OpenGLGestion {
 	}
 	
     protected void cleanUpExt() {
-    	engineZildo.cleanUp();
+    	clientEngineZildo.cleanUp();
     }
 }

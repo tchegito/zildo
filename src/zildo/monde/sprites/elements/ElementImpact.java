@@ -2,6 +2,7 @@ package zildo.monde.sprites.elements;
 
 import java.util.List;
 
+import zildo.client.SoundPlay.BankSound;
 import zildo.monde.Collision;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -49,7 +50,7 @@ public class ElementImpact extends Element {
 				setSprModel(ElementDescription.EXPLO1);
 				y+=getSprModel().getTaille_y()/2;
 				composite=new CompositeElement(this);
-				EngineZildo.soundManagement.broadcastSound("Explosion", this);
+				EngineZildo.soundManagement.broadcastSound(BankSound.Explosion, this);
 		}
 		addSpr=0;
 		// Stock the initial location

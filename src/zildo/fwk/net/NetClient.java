@@ -25,6 +25,8 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.server.SpriteManagement;
 
 /**
+ * Client on a LAN network.
+ * 
  * On the start:
  * -get the map
  * -get all entities
@@ -43,7 +45,7 @@ public class NetClient extends NetSend {
 	boolean askedMap;
 	boolean gotMap;
 	boolean gotEntities;
-
+	
 	int delayConnect=0;
 	int nFrame=0;
 	int frameWithoutEntity=0;

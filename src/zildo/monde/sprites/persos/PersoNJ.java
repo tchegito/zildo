@@ -3,6 +3,7 @@ package zildo.monde.sprites.persos;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.Hasard;
 import zildo.monde.map.Angle;
@@ -81,7 +82,7 @@ public class PersoNJ extends Perso {
 			die(true, p_shooter);
 		}
 	
-		EngineZildo.soundManagement.broadcastSound("MonstreTouche", this);
+		EngineZildo.soundManagement.broadcastSound(BankSound.MonstreTouche, this);
 	
 		return died;
 	}
@@ -222,7 +223,7 @@ public class PersoNJ extends Perso {
 							if (this.getAttente()==1 && cptMouvement<2) {
 								if (!alerte && lookForZildo(Angle.rotate(angle, PersoGardeVert.mouvetete[cptMouvement]))) {
 									alerte=true;
-									EngineZildo.soundManagement.broadcastSound("MonstreTrouve", this);
+									EngineZildo.soundManagement.broadcastSound(BankSound.MonstreTrouve, this);
 								}
 								cptMouvement++;
 								setAttente(20);

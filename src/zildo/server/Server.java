@@ -42,10 +42,10 @@ public class Server extends Thread {
 	
 	EngineZildo engineZildo;
 	
-	public Server(Game p_game) {
+	public Server(Game p_game, boolean p_lan) {
 		engineZildo=new EngineZildo(p_game);
 		gameRunning=true;
-		netServer=new NetServer(this);
+		netServer=new NetServer(this, p_lan);
 	}
 	
 	public EngineZildo getEngineZildo() {
@@ -98,7 +98,12 @@ public class Server extends Thread {
 			return clients.get(p_client).zildo.getId();
 		}
 		int zildoId=engineZildo.spawnClient();
-		clients.put(p_client, new ClientState(p_client, zildoId));
+		ClientState srv=new ClientState(p_client, zildoId);
+		clients.put(p_client, srv);
+		if (p_client == null) {
+			// Connecting server : so take the name from adress
+			srv.playerName=netServer.address.getHostName();
+		}
 		
 		if (p_client != null) {
 			ClientEngineZildo.guiDisplay.displayMessage(p_client.address.getHostName()+" join the game");
@@ -179,10 +184,6 @@ public class Server extends Thread {
             }
         }
         throw new RuntimeException("This zildo isn't referenced anymore !");
-    }
-
-    public void registerServer(ClientState p_state) {
-        clients.put(null, p_state);
     }
 	
 	public Collection<ClientState> getClientStates() {

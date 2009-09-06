@@ -3,6 +3,7 @@ package zildo.monde.sprites.elements;
 import java.util.Arrays;
 import java.util.List;
 
+import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.Collision;
 import zildo.monde.map.Angle;
@@ -103,7 +104,7 @@ public class ElementArrow extends ElementThrown  {
     	az=0;
     	flying=false;
     	shadow.dying=true;
-    	EngineZildo.soundManagement.broadcastSound("FlechePlante", this);
+    	EngineZildo.soundManagement.broadcastSound(BankSound.FlechePlante, this);
     	return true;    	
     }
     

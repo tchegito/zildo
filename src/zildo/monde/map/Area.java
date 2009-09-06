@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.dialog.Behavior;
@@ -257,7 +258,7 @@ public class Area {
 		if (on_Area == 165) {
 			Point spriteLocation = new Point(tileLocation.getX() * 16 + 8, tileLocation.getY() * 16 + 8);
 			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON, spriteLocation.getX(), spriteLocation.getY(), 0, null);
-			EngineZildo.soundManagement.broadcastSound("CasseBuisson", spriteLocation);
+			EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
 			this.writemap(tileLocation.getX(), tileLocation.getY(), 166);
 		}
