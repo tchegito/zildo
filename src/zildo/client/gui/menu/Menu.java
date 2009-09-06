@@ -10,19 +10,28 @@ import zildo.client.SoundPlay.BankSound;
 
 public class Menu {
 
+	public String title;
 	public List<ItemMenu> items;
 	public int selected;
 	public boolean displayed;
 
 	private static int keyPressed;
 	
-	public Menu(ItemMenu... p_items) {
+	public Menu() {
+		
+	}
+	public Menu(String p_title, ItemMenu... p_items) {
+		title=p_title;
 		setMenu(p_items);
 	}
 	
 	public void setMenu(ItemMenu... p_items) {
 		items=Arrays.asList(p_items);
 		displayed=false;
+	}
+	
+	public void setTitle(String p_title) {
+		title=p_title;
 	}
 	
 	/**

@@ -101,7 +101,7 @@ public class SoundPlay {
 	*/
 	
 	//CSoundManager* soundManager;
-	private OpenGLSound[] tabSounds=new OpenGLSound[Constantes.MAX_SOUNDS];
+	private OpenGLSound[] tabSounds=new OpenGLSound[BankSound.values().length];
 	private int nSounds;
 	//const GUID GUID_null = { 0, 0, 0, { 0, 0, 0, 0, 0, 0, 0, 0 } };
 	
