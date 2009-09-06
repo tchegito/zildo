@@ -2,7 +2,9 @@
 
 = Version 1.07 =
 
- * + First networking version of the game (LAN only)
- * + 4 different weapons
+ *Yes !*
+ * First networking version of the game (LAN only)
+ * 4 different weapons
 
+ *But ...*
  * - doesn't work on Linux/MacOS at all, and Vista/7 with specific video cards
