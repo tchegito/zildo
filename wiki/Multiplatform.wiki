@@ -5,9 +5,9 @@ The technologies choice (Java, LWJGL) has been made in order to adress every pla
 Everything's fine on following configs:
  * Windows XP with any graphic card
  * Windows Vista/7 with NVIDIA card
+ * MacOS X
 
 Not working on:
- * MacOS X (dependancy problem with DevIL, should be replaced by another library, to be continued...)
  * Windows Vista/7 with some ATI cards (ATI drivers are not right for all ATI cards, Radeon 9600 for example)
 
 Never tested on:
