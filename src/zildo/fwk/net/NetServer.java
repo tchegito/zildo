@@ -263,6 +263,14 @@ public class NetServer extends NetSend {
 	}
 
     /**
+     * Send a disconnect order to all clients (when server is leaving).
+     */
+    public void notifyEndToClients() {
+    	ConnectPacket p=new ConnectPacket(false);
+    	broadcastPacketToAllCients(p);
+    }
+    
+    /**
      * 
      * @param p_events
      */

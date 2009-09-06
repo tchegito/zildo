@@ -1,5 +1,6 @@
 package zildo.client;
 
+import java.io.File;
 import java.util.List;
 
 import zildo.Zildo;
@@ -152,7 +153,7 @@ public class SoundPlay {
 		if (Zildo.soundEnabled) {
 			// Build entire file name
 			String chemin=Constantes.DATA_PATH;
-			chemin+="sounds"+Constantes.separator;
+			chemin+="sounds"+File.separator;
 			chemin+=soundName;
 	
 			OpenGLSound newSound=new OpenGLSound(chemin);

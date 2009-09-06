@@ -29,7 +29,7 @@ public class Zildo {
 			LogManager.getLogManager().reset();
 		}
 		
-		Constantes.DATA_PATH="C:\\ZildoDist\\Version 1.07\\Data\\";
+		//Constantes.DATA_PATH="C:\\ZildoDist\\Version 1.07\\Data\\";
 		
         final Client client=new Client(false);
 

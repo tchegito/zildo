@@ -141,7 +141,7 @@ public class CollideManagement {
     // It's called with potential location in a move. Usually, if this method returns true,
     // previous coordinates will be kept.
     // /////////////////////////////////////////////////////////////////////////////////////
-    public boolean check_colli(int x, int y, int a, int b, int r, int rayon) {
+    public boolean checkCollisionCircles(int x, int y, int a, int b, int r, int rayon) {
         // Juste des maths...
         int c = Math.abs(x - a);
         int d = Math.abs(y - b);
@@ -156,15 +156,18 @@ public class CollideManagement {
     }
 
     public boolean checkColli(Collision p_collider, Collision p_collided) {
-        return check_colli(p_collider.cx, p_collider.cy, p_collided.cx, p_collided.cy, p_collider.cr, p_collided.cr, p_collider.size,
-                p_collided.size);
-    }
-
-    public boolean check_colli(int x1, int y1, int x2, int y2, int radius1, int radius2, Point size1, Point size2) {
+		int x1=p_collider.cx;
+		int y1=p_collider.cy;
+		int x2=p_collided.cx;
+		int y2=p_collided.cy;
+		int radius1=p_collider.cr;
+		int radius2=p_collided.cr;
+		Point size1=p_collider.size;
+		Point size2=p_collided.size;
         // Check for each
         if (size1 == null && size2 == null) {
             // Collision between 2 circles
-            return check_colli(x1, y1, x2, y2, radius1, radius2);
+            return checkCollisionCircles(x1, y1, x2, y2, radius1, radius2);
         } else if (size2 == null) {
             // Collision between 1 rectangle and 1 circle
             return new Rectangle(new Point(x1, y1), size1).isCrossingCircle(new Point(x2, y2), radius2);

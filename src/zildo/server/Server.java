@@ -130,6 +130,13 @@ public class Server extends Thread {
 		}
 	}
 	
+	/**
+	 * Notify all clients that server is destroying the game.
+	 */
+	public void disconnectServer() {
+		netServer.notifyEndToClients();
+	}
+	
 	public Set<TransferObject> getClientsLocation() {
 		return clients.keySet();
 	}

@@ -28,6 +28,7 @@ public class Client {
 	OpenGLZildo glGestion;
 	boolean awt;
 	boolean done=false;
+	boolean serverLeft=false;
 	boolean connected=false;	// TRUE so as a connection with a server is established
 	boolean lan=false;
 	Menu currentMenu;
@@ -108,6 +109,10 @@ public class Client {
         return done;
 	}
 	
+	public void serverLeft() {
+		serverLeft=true;
+	}
+	
 	public void stop() {
 		done=true;
 	}
@@ -119,7 +124,7 @@ public class Client {
 	 */
 	public void run() {
 		
-        while (!done) {
+        while (!done && !serverLeft) {
 			// Deals with network
             if (netClient != null) {
                 netClient.run();

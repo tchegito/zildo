@@ -2,6 +2,7 @@ package zildo.monde.sprites.elements;
 
 import java.util.List;
 
+import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.Collision;
@@ -31,6 +32,8 @@ public class ElementBomb extends Element {
         shadow.nSpr = ElementDescription.SHADOW_SMALL.ordinal();
         shadow.setSprModel(ElementDescription.SHADOW_SMALL);
         EngineZildo.spriteManagement.spawnSprite(shadow);
+        
+        EngineZildo.soundManagement.broadcastSound(BankSound.PlanteBombe, this);
 	}
 	
 	public List<SpriteEntity> animate() {
