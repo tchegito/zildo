@@ -1,10 +1,13 @@
 package zildo.prefs;
 
+import java.io.File;
+
+
 public class Constantes {
 
 	// File system data
-	public static String DATA_PATH = ".\\Data\\";	// Pour livraison
-	//public static String DATA_PATH = "C:\\ZildoDist\\Version 1.07\\Data\\";
+	public static String DATA_PATH = "."+File.separator+"Data"+File.separator;	// Pour livraison
+	//public static String DATA_PATH = "C:\\ZildoDist\\Version 1.08\\Data\\";
 
 	// Tile Engine
 	public static final int TILEENGINE_WIDTH = 64;		// Max Number of tiles
@@ -62,5 +65,5 @@ public class Constantes {
 	
 
 	// Sounds
-	public static final int MAX_SOUNDS = 30;
+	public static final int MAX_SOUNDS = 31;
 }

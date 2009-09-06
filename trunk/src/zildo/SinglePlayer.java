@@ -106,6 +106,11 @@ public class SinglePlayer {
             // Render sounds
             ClientEngineZildo.soundPlay.playSounds(EngineZildo.soundManagement.getQueue());
         }
+        
+        if (server != null) {
+        	// Tells all clients that we're leaving
+        	server.disconnectServer();
+        }
         clientEngineZildo.cleanUp();
         client.cleanUp();
         engineZildo.cleanUp();

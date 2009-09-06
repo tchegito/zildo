@@ -4,6 +4,7 @@ import zildo.MultiPlayer;
 import zildo.SinglePlayer;
 import zildo.client.Client;
 import zildo.client.SoundPlay.BankSound;
+import zildo.fwk.net.NetSend;
 import zildo.monde.Game;
 
 public class StartMenu extends Menu {
@@ -25,12 +26,16 @@ public class StartMenu extends Menu {
         	public void run() {
                 ItemMenu itemCreate=new ItemMenu("Create game", BankSound.MenuSelectGame) {
                 	public void run() {
-                		new MultiPlayer(game, true);
+                		new MultiPlayer(game, lan);
                 	}
                 };
                 ItemMenu itemJoin=new ItemMenu("Join game", BankSound.MenuSelectGame) {
                 	public void run() {
-                		new MultiPlayer();
+                		if (lan) {
+                			new MultiPlayer();
+                		} else {
+                			new MultiPlayer("82.228.194.234", NetSend.NET_PORT_SERVER);
+                		}
                 	}
                 };
                 ItemMenu itemToggleNetwork=new ItemMenu(getNetTypeString()) {

@@ -159,6 +159,12 @@ public class NetClient extends NetSend {
                 } else {
                 	frameWithoutEntity=0;
                 }
+                
+                // Has server leaved the game ?
+                p=packets.getUniqueTyped(PacketType.CLIENT_CONNECT);
+                if (p != null) {
+                	client.serverLeft();
+                }
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

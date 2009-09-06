@@ -14,7 +14,7 @@ import zildo.fwk.net.Packet.PacketType;
 
 public class NetSend extends TransferObject {
 
-	public final static int NET_PORT_SERVER = 8080;
+	public final static int NET_PORT_SERVER = 1234;
 	public final static int NET_PORT_CLIENT = 80;
 	public final static int MAX_PACKET_PER_FRAME = 20;
 
