@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import zildo.client.ClientEngineZildo;
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
@@ -79,7 +80,7 @@ public class PersoZildo extends Perso {
 		setMouvement(MouvementZildo.MOUVEMENT_VIDE);
 		setInfo(2);
 		setMaxpv(10);
-		setPv(1);
+		setPv(10);
 		setAlerte(false);
 		setCompte_dialogue(0);
 	    setMoney(0);
@@ -268,8 +269,10 @@ public class PersoZildo extends Perso {
      */
     public void die(boolean p_link, Perso p_shooter) {
         super.die(p_link, p_shooter);
-        EngineZildo.messageManagement.displayDeathMessage(this, p_shooter);
-        EngineZildo.respawnClient(this);
+        if (EngineZildo.game.multiPlayer) {
+        	EngineZildo.messageManagement.displayDeathMessage(this, p_shooter);
+        	EngineZildo.respawnClient(this);
+        }
     }
 	
 	///////////////////////////////////////////////////////////////////////////////////////
