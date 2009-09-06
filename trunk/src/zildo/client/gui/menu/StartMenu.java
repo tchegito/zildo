@@ -8,11 +8,12 @@ import zildo.fwk.net.NetSend;
 import zildo.monde.Game;
 
 public class StartMenu extends Menu {
-
+	
 	public StartMenu(final Client client) {
         
         final Game game = new Game("polaky", false);
-
+        final Menu startMenu=this;
+        
         ItemMenu itemSinglePlayer=new ItemMenu("Single Player", BankSound.MenuSelectGame) {
         	public void run() {
         		new SinglePlayer(game);
@@ -34,7 +35,7 @@ public class StartMenu extends Menu {
                 		if (lan) {
                 			new MultiPlayer();
                 		} else {
-                			new MultiPlayer("82.228.194.234", NetSend.NET_PORT_SERVER);
+                			new MultiPlayer(NetSend.NET_PORT_IP, NetSend.NET_PORT_SERVER);
                 		}
                 	}
                 };
@@ -45,7 +46,13 @@ public class StartMenu extends Menu {
                 		client.handleMenu(multiMenu);
                 	}
                 };
-                multiMenu=new Menu(itemCreate, itemJoin, itemToggleNetwork);
+                ItemMenu itemBack=new ItemMenu("Back") {
+                	public void run() {
+                		client.handleMenu(startMenu);
+                	}
+                };
+                
+                multiMenu=new Menu("Multiplayer", itemCreate, itemJoin, itemToggleNetwork, itemBack);
                 client.handleMenu(multiMenu);
         	}
         	
@@ -61,5 +68,6 @@ public class StartMenu extends Menu {
         };
         
         setMenu(itemSinglePlayer, itemMultiPlayer, itemQuit);
+        setTitle("Welcome to Zildo");
 	}
 }

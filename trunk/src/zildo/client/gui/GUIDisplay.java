@@ -438,12 +438,16 @@ public class GUIDisplay {
 	 * @param p_menu (can't be null)
 	 */
 	public void displayMenu(Menu p_menu) {
-		int sizeY=p_menu.items.size() * Constantes.TEXTER_MENU_SIZEY;
+		int sizeY=(p_menu.items.size() + 2) * Constantes.TEXTER_MENU_SIZEY;
 		int startY=(Zildo.viewPortY - sizeY) / 2;
 		if (!p_menu.displayed) {
 			// Display menu's text
 			ClientEngineZildo.guiDisplay.setToDisplay_dialogMode(GUIDisplay.DIALOGMODE_MENU);
 			int posY=startY;
+			// Title
+			prepareTextInFrame(p_menu.title, Constantes.TEXTER_COORDINATE_X, posY);
+			posY+=2*Constantes.TEXTER_MENU_SIZEY;
+			// Items
 			for (ItemMenu item : p_menu.items) {
 				prepareTextInFrame(item.text, Constantes.TEXTER_COORDINATE_X, posY);
 				posY+= Constantes.TEXTER_MENU_SIZEY;
@@ -452,7 +456,7 @@ public class GUIDisplay {
 		}
 		menuSequence.clear();
 		int nSpr=26+12+26+10;
-		int y=startY + p_menu.selected * Constantes.TEXTER_MENU_SIZEY;
+		int y=startY + (p_menu.selected+2) * Constantes.TEXTER_MENU_SIZEY;
 		alpha+=0.1f;
 		int wave=(int) (10.0f*Math.sin(alpha));
 		menuSequence.addSprite(SpriteBank.BANK_FONTES, nSpr, 40+wave,y);
