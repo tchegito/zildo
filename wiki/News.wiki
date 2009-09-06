@@ -2,7 +2,7 @@
 
 = Version 1.07 =
 
- *'Yes !*
+ '*Yes !*
 
  * First networking version of the game (LAN only)
  * 4 different weapons
