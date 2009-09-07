@@ -6,6 +6,7 @@ package zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.Client.ClientType;
+import zildo.fwk.net.ServerInfo;
 import zildo.monde.Game;
 import zildo.server.Server;
 
@@ -25,9 +26,9 @@ public class MultiPlayer {
     /**
      * Client wants to join www game.
      */
-    public MultiPlayer(String p_ip, int p_port) {
+    public MultiPlayer(ServerInfo p_serverInfo) {
         Client client = ClientEngineZildo.getClientForGame();
-        client.setUpNetwork(ClientType.CLIENT, p_ip, p_port);
+        client.setUpNetwork(ClientType.CLIENT, p_serverInfo.ip, p_serverInfo.port);
     }
 
     /**

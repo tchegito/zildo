@@ -141,7 +141,7 @@ public class SoundPlay {
 	///////////////////////////////////////////////////////////////////////////////////////
 	void loadAllSoundFX() {
 		for (BankSound snd : BankSound.values()) {
-			// Load every sample from the sound's bank defined in SoundManagement.h
+			// Load every sample from the sound's bank
 			loadSoundFX(snd.filename);
 		}
 	}
@@ -173,7 +173,10 @@ public class SoundPlay {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void playSoundFX(BankSound snd) {
 		// Play desired sound and exit
-		tabSounds[snd.ordinal()].play(); //0,0,-500);
+		OpenGLSound sound=tabSounds[snd.ordinal()];
+		if (sound != null) {
+			sound.play(); //0,0,-500);
+		}
 	}
 
 	public void playSounds(List<WaitingSound> p_sounds) {

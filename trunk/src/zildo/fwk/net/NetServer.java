@@ -44,7 +44,7 @@ public class NetServer extends NetSend {
 	int nFrame=0;
 	
 	public NetServer(Server p_server, boolean p_lan) {
-		super(null, NetSend.NET_PORT_SERVER);
+		super(null, NetSend.defaultServer.port);
 		server=p_server;
 		lan=p_lan;
 	}

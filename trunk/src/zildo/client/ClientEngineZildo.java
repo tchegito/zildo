@@ -282,6 +282,10 @@ public class ClientEngineZildo {
 		return client;
 	}
 	
+	public static Client getClientForMenu() {
+		return client;
+	}
+	
     public void setOpenGLGestion(OpenGLZildo p_openGLGestion) {
         	openGLGestion = p_openGLGestion;
     }
