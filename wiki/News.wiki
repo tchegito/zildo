@@ -1,5 +1,17 @@
 #summary News
 
+= Version 1.08 =
+
+ '*Yes !*
+
+ * Online Zildo now works !
+ * Start menu instead of damned batches
+ * MacOS people are now with us
+
+ '*But ...*
+
+ * - not tested on Linux at all, and Vista/7 with specific video cards
+
 = Version 1.07 =
 
  '*Yes !*
