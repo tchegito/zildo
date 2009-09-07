@@ -1,16 +1,29 @@
 package zildo.client.gui.menu;
 
+import java.util.List;
+
 import zildo.MultiPlayer;
 import zildo.SinglePlayer;
 import zildo.client.Client;
+import zildo.client.ClientEngineZildo;
 import zildo.client.SoundPlay.BankSound;
+import zildo.fwk.net.InternetClient;
 import zildo.fwk.net.NetSend;
+import zildo.fwk.net.ServerInfo;
 import zildo.monde.Game;
 
+/**
+ * Class handling all actions user can access from the start menu.
+ * 
+ * @author tchegito
+ *
+ */
 public class StartMenu extends Menu {
 	
-	public StartMenu(final Client client) {
+	public StartMenu() {
         
+		final Client client=ClientEngineZildo.getClientForMenu();
+		
         final Game game = new Game("polaky", false);
         final Menu startMenu=this;
         
@@ -35,7 +48,13 @@ public class StartMenu extends Menu {
                 		if (lan) {
                 			new MultiPlayer();
                 		} else {
-                			new MultiPlayer(NetSend.NET_PORT_IP, NetSend.NET_PORT_SERVER);
+                			// Internet
+                    		List<ServerInfo> serversReady=InternetClient.scanExistingServers();
+                    		if (serversReady.isEmpty()) {
+                    			client.handleMenu(new InfoMenu("No servers found.", multiMenu));
+                    		} else {
+                    			client.handleMenu(new JoinGameMenu(serversReady));
+                    		}
                 		}
                 	}
                 };

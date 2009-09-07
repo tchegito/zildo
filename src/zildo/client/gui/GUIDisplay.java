@@ -459,8 +459,8 @@ public class GUIDisplay {
 		int y=startY + (p_menu.selected+2) * Constantes.TEXTER_MENU_SIZEY;
 		alpha+=0.1f;
 		int wave=(int) (10.0f*Math.sin(alpha));
-		menuSequence.addSprite(SpriteBank.BANK_FONTES, nSpr, 40+wave,y);
-		menuSequence.addSprite(SpriteBank.BANK_FONTES, nSpr+1, Zildo.viewPortX - 40-wave,y);
+		menuSequence.addSprite(SpriteBank.BANK_FONTES, nSpr, 40+wave,y+2);
+		menuSequence.addSprite(SpriteBank.BANK_FONTES, nSpr+1, Zildo.viewPortX - 40-wave,y+2);
 	}
 
 	public void endMenu() {
