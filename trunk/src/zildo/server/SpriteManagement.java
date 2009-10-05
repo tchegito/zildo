@@ -155,11 +155,11 @@ public class SpriteManagement extends SpriteStore {
 				// Peut-être qu'un diamant va apparaitre !
 			}
 			if (Hasard.lanceDes(Constantes.hazardBushes_Arrow)) {
-				spawnSpriteGeneric(Element.SPR_ARROW,x,y+2,0, null);
+				spawnSpriteGeneric(Element.SPR_ARROW,x,y+5,0, null);
 			} else if (Hasard.lanceDes(Constantes.hazardBushes_Diamant)) {
-				spawnSpriteGeneric(Element.SPR_DIAMANT,x,y+2,0, null);
+				spawnSpriteGeneric(Element.SPR_DIAMANT,x,y+5,0, null);
 			} else if (Hasard.lanceDes(Constantes.hazardBushes_Heart)) {
-				spawnSpriteGeneric(Element.SPR_COEUR,x+3,y+2,0, null);
+				spawnSpriteGeneric(Element.SPR_COEUR,x+3,y+5,0, null);
 			}
 			break;
 	
@@ -167,8 +167,8 @@ public class SpriteManagement extends SpriteStore {
 		case Element.SPR_ARROW:
 			// Diamant
 			element=new ElementGoodies();
-			element.setX((float) x);
-			element.setY((float) y);
+			element.setX(x);
+			element.setY(y);
 			element.setZ(4.0f);
 			element.setVz(1.5f);
 			element.setAz(-0.1f);
@@ -176,6 +176,7 @@ public class SpriteManagement extends SpriteStore {
 				element.setSprModel(ElementDescription.GREENMONEY1, misc*3);
 			} else {
 				element.setSprModel(ElementDescription.ARROW_UP);
+				element.setY(y-3);
 			}
 			// Ombre
 			element2=new Element();
@@ -296,14 +297,14 @@ public class SpriteManagement extends SpriteStore {
 			} else if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
 				// X, vX, aX, ...
 				element = (Element)entity;
-				List<SpriteEntity> deads=element.animate();
-				if (deads!=null && !deads.isEmpty()) {
+				element.animate();
+				if (element.dying) {
 					SpriteEntity linkedOne=element.getLinkedPerso();
 					// L'élément est arrivé au terme de son existence : on le supprime de la liste
 					if (linkedOne != null && SpriteEntity.ENTITYTYPE_ELEMENT == linkedOne.getEntityType()) {
 						toDelete.add(linkedOne);
 					}
-					toDelete.addAll(deads);
+					toDelete.add(element);
 				} else {
 					if (element.isVisible()) {
 						SpriteModel spr=getSpriteBank(entity.getNBank()).get_sprite(entity.getNSpr() + element.getAddSpr());

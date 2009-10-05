@@ -44,10 +44,10 @@ public class PersoNJ extends Perso {
 			elem.add(this);
 			elem.addAll(persoSprites);
 			for (Element e:elem) {
-				if (e.isSolid()) {
+				if (e.isSolid() && e.getCollision() == null) {
 					SpriteModel spr=e.getSprModel();
 					int size=(spr.getTaille_x() + spr.getTaille_y()) / 4;
-					EngineZildo.collideManagement.addCollision((int) e.x-4, (int) e.y-(int)e.z-spr.getTaille_y()/2, size, null, getAngle(), this);
+					EngineZildo.collideManagement.addCollision((int) e.x-4, (int) e.y-(int)e.z-spr.getTaille_y()/2, size, null, getAngle(), this, null);
 				}
 			}
 		}
@@ -130,6 +130,8 @@ public class PersoNJ extends Perso {
 				this.stopBeingWounded();
 			}
 		}
+		
+		//quel_deplacement=MouvementPerso.SCRIPT_IMMOBILE;
 		
 		if (isAlerte() && !MouvementPerso.SCRIPT_VOLESPECTRE.equals(quel_deplacement)) {
 			// Zildo est reperé le monstre lui fonce dessus

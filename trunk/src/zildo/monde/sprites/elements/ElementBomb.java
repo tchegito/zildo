@@ -1,12 +1,9 @@
 package zildo.monde.sprites.elements;
 
-import java.util.List;
-
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
-import zildo.monde.Collision;
-import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.collision.Collision;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.server.EngineZildo;
@@ -36,7 +33,7 @@ public class ElementBomb extends Element {
         EngineZildo.soundManagement.broadcastSound(BankSound.PlanteBombe, this);
 	}
 	
-	public List<SpriteEntity> animate() {
+	public void animate() {
 		counter--;
 		if (counter==0) {
 			dying=true;
@@ -45,7 +42,7 @@ public class ElementBomb extends Element {
 		} else if (counter<30) {
 			setSpecialEffect(PixelShaders.ENGINEFX_PERSO_HURT);
 		}
-		return super.animate();
+		super.animate();
 	}
 	
     public Collision getCollision() {

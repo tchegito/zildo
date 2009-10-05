@@ -1,4 +1,6 @@
-package zildo.monde.map;
+package zildo.monde.collision;
+
+import zildo.monde.map.Point;
 
 public class Line {
 

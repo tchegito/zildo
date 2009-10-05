@@ -1,7 +1,5 @@
 package zildo.monde.sprites.elements;
 
-import java.util.List;
-
 import zildo.client.SoundPlay.BankSound;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
@@ -22,14 +20,14 @@ public class ElementAnimMort extends Element {
         setLinkedPerso(perso);
     }
 
-    public List<SpriteEntity> animate() {
+    public void animate() {
 
-        List<SpriteEntity> deads = super.animate();
+        super.animate();
         byte seq_mort[] = { 33, 35, 34, 36, 37, 38, 39, 0 };
 
         // Animation de la mort d'un perso
-        x = x - vx;
-        y = y - vy;
+        //x = x - vx;
+        //y = y - vy;
         SpriteEntity link = getLinkedPerso();
         if (getLinkedPerso() != null) {
             Perso perso = (Perso) link;
@@ -38,7 +36,7 @@ public class ElementAnimMort extends Element {
             if (nSpr == 36) {
                 perso.hide();
             } else if (nSpr == 38) {
-                deads.add(link);
+                link.dying=true;
                 setLinkedPerso(null);
             }
         }
@@ -47,9 +45,7 @@ public class ElementAnimMort extends Element {
         }
         nSpr = seq_mort[(byte) vx];
         if (nSpr == 0) {
-            deads.add(this);
+            dying=true;
         }
-
-        return deads;
     }
 }

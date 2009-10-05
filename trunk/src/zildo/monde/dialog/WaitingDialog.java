@@ -1,4 +1,4 @@
-package zildo.monde;
+package zildo.monde.dialog;
 
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.net.TransferObject;

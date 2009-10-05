@@ -1,19 +1,16 @@
 package zildo.monde.sprites.elements;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.IntSet;
 import zildo.fwk.bank.SpriteBank;
-import zildo.monde.Collision;
+import zildo.monde.collision.Collision;
+import zildo.monde.collision.DamageType;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.SpriteEntity;
-import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -225,11 +222,9 @@ public class Element extends SpriteEntity {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Be careful : we can animate an element which is declared as invisible (by VISIBLE boolean)
 	///////////////////////////////////////////////////////////////////////////////////////
-	public List<SpriteEntity> animate() {
+	public void animate() {
         // Perso pnj;
         boolean colli;
-
-        List<SpriteEntity> deads = new ArrayList<SpriteEntity>();
 
         // Si ce sprite est valide, est-il un sprite fixe ?
         if (this.IsNotFixe()) {
@@ -243,13 +238,13 @@ public class Element extends SpriteEntity {
                 vz = vz - az;
                 az = az - 1;
                 if (az == 0) {
-                    deads.add(this);
+                    dying=true;
                 }
             }
             // Débordement}
             if (x < -4 || y < -4 || x > 64 * 16 || y > 64 * 16) {
                 die();
-                deads = Arrays.asList((SpriteEntity) this);
+                dying=true;
             } else {
 
                 if (elementsMobiles.contains(nSpr)) {
@@ -268,7 +263,7 @@ public class Element extends SpriteEntity {
                 } else if ((z < 4 && vz != 0.0f) || colli) {
                     if (!beingCollided()) {
                         // Le sprite doit 'mourir'
-                        deads.add(this);
+                        dying=true;
                     }
                 } else if (z > 28 && nSpr == 6) {
                     nSpr = 5; // Fumée de cheminée
@@ -299,20 +294,16 @@ public class Element extends SpriteEntity {
                     if (linked != null && linked.getEntityType() != SpriteEntity.ENTITYTYPE_PERSO) {
                         linked = null;
                     }
-                    SpriteModel sprModel=getSprModel();
                     if (collision == null) {
-                    	collision=new Collision((int) x, (int) y, 6, null, Angle.NORD, (Perso) linked);
+                    	collision=new Collision((int) x, (int) y, 6, null, Angle.NORD, (Perso) linked, getDamageType());
                     }
-                    // Adjustment
-                	collision.cx-=sprModel.getTaille_x()/2;
-                	collision.cy-=(sprModel.getTaille_y()/2 + (int) z + 3);
+                    collision.cy-=z;
                    	EngineZildo.collideManagement.addCollision(collision);
                 }
             }
         }
         setAjustedX((int) x);
         setAjustedY((int) y);
-        return deads; // NULL ==> Element is still alive
     }
 
     public void setSprModel(ElementDescription p_desc) {
@@ -476,6 +467,14 @@ public class Element extends SpriteEntity {
 		}
 	}
 
+	/**
+	 * Some elements can damage. Default is no damage.
+	 * @return DamageType
+	 */
+	public DamageType getDamageType() {
+		return null;
+	}
+	
 	/**
 	 * Called when element is disappearing (in case of out of bounds, for example)
 	 */

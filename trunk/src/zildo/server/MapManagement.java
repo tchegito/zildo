@@ -401,8 +401,8 @@ public class MapManagement {
      * @return
      */
     public Point getRespawnPosition() {
-        int x = 80;
-        int y = 880;
+        int x = 147;
+        int y = 503;
         while (collide(x, y, null)) {
             y -= 16;
         }

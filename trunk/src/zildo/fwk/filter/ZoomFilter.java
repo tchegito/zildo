@@ -25,8 +25,7 @@ public class ZoomFilter extends ScreenFilter {
 		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
 		Point zildoPos=new Point(zildo.getScrX(), zildo.getScrY());
 		SpriteModel spr=zildo.getSprModel();
-		zildoPos.addX(spr.getTaille_x() / 2);
-		zildoPos.addY(spr.getTaille_y() / 2);
+		zildoPos.add(spr.getTaille_x() / 2, spr.getTaille_y() / 2);
 		ClientEngineZildo.openGLGestion.setZoomPosition(zildoPos);
 		float z=2.0f * (float) Math.sin(getFadeLevel() * (0.25f*Math.PI / 256.0f));
 		ClientEngineZildo.openGLGestion.setZ(z);

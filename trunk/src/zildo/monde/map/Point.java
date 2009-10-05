@@ -7,12 +7,17 @@ public class Point {
     public Point() {
 
     }
-
+    
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+    public Point(float x, float y) {
+    	this.x = (int)x;
+    	this.y = (int)y;
+    }
+    
     // Copy constructor
     public Point(Point p) {
         this.x = p.x;
@@ -35,16 +40,25 @@ public class Point {
         this.y = y;
     }
 
-    public void addX(int xPlus) {
-        this.x += xPlus;
+    public void add(Point p_point) {
+    	add(p_point.x, p_point.y);
     }
-
-    public void addY(int yPlus) {
-        this.y += yPlus;
+    
+    public void add(int p_xPlus, int p_yPlus) {
+        this.x += p_xPlus;
+        this.y += p_yPlus;
     }
 
     public Point translate(int addX, int addY) {
         return new Point(x + addX, y + addY);
+    }
+    
+    public Point translate(Point p_pointAdd) {
+        return translate(p_pointAdd.x, p_pointAdd.y);
+    }
+
+    public Point multiply(float factor) {
+    	return new Point(x*factor, y*factor);
     }
     
     public String toString() {

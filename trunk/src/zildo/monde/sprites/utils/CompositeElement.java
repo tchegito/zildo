@@ -3,7 +3,7 @@ package zildo.monde.sprites.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.monde.Collision;
+import zildo.monde.collision.Collision;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
@@ -158,11 +158,12 @@ public class CompositeElement {
         Element refElement = composite.get(0);
         // Determine the bottom right corner of composite
         Point topLeft = new Point((int) refElement.x, (int) refElement.y);
+        SpriteModel model = refElement.getSprModel();
+        
         Point bottomRight = new Point(topLeft);
         for (Element elmt : composite) {
-            SpriteModel model = elmt.getSprModel();
-            int right = (int) elmt.x + model.getTaille_x();
-            int bottom = (int) elmt.y + model.getTaille_y();
+            int right = (int) elmt.x;
+            int bottom = (int) elmt.y;
             if (right > bottomRight.x) {
                 bottomRight.x = right;
             }
@@ -172,7 +173,9 @@ public class CompositeElement {
         }
 
         Point size = new Point(bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
+        size=size.translate(model.getTaille_x(), model.getTaille_y());
         Point center=new Point((topLeft.x + bottomRight.x) / 2, (topLeft.y + bottomRight.y) /2);
-        return new Collision(center, size, null);
+        center=center.translate(0, -model.getTaille_y() / 2);
+        return new Collision(center, size, null, refElement.getDamageType());
     }
 }

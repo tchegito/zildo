@@ -15,10 +15,10 @@ import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.opengl.OpenGLZildo;
-import zildo.monde.Collision;
+import zildo.monde.collision.Collision;
+import zildo.monde.collision.Rectangle;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
-import zildo.monde.map.Rectangle;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.prefs.Constantes;
@@ -224,6 +224,9 @@ public class ClientEngineZildo {
 		ortho.drawText(1,50,"fps="+fps, new Vector3f(0.0f, 0.0f, 1.0f));
 		
 		SpriteEntity zildo=spriteDisplay.getZildo();
+		if (zildo == null) {
+			return;
+		}
 		ortho.drawText(1,80,"zildo: "+zildo.x, new Vector3f(1.0f, 0.0f, 1.0f));
 		ortho.drawText(43,86,""+zildo.y, new Vector3f(1.0f, 0.0f, 1.0f));
 		
@@ -249,7 +252,7 @@ public class ClientEngineZildo {
 			}
 			int x=(int) zildo.x-4;
 			int y=(int) zildo.y-10;
-			ortho.box(x-3-mapDisplay.getCamerax(), y-3-mapDisplay.getCameray(), 16, 16, 12, null);
+			ortho.box(x-3-mapDisplay.getCamerax(), y-mapDisplay.getCameray(), 16, 16, 12, null);
 		}
 		
 		if (Zildo.infoDebugCase) {

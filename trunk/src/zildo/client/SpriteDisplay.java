@@ -116,7 +116,7 @@ public class SpriteDisplay extends SpriteStore {
 					// Center sprite
 					SpriteModel spr=entity.getSprModel();
 					entity.setScrX(entity.getAjustedX() - cameraXnew - (spr.getTaille_x() >> 1));
-					entity.setScrY(entity.getAjustedY() - cameraYnew +  3-spr.getTaille_y());
+					entity.setScrY(entity.getAjustedY() - cameraYnew - spr.getTaille_y());
 				}
 			}
 		}
