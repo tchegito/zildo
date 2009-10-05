@@ -3,7 +3,6 @@ import java.util.logging.LogManager;
 
 import zildo.client.Client;
 import zildo.client.gui.menu.StartMenu;
-import zildo.fwk.net.NetSend;
 
 
 public class Zildo {
@@ -23,10 +22,6 @@ public class Zildo {
 		for (String arg : args) {
 			if ("fullscreen".equals(arg)) {
 				fullScreen=true;
-			} else if (arg.startsWith("ip")) {
-				NetSend.NET_PORT_IP=arg.substring(2);
-			} else if (arg.startsWith("port")) {
-				NetSend.NET_PORT_SERVER=Integer.parseInt(arg.substring(4), 10);
 			}
 		}
 		if (!log) {	// Disable all logging
@@ -37,7 +32,7 @@ public class Zildo {
 		
         final Client client=new Client(false);
 
-        client.handleMenu(new StartMenu(client));
+        client.handleMenu(new StartMenu());
         client.run();
         client.cleanUp();
         
