@@ -44,6 +44,10 @@ public enum Angle {
 		throw new RuntimeException(val+" n'est pas un angle reconnu.");
 	}
 	
+	/**
+	 * Returns a 0..8 ranged int based on this order (NORD, NORDEST, EST, SUDEST, SUD, SUDOUEST, OUEST, NORDOUEST)
+	 * @return int
+	 */
 	private int getUsableValue() {
 		if (isDiagonal()) {
 			return (value - 4) *2 + 1;

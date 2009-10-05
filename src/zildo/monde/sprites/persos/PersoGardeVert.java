@@ -41,7 +41,7 @@ public class PersoGardeVert extends PersoNJ {
 		teteGarde.setNSpr(PersoDescription.HAUT_GARDEVERT.first() + (angle.value + mouvetete[cptMouvement])  % 4);
 		teteGarde.setX(x);
 		teteGarde.setY(y);
-		teteGarde.setZ(12 + (this.getPos_seqsprite() % (4*Constantes.speed)) / (2*Constantes.speed));
+		teteGarde.setZ(9 + (this.getPos_seqsprite() % (4*Constantes.speed)) / (2*Constantes.speed));
 		
 		int add_spr=angle.value*2 + (getPos_seqsprite() % (4*Constantes.speed)) / (2*Constantes.speed);
 

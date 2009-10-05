@@ -1,9 +1,5 @@
 package zildo.monde.sprites.elements;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 
 
@@ -17,11 +13,9 @@ public class ElementGoodies extends Element {
 		spe=540;	// Durée de vie du goodies, en frames (on tourne en général à 60FPS : 540==9sec)
 	}
 	
-	public List<SpriteEntity> animate() {
+	public void animate() {
 		
 		super.animate();
-		
-		List<SpriteEntity> deads=new ArrayList<SpriteEntity>();
 		
 		spe--;
 		
@@ -59,7 +53,7 @@ public class ElementGoodies extends Element {
 		
 		if (spe==0) {
 			// Le sprite doit mourir
-			deads.add(this);
+			dying=true;
 		} else if (spe<120) {
 			visible=(spe%4>1);
 		} else if (spe<60) {
@@ -68,10 +62,14 @@ public class ElementGoodies extends Element {
 		
 		setAjustedX((int) x);
 		setAjustedY((int) y);
-		return deads;
 	}
 	
 	public boolean isGoodies() {
 		return true;
 	}
+	
+	public boolean beingCollided() {
+		return true;
+	}
+
 }

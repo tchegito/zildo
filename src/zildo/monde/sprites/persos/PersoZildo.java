@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import zildo.client.ClientEngineZildo;
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
+import zildo.monde.collision.DamageType;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
 import zildo.monde.items.ItemKind;
@@ -142,11 +142,6 @@ public class PersoZildo extends Perso {
 			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAttaque, this);
 			setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_EPEE);
 			setAttente(6*2);
-		
-			// Get the attacked tile
-			Point tileAttacked=getAttackTarget();
-			// And ask 'map' object to react
-			EngineZildo.mapManagement.getCurrentMap().attackTile(tileAttacked);
 			break;
 		case BOW:
 			if (attente == 0 && countArrow > 0) {
@@ -215,7 +210,8 @@ public class PersoZildo extends Perso {
 			}
 	
 			// Add this collision record to collision engine
-			EngineZildo.collideManagement.addCollision((int) cx, (int) cy, rayon, null, Angle.NORD, this);
+			DamageType dmgType=DamageType.CUTTING_FRONT;
+			EngineZildo.collideManagement.addCollision((int) cx, (int) cy, rayon, null, Angle.NORD, this, dmgType);
 		}
 	}
 	
@@ -351,28 +347,28 @@ public class PersoZildo extends Perso {
 				switch (angle) {
 					case NORD:
 						bouclier.setX((float) (xx+8));
-						bouclier.setY((float) (yy-1));
+						bouclier.setY((float) (yy+2));
 						bouclier.setZ((float) (5-1-decalbouclier3y[nSpr]));
 						bouclier.setNSpr(103);
 						bouclier.setNBank(SpriteBank.BANK_ZILDO);
 						break;
 					case EST:
 						bouclier.setX((float) (xx+9));	// PASCAL : +10
-						bouclier.setY((float) (yy-5+ decalbouclier2y[nSpr-ZildoDescription.RIGHT_FIXED.ordinal()]));
+						bouclier.setY((float) (yy-2+ decalbouclier2y[nSpr-ZildoDescription.RIGHT_FIXED.ordinal()]));
 						bouclier.setZ(0.0f);
 						bouclier.setNSpr(104);
 						bouclier.setNBank(SpriteBank.BANK_ZILDO);
 						break;
 					case SUD:
 						bouclier.setX((float) (xx-4));	// PASCAL : -3)
-						bouclier.setY((float) (yy+1));
+						bouclier.setY((float) (yy+4));
 						bouclier.setZ((float) (1+1-decalboucliery[nSpr-ZildoDescription.DOWN_FIXED.ordinal()]));
 						bouclier.setNSpr(105);
 						bouclier.setNBank(SpriteBank.BANK_ZILDO);
 						break;
 					case OUEST:
 						bouclier.setX((float) (xx-8));
-						bouclier.setY((float) (yy-5+ decalbouclier2y[nSpr-ZildoDescription.LEFT_FIXED.ordinal()]));
+						bouclier.setY((float) (yy-2+ decalbouclier2y[nSpr-ZildoDescription.LEFT_FIXED.ordinal()]));
 						bouclier.setZ(0.0f);
 						bouclier.setNSpr(106);
 						bouclier.setNBank(SpriteBank.BANK_ZILDO);
@@ -382,10 +378,10 @@ public class PersoZildo extends Perso {
 				break;
 	
 			case MOUVEMENT_BRAS_LEVES:
-				if (angle.isVertical()) yy+=1; else yy+=2;
+				yy+=2;
 				if (objetEnMain != null) {
 					objetEnMain.setX(xx);
-					objetEnMain.setY(yy);
+					objetEnMain.setY(yy+3);
 					objetEnMain.setZ(21);
 				}
 				break;
@@ -510,6 +506,7 @@ public class PersoZildo extends Perso {
 	public void finaliseComportement(int compteur_animation) {
 		
 		final int[] seq_zildoBow={0,1,2,1};
+		reverse = 0;
 		switch (getMouvement())
 		{
 		case MOUVEMENT_VIDE:

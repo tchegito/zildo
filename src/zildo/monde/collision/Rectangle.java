@@ -1,7 +1,9 @@
 /**
  *
  */
-package zildo.monde.map;
+package zildo.monde.collision;
+
+import zildo.monde.map.Point;
 
 /**
  * @author tchegito
@@ -31,6 +33,41 @@ public class Rectangle {
         size=p_size;
     }
 
+    public void translate(int p_shiftX, int p_shiftY) {
+    	for (int i=0;i<4;i++) {
+    		coordinates[i]=coordinates[i].translate(p_shiftX, p_shiftY);
+    	}
+    	center=center.translate(p_shiftX, p_shiftY);
+    }
+    
+    /**
+     * Multiplies each corner of the rectangle.
+     * @param p_factor
+     */
+    public void multiply(float p_factor) {
+    	for (int i=0;i<4;i++) {
+    		coordinates[i]=coordinates[i].multiply(p_factor);
+    	}
+    	center=center.multiply(p_factor);
+    	size=size.multiply(p_factor);
+    }
+    
+    /**
+     * Zoom in/out the rectangle. Center remains at the same location.
+     * @param p_factorX
+     * @param p_factorY
+     */
+    public void scale(float p_factorX, float p_factorY) {
+    	int x,y;
+    	for (int i=0;i<4;i++) {
+    		x=(int) ((coordinates[i].x - center.x) * p_factorX) + center.x;
+    		y=(int) ((coordinates[i].y - center.y) * p_factorX) + center.y;
+    		
+    		coordinates[i]=new Point(x,y);
+    	}
+    	size=new Point(size.x * p_factorX, size.y * p_factorY);
+    }
+    
     public boolean isInside(Point p_point) {
     	if (p_point == null) {
     		return false;

@@ -1,10 +1,8 @@
 package zildo.monde.sprites.elements;
 
-import java.util.List;
-
 import zildo.client.SoundPlay.BankSound;
-import zildo.monde.Collision;
-import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.collision.Collision;
+import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.utils.CompositeElement;
 import zildo.server.EngineZildo;
@@ -58,7 +56,7 @@ public class ElementImpact extends Element {
 		startY=p_startY;
 	}
 	
-	public List<SpriteEntity> animate() {
+	public void animate() {
 		counter++;
 		switch (kind) {
 			case SIMPLEHIT:
@@ -93,9 +91,8 @@ public class ElementImpact extends Element {
 						composite.setSprModel(ElementDescription.EXPLO1, addSpr);
 					}
 				}
-				return super.animate();
+				super.animate();
 		}
-		return null;
 	}
 	
     @Override
@@ -106,6 +103,10 @@ public class ElementImpact extends Element {
         return null;
     }
 
+    public DamageType getDamageType() {
+    	return DamageType.EXPLOSION;
+    }
+    
     @Override
     public boolean isSolid() {
         return kind == ImpactKind.EXPLOSION;

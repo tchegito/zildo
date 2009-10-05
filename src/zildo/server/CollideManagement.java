@@ -2,11 +2,14 @@ package zildo.server;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import zildo.monde.Collision;
+import zildo.monde.collision.Collision;
+import zildo.monde.collision.DamageType;
+import zildo.monde.collision.Rectangle;
 import zildo.monde.map.Point;
-import zildo.monde.map.Rectangle;
 import zildo.monde.map.Angle;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -39,8 +42,8 @@ public class CollideManagement {
     // x,y,rayon,angle : collision parameters
     // perso : perso who create this collision
     // /////////////////////////////////////////////////////////////////////////////////////
-    public void addCollision(int x, int y, int rayon, Point size, Angle angle, Perso perso) {
-        Collision colli = new Collision(x, y, rayon, size, angle, perso);
+    public void addCollision(int x, int y, int rayon, Point size, Angle angle, Perso perso, DamageType damageType) {
+        Collision colli = new Collision(x, y, rayon, size, angle, perso, damageType);
         addCollision(colli);
     }
     
@@ -81,12 +84,22 @@ public class CollideManagement {
                         }
                     }
                 }
+                // Check if any Zildo is hurt
                 checkAllZildoWound(p_states, collider);
+            }
+        	// Check if any tile is damaged (only with cutting/exploding damage)
+            DamageType dmgType=collider.damageType;
+            if (dmgType != null && dmgType.isCutting()) {
+            	Set<Point> tilesCollided=getTilesCollided(collider);
+    			// And ask 'map' object to react
+            	for (Point location : tilesCollided) {
+            		EngineZildo.mapManagement.getCurrentMap().attackTile(location);
+            	}
             }
         }
     }
 
-    public void checkAllZildoWound(Collection<ClientState> p_states, Collision p_colli) {
+    private void checkAllZildoWound(Collection<ClientState> p_states, Collision p_colli) {
         for (ClientState state : p_states) {
             PersoZildo zildo = state.zildo;
             Perso damager = p_colli.getPerso();
@@ -97,6 +110,40 @@ public class CollideManagement {
     }
 
     /**
+     * Returns a set containing all tiles hit by provided collision.
+     * @param p_colli
+     * @return List<Point>
+     */
+    private Set<Point> getTilesCollided(Collision p_colli) {
+    	Set<Point> tilesLocation=new HashSet<Point>();
+		Perso perso=p_colli.perso;
+    	if (p_colli.damageType==DamageType.CUTTING_FRONT && perso != null) {
+    		Point loc=new Point(perso.x, perso.y);
+    		loc=loc.multiply(1/16f);
+    		loc.add(perso.getAngle().coords);
+    		tilesLocation.add(loc);
+    	} else {
+	    	Point center=new Point(p_colli.cx, p_colli.cy);
+	    	Point size=p_colli.size;
+	    	if (size == null) {	// If collision is circular, consider it as a square
+	    		size=new Point(p_colli.cr, p_colli.cr);
+	    	}
+	    	Rectangle rect=new Rectangle(center, size);
+	    	
+	    	//rect.scale(1-(16f / size.x), 1-(16f / size.y));
+	    	rect.multiply(1/16f);	// Adapt tile coordinate (one tile is 16x16 sized)
+	    	Point cornerTopLeft=rect.getCornerTopLeft();
+	    	Point cornerBottomRight=cornerTopLeft.translate(rect.getSize());
+	    	for (int j=cornerTopLeft.y;j<=cornerBottomRight.y;j++) {
+	    		for (int i=cornerTopLeft.x;i<=cornerBottomRight.x;i++) {
+	    			tilesLocation.add(new Point(i,j));
+	    		}
+	    	}
+    	}
+    	return tilesLocation;
+    }
+    
+    /**
      * Check wether the given collision hit the given Zildo. Wound if needed.
      * @param p_zildo
      * @param p_colli
@@ -105,7 +152,7 @@ public class CollideManagement {
         float zildoX = p_zildo.getX() - 4;
         float zildoY = p_zildo.getY() - 10;
         // If he's already wounded, don't check
-        Collision zildoCollision = new Collision((int) zildoX, (int) zildoY, 8, null, null, p_zildo);
+        Collision zildoCollision = new Collision((int) zildoX, (int) zildoY, 8, null, null, p_zildo, null);
 
         if (!p_zildo.isWounded() && checkColli(p_colli, zildoCollision)) {
             // Zildo gets wounded

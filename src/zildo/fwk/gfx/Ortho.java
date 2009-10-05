@@ -1,5 +1,6 @@
 package zildo.fwk.gfx;
 
+import zildo.monde.collision.Rectangle;
 import zildo.monde.map.Point;
 
 import org.lwjgl.opengl.GL11;
@@ -7,7 +8,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import zildo.fwk.opengl.OpenGLStuff;
-import zildo.monde.map.Rectangle;
 
 /**
  * Classe qui permet de dessiner directement sur l'écran de rendu dans un contexte orthographique.

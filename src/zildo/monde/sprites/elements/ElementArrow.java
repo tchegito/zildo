@@ -1,11 +1,9 @@
 package zildo.monde.sprites.elements;
 
-import java.util.Arrays;
-import java.util.List;
-
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
-import zildo.monde.Collision;
+import zildo.monde.collision.Collision;
+import zildo.monde.collision.DamageType;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
@@ -56,11 +54,11 @@ public class ElementArrow extends ElementThrown  {
 
     }
 
-    public List<SpriteEntity> animate() {
+    public void animate() {
     	if (!flying) {
-    		return animateLanded();
+    		animateLanded();
     	} else {
-    		return animateFlying();
+    		animateFlying();
     	}
     }
     
@@ -68,7 +66,7 @@ public class ElementArrow extends ElementThrown  {
     	shadow.dying=true;
     }
     
-    private List<SpriteEntity> animateFlying() {
+    private void animateFlying() {
         shadow.x = x;
         shadow.y = y;
         switch (angle) {
@@ -93,7 +91,7 @@ public class ElementArrow extends ElementThrown  {
 				relativeZ=altitude;
 			}
 		}
-        return super.animate();
+        super.animate();
     }
     	
     public boolean beingCollided() {
@@ -112,7 +110,7 @@ public class ElementArrow extends ElementThrown  {
     private final static int[] add_landx={0,-1,2, 0,0,0, 0,-1,2, 0,-1,-1};
     private final static int[] add_landy={-1,-1,-1, 0,-1,2, 0,0,0, 0,-1,2};
     
-   	private List<SpriteEntity> animateLanded() {
+   	private void animateLanded() {
     	// 1: change sprite
     	switch (angle) {
     	case NORD:
@@ -132,25 +130,24 @@ public class ElementArrow extends ElementThrown  {
     	addSpr=seq;
     	vz+=0.2;
     	if (vz >= 5) {
-    		return Arrays.asList((SpriteEntity) this);
+    		dying=true;
     	} else {
     		// Adjust sprite position
     		setAjustedX((int) x + add_landx[angle.value* 3 + seq]);
     		setAjustedY((int) y + add_landy[angle.value* 3 + seq]);
-    		return null;
     	}
     }
     
     public Collision getCollision() {
-    	Point pos=new Point((int) x, (int) y);
+    	Point pos=new Point(x, y);
     	Perso perso=null;
     	if (SpriteEntity.ENTITYTYPE_PERSO == getLinkedPerso().getEntityType()) {
     		perso=(Perso) getLinkedPerso();
     	}
     	if (angle.isHorizontal()) {
-    		return new Collision(pos, sizeHorizontal, perso);
+    		return new Collision(pos, sizeHorizontal, perso, DamageType.PIERCING);
 	    } else {
-	    	return new Collision(pos, sizeVertical, perso);
+	    	return new Collision(pos, sizeVertical, perso, DamageType.PIERCING);
 	    }
     }
 }

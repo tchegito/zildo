@@ -1,4 +1,4 @@
-package zildo.monde;
+package zildo.monde.collision;
 
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
@@ -11,7 +11,8 @@ public class Collision {
     public Angle cangle; // Shooter's angle
     public Point size; // Exact object's size (if not null, radius will be ignored)
     public Perso perso; // Shooter
-
+    public DamageType damageType;
+    
     public Collision() {
     }
 
@@ -55,20 +56,22 @@ public class Collision {
         this.perso = perso;
     }
 
-    public Collision(Point p_center, Point p_size, Perso p_shooter) {
+    public Collision(Point p_center, Point p_size, Perso p_shooter, DamageType p_type) {
     	this.cx=p_center.x;
     	this.cy=p_center.y;
     	this.size=p_size;
     	this.cangle = Angle.NORD;	// Default
     	this.perso=p_shooter;
+    	this.damageType=p_type;
     }
     
-    public Collision(int x, int y, int cr, Point size, Angle angle, Perso perso) {
+    public Collision(int x, int y, int cr, Point size, Angle angle, Perso perso, DamageType p_type) {
         this.cx = x;
         this.cy = y;
         this.cr = cr;
         this.size = size;
         this.cangle = angle;
         this.perso = perso;
+    	this.damageType=p_type;
     }
 }

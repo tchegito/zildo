@@ -1,10 +1,7 @@
 package zildo.monde.sprites.elements;
 
-import java.util.List;
-
 import zildo.client.SoundPlay.BankSound;
 import zildo.monde.map.Angle;
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
@@ -34,7 +31,7 @@ public class ElementBoomerang extends ElementThrown {
         ay=-vy*0.015f;
 	}
     
-    public List<SpriteEntity> animate() {
+    public void animate() {
     	addSpr=(count/5) % 4;
     	if (count % 9 == 0) {
     		EngineZildo.soundManagement.broadcastSound(BankSound.Boomerang, this);
@@ -57,7 +54,7 @@ public class ElementBoomerang extends ElementThrown {
     	} else if (Math.abs(vx)<=0.1f && Math.abs(vy)<=0.1f) {
     		comingBack=true;
     	}
-    	return super.animate();
+    	super.animate();
     }
 
     protected boolean beingCollided() {

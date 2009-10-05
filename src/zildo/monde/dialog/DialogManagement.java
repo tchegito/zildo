@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.net.TransferObject;
-import zildo.monde.WaitingDialog;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.ClientState;
