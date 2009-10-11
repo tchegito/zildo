@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import zildo.fwk.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Hasard;
+import zildo.monde.map.Angle;
+import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
@@ -207,6 +209,27 @@ public class SpriteManagement extends SpriteStore {
 			element.setZ(8.0f);
 			spawnSprite(element);
 		   break;
+		   
+		case Element.SPR_ECLATEPIERRE:
+			Angle temp=Angle.NORDOUEST;
+			for (j=0;j<4;j++) {
+				element=new Element();
+				Point move=temp.coords;
+				element.setX(x);
+				element.setY(y);
+				element.setZ(4);
+				element.setVx(0.5f * move.x + (float) Math.random() * 0.2f);
+				element.setVy(0.5f * move.y + (float) Math.random() * 0.2f);
+				element.setVz(1f);
+				element.setAz(-0.08f);
+				element.setFx(0.04f);
+				element.setFy(0.04f);
+				element.setNSpr(ElementDescription.TINY_ROCK1.ordinal()+(j % 2));
+				spawnSprite(element);
+				
+				temp=Angle.rotate(temp, 1);
+			}
+			break;
 		}
 	
 	}
