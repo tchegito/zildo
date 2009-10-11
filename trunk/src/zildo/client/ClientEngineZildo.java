@@ -234,15 +234,15 @@ public class ClientEngineZildo {
 		if (EngineZildo.collideManagement != null && Zildo.infoDebugCollision) {
 			for (Collision c : EngineZildo.collideManagement.getTabColli()) {
 				if (c != null) {
-					int rayon=c.getCr();
+					int rayon=c.cr;
 					int color=15;
-					Perso damager=c.getPerso();
+					Perso damager=c.perso;
 					if (damager != null && damager.getInfo() == 1) {
 						color=20;
 					}
 					if (c.size==null) {
-						ortho.box(c.getCx()-rayon/2-mapDisplay.getCamerax(), 
-								c.getCy()-rayon/2-mapDisplay.getCameray(), rayon*2, rayon*2,color, null);
+						ortho.box(c.cx-rayon/2-mapDisplay.getCamerax(), 
+								c.cy-rayon/2-mapDisplay.getCameray(), rayon*2, rayon*2,color, null);
 					} else {
 						Point center=new Point(c.cx-mapDisplay.getCamerax(), c.cy-mapDisplay.getCameray());
 						Rectangle rect=new Rectangle(center, c.size);

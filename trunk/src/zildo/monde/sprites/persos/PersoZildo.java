@@ -346,29 +346,29 @@ public class PersoZildo extends Perso {
 			case MOUVEMENT_VIDE:
 				switch (angle) {
 					case NORD:
-						bouclier.setX((float) (xx+8));
-						bouclier.setY((float) (yy+2));
-						bouclier.setZ((float) (5-1-decalbouclier3y[nSpr]));
+						bouclier.setX(xx+8);
+						bouclier.setY(yy+2);
+						bouclier.setZ(5-1-decalbouclier3y[nSpr]);
 						bouclier.setNSpr(103);
 						bouclier.setNBank(SpriteBank.BANK_ZILDO);
 						break;
 					case EST:
-						bouclier.setX((float) (xx+9));	// PASCAL : +10
-						bouclier.setY((float) (yy-2+ decalbouclier2y[nSpr-ZildoDescription.RIGHT_FIXED.ordinal()]));
+						bouclier.setX(xx+9);	// PASCAL : +10
+						bouclier.setY(yy-2+ decalbouclier2y[nSpr-ZildoDescription.RIGHT_FIXED.ordinal()]);
 						bouclier.setZ(0.0f);
 						bouclier.setNSpr(104);
 						bouclier.setNBank(SpriteBank.BANK_ZILDO);
 						break;
 					case SUD:
-						bouclier.setX((float) (xx-4));	// PASCAL : -3)
-						bouclier.setY((float) (yy+4));
-						bouclier.setZ((float) (1+1-decalboucliery[nSpr-ZildoDescription.DOWN_FIXED.ordinal()]));
+						bouclier.setX(xx-4);	// PASCAL : -3)
+						bouclier.setY(yy+4);
+						bouclier.setZ(1+1-decalboucliery[nSpr-ZildoDescription.DOWN_FIXED.ordinal()]);
 						bouclier.setNSpr(105);
 						bouclier.setNBank(SpriteBank.BANK_ZILDO);
 						break;
 					case OUEST:
-						bouclier.setX((float) (xx-8));
-						bouclier.setY((float) (yy-2+ decalbouclier2y[nSpr-ZildoDescription.LEFT_FIXED.ordinal()]));
+						bouclier.setX(xx-8);
+						bouclier.setY(yy-2+ decalbouclier2y[nSpr-ZildoDescription.LEFT_FIXED.ordinal()]);
 						bouclier.setZ(0.0f);
 						bouclier.setNSpr(106);
 						bouclier.setNBank(SpriteBank.BANK_ZILDO);
@@ -428,7 +428,7 @@ public class PersoZildo extends Perso {
 				bouclier.setVisible(false);
 	
 				// Trajectoire en cloche
-				double alpha=(Math.PI*(float)en_bras)/32.0f;
+				double alpha=(Math.PI*en_bras)/32.0f;
 				yy=yy-(int) (8.0f*Math.sin(alpha));
 	
 				break;

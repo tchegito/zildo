@@ -7,6 +7,8 @@ import zildo.server.EngineZildo;
 
 public class ElementAnimMort extends Element {
 
+	int count;
+	
 	/**
 	 * Crée un sprite de mort lié au personnage
 	 * @param perso
@@ -14,20 +16,21 @@ public class ElementAnimMort extends Element {
     public ElementAnimMort(Perso perso) {
         super();
         z = 8.0f;
-        ax = 0.15f;
-        vx = 0.0f;
+        count=0;
         nSpr = 33;
         setLinkedPerso(perso);
     }
 
     public void animate() {
 
+        count++;
+
         super.animate();
         byte seq_mort[] = { 33, 35, 34, 36, 37, 38, 39, 0 };
 
         // Animation de la mort d'un perso
-        //x = x - vx;
-        //y = y - vy;
+        x = x - vx;
+        y = y - vy;
         SpriteEntity link = getLinkedPerso();
         if (getLinkedPerso() != null) {
             Perso perso = (Perso) link;
@@ -43,7 +46,7 @@ public class ElementAnimMort extends Element {
         if (vx >= 1.0f && vx < 1.15f) {
             EngineZildo.soundManagement.broadcastSound(BankSound.MonstreMeurt, this);
         }
-        nSpr = seq_mort[(byte) vx];
+        nSpr = seq_mort[count/6];
         if (nSpr == 0) {
             dying=true;
         }

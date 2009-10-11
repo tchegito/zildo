@@ -116,13 +116,13 @@ public class ChainingPoint {
 	public Angle getAngle(int x, int y, Angle startAngle) {
 		Angle angle=Angle.NORD;
 		if ((px & 128)!=0 && startAngle.isHorizontal()) {
-			if ((int)x % 16 > 8) {
+			if (x % 16 > 8) {
 				angle=Angle.OUEST;
 			} else {
 				angle=Angle.EST;
 			}
 		} else if ((px & 128)==0 && startAngle.isVertical()) {
-			if (((int)y % 16) > 8) {
+			if ((y % 16) > 8) {
 				angle=Angle.NORD;
 			} else {
 				angle=Angle.SUD;

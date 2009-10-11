@@ -156,7 +156,7 @@ public class SpriteBank {
 		int size=spr.getTaille_x() * spr.getTaille_y();
 		short[] coupe=new short[size];
 		int a=spr.getOffset();
-		System.arraycopy((Object) sprites_buf, a, (Object) coupe, 0, size);
+		System.arraycopy(sprites_buf, a, coupe, 0, size);
 		return coupe;
 	}
 	

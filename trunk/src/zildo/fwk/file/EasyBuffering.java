@@ -85,7 +85,7 @@ public class EasyBuffering {
 		data.put((byte) p_str.length());
 		byte[] bStr=p_str.getBytes();
 		for (int i=0;i<p_str.length();i++) {
-			data.put((byte) bStr[i]);
+			data.put(bStr[i]);
 		}
 		for (int i=0;i<len-p_str.length()-1;i++) {
 			data.put((byte) 0);
@@ -137,7 +137,7 @@ public class EasyBuffering {
 	 * @return
 	 */
 	public byte readByte() {
-		return (byte) data.get();
+		return data.get();
 	}
 	
 	/**
@@ -179,7 +179,7 @@ public class EasyBuffering {
 	}
 
 	public int readInt() {
-		return ((int) readUnsignedByte() << 8) + readUnsignedByte();
+		return (readUnsignedByte() << 8) + readUnsignedByte();
 	}
 
 	public boolean readBoolean() {

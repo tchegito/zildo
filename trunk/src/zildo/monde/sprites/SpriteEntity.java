@@ -267,8 +267,8 @@ public class SpriteEntity extends Identified
 		}
 		entity.setAjustedX(p_buffer.readInt());
 		entity.setAjustedY(p_buffer.readInt());
-		entity.x=(float) p_buffer.readInt();
-		entity.y=(float) p_buffer.readInt();
+		entity.x=p_buffer.readInt();
+		entity.y=p_buffer.readInt();
 		entity.setScrX(p_buffer.readInt());
 		entity.setScrY(p_buffer.readInt());
 		entity.z=p_buffer.readFloat();

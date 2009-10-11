@@ -69,8 +69,8 @@ public class SpriteManagement extends SpriteStore {
 	
 		// SpriteEntity informations
 		Element element=new Element();
-		element.setX((float) x);
-		element.setY((float) y);
+		element.setX(x);
+		element.setY(y);
 		element.setNSpr(nSpr);
 		element.setNBank(nBank);
 		element.setMoved(false);
@@ -87,7 +87,7 @@ public class SpriteManagement extends SpriteStore {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void spawnPerso(Perso perso)
 	{
-		SpriteEntity entity=(SpriteEntity)perso;
+		SpriteEntity entity=perso;
 		entity.setScrX ( (int) perso.x);
 		entity.setScrY ( (int) perso.y);
 		entity.setMoved(false);
@@ -138,7 +138,7 @@ public class SpriteManagement extends SpriteStore {
 			element.setScrX ( (int) element.x);
 			element.setScrY ( (int) element.y);
 	
-			spawnSprite((SpriteEntity)element);
+			spawnSprite(element);
 			break;
 	
 		case Element.SPR_BUISSON:
@@ -180,8 +180,8 @@ public class SpriteManagement extends SpriteStore {
 			}
 			// Ombre
 			element2=new Element();
-			element2.setX((float) x);
-			element2.setY((float) y-2);
+			element2.setX(x);
+			element2.setY(y-2);
 			element2.setSprModel(ElementDescription.SHADOW_MINUS);
 			spawnSprite(element2);
 			element.setLinkedPerso(element2);
@@ -190,8 +190,8 @@ public class SpriteManagement extends SpriteStore {
 	
 		case Element.SPR_COEUR:
 			element=new ElementGoodies();
-			element.setX((float) x-1);
-			element.setY((float) y);
+			element.setX(x-1);
+			element.setY(y);
 			element.setZ(11.0f);
 			element.setVx(0.15f);
 			element.setVz(-0.04f);
@@ -202,8 +202,8 @@ public class SpriteManagement extends SpriteStore {
 			
 		case Element.SPR_MORT:
 			element=new ElementAnimMort(miscPerso);
-			element.setX((float) x);
-			element.setY((float) y);
+			element.setX(x);
+			element.setY(y);
 			element.setZ(8.0f);
 			spawnSprite(element);
 		   break;
@@ -378,7 +378,7 @@ public class SpriteManagement extends SpriteStore {
 	public boolean collideSprite(int tx, int ty, Element elem) {
 		final int tab_add[]={-1,-1,1,1,-1};
 		
-		SpriteEntity entityRef=(SpriteEntity)elem;
+		SpriteEntity entityRef=elem;
 		boolean found=false;
 		int x=0,y=0;
 		boolean isBlockable;

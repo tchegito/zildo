@@ -214,10 +214,10 @@ public class SpriteEngine extends TextureEngine {
 	
 		SpriteModel spr=entity.getSprModel();
 		entity.setLinkVertices(
-		meshSprites[entity.getNBank()].addSprite((float) entity.getScrX(),
-											  (float) entity.getScrY() - z,
-											  (float)spr.getTexPos_x(),
-											  (float)spr.getTexPos_y(),
+		meshSprites[entity.getNBank()].addSprite(entity.getScrX(),
+											  entity.getScrY() - z,
+											  spr.getTexPos_x(),
+											  spr.getTexPos_y(),
 											  spr.getTaille_x(),
 											  spr.getTaille_y()));
 	}
@@ -241,10 +241,10 @@ public class SpriteEngine extends TextureEngine {
 		
 		SpriteModel spr=entity.getSprModel();
 		entity.setLinkVertices(
-		meshSprites[entity.getNBank()].synchronizeSprite((float) entity.getScrX(),
-				  									(float) entity.getScrY() - z,
-				  									(float)spr.getTexPos_x(),
-				  									(float)spr.getTexPos_y(),
+		meshSprites[entity.getNBank()].synchronizeSprite(entity.getScrX(),
+				  									entity.getScrY() - z,
+				  									spr.getTexPos_x(),
+				  									spr.getTexPos_y(),
 				  									revX * spr.getTaille_x(),
 				  									revY * spr.getTaille_y()));
 	}
