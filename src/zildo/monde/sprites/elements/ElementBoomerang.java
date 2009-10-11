@@ -57,7 +57,7 @@ public class ElementBoomerang extends ElementThrown {
     	super.animate();
     }
 
-    protected boolean beingCollided() {
+    public boolean beingCollided() {
     	// Boomerang hit something, so give him back to Zildo
     	comingBack=true;
 		EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);

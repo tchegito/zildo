@@ -24,14 +24,16 @@ public class Collision {
      * @param p_size
      * @param p_shooter
      * @param p_type
+     * @param p_weapon TODO
      */
-    public Collision(Point p_center, Point p_size, Perso p_shooter, DamageType p_type) {
+    public Collision(Point p_center, Point p_size, Perso p_shooter, DamageType p_type, Element p_weapon) {
     	this.cx=p_center.x;
     	this.cy=p_center.y;
     	this.size=p_size;
     	this.cangle = Angle.NORD;	// Default
     	this.perso=p_shooter;
     	this.damageType=p_type;
+    	this.weapon=p_weapon;
     }
     
     /**
@@ -42,8 +44,9 @@ public class Collision {
      * @param angle
      * @param perso
      * @param p_type
+     * @param p_weapon TODO
      */
-    public Collision(int x, int y, int cr, Angle angle, Perso perso, DamageType p_type) {
+    public Collision(int x, int y, int cr, Angle angle, Perso perso, DamageType p_type, Element p_weapon) {
         this.cx = x;
         this.cy = y;
         this.cr = cr;
@@ -51,5 +54,6 @@ public class Collision {
         this.cangle = angle;
         this.perso = perso;
     	this.damageType=p_type;
+    	this.weapon=p_weapon;
     }
 }

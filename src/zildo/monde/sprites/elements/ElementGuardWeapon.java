@@ -65,7 +65,7 @@ public class ElementGuardWeapon extends Element {
 		Point sizeHorizontal=new Point(spr.getTaille_x(), spr.getTaille_y());
 
 		// Damage type depends on the guard's weapon
-		return new Collision(new Point(x,y), sizeHorizontal, (Perso) getLinkedPerso(), DamageType.BLUNT);
+		return new Collision(new Point(x,y), sizeHorizontal, (Perso) getLinkedPerso(), DamageType.BLUNT, null);
 	}
 	
 	public boolean isSolid() {
