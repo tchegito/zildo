@@ -43,7 +43,7 @@ public class ElementAnimMort extends Element {
                 setLinkedPerso(null);
             }
         }
-        if (vx >= 1.0f && vx < 1.15f) {
+        if (count >= 6 && count < 7) {
             EngineZildo.soundManagement.broadcastSound(BankSound.MonstreMeurt, this);
         }
         nSpr = seq_mort[count/6];

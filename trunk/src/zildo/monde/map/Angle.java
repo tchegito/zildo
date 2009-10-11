@@ -7,7 +7,7 @@ public enum Angle {
 	EST(1, new Point(1,0)),
 	SUD(2, new Point(0,1)),
 	OUEST(3, new Point(-1,0)),
-	NORDEST(4, new Point(1,1)),
+	NORDEST(4, new Point(1,-1)),
 	SUDEST(5, new Point(1,1)),
 	SUDOUEST(6, new Point(-1,1)),
 	NORDOUEST(7, new Point(-1,-1));
@@ -33,7 +33,12 @@ public enum Angle {
     }
     
 	public static Angle rotate(Angle a, int quart) {
-		return fromInt((a.value + quart) % 4);
+		int val=(a.value + quart) % 4;
+		if (!a.isDiagonal()) {
+			return fromInt(val);
+		} else {	// Diagonal
+			return fromInt(val+4);
+		}
 	}
 	static public Angle fromInt(int val) {
 		for (Angle a : Angle.values()) {

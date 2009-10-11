@@ -11,6 +11,7 @@ import zildo.monde.collision.DamageType;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.map.Point;
 import zildo.monde.map.Angle;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 
@@ -171,6 +172,13 @@ public class CollideManagement {
         }
     }
 
+    /**
+     * A collision hit a character. Calls two methods:
+     * -{@link Perso#beingWounded()} on the collided character
+     * -{@link Element#beingCollided()} on the collider element
+     * @param p_collider
+     * @param p_collided
+     */
     public void wound(Collision p_collider, Perso p_collided) {
         // Character gets wounded, if he isn't yet
         if (p_collided != null && !p_collided.isWounded()) {
