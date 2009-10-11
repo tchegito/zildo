@@ -173,8 +173,8 @@ public class PlayerManagement {
 				}
 				heros.setEn_bras(0);
 			} else {
-				float pasx=(float)saut_angle[heros.getDz()].getX() / 32.0f;
-				float pasy=(float)saut_angle[heros.getDz()].getY() / 32.0f;
+				float pasx=saut_angle[heros.getDz()].getX() / 32.0f;
+				float pasy=saut_angle[heros.getDz()].getY() / 32.0f;
 				heros.setX(heros.getX()+pasx);
 				heros.setY(heros.getY()+pasy);
 				heros.setEn_bras(heros.getEn_bras()+1);
@@ -256,7 +256,7 @@ public class PlayerManagement {
 					int diffy=yy-(int) heros.y;
 					if (diffx!=0 && diffy!=0) {
 						// Déplacement diagonale -. Déplacement latéral}
-						if (!mapManagement.collide((int) xx,(int) heros.getY(),heros))
+						if (!mapManagement.collide(xx,(int) heros.getY(),heros))
 							yy=(int) heros.y;
 						else if (!mapManagement.collide((int) heros.getX(),yy,heros))
 							xx=(int) heros.x;

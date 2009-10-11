@@ -86,7 +86,7 @@ public class MotifBank {
 	*/
 		short[] coupe=new short[16*16];
 		int a=quelmotif * 16*16;
-		System.arraycopy((Object) motifs_map, a, (Object) coupe, 0, 16*16);
+		System.arraycopy(motifs_map, a, coupe, 0, 16*16);
 		return coupe;
 	}
 }

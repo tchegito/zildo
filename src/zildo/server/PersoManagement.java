@@ -85,7 +85,7 @@ public class PersoManagement {
             if (persoToCompare.getPv() > 0 && persoToCompare != quelElement) {
                 int tx = (int) persoToCompare.getX();
                 int ty = (int) persoToCompare.getY();
-                if (EngineZildo.collideManagement.checkCollisionCircles((int) x, (int) y, tx, ty, rayon, rayon)) {
+                if (EngineZildo.collideManagement.checkCollisionCircles(x, y, tx, ty, rayon, rayon)) {
                     if (perso != null && perso.isZildo() && perso.linkedSpritesContains(persoToCompare)) {
                         // Collision entre Zildo et l'objet qu'il porte dans les mains => on laisse
                     } else if (quelElement == null || quelElement.getLinkedPerso() != persoToCompare) {

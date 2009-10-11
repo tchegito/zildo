@@ -190,7 +190,7 @@ public class TileEngine extends TextureEngine {
 				Case mapCase=theMap.get_mapcase(x,y+4);
 				int n_motif=mapCase.getN_motif();
 				int xTex=(n_motif % 16) * 16;
-				int yTex=(int)(n_motif / 16) * 16 +1;
+				int yTex=(n_motif / 16) * 16 +1;
 				int bank=mapCase.getN_banque() & 63;
 				int nTile=0;
 				nTile=meshBACK[bank].addTile( (16 * x),
@@ -215,7 +215,7 @@ public class TileEngine extends TextureEngine {
 				if ((mapCase.getN_banque() & Area.M_MOTIF_MASQUE)!=0) {
 					int n_motif=mapCase.getN_motif_masque();
 					int xTex=(n_motif % 16) * 16;
-					int yTex=(int)(n_motif / 16) * 16+1;
+					int yTex=(n_motif / 16) * 16+1;
 					int bank=mapCase.getN_banque_masque() & 63;
 					meshFORE[bank].addTile( 16 * x,
 									  16 * y,
@@ -311,7 +311,7 @@ public class TileEngine extends TextureEngine {
 					Case mapCase=theMap.get_mapcase(x,y+4);
 					int n_motif=mapCase.getAnimatedMotif(compteur_animation);
 					int xTex=(n_motif % 16) * 16;
-					int yTex=(int)(n_motif / 16) * 16;
+					int yTex=(n_motif / 16) * 16;
 					int bank=mapCase.getN_banque() & 63;
 					if (bank<0 || bank>=Constantes.NB_MOTIFBANK) {
 						throw new RuntimeException("We got a big problem");
@@ -323,7 +323,7 @@ public class TileEngine extends TextureEngine {
 					if ((mapCase.getN_banque() & Area.M_MOTIF_MASQUE)!=0) {
 						n_motif=mapCase.getN_motif_masque();
 						xTex=(n_motif % 16) * 16;
-						yTex=(int)(n_motif / 16) * 16; //+1;
+						yTex=(n_motif / 16) * 16; //+1;
 						bank=mapCase.getN_banque_masque() & 63;
 						meshFORE[bank].updateTile( (16 * x) - cameraXnew,
 												(16 * y) - cameraYnew,

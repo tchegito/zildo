@@ -102,7 +102,7 @@ public class Area {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Return n_motif + n_banque*256 from a given position on the Area
 	public int readmap(int x, int y) {
-		Case temp = this.get_mapcase(x, (int) (y + 4));
+		Case temp = this.get_mapcase(x, y + 4);
 		if (temp == null) {
 			return -1;
 		}
@@ -116,7 +116,7 @@ public class Area {
 	}
 	
 	public int readAltitude(int x, int y) {
-		Case temp = this.get_mapcase(x, (int) (y + 4));
+		Case temp = this.get_mapcase(x, (y + 4));
 		if (temp == null) {
 			return 0;
 		}
@@ -473,8 +473,8 @@ public class Area {
 		// Les sprites
 		if (n_sprites != 0) {
 			for (int i = 0; i < n_sprites; i++) {
-				int x = ((int) (p_buffer.readUnsignedByte()) << 8) + p_buffer.readUnsignedByte();
-				int y = ((int) p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
+				int x = (p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
+				int y = (p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
 				short nSpr;
 				nSpr = p_buffer.readUnsignedByte();
 				if (p_spawn) {
@@ -487,9 +487,9 @@ public class Area {
 		if (n_persos != 0) {
 			for (int i = 0; i < n_persos; i++) {
 				PersoNJ perso;
-				int x = ((int) p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
-				int y = ((int) p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
-				int z = ((int) p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
+				int x = (p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
+				int y = (p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
+				int z = (p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
 
 				PersoDescription desc = PersoDescription.fromNSpr(p_buffer.readUnsignedByte());
 
@@ -512,13 +512,13 @@ public class Area {
 							break;
 					}
 				}
-				perso.setX((float) x);
-				perso.setY((float) y);
-				perso.setZ((float) z);
+				perso.setX(x);
+				perso.setY(y);
+				perso.setZ(z);
 				perso.setQuel_spr(desc);
 				perso.setInfo(p_buffer.readUnsignedByte());
 				perso.setEn_bras(p_buffer.readUnsignedByte());
-				perso.setQuel_deplacement(MouvementPerso.fromInt((int) p_buffer.readUnsignedByte()));
+				perso.setQuel_deplacement(MouvementPerso.fromInt(p_buffer.readUnsignedByte()));
 				perso.setAngle(Angle.fromInt(p_buffer.readUnsignedByte()));
 
 				perso.setNBank(SpriteBank.BANK_PNJ);

@@ -99,7 +99,7 @@ public class OpenGLZildo extends OpenGLGestion {
     	GL11.glLoadIdentity(); // Reset The Projection Matrix
 
     	// invert the y axis, down is positive
-        float zz=(float) (z *5.0f);
+        float zz=z *5.0f;
         if (zz != 0.0f) {
         	GL11.glTranslatef(-zoomPosition.getX()*zz, zoomPosition.getY()*zz,0.0f);
         }

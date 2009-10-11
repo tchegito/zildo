@@ -21,13 +21,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 */
 	private static final long serialVersionUID = 1L;
 
-    private EngineZildo engineZildo;
-
     public ZildoCanvas(String p_mapname) throws LWJGLException {
         super();
         ZildoRenderer renderer = new ZildoRenderer(p_mapname);
         setRenderer(renderer);
-        engineZildo = renderer.getEngineZildo();
     }
 	
 	public void moveCamera(int p_cameraX, int p_cameraY) {
@@ -35,13 +32,13 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	}
 	
     public void changeTile(int p_x, int p_y, Case c) {
-        MapManagement map = engineZildo.mapManagement;
+        MapManagement map = EngineZildo.mapManagement;
         Area area = map.getCurrentMap();
         area.set_mapcase(p_x, p_y, c);
     }
     
     public void saveMapFile(String p_mapName) {
-        MapManagement map = engineZildo.mapManagement;
+        MapManagement map = EngineZildo.mapManagement;
     	map.saveMapFile(p_mapName);
     }
 }

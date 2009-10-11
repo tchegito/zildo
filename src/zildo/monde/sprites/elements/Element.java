@@ -134,7 +134,7 @@ public class Element extends SpriteEntity {
 		if ((a>2 && a<=12) ||
 			(a==0 || a==1) ||
 			(a==28) ||
-			(a>=32 && a<=39) ||
+			//(a>=32 && a<=39) ||
 			(a>=40 && a<=42) ||
 			(a>=44 && a<=56) ||
 			(a>=69 && a<=74) ||
@@ -295,7 +295,7 @@ public class Element extends SpriteEntity {
                         linked = null;
                     }
                     if (collision == null) {
-                    	collision=new Collision((int) x, (int) y, 6, null, Angle.NORD, (Perso) linked, getDamageType());
+                    	collision=new Collision((int) x, (int) y, 6, Angle.NORD, (Perso) linked, getDamageType());
                     }
                     collision.cy-=z;
                    	EngineZildo.collideManagement.addCollision(collision);

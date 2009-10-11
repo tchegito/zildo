@@ -338,8 +338,8 @@ public abstract class Perso extends Element {
     public void placeAt(int p_posX, int p_posY) {
         int diffX = (int) x - p_posX;
         int diffY = (int) y - p_posY;
-        x = (int) p_posX;
-        y = (int) p_posY;
+        x = p_posX;
+        y = p_posY;
         for (Element elem : persoSprites) {
             elem.x += diffX;
             elem.y += diffY;

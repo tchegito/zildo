@@ -75,6 +75,6 @@ public class Point {
         int d = Math.abs(y - p_other.y);
         c = c * c;
         c += d * d;
-        return (float) Math.sqrt((float) c);
+        return (float) Math.sqrt(c);
     }
 }

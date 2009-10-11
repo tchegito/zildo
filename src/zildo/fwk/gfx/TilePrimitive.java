@@ -238,16 +238,16 @@ public class TilePrimitive extends OpenGLStuff {
         	texStartY-=sizeY;
         }
         for (int i = 0; i < 4; i++) {
-            vertices.put(x + pixSizeX * ((float) (i % 2))); // x
-            vertices.put(y + pixSizeY * ((float) (i / 2))); // y
+            vertices.put(x + pixSizeX * (i % 2)); // x
+            vertices.put(y + pixSizeY * (i / 2)); // y
             vertices.put(0.0f); // z
 
             // Get right tile-texture
-            float texPosX = texStartX + sizeX * (float) (i % 2);
-            float texPosY = texStartY + sizeY * (int) (i / 2);
+            float texPosX = texStartX + sizeX * (i % 2);
+            float texPosY = texStartY + sizeY * (i / 2);
 
-            textures.put(texPosX / (float) textureSizeX);
-            textures.put(texPosY / (float) textureSizeY);
+            textures.put(texPosX / textureSizeX);
+            textures.put(texPosY / textureSizeY);
         }
     }
 
