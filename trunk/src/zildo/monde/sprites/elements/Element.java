@@ -295,7 +295,7 @@ public class Element extends SpriteEntity {
                         linked = null;
                     }
                     if (collision == null) {
-                    	collision=new Collision((int) x, (int) y, 6, Angle.NORD, (Perso) linked, getDamageType());
+                    	collision=new Collision((int) x, (int) y, 6, Angle.NORD, (Perso) linked, getDamageType(), this);
                     }
                     collision.cy-=z;
                    	EngineZildo.collideManagement.addCollision(collision);
@@ -515,7 +515,7 @@ public class Element extends SpriteEntity {
 	 * Called when this element is collided by something.
 	 * @return FALSE if element must disappear, TRUE otherwise.
 	 */
-	protected boolean beingCollided() {
+	public boolean beingCollided() {
 		return false;
 	}
 	

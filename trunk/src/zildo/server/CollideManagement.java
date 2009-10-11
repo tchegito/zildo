@@ -43,7 +43,7 @@ public class CollideManagement {
     // perso : perso who create this collision
     // /////////////////////////////////////////////////////////////////////////////////////
     public void addCollision(int x, int y, int rayon, Point size, Angle angle, Perso perso, DamageType damageType) {
-        Collision colli = new Collision(x, y, rayon, angle, perso, damageType);
+        Collision colli = new Collision(x, y, rayon, angle, perso, damageType, null);
         addCollision(colli);
     }
     
@@ -152,11 +152,11 @@ public class CollideManagement {
         float zildoX = p_zildo.getX() - 4;
         float zildoY = p_zildo.getY() - 10;
         // If he's already wounded, don't check
-        Collision zildoCollision = new Collision((int) zildoX, (int) zildoY, 8, null, p_zildo, null);
+        Collision zildoCollision = new Collision((int) zildoX, (int) zildoY, 8, null, p_zildo, null, null);
 
-        if (!p_zildo.isWounded() && checkColli(p_colli, zildoCollision)) {
+        if (checkColli(p_colli, zildoCollision)) {
             // Zildo gets wounded
-            p_zildo.beingWounded(p_colli.cx, p_colli.cy, p_colli.perso);
+        	wound(p_colli, p_zildo);
         }
     }
 
@@ -167,16 +167,22 @@ public class CollideManagement {
      */
     public void checkEnemyWound(Collision p_collider, Collision p_collided) {
         if (checkColli(p_collided, p_collider)) {
-            // Monster gets wounded, if it isn't yet
-            Perso perso = p_collided.perso;
-
-            if (!perso.isWounded()) {
-                perso.beingWounded(p_collider.cx, p_collider.cy, p_collider.perso);
-            }
+            wound(p_collider, p_collided.perso);
         }
     }
 
-    // /////////////////////////////////////////////////////////////////////////////////////
+    public void wound(Collision p_collider, Perso p_collided) {
+        // Character gets wounded, if he isn't yet
+        if (p_collided != null && !p_collided.isWounded()) {
+        	p_collided.beingWounded(p_collider.cx, p_collider.cy, p_collider.perso);
+            
+            if (p_collider.weapon != null) {
+            	p_collider.weapon.beingCollided();
+            }
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////////
     // check_colli
     // /////////////////////////////////////////////////////////////////////////////////////
     // IN:(x,y) coordinates of the first character

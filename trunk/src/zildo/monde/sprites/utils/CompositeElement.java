@@ -176,6 +176,6 @@ public class CompositeElement {
         size=size.translate(model.getTaille_x(), model.getTaille_y());
         Point center=new Point((topLeft.x + bottomRight.x) / 2, (topLeft.y + bottomRight.y) /2);
         center=center.translate(0, -model.getTaille_y() / 2);
-        return new Collision(center, size, null, refElement.getDamageType());
+        return new Collision(center, size, null, refElement.getDamageType(), null);
     }
 }
