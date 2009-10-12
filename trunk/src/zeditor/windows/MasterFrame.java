@@ -42,14 +42,7 @@ import javax.swing.SwingUtilities;
 */
 public class MasterFrame extends javax.swing.JFrame {
 
-	{
-		//Set Look & Feel
-		try {
-			javax.swing.UIManager.setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	private static final long serialVersionUID = 2489915553598220909L;
 	private JMenuBar menuBar;
