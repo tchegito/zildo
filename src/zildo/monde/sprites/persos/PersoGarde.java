@@ -36,6 +36,6 @@ public class PersoGarde extends PersoNJ {
 	}
 	
 	public Collision getCollision() {
-		return new Collision((int) x, (int) y, 12, null, this, DamageType.BLUNT, null);
+		return new Collision((int) x, (int) y, 10, null, this, DamageType.BLUNT, null);
 	}
 }

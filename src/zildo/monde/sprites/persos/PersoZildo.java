@@ -181,7 +181,7 @@ public class PersoZildo extends Perso {
 			int rayon;
 			cx=getX();
 			cy=getY();
-			rayon=6;
+			rayon=4;
 			alpha=(2.0f*Math.PI*this.getAttente()) / (7*Constantes.speed);
 			
 			switch (this.getAngle()) {
