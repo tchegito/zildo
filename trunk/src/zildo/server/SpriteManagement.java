@@ -301,7 +301,7 @@ public class SpriteManagement extends SpriteStore {
 				
 				if (!perso.isZildo()) {
 					// Non-zildo sprite haven't same way to display correctly (bad...)
-					perso.setAjustedX(perso.getAjustedX() - (spr.getTaille_x() >> 1) );
+					perso.setAjustedX(perso.getAjustedX() - (spr.getTaille_x() / 2) );
 					perso.setAjustedY(perso.getAjustedY() - (spr.getTaille_y() - 3) );
 				}
 			}

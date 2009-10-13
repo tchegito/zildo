@@ -250,35 +250,11 @@ public class PlayerManagement {
 				// Adjustment
 				heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512);
 		
-				if (mapManagement.collide(xx,yy,heros))
-				{
-					int diffx=xx-(int) heros.x;
-					int diffy=yy-(int) heros.y;
-					if (diffx!=0 && diffy!=0) {
-						// Déplacement diagonale -. Déplacement latéral}
-						if (!mapManagement.collide(xx,(int) heros.getY(),heros))
-							yy=(int) heros.y;
-						else if (!mapManagement.collide((int) heros.getX(),yy,heros))
-							xx=(int) heros.x;
-					} else {
+                Point secureLocation = heros.tryMove(xx, yy);
+                xx = secureLocation.x;
+                yy = secureLocation.y;
 		
-						// Déplacement latéral -. Déplacement diagonal}
-						if (diffx==0)
-						{
-							if (!mapManagement.collide(xx+zildoSpeed,yy,heros))
-								xx+=zildoSpeed;
-							else if (!mapManagement.collide(xx-zildoSpeed,yy,heros))
-								xx-=zildoSpeed;
-						} else if (diffy==0) {
-							if (!mapManagement.collide(xx,yy+zildoSpeed,heros))
-								yy+=zildoSpeed;
-							else if (!mapManagement.collide(xx,yy-zildoSpeed,heros))
-								yy-=zildoSpeed;
-						}
-					}
-				}
-		
-				if (mapManagement.collide(xx,yy,heros))
+				if ((int) heros.x == xx && (int) heros.y == yy)
 				{
 					if (heros.getMouvement()==MouvementZildo.MOUVEMENT_VIDE)
 					{

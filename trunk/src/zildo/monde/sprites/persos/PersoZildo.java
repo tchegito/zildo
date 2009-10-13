@@ -7,6 +7,7 @@ import java.util.List;
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
+import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
@@ -108,12 +109,12 @@ public class PersoZildo extends Perso {
 		addPersoSprites(ombre);
 		addPersoSprites(piedsMouilles);
 
-		weapon=new Item(ItemKind.BOOMERANG);
+		weapon=new Item(ItemKind.SWORD);
 
 		inventory=new ArrayList<Item>();
 		inventory.add(weapon);
 		inventory.add(new Item(ItemKind.BOW));
-		inventory.add(new Item(ItemKind.SWORD));
+		inventory.add(new Item(ItemKind.BOOMERANG));
 		inventory.add(new Item(ItemKind.BOMB));
 		
 		countArrow=20;
@@ -182,7 +183,7 @@ public class PersoZildo extends Perso {
 			cy=getY();
 			rayon=6;
 			alpha=(2.0f*Math.PI*this.getAttente()) / (7*Constantes.speed);
-	
+			
 			switch (this.getAngle()) {
 				case NORD:
 					alpha=alpha + Math.PI;
@@ -210,8 +211,13 @@ public class PersoZildo extends Perso {
 			}
 	
 			// Add this collision record to collision engine
-			DamageType dmgType=DamageType.CUTTING_FRONT;
-			EngineZildo.collideManagement.addCollision((int) cx, (int) cy, rayon, null, Angle.NORD, this, dmgType);
+			// Damage type: blunt at start, and then : cutting front
+			DamageType dmgType=DamageType.BLUNT;
+			if (attente < 6) {
+				dmgType=DamageType.CUTTING_FRONT;
+			}
+			Collision c=new Collision((int) cx, (int) cy, rayon, Angle.NORD, this, dmgType, null);
+			EngineZildo.collideManagement.addCollision(c);
 		}
 	}
 	

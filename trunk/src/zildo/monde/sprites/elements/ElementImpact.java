@@ -9,7 +9,7 @@ import zildo.server.EngineZildo;
 
 public class ElementImpact extends Element {
 
-	enum ImpactKind {
+	public enum ImpactKind {
 		SIMPLEHIT(ElementDescription.IMPACT1, 4,1), 
 		EXPLOSION(ElementDescription.EXPLO1, 3,1), 
 		FIRESMOKE(ElementDescription.EXPLOSMOKE1, 3,4);

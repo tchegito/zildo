@@ -40,7 +40,7 @@ public class ElementGuardWeapon extends Element {
 				xx = xx + 8;
 				break;
 			case EST:
-				xx = xx + 6 + 3 * j;
+				xx = xx + 9 + 3 * j;
 				zz = 4;
 				break;
 			case SUD:
@@ -65,7 +65,7 @@ public class ElementGuardWeapon extends Element {
 		Point sizeHorizontal=new Point(spr.getTaille_x(), spr.getTaille_y());
 
 		// Damage type depends on the guard's weapon
-		return new Collision(new Point(x,y), sizeHorizontal, (Perso) getLinkedPerso(), DamageType.BLUNT, null);
+		return new Collision(new Point(x,y), sizeHorizontal, (Perso) getLinkedPerso(), DamageType.BLUNT, this);
 	}
 	
 	public boolean isSolid() {

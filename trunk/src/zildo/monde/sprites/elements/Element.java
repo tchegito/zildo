@@ -11,8 +11,10 @@ import zildo.monde.collision.DamageType;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoGardeVert;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
@@ -290,15 +292,7 @@ public class Element extends SpriteEntity {
                 // Collision avec les ennemis (uniquement dans le cas où l'objet est en mouvement)
                 Collision collision = getCollision();
                 if (vx != 0 || vy != 0 || vz != 0 || collision != null) {
-                    SpriteEntity linked = linkedPerso;
-                    if (linked != null && linked.getEntityType() != SpriteEntity.ENTITYTYPE_PERSO) {
-                        linked = null;
-                    }
-                    if (collision == null) {
-                    	collision=new Collision((int) x, (int) y, 6, Angle.NORD, (Perso) linked, getDamageType(), this);
-                    }
-                    collision.cy-=z;
-                   	EngineZildo.collideManagement.addCollision(collision);
+                	manageCollision();
                 }
             }
         }
@@ -306,6 +300,25 @@ public class Element extends SpriteEntity {
         setAjustedY((int) y);
     }
 
+	/**
+	 * Add to the engine the {@link Collision} object representing the region of this element.
+	 */
+	public void manageCollision() {
+		Collision collision=getCollision();
+        SpriteEntity linked = linkedPerso;
+        if (this.getClass() == PersoGardeVert.class) {
+        	int j=9;
+        }
+        SpriteModel model=getSprModel();
+        if (collision == null) {
+			int radius=(model.getTaille_x() + model.getTaille_y()) / 4;
+        	collision=new Collision((int) x, (int) y, radius, Angle.NORD, (Perso) linked, getDamageType(), this);
+        }
+    	collision.cy-=model.getTaille_y() / 2;
+        collision.cy-=z;
+       	EngineZildo.collideManagement.addCollision(collision);
+	}
+	
     public void setSprModel(ElementDescription p_desc) {
         this.setNBank(SpriteBank.BANK_ELEMENTS);
         this.setNSpr(p_desc.ordinal());

@@ -11,6 +11,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
 
 public abstract class Perso extends Element {
 	
@@ -26,7 +27,7 @@ public abstract class Perso extends Element {
     protected PersoDescription quel_spr;				
     protected int attente;				// =0 => pas d'attente
     protected int dx,dy,dz;				// Destination
-    private float px,py;				// Quand le perso est propulsé (touché)
+    protected float px,py;				// Quand le perso est propulsé (touché)
     protected int pos_seqsprite;
     private int en_bras;			// Si c'est Zildo, l'objet qu'il porte.Note : 10=poule
     protected MouvementZildo mouvement;			// Situation du perso:debout,couché,attaque...
@@ -352,12 +353,80 @@ public abstract class Perso extends Element {
 		return sb.toString();
 	}
 
-	public abstract void manageCollision();
+	/**
+	 * Push the character away, with a hit point located at the given coordinates.
+	 * @param p_cx
+	 * @param p_cy
+	 */
+	protected void project(float p_cx, float p_cy, int p_speed) {
+		// Project monster away from the enemy
+		float diffx=getX()-p_cx;
+		float diffy=getY()-p_cy;
+		double norme=Math.sqrt( (diffx*diffx) + (diffy*diffy) );
+	    if (norme==0.0f) {
+			norme=1.0f;           //Pour éviter le 'divide by zero'
+		}
+		// Et on l'envoie !
+		this.setPx((float) (p_speed*(diffx/norme)));
+		this.setPy((float) (p_speed*(diffy/norme)));		
+	}
 	
+	/**
+	 * Try to move character at the given location, and returns corrected one.<p/>
+	 * The correction is based on two methods:
+	 * -transform diagonal movement into lateral
+	 * -transform lateral movement into diagonal<p/>
+	 * If no one succeeds, returns the original location.
+	 * @param p_xx
+	 * @param p_yy
+	 * @return corrected location, or same one if character can't move at all.
+	 */
+    public Point tryMove(int p_xx, int p_yy) {
+        MapManagement mapManagement = EngineZildo.mapManagement;
+        int xx = p_xx;
+        int yy = p_yy;
+
+        if (mapManagement.collide(xx, yy, this)) {
+            int diffx = xx - (int) x;
+            int diffy = yy - (int) y;
+            if (diffx != 0 && diffy != 0) {
+                // Diagonal move impossible => try lateral move
+                if (!mapManagement.collide(xx, (int) y, this))
+                    yy = (int) y;
+                else if (!mapManagement.collide((int) x, yy, this))
+                    xx = (int) x;
+            } else {
+
+                // Lateral move impossible => try diagonal move
+                int speed;
+                if (diffx == 0) {
+                    speed = Math.abs(diffy);
+                    if (!mapManagement.collide(xx + speed, yy, this))
+                        xx += speed;
+                    else if (!mapManagement.collide(xx - speed, yy, this))
+                        xx -= speed;
+                } else if (diffy == 0) {
+                    speed = Math.abs(diffx);
+                    if (!mapManagement.collide(xx, yy + speed, this))
+                        yy += speed;
+                    else if (!mapManagement.collide(xx, yy - speed, this))
+                        yy -= speed;
+                }
+            }
+            if (mapManagement.collide(xx, yy, this)) {
+            	xx=(int) x;
+            	yy=(int) y;
+            }
+        }
+        return new Point(xx, yy);
+    }
+    
 	public abstract void initPersoFX();
 
     public abstract boolean beingWounded(float cx, float cy, Perso p_shooter);
     
+    public void parry(float cx, float cy, Perso p_shooter) {}
+    	
 	public abstract void stopBeingWounded();
 
 	public abstract void attack();

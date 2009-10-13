@@ -10,7 +10,6 @@ import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.map.Point;
-import zildo.monde.map.Angle;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -35,19 +34,11 @@ public class CollideManagement {
     public void initFrame() {
         tab_colli.clear();
     }
-
-    // /////////////////////////////////////////////////////////////////////////////////////
-    // addCollision
-    // /////////////////////////////////////////////////////////////////////////////////////
-    // IN:zildoAttack (TRUE if this collision is FROM Zildo, FALSE otherwise)
-    // x,y,rayon,angle : collision parameters
-    // perso : perso who create this collision
-    // /////////////////////////////////////////////////////////////////////////////////////
-    public void addCollision(int x, int y, int rayon, Point size, Angle angle, Perso perso, DamageType damageType) {
-        Collision colli = new Collision(x, y, rayon, angle, perso, damageType, null);
-        addCollision(colli);
-    }
     
+    /**
+     * Add collision in the way.
+     * @param p_colli
+     */
     public void addCollision(Collision p_colli) {
     	tab_colli.add(p_colli);
     }
@@ -157,7 +148,7 @@ public class CollideManagement {
 
         if (checkColli(p_colli, zildoCollision)) {
             // Zildo gets wounded
-        	wound(p_colli, p_zildo);
+        	hit(p_colli, zildoCollision);
         }
     }
 
@@ -168,7 +159,7 @@ public class CollideManagement {
      */
     public void checkEnemyWound(Collision p_collider, Collision p_collided) {
         if (checkColli(p_collided, p_collider)) {
-            wound(p_collider, p_collided.perso);
+            hit(p_collider, p_collided);
         }
     }
 
@@ -179,11 +170,17 @@ public class CollideManagement {
      * @param p_collider
      * @param p_collided
      */
-    public void wound(Collision p_collider, Perso p_collided) {
+    public void hit(Collision p_collider, Collision p_collided) {
         // Character gets wounded, if he isn't yet
-        if (p_collided != null && !p_collided.isWounded()) {
-        	p_collided.beingWounded(p_collider.cx, p_collider.cy, p_collider.perso);
-            
+    	Perso perso=p_collided.perso;
+    	Element weapon=p_collided.weapon;
+        if (perso != null && !perso.isWounded()) {
+        	if (weapon != null) {
+        		perso.parry(p_collider.cx, p_collider.cy, perso);
+        	} else {
+        		perso.beingWounded(p_collider.cx, p_collider.cy, perso);
+        	}
+        	
             if (p_collider.weapon != null) {
             	p_collider.weapon.beingCollided();
             }

@@ -1,15 +1,13 @@
 package zildo.monde.sprites.persos;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.Hasard;
 import zildo.monde.map.Angle;
-import zildo.monde.sprites.SpriteModel;
+import zildo.monde.map.Point;
 import zildo.monde.sprites.desc.PersoDescription;
-import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementImpact;
+import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.prefs.Constantes;
@@ -40,16 +38,25 @@ public class PersoNJ extends Perso {
 	public void manageCollision() {
 		if (getInfo() == 1 && getPv()>0) {
 			// Add this collision record to collision engine
+			super.manageCollision();
+			/*
 			List<Element> elem=new ArrayList<Element>();
 			elem.add(this);
 			elem.addAll(persoSprites);
 			for (Element e:elem) {
-				if (e.isSolid() && e.getCollision() == null) {
+				if (e.isSolid()) {
+					Collision c=e.getCollision();
 					SpriteModel spr=e.getSprModel();
-					int size=(spr.getTaille_x() + spr.getTaille_y()) / 4;
-					EngineZildo.collideManagement.addCollision((int) e.x-4, (int) e.y-(int)e.z-spr.getTaille_y()/2, size, null, getAngle(), this, null);
+					if (c == null) {
+						int size=(spr.getTaille_x() + spr.getTaille_y()) / 4;
+						c=new Collision((int) e.x, (int) e.y, size, getAngle(), this, DamageType.BLUNT, null);
+					}
+                	c.cy-=spr.getTaille_y() / 2;
+                    c.cy-=e.z;
+					//EngineZildo.collideManagement.addCollision(c);
 				}
 			}
+			*/
 		}
 	}
 	
@@ -61,16 +68,7 @@ public class PersoNJ extends Perso {
 	// Invoked when this character gets wounded by any enemy (=ZILDO)
 	///////////////////////////////////////////////////////////////////////////////////////
 	public boolean beingWounded(float cx, float cy, Perso p_shooter) {
-		// Project monster away from the enemy
-		float diffx=getX()-cx;
-		float diffy=getY()-cy;
-		double norme=Math.sqrt( (diffx*diffx) + (diffy*diffy) );
-	    if (norme==0.0f) {
-			norme=1.0f;           //Pour éviter le 'divide by zero'
-		}
-		// Et on l'envoie !
-		this.setPx((float) (8*(diffx/norme)));
-		this.setPy((float) (8*(diffy/norme)));
+		project(cx, cy, 6);
 		this.setMouvement(MouvementZildo.MOUVEMENT_TOUCHE);
 		this.setWounded(true);
 		this.setAlerte(true);				// Zildo is detected, if it wasn't done !
@@ -87,6 +85,13 @@ public class PersoNJ extends Perso {
 		return died;
 	}
 	
+	public void parry(float cx, float cy, Perso p_shooter) {
+		project(cx, cy, 2);
+		EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
+		EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT));
+
+	}
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// stopBeingWounded
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -97,7 +102,6 @@ public class PersoNJ extends Perso {
 		setX((int)getX());
 		setY((int)getY());
 		setWounded(false);
-		//this.setSpecialEffect(PERSOFX_GUARD_BLUE);
 		initPersoFX();
 	}
 	
@@ -113,26 +117,24 @@ public class PersoNJ extends Perso {
 			this.setAjustedY((int) getY());
 			return;
 		}
-
 	
 		float sx=getX(),sy=getY();
 		int xx,yy;
 		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
 	
-		if (getPx() != 0.0f || getPy() != 0.0f) {
+		if (px != 0.0f || py != 0.0f) {
 			// Le perso s'est fait toucher !}
-			setX(getX() + getPx());
-			setY(getY() + getPy());
-			setPx(getPx()*0.9f);
-			setPy(getPy()*0.9f);
+			Point location=tryMove((int) (x+px), (int) (y+py));
+			x=location.x;
+			y=location.y;
+			px*=0.9f;
+			py*=0.9f;
 			setAttente(0);
-			if ( (Math.abs(getPx()) + Math.abs(getPy()))<0.4f) {
+			if ( (Math.abs(px) + Math.abs(py))<0.4f) {
 				this.stopBeingWounded();
 			}
 		}
-		
-		//quel_deplacement=MouvementPerso.SCRIPT_IMMOBILE;
-		
+
 		if (isAlerte() && !MouvementPerso.SCRIPT_VOLESPECTRE.equals(quel_deplacement)) {
 			// Zildo est reperé le monstre lui fonce dessus
 			reachTarget(zildo);
@@ -324,8 +326,8 @@ public class PersoNJ extends Perso {
 
 		//}
 	
-		this.setAjustedX((int) getX());
-		this.setAjustedY((int) getY());
+		this.setAjustedX((int) x);
+		this.setAjustedY((int) y);
 		
 		finaliseComportement(compteur_animation);
 	}
