@@ -306,13 +306,15 @@ public class Element extends SpriteEntity {
 	public void manageCollision() {
 		Collision collision=getCollision();
         SpriteEntity linked = linkedPerso;
-        if (this.getClass() == PersoGardeVert.class) {
-        	int j=9;
+        Element weapon = this;
+        if (this.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+        	linked=this;
+        	weapon=null;
         }
         SpriteModel model=getSprModel();
         if (collision == null) {
 			int radius=(model.getTaille_x() + model.getTaille_y()) / 4;
-        	collision=new Collision((int) x, (int) y, radius, Angle.NORD, (Perso) linked, getDamageType(), this);
+        	collision=new Collision((int) x, (int) y, radius, Angle.NORD, (Perso) linked, getDamageType(), weapon);
         }
     	collision.cy-=model.getTaille_y() / 2;
         collision.cy-=z;
