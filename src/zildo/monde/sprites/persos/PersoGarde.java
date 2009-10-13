@@ -1,5 +1,8 @@
 package zildo.monde.sprites.persos;
 
+import zildo.monde.collision.Collision;
+import zildo.monde.collision.DamageType;
+import zildo.monde.map.Point;
 import zildo.monde.sprites.elements.ElementGuardWeapon;
 import zildo.prefs.Constantes;
 
@@ -30,5 +33,9 @@ public class PersoGarde extends PersoNJ {
 	   //Garde bleu
 	   int add_spr=seq_gbleu[angle.value][(getPos_seqsprite() % (16*Constantes.speed)) / (2*Constantes.speed)];
        this.setNSpr((this.getQuel_spr().first() + add_spr) % 128);
+	}
+	
+	public Collision getCollision() {
+		return new Collision((int) x, (int) y, 12, null, this, DamageType.BLUNT, null);
 	}
 }
