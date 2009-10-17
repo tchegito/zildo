@@ -386,8 +386,8 @@ public class PersoZildo extends Perso {
 			case MOUVEMENT_BRAS_LEVES:
 				yy+=2;
 				if (objetEnMain != null) {
-					objetEnMain.setX(xx);
-					objetEnMain.setY(yy+3);
+					objetEnMain.setX(xx+1);
+					objetEnMain.setY(yy+7);
 					objetEnMain.setZ(21);
 				}
 				break;
@@ -645,8 +645,8 @@ public class PersoZildo extends Perso {
 		getPersoSprites().remove(linkedSpr_CARRIED);
 		setEn_bras(0);
 		setMouvement(MouvementZildo.MOUVEMENT_VIDE);
-		element.setX(getX());
-		element.setY(getY());
+		element.setX(getX()+1);
+		element.setY(getY()+4);
 		element.setZ(21.0f+1.0f);
 		element.setVx(0.0f);
 		element.setVy(0.0f);
