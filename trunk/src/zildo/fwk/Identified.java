@@ -3,6 +3,18 @@ package zildo.fwk;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Mini-database mechanism.
+ * 
+ * Provide an ID assignment to an object deriving from this abstract class.
+ * It could be retrieved then by the simple key &lt;Class, ID&gt;.<p/>
+ * 
+ * Very useful to adress a specific object between client and server.<p/>
+ * 
+ * View an usage example in {@link zildo.monde.sprites.SpriteModel}
+ * @author tchegito
+ *
+ */
 public abstract class Identified {
 
 	protected int id=-1;
