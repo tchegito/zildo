@@ -46,9 +46,11 @@ public class ElementAnimMort extends Element {
         if (count >= 6 && count < 7) {
             EngineZildo.soundManagement.broadcastSound(BankSound.MonstreMeurt, this);
         }
-        nSpr = seq_mort[count/6];
-        if (nSpr == 0) {
+        int nextSpr=seq_mort[count/6];
+        if (nextSpr == 0) {
             dying=true;
+        } else {
+        	nSpr=nextSpr;
         }
     }
 }

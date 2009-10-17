@@ -14,7 +14,6 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoGardeVert;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
@@ -301,13 +300,18 @@ public class Element extends SpriteEntity {
     }
 
 	/**
-	 * Add to the engine the {@link Collision} object representing the region of this element.
+	 * Add to the engine the {@link Collision} object representing the region of this element.<p/>
+	 * There's two cases:<br/>
+	 * -<b>Element</b>: collision's perso is related to this element's linked Perso<br/>. The element is the weapon.<br/>
+	 * -<b>Perso</b>: collision's is related to this Perso, with no weapon.
 	 */
 	public void manageCollision() {
 		Collision collision=getCollision();
+		// Default, collision from element is related to the linked Perso
         SpriteEntity linked = linkedPerso;
         Element weapon = this;
         if (this.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+        	// If Element we're handling is a Perso, adjust infos
         	linked=this;
         	weapon=null;
         }
@@ -456,29 +460,37 @@ public class Element extends SpriteEntity {
 	 * Appelée lorsque l'objet tombe au sol.
 	 */
 	public void fall() {
-		if (nSpr==1) {
-			// Le buisson s'effeuille
-			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON,(int) x,(int) y,0, null);
-			EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
-		} else if (nSpr==12 || nSpr==42) {
-			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_ECLATEPIERRE,(int) x,(int) y,0, null);
-			EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
-		} else if (nSpr==32) {
-			// La poule reprend vie dans le tableau de perso
-			/*
-			pnj.x=x;        pnj.y=y;pnj.z=0;
-			with pnj do begin
-			zone_deplacement[0]=round(x-16*5);
-			zone_deplacement[1]=round(y-16*5);
-			zone_deplacement[2]=round(x+16*5);
-			zone_deplacement[3]=round(y+16*5);
-			quel_spr=35;quel_deplacement=SCRIPT_POULE;
-			info=0;     nom='poule';
-			px=0;       py=0;       alerte=false;pv=1;
-			attente=0;
-			end;
-			spawn_perso(pnj);
-			*/
+		if (nBank == SpriteBank.BANK_ELEMENTS) {
+			ElementDescription desc=ElementDescription.fromInt(nSpr);
+			switch (desc) {
+			case BUSHES:
+				// Le buisson s'effeuille
+				EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON,(int) x,(int) y,0, null);
+				EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
+				break;
+			case JAR:
+			case STONE:
+			case ROCK_BALL:
+				EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_ECLATEPIERRE,(int) x,(int) y,0, null);
+				EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
+				break;
+			case HEN:
+				// La poule reprend vie dans le tableau de perso
+				/*
+				pnj.x=x;        pnj.y=y;pnj.z=0;
+				with pnj do begin
+				zone_deplacement[0]=round(x-16*5);
+				zone_deplacement[1]=round(y-16*5);
+				zone_deplacement[2]=round(x+16*5);
+				zone_deplacement[3]=round(y+16*5);
+				quel_spr=35;quel_deplacement=SCRIPT_POULE;
+				info=0;     nom='poule';
+				px=0;       py=0;       alerte=false;pv=1;
+				attente=0;
+				end;
+				spawn_perso(pnj);
+				*/
+			}
 		}
 	}
 
