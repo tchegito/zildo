@@ -2,7 +2,6 @@ package zildo.monde.sprites.persos;
 
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.elements.ElementGuardWeapon;
 import zildo.prefs.Constantes;
 
