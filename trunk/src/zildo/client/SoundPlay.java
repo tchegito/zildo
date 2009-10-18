@@ -32,8 +32,12 @@ public class SoundPlay {
 		ZildoRecupArgent("argent3.wav"),
 
 		MonstreTouche("touche.wav"),
+		MonstreTouche2("touche2.wav"),
 		MonstreMeurt("meurt.wav"),
 		MonstreTrouve("alerte.wav"),
+		
+		Poule1("poule1.wav"),
+		Poule2("poule2.wav"),
 		
 		CasseBuisson("feuilles.wav"),
 		CassePierre("brise.wav"),

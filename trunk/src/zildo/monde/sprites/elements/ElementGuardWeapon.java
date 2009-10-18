@@ -36,7 +36,7 @@ public class ElementGuardWeapon extends Element {
 			int zz = 0;
 			switch (angle) {
 			case NORD:
-				yy = yy - 8 - 3 * j;
+				yy = yy - 12 - 3 * j;
 				xx = xx + 8;
 				break;
 			case EST:

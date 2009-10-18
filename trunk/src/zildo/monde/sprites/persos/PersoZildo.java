@@ -48,7 +48,6 @@ public class PersoZildo extends Perso {
 	static int linkedSpr_SHIELD=0;
 	static int linkedSpr_SHADOW=1;
 	static int linkedSpr_WET_FEET=2;
-	static int linkedSpr_CARRIED=3;
 	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
@@ -306,10 +305,6 @@ public class PersoZildo extends Perso {
 		Element bouclier=it.next();
 		Element ombre=it.next();
 		Element piedsMouilles=it.next();
-		Element objetEnMain=null;
-		if (it.hasNext()) {
-			objetEnMain=it.next();
-		}
 		
 		final int decalxSword[][]={
 			{1,-1,-1,-5,-10,-13},{0,2,3,2,1,1},
@@ -388,10 +383,10 @@ public class PersoZildo extends Perso {
 				if (angle.isVertical()) {
 					yy++;
 				}
-				if (objetEnMain != null) {
-					objetEnMain.setX(xx+1);
-					objetEnMain.setY(yy+7);
-					objetEnMain.setZ(21);
+				if (en_bras != null) {
+					en_bras.setX(xx+1);
+					en_bras.setY(yy+7);
+					en_bras.setZ(21);
 				}
 				break;
 			case SOULEVE:
@@ -469,15 +464,15 @@ public class PersoZildo extends Perso {
 			// On affiche ce que Zildo a dans les mains
 	
 			// Corrections...
-			if (objetEnMain != null) {
-				int objX=(int) objetEnMain.getX();
-				int objY=(int) objetEnMain.getY();
+			if (en_bras != null) {
+				int objX=(int) en_bras.getX();
+				int objY=(int) en_bras.getY();
 				if (angle==Angle.EST) objX++;
 				else if (angle==Angle.OUEST) objX--;
 				objY+=seq_1[((zildo.getPos_seqsprite() % (4*Constantes.speed)) / Constantes.speed)];
 		
-				objetEnMain.setX(objX);
-				objetEnMain.setY(objY);
+				en_bras.setX(objX);
+				en_bras.setY(objY);
 			}
 			if (en_bras.getNSpr()==32) {// Il s'agit d'une poule
 				//spriteManagement.aff_sprite(BANK_PNJ,35+compteur_animation / 20,xx-7,yy-21-8);
@@ -625,8 +620,9 @@ public class PersoZildo extends Perso {
 		elem.setY(objY);
 		elem.setZ(4);
         elem.setVisible(true);
-
-        addPersoSprites(elem);	// Link to Zildo
+        elem.flying=false;
+        
+        elem.setLinkedPerso(this);	// Link to Zildo
         
 		if (object == null) {
 			EngineZildo.spriteManagement.spawnSprite(elem);
@@ -644,8 +640,8 @@ public class PersoZildo extends Perso {
 	 */
 	public void throwSomething() {
 		//On jette un objet
-		Element element=getPersoSprites().get(linkedSpr_CARRIED);
-		getPersoSprites().remove(linkedSpr_CARRIED);
+		Element element=getEn_bras();
+		element.setLinkedPerso(null);
 		setEn_bras(null);
 		setMouvement(MouvementZildo.VIDE);
 		element.setX(getX()+1);

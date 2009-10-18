@@ -449,7 +449,7 @@ public abstract class Perso extends Element {
 	}
 	
 	public boolean linkedSpritesContains(SpriteEntity entity) {
-		return persoSprites.contains(entity);
+		return persoSprites.contains(entity) || en_bras==entity;
 	}
 
 	public int getCptMouvement() {

@@ -329,6 +329,7 @@ public class MapManagement {
 					break;
 			}
 
+			zildo.setEn_bras(null);	// Loose his object
 			zildo.finaliseComportement(EngineZildo.compteur_animation);
 			return true;
 		}
