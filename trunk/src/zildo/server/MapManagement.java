@@ -15,6 +15,7 @@ import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
 
 
@@ -239,11 +240,10 @@ public class MapManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// isChangingMap
 	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean isChangingMap() {
+	public boolean isChangingMap(PersoZildo p_zildo) {
 		// Get zildo's position
-		Perso zildo=EngineZildo.persoManagement.getZildo();
-		float x=zildo.getX();
-		float y=zildo.getY();
+		float x=p_zildo.getX();
+		float y=p_zildo.getY();
 		// Store the changing point to use it when processing map swap
 		changingMapPoint=currentMap.isChangingMap(x,y);
 	
@@ -325,7 +325,7 @@ public class MapManagement {
 					zildo.setY(zy+16);
 					break;
 				case OUEST:
-					zildo.setX(zx-16);
+					zildo.setX(zx-32);
 					break;
 			}
 
@@ -401,8 +401,8 @@ public class MapManagement {
      * @return
      */
     public Point getRespawnPosition() {
-        int x = 147;
-        int y = 503;
+        int x = 80; //271;
+        int y = 150; // 812;
         while (collide(x, y, null)) {
             y -= 16;
         }

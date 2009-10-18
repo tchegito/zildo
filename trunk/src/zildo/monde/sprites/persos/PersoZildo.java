@@ -78,7 +78,7 @@ public class PersoZildo extends Perso {
 		setDy(0);
 		setAngle(Angle.NORD);
 		setPos_seqsprite(-1);
-		setMouvement(MouvementZildo.MOUVEMENT_VIDE);
+		setMouvement(MouvementZildo.VIDE);
 		setInfo(2);
 		setMaxpv(10);
 		setPv(10);
@@ -141,18 +141,18 @@ public class PersoZildo extends Perso {
 		switch (weapon.kind) {
 		case SWORD:
 			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAttaque, this);
-			setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_EPEE);
+			setMouvement(MouvementZildo.ATTAQUE_EPEE);
 			setAttente(6*2);
 			break;
 		case BOW:
 			if (attente == 0 && countArrow > 0) {
-				setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_ARC);
+				setMouvement(MouvementZildo.ATTAQUE_ARC);
 				setAttente(4*8);
 			}
 			break;
 		case BOOMERANG:
             if (attente == 0 && (boomerang == null || !boomerang.isVisible())) {
-                setMouvement(MouvementZildo.MOUVEMENT_ATTAQUE_BOOMERANG);
+                setMouvement(MouvementZildo.ATTAQUE_BOOMERANG);
                 boomerang=new ElementBoomerang(angle, (int) x, (int) y, (int) z, this);
                 EngineZildo.spriteManagement.spawnSprite(boomerang);
                 setAttente(16);
@@ -175,7 +175,7 @@ public class PersoZildo extends Perso {
 	// -create collision zone for Zildo
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void manageCollision() {
-		if (getMouvement()==MouvementZildo.MOUVEMENT_ATTAQUE_EPEE) {
+		if (getMouvement()==MouvementZildo.ATTAQUE_EPEE) {
 			// La collision avec l'épée de Zildo}
 			double cx,cy,alpha;
 			int rayon;
@@ -239,16 +239,16 @@ public class PersoZildo extends Perso {
 		// Et on l'envoie !
 		setPx(8*(diffx/norme));
 		setPy(8*(diffy/norme));
-		setMouvement(MouvementZildo.MOUVEMENT_TOUCHE);
+		setMouvement(MouvementZildo.TOUCHE);
 		setWounded(true);
 		this.setPv(getPv()-1);
 	
 		// Si Zildo a quelque chose dans les mains, on doit le laisser tomber
-		if (getEn_bras() != 0) {
+		if (getEn_bras() != null) {
 			Element elem=persoSprites.get(3);
 			persoSprites.remove(3);
 			elem.az=-0.07f;
-			setEn_bras(0);
+			setEn_bras(null);
 		}
 		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoTouche, this);
 	
@@ -282,7 +282,7 @@ public class PersoZildo extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void stopBeingWounded()
 	{
-		setMouvement(MouvementZildo.MOUVEMENT_VIDE);
+		setMouvement(MouvementZildo.VIDE);
 		setCompte_dialogue(64);     // Temps d'invulnerabilité de Zildo
 		setPx(0.0f);
 		setPy(0.0f);
@@ -334,7 +334,7 @@ public class PersoZildo extends Perso {
 		int nSpr=zildo.getNSpr();
 		Angle angle=zildo.getAngle();
 		MouvementZildo mouvement=zildo.getMouvement();
-		int en_bras=zildo.getEn_bras();
+		Element en_bras=zildo.getEn_bras();
 	
 		// Default : invisible
 		ombre.setVisible(false);
@@ -349,7 +349,7 @@ public class PersoZildo extends Perso {
 	
 		switch (mouvement) {
 			 // Bouclier
-			case MOUVEMENT_VIDE:
+			case VIDE:
 				switch (angle) {
 					case NORD:
 						bouclier.setX(xx+8);
@@ -383,46 +383,49 @@ public class PersoZildo extends Perso {
 				bouclier.setVisible(true);
 				break;
 	
-			case MOUVEMENT_BRAS_LEVES:
-				yy+=2;
+			case BRAS_LEVES:
+				yy++;
+				if (angle.isVertical()) {
+					yy++;
+				}
 				if (objetEnMain != null) {
 					objetEnMain.setX(xx+1);
 					objetEnMain.setY(yy+7);
 					objetEnMain.setZ(21);
 				}
 				break;
-			case MOUVEMENT_SOULEVE:
+			case SOULEVE:
 			    yy+=3;
 				break;
-			case MOUVEMENT_TIRE:
+			case TIRE:
 				if (angle.isHorizontal()) yy+=1; else {
 					if (angle==Angle.NORD) yy+=3; else yy+=4;
 				}
 				if (nSpr==47) xx-=3;
 				break;
 	
-			case MOUVEMENT_POUSSE:
+			case POUSSE:
 				yy+=1;
 				if (angle==Angle.NORD) yy+=1;
 				else if (angle==Angle.SUD) yy+=3;
 				break;
 	
-			case MOUVEMENT_ATTAQUE_EPEE:
+			case ATTAQUE_EPEE:
 				xx+=decalxSword[angle.value][nSpr-(54+6*angle.value)];
 				yy+=decalySword[angle.value][nSpr-(54+6*angle.value)];
 				bouclier.setVisible(false);
 				break;
 	
-			case MOUVEMENT_ATTAQUE_ARC:
+			case ATTAQUE_ARC:
 				xx+=decalxBow[angle.value][nSpr-(108+3*angle.value)];
 				yy+=decalyBow[angle.value][nSpr-(108+3*angle.value)];
 				bouclier.setVisible(false);
 				break;
-			case MOUVEMENT_TOUCHE:
+			case TOUCHE:
 				nSpr=78+angle.value;
 				break;
 	
-			case MOUVEMENT_SAUTE:
+			case SAUTE:
 				// Zildo est en train de sauter, on affiche l'ombre à son arrivée
 	
 				ombre.setX(zildo.getDx()); //(float) (xx-ax)); //-6;)
@@ -434,19 +437,19 @@ public class PersoZildo extends Perso {
 				bouclier.setVisible(false);
 	
 				// Trajectoire en cloche
-				double alpha=(Math.PI*en_bras)/32.0f;
+				double alpha=(Math.PI*attente)/32.0f;
 				yy=yy-(int) (8.0f*Math.sin(alpha));
 	
 				break;
 	
-			case MOUVEMENT_FIERTEOBJET:
+			case FIERTEOBJET:
 				yy-=10;
 				break;
 		}
 	
 		// On affiche Zildo
 	
-		touche=(mouvement==MouvementZildo.MOUVEMENT_TOUCHE || zildo.getCompte_dialogue()!=0);
+		touche=(mouvement==MouvementZildo.TOUCHE || zildo.getCompte_dialogue()!=0);
 		// Clignotement de Zildo
 		touche=( touche && ((compteur_animation >> 1) % 2)==0 );
 		visible=!touche;
@@ -461,7 +464,7 @@ public class PersoZildo extends Perso {
 			//spriteManagement.aff_spriteplace(BANK_ZILDO,100+(compteur_animation / 20),xx+1,yy+1);
 		}
 		
-		if (mouvement==MouvementZildo.MOUVEMENT_BRAS_LEVES)
+		if (mouvement==MouvementZildo.BRAS_LEVES)
 		{
 			// On affiche ce que Zildo a dans les mains
 	
@@ -476,12 +479,12 @@ public class PersoZildo extends Perso {
 				objetEnMain.setX(objX);
 				objetEnMain.setY(objY);
 			}
-			if (en_bras==32) {// Il s'agit d'une poule
+			if (en_bras.getNSpr()==32) {// Il s'agit d'une poule
 				//spriteManagement.aff_sprite(BANK_PNJ,35+compteur_animation / 20,xx-7,yy-21-8);
 			} else {
 				//spriteManagement.aff_sprite(BANK_ELEMENTS,en_bras,xx-7,yy-21-8);
 			}
-		} else if (mouvement==MouvementZildo.MOUVEMENT_SOULEVE)
+		} else if (mouvement==MouvementZildo.SOULEVE)
 		{
 			// Si Zildo est en train de soulever un objet, on l'affiche
 			//xx-=8;yy-=11;
@@ -515,21 +518,21 @@ public class PersoZildo extends Perso {
 		reverse = 0;
 		switch (getMouvement())
 		{
-		case MOUVEMENT_VIDE:
+		case VIDE:
 			setSpr(ZildoDescription.getMoving(angle, ((pos_seqsprite+1) % (8*Constantes.speed)) / Constantes.speed));
 			//setNSpr(angle.value*7 + seq_zildoDeplacement[angle.value][((pos_seqsprite+1) % (8*Constantes.speed)) / Constantes.speed]);
 			break;
-		case MOUVEMENT_SAUTE:
+		case SAUTE:
 			setNSpr(angle.value + 96);
 			break;
-		case MOUVEMENT_BRAS_LEVES:
+		case BRAS_LEVES:
 			if (angle.isVertical()) {
 				setNSpr(angle.value*4 + seq_2[(pos_seqsprite % (8*Constantes.speed)) / Constantes.speed]+28);
 			} else {
 				setNSpr(((angle.value-1) / 2)*8 + seq_1[(pos_seqsprite % (4*Constantes.speed)) / Constantes.speed]+33);
 				}
 			break;
-		case MOUVEMENT_SOULEVE:
+		case SOULEVE:
 			switch (angle) {
 				case NORD:setNSpr(44); break;
 				case EST:setNSpr(52); break;
@@ -537,23 +540,23 @@ public class PersoZildo extends Perso {
 				case OUEST:setNSpr(53); break;
 			}
 			break;
-		case MOUVEMENT_TIRE:
+		case TIRE:
 			setNSpr(44+2*angle.value+pos_seqsprite);
 			break;
-		case MOUVEMENT_TOUCHE:
+		case TOUCHE:
 			setNSpr(78+angle.value);
 			break;
-		case MOUVEMENT_POUSSE:
+		case POUSSE:
 			if (angle==Angle.NORD) {
 				setNSpr(seq_2[(pos_seqsprite/2 % (8*Constantes.speed)) / Constantes.speed]+82);
 			} else {
 				setNSpr(angle.value*3 + seq_1[(pos_seqsprite/2 % (4*Constantes.speed)) / Constantes.speed]+84);
 			}
 			break;
-		case MOUVEMENT_ATTAQUE_EPEE:
+		case ATTAQUE_EPEE:
 		    setNSpr(angle.value*6 + (((6*2-getAttente()-1) % (6*2)) / 2) + 54);
 			break;
-		case MOUVEMENT_ATTAQUE_ARC:
+		case ATTAQUE_ARC:
 			
 		    setNSpr(angle.value*3 + seq_zildoBow[(((4*8-getAttente()-1) % (4*8)) / 8)] + 108);
 			if (attente==2*8) {
@@ -630,9 +633,9 @@ public class PersoZildo extends Perso {
 		}
 		
 		// On passe en position "soulève", et on attend 20 frames
-		setMouvement(MouvementZildo.MOUVEMENT_SOULEVE);
+		setMouvement(MouvementZildo.SOULEVE);
 		setAttente(20);
-		setEn_bras(obj);
+		setEn_bras(elem);
 
 	}
 	
@@ -643,8 +646,8 @@ public class PersoZildo extends Perso {
 		//On jette un objet
 		Element element=getPersoSprites().get(linkedSpr_CARRIED);
 		getPersoSprites().remove(linkedSpr_CARRIED);
-		setEn_bras(0);
-		setMouvement(MouvementZildo.MOUVEMENT_VIDE);
+		setEn_bras(null);
+		setMouvement(MouvementZildo.VIDE);
 		element.setX(getX()+1);
 		element.setY(getY()+4);
 		element.setZ(21.0f+1.0f);
@@ -705,7 +708,9 @@ public class PersoZildo extends Perso {
 	 * @param object
 	 */
 	public void pushSomething(SpriteEntity object) {
-		pushingSprite=object;
+		if (pushingSprite == null) {
+			pushingSprite=object;
+		}
 	}
 
 	public Point getPosAvantSaut() {

@@ -29,7 +29,7 @@ public abstract class Perso extends Element {
     protected int dx,dy,dz;				// Destination
     protected float px,py;				// Quand le perso est propulsé (touché)
     protected int pos_seqsprite;
-    private int en_bras;			// Si c'est Zildo, l'objet qu'il porte.Note : 10=poule
+    private Element en_bras;			// Si c'est Zildo, l'objet qu'il porte.Note : 10=poule
     protected MouvementZildo mouvement;			// Situation du perso:debout,couché,attaque...
     protected int cptMouvement;	// Un compteur pour les mouvements des PNJ
     private int coming_map;		// 1 si Zildo entre sur une map,sinon 255
@@ -155,11 +155,11 @@ public abstract class Perso extends Element {
 		this.pos_seqsprite = pos_seqsprite;
 	}
 
-	public int getEn_bras() {
+	public Element getEn_bras() {
 		return en_bras;
 	}
 
-	public void setEn_bras(int en_bras) {
+	public void setEn_bras(Element en_bras) {
 		this.en_bras = en_bras;
 	}
 

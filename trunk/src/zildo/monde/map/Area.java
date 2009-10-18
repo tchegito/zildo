@@ -392,7 +392,7 @@ public class Area {
 				file.put((int) perso.z);
 				file.put((byte) perso.getQuel_spr().first());
 				file.put((byte) perso.getInfo());
-				file.put((byte) perso.getEn_bras());
+				file.put(0); //(byte) perso.getEn_bras());
 				file.put((byte) perso.getQuel_deplacement().ordinal());
 				file.put((byte) perso.getAngle().ordinal());
 				file.put(perso.getNom(), 9);
@@ -517,7 +517,11 @@ public class Area {
 				perso.setZ(z);
 				perso.setQuel_spr(desc);
 				perso.setInfo(p_buffer.readUnsignedByte());
-				perso.setEn_bras(p_buffer.readUnsignedByte());
+				int a=p_buffer.readUnsignedByte();
+				if (a!= 0) {
+					throw new RuntimeException("enbras="+a);
+				}
+				perso.setEn_bras(null);
 				perso.setQuel_deplacement(MouvementPerso.fromInt(p_buffer.readUnsignedByte()));
 				perso.setAngle(Angle.fromInt(p_buffer.readUnsignedByte()));
 
@@ -531,7 +535,7 @@ public class Area {
 				perso.setZone_deplacement(zo);
 				perso.setPv(3);
 				perso.setDx(-1);
-				perso.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
+				perso.setMouvement(MouvementZildo.VIDE);
 
 				if (perso.getQuel_spr().first() >= 128) {
 					perso.setNBank(SpriteBank.BANK_PNJ2);

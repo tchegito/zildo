@@ -1,6 +1,7 @@
 package zildo.client;
 
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import zildo.Zildo;
 import zildo.client.gui.DialogDisplay;
@@ -21,7 +22,6 @@ import zildo.monde.map.Case;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
-import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
 
 public class ClientEngineZildo {
@@ -46,7 +46,6 @@ public class ClientEngineZildo {
 	
 	// Time left to unblock player's moves
 	private int waitingScene;
-	private int engineEvent;
 	
 	/**
 	 * Should be called after {@link #initializeServer}
@@ -108,7 +107,6 @@ public class ClientEngineZildo {
 		
 		client=p_client;
 		waitingScene=0;
-		engineEvent=Constantes.ENGINEEVENT_NOEVENT;
 	}
 	
 	
@@ -134,7 +132,6 @@ public class ClientEngineZildo {
 		}
 		
 		// Tile engine
-		//TODO: turn on the compteur_animation
 		tileEngine.updateTiles(mapDisplay.getCamerax(),mapDisplay.getCameray(),
 				mapDisplay.getCurrentMap(),mapDisplay.getCompteur_animation());
 
@@ -168,27 +165,40 @@ public class ClientEngineZildo {
 	
 		// Engine event management
 		//TODO: turn on the events management
-		/*
-		if (engineEvent == Constantes.ENGINEEVENT_NOEVENT && mapManagement.isChangingMap()) {
-			// Changing map : 1/3 we launch the fade out
-			engineEvent=Constantes.ENGINEEVENT_CHANGINGMAP_FADEOUT;
-			waitingScene=1;
-			guiManagement.fadeOut();
-		} else if (engineEvent == Constantes.ENGINEEVENT_CHANGINGMAP_FADEOUT && guiManagement.isFadeOver()) {
-            // Changing map : 2/3 we load the new map and launch the fade in
-            engineEvent = Constantes.ENGINEEVENT_CHANGINGMAP_FADEIN;
-            mapManagement.processChangingMap();
-            Area map = mapManagement.getCurrentMap();
-            mapDisplay.setCurrentMap(map);
-			spriteDisplay.initCamera();
-            guiManagement.fadeIn();
-        } else if (engineEvent == Constantes.ENGINEEVENT_CHANGINGMAP_FADEIN && guiManagement.isFadeOver()) {
-			// Changing map : 3/3 we unblock the player
-			engineEvent=Constantes.ENGINEEVENT_NOEVENT;
-			waitingScene=0;
-		}
-		*/
 
+		
+
+	}
+	
+	public ClientEvent renderEvent(ClientEvent p_event) {
+		
+		ClientEvent retEvent=p_event;
+		
+		switch (p_event) {
+		case CHANGINGMAP_ASKED:
+			// Changing map : 1/3 we launch the fade out
+			retEvent=ClientEvent.CHANGINGMAP_FADEOUT;
+			guiDisplay.fadeOut();
+			break;
+		case CHANGINGMAP_FADEOUT:
+			if (guiDisplay.isFadeOver()) {
+				retEvent=ClientEvent.CHANGINGMAP_FADEOUT_OVER;
+			}
+			break;
+		case CHANGINGMAP_LOADED:
+            // Changing map : 2/3 we load the new map and launch the fade in
+			retEvent = ClientEvent.CHANGINGMAP_FADEIN;
+			guiDisplay.fadeIn();
+			break;
+		case CHANGINGMAP_FADEIN:
+			if (guiDisplay.isFadeOver()) {
+				// Changing map : 3/3 we unblock the player
+	        	retEvent=ClientEvent.NOEVENT;
+	        	break;
+			}
+		}
+		
+		return retEvent;
 	}
 	
 	/**
@@ -237,12 +247,13 @@ public class ClientEngineZildo {
 					int rayon=c.cr;
 					int color=15;
 					Perso damager=c.perso;
+					Vector4f alphaColor=new Vector4f(0.2f, 0.4f, 0.9f, 16.0f);
 					if (damager != null && damager.getInfo() == 1) {
 						color=20;
 					}
 					if (c.size==null) {
-						ortho.box(c.cx-rayon/2-mapDisplay.getCamerax(), 
-								c.cy-rayon/2-mapDisplay.getCameray(), rayon*2, rayon*2,color, null);
+						ortho.box(c.cx-rayon-mapDisplay.getCamerax(), 
+								c.cy-rayon-mapDisplay.getCameray(), rayon*2, rayon*2, 0, alphaColor);
 					} else {
 						Point center=new Point(c.cx-mapDisplay.getCamerax(), c.cy-mapDisplay.getCameray());
 						Rectangle rect=new Rectangle(center, c.size);

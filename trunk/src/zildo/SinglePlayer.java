@@ -8,6 +8,7 @@ import java.util.Set;
 
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
+import zildo.client.ClientEvent;
 import zildo.client.Client.ClientType;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
@@ -68,7 +69,6 @@ public class SinglePlayer {
         	state = new ClientState(null, zildoId);
         }
         ClientEngineZildo.spriteDisplay.setZildoId(zildoId);
-        
 
         while (!done) {
         	states.clear();
@@ -80,26 +80,32 @@ public class SinglePlayer {
                 states.addAll(server.getClientStates());
             }
             
-            // Reset queues
-        	EngineZildo.soundManagement.resetQueue();
-        	EngineZildo.dialogManagement.resetQueue();
-
-            // Read keyboard
-            KeyboardInstant instant = KeyboardInstant.getKeyboardInstant();
-            state.keys = instant;
-            states.add(state);
+            // Render events (1: client and 2: server)
+            state.event = clientEngineZildo.renderEvent(state.event);
+            state.event = engineZildo.renderEvent(state.event);
+	            
+            if (state.event == ClientEvent.NOEVENT) {
+	            // Reset queues
+	        	EngineZildo.soundManagement.resetQueue();
+	        	EngineZildo.dialogManagement.resetQueue();
+	
+	            // Read keyboard
+	            KeyboardInstant instant = KeyboardInstant.getKeyboardInstant();
+	            state.keys = instant;
+	            states.add(state);
+            }
 
             // Update server
             engineZildo.renderFrame(states);
-
-            // Update client
-            ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(state));
 
             // Dialogs
             if (ClientEngineZildo.dialogDisplay.launchDialog(EngineZildo.dialogManagement.getQueue())) {
             	EngineZildo.dialogManagement.stopDialog(state);
             }
-            
+
+            // Update client
+            ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(state));
+
             // Render client
             done = client.render();
             

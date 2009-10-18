@@ -470,6 +470,7 @@ public class Element extends SpriteEntity {
 				break;
 			case JAR:
 			case STONE:
+			case STONE_HEAVY:
 			case ROCK_BALL:
 				EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_ECLATEPIERRE,(int) x,(int) y,0, null);
 				EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);

@@ -282,7 +282,7 @@ public class TileCollision {
 
             }
 
-            tileInfos[onmap] = tileInfo;
+            tileInfos[i] = tileInfo;
 
         }
     }
