@@ -3,6 +3,7 @@
  */
 package zildo.server;
 
+import zildo.client.ClientEvent;
 import zildo.fwk.Identified;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.input.KeyboardState;
@@ -15,6 +16,7 @@ import zildo.monde.sprites.persos.PersoZildo;
  * -network adress
  * -keys pressed
  * -client's zildo
+ * -events currently active (dialog, map change...)
  * 
  * @author tchegito
  *
@@ -28,6 +30,7 @@ public class ClientState {
     public int inactivityTime;		// Number of frame where server gets nothing from this client
     public DialogState dialogState;	// Client's dialoguing state
     public String playerName;
+    public ClientEvent event;
     
     public ClientState(TransferObject p_location, int p_zildoId) {
         location = p_location;
@@ -39,5 +42,6 @@ public class ClientState {
         if (p_location != null) {
         	playerName=p_location.address.getHostName();
         }
+        event=ClientEvent.NOEVENT;
     }
 }

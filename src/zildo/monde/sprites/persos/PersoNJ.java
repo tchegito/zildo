@@ -69,7 +69,7 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public boolean beingWounded(float cx, float cy, Perso p_shooter) {
 		project(cx, cy, 6);
-		this.setMouvement(MouvementZildo.MOUVEMENT_TOUCHE);
+		this.setMouvement(MouvementZildo.TOUCHE);
 		this.setWounded(true);
 		this.setAlerte(true);				// Zildo is detected, if it wasn't done !
 		this.setPv(getPv()-1);

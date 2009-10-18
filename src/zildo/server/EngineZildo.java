@@ -2,6 +2,8 @@ package zildo.server;
 
 import java.util.Collection;
 
+import zildo.client.ClientEngineZildo;
+import zildo.client.ClientEvent;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
 import zildo.monde.dialog.DialogManagement;
@@ -119,7 +121,18 @@ public class EngineZildo {
 				playerManagement.manageKeyboard(state);
 				state.keys=null;
 			}
+			if (mapManagement.isChangingMap(state.zildo) && state.event==ClientEvent.NOEVENT) {
+				state.event=ClientEvent.CHANGINGMAP_ASKED;
+			}
 		}
+		
+		// TODO: Should we block the game ?
+		boolean block=false;
+		if (!game.multiPlayer) {
+			PersoZildo zildo=persoManagement.getZildo();
+			block=zildo.isInventoring();
+		}
+		
 		// 2) Rest of the world
 		collideManagement.initFrame();
 		spriteManagement.updateSprites();
@@ -127,6 +140,20 @@ public class EngineZildo {
 		mapManagement.updateMap();
 		
 		compteur_animation++;
+	}
+	
+	public ClientEvent renderEvent(ClientEvent p_event) {
+		ClientEvent retEvent=p_event;
+		
+		switch (p_event) {
+		case CHANGINGMAP_FADEOUT_OVER:
+        	EngineZildo.mapManagement.processChangingMap();
+            ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+            retEvent=ClientEvent.CHANGINGMAP_LOADED;
+            break;
+            
+		}
+		return retEvent;
 	}
 	
 	void loadMap(String mapname)

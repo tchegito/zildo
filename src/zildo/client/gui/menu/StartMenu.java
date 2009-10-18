@@ -8,7 +8,6 @@ import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.net.InternetClient;
-import zildo.fwk.net.NetSend;
 import zildo.fwk.net.ServerInfo;
 import zildo.monde.Game;
 

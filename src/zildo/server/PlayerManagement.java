@@ -75,30 +75,32 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	void handleCommon() {
 	
-		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ATTACK)) {
-			keyPressAttack();
-		} else {
-			keyReleaseAttack();
-		}
-	
-		if (false) {	// Unable for now the Topic key (this will come later)
-			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_TOPIC)) {
-				keyPressTopic();
+		if (heros.getAttente() == 0) {
+			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ATTACK)) {
+				keyPressAttack();
 			} else {
-				keyReleaseTopic();
+				keyReleaseAttack();
 			}
-		}
-	
-		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ACTION)) {
-			keyPressAction();
-		} else {
-			keyReleaseAction();
-		}
 		
-		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
-			keyPressInventory();
-		} else {
-			keyReleaseInventory();
+			if (false) {	// Unable for now the Topic key (this will come later)
+				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_TOPIC)) {
+					keyPressTopic();
+				} else {
+					keyReleaseTopic();
+				}
+			}
+		
+			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ACTION)) {
+				keyPressAction();
+			} else {
+				keyReleaseAction();
+			}
+			
+			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
+				keyPressInventory();
+			} else {
+				keyReleaseInventory();
+			}
 		}
 	}
 	
@@ -136,7 +138,7 @@ public class PlayerManagement {
 			if (Math.abs(heros.getPx()) + Math.abs(heros.getPy()) <0.2f) {
 				heros.stopBeingWounded();
 			}
-		} else if (heros.getMouvement() == MouvementZildo.MOUVEMENT_POUSSE && pushedEntity!=null)  {
+		} else if (heros.getMouvement() == MouvementZildo.POUSSE && pushedEntity!=null)  {
 		    // Zildo est en train de pousser : obstacle bidon ou bloc ?
 			
 			if (pushedEntity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
@@ -151,10 +153,10 @@ public class PlayerManagement {
 		
 		int zildoSpeed=Constantes.ZILDO_SPEED * EngineZildo.extraSpeed;
 		
-		if (heros.getMouvement() == MouvementZildo.MOUVEMENT_SAUTE) {
+		if (heros.getMouvement() == MouvementZildo.SAUTE) {
 	    	// Zildo est en train de sauter ! Il est donc inactif
-			if (heros.getEn_bras() == 32) {
-				heros.setMouvement(MouvementZildo.MOUVEMENT_VIDE); // Fin du saut, on repasse en mouvement normal
+			if (heros.getAttente() == 32) {
+				heros.setMouvement(MouvementZildo.VIDE); // Fin du saut, on repasse en mouvement normal
 				// Si Zildo atterit dans l'eau, on le remet à son ancienne position avec un coeur de moins
 				int cx=xx / 16;
 				int cy=yy / 16;
@@ -171,29 +173,29 @@ public class PlayerManagement {
 				} else {
 					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, heros);
 				}
-				heros.setEn_bras(0);
+				heros.setAttente(0);
 			} else {
 				float pasx=saut_angle[heros.getDz()].getX() / 32.0f;
 				float pasy=saut_angle[heros.getDz()].getY() / 32.0f;
 				heros.setX(heros.getX()+pasx);
 				heros.setY(heros.getY()+pasy);
-				heros.setEn_bras(heros.getEn_bras()+1);
+				heros.setAttente(heros.getAttente()+1);
 			}
 		} else {
 			if (heros.getAttente()!=0) {
 				heros.setAttente(heros.getAttente()-1);
-				if (heros.getMouvement()!=MouvementZildo.MOUVEMENT_ATTAQUE_EPEE) {
+				if (heros.getMouvement()!=MouvementZildo.ATTAQUE_EPEE) {
 					needMovementAdjustment=false;
 				}
 			} else {
 				switch (heros.getMouvement()) {
-					case MOUVEMENT_SOULEVE:
-						heros.setMouvement(MouvementZildo.MOUVEMENT_BRAS_LEVES);
+					case SOULEVE:
+						heros.setMouvement(MouvementZildo.BRAS_LEVES);
 						break;
-                    case MOUVEMENT_ATTAQUE_EPEE:
-                    case MOUVEMENT_ATTAQUE_ARC:
-                    case MOUVEMENT_ATTAQUE_BOOMERANG:
-						heros.setMouvement(MouvementZildo.MOUVEMENT_VIDE);		// Awaiting for key pressed
+                    case ATTAQUE_EPEE:
+                    case ATTAQUE_ARC:
+                    case ATTAQUE_BOOMERANG:
+						heros.setMouvement(MouvementZildo.VIDE);		// Awaiting for key pressed
 						break;
 				}
 			}
@@ -203,7 +205,7 @@ public class PlayerManagement {
 			Angle sauvangle=heros.getAngle();
 			// ATTACK key
 	
-			if (heros.getMouvement()!=MouvementZildo.MOUVEMENT_ATTAQUE_EPEE && heros.getMouvement()!=MouvementZildo.MOUVEMENT_ATTAQUE_ARC) {
+			if (heros.getAttente() == 0 && heros.getMouvement()!=MouvementZildo.ATTAQUE_EPEE && heros.getMouvement()!=MouvementZildo.ATTAQUE_ARC) {
 				// Zildo can move ONLY if he isn't attacking
 				// LEFT/RIGHT key
 				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_LEFT)) {
@@ -224,7 +226,7 @@ public class PlayerManagement {
 				}
 			}
 	
-			if (heros.getMouvement()==MouvementZildo.MOUVEMENT_TIRE) {
+			if (heros.getMouvement()==MouvementZildo.TIRE) {
 				if (heros.getAngle()!=sauvangle && Angle.rotate(heros.getAngle(),sauvangle.value).isVertical()) {	 // A Vérifier !
 					heros.setPos_seqsprite(1);	// Zildo recule sa tête pour tirer
 				} else {
@@ -239,8 +241,8 @@ public class PlayerManagement {
 			// Is there any movement ?
 			if ((int) heros.x == xx &&
 				(int) heros.y == yy) {
-				if (heros.getMouvement().equals(MouvementZildo.MOUVEMENT_POUSSE)) {
-					heros.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
+				if (heros.getMouvement().equals(MouvementZildo.POUSSE)) {
+					heros.setMouvement(MouvementZildo.VIDE);
 				}
 				heros.setPos_seqsprite(-1);
 				heros.setNSpr(0);
@@ -256,7 +258,7 @@ public class PlayerManagement {
 		
 				if ((int) heros.x == xx && (int) heros.y == yy)
 				{
-					if (heros.getMouvement()==MouvementZildo.MOUVEMENT_VIDE)
+					if (heros.getMouvement()==MouvementZildo.VIDE)
 					{
 						if (heros.getDx()==15)
 						{
@@ -274,12 +276,12 @@ public class PlayerManagement {
 								// On sauve la position de Zildo avant son saut
 								Point zildoAvantSaut=new Point((int) heros.getX(),
 														 (int) heros.getY());
-								heros.setMouvement(MouvementZildo.MOUVEMENT_SAUTE);
+								heros.setMouvement(MouvementZildo.SAUTE);
 								heros.setDx(xx+saut_angle[heros.getDz()].getX());
 								heros.setDy(yy+saut_angle[heros.getDz()].getY());
 								heros.setX(xx);
 								heros.setY(yy);
-								heros.setEn_bras(0);
+								heros.setEn_bras(null);
 								heros.setPosAvantSaut(zildoAvantSaut);
 								EngineZildo.soundManagement.broadcastSound(BankSound.ZildoTombe, heros);
 							}
@@ -290,7 +292,7 @@ public class PlayerManagement {
 					else
 						heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512); // Sinon on augmente (Zildo pousse)
 				}	// if Collide == true
-				else if (!heros.getMouvement().equals(MouvementZildo.MOUVEMENT_SAUTE)) {
+				else if (!heros.getMouvement().equals(MouvementZildo.SAUTE)) {
 					// Pas d'obstacles ? Mais peut-être une porte !
 					int cx=xx / 16;
 					int cy=yy / 16;
@@ -315,14 +317,14 @@ public class PlayerManagement {
 		
 					// -. Yes
 				    heros.setDx(0);                          // Zildo n'est pas bloqué => 0
-					if (heros.getMouvement()==MouvementZildo.MOUVEMENT_POUSSE)
-						heros.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
+					if (heros.getMouvement()==MouvementZildo.POUSSE)
+						heros.setMouvement(MouvementZildo.VIDE);
 		
 					int diffx=xx - (int) heros.x;
 					int diffy=yy - (int) heros.y;
 					float coeff;
 					// On ralentit le mouvement de Zildo s'il est diagonal, ou si Zildo est dans un escalier
-					if (ralentit || (diffx!=0 && diffy!=0 && heros.getMouvement()!=MouvementZildo.MOUVEMENT_TOUCHE))
+					if (ralentit || (diffx!=0 && diffy!=0 && heros.getMouvement()!=MouvementZildo.TOUCHE))
 					{
 						if (ralentit)
 							coeff=0.5f;
@@ -340,9 +342,9 @@ public class PlayerManagement {
 				}
 			}
 		}
-		if (heros.getDx()==16 && heros.getMouvement()==MouvementZildo.MOUVEMENT_VIDE) {
+		if (heros.getDx()==16 && heros.getMouvement()==MouvementZildo.VIDE) {
 			heros.setDx(15);
-			heros.setMouvement(MouvementZildo.MOUVEMENT_POUSSE);
+			heros.setMouvement(MouvementZildo.POUSSE);
 		}
 	
 		// Interpret animation paramaters to get the real sprite to display
@@ -405,9 +407,9 @@ public class PlayerManagement {
 			if (dialogState.dialoguing) {
 				EngineZildo.dialogManagement.actOnDialog(client.location, DialogDisplay.ACTIONDIALOG_ACTION);
 			} else if (!heros.isInventoring()) { //
-				if (heros.getMouvement()==MouvementZildo.MOUVEMENT_BRAS_LEVES) {
+				if (heros.getMouvement()==MouvementZildo.BRAS_LEVES) {
 					heros.throwSomething();
-				} else if (heros.getMouvement()!=MouvementZildo.MOUVEMENT_BRAS_LEVES) {
+				} else if (heros.getMouvement()!=MouvementZildo.BRAS_LEVES) {
 					// On teste s'il y a un personnage à qui parler
 				/*    with_dialogue=0;
 					i=0;
@@ -491,7 +493,7 @@ public class PlayerManagement {
 							EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_FROMCHEST,16*newx+8,16*newy+16,51, null);
 							//EngineZildo.setWaitingScene(20);
 						} else if (!EngineZildo.mapManagement.isWalkable(on_map)) {
-							heros.setMouvement(MouvementZildo.MOUVEMENT_TIRE);
+							heros.setMouvement(MouvementZildo.TIRE);
 						}
 					}
 				}
@@ -506,8 +508,8 @@ public class PlayerManagement {
 	void keyReleaseAction() {
 		if (keysState.key_actionPressed) {
 			keysState.key_actionPressed=false;
-			if (heros.getMouvement()==MouvementZildo.MOUVEMENT_TIRE) {
-				heros.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
+			if (heros.getMouvement()==MouvementZildo.TIRE) {
+				heros.setMouvement(MouvementZildo.VIDE);
 			}
 		}
 	}
@@ -516,7 +518,7 @@ public class PlayerManagement {
 	// keyPressAttack
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyPressAttack() {
-		if (!keysState.key_attackPressed && heros.getEn_bras() == 0 && !client.dialogState.dialoguing && !heros.isInventoring()) {
+		if (!keysState.key_attackPressed && heros.getEn_bras() == null && !client.dialogState.dialoguing && !heros.isInventoring()) {
 			// Set Zildo in attack stance
 			heros.attack();
 		}
@@ -529,8 +531,8 @@ public class PlayerManagement {
 	void keyReleaseAttack() {
 		if (keysState.key_attackPressed) {
 			keysState.key_attackPressed=false;
-			if (heros.getMouvement()==MouvementZildo.MOUVEMENT_TIRE) {
-				heros.setMouvement(MouvementZildo.MOUVEMENT_VIDE);
+			if (heros.getMouvement()==MouvementZildo.TIRE) {
+				heros.setMouvement(MouvementZildo.VIDE);
 			}
 		}
 	}
@@ -560,7 +562,7 @@ public class PlayerManagement {
 	// keyPressInventory
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyPressInventory() {
-		if (!keysState.key_inventoryPressed && !client.dialogState.dialoguing && heros.getMouvement()==MouvementZildo.MOUVEMENT_VIDE) {
+		if (!keysState.key_inventoryPressed && !client.dialogState.dialoguing && heros.getMouvement()==MouvementZildo.VIDE) {
 			if (!heros.isInventoring()) {
 				heros.lookInventory();
 			} else {
