@@ -19,6 +19,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoGarde;
 import zildo.monde.sprites.persos.PersoGardeVert;
+import zildo.monde.sprites.persos.PersoHen;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoVolant;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -497,6 +498,9 @@ public class Area {
 					perso = new PersoNJ();
 				} else {
 					switch (desc) {
+						case POULE:
+							perso =new PersoHen();
+							break;
 						case BAS_GARDEVERT:
 							perso = new PersoGardeVert();
 							break;
