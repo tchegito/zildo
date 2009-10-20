@@ -24,6 +24,7 @@ import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
 
 
 public class PersoZildo extends Perso {
@@ -48,6 +49,9 @@ public class PersoZildo extends Perso {
 	static int linkedSpr_SHIELD=0;
 	static int linkedSpr_SHADOW=1;
 	static int linkedSpr_WET_FEET=2;
+	
+	private int count=0;
+	private boolean inWater=false;
 	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
@@ -102,7 +106,7 @@ public class PersoZildo extends Perso {
 		piedsMouilles.setX(getX());
 		piedsMouilles.setY(getY());
 		piedsMouilles.setNBank(SpriteBank.BANK_ZILDO);
-		piedsMouilles.setNSpr(103);
+		piedsMouilles.setNSpr(100);
 	
 		addPersoSprites(bouclier);
 		addPersoSprites(ombre);
@@ -331,7 +335,7 @@ public class PersoZildo extends Perso {
 	
 		// Default : invisible
 		ombre.setVisible(false);
-		piedsMouilles.setVisible(false);
+		piedsMouilles.setVisible(inWater);
 		bouclier.setVisible(false);
 	
 		// Corrections , décalages du sprite
@@ -343,6 +347,7 @@ public class PersoZildo extends Perso {
 		switch (mouvement) {
 			 // Bouclier
 			case VIDE:
+				bouclier.setForeground(false);
 				switch (angle) {
 					case NORD:
 						bouclier.setX(xx+8);
@@ -441,7 +446,12 @@ public class PersoZildo extends Perso {
 		}
 	
 		// On affiche Zildo
-	
+		piedsMouilles.setX(x+ (angle.isVertical() || angle==Angle.OUEST ? 1 : 0));
+		piedsMouilles.setY(y+9 + 1);
+		piedsMouilles.setZ(3);
+		piedsMouilles.setNSpr(100 + (compteur_animation / 6) % 3);
+		piedsMouilles.setForeground(false);
+		
 		touche=(mouvement==MouvementZildo.TOUCHE || zildo.getCompte_dialogue()!=0);
 		// Clignotement de Zildo
 		touche=( touche && ((compteur_animation >> 1) % 2)==0 );
@@ -695,6 +705,40 @@ public class PersoZildo extends Perso {
 	
 	public boolean isInventoring() {
 		return inventoring;
+	}
+	
+	public boolean walkCase(int p_cx, int p_cy) {
+		MapManagement mapManagement=EngineZildo.mapManagement;
+		int onmap=mapManagement.getCurrentMap().readmap(p_cx,p_cy);
+		boolean slowDown=false;
+		inWater=false;
+		switch (onmap) {
+		case 278:
+			mapManagement.getCurrentMap().writemap(p_cx,p_cy,314);
+			mapManagement.getCurrentMap().writemap(p_cx+1,p_cy,315);
+			EngineZildo.soundManagement.broadcastSound(BankSound.OuvrePorte, this);
+			break;
+		case 279:
+			mapManagement.getCurrentMap().writemap(p_cx-1,p_cy,314);
+			mapManagement.getCurrentMap().writemap(p_cx,p_cy,315);
+			EngineZildo.soundManagement.broadcastSound(BankSound.OuvrePorte, this);
+			break;
+		case 846:
+			// Water
+			inWater=true;
+			if (count>15) {
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPatauge, this);
+				count=0;
+			} else {
+				count++;
+			}
+			break;
+		case 857: case 858: case 859: case 860:
+		case 861: case 862: case 863: case 864:
+			slowDown=true;
+			break;
+		}
+		return slowDown;
 	}
 	
 	/**

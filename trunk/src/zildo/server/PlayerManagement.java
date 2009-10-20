@@ -296,24 +296,7 @@ public class PlayerManagement {
 					// Pas d'obstacles ? Mais peut-être une porte !
 					int cx=xx / 16;
 					int cy=yy / 16;
-					onMap=mapManagement.getCurrentMap().readmap(cx,cy);
-					boolean ralentit=false;
-					switch (onMap) {
-						case 278:
-							mapManagement.getCurrentMap().writemap(cx,cy,314);
-							mapManagement.getCurrentMap().writemap(cx+1,cy,315);
-							EngineZildo.soundManagement.broadcastSound(BankSound.OuvrePorte, heros);
-							break;
-						case 279:
-							mapManagement.getCurrentMap().writemap(cx-1,cy,314);
-							mapManagement.getCurrentMap().writemap(cx,cy,315);
-							EngineZildo.soundManagement.broadcastSound(BankSound.OuvrePorte, heros);
-							break;
-						case 857: case 858: case 859: case 860:
-						case 861: case 862: case 863: case 864:
-							ralentit=true;
-							break;
-					}
+					boolean ralentit=heros.walkCase(cx,cy);
 		
 					// -. Yes
 				    heros.setDx(0);                          // Zildo n'est pas bloqué => 0

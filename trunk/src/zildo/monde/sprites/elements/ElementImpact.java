@@ -11,8 +11,8 @@ public class ElementImpact extends Element {
 
 	public enum ImpactKind {
 		SIMPLEHIT(ElementDescription.IMPACT1, 4,1), 
-		EXPLOSION(ElementDescription.EXPLO1, 3,1), 
-		FIRESMOKE(ElementDescription.EXPLOSMOKE1, 3,4);
+		EXPLOSION(ElementDescription.EXPLO1, 3,2), 
+		FIRESMOKE(ElementDescription.EXPLOSMOKE1, 3,8);
 		
 		ElementDescription desc;
 		int seqLong;
@@ -72,11 +72,15 @@ public class ElementImpact extends Element {
 				setAjustedY((int) y+getSprModel().getTaille_y()/2);
 				break;
 			case EXPLOSION:
-				int valCounter=counter;
+				int valCounter=counter/kind.speed;
 				if (valCounter == seqExplo.length) {	// End of the sequence
 					composite.die(false);
 					// Create the ending smoke fog
-					EngineZildo.spriteManagement.spawnSprite(new ElementImpact(startX, startY, ImpactKind.FIRESMOKE));
+					for (int i=0;i<4;i++) {
+						int dx=(int) (Math.random()*32 - 16);
+						int dy=(int) (Math.random()*32 - 16);
+						EngineZildo.spriteManagement.spawnSprite(new ElementImpact(startX+dx, startY+dy, ImpactKind.FIRESMOKE));
+					}
 				} else {
 					addSpr=seqExplo[valCounter];
 					if (addSpr == 1) {
