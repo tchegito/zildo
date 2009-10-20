@@ -122,7 +122,7 @@ public class EngineZildo {
 				state.keys=null;
 			}
 			// Look for map change (only in single player for now)
-			if (!game.multiPlayer && mapManagement.isChangingMap(state.zildo) && state.event==ClientEvent.NOEVENT) {
+			if (mapManagement.isChangingMap(state.zildo) && state.event==ClientEvent.NOEVENT) {
 				state.event=ClientEvent.CHANGINGMAP_ASKED;
 			}
 		}

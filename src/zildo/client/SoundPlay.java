@@ -27,6 +27,7 @@ public class SoundPlay {
 		ZildoRamasse("ramasse.wav"),
 		ZildoPlonge("eau.wav"),
 		ZildoNage("eau2.wav"),
+		ZildoPatauge("eau3.wav"),
 		ZildoRecupVie("vie.wav"),
 		ZildoRecupCoeur("coeur.wav"),
 		ZildoRecupArgent("argent3.wav"),
