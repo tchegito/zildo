@@ -75,32 +75,32 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	void handleCommon() {
 	
-		if (heros.getAttente() == 0) {
+		if (heros.getEn_bras() == null) {
 			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ATTACK)) {
 				keyPressAttack();
 			} else {
 				keyReleaseAttack();
 			}
+		}
 		
-			if (false) {	// Unable for now the Topic key (this will come later)
-				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_TOPIC)) {
-					keyPressTopic();
-				} else {
-					keyReleaseTopic();
-				}
+		if (false) {	// Unable for now the Topic key (this will come later)
+			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_TOPIC)) {
+				keyPressTopic();
+			} else {
+				keyReleaseTopic();
 			}
+		}
+	
+		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ACTION)) {
+			keyPressAction();
+		} else {
+			keyReleaseAction();
+		}
 		
-			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ACTION)) {
-				keyPressAction();
-			} else {
-				keyReleaseAction();
-			}
-			
-			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
-				keyPressInventory();
-			} else {
-				keyReleaseInventory();
-			}
+		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
+			keyPressInventory();
+		} else {
+			keyReleaseInventory();
 		}
 	}
 	

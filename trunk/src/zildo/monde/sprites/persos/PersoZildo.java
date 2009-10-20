@@ -78,7 +78,7 @@ public class PersoZildo extends Perso {
 		setAngle(Angle.NORD);
 		setPos_seqsprite(-1);
 		setMouvement(MouvementZildo.VIDE);
-		setInfo(2);
+		setInfo(PersoInfo.ZILDO);
 		setMaxpv(10);
 		setPv(10);
 		setAlerte(false);
@@ -244,9 +244,7 @@ public class PersoZildo extends Perso {
 	
 		// Si Zildo a quelque chose dans les mains, on doit le laisser tomber
 		if (getEn_bras() != null) {
-			Element elem=persoSprites.get(3);
-			persoSprites.remove(3);
-			elem.az=-0.07f;
+			getEn_bras().az=-0.07f;
 			setEn_bras(null);
 		}
 		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoTouche, this);

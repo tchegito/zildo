@@ -121,7 +121,8 @@ public class EngineZildo {
 				playerManagement.manageKeyboard(state);
 				state.keys=null;
 			}
-			if (mapManagement.isChangingMap(state.zildo) && state.event==ClientEvent.NOEVENT) {
+			// Look for map change (only in single player for now)
+			if (!game.multiPlayer && mapManagement.isChangingMap(state.zildo) && state.event==ClientEvent.NOEVENT) {
 				state.event=ClientEvent.CHANGINGMAP_ASKED;
 			}
 		}
