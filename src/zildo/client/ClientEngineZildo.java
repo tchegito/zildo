@@ -22,6 +22,7 @@ import zildo.monde.map.Case;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.server.EngineZildo;
 
 public class ClientEngineZildo {
@@ -248,7 +249,7 @@ public class ClientEngineZildo {
 					int color=15;
 					Perso damager=c.perso;
 					Vector4f alphaColor=new Vector4f(0.2f, 0.4f, 0.9f, 16.0f);
-					if (damager != null && damager.getInfo() == 1) {
+					if (damager != null && damager.getInfo() == PersoInfo.ENEMY) {
 						color=20;
 					}
 					if (c.size==null) {

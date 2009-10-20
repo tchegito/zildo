@@ -15,13 +15,14 @@ import zildo.server.MapManagement;
 
 public abstract class Perso extends Element {
 	
-
-
+	public enum PersoInfo {
+		NEUTRAL, ENEMY, ZILDO, SHOOTABLE_NEUTRAL;
+	}
 
 	protected Zone zone_deplacement;
     private int compte_dialogue;
     private String nom;
-    protected int info;					// 0=Neutre  1=Ennemi  2=Zildo
+    protected PersoInfo info;					// 0=Neutre  1=Ennemi  2=Zildo
     protected boolean alerte;				// True=Zildo est reperé (Pieds dans l'eau si c'est Zildo)
     protected MouvementPerso quel_deplacement;      // Script
     protected PersoDescription quel_spr;				
@@ -67,11 +68,11 @@ public abstract class Perso extends Element {
 		this.nom = nom;
 	}
 
-	public int getInfo() {
+	public PersoInfo getInfo() {
 		return info;
 	}
 
-	public void setInfo(int info) {
+	public void setInfo(PersoInfo info) {
 		this.info = info;
 	}
 

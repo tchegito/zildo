@@ -13,6 +13,7 @@ import zildo.monde.map.Point;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 
 public class CollideManagement {
 
@@ -55,22 +56,22 @@ public class CollideManagement {
             Collision collider = tab_colli.get(i);
 
             Perso damager = collider.perso;
-            int infoDamager = damager == null ? 2 : damager.getInfo(); // If no one, consider it's from a Zildo
+            PersoInfo infoDamager = damager == null ? PersoInfo.ZILDO : damager.getInfo(); // If no one, consider it's from a Zildo
 
-            if (infoDamager == 1) { // PNJ -> they attack zildo
+            if (infoDamager == PersoInfo.ENEMY) { // PNJ -> they attack zildo
                 checkAllZildoWound(p_states, collider);
-            } else if (infoDamager == 2) { // ZILDO -> he attacks PNJ or another Zildo
+            } else if (infoDamager == PersoInfo.ZILDO) { // ZILDO -> he attacks PNJ or another Zildo
                 // 2) For each collision, check wether a monster/zildo gets wounded
                 for (int j = 0; j < tab_colli.size(); j++) {
                     Collision collided = tab_colli.get(j);
                     Perso damaged = collided.perso;
                     if (damaged != null) { // No one to damage : it's a bushes or rock
-                        int infoDamaged = damaged.getInfo();
+                    	PersoInfo infoDamaged = damaged.getInfo();
 
                         if (j != i && !damaged.equals(damager)) {
-                            if (infoDamaged == 1) { // Zildo hit an enemy
+                            if (infoDamaged == PersoInfo.ENEMY || infoDamaged == PersoInfo.SHOOTABLE_NEUTRAL) { // Zildo hit an enemy
                                 checkEnemyWound(collider, collided);
-                            } else if (infoDamaged == 2) {
+                            } else if (infoDamaged == PersoInfo.ZILDO) {
                                 checkZildoWound((PersoZildo) damaged, collider);
                             }
                         }

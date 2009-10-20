@@ -36,7 +36,7 @@ public class PersoNJ extends Perso {
 	// -create collision zone for this character
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void manageCollision() {
-		if (getInfo() == 1 && getPv()>0) {
+		if ((getInfo() == PersoInfo.ENEMY || getInfo() == PersoInfo.SHOOTABLE_NEUTRAL) && getPv()>0) {
 			// Add this collision record to collision engine
 			super.manageCollision();
 			/*
@@ -136,8 +136,9 @@ public class PersoNJ extends Perso {
 		}
 
 		if (isAlerte() && !MouvementPerso.SCRIPT_VOLESPECTRE.equals(quel_deplacement)) {
-			// Zildo est reperé le monstre lui fonce dessus
-			reachTarget(zildo);
+			// Zildo has been caught, so the monster try to reach him, or run away (hen)
+			boolean fear=this.getQuel_deplacement()==MouvementPerso.SCRIPT_POULE;
+			reachAvoidTarget(zildo, fear);
 		} else {
 			switch (this.getQuel_deplacement()) {
 				case SCRIPT_IMMOBILE:
@@ -441,14 +442,20 @@ public class PersoNJ extends Perso {
 	
 	/**
 	 * Se dirige vers le personnage passé en paramètre
-	 * @param perso
+	 * @param p_perso
+	 * @param p_fear
 	 */
-	public void reachTarget(Perso perso) {
+	public void reachAvoidTarget(Perso p_perso, boolean p_fear) {
 		float sx=x;
 		float sy=y;
 		cptMouvement=0;
-		float ddx=perso.getX();
-		float ddy=perso.getY();
+		float ddx=p_perso.getX();
+		float ddy=p_perso.getY();
+		if (p_fear) {
+			// Character should run away instead of reach the character p_perso
+			ddx=2*x-ddx;
+			ddy=2*y-ddy;
+		}
 		if ((int)ddx>(int)sx) {
 			setX(getX()+Constantes.MONSTER_SPEED);
 		} else if ((int)ddx<(int)x) {
@@ -518,7 +525,7 @@ public class PersoNJ extends Perso {
 	}
 	
 	public void fall() {
-		 if (info==1) {
+		 if (info==PersoInfo.ENEMY) {
 			// Un monstre vient de mourir
 			// On teste si un bonus va apparaitre
 			int k,l,m;

@@ -22,6 +22,7 @@ import zildo.monde.sprites.persos.PersoGardeVert;
 import zildo.monde.sprites.persos.PersoHen;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoVolant;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
@@ -392,7 +393,7 @@ public class Area {
 				file.put((int) perso.y);
 				file.put((int) perso.z);
 				file.put((byte) perso.getQuel_spr().first());
-				file.put((byte) perso.getInfo());
+				file.put((byte) perso.getInfo().ordinal());
 				file.put(0); //(byte) perso.getEn_bras());
 				file.put((byte) perso.getQuel_deplacement().ordinal());
 				file.put((byte) perso.getAngle().ordinal());
@@ -520,7 +521,7 @@ public class Area {
 				perso.setY(y);
 				perso.setZ(z);
 				perso.setQuel_spr(desc);
-				perso.setInfo(p_buffer.readUnsignedByte());
+				perso.setInfo(PersoInfo.values()[p_buffer.readUnsignedByte()]);
 				int a=p_buffer.readUnsignedByte();
 				if (a!= 0) {
 					throw new RuntimeException("enbras="+a);
