@@ -707,39 +707,57 @@ public class PersoZildo extends Perso {
 		return inventoring;
 	}
 	
-	public boolean walkCase(int p_cx, int p_cy) {
-		MapManagement mapManagement=EngineZildo.mapManagement;
-		int onmap=mapManagement.getCurrentMap().readmap(p_cx,p_cy);
-		boolean slowDown=false;
-		inWater=false;
-		switch (onmap) {
-		case 278:
-			mapManagement.getCurrentMap().writemap(p_cx,p_cy,314);
-			mapManagement.getCurrentMap().writemap(p_cx+1,p_cy,315);
-			EngineZildo.soundManagement.broadcastSound(BankSound.OuvrePorte, this);
-			break;
-		case 279:
-			mapManagement.getCurrentMap().writemap(p_cx-1,p_cy,314);
-			mapManagement.getCurrentMap().writemap(p_cx,p_cy,315);
-			EngineZildo.soundManagement.broadcastSound(BankSound.OuvrePorte, this);
-			break;
-		case 846:
-			// Water
-			inWater=true;
-			if (count>15) {
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPatauge, this);
-				count=0;
-			} else {
-				count++;
-			}
-			break;
-		case 857: case 858: case 859: case 860:
-		case 861: case 862: case 863: case 864:
-			slowDown=true;
-			break;
-		}
-		return slowDown;
-	}
+	/**
+	 * Zildo walk on a tile, so he reacts (water), or tile change (door).
+	 * @param p_sound TRUE=play sound when modifying map.
+	 * @return boolean (TRUE=slow down)
+	 */
+    public boolean walkTile(boolean p_sound) {
+        int cx = (int) (x / 16);
+        int cy = (int) (y / 16);
+        MapManagement mapManagement = EngineZildo.mapManagement;
+        int onmap = mapManagement.getCurrentMap().readmap(cx, cy);
+        boolean slowDown = false;
+        inWater = false;
+        BankSound snd = null;
+        switch (onmap) {
+            case 278:
+                mapManagement.getCurrentMap().writemap(cx, cy, 314);
+                mapManagement.getCurrentMap().writemap(cx + 1, cy, 315);
+                snd = BankSound.OuvrePorte;
+                break;
+            case 279:
+                mapManagement.getCurrentMap().writemap(cx - 1, cy, 314);
+                mapManagement.getCurrentMap().writemap(cx, cy, 315);
+                snd = BankSound.OuvrePorte;
+                break;
+            case 846:
+                // Water
+                inWater = true;
+                if (count > 15) {
+                    snd = BankSound.ZildoPatauge;
+                    count = 0;
+                } else {
+                    count++;
+                }
+                break;
+            case 857:
+            case 858:
+            case 859:
+            case 860:
+            case 861:
+            case 862:
+            case 863:
+            case 864:
+                slowDown = true;
+                break;
+        }
+        if (snd != null && p_sound) {
+            EngineZildo.soundManagement.broadcastSound(snd, this);
+        }
+
+        return slowDown;
+    }
 	
 	/**
 	 * Zildo avance contre un SpriteEntity

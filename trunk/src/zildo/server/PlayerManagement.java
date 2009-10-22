@@ -293,10 +293,8 @@ public class PlayerManagement {
 						heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512); // Sinon on augmente (Zildo pousse)
 				}	// if Collide == true
 				else if (!heros.getMouvement().equals(MouvementZildo.SAUTE)) {
-					// Pas d'obstacles ? Mais peut-être une porte !
-					int cx=xx / 16;
-					int cy=yy / 16;
-					boolean ralentit=heros.walkCase(cx,cy);
+                    // Pas d'obstacles ? Mais peut-être une porte !
+                    boolean ralentit = heros.walkTile(true);
 		
 					// -. Yes
 				    heros.setDx(0);                          // Zildo n'est pas bloqué => 0
