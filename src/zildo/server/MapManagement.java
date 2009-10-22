@@ -14,7 +14,6 @@ import zildo.monde.map.Point;
 import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.elements.Element;
-import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
 
@@ -263,7 +262,7 @@ public class MapManagement {
 			// 1) turn him on the right angle
 			// 2) load new map
 			// 3) place zildo at the right location
-			Perso zildo=EngineZildo.persoManagement.getZildo();
+			PersoZildo zildo=EngineZildo.persoManagement.getZildo();
 	
 			// 1/3 : angle
 			Angle newAngle=changingMapPoint.getAngle((int) zildo.getX(),(int) zildo.getY(),zildo.getAngle());
@@ -329,8 +328,9 @@ public class MapManagement {
 					break;
 			}
 
-			zildo.setEn_bras(null);	// Loose his object
-			zildo.finaliseComportement(EngineZildo.compteur_animation);
+            zildo.setEn_bras(null); // Loose his object
+            zildo.walkTile(false);
+            zildo.finaliseComportement(EngineZildo.compteur_animation);
 			return true;
 		}
 		return false;
