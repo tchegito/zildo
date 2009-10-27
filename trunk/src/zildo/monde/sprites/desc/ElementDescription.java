@@ -40,7 +40,10 @@ public enum ElementDescription  implements SpriteDescription {
 	// 103
 	REDBALL1, REDBALL2, REDBALL3,
 	// 106
-	BOMB, EXPLO1, EXPLO2, EXPLO3, EXPLOSMOKE1, EXPLOSMOKE2, EXPLOSMOKE3;
+	BOMB, EXPLO1, EXPLO2, EXPLO3, EXPLOSMOKE1, EXPLOSMOKE2, EXPLOSMOKE3,
+	
+	// 113
+	FLUT;
 	
 	public int getBank() {
 		return SpriteBank.BANK_ELEMENTS;

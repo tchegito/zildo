@@ -1,6 +1,8 @@
 package zildo.monde.sprites.elements;
 
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoZildo;
 
 
 public class ElementGoodies extends Element {
@@ -8,9 +10,16 @@ public class ElementGoodies extends Element {
 	// Coeur : nSpr=40
 	// Diamant : nSpr=10
 	
+	private int timeToAcquire;	// Untakeable. Zildo has just to wait to have it (for chest)
+
 	public ElementGoodies() {
 		super();
 		spe=540;	// Durée de vie du goodies, en frames (on tourne en général à 60FPS : 540==9sec)
+	}
+	
+	public ElementGoodies(Perso p_zildo) {
+		linkedPerso=p_zildo;
+		timeToAcquire=60;
 	}
 	
 	public void animate() {
@@ -48,6 +57,15 @@ public class ElementGoodies extends Element {
 			// 2) s'arrête sur le sol
 			if (z<4) {
 				z=4;
+			}
+		}
+		
+		if (timeToAcquire > 0) {
+			timeToAcquire--;
+			if (timeToAcquire == 0) {
+				// Zildo will now have the goodies
+				((PersoZildo)linkedPerso).pickGoodies(nSpr);
+				dying=true;
 			}
 		}
 		

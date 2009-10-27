@@ -28,14 +28,22 @@ public class SoundPlay {
 		ZildoPlonge("eau.wav"),
 		ZildoNage("eau2.wav"),
 		ZildoPatauge("eau3.wav"),
+		ZildoGadou("vase.wav"),
 		ZildoRecupVie("vie.wav"),
 		ZildoRecupCoeur("coeur.wav"),
 		ZildoRecupArgent("argent3.wav"),
-
+		ZildoGagneArgent("argent.wav"),
+		ZildoOuvreCoffre("coffre.wav"),
+		ZildoCogne("choc.wav"),
+		ZildoPousse("pousse.wav"),
+		ZildoMonte("escalmon.wav"),
+		ZildoDescend("escaldes.wav"),
+		
 		MonstreTouche("touche.wav"),
 		MonstreTouche2("touche2.wav"),
 		MonstreMeurt("meurt.wav"),
 		MonstreTrouve("alerte.wav"),
+		MonstreTire("tire2.wav"),
 		
 		Poule1("poule1.wav"),
 		Poule2("poule2.wav"),
@@ -59,6 +67,7 @@ public class SoundPlay {
 		MenuMove("bip.wav"),
 		MenuSelect("choix.wav"),
 		MenuSelectGame("choixok.wav"),
+		MenuOutOfOrder("out.wav"),
 		
 		PlanteBombe("posebomb.wav"),
 		Explosion("explose.wav");

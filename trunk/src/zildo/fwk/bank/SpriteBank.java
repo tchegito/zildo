@@ -134,7 +134,7 @@ public class SpriteBank {
 	public long modifyPixel(int nSpr, int color)
 	{
 		long toaff=-1;
-		String banqueGarde="pnj.spr";
+		String banqueGarde="PNJ.SPR";
 		if (name.equals(banqueGarde) && nSpr>=20 && nSpr<=34) {
 			if (color == 198) {
 				toaff=0xff + (127 << 24);

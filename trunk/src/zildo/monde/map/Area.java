@@ -493,7 +493,11 @@ public class Area {
 				int y = (p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
 				int z = (p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
 
-				PersoDescription desc = PersoDescription.fromNSpr(p_buffer.readUnsignedByte());
+                int sprDesc = p_buffer.readUnsignedByte();
+                if (sprDesc > 128) {
+                    sprDesc -= 2;
+                }
+                PersoDescription desc = PersoDescription.fromNSpr(sprDesc);
 
 				if (!p_spawn) {
 					perso = new PersoNJ();

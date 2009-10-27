@@ -62,19 +62,22 @@ public class MapManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Destroy any data referring to current map, and given one
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void charge_map(String mapname)
-	{
-		// Remove previous map
-		if (currentMap != null) {
-			this.deleteCurrentMap();
-		}
-	
-		// Load a new one
-		currentMap=loadMapFile(mapname);
-		
-		analyseAltitude();
+    public void charge_map(String mapname) {
+        // Remove previous map
+        if (currentMap != null) {
+            this.deleteCurrentMap();
+        }
 
-	}
+        // Adjust map according the quest diary
+        String adjustedMapName = EngineZildo.game.questDiary.getReplacedMapName(mapname);
+
+        // Load a new one
+        currentMap = loadMapFile(adjustedMapName);
+        currentMap.setName(mapname);
+        
+        analyseAltitude();
+
+    }
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// linkTwoMaps
@@ -299,7 +302,7 @@ public class MapManagement {
 				} else if (zildo.getX() > previousDimX*16-16) {
 					zildo.setX(8);
 				}
-				linkTwoMaps(newMapName);
+				//linkTwoMaps(newMapName);
 				zildo.finaliseComportement(EngineZildo.compteur_animation);
 				return true;
 			} else {
@@ -402,8 +405,8 @@ public class MapManagement {
      * @return
      */
     public Point getRespawnPosition() {
-        int x = 80; //271;
-        int y = 150; // 812;
+        int x = 100; //831;
+        int y = 147; //267;
         while (collide(x, y, null)) {
             y -= 16;
         }
