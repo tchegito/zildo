@@ -25,27 +25,10 @@ public class EngineZildo {
     public static Game game;
     public static int compteur_animation;
     
-	private static int timeToWait=0;
-	private static int nFramesToWait=0;
+	private static int waitingScene=0;
 	
 	// For debug
 	public static int extraSpeed=1;
-	
-	public static void freeze() {
-		timeToWait=3000;
-		nFramesToWait=3;
-	}
-	
-	public void waitIfFreezed() {
-		if (nFramesToWait>0) {
-			try {
-				Thread.sleep(timeToWait);
-			} catch (Exception e) {
-				
-			}
-			nFramesToWait--;
-		}
-	}
 	
 	private void initializeServer(Game p_game) {
 		// Inits de départ
@@ -58,12 +41,13 @@ public class EngineZildo {
 		playerManagement=new PlayerManagement();
         messageManagement = new MessageManagement();
         
+		game=p_game;
+
 		// Charge une map
 		String mapName=p_game.mapName;
 
 		mapManagement.charge_map(mapName);
 	
-		game=p_game;
 	}
 
     public int spawnClient() {

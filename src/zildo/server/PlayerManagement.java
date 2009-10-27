@@ -188,10 +188,14 @@ public class PlayerManagement {
 					needMovementAdjustment=false;
 				}
 			} else {
+				//TODO: Move that section into PersoZildo
 				switch (heros.getMouvement()) {
 					case SOULEVE:
 						heros.setMouvement(MouvementZildo.BRAS_LEVES);
 						break;
+                    case FIERTEOBJET:
+                    	heros.getEn_bras().dying=true;
+                    	heros.setAngle(Angle.SUD);
                     case ATTAQUE_EPEE:
                     case ATTAQUE_ARC:
                     case ATTAQUE_BOOMERANG:
@@ -291,6 +295,7 @@ public class PlayerManagement {
 					}	//if mouvement==MOUVEMENT_VIDE
 					else
 						heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512); // Sinon on augmente (Zildo pousse)
+					
 				}	// if Collide == true
 				else if (!heros.getMouvement().equals(MouvementZildo.SAUTE)) {
                     // Pas d'obstacles ? Mais peut-être une porte !
@@ -471,7 +476,8 @@ public class PlayerManagement {
 							//Zildo a trouvé un coffre ! C'est pas formidable ?
 							EngineZildo.mapManagement.getCurrentMap().writemap(newx, newy, 744);
 							//Musique('c:\musique\midi\zelda\Trouve.mid');
-							EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_FROMCHEST,16*newx+8,16*newy+16,51, null);
+							EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
+							EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_FROMCHEST,16*newx+8,16*newy+16,51, heros);
 							//EngineZildo.setWaitingScene(20);
 						} else if (!EngineZildo.mapManagement.isWalkable(on_map)) {
 							heros.setMouvement(MouvementZildo.TIRE);

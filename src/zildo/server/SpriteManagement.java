@@ -66,13 +66,14 @@ public class SpriteManagement extends SpriteStore {
 	// Spawn an element with minimal requirements
 	// -build an element with given parameters
 	// -add it to the sprite engine
-	public Element spawnElement(int nBank, int nSpr, int x, int y)
+	public Element spawnElement(int nBank, int nSpr, int x, int y, int z)
 	{
 	
 		// SpriteEntity informations
 		Element element=new Element();
 		element.setX(x);
 		element.setY(y);
+		element.setZ(z);
 		element.setNSpr(nSpr);
 		element.setNBank(nBank);
 		element.setMoved(false);
@@ -230,6 +231,20 @@ public class SpriteManagement extends SpriteStore {
 				temp=Angle.rotate(temp, 1);
 			}
 			break;
+		
+		case Element.SPR_FROMCHEST:
+			element=new ElementGoodies(miscPerso);
+			element.x=x;
+			element.y=y;
+			element.z=16;
+			element.vx=0;
+			element.vy=0.0f;
+			element.vz=0.2f;
+			element.ax=0;
+			element.fy=0.005f;
+			element.fz=0.02f;
+			element.nSpr=misc;
+			spawnSprite(element);
 		}
 	
 	}
@@ -248,7 +263,7 @@ public class SpriteManagement extends SpriteStore {
 
         if (nSpr == 69 || nSpr == 70 || nSpr == 28) {
             // Particular sprite (Block that Zildo can move, chest...)
-            return spawnElement(nBank, nSpr, x, y + spr.getTaille_y() / 2 - 3);
+            return spawnElement(nBank, nSpr, x, y + spr.getTaille_y() / 2 - 3, 0);
         }
 
         // SpriteEntity informations

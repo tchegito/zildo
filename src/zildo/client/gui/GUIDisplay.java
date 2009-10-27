@@ -20,6 +20,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
+import zildo.server.EngineZildo;
 
 // Here we draw the Graphic User Interface. It means we paint screen in last moment,
 // after all engines : Tile and Sprite.
@@ -523,6 +524,9 @@ public class GUIDisplay {
 		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,80,72,10);
 		if (countMoney < zildo.getMoney()) {
 			countMoney++;
+			if (zildo.getMoney() - countMoney % 20 == 0) {
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoGagneArgent, zildo);
+			}
 		}
 		displayNumber(countMoney, 3, 66, 20);
 		

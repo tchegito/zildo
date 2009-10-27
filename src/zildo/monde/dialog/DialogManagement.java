@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.net.TransferObject;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.ClientState;
@@ -47,24 +48,32 @@ public class DialogManagement {
 		}
 		int compteDial=persoToTalk.getCompte_dialogue();
 		
-		String sentence=dialogs.getSentence(behav,compteDial);
-		dialogQueue.add(new WaitingDialog(sentence, -1, false, p_client.location));
-		
-		// Update perso about next sentence he(she) will say
-		String sharp="#";
-		int posSharp=sentence.indexOf(sharp);
-		if (posSharp != -1) {
-			// La phrase demande explicitement de rediriger vers une autre
-			persoToTalk.setCompte_dialogue(sentence.charAt(posSharp+1) - 48);
-		} else if (behav.replique[compteDial+1]!=0) {
-			// On passe à la suivante, puisqu'elle existe
-			persoToTalk.setCompte_dialogue(compteDial + 1);
-		}
-		// Set the dialoguing states for each Perso
-		persoToTalk.setDialoguingWith(p_client.zildo);
-		p_client.zildo.setDialoguingWith(persoToTalk);
-		p_client.dialogState.dialoguing=true;
-	}
+        String sentence = dialogs.getSentence(behav, compteDial);
+
+        // Update perso about next sentence he(she) will say
+        String sharp = "#";
+        int posSharp = sentence.indexOf(sharp);
+        if (posSharp != -1) {
+            // La phrase demande explicitement de rediriger vers une autre
+            persoToTalk.setCompte_dialogue(sentence.charAt(posSharp + 1) - 48);
+            sentence = sentence.substring(0, posSharp);
+
+        } else if (behav.replique[compteDial + 1] != 0) {
+            // On passe à la suivante, puisqu'elle existe
+            persoToTalk.setCompte_dialogue(compteDial + 1);
+        }
+        sentence = sentence.trim();
+        dialogQueue.add(new WaitingDialog(sentence, -1, false, p_client.location));
+
+        if ("gerard".equals(persoToTalk.getNom()) && compteDial == 1) {
+            p_client.zildo.pickItem(ItemKind.FLUT);
+        }
+
+        // Set the dialoguing states for each Perso
+        persoToTalk.setDialoguingWith(p_client.zildo);
+        p_client.zildo.setDialoguingWith(persoToTalk);
+        p_client.dialogState.dialoguing = true;
+    }
 	
 	public void stopDialog(ClientState p_client) {
 		p_client.dialogState.dialoguing=false;

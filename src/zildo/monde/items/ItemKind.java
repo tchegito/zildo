@@ -8,7 +8,8 @@ public enum ItemKind {
 	BOOMERANG(ElementDescription.BOOMERANG1), 
 	WHIP(ElementDescription.BAR_HORIZONTAL), 
 	BOW(ElementDescription.ARROW_UP),
-	BOMB(ElementDescription.BOMB);
+	BOMB(ElementDescription.BOMB),
+	FLUT(ElementDescription.FLUT);
 	
 	public ElementDescription representation;
 	

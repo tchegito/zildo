@@ -23,7 +23,7 @@ public class StartMenu extends Menu {
         
 		final Client client=ClientEngineZildo.getClientForMenu();
 		
-        final Game game = new Game("polaky", false);
+        final Game game = new Game("d5m1", false);
         final Menu startMenu=this;
         
         ItemMenu itemSinglePlayer=new ItemMenu("Single Player", BankSound.MenuSelectGame) {

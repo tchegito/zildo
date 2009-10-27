@@ -109,7 +109,10 @@ public class SpriteEngine extends TextureEngine {
 					if (a!=255)
 					{
 						// Regular size
-						long modifiedColor=sBank.modifyPixel(n,a);
+						long modifiedColor=-1;
+						if (pixelShaderSupported) {
+							modifiedColor=sBank.modifyPixel(n,a);
+						}
 						replacedColor=modifiedColor==-1?null:createColor(modifiedColor);
 						surfaceGfx.pset(i+x,j+y,a,replacedColor);
 					}

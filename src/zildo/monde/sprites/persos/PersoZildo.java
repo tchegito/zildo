@@ -14,6 +14,7 @@ import zildo.monde.items.ItemCircle;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
+import zildo.monde.quest.QuestEvent;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.ZildoDescription;
@@ -441,7 +442,8 @@ public class PersoZildo extends Perso {
 				break;
 	
 			case FIERTEOBJET:
-				yy-=10;
+				nSpr=ZildoDescription.ARMSRAISED.ordinal();
+				yy++;
 				break;
 		}
 	
@@ -707,6 +709,31 @@ public class PersoZildo extends Perso {
 		return inventoring;
 	}
 	
+    /**
+     * Zildo takes an item.
+     * @param p_kind
+     */
+    public void pickItem(ItemKind p_kind) {
+        inventory.add(new Item(p_kind));
+        attente=20;
+        mouvement=MouvementZildo.FIERTEOBJET;
+        Element elem=EngineZildo.spriteManagement.spawnElement(SpriteBank.BANK_ELEMENTS, 
+        		p_kind.representation.ordinal(), 
+        		(int) x + 5, 
+        		(int) y + 1, 20);
+        setEn_bras(elem);
+        EngineZildo.game.questDiary.trigger(QuestEvent.INVENTORY, this);
+    }
+
+    public boolean hasItem(ItemKind p_kind) {
+        for (Item i : inventory) {
+            if (i.kind == p_kind) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 	/**
 	 * Zildo walk on a tile, so he reacts (water), or tile change (door).
 	 * @param p_sound TRUE=play sound when modifying map.
@@ -731,6 +758,9 @@ public class PersoZildo extends Perso {
                 mapManagement.getCurrentMap().writemap(cx, cy, 315);
                 snd = BankSound.OuvrePorte;
                 break;
+            case 200:
+                snd = BankSound.ZildoGadou;
+            	break;
             case 846:
                 // Water
                 inWater = true;
