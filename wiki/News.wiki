@@ -3,7 +3,7 @@
 = Version 1.09 (soon) =
 
  * "historic" adventure for single player
- * optimized online (now REALLY playable !)
+ * optimized online game experience (now REALLY playable !)
 
 = Version 1.08 =
 
