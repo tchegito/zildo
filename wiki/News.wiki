@@ -1,5 +1,10 @@
 #summary News
 
+= Version 1.09 (soon) =
+
+ * "historic" adventure for single player
+ * optimized online (now REALLY playable !)
+
 = Version 1.08 =
 
  '*Yes !*
