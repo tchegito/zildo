@@ -13,6 +13,7 @@ import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
 import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
@@ -139,7 +140,8 @@ public class MapManagement {
 	    
 	    Angle angleFlying=null;
 		Point size=new Point(8,4);	// Default size
-	    if (quelElement != null && quelElement.flying && quelElement.getAngle() != null) {
+        if (quelElement != null && quelElement.flying && quelElement.getAngle() != null
+                && SpriteEntity.ENTITYTYPE_PERSO != quelElement.getEntityType()) {
 		    angleFlying=quelElement.getAngle();
 
 	    	if (quelElement.getCollision() != null) {
@@ -171,7 +173,7 @@ public class MapManagement {
 		    tx>(currentMap.getDim_x()-1)*16 ||
 			ty>(currentMap.getDim_y()-1)*16)
 			// On empêche la collision sur les bords de cartes
-			return false;
+            return !quelElement.isZildo();
 	
 		
 		// On teste les 4 coins d'un carré de 4x4
@@ -405,8 +407,8 @@ public class MapManagement {
      * @return
      */
     public Point getRespawnPosition() {
-        int x = 100; //831;
-        int y = 147; //267;
+        int x = 831;
+        int y = 267;
         while (collide(x, y, null)) {
             y -= 16;
         }

@@ -388,9 +388,9 @@ public class PersoZildo extends Perso {
 					yy++;
 				}
 				if (en_bras != null) {
-					en_bras.setX(xx+1);
-					en_bras.setY(yy+7);
-					en_bras.setZ(21);
+                    en_bras.setX(xx + 1);
+                    en_bras.setY(yy + 3);
+                    en_bras.setZ(17);
 				}
 				break;
 			case SOULEVE:
