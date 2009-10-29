@@ -504,7 +504,7 @@ public class Area {
 				} else {
 					switch (desc) {
 						case POULE:
-							perso =new PersoHen();
+                            perso = new PersoHen(x, y);
 							break;
 						case BAS_GARDEVERT:
 							perso = new PersoGardeVert();

@@ -203,6 +203,8 @@ public class Element extends SpriteEntity {
 				x=ancX;
 				y=ancY;
 				z=ancZ;
+				vx=0;
+				vy=0;
 				return true;
 			}
 		}
