@@ -28,7 +28,7 @@ public class BlurFilter extends ZoomFilter {
 
 		boolean result=true;
 		
-		endRenderingOnFBO();
+		fbo.endRendering();
 		
 		// Get on top of screen and disable blending
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -50,7 +50,7 @@ public class BlurFilter extends ZoomFilter {
 	
 	        // Draw each image, with intensified colors
 			for (int i=0;i<nImages;i++) {
-				float coeff=startCoeff+ (float)i*(incCoeff / (float) nImages);
+				float coeff=startCoeff+ i*(incCoeff / nImages);
 		   		GL11.glColor4f(coeff, coeff, coeff, 1.0f);
 		        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texBuffer[(i+currentImage+1) % nImages]);
 				super.render();
@@ -77,8 +77,8 @@ public class BlurFilter extends ZoomFilter {
 	@Override
 	public void preFilter() {
 		// Copy last texture in TexBuffer
-		bindFBOToTextureAndDepth(texBuffer[currentImage], depthTextureID, fboId);
-		startRenderingOnFBO(fboId, sizeX, sizeY);
+		fbo.bindToTextureAndDepth(texBuffer[currentImage], depthTextureID, fboId);
+		fbo.startRendering(fboId, sizeX, sizeY);
    		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
 	}
 	
