@@ -1,24 +1,23 @@
 package zildo.fwk.opengl;
 
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.logging.Logger;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.ARBVertexBufferObject;
-import org.lwjgl.opengl.EXTFramebufferObject;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Vector4f;
 
-import zildo.Zildo;
+import zildo.fwk.opengl.compatibility.FBO;
+import zildo.fwk.opengl.compatibility.FBOHardware;
+import zildo.fwk.opengl.compatibility.FBOSoftware;
+import zildo.fwk.opengl.compatibility.VBO;
+import zildo.fwk.opengl.compatibility.VBOHardware;
+import zildo.fwk.opengl.compatibility.VBOSoftware;
 
 public class OpenGLStuff {
 
     protected OpenGLGestion m_oglGestion;
+
+    protected FBO fbo;
+    protected VBO vbo;
 
     protected Logger logger = Logger.getLogger("MapManagement");
 
@@ -28,6 +27,17 @@ public class OpenGLStuff {
 
     public OpenGLStuff() {
         m_oglGestion = null;
+        if (isFBOSupported()) {
+            fbo = new FBOHardware();
+        } else {
+            fbo = new FBOSoftware();
+        }
+        
+        if (false && isVBOSupported()) {	// Don't use VBO now, it's slower than nothing !
+        	vbo = new VBOHardware();
+        } else {
+        	vbo = new VBOSoftware();
+        }
     }
 
     public OpenGLStuff(OpenGLGestion oglGestion) {
@@ -35,24 +45,7 @@ public class OpenGLStuff {
         m_oglGestion = oglGestion;
 
     }
-
-    // ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // VBO utils
-    // ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Vertex Buffer Object : permet de stocker des données (vertex, indices, textures, normales) dans la
-    // VRAM pour accélerer le rendu. Similaire au combiné des Vertex Buffer et des Indices Buffer de DirectX.
-    // ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    public int createVBO() {
-        if (isVBOSupported()) {
-            IntBuffer buffer = BufferUtils.createIntBuffer(1);
-            ARBVertexBufferObject.glGenBuffersARB(buffer);
-            return buffer.get();
-        } else {
-            throw new RuntimeException("Unable to create VBO");
-        }
-
-    }
-
+    
     /**
      * VBO support.
      * @return TRUE if the current hardware supports VBO.
@@ -69,7 +62,7 @@ public class OpenGLStuff {
     public boolean isFBOSupported() {
         return GLContext.getCapabilities().GL_EXT_framebuffer_object;
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////
     // isPixelShaderSupported
     // /////////////////////////////////////////////////////////////////////////////////////
@@ -78,113 +71,22 @@ public class OpenGLStuff {
                 && GLContext.getCapabilities().GL_ARB_vertex_shader && GLContext.getCapabilities().GL_ARB_shading_language_100;
     }
 
-    // Vertex & Indices Buffer
-    public void bufferData(int id, Buffer buffer) {
-        ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, id);
-        if (buffer instanceof FloatBuffer) {
-        	ARBVertexBufferObject.glBufferDataARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, (FloatBuffer) buffer,
-                ARBVertexBufferObject.GL_STREAM_DRAW_ARB);
-        } else if (buffer instanceof IntBuffer) {
-        	ARBVertexBufferObject.glBufferDataARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, (IntBuffer) buffer,
-                    ARBVertexBufferObject.GL_STREAM_DRAW_ARB);
-        }
-    }
-
     // //////////////////////////////////////////////
     // Texture utils
     // //////////////////////////////////////////////
     // color: TRUE=color texture / FALSE=depth texture
     public int generateTexture(int sizeX, int sizeY) {
-        IntBuffer buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
-        GL11.glGenTextures(buf); // Create Texture In OpenGL
-        int textureID = buf.get(0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        int textureId = Utils.generateTexture(sizeX, sizeY);
 
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, adjustTexSize(sizeX), adjustTexSize(sizeY), 0, GL11.GL_RGBA,
-                GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
-
-        logger.info("Created texture " + textureID);
-        return textureID;
+        logger.info("Created texture " + textureId);
+        return textureId;
     }
 
     public int generateDepthBuffer() {
-        IntBuffer buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
-        EXTFramebufferObject.glGenRenderbuffersEXT(buf); // Create Texture In OpenGL
-        int depthID = buf.get(0);
+        int depthId = fbo.generateDepthBuffer();
 
-        EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, depthID);
-        EXTFramebufferObject.glRenderbufferStorageEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, GL11.GL_DEPTH_COMPONENT,
-                adjustTexSize(Zildo.viewPortX), adjustTexSize(Zildo.viewPortY));
-
-        logger.info("Created depth buffer " + depthID);
-        return depthID;
-    }
-
-    // //////////////////////////////////////////////
-    // FBO utils
-    // //////////////////////////////////////////////
-    public int createFBO() {
-        if (GLContext.getCapabilities().GL_EXT_framebuffer_object) {
-            IntBuffer buffer = ByteBuffer.allocateDirect(1 * 4).order(ByteOrder.nativeOrder()).asIntBuffer(); // allocate a 1 int byte
-            // buffer
-            EXTFramebufferObject.glGenFramebuffersEXT(buffer); // generate
-            logger.info("Created FBO " + buffer.get(0));
-            return buffer.get();
-        } else {
-            throw new RuntimeException("Unable to create FBO");
-        }
-    }
-
-    public void bindFBOToTextureAndDepth(int myTextureId, int myDepthId, int myFBOId) {
-        // On bind le FBO à la texture
-        EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, myFBOId);
-        if (myDepthId > 0) {
-            EXTFramebufferObject.glFramebufferRenderbufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
-                    EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT, EXTFramebufferObject.GL_RENDERBUFFER_EXT, myDepthId);
-        }
-        EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
-                EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, myTextureId, 0);
-
-        // Puis on détache la texture de la vue
-        EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
-    }
-
-    public void startRenderingOnFBO(int myFBOId, int sizeX, int sizeY) {
-        EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, myFBOId);
-
-        GL11.glPushAttrib(GL11.GL_VIEWPORT_BIT);
-        GL11.glViewport(0, 0, Zildo.viewPortX, Zildo.viewPortY);
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-    }
-
-    public void endRenderingOnFBO() {
-        EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
-        GL11.glPopAttrib();
-    }
-
-    protected void checkCompleteness(int myFBOId) {
-        int framebuffer = EXTFramebufferObject.glCheckFramebufferStatusEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT);
-        switch (framebuffer) {
-            case EXTFramebufferObject.GL_FRAMEBUFFER_COMPLETE_EXT:
-                break;
-            case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
-                throw new RuntimeException("FrameBuffer: " + myFBOId + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT exception");
-            case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
-                throw new RuntimeException("FrameBuffer: " + myFBOId
-                        + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT exception");
-            case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-                throw new RuntimeException("FrameBuffer: " + myFBOId + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT exception");
-            case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
-                throw new RuntimeException("FrameBuffer: " + myFBOId + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT exception");
-            case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-                throw new RuntimeException("FrameBuffer: " + myFBOId + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT exception");
-            case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
-                throw new RuntimeException("FrameBuffer: " + myFBOId + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT exception");
-            default:
-                throw new RuntimeException("Unexpected reply from glCheckFramebufferStatusEXT: " + framebuffer);
-        }
+        logger.info("Created depth buffer " + depthId);
+        return depthId;
     }
 
     public Vector4f createColor64(float r, float g, float b) {
@@ -197,37 +99,18 @@ public class OpenGLStuff {
         return v;
     }
 
-    /**
-     * OpenGL likes "adjusted" size for texture. We take multiple of 256.
-     * @param n Initial size
-     * @return Adjusted size
-     */
-    static public int adjustTexSize(int n) {
-        if (n % 256 == 0) {
-            return n;
-        }
-        return (n & 0xff00) + 256;
-    }
-
-    public IntBuffer getBufferWithId(int id) {
-        IntBuffer buf = BufferUtils.createIntBuffer(1);
-        buf.put(id);
-        buf.rewind();
-        return buf;
-    }
-
     public void cleanFBO(int id) {
-        EXTFramebufferObject.glDeleteFramebuffersEXT(getBufferWithId(id));
+        fbo.cleanUp(id);
         logger.info("Deleted FBO " + id);
     }
 
     public void cleanTexture(int id) {
-        GL11.glDeleteTextures(getBufferWithId(id));
+        Utils.cleanTexture(id);
         logger.info("Deleted texture " + id);
     }
 
     public void cleanDepthBuffer(int id) {
-        EXTFramebufferObject.glDeleteRenderbuffersEXT(getBufferWithId(id));
+        fbo.cleanDepthBuffer(id);
         logger.info("Deleted depth buffer " + id);
     }
 }

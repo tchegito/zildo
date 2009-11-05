@@ -23,14 +23,14 @@ public class TilePrimitiveDebug  extends TilePrimitive {
 		    		StringBuffer line=new StringBuffer("face");
 		    		line.append(i).append("=(");
 		    		for (int j=0;j<6;j++) {
-		    			line.append(indices.get());
+		    			line.append(bufs.indices.get());
 		    			if (j!=5) {
 		    				line.append(", ");
 		    			}
 		    		}
 		    		file.append(line+")\n");
 		    	}
-		    	indices.flip();
+		    	bufs.indices.flip();
 	    	}
 	    	
 	    	if (p_writeVertices) {
@@ -38,7 +38,7 @@ public class TilePrimitiveDebug  extends TilePrimitive {
 		    		StringBuffer line=new StringBuffer("point");
 		    		line.append(i).append("=(");
 		    		for (int j=0;j<3;j++) {
-		    			float value=vertices.get();
+		    			float value=bufs.vertices.get();
 		    			line.append(value);
 		    			if (j!=2) {
 		    				line.append(", ");
@@ -46,7 +46,7 @@ public class TilePrimitiveDebug  extends TilePrimitive {
 		    		}
 		    		file.append(line+")\n");
 		    	}
-		    	vertices.flip();
+		    	bufs.vertices.flip();
 	    	}
 	    	file.close();
     	} catch (Exception e) {

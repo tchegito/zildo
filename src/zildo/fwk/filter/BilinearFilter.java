@@ -7,7 +7,7 @@ public class BilinearFilter extends ScreenFilter {
 
 	@Override
 	public boolean renderFilter() {
-		endRenderingOnFBO();
+		fbo.endRendering();
 		
 		// Select right texture
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
@@ -31,7 +31,7 @@ public class BilinearFilter extends ScreenFilter {
 	
 	@Override
 	public void preFilter() {
-		startRenderingOnFBO(fboId, sizeX, sizeY);
+		fbo.startRendering(fboId, sizeX, sizeY);
    		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
 	}
 	

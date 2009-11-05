@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector4f;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.TilePrimitive;
+import zildo.fwk.opengl.Utils;
 
 
 /**
@@ -28,8 +29,8 @@ public abstract class ScreenFilter extends TilePrimitive {
 	protected static final int sizeX=Zildo.viewPortX;
 	protected static final int sizeY=Zildo.viewPortY;
 	// Resizing for OpenGL storage
-	protected static final int realX=adjustTexSize(sizeX);
-	protected static final int realY=adjustTexSize(sizeY);
+	protected static final int realX=Utils.adjustTexSize(sizeX);
+	protected static final int realY=Utils.adjustTexSize(sizeY);
 	
 	// common members
 	protected int textureID;
@@ -42,7 +43,7 @@ public abstract class ScreenFilter extends TilePrimitive {
 	//////////////////////////////////////////////////////////////////////
 	public ScreenFilter()
 	{
-		super(4,6, adjustTexSize(sizeX), adjustTexSize(sizeY));
+		super(4,6, Utils.adjustTexSize(sizeX), Utils.adjustTexSize(sizeY));
 		// Create a screen sized quad
 		super.startInitialization();
 		this.addTileSized(0,0,0.0f,0.0f,sizeX, sizeY);
@@ -67,7 +68,7 @@ public abstract class ScreenFilter extends TilePrimitive {
 	///////////////////////////////////////////////////////////////////////////////////////
 	protected void drawFilter()
 	{
-		startRenderingOnFBO(fboId, sizeX, sizeY);
+		fbo.startRendering(fboId, sizeX, sizeY);
 		GL11.glPushMatrix();
 
 		GL11.glLoadIdentity();
@@ -77,7 +78,7 @@ public abstract class ScreenFilter extends TilePrimitive {
 		drawScene();
 
 		GL11.glPopMatrix();
-		endRenderingOnFBO();
+		fbo.endRendering();
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -97,10 +98,9 @@ public abstract class ScreenFilter extends TilePrimitive {
 	
 	private void attachTextureToFBO(int texId, int texDepthId) {
 		if (fboId == -1) {
-			fboId=createFBO();
+			fboId=fbo.create();
 		}
-        bindFBOToTextureAndDepth(texId, texDepthId, fboId);
-        checkCompleteness(fboId);
+        fbo.bindToTextureAndDepth(texId, texDepthId, fboId);
 	}
 
 	protected void drawScene() {
