@@ -10,7 +10,7 @@ import zildo.fwk.opengl.compatibility.VBOBuffers;
  * -set of vertices
  * -set of indices
  * -set of normals (all the same)
- * -set of textures coordiantes
+ * -set of textures coordinates
  * 
  * @author tchegito
  *
