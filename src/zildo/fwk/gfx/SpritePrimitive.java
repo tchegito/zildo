@@ -1,11 +1,12 @@
 package zildo.fwk.gfx;
-// SpritePrimitive.cpp: implementation of the SpritePrimitive class.
-//
-//////////////////////////////////////////////////////////////////////
-// Provides a set of sprite from the same 256x256 texture..
-// This is segmented for performance issues, to avoid much access to setTexture.
-//////////////////////////////////////////////////////////////////////
 
+/**
+ * Provides a set of sprite from the same 256x256 texture..
+ * This is segmented for performance issues, to avoid too much texture switching.
+ * 
+ * @author tchegito
+ *
+ */
 
 public class SpritePrimitive extends TilePrimitive {
 
