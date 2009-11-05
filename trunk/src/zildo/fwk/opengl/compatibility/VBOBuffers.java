@@ -12,8 +12,6 @@ public class VBOBuffers {
 	int textureBufferId;
 	int indiceBufferId;
 
-	int vboId;
-	
     public FloatBuffer vertices;
     public FloatBuffer normals;
     public FloatBuffer textures;

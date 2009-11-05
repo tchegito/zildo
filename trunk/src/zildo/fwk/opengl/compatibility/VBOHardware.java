@@ -22,15 +22,7 @@ public class VBOHardware extends VBOSoftware {
 		bufs.textureBufferId = Utils.createVBO();
 		bufs.indiceBufferId = Utils.createVBO();
         
-        IntBuffer buffer = BufferUtils.createIntBuffer(1);
-        ARBVertexBufferObject.glGenBuffersARB(buffer);
-        bufs.vboId = buffer.get();
-        
         return bufs;
-	}
-
-	public void bufferData() {
-		
 	}
 	
 	public void draw(VBOBuffers p_bufs) {

@@ -5,22 +5,16 @@ import org.lwjgl.opengl.GL11;
 import zildo.fwk.opengl.OpenGLStuff;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 
-// TilePrimitive.cpp: implementation of the TilePrimitive class.
-//
-// Class describing the TileEngine main element :
-// -set of bufs.vertices
-// -set of indices
-//
-// It's used to build a set of polygon from an initial position (x,y) with texture
-// coordinates.
-//
-// The bufs.vertices are transformed and lighted.
-//
-// All polygons from this class are referring to the same texture sized 256x256.
-//
-// V1.0 : VertexBuffer and IndexBuffer are used
-// .Need optimization
-// ////////////////////////////////////////////////////////////////////
+/**
+ * Class describing the TileEngine main element :
+ * -set of vertices
+ * -set of indices
+ * -set of normals (all the same)
+ * -set of textures coordiantes
+ * 
+ * @author tchegito
+ *
+ */
 
 public class TilePrimitive extends OpenGLStuff {
 
@@ -31,8 +25,8 @@ public class TilePrimitive extends OpenGLStuff {
 
     protected VBOBuffers bufs;
     
-    private int texturesizeX = 256;
-    private int texturesizeY = 256;
+    private int textureSizeX = 256;
+    private int textureSizeY = 256;
 
     // ////////////////////////////////////////////////////////////////////
     // Construction/Destruction
@@ -59,14 +53,13 @@ public class TilePrimitive extends OpenGLStuff {
     }
 
     public TilePrimitive(int numPoints, int numIndices, int texSizeX, int texSizeY) {
-        texturesizeX = texSizeX;
-        texturesizeY = texSizeY;
+        textureSizeX = texSizeX;
+        textureSizeY = texSizeY;
         initialize(numPoints, numIndices);
     }
 
     public void cleanUp() {
        	vbo.cleanUp(bufs);
-        //logger.info("Deleted VBO " + bufs.vertexBufferId + " (vertex+texture+normal+indice)");
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////
@@ -167,8 +160,8 @@ public class TilePrimitive extends OpenGLStuff {
             float texPosX = texStartX + sizeX * (i % 2);
             float texPosY = texStartY + sizeY * (i / 2);
 
-            bufs.textures.put(texPosX / texturesizeX);
-            bufs.textures.put(texPosY / texturesizeY);
+            bufs.textures.put(texPosX / textureSizeX);
+            bufs.textures.put(texPosY / textureSizeY);
         }
     }
 
