@@ -19,6 +19,7 @@ import zildo.monde.sprites.elements.ElementAnimMort;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.prefs.Constantes;
 
 
@@ -297,7 +298,7 @@ public class SpriteManagement extends SpriteStore {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Do sprite's stuff
 	// -animate sprites & persos
-	public void updateSprites()
+	public void updateSprites(boolean p_blockMoves)
 	{
 		spriteUpdating=true;
 		spriteEntitiesToAdd.clear();
@@ -306,22 +307,24 @@ public class SpriteManagement extends SpriteStore {
 		// Mandatory to do that first, because one perso can be connected to other sprites
 		for (SpriteEntity entity : spriteEntities) {
 			if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
-				// Animate persos
 				Perso perso=(Perso)entity;
-				perso.animate(EngineZildo.compteur_animation % (3*20));
-				// Get sprite model
-				SpriteModel spr=getSpriteBank(entity.getNBank()).get_sprite(perso.getNSpr());
-				perso.setSprModel(spr);
-				perso.manageCollision();
-				
-				if (!perso.isZildo()) {
-					// Non-zildo sprite haven't same way to display correctly (bad...)
-					perso.setAjustedX(perso.getAjustedX() - (spr.getTaille_x() / 2) );
-					perso.setAjustedY(perso.getAjustedY() - (spr.getTaille_y() - 3) );
+				if (!p_blockMoves || perso.getInfo() == PersoInfo.ZILDO) {
+					// Animate persos
+					perso.animate(EngineZildo.compteur_animation % (3*20));
+					// Get sprite model
+					SpriteModel spr=getSpriteBank(entity.getNBank()).get_sprite(perso.getNSpr());
+					perso.setSprModel(spr);
+					perso.manageCollision();
+					
+					if (!perso.isZildo()) {
+						// Non-zildo sprite haven't same way to display correctly (bad...)
+						perso.setAjustedX(perso.getAjustedX() - (spr.getTaille_x() / 2) );
+						perso.setAjustedY(perso.getAjustedY() - (spr.getTaille_y() - 3) );
+					}
 				}
 			}
 		}
-		
+
 		List<SpriteEntity> toDelete=new ArrayList<SpriteEntity>();
 		for (Iterator<SpriteEntity> it=spriteEntities.iterator();it.hasNext();) {
 			SpriteEntity entity=it.next();

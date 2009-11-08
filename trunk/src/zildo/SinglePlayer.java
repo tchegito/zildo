@@ -8,7 +8,7 @@ import java.util.Set;
 
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
-import zildo.client.ClientEvent;
+import zildo.client.ClientEventNature;
 import zildo.client.Client.ClientType;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
@@ -81,10 +81,10 @@ public class SinglePlayer {
             }
             
             // Render events (1: client and 2: server)
-            state.event = clientEngineZildo.renderEvent(state.event);
             state.event = engineZildo.renderEvent(state.event);
+            state.event = clientEngineZildo.renderEvent(state.event);
 	            
-            if (state.event == ClientEvent.NOEVENT) {
+            if (state.event.nature == ClientEventNature.NOEVENT) {
 	            // Reset queues
 	        	EngineZildo.soundManagement.resetQueue();
 	        	EngineZildo.dialogManagement.resetQueue();

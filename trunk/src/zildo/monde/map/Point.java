@@ -77,4 +77,15 @@ public class Point {
         c += d * d;
         return (float) Math.sqrt(c);
     }
+    
+    /**
+     * Returns TRUE if given point have same coordinates as current one.
+     */
+    public boolean equals(Object p_other) {
+		if (!p_other.getClass().equals(Point.class)) {
+    		return false;
+    	}
+    	Point p=(Point) p_other;
+    	return p.x == x && p.y == y;
+    }
 }

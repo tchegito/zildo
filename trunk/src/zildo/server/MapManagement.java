@@ -27,13 +27,15 @@ public class MapManagement {
 	private TileCollision tileCollision;
 	
 	ChainingPoint changingMapPoint;
-
+	Angle mapScrollAngle;
+	
 	public MapManagement()
 	{
 		tileCollision=new TileCollision();
 		
 		// Init variables
 		currentMap=null;
+		mapScrollAngle=null;
 	}
 	
 	public void finalize()
@@ -254,6 +256,18 @@ public class MapManagement {
 		return (changingMapPoint !=null);
 	}
 	
+	/**
+	 * Returns current chaining point.
+	 * @return ChainingPoint
+	 */
+	public ChainingPoint getChainingPoint() {
+		return changingMapPoint;
+	}
+	
+	public Angle getMapScrollAngle() {
+		return mapScrollAngle;
+	}
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// processChangingMap
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -270,8 +284,8 @@ public class MapManagement {
 			PersoZildo zildo=EngineZildo.persoManagement.getZildo();
 	
 			// 1/3 : angle
-			Angle newAngle=changingMapPoint.getAngle((int) zildo.getX(),(int) zildo.getY(),zildo.getAngle());
-			zildo.setAngle(newAngle);
+			mapScrollAngle=changingMapPoint.getAngle((int) zildo.getX(),(int) zildo.getY(),zildo.getAngle());
+			zildo.setAngle(mapScrollAngle);
 			int orderX=changingMapPoint.getOrderX();
 			int orderY=changingMapPoint.getOrderY();
 	
@@ -318,7 +332,7 @@ public class MapManagement {
 				zildo.setX(zx-8);
 				zildo.setY(zy+8);
 			}
-			switch (newAngle) {
+			switch (mapScrollAngle) {
 				case NORD:
 					zildo.setY(zy-16);
 					break;
@@ -407,8 +421,8 @@ public class MapManagement {
      * @return
      */
     public Point getRespawnPosition() {
-        int x = 831;
-        int y = 267;
+        int x = 21; //831;
+        int y = 587;
         while (collide(x, y, null)) {
             y -= 16;
         }

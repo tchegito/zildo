@@ -132,6 +132,10 @@ public abstract class ScreenFilter extends TilePrimitive {
 		
 	}
 	
+	public void doOnActive() {
+		
+	}
+	
 	final public void cleanUp() {
 		if (fboId > 0) {
 			cleanTexture(textureID);
@@ -144,6 +148,8 @@ public abstract class ScreenFilter extends TilePrimitive {
 		active=activ;
 		if (!activ) {
 			doOnInactive();
+		} else {
+			doOnActive();
 		}
 	}
 	

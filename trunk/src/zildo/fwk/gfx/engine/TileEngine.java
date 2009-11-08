@@ -10,6 +10,7 @@ import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.TilePrimitive;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
+import zildo.monde.map.Point;
 import zildo.prefs.Constantes;
 
 // V1.0
@@ -68,7 +69,7 @@ public class TileEngine extends TextureEngine {
 	// 3D Objects (vertices and indices per bank)
     protected TilePrimitive[] meshFORE;
     protected TilePrimitive[] meshBACK;
-
+    
     private boolean initialized=false;
     List<MotifBank> motifBanks;
     private int n_banquemotif; // Nombre de banque de motifs en mémoire
@@ -294,7 +295,7 @@ public class TileEngine extends TextureEngine {
 	// Redraw all tiles with updating VertexBuffers.
 	// No need to access particular tile, because we draw every one.
 	// **BUT THIS COULD BE DANGEROUS WHEN A TILE SWITCHES FROM ONE BANK TO ANOTHER**
-	public void updateTiles(int cameraXnew, int cameraYnew, Area theMap, int compteur_animation) {
+	public void updateTiles(Point cameraNew, Area theMap, int compteur_animation) {
 	
 		if (initialized && cameraX!=-1 && cameraY!=-1) {
 	
@@ -316,8 +317,8 @@ public class TileEngine extends TextureEngine {
 					if (bank<0 || bank>=Constantes.NB_MOTIFBANK) {
 						throw new RuntimeException("We got a big problem");
 					}
-					meshBACK[bank].updateTile( (16 * x) - cameraXnew,
-												(16 * y) - cameraYnew,
+					meshBACK[bank].updateTile( (16 * x) - cameraNew.x,
+												(16 * y) - cameraNew.y,
 												xTex,
 												yTex);
 					if ((mapCase.getN_banque() & Area.M_MOTIF_MASQUE)!=0) {
@@ -325,8 +326,8 @@ public class TileEngine extends TextureEngine {
 						xTex=(n_motif % 16) * 16;
 						yTex=(n_motif / 16) * 16; //+1;
 						bank=mapCase.getN_banque_masque() & 63;
-						meshFORE[bank].updateTile( (16 * x) - cameraXnew,
-												(16 * y) - cameraYnew,
+						meshFORE[bank].updateTile( (16 * x) - cameraNew.x,
+												(16 * y) - cameraNew.y,
 												xTex,
 												yTex);
 					}
@@ -339,8 +340,9 @@ public class TileEngine extends TextureEngine {
 			}
 		}
 	
-		cameraX=cameraXnew;
-		cameraY=cameraYnew;
+		cameraX=cameraNew.x;
+		cameraY=cameraNew.y;
 		
 	}
+
 }

@@ -16,7 +16,8 @@ public class VBOSoftware implements VBO {
 	}
 	
 	public void cleanUp(VBOBuffers p_bufs) {
-		
+		p_bufs.vertices.clear();
+		p_bufs.textures.clear();
 	}
 	
 	public void endInitialization(VBOBuffers p_bufs) {

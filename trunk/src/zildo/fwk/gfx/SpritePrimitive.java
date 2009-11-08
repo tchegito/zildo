@@ -30,6 +30,10 @@ public class SpritePrimitive extends TilePrimitive {
 		locked=false;
 	}
 	
+	public SpritePrimitive(int numPoints, int numIndices, int texSizeX, int texSizeY) {
+		super(numPoints, numIndices, texSizeX, texSizeY);
+	}
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// startInitialization
 	///////////////////////////////////////////////////////////////////////////////////////

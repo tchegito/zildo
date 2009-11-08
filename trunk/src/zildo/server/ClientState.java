@@ -4,6 +4,7 @@
 package zildo.server;
 
 import zildo.client.ClientEvent;
+import zildo.client.ClientEventNature;
 import zildo.fwk.Identified;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.input.KeyboardState;
@@ -42,6 +43,6 @@ public class ClientState {
         if (p_location != null) {
         	playerName=p_location.address.getHostName();
         }
-        event=ClientEvent.NOEVENT;
+        event=new ClientEvent(ClientEventNature.NOEVENT);
     }
 }

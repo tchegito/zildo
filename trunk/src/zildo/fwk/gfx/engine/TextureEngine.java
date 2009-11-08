@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL11;
 
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.opengl.OpenGLStuff;
+import zildo.fwk.opengl.Utils;
 import zildo.prefs.Constantes;
 
 /**
@@ -31,6 +32,7 @@ public abstract class TextureEngine extends OpenGLStuff {
 
     public int[] textureTab;
     private ByteBuffer scratch;
+
     
     public TextureEngine() {
     	
@@ -38,7 +40,6 @@ public abstract class TextureEngine extends OpenGLStuff {
 		n_Texture=0;
 	
 		textureTab=new int[Constantes.NB_MOTIFBANK + Constantes.NB_SPRITEBANK];
-
     }
     
     public void finalize() {
@@ -86,5 +87,11 @@ public abstract class TextureEngine extends OpenGLStuff {
 
         // Ready for next one
 		n_Texture++;    	
+    }
+    
+    public void saveScreen(int p_texId) {
+
+		// Draw texture with depth
+    	Utils.copyScreenToTexture(p_texId);
     }
 }

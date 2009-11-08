@@ -50,7 +50,7 @@ public class OpenGLStuff {
      * VBO support.
      * @return TRUE if the current hardware supports VBO.
      */
-    public boolean isVBOSupported() {
+    protected boolean isVBOSupported() {
         return (GLContext.getCapabilities().GL_ARB_vertex_buffer_object);
     }
 
@@ -59,14 +59,14 @@ public class OpenGLStuff {
     // ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Frame Buffer Object : provide an offscreen render, which can be used further as a texture.
     // ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean isFBOSupported() {
+    protected boolean isFBOSupported() {
         return GLContext.getCapabilities().GL_EXT_framebuffer_object;
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////
     // isPixelShaderSupported
     // /////////////////////////////////////////////////////////////////////////////////////
-    public boolean isPixelShaderSupported() {
+    protected boolean isPixelShaderSupported() {
         return GLContext.getCapabilities().GL_ARB_shader_objects && GLContext.getCapabilities().GL_ARB_fragment_shader
                 && GLContext.getCapabilities().GL_ARB_vertex_shader && GLContext.getCapabilities().GL_ARB_shading_language_100;
     }
@@ -75,14 +75,14 @@ public class OpenGLStuff {
     // Texture utils
     // //////////////////////////////////////////////
     // color: TRUE=color texture / FALSE=depth texture
-    public int generateTexture(int sizeX, int sizeY) {
+    protected int generateTexture(int sizeX, int sizeY) {
         int textureId = Utils.generateTexture(sizeX, sizeY);
 
         logger.info("Created texture " + textureId);
         return textureId;
     }
 
-    public int generateDepthBuffer() {
+    protected int generateDepthBuffer() {
         int depthId = fbo.generateDepthBuffer();
 
         logger.info("Created depth buffer " + depthId);
@@ -99,17 +99,17 @@ public class OpenGLStuff {
         return v;
     }
 
-    public void cleanFBO(int id) {
+    protected void cleanFBO(int id) {
         fbo.cleanUp(id);
         logger.info("Deleted FBO " + id);
     }
 
-    public void cleanTexture(int id) {
+    protected void cleanTexture(int id) {
         Utils.cleanTexture(id);
         logger.info("Deleted texture " + id);
     }
 
-    public void cleanDepthBuffer(int id) {
+    protected void cleanDepthBuffer(int id) {
         fbo.cleanDepthBuffer(id);
         logger.info("Deleted depth buffer " + id);
     }
