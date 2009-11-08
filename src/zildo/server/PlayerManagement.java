@@ -395,7 +395,8 @@ public class PlayerManagement {
 			} else if (!heros.isInventoring()) { //
 				if (heros.getMouvement()==MouvementZildo.BRAS_LEVES) {
 					heros.throwSomething();
-				} else if (heros.getMouvement()!=MouvementZildo.BRAS_LEVES) {
+				} else if (heros.getMouvement()!=MouvementZildo.BRAS_LEVES && 
+						heros.getMouvement()!=MouvementZildo.SOULEVE) {
 					// On teste s'il y a un personnage à qui parler
 				/*    with_dialogue=0;
 					i=0;

@@ -6,12 +6,13 @@ import zildo.fwk.opengl.OpenGLStuff;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 
 /**
- * Class describing the TileEngine main element :
- * -set of vertices
- * -set of indices
- * -set of normals (all the same)
- * -set of textures coordinates
- * 
+ * Class describing the TileEngine main element :<br/>
+ * <ul>
+ * <li>set of vertices</li>
+ * <li>set of indices</li>
+ * <li>set of normals (all the same)</li>
+ * <li>set of textures coordinates</li>
+ * </ul>
  * @author tchegito
  *
  */
@@ -60,6 +61,8 @@ public class TilePrimitive extends OpenGLStuff {
 
     public void cleanUp() {
        	vbo.cleanUp(bufs);
+        nPoints = 0;
+        nIndices = 0;
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////

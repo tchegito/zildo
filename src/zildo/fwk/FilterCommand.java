@@ -34,9 +34,7 @@ public class FilterCommand {
 	}
 	
     public void addFilter(ScreenFilter filter) {
-        if (filter.isFBOSupported()) {
-            filters.add(filter);
-        }
+    	filters.add(filter);
     }
 	
 	public void doPreFilter() {

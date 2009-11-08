@@ -1,5 +1,6 @@
 package zildo.monde.sprites;
 
+import zildo.Zildo;
 import zildo.fwk.Identified;
 
 
@@ -26,6 +27,23 @@ public class SpriteModel extends Identified {
 	private int texPos_x,texPos_y;			// Position sur la texture de sprite
 
 	private	int offset;
+	
+	private static SpriteModel screenSized=null;
+	
+	static final SpriteModel getScreenSized() {
+		if (screenSized == null) {
+			screenSized=new SpriteModel();
+			screenSized.taille_x=320; //Zildo.viewPortX*2;
+			screenSized.taille_y=-Zildo.viewPortY;
+			screenSized.texPos_x=0;
+			screenSized.texPos_y=0;
+		}
+		return screenSized;
+	}
+	
+	public SpriteModel() {
+		
+	}
 	
 	public SpriteModel(int taille_x, int taille_y, int offset) {
 		this.taille_x=taille_x;

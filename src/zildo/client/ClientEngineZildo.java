@@ -62,14 +62,12 @@ public class ClientEngineZildo {
 		
 		if (!p_awt) {
 
-			if (ortho.isFBOSupported()) {
-				filterCommand.addFilter(new BilinearFilter());
-				//filterCommand.addFilter(new BlurFilter());
-				filterCommand.addFilter(new BlendFilter());
-				//filterCommand.addFilter(new FadeFilter());
-				filterCommand.active(null, false);
-				filterCommand.active(BilinearFilter.class, true);
-			}
+			filterCommand.addFilter(new BilinearFilter());
+			//filterCommand.addFilter(new BlurFilter());
+			filterCommand.addFilter(new BlendFilter());
+			//filterCommand.addFilter(new FadeFilter());
+			filterCommand.active(null, false);
+			filterCommand.active(BilinearFilter.class, true);
 
 			pixelShaders = new PixelShaders();
 			if (pixelShaders.canDoPixelShader()) {
@@ -117,7 +115,7 @@ public class ClientEngineZildo {
 			//playerManagement.manageKeyboard();
 		} else {
 			// Scene is blocked by non-player animation
-	
+			return;
 		}
 	
 
@@ -133,11 +131,11 @@ public class ClientEngineZildo {
 		}
 		
 		// Tile engine
-		tileEngine.updateTiles(mapDisplay.getCamerax(),mapDisplay.getCameray(),
+		tileEngine.updateTiles(mapDisplay.getCamera(),
 				mapDisplay.getCurrentMap(),mapDisplay.getCompteur_animation());
 
-		spriteDisplay.updateSpritesClient(mapDisplay.getCamerax(),mapDisplay.getCameray());
-		
+		spriteDisplay.updateSpritesClient(mapDisplay.getCamera());
+
 		ClientEngineZildo.openGLGestion.beginScene();
 
 	
@@ -159,47 +157,73 @@ public class ClientEngineZildo {
 			this.debug();
 		}
 
-		guiDisplay.draw();
-
+       	guiDisplay.draw();
+        
 		openGLGestion.endScene();
-		//gfxBasics.EndRendering();
-	
-		// Engine event management
-		//TODO: turn on the events management
-
-		
-
 	}
 	
 	public ClientEvent renderEvent(ClientEvent p_event) {
 		
 		ClientEvent retEvent=p_event;
 		
-		switch (p_event) {
-		case CHANGINGMAP_ASKED:
-			// Changing map : 1/3 we launch the fade out
-			retEvent=ClientEvent.CHANGINGMAP_FADEOUT;
-			guiDisplay.fadeOut();
-			break;
-		case CHANGINGMAP_FADEOUT:
-			if (guiDisplay.isFadeOver()) {
-				retEvent=ClientEvent.CHANGINGMAP_FADEOUT_OVER;
-			}
-			break;
-		case CHANGINGMAP_LOADED:
-            // Changing map : 2/3 we load the new map and launch the fade in
-			retEvent = ClientEvent.CHANGINGMAP_FADEIN;
-			guiDisplay.fadeIn();
-			break;
-		case CHANGINGMAP_FADEIN:
-			if (guiDisplay.isFadeOver()) {
-				// Changing map : 3/3 we unblock the player
-	        	retEvent=ClientEvent.NOEVENT;
+		if (p_event.wait != 0) {
+			p_event.wait--;
+		} else {
+			switch (p_event.nature) {
+			case CHANGINGMAP_ASKED:
+				// Changing map : 1/3 we launch the fade out
+				retEvent.nature=ClientEventNature.CHANGINGMAP_FADEOUT;
+				guiDisplay.fadeOut();
+				break;
+			case CHANGINGMAP_FADEOUT:
+				if (guiDisplay.isFadeOver()) {
+					retEvent.nature=ClientEventNature.CHANGINGMAP_FADEOUT_OVER;
+				}
+				break;
+			case CHANGINGMAP_LOADED:
+	            // Changing map : 2/3 we load the new map and launch the fade in
+				retEvent.nature = ClientEventNature.CHANGINGMAP_FADEIN;
+				guiDisplay.fadeIn();
+				break;
+			case CHANGINGMAP_FADEIN:
+				if (guiDisplay.isFadeOver()) {
+					// Changing map : 3/3 we unblock the player
+		        	retEvent.nature=ClientEventNature.NOEVENT;
+				}
 	        	break;
-			}
+	        case CHANGINGMAP_SCROLL_ASKED:
+	            retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_CAPTURE;
+	            filterCommand.active(BilinearFilter.class, false);
+	            guiDisplay.setToDisplay_generalGui(false);
+	            retEvent.wait=1;
+	            break;
+	        case CHANGINGMAP_SCROLL_CAPTURE:
+	            spriteEngine.captureScreen();
+	            retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP;
+	            break;
+	        case CHANGINGMAP_SCROLL_START:
+	        	if (mapDisplay.getTargetCamera() == null) {
+	        		mapDisplay.centerCamera();
+	        		mapDisplay.shiftForMapScroll(p_event.angle);
+	
+	        		spriteDisplay.displayPreviousMap(mapDisplay.getCamera());
+	                
+	        		retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL;
+		            // Hide GUI sprites
+		            filterCommand.active(BilinearFilter.class, true);
+	        	}
+	            break;
+	        case CHANGINGMAP_SCROLL:
+	        	if (!mapDisplay.isScrolling()) {
+	        		retEvent.nature = ClientEventNature.NOEVENT;
+	        		// Show GUI sprites back
+		            guiDisplay.setToDisplay_generalGui(true);
+	        	}
+	        	break;
+		    }
 		}
-		
-		return retEvent;
+	
+	    return retEvent;
 	}
 	
 	/**
@@ -242,6 +266,7 @@ public class ClientEngineZildo {
 		ortho.drawText(43,86,""+zildo.y, new Vector3f(1.0f, 0.0f, 1.0f));
 		
 		// Debug collision
+		Point camera=mapDisplay.getCamera();
 		if (EngineZildo.collideManagement != null && Zildo.infoDebugCollision) {
 			for (Collision c : EngineZildo.collideManagement.getTabColli()) {
 				if (c != null) {
@@ -253,10 +278,10 @@ public class ClientEngineZildo {
 						color=20;
 					}
 					if (c.size==null) {
-						ortho.box(c.cx-rayon-mapDisplay.getCamerax(), 
-								c.cy-rayon-mapDisplay.getCameray(), rayon*2, rayon*2, 0, alphaColor);
+						ortho.box(c.cx-rayon-camera.x, 
+								c.cy-rayon-camera.y, rayon*2, rayon*2, 0, alphaColor);
 					} else {
-						Point center=new Point(c.cx-mapDisplay.getCamerax(), c.cy-mapDisplay.getCameray());
+						Point center=new Point(c.cx-camera.x, c.cy-camera.y);
 						Rectangle rect=new Rectangle(center, c.size);
 						ortho.box(rect, color, null);
 					}
@@ -264,16 +289,16 @@ public class ClientEngineZildo {
 			}
 			int x=(int) zildo.x-4;
 			int y=(int) zildo.y-10;
-			ortho.box(x-3-mapDisplay.getCamerax(), y-mapDisplay.getCameray(), 16, 16, 12, null);
+			ortho.box(x-3-camera.x, y-camera.y, 16, 16, 12, null);
 		}
 		
 		if (Zildo.infoDebugCase) {
 			for (int y=0;y<20;y++) {
 				for (int x=0;x<20;x++) {
-					int cx=x+mapDisplay.getCamerax() / 16;
-					int cy=y+mapDisplay.getCameray() / 16;
-					int px=x*16 - mapDisplay.getCamerax() % 16;
-					int py=y*16 - mapDisplay.getCameray() % 16;
+					int cx=x+camera.x / 16;
+					int cy=y+camera.y / 16;
+					int px=x*16 - camera.x % 16;
+					int py=y*16 - camera.y % 16;
 					if (cy < 64 && cx < 64) {
 						Case c=EngineZildo.mapManagement.getCurrentMap().get_mapcase(cx, cy+4);
 						int onmap=EngineZildo.mapManagement.getCurrentMap().readmap(cx, cy);

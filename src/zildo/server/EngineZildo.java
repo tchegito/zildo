@@ -4,9 +4,11 @@ import java.util.Collection;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
+import zildo.client.ClientEventNature;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
 import zildo.monde.dialog.DialogManagement;
+import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.persos.PersoZildo;
 
@@ -24,8 +26,6 @@ public class EngineZildo {
 
     public static Game game;
     public static int compteur_animation;
-    
-	private static int waitingScene=0;
 	
 	// For debug
 	public static int extraSpeed=1;
@@ -98,6 +98,7 @@ public class EngineZildo {
 	public void renderFrame(Collection<ClientState> p_clientStates) {
 		// Animate the world
 		// 1) Players
+		boolean block=false;
 		for (ClientState state : p_clientStates) {
 			KeyboardInstant i=state.keys;
 			if (i != null) {
@@ -106,13 +107,19 @@ public class EngineZildo {
 				state.keys=null;
 			}
 			// Look for map change (only in single player for now)
-			if (mapManagement.isChangingMap(state.zildo) && state.event==ClientEvent.NOEVENT) {
-				state.event=ClientEvent.CHANGINGMAP_ASKED;
+			if (!game.multiPlayer && mapManagement.isChangingMap(state.zildo) && state.event.nature==ClientEventNature.NOEVENT) {
+				ChainingPoint ch=mapManagement.getChainingPoint();
+				if (ch.isBorder()) {
+					state.event.nature=ClientEventNature.CHANGINGMAP_SCROLL_ASKED;
+				} else {
+					state.event.nature=ClientEventNature.CHANGINGMAP_ASKED;
+				}
+			}
+			if (state.event.nature == ClientEventNature.CHANGINGMAP_SCROLL) {
+				
 			}
 		}
 		
-		// TODO: Should we block the game ?
-		boolean block=false;
 		if (!game.multiPlayer) {
 			PersoZildo zildo=persoManagement.getZildo();
 			block=zildo.isInventoring();
@@ -120,26 +127,31 @@ public class EngineZildo {
 		
 		// 2) Rest of the world
 		collideManagement.initFrame();
-		spriteManagement.updateSprites();
+		spriteManagement.updateSprites(block);
 		collideManagement.manageCollisions(p_clientStates);
 		mapManagement.updateMap();
 		
 		compteur_animation++;
 	}
 	
-	public ClientEvent renderEvent(ClientEvent p_event) {
-		ClientEvent retEvent=p_event;
-		
-		switch (p_event) {
-		case CHANGINGMAP_FADEOUT_OVER:
-        	EngineZildo.mapManagement.processChangingMap();
-            ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
-            retEvent=ClientEvent.CHANGINGMAP_LOADED;
-            break;
-            
-		}
-		return retEvent;
-	}
+    public ClientEvent renderEvent(ClientEvent p_event) {
+        ClientEvent retEvent = p_event;
+
+        switch (p_event.nature) {
+            case CHANGINGMAP_FADEOUT_OVER:
+            case CHANGINGMAP_SCROLL_WAIT_MAP:
+                mapManagement.processChangingMap();
+                ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+                if (p_event.nature == ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP) {
+                    retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_START;
+                    retEvent.angle = mapManagement.getMapScrollAngle();
+                } else {
+                    retEvent.nature = ClientEventNature.CHANGINGMAP_LOADED;
+                }
+                break;
+        }
+        return retEvent;
+    }
 	
 	void loadMap(String mapname)
 	{

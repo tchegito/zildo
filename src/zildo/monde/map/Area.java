@@ -36,15 +36,6 @@ public class Area {
 	private static final long serialVersionUID = 1L;
 
 	static public int M_MOTIF_MASQUE = 128;
-	static private int M_MOTIF_ANIME = 64;
-
-	static private int SCROLL_LEFT = 0; // Pour les changements de map
-	static private int SCROLL_RIGHT = 1;
-	static private int SCROLL_UP = 2;
-	static private int SCROLL_DOWN = 3;
-
-	static private int MOTIFS_EXTERIEUR = 1;
-	static private int MOTIFS_INTERIEUR = 0;
 
 	// For roundAndRange
 	static public int ROUND_X = 0;
@@ -532,6 +523,13 @@ public class Area {
 				}
 				perso.setEn_bras(null);
 				perso.setQuel_deplacement(MouvementPerso.fromInt(p_buffer.readUnsignedByte()));
+				if (desc==PersoDescription.PANNEAU && perso.getQuel_deplacement() != MouvementPerso.SCRIPT_IMMOBILE) {
+					// Fix a map bug : sign perso should be unmoveable
+					perso.setQuel_deplacement(MouvementPerso.SCRIPT_IMMOBILE);	
+				} else if (desc==PersoDescription.GARDE_CANARD && perso.getInfo()!=PersoInfo.ENEMY) {
+					// Another map bug : guards are always hostile
+					perso.setInfo(PersoInfo.ENEMY);
+				}
 				perso.setAngle(Angle.fromInt(p_buffer.readUnsignedByte()));
 
 				perso.setNBank(SpriteBank.BANK_PNJ);

@@ -6,8 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
+import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
@@ -41,6 +43,8 @@ public class SpriteDisplay extends SpriteStore {
 	
 	// We use a map to ease the access to an entity with his ID
 	Map<Integer, SpriteEntity> mapEntities=new HashMap<Integer, SpriteEntity>();
+	
+	SpriteEntity previousMapSprite;
 	
 	public void setEntities(List<SpriteEntity> p_entities) {
 		//mapEntities.clear();
@@ -89,7 +93,7 @@ public class SpriteDisplay extends SpriteStore {
 	 * @param cameraXnew
 	 * @param cameraYnew
 	 */
-	public void updateSpritesClient(int cameraXnew, int cameraYnew) {
+	public void updateSpritesClient(Point cameraNew) {
 		
 		// Reset the sort array used for sprites
 		clearSortArray();
@@ -101,8 +105,8 @@ public class SpriteDisplay extends SpriteStore {
 		for (SpriteEntity entity : entities) {
 			if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
 				// Camera moves
-				entity.setScrX ( entity.getAjustedX() - cameraXnew);
-				entity.setScrY ( entity.getAjustedY() - cameraYnew);
+				entity.setScrX ( entity.getAjustedX() - cameraNew.x);
+				entity.setScrY ( entity.getAjustedY() - cameraNew.y);
 			}
 		}
 		
@@ -110,13 +114,13 @@ public class SpriteDisplay extends SpriteStore {
 			if (entity != null) {
 				// Camera moves
 				if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ENTITY) { 
-					entity.setScrX((int) (entity.x - cameraXnew));
-					entity.setScrY((int) (entity.y - cameraYnew));
+					entity.setScrX((int) (entity.x - cameraNew.x));
+					entity.setScrY((int) (entity.y - cameraNew.y));
 				} else if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
 					// Center sprite
 					SpriteModel spr=entity.getSprModel();
-					entity.setScrX(entity.getAjustedX() - cameraXnew - (spr.getTaille_x() >> 1));
-					entity.setScrY(entity.getAjustedY() - cameraYnew - spr.getTaille_y());
+					entity.setScrX(entity.getAjustedX() - cameraNew.x - (spr.getTaille_x() >> 1));
+					entity.setScrY(entity.getAjustedY() - cameraNew.y - spr.getTaille_y());
 				}
 			}
 		}
@@ -290,5 +294,18 @@ public class SpriteDisplay extends SpriteStore {
 	
 	public void setZildoId(int p_zildoId) {
 		zildoId=p_zildoId;
+	}
+	
+	public void displayPreviousMap(Point p_cameraLocation) {
+
+		if (previousMapSprite != null) {
+			deleteSprite(previousMapSprite);
+		}
+		previousMapSprite=new SpriteEntity(p_cameraLocation.x, p_cameraLocation.y, false);
+		previousMapSprite.setNSpr(0);
+		previousMapSprite.setNBank(SpriteBank.BANK_COPYSCREEN);
+		previousMapSprite.setVisible(true);
+		previousMapSprite.setSpecialEffect(PixelShaders.ENGINEFX_BACK_SCREEN);
+        spawnSprite(previousMapSprite);		
 	}
 }

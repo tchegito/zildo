@@ -1,11 +1,17 @@
 package zildo.client;
 
-public enum ClientEvent {
+import zildo.monde.map.Angle;
 
-	NOEVENT,
-	CHANGINGMAP_ASKED,			// Server says "we need to change the current map"
-	CHANGINGMAP_FADEOUT,		// Client has started a fade out (for new map)
-	CHANGINGMAP_FADEOUT_OVER,	// Client has ended his fade out
-	CHANGINGMAP_LOADED,			// Server has loaded the new map
-	CHANGINGMAP_FADEIN;			// Client has started a fade in (for new map)
+public class ClientEvent {
+
+	public ClientEventNature nature;
+	public Angle angle;	// Only used with the CHANGINGMAP_SCROLL_START nature, now.
+	public int wait;
+	
+	public ClientEvent(ClientEventNature p_nature) {
+		nature=p_nature;
+		angle=null;
+		wait=0;
+	}
+	
 }

@@ -133,7 +133,12 @@ public class SpriteStore {
 		int nBank=entity.getNBank();
 		int nSpr=entity.getNSpr();
 	
-		SpriteModel spr=getSpriteBank(nBank).get_sprite(nSpr);
+		SpriteModel spr;
+		if (nBank == SpriteBank.BANK_COPYSCREEN) {
+			spr=SpriteModel.getScreenSized();
+		} else  {
+			spr=getSpriteBank(nBank).get_sprite(nSpr);
+		}
 	
 		entity.setSprModel(spr);
 	

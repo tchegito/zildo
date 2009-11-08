@@ -25,4 +25,23 @@ public class VBOBuffers {
         indices = BufferUtils.createIntBuffer(3 * p_numIndices);
         textures = BufferUtils.createFloatBuffer(2 * p_numPoints);    	
     }
+    
+	
+	public String toString() {
+		StringBuilder sb=new StringBuilder();
+		sb.append("Vertices : [");
+		for (int i=0;i<vertices.limit();i++) {
+			sb.append(vertices.get(i)+", ");
+		}
+		sb.append("]\nTextures : [");
+		for (int i=0;i<textures.limit();i++) {
+			sb.append(textures.get(i)+", ");
+		}
+		sb.append("]\nIndices : [");
+		for (int i=0;i<indices.limit();i++) {
+			sb.append(indices.get(i)+", ");
+		}
+		sb.append("]");
+		return sb.toString();
+	}
 }

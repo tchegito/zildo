@@ -1,5 +1,7 @@
 package zildo.monde.map;
 
+import zildo.server.EngineZildo;
+
 
 
 
@@ -114,23 +116,29 @@ public class ChainingPoint {
 	// IN : x,y (pixel coordinates in range 0..63*16,0..63*16
 	///////////////////////////////////////////////////////////////////////////////////////
 	public Angle getAngle(int x, int y, Angle startAngle) {
-		Angle angle=Angle.NORD;
-		if ((px & 128)!=0 && startAngle.isHorizontal()) {
+		Angle angle=startAngle;
+		if ((py & 128)!=0 && (px==0 || px==EngineZildo.mapManagement.getCurrentMap().getDim_x()-1)) {
+			// Vertical border
 			if (x % 16 > 8) {
-				angle=Angle.OUEST;
-			} else {
 				angle=Angle.EST;
-			}
-		} else if ((px & 128)==0 && startAngle.isVertical()) {
-			if ((y % 16) > 8) {
-				angle=Angle.NORD;
 			} else {
+				angle=Angle.OUEST;
+			}
+		} else if ((py & 128)!=0) {
+			// Horizontal one
+			if ((y % 16) > 8) {
 				angle=Angle.SUD;
+			} else {
+				angle=Angle.NORD;
 			}
 		}
 	
 		// Return the 'computed' angle
 		return angle;
+	}
+	
+	public boolean isBorder() {
+		return px > 127 || py > 127;
 	}
 	
 	public String toString() {

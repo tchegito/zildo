@@ -37,7 +37,7 @@ public class SpriteEngine extends TextureEngine {
 
 	// 3D Objects (vertices and indices per bank)
 	SpritePrimitive meshSprites[]=new SpritePrimitive[Constantes.NB_SPRITEBANK];
-	
+
     boolean pixelShaderSupported;
     
 	//////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ public class SpriteEngine extends TextureEngine {
 	public SpriteEngine()
 	{
         super();
-
+		
         pixelShaderSupported = isPixelShaderSupported();
     }
 	
@@ -189,9 +189,13 @@ public class SpriteEngine extends TextureEngine {
 	
 		// Allocate meshes
 		for (i=0;i<Constantes.NB_SPRITEBANK;i++) {
-			meshSprites[i] = new SpritePrimitive(
-										Constantes.NB_SPRITE_PER_PRIMITIVE*4,
-										Constantes.NB_SPRITE_PER_PRIMITIVE*3*2);	//NB_SPRITE_PER_PRIMITIVE
+			if (i==SpriteBank.BANK_COPYSCREEN) {
+				meshSprites[i] = new SpritePrimitive(4, 6, 512, 256);
+			} else {
+				meshSprites[i] = new SpritePrimitive(
+											Constantes.NB_SPRITE_PER_PRIMITIVE*4,
+											Constantes.NB_SPRITE_PER_PRIMITIVE*3*2);	//NB_SPRITE_PER_PRIMITIVE
+			}
 		}
 		// Load sprite banks
 		for (i=0;i<SpriteManagement.sprBankName.length;i++) {
@@ -200,6 +204,10 @@ public class SpriteEngine extends TextureEngine {
 			// Create a DirectX9 texture based on the current tiles
 			createTextureFromSpriteBank(sprBank);
 		}
+		
+		// Prepare screen copy texture
+		textureTab[SpriteBank.BANK_COPYSCREEN]=generateTexture(0,64); //, 1024); //, Zildo.viewPortY);
+		n_Texture++;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -306,11 +314,11 @@ public class SpriteEngine extends TextureEngine {
 			} else {
 				// Render the n sprites from this bank
 				int nbQuads=bankOrder[phase][posBankOrder*3 + 1];
-		        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[numBank]);
+				int currentFX=bankOrder[phase][posBankOrder*3 + 2];
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[numBank]);
 
 				// Select the right pixel shader (if needed)
                 if (pixelShaderSupported) {
-					int currentFX=bankOrder[phase][posBankOrder*3 + 2];
 		
 					if (currentFX == PixelShaders.ENGINEFX_NO_EFFECT) {
 						ARBShaderObjects.glUseProgramObjectARB(0);
@@ -366,5 +374,12 @@ public class SpriteEngine extends TextureEngine {
 
 	public void setBankOrder(int[][] bankOrder) {
 		this.bankOrder = bankOrder;
+	}
+	
+	/**
+	 * Capture screen before map scroll.
+	 */
+	public void captureScreen() {
+		saveScreen(textureTab[SpriteBank.BANK_COPYSCREEN]);
 	}
 }

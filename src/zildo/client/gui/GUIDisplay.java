@@ -94,6 +94,11 @@ public class GUIDisplay {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void draw()
 	{
+		// Re-initialize the gui's sprites sequence.
+		// Each frame, we re-add the sprites to avoid doing test about what exactly changes
+		// from last frame.
+		clean();
+		
 		if (toDisplay_generalGui) {
 			// Draw the general GUI (life, money...)
 			drawGeneralGUI();
@@ -499,11 +504,7 @@ public class GUIDisplay {
 		if (zildo == null) {
 			return;
 		}
-		// Re-initialize the gui's sprites sequence.
-		// Each frame, we re-add the sprites to avoid doing test about what exactly changes
-		// from last frame.
-		clean();
-	
+		
 		int i,j;
 		// Life
 		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,91,207,10);
