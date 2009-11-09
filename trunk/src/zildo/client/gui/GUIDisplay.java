@@ -449,13 +449,14 @@ public class GUIDisplay {
 		if (!p_menu.displayed) {
 			// Display menu's text
 			ClientEngineZildo.guiDisplay.setToDisplay_dialogMode(GUIDisplay.DIALOGMODE_MENU);
-			int posY=startY;
-			// Title
-			prepareTextInFrame(p_menu.title, Constantes.TEXTER_COORDINATE_X, posY);
+            int posY = startY;
+            removePreviousTextInFrame();
+            // Title
+            prepareTextInFrame(p_menu.title, Constantes.TEXTER_COORDINATE_X, posY);
 			posY+=2*Constantes.TEXTER_MENU_SIZEY;
 			// Items
 			for (ItemMenu item : p_menu.items) {
-				prepareTextInFrame(item.text, Constantes.TEXTER_COORDINATE_X, posY);
+				prepareTextInFrame(item.getText(), Constantes.TEXTER_COORDINATE_X, posY);
 				posY+= Constantes.TEXTER_MENU_SIZEY;
 			}
 			p_menu.displayed=true;

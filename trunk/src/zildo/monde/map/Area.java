@@ -385,7 +385,7 @@ public class Area {
 				file.put((int) perso.z);
 				file.put((byte) perso.getQuel_spr().first());
 				file.put((byte) perso.getInfo().ordinal());
-				file.put(0); //(byte) perso.getEn_bras());
+				file.put((byte) 0); //(byte) perso.getEn_bras());
 				file.put((byte) perso.getQuel_deplacement().ordinal());
 				file.put((byte) perso.getAngle().ordinal());
 				file.put(perso.getNom(), 9);

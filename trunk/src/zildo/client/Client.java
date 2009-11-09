@@ -145,6 +145,7 @@ public class Client {
 	
 	public void handleMenu(Menu p_menu) {
 		currentMenu=p_menu;
+		currentMenu.refresh();
 	}
 	
 	public void cleanUp() {

@@ -3,12 +3,12 @@ package zildo.fwk.file;
 import java.nio.ByteBuffer;
 
 /**
- * Class which encapsulates the read/write operations into a ByteBuffer.
- * Here we use different type (int, byte, String).
- * String objects are treated as Turbo Pascal way :
- * -first byte: string's length
- * -remaining: string content
- * 
+ * Class which encapsulates the read/write operations into a ByteBuffer.<p/>
+ * Here we use different type (int, byte, String).<br/>
+ * String objects are treated as Turbo Pascal way :<ul>
+ * <li>first byte: string's length</li>
+ * <li>remaining: string content</li>
+ * </ul>
  * @author tchegito
  *
  */
