@@ -6,6 +6,7 @@ import java.util.List;
 
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
+import zildo.client.gui.menu.PlayerNameMenu;
 import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.input.KeyboardInstant;
@@ -54,6 +55,7 @@ public class NetClient extends NetSend {
 	
 	TransferObject server;
 	Client client;
+	String playerName=PlayerNameMenu.loadPlayerName();
 	
 	public NetClient(Client p_client) {
 		super(null, NetSend.NET_PORT_CLIENT);
@@ -84,7 +86,7 @@ public class NetClient extends NetSend {
 					log("Serveur trouvé"+server.address.getHostName());
 					
 					serverFound=true;
-					ConnectPacket connectPacket=new ConnectPacket(true);
+					ConnectPacket connectPacket=new ConnectPacket(true, playerName);
 					sendPacket(connectPacket, server);
 				}
 			} else if (!serverAccepted) {
@@ -233,7 +235,7 @@ public class NetClient extends NetSend {
     
     public void close() {
     	// Send a disconnect packet
-    	ConnectPacket connectPacket=new ConnectPacket(false);
+    	ConnectPacket connectPacket=new ConnectPacket(false, null);
     	sendPacket(connectPacket, server);
     	super.close();
     }

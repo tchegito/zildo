@@ -9,6 +9,8 @@ public class Constantes {
 	public static String DATA_PATH = "."+File.separator+"Data"+File.separator;	// Pour livraison
 	//public static String DATA_PATH = "C:\\ZildoDist\\Version 1.08\\Data\\";
 
+	public static String CONFIGURATION_FILE = "player.ini";
+	
 	// Tile Engine
 	public static final int TILEENGINE_WIDTH = 64;		// Max Number of tiles
 														// on a row
@@ -21,7 +23,7 @@ public class Constantes {
 	public static final	int NB_MOTIFBANK = 8;
 
 	// Sprite Banks
-	public static final	int NB_SPRITEBANK = 6;
+	public static final	int NB_SPRITEBANK = 7;
 	public static final int NB_SPRITE_PER_PRIMITIVE = 400;
 
 	public static final int SORTY_MAX = 280;
@@ -48,11 +50,6 @@ public class Constantes {
 	public static final int TEXTER_COORDINATE_Y = 180;
 	public static final int TEXTER_TOPIC_SIZELINE = 12;
 	public static final int TEXTER_MENU_SIZEY = 16;
-	
-	// Engine events
-	public static final int ENGINEEVENT_NOEVENT = 0;
-	public static final int ENGINEEVENT_CHANGINGMAP_FADEOUT = 1;
-	public static final int ENGINEEVENT_CHANGINGMAP_FADEIN = 2;
 
 	public static final	int FADE_SPEED = 5;
 

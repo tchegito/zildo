@@ -179,7 +179,7 @@ public class CollideManagement {
         	if (weapon != null) {
         		perso.parry(p_collider.cx, p_collider.cy, perso);
         	} else {
-        		perso.beingWounded(p_collider.cx, p_collider.cy, perso);
+        		perso.beingWounded(p_collider.cx, p_collider.cy, p_collider.perso);
         	}
         	
             if (p_collider.weapon != null) {

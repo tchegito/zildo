@@ -33,9 +33,10 @@ public class StartMenu extends Menu {
         };
         
         ItemMenu itemMultiPlayer=new ItemMenu("Multi Player") {
-        	Menu multiMenu;
-        	boolean lan=true;
-        	
+            Menu multiMenu;
+            boolean lan = true;
+            StringBuilder playerName=new StringBuilder(PlayerNameMenu.loadPlayerName());
+            
         	public void run() {
                 ItemMenu itemCreate=new ItemMenu("Create game", BankSound.MenuSelectGame) {
                 	public void run() {
@@ -57,26 +58,42 @@ public class StartMenu extends Menu {
                 		}
                 	}
                 };
-                ItemMenu itemToggleNetwork=new ItemMenu(getNetTypeString()) {
-                	public void run() {
-                		lan=!lan;
-                		this.text=getNetTypeString();
-                		client.handleMenu(multiMenu);
-                	}
+                final ItemMenu itemPlayerName = new ItemMenu(getPlayerNameString()) {
+                    @Override
+                    public void run() {
+                        client.handleMenu(new PlayerNameMenu(playerName, multiMenu));
+                    }
                 };
-                ItemMenu itemBack=new ItemMenu("Back") {
-                	public void run() {
-                		client.handleMenu(startMenu);
-                	}
+                ItemMenu itemToggleNetwork = new ItemMenu(getNetTypeString()) {
+                    @Override
+                    public void run() {
+                        lan = !lan;
+                        this.setText(getNetTypeString());
+                        client.handleMenu(multiMenu);
+                    }
                 };
-                
-                multiMenu=new Menu("Multiplayer", itemCreate, itemJoin, itemToggleNetwork, itemBack);
+                ItemMenu itemBack = new ItemMenu("Back") {
+                    @Override
+                    public void run() {
+                        client.handleMenu(startMenu);
+                    }
+                };
+
+                multiMenu = new Menu("Multiplayer", itemCreate, itemJoin, itemPlayerName, itemToggleNetwork, itemBack) {
+                    public void refresh() {
+                    	itemPlayerName.setText(getPlayerNameString());
+                    }
+                };
                 client.handleMenu(multiMenu);
         	}
         	
         	String getNetTypeString() {
         		return "Current network - "+ (lan ? "LAN" : "www");
         	}
+            String getPlayerNameString() {
+                return "Player name - " + playerName.toString();
+            }
+
         };
         
         ItemMenu itemQuit=new ItemMenu("Quit", BankSound.MenuSelectGame) {

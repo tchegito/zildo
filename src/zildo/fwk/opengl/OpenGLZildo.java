@@ -74,10 +74,10 @@ public class OpenGLZildo extends OpenGLGestion {
 
         // Pour test
         if(Keyboard.isKeyDown(Keyboard.KEY_ADD)) {       // '+'
-            z+=0.1f;
+            //z+=0.1f;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_SUBTRACT)) {       // '-'
-            z-=0.1f;
+            //z-=0.1f;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_MULTIPLY)) {
         	pressed=true;

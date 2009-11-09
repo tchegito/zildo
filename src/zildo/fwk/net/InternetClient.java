@@ -19,7 +19,7 @@ public class InternetClient extends NetClient {
 		
 		server=new TransferObject(p_serverIp, p_serverPort);
 		
-		ConnectPacket connectPacket=new ConnectPacket(true);
+		ConnectPacket connectPacket=new ConnectPacket(true, playerName);
 		sendPacket(connectPacket, server);
 		serverFound=true;
 	}

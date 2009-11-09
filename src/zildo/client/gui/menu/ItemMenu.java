@@ -4,8 +4,12 @@ import zildo.client.SoundPlay.BankSound;
 
 public abstract class ItemMenu {
 
-	public String text;
+	private  String text;
 	public BankSound sound=BankSound.MenuSelect;
+	
+	public ItemMenu() {
+		
+	}
 	
 	public ItemMenu(String p_text) {
 		text=p_text;
@@ -16,6 +20,14 @@ public abstract class ItemMenu {
 		sound=p_sound;
 	}
 
+	public String getText() {
+		return text;
+	}
+	
+	public void setText(String p_text) {
+		text=p_text;
+	}
+	
 	public abstract void run();
 		
 }

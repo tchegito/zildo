@@ -92,20 +92,17 @@ public class Server extends Thread {
 	 * @param p_client
 	 * @return new Zildo's id
 	 */
-	public int connectClient(TransferObject p_client) {
+	public int connectClient(TransferObject p_client, String p_playerName) {
 		if (clients.get(p_client) != null) {
 			return clients.get(p_client).zildo.getId();
 		}
 		int zildoId=engineZildo.spawnClient();
-		ClientState srv=new ClientState(p_client, zildoId);
-		clients.put(p_client, srv);
-		if (p_client == null) {
-			// Connecting server : so take the name from adress
-			srv.playerName=netServer.address.getHostName();
-		}
+		ClientState state=new ClientState(p_client, zildoId);
+		state.playerName=p_playerName;
+		clients.put(p_client, state);
 		
 		if (p_client != null) {
-			ClientEngineZildo.guiDisplay.displayMessage(p_client.address.getHostName()+" join the game");
+			ClientEngineZildo.guiDisplay.displayMessage(p_playerName+" join the game");
 		}
 		
 		return zildoId;

@@ -70,13 +70,14 @@ public class NetServer extends NetSend {
 				
 				Packet clientConnect=packets.getUniqueTyped(PacketType.CLIENT_CONNECT);
 				if (clientConnect != null) {
-					boolean in=((ConnectPacket)clientConnect).isJoining();
+					ConnectPacket conPacket=(ConnectPacket)clientConnect;
+					boolean in=conPacket.isJoining();
 					source=clientConnect.getSource();
 					if (in) {
 						// Client is coming
-						log("Serveur:Un client est arrivé !"+source.address.getHostName()+" port:"+source.address.getPort());
+						log("Serveur:Un client est arrivé !"+source.address.getHostName()+" port:"+source.address.getPort()+" named "+conPacket.getPlayerName());
 	
-						int zildoId=server.connectClient(source);
+						int zildoId=server.connectClient(source, conPacket.getPlayerName());
 	
 						AcceptPacket accept=new AcceptPacket(zildoId);
 						sendPacket(accept, source);
@@ -266,7 +267,7 @@ public class NetServer extends NetSend {
      * Send a disconnect order to all clients (when server is leaving).
      */
     public void notifyEndToClients() {
-    	ConnectPacket p=new ConnectPacket(false);
+    	ConnectPacket p=new ConnectPacket(false, null);
     	broadcastPacketToAllCients(p);
     }
     

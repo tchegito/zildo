@@ -20,6 +20,7 @@ public class Menu {
 	public Menu() {
 		
 	}
+	
 	public Menu(String p_title, ItemMenu... p_items) {
 		title=p_title;
 		setMenu(p_items);
@@ -43,27 +44,63 @@ public class Menu {
 		ClientEngineZildo.soundPlay.playSoundFX(BankSound.MenuMove);
 	}
 	
-	public ItemMenu act() {
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-			if (keyPressed!=Keyboard.KEY_UP) {
-				move(false);
-				keyPressed=Keyboard.KEY_UP;
-			}
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-			if (keyPressed!=Keyboard.KEY_DOWN) { 
-				move(true);
-				keyPressed=Keyboard.KEY_DOWN;
-			}
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
-			if (keyPressed!=Keyboard.KEY_RETURN) {
-				keyPressed=Keyboard.KEY_RETURN;
-				ItemMenu item=items.get(selected);
-				ClientEngineZildo.soundPlay.playSoundFX(item.sound);
-				return item;
-			}
-		} else {
-			keyPressed=0;
-		}
-		return null;
-	}
+	/**
+	 * Read keyboard, move cursor, and return chosen item. Some items can be editable.
+	 * @return ItemMenu
+	 */
+    public ItemMenu act() {
+        Keyboard.poll();
+        int key = -1;
+        char charKey=' ';
+        char upperKey=' ';
+        ItemMenu item;
+        while (Keyboard.next()) {
+        	if (Keyboard.getEventKeyState()) {
+	            key = Keyboard.getEventKey(); //Keyboard.getEventCharacter();
+	            charKey = Keyboard.getEventCharacter();
+	            upperKey = Character.toUpperCase(charKey);
+        	}
+        }
+        
+        if (key != -1 && keyPressed != key) {
+            item = items.get(selected);
+
+        	switch (key) {
+        	case Keyboard.KEY_UP:
+                move(false);
+        		break;
+        	case Keyboard.KEY_DOWN:
+                move(true);
+        		break;
+        	case Keyboard.KEY_RETURN:
+                ClientEngineZildo.soundPlay.playSoundFX(item.sound);
+                return item;
+            default:
+            	// Does this item is editable ?
+	        	if (item instanceof EditableItemMenu) {
+	        		EditableItemMenu editableItem=(EditableItemMenu) item;
+	        		switch (key) {
+		        	case Keyboard.KEY_BACK:
+		                editableItem.removeLastChar();
+		                displayed=false;
+		                break;
+		        	default:
+		        		if ((upperKey >= 'A' && upperKey <= 'Z') || charKey==' ') {
+		                    editableItem.addText(charKey);
+		                    displayed = false;
+		        		}
+		        		break;
+		        	}
+		        }
+        	}
+        	keyPressed=key;
+        } else {
+        	keyPressed=0;
+        }
+        return null;
+    }
+    
+    public void refresh() {
+    
+    }
 }

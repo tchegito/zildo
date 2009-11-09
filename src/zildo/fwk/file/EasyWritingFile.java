@@ -4,6 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+/**
+ * Simple object to create a file from a buffer.<p/>
+ * You just have to instantiate an {@link EasyWritingFile} with the buffer, then call {@link #saveFile(String)}
+ * with the filename.
+ * @author tchegito
+ *
+ */
 public class EasyWritingFile extends EasyBuffering {
     
 	public EasyWritingFile(EasyBuffering p_buffer) {
