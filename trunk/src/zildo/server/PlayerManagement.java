@@ -16,6 +16,8 @@ import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.prefs.Constantes;
 import zildo.prefs.KeysConfiguration;
+import zildo.server.state.ClientState;
+import zildo.server.state.DialogState;
 
 
 public class PlayerManagement {

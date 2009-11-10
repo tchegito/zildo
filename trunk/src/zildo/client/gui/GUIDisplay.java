@@ -1,11 +1,13 @@
 package zildo.client.gui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
@@ -21,6 +23,7 @@ import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
+import zildo.server.state.PlayerState;
 
 // Here we draw the Graphic User Interface. It means we paint screen in last moment,
 // after all engines : Tile and Sprite.
@@ -44,6 +47,8 @@ public class GUIDisplay {
 	private boolean toDisplay_dialoguing;
 	private boolean toRemove_dialoguing;
 	private boolean toDisplay_generalGui;
+	private boolean toDisplay_scores;
+	
 	private int toDisplay_dialogMode;		// Contient DIALOGMODE_CLASSIC ou DIALOGMODE_TOPIC
 
 	// External flags for text display
@@ -114,6 +119,10 @@ public class GUIDisplay {
 			// Draw frame and text inside it
 			drawFrame();
 		};
+		
+		if (toDisplay_scores) {
+			drawScores();
+		}
 		
         drawConsoleMessages();
 	}
@@ -557,7 +566,7 @@ public class GUIDisplay {
 	}
 	
 	public void displayMessage(String text) {
-		messageQueue.add(new GameMessage(text));
+		messageQueue.add(0, new GameMessage(text));
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -615,4 +624,42 @@ public class GUIDisplay {
 		this.toDisplay_dialogMode = toDisplay_dialogMode;
 	}
 
+	public void setToDisplay_scores(boolean p_active) {
+		this.toDisplay_scores=p_active;
+	}
+	
+	/**
+	 * Draw the score panel.
+	 */
+	public void drawScores() {
+		Collection<PlayerState> states=ClientEngineZildo.client.getPlayerStates();
+		int sizeX=6*20 + 6*10 + 6;
+		int sizeY=16 + states.size() * 6;
+		int posX=(Zildo.viewPortX - sizeX) / 2;
+		int posY=(Zildo.viewPortY - sizeY) / 2;
+		int y=posY+14;
+		// Title
+		ClientEngineZildo.ortho.drawText(-1, posY + 3, "scores", new Vector3f(1.0f, 1.0f, 1.0f));
+		// Scores
+		for (PlayerState state : states) {
+			StringBuilder sb=new StringBuilder();
+			int score=state.nKill - state.nDied;
+			sb.append(state.playerName);
+			String scoreStr=String.valueOf(score);
+			int nSpace=30 - sb.length() - scoreStr.length();
+			for (int j=0;j< nSpace;j++) {
+				sb.append(" ");
+			}
+			sb.append(scoreStr);
+			ClientEngineZildo.ortho.drawText(posX+3, y, sb.toString(), new Vector3f(1.0f, 1.0f, 1.0f));
+			y+=8;
+		}
+		// Draw a transparent box
+		ClientEngineZildo.ortho.enableBlend();
+		ClientEngineZildo.ortho.box(posX, posY, sizeX, sizeY, 0, new Vector4f(0.3f, 0.2f, 0.4f, 0.2f));
+		ClientEngineZildo.ortho.disableBlend();
+		ClientEngineZildo.ortho.boxv(posX, posY, sizeX, sizeY, 4,new Vector4f(0.9f, 0.7f, 0.4f, 0.4f));
+		ClientEngineZildo.ortho.boxv(posX-1, posY-1, sizeX+2, sizeY+2, 4,new Vector4f(0.8f, 0.6f, 0.4f, 0.4f));
+
+	}
 }

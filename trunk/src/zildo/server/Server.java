@@ -14,6 +14,7 @@ import zildo.fwk.net.NetServer;
 import zildo.fwk.net.TransferObject;
 import zildo.monde.Game;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.server.state.ClientState;
 
 /**
  * Server job:
@@ -105,6 +106,9 @@ public class Server extends Thread {
 			ClientEngineZildo.guiDisplay.displayMessage(p_playerName+" join the game");
 		}
 		
+		ClientEngineZildo.client.registerClient(state);
+		EngineZildo.multiplayerManagement.setNeedToBroadcast(true);
+		
 		return zildoId;
 	}
 	
@@ -123,7 +127,8 @@ public class Server extends Thread {
 				// No clients anymore, we shut down the server
 				gameRunning=false;
 			}
-			ClientEngineZildo.guiDisplay.displayMessage(p_client.address.getHostName()+" left the game");
+			ClientEngineZildo.guiDisplay.displayMessage(state.playerName+" left the game");
+			ClientEngineZildo.client.unregisterClient(state.zildoId);
 		}
 	}
 	

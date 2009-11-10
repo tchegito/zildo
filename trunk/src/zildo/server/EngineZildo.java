@@ -11,6 +11,7 @@ import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.server.state.ClientState;
 
 public class EngineZildo {
 
@@ -22,7 +23,7 @@ public class EngineZildo {
 	public static PersoManagement persoManagement;
 	public static DialogManagement dialogManagement;
 	public static SoundManagement soundManagement;
-    public static MessageManagement messageManagement;
+    public static MultiplayerManagement multiplayerManagement;
 
     public static Game game;
     public static int compteur_animation;
@@ -39,7 +40,7 @@ public class EngineZildo {
 		collideManagement=new CollideManagement();
 		soundManagement=new SoundManagement();
 		playerManagement=new PlayerManagement();
-        messageManagement = new MessageManagement();
+        multiplayerManagement = new MultiplayerManagement();
         
 		game=p_game;
 
@@ -67,7 +68,7 @@ public class EngineZildo {
         Point respawnLocation = mapManagement.getRespawnPosition();
         p_zildo.placeAt(respawnLocation);
         p_zildo.setPv(13);
-        p_zildo.beingWounded(0, 0, null);
+        p_zildo.setWounded(true);
     }
 
 	public EngineZildo(Game p_game) {

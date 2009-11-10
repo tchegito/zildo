@@ -1,5 +1,6 @@
 package zildo.fwk.gfx;
 
+import zildo.Zildo;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.map.Point;
 
@@ -47,7 +48,7 @@ public class Ortho extends OpenGLStuff {
 		      {{1,0,0,0,1},{1,0,0,0,1},{1,0,1,0,1},{1,1,0,1,1},{1,0,0,0,1}},
 		      {{1,0,0,0,1},{0,1,0,1,0},{0,0,1,0,0},{0,1,0,1,0},{1,0,0,0,1}},
 		      {{1,0,0,0,1},{0,1,0,1,0},{0,0,1,0,0},{0,0,1,0,0},{0,0,1,0,0}},
-		      {{1,1,1,1,1},{0,0,0,1,0},{0,0,1,0,0},{0,1,0,0,0},{1,1,1,1,1}},
+		      {{1,1,1,1,1},{0,0,0,1,0},{0,0,1,0,0},{0,1,0,0,0},{1,1,1,1,1}}, // Z
 		      {{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,1,0,0}}, // .
 		      {{0,0,0,0,0},{0,0,0,1,0},{0,0,1,0,0},{0,1,0,0,0},{1,0,0,0,0}}, // /
 		      {{0,1,1,1,0},{1,0,0,1,1},{1,0,1,0,1},{1,1,0,0,1},{0,1,1,1,0}}, // 0
@@ -62,9 +63,9 @@ public class Ortho extends OpenGLStuff {
 		      {{0,1,1,1,0},{1,0,0,0,1},{0,1,1,1,1},{0,0,0,1,0},{0,1,1,0,0}}, // 9
 		      {{0,0,1,0,0},{0,1,0,0,0},{1,1,1,1,1},{0,1,0,0,0},{0,0,1,0,0}}, // Flèche gauche
 		      {{0,0,1,0,0},{0,0,0,1,0},{1,1,1,1,1},{0,0,0,1,0},{0,0,1,0,0}}, // Droite
-		      {{0,0,0,0,0},{0,0,1,0,0},{0,0,0,0,0},{0,0,1,0,0},{0,0,0,0,0}},
-		      {{0,0,1,0,0},{0,1,0,1,0},{1,0,0,0,1},{0,1,0,1,0},{0,0,1,0,0}},
-		      {{1,1,0,0,0},{0,0,1,0,0},{0,0,1,1,1},{0,0,1,0,0},{1,1,0,0,0}},
+		      {{0,0,0,0,0},{0,0,1,0,0},{0,0,0,0,0},{0,0,1,0,0},{0,0,0,0,0}}, // :
+		      {{0,0,1,0,0},{0,1,0,1,0},{1,0,0,0,1},{0,1,0,1,0},{0,0,1,0,0}}, // losange
+		      {{1,1,0,0,0},{0,0,1,0,0},{0,0,1,1,1},{0,0,1,0,0},{1,1,0,0,0}}, // 
 		      {{0,0,0,0,1},{0,0,0,1,1},{0,0,1,0,1},{0,1,0,0,1},{1,1,1,1,1}}, //p=6
 		      {{1,1,1,1,1},{1,0,1,0,1},{1,1,1,1,1},{1,0,1,0,1},{1,1,1,1,1}},
 		      {{0,1,1,0,1},{1,0,0,1,0},{0,0,0,0,0},{0,1,1,0,1},{1,0,0,1,0}},
@@ -84,7 +85,8 @@ public class Ortho extends OpenGLStuff {
 		      {{0,0,1,0,0},{0,1,1,1,0},{0,0,1,0,0},{0,0,1,0,0},{1,1,1,1,1}},
 		      {{1,0,1,0,1},{0,1,1,1,0},{1,1,1,1,1},{0,1,1,1,0},{1,0,1,0,1}},
 		      {{1,0,0,0,1},{1,0,0,0,1},{0,1,1,1,0},{1,0,0,0,1},{0,1,1,1,0}},
-		      {{0,0,0,1,0},{0,0,0,1,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0}}}; // '
+		      {{0,0,0,1,0},{0,0,0,1,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0}}, // '
+		      {{0,0,0,0,0},{0,0,0,0,0},{0,1,1,1,0},{0,0,0,0,0},{0,0,0,0,0}}}; // -
 
 	int w, h;
 	boolean orthoSetUp;
@@ -155,6 +157,8 @@ public class Ortho extends OpenGLStuff {
 				aa=26;
 			} else if (a=='\'') {
 				aa=62;
+			} else if (a=='-') {
+				aa=63;
 			} else if (aa>=48 && aa<=57) {
 				aa-=48-28;
 			} else {
@@ -189,13 +193,18 @@ public class Ortho extends OpenGLStuff {
 			drawChar(x+6*i, y, txt.toLowerCase().charAt(i));
 		}
 	}
-	public void drawText(int x, int y, String txt, Vector3f color) {
+	public void drawText(int p_x, int p_y, String p_txt, Vector3f p_color) {
+		// Center text
+		int x=p_x;
+		if (x == -1) {
+			x=(Zildo.viewPortX - p_txt.length() * 6) / 2;
+		}
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		float factor=0.2f;
-		GL11.glColor3f(color.x*factor, color.y*factor, color.z*factor);
-		drawText(x+1,y+1,txt);
-		GL11.glColor3f(color.x, color.y, color.z);
-		drawText(x,y,txt);
+		GL11.glColor3f(p_color.x*factor, p_color.y*factor, p_color.z*factor);
+		drawText(x+1,p_y+1,p_txt);
+		GL11.glColor3f(p_color.x, p_color.y, p_color.z);
+		drawText(x,p_y,p_txt);
 		GL11.glColor3f(1.0f, 1.0f, 1.0f);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 
@@ -306,5 +315,14 @@ public class Ortho extends OpenGLStuff {
 		box(x ,y ,w ,h ,palColor, color);
 		GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
 		
+	}
+	
+	public void enableBlend() {
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE); //_MINUS_SRC_ALPHA);
+	}
+	
+	public void disableBlend() {
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 }

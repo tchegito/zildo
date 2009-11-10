@@ -13,9 +13,9 @@ import zildo.client.Client.ClientType;
 import zildo.client.gui.menu.PlayerNameMenu;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
-import zildo.server.ClientState;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
+import zildo.server.state.ClientState;
 
 /**
  * Represents the game owner core class. It could be :
@@ -62,7 +62,7 @@ public class SinglePlayer {
         int zildoId;
         ClientState state;
         if (server != null) {
-        	zildoId=server.connectClient(null, null);
+        	zildoId=server.connectClient(null, PlayerNameMenu.loadPlayerName());
         	state=server.getClientStates().iterator().next();
     		ClientEngineZildo.guiDisplay.displayMessage("server started");
         } else {
@@ -70,8 +70,6 @@ public class SinglePlayer {
         	state = new ClientState(null, zildoId);
         }
         ClientEngineZildo.spriteDisplay.setZildoId(zildoId);
-        // Set the player's name
-    	state.playerName=PlayerNameMenu.loadPlayerName();
 
         while (!done) {
         	states.clear();

@@ -1,7 +1,7 @@
 /**
  *
  */
-package zildo.server;
+package zildo.server.state;
 
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
@@ -22,7 +22,7 @@ import zildo.monde.sprites.persos.PersoZildo;
  * @author tchegito
  *
  */
-public class ClientState {
+public class ClientState extends PlayerState {
 
     public TransferObject location;	// Information on physical location (IP, channel ...)
     public KeyboardInstant keys;	// Keyboard input from client
@@ -30,10 +30,10 @@ public class ClientState {
     public PersoZildo zildo;		// Client's Zildo
     public int inactivityTime;		// Number of frame where server gets nothing from this client
     public DialogState dialogState;	// Client's dialoguing state
-    public String playerName;
     public ClientEvent event;
     
     public ClientState(TransferObject p_location, int p_zildoId) {
+    	super(null, p_zildoId);
         location = p_location;
         keys = null;
 		zildo=(PersoZildo) Identified.fromId(SpriteEntity.class, p_zildoId);

@@ -43,7 +43,7 @@ public class ClientEngineZildo {
 	public static SoundPlay soundPlay;
 	public static PixelShaders pixelShaders;
 
-	private static Client client;
+	public static Client client;
 	
 	// Time left to unblock player's moves
 	private int waitingScene;
@@ -157,6 +157,7 @@ public class ClientEngineZildo {
 			this.debug();
 		}
 
+       	guiDisplay.setToDisplay_scores(openGLGestion.tabPressed);
        	guiDisplay.draw();
         
 		openGLGestion.endScene();
