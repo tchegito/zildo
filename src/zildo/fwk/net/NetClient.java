@@ -24,6 +24,7 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.server.SpriteManagement;
+import zildo.server.state.PlayerState;
 
 /**
  * Client on a LAN network.
@@ -56,7 +57,7 @@ public class NetClient extends NetSend {
 	TransferObject server;
 	Client client;
 	String playerName=PlayerNameMenu.loadPlayerName();
-	
+    
 	public NetClient(Client p_client) {
 		super(null, NetSend.NET_PORT_CLIENT);
 		
@@ -95,6 +96,7 @@ public class NetClient extends NetSend {
 				if (p!=null) {
 					AcceptPacket packet=(AcceptPacket) p;
 					ClientEngineZildo.spriteDisplay.setZildoId(packet.zildoId);
+					client.registerClient(new PlayerState(playerName, packet.zildoId));
 					log("Le serveur a accepté");
 					serverAccepted=true;
 				} else {
@@ -110,46 +112,50 @@ public class NetClient extends NetSend {
 				// 3) Server accepted. So, we ask for the map
 				sendPacket(new AskPacket(ResourceType.MAP), server);
 				askedMap=true;
-			} else {
-                // 4) Server sent resources
-                PacketSet set = packets.getTyped(PacketType.GET_RESOURCE);
-                boolean refreshEntities=false;
-                for (Packet packet : set) {
-                    GetPacket getPacket = (GetPacket) packet;
+			}
+			
+            // 4) Server sent resources
+            PacketSet set = packets.getTyped(PacketType.GET_RESOURCE);
+            boolean refreshEntities=false;
+            for (Packet packet : set) {
+                GetPacket getPacket = (GetPacket) packet;
 
-                    switch (getPacket.resourceType) {
-                    case MAP:
-                        try {
-                            receiveMap(getPacket);
-                            if (!gotMap) {
-                                // Ask entities for the first time
-                                sendPacket(new AskPacket(ResourceType.ENTITY), server);
-                            }
-                            gotMap = true;
-                        } catch (RuntimeException e) {
-                            e.printStackTrace();
-                            // Map receiving has failed. So re-ask.
-                            sendPacket(new AskPacket(ResourceType.MAP), server);
+                switch (getPacket.resourceType) {
+                case MAP:
+                    try {
+                        receiveMap(getPacket);
+                        if (!gotMap) {
+                            // Ask entities for the first time
+                            sendPacket(new AskPacket(ResourceType.ENTITY), server);
                         }
-                        break;
-                    case MAP_PART:
-                        if (gotMap) {
-                            receiveMapPart(getPacket);
-                        }
-                        break;
-                    case DIALOG:
-                    	receiveDialog(getPacket);
-                    	break;
-                    case ENTITY:
-                        receiveEntities(getPacket);
-                        refreshEntities = true;
-                        gotEntities = true;
-                        break;
-                    case SOUND:
-                        receiveSounds(getPacket);
-                        break;
+                        gotMap = true;
+                    } catch (RuntimeException e) {
+                        e.printStackTrace();
+                        // Map receiving has failed. So re-ask.
+                        sendPacket(new AskPacket(ResourceType.MAP), server);
                     }
+                    break;
+                case MAP_PART:
+                    if (gotMap) {
+                        receiveMapPart(getPacket);
+                    }
+                    break;
+                case DIALOG:
+                	receiveDialog(getPacket);
+                	break;
+                case ENTITY:
+                    receiveEntities(getPacket);
+                    refreshEntities = true;
+                    gotEntities = true;
+                    break;
+                case SOUND:
+                    receiveSounds(getPacket);
+                    break;
+                case CLIENTINFO:
+                	receiveClientInfos(getPacket);
+                	break;
                 }
+
                 // Reask entities if we haven't anyone since a fixed number of frames
                 if (gotMap && !refreshEntities) {
                 	frameWithoutEntity++;
@@ -180,7 +186,7 @@ public class NetClient extends NetSend {
 		sendPacket(packet, server);
 	}
 	
-	public void receiveMap(GetPacket p_packet) {
+	private void receiveMap(GetPacket p_packet) {
 		EasyBuffering buffer=new EasyBuffering(p_packet.getBuffer());
 		Area map=Area.deserialize(buffer, false);
 		
@@ -188,7 +194,7 @@ public class NetClient extends NetSend {
 		ClientEngineZildo.mapDisplay.setCurrentMap(map);
 	}
 	
-	public void receiveMapPart(GetPacket p_packet) {
+	private void receiveMapPart(GetPacket p_packet) {
 		EasyBuffering buffer=new EasyBuffering(p_packet.getBuffer());
 		Area map=ClientEngineZildo.mapDisplay.getCurrentMap();
 		while (!buffer.eof()) {
@@ -203,7 +209,7 @@ public class NetClient extends NetSend {
      * Receive entities and re-ask for next frame.
      * @param p_packet
      */
-    public void receiveEntities(GetPacket p_packet) {
+	private void receiveEntities(GetPacket p_packet) {
         EasyBuffering buffer = new EasyBuffering(p_packet.getBuffer());
         List<SpriteEntity> list = SpriteManagement.deserializeEntities(buffer);
         ClientEngineZildo.spriteDisplay.setEntities(list);
@@ -212,7 +218,7 @@ public class NetClient extends NetSend {
         sendPacket(new AskPacket(ResourceType.ENTITY), server);
     }
 
-    public void receiveSounds(GetPacket p_packet) {
+    private void receiveSounds(GetPacket p_packet) {
         EasyBuffering buffer = new EasyBuffering(p_packet.getBuffer());
         List<WaitingSound> sounds=new ArrayList<WaitingSound>();
         while (!buffer.eof()) {
@@ -222,7 +228,7 @@ public class NetClient extends NetSend {
         ClientEngineZildo.soundPlay.playSounds(sounds);
     }
     
-    public void receiveDialog(GetPacket p_packet) {
+    private void receiveDialog(GetPacket p_packet) {
         EasyBuffering buffer = new EasyBuffering(p_packet.getBuffer());
     	WaitingDialog dial=WaitingDialog.deserialize(buffer);
     	
@@ -231,6 +237,15 @@ public class NetClient extends NetSend {
     		EventPacket packet=new EventPacket(EventType.DIALOG_ENDED);
     		sendPacket(packet, server);
     	}
+    }
+    
+    
+    private void receiveClientInfos(GetPacket p_packet) {
+        EasyBuffering buffer = new EasyBuffering(p_packet.getBuffer());
+        while (!buffer.eof()) {
+        	PlayerState state=PlayerState.deserialize(buffer);
+        	client.registerClient(state);
+        }
     }
     
     public void close() {

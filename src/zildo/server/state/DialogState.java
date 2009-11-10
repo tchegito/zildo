@@ -1,4 +1,4 @@
-package zildo.server;
+package zildo.server.state;
 
 public class DialogState {
 

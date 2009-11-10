@@ -7,8 +7,8 @@ import zildo.fwk.net.TransferObject;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
-import zildo.server.ClientState;
 import zildo.server.EngineZildo;
+import zildo.server.state.ClientState;
 
 // DialogManagement.cpp: implementation of the DialogManagement class.
 //

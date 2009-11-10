@@ -7,6 +7,6 @@ public class GameMessage {
 	
 	public GameMessage(String p_text) {
 		text=p_text;
-		duration=200;	// message will be visible during 200 frames
+		duration=400;	// message will be visible during 200 frames
 	}
 }

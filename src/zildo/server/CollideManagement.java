@@ -14,6 +14,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.server.state.ClientState;
 
 public class CollideManagement {
 

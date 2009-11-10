@@ -11,6 +11,7 @@ import zildo.monde.WaitingSound;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.server.state.ClientState;
 
 /**
  * We just manage here a sound queue.

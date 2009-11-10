@@ -274,7 +274,7 @@ public class PersoZildo extends Perso {
     public void die(boolean p_link, Perso p_shooter) {
         super.die(p_link, p_shooter);
         if (EngineZildo.game.multiPlayer) {
-        	EngineZildo.messageManagement.displayDeathMessage(this, p_shooter);
+        	EngineZildo.multiplayerManagement.kill(this, p_shooter);
         	EngineZildo.respawnClient(this);
         }
     }

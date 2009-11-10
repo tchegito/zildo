@@ -21,11 +21,11 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
-import zildo.server.ClientState;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.Server;
 import zildo.server.SpriteManagement;
+import zildo.server.state.ClientState;
 
 /**
  * Network server engine
@@ -118,6 +118,11 @@ public class NetServer extends NetSend {
 					receiveKeyboards(packets.getTyped(PacketType.GET_RESOURCE));
 					
 					receiveEvents(packets.getTyped(PacketType.EVENT));
+					
+					if (EngineZildo.multiplayerManagement.isNeedToBroadcast()) {
+						sendClientInfos();
+						EngineZildo.multiplayerManagement.setNeedToBroadcast(false);
+					}
 				}
 				ZUtils.sleep(5);
 			}
@@ -288,5 +293,18 @@ public class NetServer extends NetSend {
     			throw new RuntimeException("This kind of event ("+event.type+") is unknown.");
     		}
     	}
+    }
+    
+    /**
+     * Send the PlayerState objects to all clients to keep them aware of the score.
+     */
+    private void sendClientInfos() {
+        Collection<ClientState> states = server.getClientStates();
+        EasyBuffering buffer = new EasyBuffering();
+        for (ClientState state : states) {
+            state.serialize(buffer);
+        }
+        GetPacket getPacket = new GetPacket(ResourceType.CLIENTINFO, buffer.getAll(), null);
+        broadcastPacketToAllCients(getPacket);
     }
 }

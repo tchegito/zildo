@@ -21,6 +21,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.prefs.Constantes;
+import zildo.server.state.ClientState;
 
 
 

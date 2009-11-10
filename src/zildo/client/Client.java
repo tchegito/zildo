@@ -1,5 +1,9 @@
 package zildo.client;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 
@@ -12,6 +16,7 @@ import zildo.fwk.net.NetClient;
 import zildo.fwk.net.TransferObject;
 import zildo.fwk.opengl.OpenGLZildo;
 import zildo.server.EngineZildo;
+import zildo.server.state.PlayerState;
 
 /**
  * Client job:
@@ -33,9 +38,11 @@ public class Client {
 	boolean lan=false;
 	Menu currentMenu;
 	NetClient netClient;
-	
+
 	ItemMenu action=null;
 	
+    Map<Integer, PlayerState> states;	// All player in the game (reduced info to display scores)
+    
 	public enum ClientType {
 		SERVER_AND_CLIENT, CLIENT, ZEDITOR;
 	}
@@ -45,6 +52,7 @@ public class Client {
 	 */
 	public Client(boolean p_awt) {
 		awt=p_awt;
+		states=new HashMap<Integer, PlayerState>();
 		initializeDisplay();
 
 	}
@@ -168,5 +176,25 @@ public class Client {
 	
 	public boolean isLAN() {
 		return lan;
+	}
+	
+	public Collection<PlayerState> getPlayerStates() {
+		return states.values();
+	}
+	
+	/**
+	 * Clients store the provided client in his registry.
+	 * @param p_playerName
+	 */
+	public void registerClient(PlayerState p_state) {
+		states.put(p_state.zildoId, p_state);
+	}
+	
+	/**
+	 * Client is gone, so unregister him from the map.
+	 * @param p_zildoId
+	 */
+	public void unregisterClient(int p_zildoId) {
+		states.remove(p_zildoId);
 	}
 }
