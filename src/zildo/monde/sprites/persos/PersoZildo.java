@@ -455,9 +455,14 @@ public class PersoZildo extends Perso {
 		piedsMouilles.setForeground(false);
 		
 		touche=(mouvement==MouvementZildo.TOUCHE || zildo.getCompte_dialogue()!=0);
-		// Clignotement de Zildo
+		// Zildo blink
 		touche=( touche && ((compteur_animation >> 1) % 2)==0 );
 		visible=!touche;
+		for (Element elem :persoSprites) {	// Blink linked elements too
+			if (elem.isVisible()) {
+				elem.setVisible(visible);
+			}
+		}
 	
 		// Ajustemenent
 		xx-=7;
