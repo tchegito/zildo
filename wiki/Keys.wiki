@@ -9,4 +9,5 @@ The game has a default keys configuration. Here it is (on an AZERTY keyboard) :
  * *E* : Topic (disabled for now)
  * *Arrows* : Move
  * *Left Shift* : extra speed
+ * *Tab* : See scores
  * *Escape* : Quit
