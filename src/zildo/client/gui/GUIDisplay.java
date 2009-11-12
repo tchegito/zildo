@@ -535,9 +535,9 @@ public class GUIDisplay {
 		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,80,72,10);
 		if (countMoney < zildo.getMoney()) {
 			countMoney++;
-			if (zildo.getMoney() - countMoney % 20 == 0) {
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoGagneArgent, zildo);
-			}
+            if (zildo.getMoney() - countMoney % 20 == 0) {
+                ClientEngineZildo.soundPlay.playSoundFX(BankSound.ZildoGagneArgent);
+            }
 		}
 		displayNumber(countMoney, 3, 66, 20);
 		
