@@ -20,7 +20,7 @@ public class MultiPlayer {
      */
     public MultiPlayer() {
         Client client = ClientEngineZildo.getClientForGame();
-        client.setUpNetwork(ClientType.CLIENT, null, 0);
+        client.setUpNetwork(ClientType.CLIENT, null, 0, true);
     }
     
     /**
@@ -28,7 +28,7 @@ public class MultiPlayer {
      */
     public MultiPlayer(ServerInfo p_serverInfo) {
         Client client = ClientEngineZildo.getClientForGame();
-        client.setUpNetwork(ClientType.CLIENT, p_serverInfo.ip, p_serverInfo.port);
+        client.setUpNetwork(ClientType.CLIENT, p_serverInfo.ip, p_serverInfo.port, true);
     }
 
     /**
@@ -51,7 +51,7 @@ public class MultiPlayer {
     public static void launchFakeMode(Game p_game, boolean p_fake) {
         Server server = new Server(p_game, true);
         Client client = new Client(false);
-        client.setUpNetwork(ClientType.SERVER_AND_CLIENT, null, 0);
+        client.setUpNetwork(ClientType.SERVER_AND_CLIENT, null, 0, true);
 
         server.start();
         client.run();
