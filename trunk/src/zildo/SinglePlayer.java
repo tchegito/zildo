@@ -49,7 +49,7 @@ public class SinglePlayer {
      */
     public void launchGame() {
         Client client = ClientEngineZildo.getClientForGame();
-        client.setUpNetwork(ClientType.SERVER_AND_CLIENT, null, 0);
+        client.setUpNetwork(ClientType.SERVER_AND_CLIENT, null, 0, server!=null);
         ClientEngineZildo clientEngineZildo = client.getEngineZildo();
 
         // Initialize map
@@ -93,6 +93,7 @@ public class SinglePlayer {
 	            // Read keyboard
 	            KeyboardInstant instant = KeyboardInstant.getKeyboardInstant();
 	            state.keys = instant;
+	            client.setKbInstant(instant);
 	            states.add(state);
             }
 
