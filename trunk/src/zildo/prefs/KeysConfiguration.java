@@ -14,8 +14,9 @@ public enum KeysConfiguration {
 	PLAYERKEY_DOWN(Keyboard.KEY_DOWN),
 	PLAYERKEY_RIGHT(Keyboard.KEY_RIGHT),
 	PLAYERKEY_LEFT(Keyboard.KEY_LEFT),
-	PLAYERKEY_TOPIC(Keyboard.KEY_E);
-
+	PLAYERKEY_TOPIC(Keyboard.KEY_E),
+	PLAYERKEY_TAB(Keyboard.KEY_TAB);
+	
 	public int code;
 	
 	private KeysConfiguration(int p_code) {

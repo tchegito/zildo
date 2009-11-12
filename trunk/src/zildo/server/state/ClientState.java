@@ -13,12 +13,13 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.PersoZildo;
 
 /**
- * An object used by server to represent a client state. It consists of :
- * -network adress
- * -keys pressed
- * -client's zildo
- * -events currently active (dialog, map change...)
- * 
+ * An object used by server to represent a client state. It consists of :<br/>
+ * <ul>
+ * <li>network adress</li>
+ * <li>keys pressed</li>
+ * <li>client's zildo</li>
+ * <li>events currently active (dialog, map change...)</li>
+ * </ul>
  * @author tchegito
  *
  */

@@ -11,6 +11,7 @@ import zildo.Zildo;
 import zildo.client.gui.menu.ItemMenu;
 import zildo.client.gui.menu.Menu;
 import zildo.fwk.ZUtils;
+import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.InternetClient;
 import zildo.fwk.net.NetClient;
 import zildo.fwk.net.TransferObject;
@@ -19,11 +20,12 @@ import zildo.server.EngineZildo;
 import zildo.server.state.PlayerState;
 
 /**
- * Client job:
- * -----------
- * -Read user movement
- * -Display the scene
- * 
+ * <h1>Client job:</h1><br/>
+ * <ul>
+ * <li>Read user movement</li>
+ * <li>Display the scene</li>
+ * <li>Store info about connected clients (to display score)</li>
+ * </ul>
  * @author tchegito
  *
  */
@@ -38,10 +40,13 @@ public class Client {
 	boolean lan=false;
 	Menu currentMenu;
 	NetClient netClient;
-
+	boolean multiplayer;
+	
 	ItemMenu action=null;
 	
     Map<Integer, PlayerState> states;	// All player in the game (reduced info to display scores)
+    
+    KeyboardInstant kbInstant;
     
 	public enum ClientType {
 		SERVER_AND_CLIENT, CLIENT, ZEDITOR;
@@ -74,7 +79,7 @@ public class Client {
 	 * @param p_serverIp 
 	 * @param p_serverPort
 	 */
-	public void setUpNetwork(ClientType p_type, String p_serverIp, int p_serverPort) {
+	public void setUpNetwork(ClientType p_type, String p_serverIp, int p_serverPort, boolean p_multiplayer) {
 		lan=p_serverIp == null;
 		if (ClientType.CLIENT == p_type) {
 			if (lan) {
@@ -86,6 +91,7 @@ public class Client {
 		} else {
 			connected=true;	// We don't need to manage connection
 		}
+		multiplayer=p_multiplayer;
 	}
 	
 	public void readKeyboard() {
@@ -196,5 +202,17 @@ public class Client {
 	 */
 	public void unregisterClient(int p_zildoId) {
 		states.remove(p_zildoId);
+	}
+
+	public KeyboardInstant getKbInstant() {
+		return kbInstant;
+	}
+
+	public void setKbInstant(KeyboardInstant kbInstant) {
+		this.kbInstant = kbInstant;
+	}
+	
+	public boolean isMultiplayer() {
+		return multiplayer;
 	}
 }

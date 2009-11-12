@@ -18,7 +18,6 @@ public class OpenGLZildo extends OpenGLGestion {
     private float xx;
     private Point zoomPosition;
     private boolean pressed=false;
-    public boolean tabPressed;
     
     public static final byte[] icon = { 71, -110, 88, -1, 75, -113, 84, -1, 84, -106, 98, -1, 54, 89, 42, -1, 48, 30, 0, -1, 110, 51, 26,
         -1, -101, 61, 47, -1, 113, 22, 12, -1, 80, 29, 12, -1, 77, 78, 49, -1, 80, 125, 86, -1, 94, -122, 103, -1, 114, -117, 119, -1,
@@ -86,7 +85,6 @@ public class OpenGLZildo extends OpenGLGestion {
         if (!Keyboard.isKeyDown(Keyboard.KEY_MULTIPLY) && pressed) {
         	pressed=false;
         }
-        tabPressed=Keyboard.isKeyDown(Keyboard.KEY_TAB);
         
     	EngineZildo.extraSpeed=1;
     	if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
