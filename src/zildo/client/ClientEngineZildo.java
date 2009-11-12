@@ -15,6 +15,7 @@ import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
+import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLZildo;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.Rectangle;
@@ -23,6 +24,7 @@ import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.prefs.KeysConfiguration;
 import zildo.server.EngineZildo;
 
 public class ClientEngineZildo {
@@ -156,8 +158,17 @@ public class ClientEngineZildo {
         if (Zildo.infoDebug && !p_editor) {
 			this.debug();
 		}
-
-       	guiDisplay.setToDisplay_scores(openGLGestion.tabPressed);
+        
+        if (client.isMultiplayer()) {
+            // Does player want to see the scores ? (tab key pressed)
+	        boolean tabPressed=false;
+	        KeyboardInstant kbInstant=client.getKbInstant();
+	        if (kbInstant != null) {
+	        	tabPressed=(client.getKbInstant().isKeyDown(KeysConfiguration.PLAYERKEY_TAB));
+	        }
+	        guiDisplay.setToDisplay_scores(tabPressed);
+        }
+        
        	guiDisplay.draw();
         
 		openGLGestion.endScene();
