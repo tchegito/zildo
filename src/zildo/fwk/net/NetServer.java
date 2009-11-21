@@ -89,8 +89,8 @@ public class NetServer extends NetSend {
 				}
 
 				if (server.isClients())  {
-					// We got clients
-					entitiesBuffer=null;	// Reset entities temporary buffer
+                    // We got clients
+                    prepareSendEntities();
 					PacketSet asks=packets.getTyped(PacketType.ASK_RESOURCE);
 					for (Packet packet : asks) {
 						AskPacket askPacket = (AskPacket) packet;
@@ -101,9 +101,9 @@ public class NetServer extends NetSend {
 						case MAP:
 							sendMap(askPacket.getSource());
 							break;
-						case ENTITY:
-							sendEntities(askPacket.getSource());
-							break;
+                        case ENTITY:
+                            sendEntities(askPacket.getSource(), askPacket.entire);
+                            break;
 							
 						default:
 								throw new RuntimeException("This resource type is not managed yet.");
@@ -147,16 +147,21 @@ public class NetServer extends NetSend {
 		}
 	}
 
+    private void prepareSendEntities() {
+        entitiesBuffer = null; // Reset entities temporary buffer
+        // Find only modified entities
+    }
+    
 	/**
 	 * Send entities location to client.
 	 * @param p_client target
 	 */
 	private EasyBuffering entitiesBuffer;
 	private EasyBuffering entitiesSent;
-    private void sendEntities(TransferObject p_client) {
+    private void sendEntities(TransferObject p_client, boolean p_entire) {
         SpriteManagement spriteManagement = EngineZildo.spriteManagement;
         if (entitiesBuffer == null) {
-        	entitiesBuffer = spriteManagement.serializeEntities();
+            entitiesBuffer = spriteManagement.serializeEntities(p_entire);
         }
         ClientState cl=Server.getClientState(p_client);
         if (cl != null) {

@@ -12,7 +12,8 @@ public class ElementImpact extends Element {
 	public enum ImpactKind {
 		SIMPLEHIT(ElementDescription.IMPACT1, 4,1), 
 		EXPLOSION(ElementDescription.EXPLO1, 3,2), 
-		FIRESMOKE(ElementDescription.EXPLOSMOKE1, 3,8);
+		FIRESMOKE(ElementDescription.EXPLOSMOKE1, 3,8),
+		SMOKE(ElementDescription.SMOKE, 3, 8);
 		
 		ElementDescription desc;
 		int seqLong;
@@ -59,8 +60,9 @@ public class ElementImpact extends Element {
 	public void animate() {
 		counter++;
 		switch (kind) {
-			case SIMPLEHIT:
-			case FIRESMOKE:
+        	case SIMPLEHIT:
+        	case FIRESMOKE:
+        	case SMOKE:
 				addSpr=counter / kind.speed;
 				if (addSpr == kind.seqLong) {
 					dying=true;

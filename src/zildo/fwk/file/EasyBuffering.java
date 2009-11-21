@@ -70,6 +70,24 @@ public class EasyBuffering {
 		data.put(b ? (byte) 1 : (byte) 0);
 	}
 	
+	/**
+	 * Write a boolean array into one single byte. (more efficient than {@link #put(boolean b)})
+	 * @param p_number
+	 * @return boolean[]
+	 */
+	public void putBooleans(boolean... p_value) {
+		if (p_value.length > 7) {
+			throw new RuntimeException("Can't write more than 7 booleans in a byte !");
+		}
+		byte b=0;
+		byte j=1;
+		for (boolean val : p_value) {
+			b=val ? (byte) (b | j) : b;
+			j*=2;
+		}
+		data.put(b);
+	}
+	
 	public void put(String p_str) {
 		put(p_str, -1);
 	}
@@ -185,6 +203,25 @@ public class EasyBuffering {
 	public boolean readBoolean() {
 		short b=readUnsignedByte();
 		return b==1;
+	}
+	
+	/**
+	 * Read a boolean array into one single byte. (more efficient than {@link #readBoolean()})
+	 * @param p_number
+	 * @return boolean[]
+	 */
+	public boolean[] readBooleans(int p_number) {
+		short b=readUnsignedByte();
+		boolean[] tab=new boolean[7];
+		short j=1;
+		if (p_number > 7) {
+			throw new RuntimeException("Can't read more than 7 booleans in a byte !");
+		}
+		for (int i=0;i<p_number;i++) {
+			tab[i]=(b & j) != 0;
+			j*=2;
+		}
+		return tab;
 	}
 	
 	public float readFloat() {

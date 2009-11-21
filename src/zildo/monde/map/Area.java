@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -11,11 +12,14 @@ import java.util.Map.Entry;
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
+import zildo.monde.collision.Collision;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementImpact;
+import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoGarde;
 import zildo.monde.sprites.persos.PersoGardeVert;
@@ -29,6 +33,12 @@ import zildo.server.EngineZildo;
 import zildo.server.SpriteManagement;
 
 public class Area {
+
+    class SpawningTile {
+        Case previousCase;
+        int x, y;
+        int cnt=100;
+    }
 
 	/**
 	 * 
@@ -47,14 +57,17 @@ public class Area {
 	private List<ChainingPoint> listPointsEnchainement;
 	private MapDialog dialogs;
 
-	// To diffuse changes to clients
-	private Collection<Point> changes;
+    // To diffuse changes to clients
+    private final Collection<Point> changes;
+    // To respawn removed items
+    private final Collection<SpawningTile> toRespawn;
 
 	public Area() {
 		mapdata = new HashMap<Integer, Case>();
 		listPointsEnchainement = new ArrayList<ChainingPoint>();
 
 		changes = new HashSet<Point>();
+		toRespawn = new HashSet<SpawningTile>();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -245,18 +258,46 @@ public class Area {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// attackTile
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void attackTile(Point tileLocation) {
-		// On teste si Zildo détruit un buisson
-		int on_Area = this.readmap(tileLocation.getX(), tileLocation.getY());
-		if (on_Area == 165) {
-			Point spriteLocation = new Point(tileLocation.getX() * 16 + 8, tileLocation.getY() * 16 + 8);
-			EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON, spriteLocation.getX(), spriteLocation.getY(), 0, null);
-			EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
+    public void attackTile(Point tileLocation) {
+        // On teste si Zildo détruit un buisson
+        int on_Area = this.readmap(tileLocation.getX(), tileLocation.getY());
+        if (on_Area == 165) {
+            Point spriteLocation = new Point(tileLocation.getX() * 16 + 8, tileLocation.getY() * 16 + 8);
+            EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON, spriteLocation.getX(), spriteLocation.getY(), 0, null);
+            EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
-			this.writemap(tileLocation.getX(), tileLocation.getY(), 166);
-		}
+            takeSomethingOnTile(tileLocation);
+        }
 
-	}
+    }
+
+    /**
+     * Something disappeared on a tile (jar, bushes, rock ...)
+     * @param tileLocation location
+     */
+    public void takeSomethingOnTile(Point tileLocation) {
+        int on_Area = this.readmap(tileLocation.getX(), tileLocation.getY());
+        int resultTile;
+        switch (on_Area) {
+            case 165: // Bush
+            default:
+                resultTile = 166;
+                break;
+            case 167: // Rock
+            case 169: // Heavy rock
+                resultTile = 168;
+                break;
+            case 751: // Jar
+                resultTile = 752;
+                break;
+        }
+        SpawningTile spawnTile=new SpawningTile();
+        spawnTile.x=tileLocation.x;
+        spawnTile.y=tileLocation.y;
+        spawnTile.previousCase=new Case(get_mapcase(tileLocation.x, tileLocation.y + 4));
+        toRespawn.add(spawnTile);
+        this.writemap(tileLocation.getX(), tileLocation.getY(), resultTile);
+    }
 
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// translatePoints
@@ -618,4 +659,26 @@ public class Area {
 		return dialogs;
 	}
 
+    public void update() {
+        for (Iterator<SpawningTile> it = toRespawn.iterator(); it.hasNext();) {
+            SpawningTile spawnTile = it.next();
+            if (spawnTile.cnt == 0) {
+                int x = spawnTile.x * 16 + 8;
+                int y = spawnTile.y * 16 + 8;
+                // Respawn the tile if nothing bothers at location
+                Collision colli=new Collision();
+                colli.cr=8;
+                if (EngineZildo.mapManagement.collideSprite(x, y, colli)) {
+                    spawnTile.cnt++;
+                } else {
+                    this.set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);
+                    EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE));
+                    changes.add(new Point(spawnTile.x, spawnTile.y+4));
+                    it.remove();
+                }
+            } else {
+                spawnTile.cnt--;
+            }
+        }
+    }
 }

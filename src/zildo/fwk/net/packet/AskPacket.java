@@ -26,27 +26,31 @@ public class AskPacket extends Packet {
 	}
 	
 	public ResourceType resourceType;
-	
-	/**
-	 * Empty constructor (called by {@link Packet#receive(java.nio.ByteBuffer)})
-	 */
-	public AskPacket() {
-		super();
-	}
-	
-	public AskPacket(ResourceType p_type) {
-		super();
-		resourceType=p_type;
-	}
-	
-	@Override
-	protected void buildPacket() {
-		b.put(resourceType.toString());
-	}
-	
-	protected void deserialize(EasyBuffering p_buffer) {
-		String resType=p_buffer.readString();
-		resourceType=ResourceType.fromString(resType);
-	}
+    public boolean entire; // TRUE=client want entire entities list (just for ENTITY resource type)
 
+    /**
+     * Empty constructor (called by {@link Packet#receive(java.nio.ByteBuffer)})
+     */
+    public AskPacket() {
+        super();
+    }
+
+    public AskPacket(ResourceType p_type, boolean p_entire) {
+        super();
+        resourceType = p_type;
+        entire = p_entire;
+    }
+
+    @Override
+    protected void buildPacket() {
+        b.put(resourceType.toString());
+        b.put(entire);
+    }
+
+    @Override
+    protected void deserialize(EasyBuffering p_buffer) {
+        String resType = p_buffer.readString();
+        resourceType = ResourceType.fromString(resType);
+        entire = p_buffer.readBoolean();
+    }
 }

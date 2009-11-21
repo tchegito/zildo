@@ -48,19 +48,22 @@ public class SpriteDisplay extends SpriteStore {
 	
 	public void setEntities(List<SpriteEntity> p_entities) {
 		//mapEntities.clear();
-		// Remove all non-client sprite
+		for (SpriteEntity entity : p_entities) {
+			if (entity.dying) {
+				// This entity should be removed
+				mapEntities.remove(entity.getId());
+			} else {
+				// Update or create this one
+				mapEntities.put(entity.getId(), entity);
+			}
+		}
 		for (Iterator<SpriteEntity> it=spriteEntities.iterator();it.hasNext();) {
 			SpriteEntity entity=it.next();
 			if (entity.getId() != -1) {
 				it.remove();
 			}
 		}
-		spriteEntities.addAll(p_entities);
-		for (SpriteEntity entity : p_entities) {
-			if (entity.getId() != -1) {
-				mapEntities.put(entity.getId(), entity);
-			}
-		}
+		spriteEntities.addAll(mapEntities.values());
 	}
 	
 	public SpriteDisplay(SpriteEngine spriteEngine) {

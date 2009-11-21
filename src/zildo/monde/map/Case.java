@@ -19,6 +19,16 @@ public class Case {
 	private int n_tile;	
 	private int z;	// Result of analysis
 	
+	
+	public Case(Case p_original) {
+		this.n_motif = p_original.n_motif;
+		this.n_banque = p_original.n_banque;
+		this.n_motif_masque = p_original.n_motif_masque;
+		this.n_banque_masque = p_original.n_banque_masque;
+		this.n_tile = p_original.n_tile;
+		this.z = p_original.z;
+	}
+
 	public int getN_motif() {
 		return n_motif;
 	}

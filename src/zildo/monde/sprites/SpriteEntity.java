@@ -3,6 +3,7 @@ package zildo.monde.sprites;
 import zildo.fwk.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.gfx.PixelShaders;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.Sprite;
 
@@ -20,7 +21,7 @@ import zildo.monde.sprites.utils.Sprite;
 //-------------
 //* Provide link with SpriteEngine (display textured quad on screen)
 //* Manage collision
-public class SpriteEntity extends Identified
+public class SpriteEntity extends Identified implements Cloneable
 {
 	public static final int ENTITYTYPE_ENTITY =0;
 	public static final int ENTITYTYPE_ELEMENT =1;
@@ -221,7 +222,7 @@ public class SpriteEntity extends Identified
 	 */
 	public void serializeEntity(EasyBuffering p_buffer) {
 		boolean isZildo=this.isZildo();
-		p_buffer.put(isZildo);
+		p_buffer.putBooleans(isZildo, isVisible(), isForeground(), dying);
 		p_buffer.put(this.getId());
 		if (isZildo) {
 			// Zildo needs extra info
@@ -237,8 +238,6 @@ public class SpriteEntity extends Identified
 		p_buffer.put(this.getScrX());
 		p_buffer.put(this.getScrY());
 		p_buffer.put(this.z);
-		p_buffer.put(this.isVisible());
-		p_buffer.put(this.isForeground());
 		p_buffer.put(this.getNBank());
 		p_buffer.put(this.getSpecialEffect());
 		p_buffer.put(this.getEntityType());
@@ -252,7 +251,8 @@ public class SpriteEntity extends Identified
 	 * @return SpriteEntity
 	 */
 	public static SpriteEntity deserializeOneEntity(EasyBuffering p_buffer) {
-		boolean isZildo=p_buffer.readBoolean();
+		boolean[] bools=p_buffer.readBooleans(4);
+		boolean isZildo=bools[0];
 		int id=p_buffer.readInt();
 		SpriteEntity entity;
 		if (isZildo) {
@@ -272,8 +272,9 @@ public class SpriteEntity extends Identified
 		entity.setScrX(p_buffer.readInt());
 		entity.setScrY(p_buffer.readInt());
 		entity.z=p_buffer.readFloat();
-		entity.setVisible(p_buffer.readBoolean());
-		entity.setForeground(p_buffer.readBoolean());
+		entity.setVisible(bools[1]);
+		entity.setForeground(bools[2]);
+		entity.dying=bools[3];
 		entity.setNBank(p_buffer.readInt());
 		entity.setSpecialEffect(p_buffer.readInt());
 		entity.setEntityType(p_buffer.readInt());
@@ -282,6 +283,52 @@ public class SpriteEntity extends Identified
         entity.reverse = p_buffer.readInt();
 		return entity;
 	}
+	
+    @Override
+    public SpriteEntity clone() {
+        try {
+            SpriteEntity cloned = (SpriteEntity) super.clone();
+            if (ENTITYTYPE_PERSO == getEntityType()) {
+                Perso clonedPerso = (Perso) cloned;
+                clonedPerso.setPersoSprites(null);
+            }
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Unable to clone entity !");
+        }
+    }
+    
+    /**
+     * Compare each decisive fields between 2 entities.<br/>
+     * We don't override equals methode, because of collection operations. We still want that 'remove', 'get', etc, use the JVM's id as
+     * reference.
+     * @param p_obj
+     * @return boolean
+     */
+    public boolean isSame(SpriteEntity p_other) {
+        if (p_other == null) {
+            return false;
+        }
+        // Compare each decisive fields
+        if (this.x != p_other.x || this.y != p_other.y || this.z != p_other.z) {
+            return false;
+        }
+        if (this.ajustedX != p_other.ajustedX || this.ajustedY != p_other.ajustedY) {
+            return false;
+        }
+        if (this.scrX != p_other.scrX || this.scrY != p_other.scrY) {
+            return false;
+        }
+        if (this.visible != p_other.visible || this.foreground != p_other.foreground || this.reverse != p_other.reverse) {
+            return false;
+        }
+        if (this.sprModel.getId() != p_other.sprModel.getId()) {
+            return false;
+        }
+
+        // Entities are the same
+        return true;
+    }
 }
 
 

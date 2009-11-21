@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import zildo.fwk.IntSet;
 import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
+import zildo.monde.collision.Collision;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
@@ -198,6 +199,18 @@ public class MapManagement {
 			return true;
 	
 		if (EngineZildo.spriteManagement.collideSprite(tx,ty,quelElement))
+			return true;
+
+		// Returns computed result
+		return false;
+	}
+	
+	public boolean collideSprite(int tx, int ty, Collision p_colli) {
+		
+		if (EngineZildo.persoManagement.collidePerso(tx,ty,null, p_colli.cr)!=null)
+			return true;
+	
+		if (EngineZildo.spriteManagement.collideSprite(tx,ty,p_colli.perso))
 			return true;
 
 		// Returns computed result
@@ -437,6 +450,7 @@ public class MapManagement {
 		this.currentMap = currentMap;
 	}
 
-	public void updateMap() {
+    public void updateMap() {
+        this.currentMap.update();
     }
 }
