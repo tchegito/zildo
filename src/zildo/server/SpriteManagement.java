@@ -308,11 +308,12 @@ public class SpriteManagement extends SpriteStore {
         spriteUpdating = true;
         spriteEntitiesToAdd.clear();
 
-        // Backup current entities
-        backupEntities.clear();
-        for (SpriteEntity entity : spriteEntities) {
-            SpriteEntity cloned = entity.clone();
-            backupEntities.put(cloned.getId(), cloned);
+        // Backup current entities, if backup buffer is empty
+        if (backupEntities.size() == 0) {
+	        for (SpriteEntity entity : spriteEntities) {
+	            SpriteEntity cloned = entity.clone();
+	            backupEntities.put(cloned.getId(), cloned);
+	        }
         }
 		
 		// Do perso animations
@@ -516,6 +517,7 @@ public class SpriteManagement extends SpriteStore {
 	
     /**
      * Serialize every entities into one unique ByteBuffer.
+     * @param p_entire TRUE=client want all entities / FALSE=just send delta
      * @return buffer
      */
     public EasyBuffering serializeEntities(boolean p_entire) {
@@ -523,6 +525,7 @@ public class SpriteManagement extends SpriteStore {
         if (!p_entire) {
             s = getModifiedEntities();
         }
+        backupEntities.clear();
         return serializeEntities(s, false);
     }
 	
@@ -575,10 +578,16 @@ public class SpriteManagement extends SpriteStore {
 			if (backedUp == null) {
 				// If this entity hasn't been backed up, it's a new one ==> we send it
 				returned.add(entity);
+				if (entity.dying) {
+					System.out.println("erreur !");
+				}
 			} else {
 				// If this entity has been backed up, we must check wether it has changed
 				if (!backedUp.isSame(entity)) {
 					returned.add(entity);
+					if (entity.dying) {
+						System.out.println("erreur !");
+					}
 				}
 				backupEntities.remove(id);
 			}
@@ -588,7 +597,9 @@ public class SpriteManagement extends SpriteStore {
 			entity.dying=true;
 			returned.add(entity);
 		}
-		//System.out.println(returned.size()+" / "+spriteEntities.size()+" avec "+backupEntities.size()+" à supprimer");
+		if (backupEntities.size() > 0) {
+			System.out.println(returned.size()+" / "+spriteEntities.size()+" avec "+backupEntities.size()+" à supprimer");
+		}
 		return returned;
 	}
 }
