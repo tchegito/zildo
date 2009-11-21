@@ -6,6 +6,7 @@
  * optimized online game experience (now REALLY playable !)
  * score panel !
  * player can choose his name
+ * bushes/rock reappeared after a time
 
 = Version 1.08 =
 
