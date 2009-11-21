@@ -249,12 +249,12 @@ public abstract class Perso extends Element {
 	public void finalize() {
 		logger.info("Deleting Perso");
 		// Delete linked elements
-		if (this.persoSprites.size() > 0) {
+		if (persoSprites != null && persoSprites.size() > 0) {
 			for (Element e : persoSprites) {
 				EngineZildo.spriteManagement.deleteSprite(e);
 			}
+			persoSprites.clear();
 		}
-		persoSprites.clear();
 		logger.info(" ... Ok");
 	}
 	

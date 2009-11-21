@@ -111,7 +111,7 @@ public class NetClient extends NetSend {
 				ZUtils.sleep(5);
 			} else if (!askedMap) {
 				// 3) Server accepted. So, we ask for the map
-				sendPacket(new AskPacket(ResourceType.MAP), server);
+				sendPacket(new AskPacket(ResourceType.MAP, false), server);
 				askedMap=true;
 			}
 			
@@ -127,13 +127,13 @@ public class NetClient extends NetSend {
                         receiveMap(getPacket);
                         if (!gotMap) {
                             // Ask entities for the first time
-                            sendPacket(new AskPacket(ResourceType.ENTITY), server);
+                            sendPacket(new AskPacket(ResourceType.ENTITY, true), server);
                         }
                         gotMap = true;
                     } catch (RuntimeException e) {
                         e.printStackTrace();
                         // Map receiving has failed. So re-ask.
-                        sendPacket(new AskPacket(ResourceType.MAP), server);
+                        sendPacket(new AskPacket(ResourceType.MAP, false), server);
                     }
                     break;
                 case MAP_PART:
@@ -157,11 +157,11 @@ public class NetClient extends NetSend {
                 	break;
                 }
 
-                // Reask entities if we haven't anyone since a fixed number of frames
+                // Reask every entities if we haven't anyone since a fixed number of frames
                 if (gotMap && !refreshEntities) {
                 	frameWithoutEntity++;
                 	if (frameWithoutEntity==5) {
-                        sendPacket(new AskPacket(ResourceType.ENTITY), server);
+                        sendPacket(new AskPacket(ResourceType.ENTITY, true), server);
                         frameWithoutEntity=0;
                         log("Reask entities");
                 	}
@@ -217,7 +217,7 @@ public class NetClient extends NetSend {
         ClientEngineZildo.spriteDisplay.setEntities(list);
 
         // Re-ask
-        sendPacket(new AskPacket(ResourceType.ENTITY), server);
+        sendPacket(new AskPacket(ResourceType.ENTITY, false), server);
     }
 
     private void receiveSounds(GetPacket p_packet) {

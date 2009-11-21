@@ -1,8 +1,10 @@
 package zildo.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import zildo.fwk.IntSet;
@@ -38,15 +40,17 @@ public class SpriteManagement extends SpriteStore {
 	List<SpriteEntity> spriteEntitiesToAdd; // Used for sprites created during the animation phase
 	/** See {@link #updateSprites()} **/
 //
-
+	Map<Integer, SpriteEntity> backupEntities;    // To identify entities which have been modified in the current frame
+	
 	public SpriteManagement()
 	{
 
 		super();
 
-		clientSpecificEntities=new ArrayList<SpriteEntity>();
-		spriteEntitiesToAdd=new ArrayList<SpriteEntity>();
-	}
+        clientSpecificEntities=new ArrayList<SpriteEntity>();
+        spriteEntitiesToAdd=new ArrayList<SpriteEntity>();
+        backupEntities=new HashMap<Integer, SpriteEntity>();
+    }
 	
 	public void finalize()
 	{
@@ -301,8 +305,15 @@ public class SpriteManagement extends SpriteStore {
 	// -animate sprites & persos
 	public void updateSprites(boolean p_blockMoves)
 	{
-		spriteUpdating=true;
-		spriteEntitiesToAdd.clear();
+        spriteUpdating = true;
+        spriteEntitiesToAdd.clear();
+
+        // Backup current entities
+        backupEntities.clear();
+        for (SpriteEntity entity : spriteEntities) {
+            SpriteEntity cloned = entity.clone();
+            backupEntities.put(cloned.getId(), cloned);
+        }
 		
 		// Do perso animations
 		// Mandatory to do that first, because one perso can be connected to other sprites
@@ -483,7 +494,7 @@ public class SpriteManagement extends SpriteStore {
 	
 		for (SpriteEntity entity : listToRemove) {
 			// La méthode suivante va peut-être supprimer un élément lié à celui-ci (exemple:l'ombre)
-			deleteSprite(entity);
+			entity.dying=true;
 		}
 	
 		// No collision
@@ -503,13 +514,17 @@ public class SpriteManagement extends SpriteStore {
 		return entities;
 	}
 	
-	/**
-	 * Serialize every entities into one unique ByteBuffer.
-	 * @return buffer
-	 */
-	public EasyBuffering serializeEntities() {
-		return serializeEntities(spriteEntities, false);
-	}
+    /**
+     * Serialize every entities into one unique ByteBuffer.
+     * @return buffer
+     */
+    public EasyBuffering serializeEntities(boolean p_entire) {
+        List<SpriteEntity> s = spriteEntities;
+        if (!p_entire) {
+            s = getModifiedEntities();
+        }
+        return serializeEntities(s, false);
+    }
 	
 	/**
 	 * Serialize given entities into one unique ByteBuffer.
@@ -531,7 +546,7 @@ public class SpriteManagement extends SpriteStore {
 	 * Return sprite entities according to the given client.
 	 * SpriteEntity which have 'clientSpecific' at TRUE are only transmitted if we have the right client.
 	 * @param p_cl
-	 * @return
+	 * @return List<SpriteEntity>
 	 */
 	public List<SpriteEntity> getSpriteEntities(ClientState p_cl) {
 		// Filter the entities to keep only the common and those from given client
@@ -548,4 +563,32 @@ public class SpriteManagement extends SpriteStore {
 		return entities;
 	}
  
+	/**
+	 * Prepare a list of modified entities on this frame.
+	 * @return List<SpriteEntity>
+	 */
+	private List<SpriteEntity> getModifiedEntities() {
+		List<SpriteEntity> returned=new ArrayList<SpriteEntity>();
+		for (SpriteEntity entity : spriteEntities) {
+			int id=entity.getId();
+			SpriteEntity backedUp=backupEntities.get(id);
+			if (backedUp == null) {
+				// If this entity hasn't been backed up, it's a new one ==> we send it
+				returned.add(entity);
+			} else {
+				// If this entity has been backed up, we must check wether it has changed
+				if (!backedUp.isSame(entity)) {
+					returned.add(entity);
+				}
+				backupEntities.remove(id);
+			}
+		}
+		// Send the entity which has been removed this frame
+		for (SpriteEntity entity : backupEntities.values()) {
+			entity.dying=true;
+			returned.add(entity);
+		}
+		//System.out.println(returned.size()+" / "+spriteEntities.size()+" avec "+backupEntities.size()+" à supprimer");
+		return returned;
+	}
 }

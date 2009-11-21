@@ -465,16 +465,10 @@ public class PlayerManagement {
 							case 169:enBras=11;break;
 							case 751:enBras=0;break;
 							}
-							if (enBras != -1) {
-								heros.takeSomething(newx*16+8, newy*16+14, enBras, null);
-							}
-							int j;
-							if (on_map==165) {
-								j=166;
-							} else if (on_map==751) {
-								j=752;
-							} else j=168;
-							EngineZildo.mapManagement.getCurrentMap().writemap(newx, newy, j);
+                            if (enBras != -1) {
+                                heros.takeSomething(newx * 16 + 8, newy * 16 + 14, enBras, null);
+                            }
+                            EngineZildo.mapManagement.getCurrentMap().takeSomethingOnTile(new Point(newx, newy));
 						} else if (on_map==743 && heros.getAngle()==Angle.NORD) {
 							//Zildo a trouvé un coffre ! C'est pas formidable ?
 							EngineZildo.mapManagement.getCurrentMap().writemap(newx, newy, 744);

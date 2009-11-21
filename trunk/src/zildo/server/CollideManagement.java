@@ -166,9 +166,11 @@ public class CollideManagement {
     }
 
     /**
-     * A collision hit a character. Calls two methods:
-     * -{@link Perso#beingWounded()} on the collided character
-     * -{@link Element#beingCollided()} on the collider element
+     * A collision hit a character. Calls two methods:<br/>
+     * <ul>
+     * <li>{@link Perso#beingWounded()} on the collided character</li>
+     * <li>{@link Element#beingCollided()} on the collider element</li>
+     * </ul>
      * @param p_collider
      * @param p_collided
      */
