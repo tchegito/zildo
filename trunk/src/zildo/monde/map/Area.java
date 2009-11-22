@@ -37,7 +37,7 @@ public class Area {
     class SpawningTile {
         Case previousCase;
         int x, y;
-        int cnt=100;
+        int cnt=5000;
     }
 
 	/**

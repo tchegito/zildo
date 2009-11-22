@@ -28,8 +28,7 @@ public class MultiplayerManagement {
      * <li>display message</li>
      * <li>update scores</li>
      * </ul>
-     * @para
-     * m p_zildo
+     * @param p_zildo
      * @param p_shooter
      */
     public void kill(PersoZildo p_zildo, Perso p_shooter) {
@@ -51,6 +50,9 @@ public class MultiplayerManagement {
     	needToBroadcast=p_active;
     }
     
+    /**
+     * @return TRUE if something happened in the game that goes into the score panel.
+     */
     public boolean isNeedToBroadcast() {
     	return needToBroadcast;
     }

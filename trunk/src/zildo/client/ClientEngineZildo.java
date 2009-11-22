@@ -207,10 +207,12 @@ public class ClientEngineZildo {
 	            retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_CAPTURE;
 	            filterCommand.active(BilinearFilter.class, false);
 	            guiDisplay.setToDisplay_generalGui(false);
+	            mapDisplay.setCapturing(true);
 	            retEvent.wait=1;
 	            break;
 	        case CHANGINGMAP_SCROLL_CAPTURE:
 	            spriteEngine.captureScreen();
+	            mapDisplay.setCapturing(false);
 	            retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP;
 	            break;
 	        case CHANGINGMAP_SCROLL_START:
@@ -227,7 +229,7 @@ public class ClientEngineZildo {
 	            break;
 	        case CHANGINGMAP_SCROLL:
 	        	if (!mapDisplay.isScrolling()) {
-	        		retEvent.nature = ClientEventNature.NOEVENT;
+	        		retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLLOVER;
 	        		// Show GUI sprites back
 		            guiDisplay.setToDisplay_generalGui(true);
 	        	}

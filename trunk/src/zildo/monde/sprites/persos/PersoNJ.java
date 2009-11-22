@@ -5,6 +5,7 @@ import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.Hasard;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
+import zildo.monde.map.Pointf;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
@@ -267,25 +268,9 @@ public class PersoNJ extends Perso {
 							vitesse=0.2f;
 						}
 						
-						int immo=0;
-						if ((getDx() - getX()) > vitesse) {
-							this.setX(getX() + vitesse);
-							this.setAngle(Angle.EST);
-						} else if ((getDx() - getX()) <vitesse) {
-							this.setX(getX() - vitesse);
-							this.setAngle(Angle.OUEST);
-						} else {
-							immo++;
-						}
-						if ((getDy()-getY())>vitesse) {
-							this.setY(getY() + vitesse);
-							this.setAngle(Angle.SUD);
-						} else if ((getDy() - getY())<vitesse) {
-							this.setY(getY() - vitesse);
-							this.setAngle(Angle.NORD);
-						} else {
-							immo++;
-						}
+						Pointf loc=reachDestination(vitesse);
+						x=loc.x;
+						y=loc.y;
 						
 						// suite_mouvement
 						if (quel_deplacement.equals(MouvementPerso.SCRIPT_ELECTRIQUE)) {
@@ -295,7 +280,7 @@ public class PersoNJ extends Perso {
 						}
 						if (!quel_deplacement.equals(MouvementPerso.SCRIPT_VOLESPECTRE)) {
 							// Collision ?
-							if (immo == 2 || (!quel_deplacement.equals(MouvementPerso.SCRIPT_VOLESPECTRE) && EngineZildo.mapManagement.collide((int) getX(),(int) getY(),this))) {
+							if (!quel_deplacement.equals(MouvementPerso.SCRIPT_VOLESPECTRE) && EngineZildo.mapManagement.collide((int) getX(),(int) getY(),this)) {
 								this.setX ( sx);
 								this.setY ( sy);
 								this.setDx(-1);
@@ -441,9 +426,9 @@ public class PersoNJ extends Perso {
 	}
 	
 	/**
-	 * Se dirige vers le personnage passé en paramètre
-	 * @param p_perso
-	 * @param p_fear
+	 * Reach or run away from a given character.
+	 * @param p_perso target character
+	 * @param p_fear TRUE=avoid / FALSE=reach
 	 */
 	public void reachAvoidTarget(Perso p_perso, boolean p_fear) {
 		float sx=x;

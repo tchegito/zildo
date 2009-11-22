@@ -13,6 +13,7 @@ import zildo.client.Client.ClientType;
 import zildo.client.gui.menu.PlayerNameMenu;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
+import zildo.prefs.KeysConfiguration;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
 import zildo.server.state.ClientState;
@@ -81,7 +82,7 @@ public class SinglePlayer {
                 states.addAll(server.getClientStates());
             }
             
-            // Render events (1: client and 2: server)
+            // Render events (1: server and 2: client)
             state.event = engineZildo.renderEvent(state.event);
             state.event = clientEngineZildo.renderEvent(state.event);
 	            
@@ -94,8 +95,8 @@ public class SinglePlayer {
 	            KeyboardInstant instant = KeyboardInstant.getKeyboardInstant();
 	            state.keys = instant;
 	            client.setKbInstant(instant);
-	            states.add(state);
             }
+            states.add(state);
 
             // Update server
             engineZildo.renderFrame(states);

@@ -101,12 +101,10 @@ public class EngineZildo {
 		// 1) Players
 		boolean block=false;
 		for (ClientState state : p_clientStates) {
-			KeyboardInstant i=state.keys;
-			if (i != null) {
-				// If client has pressed keys, we manage them, then clear.
-				playerManagement.manageKeyboard(state);
-				state.keys=null;
-			}
+			// If client has pressed keys, we manage them, then clear.
+			playerManagement.manageKeyboard(state);
+			state.keys=null;
+			
 			// Look for map change (only in single player for now)
 			if (!game.multiPlayer && mapManagement.isChangingMap(state.zildo) && state.event.nature==ClientEventNature.NOEVENT) {
 				ChainingPoint ch=mapManagement.getChainingPoint();
@@ -115,9 +113,6 @@ public class EngineZildo {
 				} else {
 					state.event.nature=ClientEventNature.CHANGINGMAP_ASKED;
 				}
-			}
-			if (state.event.nature == ClientEventNature.CHANGINGMAP_SCROLL) {
-				
 			}
 		}
 		
@@ -150,6 +145,10 @@ public class EngineZildo {
                     retEvent.nature = ClientEventNature.CHANGINGMAP_LOADED;
                 }
                 break;
+            case CHANGINGMAP_SCROLLOVER:
+            	persoManagement.getZildo().setGhost(false);
+            	retEvent.nature = ClientEventNature.NOEVENT;
+            	break;
         }
         return retEvent;
     }

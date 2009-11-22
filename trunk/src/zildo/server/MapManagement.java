@@ -82,20 +82,8 @@ public class MapManagement {
         analyseAltitude();
 
     }
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// linkTwoMaps
-	///////////////////////////////////////////////////////////////////////////////////////
-	Area linkTwoMaps(String mapname)
-	{
-		// Load next map
-		Area secondMap=loadMapFile(mapname);
-		// Put the current map next to the second one, so we have both on a double area
-		currentMap.translatePoints(currentMap.getDim_x(),0,secondMap);
-		return secondMap;
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////////////////
 	// loadMapFile
 	///////////////////////////////////////////////////////////////////////////////////////
 	// IN:filename to load as a map
@@ -322,16 +310,25 @@ public class MapManagement {
 			if (chPointTarget == null || isAlongBorder) {
 				// chPointTarget should never be null !
 				// But there is a map (polaky, left border) which fails...
+				Point dest=new Point(zildo.x, zildo.y);
+				zildo.x=(int) zildo.x;
+				zildo.y=(int) zildo.y;
 				if (zildo.getY() > previousDimY*16-16) {
-					zildo.setY(8);
+					zildo.setY(8 - 8);
+					dest.y=(int) zildo.y + 8;
 				} else if (zildo.getY() < 4) {
-					zildo.setY(currentMap.getDim_y() * 16 - 8);
+					zildo.setY(currentMap.getDim_y() * 16 - 8 + 8);
+					dest.y=(int) zildo.y - 8;
 				} else if (zildo.getX() < 4) {
-					zildo.setX(currentMap.getDim_x() * 16 - 16);
+					zildo.setX(currentMap.getDim_x() * 16 - 16 + 16);
+					dest.x=(int) zildo.x - 16;
 				} else if (zildo.getX() > previousDimX*16-16) {
-					zildo.setX(8);
+					zildo.setX(8 - 16);
+					dest.x=(int) zildo.x +16;
 				}
-				//linkTwoMaps(newMapName);
+                zildo.setGhost(true);
+                zildo.setDx(dest.x);
+                zildo.setDy(dest.y);
 				zildo.finaliseComportement(EngineZildo.compteur_animation);
 				return true;
 			} else {

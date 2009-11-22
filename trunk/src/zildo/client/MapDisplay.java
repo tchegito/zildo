@@ -7,9 +7,12 @@ import zildo.monde.sprites.SpriteEntity;
 
 public class MapDisplay {
 
-    private Point camera;
-	private Point targetCamera;
+    private Point camera;		// Current camera locatino
+	private Point targetCamera;	// Target camera location (if not null, camera moves smoothly to it)
 
+	private Angle scrollingAngle;
+	private boolean capturing;	// TRUE=we capture screen (for scrolling map)
+	
     private Area currentMap;
 	   
 	private int compteur_animation;			// clone from mapManagement (for now)
@@ -64,6 +67,7 @@ public class MapDisplay {
 			
 			if (targetCamera.equals(camera)) {
 				targetCamera=null;
+				scrollingAngle=null;
 			}
         }
     }
@@ -128,5 +132,19 @@ public class MapDisplay {
     	}
     	setCamera(movedCamera);
         setTargetCamera(camera);
+        scrollingAngle=p_angle;
 	}
+
+	public boolean isCapturing() {
+		return capturing;
+	}
+
+	public void setCapturing(boolean capturing) {
+		this.capturing = capturing;
+	}
+
+	public Angle getScrollingAngle() {
+		return scrollingAngle;
+	}
+
 }

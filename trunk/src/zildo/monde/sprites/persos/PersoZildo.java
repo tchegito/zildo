@@ -32,8 +32,13 @@ public class PersoZildo extends Perso {
 	
 	private SpriteEntity pushingSprite;
 	private Point posAvantSaut;
+	private Point posShadowJump;
+	private Angle jumpAngle;
+	
+	private int touch;	// number of frames zildo is touching something without moving
 	
 	private boolean inventoring=false; 
+	private boolean ghost=false;	// TRUE=player can't control him
 	public ItemCircle guiCircle;
 	private List<Item> inventory;
 	
@@ -427,8 +432,8 @@ public class PersoZildo extends Perso {
 			case SAUTE:
 				// Zildo est en train de sauter, on affiche l'ombre à son arrivée
 	
-				ombre.setX(zildo.getDx()); //(float) (xx-ax)); //-6;)
-				ombre.setY(zildo.getDy()); //(float) (yy-ay)-3);
+				ombre.setX(posShadowJump.x); //(float) (xx-ax)); //-6;)
+				ombre.setY(posShadowJump.y); //(float) (yy-ay)-3);
 				ombre.setNSpr(2);
 				ombre.setNBank(SpriteBank.BANK_ELEMENTS);
 				ombre.setZ(0);
@@ -804,11 +809,42 @@ public class PersoZildo extends Perso {
 		}
 	}
 
+	/**
+	 * Starts a jump in given angle.
+	 * @param p_angle should not be null
+	 */
+	public void jump(Angle p_angle) {
+		// On sauve la position de Zildo avant son saut
+		Point zildoAvantSaut=new Point(x, y);
+		mouvement=MouvementZildo.SAUTE;
+		jumpAngle=p_angle;
+		posShadowJump=p_angle.getLandingPoint().translate((int) x, (int) y);
+		setEn_bras(null);
+		posAvantSaut=zildoAvantSaut;
+		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoTombe, this);		
+	}
+	
 	public Point getPosAvantSaut() {
 		return posAvantSaut;
 	}
 
-	public void setPosAvantSaut(Point posAvantSaut) {
-		this.posAvantSaut = posAvantSaut;
+	public Angle getJumpAngle() {
+		return jumpAngle;
+	}
+
+	public int getTouch() {
+		return touch;
+	}
+
+	public void setTouch(int touch) {
+		this.touch = touch;
+	}
+
+	public boolean isGhost() {
+		return ghost;
+	}
+
+	public void setGhost(boolean ghost) {
+		this.ghost = ghost;
 	}
 }
