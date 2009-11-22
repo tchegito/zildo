@@ -8,6 +8,7 @@ import zildo.fwk.input.KeyboardState;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
+import zildo.monde.map.Pointf;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
@@ -52,24 +53,40 @@ public class PlayerManagement {
 		keysState=p_state.keysState;
 		dialogState=p_state.dialogState;
 		client=p_state;
-		
-		handleCommon();
-	
-		if (dialogState.dialoguing) {
-			if (EngineZildo.dialogManagement.isTopicChoosing()) {
-				// Topic selection
-				handleTopicSelection();
-			} else {
-				// Conversation
-				handleConversation();
-			}
-		} else if (heros.isInventoring()) {
-			// Inside the zildo's inventory
-			handleInventory();
+
+		if (instant == null) {
+			automaticMove();
 		} else {
-			// Regular moving on the map
-			handleRegularMoving();
+			handleCommon();
+			
+			if (dialogState.dialoguing) {
+				if (EngineZildo.dialogManagement.isTopicChoosing()) {
+					// Topic selection
+					handleTopicSelection();
+				} else {
+					// Conversation
+					handleConversation();
+				}
+			} else if (heros.isInventoring()) {
+				// Inside the zildo's inventory
+				handleInventory();
+			} else {
+				// Regular moving on the map
+				handleRegularMoving();
+			}
 		}
+	}
+	
+	/**
+	 * Zildo is in ghost mode. It provides scripting moves.
+	 */
+	public void automaticMove() {
+		 if (heros.isGhost()) {
+				Pointf pos=heros.reachDestination(Constantes.ZILDO_SPEED);
+			 	
+				adjustMovement((int) pos.x, (int) pos.y);
+				heros.finaliseComportement(EngineZildo.compteur_animation);
+		 }
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -115,10 +132,6 @@ public class PlayerManagement {
 		int yy=(int) heros.getY();
 	
 		int onMap=-1;
-	
-		final Point[] saut_angle={
-			new Point(0,-40), new Point(48,16),new Point(0,56),  new Point(-48,16),
-			new Point(32,48), new Point(32,-32),new Point(-32,48),new Point(-32,-32)};
 	
 		MapManagement mapManagement=EngineZildo.mapManagement;
 	
@@ -177,8 +190,9 @@ public class PlayerManagement {
 				}
 				heros.setAttente(0);
 			} else {
-				float pasx=saut_angle[heros.getDz()].getX() / 32.0f;
-				float pasy=saut_angle[heros.getDz()].getY() / 32.0f;
+				Point landingPoint=heros.getJumpAngle().getLandingPoint();
+				float pasx=landingPoint.x / 32.0f;
+				float pasy=landingPoint.y / 32.0f;
 				heros.setX(heros.getX()+pasx);
 				heros.setY(heros.getY()+pasy);
 				heros.setAttente(heros.getAttente()+1);
@@ -246,97 +260,82 @@ public class PlayerManagement {
 		if (needMovementAdjustment) {
 			// Is there any movement ?
 			if ((int) heros.x == xx &&
-				(int) heros.y == yy) {
-				if (heros.getMouvement().equals(MouvementZildo.POUSSE)) {
-					heros.setMouvement(MouvementZildo.VIDE);
-				}
-				heros.setPos_seqsprite(-1);
-				heros.setNSpr(0);
-				heros.setDx(0);
-			} else {
-			// Is it a valid movement ?
-				// Adjustment
-				heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512);
-		
-                Point secureLocation = heros.tryMove(xx, yy);
-                xx = secureLocation.x;
-                yy = secureLocation.y;
-		
-				if ((int) heros.x == xx && (int) heros.y == yy)
-				{
-					if (heros.getMouvement()==MouvementZildo.VIDE)
-					{
-						if (heros.getDx()==15)
-						{
-							//On regarde si Zildo peut sauter
-							int cx=xx / 16;
-							int cy=yy / 16;
-							Angle angleResult=EngineZildo.mapManagement.getAngleJump(heros.getAngle(), cx, cy);
-							if (angleResult == null) {
-								heros.setDz(8);
-							} else {
-								heros.setDz(angleResult.value);
-							}
-							if (heros.getDz()!=8 && heros.getPushingSprite() == null)
-							{
-								// On sauve la position de Zildo avant son saut
-								Point zildoAvantSaut=new Point((int) heros.getX(),
-														 (int) heros.getY());
-								heros.setMouvement(MouvementZildo.SAUTE);
-								heros.setDx(xx+saut_angle[heros.getDz()].getX());
-								heros.setDy(yy+saut_angle[heros.getDz()].getY());
-								heros.setX(xx);
-								heros.setY(yy);
-								heros.setEn_bras(null);
-								heros.setPosAvantSaut(zildoAvantSaut);
-								EngineZildo.soundManagement.broadcastSound(BankSound.ZildoTombe, heros);
-							}
-						}	//if dx=15
-						heros.setPos_seqsprite(-1);
-						heros.setDx(heros.getDx()+1);
-					}	//if mouvement==MOUVEMENT_VIDE
-					else
-						heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512); // Sinon on augmente (Zildo pousse)
-					
-				}	// if Collide == true
-				else if (!heros.getMouvement().equals(MouvementZildo.SAUTE)) {
-                    // Pas d'obstacles ? Mais peut-être une porte !
-                    boolean ralentit = heros.walkTile(true);
-		
-					// -. Yes
-				    heros.setDx(0);                          // Zildo n'est pas bloqué => 0
-					if (heros.getMouvement()==MouvementZildo.POUSSE)
+					(int) heros.y == yy) {
+					if (heros.getMouvement().equals(MouvementZildo.POUSSE)) {
 						heros.setMouvement(MouvementZildo.VIDE);
-		
-					int diffx=xx - (int) heros.x;
-					int diffy=yy - (int) heros.y;
-					float coeff;
-					// On ralentit le mouvement de Zildo s'il est diagonal, ou si Zildo est dans un escalier
-					if (ralentit || (diffx!=0 && diffy!=0 && heros.getMouvement()!=MouvementZildo.TOUCHE))
-					{
-						if (ralentit)
-							coeff=0.5f;
-						else
-							coeff=0.8f;
-		
-		
-						heros.setX(heros.getX()+diffx*coeff);
-						heros.setY(heros.getY()+diffy*coeff);
-					} else
-					{
-						heros.setX(xx);
-						heros.setY(yy);
 					}
-				}
+					heros.setPos_seqsprite(-1);
+					heros.setNSpr(0);
+					heros.setTouch(0);
+			} else {
+				adjustMovement(xx, yy);
 			}
 		}
-		if (heros.getDx()==16 && heros.getMouvement()==MouvementZildo.VIDE) {
-			heros.setDx(15);
+		if (heros.getTouch()==16 && heros.getMouvement()==MouvementZildo.VIDE) {
+			heros.setTouch(15);
 			heros.setMouvement(MouvementZildo.POUSSE);
 		}
 	
 		// Interpret animation paramaters to get the real sprite to display
 		heros.finaliseComportement(EngineZildo.compteur_animation);
+	}
+	
+	/**
+	 * 
+	 * @param xx
+	 * @param yy
+	 */
+	private void adjustMovement(int xx, int yy) {
+		// Is it a valid movement ?
+		// Adjustment
+		heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512);
+
+        Point secureLocation = heros.tryMove(xx, yy);
+        xx = secureLocation.x;
+        yy = secureLocation.y;
+
+		if ((int) heros.x == xx && (int) heros.y == yy) {
+			if (heros.getMouvement()==MouvementZildo.VIDE) {
+				if (heros.getTouch()==15) {
+					//On regarde si Zildo peut sauter
+					int cx=xx / 16;
+					int cy=yy / 16;
+					Angle angleResult=EngineZildo.mapManagement.getAngleJump(heros.getAngle(), cx, cy);
+					if (angleResult!=null && heros.getPushingSprite() == null) {
+						heros.jump(angleResult);
+					}
+				}	//if touch=15
+				heros.setPos_seqsprite(-1);
+				heros.setTouch(heros.getTouch()+1);
+			} else
+				heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512); // Sinon on augmente (Zildo pousse)
+			
+		} else if (!heros.getMouvement().equals(MouvementZildo.SAUTE)) {
+            // Pas d'obstacles ? Mais peut-être une porte !
+            boolean ralentit = heros.walkTile(true);
+
+			// -. Yes
+		    heros.setTouch(0);                          // Zildo n'est pas bloqué => 0
+			if (heros.getMouvement()==MouvementZildo.POUSSE)
+				heros.setMouvement(MouvementZildo.VIDE);
+
+			int diffx=xx - (int) heros.x;
+			int diffy=yy - (int) heros.y;
+
+			float coeff=1.0f;
+
+			// On ralentit le mouvement de Zildo s'il est diagonal, ou si Zildo est dans un escalier
+			if (ralentit || (diffx!=0 && diffy!=0 && heros.getMouvement()!=MouvementZildo.TOUCHE))
+			{
+				if (ralentit)
+					coeff=0.5f;
+				else
+					coeff=0.8f;
+			}
+
+			heros.setX(heros.getX()+diffx*coeff);
+			heros.setY(heros.getY()+diffy*coeff);
+		}
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

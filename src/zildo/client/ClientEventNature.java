@@ -14,6 +14,7 @@ public enum ClientEventNature {
 	CHANGINGMAP_SCROLL_START,	// Client has captured current screen
 	CHANGINGMAP_SCROLL_WAIT_MAP, // Client is awaiting for the new map
 	CHANGINGMAP_SCROLL_LOADED,	// Serve has loaded the new map 
-	CHANGINGMAP_SCROLL;			// Client is scrolling
+	CHANGINGMAP_SCROLL,			// Client is scrolling
+	CHANGINGMAP_SCROLLOVER;		// Client has finished scrolling
 	
 }

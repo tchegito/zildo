@@ -14,6 +14,11 @@ public enum Angle {
 	
 	public int value;
 	public Point coords;
+
+	
+	static final Point[] saut_angle={
+		new Point(0,-40), new Point(48,16),new Point(0,56),  new Point(-48,16),
+		new Point(32,48), new Point(32,-32),new Point(-32,48),new Point(-32,-32)};
 	
 	private Angle(int value, Point coords) {
 		this.value=value;
@@ -79,5 +84,13 @@ public enum Angle {
 		} else {
 			return result==0;
 		}
+	}
+	
+	/**
+	 * Returns delta location with a jump in given angle.
+	 * @return Point
+	 */
+	public Point getLandingPoint() {
+		return saut_angle[value];
 	}
 }

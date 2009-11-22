@@ -3,7 +3,9 @@ package zildo.monde.sprites.persos;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
+import zildo.monde.map.Pointf;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -467,5 +469,54 @@ public abstract class Perso extends Element {
 
 	public void setDialoguingWith(Perso p_dialoguingWith) {
 		this.dialoguingWith = p_dialoguingWith;
+	}
+	
+	public void setVisible(boolean p_visible) {
+		super.setVisible(p_visible);
+		for (SpriteEntity entity : persoSprites) {
+			entity.setVisible(p_visible);
+		}
+	}
+	
+	/**
+	 * Shouldn't modify heros location !
+	 * @param p_speed
+	 * @return int
+	 */
+	public Pointf reachDestination(float p_speed) {
+		int immo=0;
+		Pointf pos=new Pointf(x, y);
+		if (x < dx) {
+			pos.x+= p_speed;
+			if (pos.x > dx) {
+				pos.x=dx;
+			}
+			angle = Angle.EST;
+		} else if (x > dx) {
+			pos.x-= p_speed;
+			if (pos.x < dx) {
+				pos.x=dx;
+			}
+			angle=Angle.OUEST;
+		} else {
+			immo++;
+		}
+		if (y < dy) {
+			pos.y+= p_speed;
+			if (pos.y > dy) {
+				pos.y=dy;
+			}
+			angle=Angle.SUD;
+		} else if (y > dy) {
+			pos.y-= p_speed;
+			if (pos.y < dy) {
+				pos.y=dy;
+			}
+			angle=Angle.NORD;
+		} else {
+			immo++;
+		}
+		
+		return pos;
 	}
 }
