@@ -23,8 +23,8 @@ public class ElementBomb extends Element {
         // Add a shadow
         shadow = new Element();
         shadow.x = x;
-        shadow.y = y;
-        shadow.z = -1;
+        shadow.y = y-1;
+        shadow.z = -2;
         shadow.nBank = SpriteBank.BANK_ELEMENTS;
         shadow.nSpr = ElementDescription.SHADOW_SMALL.ordinal();
         shadow.setSprModel(ElementDescription.SHADOW_SMALL);

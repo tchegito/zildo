@@ -732,6 +732,7 @@ public class PersoZildo extends Perso {
         		(int) x + 5, 
         		(int) y + 1, 20);
         setEn_bras(elem);
+        EngineZildo.soundManagement.playSound(BankSound.ZildoTrouve, this);
         EngineZildo.game.questDiary.trigger(QuestEvent.INVENTORY, this);
     }
 
