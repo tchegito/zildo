@@ -1,6 +1,7 @@
 package zildo.monde.sprites.elements;
 
 import zildo.monde.map.Angle;
+import zildo.monde.map.Point;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
@@ -32,25 +33,28 @@ public abstract class ElementThrown extends Element {
         } else {
         	relativeZ = p_startZ;
         }
+        Point dir=p_angle.coords;
+        vx=p_speed*dir.x;
+        vy=p_speed*dir.y;
         switch (p_angle) {
-            case NORD:
-                vy = -p_speed;
+            case NORD: case NORDEST: case NORDOUEST:
                 nSpr = ElementDescription.ARROW_UP.ordinal();
                 break;
             case EST:
-                vx = p_speed;
                 nSpr = ElementDescription.ARROW_RIGHT.ordinal();
                 break;
-            case SUD:
-                vy = p_speed;
+            case SUD: case SUDEST: case SUDOUEST:
                 x += 2;
                 y += 4;
                 nSpr = ElementDescription.ARROW_DOWN.ordinal();
                 break;
             case OUEST:
-                vx = -p_speed;
                 nSpr = ElementDescription.ARROW_LEFT.ordinal();
                 break;
+        }
+        if (p_angle.isDiagonal()) {
+        	vx=0.7f * vx;
+        	vy=0.7f * vy;
         }
         angle = p_angle;
         setLinkedPerso(p_shooter);
