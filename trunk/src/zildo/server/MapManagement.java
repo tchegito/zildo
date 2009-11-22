@@ -129,6 +129,13 @@ public class MapManagement {
 	    int modx,mody;
 	    int on_map;           // La case où se déplace le joueur
 	    
+		
+		if (tx<0 || ty<0 || 
+		    tx>(currentMap.getDim_x()-1)*16+15 ||
+			ty>(currentMap.getDim_y()-1)*16+15)
+			// On empêche la collision sur les bords de cartes
+            return !quelElement.isZildo();
+		
 	    Angle angleFlying=null;
 		Point size=new Point(8,4);	// Default size
         if (quelElement != null && quelElement.flying && quelElement.getAngle() != null
@@ -159,13 +166,6 @@ public class MapManagement {
 	    }
 	    
 		final int[] tab_add={-1,-1,1,1,-1};
-	
-		if (tx<0 || ty<0 || 
-		    tx>(currentMap.getDim_x()-1)*16 ||
-			ty>(currentMap.getDim_y()-1)*16)
-			// On empêche la collision sur les bords de cartes
-            return !quelElement.isZildo();
-	
 		
 		// On teste les 4 coins d'un carré de 4x4
 		for (int i=0;i<4;i++)
@@ -176,6 +176,12 @@ public class MapManagement {
 			modx=mx % 16;
 			mody=my % 16;
 	
+			if (mx<0 || my<0 || 
+				    mx>(currentMap.getDim_x()-1)*16+15 ||
+					my>(currentMap.getDim_y()-1)*16+15)
+					// On empêche la collision sur les bords de cartes
+		            return !quelElement.isZildo();
+			
 			if (tileCollision.collide(modx, mody, on_map)) {
 				return true;
 			}

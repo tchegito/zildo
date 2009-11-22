@@ -38,6 +38,7 @@ public class SoundPlay {
 		ZildoPousse("pousse.wav"),
 		ZildoMonte("escalmon.wav"),
 		ZildoDescend("escaldes.wav"),
+		ZildoTrouve("trouve.wav"),
 		
 		MonstreTouche("touche.wav"),
 		MonstreTouche2("touche2.wav"),
