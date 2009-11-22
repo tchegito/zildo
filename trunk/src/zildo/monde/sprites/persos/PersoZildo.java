@@ -35,6 +35,8 @@ public class PersoZildo extends Perso {
 	private Point posShadowJump;
 	private Angle jumpAngle;
 	
+	private Angle sightAngle;	// For boomerang
+	
 	private int touch;	// number of frames zildo is touching something without moving
 	
 	private boolean inventoring=false; 
@@ -162,7 +164,7 @@ public class PersoZildo extends Perso {
 		case BOOMERANG:
             if (attente == 0 && (boomerang == null || !boomerang.isVisible())) {
                 setMouvement(MouvementZildo.ATTAQUE_BOOMERANG);
-                boomerang=new ElementBoomerang(angle, (int) x, (int) y, (int) z, this);
+                boomerang=new ElementBoomerang(sightAngle, (int) x, (int) y, (int) z, this);
                 EngineZildo.spriteManagement.spawnSprite(boomerang);
                 setAttente(16);
             }
@@ -847,5 +849,9 @@ public class PersoZildo extends Perso {
 
 	public void setGhost(boolean ghost) {
 		this.ghost = ghost;
+	}
+
+	public void setSightAngle(Angle sightAngle) {
+		this.sightAngle = sightAngle;
 	}
 }

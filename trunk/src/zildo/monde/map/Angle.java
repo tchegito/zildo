@@ -93,4 +93,21 @@ public enum Angle {
 	public Point getLandingPoint() {
 		return saut_angle[value];
 	}
+	
+	/**
+	 * Get the angle from the given direction
+	 * @param dx
+	 * @param dy
+	 * @return Angle
+	 */
+	public static Angle fromDirection(int dx, int dy) {
+		int a=Integer.signum(dx);
+		int b=Integer.signum(dy);
+		for (Angle angle : Angle.values()) {
+			if (angle.coords.x == a && angle.coords.y == b) {
+				return angle;
+			}
+		}
+		return null;
+	}
 }

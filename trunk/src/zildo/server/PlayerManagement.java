@@ -322,6 +322,13 @@ public class PlayerManagement {
 			int diffx=xx - (int) heros.x;
 			int diffy=yy - (int) heros.y;
 
+			// Calculate the sight angle (for boomerang) to have a 8-value angle, instead a 4 value
+			Angle sightAngle=heros.getAngle();
+			if (diffx != 0 && diffy != 0) {
+				sightAngle=Angle.fromDirection(diffx, diffy);
+			}
+			heros.setSightAngle(sightAngle);
+			
 			float coeff=1.0f;
 
 			// On ralentit le mouvement de Zildo s'il est diagonal, ou si Zildo est dans un escalier
