@@ -7,6 +7,7 @@
  * score panel !
  * player can choose his name
  * bushes/rock reappeared after a time
+ * diagonal boomerang
 
 = Version 1.08 =
 
