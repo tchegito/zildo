@@ -85,7 +85,7 @@ public class Menu {
 		                displayed=false;
 		                break;
 		        	default:
-		        		if ((upperKey >= 'A' && upperKey <= 'Z') || charKey==' ') {
+		        		if (EditableItemMenu.acceptableChar.indexOf(upperKey) != -1) {
 		                    editableItem.addText(charKey);
 		                    displayed = false;
 		        		}

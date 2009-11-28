@@ -57,7 +57,7 @@ public class PersoHen extends PersoNJ {
     }
 
     @Override
-    public boolean beingWounded(float cx, float cy, Perso p_shooter) {
+    public boolean beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
         project(cx, cy, 1);
         this.setMouvement(MouvementZildo.TOUCHE);
         this.setWounded(true);

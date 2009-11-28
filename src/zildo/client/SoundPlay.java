@@ -40,6 +40,10 @@ public class SoundPlay {
 		ZildoDescend("escaldes.wav"),
 		ZildoTrouve("trouve.wav"),
 		
+		QuadDamage("quaddamage.wav"),
+		QuadDamageLeaving("damage2.wav"),
+		QuadDamaging("damage3.wav"),
+		
 		MonstreTouche("touche.wav"),
 		MonstreTouche2("touche2.wav"),
 		MonstreMeurt("meurt.wav"),

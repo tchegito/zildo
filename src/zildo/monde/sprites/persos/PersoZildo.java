@@ -48,6 +48,7 @@ public class PersoZildo extends Perso {
 	public int countArrow;
 	public int countBomb;
 	private SpriteEntity boomerang;
+	private int quadDuration;
 	
 	// Sequence for sprite animation
 	static int seq_1[]={0,1,2,1};
@@ -239,7 +240,7 @@ public class PersoZildo extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Invoked when Zildo got wounded by any enemy.
 	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean beingWounded(float cx, float cy, Perso p_shooter) {
+	public boolean beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 		// Project Zildo away from the enemy
 		float diffx=getX()-cx;
 		float diffy=getY()-cy;
@@ -252,7 +253,7 @@ public class PersoZildo extends Perso {
 		setPy(8*(diffy/norme));
 		setMouvement(MouvementZildo.TOUCHE);
 		setWounded(true);
-		this.setPv(getPv()-1);
+		this.setPv(getPv()-p_damage);
 	
 		// Si Zildo a quelque chose dans les mains, on doit le laisser tomber
 		if (getEn_bras() != null) {
@@ -267,7 +268,7 @@ public class PersoZildo extends Perso {
 			guiCircle=null;
 		}
 		
-        boolean die = getPv() == 0;
+        boolean die = getPv() <= 0;
         if (die) {
             die(false, p_shooter);
         }
@@ -519,6 +520,13 @@ public class PersoZildo extends Perso {
 			}
 		}
 		
+		// Quad damage
+		if (quadDuration > 0) {
+			quadDuration--;
+			if (quadDuration == 20) {
+				EngineZildo.soundManagement.playSound(BankSound.QuadDamageLeaving, this);
+			}
+		}
 		zildo.setAjustedX(xx);
 		zildo.setAjustedY(yy);
 		zildo.setNSpr(nSpr);
@@ -609,11 +617,18 @@ public class PersoZildo extends Perso {
 			break;
 		case ARROW_UP:
 			countArrow++;
+			break;
+		case QUAD1:
+			quadDuration=1500;
+			break;
 		}
 		// Sound
 		switch (desc) {
 			case GREENMONEY1: case BLUEMONEY1: case REDMONEY1:
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
+				break;
+			case QUAD1:
+				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamage, this);
 				break;
 			case HEART: case HEART_LEFT:
 				default:
@@ -853,5 +868,9 @@ public class PersoZildo extends Perso {
 
 	public void setSightAngle(Angle sightAngle) {
 		this.sightAngle = sightAngle;
+	}
+	
+	public boolean isQuadDamaging() {
+		return quadDuration > 0;
 	}
 }

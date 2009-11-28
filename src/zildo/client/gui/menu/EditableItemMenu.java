@@ -2,6 +2,8 @@ package zildo.client.gui.menu;
 
 public abstract class EditableItemMenu extends ItemMenu {
 
+	public static String acceptableChar="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,()- ";
+	
 	StringBuilder text;
 	
 	public EditableItemMenu(StringBuilder p_text) {
@@ -14,11 +16,7 @@ public abstract class EditableItemMenu extends ItemMenu {
 	 */
 	public void addText(char p_ch) {
 		if (text.length() < 20) {
-			if (p_ch == ' ') {
-				text.append('_');
-			} else {
-				text.append(p_ch);
-			}
+			text.append(p_ch);
 		}
 	}
 	

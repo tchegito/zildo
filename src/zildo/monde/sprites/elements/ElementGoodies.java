@@ -11,7 +11,8 @@ public class ElementGoodies extends Element {
 	// Diamant : nSpr=10
 	
 	private int timeToAcquire;	// Untakeable. Zildo has just to wait to have it (for chest)
-
+	protected boolean volatil=true;	// TRUE=goodies disappear after a delay
+	
 	public ElementGoodies() {
 		super();
 		spe=540;	// Durée de vie du goodies, en frames (on tourne en général à 60FPS : 540==9sec)
@@ -26,7 +27,9 @@ public class ElementGoodies extends Element {
 		
 		super.animate();
 		
-		spe--;
+		if (volatil) {
+			spe--;
+		}
 		
 		if (nSpr == ElementDescription.HEART_LEFT.ordinal()) {
 			// Coeur voletant vers le sol

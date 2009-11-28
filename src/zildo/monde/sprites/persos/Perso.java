@@ -426,7 +426,7 @@ public abstract class Perso extends Element {
     
 	public abstract void initPersoFX();
 
-    public abstract boolean beingWounded(float cx, float cy, Perso p_shooter);
+    public abstract boolean beingWounded(float cx, float cy, Perso p_shooter, int p_damage);
     
     public void parry(float cx, float cy, Perso p_shooter) {}
     	
