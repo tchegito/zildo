@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import zildo.client.SoundPlay.BankSound;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.collision.Rectangle;
@@ -182,7 +183,17 @@ public class CollideManagement {
         	if (weapon != null) {
         		perso.parry(p_collider.cx, p_collider.cy, perso);
         	} else {
-        		perso.beingWounded(p_collider.cx, p_collider.cy, p_collider.perso);
+        		// How much damage ?
+        		int dmg=1;
+        		Perso attacker=p_collider.perso;
+        		if (attacker != null && p_collider.perso.isZildo()) {
+        			PersoZildo zildo=(PersoZildo) attacker;
+        			if (zildo.isQuadDamaging()) {
+        				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamaging, zildo);
+        				dmg*=4;
+        			}
+        		}
+        		perso.beingWounded(p_collider.cx, p_collider.cy, p_collider.perso, dmg);
         	}
         	
             if (p_collider.weapon != null) {

@@ -16,6 +16,7 @@ import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementQuadDamage;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
 
@@ -74,7 +75,10 @@ public class MapManagement {
 
         // Adjust map according the quest diary
         String adjustedMapName = EngineZildo.game.questDiary.getReplacedMapName(mapname);
-
+        
+        // Misc
+        EngineZildo.spriteManagement.spawnSprite(new ElementQuadDamage(840, 200));
+        
         // Load a new one
         currentMap = loadMapFile(adjustedMapName);
         currentMap.setName(mapname);
