@@ -481,6 +481,7 @@ public class SpriteManagement extends SpriteStore {
 								// Is it a goodies ?
 								if (isGoodies && isZildo) {
 									((PersoZildo)elem).pickGoodies(entity.getNSpr());
+									elem.fall();
 									listToRemove.add(entity);
 								} else {
 									found=true;
