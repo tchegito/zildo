@@ -235,8 +235,8 @@ public class SpriteEntity extends Identified implements Cloneable
 		p_buffer.put(this.getAjustedY());
 		p_buffer.put((int) this.x);
 		p_buffer.put((int) this.y);
-		p_buffer.put(this.getScrX());
-		p_buffer.put(this.getScrY());
+		//p_buffer.put(this.getScrX());
+		//p_buffer.put(this.getScrY());
 		p_buffer.put(this.z);
 		p_buffer.put(this.getNBank());
 		p_buffer.put(this.getSpecialEffect());
@@ -269,8 +269,8 @@ public class SpriteEntity extends Identified implements Cloneable
 		entity.setAjustedY(p_buffer.readInt());
 		entity.x=p_buffer.readInt();
 		entity.y=p_buffer.readInt();
-		entity.setScrX(p_buffer.readInt());
-		entity.setScrY(p_buffer.readInt());
+		//entity.setScrX(p_buffer.readInt());
+		//entity.setScrY(p_buffer.readInt());
 		entity.z=p_buffer.readFloat();
 		entity.setVisible(bools[1]);
 		entity.setForeground(bools[2]);
@@ -329,6 +329,13 @@ public class SpriteEntity extends Identified implements Cloneable
         // Entities are the same
         return true;
     }
+    
+    public String toString() {
+    	StringBuffer sb=new StringBuffer();
+    	sb.append("Entity id="+id+"\nx="+x+"\ny="+y+"\nnSpr="+nSpr+"\nvisible="+visible);
+    	return sb.toString();
+    }
 }
+
 
 
