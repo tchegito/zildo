@@ -578,16 +578,10 @@ public class SpriteManagement extends SpriteStore {
 			if (backedUp == null) {
 				// If this entity hasn't been backed up, it's a new one ==> we send it
 				returned.add(entity);
-				if (entity.dying) {
-					System.out.println("erreur !");
-				}
 			} else {
 				// If this entity has been backed up, we must check wether it has changed
 				if (!backedUp.isSame(entity)) {
 					returned.add(entity);
-					if (entity.dying) {
-						System.out.println("erreur !");
-					}
 				}
 				backupEntities.remove(id);
 			}
@@ -595,11 +589,10 @@ public class SpriteManagement extends SpriteStore {
 		// Send the entity which has been removed this frame
 		for (SpriteEntity entity : backupEntities.values()) {
 			entity.dying=true;
+			entity.clientSpecific=false;	// Send to all clients
 			returned.add(entity);
 		}
-		if (backupEntities.size() > 0) {
-			System.out.println(returned.size()+" / "+spriteEntities.size()+" avec "+backupEntities.size()+" à supprimer");
-		}
+		backupEntities.clear();
 		return returned;
 	}
 }
