@@ -1,7 +1,6 @@
 package zildo.monde.sprites.elements;
 
 import zildo.client.SoundPlay.BankSound;
-import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.collision.Collision;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -11,7 +10,6 @@ import zildo.server.EngineZildo;
 public class ElementBomb extends Element {
 
 	int counter;
-	Element shadow;
 	
 	public ElementBomb(int p_startX, int p_startY, int p_startZ) {
 		x=p_startX;
@@ -21,14 +19,7 @@ public class ElementBomb extends Element {
 		counter=100;
 		
         // Add a shadow
-        shadow = new Element();
-        shadow.x = x;
-        shadow.y = y-1;
-        shadow.z = -2;
-        shadow.nBank = SpriteBank.BANK_ELEMENTS;
-        shadow.nSpr = ElementDescription.SHADOW_SMALL.ordinal();
-        shadow.setSprModel(ElementDescription.SHADOW_SMALL);
-        EngineZildo.spriteManagement.spawnSprite(shadow);
+		addShadow(ElementDescription.SHADOW_SMALL);
         
         EngineZildo.soundManagement.broadcastSound(BankSound.PlanteBombe, this);
 	}

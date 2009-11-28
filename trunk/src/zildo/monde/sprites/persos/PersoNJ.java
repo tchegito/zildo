@@ -68,15 +68,15 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Invoked when this character gets wounded by any enemy (=ZILDO)
 	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean beingWounded(float cx, float cy, Perso p_shooter) {
+	public boolean beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 		project(cx, cy, 6);
 		this.setMouvement(MouvementZildo.TOUCHE);
 		this.setWounded(true);
 		this.setAlerte(true);				// Zildo is detected, if it wasn't done !
-		this.setPv(getPv()-1);
+		this.setPv(getPv()-p_damage);
 		this.setSpecialEffect(PixelShaders.ENGINEFX_PERSO_HURT);
 	
-		boolean died=(getPv()==0);
+		boolean died=(getPv()<=0);
 		if (died) {
 			die(true, p_shooter);
 		}

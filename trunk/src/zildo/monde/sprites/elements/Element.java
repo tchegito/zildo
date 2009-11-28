@@ -53,6 +53,8 @@ public class Element extends SpriteEntity {
 	protected int addSpr;	// Pour les animations (exemple:diamants qui brillent)
 	protected SpriteEntity linkedPerso;	// When this element dies, any non-perso linked entity die too.
 
+	protected Element shadow;
+	
 	public Element() {
 		super();
 		this.initialize();
@@ -495,6 +497,9 @@ public class Element extends SpriteEntity {
 				*/
 			}
 		}
+		if (shadow != null) {
+			shadow.dying=true;
+		}
 	}
 
 	/**
@@ -584,6 +589,19 @@ public class Element extends SpriteEntity {
 
 	public void setAngle(Angle angle) {
 		this.angle = angle;
+	}
+	
+	protected void addShadow(ElementDescription p_typeShadow) {
+        // Add a shadow
+        shadow = new Element();
+        shadow.x = x;
+        shadow.y = y-1;
+        shadow.z = -2;
+        shadow.nBank = SpriteBank.BANK_ELEMENTS;
+        shadow.nSpr = p_typeShadow.ordinal();
+        shadow.setSprModel(p_typeShadow);
+        shadow.linkedPerso=this;
+        EngineZildo.spriteManagement.spawnSprite(shadow);		
 	}
 	
 	public String toString() {
