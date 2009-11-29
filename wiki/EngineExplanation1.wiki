@@ -67,3 +67,13 @@ Let's see which are the goal of each packet:
  * == `EventPacket` [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/packet/EventPacket.java (SVN)] ==
 
  It's a packet specifically sent by client, to signal a identifiable event, like a dialog end, or something else, which is relevant to client.
+
+= Dialog =
+
+== Connection ==
+
+As we already said previously, there is two different behaviors between LAN and www game :
+
+ * *LAN* : server sends repeatively a *ServerPacket* with broadcast on all IP adresses with this form x.x.x.255 where the 'x' are server's IP adress members. It means that every client with same three members is targeted.
+
+ * *www* : server sends nothing. Client has to select the server in a list.
