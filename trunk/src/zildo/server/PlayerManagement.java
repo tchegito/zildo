@@ -55,8 +55,10 @@ public class PlayerManagement {
 		client=p_state;
 
 		if (instant == null) {
+			// Scripting move
 			automaticMove();
 		} else {
+			// User move
 			handleCommon();
 			
 			if (dialogState.dialoguing) {
@@ -70,7 +72,7 @@ public class PlayerManagement {
 			} else if (heros.isInventoring()) {
 				// Inside the zildo's inventory
 				handleInventory();
-			} else {
+			} else if (heros.isAlive()) {
 				// Regular moving on the map
 				handleRegularMoving();
 			}
@@ -93,33 +95,36 @@ public class PlayerManagement {
 	// handleCommon
 	///////////////////////////////////////////////////////////////////////////////////////
 	void handleCommon() {
-	
-		if (heros.getEn_bras() == null) {
-			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ATTACK)) {
-				keyPressAttack();
-			} else {
-				keyReleaseAttack();
-			}
-		}
-		
-		if (false) {	// Unable for now the Topic key (this will come later)
-			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_TOPIC)) {
-				keyPressTopic();
-			} else {
-				keyReleaseTopic();
-			}
-		}
+
 	
 		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ACTION)) {
 			keyPressAction();
 		} else {
 			keyReleaseAction();
 		}
-		
-		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
-			keyPressInventory();
-		} else {
-			keyReleaseInventory();
+		if (heros.isAlive()) {
+			
+			if (heros.getEn_bras() == null) {
+				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ATTACK)) {
+					keyPressAttack();
+				} else {
+					keyReleaseAttack();
+				}
+			}
+			
+			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
+				keyPressInventory();
+			} else {
+				keyReleaseInventory();
+			}
+			
+			if (false) {	// Unable for now the Topic key (this will come later)
+				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_TOPIC)) {
+					keyPressTopic();
+				} else {
+					keyReleaseTopic();
+				}
+			}
 		}
 	}
 	
@@ -447,7 +452,7 @@ public class PlayerManagement {
 									persoToTalk.setAngle(persoangle);
 		
 								// Launch the dialog
-								EngineZildo.dialogManagement.launchDialog(client, persoToTalk);
+								EngineZildo.dialogManagement.launchDialog(client, persoToTalk, null);
 							}
 						}
 					} else {
