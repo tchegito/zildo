@@ -86,7 +86,7 @@ As we already said previously, there is two different behaviors between LAN and 
 
 On a LAN game, client should receive the *!ServerPacket*, so he got the server's address.
 
-In both cases, client sends a *!ConnectPacket* to the server, who answers by a AcceptPacket if he's ok (he always is).
+In both cases, client sends a *!ConnectPacket* to the server, who answers by a *!AcceptPacket* if he's ok (he always is).
 
 Just after that, the client requires several things : map and entities. So he asks for via an *!AskPacket* completed with resource type.
 
