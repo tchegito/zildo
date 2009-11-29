@@ -35,51 +35,77 @@ public class DialogManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// launchDialog
 	///////////////////////////////////////////////////////////////////////////////////////
-	// IN : p_zildo : Zildo who's talking
-	//      persoToTalk : perso to talk with
+	// IN : p_zildo : 
+	//      persoToTalk : 
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void launchDialog(ClientState p_client, Perso persoToTalk) {
+	/**
+	 * Launch an interaction between Zildo and a character, or ingame event: <ul>
+	 * <li>if <code>p_persoToTalk</code> is not null, starts a dialog with him.</li>
+	 * <li>if <code>p_actionDialog</code> is not null, displays text and launch delegate action.</li>
+	 * </ul>
+	 * @param p_client Zildo who's talking
+	 * @param p_persoToTalk perso to talk with
+	 * @param p_actionDialog
+	 */
+	public void launchDialog(ClientState p_client, Perso persoToTalk, ActionDialog p_actionDialog ) {
 		MapDialog dialogs=EngineZildo.mapManagement.getCurrentMap().getMapDialog();
+		String sentence;
 		
-		Behavior behav=dialogs.getBehaviors().get(persoToTalk.getNom());
-		if (behav == null) {
-			// This perso can't talk
-			return;
+		if (persoToTalk != null) {
+			// Dialog with character
+			Behavior behav=dialogs.getBehaviors().get(persoToTalk.getNom());
+			if (behav == null) {
+				// This perso can't talk
+				return;
+			}
+			int compteDial=persoToTalk.getCompte_dialogue();
+			
+	        sentence = dialogs.getSentence(behav, compteDial);
+			
+	        // Update perso about next sentence he(she) will say
+	        String sharp = "#";
+	        int posSharp = sentence.indexOf(sharp);
+	        if (posSharp != -1) {
+	            // La phrase demande explicitement de rediriger vers une autre
+	            persoToTalk.setCompte_dialogue(sentence.charAt(posSharp + 1) - 48);
+	            sentence = sentence.substring(0, posSharp);
+
+	        } else if (behav.replique[compteDial + 1] != 0) {
+	            // On passe à la suivante, puisqu'elle existe
+	            persoToTalk.setCompte_dialogue(compteDial + 1);
+	        }
+
+	        if ("gerard".equals(persoToTalk.getNom()) && compteDial == 1) {
+	            p_client.zildo.pickItem(ItemKind.FLUT);
+	        }
+	        // Set the dialoguing states for each Perso
+	        persoToTalk.setDialoguingWith(p_client.zildo);
+
+		} else {
+			// Ingame event
+			sentence=p_actionDialog.text;
+	        p_client.dialogState.actionDialog = p_actionDialog;
 		}
-		int compteDial=persoToTalk.getCompte_dialogue();
-		
-        String sentence = dialogs.getSentence(behav, compteDial);
 
-        // Update perso about next sentence he(she) will say
-        String sharp = "#";
-        int posSharp = sentence.indexOf(sharp);
-        if (posSharp != -1) {
-            // La phrase demande explicitement de rediriger vers une autre
-            persoToTalk.setCompte_dialogue(sentence.charAt(posSharp + 1) - 48);
-            sentence = sentence.substring(0, posSharp);
-
-        } else if (behav.replique[compteDial + 1] != 0) {
-            // On passe à la suivante, puisqu'elle existe
-            persoToTalk.setCompte_dialogue(compteDial + 1);
-        }
         sentence = sentence.trim();
-        dialogQueue.add(new WaitingDialog(sentence, -1, false, p_client.location));
-
-        if ("gerard".equals(persoToTalk.getNom()) && compteDial == 1) {
-            p_client.zildo.pickItem(ItemKind.FLUT);
-        }
-
-        // Set the dialoguing states for each Perso
-        persoToTalk.setDialoguingWith(p_client.zildo);
-        p_client.zildo.setDialoguingWith(persoToTalk);
+        dialogQueue.add(new WaitingDialog(sentence, -1, false, p_client == null ? null : p_client.location));
+        
         p_client.dialogState.dialoguing = true;
+        p_client.zildo.setDialoguingWith(persoToTalk);
     }
 	
 	public void stopDialog(ClientState p_client) {
 		p_client.dialogState.dialoguing=false;
 		PersoZildo zildo=p_client.zildo;
 		Perso perso=p_client.zildo.getDialoguingWith();
-		perso.setDialoguingWith(null);
+		if (perso != null) {
+			perso.setDialoguingWith(null);
+		} else {
+			ActionDialog actionDialog=p_client.dialogState.actionDialog;
+			if (actionDialog != null) {
+				actionDialog.launchAction();
+			}
+		}
 		zildo.setDialoguingWith(null);
 	}
 	public void actOnDialog(TransferObject p_location, int p_actionDialog) {

@@ -4,17 +4,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import zildo.SinglePlayer;
+import zildo.client.ClientEngineZildo;
 import zildo.client.SoundPlay.BankSound;
+import zildo.client.gui.menu.StartMenu;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
+import zildo.monde.dialog.ActionDialog;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.quest.QuestEvent;
+import zildo.monde.quest.actions.GameOverAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.ZildoDescription;
@@ -284,6 +289,9 @@ public class PersoZildo extends Perso {
         if (EngineZildo.game.multiPlayer) {
         	EngineZildo.multiplayerManagement.kill(this, p_shooter);
         	EngineZildo.respawnClient(this);
+        } else {
+        	// Game over
+        	EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new GameOverAction());
         }
     }
 	
@@ -306,6 +314,12 @@ public class PersoZildo extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void animate(int compteur_animation)
 	{
+		// If zildo's dead, don't display him
+		if (getPv() <= 0) {
+			setVisible(false);
+			return;
+		}
+		
 		// Get zildo
 		Perso zildo=this;
 		int xx=(int) zildo.getX();
@@ -866,6 +880,10 @@ public class PersoZildo extends Perso {
 		this.ghost = ghost;
 	}
 
+	public boolean isAlive() {
+		return getPv() > 0;
+	}
+	
 	public void setSightAngle(Angle sightAngle) {
 		this.sightAngle = sightAngle;
 	}

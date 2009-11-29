@@ -116,6 +116,8 @@ public class TileEngine extends TextureEngine {
 				tp.cleanUp();
 			}
 		}
+		
+		initialized=false;
 	}
 	
     // /////////////////////////////////////////////////////////////////////////////////////

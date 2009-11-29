@@ -13,16 +13,19 @@ import zildo.client.Client.ClientType;
 import zildo.client.gui.menu.PlayerNameMenu;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
-import zildo.prefs.KeysConfiguration;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
 import zildo.server.state.ClientState;
 
 /**
- * Represents the game owner core class. It could be :
- * - a single player, with no network support
- * - a first player, who can accept client in his game
+ * Represents the game owner core class. It could be :<ul>
+ * <li>a single player, with no network support</li>
+ * <li>a first player, who can accept client in his game</li>
  * 
+ * Life cycle's of this class is:<ul>
+ * <li>Zildo's life in single player</li>
+ * <li>server's presence on multi player</li>
+ * </ul>
  * @author tchegito
  */
 public class SinglePlayer {
@@ -30,7 +33,8 @@ public class SinglePlayer {
     EngineZildo engineZildo;
     ClientEngineZildo clientEngineZildo;
     Server server;
-
+    static ClientState state;	// The single-player client / or multi-player server's client
+    
     public SinglePlayer(Server p_server) {
         server = p_server;
         engineZildo = p_server.getEngineZildo();
@@ -61,7 +65,7 @@ public class SinglePlayer {
 
         // Create Zildo !
         int zildoId;
-        ClientState state;
+        
         if (server != null) {
         	zildoId=server.connectClient(null, PlayerNameMenu.loadPlayerName());
         	state=server.getClientStates().iterator().next();
@@ -72,7 +76,7 @@ public class SinglePlayer {
         }
         ClientEngineZildo.spriteDisplay.setZildoId(zildoId);
 
-        while (!done) {
+        while (!done && !state.gameOver) {
         	states.clear();
 
             // Server's network job
@@ -111,7 +115,7 @@ public class SinglePlayer {
 
             // Render client
             done = client.render();
-            
+
             // Render sounds
             ClientEngineZildo.soundPlay.playSounds(EngineZildo.soundManagement.getQueue());
         }
@@ -120,8 +124,11 @@ public class SinglePlayer {
         	// Tells all clients that we're leaving
         	server.disconnectServer();
         }
-        clientEngineZildo.cleanUp();
-        client.cleanUp();
+
         engineZildo.cleanUp();
+    }
+    
+    public static ClientState getClientState() {
+    	return state;
     }
 }
