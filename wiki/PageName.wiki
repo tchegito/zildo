@@ -1,0 +1,10 @@
+#summary Classes representation
+
+= Introduction =
+
+Here, we will briefly describe the class hierarchy, from top view, and going into the model more precisely.
+
+
+= General view =
+
+Here is the client/server separation, with more representative classes.
