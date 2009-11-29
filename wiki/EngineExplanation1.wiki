@@ -4,7 +4,7 @@
 
 = Introduction =
 
-Here, we will briefly describe the class hierarchy, from top view, and going into the model more precisely.
+Here, we will briefly describe the class hierarchy, from top view, and going into the model more precisely, with details about exchanged data.
 
 
 = General view =
