@@ -62,7 +62,7 @@ Let's see which are the goal of each packet:
 
  * == `GetPacket` [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/packet/GetPacket.java (SVN)] ==
 
- This packet contains a resource (see '*ResourceType enum*' in [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/packet/AskPacket.java AskPacket] class to have the entire resource types). It can be a set of same kind of resources, or unique one.
+ This packet contains a resource (see '*ResourceType*' enum in [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/packet/AskPacket.java AskPacket] class to have the entire resource types). It can be a set of same kind of resources, or unique one.
 
  * == `EventPacket` [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/packet/EventPacket.java (SVN)] ==
 
