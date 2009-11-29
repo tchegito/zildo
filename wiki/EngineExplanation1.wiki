@@ -70,6 +70,8 @@ Let's see which are the goal of each packet:
 
 = Dialog =
 
+Let's see concretely the packets exchanged between server and his clients.
+
 == Connection ==
 
 === Find the server ===
@@ -99,7 +101,7 @@ At each frame, client sends :
  * keys pressed
  * *!AskPacket* to get actualised entities
 
-Server deals with all *!AskPacket* he received, and send correspondig resources.
+Server deals with all *!AskPacket* he received, and send corresponding resources.
 
 When he sends entities to clients, there is two noticeable things :
  * server only sends a delta between the current frame and the previous one. This is for performance issues. Without that, internet gaming was impossible.
