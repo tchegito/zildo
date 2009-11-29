@@ -7,7 +7,8 @@ Here, we will briefly describe the class hierarchy, from top view, and going int
 
 = General view =
 
-Here is the client/server separation, with more representative classes.
+Here is the client/server separation, with more representative classes. All links mean *composition*.
+
 [http://lh5.ggpht.com/_q_5wHG9LsPk/SxJqR2Ev-eI/AAAAAAAABfM/fPn_krYwemA/classView.PNG]
 
 Client and server don't manage the same data. Client has a basic view on everything it has to render, as server has to handle all the world. We'll see later that there's some exceptions, designed for performance issues.
@@ -17,3 +18,15 @@ Client and server don't manage the same data. Client has a basic view on everyth
 The general idea is that clients are just terminals, which only send basic orders to server. Like key pressed, essentially, but other events too, in order to display correctly things according to the client's speed.
 
 On the other side, server is responsible for the general state of the world. It only sends to client what they need. For example, a client doesn't know if a given sprite is an enemy or a NPC. He doesn't know neither how much money has the Zildo he's controlling. He just have simplified informations about each rendered sprite, each tile of the current map,etc. We'll discuss the exhaustivity later.
+
+== Data protocol ==
+
+To communicate between server and clients, we use only UDP because we don't need all TCP security checks. We need more speed to have acceptable pings on all clients.
+
+A mini framework exists in Zildo to handle such send/receive operations. Here is a brief representation of it, where all links mean *unheritance*:
+
+[http://lh6.ggpht.com/_q_5wHG9LsPk/SxJwFQtiDiI/AAAAAAAABfQ/c_jmfokB8f4/zildonetwork.PNG]
+
+The main class is [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/TransferObject.java TransferObject]. It's the more low-level. It handles socket creation, channel opening, and broadcasting.
+
+The second one, 
