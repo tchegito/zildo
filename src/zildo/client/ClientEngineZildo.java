@@ -259,7 +259,7 @@ public class ClientEngineZildo {
 		}
 	}
 	
-	public void cleanUp() {
+	public static void cleanUp() {
 		filterCommand.cleanUp();
 		pixelShaders.cleanUp();
 		tileEngine.cleanUp();
@@ -336,7 +336,7 @@ public class ClientEngineZildo {
 		return client;
 	}
 	
-	public static Client getClientForMenu() {
+	public final static Client getClientForMenu() {
 		return client;
 	}
 	

@@ -160,9 +160,11 @@ public class Client {
 	public void handleMenu(Menu p_menu) {
 		currentMenu=p_menu;
 		currentMenu.refresh();
+		connected=false;
 	}
 	
 	public void cleanUp() {
+        ClientEngineZildo.cleanUp();
         if (netClient != null) {
         	netClient.close();
         }
@@ -170,6 +172,7 @@ public class Client {
         	glGestion.cleanUp();
         	glGestion=null;
         }
+
 	}
 
 	public ClientEngineZildo getEngineZildo() {
