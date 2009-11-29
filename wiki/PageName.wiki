@@ -8,3 +8,4 @@ Here, we will briefly describe the class hierarchy, from top view, and going int
 = General view =
 
 Here is the client/server separation, with more representative classes.
+[http://picasaweb.google.fr/lh/photo/jUtxXquT3bH0IbQaacheHA?feat=directlink]
