@@ -72,8 +72,36 @@ Let's see which are the goal of each packet:
 
 == Connection ==
 
+=== Find the server ===
+
 As we already said previously, there is two different behaviors between LAN and www game :
 
- * *LAN* : server sends repeatively a *ServerPacket* with broadcast on all IP adresses with this form x.x.x.255 where the 'x' are server's IP adress members. It means that every client with same three members is targeted.
+ * *LAN* : server sends repeatively a *!ServerPacket* with broadcast on all IP addresses with this form x.x.x.255 where the 'x' are server's IP adress members. It means that every client with same three members is targeted.
 
  * *www* : server sends nothing. Client has to select the server in a list.
+
+=== Connect the client ===
+
+On a LAN game, client should receive the *!ServerPacket*, so he got the server's address.
+
+In both cases, client sends a *!ConnectPacket* to the server, who answers by a AcceptPacket if he's ok (he always is).
+
+Just after that, the client requires several things : map and entities. So he asks for via an *!AskPacket* completed with resource type.
+
+Then the server will return the asked resources.
+
+*Note:* Every entities is sent at this time, because client hasn't any of them at the beginning. We'll see that it will be different after that.
+
+== During the game ==
+
+At each frame, client sends :
+
+ * keys pressed
+ * *!AskPacket* to get actualised entities
+
+Server deals with all *!AskPacket* he received, and send correspondig resources.
+
+When he sends entities to clients, there is two noticeable things :
+ * server only sends a delta between the current frame and the previous one. This is for performance issues. Without that, internet gaming was impossible.
+
+ * there is some entities which are client specific. For example: the content of the client's inventory. These entities are not sent to other clients.
