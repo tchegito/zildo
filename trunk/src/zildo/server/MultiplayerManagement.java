@@ -1,5 +1,8 @@
 package zildo.server;
 
+import zildo.monde.sprites.elements.ElementImpact;
+import zildo.monde.sprites.elements.ElementQuadDamage;
+import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.state.ClientState;
@@ -9,7 +12,33 @@ import zildo.server.state.ClientState;
  */
 public class MultiplayerManagement {
 
+	public static final int QUAD_TIME_DURATION=1500;
+	public static final int QUAD_TIME_RESPAWNING=4000;
+	
 	private boolean needToBroadcast=false;
+	
+	int quadTimeRemaining=0;
+	
+	public void render() {
+		// Spawn again a quad damage when time is come
+		if (quadTimeRemaining > 0) {
+			quadTimeRemaining--;
+			if (quadTimeRemaining == 0) {
+				spawnQuad();
+			}
+		}
+	}
+	
+	public void pickUpQuad() {
+		quadTimeRemaining=QUAD_TIME_RESPAWNING;
+	}
+	
+	public void spawnQuad() {
+		int x=840;
+		int y=200;
+		EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE));
+        EngineZildo.spriteManagement.spawnSprite(new ElementQuadDamage(x, y));
+	}
 	
     private void displayDeathMessage(ClientState p_clientKilled, ClientState p_clientKiller) {
         String shooterName = null;

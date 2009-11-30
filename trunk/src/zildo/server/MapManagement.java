@@ -16,7 +16,6 @@ import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.elements.Element;
-import zildo.monde.sprites.elements.ElementQuadDamage;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
 
@@ -77,7 +76,9 @@ public class MapManagement {
         String adjustedMapName = EngineZildo.game.questDiary.getReplacedMapName(mapname);
         
         // Misc
-        EngineZildo.spriteManagement.spawnSprite(new ElementQuadDamage(840, 200));
+        if (EngineZildo.game.multiPlayer) {
+        	EngineZildo.multiplayerManagement.spawnQuad();
+        }
         
         // Load a new one
         currentMap = loadMapFile(adjustedMapName);
