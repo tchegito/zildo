@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 public class VBOSoftware implements VBO {
 
-	@Override
 	public VBOBuffers create(int p_numPoints, int p_numIndices) {
 		return  new VBOBuffers(p_numPoints, p_numIndices);
 	}
