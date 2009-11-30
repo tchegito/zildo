@@ -340,6 +340,14 @@ public class SpriteEngine extends TextureEngine {
 						ClientEngineZildo.pixelShaders.setParameter(0, "Color4", tabColors[1]);
 					}
                 }
+                if (currentFX == PixelShaders.ENGINEFX_SHINY) {
+
+            		GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE); //_MINUS_SRC_ALPHA);
+                	GL11.glColor4f(1,(float) Math.random(),0,(float) Math.random());
+                } else {
+            		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                	GL11.glColor4f(1,1,1,1);
+                }
 				meshSprites[numBank].render(nbQuads);
 				posBankOrder++;
 			}

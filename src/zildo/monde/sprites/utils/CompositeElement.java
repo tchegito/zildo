@@ -44,10 +44,6 @@ public class CompositeElement {
 		shape=null;
 	}
 	
-	public boolean isSquare() {
-		return shape == Shape.SQUARE;
-	}
-	
 	/**
 	 * Duplicate the initial element (called 'Referenced' further) in 3 other symetrical sprites to get a square.
 	 * 
@@ -55,7 +51,7 @@ public class CompositeElement {
 	 * @param p_gapY Vertical space between sprites
 	 */
 	public void squareShape(int p_gapX, int p_gapY) {
-		if (isSquare()) {
+		if (shape == Shape.SQUARE) {
 			return;	// Already square shaped
 		}
 		if (composite.size() != 1) {
@@ -128,8 +124,10 @@ public class CompositeElement {
                 if (refElement.visible) {
                     elem2.x = elem1.x;
                     elem2.y = elem1.y;
+                    elem2.z = elem1.z;
                     elem1.x = refElement.x;
                     elem1.y = refElement.y;
+                    elem1.z = refElement.z;
 
                     elem1.y -= elem1.getSprModel().getTaille_y() / 2;
                     elem2.y -= elem2.getSprModel().getTaille_y() / 2;
@@ -221,5 +219,13 @@ public class CompositeElement {
         Point center=new Point((topLeft.x + bottomRight.x) / 2, (topLeft.y + bottomRight.y) /2);
         center=center.translate(0, -model.getTaille_y() / 2);
         return new Collision(center, size, null, refElement.getDamageType(), null);
+    }
+    
+    /**
+     * Returns the intial element of this composition.
+     * @return Element
+     */
+    public Element getRefElement() {
+    	return composite.get(0);
     }
 }

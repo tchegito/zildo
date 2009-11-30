@@ -24,9 +24,9 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementArrow;
 import zildo.monde.sprites.elements.ElementBomb;
 import zildo.monde.sprites.elements.ElementBoomerang;
-import zildo.monde.sprites.elements.ElementShieldEffect;
-import zildo.monde.sprites.elements.ElementShieldEffect.ShieldType;
 import zildo.monde.sprites.utils.MouvementZildo;
+import zildo.monde.sprites.utils.ShieldEffect;
+import zildo.monde.sprites.utils.ShieldEffect.ShieldType;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
@@ -48,6 +48,7 @@ public class PersoZildo extends Perso {
 	private boolean ghost=false;	// TRUE=player can't control him
 	public ItemCircle guiCircle;
 	private List<Item> inventory;
+	private ShieldEffect shieldEffect;
 	
 	public Item weapon;
 	public int countArrow;
@@ -113,12 +114,11 @@ public class PersoZildo extends Perso {
 		piedsMouilles.setNBank(SpriteBank.BANK_ZILDO);
 		piedsMouilles.setNSpr(100);
 	
-        Element redBall = new ElementShieldEffect(this, ShieldType.REDBALL);
+		shieldEffect = null;
 		
 		addPersoSprites(bouclier);
 		addPersoSprites(ombre);
 		addPersoSprites(piedsMouilles);
-		addPersoSprites(redBall);
 		
 		weapon=new Item(ItemKind.SWORD);
 
@@ -324,7 +324,6 @@ public class PersoZildo extends Perso {
 		Element bouclier=it.next();
 		Element ombre=it.next();
 		Element piedsMouilles=it.next();
-		Element redBall=it.next();
 		
 		final int decalxSword[][]={
 			{1,-1,-1,-5,-10,-13},{0,2,3,2,1,1},
@@ -355,8 +354,19 @@ public class PersoZildo extends Perso {
         ombre.setVisible(false);
         piedsMouilles.setVisible(inWater);
         bouclier.setVisible(false);
-        redBall.setVisible(isQuadDamaging());
+        //redBall.setVisible(isQuadDamaging());
 
+        if (isQuadDamaging() && shieldEffect == null) {
+			shieldEffect = new ShieldEffect(this, ShieldType.REDBALL);
+        } else if (!isQuadDamaging() && shieldEffect != null) {
+        	shieldEffect.kill();
+        	shieldEffect=null;
+        }
+        // Shield effect animation
+        if (shieldEffect != null) {
+        	shieldEffect.animate();
+        }
+        
 		// Corrections , décalages du sprite
 		if (angle==Angle.EST)
 			xx-=2;

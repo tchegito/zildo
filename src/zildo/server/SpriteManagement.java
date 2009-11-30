@@ -440,7 +440,7 @@ public class SpriteManagement extends SpriteStore {
 		boolean isZildo=elem!=null && elem.getEntityType()==SpriteEntity.ENTITYTYPE_PERSO && ((Perso)elem).isZildo();
 		Element element;
 		List<SpriteEntity> listToRemove=new ArrayList<SpriteEntity>();
-
+        
 		for (SpriteEntity entity : spriteEntities) {
 			element=null;
 			if (entity != entityRef && 
@@ -498,7 +498,7 @@ public class SpriteManagement extends SpriteStore {
 			// La méthode suivante va peut-être supprimer un élément lié à celui-ci (exemple:l'ombre)
 			entity.dying=true;
 		}
-	
+		
 		// No collision
 		return found;
 	}
