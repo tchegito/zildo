@@ -28,7 +28,7 @@ public class PixelShaders extends OpenGLStuff {
 	public static final int ENGINEFX_PERSO_HURT = 7;
 	public static final int ENGINEFX_FONT_NORMAL = 8;
 	public static final int ENGINEFX_FONT_HIGHLIGHT = 9;
-	public static final int ENGINEFX_BACK_SCREEN = 10;
+	public static final int ENGINEFX_SHINY = 11;
 	
 	private int n_PixelShaders;
 	private int[] tabPixelShaders;

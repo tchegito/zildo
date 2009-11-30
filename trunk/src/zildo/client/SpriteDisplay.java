@@ -310,7 +310,6 @@ public class SpriteDisplay extends SpriteStore {
 		previousMapSprite.setNSpr(0);
 		previousMapSprite.setNBank(SpriteBank.BANK_COPYSCREEN);
 		previousMapSprite.setVisible(true);
-		previousMapSprite.setSpecialEffect(PixelShaders.ENGINEFX_BACK_SCREEN);
         spawnSprite(previousMapSprite);		
 	}
 }
