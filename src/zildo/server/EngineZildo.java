@@ -118,6 +118,8 @@ public class EngineZildo {
 		if (!game.multiPlayer) {
 			PersoZildo zildo=persoManagement.getZildo();
 			block=zildo.isInventoring();
+		} else {
+			multiplayerManagement.render();			
 		}
 		
 		// 2) Rest of the world

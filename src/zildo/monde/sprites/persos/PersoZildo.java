@@ -5,14 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import zildo.SinglePlayer;
-import zildo.client.ClientEngineZildo;
 import zildo.client.SoundPlay.BankSound;
-import zildo.client.gui.menu.StartMenu;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
-import zildo.monde.dialog.ActionDialog;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
 import zildo.monde.items.ItemKind;
@@ -27,10 +24,13 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementArrow;
 import zildo.monde.sprites.elements.ElementBomb;
 import zildo.monde.sprites.elements.ElementBoomerang;
+import zildo.monde.sprites.elements.ElementShieldEffect;
+import zildo.monde.sprites.elements.ElementShieldEffect.ShieldType;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
+import zildo.server.MultiplayerManagement;
 
 
 public class PersoZildo extends Perso {
@@ -58,11 +58,6 @@ public class PersoZildo extends Perso {
 	// Sequence for sprite animation
 	static int seq_1[]={0,1,2,1};
 	static int seq_2[]={0,1,2,1,0,3,4,3};
-	
-	// Positions in the 'PersoSprites' List
-	static int linkedSpr_SHIELD=0;
-	static int linkedSpr_SHADOW=1;
-	static int linkedSpr_WET_FEET=2;
 	
 	private int count=0;
 	private boolean inWater=false;
@@ -111,21 +106,20 @@ public class PersoZildo extends Perso {
 		bouclier.setNSpr(103);				// Assign initial nSpr to avoid 'isNotFixe' returning TRUE)
 	
 		Element ombre=new Element(this);
-		ombre.setX(getX());
-		ombre.setY(getY());
 		ombre.setNBank(SpriteBank.BANK_ZILDO);
 		ombre.setNSpr(103);
 	
 		Element piedsMouilles=new Element(this);
-		piedsMouilles.setX(getX());
-		piedsMouilles.setY(getY());
 		piedsMouilles.setNBank(SpriteBank.BANK_ZILDO);
 		piedsMouilles.setNSpr(100);
 	
+        Element redBall = new ElementShieldEffect(this, ShieldType.REDBALL);
+		
 		addPersoSprites(bouclier);
 		addPersoSprites(ombre);
 		addPersoSprites(piedsMouilles);
-
+		addPersoSprites(redBall);
+		
 		weapon=new Item(ItemKind.SWORD);
 
 		inventory=new ArrayList<Item>();
@@ -330,6 +324,7 @@ public class PersoZildo extends Perso {
 		Element bouclier=it.next();
 		Element ombre=it.next();
 		Element piedsMouilles=it.next();
+		Element redBall=it.next();
 		
 		final int decalxSword[][]={
 			{1,-1,-1,-5,-10,-13},{0,2,3,2,1,1},
@@ -356,17 +351,19 @@ public class PersoZildo extends Perso {
 		MouvementZildo mouvement=zildo.getMouvement();
 		Element en_bras=zildo.getEn_bras();
 	
-		// Default : invisible
-		ombre.setVisible(false);
-		piedsMouilles.setVisible(inWater);
-		bouclier.setVisible(false);
-	
+        // Default : invisible
+        ombre.setVisible(false);
+        piedsMouilles.setVisible(inWater);
+        bouclier.setVisible(false);
+        redBall.setVisible(isQuadDamaging());
+
 		// Corrections , décalages du sprite
 		if (angle==Angle.EST)
 			xx-=2;
 		else if (angle==Angle.OUEST)
 			xx+=2;
-	
+
+		
 		switch (mouvement) {
 			 // Bouclier
 			case VIDE:
@@ -537,7 +534,7 @@ public class PersoZildo extends Perso {
 		// Quad damage
 		if (quadDuration > 0) {
 			quadDuration--;
-			if (quadDuration == 20) {
+			if (quadDuration == 140) {
 				EngineZildo.soundManagement.playSound(BankSound.QuadDamageLeaving, this);
 			}
 		}
@@ -633,7 +630,8 @@ public class PersoZildo extends Perso {
 			countArrow++;
 			break;
 		case QUAD1:
-			quadDuration=1500;
+			quadDuration=MultiplayerManagement.QUAD_TIME_DURATION;
+			EngineZildo.multiplayerManagement.pickUpQuad();
 			break;
 		}
 		// Sound

@@ -28,9 +28,9 @@ import zildo.server.EngineZildo;
  */
 public class CompositeElement {
 
-	enum Shape {
-		SQUARE, DISPERSED;
-	}
+    enum Shape {
+        SQUARE, DISPERSED, FOLLOWING;
+    }
 	
 	List<Element> composite;
 
@@ -94,6 +94,50 @@ public class CompositeElement {
 		gapY=p_gapY;
 	}
 	
+    public void followShape() {
+        if (shape == Shape.FOLLOWING) {
+            return; // Already following shaped
+        }
+        Element refElement = composite.get(0);
+        Element copy1 = new Element(refElement);
+        Element copy2 = new Element(refElement);
+        copy1.setAddSpr(-1);
+        copy2.setAddSpr(-2);
+
+        // Spawn
+        EngineZildo.spriteManagement.spawnSprite(copy1);
+        EngineZildo.spriteManagement.spawnSprite(copy2);
+
+        composite.add(copy1);
+        composite.add(copy2);
+
+        shape = Shape.FOLLOWING;
+    }
+    
+    public void animate() {
+        if (composite.size() <= 1) {
+            return;
+        }
+        switch (shape) {
+            case FOLLOWING:
+                Element refElement = composite.get(0);
+                Element elem1 = composite.get(1);
+                Element elem2 = composite.get(2);
+                elem1.visible = refElement.visible;
+                elem2.visible = refElement.visible;
+                if (refElement.visible) {
+                    elem2.x = elem1.x;
+                    elem2.y = elem1.y;
+                    elem1.x = refElement.x;
+                    elem1.y = refElement.y;
+
+                    elem1.y -= elem1.getSprModel().getTaille_y() / 2;
+                    elem2.y -= elem2.getSprModel().getTaille_y() / 2;
+                }
+                break;
+          }
+    }
+    
 	private static final int[] squareShiftX={-1,0,0,-1};
 	private static final int[] squareShiftY={-1,-1,0,0};
 	
