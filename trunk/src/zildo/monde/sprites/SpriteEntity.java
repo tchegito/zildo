@@ -2,7 +2,7 @@ package zildo.monde.sprites;
 
 import zildo.fwk.Identified;
 import zildo.fwk.file.EasyBuffering;
-import zildo.fwk.gfx.PixelShaders;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.Sprite;
@@ -44,7 +44,7 @@ public class SpriteEntity extends Identified implements Cloneable
 	private boolean foreground;	// Drawn at last in display sequence. So always on foreground
 	public boolean dying;		// TRUE=we must remove them
 	
-	private int specialEffect;		// Utilisé pour changer la couleur d'un garde par exemple
+	private EngineFX specialEffect;		// Utilisé pour changer la couleur d'un garde par exemple
 	public int reverse;		// Combination of REVERSE_HORIZONTAL/VERTICAL (or 0)
 	public boolean clientSpecific;	// TRUE if this entity should not appear on all client's screen
 	
@@ -146,11 +146,11 @@ public class SpriteEntity extends Identified implements Cloneable
 		this.foreground = foreground;
 	}
 
-	public int getSpecialEffect() {
+	public EngineFX getSpecialEffect() {
 		return specialEffect;
 	}
 
-	public void setSpecialEffect(int specialEffect) {
+	public void setSpecialEffect(EngineFX specialEffect) {
 		this.specialEffect = specialEffect;
 	}
 
@@ -190,7 +190,7 @@ public class SpriteEntity extends Identified implements Cloneable
 		// Default : entity is part of the background
 		foreground=false;
 
-		specialEffect=PixelShaders.ENGINEFX_NO_EFFECT;
+		specialEffect=EngineFX.NO_EFFECT;
 		
 		reverse=0;
 		
@@ -239,7 +239,7 @@ public class SpriteEntity extends Identified implements Cloneable
 		//p_buffer.put(this.getScrY());
 		p_buffer.put(this.z);
 		p_buffer.put(this.getNBank());
-		p_buffer.put(this.getSpecialEffect());
+		p_buffer.put(this.getSpecialEffect().ordinal());
 		p_buffer.put(this.getEntityType());
 		p_buffer.put(this.getSprModel().getId());
 		p_buffer.put(this.reverse);
@@ -276,7 +276,7 @@ public class SpriteEntity extends Identified implements Cloneable
 		entity.setForeground(bools[2]);
 		entity.dying=bools[3];
 		entity.setNBank(p_buffer.readInt());
-		entity.setSpecialEffect(p_buffer.readInt());
+		entity.setSpecialEffect(EngineFX.values()[p_buffer.readInt()]);
 		entity.setEntityType(p_buffer.readInt());
 		int idSprModel=p_buffer.readInt();
 		entity.setSprModel(Identified.fromId(SpriteModel.class, idSprModel));

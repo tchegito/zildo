@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.gfx.PixelShaders;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.server.EngineZildo;
@@ -30,7 +30,7 @@ public class ShieldEffect {
 	            	Element ball=new Element();
 	                ball.setNSpr(ElementDescription.REDBALL3.ordinal());
 	                ball.setNBank(SpriteBank.BANK_ELEMENTS);
-	                ball.setSpecialEffect(PixelShaders.ENGINEFX_SHINY);
+	                ball.setSpecialEffect(EngineFX.SHINY);
 	        		EngineZildo.spriteManagement.spawnSprite(ball);
 	                CompositeElement composite=new CompositeElement(ball);
 	                composite.followShape();

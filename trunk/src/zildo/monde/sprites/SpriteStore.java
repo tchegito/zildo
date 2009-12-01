@@ -5,7 +5,7 @@ import java.util.List;
 
 import zildo.fwk.Identified;
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.gfx.PixelShaders;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 
@@ -113,7 +113,7 @@ public class SpriteStore {
 	
 		entity.setVisible(visible);
 	
-		entity.setSpecialEffect(PixelShaders.ENGINEFX_FONT_HIGHLIGHT);
+		entity.setSpecialEffect(EngineFX.FONT_HIGHLIGHT);
 	
 		spawnSprite(entity);
 	

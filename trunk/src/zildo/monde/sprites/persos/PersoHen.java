@@ -2,7 +2,7 @@ package zildo.monde.sprites.persos;
 
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.gfx.PixelShaders;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.Hasard;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -62,7 +62,7 @@ public class PersoHen extends PersoNJ {
         this.setMouvement(MouvementZildo.TOUCHE);
         this.setWounded(true);
         this.setAlerte(true); // Zildo is detected, if it wasn't done !
-        this.setSpecialEffect(PixelShaders.ENGINEFX_PERSO_HURT);
+        this.setSpecialEffect(EngineFX.PERSO_HURT);
 
         EngineZildo.soundManagement.broadcastSound(BankSound.MonstreTouche2, this);
 

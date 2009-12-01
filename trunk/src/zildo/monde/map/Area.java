@@ -672,7 +672,7 @@ public class Area {
                     spawnTile.cnt++;
                 } else {
                     this.set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);
-                    EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE));
+                    EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
                     changes.add(new Point(spawnTile.x, spawnTile.y+4));
                     it.remove();
                 }

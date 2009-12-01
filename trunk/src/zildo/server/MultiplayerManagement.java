@@ -36,7 +36,7 @@ public class MultiplayerManagement {
 	public void spawnQuad() {
 		int x=840;
 		int y=200;
-		EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE));
+		EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
         EngineZildo.spriteManagement.spawnSprite(new ElementQuadDamage(x, y));
 	}
 	

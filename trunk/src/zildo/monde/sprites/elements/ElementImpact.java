@@ -4,6 +4,7 @@ import zildo.client.SoundPlay.BankSound;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.utils.CompositeElement;
 import zildo.server.EngineZildo;
 
@@ -34,7 +35,7 @@ public class ElementImpact extends Element {
 	
 	private final static int[] seqExplo={0,0,0,1,1,2,2,1,1,2,2,3};
 	
-	public ElementImpact(int p_startX, int p_startY, ImpactKind p_kind) {
+    public ElementImpact(int p_startX, int p_startY, ImpactKind p_kind, Perso p_shooter) {
 		x=p_startX;
 		y=p_startY;
 		z=4;
@@ -52,6 +53,7 @@ public class ElementImpact extends Element {
 				EngineZildo.soundManagement.broadcastSound(BankSound.Explosion, this);
 		}
 		addSpr=0;
+        setLinkedPerso(p_shooter);
 		// Stock the initial location
 		startX=p_startX;
 		startY=p_startY;
@@ -81,8 +83,8 @@ public class ElementImpact extends Element {
 					for (int i=0;i<4;i++) {
 						int dx=(int) (Math.random()*32 - 16);
 						int dy=(int) (Math.random()*32 - 16);
-						EngineZildo.spriteManagement.spawnSprite(new ElementImpact(startX+dx, startY+dy, ImpactKind.FIRESMOKE));
-					}
+                        EngineZildo.spriteManagement.spawnSprite(new ElementImpact(startX + dx, startY + dy, ImpactKind.FIRESMOKE,
+                                (Perso) linkedPerso));					}
 				} else {
 					addSpr=seqExplo[valCounter];
 					if (addSpr == 1) {

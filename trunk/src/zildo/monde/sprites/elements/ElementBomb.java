@@ -1,7 +1,7 @@
 package zildo.monde.sprites.elements;
 
 import zildo.client.SoundPlay.BankSound;
-import zildo.fwk.gfx.PixelShaders;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.collision.Collision;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
@@ -29,9 +29,9 @@ public class ElementBomb extends Element {
 		if (counter==0) {
 			dying=true;
 			shadow.dying=true;
-			EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.EXPLOSION));
+			EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.EXPLOSION, null));
 		} else if (counter<30) {
-			setSpecialEffect(PixelShaders.ENGINEFX_PERSO_HURT);
+			setSpecialEffect(EngineFX.PERSO_HURT);
 		}
 		super.animate();
 	}

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.gfx.PixelShaders;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
@@ -248,7 +248,7 @@ public class SpriteDisplay extends SpriteStore {
 			int bankOrderPosition=0;
 			int currentBank=-1;
 			int nbQuadFromSameBank=0;
-			int currentFX=PixelShaders.ENGINEFX_NO_EFFECT;
+			EngineFX currentFX=EngineFX.NO_EFFECT;
 			for (int i=0;i<Constantes.SORTY_REALMAX;i++) {
 				int position=0;
 				while (position < Constantes.SORTY_ROW_PER_LINE) {
@@ -262,13 +262,13 @@ public class SpriteDisplay extends SpriteStore {
 						quadOrder[entity.getNBank()][last]=entity.getLinkVertices();
 						
 						// Check if we need a special effect
-						int persoFX=entity.getSpecialEffect();
+						EngineFX persoFX=entity.getSpecialEffect();
 	
 						if ((currentBank != entity.getNBank() || persoFX != currentFX) && currentBank != -1) {
 							// We got a break into sprite sequence display on the bank level
 							bankOrder[phase][bankOrderPosition*3]  =currentBank;
 							bankOrder[phase][bankOrderPosition*3+1]=nbQuadFromSameBank;
-							bankOrder[phase][bankOrderPosition*3+2]=currentFX;;
+							bankOrder[phase][bankOrderPosition*3+2]=currentFX.ordinal();
 							bankOrderPosition++;
 							nbQuadFromSameBank=0;
 						}
@@ -283,7 +283,7 @@ public class SpriteDisplay extends SpriteStore {
 			// Save the last build sequence
 			bankOrder[phase][bankOrderPosition*3]  =currentBank;
 			bankOrder[phase][bankOrderPosition*3+1]=nbQuadFromSameBank;
-			bankOrder[phase][bankOrderPosition*3+2]=currentFX;;
+			bankOrder[phase][bankOrderPosition*3+2]=currentFX.ordinal();
 			// Mark the end of sequences
 			bankOrder[phase][bankOrderPosition*3+3]=-1;
 		}

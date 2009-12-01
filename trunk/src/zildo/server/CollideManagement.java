@@ -98,7 +98,8 @@ public class CollideManagement {
         for (ClientState state : p_states) {
             PersoZildo zildo = state.zildo;
             Perso damager = p_colli.perso;
-            if (damager == null || !damager.equals(zildo)) {
+            // Zildo can't damage himself, excepted with explosion
+            if (damager == null || !damager.equals(zildo) || p_colli.damageType == DamageType.EXPLOSION) {
                 checkZildoWound(state.zildo, p_colli);
             }
         }

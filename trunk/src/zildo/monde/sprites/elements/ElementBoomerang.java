@@ -61,7 +61,7 @@ public class ElementBoomerang extends ElementThrown {
     	// Boomerang hit something, so give him back to Zildo
     	comingBack=true;
 		EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
-		EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT));
+		EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null));
     	return true;
     }
     

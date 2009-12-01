@@ -9,6 +9,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 
 /**
@@ -218,7 +219,7 @@ public class CompositeElement {
         size=size.translate(model.getTaille_x(), model.getTaille_y());
         Point center=new Point((topLeft.x + bottomRight.x) / 2, (topLeft.y + bottomRight.y) /2);
         center=center.translate(0, -model.getTaille_y() / 2);
-        return new Collision(center, size, null, refElement.getDamageType(), null);
+        return new Collision(center, size, (Perso) refElement.getLinkedPerso(), refElement.getDamageType(), null);
     }
     
     /**
