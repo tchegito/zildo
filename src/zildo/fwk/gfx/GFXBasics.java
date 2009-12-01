@@ -1,6 +1,5 @@
 package zildo.fwk.gfx;
 
-import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,12 +45,12 @@ public class GFXBasics extends OpenGLStuff {
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
 	
-	private static java.awt.Font[] fonts;
+	//private static java.awt.Font[] fonts;
 	
 	static {
 		// Load fonts disponibility at startup
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		fonts = ge.getAllFonts();
+		//GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		//fonts = ge.getAllFonts();
 		
 		// Default palette
 		Load_Palette("GAME1.PAL");

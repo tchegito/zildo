@@ -138,6 +138,6 @@ public class OpenGLZildo extends OpenGLGestion {
 	}
 	
     protected void cleanUpExt() {
-    	clientEngineZildo.cleanUp();
+    	ClientEngineZildo.cleanUp();
     }
 }

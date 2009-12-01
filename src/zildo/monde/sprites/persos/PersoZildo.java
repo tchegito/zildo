@@ -7,7 +7,7 @@ import java.util.List;
 import zildo.SinglePlayer;
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.gfx.PixelShaders;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.items.Item;
@@ -298,7 +298,7 @@ public class PersoZildo extends Perso {
 		setCompte_dialogue(64);     // Temps d'invulnerabilité de Zildo
 		setPx(0.0f);
 		setPy(0.0f);
-		setSpecialEffect(PixelShaders.ENGINEFX_NO_EFFECT);
+		setSpecialEffect(EngineFX.NO_EFFECT);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -356,11 +356,15 @@ public class PersoZildo extends Perso {
         bouclier.setVisible(false);
         //redBall.setVisible(isQuadDamaging());
 
-        if (isQuadDamaging() && shieldEffect == null) {
-			shieldEffect = new ShieldEffect(this, ShieldType.REDBALL);
-        } else if (!isQuadDamaging() && shieldEffect != null) {
-        	shieldEffect.kill();
-        	shieldEffect=null;
+        if (isQuadDamaging()) {
+            if (shieldEffect == null) {
+                shieldEffect = new ShieldEffect(this, ShieldType.REDBALL);
+            }
+            setSpecialEffect(EngineFX.QUAD);
+        } else if (shieldEffect != null) {
+            setSpecialEffect(EngineFX.NO_EFFECT);
+            shieldEffect.kill();
+            shieldEffect = null;
         }
         // Shield effect animation
         if (shieldEffect != null) {

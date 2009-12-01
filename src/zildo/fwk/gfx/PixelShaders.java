@@ -18,18 +18,23 @@ public class PixelShaders extends OpenGLStuff {
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
-	public static final int ENGINEFX_NO_EFFECT = 0;
-	public static final int ENGINEFX_GUARD_BLUE = 1;
-	public static final int ENGINEFX_GUARD_RED = 2;
-	public static final int ENGINEFX_GUARD_YELLOW = 3;
-	public static final int ENGINEFX_GUARD_BLACK = 4;
-	public static final int ENGINEFX_GUARD_GREEN = 5;
-	public static final int ENGINEFX_GUARD_PINK = 6;
-	public static final int ENGINEFX_PERSO_HURT = 7;
-	public static final int ENGINEFX_FONT_NORMAL = 8;
-	public static final int ENGINEFX_FONT_HIGHLIGHT = 9;
-	public static final int ENGINEFX_SHINY = 11;
 	
+	public enum EngineFX {
+		NO_EFFECT,
+		GUARD_BLUE,GUARD_RED, GUARD_YELLOW, GUARD_BLACK, GUARD_GREEN, GUARD_PINK,
+		PERSO_HURT, 
+		FONT_NORMAL, FONT_HIGHLIGHT,
+		SHINY, QUAD;
+		
+		public boolean needPixelShader() {
+			return !(this==NO_EFFECT || this==SHINY || this==QUAD);
+		}
+		
+		public EngineFX fromInt(int i) {
+			return EngineFX.values()[i];
+		}
+	}
+    
 	private int n_PixelShaders;
 	private int[] tabPixelShaders;
 	private ByteBuffer buff=BufferUtils.createByteBuffer(256);	// Used for setParameter
@@ -256,7 +261,7 @@ public class PixelShaders extends OpenGLStuff {
 	// colorReplace2 will be replaced by darkColor
 	///////////////////////////////////////////////////////////////////////////////////////
 
-	public Vector4f[] getConstantsForSpecialEffect(int specialEffect)
+	public Vector4f[] getConstantsForSpecialEffect(EngineFX specialEffect)
 	{
 		Vector4f darkColor=new Vector4f(0,0,0,0);
 		Vector4f brightColor=new Vector4f(0,0,0,0);
@@ -264,40 +269,40 @@ public class PixelShaders extends OpenGLStuff {
 		Vector4f colorReplace2=new Vector4f(0,1.0f,0,0.5f);
 	
 		switch (specialEffect) {
-			case ENGINEFX_GUARD_RED:
+			case GUARD_RED:
 				darkColor=  createColor64(46,16,28);
 				brightColor=createColor64(60,30,32);
 				break;
-			case ENGINEFX_GUARD_YELLOW:
+			case GUARD_YELLOW:
 				darkColor=  createColor64(52,48,16);
 				brightColor=createColor64(60,54,16);
 				break;
-			case ENGINEFX_GUARD_BLACK:
+			case GUARD_BLACK:
 				darkColor=  createColor64(22,22,22);
 				brightColor=createColor64(30,30,34);
 				break;
-			case ENGINEFX_GUARD_GREEN:
+			case GUARD_GREEN:
 				darkColor=  createColor64(10,30,14);
 				brightColor=createColor64(30,46,8);
 				break;
-			case ENGINEFX_GUARD_PINK:
+			case GUARD_PINK:
 				darkColor=  createColor64(58,24,44);
 				brightColor=createColor64(62,32,44);
 				break;
-			case ENGINEFX_GUARD_BLUE:
+			case GUARD_BLUE:
 				darkColor=  createColor64(20,28,50);
 				brightColor=createColor64(44,36,62);
 				break;
-			case ENGINEFX_FONT_NORMAL:	// Blue and white
+			case FONT_NORMAL:	// Blue and white
 				darkColor=  createColor64(0,0,28);
 				brightColor=createColor64(62,62,62);
 				break;
-			case ENGINEFX_FONT_HIGHLIGHT:	// Yellow set
+			case FONT_HIGHLIGHT:	// Yellow set
 				darkColor=  createColor64(8,16,28);
 				brightColor=createColor64(60,54,16);
 				break;
 			default:
-			case ENGINEFX_NO_EFFECT:
+			case NO_EFFECT:
 				;
 		}
 	

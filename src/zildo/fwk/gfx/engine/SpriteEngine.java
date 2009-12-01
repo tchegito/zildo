@@ -8,8 +8,8 @@ import org.newdawn.slick.TrueTypeFont;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
-import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.SpritePrimitive;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
@@ -314,21 +314,22 @@ public class SpriteEngine extends TextureEngine {
 			} else {
 				// Render the n sprites from this bank
 				int nbQuads=bankOrder[phase][posBankOrder*3 + 1];
-				int currentFX=bankOrder[phase][posBankOrder*3 + 2];
+				int iCurrentFX=bankOrder[phase][posBankOrder*3 + 2];
+				EngineFX currentFX=EngineFX.values()[iCurrentFX];
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[numBank]);
 
 				// Select the right pixel shader (if needed)
                 if (pixelShaderSupported) {
 		
-					if (currentFX == PixelShaders.ENGINEFX_NO_EFFECT) {
+					if (currentFX == EngineFX.NO_EFFECT) {
 						ARBShaderObjects.glUseProgramObjectARB(0);
-					} else if (currentFX == PixelShaders.ENGINEFX_PERSO_HURT) {
+					} else if (currentFX == EngineFX.PERSO_HURT) {
 						// A sprite has been hurt
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(1));
 						ClientEngineZildo.pixelShaders.setParameter(1, "randomColor", new Vector4f((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
 	
 						// And enable the 'color addition' pixel shader
-					} else {
+					} else if (currentFX.needPixelShader()) {
 						// This is a color replacement, so get the right ones
 						Vector4f[] tabColors=ClientEngineZildo.pixelShaders.getConstantsForSpecialEffect(currentFX);
 	
@@ -340,13 +341,16 @@ public class SpriteEngine extends TextureEngine {
 						ClientEngineZildo.pixelShaders.setParameter(0, "Color4", tabColors[1]);
 					}
                 }
-                if (currentFX == PixelShaders.ENGINEFX_SHINY) {
-
-            		GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE); //_MINUS_SRC_ALPHA);
-                	GL11.glColor4f(1,(float) Math.random(),0,(float) Math.random());
+                if (currentFX == EngineFX.SHINY) {
+                    GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE); // _MINUS_SRC_ALPHA);
+                    GL11.glColor4f(1, (float) Math.random(), 0, (float) Math.random());
+                } else if (currentFX == EngineFX.QUAD) {
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    GL11.glColor4f(0.5f + 0.5f * (float) Math.random(), 0.5f * (float) Math.random(), 0, 1);
                 } else {
-            		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                	GL11.glColor4f(1,1,1,1);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    GL11.glColor4f(1, 1, 1, 1);
+        			ARBShaderObjects.glUseProgramObjectARB(0);
                 }
 				meshSprites[numBank].render(nbQuads);
 				posBankOrder++;

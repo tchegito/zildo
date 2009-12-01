@@ -3,6 +3,7 @@ package zildo.monde.sprites.persos;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
@@ -274,7 +275,7 @@ public abstract class Perso extends Element {
 		}
 	}
 	
-	public void setSpecialEffect(int specialEffect) {
+	public void setSpecialEffect(EngineFX specialEffect) {
 		super.setSpecialEffect(specialEffect);
 		if (this.persoSprites.size() > 0) {
 			for (Element e : persoSprites) {

@@ -17,12 +17,11 @@ import zildo.client.gui.menu.ItemMenu;
 import zildo.client.gui.menu.Menu;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.gfx.PixelShaders;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
-import zildo.server.EngineZildo;
 import zildo.server.state.PlayerState;
 
 // Here we draw the Graphic User Interface. It means we paint screen in last moment,
@@ -440,9 +439,9 @@ public class GUIDisplay {
 		for (SpriteEntity entity : textFontSequence) {
 			int numLigne=(entity.getScrY() - Constantes.TEXTER_COORDINATE_Y) / Constantes.TEXTER_TOPIC_SIZELINE;
 			if (numLigne == selected) {
-				entity.setSpecialEffect(PixelShaders.ENGINEFX_FONT_HIGHLIGHT);
+				entity.setSpecialEffect(EngineFX.FONT_HIGHLIGHT);
 			} else {
-				entity.setSpecialEffect(PixelShaders.ENGINEFX_FONT_NORMAL);
+				entity.setSpecialEffect(EngineFX.FONT_NORMAL);
 			}
 		}
 	

@@ -1,7 +1,7 @@
 package zildo.monde.sprites.persos;
 
 import zildo.client.SoundPlay.BankSound;
-import zildo.fwk.gfx.PixelShaders;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.Hasard;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
@@ -74,7 +74,7 @@ public class PersoNJ extends Perso {
 		this.setWounded(true);
 		this.setAlerte(true);				// Zildo is detected, if it wasn't done !
 		this.setPv(getPv()-p_damage);
-		this.setSpecialEffect(PixelShaders.ENGINEFX_PERSO_HURT);
+		this.setSpecialEffect(EngineFX.PERSO_HURT);
 	
 		boolean died=(getPv()<=0);
 		if (died) {
@@ -89,7 +89,7 @@ public class PersoNJ extends Perso {
 	public void parry(float cx, float cy, Perso p_shooter) {
 		project(cx, cy, 2);
 		EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
-		EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT));
+		EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null));
 
 	}
 	
@@ -326,17 +326,17 @@ public class PersoNJ extends Perso {
 	public void initPersoFX() {
 		if (getQuel_spr().equals(PersoDescription.GARDE_CANARD)) {	// Guard
 			if ("jaune".equals(getNom())) {
-				setSpecialEffect(PixelShaders.ENGINEFX_GUARD_YELLOW);
+				setSpecialEffect(EngineFX.GUARD_YELLOW);
 			} else if("vert".equals(getNom())) {
-				setSpecialEffect(PixelShaders.ENGINEFX_GUARD_GREEN);
+				setSpecialEffect(EngineFX.GUARD_GREEN);
 			} else if("rouge".equals(getNom())) {
-				setSpecialEffect(PixelShaders.ENGINEFX_GUARD_RED);
+				setSpecialEffect(EngineFX.GUARD_RED);
 			} else {
 				// Default color for this guard : blue
-				setSpecialEffect(PixelShaders.ENGINEFX_GUARD_BLUE);
+				setSpecialEffect(EngineFX.GUARD_BLUE);
 			}
 		} else {
-			setSpecialEffect(PixelShaders.ENGINEFX_NO_EFFECT);
+			setSpecialEffect(EngineFX.NO_EFFECT);
 		}
 	}
 	
