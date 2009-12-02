@@ -264,6 +264,9 @@ public class SpriteDisplay extends SpriteStore {
 						// Check if we need a special effect
 						EngineFX persoFX=entity.getSpecialEffect();
 	
+						if (persoFX == null) {
+							int j=9;
+						}
 						if ((currentBank != entity.getNBank() || persoFX != currentFX) && currentBank != -1) {
 							// We got a break into sprite sequence display on the bank level
 							bankOrder[phase][bankOrderPosition*3]  =currentBank;

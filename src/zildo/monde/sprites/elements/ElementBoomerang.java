@@ -21,6 +21,8 @@ public class ElementBoomerang extends ElementThrown {
 
 	private static final float speed=2.5f;
 	
+	private Element grabbed;	// Element that boomerang has catched
+	
 	int count=0;
 	boolean comingBack=false;
 	
@@ -29,6 +31,7 @@ public class ElementBoomerang extends ElementThrown {
         setSprModel(ElementDescription.BOOMERANG1);
         ax=-vx*0.015f;
         ay=-vy*0.015f;
+        grabbed=null;
 	}
     
     public void animate() {
@@ -55,6 +58,10 @@ public class ElementBoomerang extends ElementThrown {
     		comingBack=true;
     	}
     	super.animate();
+    	if (grabbed != null) {
+    		grabbed.x=x;
+    		grabbed.y=y;
+    	}
     }
 
     public boolean beingCollided() {
@@ -68,4 +75,11 @@ public class ElementBoomerang extends ElementThrown {
     public boolean isSolid() {
 		return !comingBack;
 	}
+    
+    public void grab(Element p_elem) {
+    	if (grabbed == null) {
+    		grabbed=p_elem;
+    		comingBack=true;
+    	}
+    }
 }

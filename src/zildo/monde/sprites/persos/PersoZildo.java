@@ -171,7 +171,7 @@ public class PersoZildo extends Perso {
             break;
 		case BOMB:
 			if (attente == 0 && countBomb > 0) {
-                Element bomb=new ElementBomb((int) x, (int) y,0);
+                Element bomb=new ElementBomb((int) x, (int) y, 0, this);
                 EngineZildo.spriteManagement.spawnSprite(bomb);
                 countBomb--;
 				setAttente(1);
@@ -354,7 +354,6 @@ public class PersoZildo extends Perso {
         ombre.setVisible(false);
         piedsMouilles.setVisible(inWater);
         bouclier.setVisible(false);
-        //redBall.setVisible(isQuadDamaging());
 
         if (isQuadDamaging()) {
             if (shieldEffect == null) {
@@ -548,7 +547,7 @@ public class PersoZildo extends Perso {
 		// Quad damage
 		if (quadDuration > 0) {
 			quadDuration--;
-			if (quadDuration == 140) {
+			if (quadDuration == 160) {
 				EngineZildo.soundManagement.playSound(BankSound.QuadDamageLeaving, this);
 			}
 		}

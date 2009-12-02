@@ -18,6 +18,7 @@ import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementAnimMort;
+import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -132,10 +133,10 @@ public class SpriteManagement extends SpriteStore {
 		case Element.SPR_FUMEE:
 			elemDesc=ElementDescription.SMOKE_SMALL;
 			element=new Element();
-			element.setX(50.0f+16.0f);
-			element.setY(50.0f+28.0f);
+			element.setX(x+16.0f);
+			element.setY(y+34.0f);
 			element.setZ(16.0f);
-			element.setVx(0.3f); // + rnd()*0.05f);
+			element.setVx(0.2f); // + rnd()*0.05f);
 			element.setVy(0.0f);
 			element.setVz(0.0f);
 			element.setAx(-0.01f);
@@ -479,10 +480,17 @@ public class SpriteManagement extends SpriteStore {
 									((PersoZildo)elem).pushSomething(entity);
 								}
 								// Is it a goodies ?
-								if (isGoodies && isZildo) {
-									((PersoZildo)elem).pickGoodies(entity.getNSpr());
-									elem.fall();
-									listToRemove.add(entity);
+								if (isGoodies) {
+									if (isZildo) {
+										((PersoZildo)elem).pickGoodies(entity.getNSpr());
+										elem.fall();
+										listToRemove.add(entity);
+									} else {
+										if (elem.getClass().equals(ElementBoomerang.class) ) {
+											// Boomerang catches some goodies
+											((ElementBoomerang)elem).grab(element);
+										}
+									}
 								} else {
 									found=true;
 								}

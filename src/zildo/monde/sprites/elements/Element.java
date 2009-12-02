@@ -274,7 +274,7 @@ public class Element extends SpriteEntity {
                     nSpr = 5; // Fumée de cheminée
                 } else if (z > 48 && nSpr == 5) {
                     z = 16.0f;
-                    x = (int) (x / 16) * 16 + 16; // On remet la fumée à sa place
+                    x = (int) (x / 16) * 16 + 32; // On remet la fumée à sa place
                     vx = 0.2f;
                     vz = 0.0f;
                     nSpr = 6;
