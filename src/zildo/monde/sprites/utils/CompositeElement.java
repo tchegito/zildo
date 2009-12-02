@@ -218,7 +218,9 @@ public class CompositeElement {
         Point size = new Point(bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
         size=size.translate(model.getTaille_x(), model.getTaille_y());
         Point center=new Point((topLeft.x + bottomRight.x) / 2, (topLeft.y + bottomRight.y) /2);
-        center=center.translate(0, -model.getTaille_y() / 2);
+        // I had to comment this line to bomb have correct collision region.
+        // But it's weird ! Because nothing changed about this before.
+        //center=center.translate(0, -model.getTaille_y() / 2);
         return new Collision(center, size, (Perso) refElement.getLinkedPerso(), refElement.getDamageType(), null);
     }
     

@@ -166,7 +166,10 @@ public class MapManagement {
 	    	}  else if (caseZ > elemAltitude) {
 	    		return true;	// Obstacle
 	    	}
-	    	return tileCollision.collide(modx, mody, on_map);
+	    	if (tileCollision.collide(modx, mody, on_map)) {
+	    		return true;
+	    	}
+	    	return EngineZildo.spriteManagement.collideSprite(tx,ty,quelElement);
 	    	
 	    }
 	    
