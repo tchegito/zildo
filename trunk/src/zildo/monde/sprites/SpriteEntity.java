@@ -176,7 +176,11 @@ public class SpriteEntity extends Identified implements Cloneable
 			// If it's not requested, we don't create a new ID (fonts for example doesn't need an ID because
 			// they are only client side)
 			initialize();
+		} else {
+			// Basic : set special effet
+			setSpecialEffect(EngineFX.NO_EFFECT);
 		}
+
 		this.x=x;
 		this.y=y;
 	}

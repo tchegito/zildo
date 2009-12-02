@@ -307,6 +307,7 @@ public class SpriteEngine extends TextureEngine {
 		}
 	
 		int phase=(backGround)?0:1;
+		boolean effectWithPixelShader=false;
 		while (!endSequence) {
 			int numBank=bankOrder[phase][posBankOrder*3];
 			if (numBank == -1) {
@@ -320,7 +321,7 @@ public class SpriteEngine extends TextureEngine {
 
 				// Select the right pixel shader (if needed)
                 if (pixelShaderSupported) {
-		
+                	effectWithPixelShader=true;
 					if (currentFX == EngineFX.NO_EFFECT) {
 						ARBShaderObjects.glUseProgramObjectARB(0);
 					} else if (currentFX == EngineFX.PERSO_HURT) {
@@ -339,6 +340,8 @@ public class SpriteEngine extends TextureEngine {
 						ClientEngineZildo.pixelShaders.setParameter(0, "Color2", tabColors[3]);
 						ClientEngineZildo.pixelShaders.setParameter(0, "Color3", tabColors[0]);
 						ClientEngineZildo.pixelShaders.setParameter(0, "Color4", tabColors[1]);
+					} else {
+						effectWithPixelShader=false;
 					}
                 }
                 if (currentFX == EngineFX.SHINY) {
@@ -347,7 +350,7 @@ public class SpriteEngine extends TextureEngine {
                 } else if (currentFX == EngineFX.QUAD) {
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     GL11.glColor4f(0.5f + 0.5f * (float) Math.random(), 0.5f * (float) Math.random(), 0, 1);
-                } else {
+                } else if (!effectWithPixelShader) {
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     GL11.glColor4f(1, 1, 1, 1);
         			ARBShaderObjects.glUseProgramObjectARB(0);
