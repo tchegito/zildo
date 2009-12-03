@@ -353,7 +353,9 @@ public class SpriteEngine extends TextureEngine {
                 } else if (!effectWithPixelShader) {
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     GL11.glColor4f(1, 1, 1, 1);
-        			ARBShaderObjects.glUseProgramObjectARB(0);
+                    if (pixelShaderSupported) {
+                    	ARBShaderObjects.glUseProgramObjectARB(0);
+                    }
                 }
 				meshSprites[numBank].render(nbQuads);
 				posBankOrder++;
