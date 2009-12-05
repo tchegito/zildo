@@ -64,11 +64,13 @@ public class ElementBoomerang extends ElementThrown {
     	}
     }
 
-    public boolean beingCollided() {
+    public boolean beingCollided(Perso p_perso) {
     	// Boomerang hit something, so give him back to Zildo
     	comingBack=true;
-		EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
-		EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null));
+		if (p_perso == null) {	// If boomerang hit a character, don't spawn an impact
+			EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
+			EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null));
+		}
     	return true;
     }
     

@@ -267,6 +267,7 @@ public class TileEngine extends TextureEngine {
 	public void tileRender(boolean backGround) {
 
 		if (initialized) {
+            GL11.glColor4f(1, 1, 1, 1);
 			// Small optimization: do not draw invisible faces ! (counterclock wise vertices)
 			//pD3DDevice9.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 			if (backGround) {

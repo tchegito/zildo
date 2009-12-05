@@ -619,10 +619,35 @@ public class Area {
 					}
 				}
 			}
-		}
+        }
 
-		return map;
-	}
+        if (p_spawn) {
+            map.correctDoorHouse();
+        }
+        return map;
+    }
+
+    private void correctDoorHouse() {
+        Case c;
+        for (int j = 0; j < getDim_y(); j++) {
+            for (int i = 0; i < getDim_x(); i++) {
+                int onmap = readmap(i, j);
+                if (onmap == 278) {
+                    // We found a door on a house
+                    for (int l = -3; l < 0; l++) {
+                        for (int k = -2; k < 3; k++) {
+                            c = get_mapcase(i + k, j + 4 + l);
+                            if ((c.getN_banque() & Area.M_MOTIF_MASQUE) == 0) {
+                                c.setN_banque_masque(c.getN_banque());
+                                c.setN_motif_masque(c.getN_motif());
+                                c.setN_banque(Area.M_MOTIF_MASQUE);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 	public List<SpriteEntity> filterExportableSprites(List<SpriteEntity> p_spriteEntities) {
 		List<SpriteEntity> filteredEntities = new ArrayList<SpriteEntity>();

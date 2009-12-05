@@ -21,26 +21,28 @@ public class StartMenu extends Menu {
 	
 	public StartMenu() {
         
-		final Client client=ClientEngineZildo.getClientForMenu();
-		
-        final Game game = new Game("d4", false);
-        final Menu startMenu=this;
-        
-        ItemMenu itemSinglePlayer=new ItemMenu("Single Player", BankSound.MenuSelectGame) {
-        	public void run() {
-        		new SinglePlayer(game);
-        	}
+		final Client client = ClientEngineZildo.getClientForMenu();
+
+        final Menu startMenu = this;
+
+        ItemMenu itemSinglePlayer = new ItemMenu("Single Player", BankSound.MenuSelectGame) {
+            @Override
+            public void run() {
+                new SinglePlayer(new Game("d4", false));
+            }
         };
-        
-        ItemMenu itemMultiPlayer=new ItemMenu("Multi Player") {
+
+        ItemMenu itemMultiPlayer = new ItemMenu("Multi Player") {
             Menu multiMenu;
             boolean lan = true;
-            StringBuilder playerName=new StringBuilder(PlayerNameMenu.loadPlayerName());
-            
-        	public void run() {
-                ItemMenu itemCreate=new ItemMenu("Create game", BankSound.MenuSelectGame) {
-                	public void run() {
-                		new MultiPlayer(game, lan);
+            StringBuilder playerName = new StringBuilder(PlayerNameMenu.loadPlayerName());
+
+            @Override
+            public void run() {
+                ItemMenu itemCreate = new ItemMenu("Create game", BankSound.MenuSelectGame) {
+                    @Override
+                    public void run() {
+                        new MultiPlayer(new Game("polakym", false), lan);
                 	}
                 };
                 ItemMenu itemJoin=new ItemMenu("Join game", BankSound.MenuSelectGame) {

@@ -295,7 +295,8 @@ public class SpriteEngine extends TextureEngine {
 		// Display every sprites
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glEnable(GL11.GL_BLEND);
-		
+        GL11.glColor4f(1, 1, 1, 1);
+
 		// Respect order from bankOrder
 		boolean endSequence=false;
 		int posBankOrder=0;
@@ -350,12 +351,14 @@ public class SpriteEngine extends TextureEngine {
                 } else if (currentFX == EngineFX.QUAD) {
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     GL11.glColor4f(0.5f + 0.5f * (float) Math.random(), 0.5f * (float) Math.random(), 0, 1);
-                } else if (!effectWithPixelShader) {
-                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                } else {
                     GL11.glColor4f(1, 1, 1, 1);
-                    if (pixelShaderSupported) {
-                    	ARBShaderObjects.glUseProgramObjectARB(0);
-                    }
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                	if (!effectWithPixelShader) {
+	                    if (pixelShaderSupported) {
+	                    	ARBShaderObjects.glUseProgramObjectARB(0);
+	                    }
+                	}
                 }
 				meshSprites[numBank].render(nbQuads);
 				posBankOrder++;
