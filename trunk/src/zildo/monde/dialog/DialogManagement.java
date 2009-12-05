@@ -98,6 +98,7 @@ public class DialogManagement {
 		p_client.dialogState.dialoguing=false;
 		PersoZildo zildo=p_client.zildo;
 		Perso perso=p_client.zildo.getDialoguingWith();
+		zildo.setDialoguingWith(null);
 		if (perso != null) {
 			perso.setDialoguingWith(null);
 		} else {
@@ -106,7 +107,6 @@ public class DialogManagement {
 				actionDialog.launchAction();
 			}
 		}
-		zildo.setDialoguingWith(null);
 	}
 	public void actOnDialog(TransferObject p_location, int p_actionDialog) {
 		dialogQueue.add(new WaitingDialog(null, p_actionDialog, false, p_location));
