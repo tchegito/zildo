@@ -640,7 +640,7 @@ public class Area {
                             if ((c.getN_banque() & Area.M_MOTIF_MASQUE) == 0) {
                                 c.setN_banque_masque(c.getN_banque());
                                 c.setN_motif_masque(c.getN_motif());
-                                c.setN_banque(Area.M_MOTIF_MASQUE);
+                                c.setN_banque(c.getN_banque() | Area.M_MOTIF_MASQUE);
                             }
                         }
                     }
