@@ -199,6 +199,7 @@ public class DialogDisplay {
 				} else {
 					// Quit dialog
 					guiManagement.setToRemove_dialoguing(true);
+					dialoguing=false;
 					result=true;
 				}
 			}
