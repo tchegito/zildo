@@ -22,6 +22,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
+import zildo.server.MultiplayerManagement;
 import zildo.server.state.PlayerState;
 
 // Here we draw the Graphic User Interface. It means we paint screen in last moment,
@@ -642,7 +643,7 @@ public class GUIDisplay {
 		// Scores
 		for (PlayerState state : states) {
 			StringBuilder sb=new StringBuilder();
-			int score=state.nKill - state.nDied;
+			int score=MultiplayerManagement.getScore(state);
 			sb.append(state.playerName);
 			String scoreStr=String.valueOf(score);
 			int nSpace=30 - sb.length() - scoreStr.length();

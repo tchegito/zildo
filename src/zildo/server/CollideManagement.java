@@ -198,7 +198,7 @@ public class CollideManagement {
         	}
         	
             if (p_collider.weapon != null) {
-            	p_collider.weapon.beingCollided();
+            	p_collider.weapon.beingCollided(perso);
             }
         }
     }

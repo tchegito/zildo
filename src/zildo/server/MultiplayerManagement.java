@@ -6,6 +6,7 @@ import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.state.ClientState;
+import zildo.server.state.PlayerState;
 
 /**
  * @author tchegito
@@ -33,12 +34,12 @@ public class MultiplayerManagement {
 		quadTimeRemaining=QUAD_TIME_RESPAWNING;
 	}
 	
-	public void spawnQuad() {
-		int x=840;
-		int y=200;
-		EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
+    public void spawnQuad() {
+        int x = 616; // 840;
+        int y = 170;
+        EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
         EngineZildo.spriteManagement.spawnSprite(new ElementQuadDamage(x, y));
-	}
+    }
 	
     private void displayDeathMessage(ClientState p_clientKilled, ClientState p_clientKiller) {
         String shooterName = null;
@@ -84,5 +85,14 @@ public class MultiplayerManagement {
      */
     public boolean isNeedToBroadcast() {
     	return needToBroadcast;
+    }
+    
+    /**
+     * Calculate the player score.
+     * @param p_state
+     * @return int
+     */
+    public static int getScore(PlayerState p_state) {
+    	return p_state.nKill; // - p_state.nDied;    	
     }
 }

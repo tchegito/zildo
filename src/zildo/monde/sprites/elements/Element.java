@@ -24,10 +24,10 @@ public class Element extends SpriteEntity {
 	
 	protected static Logger logger=Logger.getLogger("Element");
 
-	// Eléments que Zildo peut envoyer sur les ennemis
-	private static IntSet elementsSolides=new IntSet(0,1,11,12,2,38,42, 71,72,73,74);
-	// Eléments que Zildo peut pousser
-	private static IntSet elementsMobiles=new IntSet(28,69,70);
+	// Elements that Zildo can throw on enemies
+	private static IntSet damageableElements=new IntSet(0,1,11,12,2,38,42, 71,72,73,74);
+	// Elements that Zildo can push
+	private static IntSet pushableElements=new IntSet(28,69,70);
 	
 	// Sprites animés génériques
 	public static final	int SPR_BUISSON = 0;          //Animation du buisson qui s'effeuille
@@ -175,7 +175,7 @@ public class Element extends SpriteEntity {
 	 * @return boolean
 	 */
 	public boolean isSolid() {
-		if (elementsSolides.contains(nSpr)) {
+		if (damageableElements.contains(nSpr)) {
 			return true;
 		}
 		// S'il s'agit d'un personnage
@@ -193,7 +193,7 @@ public class Element extends SpriteEntity {
 	 */
 	protected boolean physicMoveWithCollision() {
 		physicMove();
-        if (isSolid() || elementsMobiles.contains(nSpr)) {
+        if (isSolid() || pushableElements.contains(nSpr)) {
         	SpriteEntity linked=this.getLinkedPerso();
         	boolean partOfPerso=false;
         	if (linked != null && linked.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
@@ -252,7 +252,7 @@ public class Element extends SpriteEntity {
                 dying=true;
             } else {
 
-                if (elementsMobiles.contains(nSpr)) {
+                if (pushableElements.contains(nSpr)) {
                     z = ancZ; // z-vz;
                     vz = vz - az;
                     if (az != 0) {
@@ -265,8 +265,8 @@ public class Element extends SpriteEntity {
                             az = az + 1;
                         }
                     }
-                } else if ((z < 4 && vz != 0.0f) || colli) {
-                    if (!beingCollided()) {
+                } else if ((z < 4 && vz != 0.0f && !isGoodies()) || colli) {
+                    if (!beingCollided(null)) {
                         // Le sprite doit 'mourir'
                         dying=true;
                     }
@@ -550,7 +550,7 @@ public class Element extends SpriteEntity {
 	 * Called when this element is collided by something.
 	 * @return FALSE if element must disappear, TRUE otherwise.
 	 */
-	public boolean beingCollided() {
+	public boolean beingCollided(Perso p_perso) {
 		return false;
 	}
 	
