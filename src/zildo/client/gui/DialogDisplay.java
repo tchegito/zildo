@@ -126,25 +126,6 @@ public class DialogDisplay {
 			}
 			guiManagement.displayTextParts(positionInSentence,currentSentence,(numToScroll!=0));
 		}
-	
-		// Debugging thing
-		/*
-		GFXBasics* gfxBasics = (GFXBasics*) EngineZildo::getGFXBasics();
-		gfxBasics.StartRendering();
-		String sent="position=       ";
-		String sent2="numToScroll=    ";
-		String sent3="entire=      visible=    ";
-		String sent4=currentSentence.subString(positionInSentence);
-		sent.ConvIntToStr(positionInSentence,9);
-		sent2.ConvIntToStr(numToScroll,13);
-		sent3.ConvIntToStr((int)entireMessageDisplay,7);
-		sent3.ConvIntToStr((int)visibleMessageDisplay,21);
-		gfxBasics.aff_texte(0,100,sent);
-		gfxBasics.aff_texte(0,120,sent2);
-		gfxBasics.aff_texte(0,140,sent3);
-		gfxBasics.aff_texte(0,160,sent4);
-		gfxBasics.EndRendering();
-		*/
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
