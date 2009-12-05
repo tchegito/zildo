@@ -265,7 +265,7 @@ public class Element extends SpriteEntity {
                             az = az + 1;
                         }
                     }
-                } else if ((z < 4 && vz != 0.0f && !isGoodies()) || colli) {
+                } else if (!isGoodies() && ((z < 4 && vz != 0.0f) || colli)) {
                     if (!beingCollided(null)) {
                         // Le sprite doit 'mourir'
                         dying=true;

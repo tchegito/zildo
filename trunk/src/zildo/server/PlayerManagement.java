@@ -272,6 +272,10 @@ public class PlayerManagement {
 					heros.setPos_seqsprite(-1);
 					heros.setNSpr(0);
 					heros.setTouch(0);
+					
+					// Test collision even if Zildo doesn't move.
+					// Useful with boomerang catching goodies.
+					EngineZildo.spriteManagement.collideSprite((int) heros.x, (int) heros.y, heros);
 			} else {
 				adjustMovement(xx, yy);
 			}
