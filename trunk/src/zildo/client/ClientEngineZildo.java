@@ -111,14 +111,10 @@ public class ClientEngineZildo {
 	}
 	
 	
-	public void renderFrame(boolean p_editor) {
-		if (waitingScene == 0 && !p_editor) {
-			// Zildo moves by player
-			//playerManagement.manageKeyboard();
-		} else {
-			// Scene is blocked by non-player animation
-			return;
-		}
+    public void renderFrame(boolean p_editor) {
+        if (waitingScene != 0) {
+            return;
+        }
 	
 
 		// Focus camera on player

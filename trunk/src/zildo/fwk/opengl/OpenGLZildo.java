@@ -109,11 +109,11 @@ public class OpenGLZildo extends OpenGLGestion {
     		ClientEngineZildo.filterCommand.doPreFilter();
     	}
     	
-		clientEngineZildo.renderFrame(awt);
-    	if (!p_clientReady) {
-    		//ClientEngineZildo.ortho.drawText(0,4,"Awaiting server...", new Vector3f(1,1,1));
-    		clientEngineZildo.renderMenu();
-    	}
+        clientEngineZildo.renderFrame(awt);
+        if (!p_clientReady && !awt) {
+            // ClientEngineZildo.ortho.drawText(0,4,"Awaiting server...", new Vector3f(1,1,1));
+            clientEngineZildo.renderMenu();
+        }
     	
     	if (ClientEngineZildo.filterCommand != null) {
     		ClientEngineZildo.filterCommand.doFilter();
