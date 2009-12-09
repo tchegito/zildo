@@ -215,6 +215,7 @@ public class TileSet extends JPanel {
 		if ("".equals(path) || path == null) {
 			path = "tiles/";
 		}
+		path=path.trim();
 		File dir = new File(path);
 		if (!dir.exists()) {
 			throw new TileSetException("Le chemin spécifié pour la banque de tiles n'existe pas");

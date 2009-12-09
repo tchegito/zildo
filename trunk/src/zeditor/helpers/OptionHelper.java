@@ -15,9 +15,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-//import org.jdom.input.SAXBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import zeditor.core.Options;
 
@@ -33,30 +33,32 @@ public class OptionHelper {
 	 */
 	public static Map<String, String> load() {
 		// On crée une instance de SAXBuilder
-//		SAXBuilder sxb = new SAXBuilder();
-//		org.jdom.Document document;
-//		org.jdom.Element racine;
+		Document document;
+		Element racine;
 		Map<String, String> map = new HashMap<String, String>();
 		try {
+			DocumentBuilder sxb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			// On charge le fichier de configuration
-//			File config = new File("config.xml");
-//			if (!config.exists()) {
-//				save(new HashMap<String, String>());
-//				return load();
-//			}
-//			// On crée un nouveau document JDOM avec en argument le fichier XML
-//			document = sxb.build(config);
-//
-//			// On initialise un nouvel élément racine avec l'élément racine du
-//			// document.
-//			racine = document.getRootElement();
-//
-//			// Mantenant qu'on a la racine, on récupère les infos
-//			if(racine.getChildren() != null || !racine.getChildren().isEmpty()){
-//				for(Options item : Options.values()){
-//					map.put(item.getValue(), racine.getChild(item.getValue()).getText());
-//				}
-//			}
+			File config = new File("config.xml");
+			if (!config.exists()) {
+				save(new HashMap<String, String>());
+				return load();
+			}
+			// On crée un nouveau document JDOM avec en argument le fichier XML
+			document = sxb.parse(config);
+
+			// On initialise un nouvel élément racine avec l'élément racine du
+			// document.
+			racine = document.getDocumentElement();
+
+			// Mantenant qu'on a la racine, on récupère les infos
+			if(racine.getChildNodes() != null || racine.getChildNodes().getLength()!=0){
+				for(Options item : Options.values()){
+					Node node=racine.getElementsByTagName(item.getValue()).item(0).getFirstChild();
+					
+					map.put(item.getValue(), node.getTextContent());
+				}
+			}
 
 			return map;
 		} catch (Exception e) {
