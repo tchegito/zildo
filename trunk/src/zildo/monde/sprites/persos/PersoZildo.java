@@ -121,17 +121,28 @@ public class PersoZildo extends Perso {
 		addPersoSprites(piedsMouilles);
 		
 		weapon=new Item(ItemKind.SWORD);
-
 		inventory=new ArrayList<Item>();
 		inventory.add(weapon);
-		inventory.add(new Item(ItemKind.BOW));
-		inventory.add(new Item(ItemKind.BOOMERANG));
-		inventory.add(new Item(ItemKind.BOMB));
-		
-		countArrow=20;
-		countBomb=20;
-		
 	}
+    
+    /**
+     * Reset any effects zildo could have before he dies.
+     */
+    public void resetForMultiplayer() {
+		weapon=new Item(ItemKind.SWORD);
+		inventory=new ArrayList<Item>();
+		inventory.add(weapon);
+
+		MultiplayerManagement.setUpZildo(this);
+    	
+		if (shieldEffect != null) {
+			shieldEffect = null;
+			shieldEffect.kill();
+		}
+		quadDuration=0;
+		
+        setWounded(true);
+    }
 	
 	public boolean isZildo() {
 		return true;
@@ -755,6 +766,14 @@ public class PersoZildo extends Perso {
 		EngineZildo.soundManagement.playSound(BankSound.MenuIn, this);		
 		guiCircle.close();	// Ask for the circle to close
 		weapon=inventory.get(guiCircle.getItemSelected());
+	}
+	
+	/**
+	 * Directly add an item to the inventory
+	 * @param p_item
+	 */
+	public void addInventory(Item p_item) {
+		inventory.add(p_item);
 	}
 	
 	public boolean isInventoring() {
