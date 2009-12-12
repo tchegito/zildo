@@ -7,8 +7,10 @@ import zildo.SinglePlayer;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.SoundPlay.BankSound;
-import zildo.fwk.net.InternetClient;
 import zildo.fwk.net.ServerInfo;
+import zildo.fwk.ui.InfoMenu;
+import zildo.fwk.ui.ItemMenu;
+import zildo.fwk.ui.Menu;
 import zildo.monde.Game;
 
 /**
@@ -51,11 +53,11 @@ public class StartMenu extends Menu {
                 			new MultiPlayer();
                 		} else {
                 			// Internet
-                    		List<ServerInfo> serversReady=InternetClient.scanExistingServers();
+                    		List<ServerInfo> serversReady=AddServerMenu.loadServersInfos();
                     		if (serversReady.isEmpty()) {
-                    			client.handleMenu(new InfoMenu("No servers found.", multiMenu));
+                    			client.handleMenu(new InfoMenu("No servers found.", "Add one", new AddServerMenu(multiMenu)));
                     		} else {
-                    			client.handleMenu(new JoinGameMenu(serversReady));
+                    			client.handleMenu(new JoinGameMenu(serversReady, multiMenu));
                     		}
                 		}
                 	}

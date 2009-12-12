@@ -4,14 +4,15 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
+import zildo.fwk.ui.EditableItemMenu;
+import zildo.fwk.ui.ItemMenu;
+import zildo.fwk.ui.Menu;
 import zildo.prefs.Constantes;
 
 /**
  * @author eboussaton
  */
 public class PlayerNameMenu extends Menu {
-
-    Menu previousMenu;
 
     public PlayerNameMenu(final StringBuilder p_playerName, Menu p_previous) {
         super("Enter your player name");

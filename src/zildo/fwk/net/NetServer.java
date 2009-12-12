@@ -41,10 +41,12 @@ public class NetServer extends NetSend {
 	int counter;
 	boolean lan;	// TRUE=LAN network / FALSE=Internet (no broadcast)
 	
+	private static int DEFAULT_SERVER_PORT = 1234;
+	
 	int nFrame=0;
 	
 	public NetServer(Server p_server, boolean p_lan) {
-		super(null, NetSend.defaultServer.port);
+		super(null, DEFAULT_SERVER_PORT);
 		server=p_server;
 		lan=p_lan;
 	}

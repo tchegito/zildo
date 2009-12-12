@@ -1,4 +1,4 @@
-package zildo.client.gui.menu;
+package zildo.fwk.ui;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +14,8 @@ public class Menu {
 	public List<ItemMenu> items;
 	public int selected;
 	public boolean displayed;
-
+	public Menu previousMenu;
+	
 	private static int keyPressed;
 	
 	public Menu() {
@@ -102,5 +103,9 @@ public class Menu {
     
     public void refresh() {
     
+    }
+    
+    public Menu getPrevious() {
+    	return previousMenu;
     }
 }
