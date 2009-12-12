@@ -41,4 +41,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
         MapManagement map = EngineZildo.mapManagement;
     	map.saveMapFile(p_mapName);
     }
+    
+    public void loadMap(String p_mapName) {
+        MapManagement map = EngineZildo.mapManagement;
+    	map.charge_map(p_mapName);
+    	changeMap=true;
+    }
 }
