@@ -140,8 +140,7 @@ public class PersoZildo extends Perso {
 			shieldEffect.kill();
 		}
 		quadDuration=0;
-		
-        setWounded(true);
+
     }
 	
 	public boolean isZildo() {

@@ -426,19 +426,50 @@ public class MapManagement {
 	 */
 	public void analyseAltitude() {
 		Area map=getCurrentMap();
-		for (int j=0;j<map.getDim_y();j++) {
-			Case c=map.get_mapcase(0,j+4);
+		int sizeX=map.getDim_x();
+		int sizeY=map.getDim_y();
+		int i,j;
+		Case c;
+		
+		int[][] tabZ=new int[sizeY][sizeX];
+		for (j=0;j<sizeY;j++) {
+			for (i=0;i<sizeX;i++) {
+				tabZ[j][i]=0;
+			}
+		}
+		
+		// Read left to right
+		for (j=0;j<sizeY;j++) {
+			c=map.get_mapcase(0,j+4);
 			int currentZ=c.getZ();
-			for (int i=0;i<map.getDim_x();i++) {
+			for (i=0;i<sizeX;i++) {
 				c=map.get_mapcase(i,j+4);
 				int onmap=map.readmap(i,j);
 				if (leftIncreaseZ.contains(onmap)) {
 					currentZ++;
 				}
-				c.setZ(currentZ);
+				tabZ[j][i]=currentZ;
 				if (rightDecreaseZ.contains(onmap)) {
 					currentZ--;
 				}
+			}
+		}
+		
+		// Set the altitude of each case
+		for (j=0;j<sizeY;j++) {
+			// calculate the minimal altitude for this line
+			int min=tabZ[j][0];
+			for (i=0;i<sizeX;i++) {
+				if (tabZ[j][i] < min) {
+					min = tabZ[j][i];
+				}
+			}
+			
+			for (i=0;i<sizeX;i++) {
+				int currentZ=tabZ[j][i];
+				currentZ-=min;	// correct altitude with threshold
+				c=map.get_mapcase(i,j+4);
+				c.setZ(currentZ);
 			}
 		}
 	}
