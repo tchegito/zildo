@@ -1,8 +1,5 @@
 package zildo.fwk.net;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import zildo.client.Client;
 import zildo.fwk.net.packet.ConnectPacket;
 
@@ -25,19 +22,16 @@ public class InternetClient extends NetClient {
 	}
 	
 	/**
-	 * Returns a list of every responding servers.
-	 * @return List
+	 * Returns TRUE if given server is a valid one.
+	 * @return boolean
 	 */
-	public static List<ServerInfo> scanExistingServers() {
-		List<ServerInfo> servers=new ArrayList<ServerInfo>();
-		for (ServerInfo srv : ServerInfo.values()) {
-			if (srv.port !=0) {
-				TransferObject obj=new TransferObject(srv.ip, srv.port);
+	public static boolean isResponding(ServerInfo p_serverInfo) {
+			if (p_serverInfo.port !=0) {
+				TransferObject obj=new TransferObject(p_serverInfo.ip, p_serverInfo.port);
 				if (!obj.address.getAddress().isSiteLocalAddress()) {
-					servers.add(srv);
+					return true;
 				}
 			}
-		}
-		return servers;
+		return false;
 	}
 }

@@ -1,4 +1,5 @@
-package zildo.client.gui.menu;
+package zildo.fwk.ui;
+
 
 public abstract class EditableItemMenu extends ItemMenu {
 

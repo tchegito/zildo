@@ -1,18 +1,29 @@
 package zildo.fwk.net;
 
-public enum ServerInfo {
+public class ServerInfo {
 
-	LAN("192.168.0.1", 80),
-	Alex("80.9.136.49", 0),
-	Antoine("", 0),
-	Jerebat("88.242.171.39", 49122),
-	Tchegito("82.228.194.234", 1234);
-	
+	public String name;
 	public String ip;
 	public int port;
 	
-	private ServerInfo(String p_ip, int p_port) {
+	public ServerInfo(String p_name, String p_ip, int p_port) {
+		name=p_name;
 		ip=p_ip;
 		port=p_port;
+	}
+	
+	public String toString() {
+		return name+"\nIP="+ip+"\nport="+port;
+	}
+	
+	public int hashCode() {
+		return name.hashCode();
+	}
+	
+	public boolean equals(Object p_obj) {
+		if (p_obj == null || !p_obj.getClass().equals(ServerInfo.class)) {
+			return false;
+		}
+		return this.hashCode() == p_obj.hashCode();
 	}
 }

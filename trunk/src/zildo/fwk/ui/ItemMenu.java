@@ -1,4 +1,4 @@
-package zildo.client.gui.menu;
+package zildo.fwk.ui;
 
 import zildo.client.SoundPlay.BankSound;
 

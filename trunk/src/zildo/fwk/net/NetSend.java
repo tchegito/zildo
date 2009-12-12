@@ -15,7 +15,6 @@ import zildo.fwk.net.Packet.PacketType;
 public class NetSend extends TransferObject {
 
 	
-	public static ServerInfo defaultServer = ServerInfo.Tchegito;
 	public final static int NET_PORT_CLIENT = 80;
 	public final static int MAX_PACKET_PER_FRAME = 20;
 
