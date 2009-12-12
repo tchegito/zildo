@@ -137,7 +137,9 @@ public class Area {
 	public void writemap(int x, int y, int quoi) {
 		Case temp = this.get_mapcase(x, y + 4);
 		temp.setN_motif(quoi & 255);
-		temp.setN_banque(quoi >> 8);
+		// Don't squeeze the foreground tile
+		int nBanque=temp.getN_banque() & 0xb0;
+		temp.setN_banque(quoi >> 8 | nBanque);
 		this.set_mapcase(x, y + 4, temp);
 
 		changes.add(new Point(x, y + 4));
