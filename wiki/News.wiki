@@ -1,5 +1,15 @@
 #summary News
 
+= Version 1.092 =
+
+ * resource bundle for menu
+ * server configuration in game
+
+= Version 1.091 =
+
+ * quad damage
+ * game over for single player
+
 = Version 1.09 =
 
  * "historic" adventure for single player
