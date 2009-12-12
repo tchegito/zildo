@@ -34,8 +34,8 @@ public class OptionsFrame extends javax.swing.JFrame {
 	{
 		// Set Look & Feel
 		try {
-			javax.swing.UIManager
-					.setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+			//javax.swing.UIManager
+			//		.setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

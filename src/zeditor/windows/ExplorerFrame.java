@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import zeditor.windows.managers.ExplorerFrameManager;
+import zildo.prefs.Constantes;
 //import zeditor.noyau.ExplorerFrameManager;
 
 /**
@@ -34,7 +35,7 @@ public class ExplorerFrame extends javax.swing.JDialog {
 	{
 		//Set Look & Feel
 		try {
-			javax.swing.UIManager.setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+			//javax.swing.UIManager.setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -127,7 +128,7 @@ public class ExplorerFrame extends javax.swing.JDialog {
 		if (fileChooser == null) {
 			fileChooser = new JFileChooser();
 			fileChooser.setFileFilter(new FileNameExtensionFilter("Cartes Zildo","MAP"));
-			fileChooser.setCurrentDirectory(new File("D:\\ZILDO\\Data"));
+			fileChooser.setCurrentDirectory(new File(Constantes.DATA_PATH));
 			fileChooser.setControlButtonsAreShown(false);
 		}
 		return fileChooser;

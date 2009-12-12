@@ -24,6 +24,7 @@ import javax.swing.WindowConstants;
 import zeditor.core.Options;
 import zeditor.core.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
+import zildo.fwk.awt.ZildoCanvas;
 
 import javax.swing.SwingUtilities;
 
@@ -126,16 +127,21 @@ public class MasterFrame extends javax.swing.JFrame {
 				menuBar.add(getParametersMenu());
 				menuBar.add(getDebugMenu());
 			}
-			
-			// Recréation du manager avec les objets en paramètre
-			manager = new MasterFrameManager(getSystemLabel(), getTileSetPanel(), getMasterPanel(), this, getBackgroundCombo());
-			
+						
+			// On ajoute la carte
+            ZildoCanvas zildoCanvas = new ZildoCanvas("polaky");
+            zildoCanvas.setSize(640,480);
+            getContentPane().add(zildoCanvas,BorderLayout.EAST);
+
+            // Recréation du manager avec les objets en paramètre
+			manager = new MasterFrameManager(getSystemLabel(), getTileSetPanel(), getMasterPanel(), this, getBackgroundCombo(), zildoCanvas);
+            
 			// Initialisation de la fenêtre par le manager
 			manager.init();
 			
 			
 			pack();
-			this.setSize(800, 600);
+			this.setSize(640 + 350, 600);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

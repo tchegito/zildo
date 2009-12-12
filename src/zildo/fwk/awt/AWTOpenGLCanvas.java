@@ -16,6 +16,8 @@ import org.lwjgl.opengl.PixelFormat;
 import zildo.client.ClientEngineZildo;
 import zildo.client.IRenderable;
 import zildo.fwk.gfx.Ortho;
+import zildo.monde.map.Area;
+import zildo.server.EngineZildo;
 
 /** 
  * @author Benjamin "Evil-Devil" Behrendt
@@ -32,6 +34,10 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
     private Thread renderThread = null;
     private boolean initialize = false;
 
+    // We have to communicate orders via boolean to this canvas
+    // because we can use OpenGL outside of the paint process
+    protected boolean changeMap=false;
+    
     private int sizeX;
     private int sizeY;
     
@@ -82,8 +88,12 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
         this.renderer = renderable;
     }
     
-    public void paintGL() {        
-        // TODO: redo this -.-
+    public void paintGL() {
+    	if (changeMap) {
+    		Area map=EngineZildo.mapManagement.getCurrentMap();
+        	ClientEngineZildo.mapDisplay.setCurrentMap(map);
+    		changeMap=false;
+    	}
         if (!initialize) {
             System.out.println("initializing");
             initRenderThread();            

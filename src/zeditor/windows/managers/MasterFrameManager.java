@@ -17,6 +17,7 @@ import zeditor.core.exceptions.ZeditorException;
 import zeditor.helpers.OptionHelper;
 import zeditor.windows.ExplorerFrame;
 import zeditor.windows.OptionsFrame;
+import zildo.fwk.awt.ZildoCanvas;
 
 /**
  * Classe de management de la fenêtre principale de Zeditor (MasterFrame.class)
@@ -28,6 +29,8 @@ public class MasterFrameManager {
 	private JPanel masterPanel;
 	private JFrame masterFrame;
 	private JComboBox backgroundCombo;
+	
+	ZildoCanvas zildoCanvas;
 	
 	public final static int MESSAGE_ERROR = 1;
 	public final static int MESSAGE_INFO = 2;
@@ -43,13 +46,15 @@ public class MasterFrameManager {
 	 * @param p_sys Le JLabel Système de la MasterFrame
 	 * @author Drakulo
 	 */
-	public MasterFrameManager(JLabel p_sys, TileSet p_tile, JPanel p_master, JFrame p_frame, JComboBox p_backgroundCombo){
+	public MasterFrameManager(JLabel p_sys, TileSet p_tile, JPanel p_master, JFrame p_frame, JComboBox p_backgroundCombo, ZildoCanvas p_zildoCanvas){
 		systemDisplay = p_sys;
 		tileSet = p_tile;
 		masterPanel = p_master;
 		masterFrame = p_frame;
 		backgroundCombo = p_backgroundCombo;
+		zildoCanvas = p_zildoCanvas;
 	}
+	
 	/**
 	 * Ferme la fenêtre de Zeditor
 	 * @author Drakulo
@@ -83,9 +88,15 @@ public class MasterFrameManager {
 	 * @author Drakulo
 	 */
 	public void load(){
-		display("[A FAIRE] Chargement effectué.", MESSAGE_ERROR);
 		openFileExplorer(ExplorerFrameManager.OPEN);
 		// TODO
+
+	}
+	
+	public void loadMap(String p_mapName) {
+		display("Ouverture du fichier : " +p_mapName, MasterFrameManager.MESSAGE_INFO);
+		zildoCanvas.loadMap(p_mapName);	
+		display("[A FAIRE] Chargement effectué.", MESSAGE_ERROR);
 	}
 	
 	/**

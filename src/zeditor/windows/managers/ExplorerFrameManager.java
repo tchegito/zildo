@@ -79,8 +79,9 @@ public class ExplorerFrameManager {
 			// TODO Fenêtre d'erreur
 			return;
 		}
-		parent.getManager().display("Ouverture du fichier : " +f.getAbsolutePath(), MasterFrameManager.MESSAGE_INFO);
+		parent.getManager().loadMap(f.getAbsolutePath());
 		close();
+
 	}
 	
 	/**
