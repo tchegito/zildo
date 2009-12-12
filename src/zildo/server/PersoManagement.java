@@ -35,7 +35,7 @@ public class PersoManagement {
 				return (PersoZildo) p;
 			}
 		}
-		throw new RuntimeException("Can't find Zildo !");
+		return null;
 	}
 	
 	public void clearPersos()
