@@ -1,0 +1,34 @@
+#summary FAQ pour les joueurs de Zildo
+
+= Comment lancer un serveur en réseau local ? =
+
+Il faut choisir dans le menu principal :
+* multi player
+* create server
+
+= Comment lancer un serveur internet ? =
+
+Il existe une option dans le menu "Multiplayer" qui permet de passer d'un mode à l'autre. A savoir "LAN" et www, qui indiquent respectivement le réseau local et Internet.
+
+Donc, si on récapitule, il faut choisir dans le menu principal :
+* multi player
+* current network (pour passer de LAN à 'www')
+* create server
+
+= Comment changer son nom ? =
+
+Il faut choisir dans le menu principal :
+* multi player
+* current player name
+
+Et éditer le nom de son joueur.
+
+= Comment se connecter à une partie sur internet ? =
+
+Il faut choisir dans le menu principal :
+* multi player
+* current network (pour passer en 'www')
+* join game
+* 2 possibilités
+  * si aucun serveur n'existe, il faut rentrer les informations nécessaires du serveur où vous voulez vous connecter. Le nom est purement informatif, afin que vous puissiez le repérer dans la liste. Par contre l'adresse IP et le port sont obligatoires. Ils vous seront communiqués par la personne qui a crée le serveur sur son poste.
+  * si votre serveur existe dans la liste, il suffit de le sélectionner.
