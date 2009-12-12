@@ -97,12 +97,15 @@ public class MapManagement {
 	{ 
 		System.out.println("Loading "+mapname);
 	
-		String chemin=Constantes.DATA_PATH;
-		chemin+=mapname;
-		chemin+=".MAP";
-	
+		// If file name isn't complete, do it.
+		if (mapname.indexOf("/") ==-1 && mapname.indexOf("\\") == -1) {
+			String chemin=Constantes.DATA_PATH;
+			mapname=chemin+mapname;
+			mapname+=".MAP";
+		}
+		
 		// Infos de base
-		EasyReadingFile file=new EasyReadingFile(chemin);
+		EasyReadingFile file=new EasyReadingFile(mapname);
 		Area map=Area.deserialize(file, true);
 		
 		map.setName(mapname);
