@@ -8,14 +8,14 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 
 import zildo.Zildo;
-import zildo.client.gui.menu.ItemMenu;
-import zildo.client.gui.menu.Menu;
 import zildo.fwk.ZUtils;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.InternetClient;
 import zildo.fwk.net.NetClient;
 import zildo.fwk.net.TransferObject;
 import zildo.fwk.opengl.OpenGLZildo;
+import zildo.fwk.ui.ItemMenu;
+import zildo.fwk.ui.Menu;
 import zildo.server.EngineZildo;
 import zildo.server.state.PlayerState;
 
