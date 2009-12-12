@@ -271,6 +271,7 @@ public class GUIDisplay {
 						sizeCurrentWord=0;
 						nSpr[nLettre]=-2;
 					} else {
+						sizesLine[nLigne]=sizeCurrentLine;
 						if (lastSpacePosition != -1) {	// Put 'ENDOFLINE' at the last space
 							nSpr[lastSpacePosition]=-2;
 						} else {	// No space from the beginning of the message
