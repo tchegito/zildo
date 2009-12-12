@@ -12,11 +12,11 @@ public abstract class ItemMenu {
 	}
 	
 	public ItemMenu(String p_text) {
-		text=p_text;
+		text=UIText.getText(p_text);
 	}
 
 	public ItemMenu(String p_text, BankSound p_sound) {
-		text=p_text;
+		this(p_text);
 		sound=p_sound;
 	}
 
@@ -24,6 +24,10 @@ public abstract class ItemMenu {
 		return text;
 	}
 	
+	/**
+	 * Set an item name without bundle
+	 * @param p_text
+	 */
 	public void setText(String p_text) {
 		text=p_text;
 	}

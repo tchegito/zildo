@@ -15,7 +15,7 @@ import zildo.prefs.Constantes;
 public class PlayerNameMenu extends Menu {
 
     public PlayerNameMenu(final StringBuilder p_playerName, Menu p_previous) {
-        super("Enter your player name");
+        super("m5.title");
 
         previousMenu = p_previous;
 

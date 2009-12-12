@@ -11,6 +11,7 @@ import zildo.fwk.net.ServerInfo;
 import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.fwk.ui.UIText;
 
 public class JoinGameMenu extends Menu {
 
@@ -19,7 +20,7 @@ public class JoinGameMenu extends Menu {
     Client client=ClientEngineZildo.getClientForMenu();
     
     public JoinGameMenu(List<ServerInfo> serversReady, Menu p_previous) {
-        super("Choose a server");
+        super("m4.title");
         
         previousMenu=p_previous;
         
@@ -31,21 +32,21 @@ public class JoinGameMenu extends Menu {
                 	if (InternetClient.isResponding(srv)) {
                 		new MultiPlayer(srv);
                 	} else {
-    	                client.handleMenu(new InfoMenu(srv.name+" is not responding !", currentMenu));
+    	                client.handleMenu(new InfoMenu(UIText.getText("m4.error", srv.name), currentMenu));
                 	}
                 }
             };
             items.add(item);
         }
 
-        items.add(new ItemMenu("Add server") {
+        items.add(new ItemMenu("m4.add") {
             @Override
             public void run() {
             	client.handleMenu(new AddServerMenu(currentMenu));
             }
         });
         
-        items.add(new ItemMenu("Back") {
+        items.add(new ItemMenu("global.back") {
         	public void run() {
         		client.handleMenu(previousMenu);
         	}

@@ -23,7 +23,7 @@ public class Menu {
 	}
 	
 	public Menu(String p_title, ItemMenu... p_items) {
-		title=p_title;
+		title=UIText.getText(p_title);
 		setMenu(p_items);
 	}
 	
@@ -33,7 +33,7 @@ public class Menu {
 	}
 	
 	public void setTitle(String p_title) {
-		title=p_title;
+		title=UIText.getText(p_title);
 	}
 	
 	/**

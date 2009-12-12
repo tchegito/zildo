@@ -13,6 +13,7 @@ import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.fwk.ui.UIText;
 import zildo.prefs.Constantes;
 
 /**
@@ -25,14 +26,14 @@ import zildo.prefs.Constantes;
  */
 public class AddServerMenu extends Menu {
 
-    StringBuilder name = new StringBuilder("<name>");
+    StringBuilder name = new StringBuilder(UIText.getText("m3.defaultName"));
     StringBuilder ip = new StringBuilder("<IP>");
     StringBuilder port = new StringBuilder("<port>");
 
     Menu currentMenu = this;
 
     public AddServerMenu(Menu p_previousMenu) {
-        super("Enter the server IP and port");
+        super("m3.title");
 
         previousMenu = p_previousMenu;
 
@@ -55,13 +56,13 @@ public class AddServerMenu extends Menu {
                 ClientEngineZildo.getClientForMenu().handleMenu(currentMenu);
             }
         };
-        items[3] = new ItemMenu("Add this server") {
+        items[3] = new ItemMenu("m3.add") {
             @Override
             public void run() {
             	addServer(name.toString(), ip.toString(), port.toString());
             }
         };
-        items[4] = new ItemMenu("Back") {
+        items[4] = new ItemMenu("global.back") {
             @Override
             public void run() {
                 ClientEngineZildo.getClientForMenu().handleMenu(previousMenu);
@@ -81,7 +82,7 @@ public class AddServerMenu extends Menu {
     	// 1: Controls that everything is correct
     	int error=2;
     	try {
-    		if (p_name.equals("<name>")) {
+    		if (p_name.equals(UIText.getText("m3.defaultName"))) {
     			throw new Exception();
     		}
     		error=0;
@@ -99,17 +100,18 @@ public class AddServerMenu extends Menu {
     		String message;
     		switch (error) {
     		case 0:
-    			message="Port should be a number.";
+    			message="m3.error.port";
     			break;
     		case 2:
-    			message="Enter a valid name";
+    			message="m3.error.name";
     			break;
     		default:
     		case 1:
-    			message="Unreachable !";
+    			message="m3.error.unreachable";
     			break;
     		}
     		
+    		message=UIText.getText(message);
         	ClientEngineZildo.getClientForMenu().handleMenu(new InfoMenu("Impossible. "+message, currentMenu));
     	}
     }

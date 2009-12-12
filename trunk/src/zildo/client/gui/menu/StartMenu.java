@@ -11,6 +11,7 @@ import zildo.fwk.net.ServerInfo;
 import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.fwk.ui.UIText;
 import zildo.monde.Game;
 
 /**
@@ -27,27 +28,27 @@ public class StartMenu extends Menu {
 
         final Menu startMenu = this;
 
-        ItemMenu itemSinglePlayer = new ItemMenu("Single Player", BankSound.MenuSelectGame) {
+        ItemMenu itemSinglePlayer = new ItemMenu("m1.single", BankSound.MenuSelectGame) {
             @Override
             public void run() {
                 new SinglePlayer(new Game("d4", false));
             }
         };
 
-        ItemMenu itemMultiPlayer = new ItemMenu("Multi Player") {
+        ItemMenu itemMultiPlayer = new ItemMenu("m1.multi") {
             Menu multiMenu;
             boolean lan = true;
             StringBuilder playerName = new StringBuilder(PlayerNameMenu.loadPlayerName());
 
             @Override
             public void run() {
-                ItemMenu itemCreate = new ItemMenu("Create game", BankSound.MenuSelectGame) {
+                ItemMenu itemCreate = new ItemMenu("m2.create", BankSound.MenuSelectGame) {
                     @Override
                     public void run() {
                         new MultiPlayer(new Game("polakym", false), lan);
                 	}
                 };
-                ItemMenu itemJoin=new ItemMenu("Join game", BankSound.MenuSelectGame) {
+                ItemMenu itemJoin=new ItemMenu("m2.join", BankSound.MenuSelectGame) {
                 	public void run() {
                 		if (lan) {
                 			new MultiPlayer();
@@ -55,7 +56,7 @@ public class StartMenu extends Menu {
                 			// Internet
                     		List<ServerInfo> serversReady=AddServerMenu.loadServersInfos();
                     		if (serversReady.isEmpty()) {
-                    			client.handleMenu(new InfoMenu("No servers found.", "Add one", new AddServerMenu(multiMenu)));
+                    			client.handleMenu(new InfoMenu("mess.noservers", "mess.noservers.add", new AddServerMenu(multiMenu)));
                     		} else {
                     			client.handleMenu(new JoinGameMenu(serversReady, multiMenu));
                     		}
@@ -76,14 +77,14 @@ public class StartMenu extends Menu {
                         client.handleMenu(multiMenu);
                     }
                 };
-                ItemMenu itemBack = new ItemMenu("Back") {
+                ItemMenu itemBack = new ItemMenu("global.back") {
                     @Override
                     public void run() {
                         client.handleMenu(startMenu);
                     }
                 };
 
-                multiMenu = new Menu("Multiplayer", itemCreate, itemJoin, itemPlayerName, itemToggleNetwork, itemBack) {
+                multiMenu = new Menu("m2.title", itemCreate, itemJoin, itemPlayerName, itemToggleNetwork, itemBack) {
                     public void refresh() {
                     	itemPlayerName.setText(getPlayerNameString());
                     }
@@ -92,21 +93,21 @@ public class StartMenu extends Menu {
         	}
         	
         	String getNetTypeString() {
-        		return "Current network - "+ (lan ? "LAN" : "www");
+        		return UIText.getText("m2.currentNet", lan ? "LAN" : "www");
         	}
             String getPlayerNameString() {
-                return "Player name - " + playerName.toString();
+                return UIText.getText("m2.playerName", playerName.toString());
             }
 
         };
         
-        ItemMenu itemQuit=new ItemMenu("Quit", BankSound.MenuSelectGame) {
+        ItemMenu itemQuit=new ItemMenu("m1.quit", BankSound.MenuSelectGame) {
         	public void run() {
         		client.stop();
         	}
         };
         
         setMenu(itemSinglePlayer, itemMultiPlayer, itemQuit);
-        setTitle("Welcome to Zildo");
+        setTitle("m1.title");
 	}
 }
