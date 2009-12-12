@@ -56,6 +56,9 @@ public class EngineZildo {
         PersoZildo zildo = new PersoZildo(respawnLocation.getX(), respawnLocation.getY());
         spriteManagement.spawnPerso(zildo);
 
+        if (game.multiPlayer) {
+        	zildo.resetForMultiplayer();
+        }
         return zildo.getId();
     }
 
@@ -65,9 +68,10 @@ public class EngineZildo {
      */
     static public void respawnClient(PersoZildo p_zildo) {
         Point respawnLocation = mapManagement.getRespawnPosition();
+        
+        p_zildo.resetForMultiplayer();
+        
         p_zildo.placeAt(respawnLocation);
-        p_zildo.setPv(13);
-        p_zildo.setWounded(true);
     }
 
 	public EngineZildo(Game p_game) {

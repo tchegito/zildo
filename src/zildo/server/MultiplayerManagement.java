@@ -1,5 +1,7 @@
 package zildo.server;
 
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementQuadDamage;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
@@ -94,5 +96,20 @@ public class MultiplayerManagement {
      */
     public static int getScore(PlayerState p_state) {
     	return p_state.nKill; // - p_state.nDied;    	
+    }
+    
+    /**
+     * Initialize Zildo inventory and so on, with start values.
+     * @param p_zildo
+     */
+    public static void setUpZildo(PersoZildo p_zildo) {
+		p_zildo.addInventory(new Item(ItemKind.BOW));
+		p_zildo.addInventory(new Item(ItemKind.BOOMERANG));
+		p_zildo.addInventory(new Item(ItemKind.BOMB));
+		p_zildo.setPv(13);
+		
+		p_zildo.countArrow=20;
+		p_zildo.countBomb=20;
+
     }
 }
