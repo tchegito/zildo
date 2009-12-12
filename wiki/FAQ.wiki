@@ -13,7 +13,9 @@ Il existe une option dans le menu "Multiplayer" qui permet de passer d'un mode �
 Donc, si on récapitule, il faut choisir dans le menu principal :
  * Multi Player
  * Current Network (pour passer de LAN à 'www')
- * Create Server
+ * Create Game
+
+*Attention* : il faut que votre configuration internet permette aux autres joueurs de vous atteindre. Pour créer un serveur Zildo, il faut que votre port 1234 soit accessible en UDP de l'éxterieur. 
 
 = Comment changer son nom ? =
 
