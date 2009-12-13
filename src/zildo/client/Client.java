@@ -33,7 +33,7 @@ public class Client {
 
 	ClientEngineZildo clientEngineZildo;
 	OpenGLZildo glGestion;
-	boolean awt;
+	static boolean awt;
 	boolean done=false;
 	boolean serverLeft=false;
 	boolean connected=false;	// TRUE so as a connection with a server is established
@@ -105,7 +105,12 @@ public class Client {
 			throw new RuntimeException("Problem initializing ZildoRenderer !");
 		}
 		clientEngineZildo.initializeClient(true);
+		// Set up the map
         ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+        // And the sprites
+        EngineZildo.spriteManagement.updateSprites(true);
+        ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null));
+		
     }
 	
 	public boolean render()
@@ -217,5 +222,9 @@ public class Client {
 	
 	public boolean isMultiplayer() {
 		return multiplayer;
+	}
+	
+	public static boolean isZEditor() {
+		return awt;
 	}
 }

@@ -31,8 +31,8 @@ public class ZildoScrollablePanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final int viewSizeX=640;
-	private static final int viewSizeY=600;
+	public static final int viewSizeX=640;
+	public static final int viewSizeY=600;
 	
 	ZildoCanvas zildoCanvas;
 	JScrollBar horizontal;

@@ -2,6 +2,8 @@ package zildo.prefs;
 
 import java.io.File;
 
+import zildo.Zildo;
+
 
 public class Constantes {
 
@@ -27,8 +29,8 @@ public class Constantes {
 	public static final	int NB_SPRITEBANK = 7;
 	public static final int NB_SPRITE_PER_PRIMITIVE = 400;
 
-	public static final int SORTY_MAX = 280;
-	public static final int SORTY_REALMAX = 320;
+	public static final int SORTY_MAX = Zildo.viewPortY+40;
+	public static final int SORTY_REALMAX = Zildo.viewPortY+40+80;
 	public static final int SORTY_ROW_PER_LINE = 32;
 	// A line can contain multiple objects
 

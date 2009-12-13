@@ -71,12 +71,14 @@ public class ClientEngineZildo {
 			filterCommand.active(null, false);
 			filterCommand.active(BilinearFilter.class, true);
 
-			pixelShaders = new PixelShaders();
-			if (pixelShaders.canDoPixelShader()) {
-				pixelShaders.preparePixelShader();
-			}
 		}
 
+
+		pixelShaders = new PixelShaders();
+		if (pixelShaders.canDoPixelShader()) {
+			pixelShaders.preparePixelShader();
+		}
+		
 		spriteEngine = new SpriteEngine();
 		tileEngine = new TileEngine();
 
