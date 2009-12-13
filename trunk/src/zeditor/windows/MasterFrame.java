@@ -2,6 +2,7 @@ package zeditor.windows;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.ComboBoxModel;
@@ -18,15 +19,13 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
-
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import zeditor.core.Options;
 import zeditor.core.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
-import zildo.fwk.awt.ZildoCanvas;
-
-import javax.swing.SwingUtilities;
+import zildo.fwk.awt.ZildoScrollablePanel;
 
 
 /**
@@ -129,12 +128,11 @@ public class MasterFrame extends javax.swing.JFrame {
 			}
 						
 			// On ajoute la carte
-            ZildoCanvas zildoCanvas = new ZildoCanvas("polaky");
-            zildoCanvas.setSize(640,480);
-            getContentPane().add(zildoCanvas,BorderLayout.EAST);
-
+			ZildoScrollablePanel zildoPanel=new ZildoScrollablePanel("polaky");
+	        getContentPane().add(zildoPanel, BorderLayout.EAST);
+            
             // Recréation du manager avec les objets en paramètre
-			manager = new MasterFrameManager(getSystemLabel(), getTileSetPanel(), getMasterPanel(), this, getBackgroundCombo(), zildoCanvas);
+			manager = new MasterFrameManager(getSystemLabel(), getTileSetPanel(), getMasterPanel(), this, getBackgroundCombo(), zildoPanel.getZildoCanvas());
             
 			// Initialisation de la fenêtre par le manager
 			manager.init();
