@@ -108,7 +108,7 @@ public class Client {
 		// Set up the map
         ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
         // And the sprites
-        EngineZildo.spriteManagement.updateSprites(true);
+        EngineZildo.spriteManagement.updateSprites(false);
         ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null));
 		
     }
