@@ -1,6 +1,9 @@
 package zildo.fwk.awt;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.EventListener;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.DefaultBoundedRangeModel;
@@ -32,15 +35,31 @@ public class ZildoScrollablePanel extends JPanel {
 	private static final int viewSizeY=600;
 	
 	ZildoCanvas zildoCanvas;
+	JScrollBar horizontal;
+	JScrollBar vertical;
 	
 	public ZildoScrollablePanel(String p_defaultMap) throws LWJGLException {
+		// Create the panel with two scroll bars, and the canvas
 		this.setLayout(new BorderLayout());
-		this.add(new MapScrollBar(JScrollBar.HORIZONTAL), BorderLayout.SOUTH);
-		this.add(new MapScrollBar(JScrollBar.VERTICAL), BorderLayout.EAST);
+		horizontal=new MapScrollBar(JScrollBar.HORIZONTAL);
+		vertical=new MapScrollBar(JScrollBar.VERTICAL);
+		this.add(horizontal, BorderLayout.SOUTH);
+		this.add(vertical, BorderLayout.EAST);
 		this.setSize(viewSizeX,viewSizeY);
 		zildoCanvas = new ZildoCanvas(p_defaultMap);
         zildoCanvas.setSize(viewSizeX,viewSizeY);
 		this.add(zildoCanvas);
+		
+		// Create the mouse listener
+		EventListener zildoListener=new ZildoMouseListener(this);
+		zildoCanvas.addMouseListener((MouseListener) zildoListener);
+		zildoCanvas.addMouseMotionListener((MouseMotionListener) zildoListener);
+	}
+
+	public java.awt.Point getPosition() {
+		int x=horizontal.getValue();
+		int y=vertical.getValue();
+		return new java.awt.Point(x,y);
 	}
 
 	public ZildoCanvas getZildoCanvas() {

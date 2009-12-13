@@ -24,7 +24,7 @@ import zildo.fwk.awt.ZildoCanvas;
  * @author Drakulo
  */
 public class MasterFrameManager {
-	private JLabel systemDisplay;
+	public static JLabel systemDisplay;
 	private TileSet tileSet;
 	private JPanel masterPanel;
 	private JFrame masterFrame;
@@ -143,7 +143,7 @@ public class MasterFrameManager {
 	 * @param p_type est le type de message
 	 * @author Drakulo
 	 */
-	public void display(String p_msg, int p_type){
+	public static void display(String p_msg, int p_type){
 		if(systemDisplay != null){
 			systemDisplay.setText(" " + p_msg);
 			switch(p_type){
