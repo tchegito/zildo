@@ -94,7 +94,8 @@ public class ElementArrow extends ElementThrown  {
         super.animate();
     }
     	
-    public boolean beingCollided() {
+    @Override
+    public boolean beingCollided(Perso p_perso) {
     	// Arrow just landed : stop move
     	vx=0;
     	vy=0;
