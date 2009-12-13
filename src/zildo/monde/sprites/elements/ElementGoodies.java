@@ -89,7 +89,7 @@ public class ElementGoodies extends Element {
 		return true;
 	}
 	
-	public boolean beingCollided() {
+	public boolean beingCollided(Perso p_perso) {
 		return true;
 	}
 
