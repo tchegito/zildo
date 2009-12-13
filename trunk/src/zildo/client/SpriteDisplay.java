@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import zildo.fwk.awt.ZildoScrollablePanel;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.fwk.gfx.engine.SpriteEngine;
@@ -32,14 +33,16 @@ public class SpriteDisplay extends SpriteStore {
 
 	SpriteEngine spriteEngine;
 	// For Y-sorting
-	private SpriteEntity[][] tab_tri=new SpriteEntity[Constantes.SORTY_REALMAX]
-	                                                 [Constantes.SORTY_ROW_PER_LINE];
+	private SpriteEntity[][] tab_tri;
 	private int quadOrder[][];
 	private int lastInBank[];
 	private int bankOrder[][];
 	// bankOrder works like this { (BanqueN,i) , (BanqueM,j) , (BanqueP,k) ... }
 
 	public int zildoId;
+
+	private int SORTY_MAX;
+	private int SORTY_REALMAX;
 	
 	// We use a map to ease the access to an entity with his ID
 	Map<Integer, SpriteEntity> mapEntities=new HashMap<Integer, SpriteEntity>();
@@ -71,9 +74,17 @@ public class SpriteDisplay extends SpriteStore {
 		
 		this.spriteEngine=spriteEngine;
 		
+		if (Client.isZEditor()) {
+			SORTY_MAX=ZildoScrollablePanel.viewSizeY+40;
+			SORTY_REALMAX=ZildoScrollablePanel.viewSizeY+80;
+		} else {
+			SORTY_MAX=Constantes.SORTY_MAX;
+			SORTY_REALMAX=Constantes.SORTY_REALMAX;
+		}
+		tab_tri=new SpriteEntity[SORTY_REALMAX][Constantes.SORTY_ROW_PER_LINE];
 		
 		// Clear really the sort array
-		for (int i=0;i<Constantes.SORTY_REALMAX;i++) {
+		for (int i=0;i<SORTY_REALMAX;i++) {
 			for (int j=0;j<Constantes.SORTY_ROW_PER_LINE;j++) {
 				tab_tri[i][j] = null;
 			}
@@ -164,7 +175,7 @@ public class SpriteDisplay extends SpriteStore {
 		// Get the character's Y to check if it's on the screen
 		int y=sprite.getScrY();
 		if (sprite.getEntityType()==SpriteEntity.ENTITYTYPE_FONT) {
-			y=Constantes.SORTY_MAX;
+			y=SORTY_MAX;
 		} else if (sprite.getEntityType()!=SpriteEntity.ENTITYTYPE_ENTITY) {
 			// To get the right comparison, delete the adjustment done by updateSprites
 			// just for filling the sort array
@@ -179,16 +190,16 @@ public class SpriteDisplay extends SpriteStore {
 		// Find a placement for the entity in the sort array
 		// 1) Try all positions on a row
 		// 2) Go the next row and do it again, until we reach the last one
-		if (y>=0 && y<Constantes.SORTY_REALMAX) {
+		if (y>=0 && y<SORTY_REALMAX) {
 			int position=0;
-			while (tab_tri[y][position] != null && y<Constantes.SORTY_REALMAX) {
+			while (tab_tri[y][position] != null && y<SORTY_REALMAX) {
 				position++;
 				if (position==Constantes.SORTY_ROW_PER_LINE) {
 					y++;
 					position=0;
 				}
 			}
-			if (y<Constantes.SORTY_REALMAX && position < Constantes.SORTY_ROW_PER_LINE) {
+			if (y<SORTY_REALMAX && position < Constantes.SORTY_ROW_PER_LINE) {
 				// Declare sprite at the right position
 				tab_tri[y][position] = sprite;
 				if (position < Constantes.SORTY_ROW_PER_LINE-1)
@@ -204,7 +215,7 @@ public class SpriteDisplay extends SpriteStore {
 	///////////////////////////////////////////////////////////////////////////////////////
 	void clearSortArray()
 	{
-		for (int i=0;i<Constantes.SORTY_REALMAX;i++) {
+		for (int i=0;i<SORTY_REALMAX;i++) {
 			tab_tri[i][0]=null;
 		}
 	}
@@ -216,7 +227,7 @@ public class SpriteDisplay extends SpriteStore {
 	///////////////////////////////////////////////////////////////////////////////////////
 	void clearEntirelySortArray()
 	{
-		for (int i=0;i<Constantes.SORTY_REALMAX;i++) {
+		for (int i=0;i<SORTY_REALMAX;i++) {
 			for (int j=0;j<Constantes.SORTY_ROW_PER_LINE;j++) {
 				tab_tri[i][j]=null;
 			}
@@ -249,7 +260,7 @@ public class SpriteDisplay extends SpriteStore {
 			int currentBank=-1;
 			int nbQuadFromSameBank=0;
 			EngineFX currentFX=EngineFX.NO_EFFECT;
-			for (int i=0;i<Constantes.SORTY_REALMAX;i++) {
+			for (int i=0;i<SORTY_REALMAX;i++) {
 				int position=0;
 				while (position < Constantes.SORTY_ROW_PER_LINE) {
 					SpriteEntity entity=tab_tri[i][position];
