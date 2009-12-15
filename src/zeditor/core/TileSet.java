@@ -67,8 +67,8 @@ public class TileSet extends JPanel {
 						startPoint = null;
 						stopPoint = null;
 	
-						int x = 16 * ((int) e.getX() / 16);
-						int y = 16 * ((int) e.getY() / 16);
+						int x = 16 * (e.getX() / 16);
+						int y = 16 * (e.getY() / 16);
 						if((x >= 0 && x <= tileWidth - 16) && (y >= 0 && y <= tileHeight - 16)){
 							if(startPoint == null){
 								startPoint = new Point(x,y);
@@ -106,8 +106,8 @@ public class TileSet extends JPanel {
 				if(tile != null){
 					if(MouseEvent.BUTTON1 == e.getButton()){
 						// Click gauche
-						int x = 16 * ((int) e.getX() / 16);
-						int y = 16 * ((int) e.getY() / 16);
+						int x = 16 * (e.getX() / 16);
+						int y = 16 * (e.getY() / 16);
 						if(x < 0){x = 0;}else if (x >= tileWidth){x = tileWidth - 16;}
 						if(y < 0){y = 0;}else if (y >= tileHeight){y = tileHeight - 16;}
 						if(stopPoint == null){
@@ -134,8 +134,8 @@ public class TileSet extends JPanel {
 		this.addMouseMotionListener(new MouseMotionListener(){
 			public void mouseDragged(MouseEvent e) {
 				if(tile != null){
-					int x = 16 * ((int) e.getX() / 16);
-					int y = 16 * ((int) e.getY() / 16);
+					int x = 16 * (e.getX() / 16);
+					int y = 16 * (e.getY() / 16);
 					if(x < 0){x = 0;}else if (x >= tileWidth){x = tileWidth - 16;}
 					if(y < 0){y = 0;}else if (y >= tileHeight){y = tileHeight - 16;}
 					if(stopPoint == null){
