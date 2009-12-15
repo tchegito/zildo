@@ -45,7 +45,6 @@ public class PersoZildo extends Perso {
 	private int touch;	// number of frames zildo is touching something without moving
 	
 	private boolean inventoring=false; 
-	private boolean ghost=false;	// TRUE=player can't control him
 	public ItemCircle guiCircle;
 	private List<Item> inventory;
 	private ShieldEffect shieldEffect;
@@ -899,14 +898,6 @@ public class PersoZildo extends Perso {
 
 	public void setTouch(int touch) {
 		this.touch = touch;
-	}
-
-	public boolean isGhost() {
-		return ghost;
-	}
-
-	public void setGhost(boolean ghost) {
-		this.ghost = ghost;
 	}
 
 	public boolean isAlive() {

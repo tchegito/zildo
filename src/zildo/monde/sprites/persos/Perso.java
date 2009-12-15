@@ -38,6 +38,7 @@ public abstract class Perso extends Element {
     protected int cptMouvement;	// Un compteur pour les mouvements des PNJ
     private int coming_map;		// 1 si Zildo entre sur une map,sinon 255
     private int pv,maxpv;			// Points de vie du perso
+	private boolean ghost=false;	// TRUE=script control him
 
     private int money;
 
@@ -470,6 +471,14 @@ public abstract class Perso extends Element {
 
 	public void setDialoguingWith(Perso p_dialoguingWith) {
 		this.dialoguingWith = p_dialoguingWith;
+	}
+	
+	public boolean isGhost() {
+		return ghost;
+	}
+
+	public void setGhost(boolean ghost) {
+		this.ghost = ghost;
 	}
 	
 	public void setVisible(boolean p_visible) {
