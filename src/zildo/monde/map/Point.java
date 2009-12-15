@@ -88,4 +88,9 @@ public class Point {
     	Point p=(Point) p_other;
     	return p.x == x && p.y == y;
     }
+    
+    public static Point fromString(String p_text) {
+    	String[] coords=p_text.split(",");
+    	return new Point(Integer.valueOf(coords[0]), Integer.valueOf(coords[1]));
+    }
 }

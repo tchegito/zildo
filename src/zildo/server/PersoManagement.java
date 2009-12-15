@@ -101,6 +101,15 @@ public class PersoManagement {
         return collidePerso(x, y, quelPerso, 5);
     }
 	
+    public Perso getNamedPerso(String p_name) {
+    	for (Perso p : tab_perso) {
+    		if (p_name.equalsIgnoreCase(p.getNom())) {
+    			return p;
+    		}
+    	}
+    	return null;
+    }
+    
 	///////////////////////////////////////////////////////////////////////////////////////
 	// addPerso
 	///////////////////////////////////////////////////////////////////////////////////////

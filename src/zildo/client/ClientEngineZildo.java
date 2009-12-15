@@ -121,7 +121,9 @@ public class ClientEngineZildo {
 
 		// Focus camera on player
 		if (!p_editor && client.connected) {
-			mapDisplay.centerCamera();
+			if (mapDisplay.getCurrentMap() != null) {
+				mapDisplay.centerCamera();
+			}
 			
 			// Is Zildo talking with somebody ?
 			if (dialogDisplay.isDialoguing()) {
@@ -232,6 +234,11 @@ public class ClientEngineZildo {
 		            guiDisplay.setToDisplay_generalGui(true);
 	        	}
 	        	break;
+	        case SCRIPT: // Remove GUI when scripting
+	            guiDisplay.setToDisplay_generalGui(false);
+	            break;
+	        case NOEVENT:
+	            guiDisplay.setToDisplay_generalGui(true);
 		    }
 		}
 	

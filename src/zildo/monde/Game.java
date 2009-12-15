@@ -30,6 +30,10 @@ public class Game {
         questDiary = createTempQuestDiary();
     }
 
+    public Game(boolean p_editing) {
+    	this(null, p_editing);
+    }
+    
     /**
      * Create the "historic" zildo's adventure. Very simple.
      * @return QuestDiary
