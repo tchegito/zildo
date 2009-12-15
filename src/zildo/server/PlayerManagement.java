@@ -19,17 +19,18 @@ import zildo.prefs.Constantes;
 import zildo.prefs.KeysConfiguration;
 import zildo.server.state.ClientState;
 import zildo.server.state.DialogState;
+import zildo.server.state.GamePhase;
 
 
 public class PlayerManagement {
-
-
 
 	private PersoZildo heros;
 	private KeyboardInstant instant;
 	private KeyboardState keysState;
 	private DialogState dialogState;
 	private ClientState client;
+	
+	private GamePhase gamePhase;
 	
 	public PlayerManagement()
 	{
@@ -53,10 +54,26 @@ public class PlayerManagement {
 		keysState=p_state.keysState;
 		dialogState=p_state.dialogState;
 		client=p_state;
+		
+		// Determine the game phase
+		boolean ghost=heros.isGhost();
+		if (ghost) {
+			if (client.event.nature.isChangingMap()) {
+				gamePhase=GamePhase.MAPCHANGE;
+			} else {
+				gamePhase=GamePhase.SCRIPT;
+			}
+		} else if (dialogState.dialoguing) {
+			gamePhase=GamePhase.DIALOG;
+		} else {
+			gamePhase=GamePhase.INGAME;
+		} 
 
-		if (instant == null) {
+		if (ghost) {
 			// Scripting move
 			automaticMove();
+			
+			handleCommon();
 		} else {
 			// User move
 			handleCommon();
@@ -83,12 +100,10 @@ public class PlayerManagement {
 	 * Zildo is in ghost mode. It provides scripting moves.
 	 */
 	public void automaticMove() {
-		 if (heros.isGhost()) {
-				Pointf pos=heros.reachDestination(Constantes.ZILDO_SPEED);
-			 	
-				adjustMovement((int) pos.x, (int) pos.y);
-				heros.finaliseComportement(EngineZildo.compteur_animation);
-		 }
+		Pointf pos=heros.reachDestination(Constantes.ZILDO_SPEED);
+	 	
+		adjustMovement((int) pos.x, (int) pos.y);
+		heros.finaliseComportement(EngineZildo.compteur_animation);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -409,7 +424,7 @@ public class PlayerManagement {
 		if (!keysState.key_actionPressed) {
 			if (dialogState.dialoguing) {
 				EngineZildo.dialogManagement.actOnDialog(client.location, DialogDisplay.ACTIONDIALOG_ACTION);
-			} else if (!heros.isInventoring()) { //
+			} else if (gamePhase == GamePhase.INGAME && !heros.isInventoring()) { //
 				if (heros.getMouvement()==MouvementZildo.BRAS_LEVES) {
 					heros.throwSomething();
 				} else if (heros.getMouvement()!=MouvementZildo.BRAS_LEVES && 

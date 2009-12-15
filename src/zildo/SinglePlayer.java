@@ -111,12 +111,12 @@ public class SinglePlayer {
             if (state.event.nature == ClientEventNature.NOEVENT) {
 	            // Reset queues
 	        	EngineZildo.soundManagement.resetQueue();
-	
-	            // Read keyboard
-	            KeyboardInstant instant = KeyboardInstant.getKeyboardInstant();
-	            state.keys = instant;
-	            client.setKbInstant(instant);
             }
+            // Read keyboard
+            KeyboardInstant instant = KeyboardInstant.getKeyboardInstant();
+            state.keys = instant;
+            client.setKbInstant(instant);
+
             states.add(state);
 
             // Update server

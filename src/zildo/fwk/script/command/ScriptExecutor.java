@@ -1,5 +1,8 @@
 package zildo.fwk.script.command;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import zildo.SinglePlayer;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.script.xml.ActionElement;
@@ -7,9 +10,11 @@ import zildo.fwk.script.xml.ActionsElement;
 import zildo.fwk.script.xml.AnyElement;
 import zildo.fwk.script.xml.ScriptElement;
 import zildo.fwk.script.xml.StartElement;
+import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.server.EngineZildo;
 
 public class ScriptExecutor {
@@ -17,6 +22,7 @@ public class ScriptExecutor {
 	ScriptElement script = null;
 	int cursor;
 	boolean userEndedAction;
+	Set<Perso> involved;
 	
 	/**
 	 * Ask for engine to execute the given script.
@@ -25,6 +31,7 @@ public class ScriptExecutor {
 	public void execute(ScriptElement p_script) {
 		script=p_script;
 		cursor=0;
+		involved=new HashSet<Perso>();
 	}
 	
 	public void render() {
@@ -32,7 +39,7 @@ public class ScriptExecutor {
 			AnyElement currentNode=getCurrent();
 			if (currentNode == null) {
 				// We reach the end of the script
-				script=null;
+				terminate();
 			} else {
 				Class<? extends AnyElement> clazz=currentNode.getClass();
 				if (StartElement.class == clazz) {
@@ -42,6 +49,15 @@ public class ScriptExecutor {
 				}
 			}
 		}
+	}
+
+	private void terminate() {
+		// Get back to life the involved characters
+		for (Perso p : involved) {
+			p.setGhost(false);
+		}
+		involved.clear();
+		script=null;
 	}
 	
 	private void renderStart(StartElement p_start) {
@@ -63,16 +79,20 @@ public class ScriptExecutor {
 			achieved=true;
 			for (ActionElement action : actions.actions) {
 				if (!action.done) {
-					renderAction(action, p_moveCursor);
+					renderAction(action, false);
 					achieved=achieved & action.done;
 				}
 			}
 		} else {
 			if (p_action.waiting) {
 				waitForEndAction(p_action);
+				achieved=p_action.done;
 			} else {
 				String who=p_action.who;
 				Perso perso=EngineZildo.persoManagement.getNamedPerso(who);
+				if (perso != null) {
+					involved.add(perso);	// Note that this perso is concerned
+				}
 				Point location=p_action.location;
 				String text=p_action.text;
 				switch (p_action.kind) {
@@ -90,12 +110,18 @@ public class ScriptExecutor {
 					EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(text));
 					userEndedAction=false;
 					break;
+				case script:
+					perso.setQuel_deplacement(MouvementPerso.fromInt(p_action.val));
+					achieved=true;
+					break;
+				case angle:
+					perso.setAngle(Angle.fromInt(p_action.val));
+					achieved=true;
 				}
 				p_action.done=achieved;
 				p_action.waiting=!achieved;
 			}
 		}
-
 		if (p_moveCursor && achieved) {
 			cursor++;
 		}
@@ -109,11 +135,11 @@ public class ScriptExecutor {
 		switch (p_action.kind) {
 		case moveTo:
 	        if (perso.x == location.x && perso.y == location.y) {
-	        	perso.setGhost(false);
 	        	achieved=true;
 	        }
 	        break;
 		case speak:
+			achieved=userEndedAction;
 			break;
 		}
 		p_action.waiting=!achieved;
