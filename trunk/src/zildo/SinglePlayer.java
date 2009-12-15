@@ -12,7 +12,10 @@ import zildo.client.ClientEventNature;
 import zildo.client.Client.ClientType;
 import zildo.client.gui.menu.PlayerNameMenu;
 import zildo.fwk.input.KeyboardInstant;
+import zildo.fwk.script.xml.ScriptElement;
+import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.Game;
+import zildo.monde.map.Area;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
 import zildo.server.state.ClientState;
@@ -35,15 +38,26 @@ public class SinglePlayer {
     Server server;
     static ClientState state;	// The single-player client / or multi-player server's client
     
+    /**
+     * Multiplayer, where current player is the server.
+     * @param p_server
+     */
     public SinglePlayer(Server p_server) {
         server = p_server;
         engineZildo = p_server.getEngineZildo();
     }
 
+    /**
+     * The real single player. Everything start from here.
+     * @param p_game
+     */
     public SinglePlayer(Game p_game) {
     	p_game.multiPlayer=false;
         engineZildo = new EngineZildo(p_game);
 
+        ScriptElement script=(ScriptElement) ScriptReader.loadScript("intro.xml");
+        EngineZildo.scriptExecutor.execute(script);
+        
         launchGame();
     }
 
@@ -58,7 +72,10 @@ public class SinglePlayer {
         ClientEngineZildo clientEngineZildo = client.getEngineZildo();
 
         // Initialize map
-        ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+        Area map=EngineZildo.mapManagement.getCurrentMap();
+        if (map != null) {
+        	ClientEngineZildo.mapDisplay.setCurrentMap(map);
+        }
 
         boolean done = false;
         Set<ClientState> states=new HashSet<ClientState>();
@@ -90,10 +107,10 @@ public class SinglePlayer {
             state.event = engineZildo.renderEvent(state.event);
             state.event = clientEngineZildo.renderEvent(state.event);
 	            
+        	EngineZildo.dialogManagement.resetQueue();
             if (state.event.nature == ClientEventNature.NOEVENT) {
 	            // Reset queues
 	        	EngineZildo.soundManagement.resetQueue();
-	        	EngineZildo.dialogManagement.resetQueue();
 	
 	            // Read keyboard
 	            KeyboardInstant instant = KeyboardInstant.getKeyboardInstant();

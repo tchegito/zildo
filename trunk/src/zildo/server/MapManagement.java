@@ -137,6 +137,9 @@ public class MapManagement {
 	    int modx,mody;
 	    int on_map;           // La case où se déplace le joueur
 	    
+		if (currentMap == null) {
+			return false;
+		}
 		
 		if (tx<0 || ty<0 || 
 		    tx>(currentMap.getDim_x()-1)*16+15 ||
@@ -269,8 +272,9 @@ public class MapManagement {
 		float x=p_zildo.getX();
 		float y=p_zildo.getY();
 		// Store the changing point to use it when processing map swap
-		changingMapPoint=currentMap.isChangingMap(x,y);
-	
+		if (currentMap != null) { 
+			changingMapPoint=currentMap.isChangingMap(x,y);
+		}
 		return (changingMapPoint !=null);
 	}
 	
@@ -496,6 +500,8 @@ public class MapManagement {
 	}
 
     public void updateMap() {
-        this.currentMap.update();
+    	if (currentMap != null) {
+    		currentMap.update();
+    	}
     }
 }
