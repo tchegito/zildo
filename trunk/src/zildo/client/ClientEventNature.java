@@ -18,4 +18,8 @@ public enum ClientEventNature {
 	CHANGINGMAP_SCROLLOVER,		// Client has finished scrolling
 	SCRIPT;
 	
+	public boolean isChangingMap() {
+		int i=ordinal();
+		return (i>= CHANGINGMAP_ASKED.ordinal() && i<=CHANGINGMAP_SCROLLOVER.ordinal());
+	}
 }

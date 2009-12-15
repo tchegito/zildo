@@ -7,14 +7,15 @@ import zildo.monde.map.Point;
 public class ActionElement extends AnyElement {
 
     public enum ActionKind {
-        pos, moveTo, speak;
+        pos, moveTo, speak, script, angle;
     }
 
     public String who;
     public ActionKind kind;
     public Point location;
     public String text;
-
+    public int val;
+    
     @Override
     public void parse(Element p_elem) {
         who = p_elem.getAttribute("who");
@@ -37,6 +38,10 @@ public class ActionElement extends AnyElement {
             case pos:
                 location = Point.fromString(value);
                 break;
+            case script:
+            case angle:
+            	val=Integer.valueOf(value);
+            	break;
         }
     }
 }
