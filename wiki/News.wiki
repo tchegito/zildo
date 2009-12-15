@@ -4,6 +4,7 @@
 
  * resource bundle for menu (english/french)
  * server configuration in game
+ * cinematic scenes via scripting
 
 = Version 1.091 =
 
