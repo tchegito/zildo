@@ -119,7 +119,7 @@ public class PlayerManagement {
 		}
 		if (heros.isAlive()) {
 			
-			if (heros.getEn_bras() == null) {
+			if (heros.getEn_bras() == null && gamePhase.moves) {
 				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ATTACK)) {
 					keyPressAttack();
 				} else {

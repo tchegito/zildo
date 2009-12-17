@@ -137,14 +137,12 @@ public class PersoNJ extends Perso {
 				}
 			}
 	
-			if (isAlerte() && !MouvementPerso.SCRIPT_VOLESPECTRE.equals(quel_deplacement)) {
+			if (isAlerte() && MouvementPerso.SCRIPT_VOLESPECTRE != quel_deplacement) {
 				// Zildo has been caught, so the monster try to reach him, or run away (hen)
 				boolean fear=this.getQuel_deplacement()==MouvementPerso.SCRIPT_POULE;
 				reachAvoidTarget(zildo, fear);
 			} else {
 				switch (this.getQuel_deplacement()) {
-					case SCRIPT_IMMOBILE:
-						break;
 					case SCRIPT_OBSERVE:
 						// Persos qui regardent en direction de Zildo
 						xx=(int) (getX() - zildo.getX());
@@ -162,7 +160,7 @@ public class PersoNJ extends Perso {
 					case SCRIPT_VOLESPECTRE:
 						double alpha;
 						if (cptMouvement==100) {
-							if (quel_spr.equals(PersoDescription.CORBEAU)) {
+							if (quel_spr == PersoDescription.CORBEAU) {
 								// Corbeau : on centre la zone de d‚placement sur Zildo}
 								int pasx, pasy;
 								if ((int)zildo.x / 16 > x / 16) {
@@ -178,13 +176,13 @@ public class PersoNJ extends Perso {
 							}
 							attente=1+(int)Math.random()*5;
 							determineDestination();
-							dx=(int)((dx+Math.random()*20.0f-10.0f-x)/2);
-							dy=(int)((dy+Math.random()*20.0f-10.0f-y)/2);
+							target.x=(int)((target.x+Math.random()*20.0f-10.0f-x)/2);
+							target.y=(int)((target.y+Math.random()*20.0f-10.0f-y)/2);
 							cptMouvement=0;
 						} else if (attente!=0) {
 							attente--;
 						} else {
-							if (quel_spr.equals(PersoDescription.CORBEAU)) {
+							if (quel_spr == PersoDescription.CORBEAU) {
 								if (pos_seqsprite!=0) {
 									pos_seqsprite=(4*Constantes.speed)+(pos_seqsprite-4*Constantes.speed+1) % (8*Constantes.speed);
 								} else {
@@ -202,9 +200,9 @@ public class PersoNJ extends Perso {
 							alpha=Math.PI*(cptMouvement/100.0f)-Math.PI/2.0f;
 							z=(float) (2.0f+10.0f*Math.sin(alpha+Math.PI/2.0f));
 							alpha=(Math.PI/100.0f)*Math.cos(alpha);
-							x+=dx*alpha;
-							y+=dy*alpha;
-							if (dx<0) {
+							x+=target.x*alpha;
+							y+=target.y*alpha;
+							if (target.x<0) {
 								angle=Angle.EST;
 							} else angle=Angle.NORD;
 							cptMouvement++;
@@ -216,16 +214,15 @@ public class PersoNJ extends Perso {
 							break;
 						}	// Sinon elle agit comme les scripts de zone
 					default:
-						if (this.getX() == this.getDx() &&
-							this.getY() == this.getDy()) {
-							setDx(-1);
-							if (quel_deplacement!=MouvementPerso.SCRIPT_ABEILLE &&
-									(quel_deplacement!=MouvementPerso.SCRIPT_RAT || Hasard.lanceDes(8))) {
-								setAttente(10+(int) (Math.random()*20));
-							}
-						}
+                       if (target != null && this.getX() == target.x && this.getY() == target.y) {
+                    	   target=null;
+                            if (quel_deplacement != MouvementPerso.SCRIPT_ABEILLE
+                                    && (quel_deplacement != MouvementPerso.SCRIPT_RAT || Hasard.lanceDes(8))) {
+                                setAttente(10 + (int) (Math.random() * 20));
+                            }
+                        }
 						if (this.getAttente()!=0) {
-							if (getQuel_spr().equals(PersoDescription.BAS_GARDEVERT)) {
+							if (getQuel_spr() == PersoDescription.BAS_GARDEVERT) {
 								//Garde vert => Il tourne la tˆte pour faire une ronde}
 								if (this.getAttente()==1 && cptMouvement<2) {
 									if (!alerte && lookForZildo(Angle.rotate(angle, PersoGardeVert.mouvetete[cptMouvement]))) {
@@ -241,19 +238,20 @@ public class PersoNJ extends Perso {
 							this.setAttente(getAttente() - 1);
 						} else {
 							// On déplace le PNJ
-							if (this.getDx() == -1) {
+							if (target == null && MouvementPerso.SCRIPT_IMMOBILE!= quel_deplacement) {
 								//Pas de destination, donc on en fixe une dans la zone de déplacement
 								cptMouvement=0;
 					
-								if (quel_deplacement.equals(MouvementPerso.SCRIPT_ABEILLE)) {
-									dx=(int)(x+(5.0f+Math.random()*10.0f)*Math.cos(2.0f*Math.PI*Math.random()));
-									dy=(int)(y+(5.0f+Math.random()*10.0f)*Math.sin(2.0f*Math.PI*Math.random()));
+								if (quel_deplacement == MouvementPerso.SCRIPT_ABEILLE) {
+									target=new Point();
+									target.x=(int)(x+(5.0f+Math.random()*10.0f)*Math.cos(2.0f*Math.PI*Math.random()));
+									target.y=(int)(y+(5.0f+Math.random()*10.0f)*Math.sin(2.0f*Math.PI*Math.random()));
 								} else {
 									determineDestination();
 								}
 							}
 							float vitesse=0.5f;
-							if (quel_deplacement.equals(MouvementPerso.SCRIPT_RAT)) {
+							if (quel_deplacement == MouvementPerso.SCRIPT_RAT) {
 								// Script du rat => plus rapide, et crache des pierres}
 								vitesse+=1;
 								pos_seqsprite=pos_seqsprite % (8*Constantes.speed-1);
@@ -265,34 +263,39 @@ public class PersoNJ extends Perso {
 											,null);
 									attente=(int) (Math.random()*5);
 								}
-							} else if (quel_deplacement.equals(MouvementPerso.SCRIPT_ELECTRIQUE)) {
+							} else if (quel_deplacement == MouvementPerso.SCRIPT_ELECTRIQUE) {
 								vitesse=0.2f;
 							}
 							
-							Pointf loc=reachDestination(vitesse);
-							x=loc.x;
-							y=loc.y;
-							
-							// suite_mouvement
-							if (quel_deplacement.equals(MouvementPerso.SCRIPT_ELECTRIQUE)) {
-								angle=Angle.NORD;
-							} else if (quel_deplacement.equals(MouvementPerso.SCRIPT_ABEILLE)) {
-								angle=Angle.fromInt(angle.value & 2);
-							}
-							if (!quel_deplacement.equals(MouvementPerso.SCRIPT_VOLESPECTRE)) {
-								// Collision ?
-								if (!quel_deplacement.equals(MouvementPerso.SCRIPT_VOLESPECTRE) && EngineZildo.mapManagement.collide((int) getX(),(int) getY(),this)) {
-									this.setX ( sx);
-									this.setY ( sy);
-									this.setDx(-1);
-									this.setAttente(10 + (int) (Math.random()*20));
-								} else {
-									this.setPos_seqsprite ( (getPos_seqsprite() + 1) % 512);
+							if (target != null) {	// Move character if he has a target
+								Pointf loc=reachDestination(vitesse);
+								x=loc.x;
+								y=loc.y;
+								
+								// suite_mouvement
+								if (quel_deplacement.equals(MouvementPerso.SCRIPT_ELECTRIQUE)) {
+									angle=Angle.NORD;
+								} else if (quel_deplacement.equals(MouvementPerso.SCRIPT_ABEILLE)) {
+									angle=Angle.fromInt(angle.value & 2);
+								}
+								if (!quel_deplacement.equals(MouvementPerso.SCRIPT_VOLESPECTRE)) {
+									// Collision ?
+									if (EngineZildo.mapManagement.collide((int) getX(),(int) getY(),this)) {
+										this.setX ( sx);
+										this.setY ( sy);
+										if (nbShock++ == 3) {
+											target=null;
+											nbShock=0;
+										}
+										this.setAttente(10 + (int) (Math.random()*20));
+									} else {
+										this.setPos_seqsprite ( (getPos_seqsprite() + 1) % 512);
+									}
 								}
 							}
 						}
 					}
-				//}
+				
 			}
 		}
 		
@@ -346,7 +349,7 @@ public class PersoNJ extends Perso {
 			case POULE:
 			   //Poule
 			   add_spr=(getPos_seqsprite() % (8*Constantes.speed)) / (2*Constantes.speed);
-			   if (getDx()>getX())
+			   if (target != null && target.x>getX())
 				   add_spr+=41;
 				break;
 			case VIEUX:
@@ -447,7 +450,7 @@ public class PersoNJ extends Perso {
 				setY(sy);
 				setPos_seqsprite(0);
 				setAlerte(false);
-				setDx(-1);
+				target=null;
 				setAttente(10);	
 				// On replace la zone de déplacement autour de l'ennemi
 				setZone_deplacement(EngineZildo.mapManagement.range(x-16*5, y-16*5, x+16*5, y+16*5));

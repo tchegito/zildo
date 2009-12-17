@@ -102,12 +102,14 @@ public class PersoManagement {
     }
 	
     public Perso getNamedPerso(String p_name) {
-    	for (Perso p : tab_perso) {
-    		if (p_name.equalsIgnoreCase(p.getNom())) {
-    			return p;
-    		}
-    	}
-    	return null;
+        if (p_name != null && !"".equals(p_name)) {
+            for (Perso p : tab_perso) {
+                if (p_name.equalsIgnoreCase(p.getNom())) {
+                    return p;
+                }
+            }
+        }
+        return null;
     }
     
 	///////////////////////////////////////////////////////////////////////////////////////

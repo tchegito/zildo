@@ -9,7 +9,8 @@ public class MapDisplay {
 
     private Point camera;		// Current camera locatino
 	private Point targetCamera;	// Target camera location (if not null, camera moves smoothly to it)
-
+	private SpriteEntity focused;
+	
 	private Angle scrollingAngle;
 	private boolean capturing;	// TRUE=we capture screen (for scrolling map)
 	
@@ -29,10 +30,9 @@ public class MapDisplay {
 	// centerCamera
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void centerCamera() {
-		if (targetCamera == null) {
-			SpriteEntity zildo=ClientEngineZildo.spriteDisplay.getZildo();
-			int x= (int) zildo.x;
-			int y= (int) zildo.y;
+		if (focused != null) {
+			int x= (int) focused.x;
+			int y= (int) focused.y;
 			
 			camera.x=x-16*10;
 		
@@ -52,7 +52,7 @@ public class MapDisplay {
 	        if (camera.y < 0) {
 	            camera.y = 0;
 	        }
-		} else {
+		} else if (targetCamera != null) {
 			// Move the camera to the target
 			if (camera.x < targetCamera.x) {
 				camera.x+=2;
@@ -147,4 +147,7 @@ public class MapDisplay {
 		return scrollingAngle;
 	}
 
+	public void setFocusedEntity(SpriteEntity p_entity) {
+		focused=p_entity;
+	}
 }

@@ -584,7 +584,7 @@ public class Area {
 				zo.setY2(map.roundAndRange(perso.getY() + 16 * 5, Area.ROUND_Y));
 				perso.setZone_deplacement(zo);
 				perso.setPv(3);
-				perso.setDx(-1);
+				perso.setTarget(null);
 				perso.setMouvement(MouvementZildo.VIDE);
 
 				if (perso.getQuel_spr().first() >= 128) {

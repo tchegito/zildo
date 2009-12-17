@@ -7,18 +7,22 @@ import zildo.monde.map.Point;
 public class ActionElement extends AnyElement {
 
     public enum ActionKind {
-        pos, moveTo, speak, script, angle;
+        pos, moveTo, speak, script, angle, wait, sound;
     }
 
-    public String who;
+    public String who; // Characters
+    public String what; // Camera, elements
+    public boolean unblock;
     public ActionKind kind;
     public Point location;
     public String text;
     public int val;
-    
+
     @Override
     public void parse(Element p_elem) {
         who = p_elem.getAttribute("who");
+        what = p_elem.getAttribute("what");
+        unblock = "true".equalsIgnoreCase(p_elem.getAttribute("unblock"));
         String value = null;
         for (ActionKind k : ActionKind.values()) {
             value = p_elem.getAttribute(k.toString());
@@ -32,6 +36,7 @@ public class ActionElement extends AnyElement {
         }
         switch (kind) {
             case speak:
+            case sound:
                 text = value;
                 break;
             case moveTo:
@@ -40,8 +45,9 @@ public class ActionElement extends AnyElement {
                 break;
             case script:
             case angle:
-            	val=Integer.valueOf(value);
-            	break;
+            case wait:
+                val = Integer.valueOf(value);
+                break;
         }
     }
 }
