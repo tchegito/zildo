@@ -1,20 +1,19 @@
 package zildo.fwk.script.command;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
-import zildo.SinglePlayer;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.script.xml.ActionElement;
 import zildo.fwk.script.xml.ActionsElement;
 import zildo.fwk.script.xml.AnyElement;
 import zildo.fwk.script.xml.ScriptElement;
 import zildo.fwk.script.xml.StartElement;
-import zildo.monde.map.Angle;
-import zildo.monde.map.Point;
-import zildo.monde.quest.actions.ScriptAction;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.server.EngineZildo;
 
 public class ScriptExecutor {
@@ -22,7 +21,10 @@ public class ScriptExecutor {
 	ScriptElement script = null;
 	int cursor;
 	boolean userEndedAction;
-	Set<Perso> involved;
+	Set<Perso> involved=new HashSet<Perso>();
+	ActionExecutor actionExec;
+	
+	List<ActionElement> currentActions=new ArrayList<ActionElement>();
 	
 	/**
 	 * Ask for engine to execute the given script.
@@ -31,7 +33,7 @@ public class ScriptExecutor {
 	public void execute(ScriptElement p_script) {
 		script=p_script;
 		cursor=0;
-		involved=new HashSet<Perso>();
+		actionExec=new ActionExecutor(this);
 	}
 	
 	public void render() {
@@ -47,6 +49,16 @@ public class ScriptExecutor {
 				} else if (ActionElement.class.isAssignableFrom(clazz)) {
 					renderAction((ActionElement) currentNode, true);
 				}
+				
+				// Render current actions too
+				for (Iterator<ActionElement> it=currentActions.iterator();it.hasNext();) {
+					ActionElement action=it.next();
+					if (action.done) {	// It's done, so remove the action
+						it.remove();
+					} else {
+						renderAction(action, false);
+					}
+				}
 			}
 		}
 	}
@@ -57,7 +69,12 @@ public class ScriptExecutor {
 			p.setGhost(false);
 		}
 		involved.clear();
+		currentActions.clear();
 		script=null;
+		actionExec=null;
+		// Focus on Zildo
+		SpriteEntity zildo=ClientEngineZildo.spriteDisplay.getZildo();
+		ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
 	}
 	
 	private void renderStart(StartElement p_start) {
@@ -84,66 +101,17 @@ public class ScriptExecutor {
 				}
 			}
 		} else {
-			if (p_action.waiting) {
-				waitForEndAction(p_action);
-				achieved=p_action.done;
-			} else {
-				String who=p_action.who;
-				Perso perso=EngineZildo.persoManagement.getNamedPerso(who);
-				if (perso != null) {
-					involved.add(perso);	// Note that this perso is concerned
-				}
-				Point location=p_action.location;
-				String text=p_action.text;
-				switch (p_action.kind) {
-				case pos:
-					perso.x=location.x;
-					perso.y=location.y;
-					achieved=true;
-					break;
-				case moveTo:
-		            perso.setGhost(true);
-		            perso.setDx(location.x);
-		            perso.setDy(location.y);
-		            break;
-				case speak:
-					EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(text));
-					userEndedAction=false;
-					break;
-				case script:
-					perso.setQuel_deplacement(MouvementPerso.fromInt(p_action.val));
-					achieved=true;
-					break;
-				case angle:
-					perso.setAngle(Angle.fromInt(p_action.val));
-					achieved=true;
-				}
-				p_action.done=achieved;
-				p_action.waiting=!achieved;
+			achieved=actionExec.render(p_action);
+		}
+		if (p_moveCursor) {
+			if (p_action.unblock) {	// Action is unblocking, so go next, but keep it in a list
+				currentActions.add(p_action);
+				achieved=true;
+			}
+			if (achieved) {
+				cursor++;
 			}
 		}
-		if (p_moveCursor && achieved) {
-			cursor++;
-		}
-	}
-	
-	private void waitForEndAction(ActionElement p_action) {
-		String who=p_action.who;
-		Perso perso=EngineZildo.persoManagement.getNamedPerso(who);
-		Point location=p_action.location;
-		boolean achieved=false;
-		switch (p_action.kind) {
-		case moveTo:
-	        if (perso.x == location.x && perso.y == location.y) {
-	        	achieved=true;
-	        }
-	        break;
-		case speak:
-			achieved=userEndedAction;
-			break;
-		}
-		p_action.waiting=!achieved;
-		p_action.done=achieved;
 	}
 	
 	public boolean isScripting() {

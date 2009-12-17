@@ -16,6 +16,7 @@ import zildo.fwk.script.xml.ScriptElement;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.Game;
 import zildo.monde.map.Area;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
 import zildo.server.state.ClientState;
@@ -93,6 +94,10 @@ public class SinglePlayer {
         }
         ClientEngineZildo.spriteDisplay.setZildoId(zildoId);
 
+        // Focus on zildo
+        SpriteEntity zildo=EngineZildo.persoManagement.getZildo();
+        ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
+        
         while (!done && !state.gameOver) {
         	states.clear();
 

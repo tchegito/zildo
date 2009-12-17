@@ -194,6 +194,9 @@ public class NetClient extends NetSend {
 		
 		map.setName(p_packet.name);
 		ClientEngineZildo.mapDisplay.setCurrentMap(map);
+		// Focus on Zildo
+		SpriteEntity zildo=ClientEngineZildo.spriteDisplay.getZildo();
+		ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
 	}
 	
 	private void receiveMapPart(GetPacket p_packet) {

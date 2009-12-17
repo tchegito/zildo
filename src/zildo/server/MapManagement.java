@@ -348,8 +348,7 @@ public class MapManagement {
 					dest.x=(int) zildo.x +16;
 				}
                 zildo.setGhost(true);
-                zildo.setDx(dest.x);
-                zildo.setDy(dest.y);
+                zildo.setTarget(dest);
 				zildo.finaliseComportement(EngineZildo.compteur_animation);
 				return true;
 			} else {

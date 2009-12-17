@@ -30,7 +30,8 @@ public abstract class Perso extends Element {
     protected MouvementPerso quel_deplacement;      // Script
     protected PersoDescription quel_spr;				
     protected int attente;				// =0 => pas d'attente
-    protected int dx,dy,dz;				// Destination
+    protected Point target;				// Destination
+    protected int nbShock;				// Number of times character hit something going to his target
     protected float px,py;				// Quand le perso est propulsé (touché)
     protected int pos_seqsprite;
     private Element en_bras;			// Si c'est Zildo, l'objet qu'il porte.Note : 10=poule
@@ -110,30 +111,6 @@ public abstract class Perso extends Element {
 
 	public void setAttente(int attente) {
 		this.attente = attente;
-	}
-
-	public int getDx() {
-		return dx;
-	}
-
-	public void setDx(int dx) {
-		this.dx = dx;
-	}
-
-	public int getDy() {
-		return dy;
-	}
-
-	public void setDy(int dy) {
-		this.dy = dy;
-	}
-
-	public int getDz() {
-		return dz;
-	}
-
-	public void setDz(int dz) {
-		this.dz = dz;
 	}
 
 	public float getPx() {
@@ -288,35 +265,34 @@ public abstract class Perso extends Element {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// determineDestination
 	///////////////////////////////////////////////////////////////////////////////////////
-	// Set a location (dx,dy) in the current perso, inside the movement area (zone_deplacement)
+	// Set a location target(x,y) in the current perso, inside the movement area (zone_deplacement)
 	// This is where we assign a new position, horizontally and/or vertically depending on the
 	// character's script.
 	///////////////////////////////////////////////////////////////////////////////////////
 	void determineDestination() {
 		int j=13+3;
 		while (true) {
-			this.dx=(int) this.getX();
-			this.dy=(int) this.getY();
+			target=new Point(x, y);
 	
 			// On déplace le perso soit horizontalement, soit verticalement,
 			// ou les 2 si c'est une poule. Car les poules ont la bougeotte.
 			if (j%2==0 || MouvementPerso.persoDiagonales.contains(quel_deplacement) )
-				this.dx+= (16*Math.random()*j) - 8*j;
+				target.x+= (16*Math.random()*j) - 8*j;
 	
 			if (j%2==1 || MouvementPerso.persoDiagonales.contains(quel_deplacement) )
-				this.dy+= (16*Math.random()*j) - 8*j;
+				target.y+= (16*Math.random()*j) - 8*j;
 	
 			j--; // On diminue le rayon jusqu'à être dans la zone
 	
-			if ((this.dx>=zone_deplacement.getX1() && this.dy>=zone_deplacement.getY1() &&
-				 this.dx<=zone_deplacement.getX2() && this.dy<=zone_deplacement.getY2()) ||
+			if ((target.x>=zone_deplacement.getX1() && target.y>=zone_deplacement.getY1() &&
+				 target.x<=zone_deplacement.getX2() && target.y<=zone_deplacement.getY2()) ||
 				(j==-1) )
 				break;
 		}
 	
 	    if (j==-1) {  // En cas de pépin
-			this.dx=zone_deplacement.getX1();
-			this.dy=zone_deplacement.getY1();
+			target.x=zone_deplacement.getX1();
+			target.y=zone_deplacement.getY1();
 	    }
 	}
 	
@@ -488,45 +464,68 @@ public abstract class Perso extends Element {
 		}
 	}
 	
-	/**
-	 * Shouldn't modify heros location !
-	 * @param p_speed
-	 * @return int
-	 */
-	public Pointf reachDestination(float p_speed) {
-		int immo=0;
-		Pointf pos=new Pointf(x, y);
-		if (x < dx) {
-			pos.x+= p_speed;
-			if (pos.x > dx) {
-				pos.x=dx;
-			}
-			angle = Angle.EST;
-		} else if (x > dx) {
-			pos.x-= p_speed;
-			if (pos.x < dx) {
-				pos.x=dx;
-			}
-			angle=Angle.OUEST;
-		} else {
-			immo++;
+    /**
+     * Shouldn't modify heros location !
+     * @param p_speed
+     * @return int
+     */
+    public Pointf reachDestination(float p_speed) {
+        int immo = 0;
+        Pointf pos = new Pointf(x, y);
+        if (target==null) {
+            return pos;
+        }
+        if (x < target.x - 0.5f) {
+            pos.x += p_speed;
+            if (pos.x > target.x) {
+                pos.x = target.x;
+            }
+            angle = Angle.EST;
+        } else if (x > target.x + 0.5f) {
+            pos.x -= p_speed;
+            if (pos.x < target.x) {
+                pos.x = target.x;
+            }
+            angle = Angle.OUEST;
+        } else {
+            immo++;
+        }
+        if (y < target.y - 0.5f) {
+            pos.y += p_speed;
+            if (pos.y > target.y + 0.5f) {
+                pos.y = target.y;
+            }
+            angle = Angle.SUD;
+        } else if (y > target.y + 0.5f) {
+            pos.y -= p_speed;
+            if (pos.y < target.y - 0.5f) {
+                pos.y = target.y;
+            }
+            angle = Angle.NORD;
+        } else {
+            immo++;
+        }
+
+        if (immo == 2) {
+            target=null;
+        }
+
+        return pos;
+    }
+
+	public Point getTarget() {
+		return target;
+	}
+
+	public void setTarget(Point target) {
+		this.target = target;
+	}
+	
+	public boolean hasReachedTarget() {
+		if (x == target.x && y == target.y) {
+			return true;
 		}
-		if (y < dy) {
-			pos.y+= p_speed;
-			if (pos.y > dy) {
-				pos.y=dy;
-			}
-			angle=Angle.SUD;
-		} else if (y > dy) {
-			pos.y-= p_speed;
-			if (pos.y < dy) {
-				pos.y=dy;
-			}
-			angle=Angle.NORD;
-		} else {
-			immo++;
-		}
-		
-		return pos;
+		return (x >= target.x - 0.5f && x <= target.x + 0.5f && 
+			    y >= target.y - 0.5f && y <= target.y + 0.5f);
 	}
 }

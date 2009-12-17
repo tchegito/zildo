@@ -86,8 +86,7 @@ public class PersoZildo extends Perso {
 
         setX(p_posX); // 805); //601-32;//-500);
         setY(p_posY); // 973); //684+220;//-110);
-		setDx(0);
-		setDy(0);
+		target=null;
 		setAngle(Angle.NORD);
 		setPos_seqsprite(-1);
 		setMouvement(MouvementZildo.VIDE);
@@ -389,38 +388,40 @@ public class PersoZildo extends Perso {
 		switch (mouvement) {
 			 // Bouclier
 			case VIDE:
-				bouclier.setForeground(false);
-				switch (angle) {
-					case NORD:
-						bouclier.setX(xx+8);
-						bouclier.setY(yy+2);
-						bouclier.setZ(5-1-decalbouclier3y[nSpr]);
-						bouclier.setNSpr(103);
-						bouclier.setNBank(SpriteBank.BANK_ZILDO);
-						break;
-					case EST:
-						bouclier.setX(xx+9);	// PASCAL : +10
-						bouclier.setY(yy-2+ decalbouclier2y[nSpr-ZildoDescription.RIGHT_FIXED.ordinal()]);
-						bouclier.setZ(0.0f);
-						bouclier.setNSpr(104);
-						bouclier.setNBank(SpriteBank.BANK_ZILDO);
-						break;
-					case SUD:
-						bouclier.setX(xx-4);	// PASCAL : -3)
-						bouclier.setY(yy+4);
-						bouclier.setZ(1+1-decalboucliery[nSpr-ZildoDescription.DOWN_FIXED.ordinal()]);
-						bouclier.setNSpr(105);
-						bouclier.setNBank(SpriteBank.BANK_ZILDO);
-						break;
-					case OUEST:
-						bouclier.setX(xx-8);
-						bouclier.setY(yy-2+ decalbouclier2y[nSpr-ZildoDescription.LEFT_FIXED.ordinal()]);
-						bouclier.setZ(0.0f);
-						bouclier.setNSpr(106);
-						bouclier.setNBank(SpriteBank.BANK_ZILDO);
-						break;
+				if (hasItem(ItemKind.SHIELD)) {
+					bouclier.setForeground(false);
+					switch (angle) {
+						case NORD:
+							bouclier.setX(xx+8);
+							bouclier.setY(yy+2);
+							bouclier.setZ(5-1-decalbouclier3y[nSpr]);
+							bouclier.setNSpr(103);
+							bouclier.setNBank(SpriteBank.BANK_ZILDO);
+							break;
+						case EST:
+							bouclier.setX(xx+9);	// PASCAL : +10
+							bouclier.setY(yy-2+ decalbouclier2y[nSpr-ZildoDescription.RIGHT_FIXED.ordinal()]);
+							bouclier.setZ(0.0f);
+							bouclier.setNSpr(104);
+							bouclier.setNBank(SpriteBank.BANK_ZILDO);
+							break;
+						case SUD:
+							bouclier.setX(xx-4);	// PASCAL : -3)
+							bouclier.setY(yy+4);
+							bouclier.setZ(1+1-decalboucliery[nSpr-ZildoDescription.DOWN_FIXED.ordinal()]);
+							bouclier.setNSpr(105);
+							bouclier.setNBank(SpriteBank.BANK_ZILDO);
+							break;
+						case OUEST:
+							bouclier.setX(xx-8);
+							bouclier.setY(yy-2+ decalbouclier2y[nSpr-ZildoDescription.LEFT_FIXED.ordinal()]);
+							bouclier.setZ(0.0f);
+							bouclier.setNSpr(106);
+							bouclier.setNBank(SpriteBank.BANK_ZILDO);
+							break;
+					}
+					bouclier.setVisible(true);
 				}
-				bouclier.setVisible(true);
 				break;
 	
 			case BRAS_LEVES:

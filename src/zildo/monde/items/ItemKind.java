@@ -9,7 +9,8 @@ public enum ItemKind {
 	WHIP(ElementDescription.BAR_HORIZONTAL), 
 	BOW(ElementDescription.ARROW_UP),
 	BOMB(ElementDescription.BOMB),
-	FLUT(ElementDescription.FLUT);
+	FLUT(ElementDescription.FLUT),
+	SHIELD(null);
 	
 	public ElementDescription representation;
 	
