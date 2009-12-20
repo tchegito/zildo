@@ -60,5 +60,8 @@ public enum ElementDescription  implements SpriteDescription {
 		return this.ordinal();
 	}
 	
-
+	public boolean isMoney() {
+		int i=ordinal();
+		return (i >=GREENMONEY1.ordinal() && i<=REDMONEY3.ordinal());		
+	}
 }

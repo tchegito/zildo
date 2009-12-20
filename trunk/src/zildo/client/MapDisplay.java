@@ -30,7 +30,7 @@ public class MapDisplay {
 	// centerCamera
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void centerCamera() {
-		if (focused != null) {
+		if (focused != null && targetCamera == null) {
 			int x= (int) focused.x;
 			int y= (int) focused.y;
 			

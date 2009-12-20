@@ -29,6 +29,8 @@ public class EngineZildo {
     public static Game game;
     public static int compteur_animation;
 	
+    private static ClientEvent askedEvent;
+    
 	// For debug
 	public static int extraSpeed=1;
 	
@@ -106,7 +108,8 @@ public class EngineZildo {
 		// Animate the world
 		// 1) Players
 		boolean block=false;
-		for (ClientState state : p_clientStates) {
+		for (ClientState 
+				state : p_clientStates) {
 			// If client has pressed keys, we manage them, then clear.
 			playerManagement.manageKeyboard(state);
 			state.keys=null;
@@ -115,10 +118,16 @@ public class EngineZildo {
 			if (!game.multiPlayer && mapManagement.isChangingMap(state.zildo) && state.event.nature==ClientEventNature.NOEVENT) {
 				ChainingPoint ch=mapManagement.getChainingPoint();
 				if (ch.isBorder()) {
-					state.event.nature=ClientEventNature.CHANGINGMAP_SCROLL_ASKED;
+					state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_SCROLL_ASKED);
 				} else {
-					state.event.nature=ClientEventNature.CHANGINGMAP_ASKED;
+					state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_ASKED);
 				}
+				state.event.chPoint=ch;
+				state.event.mapChange=true;
+			} else if (askedEvent != null) {
+				// Use the asked event and reset it
+				state.event=askedEvent;
+				askedEvent=null;
 			}
 		}
 		
@@ -144,9 +153,9 @@ public class EngineZildo {
         ClientEvent retEvent = p_event;
 
         switch (p_event.nature) {
-            case CHANGINGMAP_FADEOUT_OVER:
+            case FADEOUT_OVER:
             case CHANGINGMAP_SCROLL_WAIT_MAP:
-                mapManagement.processChangingMap();
+                mapManagement.processChangingMap(p_event.chPoint);
                 ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
                 if (p_event.nature == ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP) {
                     retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_START;
@@ -179,5 +188,9 @@ public class EngineZildo {
 	
 		// Load map
 		mapManagement.charge_map(mapname);
+	}
+	
+	public static void askEvent(ClientEvent p_event) {
+		askedEvent=p_event;
 	}
 }
