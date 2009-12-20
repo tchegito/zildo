@@ -296,8 +296,8 @@ public class MapManagement {
 	// -load new map
 	// -set Zildo's position and angle
 	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean processChangingMap() {
-		if (changingMapPoint != null) {
+	public boolean processChangingMap(ChainingPoint p_changingMapPoint) {
+		if (p_changingMapPoint != null) {
 			// Player is currently on a changing point
 			// So we have 3 things to do:
 			// 1) turn him on the right angle
@@ -306,14 +306,14 @@ public class MapManagement {
 			PersoZildo zildo=EngineZildo.persoManagement.getZildo();
 	
 			// 1/3 : angle
-			mapScrollAngle=changingMapPoint.getAngle((int) zildo.getX(),(int) zildo.getY(),zildo.getAngle());
+			mapScrollAngle=p_changingMapPoint.getAngle((int) zildo.getX(),(int) zildo.getY(),zildo.getAngle());
 			zildo.setAngle(mapScrollAngle);
-			int orderX=changingMapPoint.getOrderX();
-			int orderY=changingMapPoint.getOrderY();
+			int orderX=p_changingMapPoint.getOrderX();
+			int orderY=p_changingMapPoint.getOrderY();
 	
 			// 2/3 : load new map
 			String previousMapName=currentMap.getName();
-			String newMapName=changingMapPoint.getMapname();
+			String newMapName=p_changingMapPoint.getMapname();
 			int previousDimX=currentMap.getDim_x();
 			int previousDimY=currentMap.getDim_y();
 			boolean isAlongBorder=currentMap.isAlongBorder((int) zildo.getX(), (int) zildo.getY());

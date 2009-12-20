@@ -184,20 +184,20 @@ public class ClientEngineZildo {
 			switch (p_event.nature) {
 			case CHANGINGMAP_ASKED:
 				// Changing map : 1/3 we launch the fade out
-				retEvent.nature=ClientEventNature.CHANGINGMAP_FADEOUT;
+				retEvent.nature=ClientEventNature.FADEOUT;
 				guiDisplay.fadeOut();
 				break;
-			case CHANGINGMAP_FADEOUT:
+			case FADEOUT:
 				if (guiDisplay.isFadeOver()) {
-					retEvent.nature=ClientEventNature.CHANGINGMAP_FADEOUT_OVER;
+					retEvent.nature=ClientEventNature.FADEOUT_OVER;
 				}
 				break;
 			case CHANGINGMAP_LOADED:
 	            // Changing map : 2/3 we load the new map and launch the fade in
-				retEvent.nature = ClientEventNature.CHANGINGMAP_FADEIN;
+				retEvent.nature = ClientEventNature.FADEIN;
 				guiDisplay.fadeIn();
 				break;
-			case CHANGINGMAP_FADEIN:
+			case FADEIN:
 				if (guiDisplay.isFadeOver()) {
 					// Changing map : 3/3 we unblock the player
 		        	retEvent.nature=ClientEventNature.NOEVENT;
