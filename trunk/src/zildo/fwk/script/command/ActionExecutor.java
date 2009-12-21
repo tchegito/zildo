@@ -2,6 +2,9 @@ package zildo.fwk.script.command;
 
 import zildo.SinglePlayer;
 import zildo.client.ClientEngineZildo;
+import zildo.client.ClientEvent;
+import zildo.client.ClientEventNature;
+import zildo.fwk.filter.FilterEffect;
 import zildo.fwk.script.xml.ActionElement;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
@@ -83,6 +86,21 @@ public class ActionExecutor {
                 case wait:
                 	count=p_action.val;
                 	break;
+                case fadeIn:
+                	EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_IN, FilterEffect.fromInt(p_action.val)));
+                	break;
+                case fadeOut:
+                	EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_OUT, FilterEffect.fromInt(p_action.val)));
+                	break;
+                case map:
+        			EngineZildo.mapManagement.charge_map(p_action.text);
+        			ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+                	achieved=true;
+                	break;
+                case focus:
+                    ClientEngineZildo.mapDisplay.setFocusedEntity(perso);
+                    achieved = true;
+                    break;
             }
 
             p_action.done = achieved;
@@ -112,6 +130,10 @@ public class ActionExecutor {
                 break;
             case wait:
             	achieved = (count-- == 0);
+            	break;
+            case fadeIn:
+            case fadeOut:
+            	achieved=ClientEngineZildo.guiDisplay.isFadeOver();
             	break;
         }
         p_action.waiting = !achieved;

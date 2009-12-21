@@ -14,7 +14,9 @@ import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.FilterCommand;
+
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.filter.FilterEffect;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
@@ -488,15 +490,15 @@ public class GUIDisplay {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// fadeIn
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void fadeIn() {
-		filterCommand.fadeIn();
+	public void fadeIn(FilterEffect... p_effects) {
+		filterCommand.fadeIn(p_effects);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// fadeOut
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void fadeOut() {
-		filterCommand.fadeOut();
+	public void fadeOut(FilterEffect... p_effects) {
+		filterCommand.fadeOut(p_effects);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

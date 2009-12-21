@@ -7,7 +7,7 @@ import zildo.monde.map.Point;
 public class ActionElement extends AnyElement {
 
     public enum ActionKind {
-        pos, moveTo, speak, script, angle, wait, sound;
+        pos, moveTo, speak, script, angle, wait, sound, fadeIn, fadeOut, map, focus, spawn;
     }
 
     public String who; // Characters
@@ -37,6 +37,8 @@ public class ActionElement extends AnyElement {
         switch (kind) {
             case speak:
             case sound:
+            case map:
+            case focus:
                 text = value;
                 break;
             case moveTo:
@@ -46,6 +48,8 @@ public class ActionElement extends AnyElement {
             case script:
             case angle:
             case wait:
+            case fadeIn:
+            case fadeOut:
                 val = Integer.valueOf(value);
                 break;
         }

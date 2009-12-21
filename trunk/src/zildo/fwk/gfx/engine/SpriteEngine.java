@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector4f;
 import org.newdawn.slick.TrueTypeFont;
 
 import zildo.client.ClientEngineZildo;
+import zildo.fwk.ZUtils;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.SpritePrimitive;
@@ -295,7 +296,7 @@ public class SpriteEngine extends TextureEngine {
 		// Display every sprites
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glEnable(GL11.GL_BLEND);
-        GL11.glColor4f(1, 1, 1, 1);
+		float[] color=ZUtils.getFloat(GL11.GL_CURRENT_COLOR, 4);
 
 		// Respect order from bankOrder
 		boolean endSequence=false;
@@ -356,7 +357,7 @@ public class SpriteEngine extends TextureEngine {
 	                    GL11.glColor4f(0.5f + 0.5f * (float) Math.random(), 0.5f * (float) Math.random(), 0, 1);
 	                    break;
 	                default:
-	                    GL11.glColor4f(1, 1, 1, 1);
+	            		ZUtils.setCurrentColor(color);
 	                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 }
 				meshSprites[numBank].render(nbQuads);

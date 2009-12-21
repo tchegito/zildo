@@ -7,8 +7,12 @@ import zildo.Zildo;
 import zildo.client.gui.DialogDisplay;
 import zildo.client.gui.GUIDisplay;
 import zildo.fwk.FilterCommand;
+
 import zildo.fwk.filter.BilinearFilter;
 import zildo.fwk.filter.BlendFilter;
+import zildo.fwk.filter.BlurFilter;
+import zildo.fwk.filter.FadeFilter;
+import zildo.fwk.filter.FilterEffect;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
@@ -65,9 +69,9 @@ public class ClientEngineZildo {
 		if (!p_awt) {
 
 			filterCommand.addFilter(new BilinearFilter());
-			//filterCommand.addFilter(new BlurFilter());
+			filterCommand.addFilter(new BlurFilter());
 			filterCommand.addFilter(new BlendFilter());
-			//filterCommand.addFilter(new FadeFilter());
+			filterCommand.addFilter(new FadeFilter());
 			filterCommand.active(null, false);
 			filterCommand.active(BilinearFilter.class, true);
 
@@ -184,23 +188,27 @@ public class ClientEngineZildo {
 			switch (p_event.nature) {
 			case CHANGINGMAP_ASKED:
 				// Changing map : 1/3 we launch the fade out
-				retEvent.nature=ClientEventNature.FADEOUT;
-				guiDisplay.fadeOut();
+				retEvent.effect=FilterEffect.BLEND;
+			case FADE_OUT:
+				retEvent.nature=ClientEventNature.FADING_OUT;
+				guiDisplay.fadeOut(retEvent.effect);
 				break;
-			case FADEOUT:
+			case FADING_OUT:
 				if (guiDisplay.isFadeOver()) {
 					retEvent.nature=ClientEventNature.FADEOUT_OVER;
 				}
 				break;
 			case CHANGINGMAP_LOADED:
 	            // Changing map : 2/3 we load the new map and launch the fade in
-				retEvent.nature = ClientEventNature.FADEIN;
-				guiDisplay.fadeIn();
+			case FADE_IN:
+				retEvent.nature = ClientEventNature.FADING_IN;
+				guiDisplay.fadeIn(retEvent.effect);
 				break;
-			case FADEIN:
+			case FADING_IN:
 				if (guiDisplay.isFadeOver()) {
 					// Changing map : 3/3 we unblock the player
 		        	retEvent.nature=ClientEventNature.NOEVENT;
+	            	retEvent.mapChange = false;
 				}
 	        	break;
 	        case CHANGINGMAP_SCROLL_ASKED:
@@ -234,13 +242,12 @@ public class ClientEngineZildo {
 		            guiDisplay.setToDisplay_generalGui(true);
 	        	}
 	        	break;
-	        case SCRIPT: // Remove GUI when scripting
-	            guiDisplay.setToDisplay_generalGui(false);
-	            break;
-	        case NOEVENT:
-	            guiDisplay.setToDisplay_generalGui(true);
 		    }
 		}
+		// Remove GUI when scripting
+        guiDisplay.setToDisplay_generalGui(!p_event.script);
+		
+		
 	
 	    return retEvent;
 	}

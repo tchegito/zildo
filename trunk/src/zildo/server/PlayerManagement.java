@@ -57,12 +57,10 @@ public class PlayerManagement {
 		
 		// Determine the game phase
 		boolean ghost=heros.isGhost();
-		if (ghost) {
-			if (client.event.nature.isChangingMap()) {
-				gamePhase=GamePhase.MAPCHANGE;
-			} else {
-				gamePhase=GamePhase.SCRIPT;
-			}
+		if (client.event.mapChange) {
+			gamePhase=GamePhase.MAPCHANGE;
+		} else if (EngineZildo.scriptExecutor.isScripting()) {
+			gamePhase=GamePhase.SCRIPT;
 		} else if (dialogState.dialoguing) {
 			gamePhase=GamePhase.DIALOG;
 		} else {
@@ -89,7 +87,7 @@ public class PlayerManagement {
 			} else if (heros.isInventoring()) {
 				// Inside the zildo's inventory
 				handleInventory();
-			} else if (heros.isAlive()) {
+			} else if (heros.isAlive() && gamePhase.moves) {
 				// Regular moving on the map
 				handleRegularMoving();
 			}
