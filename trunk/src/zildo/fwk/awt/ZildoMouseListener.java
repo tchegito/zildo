@@ -15,43 +15,36 @@ public class ZildoMouseListener implements MouseListener, MouseMotionListener {
 		panel=p_panel;
 	}
 	
-	@Override
 	public void mouseClicked(MouseEvent mouseevent) {
 		// Drop selected tile on map
 		
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent mouseevent) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void mouseExited(MouseEvent mouseevent) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void mousePressed(MouseEvent mouseevent) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent mouseevent) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void mouseDragged(MouseEvent mouseevent) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void mouseMoved(MouseEvent mouseevent) {
 		// TODO Auto-generated method stub
 		Point p=mouseevent.getPoint();
