@@ -5,7 +5,11 @@ import java.util.List;
 
 import zildo.fwk.filter.BilinearFilter;
 import zildo.fwk.filter.BlendFilter;
+import zildo.fwk.filter.BlurFilter;
+import zildo.fwk.filter.FadeFilter;
+import zildo.fwk.filter.FilterEffect;
 import zildo.fwk.filter.ScreenFilter;
+import zildo.fwk.filter.ZoomFilter;
 import zildo.prefs.Constantes;
 
 /**
@@ -20,6 +24,7 @@ import zildo.prefs.Constantes;
  */
 public class FilterCommand {
 
+	
 	private List<ScreenFilter> filters;
 	protected int fadeLevel;		// Integer between 0 and 255
 	protected boolean asked_FadeIn;
@@ -82,13 +87,14 @@ public class FilterCommand {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// When lights comes back
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void fadeIn()
+	public void fadeIn(FilterEffect... p_effects)
 	{
 		asked_FadeIn  = true;
 		asked_FadeOut = false;
 		active(null, false);
-		//active(FadeFilter.class,true);
-		active(BlendFilter.class,true);
+		for (FilterEffect effect : p_effects) {
+			active(effect.getFilterClass(), true);
+		}
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -96,14 +102,14 @@ public class FilterCommand {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// When lights goes out
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void fadeOut()
+	public void fadeOut(FilterEffect... p_effects)
 	{
 		asked_FadeIn  = false;
 		asked_FadeOut = true;
 		active(null, false);
-		//active(FadeFilter.class,true);
-		//active(BlurFilter.class,true);
-		active(BlendFilter.class,true);
+		for (FilterEffect effect : p_effects) {
+			active(effect.getFilterClass(), true);
+		}
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

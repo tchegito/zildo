@@ -155,29 +155,27 @@ public class EngineZildo {
         switch (p_event.nature) {
             case FADEOUT_OVER:
             case CHANGINGMAP_SCROLL_WAIT_MAP:
-                mapManagement.processChangingMap(p_event.chPoint);
-                ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
-                if (p_event.nature == ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP) {
-                    retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_START;
-                    retEvent.angle = mapManagement.getMapScrollAngle();
-                } else {
-                    retEvent.nature = ClientEventNature.CHANGINGMAP_LOADED;
-                }
+            	if (p_event.chPoint != null) {
+	                mapManagement.processChangingMap(p_event.chPoint);
+	                ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+	                if (p_event.nature == ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP) {
+	                    retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_START;
+	                    retEvent.angle = mapManagement.getMapScrollAngle();
+	                } else {
+	                    retEvent.nature = ClientEventNature.CHANGINGMAP_LOADED;
+	                }
+            	} else {
+            		retEvent.nature = ClientEventNature.NOEVENT;
+            	}
                 break;
             case CHANGINGMAP_SCROLLOVER:
             	persoManagement.getZildo().setGhost(false);
             	retEvent.nature = ClientEventNature.NOEVENT;
+            	retEvent.mapChange = false;
             	break;
-            case SCRIPT:
-            	if (!scriptExecutor.isScripting()) {
-            		retEvent.nature=ClientEventNature.NOEVENT;
-            	}
-            	break;
-            default:
-            	if (scriptExecutor.isScripting()) {
-            		retEvent.nature=ClientEventNature.SCRIPT;
-            	}
         }
+        retEvent.script=scriptExecutor.isScripting();
+        
         return retEvent;
     }
 	
