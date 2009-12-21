@@ -2,18 +2,18 @@
 
 = Commands =
 
-|| *command* || *type* || *who* || *what* || *unblock* || 
-|| pos || position || V || V || V ||
-|| moveTo || position || V || V || V ||
-|| speak || text || V || V || V ||
-|| script || int || V || V || V ||
-|| angle || int || V || V || V ||
-|| wait || int || V || V || V ||
-|| sound || int || V || V || V ||
-|| fadeIn || int || V || V || V ||
-|| fadeOut || int || V || V || V ||
-|| map || text || - || - || - ||
-|| focus || text || V || - || - ||
+|| *command* || *type* || *who* || *what* || *unblock* || *meaning* ||
+|| pos || position || V || V || V || Set character or camera's location ||
+|| moveTo || position || V || V || V || Move character or camera's location, progressively. ||
+|| speak || text || V || V || V || Launch a dialog ||
+|| script || int || V || V || V || Set character's script ||
+|| angle || int || V || V || V || Set character's angle ||
+|| wait || int || V || V || V || Wait for a given number of frame ||
+|| sound || text || V || V || V || Play a given sound ||
+|| fadeIn || int || V || V || V || Start a fade in, with given effect ||
+|| fadeOut || int || V || V || V || Start a fade out, with given effect ||
+|| map || text || - || - || - || Load the given map ||
+|| focus || text || V || - || - || Focus on given character ||
 
 
 = Details =
