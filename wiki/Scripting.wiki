@@ -14,6 +14,7 @@
 || fadeOut || int || - || - || V || Start a fade out, with given effect ||
 || map || text || - || - || - || Load the given map ||
 || focus || text || V || - || - || Focus on given character ||
+|| spawn || text || V || V || - || Spawn a new character/sprite. ||
 
 
 = Details =
