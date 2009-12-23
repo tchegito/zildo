@@ -4,7 +4,7 @@
 
 || *Command* || *Type* || *Who* || *What* || *Unblock* || *Meaning* ||
 || pos || position || V || V || - || Set character or camera's location ||
-|| moveTo || position || V || V || V || Move character or camera's location, progressively. ||
+|| moveTo || position || V || V || V || Move character or camera's location, progressively ||
 || speak || text || V || V || V || Launch a dialog ||
 || script || int || V || - || - || Set character's script ||
 || angle || int || V || - || - || Set character's angle ||
@@ -14,7 +14,7 @@
 || fadeOut || int || - || - || V || Start a fade out, with given effect ||
 || map || text || - || - || - || Load the given map ||
 || focus || text || V || - || - || Focus on given character ||
-|| spawn || text || V || V || - || Spawn a new character/sprite. ||
+|| spawn || text || V || V || - || Spawn a new character/sprite ||
 
 
 = Details =
