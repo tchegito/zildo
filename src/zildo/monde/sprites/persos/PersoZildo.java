@@ -86,7 +86,7 @@ public class PersoZildo extends Perso {
 
         setX(p_posX); // 805); //601-32;//-500);
         setY(p_posY); // 973); //684+220;//-110);
-		target=null;
+		pathFinder=null;
 		setAngle(Angle.NORD);
 		setPos_seqsprite(-1);
 		setMouvement(MouvementZildo.VIDE);

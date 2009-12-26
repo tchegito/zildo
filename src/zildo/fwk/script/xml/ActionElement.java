@@ -27,6 +27,7 @@ public class ActionElement extends AnyElement {
     public Point location;
     public String text;
     public int val;
+    public int speed;
 
     public ActionElement(ActionKind p_kind) {
     	kind = p_kind;
@@ -42,6 +43,7 @@ public class ActionElement extends AnyElement {
         what = p_elem.getAttribute("what");
         fx = p_elem.getAttribute("fx");
         unblock = "true".equalsIgnoreCase(p_elem.getAttribute("unblock"));
+        speed = Integer.valueOf("0"+p_elem.getAttribute("speed"));
         // Read less common ones
         String strPos=p_elem.getAttribute("pos");
         String strAngle=p_elem.getAttribute("angle");

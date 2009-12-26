@@ -175,9 +175,9 @@ public class PersoNJ extends Perso {
 								zone_deplacement.incY2(pasy*3);
 							}
 							attente=1+(int)Math.random()*5;
-							determineDestination();
-							target.x=(int)((target.x+Math.random()*20.0f-10.0f-x)/2);
-							target.y=(int)((target.y+Math.random()*20.0f-10.0f-y)/2);
+							pathFinder.determineDestination();
+							pathFinder.target.x=(int)((pathFinder.target.x+Math.random()*20.0f-10.0f-x)/2);
+							pathFinder.target.y=(int)((pathFinder.target.y+Math.random()*20.0f-10.0f-y)/2);
 							cptMouvement=0;
 						} else if (attente!=0) {
 							attente--;
@@ -200,9 +200,9 @@ public class PersoNJ extends Perso {
 							alpha=Math.PI*(cptMouvement/100.0f)-Math.PI/2.0f;
 							z=(float) (2.0f+10.0f*Math.sin(alpha+Math.PI/2.0f));
 							alpha=(Math.PI/100.0f)*Math.cos(alpha);
-							x+=target.x*alpha;
-							y+=target.y*alpha;
-							if (target.x<0) {
+							x+=pathFinder.target.x*alpha;
+							y+=pathFinder.target.y*alpha;
+							if (pathFinder.target.x<0) {
 								angle=Angle.EST;
 							} else angle=Angle.NORD;
 							cptMouvement++;
@@ -214,8 +214,8 @@ public class PersoNJ extends Perso {
 							break;
 						}	// Sinon elle agit comme les scripts de zone
 					default:
-                       if (target != null && this.getX() == target.x && this.getY() == target.y) {
-                    	   target=null;
+                       if (pathFinder.target != null && this.getX() == pathFinder.target.x && this.getY() == pathFinder.target.y) {
+                    	   pathFinder.target=null;
                             if (quel_deplacement != MouvementPerso.SCRIPT_ABEILLE
                                     && (quel_deplacement != MouvementPerso.SCRIPT_RAT || Hasard.lanceDes(8))) {
                                 setAttente(10 + (int) (Math.random() * 20));
@@ -238,16 +238,14 @@ public class PersoNJ extends Perso {
 							this.setAttente(getAttente() - 1);
 						} else {
 							// On déplace le PNJ
-							if (target == null && MouvementPerso.SCRIPT_IMMOBILE!= quel_deplacement) {
+							if (pathFinder.target == null && MouvementPerso.SCRIPT_IMMOBILE!= quel_deplacement) {
 								//Pas de destination, donc on en fixe une dans la zone de déplacement
 								cptMouvement=0;
 					
 								if (quel_deplacement == MouvementPerso.SCRIPT_ABEILLE) {
-									target=new Point();
-									target.x=(int)(x+(5.0f+Math.random()*10.0f)*Math.cos(2.0f*Math.PI*Math.random()));
-									target.y=(int)(y+(5.0f+Math.random()*10.0f)*Math.sin(2.0f*Math.PI*Math.random()));
+									pathFinder.determineDestinationBee();
 								} else {
-									determineDestination();
+									pathFinder.determineDestination();
 								}
 							}
 							float vitesse=0.5f;
@@ -267,8 +265,8 @@ public class PersoNJ extends Perso {
 								vitesse=0.2f;
 							}
 							
-							if (target != null) {	// Move character if he has a target
-								Pointf loc=reachDestination(vitesse);
+							if (pathFinder.target != null) {	// Move character if he has a target
+								Pointf loc=pathFinder.reachDestination(vitesse);
 								x=loc.x;
 								y=loc.y;
 								
@@ -284,7 +282,7 @@ public class PersoNJ extends Perso {
 										this.setX ( sx);
 										this.setY ( sy);
 										if (nbShock++ == 3) {
-											target=null;
+											pathFinder.target=null;
 											nbShock=0;
 										}
 										this.setAttente(10 + (int) (Math.random()*20));
@@ -353,7 +351,7 @@ public class PersoNJ extends Perso {
 			case POULE:
 			   //Poule
 			   add_spr=(getPos_seqsprite() % (8*Constantes.speed)) / (2*Constantes.speed);
-			   if (target != null && target.x>getX())
+			   if (pathFinder.target != null && pathFinder.target.x>getX())
 				   add_spr+=41;
 				break;
 			case VIEUX:
@@ -454,7 +452,7 @@ public class PersoNJ extends Perso {
 				setY(sy);
 				setPos_seqsprite(0);
 				setAlerte(false);
-				target=null;
+				pathFinder=null;
 				setAttente(10);	
 				// On replace la zone de déplacement autour de l'ennemi
 				setZone_deplacement(EngineZildo.mapManagement.range(x-16*5, y-16*5, x+16*5, y+16*5));
