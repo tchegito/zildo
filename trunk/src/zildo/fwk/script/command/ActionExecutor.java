@@ -106,6 +106,9 @@ public class ActionExecutor {
                     PersoDescription desc = PersoDescription.fromString(p_action.text);
                     String name = p_action.who != null ? p_action.who : p_action.what;
                     Perso newOne = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, name, p_action.val);
+                    if (p_action.speed != 0) {
+                    	newOne.setSpeed(p_action.speed);
+                    }
                     EngineZildo.spriteManagement.spawnPerso(newOne);
                     achieved = true;
                     break;
