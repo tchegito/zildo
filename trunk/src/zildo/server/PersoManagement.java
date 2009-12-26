@@ -4,9 +4,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import zildo.fwk.bank.SpriteBank;
+import zildo.monde.map.Angle;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoGarde;
+import zildo.monde.sprites.persos.PersoGardeVert;
+import zildo.monde.sprites.persos.PersoHen;
+import zildo.monde.sprites.persos.PersoNJ;
+import zildo.monde.sprites.persos.PersoVolant;
 import zildo.monde.sprites.persos.PersoZildo;
 
 //////////////////////////////////////////////////////////////////////
@@ -125,5 +133,50 @@ public class PersoManagement {
 	public void removePerso(Perso perso) {
 		tab_perso.remove(perso);
 	}
+	
+	/**
+	 * Create a character onto the map, with basic initializations.
+	 * @param p_desc
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param name
+	 * @return Perso
+	 */
+	public Perso createPerso(PersoDescription p_desc, int x, int y, int z, String name, int angle) {
+		Perso perso;
+		switch (p_desc) {
+			case POULE:
+	            perso = new PersoHen(x, y);
+				break;
+			case BAS_GARDEVERT:
+				perso = new PersoGardeVert();
+				break;
+			case GARDE_CANARD:
+				perso = new PersoGarde();
+				break;
+			case CORBEAU:
+			case SPECTRE:
+				perso = new PersoVolant();
+				break;
+			default:
+				perso = new PersoNJ();
+				break;
+		}
+
+        perso.setX(x);
+        perso.setY(y);
+        perso.setZ(z);
+        perso.setQuel_spr(p_desc);
+        perso.setNBank(SpriteBank.BANK_PNJ);
+        perso.setNom(name);
+        if (perso.getQuel_spr().first() >= 128) {
+            perso.setNBank(SpriteBank.BANK_PNJ2);
+        }
+        perso.setPv(1);
+        perso.setAngle(Angle.fromInt(angle));
+
+        return perso;
+    }
 	
 }

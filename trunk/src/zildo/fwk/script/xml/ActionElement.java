@@ -8,50 +8,75 @@ public class ActionElement extends AnyElement {
 
     public enum ActionKind {
         pos, moveTo, speak, script, angle, wait, sound, fadeIn, fadeOut, map, focus, spawn;
+        
+        public static ActionKind fromString(String p_name) {
+        	for (ActionKind kind : values()) {
+        		if (kind.toString().equalsIgnoreCase(p_name)) {
+        			return kind;
+        		}
+        	}
+        	return null;
+        }
     }
 
     public String who; // Characters
     public String what; // Camera, elements
+    public String fx;
     public boolean unblock;
     public ActionKind kind;
     public Point location;
     public String text;
     public int val;
 
+    public ActionElement(ActionKind p_kind) {
+    	kind = p_kind;
+    }
+    
     @Override
     public void parse(Element p_elem) {
+        if (kind == null) {
+        	throw new RuntimeException("Action kind is unknown !");
+        }
+    	// Read common attributes
         who = p_elem.getAttribute("who");
         what = p_elem.getAttribute("what");
+        fx = p_elem.getAttribute("fx");
         unblock = "true".equalsIgnoreCase(p_elem.getAttribute("unblock"));
-        String value = null;
-        for (ActionKind k : ActionKind.values()) {
-            value = p_elem.getAttribute(k.toString());
-            if (!"".equals(value)) {
-                kind = k;
-                break;
-            }
-        }
-        if (kind == null) {
-            throw new RuntimeException("Action kind is unknown !");
-        }
+        // Read less common ones
+        String strPos=p_elem.getAttribute("pos");
+        String strAngle=p_elem.getAttribute("angle");
         switch (kind) {
-            case speak:
-            case sound:
-            case map:
-            case focus:
-                text = value;
-                break;
-            case moveTo:
-            case pos:
-                location = Point.fromString(value);
-                break;
-            case script:
-            case angle:
-            case wait:
-            case fadeIn:
-            case fadeOut:
-                val = Integer.valueOf(value);
-                break;
+        case spawn:
+            location = Point.fromString(strPos);
+            val = Integer.valueOf(strAngle);
+            text = p_elem.getAttribute("type");
+            break;
+        case speak:
+            text = p_elem.getAttribute("text");
+            break;
+        case sound:
+        case map:
+            // String
+            text = p_elem.getAttribute("name");
+            break;
+        case moveTo:
+        case pos:
+            // Position
+            location = Point.fromString(strPos);
+            break;
+        case script:
+        case angle:
+        case wait:
+        	val = Integer.valueOf(p_elem.getAttribute("value"));
+        	break;
+        case fadeIn:
+        case fadeOut:
+            // Integer
+            val = Integer.valueOf(p_elem.getAttribute("type"));
+            break;
+        case focus:
+            who = p_elem.getAttribute("name");
+            break;
         }
     }
 }

@@ -9,6 +9,7 @@ import zildo.fwk.script.xml.ActionElement;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.quest.actions.ScriptAction;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.server.EngineZildo;
@@ -99,6 +100,13 @@ public class ActionExecutor {
                 	break;
                 case focus:
                     ClientEngineZildo.mapDisplay.setFocusedEntity(perso);
+                    achieved = true;
+                    break;
+                case spawn:
+                    PersoDescription desc = PersoDescription.fromString(p_action.text);
+                    String name = p_action.who != null ? p_action.who : p_action.what;
+                    Perso newOne = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, name, p_action.val);
+                    EngineZildo.spriteManagement.spawnPerso(newOne);
                     achieved = true;
                     break;
             }

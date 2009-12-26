@@ -11,6 +11,10 @@ public class ActionsElement extends ActionElement {
 
     public List<ActionElement> actions;
 
+    public ActionsElement() {
+    	super(null);
+    }
+    
     @Override
     @SuppressWarnings("unchecked")
     public void parse(Element p_elem) {
