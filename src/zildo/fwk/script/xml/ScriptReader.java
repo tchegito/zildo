@@ -12,6 +12,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import zildo.fwk.script.xml.ActionElement.ActionKind;
 import zildo.prefs.Constantes;
 
 public class ScriptReader {
@@ -46,21 +47,28 @@ public class ScriptReader {
      */
     private static AnyElement createNode(Element p_element) {
         String name = p_element.getNodeName();
-        name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length()).toLowerCase();
-        name = "zildo.fwk.script.xml." + name + "Element";
-
         AnyElement s = null;
-        try {
-            s = (AnyElement) Class.forName(name).newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to find class " + name);
+        // Check for ActionElement
+        ActionKind kind=ActionKind.fromString(name);
+        if (kind != null) { 
+        	s=new ActionElement(kind);
+        } else {
+        	// General case
+	        name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length()).toLowerCase();
+	        name = "zildo.fwk.script.xml." + name + "Element";
+	
+	        try {
+	            s = (AnyElement) Class.forName(name).newInstance();
+	        } catch (Exception e) {
+	            throw new RuntimeException("Unable to find class " + name);
+	        }
         }
         s.parse(p_element);
         return s;
     }
 
     /**
-     * Returns a list of every child node, which name is the provided one.
+     * Returns a list of every child node, which name is contained in the provided ones.
      * @param p_element
      * @param p_nodeName all acceptable node names
      * @return List

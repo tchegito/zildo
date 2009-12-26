@@ -10,15 +10,13 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.script.xml.ActionElement;
 import zildo.fwk.script.xml.ActionsElement;
 import zildo.fwk.script.xml.AnyElement;
-import zildo.fwk.script.xml.ScriptElement;
-import zildo.fwk.script.xml.StartElement;
+import zildo.fwk.script.xml.SceneElement;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
-import zildo.server.EngineZildo;
 
 public class ScriptExecutor {
 
-	ScriptElement script = null;
+	SceneElement script = null;
 	int cursor;
 	boolean userEndedAction;
 	Set<Perso> involved=new HashSet<Perso>();
@@ -30,7 +28,7 @@ public class ScriptExecutor {
 	 * Ask for engine to execute the given script.
 	 * @param p_script
 	 */
-	public void execute(ScriptElement p_script) {
+	public void execute(SceneElement p_script) {
 		script=p_script;
 		cursor=0;
 		actionExec=new ActionExecutor(this);
@@ -44,9 +42,7 @@ public class ScriptExecutor {
 				terminate();
 			} else {
 				Class<? extends AnyElement> clazz=currentNode.getClass();
-				if (StartElement.class == clazz) {
-					renderStart((StartElement) currentNode);
-				} else if (ActionElement.class.isAssignableFrom(clazz)) {
+				if (ActionElement.class.isAssignableFrom(clazz)) {
 					renderAction((ActionElement) currentNode, true);
 				}
 				
@@ -75,17 +71,6 @@ public class ScriptExecutor {
 		// Focus on Zildo
 		SpriteEntity zildo=ClientEngineZildo.spriteDisplay.getZildo();
 		ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
-	}
-	
-	private void renderStart(StartElement p_start) {
-		if (p_start.mapName != null) {
-			EngineZildo.mapManagement.charge_map(p_start.mapName);
-			ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
-		}
-		for (ActionElement action : p_start.startActions) {
-			renderAction(action, false);
-		}
-		cursor++;
 	}
 	
 	private void renderAction(ActionElement p_action, boolean p_moveCursor) {
@@ -123,14 +108,10 @@ public class ScriptExecutor {
 	 * @return AnyElement
 	 */
 	private AnyElement getCurrent() {
-		if (cursor == 0) {
-			return script.start;
+		if (cursor >= script.actions.size()) {	// End of the list
+			return null;
 		} else {
-			if (cursor-1 >= script.actions.size()) {	// End of the list
-				return null;
-			} else {
-				return script.actions.get(cursor - 1);
-			}
+			return script.actions.get(cursor);
 		}
 	}
 	

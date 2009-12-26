@@ -57,7 +57,7 @@ public enum PersoDescription {
 	}
 	
 	/**
-	 * Renvoie l'identité du personnage suivant un numéro de sprite
+	 * Return character's identity from given integer value.
 	 * @param nSpr
 	 * @return PersoDescription
 	 */
@@ -70,7 +70,21 @@ public enum PersoDescription {
 		return null;
 	}
 	
-	public int first() {
+	/**
+	 * Return character's identity based on a string.
+	 * @param p_spr
+	 * @return PersoDescription
+	 */
+	public static PersoDescription fromString(String p_spr) {
+		for (PersoDescription desc : PersoDescription.values()) {
+			if (desc.toString().equals(p_spr)) {
+				return desc;
+			}
+		}		
+		return null;
+	}
+
+		public int first() {
 		return sprUsed.first().intValue();
 	}
 }

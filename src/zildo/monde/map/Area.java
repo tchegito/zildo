@@ -21,11 +21,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoGarde;
-import zildo.monde.sprites.persos.PersoGardeVert;
-import zildo.monde.sprites.persos.PersoHen;
 import zildo.monde.sprites.persos.PersoNJ;
-import zildo.monde.sprites.persos.PersoVolant;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
@@ -533,67 +529,45 @@ public class Area {
                 }
                 PersoDescription desc = PersoDescription.fromNSpr(sprDesc);
 
+                // Read the character informations
+                int info=p_buffer.readUnsignedByte();
+				int en_bras=p_buffer.readUnsignedByte();
+				if (en_bras!= 0) {
+					throw new RuntimeException("enbras="+en_bras);
+				}
+				int move=p_buffer.readUnsignedByte();
+				int angle=p_buffer.readUnsignedByte();
+				String name=p_buffer.readString(9);
+				
+				// And spawn it if necessary
 				if (!p_spawn) {
 					perso = new PersoNJ();
 				} else {
-					switch (desc) {
-						case POULE:
-                            perso = new PersoHen(x, y);
-							break;
-						case BAS_GARDEVERT:
-							perso = new PersoGardeVert();
-							break;
-						case GARDE_CANARD:
-							perso = new PersoGarde();
-							break;
-						case CORBEAU:
-						case SPECTRE:
-							perso = new PersoVolant();
-							break;
-						default:
-							perso = new PersoNJ();
-							break;
+					perso = (PersoNJ) EngineZildo.persoManagement.createPerso(desc, x, y, z, name, angle);
+
+					perso.setInfo(PersoInfo.values()[info]);
+					perso.setEn_bras(null);
+					perso.setQuel_deplacement(MouvementPerso.fromInt(move));
+					if (desc==PersoDescription.PANNEAU && perso.getQuel_deplacement() != MouvementPerso.SCRIPT_IMMOBILE) {
+						// Fix a map bug : sign perso should be unmoveable
+						perso.setQuel_deplacement(MouvementPerso.SCRIPT_IMMOBILE);	
+					} else if (desc==PersoDescription.GARDE_CANARD && perso.getInfo()!=PersoInfo.ENEMY) {
+						// Another map bug : guards are always hostile
+						perso.setInfo(PersoInfo.ENEMY);
 					}
-				}
-				perso.setX(x);
-				perso.setY(y);
-				perso.setZ(z);
-				perso.setQuel_spr(desc);
-				perso.setInfo(PersoInfo.values()[p_buffer.readUnsignedByte()]);
-				int a=p_buffer.readUnsignedByte();
-				if (a!= 0) {
-					throw new RuntimeException("enbras="+a);
-				}
-				perso.setEn_bras(null);
-				perso.setQuel_deplacement(MouvementPerso.fromInt(p_buffer.readUnsignedByte()));
-				if (desc==PersoDescription.PANNEAU && perso.getQuel_deplacement() != MouvementPerso.SCRIPT_IMMOBILE) {
-					// Fix a map bug : sign perso should be unmoveable
-					perso.setQuel_deplacement(MouvementPerso.SCRIPT_IMMOBILE);	
-				} else if (desc==PersoDescription.GARDE_CANARD && perso.getInfo()!=PersoInfo.ENEMY) {
-					// Another map bug : guards are always hostile
-					perso.setInfo(PersoInfo.ENEMY);
-				}
-				perso.setAngle(Angle.fromInt(p_buffer.readUnsignedByte()));
 
-				perso.setNBank(SpriteBank.BANK_PNJ);
-				perso.setNom(p_buffer.readString(9));
-				Zone zo = new Zone();
-				zo.setX1(map.roundAndRange(perso.getX() - 16 * 5, Area.ROUND_X));
-				zo.setY1(map.roundAndRange(perso.getY() - 16 * 5, Area.ROUND_Y));
-				zo.setX2(map.roundAndRange(perso.getX() + 16 * 5, Area.ROUND_X));
-				zo.setY2(map.roundAndRange(perso.getY() + 16 * 5, Area.ROUND_Y));
-				perso.setZone_deplacement(zo);
-				perso.setPv(3);
-				perso.setTarget(null);
-				perso.setMouvement(MouvementZildo.VIDE);
+					Zone zo = new Zone();
+					zo.setX1(map.roundAndRange(perso.getX() - 16 * 5, Area.ROUND_X));
+					zo.setY1(map.roundAndRange(perso.getY() - 16 * 5, Area.ROUND_Y));
+					zo.setX2(map.roundAndRange(perso.getX() + 16 * 5, Area.ROUND_X));
+					zo.setY2(map.roundAndRange(perso.getY() + 16 * 5, Area.ROUND_Y));
+					perso.setZone_deplacement(zo);
+					perso.setPv(3);
+					perso.setTarget(null);
+					perso.setMouvement(MouvementZildo.VIDE);
+	
+					perso.initPersoFX();
 
-				if (perso.getQuel_spr().first() >= 128) {
-					perso.setNBank(SpriteBank.BANK_PNJ2);
-				}
-
-				perso.initPersoFX();
-
-				if (p_spawn) {
 					spriteManagement.spawnPerso(perso);
 				}
 			}
