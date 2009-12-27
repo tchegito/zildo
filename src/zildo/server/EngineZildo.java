@@ -135,7 +135,7 @@ public class EngineZildo {
 			PersoZildo zildo=persoManagement.getZildo();
 			block=zildo.isInventoring();
 		} else {
-			multiplayerManagement.render();			
+			multiplayerManagement.render();
 		}
 		
 		scriptExecutor.render();

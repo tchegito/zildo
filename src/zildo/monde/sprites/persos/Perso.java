@@ -3,8 +3,10 @@ package zildo.monde.sprites.persos;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.map.Point;
+import zildo.monde.map.Pointf;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -40,7 +42,10 @@ public abstract class Perso extends Element {
 	private boolean ghost=false;	// TRUE=script control him
 
     private int money;
-
+	
+	private int count=0;
+	protected boolean inWater=false;
+	
     private boolean wounded;
     private Perso dialoguingWith;
     
@@ -395,6 +400,66 @@ public abstract class Perso extends Element {
 		
 	}
 	
+    
+	/**
+	 * Zildo walk on a tile, so he reacts (water), or tile change (door).
+	 * @param p_sound TRUE=play sound when modifying map.
+	 * @return boolean (TRUE=slow down)
+	 */
+    public boolean walkTile(boolean p_sound) {
+        int cx = (int) (x / 16);
+        int cy = (int) (y / 16);
+        MapManagement mapManagement = EngineZildo.mapManagement;
+        int onmap = mapManagement.getCurrentMap().readmap(cx, cy);
+        boolean slowDown = false;
+        inWater = false;
+        BankSound snd = null;
+        switch (onmap) {
+            case 278:
+            	if (pathFinder.open) {
+	                mapManagement.getCurrentMap().writemap(cx, cy, 314);
+	                mapManagement.getCurrentMap().writemap(cx + 1, cy, 315);
+	                snd = BankSound.OuvrePorte;
+            	}
+                break;
+            case 279:
+            	if (pathFinder.open) {
+	                mapManagement.getCurrentMap().writemap(cx - 1, cy, 314);
+	                mapManagement.getCurrentMap().writemap(cx, cy, 315);
+	                snd = BankSound.OuvrePorte;
+            	}
+                break;
+            case 200:
+                snd = BankSound.ZildoGadou;
+            	break;
+            case 846:
+                // Water
+                inWater = true;
+                if (count > 15) {
+                    snd = BankSound.ZildoPatauge;
+                    count = 0;
+                } else {
+                    count++;
+                }
+                break;
+            case 857:
+            case 858:
+            case 859:
+            case 860:
+            case 861:
+            case 862:
+            case 863:
+            case 864:
+                slowDown = true;
+                break;
+        }
+        if (snd != null && p_sound) {
+            EngineZildo.soundManagement.broadcastSound(snd, this);
+        }
+
+        return slowDown;
+    }
+    
 	public boolean linkedSpritesContains(SpriteEntity entity) {
 		return persoSprites.contains(entity) || en_bras==entity;
 	}
@@ -443,6 +508,20 @@ public abstract class Perso extends Element {
 	}
 	
 	public void setSpeed(float p_speed) {
-		pathFinder.speed=p_speed;
+		if (p_speed > 0.0f) {
+			pathFinder.speed=p_speed;
+		}
+	}
+	
+	public void setForward(boolean p_forward) {
+		pathFinder.backward=p_forward;
+	}
+	
+	public void setOpen(boolean p_open) {
+		pathFinder.open=p_open;
+	}
+	
+	public Pointf reachDestination(float p_speed) {
+		return pathFinder.reachDestination(p_speed);
 	}
 }

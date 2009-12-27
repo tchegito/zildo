@@ -23,11 +23,13 @@ public class ActionElement extends AnyElement {
     public String what; // Camera, elements
     public String fx;
     public boolean unblock;
+    public boolean backward=false;
+    public boolean open=false;
     public ActionKind kind;
     public Point location;
     public String text;
     public int val;
-    public int speed;
+    public float speed;
 
     public ActionElement(ActionKind p_kind) {
     	kind = p_kind;
@@ -43,10 +45,12 @@ public class ActionElement extends AnyElement {
         what = p_elem.getAttribute("what");
         fx = p_elem.getAttribute("fx");
         unblock = "true".equalsIgnoreCase(p_elem.getAttribute("unblock"));
-        speed = Integer.valueOf("0"+p_elem.getAttribute("speed"));
+        speed = Float.valueOf("0"+p_elem.getAttribute("speed"));
         // Read less common ones
         String strPos=p_elem.getAttribute("pos");
         String strAngle=p_elem.getAttribute("angle");
+        String strBackward=p_elem.getAttribute("forward");
+        String strOpen=p_elem.getAttribute("open");
         switch (kind) {
         case spawn:
             location = Point.fromString(strPos);
@@ -62,6 +66,8 @@ public class ActionElement extends AnyElement {
             text = p_elem.getAttribute("name");
             break;
         case moveTo:
+            backward = strBackward.equalsIgnoreCase("true");
+            open = strOpen.equalsIgnoreCase("true");
         case pos:
             // Position
             location = Point.fromString(strPos);

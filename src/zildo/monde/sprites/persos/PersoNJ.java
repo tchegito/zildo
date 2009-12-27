@@ -175,9 +175,7 @@ public class PersoNJ extends Perso {
 								zone_deplacement.incY2(pasy*3);
 							}
 							attente=1+(int)Math.random()*5;
-							pathFinder.determineDestination();
-							pathFinder.target.x=(int)((pathFinder.target.x+Math.random()*20.0f-10.0f-x)/2);
-							pathFinder.target.y=(int)((pathFinder.target.y+Math.random()*20.0f-10.0f-y)/2);
+							pathFinder.determineDestinationFlying();
 							cptMouvement=0;
 						} else if (attente!=0) {
 							attente--;
@@ -197,14 +195,7 @@ public class PersoNJ extends Perso {
 								}
 							}
 							// On se déplace en courbe}
-							alpha=Math.PI*(cptMouvement/100.0f)-Math.PI/2.0f;
-							z=(float) (2.0f+10.0f*Math.sin(alpha+Math.PI/2.0f));
-							alpha=(Math.PI/100.0f)*Math.cos(alpha);
-							x+=pathFinder.target.x*alpha;
-							y+=pathFinder.target.y*alpha;
-							if (pathFinder.target.x<0) {
-								angle=Angle.EST;
-							} else angle=Angle.NORD;
+							pathFinder.reachDestinationFlying();
 							cptMouvement++;
 						}
 						break;
@@ -216,7 +207,7 @@ public class PersoNJ extends Perso {
 					default:
                        if (pathFinder.target != null && this.getX() == pathFinder.target.x && this.getY() == pathFinder.target.y) {
                     	   pathFinder.target=null;
-                            if (quel_deplacement != MouvementPerso.SCRIPT_ABEILLE
+                            if (!isGhost() && quel_deplacement != MouvementPerso.SCRIPT_ABEILLE
                                     && (quel_deplacement != MouvementPerso.SCRIPT_RAT || Hasard.lanceDes(8))) {
                                 setAttente(10 + (int) (Math.random() * 20));
                             }
@@ -270,9 +261,12 @@ public class PersoNJ extends Perso {
 								x=loc.x;
 								y=loc.y;
 								
+								walkTile(true);
+
 								// suite_mouvement
 								if (quel_deplacement.equals(MouvementPerso.SCRIPT_ELECTRIQUE)) {
 									angle=Angle.NORD;
+						
 								} else if (quel_deplacement.equals(MouvementPerso.SCRIPT_ABEILLE)) {
 									angle=Angle.fromInt(angle.value & 2);
 								}
@@ -281,7 +275,7 @@ public class PersoNJ extends Perso {
 									if (EngineZildo.mapManagement.collide((int) getX(),(int) getY(),this)) {
 										this.setX ( sx);
 										this.setY ( sy);
-										if (nbShock++ == 3) {
+										if (nbShock++ == 3 && !isGhost()) {
 											pathFinder.target=null;
 											nbShock=0;
 										}
@@ -452,22 +446,24 @@ public class PersoNJ extends Perso {
 				setY(sy);
 				setPos_seqsprite(0);
 				setAlerte(false);
-				pathFinder=null;
+				pathFinder.target=null;
 				setAttente(10);	
 				// On replace la zone de déplacement autour de l'ennemi
 				setZone_deplacement(EngineZildo.mapManagement.range(x-16*5, y-16*5, x+16*5, y+16*5));
 			}
 		}
-		if (x>sx) {
-			setAngle(Angle.EST);
-		} else if (x<sx) {
-			setAngle(Angle.OUEST);
-		} else if (y>sy) {
-			setAngle(Angle.SUD);
-		} else {
-			setAngle(Angle.NORD);
+		if (!isGhost()) {	// Replace angle if character isn't ghost (moved by script)
+			if (x>sx) {
+				setAngle(Angle.EST);
+			} else if (x<sx) {
+				setAngle(Angle.OUEST);
+			} else if (y>sy) {
+				setAngle(Angle.SUD);
+			} else {
+				setAngle(Angle.NORD);
+			}
 		}
-		if (sx!=x && sy!=y) {
+		if (sx!=x && sy!=y) {	// Diagonal moves
 			setX(sx+(x-sx)*0.8f);
 			setY(sy+(y-sy)*0.8f);
 		}

@@ -5,7 +5,6 @@ import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
-import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.utils.MouvementPerso;
 
 /**
@@ -23,12 +22,16 @@ import zildo.monde.sprites.utils.MouvementPerso;
  */
 public class PathFinder {
 
-	Element mobile;
+	Perso mobile;
 	Point target;
 	float speed;	// Should be used if different of 0
+	boolean backward;	// Default FALSE. TRUE means character is steping back
+	boolean open;	// Default FALSE. TRUE means character can open doors.
 	
-	public PathFinder(Element p_mobile) {
+	public PathFinder(Perso p_mobile) {
 		mobile=p_mobile;
+		backward=false;
+		open=false;
 	}
 	
     /**
@@ -47,19 +50,20 @@ public class PathFinder {
         
     	float velocity=speed == 0 ? p_speed : speed;
         int immo = 0;
+        Angle a=mobile.getAngle();
         
         if (x < target.x - 0.5f) {
             pos.x += velocity;
             if (pos.x > target.x) {
                 pos.x = target.x;
             }
-            mobile.setAngle(Angle.EST);
+            a=Angle.EST;
         } else if (x > target.x + 0.5f) {
             pos.x -= velocity;
             if (pos.x < target.x) {
                 pos.x = target.x;
             }
-            mobile.setAngle(Angle.OUEST);
+            a=Angle.OUEST;
         } else {
             immo++;
         }
@@ -68,27 +72,43 @@ public class PathFinder {
             if (pos.y > target.y + 0.5f) {
                 pos.y = target.y;
             }
-            mobile.setAngle(Angle.SUD);
+            a=Angle.SUD;
         } else if (y > target.y + 0.5f) {
             pos.y -= velocity;
             if (pos.y < target.y - 0.5f) {
                 pos.y = target.y;
             }
-            mobile.setAngle(Angle.NORD);
+            a=Angle.NORD;
         } else {
             immo++;
         }
 
+        // If there's no movement, stop the target
         if (immo == 2) {
             target=null;
         }
 
+        if (backward && a!= null) {
+        	a=Angle.rotate(a, 2);
+        }
+        mobile.setAngle(a);
+        
         return pos;
     }
     
+    public void reachDestinationFlying() {
+		double alpha=Math.PI*(mobile.getCptMouvement()/100.0f)-Math.PI/2.0f;
+		mobile.z=(float) (2.0f+10.0f*Math.sin(alpha+Math.PI/2.0f));
+		alpha=(Math.PI/100.0f)*Math.cos(alpha);
+		mobile.x+=target.x*alpha;
+		mobile.y+=target.y*alpha;
+		if (target.x<0) {
+			mobile.setAngle(Angle.EST);
+		} else mobile.setAngle(Angle.NORD);    	
+    }
 	
 	///////////////////////////////////////////////////////////////////////////////////////
-	// determineDestination
+	// determineDestination (SCRIPT_ZONE)
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Set a location target(x,y) in the current perso, inside the movement area (zone_deplacement)
 	// This is where we assign a new position, horizontally and/or vertically depending on the
@@ -103,9 +123,8 @@ public class PathFinder {
         	return;
         }
         
-        Perso perso=(Perso) mobile;
-        MouvementPerso mvt=perso.getQuel_deplacement();
-        Zone zone=perso.getZone_deplacement();
+        MouvementPerso mvt=mobile.getQuel_deplacement();
+        Zone zone=mobile.getZone_deplacement();
         
 		while (true) {
 			target=new Point(x, y);
@@ -132,6 +151,9 @@ public class PathFinder {
 	    }
 	}
 	
+	/**
+	 * Determine destination for SCRIPT_ABEILLE.
+	 */
 	void determineDestinationBee() {
         float x=mobile.x;
         float y=mobile.y;
@@ -140,6 +162,17 @@ public class PathFinder {
 		target.y=(int)(y+(5.0f+Math.random()*10.0f)*Math.sin(2.0f*Math.PI*Math.random()));
 	}
 	
+	/**
+	 * Determine destination for SCRIPT_CORBEAU
+	 */
+	void determineDestinationFlying() {
+        float x=mobile.x;
+        float y=mobile.y;
+		determineDestination();
+		target.x=(int)((target.x+Math.random()*20.0f-10.0f-x)/2);
+		target.y=(int)((target.y+Math.random()*20.0f-10.0f-y)/2);
+	}
+
 	public boolean hasReachedTarget() {
 		float x=mobile.x;
 		float y=mobile.y;
