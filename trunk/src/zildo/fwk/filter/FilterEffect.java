@@ -1,15 +1,19 @@
 package zildo.fwk.filter;
 
+@SuppressWarnings("unchecked")
 public enum FilterEffect {
-	FADE(FadeFilter.class), BLEND(BlendFilter.class), BLUR(BlurFilter.class), ZOOM(ZoomFilter.class);
+	FADE(FadeFilter.class, BilinearFilter.class), 
+	BLEND(BlendFilter.class), 
+	BLUR(BlurFilter.class), 
+	ZOOM(ZoomFilter.class);
 	
-	private Class<? extends ScreenFilter> clazz;
+	private Class<? extends ScreenFilter>[] clazz;
 	
-	public Class<? extends ScreenFilter> getFilterClass() {
+	public Class<? extends ScreenFilter>[] getFilterClass() {
 		return clazz;
 	}
 	
-	private FilterEffect(Class<? extends ScreenFilter> p_clazz) {
+	private FilterEffect(Class<? extends ScreenFilter>... p_clazz) {
 		clazz = p_clazz;
 	}
 	

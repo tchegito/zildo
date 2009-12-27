@@ -29,7 +29,6 @@ import zildo.monde.sprites.utils.ShieldEffect;
 import zildo.monde.sprites.utils.ShieldEffect.ShieldType;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
-import zildo.server.MapManagement;
 import zildo.server.MultiplayerManagement;
 
 
@@ -58,9 +57,6 @@ public class PersoZildo extends Perso {
 	// Sequence for sprite animation
 	static int seq_1[]={0,1,2,1};
 	static int seq_2[]={0,1,2,1,0,3,4,3};
-	
-	private int count=0;
-	private boolean inWater=false;
 	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
@@ -803,61 +799,6 @@ public class PersoZildo extends Perso {
             }
         }
         return false;
-    }
-    
-	/**
-	 * Zildo walk on a tile, so he reacts (water), or tile change (door).
-	 * @param p_sound TRUE=play sound when modifying map.
-	 * @return boolean (TRUE=slow down)
-	 */
-    public boolean walkTile(boolean p_sound) {
-        int cx = (int) (x / 16);
-        int cy = (int) (y / 16);
-        MapManagement mapManagement = EngineZildo.mapManagement;
-        int onmap = mapManagement.getCurrentMap().readmap(cx, cy);
-        boolean slowDown = false;
-        inWater = false;
-        BankSound snd = null;
-        switch (onmap) {
-            case 278:
-                mapManagement.getCurrentMap().writemap(cx, cy, 314);
-                mapManagement.getCurrentMap().writemap(cx + 1, cy, 315);
-                snd = BankSound.OuvrePorte;
-                break;
-            case 279:
-                mapManagement.getCurrentMap().writemap(cx - 1, cy, 314);
-                mapManagement.getCurrentMap().writemap(cx, cy, 315);
-                snd = BankSound.OuvrePorte;
-                break;
-            case 200:
-                snd = BankSound.ZildoGadou;
-            	break;
-            case 846:
-                // Water
-                inWater = true;
-                if (count > 15) {
-                    snd = BankSound.ZildoPatauge;
-                    count = 0;
-                } else {
-                    count++;
-                }
-                break;
-            case 857:
-            case 858:
-            case 859:
-            case 860:
-            case 861:
-            case 862:
-            case 863:
-            case 864:
-                slowDown = true;
-                break;
-        }
-        if (snd != null && p_sound) {
-            EngineZildo.soundManagement.broadcastSound(snd, this);
-        }
-
-        return slowDown;
     }
 	
 	/**

@@ -64,6 +64,9 @@ public class ActionExecutor {
                         } else {
                             perso.setGhost(true);
                             perso.setTarget(location);
+                            perso.setForward(p_action.backward);
+                            perso.setSpeed(p_action.speed);
+                            perso.setOpen(p_action.open);
                         }
                     } else if ("camera".equals(p_action.what)) {
                         ClientEngineZildo.mapDisplay.setTargetCamera(location);
@@ -106,9 +109,7 @@ public class ActionExecutor {
                     PersoDescription desc = PersoDescription.fromString(p_action.text);
                     String name = p_action.who != null ? p_action.who : p_action.what;
                     Perso newOne = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, name, p_action.val);
-                    if (p_action.speed != 0) {
-                    	newOne.setSpeed(p_action.speed);
-                    }
+                   	newOne.setSpeed(p_action.speed);
                     EngineZildo.spriteManagement.spawnPerso(newOne);
                     achieved = true;
                     break;
@@ -144,7 +145,7 @@ public class ActionExecutor {
             	break;
             case fadeIn:
             case fadeOut:
-            	achieved=ClientEngineZildo.guiDisplay.isFadeOver();
+           		achieved=ClientEngineZildo.guiDisplay.isFadeOver();
             	break;
         }
         p_action.waiting = !achieved;

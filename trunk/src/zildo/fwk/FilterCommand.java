@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.filter.BilinearFilter;
-import zildo.fwk.filter.BlendFilter;
-import zildo.fwk.filter.BlurFilter;
-import zildo.fwk.filter.FadeFilter;
 import zildo.fwk.filter.FilterEffect;
 import zildo.fwk.filter.ScreenFilter;
-import zildo.fwk.filter.ZoomFilter;
 import zildo.prefs.Constantes;
 
 /**
@@ -29,7 +25,8 @@ public class FilterCommand {
 	protected int fadeLevel;		// Integer between 0 and 255
 	protected boolean asked_FadeIn;
 	protected boolean asked_FadeOut;
-
+	private boolean fadeStarted;
+	
 	public FilterCommand() {
 		filters=new ArrayList<ScreenFilter>();
 
@@ -71,11 +68,22 @@ public class FilterCommand {
 
 		if (progressFadeLevel) {
 			// Evaluate fade level
-			if (asked_FadeOut && fadeLevel < 255) {
-				fadeLevel+=Constantes.FADE_SPEED;
+			if (asked_FadeOut) {
+				if (fadeLevel < 255) {
+					fadeLevel+=Constantes.FADE_SPEED;
+				} else {
+					fadeLevel=255;
+					fadeStarted=false;
+				}
 			}
-			if (asked_FadeIn && fadeLevel > 0) {
-				fadeLevel-=Constantes.FADE_SPEED;
+			if (asked_FadeIn) {
+				if (fadeLevel > 0) {
+					fadeLevel-=Constantes.FADE_SPEED;
+				} else {
+					fadeLevel=0;
+					fadeStarted=false;
+					fadeEnd();
+				}
 			}
 		}
 
@@ -91,9 +99,12 @@ public class FilterCommand {
 	{
 		asked_FadeIn  = true;
 		asked_FadeOut = false;
+		fadeStarted = true;
 		active(null, false);
 		for (FilterEffect effect : p_effects) {
-			active(effect.getFilterClass(), true);
+			for (Class<? extends ScreenFilter> clazz : effect.getFilterClass()) {
+				active(clazz, true);
+			}
 		}
 	}
 	
@@ -106,9 +117,12 @@ public class FilterCommand {
 	{
 		asked_FadeIn  = false;
 		asked_FadeOut = true;
+		fadeStarted = true;
 		active(null, false);
 		for (FilterEffect effect : p_effects) {
-			active(effect.getFilterClass(), true);
+			for (Class<? extends ScreenFilter> clazz : effect.getFilterClass()) {
+				active(clazz, true);
+			}
 		}
 	}
 	
@@ -129,14 +143,12 @@ public class FilterCommand {
 	// it's done.
 	///////////////////////////////////////////////////////////////////////////////////////
 	public boolean isFadeOver() {
-		if (asked_FadeOut && fadeLevel >= 255) {
-			fadeLevel=255;
-			asked_FadeIn=false;
+		if (!fadeStarted) {
+			return false;
+		}
+		if (asked_FadeIn && fadeLevel == 0) {
 			return true;
-		} else if (asked_FadeIn && fadeLevel <= 0) {
-			fadeLevel=0;
-			asked_FadeOut=false;
-			fadeEnd();
+		} else if (asked_FadeOut && fadeLevel == 255) {
 			return true;
 		}
 		return false;
