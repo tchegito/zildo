@@ -469,7 +469,7 @@ public class Element extends SpriteEntity {
 			switch (desc) {
 			case BUSHES:
 				// Le buisson s'effeuille
-				//EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON,(int) x,(int) y,0, null);
+				EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON,(int) x,(int) y,0, null);
 				EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_DIAMANT,(int) x,(int) y+5,0, null);
 				EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
 				break;
@@ -477,7 +477,7 @@ public class Element extends SpriteEntity {
 			case STONE:
 			case STONE_HEAVY:
 			case ROCK_BALL:
-				//EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_ECLATEPIERRE,(int) x,(int) y,0, null);
+				EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_ECLATEPIERRE,(int) x,(int) y,0, null);
 				EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
 				break;
 			case HEN:

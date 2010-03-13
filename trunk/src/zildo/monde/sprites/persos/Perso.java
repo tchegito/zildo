@@ -25,6 +25,7 @@ public abstract class Perso extends Element {
 	protected Zone zone_deplacement;
     private int compte_dialogue;
     private String nom;
+    private String effect;	// String containing desired effect ("noir", "jaune", ...)
     protected PersoInfo info;					// 0=Neutre  1=Ennemi  2=Zildo
     protected boolean alerte;				// True=Zildo est reperé (Pieds dans l'eau si c'est Zildo)
     protected MouvementPerso quel_deplacement;      // Script
@@ -523,5 +524,13 @@ public abstract class Perso extends Element {
 	
 	public Pointf reachDestination(float p_speed) {
 		return pathFinder.reachDestination(p_speed);
+	}
+
+	public String getEffect() {
+		return effect;
+	}
+
+	public void setEffect(String p_effect) {
+		this.effect = p_effect;
 	}
 }

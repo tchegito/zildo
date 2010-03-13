@@ -11,11 +11,10 @@ import zildo.monde.sprites.persos.PersoZildo;
 public class QuestDiary {
 
     Map<String, Quest> quests;
-    MapReplacement replaces;
+
 
     public QuestDiary() {
         quests = new HashMap<String, Quest>();
-        replaces = new MapReplacement();
     }
 
     private Quest getQuest(String p_questName) {
@@ -41,17 +40,8 @@ public class QuestDiary {
     public void accomplish(String p_questName) {
         Quest q = getQuest(p_questName);
         q.accomplish();
-        replaces.putAll(q.getTransformMap());
     }
 
-    public String getReplacedMapName(String p_mapName) {
-        String name = replaces.get(p_mapName);
-        if (name == null) {
-            return p_mapName;
-        } else {
-            return name;
-        }
-    }
     
     /**
      * Check every quest to trigger with the given event.

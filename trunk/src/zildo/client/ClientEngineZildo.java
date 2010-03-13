@@ -182,6 +182,8 @@ public class ClientEngineZildo {
 		
 		ClientEvent retEvent=p_event;
 		
+		boolean displayGUI=!p_event.script;
+		
 		if (p_event.wait != 0) {
 			p_event.wait--;
 		} else {
@@ -214,14 +216,15 @@ public class ClientEngineZildo {
 	        case CHANGINGMAP_SCROLL_ASKED:
 	            retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_CAPTURE;
 	            filterCommand.active(BilinearFilter.class, false);
-	            guiDisplay.setToDisplay_generalGui(false);
 	            mapDisplay.setCapturing(true);
 	            retEvent.wait=1;
+	            displayGUI=false;
 	            break;
 	        case CHANGINGMAP_SCROLL_CAPTURE:
 	            spriteEngine.captureScreen();
 	            mapDisplay.setCapturing(false);
 	            retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP;
+	        	displayGUI=false;
 	            break;
 	        case CHANGINGMAP_SCROLL_START:
 	        	if (mapDisplay.getTargetCamera() == null) {
@@ -234,18 +237,20 @@ public class ClientEngineZildo {
 		            // Hide GUI sprites
 		            filterCommand.active(BilinearFilter.class, true);
 	        	}
+	        	displayGUI=false;
 	            break;
 	        case CHANGINGMAP_SCROLL:
+	        	displayGUI=false;
 	        	if (!mapDisplay.isScrolling()) {
 	        		retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLLOVER;
 	        		// Show GUI sprites back
-		            guiDisplay.setToDisplay_generalGui(true);
+		            displayGUI=true;
 	        	}
 	        	break;
 		    }
 		}
 		// Remove GUI when scripting
-        guiDisplay.setToDisplay_generalGui(!p_event.script);
+        guiDisplay.setToDisplay_generalGui(displayGUI);
 		
 		
 	

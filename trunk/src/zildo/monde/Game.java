@@ -1,5 +1,6 @@
 package zildo.monde;
 
+import zildo.fwk.script.xml.AdventureElement;
 import zildo.monde.items.ItemKind;
 import zildo.monde.quest.Quest;
 import zildo.monde.quest.QuestDiary;
@@ -22,7 +23,8 @@ public class Game {
     public boolean deathmatch; // Defines the game rules
     public String mapName;
     public QuestDiary questDiary;
-
+    public AdventureElement adventure;
+    
     public Game(String p_mapName, boolean p_editing) {
         mapName = p_mapName;
         editing = p_editing;

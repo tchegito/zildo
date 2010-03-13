@@ -13,6 +13,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import zildo.fwk.script.xml.ActionElement.ActionKind;
+import zildo.monde.quest.QuestEvent;
 import zildo.prefs.Constantes;
 
 public class ScriptReader {
@@ -50,8 +51,11 @@ public class ScriptReader {
         AnyElement s = null;
         // Check for ActionElement
         ActionKind kind=ActionKind.fromString(name);
+        QuestEvent event=QuestEvent.fromString(name);
         if (kind != null) { 
         	s=new ActionElement(kind);
+        } else if (event != null) {
+        	s=new TriggerElement(event);
         } else {
         	// General case
 	        name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length()).toLowerCase();
@@ -92,5 +96,21 @@ public class ScriptReader {
             }
         }
         return elements;
+    }
+    
+    static Element getChildNamed(Element p_element, String p_nodeName) {
+        NodeList list = p_element.getChildNodes();
+        Element returnElement=null;
+        for (int i = 0; i < list.getLength(); i++) {
+            Node node = list.item(i);
+            if (node != null && node.getNodeType() == Node.ELEMENT_NODE) {
+                String nodeNameUpper = node.getNodeName().toUpperCase();
+                
+                if (p_nodeName.equalsIgnoreCase(nodeNameUpper)) {
+                	returnElement=(Element) node;
+                }
+            }
+        }
+        return returnElement;
     }
 }

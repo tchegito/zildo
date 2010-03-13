@@ -59,7 +59,7 @@ public class PlayerManagement {
 		boolean ghost=heros.isGhost();
 		if (client.event.mapChange) {
 			gamePhase=GamePhase.MAPCHANGE;
-		} else if (EngineZildo.scriptExecutor.isScripting()) {
+		} else if (EngineZildo.scriptManagement.isScripting()) {
 			gamePhase=GamePhase.SCRIPT;
 		} else if (dialogState.dialoguing) {
 			gamePhase=GamePhase.DIALOG;

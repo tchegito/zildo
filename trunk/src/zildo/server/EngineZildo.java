@@ -5,13 +5,13 @@ import java.util.Collection;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
-import zildo.fwk.script.command.ScriptExecutor;
 import zildo.monde.Game;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.state.ClientState;
+import zildo.server.state.ScriptManagement;
 
 public class EngineZildo {
 
@@ -24,7 +24,7 @@ public class EngineZildo {
 	public static DialogManagement dialogManagement;
 	public static SoundManagement soundManagement;
     public static MultiplayerManagement multiplayerManagement;
-    public static ScriptExecutor scriptExecutor;
+    public static ScriptManagement scriptManagement;
     
     public static Game game;
     public static int compteur_animation;
@@ -44,7 +44,7 @@ public class EngineZildo {
 		soundManagement=new SoundManagement();
 		playerManagement=new PlayerManagement();
         multiplayerManagement = new MultiplayerManagement();
-        scriptExecutor = new ScriptExecutor();
+        scriptManagement = new ScriptManagement();
         
 		game=p_game;
 
@@ -138,7 +138,7 @@ public class EngineZildo {
 			multiplayerManagement.render();
 		}
 		
-		scriptExecutor.render();
+		scriptManagement.render();
 		
 		// 2) Rest of the world
 		collideManagement.initFrame();
@@ -174,7 +174,7 @@ public class EngineZildo {
             	retEvent.mapChange = false;
             	break;
         }
-        retEvent.script=scriptExecutor.isScripting();
+        retEvent.script=scriptManagement.isScripting();
         
         return retEvent;
     }
