@@ -7,7 +7,7 @@ import zildo.monde.map.Point;
 public class ActionElement extends AnyElement {
 
     public enum ActionKind {
-        pos, moveTo, speak, script, angle, wait, sound, fadeIn, fadeOut, map, focus, spawn;
+        pos, moveTo, speak, script, angle, wait, sound, fadeIn, fadeOut, map, focus, spawn, exec, take, mapReplace;
         
         public static ActionKind fromString(String p_name) {
         	for (ActionKind kind : values()) {
@@ -23,8 +23,8 @@ public class ActionElement extends AnyElement {
     public String what; // Camera, elements
     public String fx;
     public boolean unblock;
-    public boolean backward=false;
-    public boolean open=false;
+    public boolean backward=false;	// Character moves back
+    public boolean open=false;		// Can open doors
     public ActionKind kind;
     public Point location;
     public String text;
@@ -85,6 +85,15 @@ public class ActionElement extends AnyElement {
         case focus:
             who = p_elem.getAttribute("name");
             break;
+        case take:
+        	text = p_elem.getAttribute("item");
+        	break;
+        case exec:
+        	text = p_elem.getAttribute("script");
+        	break;
+        case mapReplace:
+        	text = p_elem.getAttribute("name");
+        	break;
         }
     }
 }

@@ -6,11 +6,13 @@ import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.fwk.filter.FilterEffect;
 import zildo.fwk.script.xml.ActionElement;
+import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.server.EngineZildo;
 
@@ -96,23 +98,40 @@ public class ActionExecutor {
                 case fadeOut:
                 	EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_OUT, FilterEffect.fromInt(p_action.val)));
                 	break;
-                case map:
+                case map:	// Change current map
         			EngineZildo.mapManagement.charge_map(p_action.text);
         			ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
                 	achieved=true;
                 	break;
-                case focus:
+                case focus:	// Camera focus on given character
                     ClientEngineZildo.mapDisplay.setFocusedEntity(perso);
                     achieved = true;
                     break;
-                case spawn:
+                case spawn:	// Spawn a new character
                     PersoDescription desc = PersoDescription.fromString(p_action.text);
                     String name = p_action.who != null ? p_action.who : p_action.what;
                     Perso newOne = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, name, p_action.val);
                    	newOne.setSpeed(p_action.speed);
+                   	newOne.setEffect(p_action.fx);
+                   	newOne.initPersoFX();
                     EngineZildo.spriteManagement.spawnPerso(newOne);
                     achieved = true;
                     break;
+                case take:	// Zildo takes an item
+                	PersoZildo zildo=EngineZildo.persoManagement.getZildo();
+                	zildo.pickItem(ItemKind.fromString(text));
+                	achieved=true;
+                	break;
+                case mapReplace:
+                	EngineZildo.scriptManagement.addReplacedMapName(p_action.what, text);
+                	achieved = true;
+                	break;
+                case exec:
+                	//new ScriptExecutor();
+                	// Warning : with this, we totally replace the current script with the new one.
+                	// So we can't sequence scripts in an action tag.
+                	EngineZildo.scriptManagement.execute(text);
+                	break;
             }
 
             p_action.done = achieved;
@@ -146,6 +165,9 @@ public class ActionExecutor {
             case fadeIn:
             case fadeOut:
            		achieved=ClientEngineZildo.guiDisplay.isFadeOver();
+            	break;
+            case exec:
+            	achieved=true;
             	break;
         }
         p_action.waiting = !achieved;

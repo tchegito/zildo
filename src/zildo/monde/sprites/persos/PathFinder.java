@@ -31,7 +31,7 @@ public class PathFinder {
 	public PathFinder(Perso p_mobile) {
 		mobile=p_mobile;
 		backward=false;
-		open=false;
+		open=p_mobile.isZildo();
 	}
 	
     /**
@@ -97,6 +97,9 @@ public class PathFinder {
     }
     
     public void reachDestinationFlying() {
+    	if (target == null) {
+    		return;
+    	}
 		double alpha=Math.PI*(mobile.getCptMouvement()/100.0f)-Math.PI/2.0f;
 		mobile.z=(float) (2.0f+10.0f*Math.sin(alpha+Math.PI/2.0f));
 		alpha=(Math.PI/100.0f)*Math.cos(alpha);

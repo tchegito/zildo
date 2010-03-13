@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import zildo.fwk.IntSet;
 import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
+import zildo.fwk.script.xml.TriggerElement;
 import zildo.monde.collision.Collision;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
@@ -73,7 +74,11 @@ public class MapManagement {
         }
 
         // Adjust map according the quest diary
-        String adjustedMapName = EngineZildo.game.questDiary.getReplacedMapName(mapname);
+        String adjustedMapName = EngineZildo.scriptManagement.getReplacedMapName(mapname);
+        
+        // Trigger the location
+        TriggerElement trig=TriggerElement.createLocationTrigger(adjustedMapName);
+        EngineZildo.scriptManagement.trigger(trig);
         
         // Misc
         if (EngineZildo.game.multiPlayer) {
@@ -83,6 +88,12 @@ public class MapManagement {
         // Load a new one
         currentMap = loadMapFile(adjustedMapName);
         currentMap.setName(mapname);
+        
+        // Adjust map at Zildo's location
+        PersoZildo zildo=EngineZildo.persoManagement.getZildo();
+        if (zildo != null) {
+        	zildo.walkTile(false);
+        }
         
         analyseAltitude();
 

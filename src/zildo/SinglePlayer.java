@@ -12,8 +12,6 @@ import zildo.client.ClientEventNature;
 import zildo.client.Client.ClientType;
 import zildo.client.gui.menu.PlayerNameMenu;
 import zildo.fwk.input.KeyboardInstant;
-import zildo.fwk.script.xml.SceneElement;
-import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.Game;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.SpriteEntity;
@@ -56,9 +54,9 @@ public class SinglePlayer {
     	p_game.multiPlayer=false;
         engineZildo = new EngineZildo(p_game);
 
-        SceneElement script=(SceneElement) ScriptReader.loadScript("intro.xml");
-        EngineZildo.scriptExecutor.execute(script);
-        
+        // Start 'intro' script
+       	EngineZildo.scriptManagement.execute("intro");
+
         launchGame();
     }
 

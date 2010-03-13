@@ -17,4 +17,13 @@ public enum ItemKind {
 	private ItemKind(ElementDescription p_itemRepresentation) {
 		representation=p_itemRepresentation;
 	}
+	
+	public static ItemKind fromString(String p_str) {
+		for (ItemKind kind : values()) {
+			if (kind.toString() .equalsIgnoreCase(p_str)) {
+				return kind;
+			}
+		}
+		throw new RuntimeException("Item "+p_str+" doesn't exists.");
+	}
 }

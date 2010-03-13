@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.net.TransferObject;
-import zildo.monde.items.ItemKind;
+import zildo.fwk.script.xml.TriggerElement;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
@@ -75,9 +75,10 @@ public class DialogManagement {
 	            persoToTalk.setCompte_dialogue(compteDial + 1);
 	        }
 
-	        if ("gerard".equals(persoToTalk.getNom()) && compteDial == 1) {
-	            p_client.zildo.pickItem(ItemKind.FLUT);
-	        }
+	        // Adventure trigger
+	        TriggerElement trig=TriggerElement.createDialogTrigger(persoToTalk.getNom(), compteDial);
+	        EngineZildo.scriptManagement.trigger(trig);
+
 	        // Set the dialoguing states for each Perso
 	        persoToTalk.setDialoguingWith(p_client.zildo);
 

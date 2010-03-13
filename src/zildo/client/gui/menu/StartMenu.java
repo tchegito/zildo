@@ -31,7 +31,7 @@ public class StartMenu extends Menu {
         ItemMenu itemSinglePlayer = new ItemMenu("m1.single", BankSound.MenuSelectGame) {
             @Override
             public void run() {
-                new SinglePlayer(new Game(false));
+                new SinglePlayer(new Game("d5", false));
             }
         };
 

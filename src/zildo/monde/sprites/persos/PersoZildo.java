@@ -8,6 +8,7 @@ import zildo.SinglePlayer;
 import zildo.client.SoundPlay.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.fwk.script.xml.TriggerElement;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.items.Item;
@@ -82,7 +83,6 @@ public class PersoZildo extends Perso {
 
         setX(p_posX); // 805); //601-32;//-500);
         setY(p_posY); // 973); //684+220;//-110);
-		pathFinder=null;
 		setAngle(Angle.NORD);
 		setPos_seqsprite(-1);
 		setMouvement(MouvementZildo.VIDE);
@@ -520,12 +520,14 @@ public class PersoZildo extends Perso {
 			if (en_bras != null) {
 				int objX=(int) en_bras.getX();
 				int objY=(int) en_bras.getY();
+				int objZ=(int) en_bras.getZ();
 				if (angle==Angle.EST) objX++;
 				else if (angle==Angle.OUEST) objX--;
-				objY+=seq_1[((zildo.getPos_seqsprite() % (4*Constantes.speed)) / Constantes.speed)];
+				int variation=seq_1[((zildo.getPos_seqsprite() % (4*Constantes.speed)) / Constantes.speed)];
 		
 				en_bras.setX(objX);
 				en_bras.setY(objY);
+				en_bras.setZ(objZ + variation);
 			}
 			if (en_bras.getNSpr()==32) {// Il s'agit d'une poule
 				//spriteManagement.aff_sprite(BANK_PNJ,35+compteur_animation / 20,xx-7,yy-21-8);
@@ -789,7 +791,10 @@ public class PersoZildo extends Perso {
         		(int) y + 1, 20);
         setEn_bras(elem);
         EngineZildo.soundManagement.playSound(BankSound.ZildoTrouve, this);
-        EngineZildo.game.questDiary.trigger(QuestEvent.INVENTORY, this);
+
+        // Adventure trigger
+        TriggerElement trig=TriggerElement.createInventoryTrigger(p_kind);
+        EngineZildo.scriptManagement.trigger(trig);
     }
 
     public boolean hasItem(ItemKind p_kind) {

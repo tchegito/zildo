@@ -304,15 +304,16 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void initPersoFX() {
 		if (getQuel_spr().equals(PersoDescription.GARDE_CANARD)) {	// Guard
-			if ("jaune".equals(getNom())) {
+			String str=getEffect() != null ? getEffect() : getNom();
+			if ("jaune".equals(str)) {
 				setSpecialEffect(EngineFX.GUARD_YELLOW);
-			} else if("vert".equals(getNom())) {
+			} else if("vert".equals(str)) {
 				setSpecialEffect(EngineFX.GUARD_GREEN);
-			} else if("rouge".equals(getNom())) {
+			} else if("rouge".equals(str)) {
 				setSpecialEffect(EngineFX.GUARD_RED);
-			} else if("rose".equals(getNom())) {
+			} else if("rose".equals(str)) {
 				setSpecialEffect(EngineFX.GUARD_PINK);
-			} else if("noir".equals(getNom())) {
+			} else if("noir".equals(str)) {
 				setSpecialEffect(EngineFX.GUARD_BLACK);
 			} else {
 				// Default color for this guard : blue
