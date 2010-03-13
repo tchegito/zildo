@@ -11,6 +11,6 @@ public class ScriptAction extends ActionDialog {
 	
 	@Override
 	public void launchAction() {
-		EngineZildo.scriptExecutor.userEndAction();
+		EngineZildo.scriptManagement.userEndAction();
 	}
 }

@@ -16,7 +16,6 @@ import zildo.monde.items.ItemCircle;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
-import zildo.monde.quest.QuestEvent;
 import zildo.monde.quest.actions.GameOverAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
