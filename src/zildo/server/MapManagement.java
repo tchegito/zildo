@@ -304,7 +304,7 @@ public class MapManagement {
 		float y=p_zildo.getY();
 		// Store the changing point to use it when processing map swap
 		if (currentMap != null) { 
-			changingMapPoint=currentMap.isChangingMap(x,y);
+			changingMapPoint=currentMap.isChangingMap(x,y, p_zildo.getAngle());
 		}
 		return (changingMapPoint !=null);
 	}
