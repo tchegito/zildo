@@ -196,20 +196,34 @@ public class Area {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Return ChainingPoint if Zildo's crossing one (door, or Area's border)
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public ChainingPoint isChangingMap(float x, float y) {
+	public ChainingPoint isChangingMap(float x, float y, Angle p_angle) {
 		// On parcourt les points d'enchainements
 		int ax = (int) (x / 16);
 		int ay = (int) (y / 16);
 		boolean border;
+		List<ChainingPoint> candidates=new ArrayList<ChainingPoint>();
 		if (listPointsEnchainement.size() != 0) {
 			for (ChainingPoint chPoint : listPointsEnchainement) {
 				// Area's borders
 				border = isAlongBorder((int) x, (int) y);
 				if (chPoint.isCollide(ax, ay, border)) {
 					addChainingContextInfos(chPoint);
-					return chPoint;
+					candidates.add(chPoint);
 				}
 			}
+		}
+		if (candidates.size() == 1) {
+			return candidates.get(0);
+		} else if (candidates.size() > 0) {
+			// More than one possibility : we must be on a map corner
+			for (ChainingPoint ch : candidates) {
+				Angle chAngle=ch.getAngle((int) x, (int) y, p_angle);
+				if (chAngle == p_angle) {
+					return ch;
+				}
+			}
+			// return first one (default)
+			return candidates.get(0);
 		}
 		return null;
 	}
