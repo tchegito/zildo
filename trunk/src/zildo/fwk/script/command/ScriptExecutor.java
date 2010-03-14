@@ -82,6 +82,9 @@ public class ScriptExecutor {
 			// Get back to life the involved characters
 			for (Perso p : involved) {
 				p.setGhost(false);
+				if (p.isZildo()) {
+					p.setOpen(true);
+				}
 			}
 			involved.clear();
 			// Focus on Zildo

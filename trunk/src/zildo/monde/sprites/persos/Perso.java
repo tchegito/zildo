@@ -119,6 +119,9 @@ public abstract class Perso extends Element {
 
 	public void setQuel_deplacement(MouvementPerso quel_deplacement) {
 		this.quel_deplacement = quel_deplacement;
+		if (MouvementPerso.SCRIPT_IMMOBILE == quel_deplacement) {
+			this.pathFinder.target=null;
+		}
 	}
 
 	public PersoDescription getQuel_spr() {

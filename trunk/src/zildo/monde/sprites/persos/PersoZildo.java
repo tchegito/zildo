@@ -273,10 +273,15 @@ public class PersoZildo extends Perso {
 		// Et on l'envoie !
 		setPx(8*(diffx/norme));
 		setPy(8*(diffy/norme));
+
+		return beingWounded(p_shooter, p_damage);
+    }
+
+	public boolean beingWounded(Perso p_shooter, int p_damage) {
 		setMouvement(MouvementZildo.TOUCHE);
 		setWounded(true);
 		this.setPv(getPv()-p_damage);
-	
+		
 		// Si Zildo a quelque chose dans les mains, on doit le laisser tomber
 		if (getEn_bras() != null) {
 			getEn_bras().az=-0.07f;
@@ -296,8 +301,8 @@ public class PersoZildo extends Perso {
         }
 
         return die;
-    }
-
+	}
+	
     /**
      * Zildo is dead ! Send messages and respawn (in multiplayer deathmatch)
      */

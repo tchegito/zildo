@@ -217,12 +217,13 @@ public class PlayerManagement {
 				if (onMap>=108 && onMap<=138)
 				{
 					Point zildoAvantSaut=heros.getPosAvantSaut();
-					// Zildo est tombé dans l'eau !
-					heros.setCompte_dialogue(50);
+					// Zildo is fallen in the water !
 					heros.setX(zildoAvantSaut.getX());
 					heros.setY(zildoAvantSaut.getY());
-					heros.setPv(heros.getPv()-2);
+					heros.beingWounded(null, 2);
+					heros.stopBeingWounded();
 					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, heros);
+					
 				} else {
 					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, heros);
 				}
