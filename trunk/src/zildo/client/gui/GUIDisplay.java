@@ -566,11 +566,11 @@ public class GUIDisplay {
 		
 		// Bombs
 		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,93,110,10);
-		displayNumber(zildo.countBomb, 2, 107, 20);
+		displayNumber(zildo.getCountBomb(), 2, 107, 20);
 
 		// Arrows
 		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,94,149,10);
-		displayNumber(zildo.countArrow, 2, 148, 20);
+		displayNumber(zildo.getCountArrow(), 2, 148, 20);
 
 	}
 	

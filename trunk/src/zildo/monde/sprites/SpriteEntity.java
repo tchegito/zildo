@@ -251,9 +251,11 @@ public class SpriteEntity extends Identified implements Cloneable
 		if (isZildo) {
 			// Zildo needs extra info
 			PersoZildo zildo=(PersoZildo) this;
-			p_buffer.put(zildo.getPv());
-			p_buffer.put(zildo.getMaxpv());
+			p_buffer.put((byte) zildo.getPv());
+			p_buffer.put((byte) zildo.getMaxpv());
 			p_buffer.put(zildo.getMoney());
+			p_buffer.put((byte) zildo.getCountArrow());
+			p_buffer.put((byte) zildo.getCountBomb());
 		}
 		p_buffer.put(this.getAjustedX());
 		p_buffer.put(this.getAjustedY());
@@ -262,11 +264,11 @@ public class SpriteEntity extends Identified implements Cloneable
 		//p_buffer.put(this.getScrX());
 		//p_buffer.put(this.getScrY());
 		p_buffer.put(this.z);
-		p_buffer.put(this.getNBank());
-		p_buffer.put(this.getSpecialEffect().ordinal());
-		p_buffer.put(this.getEntityType());
+		p_buffer.put((byte) this.getNBank());
+		p_buffer.put((byte) this.getSpecialEffect().ordinal());
+		p_buffer.put((byte) this.getEntityType());
 		p_buffer.put(this.getSprModel().getId());
-		p_buffer.put(this.reverse);
+		p_buffer.put((byte) this.reverse);
 	}
 	
 	/**
@@ -283,9 +285,11 @@ public class SpriteEntity extends Identified implements Cloneable
 			entity=new PersoZildo(id);
 			// Zildo needs extra info
 			PersoZildo zildo=(PersoZildo) entity;
-			zildo.setPv(p_buffer.readInt());
-			zildo.setMaxpv(p_buffer.readInt());
+			zildo.setPv(p_buffer.readUnsignedByte());
+			zildo.setMaxpv(p_buffer.readUnsignedByte());
 			zildo.setMoney(p_buffer.readInt());
+			zildo.setCountArrow(p_buffer.readUnsignedByte());
+			zildo.setCountBomb(p_buffer.readUnsignedByte());
 		} else {
 			entity=new SpriteEntity(id);
 		}
@@ -299,12 +303,12 @@ public class SpriteEntity extends Identified implements Cloneable
 		entity.setVisible(bools[1]);
 		entity.setForeground(bools[2]);
 		entity.dying=bools[3];
-		entity.setNBank(p_buffer.readInt());
-		entity.setSpecialEffect(EngineFX.values()[p_buffer.readInt()]);
-		entity.setEntityType(p_buffer.readInt());
+		entity.setNBank(p_buffer.readUnsignedByte());
+		entity.setSpecialEffect(EngineFX.values()[p_buffer.readUnsignedByte()]);
+		entity.setEntityType(p_buffer.readUnsignedByte());
 		int idSprModel=p_buffer.readInt();
 		entity.setSprModel(Identified.fromId(SpriteModel.class, idSprModel));
-        entity.reverse = p_buffer.readInt();
+        entity.reverse = p_buffer.readUnsignedByte();
 		return entity;
 	}
 	
