@@ -131,7 +131,9 @@ public class EngineZildo {
 		for (ClientState 
 				state : p_clientStates) {
 			// If client has pressed keys, we manage them, then clear.
-			playerManagement.manageKeyboard(state);
+			if (state.keys != null) {
+				playerManagement.manageKeyboard(state);
+			}
 			state.keys=null;
 			
 			// Look for map change (only in single player for now)
