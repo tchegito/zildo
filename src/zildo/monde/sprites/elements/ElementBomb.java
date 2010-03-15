@@ -37,12 +37,15 @@ public class ElementBomb extends Element {
 		x=p_startX;
 		y=p_startY;
 		z=p_startZ;
+		shooter=p_shooter;
 		setSprModel(ElementDescription.BOMB);
 		counter=100;
 		
         // Add a shadow
 		addShadow(ElementDescription.SHADOW_SMALL);
         
+		shooter=p_shooter;
+		
         EngineZildo.soundManagement.broadcastSound(BankSound.PlanteBombe, this);
 	}
 	
