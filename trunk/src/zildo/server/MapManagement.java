@@ -516,7 +516,7 @@ public class MapManagement {
         int x = 831;
         int y = 360;
         while (collide(x, y, null)) {
-            y -= 16;
+            x += 16;
         }
         return new Point(x, y);
     }
