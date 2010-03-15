@@ -214,9 +214,6 @@ public class NetClient extends NetSend {
 		
 		map.setName(p_packet.name);
 		ClientEngineZildo.mapDisplay.setCurrentMap(map);
-		// Focus on Zildo
-		SpriteEntity zildo=ClientEngineZildo.spriteDisplay.getZildo();
-		ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
 	}
 	
 	private void receiveMapPart(GetPacket p_packet) {
@@ -238,6 +235,10 @@ public class NetClient extends NetSend {
         EasyBuffering buffer = new EasyBuffering(p_packet.getBuffer());
         List<SpriteEntity> list = SpriteManagement.deserializeEntities(buffer);
         ClientEngineZildo.spriteDisplay.setEntities(list);
+
+		// Focus on Zildo
+      	SpriteEntity zildo=ClientEngineZildo.spriteDisplay.getZildo();
+   		ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
 
         // Re-ask
         sendPacket(new AskPacket(ResourceType.ENTITY, false), server);
