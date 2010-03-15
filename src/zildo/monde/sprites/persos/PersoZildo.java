@@ -69,8 +69,7 @@ public class PersoZildo extends Perso {
 	private ShieldEffect shieldEffect;
 	
 	public Item weapon;
-	public int countArrow;
-	public int countBomb;
+
 	private SpriteEntity boomerang;
 	private int quadDuration;
 	

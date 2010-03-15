@@ -128,8 +128,8 @@ public class MultiplayerManagement {
 		p_zildo.addInventory(new Item(ItemKind.BOMB));
 		p_zildo.setPv(13);
 		
-		p_zildo.countArrow=20;
-		p_zildo.countBomb=20;
+		p_zildo.setCountArrow(20);
+		p_zildo.setCountBomb(20);
 
     }
 }

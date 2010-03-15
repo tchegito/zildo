@@ -63,6 +63,8 @@ public abstract class Perso extends Element {
 	private boolean ghost=false;	// TRUE=script control him
 
     private int money;
+    protected int countArrow;
+    protected int countBomb;
 	
 	private int count=0;
 	protected boolean inWater=false;
@@ -555,5 +557,21 @@ public abstract class Perso extends Element {
 
 	public void setEffect(String p_effect) {
 		this.effect = p_effect;
+	}
+
+	public int getCountArrow() {
+		return countArrow;
+	}
+
+	public void setCountArrow(int countArrow) {
+		this.countArrow = countArrow;
+	}
+
+	public int getCountBomb() {
+		return countBomb;
+	}
+
+	public void setCountBomb(int countBomb) {
+		this.countBomb = countBomb;
 	}
 }
