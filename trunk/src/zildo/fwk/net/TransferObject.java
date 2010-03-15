@@ -111,9 +111,7 @@ public class TransferObject {
 				NetSend.addTransferObject(this);
 			}
 		} catch (IOException e) {
-			log("Doesn't work");
-			//e.printStackTrace();
-			//throw new RuntimeException("Unable to get socket and channel for "+address.getAddress()+" on port "+address.getPort());
+			// Exception, but connection works anyway.
 		}
 	}
 	
