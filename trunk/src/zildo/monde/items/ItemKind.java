@@ -24,7 +24,7 @@ import zildo.monde.sprites.desc.ElementDescription;
 
 public enum ItemKind {
 
-	SWORD(ElementDescription.SMOKE), 
+	SWORD(ElementDescription.SWORD), 
 	BOOMERANG(ElementDescription.BOOMERANG1), 
 	WHIP(ElementDescription.BAR_HORIZONTAL), 
 	BOW(ElementDescription.ARROW_UP),
