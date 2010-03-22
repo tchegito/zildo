@@ -1,6 +1,6 @@
 #summary News
 
-= Version 1.092 (soon) =
+= Version 1.092 =
 
  * resource bundle for menu (english/french)
  * server configuration in game
