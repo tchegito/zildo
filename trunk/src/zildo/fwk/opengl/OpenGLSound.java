@@ -59,7 +59,6 @@ public class OpenGLSound {
 			try {
 				AL.create();
 			} catch (LWJGLException e) {
-				
 			}
 	  }
 	  
@@ -78,6 +77,11 @@ public class OpenGLSound {
 	public void finalize() {
 		killALData();
 	}
+
+	static public void cleanUp() {
+		AL.destroy();
+	}
+
 	private int loadALData(String p_filename) {
 	    // Load wav data into a buffer.
 	    AL10.alGenBuffers(buffer);

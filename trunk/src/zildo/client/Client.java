@@ -189,7 +189,6 @@ public class Client {
 	}
 	
 	public void cleanUp() {
-        ClientEngineZildo.cleanUp();
         if (netClient != null) {
         	netClient.close();
         }
