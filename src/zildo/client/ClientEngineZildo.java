@@ -301,6 +301,7 @@ public class ClientEngineZildo {
 		pixelShaders.cleanUp();
 		tileEngine.cleanUp();
 		spriteEngine.cleanUp();
+		soundPlay.cleanUp();
 	}
 	
 	void debug()

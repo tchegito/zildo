@@ -22,8 +22,11 @@ package zildo.fwk;
 
 import java.nio.FloatBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
+
+import sun.nio.ch.DirectBuffer;
 
 public class ZUtils {
 
@@ -49,7 +52,7 @@ public class ZUtils {
 	 */
 	public static float[] getFloat(int p_info,int p_size) {
 		if (floatBuffer == null) {
-			floatBuffer=FloatBuffer.allocate(16);
+			floatBuffer=BufferUtils.createFloatBuffer(16);
 		}
 		GL11.glGetFloat(p_info, floatBuffer);
 		

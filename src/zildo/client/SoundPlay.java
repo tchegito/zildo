@@ -127,8 +127,8 @@ public class SoundPlay {
 	lance			X
 	meurt			X				X
 	pasvite
-	porte			X
-	posebomb
+	porte			X				X
+	posebomb		X				X
 	ramasse			X
 	texte1			X				X
 	texte2			X
@@ -159,20 +159,18 @@ public class SoundPlay {
 		loadAllSoundFX();
 	}
 	
-	public void finalize()
+	public void cleanUp()
 	{
-		/*
+		
 		// Release all allocated buffer for samples
-		for (int i=0;i<MAX_SOUNDS;i++) {
-			CSound* currentSound=tabSounds[i];
-			if (currentSound != null) {
-				delete currentSound;
+		for (int i=0;i<Constantes.MAX_SOUNDS;i++) {
+			OpenGLSound sound=tabSounds[i];
+			if (sound != null) {
+				sound.finalize();
 			}
+			sound=null;
 		}
-	
-		if (soundManager) {
-			delete soundManager;
-		}*/
+		OpenGLSound.cleanUp();
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
