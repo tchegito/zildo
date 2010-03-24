@@ -1,5 +1,9 @@
 #summary News
 
+= Version 1.093 (soon) =
+
+ * ingame music
+
 = Version 1.092 =
 
  * resource bundle for menu (english/french)
