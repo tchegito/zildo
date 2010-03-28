@@ -21,7 +21,8 @@
 package zildo.client.sound;
 
 public enum BankMusic implements AudioBank {
-	 Village("ZildoVillage");
+	 Village("ZildoVillage"),
+	 Angoisse("Angoisse");
 	 
 	 private String filename;
 	 

@@ -24,6 +24,7 @@ import zildo.SinglePlayer;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
+import zildo.client.sound.BankMusic;
 import zildo.fwk.filter.FilterEffect;
 import zildo.fwk.script.xml.ActionElement;
 import zildo.monde.items.ItemKind;
@@ -151,6 +152,11 @@ public class ActionExecutor {
                 	// Warning : with this, we totally replace the current script with the new one.
                 	// So we can't sequence scripts in an action tag.
                 	EngineZildo.scriptManagement.execute(text);
+                	break;
+                case music:
+                	BankMusic musicSnd=BankMusic.valueOf(text);
+                	EngineZildo.soundManagement.broadcastSound(musicSnd, (Point) null);
+                	achieved=true;
                 	break;
             }
 
