@@ -26,7 +26,7 @@ import zildo.MultiPlayer;
 import zildo.SinglePlayer;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
-import zildo.client.SoundPlay.BankSound;
+import zildo.client.sound.BankSound;
 import zildo.fwk.net.ServerInfo;
 import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;

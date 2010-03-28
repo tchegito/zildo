@@ -26,7 +26,7 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 
 import zildo.client.ClientEngineZildo;
-import zildo.client.SoundPlay.BankSound;
+import zildo.client.sound.BankSound;
 
 public class Menu {
 

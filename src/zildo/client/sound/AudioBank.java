@@ -18,40 +18,15 @@
  *
  */
 
-package zildo.fwk.ui;
+package zildo.client.sound;
 
-import zildo.client.sound.BankSound;
+/**
+ * @author Tchegito
+ *
+ */
+public interface AudioBank {
 
-public abstract class ItemMenu {
-
-	private  String text;
-	public BankSound sound=BankSound.MenuSelect;
-	
-	public ItemMenu() {
-		
-	}
-	
-	public ItemMenu(String p_text) {
-		text=UIText.getText(p_text);
-	}
-
-	public ItemMenu(String p_text, BankSound p_sound) {
-		this(p_text);
-		sound=p_sound;
-	}
-
-	public String getText() {
-		return text;
-	}
-	
-	/**
-	 * Set an item name without bundle
-	 * @param p_text
-	 */
-	public void setText(String p_text) {
-		text=p_text;
-	}
-	
-	public abstract void run();
-		
+	public int ordinal();
+	public String getFilename();
+	public String getSuffix();
 }

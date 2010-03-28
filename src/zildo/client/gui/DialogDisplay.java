@@ -23,7 +23,7 @@ package zildo.client.gui;
 import java.util.List;
 
 import zildo.client.ClientEngineZildo;
-import zildo.client.SoundPlay.BankSound;
+import zildo.client.sound.BankSound;
 import zildo.monde.dialog.WaitingDialog;
 
 public class DialogDisplay {

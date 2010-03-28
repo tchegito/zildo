@@ -26,6 +26,7 @@ import org.lwjgl.util.vector.Vector4f;
 import zildo.Zildo;
 import zildo.client.gui.DialogDisplay;
 import zildo.client.gui.GUIDisplay;
+import zildo.client.sound.SoundPlay;
 import zildo.fwk.FilterCommand;
 
 import zildo.fwk.filter.BilinearFilter;

@@ -20,8 +20,8 @@
 
 package zildo.server;
 
-import zildo.client.SoundPlay.BankSound;
 import zildo.client.gui.DialogDisplay;
+import zildo.client.sound.BankSound;
 import zildo.fwk.IntSet;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.input.KeyboardState;

@@ -20,7 +20,7 @@
 
 package zildo.monde.sprites.elements;
 
-import zildo.client.SoundPlay.BankSound;
+import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.collision.Collision;
 import zildo.monde.sprites.desc.ElementDescription;
