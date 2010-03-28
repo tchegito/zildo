@@ -42,8 +42,8 @@ import zildo.server.state.ClientState;
  * Represents the game owner core class. It could be :<ul>
  * <li>a single player, with no network support</li>
  * <li>a first player, who can accept client in his game</li>
- * 
- * Life cycle's of this class is:<ul>
+ * </ul>
+ * Life cycle of this class is:<ul>
  * <li>Zildo's life in single player</li>
  * <li>server's presence on multi player</li>
  * </ul>
@@ -115,6 +115,7 @@ public class SinglePlayer {
         SpriteEntity zildo=EngineZildo.persoManagement.getZildo();
         ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
         
+        // Start village music
         ClientEngineZildo.soundPlay.playSoundFX(BankMusic.Village);
         
         while (!done && !state.gameOver) {

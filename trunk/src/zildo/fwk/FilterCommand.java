@@ -154,6 +154,8 @@ public class FilterCommand {
 	public void fadeEnd() {
 		active(null, false);
 		active(BilinearFilter.class, true);
+		asked_FadeOut=false;
+		asked_FadeIn=false;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

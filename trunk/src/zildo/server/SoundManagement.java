@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import zildo.client.sound.BankSound;
+import zildo.client.sound.AudioBank;
 import zildo.fwk.net.NetServer;
 import zildo.fwk.net.TransferObject;
 import zildo.monde.WaitingSound;
@@ -46,7 +46,7 @@ public class SoundManagement {
 
 	List<WaitingSound> soundQueue=new ArrayList<WaitingSound>();
 	
-	private void addSound(BankSound p_name, int p_x, int p_y, boolean p_broadcast, TransferObject p_object) {
+	private void addSound(AudioBank p_name, int p_x, int p_y, boolean p_broadcast, TransferObject p_object) {
 		soundQueue.add(new WaitingSound(p_name, new Point(p_x, p_y), p_broadcast, p_object));
 	}
 	
@@ -55,7 +55,7 @@ public class SoundManagement {
 	 * @param p_soundName
 	 * @param p_source
 	 */
-	public void broadcastSound(BankSound p_name, Point p_location) {
+	public void broadcastSound(AudioBank p_name, Point p_location) {
 		soundQueue.add(new WaitingSound(p_name, p_location, true, null));
 	}
 	
@@ -72,7 +72,7 @@ public class SoundManagement {
 	 * @param p_soundName
 	 * @param p_source
 	 */
-	public void broadcastSound(BankSound p_soundName, SpriteEntity p_source) {
+	public void broadcastSound(AudioBank p_soundName, SpriteEntity p_source) {
 	    addSound(p_soundName, (int) p_source.x / 16, (int) p_source.y / 16, true, null);
 	}
 	
@@ -81,7 +81,7 @@ public class SoundManagement {
 	 * @param p_soundName
 	 * @param p_source
 	 */
-	public void playSound(BankSound p_soundName, PersoZildo p_zildo) {
+	public void playSound(AudioBank p_soundName, PersoZildo p_zildo) {
 		TransferObject obj=null;
 		if (p_zildo != null) {
 			ClientState cl=Server.getClientFromZildo(p_zildo);
