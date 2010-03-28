@@ -33,6 +33,7 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.InternetClient;
 import zildo.fwk.net.NetClient;
 import zildo.fwk.net.TransferObject;
+import zildo.fwk.opengl.OpenGLSound;
 import zildo.fwk.opengl.OpenGLZildo;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
@@ -133,12 +134,19 @@ public class Client {
 		
     }
 	
+	long time;
+	
 	public boolean render()
 	{
 		if (!awt) {
 	        // Read keyboard
 	        Keyboard.poll();
 	
+	        // Music
+	        long currentTime=ZUtils.getTime();
+	        OpenGLSound.pollMusic((int) (currentTime - time));
+	        time=currentTime;
+	        
 	        done=glGestion.mainloop();
 		}
 		

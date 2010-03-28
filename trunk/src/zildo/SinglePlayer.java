@@ -29,6 +29,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEventNature;
 import zildo.client.Client.ClientType;
 import zildo.client.gui.menu.PlayerNameMenu;
+import zildo.client.sound.BankMusic;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
 import zildo.monde.map.Area;
@@ -113,6 +114,8 @@ public class SinglePlayer {
         // Focus on zildo
         SpriteEntity zildo=EngineZildo.persoManagement.getZildo();
         ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
+        
+        ClientEngineZildo.soundPlay.playSoundFX(BankMusic.Village);
         
         while (!done && !state.gameOver) {
         	states.clear();

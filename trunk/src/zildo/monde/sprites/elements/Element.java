@@ -23,7 +23,7 @@ package zildo.monde.sprites.elements;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import zildo.client.SoundPlay.BankSound;
+import zildo.client.sound.BankSound;
 import zildo.fwk.IntSet;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.collision.Collision;

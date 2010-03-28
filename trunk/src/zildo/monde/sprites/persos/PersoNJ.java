@@ -20,7 +20,7 @@
 
 package zildo.monde.sprites.persos;
 
-import zildo.client.SoundPlay.BankSound;
+import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.Hasard;
 import zildo.monde.map.Angle;

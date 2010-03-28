@@ -20,7 +20,7 @@
 
 package zildo.monde.sprites.elements;
 
-import zildo.client.SoundPlay.BankSound;
+import zildo.client.sound.BankSound;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;

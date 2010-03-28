@@ -21,7 +21,9 @@
 
 package zildo.monde;
 
-import zildo.client.SoundPlay.BankSound;
+import zildo.client.sound.AudioBank;
+import zildo.client.sound.BankMusic;
+import zildo.client.sound.BankSound;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.net.TransferObject;
 import zildo.monde.map.Point;
@@ -31,14 +33,15 @@ import zildo.monde.map.Point;
  */
 
 public class WaitingSound {
-    public BankSound name;
+    public AudioBank name;
+    public boolean isSoundFX;	// TRUE=soundFX / FALSE=music
     public Point location; // (0..64, 0..64) coordinates
     public TransferObject client;
     public boolean broadcast;	// TRUE=this sound is for all clients / FALSE=just one client (GUI sound)
     
     private static EasyBuffering buf=new EasyBuffering(40);
     
-    public WaitingSound(BankSound p_name, Point p_location, boolean p_broadcast, TransferObject p_client) {
+    public WaitingSound(AudioBank p_name, Point p_location, boolean p_broadcast, TransferObject p_client) {
         name = p_name;
         location = p_location;
         client = p_client;
@@ -46,7 +49,9 @@ public class WaitingSound {
     }
 
     public EasyBuffering serialize() {
+    	isSoundFX=name instanceof BankSound;
         buf.clear();
+        buf.put(isSoundFX);
         buf.put(name.ordinal());
         buf.put(location.getX());
         buf.put(location.getY());
@@ -54,7 +59,14 @@ public class WaitingSound {
     }
 
     public static WaitingSound deserialize(EasyBuffering p_buffer) {
-    	BankSound name = BankSound.values()[p_buffer.readInt()];
+    	boolean isSoundFX=p_buffer.readBoolean();
+    	int ord=p_buffer.readInt();
+    	AudioBank name;
+    	if (isSoundFX) {
+    		name = BankSound.values()[ord];
+    	} else {
+    		name = BankMusic.values()[ord];
+    	}
         int x = p_buffer.readInt();
         int y = p_buffer.readInt();
         WaitingSound s = new WaitingSound(name, new Point(x, y), false, null);

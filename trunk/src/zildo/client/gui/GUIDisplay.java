@@ -32,7 +32,7 @@ import org.lwjgl.util.vector.Vector4f;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
-import zildo.client.SoundPlay.BankSound;
+import zildo.client.sound.BankSound;
 import zildo.fwk.FilterCommand;
 
 import zildo.fwk.bank.SpriteBank;

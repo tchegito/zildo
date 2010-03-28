@@ -23,7 +23,7 @@ package zildo.monde.sprites.persos;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.client.SoundPlay.BankSound;
+import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;

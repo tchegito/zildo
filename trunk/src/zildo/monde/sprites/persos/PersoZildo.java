@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import zildo.SinglePlayer;
-import zildo.client.SoundPlay.BankSound;
+import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.fwk.script.xml.TriggerElement;

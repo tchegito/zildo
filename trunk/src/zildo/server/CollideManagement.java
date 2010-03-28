@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import zildo.client.SoundPlay.BankSound;
+import zildo.client.sound.BankSound;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.collision.Rectangle;
