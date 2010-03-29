@@ -10,11 +10,15 @@
 || angle || int || V || - || - || Set character's angle ||
 || wait || int || - || - || V || Wait for a given number of frame ||
 || sound || text || V || V || V || Play a given sound ||
+|| music || text || V || V || V || Play a given music||
 || fadeIn || int || - || - || V || Start a fade in, with given effect ||
 || fadeOut || int || - || - || V || Start a fade out, with given effect ||
 || map || text || - || - || - || Load the given map ||
 || focus || text || V || - || - || Focus on given character ||
 || spawn || text || V || V || - || Spawn a new character/sprite ||
+|| exec || text || - || - || - || Execute a named script ||
+|| take || text || - || V || - || Zildo take an object ||
+|| mapReplace || text || - || V || - || Replace map indicated by 'what' by the one named by 'name'  ||
 
 
 = Details =
