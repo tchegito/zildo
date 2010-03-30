@@ -26,8 +26,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
-import sun.nio.ch.DirectBuffer;
-
 public class ZUtils {
 
 	static FloatBuffer floatBuffer = null;

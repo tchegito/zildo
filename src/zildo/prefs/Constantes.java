@@ -29,10 +29,10 @@ public class Constantes {
 
 	// File system data
 	public static String DATA_PATH = "."+File.separator+"Data"+File.separator;	// Pour livraison
-	//public static String DATA_PATH = "C:\\ZildoDist\\Version 1.092\\Data\\";
+	//public static String DATA_PATH = "C:\\ZildoDist\\Version 1.093\\Data\\";
 
-	public static String CONFIGURATION_FILE = "player.ini";
-	public static String SERVER_FILE = "servers.ini";
+	public static String CONFIGURATION_FILE = "ini"+File.separator+"player.ini";
+	public static String SERVER_FILE = "ini"+File.separator+"servers.ini";
 	
 	// Tile Engine
 	public static final int TILEENGINE_WIDTH = 64;		// Max Number of tiles
@@ -85,5 +85,5 @@ public class Constantes {
 	
 
 	// Sounds
-	public static final int MAX_SOUNDS = 31;
+	public static final int MAX_SOUNDS = 49;
 }
