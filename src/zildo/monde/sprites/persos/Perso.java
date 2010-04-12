@@ -479,7 +479,7 @@ public abstract class Perso extends Element {
                 slowDown = true;
                 break;
         }
-        if (snd != null && p_sound) {
+        if (snd != null && p_sound && isZildo()) {
             EngineZildo.soundManagement.broadcastSound(snd, this);
         }
 
