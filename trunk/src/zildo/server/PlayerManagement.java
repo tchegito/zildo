@@ -34,6 +34,7 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.prefs.Constantes;
 import zildo.prefs.KeysConfiguration;
@@ -462,7 +463,7 @@ public class PlayerManagement {
 					Perso persoToTalk=EngineZildo.persoManagement.
 						collidePerso((int) heros.getX(),(int) heros.getY(),heros,10);
 		
-					if (persoToTalk!=null && !persoToTalk.isZildo()) {
+					if (persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY && !persoToTalk.isZildo()) {
 					 // On vérifie qu'il ne s'agit pas d'une poule
 						if (persoToTalk.getQuel_spr().equals(PersoDescription.POULE)) {
 							heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, 32, persoToTalk);
