@@ -1,8 +1,9 @@
 #summary News
 
-= Version 1.093 (soon) =
+= Version 1.093 =
 
  * ingame music
+ * bugs fixed (as usual!)
 
 = Version 1.092 =
 
