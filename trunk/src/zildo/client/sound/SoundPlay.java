@@ -28,6 +28,7 @@ import java.util.Map;
 import zildo.Zildo;
 import zildo.fwk.opengl.OpenGLSound;
 import zildo.monde.WaitingSound;
+import zildo.monde.map.Area;
 import zildo.prefs.Constantes;
 
 // SoundManagement.cpp: implementation of the SoundManagement class.
@@ -42,6 +43,8 @@ public class SoundPlay {
 	//CSoundManager* soundManager;
 	private Map<AudioBank, OpenGLSound> tabSounds=new HashMap<AudioBank, OpenGLSound>();
 	private int nSounds;
+	private Ambient ambient=new Ambient();
+	
 	//const GUID GUID_null = { 0, 0, 0, { 0, 0, 0, 0, 0, 0, 0, 0 } };
 	
 	//////////////////////////////////////////////////////////////////////
@@ -116,7 +119,25 @@ public class SoundPlay {
 		// Play desired sound and exit
 		OpenGLSound sound=tabSounds.get(snd);
 		if (sound != null) {
+			if (snd instanceof BankMusic) {
+				if (ambient.getCurrentMusic() == snd) {
+					// Current music is already the one asked : so return
+					return;
+				}
+				ambient.setCurrentMusic((BankMusic) snd);
+			}
 			sound.play(); //0,0,-500);
+		}
+	}
+
+	/**
+	 * Stop given sound (useful for music)
+	 * @param snd
+	 */
+	public void stopSoundFX(AudioBank snd) {
+		OpenGLSound sound=tabSounds.get(snd);
+		if (sound != null) {
+			sound.stop();
 		}
 	}
 
@@ -126,5 +147,19 @@ public class SoundPlay {
 				playSoundFX(sound.name);
 			}
 		}
+	}
+	
+	/**
+	 * Play the music related to given map.
+	 * @param p_map
+	 */
+	public void playMapMusic(Area p_map) {
+		BankMusic mus=ambient.getMusicForMap(p_map.getName());
+        playSoundFX(mus);
+	}
+	
+	public void stopMusic() {
+		BankMusic mus=ambient.getCurrentMusic();
+		stopSoundFX(mus);
 	}
 }

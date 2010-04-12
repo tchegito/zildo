@@ -176,7 +176,7 @@ public class MapManagement {
 		    tx>(currentMap.getDim_x()-1)*16+15 ||
 			ty>(currentMap.getDim_y()-1)*16+15)
 			// On empêche la collision sur les bords de cartes
-            return !quelElement.isZildo();
+            return quelElement != null && !quelElement.isZildo();
 		
 	    Angle angleFlying=null;
 		Point size=new Point(8,4);	// Default size

@@ -47,6 +47,7 @@ public class GameOverAction extends ActionDialog {
 		EngineZildo.mapManagement.deleteCurrentMap();
 		ClientEngineZildo.tileEngine.cleanUp();
 		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(false);
+		ClientEngineZildo.soundPlay.stopMusic();
 		// Stop this game
 		SinglePlayer.getClientState().gameOver=true;
 		// Return on the start menu

@@ -121,6 +121,9 @@ public class MapDisplay {
 		currentMap=map;
 		ClientEngineZildo.tileEngine.prepareTiles(map);
 
+		if (!Client.isZEditor()) {
+			ClientEngineZildo.soundPlay.playMapMusic(map);
+		}
 	}
 	
 	public void setTargetCamera(Point p_point) {

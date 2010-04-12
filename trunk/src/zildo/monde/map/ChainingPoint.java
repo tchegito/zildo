@@ -158,7 +158,7 @@ public class ChainingPoint {
 	}
 	
 	public boolean isBorder() {
-		return px > 127 || py > 127;
+		return py > 127;
 	}
 	
 	public String toString() {

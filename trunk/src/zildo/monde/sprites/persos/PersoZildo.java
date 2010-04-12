@@ -834,9 +834,7 @@ public class PersoZildo extends Perso {
 	 * @param object
 	 */
 	public void pushSomething(SpriteEntity object) {
-		if (pushingSprite == null) {
-			pushingSprite=object;
-		}
+		pushingSprite=object;
 	}
 
 	/**
