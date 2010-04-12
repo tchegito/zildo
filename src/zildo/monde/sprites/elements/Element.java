@@ -30,6 +30,7 @@ import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
+import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -563,6 +564,7 @@ public class Element extends SpriteEntity {
 			case SUD:vy=0.5f;break;
 			case OUEST:vx=-0.5f;break;
 		}
+		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPousse, new Point(x, y));
 		az=1.0f;	
 	}
 
