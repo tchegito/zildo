@@ -45,6 +45,7 @@ import zildo.server.state.ClientState;
 public class SoundManagement {
 
 	List<WaitingSound> soundQueue=new ArrayList<WaitingSound>();
+	boolean forceMusic=false;	// TRUE if music is forced by script (ex:Angoisse) / FALSE if music is automatic with map
 	
 	private void addSound(AudioBank p_name, int p_x, int p_y, boolean p_broadcast, TransferObject p_object) {
 		soundQueue.add(new WaitingSound(p_name, new Point(p_x, p_y), p_broadcast, p_object));
@@ -88,5 +89,13 @@ public class SoundManagement {
 			obj=cl != null ? cl.location : null;
 		}
 	    addSound(p_soundName, 0,0, false, obj);
+	}
+
+	public boolean isForceMusic() {
+		return forceMusic;
+	}
+
+	public void setForceMusic(boolean forceMusic) {
+		this.forceMusic = forceMusic;
 	}
 }

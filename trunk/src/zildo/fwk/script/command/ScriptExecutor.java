@@ -32,6 +32,7 @@ import zildo.fwk.script.xml.AnyElement;
 import zildo.fwk.script.xml.SceneElement;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
+import zildo.server.EngineZildo;
 
 public class ScriptExecutor {
 
@@ -90,6 +91,8 @@ public class ScriptExecutor {
 			// Focus on Zildo
 			SpriteEntity zildo=ClientEngineZildo.spriteDisplay.getZildo();
 			ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
+			// Stop forced music
+			EngineZildo.soundManagement.setForceMusic(false);
 		}
 	}
 	
