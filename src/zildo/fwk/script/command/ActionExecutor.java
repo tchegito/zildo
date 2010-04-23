@@ -148,14 +148,13 @@ public class ActionExecutor {
                 	achieved = true;
                 	break;
                 case exec:
-                	//new ScriptExecutor();
-                	// Warning : with this, we totally replace the current script with the new one.
-                	// So we can't sequence scripts in an action tag.
+                	// Note : we can sequence scripts in an action tag.
                 	EngineZildo.scriptManagement.execute(text);
                 	break;
                 case music:
                 	BankMusic musicSnd=BankMusic.valueOf(text);
                 	EngineZildo.soundManagement.broadcastSound(musicSnd, (Point) null);
+        			EngineZildo.soundManagement.setForceMusic(true);
                 	achieved=true;
                 	break;
             }

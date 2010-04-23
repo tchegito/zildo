@@ -23,6 +23,8 @@ package zildo.server;
 
 import java.util.logging.Logger;
 
+import zildo.client.Client;
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.IntSet;
 import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
@@ -115,6 +117,10 @@ public class MapManagement {
         	zildo.walkTile(false);
         }
         
+		if (!Client.isZEditor() && !EngineZildo.soundManagement.isForceMusic()) {
+			ClientEngineZildo.soundPlay.playMapMusic(currentMap);
+		}
+		
         analyseAltitude();
 
     }
