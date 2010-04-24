@@ -1,6 +1,6 @@
 #summary News
 
-= Version 1.094 = 
+= Version 1.094 (soon) = 
 
  * savegames
  * scenario enhancements
