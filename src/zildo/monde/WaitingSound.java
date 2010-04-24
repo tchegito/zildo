@@ -25,6 +25,7 @@ import zildo.client.sound.AudioBank;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasySerializable;
 import zildo.fwk.net.TransferObject;
 import zildo.monde.map.Point;
 
@@ -32,7 +33,7 @@ import zildo.monde.map.Point;
  * @author tchegito
  */
 
-public class WaitingSound {
+public class WaitingSound implements EasySerializable {
     public AudioBank name;
     public boolean isSoundFX;	// TRUE=soundFX / FALSE=music
     public Point location; // (0..64, 0..64) coordinates
@@ -48,14 +49,18 @@ public class WaitingSound {
         broadcast = p_broadcast;
     }
 
-    public EasyBuffering serialize() {
+    public void serialize(EasyBuffering p_buffer) {
     	isSoundFX=name instanceof BankSound;
-        buf.clear();
-        buf.put(isSoundFX);
-        buf.put(name.ordinal());
-        buf.put(location.getX());
-        buf.put(location.getY());
-        return buf;
+        p_buffer.clear();
+        p_buffer.put(isSoundFX);
+        p_buffer.put(name.ordinal());
+        p_buffer.put(location.getX());
+        p_buffer.put(location.getY());
+    }
+    
+    public EasyBuffering serialize() {
+    	serialize(buf);
+    	return buf;
     }
 
     public static WaitingSound deserialize(EasyBuffering p_buffer) {

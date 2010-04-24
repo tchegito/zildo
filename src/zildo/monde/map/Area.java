@@ -32,6 +32,7 @@ import java.util.Map.Entry;
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasySerializable;
 import zildo.monde.collision.Collision;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
@@ -48,7 +49,7 @@ import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
 import zildo.server.SpriteManagement;
 
-public class Area {
+public class Area implements EasySerializable {
 
     class SpawningTile {
         Case previousCase;
@@ -398,9 +399,7 @@ public class Area {
 	 * Serialize the map into an EasyWritingFile object.
 	 * @return EasyWritingFile
 	 */
-	public EasyBuffering serialize() {
-
-		EasyBuffering file = new EasyBuffering();
+	public void serialize(EasyBuffering p_file) {
 
 		// Get the right lists to serialize the right number of each one
 		List<SpriteEntity> entities = filterExportableSprites(EngineZildo.spriteManagement.getSpriteEntities(null));
@@ -411,30 +410,30 @@ public class Area {
 		int n_persos = persos.size();
 
 		// 1) Header
-		file.put((byte) this.getDim_x());
-		file.put((byte) this.getDim_y());
-		file.put((byte) persos.size());
-		file.put((byte) n_sprites);
-		file.put((byte) n_pe);
+		p_file.put((byte) this.getDim_x());
+		p_file.put((byte) this.getDim_y());
+		p_file.put((byte) persos.size());
+		p_file.put((byte) n_sprites);
+		p_file.put((byte) n_pe);
 
 		// 2) Save the map cases
 		for (int i = 0; i < this.getDim_y(); i++) {
 			for (int j = 0; j < this.getDim_x(); j++) {
 				Case temp = this.get_mapcase(j, i + 4);
 
-				file.put((byte) temp.getN_motif());
-				file.put((byte) temp.getN_banque());
-				file.put((byte) temp.getN_motif_masque());
-				file.put((byte) temp.getN_banque_masque());
+				p_file.put((byte) temp.getN_motif());
+				p_file.put((byte) temp.getN_banque());
+				p_file.put((byte) temp.getN_motif_masque());
+				p_file.put((byte) temp.getN_banque_masque());
 			}
 		}
 
 		// 3) Chaining points
 		if (n_pe != 0) {
 			for (ChainingPoint ch : this.getListPointsEnchainement()) {
-				file.put((byte) ch.getPx());
-				file.put((byte) ch.getPy());
-				file.put(ch.getMapname(), 9);
+				p_file.put((byte) ch.getPx());
+				p_file.put((byte) ch.getPy());
+				p_file.put(ch.getMapname(), 9);
 			}
 		}
 
@@ -443,9 +442,9 @@ public class Area {
 			int nSprites = 0;
 			for (SpriteEntity entity : entities) {
 				// Only element
-				file.put((int) entity.x);
-				file.put((int) entity.y);
-				file.put((byte) entity.getNSpr());
+				p_file.put((int) entity.x);
+				p_file.put((int) entity.y);
+				p_file.put((byte) entity.getNSpr());
 				nSprites++;
 			}
 		}
@@ -453,38 +452,37 @@ public class Area {
 		// 5) Persos (characters)
 		if (n_persos != 0) {
 			for (Perso perso : persos) {
-				file.put((int) perso.x);
-				file.put((int) perso.y);
-				file.put((int) perso.z);
-				file.put((byte) perso.getQuel_spr().first());
-				file.put((byte) perso.getInfo().ordinal());
-				file.put((byte) 0); //(byte) perso.getEn_bras());
-				file.put((byte) perso.getQuel_deplacement().ordinal());
-				file.put((byte) perso.getAngle().ordinal());
-				file.put(perso.getNom(), 9);
+				p_file.put((int) perso.x);
+				p_file.put((int) perso.y);
+				p_file.put((int) perso.z);
+				p_file.put((byte) perso.getQuel_spr().first());
+				p_file.put((byte) perso.getInfo().ordinal());
+				p_file.put((byte) 0); //(byte) perso.getEn_bras());
+				p_file.put((byte) perso.getQuel_deplacement().ordinal());
+				p_file.put((byte) perso.getAngle().ordinal());
+				p_file.put(perso.getNom(), 9);
 			}
 		}
 
 		// 6) Sentences
 		int nPhrases = dialogs.getN_phrases();
-		file.put((byte) nPhrases);
+		p_file.put((byte) nPhrases);
 		if (nPhrases > 0) {
 			// On lit les phrases
 			String[] sentences = dialogs.getDialogs();
 			for (int i = 0; i < nPhrases; i++) {
-				file.put(sentences[i]);
+				p_file.put(sentences[i]);
 			}
 			// On lit le nom
 			Map<String, Behavior> behaviors = dialogs.getBehaviors();
 			for (Entry<String, Behavior> entry : behaviors.entrySet()) {
-				file.put(entry.getKey(), 9);
+				p_file.put(entry.getKey(), 9);
 				Behavior behav = entry.getValue();
 				for (int i : behav.replique) {
-					file.put((byte) i);
+					p_file.put((byte) i);
 				}
 			}
 		}
-		return file;
 	}
 
 	/**

@@ -25,9 +25,10 @@ import java.util.EnumMap;
 import org.lwjgl.input.Keyboard;
 
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasySerializable;
 import zildo.prefs.KeysConfiguration;
 
-public class KeyboardInstant {
+public class KeyboardInstant implements EasySerializable {
 
 	EnumMap<KeysConfiguration, Boolean> kbdInstant;
 
@@ -56,16 +57,20 @@ public class KeyboardInstant {
 		return new KeyboardInstant(instant);
 	}
 	
+	public EasyBuffering serialize() {
+		serialize(buf);
+		return buf;
+	}
+	
 	/**
 	 * Serialize this object into a ByteBuffer
 	 * @return EasyBuffering
 	 */
-	public EasyBuffering serialize() {
-        buf.clear();
+	public void serialize(EasyBuffering p_buffer) {
+        p_buffer.clear();
         for (KeysConfiguration key : KeysConfiguration.values()) {
-			buf.put(kbdInstant.get(key));
+			p_buffer.put(kbdInstant.get(key));
 		}
-		return buf;
 	}
 	
 	/**

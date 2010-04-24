@@ -85,7 +85,7 @@ public abstract class Packet {
     
     /**
      * This method should be implemented by every subclasses, considering that the buffer is just filled
-     * with the header. (@see {@link Packet#send()})
+     * with the header. (see {@link Packet#getPacket()})
      */
     protected abstract void buildPacket();
 

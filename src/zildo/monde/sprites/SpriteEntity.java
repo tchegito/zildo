@@ -22,6 +22,7 @@ package zildo.monde.sprites;
 
 import zildo.fwk.Identified;
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasySerializable;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -41,7 +42,7 @@ import zildo.monde.sprites.utils.Sprite;
 //-------------
 //* Provide link with SpriteEngine (display textured quad on screen)
 //* Manage collision
-public class SpriteEntity extends Identified implements Cloneable
+public class SpriteEntity extends Identified implements Cloneable, EasySerializable
 {
 	public static final int ENTITYTYPE_ENTITY =0;
 	public static final int ENTITYTYPE_ELEMENT =1;
@@ -244,7 +245,7 @@ public class SpriteEntity extends Identified implements Cloneable
 	 * Serialize useful fields from this entity.
 	 * @param p_buffer
 	 */
-	public void serializeEntity(EasyBuffering p_buffer) {
+	public void serialize(EasyBuffering p_buffer) {
 		boolean isZildo=this.isZildo();
 		p_buffer.putBooleans(isZildo, isVisible(), isForeground(), dying);
 		p_buffer.put(this.getId());
@@ -276,7 +277,7 @@ public class SpriteEntity extends Identified implements Cloneable
 	 * @param p_buffer
 	 * @return SpriteEntity
 	 */
-	public static SpriteEntity deserializeOneEntity(EasyBuffering p_buffer) {
+	public static SpriteEntity deserialize(EasyBuffering p_buffer) {
 		boolean[] bools=p_buffer.readBooleans(4);
 		boolean isZildo=bools[0];
 		int id=p_buffer.readInt();
@@ -364,6 +365,3 @@ public class SpriteEntity extends Identified implements Cloneable
     	return sb.toString();
     }
 }
-
-
-
