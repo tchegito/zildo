@@ -22,9 +22,11 @@ package zildo.monde.quest;
 
 import java.util.HashMap;
 
+import zildo.server.state.ScriptManagement;
+
 /**
  * Just a simple class to encapsulate a <String, String> map.
- * It provides map (=area) replacement according to a quest status. (See {@link QuestDiary})
+ * It provides map (=area) replacement according to a quest status. (See {@link ScriptManagement})
  * @author tchegito
  *
  */
