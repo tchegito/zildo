@@ -21,9 +21,10 @@
 package zildo.monde.dialog;
 
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasySerializable;
 import zildo.fwk.net.TransferObject;
 
-public class WaitingDialog {
+public class WaitingDialog implements EasySerializable {
 
 	public String sentence;
 	public int action;

@@ -20,6 +20,8 @@
 
 package zildo.monde;
 
+import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasySerializable;
 import zildo.fwk.script.xml.AdventureElement;
 
 /**
@@ -30,7 +32,7 @@ import zildo.fwk.script.xml.AdventureElement;
  * -current quest diary<br/>
  * @author tchegito
  */
-public class Game {
+public class Game implements EasySerializable {
 
     public boolean editing;
     public boolean multiPlayer;
@@ -47,4 +49,8 @@ public class Game {
     public Game(boolean p_editing) {
     	this(null, p_editing);
     }
+    
+	public void serialize(EasyBuffering p_buffer) {
+		
+	}
 }

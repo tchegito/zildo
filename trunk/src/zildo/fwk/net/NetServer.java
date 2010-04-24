@@ -208,9 +208,9 @@ public class NetServer extends NetSend {
 	private void sendMap(TransferObject p_client) {
 		MapManagement mapManagement=EngineZildo.mapManagement;
 		GetPacket getPacket=null;
-		EasyBuffering buffer;
 		Area area=mapManagement.getCurrentMap();
-		buffer=area.serialize();
+		EasyBuffering buffer = new EasyBuffering();
+		area.serialize(buffer);
 		
 		getPacket=new GetPacket(ResourceType.MAP, buffer.getAll(), area.getName());
 		log("Sending map ("+getPacket.length+" bytes)");

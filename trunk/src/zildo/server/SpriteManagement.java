@@ -539,7 +539,7 @@ public class SpriteManagement extends SpriteStore {
 	public static List<SpriteEntity> deserializeEntities(EasyBuffering p_buffer) {
 		List<SpriteEntity> entities=new ArrayList<SpriteEntity>();
 		while (!p_buffer.eof()) {
-			entities.add(SpriteEntity.deserializeOneEntity(p_buffer));
+			entities.add(SpriteEntity.deserialize(p_buffer));
 		}
 		return entities;
 	}
@@ -568,7 +568,7 @@ public class SpriteManagement extends SpriteStore {
 		EasyBuffering b=new EasyBuffering();
 		for (SpriteEntity entity : p_listEntities) {
 			if (!entity.clientSpecific || p_clientSpecific) {
-				entity.serializeEntity(b);
+				entity.serialize(b);
 			}
 		}
 		return b;

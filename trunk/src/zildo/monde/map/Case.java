@@ -21,16 +21,10 @@
 package zildo.monde.map;
 
 import zildo.fwk.file.EasyBuffering;
-//////////////////////////////////////////////////////////////////////
-// Case
-//////////////////////////////////////////////////////////////
-// Class defining a map element : 16x16 sized position.
-//
-//
-//////////////////////////////////////////////////////////////////////
+import zildo.fwk.file.EasySerializable;
 
 
-public class Case {
+public class Case implements EasySerializable {
 
 	private int n_motif;
 	private int n_banque;
@@ -180,7 +174,7 @@ public class Case {
 	 * @param p_buffer
 	 * @return SpriteEntity
 	 */
-	public static Case deserializeCase(EasyBuffering p_buffer) {
+	public static Case deserialize(EasyBuffering p_buffer) {
 		Case mapCase=new Case();
 		mapCase.setN_banque(p_buffer.readInt());
 		mapCase.setN_banque_masque(p_buffer.readInt());

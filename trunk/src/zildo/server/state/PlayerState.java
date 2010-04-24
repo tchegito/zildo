@@ -21,6 +21,7 @@
 package zildo.server.state;
 
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasySerializable;
 
 /**
  * Object manipulated by client. It's the simple view of the complete ClientState, used by server only.
@@ -28,7 +29,7 @@ import zildo.fwk.file.EasyBuffering;
  * Each time a player connects/leaves, or kills another one, server sends to all client the updated object.
  * @author eboussaton
  */
-public class PlayerState {
+public class PlayerState implements EasySerializable {
 
     // Deathmatch
 	public int zildoId;	// Player's ID in the game
@@ -41,12 +42,11 @@ public class PlayerState {
     	playerName = p_playerName;
     }
     
-    public EasyBuffering serialize(EasyBuffering p_buf) {
+    public void serialize(EasyBuffering p_buf) {
         p_buf.put(playerName);
         p_buf.put(zildoId);
         p_buf.put(nDied);
         p_buf.put(nKill);
-        return p_buf;
     }
 
     public static PlayerState deserialize(EasyBuffering p_buffer) {

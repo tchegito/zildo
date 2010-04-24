@@ -18,39 +18,32 @@
  *
  */
 
-package zildo.fwk.script.xml;
+package zildo.fwk.file;
 
-import java.util.List;
-
-import org.w3c.dom.Element;
-
-public class AdventureElement extends AnyElement {
-
-	List<SceneElement> scenes;
-	List<QuestElement> quests;
-	
-	@Override
-	@SuppressWarnings("unchecked")
-	public void parse(Element p_elem) {
-		scenes = (List<SceneElement>) ScriptReader.parseNodes(p_elem, "scene");
-		quests = (List<QuestElement>) ScriptReader.parseNodes(p_elem, "quest");
-	}
+/**
+ * This interface provides a marker for class being serializable within the game.<p/>
+ * 
+ * We only mention <b>serialize</b> operation in this contract. The opposite operation, <b>deserialize</b>, can't be
+ * proposed because of its static character. It's not permitted in Java to have 'static' method in an interface.
+ * Though, it should be part of the contract !
+ * @author Tchegito
+ *
+ */
+public interface EasySerializable {
 
 	/**
-	 * Get the named scene, if it exists.
-	 * @param p_name
-	 * @return SceneElement
+	 * Serialize the instance into the given buffer
+	 * @param p_buffer
 	 */
-	public SceneElement getSceneNamed(String p_name) {
-		for (SceneElement scene : scenes) {
-			if (scene.id.equalsIgnoreCase(p_name)) {
-				return scene;
-			}
-		}
-		return null;
-	}
+	void serialize(EasyBuffering p_buffer);
 	
-	public List<QuestElement> getQuests() {
-		return quests;
-	}
+
+	
+	/**
+	 * Unserialize the given buffer into parameterized type and return.<p/>
+	 * 
+	 * @param p_buffer
+	 * @return T
+	 */
+	// No declaration here !
 }

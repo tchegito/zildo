@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.IntSet;
+import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.script.xml.TriggerElement;
@@ -153,7 +154,9 @@ public class MapManagement {
 	}
 
 	public void saveMapFile(String p_fileName) {
-		EasyWritingFile serializedMap = new EasyWritingFile(currentMap.serialize());
+		EasyBuffering file = new EasyBuffering();
+		currentMap.serialize(file);
+		EasyWritingFile serializedMap = new EasyWritingFile(file);
 
 		serializedMap.saveFile(p_fileName);
     }

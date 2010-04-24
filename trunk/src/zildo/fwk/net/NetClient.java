@@ -222,7 +222,7 @@ public class NetClient extends NetSend {
 		while (!buffer.eof()) {
 			int x=buffer.readInt();
 			int y=buffer.readInt();
-			Case c=Case.deserializeCase(buffer);
+			Case c=Case.deserialize(buffer);
 			map.set_mapcase(x, y, c);
 		}
 	}
