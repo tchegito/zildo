@@ -95,6 +95,7 @@ public class Menu {
         		break;
         	case Keyboard.KEY_RETURN:
                 ClientEngineZildo.soundPlay.playSoundFX(item.sound);
+                item.setLaunched(false);
                 return item;
             default:
             	// Does this item is editable ?

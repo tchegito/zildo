@@ -20,9 +20,17 @@
 
 package zildo.monde;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.List;
+
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.script.xml.AdventureElement;
+import zildo.fwk.script.xml.QuestElement;
+import zildo.monde.items.Item;
+import zildo.monde.sprites.persos.PersoZildo;
+import zildo.server.EngineZildo;
 
 /**
  * Modelizes a saved game, or start game. For now, it describes:<br/>
@@ -51,6 +59,31 @@ public class Game implements EasySerializable {
     }
     
 	public void serialize(EasyBuffering p_buffer) {
+		// 1: identify the save game
+		String formattedDate=DateFormat.getDateInstance().format(new Date());
+		p_buffer.put(formattedDate);
 		
+		// 2: quest diary
+		List<QuestElement> quests=adventure.getQuests();
+		p_buffer.put(quests.size());
+		for (QuestElement quest : quests) {
+			p_buffer.put(quest.name);
+			p_buffer.put(quest.done);
+		}
+		
+		// 3: zildo's information
+		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
+		p_buffer.put(zildo.getMaxpv());
+		p_buffer.put(zildo.getCountArrow());
+		p_buffer.put(zildo.getCountBomb());
+		p_buffer.put(zildo.getMoney());
+
+		// 4: inventory
+		List<Item> items=zildo.getInventory();
+		p_buffer.put(items.size());
+		for (Item item : items) {
+			p_buffer.put(item.kind.toString());
+			p_buffer.put(item.level);
+		}
 	}
 }

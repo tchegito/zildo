@@ -79,10 +79,11 @@ public class GUIDisplay {
 
 	private int countMoney;
 	
-	private GUISpriteSequence textFontSequence;
-	private GUISpriteSequence frameDialogSequence;
-	private GUISpriteSequence guiSpritesSequence;
-	private GUISpriteSequence menuSequence;
+	private GUISpriteSequence textDialogSequence;	// All fonts displayed in dialog
+	private GUISpriteSequence textMenuSequence;		// All fonts displayed in menu
+	private GUISpriteSequence frameDialogSequence;	// Yellow frame for display dialog
+	private GUISpriteSequence guiSpritesSequence;	// All sprites designing the GUI
+	private GUISpriteSequence menuSequence;			// Cursors for menu
 	
 	private FilterCommand filterCommand;
 	
@@ -103,7 +104,8 @@ public class GUIDisplay {
 		// Initialize screen filter
 		filterCommand=ClientEngineZildo.filterCommand;
 	
-		textFontSequence=new GUISpriteSequence();
+		textDialogSequence=new GUISpriteSequence();
+		textMenuSequence=new GUISpriteSequence();
 		frameDialogSequence=new GUISpriteSequence();
 		guiSpritesSequence=new GUISpriteSequence();
 		menuSequence = new GUISpriteSequence();
@@ -254,6 +256,8 @@ public class GUIDisplay {
 		boolean visibleFont;
 		boolean center;
 		int i;
+		GUISpriteSequence seq=textDialogSequence;	// Default sequence to add fonts
+		
 		switch (toDisplay_dialogMode) {
 		case DIALOGMODE_CLASSIC:
 		default:
@@ -268,6 +272,7 @@ public class GUIDisplay {
 			sizeLine=Constantes.TEXTER_SIZELINE;
 			visibleFont=true;
 			center=true;
+			seq=textMenuSequence;
 			break;
 		case DIALOGMODE_TOPIC:
 			nBank=SpriteBank.BANK_FONTES2;
@@ -347,7 +352,7 @@ public class GUIDisplay {
 				}
 			} else {
 				// Store font's pointer to easily remove it later and scroll into the frame
-				lettre=textFontSequence.addSprite(nBank,indexSpr,x+offsetX,y+offsetY, visibleFont);
+				lettre=seq.addSprite(nBank,indexSpr,x+offsetX,y+offsetY, visibleFont);
 				spr=lettre.getSprModel();
 				offsetX+=(spr.getTaille_x() + 1);
 			}
@@ -360,11 +365,15 @@ public class GUIDisplay {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// removePreviousTextInFrame
 	///////////////////////////////////////////////////////////////////////////////////////
-	// Remove current text from dialog's frame.
+	// Remove current text. It can be Dialog or Menu
 	///////////////////////////////////////////////////////////////////////////////////////
 	void removePreviousTextInFrame()
 	{
-		textFontSequence.clear();
+		GUISpriteSequence seq=textDialogSequence;
+		if (toDisplay_dialogMode == DIALOGMODE_MENU) {
+			seq=textMenuSequence;
+		}
+		seq.clear();
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -408,7 +417,7 @@ public class GUIDisplay {
 	// displayTextParts
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void displayTextParts(int position, String sentence, boolean scrolling) {
-		Iterator<SpriteEntity> it=textFontSequence.iterator();
+		Iterator<SpriteEntity> it=textDialogSequence.iterator();
 		int j=0;
 		char a=0;
 	
@@ -447,7 +456,7 @@ public class GUIDisplay {
 	// And display fonts which are inside the frame
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void scrollAndDisplayTextParts(int position, String sentence) {
-		for (SpriteEntity entity : textFontSequence) {
+		for (SpriteEntity entity : textDialogSequence) {
 			entity.setScrY(entity.getScrY() - Constantes.TEXTER_SIZELINE);
 		}
 	
@@ -460,7 +469,7 @@ public class GUIDisplay {
 	// displayTopics
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void displayTopics(int selected) {
-		for (SpriteEntity entity : textFontSequence) {
+		for (SpriteEntity entity : textDialogSequence) {
 			int numLigne=(entity.getScrY() - Constantes.TEXTER_COORDINATE_Y) / Constantes.TEXTER_TOPIC_SIZELINE;
 			if (numLigne == selected) {
 				entity.setSpecialEffect(EngineFX.FONT_HIGHLIGHT);
@@ -505,6 +514,8 @@ public class GUIDisplay {
 	public void endMenu() {
 		menuSequence.clear();
 		removePreviousTextInFrame();
+		// Put back in default mode
+		toDisplay_dialogMode=DIALOGMODE_CLASSIC;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

@@ -28,6 +28,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 
 import zildo.Zildo;
+import zildo.client.gui.menu.InGameMenu;
 import zildo.fwk.ZUtils;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.InternetClient;
@@ -68,6 +69,8 @@ public class Client {
     Map<Integer, PlayerState> states;	// All player in the game (reduced info to display scores)
     
     KeyboardInstant kbInstant;
+    
+    InGameMenu ingameMenu;
     
 	public enum ClientType {
 		SERVER_AND_CLIENT, CLIENT, ZEDITOR;
@@ -119,6 +122,9 @@ public class Client {
 		Keyboard.poll();
 	}
 	
+	/**
+	 * Initialize OpenGL in the ZEditor frame.
+	 */
 	public void initGL() {
 		try {
 			glGestion.init();
@@ -148,11 +154,30 @@ public class Client {
 	        time=currentTime;
 	        
 	        done=glGestion.mainloop();
+	        
+	    	if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !ClientEngineZildo.filterCommand.isFading()) {
+	    		// Escape is pressed and no fade is running
+	            if (connected) {
+	            	if (ingameMenu == null) {
+	            		ingameMenu=new InGameMenu();
+	            	}
+	            	handleMenu(ingameMenu);
+	            } else if (!isIngameMenu()) {
+	            	done=true;
+	            }
+	        }
+
 		}
 		
         // Display scene
 		glGestion.render(connected);
 		
+
+   		if (action != null && !action.isLaunched()) {
+   			action.setLaunched(true);
+   			action.run();
+   			action=null;
+   		}
         return done;
 	}
 	
@@ -182,18 +207,18 @@ public class Client {
             }
        		render();
 
-       		if (action != null) {
-       			action.run();
-       			action=null;
-       		}
         	ZUtils.sleep(5);
         }
 	}
 	
 	public void handleMenu(Menu p_menu) {
 		currentMenu=p_menu;
-		currentMenu.refresh();
-		connected=false;
+		if (p_menu == null) {
+			connected=true;
+		} else {
+			currentMenu.refresh();
+			connected=false;
+		}
 	}
 	
 	public void cleanUp() {
@@ -253,5 +278,9 @@ public class Client {
 	
 	public static boolean isZEditor() {
 		return awt;
+	}
+	
+	public boolean isIngameMenu() {
+		return currentMenu == ingameMenu && ingameMenu != null;
 	}
 }

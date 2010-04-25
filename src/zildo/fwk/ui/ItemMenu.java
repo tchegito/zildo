@@ -26,6 +26,7 @@ public abstract class ItemMenu {
 
 	private  String text;
 	public BankSound sound=BankSound.MenuSelect;
+	private boolean launched;
 	
 	public ItemMenu() {
 		
@@ -53,5 +54,13 @@ public abstract class ItemMenu {
 	}
 	
 	public abstract void run();
+
+	public boolean isLaunched() {
+		return launched;
+	}
+
+	public void setLaunched(boolean launched) {
+		this.launched = launched;
+	}
 		
 }

@@ -130,8 +130,18 @@ public class EngineZildo {
 		boolean block=false;
 		for (ClientState 
 				state : p_clientStates) {
-			// If client has pressed keys, we manage them, then clear.
-			if (state.keys != null) {
+			
+			
+			if (!game.multiPlayer) {
+				PersoZildo zildo=persoManagement.getZildo();
+				block=zildo.isInventoring();
+				block|=ClientEngineZildo.client.isIngameMenu();
+			} else {
+				multiplayerManagement.render();
+			}
+			
+			// If client has pressed keys and he's not blocked, we manage them, then clear.
+			if (state.keys != null && !block) {
 				playerManagement.manageKeyboard(state);
 			}
 			state.keys=null;
@@ -152,15 +162,11 @@ public class EngineZildo {
 				askedEvent=null;
 			}
 		}
+
 		
-		if (!game.multiPlayer) {
-			PersoZildo zildo=persoManagement.getZildo();
-			block=zildo.isInventoring();
-		} else {
-			multiplayerManagement.render();
+		if (!block) {
+			scriptManagement.render();
 		}
-		
-		scriptManagement.render();
 		
 		// 2) Rest of the world
 		collideManagement.initFrame();
