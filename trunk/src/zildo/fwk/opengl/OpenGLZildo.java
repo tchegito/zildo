@@ -131,7 +131,6 @@ public class OpenGLZildo extends OpenGLGestion {
     	
         clientEngineZildo.renderFrame(awt);
         if (!p_clientReady && !awt) {
-            // ClientEngineZildo.ortho.drawText(0,4,"Awaiting server...", new Vector3f(1,1,1));
             clientEngineZildo.renderMenu();
         }
     	

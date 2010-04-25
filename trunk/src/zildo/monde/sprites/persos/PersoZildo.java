@@ -820,6 +820,11 @@ public class PersoZildo extends Perso {
         EngineZildo.scriptManagement.trigger(trig);
     }
 
+    /**
+     * Return TRUE if Zildo has an item from given kind.
+     * @param p_kind
+     * @return boolean
+     */
     public boolean hasItem(ItemKind p_kind) {
         for (Item i : inventory) {
             if (i.kind == p_kind) {
@@ -829,6 +834,14 @@ public class PersoZildo extends Perso {
         return false;
     }
 	
+    /**
+     * Return all Zildo's inventory. Useful for saving a game.
+     * @return List<Item>
+     */
+    public List<Item> getInventory() {
+    	return inventory;
+    }
+    
 	/**
 	 * Zildo avance contre un SpriteEntity
 	 * @param object

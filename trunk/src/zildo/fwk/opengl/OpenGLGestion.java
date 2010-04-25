@@ -29,7 +29,6 @@ import java.util.List;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -179,9 +178,6 @@ public abstract class OpenGLGestion {
     public boolean mainloop() {
     	boolean done=false;
     	if (!awt) {
-	    	if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {       // Exit if Escape is pressed
-	            done = true;
-	        }
 	        if(Display.isCloseRequested()) {                     // Exit if window is closed
 	            done = true;
 	        }

@@ -176,6 +176,10 @@ public class FilterCommand {
 		return false;
 	}
 
+	public boolean isFading() {
+		return fadeStarted;
+	}
+	
 	public int getFadeLevel() {
 		return fadeLevel;
 	}
