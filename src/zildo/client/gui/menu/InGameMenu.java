@@ -20,13 +20,13 @@
 
 package zildo.client.gui.menu;
 
-import zildo.SinglePlayer;
+import java.util.ArrayList;
+import java.util.List;
+
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
-import zildo.client.sound.BankSound;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
-import zildo.monde.Game;
 
 /**
  * @author Tchegito
@@ -38,25 +38,33 @@ public class InGameMenu extends Menu {
 		
 		final Client client = ClientEngineZildo.getClientForMenu();
 
-        ItemMenu itemPlay=new ItemMenu("m7.continue", null) {
+		List<ItemMenu> items=new ArrayList<ItemMenu>();
+		
+		final Menu currentMenu=this;
+		
+        items.add(new ItemMenu("m7.continue", null) {
         	public void run() {
                 client.handleMenu(null);
         	}
-        };
+        });
         
-        ItemMenu itemSave=new ItemMenu("m7.save", BankSound.MenuSelectGame) {
+        // If client is in singleplayer mode, he's allowed to save his game
+        if (!client.isMultiplayer()) {
+        	items.add(new ItemMenu("m7.save", null) {
         	public void run() {
-                new SinglePlayer(new Game(null, false));
+                List<String> saves=SaveGameMenu.findSavegame();
+                client.handleMenu(new SaveGameMenu(saves, false, currentMenu));
         	}
-        };
+        });
+        }
         
-        ItemMenu itemQuit=new ItemMenu("m7.quit") {
+        items.add(new ItemMenu("m7.quit") {
         	public void run() {
         		client.stop();
         	}
-        };
+        });
         
-		setMenu(itemPlay, itemSave, itemQuit);
+		setMenu(items);
 		setTitle("m7.title");
 	}
 }

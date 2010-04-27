@@ -41,7 +41,6 @@ import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.PersoZildo;
-import zildo.prefs.Constantes;
 
 
 public class MapManagement {
@@ -137,9 +136,7 @@ public class MapManagement {
 	
 		// If file name isn't complete, do it.
 		if (mapname.indexOf("/") ==-1 && mapname.indexOf("\\") == -1) {
-			String chemin=Constantes.DATA_PATH;
-			mapname=chemin+mapname;
-			mapname+=".MAP";
+			mapname=mapname+=".MAP";
 		}
 		
 		// Infos de base

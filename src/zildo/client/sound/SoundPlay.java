@@ -29,7 +29,6 @@ import zildo.Zildo;
 import zildo.fwk.opengl.OpenGLSound;
 import zildo.monde.WaitingSound;
 import zildo.monde.map.Area;
-import zildo.prefs.Constantes;
 
 // SoundManagement.cpp: implementation of the SoundManagement class.
 //
@@ -94,8 +93,7 @@ public class SoundPlay {
 	void loadSound(String p_subDirectory, AudioBank p_sound) {
 		if (Zildo.soundEnabled) {
 			// Build entire file name
-			String chemin=Constantes.DATA_PATH;
-			chemin+=p_subDirectory+File.separator;
+			String chemin=p_subDirectory+File.separator;
 			chemin+=p_sound.getFilename();
 			chemin+=".";
 			chemin+=p_sound.getSuffix();

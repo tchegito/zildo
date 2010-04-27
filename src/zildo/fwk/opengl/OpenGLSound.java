@@ -32,6 +32,7 @@ import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.SoundStore;
 
 import zildo.fwk.file.EasyReadingFile;
+import zildo.prefs.Constantes;
 
 public class OpenGLSound {
 
@@ -126,7 +127,7 @@ public class OpenGLSound {
 
 		} else if (lower.endsWith("ogg")) {
 			try {
-				snd = SoundStore.get().getOggStream(p_filename);
+				snd = SoundStore.get().getOggStream(Constantes.DATA_PATH+p_filename);
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}

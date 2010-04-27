@@ -71,7 +71,7 @@ public class JoinGameMenu extends Menu {
         		client.handleMenu(previousMenu);
         	}
         });
-        setMenu(items.toArray(new ItemMenu[] {}));
+        setMenu(items);
     }
     
     
