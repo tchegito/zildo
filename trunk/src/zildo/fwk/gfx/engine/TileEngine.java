@@ -159,10 +159,8 @@ public class TileEngine extends TextureEngine {
     // /////////////////////////////////////////////////////////////////////////////////////
     void charge_motifs(String filename) {
         MotifBank motifBank = new MotifBank();
-        String chemin = Constantes.DATA_PATH;
-        chemin += filename;
 
-        motifBank.charge_motifs(chemin);
+        motifBank.charge_motifs(filename);
 
         motifBanks.add(motifBank);
 

@@ -42,7 +42,7 @@ import zildo.monde.quest.QuestEvent;
 public class ScriptManagement {
 
     ScriptExecutor scriptExecutor;
-    private AdventureElement adventure=null;
+    AdventureElement adventure=null;
     MapReplacement replaces;
     
     public ScriptManagement() {
@@ -162,4 +162,8 @@ public class ScriptManagement {
     public void addReplacedMapName(String p_ancient, String p_new) {
     	replaces.put(p_ancient, p_new);
     }
+
+	public AdventureElement getAdventure() {
+		return adventure;
+	}
 }

@@ -20,8 +20,6 @@
 
 package zildo.monde;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 
 import zildo.fwk.file.EasyBuffering;
@@ -46,7 +44,6 @@ public class Game implements EasySerializable {
     public boolean multiPlayer;
     public boolean deathmatch; // Defines the game rules
     public String mapName;
-    public AdventureElement adventure;
     
     public Game(String p_mapName, boolean p_editing) {
         mapName = p_mapName;
@@ -59,11 +56,8 @@ public class Game implements EasySerializable {
     }
     
 	public void serialize(EasyBuffering p_buffer) {
-		// 1: identify the save game
-		String formattedDate=DateFormat.getDateInstance().format(new Date());
-		p_buffer.put(formattedDate);
-		
-		// 2: quest diary
+		// 1: quest diary
+		AdventureElement adventure=EngineZildo.scriptManagement.getAdventure();
 		List<QuestElement> quests=adventure.getQuests();
 		p_buffer.put(quests.size());
 		for (QuestElement quest : quests) {
@@ -71,14 +65,14 @@ public class Game implements EasySerializable {
 			p_buffer.put(quest.done);
 		}
 		
-		// 3: zildo's information
+		// 2: zildo's information
 		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
 		p_buffer.put(zildo.getMaxpv());
 		p_buffer.put(zildo.getCountArrow());
 		p_buffer.put(zildo.getCountBomb());
 		p_buffer.put(zildo.getMoney());
 
-		// 4: inventory
+		// 3: inventory
 		List<Item> items=zildo.getInventory();
 		p_buffer.put(items.size());
 		for (Item item : items) {
@@ -86,4 +80,5 @@ public class Game implements EasySerializable {
 			p_buffer.put(item.level);
 		}
 	}
+
 }

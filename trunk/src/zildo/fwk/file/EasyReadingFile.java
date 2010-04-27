@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
+import zildo.prefs.Constantes;
+
 public class EasyReadingFile extends EasyBuffering {
 
 	int position;
@@ -38,9 +40,10 @@ public class EasyReadingFile extends EasyBuffering {
 	public EasyReadingFile(String path) {
 		FileInputStream stream;
 		try {
-			File file=new File(path);
+			File file=new File(Constantes.DATA_PATH+path);
 			stream=new FileInputStream(file);
 		} catch (FileNotFoundException e) {
+
 			throw new RuntimeException("Unable to find "+path);
 		}
 		FileChannel chIn=stream.getChannel();

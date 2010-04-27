@@ -51,6 +51,10 @@ public class Menu {
 		items=Arrays.asList(p_items);
 		displayed=false;
 	}
+	public void setMenu(List<ItemMenu> p_items) {
+		items=p_items;
+		displayed=false;
+	}
 	
 	public void setTitle(String p_title) {
 		title=UIText.getText(p_title);

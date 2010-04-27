@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import zildo.fwk.file.EasyReadingFile;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
-import zildo.prefs.Constantes;
 
 /**
 //////////////////////////////////////////////////////////////////////
@@ -114,9 +113,7 @@ public class SpriteBank {
 	// Load a sprites bank into memory
 	public void charge_sprites(String filename)
 	{
-		String chemin=Constantes.DATA_PATH;
-		chemin+=filename;
-		EasyReadingFile file=new EasyReadingFile(chemin);
+		EasyReadingFile file=new EasyReadingFile(filename);
 		short a,b;
 	    int k;
 	

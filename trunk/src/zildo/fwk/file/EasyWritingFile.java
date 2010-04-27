@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+import zildo.prefs.Constantes;
+
 /**
  * Simple object to create a file from a buffer.<p/>
  * You just have to instantiate an {@link EasyWritingFile} with the buffer, then call {@link #saveFile(String)}
@@ -43,7 +45,7 @@ public class EasyWritingFile extends EasyBuffering {
     	
         OutputStream fileOut = null;
         try {
-            fileOut = new FileOutputStream(new File(p_fileName));
+            fileOut = new FileOutputStream(new File(Constantes.DATA_PATH+p_fileName));
             fileOut.write(data.array(), 0, data.limit());
         } catch (Exception e) {
             throw new RuntimeException("Unable to write " + p_fileName + " !");
