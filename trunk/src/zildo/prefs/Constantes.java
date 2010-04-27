@@ -28,8 +28,8 @@ import zildo.Zildo;
 public class Constantes {
 
 	// File system data
-	//public static String DATA_PATH = "."+File.separator+"Data"+File.separator;	// Pour livraison
-	public static String DATA_PATH = "C:\\ZildoDist\\Version 1.094\\Data\\";
+	public static String DATA_PATH = "."+File.separator+"Data"+File.separator;	// Pour livraison
+	//public static String DATA_PATH = "C:\\ZildoDist\\Version 1.094\\Data\\";
 
 	public static String CONFIGURATION_FILE = "ini"+File.separator+"player.ini";
 	public static String SERVER_FILE = "ini"+File.separator+"servers.ini";
