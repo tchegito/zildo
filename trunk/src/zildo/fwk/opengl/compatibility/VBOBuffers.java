@@ -27,6 +27,9 @@ import org.lwjgl.BufferUtils;
 
 public class VBOBuffers {
 	
+	// As indices never changes, we just fix a maximum and use the generated array at start.
+	static final int maxIndices = 6 * 64 * 64;
+	
 	int vertexBufferId;
 	int	normalBufferId;
 	int textureBufferId;
@@ -37,12 +40,12 @@ public class VBOBuffers {
     public FloatBuffer textures;
     public IntBuffer indices;
     
-    public VBOBuffers(int p_numPoints, int p_numIndices) {
+    public VBOBuffers(int p_numPoints) {
         // Allocate buffers
-        int numFaces = p_numIndices / 3;
+        int numFaces = maxIndices / 3;
         vertices = BufferUtils.createFloatBuffer(3 * p_numPoints);
         normals = BufferUtils.createFloatBuffer(3 * numFaces);
-        indices = BufferUtils.createIntBuffer(3 * p_numIndices);
+        indices = BufferUtils.createIntBuffer(3 * maxIndices);
         textures = BufferUtils.createFloatBuffer(2 * p_numPoints);    	
     }
     

@@ -213,9 +213,7 @@ public class SpriteEngine extends TextureEngine {
 			if (i==SpriteBank.BANK_COPYSCREEN) {
 				meshSprites[i] = new SpritePrimitive(4, 6, 512, 256);
 			} else {
-				meshSprites[i] = new SpritePrimitive(
-											Constantes.NB_SPRITE_PER_PRIMITIVE*4,
-											Constantes.NB_SPRITE_PER_PRIMITIVE*3*2);	//NB_SPRITE_PER_PRIMITIVE
+				meshSprites[i] = new SpritePrimitive(Constantes.NB_SPRITE_PER_PRIMITIVE*4);
 			}
 		}
 		// Load sprite banks

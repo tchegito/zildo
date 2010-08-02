@@ -58,25 +58,25 @@ public class TilePrimitive extends OpenGLStuff {
         nIndices = 0;
     }
 
-    public TilePrimitive(int numPoints, int numIndices) {
-        initialize(numPoints, numIndices);
+    public TilePrimitive(int numPoints) {
+        initialize(numPoints);
     }
 
-    private void initialize(int numPoints, int numIndices) {
+    private void initialize(int numPoints) {
         // Initialize VBO IDs
-        bufs=vbo.create(numPoints, numIndices);
+        bufs=vbo.create(numPoints);
         
         nPoints = 0;
         nIndices = 0;
 
         // Generate all indices at primitve instanciation (it never change)
-        generateAllIndices(numIndices);
+        generateAllIndices();
     }
 
     public TilePrimitive(int numPoints, int numIndices, int texSizeX, int texSizeY) {
         textureSizeX = texSizeX;
         textureSizeY = texSizeY;
-        initialize(numPoints, numIndices);
+        initialize(numPoints);
     }
 
     public void cleanUp() {
@@ -91,7 +91,8 @@ public class TilePrimitive extends OpenGLStuff {
     // Lock VertexBuffer to gain access to data
     // /////////////////////////////////////////////////////////////////////////////////////
     public void startInitialization() {
-
+    	nPoints = 0;
+    	nIndices = 0;
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////
@@ -119,12 +120,6 @@ public class TilePrimitive extends OpenGLStuff {
         bufs.indices.position(position);
         nIndices = saveNIndices;
         bufs.indices.limit(limit);
-
-        /*
-         * ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ELEMENT_ARRAY_BUFFER_ARB, indiceBufferId);
-         * GL12.glDrawRangeElements(GL11.GL_TRIANGLES, startingQuad * 2, 2*(nbQuadsToRender + startingQuad) -1, nIndices * 3,
-         * GL11.GL_UNSIGNED_INT, 0);
-         */
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////
@@ -209,15 +204,22 @@ public class TilePrimitive extends OpenGLStuff {
         int vBufferPos = bufs.vertices.position(); // - 3*4;
         // int tBufferPos=bufs.textures.position(); // - 2*4;
 
-        if (bufs.vertices.limit() == vBufferPos) {
+        if (bufs.vertices.limit() <= vBufferPos) {
             // On rajoute une place
-            bufs.vertices.limit(bufs.vertices.position() + 3 * 4);
-            bufs.textures.limit(bufs.textures.position() + 2 * 4);
+            bufs.vertices.limit(vBufferPos + 3 * 4);
+            bufs.textures.limit(vBufferPos + 2 * 4);
         }
         
         float sizeX = bufs.vertices.get(vBufferPos + 3) - bufs.vertices.get(vBufferPos);
         float sizeY = bufs.vertices.get(vBufferPos + 3 * 2 + 1) - bufs.vertices.get(vBufferPos + 1);
 
+        if (sizeX == 0) {
+        	sizeX=16;
+        	sizeY=16;
+        }
+        nPoints += 4;
+        nIndices += 6;
+        
         // Move tile
         putTileSized(x, y, sizeX, sizeY, u, v);
 
@@ -230,7 +232,8 @@ public class TilePrimitive extends OpenGLStuff {
     // We can do this once for all, because every tiles is a quad made by 2 triangles
     // where indices are like this :
     // (v1,v2,v3) - (v2,v4,v3)
-    void generateAllIndices(int numIndices) {
+    void generateAllIndices() {
+    	int numIndices=bufs.indices.limit() / 3;
         // 3 Indices
         for (int i = 0; i < (numIndices / 6); i++) {
             // Tile's first triangle
@@ -243,7 +246,7 @@ public class TilePrimitive extends OpenGLStuff {
             bufs.normals.put(0).put(0).put(1);
         }
     }
-
+    
     public int getNPoints() {
         return nPoints;
     }
@@ -259,9 +262,4 @@ public class TilePrimitive extends OpenGLStuff {
     public void setNIndices(int indices) {
         nIndices = indices;
     }
-
-    /*
-     * void translate(float diffx, float diffy) { if (nPoints>0) { startInitialization(); for (int i=0;i<nPoints;i++) { if (pVertex!=null) {
-     * pVertex.x+=diffx; pVertex.y+=diffy; } pVertex++; } endInitialization(); } }
-     */
 }

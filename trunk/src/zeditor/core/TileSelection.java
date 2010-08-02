@@ -38,6 +38,8 @@ public class TileSelection extends Selection {
 	 */
 	private Integer height;
 
+	public int bank;
+	
 	/**
 	 * Constructeur vide
 	 */
@@ -51,8 +53,9 @@ public class TileSelection extends Selection {
 	 * @param h est la hauteur de la sélection (en nombre de cases)
 	 * @param l est la liste contenant les éléments
 	 */
-	public TileSelection(Integer w, Integer h, List<Integer> l){
+	public TileSelection(int bank, Integer w, Integer h, List<Integer> l){
 		super(l);
+		this.bank=bank;
 		width = w;
 		height = h;
 	}

@@ -24,8 +24,8 @@ import org.lwjgl.opengl.GL11;
 
 public class VBOSoftware implements VBO {
 
-	public VBOBuffers create(int p_numPoints, int p_numIndices) {
-		return  new VBOBuffers(p_numPoints, p_numIndices);
+	public VBOBuffers create(int p_numPoints) {
+		return  new VBOBuffers(p_numPoints);
 	}
 
 	public void draw(VBOBuffers p_bufs) {

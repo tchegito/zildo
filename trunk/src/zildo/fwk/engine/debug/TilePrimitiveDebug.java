@@ -6,8 +6,8 @@ import zildo.fwk.gfx.TilePrimitive;
 
 public class TilePrimitiveDebug  extends TilePrimitive {
 
-	public TilePrimitiveDebug(int numPoints, int numIndices) {
-		super(numPoints, numIndices);
+	public TilePrimitiveDebug(int numPoints) {
+		super(numPoints);
 	}
 	
 	public synchronized void writeFile(boolean p_writeIndice, boolean p_writeVertices) {
