@@ -35,19 +35,21 @@ import zildo.monde.Game;
 public class SinglePlayerMenu extends Menu {
 
     Client client=ClientEngineZildo.getClientForMenu();
-
+    Menu currentMenu = this;
+    
 	public SinglePlayerMenu(Menu p_previous) {
 		previousMenu=p_previous;
 		
         ItemMenu itemNew=new ItemMenu("m6.new", BankSound.MenuSelectGame) {
         	public void run() {
-                new SinglePlayer(new Game(null, false));
+                new SinglePlayer(new Game(null, false)).launchGame();
         	}
         };
         
         ItemMenu itemLoad=new ItemMenu("m6.load", BankSound.MenuSelectGame) {
         	public void run() {
-                new SinglePlayer(new Game(null, false));
+                client.handleMenu(new SaveGameMenu(true, currentMenu));
+
         	}
         };
         

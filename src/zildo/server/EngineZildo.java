@@ -66,7 +66,7 @@ public class EngineZildo {
         multiplayerManagement = new MultiplayerManagement();
         scriptManagement = new ScriptManagement();
         
-		game=p_game;
+        setGame(p_game);
 
 		// Charge une map
 		String mapName=p_game.mapName;
@@ -75,7 +75,7 @@ public class EngineZildo {
 		}
 	}
 
-    public int spawnClient() {
+	static public int spawnClient() {
 
         Point respawnLocation = mapManagement.getRespawnPosition();
         PersoZildo zildo = new PersoZildo(respawnLocation.getX(), respawnLocation.getY());
@@ -133,9 +133,7 @@ public class EngineZildo {
 			
 			
 			if (!game.multiPlayer) {
-				PersoZildo zildo=persoManagement.getZildo();
-				block=zildo.isInventoring();
-				block|=ClientEngineZildo.client.isIngameMenu();
+				block=ClientEngineZildo.client.isIngameMenu();
 			} else {
 				multiplayerManagement.render();
 			}
@@ -219,4 +217,10 @@ public class EngineZildo {
 	public static void askEvent(ClientEvent p_event) {
 		askedEvent=p_event;
 	}
+
+	public static void setGame(Game game) {
+		EngineZildo.game = game;
+	}
+	
+	
 }

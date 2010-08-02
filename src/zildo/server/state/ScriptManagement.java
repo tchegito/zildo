@@ -103,7 +103,7 @@ public class ScriptManagement {
     				achieved&=trig.done;
     			}
     			if (achieved) {
-    				accomplishQuest(quest);
+    				accomplishQuest(quest, true);
     			} else if (quest.isTriggersBoth()) {
     				// All trigger are not activated at the same time ==> then we reset them to 'undone'
     				for (TriggerElement trig : quest.getTriggers()) {
@@ -126,10 +126,10 @@ public class ScriptManagement {
      * Update quest status, and launch the associated actions.
      * @param p_questName
      */
-    public void accomplishQuest(String p_questName) {
+    public void accomplishQuest(String p_questName, boolean p_trigger) {
     	for (QuestElement quest : adventure.getQuests()) {
     		if (quest.name.equals(p_questName)) {
-    			accomplishQuest(quest);
+    			accomplishQuest(quest, p_trigger);
     		}
     	}
     }
@@ -137,8 +137,9 @@ public class ScriptManagement {
     /**
      * Update quest status, and launch the associated actions.
      * @param p_quest
+     * @param p_trigger TODO
      */
-    private void accomplishQuest(QuestElement p_quest) {
+    private void accomplishQuest(QuestElement p_quest, boolean p_trigger) {
     	p_quest.done=true;
     	// Target potentials triggers
     	TriggerElement trig=TriggerElement.createQuestDoneTrigger(p_quest.name);

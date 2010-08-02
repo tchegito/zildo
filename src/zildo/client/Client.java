@@ -281,6 +281,6 @@ public class Client {
 	}
 	
 	public boolean isIngameMenu() {
-		return currentMenu == ingameMenu && ingameMenu != null;
+		return currentMenu != null && ingameMenu != null;
 	}
 }
