@@ -44,8 +44,8 @@ public class SpritePrimitive extends TilePrimitive {
 		super();
 	}
 	
-	public SpritePrimitive(int numPoints, int numIndices){
-		super(numPoints, numIndices);
+	public SpritePrimitive(int numPoints){
+		super(numPoints);
 		// VB/IB aren't locked at start
 		locked=false;
 	}

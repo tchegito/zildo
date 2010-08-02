@@ -33,6 +33,7 @@ import javax.swing.JScrollBar;
 import org.lwjgl.LWJGLException;
 
 import zildo.client.ClientEngineZildo;
+import zildo.client.MapDisplay;
 import zildo.monde.map.Point;
 
 /**
@@ -52,7 +53,7 @@ public class ZildoScrollablePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	public static final int viewSizeX=640;
-	public static final int viewSizeY=600;
+	public static final int viewSizeY=480 + 32 + 16 - 4 - 2;
 	
 	ZildoCanvas zildoCanvas;
 	JScrollBar horizontal;
@@ -104,10 +105,11 @@ public class ZildoScrollablePanel extends JPanel {
 				max=64*16;
 				extent=viewSizeY;
 			}
+			setMinimum(0);
 			setMaximum(max);
 			BoundedRangeModel model=new DefaultBoundedRangeModel(0, extent, 0, max);
 			setModel(model);
-			setUnitIncrement(16);
+			setUnitIncrement(0);
 		}
 		
 		@Override

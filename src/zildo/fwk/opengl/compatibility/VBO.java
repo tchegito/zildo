@@ -36,7 +36,7 @@ package zildo.fwk.opengl.compatibility;
 
 public interface VBO {
 
-	public VBOBuffers create(int p_numPoints, int p_numIndices);
+	public VBOBuffers create(int p_numPoints);
 	
 	public void draw(VBOBuffers p_bufs);
 	

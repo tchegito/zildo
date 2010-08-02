@@ -23,7 +23,6 @@ package zildo.server;
 
 import java.util.logging.Logger;
 
-import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.IntSet;
 import zildo.fwk.file.EasyBuffering;
@@ -135,7 +134,7 @@ public class MapManagement {
 		System.out.println("Loading "+mapname);
 	
 		// If file name isn't complete, do it.
-		if (mapname.indexOf("/") ==-1 && mapname.indexOf("\\") == -1) {
+		if (mapname.indexOf("/") ==-1 && mapname.indexOf("\\") == -1 && mapname.toUpperCase().indexOf(".MAP") == -1) {
 			mapname=mapname+=".MAP";
 		}
 		

@@ -34,9 +34,9 @@ public class VBOHardware extends VBOSoftware {
 	
 	static Map<Integer, VBOBuffers> vboId = new HashMap<Integer, VBOBuffers>();
 	
-	public VBOBuffers create(int p_numPoints, int p_numIndices) {
+	public VBOBuffers create(int p_numPoints) {
         
-		VBOBuffers bufs=super.create(p_numPoints, p_numIndices);
+		VBOBuffers bufs=super.create(p_numPoints);
 		bufs.vertexBufferId = Utils.createVBO();
 		bufs.normalBufferId = Utils.createVBO();
 		bufs.textureBufferId = Utils.createVBO();

@@ -1,10 +1,21 @@
 /**
- * Legend of Zildo Copyright (C) 2006-2010 Evariste Boussaton Based on original Zelda : link to the past (C) Nintendo 1992 This program is
- * free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that
- * it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this
- * program. If not, see <http://www.gnu.org/licenses/>.
+ * Legend of Zildo
+ * Copyright (C) 2006-2010 Evariste Boussaton
+ * Based on original Zelda : link to the past (C) Nintendo 1992
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 package zildo.fwk.awt;
@@ -48,13 +59,19 @@ public class ZildoMouseListener implements MouseListener, MouseMotionListener {
         // Get brush
         TileSelection sel = MasterFrameManager.getTileSelection();
         if (sel != null) {
+        	int dx,dy;
             // Apply selected brush to the map
 	        Area map = EngineZildo.mapManagement.getCurrentMap();
 	        for (int h = 0; h < sel.getHeight(); h++) {
 	            for (int w = 0; w < sel.getWidth(); w++) {
-	                int item = sel.getItem(h * w + w);
+	                int item = sel.getItem(h * sel.getWidth() + w);
 	                if (item != -1) {
-	                    map.writemap(p.x / 16 + w, p.y / 16 + h + 4, item);
+	                	dx=p.x / 16 + w;
+	                	dy=p.y / 16 + h;
+	                	if (map.getDim_x() >= dx && map.getDim_y() >= dy+4) {
+	                		// We know that this is a valid location
+	                		map.writemap(dx, dy, item + 256*sel.bank);
+	                	}
 	                }
 	            }
 	        }
@@ -79,7 +96,7 @@ public class ZildoMouseListener implements MouseListener, MouseMotionListener {
         Point p = event.getPoint();
         Point camera = panel.getPosition();
         p.x += camera.x;
-        p.y += camera.y + 8;
+        p.y += camera.y + 16; // + 8 + 4;
 
         return p;
     }

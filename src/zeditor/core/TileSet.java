@@ -21,6 +21,7 @@ import zeditor.core.exceptions.TileSetException;
 import zeditor.core.exceptions.ZeditorException;
 import zeditor.helpers.OptionHelper;
 import zeditor.tools.CorrespondanceGifDec;
+import zildo.client.ClientEngineZildo;
 
 /**
  * Classe de gestion des Tuiles
@@ -428,7 +429,8 @@ public class TileSet extends JPanel {
 			//System.out.println(buffer);
 			height ++;
 		}
-		currentSelection = new TileSelection(width, height, list);
+		int bank=ClientEngineZildo.tileEngine.getBankFromName(tileName);
+		currentSelection = new TileSelection(bank, width, height, list);
 	}
 	
 	/**

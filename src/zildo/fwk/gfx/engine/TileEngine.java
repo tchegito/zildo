@@ -193,10 +193,8 @@ public class TileEngine extends TextureEngine {
 		int i,x,y;
 		
 		for (i=0;i<Constantes.NB_MOTIFBANK;i++) {
-			meshFORE[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS,
-										6*Constantes.TILEENGINE_WIDTH * Constantes.TILEENGINE_HEIGHT);
-			meshBACK[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS,
-										6*Constantes.TILEENGINE_WIDTH * Constantes.TILEENGINE_HEIGHT);
+			meshFORE[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS);
+			meshBACK[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS);
 			meshFORE[i].startInitialization();
 			meshBACK[i].startInitialization();
 		}
@@ -365,4 +363,19 @@ public class TileEngine extends TextureEngine {
 		
 	}
 
+	/**
+	 * Return the bank's index in loaded ones from a given name
+	 * @param p_name
+	 * @return int
+	 */
+	public int getBankFromName(String p_name) {
+		int i=0;
+		for (String s : tileBankNames) {
+			if (s.toUpperCase().indexOf(p_name.toUpperCase()) == 0) {
+				return i;
+			}
+			i++;
+		}
+		throw new RuntimeException("Bank "+p_name+" doesn't exist.");
+	}
 }
