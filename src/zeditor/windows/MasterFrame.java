@@ -1,6 +1,7 @@
 package zeditor.windows;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -139,7 +140,9 @@ public class MasterFrame extends javax.swing.JFrame {
 			
 			
 			pack();
-			this.setSize(640 + 350, 600);
+			Dimension d=zildoPanel.getSize();
+			this.setSize(640 + 350, d.height);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -7,11 +7,13 @@
 package zildo.fwk.awt;
 
 import java.awt.GraphicsDevice;
+import java.awt.Point;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.AWTGLCanvas;
 import org.lwjgl.opengl.Drawable;
 import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.util.vector.Vector4f;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.IRenderable;
@@ -34,6 +36,8 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
     private Thread renderThread = null;
     private boolean initialize = false;
 
+	protected Point cursorLocation;
+	
     // We have to communicate orders via boolean to this canvas
     // because we can use OpenGL outside of the paint process
     protected boolean changeMap=false;
@@ -106,14 +110,20 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
         }
         try  {
             makeCurrent();
+    		Ortho ortho=ClientEngineZildo.ortho;
             if (needToResize) {
-        		Ortho ortho=ClientEngineZildo.ortho;
         		if (ortho != null) {
         			ortho.setSize(sizeX, sizeY);
 	        		needToResize=false;
         		}
+                
             }
             renderer.renderScene();     
+            // Draw rectangle
+            if (cursorLocation != null) {
+            	ortho.boxv(cursorLocation.x, cursorLocation.y, 16, 16, 0, new Vector4f(1,1,1,1));
+            }
+            
             swapBuffers();
         } catch (LWJGLException lwjgle) {
             // should not happen

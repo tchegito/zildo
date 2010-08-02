@@ -85,6 +85,10 @@ public class ZildoMouseListener implements MouseListener, MouseMotionListener {
 
     public void mouseDragged(MouseEvent mouseevent) {
         mousePressed(mouseevent);
+        
+        // Store the cursor location
+        Point p=getInsidePosition(mouseevent);
+        panel.getZildoCanvas().cursorLocation=p;
     }
 
     /**
@@ -96,8 +100,22 @@ public class ZildoMouseListener implements MouseListener, MouseMotionListener {
         Point p = event.getPoint();
         Point camera = panel.getPosition();
         p.x += camera.x;
-        p.y += camera.y + 16; // + 8 + 4;
+        p.y += camera.y; // + 8 + 4;
 
+        return p;
+    }
+    
+    /**
+     * Get pixel-scaled position in window coordinates
+     * @param event
+     * @return
+     */
+    private Point getInsidePosition(MouseEvent event) {
+        Point p = event.getPoint();
+        Point camera = panel.getPosition();
+        p.x=(p.x + camera.x % 16) / 16 * 16 - camera.x % 16;
+        p.y=(p.y + camera.y % 16) / 16 * 16 - camera.y % 16;
+        
         return p;
     }
 
@@ -112,5 +130,9 @@ public class ZildoMouseListener implements MouseListener, MouseMotionListener {
         message.append("Y: ");
         message.append(p.y / 16);
         MasterFrameManager.display(message.toString(), MasterFrameManager.MESSAGE_INFO);
+
+        // Store the cursor location
+        p=getInsidePosition(mouseevent);
+        panel.getZildoCanvas().cursorLocation=p;
     }
 }
