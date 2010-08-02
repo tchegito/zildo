@@ -40,7 +40,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
     public ZildoCanvas(String p_mapname) throws LWJGLException {
         super();
         ZildoRenderer renderer = new ZildoRenderer(p_mapname);
