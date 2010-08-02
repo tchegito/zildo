@@ -27,6 +27,7 @@ import zildo.fwk.file.EasySerializable;
 import zildo.fwk.script.xml.AdventureElement;
 import zildo.fwk.script.xml.QuestElement;
 import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
@@ -40,6 +41,7 @@ import zildo.server.EngineZildo;
  */
 public class Game implements EasySerializable {
 
+	public boolean brandNew;
     public boolean editing;
     public boolean multiPlayer;
     public boolean deathmatch; // Defines the game rules
@@ -49,6 +51,7 @@ public class Game implements EasySerializable {
         mapName = p_mapName;
         editing = p_editing;
         multiPlayer = false;
+        brandNew = true;
     }
 
     public Game(boolean p_editing) {
@@ -81,4 +84,41 @@ public class Game implements EasySerializable {
 		}
 	}
 
+	/**
+	 * Create a game from a saved file. At this point, we assume that EngineZildo is already instancied.
+	 * @param p_buffer
+	 * @return Game
+	 */
+	public static Game deserialize(EasyBuffering p_buffer) {
+        Game game = new Game("a4", false);
+
+        // 1: quest diary
+        int questNumber = p_buffer.readInt();
+        for (int i = 0; i < questNumber; i++) {
+            String questName = p_buffer.readString();
+            boolean questDone = p_buffer.readBoolean();
+            if (questDone) {
+                EngineZildo.scriptManagement.accomplishQuest(questName, questDone);
+            }
+        }
+
+        // 2: Zildo
+        EngineZildo.spawnClient();
+        PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+        zildo.setMaxpv(p_buffer.readInt());
+        zildo.setCountArrow(p_buffer.readInt());
+        zildo.setCountBomb(p_buffer.readInt());
+        zildo.setMoney(p_buffer.readInt());
+
+        // 3: Inventory
+        List<Item> items = zildo.getInventory();
+        items.clear();
+        int itemNumber = p_buffer.readInt();
+        for (int i = 0; i < itemNumber; i++) {
+            String kind = p_buffer.readString();
+            int level = p_buffer.readInt();
+            items.add(new Item(ItemKind.fromString(kind), level));
+        }
+        return game;
+    }
 }

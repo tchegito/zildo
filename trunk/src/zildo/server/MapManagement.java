@@ -117,8 +117,8 @@ public class MapManagement {
         	zildo.walkTile(false);
         }
         
-		if (!Client.isZEditor() && !EngineZildo.soundManagement.isForceMusic()) {
-			ClientEngineZildo.soundPlay.playMapMusic(currentMap);
+        if (!EngineZildo.game.editing && !EngineZildo.soundManagement.isForceMusic()) {
+        	ClientEngineZildo.soundPlay.playMapMusic(currentMap);
 		}
 		
         analyseAltitude();

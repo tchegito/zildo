@@ -52,8 +52,7 @@ public class InGameMenu extends Menu {
         if (!client.isMultiplayer()) {
         	items.add(new ItemMenu("m7.save", null) {
         	public void run() {
-                List<String> saves=SaveGameMenu.findSavegame();
-                client.handleMenu(new SaveGameMenu(saves, false, currentMenu));
+                client.handleMenu(new SaveGameMenu(false, currentMenu));
         	}
         });
         }

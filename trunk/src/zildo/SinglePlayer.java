@@ -72,10 +72,11 @@ public class SinglePlayer {
     	p_game.multiPlayer=false;
         engineZildo = new EngineZildo(p_game);
 
-        // Start 'intro' script
-       	EngineZildo.scriptManagement.execute("intro");
-
-        launchGame();
+        if (p_game.brandNew) {
+	        // Start 'intro' script
+	       	EngineZildo.scriptManagement.execute("intro");
+	       	p_game.brandNew=false;
+        }
     }
 
     /**

@@ -209,6 +209,12 @@ public class TilePrimitive extends OpenGLStuff {
         int vBufferPos = bufs.vertices.position(); // - 3*4;
         // int tBufferPos=bufs.textures.position(); // - 2*4;
 
+        if (bufs.vertices.limit() == vBufferPos) {
+            // On rajoute une place
+            bufs.vertices.limit(bufs.vertices.position() + 3 * 4);
+            bufs.textures.limit(bufs.textures.position() + 2 * 4);
+        }
+        
         float sizeX = bufs.vertices.get(vBufferPos + 3) - bufs.vertices.get(vBufferPos);
         float sizeY = bufs.vertices.get(vBufferPos + 3 * 2 + 1) - bufs.vertices.get(vBufferPos + 1);
 

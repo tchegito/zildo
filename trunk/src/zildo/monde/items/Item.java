@@ -27,5 +27,11 @@ public class Item {
 	
 	public Item(ItemKind p_kind) {
 		kind=p_kind;
+		level=0;
+	}
+
+	public Item(ItemKind p_kind, int p_level) {
+		this(p_kind);
+		level=p_level;
 	}
 }

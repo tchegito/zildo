@@ -27,13 +27,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import zildo.SinglePlayer;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.monde.Game;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
 
@@ -45,24 +48,33 @@ public class SaveGameMenu extends Menu {
 
     Client client=ClientEngineZildo.getClientForMenu();
 
+    final boolean load;
+    
 	/**
 	 * Constructor for save game menu.
 	 * @param p_savegames
 	 * @param p_load	TRUE=client want to load / FALSE=save
 	 * @param p_previous
 	 */
-	public SaveGameMenu(final List<String> p_savegames, boolean p_load, Menu p_previous) {
+	public SaveGameMenu(boolean p_load, Menu p_previous) {
         super("m8.title");
         
         previousMenu=p_previous;
+        load=p_load;
         
+        final List<String> savegames=SaveGameMenu.findSavegame();
         List<ItemMenu> items = new ArrayList<ItemMenu>();
-        for (final String s : p_savegames) {
+        for (final String s : savegames) {
         	items.add(new ItemMenu(s) {
         		public void run() {
         			int number=getSavegameNumber(s);
-        			saveGame(getSavegameFilename(number));
-	            	client.handleMenu(new InfoMenu("m8.info.ok", previousMenu));
+        			String filename=getSavegameFilename(number);
+        			if (!load) {
+        				saveGame(filename);
+        				client.handleMenu(new InfoMenu("m8.info.ok", previousMenu));
+        			} else {
+        				loadGame(filename);
+        			}
         		}
         	});
         }
@@ -77,7 +89,7 @@ public class SaveGameMenu extends Menu {
 	            	while (true) {	// Find a filename which doesn't exist yet
 	            		temp=i++;
 	            		boolean found=false;
-	            		for (String name : p_savegames) {
+	            		for (String name : savegames) {
 	            			int number=getSavegameNumber(name);
 		            		if (!found && number == temp) {
 		            			found=true;
@@ -106,13 +118,26 @@ public class SaveGameMenu extends Menu {
 	/**
 	 * Save the game
 	 */
-	public void saveGame(String p_filename) {
+	private void saveGame(String p_filename) {
 		EasyBuffering buffer=new EasyBuffering();
 		EngineZildo.game.serialize(buffer);
 		EasyWritingFile file=new EasyWritingFile(buffer);
 		file.saveFile(p_filename);
 	}
 	
+	private void loadGame(String p_filename) {
+		// Create a dummy game object, just to initialize server
+		Game game=new Game(null, false);
+		game.brandNew=false;
+        SinglePlayer singlePlay=new SinglePlayer(game);
+        
+		EasyReadingFile file=new EasyReadingFile(p_filename);
+		game=Game.deserialize(file);
+		EngineZildo.setGame(game);
+		EngineZildo.mapManagement.charge_map("a4");
+		
+        singlePlay.launchGame();
+	}
 	
 	/**
 	 * Find all savegames in current directory.
@@ -122,7 +147,7 @@ public class SaveGameMenu extends Menu {
 		File saveDirectory=new File(Constantes.DATA_PATH+Constantes.SAVEGAME_DIR);
 		File[] savegames=saveDirectory.listFiles(new SaveGameFilter());
 		List<String> filenames=new ArrayList<String>();
-		if (savegames.length > 0) {	// Is there any savegames ?
+		if (savegames != null && savegames.length > 0) { // Is there any savegames ?
 			for (File f : savegames) {
 				filenames.add(getSavegameDisplayTitle(f));
 			}
@@ -131,6 +156,9 @@ public class SaveGameMenu extends Menu {
 		return filenames;
 	}
 	
+	/**
+	 * Simple filter to get the game files.
+	 */
 	public static class SaveGameFilter implements FilenameFilter {
 
 		@Override

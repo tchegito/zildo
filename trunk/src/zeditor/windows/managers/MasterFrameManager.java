@@ -12,6 +12,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import zeditor.core.Options;
+import zeditor.core.TileSelection;
 import zeditor.core.TileSet;
 import zeditor.core.exceptions.ZeditorException;
 import zeditor.helpers.OptionHelper;
@@ -25,7 +26,7 @@ import zildo.fwk.awt.ZildoCanvas;
  */
 public class MasterFrameManager {
 	public static JLabel systemDisplay;
-	private TileSet tileSet;
+	private static TileSet tileSet;
 	private JPanel masterPanel;
 	private JFrame masterFrame;
 	private JComboBox backgroundCombo;
@@ -301,4 +302,8 @@ public class MasterFrameManager {
 		updateTools();
 		changeTileSet(backgroundCombo.getSelectedItem().toString());
 	}
+	
+	public static TileSelection getTileSelection() {
+        return tileSet.getCurrentSelection();
+    }
 }
