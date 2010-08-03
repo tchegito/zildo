@@ -359,7 +359,8 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
         return true;
     }
     
-    public String toString() {
+    @Override
+	public String toString() {
     	StringBuffer sb=new StringBuffer();
     	sb.append("Entity id="+id+"\nx="+x+"\ny="+y+"\nnSpr="+nSpr+"\nvisible="+visible);
     	return sb.toString();

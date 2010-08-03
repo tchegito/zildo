@@ -32,6 +32,7 @@ public class InfoMenu extends Menu {
 		super(p_message);
 		
 		ItemMenu itemOk=new ItemMenu(p_itemText) {
+			@Override
 			public void run() {
 				ClientEngineZildo.getClientForMenu().handleMenu(p_next);
 			}

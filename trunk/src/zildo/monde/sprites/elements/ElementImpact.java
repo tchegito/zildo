@@ -79,6 +79,7 @@ public class ElementImpact extends Element {
 		startY=p_startY;
 	}
 	
+	@Override
 	public void animate() {
 		counter++;
 		switch (kind) {
@@ -131,7 +132,8 @@ public class ElementImpact extends Element {
         return null;
     }
 
-    public DamageType getDamageType() {
+    @Override
+	public DamageType getDamageType() {
     	return DamageType.EXPLOSION;
     }
     

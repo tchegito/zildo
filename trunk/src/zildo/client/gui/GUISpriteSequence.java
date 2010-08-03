@@ -79,6 +79,7 @@ public class GUISpriteSequence extends ArrayList<SpriteEntity> {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// -ask sprite management to remove each sprites added in this sequence
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public void clear()
 	{
 		SpriteDisplay spriteDisplay=ClientEngineZildo.spriteDisplay;

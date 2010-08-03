@@ -62,7 +62,8 @@ public abstract class TextureEngine extends OpenGLStuff {
 		textureTab=new int[Constantes.NB_MOTIFBANK + Constantes.NB_SPRITEBANK];
     }
     
-    public void finalize() {
+    @Override
+	public void finalize() {
 		// Free the allocated textures
 		for (int i=0;i<n_Texture;i++) {
 			//SafeRelease(ppTexture[i]);

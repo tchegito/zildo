@@ -89,6 +89,7 @@ public class SpriteBank {
 		this.nSprite=original.nSprite;
 	}
 	
+	@Override
 	public void finalize()
 	{
 		logger.log(Level.INFO, "Deleting SpriteBank");

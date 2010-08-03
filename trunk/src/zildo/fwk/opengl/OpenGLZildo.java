@@ -90,7 +90,8 @@ public class OpenGLZildo extends OpenGLGestion {
     	clientEngineZildo=p_engineZildo;
     }
     
-    protected void mainloopExt() {
+    @Override
+	protected void mainloopExt() {
 
         // Pour test
         if(Keyboard.isKeyDown(Keyboard.KEY_ADD)) {       // '+'
@@ -113,7 +114,8 @@ public class OpenGLZildo extends OpenGLGestion {
         xx+=0.5f / 8.0f;
     }
     
-    public void render(boolean p_clientReady) {
+    @Override
+	public void render(boolean p_clientReady) {
 
    		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
 
@@ -156,7 +158,8 @@ public class OpenGLZildo extends OpenGLGestion {
 		this.zoomPosition = zoomPosition;
 	}
 	
-    protected void cleanUpExt() {
+    @Override
+	protected void cleanUpExt() {
     	ClientEngineZildo.cleanUp();
     }
 }

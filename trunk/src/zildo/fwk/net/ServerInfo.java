@@ -32,14 +32,17 @@ public class ServerInfo {
 		port=p_port;
 	}
 	
+	@Override
 	public String toString() {
 		return name+"\nIP="+ip+"\nport="+port;
 	}
 	
+	@Override
 	public int hashCode() {
 		return name.hashCode();
 	}
 	
+	@Override
 	public boolean equals(Object p_obj) {
 		if (p_obj == null || !p_obj.getClass().equals(ServerInfo.class)) {
 			return false;

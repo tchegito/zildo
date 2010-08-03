@@ -258,6 +258,7 @@ public abstract class Perso extends Element {
 	
 	}
 	
+	@Override
 	public void finalize() {
 		logger.info("Deleting Perso");
 		// Delete linked elements
@@ -284,6 +285,7 @@ public abstract class Perso extends Element {
 		}
 	}
 	
+	@Override
 	public void setSpecialEffect(EngineFX specialEffect) {
 		super.setSpecialEffect(specialEffect);
 		if (this.persoSprites.size() > 0) {
@@ -325,6 +327,7 @@ public abstract class Perso extends Element {
         }
     }
     
+	@Override
 	public String toString() {
 		StringBuffer sb=new StringBuffer();
 		sb.append("Perso="+nom+"\nx="+x+"\ny="+y+"\ninfo="+info+"\nmvt="+mouvement);
@@ -514,6 +517,7 @@ public abstract class Perso extends Element {
 		this.ghost = ghost;
 	}
 	
+	@Override
 	public void setVisible(boolean p_visible) {
 		super.setVisible(p_visible);
 		for (SpriteEntity entity : persoSprites) {

@@ -144,7 +144,8 @@ public class TransferObject {
     /**
      * hashCode for TransferObject : only the adress is significant for check.
      */
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         if (hash == -1) {
             byte[] b = this.address.getAddress().getAddress();
             hash = 7;
@@ -155,6 +156,7 @@ public class TransferObject {
         return hash;
     }
 	
+	@Override
 	public boolean equals(Object p_other) {
 		if (!p_other.getClass().isAssignableFrom(TransferObject.class)) {
 			return false;

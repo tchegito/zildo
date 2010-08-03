@@ -51,10 +51,12 @@ public abstract class Identified {
 			clazz=p_clazz;
 		}
 		
+		@Override
 		public int hashCode() {
 			return id ^2+ 7*clazz.hashCode();
 		}
 		
+		@Override
 		public boolean equals(Object o) {
 			if (!o.getClass().equals(this.getClass())) {
 				return false;

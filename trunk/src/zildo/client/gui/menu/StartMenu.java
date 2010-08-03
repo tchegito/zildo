@@ -68,7 +68,8 @@ public class StartMenu extends Menu {
                 	}
                 };
                 ItemMenu itemJoin=new ItemMenu("m2.join", BankSound.MenuSelectGame) {
-                	public void run() {
+                	@Override
+					public void run() {
                 		if (lan) {
                 			new MultiPlayer();
                 		} else {
@@ -104,7 +105,8 @@ public class StartMenu extends Menu {
                 };
 
                 multiMenu = new Menu("m2.title", itemCreate, itemJoin, itemPlayerName, itemToggleNetwork, itemBack) {
-                    public void refresh() {
+                    @Override
+					public void refresh() {
                     	itemPlayerName.setText(getPlayerNameString());
                     }
                 };
@@ -121,7 +123,8 @@ public class StartMenu extends Menu {
         };
         
         ItemMenu itemQuit=new ItemMenu("m1.quit", BankSound.MenuSelectGame) {
-        	public void run() {
+        	@Override
+			public void run() {
         		client.stop();
         	}
         };

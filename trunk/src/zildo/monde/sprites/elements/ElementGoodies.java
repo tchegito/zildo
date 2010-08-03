@@ -44,6 +44,7 @@ public class ElementGoodies extends Element {
 		timeToAcquire=60;
 	}
 	
+	@Override
 	public void animate() {
 		
 		super.animate();
@@ -107,10 +108,12 @@ public class ElementGoodies extends Element {
 		setAjustedY((int) y);
 	}
 	
+	@Override
 	public boolean isGoodies() {
 		return true;
 	}
 	
+	@Override
 	public boolean beingCollided(Perso p_perso) {
 		return true;
 	}

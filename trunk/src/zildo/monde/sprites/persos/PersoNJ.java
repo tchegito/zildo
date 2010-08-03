@@ -48,6 +48,7 @@ public class PersoNJ extends Perso {
 		setPos_seqsprite(0);
 	}
 	
+	@Override
 	public void attack() {
 	}
 	
@@ -56,6 +57,7 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// -create collision zone for this character
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public void manageCollision() {
 		if ((getInfo() == PersoInfo.ENEMY || getInfo() == PersoInfo.SHOOTABLE_NEUTRAL) && getPv()>0) {
 			// Add this collision record to collision engine
@@ -88,6 +90,7 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Invoked when this character gets wounded by any enemy (=ZILDO)
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public boolean beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 		project(cx, cy, 6);
 		this.setMouvement(MouvementZildo.TOUCHE);
@@ -106,6 +109,7 @@ public class PersoNJ extends Perso {
 		return died;
 	}
 	
+	@Override
 	public void parry(float cx, float cy, Perso p_shooter) {
 		project(cx, cy, 2);
 		EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
@@ -116,6 +120,7 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// stopBeingWounded
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public void stopBeingWounded()
 	{
 		setPx(0.0f);
@@ -131,6 +136,7 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Move a PNJ to his location (dx,dy) set by determineDestination()
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public void animate(int compteur_animation)
 	{
 		if (getPv() == 0 || getDialoguingWith() != null) {
@@ -322,6 +328,7 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Set perso with initial special effect.
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public void initPersoFX() {
 		if (getQuel_spr().equals(PersoDescription.GARDE_CANARD)) {	// Guard
 			String str=getEffect() != null ? getEffect() : getNom();
@@ -349,6 +356,7 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Manage character's graphic side, depending on the position in the animated sequence.
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public void finaliseComportement(int compteur_animation) {
 	
 		final int[] seqp={0,2,0,1}; //Persos à 3 sprites
@@ -515,6 +523,7 @@ public class PersoNJ extends Perso {
 		return r;
 	}
 	
+	@Override
 	public void fall() {
 		 if (info==PersoInfo.ENEMY) {
 			// Un monstre vient de mourir

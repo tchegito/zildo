@@ -54,7 +54,8 @@ public class ElementBoomerang extends ElementThrown {
         grabbed=null;
 	}
     
-    public void animate() {
+    @Override
+	public void animate() {
     	addSpr=(count/5) % 4;
     	if (count % 9 == 0) {
     		EngineZildo.soundManagement.broadcastSound(BankSound.Boomerang, this);
@@ -84,7 +85,8 @@ public class ElementBoomerang extends ElementThrown {
     	}
     }
 
-    public boolean beingCollided(Perso p_perso) {
+    @Override
+	public boolean beingCollided(Perso p_perso) {
     	// Boomerang hit something, so give him back to Zildo
     	comingBack=true;
 		if (p_perso == null) {	// If boomerang hit a character, don't spawn an impact
@@ -94,7 +96,8 @@ public class ElementBoomerang extends ElementThrown {
     	return true;
     }
     
-    public boolean isSolid() {
+    @Override
+	public boolean isSolid() {
 		return !comingBack;
 	}
     

@@ -31,6 +31,7 @@ import zildo.server.EngineZildo;
 public class ZoomFilter extends ScreenFilter {
 
 	
+	@Override
 	public boolean renderFilter()
 	{
 		focusOnZildo();
@@ -55,6 +56,7 @@ public class ZoomFilter extends ScreenFilter {
 	/**
 	 * Re-initialize z coordinate
 	 */
+	@Override
 	public void doOnInactive() {
 		ClientEngineZildo.openGLGestion.setZ(0);
 	}	

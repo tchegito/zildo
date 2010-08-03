@@ -137,6 +137,7 @@ public class GFXBasics extends OpenGLStuff {
 		}
 	}
 	
+	@Override
 	public void finalize()
 	{
 		//SafeDelete(m_pFont);

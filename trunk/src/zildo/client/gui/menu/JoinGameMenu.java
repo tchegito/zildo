@@ -67,7 +67,8 @@ public class JoinGameMenu extends Menu {
         });
         
         items.add(new ItemMenu("global.back") {
-        	public void run() {
+        	@Override
+			public void run() {
         		client.handleMenu(previousMenu);
         	}
         });

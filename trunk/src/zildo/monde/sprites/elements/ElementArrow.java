@@ -74,7 +74,8 @@ public class ElementArrow extends ElementThrown  {
 
     }
 
-    public void animate() {
+    @Override
+	public void animate() {
     	if (!flying) {
     		animateLanded();
     	} else {
@@ -82,7 +83,8 @@ public class ElementArrow extends ElementThrown  {
     	}
     }
     
-    protected void die() {
+    @Override
+	protected void die() {
     	shadow.dying=true;
     }
     
@@ -159,7 +161,8 @@ public class ElementArrow extends ElementThrown  {
     	}
     }
     
-    public Collision getCollision() {
+    @Override
+	public Collision getCollision() {
     	Point pos=new Point(x, y);
     	Perso perso=null;
     	if (SpriteEntity.ENTITYTYPE_PERSO == getLinkedPerso().getEntityType()) {

@@ -89,6 +89,7 @@ public class OpenGLSound {
 		setListenerValues();
 	}
 
+	@Override
 	public void finalize() {
 		killALData();
 	}

@@ -42,10 +42,12 @@ public class EventPacket extends Packet {
 		type=p_type;
 	}
 	
+	@Override
 	protected void buildPacket() {
 		b.put(type.toString());
 	}
 	
+	@Override
 	protected void deserialize(EasyBuffering p_buffer) {
 		type=EventType.valueOf(p_buffer.readString());
 	}

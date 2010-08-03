@@ -156,6 +156,7 @@ public abstract class ScreenFilter extends TilePrimitive {
 		
 	}
 	
+	@Override
 	final public void cleanUp() {
 		if (fboId > 0) {
 			cleanTexture(textureID);

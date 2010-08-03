@@ -39,6 +39,7 @@ public class PersoVolant extends PersoNJ {
 		//}
 	}
 	
+	@Override
 	public void finaliseComportement(int compteur_animation) {
 		// On déplace l'ombre du perso
 		if (persoSprites.size() >0) {

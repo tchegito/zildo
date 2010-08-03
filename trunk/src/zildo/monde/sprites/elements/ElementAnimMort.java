@@ -41,7 +41,8 @@ public class ElementAnimMort extends Element {
         setLinkedPerso(perso);
     }
 
-    public void animate() {
+    @Override
+	public void animate() {
 
         count++;
 
