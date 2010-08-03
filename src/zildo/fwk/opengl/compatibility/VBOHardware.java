@@ -34,6 +34,7 @@ public class VBOHardware extends VBOSoftware {
 	
 	static Map<Integer, VBOBuffers> vboId = new HashMap<Integer, VBOBuffers>();
 	
+	@Override
 	public VBOBuffers create(int p_numPoints) {
         
 		VBOBuffers bufs=super.create(p_numPoints);
@@ -45,6 +46,7 @@ public class VBOHardware extends VBOSoftware {
         return bufs;
 	}
 	
+	@Override
 	public void draw(VBOBuffers p_bufs) {
         ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, p_bufs.vertexBufferId);
         GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
@@ -56,6 +58,7 @@ public class VBOHardware extends VBOSoftware {
         GL11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, 0);		
 	}
 	
+	@Override
 	public void cleanUp(VBOBuffers p_bufs) {
         IntBuffer buf = BufferUtils.createIntBuffer(1);
         buf.put(p_bufs.vertexBufferId);
@@ -75,6 +78,7 @@ public class VBOHardware extends VBOSoftware {
         ARBVertexBufferObject.glDeleteBuffersARB(buf);		
 	}
 	
+	@Override
 	public void endInitialization(VBOBuffers p_bufs) {
 		super.endInitialization(p_bufs);
         Utils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices);

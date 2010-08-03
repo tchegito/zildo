@@ -43,7 +43,8 @@ public class InGameMenu extends Menu {
 		final Menu currentMenu=this;
 		
         items.add(new ItemMenu("m7.continue", null) {
-        	public void run() {
+        	@Override
+			public void run() {
                 client.handleMenu(null);
         	}
         });
@@ -51,14 +52,16 @@ public class InGameMenu extends Menu {
         // If client is in singleplayer mode, he's allowed to save his game
         if (!client.isMultiplayer()) {
         	items.add(new ItemMenu("m7.save", null) {
-        	public void run() {
+        	@Override
+			public void run() {
                 client.handleMenu(new SaveGameMenu(false, currentMenu));
         	}
         });
         }
         
         items.add(new ItemMenu("m7.quit") {
-        	public void run() {
+        	@Override
+			public void run() {
         		client.stop();
         	}
         });

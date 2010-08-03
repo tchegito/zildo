@@ -61,6 +61,7 @@ public class ConnectPacket extends Packet {
 		b.put(playerName);
 	}
 
+	@Override
 	protected void deserialize(EasyBuffering p_buffer) {
 		connect=p_buffer.readBoolean();
 		playerName=p_buffer.readString();

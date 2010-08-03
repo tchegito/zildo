@@ -107,6 +107,7 @@ public class TileSelection extends Selection {
 	 * Surcharge de la méthode toString afin de renvoyer une chaine contenant tous les 
 	 * items séparés par des virgules sans afficher les tiles non mappés qui ont été sélectionnés.
 	 */
+	@Override
 	public String toString(){
 		String s = null;
 		boolean first = true;

@@ -41,20 +41,23 @@ public class SinglePlayerMenu extends Menu {
 		previousMenu=p_previous;
 		
         ItemMenu itemNew=new ItemMenu("m6.new", BankSound.MenuSelectGame) {
-        	public void run() {
+        	@Override
+			public void run() {
                 new SinglePlayer(new Game(null, false)).launchGame();
         	}
         };
         
         ItemMenu itemLoad=new ItemMenu("m6.load", BankSound.MenuSelectGame) {
-        	public void run() {
+        	@Override
+			public void run() {
                 client.handleMenu(new SaveGameMenu(true, currentMenu));
 
         	}
         };
         
         ItemMenu itemBack=new ItemMenu("global.back") {
-        	public void run() {
+        	@Override
+			public void run() {
         		client.handleMenu(previousMenu);
         	}
         };

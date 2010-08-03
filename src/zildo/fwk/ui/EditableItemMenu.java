@@ -47,6 +47,7 @@ public abstract class EditableItemMenu extends ItemMenu {
 		}
 	}
 	
+	@Override
 	public String getText() {
 		return text.toString();
 	}

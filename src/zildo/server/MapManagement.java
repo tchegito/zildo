@@ -61,6 +61,7 @@ public class MapManagement {
 		mapScrollAngle=null;
 	}
 	
+	@Override
 	public void finalize()
 	{
 		this.deleteCurrentMap();

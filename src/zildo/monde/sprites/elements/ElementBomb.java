@@ -49,6 +49,7 @@ public class ElementBomb extends Element {
         EngineZildo.soundManagement.broadcastSound(BankSound.PlanteBombe, this);
 	}
 	
+	@Override
 	public void animate() {
 		counter--;
 		if (counter==0) {
@@ -61,7 +62,8 @@ public class ElementBomb extends Element {
 		super.animate();
 	}
 	
-    public Collision getCollision() {
+    @Override
+	public Collision getCollision() {
         return null;
     }
 

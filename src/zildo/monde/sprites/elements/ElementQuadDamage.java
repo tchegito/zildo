@@ -38,6 +38,7 @@ public class ElementQuadDamage extends ElementGoodies {
 		addShadow(ElementDescription.SHADOW_SMALL);
 	}
 	
+	@Override
 	public void animate() {
 		super.animate();
 		

@@ -274,7 +274,8 @@ public class NetClient extends NetSend {
         }
     }
     
-    public void close() {
+    @Override
+	public void close() {
     	// Send a disconnect packet
     	ConnectPacket connectPacket=new ConnectPacket(false, null);
     	sendPacket(connectPacket, server);

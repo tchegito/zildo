@@ -39,6 +39,7 @@ public class ElementGuardWeapon extends Element {
 		setNSpr(9);
 	}
 	
+	@Override
 	public void animate() {
 		SpriteEntity linked=getLinkedPerso();
 		if (linked == null || SpriteEntity.ENTITYTYPE_PERSO != linked.getEntityType()) {
@@ -80,6 +81,7 @@ public class ElementGuardWeapon extends Element {
 		super.animate();
 	}
 	
+	@Override
 	public Collision getCollision() {
 		SpriteModel spr=getSprModel();
 		Point sizeHorizontal=new Point(spr.getTaille_x(), spr.getTaille_y());
@@ -88,6 +90,7 @@ public class ElementGuardWeapon extends Element {
 		return new Collision(new Point(x,y), sizeHorizontal, (Perso) getLinkedPerso(), DamageType.BLUNT, this);
 	}
 	
+	@Override
 	public boolean isSolid() {
 		return true;
 	}

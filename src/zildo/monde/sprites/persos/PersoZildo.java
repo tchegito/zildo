@@ -155,10 +155,12 @@ public class PersoZildo extends Perso {
 
     }
 	
+	@Override
 	public boolean isZildo() {
 		return true;
 	}
 	
+	@Override
 	public void initPersoFX() {
 	
 	}
@@ -170,6 +172,7 @@ public class PersoZildo extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// attack
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public void attack() {
 		switch (weapon.kind) {
 		case SWORD:
@@ -207,6 +210,7 @@ public class PersoZildo extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// -create collision zone for Zildo
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public void manageCollision() {
 		if (getMouvement()==MouvementZildo.ATTAQUE_EPEE) {
 			// La collision avec l'épée de Zildo}
@@ -261,6 +265,7 @@ public class PersoZildo extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Invoked when Zildo got wounded by any enemy.
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public boolean beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 		// Project Zildo away from the enemy
 		float diffx=getX()-cx;
@@ -305,7 +310,8 @@ public class PersoZildo extends Perso {
     /**
      * Zildo is dead ! Send messages and respawn (in multiplayer deathmatch)
      */
-    public void die(boolean p_link, Perso p_shooter) {
+    @Override
+	public void die(boolean p_link, Perso p_shooter) {
         super.die(p_link, p_shooter);
         if (EngineZildo.game.multiPlayer) {
         	EngineZildo.multiplayerManagement.kill(this, p_shooter);
@@ -319,6 +325,7 @@ public class PersoZildo extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// stopBeingWounded
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public void stopBeingWounded()
 	{
 		setMouvement(MouvementZildo.VIDE);
@@ -333,6 +340,7 @@ public class PersoZildo extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Manage all things related to Zildo display : shield, shadow, feets, and object taken.
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public void animate(int compteur_animation)
 	{
 		// If zildo's dead, don't display him
@@ -592,6 +600,7 @@ public class PersoZildo extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Manage character's graphic side, depending on the position in the animated sequence.
 	///////////////////////////////////////////////////////////////////////////////////////
+	@Override
 	public void finaliseComportement(int compteur_animation) {
 		
 		final int[] seq_zildoBow={0,1,2,1};
@@ -698,6 +707,7 @@ public class PersoZildo extends Perso {
 	 * Object can be already on the map (hen), or we can spawn it there (bushes, jar).
 	 * @param obj
 	 */
+	@Override
 	public void takeSomething(int objX, int objY, int obj, Element object) {
 		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRamasse, this);
 

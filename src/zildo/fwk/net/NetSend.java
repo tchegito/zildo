@@ -160,6 +160,7 @@ public class NetSend extends TransferObject {
 		sendBuffer(b, p_target);
 	}
 	
+	@Override
 	public void close() {
 		super.close();
 		if (objectForBroadCast != null) {

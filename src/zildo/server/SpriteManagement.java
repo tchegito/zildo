@@ -73,6 +73,7 @@ public class SpriteManagement extends SpriteStore {
         backupEntities=new HashMap<Integer, SpriteEntity>();
     }
 	
+	@Override
 	public void finalize()
 	{
 		// When whe got here, everything is deleted in 'spriteEntities' but Zildo.
@@ -309,6 +310,7 @@ public class SpriteManagement extends SpriteStore {
 		return entity;
 	}
 	
+	@Override
 	protected void addSpriteEntities(SpriteEntity p_entity) {
 		if (!spriteUpdating) {
 			spriteEntities.add(p_entity);

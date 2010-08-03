@@ -52,13 +52,13 @@ public class OptionHelper {
 			racine = document.getDocumentElement();
 
 			// Mantenant qu'on a la racine, on récupère les infos
-			if (racine.getChildNodes() != null || racine.getChildNodes().getLength() != 0) {
-				for (Options item : Options.values()) {
-					Node node = racine.getElementsByTagName(item.getValue()).item(0).getFirstChild();
+			if(racine.getChildNodes() != null || racine.getChildNodes().getLength()!=0){
+				for(Options item : Options.values()){
+					Node node=racine.getElementsByTagName(item.getValue()).item(0).getFirstChild();
+					
 					if (node != null) {
 						map.put(item.getValue(), node.getTextContent());
-					}
-				}
+					}				}
 			}
 
 			return map;
@@ -69,7 +69,8 @@ public class OptionHelper {
 	}
 
 	/**
-	 * Méthode statique de sauvegarde des paramétrages (appelée dans la fenêtre d'options)
+	 * Méthode statique de sauvegarde des paramétrages (appelée dans la fenêtre
+	 * d'options)
 	 * @param p_params
 	 * @author Drakulo
 	 */
@@ -85,7 +86,7 @@ public class OptionHelper {
 			document.appendChild(racine);
 
 			// On crée maintenant chacun des éléments de paramétrage
-			for (Options name : Options.values()) {
+			for(Options name : Options.values()){
 				Element modele = (Element) document.createElement(name.getValue());
 				String item = (p_params.get(name.getValue()) != null) ? p_params.get(name.getValue()) : "";
 				modele.appendChild(document.createTextNode(item));
@@ -136,20 +137,20 @@ public class OptionHelper {
 	 */
 	public static String loadOption(String p_option) {
 		Map<String, String> map = load();
-		if (map != null && !map.isEmpty()) {
+		if(map != null && !map.isEmpty()){
 			return map.get(p_option);
-		} else {
+		}else{
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Méthode de sauvegarde unitaire d'une option
 	 * @param p_option : Entrée de l'énumétation Options à modifier
 	 * @param p_value : Valeur à sauvegarder
 	 * @author Drakulo
 	 */
-	public static void saveOption(String p_option, String p_value) {
+	public static void saveOption(String p_option, String p_value){
 		Map<String, String> map = load();
 		map.put(p_option, p_value);
 		save(map);

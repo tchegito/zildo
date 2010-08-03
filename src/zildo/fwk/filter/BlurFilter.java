@@ -105,6 +105,7 @@ public class BlurFilter extends ZoomFilter {
 	/**
 	 * Re-initialize z coordinate
 	 */
+	@Override
 	public void doOnInactive() {
 		ClientEngineZildo.openGLGestion.setZ(0);
    		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);

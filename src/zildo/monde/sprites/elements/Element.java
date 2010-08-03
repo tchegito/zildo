@@ -139,6 +139,7 @@ public class Element extends SpriteEntity {
 	}
 
 
+	@Override
 	public void finalize()
 	{
 		logger.log(Level.INFO, "Deleting Element");
@@ -484,6 +485,7 @@ public class Element extends SpriteEntity {
 	/**
 	 * Appelée lorsque l'objet tombe au sol.
 	 */
+	@Override
 	public void fall() {
 		if (nBank == SpriteBank.BANK_ELEMENTS) {
 			ElementDescription desc=ElementDescription.fromInt(nSpr);
@@ -626,6 +628,7 @@ public class Element extends SpriteEntity {
         EngineZildo.spriteManagement.spawnSprite(shadow);		
 	}
 	
+	@Override
 	public String toString() {
 		String s=x+", "+y;
 		if (nBank == SpriteBank.BANK_ELEMENTS) {

@@ -47,6 +47,7 @@ public class AcceptPacket extends Packet {
 		b.put(zildoId);
 	}
 	
+	@Override
 	protected void deserialize(EasyBuffering p_buffer) {
 		zildoId=p_buffer.readInt();
 	}

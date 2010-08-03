@@ -58,6 +58,7 @@ public class GetPacket extends Packet {
         b.put(buffer);
     }
 	
+	@Override
 	protected void deserialize(EasyBuffering p_buffer) {
 		resourceType=ResourceType.fromString(p_buffer.readString());
 		length=p_buffer.readInt();
