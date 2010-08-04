@@ -36,7 +36,7 @@ import zildo.server.MapManagement;
  * Interface class between ZEditor and Zildo platform.
  * 
  * @author tchegito
- *
+ * 
  */
 public class ZildoCanvas extends AWTOpenGLCanvas {
 
@@ -44,25 +44,26 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-public ZildoCanvas(ZildoScrollablePanel p_panel, String p_mapname) throws LWJGLException {
+
+	public ZildoCanvas(ZildoScrollablePanel p_panel, String p_mapname)
+			throws LWJGLException {
 		super();
 		panel = p_panel;
-        ZildoRenderer renderer = new ZildoRenderer(p_mapname);
-        setRenderer(renderer);
-    }
-	
-	public void moveCamera(int p_cameraX, int p_cameraY) {
-		
+		ZildoRenderer renderer = new ZildoRenderer(p_mapname);
+		setRenderer(renderer);
 	}
-	
-    public void changeTile(int p_x, int p_y, Case c) {
-        MapManagement map = EngineZildo.mapManagement;
-        Area area = map.getCurrentMap();
-        area.set_mapcase(p_x, p_y, c);
-    }
-    
-    	public void applyBrush(Point p) {
+
+	public void moveCamera(int p_cameraX, int p_cameraY) {
+
+	}
+
+	public void changeTile(int p_x, int p_y, Case c) {
+		MapManagement map = EngineZildo.mapManagement;
+		Area area = map.getCurrentMap();
+		area.set_mapcase(p_x, p_y, c);
+	}
+
+	public void applyBrush(Point p) {
 		// Get brush
 		TileSelection sel = MasterFrameManager.getTileSelection();
 		if (sel != null) {
@@ -84,22 +85,29 @@ public ZildoCanvas(ZildoScrollablePanel p_panel, String p_mapname) throws LWJGLE
 			}
 		}
 	}
-	
-    public void saveMapFile(String p_mapName) {
-        MapManagement map = EngineZildo.mapManagement;
-    	map.saveMapFile(p_mapName);
-    }
-    
-    public void loadMap(String p_mapName) {
-        MapManagement map = EngineZildo.mapManagement;
-    	map.charge_map(p_mapName);
-    	changeMap=true;
+
+	public void saveMapFile(String p_mapName) {
+		MapManagement map = EngineZildo.mapManagement;
+		String fileName = p_mapName;
+		if (p_mapName == null) {
+			fileName = map.getCurrentMap().getName();
+		}
+		map.saveMapFile(fileName + ".MAP");
+	}
+
+	public void loadMap(String p_mapName) {
+		MapManagement map = EngineZildo.mapManagement;
+		map.charge_map(p_mapName);
+		changeMap = true;
 	}
 
 	/**
 	 * Set cursor size
-	 * @param x number of horizontal tiles
-	 * @param y number of vertical tiles
+	 * 
+	 * @param x
+	 *            number of horizontal tiles
+	 * @param y
+	 *            number of vertical tiles
 	 */
 	public void setCursorSize(int x, int y) {
 		cursorSize = new Point(x * 16, y * 16);
