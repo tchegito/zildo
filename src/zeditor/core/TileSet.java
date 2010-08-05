@@ -23,6 +23,7 @@ import zeditor.helpers.OptionHelper;
 import zeditor.tools.CorrespondanceGifDec;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.ClientEngineZildo;
+import zildo.monde.map.Case;
 
 /**
  * Classe de gestion des Tuiles
@@ -409,7 +410,7 @@ public class TileSet extends JPanel {
 		int startX, startY, stopX, stopY, width, height;
 		width = 0;
 		height = 0;
-		List<Integer> list = new ArrayList<Integer>();
+		List<Case> list = new ArrayList<Case>();
 		
 		startX = startPoint.x;
 		startY = startPoint.y;
@@ -417,12 +418,17 @@ public class TileSet extends JPanel {
 		stopY = stopPoint.y;
 		//String buffer = "";
 		
+		Case c;
+		int bank=ClientEngineZildo.tileEngine.getBankFromName(tileName);
 		for(int i = startY; i <= stopY; i+=16){
 			//buffer = "|";
 			for(int j = startX; j <= stopX; j+= 16){
 				//buffer += bridge.getCorrespondance(tileName, j, i);
 				//buffer += "|";
-				list.add(bridge.getCorrespondance(tileName, j, i));
+			    	c=new Case();
+			    	c.setN_banque(bank);
+			    	c.setN_motif(bridge.getCorrespondance(tileName, j, i));
+				list.add(c);
 				// On ne compte la largeur que pour la première ligne
 				if(height == 0){
 					width ++;
@@ -431,8 +437,7 @@ public class TileSet extends JPanel {
 			//System.out.println(buffer);
 			height ++;
 		}
-		int bank=ClientEngineZildo.tileEngine.getBankFromName(tileName);
-		currentSelection = new TileSelection(bank, width, height, list);
+		currentSelection = new TileSelection(width, height, list);
 		MasterFrameManager.getZildoCanvas().setCursorSize(width, height);
 	}
 	
