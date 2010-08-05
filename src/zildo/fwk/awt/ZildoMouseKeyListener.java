@@ -29,7 +29,11 @@ import java.awt.event.MouseMotionListener;
 
 import zeditor.windows.managers.MasterFrameManager;
 
-public class ZildoMouseKeyListener implements MouseListener, MouseMotionListener, KeyListener {
+public class ZildoMouseKeyListener
+		implements
+			MouseListener,
+			MouseMotionListener,
+			KeyListener {
 
 	ZildoScrollablePanel panel;
 
@@ -39,7 +43,6 @@ public class ZildoMouseKeyListener implements MouseListener, MouseMotionListener
 
 	// Drop selected tile on map
 	public void mouseClicked(MouseEvent mouseevent) {
-
 	}
 
 	public void mouseEntered(MouseEvent mouseevent) {
@@ -55,8 +58,16 @@ public class ZildoMouseKeyListener implements MouseListener, MouseMotionListener
 
 		// Get position
 		Point p = getPosition(mouseevent);
-		// And apply the brush on it (=selected tiles)
-		panel.getZildoCanvas().applyBrush(p);
+		int but = mouseevent.getModifiers();
+		switch (but) {
+			case 16 : // Left click
+				// And apply the brush on it (=selected tiles)
+				panel.getZildoCanvas().applyBrush(p);
+				break;
+			case 4 : // Right click
+			    	panel.getZildoCanvas().clearWithBrush(p);
+				break;
+		}
 	}
 
 	public void mouseReleased(MouseEvent mouseevent) {
@@ -74,6 +85,7 @@ public class ZildoMouseKeyListener implements MouseListener, MouseMotionListener
 
 	/**
 	 * Get pixel-scaled position
+	 * 
 	 * @param event
 	 * @return Point
 	 */
@@ -88,6 +100,7 @@ public class ZildoMouseKeyListener implements MouseListener, MouseMotionListener
 
 	/**
 	 * Get pixel-scaled position in window coordinates
+	 * 
 	 * @param event
 	 * @return
 	 */
@@ -110,7 +123,8 @@ public class ZildoMouseKeyListener implements MouseListener, MouseMotionListener
 		}
 		message.append("Y: ");
 		message.append(p.y / 16);
-		MasterFrameManager.display(message.toString(), MasterFrameManager.MESSAGE_INFO);
+		MasterFrameManager.display(message.toString(),
+				MasterFrameManager.MESSAGE_INFO);
 
 		// Store the cursor location
 		p = getInsidePosition(mouseevent);
@@ -120,16 +134,16 @@ public class ZildoMouseKeyListener implements MouseListener, MouseMotionListener
 	public void keyPressed(KeyEvent p_keyevent) {
 		int code = p_keyevent.getKeyCode();
 		switch (code) {
-			case 37: // left
+			case 37 : // left
 				panel.zildoCanvas.left = true;
 				break;
-			case 39: // right
+			case 39 : // right
 				panel.zildoCanvas.right = true;
 				break;
-			case 38: // up
+			case 38 : // up
 				panel.zildoCanvas.up = true;
 				break;
-			case 40: // down
+			case 40 : // down
 				panel.zildoCanvas.down = true;
 				break;
 		}
@@ -138,16 +152,16 @@ public class ZildoMouseKeyListener implements MouseListener, MouseMotionListener
 	public void keyReleased(KeyEvent p_keyevent) {
 		int code = p_keyevent.getKeyCode();
 		switch (code) {
-			case 37: // left
+			case 37 : // left
 				panel.zildoCanvas.left = false;
 				break;
-			case 39: // right
+			case 39 : // right
 				panel.zildoCanvas.right = false;
 				break;
-			case 38: // up
+			case 38 : // up
 				panel.zildoCanvas.up = false;
 				break;
-			case 40: // down
+			case 40 : // down
 				panel.zildoCanvas.down = false;
 				break;
 		}
