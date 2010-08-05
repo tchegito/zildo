@@ -1,61 +1,73 @@
 package zeditor.core;
 
 import java.util.List;
+
+import zildo.monde.map.Case;
 /**
- * Cette classe représente une sélection dans Zeditor. Elle est abstraite et ne peut pas être utilisée comme telle.
- * Il faut utiliser l'une des classes filles suivantes :
+ * Cette classe représente une sélection dans Zeditor. Elle est abstraite et ne
+ * peut pas être utilisée comme telle. Il faut utiliser l'une des classes filles
+ * suivantes :
  * <p>
- * 	<ul>
- *  	<li>{@link TileSelection}</li>
- *  </ul>
+ * <ul>
+ * <li>{@link TileSelection}</li>
+ * </ul>
  * </p>
+ * 
  * @author Drakulo
- *
+ * 
  */
 public abstract class Selection {
 	/**
 	 * Liste des éléments de la sélection
 	 */
-	protected List<Integer> items;
+	protected List<Case> items;
 
 	/**
 	 * Constructeur vide
 	 */
-	public Selection(){}
+	public Selection() {
+	}
 
 	/**
 	 * Constructeur à partir d'une liste
-	 * @param l est la liste des éléments de la sélection
+	 * 
+	 * @param l
+	 *            est la liste des éléments de la sélection
 	 */
-	public Selection(List<Integer> l){
+	public Selection(List<Case> l) {
 		items = l;
 	}
 
 	/**
 	 * Getter de la liste d'éléments
+	 * 
 	 * @return La liste des items
 	 */
-	public List<Integer> getItems(){
+	public List<Case> getItems() {
 		return items;
 	}
 
 	/**
 	 * Setter de la liste d'éléments
-	 * @param l est la liste des éléments
+	 * 
+	 * @param l
+	 *            est la liste des éléments
 	 */
-	public void setItems(List<Integer> l){
+	public void setItems(List<Case> l) {
 		items = l;
 	}
 
 	/**
 	 * Récupère un élément de la sélection
-	 * @param Index est l'index de l'élément à récupérer dans la liste
+	 * 
+	 * @param Index
+	 *            est l'index de l'élément à récupérer dans la liste
 	 * @return la valeur de l'élément
 	 */
-	public Integer getItem(Integer index){
-		if(index > items.size()){
+	public Case getItem(Integer index) {
+		if (index > items.size()) {
 			return null;
-		}else{
+		} else {
 			return items.get(index);
 		}
 	}
