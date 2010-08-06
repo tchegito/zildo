@@ -27,6 +27,7 @@ import zeditor.core.Options;
 import zeditor.core.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.awt.ZildoScrollablePanel;
+import zildo.fwk.awt.ZildoCanvas.ZEditMode;
 
 
 /**
@@ -77,6 +78,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JPanel contentPanel;
 	private JToggleButton gridTool;
 	private JToggleButton unmappedTool;
+	private JToggleButton copyPasteTool;
 	private JToolBar toolBar;
 	private JPanel toolBarContainer;
 	private JPanel masterPanel;
@@ -91,7 +93,10 @@ public class MasterFrame extends javax.swing.JFrame {
 	private AbstractAction actionExit;
 	private AbstractAction actionSave;
 	private AbstractAction actionLoad;
-
+	private AbstractAction actionCopyPasteTool;
+	
+	private ZildoScrollablePanel zildoPanel;
+	
 	/**
 	* Auto-generated main method to display this JFrame
 	*/
@@ -129,7 +134,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			}
 						
 			// On ajoute la carte
-			ZildoScrollablePanel zildoPanel=new ZildoScrollablePanel("polaky");
+			zildoPanel=new ZildoScrollablePanel("polaky");
 	        getContentPane().add(zildoPanel, BorderLayout.EAST);
             
             // Recréation du manager avec les objets en paramètre
@@ -266,6 +271,17 @@ public class MasterFrame extends javax.swing.JFrame {
 		return actionGridTool;
 	}
 
+	private AbstractAction getActionCopyPasteTool() {
+	    if (actionCopyPasteTool == null) {
+		actionCopyPasteTool = new AbstractAction("", null) {
+		    public void actionPerformed(ActionEvent evt) {
+			zildoPanel.getZildoCanvas().setMode(ZEditMode.COPY);
+		    }
+		};
+	    }
+	    return actionCopyPasteTool;
+	}
+	
 	private AbstractAction getActionNew() {
 		if(actionNew == null) {
 			actionNew = new AbstractAction("Nouveau", null) {
@@ -329,6 +345,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			toolBar = new JToolBar();
 			toolBar.add(getUnmappedTool());
 			toolBar.add(getGridTool());
+			toolBar.add(getCopyPasteTool());
 		}
 		return toolBar;
 	}
@@ -350,6 +367,17 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return gridTool;
 	}
+	
+	public JToggleButton getCopyPasteTool() {
+		if(copyPasteTool == null) {
+		    copyPasteTool = new JToggleButton();
+		    copyPasteTool.setToolTipText("Copier une zone");
+		    copyPasteTool.setAction(getActionCopyPasteTool());
+		    copyPasteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/copy.png")));
+		}
+		return copyPasteTool;
+	}
+	
 	private JPanel getContentPanel() {
 		if(contentPanel == null) {
 			contentPanel = new JPanel();
@@ -391,7 +419,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return backgroundPanel;
 	}
-	private JComboBox getBackgroundCombo() {
+	public JComboBox getBackgroundCombo() {
 		if (backgroundCombo == null) {
 			ComboBoxModel backgroundComboModel = new DefaultComboBoxModel(getManager().loadTileForCombo());
 			backgroundCombo = new JComboBox();
@@ -410,7 +438,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return backgroundScroll;
 	}
-	private TileSet getTileSetPanel() {
+	public TileSet getTileSetPanel() {
 		if (tileSetPanel == null) {
 			tileSetPanel = new TileSet(getBackgroundCombo().getSelectedItem().toString());
 		}

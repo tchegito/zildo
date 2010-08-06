@@ -164,6 +164,11 @@ public class TileSet extends JPanel {
 		// On renomme le tile
 		tileName = p_name;
 
+		if (tileName.indexOf("*") != -1) {
+		    tile=null;
+		    repaint();
+		    return;
+		}
 		// On supprime les points de sélection précédents
 		startPoint = null;
 		stopPoint = null;
@@ -240,6 +245,7 @@ public class TileSet extends JPanel {
 			throw new TileSetException(
 			"Le dossier paramétré ne contient aucun tileSet");
 		}
+		list.add("*block*");
 		return list.toArray();
 	}
 
@@ -439,6 +445,12 @@ public class TileSet extends JPanel {
 		}
 		currentSelection = new TileSelection(width, height, list);
 		MasterFrameManager.getZildoCanvas().setCursorSize(width, height);
+	}
+	
+	public void buildSelection(int width, int height, List<Case> p_cases) {
+	    	
+		currentSelection = new TileSelection(width, height, p_cases);
+		MasterFrameManager.getZildoCanvas().setCursorSize(width, height); 
 	}
 	
 	/**

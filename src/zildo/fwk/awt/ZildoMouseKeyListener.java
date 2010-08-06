@@ -28,6 +28,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import zeditor.windows.managers.MasterFrameManager;
+import zildo.fwk.awt.ZildoCanvas.ZEditMode;
 
 public class ZildoMouseKeyListener
 		implements
@@ -36,9 +37,11 @@ public class ZildoMouseKeyListener
 			KeyListener {
 
 	ZildoScrollablePanel panel;
-
+	ZildoCanvas canvas;
+	
 	public ZildoMouseKeyListener(ZildoScrollablePanel p_panel) {
 		panel = p_panel;
+		canvas=panel.getZildoCanvas();
 	}
 
 	// Drop selected tile on map
@@ -61,26 +64,41 @@ public class ZildoMouseKeyListener
 		int but = mouseevent.getModifiers();
 		switch (but) {
 			case 16 : // Left click
-				// And apply the brush on it (=selected tiles)
-				panel.getZildoCanvas().applyBrush(p);
+			    	if (canvas.getMode() == ZEditMode.NORMAL) {	// Copy
+			    	    // And apply the brush on it (=selected tiles)
+			    	    canvas.applyBrush(p);
+			    	}
 				break;
 			case 4 : // Right click
-			    	panel.getZildoCanvas().clearWithBrush(p);
+			    	canvas.clearWithBrush(p);
 				break;
 		}
 	}
 
 	public void mouseReleased(MouseEvent mouseevent) {
-		// TODO Auto-generated method stub
-
+	    if (canvas.getMode() == ZEditMode.COPY_DRAG) {
+		canvas.endCopy();
+	    }
 	}
 
 	public void mouseDragged(MouseEvent mouseevent) {
 		mousePressed(mouseevent);
-
-		// Store the cursor location
-		Point p = getInsidePosition(mouseevent);
-		panel.getZildoCanvas().cursorLocation = p;
+		Point p;
+		
+	    	switch (canvas.getMode()) {
+	    	case COPY:
+		    p = getPosition(mouseevent);
+	    	    canvas.startCopy(p);
+	    	    break;
+	    	case NORMAL:
+		    // Store the cursor location
+		    p = getInsidePosition(mouseevent);
+		    canvas.cursorLocation = p;
+		    break;
+	    	case COPY_DRAG:
+	    	    mouseMoved(mouseevent);
+	    	    break;
+		}
 	}
 
 	/**
@@ -128,24 +146,24 @@ public class ZildoMouseKeyListener
 
 		// Store the cursor location
 		p = getInsidePosition(mouseevent);
-		panel.getZildoCanvas().cursorLocation = p;
+		canvas.cursorLocation = p;
 	}
 
 	public void keyPressed(KeyEvent p_keyevent) {
 		int code = p_keyevent.getKeyCode();
 		switch (code) {
 			case 37 : // left
-				panel.zildoCanvas.left = true;
-				break;
+			    canvas.left = true;
+			    break;
 			case 39 : // right
-				panel.zildoCanvas.right = true;
-				break;
+			    canvas.right = true;
+			    break;
 			case 38 : // up
-				panel.zildoCanvas.up = true;
-				break;
+			    canvas.up = true;
+			    break;
 			case 40 : // down
-				panel.zildoCanvas.down = true;
-				break;
+			    canvas.down = true;
+			    break;
 		}
 	}
 
@@ -153,17 +171,17 @@ public class ZildoMouseKeyListener
 		int code = p_keyevent.getKeyCode();
 		switch (code) {
 			case 37 : // left
-				panel.zildoCanvas.left = false;
-				break;
+			    canvas.left = false;
+			    break;
 			case 39 : // right
-				panel.zildoCanvas.right = false;
-				break;
+			    canvas.right = false;
+			    break;
 			case 38 : // up
-				panel.zildoCanvas.up = false;
-				break;
+			    canvas.up = false;
+			    break;
 			case 40 : // down
-				panel.zildoCanvas.down = false;
-				break;
+			    canvas.down = false;
+			    break;
 		}
 	}
 
