@@ -17,6 +17,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.IRenderable;
+import zildo.fwk.awt.ZildoCanvas.ZEditMode;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.map.Area;
 import zildo.server.EngineZildo;
@@ -26,7 +27,7 @@ import zildo.server.EngineZildo;
  * @version 1.0, 28.12.2005
  */
 public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
-
+    	
 	/**
 	 * 
 	 */
@@ -40,7 +41,9 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 
 	protected Point cursorLocation;
 	protected Point cursorSize;
-
+	protected Point startBlock;	// For copy operation
+	protected ZEditMode mode = ZEditMode.NORMAL;
+	
 	// Booleans for directional key pressed
 	public boolean up;
 	public boolean down;
@@ -48,7 +51,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	public boolean right;
 
 	private final static Point defaultCursorSize = new Point(16, 16);
-
+	
 	// We have to communicate orders via boolean to this canvas
 	// because we can use OpenGL outside of the paint process
 	protected boolean changeMap = false;
@@ -139,12 +142,18 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			renderer.renderScene();
 			// Draw rectangle
 			if (cursorLocation != null) {
-				Point size = cursorSize;
-				if (cursorSize == null) {
-					size = defaultCursorSize;
-				}
-				ortho.boxv(cursorLocation.x, cursorLocation.y, size.x, size.y,
-						0, new Vector4f(1, 1, 1, 1));
+			    Point start = cursorLocation;
+			    Point size = cursorSize;
+			    if (cursorSize == null) {
+				size = defaultCursorSize;
+			    }
+			    if (mode == ZEditMode.COPY_DRAG) {
+				start=startBlock;
+				size=new Point(cursorLocation);
+				size.x-=startBlock.x;
+				size.y-=startBlock.y;
+			    }
+			    ortho.boxv(start.x, start.y, size.x, size.y, 0, new Vector4f(1, 1, 1, 1));
 			}
 
 			swapBuffers();
@@ -235,5 +244,19 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 
 	public void cleanUp() {
 
+	}
+
+	/**
+	 * @return the mode
+	 */
+	public ZEditMode getMode() {
+	    return mode;
+	}
+
+	/**
+	 * @param p_mode the mode to set
+	 */
+	public void setMode(ZEditMode p_mode) {
+	    mode = p_mode;
 	}
 }

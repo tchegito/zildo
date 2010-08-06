@@ -3,9 +3,9 @@ package zeditor.windows.managers;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.List;
 
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -17,8 +17,10 @@ import zeditor.core.TileSet;
 import zeditor.core.exceptions.ZeditorException;
 import zeditor.helpers.OptionHelper;
 import zeditor.windows.ExplorerFrame;
+import zeditor.windows.MasterFrame;
 import zeditor.windows.OptionsFrame;
 import zildo.fwk.awt.ZildoCanvas;
+import zildo.monde.map.Case;
 
 /**
  * Classe de management de la fenêtre principale de Zeditor (MasterFrame.class)
@@ -29,7 +31,7 @@ public class MasterFrameManager {
 	public static JLabel systemDisplay;
 	private static TileSet tileSet;
 	private JPanel masterPanel;
-	private JFrame masterFrame;
+	private static MasterFrame masterFrame;
 	private JComboBox backgroundCombo;
 
 	private static ZildoCanvas zildoCanvas;
@@ -56,7 +58,7 @@ public class MasterFrameManager {
 	 * @author Drakulo
 	 */
 	public MasterFrameManager(JLabel p_sys, TileSet p_tile, JPanel p_master,
-			JFrame p_frame, JComboBox p_backgroundCombo,
+			MasterFrame p_frame, JComboBox p_backgroundCombo,
 			ZildoCanvas p_zildoCanvas) {
 		systemDisplay = p_sys;
 		tileSet = p_tile;
@@ -361,5 +363,14 @@ public class MasterFrameManager {
 
 	public static ZildoCanvas getZildoCanvas() {
 		return zildoCanvas;
+	}
+	
+	/**
+	 * Stop copy mode and switch to *block* tileset.
+	 */
+	public static void switchCopyTile(int p_width, int p_height, List<Case> p_cases) {
+	    masterFrame.getCopyPasteTool().setSelected(false);
+	    masterFrame.getBackgroundCombo().selectWithKeyChar('*');
+	    masterFrame.getTileSetPanel().buildSelection(p_width, p_height, p_cases);
 	}
 }

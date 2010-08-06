@@ -36,14 +36,18 @@ import zildo.server.MapManagement;
 
 /**
  * Interface class between ZEditor and Zildo platform.
- *
+ * 
  * @author tchegito
- *
+ * 
  */
 public class ZildoCanvas extends AWTOpenGLCanvas {
 
+	public enum ZEditMode {
+	    NORMAL, COPY, COPY_DRAG;
+	}
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -107,6 +111,38 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		drawBrush(p, emptySel);
 	}
 
+	/**
+	 * Start of the dragging zone
+	 * @param p
+	 */
+	public void startCopy(Point p) {
+	    startBlock=cursorLocation;
+	    mode=ZEditMode.COPY_DRAG;
+	}
+	
+	/**
+	 * End of the dragging zone : user has released the mouse button.<br/>
+	 * So we stop the COPY mode, and switch the *block* tile.
+	 */
+	public void endCopy() {
+	    mode=ZEditMode.NORMAL;
+	    // Save the desired block from the map
+	    Area map=EngineZildo.mapManagement.getCurrentMap();
+	    int i=startBlock.x / 16;
+	    int j=startBlock.y / 16;
+	    int w=cursorLocation.x / 16;
+	    int h=cursorLocation.y / 16;
+	    int width=w-i;
+	    int height=h-j;
+	    List<Case> cases=new ArrayList<Case>();
+	    for (;j<h;j++) {
+    	    	for (;i<w;i++) {
+    	    	    cases.add(map.get_mapcase(i, j + 4));
+    	    	}
+	    }
+	    MasterFrameManager.switchCopyTile(width, height, cases);
+	}
+	
 	public void saveMapFile(String p_mapName) {
 		MapManagement map = EngineZildo.mapManagement;
 		String fileName = p_mapName;
@@ -124,7 +160,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 
 	/**
 	 * Set cursor size
-	 *
+	 * 
 	 * @param x
 	 *            number of horizontal tiles
 	 * @param y
