@@ -120,6 +120,11 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    mode=ZEditMode.COPY_DRAG;
 	}
 	
+	public void switchCopyMode() {
+	    mode=ZEditMode.COPY;
+	    cursorSize=defaultCursorSize;
+	}
+	
 	/**
 	 * End of the dragging zone : user has released the mouse button.<br/>
 	 * So we stop the COPY mode, and switch the *block* tile.
@@ -135,9 +140,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    int width=w-i;
 	    int height=h-j;
 	    List<Case> cases=new ArrayList<Case>();
-	    for (;j<h;j++) {
-    	    	for (;i<w;i++) {
-    	    	    cases.add(map.get_mapcase(i, j + 4));
+	    for (int y=j;y<h;y++) {
+    	    	for (int x=i;x<w;x++) {
+    	    	    cases.add(map.get_mapcase(x, y + 4));
     	    	}
 	    }
 	    MasterFrameManager.switchCopyTile(width, height, cases);

@@ -50,7 +50,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	public boolean left;
 	public boolean right;
 
-	private final static Point defaultCursorSize = new Point(16, 16);
+	protected final static Point defaultCursorSize = new Point(16, 16);
 	
 	// We have to communicate orders via boolean to this canvas
 	// because we can use OpenGL outside of the paint process
