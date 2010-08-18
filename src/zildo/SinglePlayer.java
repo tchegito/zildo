@@ -33,6 +33,7 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
 import zildo.server.state.ClientState;
@@ -106,7 +107,12 @@ public class SinglePlayer {
         	state=server.getClientStates().iterator().next();
     		ClientEngineZildo.guiDisplay.displayMessage("server started");
         } else {
-        	zildoId = engineZildo.spawnClient();
+            	PersoZildo zildo = engineZildo.persoManagement.getZildo();
+            	if (zildo == null) {
+            	    zildoId = engineZildo.spawnClient();
+            	} else {
+            	    zildoId = zildo.getId();
+            	}
         	state = new ClientState(null, zildoId);
         }
         ClientEngineZildo.spriteDisplay.setZildoId(zildoId);
