@@ -34,4 +34,12 @@ public class Item {
 		this(p_kind);
 		level=p_level;
 	}
+	
+	public int hashCode() {
+	    return kind.ordinal() * 15 + level;
+	}
+	
+	public boolean equals(Object p_item) {
+	    return p_item.hashCode() == hashCode();
+	}
 }
