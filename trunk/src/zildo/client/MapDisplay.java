@@ -28,16 +28,20 @@ import zildo.monde.sprites.SpriteEntity;
 public class MapDisplay {
 
     private Point camera;		// Current camera locatino
-	private Point targetCamera;	// Target camera location (if not null, camera moves smoothly to it)
-	private SpriteEntity focused;
+    private Point targetCamera;	// Target camera location (if not null, camera moves smoothly to it)
+    private SpriteEntity focused;
 	
-	private Angle scrollingAngle;
-	private boolean capturing;	// TRUE=we capture screen (for scrolling map)
+    private Angle scrollingAngle;
+    private boolean capturing;	// TRUE=we capture screen (for scrolling map)
 	
     private Area currentMap;
 	   
-	private int compteur_animation;			// clone from mapManagement (for now)
+    private int compteur_animation;			// clone from mapManagement (for now)
 	
+    // ZEditor specific
+    boolean displayBackground=true;
+    boolean displayForeground=true;
+    
     public MapDisplay(Area p_map) {
     	currentMap=p_map;
     	
@@ -131,26 +135,26 @@ public class MapDisplay {
 	 * @param p_angle 
 	 */
 	public void shiftForMapScroll(Angle p_angle) {
-    	Point camera=getCamera();
-    	Point movedCamera;
+    	Point cam=getCamera();
+    	Point movedCam;
     	switch (p_angle) {
     	case NORD:
-    		movedCamera=camera.translate(0, 240);
+    		movedCam=cam.translate(0, 240);
     		break;
     	case EST:
-    		movedCamera=camera.translate(-320, 0);
+    		movedCam=cam.translate(-320, 0);
     		break;
     	case SUD:
-    		movedCamera=camera.translate(0, -240);
+    		movedCam=cam.translate(0, -240);
     		break;
     	case OUEST:
-    		movedCamera=camera.translate(320, 0);
+    		movedCam=cam.translate(320, 0);
     		break;
     	default:
     		throw new RuntimeException("Can't scroll to "+p_angle+" !");
     	}
-    	setCamera(movedCamera);
-        setTargetCamera(camera);
+    	setCamera(movedCam);
+        setTargetCamera(cam);
         scrollingAngle=p_angle;
 	}
 
@@ -168,5 +172,36 @@ public class MapDisplay {
 
 	public void setFocusedEntity(SpriteEntity p_entity) {
 		focused=p_entity;
+	}
+	
+	public void setDisplaySpecific(boolean p_back, boolean p_fore) {
+	    displayBackground=p_back;
+	    displayForeground=p_fore;
+	}
+
+	/**
+	 * Invert the specific display state.
+	 * @param p_foreOrBack TRUE=fore / FALSE=back
+	 */
+	public void toggleDisplaySpecific(boolean p_foreOrBack) {
+	    if (p_foreOrBack) {
+		displayForeground=!displayForeground;
+	    } else {
+		displayBackground=!displayBackground;
+	    }
+	}
+	
+	/**
+	 * @return the displayBackground
+	 */
+	public boolean isDisplayBackground() {
+	    return displayBackground;
+	}
+
+	/**
+	 * @return the displayForeground
+	 */
+	public boolean isDisplayForeground() {
+	    return displayForeground;
 	}
 }

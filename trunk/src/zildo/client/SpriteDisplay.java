@@ -43,8 +43,8 @@ import zildo.prefs.Constantes;
  *
  * This class acts as a layer between SpriteManagement and SpriteEngine.
  *
- * We should work only on SpriteEntity here, because SpriteManagament do all the calculating jobs, about speed, acceleration, and
- * here, we just have to display a sprite at a given location. So, it remains one task to do:
+ * We only work on SpriteEntity here, because SpriteManagament do all the calculating jobs, about speed, acceleration, and
+ * here, we just have to display a sprite at a given location.
  *
  * @author tchegito
  *
@@ -341,6 +341,6 @@ public class SpriteDisplay extends SpriteStore {
 		previousMapSprite.setNSpr(0);
 		previousMapSprite.setNBank(SpriteBank.BANK_COPYSCREEN);
 		previousMapSprite.setVisible(true);
-        spawnSprite(previousMapSprite);		
+		spawnSprite(previousMapSprite);		
 	}
 }
