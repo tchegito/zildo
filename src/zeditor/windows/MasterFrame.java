@@ -26,8 +26,8 @@ import javax.swing.WindowConstants;
 import zeditor.core.Options;
 import zeditor.core.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.awt.ZildoScrollablePanel;
-import zildo.fwk.awt.ZildoCanvas.ZEditMode;
 
 
 /**
@@ -44,7 +44,7 @@ import zildo.fwk.awt.ZildoCanvas.ZEditMode;
 */
 public class MasterFrame extends javax.swing.JFrame {
 
-	
+
 
 	private static final long serialVersionUID = 2489915553598220909L;
 	private JMenuBar menuBar;
@@ -79,6 +79,8 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JToggleButton gridTool;
 	private JToggleButton unmappedTool;
 	private JToggleButton copyPasteTool;
+	private JToggleButton backTileTool;
+	private JToggleButton foreTileTool;
 	private JToolBar toolBar;
 	private JPanel toolBarContainer;
 	private JPanel masterPanel;
@@ -94,9 +96,11 @@ public class MasterFrame extends javax.swing.JFrame {
 	private AbstractAction actionSave;
 	private AbstractAction actionLoad;
 	private AbstractAction actionCopyPasteTool;
-	
+	private AbstractAction actionDisplayBackTileTool;
+	private AbstractAction actionDisplayForeTileTool;
+
 	private ZildoScrollablePanel zildoPanel;
-	
+
 	/**
 	* Auto-generated main method to display this JFrame
 	*/
@@ -109,12 +113,12 @@ public class MasterFrame extends javax.swing.JFrame {
 			}
 		});
 	}
-	
+
 	public MasterFrame() {
 		super();
 		initGUI();
 	}
-	
+
 	private void initGUI() {
 		try {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -132,32 +136,32 @@ public class MasterFrame extends javax.swing.JFrame {
 				menuBar.add(getParametersMenu());
 				menuBar.add(getDebugMenu());
 			}
-						
+
 			// On ajoute la carte
 			zildoPanel=new ZildoScrollablePanel("polaky");
 	        getContentPane().add(zildoPanel, BorderLayout.EAST);
-            
+
             // Recréation du manager avec les objets en paramètre
 			manager = new MasterFrameManager(getSystemLabel(), getTileSetPanel(), getMasterPanel(), this, getBackgroundCombo(), zildoPanel.getZildoCanvas());
-            
+
 			// Initialisation de la fenêtre par le manager
 			manager.init();
-			
-			
+
+
 			pack();
 			Dimension d=zildoPanel.getSize();
 			this.setSize(640 + 350, d.height);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private AbstractAction getActionLoad() {
 		if(actionLoad == null) {
 			actionLoad = new AbstractAction("Ouvrir", null) {
 				private static final long serialVersionUID = -7397130907033546971L;
-				
+
 				public void actionPerformed(ActionEvent evt) {
 					manager.load();
 				}
@@ -165,12 +169,12 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return actionLoad;
 	}
-	
+
 	private AbstractAction getActionSave() {
 		if(actionSave == null) {
 			actionSave = new AbstractAction("Enregistrer", null) {
 				private static final long serialVersionUID = -4309279475377395081L;
-				
+
 				public void actionPerformed(ActionEvent evt) {
 					manager.save();
 				}
@@ -178,7 +182,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return actionSave;
 	}
-	
+
 	private AbstractAction getActionExit() {
 		if(actionExit == null) {
 			actionExit = new AbstractAction("Quitter", null) {
@@ -198,7 +202,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return manager;
 	}
-	
+
 	private AbstractAction getActionChangeTileSet() {
 		if(actionChangeTileSet == null) {
 			actionChangeTileSet = new AbstractAction("Changer le TileSet", null) {
@@ -275,13 +279,35 @@ public class MasterFrame extends javax.swing.JFrame {
 	    if (actionCopyPasteTool == null) {
 		actionCopyPasteTool = new AbstractAction("", null) {
 		    public void actionPerformed(ActionEvent evt) {
-			zildoPanel.getZildoCanvas().setMode(ZEditMode.COPY);
+			zildoPanel.getZildoCanvas().switchCopyMode();
 		    }
 		};
 	    }
 	    return actionCopyPasteTool;
 	}
-	
+
+	private AbstractAction getActionDisplayBackTileTool() {
+	    if (actionDisplayBackTileTool == null) {
+		actionDisplayBackTileTool = new AbstractAction("", null) {
+		    public void actionPerformed(ActionEvent evt) {
+			ClientEngineZildo.mapDisplay.toggleDisplaySpecific(false);
+		    }
+		};
+	    }
+	    return actionDisplayBackTileTool;
+	}
+
+	private AbstractAction getActionDisplayForeTileTool() {
+	    if (actionDisplayForeTileTool == null) {
+		actionDisplayForeTileTool = new AbstractAction("", null) {
+		    public void actionPerformed(ActionEvent evt) {
+			ClientEngineZildo.mapDisplay.toggleDisplaySpecific(true);
+		    }
+		};
+	    }
+	    return actionDisplayForeTileTool;
+	}
+
 	private AbstractAction getActionNew() {
 		if(actionNew == null) {
 			actionNew = new AbstractAction("Nouveau", null) {
@@ -299,7 +325,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		if(actionTEST == null) {
 			actionTEST = new AbstractAction("Afficher les tuiles sélectionnées", null) {
 				private static final long serialVersionUID = 3319456644340391488L;
-				
+
 				public void actionPerformed(ActionEvent evt) {
 					manager.displaySelectedTiles();
 				}
@@ -346,6 +372,9 @@ public class MasterFrame extends javax.swing.JFrame {
 			toolBar.add(getUnmappedTool());
 			toolBar.add(getGridTool());
 			toolBar.add(getCopyPasteTool());
+			toolBar.add(new JToolBar.Separator());
+			toolBar.add(getToggleBackDisplayTool());
+			toolBar.add(getToggleForeDisplayTool());
 		}
 		return toolBar;
 	}
@@ -367,7 +396,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return gridTool;
 	}
-	
+
 	public JToggleButton getCopyPasteTool() {
 		if(copyPasteTool == null) {
 		    copyPasteTool = new JToggleButton();
@@ -377,7 +406,27 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return copyPasteTool;
 	}
-	
+
+	public JToggleButton getToggleBackDisplayTool() {
+		if(backTileTool == null) {
+		    backTileTool = new JToggleButton();
+		    backTileTool.setToolTipText("Tiles d'arrière plan");
+		    backTileTool.setAction(getActionDisplayBackTileTool());
+		    backTileTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/backGround.png")));
+		}
+		return backTileTool;
+	}
+
+	public JToggleButton getToggleForeDisplayTool() {
+		if(foreTileTool == null) {
+		    foreTileTool = new JToggleButton();
+		    foreTileTool.setToolTipText("Tiles de premier plan plan");
+		    foreTileTool.setAction(getActionDisplayForeTileTool());
+		    foreTileTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGround.png")));
+		}
+		return foreTileTool;
+	}
+
 	private JPanel getContentPanel() {
 		if(contentPanel == null) {
 			contentPanel = new JPanel();

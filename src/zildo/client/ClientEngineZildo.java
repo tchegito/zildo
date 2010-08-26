@@ -166,14 +166,18 @@ public class ClientEngineZildo {
 		// // DISPLAY ////
 
 		// Display BACKGROUND tiles
-		tileEngine.tileRender(true);
-
+		if (mapDisplay.isDisplayBackground()) {
+		    tileEngine.tileRender(true);
+		}
+		
 		// Display BACKGROUND sprites
 		spriteEngine.spriteRender(true);
 
 		// Display FOREGROUND tiles
-		tileEngine.tileRender(false);
-
+		if (mapDisplay.isDisplayForeground()) {
+		    tileEngine.tileRender(false);
+		}
+		
 		// Display FOREGROUND sprites
 		spriteEngine.spriteRender(false);
 
