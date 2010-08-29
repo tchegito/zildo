@@ -1,6 +1,7 @@
 package zeditor.windows.managers;
 
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.List;
@@ -66,6 +67,14 @@ public class MasterFrameManager {
 		masterFrame = p_frame;
 		backgroundCombo = p_backgroundCombo;
 		zildoCanvas = p_zildoCanvas;
+		
+		//Make canvas get the focus whenever frame is activated.
+		masterFrame.addWindowFocusListener(new WindowAdapter() {
+		    public void windowGainedFocus(WindowEvent e) {
+		    	zildoCanvas.requestFocusInWindow();
+		    }
+		});
+
 	}
 
 	/**
