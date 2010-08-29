@@ -31,7 +31,7 @@ public class QuestElement extends AnyElement {
 	List<ActionElement> actions;
 	boolean both;	// TRUE=each trigger element must be done AT THE SAME TIME to launch the actions
 
-	public boolean done=false;	// TRUE when zildo has accomplished that
+	// 'done' is TRUE when zildo has accomplished that
 	
 	@Override
     @SuppressWarnings("unchecked")
