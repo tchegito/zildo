@@ -156,6 +156,10 @@ public class SoundPlay {
         playSoundFX(mus);
 	}
 	
+	public void playMusic(BankMusic p_mus) {
+		playSoundFX(p_mus);
+	}
+	
 	public void stopMusic() {
 		BankMusic mus=ambient.getCurrentMusic();
 		stopSoundFX(mus);
