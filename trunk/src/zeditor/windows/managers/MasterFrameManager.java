@@ -13,6 +13,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import zeditor.core.Options;
+import zeditor.core.Prefetch;
 import zeditor.core.TileSelection;
 import zeditor.core.TileSet;
 import zeditor.core.exceptions.ZeditorException;
@@ -21,7 +22,9 @@ import zeditor.windows.ExplorerFrame;
 import zeditor.windows.MasterFrame;
 import zeditor.windows.OptionsFrame;
 import zildo.fwk.awt.ZildoCanvas;
+import zildo.monde.map.Area;
 import zildo.monde.map.Case;
+import zildo.server.EngineZildo;
 
 /**
  * Classe de management de la fenêtre principale de Zeditor (MasterFrame.class)
@@ -75,6 +78,8 @@ public class MasterFrameManager {
 		    }
 		});
 
+		updateTitle();
+		
 	}
 
 	/**
@@ -126,8 +131,23 @@ public class MasterFrameManager {
 		zildoCanvas.loadMap(p_mapName);
 		display("Chargement effectué.", MESSAGE_INFO);
 		currentMapFile = p_mapName;
+		
+		updateTitle();
 	}
 
+	public void updateTitle() {
+		StringBuilder sb=new StringBuilder("ZEditor - ");
+		Area map=EngineZildo.mapManagement.getCurrentMap();
+		if (map != null) {
+			sb.append(map.getName());
+			sb.append(" - ");
+			sb.append(map.getDim_x()+" x "+map.getDim_y());
+		} else {
+			sb.append("Nouvelle carte");
+		}
+		masterFrame.setTitle(sb.toString());		
+	}
+	
 	/**
 	 * Crée une nouvelle carte
 	 * 
@@ -169,6 +189,10 @@ public class MasterFrameManager {
 		}
 	}
 
+	public Object[] getPrefetchForCombo() {
+		return Prefetch.getNames();
+	}
+	
 	/**
 	 * Affiche un message dans le label Système
 	 * 

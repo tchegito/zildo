@@ -11,6 +11,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -20,8 +21,11 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import zeditor.core.Options;
 import zeditor.core.TileSet;
@@ -72,7 +76,9 @@ public class MasterFrame extends javax.swing.JFrame {
 	private TileSet tileSetPanel;
 	private JScrollPane backgroundScroll;
 	private JComboBox backgroundCombo;
+	private JList prefetchCombo;
 	private JPanel backgroundPanel;
+	private JPanel prefetchPanel;
 	private JTabbedPane tabsPane;
 	private JPanel leftPanel;
 	private JPanel contentPanel;
@@ -453,6 +459,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		if (tabsPane == null) {
 			tabsPane = new JTabbedPane();
 			tabsPane.addTab("Décors", null, getBackgroundPanel(), null);
+			tabsPane.addTab("Prefetch", null, getPrefetchPanel(), null);
 			tabsPane.addTab("Sprites", null, getSpritePanel(), null);
 			tabsPane.addTab("Personnages", null, getCharactersPanel(), null);
 		}
@@ -467,6 +474,43 @@ public class MasterFrame extends javax.swing.JFrame {
 			backgroundPanel.add(getBackgroundScroll());
 		}
 		return backgroundPanel;
+	}
+	private JPanel getPrefetchPanel() {
+		if (prefetchPanel == null) {
+			prefetchPanel = new JPanel();
+			BoxLayout prefetchPanelLayout = new BoxLayout(prefetchPanel, javax.swing.BoxLayout.Y_AXIS);
+			prefetchPanel.setLayout(prefetchPanelLayout);
+			prefetchPanel.add(getPrefetchCombo());
+		}
+		return prefetchPanel;
+	}
+	public JList getPrefetchCombo() {
+		if (prefetchCombo == null) {
+			ComboBoxModel prefetchComboModel = new DefaultComboBoxModel(getManager().getPrefetchForCombo());
+			prefetchCombo = new JList();
+			prefetchCombo.setModel(prefetchComboModel);
+			prefetchCombo.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+			prefetchCombo.setLayoutOrientation(JList.VERTICAL);
+			prefetchCombo.setVisibleRowCount(-1);
+			prefetchCombo.setSize(500,300);
+			prefetchCombo.addListSelectionListener(new ListSelectionListener() {
+				
+				public void valueChanged(ListSelectionEvent e) {
+				    if (e.getValueIsAdjusting() == false) {
+	
+				        if (prefetchCombo.getSelectedIndex() == -1) {
+				        //No selection, disable fire button.
+				            //fireButton.setEnabled(false);
+	
+				        } else {
+				        //Selection, enable the fire button.
+				            //fireButton.setEnabled(true);
+				        }
+				    }
+				}
+			});
+		}
+		return prefetchCombo;
 	}
 	public JComboBox getBackgroundCombo() {
 		if (backgroundCombo == null) {
