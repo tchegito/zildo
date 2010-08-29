@@ -135,8 +135,8 @@ public class MapManagement {
 		System.out.println("Loading "+mapname);
 	
 		// If file name isn't complete, do it.
-		if (mapname.indexOf("/") ==-1 && mapname.indexOf("\\") == -1 && mapname.toUpperCase().indexOf(".MAP") == -1) {
-			mapname=mapname+=".MAP";
+		if (mapname.indexOf("/") ==-1 && mapname.indexOf("\\") == -1 && mapname.toLowerCase().indexOf(".map") == -1) {
+			mapname=mapname.toLowerCase()+".map";
 		}
 		
 		// Infos de base

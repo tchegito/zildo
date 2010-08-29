@@ -86,7 +86,9 @@ public class Client {
 		// Video
 		initializeDisplay();
 		// Audio
-		ClientEngineZildo.soundPlay.playMusic(BankMusic.Triste);
+		if (!awt) {
+			ClientEngineZildo.soundPlay.playMusic(BankMusic.Triste);
+		}
 	}
 
 	void initializeDisplay() {
