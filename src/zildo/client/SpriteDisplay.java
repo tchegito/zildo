@@ -69,6 +69,8 @@ public class SpriteDisplay extends SpriteStore {
 	
 	SpriteEntity previousMapSprite;
 	
+	public ForeBackController foreBackController=new ForeBackController();
+	    
 	public void setEntities(List<SpriteEntity> p_entities) {
 		//mapEntities.clear();
 		for (SpriteEntity entity : p_entities) {
@@ -165,9 +167,11 @@ public class SpriteDisplay extends SpriteStore {
 		// spriteEntities list order correspond to the creation order with spawn*** methods.
 		spriteEngine.startInitialization();
 		
+		boolean displayBackSprite=ClientEngineZildo.mapDisplay.foreBackController.isDisplayBackground();
+		
 		for (SpriteEntity entity : entities) {
 			// Manage sprite in the sort array
-			if (entity.isVisible()) {
+			if (entity.isVisible() && (entity.isForeground() || displayBackSprite)) {
 				// Add in the sort array
 				insertSpriteInSortArray(entity);
 				// Add in vertices buffer

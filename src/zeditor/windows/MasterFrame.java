@@ -87,6 +87,8 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JToggleButton copyPasteTool;
 	private JToggleButton backTileTool;
 	private JToggleButton foreTileTool;
+	private JToggleButton backSpriteTool;
+	private JToggleButton foreSpriteTool;
 	private JToolBar toolBar;
 	private JPanel toolBarContainer;
 	private JPanel masterPanel;
@@ -104,8 +106,11 @@ public class MasterFrame extends javax.swing.JFrame {
 	private AbstractAction actionCopyPasteTool;
 	private AbstractAction actionDisplayBackTileTool;
 	private AbstractAction actionDisplayForeTileTool;
-
+	private AbstractAction actionDisplayBackSpriteTool;
+	private AbstractAction actionDisplayForeSpriteTool;
+	
 	private ZildoScrollablePanel zildoPanel;
+
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -291,27 +296,49 @@ public class MasterFrame extends javax.swing.JFrame {
 	    }
 	    return actionCopyPasteTool;
 	}
-
+	
 	private AbstractAction getActionDisplayBackTileTool() {
 	    if (actionDisplayBackTileTool == null) {
 		actionDisplayBackTileTool = new AbstractAction("", null) {
 		    public void actionPerformed(ActionEvent evt) {
-			ClientEngineZildo.mapDisplay.toggleDisplaySpecific(false);
+			ClientEngineZildo.mapDisplay.foreBackController.toggleDisplaySpecific(false);
 		    }
 		};
 	    }
 	    return actionDisplayBackTileTool;
 	}
-
+	
 	private AbstractAction getActionDisplayForeTileTool() {
 	    if (actionDisplayForeTileTool == null) {
 		actionDisplayForeTileTool = new AbstractAction("", null) {
 		    public void actionPerformed(ActionEvent evt) {
-			ClientEngineZildo.mapDisplay.toggleDisplaySpecific(true);
+			ClientEngineZildo.mapDisplay.foreBackController.toggleDisplaySpecific(true);
 		    }
 		};
 	    }
 	    return actionDisplayForeTileTool;
+	}
+	
+	private AbstractAction getActionDisplayBackSpriteTool() {
+	    if (actionDisplayBackSpriteTool == null) {
+		actionDisplayBackSpriteTool = new AbstractAction("", null) {
+		    public void actionPerformed(ActionEvent evt) {
+			ClientEngineZildo.spriteDisplay.foreBackController.toggleDisplaySpecific(false);
+		    }
+		};
+	    }
+	    return actionDisplayBackSpriteTool;
+	}
+	
+	private AbstractAction getActionDisplayForeSpriteTool() {
+	    if (actionDisplayForeSpriteTool == null) {
+		actionDisplayForeSpriteTool = new AbstractAction("", null) {
+		    public void actionPerformed(ActionEvent evt) {
+			ClientEngineZildo.spriteDisplay.foreBackController.toggleDisplaySpecific(true);
+		    }
+		};
+	    }
+	    return actionDisplayForeSpriteTool;
 	}
 
 	private AbstractAction getActionNew() {
@@ -381,6 +408,9 @@ public class MasterFrame extends javax.swing.JFrame {
 			toolBar.add(new JToolBar.Separator());
 			toolBar.add(getToggleBackDisplayTool());
 			toolBar.add(getToggleForeDisplayTool());
+			toolBar.add(getToggleBackSpriteDisplayTool());
+			toolBar.add(getToggleForeSpriteDisplayTool());
+
 		}
 		return toolBar;
 	}
@@ -402,7 +432,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return gridTool;
 	}
-
+	
 	public JToggleButton getCopyPasteTool() {
 		if(copyPasteTool == null) {
 		    copyPasteTool = new JToggleButton();
@@ -412,7 +442,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return copyPasteTool;
 	}
-
+	
 	public JToggleButton getToggleBackDisplayTool() {
 		if(backTileTool == null) {
 		    backTileTool = new JToggleButton();
@@ -422,7 +452,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return backTileTool;
 	}
-
+	
 	public JToggleButton getToggleForeDisplayTool() {
 		if(foreTileTool == null) {
 		    foreTileTool = new JToggleButton();
@@ -431,6 +461,26 @@ public class MasterFrame extends javax.swing.JFrame {
 		    foreTileTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGround.png")));
 		}
 		return foreTileTool;
+	}
+	
+	public JToggleButton getToggleBackSpriteDisplayTool() {
+		if(backSpriteTool == null) {
+		    backSpriteTool = new JToggleButton();
+		    backSpriteTool.setToolTipText("Sprites d'arrière plan");
+		    backSpriteTool.setAction(getActionDisplayBackSpriteTool());
+		    backSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/backGroundSprite.png")));
+		}
+		return backSpriteTool;
+	}
+	
+	public JToggleButton getToggleForeSpriteDisplayTool() {
+		if(foreSpriteTool == null) {
+		    foreSpriteTool = new JToggleButton();
+		    foreSpriteTool.setToolTipText("Sprites de premier plan plan");
+		    foreSpriteTool.setAction(getActionDisplayForeSpriteTool());
+		    foreSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGroundSprite.png")));
+		}
+		return foreSpriteTool;
 	}
 
 	private JPanel getContentPanel() {
@@ -475,6 +525,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return backgroundPanel;
 	}
+
 	private JPanel getPrefetchPanel() {
 		if (prefetchPanel == null) {
 			prefetchPanel = new JPanel();
