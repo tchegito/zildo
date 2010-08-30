@@ -165,22 +165,28 @@ public class ClientEngineZildo {
 
 		// // DISPLAY ////
 
+		spriteEngine.initRendering();
+		
 		// Display BACKGROUND tiles
-		if (mapDisplay.isDisplayBackground()) {
+		if (mapDisplay.foreBackController.isDisplayBackground()) {
 		    tileEngine.tileRender(true);
 		}
-		
-		// Display BACKGROUND sprites
-		spriteEngine.spriteRender(true);
 
-		// Display FOREGROUND tiles
-		if (mapDisplay.isDisplayForeground()) {
-		    tileEngine.tileRender(false);
+		// Display BACKGROUND sprites
+		if (spriteDisplay.foreBackController.isDisplayBackground()) {
+		    spriteEngine.spriteRender(true);
 		}
 		
-		// Display FOREGROUND sprites
-		spriteEngine.spriteRender(false);
+		// Display FOREGROUND tiles
+		if (mapDisplay.foreBackController.isDisplayForeground()) {
+		    tileEngine.tileRender(false);
+		}
 
+		// Display FOREGROUND sprites
+		if (spriteDisplay.foreBackController.isDisplayForeground()) {
+		    spriteEngine.spriteRender(false);
+		}
+		
 		if (Zildo.infoDebug && !p_editor) {
 			this.debug();
 		}

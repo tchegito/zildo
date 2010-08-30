@@ -35,9 +35,11 @@ public class MapDisplay {
     private boolean capturing;	// TRUE=we capture screen (for scrolling map)
 	
     private Area currentMap;
-	   
+
     private int compteur_animation;			// clone from mapManagement (for now)
-	
+    
+    public ForeBackController foreBackController=new ForeBackController();
+
     // ZEditor specific
     boolean displayBackground=true;
     boolean displayForeground=true;
@@ -172,36 +174,5 @@ public class MapDisplay {
 
 	public void setFocusedEntity(SpriteEntity p_entity) {
 		focused=p_entity;
-	}
-	
-	public void setDisplaySpecific(boolean p_back, boolean p_fore) {
-	    displayBackground=p_back;
-	    displayForeground=p_fore;
-	}
-
-	/**
-	 * Invert the specific display state.
-	 * @param p_foreOrBack TRUE=fore / FALSE=back
-	 */
-	public void toggleDisplaySpecific(boolean p_foreOrBack) {
-	    if (p_foreOrBack) {
-		displayForeground=!displayForeground;
-	    } else {
-		displayBackground=!displayBackground;
-	    }
-	}
-	
-	/**
-	 * @return the displayBackground
-	 */
-	public boolean isDisplayBackground() {
-	    return displayBackground;
-	}
-
-	/**
-	 * @return the displayForeground
-	 */
-	public boolean isDisplayForeground() {
-	    return displayForeground;
 	}
 }

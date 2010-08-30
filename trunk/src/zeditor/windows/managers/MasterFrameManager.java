@@ -26,6 +26,7 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.server.EngineZildo;
 
+
 /**
  * Classe de management de la fenêtre principale de Zeditor (MasterFrame.class)
  * 
@@ -127,6 +128,7 @@ public class MasterFrameManager {
 	}
 
 	public void loadMap(String p_mapName) {
+
 		display("Ouverture du fichier : " + p_mapName, MESSAGE_INFO);
 		zildoCanvas.loadMap(p_mapName);
 		display("Chargement effectué.", MESSAGE_INFO);
@@ -134,6 +136,7 @@ public class MasterFrameManager {
 		
 		updateTitle();
 	}
+
 
 	public void updateTitle() {
 		StringBuilder sb=new StringBuilder("ZEditor - ");

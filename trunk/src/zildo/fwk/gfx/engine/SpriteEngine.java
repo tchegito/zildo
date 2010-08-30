@@ -301,6 +301,13 @@ public class SpriteEngine extends TextureEngine {
 		}
 	}
 	
+	public void initRendering() {
+		// Initialize mesh the first half-time for background
+		// Because foreground display will continue rendering just after it.
+		for (int i=0;i<Constantes.NB_SPRITEBANK;i++)
+			meshSprites[i].initRendering();
+	}
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// spriteRender
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -319,12 +326,6 @@ public class SpriteEngine extends TextureEngine {
 		// Respect order from bankOrder
 		boolean endSequence=false;
 		int posBankOrder=0;
-		if (backGround) {
-			// Initialize mesh the first half-time for background
-			// Because foreground display will continue rendering just after it.
-			for (int i=0;i<Constantes.NB_SPRITEBANK;i++)
-				meshSprites[i].initRendering();
-		}
 	
 		int phase=(backGround)?0:1;
 		while (!endSequence) {
