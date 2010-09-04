@@ -438,7 +438,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		    copyPasteTool = new JToggleButton();
 		    copyPasteTool.setToolTipText("Copier une zone");
 		    copyPasteTool.setAction(getActionCopyPasteTool());
-		    copyPasteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/copy.png")));
+		    copyPasteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/copy.PNG")));
 		}
 		return copyPasteTool;
 	}
@@ -448,7 +448,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		    backTileTool = new JToggleButton();
 		    backTileTool.setToolTipText("Tiles d'arrière plan");
 		    backTileTool.setAction(getActionDisplayBackTileTool());
-		    backTileTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/backGround.png")));
+		    backTileTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/backGround.PNG")));
 		}
 		return backTileTool;
 	}
@@ -458,7 +458,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		    foreTileTool = new JToggleButton();
 		    foreTileTool.setToolTipText("Tiles de premier plan plan");
 		    foreTileTool.setAction(getActionDisplayForeTileTool());
-		    foreTileTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGround.png")));
+		    foreTileTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGround.PNG")));
 		}
 		return foreTileTool;
 	}
@@ -468,7 +468,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		    backSpriteTool = new JToggleButton();
 		    backSpriteTool.setToolTipText("Sprites d'arrière plan");
 		    backSpriteTool.setAction(getActionDisplayBackSpriteTool());
-		    backSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/backGroundSprite.png")));
+		    backSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/backGroundSprite.PNG")));
 		}
 		return backSpriteTool;
 	}
@@ -478,7 +478,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		    foreSpriteTool = new JToggleButton();
 		    foreSpriteTool.setToolTipText("Sprites de premier plan plan");
 		    foreSpriteTool.setAction(getActionDisplayForeSpriteTool());
-		    foreSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGroundSprite.png")));
+		    foreSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGroundSprite.PNG")));
 		}
 		return foreSpriteTool;
 	}
