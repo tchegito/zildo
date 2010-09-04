@@ -47,8 +47,6 @@ public class Zildo {
 			LogManager.getLogManager().reset();
 		}
 		
-		//Constantes.DATA_PATH="C:\\ZildoDist\\Version 1.08\\Data\\";
-		
         final Client client=new Client(false);
 
         client.handleMenu(new StartMenu());
