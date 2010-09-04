@@ -378,4 +378,14 @@ public class TileEngine extends TextureEngine {
 		}
 		throw new RuntimeException("Bank "+p_name+" doesn't exist.");
 	}
+	
+	/**
+	 * Return the bank's name by index
+	 * @param nBank
+	 * @return String
+	 */
+	public String getBankNameFromInt(int nBank) {
+		String response=tileBankNames[nBank];
+		return response.substring(0, response.indexOf("."));
+	}
 }

@@ -144,14 +144,17 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			if (cursorLocation != null) {
 			    Point start = cursorLocation;
 			    Point size = cursorSize;
+			    Point camera = panel.getCameraTranslation();
 			    if (cursorSize == null) {
-				size = defaultCursorSize;
+					size = defaultCursorSize;
 			    }
 			    if (mode == ZEditMode.COPY_DRAG) {
-				start=startBlock;
-				size=new Point(cursorLocation);
-				size.x-=startBlock.x;
-				size.y-=startBlock.y;
+					start=new Point(startBlock);
+					start.translate(camera.x, camera.y);
+					size=new Point(cursorLocation);
+					size.x-=startBlock.x;
+					size.y-=startBlock.y;
+					size.translate(-camera.x, -camera.y);
 			    }
 			    ortho.boxv(start.x, start.y, size.x, size.y, 0, new Vector4f(1, 1, 1, 1));
 			}

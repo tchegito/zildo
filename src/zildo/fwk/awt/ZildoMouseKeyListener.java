@@ -77,7 +77,7 @@ public class ZildoMouseKeyListener
 
 	public void mouseReleased(MouseEvent mouseevent) {
 	    if (canvas.getMode() == ZEditMode.COPY_DRAG) {
-		canvas.endCopy();
+	    	canvas.endCopy();
 	    }
 	}
 
@@ -87,13 +87,13 @@ public class ZildoMouseKeyListener
 		
 	    	switch (canvas.getMode()) {
 	    	case COPY:
-		    p = getPosition(mouseevent);
+	    		p = getInsideCameraPosition(mouseevent);
 	    	    canvas.startCopy(p);
 	    	    break;
 	    	case NORMAL:
 		    // Store the cursor location
-		    p = getInsidePosition(mouseevent);
-		    canvas.cursorLocation = p;
+	    		p = getInsidePosition(mouseevent);
+	    		canvas.cursorLocation = p;
 		    break;
 	    	case COPY_DRAG:
 	    	    mouseMoved(mouseevent);
@@ -131,6 +131,14 @@ public class ZildoMouseKeyListener
 		return p;
 	}
 
+	private Point getInsideCameraPosition(MouseEvent event) {
+		Point p=getInsidePosition(event);
+		Point camera = panel.getPosition();
+		p.x+=16 * (camera.x / 16);
+		p.y+=16 * (camera.y / 16);
+		return p;
+	}
+	
 	public void mouseMoved(MouseEvent mouseevent) {
 		Point p = getPosition(mouseevent);
 		StringBuilder message = new StringBuilder();

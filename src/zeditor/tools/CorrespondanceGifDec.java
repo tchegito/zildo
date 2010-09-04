@@ -25,6 +25,7 @@ public class CorrespondanceGifDec {
 
 	public Banque doTheJob(Banque bank) {
 		Map<Point, Integer> mapCorrespondance = new HashMap<Point, Integer>();
+		Map<Integer, Point> mapCorrespondanceInverse = new HashMap<Integer, Point>();
 		List<Point> pkmChanges = bank.getPkmChanges();
 		Iterator<Point> it = pkmChanges.iterator();
 		Point current = null;
@@ -48,6 +49,7 @@ public class CorrespondanceGifDec {
 			}
 			// On range le point dans la map
 			mapCorrespondance.put(p, nTile);
+			mapCorrespondanceInverse.put(nTile, p);
 			nTile++;
 		}
 
@@ -63,10 +65,19 @@ public class CorrespondanceGifDec {
 			System.out.println("Nombre de tile:" + bank.getCoords().length);
 		}
 
-		bank.setMapCorrespondance(mapCorrespondance);
+		bank.setMapCorrespondance(mapCorrespondance, mapCorrespondanceInverse);
 		return bank;
 	}
 
+	private Banque getBanque(String bankName) {
+		Banque bank = banks.get(bankName.toUpperCase());
+		if (bank == null) {
+			throw new RuntimeException("La banque " + bankName
+					+ " n'existe pas !");
+		}
+		return bank;
+	}
+	
 	/**
 	 * Renvoie le numéro de la tile correspondant à la banque et à la position
 	 * passées en paramètre
@@ -77,13 +88,12 @@ public class CorrespondanceGifDec {
 	 * @param y
 	 * @return int (-1 si aucune tile trouvée à cet endroit)
 	 */
-	public int getCorrespondance(String bankName, int x, int y) {
-		Banque bank = banks.get(bankName.toUpperCase());
-		if (bank == null) {
-			throw new RuntimeException("La banque " + bankName
-					+ " n'existe pas !");
-		}
-		return bank.getNumTile(x, y);
+	public int getMotifParPoint(String bankName, int x, int y) {
+		return getBanque(bankName).getNumTile(x, y);
+	}
+	
+	public Point getPointParMotif(String bankName, int nMotif) {
+		return getBanque(bankName).getCoordsTile(nMotif);
 	}
 
 	public void init() {

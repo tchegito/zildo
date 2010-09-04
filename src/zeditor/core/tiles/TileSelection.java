@@ -1,7 +1,8 @@
-package zeditor.core;
+package zeditor.core.tiles;
 
 import java.util.List;
 
+import zeditor.core.Selection;
 import zildo.monde.map.Case;
 
 /**

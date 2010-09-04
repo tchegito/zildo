@@ -85,6 +85,12 @@ public class ZildoScrollablePanel extends JPanel {
 		return new java.awt.Point(x,y);
 	}
 
+	public java.awt.Point getCameraTranslation() {
+		java.awt.Point camera=getPosition();
+		camera.x=-16*(camera.x / 16);
+		camera.y=-16*(camera.y / 16);
+		return camera;
+	}
 	public ZildoCanvas getZildoCanvas() {
 		return zildoCanvas;
 	}

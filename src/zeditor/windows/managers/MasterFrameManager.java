@@ -14,9 +14,9 @@ import javax.swing.JToolBar;
 
 import zeditor.core.Options;
 import zeditor.core.Prefetch;
-import zeditor.core.TileSelection;
-import zeditor.core.TileSet;
 import zeditor.core.exceptions.ZeditorException;
+import zeditor.core.tiles.TileSelection;
+import zeditor.core.tiles.TileSet;
 import zeditor.helpers.OptionHelper;
 import zeditor.windows.ExplorerFrame;
 import zeditor.windows.MasterFrame;
@@ -51,7 +51,8 @@ public class MasterFrameManager {
 	 * 
 	 * @author Drakulo
 	 */
-	public MasterFrameManager() {
+	public MasterFrameManager(MasterFrame p_frame) {
+		masterFrame = p_frame;
 	}
 
 	/**
@@ -170,7 +171,7 @@ public class MasterFrameManager {
 	 */
 	public Object[] loadTileForCombo() {
 		try {
-			return TileSet.getTiles();
+			return masterFrame.getTileSetPanel().getTiles();
 		} catch (ZeditorException e) {
 			display(e.getMessage(), MESSAGE_ERROR);
 			return new Object[]{""};
@@ -185,7 +186,7 @@ public class MasterFrameManager {
 	 */
 	public void changeTileSet(String p_name) {
 		try {
-			tileSet.changeTile(p_name);
+			masterFrame.getTileSetPanel().changeTile(p_name);
 			display("TileSet '" + p_name + "' chargé.", MESSAGE_INFO);
 		} catch (ZeditorException e) {
 			display(e.getMessage(), MESSAGE_ERROR);
@@ -405,8 +406,10 @@ public class MasterFrameManager {
 	 * Stop copy mode and switch to *block* tileset.
 	 */
 	public static void switchCopyTile(int p_width, int p_height, List<Case> p_cases) {
-	    masterFrame.getCopyPasteTool().setSelected(false);
-	    masterFrame.getBackgroundCombo().selectWithKeyChar('*');
-	    masterFrame.getTileSetPanel().buildSelection(p_width, p_height, p_cases);
+		if (p_width > 0 && p_height >0) {
+		    masterFrame.getCopyPasteTool().setSelected(false);
+		    masterFrame.getBackgroundCombo().selectWithKeyChar('*');
+		    masterFrame.getTileSetPanel().buildSelection(p_width, p_height, p_cases);
+		}
 	}
 }
