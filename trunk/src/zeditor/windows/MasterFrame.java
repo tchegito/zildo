@@ -301,7 +301,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	    if (actionDisplayBackTileTool == null) {
 			actionDisplayBackTileTool = new AbstractAction(null) {
 			    public void actionPerformed(ActionEvent evt) {
-				ClientEngineZildo.mapDisplay.toggleDisplaySpecific(false);
+				ClientEngineZildo.mapDisplay.foreBackController.toggleDisplaySpecific(false);
 			    }
 			};
 	    }
@@ -312,7 +312,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	    if (actionDisplayForeTileTool == null) {
 			actionDisplayForeTileTool = new AbstractAction(null) {
 			    public void actionPerformed(ActionEvent evt) {
-				ClientEngineZildo.mapDisplay.toggleDisplaySpecific(true);
+				ClientEngineZildo.mapDisplay.foreBackController.toggleDisplaySpecific(true);
 			    }
 			};
 	    }
