@@ -198,7 +198,7 @@ public class Foret1 extends Banque {
 				new Point(16, 16), new Point(80, 0) };
 
 		pkmChanges = Arrays.asList(new Point[] { new Point(109, 192),
-				new Point(140, -192), new Point(187, 192 + 160),
+				new Point(139, -192), new Point(187, 192 + 176),
 				new Point(209, -160) });
 	}
 }
