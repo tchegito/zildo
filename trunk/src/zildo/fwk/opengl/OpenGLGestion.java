@@ -138,7 +138,10 @@ public abstract class OpenGLGestion {
         ByteBuffer icon = ByteBuffer.allocate(16 * 16 * 4);
         icon.put(OpenGLZildo.icon);
         icon.flip();
-        Display.setIcon(new ByteBuffer[] { icon });
+        ByteBuffer bigIcon = ByteBuffer.allocate(32 * 32 * 4);
+        bigIcon.put(OpenGLZildo.bigIcon);
+        bigIcon.flip();
+        Display.setIcon(new ByteBuffer[] { icon, bigIcon });
     }
 
     private void initGL() {
