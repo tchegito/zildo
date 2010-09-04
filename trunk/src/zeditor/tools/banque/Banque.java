@@ -19,8 +19,9 @@ public abstract class Banque {
 	Point[] coords;
 	List<Point> pkmChanges;
 	// Données construites par {@link GenereCorrespondanceDec#doTheJob()}
-	Map<Point, Integer> mapCorrespondance;
-
+	Map<Point, Integer> motifParPoint;
+	Map<Integer, Point> pointParMotif;
+	
 	// Ensemble des points correspondant à la position haute-gauche de chaque
 	// tile
 	public Point[] getCoords() {
@@ -33,8 +34,9 @@ public abstract class Banque {
 		return pkmChanges;
 	}
 
-	public void setMapCorrespondance(Map<Point, Integer> map) {
-		mapCorrespondance = map;
+	public void setMapCorrespondance(Map<Point, Integer> map, Map<Integer, Point> map2) {
+		motifParPoint = map;
+		pointParMotif = map2;
 	}
 
 	/**
@@ -47,7 +49,11 @@ public abstract class Banque {
 	 */
 	public int getNumTile(int x, int y) {
 		Point p = new Point(x, y);
-		Integer i = mapCorrespondance.get(p);
+		Integer i = motifParPoint.get(p);
 		return i == null ? -1 : i.intValue();
+	}
+	
+	public Point getCoordsTile(int i) {
+		return pointParMotif.get(i);
 	}
 }

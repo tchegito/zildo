@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.lwjgl.LWJGLException;
 
-import zeditor.core.TileSelection;
+import zeditor.core.tiles.TileSelection;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.ZildoRenderer;
 import zildo.monde.map.Area;
@@ -116,7 +116,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 * @param p
 	 */
 	public void startCopy(Point p) {
-	    startBlock=cursorLocation;
+	    startBlock=p;
 	    mode=ZEditMode.COPY_DRAG;
 	}
 	
@@ -133,16 +133,18 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    mode=ZEditMode.NORMAL;
 	    // Save the desired block from the map
 	    Area map=EngineZildo.mapManagement.getCurrentMap();
-	    int i=startBlock.x / 16;
-	    int j=startBlock.y / 16;
-	    int w=cursorLocation.x / 16;
-	    int h=cursorLocation.y / 16;
+	    Point camera=panel.getCameraTranslation();
+	    Point cameraCorrection=panel.getPosition();
+	    int i=(startBlock.x+cameraCorrection.x % 16) / 16;
+	    int j=(startBlock.y+cameraCorrection.y % 16) / 16;
+	    int w=(cursorLocation.x - camera.x) / 16;
+	    int h=(cursorLocation.y - camera.y) / 16;
 	    int width=w-i;
 	    int height=h-j;
 	    List<Case> cases=new ArrayList<Case>();
 	    for (int y=j;y<h;y++) {
     	    	for (int x=i;x<w;x++) {
-    	    	    cases.add(map.get_mapcase(x, y + 4));
+    	    	    cases.add(map.get_mapcase(x, y + 4 ));
     	    	}
 	    }
 	    MasterFrameManager.switchCopyTile(width, height, cases);

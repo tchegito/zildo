@@ -28,7 +28,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import zeditor.core.Options;
-import zeditor.core.TileSet;
+import zeditor.core.tiles.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.awt.ZildoScrollablePanel;
@@ -46,11 +46,11 @@ import zildo.fwk.awt.ZildoScrollablePanel;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
+@SuppressWarnings("serial")
 public class MasterFrame extends javax.swing.JFrame {
 
 
 
-	private static final long serialVersionUID = 2489915553598220909L;
 	private JMenuBar menuBar;
 	private MasterFrameManager manager;
 	private JMenu charactersMenuItem;
@@ -73,7 +73,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JPanel rightPanel;
 	private JPanel charactersPanel;
 	private JPanel spritePanel;
-	private TileSet tileSetPanel;
+	public TileSet tileSetPanel;
 	private JScrollPane backgroundScroll;
 	private JComboBox backgroundCombo;
 	private JList prefetchCombo;
@@ -209,7 +209,7 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	public MasterFrameManager getManager() {
 		if(manager == null) {
-			manager = new MasterFrameManager();
+			manager = new MasterFrameManager(this);
 		}
 		return manager;
 	}
@@ -288,33 +288,33 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	private AbstractAction getActionCopyPasteTool() {
 	    if (actionCopyPasteTool == null) {
-		actionCopyPasteTool = new AbstractAction("", null) {
-		    public void actionPerformed(ActionEvent evt) {
-			zildoPanel.getZildoCanvas().switchCopyMode();
-		    }
-		};
+	    	actionCopyPasteTool = new AbstractAction(null) {
+			    public void actionPerformed(ActionEvent evt) {
+				zildoPanel.getZildoCanvas().switchCopyMode();
+			    }
+			};
 	    }
 	    return actionCopyPasteTool;
 	}
 	
 	private AbstractAction getActionDisplayBackTileTool() {
 	    if (actionDisplayBackTileTool == null) {
-		actionDisplayBackTileTool = new AbstractAction("", null) {
-		    public void actionPerformed(ActionEvent evt) {
-			ClientEngineZildo.mapDisplay.foreBackController.toggleDisplaySpecific(false);
-		    }
-		};
+			actionDisplayBackTileTool = new AbstractAction(null) {
+			    public void actionPerformed(ActionEvent evt) {
+				ClientEngineZildo.mapDisplay.toggleDisplaySpecific(false);
+			    }
+			};
 	    }
 	    return actionDisplayBackTileTool;
 	}
 	
 	private AbstractAction getActionDisplayForeTileTool() {
 	    if (actionDisplayForeTileTool == null) {
-		actionDisplayForeTileTool = new AbstractAction("", null) {
-		    public void actionPerformed(ActionEvent evt) {
-			ClientEngineZildo.mapDisplay.foreBackController.toggleDisplaySpecific(true);
-		    }
-		};
+			actionDisplayForeTileTool = new AbstractAction(null) {
+			    public void actionPerformed(ActionEvent evt) {
+				ClientEngineZildo.mapDisplay.toggleDisplaySpecific(true);
+			    }
+			};
 	    }
 	    return actionDisplayForeTileTool;
 	}
@@ -584,7 +584,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 	public TileSet getTileSetPanel() {
 		if (tileSetPanel == null) {
-			tileSetPanel = new TileSet(getBackgroundCombo().getSelectedItem().toString());
+			tileSetPanel = new TileSet("");
 		}
 		return tileSetPanel;
 	}

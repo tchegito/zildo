@@ -2,6 +2,7 @@ package zeditor.core;
 
 import java.util.List;
 
+import zeditor.core.tiles.TileSelection;
 import zildo.monde.map.Case;
 /**
  * Cette classe représente une sélection dans Zeditor. Elle est abstraite et ne
