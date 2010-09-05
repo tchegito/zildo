@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -193,6 +194,18 @@ public class TileSet extends JPanel {
         return path;
     }
     
+    class CallbackImageObserver implements ImageObserver {
+    	@Override
+    	public boolean imageUpdate(Image img, int infoflags, int x, int y,
+    			int width, int height) {
+    		tileHeight=height;
+    		tileWidth=width;
+    		return false;
+    	}
+    }
+    
+    ImageObserver imgObserver=new CallbackImageObserver();
+    
     /**
      * Méthode de changement du tile
      * @param p_url chemin de l'image du Tile à charger
@@ -216,8 +229,8 @@ public class TileSet extends JPanel {
         
         // Récupération de la taille de l'image
         
-        tileWidth = currentTile.getWidth(null);
-        tileHeight = currentTile.getHeight(null);
+        tileWidth = currentTile.getWidth(imgObserver);
+        tileHeight = currentTile.getHeight(imgObserver);
         // Si la hauteur n'est pas un multiple de 16, on tronque la taille au multiple inférieur
         if (tileHeight % 16 != 0){
             tileHeight -= tileHeight % 16;

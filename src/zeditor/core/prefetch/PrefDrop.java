@@ -32,6 +32,8 @@ public enum PrefDrop {
 
 	CollineGauche(new Point(2,4),new int[] {27,40, 37,41, 38,54, 39,54}), 
 	CollineDroite(new Point(2,4), new int[] {42, 35, 43, 44, 54, 45, 54, 46}), 
+	PetitChemin(new Point(2, 2), new int[] {8, 10, 14, 12}),	// Use by PrefTraceDrop
+	GrandChemin(new Point(3, 3), new int[] {8, 9, 10, 15, 24, 11, 14, 13, 12}), // Use by PrefTraceDrop
 	Arbre(new Point(4, 5), new int[] {-139, -140, -141, -142, -143, -144, -145, -146, 
 		-147, -148, -149, -150, 151, 152, 153, 154, 155, 156, 157, 158}),
 	Souche(new Point(2, 2), new int[] {159, 160, 161, 162}),
@@ -45,7 +47,7 @@ public enum PrefDrop {
 
 	
 	Point size;
-	int[] data;	// Negative values mean masked tiles (example: tree)
+	public int[] data;	// Negative values mean masked tiles (example: tree)
 	
 	private PrefDrop(Point p_size, int[] p_data) {
 		size=p_size;
