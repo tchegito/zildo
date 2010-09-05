@@ -21,6 +21,7 @@
 package zeditor.core.prefetch;
 
 import zeditor.core.prefetch.complex.DelegateDraw;
+import zeditor.core.prefetch.complex.Hill;
 import zeditor.core.prefetch.complex.Road;
 import zildo.monde.map.Point;
 
@@ -30,7 +31,7 @@ import zildo.monde.map.Point;
  */
 public enum PrefTraceDrop {
 
-	Colline(new Point(0, 0), null), 
+	Colline(new Point(0, 0), new Hill()), 
 	PetitChemin(new Point(2, 2), new Road(false)),
 	GrandChemin(new Point(3, 3), new Road(true));
 

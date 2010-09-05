@@ -74,6 +74,12 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		p_sel.draw(map, new zildo.monde.map.Point(p.x / 16, p.y / 16));
 	}
 
+	public void endBrush() {
+		Selection sel = MasterFrameManager.getSelection();
+		if (sel != null && sel instanceof TileSelection) {
+			((TileSelection)sel).finalizeDraw();
+		}
+	}
 	/**
 	 * Clear a region of the map sized by the selected brush
 	 * @param p

@@ -80,4 +80,13 @@ public class PrefetchSelection extends TileSelection {
 			super.draw(p_map, p_start);
 		}
 	}
+
+	@Override
+	public void finalizeDraw() {
+		switch (kind) {
+		case TraceDrop:
+			traceDrop.method.finalizeDraw();
+			break;
+		}
+	}
 }

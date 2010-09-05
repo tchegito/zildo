@@ -76,8 +76,13 @@ public class ZildoMouseKeyListener
 	}
 
 	public void mouseReleased(MouseEvent mouseevent) {
-	    if (canvas.getMode() == ZEditMode.COPY_DRAG) {
+		switch (canvas.getMode()) {
+		case NORMAL:
+			canvas.endBrush();
+			break;
+		case COPY_DRAG:
 	    	canvas.endCopy();
+	    	break;
 	    }
 	}
 
