@@ -60,12 +60,12 @@ public class TileSelection extends Selection {
     /**
      * Largeur de la sélection en nombre de cases
      */
-    protected Integer width;
+    public int width;
 
     /**
      * Hauteur de la sélection en nombre de cases
      */
-    protected Integer height;
+    public int height;
 
     /**
      * Constructeur vide
@@ -102,44 +102,6 @@ public class TileSelection extends Selection {
 	super();
 	width = w;
 	height = h;
-    }
-
-    /**
-     * Getter de la largeur de la sélection
-     * 
-     * @return la largeur de la sélection (en nombre de cases)
-     */
-    public Integer getWidth() {
-	return width;
-    }
-
-    /**
-     * Setter de la largeur de la séléction
-     * 
-     * @param width
-     *            est la nouvelle largeur à assigner (en nombre de cases)
-     */
-    public void setWidth(Integer width) {
-	this.width = width;
-    }
-
-    /**
-     * Getter de la hauteur de la sélection
-     * 
-     * @return la hauteur de la sélection (en nombre de cases)
-     */
-    public Integer getHeight() {
-	return height;
-    }
-
-    /**
-     * Setter de la hauteur de la séléction
-     * 
-     * @param height
-     *            est la nouvelle hauteur à assigner (en nombre de cases)
-     */
-    public void setHeight(Integer height) {
-	this.height = height;
     }
 
     /**
@@ -198,7 +160,5 @@ public class TileSelection extends Selection {
     }
     
 	
-	public void finalizeDraw() {
-		
-	}
+	public void finalizeDraw() {}
 }

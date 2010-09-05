@@ -32,7 +32,5 @@ public abstract class DelegateDraw {
 	
 	public abstract void draw(Area p_map, Point p_start);
 	
-	public void finalizeDraw() {
-		
-	}
+	public void finalizeDraw() {}
 }

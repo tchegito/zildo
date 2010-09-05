@@ -89,7 +89,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		Point size;
 		if (sel != null && sel instanceof TileSelection) {
 			TileSelection tileSel=(TileSelection) sel;
-			size = new Point(tileSel.getWidth(), tileSel.getHeight());
+			size = new Point(tileSel.width, tileSel.height);
 		} else {
 			size = new Point(1, 1);
 		}

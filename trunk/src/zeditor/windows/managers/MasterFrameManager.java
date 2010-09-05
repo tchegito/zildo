@@ -427,7 +427,7 @@ public class MasterFrameManager {
 		currentSelection = p_currentSelection;
 		if (currentSelection instanceof TileSelection) {
 			TileSelection tileSel=(TileSelection) currentSelection;
-			getZildoCanvas().setCursorSize(tileSel.getWidth(), tileSel.getHeight());
+			getZildoCanvas().setCursorSize(tileSel.width, tileSel.height);
 		}
 	}
 }
