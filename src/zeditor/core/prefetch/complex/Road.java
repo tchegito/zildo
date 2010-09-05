@@ -31,7 +31,7 @@ import zildo.monde.map.Point;
  * @author Tchegito
  *
  */
-public class Road implements DelegateDraw {
+public class Road extends DelegateDraw {
 
 	boolean big;
 	
@@ -55,7 +55,7 @@ public class Road implements DelegateDraw {
 		for (int i=0;i<size;i++) {
 			for (int j=0;j<size;j++) {
 				int val=p_map.readmap(p_start.x+j, p_start.y+i);
-				if (val >= startRoad && val < startRoad+27) {
+				if (val >= startRoad && val < startRoad+24) {
 					val=value_chemin[val - startRoad];
 					if (big) {
 						val=val | value_chemin[PrefDrop.GrandChemin.data[i*size +j]];

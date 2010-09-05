@@ -28,7 +28,11 @@ import zildo.monde.map.Point;
  * @author Tchegito
  *
  */
-public interface DelegateDraw {
+public abstract class DelegateDraw {
 	
-	public void draw(Area p_map, Point p_start);
+	public abstract void draw(Area p_map, Point p_start);
+	
+	public void finalizeDraw() {
+		
+	}
 }

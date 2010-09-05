@@ -196,4 +196,9 @@ public class TileSelection extends Selection {
 			}
 		}
     }
+    
+	
+	public void finalizeDraw() {
+		
+	}
 }

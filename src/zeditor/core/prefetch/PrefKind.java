@@ -27,7 +27,6 @@ package zeditor.core.prefetch;
 public enum PrefKind {
 
 	Drop,	// Just put tile on the map 
-	Trace, 	// User trace something, then draw adapted brush
-	TraceDrop, // User trace, but it's immediately on the map
+	TraceDrop, // User trace, and maybe finalization
 	Colour;	// User colour some tiles
 }
