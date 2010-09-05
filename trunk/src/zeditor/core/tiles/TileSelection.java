@@ -3,7 +3,9 @@ package zeditor.core.tiles;
 import java.util.List;
 
 import zeditor.core.Selection;
+import zildo.monde.map.Area;
 import zildo.monde.map.Case;
+import zildo.monde.map.Point;
 
 /**
  * Cette classe représente une sélection du TileSet. Elle est composée de :
@@ -163,4 +165,35 @@ public class TileSelection extends Selection {
 	return s;
     }
 
+    /**
+     * Draw a set of tiles on the given map at given location
+     * @param map
+     * @param p (map coordinates, basically 0..63, 0..63)
+     */
+    public void draw(Area map, Point p) {
+    	int dx,dy;
+		for (int h = 0; h < height; h++) {
+			for (int w = 0; w < width; w++) {
+				Case item = items.get(h * width + w);
+				if (item != null) {
+					dx = p.x + w;
+					dy = p.y + h;
+					if (map.getDim_x() >= dx && map.getDim_y() > dy) {
+						// We know that this is a valid location
+						Case c=map.get_mapcase(dx, dy+4);
+						// Apply modifications
+						int nMotif=item.getN_motif();
+						if (nMotif != -1) {	// Smash the previous tile
+							c.setN_banque(item.getN_banque());
+							c.setN_motif(nMotif);
+						} else {
+							c.setMasked();
+						}
+						c.setN_banque_masque(item.getN_banque_masque());
+						c.setN_motif_masque(item.getN_motif_masque());
+					}
+				}
+			}
+		}
+    }
 }

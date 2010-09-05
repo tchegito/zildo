@@ -21,7 +21,9 @@
 package zeditor.core.prefetch;
 
 import zeditor.core.tiles.TileSelection;
+import zildo.monde.map.Area;
 import zildo.monde.map.Case;
+import zildo.monde.map.Point;
 
 /**
  * @author Tchegito
@@ -29,8 +31,12 @@ import zildo.monde.map.Case;
  */
 public class PrefetchSelection extends TileSelection {
 
+	PrefKind kind;
+	PrefTraceDrop traceDrop;
+	
 	public PrefetchSelection(Prefetch p_pref) {
 		super();
+		kind=p_pref.kind;
 		switch (p_pref.kind) {
 		case Drop:
 			// Get the associated PrefDrop object
@@ -54,8 +60,24 @@ public class PrefetchSelection extends TileSelection {
 				}
 			}
 			break;
+		case TraceDrop:
+			traceDrop=PrefTraceDrop.fromPrefetch(p_pref);
+			width=traceDrop.size.x;
+			height=traceDrop.size.y;
+			break;
 		default:
 			// Not implemented yet
+		}
+	}
+	
+	@Override
+	public void draw(Area p_map, Point p_start) {
+		switch (kind) {
+		case TraceDrop:
+			traceDrop.method.draw(p_map, p_start);
+			break;
+		default:
+			super.draw(p_map, p_start);
 		}
 	}
 }

@@ -69,32 +69,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	}
 
 	private void drawBrush(Point p, TileSelection p_sel) {
-		int dx, dy;
 		// Apply selected brush to the map
 		Area map = EngineZildo.mapManagement.getCurrentMap();
-		for (int h = 0; h < p_sel.getHeight(); h++) {
-			for (int w = 0; w < p_sel.getWidth(); w++) {
-				Case item = p_sel.getItem(h * p_sel.getWidth() + w);
-				if (item != null) {
-					dx = p.x / 16 + w;
-					dy = p.y / 16 + h;
-					if (map.getDim_x() >= dx && map.getDim_y() > dy) {
-						// We know that this is a valid location
-						Case c=map.get_mapcase(dx, dy+4);
-						// Apply modifications
-						int nMotif=item.getN_motif();
-						if (nMotif != -1) {	// Smash the previous tile
-							c.setN_banque(item.getN_banque());
-							c.setN_motif(nMotif);
-						} else {
-							c.setMasked();
-						}
-						c.setN_banque_masque(item.getN_banque_masque());
-						c.setN_motif_masque(item.getN_motif_masque());
-					}
-				}
-			}
-		}
+		p_sel.draw(map, new zildo.monde.map.Point(p.x / 16, p.y / 16));
 	}
 
 	/**
