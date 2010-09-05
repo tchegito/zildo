@@ -13,8 +13,9 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import zeditor.core.Options;
-import zeditor.core.Prefetch;
+import zeditor.core.Selection;
 import zeditor.core.exceptions.ZeditorException;
+import zeditor.core.prefetch.Prefetch;
 import zeditor.core.tiles.TileSelection;
 import zeditor.core.tiles.TileSet;
 import zeditor.helpers.OptionHelper;
@@ -41,6 +42,8 @@ public class MasterFrameManager {
 
 	private static ZildoCanvas zildoCanvas;
 
+	private static Selection currentSelection;
+	
 	private String currentMapFile;
 
 	public final static int MESSAGE_ERROR = 1;
@@ -394,8 +397,15 @@ public class MasterFrameManager {
 		changeTileSet(backgroundCombo.getSelectedItem().toString());
 	}
 
-	public static TileSelection getTileSelection() {
-		return tileSet.getCurrentSelection();
+	public static Selection getSelection() {
+		int sel=masterFrame.getTabsPane().getSelectedIndex();
+		switch (sel) {
+		case 0: // tiles
+			return tileSet.getCurrentSelection();
+		case 1:	// prefetch
+			return currentSelection;
+		}
+		return null;
 	}
 
 	public static ZildoCanvas getZildoCanvas() {
@@ -410,6 +420,14 @@ public class MasterFrameManager {
 		    masterFrame.getCopyPasteTool().setSelected(false);
 		    masterFrame.getBackgroundCombo().selectWithKeyChar('*');
 		    masterFrame.getTileSetPanel().buildSelection(p_width, p_height, p_cases);
+		}
+	}
+
+	public static void setCurrentSelection(Selection p_currentSelection) {
+		currentSelection = p_currentSelection;
+		if (currentSelection instanceof TileSelection) {
+			TileSelection tileSel=(TileSelection) currentSelection;
+			getZildoCanvas().setCursorSize(tileSel.getWidth(), tileSel.getHeight());
 		}
 	}
 }

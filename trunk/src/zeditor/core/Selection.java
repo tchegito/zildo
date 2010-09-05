@@ -1,5 +1,6 @@
 package zeditor.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import zeditor.core.tiles.TileSelection;
@@ -27,6 +28,7 @@ public abstract class Selection {
 	 * Constructeur vide
 	 */
 	public Selection() {
+		items=new ArrayList<Case>();
 	}
 
 	/**

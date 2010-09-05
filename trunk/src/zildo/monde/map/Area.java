@@ -94,7 +94,7 @@ public class Area implements EasySerializable {
 	// OUT: Case object at the given coordinates
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public Case get_mapcase(int x, int y) {
-		return mapdata.get(new Integer(y * this.dim_x + x));
+		return mapdata.get(y * this.dim_x + x);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +103,7 @@ public class Area implements EasySerializable {
 	// IN:coordinates, Case object
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public void set_mapcase(int x, int y, Case c) {
-		mapdata.put(new Integer(y * this.dim_x + x), c);
+		mapdata.put(y * this.dim_x + x, c);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////

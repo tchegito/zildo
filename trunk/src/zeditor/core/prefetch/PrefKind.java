@@ -18,7 +18,7 @@
  *
  */
 
-package zeditor.core;
+package zeditor.core.prefetch;
 
 /**
  * @author Tchegito
@@ -28,5 +28,6 @@ public enum PrefKind {
 
 	Drop,	// Just put tile on the map 
 	Trace, 	// User trace something, then draw adapted brush
+	TraceDrop, // User trace, but it's immediately on the map
 	Colour;	// User colour some tiles
 }

@@ -185,6 +185,10 @@ public class Case implements EasySerializable {
 		return mapCase;
 	}
 
+	public void setMasked() {
+		setN_banque(getN_banque() | 128);
+	}
+	
 	public int getZ() {
 		return z;
 	}
