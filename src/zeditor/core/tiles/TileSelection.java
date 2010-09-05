@@ -58,12 +58,12 @@ public class TileSelection extends Selection {
     /**
      * Largeur de la sélection en nombre de cases
      */
-    private Integer width;
+    protected Integer width;
 
     /**
      * Hauteur de la sélection en nombre de cases
      */
-    private Integer height;
+    protected Integer height;
 
     /**
      * Constructeur vide

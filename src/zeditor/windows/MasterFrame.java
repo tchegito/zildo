@@ -28,6 +28,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import zeditor.core.Options;
+import zeditor.core.prefetch.Prefetch;
+import zeditor.core.prefetch.PrefetchSelection;
 import zeditor.core.tiles.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.ClientEngineZildo;
@@ -110,7 +112,6 @@ public class MasterFrame extends javax.swing.JFrame {
 	private AbstractAction actionDisplayForeSpriteTool;
 	
 	private ZildoScrollablePanel zildoPanel;
-
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -505,7 +506,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return leftPanel;
 	}
-	private JTabbedPane getTabsPane() {
+	public JTabbedPane getTabsPane() {
 		if (tabsPane == null) {
 			tabsPane = new JTabbedPane();
 			tabsPane.addTab("Décors", null, getBackgroundPanel(), null);
@@ -549,13 +550,9 @@ public class MasterFrame extends javax.swing.JFrame {
 				public void valueChanged(ListSelectionEvent e) {
 				    if (e.getValueIsAdjusting() == false) {
 	
-				        if (prefetchCombo.getSelectedIndex() == -1) {
-				        //No selection, disable fire button.
-				            //fireButton.setEnabled(false);
-	
-				        } else {
-				        //Selection, enable the fire button.
-				            //fireButton.setEnabled(true);
+						int ind=prefetchCombo.getSelectedIndex();
+				        if (ind != -1) {
+							MasterFrameManager.setCurrentSelection(new PrefetchSelection(Prefetch.fromInt(ind)));
 				        }
 				    }
 				}

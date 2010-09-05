@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.lwjgl.LWJGLException;
 
+import zeditor.core.Selection;
 import zeditor.core.tiles.TileSelection;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.ZildoRenderer;
@@ -61,9 +62,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 
 	public void applyBrush(Point p) {
 		// Get brush
-		TileSelection sel = MasterFrameManager.getTileSelection();
+		Selection sel = MasterFrameManager.getSelection();
 		if (sel != null) {
-			drawBrush(p, sel);
+			drawBrush(p, (TileSelection) sel);
 		}
 	}
 
@@ -79,7 +80,17 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 					dy = p.y / 16 + h;
 					if (map.getDim_x() >= dx && map.getDim_y() > dy) {
 						// We know that this is a valid location
-						map.set_mapcase(dx, dy + 4, item);
+						Case c=map.get_mapcase(dx, dy+4);
+						// Apply modifications
+						int nMotif=item.getN_motif();
+						if (nMotif != -1) {	// Smash the previous tile
+							c.setN_banque(item.getN_banque());
+							c.setN_motif(nMotif);
+						} else {
+							c.setMasked();
+						}
+						c.setN_banque_masque(item.getN_banque_masque());
+						c.setN_motif_masque(item.getN_motif_masque());
 					}
 				}
 			}
@@ -91,10 +102,11 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 * @param p
 	 */
 	public void clearWithBrush(Point p) {
-		TileSelection sel = MasterFrameManager.getTileSelection();
+		Selection sel = MasterFrameManager.getSelection();
 		Point size;
-		if (sel != null) {
-			size = new Point(sel.getWidth(), sel.getHeight());
+		if (sel != null && sel instanceof TileSelection) {
+			TileSelection tileSel=(TileSelection) sel;
+			size = new Point(tileSel.getWidth(), tileSel.getHeight());
 		} else {
 			size = new Point(1, 1);
 		}

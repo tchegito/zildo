@@ -18,7 +18,7 @@
  *
  */
 
-package zeditor.core;
+package zeditor.core.prefetch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +29,14 @@ import java.util.List;
  */
 public enum Prefetch {
 
-	Colline(PrefKind.Drop), CollineGauche(PrefKind.Drop), CollineDroite(PrefKind.Drop), CollineBordure(PrefKind.Colour),
-	CollineMarron(PrefKind.Colour), PetitChemin(PrefKind.Drop), GrandChemin(PrefKind.Drop), Eau(PrefKind.Trace),
+	Colline(PrefKind.Colour), CollineGauche(PrefKind.Drop), CollineDroite(PrefKind.Drop), CollineBordure(PrefKind.Colour),
+	CollineMarron(PrefKind.Colour), PetitChemin(PrefKind.TraceDrop), GrandChemin(PrefKind.TraceDrop), Eau(PrefKind.Trace),
 	
 	Arbre(PrefKind.Drop), Souche(PrefKind.Drop), Statue(PrefKind.Drop), ArcheVillage(PrefKind.Drop), GrossePierre(PrefKind.Drop),
 	MaisonRouge(PrefKind.Trace), MaisonBleue(PrefKind.Colour), MaisonVerte(PrefKind.Colour),
 	Souterrain(PrefKind.Trace), SouterrainLarge(PrefKind.Trace),
 	ArbreRouge(PrefKind.Drop), ArbreJaune(PrefKind.Drop),
-	RouteDesert(PrefKind.Drop);
+	RouteDesert(PrefKind.TraceDrop);
 	
 	PrefKind kind;
 	
@@ -60,5 +60,9 @@ public enum Prefetch {
 			names.add(sb.toString());
 		}
 		return names.toArray(new String[]{});
+	}
+	
+	public static Prefetch fromInt(int i) {
+		return values()[i];
 	}
 }

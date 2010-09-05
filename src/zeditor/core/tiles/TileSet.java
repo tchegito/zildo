@@ -440,7 +440,7 @@ public class TileSet extends JPanel {
      */
     private void buildSelection(){
         if (blockSet) {
-        return;
+        	return;
         }
         int startX, startY, stopX, stopY, width, height;
         width = 0;
@@ -469,7 +469,7 @@ public class TileSet extends JPanel {
             height ++;
         }
         currentSelection = new TileSelection(width, height, list);
-        MasterFrameManager.getZildoCanvas().setCursorSize(width, height);
+        MasterFrameManager.setCurrentSelection(currentSelection);
     }
    
     public void buildSelection(int width, int height, List<Case> p_cases) {
