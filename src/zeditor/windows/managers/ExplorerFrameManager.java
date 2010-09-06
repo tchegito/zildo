@@ -75,7 +75,7 @@ public class ExplorerFrameManager {
 	private void open(){
 		File f = fileChooser.getSelectedFile();
 		// On teste la nature du fichier (si c'est un *.MAP)
-		if(!f.getName().toUpperCase().endsWith(".MAP")){
+		if(!f.getName().endsWith(".MAP")){
 			// TODO Fenêtre d'erreur
 			return;
 		}
@@ -93,8 +93,8 @@ public class ExplorerFrameManager {
 		}
 		//File f = new File(fileChooser.getSelectedFile().getAbsolutePath());
 
-		parent.getManager().save();
+		parent.getManager().saveAs(fileChooser.getSelectedFile().getName());
 		
-		//close();
+		close();
 	}
 }

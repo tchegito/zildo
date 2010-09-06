@@ -10,7 +10,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
 
 import zeditor.core.Options;
 import zeditor.core.Selection;
@@ -110,6 +109,11 @@ public class MasterFrameManager {
 		display("Sauvegarde effectuée.", MESSAGE_INFO);
 	}
 
+	public void saveAs(String newMapFile) {
+		currentMapFile=newMapFile;
+		save();
+	}
+	
 	/**
 	 * Ouvre l'explorateur afin de sélectionner le nom du fichier à sauvegarder
 	 * pui lance (ou annule) la sauvegarde
@@ -117,7 +121,6 @@ public class MasterFrameManager {
 	public void saveAs() {
 		display("[A FAIRE] Enregistrer sous...", MESSAGE_ERROR);
 		openFileExplorer(ExplorerFrameManager.SAVE);
-		// TODO
 	}
 
 	/**
@@ -127,7 +130,6 @@ public class MasterFrameManager {
 	 */
 	public void load() {
 		openFileExplorer(ExplorerFrameManager.OPEN);
-		// TODO
 
 	}
 
@@ -161,9 +163,9 @@ public class MasterFrameManager {
 	 * @author Drakulo
 	 */
 	public void create() {
-		// TODO
-		changeTitle("Carte sans nom");
-		display("[A FAIRE] Nouvelle carte", MESSAGE_ERROR);
+		display(" Nouvelle carte", MESSAGE_ERROR);
+		zildoCanvas.clearMap();
+		updateTitle();
 	}
 
 	/**
@@ -298,11 +300,8 @@ public class MasterFrameManager {
 	 * @author Drakulo
 	 */
 	public void updateTools() {
-		JToolBar toolBar = (JToolBar) ((JPanel) masterPanel.getComponent(0))
-				.getComponent(0);
-
 		// Bouton des tuiles non mappées
-		JToggleButton unmapped = (JToggleButton) toolBar.getComponent(0);
+		JToggleButton unmapped=masterFrame.getUnmappedTool();
 		if (Boolean.valueOf(OptionHelper.loadOption(Options.SHOW_TILES_UNMAPPED
 				.getValue()))) {
 			unmapped.setSelected(true);
@@ -311,7 +310,7 @@ public class MasterFrameManager {
 		}
 
 		// Bouton d'affichage de la grille
-		JToggleButton grid = (JToggleButton) toolBar.getComponent(1);
+		JToggleButton grid=masterFrame.getGridTool();
 		if (Boolean.valueOf(OptionHelper.loadOption(Options.SHOW_TILES_GRID
 				.getValue()))) {
 			grid.setSelected(true);

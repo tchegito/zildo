@@ -87,6 +87,16 @@ public class Area implements EasySerializable {
 		toRespawn = new HashSet<SpawningTile>();
 	}
 
+	public Area(boolean p_outside) {
+		this();
+		dim_x=64;
+		dim_y=64;
+		for (int i=0;i<dim_x*dim_y;i++) {
+			int x=i%dim_x;
+			int y=i/dim_x;
+			writemap(x, y, 54);
+		}
+	}
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// get_Areacase
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -153,6 +163,9 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public void writemap(int x, int y, int quoi) {
 		Case temp = this.get_mapcase(x, y + 4);
+		if (temp == null) {
+			temp=new Case();
+		}
 		temp.setN_motif(quoi & 255);
 		// Don't squeeze the foreground tile
 		int nBanque=temp.getN_banque() & 0xb0;
