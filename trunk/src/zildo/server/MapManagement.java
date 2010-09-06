@@ -126,11 +126,11 @@ public class MapManagement {
     }
 
     public void clearMap() {
-	if (currentMap != null) {
-	    deleteCurrentMap();
-	}
-	currentMap=new Area();
-	currentMap.setName("Nouvelle");
+		if (currentMap != null) {
+		    deleteCurrentMap();
+		}
+		currentMap=new Area(false);
+		currentMap.setName("Nouvelle");
         analyseAltitude();
     }
     

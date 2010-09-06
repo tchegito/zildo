@@ -35,7 +35,6 @@ import zeditor.core.tiles.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.awt.ZildoScrollablePanel;
-import zildo.server.EngineZildo;
 
 
 /**
@@ -350,8 +349,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	    if (actionNewMapTool == null) {
 		actionNewMapTool = new AbstractAction(null) {
 		    public void actionPerformed(ActionEvent evt) {
-			EngineZildo.mapManagement.clearMap();
-			ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+		    	zildoPanel.getCanvas().clearMap();
 		    }
 		};
 	    }
@@ -433,7 +431,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return toolBar;
 	}
-	private JToggleButton getUnmappedTool() {
+	public JToggleButton getUnmappedTool() {
 		if(unmappedTool == null) {
 			unmappedTool = new JToggleButton();
 			unmappedTool.setToolTipText("Afficher les tuiles non mappées.");
@@ -443,7 +441,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return unmappedTool;
 	}
-	private JToggleButton getGridTool() {
+	public JToggleButton getGridTool() {
 		if(gridTool == null) {
 			gridTool = new JToggleButton();
 			gridTool.setAction(getActionGridTool());

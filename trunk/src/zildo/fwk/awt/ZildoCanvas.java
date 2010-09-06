@@ -151,12 +151,17 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		if (p_mapName == null) {
 			fileName = map.getCurrentMap().getName();
 		}
-		map.saveMapFile(fileName + ".MAP");
+		map.saveMapFile(fileName + ".map");
 	}
 
 	public void loadMap(String p_mapName) {
 		MapManagement map = EngineZildo.mapManagement;
 		map.charge_map(p_mapName);
+		changeMap = true;
+	}
+	
+	public void clearMap() {
+		EngineZildo.mapManagement.clearMap();
 		changeMap = true;
 	}
 
