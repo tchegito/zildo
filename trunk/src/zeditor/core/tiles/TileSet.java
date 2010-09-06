@@ -195,7 +195,6 @@ public class TileSet extends JPanel {
     }
     
     class CallbackImageObserver implements ImageObserver {
-    	@Override
     	public boolean imageUpdate(Image img, int infoflags, int x, int y,
     			int width, int height) {
     		tileHeight=height;

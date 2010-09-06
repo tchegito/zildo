@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -34,6 +35,7 @@ import zeditor.core.tiles.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.awt.ZildoScrollablePanel;
+import zildo.server.EngineZildo;
 
 
 /**
@@ -84,6 +86,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JTabbedPane tabsPane;
 	private JPanel leftPanel;
 	private JPanel contentPanel;
+	private JButton newMapTool;
 	private JToggleButton gridTool;
 	private JToggleButton unmappedTool;
 	private JToggleButton copyPasteTool;
@@ -105,6 +108,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private AbstractAction actionExit;
 	private AbstractAction actionSave;
 	private AbstractAction actionLoad;
+	private AbstractAction actionNewMapTool;
 	private AbstractAction actionCopyPasteTool;
 	private AbstractAction actionDisplayBackTileTool;
 	private AbstractAction actionDisplayForeTileTool;
@@ -342,6 +346,18 @@ public class MasterFrame extends javax.swing.JFrame {
 	    return actionDisplayForeSpriteTool;
 	}
 
+	private AbstractAction getActionNewMapTool() {
+	    if (actionNewMapTool == null) {
+		actionNewMapTool = new AbstractAction(null) {
+		    public void actionPerformed(ActionEvent evt) {
+			EngineZildo.mapManagement.clearMap();
+			ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+		    }
+		};
+	    }
+	    return actionNewMapTool;
+	}
+	
 	private AbstractAction getActionNew() {
 		if(actionNew == null) {
 			actionNew = new AbstractAction("Nouveau", null) {
@@ -403,6 +419,8 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JToolBar getToolBar() {
 		if(toolBar == null) {
 			toolBar = new JToolBar();
+			toolBar.add(getNewMapTool());
+			toolBar.add(new JToolBar.Separator());
 			toolBar.add(getUnmappedTool());
 			toolBar.add(getGridTool());
 			toolBar.add(getCopyPasteTool());
@@ -482,6 +500,16 @@ public class MasterFrame extends javax.swing.JFrame {
 		    foreSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGroundSprite.PNG")));
 		}
 		return foreSpriteTool;
+	}
+	
+	public JButton getNewMapTool() {
+		if(newMapTool == null) {
+		    newMapTool = new JButton();
+		    newMapTool.setToolTipText("Nouvelle carte");
+		    newMapTool.setAction(getActionNewMapTool());
+		    newMapTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/page.png")));
+		}
+		return newMapTool;
 	}
 
 	private JPanel getContentPanel() {

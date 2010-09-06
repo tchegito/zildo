@@ -125,6 +125,15 @@ public class MapManagement {
 
     }
 
+    public void clearMap() {
+	if (currentMap != null) {
+	    deleteCurrentMap();
+	}
+	currentMap=new Area();
+	currentMap.setName("Nouvelle");
+        analyseAltitude();
+    }
+    
     ///////////////////////////////////////////////////////////////////////////////////////
 	// loadMapFile
 	///////////////////////////////////////////////////////////////////////////////////////
