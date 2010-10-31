@@ -20,7 +20,10 @@
 
 package zildo.server.state;
 
+import java.util.List;
+
 import zildo.fwk.script.command.ScriptExecutor;
+import zildo.fwk.script.xml.ActionElement;
 import zildo.fwk.script.xml.AdventureElement;
 import zildo.fwk.script.xml.QuestElement;
 import zildo.fwk.script.xml.SceneElement;
@@ -76,6 +79,13 @@ public class ScriptManagement {
     		scriptExecutor.execute(scene);
     	}
     }
+
+    private void execute(List<ActionElement> p_actions) {
+    	// Create a SceneElement from the given actions
+		SceneElement scene=SceneElement.createScene(p_actions);
+		// And execute this list
+		scriptExecutor.execute(scene);
+    }
     
     /**
      * Entry point for all identifiable action, which could target a trigger.<p/>
@@ -125,6 +135,7 @@ public class ScriptManagement {
     /**
      * Update quest status, and launch the associated actions.
      * @param p_questName
+     * @param p_trigger
      */
     public void accomplishQuest(String p_questName, boolean p_trigger) {
     	for (QuestElement quest : adventure.getQuests()) {
@@ -137,18 +148,27 @@ public class ScriptManagement {
     /**
      * Update quest status, and launch the associated actions.
      * @param p_quest
-     * @param p_trigger TODO
+     * @param p_trigger TRUE=we have to launch targeted action / FALSE=just set quest to 'done' state
      */
     private void accomplishQuest(QuestElement p_quest, boolean p_trigger) {
     	p_quest.done=true;
-    	// Target potentials triggers
-    	TriggerElement trig=TriggerElement.createQuestDoneTrigger(p_quest.name);
-    	trigger(trig);
-		// Execute the corresponding actions
-		// Create a SceneElement from the given actions
-		SceneElement scene=SceneElement.createScene(p_quest.getActions());
-		// And execute this list
-		scriptExecutor.execute(scene);
+    	
+    	// 1) note the history events (mapReplace ...)
+    	List<ActionElement> history=p_quest.getHistory();
+		if (history != null) {
+			execute(history);
+		}
+		
+		// 2) execute the immediate actions (only in-game)
+    	if (p_trigger) {
+	    	// Target potentials triggers
+	    	TriggerElement trig=TriggerElement.createQuestDoneTrigger(p_quest.name);
+	    	trigger(trig);
+			// Execute the corresponding actions
+			execute(p_quest.getActions());
+    	}
+
+    	
     }
     
     public String getReplacedMapName(String p_mapName) {
