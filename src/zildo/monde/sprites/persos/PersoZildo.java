@@ -815,7 +815,7 @@ public class PersoZildo extends Perso {
      * @param p_kind
      */
     public void pickItem(ItemKind p_kind) {
-        inventory.add(new Item(p_kind));
+        addInventory(new Item(p_kind));
         attente=20;
         mouvement=MouvementZildo.FIERTEOBJET;
         Element elem=EngineZildo.spriteManagement.spawnElement(SpriteBank.BANK_ELEMENTS, 

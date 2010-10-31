@@ -98,7 +98,7 @@ public class Game implements EasySerializable {
             String questName = p_buffer.readString();
             boolean questDone = p_buffer.readBoolean();
             if (questDone) {
-                EngineZildo.scriptManagement.accomplishQuest(questName, questDone);
+                EngineZildo.scriptManagement.accomplishQuest(questName, false);
             }
         }
 
