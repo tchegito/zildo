@@ -1,6 +1,33 @@
 #summary Script language in Zildo
 
+= Description =
+
+The scripting module in Zildo is divided into two essentials sections :
+ * scenes
+ * quests
+
+All is described in a single XML file, containing an ADVENTURE root.
+
+But let's see how works the 2 sections.
+
+== Scenes ==
+
+A scene is a cinematic sequence, where player can't act. He just has to show events happening like in a movie.
+
+Basically, it's a list of mini-actions which are launched sequentially. Some can be launched simultaneously. (see the 'Commands' section)
+
+== Quests ==
+
+A quest is an objective for the player. It has 3 parts:
+ * *trigger* : what the player has to do in order to accomplish the quest
+ * *action* : direct actions from the accomplishment
+ * *history* : consequences in the history (map replacements ...)
+
+_Note_ : when loading a saved game, every accomplished quest launches the execution of each 'history' part, but not 'action' part.
+
 = Commands =
+
+Every action is a parametered command. Here is an exhaustive list of all existing actions :
 
 || *Command* || *Type* || *Who* || *What* || *Unblock* || *Meaning* ||
 || pos || position || V || V || - || Set character or camera's location ||
