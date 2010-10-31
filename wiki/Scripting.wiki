@@ -1,5 +1,8 @@
 #summary Script language in Zildo
 
+<wiki:toc max_depth="4" />
+
+
 = Description =
 
 The scripting module in Zildo is divided into two essentials sections :
@@ -14,7 +17,7 @@ But let's see how works the 2 sections.
 
 A scene is a cinematic sequence, where player can't act. He just has to show events happening like in a movie.
 
-Basically, it's a list of mini-actions which are launched sequentially. Some can be launched simultaneously. (see the 'Commands' section)
+Basically, it's a list of mini-actions which are launched sequentially. Some can be launched simultaneously. (see the 'Misc' section)
 
 == Quests ==
 
@@ -22,6 +25,8 @@ A quest is an objective for the player. It has 3 parts:
  * *trigger* : what the player has to do in order to accomplish the quest
  * *action* : direct actions from the accomplishment
  * *history* : consequences in the history (map replacements ...)
+
+A quest has a name and a state during the game, which can be 'done' or 'undone'.
 
 _Note_ : when loading a saved game, every accomplished quest launches the execution of each 'history' part, but not 'action' part.
 
@@ -48,6 +53,21 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || mapReplace || text || - || V || - || Replace map indicated by 'what' by the one named by 'name'  ||
 
 
-= Details =
+= Misc=
 
-Add your content here.  Format your content with:
+Here is some details for particular commands.
+
+== Simultaneous actions ==
+
+Basically, each command is launched when the previous one is finished.
+But, there's two possibilities to avoid this kind of mechanic.
+
+=== actions ===
+
+Into the command 'actions', you can add a sublist of actions. It means that each one should happen in the same time.
+
+It's useful when two people have to walk in the same direction, or when the camera should follow a character and so on.
+
+=== unblock ===
+
+With the attribute 'unblock', the given command is said to be unblocking. It means that next action can start without waiting for the current one.
