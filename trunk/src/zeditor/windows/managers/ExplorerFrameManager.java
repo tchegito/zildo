@@ -75,7 +75,7 @@ public class ExplorerFrameManager {
 	private void open(){
 		File f = fileChooser.getSelectedFile();
 		// On teste la nature du fichier (si c'est un *.MAP)
-		if(!f.getName().endsWith(".MAP")){
+		if(!f.getName().endsWith(".map")){
 			// TODO Fenêtre d'erreur
 			return;
 		}

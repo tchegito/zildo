@@ -87,7 +87,7 @@ public class OptionHelper {
 
 			// On crée maintenant chacun des éléments de paramétrage
 			for(Options name : Options.values()){
-				Element modele = (Element) document.createElement(name.getValue());
+				Element modele = document.createElement(name.getValue());
 				String item = (p_params.get(name.getValue()) != null) ? p_params.get(name.getValue()) : "";
 				modele.appendChild(document.createTextNode(item));
 				racine.appendChild(modele);
