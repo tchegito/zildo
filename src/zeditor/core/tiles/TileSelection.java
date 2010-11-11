@@ -140,7 +140,7 @@ public class TileSelection extends Selection {
 				if (item != null) {
 					dx = p.x + w;
 					dy = p.y + h;
-					if (map.getDim_x() >= dx && map.getDim_y() > dy) {
+					if (map.getDim_x() > dx && map.getDim_y() > dy) {
 						// We know that this is a valid location
 						Case c=map.get_mapcase(dx, dy+4);
 						// Apply modifications
