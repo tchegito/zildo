@@ -22,8 +22,8 @@ package zildo.monde.map;
 
 public class Zone {
 
-	private int x1,y1;
-	private int x2,y2;
+	public int x1,y1;
+	public int x2,y2;
 	
 	public int getX1() {
 		return x1;
