@@ -49,6 +49,11 @@ import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
 import zildo.server.SpriteManagement;
 
+/**
+ * Class modelizing a map where the hero can play.
+ * @author Tchegito
+ *
+ */
 public class Area implements EasySerializable {
 
     class SpawningTile {

@@ -161,6 +161,10 @@ public class ChainingPoint {
 		return py > 127;
 	}
 	
+	public boolean isVertical() {
+		return px > 127;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuffer sb=new StringBuffer();

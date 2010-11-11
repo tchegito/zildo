@@ -24,7 +24,9 @@ import java.awt.BorderLayout;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.List;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.DefaultBoundedRangeModel;
@@ -35,7 +37,11 @@ import org.lwjgl.LWJGLException;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
+import zildo.monde.map.Area;
+import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
+import zildo.monde.map.Zone;
+import zildo.server.EngineZildo;
 
 /**
  * Panel handling map display.<p/>
@@ -145,5 +151,30 @@ public class ZildoScrollablePanel extends JPanel {
 	
 	public ZildoCanvas getCanvas() {
 		return zildoCanvas;
+	}
+	
+	public List<Zone> getChainingPoints() {
+		List<Zone> zones=new ArrayList<Zone>();
+		Area map=EngineZildo.mapManagement.getCurrentMap();
+		List<ChainingPoint> chaining=map.getListPointsEnchainement();
+		for (ChainingPoint c : chaining) {
+			Point p1=new Point(c.getPx() & 63, c.getPy() & 63);
+			Point p2=new Point(32, 16); //c.getPx() & 63, c.getPy() & 63);
+			if (c.isBorder()) {
+				if (p1.x == 0 || p1.x == map.getDim_x()-1) {
+					p1.y=0;
+					p2.y=map.getDim_y()*16;
+					p2.x=16;
+				} else {
+					p1.x=0;
+					p2.x=map.getDim_x()*16;
+				}
+			} else if (c.isVertical()) {
+				p2.x=16;
+				p2.y=32;
+			}
+			zones.add(new Zone(p1.x, p1.y, p2.x, p2.y));
+		}
+		return zones;
 	}
 }

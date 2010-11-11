@@ -8,6 +8,7 @@ package zildo.fwk.awt;
 
 import java.awt.GraphicsDevice;
 import java.awt.Point;
+import java.util.List;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.AWTGLCanvas;
@@ -20,6 +21,7 @@ import zildo.client.IRenderable;
 import zildo.fwk.awt.ZildoCanvas.ZEditMode;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.map.Area;
+import zildo.monde.map.Zone;
 import zildo.server.EngineZildo;
 
 /**
@@ -140,6 +142,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 
 			}
 			renderer.renderScene();
+
 			// Draw rectangle
 			if (cursorLocation != null) {
 			    Point start = cursorLocation;
@@ -158,7 +161,14 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			    }
 			    ortho.boxv(start.x, start.y, size.x, size.y, 0, new Vector4f(1, 1, 1, 1));
 			}
-
+			
+			// Draw chaining points
+			List<Zone> zones=panel.getChainingPoints();
+			Point shift=panel.getPosition();
+			for (Zone p : zones) {
+			    ortho.boxv(p.x1 * 16 - shift.x, p.y1 * 16 - shift.y, 
+			    		   p.x2,                p.y2, 0, new Vector4f(0.8f, 0.7f, 0.8f, 1));
+			}
 			swapBuffers();
 		} catch (LWJGLException lwjgle) {
 			// should not happen
