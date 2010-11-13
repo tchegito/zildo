@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -24,6 +25,7 @@ import zeditor.windows.OptionsFrame;
 import zildo.fwk.awt.ZildoCanvas;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
+import zildo.monde.map.ChainingPoint;
 import zildo.server.EngineZildo;
 
 
@@ -42,6 +44,7 @@ public class MasterFrameManager {
 	private static ZildoCanvas zildoCanvas;
 
 	private static Selection currentSelection;
+	private static ChainingPoint chPointSelection;
 	
 	private String currentMapFile;
 
@@ -83,6 +86,7 @@ public class MasterFrameManager {
 		});
 
 		updateTitle();
+		updateChainingPoints();
 		
 	}
 
@@ -141,6 +145,7 @@ public class MasterFrameManager {
 		currentMapFile = p_mapName;
 		
 		updateTitle();
+		updateChainingPoints();
 	}
 
 
@@ -157,6 +162,10 @@ public class MasterFrameManager {
 		masterFrame.setTitle(sb.toString());		
 	}
 	
+	public void updateChainingPoints() {
+		masterFrame.getChainingPointPanel().updateList(getChainingPointsForCombo());
+	}
+
 	/**
 	 * Crée une nouvelle carte
 	 * 
@@ -200,6 +209,18 @@ public class MasterFrameManager {
 
 	public Object[] getPrefetchForCombo() {
 		return Prefetch.getNames();
+	}
+	
+	public Object[] getChainingPointsForCombo() {
+		if (EngineZildo.mapManagement == null) {
+			return new Object[]{};
+		}
+		List<String> names=new ArrayList<String>();
+		List<ChainingPoint> points=EngineZildo.mapManagement.getCurrentMap().getListPointsEnchainement();
+		for (ChainingPoint chp : points) {
+			names.add(chp.getMapname());
+		}
+		return names.toArray(new String[]{});
 	}
 	
 	/**
@@ -428,5 +449,9 @@ public class MasterFrameManager {
 			TileSelection tileSel=(TileSelection) currentSelection;
 			getZildoCanvas().setCursorSize(tileSel.width, tileSel.height);
 		}
+	}
+	
+	public void setChainingPointSelection(ChainingPoint p_chPoint) {
+		chPointSelection=p_chPoint;
 	}
 }
