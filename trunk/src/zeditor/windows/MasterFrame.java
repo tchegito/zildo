@@ -12,7 +12,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -22,17 +21,14 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import zeditor.core.Options;
-import zeditor.core.prefetch.Prefetch;
-import zeditor.core.prefetch.PrefetchSelection;
 import zeditor.core.tiles.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
+import zeditor.windows.subpanels.ChainingPointPanel;
+import zeditor.windows.subpanels.PrefetchPanel;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.awt.ZildoScrollablePanel;
 
@@ -79,9 +75,9 @@ public class MasterFrame extends javax.swing.JFrame {
 	public TileSet tileSetPanel;
 	private JScrollPane backgroundScroll;
 	private JComboBox backgroundCombo;
-	private JList prefetchCombo;
 	private JPanel backgroundPanel;
 	private JPanel prefetchPanel;
+	private JPanel chainingPointPanel;
 	private JTabbedPane tabsPane;
 	private JPanel leftPanel;
 	private JPanel contentPanel;
@@ -534,11 +530,12 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 	public JTabbedPane getTabsPane() {
 		if (tabsPane == null) {
-			tabsPane = new JTabbedPane();
+			tabsPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
 			tabsPane.addTab("Décors", null, getBackgroundPanel(), null);
 			tabsPane.addTab("Prefetch", null, getPrefetchPanel(), null);
 			tabsPane.addTab("Sprites", null, getSpritePanel(), null);
 			tabsPane.addTab("Personnages", null, getCharactersPanel(), null);
+			tabsPane.addTab("Enchainements", null, getChainingPointPanel(), null);
 		}
 		return tabsPane;
 	}
@@ -555,37 +552,18 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	private JPanel getPrefetchPanel() {
 		if (prefetchPanel == null) {
-			prefetchPanel = new JPanel();
-			BoxLayout prefetchPanelLayout = new BoxLayout(prefetchPanel, javax.swing.BoxLayout.Y_AXIS);
-			prefetchPanel.setLayout(prefetchPanelLayout);
-			prefetchPanel.add(getPrefetchCombo());
+			prefetchPanel = new PrefetchPanel(getManager());
 		}
 		return prefetchPanel;
 	}
-	public JList getPrefetchCombo() {
-		if (prefetchCombo == null) {
-			ComboBoxModel prefetchComboModel = new DefaultComboBoxModel(getManager().getPrefetchForCombo());
-			prefetchCombo = new JList();
-			prefetchCombo.setModel(prefetchComboModel);
-			prefetchCombo.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-			prefetchCombo.setLayoutOrientation(JList.VERTICAL);
-			prefetchCombo.setVisibleRowCount(-1);
-			prefetchCombo.setSize(500,300);
-			prefetchCombo.addListSelectionListener(new ListSelectionListener() {
-				
-				public void valueChanged(ListSelectionEvent e) {
-				    if (e.getValueIsAdjusting() == false) {
 	
-						int ind=prefetchCombo.getSelectedIndex();
-				        if (ind != -1) {
-							MasterFrameManager.setCurrentSelection(new PrefetchSelection(Prefetch.fromInt(ind)));
-				        }
-				    }
-				}
-			});
+	public ChainingPointPanel getChainingPointPanel() {
+		if (chainingPointPanel == null) {
+			chainingPointPanel = new ChainingPointPanel(getManager());
 		}
-		return prefetchCombo;
+		return (ChainingPointPanel) chainingPointPanel;
 	}
+
 	public JComboBox getBackgroundCombo() {
 		if (backgroundCombo == null) {
 			ComboBoxModel backgroundComboModel = new DefaultComboBoxModel(getManager().loadTileForCombo());

@@ -16,7 +16,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import zeditor.windows.managers.ExplorerFrameManager;
 import zildo.prefs.Constantes;
-//import zeditor.noyau.ExplorerFrameManager;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
