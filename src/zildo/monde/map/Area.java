@@ -76,7 +76,7 @@ public class Area implements EasySerializable {
 	private int dim_x, dim_y;
 	private String name;
 	private Map<Integer, Case> mapdata;
-	private List<ChainingPoint> listPointsEnchainement;
+	private List<ChainingPoint> listChainingPoint;
 	private MapDialog dialogs;
 
     // To diffuse changes to clients
@@ -86,7 +86,7 @@ public class Area implements EasySerializable {
 
 	public Area() {
 		mapdata = new HashMap<Integer, Case>();
-		listPointsEnchainement = new ArrayList<ChainingPoint>();
+		listChainingPoint = new ArrayList<ChainingPoint>();
 
 		changes = new HashSet<Point>();
 		toRespawn = new HashSet<SpawningTile>();
@@ -221,8 +221,8 @@ public class Area implements EasySerializable {
 		int ay = (int) (y / 16);
 		boolean border;
 		List<ChainingPoint> candidates=new ArrayList<ChainingPoint>();
-		if (listPointsEnchainement.size() != 0) {
-			for (ChainingPoint chPoint : listPointsEnchainement) {
+		if (listChainingPoint.size() != 0) {
+			for (ChainingPoint chPoint : listChainingPoint) {
 				// Area's borders
 				border = isAlongBorder((int) x, (int) y);
 				if (chPoint.isCollide(ax, ay, border)) {
@@ -257,7 +257,7 @@ public class Area implements EasySerializable {
 		int orderY = 0;
 		// We're gonna get a sort number in each coordinate for all chaining point
 		// referring to the same Area.
-		for (ChainingPoint chP : listPointsEnchainement) {
+		for (ChainingPoint chP : listChainingPoint) {
 			if (chP.getMapname().equals(chPoint.getMapname())) {
 				if (chP.getPx() <= chPoint.getPx()) {
 					orderX++;
@@ -277,8 +277,8 @@ public class Area implements EasySerializable {
 	// IN : comingArea -. Area's name
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public ChainingPoint getTarget(String comingArea, int orderX, int orderY) {
-		if (listPointsEnchainement.size() != 0) {
-			for (ChainingPoint chPoint : listPointsEnchainement) {
+		if (listChainingPoint.size() != 0) {
+			for (ChainingPoint chPoint : listChainingPoint) {
 				if (chPoint.getMapname().equals(comingArea)) {
 					if (orderX == 0 && orderY == 0) {
 						return chPoint;
@@ -366,7 +366,11 @@ public class Area implements EasySerializable {
 	}
 
 	public void addPointEnchainement(ChainingPoint ch) {
-		listPointsEnchainement.add(ch);
+		listChainingPoint.add(ch);
+	}
+	
+	public void removeChainingPoint(ChainingPoint ch) {
+		listChainingPoint.remove(ch);
 	}
 
 	public int getDim_x() {
@@ -394,11 +398,11 @@ public class Area implements EasySerializable {
 	}
 
 	public List<ChainingPoint> getListPointsEnchainement() {
-		return listPointsEnchainement;
+		return listChainingPoint;
 	}
 
 	public void setListPointsEnchainement(List<ChainingPoint> listPointsEnchainement) {
-		this.listPointsEnchainement = listPointsEnchainement;
+		this.listChainingPoint = listPointsEnchainement;
 	}
 
 	public boolean isModified() {
@@ -423,7 +427,7 @@ public class Area implements EasySerializable {
 		List<SpriteEntity> entities = filterExportableSprites(EngineZildo.spriteManagement.getSpriteEntities(null));
 		List<Perso> persos = filterExportablePersos(EngineZildo.persoManagement.tab_perso);
 
-		int n_pe = listPointsEnchainement.size();
+		int n_pe = listChainingPoint.size();
 		int n_sprites = entities.size();
 		int n_persos = persos.size();
 

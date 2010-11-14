@@ -16,11 +16,16 @@ import org.lwjgl.opengl.Drawable;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Vector4f;
 
+import zeditor.core.ChainingPointSelection;
+import zeditor.core.Selection;
+import zeditor.windows.managers.MasterFrameManager;
+import zeditor.windows.subpanels.SelectionKind;
 import zildo.client.ClientEngineZildo;
 import zildo.client.IRenderable;
 import zildo.fwk.awt.ZildoCanvas.ZEditMode;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.map.Area;
+import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Zone;
 import zildo.server.EngineZildo;
 
@@ -53,6 +58,10 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	public boolean right;
 
 	protected final static Point defaultCursorSize = new Point(16, 16);
+
+	private final static Vector4f colChainingPoint = new Vector4f(0.8f, 0.7f, 0.8f, 1);
+	private final static Vector4f colChainingPointSelected = new Vector4f(0.6f, 0.9f, 0.9f, 0.8f);
+	private final static Vector4f colCursor = new Vector4f(1, 1, 1, 1);
 	
 	// We have to communicate orders via boolean to this canvas
 	// because we can use OpenGL outside of the paint process
@@ -63,6 +72,8 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 
 	private boolean needToResize = false;
 
+	private float alpha;
+	
 	public AWTOpenGLCanvas() throws LWJGLException {
 		super();
 	}
@@ -142,7 +153,34 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 
 			}
 			renderer.renderScene();
+			
+			alpha+=0.04f;
+			float sin=(float) Math.sin(alpha);
+			
+			// Draw chaining points
+			Point shift=panel.getPosition();
+			Area map=EngineZildo.mapManagement.getCurrentMap();
+			List<ChainingPoint> chaining=map.getListPointsEnchainement();
+			Selection sel=MasterFrameManager.getSelection();
+			ChainingPoint selected=null;
+			if (sel != null && sel.getKind()==SelectionKind.CHAININGPOINT) {
+				selected=((ChainingPointSelection) sel).getPoint();
+			}
+			Vector4f col=colChainingPointSelected;
+			col.w=sin;
+			for (ChainingPoint ch : chaining) {
+				Zone p=ch.getZone();
+			    ortho.boxv(p.x1 * 16 - shift.x, p.y1 * 16 - shift.y, 
+			    		   p.x2,                p.y2, 0, colChainingPoint);
+				if (selected != null && selected ==ch) {
+					ortho.enableBlend();
+				    ortho.box(p.x1 * 16 - shift.x+1, p.y1 * 16 - shift.y+1, 
+				    		  p.x2-2,                p.y2-2, 0, col);
+				    ortho.disableBlend();
+				}
+			}
 
+			
 			// Draw rectangle
 			if (cursorLocation != null) {
 			    Point start = cursorLocation;
@@ -159,16 +197,10 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 					size.y-=startBlock.y;
 					size.translate(-camera.x, -camera.y);
 			    }
-			    ortho.boxv(start.x, start.y, size.x, size.y, 0, new Vector4f(1, 1, 1, 1));
+			    ortho.boxv(start.x, start.y, size.x, size.y, 0, colCursor);
 			}
+
 			
-			// Draw chaining points
-			List<Zone> zones=panel.getChainingPoints();
-			Point shift=panel.getPosition();
-			for (Zone p : zones) {
-			    ortho.boxv(p.x1 * 16 - shift.x, p.y1 * 16 - shift.y, 
-			    		   p.x2,                p.y2, 0, new Vector4f(0.8f, 0.7f, 0.8f, 1));
-			}
 			swapBuffers();
 		} catch (LWJGLException lwjgle) {
 			// should not happen

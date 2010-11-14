@@ -26,12 +26,15 @@ import java.util.List;
 
 import org.lwjgl.LWJGLException;
 
+import zeditor.core.ChainingPointSelection;
 import zeditor.core.Selection;
 import zeditor.core.tiles.TileSelection;
 import zeditor.windows.managers.MasterFrameManager;
+import zeditor.windows.subpanels.SelectionKind;
 import zildo.client.ZildoRenderer;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
+import zildo.monde.map.ChainingPoint;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 
@@ -64,7 +67,15 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		// Get brush
 		Selection sel = MasterFrameManager.getSelection();
 		if (sel != null) {
-			drawBrush(p, (TileSelection) sel);
+			SelectionKind kind=sel.getKind();
+			switch (kind) {
+				case TILES:
+				case PREFETCH:
+					drawBrush(p, (TileSelection) sel);
+					break;
+				case CHAININGPOINT:
+					moveChainingPoint(p, (ChainingPointSelection) sel);
+			}
 		}
 	}
 
@@ -175,5 +186,11 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 */
 	public void setCursorSize(int x, int y) {
 		cursorSize = new Point(x * 16, y * 16);
+	}
+	
+	private void moveChainingPoint(Point p_point, ChainingPointSelection p_sel) {
+		ChainingPoint ch=p_sel.getPoint();
+		ch.setPx((short) (p_point.x / 16));
+		ch.setPy((short) (p_point.y / 16));
 	}
 }

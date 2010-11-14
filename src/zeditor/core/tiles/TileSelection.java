@@ -2,7 +2,8 @@ package zeditor.core.tiles;
 
 import java.util.List;
 
-import zeditor.core.Selection;
+import zeditor.core.CaseSelection;
+import zeditor.windows.subpanels.SelectionKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
@@ -11,7 +12,7 @@ import zildo.monde.map.Point;
  * Cette classe représente une sélection du TileSet. Elle est composée de :
  * <p>
  * <ul>
- * <li>La liste des éléments sélectionnés héritée de la classe {@link Selection}
+ * <li>La liste des éléments sélectionnés héritée de la classe {@link CaseSelection}
  * </li>
  * <li>La largeur de la sélection en nombre de cases</li>
  * <li>La hauteur de la sélection en nombre de cases</li>
@@ -56,7 +57,7 @@ import zildo.monde.map.Point;
  * @author Drakulo
  * 
  */
-public class TileSelection extends Selection {
+public class TileSelection extends CaseSelection {
     /**
      * Largeur de la sélection en nombre de cases
      */
@@ -104,6 +105,10 @@ public class TileSelection extends Selection {
 	height = h;
     }
 
+    public SelectionKind getKind() {
+    	return SelectionKind.TILES;
+    }
+    
     /**
      * Surcharge de la méthode toString afin de renvoyer une chaine contenant
      * tous les items séparés par des virgules sans afficher les tiles non

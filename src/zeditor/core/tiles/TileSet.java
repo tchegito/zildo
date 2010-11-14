@@ -50,22 +50,20 @@ public class TileSet extends JPanel {
     private Integer tileHeight;
     private TileSelection currentSelection;
 
+    private MasterFrameManager manager;
+    
     boolean blockSet=false;    // If we are on a map region selected by user
-   
-    /**
-     * Constructeur vide
-     */
-    public TileSet() {
-    	tiles=new HashMap<String, Image>();
-    }
 
     /**
      * Constructeur avec paramètres
      * @param p_tileName : Nom du set de tuiles en cours
      * @author Drakulo
      */
-    public TileSet(String p_tileName) {
-    	this();
+    public TileSet(String p_tileName, MasterFrameManager p_manager) {
+    	tiles=new HashMap<String, Image>();
+    	
+    	manager=p_manager;
+    	
         // Définition du layout afin d'afficher le Tile en haut du conteneur
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -481,7 +479,7 @@ public class TileSet extends JPanel {
             height ++;
         }
         currentSelection = new TileSelection(width, height, list);
-        MasterFrameManager.setCurrentSelection(currentSelection);
+        manager.setCaseSelection(currentSelection);
     }
    
     public void buildSelection(int width, int height, List<Case> p_cases) {
