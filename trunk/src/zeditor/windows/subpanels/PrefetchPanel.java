@@ -70,7 +70,7 @@ public class PrefetchPanel extends JPanel {
 	
 						int ind=prefetchList.getSelectedIndex();
 				        if (ind != -1) {
-							manager.setCurrentSelection(new PrefetchSelection(Prefetch.fromInt(ind)));
+							manager.setCaseSelection(new PrefetchSelection(Prefetch.fromInt(ind)));
 				        }
 				    }
 				}

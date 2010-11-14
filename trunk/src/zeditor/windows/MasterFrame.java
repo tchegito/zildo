@@ -585,7 +585,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 	public TileSet getTileSetPanel() {
 		if (tileSetPanel == null) {
-			tileSetPanel = new TileSet("");
+			tileSetPanel = new TileSet("", getManager());
 		}
 		return tileSetPanel;
 	}

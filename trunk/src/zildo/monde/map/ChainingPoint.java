@@ -160,15 +160,51 @@ public class ChainingPoint {
 	public boolean isBorder() {
 		return py > 127;
 	}
+		
+	public void setVertical(boolean verti) {
+		px=(short) (px & 127);
+		if (verti) {
+			px=(short) (px+128);
+		}
+	}
 	
 	public boolean isVertical() {
 		return px > 127;
 	}
+
+	public void setBorder(boolean border) {
+		py=(short) (py & 127);
+		if (border) {
+			py=(short) (py+128);
+		}
+	}
 	
 	@Override
 	public String toString() {
-		StringBuffer sb=new StringBuffer();
-		sb.append("Map="+mapname+"\npx="+px+"\npy="+py);
-		return sb.toString();
+		return mapname;
+	}
+	
+	/**
+	 * Get the range in pixel coordiantes taken for the point.
+	 * @return
+	 */
+	public Zone getZone() {
+		Area map=EngineZildo.mapManagement.getCurrentMap();
+		Point p1=new Point(px & 63, py & 63);
+		Point p2=new Point(32, 16);
+		if (isBorder()) {
+			if (p1.x == 0 || p1.x == map.getDim_x()-1) {
+				p1.y=0;
+				p2.y=map.getDim_y()*16;
+				p2.x=16;
+			} else {
+				p1.x=0;
+				p2.x=map.getDim_x()*16;
+			}
+		} else if (isVertical()) {
+			p2.x=16;
+			p2.y=32;
+		}
+		return new Zone(p1.x, p1.y, p2.x, p2.y);		
 	}
 }

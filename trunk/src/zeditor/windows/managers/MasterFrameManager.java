@@ -12,7 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
+import zeditor.core.ChainingPointSelection;
 import zeditor.core.Options;
+import zeditor.core.CaseSelection;
 import zeditor.core.Selection;
 import zeditor.core.exceptions.ZeditorException;
 import zeditor.core.prefetch.Prefetch;
@@ -22,6 +24,7 @@ import zeditor.helpers.OptionHelper;
 import zeditor.windows.ExplorerFrame;
 import zeditor.windows.MasterFrame;
 import zeditor.windows.OptionsFrame;
+import zeditor.windows.subpanels.SelectionKind;
 import zildo.fwk.awt.ZildoCanvas;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
@@ -44,7 +47,6 @@ public class MasterFrameManager {
 	private static ZildoCanvas zildoCanvas;
 
 	private static Selection currentSelection;
-	private static ChainingPoint chPointSelection;
 	
 	private String currentMapFile;
 
@@ -211,16 +213,16 @@ public class MasterFrameManager {
 		return Prefetch.getNames();
 	}
 	
-	public Object[] getChainingPointsForCombo() {
+	public ChainingPoint[] getChainingPointsForCombo() {
 		if (EngineZildo.mapManagement == null) {
-			return new Object[]{};
+			return new ChainingPoint[]{};
 		}
-		List<String> names=new ArrayList<String>();
+		List<ChainingPoint> names=new ArrayList<ChainingPoint>();
 		List<ChainingPoint> points=EngineZildo.mapManagement.getCurrentMap().getListPointsEnchainement();
 		for (ChainingPoint chp : points) {
-			names.add(chp.getMapname());
+			names.add(chp);
 		}
-		return names.toArray(new String[]{});
+		return names.toArray(new ChainingPoint[]{});
 	}
 	
 	/**
@@ -419,11 +421,16 @@ public class MasterFrameManager {
 
 	public static Selection getSelection() {
 		int sel=masterFrame.getTabsPane().getSelectedIndex();
-		switch (sel) {
-		case 0: // tiles
-			return tileSet.getCurrentSelection();
-		case 1:	// prefetch
-			return currentSelection;
+		SelectionKind kind=SelectionKind.fromInt(sel);
+		if (kind != null) {
+			switch (kind) {
+			case TILES: 
+				return tileSet.getCurrentSelection();
+			case PREFETCH:	
+				return currentSelection;
+			case CHAININGPOINT: 
+				return currentSelection;
+			}
 		}
 		return null;
 	}
@@ -443,7 +450,7 @@ public class MasterFrameManager {
 		}
 	}
 
-	public static void setCurrentSelection(Selection p_currentSelection) {
+	public void setCaseSelection(CaseSelection p_currentSelection) {
 		currentSelection = p_currentSelection;
 		if (currentSelection instanceof TileSelection) {
 			TileSelection tileSel=(TileSelection) currentSelection;
@@ -451,7 +458,7 @@ public class MasterFrameManager {
 		}
 	}
 	
-	public void setChainingPointSelection(ChainingPoint p_chPoint) {
-		chPointSelection=p_chPoint;
+	public void setChainingPointSelection(ChainingPointSelection p_currentSelection) {
+		currentSelection=p_currentSelection;
 	}
 }
