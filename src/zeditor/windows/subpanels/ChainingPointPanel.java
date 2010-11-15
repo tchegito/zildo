@@ -112,7 +112,6 @@ public class ChainingPointPanel extends JPanel {
 		// Set buttons
     	TableColumn buttonColumn = pointsList.getColumnModel().getColumn(3);
     	buttonColumn.setCellRenderer(new ChainingPointCellRenderer(new AbstractAction("X", null) {
-    		@Override
     		public void actionPerformed(ActionEvent e) {
     			// Remove chaining point and update list
     			ChainingPoint ch=getSelectedPoint();
@@ -123,7 +122,6 @@ public class ChainingPointPanel extends JPanel {
 
     	buttonColumn = pointsList.getColumnModel().getColumn(4);
     	buttonColumn.setCellRenderer(new ChainingPointCellRenderer(new AbstractAction("Go", null) {
-    		@Override
     		public void actionPerformed(ActionEvent e) {
     			ChainingPoint ch=getSelectedPoint();
     			manager.loadMap(ch.getMapname());
@@ -152,7 +150,6 @@ public class ChainingPointPanel extends JPanel {
 			setEnabled(true);
 		}
 
-		@Override
 		public Component getTableCellRendererComponent(JTable jtable,
 				Object obj, boolean isSelected, boolean isFocus, int i, int j) {
 			if (isSelected && isFocus) {
@@ -200,7 +197,6 @@ public class ChainingPointPanel extends JPanel {
         	points=data;
         	
         	addTableModelListener(new TableModelListener() {
-        		@Override
         		public void tableChanged(TableModelEvent e) {
         			int col=e.getColumn();
         			int row=e.getFirstRow();

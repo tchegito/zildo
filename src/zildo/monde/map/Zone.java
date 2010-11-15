@@ -79,4 +79,14 @@ public class Zone {
 		this.y1=y1;
 		this.y2=y2;
 	}
+	
+	/**
+	 * Return TRUE if given point is into the zone. We assume that x2 and y2 are the width/height of the zone.
+	 * @param px
+	 * @param py
+	 * @return boolean
+	 */
+	public boolean isInto(int px, int py) {
+	    return px > x1 && py > y1 && px <= (x1+x2) && py <= (y1+y2);
+	}
 }
