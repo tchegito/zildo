@@ -12,9 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
+import zeditor.core.CaseSelection;
 import zeditor.core.ChainingPointSelection;
 import zeditor.core.Options;
-import zeditor.core.CaseSelection;
 import zeditor.core.Selection;
 import zeditor.core.exceptions.ZeditorException;
 import zeditor.core.prefetch.Prefetch;
@@ -419,9 +419,14 @@ public class MasterFrameManager {
 		changeTileSet(backgroundCombo.getSelectedItem().toString());
 	}
 
-	public static Selection getSelection() {
+	public static SelectionKind getSelectionKind() {
 		int sel=masterFrame.getTabsPane().getSelectedIndex();
 		SelectionKind kind=SelectionKind.fromInt(sel);
+		return kind;
+	}
+	
+	public static Selection getSelection() {
+		SelectionKind kind=getSelectionKind();
 		if (kind != null) {
 			switch (kind) {
 			case TILES: 
@@ -450,7 +455,7 @@ public class MasterFrameManager {
 		}
 	}
 
-	public void setCaseSelection(CaseSelection p_currentSelection) {
+	public static void setCaseSelection(CaseSelection p_currentSelection) {
 		currentSelection = p_currentSelection;
 		if (currentSelection instanceof TileSelection) {
 			TileSelection tileSel=(TileSelection) currentSelection;
@@ -458,7 +463,7 @@ public class MasterFrameManager {
 		}
 	}
 	
-	public void setChainingPointSelection(ChainingPointSelection p_currentSelection) {
+	public static void setChainingPointSelection(ChainingPointSelection p_currentSelection) {
 		currentSelection=p_currentSelection;
 	}
 }

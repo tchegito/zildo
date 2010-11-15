@@ -35,6 +35,7 @@ import zildo.client.ZildoRenderer;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.map.Zone;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 
@@ -188,9 +189,31 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		cursorSize = new Point(x * 16, y * 16);
 	}
 	
+	/**
+	 * Change the location of a chaining point
+	 * @param p_point
+	 * @param p_sel
+	 */
 	private void moveChainingPoint(Point p_point, ChainingPointSelection p_sel) {
 		ChainingPoint ch=p_sel.getPoint();
 		ch.setPx((short) (p_point.x / 16));
 		ch.setPy((short) (p_point.y / 16));
+	}
+	
+	public Selection getObjectOnCursor(Point p) {
+	    SelectionKind kind =MasterFrameManager.getSelectionKind();
+	    switch (kind) {
+	    case CHAININGPOINT:
+		List<ChainingPoint> points=EngineZildo.mapManagement.getCurrentMap().getListPointsEnchainement();
+		for (ChainingPoint ch : points) {
+		    Zone z=ch.getZone();
+		    if (z.isInto(p.x / 16, p.y / 16)) {
+			MasterFrameManager.setChainingPointSelection(new ChainingPointSelection(ch));
+			return null;
+		    }
+		}
+		default:
+		    return null;
+	    }
 	}
 }

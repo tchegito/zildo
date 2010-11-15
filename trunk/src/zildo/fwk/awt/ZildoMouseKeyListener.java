@@ -157,6 +157,8 @@ public class ZildoMouseKeyListener
 		MasterFrameManager.display(message.toString(),
 				MasterFrameManager.MESSAGE_INFO);
 
+		canvas.getObjectOnCursor(p);
+		
 		// Store the cursor location
 		p = getInsidePosition(mouseevent);
 		canvas.cursorLocation = p;

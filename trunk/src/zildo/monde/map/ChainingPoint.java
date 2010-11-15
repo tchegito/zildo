@@ -191,19 +191,19 @@ public class ChainingPoint {
 	public Zone getZone() {
 		Area map=EngineZildo.mapManagement.getCurrentMap();
 		Point p1=new Point(px & 63, py & 63);
-		Point p2=new Point(32, 16);
+		Point p2=new Point(2, 1);
 		if (isBorder()) {
 			if (p1.x == 0 || p1.x == map.getDim_x()-1) {
 				p1.y=0;
-				p2.y=map.getDim_y()*16;
-				p2.x=16;
+				p2.y=map.getDim_y();
+				p2.x=1;
 			} else {
 				p1.x=0;
-				p2.x=map.getDim_x()*16;
+				p2.x=map.getDim_x();
 			}
 		} else if (isVertical()) {
-			p2.x=16;
-			p2.y=32;
+			p2.x=1;
+			p2.y=2;
 		}
 		return new Zone(p1.x, p1.y, p2.x, p2.y);		
 	}

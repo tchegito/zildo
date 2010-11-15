@@ -171,11 +171,11 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			for (ChainingPoint ch : chaining) {
 				Zone p=ch.getZone();
 			    ortho.boxv(p.x1 * 16 - shift.x, p.y1 * 16 - shift.y, 
-			    		   p.x2,                p.y2, 0, colChainingPoint);
+			    		   p.x2*16,                p.y2*16, 0, colChainingPoint);
 				if (selected != null && selected ==ch) {
 					ortho.enableBlend();
 				    ortho.box(p.x1 * 16 - shift.x+1, p.y1 * 16 - shift.y+1, 
-				    		  p.x2-2,                p.y2-2, 0, col);
+				    		  p.x2*16-2,                p.y2*16-2, 0, col);
 				    ortho.disableBlend();
 				}
 			}
