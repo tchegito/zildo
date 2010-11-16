@@ -464,6 +464,10 @@ public class MasterFrameManager {
 	}
 	
 	public static void setChainingPointSelection(ChainingPointSelection p_currentSelection) {
+	    if (currentSelection == null || !p_currentSelection.equals(currentSelection)) {
+		// Chaining point changes : we hava to update the list
+		masterFrame.getChainingPointPanel().focusPoint(p_currentSelection.getPoint());
 		currentSelection=p_currentSelection;
+	    }
 	}
 }
