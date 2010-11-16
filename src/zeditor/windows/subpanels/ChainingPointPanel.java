@@ -56,6 +56,7 @@ public class ChainingPointPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -7870707104640951490L;
 	JTable pointsList;
+	ChainingPointTableModel model;
 	private final String[] columnNames=new String[]{"Carte", "Vertical", "Bord", "", ""};
 	private final int[] columnSizes={80, 40, 40, 60, 60};
 	
@@ -94,10 +95,20 @@ public class ChainingPointPanel extends JPanel {
 		return pointsList;
 	}
 	
+	public void focusPoint(ChainingPoint p_point) {
+	    // Find the nth line
+	    for (int i=0;i<model.getRowCount();i++) {
+		ChainingPoint c=model.getNthRow(i);
+		if (c == p_point) {
+		    pointsList.changeSelection(i, 0, false, false);
+		    return;
+		}
+	    }
+	}
+	
 	private ChainingPoint getSelectedPoint() {
 		int ind=pointsList.getSelectedRow();
         if (ind != -1) {
-        	ChainingPointTableModel model=(ChainingPointTableModel) pointsList.getModel();
 			return model.getNthRow(ind);
         }
         return null;
@@ -107,7 +118,8 @@ public class ChainingPointPanel extends JPanel {
 	public void updateList(ChainingPoint[] p_points) {
 
 		// Set the model
-		pointsList.setModel(new ChainingPointTableModel(p_points, columnNames));
+	    	model=new ChainingPointTableModel(p_points, columnNames);
+		pointsList.setModel(model);
 		
 		// Set buttons
     	TableColumn buttonColumn = pointsList.getColumnModel().getColumn(3);
