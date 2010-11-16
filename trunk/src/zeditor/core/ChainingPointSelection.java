@@ -42,4 +42,17 @@ public class ChainingPointSelection extends Selection {
     public ChainingPoint getPoint() {
     	return ch;
     }
+    
+    /**
+     * Consider that :<ul>
+     * <li>Selection has ALWAYS a chaining point</li>
+     * <li>Two selection are equals if and only if its have the same point</li>
+     * </ul>
+     * {@inheritDoc}
+     */
+    public boolean equals(Object p_obj) {
+	ChainingPointSelection p=(ChainingPointSelection) p_obj;
+	return p.getPoint().equals(getPoint());
+	
+    }
 }
