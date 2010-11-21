@@ -28,7 +28,9 @@ import zeditor.core.Options;
 import zeditor.core.tiles.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zeditor.windows.subpanels.ChainingPointPanel;
+import zeditor.windows.subpanels.PersoPanel;
 import zeditor.windows.subpanels.PrefetchPanel;
+import zeditor.windows.subpanels.SpritePanel;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.awt.ZildoScrollablePanel;
 
@@ -70,8 +72,8 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JLabel systemLabel;
 	private JPanel systemPanel;
 	private JPanel rightPanel;
-	private JPanel charactersPanel;
-	private JPanel spritePanel;
+	private PersoPanel persoPanel;
+	private SpritePanel spritePanel;
 	public TileSet tileSetPanel;
 	private JScrollPane backgroundScroll;
 	private JComboBox backgroundCombo;
@@ -534,7 +536,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			tabsPane.addTab("Décors", null, getBackgroundPanel(), null);
 			tabsPane.addTab("Prefetch", null, getPrefetchPanel(), null);
 			tabsPane.addTab("Sprites", null, getSpritePanel(), null);
-			tabsPane.addTab("Personnages", null, getCharactersPanel(), null);
+			tabsPane.addTab("Personnages", null, getPersoPanel(), null);
 			tabsPane.addTab("Enchainements", null, getChainingPointPanel(), null);
 		}
 		return tabsPane;
@@ -585,21 +587,21 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 	public TileSet getTileSetPanel() {
 		if (tileSetPanel == null) {
-			tileSetPanel = new TileSet("", getManager());
+			tileSetPanel = new TileSet("", manager);
 		}
 		return tileSetPanel;
 	}
-	private JPanel getSpritePanel() {
+	public SpritePanel getSpritePanel() {
 		if (spritePanel == null) {
-			spritePanel = new JPanel();
+			spritePanel = new SpritePanel(manager);
 		}
 		return spritePanel;
 	}
-	private JPanel getCharactersPanel() {
-		if (charactersPanel == null) {
-			charactersPanel = new JPanel();
+	public PersoPanel getPersoPanel() {
+		if (persoPanel == null) {
+			persoPanel = new PersoPanel(manager);
 		}
-		return charactersPanel;
+		return persoPanel;
 	}
 	private JPanel getRightPanel() {
 		if (rightPanel == null) {

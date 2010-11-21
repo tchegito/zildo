@@ -18,15 +18,30 @@
  *
  */
 
-package zeditor.core;
+package zeditor.core.selection;
 
 import zeditor.windows.subpanels.SelectionKind;
+import zildo.monde.map.ChainingPoint;
 
 /**
  * @author Tchegito
  *
  */
-public abstract class Selection {
+public class ChainingPointSelection extends Selection {
 
-	public abstract SelectionKind getKind();
+	ChainingPoint ch;
+	
+	public ChainingPointSelection(ChainingPoint p_ch) {
+		ch=p_ch;
+	}
+	
+    public SelectionKind getKind() {
+    	return SelectionKind.CHAININGPOINT;
+    }
+    
+    public ChainingPoint getElement() {
+    	return ch;
+    }
+    
+
 }

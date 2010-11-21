@@ -18,41 +18,22 @@
  *
  */
 
-package zeditor.core;
+package zildo.fwk.gfx.filter;
 
-import zeditor.windows.subpanels.SelectionKind;
-import zildo.monde.map.ChainingPoint;
+import org.lwjgl.opengl.GL11;
 
-/**
- * @author Tchegito
- *
- */
-public class ChainingPointSelection extends Selection {
+public class FadeFilter extends ScreenFilter {
 
-	ChainingPoint ch;
 	
-	public ChainingPointSelection(ChainingPoint p_ch) {
-		ch=p_ch;
+	@Override
+	public boolean renderFilter()
+	{
+		return true;
 	}
 	
-    public SelectionKind getKind() {
-    	return SelectionKind.CHAININGPOINT;
-    }
-    
-    public ChainingPoint getPoint() {
-    	return ch;
-    }
-    
-    /**
-     * Consider that :<ul>
-     * <li>Selection has ALWAYS a chaining point</li>
-     * <li>Two selection are equals if and only if its have the same point</li>
-     * </ul>
-     * {@inheritDoc}
-     */
-    public boolean equals(Object p_obj) {
-	ChainingPointSelection p=(ChainingPointSelection) p_obj;
-	return p.getPoint().equals(getPoint());
-	
-    }
+	@Override
+	public void preFilter() {
+		float coeff=1.0f - (getFadeLevel() / 256.0f);
+		GL11.glColor4f(coeff, coeff, coeff, 1.0f);
+	}
 }

@@ -1,4 +1,4 @@
-package zeditor.core;
+package zeditor.core.selection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,15 +42,6 @@ public abstract class CaseSelection extends Selection {
 	}
 
 	/**
-	 * Getter de la liste d'éléments
-	 * 
-	 * @return La liste des items
-	 */
-	public List<Case> getItems() {
-		return items;
-	}
-
-	/**
 	 * Setter de la liste d'éléments
 	 * 
 	 * @param l
@@ -60,19 +51,5 @@ public abstract class CaseSelection extends Selection {
 		items = l;
 	}
 
-	/**
-	 * Récupère un élément de la sélection
-	 * 
-	 * @param Index
-	 *            est l'index de l'élément à récupérer dans la liste
-	 * @return la valeur de l'élément
-	 */
-	public Case getItem(Integer index) {
-		if (index > items.size()) {
-			return null;
-		} else {
-			return items.get(index);
-		}
-	}
 
 }

@@ -26,16 +26,21 @@ import java.util.List;
 
 import org.lwjgl.LWJGLException;
 
-import zeditor.core.ChainingPointSelection;
-import zeditor.core.Selection;
+import zeditor.core.selection.ChainingPointSelection;
+import zeditor.core.selection.PersoSelection;
+import zeditor.core.selection.Selection;
+import zeditor.core.selection.SpriteSelection;
 import zeditor.core.tiles.TileSelection;
 import zeditor.windows.managers.MasterFrameManager;
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.client.ZildoRenderer;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Zone;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 
@@ -63,10 +68,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		ZildoRenderer renderer = new ZildoRenderer(p_mapname);
 		setRenderer(renderer);
 	}
-
+	
 	public void applyBrush(Point p) {
 		// Get brush
-		Selection sel = MasterFrameManager.getSelection();
+		Selection sel = manager.getSelection();
 		if (sel != null) {
 			SelectionKind kind=sel.getKind();
 			switch (kind) {
@@ -87,7 +92,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	}
 
 	public void endBrush() {
-		Selection sel = MasterFrameManager.getSelection();
+		Selection sel = manager.getSelection();
 		if (sel != null && sel instanceof TileSelection) {
 			((TileSelection)sel).finalizeDraw();
 		}
@@ -97,7 +102,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 * @param p
 	 */
 	public void clearWithBrush(Point p) {
-		Selection sel = MasterFrameManager.getSelection();
+		Selection sel = manager.getSelection();
 		Point size;
 		if (sel != null && sel instanceof TileSelection) {
 			TileSelection tileSel=(TileSelection) sel;
@@ -195,25 +200,55 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 * @param p_sel
 	 */
 	private void moveChainingPoint(Point p_point, ChainingPointSelection p_sel) {
-		ChainingPoint ch=p_sel.getPoint();
+		ChainingPoint ch=p_sel.getElement();
 		ch.setPx((short) (p_point.x / 16));
 		ch.setPy((short) (p_point.y / 16));
 	}
 	
-	public Selection getObjectOnCursor(Point p) {
-	    SelectionKind kind =MasterFrameManager.getSelectionKind();
+	public void setObjectOnCursor(Point p) {
+	    SelectionKind kind =manager.getSelectionKind();
 	    switch (kind) {
 	    case CHAININGPOINT:
-		List<ChainingPoint> points=EngineZildo.mapManagement.getCurrentMap().getListPointsEnchainement();
-		for (ChainingPoint ch : points) {
-		    Zone z=ch.getZone();
-		    if (z.isInto(p.x / 16, p.y / 16)) {
-			MasterFrameManager.setChainingPointSelection(new ChainingPointSelection(ch));
-			return null;
-		    }
-		}
+			List<ChainingPoint> points=EngineZildo.mapManagement.getCurrentMap().getListPointsEnchainement();
+			for (ChainingPoint ch : points) {
+			    Zone z=ch.getZone();
+			    if (z.isInto(p.x, p.y)) {
+			    	manager.setChainingPointSelection(new ChainingPointSelection(ch));
+			    	return;
+			    }
+			}
+			break;
+	    case SPRITES:
+	    case PERSOS:
+	    	SpriteEntity entity=findEntity(kind, p);
+	    	if (entity != null) {
+		    	if (kind == SelectionKind.SPRITES) {
+		    		manager.setSpriteSelection(new SpriteSelection(entity));
+		    	} else {
+			    	manager.setPersoSelection(new PersoSelection((Perso) entity));
+		    	}
+				entity.setSpecialEffect(EngineFX.PERSO_HURT);
+	    	}
+	    	break;
 		default:
-		    return null;
 	    }
+	}
+	
+	private SpriteEntity findEntity(SelectionKind p_kind, Point p) {
+    	List<SpriteEntity> sprites=EngineZildo.spriteManagement.getSpriteEntities(null);
+    	Point camera=panel.getPosition();
+    	p.x-=camera.x;
+    	p.y-=camera.y;
+    	for (SpriteEntity entity : sprites) {
+    		int typ=entity.getEntityType();
+    		if ((typ == SpriteEntity.ENTITYTYPE_PERSO && p_kind == SelectionKind.PERSOS) || 
+    			(typ != SpriteEntity.ENTITYTYPE_PERSO && p_kind == SelectionKind.SPRITES)) {
+	    		Zone z=entity.getZone();
+	    		if (z.isInto(p.x, p.y)) {
+	    			return entity;
+	    		}
+    		}
+    	}
+    	return null;
 	}
 }

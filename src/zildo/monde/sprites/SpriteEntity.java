@@ -24,6 +24,7 @@ import zildo.fwk.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.monde.map.Zone;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.Sprite;
@@ -364,5 +365,10 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
     	StringBuffer sb=new StringBuffer();
     	sb.append("Entity id="+id+"\nx="+x+"\ny="+y+"\nnSpr="+nSpr+"\nvisible="+visible);
     	return sb.toString();
+    }
+    
+    public Zone getZone() {
+    	Zone z=new Zone(scrX, scrY, sprModel.getTaille_x(), sprModel.getTaille_y());
+    	return z;
     }
 }

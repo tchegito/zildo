@@ -21,6 +21,7 @@
 package zildo.monde.map;
 
 
+
 public enum Angle {
 
 	NORD(0, new Point(0,-1)),
