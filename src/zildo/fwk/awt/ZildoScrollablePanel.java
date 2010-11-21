@@ -90,6 +90,11 @@ public class ZildoScrollablePanel extends JPanel {
 		int y=vertical.getValue();
 		return new java.awt.Point(x,y);
 	}
+	
+	public void setPosition(java.awt.Point p_point) {
+		horizontal.setValue(p_point.x);
+		vertical.setValue(p_point.y);
+	}
 
 	public java.awt.Point getCameraTranslation() {
 		java.awt.Point camera=getPosition();
@@ -128,6 +133,13 @@ public class ZildoScrollablePanel extends JPanel {
 		
 		@Override
 		public void setValue(int val) {
+			int max=getMaximum() - getVisibleAmount();
+			if (val > max) {
+				val=max;
+			}
+			if (val < 0) {
+				val=0;
+			}
 			if (val >= 0 && val <= (getMaximum() - getVisibleAmount())) {
 				Point p=ClientEngineZildo.mapDisplay.getCamera();
 				if (orientation == JScrollBar.HORIZONTAL) {

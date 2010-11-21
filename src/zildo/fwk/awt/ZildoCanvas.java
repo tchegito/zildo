@@ -171,10 +171,32 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		map.saveMapFile(fileName + ".map");
 	}
 
-	public void loadMap(String p_mapName) {
-		MapManagement map = EngineZildo.mapManagement;
-		map.charge_map(p_mapName);
+	/**
+	 * Ask the server side to load the given map. If we come from a chaining point, then we return the
+	 * target point.
+	 * @param p_mapName
+	 * @param p_fromChangingPoint (optional)
+	 * @return ChainingPoint
+	 */
+	public ChainingPoint loadMap(String p_mapName, ChainingPoint p_fromChangingPoint) {
+		MapManagement mapManagement = EngineZildo.mapManagement;
+		String previousMapName=mapManagement.getCurrentMap().getName();
+		mapManagement.charge_map(p_mapName);
 		changeMap = true;
+		Point p=new Point(0, 0);
+		ChainingPoint ch=null;
+		if (p_fromChangingPoint != null) {
+			ch=mapManagement.getCurrentMap().getTarget(previousMapName, 0, 0);
+			if (ch != null) {
+				Zone z=ch.getZone();
+				p.x=z.x1 - ZildoScrollablePanel.viewSizeX / 2;
+				p.y=z.y1 - ZildoScrollablePanel.viewSizeY / 2;
+				System.out.println(p.x+" "+p.y);
+			}
+		}
+		panel.setPosition(p);
+		
+		return ch;
 	}
 	
 	public void clearMap() {

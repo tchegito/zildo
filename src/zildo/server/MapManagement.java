@@ -99,8 +99,10 @@ public class MapManagement {
         String adjustedMapName = EngineZildo.scriptManagement.getReplacedMapName(mapname);
         
         // Trigger the location
-        TriggerElement trig=TriggerElement.createLocationTrigger(adjustedMapName);
-        EngineZildo.scriptManagement.trigger(trig);
+        if (!EngineZildo.game.editing) {
+        	TriggerElement trig=TriggerElement.createLocationTrigger(adjustedMapName);
+        	EngineZildo.scriptManagement.trigger(trig);
+        }
         
         // Misc
         if (EngineZildo.game.multiPlayer) {

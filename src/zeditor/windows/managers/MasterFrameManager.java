@@ -26,6 +26,7 @@ import zeditor.helpers.OptionHelper;
 import zeditor.windows.ExplorerFrame;
 import zeditor.windows.MasterFrame;
 import zeditor.windows.OptionsFrame;
+import zeditor.windows.subpanels.ChainingPointPanel;
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.fwk.awt.ZildoCanvas;
 import zildo.monde.map.Area;
@@ -91,7 +92,7 @@ public class MasterFrameManager {
 		});
 
 		updateTitle();
-		updateChainingPoints();
+		updateChainingPoints(null);
 		
 	}
 
@@ -142,15 +143,19 @@ public class MasterFrameManager {
 
 	}
 
-	public void loadMap(String p_mapName) {
+	public void loadMap(String p_mapName, ChainingPoint p_fromChainingPoint) {
 
 		display("Ouverture du fichier : " + p_mapName, MESSAGE_INFO);
-		zildoCanvas.loadMap(p_mapName);
-		display("Chargement effectué.", MESSAGE_INFO);
-		currentMapFile = p_mapName;
-		
-		updateTitle();
-		updateChainingPoints();
+		try {
+			ChainingPoint ch=zildoCanvas.loadMap(p_mapName, p_fromChainingPoint);
+			display("Chargement effectué.", MESSAGE_INFO);
+			currentMapFile = p_mapName;
+			
+			updateTitle();
+			updateChainingPoints(ch);
+		} catch (RuntimeException e) {
+			display("Probleme !", MESSAGE_ERROR);
+		}
 	}
 
 
@@ -167,8 +172,12 @@ public class MasterFrameManager {
 		masterFrame.setTitle(sb.toString());		
 	}
 	
-	public void updateChainingPoints() {
-		masterFrame.getChainingPointPanel().updateList(getChainingPointsForCombo());
+	public void updateChainingPoints(ChainingPoint p_ch) {
+		ChainingPointPanel chPanel=masterFrame.getChainingPointPanel();
+		chPanel.updateList(getChainingPointsForCombo());
+		if (p_ch != null) {
+			chPanel.focusPoint(p_ch);
+		}
 	}
 
 	/**
