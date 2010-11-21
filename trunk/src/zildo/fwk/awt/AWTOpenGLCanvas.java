@@ -16,8 +16,8 @@ import org.lwjgl.opengl.Drawable;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Vector4f;
 
-import zeditor.core.ChainingPointSelection;
-import zeditor.core.Selection;
+import zeditor.core.selection.ChainingPointSelection;
+import zeditor.core.selection.Selection;
 import zeditor.windows.managers.MasterFrameManager;
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.client.ClientEngineZildo;
@@ -45,6 +45,8 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	private boolean initialize = false;
 
 	protected ZildoScrollablePanel panel;
+	
+	MasterFrameManager manager;
 
 	protected Point cursorLocation;
 	protected Point cursorSize;
@@ -119,6 +121,10 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		this.renderer = renderable;
 	}
 
+	public void setManager(MasterFrameManager p_manager) {
+		manager=p_manager;
+	}
+	
 	@Override
 	public void paintGL() {
 		if (changeMap) {
@@ -161,21 +167,21 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			Point shift=panel.getPosition();
 			Area map=EngineZildo.mapManagement.getCurrentMap();
 			List<ChainingPoint> chaining=map.getListPointsEnchainement();
-			Selection sel=MasterFrameManager.getSelection();
+			Selection sel=manager.getSelection();
 			ChainingPoint selected=null;
 			if (sel != null && sel.getKind()==SelectionKind.CHAININGPOINT) {
-				selected=((ChainingPointSelection) sel).getPoint();
+				selected=((ChainingPointSelection) sel).getElement();
 			}
 			Vector4f col=colChainingPointSelected;
 			col.w=sin;
 			for (ChainingPoint ch : chaining) {
 				Zone p=ch.getZone();
-			    ortho.boxv(p.x1 * 16 - shift.x, p.y1 * 16 - shift.y, 
-			    		   p.x2*16,                p.y2*16, 0, colChainingPoint);
+			    ortho.boxv(p.x1 - shift.x, p.y1 - shift.y, 
+			    		   p.x2,                p.y2, 0, colChainingPoint);
 				if (selected != null && selected ==ch) {
 					ortho.enableBlend();
-				    ortho.box(p.x1 * 16 - shift.x+1, p.y1 * 16 - shift.y+1, 
-				    		  p.x2*16-2,                p.y2*16-2, 0, col);
+				    ortho.box(p.x1 - shift.x+1, p.y1 - shift.y+1, 
+				    		  p.x2-2,                p.y2-2, 0, col);
 				    ortho.disableBlend();
 				}
 			}

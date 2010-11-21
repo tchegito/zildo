@@ -539,10 +539,6 @@ public class Area implements EasySerializable {
 					spriteManagement.spawnSpriteGeneric(Element.SPR_FUMEE, j * 16, i * 16, 0, null);
 				}
 			}
-		/*
-		 * with spr do begin x:=j*16+16; y:=i*16+28; z:=16; vx:=0.3+random(5)*0.01;vy:=0;vz:=0; ax:=-0.01;ay:=0;az:=0.01+random(5)*0.001;
-		 * quelspr:=6; end; spawn_sprite(spr); end;
-		 */
 
 		// Les P.E
 		ChainingPoint pe;

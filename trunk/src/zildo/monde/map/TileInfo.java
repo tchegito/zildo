@@ -24,6 +24,9 @@ package zildo.monde.map;
 import zildo.monde.map.Angle;
 
 /**
+ * Class used by the collision engine.<br/>
+ * 
+ * It provides informations about blockable characteristics of a tile.
  * @author tchegito
  */
 public class TileInfo {

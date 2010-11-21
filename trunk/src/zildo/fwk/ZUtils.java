@@ -21,6 +21,8 @@
 package zildo.fwk;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
@@ -66,5 +68,20 @@ public class ZUtils {
 	 */
 	public static void setCurrentColor(float[] p_color) {
 		GL11.glColor4f(p_color[0], p_color[1], p_color[2], p_color[3]);		
+	}
+	
+	/**
+	 * Return an array of string, representing the text to be displayed in a combo, for a given enum type.
+	 * @param <T>
+	 * @param p_content
+	 * @return String[]
+	 */
+	public static <T extends Enum<T>>  String[] getValues(Class<T> p_content) {
+		List<String> str=new ArrayList<String>();
+		T[] enumConst=p_content.getEnumConstants();
+		for (T mvt : enumConst) {
+			str.add(mvt.name());
+		}
+		return str.toArray(new String[]{});
 	}
 }

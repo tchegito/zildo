@@ -2,7 +2,7 @@ package zeditor.core.tiles;
 
 import java.util.List;
 
-import zeditor.core.CaseSelection;
+import zeditor.core.selection.CaseSelection;
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
@@ -164,6 +164,9 @@ public class TileSelection extends CaseSelection {
 		}
     }
     
+    public List<Case> getElement() {
+    	return items;
+    }
 	
 	public void finalizeDraw() {}
 }

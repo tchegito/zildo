@@ -12,12 +12,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
-import zeditor.core.CaseSelection;
-import zeditor.core.ChainingPointSelection;
 import zeditor.core.Options;
-import zeditor.core.Selection;
 import zeditor.core.exceptions.ZeditorException;
 import zeditor.core.prefetch.Prefetch;
+import zeditor.core.selection.CaseSelection;
+import zeditor.core.selection.ChainingPointSelection;
+import zeditor.core.selection.PersoSelection;
+import zeditor.core.selection.Selection;
+import zeditor.core.selection.SpriteSelection;
 import zeditor.core.tiles.TileSelection;
 import zeditor.core.tiles.TileSet;
 import zeditor.helpers.OptionHelper;
@@ -79,6 +81,7 @@ public class MasterFrameManager {
 		masterFrame = p_frame;
 		backgroundCombo = p_backgroundCombo;
 		zildoCanvas = p_zildoCanvas;
+		zildoCanvas.setManager(this);
 		
 		//Make canvas get the focus whenever frame is activated.
 		masterFrame.addWindowFocusListener(new WindowAdapter() {
@@ -419,13 +422,13 @@ public class MasterFrameManager {
 		changeTileSet(backgroundCombo.getSelectedItem().toString());
 	}
 
-	public static SelectionKind getSelectionKind() {
+	public SelectionKind getSelectionKind() {
 		int sel=masterFrame.getTabsPane().getSelectedIndex();
 		SelectionKind kind=SelectionKind.fromInt(sel);
 		return kind;
 	}
 	
-	public static Selection getSelection() {
+	public Selection getSelection() {
 		SelectionKind kind=getSelectionKind();
 		if (kind != null) {
 			switch (kind) {
@@ -455,7 +458,7 @@ public class MasterFrameManager {
 		}
 	}
 
-	public static void setCaseSelection(CaseSelection p_currentSelection) {
+	public void setCaseSelection(CaseSelection p_currentSelection) {
 		currentSelection = p_currentSelection;
 		if (currentSelection instanceof TileSelection) {
 			TileSelection tileSel=(TileSelection) currentSelection;
@@ -463,11 +466,34 @@ public class MasterFrameManager {
 		}
 	}
 	
-	public static void setChainingPointSelection(ChainingPointSelection p_currentSelection) {
+	public void setChainingPointSelection(ChainingPointSelection p_currentSelection) {
 	    if (currentSelection == null || !p_currentSelection.equals(currentSelection)) {
 		// Chaining point changes : we hava to update the list
-		masterFrame.getChainingPointPanel().focusPoint(p_currentSelection.getPoint());
+		masterFrame.getChainingPointPanel().focusPoint(p_currentSelection.getElement());
 		currentSelection=p_currentSelection;
+	    }
+	}
+	
+	
+	public void setSpriteSelection(SpriteSelection p_currentSelection) {
+	    if (currentSelection == null || !p_currentSelection.equals(currentSelection)) {
+	    	if (currentSelection != null) {
+	    		currentSelection.unfocus();
+	    	}
+			// Chaining point changes : we hava to update the list
+			masterFrame.getSpritePanel().focusSprite(p_currentSelection.getElement());
+			currentSelection=p_currentSelection;
+	    }
+	}
+	
+	public void setPersoSelection(PersoSelection p_currentSelection) {
+	    if (currentSelection == null || !p_currentSelection.equals(currentSelection)) {
+	    	if (currentSelection != null) {
+	    		currentSelection.unfocus();
+	    	}
+			// Chaining point changes : we hava to update the list
+			masterFrame.getPersoPanel().focusPerso(p_currentSelection.getElement());
+			currentSelection=p_currentSelection;
 	    }
 	}
 }

@@ -205,6 +205,6 @@ public class ChainingPoint {
 			p2.x=1;
 			p2.y=2;
 		}
-		return new Zone(p1.x, p1.y, p2.x, p2.y);		
+		return new Zone(16*p1.x, 16*p1.y, 16*p2.x, 16*p2.y);		
 	}
 }

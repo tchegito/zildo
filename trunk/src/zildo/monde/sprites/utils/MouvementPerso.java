@@ -20,6 +20,7 @@
 
 package zildo.monde.sprites.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,5 +53,13 @@ public enum MouvementPerso {
 			}
 		}
 		throw new RuntimeException("Le script de mouvement "+a+" n'existe pas.");
+	}
+	
+	public static String[] getValues() {
+		List<String> str=new ArrayList<String>();
+		for (MouvementPerso mvt : values()) {
+			str.add(mvt.name());
+		}
+		return str.toArray(new String[]{});
 	}
 }

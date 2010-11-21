@@ -38,7 +38,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import zeditor.core.ChainingPointSelection;
+import zeditor.core.selection.ChainingPointSelection;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.monde.map.ChainingPoint;
 import zildo.server.EngineZildo;
@@ -98,11 +98,11 @@ public class ChainingPointPanel extends JPanel {
 	public void focusPoint(ChainingPoint p_point) {
 	    // Find the nth line
 	    for (int i=0;i<model.getRowCount();i++) {
-		ChainingPoint c=model.getNthRow(i);
-		if (c == p_point) {
-		    pointsList.changeSelection(i, 0, false, false);
-		    return;
-		}
+			ChainingPoint c=model.getNthRow(i);
+			if (c == p_point) {
+			    pointsList.changeSelection(i, 0, false, false);
+			    return;
+			}
 	    }
 	}
 	
