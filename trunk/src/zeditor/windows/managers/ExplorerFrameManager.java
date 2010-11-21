@@ -79,7 +79,7 @@ public class ExplorerFrameManager {
 			// TODO Fenêtre d'erreur
 			return;
 		}
-		parent.getManager().loadMap(f.getName());
+		parent.getManager().loadMap(f.getName(), null);
 		close();
 
 	}

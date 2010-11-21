@@ -49,12 +49,9 @@ import zildo.server.EngineZildo;
  * @author Tchegito
  *
  */
+@SuppressWarnings("serial")
 public class ChainingPointPanel extends JPanel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7870707104640951490L;
 	JTable pointsList;
 	ChainingPointTableModel model;
 	private final String[] columnNames=new String[]{"Carte", "Vertical", "Bord", "", ""};
@@ -67,6 +64,17 @@ public class ChainingPointPanel extends JPanel {
 		setLayout(chainingPointPanelLayout);
 		add(getCombo(), BorderLayout.WEST);
 		add(getCombo().getTableHeader(), BorderLayout.PAGE_START);
+		
+		JButton creer=new JButton(new AbstractAction("Créer un nouveau", null) {
+			@Override
+			public void actionPerformed(ActionEvent actionevent) {
+				ChainingPoint ch=new ChainingPoint();
+				ch.setMapname("nouveau");
+    			EngineZildo.mapManagement.getCurrentMap().addChainingPoint(ch);
+    			manager.updateChainingPoints(null);
+			}
+		});
+		add(creer, BorderLayout.SOUTH);
 		
 		manager=p_manager;
 
@@ -114,7 +122,6 @@ public class ChainingPointPanel extends JPanel {
         return null;
 	}
 	
-	@SuppressWarnings("serial")
 	public void updateList(ChainingPoint[] p_points) {
 
 		// Set the model
@@ -128,15 +135,16 @@ public class ChainingPointPanel extends JPanel {
     			// Remove chaining point and update list
     			ChainingPoint ch=getSelectedPoint();
     			EngineZildo.mapManagement.getCurrentMap().removeChainingPoint(ch);
-    			manager.updateChainingPoints();
+    			manager.updateChainingPoints(null);
     		}
     	}));
 
     	buttonColumn = pointsList.getColumnModel().getColumn(4);
     	buttonColumn.setCellRenderer(new ChainingPointCellRenderer(new AbstractAction("Go", null) {
     		public void actionPerformed(ActionEvent e) {
+    			// Load the map referred from this chaining point
     			ChainingPoint ch=getSelectedPoint();
-    			manager.loadMap(ch.getMapname());
+    			manager.loadMap(ch.getMapname(), ch);
     		}
     	}));
     	
@@ -153,7 +161,6 @@ public class ChainingPointPanel extends JPanel {
 	 * @author Tchegito
 	 *
 	 */
-	@SuppressWarnings("serial")
 	public class ChainingPointCellRenderer extends JButton implements TableCellRenderer {
 		
 		public ChainingPointCellRenderer(Action p_action) {
