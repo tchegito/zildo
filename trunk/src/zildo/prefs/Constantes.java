@@ -17,7 +17,7 @@ public class Constantes {
 
 	// File system data
 	// public static String DATA_PATH = "."+File.separator+"Data"+File.separator; // Pour livraison
-	public static String DATA_PATH = "C:\\Documents and Settings\\eboussaton\\Bureau\\Zildo\\Version 1.093\\Data\\";
+	public static String DATA_PATH = "C:\\Bazar\\Zildo\\Version 1.094Rominou\\Data\\";
 
 	public static String CONFIGURATION_FILE = "ini" + File.separator + "player.ini";
 	public static String SERVER_FILE = "ini" + File.separator + "servers.ini";

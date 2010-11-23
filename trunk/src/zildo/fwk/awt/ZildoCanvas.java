@@ -188,10 +188,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		if (p_fromChangingPoint != null) {
 			ch=mapManagement.getCurrentMap().getTarget(previousMapName, 0, 0);
 			if (ch != null) {
+			    	// Center view on the chaining point
 				Zone z=ch.getZone();
 				p.x=z.x1 - ZildoScrollablePanel.viewSizeX / 2;
 				p.y=z.y1 - ZildoScrollablePanel.viewSizeY / 2;
-				System.out.println(p.x+" "+p.y);
 			}
 		}
 		panel.setPosition(p);
