@@ -66,7 +66,6 @@ public class ChainingPointPanel extends JPanel {
 		add(getCombo().getTableHeader(), BorderLayout.PAGE_START);
 		
 		JButton creer=new JButton(new AbstractAction("Créer un nouveau", null) {
-			@Override
 			public void actionPerformed(ActionEvent actionevent) {
 				ChainingPoint ch=new ChainingPoint();
 				ch.setMapname("nouveau");

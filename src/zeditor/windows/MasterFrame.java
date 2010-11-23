@@ -6,17 +6,13 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
@@ -27,6 +23,7 @@ import javax.swing.WindowConstants;
 import zeditor.core.Options;
 import zeditor.core.tiles.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
+import zeditor.windows.subpanels.BackgroundPanel;
 import zeditor.windows.subpanels.ChainingPointPanel;
 import zeditor.windows.subpanels.PersoPanel;
 import zeditor.windows.subpanels.PrefetchPanel;
@@ -75,9 +72,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private PersoPanel persoPanel;
 	private SpritePanel spritePanel;
 	public TileSet tileSetPanel;
-	private JScrollPane backgroundScroll;
-	private JComboBox backgroundCombo;
-	private JPanel backgroundPanel;
+	private BackgroundPanel backgroundPanel;
 	private JPanel prefetchPanel;
 	private JPanel chainingPointPanel;
 	private JTabbedPane tabsPane;
@@ -216,18 +211,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		return manager;
 	}
 
-	private AbstractAction getActionChangeTileSet() {
-		if(actionChangeTileSet == null) {
-			actionChangeTileSet = new AbstractAction("Changer le TileSet", null) {
-				private static final long serialVersionUID = -7877935671989785646L;
 
-				public void actionPerformed(ActionEvent evt) {
-					manager.changeTileSet(backgroundCombo.getSelectedItem().toString());
-				}
-			};
-		}
-		return actionChangeTileSet;
-	}
 	private AbstractAction getActionOpenOptionsFrame() {
 		if(actionOpenOptionsFrame == null) {
 			actionOpenOptionsFrame = new AbstractAction("Options", null) {
@@ -541,13 +525,9 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return tabsPane;
 	}
-	private JPanel getBackgroundPanel() {
+	public BackgroundPanel getBackgroundPanel() {
 		if (backgroundPanel == null) {
-			backgroundPanel = new JPanel();
-			BoxLayout backgroundPanelLayout = new BoxLayout(backgroundPanel, javax.swing.BoxLayout.Y_AXIS);
-			backgroundPanel.setLayout(backgroundPanelLayout);
-			backgroundPanel.add(getBackgroundCombo());
-			backgroundPanel.add(getBackgroundScroll());
+			backgroundPanel = new BackgroundPanel(getManager());
 		}
 		return backgroundPanel;
 	}
@@ -566,31 +546,6 @@ public class MasterFrame extends javax.swing.JFrame {
 		return (ChainingPointPanel) chainingPointPanel;
 	}
 
-	public JComboBox getBackgroundCombo() {
-		if (backgroundCombo == null) {
-			ComboBoxModel backgroundComboModel = new DefaultComboBoxModel(getManager().loadTileForCombo());
-			backgroundCombo = new JComboBox();
-			backgroundCombo.setModel(backgroundComboModel);
-			backgroundCombo.setSize(339, 21);
-			backgroundCombo.setMaximumSize(new java.awt.Dimension(32767,21));
-			backgroundCombo.setAction(getActionChangeTileSet());
-		}
-		return backgroundCombo;
-	}
-	private JScrollPane getBackgroundScroll() {
-		if (backgroundScroll == null) {
-			backgroundScroll = new JScrollPane();
-			backgroundScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-			backgroundScroll.setViewportView(getTileSetPanel());
-		}
-		return backgroundScroll;
-	}
-	public TileSet getTileSetPanel() {
-		if (tileSetPanel == null) {
-			tileSetPanel = new TileSet("", manager);
-		}
-		return tileSetPanel;
-	}
 	public SpritePanel getSpritePanel() {
 		if (spritePanel == null) {
 			spritePanel = new SpritePanel(manager);

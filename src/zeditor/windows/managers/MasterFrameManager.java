@@ -199,7 +199,7 @@ public class MasterFrameManager {
 	 */
 	public Object[] loadTileForCombo() {
 		try {
-			return masterFrame.getTileSetPanel().getTiles();
+			return masterFrame.getBackgroundPanel().getTileSetPanel().getTiles();
 		} catch (ZeditorException e) {
 			display(e.getMessage(), MESSAGE_ERROR);
 			return new Object[]{""};
