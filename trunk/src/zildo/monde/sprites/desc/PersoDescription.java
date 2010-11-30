@@ -21,8 +21,9 @@
 package zildo.monde.sprites.desc;
 
 import zildo.fwk.IntSet;
+import zildo.fwk.bank.SpriteBank;
 
-public enum PersoDescription {
+public enum PersoDescription implements SpriteDescription {
 
 	// PNJ.SPR
 	PRINCESSE(0,7),
@@ -107,4 +108,12 @@ public enum PersoDescription {
 		public int first() {
 		return sprUsed.first().intValue();
 	}
+		
+		public int getNSpr() {
+			return this.ordinal();
+		}
+		
+		public int getBank() {
+			return SpriteBank.BANK_PNJ;
+		}
 }

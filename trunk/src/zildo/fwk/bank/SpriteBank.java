@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 
 import zildo.fwk.file.EasyReadingFile;
 import zildo.monde.sprites.SpriteModel;
-import zildo.monde.sprites.desc.ElementDescription;
 
 /**
 //////////////////////////////////////////////////////////////////////
@@ -138,10 +137,6 @@ public class SpriteBank {
 			k+=taille;
 			nSprite++;
 		}
-	}
-	
-	public SpriteModel get_sprite(ElementDescription p_elemDesc) {
-		return get_sprite(p_elemDesc.ordinal());
 	}
 	
 	public SpriteModel get_sprite(int nspr)

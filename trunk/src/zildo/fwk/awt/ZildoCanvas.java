@@ -227,6 +227,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		ch.setPy((short) (p_point.y / 16));
 	}
 	
+	/**
+	 * Detect which object of current kind (sprite, chaining point ...) is under the mouse
+	 * @param p
+	 */
 	public void setObjectOnCursor(Point p) {
 	    SelectionKind kind =manager.getSelectionKind();
 	    switch (kind) {

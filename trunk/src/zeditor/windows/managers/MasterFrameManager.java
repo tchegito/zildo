@@ -419,7 +419,7 @@ public class MasterFrameManager {
 		return null;
 	}
 
-	public static ZildoCanvas getZildoCanvas() {
+	public ZildoCanvas getZildoCanvas() {
 		return zildoCanvas;
 	}
 	
