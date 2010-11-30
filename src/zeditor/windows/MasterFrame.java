@@ -53,8 +53,6 @@ public class MasterFrame extends javax.swing.JFrame {
 	private MasterFrameManager manager;
 	private JMenu charactersMenuItem;
 	private JMenu spriteMenuItem;
-	private JMenuItem showSelectedTilesItem;
-	private JMenu tileSetMenuItem;
 	private JMenu debugMenu;
 	private JMenuItem reloadConfigItem;
 	private JMenuItem optionsItem;
@@ -90,13 +88,11 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JPanel toolBarContainer;
 	private JPanel masterPanel;
 	private AbstractAction actionSaveAs;
-	private AbstractAction actionTEST;
 	private AbstractAction actionNew;
 	private AbstractAction actionGridTool;
 	private AbstractAction actionUnmappedTool;
 	private AbstractAction actionReloadConfig;
 	private AbstractAction actionOpenOptionsFrame;
-	private AbstractAction actionChangeTileSet;
 	private AbstractAction actionExit;
 	private AbstractAction actionSave;
 	private AbstractAction actionLoad;

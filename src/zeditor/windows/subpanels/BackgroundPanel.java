@@ -16,6 +16,7 @@ import zeditor.core.tiles.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.monde.map.Case;
 
+@SuppressWarnings("serial")
 public class BackgroundPanel extends JPanel {
 
     MasterFrameManager manager;
@@ -26,49 +27,49 @@ public class BackgroundPanel extends JPanel {
     TileSet tileSetPanel;
     
     public BackgroundPanel(MasterFrameManager p_manager) {
-	manager=p_manager;
-	
-	BoxLayout backgroundPanelLayout = new BoxLayout(this, javax.swing.BoxLayout.Y_AXIS);
-	setLayout(backgroundPanelLayout);
-	add(getBackgroundCombo());
-	add(getBackgroundScroll());	
+		manager=p_manager;
+		
+		BoxLayout backgroundPanelLayout = new BoxLayout(this, javax.swing.BoxLayout.Y_AXIS);
+		setLayout(backgroundPanelLayout);
+		add(getBackgroundCombo());
+		add(getBackgroundScroll());	
     }
 
     public JComboBox getBackgroundCombo() {
-	if (backgroundCombo == null) {
-	    ComboBoxModel backgroundComboModel = new DefaultComboBoxModel(
-		    loadTileForCombo());
-	    backgroundCombo = new JComboBox();
-	    backgroundCombo.setModel(backgroundComboModel);
-	    backgroundCombo.setSize(339, 21);
-	    backgroundCombo.setMaximumSize(new java.awt.Dimension(32767, 21));
-	    backgroundCombo.setAction(getActionChangeTileSet());
-	}
-	return backgroundCombo;
+		if (backgroundCombo == null) {
+		    ComboBoxModel backgroundComboModel = new DefaultComboBoxModel(
+			    loadTileForCombo());
+		    backgroundCombo = new JComboBox();
+		    backgroundCombo.setModel(backgroundComboModel);
+		    backgroundCombo.setSize(339, 21);
+		    backgroundCombo.setMaximumSize(new java.awt.Dimension(32767, 21));
+		    backgroundCombo.setAction(getActionChangeTileSet());
+		}
+		return backgroundCombo;
     }
 
     private JScrollPane getBackgroundScroll() {
-	if (backgroundScroll == null) {
-	    backgroundScroll = new JScrollPane();
-	    backgroundScroll
-		    .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	    backgroundScroll.setViewportView(getTileSetPanel());
-	}
-	return backgroundScroll;
+		if (backgroundScroll == null) {
+		    backgroundScroll = new JScrollPane();
+		    backgroundScroll
+			    .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		    backgroundScroll.setViewportView(getTileSetPanel());
+		}
+		return backgroundScroll;
     }
     
     private AbstractAction getActionChangeTileSet() {
-	if (actionChangeTileSet == null) {
-	    actionChangeTileSet = new AbstractAction("Changer le TileSet", null) {
-		private static final long serialVersionUID = -7877935671989785646L;
-
-		public void actionPerformed(ActionEvent evt) {
-		    manager.changeTileSet(backgroundCombo.getSelectedItem()
-			    .toString());
+		if (actionChangeTileSet == null) {
+		    actionChangeTileSet = new AbstractAction("Changer le TileSet", null) {
+			private static final long serialVersionUID = -7877935671989785646L;
+	
+			public void actionPerformed(ActionEvent evt) {
+			    manager.changeTileSet(backgroundCombo.getSelectedItem()
+				    .toString());
+			}
+		    };
 		}
-	    };
-	}
-	return actionChangeTileSet;
+		return actionChangeTileSet;
     }
     
 
@@ -79,12 +80,12 @@ public class BackgroundPanel extends JPanel {
      * @author Drakulo
      */
     public Object[] loadTileForCombo() {
-	try {
-	    return getTileSetPanel().getTiles();
-	} catch (ZeditorException e) {
-	    //display(e.getMessage(), MESSAGE_ERROR);
-	    return new Object[] { "" };
-	}
+		try {
+		    return getTileSetPanel().getTiles();
+		} catch (ZeditorException e) {
+		    //display(e.getMessage(), MESSAGE_ERROR);
+		    return new Object[] { "" };
+		}
     }
 	
 

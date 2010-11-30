@@ -1,30 +1,23 @@
 package zeditor.core.tiles;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 
 import zeditor.core.Options;
 import zeditor.core.exceptions.TileSetException;
 import zeditor.core.exceptions.ZeditorException;
+import zeditor.core.selection.CaseSelection;
 import zeditor.helpers.OptionHelper;
 import zeditor.tools.CorrespondanceGifDec;
 import zeditor.tools.Transparency;
@@ -37,20 +30,10 @@ import zildo.monde.map.Case;
  * Classe de gestion des Tuiles
  * @author Drakulo
  */
-public class TileSet extends JPanel {
-    private static final long serialVersionUID = 8712246788178837311L;
+@SuppressWarnings("serial")
+public class TileSet extends ImageSet {
 
-    private String tileName;
     private CorrespondanceGifDec bridge;
-    private Point startPoint;
-    private Point stopPoint;
-    private Map<String, Image> tiles;
-    private Image currentTile;
-    private Integer tileWidth;
-    private Integer tileHeight;
-    private TileSelection currentSelection;
-
-    private MasterFrameManager manager;
     
     boolean blockSet=false;    // If we are on a map region selected by user
 
@@ -60,94 +43,12 @@ public class TileSet extends JPanel {
      * @author Drakulo
      */
     public TileSet(String p_tileName, MasterFrameManager p_manager) {
-    	tiles=new HashMap<String, Image>();
+    	super(p_tileName, p_manager);
     	
-    	manager=p_manager;
-    	
-        // Définition du layout afin d'afficher le Tile en haut du conteneur
-        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
-        tileName = p_tileName;
-
         // Construction du pont de correspondance
         bridge = new CorrespondanceGifDec();
         bridge.init();
 
-        // On ajoute le mouseListene pour détecter les actions à la souris
-        this.addMouseListener(new MouseListener() {
-            public void mousePressed(MouseEvent e) {
-                if(currentTile != null){
-                    if(MouseEvent.BUTTON1 == e.getButton()){
-                        // On réinitialise les points pour la nouvelle sélection
-                        startPoint = null;
-                        stopPoint = null;
-   
-                        int x = 16 * (e.getX() / 16);
-                        int y = 16 * (e.getY() / 16);
-                        if((x >= 0 && x <= tileWidth - 16) && (y >= 0 && y <= tileHeight - 16)){
-                            if(startPoint == null){
-                                startPoint = new Point(x,y);
-                            }else{
-                                startPoint.setLocation(x, y);
-                            }
-                            repaint();
-                        }
-                    }else if (MouseEvent.BUTTON3 == e.getButton()){
-                        // Click droit
-                    }
-                }
-            }
-            public void mouseClicked(MouseEvent e) {
-            }
-            public void mouseEntered(MouseEvent arg0) {}
-            public void mouseExited(MouseEvent arg0) {}
-            public void mouseReleased(MouseEvent e) {
-                if(currentTile != null){
-                    if(MouseEvent.BUTTON1 == e.getButton()){
-                        // Click gauche
-                        int x = 16 * (e.getX() / 16);
-                        int y = 16 * (e.getY() / 16);
-                        if(x < 0){x = 0;}else if (x >= tileWidth){x = tileWidth - 16;}
-                        if(y < 0){y = 0;}else if (y >= tileHeight){y = tileHeight - 16;}
-                        if(stopPoint == null){
-                            stopPoint = new Point(x,y);
-                        }else{
-                            stopPoint.setLocation(x, y);
-                        }               
-                       
-                        if(startPoint != null){
-                            // On trie les points si le startPoint est valide
-                            sortPoints();
-                            // On construit la nouvelle sélection
-                            buildSelection();
-                        }
-                        repaint();
-                       
-                    }else if (MouseEvent.BUTTON3 == e.getButton()){
-                        // Click droit
-   
-                    }
-                }
-            }
-        });
-        this.addMouseMotionListener(new MouseMotionListener(){
-            public void mouseDragged(MouseEvent e) {
-                if(currentTile != null){
-                    int x = 16 * (e.getX() / 16);
-                    int y = 16 * (e.getY() / 16);
-                    if(x < 0){x = 0;}else if (x >= tileWidth){x = tileWidth - 16;}
-                    if(y < 0){y = 0;}else if (y >= tileHeight){y = tileHeight - 16;}
-                    if(stopPoint == null){
-                        stopPoint = new Point(x,y);
-                    }else{
-                        stopPoint.setLocation(x, y);
-                    }
-                    // Repaint du Tile
-                    repaint();
-                }
-            }
-            public void mouseMoved(MouseEvent arg0) {}
-        });
     }
 
     private Image getTileNamed(String p_name) {
@@ -282,87 +183,18 @@ public class TileSet extends JPanel {
         list.add("*block*");
         return list.toArray();
     }
-
-    /**
-     * {@inheritDoc}
-     */
+    
     @Override
-    public void paint(Graphics g){
-        // Redimensionnement de la taille du TileSet pour le Scroll automatique
-        g.clearRect(0, 0, getWidth(), getHeight());
-        if(currentTile != null){
-            setPreferredSize(new Dimension(currentTile.getWidth(null), currentTile.getHeight(null)));
-        }else{
-            setPreferredSize(new Dimension(0, 0));
-        }
-        revalidate();
-        
-        // Repaint
-        Graphics2D g2d = (Graphics2D) g;
-        while (!g2d.drawImage(currentTile, 0, 0, Transparency.BANK_TRANSPARENCY, null)) {
-        	// If image isn't ready yet, wait then retry
-        	ZUtils.sleep(100);
-        }
-        
-        if(currentTile != null && bridge != null && !blockSet){
-            // Selon le paramétrage :
-            if(Boolean.parseBoolean(OptionHelper.loadOption(Options.SHOW_TILES_UNMAPPED.getValue()))){
-                showUnmappedTiles(g2d);
-            }
-            if(Boolean.parseBoolean(OptionHelper.loadOption(Options.SHOW_TILES_GRID.getValue()))){
-                showGrid(g2d);
-            }
-        }
-        // On dessine un cadre autour des tuiles sélectionnées en dernier pour qu'il soit au dessus
-        if(stopPoint == null){
-            // Le point stopDrag est null donc on met le cadre sur une simple case
-            drawRectangle(g2d, Color.black, Color.white, startPoint, startPoint);
-        }else{
-            // Le point de stopDrag n'est pas null donc on doit tracer un rectangle sur plusieurs cases
-            drawRectangle(g2d, Color.black, Color.white, startPoint, stopPoint);
-        }
-        g2d.dispose();
-
-    }
-
-    /**     * Méthode de tracé du cadre autour des tuiles sélectionnées
-     * @param g : Graphics sur lequel on va dessiner
-     * @param outer : Couleur de l'extérieur de cadre
-     * @param inner : Couleur de l'intérieur de cadre
-     * @param startPoint : Point de départ du cadre
-     * @param stopPoint : Point de fin du cadre
-     * @author Drakulo
-     */
-    private void drawRectangle(Graphics g, Color outer, Color inner, Point startPoint, Point stopPoint){
-        if(startPoint != null && stopPoint != null){
-            int xDep, yDep, xFin, yFin;
-            if(startPoint.getX() < stopPoint.getX()){
-                // On veut sélectionner de gauche à droite
-                xDep = (int) startPoint.getX();
-                xFin = (int) stopPoint.getX();
-            }else{
-                // On veut sélectionner de droite à gauche
-                xDep = (int) stopPoint.getX();
-                xFin = (int) startPoint.getX();
-            }
-
-            if(startPoint.getY() < stopPoint.getY()){
-                // On veut sélectionner de haut en bas
-                yDep = (int) startPoint.getY();
-                yFin = (int) stopPoint.getY();
-            }else{
-                // On veut sélectionner de bas en haut
-                yDep = (int) stopPoint.getY();
-                yFin = (int) startPoint.getY();
-            }
-
-            g.setColor(outer);
-            g.drawRect(xDep, yDep, xFin-xDep+16, yFin-yDep+16);
-            g.setColor(inner);
-            g.drawRect(xDep+1, yDep+1, xFin-xDep+14, yFin-yDep+14);
-            g.setColor(outer);
-            g.drawRect(xDep+2, yDep+2, xFin-xDep+12, yFin-yDep+12);
-        }
+    protected void specificPaint(Graphics2D p_g2d) {
+	    if(currentTile != null && bridge != null && !blockSet){
+	        // Selon le paramétrage :
+	        if(Boolean.parseBoolean(OptionHelper.loadOption(Options.SHOW_TILES_UNMAPPED.getValue()))){
+	            showUnmappedTiles(p_g2d);
+	        }
+	        if(Boolean.parseBoolean(OptionHelper.loadOption(Options.SHOW_TILES_GRID.getValue()))){
+	            showGrid(p_g2d);
+	        }
+	    }
     }
 
     /**
@@ -418,37 +250,9 @@ public class TileSet extends JPanel {
     }
    
     /**
-     * Méthode privée de tri des Points de sélection. Le point en haut à gauche devient
-     * le point de départ et le point en bas à droite devient le point de fin.
-     */
-    private void sortPoints(){
-        // A partir des points de début et de fin, on recrée deux nouveaux
-        // points afin d'avoir le point de début en haut à gauche et le point
-        // de fin en bas à droite
-        Point temp;
-        if(startPoint.x > stopPoint.x){
-            if(startPoint.y > stopPoint.y){
-                temp = new Point(startPoint.x, startPoint.y);
-                startPoint.setLocation(stopPoint.x, stopPoint.y);
-                stopPoint.setLocation(temp);
-            }else{
-                temp = new Point(startPoint.x, stopPoint.y);
-                startPoint.setLocation(stopPoint.x, startPoint.y);
-                stopPoint.setLocation(temp);
-            }
-        }else{
-            if(startPoint.y > stopPoint.y){
-                temp = new Point(stopPoint.x, startPoint.y);
-                startPoint.setLocation(startPoint.x, stopPoint.y);
-                stopPoint.setLocation(temp);
-            }
-        }
-    }
-   
-    /**
      * Méthode privée de construction de la sélection
      */
-    private void buildSelection(){
+    protected void buildSelection(){
         if (blockSet) {
         	return;
         }
@@ -466,11 +270,15 @@ public class TileSet extends JPanel {
         int bank=ClientEngineZildo.tileEngine.getBankFromName(tileName);
         for(int i = startY; i <= stopY; i+=16){
             for(int j = startX; j <= stopX; j+= 16){
-
-                c=new Case();
-                c.setN_banque(bank);
-                c.setN_motif(bridge.getMotifParPoint(tileName, j, i));
-                list.add(c);
+            	int nMotif=bridge.getMotifParPoint(tileName, j, i);
+            	if (nMotif == -1) {
+            		list.add(null);
+            	} else {
+	                c=new Case();
+	                c.setN_banque(bank);
+	                c.setN_motif(bridge.getMotifParPoint(tileName, j, i));
+	                list.add(c);
+            	}
                 // On ne compte la largeur que pour la première ligne
                 if(height == 0){
                     width ++;
@@ -479,13 +287,19 @@ public class TileSet extends JPanel {
             height ++;
         }
         currentSelection = new TileSelection(width, height, list);
-        manager.setCaseSelection(currentSelection);
+        manager.setCaseSelection((CaseSelection) currentSelection);
     }
    
+    /**
+     * Build a selection from a Case's list (when user copy a section of the map)
+     * @param width
+     * @param height
+     * @param p_cases
+     */
     public void buildSelection(int width, int height, List<Case> p_cases) {
            
         currentSelection = new TileSelection(width, height, p_cases);
-        MasterFrameManager.getZildoCanvas().setCursorSize(width, height);
+        manager.getZildoCanvas().setCursorSize(width, height);
 
         currentTile=new BufferedImage(width*16, height*16, BufferedImage.TYPE_INT_RGB);
         // We have to redraw the cases on the image
@@ -534,6 +348,6 @@ public class TileSet extends JPanel {
      * @return la sélection courante
      */
     public TileSelection getCurrentSelection() {
-        return currentSelection;
+        return (TileSelection) currentSelection;
     }
 }
