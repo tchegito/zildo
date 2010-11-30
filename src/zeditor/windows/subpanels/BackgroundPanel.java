@@ -1,6 +1,7 @@
 package zeditor.windows.subpanels;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -10,8 +11,10 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import zeditor.core.exceptions.ZeditorException;
 import zeditor.core.tiles.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
+import zildo.monde.map.Case;
 
 public class BackgroundPanel extends JPanel {
 
@@ -34,7 +37,7 @@ public class BackgroundPanel extends JPanel {
     public JComboBox getBackgroundCombo() {
 	if (backgroundCombo == null) {
 	    ComboBoxModel backgroundComboModel = new DefaultComboBoxModel(
-		    manager.loadTileForCombo());
+		    loadTileForCombo());
 	    backgroundCombo = new JComboBox();
 	    backgroundCombo.setModel(backgroundComboModel);
 	    backgroundCombo.setSize(339, 21);
@@ -69,10 +72,31 @@ public class BackgroundPanel extends JPanel {
     }
     
 
+    /**
+     * Charge la liste des TileSets pour la combo de décors
+     * 
+     * @return Un tableau de String des titres des TileSets
+     * @author Drakulo
+     */
+    public Object[] loadTileForCombo() {
+	try {
+	    return getTileSetPanel().getTiles();
+	} catch (ZeditorException e) {
+	    //display(e.getMessage(), MESSAGE_ERROR);
+	    return new Object[] { "" };
+	}
+    }
+	
+
 	public TileSet getTileSetPanel() {
 		if (tileSetPanel == null) {
 			tileSetPanel = new TileSet("", manager);
 		}
 		return tileSetPanel;
+	}
+	
+	public void switchCopyTile(int p_width, int p_height, List<Case> p_cases) {
+	    backgroundCombo.selectWithKeyChar('*');
+	    tileSetPanel.buildSelection(p_width, p_height, p_cases);	    
 	}
 }

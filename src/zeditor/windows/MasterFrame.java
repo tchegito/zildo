@@ -150,7 +150,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	        getContentPane().add(zildoPanel, BorderLayout.EAST);
 
             // Recréation du manager avec les objets en paramètre
-			manager = new MasterFrameManager(getSystemLabel(), getTileSetPanel(), getMasterPanel(), this, getBackgroundCombo(), zildoPanel.getZildoCanvas());
+			manager = new MasterFrameManager(getSystemLabel(), getMasterPanel(), this, zildoPanel.getZildoCanvas());
 
 			// Initialisation de la fenêtre par le manager
 			manager.init();
@@ -349,19 +349,6 @@ public class MasterFrame extends javax.swing.JFrame {
 			};
 		}
 		return actionNew;
-	}
-
-	private AbstractAction getActionTEST() {
-		if(actionTEST == null) {
-			actionTEST = new AbstractAction("Afficher les tuiles sélectionnées", null) {
-				private static final long serialVersionUID = 3319456644340391488L;
-
-				public void actionPerformed(ActionEvent evt) {
-					manager.displaySelectedTiles();
-				}
-			};
-		}
-		return actionTEST;
 	}
 
 	private AbstractAction getActionSaveAs() {
@@ -682,29 +669,12 @@ public class MasterFrame extends javax.swing.JFrame {
 			debugMenu = new JMenu();
 			debugMenu.setText("Debug");
 			debugMenu.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/bug.png")));
-			debugMenu.add(getTileSetMenuItem());
 			debugMenu.add(getSpriteMenuItem());
 			debugMenu.add(getCharactersMenuItem());
 		}
 		return debugMenu;
 	}
-	private JMenu getTileSetMenuItem() {
-		if(tileSetMenuItem == null) {
-			tileSetMenuItem = new JMenu();
-			tileSetMenuItem.setText("TileSet");
-			tileSetMenuItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/photo.png")));
-			tileSetMenuItem.add(getShowSelectedTilesItem());
-		}
-		return tileSetMenuItem;
-	}
-	private JMenuItem getShowSelectedTilesItem() {
-		if(showSelectedTilesItem == null) {
-			showSelectedTilesItem = new JMenuItem();
-			showSelectedTilesItem.setText("Afficher les tuiles sélectionnées");
-			showSelectedTilesItem.setAction(getActionTEST());
-		}
-		return showSelectedTilesItem;
-	}
+
 	private JMenu getSpriteMenuItem() {
 		if(spriteMenuItem == null) {
 			spriteMenuItem = new JMenu();
