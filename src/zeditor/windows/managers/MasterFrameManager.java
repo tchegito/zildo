@@ -7,7 +7,6 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -21,7 +20,6 @@ import zeditor.core.selection.PersoSelection;
 import zeditor.core.selection.Selection;
 import zeditor.core.selection.SpriteSelection;
 import zeditor.core.tiles.TileSelection;
-import zeditor.core.tiles.TileSet;
 import zeditor.helpers.OptionHelper;
 import zeditor.windows.ExplorerFrame;
 import zeditor.windows.MasterFrame;
@@ -42,11 +40,9 @@ import zildo.server.EngineZildo;
  */
 public class MasterFrameManager {
 	public static JLabel systemDisplay;
-	private static TileSet tileSet;
-	private JPanel masterPanel;
 	private static MasterFrame masterFrame;
-	private JComboBox backgroundCombo;
-
+	private JPanel masterPanel;
+	
 	private static ZildoCanvas zildoCanvas;
 
 	private static Selection currentSelection;
@@ -73,14 +69,11 @@ public class MasterFrameManager {
 	 *            Le JLabel Système de la MasterFrame
 	 * @author Drakulo
 	 */
-	public MasterFrameManager(JLabel p_sys, TileSet p_tile, JPanel p_master,
-			MasterFrame p_frame, JComboBox p_backgroundCombo,
-			ZildoCanvas p_zildoCanvas) {
+	public MasterFrameManager(JLabel p_sys,JPanel p_master,
+			MasterFrame p_frame, ZildoCanvas p_zildoCanvas) {
 		systemDisplay = p_sys;
-		tileSet = p_tile;
-		masterPanel = p_master;
 		masterFrame = p_frame;
-		backgroundCombo = p_backgroundCombo;
+		masterPanel = p_master;
 		zildoCanvas = p_zildoCanvas;
 		zildoCanvas.setManager(this);
 		
@@ -192,21 +185,6 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Charge la liste des TileSets pour la combo de décors
-	 * 
-	 * @return Un tableau de String des titres des TileSets
-	 * @author Drakulo
-	 */
-	public Object[] loadTileForCombo() {
-		try {
-			return masterFrame.getBackgroundPanel().getTileSetPanel().getTiles();
-		} catch (ZeditorException e) {
-			display(e.getMessage(), MESSAGE_ERROR);
-			return new Object[]{""};
-		}
-	}
-
-	/**
 	 * Charge le tileSet dont le nom est passé en paramètres
 	 * 
 	 * @param name
@@ -214,7 +192,7 @@ public class MasterFrameManager {
 	 */
 	public void changeTileSet(String p_name) {
 		try {
-			masterFrame.getTileSetPanel().changeTile(p_name);
+			masterFrame.getBackgroundPanel().getTileSetPanel().changeTile(p_name);
 			display("TileSet '" + p_name + "' chargé.", MESSAGE_INFO);
 		} catch (ZeditorException e) {
 			display(e.getMessage(), MESSAGE_ERROR);
@@ -313,7 +291,7 @@ public class MasterFrameManager {
 	 */
 	public void saveOption(String p_option, String p_value) {
 		OptionHelper.saveOption(p_option, p_value);
-		masterPanel.repaint();
+		masterFrame.getBackgroundPanel().repaint();
 	}
 
 	/**
@@ -362,17 +340,6 @@ public class MasterFrameManager {
 	 */
 	public void changeTitle(String title) {
 		masterFrame.setTitle("Zeditor - " + title);
-	}
-
-	/**
-	 * Méthode de test pour afficher le numéro des tuiles sélectionnées
-	 * 
-	 * @author Drakulo
-	 */
-	public void displaySelectedTiles() {
-		if (tileSet.getCurrentSelection() != null) {
-			display(tileSet.getCurrentSelection().toString(), MESSAGE_INFO);
-		}
 	}
 
 	/**
@@ -428,7 +395,7 @@ public class MasterFrameManager {
 	 */
 	public void init() {
 		updateTools();
-		changeTileSet(backgroundCombo.getSelectedItem().toString());
+		changeTileSet(masterFrame.getBackgroundPanel().getBackgroundCombo().getSelectedItem().toString());
 	}
 
 	public SelectionKind getSelectionKind() {
@@ -442,7 +409,7 @@ public class MasterFrameManager {
 		if (kind != null) {
 			switch (kind) {
 			case TILES: 
-				return tileSet.getCurrentSelection();
+				return masterFrame.getBackgroundPanel().getTileSetPanel().getCurrentSelection();
 			case PREFETCH:	
 				return currentSelection;
 			case CHAININGPOINT: 
@@ -462,8 +429,7 @@ public class MasterFrameManager {
 	public static void switchCopyTile(int p_width, int p_height, List<Case> p_cases) {
 		if (p_width > 0 && p_height >0) {
 		    masterFrame.getCopyPasteTool().setSelected(false);
-		    masterFrame.getBackgroundCombo().selectWithKeyChar('*');
-		    masterFrame.getTileSetPanel().buildSelection(p_width, p_height, p_cases);
+		    masterFrame.getBackgroundPanel().switchCopyTile(p_width, p_height, p_cases);
 		}
 	}
 
