@@ -20,11 +20,16 @@
 
 package zeditor.core.tiles;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import org.lwjgl.util.vector.Vector4f;
+
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.gfx.GFXBasics;
+import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.server.EngineZildo;
 
@@ -48,8 +53,28 @@ public class PersoSet extends ImageSet {
         currentTile=new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     	currentTile.getGraphics();
     	
+    	int posX=0;
+    	int posY=0;
+    	int maxY=0;
+    	for (PersoDescription perso : PersoDescription.values()) {
+    		
+        	SpriteBank pnjBank=EngineZildo.spriteManagement.getSpriteBank(perso.getBank());
+        	int nSpr=perso.first() % 128;
+    		SpriteModel model=pnjBank.get_sprite(nSpr);
+    		drawPerso(posX, posY, pnjBank, perso, false);
+    		posX+=model.getTaille_x();
+    		if (posX > width) {
+    			posX=0;
+    			posY+=maxY;
+    		}
+    		if (model.getTaille_y() > maxY) {
+    			maxY=model.getTaille_y();
+    		}
+    	}
     }
     
+	final Vector4f colMasque=new Vector4f(192, 128, 240, 1);
+	
     /**
      * Display tile, with or without mask
      * @param i
@@ -58,10 +83,26 @@ public class PersoSet extends ImageSet {
      * @param nMotif
      * @param masque
      */
-    private void drawPerso(int i, int j, int nBank, int nMotif, boolean masque) {
+    private void drawPerso(int i, int j, SpriteBank pnjBank, PersoDescription nMotif, boolean masque) {
+
+    	int nSpr=nMotif.first() % 128;
+    	SpriteModel model=pnjBank.get_sprite(nSpr);
+    	short[] data=pnjBank.getSpriteGfx(nSpr);
     	
-    	SpriteBank pnjBank=EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ);
-    	short[] data=pnjBank.getSpriteGfx(PersoDescription.BANDIT.getNSpr());
+    	Graphics2D gfx2d=(Graphics2D) currentTile.getGraphics();
+    	
+    	for (int y=0;y<model.getTaille_y();y++) {
+        	for (int x=0;x<model.getTaille_x();x++) {
+        		int offset=y*model.getTaille_x()+x;
+        		int a=data[offset];
+        		if (a != 255) {
+            		Vector4f col=GFXBasics.getColor(a);
+        			gfx2d.setColor(new Color(col.x / 256, col.y / 256, col.z / 256));
+        			gfx2d.drawLine(x+i,y+j,x+i,y+j);
+        		}
+        	}
+    	}
+    	
     }
     
 	@Override
