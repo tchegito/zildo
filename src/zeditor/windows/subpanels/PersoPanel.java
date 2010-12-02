@@ -20,6 +20,7 @@
 
 package zeditor.windows.subpanels;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.DefaultComboBoxModel;
@@ -28,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import zeditor.core.tiles.PersoSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
 import zildo.monde.map.Angle;
@@ -55,28 +57,38 @@ public class PersoPanel extends JPanel {
 	JComboBox info;
 	
 	public PersoPanel(MasterFrameManager p_manager) {
-		GridLayout thisLayout = new GridLayout(0,2);
-		setLayout(thisLayout);
-		
-		name=new JTextField();
-		add(new JLabel("Nom"));
-		add(name);
-		add(new JLabel("Script"));
-		script=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(MouvementPerso.class)));
-		add(script);
-		
-		add(new JLabel("Angle"));
-		angle=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(Angle.class)));
-		add(angle);
+		setLayout(new BorderLayout());
+		add(new PersoSet(null, p_manager), BorderLayout.CENTER);
+		add(getSouthPanel(), BorderLayout.SOUTH);
 
-		add(new JLabel("Objet"));
-		object=new JTextField();
-		add(object);
-		
-		add(new JLabel("Info"));
-		info=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(PersoInfo.class)));
-		add(info);
 		manager=p_manager;
+	}
+	
+	private JPanel getSouthPanel() {
+		JPanel panel=new JPanel();
+		GridLayout thisLayout = new GridLayout(0,2);
+		panel.setLayout(thisLayout);
+
+		name=new JTextField();
+		panel.add(new JLabel("Nom"));
+		panel.add(name);
+		panel.add(new JLabel("Script"));
+		script=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(MouvementPerso.class)));
+		panel.add(script);
+		
+		panel.add(new JLabel("Angle"));
+		angle=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(Angle.class)));
+		panel.add(angle);
+
+		panel.add(new JLabel("Objet"));
+		object=new JTextField();
+		panel.add(object);
+		
+		panel.add(new JLabel("Info"));
+		info=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(PersoInfo.class)));
+		panel.add(info);
+		
+		return panel;
 	}
 	
 	/**

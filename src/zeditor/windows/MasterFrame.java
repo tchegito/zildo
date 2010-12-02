@@ -125,6 +125,8 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	private void initGUI() {
 		try {
+			zildoPanel=new ZildoScrollablePanel("polaky");
+			
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			BorderLayout thisLayout = new BorderLayout();
 			getContentPane().setLayout(thisLayout);
@@ -142,7 +144,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			}
 
 			// On ajoute la carte
-			zildoPanel=new ZildoScrollablePanel("polaky");
+
 	        getContentPane().add(zildoPanel, BorderLayout.EAST);
 
             // Recréation du manager avec les objets en paramètre
