@@ -41,7 +41,7 @@ import zildo.server.EngineZildo;
 public class PersoSet extends ImageSet {
 
 	private final int width = 320;
-	private final int height = 512;
+	private final int height = 320;
 	
     public PersoSet(String p_tileName, MasterFrameManager p_manager) {
     	super(p_tileName, p_manager);
