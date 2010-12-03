@@ -21,21 +21,28 @@
 package zeditor.windows.subpanels;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerListModel;
 
 import zeditor.core.tiles.PersoSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
+import zildo.monde.dialog.Behavior;
+import zildo.monde.dialog.MapDialog;
 import zildo.monde.map.Angle;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -55,6 +62,10 @@ public class PersoPanel extends JPanel {
 	JComboBox angle;
 	JTextField object;
 	JComboBox info;
+	JSpinner spinner;
+	JTextArea dialogZone;
+	
+	Perso currentPerso;
 	
 	public PersoPanel(MasterFrameManager p_manager) {
 		setLayout(new BorderLayout());
@@ -88,6 +99,23 @@ public class PersoPanel extends JPanel {
 		info=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(PersoInfo.class)));
 		panel.add(info);
 		
+		// Spinner for the dialogs
+		SpinnerListModel dialogModel = new SpinnerListModel(new String[] {"0", "1", "2"});
+		spinner = new JSpinner(dialogModel);
+		spinner.setPreferredSize(new Dimension(40,12));
+		JPanel subPanel=new JPanel();
+		subPanel.setLayout(new BorderLayout());
+		subPanel.add(new JLabel("Dialog"), BorderLayout.WEST);
+		subPanel.add(spinner, BorderLayout.EAST);
+		panel.add(subPanel);
+		
+		dialogZone=new JTextArea(4, 30);
+		dialogZone.setLineWrap(true);
+		dialogZone.setWrapStyleWord(true);
+		dialogZone.setAutoscrolls(true);
+		dialogZone.setMaximumSize(dialogZone.getSize());
+		panel.add(dialogZone);
+
 		return panel;
 	}
 	
@@ -101,5 +129,16 @@ public class PersoPanel extends JPanel {
 		angle.setSelectedIndex(p_perso.getAngle().value);
 		info.setSelectedIndex(p_perso.getInfo().ordinal());
 		object.setText("0");
+		
+		currentPerso=p_perso;
+		updateDialog();
+	}
+	
+	public void updateDialog() {
+	    MapDialog mapDialog=EngineZildo.mapManagement.getCurrentMap().getMapDialog();
+	    Behavior behav=mapDialog.getBehaviors().get(currentPerso.getNom());
+	    String dial=mapDialog.getSentence(behav, currentPerso.getCompte_dialogue());
+	    dialogZone.setText(dial);
+
 	}
 }

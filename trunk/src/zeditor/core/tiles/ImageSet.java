@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
@@ -39,6 +40,7 @@ import zeditor.core.selection.Selection;
 import zeditor.tools.Transparency;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
+import zildo.monde.map.Zone;
 
 /**
  * Abstract class handling image containing arbitrary sized sections.
@@ -58,6 +60,7 @@ public abstract class ImageSet extends JPanel {
     protected Point startPoint;
     protected Point stopPoint;
     protected Selection currentSelection;
+    List<Zone> selectables;
     
     protected MasterFrameManager manager;
     

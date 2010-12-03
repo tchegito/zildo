@@ -83,7 +83,7 @@ public class MapDialog {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// IN:character's name
 	///////////////////////////////////////////////////////////////////////////////////////
-	String getSentence(Behavior behav, int numComportement) {
+	public String getSentence(Behavior behav, int numComportement) {
 		String reponse="pas trouve !";
 		if (behav!=null) {
 			int numSentence=behav.replique[numComportement];
