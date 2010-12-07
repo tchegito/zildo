@@ -6,9 +6,7 @@ Everything's fine on following configs:
  * Windows XP with any graphic card
  * Windows Vista/7 with NVIDIA card
  * MacOS X
+ * Linux
 
 Not working on:
  * Windows Vista/7 with some ATI cards (ATI drivers are not right for all ATI cards, Radeon 9600 for example)
-
-Never tested on:
- * Linux
