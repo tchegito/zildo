@@ -25,6 +25,7 @@ import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.ZUtils;
 import zildo.monde.map.Case;
+import zildo.monde.map.Zone;
 
 /**
  * Classe de gestion des Tuiles
@@ -141,6 +142,32 @@ public class TileSet extends ImageSet {
         blockSet=false;
     }
 
+    /**
+     * Return the 16x16 tiled zone.
+     */
+    protected Zone getObjectOnClick(int p_x, int p_y) {
+    	int x=16 * (p_x / 16);
+    	int y=16 * (p_y / 16);
+    	Zone z=null;
+        if (x < 0) {
+        	x = 0;
+        } else if (x >= tileWidth) {
+        	x = tileWidth - 16;
+        }
+        if (y < 0) {
+        	y = 0;
+        } else if (y >= tileHeight) {
+        	y = tileHeight - 16;
+        }
+
+        // Useful ?
+        if((x >= 0 && x <= tileWidth - 16) && (y >= 0 && y <= tileHeight - 16)){
+        	z = new Zone(x, y, 16, 16);
+        }
+
+        return z;
+    }
+    
     /**
      * Méthode de chargement dynamique des tiles présents dans le dossier défini
      * des Tiles.
@@ -268,8 +295,8 @@ public class TileSet extends ImageSet {
        
         Case c;
         int bank=ClientEngineZildo.tileEngine.getBankFromName(tileName);
-        for(int i = startY; i <= stopY; i+=16){
-            for(int j = startX; j <= stopX; j+= 16){
+        for(int i = startY; i < stopY; i+=16){
+            for(int j = startX; j < stopX; j+= 16){
             	int nMotif=bridge.getMotifParPoint(tileName, j, i);
             	if (nMotif == -1) {
             		list.add(null);

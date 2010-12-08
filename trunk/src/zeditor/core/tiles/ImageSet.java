@@ -29,6 +29,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,7 @@ public abstract class ImageSet extends JPanel {
     protected Point startPoint;
     protected Point stopPoint;
     protected Selection currentSelection;
-    List<Zone> selectables;
+    protected List<Zone> selectables;
     
     protected MasterFrameManager manager;
     
@@ -79,6 +80,7 @@ public abstract class ImageSet extends JPanel {
 
         tileName = p_tileName;
 
+        selectables=new ArrayList<Zone>();
 
         // On ajoute le mouseListene pour détecter les actions à la souris
         this.addMouseListener(new MouseListener() {
@@ -89,16 +91,17 @@ public abstract class ImageSet extends JPanel {
                         startPoint = null;
                         stopPoint = null;
    
-                        int x = 16 * (e.getX() / 16);
-                        int y = 16 * (e.getY() / 16);
-                        if((x >= 0 && x <= tileWidth - 16) && (y >= 0 && y <= tileHeight - 16)){
+                    	Zone z=getObjectOnClick(e.getX(), e.getY());
+                    	if (z != null) {
+	                        int x = z.x1;
+	                        int y = z.y1;
                             if(startPoint == null){
                                 startPoint = new Point(x,y);
                             }else{
                                 startPoint.setLocation(x, y);
                             }
                             repaint();
-                        }
+                    	}
                     }else if (MouseEvent.BUTTON3 == e.getButton()){
                         // Click droit
                     }
@@ -112,23 +115,24 @@ public abstract class ImageSet extends JPanel {
                 if(currentTile != null){
                     if(MouseEvent.BUTTON1 == e.getButton()){
                         // Click gauche
-                        int x = 16 * (e.getX() / 16);
-                        int y = 16 * (e.getY() / 16);
-                        if(x < 0){x = 0;}else if (x >= tileWidth){x = tileWidth - 16;}
-                        if(y < 0){y = 0;}else if (y >= tileHeight){y = tileHeight - 16;}
-                        if(stopPoint == null){
-                            stopPoint = new Point(x,y);
-                        }else{
-                            stopPoint.setLocation(x, y);
-                        }               
-                       
-                        if(startPoint != null){
-                            // On trie les points si le startPoint est valide
-                            sortPoints();
-                            // On construit la nouvelle sélection
-                            buildSelection();
-                        }
-                        repaint();
+                    	Zone z=getObjectOnClick(e.getX(), e.getY());
+                    	if (z != null) {
+	                        int x = z.x1 + z.x2;
+	                        int y = z.y1 + z.y2;
+	                        if(stopPoint == null){
+	                            stopPoint = new Point(x,y);
+	                        }else{
+	                            stopPoint.setLocation(x, y);
+	                        }               
+	                       
+	                        if(startPoint != null){
+	                            // On trie les points si le startPoint est valide
+	                            sortPoints();
+	                            // On construit la nouvelle sélection
+	                            buildSelection();
+	                        }
+	                        repaint();
+                    	}
                        
                     }else if (MouseEvent.BUTTON3 == e.getButton()){
                         // Click droit
@@ -140,23 +144,33 @@ public abstract class ImageSet extends JPanel {
         this.addMouseMotionListener(new MouseMotionListener(){
             public void mouseDragged(MouseEvent e) {
                 if(currentTile != null){
-                    int x = 16 * (e.getX() / 16);
-                    int y = 16 * (e.getY() / 16);
-                    if(x < 0){x = 0;}else if (x >= tileWidth){x = tileWidth - 16;}
-                    if(y < 0){y = 0;}else if (y >= tileHeight){y = tileHeight - 16;}
-                    if(stopPoint == null){
-                        stopPoint = new Point(x,y);
-                    }else{
-                        stopPoint.setLocation(x, y);
-                    }
-                    // Repaint du Tile
-                    repaint();
+                	Zone z=getObjectOnClick(e.getX(), e.getY());
+                	if (z != null) {
+	                    int x = z.x1 + z.x2;
+	                    int y = z.y1 + z.y2;
+	                    if(stopPoint == null){
+	                        stopPoint = new Point(x,y);
+	                    }else{
+	                        stopPoint.setLocation(x, y);
+	                    }
+	                    // Repaint du Tile
+	                    repaint();
+                	}
                 }
             }
             public void mouseMoved(MouseEvent arg0) {}
         });
     }
     
+    protected Zone getObjectOnClick(int p_x, int p_y) {
+    	for (Zone z : selectables) {
+    		if (z.isInto(p_x, p_y)) {
+    			return z;
+    		}
+    	}
+    	// No object under the mouse
+    	return null;
+    }
     
     /**
      * Méthode privée de tri des Points de sélection. Le point en haut à gauche devient
@@ -228,11 +242,11 @@ public abstract class ImageSet extends JPanel {
             yFin = Math.max(startPoint.y, stopPoint.y);
 
             g.setColor(outer);
-            g.drawRect(xDep, yDep, xFin-xDep+16, yFin-yDep+16);
+            g.drawRect(xDep, yDep, xFin-xDep, yFin-yDep);
             g.setColor(inner);
-            g.drawRect(xDep+1, yDep+1, xFin-xDep+14, yFin-yDep+14);
+            g.drawRect(xDep+1, yDep+1, xFin-xDep-2, yFin-yDep-2);
             g.setColor(outer);
-            g.drawRect(xDep+2, yDep+2, xFin-xDep+12, yFin-yDep+12);
+            g.drawRect(xDep+2, yDep+2, xFin-xDep-4, yFin-yDep-4);
         }
     }
 

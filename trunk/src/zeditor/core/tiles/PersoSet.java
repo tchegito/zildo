@@ -23,14 +23,20 @@ package zeditor.core.tiles;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.lwjgl.util.vector.Vector4f;
 
+import zeditor.core.selection.PersoSelection;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
+import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoNJ;
 import zildo.server.EngineZildo;
 
 /**
@@ -43,9 +49,12 @@ public class PersoSet extends ImageSet {
 	private final int width = 320;
 	private final int height = 320;
 	
+    protected Map<Zone, Object> objectsFromZone;
+
     public PersoSet(String p_tileName, MasterFrameManager p_manager) {
     	super(p_tileName, p_manager);
     	
+    	objectsFromZone=new HashMap<Zone, Object>();
     	initImage();
 	}
     
@@ -62,6 +71,12 @@ public class PersoSet extends ImageSet {
         	int nSpr=perso.first() % 128;
     		SpriteModel model=pnjBank.get_sprite(nSpr);
     		drawPerso(posX, posY, pnjBank, perso, false);
+    		
+    		// Store this zone into the list
+    		Zone z=new Zone(posX, posY, model.getTaille_x(), model.getTaille_y());
+    		selectables.add(z);
+    		objectsFromZone.put(z, nSpr);
+    		
     		posX+=model.getTaille_x();
     		if (posX > width) {
     			posX=0;
@@ -107,7 +122,16 @@ public class PersoSet extends ImageSet {
     
 	@Override
 	protected void buildSelection() {
-
+		Zone z=getObjectOnClick(startPoint.x, startPoint.y);
+		if (z != null) {
+			int nSpr=(Integer) objectsFromZone.get(z);
+			PersoDescription desc=PersoDescription.fromNSpr(nSpr);
+			Perso temp=new PersoNJ();
+			temp.setNSpr(nSpr);
+			
+	        currentSelection = new PersoSelection(temp);
+	        manager.setPersoSelection((PersoSelection) currentSelection);
+		}
 	}
 
 	@Override

@@ -113,7 +113,6 @@ public class PersoPanel extends JPanel {
 		dialogZone.setLineWrap(true);
 		dialogZone.setWrapStyleWord(true);
 		dialogZone.setAutoscrolls(true);
-		dialogZone.setMaximumSize(dialogZone.getSize());
 		panel.add(dialogZone);
 
 		return panel;
