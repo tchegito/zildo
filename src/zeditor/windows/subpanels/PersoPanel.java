@@ -21,6 +21,7 @@
 package zeditor.windows.subpanels;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -28,6 +29,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -67,6 +69,11 @@ public class PersoPanel extends JPanel {
 	
 	Perso currentPerso;
 	
+	// For style
+	boolean left=true;
+	JPanel southPanel;
+	JPanel currentPanel;
+	
 	public PersoPanel(MasterFrameManager p_manager) {
 		setLayout(new BorderLayout());
 		add(new PersoSet(null, p_manager), BorderLayout.CENTER);
@@ -76,28 +83,28 @@ public class PersoPanel extends JPanel {
 	}
 	
 	private JPanel getSouthPanel() {
-		JPanel panel=new JPanel();
-		GridLayout thisLayout = new GridLayout(0,2);
-		panel.setLayout(thisLayout);
+		southPanel=new JPanel();
+		southPanel.setLayout(new GridLayout(6, 1));
+		//c.gridheight=6;
 
 		name=new JTextField();
-		panel.add(new JLabel("Nom"));
-		panel.add(name);
-		panel.add(new JLabel("Script"));
+		addComp(new JLabel("Nom"));
+		addComp(name);
+		addComp(new JLabel("Script"));
 		script=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(MouvementPerso.class)));
-		panel.add(script);
+		addComp(script);
 		
-		panel.add(new JLabel("Angle"));
+		addComp(new JLabel("Angle"));
 		angle=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(Angle.class)));
-		panel.add(angle);
+		addComp(angle);
 
-		panel.add(new JLabel("Objet"));
+		addComp(new JLabel("Objet"));
 		object=new JTextField();
-		panel.add(object);
+		addComp(object);
 		
-		panel.add(new JLabel("Info"));
+		addComp(new JLabel("Info"));
 		info=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(PersoInfo.class)));
-		panel.add(info);
+		addComp(info);
 		
 		// Spinner for the dialogs
 		SpinnerListModel dialogModel = new SpinnerListModel(new String[] {"0", "1", "2"});
@@ -107,15 +114,39 @@ public class PersoPanel extends JPanel {
 		subPanel.setLayout(new BorderLayout());
 		subPanel.add(new JLabel("Dialog"), BorderLayout.WEST);
 		subPanel.add(spinner, BorderLayout.EAST);
-		panel.add(subPanel);
+		addComp(subPanel);
 		
-		dialogZone=new JTextArea(4, 30);
+		dialogZone=new JTextArea(3, 30);
 		dialogZone.setLineWrap(true);
 		dialogZone.setWrapStyleWord(true);
 		dialogZone.setAutoscrolls(true);
-		panel.add(dialogZone);
+		JScrollPane areaScrollPane = new JScrollPane(dialogZone);
+	        areaScrollPane.setVerticalScrollBarPolicy(
+	                        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	        //areaScrollPane.setPreferredSize(dialogZone.getSize());
+	        
 
-		return panel;
+		addComp(areaScrollPane);
+
+		return southPanel;
+	}
+	
+	private void addComp(Component p_comp) {
+	    String style;
+	    Dimension d=p_comp.getPreferredSize();
+	    if (left) {
+		currentPanel=new JPanel();
+		BorderLayout layout=new BorderLayout();
+		layout.setHgap(10);
+		currentPanel.setLayout(layout);
+		southPanel.add(currentPanel);
+		style=BorderLayout.WEST;
+	    } else {
+		style=BorderLayout.EAST;
+		p_comp.setPreferredSize(new Dimension(2*PersoSet.width/3, d.height));
+	    }
+	    left=!left;
+	    currentPanel.add(p_comp, style);
 	}
 	
 	/**
