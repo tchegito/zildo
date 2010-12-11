@@ -39,6 +39,9 @@ public class ZildoMouseKeyListener
 	ZildoScrollablePanel panel;
 	ZildoCanvas canvas;
 	
+	// When user press SHIFT, we set this to TRUE, and user gain focus on what is under the mouse cursor
+	private boolean focusOnCursor;
+	
 	public ZildoMouseKeyListener(ZildoScrollablePanel p_panel) {
 		panel = p_panel;
 		canvas=panel.getZildoCanvas();
@@ -157,11 +160,16 @@ public class ZildoMouseKeyListener
 		MasterFrameManager.display(message.toString(),
 				MasterFrameManager.MESSAGE_INFO);
 
-		canvas.setObjectOnCursor(p);
+		if (focusOnCursor) {
+			canvas.setObjectOnCursor(p);
+		}
 		
 		// Store the cursor location
 		p = getInsidePosition(mouseevent);
 		canvas.cursorLocation = p;
+		
+		// In order to user can press keys when mouse is under the canvas
+		canvas.requestFocusInWindow();
 	}
 
 	public void keyPressed(KeyEvent p_keyevent) {
@@ -179,6 +187,9 @@ public class ZildoMouseKeyListener
 			case 40 : // down
 			    canvas.down = true;
 			    break;
+			case 16:	// shift
+				focusOnCursor = true;
+				break;
 		}
 	}
 
@@ -197,6 +208,9 @@ public class ZildoMouseKeyListener
 			case 40 : // down
 			    canvas.down = false;
 			    break;
+			case 16 : // shift
+				focusOnCursor = false;
+				break;
 		}
 	}
 

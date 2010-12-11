@@ -32,11 +32,13 @@ import zeditor.core.selection.PersoSelection;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
+import zildo.monde.map.Angle;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.server.EngineZildo;
 
 /**
@@ -46,8 +48,8 @@ import zildo.server.EngineZildo;
 @SuppressWarnings("serial")
 public class PersoSet extends ImageSet {
 
-	private final int width = 320;
-	private final int height = 320;
+	public final static int width = 320;
+	public final static int height = 320;
 	
     protected Map<Zone, Object> objectsFromZone;
 
@@ -122,15 +124,19 @@ public class PersoSet extends ImageSet {
     
 	@Override
 	protected void buildSelection() {
-		Zone z=getObjectOnClick(startPoint.x, startPoint.y);
+		Zone z=getObjectOnClick(startPoint.x+1, startPoint.y+1);
 		if (z != null) {
 			int nSpr=(Integer) objectsFromZone.get(z);
 			PersoDescription desc=PersoDescription.fromNSpr(nSpr);
-			Perso temp=new PersoNJ();
-			temp.setNSpr(nSpr);
-			
-	        currentSelection = new PersoSelection(temp);
-	        manager.setPersoSelection((PersoSelection) currentSelection);
+			if (desc != null) {
+				// Initialize a virtual character
+				Perso temp=EngineZildo.persoManagement.createPerso(desc, 0, 0, 0, "new", Angle.NORD.value);
+				temp.setInfo(PersoInfo.NEUTRAL);
+				temp.initPersoFX();
+				
+		        currentSelection = new PersoSelection(temp);
+		        manager.setPersoSelection((PersoSelection) currentSelection);
+			}
 		}
 	}
 
