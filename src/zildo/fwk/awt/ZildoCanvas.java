@@ -81,6 +81,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 					break;
 				case CHAININGPOINT:
 					moveChainingPoint(p, (ChainingPointSelection) sel);
+					break;
+				case PERSOS:
+					placePerso(p, (PersoSelection) sel);
+					break;
 			}
 		}
 	}
@@ -276,5 +280,18 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
     		}
     	}
     	return null;
+	}
+	
+	/**
+	 * Add a perso to the map
+	 * @param p_point
+	 * @param p_sel
+	 */
+	private void placePerso(Point p_point, PersoSelection p_sel) {
+		Perso perso=p_sel.getElement();
+		perso.setX(p_point.x);
+		perso.setY(p_point.y);
+		EngineZildo.spriteManagement.spawnPerso(perso);
+		changeSprites=true;	// Ask for sprites updating
 	}
 }

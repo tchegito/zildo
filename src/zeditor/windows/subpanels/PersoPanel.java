@@ -22,8 +22,14 @@ package zeditor.windows.subpanels;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FocusTraversalPolicy;
 import java.awt.GridLayout;
+import java.awt.KeyboardFocusManager;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -34,6 +40,10 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerListModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 import zeditor.core.tiles.PersoSet;
 import zeditor.windows.managers.MasterFrameManager;
@@ -41,6 +51,7 @@ import zildo.fwk.ZUtils;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.map.Angle;
+import zildo.monde.map.Area;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -68,11 +79,11 @@ public class PersoPanel extends JPanel {
 	JTextArea dialogZone;
 	
 	Perso currentPerso;
+	Behavior behavior;
 	
-	// For style
-	boolean left=true;
 	JPanel southPanel;
-	JPanel currentPanel;
+	PersoWidgetListener listener;
+	boolean updatingUI;	// To know wether user or UI ask for update
 	
 	public PersoPanel(MasterFrameManager p_manager) {
 		setLayout(new BorderLayout());
@@ -85,26 +96,20 @@ public class PersoPanel extends JPanel {
 	private JPanel getSouthPanel() {
 		southPanel=new JPanel();
 		southPanel.setLayout(new GridLayout(6, 1));
-		//c.gridheight=6;
 
 		name=new JTextField();
-		addComp(new JLabel("Nom"));
-		addComp(name);
-		addComp(new JLabel("Script"));
+		addComp(new JLabel("Nom"), name);
 		script=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(MouvementPerso.class)));
-		addComp(script);
+		addComp(new JLabel("Script"), script);
 		
-		addComp(new JLabel("Angle"));
 		angle=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(Angle.class)));
-		addComp(angle);
+		addComp(new JLabel("Angle"), angle);
 
-		addComp(new JLabel("Objet"));
 		object=new JTextField();
-		addComp(object);
+		addComp(new JLabel("Objet"), object);
 		
-		addComp(new JLabel("Info"));
 		info=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(PersoInfo.class)));
-		addComp(info);
+		addComp(new JLabel("Info"), info);
 		
 		// Spinner for the dialogs
 		SpinnerListModel dialogModel = new SpinnerListModel(new String[] {"0", "1", "2"});
@@ -114,39 +119,42 @@ public class PersoPanel extends JPanel {
 		subPanel.setLayout(new BorderLayout());
 		subPanel.add(new JLabel("Dialog"), BorderLayout.WEST);
 		subPanel.add(spinner, BorderLayout.EAST);
-		addComp(subPanel);
 		
 		dialogZone=new JTextArea(3, 30);
 		dialogZone.setLineWrap(true);
 		dialogZone.setWrapStyleWord(true);
-		dialogZone.setAutoscrolls(true);
 		JScrollPane areaScrollPane = new JScrollPane(dialogZone);
 	        areaScrollPane.setVerticalScrollBarPolicy(
 	                        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	        //areaScrollPane.setPreferredSize(dialogZone.getSize());
-	        
 
-		addComp(areaScrollPane);
+		addComp(subPanel, areaScrollPane);
 
+		// Now add the listener
+		PersoWidgetListener listener=new PersoWidgetListener();
+		name.getDocument().addDocumentListener(listener);
+		script.addActionListener(listener);
+		angle.addActionListener(listener);
+		object.addActionListener(listener);
+		info.addActionListener(listener);
+		dialogZone.getDocument().addDocumentListener(listener);
+		
 		return southPanel;
 	}
 	
-	private void addComp(Component p_comp) {
-	    String style;
-	    Dimension d=p_comp.getPreferredSize();
-	    if (left) {
-		currentPanel=new JPanel();
+	private void addComp(Component p_compLeft, Component p_compRight) {
+	    Dimension d=p_compRight.getPreferredSize();
+
+	    JPanel currentPanel=new JPanel();
 		BorderLayout layout=new BorderLayout();
 		layout.setHgap(10);
 		currentPanel.setLayout(layout);
+		p_compRight.setPreferredSize(new Dimension(2*PersoSet.width/3, d.height));
+
+	    currentPanel.add(p_compLeft, BorderLayout.WEST);
+	    currentPanel.add(p_compRight, BorderLayout.EAST);
+	    
+	    // Put a listener on the editable component
 		southPanel.add(currentPanel);
-		style=BorderLayout.WEST;
-	    } else {
-		style=BorderLayout.EAST;
-		p_comp.setPreferredSize(new Dimension(2*PersoSet.width/3, d.height));
-	    }
-	    left=!left;
-	    currentPanel.add(p_comp, style);
 	}
 	
 	/**
@@ -154,21 +162,92 @@ public class PersoPanel extends JPanel {
 	 * @param p_entity
 	 */
 	public void focusPerso(Perso p_perso) {
+		updatingUI=true;	// To disable the listeners
+		
 		name.setText(p_perso.getNom());
 		script.setSelectedIndex(p_perso.getQuel_deplacement().valeur);
 		angle.setSelectedIndex(p_perso.getAngle().value);
 		info.setSelectedIndex(p_perso.getInfo().ordinal());
 		object.setText("0");
-		
+
 		currentPerso=p_perso;
+	    MapDialog mapDialog=EngineZildo.mapManagement.getCurrentMap().getMapDialog();
+	    behavior=mapDialog.getBehaviors().get(currentPerso.getNom());
 		updateDialog();
+		
+		updatingUI=false;
 	}
 	
-	public void updateDialog() {
+	private void updateDialog() {
 	    MapDialog mapDialog=EngineZildo.mapManagement.getCurrentMap().getMapDialog();
-	    Behavior behav=mapDialog.getBehaviors().get(currentPerso.getNom());
-	    String dial=mapDialog.getSentence(behav, currentPerso.getCompte_dialogue());
+	    String dial=mapDialog.getSentence(behavior, currentPerso.getCompte_dialogue());
 	    dialogZone.setText(dial);
+	    dialogZone.setCaretPosition(0);
+	}
+	
+	class PersoWidgetListener implements ActionListener, DocumentListener {
 
+		public void actionPerformed(ActionEvent actionevent) {
+			if (!updatingUI) {
+				Component comp=(Component) actionevent.getSource();
+				if (comp == angle || comp == script || comp == info) {
+					String val=(String) ((JComboBox) comp).getSelectedItem();
+					if (comp==angle) {
+						Angle a=ZUtils.getField(val, Angle.class);
+						currentPerso.setAngle(a);
+					} else if (comp == script) {
+						MouvementPerso s=ZUtils.getField(val, MouvementPerso.class);
+						currentPerso.setQuel_deplacement(s);
+					} else if (comp == info) {
+						PersoInfo i=ZUtils.getField(val, PersoInfo.class);
+						currentPerso.setInfo(i);
+					}
+				}
+				manager.getZildoCanvas().setChangeSprites(true);
+			}
+		}
+
+		public void changedUpdate(DocumentEvent documentevent) {
+			updateText(documentevent);
+		}
+
+		public void removeUpdate(DocumentEvent documentevent) {
+			updateText(documentevent);		
+		}
+
+		public void insertUpdate(DocumentEvent documentevent) {
+			updateText(documentevent);
+		}
+		
+		private void updateText(DocumentEvent p_event) {
+			if (!updatingUI) {
+				Component comp=KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+				Document doc=p_event.getDocument();
+		    	try {
+					String txt=doc.getText(0, doc.getLength());
+					if (comp == dialogZone) {
+						updatePersoText(txt);
+					} else if (comp == name) {
+						updatePersoName(txt);
+					}
+		    	} catch (BadLocationException e) {
+		    		
+		    	}
+			}
+		}
+		
+		private void updatePersoText(String p_text) {
+			Area area=EngineZildo.mapManagement.getCurrentMap();
+			MapDialog dialogs=area.getMapDialog();
+		    if (behavior != null) {
+
+		    		dialogs.setSentence(behavior, Integer.valueOf((String) spinner.getValue()), p_text);
+
+		    }
+		}
+		
+		private void updatePersoName(String p_text) {
+			currentPerso.setNom(p_text);
+		}
 	}
 }

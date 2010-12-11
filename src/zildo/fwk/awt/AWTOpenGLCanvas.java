@@ -58,7 +58,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	public boolean down;
 	public boolean left;
 	public boolean right;
-
+	
 	protected final static Point defaultCursorSize = new Point(16, 16);
 
 	private final static Vector4f colChainingPoint = new Vector4f(0.8f, 0.7f, 0.8f, 1);
@@ -68,6 +68,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	// We have to communicate orders via boolean to this canvas
 	// because we can use OpenGL outside of the paint process
 	protected boolean changeMap = false;
+	protected boolean changeSprites = false;
 
 	private int sizeX;
 	private int sizeY;
@@ -130,12 +131,16 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		if (changeMap) {
 			Area map = EngineZildo.mapManagement.getCurrentMap();
 			ClientEngineZildo.mapDisplay.setCurrentMap(map);
+			changeMap = false;
+			changeSprites=true;
+		}
+		if (changeSprites) {
 			// And the sprites
 			EngineZildo.spriteManagement.updateSprites(false);
 			ClientEngineZildo.spriteDisplay
 					.setEntities(EngineZildo.spriteManagement
 							.getSpriteEntities(null));
-			changeMap = false;
+			changeSprites=false;
 		}
 		if (!initialize) {
 			System.out.println("initializing");
@@ -309,5 +314,9 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	 */
 	public void setMode(ZEditMode p_mode) {
 	    mode = p_mode;
+	}
+	
+	public void setChangeSprites(boolean p_value) {
+		changeSprites=p_value;
 	}
 }

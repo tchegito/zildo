@@ -95,6 +95,13 @@ public class MapDialog {
 		return reponse;
 	}
 	
+	public void setSentence(Behavior behav, int numComportement, String sentence) {
+		if (behav!=null) {
+			int numSentence=behav.replique[numComportement];
+			dialogs[numSentence - 1]=sentence;
+		}
+	}
+	
 	public int getN_phrases() {
 		return n_phrases;
 	}

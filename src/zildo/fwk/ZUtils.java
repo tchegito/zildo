@@ -76,12 +76,21 @@ public class ZUtils {
 	 * @param p_content
 	 * @return String[]
 	 */
-	public static <T extends Enum<T>>  String[] getValues(Class<T> p_content) {
+	public static <T extends Enum<T>>  Object[] getValues(Class<T> p_content) {
 		List<String> str=new ArrayList<String>();
 		T[] enumConst=p_content.getEnumConstants();
 		for (T mvt : enumConst) {
 			str.add(mvt.name());
 		}
 		return str.toArray(new String[]{});
+	}
+	
+	public static <T extends Enum<T>> T getField(String p_enumString, Class<T> p_clazz) {
+		for (T e : p_clazz.getEnumConstants()) {
+			if (e.toString().equals(p_enumString)) {
+				return e;
+			}
+		}
+		return null;
 	}
 }

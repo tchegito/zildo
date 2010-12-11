@@ -83,7 +83,7 @@ public class MasterFrameManager {
 		    	zildoCanvas.requestFocusInWindow();
 		    }
 		});
-
+		
 		updateTitle();
 		updateChainingPoints(null);
 		
@@ -414,6 +414,8 @@ public class MasterFrameManager {
 				return currentSelection;
 			case CHAININGPOINT: 
 				return currentSelection;
+			case PERSOS:
+				return currentSelection;
 			}
 		}
 		return null;
@@ -461,6 +463,13 @@ public class MasterFrameManager {
 	    }
 	}
 	
+	/**
+	 * Set the current Perso selection. Two possible situations: <ul>
+	 * <li>user gain focus on a character on the map</li>
+	 * <li>user pick a character from the library</li>
+	 * </ul>
+	 * @param p_currentSelection
+	 */
 	public void setPersoSelection(PersoSelection p_currentSelection) {
 	    if (currentSelection == null || !p_currentSelection.equals(currentSelection)) {
 	    	if (currentSelection != null) {
