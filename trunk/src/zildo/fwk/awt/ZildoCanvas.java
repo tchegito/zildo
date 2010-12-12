@@ -40,6 +40,7 @@ import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
@@ -81,6 +82,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 					break;
 				case CHAININGPOINT:
 					moveChainingPoint(p, (ChainingPointSelection) sel);
+					break;
+				case SPRITES:
+					placeSprite(p, (SpriteSelection) sel);
 					break;
 				case PERSOS:
 					placePerso(p, (PersoSelection) sel);
@@ -253,7 +257,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    	SpriteEntity entity=findEntity(kind, p);
 	    	if (entity != null) {
 		    	if (kind == SelectionKind.SPRITES) {
-		    		manager.setSpriteSelection(new SpriteSelection(entity));
+		    		manager.setSpriteSelection(new SpriteSelection((Element) entity));
 		    	} else {
 			    	manager.setPersoSelection(new PersoSelection((Perso) entity));
 		    	}
@@ -293,5 +297,13 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		perso.setY(p_point.y);
 		EngineZildo.spriteManagement.spawnPerso(perso);
 		changeSprites=true;	// Ask for sprites updating
+	}
+	
+	private void placeSprite(Point p_point, SpriteSelection p_sel) {
+		Element elem=p_sel.getElement();
+		elem.setX(p_point.x);
+		elem.setY(p_point.y);
+		EngineZildo.spriteManagement.spawnSprite(elem);
+		changeSprites=true;
 	}
 }

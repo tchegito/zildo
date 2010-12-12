@@ -44,7 +44,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import zeditor.core.tiles.PersoSet;
+import zeditor.core.tiles.SpriteSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
 import zildo.monde.dialog.Behavior;
@@ -86,7 +86,7 @@ public class PersoPanel extends JPanel {
 	
 	public PersoPanel(MasterFrameManager p_manager) {
 		setLayout(new BorderLayout());
-		add(new PersoSet(null, p_manager), BorderLayout.CENTER);
+		add(new SpriteSet(true, p_manager), BorderLayout.CENTER);
 		add(getSouthPanel(), BorderLayout.SOUTH);
 
 		manager=p_manager;
@@ -148,7 +148,7 @@ public class PersoPanel extends JPanel {
 		BorderLayout layout=new BorderLayout();
 		layout.setHgap(10);
 		currentPanel.setLayout(layout);
-		p_compRight.setPreferredSize(new Dimension(2*PersoSet.width/3, d.height));
+		p_compRight.setPreferredSize(new Dimension(2*SpriteSet.width/3, d.height));
 
 	    currentPanel.add(p_compLeft, BorderLayout.WEST);
 	    currentPanel.add(p_compRight, BorderLayout.EAST);

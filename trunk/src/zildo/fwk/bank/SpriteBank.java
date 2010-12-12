@@ -41,8 +41,6 @@ public class SpriteBank {
 	
 	protected Logger logger=Logger.getLogger("SpriteBank");
 	
-	public static final int MAX_BANQUES = 8;
-
 	public static final int BANK_ZILDO = 0;
 	public static final int BANK_ELEMENTS = 1;
 	public static final int BANK_PNJ = 2;

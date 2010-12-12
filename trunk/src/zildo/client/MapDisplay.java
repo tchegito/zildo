@@ -29,6 +29,7 @@ public class MapDisplay {
 
     private Point camera;		// Current camera locatino
     private Point targetCamera;	// Target camera location (if not null, camera moves smoothly to it)
+    private final int cameraSpeed=2;
     private SpriteEntity focused;
 	
     private Angle scrollingAngle;
@@ -80,15 +81,19 @@ public class MapDisplay {
 	        }
 		} else if (targetCamera != null) {
 			// Move the camera to the target
+			int camSpeed=cameraSpeed;
+			if (scrollingAngle != null) {	// double speed if map is scrolling
+				camSpeed*=2;
+			}
 			if (camera.x < targetCamera.x) {
-				camera.x+=2;
+				camera.x+=camSpeed;
 			} else if (camera.x > targetCamera.x) {
-				camera.x-=2;
+				camera.x-=camSpeed;
 			}
 			if (camera.y < targetCamera.y) {
-				camera.y+=2;
+				camera.y+=camSpeed;
 			} else if (camera.y > targetCamera.y) {
-				camera.y-=2;
+				camera.y-=camSpeed;
 			}
 			
 			if (targetCamera.equals(camera)) {

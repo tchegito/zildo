@@ -107,9 +107,9 @@ public class SinglePlayer {
         	state=server.getClientStates().iterator().next();
     		ClientEngineZildo.guiDisplay.displayMessage("server started");
         } else {
-            	PersoZildo zildo = engineZildo.persoManagement.getZildo();
+            	PersoZildo zildo = EngineZildo.persoManagement.getZildo();
             	if (zildo == null) {
-            	    zildoId = engineZildo.spawnClient();
+            	    zildoId = EngineZildo.spawnClient();
             	} else {
             	    zildoId = zildo.getId();
             	}

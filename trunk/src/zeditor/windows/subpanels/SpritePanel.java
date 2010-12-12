@@ -20,12 +20,14 @@
 
 package zeditor.windows.subpanels;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import zeditor.core.tiles.SpriteSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.monde.sprites.SpriteEntity;
 
@@ -46,20 +48,28 @@ public class SpritePanel extends JPanel {
 	JTextField addy;
 	
 	public SpritePanel(MasterFrameManager p_manager) {
-		GridLayout thisLayout = new GridLayout(0,2);
-		setLayout(thisLayout);
-		
-		addx=new JTextField();
-		add(new JLabel("Add-x"));
-		add(addx);
-		
-		addy=new JTextField();
-		add(new JLabel("Add-y"));
-		add(addy);	
+		setLayout(new BorderLayout());
+		add(new SpriteSet(false, p_manager), BorderLayout.CENTER);
+		add(getSouthPanel(), BorderLayout.SOUTH);
 		
 		manager=p_manager;
 	}
-	
+
+	private JPanel getSouthPanel() {
+		JPanel panel=new JPanel();
+		GridLayout thisLayout = new GridLayout(0,2);
+		panel.setLayout(thisLayout);
+		
+		addx=new JTextField();
+		panel.add(new JLabel("Add-x"));
+		panel.add(addx);
+		
+		addy=new JTextField();
+		panel.add(new JLabel("Add-y"));
+		panel.add(addy);
+		
+		return panel;
+	}
 	/**
 	 * Update fields with the given entity's infos.
 	 * @param p_entity

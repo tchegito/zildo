@@ -27,9 +27,11 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.input.KeyboardState;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.Angle;
+import zildo.monde.map.Area;
 import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -500,7 +502,8 @@ public class PlayerManagement {
 						final int add_angley[]={-1,0,1,0};
 						int newx=((int)heros.x+5*add_anglex[heros.getAngle().value]) / 16;
 						int newy=((int)heros.y+3*add_angley[heros.getAngle().value]) / 16;
-						int on_map=EngineZildo.mapManagement.getCurrentMap().readmap(newx,newy);
+						Area map=EngineZildo.mapManagement.getCurrentMap();
+						int on_map=map.readmap(newx,newy);
 						int enBras=-1;
 						if (new IntSet(165,167,169,751).contains(on_map)) {
 							//On ramasse l'objet
@@ -518,14 +521,17 @@ public class PlayerManagement {
                             if (enBras != -1) {
                                 heros.takeSomething(newx * 16 + 8, newy * 16 + 14, enBras, null);
                             }
-                            EngineZildo.mapManagement.getCurrentMap().takeSomethingOnTile(new Point(newx, newy));
+                            map.takeSomethingOnTile(new Point(newx, newy));
 						} else if (on_map==743 && heros.getAngle()==Angle.NORD) {
 							//Zildo a trouvé un coffre ! C'est pas formidable ?
-							EngineZildo.mapManagement.getCurrentMap().writemap(newx, newy, 744);
-							//Musique('c:\musique\midi\zelda\Trouve.mid');
+							map.writemap(newx, newy, 744);
 							EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
-							EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_FROMCHEST,16*newx+8,16*newy+16,51, heros);
-							//EngineZildo.setWaitingScene(20);
+							ElementDescription desc=map.getCaseItem(newx, newy);
+							int nSpr=51;
+							if (desc != null) {
+								nSpr=desc.getNSpr();
+							}
+							EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_FROMCHEST, 16*newx+8, 16*newy+16, nSpr, heros);
 						} else if (!EngineZildo.mapManagement.isWalkable(on_map)) {
 							heros.setMouvement(MouvementZildo.TIRE);
 						}

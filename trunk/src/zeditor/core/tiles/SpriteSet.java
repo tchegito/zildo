@@ -29,13 +29,17 @@ import java.util.Map;
 import org.lwjgl.util.vector.Vector4f;
 
 import zeditor.core.selection.PersoSelection;
+import zeditor.core.selection.SpriteSelection;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.server.EngineZildo;
@@ -45,31 +49,42 @@ import zildo.server.EngineZildo;
  *
  */
 @SuppressWarnings("serial")
-public class PersoSet extends ImageSet {
+public class SpriteSet extends ImageSet {
 
 	public final static int width = 320;
 	public final static int height = 200;
 	
-    protected Map<Zone, PersoDescription> objectsFromZone;
+    protected Map<Zone, SpriteDescription> objectsFromZone;
 
-    public PersoSet(String p_tileName, MasterFrameManager p_manager) {
-    	super(p_tileName, p_manager);
+    boolean perso;
+    
+    /**
+     * Initialize the object
+     * @param p_perso TRUE=Perso / FALSE=Element
+     * @param p_manager
+     */
+    public SpriteSet(boolean p_perso, MasterFrameManager p_manager) {
+    	super(null, p_manager);
+
+    	perso=p_perso;
     	
-    	objectsFromZone=new HashMap<Zone, PersoDescription>();
-    	initImage();
+    	objectsFromZone=new HashMap<Zone, SpriteDescription>();
+    	initImage(p_perso ? PersoDescription.class : ElementDescription.class);
 	}
     
-    public void initImage() {
+    public <T extends SpriteDescription> void initImage(Class<T> p_bankDesc) {
         currentTile=new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     	currentTile.getGraphics();
     	
     	int posX=0;
     	int posY=0;
     	int maxY=0;
-    	for (PersoDescription perso : PersoDescription.values()) {
+    	
+    	T[] values=p_bankDesc.getEnumConstants();
+    	for (T perso : values) {
     		
         	SpriteBank pnjBank=EngineZildo.spriteManagement.getSpriteBank(perso.getBank());
-        	int nSpr=perso.first() % 128;
+        	int nSpr=perso.getNSpr() % 128;
     		SpriteModel model=pnjBank.get_sprite(nSpr);
     		drawPerso(posX, posY, pnjBank, perso, false);
     		
@@ -99,9 +114,9 @@ public class PersoSet extends ImageSet {
      * @param nMotif
      * @param masque
      */
-    private void drawPerso(int i, int j, SpriteBank pnjBank, PersoDescription nMotif, boolean masque) {
+    private void drawPerso(int i, int j, SpriteBank pnjBank, SpriteDescription nMotif, boolean masque) {
 
-    	int nSpr=nMotif.first() % 128;
+    	int nSpr=nMotif.getNSpr() % 128;
     	SpriteModel model=pnjBank.get_sprite(nSpr);
     	short[] data=pnjBank.getSpriteGfx(nSpr);
     	
@@ -125,15 +140,25 @@ public class PersoSet extends ImageSet {
 	protected void buildSelection() {
 		Zone z=getObjectOnClick(startPoint.x+1, startPoint.y+1);
 		if (z != null) {
-			PersoDescription desc=objectsFromZone.get(z);
+			SpriteDescription desc=objectsFromZone.get(z);
 			if (desc != null) {
-				// Initialize a virtual character
-				Perso temp=EngineZildo.persoManagement.createPerso(desc, 0, 0, 0, "new", Angle.NORD.value);
-				temp.setInfo(PersoInfo.NEUTRAL);
-				temp.initPersoFX();
-				
-		        currentSelection = new PersoSelection(temp);
-		        manager.setPersoSelection((PersoSelection) currentSelection);
+				if (perso) {
+					PersoDescription persoDesc=(PersoDescription) desc;
+					// Initialize a virtual character
+					Perso temp=EngineZildo.persoManagement.createPerso(persoDesc, 0, 0, 0, "new", Angle.NORD.value);
+					temp.setInfo(PersoInfo.NEUTRAL);
+					temp.initPersoFX();
+					
+			        currentSelection = new PersoSelection(temp);
+			        manager.setPersoSelection((PersoSelection) currentSelection);
+				} else {
+					ElementDescription elemDesc=(ElementDescription) desc;
+					Element temp=new Element();
+					temp.setNBank(elemDesc.getBank());
+					temp.setNSpr(elemDesc.getNSpr());
+					currentSelection=new SpriteSelection(temp);
+					manager.setSpriteSelection((SpriteSelection) currentSelection);
+				}
 			}
 		}
 	}

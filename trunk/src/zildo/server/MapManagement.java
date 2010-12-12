@@ -530,7 +530,7 @@ public class MapManagement {
      * @return
      */
     public Point getRespawnPosition() {
-        int x = 831;
+        int x = 831 - 700;
         int y = 360;
         while (collide(x, y, null)) {
             x += 16;

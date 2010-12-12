@@ -139,7 +139,7 @@ public class SaveGameMenu extends Menu {
 		EasyReadingFile file = new EasyReadingFile(p_filename);
 		game = Game.deserialize(file);
 		EngineZildo.setGame(game);
-		EngineZildo.mapManagement.charge_map("d4");
+		EngineZildo.mapManagement.charge_map("polaky"); //d4");
 
 		singlePlay.launchGame();
 	}
