@@ -37,6 +37,7 @@ import zildo.monde.collision.Collision;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementImpact;
@@ -79,6 +80,8 @@ public class Area implements EasySerializable {
 	private List<ChainingPoint> listChainingPoint;
 	private MapDialog dialogs;
 
+	private Map<Case, ElementDescription> caseItem;
+	
     // To diffuse changes to clients
     private final Collection<Point> changes;
     // To respawn removed items
@@ -90,6 +93,8 @@ public class Area implements EasySerializable {
 
 		changes = new HashSet<Point>();
 		toRespawn = new HashSet<SpawningTile>();
+		
+		caseItem = new HashMap<Case, ElementDescription>();
 	}
 
 	public Area(boolean p_outside) {
@@ -560,7 +565,12 @@ public class Area implements EasySerializable {
 				short nSpr;
 				nSpr = p_buffer.readUnsignedByte();
 				if (p_spawn) {
-					spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS, nSpr, x, y, false);
+					// If this sprite is on a chest tile, link them
+					if (map.readmap(x / 16, y/16) == 743) {
+						map.setCaseItem(x/16, y/16, nSpr);
+					} else {	// else, show it as a regular element
+						spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS, nSpr, x, y, false);
+					}
 				}
 			}
 		}
@@ -731,5 +741,28 @@ public class Area implements EasySerializable {
                 spawnTile.cnt--;
             }
         }
+    }
+    
+    /**
+     * Link a tile with an item description. (useful for chest)
+     * @param p_x map X coordinate
+     * @param p_y map Y coordinate
+     * @param p_nSpr
+     */
+    public void setCaseItem(int p_x, int p_y, int p_nSpr) {
+    	Case cas=get_mapcase(p_x, p_y);
+    	ElementDescription desc=ElementDescription.fromInt(p_nSpr);
+    	caseItem.put(cas, desc);
+    }
+    
+    /**
+     * Get the linked item description from a given position (if exists).
+     * @param p_x map X coordinate
+     * @param p_y map Y coordinate
+     * @return ElementDescription
+     */
+    public ElementDescription getCaseItem(int p_x, int p_y) {
+    	Case cas=get_mapcase(p_x, p_y);
+    	return caseItem.get(cas);
     }
 }

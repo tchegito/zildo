@@ -411,10 +411,9 @@ public class MasterFrameManager {
 			case TILES: 
 				return masterFrame.getBackgroundPanel().getTileSetPanel().getCurrentSelection();
 			case PREFETCH:	
-				return currentSelection;
 			case CHAININGPOINT: 
-				return currentSelection;
 			case PERSOS:
+			case SPRITES:
 				return currentSelection;
 			}
 		}

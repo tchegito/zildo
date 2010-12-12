@@ -118,7 +118,7 @@ public class Server extends Thread {
 		if (clients.get(p_client) != null) {
 			return clients.get(p_client).zildo.getId();
 		}
-		int zildoId=engineZildo.spawnClient();
+		int zildoId=EngineZildo.spawnClient();
 		ClientState state=new ClientState(p_client, zildoId);
 		state.playerName=p_playerName;
 		clients.put(p_client, state);

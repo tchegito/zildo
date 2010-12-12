@@ -71,8 +71,6 @@ public enum PersoDescription implements SpriteDescription {
 	
 	IntSet sprUsed;
 
-	//final static int add=128;
-
 	private PersoDescription(int... sprUsed) {
 		this.sprUsed=new IntSet(sprUsed);
 	}
@@ -110,7 +108,7 @@ public enum PersoDescription implements SpriteDescription {
 	}
 		
 		public int getNSpr() {
-			return this.ordinal();
+			return first();
 		}
 		
 		public int getBank() {
