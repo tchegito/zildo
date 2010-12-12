@@ -131,7 +131,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			BorderLayout thisLayout = new BorderLayout();
 			getContentPane().setLayout(thisLayout);
 			this.setTitle("Zeditor");
-			this.setMinimumSize(new java.awt.Dimension(800, 600));
+			this.setMinimumSize(new java.awt.Dimension(1010, 600));
 			this.setIconImage(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/map.png")).getImage());
 			getContentPane().add(getMasterPanel(), BorderLayout.CENTER);
 			getContentPane().add(getSystemPanel(), BorderLayout.SOUTH);

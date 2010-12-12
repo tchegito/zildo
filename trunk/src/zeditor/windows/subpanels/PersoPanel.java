@@ -22,12 +22,9 @@ package zeditor.windows.subpanels;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FocusTraversalPolicy;
 import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -39,7 +36,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SpinnerListModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -112,9 +111,9 @@ public class PersoPanel extends JPanel {
 		addComp(new JLabel("Info"), info);
 		
 		// Spinner for the dialogs
-		SpinnerListModel dialogModel = new SpinnerListModel(new String[] {"0", "1", "2"});
-		spinner = new JSpinner(dialogModel);
+		spinner = new JSpinner();
 		spinner.setPreferredSize(new Dimension(40,12));
+		initSpinner();
 		JPanel subPanel=new JPanel();
 		subPanel.setLayout(new BorderLayout());
 		subPanel.add(new JLabel("Dialog"), BorderLayout.WEST);
@@ -129,13 +128,14 @@ public class PersoPanel extends JPanel {
 
 		addComp(subPanel, areaScrollPane);
 
-		// Now add the listener
+		// Now add the listeners
 		PersoWidgetListener listener=new PersoWidgetListener();
 		name.getDocument().addDocumentListener(listener);
 		script.addActionListener(listener);
 		angle.addActionListener(listener);
 		object.addActionListener(listener);
 		info.addActionListener(listener);
+		spinner.addChangeListener(listener);
 		dialogZone.getDocument().addDocumentListener(listener);
 		
 		return southPanel;
@@ -153,7 +153,6 @@ public class PersoPanel extends JPanel {
 	    currentPanel.add(p_compLeft, BorderLayout.WEST);
 	    currentPanel.add(p_compRight, BorderLayout.EAST);
 	    
-	    // Put a listener on the editable component
 		southPanel.add(currentPanel);
 	}
 	
@@ -175,17 +174,42 @@ public class PersoPanel extends JPanel {
 	    behavior=mapDialog.getBehaviors().get(currentPerso.getNom());
 		updateDialog();
 		
+		// Initialize the spinner
+		initSpinner();
+		
 		updatingUI=false;
 	}
 	
+	private void initSpinner() {
+		int max=0;
+		if (behavior != null) {
+			for (int i=0;i<behavior.replique.length;i++) {
+				if (behavior.replique[i] == 0) {
+					max=i;
+				}
+			}
+		}
+		spinner.setModel(new SpinnerNumberModel(0, 0, max, -1));	// -1 to get next sentence with down arrow
+	}
+	
+	/**
+	 * Update the dialog's textarea, according to the current Perso and the behavior (spinner's position)
+	 */
 	private void updateDialog() {
 	    MapDialog mapDialog=EngineZildo.mapManagement.getCurrentMap().getMapDialog();
-	    String dial=mapDialog.getSentence(behavior, currentPerso.getCompte_dialogue());
+	    int val=(Integer) spinner.getValue();
+	    String dial=mapDialog.getSentence(behavior, val);
 	    dialogZone.setText(dial);
 	    dialogZone.setCaretPosition(0);
 	}
 	
-	class PersoWidgetListener implements ActionListener, DocumentListener {
+	/**
+	 * Listener for all widgets in the "south panel" : name, angle, script, info and dialog.<br/>
+	 * Manages the synchronisation between UI and model (Perso class)
+	 * @author Tchegito
+	 *
+	 */
+	class PersoWidgetListener implements ActionListener, DocumentListener, ChangeListener {
 
 		public void actionPerformed(ActionEvent actionevent) {
 			if (!updatingUI) {
@@ -219,6 +243,11 @@ public class PersoPanel extends JPanel {
 			updateText(documentevent);
 		}
 		
+		@Override
+		public void stateChanged(ChangeEvent changeevent) {
+			updateDialog();
+		}
+		
 		private void updateText(DocumentEvent p_event) {
 			if (!updatingUI) {
 				Component comp=KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
@@ -240,9 +269,7 @@ public class PersoPanel extends JPanel {
 			Area area=EngineZildo.mapManagement.getCurrentMap();
 			MapDialog dialogs=area.getMapDialog();
 		    if (behavior != null) {
-
-		    		dialogs.setSentence(behavior, Integer.valueOf((String) spinner.getValue()), p_text);
-
+	    		dialogs.setSentence(behavior, (Integer) spinner.getValue(), p_text);
 		    }
 		}
 		

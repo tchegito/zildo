@@ -87,7 +87,9 @@ public class MapDialog {
 		String reponse="pas trouve !";
 		if (behav!=null) {
 			int numSentence=behav.replique[numComportement];
-			reponse=dialogs[numSentence - 1];
+			if (numSentence > 0) {
+				reponse=dialogs[numSentence - 1];
+			}
 			//char a='#';
 			//int posDiese=reponse.indexOf(a);
 			//if (posDiese != -1) {

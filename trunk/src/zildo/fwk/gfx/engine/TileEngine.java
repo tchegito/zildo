@@ -101,7 +101,8 @@ public class TileEngine extends TextureEngine {
 		"foret2.dec",
 		"foret3.dec",
 		"foret4.dec",
-		"palais1.dec"};
+		"palais1.dec",
+		"palais2.dec"};
             
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
@@ -147,9 +148,9 @@ public class TileEngine extends TextureEngine {
     // /////////////////////////////////////////////////////////////////////////////////////
     void charge_tous_les_motifs() {
         n_banquemotif = 0;
-        for (int i = 0; i < 8; i++)
-            this.charge_motifs(tileBankNames[i].toUpperCase());
-
+        for (String bankName : tileBankNames) {
+            this.charge_motifs(bankName.toUpperCase());
+        }
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////
