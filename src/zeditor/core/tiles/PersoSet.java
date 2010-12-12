@@ -37,7 +37,6 @@ import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.server.EngineZildo;
 
@@ -49,14 +48,14 @@ import zildo.server.EngineZildo;
 public class PersoSet extends ImageSet {
 
 	public final static int width = 320;
-	public final static int height = 320;
+	public final static int height = 200;
 	
-    protected Map<Zone, Object> objectsFromZone;
+    protected Map<Zone, PersoDescription> objectsFromZone;
 
     public PersoSet(String p_tileName, MasterFrameManager p_manager) {
     	super(p_tileName, p_manager);
     	
-    	objectsFromZone=new HashMap<Zone, Object>();
+    	objectsFromZone=new HashMap<Zone, PersoDescription>();
     	initImage();
 	}
     
@@ -77,7 +76,7 @@ public class PersoSet extends ImageSet {
     		// Store this zone into the list
     		Zone z=new Zone(posX, posY, model.getTaille_x(), model.getTaille_y());
     		selectables.add(z);
-    		objectsFromZone.put(z, nSpr);
+    		objectsFromZone.put(z, perso);
     		
     		posX+=model.getTaille_x();
     		if (posX > width) {
@@ -126,8 +125,7 @@ public class PersoSet extends ImageSet {
 	protected void buildSelection() {
 		Zone z=getObjectOnClick(startPoint.x+1, startPoint.y+1);
 		if (z != null) {
-			int nSpr=(Integer) objectsFromZone.get(z);
-			PersoDescription desc=PersoDescription.fromNSpr(nSpr);
+			PersoDescription desc=objectsFromZone.get(z);
 			if (desc != null) {
 				// Initialize a virtual character
 				Perso temp=EngineZildo.persoManagement.createPerso(desc, 0, 0, 0, "new", Angle.NORD.value);
