@@ -28,6 +28,7 @@ import zeditor.windows.subpanels.ChainingPointPanel;
 import zeditor.windows.subpanels.PersoPanel;
 import zeditor.windows.subpanels.PrefetchPanel;
 import zeditor.windows.subpanels.SpritePanel;
+import zeditor.windows.subpanels.StatsPanel;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.awt.ZildoScrollablePanel;
 
@@ -71,8 +72,9 @@ public class MasterFrame extends javax.swing.JFrame {
 	private SpritePanel spritePanel;
 	public TileSet tileSetPanel;
 	private BackgroundPanel backgroundPanel;
+	private StatsPanel statsPanel;
 	private JPanel prefetchPanel;
-	private JPanel chainingPointPanel;
+	private ChainingPointPanel chainingPointPanel;
 	private JTabbedPane tabsPane;
 	private JPanel leftPanel;
 	private JPanel contentPanel;
@@ -507,6 +509,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			tabsPane.addTab("Sprites", null, getSpritePanel(), null);
 			tabsPane.addTab("Personnages", null, getPersoPanel(), null);
 			tabsPane.addTab("Enchainements", null, getChainingPointPanel(), null);
+			tabsPane.addTab("Stats", null, getStatsPanel(), null);
 		}
 		return tabsPane;
 	}
@@ -528,7 +531,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		if (chainingPointPanel == null) {
 			chainingPointPanel = new ChainingPointPanel(getManager());
 		}
-		return (ChainingPointPanel) chainingPointPanel;
+		return chainingPointPanel;
 	}
 
 	public SpritePanel getSpritePanel() {
@@ -542,6 +545,12 @@ public class MasterFrame extends javax.swing.JFrame {
 			persoPanel = new PersoPanel(manager);
 		}
 		return persoPanel;
+	}
+	public StatsPanel getStatsPanel() {
+	    if (statsPanel == null) {
+		statsPanel = new StatsPanel();
+	    }
+	    return statsPanel;
 	}
 	private JPanel getRightPanel() {
 		if (rightPanel == null) {

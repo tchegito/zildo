@@ -86,7 +86,7 @@ public class MasterFrameManager {
 		
 		updateTitle();
 		updateChainingPoints(null);
-		
+		masterFrame.getStatsPanel().updateStats();
 	}
 
 	/**
@@ -146,6 +146,7 @@ public class MasterFrameManager {
 			
 			updateTitle();
 			updateChainingPoints(ch);
+			masterFrame.getStatsPanel().updateStats();
 		} catch (RuntimeException e) {
 			display("Probleme !", MESSAGE_ERROR);
 		}
@@ -182,6 +183,7 @@ public class MasterFrameManager {
 		display(" Nouvelle carte", MESSAGE_ERROR);
 		zildoCanvas.clearMap();
 		updateTitle();
+		masterFrame.getStatsPanel().updateStats();
 	}
 
 	/**

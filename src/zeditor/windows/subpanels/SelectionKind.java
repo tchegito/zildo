@@ -30,7 +30,7 @@ public enum SelectionKind {
 	TILES, PREFETCH, SPRITES, PERSOS, CHAININGPOINT;
 	
 	public static SelectionKind fromInt(int p_value) {
-		if (p_value > SelectionKind.values().length) {
+		if (p_value >= SelectionKind.values().length) {
 			return null;
 		}
 		return values()[p_value];

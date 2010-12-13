@@ -129,7 +129,7 @@ public class PersoPanel extends JPanel {
 		addComp(subPanel, areaScrollPane);
 
 		// Now add the listeners
-		PersoWidgetListener listener=new PersoWidgetListener();
+		listener=new PersoWidgetListener();
 		name.getDocument().addDocumentListener(listener);
 		script.addActionListener(listener);
 		angle.addActionListener(listener);
