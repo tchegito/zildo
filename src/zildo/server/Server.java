@@ -65,7 +65,9 @@ public class Server extends Thread {
 	public Server(Game p_game, boolean p_lan) {
 		engineZildo=new EngineZildo(p_game);
 		gameRunning=true;
-		netServer=new NetServer(this, p_lan);
+		if (!p_game.editing) {
+		    netServer=new NetServer(this, p_lan);
+		}
 	}
 	
 	public EngineZildo getEngineZildo() {
