@@ -23,7 +23,10 @@ package zeditor.core.tiles;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.util.vector.Vector4f;
@@ -75,35 +78,71 @@ public class SpriteSet extends ImageSet {
     public <T extends SpriteDescription> void initImage(Class<T> p_bankDesc) {
         currentTile=new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     	currentTile.getGraphics();
+
+    	
+    	SpriteDescription[] values=p_bankDesc.getEnumConstants();
+    	List<SpriteDescription> list;
+    	list=Arrays.asList(values);
+    	if (false) {	// for test, now
+    		list=prepareListFromBank(4);
+    	}
+
+    	displayListSprites(list);
+    }
+    
+    /**
+     * Return a virtual list for displaying an entire bank
+     * @param p_numBank
+     * @return List<SpriteDescription>
+     */
+    private List<SpriteDescription> prepareListFromBank(final int p_numBank) {
+    	// Display an entire bank
+    	List<SpriteDescription> list=new ArrayList<SpriteDescription>();
+    	SpriteBank bank=EngineZildo.spriteManagement.getSpriteBank(p_numBank);
+    	for (int i=0;i<bank.getNSprite();i++) {
+    		final int n=i;
+    		list.add(new SpriteDescription() {
+    			public int getBank() {
+    				return p_numBank;
+    			}
+    			public int getNSpr() {
+    				return n;
+    			}
+    		});
+    	}
+    	return list;
+    }
+    
+    private void displayListSprites(List<SpriteDescription> p_list) {
     	
     	int posX=0;
     	int posY=0;
     	int maxY=0;
-    	
-    	T[] values=p_bankDesc.getEnumConstants();
-    	for (T perso : values) {
+    	for (SpriteDescription perso : p_list) {
     		
         	SpriteBank pnjBank=EngineZildo.spriteManagement.getSpriteBank(perso.getBank());
         	int nSpr=perso.getNSpr() % 128;
     		SpriteModel model=pnjBank.get_sprite(nSpr);
-    		drawPerso(posX, posY, pnjBank, perso, false);
     		
-    		// Store this zone into the list
-    		Zone z=new Zone(posX, posY, model.getTaille_x(), model.getTaille_y());
-    		selectables.add(z);
-    		objectsFromZone.put(z, perso);
-    		
-    		posX+=model.getTaille_x();
-    		if (posX > width) {
+    		int sizeX=model.getTaille_x();
+    		if (posX + sizeX > width) {
     			posX=0;
     			posY+=maxY;
+    			maxY=0;
     		}
     		if (model.getTaille_y() > maxY) {
     			maxY=model.getTaille_y();
     		}
+    		
+    		drawPerso(posX, posY, pnjBank, nSpr, false);
+
+    		// Store this zone into the list
+    		Zone z=new Zone(posX, posY, model.getTaille_x(), model.getTaille_y());
+    		selectables.add(z);
+    		objectsFromZone.put(z, perso);
+    		posX+=sizeX;
     	}
     }
-    
 	final Vector4f colMasque=new Vector4f(192, 128, 240, 1);
 	
     /**
@@ -114,9 +153,8 @@ public class SpriteSet extends ImageSet {
      * @param nMotif
      * @param masque
      */
-    private void drawPerso(int i, int j, SpriteBank pnjBank, SpriteDescription nMotif, boolean masque) {
+    private void drawPerso(int i, int j, SpriteBank pnjBank, int nSpr, boolean masque) {
 
-    	int nSpr=nMotif.getNSpr() % 128;
     	SpriteModel model=pnjBank.get_sprite(nSpr);
     	short[] data=pnjBank.getSpriteGfx(nSpr);
     	
@@ -152,10 +190,9 @@ public class SpriteSet extends ImageSet {
 			        currentSelection = new PersoSelection(temp);
 			        manager.setPersoSelection((PersoSelection) currentSelection);
 				} else {
-					ElementDescription elemDesc=(ElementDescription) desc;
 					Element temp=new Element();
-					temp.setNBank(elemDesc.getBank());
-					temp.setNSpr(elemDesc.getNSpr());
+					temp.setNBank(desc.getBank());
+					temp.setNSpr(desc.getNSpr());
 					currentSelection=new SpriteSelection(temp);
 					manager.setSpriteSelection((SpriteSelection) currentSelection);
 				}
