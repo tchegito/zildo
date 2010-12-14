@@ -50,40 +50,19 @@ public class SpriteBank {
 	public static final int BANK_FONTES2 = 6;
 	
 		// Class variables
-	private long spr_size;
-	private List<SpriteModel> tab_sprite;
+	protected List<SpriteModel> models;
 
-	private short[] sprites_buf;
-	private int nSprite;
-	private	String name;
+	protected short[] sprites_buf;
+	protected int nSprite;
+	protected String name;
 	
 	public SpriteBank()
 	{
 		this.nSprite=0;
-		this.spr_size=0;
-		tab_sprite=new ArrayList<SpriteModel>();
+		models=new ArrayList<SpriteModel>();
 		this.sprites_buf=null;
 	
 		logger.log(Level.INFO, "Creating SpriteBank");
-	}
-
-	public SpriteBank(short[] sprites_buf_, long spr_size, List<SpriteModel> tab_sprite)
-	{
-		this.nSprite=tab_sprite.size();
-		this.sprites_buf=sprites_buf_;
-		this.spr_size=spr_size;
-		this.tab_sprite=tab_sprite;
-	
-		logger.log(Level.INFO, "Creating SpriteBank");
-	}
-	
-	// Assignment operator
-	public SpriteBank(SpriteBank original) {
-		this.sprites_buf=original.sprites_buf;
-		this.spr_size=original.spr_size;
-		this.tab_sprite=original.tab_sprite;
-		this.name=original.name;
-		this.nSprite=original.nSprite;
 	}
 	
 	@Override
@@ -105,7 +84,7 @@ public class SpriteBank {
 			it++;
 		}
 	*/
-		tab_sprite.clear();
+		models.clear();
 	}
 	
 	// Load a sprites bank into memory
@@ -127,7 +106,7 @@ public class SpriteBank {
 	
 			// Build a temporary sprite and add it to the list
 			SpriteModel spr=new SpriteModel(a, b, k);
-			tab_sprite.add(spr);
+			models.add(spr);
 	
 			int taille=b*a;
 			file.readUnsignedBytes(sprites_buf, k, taille);
@@ -140,7 +119,7 @@ public class SpriteBank {
 	public SpriteModel get_sprite(int nspr)
 	{
 		// Get the right sprite
-		return tab_sprite.get(nspr);
+		return models.get(nspr);
 	}
 	
 	public long modifyPixel(int nSpr, int color)
@@ -175,45 +154,17 @@ public class SpriteBank {
 	public void addSpriteReference(int texPosX, int texPosY, int sizeX, int sizeY)
 	{
 		SpriteModel spr=new SpriteModel(sizeX, sizeY, texPosX, texPosY);
-		tab_sprite.add(spr);
+		models.add(spr);
 	
 		nSprite++;
 	}
 
-	public long getSpr_size() {
-		return spr_size;
-	}
-
-	public void setSpr_size(long spr_size) {
-		this.spr_size = spr_size;
-	}
-
-	public List<SpriteModel> getTab_sprite() {
-		return tab_sprite;
-	}
-
-	public void setTab_sprite(List<SpriteModel> tab_sprite) {
-		this.tab_sprite = tab_sprite;
-	}
-
-	public short[] getSprites_buf() {
-		return sprites_buf;
-	}
-	
-	public short getSprites_buf(long pos) {
-		return sprites_buf[(int) pos];
-	}
-
-	public void setSprites_buf(short[] sprites_buf) {
-		this.sprites_buf = sprites_buf;
+	public List<SpriteModel> getModels() {
+		return models;
 	}
 
 	public int getNSprite() {
 		return nSprite;
-	}
-
-	public void setNSprite(int sprite) {
-		nSprite = sprite;
 	}
 
 	public String getName() {
@@ -222,5 +173,9 @@ public class SpriteBank {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public short[] getSprites_buf() {
+		return sprites_buf;
 	}
 }
