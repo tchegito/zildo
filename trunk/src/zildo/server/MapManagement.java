@@ -39,6 +39,7 @@ import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementStars;
 import zildo.monde.sprites.persos.PersoZildo;
 
 
@@ -521,6 +522,7 @@ public class MapManagement {
 				currentZ-=min;	// correct altitude with threshold
 				c=map.get_mapcase(i,j+4);
 				c.setZ(currentZ);
+				
 			}
 		}
 	}
@@ -535,6 +537,9 @@ public class MapManagement {
         while (collide(x, y, null)) {
             x += 16;
         }
+        
+		EngineZildo.spriteManagement.spawnSprite(new ElementStars(150, 360));
+
         return new Point(x, y);
     }
     

@@ -76,6 +76,7 @@ public class ClientEngineZildo {
 
 	/**
 	 * Should be called after {@link #initializeServer}
+	 * @param p_awt TRUE=ZEditor / FALSE=game
 	 */
 	public void initializeClient(boolean p_awt) {
 
@@ -96,7 +97,6 @@ public class ClientEngineZildo {
 			filterCommand.addFilter(new FadeFilter());
 			filterCommand.active(null, false);
 			filterCommand.active(BilinearFilter.class, true);
-
 		}
 
 		pixelShaders = new PixelShaders();
@@ -121,8 +121,9 @@ public class ClientEngineZildo {
 	/**
 	 * Client intialization, with real network
 	 * 
-	 * @param p_game
 	 * @param p_openGLGestion
+	 * @param p_awt TRUE=ZEditor / FALSE=game
+	 * @param p_client
 	 */
 	public ClientEngineZildo(OpenGLZildo p_openGLGestion, boolean p_awt,
 			Client p_client) {

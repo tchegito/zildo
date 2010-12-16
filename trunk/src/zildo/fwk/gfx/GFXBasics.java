@@ -396,4 +396,26 @@ public class GFXBasics extends OpenGLStuff {
 	public static Vector4f getColor(int palIndex) {
 		return palette[palIndex];
 	}
+
+	public static int getPalIndex(int value) {
+		int r = (value >> 16) & 0xff;
+		int g = (value >>  8) & 0xff;
+		int b = (value      ) & 0xff;
+		Vector2f min=new Vector2f(10000,1);	// X=minimal distance / Y=corresponding color index
+		for (int i=0;i<palette.length;i++) {
+			Vector4f col=palette[i];
+			double dist=Math.pow(col.x - r, 2) + 
+					 	Math.pow(col.y - g, 2) + 
+					 	Math.pow(col.z - b, 2);
+			if (dist < min.x) {
+				min.x=(float) dist;
+				min.y=i;
+				if (dist == 0) {
+					break;
+				}
+			}
+		}
+		// return the closest color's index
+		return (int) min.y;
+	}
 }

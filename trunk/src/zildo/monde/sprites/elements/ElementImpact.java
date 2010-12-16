@@ -32,17 +32,36 @@ public class ElementImpact extends Element {
 
 	public enum ImpactKind {
 		SIMPLEHIT(ElementDescription.IMPACT1, 4,1), 
-		EXPLOSION(ElementDescription.EXPLO1, 3,2), 
+		EXPLOSION(ElementDescription.EXPLO1, new int[] {0,0,0,1,1,2,2,1,1,2,2,3}, 2), 
 		FIRESMOKE(ElementDescription.EXPLOSMOKE1, 3,8),
-		SMOKE(ElementDescription.SMOKE, 3, 8);
+		SMOKE(ElementDescription.SMOKE, 3, 8),
+		STAR_YELLOW(ElementDescription.STAR1, new int[] {0,1,2,1,0}, 8);
 		
 		ElementDescription desc;
-		int seqLong;
-		int speed;
+		int seqLong;	// Size of the sequence of the sprite's life
+		int speed;	// Number of frame during each sprite animation
+		int[] seq=null;
 		
+		/**
+		 * Default constructor : create a linear sprite sequence (1,2,3,...)
+		 */
 		private ImpactKind(ElementDescription p_desc, int p_seqLong, int p_speed) {
 			desc=p_desc;
 			seqLong=p_seqLong;
+			speed=p_speed;
+			seq=new int[seqLong];
+			for (int i=0;i<seqLong;i++) {
+				seq[i]=i;
+			}
+		}
+		
+		/**
+		 * Constructor with custom sprite sequence
+		 */
+		private ImpactKind(ElementDescription p_desc, int[] p_seq, int p_speed) {
+			desc=p_desc;
+			seqLong=p_seq.length;
+			seq=p_seq;
 			speed=p_speed;
 		}
 	}
@@ -52,9 +71,7 @@ public class ElementImpact extends Element {
 	ImpactKind kind;
 
 	CompositeElement composite;
-	
-	private final static int[] seqExplo={0,0,0,1,1,2,2,1,1,2,2,3};
-	
+
     public ElementImpact(int p_startX, int p_startY, ImpactKind p_kind, Perso p_shooter) {
 		x=p_startX;
 		y=p_startY;
@@ -64,6 +81,7 @@ public class ElementImpact extends Element {
 		switch (p_kind) {
 			case SIMPLEHIT:
 			case FIRESMOKE:
+			case STAR_YELLOW:
 				setSprModel(kind.desc);
 				break;
 			case EXPLOSION:
@@ -82,32 +100,34 @@ public class ElementImpact extends Element {
 	@Override
 	public void animate() {
 		counter++;
+		int valCounter=counter/kind.speed;
 		switch (kind) {
+			case STAR_YELLOW:
         	case SIMPLEHIT:
         	case FIRESMOKE:
         	case SMOKE:
-				addSpr=counter / kind.speed;
-				if (addSpr == kind.seqLong) {
+				if (valCounter == kind.seqLong) {
 					dying=true;
 					visible=false;
 				} else {
+					addSpr=kind.seq[valCounter];
 					setSprModel(kind.desc, addSpr);
 				}
 				setAjustedX((int) x);
 				setAjustedY((int) y+getSprModel().getTaille_y()/2);
 				break;
 			case EXPLOSION:
-				int valCounter=counter/kind.speed;
-				if (valCounter == seqExplo.length) {	// End of the sequence
+				if (valCounter == kind.seq.length) {	// End of the sequence
 					composite.die(false);
 					// Create the ending smoke fog
 					for (int i=0;i<4;i++) {
 						int dx=(int) (Math.random()*32 - 16);
 						int dy=(int) (Math.random()*32 - 16);
                         EngineZildo.spriteManagement.spawnSprite(new ElementImpact(startX + dx, startY + dy, ImpactKind.FIRESMOKE,
-                                (Perso) linkedPerso));					}
+                                (Perso) linkedPerso));
+                    }
 				} else {
-					addSpr=seqExplo[valCounter];
+					addSpr=kind.seq[valCounter];
 					if (addSpr == 1) {
 						// Create 3 other elements to create the entire explosion
 						composite.squareShape(0,0);

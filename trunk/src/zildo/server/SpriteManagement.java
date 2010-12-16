@@ -109,6 +109,18 @@ public class SpriteManagement extends SpriteStore {
 
 		return element;
 	}
+	
+	/**
+	 * convenience method
+	 * @param desc
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return Element
+	 */
+	public Element spawnElement(ElementDescription desc, int x, int y, int z) {
+		return spawnElement(desc.getBank(), desc.getNSpr(), x, y, z);
+	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// spawnPerso

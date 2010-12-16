@@ -22,10 +22,9 @@ package zeditor.tools.sprites;
 
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.Game;
+import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
-import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
-import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
 
 /**
@@ -35,35 +34,48 @@ import zildo.server.EngineZildo;
  *
  */
 public class Modifier {
-	 public static void main(String[] args) {
-		Game g=new Game(null, true);
-		 
-		EngineZildo engine=new EngineZildo(g);
-		
-		EngineZildo.spriteManagement.charge_sprites("PNJ3.SPR");
-		
-		// Remove spector
-		SpriteBankEdit bankIn=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ));
-		SpriteBankEdit bankOut=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(6));
-		int fin=bankOut.getNSprite();
-		for (int i=0;i<6;i++) {
-			int nSprOriginal=PersoDescription.VOLANT_BLEU.getNSpr() + i;
-			SpriteModel model=bankIn.get_sprite(nSprOriginal);
-			System.out.println("On copie le sprite no"+nSprOriginal);
-			bankOut.addSpr(fin+i, model.getTaille_x(), model.getTaille_y(), bankIn.getSpriteGfx(nSprOriginal));
-		}
-		bankIn.removeSpr(124);
-		bankIn.removeSpr(124);
-		bankIn.removeSpr(124);
-		bankIn.removeSpr(124);
-		bankIn.removeSpr(124);
-		bankIn.removeSpr(124);
-		bankIn.saveBank();
-		bankOut.saveBank();
-		// New one
-		
-		
-		//bankOut.removeSpr(19);
-		//bankOut.removeSpr(20);
-	}
+	
+	public final static int COLOR_BLUE = 255;
+	
+     public static void main(String[] args) {
+         // Intialize game engine
+        Game g=new Game(null, true);
+        new EngineZildo(g);
+       
+        SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
+        bankElem.loadImage("objets.png", COLOR_BLUE);
+        int nSpr=bankElem.getNSprite();
+        Zone[] elements=new ElementsPlus().getZones();
+        for (Zone z : elements) {
+        	bankElem.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
+        	nSpr++;
+        }
+        bankElem.setName("elements2.spr");
+        bankElem.saveBank();
+        //new Modifier().fixPnj2();
+
+    }
+     
+    public void fixPnj2() {
+        EngineZildo.spriteManagement.charge_sprites("PNJ3.SPR");
+       
+        // Remove spector
+        SpriteBankEdit bankIn=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ));
+        SpriteBankEdit bankOut=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(6));
+        int fin=bankOut.getNSprite();
+        for (int i=0;i<6;i++) {
+            int nSprOriginal=PersoDescription.VOLANT_BLEU.getNSpr() + i;
+            SpriteModel model=bankIn.get_sprite(nSprOriginal);
+            System.out.println("On copie le sprite no"+nSprOriginal);
+            bankOut.addSpr(fin+i, model.getTaille_x(), model.getTaille_y(), bankIn.getSpriteGfx(nSprOriginal));
+        }
+        bankIn.removeSpr(124);
+        bankIn.removeSpr(124);
+        bankIn.removeSpr(124);
+        bankIn.removeSpr(124);
+        bankIn.removeSpr(124);
+        bankIn.removeSpr(124);
+        bankIn.saveBank();
+        bankOut.saveBank();
+    }
 }

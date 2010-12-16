@@ -120,9 +120,12 @@ public class SpriteSet extends ImageSet {
     	int maxY=0;
     	for (SpriteDescription perso : p_list) {
     		
-        	SpriteBank pnjBank=EngineZildo.spriteManagement.getSpriteBank(perso.getBank());
-        	int nSpr=perso.getNSpr() % 128;
-    		SpriteModel model=pnjBank.get_sprite(nSpr);
+        	SpriteBank bank=EngineZildo.spriteManagement.getSpriteBank(perso.getBank());
+        	int nSpr=perso.getNSpr();
+        	if (bank.getName().equals("PNJ2.SPR")) {
+        		nSpr=nSpr % 128;
+        	}
+    		SpriteModel model=bank.get_sprite(nSpr);
     		
     		int sizeX=model.getTaille_x();
     		if (posX + sizeX > width) {
@@ -134,7 +137,7 @@ public class SpriteSet extends ImageSet {
     			maxY=model.getTaille_y();
     		}
     		
-    		drawPerso(posX, posY, pnjBank, nSpr, false);
+    		drawPerso(posX, posY, bank, nSpr, false);
 
     		// Store this zone into the list
     		Zone z=new Zone(posX, posY, model.getTaille_x(), model.getTaille_y());
