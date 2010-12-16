@@ -18,24 +18,19 @@
  *
  */
 
-package zildo.monde;
+package zeditor.tools.sprites;
 
-public class Hasard {
+import zildo.monde.map.Zone;
 
-	/**
-	 * Renvoie VRAI si un lancer de dé à 10 faces fait plus de 'p_number'
-	 * @param p_number
-	 */
-	static public boolean lanceDes(int p_number) {
-		return Math.random()*10 > p_number;
-	}
+/**
+ * @author Tchegito
+ *
+ */
+public class SpriteBanque {
+
+	Zone[] zones;
 	
-	/**
-	 * Returns a number between -p_range/2 and p_range/2.
-	 * @param p_range
-	 * @return int
-	 */
-	static public int intervalle(int p_range) {
-		return (int) (Math.random()*p_range) - (p_range / 2);
+	public Zone[] getZones() {
+		return zones;
 	}
 }

@@ -69,6 +69,7 @@ public class SpriteDisplay extends SpriteStore {
 	
 	SpriteEntity previousMapSprite;
 	
+	// ZEditor only
 	public ForeBackController foreBackController=new ForeBackController();
 	    
 	public void setEntities(List<SpriteEntity> p_entities) {
