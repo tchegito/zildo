@@ -129,18 +129,19 @@ public class EngineZildo {
 		// Animate the world
 		// 1) Players
 		boolean block=false;
+		boolean blockKeyboard=false;
 		for (ClientState 
 				state : p_clientStates) {
 			
-			
-			if (!game.multiPlayer) {
-				block=ClientEngineZildo.client.isIngameMenu();
-			} else {
+			blockKeyboard=ClientEngineZildo.client.isIngameMenu();
+			if (game.multiPlayer) {
 				multiplayerManagement.render();
+			} else {	// Block everything in single player
+				block=blockKeyboard;
 			}
 			
 			// If client has pressed keys and he's not blocked, we manage them, then clear.
-			if (state.keys != null && !block) {
+			if (state.keys != null && !blockKeyboard) {
 				playerManagement.manageKeyboard(state);
 			}
 			state.keys=null;

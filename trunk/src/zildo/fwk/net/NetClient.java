@@ -77,7 +77,6 @@ public class NetClient extends NetSend {
 	TransferObject server;
 	Client client;
 	String playerName=PlayerNameMenu.loadPlayerName();
-    KeyboardInstant kbInstant;
     
 	public NetClient(Client p_client) {
 		super(null, NetSend.NET_PORT_CLIENT);
@@ -201,8 +200,7 @@ public class NetClient extends NetSend {
 	}
 	
 	public void sendKeyboard() {
-		kbInstant = KeyboardInstant.getKeyboardInstant();
-		client.setKbInstant(kbInstant);
+		KeyboardInstant kbInstant=client.getKbInstant();
 		GetPacket packet=new GetPacket(ResourceType.KEYBOARD, kbInstant.serialize().getAll(), null);
 		
 		sendPacket(packet, server);

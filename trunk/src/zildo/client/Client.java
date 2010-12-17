@@ -69,7 +69,7 @@ public class Client {
 	
     Map<Integer, PlayerState> states;	// All player in the game (reduced info to display scores)
     
-    KeyboardInstant kbInstant;
+    KeyboardInstant kbInstant=new KeyboardInstant();
     
     InGameMenu ingameMenu;
     
@@ -121,10 +121,6 @@ public class Client {
 			connected=true;	// We don't need to manage connection
 		}
 		multiplayer=p_multiplayer;
-	}
-	
-	public void readKeyboard() {
-		Keyboard.poll();
 	}
 	
 	/**
@@ -205,10 +201,13 @@ public class Client {
 			// Deals with network
             if (netClient != null) {
                 netClient.run();
-                connected = netClient.isConnected();
-                if (connected) {
-                    netClient.sendKeyboard();
+                connected = netClient.isConnected() && !isIngameMenu();
+        		
+                if (connected) {	// Read keyboard if player is in game
+            		kbInstant.update();
                 }
+                // Send keyboard (a non-sending during certain time means deconnection)
+                netClient.sendKeyboard();
             }
        		render();
 
