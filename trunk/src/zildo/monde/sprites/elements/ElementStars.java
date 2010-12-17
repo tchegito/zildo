@@ -20,6 +20,9 @@
 
 package zildo.monde.sprites.elements;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.server.EngineZildo;
 
@@ -32,31 +35,75 @@ import zildo.server.EngineZildo;
  */
 public class ElementStars extends Element {
 
-	int count=0;
-	int delay;
+	public enum StarKind {
+		STATIC(4, 8), TRAIL(2, 3);
+		
+		int delay;
+		int radius;
+		
+		/**
+		 * @param p_delay Delay until the next star
+		 * @param p_radius Range of the star focus
+		 */
+		private StarKind(int p_delay, int p_radius) {
+			delay=p_delay;
+			radius=p_radius;
+		}
+	}
 	
-	public ElementStars(int p_x, int p_y) {
+	int count=0;
+	int delay=0;
+	double alpha=0;
+	StarKind kind;
+	
+	List<Element> linkeds;
+	
+	public ElementStars(StarKind p_kind, int p_x, int p_y) {
 		x=p_x;
 		y=p_y;
+		kind=p_kind;
 		visible=false;
-		spawnOne();
+		
+		linkeds=new ArrayList<Element>();
+		
 	}
 
-	private void spawnOne() {
+	private void spawnOne(int px, int py) {
 		// Find a spot inside a circle around the initial point
-		double r=Math.random() * 8;
-		double alpha=2*Math.PI * Math.random();
-		Element i=new ElementImpact((int) (x + r * Math.cos(alpha)), 
-								    (int) (y + r * Math.sin(alpha)), ImpactKind.STAR_YELLOW, null);
-		EngineZildo.spriteManagement.spawnSprite(i);
-		delay=(int) (Math.random() * 12 + 4);
+		double r=Math.random() * kind.radius;
+		double theta=2*Math.PI * Math.random();
+		Element star=new ElementImpact((int) (px + r * Math.cos(theta)), 
+								    (int) (py + r * Math.sin(theta)), ImpactKind.STAR_YELLOW, null);
+		linkeds.add(star);
+		EngineZildo.spriteManagement.spawnSprite(star);
+		delay=(int) (Math.random() * 12 + kind.delay);
 	}
 
 	public void animate() {
-		count++;
+		
+		switch (kind) {
+		case TRAIL:
+			x+=Math.cos(alpha);
+			y+=Math.sin(alpha);
+			double beta=alpha-Math.PI/2;
+			double gamma=alpha+Math.PI/2;
+			boolean direction=true;
+			for (Element e : linkeds) {
+				double angle=beta;
+				direction=!direction;
+				if (!direction) {
+					angle=gamma;
+				}
+				e.x+=0.5*Math.cos(angle);
+				e.y+=0.5*Math.sin(angle);
+			}
+			alpha+=0.01f;
+			break;
+		}
 		if (count == delay) {	// After the delay, create another one
-			spawnOne();
+			spawnOne((int) x, (int) y);
 			count=0;
 		}
+		count++;
 	}
 }
