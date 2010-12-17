@@ -121,6 +121,8 @@ public class SinglePlayer {
         SpriteEntity zildo=EngineZildo.persoManagement.getZildo();
         ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
         
+        KeyboardInstant instant=new KeyboardInstant();
+        
         while (!done && !state.gameOver) {
         	states.clear();
 
@@ -141,7 +143,7 @@ public class SinglePlayer {
 	        	EngineZildo.soundManagement.resetQueue();
             }
             // Read keyboard
-            KeyboardInstant instant = KeyboardInstant.getKeyboardInstant();
+            instant.update();
             state.keys = instant;
             client.setKbInstant(instant);
 

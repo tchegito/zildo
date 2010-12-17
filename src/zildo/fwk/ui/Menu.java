@@ -74,7 +74,6 @@ public class Menu {
 	 * @return ItemMenu
 	 */
     public ItemMenu act() {
-        Keyboard.poll();
         int key = -1;
         char charKey=' ';
         char upperKey=' ';

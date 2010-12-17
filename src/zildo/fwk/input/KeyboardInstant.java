@@ -31,11 +31,20 @@ import zildo.prefs.KeysConfiguration;
 public class KeyboardInstant implements EasySerializable {
 
 	EnumMap<KeysConfiguration, Boolean> kbdInstant;
-
-	private static int KEYS_LENGTH=KeysConfiguration.values().length;
+	boolean[] bools=new boolean[KEYS_LENGTH];
+	                            
+	static int KEYS_LENGTH=KeysConfiguration.values().length;
     
-    private static EasyBuffering buf=new EasyBuffering(KEYS_LENGTH * 4);
+    static EasyBuffering buf=new EasyBuffering(KEYS_LENGTH * 4);
 
+    public KeyboardInstant() {
+    	kbdInstant=new EnumMap<KeysConfiguration, Boolean>(KeysConfiguration.class);
+    	// Default : all keys are unpressed
+    	for (KeysConfiguration key : KeysConfiguration.values()) {
+    		kbdInstant.put(key, false);
+    	}
+    }
+    
 	public KeyboardInstant(EnumMap<KeysConfiguration, Boolean> p_keys) {
 		kbdInstant=p_keys;
 	}
@@ -44,17 +53,13 @@ public class KeyboardInstant implements EasySerializable {
 		return kbdInstant.get(key);
 	}
 	
-	public static KeyboardInstant getKeyboardInstant() {
-		EnumMap<KeysConfiguration, Boolean> instant=new EnumMap<KeysConfiguration, Boolean>(KeysConfiguration.class);
+	/**
+	 * Update keyboard state
+	 */
+	public void update() {
 		for (KeysConfiguration key : KeysConfiguration.values()) {
-			Boolean b=Boolean.FALSE;
-			if (Keyboard.isKeyDown(key.code)) {
-				b=Boolean.TRUE;
-			}
-			instant.put(key, b);
+			kbdInstant.put(key, Keyboard.isKeyDown(key.code));
 		}
-		
-		return new KeyboardInstant(instant);
 	}
 	
 	public EasyBuffering serialize() {
@@ -68,9 +73,12 @@ public class KeyboardInstant implements EasySerializable {
 	 */
 	public void serialize(EasyBuffering p_buffer) {
         p_buffer.clear();
+        boolean[] bools=new boolean[KEYS_LENGTH];
+        int index=0;
         for (KeysConfiguration key : KeysConfiguration.values()) {
-			p_buffer.put(kbdInstant.get(key));
+        	bools[index++]=kbdInstant.get(key);
 		}
+   		p_buffer.putBooleans(bools);
 	}
 	
 	/**
@@ -80,9 +88,10 @@ public class KeyboardInstant implements EasySerializable {
 	 */
 	public static KeyboardInstant deserialize(EasyBuffering p_buffer) {
 		EnumMap<KeysConfiguration, Boolean> instant=new EnumMap<KeysConfiguration, Boolean>(KeysConfiguration.class);
+		boolean[] bools=p_buffer.readBooleans(KEYS_LENGTH);
+		int index=0;
 		for (KeysConfiguration key : KeysConfiguration.values()) {
-			boolean b=p_buffer.readBoolean();
-			instant.put(key, b ? Boolean.TRUE : Boolean.FALSE);
+			instant.put(key, bools[index++]);
 		}
 		return new KeyboardInstant(instant);
 	}
