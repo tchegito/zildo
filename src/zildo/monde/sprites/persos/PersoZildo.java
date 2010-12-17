@@ -148,8 +148,8 @@ public class PersoZildo extends Perso {
 		MultiplayerManagement.setUpZildo(this);
     	
 		if (shieldEffect != null) {
-			shieldEffect = null;
 			shieldEffect.kill();
+			shieldEffect = null;
 		}
 		quadDuration=0;
 
