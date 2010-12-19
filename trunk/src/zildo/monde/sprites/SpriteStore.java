@@ -203,8 +203,6 @@ public class SpriteStore {
 				Perso perso=(Perso)entity;
 				//EngineZildo.persoManagement.removePerso(perso);
 				perso.finalize();
-			} else {
-				//entity.finalize();
 			}
 			entity.visible=false;
 		}

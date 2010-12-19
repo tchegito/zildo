@@ -30,6 +30,7 @@ import zildo.monde.map.Pointf;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
@@ -425,7 +426,7 @@ public abstract class Perso extends Element {
 	}
 	
 	// Default : nothing to do (only Zildo can take up objects for now)
-	public void takeSomething(int objX, int objY, int obj, Element object) {
+	public void takeSomething(int objX, int objY, SpriteDescription desc, Element object) {
 		
 	}
 	
