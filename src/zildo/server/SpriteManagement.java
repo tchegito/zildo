@@ -21,6 +21,7 @@
 package zildo.server;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -51,8 +52,9 @@ public class SpriteManagement extends SpriteStore {
 	protected Logger logger = Logger.getLogger("SpriteManagement");
 
 	// Index des sprites fixes qui bloquent les persos (rambarde,tonneau)
-	static IntSet blockable_sprite = new IntSet(25, 26, 27, 28, 68, 69, 70);
-
+	IntSet blockable_sprite = new IntSet(25, 26, 27, 28, 68, 69, 70);
+	EnumSet<ElementDescription> pickableSprites = EnumSet.of(ElementDescription.BOMB);
+	
 	boolean spriteUpdating;
 
 	List<SpriteEntity> clientSpecificEntities;
@@ -569,6 +571,38 @@ public class SpriteManagement extends SpriteStore {
 		return found;
 	}
 
+	/**
+	 * Find an element near a given one.
+	 * @param x
+	 * @param y
+	 * @param quelElement
+	 * @param radius
+	 * @return Element
+	 */
+    public Element collideElement(int x, int y, Element quelElement, int radius) {
+        Perso perso = null;
+        if (quelElement != null && quelElement.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+            perso = (Perso) quelElement;
+        }
+
+        for (SpriteEntity entity : spriteEntities) {
+        	if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+	            if (entity != quelElement) {
+	                int tx = (int) entity.x;
+	                int ty = (int) entity.y;
+	                if (EngineZildo.collideManagement.checkCollisionCircles(x, y, tx, ty, radius, radius)) {
+	                    if (perso != null && perso.isZildo() && perso.linkedSpritesContains(entity)) {
+	                        // Collision entre Zildo et l'objet qu'il porte dans les mains => on laisse
+	                    } else if (quelElement == null || quelElement.getLinkedPerso() != entity) {
+	                        return (Element) entity;
+	                    }
+	                }
+	            }
+        	}
+        }
+        return null;
+    }
+    
 	/**
 	 * Get a SpriteEntity list from a ByteBuffer.
 	 * 

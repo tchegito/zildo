@@ -46,7 +46,7 @@ public class Element extends SpriteEntity {
 	protected static Logger logger=Logger.getLogger("Element");
 
 	// Elements that Zildo can throw on enemies
-	private static IntSet damageableElements=new IntSet(0,1,11,12,2,38,42, 71,72,73,74);
+	private static IntSet damageableElements=new IntSet(0,1,11,12,2,38,42, 71,72,73,74,  106);
 	// Elements that Zildo can push
 	private static IntSet pushableElements=new IntSet(28,69,70);
 	
@@ -72,7 +72,7 @@ public class Element extends SpriteEntity {
 	
     public int relativeZ;	// Simulate the altitude delta
 	protected int addSpr;	// Pour les animations (exemple:diamants qui brillent)
-	protected SpriteEntity linkedPerso;	// When this element dies, any non-perso linked entity die too.
+	protected Element linkedPerso;	// When this element dies, any non-perso linked entity die too.
 
 	protected Element shadow;
 	
@@ -112,12 +112,6 @@ public class Element extends SpriteEntity {
 		flying=false;
 
 		//logger.log(Level.INFO, "Creating Element");
-	}
-
-	public Element(SpriteEntity perso)
-	{
-		this.initialize();
-		linkedPerso=perso;
 	}
 	
 	// Copy constructor
@@ -163,7 +157,8 @@ public class Element extends SpriteEntity {
 			(a>=40 && a<=42) ||
 			(a>=44 && a<=56) ||
 			(a>=69 && a<=74) ||
-			(a>=ElementDescription.BOOMERANG1.ordinal() && a<=ElementDescription.BOOMERANG4.ordinal())
+			(a>=ElementDescription.BOOMERANG1.ordinal() && a<=ElementDescription.BOOMERANG4.ordinal()) ||
+			(a==ElementDescription.BOMB.ordinal())
 			)
 			return true;
 		else
@@ -321,6 +316,10 @@ public class Element extends SpriteEntity {
                 }
             }
         }
+        if (shadow != null) {
+        	shadow.x=x;
+        	shadow.y=y-1;
+        }
         setAjustedX((int) x);
         setAjustedY((int) y);
     }
@@ -473,12 +472,12 @@ public class Element extends SpriteEntity {
 	}
 
 
-	public SpriteEntity getLinkedPerso() {
+	public Element getLinkedPerso() {
 		return linkedPerso;
 	}
 
 
-	public void setLinkedPerso(SpriteEntity linkedPerso) {
+	public void setLinkedPerso(Element linkedPerso) {
 		this.linkedPerso = linkedPerso;
 	}
 	
@@ -501,6 +500,8 @@ public class Element extends SpriteEntity {
 			case ROCK_BALL:
 				EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_ECLATEPIERRE,(int) x,(int) y,0, null);
 				EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
+				break;
+			case BOMB:
 				break;
 			case HEN:
 				// La poule reprend vie dans le tableau de perso

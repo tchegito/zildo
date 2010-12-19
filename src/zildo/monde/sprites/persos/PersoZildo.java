@@ -39,6 +39,7 @@ import zildo.monde.map.Point;
 import zildo.monde.quest.actions.GameOverAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.desc.ZildoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementArrow;
@@ -703,19 +704,22 @@ public class PersoZildo extends Perso {
 	}
 	
 	/**
-	 * Zildo pick up something (bushes, hen...)
+	 * Zildo picks something up (bushes, hen...)
 	 * Object can be already on the map (hen), or we can spawn it there (bushes, jar).
-	 * @param obj
+	 * @param objX
+	 * @param objY
+	 * @param desc sprite's description, in case no object is supplied
+	 * @param object the taken element
 	 */
 	@Override
-	public void takeSomething(int objX, int objY, int obj, Element object) {
+	public void takeSomething(int objX, int objY, SpriteDescription desc, Element object) {
 		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRamasse, this);
 
 		Element elem=object;
 		if (object == null) {
 			elem=new Element();
-			elem.setNBank(SpriteBank.BANK_ELEMENTS);
-			elem.setNSpr(obj);
+			elem.setNBank(desc.getBank());
+			elem.setNSpr(desc.getNSpr());
 		}
 		elem.setScrX(objX);
 		elem.setScrY(objY);
@@ -748,7 +752,7 @@ public class PersoZildo extends Perso {
 		setEn_bras(null);
 		setMouvement(MouvementZildo.VIDE);
 		element.setX(getX()+1);
-		element.setY(getY()+4);
+		element.setY(getY());
 		element.setZ(21.0f+1.0f);
 		element.setVx(0.0f);
 		element.setVy(0.0f);

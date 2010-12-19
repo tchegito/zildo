@@ -463,12 +463,12 @@ public class PlayerManagement {
 					until (with_dialogue<>0) or (i=MAX_PERSO-1);
 				*/
 					Perso persoToTalk=EngineZildo.persoManagement.
-						collidePerso((int) heros.getX(),(int) heros.getY(),heros,10);
+						collidePerso((int) heros.x, (int) heros.y, heros, 10);
 		
 					if (persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY && !persoToTalk.isZildo()) {
 					 // On vérifie qu'il ne s'agit pas d'une poule
 						if (persoToTalk.getQuel_spr().equals(PersoDescription.POULE)) {
-							heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, 32, persoToTalk);
+							heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, ElementDescription.HEN, persoToTalk);
 						} else if (persoToTalk.getDialoguingWith() == null) {
 							// On vérifie que Zildo regarde la personne
 							cx=(int) persoToTalk.getX();
@@ -497,43 +497,56 @@ public class PlayerManagement {
 							}
 						}
 					} else {
-						//On teste s'il y a un objet
-						final int add_anglex[]={0,1,0,-1};
-						final int add_angley[]={-1,0,1,0};
-						int newx=((int)heros.x+5*add_anglex[heros.getAngle().value]) / 16;
-						int newy=((int)heros.y+3*add_angley[heros.getAngle().value]) / 16;
-						Area map=EngineZildo.mapManagement.getCurrentMap();
-						int on_map=map.readmap(newx,newy);
-						int enBras=-1;
-						if (new IntSet(165,167,169,751).contains(on_map)) {
-							//On ramasse l'objet
-							switch (on_map) {
-							case 165:
-								enBras=1;
-								if (((int)Math.random()*6)==5) {
-									EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_DIAMANT,newx*16+8,newy*16+10,0, null);
+						// Check for Sprite
+						Element elem = EngineZildo.spriteManagement.collideElement((int) heros.x, (int) heros.y, heros, 10);
+						if (elem != null) {
+							if (elem.getLinkedPerso() != null) {
+								elem=elem.getLinkedPerso();
+							}
+							ElementDescription desc=ElementDescription.fromInt(elem.getNSpr());
+							// Zildo can take a non-flying pickable sprite (ex: bomb)
+							if (EngineZildo.spriteManagement.pickableSprites.contains(desc) && !elem.flying) {
+								heros.takeSomething((int) elem.x, (int) elem.y, null, elem);
+							}
+						} else {
+							// Check for special tile on the map
+							final int add_anglex[]={0,1,0,-1};
+							final int add_angley[]={-1,0,1,0};
+							int newx=((int)heros.x+5*add_anglex[heros.getAngle().value]) / 16;
+							int newy=((int)heros.y+3*add_angley[heros.getAngle().value]) / 16;
+							Area map=EngineZildo.mapManagement.getCurrentMap();
+							int on_map=map.readmap(newx,newy);
+							ElementDescription objDesc=null;
+							if (new IntSet(165,167,169,751).contains(on_map)) {
+								//On ramasse l'objet
+								switch (on_map) {
+								case 165:
+									objDesc=ElementDescription.BUSHES;
+									if (((int)Math.random()*6)==5) {
+										EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_DIAMANT,newx*16+8,newy*16+10,0, null);
+									}
+									break;
+								case 167:objDesc=ElementDescription.STONE;break;
+								case 169:objDesc=ElementDescription.STONE_HEAVY;break;
+								case 751:objDesc=ElementDescription.JAR;break;
 								}
-								break;
-							case 167:enBras=12;break;
-							case 169:enBras=11;break;
-							case 751:enBras=0;break;
+	                            if (objDesc != null) {
+	                                heros.takeSomething(newx * 16 + 8, newy * 16 + 14, objDesc, null);
+	                            }
+	                            map.takeSomethingOnTile(new Point(newx, newy));
+							} else if (on_map==743 && heros.getAngle()==Angle.NORD) {
+								//Zildo a trouvé un coffre ! C'est pas formidable ?
+								map.writemap(newx, newy, 744);
+								EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
+								ElementDescription desc=map.getCaseItem(newx, newy);
+								int nSpr=51;
+								if (desc != null) {
+									nSpr=desc.getNSpr();
+								}
+								EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_FROMCHEST, 16*newx+8, 16*newy+16, nSpr, heros);
+							} else if (!EngineZildo.mapManagement.isWalkable(on_map)) {
+								heros.setMouvement(MouvementZildo.TIRE);
 							}
-                            if (enBras != -1) {
-                                heros.takeSomething(newx * 16 + 8, newy * 16 + 14, enBras, null);
-                            }
-                            map.takeSomethingOnTile(new Point(newx, newy));
-						} else if (on_map==743 && heros.getAngle()==Angle.NORD) {
-							//Zildo a trouvé un coffre ! C'est pas formidable ?
-							map.writemap(newx, newy, 744);
-							EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
-							ElementDescription desc=map.getCaseItem(newx, newy);
-							int nSpr=51;
-							if (desc != null) {
-								nSpr=desc.getNSpr();
-							}
-							EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_FROMCHEST, 16*newx+8, 16*newy+16, nSpr, heros);
-						} else if (!EngineZildo.mapManagement.isWalkable(on_map)) {
-							heros.setMouvement(MouvementZildo.TIRE);
 						}
 					}
 				}

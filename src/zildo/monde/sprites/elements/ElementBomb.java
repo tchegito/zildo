@@ -39,7 +39,7 @@ public class ElementBomb extends Element {
 		z=p_startZ;
 		shooter=p_shooter;
 		setSprModel(ElementDescription.BOMB);
-		counter=100;
+		counter=120;
 		
         // Add a shadow
 		addShadow(ElementDescription.SHADOW_SMALL);
@@ -59,6 +59,7 @@ public class ElementBomb extends Element {
 		} else if (counter<30) {
 			setSpecialEffect(EngineFX.PERSO_HURT);
 		}
+		
 		super.animate();
 	}
 	
@@ -67,4 +68,7 @@ public class ElementBomb extends Element {
         return null;
     }
 
+	public boolean beingCollided(Perso p_perso) {
+		return true;
+	}
 }
