@@ -316,6 +316,11 @@ public class PersoZildo extends Perso {
         super.die(p_link, p_shooter);
         if (EngineZildo.game.multiPlayer) {
         	EngineZildo.multiplayerManagement.kill(this, p_shooter);
+        	// Drop Zildo's weapon at his death point
+        	ItemKind k=weapon == null ? null : weapon.kind;
+        	if (k != null && k != ItemKind.SWORD) {
+        	    EngineZildo.spriteManagement.spawnElement(k.representation, (int) x, (int) y, 0);
+        	}
         	EngineZildo.respawnClient(this);
         } else {
         	// Game over

@@ -20,8 +20,6 @@
 
 package zildo.server;
 
-import zildo.monde.items.Item;
-import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementQuadDamage;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
@@ -123,13 +121,13 @@ public class MultiplayerManagement {
      * @param p_zildo
      */
     public static void setUpZildo(PersoZildo p_zildo) {
-		p_zildo.addInventory(new Item(ItemKind.BOW));
-		p_zildo.addInventory(new Item(ItemKind.BOOMERANG));
-		p_zildo.addInventory(new Item(ItemKind.BOMB));
-		p_zildo.setPv(13);
+		//p_zildo.addInventory(new Item(ItemKind.BOW));
+		//p_zildo.addInventory(new Item(ItemKind.BOOMERANG));
+		//p_zildo.addInventory(new Item(ItemKind.BOMB));
+		p_zildo.setPv(3);
 		
-		p_zildo.setCountArrow(20);
-		p_zildo.setCountBomb(20);
+		//p_zildo.setCountArrow(20);
+		//p_zildo.setCountBomb(20);
 
     }
 }
