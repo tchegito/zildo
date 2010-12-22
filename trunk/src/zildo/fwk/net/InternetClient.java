@@ -22,6 +22,7 @@ package zildo.fwk.net;
 
 import zildo.client.Client;
 import zildo.fwk.net.packet.ConnectPacket;
+import zildo.prefs.Constantes;
 
 /**
  * Client on a the WWW network.
@@ -36,7 +37,7 @@ public class InternetClient extends NetClient {
 		
 		server=new TransferObject(p_serverIp, p_serverPort);
 		
-		ConnectPacket connectPacket=new ConnectPacket(true, playerName);
+		ConnectPacket connectPacket=new ConnectPacket(true, playerName, Constantes.CURRENT_VERSION);
 		sendPacket(connectPacket, server);
 		serverFound=true;
 	}

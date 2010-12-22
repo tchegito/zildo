@@ -41,6 +41,7 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.Server;
@@ -96,6 +97,9 @@ public class NetServer extends NetSend {
 					boolean in=conPacket.isJoining();
 					source=clientConnect.getSource();
 					if (in) {
+					    if (conPacket.getVersion() != Constantes.CURRENT_VERSION) {
+						log("Serveur:Le client n'a pas la même version que le serveur ("+Constantes.CURRENT_VERSION+") : impossible de l'accepter");
+					    } else {
 						// Client is coming
 						log("Serveur:Un client est arrivé !"+source.address.getHostName()+" port:"+source.address.getPort()+" named "+conPacket.getPlayerName());
 	
@@ -103,6 +107,7 @@ public class NetServer extends NetSend {
 	
 						AcceptPacket accept=new AcceptPacket(zildoId);
 						sendPacket(accept, source);
+					    }
 					} else {
 						// Client is leaving
 						server.disconnectClient(source);
@@ -299,7 +304,7 @@ public class NetServer extends NetSend {
      * Send a disconnect order to all clients (when server is leaving).
      */
     public void notifyEndToClients() {
-    	ConnectPacket p=new ConnectPacket(false, null);
+    	ConnectPacket p=new ConnectPacket(false, null, 0);
     	broadcastPacketToAllCients(p);
     }
     

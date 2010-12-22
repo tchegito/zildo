@@ -43,6 +43,7 @@ import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.prefs.Constantes;
 import zildo.server.SpriteManagement;
 import zildo.server.state.PlayerState;
 
@@ -107,7 +108,7 @@ public class NetClient extends NetSend {
 					log("Serveur trouvé"+server.address.getHostName());
 					
 					serverFound=true;
-					ConnectPacket connectPacket=new ConnectPacket(true, playerName);
+					ConnectPacket connectPacket=new ConnectPacket(true, playerName, Constantes.CURRENT_VERSION);
 					sendPacket(connectPacket, server);
 				}
 			} else if (!serverAccepted) {
@@ -275,7 +276,7 @@ public class NetClient extends NetSend {
     @Override
 	public void close() {
     	// Send a disconnect packet
-    	ConnectPacket connectPacket=new ConnectPacket(false, null);
+    	ConnectPacket connectPacket=new ConnectPacket(false, null, 0);
     	sendPacket(connectPacket, server);
     	super.close();
     }
