@@ -33,6 +33,7 @@ public class ConnectPacket extends Packet {
 
 	boolean connect;	// TRUE=client is joining / FALSE=client is leaving
 	String playerName;
+	int version;
 	
 	/**
 	 * Empty constructor (called by {@link Packet#receive(java.nio.ByteBuffer)})
@@ -41,10 +42,11 @@ public class ConnectPacket extends Packet {
 		super();
 	}
 	
-	public ConnectPacket(boolean p_connect, String p_playerName) {
+	public ConnectPacket(boolean p_connect, String p_playerName, int p_numVersion) {
 		super();
 		connect=p_connect;
 		playerName=p_playerName;
+		version=p_numVersion;
 	}
 	
 	public boolean isJoining() {
@@ -55,15 +57,25 @@ public class ConnectPacket extends Packet {
 		return playerName;
 	}
 	
+	public int getVersion() {
+	    return version;
+	}
+	
 	@Override
 	protected void buildPacket() {
 		b.put(connect);
 		b.put(playerName);
+		b.put(version);
 	}
 
 	@Override
 	protected void deserialize(EasyBuffering p_buffer) {
 		connect=p_buffer.readBoolean();
 		playerName=p_buffer.readString();
+		if (p_buffer.eof()) {	// Previous releases didn't provide the client version. So we deduce that the version is bad.
+		    version=0;
+		} else {
+		    version=p_buffer.readInt();
+		}
 	}
 }
