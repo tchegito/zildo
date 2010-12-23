@@ -354,11 +354,45 @@ public class PersoZildo extends Perso {
 			setVisible(false);
 			return;
 		}
-		
+				
 		// Get zildo
 		Perso zildo=this;
 		int xx=(int) zildo.getX();
 		int yy=(int) zildo.getY();
+		
+		if (compte_dialogue != 0) {
+			compte_dialogue--;
+			if (compte_dialogue == 0) {
+				setWounded(false);
+			}
+		}
+		
+		SpriteEntity pushedEntity=getPushingSprite();
+
+		if (px !=0.0f || py !=0.0f) {
+			// Zildo being hurt !
+			xx+=px;
+			yy+=py;
+			px*=0.8f;
+			py*=0.8f;
+			if (Math.abs(px) + Math.abs(py) <0.2f) {
+				stopBeingWounded();
+			}
+			Point p=tryMove(xx, yy);
+			x=p.x;
+			y=p.y;
+		} else if (getMouvement() == MouvementZildo.POUSSE && pushedEntity!=null)  {
+		    // Zildo est en train de pousser : obstacle bidon ou bloc ?
+			
+			if (pushedEntity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+				Element pushedElement=(Element) pushedEntity;
+				if (pushedElement.isPushable()) {
+					pushedElement.moveOnPush(getAngle());
+					// Break link between Zildo and pushed object
+					pushSomething(null);
+				}
+			}
+		}
 	
 		// Get connected sprites
 		Iterator<Element> it=zildo.getPersoSprites().iterator();

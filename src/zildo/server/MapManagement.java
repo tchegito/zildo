@@ -40,6 +40,7 @@ import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementStars;
+import zildo.monde.sprites.elements.ElementStars.StarKind;
 import zildo.monde.sprites.persos.PersoZildo;
 
 
@@ -538,7 +539,7 @@ public class MapManagement {
             x += 16;
         }
         
-		EngineZildo.spriteManagement.spawnSprite(new ElementStars(150, 360));
+		EngineZildo.spriteManagement.spawnSprite(new ElementStars(StarKind.TRAIL, 150, 360));
 
         return new Point(x, y);
     }
