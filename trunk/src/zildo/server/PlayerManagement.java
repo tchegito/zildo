@@ -30,7 +30,6 @@ import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
 import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
@@ -177,35 +176,6 @@ public class PlayerManagement {
 		MapManagement mapManagement=EngineZildo.mapManagement;
 	
 		boolean needMovementAdjustment=true;
-		SpriteEntity pushedEntity=heros.getPushingSprite();
-
-		if (heros.getCompte_dialogue() != 0) {
-			heros.setCompte_dialogue(heros.getCompte_dialogue()-1);
-			if (heros.getCompte_dialogue() == 0) {
-				heros.setWounded(false);
-			}
-		}
-		if (heros.getPx()!=0.0f || heros.getPy()!=0.0f) {
-			// Zildo s'est fait toucher !
-			xx+=heros.getPx();
-			yy+=heros.getPy();
-			heros.setPx(heros.getPx()*0.8f);
-			heros.setPy(heros.getPy()*0.8f);
-			if (Math.abs(heros.getPx()) + Math.abs(heros.getPy()) <0.2f) {
-				heros.stopBeingWounded();
-			}
-		} else if (heros.getMouvement() == MouvementZildo.POUSSE && pushedEntity!=null)  {
-		    // Zildo est en train de pousser : obstacle bidon ou bloc ?
-			
-			if (pushedEntity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
-				Element pushedElement=(Element) pushedEntity;
-				if (pushedElement.isPushable()) {
-					pushedElement.moveOnPush(heros.getAngle());
-					// On casse le lien entre Zildo et l'objet poussé
-					heros.pushSomething(null);
-				}
-			}
-		}
 		
 		int zildoSpeed=Constantes.ZILDO_SPEED * EngineZildo.extraSpeed;
 		

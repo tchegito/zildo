@@ -44,7 +44,7 @@ public abstract class Perso extends Element {
 	}
 
 	protected Zone zone_deplacement;
-    private int compte_dialogue;
+    protected int compte_dialogue;
     private String nom;
     private String effect;	// String containing desired effect ("noir", "jaune", ...)
     protected PersoInfo info;					// 0=Neutre  1=Ennemi  2=Zildo
