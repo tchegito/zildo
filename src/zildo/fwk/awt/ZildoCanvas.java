@@ -176,7 +176,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		if (p_mapName == null) {
 			fileName = map.getCurrentMap().getName();
 		}
-		map.saveMapFile(fileName + ".map");
+		if (fileName.indexOf(".") == -1) {
+			fileName+=".map";
+		}
+		map.saveMapFile(fileName);
 	}
 
 	/**
