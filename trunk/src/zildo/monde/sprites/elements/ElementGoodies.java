@@ -34,11 +34,18 @@ public class ElementGoodies extends Element {
 	private int timeToAcquire;	// Untakeable. Zildo has just to wait to have it (for chest)
 	protected boolean volatil=true;	// TRUE=goodies disappear after a delay
 	
+	/**
+	 * Common goodies : volatil
+	 */
 	public ElementGoodies() {
 		super();
 		spe=540;	// Durée de vie du goodies, en frames (on tourne en général à 60FPS : 540==9sec)
 	}
 	
+	/**
+	 * Constructor for object coming from a chest. He's designed for Zildo.
+	 * @param p_zildo
+	 */
 	public ElementGoodies(Perso p_zildo) {
 		linkedPerso=p_zildo;
 		timeToAcquire=60;
@@ -90,7 +97,7 @@ public class ElementGoodies extends Element {
 			timeToAcquire--;
 			if (timeToAcquire == 0) {
 				// Zildo will now have the goodies
-				((PersoZildo)linkedPerso).pickGoodies(nSpr);
+				((PersoZildo)linkedPerso).pickGoodies(this);
 				dying=true;
 			}
 		}

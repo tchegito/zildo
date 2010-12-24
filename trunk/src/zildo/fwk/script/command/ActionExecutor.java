@@ -140,7 +140,7 @@ public class ActionExecutor {
                     break;
                 case take:	// Zildo takes an item
                 	PersoZildo zildo=EngineZildo.persoManagement.getZildo();
-                	zildo.pickItem(ItemKind.fromString(text));
+                	zildo.pickItem(ItemKind.fromString(text), null);
                 	achieved=true;
                 	break;
                 case mapReplace:

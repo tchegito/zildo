@@ -162,10 +162,6 @@ public class SpriteStore {
 	
 		entity.setSprModel(spr);
 	
-		if (entity.isVisible()) { // TODO:test this : && fillingMeshes) {
-			// If the entity came here unvisible, we don't add it now to avoid flickering
-			//spriteEngine.addSprite(entity);
-		}
 		addSpriteEntities(entity);
 	}
 	
@@ -207,19 +203,4 @@ public class SpriteStore {
 			entity.visible=false;
 		}
 	}
-	
-    /**
-     * @return the banque_spr
-     */
-    public List<SpriteBank> getBanqueSpr() {
-        return banque_spr;
-    }
-
-    /**
-     * @param p_banque_spr the banque_spr to set
-     */
-    public void setBanqueSpr(List<SpriteBank> p_banque_spr) {
-        banque_spr = p_banque_spr;
-    }
-
 }

@@ -27,7 +27,7 @@ public enum ItemKind {
 	SWORD(ElementDescription.SWORD), 
 	BOOMERANG(ElementDescription.BOOMERANG1), 
 	WHIP(ElementDescription.BAR_HORIZONTAL), 
-	BOW(ElementDescription.ARROW_UP),
+	BOW(ElementDescription.ENEMYARC_RIGHT1),
 	BOMB(ElementDescription.BOMB),
 	FLUT(ElementDescription.FLUT),
 	SHIELD(null);

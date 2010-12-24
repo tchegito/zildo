@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import zildo.client.sound.BankSound;
-import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.monde.collision.Collision;
@@ -43,8 +42,8 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
@@ -569,7 +568,8 @@ public class Area implements EasySerializable {
 					if (map.readmap(x / 16, y/16) == 743) {
 						map.setCaseItem(x/16, y/16, nSpr);
 					} else {	// else, show it as a regular element
-						spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS, nSpr, x, y, false);
+						ElementDescription desc=ElementDescription.fromInt(nSpr);
+						spriteManagement.spawnSprite(desc, x, y, false);
 					}
 				}
 			}

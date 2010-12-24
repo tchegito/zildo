@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.client.sound.BankSound;
-import zildo.fwk.bank.SpriteBank;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -46,7 +45,7 @@ public class ItemCircle {
 	private List<SpriteEntity> guiSprites;
 	private Point center;
 	private CirclePhase phase;	// 0=create 1=fixed 2=remove 3=scroll
-	private int itemSelected;	// From 0 to guiSprites.size()
+	private int itemSelected;	// From 0 to guiSprites.size()-1
 	private int count;
 	private PersoZildo heros;	// The one at the center of the circle
 	
@@ -73,10 +72,9 @@ public class ItemCircle {
 		guiSprites.clear();
 		heros=p_heros;
 		
-		center=new Point((int) heros.x, (int) heros.y-8);
+		center=new Point((int) heros.x-2, (int) heros.y-12);
 		for (Item item : p_items) {
-			int typ=item.kind.representation.ordinal();
-            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(SpriteBank.BANK_ELEMENTS, typ, center.x, center.y, true);
+            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(item.kind.representation, center.x, center.y, true);
             e.clientSpecific=true;
             guiSprites.add(e);
 		}

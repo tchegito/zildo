@@ -41,9 +41,10 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementAnimMort;
 import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementGoodies;
+import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
 import zildo.server.state.ClientState;
 
@@ -299,10 +300,23 @@ public class SpriteManagement extends SpriteStore {
 	// Spawn a sprite with minimal requirements
 	// -build an entity with given parameters
 	// -add it to the sprite engine
-	public SpriteEntity spawnSprite(int nBank, int nSpr, int x, int y,
+	
+	/**
+	 * Spawn a sprite with minimal requirements:<ul>
+	 * <li>build an entity with given parameters</li>
+	 * <li>add it to the sprite engine</li>
+	 * @param nBank
+	 * @param nSpr
+	 * @param x
+	 * @param y
+	 * @param p_foreground TRUE=above the other sprites (GUI) / FALSE=in-game sprite
+	 */
+	public SpriteEntity spawnSprite(ElementDescription desc, int x, int y,
 			boolean p_foreground) {
 
-		SpriteModel spr = getSpriteBank(nBank).get_sprite(nSpr);
+		int nBank=desc.getBank();
+		int nSpr=desc.getNSpr();
+		SpriteModel spr = getSpriteBank(desc.getBank()).get_sprite(nSpr);
 
 		if (nSpr == 69 || nSpr == 70 || nSpr == 28) {
 			// Particular sprite (Block that Zildo can move, chest...)
@@ -311,8 +325,14 @@ public class SpriteManagement extends SpriteStore {
 		}
 
 		// SpriteEntity informations
-		SpriteEntity entity = new SpriteEntity(x, y, true);
-
+		SpriteEntity entity;
+		
+		if (!p_foreground && desc.isWeapon()) {
+			entity = new ElementWeapon();
+		} else {
+			entity = new SpriteEntity(x, y, true);
+		}
+		
 		entity.setNSpr(nSpr);
 		entity.setNBank(nBank);
 		entity.setMoved(false);
@@ -530,18 +550,19 @@ public class SpriteManagement extends SpriteStore {
 							int py = ty + 2 * tab_add[j + 1];
 							if (px >= x && py >= y && px <= (x + sx)
 									&& py <= (y + sy)) {
-								// On signale que Zildo exerce une poussée
-								// contre une entité
+								// Notify that Zildo is pushing an entity
 								if (!isGoodies && isZildo) {
 									((PersoZildo) elem).pushSomething(entity);
 								}
 								// Is it a goodies ?
 								if (isGoodies) {
 									if (isZildo) {
-										((PersoZildo) elem).pickGoodies(entity
-												.getNSpr());
-										elem.fall();
-										listToRemove.add(entity);
+										PersoZildo zildo = (PersoZildo) elem;
+										boolean disappear = zildo.pickGoodies(element);
+										if (disappear) {
+											elem.fall();
+											listToRemove.add(entity);
+										}
 									} else {
 										if (elem.getClass().equals(
 												ElementBoomerang.class)) {

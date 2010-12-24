@@ -20,9 +20,11 @@
 
 package zildo.server;
 
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.elements.ElementImpact;
-import zildo.monde.sprites.elements.ElementQuadDamage;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
+import zildo.monde.sprites.elements.ElementQuadDamage;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.state.ClientState;
@@ -93,6 +95,19 @@ public class MultiplayerManagement {
     	if (clShooter != null) {
     		clShooter.nKill++;
     	}
+    	
+    	// Drop Zildo's weapon at his death point
+    	Item weapon=p_zildo.getWeapon();
+    	ItemKind k=weapon == null ? null : weapon.kind;
+    	if (k != null && k != ItemKind.SWORD) {
+    	    EngineZildo.spriteManagement.spawnSprite(k.representation, 
+    	    		(int) p_zildo.getX(), 
+    	    		(int) p_zildo.getY(), false);
+    	}
+    	
+    	// Respawn Zildo
+    	EngineZildo.respawnClient(p_zildo);
+    	
     	needToBroadcast=true;
     }
     
@@ -126,7 +141,7 @@ public class MultiplayerManagement {
 		//p_zildo.addInventory(new Item(ItemKind.BOMB));
 		p_zildo.setPv(3);
 		
-		//p_zildo.setCountArrow(20);
+		p_zildo.setCountArrow(20);
 		//p_zildo.setCountBomb(20);
 
     }

@@ -71,6 +71,10 @@ public class PersoZildo extends Perso {
 	
 	public Item weapon;
 
+	public Item getWeapon() {
+		return weapon;
+	}
+
 	private SpriteEntity boomerang;
 	private int quadDuration;
 	
@@ -283,17 +287,20 @@ public class PersoZildo extends Perso {
     }
 
 	public boolean beingWounded(Perso p_shooter, int p_damage) {
-		setMouvement(MouvementZildo.TOUCHE);
-		setWounded(true);
-		this.setPv(getPv()-p_damage);
-		
 		// Si Zildo a quelque chose dans les mains, on doit le laisser tomber
 		if (getEn_bras() != null) {
 			getEn_bras().az=-0.07f;
+			if (getMouvement() == MouvementZildo.FIERTEOBJET) {
+				getEn_bras().dying=true;
+			}
 			setEn_bras(null);
 		}
 		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoTouche, this);
-	
+
+		setMouvement(MouvementZildo.TOUCHE);
+		setWounded(true);
+		this.setPv(getPv()-p_damage);
+
 		if (guiCircle != null) {
 			guiCircle.kill();
 			inventoring=false;
@@ -316,12 +323,6 @@ public class PersoZildo extends Perso {
         super.die(p_link, p_shooter);
         if (EngineZildo.game.multiPlayer) {
         	EngineZildo.multiplayerManagement.kill(this, p_shooter);
-        	// Drop Zildo's weapon at his death point
-        	ItemKind k=weapon == null ? null : weapon.kind;
-        	if (k != null && k != ItemKind.SWORD) {
-        	    EngineZildo.spriteManagement.spawnElement(k.representation, (int) x, (int) y, 0);
-        	}
-        	EngineZildo.respawnClient(this);
         } else {
         	// Game over
         	EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new GameOverAction());
@@ -355,6 +356,10 @@ public class PersoZildo extends Perso {
 			return;
 		}
 				
+		if (getEn_bras() != null && getEn_bras().dying) {
+			setEn_bras(null);
+		}
+		
 		// Get zildo
 		Perso zildo=this;
 		int xx=(int) zildo.getX();
@@ -698,48 +703,57 @@ public class PersoZildo extends Perso {
 		}
 	}
 	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// pickGoodies
-	///////////////////////////////////////////////////////////////////////////////////////
-	public void pickGoodies(int nSpr) {
+	/**
+	 * Zildo take some goodies. It could be a heart, an arrow, or a weapon...
+	 * @param p_element
+	 * @return boolean : TRUE=element should disappear / FALSE=element stays
+	 */
+	public boolean pickGoodies(Element p_element) {
 		// Effect on perso
+		int nSpr=p_element.getNSpr();
 		int money=this.getMoney();
 		int pv=this.getPv();
 		ElementDescription desc=ElementDescription.fromInt(nSpr);
-		switch (desc) {
-		case GREENMONEY1:
-			setMoney(money+1);
-			break;
-		case BLUEMONEY1:
-			setMoney(money+5);
-			break;
-		case REDMONEY1:
-			setMoney(money+20);
-			break;
-		case HEART: case HEART_LEFT:
-			setPv(pv+1);
-			break;
-		case ARROW_UP:
-			countArrow++;
-			break;
-		case QUAD1:
-			quadDuration=MultiplayerManagement.QUAD_TIME_DURATION;
-			EngineZildo.multiplayerManagement.pickUpQuad();
-			break;
-		}
-		// Sound
-		switch (desc) {
-			case GREENMONEY1: case BLUEMONEY1: case REDMONEY1:
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
+		if (desc.isWeapon()) {
+			pickItem(desc.getItem(), p_element);
+			return false;
+		} else {
+			switch (desc) {
+			case GREENMONEY1:
+				setMoney(money+1);
 				break;
-			case QUAD1:
-				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamage, this);
+			case BLUEMONEY1:
+				setMoney(money+5);
+				break;
+			case REDMONEY1:
+				setMoney(money+20);
 				break;
 			case HEART: case HEART_LEFT:
-				default:
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupCoeur, this);
+				setPv(pv+1);
 				break;
+			case ARROW_UP:
+				countArrow++;
+				break;
+			case QUAD1:
+				quadDuration=MultiplayerManagement.QUAD_TIME_DURATION;
+				EngineZildo.multiplayerManagement.pickUpQuad();
+				break;
+			}
+			// Sound
+			switch (desc) {
+				case GREENMONEY1: case BLUEMONEY1: case REDMONEY1:
+					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
+					break;
+				case QUAD1:
+					EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamage, this);
+					break;
+				case HEART: case HEART_LEFT:
+					default:
+					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupCoeur, this);
+					break;
+			}
 		}
+		return true;
 	}
 	
 	/**
@@ -856,21 +870,30 @@ public class PersoZildo extends Perso {
     /**
      * Zildo takes an item.
      * @param p_kind
+     * @param p_element NULL if we have to spawn the element / otherwise, element already is on the map.
      */
-    public void pickItem(ItemKind p_kind) {
-        addInventory(new Item(p_kind));
-        attente=20;
-        mouvement=MouvementZildo.FIERTEOBJET;
-        Element elem=EngineZildo.spriteManagement.spawnElement(SpriteBank.BANK_ELEMENTS, 
-        		p_kind.representation.ordinal(), 
-        		(int) x + 5, 
-        		(int) y + 1, 20);
-        setEn_bras(elem);
-        EngineZildo.soundManagement.playSound(BankSound.ZildoTrouve, this);
-
-        // Adventure trigger
-        TriggerElement trig=TriggerElement.createInventoryTrigger(p_kind);
-        EngineZildo.scriptManagement.trigger(trig);
+    public void pickItem(ItemKind p_kind, Element p_element) {
+    	if (getEn_bras() == null) {	// Doesn't take 2 items at 1 time
+	        addInventory(new Item(p_kind));
+	        attente=20;
+	        mouvement=MouvementZildo.FIERTEOBJET;
+	        Element elem=p_element;
+	        if (elem == null) {
+		        elem=EngineZildo.spriteManagement.spawnElement(p_kind.representation, 
+		        	 (int) x, 
+		        	 (int) y, 0);
+	        }
+	        // Place item right above Zildo
+	        elem.x=x + 5;
+	        elem.y=y + 1;
+	        elem.z=20f;
+	        setEn_bras(elem);
+	        EngineZildo.soundManagement.playSound(BankSound.ZildoTrouve, this);
+	
+	        // Adventure trigger
+	        TriggerElement trig=TriggerElement.createInventoryTrigger(p_kind);
+	        EngineZildo.scriptManagement.trigger(trig);
+    	}
     }
 
     /**

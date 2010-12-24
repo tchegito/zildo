@@ -21,6 +21,7 @@
 package zildo.monde.sprites.desc;
 
 import zildo.fwk.bank.SpriteBank;
+import zildo.monde.items.ItemKind;
 
 public enum ElementDescription  implements SpriteDescription {
 
@@ -90,5 +91,26 @@ public enum ElementDescription  implements SpriteDescription {
 	public boolean isMoney() {
 		int i=ordinal();
 		return (i >=GREENMONEY1.ordinal() && i<=REDMONEY3.ordinal());		
+	}
+	
+	public boolean isWeapon() {
+		return this==ENEMYARC_RIGHT1 || this==BOMB || this==BOOMERANG1;
+	}
+	
+	/**
+	 * Get the ItemKind associated with this description. Can return NULL if no one is associated.
+	 * @return ItemKind
+	 */
+	public ItemKind getItem() {
+		switch (this) {
+		case ENEMYARC_RIGHT1:
+			return ItemKind.BOW;
+		case BOMB:
+			return ItemKind.BOMB;
+		case BOOMERANG1:
+			return ItemKind.BOOMERANG;
+		default:
+			return null;
+		}
 	}
 }
