@@ -79,6 +79,8 @@ public class MultiplayerManagement {
      * <ul>
      * <li>display message</li>
      * <li>update scores</li>
+     * <li>drop Zildo's current weapon</li>
+     * <li>respawn him</li>
      * </ul>
      * @param p_zildo
      * @param p_shooter
