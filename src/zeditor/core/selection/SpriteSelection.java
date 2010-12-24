@@ -22,7 +22,7 @@ package zeditor.core.selection;
 
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
-import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.SpriteEntity;
 
 /**
  * @author Tchegito
@@ -30,7 +30,7 @@ import zildo.monde.sprites.elements.Element;
  */
 public class SpriteSelection extends Selection {
 
-	Element sprite;
+	SpriteEntity sprite;
 	EngineFX initial;
 	
 	@Override
@@ -38,12 +38,12 @@ public class SpriteSelection extends Selection {
 		return SelectionKind.SPRITES;
 	}
 	
-	public SpriteSelection(Element p_entity) {
+	public SpriteSelection(SpriteEntity p_entity) {
 		sprite=p_entity;
 		initial=sprite.getSpecialEffect();
 	}
 	
-	public Element getElement() {
+	public SpriteEntity getElement() {
 		return sprite;
 	}
 	
