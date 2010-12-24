@@ -105,19 +105,20 @@ public enum PersoDescription implements SpriteDescription {
 		return null;
 	}
 
-		public int first() {
+	public int first() {
 		return sprUsed.first().intValue();
 	}
 		
-		public int getNSpr() {
-			return first();
-		}
+	public int getNSpr() {
+		return first();
+	}
 		
-		public int getBank() {
-			if (first() < 128) {
-				return SpriteBank.BANK_PNJ;
-			} else {
-				return SpriteBank.BANK_PNJ2;
-			}
+	public int getBank() {
+		if (first() < 128) {
+			return SpriteBank.BANK_PNJ;
+		} else {
+			return SpriteBank.BANK_PNJ2;
 		}
+	}
+
 }
