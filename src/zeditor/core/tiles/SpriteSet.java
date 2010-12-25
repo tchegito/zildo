@@ -24,7 +24,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,9 +38,10 @@ import zildo.fwk.gfx.GFXBasics;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
-import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
+import zildo.monde.sprites.desc.ZPersoLibrary;
+import zildo.monde.sprites.desc.ZSpriteLibrary;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
@@ -61,6 +61,9 @@ public class SpriteSet extends ImageSet {
 
     boolean perso;
     
+    final static ZPersoLibrary persoLibrary=new ZPersoLibrary();
+    final static ZSpriteLibrary spriteLibrary=new ZSpriteLibrary();
+    
     /**
      * Initialize the object
      * @param p_perso TRUE=Perso / FALSE=Element
@@ -72,22 +75,19 @@ public class SpriteSet extends ImageSet {
     	perso=p_perso;
     	
     	objectsFromZone=new HashMap<Zone, SpriteDescription>();
-    	initImage(p_perso ? PersoDescription.class : ElementDescription.class);
+    	initImage(p_perso ? persoLibrary : spriteLibrary);
 	}
     
-    public <T extends SpriteDescription> void initImage(Class<T> p_bankDesc) {
+    public <T extends SpriteDescription> void initImage(List<SpriteDescription> p_bankDesc) {
         currentTile=new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     	currentTile.getGraphics();
 
     	
-    	SpriteDescription[] values=p_bankDesc.getEnumConstants();
-    	List<SpriteDescription> list;
-    	list=Arrays.asList(values);
     	if (false) {	// for test, now
-    		list=prepareListFromBank(4);
+    		p_bankDesc=prepareListFromBank(4);
     	}
 
-    	displayListSprites(list);
+    	displayListSprites(p_bankDesc);
     }
     
     /**
@@ -149,7 +149,7 @@ public class SpriteSet extends ImageSet {
 	final Vector4f colMasque=new Vector4f(192, 128, 240, 1);
 	
     /**
-     * Display tile, with or without mask
+     * Display sprite, with or without mask
      * @param i
      * @param j
      * @param nBank
@@ -189,6 +189,7 @@ public class SpriteSet extends ImageSet {
 					Perso temp=EngineZildo.persoManagement.createPerso(persoDesc, 0, 0, 0, "new", Angle.NORD.value);
 					temp.setInfo(PersoInfo.NEUTRAL);
 					temp.initPersoFX();
+			        persoLibrary.initialize(temp);
 					
 			        currentSelection = new PersoSelection(temp);
 			        manager.setPersoSelection((PersoSelection) currentSelection);

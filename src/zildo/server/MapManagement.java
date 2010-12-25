@@ -21,6 +21,7 @@
 package zildo.server;
 
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import zildo.client.ClientEngineZildo;
@@ -533,15 +534,16 @@ public class MapManagement {
      * @return
      */
     public Point getRespawnPosition() {
-        int x = 831 - 700;
-        int y = 360;
-        while (collide(x, y, null)) {
-            x += 16;
-        }
+        List<Point> points=currentMap.getRespawnPoints();
         
+        int n=(int) (points.size() * Math.random());
 		EngineZildo.spriteManagement.spawnSprite(new ElementStars(StarKind.TRAIL, 150, 360));
 
-        return new Point(x, y);
+		Point p=new Point(points.get(n));
+        while (collide(p.x, p.y, null)) {
+            p.x += 16;
+        }
+        return p;
     }
     
 	public Area getCurrentMap() {
