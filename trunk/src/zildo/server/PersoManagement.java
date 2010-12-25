@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import zildo.fwk.bank.SpriteBank;
 import zildo.monde.map.Angle;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -188,11 +187,7 @@ public class PersoManagement {
         perso.setY(y);
         perso.setZ(z);
         perso.setQuel_spr(p_desc);
-        perso.setNBank(SpriteBank.BANK_PNJ);
         perso.setNom(name);
-        if (perso.getQuel_spr().first() >= 128) {
-            perso.setNBank(SpriteBank.BANK_PNJ2);
-        }
         perso.setPv(1);
         perso.setAngle(Angle.fromInt(angle));
 

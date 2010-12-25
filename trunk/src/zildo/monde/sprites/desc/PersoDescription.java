@@ -69,8 +69,10 @@ public enum PersoDescription implements SpriteDescription {
 	CREATURE(170,171,172,173,174,175,176,177),
 	LAPIN(178,179),
 	OISEAU_VERT(180,181),
-	VOLANT_BLEU(182,183,184,185,186,187);
+	VOLANT_BLEU(182,183,184,185,186,187),
 
+	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
+	
 	IntSet sprUsed;
 
 	private PersoDescription(int... sprUsed) {
@@ -114,6 +116,9 @@ public enum PersoDescription implements SpriteDescription {
 	}
 		
 	public int getBank() {
+		if (this==ZILDO) {
+			return SpriteBank.BANK_ZILDO;
+		}
 		if (first() < 128) {
 			return SpriteBank.BANK_PNJ;
 		} else {

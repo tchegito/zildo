@@ -133,6 +133,7 @@ public abstract class Perso extends Element {
 
 	public void setQuel_spr(PersoDescription quel_spr) {
 		this.quel_spr = quel_spr;
+		this.nBank = quel_spr.getBank();
 	}
 	
 	public int getAttente() {

@@ -85,6 +85,12 @@ public class Area implements EasySerializable {
     private final Collection<Point> changes;
     // To respawn removed items
     private final Collection<SpawningTile> toRespawn;
+    // Respawn points for Zildo (multiplayer only)
+    private final List<Point> respawnPoints;
+    
+	public List<Point> getRespawnPoints() {
+		return respawnPoints;
+	}
 
 	public Area() {
 		mapdata = new HashMap<Integer, Case>();
@@ -94,6 +100,7 @@ public class Area implements EasySerializable {
 		toRespawn = new HashSet<SpawningTile>();
 		
 		caseItem = new HashMap<Case, ElementDescription>();
+		respawnPoints = new ArrayList<Point>();
 	}
 
 	public Area(boolean p_outside) {
@@ -588,7 +595,10 @@ public class Area implements EasySerializable {
                     sprDesc -= 2;
                 }
                 PersoDescription desc = PersoDescription.fromNSpr(sprDesc);
-
+                if (desc == null) {
+                	desc=PersoDescription.ZILDO;
+                }
+                
                 // Read the character informations
                 int info=p_buffer.readUnsignedByte();
 				int en_bras=p_buffer.readUnsignedByte();
@@ -598,6 +608,12 @@ public class Area implements EasySerializable {
 				int move=p_buffer.readUnsignedByte();
 				int angle=p_buffer.readUnsignedByte();
 				String name=p_buffer.readString(9);
+				
+				if ("zildo".equals(name)) {
+					desc=PersoDescription.ZILDO;
+					map.respawnPoints.add(new Point(x,y));
+					continue;
+				}
 				
 				// And spawn it if necessary
 				if (!p_spawn) {
