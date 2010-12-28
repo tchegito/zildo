@@ -60,6 +60,7 @@ public class Element extends SpriteEntity {
 	public static final	int SPR_FROMCHEST = 6;
 	public static final	int SPR_FUMEE = 7;
 	public static final	int SPR_ARROW = 8;
+	public static final int SPR_FROMGROUND = 9; // Under bushes
 
 	// Class variables
 	private float ancX, ancY, ancZ;

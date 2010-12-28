@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import zildo.client.Client;
 import zildo.client.sound.BankSound;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
@@ -79,6 +80,7 @@ public class Area implements EasySerializable {
 	private List<ChainingPoint> listChainingPoint;
 	private MapDialog dialogs;
 
+	// Elements linked to a given case (into chest, bushes, jar ...)
 	private Map<Case, ElementDescription> caseItem;
 	
     // To diffuse changes to clients
@@ -322,10 +324,17 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
     public void attackTile(Point tileLocation) {
         // On teste si Zildo détruit un buisson
-        int on_Area = this.readmap(tileLocation.getX(), tileLocation.getY());
+        int on_Area = this.readmap(tileLocation.x, tileLocation.y);
         if (on_Area == 165) {
-            Point spriteLocation = new Point(tileLocation.getX() * 16 + 8, tileLocation.getY() * 16 + 8);
-            EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON, spriteLocation.getX(), spriteLocation.getY(), 0, null);
+        	// Is there something planned to appear ?
+        	int nSpr=0;
+        	ElementDescription desc=getCaseItem(tileLocation.x, tileLocation.y);
+        	if (desc != null) {
+        		nSpr=desc.getNSpr();
+        	}
+        	
+            Point spriteLocation = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
+            EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON, spriteLocation.x, spriteLocation.y, nSpr, null);
             EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
             takeSomethingOnTile(tileLocation);
@@ -527,6 +536,8 @@ public class Area implements EasySerializable {
 		Area map = new Area();
 		SpriteManagement spriteManagement = EngineZildo.spriteManagement;
 
+		boolean zeditor=Client.isZEditor();
+		
 		map.setDim_x(p_buffer.readUnsignedByte());
 		map.setDim_y(p_buffer.readUnsignedByte());
 		int n_persos = p_buffer.readUnsignedByte();
@@ -572,11 +583,20 @@ public class Area implements EasySerializable {
 				nSpr = p_buffer.readUnsignedByte();
 				if (p_spawn) {
 					// If this sprite is on a chest tile, link them
-					if (map.readmap(x / 16, y/16) == 743) {
-						map.setCaseItem(x/16, y/16, nSpr);
-					} else {	// else, show it as a regular element
-						ElementDescription desc=ElementDescription.fromInt(nSpr);
-						spriteManagement.spawnSprite(desc, x, y, false);
+					int ax = x/16;
+					int ay = y/16;
+					int tileDesc=map.readmap(ax, ay);
+					switch (tileDesc) {
+						case 743: // Chest
+						case 165: // Bushes
+							map.setCaseItem(ax, ay, nSpr);
+							if (!zeditor) {	// We have to see the sprites in ZEditor
+								break;
+							}
+						default:	// else, show it as a regular element
+							ElementDescription desc=ElementDescription.fromInt(nSpr);
+							spriteManagement.spawnSprite(desc, x, y, false);
+							break;
 					}
 				}
 			}
@@ -612,7 +632,9 @@ public class Area implements EasySerializable {
 				if ("zildo".equals(name)) {
 					desc=PersoDescription.ZILDO;
 					map.respawnPoints.add(new Point(x,y));
-					continue;
+					if (!zeditor) {	// We have to see persos in ZEditor
+						continue;
+					}
 				}
 				
 				// And spawn it if necessary
