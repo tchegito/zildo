@@ -198,18 +198,23 @@ public class SpriteManagement extends SpriteStore {
 					spawnSprite(element);
 					// Peut-être qu'un diamant va apparaitre !
 				}
-				if (Hasard.lanceDes(Constantes.hazardBushes_Arrow)) {
-					spawnSpriteGeneric(Element.SPR_ARROW, x, y + 5, 0, null);
-				} else if (Hasard.lanceDes(Constantes.hazardBushes_Diamant)) {
-					spawnSpriteGeneric(Element.SPR_DIAMANT, x, y + 5, 0, null);
-				} else if (Hasard.lanceDes(Constantes.hazardBushes_Heart)) {
-					spawnSpriteGeneric(Element.SPR_COEUR, x + 3, y + 5, 0, null);
+				if (misc != 0) {	// Something is planned to appear
+					spawnSpriteGeneric(Element.SPR_FROMGROUND, x, y + 5, misc, null);
+				} else {
+					if (Hasard.lanceDes(Constantes.hazardBushes_Arrow)) {
+						spawnSpriteGeneric(Element.SPR_ARROW, x, y + 5, 0, null);
+					} else if (Hasard.lanceDes(Constantes.hazardBushes_Diamant)) {
+						spawnSpriteGeneric(Element.SPR_DIAMANT, x, y + 5, 0, null);
+					} else if (Hasard.lanceDes(Constantes.hazardBushes_Heart)) {
+						spawnSpriteGeneric(Element.SPR_COEUR, x + 3, y + 5, 0, null);
+					}
 				}
 				break;
 
 			case Element.SPR_DIAMANT :
 			case Element.SPR_ARROW :
-				// Diamant
+			case Element.SPR_FROMGROUND :
+				// Diamond, arrows, everything coming from ground
 				element = new ElementGoodies();
 				element.setX(x);
 				element.setY(y);
@@ -219,6 +224,8 @@ public class SpriteManagement extends SpriteStore {
 				if (typeSprite == Element.SPR_DIAMANT) {
 					element.setSprModel(ElementDescription.GREENMONEY1,
 							misc * 3);
+				} else if (typeSprite == Element.SPR_FROMGROUND) {
+					element.setSprModel(ElementDescription.fromInt(misc));
 				} else {
 					element.setSprModel(ElementDescription.ARROW_UP);
 					element.setY(y - 3);
