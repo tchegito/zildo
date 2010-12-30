@@ -44,7 +44,9 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(42, 70, 12, 14), new Zone(58, 70, 12, 14), new Zone(74, 70, 12, 14),
 				// Bouclier rouge
 				new Zone(89, 69, 14, 16), new Zone(121, 69, 14, 16), new Zone(18, 56, 3, 3),
-				new Zone(22, 61, 5, 5), new Zone(23, 53, 7, 7)
+				new Zone(22, 61, 5, 5), new Zone(23, 53, 7, 7),
+				// 3 bombs
+				new Zone(142, 68, 16, 16)
 		};
 	}
 }

@@ -39,6 +39,7 @@ import zildo.monde.dialog.MapDialog;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
@@ -334,7 +335,7 @@ public class Area implements EasySerializable {
         	}
         	
             Point spriteLocation = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
-            EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON, spriteLocation.x, spriteLocation.y, nSpr, null);
+            EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_BUISSON, spriteLocation.x, spriteLocation.y, nSpr, null);
             EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
             takeSomethingOnTile(tileLocation);
@@ -558,7 +559,7 @@ public class Area implements EasySerializable {
 
 				if (temp.getN_motif() == 99 && temp.getN_banque() == 1 && p_spawn) {
 					// Fumée de cheminée
-					spriteManagement.spawnSpriteGeneric(Element.SPR_FUMEE, j * 16, i * 16, 0, null);
+					spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_FUMEE, j * 16, i * 16, 0, null);
 				}
 			}
 

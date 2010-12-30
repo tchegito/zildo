@@ -37,6 +37,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementAnimMort;
 import zildo.monde.sprites.elements.ElementBoomerang;
@@ -155,7 +156,7 @@ public class SpriteManagement extends SpriteStore {
 	// misc :money value (just for SPR_DIAMANT)
 	// miscPerso :pointer on perso dying (just for SPR_MORT)
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void spawnSpriteGeneric(int typeSprite, int x, int y, int misc,
+	public void spawnSpriteGeneric(SpriteAnimation typeSprite, int x, int y, int misc,
 			Perso miscPerso) {
 		Element element = null;
 		Element element2 = null;
@@ -163,7 +164,7 @@ public class SpriteManagement extends SpriteStore {
 		int j;
 
 		switch (typeSprite) {
-			case Element.SPR_FUMEE :
+			case SPR_FUMEE :
 				elemDesc = ElementDescription.SMOKE_SMALL;
 				element = new Element();
 				element.setX(x + 16.0f);
@@ -184,7 +185,7 @@ public class SpriteManagement extends SpriteStore {
 				spawnSprite(element);
 				break;
 
-			case Element.SPR_BUISSON :
+			case SPR_BUISSON :
 				for (j = 0; j < 8; j++) {
 					element = new Element();
 					element.setX((float) (x + Math.random() * 10 - 5));
@@ -199,21 +200,21 @@ public class SpriteManagement extends SpriteStore {
 					// Peut-être qu'un diamant va apparaitre !
 				}
 				if (misc != 0) {	// Something is planned to appear
-					spawnSpriteGeneric(Element.SPR_FROMGROUND, x, y + 5, misc, null);
+					spawnSpriteGeneric(SpriteAnimation.SPR_FROMGROUND, x, y + 5, misc, null);
 				} else {
 					if (Hasard.lanceDes(Constantes.hazardBushes_Arrow)) {
-						spawnSpriteGeneric(Element.SPR_ARROW, x, y + 5, 0, null);
+						spawnSpriteGeneric(SpriteAnimation.SPR_ARROW, x, y + 5, 0, null);
 					} else if (Hasard.lanceDes(Constantes.hazardBushes_Diamant)) {
-						spawnSpriteGeneric(Element.SPR_DIAMANT, x, y + 5, 0, null);
+						spawnSpriteGeneric(SpriteAnimation.SPR_DIAMANT, x, y + 5, 0, null);
 					} else if (Hasard.lanceDes(Constantes.hazardBushes_Heart)) {
-						spawnSpriteGeneric(Element.SPR_COEUR, x + 3, y + 5, 0, null);
+						spawnSpriteGeneric(SpriteAnimation.SPR_COEUR, x + 3, y + 5, 0, null);
 					}
 				}
 				break;
 
-			case Element.SPR_DIAMANT :
-			case Element.SPR_ARROW :
-			case Element.SPR_FROMGROUND :
+			case SPR_DIAMANT :
+			case SPR_ARROW :
+			case SPR_FROMGROUND :
 				// Diamond, arrows, everything coming from ground
 				element = new ElementGoodies();
 				element.setX(x);
@@ -221,10 +222,10 @@ public class SpriteManagement extends SpriteStore {
 				element.setZ(4.0f);
 				element.setVz(1.5f);
 				element.setAz(-0.1f);
-				if (typeSprite == Element.SPR_DIAMANT) {
+				if (typeSprite == SpriteAnimation.SPR_DIAMANT) {
 					element.setSprModel(ElementDescription.GREENMONEY1,
 							misc * 3);
-				} else if (typeSprite == Element.SPR_FROMGROUND) {
+				} else if (typeSprite == SpriteAnimation.SPR_FROMGROUND) {
 					element.setSprModel(ElementDescription.fromInt(misc));
 				} else {
 					element.setSprModel(ElementDescription.ARROW_UP);
@@ -240,7 +241,7 @@ public class SpriteManagement extends SpriteStore {
 				spawnSprite(element);
 				break;
 
-			case Element.SPR_COEUR :
+			case SPR_COEUR :
 				element = new ElementGoodies();
 				element.setX(x - 1);
 				element.setY(y);
@@ -252,7 +253,7 @@ public class SpriteManagement extends SpriteStore {
 				spawnSprite(element);
 				break;
 
-			case Element.SPR_MORT :
+			case SPR_MORT :
 				element = new ElementAnimMort(miscPerso);
 				element.setX(x);
 				element.setY(y);
@@ -260,7 +261,7 @@ public class SpriteManagement extends SpriteStore {
 				spawnSprite(element);
 				break;
 
-			case Element.SPR_ECLATEPIERRE :
+			case SPR_ECLATEPIERRE :
 				Angle temp = Angle.NORDOUEST;
 				for (j = 0; j < 4; j++) {
 					element = new Element();
@@ -282,7 +283,7 @@ public class SpriteManagement extends SpriteStore {
 				}
 				break;
 
-			case Element.SPR_FROMCHEST :
+			case SPR_FROMCHEST :
 				element = new ElementGoodies(miscPerso);
 				element.x = x;
 				element.y = y;

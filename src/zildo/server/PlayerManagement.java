@@ -32,6 +32,7 @@ import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
@@ -493,7 +494,7 @@ public class PlayerManagement {
 								case 165:
 									objDesc=ElementDescription.BUSHES;
 									if (((int)Math.random()*6)==5) {
-										EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_DIAMANT,newx*16+8,newy*16+10,0, null);
+										EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_DIAMANT,newx*16+8,newy*16+10,0, null);
 									}
 									break;
 								case 167:objDesc=ElementDescription.STONE;break;
@@ -513,7 +514,7 @@ public class PlayerManagement {
 								if (desc != null) {
 									nSpr=desc.getNSpr();
 								}
-								EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_FROMCHEST, 16*newx+8, 16*newy+16, nSpr, heros);
+								EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_FROMCHEST, 16*newx+8, 16*newy+16, nSpr, heros);
 							} else if (!EngineZildo.mapManagement.isWalkable(on_map)) {
 								heros.setMouvement(MouvementZildo.TIRE);
 							}
