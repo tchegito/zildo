@@ -27,6 +27,7 @@ import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -273,7 +274,7 @@ public class PersoNJ extends Perso {
 								if (quel_spr.equals(PersoDescription.CRABE) && Math.random()*40==2) {
 									//On crache une boule de pierre}
 									pos_seqsprite=8*Constantes.speed;
-									EngineZildo.spriteManagement.spawnSpriteGeneric(SPR_BOULEPIERRE,(int)x,(int)y,
+									EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_BOULEPIERRE,(int)x,(int)y,
 											(int) (angle.value+Math.random()*4)	// Attention : math.random() était 'i' en pascal
 											,null);
 									attente=(int) (Math.random()*5);
@@ -528,22 +529,23 @@ public class PersoNJ extends Perso {
 		 if (info==PersoInfo.ENEMY) {
 			// Un monstre vient de mourir
 			// On teste si un bonus va apparaitre
-			int k,l,m;
+			int k,m;
+			SpriteAnimation anim=null;
 			k=1+(int) (Math.random()*6);
-			l=-1;m=0;
+			m=0;
 			switch (k) {
 				case 5: case 6:
-				l=SPR_COEUR;
+				anim=SpriteAnimation.SPR_COEUR;
 				break;
 				case 3: case 4:
-				l=SPR_DIAMANT;
+				anim=SpriteAnimation.SPR_DIAMANT;
 				case 1:
-				l=SPR_DIAMANT;
+				anim=SpriteAnimation.SPR_DIAMANT;
 				m=2;
 				break;
 			}
-			if (l!=-1) {
-				EngineZildo.spriteManagement.spawnSpriteGeneric(l,(int)x,(int)y,m, null);
+			if (anim!=null) {
+				EngineZildo.spriteManagement.spawnSpriteGeneric(anim,(int)x,(int)y,m, null);
 			}
 		 }
 	}

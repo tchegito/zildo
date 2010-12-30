@@ -34,6 +34,7 @@ import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
@@ -492,14 +493,14 @@ public class Element extends SpriteEntity {
 			switch (desc) {
 			case BUSHES:
 				// Le buisson s'effeuille
-				EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_BUISSON,(int) x,(int) y,0, null);
+				EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_BUISSON,(int) x,(int) y,0, null);
 				EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
 				break;
 			case JAR:
 			case STONE:
 			case STONE_HEAVY:
 			case ROCK_BALL:
-				EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_ECLATEPIERRE,(int) x,(int) y,0, null);
+				EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_ECLATEPIERRE,(int) x,(int) y,0, null);
 				EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
 				break;
 			case BOMB:

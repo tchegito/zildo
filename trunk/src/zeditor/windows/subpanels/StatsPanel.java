@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import zildo.monde.map.Area;
 import zildo.server.EngineZildo;
 
+@SuppressWarnings("serial")
 public class StatsPanel extends JPanel {
 
     JLabel dim;

@@ -30,6 +30,7 @@ import zildo.monde.map.Pointf;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -416,7 +417,7 @@ public abstract class Perso extends Element {
 	
     public void die(boolean p_link, Perso p_shooter) {
         // Death !
-        EngineZildo.spriteManagement.spawnSpriteGeneric(Element.SPR_MORT, (int) x, (int) y, 0, p_link ? this : null);
+        EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_MORT, (int) x, (int) y, 0, p_link ? this : null);
     }
     
 	public abstract void finaliseComportement(int compteur_animation);
