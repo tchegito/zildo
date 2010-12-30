@@ -417,7 +417,7 @@ public abstract class Perso extends Element {
 	
     public void die(boolean p_link, Perso p_shooter) {
         // Death !
-        EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_MORT, (int) x, (int) y, 0, p_link ? this : null);
+        EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DEATH, (int) x, (int) y, 0, p_link ? this : null, null);
     }
     
 	public abstract void finaliseComportement(int compteur_animation);

@@ -50,18 +50,6 @@ public class Element extends SpriteEntity {
 	private static IntSet damageableElements=new IntSet(0,1,11,12,2,38,42, 71,72,73,74,  106);
 	// Elements that Zildo can push
 	private static IntSet pushableElements=new IntSet(28,69,70);
-	
-	// Sprites animés génériques
-	public static final	int SPR_BUISSON = 0;          //Animation du buisson qui s'effeuille
-	public static final	int SPR_MORT = 1;
-	public static final	int SPR_BOULEPIERRE = 2;
-	public static final	int SPR_ECLATEPIERRE = 3;
-	public static final	int SPR_DIAMANT = 4;
-	public static final	int SPR_COEUR = 5;
-	public static final	int SPR_FROMCHEST = 6;
-	public static final	int SPR_FUMEE = 7;
-	public static final	int SPR_ARROW = 8;
-	public static final int SPR_FROMGROUND = 9; // Under bushes
 
 	// Class variables
 	private float ancX, ancY, ancZ;
@@ -149,6 +137,10 @@ public class Element extends SpriteEntity {
 	
 	}
 	
+	/**
+	 * If this methods returns TRUE, then element is submitted to physics.
+	 * @return boolean
+	 */
 	public boolean IsNotFixe()
 	{
 		int a=this.nSpr;
@@ -160,7 +152,8 @@ public class Element extends SpriteEntity {
 			(a>=44 && a<=56) ||
 			(a>=69 && a<=74) ||
 			(a>=ElementDescription.BOOMERANG1.ordinal() && a<=ElementDescription.BOOMERANG4.ordinal()) ||
-			(a==ElementDescription.BOMB.ordinal())
+			(a==ElementDescription.BOMB.ordinal()) ||
+			a==ElementDescription.BOMBS3.ordinal()
 			)
 			return true;
 		else
@@ -493,14 +486,14 @@ public class Element extends SpriteEntity {
 			switch (desc) {
 			case BUSHES:
 				// Le buisson s'effeuille
-				EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_BUISSON,(int) x,(int) y,0, null);
+				EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES,(int) x,(int) y,0, null, null);
 				EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
 				break;
 			case JAR:
 			case STONE:
 			case STONE_HEAVY:
 			case ROCK_BALL:
-				EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_ECLATEPIERRE,(int) x,(int) y,0, null);
+				EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BREAKING_ROCK,(int) x,(int) y,0, null, null);
 				EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
 				break;
 			case BOMB:

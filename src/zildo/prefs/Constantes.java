@@ -30,7 +30,7 @@ public class Constantes {
 
 	// File system data
 	//public static String DATA_PATH = "."+File.separator+"Data"+File.separator;	// Pour livraison
-	public static String DATA_PATH = "C:\\Bazar\\Zildo\\Version 1.094\\Data\\";
+	public static String DATA_PATH = "E:\\ZildoDist\\Version 1.094\\Data\\";
 
 	public static String CONFIGURATION_FILE = "ini"+File.separator+"player.ini";
 	public static String SERVER_FILE = "ini"+File.separator+"servers.ini";
@@ -83,11 +83,6 @@ public class Constantes {
 
 	public static final	float mathPi = 3.1415926535f;
 
-	// Hazard
-	public static final int hazardBushes_Diamant = 6;
-	public static final int hazardBushes_Heart = 5;
-	public static final int hazardBushes_Arrow = 7;
-	
 
 	// Sounds
 	public static final int MAX_SOUNDS = 49;

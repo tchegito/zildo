@@ -22,6 +22,16 @@ package zildo.monde;
 
 public class Hasard {
 
+	// Note about the hazard in bushes :
+	// We have to be careful to not giving bombs to Zildo if he doesn't have any yet. He MUST find
+	// the weapon first, and after take some ammos.
+	
+	// Hazard
+	public static final int hazardBushes_Diamant = 7;
+	public static final int hazardBushes_Heart = 5;
+	public static final int hazardBushes_Arrow = 7;
+	public static final int hazardBushes_Bombs = 7;
+	
 	/**
 	 * Renvoie VRAI si un lancer de dé à 10 faces fait plus de 'p_number'
 	 * @param p_number

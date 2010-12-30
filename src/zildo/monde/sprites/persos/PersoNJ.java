@@ -274,9 +274,9 @@ public class PersoNJ extends Perso {
 								if (quel_spr.equals(PersoDescription.CRABE) && Math.random()*40==2) {
 									//On crache une boule de pierre}
 									pos_seqsprite=8*Constantes.speed;
-									EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_BOULEPIERRE,(int)x,(int)y,
+									EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.ROCKBALL,(int)x,(int)y,
 											(int) (angle.value+Math.random()*4)	// Attention : math.random() était 'i' en pascal
-											,null);
+											,null, null);
 									attente=(int) (Math.random()*5);
 								}
 							} else if (quel_deplacement == MouvementPerso.SCRIPT_ELECTRIQUE) {
@@ -535,17 +535,17 @@ public class PersoNJ extends Perso {
 			m=0;
 			switch (k) {
 				case 5: case 6:
-				anim=SpriteAnimation.SPR_COEUR;
+				anim=SpriteAnimation.HEART;
 				break;
 				case 3: case 4:
-				anim=SpriteAnimation.SPR_DIAMANT;
+				anim=SpriteAnimation.DIAMOND;
 				case 1:
-				anim=SpriteAnimation.SPR_DIAMANT;
+				anim=SpriteAnimation.DIAMOND;
 				m=2;
 				break;
 			}
 			if (anim!=null) {
-				EngineZildo.spriteManagement.spawnSpriteGeneric(anim,(int)x,(int)y,m, null);
+				EngineZildo.spriteManagement.spawnSpriteGeneric(anim,(int)x,(int)y,m, null, null);
 			}
 		 }
 	}

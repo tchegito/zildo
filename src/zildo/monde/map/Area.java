@@ -328,14 +328,10 @@ public class Area implements EasySerializable {
         int on_Area = this.readmap(tileLocation.x, tileLocation.y);
         if (on_Area == 165) {
         	// Is there something planned to appear ?
-        	int nSpr=0;
         	ElementDescription desc=getCaseItem(tileLocation.x, tileLocation.y);
-        	if (desc != null) {
-        		nSpr=desc.getNSpr();
-        	}
         	
             Point spriteLocation = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
-            EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_BUISSON, spriteLocation.x, spriteLocation.y, nSpr, null);
+            EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES, spriteLocation.x, spriteLocation.y, 0, null, desc);
             EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
             takeSomethingOnTile(tileLocation);
@@ -559,7 +555,7 @@ public class Area implements EasySerializable {
 
 				if (temp.getN_motif() == 99 && temp.getN_banque() == 1 && p_spawn) {
 					// Fumée de cheminée
-					spriteManagement.spawnSpriteGeneric(SpriteAnimation.SPR_FUMEE, j * 16, i * 16, 0, null);
+					spriteManagement.spawnSpriteGeneric(SpriteAnimation.SMOKE, j * 16, i * 16, 0, null, null);
 				}
 			}
 
