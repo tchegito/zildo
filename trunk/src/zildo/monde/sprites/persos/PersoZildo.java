@@ -738,6 +738,9 @@ public class PersoZildo extends Perso {
 				quadDuration=MultiplayerManagement.QUAD_TIME_DURATION;
 				EngineZildo.multiplayerManagement.pickUpQuad();
 				break;
+			case BOMBS3:
+				countBomb+=3;
+				break;
 			}
 			// Sound
 			switch (desc) {
@@ -875,7 +878,7 @@ public class PersoZildo extends Perso {
     public void pickItem(ItemKind p_kind, Element p_element) {
     	if (getEn_bras() == null) {	// Doesn't take 2 items at 1 time
 	        addInventory(new Item(p_kind));
-	        attente=20;
+	        attente=40;
 	        mouvement=MouvementZildo.FIERTEOBJET;
 	        Element elem=p_element;
 	        if (elem == null) {

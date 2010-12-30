@@ -26,14 +26,14 @@ package zildo.monde.sprites.desc;
  */
 public enum SpriteAnimation {
 
-	SPR_BUISSON,          //Animation du buisson qui s'effeuille
-	SPR_MORT,
-	SPR_BOULEPIERRE,
-	SPR_ECLATEPIERRE,
-	SPR_DIAMANT,
-	SPR_COEUR,
-	SPR_FROMCHEST,
-	SPR_FUMEE,
-	SPR_ARROW,
-	SPR_FROMGROUND;
+	BUSHES,          // Stripping bushes
+	DEATH,	// When someone dies
+	ROCKBALL,
+	BREAKING_ROCK,
+	DIAMOND,	// Glittering money
+	HEART,	 // falling heart
+	FROM_CHEST,	// Coming from a chest
+	SMOKE,	// Smoke on house's chemney
+	ARROW,
+	FROMGROUND; // Under bushes
 }
