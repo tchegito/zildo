@@ -347,8 +347,8 @@ public class SpriteManagement extends SpriteStore {
 		entity.setMoved(false);
 		entity.setForeground(p_foreground);
 
-		entity.x = x - (spr.getTaille_x() >> 1);
-		entity.y = y - (spr.getTaille_y() >> 1);
+		entity.setAjustedX(x - (spr.getTaille_x() >> 1));
+		entity.setAjustedY(y - (spr.getTaille_y() >> 1));
 
 		spawnSprite(entity);
 

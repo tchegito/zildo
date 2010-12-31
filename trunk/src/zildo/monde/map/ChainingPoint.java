@@ -207,4 +207,15 @@ public class ChainingPoint {
 		}
 		return new Zone(16*p1.x, 16*p1.y, 16*p2.x, 16*p2.y);		
 	}
+	
+	/**
+	 * Useful for test cases.
+	 */
+	public boolean equals(Object o) {
+		if (!(o instanceof ChainingPoint)) {
+			return false;
+		}
+		ChainingPoint other=(ChainingPoint) o;
+		return (px == other.px && py == other.py && mapname.equals(other.mapname) && orderX == other.orderX && orderY == other.orderY);
+	}
 }

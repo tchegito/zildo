@@ -42,6 +42,26 @@ public class MapDialog {
 		behaviors=new LinkedHashMap<String, Behavior>();	// LinkedHashMap to keep order
 	}
 
+	/**
+	 * Useful for test cases.
+	 */
+	public boolean equals(Object o) {
+		if (!(o instanceof MapDialog)) {
+			return false;
+		}
+		MapDialog other=(MapDialog) o;
+		if (n_phrases != other.n_phrases) {
+			return false;
+		}
+		if (n_comportements != other.n_comportements) {
+			return false;
+		}
+		if (n_topics != other.n_topics) {
+			return false;
+		}
+		return true;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////
 	// addSentence
 	///////////////////////////////////////////////////////////////////////////////////////

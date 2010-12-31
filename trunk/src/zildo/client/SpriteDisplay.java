@@ -151,8 +151,8 @@ public class SpriteDisplay extends SpriteStore {
 			if (entity != null) {
 				// Camera moves
 				if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ENTITY) { 
-					entity.setScrX((int) (entity.x - cameraNew.x));
-					entity.setScrY((int) (entity.y - cameraNew.y));
+					entity.setScrX(entity.getAjustedX() - cameraNew.x);
+					entity.setScrY(entity.getAjustedY() - cameraNew.y);
 				} else if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
 					// Center sprite
 					SpriteModel spr=entity.getSprModel();
