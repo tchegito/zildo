@@ -103,8 +103,8 @@ public class ItemCircle {
 		for (SpriteEntity entity : guiSprites) {
 			int itemX=(int) (center.getX() + rayon*Math.sin(alpha));
 			int itemY=(int) (center.getY() - rayon*Math.cos(alpha));
-			entity.x=itemX;
-			entity.y=itemY;
+			entity.setAjustedX(itemX);
+			entity.setAjustedY(itemY);
 			
 			alpha+=pas;
 		}		

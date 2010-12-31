@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import zildo.client.Client;
 import zildo.client.sound.BankSound;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
@@ -44,8 +43,8 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoNJ;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
@@ -533,7 +532,7 @@ public class Area implements EasySerializable {
 		Area map = new Area();
 		SpriteManagement spriteManagement = EngineZildo.spriteManagement;
 
-		boolean zeditor=Client.isZEditor();
+		boolean zeditor=EngineZildo.game.editing;
 		
 		map.setDim_x(p_buffer.readUnsignedByte());
 		map.setDim_y(p_buffer.readUnsignedByte());
@@ -574,8 +573,8 @@ public class Area implements EasySerializable {
 		// Les sprites
 		if (n_sprites != 0) {
 			for (int i = 0; i < n_sprites; i++) {
-				int x = (p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
-				int y = (p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
+				int x = p_buffer.readInt();
+				int y = p_buffer.readInt();
 				short nSpr;
 				nSpr = p_buffer.readUnsignedByte();
 				if (p_spawn) {
@@ -603,13 +602,13 @@ public class Area implements EasySerializable {
 		if (n_persos != 0) {
 			for (int i = 0; i < n_persos; i++) {
 				PersoNJ perso;
-				int x = (p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
-				int y = (p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
-				int z = (p_buffer.readUnsignedByte() << 8) + p_buffer.readUnsignedByte();
+				int x = p_buffer.readInt();
+				int y = p_buffer.readInt();
+				int z = p_buffer.readInt();
 
                 int sprDesc = p_buffer.readUnsignedByte();
                 if (sprDesc > 128) {
-                    sprDesc -= 2;
+                    //sprDesc -= 2;
                 }
                 PersoDescription desc = PersoDescription.fromNSpr(sprDesc);
                 if (desc == null) {

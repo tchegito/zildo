@@ -47,6 +47,7 @@ public class EasyWritingFile extends EasyBuffering {
         try {
             fileOut = new FileOutputStream(new File(Constantes.DATA_PATH+p_fileName));
             fileOut.write(data.array(), 0, data.limit());
+            fileOut.close();
         } catch (Exception e) {
             throw new RuntimeException("Unable to write " + p_fileName + " !");
         }
