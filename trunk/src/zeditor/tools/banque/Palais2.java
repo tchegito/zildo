@@ -3,6 +3,9 @@ package zeditor.tools.banque;
 import java.awt.Point;
 import java.util.Arrays;
 
+import zeditor.tools.tiles.Banque;
+import zeditor.tools.tiles.GraphChange;
+
 public class Palais2 extends Banque {
 
 	// Palais2 = interia5 (179 tiles)
@@ -112,6 +115,6 @@ public class Palais2 extends Banque {
 				new Point(224, 144), new Point(192, 160), new Point(208, 160),
 				new Point(224, 160) };
 
-		pkmChanges = Arrays.asList();
+		pkmChanges = Arrays.asList(new GraphChange[] {new GraphChange("interia5", 0, 0)});
 	}
 }

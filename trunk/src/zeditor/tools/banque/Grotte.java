@@ -3,9 +3,12 @@ package zeditor.tools.banque;
 import java.awt.Point;
 import java.util.Arrays;
 
+import zeditor.tools.tiles.Banque;
+import zeditor.tools.tiles.GraphChange;
+
 public class Grotte extends Banque {
 
-	// Grotte.dec = Interia3 + Interia2 (191 tiles)
+	// Grotte.dec = Interia3 + Interia2 (203 tiles)
 	public Grotte() {
 		coords = new Point[] {
 		/* Murs étage 2 */
@@ -55,15 +58,15 @@ public class Grotte extends Banque {
 				new Point(128, 176), new Point(144, 176),
 
 				/* Eau */
-				new Point(56, 80), new Point(72, 80), new Point(88, 80),
+				new Point(64, 80), new Point(80, 80), new Point(96, 80),
 
 				/* Sortie */
 				new Point(0, 80), new Point(16, 80), new Point(0, 96),
 				new Point(16, 96),
 
 				/* Statue d'abeille */
-				new Point(104, 80), new Point(120, 80), new Point(104, 96),
-				new Point(120, 96),
+				new Point(112, 80), new Point(128, 80), new Point(112, 96),
+				new Point(128, 96),
 
 				/* Escaliers */
 				new Point(160, 0), new Point(176, 0), new Point(160, 16),
@@ -134,8 +137,19 @@ public class Grotte extends Banque {
 				new Point(0, 112), new Point(16, 112), new Point(0, 128),
 				new Point(16, 128), /* Descend */
 				new Point(32, 112), new Point(48, 112), new Point(32, 128),
-				new Point(48, 128) };/* Monte */
-
-		pkmChanges = Arrays.asList(new Point(127, 192));
+				new Point(48, 128), /* Monte */
+				
+				/* Porte gauche */
+				new Point(64, 112), new Point(80, 112),
+				new Point(64, 128), new Point(80, 128),
+				new Point(64, 144), new Point(80, 144),
+				/* Porte droite */
+				new Point(96, 112), new Point(112, 112),
+				new Point(96, 128), new Point(112, 128),
+				new Point(96, 144), new Point(112, 144)
+		};
+				
+		pkmChanges = Arrays.asList(new GraphChange("interia3", 0, 0),
+				new GraphChange("interia2", 126, 192));
 	}
 }

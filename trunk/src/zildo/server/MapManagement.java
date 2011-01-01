@@ -21,6 +21,7 @@
 package zildo.server;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -530,11 +531,16 @@ public class MapManagement {
 	}
 	
     /**
-     * Return a respawn position, at an empty place. (temporary : this must be fixed in the map)
+     * Return a respawn position, at an empty place.
      * @return
      */
     public Point getRespawnPosition() {
-        List<Point> points=currentMap.getRespawnPoints();
+        List<Point> points=new ArrayList<Point>();
+        if (currentMap == null) {
+        	points.add(new Point(831, 360));
+        } else {
+        	points=currentMap.getRespawnPoints();
+        }
         
         int n=(int) (points.size() * Math.random());
 		EngineZildo.spriteManagement.spawnSprite(new ElementStars(StarKind.TRAIL, 150, 360));

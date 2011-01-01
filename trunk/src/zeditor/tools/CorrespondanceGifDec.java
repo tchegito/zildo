@@ -1,12 +1,12 @@
 package zeditor.tools;
 
+import java.awt.Image;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import zeditor.tools.banque.Banque;
 import zeditor.tools.banque.Foret1;
 import zeditor.tools.banque.Foret2;
 import zeditor.tools.banque.Foret3;
@@ -16,6 +16,10 @@ import zeditor.tools.banque.Maison;
 import zeditor.tools.banque.Palais1;
 import zeditor.tools.banque.Palais2;
 import zeditor.tools.banque.Village;
+import zeditor.tools.tiles.Banque;
+import zeditor.tools.tiles.GraphChange;
+import zeditor.tools.tiles.MotifBankEdit;
+import zildo.fwk.bank.MotifBank;
 
 // Fait la correspondance entre les fichiers PKM et un fichier DEC
 
@@ -26,9 +30,9 @@ public class CorrespondanceGifDec {
 	public Banque doTheJob(Banque bank) {
 		Map<Point, Integer> mapCorrespondance = new HashMap<Point, Integer>();
 		Map<Integer, Point> mapCorrespondanceInverse = new HashMap<Integer, Point>();
-		List<Point> pkmChanges = bank.getPkmChanges();
-		Iterator<Point> it = pkmChanges.iterator();
-		Point current = null;
+		List<GraphChange> pkmChanges = bank.getPkmChanges();
+		Iterator<GraphChange> it = pkmChanges.iterator();
+		GraphChange current = null;
 		if (it.hasNext()) {
 			current = it.next();
 		}
@@ -36,9 +40,9 @@ public class CorrespondanceGifDec {
 		int nTile = 0;
 		int maxY = 0;
 		for (Point p : bank.getCoords()) {
-			if (current != null && current.x == nTile) {
+			if (current != null && current.nTile == nTile) {
 				// On change de PKM
-				addY += current.y;
+				addY += current.shiftY;
 				if (it.hasNext()) {
 					current = it.next();
 				}
@@ -76,6 +80,11 @@ public class CorrespondanceGifDec {
 					+ " n'existe pas !");
 		}
 		return bank;
+	}
+	
+	public Image generateImg(MotifBank bank) {
+		Banque b=getBanque(bank.getName());
+		return new MotifBankEdit(bank, b).generateImg();
 	}
 	
 	/**

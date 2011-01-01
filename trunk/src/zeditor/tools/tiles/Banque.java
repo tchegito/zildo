@@ -1,8 +1,10 @@
-package zeditor.tools.banque;
+package zeditor.tools.tiles;
 
 import java.awt.Point;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 
 //Regexps à appliquer:
 ///////////////////////
@@ -16,11 +18,13 @@ import java.util.Map;
 public abstract class Banque {
 
 	// Données d'entrée
-	Point[] coords;
-	List<Point> pkmChanges;
+	protected Point[] coords;
+	protected List<GraphChange> pkmChanges;
 	// Données construites par {@link GenereCorrespondanceDec#doTheJob()}
 	Map<Point, Integer> motifParPoint;
 	Map<Integer, Point> pointParMotif;
+	
+	public static final String PKM_PATH = "F:\\Code\\Projets Pascal\\Zildo\\Developpement\\Graph\\";
 	
 	// Ensemble des points correspondant à la position haute-gauche de chaque
 	// tile
@@ -30,7 +34,7 @@ public abstract class Banque {
 
 	// List des numéros de tile où on change de PKM
 	// Dans point on a: x=numéro de tile / y=offset Y pour la page suivante
-	public List<Point> getPkmChanges() {
+	public List<GraphChange> getPkmChanges() {
 		return pkmChanges;
 	}
 
@@ -56,4 +60,34 @@ public abstract class Banque {
 	public Point getCoordsTile(int i) {
 		return pointParMotif.get(i);
 	}
+	
+	/**
+	 * Save this bank in DEC format.
+	 */
+    public void save() {
+    	MotifBankEdit bankEdit=new MotifBankEdit(this);
+    	
+    	System.out.println("Processing "+bankEdit.getName()+"...");
+    	Iterator<GraphChange> it=getPkmChanges().iterator();
+    	GraphChange current=it.next();
+    	int nTile=0;
+    	for (Point p : coords) {
+    		if (current != null && current.nTile == nTile) {
+    			System.out.println("Loading "+current.imageName);
+    			bankEdit.loadImage(current.imageName, 0);	// 0 as transparency color
+    			if (it.hasNext()) {
+    				current=it.next();
+    			} else {
+    				current=null;
+    			}
+    		}
+    		
+    		bankEdit.addSprFromImage(nTile++, p.x, p.y);
+
+    	}
+    	
+    	bankEdit.saveBank();
+    	
+    	System.out.println("Ok");
+    }
 }

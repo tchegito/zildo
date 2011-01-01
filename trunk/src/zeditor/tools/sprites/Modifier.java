@@ -20,6 +20,9 @@
 
 package zeditor.tools.sprites;
 
+import zeditor.tools.banque.Foret4;
+import zeditor.tools.banque.Grotte;
+import zeditor.tools.tiles.MotifBankEdit;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.Game;
 import zildo.monde.map.Zone;
@@ -42,20 +45,37 @@ public class Modifier {
         Game g=new Game(null, true);
         new EngineZildo(g);
        
-        SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
-        bankElem.loadImage("objets.png", COLOR_BLUE);
-        int nSpr=bankElem.getNSprite();
-        Zone[] elements=new ElementsPlus().getZones();
-        for (Zone z : elements) {
-        	bankElem.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
-        	nSpr++;
-        }
-        bankElem.setName("elements2.spr");
-        bankElem.saveBank();
-        //new Modifier().fixPnj2();
 
+        //new Modifier().fixPnj2();
+        //new Modifier().saveElements2();
+        new Modifier().saveBanque();
+        new Modifier().generateImg();
     }
      
+     public void generateImg() {
+    	 MotifBankEdit bankEdit=new MotifBankEdit(new Grotte());
+    	 bankEdit.charge_motifs(bankEdit.getName()+".dec");
+    	 bankEdit.generateImg();
+     }
+     
+     public void saveBanque() {
+    	 new Foret4().save();
+     }
+     
+     public void saveElements2() {
+         SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
+         bankElem.loadImage("objets.png", COLOR_BLUE);
+         int nSpr=bankElem.getNSprite();
+         Zone[] elements=new ElementsPlus().getZones();
+         for (Zone z : elements) {
+         	bankElem.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
+         	nSpr++;
+         }
+         bankElem.setName("elements2.spr");
+         bankElem.saveBank();
+     }
+
+     /** Not useful anymore. It remains here as an example. **/
     public void fixPnj2() {
         EngineZildo.spriteManagement.charge_sprites("PNJ3.SPR");
        
@@ -78,4 +98,5 @@ public class Modifier {
         bankIn.saveBank();
         bankOut.saveBank();
     }
+
 }

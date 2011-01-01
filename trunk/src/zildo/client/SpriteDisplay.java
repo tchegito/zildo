@@ -346,6 +346,8 @@ public class SpriteDisplay extends SpriteStore {
 		previousMapSprite.setNSpr(0);
 		previousMapSprite.setNBank(SpriteBank.BANK_COPYSCREEN);
 		previousMapSprite.setVisible(true);
+		previousMapSprite.setAjustedX(p_cameraLocation.x);
+		previousMapSprite.setAjustedY(p_cameraLocation.y);
 		spawnSprite(previousMapSprite);		
 	}
 }

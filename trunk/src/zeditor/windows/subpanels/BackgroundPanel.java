@@ -11,7 +11,6 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import zeditor.core.exceptions.ZeditorException;
 import zeditor.core.tiles.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.monde.map.Case;
@@ -80,12 +79,7 @@ public class BackgroundPanel extends JPanel {
      * @author Drakulo
      */
     public Object[] loadTileForCombo() {
-		try {
-		    return getTileSetPanel().getTiles();
-		} catch (ZeditorException e) {
-		    //display(e.getMessage(), MESSAGE_ERROR);
-		    return new Object[] { "" };
-		}
+	    return getTileSetPanel().getTiles();
     }
 	
 

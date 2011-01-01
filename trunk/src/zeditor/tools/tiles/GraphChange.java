@@ -18,34 +18,21 @@
  *
  */
 
-package zeditor.core.selection;
-
-import zeditor.windows.subpanels.SelectionKind;
+package zeditor.tools.tiles;
 
 /**
  * @author Tchegito
  *
  */
-public abstract class Selection {
+public class GraphChange {
 
-	public abstract SelectionKind getKind();
+	public String imageName;
+	public int nTile;
+	public int shiftY;
 	
-	public abstract Object getElement();
-	
-	public void unfocus() {}
-	
-    /**
-     * Consider that :<ul>
-     * <li>Selection has ALWAYS an element</li>
-     * <li>Two selections are equals if and only if its have the same element</li>
-     * </ul>
-     * {@inheritDoc}
-     */
-    public boolean equals(Object p_obj) {
-    	Selection sel=(Selection) p_obj;
-    	if (sel.getKind() != getKind()) {
-    		return false;
-    	}
-    	return sel.getElement().equals(getElement());
-    }
+	public GraphChange(String p_imageName, int p_nTile, int p_shiftY) {
+		imageName=p_imageName;
+		nTile=p_nTile;
+		shiftY=p_shiftY;
+	}
 }
