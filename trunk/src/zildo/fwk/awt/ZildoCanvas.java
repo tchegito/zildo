@@ -1,6 +1,6 @@
 /**
  * Legend of Zildo
- * Copyright (C) 2006-2010 Evariste Boussaton
+ * Copyright (C) 2006-2011 Evariste Boussaton
  * Based on original Zelda : link to the past (C) Nintendo 1992
  *
  * This program is free software: you can redistribute it and/or modify
@@ -243,6 +243,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 */
 	public void setObjectOnCursor(Point p) {
 	    SelectionKind kind =manager.getSelectionKind();
+	    if (kind == null) {
+	    	return;
+	    }
 	    switch (kind) {
 	    case CHAININGPOINT:
 			List<ChainingPoint> points=EngineZildo.mapManagement.getCurrentMap().getListPointsEnchainement();
@@ -297,7 +300,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		Perso perso=p_sel.getElement();
 		perso.setX(p_point.x);
 		perso.setY(p_point.y);
-		EngineZildo.spriteManagement.spawnPerso(perso);
+		if (!EngineZildo.spriteManagement.isSpawned(perso)) {
+			EngineZildo.spriteManagement.spawnPerso(perso);
+		}
 		changeSprites=true;	// Ask for sprites updating
 	}
 	
@@ -305,7 +310,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		SpriteEntity elem=p_sel.getElement();
 		elem.x=p_point.x;
 		elem.y=p_point.y;
-		EngineZildo.spriteManagement.spawnSprite(elem);
+		if (!EngineZildo.spriteManagement.isSpawned(elem)) {
+			EngineZildo.spriteManagement.spawnSprite(elem);
+		}
 		changeSprites=true;
 	}
 }

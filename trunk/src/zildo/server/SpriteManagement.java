@@ -1,6 +1,6 @@
 /**
  * Legend of Zildo
- * Copyright (C) 2006-2010 Evariste Boussaton
+ * Copyright (C) 2006-2011 Evariste Boussaton
  * Based on original Zelda : link to the past (C) Nintendo 1992
  *
  * This program is free software: you can redistribute it and/or modify
@@ -739,5 +739,19 @@ public class SpriteManagement extends SpriteStore {
 		}
 		backupEntities.clear();
 		return returned;
+	}
+	
+	/**
+	 * Returns TRUE if the given entity is already spawned.
+	 * @param p_entity
+	 * @return boolean
+	 */
+	public boolean isSpawned(SpriteEntity p_entity) {
+		for (SpriteEntity e : spriteEntities) {
+			if (e.getId() == p_entity.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
