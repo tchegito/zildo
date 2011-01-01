@@ -3,6 +3,9 @@ package zeditor.tools.banque;
 import java.awt.Point;
 import java.util.Arrays;
 
+import zeditor.tools.tiles.Banque;
+import zeditor.tools.tiles.GraphChange;
+
 public class Foret1 extends Banque {
 
 	// foret1 = exteria1 + exteria2 + exteria3 (254 tiles)
@@ -197,8 +200,9 @@ public class Foret1 extends Banque {
 				new Point(128, 16), new Point(32, 128), new Point(80, 32),
 				new Point(16, 16), new Point(80, 0) };
 
-		pkmChanges = Arrays.asList(new Point[] { new Point(109, 192),
-				new Point(139, -192), new Point(187, 192 + 176),
-				new Point(209, -160) });
+		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("exteria1", 0, 0), 
+				new GraphChange("exteria2", 109, 192),
+				new GraphChange("exteria1", 139, -192), new GraphChange("exteria3", 186, 192 + 176),
+				new GraphChange("exteria2", 209, -160) });
 	}
 }

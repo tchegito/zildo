@@ -7,23 +7,21 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-
 import zeditor.core.Options;
-import zeditor.core.exceptions.TileSetException;
 import zeditor.core.exceptions.ZeditorException;
 import zeditor.core.selection.CaseSelection;
-import zeditor.helpers.OptionHelper;
 import zeditor.tools.CorrespondanceGifDec;
 import zeditor.tools.Transparency;
+import zeditor.windows.OptionHelper;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.ZUtils;
+import zildo.fwk.bank.MotifBank;
+import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.Case;
 import zildo.monde.map.Zone;
 
@@ -56,42 +54,18 @@ public class TileSet extends ImageSet {
 
         Image tile=tiles.get(p_name);
         if (tile == null) {
-	        // On charge l'image
-        	ImageIcon icon=null;
-        	try {
-        		icon = new ImageIcon(getPath() + p_name + ".gif");
-        	} catch (Exception e) {
-        		
+	        // Generate image
+        	if (ClientEngineZildo.tileEngine == null) {
+        		return null;
         	}
-	        // On vérifie la largeur
-	        if(icon.getIconWidth() != 320){
-	            tile = null;
-	            throw new RuntimeException("Le fichier de Tiles est trop large :" + icon.getIconWidth() + "px au lieu de 320px.");
-	        }
-	       
-	        tile = icon.getImage();
-	        
+        	int nBank=ClientEngineZildo.tileEngine.getBankFromName(p_name);
+        	MotifBank bank=ClientEngineZildo.tileEngine.getMotifBank(nBank);
+        	tile=bridge.generateImg(bank);
 			
-	        tile = Transparency.makeColorTransparent(tile, Transparency.BANK_TRANSPARENCY);
+	        //tile = Transparency.makeColorTransparent(tile, Transparency.BANK_TRANSPARENCY);
 	        tiles.put(p_name, tile);
         }
         return tile;
-    }
-    
-    private String getPath() throws TileSetException{
-        
-        // On récupère le chemin paramétré (si il est paramétré)
-        String path = OptionHelper.loadOption(Options.TILES_PATH.getValue());
-        if ("".equals(path) || path == null) {
-            path = "tiles/";
-        }
-
-        // On teste l'existance
-        File f = new File(path);
-        if (!f.exists()) {
-            throw new TileSetException("Le chemin spécifié pour la banque de tiles n'existe pas");
-        }
-        return path;
     }
     
     class CallbackImageObserver implements ImageObserver {
@@ -127,14 +101,15 @@ public class TileSet extends ImageSet {
         currentTile=getTileNamed(p_name);
         
         // Récupération de la taille de l'image
-        
-        tileWidth = currentTile.getWidth(imgObserver);
-        tileHeight = currentTile.getHeight(imgObserver);
-        // Si la hauteur n'est pas un multiple de 16, on tronque la taille au multiple inférieur
-        if (tileHeight % 16 != 0){
-            tileHeight -= tileHeight % 16;
+        if (currentTile != null) {
+	        tileWidth = currentTile.getWidth(imgObserver);
+	        tileHeight = currentTile.getHeight(imgObserver);
+	        // Si la hauteur n'est pas un multiple de 16, on tronque la taille au multiple inférieur
+	        if (tileHeight % 16 != 0){
+	            tileHeight -= tileHeight % 16;
+	        }
         }
-
+        
        
         // On repaint pour afficher le résultat
         repaint();
@@ -172,40 +147,15 @@ public class TileSet extends ImageSet {
      * Méthode de chargement dynamique des tiles présents dans le dossier défini
      * des Tiles.
      * @return Object[] : Un tableau de String contenant le nom des fichiers images (sans l'extension)
-     * @throws ZeditorException
      * @author Drakulo
      */
-    public Object[] getTiles() throws ZeditorException {
+    public Object[] getTiles() {
         // Récupération des fichiers du dossier de tiles
-        File[] files = null;
         List<String> list = new ArrayList<String>();
-        String path = OptionHelper.loadOption(Options.TILES_PATH.getValue());
-        if ("".equals(path) || path == null) {
-            path = "tiles/";
-        }
-        path=path.trim();
-        File dir = new File(path);
-        if (!dir.exists()) {
-            throw new TileSetException("Le chemin spécifié pour la banque de tiles n'existe pas");
-        }
-        files = dir.listFiles();
-        if (files == null) {
-            throw new TileSetException("Le dossier paramétré est vide");
-        }
-        int i = 0;
-        for (File file : files) {
-            String fileName = file.getName();
-            // On ajoute à la liste que si l'élément est une image GIF
-            if(fileName.endsWith(".gif") || fileName.endsWith(".GIF")){
-            	String name=fileName.substring(0, (fileName.length() - 4));
-            	getTileNamed(name);
-                list.add(name);
-            }
-            i++;
-        }
-        if (list.isEmpty()) {
-            throw new TileSetException(
-            "Le dossier paramétré ne contient aucun tileSet");
+
+        for (String bankName : TileEngine.tileBankNames) {
+            String fileName = bankName.substring(0, bankName.indexOf("."));
+            list.add(fileName);
         }
         list.add("*block*");
         return list.toArray();

@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import zildo.monde.dialog.MapDialog;
 import zildo.monde.map.Area;
 import zildo.server.EngineZildo;
 
@@ -39,7 +40,8 @@ public class StatsPanel extends JPanel {
 	int nbPerso=EngineZildo.persoManagement.tab_perso.size();
 	int nbSpr=EngineZildo.spriteManagement.getSpriteEntities(null).size();
 	int nbChPoint=map.getListPointsEnchainement().size();
-	int nbDial=map.getMapDialog().getN_phrases();
+	MapDialog dialogs=map.getMapDialog();
+	int nbDial=dialogs == null ? 0 : dialogs.getN_phrases();
 	dim.setText(map.getDim_x() + " x "+map.getDim_y());
 	nPerso.setText(String.valueOf(nbPerso));
 	nSpr.setText(String.valueOf(nbSpr - nbPerso));

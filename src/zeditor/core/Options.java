@@ -6,7 +6,6 @@ package zeditor.core;
  *
  */
 public enum Options {
-	TILES_PATH("tilesPath"),
 	SHOW_TILES_UNMAPPED("showTilesUnmapped"),
 	SHOW_TILES_GRID("showTilesGrid");
 	

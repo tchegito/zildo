@@ -479,7 +479,6 @@ public class Area implements EasySerializable {
 		if (n_sprites != 0) {
 			int nSprites = 0;
 			for (SpriteEntity entity : entities) {
-				// Only element
 				p_file.put((int) entity.x);
 				p_file.put((int) entity.y);
 				p_file.put((byte) entity.getNSpr());
@@ -503,7 +502,7 @@ public class Area implements EasySerializable {
 		}
 
 		// 6) Sentences
-		int nPhrases = dialogs.getN_phrases();
+		int nPhrases = dialogs == null ? 0 : dialogs.getN_phrases();
 		p_file.put((byte) nPhrases);
 		if (nPhrases > 0) {
 			// On lit les phrases
@@ -619,7 +618,7 @@ public class Area implements EasySerializable {
                 int info=p_buffer.readUnsignedByte();
 				int en_bras=p_buffer.readUnsignedByte();
 				if (en_bras!= 0) {
-					throw new RuntimeException("enbras="+en_bras);
+					//throw new RuntimeException("enbras="+en_bras);
 				}
 				int move=p_buffer.readUnsignedByte();
 				int angle=p_buffer.readUnsignedByte();
@@ -719,20 +718,34 @@ public class Area implements EasySerializable {
         }
     }
 
+    /**
+     * Keep only the exportable sprites. Those which are eliminated are:<ul>
+     * <li>Zildo</li>
+     * <li>sprites related to others (ex:shadow)</li>
+     * <li>house's smoke (should be fixed)</li>
+     * </ul>
+     * @param p_spriteEntities
+     * @return
+     */
 	public List<SpriteEntity> filterExportableSprites(List<SpriteEntity> p_spriteEntities) {
 		List<SpriteEntity> filteredEntities = new ArrayList<SpriteEntity>();
 		for (SpriteEntity entity : p_spriteEntities) {
 			int type = entity.getEntityType();
 			boolean ok = true;
-			if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+			// In singleplayer, we have to exclude the sprites related to others. Indeed, its will be created with the mother entity.
+			if (!EngineZildo.game.multiPlayer && entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
 				Element elem = (Element) entity;
 				if (elem.getLinkedPerso() != null) {
 					ok = false;
+				}
+				if (elem.getNSpr() == ElementDescription.SMOKE_SMALL.ordinal()) {
+					ok = false;;	// Exclude smoke too (spawned on houses)
 				}
 			}
 			if (entity.isZildo()) {
 				ok = false;
 			}
+
 			if (entity.isVisible() && ok && (type == SpriteEntity.ENTITYTYPE_ELEMENT || type == SpriteEntity.ENTITYTYPE_ENTITY)) {
 				filteredEntities.add(entity);
 			}

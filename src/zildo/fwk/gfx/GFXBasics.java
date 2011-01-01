@@ -396,6 +396,11 @@ public class GFXBasics extends OpenGLStuff {
 	public static Vector4f getColor(int palIndex) {
 		return palette[palIndex];
 	}
+	
+	public static int getIntColor(int palIndex) {
+		Vector4f v=getColor(palIndex);
+		return (int) v.x << 16 | (int) v.y << 8 | (int) v.z;
+	}
 
 	public static int getPalIndex(int value) {
 		int r = (value >> 16) & 0xff;

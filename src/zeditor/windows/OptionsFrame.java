@@ -11,10 +11,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-
-import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import zeditor.windows.managers.OptionsFrameManager;
 
@@ -54,7 +52,6 @@ public class OptionsFrame extends javax.swing.JFrame {
 	private JCheckBox gridCheckBox;
 	private JCheckBox unmappedCheckBox;
 	private JPanel boxesPanel;
-	private JTextField TilesPath;
 	private JLabel star;
 	private JLabel TilePathLabel;
 	private JPanel TilePathPanel;
@@ -93,7 +90,7 @@ public class OptionsFrame extends javax.swing.JFrame {
 			getContentPane().add(getButtonsGroupPanel());
 
 			// On recrée le manager avec les champs
-			manager = new OptionsFrameManager(this, getTilesPath(), getUnmappedCheckBox(), getGridCheckBox());
+			manager = new OptionsFrameManager(this, getUnmappedCheckBox(), getGridCheckBox());
 			
 			// On initialise la fenêtre avec le paramétrage actuel
 			manager.init();
@@ -162,7 +159,6 @@ public class OptionsFrame extends javax.swing.JFrame {
 			TilePathPanel.setLayout(TilePathPanelLayout);
 			TilePathPanel.add(getTilePathLabel());
 			TilePathPanel.add(getStar());
-			TilePathPanel.add(getTilesPath());
 		}
 		return TilePathPanel;
 	}
@@ -180,13 +176,7 @@ public class OptionsFrame extends javax.swing.JFrame {
 		}
 		return star;
 	}
-	private JTextField getTilesPath() {
-		if (TilesPath == null) {
-			TilesPath = new JTextField();
-			TilesPath.setPreferredSize(new java.awt.Dimension(382,23));
-		}
-		return TilesPath;
-	}
+
 	private JPanel getBoxesPanel() {
 		if(boxesPanel == null) {
 			boxesPanel = new JPanel();

@@ -163,7 +163,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    List<Case> cases=new ArrayList<Case>();
 	    for (int y=j;y<h;y++) {
     	    	for (int x=i;x<w;x++) {
-    	    	    cases.add(map.get_mapcase(x, y + 4 ));
+    	    	    cases.add(new Case(map.get_mapcase(x, y + 4 )));
     	    	}
 	    }
 	    MasterFrameManager.switchCopyTile(width, height, cases);

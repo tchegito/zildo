@@ -151,6 +151,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			// and init the renderer itself
 			// renderer.initRenderer();
 			renderer.setInitialized(true);
+			manager.init();
 			initialize = true;
 		}
 		try {

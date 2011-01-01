@@ -30,21 +30,19 @@ public class MotifBank {
 
 	protected final Logger logger=Logger.getLogger("MotifBank");
 	
-	private short[] motifs_map; // Pointeur sur nos graphs
-	private long motifs_size;  // Taille de la banque
-	private String nom;				// Max length should be 12
-	private boolean charge;       // TRUE=en mémoire FALSE=en attente
-	private int nb_motifs;		// Nombre de motifs dans la banque
+	protected short[] motifs_map; // Pointeur sur nos graphs
+	private String name;				// Max length should be 12
+	protected int nb_motifs;		// Nombre de motifs dans la banque
 
 
 
 	
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getNb_motifs() {
@@ -56,57 +54,38 @@ public class MotifBank {
 	}
 
 	public MotifBank() {
-		charge=false;
-	
 		logger.log(Level.INFO, "Creating MotifBank");
 	
 	}
 	
 	//Assignment operator to work out with STL
 	public MotifBank(MotifBank original) {
-		this.charge=original.charge;
 		this.motifs_map=original.motifs_map;
-		this.motifs_size=original.motifs_size;
 		this.nb_motifs=original.nb_motifs;
-		this.nom=original.nom;
+		this.name=original.name;
 	}
 	
-	public void charge_motifs(String filename)
-	{
+	public void charge_motifs(String filename) {
 		// On récupère la taille du fichier .DEC
 		EasyReadingFile file=new EasyReadingFile(filename);
 		int size=file.getSize();
-		if (!charge) {
-			//motifs_map=new short[size];
-		}
 		
-		nom=filename;
-		motifs_size=size;
-		nb_motifs=(int) (motifs_size / (16*16));
+		name=filename.substring(0, filename.indexOf("."));
+		nb_motifs=size / (16*16);
 	
 		// Load the mini-pictures
 		motifs_map=file.readUnsignedBytes();
 			
-		charge=true;
-
 	}
 	
-	public short[] get_motif(int quelmotif)
-	{
-		/*
-		// Retrieve motif from bank buffer
-		byte* temp;
-		temp=(byte*)malloc(sizeof(byte) * 16*16);
-		temp=new byte[16*16];
-		for (int i=0;i<16*16;i++)
-			*(temp+i) = *(motifs_map + a + i);
-	
-		// Return extracted one
-		return temp;
-	*/
+	public short[] get_motif(int quelmotif) {
 		short[] coupe=new short[16*16];
 		int a=quelmotif * 16*16;
 		System.arraycopy(motifs_map, a, coupe, 0, 16*16);
 		return coupe;
+	}
+
+	public short[] getMotifs_map() {
+		return motifs_map;
 	}
 }

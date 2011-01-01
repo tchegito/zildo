@@ -145,7 +145,7 @@ public class TileSelection extends CaseSelection {
 				if (item != null) {
 					dx = p.x + w;
 					dy = p.y + h;
-					if (map.getDim_x() > dx && map.getDim_y() > dy) {
+					if (map.getDim_x() > dx && map.getDim_y() > dy && dy >= 0 && dx >= 0) {
 						// We know that this is a valid location
 						Case c=map.get_mapcase(dx, dy+4);
 						// Apply modifications
@@ -158,9 +158,11 @@ public class TileSelection extends CaseSelection {
 						}
 						c.setN_banque_masque(item.getN_banque_masque());
 						c.setN_motif_masque(item.getN_motif_masque());
+						System.out.print(item.getN_motif());
 					}
 				}
 			}
+			System.out.println("");
 		}
     }
     
