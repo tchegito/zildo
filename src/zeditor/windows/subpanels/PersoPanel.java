@@ -163,15 +163,24 @@ public class PersoPanel extends JPanel {
 	public void focusPerso(Perso p_perso) {
 		updatingUI=true;	// To disable the listeners
 		
-		name.setText(p_perso.getNom());
-		script.setSelectedIndex(p_perso.getQuel_deplacement().valeur);
-		angle.setSelectedIndex(p_perso.getAngle().value);
-		info.setSelectedIndex(p_perso.getInfo().ordinal());
-		object.setText("0");
-
+		if (p_perso == null) {
+			name.setText("");
+			script.setSelectedIndex(0);
+			angle.setSelectedIndex(0);
+			info.setSelectedIndex(0);
+			object.setText("0");
+			behavior=null;
+		} else {
+			name.setText(p_perso.getNom());
+			script.setSelectedIndex(p_perso.getQuel_deplacement().valeur);
+			angle.setSelectedIndex(p_perso.getAngle().value);
+			info.setSelectedIndex(p_perso.getInfo().ordinal());
+			object.setText("0");
+	
+		    MapDialog mapDialog=EngineZildo.mapManagement.getCurrentMap().getMapDialog();
+		    behavior=mapDialog.getBehaviors().get(p_perso.getNom());
+		}
 		currentPerso=p_perso;
-	    MapDialog mapDialog=EngineZildo.mapManagement.getCurrentMap().getMapDialog();
-	    behavior=mapDialog.getBehaviors().get(currentPerso.getNom());
 		updateDialog();
 		
 		// Initialize the spinner

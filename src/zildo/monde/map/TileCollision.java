@@ -44,6 +44,7 @@ public class TileCollision {
     final IntSet walkable3 = new IntSet(0, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 94, 95, 96, // +512
             97, 98, 99, 100, 101, 102, 217, 218, 219, 220, 221, 222, 240);
 
+    // Grotte
     final IntSet walkable4 = new IntSet(9, 37, 38, 39, 41, 42, 43, 44, 45, 46, 50, 51, 52, 53, 78, 79, 80, 81, // +768
             82, 83, 84, 155, 156, 157, 158, 159, 160);
 
@@ -167,6 +168,8 @@ public class TileCollision {
                 case 1103:
                 case 1107:
                 case 1108:
+                case 192+768:
+                case 196+768:
                     tileInfo.half=true;
                     tileInfo.blockAngle=Angle.NORD;
                     break;
@@ -188,6 +191,8 @@ public class TileCollision {
                 case 1192:
                 case 1201:
                 case 1203:
+                case 194+768:
+                case 198+768:
                     tileInfo.half=true;
                     tileInfo.blockAngle=Angle.SUD;
                     break;
@@ -224,6 +229,7 @@ public class TileCollision {
                 case 1097:
                 case 1213:
                 case 1275:
+                case 181+768:
                     tileInfo.half=true;
                     tileInfo.blockAngle=Angle.OUEST;
                     break;
@@ -252,6 +258,7 @@ public class TileCollision {
                 case 1098:
                 case 1214:
                 case 1276:
+                case 182+768:
                     tileInfo.half=true;
                     tileInfo.blockAngle=Angle.EST;
                     break;
@@ -262,15 +269,17 @@ public class TileCollision {
                 case 946:
                 case 954:
                 case 958:
-                case 920:
+                case 191+768:
                     tileInfo.corner=true;
                     tileInfo.blockAngle=Angle.NORDEST;
                     break;
                 case 947:
+                case 199+768:
                     tileInfo.corner=true;
                     tileInfo.blockAngle=Angle.SUDOUEST;
                     break;
                 case 948:
+                case 193+768:
                     tileInfo.corner=true;
                     tileInfo.blockAngle=Angle.SUDEST;
                     break;
@@ -278,22 +287,32 @@ public class TileCollision {
                 case 945:
                 case 953:
                 case 957:
-                case 919:
+                case 197+768:
                     tileInfo.corner=true;
                     tileInfo.blockAngle=Angle.NORDOUEST;
                     break;
-                case 921:
+                case 920:
                 case 1171:
                 	tileInfo.corner=true;
                 	tileInfo.inverse=true;
                 	tileInfo.blockAngle=Angle.SUDOUEST;
                     break;
-                case 922:
+                case 919:
                 case 1172:
                 	tileInfo.corner=true;
                 	tileInfo.inverse=true;
                 	tileInfo.blockAngle=Angle.SUDEST;
                     break;
+                case 921:
+                	tileInfo.corner=true;
+                	tileInfo.inverse=true;
+                	tileInfo.blockAngle=Angle.NORDEST;
+                	break;
+                case 922:
+                	tileInfo.corner=true;
+                	tileInfo.inverse=true;
+                	tileInfo.blockAngle=Angle.NORDOUEST;
+                	break;
 
                 default:
                 	tileInfo.walkable=isWalkable(onmap);

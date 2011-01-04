@@ -30,6 +30,8 @@ import zildo.fwk.awt.ZildoCanvas;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 
 
@@ -454,30 +456,33 @@ public class MasterFrameManager {
 	
 	
 	public void setSpriteSelection(SpriteSelection p_currentSelection) {
-	    if (currentSelection == null || !p_currentSelection.equals(currentSelection)) {
+	    if (currentSelection == null || p_currentSelection == null || !p_currentSelection.equals(currentSelection)) {
 	    	if (currentSelection != null) {
 	    		currentSelection.unfocus();
 	    	}
-			// Chaining point changes : we hava to update the list
-			masterFrame.getSpritePanel().focusSprite(p_currentSelection.getElement());
+			// Focus the given sprite
 			currentSelection=p_currentSelection;
 	    }
+	    SpriteEntity entity=p_currentSelection == null ? null : p_currentSelection.getElement();
+		masterFrame.getSpritePanel().focusSprite(entity);
 	}
 	
 	/**
-	 * Set the current Perso selection. Two possible situations: <ul>
+	 * Set the current Perso selection. Three possible situations: <ul>
 	 * <li>user gain focus on a character on the map</li>
 	 * <li>user pick a character from the library</li>
+	 * <li>user remove the focuses perso</li>
 	 * </ul>
 	 * @param p_currentSelection
 	 */
 	public void setPersoSelection(PersoSelection p_currentSelection) {
-	    if (currentSelection == null || !p_currentSelection.equals(currentSelection)) {
+	    if (currentSelection == null || p_currentSelection == null || !p_currentSelection.equals(currentSelection)) {
 	    	if (currentSelection != null) {
 	    		currentSelection.unfocus();
 	    	}
-			// Chaining point changes : we hava to update the list
-			masterFrame.getPersoPanel().focusPerso(p_currentSelection.getElement());
+			// Focus the given perso (or focus NULL if selection is empty)
+	    	Perso perso=p_currentSelection == null ? null : p_currentSelection.getElement();
+			masterFrame.getPersoPanel().focusPerso(perso);
 			currentSelection=p_currentSelection;
 	    }
 	}

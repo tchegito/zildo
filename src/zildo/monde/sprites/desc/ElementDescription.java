@@ -78,6 +78,7 @@ public enum ElementDescription  implements SpriteDescription {
 	
 	// 155
 	BOMBS3;
+
 	
 	public int getBank() {
 		return SpriteBank.BANK_ELEMENTS;
@@ -88,7 +89,11 @@ public enum ElementDescription  implements SpriteDescription {
 	}
 	
 	public int getNSpr() {
-		return this.ordinal();
+		int n=this.ordinal();
+		if (name().startsWith("GEAR")) {
+			n-=156;
+		}
+		return n;
 	}
 	
 	public boolean isMoney() {

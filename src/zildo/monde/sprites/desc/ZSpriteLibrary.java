@@ -1,6 +1,8 @@
 package zildo.monde.sprites.desc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 @SuppressWarnings("serial")
 public class ZSpriteLibrary extends ArrayList<SpriteDescription> {
@@ -86,5 +88,6 @@ public class ZSpriteLibrary extends ArrayList<SpriteDescription> {
 				add(desc);
 			}
 		}
+		addAll(Arrays.asList(GearDescription.values()));
 	}
 }

@@ -61,6 +61,8 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	boolean mask=false;
+	
 	public ZildoCanvas(ZildoScrollablePanel p_panel, String p_mapname)
 			throws LWJGLException {
 		super();
@@ -95,7 +97,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	private void drawBrush(Point p, TileSelection p_sel) {
 		// Apply selected brush to the map
 		Area map = EngineZildo.mapManagement.getCurrentMap();
-		p_sel.draw(map, new zildo.monde.map.Point(p.x / 16, p.y / 16));
+		p_sel.draw(map, new zildo.monde.map.Point(p.x / 16, p.y / 16), mask);
 	}
 
 	public void endBrush() {
@@ -105,29 +107,56 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		}
 	}
 	/**
-	 * Clear a region of the map sized by the selected brush
+	 * Action launched by right-clicking on the map. Depends on the kind of selection.<br/>
+	 * With Tiles, : lear a region of the map sized by the selected brush.<br/>
+	 * Otherwise, remove the focuses element.
 	 * @param p
 	 */
 	public void clearWithBrush(Point p) {
 		Selection sel = manager.getSelection();
-		Point size;
-		if (sel != null && sel instanceof TileSelection) {
-			TileSelection tileSel=(TileSelection) sel;
-			size = new Point(tileSel.width, tileSel.height);
-		} else {
-			size = new Point(1, 1);
+		// Default kind is TILES
+		SelectionKind kind=sel == null ? SelectionKind.TILES : sel.getKind();
+		switch (kind) {
+			case TILES:
+				Point size;
+				if (sel != null && sel instanceof TileSelection) {
+					TileSelection tileSel=(TileSelection) sel;
+					size = new Point(tileSel.width, tileSel.height);
+				} else {
+					size = new Point(1, 1);
+				}
+				List<Case> cases=new ArrayList<Case>();
+				Case empty=new Case();
+				empty.setN_banque(0);
+				empty.setN_motif(54);	// Empty in outside
+				empty.setN_banque_masque(0);
+				empty.setN_motif_masque(0);
+				for (int i=0;i<size.x*size.y;i++) {
+				    cases.add(empty);
+				}
+				TileSelection emptySel = new TileSelection(size.x, size.y, cases);
+				drawBrush(p, emptySel);
+				break;
+			case CHAININGPOINT:
+				ChainingPoint ch=(ChainingPoint) sel.getElement();
+				if (ch != null) {
+					EngineZildo.mapManagement.getCurrentMap().removeChainingPoint(ch);
+					manager.updateChainingPoints(null);
+				}
+				break;
+			case SPRITES:
+			case PERSOS:
+				SpriteEntity entity=(SpriteEntity) sel.getElement();
+				EngineZildo.spriteManagement.deleteSprite(entity);
+				if (sel.getKind() == SelectionKind.PERSOS) {
+					EngineZildo.persoManagement.removePerso((Perso) entity);
+					manager.setPersoSelection(null);
+				} else {
+					manager.setSpriteSelection(null);
+				}
+			default:
+				break;
 		}
-		List<Case> cases=new ArrayList<Case>();
-		Case empty=new Case();
-		empty.setN_banque(0);
-		empty.setN_motif(54);	// Empty in outside
-		empty.setN_banque_masque(0);
-		empty.setN_motif_masque(0);
-		for (int i=0;i<size.x*size.y;i++) {
-		    cases.add(empty);
-		}
-		TileSelection emptySel = new TileSelection(size.x, size.y, cases);
-		drawBrush(p, emptySel);
 	}
 
 	/**
@@ -310,9 +339,16 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		SpriteEntity elem=p_sel.getElement();
 		elem.x=p_point.x;
 		elem.y=p_point.y;
+		elem.setAjustedX(p_point.x);
+		elem.setAjustedY(p_point.y);
 		if (!EngineZildo.spriteManagement.isSpawned(elem)) {
 			EngineZildo.spriteManagement.spawnSprite(elem);
 		}
+		manager.setSpriteSelection(p_sel);
 		changeSprites=true;
+	}
+
+	public void toggleMask() {
+		this.mask = !mask;
 	}
 }

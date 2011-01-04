@@ -414,21 +414,37 @@ public class MapManagement {
 				zildo.setX(zx-8);
 				zildo.setY(zy+8);
 			}
-			switch (mapScrollAngle) {
-				case NORD:
-					zildo.setY(zy-16);
+			Angle a=mapScrollAngle;
+			int movedX=(int) zx;
+			int movedY=(int) zy;
+			// We will try 2 different angles. Usually Zildo gets in and out with the same angle.
+			// But stairs are always north to north.
+			for (int i=0;i<2;i++) {
+				movedX=(int) zx;
+				movedY=(int) zy;
+				switch (a) {
+					case NORD:
+						movedY-=16;
+						break;
+					case EST:
+						movedX+=16;
+						break;
+					case SUD:
+						movedY+=16;
+						break;
+					case OUEST:
+						movedX-=32;
+						break;
+				}
+				if (collide(2*movedX - (int) zx, 2*movedY - (int) zy, zildo)) {
+					a=Angle.rotate(a, 2);
+				} else {
 					break;
-				case EST:
-					zildo.setX(zx+16);
-					break;
-				case SUD:
-					zildo.setY(zy+16);
-					break;
-				case OUEST:
-					zildo.setX(zx-32);
-					break;
+				}
 			}
-
+			zildo.setAngle(a);
+			zildo.setX(movedX);
+			zildo.setY(movedY);
             zildo.setEn_bras(null); // Loose his object
             zildo.walkTile(false);
             zildo.finaliseComportement(EngineZildo.compteur_animation);
@@ -537,7 +553,7 @@ public class MapManagement {
     public Point getRespawnPosition() {
         List<Point> points=new ArrayList<Point>();
         if (currentMap == null) {
-        	points.add(new Point(831, 360));
+        	points.add(new Point(831-700, 360-150));
         } else {
         	points=currentMap.getRespawnPoints();
         }

@@ -20,6 +20,7 @@
 
 package zeditor.tools.sprites;
 
+import zeditor.tools.tiles.Banque;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
@@ -76,7 +77,8 @@ public class SpriteBankEdit extends SpriteBank {
 	}
    
     public void loadImage(String p_filename, int p_transparentColor) {
-		bankEdit.loadImage(p_filename, p_transparentColor);
+    	String imageName=Banque.PKM_PATH + p_filename + ".png";
+		bankEdit.loadImage(imageName, p_transparentColor);
 	}
     
     public void saveBank() {

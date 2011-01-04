@@ -30,7 +30,6 @@ import java.util.logging.Logger;
 
 import zildo.fwk.IntSet;
 import zildo.fwk.file.EasyBuffering;
-import zildo.monde.Hasard;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
@@ -38,6 +37,7 @@ import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementAnimMort;
 import zildo.monde.sprites.elements.ElementBoomerang;
@@ -198,19 +198,6 @@ public class SpriteManagement extends SpriteStore {
 					spawnSprite(element);
 					// Peut-être qu'un diamant va apparaitre !
 				}
-				if (desc != null) {	// Something is planned to appear
-					spawnSpriteGeneric(SpriteAnimation.FROMGROUND, x, y + 5, misc, null, desc);
-				} else {
-					if (Hasard.lanceDes(Hasard.hazardBushes_Arrow)) {
-						spawnSpriteGeneric(SpriteAnimation.ARROW, x, y + 5, 0, null, desc);
-					} else if (Hasard.lanceDes(Hasard.hazardBushes_Diamant)) {
-						spawnSpriteGeneric(SpriteAnimation.DIAMOND, x, y + 5, 0, null, desc);
-					} else if (Hasard.lanceDes(Hasard.hazardBushes_Heart)) {
-						spawnSpriteGeneric(SpriteAnimation.HEART, x + 3, y + 5, 0, null, desc);
-					} else if (Hasard.lanceDes(Hasard.hazardBushes_Bombs)) {
-						spawnSpriteGeneric(SpriteAnimation.FROMGROUND, x + 3, y + 5, 0, null, ElementDescription.BOMBS3);
-					}
-				}
 				break;
 
 			case DIAMOND :
@@ -320,7 +307,7 @@ public class SpriteManagement extends SpriteStore {
 	 * @param y
 	 * @param p_foreground TRUE=above the other sprites (GUI) / FALSE=in-game sprite
 	 */
-	public SpriteEntity spawnSprite(ElementDescription desc, int x, int y,
+	public SpriteEntity spawnSprite(SpriteDescription desc, int x, int y,
 			boolean p_foreground) {
 
 		int nBank=desc.getBank();
@@ -329,14 +316,17 @@ public class SpriteManagement extends SpriteStore {
 
 		if (nSpr == 69 || nSpr == 70 || nSpr == 28) {
 			// Particular sprite (Block that Zildo can move, chest...)
-			return spawnElement(nBank, nSpr, x, y + spr.getTaille_y() / 2 - 3,
-					0);
+			return spawnElement(nBank, nSpr, x, y, 0); // + spr.getTaille_y() / 2 - 3,
+					//0);
 		}
 
 		// SpriteEntity informations
 		SpriteEntity entity;
-		
-		if (!p_foreground && desc.isWeapon()) {
+		ElementDescription elemDesc=null;
+		if (desc instanceof ElementDescription) {
+			elemDesc=(ElementDescription) desc;
+		}
+		if (!p_foreground && elemDesc != null && elemDesc.isWeapon()) {
 			entity = new ElementWeapon();
 		} else {
 			entity = new SpriteEntity(x, y, true);

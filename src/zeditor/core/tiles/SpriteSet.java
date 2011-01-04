@@ -118,10 +118,10 @@ public class SpriteSet extends ImageSet {
     	int posX=0;
     	int posY=0;
     	int maxY=0;
-    	for (SpriteDescription perso : p_list) {
+    	for (SpriteDescription sprite : p_list) {
     		
-        	SpriteBank bank=EngineZildo.spriteManagement.getSpriteBank(perso.getBank());
-        	int nSpr=perso.getNSpr();
+        	SpriteBank bank=EngineZildo.spriteManagement.getSpriteBank(sprite.getBank());
+        	int nSpr=sprite.getNSpr();
         	if (bank.getName().equals("PNJ2.SPR")) {
         		nSpr=nSpr % 128;
         	}
@@ -142,7 +142,7 @@ public class SpriteSet extends ImageSet {
     		// Store this zone into the list
     		Zone z=new Zone(posX, posY, model.getTaille_x(), model.getTaille_y());
     		selectables.add(z);
-    		objectsFromZone.put(z, perso);
+    		objectsFromZone.put(z, sprite);
     		posX+=sizeX;
     	}
     }
