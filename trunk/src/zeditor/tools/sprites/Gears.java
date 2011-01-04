@@ -18,30 +18,21 @@
  *
  */
 
-package zildo.monde.sprites.desc;
+package zeditor.tools.sprites;
 
-import zildo.fwk.bank.SpriteBank;
+import zildo.monde.map.Zone;
 
-// Interface for all sprite description enums
+/**
+ * @author Tchegito
+ *
+ */
+public class Gears extends SpriteBanque {
 
-public interface SpriteDescription {
-
-	public int getBank();
-	
-	public int getNSpr();
-	
-	class Locator {
-		public static SpriteDescription findSpr(int nBank, int nSpr) {
-			switch (nBank) {
-			case SpriteBank.BANK_ELEMENTS:
-				return ElementDescription.fromInt(nSpr);
-			case SpriteBank.BANK_PNJ:
-			case SpriteBank.BANK_PNJ2:
-				return PersoDescription.fromNSpr(nSpr);
-			case SpriteBank.BANK_GEAR:
-				return GearDescription.fromNSpr(nSpr);
-			}
-			throw new RuntimeException("Can't find sprite for bank "+nBank);
-		}
+	public Gears() {
+		zones=new Zone[] {
+				new Zone(104, 144, 16, 32),
+				/* Idem à demi ouverte */
+				new Zone(120, 144, 16, 32)
+		};
 	}
 }

@@ -73,7 +73,7 @@ public class PersoManagement {
 	public void clearPersosWithoutZildo()
 	{
 		Iterator<Perso> it=tab_perso.iterator();
-		if (tab_perso.size() <= 1) {
+		if (tab_perso.size() < 1) {
 			// We haven't enough characters to process this deletion
 			return;
 		}

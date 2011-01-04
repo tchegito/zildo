@@ -136,8 +136,9 @@ public class TileSelection extends CaseSelection {
      * Draw a set of tiles on the given map at given location
      * @param map
      * @param p (map coordinates, basically 0..63, 0..63)
+     * @param p_mask TODO
      */
-    public void draw(Area map, Point p) {
+    public void draw(Area map, Point p, boolean p_mask) {
     	int dx,dy;
 		for (int h = 0; h < height; h++) {
 			for (int w = 0; w < width; w++) {
@@ -150,19 +151,26 @@ public class TileSelection extends CaseSelection {
 						Case c=map.get_mapcase(dx, dy+4);
 						// Apply modifications
 						int nMotif=item.getN_motif();
-						if (nMotif != -1) {	// Smash the previous tile
+						if (nMotif != -1 && !p_mask) {	// Smash the previous tile
 							c.setN_banque(item.getN_banque());
 							c.setN_motif(nMotif);
 						} else {
-							c.setMasked();
+							if (item.getN_motif() == 54) {
+								c.setMasked(false);
+							} else {
+								c.setMasked(true);
+							}
 						}
-						c.setN_banque_masque(item.getN_banque_masque());
-						c.setN_motif_masque(item.getN_motif_masque());
-						System.out.print(item.getN_motif());
+						if (p_mask) {
+							c.setN_banque_masque(item.getN_banque());
+							c.setN_motif_masque(item.getN_motif());
+						} else {
+							c.setN_banque_masque(item.getN_banque_masque());
+							c.setN_motif_masque(item.getN_motif_masque());
+						}
 					}
 				}
 			}
-			System.out.println("");
 		}
     }
     

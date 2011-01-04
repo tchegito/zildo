@@ -22,26 +22,28 @@ package zildo.monde.sprites.desc;
 
 import zildo.fwk.bank.SpriteBank;
 
-// Interface for all sprite description enums
-
-public interface SpriteDescription {
-
-	public int getBank();
+/**
+ * @author Tchegito
+ *
+ */
+public enum GearDescription implements SpriteDescription {
 	
-	public int getNSpr();
+	GEAR_GREENDOOR, GEAR_GREENDOOR_OPENING;
 	
-	class Locator {
-		public static SpriteDescription findSpr(int nBank, int nSpr) {
-			switch (nBank) {
-			case SpriteBank.BANK_ELEMENTS:
-				return ElementDescription.fromInt(nSpr);
-			case SpriteBank.BANK_PNJ:
-			case SpriteBank.BANK_PNJ2:
-				return PersoDescription.fromNSpr(nSpr);
-			case SpriteBank.BANK_GEAR:
-				return GearDescription.fromNSpr(nSpr);
-			}
-			throw new RuntimeException("Can't find sprite for bank "+nBank);
-		}
+	public int getBank() {
+		return SpriteBank.BANK_GEAR;
+	}
+		
+	public int getNSpr() {
+		return ordinal();
+	}
+	
+	/**
+	 * Return gear's identity from given integer value.
+	 * @param nSpr
+	 * @return GearDescription
+	 */
+	public static GearDescription fromNSpr(int nSpr) {
+		return values()[nSpr];
 	}
 }

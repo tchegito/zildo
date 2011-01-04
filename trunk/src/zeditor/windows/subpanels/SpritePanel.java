@@ -21,11 +21,16 @@
 package zeditor.windows.subpanels;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.KeyboardFocusManager;
 
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import zeditor.core.tiles.SpriteSet;
 import zeditor.windows.managers.MasterFrameManager;
@@ -47,6 +52,8 @@ public class SpritePanel extends JPanel {
 	JTextField addx;
 	JTextField addy;
 	
+	SpriteEntity entity;
+	
 	public SpritePanel(MasterFrameManager p_manager) {
 		setLayout(new BorderLayout());
 		add(new SpriteSet(false, p_manager), BorderLayout.CENTER);
@@ -60,14 +67,17 @@ public class SpritePanel extends JPanel {
 		GridLayout thisLayout = new GridLayout(0,2);
 		panel.setLayout(thisLayout);
 		
-		addx=new JTextField();
+		addx=new JFormattedTextField(0);
 		panel.add(new JLabel("Add-x"));
 		panel.add(addx);
 		
-		addy=new JTextField();
+		addy=new JFormattedTextField(0);
 		panel.add(new JLabel("Add-y"));
 		panel.add(addy);
 		
+		DocumentListener listener=new SpriteFieldsListener();
+		addx.getDocument().addDocumentListener(listener);
+		addy.getDocument().addDocumentListener(listener);
 		return panel;
 	}
 	/**
@@ -75,7 +85,60 @@ public class SpritePanel extends JPanel {
 	 * @param p_entity
 	 */
 	public void focusSprite(SpriteEntity p_entity) {
-		addx.setText(String.valueOf(p_entity.x % 15));
-		addy.setText(String.valueOf(p_entity.y % 15));
+		if (p_entity == null) {
+			// Reset fields
+			addx.setText("0");
+			addy.setText("0");
+		} else {
+			addx.setText(String.valueOf(p_entity.x % 15));
+			addy.setText(String.valueOf(p_entity.y % 15));
+		}
+		entity=p_entity;
+	}
+	
+	class SpriteFieldsListener implements DocumentListener {
+
+		@Override
+		public void changedUpdate(DocumentEvent documentevent) {
+			updateText(documentevent);
+		}
+
+		@Override
+		public void insertUpdate(DocumentEvent documentevent) {
+			updateText(documentevent);
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent documentevent) {
+			updateText(documentevent);
+		}
+		
+		private void updateText(DocumentEvent documentevent) {
+			// If we are focusing on an existing sprite, then update his attributes
+			if (entity != null) {
+				Component comp=KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+				if (comp instanceof JTextField) {
+					JTextField textField=(JTextField) comp;
+					String value=textField.getText();
+					int val=0;
+					try {
+						val=Integer.valueOf(value);
+					} catch (NumberFormatException e) {
+					}
+					val = val % 16;
+					if (textField == addx) {
+						entity.x=16*(int) (entity.x / 16) + val;
+						entity.setAjustedX((int) entity.x);
+						//textField.setText(String.valueOf(val));
+					} else if (textField == addy) {
+						//textField.setText(String.valueOf(val));
+						entity.y=16*(int) (entity.y / 16) + val;
+						entity.setAjustedY((int) entity.y);
+					}
+					manager.getZildoCanvas().setChangeSprites(true);
+				}
+		    	
+			}			
+		}
 	}
 }

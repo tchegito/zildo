@@ -144,6 +144,9 @@ public class Element extends SpriteEntity {
 	public boolean IsNotFixe()
 	{
 		int a=this.nSpr;
+		if (nBank == SpriteBank.BANK_GEAR) {
+			return false;
+		}
 		if ((a>2 && a<=12) ||
 			(a==0 || a==1) ||
 			(a==28) ||

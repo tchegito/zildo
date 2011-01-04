@@ -51,7 +51,7 @@ public class Constantes {
 	public static final	int NB_MOTIFBANK = TileEngine.tileBankNames.length;
 
 	// Sprite Banks
-	public static final	int NB_SPRITEBANK = 7;
+	public static final	int NB_SPRITEBANK = 8;
 	public static final int NB_SPRITE_PER_PRIMITIVE = 400;
 
 	public static final int SORTY_MAX = Zildo.viewPortY+40;

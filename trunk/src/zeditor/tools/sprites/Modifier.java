@@ -20,7 +20,10 @@
 
 package zeditor.tools.sprites;
 
-import zeditor.tools.banque.Foret4;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.logging.LogManager;
+
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.tiles.MotifBankEdit;
 import zildo.fwk.bank.SpriteBank;
@@ -28,11 +31,21 @@ import zildo.monde.Game;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
+import zildo.server.Server;
 
 /**
- * Test class, doesn't apart to real project.
- *
+ * Test class, doesn't apart to real project.<br/>
+ * 
+ * We can find here a bunch of methods dealing some connex issues like :<ul>
+ * <li>saving a sprite/motif bank</li>
+ * <li>fix a bank</li>
+ * <li>generate an image</li>
+ * <li>modify all maps</li>
+ * <li>and so on</li>
+ * </ul>
  * @author Tchegito
  *
  */
@@ -48,8 +61,10 @@ public class Modifier {
 
         //new Modifier().fixPnj2();
         //new Modifier().saveElements2();
-        new Modifier().saveBanque();
-        new Modifier().generateImg();
+        //new Modifier().saveBanque();
+        //new Modifier().saveGears();
+        new Modifier().saveAllMaps();
+        //new Modifier().generateImg();
     }
      
      public void generateImg() {
@@ -59,7 +74,7 @@ public class Modifier {
      }
      
      public void saveBanque() {
-    	 new Foret4().save();
+    	 new Grotte().save();
      }
      
      public void saveElements2() {
@@ -75,6 +90,25 @@ public class Modifier {
          bankElem.saveBank();
      }
 
+     public void saveGears() {
+         SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
+         
+         bankElem.loadImage("interia2", COLOR_BLUE);
+         int nSpr=bankElem.getNSprite();
+    	 for (int i=0;i<nSpr;i++) {
+    		 bankElem.removeSpr(0);
+    	 }
+    	 // Add doors
+    	 Zone[] elements=new Gears().getZones();
+    	 nSpr=0;
+         for (Zone z : elements) {
+          	bankElem.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
+          	nSpr++;
+          }
+    	 bankElem.setName("gear.spr");
+    	 bankElem.saveBank();
+     }
+     
      /** Not useful anymore. It remains here as an example. **/
     public void fixPnj2() {
         EngineZildo.spriteManagement.charge_sprites("PNJ3.SPR");
@@ -99,4 +133,28 @@ public class Modifier {
         bankOut.saveBank();
     }
 
+    public void saveAllMaps() {
+    	
+		String path=Constantes.DATA_PATH;
+		File directory=new File(path);
+		
+		File[] maps = directory.listFiles(new FilenameFilter() {
+    		public boolean accept(File dir, String name) {
+    			return name.toLowerCase().endsWith(".map");
+    		}
+		});
+		LogManager.getLogManager().reset();
+		
+        Game game = new Game(null, true);
+        Server server = new Server(game, true);
+		for (File f : maps) {
+			String name=f.getName();
+			System.out.println("Processing "+name+"...");
+			EngineZildo.mapManagement.charge_map(name);
+		        
+	        // Save the map into a temporary file
+			MapManagement mapManagement=EngineZildo.mapManagement;
+			mapManagement.saveMapFile(name);
+		}
+    }
 }

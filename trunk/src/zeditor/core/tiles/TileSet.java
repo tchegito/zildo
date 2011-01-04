@@ -144,9 +144,8 @@ public class TileSet extends ImageSet {
     }
     
     /**
-     * Méthode de chargement dynamique des tiles présents dans le dossier défini
-     * des Tiles.
-     * @return Object[] : Un tableau de String contenant le nom des fichiers images (sans l'extension)
+     * Tiles combo loading.
+     * @return Object[] : String array, containing bank names.
      * @author Drakulo
      */
     public Object[] getTiles() {
@@ -245,9 +244,10 @@ public class TileSet extends ImageSet {
        
         Case c;
         int bank=ClientEngineZildo.tileEngine.getBankFromName(tileName);
+        int nMotif=0;
         for(int i = startY; i < stopY; i+=16){
             for(int j = startX; j < stopX; j+= 16){
-            	int nMotif=bridge.getMotifParPoint(tileName, j, i);
+            	nMotif=bridge.getMotifParPoint(tileName, j, i);
             	if (nMotif == -1) {
             		list.add(null);
             	} else {
@@ -262,6 +262,10 @@ public class TileSet extends ImageSet {
                 }
             }
             height ++;
+        }
+        // Display tile number (from 1x1 selection only)
+        if (width == 1 && height == 1) {
+        	MasterFrameManager.display("Tile="+nMotif, MasterFrameManager.MESSAGE_INFO);
         }
         currentSelection = new TileSelection(width, height, list);
         manager.setCaseSelection((CaseSelection) currentSelection);

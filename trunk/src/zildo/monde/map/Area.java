@@ -32,6 +32,7 @@ import java.util.Map.Entry;
 import zildo.client.sound.BankSound;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
+import zildo.monde.Hasard;
 import zildo.monde.collision.Collision;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
@@ -39,6 +40,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
@@ -326,11 +328,9 @@ public class Area implements EasySerializable {
         // On teste si Zildo détruit un buisson
         int on_Area = this.readmap(tileLocation.x, tileLocation.y);
         if (on_Area == 165) {
-        	// Is there something planned to appear ?
-        	ElementDescription desc=getCaseItem(tileLocation.x, tileLocation.y);
         	
             Point spriteLocation = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
-            EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES, spriteLocation.x, spriteLocation.y, 0, null, desc);
+            EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES, spriteLocation.x, spriteLocation.y, 0, null, null);
             EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
             takeSomethingOnTile(tileLocation);
@@ -364,6 +364,26 @@ public class Area implements EasySerializable {
         spawnTile.previousCase=new Case(get_mapcase(tileLocation.x, tileLocation.y + 4));
         toRespawn.add(spawnTile);
         this.writemap(tileLocation.getX(), tileLocation.getY(), resultTile);
+        
+    	// Is there something planned to appear ?
+        Point p = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
+    	ElementDescription desc=getCaseItem(tileLocation.x, tileLocation.y);
+    	SpriteManagement sprMgt=EngineZildo.spriteManagement;
+    	if (desc != null) {
+    		sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, 
+            		p.x, p.y+5, 0, null, desc);
+    	} else {
+			if (Hasard.lanceDes(Hasard.hazardBushes_Arrow)) {
+				sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 0, null, desc);
+			} else if (Hasard.lanceDes(Hasard.hazardBushes_Diamant)) {
+				sprMgt.spawnSpriteGeneric(SpriteAnimation.DIAMOND, p.x, p.y + 5, 0, null, desc);
+			} else if (Hasard.lanceDes(Hasard.hazardBushes_Heart)) {
+				sprMgt.spawnSpriteGeneric(SpriteAnimation.HEART, p.x + 3, p.y + 5, 0, null, desc);
+			} else if (Hasard.lanceDes(Hasard.hazardBushes_Bombs)) {
+				sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 0, null, ElementDescription.BOMBS3);
+			}
+    	}
+
     }
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -481,6 +501,7 @@ public class Area implements EasySerializable {
 			for (SpriteEntity entity : entities) {
 				p_file.put((int) entity.x);
 				p_file.put((int) entity.y);
+				p_file.put((byte) entity.getNBank());
 				p_file.put((byte) entity.getNSpr());
 				nSprites++;
 			}
@@ -492,7 +513,9 @@ public class Area implements EasySerializable {
 				p_file.put((int) perso.x);
 				p_file.put((int) perso.y);
 				p_file.put((int) perso.z);
-				p_file.put((byte) perso.getQuel_spr().first());
+				PersoDescription desc=perso.getQuel_spr();
+				p_file.put((byte) desc.getBank());
+				p_file.put((byte) desc.first());
 				p_file.put((byte) perso.getInfo().ordinal());
 				p_file.put((byte) 0); //(byte) perso.getEn_bras());
 				p_file.put((byte) perso.getQuel_deplacement().ordinal());
@@ -503,8 +526,8 @@ public class Area implements EasySerializable {
 
 		// 6) Sentences
 		int nPhrases = dialogs == null ? 0 : dialogs.getN_phrases();
-		p_file.put((byte) nPhrases);
 		if (nPhrases > 0) {
+			p_file.put((byte) nPhrases);
 			// On lit les phrases
 			String[] sentences = dialogs.getDialogs();
 			for (int i = 0; i < nPhrases; i++) {
@@ -575,6 +598,7 @@ public class Area implements EasySerializable {
 				int x = p_buffer.readInt();
 				int y = p_buffer.readInt();
 				short nSpr;
+				short nBank = p_buffer.readUnsignedByte();
 				nSpr = p_buffer.readUnsignedByte();
 				if (p_spawn) {
 					// If this sprite is on a chest tile, link them
@@ -584,12 +608,15 @@ public class Area implements EasySerializable {
 					switch (tileDesc) {
 						case 743: // Chest
 						case 165: // Bushes
+						case 167: // Stone
+						case 169: // Heavy stone
+						case 751: // Jar
 							map.setCaseItem(ax, ay, nSpr);
 							if (!zeditor) {	// We have to see the sprites in ZEditor
 								break;
 							}
 						default:	// else, show it as a regular element
-							ElementDescription desc=ElementDescription.fromInt(nSpr);
+			                SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
 							spriteManagement.spawnSprite(desc, x, y, false);
 							break;
 					}
@@ -605,11 +632,12 @@ public class Area implements EasySerializable {
 				int y = p_buffer.readInt();
 				int z = p_buffer.readInt();
 
+                int sprBank = p_buffer.readUnsignedByte();
                 int sprDesc = p_buffer.readUnsignedByte();
                 if (sprDesc > 128) {
                     //sprDesc -= 2;
                 }
-                PersoDescription desc = PersoDescription.fromNSpr(sprDesc);
+                PersoDescription desc = (PersoDescription) SpriteDescription.Locator.findSpr(sprBank, sprDesc);
                 if (desc == null) {
                 	desc=PersoDescription.ZILDO;
                 }
@@ -668,10 +696,10 @@ public class Area implements EasySerializable {
 
 		// Les Phrases
 		int n_phrases = 0;
+		map.dialogs = new MapDialog();
 		if (!p_buffer.eof()) {
 			n_phrases = p_buffer.readUnsignedByte();
 			if (n_phrases > 0) {
-				map.dialogs = new MapDialog();
 				// On lit les phrases
 				for (int i = 0; i < n_phrases; i++) {
 					String phrase = p_buffer.readString();

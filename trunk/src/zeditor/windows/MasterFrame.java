@@ -86,6 +86,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JToggleButton foreTileTool;
 	private JToggleButton backSpriteTool;
 	private JToggleButton foreSpriteTool;
+	private JToggleButton tileMaskTool;
 	private JToolBar toolBar;
 	private JPanel toolBarContainer;
 	private JPanel masterPanel;
@@ -104,6 +105,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private AbstractAction actionDisplayForeTileTool;
 	private AbstractAction actionDisplayBackSpriteTool;
 	private AbstractAction actionDisplayForeSpriteTool;
+	private AbstractAction actionTileMask;
 	
 	private ZildoScrollablePanel zildoPanel;
 
@@ -327,6 +329,17 @@ public class MasterFrame extends javax.swing.JFrame {
 	    return actionDisplayForeSpriteTool;
 	}
 
+	private AbstractAction getActionTileMask() {
+	    if (actionTileMask == null) {
+	    	actionTileMask = new AbstractAction("", null) {
+		    public void actionPerformed(ActionEvent evt) {
+		    	zildoPanel.getCanvas().toggleMask();
+		    }
+		};
+	    }
+	    return actionTileMask;
+	}
+	
 	private AbstractAction getActionNewMapTool() {
 	    if (actionNewMapTool == null) {
 		actionNewMapTool = new AbstractAction(null) {
@@ -391,6 +404,8 @@ public class MasterFrame extends javax.swing.JFrame {
 			toolBar.add(getUnmappedTool());
 			toolBar.add(getGridTool());
 			toolBar.add(getCopyPasteTool());
+			toolBar.add(new JToolBar.Separator());
+			toolBar.add(getToggleTileMaskTool());
 			toolBar.add(new JToolBar.Separator());
 			toolBar.add(getToggleBackDisplayTool());
 			toolBar.add(getToggleForeDisplayTool());
@@ -467,6 +482,16 @@ public class MasterFrame extends javax.swing.JFrame {
 		    foreSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGroundSprite.PNG")));
 		}
 		return foreSpriteTool;
+	}
+	
+	public JToggleButton getToggleTileMaskTool() {
+		if(tileMaskTool == null) {
+		    tileMaskTool = new JToggleButton();
+		    tileMaskTool.setToolTipText("Edition du masque");
+		    tileMaskTool.setAction(getActionTileMask());
+		    tileMaskTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGroundSprite.PNG")));
+		}
+		return tileMaskTool;
 	}
 	
 	public JButton getNewMapTool() {

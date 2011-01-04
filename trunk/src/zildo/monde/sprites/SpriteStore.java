@@ -40,7 +40,8 @@ public class SpriteStore {
 											  "elements2.spr", 
 											  "pnj.spr", 
 											  "font.spr", 
-											  "pnj2.spr"};
+											  "pnj2.spr",
+											  "gear.spr"};
 
 	public SpriteStore() {
 		
