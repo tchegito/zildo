@@ -24,7 +24,10 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -51,6 +54,8 @@ public class SpritePanel extends JPanel {
 	
 	JTextField addx;
 	JTextField addy;
+	JCheckBox reverseHorizontal;
+	JCheckBox reverseVertical;
 	
 	SpriteEntity entity;
 	
@@ -62,6 +67,7 @@ public class SpritePanel extends JPanel {
 		manager=p_manager;
 	}
 
+	@SuppressWarnings("serial")
 	private JPanel getSouthPanel() {
 		JPanel panel=new JPanel();
 		GridLayout thisLayout = new GridLayout(0,2);
@@ -75,11 +81,53 @@ public class SpritePanel extends JPanel {
 		panel.add(new JLabel("Add-y"));
 		panel.add(addy);
 		
+		reverseHorizontal=new JCheckBox(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent actionevent) {
+				if (entity != null) {
+					toggleReverse(true);
+				}
+			}
+			
+		});
+		panel.add(new JLabel("Reverse H"));
+		panel.add(reverseHorizontal);
+
+		reverseVertical=new JCheckBox(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent actionevent) {
+				if (entity != null) {
+					toggleReverse(false);
+				}
+			}
+			
+		});
+		panel.add(new JLabel("Reverse V"));
+		panel.add(reverseVertical);
+
 		DocumentListener listener=new SpriteFieldsListener();
 		addx.getDocument().addDocumentListener(listener);
 		addy.getDocument().addDocumentListener(listener);
+		
 		return panel;
 	}
+	
+	private void toggleReverse(boolean p_horizontal) {
+		boolean isHorizontal=(entity.reverse & SpriteEntity.REVERSE_HORIZONTAL) != 0;
+		boolean isVertical=(entity.reverse & SpriteEntity.REVERSE_VERTICAL) != 0;
+		
+		if (p_horizontal) {
+			isHorizontal=!isHorizontal;
+		} else {
+			isVertical=!isVertical;
+		}
+		
+		entity.reverse=isVertical ? SpriteEntity.REVERSE_VERTICAL : 0;
+		entity.reverse|=isHorizontal ? SpriteEntity.REVERSE_HORIZONTAL : 0;
+		// Ask a sprite visual update
+		manager.getZildoCanvas().setChangeSprites(true);
+	}
+	
 	/**
 	 * Update fields with the given entity's infos.
 	 * @param p_entity
@@ -89,9 +137,13 @@ public class SpritePanel extends JPanel {
 			// Reset fields
 			addx.setText("0");
 			addy.setText("0");
+			reverseHorizontal.setSelected(false);
+			reverseVertical.setSelected(false);
 		} else {
 			addx.setText(String.valueOf(p_entity.x % 15));
 			addy.setText(String.valueOf(p_entity.y % 15));
+			reverseHorizontal.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_HORIZONTAL));
+			reverseVertical.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_VERTICAL));
 		}
 		entity=p_entity;
 	}

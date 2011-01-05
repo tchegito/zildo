@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import zildo.client.sound.BankSound;
+import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.monde.Hasard;
@@ -501,7 +502,7 @@ public class Area implements EasySerializable {
 			for (SpriteEntity entity : entities) {
 				p_file.put((int) entity.x);
 				p_file.put((int) entity.y);
-				p_file.put((byte) entity.getNBank());
+				p_file.put((byte) (entity.getNBank() | entity.reverse));
 				p_file.put((byte) entity.getNSpr());
 				nSprites++;
 			}
@@ -598,7 +599,9 @@ public class Area implements EasySerializable {
 				int x = p_buffer.readInt();
 				int y = p_buffer.readInt();
 				short nSpr;
-				short nBank = p_buffer.readUnsignedByte();
+				short multi=p_buffer.readUnsignedByte();
+				int nBank =  multi & 15;
+				int reverse=multi & (SpriteEntity.REVERSE_HORIZONTAL | SpriteEntity.REVERSE_VERTICAL);
 				nSpr = p_buffer.readUnsignedByte();
 				if (p_spawn) {
 					// If this sprite is on a chest tile, link them
@@ -617,7 +620,7 @@ public class Area implements EasySerializable {
 							}
 						default:	// else, show it as a regular element
 			                SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
-							spriteManagement.spawnSprite(desc, x, y, false);
+							spriteManagement.spawnSprite(desc, x, y, false, reverse);
 							break;
 					}
 				}

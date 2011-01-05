@@ -62,8 +62,8 @@ public class Modifier {
         //new Modifier().fixPnj2();
         //new Modifier().saveElements2();
         //new Modifier().saveBanque();
-        //new Modifier().saveGears();
-        new Modifier().saveAllMaps();
+        new Modifier().saveGears();
+        //new Modifier().saveAllMaps();
         //new Modifier().generateImg();
     }
      

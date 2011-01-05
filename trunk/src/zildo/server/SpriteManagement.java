@@ -301,14 +301,15 @@ public class SpriteManagement extends SpriteStore {
 	 * Spawn a sprite with minimal requirements:<ul>
 	 * <li>build an entity with given parameters</li>
 	 * <li>add it to the sprite engine</li>
-	 * @param nBank
-	 * @param nSpr
 	 * @param x
 	 * @param y
 	 * @param p_foreground TRUE=above the other sprites (GUI) / FALSE=in-game sprite
+	 * @param p_reverse TODO
+	 * @param nBank
+	 * @param nSpr
 	 */
 	public SpriteEntity spawnSprite(SpriteDescription desc, int x, int y,
-			boolean p_foreground) {
+			boolean p_foreground, int p_reverse) {
 
 		int nBank=desc.getBank();
 		int nSpr=desc.getNSpr();
@@ -340,6 +341,8 @@ public class SpriteManagement extends SpriteStore {
 		entity.setAjustedX(x - (spr.getTaille_x() >> 1));
 		entity.setAjustedY(y - (spr.getTaille_y() >> 1));
 
+		entity.reverse=p_reverse;
+		
 		spawnSprite(entity);
 
 		return entity;
