@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import zildo.fwk.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
@@ -48,12 +47,11 @@ import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.server.state.ClientState;
 
+@SuppressWarnings("unchecked")
 public class SpriteManagement extends SpriteStore {
 
 	protected Logger logger = Logger.getLogger("SpriteManagement");
 
-	// Index des sprites fixes qui bloquent les persos (rambarde,tonneau)
-	IntSet blockable_sprite = new IntSet(25, 26, 27, 28, 68, 69, 70);
 	EnumSet<ElementDescription> pickableSprites = EnumSet.of(ElementDescription.BOMB);
 	
 	boolean spriteUpdating;
@@ -520,7 +518,7 @@ public class SpriteManagement extends SpriteStore {
 			if (entity != entityRef
 					&& (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT || entity
 							.getEntityType() == SpriteEntity.ENTITYTYPE_ENTITY) && !entity.dying) {
-				isBlockable = blockable_sprite.contains(entity.getNSpr());
+				isBlockable = entity.getDesc().isBlocking();
 				isGoodies = entity.isGoodies();
 				SpriteModel sprModel = entity.getSprModel();
 				int sx = sprModel.getTaille_x();
@@ -538,9 +536,9 @@ public class SpriteManagement extends SpriteStore {
 						}
 					} else {
 						// The entities
-						x = (int) entity.x; // ScrX() +
+						x = (int) entity.x - sx / 2; // ScrX() +
 											// mapManagement.getCamerax();
-						y = (int) entity.y; // ScrY() +
+						y = (int) entity.y - sy / 2; // ScrY() +
 											// mapManagement.getCameray();
 						canDealWith = true;
 					}

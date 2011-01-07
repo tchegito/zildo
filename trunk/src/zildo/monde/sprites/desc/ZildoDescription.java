@@ -120,4 +120,8 @@ public enum ZildoDescription implements SpriteDescription {
 	public int getNSpr() {
 		return this.ordinal();
 	}
+	
+	public boolean isBlocking() {
+		return false;
+	}
 }

@@ -18,34 +18,20 @@
  *
  */
 
-package zildo.monde.sprites.desc;
+package zildo.fwk;
 
-import zildo.fwk.bank.SpriteBank;
+import java.util.ArrayList;
 
-// Interface for all sprite description enums
+/**
+ * @author Tchegito
+ *
+ */
+@SuppressWarnings("serial")
+public class InheritedEnumSet <E> extends ArrayList<E> {
 
-public interface SpriteDescription {
-
-	public int getBank();
-	
-	public int getNSpr();
-	
-	public boolean isBlocking();
-	
-	class Locator {
-		public static SpriteDescription findSpr(int nBank, int nSpr) {
-			switch (nBank) {
-			case SpriteBank.BANK_ZILDO:
-				return ZildoDescription.fromInt(nSpr);
-			case SpriteBank.BANK_ELEMENTS:
-				return ElementDescription.fromInt(nSpr);
-			case SpriteBank.BANK_PNJ:
-			case SpriteBank.BANK_PNJ2:
-				return PersoDescription.fromNSpr(nSpr);
-			case SpriteBank.BANK_GEAR:
-				return GearDescription.fromNSpr(nSpr);
-			}
-			throw new RuntimeException("Can't find sprite for bank "+nBank);
+	public InheritedEnumSet(E... obj) {
+		for (E e : obj) {
+			this.add(e);
 		}
 	}
 }

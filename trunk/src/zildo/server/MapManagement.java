@@ -428,12 +428,14 @@ public class MapManagement {
 						break;
 					case EST:
 						movedX+=16;
+						movedY+=4;
 						break;
 					case SUD:
 						movedY+=16;
 						break;
 					case OUEST:
 						movedX-=32;
+						movedY+=4;
 						break;
 				}
 				if (collide(2*movedX - (int) zx, 2*movedY - (int) zy, zildo)) {
