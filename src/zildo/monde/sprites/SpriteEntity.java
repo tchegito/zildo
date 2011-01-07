@@ -25,6 +25,7 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.map.Zone;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.Sprite;
@@ -60,6 +61,7 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	private SpriteModel sprModel;	// Reference to the sprite being rendered
 	public int nSpr;			// Pour les perso devient une interprétation de 'angle' et 'pos_seqsprite'
 	public int nBank;
+	private SpriteDescription desc;	// Interpretation of nSpr and nBank
 	private boolean moved;			// True=need to synchronize the vertex buffer, False=no move this frame
 	private int linkVertices;	// Index on VertexBuffer's position about quad describing this sprite
 	public boolean visible;		// TRUE=visible FALSE=invisible
@@ -241,7 +243,20 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 		
 	}
 
-
+	/**
+	 * @return the SpriteDescription associated to this object (constant, for now)
+	 */
+	public SpriteDescription getDesc() {
+		if (desc == null) {
+			desc=SpriteDescription.Locator.findSpr(nBank, nSpr);
+		}
+		return desc;
+	}
+	
+	public void animate() {
+		ajustedX = (int) x - (sprModel.getTaille_x() >> 1);
+		ajustedY = (int) y - (sprModel.getTaille_y() >> 1);
+	}
 	/**
 	 * Serialize useful fields from this entity.
 	 * @param p_buffer

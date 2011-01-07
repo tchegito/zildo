@@ -46,4 +46,16 @@ public enum GearDescription implements SpriteDescription {
 	public static GearDescription fromNSpr(int nSpr) {
 		return values()[nSpr];
 	}
+
+	@Override
+	public boolean isBlocking() {
+		switch (this) {
+			case GEAR_GREENDOOR:
+			case GEAR_GREENDOOR_OPENING:
+				return true;
+			default:
+				return false;
+		}
+
+	}
 }

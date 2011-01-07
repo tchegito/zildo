@@ -23,17 +23,16 @@ package zeditor.windows.subpanels;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import zeditor.core.tiles.SpriteSet;
 import zeditor.windows.managers.MasterFrameManager;
@@ -52,10 +51,12 @@ public class SpritePanel extends JPanel {
 
 	MasterFrameManager manager;
 	
-	JTextField addx;
-	JTextField addy;
 	JCheckBox reverseHorizontal;
 	JCheckBox reverseVertical;
+	JSpinner spinX;
+	JSpinner spinY;
+	
+	boolean updatingUI;
 	
 	SpriteEntity entity;
 	
@@ -73,14 +74,16 @@ public class SpritePanel extends JPanel {
 		GridLayout thisLayout = new GridLayout(0,2);
 		panel.setLayout(thisLayout);
 		
-		addx=new JFormattedTextField(0);
+		spinX=new JSpinner(new SpinnerNumberModel(0, 0, 15, -1));
+		spinY=new JSpinner(new SpinnerNumberModel(0, 0, 15, -1));
+
 		panel.add(new JLabel("Add-x"));
-		panel.add(addx);
+		panel.add(spinX);
 		
-		addy=new JFormattedTextField(0);
 		panel.add(new JLabel("Add-y"));
-		panel.add(addy);
+		panel.add(spinY);
 		
+
 		reverseHorizontal=new JCheckBox(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent actionevent) {
@@ -105,9 +108,9 @@ public class SpritePanel extends JPanel {
 		panel.add(new JLabel("Reverse V"));
 		panel.add(reverseVertical);
 
-		DocumentListener listener=new SpriteFieldsListener();
-		addx.getDocument().addDocumentListener(listener);
-		addy.getDocument().addDocumentListener(listener);
+		ChangeListener listener=new SpriteFieldsListener();
+		spinX.addChangeListener(listener);
+		spinY.addChangeListener(listener);
 		
 		return panel;
 	}
@@ -133,64 +136,52 @@ public class SpritePanel extends JPanel {
 	 * @param p_entity
 	 */
 	public void focusSprite(SpriteEntity p_entity) {
+		updatingUI=true;
 		if (p_entity == null) {
 			// Reset fields
-			addx.setText("0");
-			addy.setText("0");
+			spinX.setValue(0);
+			spinY.setValue(0);
 			reverseHorizontal.setSelected(false);
 			reverseVertical.setSelected(false);
 		} else {
-			addx.setText(String.valueOf(p_entity.x % 15));
-			addy.setText(String.valueOf(p_entity.y % 15));
+			spinX.setValue((int) p_entity.x % 16);
+			spinY.setValue((int) p_entity.y % 16);
 			reverseHorizontal.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_HORIZONTAL));
 			reverseVertical.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_VERTICAL));
 		}
+		updatingUI=false;
 		entity=p_entity;
 	}
 	
-	class SpriteFieldsListener implements DocumentListener {
-
-		@Override
-		public void changedUpdate(DocumentEvent documentevent) {
-			updateText(documentevent);
-		}
-
-		@Override
-		public void insertUpdate(DocumentEvent documentevent) {
-			updateText(documentevent);
-		}
-
-		@Override
-		public void removeUpdate(DocumentEvent documentevent) {
-			updateText(documentevent);
-		}
+	class SpriteFieldsListener implements ChangeListener {
 		
-		private void updateText(DocumentEvent documentevent) {
+		private void updateText(ChangeEvent documentevent) {
+			
 			// If we are focusing on an existing sprite, then update his attributes
-			if (entity != null) {
-				Component comp=KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-				if (comp instanceof JTextField) {
-					JTextField textField=(JTextField) comp;
-					String value=textField.getText();
-					int val=0;
-					try {
-						val=Integer.valueOf(value);
-					} catch (NumberFormatException e) {
-					}
-					val = val % 16;
-					if (textField == addx) {
+			if (!updatingUI && entity != null) {
+				Component comp=(Component) documentevent.getSource();
+				if (comp instanceof JSpinner) {
+					int val=(Integer) ((JSpinner) comp).getValue();
+					if (comp == spinX) {
 						entity.x=16*(int) (entity.x / 16) + val;
 						entity.setAjustedX((int) entity.x);
-						//textField.setText(String.valueOf(val));
-					} else if (textField == addy) {
-						//textField.setText(String.valueOf(val));
+					} else if (comp == spinY) {
 						entity.y=16*(int) (entity.y / 16) + val;
 						entity.setAjustedY((int) entity.y);
 					}
+					entity.animate();
 					manager.getZildoCanvas().setChangeSprites(true);
 				}
 		    	
 			}			
+		}
+
+		/* (non-Javadoc)
+		 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+		 */
+		@Override
+		public void stateChanged(ChangeEvent changeevent) {
+			updateText(changeevent);
 		}
 	}
 }

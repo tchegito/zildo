@@ -121,4 +121,20 @@ public enum ElementDescription  implements SpriteDescription {
 			return null;
 		}
 	}
+
+	@Override
+	public boolean isBlocking() {
+		switch (this) {
+		case BAR_UP:
+		case BAR_HORIZONTAL:
+		case BAR_VERTICAL: 
+		case BARREL:
+		case WOOD_BAR:
+		case CUBE_BLUE: 
+		case CUBE_ORANGE:
+			return true;
+		default:
+			return false;
+		}
+	}
 }

@@ -126,4 +126,9 @@ public enum PersoDescription implements SpriteDescription {
 		}
 	}
 
+	@Override
+	public boolean isBlocking() {
+		return false;
+	}
+
 }
