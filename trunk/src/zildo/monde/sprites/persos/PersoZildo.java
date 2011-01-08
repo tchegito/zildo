@@ -36,6 +36,7 @@ import zildo.monde.items.ItemCircle;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
+import zildo.monde.map.Pointf;
 import zildo.monde.quest.actions.GameOverAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -374,8 +375,8 @@ public class PersoZildo extends Perso {
 		
 		// Get zildo
 		Perso zildo=this;
-		int xx=(int) zildo.getX();
-		int yy=(int) zildo.getY();
+		float xx=zildo.getX();
+		float yy=zildo.getY();
 		
 		if (compte_dialogue != 0) {
 			compte_dialogue--;
@@ -395,7 +396,7 @@ public class PersoZildo extends Perso {
 			if (Math.abs(px) + Math.abs(py) <0.2f) {
 				stopBeingWounded();
 			}
-			Point p=tryMove(xx, yy);
+			Pointf p=tryMove(xx, yy);
 			x=p.x;
 			y=p.y;
 		} else if (getMouvement() == MouvementZildo.POUSSE && pushedEntity!=null)  {
@@ -647,8 +648,8 @@ public class PersoZildo extends Perso {
 				EngineZildo.soundManagement.playSound(BankSound.QuadDamageLeaving, this);
 			}
 		}
-		zildo.setAjustedX(xx);
-		zildo.setAjustedY(yy);
+		zildo.setAjustedX((int) xx);
+		zildo.setAjustedY((int) yy);
 		zildo.setNSpr(nSpr);
 	}
 	

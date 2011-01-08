@@ -177,6 +177,18 @@ public class MapManagement {
 		return tileCollision.collide(p_onmap); 
 	}
 	
+	/**
+	 * Convenience method with float. <br/>
+	 * Same that {@link #collide(int, int, Element)}
+	 * @param tx
+	 * @param ty
+	 * @param quelElement
+	 * @return
+	 */
+	public boolean collide(float tx, float ty, Element quelElement) {
+		return collide((int) tx, (int) ty, quelElement);
+	}
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// collide
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -324,8 +336,12 @@ public class MapManagement {
 		float x=p_zildo.getX();
 		float y=p_zildo.getY();
 		// Store the changing point to use it when processing map swap
+		boolean noChange=changingMapPoint == null;
 		if (currentMap != null) { 
 			changingMapPoint=currentMap.isChangingMap(x,y, p_zildo.getAngle());
+		}
+		if (changingMapPoint != null && noChange) {
+			//EngineZildo.soundManagement.playSound(BankSound.ZildoMonte, p_zildo);
 		}
 		return (changingMapPoint !=null);
 	}
@@ -443,6 +459,7 @@ public class MapManagement {
 				} else {
 					break;
 				}
+				changingMapPoint=chPointTarget;
 			}
 			zildo.setAngle(a);
 			zildo.setX(movedX);

@@ -31,6 +31,10 @@ public class ChainingPoint {
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+	public enum MapLink {
+		REGULAR, STAIRS_STRAIGHT, STAIRS_CORNER_LEFT, STAIRS_CORNER_RIGHT;
+	}
+	
 	/**
 	 * 
 	 */
@@ -42,7 +46,8 @@ public class ChainingPoint {
 	// Extra infos (deduced from map's context) to locate points referring to the same map.
 	private int orderX;
 	private int orderY;
-
+	private boolean done;	// Means that Zildo has been detected going through this. (useful for stairs)
+	
 	public String getMapname() {
 		return mapname;
 	}
@@ -77,6 +82,20 @@ public class ChainingPoint {
 
 	public int getOrderY() {
 		return orderY;
+	}
+	
+	public MapLink getLinkType() {
+		int infomap=EngineZildo.mapManagement.getCurrentMap().readmap(px & 127, py & 127);
+		switch (infomap) {
+		case 183+768: case 184+768:
+			return MapLink.STAIRS_CORNER_LEFT;
+		case 187+768: case 188+768:
+			return MapLink.STAIRS_CORNER_RIGHT;
+		case 1024+249: case 1024+250:
+			return MapLink.STAIRS_STRAIGHT;
+		default:
+			return MapLink.REGULAR;
+		}
 	}
 
 	public void setOrderY(int orderY) {
@@ -217,5 +236,13 @@ public class ChainingPoint {
 		}
 		ChainingPoint other=(ChainingPoint) o;
 		return (px == other.px && py == other.py && mapname.equals(other.mapname) && orderX == other.orderX && orderY == other.orderY);
+	}
+
+	public boolean isDone() {
+		return done;
+	}
+
+	public void setDone(boolean done) {
+		this.done = done;
 	}
 }

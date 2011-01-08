@@ -26,7 +26,6 @@ import java.util.Set;
 
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
-import zildo.client.ClientEventNature;
 import zildo.client.Client.ClientType;
 import zildo.client.gui.menu.PlayerNameMenu;
 import zildo.fwk.input.KeyboardInstant;
@@ -138,10 +137,10 @@ public class SinglePlayer {
             state.event = clientEngineZildo.renderEvent(state.event);
 	            
         	EngineZildo.dialogManagement.resetQueue();
-            if (state.event.nature == ClientEventNature.NOEVENT) {
+            //if (state.event.nature == ClientEventNature.NOEVENT) {
 	            // Reset queues
 	        	EngineZildo.soundManagement.resetQueue();
-            }
+            //}
             // Read keyboard
             instant.update();
             state.keys = instant;

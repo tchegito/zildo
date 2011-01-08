@@ -28,4 +28,10 @@ public abstract class AnyElement {
     public boolean done = false;
 
     public abstract void parse(Element p_elem);
+    
+    // Useful operations
+    public boolean isTrue(Element p_elem, String p_attrName) {
+    	String str=p_elem.getAttribute(p_attrName);
+    	return str.equalsIgnoreCase("true");
+    }
 }

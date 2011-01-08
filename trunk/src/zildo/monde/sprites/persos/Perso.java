@@ -365,24 +365,24 @@ public abstract class Perso extends Element {
 	 * @param p_yy
 	 * @return corrected location, or same one if character can't move at all.
 	 */
-    public Point tryMove(int p_xx, int p_yy) {
+    public Pointf tryMove(float p_xx, float p_yy) {
         MapManagement mapManagement = EngineZildo.mapManagement;
-        int xx = p_xx;
-        int yy = p_yy;
+        float xx = p_xx;
+        float yy = p_yy;
 
-        if (mapManagement.collide(xx, yy, this)) {
-            int diffx = xx - (int) x;
-            int diffy = yy - (int) y;
+        if (mapManagement.collide((int) xx, (int) yy, this)) {
+            float diffx = xx - x;
+            float diffy = yy - y;
             if (diffx != 0 && diffy != 0) {
                 // Diagonal move impossible => try lateral move
-                if (!mapManagement.collide(xx, (int) y, this))
+                if (!mapManagement.collide((int) xx, (int) y, this))
                     yy = (int) y;
-                else if (!mapManagement.collide((int) x, yy, this))
+                else if (!mapManagement.collide((int) x, (int) yy, this))
                     xx = (int) x;
             } else {
 
                 // Lateral move impossible => try diagonal move
-                int speed;
+                float speed;
                 if (diffx == 0) {
                     speed = Math.abs(diffy);
                     if (!mapManagement.collide(xx + speed, yy, this))
@@ -402,7 +402,7 @@ public abstract class Perso extends Element {
             	yy=(int) y;
             }
         }
-        return new Point(xx, yy);
+        return new Pointf(xx, yy);
     }
     
 	public abstract void initPersoFX();

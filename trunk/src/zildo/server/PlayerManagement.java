@@ -123,7 +123,7 @@ public class PlayerManagement {
 	public void automaticMove() {
 		Pointf pos=heros.reachDestination(Constantes.ZILDO_SPEED);
 	 	
-		adjustMovement((int) pos.x, (int) pos.y);
+		adjustMovement(pos.x, pos.y);
 		heros.finaliseComportement(EngineZildo.compteur_animation);
 	}
 	
@@ -169,8 +169,8 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	void handleRegularMoving()
 	{
-		int xx=(int) heros.getX();
-		int yy=(int) heros.getY();
+		float xx=heros.getX();
+		float yy=heros.getY();
 	
 		int onMap=-1;
 	
@@ -185,8 +185,8 @@ public class PlayerManagement {
 			if (heros.getAttente() == 32) {
 				heros.setMouvement(MouvementZildo.VIDE); // Fin du saut, on repasse en mouvement normal
 				// Si Zildo atterit dans l'eau, on le remet à son ancienne position avec un coeur de moins
-				int cx=xx / 16;
-				int cy=yy / 16;
+				int cx=(int) (xx / 16);
+				int cy=(int) (yy / 16);
 				onMap=mapManagement.getCurrentMap().readmap(cx,cy);
 				if (onMap>=108 && onMap<=138)
 				{
@@ -272,8 +272,8 @@ public class PlayerManagement {
 
 		if (needMovementAdjustment) {
 			// Is there any movement ?
-			if ((int) heros.x == xx &&
-					(int) heros.y == yy) {
+			if (heros.x == xx &&
+					heros.y == yy) {
 					if (heros.getMouvement().equals(MouvementZildo.POUSSE)) {
 						heros.setMouvement(MouvementZildo.VIDE);
 					}
@@ -302,21 +302,21 @@ public class PlayerManagement {
 	 * @param xx
 	 * @param yy
 	 */
-	private void adjustMovement(int xx, int yy) {
+	private void adjustMovement(float xx, float yy) {
 		// Is it a valid movement ?
 		// Adjustment
 		heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512);
 
-        Point secureLocation = heros.tryMove(xx, yy);
+        Pointf secureLocation = heros.tryMove(xx, yy);
         xx = secureLocation.x;
         yy = secureLocation.y;
 
-		if ((int) heros.x == xx && (int) heros.y == yy) {
+		if (heros.x == xx && heros.y == yy) {
 			if (heros.getMouvement()==MouvementZildo.VIDE) {
 				if (heros.getTouch()==15) {
 					//On regarde si Zildo peut sauter
-					int cx=xx / 16;
-					int cy=yy / 16;
+					int cx=(int) (xx / 16);
+					int cy=(int) (yy / 16);
 					Angle angleResult=EngineZildo.mapManagement.getAngleJump(heros.getAngle(), cx, cy);
 					if (angleResult!=null && heros.getPushingSprite() == null) {
 						heros.jump(angleResult);
@@ -336,13 +336,13 @@ public class PlayerManagement {
 			if (heros.getMouvement()==MouvementZildo.POUSSE)
 				heros.setMouvement(MouvementZildo.VIDE);
 
-			int diffx=xx - (int) heros.x;
-			int diffy=yy - (int) heros.y;
+			float diffx=xx - heros.x;
+			float diffy=yy - heros.y;
 
 			// Calculate the sight angle (for boomerang) to have a 8-value angle, instead a 4 value
 			Angle sightAngle=heros.getAngle();
 			if (diffx != 0 && diffy != 0) {
-				sightAngle=Angle.fromDirection(diffx, diffy);
+				sightAngle=Angle.fromDirection((int) diffx, (int) diffy);
 			}
 			heros.setSightAngle(sightAngle);
 			
