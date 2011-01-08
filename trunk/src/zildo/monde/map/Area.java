@@ -640,8 +640,8 @@ public class Area implements EasySerializable {
                 if (sprDesc > 128) {
                     //sprDesc -= 2;
                 }
-                PersoDescription desc = (PersoDescription) SpriteDescription.Locator.findSpr(sprBank, sprDesc);
-                if (desc == null) {
+                SpriteDescription desc = SpriteDescription.Locator.findSpr(sprBank, sprDesc);
+                if (desc.getBank() == SpriteBank.BANK_ZILDO) {
                 	desc=PersoDescription.ZILDO;
                 }
                 
@@ -667,7 +667,7 @@ public class Area implements EasySerializable {
 				if (!p_spawn) {
 					perso = new PersoNJ();
 				} else {
-					perso = (PersoNJ) EngineZildo.persoManagement.createPerso(desc, x, y, z, name, angle);
+					perso = (PersoNJ) EngineZildo.persoManagement.createPerso((PersoDescription) desc, x, y, z, name, angle);
 
 					perso.setInfo(PersoInfo.values()[info]);
 					perso.setEn_bras(null);

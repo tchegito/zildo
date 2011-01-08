@@ -179,6 +179,7 @@ public class PersoZildo extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void attack() {
+		boolean outOfOrder=false;
 		switch (weapon.kind) {
 		case SWORD:
 			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAttaque, this);
@@ -186,9 +187,13 @@ public class PersoZildo extends Perso {
 			setAttente(6*2);
 			break;
 		case BOW:
-			if (attente == 0 && countArrow > 0) {
-				setMouvement(MouvementZildo.ATTAQUE_ARC);
-				setAttente(4*8);
+			if (attente == 0) {
+				if (countArrow > 0) {
+					setMouvement(MouvementZildo.ATTAQUE_ARC);
+					setAttente(4*8);
+				} else {
+					outOfOrder=true;
+				}
 			}
 			break;
 		case BOOMERANG:
@@ -200,13 +205,20 @@ public class PersoZildo extends Perso {
             }
             break;
 		case BOMB:
-			if (attente == 0 && countBomb > 0) {
-                Element bomb=new ElementBomb((int) x, (int) y, 0, this);
-                EngineZildo.spriteManagement.spawnSprite(bomb);
-                countBomb--;
-				setAttente(1);
+			if (attente == 0) {
+				if (countBomb > 0) {
+	                Element bomb=new ElementBomb((int) x, (int) y, 0, this);
+	                EngineZildo.spriteManagement.spawnSprite(bomb);
+	                countBomb--;
+					setAttente(1);
+				} else {
+					outOfOrder=true;
+				}
 			}
 			break;
+		}
+		if (outOfOrder) {
+			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
 		}
 	}
 	
