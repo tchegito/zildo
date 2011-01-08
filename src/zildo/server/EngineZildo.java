@@ -29,6 +29,7 @@ import zildo.monde.Game;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
+import zildo.monde.map.ChainingPoint.MapLink;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.state.ClientState;
 import zildo.server.state.ScriptManagement;
@@ -152,13 +153,31 @@ public class EngineZildo {
 				if (ch.isBorder()) {
 					state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_SCROLL_ASKED);
 				} else {
-					state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_ASKED);
+					MapLink linkType=ch.getLinkType();
+					if (ch.isDone() || linkType == MapLink.REGULAR) {
+						state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_ASKED);
+					} else {
+						switch (linkType) {
+						case STAIRS_CORNER_RIGHT:
+							EngineZildo.scriptManagement.execute("stairsUpCornerRight");
+							break;
+						case STAIRS_CORNER_LEFT:
+							EngineZildo.scriptManagement.execute("stairsUpCornerLeft");
+							break;
+						case STAIRS_STRAIGHT:
+							EngineZildo.scriptManagement.execute("stairsUp");
+							break;
+						}
+						state.event.nature=ClientEventNature.SCRIPT;
+						ch.setDone(true);
+					}
 				}
 				state.event.chPoint=ch;
 				state.event.mapChange=true;
 			} else if (askedEvent != null) {
 				// Use the asked event and reset it
-				state.event=askedEvent;
+				state.event.nature=askedEvent.nature;
+				state.event.effect=askedEvent.effect;
 				askedEvent=null;
 			}
 		}
@@ -190,7 +209,25 @@ public class EngineZildo {
 	                    retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_START;
 	                    retEvent.angle = mapManagement.getMapScrollAngle();
 	                } else {
-	                    retEvent.nature = ClientEventNature.CHANGINGMAP_LOADED;
+	                	// Do the right animation when Zildo came on the new map
+						MapLink linkType=mapManagement.getChainingPoint().getLinkType();
+						switch (linkType) {
+							case STAIRS_CORNER_LEFT:
+								EngineZildo.scriptManagement.execute("stairsUpCornerLeftEnd");
+								retEvent.nature=ClientEventNature.SCRIPT;
+								break;
+							case STAIRS_CORNER_RIGHT:
+								EngineZildo.scriptManagement.execute("stairsUpCornerRightEnd");
+								retEvent.nature=ClientEventNature.SCRIPT;
+								break;
+							case STAIRS_STRAIGHT:
+								EngineZildo.scriptManagement.execute("stairsUpEnd");
+								retEvent.nature=ClientEventNature.SCRIPT;
+								break;
+							case REGULAR:
+								retEvent.nature = ClientEventNature.CHANGINGMAP_LOADED;
+								break;
+						}
 	                }
             	} else {
             		retEvent.nature = ClientEventNature.NOEVENT;

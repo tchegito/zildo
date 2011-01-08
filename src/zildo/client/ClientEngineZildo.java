@@ -212,7 +212,7 @@ public class ClientEngineZildo {
 
 		ClientEvent retEvent = p_event;
 
-		boolean displayGUI = !p_event.script;
+		boolean displayGUI = !p_event.script && !p_event.mapChange;
 
 		if (p_event.wait != 0) {
 			p_event.wait--;
@@ -233,6 +233,7 @@ public class ClientEngineZildo {
 				case CHANGINGMAP_LOADED :
 					// Changing map : 2/3 we load the new map and launch the
 					// fade in
+
 				case FADE_IN :
 					retEvent.nature = ClientEventNature.FADING_IN;
 					guiDisplay.fadeIn(retEvent.effect);
@@ -242,6 +243,7 @@ public class ClientEngineZildo {
 						// Changing map : 3/3 we unblock the player
 						retEvent.nature = ClientEventNature.NOEVENT;
 						retEvent.mapChange = false;
+
 					}
 					break;
 				case CHANGINGMAP_SCROLL_ASKED :

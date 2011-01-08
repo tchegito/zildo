@@ -228,8 +228,9 @@ public class TileCollision {
                 case 1063:
                 case 1097:
                 case 1213:
-                case 1275:
+                case 1275: case 1273:	// Cave enter
                 case 181+768:
+                case 187+768:
                     tileInfo.half=true;
                     tileInfo.blockAngle=Angle.OUEST;
                     break;
@@ -257,7 +258,7 @@ public class TileCollision {
                 case 1064:
                 case 1098:
                 case 1214:
-                case 1276:
+                case 1274: case 1276: // cave enter
                 case 182+768:
                     tileInfo.half=true;
                     tileInfo.blockAngle=Angle.EST;
@@ -279,6 +280,7 @@ public class TileCollision {
                     tileInfo.blockAngle=Angle.SUDOUEST;
                     break;
                 case 948:
+                case 188+768:	// Stairs up
                 case 193+768:
                     tileInfo.corner=true;
                     tileInfo.blockAngle=Angle.SUDEST;

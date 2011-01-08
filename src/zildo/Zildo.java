@@ -27,7 +27,7 @@ import zildo.client.gui.menu.StartMenu;
 public class Zildo {
 
 	public static boolean soundEnabled=true;
-	public static boolean fullScreen=false;
+	public static boolean fullScreen=true;
 	public static int viewPortX=320;
 	public static int viewPortY=240;
 	public static boolean infoDebug=false;

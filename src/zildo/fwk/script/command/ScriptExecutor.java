@@ -26,6 +26,8 @@ import java.util.Set;
 import java.util.Stack;
 
 import zildo.client.ClientEngineZildo;
+import zildo.client.ClientEvent;
+import zildo.client.ClientEventNature;
 import zildo.fwk.script.xml.ActionElement;
 import zildo.fwk.script.xml.ActionsElement;
 import zildo.fwk.script.xml.AnyElement;
@@ -76,6 +78,9 @@ public class ScriptExecutor {
 		}
 	}
 
+	/**
+	 * Script just terminated.
+	 */
 	private void terminate() {
 		ScriptProcess process=scripts.pop();
 		process.terminate();
@@ -93,6 +98,9 @@ public class ScriptExecutor {
 			ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
 			// Stop forced music
 			EngineZildo.soundManagement.setForceMusic(false);
+
+			EngineZildo.askEvent(new ClientEvent(ClientEventNature.NOEVENT));
+
 		}
 	}
 	

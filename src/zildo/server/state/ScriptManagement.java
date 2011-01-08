@@ -77,6 +77,8 @@ public class ScriptManagement {
     	SceneElement scene=adventure.getSceneNamed(p_name);
     	if (scene != null) {
     		scriptExecutor.execute(scene);
+    	} else {
+    		throw new RuntimeException("Scene "+p_name+" doesn't exist !");
     	}
     }
 

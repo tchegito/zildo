@@ -24,7 +24,6 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.Hasard;
 import zildo.monde.map.Angle;
-import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
@@ -153,7 +152,7 @@ public class PersoNJ extends Perso {
 		if (zildo != null) {
 			if (px != 0.0f || py != 0.0f) {
 				// Le perso s'est fait toucher !}
-				Point location=tryMove((int) (x+px), (int) (y+py));
+				Pointf location=tryMove(x+px, y+py);
 				x=location.x;
 				y=location.y;
 				px*=0.9f;

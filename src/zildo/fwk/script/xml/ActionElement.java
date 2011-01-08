@@ -45,6 +45,7 @@ public class ActionElement extends AnyElement {
     public boolean unblock;
     public boolean backward=false;	// Character moves back
     public boolean open=false;		// Can open doors
+    public boolean delta=false;		// for 'moveTo' and 'pos' : means that 'pos' should be added to current location
     public ActionKind kind;
     public Point location;
     public String text;
@@ -69,8 +70,6 @@ public class ActionElement extends AnyElement {
         // Read less common ones
         String strPos=p_elem.getAttribute("pos");
         String strAngle=p_elem.getAttribute("angle");
-        String strBackward=p_elem.getAttribute("forward");
-        String strOpen=p_elem.getAttribute("open");
         switch (kind) {
         case spawn:
             location = Point.fromString(strPos);
@@ -87,11 +86,12 @@ public class ActionElement extends AnyElement {
             text = p_elem.getAttribute("name");
             break;
         case moveTo:
-            backward = strBackward.equalsIgnoreCase("true");
-            open = strOpen.equalsIgnoreCase("true");
+            backward = isTrue(p_elem, "forward");
+            open = isTrue(p_elem, "open");
         case pos:
             // Position
             location = Point.fromString(strPos);
+            delta = isTrue(p_elem, "delta");
             break;
         case script:
         case angle:

@@ -25,6 +25,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.client.sound.BankMusic;
+import zildo.client.sound.BankSound;
 import zildo.fwk.filter.FilterEffect;
 import zildo.fwk.script.xml.ActionElement;
 import zildo.monde.items.ItemKind;
@@ -68,6 +69,10 @@ public class ActionExecutor {
                 scriptExec.involved.add(perso); // Note that this perso is concerned
             }
             Point location = p_action.location;
+            if (p_action.delta && perso != null) {
+            	// Given position is a delta with current one (work ONLY with perso, not with camera)
+            	location=location.translate((int) perso.x, (int) perso.y);
+            }
             String text = p_action.text;
             switch (p_action.kind) {
                 case pos:
@@ -155,6 +160,11 @@ public class ActionExecutor {
                 	BankMusic musicSnd=BankMusic.valueOf(text);
                 	EngineZildo.soundManagement.broadcastSound(musicSnd, (Point) null);
         			EngineZildo.soundManagement.setForceMusic(true);
+                	achieved=true;
+                	break;
+                case sound:
+                	BankSound snd=BankSound.valueOf(text);
+                	EngineZildo.soundManagement.playSound(snd, null);
                 	achieved=true;
                 	break;
             }
