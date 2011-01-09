@@ -209,9 +209,8 @@ public class NetClient extends NetSend {
 	
 	private void receiveMap(GetPacket p_packet) {
 		EasyBuffering buffer=new EasyBuffering(p_packet.getBuffer());
-		Area map=Area.deserialize(buffer, false);
+		Area map=Area.deserialize(buffer, p_packet.name, false);
 		
-		map.setName(p_packet.name);
 		ClientEngineZildo.mapDisplay.setCurrentMap(map);
 	}
 	

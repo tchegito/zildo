@@ -20,6 +20,7 @@
 
 package zildo.server.state;
 
+import zildo.monde.map.Point;
 import java.util.List;
 
 import zildo.fwk.script.command.ScriptExecutor;
@@ -35,10 +36,15 @@ import zildo.monde.quest.QuestEvent;
 /**
  * Delegate class which deals with script.<p/>
  * 
- * It provides two functions:<ul>
+ * It provides two basic functions :<ul>
  * <li>render script (via {@link ScriptExecutor})</li>
  * <li>trigger an event</li>
  * </ul>
+ * and more high-level functions :<ul>
+ * <li>remember opened chest</li>
+ * <li>remember opened doors</li>
+ * </ul>
+ * 
  * @author Tchegito
  *
  */
@@ -140,10 +146,18 @@ public class ScriptManagement {
      * @param p_trigger
      */
     public void accomplishQuest(String p_questName, boolean p_trigger) {
+    	boolean found=false;
     	for (QuestElement quest : adventure.getQuests()) {
     		if (quest.name.equals(p_questName)) {
     			accomplishQuest(quest, p_trigger);
+    			found=true;
     		}
+    	}
+    	if (!found) { // Given quest hasn't been found, so create it (useful for automatic behaviors like chest and doors)
+    		QuestElement quest=new QuestElement();
+    		quest.name=p_questName;
+    		quest.done=true;	// Set it done
+    		adventure.addQuest(quest);
     	}
     }
     
@@ -188,5 +202,29 @@ public class ScriptManagement {
 
 	public AdventureElement getAdventure() {
 		return adventure;
+	}
+	
+	/**
+	 * Returns TRUE if the given quest is marked as done.
+	 * @param p_questName
+	 * @return boolean
+	 */
+	private boolean isQuestDone(String p_questName) {
+		for (QuestElement quest : adventure.getQuests()) {
+			if (quest.name.equals(p_questName)) {
+				return quest.done;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isOpenedChest(String p_mapName, Point p_location) {
+		String questName=p_mapName+p_location.toString();
+		return isQuestDone(questName);
+	}
+	
+	public void openChest(String p_mapName, Point p_location) {
+		String questName=p_mapName+p_location.toString();
+		accomplishQuest(questName, false);
 	}
 }

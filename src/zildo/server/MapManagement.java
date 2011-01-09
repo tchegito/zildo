@@ -114,8 +114,7 @@ public class MapManagement {
         }
         
         // Load a new one
-        currentMap = loadMapFile(adjustedMapName);
-        currentMap.setName(mapname);
+        currentMap = loadMapFile(adjustedMapName, mapname);
         
         // Adjust map at Zildo's location
         PersoZildo zildo=EngineZildo.persoManagement.getZildo();
@@ -140,27 +139,26 @@ public class MapManagement {
         analyseAltitude();
     }
     
-    ///////////////////////////////////////////////////////////////////////////////////////
-	// loadMapFile
-	///////////////////////////////////////////////////////////////////////////////////////
-	// IN:filename to load as a map
-	///////////////////////////////////////////////////////////////////////////////////////
-	Area loadMapFile(String mapname) 
+    /**
+     * Load the given map
+     * @param p_mapname file name
+     * @param p_refMapname original file name (without adjustment due to quests)
+     * @return
+     */
+	Area loadMapFile(String p_mapname, String p_refMapname) 
 	{ 
-		System.out.println("Loading "+mapname);
+		System.out.println("Loading "+p_mapname);
 	
 		// If file name isn't complete, do it.
-		if (mapname.indexOf("/") ==-1 && mapname.indexOf("\\") == -1 && mapname.toLowerCase().indexOf(".map") == -1) {
-			mapname=mapname.toLowerCase()+".map";
+		if (p_mapname.indexOf("/") ==-1 && p_mapname.indexOf("\\") == -1 && p_mapname.toLowerCase().indexOf(".map") == -1) {
+			p_mapname=p_mapname.toLowerCase()+".map";
 		}
 		
 		// Infos de base
-		EasyReadingFile file=new EasyReadingFile(mapname);
-		Area map=Area.deserialize(file, true);
+		EasyReadingFile file=new EasyReadingFile(p_mapname);
+		Area map=Area.deserialize(file, p_refMapname, true);
 		
-		map.setName(mapname);
-		
-		this.logger.info("Map loaded: "+mapname);
+		this.logger.info("Map loaded: "+p_mapname);
 
 		return map;
 	}
