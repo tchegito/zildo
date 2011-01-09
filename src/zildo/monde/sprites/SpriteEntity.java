@@ -62,7 +62,7 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	private SpriteModel sprModel;	// Reference to the sprite being rendered
 	public int nSpr;			// Pour les perso devient une interprétation de 'angle' et 'pos_seqsprite'
 	public int nBank;
-	private SpriteDescription desc;	// Interpretation of nSpr and nBank
+	protected SpriteDescription desc;	// Interpretation of nSpr and nBank
 	private boolean moved;			// True=need to synchronize the vertex buffer, False=no move this frame
 	private int linkVertices;	// Index on VertexBuffer's position about quad describing this sprite
 	public boolean visible;		// TRUE=visible FALSE=invisible

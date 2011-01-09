@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
@@ -40,6 +41,7 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementAnimMort;
 import zildo.monde.sprites.elements.ElementBoomerang;
+import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
@@ -326,8 +328,14 @@ public class SpriteManagement extends SpriteStore {
 		}
 		if (!p_foreground && elemDesc != null && elemDesc.isWeapon()) {
 			entity = new ElementWeapon();
+		} else if (desc.getBank() == SpriteBank.BANK_GEAR) {
+			entity = new ElementGear(x, y);
+			entity.setAjustedX(x);
+			entity.setAjustedY(y);
 		} else {
 			entity = new SpriteEntity(x, y, true);
+			entity.setAjustedX(x - (spr.getTaille_x() >> 1));
+			entity.setAjustedY(y - (spr.getTaille_y() >> 1));
 		}
 		
 		entity.setNSpr(nSpr);
@@ -335,8 +343,6 @@ public class SpriteManagement extends SpriteStore {
 		entity.setMoved(false);
 		entity.setForeground(p_foreground);
 
-		entity.setAjustedX(x - (spr.getTaille_x() >> 1));
-		entity.setAjustedY(y - (spr.getTaille_y() >> 1));
 
 		entity.reverse=p_reverse;
 		
@@ -553,7 +559,7 @@ public class SpriteManagement extends SpriteStore {
 								if (!isGoodies && isZildo) {
 									((PersoZildo) elem).pushSomething(entity);
 								}
-								//found=true;
+								found=true;
 								// Is it a goodies ?
 								if (isGoodies) {
 									if (isZildo) {

@@ -623,7 +623,7 @@ public class Area implements EasySerializable {
 					int ay = y/16;
 					int tileDesc=map.readmap(ax, ay);
 					switch (tileDesc) {
-						case 744: // Opened chest
+						case 744: // Opened chest (don't spawn the linked item)
 							break;
 						case 743: // Chest
 						case 165: // Bushes
