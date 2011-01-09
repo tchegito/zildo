@@ -53,4 +53,12 @@ public class AdventureElement extends AnyElement {
 	public List<QuestElement> getQuests() {
 		return quests;
 	}
+	
+	/**
+	 * Manually add a quest to the adventure. (only for automatic behaviors like chest and doors)
+	 * @param p_quest
+	 */
+	public void addQuest(QuestElement p_quest) {
+		quests.add(p_quest);
+	}
 }

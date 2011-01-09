@@ -550,11 +550,14 @@ public class Area implements EasySerializable {
 
 	/**
 	 * @param p_buffer
+	 * @param p_name TODO
 	 * @return Area
 	 */
-	public static Area deserialize(EasyBuffering p_buffer, boolean p_spawn) {
+	public static Area deserialize(EasyBuffering p_buffer, String p_name, boolean p_spawn) {
 
 		Area map = new Area();
+		map.setName(p_name);
+		
 		SpriteManagement spriteManagement = EngineZildo.spriteManagement;
 
 		boolean zeditor=EngineZildo.game.editing;
@@ -577,10 +580,19 @@ public class Area implements EasySerializable {
 
 				map.set_mapcase(j, i + 4, temp);
 
-				if (temp.getN_motif() == 99 && temp.getN_banque() == 1 && p_spawn) {
-					// Fumée de cheminée
-					spriteManagement.spawnSpriteGeneric(SpriteAnimation.SMOKE, j * 16, i * 16, 0, null, null);
+				if (p_spawn) {
+					if (temp.getN_motif() == 99 && temp.getN_banque() == 1) {
+						// Fumée de cheminée
+						spriteManagement.spawnSpriteGeneric(SpriteAnimation.SMOKE, j * 16, i * 16, 0, null, null);
+					}
+					// Is this chest already opened ?
+					if (temp.getN_motif() == (743 & 255) && temp.getN_banque() == 2) {
+						if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
+							temp.setN_motif(744 & 255);
+						}
+					}
 				}
+
 			}
 
 		// Les P.E
@@ -611,6 +623,8 @@ public class Area implements EasySerializable {
 					int ay = y/16;
 					int tileDesc=map.readmap(ax, ay);
 					switch (tileDesc) {
+						case 744: // Opened chest
+							break;
 						case 743: // Chest
 						case 165: // Bushes
 						case 167: // Stone
