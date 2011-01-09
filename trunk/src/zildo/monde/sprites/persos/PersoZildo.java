@@ -40,13 +40,13 @@ import zildo.monde.map.Pointf;
 import zildo.monde.quest.actions.GameOverAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
-import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.desc.ZildoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementArrow;
 import zildo.monde.sprites.elements.ElementBomb;
 import zildo.monde.sprites.elements.ElementBoomerang;
+import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.sprites.utils.ShieldEffect;
 import zildo.monde.sprites.utils.ShieldEffect.ShieldType;
@@ -117,6 +117,7 @@ public class PersoZildo extends Perso {
 		setAlerte(false);
 		setCompte_dialogue(0);
 	    setMoney(0);
+	    setCountKey(1);
 	    pushingSprite = null;
 
 	    Element bouclier = new Element(this);
@@ -941,10 +942,8 @@ public class PersoZildo extends Perso {
 	 */
 	public void pushSomething(SpriteEntity object) {
 		pushingSprite=object;
-		if (pushingSprite != null && pushingSprite.getDesc() == GearDescription.GEAR_GREENDOOR) {
-			pushingSprite.setDesc(GearDescription.GEAR_GREENDOOR_OPENING);
-			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlock, this);
-			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlockDouble, this);
+		if (pushingSprite != null && pushingSprite.getDesc().getBank() == SpriteBank.BANK_GEAR) {
+			((ElementGear) object).push(this);
 		}
 	}
 
