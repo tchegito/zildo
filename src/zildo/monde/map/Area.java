@@ -560,7 +560,7 @@ public class Area implements EasySerializable {
 		
 		SpriteManagement spriteManagement = EngineZildo.spriteManagement;
 
-		boolean zeditor=EngineZildo.game.editing;
+		boolean zeditor=p_spawn && EngineZildo.game.editing;
 		
 		map.setDim_x(p_buffer.readUnsignedByte());
 		map.setDim_y(p_buffer.readUnsignedByte());
