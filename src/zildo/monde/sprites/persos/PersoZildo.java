@@ -40,6 +40,7 @@ import zildo.monde.map.Pointf;
 import zildo.monde.quest.actions.GameOverAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.desc.ZildoDescription;
 import zildo.monde.sprites.elements.Element;
@@ -940,6 +941,9 @@ public class PersoZildo extends Perso {
 	 */
 	public void pushSomething(SpriteEntity object) {
 		pushingSprite=object;
+		if (pushingSprite != null && pushingSprite.getDesc() == GearDescription.GEAR_GREENDOOR) {
+			pushingSprite.setDesc(GearDescription.GEAR_GREENDOOR_OPENING);
+		}
 	}
 
 	/**

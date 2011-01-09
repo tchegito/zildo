@@ -156,7 +156,7 @@ public class ChainingPoint {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public Angle getAngle(int x, int y, Angle startAngle) {
 		Angle angle=startAngle;
-		if ((py & 128)!=0 && (px==0 || px==EngineZildo.mapManagement.getCurrentMap().getDim_x()-1)) {
+		if ((py & 128)!=0 && ((px & 127)==0 || (px & 127)==EngineZildo.mapManagement.getCurrentMap().getDim_x()-1)) {
 			// Vertical border
 			if (x % 16 > 8) {
 				angle=Angle.EST;
@@ -183,7 +183,7 @@ public class ChainingPoint {
 	public void setVertical(boolean verti) {
 		px=(short) (px & 127);
 		if (verti) {
-			px=(short) (px+128);
+			px=(short) (px | 128);
 		}
 	}
 	
@@ -194,7 +194,7 @@ public class ChainingPoint {
 	public void setBorder(boolean border) {
 		py=(short) (py & 127);
 		if (border) {
-			py=(short) (py+128);
+			py=(short) (py | 128);
 		}
 	}
 	

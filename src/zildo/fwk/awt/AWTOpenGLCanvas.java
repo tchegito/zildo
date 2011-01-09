@@ -212,6 +212,11 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			    ortho.boxv(start.x, start.y, size.x, size.y, 0, colCursor);
 			}
 
+			// Draw map limits
+			int limitX=map.getDim_x()*16 - shift.x;
+			int limitY=map.getDim_y()*16 - shift.y;
+			ortho.box(limitX, 0, 1, sizeY, 0, colCursor);
+			ortho.box(0, limitY, sizeX, 1, 0, colCursor);
 			
 			swapBuffers();
 		} catch (LWJGLException lwjgle) {

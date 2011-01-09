@@ -108,6 +108,9 @@ public class SpriteSet extends ImageSet {
     			public int getNSpr() {
     				return n;
     			}
+    			public boolean isBlocking() {
+    				return false;
+    			}
     		});
     	}
     	return list;
@@ -122,7 +125,7 @@ public class SpriteSet extends ImageSet {
     		
         	SpriteBank bank=EngineZildo.spriteManagement.getSpriteBank(sprite.getBank());
         	int nSpr=sprite.getNSpr();
-        	if (bank.getName().equals("PNJ2.SPR")) {
+        	if (bank.getName().equals("pnj2.spr")) {
         		nSpr=nSpr % 128;
         	}
     		SpriteModel model=bank.get_sprite(nSpr);

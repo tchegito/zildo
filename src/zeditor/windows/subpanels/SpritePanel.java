@@ -74,8 +74,8 @@ public class SpritePanel extends JPanel {
 		GridLayout thisLayout = new GridLayout(0,2);
 		panel.setLayout(thisLayout);
 		
-		spinX=new JSpinner(new SpinnerNumberModel(0, 0, 15, -1));
-		spinY=new JSpinner(new SpinnerNumberModel(0, 0, 15, -1));
+		spinX=new JSpinner(new SpinnerNumberModel(0, 0, 16, -1));
+		spinY=new JSpinner(new SpinnerNumberModel(0, 0, 16, -1));
 
 		panel.add(new JLabel("Add-x"));
 		panel.add(spinX);
@@ -154,12 +154,13 @@ public class SpritePanel extends JPanel {
 	}
 	
 	class SpriteFieldsListener implements ChangeListener {
-		
-		private void updateText(ChangeEvent documentevent) {
+
+		@Override
+		public void stateChanged(ChangeEvent changeevent) {
 			
 			// If we are focusing on an existing sprite, then update his attributes
 			if (!updatingUI && entity != null) {
-				Component comp=(Component) documentevent.getSource();
+				Component comp=(Component) changeevent.getSource();
 				if (comp instanceof JSpinner) {
 					int val=(Integer) ((JSpinner) comp).getValue();
 					if (comp == spinX) {
@@ -168,20 +169,14 @@ public class SpritePanel extends JPanel {
 					} else if (comp == spinY) {
 						entity.y=16*(int) (entity.y / 16) + val;
 						entity.setAjustedY((int) entity.y);
+						if (val == 16) {
+							spinY.setValue(0);
+						}
 					}
 					entity.animate();
 					manager.getZildoCanvas().setChangeSprites(true);
 				}
-		    	
-			}			
-		}
-
-		/* (non-Javadoc)
-		 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
-		 */
-		@Override
-		public void stateChanged(ChangeEvent changeevent) {
-			updateText(changeevent);
+			}	
 		}
 	}
 }

@@ -47,7 +47,6 @@ import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.server.state.ClientState;
 
-@SuppressWarnings("unchecked")
 public class SpriteManagement extends SpriteStore {
 
 	protected Logger logger = Logger.getLogger("SpriteManagement");
@@ -554,7 +553,7 @@ public class SpriteManagement extends SpriteStore {
 								if (!isGoodies && isZildo) {
 									((PersoZildo) elem).pushSomething(entity);
 								}
-								found=true;
+								//found=true;
 								// Is it a goodies ?
 								if (isGoodies) {
 									if (isZildo) {
@@ -572,8 +571,6 @@ public class SpriteManagement extends SpriteStore {
 													.grab(element);
 										}
 									}
-								} else {
-									found = true;
 								}
 							}
 						}

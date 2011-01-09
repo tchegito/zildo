@@ -77,6 +77,8 @@ public class Area implements EasySerializable {
 	static public int ROUND_X = 0;
 	static public int ROUND_Y = 0;
 
+	static public int lineSize = 128;	// Max-size of a map's line
+	
 	private int dim_x, dim_y;
 	private String name;
 	private Map<Integer, Case> mapdata;
@@ -125,7 +127,7 @@ public class Area implements EasySerializable {
 	// OUT: Case object at the given coordinates
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public Case get_mapcase(int x, int y) {
-		return mapdata.get(y * this.dim_x + x);
+		return mapdata.get(y * lineSize + x);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -134,7 +136,7 @@ public class Area implements EasySerializable {
 	// IN:coordinates, Case object
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public void set_mapcase(int x, int y, Case c) {
-		mapdata.put(y * this.dim_x + x, c);
+		mapdata.put(y * lineSize + x, c);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
