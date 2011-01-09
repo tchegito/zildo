@@ -51,7 +51,7 @@ public class SpriteStore {
 			n_bankspr=0;
 			Identified.resetCounter(SpriteModel.class);
 			for (int b=0;b<sprBankName.length;b++) {
-				charge_sprites(sprBankName[b].toUpperCase());
+				charge_sprites(sprBankName[b]);
 			}
 		}
 		

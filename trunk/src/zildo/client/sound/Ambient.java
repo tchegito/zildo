@@ -39,6 +39,7 @@ public class Ambient {
 		ambientMusic.put("polakyg", BankMusic.Grotte);
 		ambientMusic.put("polakyg2", BankMusic.Grotte);
 		ambientMusic.put("polakyg3", BankMusic.Grotte);
+		ambientMusic.put("polakyg4", BankMusic.Grotte);
 		ambientMusic.put("polaky4", BankMusic.Grotte);
 		ambientMusic.put("polaky5", BankMusic.Grotte);
 	}

@@ -61,8 +61,9 @@ public class Modifier {
 
         //new Modifier().fixPnj2();
         //new Modifier().saveElements2();
+        //new Modifier().saveFontes2();
         //new Modifier().saveBanque();
-        new Modifier().saveGears();
+        //new Modifier().saveGears();
         //new Modifier().saveAllMaps();
         //new Modifier().generateImg();
     }
@@ -79,7 +80,7 @@ public class Modifier {
      
      public void saveElements2() {
          SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
-         bankElem.loadImage("objets.png", COLOR_BLUE);
+         bankElem.loadImage("objets", COLOR_BLUE);
          int nSpr=bankElem.getNSprite();
          Zone[] elements=new ElementsPlus().getZones();
          for (Zone z : elements) {
@@ -90,6 +91,19 @@ public class Modifier {
          bankElem.saveBank();
      }
 
+     public void saveFontes2() {
+         SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_FONTES));
+         bankElem.loadImage("fontes", COLOR_BLUE);
+         int nSpr=bankElem.getNSprite();
+         Zone[] elements=new Fontes().getZones();
+         for (Zone z : elements) {
+         	bankElem.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
+         	nSpr++;
+         }
+         bankElem.setName("font2.spr");
+         bankElem.saveBank();
+     }
+     
      public void saveGears() {
          SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
          

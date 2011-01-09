@@ -29,6 +29,7 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.Sprite;
+import zildo.server.EngineZildo;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -249,14 +250,23 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	public SpriteDescription getDesc() {
 		if (desc == null) {
 			desc=SpriteDescription.Locator.findSpr(nBank, nSpr);
+
 		}
 		return desc;
+	}
+	
+	public void setDesc(SpriteDescription p_desc) {
+		desc=p_desc;
+		nSpr=p_desc.getNSpr();
+		nBank=p_desc.getBank();
+        setSprModel(EngineZildo.spriteManagement.getSpriteBank(nBank).get_sprite(nSpr));
 	}
 	
 	public void animate() {
 		ajustedX = (int) x - (sprModel.getTaille_x() >> 1);
 		ajustedY = (int) y - (sprModel.getTaille_y() >> 1);
 	}
+	
 	/**
 	 * Serialize useful fields from this entity.
 	 * @param p_buffer

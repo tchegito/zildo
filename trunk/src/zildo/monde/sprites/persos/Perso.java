@@ -67,7 +67,8 @@ public abstract class Perso extends Element {
     private int money;
     protected int countArrow;
     protected int countBomb;
-	
+	private int countKey;	// How many keys have perso ? (for PNJ, he gives it when he dies)
+
 	private int count=0;
 	protected boolean inWater=false;
 	
@@ -580,5 +581,13 @@ public abstract class Perso extends Element {
 
 	public void setCountBomb(int countBomb) {
 		this.countBomb = countBomb;
+	}
+
+	public int getCountKey() {
+		return countKey;
+	}
+
+	public void setCountKey(int countKey) {
+		this.countKey = countKey;
 	}
 }

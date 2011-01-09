@@ -583,6 +583,9 @@ public class GUIDisplay {
 		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,94,149,10);
 		displayNumber(zildo.getCountArrow(), 2, 148, 20);
 
+		// Keys
+		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,95,41,10);
+		displayNumber(zildo.getCountKey(), 1, 40, 20);
 	}
 	
 	private void displayNumber(int p_number, int p_numDigit, int p_x, int p_y) {
