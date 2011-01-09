@@ -42,6 +42,11 @@ public enum BankSound implements AudioBank {
 	ZildoMonte("escalmon"),
 	ZildoDescend("escaldes"),
 	ZildoTrouve("trouve"),
+	ZildoCoeur("heartPiece"),
+	ZildoSecret("secret"),
+	ZildoKey("getKey"),
+	ZildoUnlock("doorUnlock"),
+	ZildoUnlockDouble("doorDouble"),
 	
 	QuadDamage("quaddamage"),
 	QuadDamageLeaving("damage2"),
@@ -78,7 +83,10 @@ public enum BankSound implements AudioBank {
 	MenuOutOfOrder("out"),
 	
 	PlanteBombe("posebomb"),
-	Explosion("explose");
+	Explosion("explose"),
+	
+	ChestAppears("appear");
+	
 
 	String filename;
 	

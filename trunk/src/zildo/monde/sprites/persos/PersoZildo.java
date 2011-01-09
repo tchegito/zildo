@@ -943,6 +943,8 @@ public class PersoZildo extends Perso {
 		pushingSprite=object;
 		if (pushingSprite != null && pushingSprite.getDesc() == GearDescription.GEAR_GREENDOOR) {
 			pushingSprite.setDesc(GearDescription.GEAR_GREENDOOR_OPENING);
+			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlock, this);
+			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlockDouble, this);
 		}
 	}
 
