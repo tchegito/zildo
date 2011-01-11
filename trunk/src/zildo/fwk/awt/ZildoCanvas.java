@@ -220,7 +220,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	public ChainingPoint loadMap(String p_mapName, ChainingPoint p_fromChangingPoint) {
 		MapManagement mapManagement = EngineZildo.mapManagement;
 		String previousMapName=mapManagement.getCurrentMap().getName();
-		mapManagement.charge_map(p_mapName);
+		mapManagement.loadMap(p_mapName, false);
 		changeMap = true;
 		Point p=new Point(0, 0);
 		ChainingPoint ch=null;

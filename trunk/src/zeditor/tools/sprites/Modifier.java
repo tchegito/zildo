@@ -164,7 +164,7 @@ public class Modifier {
 		for (File f : maps) {
 			String name=f.getName();
 			System.out.println("Processing "+name+"...");
-			EngineZildo.mapManagement.charge_map(name);
+			EngineZildo.mapManagement.loadMap(name, false);
 		        
 	        // Save the map into a temporary file
 			MapManagement mapManagement=EngineZildo.mapManagement;
