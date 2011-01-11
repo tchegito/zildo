@@ -125,7 +125,7 @@ public class ActionExecutor {
                 	EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_OUT, FilterEffect.fromInt(p_action.val)));
                 	break;
                 case map:	// Change current map
-        			EngineZildo.mapManagement.charge_map(p_action.text);
+        			EngineZildo.mapManagement.loadMap(p_action.text, false);
         			ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
                 	achieved=true;
                 	break;

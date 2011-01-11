@@ -72,7 +72,7 @@ public class EngineZildo {
 		// Charge une map
 		String mapName=p_game.mapName;
 		if (mapName != null) {
-			mapManagement.charge_map(mapName);
+			mapManagement.loadMap(mapName, false);
 		}
 	}
 
@@ -205,6 +205,7 @@ public class EngineZildo {
             	if (p_event.chPoint != null) {
 	                mapManagement.processChangingMap(p_event.chPoint);
 	                ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+	                ClientEngineZildo.mapDisplay.setPreviousMap(EngineZildo.mapManagement.getPreviousMap());
 	                if (p_event.nature == ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP) {
 	                    retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_START;
 	                    retEvent.angle = mapManagement.getMapScrollAngle();
@@ -250,7 +251,7 @@ public class EngineZildo {
 		persoManagement.clearPersos();
 	
 		// Load map
-		mapManagement.charge_map(mapname);
+		mapManagement.loadMap(mapname, false);
 	}
 	
 	public static void askEvent(ClientEvent p_event) {

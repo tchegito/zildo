@@ -43,6 +43,7 @@ import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.Rectangle;
+import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
@@ -157,9 +158,9 @@ public class ClientEngineZildo {
 		}
 
 		// Tile engine
-		tileEngine.updateTiles(mapDisplay.getCamera(), mapDisplay
-				.getCurrentMap(), mapDisplay.getCompteur_animation());
-
+		Area[] maps=new Area[]{ mapDisplay.getCurrentMap(), mapDisplay.getPreviousMap()};
+		tileEngine.updateTiles(mapDisplay.getCamera(), maps, mapDisplay.getCompteur_animation());
+		
 		spriteDisplay.updateSpritesClient(mapDisplay.getCamera());
 
 		ClientEngineZildo.openGLGestion.beginScene();
@@ -254,7 +255,7 @@ public class ClientEngineZildo {
 					displayGUI = false;
 					break;
 				case CHANGINGMAP_SCROLL_CAPTURE :
-					spriteEngine.captureScreen();
+					//spriteEngine.captureScreen();
 					mapDisplay.setCapturing(false);
 					retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP;
 					displayGUI = false;
@@ -264,8 +265,8 @@ public class ClientEngineZildo {
 						mapDisplay.centerCamera();
 						mapDisplay.shiftForMapScroll(p_event.angle);
 
-						spriteDisplay
-								.displayPreviousMap(mapDisplay.getCamera());
+						//spriteDisplay
+						//		.displayPreviousMap(mapDisplay.getCamera());
 
 						retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL;
 						// Hide GUI sprites

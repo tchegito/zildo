@@ -51,6 +51,8 @@ public class MapManagement {
 	protected Logger logger=Logger.getLogger("MapManagement");
 
 	private Area currentMap;
+	private Area previousMap;
+	
 	private TileCollision tileCollision;
 	
 	ChainingPoint changingMapPoint;
@@ -93,14 +95,18 @@ public class MapManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Destroy any data referring to current map, and given one
 	///////////////////////////////////////////////////////////////////////////////////////
-    public void charge_map(String mapname) {
+    public void loadMap(String p_mapname, boolean p_additive) {
         // Remove previous map
-        if (currentMap != null) {
-            this.deleteCurrentMap();
-        }
+    	if (p_additive) {
+    		previousMap=currentMap;
+    	} else {
+	        if (currentMap != null) {
+	            this.deleteCurrentMap();
+	        }
+    	}
 
         // Adjust map according the quest diary
-        String adjustedMapName = EngineZildo.scriptManagement.getReplacedMapName(mapname);
+        String adjustedMapName = EngineZildo.scriptManagement.getReplacedMapName(p_mapname);
         
         // Trigger the location
         if (!EngineZildo.game.editing) {
@@ -114,7 +120,7 @@ public class MapManagement {
         }
         
         // Load a new one
-        currentMap = loadMapFile(adjustedMapName, mapname);
+        currentMap = loadMapFile(adjustedMapName, p_mapname);
         
         // Adjust map at Zildo's location
         PersoZildo zildo=EngineZildo.persoManagement.getZildo();
@@ -383,12 +389,7 @@ public class MapManagement {
 			int previousDimX=currentMap.getDim_x();
 			int previousDimY=currentMap.getDim_y();
 			boolean isAlongBorder=currentMap.isAlongBorder((int) zildo.getX(), (int) zildo.getY());
-			// ATTENTION !
-			// Cette ligne ne va pas marcher dans le cas d'un scroll d'une map à l'autre
-			// On ne trouvera jamais le point d'enchaînement, et en plus on perdra la map
-			// courante.
-			// ATTENTION !
-			this.charge_map(newMapName);
+			loadMap(newMapName, isAlongBorder);
 			
 			// 3/3 : location
 			// get the target chaining point and place zildo through it
@@ -416,6 +417,21 @@ public class MapManagement {
                 zildo.setGhost(true);
                 zildo.setTarget(dest);
 				zildo.finaliseComportement(EngineZildo.compteur_animation);
+				
+				// Shift the previous map to the right position, in order to have it
+				// sticked to the new one. So we calculate the shift coordinates.
+				Angle angleShift=Angle.rotate(mapScrollAngle, 2);
+				Point coords=angleShift.coords;
+				Area mapReference=currentMap;
+				switch (angleShift) {
+					case OUEST:
+					case NORD:
+						mapReference=previousMap;
+					default:
+				}
+				Point offset=new Point(coords.x * 16 * mapReference.getDim_x(),
+									   coords.y * 16 * mapReference.getDim_y());
+				previousMap.setOffset(offset);
 				return true;
 			} else {
 				zildo.setX((chPointTarget.getPx() & 127) * 16 + 16);
@@ -598,4 +614,12 @@ public class MapManagement {
     		currentMap.update();
     	}
     }
+    
+    public void translateMap(Point p_shift) {
+    	
+    }
+
+	public Area getPreviousMap() {
+		return previousMap;
+	}
 }

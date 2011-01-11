@@ -82,10 +82,6 @@ public class TileEngine extends TextureEngine {
     private int cameraX;
     private int cameraY;
 
-	// Current tile engine dimensions
-    private int tileEngineWidth;
-    private int tileEngineHeight;
-
 	// 3D Objects (vertices and indices per bank)
     protected TilePrimitive[] meshFORE;
     protected TilePrimitive[] meshBACK;
@@ -187,10 +183,6 @@ public class TileEngine extends TextureEngine {
 	// Prepare vertices and indices for drawing tiles
 	public void prepareTiles(Area theMap) {
 	
-		// Define tile map according to map dimension
-		tileEngineWidth= theMap.getDim_x();
-		tileEngineHeight=theMap.getDim_y();
-	
 		int i,x,y;
 		
 		for (i=0;i<Constantes.NB_MOTIFBANK;i++) {
@@ -202,37 +194,39 @@ public class TileEngine extends TextureEngine {
 	
 		// Prepare vertices and indices for background map (tiles displayed UNDER sprites)
 		// For each tile bank
-		for (y=0;y<tileEngineHeight;y++)
+		for (y=0;y<Constantes.TILEENGINE_HEIGHT;y++)
 		{
-			for (x=0;x<tileEngineWidth;x++)
+			for (x=0;x<Constantes.TILEENGINE_WIDTH;x++)
 			{
 				// Get corresponding case on the map
 				Case mapCase=theMap.get_mapcase(x,y+4);
-				int n_motif=mapCase.getN_motif();
-				int xTex=(n_motif % 16) * 16;
-				int yTex=(n_motif / 16) * 16 +1;
-				int bank=mapCase.getN_banque() & 63;
-				int nTile=0;
-				nTile=meshBACK[bank].addTile( (16 * x),
-												   (16 * y),
-												   xTex,
-												   yTex);
-	
-				// Store tile number in Case object to future access
-				mapCase.setN_tile(nTile);
+				if (mapCase != null) {
+					int n_motif=mapCase.getN_motif();
+					int xTex=(n_motif % 16) * 16;
+					int yTex=(n_motif / 16) * 16 +1;
+					int bank=mapCase.getN_banque() & 63;
+					int nTile=0;
+					nTile=meshBACK[bank].addTile( (16 * x),
+													   (16 * y),
+													   xTex,
+													   yTex);
+		
+					// Store tile number in Case object to future access
+					mapCase.setN_tile(nTile);
+				}
 			}
 		}
 	
 	
 		// Prepare vertices and indices for foreground map (tiles displayed ON sprites)
 		// For each tile bank
-		for (y=0;y<tileEngineHeight;y++)
+		for (y=0;y<Constantes.TILEENGINE_HEIGHT;y++)
 		{
-			for (x=0;x<tileEngineWidth;x++)
+			for (x=0;x<Constantes.TILEENGINE_WIDTH;x++)
 			{
 				// Get corresponding foreground case on the map
 				Case mapCase=theMap.get_mapcase(x,y+4);
-				if ((mapCase.getN_banque() & Area.M_MOTIF_MASQUE)!=0) {
+				if (mapCase != null && (mapCase.getN_banque() & Area.M_MOTIF_MASQUE)!=0) {
 					int n_motif=mapCase.getN_motif_masque();
 					int xTex=(n_motif % 16) * 16;
 					int yTex=(n_motif / 16) * 16+1;
@@ -314,7 +308,7 @@ public class TileEngine extends TextureEngine {
 	// Redraw all tiles with updating VertexBuffers.
 	// No need to access particular tile, because we draw every one.
 	// **BUT THIS COULD BE DANGEROUS WHEN A TILE SWITCHES FROM ONE BANK TO ANOTHER**
-	public void updateTiles(Point cameraNew, Area theMap, int compteur_animation) {
+	public void updateTiles(Point cameraNew, Area[] p_areas, int compteur_animation) {
 	
 		if (initialized && cameraX!=-1 && cameraY!=-1) {
 	
@@ -323,36 +317,43 @@ public class TileEngine extends TextureEngine {
 				meshBACK[i].startInitialization();
 				meshFORE[i].startInitialization();
 			}
-			for (int y=0;y<tileEngineHeight;y++)
-			{
-				for (int x=0;x<tileEngineWidth;x++)
+			for (Area theMap : p_areas) {
+				if (theMap == null) {
+					break;
+				}
+				Point offset=theMap.getOffset();
+				for (int y=0;y<Constantes.TILEENGINE_HEIGHT;y++)
 				{
-					// Get corresponding case on the map
-					Case mapCase=theMap.get_mapcase(x,y+4);
-					int n_motif=mapCase.getAnimatedMotif(compteur_animation);
-					int xTex=(n_motif % 16) * 16;
-					int yTex=(n_motif / 16) * 16;
-					int bank=mapCase.getN_banque() & 63;
-					if (bank<0 || bank>=Constantes.NB_MOTIFBANK) {
-						throw new RuntimeException("We got a big problem");
-					}
-					meshBACK[bank].updateTile( (16 * x) - cameraNew.x,
-												(16 * y) - cameraNew.y,
-												xTex,
-												yTex);
-					if ((mapCase.getN_banque() & Area.M_MOTIF_MASQUE)!=0) {
-						n_motif=mapCase.getN_motif_masque();
-						xTex=(n_motif % 16) * 16;
-						yTex=(n_motif / 16) * 16; //+1;
-						bank=mapCase.getN_banque_masque() & 63;
-						meshFORE[bank].updateTile( (16 * x) - cameraNew.x,
-												(16 * y) - cameraNew.y,
-												xTex,
-												yTex);
+					for (int x=0;x<Constantes.TILEENGINE_WIDTH;x++)
+					{
+						// Get corresponding case on the map
+						Case mapCase=theMap.get_mapcase(x,y+4);
+						if (mapCase != null) {
+							int n_motif=mapCase.getAnimatedMotif(compteur_animation);
+							int xTex=(n_motif % 16) * 16;
+							int yTex=(n_motif / 16) * 16;
+							int bank=mapCase.getN_banque() & 63;
+							if (bank<0 || bank>=Constantes.NB_MOTIFBANK) {
+								throw new RuntimeException("We got a big problem");
+							}
+							meshBACK[bank].updateTile( (16 * x) - cameraNew.x + offset.x ,
+														(16 * y) - cameraNew.y + offset.y,
+														xTex,
+														yTex);
+							if ((mapCase.getN_banque() & Area.M_MOTIF_MASQUE)!=0) {
+								n_motif=mapCase.getN_motif_masque();
+								xTex=(n_motif % 16) * 16;
+								yTex=(n_motif / 16) * 16; //+1;
+								bank=mapCase.getN_banque_masque() & 63;
+								meshFORE[bank].updateTile( (16 * x) - cameraNew.x + offset.x,
+														(16 * y) - cameraNew.y + offset.y,
+														xTex,
+														yTex);
+							}
+						}
 					}
 				}
 			}
-	
 			for (i=0;i<Constantes.NB_MOTIFBANK;i++) {
 				meshBACK[i].endInitialization();
 				meshFORE[i].endInitialization();

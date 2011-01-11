@@ -79,6 +79,8 @@ public class Area implements EasySerializable {
 
 	static public int lineSize = 128;	// Max-size of a map's line
 	
+	private Point offset;	// For scrolling map
+	
 	private int dim_x, dim_y;
 	private String name;
 	private Map<Integer, Case> mapdata;
@@ -108,6 +110,8 @@ public class Area implements EasySerializable {
 		
 		caseItem = new HashMap<Case, ElementDescription>();
 		respawnPoints = new ArrayList<Point>();
+		
+		offset = new Point(0, 0);
 	}
 
 	public Area(boolean p_outside) {
@@ -138,7 +142,7 @@ public class Area implements EasySerializable {
 	public void set_mapcase(int x, int y, Case c) {
 		mapdata.put(y * lineSize + x, c);
 	}
-
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// get_animatedAreacase
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -859,4 +863,12 @@ public class Area implements EasySerializable {
     	Case cas=get_mapcase(p_x, p_y);
     	return caseItem.get(cas);
     }
+
+	public Point getOffset() {
+		return offset;
+	}
+
+	public void setOffset(Point offset) {
+		this.offset = offset;
+	}
 }

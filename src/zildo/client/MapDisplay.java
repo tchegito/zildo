@@ -36,7 +36,8 @@ public class MapDisplay {
     private boolean capturing;	// TRUE=we capture screen (for scrolling map)
 	
     private Area currentMap;
-
+    private Area previousMap;
+    
     private int compteur_animation;			// clone from mapManagement (for now)
     
     public ForeBackController foreBackController=new ForeBackController();
@@ -179,5 +180,13 @@ public class MapDisplay {
 
 	public void setFocusedEntity(SpriteEntity p_entity) {
 		focused=p_entity;
+	}
+
+	public Area getPreviousMap() {
+		return previousMap;
+	}
+
+	public void setPreviousMap(Area p_previousMap) {
+		previousMap = p_previousMap;
 	}
 }
