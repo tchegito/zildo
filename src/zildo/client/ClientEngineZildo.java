@@ -249,14 +249,11 @@ public class ClientEngineZildo {
 					break;
 				case CHANGINGMAP_SCROLL_ASKED :
 					retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_CAPTURE;
-					filterCommand.active(BilinearFilter.class, false);
-					mapDisplay.setCapturing(true);
 					retEvent.wait = 1;
 					displayGUI = false;
 					break;
 				case CHANGINGMAP_SCROLL_CAPTURE :
 					//spriteEngine.captureScreen();
-					mapDisplay.setCapturing(false);
 					retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP;
 					displayGUI = false;
 					break;
@@ -269,8 +266,6 @@ public class ClientEngineZildo {
 						//		.displayPreviousMap(mapDisplay.getCamera());
 
 						retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL;
-						// Hide GUI sprites
-						filterCommand.active(BilinearFilter.class, true);
 					}
 					displayGUI = false;
 					break;
@@ -280,6 +275,7 @@ public class ClientEngineZildo {
 						retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLLOVER;
 						// Show GUI sprites back
 						displayGUI = true;
+						//mapDisplay.setPreviousMap(null);
 					}
 					break;
 			}

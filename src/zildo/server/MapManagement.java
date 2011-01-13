@@ -84,7 +84,7 @@ public class MapManagement {
 	
 		EngineZildo.dialogManagement.clearDialogs();
 	
-		EngineZildo.spriteManagement.clearSpritesWithoutZildo();
+		EngineZildo.spriteManagement.clearSpritesWithoutZildo(false);
 	
 	}
 	
@@ -98,11 +98,12 @@ public class MapManagement {
     public void loadMap(String p_mapname, boolean p_additive) {
         // Remove previous map
     	if (p_additive) {
-    		previousMap=currentMap;
+    		previousMap=currentMap;	// Keep previous map for the scrolling phasis
     	} else {
 	        if (currentMap != null) {
 	            this.deleteCurrentMap();
 	        }
+	        previousMap=null;
     	}
 
         // Adjust map according the quest diary
@@ -389,6 +390,10 @@ public class MapManagement {
 			int previousDimX=currentMap.getDim_x();
 			int previousDimY=currentMap.getDim_y();
 			boolean isAlongBorder=currentMap.isAlongBorder((int) zildo.getX(), (int) zildo.getY());
+			
+			if (isAlongBorder) {
+			    shiftPreviousMap(mapScrollAngle);
+			}
 			loadMap(newMapName, isAlongBorder);
 			
 			// 3/3 : location
@@ -414,24 +419,10 @@ public class MapManagement {
 					zildo.setX(8 - 16);
 					dest.x=(int) zildo.x +16;
 				}
-                zildo.setGhost(true);
-                zildo.setTarget(dest);
+                                zildo.setGhost(true);
+                                zildo.setTarget(dest);
 				zildo.finaliseComportement(EngineZildo.compteur_animation);
 				
-				// Shift the previous map to the right position, in order to have it
-				// sticked to the new one. So we calculate the shift coordinates.
-				Angle angleShift=Angle.rotate(mapScrollAngle, 2);
-				Point coords=angleShift.coords;
-				Area mapReference=currentMap;
-				switch (angleShift) {
-					case OUEST:
-					case NORD:
-						mapReference=previousMap;
-					default:
-				}
-				Point offset=new Point(coords.x * 16 * mapReference.getDim_x(),
-									   coords.y * 16 * mapReference.getDim_y());
-				previousMap.setOffset(offset);
 				return true;
 			} else {
 				zildo.setX((chPointTarget.getPx() & 127) * 16 + 16);
@@ -486,6 +477,26 @@ public class MapManagement {
 		return false;
 	}
 
+	private void shiftPreviousMap(Angle p_mapScrollAngle) {
+		// Shift the previous map to the right position, in order to have it
+		// sticked to the new one. So we calculate the shift coordinates.
+		Angle angleShift=Angle.rotate(p_mapScrollAngle, 2);
+		Point coords=angleShift.coords;
+		Area mapReference=currentMap;
+		switch (angleShift) {
+			case OUEST:
+			case NORD:
+				mapReference=previousMap;
+			default:
+		}
+		Point offset=new Point(coords.x * 16 * mapReference.getDim_x(),
+							   coords.y * 16 * mapReference.getDim_y());
+		previousMap.setOffset(offset);
+		
+		// And shift all entities (except Zildo) with same offset
+		EngineZildo.spriteManagement.translateEntitiesWithoutZildo(offset);
+	}
+	
 	private int normalizeX(int x) {
 		if (x<0) {
 			return 0;

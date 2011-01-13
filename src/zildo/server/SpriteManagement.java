@@ -458,7 +458,7 @@ public class SpriteManagement extends SpriteStore {
 	// -Clean the sort array
 	// -Reinitializes local camera
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void clearSpritesWithoutZildo() {
+	public void clearSpritesWithoutZildo(boolean p_schedule) {
 		// Get Zildo to avoid to remove it
 		Perso zildo = EngineZildo.persoManagement.getZildo();
 
@@ -483,18 +483,18 @@ public class SpriteManagement extends SpriteStore {
 				}
 				if (canDelete) {
 					listToRemove.add(entity);
-					entity = null;
 				}
 			}
 		}
 
 		for (SpriteEntity entity : listToRemove) {
+		    if (p_schedule) {
+			entity.dying=true;
+		    } else {
 			this.logger.info("Removing entity");
 			deleteSprite(entity);
+		    }
 		}
-
-		// Here we used to clear sort array
-
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -747,5 +747,12 @@ public class SpriteManagement extends SpriteStore {
 			}
 		}
 		return false;
+	}
+	
+	public void translateEntitiesWithoutZildo(Point p_offset) {
+	    for (SpriteEntity entity : spriteEntities) {
+		entity.x+=p_offset.x;
+		entity.y+=p_offset.y;
+	    }
 	}
 }

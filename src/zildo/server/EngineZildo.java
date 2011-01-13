@@ -203,6 +203,7 @@ public class EngineZildo {
             case FADEOUT_OVER:
             case CHANGINGMAP_SCROLL_WAIT_MAP:
             	if (p_event.chPoint != null) {
+            	    	spriteManagement.clearSpritesWithoutZildo(true);
 	                mapManagement.processChangingMap(p_event.chPoint);
 	                ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
 	                ClientEngineZildo.mapDisplay.setPreviousMap(EngineZildo.mapManagement.getPreviousMap());
