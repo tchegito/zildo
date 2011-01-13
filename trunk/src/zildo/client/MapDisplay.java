@@ -33,7 +33,6 @@ public class MapDisplay {
     private SpriteEntity focused;
 	
     private Angle scrollingAngle;
-    private boolean capturing;	// TRUE=we capture screen (for scrolling map)
 	
     private Area currentMap;
     private Area previousMap;
@@ -164,14 +163,6 @@ public class MapDisplay {
     	setCamera(movedCam);
         setTargetCamera(cam);
         scrollingAngle=p_angle;
-	}
-
-	public boolean isCapturing() {
-		return capturing;
-	}
-
-	public void setCapturing(boolean capturing) {
-		this.capturing = capturing;
 	}
 
 	public Angle getScrollingAngle() {

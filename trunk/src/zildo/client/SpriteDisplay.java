@@ -158,8 +158,6 @@ public class SpriteDisplay extends SpriteStore {
 					SpriteModel spr=entity.getSprModel();
 					entity.setScrX(entity.getAjustedX() - cameraNew.x - (spr.getTaille_x() >> 1));
 					entity.setScrY(entity.getAjustedY() - cameraNew.y - spr.getTaille_y());
-				} else if (entity.isZildo() && ClientEngineZildo.mapDisplay.isCapturing()) {
-					entity.setVisible(false);
 				}
 			}
 		}
