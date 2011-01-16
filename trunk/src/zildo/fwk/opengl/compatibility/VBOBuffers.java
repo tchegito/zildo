@@ -28,7 +28,7 @@ import org.lwjgl.BufferUtils;
 public class VBOBuffers {
 	
 	// As indices never changes, we just fix a maximum and use the generated array at start.
-	static final int maxIndices = 6 * 64 * 64;
+	static final int maxIndices = 2 * 6 * 64 * 64;
 	
 	int vertexBufferId;
 	int	normalBufferId;

@@ -117,7 +117,7 @@ public class PersoZildo extends Perso {
 		setAlerte(false);
 		setCompte_dialogue(0);
 	    setMoney(0);
-	    setCountKey(1);
+	    setCountKey(10);
 	    pushingSprite = null;
 
 	    Element bouclier = new Element(this);
@@ -940,8 +940,10 @@ public class PersoZildo extends Perso {
 	 * Zildo avance contre un SpriteEntity
 	 * @param object
 	 */
-	public void pushSomething(SpriteEntity object) {
-		pushingSprite=object;
+	public void pushSomething(Element object) {
+		if( object == null || object.isPushable()) {
+			pushingSprite=object;
+		}
 		if (pushingSprite != null && pushingSprite.getDesc().getBank() == SpriteBank.BANK_GEAR) {
 			((ElementGear) object).push(this);
 		}

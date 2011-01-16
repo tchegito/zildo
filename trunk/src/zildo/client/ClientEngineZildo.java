@@ -244,16 +244,9 @@ public class ClientEngineZildo {
 						// Changing map : 3/3 we unblock the player
 						retEvent.nature = ClientEventNature.NOEVENT;
 						retEvent.mapChange = false;
-
 					}
 					break;
 				case CHANGINGMAP_SCROLL_ASKED :
-					retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_CAPTURE;
-					retEvent.wait = 1;
-					displayGUI = false;
-					break;
-				case CHANGINGMAP_SCROLL_CAPTURE :
-					//spriteEngine.captureScreen();
 					retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP;
 					displayGUI = false;
 					break;
@@ -261,9 +254,6 @@ public class ClientEngineZildo {
 					if (mapDisplay.getTargetCamera() == null) {
 						mapDisplay.centerCamera();
 						mapDisplay.shiftForMapScroll(p_event.angle);
-
-						//spriteDisplay
-						//		.displayPreviousMap(mapDisplay.getCamera());
 
 						retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL;
 					}

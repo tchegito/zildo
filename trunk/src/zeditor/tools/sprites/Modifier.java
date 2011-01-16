@@ -160,7 +160,7 @@ public class Modifier {
 		LogManager.getLogManager().reset();
 		
         Game game = new Game(null, true);
-        Server server = new Server(game, true);
+        new Server(game, true);
 		for (File f : maps) {
 			String name=f.getName();
 			System.out.println("Processing "+name+"...");

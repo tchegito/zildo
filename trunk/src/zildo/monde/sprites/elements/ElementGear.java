@@ -21,6 +21,7 @@
 package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
+import zildo.monde.map.Point;
 import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
@@ -74,6 +75,11 @@ public class ElementGear extends Element {
 			}
 			count++;
 		}
-		//super.animate();
+	}
+	
+	public Point getCenter() {
+		super.getCenter();
+		center.y = (int) y - sprModel.getTaille_y();
+		return center;
 	}
 }

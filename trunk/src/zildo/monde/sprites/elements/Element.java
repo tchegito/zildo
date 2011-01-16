@@ -127,12 +127,6 @@ public class Element extends SpriteEntity {
 	public void finalize()
 	{
 		logger.log(Level.INFO, "Deleting Element");
-	
-		// IMPORTANT : We shouldn't remove linked perso, because it would be a double delete !
-		if (linkedPerso != null) {
-			// Remove linked entity
-			//EngineZildo::spriteManagement.deleteSprite(linkedPerso);
-		}
 		linkedPerso=null;
 	
 	}
@@ -283,6 +277,7 @@ public class Element extends SpriteEntity {
                 } else if (!isGoodies() && ((z < 4 && vz != 0.0f) || colli)) {
                     if (!beingCollided(null)) {
                         // Le sprite doit 'mourir'
+                    	fall();
                         dying=true;
                     }
                 } else if (z > 28 && nSpr == 6) {
@@ -580,7 +575,7 @@ public class Element extends SpriteEntity {
     public Collision getCollision() {
         return null;
     }
-    
+
 	public void setFx(float fx) {
 		this.fx = fx;
 	}
@@ -626,7 +621,7 @@ public class Element extends SpriteEntity {
         shadow.linkedPerso=this;
         EngineZildo.spriteManagement.spawnSprite(shadow);		
 	}
-	
+
 	@Override
 	public String toString() {
 		String s=x+", "+y;

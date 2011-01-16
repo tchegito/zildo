@@ -106,4 +106,6 @@ public class ElementStars extends Element {
 		}
 		count++;
 	}
+	
+	public void fall() {}
 }
