@@ -553,7 +553,6 @@ public class SpriteManagement extends SpriteStore {
 									&& py <= (y + sy)) {
 								// Notify that Zildo is pushing an entity
 								if (!isGoodies && isZildo) {
-									System.out.println("push");
 									((PersoZildo) elem).pushSomething(element);
 								}
 								found=true;
