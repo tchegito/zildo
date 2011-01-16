@@ -55,11 +55,13 @@ public class SpriteManagement extends SpriteStore {
 
 	EnumSet<ElementDescription> pickableSprites = EnumSet.of(ElementDescription.BOMB);
 	
-	boolean spriteUpdating;
+	boolean spriteUpdating;	// TRUE=new sprites are added to SpriteEntitiesToAdd / FALSE=regular list
 
 	List<SpriteEntity> clientSpecificEntities;
 	List<SpriteEntity> spriteEntitiesToAdd; // Used for sprites created during
 											// the animation phase
+	List<SpriteEntity> suspendedEntities;
+	
 	/** See {@link #updateSprites()} **/
 	//
 	Map<Integer, SpriteEntity> backupEntities; // To identify entities which
@@ -72,6 +74,7 @@ public class SpriteManagement extends SpriteStore {
 
 		clientSpecificEntities = new ArrayList<SpriteEntity>();
 		spriteEntitiesToAdd = new ArrayList<SpriteEntity>();
+		suspendedEntities = new ArrayList<SpriteEntity>();
 		backupEntities = new HashMap<Integer, SpriteEntity>();
 	}
 
@@ -385,30 +388,32 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : spriteEntities) {
 			if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
 				Perso perso = (Perso) entity;
+				int compt=EngineZildo.compteur_animation % (3 * 20);
 				if (!p_blockMoves || perso.getInfo() == PersoInfo.ZILDO) {
 					// Animate persos
-					perso.animate(EngineZildo.compteur_animation % (3 * 20));
-					// Get sprite model
-					SpriteModel spr = getSpriteBank(entity.getNBank())
-							.get_sprite(perso.getNSpr());
-					perso.setSprModel(spr);
-					perso.manageCollision();
+					perso.animate(compt);
+				}
+				perso.finaliseComportement(compt);
+				// Get sprite model
+				SpriteModel spr = getSpriteBank(entity.getNBank())
+						.get_sprite(perso.getNSpr());
+				perso.setSprModel(spr);
+				perso.manageCollision();
 
-					if (!perso.isZildo()) {
-						// Non-zildo sprite haven't same way to display
-						// correctly (bad...)
-						perso.setAjustedX(perso.getAjustedX()
-								- (spr.getTaille_x() / 2));
-						perso.setAjustedY(perso.getAjustedY()
-								- (spr.getTaille_y() - 3));
-					}
+				if (!perso.isZildo()) {
+					// Non-zildo sprite haven't same way to display
+					// correctly (bad...)
+					perso.setAjustedX(perso.getAjustedX()
+							- (spr.getTaille_x() / 2));
+					perso.setAjustedY(perso.getAjustedY()
+							- (spr.getTaille_y() - 3));
 				}
 			}
 		}
 
 		List<SpriteEntity> toDelete = new ArrayList<SpriteEntity>();
 		for (Iterator<SpriteEntity> it = spriteEntities.iterator(); it
-				.hasNext();) {
+				.hasNext() && !p_blockMoves;) {
 			SpriteEntity entity = it.next();
 			if (toDelete.contains(entity)) {
 				continue; // It's a dead one
@@ -458,7 +463,7 @@ public class SpriteManagement extends SpriteStore {
 	// -Clean the sort array
 	// -Reinitializes local camera
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void clearSpritesWithoutZildo(boolean p_schedule) {
+	public void clearSpritesWithoutZildo() {
 		// Get Zildo to avoid to remove it
 		Perso zildo = EngineZildo.persoManagement.getZildo();
 
@@ -488,12 +493,8 @@ public class SpriteManagement extends SpriteStore {
 		}
 
 		for (SpriteEntity entity : listToRemove) {
-		    if (p_schedule) {
-			entity.dying=true;
-		    } else {
 			this.logger.info("Removing entity");
 			deleteSprite(entity);
-		    }
 		}
 	}
 
@@ -530,26 +531,21 @@ public class SpriteManagement extends SpriteStore {
 				int sy = sprModel.getTaille_y();
 				if (isGoodies || isBlockable) {
 					boolean canDealWith = false;
+					Point center=entity.getCenter();
 					if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
 						// The elements
 						element = (Element) entity;
 						if (element.getLinkedPerso() == null
 								|| element.getLinkedPerso() != elem) {
 							canDealWith = true;
-							x = (int) element.getX() - sx / 2;
-							y = (int) element.getY() - sy / 2;
 						}
 					} else {
-						// The entities
-						x = (int) entity.x - sx / 2; // ScrX() +
-											// mapManagement.getCamerax();
-						y = (int) entity.y - sy / 2; // ScrY() +
-											// mapManagement.getCameray();
 						canDealWith = true;
 					}
 					if (canDealWith) {
 						// Test collision with element
-
+						x = center.x;
+						y = center.y;
 						for (int j = 0; j < 4 && !found; j++) {
 							int px = tx + 4 * tab_add[j];
 							int py = ty + 2 * tab_add[j + 1];
@@ -557,7 +553,8 @@ public class SpriteManagement extends SpriteStore {
 									&& py <= (y + sy)) {
 								// Notify that Zildo is pushing an entity
 								if (!isGoodies && isZildo) {
-									((PersoZildo) elem).pushSomething(entity);
+									System.out.println("push");
+									((PersoZildo) elem).pushSomething(element);
 								}
 								found=true;
 								// Is it a goodies ?
@@ -751,8 +748,32 @@ public class SpriteManagement extends SpriteStore {
 	
 	public void translateEntitiesWithoutZildo(Point p_offset) {
 	    for (SpriteEntity entity : spriteEntities) {
-		entity.x+=p_offset.x;
-		entity.y+=p_offset.y;
+	    	if (!entity.clientSpecific && !entity.isZildo()) {
+	    		entity.x+=p_offset.x;
+	    		entity.y+=p_offset.y;
+	    		entity.setAjustedX(entity.getAjustedX() + p_offset.x);
+	    		entity.setAjustedY(entity.getAjustedY() + p_offset.y);
+	    	}
 	    }
+	}
+	
+	public void notifyLoadingMap(boolean p_loading) {
+		spriteUpdating=p_loading;
+		if (!p_loading) {
+			// Loading is over. We have to keep all current entities in order to delete
+			// them at the end of the scroll.
+			suspendedEntities.addAll(spriteEntities);
+			spriteEntities.addAll(spriteEntitiesToAdd);
+			spriteEntitiesToAdd.clear();
+		}
+	}
+	
+	public void clearSuspendedEntities() {
+		for (SpriteEntity entity : suspendedEntities) {
+			if (entity != null && !entity.isZildo()) {
+				deleteSprite(entity);
+			}
+		}
+		suspendedEntities.clear();
 	}
 }

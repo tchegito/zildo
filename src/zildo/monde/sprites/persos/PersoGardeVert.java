@@ -55,6 +55,8 @@ public class PersoGardeVert extends PersoNJ {
 	
 	@Override
 	public void finaliseComportement(int compteur_animation) {
+		super.finaliseComportement(compteur_animation);
+		
 		// On affiche la tête du garde vert
 		Iterator<Element> it=this.persoSprites.iterator();
 		Element teteGarde=it.next();

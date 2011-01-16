@@ -137,11 +137,8 @@ public class PersoNJ extends Perso {
 	// Move a PNJ to his location (dx,dy) set by determineDestination()
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public void animate(int compteur_animation)
-	{
+	public void animate(int compteur_animation) {
 		if (getPv() == 0 || getDialoguingWith() != null) {
-			this.setAjustedX((int) getX());
-			this.setAjustedY((int) getY());
 			return;
 		}
 	
@@ -317,10 +314,6 @@ public class PersoNJ extends Perso {
 			}
 		}
 		
-		this.setAjustedX((int) x);
-		this.setAjustedY((int) y);
-		
-		finaliseComportement(compteur_animation);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -359,6 +352,9 @@ public class PersoNJ extends Perso {
 	@Override
 	public void finaliseComportement(int compteur_animation) {
 	
+		this.setAjustedX((int) x);
+		this.setAjustedY((int) y);
+
 		final int[] seqp={0,2,0,1}; //Persos à 3 sprites
 	
 		int add_spr=0;

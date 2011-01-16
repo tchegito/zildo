@@ -44,8 +44,8 @@ public class Constantes {
 														// on a row
 	public static final int TILEENGINE_HEIGHT = 64;		// Max Number of tiles
 														// on a column
-	// Total vertices on the tile map
-	public static final int TILEENGINE_MAXPOINTS = 4 * (TILEENGINE_WIDTH * TILEENGINE_HEIGHT);	
+	// Total vertices on the tile map (4 vertices per tile, double it for two map at a same time)
+	public static final int TILEENGINE_MAXPOINTS = 2 * 4 * (TILEENGINE_WIDTH * TILEENGINE_HEIGHT);	
 
 	// Tile Banks
 	public static final	int NB_MOTIFBANK = TileEngine.tileBankNames.length;

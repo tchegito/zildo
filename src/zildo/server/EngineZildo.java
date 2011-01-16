@@ -25,6 +25,7 @@ import java.util.Collection;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
+import zildo.fwk.net.packet.EventPacket.EventType;
 import zildo.monde.Game;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.ChainingPoint;
@@ -138,7 +139,7 @@ public class EngineZildo {
 			if (game.multiPlayer) {
 				multiplayerManagement.render();
 			} else {	// Block everything in single player
-				block=blockKeyboard;
+				block=blockKeyboard || state.event.nature == ClientEventNature.CHANGINGMAP_SCROLL;
 			}
 			
 			// If client has pressed keys and he's not blocked, we manage them, then clear.
@@ -203,7 +204,6 @@ public class EngineZildo {
             case FADEOUT_OVER:
             case CHANGINGMAP_SCROLL_WAIT_MAP:
             	if (p_event.chPoint != null) {
-            	    	spriteManagement.clearSpritesWithoutZildo(true);
 	                mapManagement.processChangingMap(p_event.chPoint);
 	                ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
 	                ClientEngineZildo.mapDisplay.setPreviousMap(EngineZildo.mapManagement.getPreviousMap());
@@ -237,6 +237,7 @@ public class EngineZildo {
                 break;
             case CHANGINGMAP_SCROLLOVER:
             	persoManagement.getZildo().setGhost(false);
+            	spriteManagement.clearSuspendedEntities();
             	retEvent.nature = ClientEventNature.NOEVENT;
             	retEvent.mapChange = false;
             	break;

@@ -24,6 +24,7 @@ import zildo.fwk.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.monde.map.Point;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
@@ -59,7 +60,7 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	public float x,y,z;	// Real position located by center (z is never initialized with entities)
     private int ajustedX,ajustedY;
 	private int scrX,scrY;	// Screen position (so with camera adjustment)
-	private SpriteModel sprModel;	// Reference to the sprite being rendered
+	protected SpriteModel sprModel;	// Reference to the sprite being rendered
 	public int nSpr;			// Pour les perso devient une interprétation de 'angle' et 'pos_seqsprite'
 	public int nBank;
 	protected SpriteDescription desc;	// Interpretation of nSpr and nBank
@@ -68,6 +69,7 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	public boolean visible;		// TRUE=visible FALSE=invisible
 	private boolean foreground;	// Drawn at last in display sequence. So always on foreground
 	public boolean dying;		// TRUE=we must remove them
+	protected Point center=new Point();	// Defaults : 1) entity : [x/2, y] 2) element : [x/2, y/2]
 	
 	private EngineFX specialEffect;		// Utilisé pour changer la couleur d'un garde par exemple
 	public int reverse;		// Combination of REVERSE_HORIZONTAL/VERTICAL (or 0)
@@ -114,7 +116,16 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 
 	public void setSprModel(SpriteModel sprModel) {
 		this.sprModel = sprModel;
+    }
+    
+	public void calculateCenter() {
 	}
+	
+    public Point getCenter() {
+		center.x=(int) x-sprModel.getTaille_x() / 2;
+        center.y=(int) y-sprModel.getTaille_y() / 2;
+    	return center;
+    }
     
 	public int getNSpr() {
 		return nSpr;

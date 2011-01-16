@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import zildo.fwk.awt.ZildoScrollablePanel;
-import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.monde.map.Point;
@@ -66,8 +65,6 @@ public class SpriteDisplay extends SpriteStore {
 	
 	// We use a map to ease the access to an entity with his ID
 	Map<Integer, SpriteEntity> mapEntities=new HashMap<Integer, SpriteEntity>();
-	
-	SpriteEntity previousMapSprite;
 	
 	// ZEditor only
 	public ForeBackController foreBackController=new ForeBackController();
@@ -333,19 +330,5 @@ public class SpriteDisplay extends SpriteStore {
 	
 	public void setZildoId(int p_zildoId) {
 		zildoId=p_zildoId;
-	}
-	
-	public void displayPreviousMap(Point p_cameraLocation) {
-
-		if (previousMapSprite != null) {
-			deleteSprite(previousMapSprite);
-		}
-		previousMapSprite=new SpriteEntity(p_cameraLocation.x, p_cameraLocation.y, false);
-		previousMapSprite.setNSpr(0);
-		previousMapSprite.setNBank(SpriteBank.BANK_COPYSCREEN);
-		previousMapSprite.setVisible(true);
-		previousMapSprite.setAjustedX(p_cameraLocation.x);
-		previousMapSprite.setAjustedY(p_cameraLocation.y);
-		spawnSprite(previousMapSprite);		
 	}
 }

@@ -184,8 +184,6 @@ public class SpriteStore {
 	public void deleteSprite(SpriteEntity entity)
 	{
 		if (entity != null) {
-			entity.fall();
-			
 			spriteEntities.remove(entity);
 			if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
 				Element element=(Element)entity;
