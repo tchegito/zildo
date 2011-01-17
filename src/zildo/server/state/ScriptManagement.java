@@ -20,6 +20,7 @@
 
 package zildo.server.state;
 
+import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
 import java.util.List;
 
@@ -226,5 +227,27 @@ public class ScriptManagement {
 	public void openChest(String p_mapName, Point p_location) {
 		String questName=p_mapName+p_location.toString();
 		accomplishQuest(questName, false);
+	}
+	
+	/**
+	 * Build a quest's keyname about a chaining point between 2 maps.
+	 * @param p_mapName
+	 * @param p_ch
+	 * @return String
+	 */
+	private String buildKeyDoor(String p_mapName, ChainingPoint p_ch) {
+		String map2=p_ch.getMapname();
+		String key=p_mapName.compareTo(map2) < 0 ? p_mapName+map2 : map2+p_mapName;
+		key+=p_ch.getOrderX()+p_ch.getOrderY();
+
+		return key;
+	}
+	
+	public boolean isOpenedDoor(String p_mapName, ChainingPoint p_ch) {
+		return isQuestDone(buildKeyDoor(p_mapName, p_ch));
+	}
+	
+	public void openDoor(String p_mapName, ChainingPoint p_ch) {
+		accomplishQuest(buildKeyDoor(p_mapName, p_ch), false);
 	}
 }

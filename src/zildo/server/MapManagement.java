@@ -628,7 +628,7 @@ public class MapManagement {
 	/**
 	 * Return a respawn position, at an empty place.
 	 * 
-	 * @return
+	 * @return Point
 	 */
 	public Point getRespawnPosition() {
 		List<Point> points = new ArrayList<Point>();
@@ -661,10 +661,6 @@ public class MapManagement {
 		if (currentMap != null) {
 			currentMap.update();
 		}
-	}
-
-	public void translateMap(Point p_shift) {
-
 	}
 
 	public Area getPreviousMap() {
