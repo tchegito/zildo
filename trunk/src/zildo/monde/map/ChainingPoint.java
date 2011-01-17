@@ -48,6 +48,8 @@ public class ChainingPoint {
 	private int orderY;
 	private boolean done;	// Means that Zildo has been detected going through this. (useful for stairs)
 	
+	private Zone zone;
+	
 	public String getMapname() {
 		return mapname;
 	}
@@ -62,6 +64,7 @@ public class ChainingPoint {
 
 	public void setPx(short px) {
 		this.px = px;
+		zone = null;
 	}
 
 	public short getPy() {
@@ -70,6 +73,7 @@ public class ChainingPoint {
 
 	public void setPy(short py) {
 		this.py = py;
+		zone = null;
 	}
 
 	public int getOrderX() {
@@ -208,23 +212,26 @@ public class ChainingPoint {
 	 * @return
 	 */
 	public Zone getZone() {
-		Area map=EngineZildo.mapManagement.getCurrentMap();
-		Point p1=new Point(px & 63, py & 63);
-		Point p2=new Point(2, 1);
-		if (isBorder()) {
-			if (p1.x == 0 || p1.x == map.getDim_x()-1) {
-				p1.y=0;
-				p2.y=map.getDim_y();
+		if (zone == null) {
+			Area map=EngineZildo.mapManagement.getCurrentMap();
+			Point p1=new Point(px & 63, py & 63);
+			Point p2=new Point(2, 1);
+			if (isBorder()) {
+				if (p1.x == 0 || p1.x == map.getDim_x()-1) {
+					p1.y=0;
+					p2.y=map.getDim_y();
+					p2.x=1;
+				} else {
+					p1.x=0;
+					p2.x=map.getDim_x();
+				}
+			} else if (isVertical()) {
 				p2.x=1;
-			} else {
-				p1.x=0;
-				p2.x=map.getDim_x();
+				p2.y=2;
 			}
-		} else if (isVertical()) {
-			p2.x=1;
-			p2.y=2;
+			zone = new Zone(16*p1.x, 16*p1.y, 16*p2.x, 16*p2.y);
 		}
-		return new Zone(16*p1.x, 16*p1.y, 16*p2.x, 16*p2.y);		
+		return zone;
 	}
 	
 	/**

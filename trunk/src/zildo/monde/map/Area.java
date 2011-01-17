@@ -39,6 +39,7 @@ import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
@@ -640,6 +641,12 @@ public class Area implements EasySerializable {
 							}
 						default:	// else, show it as a regular element
 			                SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
+							if (desc == GearDescription.GEAR_GREENDOOR) {
+								ChainingPoint ch=map.getCloseChainingPoint(ax, ay);
+								if (EngineZildo.scriptManagement.isOpenedDoor(map.getName(), ch)) {
+									break;
+								}
+							}
 							spriteManagement.spawnSprite(desc, x, y, false, reverse);
 							break;
 					}
@@ -870,5 +877,22 @@ public class Area implements EasySerializable {
 
 	public void setOffset(Point offset) {
 		this.offset = offset;
+	}
+	
+	public ChainingPoint getCloseChainingPoint(int p_px, int p_py) {
+		List<ChainingPoint> points=getListPointsEnchainement();
+		for (ChainingPoint ch : points) {
+		    Zone z=ch.getZone();
+		    for (Angle a : Angle.values()) {
+		    	if (!a.isDiagonal()) {
+			    	int px=p_px + a.coords.x;
+			    	int py=p_py + a.coords.y;
+				    if (z.isInto(px, py)) {
+				    	return ch;
+				    }
+		    	}
+		    }
+		}
+		return null;
 	}
 }

@@ -21,6 +21,8 @@
 package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
+import zildo.monde.map.Area;
+import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -55,6 +57,14 @@ public class ElementGear extends Element {
 					acting=true;
 					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlock, this);
 					p_perso.setCountKey(--keys);
+					
+					// Trigger
+					Area map=EngineZildo.mapManagement.getCurrentMap();
+					String mapName=map.getName();
+					ChainingPoint ch=map.getCloseChainingPoint((int) p_perso.x, (int) p_perso.y);
+					if (ch != null) {
+						EngineZildo.scriptManagement.openDoor(mapName, ch);
+					}
 				}
 				break;
 			}
