@@ -944,7 +944,7 @@ public class PersoZildo extends Perso {
 		if( object == null || object.isPushable()) {
 			pushingSprite=object;
 		}
-		if (pushingSprite != null && pushingSprite.getDesc().getBank() == SpriteBank.BANK_GEAR) {
+		if (object != null && object.getDesc().getBank() == SpriteBank.BANK_GEAR) {
 			((ElementGear) object).push(this);
 		}
 	}
