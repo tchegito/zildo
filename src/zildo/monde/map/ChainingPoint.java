@@ -211,19 +211,18 @@ public class ChainingPoint {
 	 * Get the range in pixel coordiantes taken for the point.
 	 * @return
 	 */
-	public Zone getZone() {
+	public Zone getZone(Area p_map) {
 		if (zone == null) {
-			Area map=EngineZildo.mapManagement.getCurrentMap();
 			Point p1=new Point(px & 63, py & 63);
 			Point p2=new Point(2, 1);
 			if (isBorder()) {
-				if (p1.x == 0 || p1.x == map.getDim_x()-1) {
+				if (p1.x == 0 || p1.x == p_map.getDim_x()-1) {
 					p1.y=0;
-					p2.y=map.getDim_y();
+					p2.y=p_map.getDim_y();
 					p2.x=1;
 				} else {
 					p1.x=0;
-					p2.x=map.getDim_x();
+					p2.x=p_map.getDim_x();
 				}
 			} else if (isVertical()) {
 				p2.x=1;

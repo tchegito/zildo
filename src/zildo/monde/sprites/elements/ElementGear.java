@@ -58,10 +58,13 @@ public class ElementGear extends Element {
 					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlock, this);
 					p_perso.setCountKey(--keys);
 					
-					// Trigger
+					// Trigger door
 					Area map=EngineZildo.mapManagement.getCurrentMap();
 					String mapName=map.getName();
-					ChainingPoint ch=map.getCloseChainingPoint((int) p_perso.x, (int) p_perso.y);
+					// Get the map coordinates in front of Zildo (with his angle)
+					int ax=(int) p_perso.x / 16 + p_perso.angle.coords.x;
+					int ay=(int) p_perso.y / 16 + p_perso.angle.coords.y;
+					ChainingPoint ch=map.getCloseChainingPoint(ax, ay);
 					if (ch != null) {
 						EngineZildo.scriptManagement.openDoor(mapName, ch);
 					}
