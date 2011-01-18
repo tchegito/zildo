@@ -249,7 +249,6 @@ public class Area implements EasySerializable {
 				// Area's borders
 				border = isAlongBorder((int) x, (int) y);
 				if (chPoint.isCollide(ax, ay, border)) {
-					addChainingContextInfos(chPoint);
 					candidates.add(chPoint);
 				}
 			}
@@ -275,23 +274,25 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Fill the given ChainingPoint with two extra infos: 'orderX' and 'orderY'
 	// /////////////////////////////////////////////////////////////////////////////////////
-	void addChainingContextInfos(ChainingPoint chPoint) {
-		int orderX = 0;
-		int orderY = 0;
-		// We're gonna get a sort number in each coordinate for all chaining point
-		// referring to the same Area.
-		for (ChainingPoint chP : listChainingPoint) {
-			if (chP.getMapname().equals(chPoint.getMapname())) {
-				if (chP.getPx() <= chPoint.getPx()) {
-					orderX++;
-				}
-				if (chP.getPy() <= chPoint.getPy()) {
-					orderY++;
+	void addChainingContextInfos() {
+		for (ChainingPoint ch : listChainingPoint) {
+			int orderX = 0;
+			int orderY = 0;
+			// We're gonna get a sort number in each coordinate for all chaining point
+			// referring to the same Area.
+			for (ChainingPoint chP : listChainingPoint) {
+				if (chP.getMapname().equals(ch.getMapname())) {
+					if (chP.getPx() <= ch.getPx()) {
+						orderX++;
+					}
+					if (chP.getPy() <= ch.getPy()) {
+						orderY++;
+					}
 				}
 			}
+			ch.setOrderX(orderX);
+			ch.setOrderY(orderY);
 		}
-		chPoint.setOrderX(orderX);
-		chPoint.setOrderY(orderY);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -308,7 +309,6 @@ public class Area implements EasySerializable {
 					} else {
 						// Get the right one, because there is several connections between
 						// the two Areas.
-						addChainingContextInfos(chPoint);
 						if (chPoint.getOrderX() == orderX && chPoint.getOrderY() == orderY) {
 							return chPoint;
 						}
@@ -576,7 +576,6 @@ public class Area implements EasySerializable {
 		// La map
 		for (int i = 0; i < map.getDim_y(); i++)
 			for (int j = 0; j < map.getDim_x(); j++) {
-				// System.out.println("x="+j+" y="+i);
 				Case temp = new Case();
 				temp.setN_motif(p_buffer.readUnsignedByte());
 				temp.setN_banque(p_buffer.readUnsignedByte());
@@ -611,6 +610,8 @@ public class Area implements EasySerializable {
 				map.addChainingPoint(pe);
 			}
 		}
+		// Compute chaining points
+		map.addChainingContextInfos();
 
 		// Les sprites
 		if (n_sprites != 0) {
@@ -643,7 +644,7 @@ public class Area implements EasySerializable {
 			                SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
 							if (desc == GearDescription.GEAR_GREENDOOR) {
 								ChainingPoint ch=map.getCloseChainingPoint(ax, ay);
-								if (EngineZildo.scriptManagement.isOpenedDoor(map.getName(), ch)) {
+								if (ch != null && EngineZildo.scriptManagement.isOpenedDoor(map.getName(), ch)) {
 									break;
 								}
 							}
@@ -879,15 +880,21 @@ public class Area implements EasySerializable {
 		this.offset = offset;
 	}
 	
+	/**
+	 * Returns the closest chaining point from given map-coordinates.
+	 * @param p_px int in range 0..63
+	 * @param p_py int in range 0..63
+	 * @return ChainingPoint
+	 */
 	public ChainingPoint getCloseChainingPoint(int p_px, int p_py) {
 		List<ChainingPoint> points=getListPointsEnchainement();
 		for (ChainingPoint ch : points) {
-		    Zone z=ch.getZone();
+		    Zone z=ch.getZone(this);
 		    for (Angle a : Angle.values()) {
 		    	if (!a.isDiagonal()) {
 			    	int px=p_px + a.coords.x;
 			    	int py=p_py + a.coords.y;
-				    if (z.isInto(px, py)) {
+				    if (z.isInto(16*px, 16*py)) {
 				    	return ch;
 				    }
 		    	}

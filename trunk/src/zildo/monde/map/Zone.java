@@ -87,7 +87,7 @@ public class Zone {
 	 * @return boolean
 	 */
 	public boolean isInto(int px, int py) {
-	    return px > x1 && py > y1 && px <= (x1+x2) && py <= (y1+y2);
+	    return px >= x1 && py >= y1 && px <= (x1+x2) && py <= (y1+y2);
 	}
 	
 	public String toString() {

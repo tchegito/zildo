@@ -225,10 +225,11 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		Point p=new Point(0, 0);
 		ChainingPoint ch=null;
 		if (p_fromChangingPoint != null) {
-			ch=mapManagement.getCurrentMap().getTarget(previousMapName, 0, 0);
+			Area map = mapManagement.getCurrentMap();
+			ch=map.getTarget(previousMapName, 0, 0);
 			if (ch != null) {
 			    	// Center view on the chaining point
-				Zone z=ch.getZone();
+				Zone z=ch.getZone(map);
 				p.x=z.x1 - ZildoScrollablePanel.viewSizeX / 2;
 				p.y=z.y1 - ZildoScrollablePanel.viewSizeY / 2;
 			}
@@ -277,9 +278,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    }
 	    switch (kind) {
 	    case CHAININGPOINT:
+	    	Area map=EngineZildo.mapManagement.getCurrentMap();
 			List<ChainingPoint> points=EngineZildo.mapManagement.getCurrentMap().getListPointsEnchainement();
 			for (ChainingPoint ch : points) {
-			    Zone z=ch.getZone();
+			    Zone z=ch.getZone(map);
 			    if (z.isInto(p.x, p.y)) {
 			    	manager.setChainingPointSelection(new ChainingPointSelection(ch));
 			    	return;

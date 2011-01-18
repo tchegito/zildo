@@ -181,7 +181,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			Vector4f col=colChainingPointSelected;
 			col.w=sin;
 			for (ChainingPoint ch : chaining) {
-				Zone p=ch.getZone();
+				Zone p=ch.getZone(map);
 			    ortho.boxv(p.x1 - shift.x, p.y1 - shift.y, 
 			    		   p.x2,                p.y2, 0, colChainingPoint);
 				if (selected != null && selected ==ch) {

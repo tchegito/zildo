@@ -67,4 +67,8 @@ public class QuestElement extends AnyElement {
 	public boolean isTriggersBoth() {
 		return both;
 	}
+	
+	public String toString() {
+		return name + "\ntriggers="+triggers+"\nactions="+actions;
+	}
 }
