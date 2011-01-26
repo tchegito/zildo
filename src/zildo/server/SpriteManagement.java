@@ -388,7 +388,7 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : spriteEntities) {
 			if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
 				Perso perso = (Perso) entity;
-				int compt=EngineZildo.compteur_animation % (3 * 20);
+				int compt=EngineZildo.compteur_animation; // % (3 * 20);
 				if (!p_blockMoves || perso.getInfo() == PersoInfo.ZILDO) {
 					// Animate persos
 					perso.animate(compt);

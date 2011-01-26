@@ -66,6 +66,7 @@ public class Modifier {
         //new Modifier().saveGears();
         //new Modifier().saveAllMaps();
         //new Modifier().generateImg();
+        //new Modifier().fixZildo();
     }
      
      public void generateImg() {
@@ -145,6 +146,16 @@ public class Modifier {
         bankIn.removeSpr(124);
         bankIn.saveBank();
         bankOut.saveBank();
+    }
+
+    public void fixZildo() {
+        SpriteBankEdit bankIn=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO));
+        bankIn.loadImage("link3b", COLOR_BLUE);
+        int pos=bankIn.getNSprite();
+        bankIn.addSprFromImage(pos,   67, 70, 16, 8);
+        bankIn.addSprFromImage(pos+1, 67, 79, 16, 9);
+        bankIn.addSprFromImage(pos+2, 67, 89, 16, 8);
+        bankIn.saveBank();
     }
 
     public void saveAllMaps() {

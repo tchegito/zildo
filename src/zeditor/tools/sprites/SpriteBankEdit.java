@@ -82,7 +82,7 @@ public class SpriteBankEdit extends SpriteBank {
 	}
     
     public void saveBank() {
-        EasyBuffering buffer=new EasyBuffering();
+        EasyBuffering buffer=new EasyBuffering(80000);
         for (int i=0;i<nSprite;i++) {
             SpriteModel model=models.get(i);
             buffer.put((byte) model.getTaille_x());

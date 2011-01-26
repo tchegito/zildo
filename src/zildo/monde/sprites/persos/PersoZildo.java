@@ -161,6 +161,8 @@ public class PersoZildo extends Perso {
 		}
 		quadDuration=0;
 
+		inWater = false;
+		inDirt = false;
     }
 	
 	@Override
@@ -447,7 +449,7 @@ public class PersoZildo extends Perso {
 	
         // Default : invisible
         ombre.setVisible(false);
-        piedsMouilles.setVisible(inWater);
+        piedsMouilles.setVisible(inWater || inDirt);
         bouclier.setVisible(false);
 
         if (isQuadDamaging()) {
@@ -580,7 +582,13 @@ public class PersoZildo extends Perso {
 		piedsMouilles.setX(x+ (angle.isVertical() || angle==Angle.OUEST ? 1 : 0));
 		piedsMouilles.setY(y+9 + 1);
 		piedsMouilles.setZ(3);
-		piedsMouilles.setNSpr(100 + (compteur_animation / 6) % 3);
+		piedsMouilles.setAddSpr((compteur_animation / 6) % 3);
+		if (inWater) {
+			piedsMouilles.setNSpr(100);
+		} else if (inDirt) {
+			piedsMouilles.setNSpr(120);
+			piedsMouilles.setY(piedsMouilles.getY() - 3);
+		}
 		piedsMouilles.setForeground(false);
 		
 		touche=(mouvement==MouvementZildo.TOUCHE || zildo.getCompte_dialogue()!=0);

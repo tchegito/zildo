@@ -1,7 +1,6 @@
 package zildo.monde.sprites.desc;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
@@ -10,7 +9,16 @@ import zildo.monde.sprites.persos.Perso.PersoInfo;
 public class ZPersoLibrary extends ArrayList<SpriteDescription> {
 
 	public ZPersoLibrary() {
-		addAll(Arrays.asList(PersoDescription.values()));
+		for (PersoDescription desc : PersoDescription.values()) {
+			switch (desc) {
+			case ARME_EPEE:
+			case ARME_LANCE:
+			case ARC:
+				break;
+			default:
+				add(desc);
+			}
+		}
 	}
 	
 	/**
