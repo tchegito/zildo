@@ -287,13 +287,13 @@ public class PersoNJ extends Perso {
 								walkTile(true);
 
 								// suite_mouvement
-								if (quel_deplacement.equals(MouvementPerso.SCRIPT_ELECTRIQUE)) {
+								if (quel_deplacement == MouvementPerso.SCRIPT_ELECTRIQUE) {
 									angle=Angle.NORD;
 						
-								} else if (quel_deplacement.equals(MouvementPerso.SCRIPT_ABEILLE)) {
+								} else if (quel_deplacement == MouvementPerso.SCRIPT_ABEILLE) {
 									angle=Angle.fromInt(angle.value & 2);
 								}
-								if (!quel_deplacement.equals(MouvementPerso.SCRIPT_VOLESPECTRE)) {
+								if (quel_deplacement != MouvementPerso.SCRIPT_VOLESPECTRE) {
 									// Collision ?
 									if (EngineZildo.mapManagement.collide((int) getX(),(int) getY(),this)) {
 										this.setX ( sx);
@@ -323,7 +323,7 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void initPersoFX() {
-		if (getQuel_spr().equals(PersoDescription.GARDE_CANARD)) {	// Guard
+		if (getQuel_spr() == PersoDescription.GARDE_CANARD) {	// Guard
 			String str=getEffect() != null ? getEffect() : getNom();
 			if ("jaune".equals(str)) {
 				setSpecialEffect(EngineFX.GUARD_YELLOW);
@@ -395,7 +395,7 @@ public class PersoNJ extends Perso {
 			case SORCIER_CAGOULE:
 			case VIEUX_SAGE2:
 				//Persos toujours de face, à 2 sprites seulement
-				add_spr=(compteur_animation / 30);
+				add_spr=(compteur_animation / 30) % 2;
 				break;
 			case ENFANT:
 			case VOLEUR:
@@ -411,7 +411,7 @@ public class PersoNJ extends Perso {
 			case VAUTOUR:
 			case ELECTRIQUE:
 				//Persos à 3 sprite et 1 angle
-				add_spr=compteur_animation / 20;
+				add_spr=(compteur_animation / 20) % 3;
 				break;
 			case SPECTRE:
 				//Perso à 2 sprites (gauche/droite)
@@ -423,7 +423,7 @@ public class PersoNJ extends Perso {
 				add_spr=angle.value*3 + (getPos_seqsprite() % (12*Constantes.speed)) / (4*Constantes.speed);
 				break;
 			case ABEILLE:
-				add_spr=angle.value + (compteur_animation / 30);
+				add_spr=(angle.value & 2) + (compteur_animation / 30) % 2;
 				break;
 			default:
 				add_spr=angle.value*2 + (getPos_seqsprite() % (4*Constantes.speed)) / (2*Constantes.speed);

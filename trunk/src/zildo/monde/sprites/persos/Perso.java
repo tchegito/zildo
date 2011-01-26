@@ -71,6 +71,7 @@ public abstract class Perso extends Element {
 
 	private int count=0;
 	protected boolean inWater=false;
+	protected boolean inDirt=false;
 	
     private boolean wounded;
     private Perso dialoguingWith;
@@ -445,7 +446,9 @@ public abstract class Perso extends Element {
         MapManagement mapManagement = EngineZildo.mapManagement;
         int onmap = mapManagement.getCurrentMap().readmap(cx, cy);
         boolean slowDown = false;
+        boolean repeatSound = false;
         inWater = false;
+        inDirt = false;
         BankSound snd = null;
         switch (onmap) {
             case 278:
@@ -463,17 +466,17 @@ public abstract class Perso extends Element {
             	}
                 break;
             case 200:
-                snd = BankSound.ZildoGadou;
+            case 374:
+               	snd = BankSound.ZildoGadou;
+               	inDirt=true;
+                repeatSound = true;
+                slowDown = true;
             	break;
             case 846:
                 // Water
                 inWater = true;
-                if (count > 15) {
-                    snd = BankSound.ZildoPatauge;
-                    count = 0;
-                } else {
-                    count++;
-                }
+                snd = BankSound.ZildoPatauge;
+                repeatSound = true;
                 break;
             case 857:
             case 858:
@@ -486,7 +489,16 @@ public abstract class Perso extends Element {
                 slowDown = true;
                 break;
         }
+        if (repeatSound) {
+            if (count > 15) {
+                count = 0;
+            } else {
+            	snd=null;
+                count++;
+            }
+    	}
         if (snd != null && p_sound && isZildo()) {
+        	
             EngineZildo.soundManagement.broadcastSound(snd, this);
         }
 
