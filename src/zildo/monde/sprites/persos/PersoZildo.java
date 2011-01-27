@@ -21,7 +21,6 @@
 package zildo.monde.sprites.persos;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import zildo.SinglePlayer;
@@ -70,6 +69,11 @@ public class PersoZildo extends Perso {
 	public ItemCircle guiCircle;
 	private List<Item> inventory;
 	private ShieldEffect shieldEffect;
+	
+	// Linked elements
+	Element bouclier;
+	Element feet;
+	Element ombre;
 	
 	public Item weapon;
 
@@ -120,25 +124,25 @@ public class PersoZildo extends Perso {
 	    setCountKey(10);
 	    pushingSprite = null;
 
-	    Element bouclier = new Element(this);
+	    bouclier = new Element(this);
 		bouclier.setX(getX());
 		bouclier.setY(getY());
 		bouclier.setNBank(SpriteBank.BANK_ZILDO);
 		bouclier.setNSpr(103);				// Assign initial nSpr to avoid 'isNotFixe' returning TRUE)
 	
-		Element ombre=new Element(this);
+		ombre=new Element(this);
 		ombre.setNBank(SpriteBank.BANK_ZILDO);
 		ombre.setNSpr(103);
 	
-		Element piedsMouilles=new Element(this);
-		piedsMouilles.setNBank(SpriteBank.BANK_ZILDO);
-		piedsMouilles.setNSpr(100);
+		feet=new Element(this);
+		feet.setNBank(SpriteBank.BANK_ZILDO);
+		feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
 	
 		shieldEffect = null;
 		
 		addPersoSprites(bouclier);
 		addPersoSprites(ombre);
-		addPersoSprites(piedsMouilles);
+		addPersoSprites(feet);
 		
 		weapon=new Item(ItemKind.SWORD);
 		inventory=new ArrayList<Item>();
@@ -415,12 +419,6 @@ public class PersoZildo extends Perso {
 				}
 			}
 		}
-	
-		// Get connected sprites
-		Iterator<Element> it=zildo.getPersoSprites().iterator();
-		Element bouclier=it.next();
-		Element ombre=it.next();
-		Element piedsMouilles=it.next();
 		
 		final int decalxSword[][]={
 			{1,-1,-1,-5,-10,-13},{0,2,3,2,1,1},
@@ -449,7 +447,7 @@ public class PersoZildo extends Perso {
 	
         // Default : invisible
         ombre.setVisible(false);
-        piedsMouilles.setVisible(inWater || inDirt);
+        feet.setVisible(inWater || inDirt);
         bouclier.setVisible(false);
 
         if (isQuadDamaging()) {
@@ -579,17 +577,17 @@ public class PersoZildo extends Perso {
 		}
 	
 		// On affiche Zildo
-		piedsMouilles.setX(x+ (angle.isVertical() || angle==Angle.OUEST ? 1 : 0));
-		piedsMouilles.setY(y+9 + 1);
-		piedsMouilles.setZ(3);
-		piedsMouilles.setAddSpr((compteur_animation / 6) % 3);
+		feet.setX(x+ (angle.isVertical() || angle==Angle.OUEST ? 1 : 0));
+		feet.setY(y+9 + 1);
+		feet.setZ(3);
+		feet.setAddSpr((compteur_animation / 6) % 3);
 		if (inWater) {
-			piedsMouilles.setNSpr(100);
+			feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
 		} else if (inDirt) {
-			piedsMouilles.setNSpr(120);
-			piedsMouilles.setY(piedsMouilles.getY() - 3);
+			feet.setNSpr(ZildoDescription.DIRT1.getNSpr());
+			feet.setY(feet.getY() - 3);
 		}
-		piedsMouilles.setForeground(false);
+		feet.setForeground(false);
 		
 		touche=(mouvement==MouvementZildo.TOUCHE || zildo.getCompte_dialogue()!=0);
 		// Zildo blink
