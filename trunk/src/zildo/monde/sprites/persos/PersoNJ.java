@@ -24,6 +24,7 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.Hasard;
 import zildo.monde.map.Angle;
+import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
@@ -227,7 +228,24 @@ public class PersoNJ extends Perso {
 							physicMoveWithCollision();
 							break;
 						}	// Sinon elle agit comme les scripts de zone
+					case SCRIPT_ZONEARC:
+						 if (pathFinder.target == null && lookForZildo(angle)) {
+							 // Get the enemy aligned with Zildo to draw arrows
+							 int deltaX=(int) (zildo.x - x);
+							 int deltaY=(int) (zildo.y - y);
+							 if (deltaX <= deltaY) {
+								 pathFinder.target=new Point(zildo.x, y);
+							 } else {
+								 pathFinder.target=new Point(x, zildo.y);
+							 }
+						 }
+						break;
 					default:
+						break;
+				}
+				if (quel_deplacement != MouvementPerso.SCRIPT_POULE &&
+					quel_deplacement != MouvementPerso.SCRIPT_OBSERVE &&
+					quel_deplacement != MouvementPerso.SCRIPT_VOLESPECTRE) {
                        if (pathFinder.target != null && this.getX() == pathFinder.target.x && this.getY() == pathFinder.target.y) {
                     	   pathFinder.target=null;
                             if (!isGhost() && quel_deplacement != MouvementPerso.SCRIPT_ABEILLE
