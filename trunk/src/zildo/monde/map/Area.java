@@ -319,29 +319,23 @@ public class Area implements EasySerializable {
 		return null;
 	}
 
-	/*
-	 * // On place Zildo sur son bon angle si c'est pas le cas} int angle {On change de Area} temp:=name; {On sauve l'ancien nom}
-	 * fade(FALSE); charger_aventure_Area(Area1,tab_pe[i].Areaname); {On cherche le point de r‚apparition de Zildo} if n_pe<>0 then {Ce
-	 * nombre ne PEUT pas ˆtre nul} for j:=0 to n_pe-1 do if tab_pe[j].Areaname=temp then begin x:=(tab_pe[j].px and 127)*16+16;
-	 * y:=(tab_pe[j].py and 127)*16+8; if (tab_pe[j].px and 128) <> 0 then begin x:=x-8;y:=y+8; end; coming_Area:=1; {On met Zildo un peu en
-	 * avant} case angle of 0:y:=y-16; 1:x:=x+16; 2:y:=y+16; 3:x:=x-16; end; camerax:=round(x)-16*10; cameray:=round(y)-16*6; if
-	 * camerax>(16*dim_x-16*20) then camerax:=16*dim_x-16*20; if cameray>(16*dim_y-16*13+8) then cameray:=16*dim_y-16*13+8; if camerax<0
-	 * then camerax:=0; if cameray<0 then cameray:=0; exit; end; }
-	 */
-
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// attackTile
 	// /////////////////////////////////////////////////////////////////////////////////////
     public void attackTile(Point tileLocation) {
-        // On teste si Zildo détruit un buisson
-        int on_Area = this.readmap(tileLocation.x, tileLocation.y);
-        if (on_Area == 165) {
-        	
+        // Check if Zildo destroy something on a tile
+        int onmap = readmap(tileLocation.x, tileLocation.y);
+        switch (onmap) {
+        case 165:	// Bushes
             Point spriteLocation = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
             EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES, spriteLocation.x, spriteLocation.y, 0, null, null);
             EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
             takeSomethingOnTile(tileLocation);
+            break;
+        case 374:	// Mud
+            writemap(tileLocation.x, tileLocation.y, 375);
+        	break;
         }
 
     }
