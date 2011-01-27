@@ -53,8 +53,8 @@ public class PersoGarde extends PersoNJ {
 		super.finaliseComportement(compteur_animation);
 		
 	   //Garde bleu
-	   int add_spr=seq_gbleu[angle.value][(getPos_seqsprite() % (16*Constantes.speed)) / (2*Constantes.speed)];
-       this.setNSpr((this.getQuel_spr().first() + add_spr) % 128);
+	   setNSpr(this.getQuel_spr().first());
+	   setAddSpr(seq_gbleu[angle.value][(getPos_seqsprite() % (16*Constantes.speed)) / (2*Constantes.speed)]);
 	}
 	
 	@Override
