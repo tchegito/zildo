@@ -396,7 +396,7 @@ public class SpriteManagement extends SpriteStore {
 				perso.finaliseComportement(compt);
 				// Get sprite model
 				SpriteModel spr = getSpriteBank(entity.getNBank())
-						.get_sprite(perso.getNSpr());
+						.get_sprite(perso.getNSpr() + perso.getAddSpr());
 				perso.setSprModel(spr);
 				perso.manageCollision();
 
