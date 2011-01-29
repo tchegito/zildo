@@ -41,7 +41,7 @@ import zildo.server.EngineZildo;
  */
 public class Game implements EasySerializable {
 
-	public boolean brandNew;
+	public boolean brandNew;	// TRUE if this game is a new game from the beginning (so, with intro)
     public boolean editing;
     public boolean multiPlayer;
     public boolean deathmatch; // Defines the game rules
