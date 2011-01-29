@@ -178,6 +178,7 @@ public class EngineZildo {
 				// Use the asked event and reset it
 				state.event.nature=askedEvent.nature;
 				state.event.effect=askedEvent.effect;
+				state.event.chPoint=askedEvent.chPoint;
 				askedEvent=null;
 			}
 		}
@@ -211,7 +212,11 @@ public class EngineZildo {
 	                    retEvent.angle = mapManagement.getMapScrollAngle();
 	                } else {
 	                	// Do the right animation when Zildo came on the new map
-						MapLink linkType=mapManagement.getChainingPoint().getLinkType();
+	                	ChainingPoint ch = mapManagement.getChainingPoint();
+						MapLink linkType=MapLink.REGULAR;
+						if (ch != null) {
+							linkType=ch.getLinkType();
+						}
 						switch (linkType) {
 							case STAIRS_CORNER_LEFT:
 								EngineZildo.scriptManagement.execute("stairsUpCornerLeftEnd");

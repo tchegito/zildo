@@ -40,8 +40,6 @@ import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.elements.Element;
-import zildo.monde.sprites.elements.ElementStars;
-import zildo.monde.sprites.elements.ElementStars.StarKind;
 import zildo.monde.sprites.persos.PersoZildo;
 
 public class MapManagement {
@@ -633,14 +631,15 @@ public class MapManagement {
 	public Point getRespawnPosition() {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
+			//points.add(new Point(831, 360));
 			points.add(new Point(831 - 700, 360 - 150));
 		} else {
 			points = currentMap.getRespawnPoints();
 		}
 
 		int n = (int) (points.size() * Math.random());
-		EngineZildo.spriteManagement.spawnSprite(new ElementStars(
-				StarKind.TRAIL, 150, 360));
+		//EngineZildo.spriteManagement.spawnSprite(new ElementStars(
+		//		StarKind.TRAIL, 150, 360));
 
 		Point p = new Point(points.get(n));
 		while (collide(p.x, p.y, null)) {

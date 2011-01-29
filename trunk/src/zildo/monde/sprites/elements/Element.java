@@ -150,7 +150,8 @@ public class Element extends SpriteEntity {
 			(a>=69 && a<=74) ||
 			(a>=ElementDescription.BOOMERANG1.ordinal() && a<=ElementDescription.BOOMERANG4.ordinal()) ||
 			(a==ElementDescription.BOMB.ordinal()) ||
-			a==ElementDescription.BOMBS3.ordinal()
+			a==ElementDescription.BOMBS3.ordinal() ||
+			a==ElementDescription.KEY.ordinal()
 			)
 			return true;
 		else

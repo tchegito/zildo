@@ -121,7 +121,7 @@ public class PersoZildo extends Perso {
 		setAlerte(false);
 		setCompte_dialogue(0);
 	    setMoney(0);
-	    setCountKey(10);
+	    setCountKey(0);
 	    pushingSprite = null;
 
 	    bouclier = new Element(this);
@@ -382,9 +382,8 @@ public class PersoZildo extends Perso {
 		}
 		
 		// Get zildo
-		Perso zildo=this;
-		float xx=zildo.getX();
-		float yy=zildo.getY();
+		float xx=x;
+		float yy=y;
 		
 		if (compte_dialogue != 0) {
 			compte_dialogue--;
@@ -440,10 +439,10 @@ public class PersoZildo extends Perso {
 	    boolean touche;
 	
 		// Get variables to reduce code amount
-		int nSpr=zildo.getNSpr();
-		Angle angle=zildo.getAngle();
-		MouvementZildo mouvement=zildo.getMouvement();
-		Element en_bras=zildo.getEn_bras();
+		int nSpr=getNSpr();
+		Angle angle=getAngle();
+		MouvementZildo mouvement=getMouvement();
+		Element en_bras=getEn_bras();
 	
         // Default : invisible
         ombre.setVisible(false);
@@ -589,7 +588,7 @@ public class PersoZildo extends Perso {
 		}
 		feet.setForeground(false);
 		
-		touche=(mouvement==MouvementZildo.TOUCHE || zildo.getCompte_dialogue()!=0);
+		touche=(mouvement==MouvementZildo.TOUCHE || getCompte_dialogue()!=0);
 		// Zildo blink
 		touche=( touche && ((compteur_animation >> 1) % 2)==0 );
 		visible=!touche;
@@ -604,7 +603,7 @@ public class PersoZildo extends Perso {
 		yy-=21;
 	
 	
-		if (zildo.isAlerte()) {
+		if (isAlerte()) {
 			// Zildo a les pieds dans l'eau
 			//spriteManagement.aff_spriteplace(BANK_ZILDO,100+(compteur_animation / 20),xx+1,yy+1);
 		}
@@ -620,7 +619,7 @@ public class PersoZildo extends Perso {
 				int objZ=(int) en_bras.getZ();
 				if (angle==Angle.EST) objX++;
 				else if (angle==Angle.OUEST) objX--;
-				int variation=seq_1[((zildo.getPos_seqsprite() % (4*Constantes.speed)) / Constantes.speed)];
+				int variation=seq_1[((getPos_seqsprite() % (4*Constantes.speed)) / Constantes.speed)];
 		
 				en_bras.setX(objX);
 				en_bras.setY(objY);
@@ -656,9 +655,9 @@ public class PersoZildo extends Perso {
 				EngineZildo.soundManagement.playSound(BankSound.QuadDamageLeaving, this);
 			}
 		}
-		zildo.setAjustedX((int) xx);
-		zildo.setAjustedY((int) yy);
-		zildo.setNSpr(nSpr);
+		setAjustedX((int) xx);
+		setAjustedY((int) yy);
+		setNSpr(nSpr);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -762,6 +761,9 @@ public class PersoZildo extends Perso {
 			case BOMBS3:
 				countBomb+=3;
 				break;
+			case KEY:
+				countKey++;
+				break;
 			}
 			// Sound
 			switch (desc) {
@@ -770,6 +772,9 @@ public class PersoZildo extends Perso {
 					break;
 				case QUAD1:
 					EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamage, this);
+					break;
+				case KEY:
+					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoKey, this);
 					break;
 				case HEART: case HEART_LEFT:
 					default:

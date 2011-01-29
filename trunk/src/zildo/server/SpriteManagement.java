@@ -748,6 +748,12 @@ public class SpriteManagement extends SpriteStore {
 	public void translateEntitiesWithoutZildo(Point p_offset) {
 	    for (SpriteEntity entity : spriteEntities) {
 	    	if (!entity.clientSpecific && !entity.isZildo()) {
+	    		if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+	    			Element e=(Element) entity;
+	    			if (e.getLinkedPerso() != null && e.getLinkedPerso().isZildo()) {
+	    				continue;
+	    			}
+	    		}
 	    		entity.x+=p_offset.x;
 	    		entity.y+=p_offset.y;
 	    		entity.setAjustedX(entity.getAjustedX() + p_offset.x);
@@ -770,6 +776,13 @@ public class SpriteManagement extends SpriteStore {
 	public void clearSuspendedEntities() {
 		for (SpriteEntity entity : suspendedEntities) {
 			if (entity != null && !entity.isZildo()) {
+				// Check if this entity is an element linked to Zildo
+				if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+					Element linkedPerso=((Element)entity).getLinkedPerso();
+					if (linkedPerso != null && linkedPerso.isZildo()) {
+						continue;
+					}
+				}
 				deleteSprite(entity);
 			}
 		}
