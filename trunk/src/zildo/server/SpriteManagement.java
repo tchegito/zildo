@@ -235,11 +235,18 @@ public class SpriteManagement extends SpriteStore {
 				element = new ElementGoodies();
 				element.setX(x - 1);
 				element.setY(y);
-				element.setZ(11.0f);
-				element.setVx(0.15f);
-				element.setVz(-0.04f);
-				element.setAx(-0.01f);
-				element.setSprModel(ElementDescription.HEART_LEFT);
+				if (misc == 1) { // Heart should be on the ground
+					element.setX(x-3);
+					element.setY(y);
+					element.setZ(0);
+					element.setSprModel(ElementDescription.HEART);
+				} else {
+					element.setZ(11.0f);
+					element.setVx(0.15f);
+					element.setVz(-0.04f);
+					element.setAx(-0.01f);
+					element.setSprModel(ElementDescription.HEART_LEFT);
+				}
 				spawnSprite(element);
 				break;
 
