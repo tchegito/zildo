@@ -504,7 +504,7 @@ public class PlayerManagement {
 	                            if (objDesc != null) {
 	                                heros.takeSomething(newx * 16 + 8, newy * 16 + 14, objDesc, null);
 	                            }
-	                            map.takeSomethingOnTile(new Point(newx, newy));
+	                            map.takeSomethingOnTile(new Point(newx, newy), false);
 							} else if (on_map==743 && heros.getAngle()==Angle.NORD) {
 								//Zildo a trouvé un coffre ! C'est pas formidable ?
 								map.writemap(newx, newy, 744);
