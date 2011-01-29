@@ -67,7 +67,7 @@ public abstract class Perso extends Element {
     private int money;
     protected int countArrow;
     protected int countBomb;
-	private int countKey;	// How many keys have perso ? (for PNJ, he gives it when he dies)
+    protected int countKey;	// How many keys have perso ? (for PNJ, he gives it when he dies)
 
 	private int count=0;
 	protected boolean inWater=false;

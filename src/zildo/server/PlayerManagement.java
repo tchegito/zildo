@@ -514,9 +514,10 @@ public class PlayerManagement {
 								if (desc != null) {
 									nSpr=desc.getNSpr();
 								}
+								heros.setAttente(50);
 								EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.FROM_CHEST, 16*newx+8, 16*newy+16, nSpr, heros, null);
 								// Mark this event : chest opened
-								EngineZildo.scriptManagement.openChest(map.getName(), new Point(newx, newy));
+								//EngineZildo.scriptManagement.openChest(map.getName(), new Point(newx, newy));
 							} else if (!EngineZildo.mapManagement.isWalkable(on_map)) {
 								heros.setMouvement(MouvementZildo.TIRE);
 							}
