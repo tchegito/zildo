@@ -23,9 +23,9 @@ package zildo.fwk;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.fwk.filter.BilinearFilter;
-import zildo.fwk.filter.FilterEffect;
-import zildo.fwk.filter.ScreenFilter;
+import zildo.fwk.gfx.filter.BilinearFilter;
+import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.gfx.filter.ScreenFilter;
 import zildo.prefs.Constantes;
 
 /**
@@ -120,10 +120,10 @@ public class FilterCommand {
 		asked_FadeIn  = true;
 		asked_FadeOut = false;
 		fadeStarted = true;
-		active(null, false);
+		active(null, false, null);
 		for (FilterEffect effect : p_effects) {
 			for (Class<? extends ScreenFilter> clazz : effect.getFilterClass()) {
-				active(clazz, true);
+				active(clazz, true, effect);
 			}
 		}
 	}
@@ -138,10 +138,10 @@ public class FilterCommand {
 		asked_FadeIn  = false;
 		asked_FadeOut = true;
 		fadeStarted = true;
-		active(null, false);
+		active(null, false, null);
 		for (FilterEffect effect : p_effects) {
 			for (Class<? extends ScreenFilter> clazz : effect.getFilterClass()) {
-				active(clazz, true);
+				active(clazz, true, effect);
 			}
 		}
 	}
@@ -152,8 +152,8 @@ public class FilterCommand {
 	// Fade is over, so put back in default position
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void fadeEnd() {
-		active(null, false);
-		active(BilinearFilter.class, true);
+		active(null, false, null);
+		active(BilinearFilter.class, true, null);
 		asked_FadeOut=false;
 		asked_FadeIn=false;
 	}
@@ -189,11 +189,12 @@ public class FilterCommand {
 	 * If 'clazz' is null, so all filters will be targeted.
 	 * @param clazz
 	 * @param activ
+	 * @param effect TODO
 	 */
-	public void active(Class<? extends ScreenFilter> clazz, boolean activ) {
+	public void active(Class<? extends ScreenFilter> clazz, boolean activ, FilterEffect effect) {
 		for (ScreenFilter filter : filters) {
 			if (clazz == null || filter.getClass().equals(clazz)) {
-				filter.setActive(activ);
+				filter.setActive(activ, effect);
 			}
 		}
 	}

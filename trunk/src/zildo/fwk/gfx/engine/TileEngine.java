@@ -278,6 +278,8 @@ public class TileEngine extends TextureEngine {
 	public void tileRender(boolean backGround) {
 
 		if (initialized) {
+	        //GL11.glColor3f(0.8f, 0.8f, 0.8f);
+
 			// Small optimization: do not draw invisible faces ! (counterclock wise vertices)
 			//pD3DDevice9.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 			if (backGround) {
@@ -302,6 +304,9 @@ public class TileEngine extends TextureEngine {
 				}
 				GL11.glDisable(GL11.GL_BLEND);
 			}
+			
+	        GL11.glColor3f(1f, 1f, 1f);
+
 		}
 	}
 	

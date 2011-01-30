@@ -57,7 +57,7 @@ public class ZoomFilter extends ScreenFilter {
 	 * Re-initialize z coordinate
 	 */
 	@Override
-	public void doOnInactive() {
+	public void doOnInactive(FilterEffect effect) {
 		ClientEngineZildo.openGLGestion.setZ(0);
 	}	
 }

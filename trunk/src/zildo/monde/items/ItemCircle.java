@@ -23,9 +23,14 @@ package zildo.monde.items;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.client.ClientEvent;
+import zildo.client.ClientEventNature;
 import zildo.client.sound.BankSound;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
@@ -47,13 +52,19 @@ public class ItemCircle {
 	private CirclePhase phase;	// 0=create 1=fixed 2=remove 3=scroll
 	private int itemSelected;	// From 0 to guiSprites.size()-1
 	private int count;
-	private PersoZildo heros;	// The one at the center of the circle
+	private Perso perso;	// The one at the center of the circle
+	private PersoZildo client;	// Define the Zildo acting
 	
-	public ItemCircle() {
+	/**
+	 * Create an ItemCircle object, related to a given client, identified by the PersoZildo object.
+	 * @param p_zildoClient
+	 */
+	public ItemCircle(PersoZildo p_zildoClient) {
 		guiSprites=new ArrayList<SpriteEntity>();
 		count=0;
 		itemSelected=0;
 		phase=CirclePhase.EXPANSION;
+		client=p_zildoClient;
 	}
 	
 	public List<SpriteEntity> getSprites() {
@@ -66,19 +77,25 @@ public class ItemCircle {
 	 * @param p_x
 	 * @param p_y
 	 */
-	public void create(List<Item> p_items, int p_selected, PersoZildo p_heros) {
+	public void create(List<Item> p_items, int p_selected, Perso p_heros) {
 		count=0;
 		itemSelected=p_selected;
 		guiSprites.clear();
-		heros=p_heros;
+		perso=p_heros;
 		
-		center=new Point((int) heros.x-2, (int) heros.y-12);
+		center=new Point((int) perso.x-2, (int) perso.y-12);
 		for (Item item : p_items) {
             SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(item.kind.representation, center.x, center.y, true, 0);
             e.clientSpecific=true;
+            e.setSpecialEffect(EngineFX.FOCUSED);
             guiSprites.add(e);
 		}
 		display();
+		
+		perso.setSpecialEffect(EngineFX.FOCUSED);
+		client.setSpecialEffect(EngineFX.FOCUSED);
+		EngineZildo.soundManagement.playSound(BankSound.MenuOut, client);
+		EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_OUT, FilterEffect.SEMIFADE));
 	}
 	
 	/**
@@ -123,10 +140,10 @@ public class ItemCircle {
 			} else {
 				if (phase==CirclePhase.ROTATE_LEFT) {
 					itemSelected= (itemSelected+guiSprites.size() -1) % guiSprites.size();
-					EngineZildo.soundManagement.playSound(BankSound.MenuMove, heros);
+					EngineZildo.soundManagement.playSound(BankSound.MenuMove, client);
 				} else if (phase==CirclePhase.ROTATE_RIGHT) {
 					itemSelected= (itemSelected +1) % guiSprites.size();
-					EngineZildo.soundManagement.playSound(BankSound.MenuMove, heros);
+					EngineZildo.soundManagement.playSound(BankSound.MenuMove, client);
 				}
 				phase=CirclePhase.FIXED;
 			}
@@ -167,6 +184,7 @@ public class ItemCircle {
 	 */
 	public void close() {
 		phase=CirclePhase.REDUCTION;
+		EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_IN, FilterEffect.SEMIFADE));
 	}
 	
 	public int getItemSelected() {
@@ -181,5 +199,11 @@ public class ItemCircle {
 			e.dying=true;
 		}
 		guiSprites.clear();
+		
+		// Unfocus involved persos
+		client.initPersoFX();
+		perso.initPersoFX();
+		EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_IN, FilterEffect.SEMIFADE));
+
 	}
 }

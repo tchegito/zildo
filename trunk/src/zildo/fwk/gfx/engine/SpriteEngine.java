@@ -22,6 +22,7 @@ package zildo.fwk.gfx.engine;
 
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.newdawn.slick.TrueTypeFont;
 
@@ -323,6 +324,12 @@ public class SpriteEngine extends TextureEngine {
 		GL11.glEnable(GL11.GL_BLEND);
 		float[] color=ZUtils.getFloat(GL11.GL_CURRENT_COLOR, 4);
 
+		Vector3f ambient=ClientEngineZildo.ortho.getAmbientColor();
+		if (ambient != null) {
+			color[0]=ambient.x;
+			color[1]=ambient.y;
+			color[2]=ambient.z;
+		}
 		// Respect order from bankOrder
 		boolean endSequence=false;
 		int posBankOrder=0;
@@ -359,8 +366,8 @@ public class SpriteEngine extends TextureEngine {
 							ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(0));
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color1", tabColors[2]);
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color2", tabColors[3]);
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color3", tabColors[0]);
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color4", tabColors[1]);
+							ClientEngineZildo.pixelShaders.setParameter(0, "Color3", (Vector4f) tabColors[0].scale(color[0]));
+							ClientEngineZildo.pixelShaders.setParameter(0, "Color4", (Vector4f) tabColors[1].scale(color[0]));
 						} else {
 							ARBShaderObjects.glUseProgramObjectARB(0);
 						}
@@ -375,6 +382,9 @@ public class SpriteEngine extends TextureEngine {
 	                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	                    GL11.glColor4f(0.5f + 0.5f * (float) Math.random(), 0.5f * (float) Math.random(), 0, 1);
 	                    break;
+	                case FOCUSED:
+	                	GL11.glColor3f(1.0f, 1.0f, 1.0f);
+	                	break;
 	                default:
 	            		ZUtils.setCurrentColor(color);
 	                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

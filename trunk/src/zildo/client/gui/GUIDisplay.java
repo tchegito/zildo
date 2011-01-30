@@ -34,10 +34,9 @@ import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
 import zildo.client.sound.BankSound;
 import zildo.fwk.FilterCommand;
-
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.filter.FilterEffect;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.monde.sprites.SpriteEntity;

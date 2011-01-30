@@ -73,6 +73,7 @@ public class Game implements EasySerializable {
 		p_buffer.put(zildo.getMaxpv());
 		p_buffer.put(zildo.getCountArrow());
 		p_buffer.put(zildo.getCountBomb());
+		p_buffer.put((byte) zildo.getCountKey());
 		p_buffer.put(zildo.getMoney());
 
 		// 3: inventory
@@ -108,8 +109,9 @@ public class Game implements EasySerializable {
         zildo.setMaxpv(p_buffer.readInt());
         zildo.setCountArrow(p_buffer.readInt());
         zildo.setCountBomb(p_buffer.readInt());
+        zildo.setCountKey(p_buffer.readByte());
         zildo.setMoney(p_buffer.readInt());
-
+        
         // 3: Inventory
         List<Item> items = zildo.getInventory();
         items.clear();

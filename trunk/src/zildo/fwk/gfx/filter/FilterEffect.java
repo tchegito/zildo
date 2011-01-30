@@ -22,7 +22,8 @@ package zildo.fwk.gfx.filter;
 
 @SuppressWarnings("unchecked")
 public enum FilterEffect {
-	FADE(FadeFilter.class, BilinearFilter.class), 
+	FADE(FadeFilter.class, BilinearFilter.class),
+	SEMIFADE(FadeFilter.class, BilinearFilter.class),
 	BLEND(BlendFilter.class), 
 	BLUR(BlurFilter.class), 
 	ZOOM(ZoomFilter.class);

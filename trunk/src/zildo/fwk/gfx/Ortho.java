@@ -31,10 +31,10 @@ import org.lwjgl.util.vector.Vector4f;
 import zildo.fwk.opengl.OpenGLStuff;
 
 /**
- * Classe qui permet de dessiner directement sur l'écran de rendu dans un contexte orthographique.
- * 
- * C'est-à-dire qu'il n'y a pas de projection. La coordonnée en Z n'est utilisée que pour savoir si un objet est
- * devant ou derrière un autre, mais elle ne met plus les objets en perspective.
+ * Class which provides direct draw on render screen, in an orthographic context.
+ *
+ * It means that there's any projection. The z-coordinate is just used to know if an obect is behind or before another, but it doesn't
+ * lead to perspective anymore.
  * 
  * 
  * @author tchegito
@@ -110,6 +110,8 @@ public class Ortho extends OpenGLStuff {
 
 	int w, h;
 	boolean orthoSetUp;
+	
+	Vector3f ambientColor;	// Current ambient color (could be null)
 	
 	public Ortho(int width, int height) {
 		w=width;
@@ -344,5 +346,13 @@ public class Ortho extends OpenGLStuff {
 	
 	public void disableBlend() {
 		GL11.glDisable(GL11.GL_BLEND);
+	}
+
+	public Vector3f getAmbientColor() {
+		return ambientColor;
+	}
+
+	public void setAmbientColor(Vector3f ambientColor) {
+		this.ambientColor = ambientColor;
 	}
 }
