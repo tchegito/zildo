@@ -284,7 +284,9 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	 */
 	public void serialize(EasyBuffering p_buffer) {
 		boolean isZildo=this.isZildo();
-		p_buffer.putBooleans(isZildo, isVisible(), isForeground(), dying);
+		p_buffer.putBooleans(isZildo, isVisible(), isForeground(), dying, 
+				(reverse & REVERSE_HORIZONTAL) != 0, 
+				(reverse & REVERSE_VERTICAL) != 0);
 		p_buffer.put(this.getId());
 		if (isZildo) {
 			// Zildo needs extra info
@@ -306,7 +308,6 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 		p_buffer.put((byte) this.getSpecialEffect().ordinal());
 		p_buffer.put((byte) this.getEntityType());
 		p_buffer.put(this.getSprModel().getId());
-		p_buffer.put((byte) this.reverse);
 	}
 	
 	/**
@@ -315,7 +316,7 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	 * @return SpriteEntity
 	 */
 	public static SpriteEntity deserialize(EasyBuffering p_buffer) {
-		boolean[] bools=p_buffer.readBooleans(4);
+		boolean[] bools=p_buffer.readBooleans(6);
 		boolean isZildo=bools[0];
 		int id=p_buffer.readInt();
 		SpriteEntity entity;
@@ -346,7 +347,14 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 		entity.setEntityType(p_buffer.readUnsignedByte());
 		int idSprModel=p_buffer.readInt();
 		entity.setSprModel(Identified.fromId(SpriteModel.class, idSprModel));
-        entity.reverse = p_buffer.readUnsignedByte();
+		int reverse=0;
+		if (bools[4]) {
+			reverse|=REVERSE_HORIZONTAL;
+		}
+		if (bools[5]) {
+			reverse|=REVERSE_VERTICAL;			
+		}
+        entity.reverse = reverse;
 		return entity;
 	}
 	

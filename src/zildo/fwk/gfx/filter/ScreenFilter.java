@@ -148,11 +148,11 @@ public abstract class ScreenFilter extends TilePrimitive {
 		
 	}
 	
-	public void doOnInactive() {
+	public void doOnInactive(FilterEffect effect) {
 		
 	}
 	
-	public void doOnActive() {
+	public void doOnActive(FilterEffect effect) {
 		
 	}
 	
@@ -165,12 +165,12 @@ public abstract class ScreenFilter extends TilePrimitive {
 		}
 	}
 	
-	final public void setActive(boolean activ) {
+	final public void setActive(boolean activ, FilterEffect effect) {
 		active=activ;
 		if (!activ) {
-			doOnInactive();
+			doOnInactive(effect);
 		} else {
-			doOnActive();
+			doOnActive(effect);
 		}
 	}
 	

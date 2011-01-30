@@ -25,6 +25,8 @@ import java.util.List;
 
 import zildo.fwk.net.TransferObject;
 import zildo.fwk.script.xml.TriggerElement;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemCircle;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
@@ -116,12 +118,18 @@ public class DialogManagement {
     }
 	
 	public void stopDialog(ClientState p_client) {
-		p_client.dialogState.dialoguing=false;
+		//p_client.dialogState.dialoguing=false;
 		PersoZildo zildo=p_client.zildo;
 		Perso perso=p_client.zildo.getDialoguingWith();
-		zildo.setDialoguingWith(null);
+		//zildo.setDialoguingWith(null);
 		if (perso != null) {
-			perso.setDialoguingWith(null);
+			//perso.setDialoguingWith(null);
+			
+			zildo.guiCircle=new ItemCircle(zildo);
+			List<Item> items=new ArrayList<Item>();
+			items.addAll(zildo.getInventory());
+			items.addAll(zildo.getInventory());
+			zildo.guiCircle.create(items, 0, perso);
 		} else {
 			ActionDialog actionDialog=p_client.dialogState.actionDialog;
 			if (actionDialog != null) {

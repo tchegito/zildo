@@ -176,7 +176,7 @@ public class PersoZildo extends Perso {
 	
 	@Override
 	public void initPersoFX() {
-	
+		setSpecialEffect(EngineFX.NO_EFFECT);
 	}
 	
 	public SpriteEntity getPushingSprite() {
@@ -870,9 +870,8 @@ public class PersoZildo extends Perso {
 	
 	public void lookInventory() {
 		if (inventory.size() > 0) {
-			EngineZildo.soundManagement.playSound(BankSound.MenuOut, this);		
 			inventoring=true;
-			guiCircle=new ItemCircle();
+			guiCircle=new ItemCircle(this);
 			int sel=inventory.indexOf(weapon);
 			guiCircle.create(inventory, sel, this);
 		}

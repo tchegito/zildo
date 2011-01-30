@@ -20,7 +20,7 @@
 
 package zildo.client;
 
-import zildo.fwk.filter.FilterEffect;
+import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.monde.map.Angle;
 import zildo.monde.map.ChainingPoint;
 

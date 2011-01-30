@@ -44,10 +44,11 @@ public class PixelShaders extends OpenGLStuff {
 		GUARD_BLUE,GUARD_RED, GUARD_YELLOW, GUARD_BLACK, GUARD_GREEN, GUARD_PINK,
 		PERSO_HURT, 
 		FONT_NORMAL, FONT_HIGHLIGHT,
-		SHINY, QUAD;
+		SHINY, QUAD,
+		FOCUSED;	// FOCUSED is used when we wants to highlight some entity (inventory, or buying something)
 		
 		public boolean needPixelShader() {
-			return !(this==NO_EFFECT || this==SHINY || this==QUAD);
+			return !(this==NO_EFFECT || this==SHINY || this==QUAD || this==FOCUSED);
 		}
 		
 		public EngineFX fromInt(int i) {

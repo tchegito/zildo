@@ -21,9 +21,13 @@
 package zildo.fwk.gfx.filter;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector3f;
+
+import zildo.client.ClientEngineZildo;
 
 public class FadeFilter extends ScreenFilter {
 
+	boolean complete=true;
 	
 	@Override
 	public boolean renderFilter()
@@ -33,7 +37,18 @@ public class FadeFilter extends ScreenFilter {
 	
 	@Override
 	public void preFilter() {
-		float coeff=1.0f - (getFadeLevel() / 256.0f);
+		float factor = complete ? 256.0f : 768.0f;
+		float coeff=1.0f - (getFadeLevel() / factor);
+		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(coeff, coeff, coeff));
 		GL11.glColor4f(coeff, coeff, coeff, 1.0f);
 	}
+
+	public void doOnActive(FilterEffect effect) {
+		if (effect == FilterEffect.SEMIFADE) {
+			complete=false;
+		} else {
+			complete=true;
+		}
+	}
+	
 }

@@ -28,15 +28,15 @@ import zildo.client.gui.DialogDisplay;
 import zildo.client.gui.GUIDisplay;
 import zildo.client.sound.SoundPlay;
 import zildo.fwk.FilterCommand;
-import zildo.fwk.filter.BilinearFilter;
-import zildo.fwk.filter.BlendFilter;
-import zildo.fwk.filter.BlurFilter;
-import zildo.fwk.filter.FadeFilter;
-import zildo.fwk.filter.FilterEffect;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
+import zildo.fwk.gfx.filter.BilinearFilter;
+import zildo.fwk.gfx.filter.BlendFilter;
+import zildo.fwk.gfx.filter.BlurFilter;
+import zildo.fwk.gfx.filter.FadeFilter;
+import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLZildo;
 import zildo.fwk.ui.ItemMenu;
@@ -96,8 +96,8 @@ public class ClientEngineZildo {
 			filterCommand.addFilter(new BlurFilter());
 			filterCommand.addFilter(new BlendFilter());
 			filterCommand.addFilter(new FadeFilter());
-			filterCommand.active(null, false);
-			filterCommand.active(BilinearFilter.class, true);
+			filterCommand.active(null, false, null);
+			filterCommand.active(BilinearFilter.class, true, null);
 		}
 
 		pixelShaders = new PixelShaders();

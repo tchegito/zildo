@@ -40,6 +40,8 @@ public class BilinearFilter extends ScreenFilter {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0,-sizeY,1);
 
+		GL11.glColor3f(1.0f, 1.0f, 1.0f);
+		
 		// Draw texture with depth
 		super.render();
 		GL11.glPopMatrix();
