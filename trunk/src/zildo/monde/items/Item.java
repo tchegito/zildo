@@ -56,7 +56,7 @@ public class Item {
 			s+="courante";
 			break;
 		case 1:
-			s+="arrangée";
+			s+="arrangee";
 			break;
 		case 2:
 			s+="bonne facture";

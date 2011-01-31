@@ -549,7 +549,7 @@ public class GUIDisplay {
 		int i,j;
 		// Life
 		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,91,207,10);
-        for (i = 0; i < zildo.getMaxpv(); i++) {
+        for (i = 0; i < zildo.getMaxpv() / 2; i++) {
             int pv = zildo.getPv();
             if (i == pv >> 1 && pv % 2 == 1) {
                 j = 14; // Half heart
