@@ -42,4 +42,30 @@ public class Item {
 	public boolean equals(Object p_item) {
 	    return p_item.hashCode() == hashCode();
 	}
+	
+	public int getPrice() {
+		return kind.price * (level+1);
+	}
+	
+	public String toString() {
+		String s=kind.name().toLowerCase();
+		s=s.substring(0,1).toUpperCase() + s.substring(1);
+		s+=" (";
+		switch (level) {
+		case 0:
+			s+="courante";
+			break;
+		case 1:
+			s+="arrangée";
+			break;
+		case 2:
+			s+="bonne facture";
+			break;
+		case 3:
+			s+="maitre d'arme";
+			break;
+		}
+		s+=")\n"+getPrice()+" rupees";
+		return s;
+	}
 }

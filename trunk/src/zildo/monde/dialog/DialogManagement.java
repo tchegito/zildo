@@ -25,8 +25,8 @@ import java.util.List;
 
 import zildo.fwk.net.TransferObject;
 import zildo.fwk.script.xml.TriggerElement;
-import zildo.monde.items.Item;
-import zildo.monde.items.ItemCircle;
+import zildo.monde.dialog.WaitingDialog.CommandDialog;
+import zildo.monde.quest.actions.BuyingAction;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
@@ -39,7 +39,6 @@ import zildo.server.state.ClientState;
 
 public class DialogManagement {
 	
-	private boolean dialoguing;
 	private boolean topicChoosing;
 	
 	List<WaitingDialog> dialogQueue;
@@ -49,8 +48,6 @@ public class DialogManagement {
 	//////////////////////////////////////////////////////////////////////
 	
 	public DialogManagement() {
-		clearDialogs();
-		
 		dialogQueue=new ArrayList<WaitingDialog>();
 	}
 	
@@ -85,13 +82,16 @@ public class DialogManagement {
 	        sentence = dialogs.getSentence(behav, compteDial);
 			
 	        // Update perso about next sentence he(she) will say
-	        String sharp = "#";
-	        int posSharp = sentence.indexOf(sharp);
+	        int posSharp = sentence.indexOf("#");
+	        int posDollar = sentence.indexOf("$");
 	        if (posSharp != -1) {
 	            // La phrase demande explicitement de rediriger vers une autre
 	            persoToTalk.setCompte_dialogue(sentence.charAt(posSharp + 1) - 48);
 	            sentence = sentence.substring(0, posSharp);
-
+	        } else if (posDollar != -1) {
+	        	// This sentence leads to a buying phase
+	        	sentence = sentence.substring(0, posDollar);
+	        	p_client.dialogState.actionDialog=new BuyingAction(p_client.zildo, persoToTalk);
 	        } else if (behav.replique[compteDial + 1] != 0) {
 	            // On passe à la suivante, puisqu'elle existe
 	            persoToTalk.setCompte_dialogue(compteDial + 1);
@@ -111,38 +111,33 @@ public class DialogManagement {
 		}
 
         sentence = sentence.trim();
-        dialogQueue.add(new WaitingDialog(sentence, -1, false, p_client == null ? null : p_client.location));
+        dialogQueue.add(new WaitingDialog(sentence, null, false, p_client == null ? null : p_client.location));
         
         p_client.dialogState.dialoguing = true;
         p_client.zildo.setDialoguingWith(persoToTalk);
     }
 	
 	public void stopDialog(ClientState p_client) {
-		//p_client.dialogState.dialoguing=false;
+		p_client.dialogState.dialoguing=false;
 		PersoZildo zildo=p_client.zildo;
 		Perso perso=p_client.zildo.getDialoguingWith();
-		//zildo.setDialoguingWith(null);
+		zildo.setDialoguingWith(null);
 		if (perso != null) {
-			//perso.setDialoguingWith(null);
-			
-			zildo.guiCircle=new ItemCircle(zildo);
-			List<Item> items=new ArrayList<Item>();
-			items.addAll(zildo.getInventory());
-			items.addAll(zildo.getInventory());
-			zildo.guiCircle.create(items, 0, perso);
-		} else {
-			ActionDialog actionDialog=p_client.dialogState.actionDialog;
-			if (actionDialog != null) {
-				actionDialog.launchAction();
-			}
+			perso.setDialoguingWith(null);
+		}
+		ActionDialog actionDialog=p_client.dialogState.actionDialog;
+		if (actionDialog != null) {
+			actionDialog.launchAction(p_client);
+			p_client.dialogState.actionDialog=null;
 		}
 	}
-	public void actOnDialog(TransferObject p_location, int p_actionDialog) {
+
+	public void actOnDialog(TransferObject p_location, CommandDialog p_actionDialog) {
 		dialogQueue.add(new WaitingDialog(null, p_actionDialog, false, p_location));
 	}
 	
 	public void writeConsole(String p_sentence) {
-		dialogQueue.add(new WaitingDialog(p_sentence, 0, true, null));
+		dialogQueue.add(new WaitingDialog(p_sentence, null, true, null));
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -150,23 +145,6 @@ public class DialogManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void launchTopicSelection() {
 		//TODO : topic
-	}
-	
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// clearDialogs
-	///////////////////////////////////////////////////////////////////////////////////////
-	public void clearDialogs() {
-		dialoguing=false;
-		topicChoosing=false;
-	}
-
-	public boolean isDialoguing() {
-		return dialoguing;
-	}
-
-	public void setDialoguing(boolean dialoguing) {
-		this.dialoguing = dialoguing;
 	}
 
 	public boolean isTopicChoosing() {

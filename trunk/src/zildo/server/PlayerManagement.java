@@ -20,12 +20,12 @@
 
 package zildo.server;
 
-import zildo.client.gui.DialogDisplay;
 import zildo.client.sound.BankSound;
 import zildo.fwk.IntSet;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.input.KeyboardState;
 import zildo.monde.dialog.DialogManagement;
+import zildo.monde.dialog.WaitingDialog.CommandDialog;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
 import zildo.monde.map.Point;
@@ -35,8 +35,8 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.prefs.Constantes;
 import zildo.prefs.KeysConfiguration;
@@ -85,7 +85,11 @@ public class PlayerManagement {
 		} else if (EngineZildo.scriptManagement.isScripting()) {
 			gamePhase=GamePhase.SCRIPT;
 		} else if (dialogState.dialoguing) {
-			gamePhase=GamePhase.DIALOG;
+			if (heros.isInventoring()) {
+				gamePhase=GamePhase.BUYING;
+			} else {
+				gamePhase=GamePhase.DIALOG;
+			}
 		} else {
 			gamePhase=GamePhase.INGAME;
 		} 
@@ -106,6 +110,10 @@ public class PlayerManagement {
 				} else {
 					// Conversation
 					handleConversation();
+					if (heros.isInventoring()) {
+						// Inside the zildo's inventory
+						handleInventory();
+					}
 				}
 			} else if (heros.isInventoring()) {
 				// Inside the zildo's inventory
@@ -387,7 +395,7 @@ public class PlayerManagement {
 	void handleTopicSelection() {
 		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_UP)) {
 			if (!keysState.key_upPressed) {
-				EngineZildo.dialogManagement.actOnDialog(client.location, DialogDisplay.ACTIONDIALOG_UP);
+				EngineZildo.dialogManagement.actOnDialog(client.location, CommandDialog.UP);
 				keysState.key_upPressed=true;
 			}
 		} else {
@@ -396,7 +404,7 @@ public class PlayerManagement {
 	
 		if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_DOWN)) {
 			if (!keysState.key_downPressed) {
-				EngineZildo.dialogManagement.actOnDialog(client.location, DialogDisplay.ACTIONDIALOG_DOWN);
+				EngineZildo.dialogManagement.actOnDialog(client.location, CommandDialog.DOWN);
 				keysState.key_downPressed=true;
 			}
 		} else {
@@ -415,8 +423,10 @@ public class PlayerManagement {
 	
 	
 		if (!keysState.key_actionPressed) {
-			if (dialogState.dialoguing) {
-				EngineZildo.dialogManagement.actOnDialog(client.location, DialogDisplay.ACTIONDIALOG_ACTION);
+			if (gamePhase == GamePhase.BUYING) {
+				heros.buyItem();
+			} else if (gamePhase == GamePhase.DIALOG) {
+				EngineZildo.dialogManagement.actOnDialog(client.location, CommandDialog.ACTION);
 			} else if (gamePhase == GamePhase.INGAME && !heros.isInventoring()) { //
 				if (heros.getMouvement()==MouvementZildo.BRAS_LEVES) {
 					heros.throwSomething();
@@ -589,11 +599,14 @@ public class PlayerManagement {
 	// keyPressInventory
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyPressInventory() {
-		if (!keysState.key_inventoryPressed && !client.dialogState.dialoguing && heros.getMouvement()==MouvementZildo.VIDE) {
+		if (!keysState.key_inventoryPressed && gamePhase != GamePhase.DIALOG && heros.getMouvement()==MouvementZildo.VIDE) {
 			if (!heros.isInventoring()) {
 				heros.lookInventory();
 			} else {
 				heros.closeInventory();
+				EngineZildo.dialogManagement.actOnDialog(client.location, CommandDialog.ACTION);
+
+				//EngineZildo.dialogManagement.stopDialog(client);
 			}
 			keysState.key_inventoryPressed=true;
 		}

@@ -24,18 +24,20 @@ import zildo.monde.sprites.desc.ElementDescription;
 
 public enum ItemKind {
 
-	SWORD(ElementDescription.SWORD), 
-	BOOMERANG(ElementDescription.BOOMERANG1), 
-	WHIP(ElementDescription.BAR_HORIZONTAL), 
-	BOW(ElementDescription.ENEMYARC_RIGHT1),
-	BOMB(ElementDescription.BOMB),
-	FLUT(ElementDescription.FLUT),
-	SHIELD(null);
+	SWORD(ElementDescription.SWORD, 20), 
+	BOOMERANG(ElementDescription.BOOMERANG1, 40), 
+	WHIP(ElementDescription.BAR_HORIZONTAL, 50), 
+	BOW(ElementDescription.ENEMYARC_RIGHT1, 40),
+	BOMB(ElementDescription.BOMB, 10),
+	FLUT(ElementDescription.FLUT, 1),
+	SHIELD(null, 60);
 	
 	public ElementDescription representation;
+	public int price;
 	
-	private ItemKind(ElementDescription p_itemRepresentation) {
-		representation=p_itemRepresentation;
+	private ItemKind(ElementDescription p_itemRepresentation, int p_price) {
+		representation = p_itemRepresentation;
+		price = p_price;
 	}
 	
 	public static ItemKind fromString(String p_str) {

@@ -76,8 +76,6 @@ public class MapManagement {
 
 		EngineZildo.persoManagement.clearPersosWithoutZildo();
 
-		EngineZildo.dialogManagement.clearDialogs();
-
 		EngineZildo.spriteManagement.clearSpritesWithoutZildo();
 
 	}

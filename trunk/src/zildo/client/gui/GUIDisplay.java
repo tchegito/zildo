@@ -262,7 +262,6 @@ public class GUIDisplay {
 		default:
 			nBank=SpriteBank.BANK_FONTES;
 			sizeLine=Constantes.TEXTER_SIZELINE;
-			//nMaxLigne=3;
 			visibleFont=false;
 			center=false;
 			break;
@@ -276,7 +275,6 @@ public class GUIDisplay {
 		case DIALOGMODE_TOPIC:
 			nBank=SpriteBank.BANK_FONTES2;
 			sizeLine=Constantes.TEXTER_TOPIC_SIZELINE;
-			//nMaxLigne=10;
 			visibleFont=true;
 			center=true;
 			break;
@@ -357,8 +355,8 @@ public class GUIDisplay {
 			}
 		}
 	
-		visibleMessageDisplay=false;	// Say that the message is not complete yet at screen
-		entireMessageDisplay=false;
+		visibleMessageDisplay=visibleFont;	// Say that the message is not complete yet at screen
+		entireMessageDisplay=visibleFont;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -566,8 +564,12 @@ public class GUIDisplay {
 	
 		// Money
 		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,80,72,10);
-		if (countMoney < zildo.getMoney()) {
-			countMoney++;
+		if (countMoney != zildo.getMoney()) {
+			if (countMoney < zildo.getMoney()) {
+				countMoney++;
+			} else {
+				countMoney--;
+			}
             if (zildo.getMoney() - countMoney % 20 == 0) {
                 ClientEngineZildo.soundPlay.playSoundFX(BankSound.ZildoGagneArgent);
             }

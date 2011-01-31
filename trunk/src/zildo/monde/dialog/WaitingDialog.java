@@ -26,12 +26,16 @@ import zildo.fwk.net.TransferObject;
 
 public class WaitingDialog implements EasySerializable {
 
+	public enum CommandDialog {
+		ACTION,	UP,	DOWN, BUYING
+	}
+	
 	public String sentence;
-	public int action;
+	public CommandDialog action;
 	public boolean console;			// TRUE=message should be displayed in the console
 	public TransferObject client;	// Only used for sending dialog to the right client. Unused by client side.
 	
-	public WaitingDialog(String p_sentence, int p_action, boolean p_console, TransferObject p_client) {
+	public WaitingDialog(String p_sentence, CommandDialog p_action, boolean p_console, TransferObject p_client) {
 		sentence=p_sentence;
 		action=p_action;
 		console=p_console;
@@ -40,7 +44,7 @@ public class WaitingDialog implements EasySerializable {
 	
 	public void serialize(EasyBuffering p_buffer) {
 		p_buffer.put(sentence);
-		p_buffer.put(action);
+		p_buffer.put(action == null ? -1 : action.ordinal());
 		p_buffer.put(console);
 	}
 	
@@ -48,6 +52,7 @@ public class WaitingDialog implements EasySerializable {
 		String s=p_buffer.readString();
 		int act=p_buffer.readInt();
 		boolean console=p_buffer.readBoolean();
-		return new WaitingDialog(s, act, console, null);
+		CommandDialog actDialog=(act == -1 ? null : CommandDialog.values()[act]);
+		return new WaitingDialog(s, actDialog, console, null);
 	}
 }

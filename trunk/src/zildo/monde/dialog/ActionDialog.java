@@ -20,6 +20,8 @@
 
 package zildo.monde.dialog;
 
+import zildo.server.state.ClientState;
+
 public abstract class ActionDialog {
 
 	String text;
@@ -28,5 +30,5 @@ public abstract class ActionDialog {
 		text=p_text;
 	}
 	
-	public abstract void launchAction();
+	public abstract void launchAction(ClientState p_clientState);
 }
