@@ -25,6 +25,7 @@ import java.util.List;
 import zildo.MultiPlayer;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
+import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
 import zildo.fwk.net.ServerInfo;
 import zildo.fwk.ui.InfoMenu;
@@ -43,6 +44,9 @@ public class StartMenu extends Menu {
 	
 	public StartMenu() {
         
+		// Play menu music
+		ClientEngineZildo.soundPlay.playMusic(BankMusic.Triste);
+
 		final Client client = ClientEngineZildo.getClientForMenu();
 
         final Menu startMenu = this;

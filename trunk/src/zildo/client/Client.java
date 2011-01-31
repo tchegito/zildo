@@ -29,7 +29,6 @@ import org.lwjgl.input.Keyboard;
 
 import zildo.Zildo;
 import zildo.client.gui.menu.InGameMenu;
-import zildo.client.sound.BankMusic;
 import zildo.fwk.ZUtils;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.InternetClient;
@@ -85,10 +84,6 @@ public class Client {
 		states=new HashMap<Integer, PlayerState>();
 		// Video
 		initializeDisplay();
-		// Audio
-		if (!awt) {
-			ClientEngineZildo.soundPlay.playMusic(BankMusic.Triste);
-		}
 	}
 
 	void initializeDisplay() {
