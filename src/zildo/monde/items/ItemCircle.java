@@ -28,11 +28,15 @@ import zildo.client.ClientEventNature;
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.monde.dialog.WaitingDialog;
+import zildo.monde.dialog.WaitingDialog.CommandDialog;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
+import zildo.server.Server;
+import zildo.server.state.ClientState;
 
 public class ItemCircle {
 
@@ -48,12 +52,14 @@ public class ItemCircle {
 	}
 	
 	private List<SpriteEntity> guiSprites;
+	private List<Item> items;
 	private Point center;
 	private CirclePhase phase;	// 0=create 1=fixed 2=remove 3=scroll
 	private int itemSelected;	// From 0 to guiSprites.size()-1
 	private int count;
 	private Perso perso;	// The one at the center of the circle
 	private PersoZildo client;	// Define the Zildo acting
+	private boolean describe;	// TRUE=Describe selected item in dialog area
 	
 	/**
 	 * Create an ItemCircle object, related to a given client, identified by the PersoZildo object.
@@ -74,14 +80,18 @@ public class ItemCircle {
 	/**
 	 * Create the circle with given items
 	 * @param p_items
+	 * @param p_heros Character who is the center of the item circle
+	 * @param p_buying TRUE=This circle is a store inventory, and hero can buy some.
 	 * @param p_x
 	 * @param p_y
 	 */
-	public void create(List<Item> p_items, int p_selected, Perso p_heros) {
+	public void create(List<Item> p_items, int p_selected, Perso p_heros, boolean p_buying) {
 		count=0;
 		itemSelected=p_selected;
 		guiSprites.clear();
 		perso=p_heros;
+		describe=p_buying;
+		items=p_items;
 		
 		center=new Point((int) perso.x-2, (int) perso.y-12);
 		for (Item item : p_items) {
@@ -92,6 +102,7 @@ public class ItemCircle {
 		}
 		display();
 		
+		// Focused buyer and seller (or just hero), and launch a semi-fade out
 		perso.setSpecialEffect(EngineFX.FOCUSED);
 		client.setSpecialEffect(EngineFX.FOCUSED);
 		EngineZildo.soundManagement.playSound(BankSound.MenuOut, client);
@@ -146,6 +157,12 @@ public class ItemCircle {
 					EngineZildo.soundManagement.playSound(BankSound.MenuMove, client);
 				}
 				phase=CirclePhase.FIXED;
+				
+				if (describe) {
+					Item item = items.get(itemSelected);
+					ClientState clState = Server.getClientFromZildo(client);
+					EngineZildo.dialogManagement.getQueue().add(new WaitingDialog(item.toString(), CommandDialog.BUYING, false, clState == null ? null : clState.location));
+				}
 			}
 			break;
 		case REDUCTION:
@@ -187,8 +204,8 @@ public class ItemCircle {
 		EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_IN, FilterEffect.SEMIFADE));
 	}
 	
-	public int getItemSelected() {
-		return itemSelected;
+	public Item getItemSelected() {
+		return items.get(itemSelected);
 	}
 	
 	/**

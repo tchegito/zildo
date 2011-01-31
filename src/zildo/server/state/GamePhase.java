@@ -30,7 +30,8 @@ public enum GamePhase {
 	INGAME(true, true, true), 
 	DIALOG(false, true, false), 
 	MAPCHANGE(false, false, false), 
-	SCRIPT(false, true, false);
+	SCRIPT(false, true, false),
+	BUYING(false, true, true);
 	
 	private GamePhase(boolean p_moves, boolean p_action, boolean p_others) {
 		moves=p_moves;

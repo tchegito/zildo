@@ -25,12 +25,9 @@ import java.util.List;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.BankSound;
 import zildo.monde.dialog.WaitingDialog;
+import zildo.monde.dialog.WaitingDialog.CommandDialog;
 
 public class DialogDisplay {
-
-	public static final int ACTIONDIALOG_ACTION=0;
-	public static final int ACTIONDIALOG_UP=1;
-	public static final int ACTIONDIALOG_DOWN=2;
 	
 	public boolean dialoguing;
 	public boolean topicChoosing;
@@ -75,7 +72,7 @@ public class DialogDisplay {
             		if (dial.console) {
             			ClientEngineZildo.guiDisplay.displayMessage(dial.sentence);
             		} else {
-            			launchDialog(dial.sentence);
+            			launchDialog(dial.sentence, dial.action);
             		}
             	} else {
             		result=actOnDialog(dial.action);
@@ -88,13 +85,21 @@ public class DialogDisplay {
 	/**
 	 * Ask GUI to display the current sentence.
 	 * @param p_sentence
+	 * @param p_dialAction optional
 	 */
-	public void launchDialog(String p_sentence) {
+	public void launchDialog(String p_sentence, CommandDialog p_dialAction) {
 		
 		currentSentence=p_sentence;
-		ClientEngineZildo.guiDisplay.setText(currentSentence, GUIDisplay.DIALOGMODE_CLASSIC);
-		ClientEngineZildo.guiDisplay.setToDisplay_dialoguing(true);
+
+		int displayMode = GUIDisplay.DIALOGMODE_CLASSIC;
+		if (p_dialAction == CommandDialog.BUYING) {
+			// Hero is looking items in a store : so display sentence centered and directly
+			displayMode = GUIDisplay.DIALOGMODE_MENU;
+		}
+
 		positionInSentence=0;
+		ClientEngineZildo.guiDisplay.setText(currentSentence, displayMode);
+		ClientEngineZildo.guiDisplay.setToDisplay_dialoguing(true);
 		dialoguing=true;
 	}
 	
@@ -126,16 +131,16 @@ public class DialogDisplay {
 	// -quit dialog
 	///////////////////////////////////////////////////////////////////////////////////////
 	void manageConversation() {
-		GUIDisplay guiManagement=ClientEngineZildo.guiDisplay;
+		GUIDisplay guiDisplay=ClientEngineZildo.guiDisplay;
 	
-		boolean entireMessageDisplay=guiManagement.isEntireMessageDisplay();
-		boolean visibleMessageDisplay=guiManagement.isVisibleMessageDisplay();
+		boolean entireMessageDisplay=guiDisplay.isEntireMessageDisplay();
+		boolean visibleMessageDisplay=guiDisplay.isVisibleMessageDisplay();
 	
 		if (entireMessageDisplay || visibleMessageDisplay) {
 			if (numToScroll!=0) {
 				numToScroll--;
 				if (!entireMessageDisplay) {
-					guiManagement.scrollAndDisplayTextParts(positionInSentence,currentSentence);
+					guiDisplay.scrollAndDisplayTextParts(positionInSentence,currentSentence);
 				}
 			}
 		} else if (!visibleMessageDisplay ) {
@@ -144,7 +149,7 @@ public class DialogDisplay {
 			if (positionInSentence % 3 ==0 && (Math.random()*10)>7) {
 				ClientEngineZildo.soundPlay.playSoundFX(BankSound.AfficheTexte);
 			}
-			guiManagement.displayTextParts(positionInSentence,currentSentence,(numToScroll!=0));
+			guiDisplay.displayTextParts(positionInSentence,currentSentence,(numToScroll!=0));
 		}
 	}
 	
@@ -165,27 +170,27 @@ public class DialogDisplay {
 	// .Choose topic
 	// -Returns TRUE if dialog is finished
 	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean actOnDialog(int actionDialog) {
-		GUIDisplay guiManagement = ClientEngineZildo.guiDisplay;
-		boolean entireMessageDisplay=guiManagement.isEntireMessageDisplay();
-		boolean visibleMessageDisplay=guiManagement.isVisibleMessageDisplay();
+	public boolean actOnDialog(CommandDialog actionDialog) {
+		GUIDisplay guiDisplay = ClientEngineZildo.guiDisplay;
+		boolean entireMessageDisplay=guiDisplay.isEntireMessageDisplay();
+		boolean visibleMessageDisplay=guiDisplay.isVisibleMessageDisplay();
 	
 		boolean result=false;
 		
 		if (topicChoosing) {
 			// Topic
 			switch (actionDialog) {
-			case ACTIONDIALOG_ACTION:
-				guiManagement.setToRemove_dialoguing(true);
+			case ACTION:
+				guiDisplay.setToRemove_dialoguing(true);
 				topicChoosing=false;
 				result=true;
 				break;
-			case ACTIONDIALOG_DOWN:
+			case DOWN:
 				if (selectedTopic != nProposedTopics - 1) {
 					selectedTopic++;
 				}
 				break;
-			case ACTIONDIALOG_UP:
+			case UP:
 				if (selectedTopic != 0) {
 					selectedTopic--;
 				}
@@ -199,7 +204,7 @@ public class DialogDisplay {
 					numToScroll=3;
 				} else {
 					// Quit dialog
-					guiManagement.setToRemove_dialoguing(true);
+					guiDisplay.setToRemove_dialoguing(true);
 					dialoguing=false;
 					result=true;
 				}

@@ -65,7 +65,8 @@ public class PersoZildo extends Perso {
 	
 	private int touch;	// number of frames zildo is touching something without moving
 	
-	private boolean inventoring=false; 
+	private boolean inventoring=false;
+	private boolean buying=false;
 	public ItemCircle guiCircle;
 	private List<Item> inventory;
 	private ShieldEffect shieldEffect;
@@ -120,7 +121,7 @@ public class PersoZildo extends Perso {
 		setPv(10);
 		setAlerte(false);
 		setCompte_dialogue(0);
-	    setMoney(0);
+	    setMoney(200);
 	    setCountKey(0);
 	    pushingSprite = null;
 
@@ -868,19 +869,47 @@ public class PersoZildo extends Perso {
 		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoLance, this);		
 	}
 	
+	/**
+	 * Display Zildo's inventory around him
+	 */
 	public void lookInventory() {
-		if (inventory.size() > 0) {
-			inventoring=true;
-			guiCircle=new ItemCircle(this);
-			int sel=inventory.indexOf(weapon);
-			guiCircle.create(inventory, sel, this);
+		lookItems(inventory, this, false);
+	}
+	
+	public void lookItems(List<Item> p_items, Perso p_involved, boolean p_buying) {
+		inventoring=true;
+		guiCircle=new ItemCircle(this);
+		int sel=p_items.indexOf(weapon);
+		guiCircle.create(p_items, sel, p_involved, p_buying);
+		buying=p_buying;
+	}
+	
+	/**
+	 * Zildo buy an item at a store. Check his money, and add item to his inventory if he has enough.
+	 */
+	public void buyItem() {
+		Item item=guiCircle.getItemSelected();
+		int remains=getMoney() - item.getPrice();
+		if (remains < 0) {
+			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
+		} else {
+			setMoney(getMoney() - item.getPrice());
+			inventory.add(item);
+			EngineZildo.soundManagement.playSound(BankSound.ZildoGagneArgent, this);
 		}
 	}
 	
 	public void closeInventory() {
 		EngineZildo.soundManagement.playSound(BankSound.MenuIn, this);		
 		guiCircle.close();	// Ask for the circle to close
-		weapon=inventory.get(guiCircle.getItemSelected());
+		if (!buying) {
+			weapon=guiCircle.getItemSelected();
+			Perso perso=getDialoguingWith();
+			if (perso != null) {
+				perso.setDialoguingWith(null);
+				setDialoguingWith(null);
+			}
+		}
 	}
 	
 	/**

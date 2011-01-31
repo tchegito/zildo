@@ -25,6 +25,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.client.gui.menu.StartMenu;
 import zildo.monde.dialog.ActionDialog;
 import zildo.server.EngineZildo;
+import zildo.server.state.ClientState;
 
 /**
  * When Zildo dies in single player.
@@ -42,7 +43,7 @@ public class GameOverAction extends ActionDialog {
 	}
 	
 	@Override
-	public void launchAction() {
+	public void launchAction(ClientState p_clientState) {
 		// Reset map / GUI
 		EngineZildo.mapManagement.deleteCurrentMap();
 		ClientEngineZildo.tileEngine.cleanUp();

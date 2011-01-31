@@ -20,18 +20,48 @@
 
 package zildo.monde.quest.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import zildo.monde.dialog.ActionDialog;
-import zildo.server.EngineZildo;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.state.ClientState;
 
-public class ScriptAction extends ActionDialog {
+/**
+ * @author Tchegito
+ *
+ */
+public class BuyingAction extends ActionDialog {
 
-	public ScriptAction(String p_text) {
+	PersoZildo zildo;
+	Perso seller;
+	
+	/**
+	 * @param p_text
+	 */
+	public BuyingAction(String p_text) {
 		super(p_text);
+	}
+
+	public BuyingAction(PersoZildo p_zildo, Perso p_seller) {
+		super(null);
+		zildo = p_zildo;
+		seller = p_seller;
 	}
 	
 	@Override
 	public void launchAction(ClientState p_clientState) {
-		EngineZildo.scriptManagement.userEndAction();
+		
+		List<Item> items=new ArrayList<Item>();
+		items.addAll(zildo.getInventory());
+		items.add(new Item(ItemKind.BOOMERANG, 2));
+		items.add(new Item(ItemKind.BOMB, 3));
+		zildo.lookItems(items, seller, true);
+		
+		p_clientState.dialogState.dialoguing=true;
 	}
+
 }
