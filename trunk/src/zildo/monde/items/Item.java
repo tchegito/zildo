@@ -66,6 +66,7 @@ public class Item {
 			break;
 		}
 		s+=")\n"+getPrice()+" rupees";
+		s=s.replaceAll("_", " ");
 		return s;
 	}
 }
