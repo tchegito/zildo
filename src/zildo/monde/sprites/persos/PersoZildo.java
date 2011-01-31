@@ -46,6 +46,7 @@ import zildo.monde.sprites.elements.ElementArrow;
 import zildo.monde.sprites.elements.ElementBomb;
 import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementGear;
+import zildo.monde.sprites.persos.action.HealAction;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.sprites.utils.ShieldEffect;
 import zildo.monde.sprites.utils.ShieldEffect.ShieldType;
@@ -226,10 +227,23 @@ public class PersoZildo extends Perso {
 				}
 			}
 			break;
+		case FLASK_RED:
+			if (getPv() == getMaxpv()) {	// If Zildo already has full life, do nothing
+				outOfOrder = true;
+			} else {
+				action = new HealAction(this);
+				inventory.remove(weapon);
+				weapon=null;
+			}
+			break;
 		}
 		if (outOfOrder) {
 			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
 		}
+		if (weapon == null) {
+			weapon=inventory.get(0);
+		}
+
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -377,7 +391,13 @@ public class PersoZildo extends Perso {
 			setVisible(false);
 			return;
 		}
-				
+			
+		if (action != null) {
+			if (action.launchAction()) {
+				action = null;
+			}
+		}
+		
 		if (getEn_bras() != null && getEn_bras().dying) {
 			setEn_bras(null);
 		}
@@ -873,14 +893,14 @@ public class PersoZildo extends Perso {
 	 * Display Zildo's inventory around him
 	 */
 	public void lookInventory() {
-		lookItems(inventory, this, false);
+		int sel=inventory.indexOf(weapon);
+		lookItems(inventory, sel, this, false);
 	}
 	
-	public void lookItems(List<Item> p_items, Perso p_involved, boolean p_buying) {
+	public void lookItems(List<Item> p_items, int p_sel, Perso p_involved, boolean p_buying) {
 		inventoring=true;
 		guiCircle=new ItemCircle(this);
-		int sel=p_items.indexOf(weapon);
-		guiCircle.create(p_items, sel, p_involved, p_buying);
+		guiCircle.create(p_items, p_sel, p_involved, p_buying);
 		buying=p_buying;
 	}
 	

@@ -33,6 +33,7 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.persos.action.PersoAction;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
@@ -69,6 +70,8 @@ public abstract class Perso extends Element {
     protected int countBomb;
     protected int countKey;	// How many keys have perso ? (for PNJ, he gives it when he dies)
 
+    protected PersoAction action;	// Perso doing an action
+    
 	private int count=0;
 	protected boolean inWater=false;
 	protected boolean inDirt=false;

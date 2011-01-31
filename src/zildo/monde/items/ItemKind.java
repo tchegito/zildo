@@ -30,7 +30,8 @@ public enum ItemKind {
 	BOW(ElementDescription.ENEMYARC_RIGHT1, 40),
 	BOMB(ElementDescription.BOMB, 10),
 	FLUT(ElementDescription.FLUT, 1),
-	SHIELD(null, 60);
+	SHIELD(null, 60),
+	FLASK_RED(ElementDescription.FLASK_RED, 10);
 	
 	public ElementDescription representation;
 	public int price;

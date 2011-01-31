@@ -31,6 +31,7 @@ import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.state.ClientState;
 
 /**
+ * Action launched in order to make Zildo buy items with a given character.
  * @author Tchegito
  *
  */
@@ -56,10 +57,11 @@ public class BuyingAction extends ActionDialog {
 	public void launchAction(ClientState p_clientState) {
 		
 		List<Item> items=new ArrayList<Item>();
-		items.addAll(zildo.getInventory());
 		items.add(new Item(ItemKind.BOOMERANG, 2));
 		items.add(new Item(ItemKind.BOMB, 3));
-		zildo.lookItems(items, seller, true);
+		items.add(new Item(ItemKind.FLASK_RED, 0));
+		items.add(new Item(ItemKind.BOW, 0));
+		zildo.lookItems(items, 0, seller, true);
 		
 		p_clientState.dialogState.dialoguing=true;
 	}
