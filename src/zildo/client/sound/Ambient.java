@@ -42,6 +42,8 @@ public class Ambient {
 		ambientMusic.put("polakyg4", BankMusic.Grotte);
 		ambientMusic.put("polaky4", BankMusic.Grotte);
 		ambientMusic.put("polaky5", BankMusic.Grotte);
+		ambientMusic.put("d4m5", BankMusic.PianoBar);
+		ambientMusic.put("d4m4", BankMusic.PianoBar);
 	}
 	
 	public BankMusic getMusicForMap(String p_mapName) {
