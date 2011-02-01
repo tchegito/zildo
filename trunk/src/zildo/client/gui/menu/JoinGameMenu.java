@@ -52,7 +52,7 @@ public class JoinGameMenu extends Menu {
                 	if (InternetClient.isResponding(srv)) {
                 		new MultiPlayer(srv);
                 	} else {
-    	                client.handleMenu(new InfoMenu(UIText.getText("m4.error", srv.name), currentMenu));
+    	                client.handleMenu(new InfoMenu(UIText.getMenuText("m4.error", srv.name), currentMenu));
                 	}
                 }
             };

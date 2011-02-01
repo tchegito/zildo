@@ -31,20 +31,23 @@ import zildo.server.EngineZildo;
 public class HealAction implements PersoAction {
 
 	Perso perso;
-
-	public HealAction(Perso p_perso) {
+	int numPv;
+	
+	public HealAction(Perso p_perso, int p_numPv) {
 		perso = p_perso;
+		numPv = p_numPv;
 		perso.setAttente(1);
 	}
 	
 	@Override
 	public boolean launchAction() {
 		int pv=perso.getPv();
-		if (perso.getMaxpv() == pv) {
+		if (perso.getMaxpv() == pv || numPv == 0) {
 			return true;
 		} else {
 			if (perso.getAttente() == 0) {
 				perso.setPv(pv+1);
+				numPv--;
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupVie, perso);
 				perso.setAttente(8);
 			}

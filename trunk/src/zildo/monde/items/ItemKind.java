@@ -20,6 +20,7 @@
 
 package zildo.monde.items;
 
+import zildo.fwk.ui.UIText;
 import zildo.monde.sprites.desc.ElementDescription;
 
 public enum ItemKind {
@@ -48,5 +49,9 @@ public enum ItemKind {
 			}
 		}
 		throw new RuntimeException("Item "+p_str+" doesn't exists.");
+	}
+	
+	public String getName() {
+		return UIText.getGameText("item."+name());
 	}
 }

@@ -33,7 +33,7 @@ public abstract class ItemMenu {
 	}
 	
 	public ItemMenu(String p_text) {
-		text=UIText.getText(p_text);
+		text=UIText.getMenuText(p_text);
 	}
 
 	public ItemMenu(String p_text, BankSound p_sound) {
