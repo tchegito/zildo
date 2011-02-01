@@ -231,7 +231,7 @@ public class PersoZildo extends Perso {
 			if (getPv() == getMaxpv()) {	// If Zildo already has full life, do nothing
 				outOfOrder = true;
 			} else {
-				action = new HealAction(this);
+				action = new HealAction(this, 6);	// Give back 6 half-hearts
 				inventory.remove(weapon);
 				weapon=null;
 			}
@@ -911,6 +911,10 @@ public class PersoZildo extends Perso {
 		Item item=guiCircle.getItemSelected();
 		int remains=getMoney() - item.getPrice();
 		if (remains < 0) {
+			// Not enough money
+			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
+		} else if (inventory.size() == 8) {
+			// Too much items
 			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
 		} else {
 			setMoney(getMoney() - item.getPrice());

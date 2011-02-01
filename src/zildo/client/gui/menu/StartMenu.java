@@ -118,10 +118,10 @@ public class StartMenu extends Menu {
         	}
         	
         	String getNetTypeString() {
-        		return UIText.getText("m2.currentNet", lan ? "LAN" : "www");
+        		return UIText.getMenuText("m2.currentNet", lan ? "LAN" : "www");
         	}
             String getPlayerNameString() {
-                return UIText.getText("m2.playerName", playerName.toString());
+                return UIText.getMenuText("m2.playerName", playerName.toString());
             }
 
         };

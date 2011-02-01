@@ -48,7 +48,7 @@ public class Item {
 	}
 	
 	public String toString() {
-		String s=kind.name().toLowerCase();
+		String s=kind.getName().toLowerCase();
 		s=s.substring(0,1).toUpperCase() + s.substring(1);
 		s+=" (";
 		switch (level) {

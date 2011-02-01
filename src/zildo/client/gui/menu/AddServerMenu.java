@@ -46,7 +46,7 @@ import zildo.prefs.Constantes;
  */
 public class AddServerMenu extends Menu {
 
-    StringBuilder name = new StringBuilder(UIText.getText("m3.defaultName"));
+    StringBuilder name = new StringBuilder(UIText.getMenuText("m3.defaultName"));
     StringBuilder ip = new StringBuilder("<IP>");
     StringBuilder port = new StringBuilder("<port>");
 
@@ -102,7 +102,7 @@ public class AddServerMenu extends Menu {
     	// 1: Controls that everything is correct
     	int error=2;
     	try {
-    		if (p_name.equals(UIText.getText("m3.defaultName"))) {
+    		if (p_name.equals(UIText.getMenuText("m3.defaultName"))) {
     			throw new Exception();
     		}
     		error=0;
@@ -131,7 +131,7 @@ public class AddServerMenu extends Menu {
     			break;
     		}
     		
-    		message=UIText.getText(message);
+    		message=UIText.getMenuText(message);
         	ClientEngineZildo.getClientForMenu().handleMenu(new InfoMenu("Impossible. "+message, currentMenu));
     	}
     }

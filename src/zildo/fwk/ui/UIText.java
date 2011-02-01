@@ -26,26 +26,41 @@ import java.util.ResourceBundle;
 
 public class UIText {
 
-	static ResourceBundle bundle;
+	static ResourceBundle menuBundle;
+	static ResourceBundle gameBundle;
 	
 	static {
-		bundle=ResourceBundle.getBundle("zildo.prefs.bundle.menu");
+		menuBundle=ResourceBundle.getBundle("zildo.prefs.bundle.menu");
+		gameBundle=ResourceBundle.getBundle("zildo.prefs.bundle.game");
 	}
 	
-	public static String getText(String p_key) {
+	static private String getText(ResourceBundle p_bundle, String p_key, Object... p_params) {
 		try {
-			return bundle.getString(p_key);
-		} catch (MissingResourceException e) {
-			return p_key;
-		}
-	}
-	
-	public static String getText(String p_key, Object... p_params) {
-		try {
-			String message= bundle.getString(p_key);
+			String message = p_bundle.getString(p_key);
 			return MessageFormat.format(message, p_params);
 		} catch (MissingResourceException e) {
 			return p_key;
 		}
 	}
+	
+	/**
+	 * Returns a label with a given key and given parameters from the <b>menu</b> bundle properties.
+	 * @param p_key
+	 * @param p_params
+	 * @return String
+	 */
+	public static String getMenuText(String p_key, Object... p_params) {
+		return getText(menuBundle, p_key, p_params);
+	}
+	
+	/**
+	 * Returns a label with a given key and given parameters from the <b>game</b> bundle properties.
+	 * @param p_key
+	 * @param p_params
+	 * @return String
+	 */
+	public static String getGameText(String p_key, Object... p_params) {
+		return getText(gameBundle, p_key, p_params);
+	}
+	
 }
