@@ -4,6 +4,7 @@
 
  * savegames
  * scenario enhancements
+ * improve gameplay in multiplayer (seller, special map ...)
 
 = Version 1.093 =
 
