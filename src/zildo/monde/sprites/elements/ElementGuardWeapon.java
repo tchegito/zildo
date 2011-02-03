@@ -20,23 +20,38 @@
 
 package zildo.monde.sprites.elements;
 
-import zildo.fwk.bank.SpriteBank;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.prefs.Constantes;
 
 public class ElementGuardWeapon extends Element {
 
+    enum GuardWeapon {
+	SWORD(PersoDescription.ARME_EPEE), 
+	SPEAR(PersoDescription.ARME_LANCE),
+	BOW(PersoDescription.ARC);
+	
+	SpriteDescription desc;
+	
+	private GuardWeapon(SpriteDescription p_desc) {
+	    desc = p_desc;
+	}
+    }
+    
 	public ElementGuardWeapon(Perso p_guard) {
 		x=p_guard.getX();
 		y=p_guard.getY()-12;
-		setNBank(SpriteBank.BANK_PNJ);
-		setNSpr(9);
+		setDesc(PersoDescription.ARME_EPEE);
+	}
+
+	public void setWeapon(GuardWeapon p_weapon) {
+	    setDesc(p_weapon.desc);
 	}
 	
 	@Override
@@ -47,8 +62,7 @@ public class ElementGuardWeapon extends Element {
 		} else {
 			Perso guard=(Perso) linked;
 			angle=guard.angle;
-			setNSpr(PersoDescription.ARME_EPEE.first() + angle.value);
-			setNBank(SpriteBank.BANK_PNJ);
+			setAddSpr(angle.value);
 
 			// Arme du garde
 			int j = (guard.getPos_seqsprite() / (2 * Constantes.speed)) % 2;
