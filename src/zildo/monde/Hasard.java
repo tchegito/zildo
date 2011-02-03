@@ -28,9 +28,9 @@ public class Hasard {
 	
 	// Hazard
 	public static final int hazardBushes_Diamant = 7;
-	public static final int hazardBushes_Heart = 5;
-	public static final int hazardBushes_Arrow = 7;
-	public static final int hazardBushes_Bombs = 7;
+	public static final int hazardBushes_Heart = 9;
+	public static final int hazardBushes_Arrow = 9;
+	public static final int hazardBushes_Bombs = 9;
 	
 	/**
 	 * Renvoie VRAI si un lancer de dé à 10 faces fait plus de 'p_number'

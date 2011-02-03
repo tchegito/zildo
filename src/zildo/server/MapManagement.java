@@ -110,11 +110,6 @@ public class MapManagement {
 			EngineZildo.scriptManagement.trigger(trig);
 		}
 
-		// Misc
-		if (EngineZildo.game.multiPlayer) {
-			EngineZildo.multiplayerManagement.spawnQuad();
-		}
-
 		// Load a new one
 		currentMap = loadMapFile(adjustedMapName, p_mapname);
 
@@ -212,7 +207,7 @@ public class MapManagement {
 		if (tx < 0 || ty < 0 || tx > (currentMap.getDim_x() - 1) * 16 + 15
 				|| ty > (currentMap.getDim_y() - 1) * 16 + 15)
 			// On empêche la collision sur les bords de cartes
-			return quelElement != null && !quelElement.isZildo();
+			return quelElement != null && (!quelElement.isZildo() || EngineZildo.game.multiPlayer);
 
 		Angle angleFlying = null;
 		Point size = new Point(8, 4); // Default size

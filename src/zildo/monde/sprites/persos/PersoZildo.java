@@ -122,7 +122,7 @@ public class PersoZildo extends Perso {
 		setPv(10);
 		setAlerte(false);
 		setCompte_dialogue(0);
-	    setMoney(200);
+	    setMoney(0);
 	    setCountKey(0);
 	    pushingSprite = null;
 
@@ -773,7 +773,7 @@ public class PersoZildo extends Perso {
 				setPv(pv+1);
 				break;
 			case ARROW_UP:
-				countArrow++;
+				countArrow+=5;
 				break;
 			case QUAD1:
 				quadDuration=MultiplayerManagement.QUAD_TIME_DURATION;
@@ -960,7 +960,7 @@ public class PersoZildo extends Perso {
 	        mouvement=MouvementZildo.FIERTEOBJET;
 	        Element elem=p_element;
 	        if (elem == null) {
-		        elem=EngineZildo.spriteManagement.spawnElement(p_kind.representation, 
+		        elem=EngineZildo.spriteManagement.spawnElement((ElementDescription) p_kind.representation, 
 		        	 (int) x, 
 		        	 (int) y, 0);
 	        }

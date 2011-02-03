@@ -38,6 +38,7 @@ import zildo.fwk.gfx.GFXBasics;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.desc.ZPersoLibrary;
@@ -197,7 +198,12 @@ public class SpriteSet extends ImageSet {
 			        currentSelection = new PersoSelection(temp);
 			        manager.setPersoSelection((PersoSelection) currentSelection);
 				} else {
-					Element temp=new Element();
+					Element temp;
+					if (desc instanceof ElementDescription) {
+						temp = ((ElementDescription)desc).createElement();
+					} else {
+						temp = new Element();
+					}
 					temp.setNBank(desc.getBank());
 					temp.setNSpr(desc.getNSpr());
 					currentSelection=new SpriteSelection(temp);

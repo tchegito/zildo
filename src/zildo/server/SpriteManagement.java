@@ -213,8 +213,17 @@ public class SpriteManagement extends SpriteStore {
 				element.setVz(1.5f);
 				element.setAz(-0.1f);
 				if (typeSprite == SpriteAnimation.DIAMOND) {
-					element.setSprModel(ElementDescription.GREENMONEY1,
-							misc * 3);
+					switch (misc) {
+					case 0:
+						element.setDesc(ElementDescription.GREENMONEY1);
+						break;
+					case 1:
+						element.setDesc(ElementDescription.BLUEMONEY1);
+						break;
+					default:
+						element.setDesc(ElementDescription.REDMONEY1);
+						break;
+					}
 				} else if (typeSprite == SpriteAnimation.FROMGROUND) {
 					element.setSprModel(desc);
 				} else {
@@ -291,7 +300,7 @@ public class SpriteManagement extends SpriteStore {
 				element.ax = 0;
 				element.fy = 0.005f;
 				element.fz = 0.02f;
-				element.nSpr = misc;
+				element.setDesc(desc);
 				spawnSprite(element);
 		}
 
@@ -342,6 +351,9 @@ public class SpriteManagement extends SpriteStore {
 			entity = new ElementGear(x, y);
 			entity.setAjustedX(x);
 			entity.setAjustedY(y);
+		} else if (desc == ElementDescription.QUAD1) {
+			EngineZildo.multiplayerManagement.spawnQuad(x, y);
+			return null;
 		} else {
 			entity = new SpriteEntity(x, y, true);
 			entity.setAjustedX(x - (spr.getTaille_x() >> 1));

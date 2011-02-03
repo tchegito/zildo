@@ -61,6 +61,8 @@ public class BuyingAction extends ActionDialog {
 		items.add(new Item(ItemKind.BOMB, 3));
 		items.add(new Item(ItemKind.FLASK_RED, 0));
 		items.add(new Item(ItemKind.BOW, 0));
+		items.add(new Item(ItemKind.SHIELD_MEDIUM, 0));
+		items.add(new Item(ItemKind.SHIELD_LARGE, 0));
 		zildo.lookItems(items, 0, seller, true);
 		
 		p_clientState.dialogState.dialoguing=true;

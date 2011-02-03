@@ -22,6 +22,8 @@ package zildo.monde.sprites.desc;
 
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementGoodies;
 
 public enum ElementDescription  implements SpriteDescription {
 
@@ -135,6 +137,15 @@ public enum ElementDescription  implements SpriteDescription {
 			return true;
 		default:
 			return false;
+		}
+	}
+	
+	public Element createElement() {
+		switch (this) {
+		case HEART: case BOMBS3: case ARROW_UP:
+			return new ElementGoodies();
+		default:
+			return new Element();
 		}
 	}
 }
