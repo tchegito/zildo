@@ -22,6 +22,7 @@ package zildo.server;
 
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.map.Point;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.elements.ElementQuadDamage;
@@ -42,12 +43,14 @@ public class MultiplayerManagement {
 	
 	int quadTimeRemaining=0;
 	
+	Point quadPos;
+	
 	public void render() {
 		// Spawn again a quad damage when time is come
 		if (quadTimeRemaining > 0) {
 			quadTimeRemaining--;
 			if (quadTimeRemaining == 0) {
-				spawnQuad();
+				spawnQuad(quadPos.x, quadPos.y);
 			}
 		}
 	}
@@ -56,11 +59,10 @@ public class MultiplayerManagement {
 		quadTimeRemaining=QUAD_TIME_RESPAWNING;
 	}
 	
-    public void spawnQuad() {
-        int x = 616; // 840;
-        int y = 170;
+    public void spawnQuad(int x, int y) {
         EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
         EngineZildo.spriteManagement.spawnSprite(new ElementQuadDamage(x, y));
+        quadPos=new Point(x, y);
     }
 	
     private void displayDeathMessage(ClientState p_clientKilled, ClientState p_clientKiller) {
@@ -142,8 +144,9 @@ public class MultiplayerManagement {
 		//p_zildo.addInventory(new Item(ItemKind.BOOMERANG));
 		//p_zildo.addInventory(new Item(ItemKind.BOMB));
 		p_zildo.setPv(3);
+		p_zildo.setMoney(0);
 		
-		p_zildo.setCountArrow(20);
+		//p_zildo.setCountArrow(0);
 		//p_zildo.setCountBomb(20);
 
     }

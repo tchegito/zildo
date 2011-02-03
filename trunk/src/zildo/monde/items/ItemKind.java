@@ -22,6 +22,8 @@ package zildo.monde.items;
 
 import zildo.fwk.ui.UIText;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
+import zildo.monde.sprites.desc.ZildoDescription;
 
 public enum ItemKind {
 
@@ -31,13 +33,17 @@ public enum ItemKind {
 	BOW(ElementDescription.ENEMYARC_RIGHT1, 40),
 	BOMB(ElementDescription.BOMB, 10),
 	FLUT(ElementDescription.FLUT, 1),
-	SHIELD(null, 60),
+	GLOVE(ElementDescription.GLOVE, 20),
+	GLOVE_IRON(ElementDescription.SUPER_GLOVE, 40),
+	SHIELD(ZildoDescription.SHIELD_DOWN, 60),
+	SHIELD_MEDIUM(ElementDescription.SHIELD_RED, 60),
+	SHIELD_LARGE(ElementDescription.SHIELD_YELLOW, 60),
 	FLASK_RED(ElementDescription.FLASK_RED, 10);
 	
-	public ElementDescription representation;
+	public SpriteDescription representation;
 	public int price;
 	
-	private ItemKind(ElementDescription p_itemRepresentation, int p_price) {
+	private ItemKind(SpriteDescription p_itemRepresentation, int p_price) {
 		representation = p_itemRepresentation;
 		price = p_price;
 	}

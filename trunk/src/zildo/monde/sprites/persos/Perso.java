@@ -489,6 +489,7 @@ public abstract class Perso extends Element {
             case 862:
             case 863:
             case 864:
+            case 206: case 207:	// Mountain ladder
             case 170: case 171: case 172:	// Stairs in forest
                 slowDown = true;
                 break;

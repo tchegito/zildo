@@ -26,6 +26,7 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.input.KeyboardState;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
+import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
 import zildo.monde.map.Point;
@@ -425,7 +426,7 @@ public class PlayerManagement {
 		if (!keysState.key_actionPressed) {
 			if (gamePhase == GamePhase.BUYING) {
 				heros.buyItem();
-			} else if (gamePhase == GamePhase.DIALOG) {
+			} else if (gamePhase == GamePhase.DIALOG || gamePhase == GamePhase.SCRIPT) {
 				EngineZildo.dialogManagement.actOnDialog(client.location, CommandDialog.ACTION);
 			} else if (gamePhase == GamePhase.INGAME && !heros.isInventoring()) { //
 				if (heros.getMouvement()==MouvementZildo.BRAS_LEVES) {
@@ -507,27 +508,29 @@ public class PlayerManagement {
 										EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DIAMOND,newx*16+8,newy*16+10,0, null, null);
 									}
 									break;
-								case 167:objDesc=ElementDescription.STONE;break;
-								case 169:objDesc=ElementDescription.STONE_HEAVY;break;
+								case 167:
+									if (heros.hasItem(ItemKind.GLOVE)) {
+										objDesc=ElementDescription.STONE;
+									}
+									break;
+								case 169:
+									if (heros.hasItem(ItemKind.GLOVE_IRON)) {
+										objDesc=ElementDescription.STONE_HEAVY;
+									}
+									break;
 								case 751:objDesc=ElementDescription.JAR;break;
 								}
 	                            if (objDesc != null) {
 	                                heros.takeSomething(newx * 16 + 8, newy * 16 + 14, objDesc, null);
+	                                map.takeSomethingOnTile(new Point(newx, newy), false, heros);
 	                            }
-	                            map.takeSomethingOnTile(new Point(newx, newy), false);
 							} else if (on_map==743 && heros.getAngle()==Angle.NORD) {
 								//Zildo a trouvé un coffre ! C'est pas formidable ?
-								map.writemap(newx, newy, 744);
 								EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
-								ElementDescription desc=map.getCaseItem(newx, newy);
-								int nSpr=51;
-								if (desc != null) {
-									nSpr=desc.getNSpr();
-								}
 								heros.setAttente(50);
-								EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.FROM_CHEST, 16*newx+8, 16*newy+16, nSpr, heros, null);
+                                map.takeSomethingOnTile(new Point(newx, newy), false, heros);
 								// Mark this event : chest opened
-								//EngineZildo.scriptManagement.openChest(map.getName(), new Point(newx, newy));
+								EngineZildo.scriptManagement.openChest(map.getName(), new Point(newx, newy));
 							} else if (!EngineZildo.mapManagement.isWalkable(on_map)) {
 								heros.setMouvement(MouvementZildo.TIRE);
 							}
@@ -599,14 +602,12 @@ public class PlayerManagement {
 	// keyPressInventory
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyPressInventory() {
-		if (!keysState.key_inventoryPressed && gamePhase != GamePhase.DIALOG && heros.getMouvement()==MouvementZildo.VIDE) {
+		if (!keysState.key_inventoryPressed && gamePhase != GamePhase.DIALOG && gamePhase != GamePhase.SCRIPT && heros.getMouvement()==MouvementZildo.VIDE) {
 			if (!heros.isInventoring()) {
 				heros.lookInventory();
 			} else {
 				heros.closeInventory();
 				EngineZildo.dialogManagement.actOnDialog(client.location, CommandDialog.ACTION);
-
-				//EngineZildo.dialogManagement.stopDialog(client);
 			}
 			keysState.key_inventoryPressed=true;
 		}

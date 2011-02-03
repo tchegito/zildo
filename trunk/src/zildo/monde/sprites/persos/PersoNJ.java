@@ -538,7 +538,9 @@ public class PersoNJ extends Perso {
 	}
 	
 	@Override
-	public void fall() {
+    public void die(boolean p_link, Perso p_shooter) {
+		super.die(p_link, p_shooter);
+		
 		 if (info==PersoInfo.ENEMY) {
 			// Un monstre vient de mourir
 			// On teste si un bonus va apparaitre
@@ -548,14 +550,15 @@ public class PersoNJ extends Perso {
 			m=0;
 			switch (k) {
 				case 5: case 6:
-				anim=SpriteAnimation.HEART;
-				break;
+					anim=SpriteAnimation.HEART;
+					break;
 				case 3: case 4:
-				anim=SpriteAnimation.DIAMOND;
+					anim=SpriteAnimation.DIAMOND;
+					break;
 				case 1:
-				anim=SpriteAnimation.DIAMOND;
-				m=2;
-				break;
+					anim=SpriteAnimation.DIAMOND;
+					m=2;
+					break;
 			}
 			if (anim!=null) {
 				EngineZildo.spriteManagement.spawnSpriteGeneric(anim,(int)x,(int)y,m, null, null);

@@ -34,7 +34,7 @@ public class TileCollision {
 
     final IntSet walkable = new IntSet(1, 6, 19, 23, 27, 35, 40, 41, 42, 43, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
             64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 89, 90, 91, 99, 139, 140, 141, 142, 143, 144, 145, 146, 166, 168, 170, 171,
-            172, 174, 175, 176, 177, 178, 183);
+            172, 174, 175, 176, 177, 178, 183, 206, 207);
 
     final IntSet walkable2 = new IntSet(22, 23, 25, 34, 35, 36, 37, 58, 59, 61, 67, 68, 71, 72,
             73, // +256
@@ -202,6 +202,7 @@ public class TileCollision {
                 case 107:
                 case 179:
                 case 185:
+                case 192:	// Mountain cave enter
                 case 194:
                 case 278:
                 case 314:
@@ -237,6 +238,7 @@ public class TileCollision {
 
                 case 46:
                 case 103:
+                case 193:	// Mountain cave enter
                 case 195:
                 case 279:
                 case 315:

@@ -331,7 +331,7 @@ public class Area implements EasySerializable {
             EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES, spriteLocation.x, spriteLocation.y, 0, null, null);
             EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
-            takeSomethingOnTile(tileLocation, true);
+            takeSomethingOnTile(tileLocation, true, null);
             break;
         case 374:	// Mud
             writemap(tileLocation.x, tileLocation.y, 375);
@@ -345,9 +345,10 @@ public class Area implements EasySerializable {
      * @param tileLocation location
      * @param p_destroy TRUE if tile is attacked / FALSE for simple action (ex: Zildo picks up a bush) 
      */
-    public void takeSomethingOnTile(Point tileLocation, boolean p_destroy) {
+    public void takeSomethingOnTile(Point tileLocation, boolean p_destroy, Perso p_perso) {
         int on_Area = this.readmap(tileLocation.getX(), tileLocation.getY());
         int resultTile;
+        SpriteAnimation anim=SpriteAnimation.FROMGROUND;
         switch (on_Area) {
             case 165: // Bush
             default:
@@ -360,31 +361,46 @@ public class Area implements EasySerializable {
             case 751: // Jar
                 resultTile = 752;
                 break;
+            case 743: // Chest
+            	resultTile = 744;
+            	anim=SpriteAnimation.FROM_CHEST;
+            	break;
         }
-        SpawningTile spawnTile=new SpawningTile();
-        spawnTile.x=tileLocation.x;
-        spawnTile.y=tileLocation.y;
-        spawnTile.previousCase=new Case(get_mapcase(tileLocation.x, tileLocation.y + 4));
-        toRespawn.add(spawnTile);
+        if (anim != SpriteAnimation.FROM_CHEST || EngineZildo.game.multiPlayer) {
+        	// Notify that this case should reappear after a given time
+        	// Except for chests in SinglePlayer (they DO NOT have to reappear !)
+	        SpawningTile spawnTile=new SpawningTile();
+	        spawnTile.x=tileLocation.x;
+	        spawnTile.y=tileLocation.y;
+	        spawnTile.previousCase=new Case(get_mapcase(tileLocation.x, tileLocation.y + 4));
+	        toRespawn.add(spawnTile);
+        }
         this.writemap(tileLocation.getX(), tileLocation.getY(), resultTile);
         
     	// Is there something planned to appear ?
         Point p = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
     	ElementDescription desc=getCaseItem(tileLocation.x, tileLocation.y);
     	SpriteManagement sprMgt=EngineZildo.spriteManagement;
-    	if (desc != null) {
-    		sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, 
-            		p.x, p.y+5, 0, null, desc);
+    	
+    	if (p_perso != null && anim == SpriteAnimation.FROM_CHEST) {
+    		if (desc == null) {
+    			desc = ElementDescription.BLUEMONEY1;
+    		}
+    		sprMgt.spawnSpriteGeneric(SpriteAnimation.FROM_CHEST, p.x, p.y + 8, 0, p_perso, desc);
     	} else {
-			if (Hasard.lanceDes(Hasard.hazardBushes_Arrow)) {
-				sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 0, null, null);
-			} else if (Hasard.lanceDes(Hasard.hazardBushes_Diamant)) {
-				sprMgt.spawnSpriteGeneric(SpriteAnimation.DIAMOND, p.x, p.y + 5, 0, null, null);
-			} else if (Hasard.lanceDes(Hasard.hazardBushes_Heart)) {
-				sprMgt.spawnSpriteGeneric(SpriteAnimation.HEART, p.x + 3, p.y + 5, p_destroy ? 0 : 1, null, null);
-			} else if (Hasard.lanceDes(Hasard.hazardBushes_Bombs)) {
-				sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 0, null, ElementDescription.BOMBS3);
-			}
+	    	if (desc != null) {
+	    		sprMgt.spawnSpriteGeneric(anim, p.x, p.y+5, 0, null, desc);
+	    	} else {
+				if (Hasard.lanceDes(Hasard.hazardBushes_Arrow)) {
+					sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 0, null, null);
+				} else if (Hasard.lanceDes(Hasard.hazardBushes_Diamant)) {
+					sprMgt.spawnSpriteGeneric(SpriteAnimation.DIAMOND, p.x, p.y + 5, 0, null, null);
+				} else if (Hasard.lanceDes(Hasard.hazardBushes_Heart)) {
+					sprMgt.spawnSpriteGeneric(SpriteAnimation.HEART, p.x + 3, p.y + 5, p_destroy ? 0 : 1, null, null);
+				} else if (Hasard.lanceDes(Hasard.hazardBushes_Bombs)) {
+					sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 0, null, ElementDescription.BOMBS3);
+				}
+	    	}
     	}
 
     }
