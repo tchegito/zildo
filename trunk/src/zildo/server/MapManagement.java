@@ -305,7 +305,6 @@ public class MapManagement {
 			result = Angle.NORDOUEST;
 			break; // 7
 		case 23:
-		case 73:
 		case 102:
 			result = Angle.SUDEST;
 			break; // 5
