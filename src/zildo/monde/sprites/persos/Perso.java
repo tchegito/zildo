@@ -430,9 +430,6 @@ public abstract class Perso extends Element {
 	
 	// Default function : nothing
 	public void animate(int compteur) {
-		if (getPv() == 0 || getDialoguingWith() != null) {
-			return;
-		}
 		
 		if (action != null) {
 			if (attente != 0) {

@@ -153,7 +153,7 @@ public class SinglePlayer {
 
             // Dialogs
             if (ClientEngineZildo.dialogDisplay.launchDialog(EngineZildo.dialogManagement.getQueue())) {
-            	EngineZildo.dialogManagement.stopDialog(state);
+            	EngineZildo.dialogManagement.stopDialog(state, false);
             }
 
             // Update client

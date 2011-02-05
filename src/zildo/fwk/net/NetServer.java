@@ -319,7 +319,7 @@ public class NetServer extends NetSend {
     		switch (event.type) {
     		case DIALOG_ENDED:
     			ClientState client=Server.getClientState(source);
-    			EngineZildo.dialogManagement.stopDialog(client);
+    			EngineZildo.dialogManagement.stopDialog(client, false);
     			break;
     		default:
     			throw new RuntimeException("This kind of event ("+event.type+") is unknown.");
