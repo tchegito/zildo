@@ -27,7 +27,7 @@ import zildo.fwk.net.TransferObject;
 public class WaitingDialog implements EasySerializable {
 
 	public enum CommandDialog {
-		ACTION,	UP,	DOWN, BUYING
+		ACTION,	UP,	DOWN, BUYING, STOP;
 	}
 	
 	public String sentence;

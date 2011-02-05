@@ -53,6 +53,7 @@ import zildo.monde.sprites.utils.ShieldEffect.ShieldType;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
 import zildo.server.MultiplayerManagement;
+import zildo.server.Server;
 
 
 public class PersoZildo extends Perso {
@@ -343,6 +344,12 @@ public class PersoZildo extends Perso {
 			guiCircle=null;
 		}
 		
+		if (getDialoguingWith() != null) {
+			getDialoguingWith().setDialoguingWith(null);
+			setDialoguingWith(null);	// End dialog
+			EngineZildo.dialogManagement.stopDialog(Server.getClientFromZildo(this), true);
+		}
+		
         boolean die = getPv() <= 0;
         if (die) {
             die(false, p_shooter);
@@ -386,6 +393,8 @@ public class PersoZildo extends Perso {
 	@Override
 	public void animate(int compteur_animation)
 	{
+		super.animate(compteur_animation);
+		
 		// If zildo's dead, don't display him
 		if (getPv() <= 0) {
 			setVisible(false);
@@ -495,13 +504,13 @@ public class PersoZildo extends Perso {
 						case NORD:
 							shield.setX(xx+8);
 							shield.setY(yy+2);
-							shield.setZ(5-1-decalbouclier3y[nSpr]);
+							shield.setZ(5-1-decalbouclier3y[nSpr % 8]);
 							shield.setNSpr(103);
 							shield.setNBank(SpriteBank.BANK_ZILDO);
 							break;
 						case EST:
 							shield.setX(xx+9);	// PASCAL : +10
-							shield.setY(yy-2+ decalbouclier2y[nSpr-ZildoDescription.RIGHT_FIXED.ordinal()]);
+							shield.setY(yy-2+ decalbouclier2y[(nSpr-ZildoDescription.RIGHT_FIXED.ordinal()) % 8]);
 							shield.setZ(0.0f);
 							shield.setNSpr(104);
 							shield.setNBank(SpriteBank.BANK_ZILDO);
@@ -509,13 +518,13 @@ public class PersoZildo extends Perso {
 						case SUD:
 							shield.setX(xx-4);	// PASCAL : -3)
 							shield.setY(yy+4);
-							shield.setZ(1+1-decalboucliery[nSpr-ZildoDescription.DOWN_FIXED.ordinal()]);
+							shield.setZ(1+1-decalboucliery[(nSpr-ZildoDescription.DOWN_FIXED.ordinal()) % 6]);
 							shield.setNSpr(105);
 							shield.setNBank(SpriteBank.BANK_ZILDO);
 							break;
 						case OUEST:
 							shield.setX(xx-8);
-							shield.setY(yy-2+ decalbouclier2y[nSpr-ZildoDescription.LEFT_FIXED.ordinal()]);
+							shield.setY(yy-2+ decalbouclier2y[(nSpr-ZildoDescription.LEFT_FIXED.ordinal()) % 8]);
 							shield.setZ(0.0f);
 							shield.setNSpr(106);
 							shield.setNBank(SpriteBank.BANK_ZILDO);

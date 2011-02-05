@@ -117,7 +117,12 @@ public class DialogManagement {
         p_client.zildo.setDialoguingWith(persoToTalk);
     }
 	
-	public void stopDialog(ClientState p_client) {
+	/**
+	 * Stop a dialog, when user press key, or brutally when zildo gets hurt.
+	 * @param p_client
+	 * @param p_brutal TRUE=Zildo leaves brutally his interlocutor
+	 */
+	public void stopDialog(ClientState p_client, boolean p_brutal) {
 		p_client.dialogState.dialoguing=false;
 		PersoZildo zildo=p_client.zildo;
 		Perso perso=p_client.zildo.getDialoguingWith();
@@ -126,7 +131,9 @@ public class DialogManagement {
 			perso.setDialoguingWith(null);
 		}
 		ActionDialog actionDialog=p_client.dialogState.actionDialog;
-		if (actionDialog != null) {
+		if( p_brutal) {
+			actOnDialog(p_client.location, CommandDialog.STOP);
+		} else if (actionDialog != null) {
 			actionDialog.launchAction(p_client);
 			p_client.dialogState.actionDialog=null;
 		}

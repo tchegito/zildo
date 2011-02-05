@@ -198,16 +198,24 @@ public class DialogDisplay {
 			}
 		} else if (dialoguing) {
 			// Conversation
-			if (entireMessageDisplay || visibleMessageDisplay) {
-				// Two cases : continue or quit
-				if (!entireMessageDisplay) {
-					numToScroll=3;
-				} else {
-					// Quit dialog
+			switch (actionDialog) {
+				case ACTION:
+					if (entireMessageDisplay || visibleMessageDisplay) {
+						// Two cases : continue or quit
+						if (!entireMessageDisplay) {
+							numToScroll=3;
+						} else {
+							// Quit dialog
+							guiDisplay.setToRemove_dialoguing(true);
+							dialoguing=false;
+							result=true;
+						}
+					}
+					break;
+				case STOP:
 					guiDisplay.setToRemove_dialoguing(true);
 					dialoguing=false;
-					result=true;
-				}
+					break;
 			}
 		}
 		return result;

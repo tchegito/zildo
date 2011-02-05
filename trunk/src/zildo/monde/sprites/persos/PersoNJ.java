@@ -143,9 +143,15 @@ public class PersoNJ extends Perso {
 
 		super.animate(compteur_animation);
 	
+		// If character has a delegate action, then do nothing else
 		if (action != null) {
 			return;
 		}
+		
+		if (getPv() == 0 || getDialoguingWith() != null) {
+			return;
+		}
+		
 		float sx=getX(),sy=getY();
 		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
 	

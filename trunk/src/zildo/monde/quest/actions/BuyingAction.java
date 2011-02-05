@@ -56,6 +56,9 @@ public class BuyingAction extends ActionDialog {
 	@Override
 	public void launchAction(ClientState p_clientState) {
 		
+		zildo.setDialoguingWith(seller);
+		seller.setDialoguingWith(zildo);
+		
 		List<Item> items=new ArrayList<Item>();
 		items.add(new Item(ItemKind.BOOMERANG, 2));
 		items.add(new Item(ItemKind.BOMB, 3));
