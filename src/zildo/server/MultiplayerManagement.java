@@ -109,6 +109,13 @@ public class MultiplayerManagement {
     	    		(int) p_zildo.getY(), false, 0);
     	}
     	
+    	// Steal money from the dead Zildo
+    	if (p_shooter != null && p_shooter.isZildo()) {
+    		int money=p_zildo.getMoney() / 2;
+    		p_zildo.setMoney(money);
+    		p_shooter.setMoney(p_shooter.getMoney() + money);
+    	}
+    	
     	// Respawn Zildo
     	EngineZildo.respawnClient(p_zildo);
     	
@@ -144,7 +151,7 @@ public class MultiplayerManagement {
 		//p_zildo.addInventory(new Item(ItemKind.BOOMERANG));
 		//p_zildo.addInventory(new Item(ItemKind.BOMB));
 		p_zildo.setPv(3);
-		p_zildo.setMoney(0);
+		//p_zildo.setMoney(0);
 		
 		//p_zildo.setCountArrow(0);
 		//p_zildo.setCountBomb(20);
