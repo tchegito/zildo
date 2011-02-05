@@ -150,7 +150,7 @@ public class MultiplayerManagement {
 		//p_zildo.addInventory(new Item(ItemKind.BOW));
 		//p_zildo.addInventory(new Item(ItemKind.BOOMERANG));
 		//p_zildo.addInventory(new Item(ItemKind.BOMB));
-		p_zildo.setPv(3);
+		p_zildo.setPv(p_zildo.getMaxpv());
 		//p_zildo.setMoney(0);
 		
 		//p_zildo.setCountArrow(0);
