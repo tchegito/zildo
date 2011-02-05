@@ -366,15 +366,13 @@ public class Area implements EasySerializable {
             	anim=SpriteAnimation.FROM_CHEST;
             	break;
         }
-        if (anim != SpriteAnimation.FROM_CHEST || EngineZildo.game.multiPlayer) {
-        	// Notify that this case should reappear after a given time
-        	// Except for chests in SinglePlayer (they DO NOT have to reappear !)
-	        SpawningTile spawnTile=new SpawningTile();
-	        spawnTile.x=tileLocation.x;
-	        spawnTile.y=tileLocation.y;
-	        spawnTile.previousCase=new Case(get_mapcase(tileLocation.x, tileLocation.y + 4));
-	        toRespawn.add(spawnTile);
-        }
+    	// Notify that this case should reappear after a given time
+        SpawningTile spawnTile=new SpawningTile();
+        spawnTile.x=tileLocation.x;
+        spawnTile.y=tileLocation.y;
+        spawnTile.previousCase=new Case(get_mapcase(tileLocation.x, tileLocation.y + 4));
+        toRespawn.add(spawnTile);
+
         this.writemap(tileLocation.getX(), tileLocation.getY(), resultTile);
         
     	// Is there something planned to appear ?
@@ -838,26 +836,29 @@ public class Area implements EasySerializable {
 	}
 
     public void update() {
-        for (Iterator<SpawningTile> it = toRespawn.iterator(); it.hasNext();) {
-            SpawningTile spawnTile = it.next();
-            if (spawnTile.cnt == 0) {
-                int x = spawnTile.x * 16 + 8;
-                int y = spawnTile.y * 16 + 8;
-                // Respawn the tile if nothing bothers at location
-                Collision colli=new Collision();
-                colli.cr=8;
-                if (EngineZildo.mapManagement.collideSprite(x, y, colli)) {
-                    spawnTile.cnt++;
-                } else {
-                    this.set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);
-                    EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
-                    changes.add(new Point(spawnTile.x, spawnTile.y+4));
-                    it.remove();
-                }
-            } else {
-                spawnTile.cnt--;
-            }
-        }
+    	if (EngineZildo.game.multiPlayer) {
+    		// Only respawn bushes and chests in multiplayer
+	        for (Iterator<SpawningTile> it = toRespawn.iterator(); it.hasNext();) {
+	            SpawningTile spawnTile = it.next();
+	            if (spawnTile.cnt == 0) {
+	                int x = spawnTile.x * 16 + 8;
+	                int y = spawnTile.y * 16 + 8;
+	                // Respawn the tile if nothing bothers at location
+	                Collision colli=new Collision();
+	                colli.cr=8;
+	                if (EngineZildo.mapManagement.collideSprite(x, y, colli)) {
+	                    spawnTile.cnt++;
+	                } else {
+	                    this.set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);
+	                    EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
+	                    changes.add(new Point(spawnTile.x, spawnTile.y+4));
+	                    it.remove();
+	                }
+	            } else {
+	                spawnTile.cnt--;
+	            }
+	        }
+    	}
     }
     
     /**
