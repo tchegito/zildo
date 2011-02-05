@@ -60,4 +60,12 @@ public enum ItemKind {
 	public String getName() {
 		return UIText.getGameText("item."+name());
 	}
+	
+	public String getFoundSentence() {
+    	String label=UIText.getGameText("automatic."+name());
+    	if (label.startsWith("automatic.")) {
+    		return null;	// Label doesn't exist (security but this shouldn't occur)
+    	}
+    	return label;
+	}
 }

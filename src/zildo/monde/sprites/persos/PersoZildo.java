@@ -973,7 +973,10 @@ public class PersoZildo extends Perso {
 	        elem.z=20f;
 	        setEn_bras(elem);
 	        EngineZildo.soundManagement.playSound(BankSound.ZildoTrouve, this);
-	
+
+			// Automatic behavior (presentation text, ammos adjustments)
+	        EngineZildo.scriptManagement.automaticBehavior(this, p_kind);
+	        
 	        // Adventure trigger
 	        TriggerElement trig=TriggerElement.createInventoryTrigger(p_kind);
 	        EngineZildo.scriptManagement.trigger(trig);

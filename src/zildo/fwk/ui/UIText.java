@@ -39,7 +39,7 @@ public class UIText {
 			String message = p_bundle.getString(p_key);
 			return MessageFormat.format(message, p_params);
 		} catch (MissingResourceException e) {
-			return p_key;
+			return p_key;	// This is mandatory for item menus with parameters (ex: player name)
 		}
 	}
 	

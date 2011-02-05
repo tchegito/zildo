@@ -20,8 +20,6 @@
 
 package zildo.server.state;
 
-import zildo.monde.map.ChainingPoint;
-import zildo.monde.map.Point;
 import java.util.List;
 
 import zildo.fwk.script.command.ScriptExecutor;
@@ -31,8 +29,15 @@ import zildo.fwk.script.xml.QuestElement;
 import zildo.fwk.script.xml.SceneElement;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.TriggerElement;
+import zildo.monde.items.ItemKind;
+import zildo.monde.map.ChainingPoint;
+import zildo.monde.map.Point;
 import zildo.monde.quest.MapReplacement;
 import zildo.monde.quest.QuestEvent;
+import zildo.monde.quest.actions.ScriptAction;
+import zildo.monde.sprites.persos.PersoZildo;
+import zildo.server.EngineZildo;
+import zildo.server.Server;
 
 /**
  * Delegate class which deals with script.<p/>
@@ -203,6 +208,21 @@ public class ScriptManagement {
 
 	public AdventureElement getAdventure() {
 		return adventure;
+	}
+		
+	public void automaticBehavior(PersoZildo p_zildo, ItemKind p_kind) {
+        switch (p_kind) {
+        case BOW:
+        	p_zildo.setCountArrow(p_zildo.getCountArrow() + 5);	// Bow comes with 5 arrows
+        case BOMB:
+        	p_zildo.setCountBomb(p_zildo.getCountBomb() + 5);	// 5 bombs at start
+        default:
+        	break;
+        }
+    	String label=p_kind.getFoundSentence();
+    	if (label != null) {
+    		EngineZildo.dialogManagement.launchDialog(Server.getClientFromZildo(p_zildo), null, new ScriptAction(label));
+    	}
 	}
 	
 	/**

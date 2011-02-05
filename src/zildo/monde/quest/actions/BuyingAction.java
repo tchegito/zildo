@@ -61,11 +61,11 @@ public class BuyingAction extends ActionDialog {
 		
 		List<Item> items=new ArrayList<Item>();
 		items.add(new Item(ItemKind.BOOMERANG, 2));
-		items.add(new Item(ItemKind.BOMB, 3));
+		items.add(new Item(ItemKind.BOMB, 0));
 		items.add(new Item(ItemKind.FLASK_RED, 0));
 		items.add(new Item(ItemKind.BOW, 0));
-		items.add(new Item(ItemKind.SHIELD_MEDIUM, 0));
-		items.add(new Item(ItemKind.SHIELD_LARGE, 0));
+		items.add(new Item(ItemKind.GLOVE, 0));
+		items.add(new Item(ItemKind.GLOVE_IRON, 0));
 		zildo.lookItems(items, 0, seller, true);
 		
 		p_clientState.dialogState.dialoguing=true;

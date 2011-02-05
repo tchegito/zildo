@@ -232,7 +232,9 @@ public class PlayerManagement {
 						heros.setMouvement(MouvementZildo.BRAS_LEVES);
 						break;
                     case FIERTEOBJET:
-                    	heros.getEn_bras().dying=true;
+                    	if (heros.getEn_bras() != null) {
+                    		heros.getEn_bras().dying=true;
+                    	}
                     	heros.setAngle(Angle.SUD);
                     case ATTAQUE_EPEE:
                     case ATTAQUE_ARC:
@@ -508,12 +510,12 @@ public class PlayerManagement {
 										EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DIAMOND,newx*16+8,newy*16+10,0, null, null);
 									}
 									break;
-								case 167:
-									if (heros.hasItem(ItemKind.GLOVE)) {
+								case 167:	// With any gloves, Zildo can lift this stone
+									if (heros.hasItem(ItemKind.GLOVE) || heros.hasItem(ItemKind.GLOVE_IRON)) {
 										objDesc=ElementDescription.STONE;
 									}
 									break;
-								case 169:
+								case 169:	// Only with iron glove, he can lift this heavy stone
 									if (heros.hasItem(ItemKind.GLOVE_IRON)) {
 										objDesc=ElementDescription.STONE_HEAVY;
 									}
