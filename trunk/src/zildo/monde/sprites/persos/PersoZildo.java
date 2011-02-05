@@ -211,7 +211,8 @@ public class PersoZildo extends Perso {
 		case BOOMERANG:
             if (attente == 0 && (boomerang == null || !boomerang.isVisible())) {
                 setMouvement(MouvementZildo.ATTAQUE_BOOMERANG);
-                boomerang=new ElementBoomerang(sightAngle, (int) x, (int) y, (int) z, this);
+                // Sightangle should not be null, but I got it once in multiplayer test
+                boomerang=new ElementBoomerang(sightAngle == null ? Angle.NORD : sightAngle, (int) x, (int) y, (int) z, this);
                 EngineZildo.spriteManagement.spawnSprite(boomerang);
                 setAttente(16);
             }
