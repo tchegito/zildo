@@ -89,7 +89,7 @@ public class Area implements EasySerializable {
 	private MapDialog dialogs;
 
 	// Elements linked to a given case (into chest, bushes, jar ...)
-	private Map<Case, ElementDescription> caseItem;
+	private Map<Integer, ElementDescription> caseItem;
 	
     // To diffuse changes to clients
     private final Collection<Point> changes;
@@ -109,7 +109,7 @@ public class Area implements EasySerializable {
 		changes = new HashSet<Point>();
 		toRespawn = new HashSet<SpawningTile>();
 		
-		caseItem = new HashMap<Case, ElementDescription>();
+		caseItem = new HashMap<Integer, ElementDescription>();
 		respawnPoints = new ArrayList<Point>();
 		
 		offset = new Point(0, 0);
@@ -564,7 +564,7 @@ public class Area implements EasySerializable {
 
 	/**
 	 * @param p_buffer
-	 * @param p_name TODO
+	 * @param p_name map name
 	 * @return Area
 	 */
 	public static Area deserialize(EasyBuffering p_buffer, String p_name, boolean p_spawn) {
@@ -867,9 +867,8 @@ public class Area implements EasySerializable {
      * @param p_nSpr
      */
     public void setCaseItem(int p_x, int p_y, int p_nSpr) {
-    	Case cas=get_mapcase(p_x, p_y);
     	ElementDescription desc=ElementDescription.fromInt(p_nSpr);
-    	caseItem.put(cas, desc);
+    	caseItem.put(lineSize * p_y + p_x, desc);
     }
     
     /**
@@ -879,8 +878,7 @@ public class Area implements EasySerializable {
      * @return ElementDescription
      */
     public ElementDescription getCaseItem(int p_x, int p_y) {
-    	Case cas=get_mapcase(p_x, p_y);
-    	return caseItem.get(cas);
+    	return caseItem.get(lineSize * p_y + p_x);
     }
 
 	public Point getOffset() {

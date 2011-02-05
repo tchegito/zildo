@@ -637,7 +637,7 @@ public class MapManagement {
 		while (collide(p.x, p.y, null)) {
 			p.x += 16;
 		}
-		p=new Point(900, 340);
+		//p=new Point(900, 340);
 		return p;
 	}
 

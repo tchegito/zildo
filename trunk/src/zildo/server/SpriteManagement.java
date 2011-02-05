@@ -346,7 +346,7 @@ public class SpriteManagement extends SpriteStore {
 			elemDesc=(ElementDescription) desc;
 		}
 		if (!p_foreground && elemDesc != null && elemDesc.isWeapon()) {
-			entity = new ElementWeapon();
+			entity = new ElementWeapon(x, y);
 		} else if (desc.getBank() == SpriteBank.BANK_GEAR) {
 			entity = new ElementGear(x, y);
 			entity.setAjustedX(x);

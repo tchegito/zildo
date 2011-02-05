@@ -49,7 +49,7 @@ public class HealAction implements PersoAction {
 				perso.setPv(pv+1);
 				numPv--;
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupVie, perso);
-				perso.setAttente(8);
+				perso.setAttente(8 * 2);
 			}
 		}
 		return false;

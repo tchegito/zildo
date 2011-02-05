@@ -50,23 +50,7 @@ public class Item {
 	public String toString() {
 		String s=kind.getName().toLowerCase();
 		s=s.substring(0,1).toUpperCase() + s.substring(1);
-		s+=" (";
-		switch (level) {
-		case 0:
-			s+="courante";
-			break;
-		case 1:
-			s+="arrangee";
-			break;
-		case 2:
-			s+="bonne facture";
-			break;
-		case 3:
-			s+="maitre d'arme";
-			break;
-		}
-		s+=")\n"+getPrice()+" rupees";
-		s=s.replaceAll("_", " ");
+		s+="\n"+getPrice()+" rupees";
 		return s;
 	}
 }

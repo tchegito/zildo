@@ -431,7 +431,7 @@ public abstract class Perso extends Element {
 	// Default function : nothing
 	public void animate(int compteur) {
 		
-		if (action != null) {
+		if (action != null && getPv() > 0) {
 			if (attente != 0) {
 				attente--;
 			}
