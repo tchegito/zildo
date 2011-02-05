@@ -53,6 +53,7 @@ public class SpritePanel extends JPanel {
 	
 	JCheckBox reverseHorizontal;
 	JCheckBox reverseVertical;
+	JCheckBox foreground;
 	JSpinner spinX;
 	JSpinner spinY;
 	
@@ -73,6 +74,17 @@ public class SpritePanel extends JPanel {
 		JPanel panel=new JPanel();
 		GridLayout thisLayout = new GridLayout(0,2);
 		panel.setLayout(thisLayout);
+		
+		foreground = new JCheckBox(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent actionevent) {
+				if (entity != null) {
+					toggleForeground();
+				}
+			}
+		});
+		panel.add(new JLabel("Foreground"));
+		panel.add(foreground);
 		
 		spinX=new JSpinner(new SpinnerNumberModel(0, 0, 16, -1));
 		spinY=new JSpinner(new SpinnerNumberModel(0, 0, 16, -1));
@@ -131,6 +143,10 @@ public class SpritePanel extends JPanel {
 		manager.getZildoCanvas().setChangeSprites(true);
 	}
 	
+	private void toggleForeground() {
+		entity.setForeground(!entity.isForeground());
+	}
+	
 	/**
 	 * Update fields with the given entity's infos.
 	 * @param p_entity
@@ -143,11 +159,13 @@ public class SpritePanel extends JPanel {
 			spinY.setValue(0);
 			reverseHorizontal.setSelected(false);
 			reverseVertical.setSelected(false);
+			foreground.setSelected(false);
 		} else {
 			spinX.setValue((int) p_entity.x % 16);
 			spinY.setValue((int) p_entity.y % 16);
 			reverseHorizontal.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_HORIZONTAL));
 			reverseVertical.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_VERTICAL));
+			foreground.setSelected(p_entity.isForeground());
 		}
 		updatingUI=false;
 		entity=p_entity;
