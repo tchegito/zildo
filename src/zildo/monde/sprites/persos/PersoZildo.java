@@ -73,9 +73,9 @@ public class PersoZildo extends Perso {
 	private ShieldEffect shieldEffect;
 	
 	// Linked elements
-	Element bouclier;
+	Element shield;
 	Element feet;
-	Element ombre;
+	Element shadow;
 	
 	public Item weapon;
 
@@ -126,15 +126,15 @@ public class PersoZildo extends Perso {
 	    setCountKey(0);
 	    pushingSprite = null;
 
-	    bouclier = new Element(this);
-		bouclier.setX(getX());
-		bouclier.setY(getY());
-		bouclier.setNBank(SpriteBank.BANK_ZILDO);
-		bouclier.setNSpr(103);				// Assign initial nSpr to avoid 'isNotFixe' returning TRUE)
+	    shield = new Element(this);
+		shield.setX(getX());
+		shield.setY(getY());
+		shield.setNBank(SpriteBank.BANK_ZILDO);
+		shield.setNSpr(103);				// Assign initial nSpr to avoid 'isNotFixe' returning TRUE)
 	
-		ombre=new Element(this);
-		ombre.setNBank(SpriteBank.BANK_ZILDO);
-		ombre.setNSpr(103);
+		shadow=new Element(this);
+		shadow.setNBank(SpriteBank.BANK_ZILDO);
+		shadow.setNSpr(103);
 	
 		feet=new Element(this);
 		feet.setNBank(SpriteBank.BANK_ZILDO);
@@ -142,8 +142,8 @@ public class PersoZildo extends Perso {
 	
 		shieldEffect = null;
 		
-		addPersoSprites(bouclier);
-		addPersoSprites(ombre);
+		addPersoSprites(shield);
+		addPersoSprites(shadow);
 		addPersoSprites(feet);
 		
 		weapon=new Item(ItemKind.SWORD);
@@ -466,9 +466,9 @@ public class PersoZildo extends Perso {
 		Element en_bras=getEn_bras();
 	
         // Default : invisible
-        ombre.setVisible(false);
+        shadow.setVisible(false);
         feet.setVisible(inWater || inDirt);
-        bouclier.setVisible(false);
+        shield.setVisible(false);
 
         if (isQuadDamaging()) {
             if (shieldEffect == null) {
@@ -496,38 +496,38 @@ public class PersoZildo extends Perso {
 			 // Bouclier
 			case VIDE:
 				if (hasItem(ItemKind.SHIELD)) {
-					bouclier.setForeground(false);
+					shield.setForeground(false);
 					switch (angle) {
 						case NORD:
-							bouclier.setX(xx+8);
-							bouclier.setY(yy+2);
-							bouclier.setZ(5-1-decalbouclier3y[nSpr]);
-							bouclier.setNSpr(103);
-							bouclier.setNBank(SpriteBank.BANK_ZILDO);
+							shield.setX(xx+8);
+							shield.setY(yy+2);
+							shield.setZ(5-1-decalbouclier3y[nSpr]);
+							shield.setNSpr(103);
+							shield.setNBank(SpriteBank.BANK_ZILDO);
 							break;
 						case EST:
-							bouclier.setX(xx+9);	// PASCAL : +10
-							bouclier.setY(yy-2+ decalbouclier2y[nSpr-ZildoDescription.RIGHT_FIXED.ordinal()]);
-							bouclier.setZ(0.0f);
-							bouclier.setNSpr(104);
-							bouclier.setNBank(SpriteBank.BANK_ZILDO);
+							shield.setX(xx+9);	// PASCAL : +10
+							shield.setY(yy-2+ decalbouclier2y[nSpr-ZildoDescription.RIGHT_FIXED.ordinal()]);
+							shield.setZ(0.0f);
+							shield.setNSpr(104);
+							shield.setNBank(SpriteBank.BANK_ZILDO);
 							break;
 						case SUD:
-							bouclier.setX(xx-4);	// PASCAL : -3)
-							bouclier.setY(yy+4);
-							bouclier.setZ(1+1-decalboucliery[nSpr-ZildoDescription.DOWN_FIXED.ordinal()]);
-							bouclier.setNSpr(105);
-							bouclier.setNBank(SpriteBank.BANK_ZILDO);
+							shield.setX(xx-4);	// PASCAL : -3)
+							shield.setY(yy+4);
+							shield.setZ(1+1-decalboucliery[nSpr-ZildoDescription.DOWN_FIXED.ordinal()]);
+							shield.setNSpr(105);
+							shield.setNBank(SpriteBank.BANK_ZILDO);
 							break;
 						case OUEST:
-							bouclier.setX(xx-8);
-							bouclier.setY(yy-2+ decalbouclier2y[nSpr-ZildoDescription.LEFT_FIXED.ordinal()]);
-							bouclier.setZ(0.0f);
-							bouclier.setNSpr(106);
-							bouclier.setNBank(SpriteBank.BANK_ZILDO);
+							shield.setX(xx-8);
+							shield.setY(yy-2+ decalbouclier2y[nSpr-ZildoDescription.LEFT_FIXED.ordinal()]);
+							shield.setZ(0.0f);
+							shield.setNSpr(106);
+							shield.setNBank(SpriteBank.BANK_ZILDO);
 							break;
 					}
-					bouclier.setVisible(true);
+					shield.setVisible(true);
 				}
 				break;
 	
@@ -561,13 +561,13 @@ public class PersoZildo extends Perso {
 			case ATTAQUE_EPEE:
 				xx+=decalxSword[angle.value][nSpr-(54+6*angle.value)];
 				yy+=decalySword[angle.value][nSpr-(54+6*angle.value)];
-				bouclier.setVisible(false);
+				shield.setVisible(false);
 				break;
 	
 			case ATTAQUE_ARC:
 				xx+=decalxBow[angle.value][nSpr-(108+3*angle.value)];
 				yy+=decalyBow[angle.value][nSpr-(108+3*angle.value)];
-				bouclier.setVisible(false);
+				shield.setVisible(false);
 				break;
 			case TOUCHE:
 				nSpr=78+angle.value;
@@ -576,13 +576,13 @@ public class PersoZildo extends Perso {
 			case SAUTE:
 				// Zildo est en train de sauter, on affiche l'ombre à son arrivée
 	
-				ombre.setX(posShadowJump.x); //(float) (xx-ax)); //-6;)
-				ombre.setY(posShadowJump.y); //(float) (yy-ay)-3);
-				ombre.setNSpr(2);
-				ombre.setNBank(SpriteBank.BANK_ELEMENTS);
-				ombre.setZ(0);
-				ombre.setVisible(true);
-				bouclier.setVisible(false);
+				shadow.setX(posShadowJump.x); //(float) (xx-ax)); //-6;)
+				shadow.setY(posShadowJump.y); //(float) (yy-ay)-3);
+				shadow.setNSpr(2);
+				shadow.setNBank(SpriteBank.BANK_ELEMENTS);
+				shadow.setZ(0);
+				shadow.setVisible(true);
+				shield.setVisible(false);
 	
 				// Trajectoire en cloche
 				double alpha=(Math.PI*attente)/32.0f;
