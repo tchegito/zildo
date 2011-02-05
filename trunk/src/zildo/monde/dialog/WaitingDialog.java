@@ -44,13 +44,13 @@ public class WaitingDialog implements EasySerializable {
 	
 	public void serialize(EasyBuffering p_buffer) {
 		p_buffer.put(sentence);
-		p_buffer.put(action == null ? -1 : action.ordinal());
+		p_buffer.put((byte) (action == null ? -1 : action.ordinal()));
 		p_buffer.put(console);
 	}
 	
 	public static WaitingDialog deserialize(EasyBuffering p_buffer) {
 		String s=p_buffer.readString();
-		int act=p_buffer.readInt();
+		int act=p_buffer.readByte();
 		boolean console=p_buffer.readBoolean();
 		CommandDialog actDialog=(act == -1 ? null : CommandDialog.values()[act]);
 		return new WaitingDialog(s, actDialog, console, null);
