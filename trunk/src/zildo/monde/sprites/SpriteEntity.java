@@ -55,6 +55,7 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 
 	public static final int REVERSE_HORIZONTAL = 128;
 	public static final int REVERSE_VERTICAL = 64;
+	public static final int FOREGROUND = 32;	// Only for MAP format
 	
 	// Class variable
 	public float x,y,z;	// Real position located by center (z is never initialized with entities)

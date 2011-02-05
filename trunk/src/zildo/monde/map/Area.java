@@ -518,7 +518,8 @@ public class Area implements EasySerializable {
 			for (SpriteEntity entity : entities) {
 				p_file.put((int) entity.x);
 				p_file.put((int) entity.y);
-				p_file.put((byte) (entity.getNBank() | entity.reverse));
+				int foreground=entity.isForeground() ? SpriteEntity.FOREGROUND : 0;
+				p_file.put((byte) (entity.getNBank() | entity.reverse | foreground));
 				p_file.put((byte) entity.getNSpr());
 				nSprites++;
 			}
@@ -657,7 +658,10 @@ public class Area implements EasySerializable {
 									break;
 								}
 							}
-							spriteManagement.spawnSprite(desc, x, y, false, reverse);
+							SpriteEntity entity=spriteManagement.spawnSprite(desc, x, y, false, reverse);
+							if ((multi & SpriteEntity.FOREGROUND) != 0) {
+								entity.setForeground(true);
+							}
 							break;
 					}
 				}
