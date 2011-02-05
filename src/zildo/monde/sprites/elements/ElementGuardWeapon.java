@@ -32,17 +32,19 @@ import zildo.prefs.Constantes;
 
 public class ElementGuardWeapon extends Element {
 
-    enum GuardWeapon {
-	SWORD(PersoDescription.ARME_EPEE), 
-	SPEAR(PersoDescription.ARME_LANCE),
-	BOW(PersoDescription.ARC);
-	
-	SpriteDescription desc;
-	
-	private GuardWeapon(SpriteDescription p_desc) {
-	    desc = p_desc;
-	}
+    public enum GuardWeapon {
+		SWORD(PersoDescription.ARME_EPEE), 
+		SPEAR(PersoDescription.ARME_LANCE),
+		BOW(PersoDescription.ARC);
+		
+		SpriteDescription desc;
+		
+		private GuardWeapon(SpriteDescription p_desc) {
+		    desc = p_desc;
+		}
     }
+    
+    GuardWeapon weaponKind;
     
 	public ElementGuardWeapon(Perso p_guard) {
 		x=p_guard.getX();
@@ -52,6 +54,7 @@ public class ElementGuardWeapon extends Element {
 
 	public void setWeapon(GuardWeapon p_weapon) {
 	    setDesc(p_weapon.desc);
+	    weaponKind = p_weapon;
 	}
 	
 	@Override
@@ -59,38 +62,67 @@ public class ElementGuardWeapon extends Element {
 		SpriteEntity linked=getLinkedPerso();
 		if (linked == null || SpriteEntity.ENTITYTYPE_PERSO != linked.getEntityType()) {
 			dying=true;
-		} else {
+		} else if (weaponKind != null) {
 			Perso guard=(Perso) linked;
 			angle=guard.angle;
-			setAddSpr(angle.value);
 
-			// Arme du garde
 			int j = (guard.getPos_seqsprite() / (2 * Constantes.speed)) % 2;
 			int yy = (int) guard.y;
 			int xx = (int) guard.x;
 			int zz = 0;
-			switch (angle) {
-			case NORD:
-				yy = yy - 12 - 3 * j;
-				xx = xx + 8;
+
+			// Spear / Sword
+			switch (weaponKind) {
+			case SPEAR: case SWORD:
+				setAddSpr(angle.value);
+				switch (angle) {
+				case NORD:
+					yy = yy - 12 - 3 * j;
+					xx = xx + 8;
+					break;
+				case EST:
+					xx = xx + 9 + 3 * j;
+					zz = 4;
+					break;
+				case SUD:
+					yy = yy + 6 + 3 * j;
+					xx = xx - 9;
+					break;
+				case OUEST:
+					xx = xx - 6 - 3 * j;
+					zz = 4;
+					break;
+				}
+				x=xx;
+				y=yy+3;
+				z=zz;
 				break;
-			case EST:
-				xx = xx + 9 + 3 * j;
-				zz = 4;
-				break;
-			case SUD:
-				yy = yy + 6 + 3 * j;
-				xx = xx - 9;
-				break;
-			case OUEST:
-				xx = xx - 6 - 3 * j;
-				zz = 4;
+				
+			case BOW:
+				addSpr = angle.value * 2;
+				switch (angle) {
+					case NORD:
+						y = yy - 6 - j;
+						x = xx + 8;
+						break;
+					case SUD:
+						x = xx - 6;
+						y = yy + 3 + j;
+						break;
+					case EST:
+						x = xx + 5 + j;
+						y = yy + 4;
+						addSpr++;
+						break;
+					case OUEST:
+						x = xx - 7 - j;
+						y = yy + 1;
+						addSpr++;
+						break;
+				}
+				z=4;
 				break;
 			}
-
-			x=xx;
-			y=yy+3;
-			z=zz;
 		}
 		super.animate();
 	}

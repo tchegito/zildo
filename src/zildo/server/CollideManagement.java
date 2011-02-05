@@ -165,7 +165,7 @@ public class CollideManagement {
      * @param p_colli
      */
     public void checkZildoWound(PersoZildo p_zildo, Collision p_colli) {
-        float zildoX = p_zildo.getX() - 4;
+        float zildoX = p_zildo.getX(); // - 4;
         float zildoY = p_zildo.getY() - 10;
         // If he's already wounded, don't check
         Collision zildoCollision = new Collision((int) zildoX, (int) zildoY, 8, null, p_zildo, null, null);

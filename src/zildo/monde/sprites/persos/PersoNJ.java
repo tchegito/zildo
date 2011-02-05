@@ -30,6 +30,7 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
+import zildo.monde.sprites.persos.action.ShotArrowAction;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.prefs.Constantes;
@@ -139,12 +140,13 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void animate(int compteur_animation) {
-		if (getPv() == 0 || getDialoguingWith() != null) {
+
+		super.animate(compteur_animation);
+	
+		if (action != null) {
 			return;
 		}
-	
 		float sx=getX(),sy=getY();
-		int xx,yy;
 		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
 	
 		if (zildo != null) {
@@ -161,7 +163,7 @@ public class PersoNJ extends Perso {
 				}
 			}
 	
-			if (isAlerte() && MouvementPerso.SCRIPT_VOLESPECTRE != quel_deplacement) {
+			if (isAlerte() && MouvementPerso.SCRIPT_VOLESPECTRE != quel_deplacement && MouvementPerso.SCRIPT_ZONEARC != quel_deplacement) {
 				// Zildo has been caught, so the monster try to reach him, or run away (hen)
 				boolean fear=this.getQuel_deplacement()==MouvementPerso.SCRIPT_POULE;
 				reachAvoidTarget(zildo, fear);
@@ -169,17 +171,7 @@ public class PersoNJ extends Perso {
 				switch (this.getQuel_deplacement()) {
 					case SCRIPT_OBSERVE:
 						// Persos qui regardent en direction de Zildo
-						xx=(int) (getX() - zildo.getX());
-						yy=(int) (getY() - zildo.getY());
-						if (Math.abs(yy) >= Math.abs(xx) || Math.abs(xx)>96 || Math.abs(yy)>96) {
-							setAngle(Angle.SUD);
-						} else {
-							if (xx>0) {
-								setAngle(Angle.OUEST);
-							} else {
-								setAngle(Angle.EST);
-							}
-						}
+						sight(zildo, true);
 						break;
 					case SCRIPT_VOLESPECTRE:
 						double alpha;
@@ -226,25 +218,34 @@ public class PersoNJ extends Perso {
 					case SCRIPT_POULE:
 						if (z>0) { // La poule est en l'air, elle n'est plus libre de ses mouvements
 							physicMoveWithCollision();
-							break;
 						}	// Sinon elle agit comme les scripts de zone
+						break;
 					case SCRIPT_ZONEARC:
-						 if (pathFinder.target == null && lookForZildo(angle)) {
+						 if (isAlerte()) {
 							 // Get the enemy aligned with Zildo to draw arrows
-							 int deltaX=(int) (zildo.x - x);
-							 int deltaY=(int) (zildo.y - y);
-							 if (deltaX <= deltaY) {
-								 pathFinder.target=new Point(zildo.x, y);
-							 } else {
-								 pathFinder.target=new Point(x, zildo.y);
+							 int xx = (int) getX();
+							 int yy = (int) getY();
+							 int deltaX=Math.abs((int) (zildo.x - xx));
+							 int deltaY=Math.abs((int) (zildo.y - yy));
+							 if (deltaX <= 1 || deltaY <= 1) {
+								 // Get sight on Zildo and shoot !
+								 sight(zildo, false);
+								 action = new ShotArrowAction(this);
+								 break;
 							 }
+							 if (deltaX <= deltaY) {
+								 pathFinder.target=new Point(zildo.x, yy);
+							 } else {
+								 pathFinder.target=new Point(xx, zildo.y);
+							 }
+						 } else if (lookForZildo(angle)) {
+							 setAlerte(true);
 						 }
 						break;
 					default:
 						break;
 				}
-				if (quel_deplacement != MouvementPerso.SCRIPT_POULE &&
-					quel_deplacement != MouvementPerso.SCRIPT_OBSERVE &&
+				if (quel_deplacement != MouvementPerso.SCRIPT_OBSERVE &&
 					quel_deplacement != MouvementPerso.SCRIPT_VOLESPECTRE) {
                        if (pathFinder.target != null && this.getX() == pathFinder.target.x && this.getY() == pathFinder.target.y) {
                     	   pathFinder.target=null;
@@ -253,6 +254,9 @@ public class PersoNJ extends Perso {
                                 setAttente(10 + (int) (Math.random() * 20));
                             }
                         }
+                       	if (getQuel_spr().equals(PersoDescription.GARDE_CANARD) && !isAlerte()) {
+							setAlerte(lookForZildo(angle));
+						}
 						if (this.getAttente()!=0) {
 							if (getQuel_spr() == PersoDescription.BAS_GARDEVERT) {
 								//Garde vert => Il tourne la tˆte pour faire une ronde}
@@ -264,9 +268,7 @@ public class PersoNJ extends Perso {
 									cptMouvement++;
 									setAttente(20);
 								}
-							} else if (getQuel_spr().equals(PersoDescription.GARDE_CANARD)) {
-								setAlerte(lookForZildo(angle));
-							}
+							} else 
 							this.setAttente(getAttente() - 1);
 						} else {
 							// On déplace le PNJ
@@ -316,8 +318,9 @@ public class PersoNJ extends Perso {
 									if (EngineZildo.mapManagement.collide((int) getX(),(int) getY(),this)) {
 										this.setX ( sx);
 										this.setY ( sy);
-										if (nbShock++ == 3 && !isGhost()) {
+										if (nbShock++ >= 3 && !isGhost()) {
 											pathFinder.target=null;
+											setAlerte(false);
 											nbShock=0;
 										}
 										this.setAttente(10 + (int) (Math.random()*20));
@@ -529,9 +532,9 @@ public class PersoNJ extends Perso {
 		if (angle.isHorizontal()==temp) {
 			switch (angle) {
 			case NORD:if (diy>0 && diy<DISTANCEMAX)  r=true;break;
-			case EST:if (dix<0 && dix>-DISTANCEMAX) r=true;break;
+			case EST:if (dix>0 && dix<DISTANCEMAX) r=true;break;
 			case SUD:if (diy<0 && diy>-DISTANCEMAX) r=true;break;
-			case OUEST:if (dix>0 && dix<DISTANCEMAX)  r=true;break;
+			case OUEST:if (dix<0 && dix>-DISTANCEMAX)  r=true;break;
 			}
 		}
 		return r;

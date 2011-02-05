@@ -25,6 +25,7 @@ import java.util.List;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
 import zildo.monde.map.Zone;
@@ -58,7 +59,7 @@ public abstract class Perso extends Element {
     protected int nbShock;				// Number of times character hit something going to his target
     protected float px,py;				// Quand le perso est propulsé (touché)
     protected int pos_seqsprite;
-    private Element en_bras;			// Si c'est Zildo, l'objet qu'il porte.Note : 10=poule
+    private Element en_bras;			//If this is Zildo, what he holds. If any perso, his weapon
     protected MouvementZildo mouvement;			// Situation du perso:debout,couché,attaque...
     protected int cptMouvement;	// Un compteur pour les mouvements des PNJ
     private int coming_map;		// 1 si Zildo entre sur une map,sinon 255
@@ -429,7 +430,18 @@ public abstract class Perso extends Element {
 	
 	// Default function : nothing
 	public void animate(int compteur) {
+		if (getPv() == 0 || getDialoguingWith() != null) {
+			return;
+		}
 		
+		if (action != null) {
+			if (attente != 0) {
+				attente--;
+			}
+			if (action.launchAction()) {
+				action = null;
+			}
+		}
 	}
 	
 	// Default : nothing to do (only Zildo can take up objects for now)
@@ -606,5 +618,28 @@ public abstract class Perso extends Element {
 
 	public void setCountKey(int countKey) {
 		this.countKey = countKey;
+	}
+	
+	/**
+	 * Turn character in order to see given perso.
+	 * @param p_target
+	 * @param p_shortRadius TRUE=sight only if target is in short perimeter / FALSE=sight whenever target is
+	 */
+	public void sight(Perso p_target, boolean p_shortRadius) {
+		int xx=(int) (getX() - p_target.getX());
+		int yy=(int) (getY() - p_target.getY());
+		if (Math.abs(yy) >= Math.abs(xx) || (p_shortRadius && (Math.abs(xx)>96 || Math.abs(yy)>96))) {
+			if (yy > 0) {
+				setAngle(Angle.NORD);
+			} else {
+				setAngle(Angle.SUD);
+			}
+		} else {
+			if (xx>0) {
+				setAngle(Angle.OUEST);
+			} else {
+				setAngle(Angle.EST);
+			}
+		}
 	}
 }
