@@ -146,7 +146,7 @@ public class Rectangle {
     	// Do the Thales theorem
     	int oa=(int) (ob * dist / oc);
 
-    	return dist < (oa + p_radius);
+    	return dist <= (oa + p_radius);
     }
     
     public Point getSize() {

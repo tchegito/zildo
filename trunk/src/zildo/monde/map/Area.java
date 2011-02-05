@@ -707,7 +707,6 @@ public class Area implements EasySerializable {
 					perso = (PersoNJ) EngineZildo.persoManagement.createPerso((PersoDescription) desc, x, y, z, name, angle);
 
 					perso.setInfo(PersoInfo.values()[info]);
-					perso.setEn_bras(null);
 					perso.setQuel_deplacement(MouvementPerso.fromInt(move));
 					if (desc==PersoDescription.PANNEAU && perso.getQuel_deplacement() != MouvementPerso.SCRIPT_IMMOBILE) {
 						// Fix a map bug : sign perso should be unmoveable

@@ -391,12 +391,6 @@ public class PersoZildo extends Perso {
 			setVisible(false);
 			return;
 		}
-			
-		if (action != null) {
-			if (action.launchAction()) {
-				action = null;
-			}
-		}
 		
 		if (getEn_bras() != null && getEn_bras().dying) {
 			setEn_bras(null);

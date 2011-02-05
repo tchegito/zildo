@@ -112,7 +112,7 @@ public enum PersoDescription implements SpriteDescription {
 	}
 		
 	public int getNSpr() {
-		return first();
+		return first() % 128;
 	}
 		
 	public int getBank() {

@@ -23,6 +23,8 @@ package zildo.monde.sprites.persos;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.elements.ElementGuardWeapon;
+import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
+import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.prefs.Constantes;
 
 /**
@@ -45,7 +47,20 @@ public class PersoGarde extends PersoNJ {
 	public PersoGarde() {
 		super();
 		weapon=new ElementGuardWeapon(this);
-		addPersoSprites(weapon);		
+		addPersoSprites(weapon);
+		setEn_bras(weapon);
+	}
+	
+	public void setQuel_deplacement(MouvementPerso p_script) {
+		super.setQuel_deplacement(p_script);
+		switch (p_script) {
+		case SCRIPT_ZONELANCE:
+			weapon.setWeapon(GuardWeapon.SPEAR);
+			break;
+		case SCRIPT_ZONEARC:
+			weapon.setWeapon(GuardWeapon.BOW);
+			break;
+		}
 	}
 	
 	@Override

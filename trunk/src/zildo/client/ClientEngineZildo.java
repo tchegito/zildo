@@ -341,6 +341,7 @@ public class ClientEngineZildo {
 					}
 				}
 			}
+			// -7, -10
 			int x = (int) zildo.x - 4;
 			int y = (int) zildo.y - 10;
 			ortho.box(x - 3 - camera.x, y - camera.y, 16, 16, 12, null);
