@@ -50,8 +50,6 @@ public class AddServerMenu extends Menu {
     StringBuilder ip = new StringBuilder("<IP>");
     StringBuilder port = new StringBuilder("<port>");
 
-    Menu currentMenu = this;
-
     public AddServerMenu(Menu p_previousMenu) {
         super("m3.title");
 
@@ -61,19 +59,19 @@ public class AddServerMenu extends Menu {
         items[0] = new EditableItemMenu(name) {
             @Override
             public void run() {
-                ClientEngineZildo.getClientForMenu().handleMenu(currentMenu);
+                client.handleMenu(currentMenu);
             }
         };
         items[1] = new EditableItemMenu(ip) {
             @Override
             public void run() {
-                ClientEngineZildo.getClientForMenu().handleMenu(currentMenu);
+            	client.handleMenu(currentMenu);
             }
         };
         items[2] = new EditableItemMenu(port) {
             @Override
             public void run() {
-                ClientEngineZildo.getClientForMenu().handleMenu(currentMenu);
+            	client.handleMenu(currentMenu);
             }
         };
         items[3] = new ItemMenu("m3.add") {
@@ -114,7 +112,7 @@ public class AddServerMenu extends Menu {
     		saveServerInfos(new ServerInfo(p_name, p_ip, port));
     		
     		// And go back to the menu
-        	ClientEngineZildo.getClientForMenu().handleMenu(new JoinGameMenu(loadServersInfos(), previousMenu.previousMenu));
+    		client.handleMenu(new JoinGameMenu(loadServersInfos(), previousMenu.previousMenu));
     		
     	} catch (Exception e) {
     		String message;
@@ -132,7 +130,7 @@ public class AddServerMenu extends Menu {
     		}
     		
     		message=UIText.getMenuText(message);
-        	ClientEngineZildo.getClientForMenu().handleMenu(new InfoMenu("Impossible. "+message, currentMenu));
+    		client.handleMenu(new InfoMenu("Impossible. "+message, currentMenu));
     	}
     }
     

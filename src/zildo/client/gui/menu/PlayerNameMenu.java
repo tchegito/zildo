@@ -20,7 +20,6 @@
 
 package zildo.client.gui.menu;
 
-import zildo.client.ClientEngineZildo;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
@@ -45,7 +44,7 @@ public class PlayerNameMenu extends Menu {
             	// Save playername on disk
             	savePlayerName(p_playerName.toString());
             	// Back to previous menu
-                ClientEngineZildo.getClientForMenu().handleMenu(previousMenu);
+            	client.handleMenu(previousMenu);
             }
         };
 

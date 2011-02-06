@@ -63,6 +63,7 @@ public class Client {
 	Menu currentMenu;
 	NetClient netClient;
 	boolean multiplayer;
+	boolean music=Zildo.soundEnabled;
 	
 	ItemMenu action=null;
 	
@@ -145,10 +146,11 @@ public class Client {
 	        Keyboard.poll();
 	
 	        // Music
-	        long currentTime=ZUtils.getTime();
-	        OpenGLSound.pollMusic((int) (currentTime - time));
-	        time=currentTime;
-	        
+	        if (music) {
+		        long currentTime=ZUtils.getTime();
+		        OpenGLSound.pollMusic((int) (currentTime - time));
+		        time=currentTime;
+	        }
 	        done=glGestion.mainloop();
 	        
 	    	if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !ClientEngineZildo.filterCommand.isFading()) {
@@ -283,5 +285,13 @@ public class Client {
 	
 	public boolean isIngameMenu() {
 		return currentMenu != null && ingameMenu != null;
+	}
+
+	public boolean isMusic() {
+		return music;
+	}
+
+	public void setMusic(boolean music) {
+		this.music = music;
 	}
 }

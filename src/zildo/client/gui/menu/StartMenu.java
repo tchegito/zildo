@@ -23,7 +23,6 @@ package zildo.client.gui.menu;
 import java.util.List;
 
 import zildo.MultiPlayer;
-import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
@@ -47,14 +46,10 @@ public class StartMenu extends Menu {
 		// Play menu music
 		ClientEngineZildo.soundPlay.playMusic(BankMusic.Triste);
 
-		final Client client = ClientEngineZildo.getClientForMenu();
-
-        final Menu startMenu = this;
-
         ItemMenu itemSinglePlayer = new ItemMenu("m1.single", null) {
             @Override
             public void run() {
-    			client.handleMenu(new SinglePlayerMenu(startMenu));
+    			client.handleMenu(new SinglePlayerMenu(currentMenu));
             }
         };
 
@@ -104,7 +99,7 @@ public class StartMenu extends Menu {
                 ItemMenu itemBack = new ItemMenu("global.back") {
                     @Override
                     public void run() {
-                        client.handleMenu(startMenu);
+                        client.handleMenu(currentMenu);
                     }
                 };
 

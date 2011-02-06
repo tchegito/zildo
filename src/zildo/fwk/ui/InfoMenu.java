@@ -20,8 +20,6 @@
 
 package zildo.fwk.ui;
 
-import zildo.client.ClientEngineZildo;
-
 public class InfoMenu extends Menu {
 
 	public InfoMenu(String p_message, final Menu p_next) {
@@ -34,7 +32,7 @@ public class InfoMenu extends Menu {
 		ItemMenu itemOk=new ItemMenu(p_itemText) {
 			@Override
 			public void run() {
-				ClientEngineZildo.getClientForMenu().handleMenu(p_next);
+				client.handleMenu(p_next);
 			}
 		};
 		
