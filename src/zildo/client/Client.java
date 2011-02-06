@@ -200,9 +200,11 @@ public class Client {
         		
                 if (connected) {	// Read keyboard if player is in game
             		kbInstant.update();
+            		
+                    // Send keyboard (a non-sending during certain time means deconnection)
+                    netClient.sendKeyboard();
                 }
-                // Send keyboard (a non-sending during certain time means deconnection)
-                netClient.sendKeyboard();
+
             }
        		render();
 

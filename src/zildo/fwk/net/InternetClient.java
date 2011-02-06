@@ -37,6 +37,10 @@ public class InternetClient extends NetClient {
 		
 		server=new TransferObject(p_serverIp, p_serverPort);
 		
+		findServer(null);
+	}
+	
+	public void findServer(PacketSet packets) {
 		ConnectPacket connectPacket=new ConnectPacket(true, playerName, Constantes.CURRENT_VERSION);
 		sendPacket(connectPacket, server);
 		serverFound=true;
