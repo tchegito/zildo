@@ -93,6 +93,18 @@ public class NetClient extends NetSend {
 		log("En attente d'un serveur...");
 	}
 	
+	public void findServer(PacketSet packets) {
+		Packet p=packets.getUniqueTyped(PacketType.SERVER);
+		if (p!=null) {
+			server=p.getSource();
+			log("Serveur trouvé"+server.address.getHostName());
+			
+			serverFound=true;
+			ConnectPacket connectPacket=new ConnectPacket(true, playerName, Constantes.CURRENT_VERSION);
+			sendPacket(connectPacket, server);
+		}
+	}
+	
 	public void run() {
 		//System.out.println("client"+nFrame++);
 
@@ -102,15 +114,7 @@ public class NetClient extends NetSend {
 			Packet p;
 			if (!serverFound) {
 				// 1) Awaiting for a server to create a game
-				p=packets.getUniqueTyped(PacketType.SERVER);
-				if (p!=null) {
-					server=p.getSource();
-					log("Serveur trouvé"+server.address.getHostName());
-					
-					serverFound=true;
-					ConnectPacket connectPacket=new ConnectPacket(true, playerName, Constantes.CURRENT_VERSION);
-					sendPacket(connectPacket, server);
-				}
+				findServer(packets);
 			} else if (!serverAccepted) {
 				// 2) Sending a request to the server in order to join game
 				p=packets.getUniqueTyped(PacketType.SERVER_ACCEPT);
@@ -124,7 +128,13 @@ public class NetClient extends NetSend {
 					delayConnect++;
 					if (delayConnect == TIMEOUT_CONNECT) {
 						delayConnect=0;
-						serverFound=false;
+						if (true) {
+							ConnectPacket connectPacket=new ConnectPacket(true, playerName, Constantes.CURRENT_VERSION);
+							sendPacket(connectPacket, server);
+							serverFound=true;
+						} else {
+							serverFound=false;
+						}
 					}
 				}
 
