@@ -21,8 +21,6 @@
 package zildo.client.gui.menu;
 
 import zildo.SinglePlayer;
-import zildo.client.Client;
-import zildo.client.ClientEngineZildo;
 import zildo.client.sound.BankSound;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
@@ -34,9 +32,6 @@ import zildo.monde.Game;
  */
 public class SinglePlayerMenu extends Menu {
 
-    Client client=ClientEngineZildo.getClientForMenu();
-    Menu currentMenu = this;
-    
 	public SinglePlayerMenu(Menu p_previous) {
 		previousMenu=p_previous;
 		

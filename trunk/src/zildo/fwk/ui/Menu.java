@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
+import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.BankSound;
 
@@ -37,6 +38,10 @@ public class Menu {
 	public Menu previousMenu;
 	
 	private static int keyPressed;
+	
+	// Object to handle any menus
+	protected Client client = ClientEngineZildo.getClientForMenu();
+	protected final Menu currentMenu = this;
 	
 	public Menu() {
 		

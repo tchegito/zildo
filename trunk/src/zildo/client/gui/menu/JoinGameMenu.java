@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.MultiPlayer;
-import zildo.client.Client;
-import zildo.client.ClientEngineZildo;
 import zildo.fwk.net.InternetClient;
 import zildo.fwk.net.ServerInfo;
 import zildo.fwk.ui.InfoMenu;
@@ -35,10 +33,6 @@ import zildo.fwk.ui.UIText;
 
 public class JoinGameMenu extends Menu {
 
-    Menu currentMenu = this;
-    
-    Client client=ClientEngineZildo.getClientForMenu();
-    
     public JoinGameMenu(List<ServerInfo> serversReady, Menu p_previous) {
         super("m4.title");
         

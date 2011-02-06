@@ -28,8 +28,6 @@ import java.util.Date;
 import java.util.List;
 
 import zildo.SinglePlayer;
-import zildo.client.Client;
-import zildo.client.ClientEngineZildo;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
@@ -45,8 +43,6 @@ import zildo.server.EngineZildo;
  * 
  */
 public class SaveGameMenu extends Menu {
-
-	Client client = ClientEngineZildo.getClientForMenu();
 
 	final boolean load;
 
