@@ -624,7 +624,7 @@ public class MapManagement {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
 			//points.add(new Point(831, 360));
-			points.add(new Point(831 - 700, 360 - 150));
+			points.add(new Point(831+50, 360));
 		} else {
 			points = currentMap.getRespawnPoints();
 		}
