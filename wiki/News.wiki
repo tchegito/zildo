@@ -5,6 +5,8 @@
  * savegames
  * scenario enhancements
  * improve gameplay in multiplayer (seller, special map ...)
+ * two new musics
+ * in-game menu
 
 = Version 1.093 =
 
