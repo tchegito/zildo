@@ -585,7 +585,7 @@ public class SpriteManagement extends SpriteStore {
 											listToRemove.add(entity);
 										}
 									} else {
-										if (elem.getClass().equals(
+										if (elem != null && elem.getClass().equals(
 												ElementBoomerang.class)) {
 											// Boomerang catches some goodies
 											((ElementBoomerang) elem)
