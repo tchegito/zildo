@@ -147,11 +147,6 @@ public class OpenGLSound {
 
 	}
 
-	public void loadMusic(String p_filename) {
-		// InputStream is=new OggInputStream
-
-	}
-
 	/**
 	 * void setListenerValues()
 	 * 
