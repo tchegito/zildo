@@ -1,6 +1,6 @@
 #summary News
 
-= Version 1.094 (soon) = 
+= Version 1.094 (very soon, beta-testing now) = 
 
  * savegames
  * scenario enhancements
