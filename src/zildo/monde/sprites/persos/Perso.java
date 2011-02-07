@@ -204,7 +204,11 @@ public abstract class Perso extends Element {
 	}
 
 	public void setPv(int pv) {
-		this.pv = pv;
+		if (pv > maxpv) {
+			this.pv = maxpv;
+		} else {
+			this.pv = pv;
+		}
 	}
 
 	public int getMaxpv() {
@@ -413,7 +417,7 @@ public abstract class Perso extends Element {
     
 	public abstract void initPersoFX();
 
-    public abstract boolean beingWounded(float cx, float cy, Perso p_shooter, int p_damage);
+    public abstract void beingWounded(float cx, float cy, Perso p_shooter, int p_damage);
     
     public void parry(float cx, float cy, Perso p_shooter) {}
     	

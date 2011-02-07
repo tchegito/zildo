@@ -330,7 +330,10 @@ public class PlayerManagement {
 					int cy=(int) (yy / 16);
 					Angle angleResult=EngineZildo.mapManagement.getAngleJump(heros.getAngle(), cx, cy);
 					if (angleResult!=null && heros.getPushingSprite() == null) {
-						heros.jump(angleResult);
+						Point landingPoint=angleResult.getLandingPoint().translate((int) heros.x, (int) heros.y);
+						if (!EngineZildo.mapManagement.collide(landingPoint.x, landingPoint.y, heros)) {
+							heros.jump(angleResult);
+						}
 					}
 				}	//if touch=15
 				heros.setPos_seqsprite(-1);

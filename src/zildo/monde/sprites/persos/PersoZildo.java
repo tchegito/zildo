@@ -309,7 +309,11 @@ public class PersoZildo extends Perso {
 	// Invoked when Zildo got wounded by any enemy.
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public boolean beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
+	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
+		
+		if (mouvement == MouvementZildo.SAUTE) {
+			return;
+		}
 		// Project Zildo away from the enemy
 		float diffx=getX()-cx;
 		float diffy=getY()-cy;
@@ -321,10 +325,10 @@ public class PersoZildo extends Perso {
 		setPx(8*(diffx/norme));
 		setPy(8*(diffy/norme));
 
-		return beingWounded(p_shooter, p_damage);
+		beingWounded(p_shooter, p_damage);
     }
 
-	public boolean beingWounded(Perso p_shooter, int p_damage) {
+	public void beingWounded(Perso p_shooter, int p_damage) {
 		// Si Zildo a quelque chose dans les mains, on doit le laisser tomber
 		if (getEn_bras() != null) {
 			getEn_bras().az=-0.07f;
@@ -355,8 +359,6 @@ public class PersoZildo extends Perso {
         if (die) {
             die(false, p_shooter);
         }
-
-        return die;
 	}
 	
     /**

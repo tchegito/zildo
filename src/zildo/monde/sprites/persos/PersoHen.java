@@ -66,7 +66,7 @@ public class PersoHen extends PersoNJ {
     }
 
     @Override
-    public boolean beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
+    public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
         project(cx, cy, 1);
         this.setMouvement(MouvementZildo.TOUCHE);
         this.setWounded(true);
@@ -74,7 +74,5 @@ public class PersoHen extends PersoNJ {
         this.setSpecialEffect(EngineFX.PERSO_HURT);
 
         EngineZildo.soundManagement.broadcastSound(BankSound.MonstreTouche2, this);
-
-        return false;
     }
 }
