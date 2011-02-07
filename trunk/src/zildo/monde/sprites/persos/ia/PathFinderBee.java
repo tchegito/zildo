@@ -18,39 +18,34 @@
  *
  */
 
-package zildo.monde.sprites.persos;
+package zildo.monde.sprites.persos.ia;
 
-import zildo.monde.sprites.desc.ElementDescription;
-import zildo.monde.sprites.elements.Element;
-import zildo.monde.sprites.persos.ia.PathFinderFlying;
+import zildo.monde.map.Point;
+import zildo.monde.sprites.persos.Perso;
 
-public class PersoVolant extends PersoNJ {
+/**
+ * @author Tchegito
+ *
+ */
+public class PathFinderBee extends PathFinder {
 
-	public PersoVolant() {
-		super();
-
-		setCptMouvement(100);
-		setForeground(true);
-		
-		Element ombre=new Element();
-		ombre.setX(x);
-		ombre.setY(y-12);
-		ombre.setSprModel(ElementDescription.SHADOW_SMALL);
-		addPersoSprites(ombre);
-		
-		pathFinder = new PathFinderFlying(this);
-	}
 	
+	/**
+	 * @param p_mobile
+	 */
+	public PathFinderBee(Perso p_mobile) {
+		super(p_mobile);
+	}
+
+	/**
+	 * Determine destination for SCRIPT_ABEILLE.
+	 */
 	@Override
-	public void finaliseComportement(int compteur_animation) {
-		// On déplace l'ombre du perso
-		if (persoSprites.size() >0) {
-			Element ombre=persoSprites.get(0);
-			ombre.setX(x);
-			ombre.setY(y+6);
-			ombre.setVisible(z>0);
-		}
-		super.finaliseComportement(compteur_animation);
+	public void determineDestination() {
+        float x=mobile.x;
+        float y=mobile.y;
+		target=new Point();
+		target.x=(int)(x+(5.0f+Math.random()*10.0f)*Math.cos(2.0f*Math.PI*Math.random()));
+		target.y=(int)(y+(5.0f+Math.random()*10.0f)*Math.sin(2.0f*Math.PI*Math.random()));
 	}
-	
 }

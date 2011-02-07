@@ -35,6 +35,7 @@ import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.action.PersoAction;
+import zildo.monde.sprites.persos.ia.PathFinder;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
@@ -642,5 +643,9 @@ public abstract class Perso extends Element {
 				setAngle(Angle.EST);
 			}
 		}
+	}
+	
+	public void setPathFinder(PathFinder p_pf) {
+		pathFinder = p_pf;
 	}
 }

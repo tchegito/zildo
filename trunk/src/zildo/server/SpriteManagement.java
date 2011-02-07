@@ -590,6 +590,8 @@ public class SpriteManagement extends SpriteStore {
 											// Boomerang catches some goodies
 											((ElementBoomerang) elem)
 													.grab(element);
+										} else {
+											found=false;
 										}
 									}
 								}
@@ -602,12 +604,11 @@ public class SpriteManagement extends SpriteStore {
 		}
 
 		for (SpriteEntity entity : listToRemove) {
-			// La méthode suivante va peut-être supprimer un élément lié à
-			// celui-ci (exemple:l'ombre)
+			// Next method might remove an element linked to this one (example: shadow)
 			entity.dying = true;
 		}
 
-		// No collision
+		// Return collision
 		return found;
 	}
 

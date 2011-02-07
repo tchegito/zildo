@@ -195,7 +195,7 @@ public class PersoNJ extends Perso {
 								zone_deplacement.incY2(pasy*3);
 							}
 							attente=1+(int)Math.random()*5;
-							pathFinder.determineDestinationFlying();
+							pathFinder.determineDestination();
 							cptMouvement=0;
 						} else if (attente!=0) {
 							attente--;
@@ -215,7 +215,7 @@ public class PersoNJ extends Perso {
 								}
 							}
 							// On se déplace en courbe}
-							pathFinder.reachDestinationFlying();
+							pathFinder.reachDestination(0);	// Speed is unused
 							cptMouvement++;
 						}
 						break;
@@ -280,11 +280,7 @@ public class PersoNJ extends Perso {
 								//Pas de destination, donc on en fixe une dans la zone de déplacement
 								cptMouvement=0;
 					
-								if (quel_deplacement == MouvementPerso.SCRIPT_ABEILLE) {
-									pathFinder.determineDestinationBee();
-								} else {
-									pathFinder.determineDestination();
-								}
+								pathFinder.determineDestination();
 							}
 							float vitesse=0.5f;
 							if (quel_deplacement == MouvementPerso.SCRIPT_RAT) {
