@@ -93,7 +93,7 @@ public class PersoNJ extends Perso {
 	// Invoked when this character gets wounded by any enemy (=ZILDO)
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public boolean beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
+	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 		project(cx, cy, 6);
 		this.setMouvement(MouvementZildo.TOUCHE);
 		this.setWounded(true);
@@ -107,8 +107,6 @@ public class PersoNJ extends Perso {
 		}
 	
 		EngineZildo.soundManagement.broadcastSound(BankSound.MonstreTouche, this);
-	
-		return died;
 	}
 	
 	@Override
