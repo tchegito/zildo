@@ -18,13 +18,14 @@
  *
  */
 
-package zildo.monde.sprites.persos;
+package zildo.monde.sprites.persos.ia;
 
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.utils.MouvementPerso;
 
 /**
@@ -43,10 +44,10 @@ import zildo.monde.sprites.utils.MouvementPerso;
 public class PathFinder {
 
 	Perso mobile;
-	Point target;
-	float speed;	// Should be used if different of 0
-	boolean backward;	// Default FALSE. TRUE means character is steping back
-	boolean open;	// Default FALSE. TRUE means character can open doors.
+	public Point target;
+	public float speed;	// Should be used if different of 0
+	public boolean backward;	// Default FALSE. TRUE means character is steping back
+	public boolean open;	// Default FALSE. TRUE means character can open doors.
 	
 	public PathFinder(Perso p_mobile) {
 		mobile=p_mobile;
@@ -115,20 +116,7 @@ public class PathFinder {
         
         return pos;
     }
-    
-    public void reachDestinationFlying() {
-    	if (target == null) {
-    		return;
-    	}
-		double alpha=Math.PI*(mobile.getCptMouvement()/100.0f)-Math.PI/2.0f;
-		mobile.z=(float) (2.0f+10.0f*Math.sin(alpha+Math.PI/2.0f));
-		alpha=(Math.PI/100.0f)*Math.cos(alpha);
-		mobile.x+=target.x*alpha;
-		mobile.y+=target.y*alpha;
-		if (target.x<0) {
-			mobile.setAngle(Angle.EST);
-		} else mobile.setAngle(Angle.NORD);    	
-    }
+
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// determineDestination (SCRIPT_ZONE)
@@ -137,7 +125,7 @@ public class PathFinder {
 	// This is where we assign a new position, horizontally and/or vertically depending on the
 	// character's script.
 	///////////////////////////////////////////////////////////////////////////////////////
-	void determineDestination() {
+	public void determineDestination() {
 		int j=13+3;
         float x=mobile.x;
         float y=mobile.y;
@@ -172,28 +160,6 @@ public class PathFinder {
 			target.x=zone.getX1();
 			target.y=zone.getY1();
 	    }
-	}
-	
-	/**
-	 * Determine destination for SCRIPT_ABEILLE.
-	 */
-	void determineDestinationBee() {
-        float x=mobile.x;
-        float y=mobile.y;
-		target=new Point();
-		target.x=(int)(x+(5.0f+Math.random()*10.0f)*Math.cos(2.0f*Math.PI*Math.random()));
-		target.y=(int)(y+(5.0f+Math.random()*10.0f)*Math.sin(2.0f*Math.PI*Math.random()));
-	}
-	
-	/**
-	 * Determine destination for SCRIPT_CORBEAU
-	 */
-	void determineDestinationFlying() {
-        float x=mobile.x;
-        float y=mobile.y;
-		determineDestination();
-		target.x=(int)((target.x+Math.random()*20.0f-10.0f-x)/2);
-		target.y=(int)((target.y+Math.random()*20.0f-10.0f-y)/2);
 	}
 
 	public boolean hasReachedTarget() {

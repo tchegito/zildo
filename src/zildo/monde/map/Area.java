@@ -726,6 +726,7 @@ public class Area implements EasySerializable {
 					zo.setX2(map.roundAndRange(perso.getX() + 16 * 5, Area.ROUND_X));
 					zo.setY2(map.roundAndRange(perso.getY() + 16 * 5, Area.ROUND_Y));
 					perso.setZone_deplacement(zo);
+					perso.setMaxpv(3);
 					perso.setPv(3);
 					perso.setTarget(null);
 					perso.setMouvement(MouvementZildo.VIDE);

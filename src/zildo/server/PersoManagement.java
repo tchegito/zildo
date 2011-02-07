@@ -35,6 +35,7 @@ import zildo.monde.sprites.persos.PersoHen;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoVolant;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.ia.PathFinderBee;
 
 //////////////////////////////////////////////////////////////////////
 // PersoManagement
@@ -180,6 +181,9 @@ public class PersoManagement {
 				break;
 			default:
 				perso = new PersoNJ();
+				if (p_desc == PersoDescription.ABEILLE) {
+					perso.setPathFinder(new PathFinderBee(perso));
+				}
 				break;
 		}
 
@@ -188,6 +192,7 @@ public class PersoManagement {
         perso.setZ(z);
         perso.setQuel_spr(p_desc);
         perso.setNom(name);
+        perso.setMaxpv(1);
         perso.setPv(1);
         perso.setAngle(Angle.fromInt(angle));
 
