@@ -532,7 +532,7 @@ public class PlayerManagement {
 							} else if (on_map==743 && heros.getAngle()==Angle.NORD) {
 								//Zildo a trouvé un coffre ! C'est pas formidable ?
 								EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
-								heros.setAttente(50);
+								heros.setAttente(60);
                                 map.takeSomethingOnTile(new Point(newx, newy), false, heros);
 								// Mark this event : chest opened
 								EngineZildo.scriptManagement.openChest(map.getName(), new Point(newx, newy));
