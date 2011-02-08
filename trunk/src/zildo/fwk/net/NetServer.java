@@ -56,7 +56,7 @@ import zildo.server.state.ClientState;
  * @author tchegito
  *
  */
-public class NetServer extends NetSendDebug {
+public class NetServer extends NetSend {
 
 	Server server;
 	int counter;
@@ -218,9 +218,9 @@ public class NetServer extends NetSendDebug {
 		area.serialize(buffer);
 		
 		getPacket=new GetPacket(ResourceType.MAP, buffer.getAll(), area.getName());
-		log("Sending map ("+getPacket.length+" bytes)");
 		
 		sendPacket(getPacket, p_client);
+		log("Sending map ("+getPacket.getSize()+" bytes)");
 	}
 	
 	private void sendSounds() {
