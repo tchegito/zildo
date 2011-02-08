@@ -55,6 +55,8 @@ public abstract class Packet {
 	
     protected EasyBuffering b=new EasyBuffering(NetSend.PACKET_MAX_SIZE);
     
+    int size;
+    
 	TransferObject source;
 	PacketType type;
 	
@@ -75,8 +77,8 @@ public abstract class Packet {
     	return source;
     }
     
-    protected final String getHeader() {
-    	return type.header;
+    public byte getHeader() {
+	return (byte) getType().ordinal();
     }
     
     public PacketType getType() {
@@ -106,14 +108,16 @@ public abstract class Packet {
     public static Packet receive(ByteBuffer p_buffer) {
         // Read the header
     	EasyBuffering eb=new EasyBuffering(p_buffer);
-    	String header=eb.readString();
+    	int headerInt=eb.readByte();
     	Packet p=null;
     	for (PacketType typ : PacketType.values()) {
-    		if (typ.header.equals(header)) {
+    		if (typ.ordinal() == headerInt) {
     			// Create the packet
     			try {
     				p=typ.clazz.newInstance();
+    				p.size=p_buffer.limit();
     				p.deserialize(eb);
+    				break;
     			} catch (Exception e) {
     				throw new RuntimeException(e);
     			}
@@ -132,6 +136,15 @@ public abstract class Packet {
         b.put(getHeader());
         buildPacket();
         b.getAll().flip();
+        size=b.getAll().limit();
         return b.getAll();
+    }
+    
+    /**
+     * Only for debug
+     * @return int
+     */
+    public int getSize() {
+	return size;
     }
 }

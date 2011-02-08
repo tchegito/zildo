@@ -61,7 +61,7 @@ import zildo.server.state.PlayerState;
  * @author tchegito
  *
  */
-public class NetClient extends NetSend {
+public class NetClient extends NetSendDebug {
 
 	boolean serverFound;
 	boolean serverAccepted;

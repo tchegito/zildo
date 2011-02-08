@@ -56,7 +56,7 @@ import zildo.server.state.ClientState;
  * @author tchegito
  *
  */
-public class NetServer extends NetSend {
+public class NetServer extends NetSendDebug {
 
 	Server server;
 	int counter;
