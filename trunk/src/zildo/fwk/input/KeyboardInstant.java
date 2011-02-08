@@ -68,18 +68,18 @@ public class KeyboardInstant implements EasySerializable {
 	}
 	
 	/**
-	 * Serialize this object into a ByteBuffer
-	 * @return EasyBuffering
-	 */
-	public void serialize(EasyBuffering p_buffer) {
-        p_buffer.clear();
-        boolean[] bools=new boolean[KEYS_LENGTH];
-        int index=0;
-        for (KeysConfiguration key : KeysConfiguration.values()) {
-        	bools[index++]=kbdInstant.get(key);
-		}
-   		p_buffer.putBooleans(bools);
+     * Serialize this object into a ByteBuffer
+     * 
+     * @return EasyBuffering
+     */
+    public void serialize(EasyBuffering p_buffer) {
+	p_buffer.clear();
+	int index = 0;
+	for (KeysConfiguration key : KeysConfiguration.values()) {
+	    bools[index++] = kbdInstant.get(key);
 	}
+	p_buffer.putBooleans(bools);
+    }
 	
 	/**
 	 * Deserialize a ByteBuffer into a KeyboardInstant object.

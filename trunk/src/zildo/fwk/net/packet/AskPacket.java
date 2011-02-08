@@ -34,18 +34,9 @@ public class AskPacket extends Packet {
 
     public enum ResourceType {
     	MAP, MAP_PART, ENTITY, KEYBOARD, SOUND, DIALOG, CLIENTINFO; // Note: Keyboard, Dialog, Map part and Sound are never asked, only sent.		
-		public static ResourceType fromString(String p_string) {
-			for (ResourceType rType : ResourceType.values()) {
-				if (rType.toString().equals(p_string)) {
-					return rType;
-				}
-			}
-			throw new RuntimeException(p_string+" is not a valid resource type");
-		}
-
-	}
+    }
 	
-	public ResourceType resourceType;
+    public ResourceType resourceType;
     public boolean entire; // TRUE=client want entire entities list (just for ENTITY resource type)
 
     /**
@@ -63,14 +54,17 @@ public class AskPacket extends Packet {
 
     @Override
     protected void buildPacket() {
-        b.put(resourceType.toString());
-        b.put(entire);
+        b.put((byte) resourceType.ordinal());
+        if (resourceType == ResourceType.ENTITY) {
+            b.put(entire);
+        }
     }
 
     @Override
     protected void deserialize(EasyBuffering p_buffer) {
-        String resType = p_buffer.readString();
-        resourceType = ResourceType.fromString(resType);
-        entire = p_buffer.readBoolean();
+        resourceType = ResourceType.values()[p_buffer.readByte()];
+        if (resourceType == ResourceType.ENTITY) {
+            entire = p_buffer.readBoolean();
+        }
     }
 }

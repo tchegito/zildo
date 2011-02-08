@@ -28,8 +28,7 @@ import zildo.fwk.net.packet.AskPacket.ResourceType;
 
 public class GetPacket extends Packet {
 
-	public int length;
-	public String name;
+	public String name;	// Only used for MAP resource type
 	private ByteBuffer buffer;
 	public ResourceType resourceType;
 	
@@ -41,9 +40,8 @@ public class GetPacket extends Packet {
 	}
 	
 	public GetPacket(ResourceType p_resType, ByteBuffer p_buffer, String p_name) {
-		length=p_buffer.position();
 		buffer=p_buffer;
-		name=p_name==null?"dummy":p_name;
+		name=p_name;
 		resourceType=p_resType;
 		buffer.flip();
 	}
@@ -52,18 +50,20 @@ public class GetPacket extends Packet {
     protected void buildPacket() {
         buffer.position(0);
 
-        b.put(resourceType.toString());
-        b.put(length);
-        b.put(name);
+        b.put((byte) resourceType.ordinal());
+        if (resourceType == ResourceType.MAP) {
+            b.put(name);
+        }
         b.put(buffer);
     }
 	
 	@Override
 	protected void deserialize(EasyBuffering p_buffer) {
-		resourceType=ResourceType.fromString(p_buffer.readString());
-		length=p_buffer.readInt();
-		name=p_buffer.readString();
-		buffer=ByteBuffer.allocate(length);
+		resourceType=ResourceType.values()[p_buffer.readByte()];
+		if (resourceType == ResourceType.MAP) {
+		    name=p_buffer.readString();
+		}
+		buffer=ByteBuffer.allocate(p_buffer.getAll().limit());
 		buffer.put(p_buffer.getAll());
 		buffer.flip();
 	}
