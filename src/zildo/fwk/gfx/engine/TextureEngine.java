@@ -107,7 +107,12 @@ public abstract class TextureEngine extends OpenGLStuff {
         textureTab[n_Texture]=buf.get(0);
 
         // Ready for next one
-		n_Texture++;    	
+	n_Texture++;    	
+    }
+    
+    public void getTextureImage(int p_texId) {
+	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, p_texId);
+	    GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, scratch);
     }
     
     public void saveScreen(int p_texId) {

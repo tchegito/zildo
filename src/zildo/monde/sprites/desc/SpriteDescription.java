@@ -44,6 +44,11 @@ public interface SpriteDescription {
 				return PersoDescription.fromNSpr(nSpr);
 			case SpriteBank.BANK_GEAR:
 				return GearDescription.fromNSpr(nSpr);
+			default:
+			    // Is this bank Zildo with another outfit ?
+			    if (nBank >= SpriteBank.BANK_COPYSCREEN) {
+				return ZildoDescription.fromInt(nSpr);
+			    }
 			}
 			throw new RuntimeException("Can't find sprite for bank "+nBank);
 		}

@@ -148,7 +148,7 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	}
 
 	public void setNBank(int bank) {
-		nBank = bank;
+	    nBank = bank;
 	}
 
 	public boolean isMoved() {

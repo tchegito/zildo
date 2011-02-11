@@ -87,7 +87,7 @@ public class SinglePlayer {
     public void launchGame() {
         Client client = ClientEngineZildo.getClientForGame();
         client.setUpNetwork(ClientType.SERVER_AND_CLIENT, null, 0, server!=null);
-        ClientEngineZildo clientEngineZildo = client.getEngineZildo();
+        clientEngineZildo = client.getEngineZildo();
 
         // Initialize map
         Area map=EngineZildo.mapManagement.getCurrentMap();
@@ -108,7 +108,7 @@ public class SinglePlayer {
         } else {
             	PersoZildo zildo = EngineZildo.persoManagement.getZildo();
             	if (zildo == null) {
-            	    zildoId = EngineZildo.spawnClient();
+            	    zildoId = EngineZildo.spawnClient(1);
             	} else {
             	    zildoId = zildo.getId();
             	}

@@ -76,10 +76,10 @@ public class EngineZildo {
 		}
 	}
 
-	static public int spawnClient() {
+	static public int spawnClient(int p_outfitBank) {
 
         Point respawnLocation = mapManagement.getRespawnPosition();
-        PersoZildo zildo = new PersoZildo(respawnLocation.getX(), respawnLocation.getY());
+        PersoZildo zildo = new PersoZildo(respawnLocation.getX(), respawnLocation.getY(), p_outfitBank);
         spriteManagement.spawnPerso(zildo);
 
         if (game.multiPlayer) {

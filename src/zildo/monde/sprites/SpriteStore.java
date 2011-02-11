@@ -107,7 +107,11 @@ public class SpriteStore {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public SpriteBank getSpriteBank(int nBank)
 	{
-		return banque_spr.get(nBank);
+	    int bk=nBank;
+	    if (nBank >= SpriteBank.BANK_COPYSCREEN) {
+		bk = SpriteBank.BANK_ZILDO;
+	    }
+	    return banque_spr.get(bk);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -155,11 +159,7 @@ public class SpriteStore {
 		int nSpr=entity.getNSpr();
 	
 		SpriteModel spr;
-		if (nBank == SpriteBank.BANK_COPYSCREEN) {
-			spr=SpriteModel.getScreenSized();
-		} else  {
-			spr=getSpriteBank(nBank).get_sprite(nSpr);
-		}
+		spr=getSpriteBank(nBank).get_sprite(nSpr);
 	
 		entity.setSprModel(spr);
 	

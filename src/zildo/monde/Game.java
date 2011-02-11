@@ -104,7 +104,7 @@ public class Game implements EasySerializable {
         }
 
         // 2: Zildo
-        EngineZildo.spawnClient();
+        EngineZildo.spawnClient(0);
         PersoZildo zildo = EngineZildo.persoManagement.getZildo();
         zildo.setMaxpv(p_buffer.readInt());
         zildo.setCountArrow(p_buffer.readInt());

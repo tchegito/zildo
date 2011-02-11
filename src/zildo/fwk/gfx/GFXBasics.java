@@ -296,15 +296,15 @@ public class GFXBasics extends OpenGLStuff {
 	
 	}
 	
-	public Vector4f getPixel(int x, int y) {
-		int a=y*width*pitch + x * pitch;
-		byte r=pBackBuffer.get(a);
-		byte g=pBackBuffer.get(a+1);
-		byte b=pBackBuffer.get(a+2);
-		byte w=pBackBuffer.get(a+3);
-		Vector4f result=new Vector4f(r, g, b, w);
-		return result;
-	}
+	    public Vector4f getPixel(int x, int y) {
+	        int a=y*width*pitch + x * pitch;
+	        short r=(short) (0xFF & pBackBuffer.get(a));
+	        short g=(short) (0xFF & pBackBuffer.get(a+1));
+	        short b=(short) (0xFF & pBackBuffer.get(a+2));
+	        short w=(short) (0xFF & pBackBuffer.get(a+3));
+	        Vector4f result=new Vector4f(r, g, b, w);
+	        return result;
+	    }
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// outlineBox
@@ -402,10 +402,20 @@ public class GFXBasics extends OpenGLStuff {
 		return (int) v.x << 16 | (int) v.y << 8 | (int) v.z;
 	}
 
+	public int getPalIndex(Vector4f p_color) {
+	    int r=(int) (p_color.x * 1f);
+	    int g=(int) (p_color.y * 1f);
+	    int b=(int) (p_color.z * 1f);
+	    return getPalIndex(r, g, b);
+	}
 	public static int getPalIndex(int value) {
 		int r = (value >> 16) & 0xff;
 		int g = (value >>  8) & 0xff;
 		int b = (value      ) & 0xff;
+		return getPalIndex(r, g, b);
+	}
+	
+	private static int getPalIndex(int r, int g, int b) {
 		Vector2f min=new Vector2f(10000,1);	// X=minimal distance / Y=corresponding color index
 		for (int i=0;i<palette.length;i++) {
 			Vector4f col=palette[i];
