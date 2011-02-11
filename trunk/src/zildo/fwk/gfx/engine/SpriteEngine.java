@@ -32,9 +32,11 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.SpritePrimitive;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
+import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.elements.Element;
 import zildo.prefs.Constantes;
 import zildo.server.SpriteManagement;
@@ -148,6 +150,31 @@ public class SpriteEngine extends TextureEngine {
 		generateTexture();
 	}
 	
+	/**
+	 * Create a new texture from a given one, and replace colors as specified by the {@link Point} list.
+	 * @param p_originalTexture
+	 * @param p_replacements list of replacements : for a point (x,y), color-index <b>x</b> become color-index <b>y</b>.
+	 */
+	public void createTextureFromAnotherReplacement(int p_originalTexture, Point... p_replacements) {
+
+        	GFXBasics surfaceGfx = prepareSurfaceForTexture();
+        	getTextureImage(textureTab[p_originalTexture]);
+        
+        	surfaceGfx.StartRendering();
+        	for (int j = 0; j < 256; j++) {
+        	    for (int i = 0; i < 256; i++) {
+        		Vector4f color = surfaceGfx.getPixel(i, j);
+        		int palIndex = surfaceGfx.getPalIndex(color);
+        		for (Point p : p_replacements) {
+        		    if (palIndex == p.x) {
+        			surfaceGfx.pset(i, j, p.y, null);
+        		    }
+        		}
+        	    }
+        	}
+        	generateTexture();
+	}
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// createTextureFromFontStyle
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -225,9 +252,15 @@ public class SpriteEngine extends TextureEngine {
 			createTextureFromSpriteBank(sprBank);
 		}
 		
+		// Create Zildo with all outfits
+		for (ZildoOutfit outfit : ZildoOutfit.values()) {
+		    createTextureFromAnotherReplacement(SpriteBank.BANK_ZILDO,
+			    outfit.transforms);
+		}
+		
 		// Prepare screen copy texture
-		textureTab[SpriteBank.BANK_COPYSCREEN]=generateTexture(0,64); //, 1024); //, Zildo.viewPortY);
-		n_Texture++;
+		//textureTab[SpriteBank.BANK_COPYSCREEN]=generateTexture(0,64); //, 1024); //, Zildo.viewPortY);
+		//n_Texture++;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -344,7 +377,8 @@ public class SpriteEngine extends TextureEngine {
 				int nbQuads=bankOrder[phase][posBankOrder*3 + 1];
 				int iCurrentFX=bankOrder[phase][posBankOrder*3 + 2];
 				EngineFX currentFX=EngineFX.values()[iCurrentFX];
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[numBank]);
+				int texId=textureTab[numBank];
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
 
 				// Select the right pixel shader (if needed)
                 if (pixelShaderSupported) {

@@ -73,6 +73,8 @@ public class PersoZildo extends Perso {
 	private List<Item> inventory;
 	private ShieldEffect shieldEffect;
 	
+	private int outfitBank;
+	
 	// Linked elements
 	Element shield;
 	Element feet;
@@ -105,12 +107,13 @@ public class PersoZildo extends Perso {
 	// Return a perso named Zildo : this game's hero !
 	// with a given location.
 	///////////////////////////////////////////////////////////////////////////////////////
-    public PersoZildo(int p_posX, int p_posY) {
+    public PersoZildo(int p_posX, int p_posY, int p_outfitBank) {
         super();
         this.setNom("Zildo");
 
         // We could maybe put that somewhere else
-        this.setNBank(SpriteBank.BANK_ZILDO);
+        outfitBank = p_outfitBank;
+        this.setNBank(outfitBank);
         setNSpr(0);
 
         setX(p_posX); // 805); //601-32;//-500);
@@ -130,15 +133,15 @@ public class PersoZildo extends Perso {
 	    shield = new Element(this);
 		shield.setX(getX());
 		shield.setY(getY());
-		shield.setNBank(SpriteBank.BANK_ZILDO);
+		shield.setNBank(outfitBank);
 		shield.setNSpr(103);				// Assign initial nSpr to avoid 'isNotFixe' returning TRUE)
 	
 		shadow=new Element(this);
-		shadow.setNBank(SpriteBank.BANK_ZILDO);
+		shadow.setNBank(outfitBank);
 		shadow.setNSpr(103);
 	
 		feet=new Element(this);
-		feet.setNBank(SpriteBank.BANK_ZILDO);
+		feet.setNBank(outfitBank);
 		feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
 	
 		shieldEffect = null;
@@ -509,28 +512,28 @@ public class PersoZildo extends Perso {
 							shield.setY(yy+2);
 							shield.setZ(5-1-decalbouclier3y[nSpr % 8]);
 							shield.setNSpr(103);
-							shield.setNBank(SpriteBank.BANK_ZILDO);
+							shield.setNBank(outfitBank);
 							break;
 						case EST:
 							shield.setX(xx+9);	// PASCAL : +10
 							shield.setY(yy-2+ decalbouclier2y[(nSpr-ZildoDescription.RIGHT_FIXED.ordinal()) % 8]);
 							shield.setZ(0.0f);
 							shield.setNSpr(104);
-							shield.setNBank(SpriteBank.BANK_ZILDO);
+							shield.setNBank(outfitBank);
 							break;
 						case SUD:
 							shield.setX(xx-4);	// PASCAL : -3)
 							shield.setY(yy+4);
 							shield.setZ(1+1-decalboucliery[(nSpr-ZildoDescription.DOWN_FIXED.ordinal()) % 6]);
 							shield.setNSpr(105);
-							shield.setNBank(SpriteBank.BANK_ZILDO);
+							shield.setNBank(outfitBank);
 							break;
 						case OUEST:
 							shield.setX(xx-8);
 							shield.setY(yy-2+ decalbouclier2y[(nSpr-ZildoDescription.LEFT_FIXED.ordinal()) % 8]);
 							shield.setZ(0.0f);
 							shield.setNSpr(106);
-							shield.setNBank(SpriteBank.BANK_ZILDO);
+							shield.setNBank(outfitBank);
 							break;
 					}
 					shield.setVisible(true);
