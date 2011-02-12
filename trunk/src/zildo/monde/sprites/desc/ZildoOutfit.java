@@ -22,11 +22,33 @@ public enum ZildoOutfit {
 	    	 new Point(111, 251), new Point(107, 252),
 	    	 new Point(45, 210)),	// Belt
     
-    Pingouin(new Point(223, 96), new Point(162, 6),
+    Zildazur(new Point(223, 96), new Point(162, 6),
 	    new Point(150, 218), // 34
 	    new Point(180, 86),	// Skin
 	     new Point(111, 163), new Point(107, 164), new Point(246, 80),
-	     new Point(45, 240));
+	     new Point(45, 240)),
+	     
+	Zildesbois(new Point(223, 16), new Point(162, 17),
+			new Point(111, 251), new Point(107, 252)),
+    
+	Schtroumpf(new Point(223, 6), new Point(162, 61),
+			new Point(45, 109),
+			new Point(180, 115), new Point(243, 162),	// Skin
+			new Point(254, 115), new Point(253, 162),	// Arm - hand
+			new Point(111, 6), new Point(107, 61), new Point(246, 108)),
+		
+	Zildemon(new Point(223, 111), new Point(162, 107),
+			new Point(45, 3),
+			new Point(3, 106),	// Outline
+			new Point(6, 111),	// Eyes
+			new Point(150, 3)),
+			
+	Zildange(new Point(223, 96), new Point(162, 6),
+			new Point(246, 166), 
+			new Point(150, 254),
+			new Point(180, 174), new Point(243, 132), 
+			new Point(254, 96), new Point(253, 132),
+			new Point(111, 96), new Point(107, 6));
     
     public Point[] transforms;
     
