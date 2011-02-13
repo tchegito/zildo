@@ -181,11 +181,12 @@ public class Server extends Thread {
 	public void updateClientKeyboard(TransferObject p_client, KeyboardInstant p_instant) {
         ClientState state=clients.get(p_client);
         if (state == null) {
-        	throw new RuntimeException("Client isn't registered on server !");
+        	System.out.println("Client "+p_client.address+" isn't registered on server !");
+        } else {
+	        state.keys=p_instant;
+	        state.inactivityTime=0;
+			clients.put(p_client, state);
         }
-        state.keys=p_instant;
-        state.inactivityTime=0;
-		clients.put(p_client, state);
 	}
 	
     /**
