@@ -39,6 +39,7 @@ import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.elements.Element;
 import zildo.prefs.Constantes;
+import zildo.server.EngineZildo;
 import zildo.server.SpriteManagement;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.
@@ -257,11 +258,13 @@ public class SpriteEngine extends TextureEngine {
 		}
 		
 		// Create Zildo with all outfits
-		n_Texture=SpriteBank.BANK_ZILDOOUTFIT;
-		for (ZildoOutfit outfit : ZildoOutfit.values()) {
-			if (outfit != ZildoOutfit.Zildo) {
-				createTextureFromAnotherReplacement(SpriteBank.BANK_ZILDO,
-						outfit.transforms);
+		if (!ClientEngineZildo.editing) {
+			n_Texture=SpriteBank.BANK_ZILDOOUTFIT;
+			for (ZildoOutfit outfit : ZildoOutfit.values()) {
+				if (outfit != ZildoOutfit.Zildo) {
+					createTextureFromAnotherReplacement(SpriteBank.BANK_ZILDO,
+							outfit.transforms);
+				}
 			}
 		}
 		

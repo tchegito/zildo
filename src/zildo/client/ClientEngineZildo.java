@@ -72,6 +72,8 @@ public class ClientEngineZildo {
 
 	public static Client client;
 
+	public static boolean editing;
+	
 	// Time left to unblock player's moves
 	private final int waitingScene;
 
@@ -81,6 +83,8 @@ public class ClientEngineZildo {
 	 */
 	public void initializeClient(boolean p_awt) {
 
+		editing = p_awt;
+		
 		filterCommand = new FilterCommand();
 		guiDisplay = new GUIDisplay();
 		dialogDisplay = new DialogDisplay();
