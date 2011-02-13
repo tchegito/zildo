@@ -32,6 +32,7 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
@@ -108,7 +109,7 @@ public class SinglePlayer {
         } else {
             	PersoZildo zildo = EngineZildo.persoManagement.getZildo();
             	if (zildo == null) {
-            	    zildoId = EngineZildo.spawnClient(1);
+            	    zildoId = EngineZildo.spawnClient(ZildoOutfit.Zildo);
             	} else {
             	    zildoId = zildo.getId();
             	}

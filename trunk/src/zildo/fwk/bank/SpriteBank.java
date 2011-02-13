@@ -49,6 +49,7 @@ public class SpriteBank {
 	public static final int BANK_GEAR = 5;
 	public static final int BANK_COPYSCREEN = 6;	// Just one sprite : screen sized
 	public static final int BANK_FONTES2 = 7;
+	public static final int BANK_ZILDOOUTFIT = 8;
 	
 		// Class variables
 	protected List<SpriteModel> models;

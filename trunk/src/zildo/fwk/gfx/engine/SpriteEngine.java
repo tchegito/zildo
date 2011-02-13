@@ -151,28 +151,32 @@ public class SpriteEngine extends TextureEngine {
 	}
 	
 	/**
-	 * Create a new texture from a given one, and replace colors as specified by the {@link Point} list.
+	 * Create a new texture from a given one, and replace colors as specified by the {@link Point} list.<br/>
+	 * Very slow, for now.
 	 * @param p_originalTexture
 	 * @param p_replacements list of replacements : for a point (x,y), color-index <b>x</b> become color-index <b>y</b>.
 	 */
 	public void createTextureFromAnotherReplacement(int p_originalTexture, Point... p_replacements) {
 
-        	GFXBasics surfaceGfx = prepareSurfaceForTexture();
-        	getTextureImage(textureTab[p_originalTexture]);
-        
-        	surfaceGfx.StartRendering();
-        	for (int j = 0; j < 256; j++) {
-        	    for (int i = 0; i < 256; i++) {
+    	GFXBasics surfaceGfx = prepareSurfaceForTexture();
+    	getTextureImage(textureTab[p_originalTexture]);
+    
+    	surfaceGfx.StartRendering();
+    	for (int j = 0; j < 256; j++) {
+    	    for (int i = 0; i < 256; i++) {
         		Vector4f color = surfaceGfx.getPixel(i, j);
-        		int palIndex = surfaceGfx.getPalIndex(color);
-        		for (Point p : p_replacements) {
-        		    if (palIndex == p.x) {
-        			surfaceGfx.pset(i, j, p.y, null);
-        		    }
+        		if (color .w != 0) {
+	        		int palIndex = surfaceGfx.getPalIndex(color);
+	        		for (Point p : p_replacements) {
+	        		    if (palIndex == p.x) {
+	        		    	surfaceGfx.pset(i, j, p.y, null);
+	        		    }
+	        		}
         		}
-        	    }
-        	}
-        	generateTexture();
+    	    }
+    	}
+    	
+    	generateTexture();
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -253,9 +257,12 @@ public class SpriteEngine extends TextureEngine {
 		}
 		
 		// Create Zildo with all outfits
+		n_Texture=SpriteBank.BANK_ZILDOOUTFIT;
 		for (ZildoOutfit outfit : ZildoOutfit.values()) {
-		    createTextureFromAnotherReplacement(SpriteBank.BANK_ZILDO,
-			    outfit.transforms);
+			if (outfit != ZildoOutfit.Zildo) {
+				createTextureFromAnotherReplacement(SpriteBank.BANK_ZILDO,
+						outfit.transforms);
+			}
 		}
 		
 		// Prepare screen copy texture

@@ -292,8 +292,8 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 		if (isZildo) {
 			// Zildo needs extra info
 			PersoZildo zildo=(PersoZildo) this;
-			p_buffer.put((byte) zildo.getPv());
 			p_buffer.put((byte) zildo.getMaxpv());
+			p_buffer.put((byte) zildo.getPv());
 			p_buffer.put(zildo.getMoney());
 			p_buffer.put((byte) zildo.getCountArrow());
 			p_buffer.put((byte) zildo.getCountBomb());
@@ -325,8 +325,8 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 			entity=new PersoZildo(id);
 			// Zildo needs extra info
 			PersoZildo zildo=(PersoZildo) entity;
-			zildo.setPv(p_buffer.readUnsignedByte());
 			zildo.setMaxpv(p_buffer.readUnsignedByte());
+			zildo.setPv(p_buffer.readUnsignedByte());
 			zildo.setMoney(p_buffer.readInt());
 			zildo.setCountArrow(p_buffer.readUnsignedByte());
 			zildo.setCountBomb(p_buffer.readUnsignedByte());

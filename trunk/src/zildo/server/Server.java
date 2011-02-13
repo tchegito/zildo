@@ -29,11 +29,11 @@ import java.util.Set;
 
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.ZUtils;
-import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.NetServer;
 import zildo.fwk.net.TransferObject;
 import zildo.monde.Game;
+import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.state.ClientState;
 
@@ -121,8 +121,9 @@ public class Server extends Thread {
 		if (clients.get(p_client) != null) {
 			return clients.get(p_client).zildo.getId();
 		}
-		int outfitBank = clients.size() + SpriteBank.BANK_COPYSCREEN;
-		int zildoId=EngineZildo.spawnClient(outfitBank);
+		ZildoOutfit outfit = ZildoOutfit.values()[clients.size()];
+		
+		int zildoId=EngineZildo.spawnClient(outfit);
 		ClientState state=new ClientState(p_client, zildoId);
 		state.playerName=p_playerName;
 		clients.put(p_client, state);

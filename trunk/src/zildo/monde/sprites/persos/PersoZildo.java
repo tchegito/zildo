@@ -41,6 +41,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.desc.ZildoDescription;
+import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementArrow;
 import zildo.monde.sprites.elements.ElementBomb;
@@ -73,7 +74,7 @@ public class PersoZildo extends Perso {
 	private List<Item> inventory;
 	private ShieldEffect shieldEffect;
 	
-	private int outfitBank;
+	private ZildoOutfit outfit;
 	
 	// Linked elements
 	Element shield;
@@ -107,13 +108,13 @@ public class PersoZildo extends Perso {
 	// Return a perso named Zildo : this game's hero !
 	// with a given location.
 	///////////////////////////////////////////////////////////////////////////////////////
-    public PersoZildo(int p_posX, int p_posY, int p_outfitBank) {
+    public PersoZildo(int p_posX, int p_posY, ZildoOutfit p_outfit) {
         super();
         this.setNom("Zildo");
 
         // We could maybe put that somewhere else
-        outfitBank = p_outfitBank;
-        this.setNBank(outfitBank);
+        outfit = p_outfit;
+        this.setNBank(SpriteBank.BANK_ZILDO);
         setNSpr(0);
 
         setX(p_posX); // 805); //601-32;//-500);
@@ -133,15 +134,15 @@ public class PersoZildo extends Perso {
 	    shield = new Element(this);
 		shield.setX(getX());
 		shield.setY(getY());
-		shield.setNBank(outfitBank);
+		shield.setNBank(SpriteBank.BANK_ZILDO);
 		shield.setNSpr(103);				// Assign initial nSpr to avoid 'isNotFixe' returning TRUE)
 	
 		shadow=new Element(this);
-		shadow.setNBank(outfitBank);
+		shadow.setNBank(SpriteBank.BANK_ZILDO);
 		shadow.setNSpr(103);
 	
 		feet=new Element(this);
-		feet.setNBank(outfitBank);
+		feet.setNBank(SpriteBank.BANK_ZILDO);
 		feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
 	
 		shieldEffect = null;
@@ -512,28 +513,28 @@ public class PersoZildo extends Perso {
 							shield.setY(yy+2);
 							shield.setZ(5-1-decalbouclier3y[nSpr % 8]);
 							shield.setNSpr(103);
-							shield.setNBank(outfitBank);
+							shield.setNBank(SpriteBank.BANK_ZILDO);
 							break;
 						case EST:
 							shield.setX(xx+9);	// PASCAL : +10
 							shield.setY(yy-2+ decalbouclier2y[(nSpr-ZildoDescription.RIGHT_FIXED.ordinal()) % 8]);
 							shield.setZ(0.0f);
 							shield.setNSpr(104);
-							shield.setNBank(outfitBank);
+							shield.setNBank(SpriteBank.BANK_ZILDO);
 							break;
 						case SUD:
 							shield.setX(xx-4);	// PASCAL : -3)
 							shield.setY(yy+4);
 							shield.setZ(1+1-decalboucliery[(nSpr-ZildoDescription.DOWN_FIXED.ordinal()) % 6]);
 							shield.setNSpr(105);
-							shield.setNBank(outfitBank);
+							shield.setNBank(SpriteBank.BANK_ZILDO);
 							break;
 						case OUEST:
 							shield.setX(xx-8);
 							shield.setY(yy-2+ decalbouclier2y[(nSpr-ZildoDescription.LEFT_FIXED.ordinal()) % 8]);
 							shield.setZ(0.0f);
 							shield.setNSpr(106);
-							shield.setNBank(outfitBank);
+							shield.setNBank(SpriteBank.BANK_ZILDO);
 							break;
 					}
 					shield.setVisible(true);
@@ -750,6 +751,10 @@ public class PersoZildo extends Perso {
 				countArrow--;
 			}
 		    break;
+		}
+		
+		if (outfit != null && nBank == SpriteBank.BANK_ZILDO) {
+			setNBank(outfit.getNBank());
 		}
 	}
 	

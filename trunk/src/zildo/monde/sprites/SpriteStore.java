@@ -108,8 +108,8 @@ public class SpriteStore {
 	public SpriteBank getSpriteBank(int nBank)
 	{
 	    int bk=nBank;
-	    if (nBank >= SpriteBank.BANK_COPYSCREEN) {
-		bk = SpriteBank.BANK_ZILDO;
+	    if (nBank >= SpriteBank.BANK_ZILDOOUTFIT) {
+	    	bk = SpriteBank.BANK_ZILDO;
 	    }
 	    return banque_spr.get(bk);
 	}
