@@ -46,7 +46,7 @@ public interface SpriteDescription {
 				return GearDescription.fromNSpr(nSpr);
 			default:
 			    // Is this bank Zildo with another outfit ?
-			    if (nBank >= SpriteBank.BANK_COPYSCREEN) {
+			    if (nBank >= SpriteBank.BANK_ZILDOOUTFIT) {
 				return ZildoDescription.fromInt(nSpr);
 			    }
 			}

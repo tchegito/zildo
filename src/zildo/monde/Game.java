@@ -28,6 +28,7 @@ import zildo.fwk.script.xml.AdventureElement;
 import zildo.fwk.script.xml.QuestElement;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
@@ -104,7 +105,7 @@ public class Game implements EasySerializable {
         }
 
         // 2: Zildo
-        EngineZildo.spawnClient(0);
+        EngineZildo.spawnClient(ZildoOutfit.Zildo);
         PersoZildo zildo = EngineZildo.persoManagement.getZildo();
         zildo.setMaxpv(p_buffer.readInt());
         zildo.setCountArrow(p_buffer.readInt());

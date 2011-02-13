@@ -24,6 +24,7 @@ import java.io.File;
 
 import zildo.Zildo;
 import zildo.fwk.gfx.engine.TileEngine;
+import zildo.monde.sprites.desc.ZildoOutfit;
 
 
 public class Constantes {
@@ -51,7 +52,7 @@ public class Constantes {
 	public static final	int NB_MOTIFBANK = TileEngine.tileBankNames.length;
 
 	// Sprite Banks
-	public static final	int NB_SPRITEBANK = 8;
+	public static final	int NB_SPRITEBANK = 8 + ZildoOutfit.values().length;
 	public static final int NB_SPRITE_PER_PRIMITIVE = 400;
 
 	public static final int SORTY_MAX = Zildo.viewPortY+40;

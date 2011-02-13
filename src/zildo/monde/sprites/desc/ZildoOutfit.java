@@ -1,5 +1,6 @@
 package zildo.monde.sprites.desc;
 
+import zildo.fwk.bank.SpriteBank;
 import zildo.monde.map.Point;
 
 /**
@@ -13,6 +14,8 @@ import zildo.monde.map.Point;
 public enum ZildoOutfit {
 
     
+	Zildo(),
+	
     Zildor(new Point(223, 174), new Point(162, 218),    // tunic
 	                new Point(150, 253),    // Hairs
 	                new Point(111, 123), new Point(107, 208), new Point(246, 192)),	// Hat
@@ -53,6 +56,14 @@ public enum ZildoOutfit {
     public Point[] transforms;
     
     private ZildoOutfit(Point... p_transforms) {
-	transforms = p_transforms;
+    	transforms = p_transforms;
+    }
+    
+    public int getNBank() {
+    	if (this == Zildo) {
+    		return SpriteBank.BANK_ZILDO;
+    	} else {
+    		return SpriteBank.BANK_ZILDOOUTFIT + ordinal() - 1;
+    	}
     }
 }

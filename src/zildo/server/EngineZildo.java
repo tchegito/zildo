@@ -30,6 +30,7 @@ import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
 import zildo.monde.map.ChainingPoint.MapLink;
+import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.state.ClientState;
 import zildo.server.state.ScriptManagement;
@@ -76,10 +77,10 @@ public class EngineZildo {
 		}
 	}
 
-	static public int spawnClient(int p_outfitBank) {
+	static public int spawnClient(ZildoOutfit p_outfit) {
 
         Point respawnLocation = mapManagement.getRespawnPosition();
-        PersoZildo zildo = new PersoZildo(respawnLocation.getX(), respawnLocation.getY(), p_outfitBank);
+        PersoZildo zildo = new PersoZildo(respawnLocation.getX(), respawnLocation.getY(), p_outfit);
         spriteManagement.spawnPerso(zildo);
 
         if (game.multiPlayer) {
