@@ -20,6 +20,9 @@
 
 package zildo.fwk.gfx.engine;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
@@ -36,10 +39,10 @@ import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
+import zildo.monde.sprites.desc.Outfit;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.elements.Element;
 import zildo.prefs.Constantes;
-import zildo.server.EngineZildo;
 import zildo.server.SpriteManagement;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.
@@ -151,34 +154,61 @@ public class SpriteEngine extends TextureEngine {
 		generateTexture();
 	}
 	
-	/**
-	 * Create a new texture from a given one, and replace colors as specified by the {@link Point} list.<br/>
-	 * Very slow, for now.
-	 * @param p_originalTexture
-	 * @param p_replacements list of replacements : for a point (x,y), color-index <b>x</b> become color-index <b>y</b>.
-	 */
-	public void createTextureFromAnotherReplacement(int p_originalTexture, Point... p_replacements) {
+    /**
+     * Create a new texture from a given one, and replace colors as specified by
+     * the {@link Point} list.<br/>
+     * 
+     * @param p_originalTexture
+     * @param p_replacements
+     *            list of replacements : for a point (x,y), color-index <b>x</b>
+     *            become color-index <b>y</b>.
+     */
+    public void createTextureFromAnotherReplacement(int p_originalTexture,
+	    Class<? extends Outfit> p_outfitClass) {
 
-    	GFXBasics surfaceGfx = prepareSurfaceForTexture();
-    	getTextureImage(textureTab[p_originalTexture]);
-    
-    	surfaceGfx.StartRendering();
-    	for (int j = 0; j < 256; j++) {
-    	    for (int i = 0; i < 256; i++) {
-        		Vector4f color = surfaceGfx.getPixel(i, j);
-        		if (color .w != 0) {
-	        		int palIndex = surfaceGfx.getPalIndex(color);
-	        		for (Point p : p_replacements) {
-	        		    if (palIndex == p.x) {
-	        		    	surfaceGfx.pset(i, j, p.y, null);
-	        		    }
-	        		}
-        		}
-    	    }
-    	}
-    	
-    	generateTexture();
+	GFXBasics surfaceGfx = prepareSurfaceForTexture();
+
+	// 1) Store the color indexes once for all
+	getTextureImage(textureTab[p_originalTexture]);
+	Map<Integer, Integer> colorIndexes = new HashMap<Integer, Integer>();
+	int i, j;
+	for (j = 0; j < 256; j++) {
+	    for (i = 0; i < 256; i++) {
+		Vector4f color = surfaceGfx.getPixel(i, j);
+		if (color.w != 0) {
+		    colorIndexes.put(j * 256 + i, surfaceGfx.getPalIndex(color));
+		}
+	    }
 	}
+
+	boolean textureReady=true;
+	Outfit[] outfits = p_outfitClass.getEnumConstants();
+	for (Outfit outfit : outfits) {
+	    Point[] replacements = outfit.getTransforms();
+	    if (replacements.length == 0) {
+		continue;	// No replacements
+	    }
+	    if (!textureReady) {
+		surfaceGfx = prepareSurfaceForTexture();
+	    }
+	    surfaceGfx.StartRendering();
+	    for (j = 0; j < 256; j++) {
+		for (i = 0; i < 256; i++) {
+		    Integer palIndex = colorIndexes.get(j * 256 + i);
+		    if (palIndex != null) {
+			for (Point p : replacements) {
+			    if (palIndex == p.x) {
+				surfaceGfx.pset(i, j, p.y, null);
+			    }
+			}
+		    }
+		}
+	    }
+
+	    generateTexture();
+	    textureReady=false;
+	}
+    }
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// createTextureFromFontStyle
@@ -260,12 +290,7 @@ public class SpriteEngine extends TextureEngine {
 		// Create Zildo with all outfits
 		if (!ClientEngineZildo.editing) {
 			n_Texture=SpriteBank.BANK_ZILDOOUTFIT;
-			for (ZildoOutfit outfit : ZildoOutfit.values()) {
-				if (outfit != ZildoOutfit.Zildo) {
-					createTextureFromAnotherReplacement(SpriteBank.BANK_ZILDO,
-							outfit.transforms);
-				}
-			}
+			createTextureFromAnotherReplacement(SpriteBank.BANK_ZILDO, ZildoOutfit.class);
 		}
 		
 		// Prepare screen copy texture

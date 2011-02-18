@@ -11,7 +11,7 @@ import zildo.monde.map.Point;
  * @author eboussaton
  *
  */
-public enum ZildoOutfit {
+public enum ZildoOutfit implements Outfit {
 
     
 	Zildo(),
@@ -53,12 +53,16 @@ public enum ZildoOutfit {
 			new Point(254, 96), new Point(253, 132),
 			new Point(111, 96), new Point(107, 6));
     
-    public Point[] transforms;
+    Point[] transforms;
     
     private ZildoOutfit(Point... p_transforms) {
     	transforms = p_transforms;
     }
     
+    public Point[] getTransforms() {
+	return transforms;
+    }
+
     public int getNBank() {
     	if (this == Zildo) {
     		return SpriteBank.BANK_ZILDO;
