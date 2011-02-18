@@ -156,7 +156,7 @@ public class SpriteEngine extends TextureEngine {
 	
     /**
      * Create a new texture from a given one, and replace colors as specified by
-     * the {@link Point} list.<br/>
+     * the {@link Outfit} class.<br/>
      * 
      * @param p_originalTexture
      * @param p_replacements
@@ -181,6 +181,7 @@ public class SpriteEngine extends TextureEngine {
 	    }
 	}
 
+	// 2) Create all textures according to the outfits
 	boolean textureReady=true;
 	Outfit[] outfits = p_outfitClass.getEnumConstants();
 	for (Outfit outfit : outfits) {
