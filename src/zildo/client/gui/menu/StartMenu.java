@@ -76,7 +76,7 @@ public class StartMenu extends Menu {
                 			// Internet
                     		List<ServerInfo> serversReady=WorldRegister.getStartedServers();
                     		if (serversReady.isEmpty()) {
-                    			client.handleMenu(new InfoMenu("mess.noservers", "mess.noservers.add", new AddServerMenu(multiMenu)));
+                    			client.handleMenu(new InfoMenu("mess.noservers", currentMenu));
                     		} else {
                     			client.handleMenu(new JoinGameMenu(serversReady, multiMenu));
                     		}
