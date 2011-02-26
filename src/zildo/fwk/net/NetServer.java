@@ -25,16 +25,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import zildo.client.gui.menu.PlayerNameMenu;
 import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.Packet.PacketType;
 import zildo.fwk.net.packet.AcceptPacket;
 import zildo.fwk.net.packet.AskPacket;
+import zildo.fwk.net.packet.AskPacket.ResourceType;
 import zildo.fwk.net.packet.ConnectPacket;
 import zildo.fwk.net.packet.EventPacket;
 import zildo.fwk.net.packet.GetPacket;
-import zildo.fwk.net.packet.AskPacket.ResourceType;
+import zildo.fwk.net.www.NetMessage;
+import zildo.fwk.net.www.NetMessage.Command;
+import zildo.fwk.net.www.WorldRegister;
 import zildo.monde.WaitingSound;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.map.Area;
@@ -62,7 +66,12 @@ public class NetServer extends NetSend {
 	int counter;
 	boolean lan;	// TRUE=LAN network / FALSE=Internet (no broadcast)
 	
-	private static int DEFAULT_SERVER_PORT = 1234;
+	// Default server name : player name
+	String name=PlayerNameMenu.loadPlayerName();
+	
+	WorldRegister worldRegister;
+	
+	public static final int DEFAULT_SERVER_PORT = 1234;
 	
 	int nFrame=0;
 	
@@ -70,14 +79,18 @@ public class NetServer extends NetSend {
 		super(null, DEFAULT_SERVER_PORT);
 		server=p_server;
 		lan=p_lan;
+	    if (!lan) {
+	    	// Launch the worldRegister
+	    	worldRegister=new WorldRegister();
+	    	worldRegister.start();
+	    	registerServer();
+	    }
 	}
 	
 	protected void addClient(TransferObject client) {
 	}
 	
 	public void run() {
-		//System.out.println("server"+nFrame++);
-		
 		TransferObject source=null;
 		try {
 			if (isOpen()) {
@@ -303,9 +316,12 @@ public class NetServer extends NetSend {
     /**
      * Send a disconnect order to all clients (when server is leaving).
      */
-    public void notifyEndToClients() {
+    public void kill() {
+    	// Notify end to clients
     	ConnectPacket p=new ConnectPacket(false, null, 0);
     	broadcastPacketToAllCients(p);
+    	
+    	unregisterServer();
     }
     
     /**
@@ -338,5 +354,31 @@ public class NetServer extends NetSend {
         }
         GetPacket getPacket = new GetPacket(ResourceType.CLIENTINFO, buffer.getAll(), null);
         broadcastPacketToAllCients(getPacket);
+    }
+    
+    /**
+     * Register server on the WORLD register !
+     */
+    private void registerServer() {
+    	NetMessage message=new NetMessage(Command.CREATE, name);
+    	worldRegister.askMessage(message, true);
+    }
+    
+    /**
+     * Unregister server on the WORLD register !
+     */
+    public void unregisterServer() {
+    	NetMessage message=new NetMessage(Command.REMOVE, name);
+    	worldRegister.askMessage(message, false);	// Synchronous because thread will die soon
+    }
+    
+    /**
+     * Update server on the WORLD register, especially about player's number.
+     * @param p_nbPlayers
+     */
+    public void updateServer(int p_nbPlayers) {
+    	NetMessage message=new NetMessage(Command.UPDATE, name);
+    	message.getServerInfo().nbPlayers = p_nbPlayers;
+    	worldRegister.askMessage(message, true);
     }
 }

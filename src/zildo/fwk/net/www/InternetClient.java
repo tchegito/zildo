@@ -18,10 +18,15 @@
  *
  */
 
-package zildo.fwk.net;
+package zildo.fwk.net.www;
 
 import zildo.client.Client;
+import zildo.fwk.net.NetClient;
+import zildo.fwk.net.PacketSet;
+import zildo.fwk.net.ServerInfo;
+import zildo.fwk.net.TransferObject;
 import zildo.fwk.net.packet.ConnectPacket;
+import zildo.fwk.net.www.NetMessage.Command;
 import zildo.prefs.Constantes;
 
 /**
@@ -52,9 +57,16 @@ public class InternetClient extends NetClient {
 	 */
 	public static boolean isResponding(ServerInfo p_serverInfo) {
 			if (p_serverInfo.port !=0) {
-				TransferObject obj=new TransferObject(p_serverInfo.ip, p_serverInfo.port);
-				if (!obj.address.getAddress().isSiteLocalAddress()) {
-					return true;
+				try {
+					TransferObject obj=new TransferObject(p_serverInfo.ip, p_serverInfo.port);
+					if (!obj.address.getAddress().isSiteLocalAddress()) {
+						return true;
+					}
+				} catch (RuntimeException e) {
+					// "Unknown host exception" has been wrapped
+			    	NetMessage message=new NetMessage(Command.REMOVE, p_serverInfo.name);
+			    	message.getServerInfo().ip = p_serverInfo.ip;
+					new WorldRegister().askMessage(message, false);
 				}
 			}
 		return false;

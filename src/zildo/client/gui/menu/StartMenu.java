@@ -27,6 +27,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
 import zildo.fwk.net.ServerInfo;
+import zildo.fwk.net.www.WorldRegister;
 import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
@@ -73,7 +74,7 @@ public class StartMenu extends Menu {
                 			new MultiPlayer();
                 		} else {
                 			// Internet
-                    		List<ServerInfo> serversReady=AddServerMenu.loadServersInfos();
+                    		List<ServerInfo> serversReady=WorldRegister.getStartedServers();
                     		if (serversReady.isEmpty()) {
                     			client.handleMenu(new InfoMenu("mess.noservers", "mess.noservers.add", new AddServerMenu(multiMenu)));
                     		} else {

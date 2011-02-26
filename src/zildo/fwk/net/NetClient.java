@@ -33,11 +33,11 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.Packet.PacketType;
 import zildo.fwk.net.packet.AcceptPacket;
 import zildo.fwk.net.packet.AskPacket;
+import zildo.fwk.net.packet.AskPacket.ResourceType;
 import zildo.fwk.net.packet.ConnectPacket;
 import zildo.fwk.net.packet.EventPacket;
-import zildo.fwk.net.packet.GetPacket;
-import zildo.fwk.net.packet.AskPacket.ResourceType;
 import zildo.fwk.net.packet.EventPacket.EventType;
+import zildo.fwk.net.packet.GetPacket;
 import zildo.monde.WaitingSound;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.map.Area;
@@ -63,21 +63,22 @@ import zildo.server.state.PlayerState;
  */
 public class NetClient extends NetSend {
 
-	boolean serverFound;
+	protected boolean serverFound;
 	boolean serverAccepted;
 	boolean askedMap;
 	boolean gotMap;
 	boolean gotEntities;
 	
 	int delayConnect=0;
+	int tryConnect=0;
 	int nFrame=0;
 	int frameWithoutEntity=0;
 	
 	private static int TIMEOUT_CONNECT = 20;
 	
-	TransferObject server;
+	protected TransferObject server;
 	Client client;
-	String playerName=PlayerNameMenu.loadPlayerName();
+	protected String playerName=PlayerNameMenu.loadPlayerName();
     
 	public NetClient(Client p_client) {
 		super(null, NetSend.NET_PORT_CLIENT);
@@ -128,13 +129,8 @@ public class NetClient extends NetSend {
 					delayConnect++;
 					if (delayConnect == TIMEOUT_CONNECT) {
 						delayConnect=0;
-						if (true) {
-							ConnectPacket connectPacket=new ConnectPacket(true, playerName, Constantes.CURRENT_VERSION);
-							sendPacket(connectPacket, server);
-							serverFound=true;
-						} else {
-							serverFound=false;
-						}
+						findServer(packets);
+						serverFound=true;
 					}
 				}
 
@@ -289,6 +285,7 @@ public class NetClient extends NetSend {
     	sendPacket(connectPacket, server);
     	super.close();
     }
+    
 	public boolean isConnected() {
 		return serverAccepted && gotMap && gotEntities;
 	}
