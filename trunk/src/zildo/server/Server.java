@@ -135,6 +135,9 @@ public class Server extends Thread {
 		ClientEngineZildo.client.registerClient(state);
 		EngineZildo.multiplayerManagement.setNeedToBroadcast(true);
 		
+		// Update the world register
+		netServer.updateServer(clients.size());
+		
 		return zildoId;
 	}
 	
@@ -156,13 +159,16 @@ public class Server extends Thread {
 			ClientEngineZildo.guiDisplay.displayMessage(state.playerName+" left the game");
 			ClientEngineZildo.client.unregisterClient(state.zildoId);
 		}
+		
+		// Update the world register
+		netServer.updateServer(clients.size());
 	}
 	
 	/**
 	 * Notify all clients that server is destroying the game.
 	 */
 	public void disconnectServer() {
-		netServer.notifyEndToClients();
+		netServer.kill();
 	}
 	
 	public Set<TransferObject> getClientsLocation() {

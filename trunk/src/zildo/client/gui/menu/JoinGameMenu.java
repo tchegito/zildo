@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.MultiPlayer;
-import zildo.fwk.net.InternetClient;
 import zildo.fwk.net.ServerInfo;
+import zildo.fwk.net.www.InternetClient;
 import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
@@ -40,7 +40,7 @@ public class JoinGameMenu extends Menu {
         
         List<ItemMenu> items = new ArrayList<ItemMenu>();
         for (final ServerInfo srv : serversReady) {
-            ItemMenu item = new ItemMenu(srv.name) {
+            ItemMenu item = new ItemMenu(UIText.getMenuText("m4.serverInfo", srv.name, srv.nbPlayers)) {
                 @Override
                 public void run() {
                 	if (InternetClient.isResponding(srv)) {

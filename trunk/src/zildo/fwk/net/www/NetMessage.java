@@ -18,36 +18,31 @@
  *
  */
 
-package zildo.fwk.net;
+package zildo.fwk.net.www;
 
-public class ServerInfo {
+import zildo.fwk.net.NetServer;
+import zildo.fwk.net.ServerInfo;
 
-	public String name;
-	public String ip;
-	public int port;
-	public int nbPlayers;
+/**
+ * @author Tchegito
+ *
+ */
+public class NetMessage {
+
 	
-	public ServerInfo(String p_name, String p_ip, int p_port) {
-		name=p_name;
-		ip=p_ip;
-		port=p_port;
+	public enum Command {
+		CREATE, UPDATE, REMOVE;
 	}
 	
-	@Override
-	public String toString() {
-		return name+"\nIP="+ip+"\nport="+port;
-	}
+	Command command;
+	ServerInfo server;
 	
-	@Override
-	public int hashCode() {
-		return name.hashCode();
+	public NetMessage(Command p_command, String p_name) {
+		command = p_command;
+    	server = new ServerInfo(p_name, null, NetServer.DEFAULT_SERVER_PORT);
 	}
-	
-	@Override
-	public boolean equals(Object p_obj) {
-		if (p_obj == null || !p_obj.getClass().equals(ServerInfo.class)) {
-			return false;
-		}
-		return this.hashCode() == p_obj.hashCode();
+
+	public ServerInfo getServerInfo() {
+		return server;
 	}
 }

@@ -37,6 +37,7 @@ public class UIText {
 	static private String getText(ResourceBundle p_bundle, String p_key, Object... p_params) {
 		try {
 			String message = p_bundle.getString(p_key);
+			message = message.replaceAll("'", "''");
 			return MessageFormat.format(message, p_params);
 		} catch (MissingResourceException e) {
 			return p_key;	// This is mandatory for item menus with parameters (ex: player name)
