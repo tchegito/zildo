@@ -44,6 +44,7 @@ import zildo.prefs.Constantes;
  * After that, we go back the previous menu, assuming it was a "Join game" menu, reloading the server configuration.
  * @author tchegito
  */
+@Deprecated
 public class AddServerMenu extends Menu {
 
     StringBuilder name = new StringBuilder(UIText.getMenuText("m3.defaultName"));

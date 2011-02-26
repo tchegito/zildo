@@ -162,14 +162,6 @@ public class PlayerManagement {
 			} else {
 				keyReleaseInventory();
 			}
-			
-			if (false) {	// Unable for now the Topic key (this will come later)
-				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_TOPIC)) {
-					keyPressTopic();
-				} else {
-					keyReleaseTopic();
-				}
-			}
 		}
 	}
 	

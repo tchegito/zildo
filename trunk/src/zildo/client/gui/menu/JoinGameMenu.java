@@ -52,13 +52,6 @@ public class JoinGameMenu extends Menu {
             };
             items.add(item);
         }
-
-        items.add(new ItemMenu("m4.add") {
-            @Override
-            public void run() {
-            	client.handleMenu(new AddServerMenu(currentMenu));
-            }
-        });
         
         items.add(new ItemMenu("global.back") {
         	@Override
