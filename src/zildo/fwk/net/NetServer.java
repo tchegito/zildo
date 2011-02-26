@@ -360,16 +360,20 @@ public class NetServer extends NetSend {
      * Register server on the WORLD register !
      */
     private void registerServer() {
-    	NetMessage message=new NetMessage(Command.CREATE, name);
-    	worldRegister.askMessage(message, true);
+    	if (worldRegister != null) {
+	    	NetMessage message=new NetMessage(Command.CREATE, name);
+	    	worldRegister.askMessage(message, true);
+    	}
     }
     
     /**
      * Unregister server on the WORLD register !
      */
     public void unregisterServer() {
-    	NetMessage message=new NetMessage(Command.REMOVE, name);
-    	worldRegister.askMessage(message, false);	// Synchronous because thread will die soon
+    	if (worldRegister != null) {
+    		NetMessage message=new NetMessage(Command.REMOVE, name);
+    		worldRegister.askMessage(message, false);	// Synchronous because thread will die soon
+    	}
     }
     
     /**
@@ -377,8 +381,10 @@ public class NetServer extends NetSend {
      * @param p_nbPlayers
      */
     public void updateServer(int p_nbPlayers) {
-    	NetMessage message=new NetMessage(Command.UPDATE, name);
-    	message.getServerInfo().nbPlayers = p_nbPlayers;
-    	worldRegister.askMessage(message, true);
+    	if (worldRegister != null) {
+	    	NetMessage message=new NetMessage(Command.UPDATE, name);
+	    	message.getServerInfo().nbPlayers = p_nbPlayers;
+	    	worldRegister.askMessage(message, true);
+    	}
     }
 }
