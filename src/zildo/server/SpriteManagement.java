@@ -43,6 +43,7 @@ import zildo.monde.sprites.elements.ElementAnimMort;
 import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
+import zildo.monde.sprites.elements.ElementSmoke;
 import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -167,11 +168,9 @@ public class SpriteManagement extends SpriteStore {
 		switch (typeSprite) {
 			case SMOKE :
 				elemDesc = ElementDescription.SMOKE_SMALL;
-				element = new Element();
-				element.setX(x + 16.0f);
-				element.setY(y + 34.0f);
-				element.setZ(16.0f);
-				element.setVx(0.2f); // + rnd()*0.05f);
+				element = new ElementSmoke(x, y);
+				element.setZ(6.0f);
+				element.setVx(0.2f+0.1f*(float) Math.random());
 				element.setVy(0.0f);
 				element.setVz(0.0f);
 				element.setAx(-0.01f);

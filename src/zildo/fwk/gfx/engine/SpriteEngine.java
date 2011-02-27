@@ -33,8 +33,8 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.ZUtils;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
-import zildo.fwk.gfx.SpritePrimitive;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.fwk.gfx.SpritePrimitive;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
@@ -54,14 +54,6 @@ import zildo.server.SpriteManagement;
 
 
 public class SpriteEngine extends TextureEngine {
-
-	
-	///////////////////////
-	// Variables
-	///////////////////////
-	// Sorting by bank and by Y axis
-	private int[][] bankOrder;   // Reference to an int array from SpriteManagement
-
 
 	// 3D Objects (vertices and indices per bank)
 	SpritePrimitive meshSprites[]=new SpritePrimitive[Constantes.NB_SPRITEBANK];
@@ -106,7 +98,7 @@ public class SpriteEngine extends TextureEngine {
 	// at the end, indeed. So we can say this is a beautiful method.
 	public void createTextureFromSpriteBank(SpriteBank sBank) {
 	
-		GFXBasics surfaceGfx = prepareSurfaceForTexture();
+		GFXBasics surfaceGfx = prepareSurfaceForTexture(true);
 
 		surfaceGfx.StartRendering();
 		surfaceGfx.box(0,0,320,256,32,new Vector4f(0,0,0,0));
@@ -166,7 +158,7 @@ public class SpriteEngine extends TextureEngine {
     public void createTextureFromAnotherReplacement(int p_originalTexture,
 	    Class<? extends Outfit> p_outfitClass) {
 
-	GFXBasics surfaceGfx = prepareSurfaceForTexture();
+	GFXBasics surfaceGfx = prepareSurfaceForTexture(true);
 
 	// 1) Store the color indexes once for all
 	getTextureImage(textureTab[p_originalTexture]);
@@ -190,7 +182,7 @@ public class SpriteEngine extends TextureEngine {
 		continue;	// No replacements
 	    }
 	    if (!textureReady) {
-		surfaceGfx = prepareSurfaceForTexture();
+		surfaceGfx = prepareSurfaceForTexture(true);
 	    }
 	    surfaceGfx.StartRendering();
 	    for (j = 0; j < 256; j++) {
@@ -216,7 +208,7 @@ public class SpriteEngine extends TextureEngine {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void createTextureFromFontStyle(SpriteBank sprBank)
 	{
-		GFXBasics surfaceGfx = prepareSurfaceForTexture();
+		GFXBasics surfaceGfx = prepareSurfaceForTexture(true);
 
 
 		TrueTypeFont ttFont=(TrueTypeFont) surfaceGfx.getFont();
@@ -403,15 +395,19 @@ public class SpriteEngine extends TextureEngine {
 		boolean endSequence=false;
 		int posBankOrder=0;
 	
+		// Retrieve the sprite's order
+		int[][] bankOrder = ClientEngineZildo.spriteDisplay.getBankOrder();
+		
 		int phase=(backGround)?0:1;
 		while (!endSequence) {
-			int numBank=bankOrder[phase][posBankOrder*3];
+			int numBank=bankOrder[phase][posBankOrder*4];
 			if (numBank == -1) {
 				endSequence=true;
 			} else {
 				// Render the n sprites from this bank
-				int nbQuads=bankOrder[phase][posBankOrder*3 + 1];
-				int iCurrentFX=bankOrder[phase][posBankOrder*3 + 2];
+				int nbQuads=bankOrder[phase][posBankOrder*4 + 1];
+				int iCurrentFX=bankOrder[phase][posBankOrder*4 + 2];
+				int alpha=bankOrder[phase][posBankOrder*4 + 3];
 				EngineFX currentFX=EngineFX.values()[iCurrentFX];
 				int texId=textureTab[numBank];
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
@@ -456,6 +452,7 @@ public class SpriteEngine extends TextureEngine {
 	                	GL11.glColor3f(1.0f, 1.0f, 1.0f);
 	                	break;
 	                default:
+	                	color[3]=alpha / 255.0f;
 	            		ZUtils.setCurrentColor(color);
 	                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 }
@@ -485,14 +482,6 @@ public class SpriteEngine extends TextureEngine {
 				meshSprites[i].buildIndexBuffer(quadOrderForOneBank);
 			}
 		}
-	}
-
-	public int[][] getBankOrder() {
-		return bankOrder;
-	}
-
-	public void setBankOrder(int[][] bankOrder) {
-		this.bankOrder = bankOrder;
 	}
 	
 	/**

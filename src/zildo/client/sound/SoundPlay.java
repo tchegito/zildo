@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import zildo.Zildo;
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.opengl.OpenGLSound;
 import zildo.monde.WaitingSound;
 import zildo.monde.map.Area;
@@ -42,7 +43,6 @@ public class SoundPlay {
 	//CSoundManager* soundManager;
 	private Map<AudioBank, OpenGLSound> tabSounds=new HashMap<AudioBank, OpenGLSound>();
 	private int nSounds;
-	private Ambient ambient=new Ambient();
 	
 	//const GUID GUID_null = { 0, 0, 0, { 0, 0, 0, 0, 0, 0, 0, 0 } };
 	
@@ -115,6 +115,7 @@ public class SoundPlay {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void playSoundFX(AudioBank snd) {
 		// Play desired sound and exit
+		Ambient ambient=ClientEngineZildo.ambient;
 		OpenGLSound sound=tabSounds.get(snd);
 		if (sound != null) {
 			if (snd instanceof BankMusic) {
@@ -152,7 +153,7 @@ public class SoundPlay {
 	 * @param p_map
 	 */
 	public void playMapMusic(Area p_map) {
-		BankMusic mus=ambient.getMusicForMap(p_map.getName());
+		BankMusic mus=ClientEngineZildo.ambient.getMusicForMap(p_map.getName());
         playSoundFX(mus);
 	}
 	
@@ -161,7 +162,7 @@ public class SoundPlay {
 	}
 	
 	public void stopMusic() {
-		BankMusic mus=ambient.getCurrentMusic();
+		BankMusic mus=ClientEngineZildo.ambient.getCurrentMusic();
 		stopSoundFX(mus);
 	}
 }

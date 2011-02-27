@@ -51,7 +51,8 @@ public abstract class TextureEngine extends OpenGLStuff {
     protected int n_Texture;
 
     public int[] textureTab;
-    private ByteBuffer scratch;
+    int textureFormat;	// Current texture's format
+    protected ByteBuffer scratch;
 
     
     public TextureEngine() {
@@ -70,9 +71,15 @@ public abstract class TextureEngine extends OpenGLStuff {
 		}
     }
     
-    public GFXBasics prepareSurfaceForTexture() {
+    public GFXBasics prepareSurfaceForTexture(boolean p_alpha) {
         // Create image
-        scratch = ByteBuffer.allocateDirect(256 * 256 * 4);
+    	if (p_alpha) {
+    		scratch = ByteBuffer.allocateDirect(256 * 256 * 4);
+    		textureFormat = GL11.GL_RGBA;
+    	} else {
+    		scratch = ByteBuffer.allocateDirect(256 * 256 * 3);
+    		textureFormat = GL11.GL_RGB;
+    	}
 		GFXBasics surface=new GFXBasics(true);
 		surface.SetBackBuffer(scratch, 256, 256);
     	
@@ -88,7 +95,7 @@ public abstract class TextureEngine extends OpenGLStuff {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, buf.get(0));
         // Typical Texture Generation Using Data From The Image
 
-        int wrapping=GL11.GL_CLAMP;
+        int wrapping=GL11.GL_REPEAT;	// Wrap texture (useful for cloud)
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, wrapping);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, wrapping);
         
@@ -97,7 +104,7 @@ public abstract class TextureEngine extends OpenGLStuff {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filtering);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filtering);
         // Generate The Texture
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 256, 256, 0, GL11.GL_RGBA, 
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, textureFormat, 256, 256, 0, textureFormat, 
         		GL11.GL_UNSIGNED_BYTE, scratch);
         
         // Reset bytebuffer scratch
@@ -107,12 +114,12 @@ public abstract class TextureEngine extends OpenGLStuff {
         textureTab[n_Texture]=buf.get(0);
 
         // Ready for next one
-	n_Texture++;    	
+        n_Texture++;
     }
     
     public void getTextureImage(int p_texId) {
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, p_texId);
-	    GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, scratch);
+	    GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, textureFormat, GL11.GL_UNSIGNED_BYTE, scratch);
     }
     
     public void saveScreen(int p_texId) {

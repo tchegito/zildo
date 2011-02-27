@@ -23,8 +23,13 @@ package zildo.client.sound;
 import java.util.HashMap;
 import java.util.Map;
 
+import zildo.monde.map.Area;
+
 /**
- * Class managing all ambient sounds : music and SFX.
+ * Class managing all ambient things: <ul>
+ * <li>sounds : music and SFX</li>
+ * <li>weather : clouds, rain</li>
+ * </ul>
  * Depends on : current map, and scenaristic movements.
  * @author Tchegito
  *
@@ -34,6 +39,10 @@ public class Ambient {
 	Map<String, BankMusic> ambientMusic=new HashMap<String, BankMusic>();
 	
 	BankMusic currentMusic=null;
+	
+	public enum Weather {
+		USUAL, CLOUD;
+	}
 	
 	public Ambient() {
 		ambientMusic.put("polakyg", BankMusic.Grotte);
@@ -61,5 +70,18 @@ public class Ambient {
 	
 	public void setCurrentMusic(BankMusic p_mus) {
 		currentMusic=p_mus;
+	}
+	
+	/**
+	 * Returns the map's weather. (default : 64x64 map have clouds)
+	 * @param p_map
+	 * @return Weather
+	 */
+	public Weather getWeather(Area p_map) {
+		if (p_map.getDim_x() == 64 && p_map.getDim_y() == 64) {
+			return Weather.CLOUD;
+		} else {
+			return Weather.USUAL;
+		}
 	}
 }

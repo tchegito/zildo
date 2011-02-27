@@ -20,9 +20,6 @@
 
 package zildo.fwk.gfx.filter;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector4f;
-
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.TilePrimitive;
@@ -32,13 +29,13 @@ import zildo.fwk.opengl.Utils;
 /**
  * Defines a screen filter.
  * 
- * Provides basically:
- * -a FBO
- * -a texture
- * -a depth rendered buffer
- * -a screen sized tile 
- * 
- * A simple super.render() from a derived class draw binded texture at screen.
+ * Provides basically:<ul>
+ * <li>a FBO</li>
+ * <li>a texture</li>
+ * <li>a depth rendered buffer</li>
+ * <li>a screen sized tile</li> 
+ * </ul>
+ * A simple <code>super.render()</code> from a derived class draw binded texture at screen.
  * 
  * @author tchegito
  *
@@ -71,6 +68,8 @@ public abstract class ScreenFilter extends TilePrimitive {
 	
 		// Create texture for alpha blending
 		this.createBlankTexture(true);
+		
+		setActive(false, null);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -79,27 +78,6 @@ public abstract class ScreenFilter extends TilePrimitive {
 	// Render filter on screen, after GUI done.
 	///////////////////////////////////////////////////////////////////////////////////////
 	public abstract boolean renderFilter();
-
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// drawFilter
-	///////////////////////////////////////////////////////////////////////////////////////
-	// Draw a box on texture used for screen filter.
-	///////////////////////////////////////////////////////////////////////////////////////
-	protected void drawFilter()
-	{
-		fbo.startRendering(fboId, sizeX, sizeY);
-		GL11.glPushMatrix();
-
-		GL11.glLoadIdentity();
-		GL11.glTranslated(0, -sizeY,0);
-
-		//draw a misc scene
-		drawScene();
-
-		GL11.glPopMatrix();
-		fbo.endRendering();
-	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// createBlankTexture
@@ -121,24 +99,6 @@ public abstract class ScreenFilter extends TilePrimitive {
 			fboId=fbo.create();
 		}
         fbo.bindToTextureAndDepth(texId, texDepthId, fboId);
-	}
-
-	protected void drawScene() {
-		// On dessine un simple carré noir
-		ClientEngineZildo.ortho.box(0, 0, sizeX, sizeY, 1, new Vector4f(0.0f,0.0f,0, getFadeLevel()/256.0f));
-		
-		/*
-		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
-		int x=(int) zildo.x-EngineZildo.mapManagement.getCamerax() - 20;
-		int y=(int) zildo.y-EngineZildo.mapManagement.getCameray() - 20;
-		float alpha=0.5f-0.01f;
-		int i=0;
-		for (i=0;i<10;i++) {
-			EngineZildo.ortho.boxv(x+i, y+i, 40-2*i, 40-2*i, 1, new Vector4f(0,0,0, alpha));
-			alpha-=0.02f;
-		}
-		EngineZildo.ortho.box(x+i, y+i, 40-2*i, 40-2*i, 1, new Vector4f(0,0,0, 0.0f));
-		*/
 	}
 
 	public void preFilter() {

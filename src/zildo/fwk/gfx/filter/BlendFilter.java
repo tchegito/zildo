@@ -57,6 +57,8 @@ public class BlendFilter extends ScreenFilter {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0,-sizeY,0);
 		
+		GL11.glColor3f(1f, 1f, 1f);
+		
 		// Draw squares
 		int nSquareX=Zildo.viewPortX / currentSquareSize;
 		int nSquareY=Zildo.viewPortY / currentSquareSize;

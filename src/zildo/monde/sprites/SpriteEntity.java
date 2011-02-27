@@ -73,6 +73,15 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	protected Point center=new Point();	// Defaults : 1) entity : [x/2, y] 2) element : [x/2, y/2]
 	
 	private EngineFX specialEffect;		// Utilisé pour changer la couleur d'un garde par exemple
+	protected int alpha = 255;	// 0..255 alpha channel
+	public int getAlpha() {
+		return alpha;
+	}
+
+	public void setAlpha(int alpha) {
+		this.alpha = alpha;
+	}
+
 	public int reverse;		// Combination of REVERSE_HORIZONTAL/VERTICAL (or 0)
 	public boolean clientSpecific;	// TRUE if this entity should not appear on all client's screen
 	
@@ -302,8 +311,6 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 		p_buffer.put(this.getAjustedY());
 		p_buffer.put((int) this.x);
 		p_buffer.put((int) this.y);
-		//p_buffer.put(this.getScrX());
-		//p_buffer.put(this.getScrY());
 		p_buffer.put(this.z);
 		p_buffer.put((byte) this.getNBank());
 		p_buffer.put((byte) this.getSpecialEffect().ordinal());
@@ -337,8 +344,6 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 		entity.setAjustedY(p_buffer.readInt());
 		entity.x=p_buffer.readInt();
 		entity.y=p_buffer.readInt();
-		//entity.setScrX(p_buffer.readInt());
-		//entity.setScrY(p_buffer.readInt());
 		entity.z=p_buffer.readFloat();
 		entity.setVisible(bools[1]);
 		entity.setForeground(bools[2]);

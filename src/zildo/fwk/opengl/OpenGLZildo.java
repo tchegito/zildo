@@ -210,6 +210,7 @@ public class OpenGLZildo extends OpenGLGestion {
     	
     }
     
+    
 	public OpenGLZildo(boolean fullscreen) {
 		super(fullscreen);
     	

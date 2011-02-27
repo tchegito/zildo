@@ -28,4 +28,13 @@ public class Pointf {
 		x=a;
 		y=b;
 	}
+	
+    public void add(Pointf p_point) {
+    	add(p_point.x, p_point.y);
+    }
+    
+    public void add(float p_xPlus, float p_yPlus) {
+        this.x += p_xPlus;
+        this.y += p_yPlus;
+    }
 }

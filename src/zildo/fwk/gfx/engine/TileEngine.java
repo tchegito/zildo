@@ -30,6 +30,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.TilePrimitive;
+import zildo.fwk.gfx.effect.CloudGenerator;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
@@ -92,6 +93,8 @@ public class TileEngine extends TextureEngine {
     List<MotifBank> motifBanks;
     private int n_banquemotif; // Nombre de banque de motifs en mémoire
 
+    public int texCloudId;
+    
 	static public String[] tileBankNames={"foret1.dec",
 		"village.dec",
 		"maison.dec",
@@ -121,6 +124,8 @@ public class TileEngine extends TextureEngine {
         this.charge_tous_les_motifs();
 
         loadTiles();
+        
+        createCloudTexture();
     }
 	
 	public void cleanUp()
@@ -251,7 +256,7 @@ public class TileEngine extends TextureEngine {
 
 	public void createTextureFromMotifBank(MotifBank mBank) {
 
-		GFXBasics surface = prepareSurfaceForTexture();
+		GFXBasics surface = prepareSurfaceForTexture(true);
 		
 		// Display tiles on it
 		int x=0,y=0;
@@ -275,6 +280,16 @@ public class TileEngine extends TextureEngine {
 		}
 
 		generateTexture();
+	}
+	
+	public void createCloudTexture() {
+		prepareSurfaceForTexture(false);
+		
+        CloudGenerator cGen=new CloudGenerator(scratch);
+        cGen.generate();
+        
+		generateTexture();
+        texCloudId = textureTab[n_Texture-1];
 	}
 
 	public void tileRender(boolean backGround) {

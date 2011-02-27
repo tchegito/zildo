@@ -22,18 +22,27 @@ package zildo.fwk.gfx.filter;
 
 import org.lwjgl.opengl.GL11;
 
+import zildo.client.ClientEngineZildo;
+import zildo.monde.map.Pointf;
 
-public class BilinearFilter extends ScreenFilter {
+/**
+ * @author Tchegito
+ *
+ */
+public class CloudFilter extends ScreenFilter {
 
+	static float u=0;
+	static float v=0;
+	static Pointf wind=new Pointf(0.01f, 0);
+	static Pointf move=new Pointf(0,0);
+	
 	@Override
 	public boolean renderFilter() {
-		fbo.endRendering();
 		
-		// Select right texture
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-        // Disable blend
-		GL11.glDisable(GL11.GL_BLEND);
-
+		super.startInitialization();
+		updateTile(0, 0, u, v);
+		this.endInitialization();
+		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
     	GL11.glLoadIdentity();
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -41,21 +50,29 @@ public class BilinearFilter extends ScreenFilter {
 		GL11.glTranslatef(0,-sizeY,1);
 
 		GL11.glColor3f(1.0f, 1.0f, 1.0f);
-		
-		// Draw texture with depth
+		float colorFactor=0.2f;
+		GL11.glColor4f(colorFactor, colorFactor, colorFactor, 0.1f);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE_MINUS_SRC_COLOR);
+
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientEngineZildo.tileEngine.texCloudId);
 		super.render();
 
+		GL11.glDisable(GL11.GL_BLEND);
+		
 		GL11.glPopMatrix();
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		
 		return true;
 	}
-	
-	@Override
-	public void preFilter() {
-		fbo.startRendering(fboId, sizeX, sizeY);
-   		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
+
+	public static void setPosition(int x, int y) {
+		u = x;
+		v = -y;
+		
+		// Blow the wind
+		move.add(wind);
+		u+=move.x;
+		v+=move.y;
 	}
-	
 }
