@@ -29,6 +29,7 @@ import zildo.fwk.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
+import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.script.xml.TriggerElement;
 import zildo.monde.collision.Collision;
 import zildo.monde.map.Angle;
@@ -122,6 +123,14 @@ public class MapManagement {
 		if (!EngineZildo.game.editing
 				&& !EngineZildo.soundManagement.isForceMusic()) {
 			ClientEngineZildo.soundPlay.playMapMusic(currentMap);
+			switch (ClientEngineZildo.ambient.getWeather(currentMap)) {
+				case CLOUD:
+					ClientEngineZildo.filterCommand.active(CloudFilter.class, true, null);
+					break;
+				case USUAL:
+					ClientEngineZildo.filterCommand.active(CloudFilter.class, false, null);
+					break;
+			}
 		}
 
 		analyseAltitude();

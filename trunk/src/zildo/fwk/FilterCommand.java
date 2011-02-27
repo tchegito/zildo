@@ -120,7 +120,7 @@ public class FilterCommand {
 		asked_FadeIn  = true;
 		asked_FadeOut = false;
 		fadeStarted = true;
-		active(null, false, null);
+		active(BilinearFilter.class, false, null);
 		for (FilterEffect effect : p_effects) {
 			for (Class<? extends ScreenFilter> clazz : effect.getFilterClass()) {
 				active(clazz, true, effect);
@@ -138,7 +138,7 @@ public class FilterCommand {
 		asked_FadeIn  = false;
 		asked_FadeOut = true;
 		fadeStarted = true;
-		active(null, false, null);
+		active(BilinearFilter.class, false, null);
 		for (FilterEffect effect : p_effects) {
 			for (Class<? extends ScreenFilter> clazz : effect.getFilterClass()) {
 				active(clazz, true, effect);
@@ -152,8 +152,7 @@ public class FilterCommand {
 	// Fade is over, so put back in default position
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void fadeEnd() {
-		active(null, false, null);
-		active(BilinearFilter.class, true, null);
+		restoreFilters();
 		asked_FadeOut=false;
 		asked_FadeIn=false;
 	}
@@ -189,7 +188,7 @@ public class FilterCommand {
 	 * If 'clazz' is null, so all filters will be targeted.
 	 * @param clazz
 	 * @param activ
-	 * @param effect TODO
+	 * @param effect kind of filter
 	 */
 	public void active(Class<? extends ScreenFilter> clazz, boolean activ, FilterEffect effect) {
 		for (ScreenFilter filter : filters) {
@@ -197,6 +196,13 @@ public class FilterCommand {
 				filter.setActive(activ, effect);
 			}
 		}
+	}
+	
+	/**
+	 * Restore default filters.
+	 */
+	private void restoreFilters() {
+		active(BilinearFilter.class, true, null);
 	}
 	
 	public void cleanUp() {

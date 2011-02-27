@@ -26,6 +26,7 @@ import org.lwjgl.util.vector.Vector4f;
 import zildo.Zildo;
 import zildo.client.gui.DialogDisplay;
 import zildo.client.gui.GUIDisplay;
+import zildo.client.sound.Ambient;
 import zildo.client.sound.SoundPlay;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.gfx.Ortho;
@@ -35,6 +36,7 @@ import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.BilinearFilter;
 import zildo.fwk.gfx.filter.BlendFilter;
 import zildo.fwk.gfx.filter.BlurFilter;
+import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FadeFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.input.KeyboardInstant;
@@ -77,6 +79,8 @@ public class ClientEngineZildo {
 	// Time left to unblock player's moves
 	private final int waitingScene;
 
+	public static Ambient ambient=new Ambient();
+
 	/**
 	 * Should be called after {@link #initializeServer}
 	 * @param p_awt TRUE=ZEditor / FALSE=game
@@ -97,10 +101,10 @@ public class ClientEngineZildo {
 		if (!p_awt) {
 
 			filterCommand.addFilter(new BilinearFilter());
+			filterCommand.addFilter(new CloudFilter());
 			filterCommand.addFilter(new BlurFilter());
 			filterCommand.addFilter(new BlendFilter());
 			filterCommand.addFilter(new FadeFilter());
-			filterCommand.active(null, false, null);
 			filterCommand.active(BilinearFilter.class, true, null);
 		}
 

@@ -117,6 +117,7 @@ public class Ortho extends OpenGLStuff {
 		w=width;
 		h=height;
 		orthoSetUp=false;
+		ambientColor=new Vector3f(1f, 1f, 1f);
 	}
 	
 	public void setOrthographicProjection() {

@@ -196,8 +196,14 @@ public class TilePrimitive extends OpenGLStuff {
         return isLock;
     }
 
-    // Move a tile and reset its texture (don't change size)
-    // **IMPORTANT** : VertexBuffer MUST BE locked
+    /**
+     *  Move a tile and reset its texture (don't change size)<br/>
+     * {@link #startInitialization()} should be called first.
+     * @param x
+     * @param y
+     * @param u
+     * @param v
+     */
     public void updateTile(float x, float y, float u, float v) {
         // Get size
         int vBufferPos = bufs.vertices.position(); // - 3*4;

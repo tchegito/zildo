@@ -281,14 +281,6 @@ public class Element extends SpriteEntity {
                     	fall();
                         dying=true;
                     }
-                } else if (z > 28 && nSpr == 6) {
-                    nSpr = 5; // Fumée de cheminée
-                } else if (z > 48 && nSpr == 5) {
-                    z = 16.0f;
-                    x = (int) (x / 16) * 16 + 32; // On remet la fumée à sa place
-                    vx = 0.2f;
-                    vz = 0.0f;
-                    nSpr = 6;
                 }
             }
         }
