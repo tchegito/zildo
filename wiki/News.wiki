@@ -1,6 +1,11 @@
 #summary News
 
-= Version 1.094 (very soon, beta-testing now) = 
+= Version 1.095 (work in progress) = 
+
+ * clouds
+ * internet server
+
+= Version 1.094 = 
 
  * savegames
  * scenario enhancements
