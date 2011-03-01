@@ -195,6 +195,8 @@ public class PlayerManagement {
 					// Zildo is fallen in the water !
 					heros.setX(zildoAvantSaut.getX());
 					heros.setY(zildoAvantSaut.getY());
+					xx=heros.getX();
+					yy=heros.getY();
 					heros.beingWounded(null, 2);
 					heros.stopBeingWounded();
 					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, heros);

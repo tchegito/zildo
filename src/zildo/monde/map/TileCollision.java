@@ -23,7 +23,6 @@ package zildo.monde.map;
 
 import zildo.fwk.IntSet;
 import zildo.fwk.gfx.engine.TileEngine;
-import zildo.monde.map.Angle;
 
 /**
  * @author tchegito
@@ -33,7 +32,11 @@ public class TileCollision {
     private final TileInfo[] tileInfos = new TileInfo[TileEngine.tileBankNames.length * 256];
 
     final IntSet walkable = new IntSet(1, 6, 19, 23, 27, 35, 40, 41, 42, 43, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
-            64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 89, 90, 91, 99, 139, 140, 141, 142, 143, 144, 145, 146, 166, 168, 170, 171,
+            64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 89, 90, 91, 99,
+            // Water
+            108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127,
+            128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138,	// End of water
+            139, 140, 141, 142, 143, 144, 145, 146, 166, 168, 170, 171,
             172, 174, 175, 176, 177, 178, 183, 206, 207);
 
     final IntSet walkable2 = new IntSet(22, 23, 25, 34, 35, 36, 37, 58, 59, 61, 67, 68, 71, 72,
