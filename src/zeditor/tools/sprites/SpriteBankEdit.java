@@ -69,6 +69,12 @@ public class SpriteBankEdit extends SpriteBank {
         nSprite--;
     }
    
+    public void clear() {
+    	while (nSprite != 0) {
+    		removeSpr(0);
+    	}
+    }
+    
     public void addSprFromImage(int p_position, int p_startX, int p_startY,
 			int p_tailleX, int p_tailleY) {
 		// Extract sprite from image
@@ -94,4 +100,20 @@ public class SpriteBankEdit extends SpriteBank {
         EasyWritingFile file=new EasyWritingFile(buffer);
         file.saveFile(getName());
     }
+    
+    /**
+     * Returns the width of an element starting at given coordinates.<br/>
+     * We assume that element is ending when there's an entire line made with transparent color at his right.
+     * @param p_startX
+     * @param p_startY
+     * @param p_height
+     * @return int
+     */
+	public int getWidth(int p_startX, int p_startY, int p_height) {
+		int width = 0;
+		while (bankEdit.isLineFilled(p_startX + width, p_startY, p_height)) {
+			width++;
+		}
+		return width;
+	}
 }

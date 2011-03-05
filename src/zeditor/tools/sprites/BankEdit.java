@@ -94,4 +94,21 @@ public class BankEdit {
 		
 		return sprite;
 	}
+    
+    /**
+     * Returns TRUE if there's something on a vertical line (useful for fonts).
+     * @param p_startX
+     * @param p_startY
+     * @param p_height
+     * @return boolean
+     */
+    protected boolean isLineFilled(int p_startX, int p_startY, int p_height) {
+    	for (int i=0;i<p_height;i++) {
+			int offsetImg = (p_startY + i) * img.getWidth() + p_startX;
+    		if (imgPixels[offsetImg] != 255) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 }
