@@ -31,7 +31,7 @@ public class Constantes {
 
 	// File system data
 	//public static String DATA_PATH = "."+File.separator+"Data"+File.separator;	// Pour livraison
-	public static String DATA_PATH = "E:\\ZildoDist\\Version 1.094\\Data\\";
+	public static String DATA_PATH = "E:\\ZildoDist\\Version 1.095\\Data\\";
 
 	public static String CONFIGURATION_FILE = "ini"+File.separator+"player.ini";
 	public static String SERVER_FILE = "ini"+File.separator+"servers.ini";
@@ -65,7 +65,7 @@ public class Constantes {
 	// Perso
 	public static final	int speed = 3;
 	public static final	int MAX_PERSO = 80;
-	public static final	int ZILDO_SPEED = 1;
+	public static final	float ZILDO_SPEED = 1.5f;
 	public static final	float MONSTER_SPEED = 0.85f; // Vitesse du monstre en alerte
 	public static final	int MAX_DIALOG = 256;
 	public static final	int MAX_TOPICS = 100;
