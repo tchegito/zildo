@@ -63,7 +63,8 @@ public class PersoZildo extends Perso {
 	private Point posAvantSaut;
 	private Point posShadowJump;
 	private Angle jumpAngle;
-	
+	private int acceleration;	// from 0 to 10
+
 	private Angle sightAngle;	// For boomerang
 	
 	private int touch;	// number of frames zildo is touching something without moving
@@ -1070,5 +1071,24 @@ public class PersoZildo extends Perso {
 	
 	public boolean isQuadDamaging() {
 		return quadDuration > 0;
+	}
+	
+	
+	int[] accels=new int[]{0,1,1,1,2,2,3,6,8,10,10};
+	
+	public float getAcceleration() {
+		return accels[acceleration];
+	}
+
+	public void increaseAcceleration() {
+		if (acceleration != 10) {
+			acceleration+=1;
+		}
+	}
+	
+	public void decreaseAcceleration() {
+		if (acceleration > 1) {
+			acceleration-=1;
+		}
 	}
 }

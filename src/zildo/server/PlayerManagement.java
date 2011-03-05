@@ -179,7 +179,7 @@ public class PlayerManagement {
 	
 		boolean needMovementAdjustment=true;
 		
-		int zildoSpeed=Constantes.ZILDO_SPEED * EngineZildo.extraSpeed;
+		float zildoSpeed=Constantes.ZILDO_SPEED * (heros.getAcceleration() / 10 ) * EngineZildo.extraSpeed;
 		
 		if (heros.getMouvement() == MouvementZildo.SAUTE) {
 	    	// Zildo est en train de sauter ! Il est donc inactif
@@ -249,18 +249,26 @@ public class PlayerManagement {
 				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_LEFT)) {
 					xx-=zildoSpeed;
 					heros.setAngle(Angle.OUEST);
+					heros.increaseAcceleration();
 				} else if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_RIGHT)) {
 					xx+=zildoSpeed;
 					heros.setAngle(Angle.EST);
+					heros.increaseAcceleration();
 				}
 	
 				// UP/DOWN key
 				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_UP)) {
 					yy-=zildoSpeed;
 					heros.setAngle(Angle.NORD);
+					heros.increaseAcceleration();
 				} else if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_DOWN)) {
 					yy+=zildoSpeed;
 					heros.setAngle(Angle.SUD);
+					heros.increaseAcceleration();
+				}
+				
+				if (xx == heros.getX() && yy == heros.getY()) {
+					heros.decreaseAcceleration();
 				}
 			}
 	
@@ -362,7 +370,7 @@ public class PlayerManagement {
 				if (ralentit)
 					coeff=0.5f;
 				else
-					coeff=0.8f;
+					coeff=0.7f;
 			}
 
 			heros.setX(heros.getX()+diffx*coeff);
