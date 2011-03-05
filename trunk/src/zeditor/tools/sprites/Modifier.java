@@ -26,6 +26,7 @@ import java.util.logging.LogManager;
 
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.tiles.MotifBankEdit;
+import zildo.client.gui.GUIDisplay;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.Game;
 import zildo.monde.map.Zone;
@@ -61,7 +62,7 @@ public class Modifier {
 
         //new Modifier().fixPnj2();
         //new Modifier().saveElements2();
-        //new Modifier().saveFontes2();
+        new Modifier().saveFontes2();
         //new Modifier().saveBanque();
         //new Modifier().saveGears();
         //new Modifier().saveAllMaps();
@@ -94,14 +95,37 @@ public class Modifier {
 
      public void saveFontes2() {
          SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_FONTES));
+         bankElem.clear();
          bankElem.loadImage("fontes", COLOR_BLUE);
+         
+         // Capture the fonts
+         int startX=0;
+         int startY=0;
+         for (int i=0;i<GUIDisplay.transcoChar.length();i++) {
+        	 // Get size
+        	 int width=bankElem.getWidth(startX, startY, 16);
+        	 if (width > 1) {
+	        	 bankElem.addSprFromImage(i, startX, startY, width, 16);
+	        	 
+	        	 System.out.println(startX+" , "+startY+" size="+width);
+
+	        	 startX+=width + 1;
+	        	 if (startX >= 184) {
+	        		 startX=0;
+	        		 startY+=16;
+	        	 }
+        	 } else {
+        		 startX = 0;
+        		 startY+=16;
+        		 i--;
+        	 }
+         }
          int nSpr=bankElem.getNSprite();
          Zone[] elements=new Fontes().getZones();
          for (Zone z : elements) {
          	bankElem.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
          	nSpr++;
          }
-         bankElem.setName("font2.spr");
          bankElem.saveBank();
      }
      

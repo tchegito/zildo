@@ -22,8 +22,10 @@ package zildo.client.gui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -41,6 +43,7 @@ import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.FontDescription;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
 import zildo.server.MultiplayerManagement;
@@ -184,21 +187,20 @@ public class GUIDisplay {
 	// IN :character in text sequence
 	// OUT:given character's font position in the FONTES.PNJ sprite bank
 	///////////////////////////////////////////////////////////////////////////////////////
-	static String caracteres_speciaux="-.,<>!?()'";
-	int getIndexCharacter(char a) {
-		if (a>='A' && a<='Z')
-			return a-'A';
-		if (a>='a' && a<='z')
-			return a-'a'+ 26 + 12;
-		if (a>='0' && a<='9')
-			return a-'0' + 26*2 +12;
-		for (int i=0;i<caracteres_speciaux.length();i++) {
-			if (a==caracteres_speciaux.charAt(i))
-				return i+26;
-		}
+	public static final String transcoChar="ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
+										   "-.,<>!?()'#$חיךטאûמגפüצהןכש"+
+										   "abcdefghijklmnopqrstuvwxyz"+
+										   "0123456789~£§/:%";
+	static final Map<Character, Integer> mapTranscoChar=new HashMap<Character, Integer>();
 	
-		// Nothing found
-		return 0;
+	static {
+		for (int i=0;i<transcoChar.length();i++) {
+			mapTranscoChar.put(transcoChar.charAt(i), i);
+		}
+	}
+	
+	int getIndexCharacter(char a) {
+		return mapTranscoChar.get(a);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -393,10 +395,10 @@ public class GUIDisplay {
 	{
 		// Draw corner frame
 		if ( !frameDialogSequence.isDrawn()) {
-			frameDialogSequence.addSprite(SpriteBank.BANK_FONTES,26+12+26+10,  40,170);
-			frameDialogSequence.addSprite(SpriteBank.BANK_FONTES,26+12+26+10+1,  280,170);
-			frameDialogSequence.addSprite(SpriteBank.BANK_FONTES,26+12+26+10+2,  40,230);
-			frameDialogSequence.addSprite(SpriteBank.BANK_FONTES,26+12+26+10+3,  280,230);
+			frameDialogSequence.addSprite(FontDescription.FRAME_UPLEFT,  40,170);
+			frameDialogSequence.addSprite(FontDescription.FRAME_UPRIGHT,  280,170);
+			frameDialogSequence.addSprite(FontDescription.FRAME_DOWNLEFT,  40,230);
+			frameDialogSequence.addSprite(FontDescription.FRAME_DOWNRIGHT,  280,230);
 		}
 	
 		// Draw frame's bars
@@ -500,12 +502,11 @@ public class GUIDisplay {
 			p_menu.displayed=true;
 		}
 		menuSequence.clear();
-		int nSpr=26+12+26+10;
 		int y=startY + (p_menu.selected+2) * Constantes.TEXTER_MENU_SIZEY;
 		alpha+=0.1f;
 		int wave=(int) (10.0f*Math.sin(alpha));
-		menuSequence.addSprite(SpriteBank.BANK_FONTES, nSpr, 40+wave,y+2);
-		menuSequence.addSprite(SpriteBank.BANK_FONTES, nSpr+1, Zildo.viewPortX - 40-wave,y+2);
+		menuSequence.addSprite(FontDescription.FRAME_UPRIGHT, 40+wave,y+2);
+		menuSequence.addSprite(FontDescription.FRAME_UPLEFT, Zildo.viewPortX - 40-wave,y+2);
 	}
 
 	public void endMenu() {
@@ -546,24 +547,25 @@ public class GUIDisplay {
 			return;
 		}
 		
-		int i,j;
+		int i;
 		// Life
-		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,91,207,10);
+		guiSpritesSequence.addSprite(FontDescription.GUI_LIFE, 207,10);
         for (i = 0; i < zildo.getMaxpv() / 2; i++) {
             int pv = zildo.getPv();
+            FontDescription desc;
             if (i == pv >> 1 && pv % 2 == 1) {
-                j = 14; // Half heart
+                desc = FontDescription.GUI_HEARTHALF; // Half heart
             } else if (pv >> 1 <= i) {
-                j = 1; // Empty heart
+                desc = FontDescription.GUI_HEARTEMPTY; // Empty heart
             } else {
-                j = 0; // Full heart
+                desc = FontDescription.GUI_HEART; // Full heart
             }
-			guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,78+j,190+((i-1) % 10) * 8,
+			guiSpritesSequence.addSprite(desc, 190+((i-1) % 10) * 8,
 													20+8*((i-1) / 10));
 		}
 	
 		// Money
-		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,80,72,10);
+		guiSpritesSequence.addSprite(FontDescription.GUI_RUPEE, 72, 10);
 		if (countMoney != zildo.getMoney()) {
 			if (countMoney < zildo.getMoney()) {
 				countMoney++;
@@ -577,15 +579,15 @@ public class GUIDisplay {
 		displayNumber(countMoney, 3, 66, 20);
 		
 		// Bombs
-		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,93,110,10);
+		guiSpritesSequence.addSprite(FontDescription.GUI_BOMB, 110, 10);
 		displayNumber(zildo.getCountBomb(), 2, 107, 20);
 
 		// Arrows
-		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,94,149,10);
+		guiSpritesSequence.addSprite(FontDescription.GUI_ARROW, 149, 10);
 		displayNumber(zildo.getCountArrow(), 2, 148, 20);
 
 		// Keys
-		guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,95,41,10);
+		guiSpritesSequence.addSprite(FontDescription.GUI_KEY, 41, 10);
 		displayNumber(zildo.getCountKey(), 1, 40, 20);
 	}
 	
@@ -599,7 +601,9 @@ public class GUIDisplay {
 				j=j / 10;
 			}
 			j=j % 10;
-			guiSpritesSequence.addSprite(SpriteBank.BANK_FONTES,81+j,lastPos-i*7,p_y);
+			FontDescription desc=FontDescription.values()[FontDescription.N_0.ordinal() + j];
+			
+			guiSpritesSequence.addSprite(desc, lastPos-i*7,p_y);
 		}
 	}
 	

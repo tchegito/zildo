@@ -29,9 +29,30 @@ import zildo.monde.map.Zone;
 public class Fontes extends SpriteBanque {
 
 	public Fontes() {
-		zones=new Zone[] {
-				new Zone(51, 87, 8, 8), new Zone(184, 0, 16, 42),
-				new Zone(200, 21, 8, 2), new Zone(200, 0, 22, 21)
-		};
+		zones = new Zone[] {
+				// Le cadre
+				new Zone(0, 73, 7, 7),
+				new Zone(7, 73, 7, 7),
+				new Zone(0, 80, 7, 7),
+				new Zone(7, 80, 7, 7),
+				// Les icones de l'interface
+				new Zone(0, 87, 7, 7),
+				new Zone(7, 87, 7, 7),
+				new Zone(14, 87, 8, 8),
+				new Zone(22, 87, 8, 8),
+				new Zone(30, 87, 14, 8),
+				new Zone(51, 87, 8, 8),
+				// Les 10 chiffres
+				new Zone(0, 95, 7, 7), new Zone(7, 95, 7, 7),
+				new Zone(14, 95, 7, 7), new Zone(21, 95, 7, 7),
+				new Zone(28, 95, 7, 7), new Zone(35, 95, 7, 7),
+				new Zone(42, 95, 7, 7), new Zone(49, 95, 7, 7),
+				new Zone(56, 95, 7, 7), new Zone(63, 95, 7, 7),
+				// Vie
+				new Zone(0, 102, 44, 7), new Zone(44, 87, 7, 7),
+
+				// Jauge etc...
+				new Zone(185, 0, 16, 42),
+				new Zone(201, 21, 8, 2), new Zone(201, 0, 22, 21) };
 	}
 }
