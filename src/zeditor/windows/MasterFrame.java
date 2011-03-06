@@ -152,7 +152,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	        getContentPane().add(zildoPanel, BorderLayout.EAST);
 
             // Recréation du manager avec les objets en paramètre
-			manager = new MasterFrameManager(getSystemLabel(), getMasterPanel(), this, zildoPanel.getZildoCanvas());
+			//manager = new MasterFrameManager(getSystemLabel(), getMasterPanel(), this, zildoPanel.getZildoCanvas());
 
 			// Initialisation de la fenêtre par le manager
 			manager.init();
@@ -208,7 +208,8 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	public MasterFrameManager getManager() {
 		if(manager == null) {
-			manager = new MasterFrameManager(this);
+			manager =new MasterFrameManager(this);
+			manager.initialize(getSystemLabel(), getMasterPanel(),  zildoPanel.getZildoCanvas());
 		}
 		return manager;
 	}
