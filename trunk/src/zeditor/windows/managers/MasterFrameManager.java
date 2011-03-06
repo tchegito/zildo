@@ -71,10 +71,8 @@ public class MasterFrameManager {
 	 *            Le JLabel Système de la MasterFrame
 	 * @author Drakulo
 	 */
-	public MasterFrameManager(JLabel p_sys,JPanel p_master,
-			MasterFrame p_frame, ZildoCanvas p_zildoCanvas) {
+	public void initialize(JLabel p_sys,JPanel p_master, ZildoCanvas p_zildoCanvas) {
 		systemDisplay = p_sys;
-		masterFrame = p_frame;
 		masterPanel = p_master;
 		zildoCanvas = p_zildoCanvas;
 		zildoCanvas.setManager(this);
