@@ -22,6 +22,7 @@ package zeditor.tools.sprites;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Map;
 import java.util.logging.LogManager;
 
 import zeditor.tools.banque.Grotte;
@@ -29,6 +30,9 @@ import zeditor.tools.tiles.MotifBankEdit;
 import zildo.client.gui.GUIDisplay;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.Game;
+import zildo.monde.dialog.Behavior;
+import zildo.monde.dialog.MapDialog;
+import zildo.monde.map.Area;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -62,12 +66,13 @@ public class Modifier {
 
         //new Modifier().fixPnj2();
         //new Modifier().saveElements2();
-        new Modifier().saveFontes2();
+        //new Modifier().saveFontes2();
         //new Modifier().saveBanque();
         //new Modifier().saveGears();
         //new Modifier().saveAllMaps();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
+        new Modifier().ripDialogFromAllMaps();
     }
      
      public void generateImg() {
@@ -204,6 +209,54 @@ public class Modifier {
 	        // Save the map into a temporary file
 			MapManagement mapManagement=EngineZildo.mapManagement;
 			mapManagement.saveMapFile(name);
+		}
+    }
+    
+    public void ripDialogFromAllMaps() {
+    	
+		String path=Constantes.DATA_PATH;
+		File directory=new File(path);
+		
+		File[] maps = directory.listFiles(new FilenameFilter() {
+    		public boolean accept(File dir, String name) {
+    			return name.toLowerCase().endsWith(".map");
+    		}
+		});
+		LogManager.getLogManager().reset();
+		
+        Game game = new Game(null, true);
+        new Server(game, true);
+		for (File f : maps) {
+			String name=f.getName();
+			EngineZildo.mapManagement.loadMap(name, false);
+		        
+	        // Save the map into a temporary file
+			MapManagement mapManagement=EngineZildo.mapManagement;
+			Area map = mapManagement.getCurrentMap();
+			MapDialog dialogs = map.getMapDialog();
+			
+			String mapName=map.getName();
+			mapName=mapName.substring(0, mapName.indexOf("."));
+			
+			// Behavior
+			Map<String, Behavior> behaviors = dialogs.getBehaviors();
+
+			System.out.println("\n## "+mapName);
+
+			for (String key : behaviors.keySet()) {
+				Behavior b=behaviors.get(key);
+				for (int i=0;i<10;i++) {
+					if (b.replique[i] == 0) {
+						break;
+					}
+					String s = dialogs.getSentence(b, i);
+					if (s != null) {
+
+						System.out.println(mapName+"."+key+"."+i+"="+s);
+					}
+				}
+			}
+			//mapManagement.saveMapFile(name);
 		}
     }
 }
