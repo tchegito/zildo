@@ -91,12 +91,12 @@ public class Utils {
         return buf;
     }
 
-    public static void copyScreenToTexture(int p_texId) {
+    public static void copyScreenToTexture(int p_texId, int p_sizeX, int p_sizeY) {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, p_texId);
 
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 
-        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, 1024, 512, 0);
+        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, p_sizeX, p_sizeY, 0);
     }
 }

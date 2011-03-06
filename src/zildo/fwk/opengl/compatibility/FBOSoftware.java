@@ -55,7 +55,7 @@ public class FBOSoftware implements FBO {
     }
 
     public void endRendering() {
-    	Utils.copyScreenToTexture(texRendered);
+    	Utils.copyScreenToTexture(texRendered, 1024, 512);
         Util.checkGLError();
     }
 
