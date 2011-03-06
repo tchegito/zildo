@@ -48,7 +48,8 @@ public class PathFinder {
 	public float speed;	// Should be used if different of 0
 	public boolean backward;	// Default FALSE. TRUE means character is steping back
 	public boolean open;	// Default FALSE. TRUE means character can open doors.
-	
+    protected int nbShock;				// Number of times character hit something going to his target
+
 	public PathFinder(Perso p_mobile) {
 		mobile=p_mobile;
 		backward=false;
@@ -170,5 +171,19 @@ public class PathFinder {
 		}
 		return (x >= target.x - 0.5f && x <= target.x + 0.5f && 
 			    y >= target.y - 0.5f && y <= target.y + 0.5f);
+	}
+	
+	public void collide() {
+		if (mobile.getQuel_deplacement() == MouvementPerso.SCRIPT_POULE ||
+				mobile.getQuel_deplacement() == MouvementPerso.SCRIPT_ABEILLE) {
+			target=null;
+		} else {
+			if (nbShock++ >= 3 && !mobile.isGhost()) {
+				target=null;
+				mobile.setAlerte(false);
+				nbShock=0;
+			}
+			mobile.setAttente(10 + (int) (Math.random()*20));
+		}
 	}
 }

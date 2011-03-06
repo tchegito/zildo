@@ -315,15 +315,10 @@ public class PersoNJ extends Perso {
 								}
 								if (quel_deplacement != MouvementPerso.SCRIPT_VOLESPECTRE) {
 									// Collision ?
-									if (EngineZildo.mapManagement.collide((int) getX(),(int) getY(),this)) {
+									if (EngineZildo.mapManagement.collide((int) x, (int) y, this)) {
 										this.setX ( sx);
 										this.setY ( sy);
-										if (nbShock++ >= 3 && !isGhost()) {
-											pathFinder.target=null;
-											setAlerte(false);
-											nbShock=0;
-										}
-										this.setAttente(10 + (int) (Math.random()*20));
+										pathFinder.collide();
 									} else {
 										this.setPos_seqsprite ( (getPos_seqsprite() + 1) % 512);
 									}
@@ -391,8 +386,9 @@ public class PersoNJ extends Perso {
 			case POULE:
 			   //Poule
 			   add_spr=(getPos_seqsprite() % (8*Constantes.speed)) / (2*Constantes.speed);
-			   if (pathFinder.target != null && pathFinder.target.x>getX())
+			   if (pathFinder.target != null && (pathFinder.target.x>getX() && !isAlerte())) {
 				   add_spr+=41;
+			   }
 				break;
 			case VIEUX:
 			   //Vieux saoul à 3 sprites
@@ -500,13 +496,16 @@ public class PersoNJ extends Perso {
 		}
 		if (!isGhost()) {	// Replace angle if character isn't ghost (moved by script)
 			if (x>sx) {
-				setAngle(Angle.EST);
+				angle = Angle.EST;
 			} else if (x<sx) {
-				setAngle(Angle.OUEST);
+				angle = Angle.OUEST;
 			} else if (y>sy) {
-				setAngle(Angle.SUD);
+				angle = Angle.SUD;
 			} else {
-				setAngle(Angle.NORD);
+				angle = Angle.NORD;
+			}
+			if (p_fear){
+				angle = Angle.rotate(angle, 2);
 			}
 		}
 		if (sx!=x && sy!=y) {	// Diagonal moves

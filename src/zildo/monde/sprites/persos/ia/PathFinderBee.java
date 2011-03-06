@@ -21,6 +21,7 @@
 package zildo.monde.sprites.persos.ia;
 
 import zildo.monde.map.Point;
+import zildo.monde.map.Pointf;
 import zildo.monde.sprites.persos.Perso;
 
 /**
@@ -48,4 +49,17 @@ public class PathFinderBee extends PathFinder {
 		target.x=(int)(x+(5.0f+Math.random()*10.0f)*Math.cos(2.0f*Math.PI*Math.random()));
 		target.y=(int)(y+(5.0f+Math.random()*10.0f)*Math.sin(2.0f*Math.PI*Math.random()));
 	}
+	
+    public Pointf reachDestination(float p_speed) {
+    	Pointf pos=super.reachDestination(p_speed);
+    	
+    	// Introduce noise
+    	double alpha=Math.random() * 2 * Math.PI;
+    	double dx = Math.cos(alpha) * p_speed;
+    	double dy = Math.sin(alpha) * p_speed;
+    	
+    	pos.add((float) dx, (float) dy);
+    	
+    	return pos;
+    }
 }
