@@ -57,7 +57,6 @@ public abstract class Perso extends Element {
     protected PersoDescription quel_spr;				
     protected int attente;				// =0 => pas d'attente
     protected PathFinder pathFinder;				// Destination
-    protected int nbShock;				// Number of times character hit something going to his target
     protected float px,py;				// Quand le perso est propulsé (touché)
     protected int pos_seqsprite;
     private Element en_bras;			//If this is Zildo, what he holds. If any perso, his weapon
