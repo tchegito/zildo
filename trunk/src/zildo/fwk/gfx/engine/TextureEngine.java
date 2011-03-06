@@ -125,6 +125,6 @@ public abstract class TextureEngine extends OpenGLStuff {
     public void saveScreen(int p_texId) {
 
 		// Draw texture with depth
-    	Utils.copyScreenToTexture(p_texId);
+    	Utils.copyScreenToTexture(p_texId, 1024, 512);
     }
 }
