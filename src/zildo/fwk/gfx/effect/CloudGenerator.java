@@ -23,6 +23,9 @@ package zildo.fwk.gfx.effect;
 import java.nio.ByteBuffer;
 
 /**
+ * Cloud generator, highly inspired from this web page :<br/>
+ * <a href="http://www.gamedev.net/page/resources/_/reference/programming/sweet-snippets/simple-clouds-part-1-r2085">
+ * Simple clouds</a>
  * @author Tchegito
  *
  */
