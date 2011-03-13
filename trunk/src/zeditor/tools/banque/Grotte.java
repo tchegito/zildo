@@ -150,12 +150,14 @@ public class Grotte extends Banque {
 				/* Dessus de porte */
 				new Point(32, 144), new Point(48, 144),
 				
-				/* Porte fermée à clé */
-				new Point(96, 144), new Point(112, 144),
-				new Point(96, 160), new Point(112, 160),
-				/* Idem à demi ouverte */
-				new Point(128, 144), new Point(144, 144),
-				new Point(128, 160), new Point(144, 160)
+				/* Coin en pierre */
+				new Point(112, 0), new Point(128, 0),
+				new Point(112, 16), new Point(128, 16),
+				
+				/* Lit de prison */
+				new Point(144,0), new Point(160, 0),
+				new Point(144, 16), new Point(160, 16),
+				new Point(144, 32), new Point(160, 32)
 		};
 				
 		pkmChanges = Arrays.asList(new GraphChange("interia3", 0, 0),

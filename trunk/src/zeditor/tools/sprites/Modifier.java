@@ -68,11 +68,11 @@ public class Modifier {
         //new Modifier().saveElements2();
         //new Modifier().saveFontes2();
         //new Modifier().saveBanque();
-        //new Modifier().saveGears();
+        new Modifier().saveGears();
         //new Modifier().saveAllMaps();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
-        new Modifier().ripDialogFromAllMaps();
+        //new Modifier().ripDialogFromAllMaps();
     }
      
      public void generateImg() {
