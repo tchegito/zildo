@@ -26,6 +26,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.awt.ZildoCanvas.ZEditMode;
@@ -34,7 +36,8 @@ public class ZildoMouseKeyListener
 		implements
 			MouseListener,
 			MouseMotionListener,
-			KeyListener {
+			KeyListener,
+			MouseWheelListener {
 
 	ZildoScrollablePanel panel;
 	ZildoCanvas canvas;
@@ -217,5 +220,15 @@ public class ZildoMouseKeyListener
 	public void keyTyped(KeyEvent p_keyevent) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		int rot=e.getWheelRotation();
+		if (rot == 1) {
+			canvas.setZoom(false);
+		} else {
+			canvas.setZoom(true);
+		}
 	}
 }

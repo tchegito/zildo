@@ -24,6 +24,7 @@ import java.awt.BorderLayout;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
@@ -83,6 +84,7 @@ public class ZildoScrollablePanel extends JPanel {
 		zildoCanvas.addMouseListener((MouseListener) zildoListener);
 		zildoCanvas.addMouseMotionListener((MouseMotionListener) zildoListener);
 		zildoCanvas.addKeyListener((KeyListener) zildoListener);
+		zildoCanvas.addMouseWheelListener((MouseWheelListener) zildoListener);
 	}
 
 	public java.awt.Point getPosition() {
@@ -104,6 +106,22 @@ public class ZildoScrollablePanel extends JPanel {
 	}
 	public ZildoCanvas getZildoCanvas() {
 		return zildoCanvas;
+	}
+	
+	public void setZoom(boolean p_zoom) {
+		double factor2 = 2f;
+		if (!p_zoom) {
+			factor2 = 1 / factor2;
+		}
+		int hv = horizontal.getValue();	// Keep old values
+		int vv = vertical.getValue();
+		horizontal.setValue(0);	// Identity to avoid getting out of range after changing the extent
+		vertical.setValue(0);
+		horizontal.getModel().setExtent((int) (horizontal.getModel().getExtent() / factor2));
+		vertical.getModel().setExtent((int) (vertical.getModel().getExtent() / factor2));
+		// Reset the previous values
+		horizontal.setValue(hv);
+		vertical.setValue(vv);
 	}
 	
 	public class MapScrollBar extends JScrollBar {

@@ -120,7 +120,7 @@ public class Ortho extends OpenGLStuff {
 		ambientColor=new Vector3f(1f, 1f, 1f);
 	}
 	
-	public void setOrthographicProjection() {
+	public void setOrthographicProjection(boolean p_zoom) {
 		if (!orthoSetUp) {
 			// switch to projection mode
 			GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -130,8 +130,12 @@ public class Ortho extends OpenGLStuff {
 			// reset matrix
 			GL11.glLoadIdentity();
 			// set a 2D orthographic projection
-			GL11.glOrtho(0, w, 0, h, -99999, 99999);
-	
+			if (p_zoom) {
+				GL11.glOrtho(0, w/2, 0, h/2, -99999, 99999);
+				GL11.glTranslatef(0, -h/2, 0);
+			} else {
+				GL11.glOrtho(0, w, 0, h, -99999, 99999);
+			}
 			// invert the y axis, down is positive
 			//GL11.glScalef(1, -1, 1);
 			//GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -152,15 +156,14 @@ public class Ortho extends OpenGLStuff {
 	 * @param p_x
 	 * @param p_y
 	 */
-	public void setSize(int p_x, int p_y) {
+	public void setSize(int p_x, int p_y, boolean p_zoom) {
 		// Change viewport
 		GL11.glViewport(0,0, p_x, p_y);
-		
 		// And adapt ortho
 		resetPerspectiveProjection();
 		w=p_x;
 		h=p_y;
-		setOrthographicProjection();
+		setOrthographicProjection(p_zoom);
 	}
 	
 	public void resetPerspectiveProjection() {
