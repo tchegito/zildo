@@ -112,6 +112,15 @@ public class ZildoMouseKeyListener
 		}
 	}
 
+	private Point getAdjustedPoint(MouseEvent p_event) {
+		Point p=p_event.getPoint();
+		if (canvas.isZoom()) {
+			p.x/=2;
+			p.y/=2;
+		}
+		return p;
+	}
+	
 	/**
 	 * Get pixel-scaled position
 	 * 
@@ -119,7 +128,7 @@ public class ZildoMouseKeyListener
 	 * @return Point
 	 */
 	private Point getPosition(MouseEvent event) {
-		Point p = event.getPoint();
+		Point p = getAdjustedPoint(event);
 		Point camera = panel.getPosition();
 		p.x += camera.x;
 		p.y += camera.y; // + 8 + 4;
@@ -134,7 +143,7 @@ public class ZildoMouseKeyListener
 	 * @return
 	 */
 	private Point getInsidePosition(MouseEvent event) {
-		Point p = event.getPoint();
+		Point p = getAdjustedPoint(event);
 		Point camera = panel.getPosition();
 		p.x = (p.x + camera.x % 16) / 16 * 16 - camera.x % 16;
 		p.y = (p.y + camera.y % 16) / 16 * 16 - camera.y % 16;
