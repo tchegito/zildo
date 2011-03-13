@@ -281,6 +281,10 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			needToResize = true;
 		}
 	}
+	
+	public boolean isZoom() {
+		return zoom;
+	}
 
 	/**
 	 * If the context is created and a IRenderable object is provided, then
