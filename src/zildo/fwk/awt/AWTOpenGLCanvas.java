@@ -51,6 +51,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	protected Point cursorLocation;
 	protected Point cursorSize;
 	protected Point startBlock;	// For copy operation
+	boolean zoom=false;	// FALSE=editor view / TRUE=in-game view
 	protected ZEditMode mode = ZEditMode.NORMAL;
 	
 	// Booleans for directional key pressed
@@ -159,7 +160,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			Ortho ortho = ClientEngineZildo.ortho;
 			if (needToResize) {
 				if (ortho != null) {
-					ortho.setSize(sizeX, sizeY);
+					ortho.setSize(sizeX, sizeY, zoom);
 					needToResize = false;
 				}
 
@@ -270,6 +271,15 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		sizeX = width;
 		sizeY = height;
 		needToResize = true;
+	}
+	
+	public void setZoom(boolean p_zoom) {
+		if (zoom != p_zoom) {
+			panel.setZoom(p_zoom);
+			
+			zoom = p_zoom;
+			needToResize = true;
+		}
 	}
 
 	/**

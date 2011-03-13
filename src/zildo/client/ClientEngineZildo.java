@@ -123,7 +123,7 @@ public class ClientEngineZildo {
 		// GUI
 		guiDisplay.setToDisplay_generalGui(false);
 
-		ortho.setOrthographicProjection();
+		ortho.setOrthographicProjection(false);
 
 	}
 
