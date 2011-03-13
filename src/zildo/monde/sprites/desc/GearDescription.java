@@ -28,7 +28,10 @@ import zildo.fwk.bank.SpriteBank;
  */
 public enum GearDescription implements SpriteDescription {
 	
-	GEAR_GREENDOOR, GEAR_GREENDOOR_OPENING;
+	GEAR_GREENDOOR, GEAR_GREENDOOR_OPENING,
+	GEAR_SIMPLEDOOR, GEAR_SIMPLEDOOR_OPENING,
+	
+	PRISON_GRATE, PRISON_GRATESIDE;
 	
 	public int getBank() {
 		return SpriteBank.BANK_GEAR;
