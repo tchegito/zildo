@@ -2,7 +2,11 @@ package zeditor.windows.subpanels;
 
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -10,6 +14,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import zildo.client.sound.Ambient.Atmosphere;
+import zildo.fwk.ZUtils;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.map.Area;
 import zildo.server.EngineZildo;
@@ -24,9 +30,10 @@ public class StatsPanel extends JPanel {
     JLabel nDialogs;
 	JSpinner spinLimitX;
 	JSpinner spinLimitY;
- 
+	JComboBox atmosphere;
+	
     public StatsPanel() {
-	setLayout(new GridLayout(7,2));
+	setLayout(new GridLayout(8,2));
 	
 	add(new JLabel("Dimension"));
 	add(dim = new JLabel(""));
@@ -39,6 +46,10 @@ public class StatsPanel extends JPanel {
 	add(new JLabel("Dialogues"));
 	add(nDialogs = new JLabel(""));
 	
+	atmosphere=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(Atmosphere.class)));
+	add(new JLabel("Atmosphere"));
+	add(atmosphere);
+	
 	spinLimitX=new JSpinner(new SpinnerNumberModel(1, 1, 64, -1));
 	spinLimitY=new JSpinner(new SpinnerNumberModel(1, 1, 64, -1));
 
@@ -48,6 +59,10 @@ public class StatsPanel extends JPanel {
 	add(new JLabel("Taille Y"));
 	add(spinLimitY);
 
+	ChangeListener listener=new StatsFieldsListener();
+	spinLimitX.addChangeListener(listener);
+	spinLimitY.addChangeListener(listener);
+	atmosphere.addActionListener((ActionListener) listener);
     }
     
     public void updateStats() {
@@ -63,11 +78,9 @@ public class StatsPanel extends JPanel {
 		nChainingPoint.setText(String.valueOf(nbChPoint));
 		nDialogs.setText(String.valueOf(nbDial));
 		
+		atmosphere.setSelectedIndex(map.getAtmosphere().ordinal());
 		spinLimitX.setValue(map.getDim_x());
 		spinLimitY.setValue(map.getDim_y());
-		ChangeListener listener=new StatsFieldsListener();
-		spinLimitX.addChangeListener(listener);
-		spinLimitY.addChangeListener(listener);
     }
     
     @Override
@@ -78,7 +91,7 @@ public class StatsPanel extends JPanel {
         super.setVisible(p_flag);
     }
 
-	class StatsFieldsListener implements ChangeListener {
+	class StatsFieldsListener implements ChangeListener, ActionListener {
 
 		@Override
 		public void stateChanged(ChangeEvent changeevent) {
@@ -88,13 +101,22 @@ public class StatsPanel extends JPanel {
 			if (comp instanceof JSpinner) {
 				int val=(Integer) ((JSpinner) comp).getValue();
 				Area map=EngineZildo.mapManagement.getCurrentMap();
-				
 				if (comp == spinLimitX) {
 					map.setDim_x(val);
 				} else if (comp == spinLimitY) {
 					map.setDim_y(val);
 				}
-			}	
+			}
+		}
+		
+		public void actionPerformed(ActionEvent changeevent) {
+			Component comp=(Component) changeevent.getSource();
+			Area map=EngineZildo.mapManagement.getCurrentMap();
+			if (comp == atmosphere) {
+				String val=(String) ((JComboBox) comp).getSelectedItem();
+				Atmosphere a=ZUtils.getField(val, Atmosphere.class);
+				map.setAtmosphere(a);
+			}
 		}
 	}
 }
