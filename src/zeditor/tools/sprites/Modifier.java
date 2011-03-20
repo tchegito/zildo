@@ -28,6 +28,7 @@ import java.util.logging.LogManager;
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.tiles.MotifBankEdit;
 import zildo.client.gui.GUIDisplay;
+import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.Game;
 import zildo.monde.dialog.Behavior;
@@ -68,8 +69,8 @@ public class Modifier {
         //new Modifier().saveElements2();
         //new Modifier().saveFontes2();
         //new Modifier().saveBanque();
-        new Modifier().saveGears();
-        //new Modifier().saveAllMaps();
+        //new Modifier().saveGears();
+        new Modifier().saveAllMaps();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
         //new Modifier().ripDialogFromAllMaps();
@@ -204,10 +205,20 @@ public class Modifier {
 		for (File f : maps) {
 			String name=f.getName();
 			System.out.println("Processing "+name+"...");
-			EngineZildo.mapManagement.loadMap(name, false);
-		        
-	        // Save the map into a temporary file
 			MapManagement mapManagement=EngineZildo.mapManagement;
+
+			mapManagement.loadMap(name, false);
+		    
+			Area area = mapManagement.getCurrentMap();
+			area.setAtmosphere(Atmosphere.OUTSIDE);
+			String mapName=name.substring(0, name.indexOf("."));
+			if (mapName.indexOf("m") != -1) {
+				area.setAtmosphere(Atmosphere.HOUSE);
+			} else if (mapName.startsWith("polaky") && !mapName.equals("polaky")) {
+				area.setAtmosphere(Atmosphere.CAVE);
+			}
+			System.out.println(area.getAtmosphere());
+	        // Save the map into a temporary file
 			mapManagement.saveMapFile(name);
 		}
     }

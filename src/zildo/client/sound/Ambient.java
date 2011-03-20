@@ -20,9 +20,6 @@
 
 package zildo.client.sound;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import zildo.monde.map.Area;
 
 /**
@@ -36,32 +33,32 @@ import zildo.monde.map.Area;
  */
 public class Ambient {
 
-	Map<String, BankMusic> ambientMusic=new HashMap<String, BankMusic>();
-	
 	BankMusic currentMusic=null;
 	
 	public enum Weather {
 		USUAL, CLOUD;
 	}
 	
-	public Ambient() {
-		ambientMusic.put("polakyg", BankMusic.Grotte);
-		ambientMusic.put("polakyg2", BankMusic.Grotte);
-		ambientMusic.put("polakyg3", BankMusic.Grotte);
-		ambientMusic.put("polakyg4", BankMusic.Grotte);
-		ambientMusic.put("polaky4", BankMusic.Grotte);
-		ambientMusic.put("polaky5", BankMusic.Grotte);
-		ambientMusic.put("d4m5", BankMusic.PianoBar);
-		ambientMusic.put("d4m4", BankMusic.PianoBar);
+	public enum Atmosphere {
+		OUTSIDE(true, BankMusic.Village), // 0
+		CAVE(false, BankMusic.Grotte), // 1
+		HOUSE(false, BankMusic.Village), // 2
+		BAR(false, BankMusic.PianoBar);	// 3
+		
+		public boolean outside;
+		public BankMusic music;
+		private Atmosphere(boolean p_outside, BankMusic p_music) {
+			outside = p_outside;
+			music = p_music;
+		}
 	}
 	
-	public BankMusic getMusicForMap(String p_mapName) {
-		BankMusic mus=ambientMusic.get(p_mapName.toLowerCase());
-		if (mus == null)  {
-			// Default is 'Village'
-			mus=BankMusic.Village;
-		}
-		return mus;
+	public Ambient() {
+	}
+	
+	public BankMusic getMusicForMap(Area p_map) {
+		Atmosphere atm=p_map.getAtmosphere();
+		return atm.music;
 	}
 	
 	public BankMusic getCurrentMusic() {
@@ -78,7 +75,7 @@ public class Ambient {
 	 * @return Weather
 	 */
 	public Weather getWeather(Area p_map) {
-		if (p_map.getDim_x() == 64 && p_map.getDim_y() == 64) {
+		if (p_map.getAtmosphere() == Atmosphere.OUTSIDE) {
 			return Weather.CLOUD;
 		} else {
 			return Weather.USUAL;

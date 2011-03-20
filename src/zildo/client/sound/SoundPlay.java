@@ -153,7 +153,7 @@ public class SoundPlay {
 	 * @param p_map
 	 */
 	public void playMapMusic(Area p_map) {
-		BankMusic mus=ClientEngineZildo.ambient.getMusicForMap(p_map.getName());
+		BankMusic mus=ClientEngineZildo.ambient.getMusicForMap(p_map);
         playSoundFX(mus);
 	}
 	

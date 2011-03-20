@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import zildo.client.sound.Ambient.Atmosphere;
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
@@ -87,6 +88,8 @@ public class Area implements EasySerializable {
 	private Map<Integer, Case> mapdata;
 	private List<ChainingPoint> listChainingPoint;
 	private MapDialog dialogs;
+
+	private Atmosphere atmosphere;
 
 	// Elements linked to a given case (into chest, bushes, jar ...)
 	private Map<Integer, ElementDescription> caseItem;
@@ -485,6 +488,7 @@ public class Area implements EasySerializable {
 		int n_persos = persos.size();
 
 		// 1) Header
+		p_file.put((byte) atmosphere.ordinal());
 		p_file.put((byte) this.getDim_x());
 		p_file.put((byte) this.getDim_y());
 		p_file.put((byte) persos.size());
@@ -577,6 +581,7 @@ public class Area implements EasySerializable {
 
 		boolean zeditor=p_spawn && EngineZildo.game.editing;
 		
+		map.setAtmosphere(Atmosphere.values()[p_buffer.readUnsignedByte()]);
 		map.setDim_x(p_buffer.readUnsignedByte());
 		map.setDim_y(p_buffer.readUnsignedByte());
 		int n_persos = p_buffer.readUnsignedByte();
@@ -915,5 +920,13 @@ public class Area implements EasySerializable {
 		    }
 		}
 		return null;
+	}
+	
+	public Atmosphere getAtmosphere() {
+		return atmosphere;
+	}
+
+	public void setAtmosphere(Atmosphere atmosphere) {
+		this.atmosphere = atmosphere;
 	}
 }
