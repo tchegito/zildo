@@ -51,6 +51,17 @@ public class Ambient {
 			outside = p_outside;
 			music = p_music;
 		}
+		
+		public int getEmptyTile() {
+			switch (this) {
+			default:
+				return 54;	// Green herb;
+			case HOUSE:
+			case BAR:
+			case CAVE:
+				return 512;
+			}
+		}
 	}
 	
 	public Ambient() {
