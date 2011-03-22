@@ -127,8 +127,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 				}
 				List<Case> cases=new ArrayList<Case>();
 				Case empty=new Case();
-				empty.setN_banque(0);
-				empty.setN_motif(54);	// Empty in outside
+				// Get the right empty tile associated to map's "atmosphere"
+				int nTile=EngineZildo.mapManagement.getCurrentMap().getAtmosphere().getEmptyTile();
+				empty.setN_banque(nTile / 256);
+				empty.setN_motif(nTile % 256);	// Empty in outside
 				empty.setN_banque_masque(0);
 				empty.setN_motif_masque(0);
 				for (int i=0;i<size.x*size.y;i++) {

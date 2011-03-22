@@ -127,6 +127,7 @@ public class Area implements EasySerializable {
 			int y=i/dim_x;
 			writemap(x, y, 54);
 		}
+		atmosphere=Atmosphere.OUTSIDE;
 	}
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// get_Areacase
