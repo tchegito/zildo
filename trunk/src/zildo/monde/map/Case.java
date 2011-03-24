@@ -146,7 +146,7 @@ public class Case implements EasySerializable {
 	
 			case 5:
 				// FORET3.DEC animation d'eau supplémentaire
-				if (motif>=59 && motif<=61)
+				if (motif>=96 && motif<=104)
 					motif+=(compteur_animation / 20)*3;
 				break;
 		}
