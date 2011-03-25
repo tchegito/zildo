@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import zildo.client.sound.Ambient.Atmosphere;
 import zildo.client.sound.BankSound;
+import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
@@ -921,6 +921,23 @@ public class Area implements EasySerializable {
 		    }
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns entities outside the map range (0..dim_x, 0..dim_y). Only used in ZEditor.
+	 * @return List<SpriteEntity>
+	 */
+	public List<SpriteEntity> getOutOfBoundEntities() {
+	    List<SpriteEntity> found=new ArrayList<SpriteEntity>();
+	    List<SpriteEntity> entities = filterExportableSprites(EngineZildo.spriteManagement.getSpriteEntities(null));
+	    List<Perso> persos = filterExportablePersos(EngineZildo.persoManagement.tab_perso);
+	    entities.addAll(persos);
+	    for (SpriteEntity entity : entities) {
+	        if (entity.x > dim_x *16 || entity.y > dim_y * 16) {
+	            found.add(entity);
+	        }
+	    }
+	    return found;
 	}
 	
 	public Atmosphere getAtmosphere() {
