@@ -24,6 +24,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.lwjgl.LWJGLException;
 
 import zeditor.core.selection.ChainingPointSelection;
@@ -209,6 +211,17 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		if (fileName.indexOf(".") == -1) {
 			fileName+=".map";
 		}
+		    
+	    	// Check for sprites out of bound
+	    	List<SpriteEntity> outOfBoundsEntities =  map.getCurrentMap().getOutOfBoundEntities();
+	    	if (outOfBoundsEntities.size() > 0) {
+	    	    if ( 0 == JOptionPane.showConfirmDialog(this, "Some entities are out of bounds. Do you want to remove them ?", "ZEditor", JOptionPane.YES_NO_OPTION) ) {
+    	    	    for (SpriteEntity e : outOfBoundsEntities) {
+    	    		EngineZildo.spriteManagement.deleteSprite(e);
+    	    	    }
+	    	    }
+	    	}
+	    	
 		map.saveMapFile(fileName);
 	}
 

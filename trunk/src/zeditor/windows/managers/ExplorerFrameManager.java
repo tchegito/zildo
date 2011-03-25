@@ -79,7 +79,9 @@ public class ExplorerFrameManager {
 			// TODO Fenêtre d'erreur
 			return;
 		}
-		parent.getManager().loadMap(f.getName(), null);
+		String relativeFilename=f.getAbsolutePath().replace(zildo.prefs.Constantes.DATA_PATH, "");
+		
+		parent.getManager().loadMap(relativeFilename, null);
 		close();
 
 	}
