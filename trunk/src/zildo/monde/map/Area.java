@@ -513,7 +513,7 @@ public class Area implements EasySerializable {
 			for (ChainingPoint ch : this.getListPointsEnchainement()) {
 				p_file.put((byte) ch.getPx());
 				p_file.put((byte) ch.getPy());
-				p_file.put(ch.getMapname(), 9);
+				p_file.put(ch.getMapname());
 			}
 		}
 
@@ -622,7 +622,8 @@ public class Area implements EasySerializable {
 				pe = new ChainingPoint();
 				pe.setPx(p_buffer.readUnsignedByte());
 				pe.setPy(p_buffer.readUnsignedByte());
-				pe.setMapname(p_buffer.readString(9));
+				String mapName = p_buffer.readString();
+				pe.setMapname(mapName);
 				map.addChainingPoint(pe);
 			}
 		}

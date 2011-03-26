@@ -78,14 +78,19 @@ public class PersoManagement {
 			// We haven't enough characters to process this deletion
 			return;
 		}
+		List<Perso> persoToRemove=new ArrayList<Perso>();
 		// Destroy entities
 		while (it.hasNext()) {
 			Perso perso=it.next();
 			if (perso != null && !perso.isZildo()) {
-				EngineZildo.spriteManagement.deleteSprite(perso);
+				persoToRemove.add(perso);
 				it.remove();
 			}
 		}
+		for (Perso p : persoToRemove) {
+			EngineZildo.spriteManagement.deleteSprite(p);
+		}
+
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

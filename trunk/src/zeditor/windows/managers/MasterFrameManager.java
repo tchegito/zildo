@@ -148,6 +148,7 @@ public class MasterFrameManager {
 			updateChainingPoints(ch);
 			masterFrame.getStatsPanel().updateStats();
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			display("Probleme !", MESSAGE_ERROR);
 		}
 	}
