@@ -143,7 +143,13 @@ public class ChainingPointPanel extends JPanel {
     		public void actionPerformed(ActionEvent e) {
     			// Load the map referred from this chaining point
     			ChainingPoint ch=getSelectedPoint();
-    			manager.loadMap(ch.getMapname(), ch);
+    			String mapName=ch.getMapname();
+    			String currentMapName=EngineZildo.mapManagement.getCurrentMap().getName();
+    			int posSlash = currentMapName.indexOf(System.getProperty("file.separator"));
+    			if (posSlash != -1) {
+    				mapName=currentMapName.substring(0, posSlash+1) + mapName; 
+    			}
+    			manager.loadMap(mapName+".map", ch);
     		}
     	}));
     	

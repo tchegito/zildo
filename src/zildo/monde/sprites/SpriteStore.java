@@ -28,6 +28,7 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.server.EngineZildo;
 
 public class SpriteStore {
 
@@ -196,7 +197,7 @@ public class SpriteStore {
 				element.finalize();
 			} else if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
 				Perso perso=(Perso)entity;
-				//EngineZildo.persoManagement.removePerso(perso);
+				EngineZildo.persoManagement.removePerso(perso);
 				perso.finalize();
 			}
 			entity.visible=false;

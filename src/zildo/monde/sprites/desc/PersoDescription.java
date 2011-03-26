@@ -26,7 +26,7 @@ import zildo.fwk.bank.SpriteBank;
 public enum PersoDescription implements SpriteDescription {
 
 	// PNJ.SPR
-	PRINCESSE(0,7),
+	PRINCESSE(0,1,2,3,4,5,6,7),
 	BAS_GARDEVERT(8,9,10,11,12,13,14,15),
 	HAUT_GARDEVERT(16,17,18,19),
 	GARDE_CANARD(20,21,22,23,24,25,26,27,28,29,30,31,32,33,34),
