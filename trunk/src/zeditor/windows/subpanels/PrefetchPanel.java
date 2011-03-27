@@ -60,7 +60,7 @@ public class PrefetchPanel extends JPanel {
 			prefetchList = new JList();
 			prefetchList.setModel(prefetchListModel);
 			prefetchList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-			prefetchList.setLayoutOrientation(JList.VERTICAL);
+			prefetchList.setLayoutOrientation(JList.VERTICAL_WRAP);
 			prefetchList.setVisibleRowCount(-1);
 			prefetchList.setSize(500,300);
 			prefetchList.addListSelectionListener(new ListSelectionListener() {

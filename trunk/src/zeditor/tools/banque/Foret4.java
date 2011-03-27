@@ -85,15 +85,15 @@ public class Foret4 extends Banque {
 				new Point(32, 144), new Point(48, 144), new Point(0, 160),
 				new Point(16, 160), new Point(32, 160), new Point(48, 160),
 				new Point(0, 176), new Point(16, 176), new Point(32, 176),
-				new Point(48, 176), new Point(64, 128), new Point(80, 128),
+				new Point(64, 128), new Point(80, 128),
 				new Point(96, 128), new Point(112, 128), new Point(64, 144),
 				new Point(80, 144), new Point(96, 144), new Point(112, 144),
 				new Point(64, 160), new Point(80, 160), new Point(96, 160),
-				new Point(112, 160), new Point(64, 176), new Point(80, 176),
+				new Point(112, 160), new Point(80, 176),
 				new Point(96, 176), new Point(112, 176),
 				/* Ombres */
 				new Point(144, 144), new Point(160, 144), new Point(128, 160),
-				new Point(144, 160), new Point(160, 160), new Point(176, 160),
+				new Point(144, 160), new Point(176, 160),
 				new Point(144, 176), new Point(160, 176),
 				/* Estrade de pierre */
 				new Point(224, 144), new Point(240, 144), new Point(256, 144),
@@ -104,7 +104,11 @@ public class Foret4 extends Banque {
 				new Point(256, 176), new Point(272, 176), new Point(288, 176),
 				/* Piédestal */
 				new Point(272, 144), new Point(288, 144), new Point(272, 160),
-				new Point(288, 160) };
+				new Point(288, 160),
+				/* Close trees */
+				new Point(304, 0), new Point(304, 16), new Point(304, 32),
+				new Point(304, 48), new Point(304, 64)
+		};
 
 		pkmChanges = Arrays.asList(new GraphChange[] {new GraphChange("exteria8", 0, 0)});
 	}
