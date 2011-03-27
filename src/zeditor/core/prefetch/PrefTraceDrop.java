@@ -24,6 +24,7 @@ import zeditor.core.prefetch.complex.DelegateDraw;
 import zeditor.core.prefetch.complex.ForestBorder;
 import zeditor.core.prefetch.complex.Hill;
 import zeditor.core.prefetch.complex.Road;
+import zeditor.core.prefetch.complex.Water;
 import zildo.monde.map.Point;
 
 /**
@@ -36,7 +37,8 @@ public enum PrefTraceDrop {
 	PetitChemin(new Point(2, 2), new Road(false)),
 	GrandChemin(new Point(3, 3), new Road(true)),
 	PetiteLisiere(new Point(2, 2), new ForestBorder(false)),
-	GrandeLisiere(new Point(3, 3), new ForestBorder(true));
+	GrandeLisiere(new Point(3, 3), new ForestBorder(true)),
+	Eau(new Point(3, 3), new Water());
 	
 	Point size;
 	DelegateDraw method;
