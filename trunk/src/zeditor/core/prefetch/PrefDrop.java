@@ -45,8 +45,8 @@ public enum PrefDrop {
 	ArbreJaune(new Point(4, 5), new int[] {-1058, -1059, -1060, -1061, -1062, -1063, -1064, -1065,
 		-1066, -1067, -1068, -1069, 1070, 1071, 1072, 1073, 155, 156, 157, 158}),
 	PetiteLisiere(new Point(2, 2)),
-	GrandeLisiere(new Point(3, 3))
-		;
+	GrandeLisiere(new Point(3, 3)),
+	Eau(new Point(3, 3));
 
 	
 	Point size;
