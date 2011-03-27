@@ -20,10 +20,8 @@
 
 package zeditor.core.prefetch.complex;
 
-import zeditor.core.prefetch.PrefDrop;
 import zildo.monde.Hasard;
 import zildo.monde.map.Area;
-import zildo.monde.map.Point;
 
 /**
  * Render for road (little or big one)
@@ -31,9 +29,7 @@ import zildo.monde.map.Point;
  * @author Tchegito
  *
  */
-public class Road extends DelegateDraw {
-
-	boolean big;
+public class Road extends AbstractPatch12 {
 	
 	byte[] value_chemin=	// Valeurs en zone des chemins
     {0,0,0,0,0,0,0,0,
@@ -44,34 +40,29 @@ public class Road extends DelegateDraw {
     {-3,4,6,5,2,3,16,10,
      0,16,7,15,1,13,12,16};
     
+    int startRoad = 49;
 	public Road(boolean p_big) {
-		big=p_big;
-	}
-	
-	@Override
-	public void draw(Area p_map, Point p_start) {
-		int size=big ? 3 : 2;
-		int startRoad=49;
-		
-		for (int i=0;i<size;i++) {
-			for (int j=0;j<size;j++) {
-				int val=p_map.readmap(p_start.x+j, p_start.y+i);
-				if (val >= startRoad && val < startRoad+24) {
-					val=value_chemin[val - startRoad];
-					if (big) {
-						val=val | value_chemin[PrefDrop.GrandChemin.data[i*size +j]];
-					} else {
-						val=val | value_chemin[PrefDrop.PetitChemin.data[i*size +j]];
-					}
-					val=conv_value_chemin[val] + startRoad + 8;
-				    // On a 2 séries de 4 motifs pour ces chemins (8--11) et (12--15)
-					if (val > 11 && val < 16 && Hasard.lanceDes(5)) {
-						val-=4;
-					}
-					p_map.writemap(p_start.x+j, p_start.y+i, val);
-				}
-			}
-		}
+		super(p_big);
 	}
 
+	@Override
+	public void drawOneTile(Area p_map, int p_x, int p_y, int p_val) {
+		if (p_val > startRoad + 8 + 11 && p_val < startRoad + 8 + 16 && Hasard.lanceDes(5)) {
+			p_val-=4;
+		}
+		p_map.writemap(p_x, p_y, p_val);
+	}
+
+	public int toBinaryValue(int p_val) {
+		int i = p_val - startRoad;
+		if (i >=0 && i < value_chemin.length) {
+			return value_chemin[i];
+		} else {
+			return 0;
+		}
+	}
+	
+	public int toGraphicalValue(int p_val) {
+		return conv_value_chemin[p_val] + startRoad + 8;
+	}
 }
