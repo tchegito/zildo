@@ -18,6 +18,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 import zeditor.core.Options;
@@ -31,6 +33,8 @@ import zeditor.windows.subpanels.SpritePanel;
 import zeditor.windows.subpanels.StatsPanel;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.awt.ZildoScrollablePanel;
+
+import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
 
 
 /**
@@ -115,6 +119,12 @@ public class MasterFrame extends javax.swing.JFrame {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				try {
+					UIManager.setLookAndFeel(new NimbusLookAndFeel());
+				} catch (UnsupportedLookAndFeelException e) {
+					
+				}
+				
 				MasterFrame inst = new MasterFrame();
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
