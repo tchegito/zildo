@@ -274,7 +274,8 @@ public class PersoNJ extends Perso {
 								}
 							} else 
 							this.setAttente(getAttente() - 1);
-						} else {
+							// Stop hen's movements when it's flying (TODO : this isn't very clean)
+						} else if (quel_deplacement != MouvementPerso.SCRIPT_POULE || z == 0){
 							// On déplace le PNJ
 							if (pathFinder.target == null && MouvementPerso.SCRIPT_IMMOBILE!= quel_deplacement) {
 								//Pas de destination, donc on en fixe une dans la zone de déplacement
