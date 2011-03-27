@@ -20,15 +20,12 @@
 
 package zeditor.core.prefetch.complex;
 
-import zeditor.core.prefetch.PrefDrop;
-import zildo.monde.map.Area;
-import zildo.monde.map.Point;
 
 /**
  * @author Tchegito
  *
  */
-public class ForestBorder extends DelegateDraw {
+public class ForestBorder extends AbstractPatch12 {
 
 	byte[] value_border =new byte[] {
 		15, 0, 0, 7, 3, 11, 1, 2,
@@ -41,38 +38,29 @@ public class ForestBorder extends DelegateDraw {
 		-1, 82, 78, 88, 87, 89, 73, -1
 	};
 	
-	boolean big;
+	int startRoad=256 * 6 + 73;
 	
 	public ForestBorder(boolean p_big) {
-		big = p_big;
+		super(p_big);
 	}
-	@Override
-	public void draw(Area p_map, Point p_start) {
-		int size=big ? 3 : 2;
-		int startRoad=256 * 6 + 73;
-		
-		for (int i=0;i<size;i++) {
-			for (int j=0;j<size;j++) {
-				int val=p_map.readmap(p_start.x+j, p_start.y+i);
-				if (val >= startRoad && val < startRoad+16) {
-					val=value_border[val - startRoad];
-				} else {
-					val = 0;
-				}
-				if (big) {
-					val=val | value_border[PrefDrop.GrandeLisiere.data[i*size +j] - startRoad % 256];
-				} else {
-					val=val | value_border[PrefDrop.PetiteLisiere.data[i*size +j] - startRoad % 256];
-				}
-				val=conv_value_border[val];
-				if (val == -1) {
-					val = 54;
-				} else {
-					val = 256*6 + val;
-				}
-				p_map.writemap(p_start.x+j, p_start.y+i, val);
-			}
+	
+	public int toBinaryValue(int p_val) {
+		int i=p_val - startRoad;
+		if (i >=0 && i < value_border.length) {
+			return value_border[i];
+		} else {
+			return 0;
 		}
+	}
+	
+	public int toGraphicalValue(int p_val) {
+		int val = conv_value_border[p_val];
+		if (val == -1) {
+			val = 54;
+		} else {
+			val = 256*6 + val;
+		}
+		return val;
 	}
 
 }
