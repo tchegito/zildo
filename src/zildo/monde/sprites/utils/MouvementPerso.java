@@ -36,7 +36,9 @@ public enum MouvementPerso {
 	SCRIPT_ZONELANCE(6),
 	SCRIPT_ZONEARC(7),
 	SCRIPT_ELECTRIQUE(8),
-	SCRIPT_ABEILLE(9);
+	SCRIPT_ABEILLE(9),
+	SCRIPT_OISEAU(10),
+	SCRIPT_LAPIN(11);
 	
 	public int valeur;
 	
@@ -53,6 +55,10 @@ public enum MouvementPerso {
 			}
 		}
 		throw new RuntimeException("Le script de mouvement "+a+" n'existe pas.");
+	}
+	
+	public boolean isFlying() {
+		return this == SCRIPT_VOLESPECTRE || this == SCRIPT_OISEAU;
 	}
 	
 	public static String[] getValues() {

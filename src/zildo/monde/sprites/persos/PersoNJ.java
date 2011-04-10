@@ -314,7 +314,7 @@ public class PersoNJ extends Perso {
 								} else if (quel_deplacement == MouvementPerso.SCRIPT_ABEILLE) {
 									angle=Angle.fromInt(angle.value & 2);
 								}
-								if (quel_deplacement != MouvementPerso.SCRIPT_VOLESPECTRE) {
+								if (!quel_deplacement.isFlying()) {
 									// Collision ?
 									if (EngineZildo.mapManagement.collide((int) x, (int) y, this)) {
 										this.setX ( sx);
@@ -442,6 +442,14 @@ public class PersoNJ extends Perso {
 				break;
 			case ABEILLE:
 				add_spr=(angle.value & 2) + (compteur_animation / 30) % 2;
+				break;
+			case OISEAU_VERT:
+				if (angle == Angle.OUEST){
+					reverse = REVERSE_HORIZONTAL;
+				} else {
+					reverse = 0;
+				}
+				add_spr=(compteur_animation % 32) / 16;
 				break;
 			default:
 				add_spr=angle.value*2 + (getPos_seqsprite() % (4*Constantes.speed)) / (2*Constantes.speed);

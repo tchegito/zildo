@@ -83,6 +83,7 @@ public class SpriteSorter {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void clearSortArray()
 	{
+		clearEntirelySortArray();
 		for (int i=0;i<SORTY_REALMAX;i++) {
 			tab_tri[i][0]=null;
 		}
@@ -207,6 +208,7 @@ public class SpriteSorter {
 			bankOrder[phase][bankOrderPosition*4]  =currentBank;
 			bankOrder[phase][bankOrderPosition*4+1]=nbQuadFromSameBank;
 			bankOrder[phase][bankOrderPosition*4+2]=currentFX.ordinal();
+			bankOrder[phase][bankOrderPosition*4+3]=currentAlpha;
 			// Mark the end of sequences
 			bankOrder[phase][bankOrderPosition*4+4]=-1;
 		}

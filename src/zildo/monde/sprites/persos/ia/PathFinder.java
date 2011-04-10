@@ -117,16 +117,13 @@ public class PathFinder {
         
         return pos;
     }
-
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// determineDestination (SCRIPT_ZONE)
-	///////////////////////////////////////////////////////////////////////////////////////
-	// Set a location target(x,y) in the current perso, inside the movement area (zone_deplacement)
-	// This is where we assign a new position, horizontally and/or vertically depending on the
-	// character's script.
-	///////////////////////////////////////////////////////////////////////////////////////
-	public void determineDestination() {
+    
+    /**
+     * Set a location target(x,y) in the current perso, inside the movement area (zone_deplacement). 
+     * This is where we assign a new position, horizontally and/or vertically depending on the 
+     * character's script.
+     */
+    public void determineDestination() {
 		int j=13+3;
         float x=mobile.x;
         float y=mobile.y;
