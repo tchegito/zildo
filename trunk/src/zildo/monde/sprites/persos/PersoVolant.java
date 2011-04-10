@@ -21,12 +21,14 @@
 package zildo.monde.sprites.persos;
 
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.ia.PathFinderFlying;
+import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 
 public class PersoVolant extends PersoNJ {
 
-	public PersoVolant() {
+	public PersoVolant(PersoDescription p_desc) {
 		super();
 
 		setCptMouvement(100);
@@ -38,12 +40,19 @@ public class PersoVolant extends PersoNJ {
 		ombre.setSprModel(ElementDescription.SHADOW_SMALL);
 		addPersoSprites(ombre);
 		
-		pathFinder = new PathFinderFlying(this);
+		switch (p_desc) {
+		case OISEAU_VERT:
+			pathFinder = new PathFinderStraightFlying(this);
+			break;
+		default:
+			pathFinder = new PathFinderFlying(this);
+			break;
+		}
 	}
 	
 	@Override
 	public void finaliseComportement(int compteur_animation) {
-		// On déplace l'ombre du perso
+		// Move character's shadow
 		if (persoSprites.size() >0) {
 			Element ombre=persoSprites.get(0);
 			ombre.setX(x);

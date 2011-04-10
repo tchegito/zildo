@@ -251,15 +251,7 @@ public class EngineZildo {
         
         return retEvent;
     }
-	
-	void loadMap(String mapname)
-	{
-		// Clear existing entities
-		persoManagement.clearPersos();
-	
-		// Load map
-		mapManagement.loadMap(mapname, false);
-	}
+
 	
 	public static void askEvent(ClientEvent p_event) {
 		askedEvent=p_event;

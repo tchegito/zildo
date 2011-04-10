@@ -120,9 +120,10 @@ public class MapManagement {
 			zildo.walkTile(false);
 		}
 
-		if (!EngineZildo.game.editing
-				&& !EngineZildo.soundManagement.isForceMusic()) {
-			ClientEngineZildo.soundPlay.playMapMusic(currentMap);
+		if (!EngineZildo.game.editing) {
+			if (!EngineZildo.soundManagement.isForceMusic()) {
+				ClientEngineZildo.soundPlay.playMapMusic(currentMap);
+			}
 			switch (ClientEngineZildo.ambient.getWeather(currentMap)) {
 				case CLOUD:
 					ClientEngineZildo.filterCommand.active(CloudFilter.class, true, null);
@@ -165,7 +166,7 @@ public class MapManagement {
 		}
 
 		// Infos de base
-		EasyReadingFile file = new EasyReadingFile(p_mapname);
+		EasyReadingFile file = new EasyReadingFile("maps/"+p_mapname);
 		Area map = Area.deserialize(file, p_refMapname, true);
 
 		this.logger.info("Map loaded: " + p_mapname);
