@@ -22,9 +22,13 @@ package zeditor.tools.sprites;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.LogManager;
 
+import zeditor.tools.banque.Foret4;
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.tiles.MotifBankEdit;
 import zildo.client.gui.GUIDisplay;
@@ -70,10 +74,10 @@ public class Modifier {
         //new Modifier().saveFontes2();
         //new Modifier().saveBanque();
         //new Modifier().saveGears();
-        new Modifier().saveAllMaps();
+        //new Modifier().saveAllMaps();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
-        //new Modifier().ripDialogFromAllMaps();
+        new Modifier().ripDialogFromAllMaps();
     }
      
      public void generateImg() {
@@ -83,11 +87,12 @@ public class Modifier {
      }
      
      public void saveBanque() {
-    	 new Grotte().save();
+    	 new Foret4().save();
      }
      
      public void saveElements2() {
          SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
+         bankElem.clear();
          bankElem.loadImage("objets", COLOR_BLUE);
          int nSpr=bankElem.getNSprite();
          Zone[] elements=new ElementsPlus().getZones();
@@ -193,17 +198,22 @@ public class Modifier {
 		String path=Constantes.DATA_PATH;
 		File directory=new File(path);
 		
-		File[] maps = directory.listFiles(new FilenameFilter() {
+		FilenameFilter mapFilter = new FilenameFilter() {
     		public boolean accept(File dir, String name) {
     			return name.toLowerCase().endsWith(".map");
     		}
-		});
+		};
+		File[] maps = directory.listFiles(mapFilter);
+		List<File> mapsFile=new ArrayList();
+		//mapsFile.addAll(Arrays.asList(maps));
+		File[] scenarioMaps = new File(path+"/scenario").listFiles(mapFilter);
+		mapsFile.addAll(Arrays.asList(scenarioMaps));
 		LogManager.getLogManager().reset();
 		
         Game game = new Game(null, true);
         new Server(game, true);
-		for (File f : maps) {
-			String name=f.getName();
+		for (File f : mapsFile) {
+			String name="scenario/"+f.getName();
 			System.out.println("Processing "+name+"...");
 			MapManagement mapManagement=EngineZildo.mapManagement;
 
@@ -225,7 +235,7 @@ public class Modifier {
     
     public void ripDialogFromAllMaps() {
     	
-		String path=Constantes.DATA_PATH;
+		String path=Constantes.DATA_PATH+"anciens";
 		File directory=new File(path);
 		
 		File[] maps = directory.listFiles(new FilenameFilter() {
@@ -239,14 +249,14 @@ public class Modifier {
         new Server(game, true);
 		for (File f : maps) {
 			String name=f.getName();
-			EngineZildo.mapManagement.loadMap(name, false);
+			EngineZildo.mapManagement.loadMap("..\\anciens\\"+name, false);
 		        
 	        // Save the map into a temporary file
 			MapManagement mapManagement=EngineZildo.mapManagement;
 			Area map = mapManagement.getCurrentMap();
 			MapDialog dialogs = map.getMapDialog();
 			
-			String mapName=map.getName();
+			String mapName=map.getName().substring("..\\anciens\\".length());
 			mapName=mapName.substring(0, mapName.indexOf("."));
 			
 			// Behavior
@@ -263,11 +273,16 @@ public class Modifier {
 					String s = dialogs.getSentence(b, i);
 					if (s != null) {
 
-						System.out.println(mapName+"."+key+"."+i+"="+s);
+						String sentenceKey=mapName+"."+key+"."+i;
+						System.out.println(sentenceKey+"="+s);
+						
+						// Replace sentence by key in the map file
+			    		dialogs.setSentence(b, i, sentenceKey);
+
 					}
 				}
 			}
-			//mapManagement.saveMapFile(name);
+			mapManagement.saveMapFile(name);
 		}
     }
 }
