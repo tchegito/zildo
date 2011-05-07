@@ -7,6 +7,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 
 import zeditor.windows.MasterFrame;
+import zildo.prefs.Constantes;
 
 public class ExplorerFrameManager {
 	public static final int SAVE = 0;
@@ -79,7 +80,7 @@ public class ExplorerFrameManager {
 			// TODO Fenêtre d'erreur
 			return;
 		}
-		String relativeFilename=f.getAbsolutePath().replace(zildo.prefs.Constantes.MAP_PATH, "");
+		String relativeFilename=f.getAbsolutePath().replace(Constantes.DATA_PATH+Constantes.MAP_PATH, "");
 		
 		parent.getManager().loadMap(relativeFilename, null);
 		close();
