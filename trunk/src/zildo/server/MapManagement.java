@@ -20,6 +20,7 @@
 
 package zildo.server;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -42,6 +43,7 @@ import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.prefs.Constantes;
 
 public class MapManagement {
 
@@ -166,7 +168,7 @@ public class MapManagement {
 		}
 
 		// Infos de base
-		EasyReadingFile file = new EasyReadingFile("maps/"+p_mapname);
+		EasyReadingFile file = new EasyReadingFile(Constantes.MAP_PATH+p_mapname);
 		Area map = Area.deserialize(file, p_refMapname, true);
 
 		this.logger.info("Map loaded: " + p_mapname);
