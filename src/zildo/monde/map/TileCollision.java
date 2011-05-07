@@ -54,6 +54,12 @@ public class TileCollision {
     final IntSet walkable5 = new IntSet(45, 81, 82, 135, 137, 147, 173, 178, 210, 212, 213, 227, 228, 229, // +1024
             230, 231, 239, 240, 241);
 
+    // Foret 3
+    final IntSet walkable6 = new IntSet(0);
+    
+    // Foret 4
+    final IntSet walkable7 = new IntSet(107, 119, 162, 163, 164, 165, 166, 167, 168);
+
     public TileCollision() {
         buildTileInfos();
     }
@@ -348,7 +354,11 @@ public class TileCollision {
 			return walkable3.contains(on_map-512);
 		else if (on_map<1024)
 			return walkable4.contains(on_map-768);
-		else
+		else if (on_map<1280)
 			return walkable5.contains(on_map-1024);
+		else if (on_map<1536)
+			return walkable6.contains(on_map-1280);
+		else
+			return walkable7.contains(on_map-1536);
 	}
 }
