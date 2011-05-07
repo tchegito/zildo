@@ -35,8 +35,8 @@ import zildo.monde.map.Point;
  */
 public abstract class AbstractPatch12 extends DelegateDraw {
 
-	byte[] smallPatch = new byte[] { 8, 4, 2, 1};
-	byte[] bigPatch = new byte[] {8, 12, 4, 10, 15, 5, 2, 3, 1};
+	int[] smallPatch = new int[] { 8, 4, 2, 1};
+	int[] bigPatch = new int[] {8, 12, 4, 10, 15, 5, 2, 3, 1};
 
 	boolean big;
 	
@@ -65,26 +65,42 @@ public abstract class AbstractPatch12 extends DelegateDraw {
 	public void draw(Area p_map, Point p_start) {
 		int size=big ? 3 : 2;
 		
+		if (big) {
+			size = (int) Math.sqrt(bigPatch.length);
+		}
 		for (int i=0;i<size;i++) {
 			for (int j=0;j<size;j++) {
-				// Get map value
-				int val=p_map.readmap(p_start.x+j, p_start.y+i);
-				val=toBinaryValue(val);
-				// Add patch value
+				int patchValue;
 				if (big) {
-					val=val | bigPatch[i*size +j];
+					patchValue = bigPatch[i*size +j];
 				} else {
-					val=val | smallPatch[i*size +j];
+					patchValue = smallPatch[i*size +j];
 				}
-				// And render the arranged one
-				val=toGraphicalValue(val); 
-				drawOneTile(p_map, p_start.x+j, p_start.y+i, val);
+				arrangeOneTile(p_map, patchValue, p_start.x+j, p_start.y+i);
 			}
 		}
+	}
+	
+	public void arrangeOneTile(Area p_map, int p_patchValue, int p_x, int p_y) {
+		// Get map value
+		int val=p_map.readmap(p_x, p_y);
+		val=toBinaryValue(val);
+		// Add patch value
+		if (big) {
+			val=val | p_patchValue;
+		} else {
+			val=val | p_patchValue;
+		}
+		// And render the arranged one
+		val=toGraphicalValue(val); 
+		drawOneTile(p_map, p_x, p_y, val);		
 	}
 	
 	public void drawOneTile(Area p_map, int p_x, int p_y, int p_val) {
 		p_map.writemap(p_x, p_y, p_val);
 	}
 
+	final protected void setBigPatch(int[] p_bytes) {
+		bigPatch = p_bytes;
+	}
 }

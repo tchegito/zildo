@@ -31,6 +31,42 @@ import zildo.monde.map.Point;
 public abstract class DelegateDraw {
 	
 	public abstract void draw(Area p_map, Point p_start);
+
+	public Adjustment[] getAdjustments() {
+		return new Adjustment[] {};
+	}
+	
+	public AbstractPatch12 getAdjustmentClass() {
+		return null;
+	}
 	
 	public void finalizeDraw() {}
+
+	public void drawAdjustments(Area p_map, Point p_start) {
+		AbstractPatch12 adjDraw = getAdjustmentClass();
+		
+		for (int i=0;i<3;i++) {
+			for (int j=0;j<3;j++) {
+				int val=p_map.readmap(p_start.x+j, p_start.y+i);
+				for (Adjustment adj : getAdjustments()) {
+					if (adj.matchTile == val) {
+						Point p=new Point(p_start).translate(j, i);
+						for (int tile : adj.addedTiles) {
+							p = p.translate(adj.a.coords);
+							if (adjDraw != null) {
+								int binaryValue=adjDraw.toBinaryValue(tile);
+								if (binaryValue == 0) {
+									p_map.writemap(p.x, p.y, tile);
+								} else {
+									adjDraw.arrangeOneTile(p_map, binaryValue, p.x, p.y);
+								}
+							} else {
+								p_map.writemap(p.x, p.y, tile);
+							}
+						}
+					}
+				}
+			}
+		}		
+	}
 }

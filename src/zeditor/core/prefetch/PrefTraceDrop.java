@@ -22,7 +22,7 @@ package zeditor.core.prefetch;
 
 import zeditor.core.prefetch.complex.DelegateDraw;
 import zeditor.core.prefetch.complex.ForestBorder;
-import zeditor.core.prefetch.complex.Hill;
+import zeditor.core.prefetch.complex.HillTop;
 import zeditor.core.prefetch.complex.Road;
 import zeditor.core.prefetch.complex.Water;
 import zildo.monde.map.Point;
@@ -33,7 +33,8 @@ import zildo.monde.map.Point;
  */
 public enum PrefTraceDrop {
 
-	Colline(new Point(0, 0), new Hill()), 
+	PetiteColline(new Point(4, 5), new HillTop(false)), 
+	GrandeColline(new Point(4, 5), new HillTop(true)), 
 	PetitChemin(new Point(2, 2), new Road(false)),
 	GrandChemin(new Point(3, 3), new Road(true)),
 	PetiteLisiere(new Point(2, 2), new ForestBorder(false)),

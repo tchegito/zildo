@@ -29,7 +29,9 @@ import java.util.List;
  */
 public enum Prefetch {
 
-	Colline(PrefKind.TraceDrop), CollineGauche(PrefKind.Drop), CollineDroite(PrefKind.Drop), CollineBordure(PrefKind.Colour),
+	PetiteColline(PrefKind.TraceDrop), 
+	GrandeColline(PrefKind.TraceDrop), 
+	CollineGauche(PrefKind.Drop), CollineDroite(PrefKind.Drop), CollineBordure(PrefKind.Colour),
 	CollineMarron(PrefKind.Colour), PetitChemin(PrefKind.TraceDrop), GrandChemin(PrefKind.TraceDrop), Eau(PrefKind.TraceDrop),
 	
 	Arbre(PrefKind.Drop), Souche(PrefKind.Drop), Statue(PrefKind.Drop), ArcheVillage(PrefKind.Drop), GrossePierre(PrefKind.Drop),
