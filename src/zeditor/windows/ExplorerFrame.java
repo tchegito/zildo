@@ -126,7 +126,7 @@ public class ExplorerFrame extends javax.swing.JDialog {
 		if (fileChooser == null) {
 			fileChooser = new JFileChooser();
 			fileChooser.setFileFilter(new FileNameExtensionFilter("Cartes Zildo","MAP"));
-			fileChooser.setCurrentDirectory(new File(Constantes.DATA_PATH));
+			fileChooser.setCurrentDirectory(new File(Constantes.MAP_PATH));
 			fileChooser.setControlButtonsAreShown(false);
 		}
 		return fileChooser;
