@@ -180,7 +180,7 @@ public class MapManagement {
 		currentMap.serialize(file);
 		EasyWritingFile serializedMap = new EasyWritingFile(file);
 
-		serializedMap.saveFile(p_fileName);
+		serializedMap.saveFile(Constantes.MAP_PATH + p_fileName);
 	}
 
 	public boolean isWalkable(int p_onmap) {
