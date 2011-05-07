@@ -25,6 +25,7 @@ import java.util.List;
 
 import zildo.fwk.net.TransferObject;
 import zildo.fwk.script.xml.TriggerElement;
+import zildo.fwk.ui.UIText;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
 import zildo.monde.quest.actions.BuyingAction;
 import zildo.monde.sprites.persos.Perso;
@@ -81,6 +82,8 @@ public class DialogManagement {
 			
 	        sentence = dialogs.getSentence(behav, compteDial);
 			
+	        sentence=UIText.getGameText(sentence);
+	        
 	        // Update perso about next sentence he(she) will say
 	        int posSharp = sentence.indexOf("#");
 	        int posDollar = sentence.indexOf("$");
