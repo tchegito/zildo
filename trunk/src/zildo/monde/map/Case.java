@@ -31,6 +31,7 @@ public class Case implements EasySerializable {
 	private int n_motif_masque;
 	private int n_banque_masque;
 	private int n_tile;	
+	private boolean groundTransition;	// Back to fore ground	(n_banque | 64)
 	private int z;	// Result of analysis
 	
 	

@@ -225,6 +225,7 @@ public class MapManagement {
 		if (quelElement != null && quelElement.flying
 				&& quelElement.getAngle() != null
 				&& SpriteEntity.ENTITYTYPE_PERSO != quelElement.getEntityType()) {
+			// Flying object
 			angleFlying = quelElement.getAngle();
 
 			if (quelElement.getCollision() != null) {

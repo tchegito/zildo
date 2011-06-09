@@ -163,21 +163,33 @@ public class Area implements EasySerializable {
 	// readArea
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// IN : coordinates on Area
+	//      foreground: FALSE=on the floor TRUE=foreground
 	// OUT: return motif + bank*256
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Return n_motif + n_banque*256 from a given position on the Area
-	public int readmap(int x, int y) {
+	public int readmap(int x, int y, boolean p_foreground) {
 		Case temp = this.get_mapcase(x, y + 4);
 		if (temp == null) {
 			return -1;
 		}
-		int a = temp.getN_banque() & 31;
-		int b = temp.getN_motif();
-		/*
-		 * if (a==2 && b==0) { a=temp.n_banque_masque & 31; b=temp.n_motif_masque; }
-		 */
+		int a,b;
+		
+		// Is there two layers on this tile ?
+		boolean masked = (temp.getN_banque() & 128) != 0;
+		
+		if (p_foreground && masked) {
+			a=temp.getN_banque_masque() & 31;
+			b=temp.getN_motif_masque();
+		} else {
+			a = temp.getN_banque() & 31;
+			b = temp.getN_motif();
+		}
 		a = a << 8;
 		return a + b;
+	}
+	
+	public int readmap(int x, int y) {
+		return readmap(x, y, false);
 	}
 	
 	public int readAltitude(int x, int y) {
