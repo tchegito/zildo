@@ -202,6 +202,7 @@ public class PlayerManagement {
 					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, heros);
 					
 				} else {
+					heros.setForeground(false);
 					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, heros);
 				}
 				heros.setAttente(0);
