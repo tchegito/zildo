@@ -22,8 +22,6 @@ package zildo.fwk.bank;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import zildo.fwk.file.EasyReadingFile;
 import zildo.monde.sprites.SpriteModel;
@@ -38,8 +36,6 @@ import zildo.monde.sprites.SpriteModel;
 */
 
 public class SpriteBank {
-	
-	protected Logger logger=Logger.getLogger("SpriteBank");
 	
 	public static final int BANK_ZILDO = 0;
 	public static final int BANK_ELEMENTS = 1;
@@ -63,15 +59,11 @@ public class SpriteBank {
 		this.nSprite=0;
 		models=new ArrayList<SpriteModel>();
 		this.sprites_buf=null;
-	
-		logger.log(Level.INFO, "Creating SpriteBank");
 	}
 	
 	@Override
 	public void finalize()
 	{
-		logger.log(Level.INFO, "Deleting SpriteBank");
-	
 		// No need to do that in Java
 		
 		// sprites_buf is already deleted in SpriteManagement

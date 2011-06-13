@@ -23,6 +23,7 @@ import zildo.fwk.ZUtils;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.Case;
+import zildo.monde.map.Tile;
 import zildo.monde.map.Zone;
 
 /**
@@ -252,8 +253,7 @@ public class TileSet extends ImageSet {
             		list.add(null);
             	} else {
 	                c=new Case();
-	                c.setN_banque(bank);
-	                c.setN_motif(bridge.getMotifParPoint(tileName, j, i));
+	                c.setBackTile(new Tile(bank, bridge.getMotifParPoint(tileName, j, i)));
 	                list.add(c);
             	}
                 // On ne compte la largeur que pour la première ligne
@@ -288,10 +288,11 @@ public class TileSet extends ImageSet {
         for (int j=0;j<height;j++) {
         	for (int i=0;i<width;i++) {
         		Case theCase=itCase.next();
-        		int nBank=theCase.getN_banque();
-        		drawMotif(i, j, nBank & 63, theCase.getN_motif(), false);
-        		if (nBank>127) {
-            		drawMotif(i, j, theCase.getN_banque_masque() & 63, theCase.getN_motif_masque(), true);
+        		Tile back = theCase.getBackTile();
+        		Tile fore = theCase.getForeTile();
+        		drawMotif(i, j, back.bank, back.index, false);
+        		if (fore != null) {
+            		drawMotif(i, j, fore.bank, fore.index, true);
         		}
         	}
         }

@@ -24,6 +24,7 @@ import zeditor.core.tiles.TileSelection;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
+import zildo.monde.map.Tile;
 
 /**
  * @author Tchegito
@@ -47,14 +48,13 @@ public class PrefetchSelection extends TileSelection {
 				for (int i=0;i<width;i++) {
 					int d=drop.data[j*width + i];
 					Case aCase=new Case();
+					Tile back = aCase.getBackTile();
 					if (d<0) {	// Motif en foreground
-						aCase.setN_banque(128);
-						aCase.setN_motif(-1);
-						aCase.setN_motif_masque(-d % 256);
-						aCase.setN_banque_masque(-d / 256);
+						back.index = -1;
+						aCase.setForeTile(new Tile(-d / 256, -d % 256));
 					} else {
-						aCase.setN_motif(d % 256);
-						aCase.setN_banque(d / 256);
+						back.index = d % 256;
+						back.bank = d / 256;
 					}
 					items.add(aCase);
 				}

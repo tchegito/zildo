@@ -203,6 +203,6 @@ public class Foret1 extends Banque {
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("exteria1", 0, 0), 
 				new GraphChange("exteria2", 109, 192),
 				new GraphChange("exteria1", 139, -192), new GraphChange("exteria3", 186, 192 + 176),
-				new GraphChange("exteria2", 209, -160) });
+				new GraphChange("exteria2", 209, -176) });
 	}
 }

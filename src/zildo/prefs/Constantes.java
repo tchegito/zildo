@@ -39,7 +39,7 @@ public class Constantes {
 	public static String SAVEGAME_DIR = "saves"+File.separator;
 	public static String SAVEGAME_FILE = "save.z";
 	
-	public static int CURRENT_VERSION = 1094;	// Version 1.094
+	public static int CURRENT_VERSION = 1095;	// Version 1.095
 	
 	// Tile Engine
 	public static final int TILEENGINE_WIDTH = 64;		// Max Number of tiles

@@ -40,6 +40,7 @@ import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.map.Tile;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
@@ -131,10 +132,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 				Case empty=new Case();
 				// Get the right empty tile associated to map's "atmosphere"
 				int nTile=EngineZildo.mapManagement.getCurrentMap().getAtmosphere().getEmptyTile();
-				empty.setN_banque(nTile / 256);
-				empty.setN_motif(nTile % 256);	// Empty in outside
-				empty.setN_banque_masque(0);
-				empty.setN_motif_masque(0);
+				Tile back = empty.getBackTile();
+				back.bank = nTile / 256;
+				back.index = nTile % 256;	// Empty in outside
 				for (int i=0;i<size.x*size.y;i++) {
 				    cases.add(empty);
 				}

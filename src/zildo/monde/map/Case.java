@@ -26,72 +26,47 @@ import zildo.fwk.file.EasySerializable;
 
 public class Case implements EasySerializable {
 
-	private int n_motif;
-	private int n_banque;
-	private int n_motif_masque;
-	private int n_banque_masque;
-	private int n_tile;	
-	private boolean groundTransition;	// Back to fore ground	(n_banque | 64)
+	private Tile back;
+	private Tile fore;
+	
+	private Angle transition; // Back to fore ground	(n_banque | 64)
+	
 	private int z;	// Result of analysis
 	
 	
 	public Case(Case p_original) {
-		this.n_motif = p_original.n_motif;
-		this.n_banque = p_original.n_banque;
-		this.n_motif_masque = p_original.n_motif_masque;
-		this.n_banque_masque = p_original.n_banque_masque;
-		this.n_tile = p_original.n_tile;
+		this.back = p_original.getBackTile().clone();
+		if (p_original.getForeTile() != null) {
+			this.fore = p_original.getForeTile().clone();
+		}
 		this.z = p_original.z;
 	}
 
-	public int getN_motif() {
-		return n_motif;
+	public Tile getBackTile() {
+		return back;
 	}
-
-	public void setN_motif(int n_motif) {
-		this.n_motif = n_motif;
+	
+	public void setBackTile(Tile p_tile) {
+		this.back = p_tile;
 	}
-
-	public int getN_banque() {
-		return n_banque;
+	
+	public Tile getForeTile() {
+		return fore;
 	}
-
-	public void setN_banque(int n_banque) {
-		this.n_banque = n_banque;
+	
+	public void setForeTile(Tile p_tile) {
+		this.fore = p_tile;
 	}
-
-	public int getN_motif_masque() {
-		return n_motif_masque;
-	}
-
-	public void setN_motif_masque(int n_motif_masque) {
-		this.n_motif_masque = n_motif_masque;
-	}
-
-	public int getN_banque_masque() {
-		return n_banque_masque;
-	}
-
-	public void setN_banque_masque(int n_banque_masque) {
-		this.n_banque_masque = n_banque_masque;
-	}
-
-	public int getN_tile() {
-		return n_tile;
-	}
-
-	public void setN_tile(int n_tile) {
-		this.n_tile = n_tile;
-	}
-
+	
 	public Case() {
+		back = new Tile(0, 0);
 		z=0;
 	}
 
 	public int getAnimatedMotif(int compteur_animation)
 	{
-		int motif=this.n_motif;
-		switch (this.n_banque)
+		int motif=back.index;
+		switch (back.bank)
 		{
 		// On gère les sprites animés
 			case 0:
@@ -163,11 +138,10 @@ public class Case implements EasySerializable {
 	 * @param p_buffer
 	 */
 	public void serialize(EasyBuffering p_buffer) {
-		p_buffer.put(this.getN_banque());
-		p_buffer.put(this.getN_banque_masque());
-		p_buffer.put(this.getN_motif());
-		p_buffer.put(this.getN_motif_masque());
-		p_buffer.put(this.getN_tile());
+		p_buffer.put((byte) back.bank);
+		p_buffer.put((byte) back.index);
+		p_buffer.put((byte) fore.bank);
+		p_buffer.put((byte) fore.index);
 	}
 	
 	/**
@@ -177,21 +151,16 @@ public class Case implements EasySerializable {
 	 */
 	public static Case deserialize(EasyBuffering p_buffer) {
 		Case mapCase=new Case();
-		mapCase.setN_banque(p_buffer.readInt());
-		mapCase.setN_banque_masque(p_buffer.readInt());
-		mapCase.setN_motif(p_buffer.readInt());
-		mapCase.setN_motif_masque(p_buffer.readInt());
-		mapCase.setN_tile(p_buffer.readInt());
+		int index1 = p_buffer.readUnsignedByte();
+		int bank1 = p_buffer.readUnsignedByte() & 63;
+		int index2 = p_buffer.readUnsignedByte();
+		int bank2 = p_buffer.readUnsignedByte();
 		
-		return mapCase;
-	}
-
-	public void setMasked(boolean p_mask) {
-		if (p_mask) {
-			setN_banque(getN_banque() | 128);
-		} else {
-			setN_banque(getN_banque() & 127);
+		mapCase.setBackTile(new Tile(bank1, index1));
+		if (index2 != 0 || bank2 != 0) {
+			mapCase.setForeTile(new Tile(bank2, index2));
 		}
+		return mapCase;
 	}
 	
 	public int getZ() {

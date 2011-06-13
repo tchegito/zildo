@@ -155,7 +155,7 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	Case get_animatedAreacase(int x, int y, int compteur_animation) {
 		Case temp = this.get_mapcase(x, y);
-		temp.setN_motif(temp.getAnimatedMotif(compteur_animation));
+		temp.getBackTile().index=temp.getAnimatedMotif(compteur_animation);
 		return temp;
 	}
 
@@ -175,15 +175,16 @@ public class Area implements EasySerializable {
 		int a,b;
 		
 		// Is there two layers on this tile ?
-		boolean masked = (temp.getN_banque() & 128) != 0;
+		boolean masked = temp.getForeTile() != null;
 		
+		Tile tile;
 		if (p_foreground && masked) {
-			a=temp.getN_banque_masque() & 31;
-			b=temp.getN_motif_masque();
+			tile = temp.getForeTile();
 		} else {
-			a = temp.getN_banque() & 31;
-			b = temp.getN_motif();
+			tile =temp.getBackTile();
 		}
+		a = tile.bank & 31;
+		b = tile.index;
 		a = a << 8;
 		return a + b;
 	}
@@ -210,10 +211,9 @@ public class Area implements EasySerializable {
 		if (temp == null) {
 			temp=new Case();
 		}
-		temp.setN_motif(quoi & 255);
-		// Don't squeeze the foreground tile
-		int nBanque=temp.getN_banque() & 0xb0;
-		temp.setN_banque(quoi >> 8 | nBanque);
+		Tile back = temp.getBackTile();
+		back.index = quoi & 255;
+		back.bank = quoi >> 8;
 		this.set_mapcase(x, y + 4, temp);
 
 		changes.add(new Point(x, y + 4));
@@ -512,11 +512,8 @@ public class Area implements EasySerializable {
 		for (int i = 0; i < this.getDim_y(); i++) {
 			for (int j = 0; j < this.getDim_x(); j++) {
 				Case temp = this.get_mapcase(j, i + 4);
-
-				p_file.put((byte) temp.getN_motif());
-				p_file.put((byte) temp.getN_banque());
-				p_file.put((byte) temp.getN_motif_masque());
-				p_file.put((byte) temp.getN_banque_masque());
+				
+				temp.serialize(p_file);
 			}
 		}
 
@@ -604,23 +601,20 @@ public class Area implements EasySerializable {
 		// La map
 		for (int i = 0; i < map.getDim_y(); i++)
 			for (int j = 0; j < map.getDim_x(); j++) {
-				Case temp = new Case();
-				temp.setN_motif(p_buffer.readUnsignedByte());
-				temp.setN_banque(p_buffer.readUnsignedByte());
-				temp.setN_motif_masque(p_buffer.readUnsignedByte());
-				temp.setN_banque_masque(p_buffer.readUnsignedByte());
+				Case temp = Case.deserialize(p_buffer);
 
 				map.set_mapcase(j, i + 4, temp);
 
 				if (p_spawn) {
-					if (temp.getN_motif() == 99 && temp.getN_banque() == 1) {
+					Tile backTile = temp.getBackTile();
+					if (backTile.index == 99 && backTile.bank == 1) {
 						// Fumée de cheminée
 						spriteManagement.spawnSpriteGeneric(SpriteAnimation.SMOKE, j * 16, i * 16, 0, null, null);
 					}
 					// Is this chest already opened ?
-					if (temp.getN_motif() == (743 & 255) && temp.getN_banque() == 2) {
+					if (backTile.index == (743 & 255) && backTile.bank == 2) {
 						if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
-							temp.setN_motif(744 & 255);
+							backTile.index=744 & 255;
 						}
 					}
 				}
@@ -797,10 +791,8 @@ public class Area implements EasySerializable {
                     for (int l = -3; l < 0; l++) {
                         for (int k = -2; k < 3; k++) {
                             c = get_mapcase(i + k, j + 4 + l);
-                            if ((c.getN_banque() & Area.M_MOTIF_MASQUE) == 0) {
-                                c.setN_banque_masque(c.getN_banque());
-                                c.setN_motif_masque(c.getN_motif());
-                                c.setN_banque(c.getN_banque() | Area.M_MOTIF_MASQUE);
+                            if (c.getForeTile() == null) {
+                            	c.setForeTile(c.getBackTile());
                             }
                         }
                     }

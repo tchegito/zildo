@@ -20,16 +20,11 @@
 
 package zildo.fwk.bank;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import zildo.fwk.file.EasyReadingFile;
 
 
 public class MotifBank {
 
-	protected final Logger logger=Logger.getLogger("MotifBank");
-	
 	protected short[] motifs_map; // Pointeur sur nos graphs
 	private String name;				// Max length should be 12
 	protected int nb_motifs;		// Nombre de motifs dans la banque
@@ -54,8 +49,6 @@ public class MotifBank {
 	}
 
 	public MotifBank() {
-		logger.log(Level.INFO, "Creating MotifBank");
-	
 	}
 	
 	//Assignment operator to work out with STL
