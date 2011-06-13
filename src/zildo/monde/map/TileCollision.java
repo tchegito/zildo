@@ -58,7 +58,7 @@ public class TileCollision {
     final IntSet walkable6 = new IntSet(0);
     
     // Foret 4
-    final IntSet walkable7 = new IntSet(107, 119, 162, 163, 164, 165, 166, 167, 168);
+    final IntSet walkable7 = new IntSet(107, 116, 119, 162, 163, 164, 165, 166, 167, 168);
 
     public TileCollision() {
         buildTileInfos();
