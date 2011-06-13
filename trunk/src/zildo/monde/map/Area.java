@@ -73,8 +73,6 @@ public class Area implements EasySerializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	static public int M_MOTIF_MASQUE = 128;
-
 	// For roundAndRange
 	static public int ROUND_X = 0;
 	static public int ROUND_Y = 0;

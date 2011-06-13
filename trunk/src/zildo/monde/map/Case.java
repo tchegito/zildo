@@ -60,6 +60,7 @@ public class Case implements EasySerializable {
 	
 	public Case() {
 		back = new Tile(0, 0);
+		fore = null;
 		z=0;
 	}
 
@@ -138,10 +139,13 @@ public class Case implements EasySerializable {
 	 * @param p_buffer
 	 */
 	public void serialize(EasyBuffering p_buffer) {
-		p_buffer.put((byte) back.bank);
+		int isMasque = fore != null ? 128 : 0;
 		p_buffer.put((byte) back.index);
-		p_buffer.put((byte) fore.bank);
-		p_buffer.put((byte) fore.index);
+		p_buffer.put((byte) (back.bank | isMasque));
+		if (fore != null) {
+			p_buffer.put((byte) fore.index);
+			p_buffer.put((byte) fore.bank);
+		}
 	}
 	
 	/**
@@ -152,14 +156,16 @@ public class Case implements EasySerializable {
 	public static Case deserialize(EasyBuffering p_buffer) {
 		Case mapCase=new Case();
 		int index1 = p_buffer.readUnsignedByte();
-		int bank1 = p_buffer.readUnsignedByte() & 63;
-		int index2 = p_buffer.readUnsignedByte();
-		int bank2 = p_buffer.readUnsignedByte();
-		
-		mapCase.setBackTile(new Tile(bank1, index1));
-		if (index2 != 0 || bank2 != 0) {
-			mapCase.setForeTile(new Tile(bank2, index2));
+		int bank1 = p_buffer.readUnsignedByte();
+		if ((bank1 & 128) != 0) {
+			int index2 = p_buffer.readUnsignedByte();
+			int bank2 = p_buffer.readUnsignedByte();
+			if ((bank1 & 128) != 0) { //bank2 != 0 || index2 != 0) {
+				mapCase.setForeTile(new Tile(bank2, index2));
+			}
 		}
+		bank1&=127;
+		mapCase.setBackTile(new Tile(bank1, index1));
 		return mapCase;
 	}
 	

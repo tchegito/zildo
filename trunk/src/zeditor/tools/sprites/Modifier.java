@@ -39,6 +39,7 @@ import zildo.monde.Game;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.map.Area;
+import zildo.monde.map.Case;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -73,9 +74,9 @@ public class Modifier {
         //new Modifier().fixPnj2();
         //new Modifier().saveElements2();
         //new Modifier().saveFontes2();
-        new Modifier().saveBanque();
+        //new Modifier().saveBanque();
         //new Modifier().saveGears();
-        //new Modifier().saveAllMaps();
+        new Modifier().saveAllMaps();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
        // new Modifier().ripDialogFromAllMaps();
@@ -197,24 +198,21 @@ public class Modifier {
     public void saveAllMaps() {
     	
 		String path=Constantes.DATA_PATH;
-		File directory=new File(path);
 		
 		FilenameFilter mapFilter = new FilenameFilter() {
     		public boolean accept(File dir, String name) {
     			return name.toLowerCase().endsWith(".map");
     		}
 		};
-		File[] maps = directory.listFiles(mapFilter);
-		List<File> mapsFile=new ArrayList();
-		//mapsFile.addAll(Arrays.asList(maps));
-		File[] scenarioMaps = new File(path+"/scenario").listFiles(mapFilter);
+		List<File> mapsFile=new ArrayList<File>();
+		File[] scenarioMaps = new File(path+"/maps").listFiles(mapFilter);
 		mapsFile.addAll(Arrays.asList(scenarioMaps));
 		LogManager.getLogManager().reset();
 		
         Game game = new Game(null, true);
         new Server(game, true);
 		for (File f : mapsFile) {
-			String name="scenario/"+f.getName();
+			String name=f.getName();
 			System.out.println("Processing "+name+"...");
 			MapManagement mapManagement=EngineZildo.mapManagement;
 
