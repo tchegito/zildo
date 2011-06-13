@@ -7,6 +7,7 @@ import zeditor.windows.subpanels.SelectionKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
+import zildo.monde.map.Tile;
 
 /**
  * Cette classe représente une sélection du TileSet. Elle est composée de :
@@ -150,23 +151,23 @@ public class TileSelection extends CaseSelection {
 						// We know that this is a valid location
 						Case c=map.get_mapcase(dx, dy+4);
 						// Apply modifications
-						int nMotif=item.getN_motif();
-						if (nMotif != -1 && !p_mask) {	// Smash the previous tile
-							c.setN_banque(item.getN_banque());
-							c.setN_motif(nMotif);
+						Tile tile = item.getBackTile();
+						if (tile.index != -1 && !p_mask) {	// Smash the previous tile
+							c.setBackTile(item.getBackTile());
 						} else {
-							if (item.getN_motif() == 54) {
+							//TODO : Check this
+							/*
+							if (tile.index == 54) {
 								c.setMasked(false);
 							} else {
 								c.setMasked(true);
 							}
+							*/
 						}
 						if (p_mask) {
-							c.setN_banque_masque(item.getN_banque());
-							c.setN_motif_masque(item.getN_motif());
+							c.setForeTile(item.getBackTile());
 						} else {
-							c.setN_banque_masque(item.getN_banque_masque());
-							c.setN_motif_masque(item.getN_motif_masque());
+							c.setForeTile(item.getForeTile());
 						}
 					}
 				}

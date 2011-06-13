@@ -34,6 +34,7 @@ import zildo.fwk.gfx.effect.CloudGenerator;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
+import zildo.monde.map.Tile;
 import zildo.prefs.Constantes;
 
 // V1.0
@@ -208,18 +209,13 @@ public class TileEngine extends TextureEngine {
 				// Get corresponding case on the map
 				Case mapCase=theMap.get_mapcase(x,y+4);
 				if (mapCase != null) {
-					int n_motif=mapCase.getN_motif();
-					int xTex=(n_motif % 16) * 16;
-					int yTex=(n_motif / 16) * 16 +1;
-					int bank=mapCase.getN_banque() & 63;
-					int nTile=0;
-					nTile=meshBACK[bank].addTile( (16 * x),
+					Tile back = mapCase.getBackTile();
+					int xTex=(back.index % 16) * 16;
+					int yTex=(back.index / 16) * 16 +1;
+					meshBACK[back.bank].addTile( (16 * x),
 													   (16 * y),
 													   xTex,
 													   yTex);
-		
-					// Store tile number in Case object to future access
-					mapCase.setN_tile(nTile);
 				}
 			}
 		}
@@ -233,12 +229,11 @@ public class TileEngine extends TextureEngine {
 			{
 				// Get corresponding foreground case on the map
 				Case mapCase=theMap.get_mapcase(x,y+4);
-				if (mapCase != null && (mapCase.getN_banque() & Area.M_MOTIF_MASQUE)!=0) {
-					int n_motif=mapCase.getN_motif_masque();
-					int xTex=(n_motif % 16) * 16;
-					int yTex=(n_motif / 16) * 16+1;
-					int bank=mapCase.getN_banque_masque() & 63;
-					meshFORE[bank].addTile( 16 * x,
+				if (mapCase != null && mapCase.getForeTile() != null) {
+					Tile fore = mapCase.getForeTile();
+					int xTex=(fore.index % 16) * 16;
+					int yTex=(fore.index / 16) * 16+1;
+					meshFORE[fore.bank].addTile( 16 * x,
 									  16 * y,
 									  xTex,
 									  yTex);
@@ -354,10 +349,11 @@ public class TileEngine extends TextureEngine {
 						// Get corresponding case on the map
 						Case mapCase=theMap.get_mapcase(x,y+4);
 						if (mapCase != null) {
+							Tile back = mapCase.getBackTile();
 							int n_motif=mapCase.getAnimatedMotif(compteur_animation);
 							int xTex=(n_motif % 16) * 16;
 							int yTex=(n_motif / 16) * 16;
-							int bank=mapCase.getN_banque() & 63;
+							int bank=back.bank;
 							if (bank<0 || bank>=Constantes.NB_MOTIFBANK) {
 								throw new RuntimeException("We got a big problem");
 							}
@@ -365,12 +361,12 @@ public class TileEngine extends TextureEngine {
 														(16 * y) - cameraNew.y + offset.y,
 														xTex,
 														yTex);
-							if ((mapCase.getN_banque() & Area.M_MOTIF_MASQUE)!=0) {
-								n_motif=mapCase.getN_motif_masque();
+							Tile fore = mapCase.getForeTile();
+							if (fore != null) {
+								n_motif=fore.index;
 								xTex=(n_motif % 16) * 16;
 								yTex=(n_motif / 16) * 16; //+1;
-								bank=mapCase.getN_banque_masque() & 63;
-								meshFORE[bank].updateTile( (16 * x) - cameraNew.x + offset.x,
+								meshFORE[fore.bank].updateTile( (16 * x) - cameraNew.x + offset.x,
 														(16 * y) - cameraNew.y + offset.y,
 														xTex,
 														yTex);

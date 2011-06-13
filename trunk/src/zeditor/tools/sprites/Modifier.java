@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.LogManager;
 
+import zeditor.tools.banque.Foret2;
 import zeditor.tools.banque.Foret4;
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.tiles.MotifBankEdit;
@@ -72,12 +73,12 @@ public class Modifier {
         //new Modifier().fixPnj2();
         //new Modifier().saveElements2();
         //new Modifier().saveFontes2();
-        //new Modifier().saveBanque();
+        new Modifier().saveBanque();
         //new Modifier().saveGears();
         //new Modifier().saveAllMaps();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
-        new Modifier().ripDialogFromAllMaps();
+       // new Modifier().ripDialogFromAllMaps();
     }
      
      public void generateImg() {
@@ -87,7 +88,7 @@ public class Modifier {
      }
      
      public void saveBanque() {
-    	 new Foret4().save();
+    	 new Foret2().save();
      }
      
      public void saveElements2() {

@@ -266,14 +266,11 @@ public abstract class Perso extends Element {
 		persoSprites=new ArrayList<Element>();
 	
 		pathFinder=new PathFinder(this);
-		
-		logger.info("Creating Perso");
 	
 	}
 	
 	@Override
 	public void finalize() {
-		logger.info("Deleting Perso");
 		// Delete linked elements
 		if (persoSprites != null && persoSprites.size() > 0) {
 			for (Element e : persoSprites) {
@@ -281,7 +278,6 @@ public abstract class Perso extends Element {
 			}
 			persoSprites.clear();
 		}
-		logger.info(" ... Ok");
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
