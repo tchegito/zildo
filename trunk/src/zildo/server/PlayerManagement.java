@@ -356,7 +356,7 @@ public class PlayerManagement {
 			float diffx=xx - heros.x;
 			float diffy=yy - heros.y;
 
-			// Calculate the sight angle (for boomerang) to have a 8-value angle, instead a 4 value
+			// Calculate the sight angle (for boomerang) to have a 8-valued angle, instead a 4-valued
 			Angle sightAngle=heros.getAngle();
 			if (diffx != 0 && diffy != 0) {
 				sightAngle=Angle.fromDirection((int) diffx, (int) diffy);

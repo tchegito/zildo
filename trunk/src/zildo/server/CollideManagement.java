@@ -258,6 +258,15 @@ public class CollideManagement {
 		int radius2=p_collided.cr;
 		Point size1=p_collider.size;
 		Point size2=p_collided.size;
+		
+		// Check for same layer (except for flying ones)
+		if (p_collider.perso != null && p_collided.perso != null) {
+			if (p_collider.perso.isForeground() != p_collided.perso.isForeground() &&
+					p_collider.perso.flying != p_collided.perso.flying) {
+				return false;
+			}
+		}
+		
         // Check for each
         if (size1 == null && size2 == null) {
             // Collision between 2 circles

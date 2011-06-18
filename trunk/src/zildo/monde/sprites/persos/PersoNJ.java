@@ -171,6 +171,7 @@ public class PersoNJ extends Perso {
 				// Zildo has been caught, so the monster try to reach him, or run away (hen)
 				boolean fear=this.getQuel_deplacement()==MouvementPerso.SCRIPT_POULE;
 				reachAvoidTarget(zildo, fear);
+				walkTile(true);
 			} else {
 				switch (this.getQuel_deplacement()) {
 					case SCRIPT_OBSERVE:

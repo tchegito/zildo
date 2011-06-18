@@ -29,14 +29,11 @@ public class Collision {
 
     public int cx, cy;	// Center
     public int cr;		// Radius
-    public Angle cangle; // Shooter's angle
-    public Point size; // Exact object's size (if not null, radius will be ignored)
-    public Perso perso; // Shooter
-    public DamageType damageType;
-    public Element weapon;	// Element which causes direct collision (boomerang, projectile...)
-    
-    public Collision() {
-    }
+    public final Angle cangle; // Shooter's angle
+    public final Point size; // Exact object's size (if not null, radius will be ignored)
+    public final Perso perso; // Shooter
+    public final DamageType damageType;
+    public final Element weapon;	// Element which causes direct collision (boomerang, projectile...)
 
     /**
      * Create a bounding box collision
