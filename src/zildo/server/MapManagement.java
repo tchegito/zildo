@@ -37,6 +37,7 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
+import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
@@ -260,11 +261,15 @@ public class MapManagement {
 
 		final int[] tab_add = { -1, -1, 1, 1, -1 };
 
+		// Check on back or fore ground, depending on the character we're checking
+		boolean foreground = quelElement != null && quelElement.isForeground();
+
 		// On teste les 4 coins d'un carré de 4x4
 		for (int i = 0; i < 4; i++) {
 			mx = (tx + (size.x / 2) * tab_add[i]);
 			my = (ty + (size.y / 2) * tab_add[i + 1]);
-			on_map = currentMap.readmap((mx / 16), (my / 16));
+			Tile tile = currentMap.readmap((mx / 16), (my / 16), foreground);
+			on_map = tile.getValue();
 			modx = mx % 16;
 			mody = my % 16;
 
@@ -635,8 +640,8 @@ public class MapManagement {
 	public Point getRespawnPosition() {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
-			//points.add(new Point(831, 360));
-			points.add(new Point(831+50, 360));
+			points.add(new Point(16*26, 45*16));
+			//points.add(new Point(831+50, 360));
 		} else {
 			points = currentMap.getRespawnPoints();
 		}

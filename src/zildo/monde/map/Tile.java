@@ -28,13 +28,15 @@ public class Tile implements Cloneable {
 
 	public int index;
 	public int bank;
+	public Case parent;
 	
-	public Tile(int p_bank, int p_index) {
+	public Tile(int p_bank, int p_index, Case p_parent) {
 		if (bank == 73) {
 			throw new RuntimeException();
 		}
 		bank = p_bank;
 		index = p_index;
+		parent = p_parent;
 	}
 	
 	public Tile clone() {
@@ -43,6 +45,13 @@ public class Tile implements Cloneable {
 		} catch (CloneNotSupportedException e) {
 			throw new RuntimeException("Unable to clone Tile");
 		}
+	}
+	
+	public int getValue() {
+		int a = bank & 31;
+		int b = index;
+		a = a << 8;
+		return a + b;
 	}
 	
 	@Override

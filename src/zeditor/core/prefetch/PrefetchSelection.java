@@ -51,7 +51,7 @@ public class PrefetchSelection extends TileSelection {
 					Tile back = aCase.getBackTile();
 					if (d<0) {	// Motif en foreground
 						back.index = -1;
-						aCase.setForeTile(new Tile(-d / 256, -d % 256));
+						aCase.setForeTile(new Tile(-d / 256, -d % 256, aCase));
 					} else {
 						back.index = d % 256;
 						back.bank = d / 256;

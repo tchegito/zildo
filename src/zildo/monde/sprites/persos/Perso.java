@@ -28,6 +28,7 @@ import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
+import zildo.monde.map.Tile;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -447,8 +448,11 @@ public abstract class Perso extends Element {
 	}
 	
     
+	private Point transitionCrossed;
+	private Angle transitionAngle;
+	
 	/**
-	 * Zildo walk on a tile, so he reacts (water), or tile change (door).
+	 * Perso walk on a tile, so he reacts (water), or tile change (door).
 	 * @param p_sound TRUE=play sound when modifying map.
 	 * @return boolean (TRUE=slow down)
 	 */
@@ -456,7 +460,23 @@ public abstract class Perso extends Element {
         int cx = (int) (x / 16);
         int cy = (int) (y / 16);
         MapManagement mapManagement = EngineZildo.mapManagement;
-        int onmap = mapManagement.getCurrentMap().readmap(cx, cy);
+       	Tile tile = mapManagement.getCurrentMap().readmap(cx, cy, false);
+        int onmap = tile.getValue(); 
+        if (tile.parent.getTransition() != null) {
+    		// Transitional case
+        	if (transitionCrossed == null) {
+        		setForeground(true);
+        		transitionCrossed = new Point(cx,cy);
+        		transitionAngle = tile.parent.getTransition();
+        	}
+        } else if (transitionCrossed != null) {
+        	// Is Perso gone in the right direction ?
+        	Angle choosed = Angle.fromDirection(cx-transitionCrossed.x, cy-transitionCrossed.y);
+        	if (choosed != transitionAngle) {
+        		setForeground(false);
+        	}
+        	transitionCrossed = null;
+        }
         boolean slowDown = false;
         boolean repeatSound = false;
         inWater = false;
@@ -523,6 +543,17 @@ public abstract class Perso extends Element {
 		return persoSprites.contains(entity) || en_bras==entity;
 	}
 
+	@Override
+	public void setForeground(boolean p_foreground) {
+		super.setForeground(p_foreground);
+		for (Element e : persoSprites) {
+			e.setForeground(p_foreground);
+		}
+		if (getEn_bras() != null) {
+			getEn_bras().setForeground(p_foreground);
+		}
+	}
+	
 	public int getCptMouvement() {
 		return cptMouvement;
 	}
