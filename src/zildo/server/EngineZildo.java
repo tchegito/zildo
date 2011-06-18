@@ -139,7 +139,9 @@ public class EngineZildo {
 			if (game.multiPlayer) {
 				multiplayerManagement.render();
 			} else {	// Block everything in single player
-				block=blockKeyboard || state.event.nature == ClientEventNature.CHANGINGMAP_SCROLL;
+				block=blockKeyboard;
+				block|=state.event.nature == ClientEventNature.CHANGINGMAP_SCROLL;
+				block|=persoManagement.getZildo().isInventoring();
 			}
 			
 			// If client has pressed keys and he's not blocked, we manage them, then clear.

@@ -31,7 +31,6 @@ import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.script.xml.TriggerElement;
-import zildo.monde.collision.Collision;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
@@ -294,12 +293,12 @@ public class MapManagement {
 		return false;
 	}
 
-	public boolean collideSprite(int tx, int ty, Collision p_colli) {
+	public boolean collideSprite(int tx, int ty, int p_radius, Element p_element) {
 
-		if (EngineZildo.persoManagement.collidePerso(tx, ty, null, p_colli.cr) != null)
+		if (EngineZildo.persoManagement.collidePerso(tx, ty, null, p_radius) != null)
 			return true;
 
-		if (EngineZildo.spriteManagement.collideSprite(tx, ty, p_colli.perso))
+		if (EngineZildo.spriteManagement.collideSprite(tx, ty, p_element))
 			return true;
 
 		// Returns computed result

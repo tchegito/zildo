@@ -29,13 +29,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import zildo.client.sound.BankSound;
 import zildo.client.sound.Ambient.Atmosphere;
+import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.monde.Hasard;
-import zildo.monde.collision.Collision;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.sprites.SpriteEntity;
@@ -48,8 +47,8 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
@@ -861,9 +860,8 @@ public class Area implements EasySerializable {
 	                int x = spawnTile.x * 16 + 8;
 	                int y = spawnTile.y * 16 + 8;
 	                // Respawn the tile if nothing bothers at location
-	                Collision colli=new Collision();
-	                colli.cr=8;
-	                if (EngineZildo.mapManagement.collideSprite(x, y, colli)) {
+	                int radius=8;
+	                if (EngineZildo.mapManagement.collideSprite(x, y, radius, null)) {
 	                    spawnTile.cnt++;
 	                } else {
 	                    this.set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);

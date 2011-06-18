@@ -109,6 +109,10 @@ public class PersoManagement {
 
         for (Perso persoToCompare : tab_perso) {
             if (persoToCompare.getPv() > 0 && persoToCompare != quelElement) {
+            	// Check if the compared characters are on different layers
+            	if (quelElement != null && persoToCompare.isForeground() != quelElement.isForeground()) {
+            		continue;
+            	}
                 int tx = (int) persoToCompare.getX();
                 int ty = (int) persoToCompare.getY();
                 if (EngineZildo.collideManagement.checkCollisionCircles(x, y, tx, ty, rayon, rayon)) {
