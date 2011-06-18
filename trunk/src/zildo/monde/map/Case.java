@@ -59,7 +59,7 @@ public class Case implements EasySerializable {
 	}
 	
 	public Case() {
-		back = new Tile(0, 0);
+		back = new Tile(0, 0, this);
 		fore = null;
 		z=0;
 	}
@@ -140,11 +140,15 @@ public class Case implements EasySerializable {
 	 */
 	public void serialize(EasyBuffering p_buffer) {
 		int isMasque = fore != null ? 128 : 0;
+		int isTransition = transition != null ? 64 : 0;
 		p_buffer.put((byte) back.index);
-		p_buffer.put((byte) (back.bank | isMasque));
+		p_buffer.put((byte) (back.bank | isMasque | isTransition));
 		if (fore != null) {
 			p_buffer.put((byte) fore.index);
 			p_buffer.put((byte) fore.bank);
+		}
+		if (transition != null) {
+			p_buffer.put((byte) transition.value);
 		}
 	}
 	
@@ -161,11 +165,14 @@ public class Case implements EasySerializable {
 			int index2 = p_buffer.readUnsignedByte();
 			int bank2 = p_buffer.readUnsignedByte();
 			if ((bank1 & 128) != 0) { //bank2 != 0 || index2 != 0) {
-				mapCase.setForeTile(new Tile(bank2, index2));
+				mapCase.setForeTile(new Tile(bank2, index2, mapCase));
 			}
 		}
-		bank1&=127;
-		mapCase.setBackTile(new Tile(bank1, index1));
+		if ((bank1 & 64) != 0) {
+			mapCase.setTransition(Angle.fromInt(p_buffer.readUnsignedByte()));
+		}
+		bank1&=63;
+		mapCase.setBackTile(new Tile(bank1, index1, mapCase));
 		return mapCase;
 	}
 	
@@ -176,4 +183,13 @@ public class Case implements EasySerializable {
 	public void setZ(int z) {
 		this.z = z;
 	}
+
+	public Angle getTransition() {
+		return transition;
+	}
+
+	public void setTransition(Angle transition) {
+		this.transition = transition;
+	}
+	
 }

@@ -253,7 +253,7 @@ public class TileSet extends ImageSet {
             		list.add(null);
             	} else {
 	                c=new Case();
-	                c.setBackTile(new Tile(bank, bridge.getMotifParPoint(tileName, j, i)));
+	                c.setBackTile(new Tile(bank, bridge.getMotifParPoint(tileName, j, i), c));
 	                list.add(c);
             	}
                 // On ne compte la largeur que pour la première ligne

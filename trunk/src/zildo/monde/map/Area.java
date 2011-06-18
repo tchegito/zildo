@@ -165,30 +165,29 @@ public class Area implements EasySerializable {
 	// OUT: return motif + bank*256
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Return n_motif + n_banque*256 from a given position on the Area
-	public int readmap(int x, int y, boolean p_foreground) {
+	public Tile readmap(int x, int y, boolean p_foreground) {
 		Case temp = this.get_mapcase(x, y + 4);
 		if (temp == null) {
-			return -1;
+			return null;
 		}
-		int a,b;
 		
 		// Is there two layers on this tile ?
 		boolean masked = temp.getForeTile() != null;
 		
-		Tile tile;
 		if (p_foreground && masked) {
-			tile = temp.getForeTile();
+			return temp.getForeTile();
 		} else {
-			tile =temp.getBackTile();
+			return temp.getBackTile();
 		}
-		a = tile.bank & 31;
-		b = tile.index;
-		a = a << 8;
-		return a + b;
 	}
 	
 	public int readmap(int x, int y) {
-		return readmap(x, y, false);
+		Tile tile = readmap(x, y, false);
+		if (tile == null) {
+			return -1;
+		} else {
+			return tile.getValue();
+		}
 	}
 	
 	public int readAltitude(int x, int y) {
@@ -603,6 +602,11 @@ public class Area implements EasySerializable {
 
 				map.set_mapcase(j, i + 4, temp);
 
+				if (i == 47 && j == 27) {
+					temp.setTransition(Angle.EST);
+				} else if (i == 47 && j == 44) {
+					temp.setTransition(Angle.OUEST);
+				}
 				if (p_spawn) {
 					Tile backTile = temp.getBackTile();
 					if (backTile.index == 99 && backTile.bank == 1) {
