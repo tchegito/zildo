@@ -115,12 +115,6 @@ public class MapManagement {
 		// Load a new one
 		currentMap = loadMapFile(adjustedMapName, p_mapname);
 
-		// Adjust map at Zildo's location
-		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-		if (zildo != null) {
-			zildo.walkTile(false);
-		}
-
 		if (!EngineZildo.game.editing) {
 			if (!EngineZildo.soundManagement.isForceMusic()) {
 				ClientEngineZildo.soundPlay.playMapMusic(currentMap);
@@ -450,7 +444,6 @@ public class MapManagement {
 				}
 				zildo.setGhost(true);
 				zildo.setTarget(dest);
-				zildo.finaliseComportement(EngineZildo.compteur_animation);
 
 				shiftPreviousMap(mapScrollAngle);
 			} else {
@@ -458,7 +451,9 @@ public class MapManagement {
 				zildo.setY(chPointTarget.getPy() * 16 + 8);
 				float zx = zildo.getX();
 				float zy = zildo.getY();
-				if (chPointTarget.isVertical()) {
+				if( chPointTarget.isSingle()) {
+					zx-=8;
+				} else if (chPointTarget.isVertical()) {
 					// Vertical chaining point
 					zildo.setX(zx - 8);
 					zildo.setY(zy + 8);
@@ -500,7 +495,12 @@ public class MapManagement {
 				zildo.setY(movedY);
 				zildo.setEn_bras(null); // Loose his object
 				zildo.walkTile(false);
-				zildo.finaliseComportement(EngineZildo.compteur_animation);
+			}
+			zildo.finaliseComportement(EngineZildo.compteur_animation);
+
+			// Adjust map at Zildo's location
+			if (zildo != null) {
+				zildo.walkTile(false);
 			}
 			
 			EngineZildo.spriteManagement.notifyLoadingMap(false);
@@ -639,8 +639,8 @@ public class MapManagement {
 	public Point getRespawnPosition() {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
-			points.add(new Point(16*26, 45*16));
-			//points.add(new Point(831+50, 360));
+			//points.add(new Point(16*26, 45*16));
+			points.add(new Point(831+50, 360));
 		} else {
 			points = currentMap.getRespawnPoints();
 		}
