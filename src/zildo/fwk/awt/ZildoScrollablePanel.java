@@ -188,7 +188,7 @@ public class ZildoScrollablePanel extends JPanel {
 		Area map=EngineZildo.mapManagement.getCurrentMap();
 		List<ChainingPoint> chaining=map.getListPointsEnchainement();
 		for (ChainingPoint c : chaining) {
-			Point p1=new Point(c.getPx() & 63, c.getPy() & 63);
+			Point p1=new Point(c.getPx(), c.getPy());
 			Point p2=new Point(32, 16); //c.getPx() & 63, c.getPy() & 63);
 			if (c.isBorder()) {
 				if (p1.x == 0 || p1.x == map.getDim_x()-1) {

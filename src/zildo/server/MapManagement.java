@@ -454,11 +454,11 @@ public class MapManagement {
 
 				shiftPreviousMap(mapScrollAngle);
 			} else {
-				zildo.setX((chPointTarget.getPx() & 127) * 16 + 16);
-				zildo.setY((chPointTarget.getPy() & 127) * 16 + 8);
+				zildo.setX(chPointTarget.getPx() * 16 + 16);
+				zildo.setY(chPointTarget.getPy() * 16 + 8);
 				float zx = zildo.getX();
 				float zy = zildo.getY();
-				if ((chPointTarget.getPx() & 128) != 0) {
+				if (chPointTarget.isVertical()) {
 					// Vertical chaining point
 					zildo.setX(zx - 8);
 					zildo.setY(zy + 8);

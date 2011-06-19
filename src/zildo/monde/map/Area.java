@@ -516,9 +516,7 @@ public class Area implements EasySerializable {
 		// 3) Chaining points
 		if (n_pe != 0) {
 			for (ChainingPoint ch : this.getListPointsEnchainement()) {
-				p_file.put((byte) ch.getPx());
-				p_file.put((byte) ch.getPy());
-				p_file.put(ch.getMapname());
+				ch.serialize(p_file);
 			}
 		}
 
@@ -623,15 +621,9 @@ public class Area implements EasySerializable {
 			}
 
 		// Les P.E
-		ChainingPoint pe;
 		if (n_pe != 0) {
 			for (int i = 0; i < n_pe; i++) {
-				pe = new ChainingPoint();
-				pe.setPx(p_buffer.readUnsignedByte());
-				pe.setPy(p_buffer.readUnsignedByte());
-				String mapName = p_buffer.readString();
-				pe.setMapname(mapName);
-				map.addChainingPoint(pe);
+				map.addChainingPoint(ChainingPoint.deserialize(p_buffer));
 			}
 		}
 		// Compute chaining points
