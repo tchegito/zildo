@@ -500,7 +500,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		    tileMaskTool = new JToggleButton();
 		    tileMaskTool.setToolTipText("Edition du masque");
 		    tileMaskTool.setAction(getActionTileMask());
-		    tileMaskTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGroundSprite.PNG")));
+		    tileMaskTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/mask.PNG")));
 		}
 		return tileMaskTool;
 	}
