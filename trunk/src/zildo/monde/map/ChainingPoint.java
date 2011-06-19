@@ -20,12 +20,14 @@
 
 package zildo.monde.map;
 
+import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasySerializable;
 import zildo.server.EngineZildo;
 
 
 
 
-public class ChainingPoint {
+public class ChainingPoint implements EasySerializable {
 	
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -43,6 +45,9 @@ public class ChainingPoint {
 	private String mapname;	// max length=8
 	private short  px,py;
 
+	private boolean vertical;
+	private boolean border;
+	
 	// Extra infos (deduced from map's context) to locate points referring to the same map.
 	private int orderX;
 	private int orderY;
@@ -89,7 +94,7 @@ public class ChainingPoint {
 	}
 	
 	public MapLink getLinkType() {
-		int infomap=EngineZildo.mapManagement.getCurrentMap().readmap(px & 127, py & 127);
+		int infomap=EngineZildo.mapManagement.getCurrentMap().readmap(px, py);
 		switch (infomap) {
 		case 183+768: case 184+768:
 			return MapLink.STAIRS_CORNER_LEFT;
@@ -110,24 +115,15 @@ public class ChainingPoint {
 	{
 	}
 	
-	// Assignment operator
-	public ChainingPoint(ChainingPoint original) {
-		this.mapname=original.mapname;
-		this.px=original.px;
-		this.py=original.py;
-		this.orderX=0;
-		this.orderY=0;
-	}
-	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// isCollide
 	///////////////////////////////////////////////////////////////////////////////////////
 	// IN : ax,ay (map coordinates in range 0..63,0..63)
 	///////////////////////////////////////////////////////////////////////////////////////
 	public boolean isCollide(int ax, int ay, boolean border) {
-		if (py<128) {
-			if ((px & 128)!=0) {
-				if (ay>=py && ax==(px & 127) && ay<=(py+1)) {
+		if (!border) {
+			if (vertical) {
+				if (ay>=py && ax==px && ay<=(py+1)) {
 					return true;
 				}
 			} else {
@@ -143,9 +139,9 @@ public class ChainingPoint {
 	     temp:=tab_pe[i].mapname;
 	   end;
 			*/
-		} else if (border) {
+		} else {
 			// Map's border
-			if ( (py & 127)==ay || (px & 127)==ax) {
+			if ( py==ay || px==ax) {
 				return true;
 			}
 		}
@@ -160,14 +156,14 @@ public class ChainingPoint {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public Angle getAngle(int x, int y, Angle startAngle) {
 		Angle angle=startAngle;
-		if ((py & 128)!=0 && ((px & 127)==0 || (px & 127)==EngineZildo.mapManagement.getCurrentMap().getDim_x()-1)) {
+		if (border && (px == 0 || px==EngineZildo.mapManagement.getCurrentMap().getDim_x()-1)) {
 			// Vertical border
 			if (x % 16 > 8) {
 				angle=Angle.EST;
 			} else {
 				angle=Angle.OUEST;
 			}
-		} else if ((py & 128)!=0) {
+		} else if (border) {
 			// Horizontal one
 			if ((y % 16) > 8) {
 				angle=Angle.SUD;
@@ -181,25 +177,21 @@ public class ChainingPoint {
 	}
 	
 	public boolean isBorder() {
-		return py > 127;
+		return border;
 	}
 		
-	public void setVertical(boolean verti) {
-		px=(short) (px & 127);
-		if (verti) {
-			px=(short) (px | 128);
-		}
+	public void setVertical(boolean p_verti) {
+		vertical = p_verti;
+		zone = null;
 	}
 	
 	public boolean isVertical() {
-		return px > 127;
+		return vertical;
 	}
 
-	public void setBorder(boolean border) {
-		py=(short) (py & 127);
-		if (border) {
-			py=(short) (py | 128);
-		}
+	public void setBorder(boolean p_border) {
+		border = p_border;
+		zone = null;
 	}
 	
 	@Override
@@ -208,12 +200,12 @@ public class ChainingPoint {
 	}
 	
 	/**
-	 * Get the range in pixel coordiantes taken for the point.
-	 * @return
+	 * Get the range, in pixel coordinates, taken for the point.
+	 * @return Zone
 	 */
 	public Zone getZone(Area p_map) {
 		if (zone == null) {
-			Point p1=new Point(px & 63, py & 63);
+			Point p1=new Point(px, py);
 			Point p2=new Point(2, 1);
 			if (isBorder()) {
 				if (p1.x == 0 || p1.x == p_map.getDim_x()-1) {
@@ -231,6 +223,47 @@ public class ChainingPoint {
 			zone = new Zone(16*p1.x, 16*p1.y, 16*p2.x, 16*p2.y);
 		}
 		return zone;
+	}
+	
+	/**
+	 * Deserialize a chaining point from a given buffer.
+	 * @param p_buffer
+	 * @return ChainingPoint
+	 */
+	public static ChainingPoint deserialize(EasyBuffering p_buffer) {
+		ChainingPoint pe = new ChainingPoint();
+		pe.px = p_buffer.readUnsignedByte();
+		pe.py = p_buffer.readUnsignedByte();
+		String mapName = p_buffer.readString();
+		pe.mapname = mapName;
+		
+		// Set the linked properties
+		if (pe.px > 127) {
+			pe.vertical = true;
+			pe.px&=127;
+		}
+		if (pe.py > 127) {
+			pe.border = true;
+			pe.py&=127;
+		}
+		return pe;
+	}
+	
+	/**
+	 *  Serialize this chaining point.
+	 */
+	public void serialize(EasyBuffering p_buffer) {
+		int saveX = px;
+		int saveY = py;
+		if (vertical) {
+			saveX|=128;
+		}
+		if (border) {
+			saveY|=128;
+		}
+		p_buffer.put((byte) saveX);
+		p_buffer.put((byte) saveY);
+		p_buffer.put(mapname);
 	}
 	
 	/**
