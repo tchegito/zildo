@@ -41,12 +41,13 @@ public class ChainingPoint implements EasySerializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String mapname;	// max length=8
 	private short  px,py;
 
 	private boolean vertical;
 	private boolean border;
+	private boolean single;	// TRUE=chaining point is on only one tile
 	
 	// Extra infos (deduced from map's context) to locate points referring to the same map.
 	private int orderX;
@@ -121,6 +122,9 @@ public class ChainingPoint implements EasySerializable {
 	// IN : ax,ay (map coordinates in range 0..63,0..63)
 	///////////////////////////////////////////////////////////////////////////////////////
 	public boolean isCollide(int ax, int ay, boolean border) {
+		if (single) {
+			return ax == px && ay == py;
+		}
 		if (!border) {
 			if (vertical) {
 				if (ay>=py && ax==px && ay<=(py+1)) {
@@ -131,14 +135,6 @@ public class ChainingPoint implements EasySerializable {
 					return true;
 				}
 			}
-			/*
-	   if (tab_pe[i].py and 128)<>0 then begin
-	    if tab_pe[i].px=oux then
-	     temp:=tab_pe[i].mapname
-	    else if (tab_pe[i].py and 127)=ouy then
-	     temp:=tab_pe[i].mapname;
-	   end;
-			*/
 		} else {
 			// Map's border
 			if ( py==ay || px==ax) {
@@ -192,8 +188,17 @@ public class ChainingPoint implements EasySerializable {
 	public void setBorder(boolean p_border) {
 		border = p_border;
 		zone = null;
-	}
+	}	
 	
+	public boolean isSingle() {
+		return single;
+	}
+
+	public void setSingle(boolean single) {
+		this.single = single;
+		zone = null;
+	}
+
 	@Override
 	public String toString() {
 		return mapname;
@@ -219,6 +224,9 @@ public class ChainingPoint implements EasySerializable {
 			} else if (isVertical()) {
 				p2.x=1;
 				p2.y=2;
+			} else if (isSingle()) {
+				p2.x=1;
+				p2.y=1;
 			}
 			zone = new Zone(16*p1.x, 16*p1.y, 16*p2.x, 16*p2.y);
 		}
@@ -238,6 +246,10 @@ public class ChainingPoint implements EasySerializable {
 		pe.mapname = mapName;
 		
 		// Set the linked properties
+		if ((pe.px & 64) != 0) {
+			pe.single = true;
+			pe.px&=128+63;
+		}
 		if (pe.px > 127) {
 			pe.vertical = true;
 			pe.px&=127;
@@ -255,6 +267,9 @@ public class ChainingPoint implements EasySerializable {
 	public void serialize(EasyBuffering p_buffer) {
 		int saveX = px;
 		int saveY = py;
+		if (single) {
+			saveX|=64;
+		}
 		if (vertical) {
 			saveX|=128;
 		}

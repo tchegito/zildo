@@ -54,8 +54,8 @@ public class ChainingPointPanel extends JPanel {
 
 	JTable pointsList;
 	ChainingPointTableModel model;
-	private final String[] columnNames=new String[]{"Carte", "Vertical", "Bord", "", ""};
-	private final int[] columnSizes={80, 40, 40, 60, 60};
+	private final String[] columnNames=new String[]{"Carte", "Vertical", "Bord", "Single", "", ""};
+	private final int[] columnSizes={80, 40, 40, 40, 60, 60};
 	
 	MasterFrameManager manager;
 	
@@ -128,7 +128,7 @@ public class ChainingPointPanel extends JPanel {
 		pointsList.setModel(model);
 		
 		// Set buttons
-    	TableColumn buttonColumn = pointsList.getColumnModel().getColumn(3);
+    	TableColumn buttonColumn = pointsList.getColumnModel().getColumn(4);
     	buttonColumn.setCellRenderer(new ChainingPointCellRenderer(new AbstractAction("X", null) {
     		public void actionPerformed(ActionEvent e) {
     			// Remove chaining point and update list
@@ -138,7 +138,7 @@ public class ChainingPointPanel extends JPanel {
     		}
     	}));
 
-    	buttonColumn = pointsList.getColumnModel().getColumn(4);
+    	buttonColumn = pointsList.getColumnModel().getColumn(5);
     	buttonColumn.setCellRenderer(new ChainingPointCellRenderer(new AbstractAction("Go", null) {
     		public void actionPerformed(ActionEvent e) {
     			// Load the map referred from this chaining point
@@ -208,7 +208,7 @@ public class ChainingPointPanel extends JPanel {
 		 */
 		@Override
 		public boolean isCellEditable(int i, int j) {
-			if (j>2) {
+			if (j>3) {
 				return false;
 			}
 			return super.isCellEditable(i, j);
@@ -235,6 +235,9 @@ public class ChainingPointPanel extends JPanel {
         			case 2: // bord
         				ch.setBorder((Boolean) getValueAt(row, col));
         				break;
+        			case 3: // single
+        				ch.setSingle((Boolean) getValueAt(row, col));
+        				break;
         			}
         		}
         	});
@@ -251,7 +254,7 @@ public class ChainingPointPanel extends JPanel {
         
     	
         private static Object[] getRow(ChainingPoint ch) {
-    		Object[] obj=new Object[]{ch.getMapname(), ch.isVertical(), ch.isBorder(), new JButton("creer"), null};
+    		Object[] obj=new Object[]{ch.getMapname(), ch.isVertical(), ch.isBorder(), ch.isSingle(), new JButton("creer"), null};
     		return obj;
     	}
         
