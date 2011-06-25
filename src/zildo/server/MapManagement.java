@@ -262,6 +262,9 @@ public class MapManagement {
 			mx = (tx + (size.x / 2) * tab_add[i]);
 			my = (ty + (size.y / 2) * tab_add[i + 1]);
 			Tile tile = currentMap.readmap((mx / 16), (my / 16), foreground);
+			if (tile == null) {
+				continue;
+			}
 			on_map = tile.getValue();
 			modx = mx % 16;
 			mody = my % 16;

@@ -599,11 +599,6 @@ public class Area implements EasySerializable {
 
 				map.set_mapcase(j, i + 4, temp);
 
-				if (i == 47 && j == 27) {
-					temp.setTransition(Angle.EST);
-				} else if (i == 47 && j == 44) {
-					temp.setTransition(Angle.OUEST);
-				}
 				if (p_spawn) {
 					Tile backTile = temp.getBackTile();
 					if (backTile.index == 99 && backTile.bank == 1) {

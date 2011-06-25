@@ -461,6 +461,9 @@ public abstract class Perso extends Element {
         int cy = (int) (y / 16);
         MapManagement mapManagement = EngineZildo.mapManagement;
        	Tile tile = mapManagement.getCurrentMap().readmap(cx, cy, false);
+       	if (tile == null) {
+       		return false;
+       	}
         int onmap = tile.getValue(); 
         if (tile.parent.getTransition() != null) {
     		// Transitional case
@@ -673,5 +676,12 @@ public abstract class Perso extends Element {
 	
 	public void setPathFinder(PathFinder p_pf) {
 		pathFinder = p_pf;
+	}
+	
+	public Point getCenteredScreenPosition() {
+		Point pos=new Point(getScrX(), getScrY());
+		pos.add(sprModel.getTaille_x() / 2, sprModel.getTaille_y() / 2);
+
+		return pos;
 	}
 }
