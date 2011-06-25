@@ -226,6 +226,9 @@ public class ClientEngineZildo {
 
 		boolean displayGUI = !p_event.script && !p_event.mapChange;
 
+		PersoZildo zildo;
+		Point zildoPos;
+		
 		if (p_event.wait != 0) {
 			p_event.wait--;
 		} else {
@@ -233,8 +236,9 @@ public class ClientEngineZildo {
 				case CHANGINGMAP_ASKED :
 					// Changing map : 1/3 we launch the fade out
 					retEvent.effect = FilterEffect.CIRCLE;
-					PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-					Point zildoPos=zildo.getCenteredScreenPosition();
+					// Call Circle filter to focus on Zildo
+					zildo = EngineZildo.persoManagement.getZildo();
+					zildoPos=zildo.getCenteredScreenPosition();
 					CircleFilter.setCenter(zildoPos.x, zildoPos.y);
 				case FADE_OUT :
 					retEvent.nature = ClientEventNature.FADING_OUT;
@@ -252,6 +256,8 @@ public class ClientEngineZildo {
 				case FADE_IN :
 					retEvent.nature = ClientEventNature.FADING_IN;
 					guiDisplay.fadeIn(retEvent.effect);
+
+
 					break;
 				case FADING_IN :
 					if (guiDisplay.isFadeOver()) {
@@ -259,6 +265,11 @@ public class ClientEngineZildo {
 						filterCommand.active(retEvent.effect.getFilterClass()[0], false, null);
 						retEvent.nature = ClientEventNature.NOEVENT;
 						retEvent.mapChange = false;
+					} else {
+						// Call Circle filter to focus on Zildo
+						zildo = EngineZildo.persoManagement.getZildo();
+						zildoPos=zildo.getCenteredScreenPosition();
+						CircleFilter.setCenter(zildoPos.x, zildoPos.y);
 					}
 					break;
 				case CHANGINGMAP_SCROLL_ASKED :
