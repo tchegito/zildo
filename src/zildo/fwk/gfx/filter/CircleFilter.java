@@ -76,7 +76,6 @@ public class CircleFilter extends FadeScreenFilter {
 		
 		GL11.glColor3f(1f, 1f, 1f);
 		
-		// Draw squares
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
 
 		GL11.glBegin(GL11.GL_QUADS);
@@ -101,18 +100,14 @@ public class CircleFilter extends FadeScreenFilter {
 		
 		for (int i=startI;i<endI;i++) {
 			int start = (int) Math.pow(i-center.y, 2);
-			if (start > radiusSquare) {	// Optimization
-				ClientEngineZildo.ortho.boxOpti(0, i, Zildo.viewPortX, 1, 2, null);
-			} else {
-				// Calculate DELTA and 2 roots x1 & x2
-				double delta = 4 * (radiusSquare - start);
-				double squareRootDelta = Math.sqrt(delta);
-				int x1 = (int) (center.x - squareRootDelta / 2);
-				int x2 = (int) (center.x + squareRootDelta / 2);
-				ClientEngineZildo.ortho.boxOpti(0, i, x1, 1, col, null);
-				ClientEngineZildo.ortho.boxOpti(x2, i, Zildo.viewPortX - x2, 1, col, null);
 
-			}
+			// Calculate DELTA and 2 roots x1 & x2
+			double delta = 4 * (radiusSquare - start);
+			double squareRootDelta = Math.sqrt(delta);
+			int x1 = (int) (center.x - squareRootDelta / 2);
+			int x2 = (int) (center.x + squareRootDelta / 2);
+			ClientEngineZildo.ortho.boxOpti(0, i, x1, 1, col, null);
+			ClientEngineZildo.ortho.boxOpti(x2, i, Zildo.viewPortX - x2, 1, col, null);
 		}
 		GL11.glEnd();
 		GL11.glPopMatrix();
