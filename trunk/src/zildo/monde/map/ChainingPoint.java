@@ -121,7 +121,7 @@ public class ChainingPoint implements EasySerializable {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// IN : ax,ay (map coordinates in range 0..63,0..63)
 	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean isCollide(int ax, int ay, boolean border) {
+	public boolean isCollide(int ax, int ay, boolean p_border) {
 		if (single) {
 			return ax == px && ay == py;
 		}
@@ -135,7 +135,7 @@ public class ChainingPoint implements EasySerializable {
 					return true;
 				}
 			}
-		} else {
+		} else if (p_border) {
 			// Map's border
 			if ( py==ay || px==ax) {
 				return true;
