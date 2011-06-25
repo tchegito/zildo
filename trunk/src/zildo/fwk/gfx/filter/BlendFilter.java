@@ -33,7 +33,7 @@ import zildo.client.ClientEngineZildo;
  * @author tchegito
  *
  */
-public class BlendFilter extends ScreenFilter {
+public class BlendFilter extends FadeScreenFilter {
 
 	static final int SQUARE_SIZE = 20;
 	

@@ -20,33 +20,20 @@
 
 package zildo.fwk.gfx.filter;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import zildo.client.ClientEngineZildo;
 
-public class FadeFilter extends FadeScreenFilter {
-
-	boolean complete=true;
+/**
+ * Screen filter which can fade in and out.
+ * 
+ * @author Tchegito
+ *
+ */
+public abstract class FadeScreenFilter extends ScreenFilter {
 	
-	@Override
-	public boolean renderFilter()
-	{
-		return true;
+	/**
+	 * @return Fade level (0..255)
+	 */
+	final public int getFadeLevel() {
+		return ClientEngineZildo.filterCommand.getFadeLevel();
 	}
-	
-	@Override
-	public void preFilter() {
-		float factor = complete ? 256.0f : 768.0f;
-		float coeff=1.0f - (getFadeLevel() / factor);
-		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(coeff, coeff, coeff));
-	}
-
-	public void doOnActive(FilterEffect effect) {
-		if (effect == FilterEffect.SEMIFADE) {
-			complete=false;
-		} else {
-			complete=true;
-		}
-	}
-	
 }

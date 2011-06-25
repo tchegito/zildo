@@ -21,7 +21,6 @@
 package zildo.fwk.gfx.filter;
 
 import zildo.Zildo;
-import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.TilePrimitive;
 import zildo.fwk.opengl.Utils;
 
@@ -136,9 +135,5 @@ public abstract class ScreenFilter extends TilePrimitive {
 	
 	final public boolean isActive() {
 		return active;
-	}
-	
-	final public int getFadeLevel() {
-		return ClientEngineZildo.filterCommand.getFadeLevel();
 	}
 }

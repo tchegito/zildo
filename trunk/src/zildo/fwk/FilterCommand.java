@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.gfx.filter.BilinearFilter;
+import zildo.fwk.gfx.filter.FadeScreenFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.ScreenFilter;
 import zildo.prefs.Constantes;
@@ -202,6 +203,11 @@ public class FilterCommand {
 	 * Restore default filters.
 	 */
 	private void restoreFilters() {
+		for (ScreenFilter filter : filters) {
+			if (FadeScreenFilter.class.isAssignableFrom(filter.getClass())) {
+				active(filter.getClass(), false, null);
+			}
+		}
 		active(BilinearFilter.class, true, null);
 	}
 	
