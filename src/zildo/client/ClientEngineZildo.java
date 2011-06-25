@@ -36,6 +36,7 @@ import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.BilinearFilter;
 import zildo.fwk.gfx.filter.BlendFilter;
 import zildo.fwk.gfx.filter.BlurFilter;
+import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FadeFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
@@ -51,6 +52,7 @@ import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.KeysConfiguration;
 import zildo.server.EngineZildo;
 
@@ -105,6 +107,7 @@ public class ClientEngineZildo {
 			filterCommand.addFilter(new BlurFilter());
 			filterCommand.addFilter(new BlendFilter());
 			filterCommand.addFilter(new FadeFilter());
+			filterCommand.addFilter(new CircleFilter());
 			filterCommand.active(BilinearFilter.class, true, null);
 		}
 
@@ -229,7 +232,10 @@ public class ClientEngineZildo {
 			switch (p_event.nature) {
 				case CHANGINGMAP_ASKED :
 					// Changing map : 1/3 we launch the fade out
-					retEvent.effect = FilterEffect.BLEND;
+					retEvent.effect = FilterEffect.CIRCLE;
+					PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+					Point zildoPos=zildo.getCenteredScreenPosition();
+					CircleFilter.setCenter(zildoPos.x, zildoPos.y);
 				case FADE_OUT :
 					retEvent.nature = ClientEventNature.FADING_OUT;
 					guiDisplay.fadeOut(retEvent.effect);
@@ -250,6 +256,7 @@ public class ClientEngineZildo {
 				case FADING_IN :
 					if (guiDisplay.isFadeOver()) {
 						// Changing map : 3/3 we unblock the player
+						filterCommand.active(retEvent.effect.getFilterClass()[0], false, null);
 						retEvent.nature = ClientEventNature.NOEVENT;
 						retEvent.mapChange = false;
 					}
