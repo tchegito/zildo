@@ -110,6 +110,7 @@ public class TileCollision {
                 case 723:
                 case 787:
                 case 917:
+                case 1536 + 84:
                     tileInfo.half=true;
                     tileInfo.blockAngle=Angle.SUDOUEST;
                     break;
@@ -121,6 +122,7 @@ public class TileCollision {
                 case 721:
                 case 788:
                 case 915:
+                case 1536 + 85:
                     tileInfo.half=true;
                     tileInfo.blockAngle=Angle.SUDEST;
                     break;
@@ -132,6 +134,7 @@ public class TileCollision {
                 case 719:
                 case 786:
                 case 913:
+                case 1536 + 80:
                     tileInfo.half=true;
                     tileInfo.blockAngle=Angle.NORDEST;
                     break;
@@ -143,6 +146,7 @@ public class TileCollision {
                 case 717:
                 case 785:
                 case 911:
+                case 1536 + 79:
                     tileInfo.half=true;
                     tileInfo.blockAngle=Angle.NORDOUEST;
                     break;
