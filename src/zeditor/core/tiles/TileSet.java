@@ -24,6 +24,7 @@ import zildo.fwk.bank.MotifBank;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
+import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
 
 /**
@@ -47,8 +48,7 @@ public class TileSet extends ImageSet {
     	
         // Construction du pont de correspondance
         bridge = new CorrespondanceGifDec();
-        bridge.init();
-
+        
     }
 
     private Image getTileNamed(String p_name) {
@@ -171,6 +171,9 @@ public class TileSet extends ImageSet {
 	        if(Boolean.parseBoolean(OptionHelper.loadOption(Options.SHOW_TILES_GRID.getValue()))){
 	            showGrid(p_g2d);
 	        }
+	        if(Boolean.parseBoolean(OptionHelper.loadOption(Options.SHOW_COLLISION.getValue()))){
+	            showCollision(p_g2d);
+	        }
 	    }
     }
 
@@ -226,6 +229,14 @@ public class TileSet extends ImageSet {
         }
     }
    
+    /**
+     * Affichage des infos de collisions issues de {@link TileCollision}.
+     * @param g
+     */
+    private void showCollision(Graphics g) {
+    	
+    }
+    
     /**
      * Méthode privée de construction de la sélection
      */

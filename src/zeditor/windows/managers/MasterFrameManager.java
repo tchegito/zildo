@@ -292,7 +292,7 @@ public class MasterFrameManager {
 	 *            : Valeur à attribuer
 	 * @author Drakulo
 	 */
-	public void saveOption(String p_option, String p_value) {
+	public void saveOption(Options p_option, String p_value) {
 		OptionHelper.saveOption(p_option, p_value);
 		masterFrame.getBackgroundPanel().repaint();
 	}
@@ -318,21 +318,18 @@ public class MasterFrameManager {
 	public void updateTools() {
 		// Bouton des tuiles non mappées
 		JToggleButton unmapped=masterFrame.getUnmappedTool();
-		if (Boolean.valueOf(OptionHelper.loadOption(Options.SHOW_TILES_UNMAPPED
-				.getValue()))) {
-			unmapped.setSelected(true);
-		} else {
-			unmapped.setSelected(false);
-		}
+		unmapped.setSelected(Boolean.valueOf(OptionHelper.loadOption(Options.SHOW_TILES_UNMAPPED
+					.getValue())));
 
 		// Bouton d'affichage de la grille
 		JToggleButton grid=masterFrame.getGridTool();
-		if (Boolean.valueOf(OptionHelper.loadOption(Options.SHOW_TILES_GRID
-				.getValue()))) {
-			grid.setSelected(true);
-		} else {
-			grid.setSelected(false);
-		}
+		grid.setSelected(Boolean.valueOf(OptionHelper.loadOption(Options.SHOW_TILES_GRID
+					.getValue())));
+		
+		// Bouton d'affichage de la grille
+		JToggleButton collision=masterFrame.getCollisionTool();
+		collision.setSelected(Boolean.valueOf(OptionHelper.loadOption(Options.SHOW_COLLISION
+					.getValue())));
 	}
 
 	/**
@@ -353,11 +350,20 @@ public class MasterFrameManager {
 	 * @author Drakulo
 	 */
 	public void showTileSetGrid(boolean flag) {
-		saveOption(Options.SHOW_TILES_GRID.getValue(), String.valueOf(flag));
+		saveOption(Options.SHOW_TILES_GRID, String.valueOf(flag));
 		if (flag) {
 			display("Grille affichée.", MESSAGE_INFO);
 		} else {
 			display("Grille masquée.", MESSAGE_INFO);
+		}
+	}
+	
+	public void showCollision(boolean flag) {
+		saveOption(Options.SHOW_COLLISION, String.valueOf(flag));
+		if (flag) {
+			display("Collision activée.", MESSAGE_INFO);
+		} else {
+			display("Collision desactivée.", MESSAGE_INFO);
 		}
 	}
 
@@ -370,7 +376,7 @@ public class MasterFrameManager {
 	 * @author Drakulo
 	 */
 	public void showTileSetUnmapped(boolean flag) {
-		saveOption(Options.SHOW_TILES_UNMAPPED.getValue(), String.valueOf(flag));
+		saveOption(Options.SHOW_TILES_UNMAPPED, String.valueOf(flag));
 		if (flag) {
 			display("Tuiles non mappées mises en évidence.", MESSAGE_INFO);
 		} else {

@@ -7,7 +7,8 @@ package zeditor.core;
  */
 public enum Options {
 	SHOW_TILES_UNMAPPED("showTilesUnmapped"),
-	SHOW_TILES_GRID("showTilesGrid");
+	SHOW_TILES_GRID("showTilesGrid"),
+	SHOW_COLLISION("showCollision");
 	
 	/** L'attribut qui contient la valeur associé à l'enum */
 	private final String value;

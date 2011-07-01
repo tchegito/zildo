@@ -72,6 +72,10 @@ public class TileCollision {
     	return !tileInfos[p_nTile].walkable;
     }
     
+    public TileInfo getTileInfo(int p_nTile) {
+    	return tileInfos[p_nTile];
+    }
+    
     private void buildTileInfos() {
         // Build the entire tile infos
         for (int i = 0; i < tileInfos.length; i++) {
