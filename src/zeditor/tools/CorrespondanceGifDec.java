@@ -98,14 +98,18 @@ public class CorrespondanceGifDec {
 	}
 	
 	public TileInfo getCollisionParPoint(String bankName, int x, int y) {
+		int nTile=getMotifParPoint(bankName, x, y);
+		if (nTile == -1) {
+			return null;
+		}
 		int i=0;
         for (String name : TileEngine.tileBankNames) {
-        	if (name.equals(bankName)) {
+        	if (name.startsWith(bankName)) {
         		break;
         	}
         	i+=256;
         }
-        i+=getMotifParPoint(bankName, x, y);
+        i+=nTile;
         return tileCollision.getTileInfo(i);
 	}
 

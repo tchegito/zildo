@@ -25,6 +25,7 @@ import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
+import zildo.monde.map.TileInfo;
 import zildo.monde.map.Zone;
 
 /**
@@ -234,7 +235,15 @@ public class TileSet extends ImageSet {
      * @param g
      */
     private void showCollision(Graphics g) {
-    	
+    	CollisionDrawer collisionDrawer = new CollisionDrawer(g);
+        for(int j = 0; j < currentTile.getHeight(null); j+=16){
+            for(int i = 0; i < currentTile.getWidth(null); i+=16){
+            	TileInfo tileInfo = bridge.getCollisionParPoint(tileName, i, j);
+            	if (tileInfo != null) {
+            		collisionDrawer.drawCollisionTile(i, j, tileInfo);
+            	}
+            }
+        }
     }
     
     /**

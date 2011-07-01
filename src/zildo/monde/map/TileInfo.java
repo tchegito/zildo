@@ -39,6 +39,8 @@ public class TileInfo {
     public boolean down;	// TRUE if tiles altitude decrease in 'blockAngle' direction
     public Angle blockAngle; // Indicates the collider angle. Can be diagonal
 
+    private int hash = -1;	// Keep it for optimizing
+    
     public TileInfo() {
     	walkable=true;
     	corner=false;
@@ -139,5 +141,33 @@ public class TileInfo {
             default:
                 throw new RuntimeException("No way to determine the tile collision !");
         }
+    }
+    
+    /**
+     * Returns TRUE if given TileInfo is equals to the current one.
+     */
+    @Override
+    public boolean equals(Object p_object) {
+    	if (p_object == null || p_object.getClass() != TileInfo.class) {
+    		return false;
+    	}
+    	TileInfo t2 = (TileInfo) p_object;
+    	return hashCode() == t2.hashCode();
+    }
+    
+    @Override
+    public int hashCode() {
+    	if (hash == -1) {
+    		// Just for pleasure ! We could just returned 1, in order to discard the default hashCode behavior.
+    		hash = (walkable ? 1 : 0);
+	    	hash = 2*hash + (corner ? 1 : 0);
+	    	hash = 2*hash + (cornerDiagonal ? 1 : 0);
+			hash = 2*hash + (half ? 1 : 0);
+			hash = 2*hash + (inverse ? 1 : 0);
+			hash = 2*hash + (down ? 1 : 0);
+			hash = 8*hash + (blockAngle == null ? 0 : blockAngle.value);
+    	}
+    	
+    	return hash;
     }
 }
