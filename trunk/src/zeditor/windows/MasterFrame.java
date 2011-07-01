@@ -84,6 +84,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JPanel contentPanel;
 	private JButton newMapTool;
 	private JToggleButton gridTool;
+	private JToggleButton collisionTool;
 	private JToggleButton unmappedTool;
 	private JToggleButton copyPasteTool;
 	private JToggleButton backTileTool;
@@ -97,6 +98,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private AbstractAction actionSaveAs;
 	private AbstractAction actionNew;
 	private AbstractAction actionGridTool;
+	private AbstractAction actionCollisionTool;
 	private AbstractAction actionUnmappedTool;
 	private AbstractAction actionReloadConfig;
 	private AbstractAction actionOpenOptionsFrame;
@@ -285,6 +287,21 @@ public class MasterFrame extends javax.swing.JFrame {
 		return actionGridTool;
 	}
 
+	private AbstractAction getActionCollisionTool() {
+		if(actionCollisionTool == null) {
+			actionCollisionTool = new AbstractAction("", null) {
+				public void actionPerformed(ActionEvent evt) {
+					if(collisionTool.isSelected()){
+						manager.showCollision(true);
+					}else{
+						manager.showCollision(false);
+					}
+				}
+			};
+		}
+		return actionCollisionTool;
+	}
+
 	private AbstractAction getActionCopyPasteTool() {
 	    if (actionCopyPasteTool == null) {
 	    	actionCopyPasteTool = new AbstractAction(null) {
@@ -414,8 +431,9 @@ public class MasterFrame extends javax.swing.JFrame {
 			toolBar.add(new JToolBar.Separator());
 			toolBar.add(getUnmappedTool());
 			toolBar.add(getGridTool());
-			toolBar.add(getCopyPasteTool());
+			toolBar.add(getCollisionTool());
 			toolBar.add(new JToolBar.Separator());
+			toolBar.add(getCopyPasteTool());
 			toolBar.add(getToggleTileMaskTool());
 			toolBar.add(new JToolBar.Separator());
 			toolBar.add(getToggleBackDisplayTool());
@@ -445,6 +463,15 @@ public class MasterFrame extends javax.swing.JFrame {
 		return gridTool;
 	}
 	
+	public JToggleButton getCollisionTool() {
+		if(collisionTool == null) {
+			collisionTool = new JToggleButton();
+			collisionTool.setAction(getActionCollisionTool());
+			collisionTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/footstep.png")));
+		}
+		return collisionTool;
+	}
+	
 	public JToggleButton getCopyPasteTool() {
 		if(copyPasteTool == null) {
 		    copyPasteTool = new JToggleButton();
@@ -468,7 +495,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	public JToggleButton getToggleForeDisplayTool() {
 		if(foreTileTool == null) {
 		    foreTileTool = new JToggleButton();
-		    foreTileTool.setToolTipText("Tiles de premier plan plan");
+		    foreTileTool.setToolTipText("Tiles de premier plan");
 		    foreTileTool.setAction(getActionDisplayForeTileTool());
 		    foreTileTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGround.PNG")));
 		}

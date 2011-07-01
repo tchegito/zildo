@@ -20,13 +20,17 @@ import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.GraphChange;
 import zeditor.tools.tiles.MotifBankEdit;
 import zildo.fwk.bank.MotifBank;
+import zildo.fwk.gfx.engine.TileEngine;
+import zildo.monde.map.TileCollision;
+import zildo.monde.map.TileInfo;
 
 // Fait la correspondance entre les fichiers PKM et un fichier DEC
 
 public class CorrespondanceGifDec {
 
-	Map<String, Banque> banks;
-
+	final Map<String, Banque> banks;
+	final TileCollision tileCollision = new TileCollision();
+	
 	public Banque doTheJob(Banque bank) {
 		Map<Point, Integer> mapCorrespondance = new HashMap<Point, Integer>();
 		Map<Integer, Point> mapCorrespondanceInverse = new HashMap<Integer, Point>();
@@ -55,18 +59,6 @@ public class CorrespondanceGifDec {
 			mapCorrespondance.put(p, nTile);
 			mapCorrespondanceInverse.put(nTile, p);
 			nTile++;
-		}
-
-		// On affiche le numéro de la tile pour chaque position:
-		if (false) {
-			for (int i = 0; i < (maxY / 16) + 1; i++) {
-				for (int j = 0; j < 20; j++) {
-					Point p = new Point(j * 16, i * 16);
-					System.out.println("Pos: x=" + p.x + " y=" + p.y
-							+ " ==> tile n°" + mapCorrespondance.get(p));
-				}
-			}
-			System.out.println("Nombre de tile:" + bank.getCoords().length);
 		}
 
 		bank.setMapCorrespondance(mapCorrespondance, mapCorrespondanceInverse);
@@ -104,8 +96,20 @@ public class CorrespondanceGifDec {
 	public Point getPointParMotif(String bankName, int nMotif) {
 		return getBanque(bankName).getCoordsTile(nMotif);
 	}
+	
+	public TileInfo getCollisionParPoint(String bankName, int x, int y) {
+		int i=0;
+        for (String name : TileEngine.tileBankNames) {
+        	if (name.equals(bankName)) {
+        		break;
+        	}
+        	i+=256;
+        }
+        i+=getMotifParPoint(bankName, x, y);
+        return tileCollision.getTileInfo(i);
+	}
 
-	public void init() {
+	public CorrespondanceGifDec() {
 		banks = new HashMap<String, Banque>();
 		banks.put("FORET1", doTheJob(new Foret1()));
 		banks.put("FORET2", doTheJob(new Foret2()));
@@ -116,9 +120,5 @@ public class CorrespondanceGifDec {
 		banks.put("GROTTE", doTheJob(new Grotte()));
 		banks.put("PALAIS1", doTheJob(new Palais1()));
 		banks.put("PALAIS2", doTheJob(new Palais2()));
-	}
-
-	public static void main(String[] args) {
-		new CorrespondanceGifDec().init();
 	}
 }

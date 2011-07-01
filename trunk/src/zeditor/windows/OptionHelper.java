@@ -54,11 +54,17 @@ public class OptionHelper {
 			// Mantenant qu'on a la racine, on récupère les infos
 			if(racine.getChildNodes() != null || racine.getChildNodes().getLength()!=0){
 				for(Options item : Options.values()){
-					Node node=racine.getElementsByTagName(item.getValue()).item(0).getFirstChild();
-					
+					Node node=racine.getElementsByTagName(item.getValue()).item(0);
 					if (node != null) {
-						map.put(item.getValue(), node.getTextContent());
-					}				}
+						node = node.getFirstChild();
+					
+						String value = "";
+						if (node != null) {
+							value = node.getTextContent();
+						}
+						map.put(item.getValue(), value);
+					}
+				}
 			}
 
 			return map;
@@ -150,9 +156,9 @@ public class OptionHelper {
 	 * @param p_value : Valeur à sauvegarder
 	 * @author Drakulo
 	 */
-	public static void saveOption(String p_option, String p_value){
+	public static void saveOption(Options p_option, String p_value){
 		Map<String, String> map = load();
-		map.put(p_option, p_value);
+		map.put(p_option.getValue(), p_value);
 		save(map);
 	}
 }
