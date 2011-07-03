@@ -169,6 +169,13 @@ public class ZildoMouseKeyListener
 		}
 		message.append("Y: ");
 		message.append(p.y / 16);
+		
+		message.append("         ");
+		message.append("x: ");
+		message.append(p.x);
+		message.append("    y: ");
+		message.append(p.y);
+		
 		MasterFrameManager.display(message.toString(),
 				MasterFrameManager.MESSAGE_INFO);
 
