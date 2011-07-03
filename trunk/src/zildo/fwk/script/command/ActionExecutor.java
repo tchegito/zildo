@@ -28,6 +28,7 @@ import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.script.xml.ActionElement;
+import zildo.fwk.ui.UIText;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
@@ -101,7 +102,8 @@ public class ActionExecutor {
                     }
                     break;
                 case speak:
-                    EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(text));
+                	String sentence = UIText.getGameText(text);
+                    EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence));
                     scriptExec.userEndedAction = false;
                     break;
                 case script:
