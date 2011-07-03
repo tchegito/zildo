@@ -41,6 +41,7 @@ import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.prefs.Constantes;
 
@@ -209,11 +210,16 @@ public class MapManagement {
 			return false;
 		}
 
+		// Is it a ghost ?
+		boolean ghost = false;
+		Perso p = quelElement.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO ? (Perso) quelElement : null;
+		ghost = p !=null && p.isGhost();
+		
 		if (tx < 0 || ty < 0 || tx > (currentMap.getDim_x() - 1) * 16 + 15
-				|| ty > (currentMap.getDim_y() - 1) * 16 + 15)
-			// On empêche la collision sur les bords de cartes
-			return quelElement != null && (!quelElement.isZildo() || EngineZildo.game.multiPlayer);
-
+				|| ty > (currentMap.getDim_y() - 1) * 16 + 15) {
+			// Detect element out of the map, except for 3 cases : Zildo, ghosts and single pleyer
+			return quelElement != null && !ghost && (!quelElement.isZildo() || EngineZildo.game.multiPlayer);
+		}
 		Angle angleFlying = null;
 		Point size = new Point(8, 4); // Default size
 		if (quelElement != null && quelElement.flying
@@ -272,7 +278,7 @@ public class MapManagement {
 			if (mx < 0 || my < 0 || mx > (currentMap.getDim_x() - 1) * 16 + 15
 					|| my > (currentMap.getDim_y() - 1) * 16 + 15)
 				// On empêche la collision sur les bords de cartes
-				return !quelElement.isZildo();
+				return !quelElement.isZildo() && !ghost;
 
 			if (tileCollision.collide(modx, mody, on_map)) {
 				return true;

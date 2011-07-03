@@ -259,7 +259,7 @@ public class PersoNJ extends Perso {
                                 setAttente(10 + (int) (Math.random() * 20));
                             }
                         }
-                       	if (getQuel_spr().equals(PersoDescription.GARDE_CANARD) && !isAlerte()) {
+                       	if (!isGhost() && getQuel_spr().equals(PersoDescription.GARDE_CANARD) && !isAlerte()) {
 							setAlerte(lookForZildo(angle));
 						}
 						if (this.getAttente()!=0) {
