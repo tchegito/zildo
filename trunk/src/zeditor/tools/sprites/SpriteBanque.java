@@ -20,6 +20,9 @@
 
 package zeditor.tools.sprites;
 
+import java.util.List;
+
+import zeditor.tools.tiles.GraphChange;
 import zildo.monde.map.Zone;
 
 /**
@@ -29,8 +32,13 @@ import zildo.monde.map.Zone;
 public class SpriteBanque {
 
 	Zone[] zones;
+	List<GraphChange> pkmChanges;
 	
 	public Zone[] getZones() {
 		return zones;
+	}
+	
+	public List<GraphChange> getPkmChanges() {
+		return pkmChanges;
 	}
 }

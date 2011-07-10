@@ -79,7 +79,7 @@ public enum ElementDescription  implements SpriteDescription {
 	SHIELD_RED, SHIELD_YELLOW, STAR1, STAR2, STAR3,
 	
 	// 155
-	BOMBS3;
+	BOMBS3, SCEPTER;
 
 	
 	public int getBank() {
@@ -147,5 +147,19 @@ public enum ElementDescription  implements SpriteDescription {
 		default:
 			return new Element();
 		}
+	}
+	
+	/**
+	 * Return element's identity based on a string.
+	 * @param p_spr
+	 * @return ElementDescription
+	 */
+	public static ElementDescription fromString(String p_spr) {
+		for (ElementDescription desc : ElementDescription.values()) {
+			if (desc.toString().equals(p_spr)) {
+				return desc;
+			}
+		}		
+		return null;
 	}
 }

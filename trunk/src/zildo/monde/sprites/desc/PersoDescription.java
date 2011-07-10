@@ -70,7 +70,8 @@ public enum PersoDescription implements SpriteDescription {
 	LAPIN(178,179),
 	OISEAU_VERT(180,181),
 	VOLANT_BLEU(182,183,184,185,186,187),
-
+	PRINCESSE_COUCHEE(188, 189),
+	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 	
 	IntSet sprUsed;

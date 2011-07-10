@@ -20,10 +20,14 @@
 
 package zeditor.tools.sprites;
 
+import java.util.Iterator;
+
 import zeditor.tools.tiles.Banque;
+import zeditor.tools.tiles.GraphChange;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
+import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
 
 /**
@@ -115,5 +119,26 @@ public class SpriteBankEdit extends SpriteBank {
 			width++;
 		}
 		return width;
+	}
+	
+	public void addSpritesFromBank(SpriteBanque p_bank) {
+   	 Zone[] elements=p_bank.getZones();
+   	 Iterator<GraphChange> itChanges = p_bank.getPkmChanges().iterator();
+   	 GraphChange current = null;
+	 int startSpr=getNSprite();
+	 int i=0;
+     for (Zone z : elements) {
+    	 if (current == null && itChanges.hasNext()) {
+    		 current = itChanges.next();
+    	 }
+    	 if (current != null) {
+    		 if (current.nTile == i) {
+    			 loadImage(current.imageName, Modifier.COLOR_BLUE);
+    			 current = null;
+    		 }
+    	 }
+      	addSprFromImage(startSpr + i, z.x1, z.y1, z.x2, z.y2);
+      	i++;
+      }		
 	}
 }
