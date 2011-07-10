@@ -34,4 +34,15 @@ public abstract class AnyElement {
     	String str=p_elem.getAttribute(p_attrName);
     	return str.equalsIgnoreCase("true");
     }
+    
+    /**
+     * Read an attribute's value, and return NULL if it isn't set.
+     * @param p_elem
+     * @param p_attrName
+     * @return String
+     */
+    protected String readAttribute(Element p_elem, String p_attrName) {
+    	String value = p_elem.getAttribute(p_attrName);
+    	return "".equals(value) ? null : value;
+    }
 }

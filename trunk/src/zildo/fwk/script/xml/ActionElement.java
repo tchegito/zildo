@@ -62,8 +62,8 @@ public class ActionElement extends AnyElement {
         	throw new RuntimeException("Action kind is unknown !");
         }
     	// Read common attributes
-        who = p_elem.getAttribute("who");
-        what = p_elem.getAttribute("what");
+        who = readAttribute(p_elem, "who");
+        what = readAttribute(p_elem, "what");
         fx = p_elem.getAttribute("fx");
         unblock = "true".equalsIgnoreCase(p_elem.getAttribute("unblock"));
         speed = Float.valueOf("0"+p_elem.getAttribute("speed"));
@@ -73,7 +73,9 @@ public class ActionElement extends AnyElement {
         switch (kind) {
         case spawn:
             location = Point.fromString(strPos);
-            val = Integer.valueOf(strAngle);
+            if (!"".equals(strAngle)) {
+            	val = Integer.valueOf(strAngle);
+            }
             text = p_elem.getAttribute("type");
             break;
         case speak:
@@ -86,7 +88,7 @@ public class ActionElement extends AnyElement {
             text = p_elem.getAttribute("name");
             break;
         case moveTo:
-            backward = isTrue(p_elem, "forward");
+            backward = isTrue(p_elem, "backward");
             open = isTrue(p_elem, "open");
         case pos:
             // Position

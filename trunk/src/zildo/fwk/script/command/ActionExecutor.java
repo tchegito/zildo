@@ -33,6 +33,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.quest.actions.ScriptAction;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -70,9 +71,18 @@ public class ActionExecutor {
                 scriptExec.involved.add(perso); // Note that this perso is concerned
             }
             Point location = p_action.location;
-            if (p_action.delta && perso != null) {
-            	// Given position is a delta with current one (work ONLY with perso, not with camera)
-            	location=location.translate((int) perso.x, (int) perso.y);
+            if (p_action.delta) {
+            	Point currentPos = null;
+            	if (perso != null) {
+            		// Given position is a delta with current one (work ONLY with perso, not with camera)
+            		currentPos = new Point(perso.x, perso.y);
+            	} else if ("camera".equals(p_action.what)) {
+            		currentPos = ClientEngineZildo.mapDisplay.getCamera();
+            	}
+            	if (currentPos == null) {
+            		throw new RuntimeException("We need valid 'who' or 'what' attribute");
+            	}
+        		location=location.translate(currentPos.x, currentPos.y);
             }
             String text = p_action.text;
             switch (p_action.kind) {
@@ -99,6 +109,7 @@ public class ActionExecutor {
                         }
                     } else if ("camera".equals(p_action.what)) {
                         ClientEngineZildo.mapDisplay.setTargetCamera(location);
+                        ClientEngineZildo.mapDisplay.setFocusedEntity(null);
                     }
                     break;
                 case speak:
@@ -136,13 +147,17 @@ public class ActionExecutor {
                     achieved = true;
                     break;
                 case spawn:	// Spawn a new character
-                    PersoDescription desc = PersoDescription.fromString(p_action.text);
-                    String name = p_action.who != null ? p_action.who : p_action.what;
-                    Perso newOne = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, name, p_action.val);
-                   	newOne.setSpeed(p_action.speed);
-                   	newOne.setEffect(p_action.fx);
-                   	newOne.initPersoFX();
-                    EngineZildo.spriteManagement.spawnPerso(newOne);
+                	if (p_action.who != null) {
+                		PersoDescription desc = PersoDescription.fromString(p_action.text);
+                		Perso newOne = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, p_action.who, p_action.val);
+                       	newOne.setSpeed(p_action.speed);
+                       	newOne.setEffect(p_action.fx);
+                       	newOne.initPersoFX();
+                        EngineZildo.spriteManagement.spawnPerso(newOne);
+                	} else {	// Spawn a new element
+                		ElementDescription desc = ElementDescription.fromString(p_action.text);
+                		EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0);
+                	}
                     achieved = true;
                     break;
                 case take:	// Zildo takes an item
