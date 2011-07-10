@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.logging.LogManager;
 
 import zeditor.tools.banque.Foret2;
-import zeditor.tools.banque.Foret4;
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.tiles.MotifBankEdit;
 import zildo.client.gui.GUIDisplay;
@@ -39,9 +38,9 @@ import zildo.monde.Game;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.map.Area;
-import zildo.monde.map.Case;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.prefs.Constantes;
 import zildo.server.EngineZildo;
@@ -76,7 +75,7 @@ public class Modifier {
         //new Modifier().saveFontes2();
         //new Modifier().saveBanque();
         //new Modifier().saveGears();
-        new Modifier().saveAllMaps();
+        new Modifier().savePnj();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
        // new Modifier().ripDialogFromAllMaps();
@@ -106,6 +105,14 @@ public class Modifier {
          bankElem.saveBank();
      }
 
+     public void saveElements3() {
+         SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
+   		 bankElem.removeSpr(ElementDescription.SCEPTER.getNSpr()+1);
+    	 //bankElem.loadImage("pnj2", COLOR_BLUE);
+    	 //bankElem.addSprFromImage(ElementDescription.SCEPTER.getNSpr(), 100, 17, 23, 11);
+    	 bankElem.saveBank();
+     }
+     
      public void saveFontes2() {
          SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_FONTES));
          bankElem.clear();
@@ -159,6 +166,20 @@ public class Modifier {
           }
     	 bankElem.setName("gear.spr");
     	 bankElem.saveBank();
+     }
+     
+     public void savePnj2() {
+         SpriteBankEdit bank=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ2));
+         bank.clear();
+    	 bank.addSpritesFromBank(new Pnj2());
+    	 bank.saveBank();
+     }
+   
+     public void savePnj() {
+         SpriteBankEdit bank=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ));
+         bank.clear();
+    	 bank.addSpritesFromBank(new Pnj());
+    	 bank.saveBank();
      }
      
      /** Not useful anymore. It remains here as an example. **/

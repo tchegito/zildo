@@ -38,7 +38,7 @@ public class SpriteStore {
 	protected List<SpriteEntity> spriteEntities;
 
 	static public final String[] sprBankName={"zildo.spr", 
-											  "elements2.spr", 
+											  "elem.spr", 
 											  "pnj.spr", 
 											  "font.spr", 
 											  "pnj2.spr",
