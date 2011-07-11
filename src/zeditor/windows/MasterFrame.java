@@ -29,6 +29,7 @@ import zeditor.windows.subpanels.BackgroundPanel;
 import zeditor.windows.subpanels.ChainingPointPanel;
 import zeditor.windows.subpanels.PersoPanel;
 import zeditor.windows.subpanels.PrefetchPanel;
+import zeditor.windows.subpanels.ScriptPanel;
 import zeditor.windows.subpanels.SpritePanel;
 import zeditor.windows.subpanels.StatsPanel;
 import zildo.client.ClientEngineZildo;
@@ -76,6 +77,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private SpritePanel spritePanel;
 	public TileSet tileSetPanel;
 	private BackgroundPanel backgroundPanel;
+	private ScriptPanel scriptPanel;
 	private StatsPanel statsPanel;
 	private JPanel prefetchPanel;
 	private ChainingPointPanel chainingPointPanel;
@@ -573,6 +575,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			tabsPane.addTab("Personnages", null, getPersoPanel(), null);
 			tabsPane.addTab("Enchainements", null, getChainingPointPanel(), null);
 			tabsPane.addTab("Stats", null, getStatsPanel(), null);
+			tabsPane.addTab("Scripts", null, getScriptPanel(), null);
 		}
 		return tabsPane;
 	}
@@ -597,6 +600,12 @@ public class MasterFrame extends javax.swing.JFrame {
 		return chainingPointPanel;
 	}
 
+	public ScriptPanel getScriptPanel() {
+		if (scriptPanel == null) {
+		    scriptPanel = new ScriptPanel(getManager());
+		}
+		return scriptPanel;
+	}
 	public SpritePanel getSpritePanel() {
 		if (spritePanel == null) {
 			spritePanel = new SpritePanel(manager);
