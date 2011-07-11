@@ -54,6 +54,10 @@ public class AdventureElement extends AnyElement {
 		return quests;
 	}
 	
+	public List<SceneElement> getScenes() {
+	    return scenes;
+	}
+	
 	/**
 	 * Manually add a quest to the adventure. (only for automatic behaviors like chest and doors)
 	 * @param p_quest

@@ -174,7 +174,7 @@ public class MasterFrameManager {
 			chPanel.focusPoint(p_ch);
 		}
 	}
-
+	
 	/**
 	 * Crée une nouvelle carte
 	 * 
