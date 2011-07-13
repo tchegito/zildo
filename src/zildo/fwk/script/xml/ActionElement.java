@@ -52,6 +52,8 @@ public class ActionElement extends AnyElement {
     public int val;
     public float speed;
 
+    private Element xmlElement;
+    
     public ActionElement(ActionKind p_kind) {
     	kind = p_kind;
     }
@@ -61,6 +63,10 @@ public class ActionElement extends AnyElement {
         if (kind == null) {
         	throw new RuntimeException("Action kind is unknown !");
         }
+        
+        // Store XML element in order to read easier from ZEditor
+        xmlElement = p_elem;
+        
     	// Read common attributes
         who = readAttribute(p_elem, "who");
         what = readAttribute(p_elem, "what");
@@ -118,5 +124,14 @@ public class ActionElement extends AnyElement {
         	text = p_elem.getAttribute("name");
         	break;
         }
+    }
+    
+    /**
+     * Returns the attribute's value from the XML representation. (used in ZEditor)
+     * @param p_name
+     * @return String
+     */
+    public String readAttribute(String p_name) {
+	return readAttribute(xmlElement, p_name);
     }
 }
