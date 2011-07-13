@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.script.xml.ActionElement;
@@ -24,8 +25,8 @@ import zildo.server.EngineZildo;
 public class ScriptPanel extends JPanel {
 
     final JTable scriptList;
-    private final static String[] columnNames=new String[]{"Action", "1", "2", "3", "", ""};
-    private final int[] columnSizes={80, 40, 40, 40, 60, 60};
+    private final static String[] columnNames=new String[]{"Action", "who", "pos", "what", "value", "angle",
+	"name", "type", "delta", "fx", "speed", "text", "backward", "unblock"};
 
     final MasterFrameManager manager;
     final JComboBox scriptCombo;
@@ -81,7 +82,9 @@ public class ScriptPanel extends JPanel {
     private JScrollPane getScrollPaneList() {
 	JScrollPane backgroundScroll = new JScrollPane();
 	    backgroundScroll
-		    .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	    .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	    backgroundScroll
+	    .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	    backgroundScroll.setViewportView(scriptList);
 	return backgroundScroll;
     }
@@ -90,6 +93,15 @@ public class ScriptPanel extends JPanel {
 	JTable list = new JTable(null, columnNames);
 	list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	list.setModel(new ScriptTableModel(focused.actions));
+	
+	list.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); //ALL_COLUMNS);
+	
+	int length=160;
+    	for (int i=0;i<columnNames.length;i++) {
+    	    TableColumn col = list.getColumnModel().getColumn(i);
+    	    //col.setPreferredWidth(length);
+    	    length=40;
+	}
 	return list;
     }
 
@@ -123,7 +135,11 @@ public class ScriptPanel extends JPanel {
             if (p_action instanceof ActionsElement) {
         	return null;
             } else {
-		Object[] obj=new Object[]{p_action.kind.name(), "b", "c", "d", "e", "f"};
+		Object[] obj=new Object[columnNames.length];
+		obj[0] = p_action.kind.name();
+		for (int i=1;i<columnNames.length;i++) {
+		    obj[i] = p_action.readAttribute(columnNames[i]);
+		}
 		return obj;
             }
 	}
