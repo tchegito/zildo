@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.ComboBoxModel;
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -22,8 +23,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import zeditor.windows.managers.MasterFrameManager;
-import zildo.fwk.script.xml.ActionElement;
-import zildo.fwk.script.xml.ActionsElement;
 import zildo.fwk.script.xml.SceneElement;
 import zildo.server.EngineZildo;
 
@@ -31,9 +30,7 @@ import zildo.server.EngineZildo;
 public class ScriptPanel extends JPanel {
 
 	final JTable scriptList;
-	private final static String[] columnNames = new String[] { "Action", "who",
-			"pos", "what", "value", "angle", "name", "type", "delta", "fx",
-			"speed", "text", "backward", "unblock" };
+
 
 	final MasterFrameManager manager;
 	final JComboBox scriptCombo;
@@ -101,9 +98,13 @@ public class ScriptPanel extends JPanel {
 	}
 
 	private JTable getScriptList() {
-		JTable list = new JTable(null, columnNames);
+		JTable list = new JTable(null, ScriptTableModel.columnNames);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+		
+	    	TableColumn buttonColumn = list.getColumnModel().getColumn(0);
+	    	JComboBox comboActions = new JComboBox(ScriptTableModel.columnNames);
+	    	buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
 		return list;
 	}
 
@@ -125,35 +126,6 @@ public class ScriptPanel extends JPanel {
 			sceneNames.add(scene.id);
 		}
 		return sceneNames.toArray();
-	}
-
-	public static class ScriptTableModel extends DefaultTableModel {
-
-		public ScriptTableModel(List<ActionElement> p_actions) {
-			super(transformObjectArray(p_actions), columnNames);
-		}
-
-		private static Object[][] transformObjectArray(
-				List<ActionElement> p_actions) {
-			Object[][] data = new Object[p_actions.size()][5];
-			for (int i = 0; i < p_actions.size(); i++) {
-				data[i] = getRow(p_actions.get(i));
-			}
-			return data;
-		}
-
-		private static Object[] getRow(ActionElement p_action) {
-			if (p_action instanceof ActionsElement) {
-				return null;
-			} else {
-				Object[] obj = new Object[columnNames.length];
-				obj[0] = p_action.kind.name();
-				for (int i = 1; i < columnNames.length; i++) {
-					obj[i] = p_action.readAttribute(columnNames[i]);
-				}
-				return obj;
-			}
-		}
 	}
 
 	/**

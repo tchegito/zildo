@@ -109,6 +109,7 @@ public class ClientEngineZildo {
 			filterCommand.addFilter(new FadeFilter());
 			filterCommand.addFilter(new CircleFilter());
 			filterCommand.active(BilinearFilter.class, true, null);
+			filterCommand.active(CircleFilter.class, true, null);
 		}
 
 		pixelShaders = new PixelShaders();
