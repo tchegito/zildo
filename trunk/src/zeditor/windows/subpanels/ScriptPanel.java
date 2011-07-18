@@ -23,7 +23,10 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import zeditor.windows.managers.MasterFrameManager;
+import zildo.fwk.ZUtils;
+import zildo.fwk.script.xml.ActionElement.ActionKind;
 import zildo.fwk.script.xml.SceneElement;
+import zildo.monde.map.Angle;
 import zildo.server.EngineZildo;
 
 @SuppressWarnings("serial")
@@ -102,9 +105,6 @@ public class ScriptPanel extends JPanel {
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		
-	    	TableColumn buttonColumn = list.getColumnModel().getColumn(0);
-	    	JComboBox comboActions = new JComboBox(ScriptTableModel.columnNames);
-	    	buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
 		return list;
 	}
 
@@ -112,9 +112,31 @@ public class ScriptPanel extends JPanel {
 		DefaultTableModel model = new ScriptTableModel(focused.actions);
 		scriptList.setModel(model);
 
+		enhanceListWithCombo();
+		
 		autoResizeColWidth(scriptList);
 	}
 	
+    private void enhanceListWithCombo() {
+	// Action kind
+	TableColumn buttonColumn = scriptList.getColumnModel().getColumn(0);
+	JComboBox comboActions = new JComboBox(ZUtils.getValues(ActionKind.class));
+	buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
+
+	// Angle
+	int nthColumn = ScriptTableModel.findColumnByName("angle");
+	buttonColumn = scriptList.getColumnModel().getColumn(nthColumn);
+	comboActions = new JComboBox(ZUtils.getValues(Angle.class));
+	buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
+	
+	String[] booleanColumns= {"delta", "backward", "unblock"};
+	for (String s : booleanColumns) {
+		nthColumn = ScriptTableModel.findColumnByName(s);
+		buttonColumn = scriptList.getColumnModel().getColumn(nthColumn);
+		comboActions = new JComboBox(new Object[] {"", "true"});
+		buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
+	}
+    }
 	/**
 	 * Return the scenes names, designed for a JComboBox
 	 * 
