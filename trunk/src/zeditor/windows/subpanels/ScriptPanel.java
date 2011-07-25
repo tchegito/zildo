@@ -3,7 +3,9 @@ package zeditor.windows.subpanels;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -19,29 +21,37 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import zeditor.tools.ui.SteppedComboBox;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
+import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.script.xml.ActionElement;
 import zildo.fwk.script.xml.ActionElement.ActionKind;
 import zildo.fwk.script.xml.SceneElement;
 import zildo.monde.map.Angle;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.server.EngineZildo;
 
 @SuppressWarnings("serial")
 public class ScriptPanel extends JPanel {
 
 	final JTable scriptList;
-
+	ScriptTableModel model;
+	
 	final MasterFrameManager manager;
 	final JComboBox scriptCombo;
 	final JButton buttonPlus;
 	final JButton buttonSave;
+	
+	// Specific combos based on enumerated types
+	final Map<Class<Enum>, JComboBox> combosByEnumClass;
+	final static Class<Enum>[] managedEnums = (Class<Enum>[]) new Class<?>[]{Angle.class, ElementDescription.class, PersoDescription.class, FilterEffect.class, MouvementPerso.class};
 	
 	JScrollPane listScroll;
 	final List<SceneElement> scenes = EngineZildo.scriptManagement
@@ -70,6 +80,12 @@ public class ScriptPanel extends JPanel {
 		JPanel panelButtons = new JPanel();
 		panelButtons.add(buttonPlus);
 		panelButtons.add(buttonSave);
+
+		// Specific combos for the list
+		combosByEnumClass = new HashMap();
+		for (Class<Enum> e : managedEnums) {
+		    combosByEnumClass.put(e, new SteppedComboBox(ZUtils.getValues(e)));
+		}
 		
 		updateList();
 
@@ -131,19 +147,30 @@ public class ScriptPanel extends JPanel {
 	}
 
 	private JTable getScriptList() {
-		JTable list = new JTable(null, ScriptTableModel.columnNames);
+		JTable list = new JTable(null, ScriptTableModel.columnNames) {
+		    @Override
+		    public TableCellEditor getCellEditor(int p_row, int p_column) {
+		        if (p_column >= 1) {
+		            Class c = model.getClassCell(p_row, p_column);
+		            if (c.isEnum()) {
+		        	return new DefaultCellEditor(combosByEnumClass.get(c));
+		            }
+		        }
+		        return super.getCellEditor(p_row, p_column);
+		    }
+		};
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		return list;
 	}
 
 	private void updateList() {
-		DefaultTableModel model = new ScriptTableModel(focused.actions);
-		scriptList.setModel(model);
+	    model = new ScriptTableModel(focused.actions);
+	    scriptList.setModel(model);
 
-		enhanceListWithCombo();
+	    enhanceListWithCombo();
 
-		autoResizeColWidth(scriptList);
+	    autoResizeColWidth(scriptList);
 	}
 
 	/**
@@ -170,14 +197,6 @@ public class ScriptPanel extends JPanel {
 			comboActions = new JComboBox(new Object[] { "", "true" });
 			buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
 		}
-		
-		// ElementDescription
-		nthColumn = ScriptTableModel.findColumnByName("type");
-		buttonColumn = scriptList.getColumnModel().getColumn(nthColumn);
-		SteppedComboBox steppedCombo = new SteppedComboBox(ZUtils.getValues(ElementDescription.class));
-		steppedCombo.setPopupWidth(250);
-		buttonColumn.setCellEditor(new DefaultCellEditor(steppedCombo));
-		
 	}
 
 	/**
