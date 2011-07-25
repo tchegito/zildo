@@ -10,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,11 +23,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import zeditor.tools.ui.SteppedComboBox;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
+import zildo.fwk.script.xml.ActionElement;
 import zildo.fwk.script.xml.ActionElement.ActionKind;
 import zildo.fwk.script.xml.SceneElement;
 import zildo.monde.map.Angle;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.server.EngineZildo;
 
 @SuppressWarnings("serial")
@@ -34,9 +38,11 @@ public class ScriptPanel extends JPanel {
 
 	final JTable scriptList;
 
-
 	final MasterFrameManager manager;
 	final JComboBox scriptCombo;
+	final JButton buttonPlus;
+	final JButton buttonSave;
+	
 	JScrollPane listScroll;
 	final List<SceneElement> scenes = EngineZildo.scriptManagement
 			.getAdventure().getScenes();
@@ -49,9 +55,24 @@ public class ScriptPanel extends JPanel {
 		scriptCombo = getCombo();
 		scriptList = getScriptList();
 		listScroll = getScrollPaneList();
-
-		updateList();
+		buttonPlus = new JButton(new AbstractAction("Ajouter", null) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addLine();
+			}
+		});
+		buttonSave = new JButton(new AbstractAction("Sauvegarder", null) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveScript();
+			}
+		});
+		JPanel panelButtons = new JPanel();
+		panelButtons.add(buttonPlus);
+		panelButtons.add(buttonSave);
 		
+		updateList();
+
 		// Layout
 		BoxLayout backgroundPanelLayout = new BoxLayout(this,
 				javax.swing.BoxLayout.Y_AXIS);
@@ -60,11 +81,20 @@ public class ScriptPanel extends JPanel {
 		// Add components
 		add(scriptCombo);
 		add(scriptList.getTableHeader());
+		add(panelButtons);
 		add(listScroll);
-
+		
 		manager = p_manager;
 	}
 
+	private void addLine() {
+		focused.actions.add(new ActionElement(ActionKind.pos));
+		updateList();
+	}
+	
+	private void saveScript() {
+		
+	}
 	private JComboBox getCombo() {
 		ComboBoxModel backgroundComboModel = new DefaultComboBoxModel(
 				getSceneNames());
@@ -104,7 +134,6 @@ public class ScriptPanel extends JPanel {
 		JTable list = new JTable(null, ScriptTableModel.columnNames);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		
 		return list;
 	}
 
@@ -113,30 +142,44 @@ public class ScriptPanel extends JPanel {
 		scriptList.setModel(model);
 
 		enhanceListWithCombo();
-		
+
 		autoResizeColWidth(scriptList);
 	}
-	
-    private void enhanceListWithCombo() {
-	// Action kind
-	TableColumn buttonColumn = scriptList.getColumnModel().getColumn(0);
-	JComboBox comboActions = new JComboBox(ZUtils.getValues(ActionKind.class));
-	buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
 
-	// Angle
-	int nthColumn = ScriptTableModel.findColumnByName("angle");
-	buttonColumn = scriptList.getColumnModel().getColumn(nthColumn);
-	comboActions = new JComboBox(ZUtils.getValues(Angle.class));
-	buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
-	
-	String[] booleanColumns= {"delta", "backward", "unblock"};
-	for (String s : booleanColumns) {
-		nthColumn = ScriptTableModel.findColumnByName(s);
-		buttonColumn = scriptList.getColumnModel().getColumn(nthColumn);
-		comboActions = new JComboBox(new Object[] {"", "true"});
+	/**
+	 * Add combobox to cases which are needing one.
+	 */
+	private void enhanceListWithCombo() {
+		// Action kind
+		TableColumn buttonColumn = scriptList.getColumnModel().getColumn(0);
+		JComboBox comboActions = new JComboBox(
+				ZUtils.getValues(ActionKind.class));
 		buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
+
+		// Angle
+		int nthColumn = ScriptTableModel.findColumnByName("angle");
+		buttonColumn = scriptList.getColumnModel().getColumn(nthColumn);
+		comboActions = new JComboBox(ZUtils.getValues(Angle.class));
+		buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
+
+		// Boolean columns
+		String[] booleanColumns = { "delta", "backward", "unblock" };
+		for (String s : booleanColumns) {
+			nthColumn = ScriptTableModel.findColumnByName(s);
+			buttonColumn = scriptList.getColumnModel().getColumn(nthColumn);
+			comboActions = new JComboBox(new Object[] { "", "true" });
+			buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
+		}
+		
+		// ElementDescription
+		nthColumn = ScriptTableModel.findColumnByName("type");
+		buttonColumn = scriptList.getColumnModel().getColumn(nthColumn);
+		SteppedComboBox steppedCombo = new SteppedComboBox(ZUtils.getValues(ElementDescription.class));
+		steppedCombo.setPopupWidth(250);
+		buttonColumn.setCellEditor(new DefaultCellEditor(steppedCombo));
+		
 	}
-    }
+
 	/**
 	 * Return the scenes names, designed for a JComboBox
 	 * 
@@ -152,7 +195,10 @@ public class ScriptPanel extends JPanel {
 
 	/**
 	 * Auto adjust column size with content.<br/>
-	 * Found at 'http://www.pikopong.com/blog/2008/08/13/auto-resize-jtable-column-width/'.
+	 * Found at
+	 * 'http://www.pikopong.com/blog/2008/08/13/auto-resize-jtable-column-width/'
+	 * .
+	 * 
 	 * @param table
 	 */
 	private void autoResizeColWidth(JTable table) {

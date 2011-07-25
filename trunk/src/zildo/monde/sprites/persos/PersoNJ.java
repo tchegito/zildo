@@ -167,18 +167,18 @@ public class PersoNJ extends Perso {
 				}
 			}
 	
-			if (isAlerte() && MouvementPerso.SCRIPT_VOLESPECTRE != quel_deplacement && MouvementPerso.SCRIPT_ZONEARC != quel_deplacement) {
+			if (isAlerte() && MouvementPerso.VOLESPECTRE != quel_deplacement && MouvementPerso.ZONEARC != quel_deplacement) {
 				// Zildo has been caught, so the monster try to reach him, or run away (hen)
-				boolean fear=this.getQuel_deplacement()==MouvementPerso.SCRIPT_POULE;
+				boolean fear=quel_deplacement.isAfraid();
 				reachAvoidTarget(zildo, fear);
 				walkTile(true);
 			} else {
 				switch (this.getQuel_deplacement()) {
-					case SCRIPT_OBSERVE:
+					case OBSERVE:
 						// Persos qui regardent en direction de Zildo
 						sight(zildo, true);
 						break;
-					case SCRIPT_VOLESPECTRE:
+					case VOLESPECTRE:
 						double alpha;
 						if (cptMouvement==100) {
 							if (quel_spr == PersoDescription.CORBEAU) {
@@ -196,7 +196,9 @@ public class PersoNJ extends Perso {
 								zone_deplacement.incY2(pasy*3);
 							}
 							attente=1+(int)Math.random()*5;
-							pathFinder.determineDestination();
+							if (pathFinder.target == null) {
+								pathFinder.determineDestination();
+							}
 							cptMouvement=0;
 						} else if (attente!=0) {
 							attente--;
@@ -215,17 +217,17 @@ public class PersoNJ extends Perso {
 									break;
 								}
 							}
-							// On se déplace en courbe}
+							// On se déplace en courbe
 							pathFinder.reachDestination(0);	// Speed is unused
 							cptMouvement++;
 						}
 						break;
-					case SCRIPT_POULE:
+					case POULE:
 						if (z>0) { // La poule est en l'air, elle n'est plus libre de ses mouvements
 							physicMoveWithCollision();
 						}	// Sinon elle agit comme les scripts de zone
 						break;
-					case SCRIPT_ZONEARC:
+					case ZONEARC:
 						 if (!isWounded() && isAlerte()) {
 							 // Get the enemy aligned with Zildo to draw arrows
 							 int xx = (int) getX();
@@ -250,12 +252,12 @@ public class PersoNJ extends Perso {
 					default:
 						break;
 				}
-				if (quel_deplacement != MouvementPerso.SCRIPT_OBSERVE &&
-					quel_deplacement != MouvementPerso.SCRIPT_VOLESPECTRE) {
+				if (quel_deplacement != MouvementPerso.OBSERVE &&
+					quel_deplacement != MouvementPerso.VOLESPECTRE) {
                        if (pathFinder.target != null && this.getX() == pathFinder.target.x && this.getY() == pathFinder.target.y) {
                     	   pathFinder.target=null;
-                            if (!isGhost() && quel_deplacement != MouvementPerso.SCRIPT_ABEILLE
-                                    && (quel_deplacement != MouvementPerso.SCRIPT_RAT || Hasard.lanceDes(8))) {
+                            if (!isGhost() && quel_deplacement != MouvementPerso.ABEILLE
+                                    && (quel_deplacement != MouvementPerso.RAT || Hasard.lanceDes(8))) {
                                 setAttente(10 + (int) (Math.random() * 20));
                             }
                         }
@@ -276,16 +278,16 @@ public class PersoNJ extends Perso {
 							} else 
 							this.setAttente(getAttente() - 1);
 							// Stop hen's movements when it's flying (TODO : this isn't very clean)
-						} else if (quel_deplacement != MouvementPerso.SCRIPT_POULE || z == 0){
+						} else if (quel_deplacement != MouvementPerso.POULE || z == 0){
 							// On déplace le PNJ
-							if (pathFinder.target == null && MouvementPerso.SCRIPT_IMMOBILE!= quel_deplacement) {
+							if (pathFinder.target == null && MouvementPerso.IMMOBILE!= quel_deplacement) {
 								//Pas de destination, donc on en fixe une dans la zone de déplacement
 								cptMouvement=0;
 					
 								pathFinder.determineDestination();
 							}
 							float vitesse=0.5f;
-							if (quel_deplacement == MouvementPerso.SCRIPT_RAT) {
+							if (quel_deplacement == MouvementPerso.RAT) {
 								// Script du rat => plus rapide, et crache des pierres}
 								vitesse+=1;
 								pos_seqsprite=pos_seqsprite % (8*Constantes.speed-1);
@@ -297,7 +299,7 @@ public class PersoNJ extends Perso {
 											,null, null);
 									attente=(int) (Math.random()*5);
 								}
-							} else if (quel_deplacement == MouvementPerso.SCRIPT_ELECTRIQUE) {
+							} else if (quel_deplacement == MouvementPerso.ELECTRIQUE) {
 								vitesse=0.2f;
 							}
 							
@@ -309,10 +311,10 @@ public class PersoNJ extends Perso {
 								walkTile(true);
 
 								// suite_mouvement
-								if (quel_deplacement == MouvementPerso.SCRIPT_ELECTRIQUE) {
+								if (quel_deplacement == MouvementPerso.ELECTRIQUE) {
 									angle=Angle.NORD;
 						
-								} else if (quel_deplacement == MouvementPerso.SCRIPT_ABEILLE) {
+								} else if (quel_deplacement == MouvementPerso.ABEILLE) {
 									angle=Angle.fromInt(angle.value & 2);
 								}
 								if (!quel_deplacement.isFlying()) {

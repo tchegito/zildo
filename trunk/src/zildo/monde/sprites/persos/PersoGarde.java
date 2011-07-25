@@ -54,10 +54,10 @@ public class PersoGarde extends PersoNJ {
 	public void setQuel_deplacement(MouvementPerso p_script) {
 		super.setQuel_deplacement(p_script);
 		switch (p_script) {
-		case SCRIPT_ZONELANCE:
+		case ZONELANCE:
 			weapon.setWeapon(GuardWeapon.SPEAR);
 			break;
-		case SCRIPT_ZONEARC:
+		case ZONEARC:
 			weapon.setWeapon(GuardWeapon.BOW);
 			break;
 		}

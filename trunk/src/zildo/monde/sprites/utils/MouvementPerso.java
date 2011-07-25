@@ -21,28 +21,25 @@
 package zildo.monde.sprites.utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public enum MouvementPerso {
 
 	// Mouvement des persos
-	SCRIPT_ZONE(0),
-	SCRIPT_POULE(1),
-	SCRIPT_OBSERVE(2),
-	SCRIPT_IMMOBILE(3),
-	SCRIPT_VOLESPECTRE(4),
-	SCRIPT_RAT(5),
-	SCRIPT_ZONELANCE(6),
-	SCRIPT_ZONEARC(7),
-	SCRIPT_ELECTRIQUE(8),
-	SCRIPT_ABEILLE(9),
-	SCRIPT_OISEAU(10),
-	SCRIPT_LAPIN(11);
+	ZONE(0),
+	POULE(1),
+	OBSERVE(2),
+	IMMOBILE(3),
+	VOLESPECTRE(4),
+	RAT(5),
+	ZONELANCE(6),
+	ZONEARC(7),
+	ELECTRIQUE(8),
+	ABEILLE(9),
+	OISEAU(10),
+	LAPIN(11);
 	
 	public int valeur;
-	
-	public static List<MouvementPerso> persoDiagonales=Arrays.asList(SCRIPT_POULE,SCRIPT_VOLESPECTRE,SCRIPT_ELECTRIQUE);
 	
 	private MouvementPerso(int val) {
 		this.valeur=val;
@@ -57,8 +54,12 @@ public enum MouvementPerso {
 		throw new RuntimeException("Le script de mouvement "+a+" n'existe pas.");
 	}
 	
+	/**
+	 * Does this script make the character collide obstacles ?
+	 * @return TRUE = no collision / FALSE = collision with background
+	 */
 	public boolean isFlying() {
-		return this == SCRIPT_VOLESPECTRE || this == SCRIPT_OISEAU;
+		return this == VOLESPECTRE || this == OISEAU;
 	}
 	
 	public static String[] getValues() {
@@ -67,5 +68,22 @@ public enum MouvementPerso {
 			str.add(mvt.name());
 		}
 		return str.toArray(new String[]{});
+	}
+	
+	/**
+	 * Does this script make the character focus on his target, or out of his way ? 
+	 * @return TRUE = character runs away / FALSE = character runs on his target
+	 */
+	public boolean isAfraid() {
+		return this == POULE;
+	}
+	/**
+	 * Does this script make the character move diagonally ?
+	 * @return TRUE = diagonal move / FALSE = lateral move
+	 */
+	public boolean isDiagonal() {
+		return this == POULE ||
+		this == VOLESPECTRE ||
+		this == ELECTRIQUE;
 	}
 }

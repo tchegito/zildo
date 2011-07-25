@@ -140,10 +140,10 @@ public class PathFinder {
 	
 			// On déplace le perso soit horizontalement, soit verticalement,
 			// ou les 2 si c'est une poule. Car les poules ont la bougeotte.
-			if (j%2==0 || MouvementPerso.persoDiagonales.contains(mvt) )
+			if (j%2==0 || mvt.isDiagonal() )
 				target.x+= (16*Math.random()*j) - 8*j;
 	
-			if (j%2==1 || MouvementPerso.persoDiagonales.contains(mvt) )
+			if (j%2==1 || mvt.isDiagonal() )
 				target.y+= (16*Math.random()*j) - 8*j;
 	
 			j--; // On diminue le rayon jusqu'à être dans la zone
@@ -171,8 +171,8 @@ public class PathFinder {
 	}
 	
 	public void collide() {
-		if (mobile.getQuel_deplacement() == MouvementPerso.SCRIPT_POULE ||
-				mobile.getQuel_deplacement() == MouvementPerso.SCRIPT_ABEILLE) {
+		if (mobile.getQuel_deplacement() == MouvementPerso.POULE ||
+				mobile.getQuel_deplacement() == MouvementPerso.ABEILLE) {
 			target=null;
 		} else {
 			if (nbShock++ >= 3 && !mobile.isGhost()) {
