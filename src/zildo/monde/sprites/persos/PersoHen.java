@@ -31,6 +31,7 @@ import zildo.server.EngineZildo;
 public class PersoHen extends PersoNJ {
 
     public PersoHen(int x, int y) {
+    	super();
         // Add a shadow
     	addShadow(ElementDescription.SHADOW);
     }

@@ -130,7 +130,7 @@ public abstract class Perso extends Element {
 
 	public void setQuel_deplacement(MouvementPerso quel_deplacement) {
 		this.quel_deplacement = quel_deplacement;
-		if (MouvementPerso.SCRIPT_IMMOBILE == quel_deplacement) {
+		if (MouvementPerso.IMMOBILE == quel_deplacement) {
 			this.pathFinder.target=null;
 		}
 	}
@@ -262,7 +262,7 @@ public abstract class Perso extends Element {
 		compte_dialogue=0;
 		attente=0;
 		
-		quel_deplacement=MouvementPerso.SCRIPT_IMMOBILE;
+		quel_deplacement=MouvementPerso.IMMOBILE;
 		
 		persoSprites=new ArrayList<Element>();
 	

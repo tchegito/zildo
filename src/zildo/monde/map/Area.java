@@ -679,9 +679,6 @@ public class Area implements EasySerializable {
 
                 int sprBank = p_buffer.readUnsignedByte();
                 int sprDesc = p_buffer.readUnsignedByte();
-                if (sprDesc > 128) {
-                    //sprDesc -= 2;
-                }
                 SpriteDescription desc = SpriteDescription.Locator.findSpr(sprBank, sprDesc);
                 if (desc.getBank() == SpriteBank.BANK_ZILDO) {
                 	desc=PersoDescription.ZILDO;
@@ -713,9 +710,9 @@ public class Area implements EasySerializable {
 
 					perso.setInfo(PersoInfo.values()[info]);
 					perso.setQuel_deplacement(MouvementPerso.fromInt(move));
-					if (desc==PersoDescription.PANNEAU && perso.getQuel_deplacement() != MouvementPerso.SCRIPT_IMMOBILE) {
+					if (desc==PersoDescription.PANNEAU && perso.getQuel_deplacement() != MouvementPerso.IMMOBILE) {
 						// Fix a map bug : sign perso should be unmoveable
-						perso.setQuel_deplacement(MouvementPerso.SCRIPT_IMMOBILE);	
+						perso.setQuel_deplacement(MouvementPerso.IMMOBILE);	
 					} else if (desc==PersoDescription.GARDE_CANARD && perso.getInfo()!=PersoInfo.ENEMY) {
 						// Another map bug : guards are always hostile
 						perso.setInfo(PersoInfo.ENEMY);

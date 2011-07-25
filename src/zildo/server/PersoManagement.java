@@ -180,6 +180,7 @@ public class PersoManagement {
 			case CORBEAU:
 			case SPECTRE:
 			case OISEAU_VERT:
+			case VAUTOUR:
 				perso = new PersoVolant(p_desc);
 				break;
 			default:

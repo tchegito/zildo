@@ -45,9 +45,13 @@ public class PathFinderFlying extends PathFinder {
 	public void determineDestination() {
         float x=mobile.x;
         float y=mobile.y;
-		super.determineDestination();
-		target.x=(int)((target.x+Math.random()*20.0f-10.0f-x)/2);
-		target.y=(int)((target.y+Math.random()*20.0f-10.0f-y)/2);
+        if (target == null && mobile.getZone_deplacement() != null) {
+        	super.determineDestination();
+        }
+        if (target != null) {
+        	target.x=(int)((target.x+Math.random()*20.0f-10.0f-x)/2);
+        	target.y=(int)((target.y+Math.random()*20.0f-10.0f-y)/2);
+        }
 	}
 	
     
@@ -61,6 +65,7 @@ public class PathFinderFlying extends PathFinder {
 		alpha=(Math.PI/100.0f)*Math.cos(alpha);
 		mobile.x+=target.x*alpha;
 		mobile.y+=target.y*alpha;
+		System.out.println(mobile);
 		if (target.x<0) {
 			mobile.setAngle(Angle.EST);
 		} else {
