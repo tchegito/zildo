@@ -2,6 +2,7 @@ package zeditor.windows.subpanels;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +26,6 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import zeditor.tools.ui.SteppedComboBox;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.filter.FilterEffect;
@@ -84,7 +84,15 @@ public class ScriptPanel extends JPanel {
 		// Specific combos for the list
 		combosByEnumClass = new HashMap();
 		for (Class<Enum> e : managedEnums) {
-		    combosByEnumClass.put(e, new SteppedComboBox(ZUtils.getValues(e)));
+		    // Create a combo which resize itself after item changed
+		    JComboBox combo = new JComboBox(ZUtils.getValues(e));
+		    combo.addActionListener(new ActionListener() {
+		        @Override
+		        public void actionPerformed(ActionEvent p_e) {
+			    autoResizeColWidth(scriptList);
+		        }
+		    });
+		    combosByEnumClass.put(e, combo); 
 		}
 		
 		updateList();
