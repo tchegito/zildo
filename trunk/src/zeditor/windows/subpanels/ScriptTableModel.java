@@ -2,11 +2,14 @@ package zeditor.windows.subpanels;
 
 import java.util.List;
 
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.script.xml.ActionElement;
+import zildo.fwk.script.xml.ActionElement.ActionKind;
 import zildo.fwk.script.xml.ActionsElement;
 import zildo.monde.map.Angle;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -19,11 +22,15 @@ public class ScriptTableModel extends DefaultTableModel {
 	    "pos", "what", "value", "text", "angle", "name", "type", "delta", "fx",
 	    "speed", "backward", "unblock" };
 
+    List<ActionElement> actions;
+    
     public ScriptTableModel(List<ActionElement> p_actions) {
 	super();
 	// 1st pass : set values
 	setDataVector(transformObjectArray(p_actions), columnNames);
 
+	actions = p_actions;
+	
 	// 2nd pass : adjust enum values
 	for (int i = 0; i < p_actions.size(); i++) {
 	    for (int j = 0 ; j<columnNames.length ;j ++) {
@@ -41,6 +48,38 @@ public class ScriptTableModel extends DefaultTableModel {
 		}
 	    }
 	}
+	
+	addTableModelListener(new TableModelListener() {
+	    
+	    @Override
+	    public void tableChanged(TableModelEvent p_e) {
+		int col=p_e.getColumn();
+		int row=p_e.getFirstRow();
+		if (col == -1) {	// Sometimes we got here with -1
+		    return;
+		}
+		String attr = columnNames[col];
+		ActionElement action = actions.get(row);
+		String value = (String) getValueAt(row, col);
+		
+		if (col == 0) {
+		    // Kind of action
+		    ActionKind kind = ZUtils.getField(value, ActionKind.class);
+		    if (action.kind != kind) {	// New action ?
+			actions.set(row, new ActionElement(kind));
+		    }
+		} else {
+		    Class clazz = getClassCell(row, col);
+		    if (clazz != String.class && clazz != PersoDescription.class && clazz != ElementDescription.class) {
+			// Special cells
+        		int intValue = ZUtils.getField(value, clazz).ordinal();
+        		value = String.valueOf(intValue);
+		    }
+		    action.setAttribute(attr, value);
+		}
+	    }
+	});
+	    
     }
 
     public final static int findColumnByName(String p_name) {

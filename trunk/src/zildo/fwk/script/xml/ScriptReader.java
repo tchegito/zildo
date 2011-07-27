@@ -52,7 +52,7 @@ public class ScriptReader {
 
             Document document = sxb.parse(config);
             Element racine = document.getDocumentElement();
-
+            
             ret = createNode(racine);
 
         } catch (Exception e) {
@@ -84,6 +84,7 @@ public class ScriptReader {
 	        try {
 	            s = (AnyElement) Class.forName(name).newInstance();
 	        } catch (Exception e) {
+	            e.printStackTrace();
 	            throw new RuntimeException("Unable to find class " + name);
 	        }
         }
