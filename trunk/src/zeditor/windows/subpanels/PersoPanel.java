@@ -28,7 +28,6 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -98,16 +97,16 @@ public class PersoPanel extends JPanel {
 
 		name=new JTextField();
 		addComp(new JLabel("Nom"), name);
-		script=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(MouvementPerso.class)));
+		script=new JComboBox(ZUtils.getValues(MouvementPerso.class));
 		addComp(new JLabel("Script"), script);
 		
-		angle=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(Angle.class)));
+		angle=new JComboBox(ZUtils.getValues(Angle.class));
 		addComp(new JLabel("Angle"), angle);
 
 		object=new JTextField();
 		addComp(new JLabel("Objet"), object);
 		
-		info=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(PersoInfo.class)));
+		info=new JComboBox(ZUtils.getValues(PersoInfo.class));
 		addComp(new JLabel("Info"), info);
 		
 		// Spinner for the dialogs

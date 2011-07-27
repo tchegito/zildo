@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -46,7 +45,7 @@ public class StatsPanel extends JPanel {
 	add(new JLabel("Dialogues"));
 	add(nDialogs = new JLabel(""));
 	
-	atmosphere=new JComboBox(new DefaultComboBoxModel(ZUtils.getValues(Atmosphere.class)));
+	atmosphere=new JComboBox(ZUtils.getValues(Atmosphere.class));
 	add(new JLabel("Atmosphere"));
 	add(atmosphere);
 	

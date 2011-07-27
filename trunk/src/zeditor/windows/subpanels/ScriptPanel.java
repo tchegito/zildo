@@ -3,9 +3,6 @@ package zeditor.windows.subpanels;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,15 +52,16 @@ public class ScriptPanel extends JPanel {
 	final JButton buttonSave;
 	
 	// Specific combos based on enumerated types
-	final Map<Class<Enum>, JComboBox> combosByEnumClass;
-	final static Class<Enum>[] managedEnums = (Class<Enum>[]) new Class<?>[]{Angle.class, ElementDescription.class, PersoDescription.class, FilterEffect.class, MouvementPerso.class};
+	final Map<Class<?>, JComboBox> combosByEnumClass;
+	final static Class<?>[] managedEnums = {Angle.class, ElementDescription.class, PersoDescription.class, FilterEffect.class, MouvementPerso.class};
 	
 	JScrollPane listScroll;
 	final List<SceneElement> scenes = EngineZildo.scriptManagement
 			.getAdventure().getScenes();
 	SceneElement focused;
 
-	public ScriptPanel(MasterFrameManager p_manager) {
+	@SuppressWarnings("unchecked")
+	public <T extends Enum<T>> ScriptPanel(MasterFrameManager p_manager) {
 
 		// Initialize the needed objects
 		focused = scenes != null && scenes.size() > 0 ? scenes.get(0) : null;
@@ -87,16 +85,11 @@ public class ScriptPanel extends JPanel {
 		panelButtons.add(buttonSave);
 
 		// Specific combos for the list
-		combosByEnumClass = new HashMap();
-		for (Class<Enum> e : managedEnums) {
+		combosByEnumClass = new HashMap<Class<?>, JComboBox>();
+		for (Class<?> e : managedEnums) {
 		    // Create a combo which resize itself after item changed
-		    JComboBox combo = new JComboBox(ZUtils.getValues(e));
-		    combo.addActionListener(new ActionListener() {
-		        @Override
-		        public void actionPerformed(ActionEvent p_e) {
-			    autoResizeColWidth(scriptList);
-		        }
-		    });
+			Class<T> enumClazz = (Class<T>) e;
+		    JComboBox combo = new UpdateComboBox(ZUtils.getValues(enumClazz));
 		    combosByEnumClass.put(e, combo); 
 		}
 		
@@ -166,7 +159,7 @@ public class ScriptPanel extends JPanel {
 		    @Override
 		    public TableCellEditor getCellEditor(int p_row, int p_column) {
 		        if (p_column >= 1) {
-		            Class c = model.getClassCell(p_row, p_column);
+		            Class<?> c = model.getClassCell(p_row, p_column);
 		            if (c.isEnum()) {
 		        	return new DefaultCellEditor(combosByEnumClass.get(c));
 		            }
@@ -182,15 +175,6 @@ public class ScriptPanel extends JPanel {
 		    }
 		};
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.addVetoableChangeListener(new VetoableChangeListener() {
-		    
-		    @Override
-		    public void vetoableChange(PropertyChangeEvent p_evt)
-			    throws PropertyVetoException {
-			// TODO Auto-generated method stub
-			System.out.println("click");
-		    }
-		});
 		return list;
 	}
 
@@ -216,7 +200,7 @@ public class ScriptPanel extends JPanel {
 		// Angle
 		int nthColumn = ScriptTableModel.findColumnByName("angle");
 		buttonColumn = scriptList.getColumnModel().getColumn(nthColumn);
-		comboActions = new JComboBox(ZUtils.getValues(Angle.class));
+		comboActions = new UpdateComboBox(ZUtils.getValues(Angle.class));
 		buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
 
 		// Boolean columns
@@ -224,7 +208,7 @@ public class ScriptPanel extends JPanel {
 		for (String s : booleanColumns) {
 			nthColumn = ScriptTableModel.findColumnByName(s);
 			buttonColumn = scriptList.getColumnModel().getColumn(nthColumn);
-			comboActions = new JComboBox(new Object[] { "", "true" });
+			comboActions = new UpdateComboBox(new Object[] { "", "true" });
 			buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
 		}
 	}
@@ -295,4 +279,23 @@ public class ScriptPanel extends JPanel {
 
 		table.getTableHeader().setReorderingAllowed(false);
 	}
+	
+	/**
+	 * Simple combo which updates the list, as soon as the selected item changes.
+	 * @author Tchegito
+	 *
+	 */
+    class UpdateComboBox extends JComboBox {
+    	
+    	public UpdateComboBox(Object[] p_items) {
+    		super(p_items);
+    	    this.addActionListener(new ActionListener() {
+    	        @Override
+    	        public void actionPerformed(ActionEvent p_e) {
+    		    autoResizeColWidth(scriptList);
+    	        }
+    	    });
+    	}
+    }
+
 }
