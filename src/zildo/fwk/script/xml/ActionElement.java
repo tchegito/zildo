@@ -27,7 +27,7 @@ import zildo.monde.map.Point;
 public class ActionElement extends AnyElement {
 
     public enum ActionKind {
-        pos, moveTo, speak, script, angle, wait, sound, fadeIn, fadeOut, map, focus, spawn, exec, take, mapReplace, music;
+        actions, pos, moveTo, speak, script, angle, wait, sound, fadeIn, fadeOut, map, focus, spawn, exec, take, mapReplace, music;
         
         public static ActionKind fromString(String p_name) {
         	for (ActionKind kind : values()) {
@@ -56,6 +56,7 @@ public class ActionElement extends AnyElement {
     
     public ActionElement(ActionKind p_kind) {
     	kind = p_kind;
+    	xmlElement = ScriptWriter.document.createElement(kind.toString());
     }
     
     @Override
@@ -134,4 +135,14 @@ public class ActionElement extends AnyElement {
     public String readAttribute(String p_name) {
 	return readAttribute(xmlElement, p_name);
     }
+    
+    /**
+     * Update attribute's value. (used only for ZEditor)
+     * @param p_name
+     * @param p_value
+     */
+    public void setAttribute(String p_name, String p_value) {
+	xmlElement.setAttribute(p_name, p_value);
+    }
+    
 }

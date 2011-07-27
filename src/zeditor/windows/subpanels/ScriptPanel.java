@@ -3,6 +3,9 @@ package zeditor.windows.subpanels;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableCellEditor;
@@ -32,6 +36,7 @@ import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.script.xml.ActionElement;
 import zildo.fwk.script.xml.ActionElement.ActionKind;
 import zildo.fwk.script.xml.SceneElement;
+import zildo.fwk.script.xml.ScriptWriter;
 import zildo.monde.map.Angle;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -117,8 +122,10 @@ public class ScriptPanel extends JPanel {
 	}
 	
 	private void saveScript() {
-		
+		// Save the XML script
+	    	new ScriptWriter("kikoo").create(scenes);
 	}
+	
 	private JComboBox getCombo() {
 		ComboBoxModel backgroundComboModel = new DefaultComboBoxModel(
 				getSceneNames());
@@ -166,9 +173,24 @@ public class ScriptPanel extends JPanel {
 		        }
 		        return super.getCellEditor(p_row, p_column);
 		    }
+		    @Override
+		    public void tableChanged(TableModelEvent p_e) {
+		        super.tableChanged(p_e);
+			if (p_e.getColumn() == 0) {
+			    updateList();
+			}
+		    }
 		};
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+		list.addVetoableChangeListener(new VetoableChangeListener() {
+		    
+		    @Override
+		    public void vetoableChange(PropertyChangeEvent p_evt)
+			    throws PropertyVetoException {
+			// TODO Auto-generated method stub
+			System.out.println("click");
+		    }
+		});
 		return list;
 	}
 
