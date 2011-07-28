@@ -31,7 +31,7 @@ public class ZPersoLibrary extends ArrayList<SpriteDescription> {
 		switch (desc) {
 		case ZILDO:
 			info=PersoInfo.ZILDO;
-			p_perso.setNom("zildo");
+			p_perso.setName("zildo");
 			break;
 		case GARDE_BOUCLIER:
 			info=PersoInfo.NEUTRAL;

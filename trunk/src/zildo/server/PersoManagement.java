@@ -134,7 +134,7 @@ public class PersoManagement {
     public Perso getNamedPerso(String p_name) {
         if (p_name != null && !"".equals(p_name)) {
             for (Perso p : tab_perso) {
-                if (p_name.equalsIgnoreCase(p.getNom())) {
+                if (p_name.equalsIgnoreCase(p.getName())) {
                     return p;
                 }
             }
@@ -195,7 +195,7 @@ public class PersoManagement {
         perso.setY(y);
         perso.setZ(z);
         perso.setQuel_spr(p_desc);
-        perso.setNom(name);
+        perso.setName(name);
         perso.setMaxpv(1);
         perso.setPv(1);
         perso.setAngle(Angle.fromInt(angle));

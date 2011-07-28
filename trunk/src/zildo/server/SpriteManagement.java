@@ -807,4 +807,24 @@ public class SpriteManagement extends SpriteStore {
 		}
 		suspendedEntities.clear();
 	}
+	
+	/**
+	 * Returned the element with given name.
+	 * @param p_name
+	 * @return element
+	 */
+    public Element getNamedElement(String p_name) {
+        if (p_name != null && !"".equals(p_name)) {
+            for (SpriteEntity p : spriteEntities) {
+            	if (p.getEntityType() != SpriteEntity.ENTITYTYPE_ELEMENT) {
+            		continue;
+            	}
+            	Element e = (Element) p;
+                if (p_name.equalsIgnoreCase(e.getName())) {
+                    return e;
+                }
+            }
+        }
+        return null;
+    }
 }

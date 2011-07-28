@@ -56,7 +56,7 @@ public class ActionElement extends AnyElement {
     
     public ActionElement(ActionKind p_kind) {
     	kind = p_kind;
-    	xmlElement = ScriptWriter.document.createElement(kind.toString());
+    	//xmlElement = ScriptWriter.document.createElement(kind.toString());
     }
     
     @Override

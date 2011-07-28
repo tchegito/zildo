@@ -344,7 +344,7 @@ public class PersoNJ extends Perso {
 	@Override
 	public void initPersoFX() {
 		if (getQuel_spr() == PersoDescription.GARDE_CANARD) {	// Guard
-			String str=getEffect() != null ? getEffect() : getNom();
+			String str=getEffect() != null ? getEffect() : getName();
 			if ("jaune".equals(str)) {
 				setSpecialEffect(EngineFX.GUARD_YELLOW);
 			} else if("vert".equals(str)) {

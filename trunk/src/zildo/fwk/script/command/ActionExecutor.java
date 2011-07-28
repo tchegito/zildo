@@ -35,6 +35,7 @@ import zildo.monde.map.Point;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -157,13 +158,21 @@ public class ActionExecutor {
                         EngineZildo.spriteManagement.spawnPerso(newOne);
                 	} else {	// Spawn a new element
                 		ElementDescription desc = ElementDescription.fromString(p_action.text);
-                		EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0);
+                		Element elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0);
+                		elem.setName(p_action.what);
                 	}
                     achieved = true;
                     break;
-                case take:	// Zildo takes an item
-                	PersoZildo zildo=EngineZildo.persoManagement.getZildo();
-                	zildo.pickItem(ItemKind.fromString(text), null);
+                case take:	// Someone takes an item
+                	if (p_action.who == null || "zildo".equalsIgnoreCase(p_action.who)) {
+                		// This is Zildo
+                		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
+                		zildo.pickItem(ItemKind.fromString(text), null);
+                	} else if (perso != null) {
+                		// This is somebody else
+                		Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+                		perso.addPersoSprites(elem);
+                	}
                 	achieved=true;
                 	break;
                 case mapReplace:

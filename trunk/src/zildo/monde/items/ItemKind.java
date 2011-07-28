@@ -38,7 +38,8 @@ public enum ItemKind {
 	SHIELD(ZildoDescription.SHIELD_DOWN, 60),
 	SHIELD_MEDIUM(ElementDescription.SHIELD_RED, 60),
 	SHIELD_LARGE(ElementDescription.SHIELD_YELLOW, 60),
-	FLASK_RED(ElementDescription.FLASK_RED, 10);
+	FLASK_RED(ElementDescription.FLASK_RED, 10),
+	SCEPTER(ElementDescription.SCEPTER, 0);
 	
 	public SpriteDescription representation;
 	public int price;
