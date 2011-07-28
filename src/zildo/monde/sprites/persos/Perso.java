@@ -51,7 +51,6 @@ public abstract class Perso extends Element {
 
 	protected Zone zone_deplacement;
     protected int compte_dialogue;
-    private String nom;
     private String effect;	// String containing desired effect ("noir", "jaune", ...)
     protected PersoInfo info;					// 0=Neutre  1=Ennemi  2=Zildo
     protected boolean alerte;				// True=Zildo est reperé (Pieds dans l'eau si c'est Zildo)
@@ -99,14 +98,6 @@ public abstract class Perso extends Element {
 
 	public void setCompte_dialogue(int compte_dialogue) {
 		this.compte_dialogue = compte_dialogue;
-	}
-
-	public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
 	}
 
 	public PersoInfo getInfo() {
@@ -348,7 +339,7 @@ public abstract class Perso extends Element {
 	@Override
 	public String toString() {
 		StringBuffer sb=new StringBuffer();
-		sb.append("Perso="+nom+"\nx="+x+"\ny="+y+"\ninfo="+info+"\nmvt="+mouvement);
+		sb.append("Perso="+name+"\nx="+x+"\ny="+y+"\ninfo="+info+"\nmvt="+mouvement);
 		return sb.toString();
 	}
 

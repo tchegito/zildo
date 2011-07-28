@@ -60,6 +60,8 @@ public class Element extends SpriteEntity {
     protected Angle angle;
 	public boolean flying;
 	
+    protected String name;
+
     public int relativeZ;	// Simulate the altitude delta
 	protected int addSpr;	// Pour les animations (exemple:diamants qui brillent)
 	protected Element linkedPerso;	// When this element dies, any non-perso linked entity die too.
@@ -600,6 +602,14 @@ public class Element extends SpriteEntity {
 
 	public void setAngle(Angle angle) {
 		this.angle = angle;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	protected void addShadow(ElementDescription p_typeShadow) {

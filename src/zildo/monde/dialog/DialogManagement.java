@@ -73,7 +73,7 @@ public class DialogManagement {
 		
 		if (persoToTalk != null) {
 			// Dialog with character
-			Behavior behav=dialogs.getBehaviors().get(persoToTalk.getNom());
+			Behavior behav=dialogs.getBehaviors().get(persoToTalk.getName());
 			if (behav == null) {
 				// This perso can't talk
 				return;
@@ -101,7 +101,7 @@ public class DialogManagement {
 	        }
 
 	        // Adventure trigger
-	        TriggerElement trig=TriggerElement.createDialogTrigger(persoToTalk.getNom(), compteDial);
+	        TriggerElement trig=TriggerElement.createDialogTrigger(persoToTalk.getName(), compteDial);
 	        EngineZildo.scriptManagement.trigger(trig);
 
 	        // Set the dialoguing states for each Perso

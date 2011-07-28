@@ -111,7 +111,7 @@ public class PersoZildo extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
     public PersoZildo(int p_posX, int p_posY, ZildoOutfit p_outfit) {
         super();
-        this.setNom("Zildo");
+        this.setName("Zildo");
 
         // We could maybe put that somewhere else
         outfit = p_outfit;
