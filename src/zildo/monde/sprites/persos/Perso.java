@@ -37,6 +37,7 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.action.PersoAction;
 import zildo.monde.sprites.persos.ia.PathFinder;
+import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
@@ -128,10 +129,17 @@ public abstract class Perso extends Element {
 		return quel_deplacement;
 	}
 
-	public void setQuel_deplacement(MouvementPerso quel_deplacement) {
-		this.quel_deplacement = quel_deplacement;
-		if (MouvementPerso.IMMOBILE == quel_deplacement) {
-			this.pathFinder.target=null;
+	public void setQuel_deplacement(MouvementPerso p_script) {
+		quel_deplacement = p_script;
+		Point target = pathFinder.target;
+		switch (p_script) {
+		case IMMOBILE:
+			pathFinder.target=null;
+			break;
+		case OISEAU:
+			pathFinder = new PathFinderStraightFlying(this);
+			pathFinder.target = target;	// Keep the previous target
+			break;
 		}
 	}
 

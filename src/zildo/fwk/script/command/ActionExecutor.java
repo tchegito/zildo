@@ -98,7 +98,8 @@ public class ActionExecutor {
                     break;
                 case moveTo:
                     if (perso != null) {
-                        if (perso.getTarget() != null) { // Perso has already a target
+                    	// TODO: maybe this oculd cause previous scripts "enlevement" & "intro" to not working anymore !
+                        if (perso.getTarget() != null && false) { // Perso has already a target
                             return false;
                         } else {
                             perso.setGhost(true);

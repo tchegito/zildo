@@ -48,7 +48,10 @@ public class ScriptProcess {
 		actionExec=new ActionExecutor(p_scriptExecutor);
 		
 		if (scene.restoreZildo) {
-			duplicateZildo=(PersoZildo) EngineZildo.persoManagement.getZildo().clone();
+			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+			if (zildo != null) {
+				duplicateZildo=(PersoZildo) EngineZildo.persoManagement.getZildo().clone();
+			}
 		}
 	}
 	

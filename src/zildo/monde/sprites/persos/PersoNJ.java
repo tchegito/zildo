@@ -375,8 +375,9 @@ public class PersoNJ extends Perso {
 		this.setAjustedX((int) x);
 		this.setAjustedY((int) y);
 
-		final int[] seqp={0,2,0,1}; //Persos à 3 sprites
-	
+		final int[] seqp={0,2,0,1}; // 3 sprites characters
+		final int[] seqv={0, 1, 2, 1};	// another 3 sprites
+		
 		int add_spr=0;
 		PersoDescription quelSpriteWithBank=this.getQuel_spr();
 	
@@ -432,7 +433,7 @@ public class PersoNJ extends Perso {
 			case VAUTOUR:
 			case ELECTRIQUE:
 				//Persos à 3 sprite et 1 angle
-				add_spr=(compteur_animation / 20) % 3;
+				add_spr=seqv[(compteur_animation / 20) % 4];
 				break;
 			case SPECTRE:
 				//Perso à 2 sprites (gauche/droite)
