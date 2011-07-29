@@ -20,7 +20,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableCellEditor;
@@ -92,8 +91,8 @@ public class ScriptPanel extends JPanel {
 		    JComboBox combo = new UpdateComboBox(ZUtils.getValues(enumClazz));
 		    combosByEnumClass.put(e, combo); 
 		}
-		
-		updateList();
+
+		updateList(true);
 
 		// Layout
 		BoxLayout backgroundPanelLayout = new BoxLayout(this,
@@ -111,7 +110,7 @@ public class ScriptPanel extends JPanel {
 
 	private void addLine() {
 		focused.actions.add(new ActionElement(ActionKind.pos));
-		updateList();
+		updateList(false);
 	}
 	
 	private void saveScript() {
@@ -130,7 +129,7 @@ public class ScriptPanel extends JPanel {
 			public void actionPerformed(ActionEvent evt) {
 				String sceneName = scriptCombo.getSelectedItem().toString();
 				focusNamedScene(sceneName);
-				updateList();
+				updateList(true);
 			}
 		});
 		return combo;
@@ -166,24 +165,19 @@ public class ScriptPanel extends JPanel {
 		        }
 		        return super.getCellEditor(p_row, p_column);
 		    }
-		    @Override
-		    public void tableChanged(TableModelEvent p_e) {
-		        super.tableChanged(p_e);
-			if (p_e.getColumn() == 0) {
-			    updateList();
-			}
-		    }
+
 		};
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		return list;
 	}
 
-	private void updateList() {
-	    model = new ScriptTableModel(focused.actions);
-	    scriptList.setModel(model);
+	private void updateList(boolean p_specificCombos) {
+	    if (p_specificCombos) {
+		model = new ScriptTableModel(focused.actions);
+		scriptList.setModel(model);
 
-	    enhanceListWithCombo();
-
+		enhanceListWithCombo();
+	    }
 	    autoResizeColWidth(scriptList);
 	}
 
@@ -193,7 +187,7 @@ public class ScriptPanel extends JPanel {
 	private void enhanceListWithCombo() {
 		// Action kind
 		TableColumn buttonColumn = scriptList.getColumnModel().getColumn(0);
-		JComboBox comboActions = new JComboBox(
+		JComboBox comboActions = new UpdateComboBox(
 				ZUtils.getValues(ActionKind.class));
 		buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
 
@@ -289,13 +283,34 @@ public class ScriptPanel extends JPanel {
     	
     	public UpdateComboBox(Object[] p_items) {
     		super(p_items);
-    	    this.addActionListener(new ActionListener() {
+    		
+    		
+    	    this.addActionListener(new SelChangedListener(this));
+    	}
+    }
+    
+    class SelChangedListener implements ActionListener {
+		final JComboBox combo;
+
+		int selItem;
+    		
+		public SelChangedListener(JComboBox p_combo) {
+		    selItem = p_combo.getSelectedIndex();
+		    combo = p_combo;
+		    System.out.println("nouveau listener");
+		}
+		
     	        @Override
     	        public void actionPerformed(ActionEvent p_e) {
-    		    autoResizeColWidth(scriptList);
+    	        int newSelItem = combo.getSelectedIndex();
+	            System.out.println("click "+selItem+" ==> "+newSelItem);
+    	            if (selItem != newSelItem) {
+        	            updateList(false);
+    	        	
+    	            }
+	        	selItem = newSelItem;
+    	            //autoResizeColWidth(scriptList);
     	        }
-    	    });
-    	}
     }
 
 }

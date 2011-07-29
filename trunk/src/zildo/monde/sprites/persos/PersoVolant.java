@@ -20,6 +20,11 @@
 
 package zildo.monde.sprites.persos;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import zildo.monde.map.Point;
+import zildo.monde.map.Zone;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
@@ -28,6 +33,12 @@ import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 
 public class PersoVolant extends PersoNJ {
 
+    final static Map<PersoDescription, Point> grabPoint = new HashMap();
+    
+    static {
+	grabPoint.put(PersoDescription.VAUTOUR, new Point(3, 10));
+    }
+    
 	public PersoVolant(PersoDescription p_desc) {
 		super();
 
@@ -48,6 +59,7 @@ public class PersoVolant extends PersoNJ {
 			pathFinder = new PathFinderFlying(this);
 			break;
 		}
+		desc = p_desc;
 	}
 	
 	@Override
@@ -62,4 +74,20 @@ public class PersoVolant extends PersoNJ {
 		super.finaliseComportement(compteur_animation);
 	}
 	
+	@Override
+	public void animate(int compteur_animation) {
+	    for (Element e : persoSprites) {
+		if (e.getDesc() != ElementDescription.SHADOW_SMALL) {
+		    Point grabber = grabPoint.get(getDesc());
+		    if (grabber == null) {
+			Zone sprZone = getZone();
+			grabber = new Point((sprZone.x2+sprZone.x1) / 2, (sprZone.y2+sprZone.y1)/ 2 );
+		    }
+		    e.x=this.x + grabber.x;
+		    e.y=this.y + grabber.y;
+		    e.z=this.z;
+		}
+	    }
+	    super.animate(compteur_animation);
+	}
 }
