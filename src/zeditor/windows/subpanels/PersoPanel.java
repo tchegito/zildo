@@ -170,14 +170,14 @@ public class PersoPanel extends JPanel {
 			object.setText("0");
 			behavior=null;
 		} else {
-			name.setText(p_perso.getNom());
+			name.setText(p_perso.getName());
 			script.setSelectedIndex(p_perso.getQuel_deplacement().valeur);
 			angle.setSelectedIndex(p_perso.getAngle().value);
 			info.setSelectedIndex(p_perso.getInfo().ordinal());
 			object.setText("0");
 	
 		    MapDialog mapDialog=EngineZildo.mapManagement.getCurrentMap().getMapDialog();
-		    behavior=mapDialog.getBehaviors().get(p_perso.getNom());
+		    behavior=mapDialog.getBehaviors().get(p_perso.getName());
 		}
 		currentPerso=p_perso;
 		updateDialog();
@@ -282,7 +282,7 @@ public class PersoPanel extends JPanel {
 		}
 		
 		private void updatePersoName(String p_text) {
-			currentPerso.setNom(p_text);
+			currentPerso.setName(p_text);
 		}
 	}
 }
