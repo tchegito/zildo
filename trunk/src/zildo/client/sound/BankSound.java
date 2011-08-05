@@ -85,8 +85,9 @@ public enum BankSound implements AudioBank {
 	PlanteBombe("posebomb"),
 	Explosion("explose"),
 	
-	ChestAppears("appear");
+	ChestAppears("appear"),
 	
+	Sort("sort");
 
 	String filename;
 	
