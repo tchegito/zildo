@@ -33,24 +33,25 @@ import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 
 public class PersoVolant extends PersoNJ {
 
-    final static Map<PersoDescription, Point> grabPoint = new HashMap();
-    
-    static {
-	grabPoint.put(PersoDescription.VAUTOUR, new Point(3, 10));
-    }
-    
+	final static Map<PersoDescription, Point> grabPoint = new HashMap<PersoDescription, Point>();
+
+	static {
+		grabPoint.put(PersoDescription.VAUTOUR, new Point(3, 10));
+	}
+
 	public PersoVolant(PersoDescription p_desc) {
 		super();
 
 		setCptMouvement(100);
 		setForeground(true);
+		setSpeed(2.0f);
 		
-		Element ombre=new Element();
+		Element ombre = new Element();
 		ombre.setX(x);
-		ombre.setY(y-12);
+		ombre.setY(y - 12);
 		ombre.setSprModel(ElementDescription.SHADOW_SMALL);
 		addPersoSprites(ombre);
-		
+
 		switch (p_desc) {
 		case OISEAU_VERT:
 			pathFinder = new PathFinderStraightFlying(this);
@@ -61,33 +62,35 @@ public class PersoVolant extends PersoNJ {
 		}
 		desc = p_desc;
 	}
-	
+
 	@Override
 	public void finaliseComportement(int compteur_animation) {
 		// Move character's shadow
-		if (persoSprites.size() >0) {
-			Element ombre=persoSprites.get(0);
+		if (persoSprites.size() > 0) {
+			Element ombre = persoSprites.get(0);
 			ombre.setX(x);
-			ombre.setY(y+6);
-			ombre.setVisible(z>0);
+			ombre.setY(y + 6);
+			ombre.setVisible(z > 0);
 		}
 		super.finaliseComportement(compteur_animation);
 	}
-	
+
 	@Override
 	public void animate(int compteur_animation) {
-	    for (Element e : persoSprites) {
-		if (e.getDesc() != ElementDescription.SHADOW_SMALL) {
-		    Point grabber = grabPoint.get(getDesc());
-		    if (grabber == null) {
-			Zone sprZone = getZone();
-			grabber = new Point((sprZone.x2+sprZone.x1) / 2, (sprZone.y2+sprZone.y1)/ 2 );
-		    }
-		    e.x=this.x + grabber.x;
-		    e.y=this.y + grabber.y;
-		    e.z=this.z;
+		for (Element e : persoSprites) {
+			ElementDescription desc = (ElementDescription) e.getDesc();
+			if (!desc.isShadow()) {
+				Point grabber = grabPoint.get(getDesc());
+				if (grabber == null) {
+					Zone sprZone = getZone();
+					grabber = new Point((sprZone.x2 + sprZone.x1) / 2,
+							(sprZone.y2 + sprZone.y1) / 2);
+				}
+				e.x = this.x + grabber.x;
+				e.y = this.y + grabber.y;
+				e.z = this.z;
+			}
 		}
-	    }
-	    super.animate(compteur_animation);
+		super.animate(compteur_animation);
 	}
 }

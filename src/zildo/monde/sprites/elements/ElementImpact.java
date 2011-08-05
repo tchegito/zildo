@@ -34,7 +34,7 @@ public class ElementImpact extends Element {
 		SIMPLEHIT(ElementDescription.IMPACT1, 4,1), 
 		EXPLOSION(ElementDescription.EXPLO1, new int[] {0,0,0,1,1,2,2,1,1,2,2,3}, 2), 
 		FIRESMOKE(ElementDescription.EXPLOSMOKE1, 3,8),
-		SMOKE(ElementDescription.SMOKE, 3, 8),
+		SMOKE(ElementDescription.SMOKE, new int[] {0,1,52,53,54}, 8),
 		STAR_YELLOW(ElementDescription.STAR1, new int[] {0,1,2,1,0}, 8);
 		
 		ElementDescription desc;

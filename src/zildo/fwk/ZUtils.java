@@ -44,6 +44,10 @@ public class ZUtils {
 		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
 	}
 	
+	public static int randomRange(int p_range) {
+		return (int) (p_range * Math.random()) - (p_range / 2);
+	}
+	
 	/**
 	 * Get the current color set with glColor4f
 	 * @param p_info

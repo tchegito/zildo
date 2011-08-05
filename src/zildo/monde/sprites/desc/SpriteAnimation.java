@@ -33,7 +33,9 @@ public enum SpriteAnimation {
 	DIAMOND,	// Glittering money
 	HEART,	 // falling heart
 	FROM_CHEST,	// Coming from a chest
-	SMOKE,	// Smoke on house's chemney
+	CHIMNEY_SMOKE,	// Smoke on house's chemney
 	ARROW,
-	FROMGROUND; // Under bushes
+	FROMGROUND, // Under bushes
+	STAR_CIRCLE,
+	CLOUD_FOG;	// A fog made by several cloud ElementDescription.SMOKE 
 }

@@ -176,7 +176,11 @@ public class PersoNJ extends Perso {
 				switch (this.getQuel_deplacement()) {
 					case OBSERVE:
 						// Persos qui regardent en direction de Zildo
-						sight(zildo, true);
+						Perso observed = this.getFollowing();
+						if (observed == null) {
+							observed=zildo;
+						}
+						sight(observed, true);
 						break;
 					case VOLESPECTRE:
 						double alpha;
@@ -240,6 +244,7 @@ public class PersoNJ extends Perso {
 								 action = new ShotArrowAction(this);
 								 break;
 							 }
+							 // Gets on a right position to shoot Zildo
 							 if (deltaX <= deltaY) {
 								 pathFinder.target=new Point(zildo.x, yy);
 							 } else {
@@ -249,6 +254,9 @@ public class PersoNJ extends Perso {
 							 setAlerte(true);
 						 }
 						break;
+					case WAKEUP:
+						pos_seqsprite++;
+						break;
 					default:
 						break;
 				}
@@ -256,7 +264,7 @@ public class PersoNJ extends Perso {
 					quel_deplacement != MouvementPerso.VOLESPECTRE) {
                        if (pathFinder.target != null && this.getX() == pathFinder.target.x && this.getY() == pathFinder.target.y) {
                     	   pathFinder.target=null;
-                            if (!isGhost() && quel_deplacement != MouvementPerso.ABEILLE
+                            if (!isGhost() && quel_deplacement != MouvementPerso.BEE
                                     && (quel_deplacement != MouvementPerso.RAT || Hasard.lanceDes(8))) {
                                 setAttente(10 + (int) (Math.random() * 20));
                             }
@@ -280,13 +288,13 @@ public class PersoNJ extends Perso {
 							// Stop hen's movements when it's flying (TODO : this isn't very clean)
 						} else if (quel_deplacement != MouvementPerso.POULE || z == 0){
 							// On déplace le PNJ
-							if (pathFinder.target == null && MouvementPerso.IMMOBILE!= quel_deplacement) {
+							if (pathFinder.target == null && quel_deplacement.isMobile()) {
 								//Pas de destination, donc on en fixe une dans la zone de déplacement
 								cptMouvement=0;
 					
 								pathFinder.determineDestination();
 							}
-							float vitesse=0.5f;
+							float vitesse=pathFinder.speed;
 							if (quel_deplacement == MouvementPerso.RAT) {
 								// Script du rat => plus rapide, et crache des pierres}
 								vitesse+=1;
@@ -299,7 +307,7 @@ public class PersoNJ extends Perso {
 											,null, null);
 									attente=(int) (Math.random()*5);
 								}
-							} else if (quel_deplacement == MouvementPerso.ELECTRIQUE) {
+							} else if (quel_deplacement == MouvementPerso.ELECTRIC) {
 								vitesse=0.2f;
 							}
 							
@@ -311,10 +319,10 @@ public class PersoNJ extends Perso {
 								walkTile(true);
 
 								// suite_mouvement
-								if (quel_deplacement == MouvementPerso.ELECTRIQUE) {
+								if (quel_deplacement == MouvementPerso.ELECTRIC) {
 									angle=Angle.NORD;
 						
-								} else if (quel_deplacement == MouvementPerso.ABEILLE) {
+								} else if (quel_deplacement == MouvementPerso.BEE) {
 									angle=Angle.fromInt(angle.value & 2);
 								}
 								if (!quel_deplacement.isFlying()) {
@@ -364,6 +372,8 @@ public class PersoNJ extends Perso {
 		}
 	}
 	
+	final int[] seqWakeUp={0,2,0,2,3};
+
 	///////////////////////////////////////////////////////////////////////////////////////
 	// finaliseComportement
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -454,6 +464,14 @@ public class PersoNJ extends Perso {
 					reverse = 0;
 				}
 				add_spr=(compteur_animation % 32) / 16;
+				break;
+			case LAPIN:
+				reverse = angle == Angle.OUEST ? REVERSE_HORIZONTAL : 0;
+				addSpr = pathFinder.target == null ? 0 : 1;
+				break;
+			case PRINCESSE_COUCHEE:
+				int seqPos = (getPos_seqsprite() / 40) % 5;
+				add_spr=seqWakeUp[seqPos];
 				break;
 			default:
 				add_spr=angle.value*2 + (getPos_seqsprite() % (4*Constantes.speed)) / (2*Constantes.speed);

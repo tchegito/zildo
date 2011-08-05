@@ -72,7 +72,7 @@ public class ScriptReader {
         // Check for ActionElement
         ActionKind kind=ActionKind.fromString(name);
         QuestEvent event=QuestEvent.fromString(name);
-        if (kind != null) { 
+        if (kind != null && kind != ActionKind.actions) { 
         	s=new ActionElement(kind);
         } else if (event != null) {
         	s=new TriggerElement(event);

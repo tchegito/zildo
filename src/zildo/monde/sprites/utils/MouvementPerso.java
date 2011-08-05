@@ -34,10 +34,11 @@ public enum MouvementPerso {
 	RAT(5),
 	ZONELANCE(6),
 	ZONEARC(7),
-	ELECTRIQUE(8),
-	ABEILLE(9),
-	OISEAU(10),
-	LAPIN(11);
+	ELECTRIC(8),
+	BEE(9),
+	BIRD(10),
+	SQUIRREL(11),
+	WAKEUP(12);
 	
 	public int valeur;
 	
@@ -59,7 +60,7 @@ public enum MouvementPerso {
 	 * @return TRUE = no collision / FALSE = collision with background
 	 */
 	public boolean isFlying() {
-		return this == VOLESPECTRE || this == OISEAU;
+		return this == VOLESPECTRE || this == BIRD;
 	}
 	
 	public static String[] getValues() {
@@ -84,6 +85,17 @@ public enum MouvementPerso {
 	public boolean isDiagonal() {
 		return this == POULE ||
 		this == VOLESPECTRE ||
-		this == ELECTRIQUE;
+		this == ELECTRIC ||
+		this == SQUIRREL;
+	}
+	
+	/**
+	 * Does this script make the character move ?
+	 * @return TRUE = he can move / FALSE = immobile
+	 */
+	public boolean isMobile() {
+		return this != IMMOBILE &&
+		this != OBSERVE &&
+		this != WAKEUP;
 	}
 }

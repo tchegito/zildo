@@ -80,7 +80,17 @@ public abstract class Perso extends Element {
 	
     private boolean wounded;
     private Perso dialoguingWith;
+    private Perso following;	// Perso followed by this one
     
+	public Perso getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(Perso following) {
+		this.following = following;
+	}
+
+
 	// Liste des sprites complémentaires du perso (ex:bouclier+casque pour zildo)
 	List<Element>	persoSprites;
 
@@ -127,9 +137,12 @@ public abstract class Perso extends Element {
 		case IMMOBILE:
 			pathFinder.target=null;
 			break;
-		case OISEAU:
+		case BIRD:
 			pathFinder = new PathFinderStraightFlying(this);
 			pathFinder.target = target;	// Keep the previous target
+			break;
+		case WAKEUP:
+			pos_seqsprite=0;
 			break;
 		}
 	}
