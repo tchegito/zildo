@@ -54,6 +54,7 @@ public class PathFinder {
 		mobile=p_mobile;
 		backward=false;
 		open=p_mobile.isZildo();
+		speed = 1;
 	}
 	
     /**
@@ -172,7 +173,7 @@ public class PathFinder {
 	
 	public void collide() {
 		if (mobile.getQuel_deplacement() == MouvementPerso.POULE ||
-				mobile.getQuel_deplacement() == MouvementPerso.ABEILLE) {
+				mobile.getQuel_deplacement() == MouvementPerso.BEE) {
 			target=null;
 		} else {
 			if (nbShock++ >= 3 && !mobile.isGhost()) {
@@ -182,5 +183,32 @@ public class PathFinder {
 			}
 			mobile.setAttente(10 + (int) (Math.random()*20));
 		}
+	}
+	
+	/**
+	 * Common method for reaching a point by the shortest distance : a line.<br/>
+	 * Set the angle accordingly to the direction.
+	 */
+	final protected Pointf reachLine(float p_speed, boolean p_twoAngles) {
+		Pointf p =new Pointf(mobile.x, mobile.y);
+		if (target != null) {
+			float hypothenuse = target.distance(new Point(mobile.x, mobile.y));
+			double cosAngle = (target.x - mobile.x) / hypothenuse;
+			double sinAngle = (target.y - mobile.y) / hypothenuse;
+			p.x+=cosAngle * p_speed;
+			p.y+=sinAngle * p_speed;
+			if (hypothenuse < p_speed) {
+				target=null;
+			}
+			// Set the angle
+			if (p_twoAngles) {
+				if (cosAngle < 0) {
+					mobile.setAngle(Angle.OUEST);
+				} else {
+					mobile.setAngle(Angle.EST);
+				}
+			}
+		}
+		return p;
 	}
 }

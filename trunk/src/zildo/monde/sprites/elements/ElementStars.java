@@ -20,9 +20,8 @@
 
 package zildo.monde.sprites.elements;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import zildo.client.sound.BankSound;
+import zildo.monde.map.Point;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.server.EngineZildo;
 
@@ -33,10 +32,12 @@ import zildo.server.EngineZildo;
  * @author Tchegito
  *
  */
-public class ElementStars extends Element {
+public class ElementStars extends ElementChained {
 
 	public enum StarKind {
-		STATIC(4, 8), TRAIL(2, 3);
+		STATIC(4, 8), // Static star
+		TRAIL(2, 3), // Trail turning around a zone 
+		CIRCLE(3, 0);	// Stars drawing a circle (just one)
 		
 		int delay;
 		int radius;
@@ -51,32 +52,29 @@ public class ElementStars extends Element {
 		}
 	}
 	
-	int count=0;
-	int delay=0;
 	double alpha=0;
 	StarKind kind;
 	
-	List<Element> linkeds;
-	
 	public ElementStars(StarKind p_kind, int p_x, int p_y) {
-		x=p_x;
-		y=p_y;
+		super(p_x, p_y);
+		
 		kind=p_kind;
 		visible=false;
 		
-		linkeds=new ArrayList<Element>();
-		
+		if (kind == StarKind.CIRCLE) {
+			EngineZildo.soundManagement.broadcastSound(BankSound.Sort, new Point(p_x, p_y));
+		}
 	}
 
-	private void spawnOne(int px, int py) {
+	protected Element createOne(int px, int py) {
 		// Find a spot inside a circle around the initial point
 		double r=Math.random() * kind.radius;
 		double theta=2*Math.PI * Math.random();
 		Element star=new ElementImpact((int) (px + r * Math.cos(theta)), 
 								    (int) (py + r * Math.sin(theta)), ImpactKind.STAR_YELLOW, null);
-		linkeds.add(star);
-		EngineZildo.spriteManagement.spawnSprite(star);
+		star.setForeground(true);
 		delay=(int) (Math.random() * 12 + kind.delay);
+		return star;
 	}
 
 	public void animate() {
@@ -99,13 +97,16 @@ public class ElementStars extends Element {
 			}
 			alpha+=0.01f;
 			break;
+		case CIRCLE:
+			x=(float) (initialLocation.x + 8f * Math.cos(alpha));
+			y=(float) (initialLocation.y + 5f * Math.sin(alpha));
+			alpha+=0.06f;
+			if (alpha > Math.PI * 2) {
+				dying=true;	// Just 1 turn
+			}
+			break;
 		}
-		if (count == delay) {	// After the delay, create another one
-			spawnOne((int) x, (int) y);
-			count=0;
-		}
-		count++;
+		super.animate();
 	}
-	
-	public void fall() {}
+
 }

@@ -59,20 +59,20 @@ public enum PersoDescription implements SpriteDescription {
 	BANDIT(131,132,133),
 	BANDIT_CHAPEAU(134),
 	BANDIT_VERT(135,136,137,138,139,140,141,142),
-	MOUSTACHU_ASSIS(143, 192, 193, 194, 195),
+	MOUSTACHU_ASSIS(143, 194, 195, 196, 197),
 	VAUTOUR(144,145,146),
 	ECTOPLASME(147,148), // (?),),
 	VIEUX_SAGE2(149,150),
 	ARC(151,152,153,154,155,156,157,158),
-	ELECTRIQUE(159,160,161, 196, 197, 198, 199),
+	ELECTRIQUE(159,160,161, 198, 199, 200, 201),
 	SQUELETTE(162,163,164,165,166,167,168,169),
 	CREATURE(170,171,172,173,174,175,176,177),
 	LAPIN(178,179),
 	OISEAU_VERT(180,181),
 	VOLANT_BLEU(182,183,184,185,186,187),
-	PRINCESSE_COUCHEE(188, 189),
-	ARBUSTE_VIVANT(190, 191),
-	CHAUVESOURIS(200, 201),
+	PRINCESSE_COUCHEE(188, 189, 190, 191),
+	ARBUSTE_VIVANT(192, 193),
+	CHAUVESOURIS(202, 203),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 	
@@ -93,20 +93,6 @@ public enum PersoDescription implements SpriteDescription {
 				return desc;
 			}
 		}
-		return null;
-	}
-	
-	/**
-	 * Return character's identity based on a string.
-	 * @param p_spr
-	 * @return PersoDescription
-	 */
-	public static PersoDescription fromString(String p_spr) {
-		for (PersoDescription desc : PersoDescription.values()) {
-			if (desc.toString().equals(p_spr)) {
-				return desc;
-			}
-		}		
 		return null;
 	}
 

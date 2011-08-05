@@ -149,17 +149,15 @@ public enum ElementDescription  implements SpriteDescription {
 		}
 	}
 	
-	/**
-	 * Return element's identity based on a string.
-	 * @param p_spr
-	 * @return ElementDescription
-	 */
-	public static ElementDescription fromString(String p_spr) {
-		for (ElementDescription desc : ElementDescription.values()) {
-			if (desc.toString().equals(p_spr)) {
-				return desc;
-			}
-		}		
-		return null;
+	public boolean isShadow() {
+		switch (this) {
+			case SHADOW:
+			case SHADOW_LARGE:
+			case SHADOW_MINUS:
+			case SHADOW_SMALL:
+				return true;
+		}
+		return false;
 	}
+
 }

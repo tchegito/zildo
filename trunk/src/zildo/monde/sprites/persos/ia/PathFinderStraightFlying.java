@@ -53,11 +53,12 @@ public class PathFinderStraightFlying extends PathFinder {
 				target.x = 16 * EngineZildo.mapManagement.getCurrentMap().getDim_x() + 100;
 				break;
 		}
-		mobile.z=30f;	// Up in the sky
+		mobile.z=35f;	// Up in the sky
 	}
 	
+	@Override
 	public Pointf reachDestination(float p_speed) {
-		Pointf p =super.reachDestination(speed);
+		Pointf p = reachLine(p_speed, true);
 		
 		// Swing the bird !
 		alpha+=0.07f;

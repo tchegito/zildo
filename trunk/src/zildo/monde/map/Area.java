@@ -603,7 +603,7 @@ public class Area implements EasySerializable {
 					Tile backTile = temp.getBackTile();
 					if (backTile.index == 99 && backTile.bank == 1) {
 						// Fumée de cheminée
-						spriteManagement.spawnSpriteGeneric(SpriteAnimation.SMOKE, j * 16, i * 16, 0, null, null);
+						spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16, 0, null, null);
 					}
 					// Is this chest already opened ?
 					if (backTile.index == (743 & 255) && backTile.bank == 2) {

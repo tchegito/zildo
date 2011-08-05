@@ -33,6 +33,7 @@ import zildo.monde.sprites.persos.PersoGarde;
 import zildo.monde.sprites.persos.PersoGardeVert;
 import zildo.monde.sprites.persos.PersoHen;
 import zildo.monde.sprites.persos.PersoNJ;
+import zildo.monde.sprites.persos.PersoSquirrel;
 import zildo.monde.sprites.persos.PersoVolant;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.ia.PathFinderBee;
@@ -182,6 +183,9 @@ public class PersoManagement {
 			case OISEAU_VERT:
 			case VAUTOUR:
 				perso = new PersoVolant(p_desc);
+				break;
+			case LAPIN:
+				perso = new PersoSquirrel();
 				break;
 			default:
 				perso = new PersoNJ();

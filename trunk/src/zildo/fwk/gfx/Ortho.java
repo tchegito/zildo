@@ -353,7 +353,9 @@ public class Ortho extends OpenGLStuff {
 	}
 
 	public Vector3f getAmbientColor() {
-		return ambientColor;
+		return new Vector3f(0.5f, 0.6f, 1f);
+
+		//return ambientColor;
 	}
 
 	public void setAmbientColor(Vector3f ambientColor) {

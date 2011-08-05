@@ -41,10 +41,13 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementAnimMort;
 import zildo.monde.sprites.elements.ElementBoomerang;
+import zildo.monde.sprites.elements.ElementClouds;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.elements.ElementSmoke;
+import zildo.monde.sprites.elements.ElementStars;
 import zildo.monde.sprites.elements.ElementWeapon;
+import zildo.monde.sprites.elements.ElementStars.StarKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
@@ -166,7 +169,7 @@ public class SpriteManagement extends SpriteStore {
 		int j;
 
 		switch (typeSprite) {
-			case SMOKE :
+			case CHIMNEY_SMOKE :
 				elemDesc = ElementDescription.SMOKE_SMALL;
 				element = new ElementSmoke(x, y);
 				element.setZ(6.0f);
@@ -301,6 +304,15 @@ public class SpriteManagement extends SpriteStore {
 				element.fz = 0.02f;
 				element.setDesc(desc);
 				spawnSprite(element);
+				break;
+			case STAR_CIRCLE:
+				element = new ElementStars(StarKind.CIRCLE, x, y);
+				spawnSprite(element);
+				break;
+			case CLOUD_FOG:
+				element = new ElementClouds(x, y);
+				spawnSprite(element);
+				break;
 		}
 
 	}

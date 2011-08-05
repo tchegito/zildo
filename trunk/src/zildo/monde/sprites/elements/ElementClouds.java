@@ -20,46 +20,32 @@
 
 package zildo.monde.sprites.elements;
 
-import zildo.monde.sprites.desc.SpriteAnimation;
-import zildo.server.EngineZildo;
-
+import zildo.fwk.ZUtils;
+import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 
 /**
- * Chimney smoke.
- * 
  * @author Tchegito
  *
  */
-public class ElementSmoke extends Element {
+public class ElementClouds extends ElementChained {
 
-	int startX;
-	int startY;
-	boolean vanishing=false;
+	int nCloud=0;
 	
-	public ElementSmoke(int p_x, int p_y) {
-		super();
-		startX=p_x;
-		startY=p_y;
-		x = p_x + 16.0f;
-		y = p_y + 34.0f;
+	public ElementClouds(int p_x, int p_y) {
+		super(p_x, p_y);
+	}
+	
+	@Override
+	protected Element createOne(int p_x, int p_y) {
+		int px = p_x + ZUtils.randomRange(14);
+		int py = p_y + ZUtils.randomRange(14);
+		delay = 2 + (int) Math.random() * 5;
+		
+		nCloud++;
+		if (nCloud == 8) {	// Stop the animation about 8 sprites
+			dying = true;
+		}
+		return new ElementImpact(px, py, ImpactKind.SMOKE, null);
+	}
 
-	}
-	public void animate() {
-        physicMoveWithCollision();
-		 if (z > 28 && nSpr == 6) {
-             nSpr = 5; // Smoke
-         } else if (z > 48 && nSpr == 5 && !vanishing) {
-        	 EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, startX, startY, 0, null, null);
-        	 vanishing=true;	// Sprite is vanishing (with alpha channel)
-         } else if (z > 18) {
-    		 alpha-=3;
-         }
-		 
-		 if (alpha < 10) {
-			 dying=true;
-		 }
-		 
-	     setAjustedX((int) x);
-	     setAjustedY((int) y);
-	}
 }

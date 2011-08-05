@@ -27,7 +27,8 @@ import zildo.monde.map.Point;
 public class ActionElement extends AnyElement {
 
     public enum ActionKind {
-        actions, pos, moveTo, speak, script, angle, wait, sound, fadeIn, fadeOut, map, focus, spawn, exec, take, mapReplace, music;
+        actions, pos, moveTo, speak, script, angle, wait, sound, fadeIn, fadeOut, map, focus, spawn, exec, take, mapReplace, music,
+        animation, impact, remove;
         
         public static ActionKind fromString(String p_name) {
         	for (ActionKind kind : values()) {
@@ -79,6 +80,8 @@ public class ActionElement extends AnyElement {
         String strAngle=p_elem.getAttribute("angle");
         switch (kind) {
         case spawn:
+        case animation:
+        case impact:
             location = Point.fromString(strPos);
             if (!"".equals(strAngle)) {
             	val = Integer.valueOf(strAngle);
