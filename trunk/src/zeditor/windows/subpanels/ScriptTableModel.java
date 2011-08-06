@@ -170,6 +170,10 @@ public class ScriptTableModel extends DefaultTableModel {
 		return String.class;
 	}
 	
+	/** Returns the right color this line (based on the "who"/"what" field of the action).
+	 * @param p_row
+	 * @return Color
+	 */
 	public Color getLineColor(int p_row) {
 		ActionElement action = actions.get(p_row);
 		String whowhat = action.who == null ? action.what : action.who;
