@@ -109,7 +109,7 @@ public class OpenGLStuff {
         return depthId;
     }
 
-    public Vector4f createColor64(float r, float g, float b) {
+    public static Vector4f createColor64(float r, float g, float b) {
         return new Vector4f(r / 63.0f, g / 63.0f, b / 63.0f, 1.0f);
     }
 
