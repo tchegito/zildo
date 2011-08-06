@@ -213,6 +213,9 @@ public class MapManagement {
 		// Is it a ghost ?
 		boolean ghost = false;
 		Perso p = quelElement != null && quelElement.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO ? (Perso) quelElement : null;
+		if (p != null && p.isUnstoppable()) {
+			return false;
+		}
 		ghost = p !=null && p.isGhost();
 		
 		if (tx < 0 || ty < 0 || tx > (currentMap.getDim_x() - 1) * 16 + 15

@@ -45,20 +45,27 @@ public class PathFinderSquirrel extends PathFinder {
 	    		correctAlpha();
 	        	nbJump = (int) (1 + Math.random() * 4);
 	    	}
-	        target = new Point((int) (mobile.x + Math.cos(alpha) * jumpDistance),
+	        Point tempTarget = new Point((int) (mobile.x + Math.cos(alpha) * jumpDistance),
 	                    (int) (mobile.y + Math.sin(alpha) * jumpDistance));
 	        nbJump--;
-	        if (EngineZildo.mapManagement.collide(target.x, target.y, mobile) ||
-	        		EngineZildo.persoManagement.collidePerso(target.x, target.y, mobile, 50) != null) {
-	        	target = null;
+	        if (EngineZildo.mapManagement.collide(tempTarget.x, tempTarget.y, mobile) ||
+	        		EngineZildo.persoManagement.collidePerso(tempTarget.x, tempTarget.y, mobile, 50) != null) {
+	        	tempTarget = null;
 	        	alpha+= Math.PI/2;
 	    		correctAlpha();
-	    		
 	        } else {
-	        	mobile.az = -0.1f;
-	        	mobile.vz = 1.2f;
+	        	setTarget(tempTarget);
 	        }
 	    }
+    }
+
+    @Override
+    public void setTarget(Point p_target) {
+    	if (p_target != null) {
+    		mobile.az = -0.1f;
+    		mobile.vz = 1.2f;
+    	}
+    	super.setTarget(p_target);
     }
     
     /**
@@ -69,6 +76,7 @@ public class PathFinderSquirrel extends PathFinder {
     		alpha+=Math.PI / 4;
     	}
     }
+    
     
     @Override
     public Pointf reachDestination(float p_speed) {

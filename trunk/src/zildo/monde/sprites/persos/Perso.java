@@ -132,14 +132,14 @@ public abstract class Perso extends Element {
 
 	public void setQuel_deplacement(MouvementPerso p_script) {
 		quel_deplacement = p_script;
-		Point target = pathFinder.target;
+		Point target = pathFinder.getTarget();
 		switch (p_script) {
 		case IMMOBILE:
-			pathFinder.target=null;
+			pathFinder.setTarget(null);
 			break;
 		case BIRD:
 			pathFinder = new PathFinderStraightFlying(this);
-			pathFinder.target = target;	// Keep the previous target
+			pathFinder.setTarget(target);	// Keep the previous target
 			break;
 		case WAKEUP:
 			pos_seqsprite=0;
@@ -593,6 +593,14 @@ public abstract class Perso extends Element {
 		this.ghost = ghost;
 	}
 	
+	public boolean isUnstoppable() {
+		return pathFinder.unstoppable;
+	}
+	
+	public void setUnstoppable(boolean p_value) {
+		pathFinder.unstoppable = p_value;
+	}
+	
 	@Override
 	public void setVisible(boolean p_visible) {
 		super.setVisible(p_visible);
@@ -602,15 +610,15 @@ public abstract class Perso extends Element {
 	}
 
 	public Point getTarget() {
-		return pathFinder.target;
+		return pathFinder.getTarget();
 	}
 
 	public void setTarget(Point target) {
-		this.pathFinder.target = target;
+		this.pathFinder.setTarget( target);
 	}
 	
 	public boolean hasReachedTarget() {
-		return pathFinder.target == null || pathFinder.hasReachedTarget();
+		return pathFinder.getTarget() == null || pathFinder.hasReachedTarget();
 	}
 	
 	public void setSpeed(float p_speed) {

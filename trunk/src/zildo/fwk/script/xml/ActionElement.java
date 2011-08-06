@@ -47,6 +47,7 @@ public class ActionElement extends AnyElement {
     public boolean backward=false;	// Character moves back
     public boolean open=false;		// Can open doors
     public boolean delta=false;		// for 'moveTo' and 'pos' : means that 'pos' should be added to current location
+    public boolean unstoppable=false;	// TRUE=no collision for this movement (for 'moveTo')
     public ActionKind kind;
     public Point location;
     public String text;
@@ -73,8 +74,9 @@ public class ActionElement extends AnyElement {
         who = readAttribute(p_elem, "who");
         what = readAttribute(p_elem, "what");
         fx = p_elem.getAttribute("fx");
-        unblock = "true".equalsIgnoreCase(p_elem.getAttribute("unblock"));
+        unblock = isTrue(p_elem, "unblock");
         speed = Float.valueOf("0"+p_elem.getAttribute("speed"));
+        unstoppable = isTrue(p_elem, "unstoppable");
         // Read less common ones
         String strPos=p_elem.getAttribute("pos");
         String strAngle=p_elem.getAttribute("angle");

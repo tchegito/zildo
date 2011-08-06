@@ -200,7 +200,7 @@ public class PersoNJ extends Perso {
 								zone_deplacement.incY2(pasy*3);
 							}
 							attente=1+(int)Math.random()*5;
-							if (pathFinder.target == null) {
+							if (pathFinder.getTarget() == null) {
 								pathFinder.determineDestination();
 							}
 							cptMouvement=0;
@@ -226,7 +226,7 @@ public class PersoNJ extends Perso {
 							cptMouvement++;
 						}
 						break;
-					case POULE:
+					case HEN:
 						if (z>0) { // La poule est en l'air, elle n'est plus libre de ses mouvements
 							physicMoveWithCollision();
 						}	// Sinon elle agit comme les scripts de zone
@@ -246,9 +246,9 @@ public class PersoNJ extends Perso {
 							 }
 							 // Gets on a right position to shoot Zildo
 							 if (deltaX <= deltaY) {
-								 pathFinder.target=new Point(zildo.x, yy);
+								 pathFinder.setTarget(new Point(zildo.x, yy));
 							 } else {
-								 pathFinder.target=new Point(xx, zildo.y);
+								 pathFinder.setTarget(new Point(xx, zildo.y));
 							 }
 						 } else if (lookForZildo(angle)) {
 							 setAlerte(true);
@@ -262,8 +262,8 @@ public class PersoNJ extends Perso {
 				}
 				if (quel_deplacement != MouvementPerso.OBSERVE &&
 					quel_deplacement != MouvementPerso.VOLESPECTRE) {
-                       if (pathFinder.target != null && this.getX() == pathFinder.target.x && this.getY() == pathFinder.target.y) {
-                    	   pathFinder.target=null;
+                       if (pathFinder.getTarget() != null && this.getX() == pathFinder.getTarget().x && this.getY() == pathFinder.getTarget().y) {
+                    	   pathFinder.setTarget(null);
                             if (!isGhost() && quel_deplacement != MouvementPerso.BEE
                                     && (quel_deplacement != MouvementPerso.RAT || Hasard.lanceDes(8))) {
                                 setAttente(10 + (int) (Math.random() * 20));
@@ -286,9 +286,9 @@ public class PersoNJ extends Perso {
 							} else 
 							this.setAttente(getAttente() - 1);
 							// Stop hen's movements when it's flying (TODO : this isn't very clean)
-						} else if (quel_deplacement != MouvementPerso.POULE || z == 0){
+						} else if (quel_deplacement != MouvementPerso.HEN || z == 0){
 							// On déplace le PNJ
-							if (pathFinder.target == null && quel_deplacement.isMobile()) {
+							if (pathFinder.getTarget() == null && quel_deplacement.isMobile()) {
 								//Pas de destination, donc on en fixe une dans la zone de déplacement
 								cptMouvement=0;
 					
@@ -311,7 +311,7 @@ public class PersoNJ extends Perso {
 								vitesse=0.2f;
 							}
 							
-							if (pathFinder.target != null) {	// Move character if he has a target
+							if (pathFinder.getTarget() != null) {	// Move character if he has a target
 								Pointf loc=pathFinder.reachDestination(vitesse);
 								x=loc.x;
 								y=loc.y;
@@ -401,7 +401,7 @@ public class PersoNJ extends Perso {
 			case POULE:
 			   //Poule
 			   add_spr=(getPos_seqsprite() % (8*Constantes.speed)) / (2*Constantes.speed);
-			   if (pathFinder.target != null && (pathFinder.target.x>getX() && !isAlerte())) {
+			   if (pathFinder.getTarget() != null && (pathFinder.getTarget().x>getX() && !isAlerte())) {
 				   add_spr+=41;
 			   }
 				break;
@@ -466,8 +466,9 @@ public class PersoNJ extends Perso {
 				add_spr=(compteur_animation % 32) / 16;
 				break;
 			case LAPIN:
+			case PRINCESS_BUNNY:
 				reverse = angle == Angle.OUEST ? REVERSE_HORIZONTAL : 0;
-				addSpr = pathFinder.target == null ? 0 : 1;
+				addSpr = pathFinder.getTarget() == null ? 0 : 1;
 				break;
 			case PRINCESSE_COUCHEE:
 				int seqPos = (getPos_seqsprite() / 40) % 5;
@@ -519,7 +520,7 @@ public class PersoNJ extends Perso {
 				setY(sy);
 				setPos_seqsprite(0);
 				setAlerte(false);
-				pathFinder.target=null;
+				pathFinder.setTarget(null);
 				setAttente(10);	
 				// On replace la zone de déplacement autour de l'ennemi
 				setZone_deplacement(EngineZildo.mapManagement.range(x-16*5, y-16*5, x+16*5, y+16*5));

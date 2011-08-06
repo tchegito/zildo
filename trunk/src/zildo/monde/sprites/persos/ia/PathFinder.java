@@ -44,10 +44,11 @@ import zildo.monde.sprites.utils.MouvementPerso;
 public class PathFinder {
 
 	Perso mobile;
-	public Point target;
+	protected Point target;
 	public float speed;	// Should be used if different of 0
 	public boolean backward;	// Default FALSE. TRUE means character is steping back
 	public boolean open;	// Default FALSE. TRUE means character can open doors.
+	public boolean unstoppable;	// TRUE = no collision for this character
     protected int nbShock;				// Number of times character hit something going to his target
 
 	public PathFinder(Perso p_mobile) {
@@ -55,6 +56,7 @@ public class PathFinder {
 		backward=false;
 		open=p_mobile.isZildo();
 		speed = 1;
+		unstoppable=false;
 	}
 	
     /**
@@ -172,7 +174,7 @@ public class PathFinder {
 	}
 	
 	public void collide() {
-		if (mobile.getQuel_deplacement() == MouvementPerso.POULE ||
+		if (mobile.getQuel_deplacement() == MouvementPerso.HEN ||
 				mobile.getQuel_deplacement() == MouvementPerso.BEE) {
 			target=null;
 		} else {
@@ -210,5 +212,17 @@ public class PathFinder {
 			}
 		}
 		return p;
+	}
+
+	public Point getTarget() {
+		return target;
+	}
+
+	/**
+	 * Overridable method, in order to do something special when the character gets a target.
+	 * @param target
+	 */
+	public void setTarget(Point target) {
+		this.target = target;
 	}
 }
