@@ -73,6 +73,7 @@ public enum PersoDescription implements SpriteDescription {
 	PRINCESSE_COUCHEE(188, 189, 190, 191),
 	ARBUSTE_VIVANT(192, 193),
 	CHAUVESOURIS(202, 203),
+	PRINCESS_BUNNY(204, 205),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 	

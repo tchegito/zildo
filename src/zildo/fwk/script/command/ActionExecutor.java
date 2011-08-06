@@ -111,6 +111,7 @@ public class ActionExecutor {
                             perso.setForward(p_action.backward);
                             perso.setSpeed(p_action.speed);
                             perso.setOpen(p_action.open);
+                            perso.setUnstoppable(p_action.unstoppable);
                         }
                     } else if ("camera".equals(p_action.what)) {
                         ClientEngineZildo.mapDisplay.setTargetCamera(location);

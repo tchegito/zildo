@@ -25,9 +25,9 @@ import java.util.List;
 
 public enum MouvementPerso {
 
-	// Mouvement des persos
+	// Characters movements
 	ZONE(0),
-	POULE(1),
+	HEN(1),	// Poule
 	OBSERVE(2),
 	IMMOBILE(3),
 	VOLESPECTRE(4),
@@ -76,14 +76,14 @@ public enum MouvementPerso {
 	 * @return TRUE = character runs away / FALSE = character runs on his target
 	 */
 	public boolean isAfraid() {
-		return this == POULE;
+		return this == HEN;
 	}
 	/**
 	 * Does this script make the character move diagonally ?
 	 * @return TRUE = diagonal move / FALSE = lateral move
 	 */
 	public boolean isDiagonal() {
-		return this == POULE ||
+		return this == HEN ||
 		this == VOLESPECTRE ||
 		this == ELECTRIC ||
 		this == SQUIRREL;

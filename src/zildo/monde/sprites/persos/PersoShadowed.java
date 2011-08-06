@@ -21,34 +21,37 @@
 package zildo.monde.sprites.persos;
 
 import zildo.monde.sprites.desc.ElementDescription;
-import zildo.monde.sprites.desc.PersoDescription;
-import zildo.monde.sprites.persos.ia.PathFinderSquirrel;
+import zildo.monde.sprites.elements.Element;
 
-public class PersoSquirrel extends PersoShadowed {
+/**
+ * @author Tchegito
+ * 
+ */
+public abstract class PersoShadowed extends PersoNJ {
 
-    public PersoSquirrel(PersoDescription p_desc) {
-    	super();
-    	
-    	// This perso could be from two descriptions
-    	switch (p_desc) {
-    	case LAPIN:
-    		shadow.setDesc(ElementDescription.SHADOW);
-    		break;
-    	case PRINCESS_BUNNY:
-    		shadow.setDesc(ElementDescription.SHADOW_SMALL);
-    		break;
-    	}
-	    pathFinder = new PathFinderSquirrel(this);
-    }
-   
-    @Override
-    public void animate(int p_compteur_animation) {
-        super.animate(p_compteur_animation);
-   
-        z=z+vz;
-	    if (z<0) {
-	        z=0;vz=0;az=0;
+	Element shadow;
+	
+	public PersoShadowed() {
+		shadow = new Element();
+		shadow.setSprModel(ElementDescription.SHADOW);
+		addPersoSprites(shadow);
+	}
+	
+	public PersoShadowed(ElementDescription p_shadowType) {
+		this();
+		shadow.setSprModel(p_shadowType);
+	}
+	
+	@Override
+	public void finaliseComportement(int compteur_animation) {
+	    // Move character's shadow
+	    if (persoSprites.size() >0) {
+	        Element ombre=persoSprites.get(0);
+	        ombre.setX(x);
+	        ombre.setY(y-1);
+	        ombre.setZ(-7);
+	        ombre.setVisible(z>=0);
 	    }
-	    vz=vz+az;
-    }
+	    super.finaliseComportement(compteur_animation);
+	}
 }
