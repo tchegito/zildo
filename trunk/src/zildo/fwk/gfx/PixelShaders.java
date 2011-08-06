@@ -41,11 +41,20 @@ public class PixelShaders extends OpenGLStuff {
 	
 	public enum EngineFX {
 		NO_EFFECT,
-		GUARD_BLUE,GUARD_RED, GUARD_YELLOW, GUARD_BLACK, GUARD_GREEN, GUARD_PINK,
+		GUARD_BLUE(new int[]{20, 28, 50}, new int[]{44, 36, 62}), 
+		GUARD_RED(new int[]{46, 16, 28}, new int[]{60, 30, 32}), 
+		GUARD_YELLOW(new int[]{52, 48, 16}, new int[]{60, 54, 16}), 
+		GUARD_BLACK(new int[]{22, 22, 22}, new int[]{30, 30, 34}), 
+		GUARD_GREEN(new int[]{10, 30, 14}, new int[]{30, 46, 8}), 
+		GUARD_PINK(new int[]{58, 24, 44}, new int[]{62, 32, 44}), 
 		PERSO_HURT, 
-		FONT_NORMAL, FONT_HIGHLIGHT,
+		FONT_NORMAL(new int[]{0, 0, 28}, new int[]{62, 62, 62}), 
+		FONT_HIGHLIGHT(new int[]{8, 16, 28}, new int[]{60, 54, 16}), 
 		SHINY, QUAD,
 		FOCUSED;	// FOCUSED is used when we wants to highlight some entity (inventory, or buying something)
+		
+		public Vector4f darkColor = null;
+		public Vector4f brightColor = null;
 		
 		public boolean needPixelShader() {
 			return !(this==NO_EFFECT || this==SHINY || this==QUAD || this==FOCUSED);
@@ -53,6 +62,12 @@ public class PixelShaders extends OpenGLStuff {
 		
 		public EngineFX fromInt(int i) {
 			return EngineFX.values()[i];
+		}
+		
+		private EngineFX() { }
+		private EngineFX(int[] dark, int[] bright) {
+			darkColor = OpenGLStuff.createColor64(dark[0], dark[1], dark[2]);
+			brightColor = OpenGLStuff.createColor64(bright[0], bright[1], bright[2]);
 		}
 	}
     
@@ -289,43 +304,8 @@ public class PixelShaders extends OpenGLStuff {
 		Vector4f colorReplace1=new Vector4f(1,0,0.0f,0.5f);
 		Vector4f colorReplace2=new Vector4f(0,1.0f,0,0.5f);
 	
-		switch (specialEffect) {
-			case GUARD_RED:
-				darkColor=  createColor64(46,16,28);
-				brightColor=createColor64(60,30,32);
-				break;
-			case GUARD_YELLOW:
-				darkColor=  createColor64(52,48,16);
-				brightColor=createColor64(60,54,16);
-				break;
-			case GUARD_BLACK:
-				darkColor=  createColor64(22,22,22);
-				brightColor=createColor64(30,30,34);
-				break;
-			case GUARD_GREEN:
-				darkColor=  createColor64(10,30,14);
-				brightColor=createColor64(30,46,8);
-				break;
-			case GUARD_PINK:
-				darkColor=  createColor64(58,24,44);
-				brightColor=createColor64(62,32,44);
-				break;
-			case GUARD_BLUE:
-				darkColor=  createColor64(20,28,50);
-				brightColor=createColor64(44,36,62);
-				break;
-			case FONT_NORMAL:	// Blue and white
-				darkColor=  createColor64(0,0,28);
-				brightColor=createColor64(62,62,62);
-				break;
-			case FONT_HIGHLIGHT:	// Yellow set
-				darkColor=  createColor64(8,16,28);
-				brightColor=createColor64(60,54,16);
-				break;
-			default:
-			case NO_EFFECT:
-				;
-		}
+		darkColor = specialEffect.darkColor;
+		brightColor = specialEffect.brightColor;
 	
 		Vector4f[] tab={brightColor, darkColor, colorReplace1, colorReplace2};
 
