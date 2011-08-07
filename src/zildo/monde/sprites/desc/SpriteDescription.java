@@ -50,7 +50,7 @@ public interface SpriteDescription {
 				return ZildoDescription.fromInt(nSpr);
 			    }
 			}
-			throw new RuntimeException("Can't find sprite for bank "+nBank);
+			throw new RuntimeException("Can't find sprite for bank "+nBank+" and sprite "+nSpr);
 		}
 	}
 }

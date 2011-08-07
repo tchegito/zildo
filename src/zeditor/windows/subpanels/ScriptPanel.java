@@ -301,19 +301,16 @@ public class ScriptPanel extends JPanel {
 		public SelChangedListener(JComboBox p_combo) {
 			selItem = p_combo.getSelectedIndex();
 			combo = p_combo;
-			System.out.println("nouveau listener");
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent p_e) {
 			int newSelItem = combo.getSelectedIndex();
-			System.out.println("click " + selItem + " ==> " + newSelItem);
 			if (selItem != newSelItem) {
 				updateList(false);
 
 			}
 			selItem = newSelItem;
-			// autoResizeColWidth(scriptList);
 		}
 	}
 

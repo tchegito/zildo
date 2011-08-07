@@ -20,6 +20,9 @@
 
 package zeditor.tools.sprites;
 
+import java.util.Arrays;
+
+import zeditor.tools.tiles.GraphChange;
 import zildo.monde.map.Zone;
 
 /**
@@ -40,7 +43,21 @@ public class Gears extends SpriteBanque {
 				
 				/* Prison */
 				new Zone(176, 0, 8, 32),
-				new Zone(184, 0, 8, 5)
+				new Zone(184, 0, 8, 5),
+				
+				/* Boulder on a hill */
+				new Zone(88, 160, 16, 20),
+
+				/* Cave - Closed door */
+				new Zone(224, 48, 24, 16),
+				new Zone(248, 48, 24, 16),	// Master key
+				new Zone(272, 48, 24, 16)  // Regular key
+				
+				
+				
 		};
+		
+		pkmChanges = Arrays.asList(new GraphChange[]{
+		new GraphChange("interia3", 7, 0)});
 	}
 }

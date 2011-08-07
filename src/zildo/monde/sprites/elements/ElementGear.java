@@ -51,7 +51,7 @@ public class ElementGear extends Element {
 		if (!acting) {
 			GearDescription gearDesc=(GearDescription) desc;
 			switch (gearDesc) {
-			case GEAR_GREENDOOR:
+			case GREEN_DOOR:
 				int keys=p_perso.getCountKey();
 				if (keys != 0) {
 					acting=true;
@@ -80,7 +80,7 @@ public class ElementGear extends Element {
 		if (acting) {
 			switch (count) {
 			case 10:
-				setDesc(GearDescription.GEAR_GREENDOOR_OPENING);
+				setDesc(GearDescription.GREEN_DOOR_OPENING);
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlockDouble, this);
 				break;
 			case 20:

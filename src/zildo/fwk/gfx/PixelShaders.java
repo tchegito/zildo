@@ -304,9 +304,11 @@ public class PixelShaders extends OpenGLStuff {
 		Vector4f colorReplace1=new Vector4f(1,0,0.0f,0.5f);
 		Vector4f colorReplace2=new Vector4f(0,1.0f,0,0.5f);
 	
-		darkColor = specialEffect.darkColor;
-		brightColor = specialEffect.brightColor;
-	
+		if (specialEffect.darkColor != null) {
+			darkColor = specialEffect.darkColor;
+			brightColor = specialEffect.brightColor;
+		}
+		
 		Vector4f[] tab={brightColor, darkColor, colorReplace1, colorReplace2};
 
 		return tab;

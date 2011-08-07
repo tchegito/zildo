@@ -150,6 +150,10 @@ public class TileSelection extends CaseSelection {
 					if (map.getDim_x() > dx && map.getDim_y() > dy && dy >= 0 && dx >= 0) {
 						// We know that this is a valid location
 						Case c=map.get_mapcase(dx, dy+4);
+						if (c == null) {
+							c = new Case();
+							map.set_mapcase(dx, dy+4, c);
+						}
 						// Apply modifications
 						Tile tile = item.getBackTile();
 						if (tile.index != -1 && !p_mask) {	// Smash the previous tile
