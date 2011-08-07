@@ -32,7 +32,6 @@ import zeditor.tools.banque.Foret2;
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.tiles.MotifBankEdit;
 import zildo.client.gui.GUIDisplay;
-import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.Game;
 import zildo.monde.dialog.Behavior;
@@ -69,13 +68,13 @@ public class Modifier {
         Game g=new Game(null, true);
         new EngineZildo(g);
        
-
+        //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
         //new Modifier().saveElements2();
         //new Modifier().saveFontes2();
         //new Modifier().saveBanque();
-        //new Modifier().saveGears();
-        new Modifier().savePnj();
+        new Modifier().saveGears();
+        //new Modifier().savePnj2();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
        // new Modifier().ripDialogFromAllMaps();
@@ -150,22 +149,15 @@ public class Modifier {
      }
      
      public void saveGears() {
-         SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
-         
-         bankElem.loadImage("interia2", COLOR_BLUE);
-         int nSpr=bankElem.getNSprite();
-    	 for (int i=0;i<nSpr;i++) {
-    		 bankElem.removeSpr(0);
-    	 }
+         SpriteBankEdit bank=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
+
+         bank.clear();
+         bank.loadImage("interia2", COLOR_BLUE);
+
     	 // Add doors
-    	 Zone[] elements=new Gears().getZones();
-    	 nSpr=0;
-         for (Zone z : elements) {
-          	bankElem.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
-          	nSpr++;
-          }
-    	 bankElem.setName("gear.spr");
-    	 bankElem.saveBank();
+    	 bank.addSpritesFromBank(new Gears());
+    	 bank.setName("gear.spr");
+    	 bank.saveBank();
      }
      
      public void savePnj2() {
@@ -226,7 +218,7 @@ public class Modifier {
     		}
 		};
 		List<File> mapsFile=new ArrayList<File>();
-		File[] scenarioMaps = new File(path+"/maps").listFiles(mapFilter);
+		File[] scenarioMaps = new File(path+"/anciens").listFiles(mapFilter);
 		mapsFile.addAll(Arrays.asList(scenarioMaps));
 		LogManager.getLogManager().reset();
 		
@@ -235,20 +227,13 @@ public class Modifier {
 		for (File f : mapsFile) {
 			String name=f.getName();
 			System.out.println("Processing "+name+"...");
+	        Constantes.MAP_PATH="anciens/";
 			MapManagement mapManagement=EngineZildo.mapManagement;
 
 			mapManagement.loadMap(name, false);
-		    
-			Area area = mapManagement.getCurrentMap();
-			area.setAtmosphere(Atmosphere.OUTSIDE);
-			String mapName=name.substring(0, name.indexOf("."));
-			if (mapName.indexOf("m") != -1) {
-				area.setAtmosphere(Atmosphere.HOUSE);
-			} else if (mapName.startsWith("polaky") && !mapName.equals("polaky")) {
-				area.setAtmosphere(Atmosphere.CAVE);
-			}
-			System.out.println(area.getAtmosphere());
+
 	        // Save the map into a temporary file
+			
 			mapManagement.saveMapFile(name);
 		}
     }

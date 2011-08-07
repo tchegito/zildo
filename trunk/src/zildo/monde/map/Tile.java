@@ -34,7 +34,7 @@ public class Tile implements Cloneable {
 		if (bank == 73) {
 			throw new RuntimeException();
 		}
-		bank = p_bank;
+		bank = p_bank & 63;
 		index = p_index;
 		parent = p_parent;
 	}

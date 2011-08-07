@@ -136,7 +136,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 				back.bank = nTile / 256;
 				back.index = nTile % 256;	// Empty in outside
 				for (int i=0;i<size.x*size.y;i++) {
-				    cases.add(empty);
+				    cases.add(new Case(empty));
 				}
 				TileSelection emptySel = new TileSelection(size.x, size.y, cases);
 				drawBrush(p, emptySel);

@@ -112,12 +112,16 @@ public class Ortho extends OpenGLStuff {
 	boolean orthoSetUp;
 	
 	Vector3f ambientColor;	// Current ambient color (could be null)
+	Vector3f filteredColor;	// Filtered color (never null, at least 1,1,1)
+	
+	final static Vector3f NIGHT_FILTER =  new Vector3f(0.5f, 0.6f, 1f);
 	
 	public Ortho(int width, int height) {
 		w=width;
 		h=height;
 		orthoSetUp=false;
 		ambientColor=new Vector3f(1f, 1f, 1f);
+		filteredColor=new Vector3f(1f, 1f, 1f);
 	}
 	
 	public void setOrthographicProjection(boolean p_zoom) {
@@ -353,9 +357,7 @@ public class Ortho extends OpenGLStuff {
 	}
 
 	public Vector3f getAmbientColor() {
-		return new Vector3f(0.5f, 0.6f, 1f);
-
-		//return ambientColor;
+		return ambientColor;
 	}
 
 	public void setAmbientColor(Vector3f ambientColor) {

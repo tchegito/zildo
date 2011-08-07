@@ -28,10 +28,14 @@ import zildo.fwk.bank.SpriteBank;
  */
 public enum GearDescription implements SpriteDescription {
 	
-	GEAR_GREENDOOR, GEAR_GREENDOOR_OPENING,
-	GEAR_SIMPLEDOOR, GEAR_SIMPLEDOOR_OPENING,
+	GREEN_DOOR, GREEN_DOOR_OPENING,
+	GREEN_SIMPLEDOOR, GREEN_SIMPLEDOOR_OPENING,
 	
-	PRISON_GRATE, PRISON_GRATESIDE;
+	PRISON_GRATE, PRISON_GRATESIDE,
+	
+	BOULDER,
+	
+	CAVE_SIMPLEDOOR, CAVE_MASTERDOOR, CAVE_KEYDOOR;
 	
 	public int getBank() {
 		return SpriteBank.BANK_GEAR;
@@ -53,8 +57,8 @@ public enum GearDescription implements SpriteDescription {
 	@Override
 	public boolean isBlocking() {
 		switch (this) {
-			case GEAR_GREENDOOR:
-			case GEAR_GREENDOOR_OPENING:
+			case GREEN_DOOR:
+			case GREEN_DOOR_OPENING:
 				return true;
 			default:
 				return false;

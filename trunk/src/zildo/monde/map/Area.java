@@ -653,7 +653,7 @@ public class Area implements EasySerializable {
 							}
 						default:	// else, show it as a regular element
 			                SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
-							if (desc == GearDescription.GEAR_GREENDOOR) {
+							if (desc == GearDescription.GREEN_DOOR) {
 								ChainingPoint ch=map.getCloseChainingPoint(ax, ay);
 								if (ch != null && EngineZildo.scriptManagement.isOpenedDoor(map.getName(), ch)) {
 									break;
@@ -806,7 +806,7 @@ public class Area implements EasySerializable {
 				if (elem.getLinkedPerso() != null) {
 					ok = false;
 				}
-				if (elem.getNSpr() == ElementDescription.SMOKE_SMALL.ordinal()) {
+				if (elem.getNSpr() == ElementDescription.SMOKE_SMALL.ordinal() && elem.getNBank() == SpriteBank.BANK_ELEMENTS) {
 					ok = false;;	// Exclude smoke too (spawned on houses)
 				}
 			}
