@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.net.TransferObject;
+import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.xml.TriggerElement;
 import zildo.fwk.ui.UIText;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
@@ -80,6 +81,14 @@ public class DialogManagement {
 			}
 			int compteDial=persoToTalk.getCompte_dialogue();
 			
+			// Dialog switch : adjust sentence according to quest elements
+			if (persoToTalk.getDialogSwitch() != null) {
+				ZSSwitch swi = new ZSSwitch(persoToTalk.getDialogSwitch());
+				int posSentence = swi.evaluate();
+				if (posSentence > compteDial) {
+					compteDial = posSentence;
+				}
+			}
 	        sentence = dialogs.getSentence(behav, compteDial);
 			
 	        sentence=UIText.getGameText(sentence);

@@ -34,6 +34,7 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
+import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.Hasard;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
@@ -543,7 +544,8 @@ public class Area implements EasySerializable {
 				p_file.put((byte) desc.getBank());
 				p_file.put((byte) desc.first());
 				p_file.put((byte) perso.getInfo().ordinal());
-				p_file.put((byte) 0); //(byte) perso.getEn_bras());
+				p_file.put(perso.getDialogSwitch());
+				//p_file.put((byte) 0); //(byte) perso.getEn_bras());
 				p_file.put((byte) perso.getQuel_deplacement().ordinal());
 				p_file.put((byte) perso.getAngle().ordinal());
 				p_file.put(perso.getName(), 9);
@@ -551,21 +553,22 @@ public class Area implements EasySerializable {
 		}
 
 		// 6) Sentences
-		int nPhrases = dialogs == null ? 0 : dialogs.getN_phrases();
-		if (nPhrases > 0) {
-			p_file.put((byte) nPhrases);
-			// On lit les phrases
-			String[] sentences = dialogs.getDialogs();
-			for (int i = 0; i < nPhrases; i++) {
-				p_file.put(sentences[i]);
-			}
-			// On lit le nom
-			Map<String, Behavior> behaviors = dialogs.getBehaviors();
-			for (Entry<String, Behavior> entry : behaviors.entrySet()) {
-				p_file.put(entry.getKey(), 9);
-				Behavior behav = entry.getValue();
-				for (int i : behav.replique) {
-					p_file.put((byte) i);
+		if (dialogs != null) {
+			List<String> phrases = dialogs.getDialogs();
+			if (phrases.size() > 0) {
+				p_file.put((byte) phrases.size());
+				// On lit les phrases
+				for (String s : phrases) {
+					p_file.put(s);
+				}
+				// On lit le nom
+				Map<String, Behavior> behaviors = dialogs.getBehaviors();
+				for (Entry<String, Behavior> entry : behaviors.entrySet()) {
+					p_file.put(entry.getKey(), 9);
+					Behavior behav = entry.getValue();
+					for (int i : behav.replique) {
+						p_file.put((byte) i);
+					}
 				}
 			}
 		}
@@ -599,7 +602,7 @@ public class Area implements EasySerializable {
 
 				map.set_mapcase(j, i + 4, temp);
 
-				if (p_spawn) {
+				if (p_spawn && !EngineZildo.game.editing) {
 					Tile backTile = temp.getBackTile();
 					if (backTile.index == 99 && backTile.bank == 1) {
 						// Fumée de cheminée
@@ -686,10 +689,11 @@ public class Area implements EasySerializable {
                 
                 // Read the character informations
                 int info=p_buffer.readUnsignedByte();
-				int en_bras=p_buffer.readUnsignedByte();
-				if (en_bras!= 0) {
+				//int en_bras=p_buffer.readUnsignedByte();
+				//if (en_bras!= 0) {
 					//throw new RuntimeException("enbras="+en_bras);
-				}
+				//}
+                String dialogSwitch = p_buffer.readString();
 				int move=p_buffer.readUnsignedByte();
 				int angle=p_buffer.readUnsignedByte();
 				String name=p_buffer.readString(9);
@@ -728,7 +732,8 @@ public class Area implements EasySerializable {
 					perso.setPv(3);
 					perso.setTarget(null);
 					perso.setMouvement(MouvementZildo.VIDE);
-	
+					perso.setDialogSwitch(dialogSwitch);
+					
 					perso.initPersoFX();
 
 					spriteManagement.spawnPerso(perso);
@@ -927,6 +932,27 @@ public class Area implements EasySerializable {
 	        }
 	    }
 	    return found;
+	}
+	
+	/**
+	 * Returns an error message, designed for ZEditor. Called before save.
+	 * @return String (NULL = no error)
+	 */
+	public String checkBeforeSave() {
+		String result = null;
+		// 1) dialog switch
+		for (Perso p : EngineZildo.persoManagement.tab_perso) {
+			String swi = p.getDialogSwitch();
+			if (swi != null && swi.length() > 0) {
+				try {
+					new ZSSwitch(swi);
+				} catch (RuntimeException e) {
+					return "Perso "+p.getName()+" : "+e.getMessage();
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	public Atmosphere getAtmosphere() {

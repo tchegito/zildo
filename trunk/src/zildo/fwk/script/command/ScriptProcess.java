@@ -29,6 +29,7 @@ import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
 /**
+ * Object describing a script being processed by the script engine.
  * @author Tchegito
  *
  */

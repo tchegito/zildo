@@ -109,7 +109,6 @@ public class ClientEngineZildo {
 			filterCommand.addFilter(new FadeFilter());
 			filterCommand.addFilter(new CircleFilter());
 			filterCommand.active(BilinearFilter.class, true, null);
-			filterCommand.active(CircleFilter.class, true, null);
 		}
 
 		pixelShaders = new PixelShaders();
@@ -236,7 +235,7 @@ public class ClientEngineZildo {
 			switch (p_event.nature) {
 				case CHANGINGMAP_ASKED :
 					// Changing map : 1/3 we launch the fade out
-					retEvent.effect = FilterEffect.CIRCLE;
+					retEvent.effect = FilterEffect.BLEND;
 					// Call Circle filter to focus on Zildo
 					zildo = EngineZildo.persoManagement.getZildo();
 					zildoPos=zildo.getCenteredScreenPosition();

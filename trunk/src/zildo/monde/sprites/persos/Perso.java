@@ -80,6 +80,7 @@ public abstract class Perso extends Element {
 	
     private boolean wounded;
     private Perso dialoguingWith;
+	private String dialogSwitch;	// Field parseable by ZSSwitch
     private Perso following;	// Perso followed by this one
     
 	public Perso getFollowing() {
@@ -239,7 +240,19 @@ public abstract class Perso extends Element {
 	public void setMoney(int money) {
 		this.money = money;
 	}
-
+	
+	public String getDialogSwitch() {
+		return dialogSwitch;
+	}
+	
+	public void setDialogSwitch(String p_dialogSwitch) {
+		if (p_dialogSwitch != null && p_dialogSwitch.length() > 0) {
+			dialogSwitch = p_dialogSwitch;
+		} else {
+			dialogSwitch = null;
+		}
+	}
+	
 	public boolean isWounded() {
 		return wounded;
 	}
