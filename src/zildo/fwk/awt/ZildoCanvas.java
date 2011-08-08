@@ -205,15 +205,16 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	public void saveMapFile(String p_mapName) {
 		MapManagement map = EngineZildo.mapManagement;
 		String fileName = p_mapName;
+		Area area = map.getCurrentMap();
 		if (p_mapName == null) {
-			fileName = map.getCurrentMap().getName();
+			fileName = area.getName();
 		}
 		if (fileName.indexOf(".") == -1) {
 			fileName += ".map";
 		}
 
 		// Check for sprites out of bound
-		List<SpriteEntity> outOfBoundsEntities = map.getCurrentMap().getOutOfBoundEntities();
+		List<SpriteEntity> outOfBoundsEntities = area.getOutOfBoundEntities();
 		if (outOfBoundsEntities.size() > 0) {
 			if (0 == JOptionPane
 					.showConfirmDialog(
@@ -226,6 +227,11 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 			}
 		}
 
+		String m = area.checkBeforeSave();
+		if (m != null) {
+			JOptionPane.showMessageDialog(this, m, "ZEditor : error on 'dialog switch'", JOptionPane.ERROR_MESSAGE);
+		}
+		
 		map.saveMapFile(fileName);
 	}
 

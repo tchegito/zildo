@@ -49,6 +49,7 @@ public class PersoNJ extends Perso {
 		super();
 		setPos_seqsprite(0);
 	}
+
 	
 	@Override
 	public void attack() {

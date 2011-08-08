@@ -20,23 +20,23 @@
 
 package zildo.monde.dialog;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import zildo.prefs.Constantes;
 
 public class MapDialog {
 
-	private int n_phrases;
 	private int n_comportements;
 	private int n_topics;
 
-	private String dialogs[]=new String[Constantes.MAX_DIALOG];
+	private List<String> dialogs=new ArrayList<String>();
 	private Map<String, Behavior> behaviors;
 	private DialogTopic[] topics=new DialogTopic[Constantes.MAX_TOPICS];
 
 	public MapDialog() {
-		n_phrases=0;
 		n_comportements=0;
 		n_topics=0;
 		behaviors=new LinkedHashMap<String, Behavior>();	// LinkedHashMap to keep order
@@ -50,7 +50,7 @@ public class MapDialog {
 			return false;
 		}
 		MapDialog other=(MapDialog) o;
-		if (n_phrases != other.n_phrases) {
+		if (dialogs.size() != other.dialogs.size()) {
 			return false;
 		}
 		if (n_comportements != other.n_comportements) {
@@ -68,8 +68,7 @@ public class MapDialog {
 	// Add the given sentence to sentence buffer.
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void addSentence(String sentence) {
-		dialogs[n_phrases]=sentence;
-		n_phrases++;
+		dialogs.add(sentence);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -108,7 +107,7 @@ public class MapDialog {
 		if (behav!=null) {
 			int numSentence=behav.replique[numComportement];
 			if (numSentence > 0) {
-				reponse=dialogs[numSentence - 1];
+				reponse=dialogs.get(numSentence - 1);
 			}
 			//char a='#';
 			//int posDiese=reponse.indexOf(a);
@@ -120,15 +119,20 @@ public class MapDialog {
 	public void setSentence(Behavior behav, int numComportement, String sentence) {
 		if (behav!=null) {
 			int numSentence=behav.replique[numComportement];
-			dialogs[numSentence - 1]=sentence;
+			if (numSentence == 0) {
+				behav.replique[numComportement] = dialogs.size();
+				dialogs.add(sentence);
+			} else {
+				dialogs.set(numSentence - 1, sentence);
+			}
 		}
 	}
 	
 	public int getN_phrases() {
-		return n_phrases;
+		return dialogs.size();
 	}
 	
-	public String[] getDialogs() {
+	public List<String> getDialogs() {
 		return dialogs;
 	}
 	

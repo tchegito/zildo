@@ -20,7 +20,9 @@
 
 package zildo.server.state;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import zildo.fwk.script.command.ScriptExecutor;
 import zildo.fwk.script.xml.ActionElement;
@@ -60,6 +62,8 @@ public class ScriptManagement {
     AdventureElement adventure=null;
     MapReplacement replaces;
     
+    Map<String, QuestElement> questsByName;
+    
     public ScriptManagement() {
         // Load adventure
         adventure=(AdventureElement) ScriptReader.loadScript("quests.xml");
@@ -67,6 +71,11 @@ public class ScriptManagement {
         scriptExecutor=new ScriptExecutor();
         
         replaces=new MapReplacement();
+        
+        questsByName = new HashMap<String, QuestElement>();
+        for (QuestElement quest : adventure.getQuests()) {
+        	questsByName.put(quest.name, quest);
+        }
     }
     
     public void render() {
@@ -230,13 +239,12 @@ public class ScriptManagement {
 	 * @param p_questName
 	 * @return boolean
 	 */
-	private boolean isQuestDone(String p_questName) {
-		for (QuestElement quest : adventure.getQuests()) {
-			if (quest.name.equals(p_questName)) {
-				return quest.done;
-			}
+	public boolean isQuestDone(String p_questName) {
+		QuestElement quest = questsByName.get(p_questName);
+		if (quest == null) {
+			return false;
 		}
-		return false;
+		return quest.done;
 	}
 	
 	public boolean isOpenedChest(String p_mapName, Point p_location) {
