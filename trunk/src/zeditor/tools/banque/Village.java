@@ -218,7 +218,10 @@ public class Village extends Banque {
 				/* Animations d'eau */
 				new Point(128, 0), new Point(128, 16), new Point(128, 32),
 				new Point(144, 0), new Point(144, 16), new Point(144, 32),
-				new Point(160, 0), new Point(160, 16), new Point(160, 32) };
+				new Point(160, 0), new Point(160, 16), new Point(160, 32),
+				
+				/* Champ */
+				new Point(0, 192), new Point(16, 192), new Point(32, 192), new Point(48, 192)};
 
 		pkmChanges = Arrays.asList(new GraphChange("exteria3", 0, 0), 
 				new GraphChange("exteria4", 191, 192), new GraphChange("exteria6", 235, 96));
