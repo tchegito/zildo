@@ -94,7 +94,7 @@ public class Foret1 extends Banque {
 				new Point(304, 80), new Point(288, 80), new Point(272, 80),
 				new Point(272, 64), /* 4--7 +100 */
 
-				/* Eau */
+				/* Eau - 108 */
 				new Point(96, 0), new Point(0, 64), new Point(0, 80),
 				new Point(160, 0), new Point(160, 16), new Point(160, 32),
 				new Point(16, 64), /* 0--6 +108 */
@@ -117,7 +117,7 @@ public class Foret1 extends Banque {
 																		 * +108
 																		 */
 
-				/* Arbre */
+				/* Arbre - 139 */
 				new Point(80, 112), new Point(96, 112), new Point(112, 112),
 				new Point(128, 112), /* 0--3 +139 */
 				new Point(80, 128), new Point(96, 128), new Point(112, 128),
@@ -201,8 +201,8 @@ public class Foret1 extends Banque {
 				new Point(16, 16), new Point(80, 0) };
 
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("exteria1", 0, 0), 
-				new GraphChange("exteria2", 109, 192),
+				new GraphChange("exteria2", 108, 192),
 				new GraphChange("exteria1", 139, -192), new GraphChange("exteria3", 186, 192 + 176),
-				new GraphChange("exteria2", 209, -176) });
+				new GraphChange("exteria2", 208, -176) });
 	}
 }
