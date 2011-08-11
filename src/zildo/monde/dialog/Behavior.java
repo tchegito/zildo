@@ -25,7 +25,8 @@ public class Behavior {
     public String persoName;	// max length=8
     public int[] replique=new int[10];
     
-    public Behavior() {
+    public Behavior(String p_persoName) {
+    	persoName = p_persoName;
     	for (int i=0;i<replique.length;i++) {
     		replique[i]=0;
     	}

@@ -99,8 +99,11 @@ public class ScriptReader {
      * @return List
      */
     static List<? extends AnyElement> parseNodes(Element p_element, String... p_nodeName) {
-        NodeList list = p_element.getChildNodes();
         List<AnyElement> elements = new ArrayList<AnyElement>();
+        if (p_element == null) {	// No child ? Returns an empty list.
+        	return elements;
+        }
+        NodeList list = p_element.getChildNodes();
         List<String> acceptables = new ArrayList<String>();
         if (p_nodeName != null) {
             for (String s : p_nodeName) {

@@ -35,7 +35,8 @@ public enum PersoDescription implements SpriteDescription {
 	VOYANT(42,43),
 	DRESSEUR_SERPENT(44,45),
 	VIEUX(46,47,48),
-	SOFIASKY(49,50,51,52,53,54,55,56),
+	SOFIASKY(49,50,51,52,53,54),
+	GARCON_BRUN(55,56),
 	RITASKY(57,58,59,60,61,62,63,64),
 	VIEILLE_BALAI(65,66),
 	SORCIERE(67,68),
@@ -74,6 +75,9 @@ public enum PersoDescription implements SpriteDescription {
 	ARBUSTE_VIVANT(192, 193),
 	CHAUVESOURIS(202, 203),
 	PRINCESS_BUNNY(204, 205),
+	GARCON_BLEU(206, 207),
+	GARCON_JAUNE(208, 209),
+	FERMIERE(210, 211, 212, 213, 214, 215),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 	

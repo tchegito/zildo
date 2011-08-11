@@ -162,17 +162,17 @@ public class ScriptManagement {
      */
     public void accomplishQuest(String p_questName, boolean p_trigger) {
     	boolean found=false;
-    	for (QuestElement quest : adventure.getQuests()) {
-    		if (quest.name.equals(p_questName)) {
-    			accomplishQuest(quest, p_trigger);
-    			found=true;
-    		}
-    	}
-    	if (!found) { // Given quest hasn't been found, so create it (useful for automatic behaviors like chest and doors)
-    		QuestElement quest=new QuestElement();
-    		quest.name=p_questName;
-    		quest.done=true;	// Set it done
-    		adventure.addQuest(quest);
+    	QuestElement quest = questsByName.get(p_questName);
+    	if (quest != null) {
+   			accomplishQuest(quest, p_trigger);
+    	} else {
+	    	if (!found) { // Given quest hasn't been found, so create it (useful for automatic behaviors like chest and doors)
+	    		quest=new QuestElement();
+	    		quest.name=p_questName;
+	    		quest.done=true;	// Set it done
+	    		questsByName.put(p_questName, quest);
+	    		adventure.addQuest(quest);
+	    	}
     	}
     }
     
@@ -182,6 +182,7 @@ public class ScriptManagement {
      * @param p_trigger TRUE=we have to launch targeted action / FALSE=just set quest to 'done' state
      */
     private void accomplishQuest(QuestElement p_quest, boolean p_trigger) {
+    	System.out.println("Accomplish "+p_quest.name);
     	p_quest.done=true;
     	
     	// 1) note the history events (mapReplace ...)

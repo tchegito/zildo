@@ -31,6 +31,7 @@ import java.util.Map.Entry;
 
 import zildo.client.sound.Ambient.Atmosphere;
 import zildo.client.sound.BankSound;
+import zildo.fwk.IntSet;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
@@ -767,6 +768,7 @@ public class Area implements EasySerializable {
 
         if (p_spawn) {
             map.correctDoorHouse();
+            map.correctTrees();
         }
         return map;
     }
@@ -787,6 +789,26 @@ public class Area implements EasySerializable {
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    private final static IntSet treeToBlock = new IntSet(144, 145, 148, 149,
+    		23+256*4, 24+256*4, 27+256*4, 28+256*4, 39+256*4, 40+256*4, 43+256*4, 44+256*4);
+    
+    /**
+     * Add blocking tile on the hidden part of the tree in order to limit the move 
+     * of characters under the tree.
+     */
+    private void correctTrees() {
+        for (int j = 0; j < getDim_y(); j++) {
+            for (int i = 0; i < getDim_x(); i++) {
+            	 Case c = get_mapcase(i, j + 4);
+            	 Tile foreTile = c.getForeTile();
+            	 if (foreTile != null && treeToBlock.contains(foreTile.index + foreTile.bank * 256)) {
+            		 c.getBackTile().index = 152;
+            		 c.getBackTile().bank = 0;
+            	 }
             }
         }
     }

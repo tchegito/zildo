@@ -43,11 +43,14 @@ public class DropTreeDrawer extends DropDelegateDraw {
 			return;
 		}
 		
+		// Bad thing !
+		if (false) {
 		if (t1 != null && t2 != null) {
 			p_mapTile.setBackTile(t1.clone());
 			t1.index = t2.index;
 			t1.bank = t2.bank;
 			return;
+		}
 		}
 		// 3) back tile
 		t1 = p_mapTile.getBackTile();

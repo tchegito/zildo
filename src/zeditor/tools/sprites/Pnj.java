@@ -101,8 +101,9 @@ public class Pnj extends SpriteBanque {
 				new Zone(46, 158, 13, 25),
 				new Zone(59, 158, 16, 25),
 				new Zone(75, 158, 16, 25),
-				new Zone(91, 159, 14, 24),
-				new Zone(105, 158, 13, 25),
+				// Garçon brun - 55
+				new Zone(177, 70, 16, 28),
+				new Zone(193, 70, 16, 28),
 				// Villageoise jaune - 57
 				new Zone(156, 133, 16, 23),
 				new Zone(172, 133, 16, 23),
@@ -186,7 +187,8 @@ public class Pnj extends SpriteBanque {
 				new Zone(171, 84, 5, 16), new Zone(160, 78, 16, 5) };
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
-				new GraphChange("pnj", 0, 0), new GraphChange("pnj2", 91, 0),
+				new GraphChange("pnj", 0, 0), new GraphChange("pnj2", 55, 0),
+				new GraphChange("pnj", 57, 0), new GraphChange("pnj2", 91, 0),
 				new GraphChange("pnj", 116, 0)
 		});
 	}

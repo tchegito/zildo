@@ -143,7 +143,7 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	private void initGUI() {
 		try {
-			zildoPanel=new ZildoScrollablePanel("polaky");
+			zildoPanel=new ZildoScrollablePanel("coucou");
 			
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			BorderLayout thisLayout = new BorderLayout();
