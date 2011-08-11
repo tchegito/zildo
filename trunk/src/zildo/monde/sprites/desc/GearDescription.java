@@ -35,7 +35,9 @@ public enum GearDescription implements SpriteDescription {
 	
 	BOULDER,
 	
-	CAVE_SIMPLEDOOR, CAVE_MASTERDOOR, CAVE_KEYDOOR;
+	CAVE_SIMPLEDOOR, CAVE_MASTERDOOR, CAVE_KEYDOOR,
+	
+	BOULDER2;
 	
 	public int getBank() {
 		return SpriteBank.BANK_GEAR;

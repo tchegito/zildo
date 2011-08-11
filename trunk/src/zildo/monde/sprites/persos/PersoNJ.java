@@ -436,6 +436,15 @@ public class PersoNJ extends Perso {
 				//Persos à 3 angles
 				add_spr=seqp[angle.value];
 				break;
+			case GARCON_BRUN:
+			case GARCON_BLEU:
+			case GARCON_JAUNE:
+				add_spr=seqp[angle.value];
+				reverse = 0;
+				if (add_spr == 2) {
+					add_spr = 1;
+					reverse = REVERSE_HORIZONTAL;
+				}
 			case CURE:
 			case GARDE_BOUCLIER:
 				//Persos à 4 sprites : prêtre,garde bouclier
@@ -479,6 +488,19 @@ public class PersoNJ extends Perso {
 				add_spr=angle.value*2 + (getPos_seqsprite() % (4*Constantes.speed)) / (2*Constantes.speed);
 				break;
 		}
+
+		switch (quel_spr) {
+			case SOFIASKY:
+			case FERMIERE:
+				reverse = 0;
+				if (add_spr >= 6) {
+					add_spr-=4;
+					reverse = REVERSE_HORIZONTAL;
+				}
+				break;
+				
+		}
+
 	
 		this.setNSpr((this.getQuel_spr().first() + add_spr) % 128);
 	}

@@ -29,7 +29,6 @@ import zildo.prefs.Constantes;
 
 public class MapDialog {
 
-	private int n_comportements;
 	private int n_topics;
 
 	private List<String> dialogs=new ArrayList<String>();
@@ -37,7 +36,6 @@ public class MapDialog {
 	private DialogTopic[] topics=new DialogTopic[Constantes.MAX_TOPICS];
 
 	public MapDialog() {
-		n_comportements=0;
 		n_topics=0;
 		behaviors=new LinkedHashMap<String, Behavior>();	// LinkedHashMap to keep order
 	}
@@ -53,7 +51,7 @@ public class MapDialog {
 		if (dialogs.size() != other.dialogs.size()) {
 			return false;
 		}
-		if (n_comportements != other.n_comportements) {
+		if (behaviors.size() != other.behaviors.size()) {
 			return false;
 		}
 		if (n_topics != other.n_topics) {
@@ -77,13 +75,15 @@ public class MapDialog {
 	// IN:character's name and behavior (array of 9 integers)
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void addBehavior(String nomPerso, short[] replique) {
-		Behavior b=new Behavior();
-		b.persoName=nomPerso;
+		Behavior b=new Behavior(nomPerso);
 		for (int i=0;i<replique.length;i++) {
 			b.replique[i]=replique[i];
 		}
 		behaviors.put(nomPerso, b);
-		n_comportements++;
+	}
+	
+	public void addBehavior(Behavior p_behav) {
+		behaviors.put(p_behav.persoName, p_behav);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

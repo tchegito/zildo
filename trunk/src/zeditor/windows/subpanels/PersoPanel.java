@@ -299,9 +299,11 @@ public class PersoPanel extends JPanel {
 		private void updatePersoText(String p_text) {
 			Area area = EngineZildo.mapManagement.getCurrentMap();
 			MapDialog dialogs = area.getMapDialog();
-			if (behavior != null) {
-				dialogs.setSentence(behavior, (Integer) spinner.getValue(), p_text);
+			if (behavior == null) {
+				behavior = new Behavior(name.getText());
+				dialogs.addBehavior(behavior);
 			}
+			dialogs.setSentence(behavior, (Integer) spinner.getValue(), p_text);
 		}
 	}
 }
