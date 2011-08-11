@@ -2,19 +2,19 @@ package zeditor.core.tiles;
 
 import java.util.List;
 
+import zeditor.core.prefetch.complex.DropDelegateDraw;
 import zeditor.core.selection.CaseSelection;
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
-import zildo.monde.map.Tile;
 
 /**
  * Cette classe représente une sélection du TileSet. Elle est composée de :
  * <p>
  * <ul>
- * <li>La liste des éléments sélectionnés héritée de la classe {@link CaseSelection}
- * </li>
+ * <li>La liste des éléments sélectionnés héritée de la classe
+ * {@link CaseSelection}</li>
  * <li>La largeur de la sélection en nombre de cases</li>
  * <li>La hauteur de la sélection en nombre de cases</li>
  * </ul>
@@ -59,88 +59,83 @@ import zildo.monde.map.Tile;
  * 
  */
 public class TileSelection extends CaseSelection {
-    /**
-     * Largeur de la sélection en nombre de cases
-     */
-    public int width;
+	/**
+	 * Largeur de la sélection en nombre de cases
+	 */
+	public int width;
 
-    /**
-     * Hauteur de la sélection en nombre de cases
-     */
-    public int height;
+	/**
+	 * Hauteur de la sélection en nombre de cases
+	 */
+	public int height;
 
-    /**
-     * Constructeur vide
-     */
-    public TileSelection() {
-	super();
-    }
-
-    /**
-     * Constructeur
-     * 
-     * @param w
-     *            est la largeur de la sélection (en nombre de cases)
-     * @param h
-     *            est la hauteur de la sélection (en nombre de cases)
-     * @param l
-     *            est la liste contenant les éléments
-     */
-    public TileSelection(Integer w, Integer h, List<Case> l) {
-	super(l);
-	width = w;
-	height = h;
-    }
-
-    /**
-     * Constructeur
-     * 
-     * @param w
-     *            est la largeur de la sélection (en nombre de cases)
-     * @param h
-     *            est la hauteur de la sélection (en nombre de cases)
-     */
-    public TileSelection(Integer w, Integer h) {
-	super();
-	width = w;
-	height = h;
-    }
-
-    public SelectionKind getKind() {
-    	return SelectionKind.TILES;
-    }
-    
-    /**
-     * Surcharge de la méthode toString afin de renvoyer une chaine contenant
-     * tous les items séparés par des virgules sans afficher les tiles non
-     * mappés qui ont été sélectionnés.
-     */
-    @Override
-    public String toString() {
-	String s = null;
-	boolean first = true;
-	if (items != null && !items.isEmpty()) {
-	    s = "[" + width + "," + height + "] >> ";
-	    for (int i = 0; i < items.size(); i++) {
-		if (first) {
-		    first = false;
-		} else {
-		    s += ", ";
-		}
-		s += items.get(i);
-	    }
+	/**
+	 * Constructeur vide
+	 */
+	public TileSelection() {
+		super();
 	}
-	return s;
-    }
 
-    /**
-     * Draw a set of tiles on the given map at given location
-     * @param map
-     * @param p (map coordinates, basically 0..63, 0..63)
-     * @param p_mask TODO
-     */
-    public void draw(Area map, Point p, boolean p_mask) {
-    	int dx,dy;
+	protected DropDelegateDraw drawer; // Class that handles the drawing of TileSelection
+
+	/**
+	 * Constructeur
+	 * 
+	 * @param w
+	 *            est la largeur de la sélection (en nombre de cases)
+	 * @param h
+	 *            est la hauteur de la sélection (en nombre de cases)
+	 * @param l
+	 *            est la liste contenant les éléments
+	 */
+	public TileSelection(Integer w, Integer h, List<Case> l) {
+		super(l);
+		width = w;
+		height = h;
+		
+		// Default renderer for TileSelection. This could be overriden in subclasses
+		// (For example : PrefetchSelection)
+		drawer = new DropDelegateDraw();
+	}
+
+	public SelectionKind getKind() {
+		return SelectionKind.TILES;
+	}
+
+	/**
+	 * Surcharge de la méthode toString afin de renvoyer une chaine contenant
+	 * tous les items séparés par des virgules sans afficher les tiles non
+	 * mappés qui ont été sélectionnés.
+	 */
+	@Override
+	public String toString() {
+		String s = null;
+		boolean first = true;
+		if (items != null && !items.isEmpty()) {
+			s = "[" + width + "," + height + "] >> ";
+			for (int i = 0; i < items.size(); i++) {
+				if (first) {
+					first = false;
+				} else {
+					s += ", ";
+				}
+				s += items.get(i);
+			}
+		}
+		return s;
+	}
+
+	/**
+	 * Draw a set of tiles on the given map at given location
+	 * 
+	 * @param map
+	 * @param p
+	 *            (map coordinates, basically 0..63, 0..63)
+	 * @param p_mask
+	 *            TRUE=user is in 'masked edit' mode
+	 */
+	public void draw(Area map, Point p, boolean p_mask) {
+		int dx, dy;
 		for (int h = 0; h < height; h++) {
 			for (int w = 0; w < width; w++) {
 				Case item = items.get(h * width + w);
@@ -149,39 +144,24 @@ public class TileSelection extends CaseSelection {
 					dy = p.y + h;
 					if (map.getDim_x() > dx && map.getDim_y() > dy && dy >= 0 && dx >= 0) {
 						// We know that this is a valid location
-						Case c=map.get_mapcase(dx, dy+4);
+						Case c = map.get_mapcase(dx, dy + 4);
 						if (c == null) {
 							c = new Case();
-							map.set_mapcase(dx, dy+4, c);
+							map.set_mapcase(dx, dy + 4, c);
 						}
-						// Apply modifications
-						Tile tile = item.getBackTile();
-						if (tile.index != -1 && !p_mask) {	// Smash the previous tile
-							c.setBackTile(item.getBackTile());
-						} else {
-							//TODO : Check this
-							/*
-							if (tile.index == 54) {
-								c.setMasked(false);
-							} else {
-								c.setMasked(true);
-							}
-							*/
-						}
-						if (p_mask) {
-							c.setForeTile(item.getBackTile());
-						} else {
-							c.setForeTile(item.getForeTile());
-						}
+
+						// Calls the drawer to do the job
+						drawer.draw(c, item, p_mask);
 					}
 				}
 			}
 		}
-    }
-    
-    public List<Case> getElement() {
-    	return items;
-    }
-	
-	public void finalizeDraw() {}
+	}
+
+	public List<Case> getElement() {
+		return items;
+	}
+
+	public void finalizeDraw() {
+	}
 }
