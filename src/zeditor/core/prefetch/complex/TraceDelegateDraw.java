@@ -24,11 +24,11 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Point;
 
 /**
- * Define a interface for drawing specific render
+ * Define an interface for drawing specific render.
  * @author Tchegito
  *
  */
-public abstract class DelegateDraw {
+public abstract class TraceDelegateDraw {
 	
 	public abstract void draw(Area p_map, Point p_start);
 

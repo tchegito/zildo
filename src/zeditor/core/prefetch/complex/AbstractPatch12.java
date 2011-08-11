@@ -33,7 +33,7 @@ import zildo.monde.map.Point;
  * @author Tchegito
  *
  */
-public abstract class AbstractPatch12 extends DelegateDraw {
+public abstract class AbstractPatch12 extends TraceDelegateDraw {
 
 	int[] smallPatch = new int[] { 8, 4, 2, 1};
 	int[] bigPatch = new int[] {8, 12, 4, 10, 15, 5, 2, 3, 1};

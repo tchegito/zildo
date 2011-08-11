@@ -20,6 +20,8 @@
 
 package zeditor.core.prefetch;
 
+import zeditor.core.prefetch.complex.DropDelegateDraw;
+import zeditor.core.prefetch.complex.DropTreeDrawer;
 import zildo.monde.map.Point;
 
 /**
@@ -35,7 +37,7 @@ public enum PrefDrop {
 	PetitChemin(new Point(2, 2)), 
 	GrandChemin(new Point(3, 3)),
 	Arbre(new Point(4, 5), new int[] {-139, -140, -141, -142, -143, -144, -145, -146, 
-		-147, -148, -149, -150, 151, 152, 153, 154, 155, 156, 157, 158}),
+		-147, -148, -149, -150, 151, 152, 153, 154, 155, 156, 157, 158}, new DropTreeDrawer()),
 	Souche(new Point(2, 2), new int[] {159, 160, 161, 162}),
 	Statue(new Point(2, 3), new int[] {-186, -187, 188, 189, 190, 191}), 
 	ArcheVillage(new Point(5, 3), new int[] {-376, -377, -378, -379, -380, 381, -382, -383, -384, 381, 385, 386, 386, 386, 385}),
@@ -51,6 +53,7 @@ public enum PrefDrop {
 	
 	Point size;
 	public int[] data;	// Negative values mean masked tiles (example: tree)
+	DropDelegateDraw drawer;
 	
 	private PrefDrop(Point p_size) {
 		size=p_size;
@@ -59,6 +62,17 @@ public enum PrefDrop {
 	private PrefDrop(Point p_size, int[] p_data) {
 		size=p_size;
 		data=p_data;
+	}
+	
+	/**
+	 * Special constructor with specific drawing method.
+	 * @param p_size
+	 * @param p_data
+	 * @param p_drawer
+	 */
+	private PrefDrop(Point p_size, int[] p_data, DropDelegateDraw p_drawer) {
+		this(p_size, p_data);
+		drawer=p_drawer;
 	}
 	
 	public static PrefDrop fromPrefetch(Prefetch p_pref) {

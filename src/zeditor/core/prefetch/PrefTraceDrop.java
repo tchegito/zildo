@@ -20,7 +20,7 @@
 
 package zeditor.core.prefetch;
 
-import zeditor.core.prefetch.complex.DelegateDraw;
+import zeditor.core.prefetch.complex.TraceDelegateDraw;
 import zeditor.core.prefetch.complex.ForestBorder;
 import zeditor.core.prefetch.complex.HillTop;
 import zeditor.core.prefetch.complex.Road;
@@ -42,9 +42,9 @@ public enum PrefTraceDrop {
 	Eau(new Point(3, 3), new Water());
 	
 	Point size;
-	DelegateDraw method;
+	TraceDelegateDraw method;
 	
-	private PrefTraceDrop(Point p_size, DelegateDraw p_method) {
+	private PrefTraceDrop(Point p_size, TraceDelegateDraw p_method) {
 		size=p_size;
 		method=p_method;
 	}

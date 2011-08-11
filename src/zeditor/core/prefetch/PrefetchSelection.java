@@ -20,6 +20,7 @@
 
 package zeditor.core.prefetch;
 
+import zeditor.core.prefetch.complex.DropDelegateDraw;
 import zeditor.core.tiles.TileSelection;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
@@ -34,6 +35,9 @@ public class PrefetchSelection extends TileSelection {
 
 	PrefKind kind;
 	PrefTraceDrop traceDrop;
+	PrefDrop drop;
+	
+	final static private DropDelegateDraw defaultDrawer = new DropDelegateDraw();
 	
 	public PrefetchSelection(Prefetch p_pref) {
 		super();
@@ -41,7 +45,7 @@ public class PrefetchSelection extends TileSelection {
 		switch (p_pref.kind) {
 		case Drop:
 			// Get the associated PrefDrop object
-			PrefDrop drop=PrefDrop.fromPrefetch(p_pref);
+			drop=PrefDrop.fromPrefetch(p_pref);
 			width=drop.size.x;
 			height=drop.size.y;
 			for (int j=0;j<height;j++) {
@@ -58,6 +62,11 @@ public class PrefetchSelection extends TileSelection {
 					}
 					items.add(aCase);
 				}
+			}
+			if (drop.drawer == null) {
+				drawer = defaultDrawer;
+			} else {
+				drawer = drop.drawer;
 			}
 			break;
 		case TraceDrop:
