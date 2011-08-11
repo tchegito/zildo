@@ -72,7 +72,7 @@ public class Case implements EasySerializable {
 		// On gère les sprites animés
 			case 0:
 			// L'eau
-				if (motif>=108 && motif<=130) {
+				if (motif>=108 && motif<=130 && motif !=129) {
 					if (compteur_animation > 40)
 						motif+=100;
 					else if (compteur_animation > 20)
