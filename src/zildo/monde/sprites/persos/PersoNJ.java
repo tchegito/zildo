@@ -445,6 +445,7 @@ public class PersoNJ extends Perso {
 					add_spr = 1;
 					reverse = REVERSE_HORIZONTAL;
 				}
+				break;
 			case CURE:
 			case GARDE_BOUCLIER:
 				//Persos à 4 sprites : prêtre,garde bouclier
