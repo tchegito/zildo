@@ -117,7 +117,6 @@ public class PersoManagement {
             	}
                 int tx = (int) persoToCompare.getX();
                 int ty = (int) persoToCompare.getY();
-                Collision c = persoToCompare.getCollision();
                 int rayonPersoToCompare = rayon;
             	int grossoModoSize=persoToCompare.getSprModel().getTaille_x() / 2;
             	if (grossoModoSize > rayon) {

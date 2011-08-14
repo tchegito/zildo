@@ -23,15 +23,17 @@ package zildo.fwk.script.xml;
 import org.w3c.dom.Element;
 
 import zildo.monde.items.ItemKind;
+import zildo.monde.map.Point;
 import zildo.monde.map.Zone;
 import zildo.monde.quest.QuestEvent;
 
 public class TriggerElement extends AnyElement {
 
-	public QuestEvent kind;
+	public final QuestEvent kind;
 	String name;	// dialog, map, item and questDone
 	int numSentence;
-	Zone region;
+	Point location;
+	Zone region;	// Unimplemented yet
 	
 	public TriggerElement(QuestEvent p_kind) {
 		kind=p_kind;
@@ -48,7 +50,11 @@ public class TriggerElement extends AnyElement {
         	numSentence=Integer.valueOf(p_elem.getAttribute("num"));
         case QUESTDONE:
         case LOCATION:
-        	name=p_elem.getAttribute("name");
+        	name=readAttribute(p_elem, "name");
+        	String strPos=readAttribute(p_elem, "pos");
+        	if (strPos != null) {
+        		location=Point.fromString(strPos);
+        	}
         	break;
         case INVENTORY:
         	name=p_elem.getAttribute("item");
@@ -77,14 +83,24 @@ public class TriggerElement extends AnyElement {
 				break;
 			case LOCATION:
 				if (p_another.name.equals(name)) {
-					return true;
+					if (p_another.location == null && location == null) {
+						return true;
+					} else if (p_another.location != null && location != null) {
+						float dist = p_another.location.distance(location);
+						return dist < 8f;
+					}
 				}
+				break;
 			case QUESTDONE:
 				if (p_another.name.equals(name)) {
 					return true;
 				}
 		}
 		return false;
+	}
+	
+	public boolean isLocationSpecific() {
+		return kind == QuestEvent.LOCATION && name != null && location != null;
 	}
 	
 	/**
@@ -116,9 +132,12 @@ public class TriggerElement extends AnyElement {
 	 * @param p_mapName
 	 * @return TriggerElement
 	 */
-	public static TriggerElement createLocationTrigger(String p_mapName) {
+	public static TriggerElement createLocationTrigger(String p_mapName, Point p_location) {
 		TriggerElement elem=new TriggerElement(QuestEvent.LOCATION);
 		elem.name=p_mapName;
+		if (p_location != null) {
+			elem.location=p_location;
+		}
 		return elem;
 	}
 	
@@ -132,4 +151,9 @@ public class TriggerElement extends AnyElement {
 		elem.name=p_quest;
 		return elem;
 	}
+
+	public String getName() {
+		return name;
+	}
+	
 }

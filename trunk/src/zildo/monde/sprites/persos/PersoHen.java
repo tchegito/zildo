@@ -34,6 +34,7 @@ public class PersoHen extends PersoNJ {
     	super();
         // Add a shadow
     	addShadow(ElementDescription.SHADOW);
+    	setSpeed(0.5f);
     }
 
     @Override

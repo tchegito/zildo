@@ -20,6 +20,7 @@
 
 package zildo.server.state;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,10 @@ public class ScriptManagement {
     AdventureElement adventure=null;
     MapReplacement replaces;
     
-    Map<String, QuestElement> questsByName;
+    final Map<String, QuestElement> questsByName;
+    
+    // 'LOCATION' trigs for specific location on the current map
+    final List<TriggerElement> locationTriggerOnMap;	
     
     public ScriptManagement() {
         // Load adventure
@@ -76,6 +80,8 @@ public class ScriptManagement {
         for (QuestElement quest : adventure.getQuests()) {
         	questsByName.put(quest.name, quest);
         }
+        
+    	locationTriggerOnMap = new ArrayList<TriggerElement>();
     }
     
     public void render() {
@@ -116,6 +122,21 @@ public class ScriptManagement {
      * @param p_triggerElement element created by a static method from TriggerElement
      */
     public void trigger(TriggerElement p_triggerElement) {
+    	
+    	// 0: optimization, check LOCATION trigger on a restricted list
+    	if (p_triggerElement.isLocationSpecific()) {
+    		boolean atLeastOne=false;
+    		for (TriggerElement trig : locationTriggerOnMap) {
+    			if (trig.match(p_triggerElement)) {
+    				trig.done=true;
+    				atLeastOne=true;
+    			}
+    		}
+    		if (!atLeastOne) {	// No one ? So get out !
+    			return;
+    		}
+    	}
+    	
     	// 1: check the existing triggers to potentially enable them
     	for (QuestElement quest : adventure.getQuests()) {
     		if (!quest.done) {
@@ -154,6 +175,24 @@ public class ScriptManagement {
     	}
     }
 
+    /**
+     * Method designed for optimization : we have to chek at each character's movement, if he activates
+     * a trigger. So, this must be a fast operation.
+     * @param p_mapName
+     */
+    public void prepareMapSubTriggers(String p_mapName) {
+    	locationTriggerOnMap.clear();
+    	for (QuestElement quest : adventure.getQuests()) {
+    		if (!quest.done) {
+    			// For each quest undone yet :
+    			for (TriggerElement trig : quest.getTriggers()) {
+    				if (trig.isLocationSpecific() && p_mapName.equals(trig.getName())) {
+    					locationTriggerOnMap.add(trig);
+    				}
+    			}
+    		}
+    	}
+    }
 
     /**
      * Update quest status, and launch the associated actions.

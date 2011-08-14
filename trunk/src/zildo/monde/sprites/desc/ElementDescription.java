@@ -79,7 +79,7 @@ public enum ElementDescription  implements SpriteDescription {
 	SHIELD_RED, SHIELD_YELLOW, STAR1, STAR2, STAR3,
 	
 	// 155
-	BOMBS3, SCEPTER, SPADE;
+	BOMBS3, SCEPTER, SPADE, BOOK_SIGN, LEAF, MILK;
 
 	
 	public int getBank() {
@@ -134,6 +134,7 @@ public enum ElementDescription  implements SpriteDescription {
 		case WOOD_BAR:
 		case CUBE_BLUE: 
 		case CUBE_ORANGE:
+		case SPADE:
 			return true;
 		default:
 			return false;

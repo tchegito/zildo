@@ -44,7 +44,8 @@ public class Ambient {
 		CAVE(false, BankMusic.Grotte), // 1
 		HOUSE(false, BankMusic.Village), // 2
 		BAR(false, BankMusic.PianoBar),	// 3
-		DESERT(false, BankMusic.Village); // 4
+		DESERT(false, BankMusic.Village), // 4
+		CASTLE(false, BankMusic.Chateau);
 		
 		public boolean outside;
 		public BankMusic music;
