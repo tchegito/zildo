@@ -549,7 +549,7 @@ public class Area implements EasySerializable {
 				//p_file.put((byte) 0); //(byte) perso.getEn_bras());
 				p_file.put((byte) perso.getQuel_deplacement().ordinal());
 				p_file.put((byte) perso.getAngle().ordinal());
-				p_file.put(perso.getName(), 9);
+				p_file.put(perso.getName());
 			}
 		}
 
@@ -565,7 +565,7 @@ public class Area implements EasySerializable {
 				// On lit le nom
 				Map<String, Behavior> behaviors = dialogs.getBehaviors();
 				for (Entry<String, Behavior> entry : behaviors.entrySet()) {
-					p_file.put(entry.getKey(), 9);
+					p_file.put(entry.getKey());
 					Behavior behav = entry.getValue();
 					for (int i : behav.replique) {
 						p_file.put((byte) i);
@@ -697,7 +697,7 @@ public class Area implements EasySerializable {
                 String dialogSwitch = p_buffer.readString();
 				int move=p_buffer.readUnsignedByte();
 				int angle=p_buffer.readUnsignedByte();
-				String name=p_buffer.readString(9);
+				String name=p_buffer.readString();
 				
 				if ("zildo".equals(name)) {
 					desc=PersoDescription.ZILDO;
@@ -756,7 +756,7 @@ public class Area implements EasySerializable {
 				if (!p_buffer.eof()) {
 					while (!p_buffer.eof()) {
 						// On lit le nom
-						String nomPerso = p_buffer.readString(9);
+						String nomPerso = p_buffer.readString();
 						// On lit le comportement
 						short[] comportement = new short[10];
 						p_buffer.readUnsignedBytes(comportement, 0, 10);
