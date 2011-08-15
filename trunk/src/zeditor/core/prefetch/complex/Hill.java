@@ -27,7 +27,7 @@ import zildo.monde.map.Point;
  * @author Tchegito
  *
  */
-public class Hill extends DelegateDraw {
+public class Hill extends TraceDelegateDraw {
 
 	final int[] conv_etage_to_map=
 	    {0,3,21,54,0,5,22,0,             // 0--7}
