@@ -154,7 +154,9 @@ public class PersoZildo extends Perso {
 		
 		weapon=new Item(ItemKind.SWORD);
 		inventory=new ArrayList<Item>();
-		inventory.add(weapon);
+		//inventory.add(weapon);
+		
+		setSpeed(Constantes.ZILDO_SPEED);
 	}
     
     /**
@@ -239,7 +241,7 @@ public class PersoZildo extends Perso {
 				outOfOrder = true;
 			} else {
 				action = new HealAction(this, 6);	// Give back 6 half-hearts
-				inventory.remove(weapon);
+				removeItem(ItemKind.FLASK_RED);
 				weapon=null;
 			}
 			break;
@@ -908,6 +910,11 @@ public class PersoZildo extends Perso {
 	 * Display Zildo's inventory around him
 	 */
 	public void lookInventory() {
+		if (inventory.size() == 0) {
+			// no inventory !
+			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
+			return;
+		}
 		int sel=inventory.indexOf(weapon);
 		lookItems(inventory, sel, this, false);
 	}
@@ -995,6 +1002,21 @@ public class PersoZildo extends Perso {
     	}
     }
 
+    /**
+     * Zildo loose an item from his inventory.
+     * @param p_kind
+     */
+    public void removeItem(ItemKind p_kind) {
+    	int index=0;
+        for (Item i : inventory) {
+            if (i.kind == p_kind) {
+            	inventory.remove(index);
+            	return;
+            }
+            index++;
+        }
+    }
+    
     /**
      * Return TRUE if Zildo has an item from given kind.
      * @param p_kind

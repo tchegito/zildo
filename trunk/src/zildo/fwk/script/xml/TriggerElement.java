@@ -22,6 +22,7 @@ package zildo.fwk.script.xml;
 
 import org.w3c.dom.Element;
 
+import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Point;
 import zildo.monde.map.Zone;
@@ -34,6 +35,8 @@ public class TriggerElement extends AnyElement {
 	int numSentence;
 	Point location;
 	Zone region;	// Unimplemented yet
+	
+	ZSSwitch questSwitch;
 	
 	public TriggerElement(QuestEvent p_kind) {
 		kind=p_kind;
@@ -48,13 +51,16 @@ public class TriggerElement extends AnyElement {
         switch (kind) {
         case DIALOG:
         	numSentence=Integer.valueOf(p_elem.getAttribute("num"));
-        case QUESTDONE:
         case LOCATION:
         	name=readAttribute(p_elem, "name");
         	String strPos=readAttribute(p_elem, "pos");
         	if (strPos != null) {
         		location=Point.fromString(strPos);
         	}
+        	break;
+        case QUESTDONE:
+        	name=readAttribute(p_elem, "name");
+        	questSwitch = new ZSSwitch(name+":1,0");
         	break;
         case INVENTORY:
         	name=p_elem.getAttribute("item");
@@ -92,7 +98,7 @@ public class TriggerElement extends AnyElement {
 				}
 				break;
 			case QUESTDONE:
-				if (p_another.name.equals(name)) {
+				if (questSwitch.evaluate() == 1) {
 					return true;
 				}
 		}

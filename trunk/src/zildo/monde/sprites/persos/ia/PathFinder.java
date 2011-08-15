@@ -175,7 +175,8 @@ public class PathFinder {
 	
 	public void collide() {
 		if (mobile.getQuel_deplacement() == MouvementPerso.HEN ||
-				mobile.getQuel_deplacement() == MouvementPerso.BEE) {
+				mobile.getQuel_deplacement() == MouvementPerso.BEE ||
+				mobile.getQuel_deplacement() == MouvementPerso.SQUIRREL) {
 			target=null;
 		} else {
 			if (nbShock++ >= 3 && !mobile.isGhost()) {

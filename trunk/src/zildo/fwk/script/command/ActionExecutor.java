@@ -199,6 +199,11 @@ public class ActionExecutor {
                 	}
                 	achieved=true;
                 	break;
+                case putDown:	// Zildo loses an item
+            		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
+            		zildo.removeItem(ItemKind.fromString(text));
+            		achieved=true;
+            		break;
                 case mapReplace:
                 	EngineZildo.scriptManagement.addReplacedMapName(p_action.what, text);
                 	achieved = true;
@@ -228,6 +233,14 @@ public class ActionExecutor {
                 	}             	
                 	EngineZildo.spriteManagement.deleteSprite(toRemove);
                 	achieved = true;
+                	break;
+                case markQuest:
+                	if (p_action.val == 1) {
+                		EngineZildo.scriptManagement.accomplishQuest(p_action.text, true);
+                	} else {
+                		EngineZildo.scriptManagement.resetQuest(p_action.text);
+                	}
+                	achieved=true;
                 	break;
             }
 

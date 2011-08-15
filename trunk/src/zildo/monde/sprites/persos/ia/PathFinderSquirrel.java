@@ -35,6 +35,7 @@ public class PathFinderSquirrel extends PathFinder {
     
     public PathFinderSquirrel(Perso p_mobile) {
     	super(p_mobile);
+    	speed=1f;
     }
    
     @Override

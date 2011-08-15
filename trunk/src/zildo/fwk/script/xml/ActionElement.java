@@ -28,7 +28,7 @@ public class ActionElement extends AnyElement {
 
     public enum ActionKind {
         actions, pos, moveTo, speak, script, angle, wait, sound, fadeIn, fadeOut, map, focus, spawn, exec, take, mapReplace, music,
-        animation, impact, remove;
+        animation, impact, remove, markQuest, putDown;
         
         public static ActionKind fromString(String p_name) {
         	for (ActionKind kind : values()) {
@@ -121,6 +121,7 @@ public class ActionElement extends AnyElement {
             who = p_elem.getAttribute("name");
             break;
         case take:
+        case putDown:
         	text = p_elem.getAttribute("item");
         	break;
         case exec:
@@ -128,6 +129,10 @@ public class ActionElement extends AnyElement {
         	break;
         case mapReplace:
         	text = p_elem.getAttribute("name");
+        	break;
+        case markQuest:
+        	text = readAttribute(p_elem, "name");
+        	val = isTrue(p_elem, "value") ? 1 : 0;
         	break;
         }
     }

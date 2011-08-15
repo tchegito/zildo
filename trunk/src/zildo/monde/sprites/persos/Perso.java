@@ -137,7 +137,9 @@ public abstract class Perso extends Element {
 		quel_deplacement = p_script;
 		Point target = pathFinder.getTarget();
 		switch (p_script) {
+		case ZONE:
 		case IMMOBILE:
+			pathFinder=new PathFinder(this);
 			pathFinder.setTarget(null);
 			break;
 		case BIRD:
