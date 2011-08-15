@@ -4,6 +4,7 @@
 
  * clouds
  * internet server
+ * real adventure with quests !!! (really soon)
 
 = Version 1.094 = 
 
