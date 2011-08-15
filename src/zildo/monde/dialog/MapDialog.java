@@ -139,4 +139,25 @@ public class MapDialog {
 	public Map<String, Behavior> getBehaviors() {
 		return behaviors;
 	}
+	
+	public void removePersoDialog(String p_name) {
+		Behavior b = behaviors.get(p_name);
+		if (b != null) {
+			behaviors.remove(p_name);
+			for (int i=0;i<10;i++) {
+				int nSentence = b.replique[i];
+				if (nSentence > 0) {
+					dialogs.remove(nSentence-1);
+					// Update all others referring to sentence after (way too dirty !)
+					for (Behavior behav : behaviors.values()) {
+						for (int j=0;j<10;j++) {
+							if (behav.replique[j] > nSentence) {
+								behav.replique[j]--;
+							}
+						}						
+					}
+				}
+			}
+		}
+	}
 }

@@ -55,7 +55,7 @@ public class PathFinder {
 		mobile=p_mobile;
 		backward=false;
 		open=p_mobile.isZildo();
-		speed = 1;
+		speed = 0.5f;
 		unstoppable=false;
 	}
 	

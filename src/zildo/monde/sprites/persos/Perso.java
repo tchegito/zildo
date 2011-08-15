@@ -38,6 +38,7 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.action.PersoAction;
 import zildo.monde.sprites.persos.ia.PathFinder;
+import zildo.monde.sprites.persos.ia.PathFinderSquirrel;
 import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
@@ -142,6 +143,9 @@ public abstract class Perso extends Element {
 		case BIRD:
 			pathFinder = new PathFinderStraightFlying(this);
 			pathFinder.setTarget(target);	// Keep the previous target
+			break;
+		case SQUIRREL:
+			pathFinder= new PathFinderSquirrel(this);
 			break;
 		case WAKEUP:
 			pos_seqsprite=0;

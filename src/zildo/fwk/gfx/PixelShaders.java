@@ -53,8 +53,8 @@ public class PixelShaders extends OpenGLStuff {
 		SHINY, QUAD,
 		FOCUSED;	// FOCUSED is used when we wants to highlight some entity (inventory, or buying something)
 		
-		public Vector4f darkColor = null;
-		public Vector4f brightColor = null;
+		public final Vector4f darkColor;
+		public final Vector4f brightColor;
 		
 		public boolean needPixelShader() {
 			return !(this==NO_EFFECT || this==SHINY || this==QUAD || this==FOCUSED);
@@ -64,7 +64,10 @@ public class PixelShaders extends OpenGLStuff {
 			return EngineFX.values()[i];
 		}
 		
-		private EngineFX() { }
+		private EngineFX() { 
+			darkColor = null;
+			brightColor = null;
+		}
 		private EngineFX(int[] dark, int[] bright) {
 			darkColor = OpenGLStuff.createColor64(dark[0], dark[1], dark[2]);
 			brightColor = OpenGLStuff.createColor64(bright[0], bright[1], bright[2]);

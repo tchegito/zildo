@@ -36,7 +36,7 @@ public class FadeFilter extends FadeScreenFilter {
 	
 	@Override
 	public void preFilter() {
-		float factor = complete ? 256.0f : 768.0f;
+		float factor = complete ? 255.0f : 768.0f;
 		float coeff=1.0f - (getFadeLevel() / factor);
 		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(coeff, coeff, coeff));
 	}

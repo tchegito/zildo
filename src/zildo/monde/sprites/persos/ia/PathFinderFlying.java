@@ -65,7 +65,6 @@ public class PathFinderFlying extends PathFinder {
 		alpha=(Math.PI/100.0f)*Math.cos(alpha);
 		mobile.x+=target.x*alpha;
 		mobile.y+=target.y*alpha;
-		System.out.println(mobile);
 		if (target.x<0) {
 			mobile.setAngle(Angle.EST);
 		} else {

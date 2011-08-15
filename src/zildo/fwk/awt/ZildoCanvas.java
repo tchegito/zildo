@@ -153,7 +153,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 				SpriteEntity entity=(SpriteEntity) sel.getElement();
 				EngineZildo.spriteManagement.deleteSprite(entity);
 				if (sel.getKind() == SelectionKind.PERSOS) {
-					EngineZildo.persoManagement.removePerso((Perso) entity);
+					Perso perso = (Perso) entity;
+					EngineZildo.persoManagement.removePerso(perso);
+					// Remove dialogs too
+					EngineZildo.mapManagement.getCurrentMap().getMapDialog().removePersoDialog(perso.getName());
 					manager.setPersoSelection(null);
 				} else {
 					manager.setSpriteSelection(null);
