@@ -24,6 +24,8 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+import zildo.fwk.script.xml.ActionElement.ActionKind;
+
 public class QuestElement extends AnyElement {
 
 	public String name;
@@ -32,7 +34,8 @@ public class QuestElement extends AnyElement {
 	List<ActionElement> history;
 	
 	boolean both;	// TRUE=each trigger element must be done AT THE SAME TIME to launch the actions
-
+	boolean repeat;	// TRUE=can be accomplished unlimited time
+	
 	// 'done' is TRUE when zildo has accomplished that
 	
 	@Override
@@ -49,7 +52,16 @@ public class QuestElement extends AnyElement {
 	    	 history = (List<ActionElement>) ScriptReader.parseNodes(historyContainer);
 	     }
 	     
-	     both="true".equalsIgnoreCase(triggerContainer.getAttribute("both"));
+	     both=isTrue(p_elem, "both");
+	     repeat=isTrue(p_elem, "repeat");
+	     
+	     if (repeat) {
+	    	 // Add a final action to reset this quest (it must be "repeatable")
+	    	 ActionElement actionResetQuest = new ActionElement(ActionKind.markQuest);
+	    	 actionResetQuest.text=name;
+	    	 actionResetQuest.val=0;
+	    	 actions.add(actionResetQuest);
+	     }
 	}
 
 	public List<TriggerElement> getTriggers() {

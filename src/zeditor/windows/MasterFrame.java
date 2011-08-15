@@ -18,6 +18,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -529,7 +530,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		    tileMaskTool = new JToggleButton();
 		    tileMaskTool.setToolTipText("Edition du masque");
 		    tileMaskTool.setAction(getActionTileMask());
-		    tileMaskTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/mask.PNG")));
+		    tileMaskTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/mask.png")));
 		}
 		return tileMaskTool;
 	}

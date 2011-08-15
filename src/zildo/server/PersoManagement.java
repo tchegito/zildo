@@ -117,10 +117,12 @@ public class PersoManagement {
                 int tx = (int) persoToCompare.getX();
                 int ty = (int) persoToCompare.getY();
                 int rayonPersoToCompare = rayon;
-            	int grossoModoSize=persoToCompare.getSprModel().getTaille_x() / 2;
-            	if (grossoModoSize > rayon) {
-            		rayonPersoToCompare = grossoModoSize;
-            	}
+                if (persoToCompare.getCollision() != null) {
+                	int grossoModoSize=persoToCompare.getSprModel().getTaille_x() / 2;
+                	if (grossoModoSize > rayon) {
+                		rayonPersoToCompare = grossoModoSize;
+                	}
+                }
                 if (EngineZildo.collideManagement.checkCollisionCircles(x, y, tx, ty, rayon, rayonPersoToCompare)) {
                     if (perso != null && perso.isZildo() && perso.linkedSpritesContains(persoToCompare)) {
                         // Collision entre Zildo et l'objet qu'il porte dans les mains => on laisse

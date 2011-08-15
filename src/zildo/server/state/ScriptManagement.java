@@ -222,7 +222,7 @@ public class ScriptManagement {
      */
     private void accomplishQuest(QuestElement p_quest, boolean p_trigger) {
     	System.out.println("Accomplish "+p_quest.name);
-    	p_quest.done=true;
+   		p_quest.done=true;
     	
     	// 1) note the history events (mapReplace ...)
     	List<ActionElement> history=p_quest.getHistory();
@@ -240,6 +240,20 @@ public class ScriptManagement {
     	}
 
     	
+    }
+    
+    /**
+     * Declare a quest "undone". (used for quests with attribute "repeat")
+     * @param p_questName
+     */
+    public void resetQuest(String p_questName) {
+    	QuestElement quest = questsByName.get(p_questName);
+    	if( quest != null) {
+    		quest.done = false;
+    		for (TriggerElement trigger : quest.getTriggers()) {
+    			trigger.done = false;
+    		}
+    	}
     }
     
     public String getReplacedMapName(String p_mapName) {
