@@ -54,18 +54,18 @@ public enum PersoDescription implements SpriteDescription {
 	ARME_LANCE(120,121,122,123),
 
 	// PNJ2.SPR
-	MOUSTACHU(128),
+	MOUSTACHU(128, 194, 195, 196),
 	BUCHERON_ASSIS(129),
 	VIEUX_SAGE(130),
 	BANDIT(131,132,133),
 	BANDIT_CHAPEAU(134),
 	BANDIT_VERT(135,136,137,138,139,140,141,142),
-	MOUSTACHU_ASSIS(143, 194, 195, 196, 197),
+	MOUSTACHU_ASSIS(143),
 	VAUTOUR(144,145,146),
 	ECTOPLASME(147,148), // (?),),
 	VIEUX_SAGE2(149,150),
 	ARC(151,152,153,154,155,156,157,158),
-	ELECTRIQUE(159,160,161, 198, 199, 200, 201),
+	ELECTRIQUE(159,160,161, 197, 198, 199, 200),
 	SQUELETTE(162,163,164,165,166,167,168,169),
 	CREATURE(170,171,172,173,174,175,176,177),
 	LAPIN(178,179),
@@ -73,11 +73,11 @@ public enum PersoDescription implements SpriteDescription {
 	VOLANT_BLEU(182,183,184,185,186,187),
 	PRINCESSE_COUCHEE(188, 189, 190, 191),
 	ARBUSTE_VIVANT(192, 193),
-	CHAUVESOURIS(202, 203),
-	PRINCESS_BUNNY(204, 205),
-	GARCON_BLEU(206, 207),
-	GARCON_JAUNE(208, 209),
-	FERMIERE(210, 211, 212, 213, 214, 215),
+	CHAUVESOURIS(201, 202),
+	PRINCESS_BUNNY(203, 204),
+	GARCON_BLEU(205, 206),
+	GARCON_JAUNE(207, 208),
+	FERMIERE(209,210, 211, 212, 213, 214),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 	
@@ -102,9 +102,18 @@ public enum PersoDescription implements SpriteDescription {
 	}
 
 	public int first() {
-		return sprUsed.first().intValue();
+		return nth(0);
 	}
 		
+	/**
+	 * Returns the n-th element
+	 * @param p_nth
+	 * @return int
+	 */
+	public int nth(int p_nth) {
+		return sprUsed.get(p_nth).intValue();
+	}
+	
 	public int getNSpr() {
 		return first() % 128;
 	}
@@ -120,6 +129,19 @@ public enum PersoDescription implements SpriteDescription {
 		}
 	}
 
+	public int getRadius() {
+		switch (this) {
+			case GARDE_BOUCLIER:
+			case BUCHERON_ASSIS:
+				return 8;
+			case POULE:
+			case CRABE:
+				return 5;
+			default:
+				return 6;
+		}
+	}
+	
 	@Override
 	public boolean isBlocking() {
 		return false;

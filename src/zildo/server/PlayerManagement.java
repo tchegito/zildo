@@ -81,10 +81,10 @@ public class PlayerManagement {
 		
 		// Determine the game phase
 		boolean ghost=heros.isGhost();
-		if (client.event.mapChange) {
-			gamePhase=GamePhase.MAPCHANGE;
-		} else if (EngineZildo.scriptManagement.isScripting()) {
+		if (EngineZildo.scriptManagement.isScripting()) {
 			gamePhase=GamePhase.SCRIPT;
+		} else if (client.event.mapChange) {
+			gamePhase=GamePhase.MAPCHANGE;
 		} else if (dialogState.dialoguing) {
 			if (heros.isInventoring()) {
 				gamePhase=GamePhase.BUYING;
@@ -457,7 +457,7 @@ public class PlayerManagement {
 		
 					if (persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY && !persoToTalk.isZildo()) {
 					 // On vérifie qu'il ne s'agit pas d'une poule
-						if (persoToTalk.getQuel_spr().equals(PersoDescription.POULE)) {
+						if (persoToTalk.getDesc() == PersoDescription.POULE) {
 							heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, ElementDescription.HEN, persoToTalk);
 						} else if (persoToTalk.getDialoguingWith() == null) {
 							// On vérifie que Zildo regarde la personne

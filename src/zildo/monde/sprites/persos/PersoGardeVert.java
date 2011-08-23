@@ -68,7 +68,7 @@ public class PersoGardeVert extends PersoNJ {
 		
 		int add_spr=angle.value*2 + (getPos_seqsprite() % (4*Constantes.speed)) / (2*Constantes.speed);
 
-		this.setNSpr((this.getQuel_spr().first()+add_spr) % 128);
+		this.setNSpr((getDesc().first()+add_spr) % 128);
 
 	}
 }

@@ -27,7 +27,7 @@ import zildo.monde.map.Point;
 public class ActionElement extends AnyElement {
 
     public enum ActionKind {
-        actions, pos, moveTo, speak, script, angle, wait, sound, fadeIn, fadeOut, map, focus, spawn, exec, take, mapReplace, music,
+        actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, map, focus, spawn, exec, take, mapReplace, music,
         animation, impact, remove, markQuest, putDown;
         
         public static ActionKind fromString(String p_name) {
@@ -153,6 +153,16 @@ public class ActionElement extends AnyElement {
      */
     public void setAttribute(String p_name, String p_value) {
 	xmlElement.setAttribute(p_name, p_value);
+    }
+    
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(kind).append(" ");
+    	if (who != null) sb.append(who).append(" ");
+    	if (what != null) sb.append(what).append(" ");
+    	if (location != null) sb.append(location).append(" ");
+    	if (text != null) sb.append(text).append(" ");
+    	return sb.toString();
     }
     
 }

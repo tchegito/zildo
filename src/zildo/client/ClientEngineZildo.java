@@ -249,6 +249,13 @@ public class ClientEngineZildo {
 						retEvent.nature = ClientEventNature.FADEOUT_OVER;
 					}
 					break;
+				case CLEAR:
+					// Reset fade, hide Zildo and kill the current map
+					filterCommand.fadeEnd();
+            		EngineZildo.mapManagement.deleteCurrentMap();
+            		EngineZildo.persoManagement.getZildo().setX(-100);
+            		ClientEngineZildo.tileEngine.cleanUp();
+					break;
 				case CHANGINGMAP_LOADED :
 					// Changing map : 2/3 we load the new map and launch the
 					// fade in

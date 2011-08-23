@@ -122,9 +122,8 @@ public class ScriptManagement {
      * @param p_triggerElement element created by a static method from TriggerElement
      */
     public void trigger(TriggerElement p_triggerElement) {
-    	
     	// 0: optimization, check LOCATION trigger on a restricted list
-    	if (p_triggerElement.isLocationSpecific()) {
+     	if (p_triggerElement.isLocationSpecific()) {
     		boolean atLeastOne=false;
     		for (TriggerElement trig : locationTriggerOnMap) {
     			if (trig.match(p_triggerElement)) {
@@ -143,7 +142,7 @@ public class ScriptManagement {
     			// For each quest undone yet :
     			for (TriggerElement trig : quest.getTriggers()) {
     				if (!trig.done && trig.match(p_triggerElement)) {
-    					trig.done=true;
+    					trig.done = true;
     				}
     			}
     		}
@@ -154,7 +153,7 @@ public class ScriptManagement {
     			// For each quest undone yet :
     			boolean achieved=true;
     			for (TriggerElement trig : quest.getTriggers()) {
-    				achieved&=trig.done;
+    				achieved&=trig.isDone();
     			}
     			if (achieved) {
     				accomplishQuest(quest, true);

@@ -541,7 +541,7 @@ public class Area implements EasySerializable {
 				p_file.put((int) perso.x);
 				p_file.put((int) perso.y);
 				p_file.put((int) perso.z);
-				PersoDescription desc=perso.getQuel_spr();
+				PersoDescription desc=perso.getDesc();
 				p_file.put((byte) desc.getBank());
 				p_file.put((byte) desc.first());
 				p_file.put((byte) perso.getInfo().ordinal());
@@ -607,7 +607,7 @@ public class Area implements EasySerializable {
 					Tile backTile = temp.getBackTile();
 					if (backTile.index == 99 && backTile.bank == 1) {
 						// Fumée de cheminée
-						spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16, 0, null, null);
+						spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, 0, null, null);
 					}
 					// Is this chest already opened ?
 					if (backTile.index == (743 & 255) && backTile.bank == 2) {

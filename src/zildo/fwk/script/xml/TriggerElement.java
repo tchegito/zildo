@@ -76,6 +76,9 @@ public class TriggerElement extends AnyElement {
 	 * @return boolean
 	 */
 	public boolean match(TriggerElement p_another) {
+		if (kind != p_another.kind) {
+			return false;	// Different kinds
+		}
 		switch (kind) {
 			case DIALOG:
 				if (p_another.name.equals(name) && p_another.numSentence == numSentence) {
@@ -98,8 +101,8 @@ public class TriggerElement extends AnyElement {
 				}
 				break;
 			case QUESTDONE:
-				if (questSwitch.evaluate() == 1) {
-					return true;
+				if (questSwitch.contains(p_another.name)) {
+					return questSwitch.evaluate() == 1;
 				}
 		}
 		return false;
@@ -109,6 +112,17 @@ public class TriggerElement extends AnyElement {
 		return kind == QuestEvent.LOCATION && name != null && location != null;
 	}
 	
+	/**
+	 * The 'done' member isn't reliable, because of the QUESTDONE kind of triggers.
+	 * @return boolean
+	 */
+	public boolean isDone() {
+		if (kind == QuestEvent.QUESTDONE) {
+			return questSwitch.evaluate() == 1;
+		} else {
+			return done;
+		}
+	}
 	/**
 	 * Ingame method to check a dialog trigger.
 	 * @param p_name
@@ -162,4 +176,19 @@ public class TriggerElement extends AnyElement {
 		return name;
 	}
 	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(kind.toString());
+		sb.append(" ");
+		if (name != null) {
+			sb.append(name).append(" ");
+		}
+		if (location != null) {
+			sb.append(location).append(" ");
+		}
+		if (kind == QuestEvent.DIALOG) {
+			sb.append(numSentence);
+		}
+		return sb.toString();
+	}
 }

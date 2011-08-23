@@ -26,9 +26,8 @@ public class ZPersoLibrary extends ArrayList<SpriteDescription> {
 	 * @param p_perso
 	 */
 	public void initialize(Perso p_perso) {
-		PersoDescription desc=p_perso.getQuel_spr();
 		PersoInfo info=PersoInfo.NEUTRAL;
-		switch (desc) {
+		switch (p_perso.getDesc()) {
 		case ZILDO:
 			info=PersoInfo.ZILDO;
 			p_perso.setName("zildo");

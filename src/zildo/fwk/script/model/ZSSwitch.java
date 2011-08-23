@@ -36,6 +36,7 @@ public class ZSSwitch {
 
 	List<ZSCondition> conditions;
 	final int defaultValue;
+	String toString=null;
 	
 	public ZSSwitch(int p_defaultValue) {
 		if (p_defaultValue == ZSCondition.FALSE) {
@@ -75,6 +76,7 @@ public class ZSSwitch {
 	 */
 	public ZSSwitch add(ZSCondition p_condition) {
 		conditions.add(p_condition);
+		toString=null;
 		return this;
 	}
 	
@@ -105,12 +107,25 @@ public class ZSSwitch {
 	}
 	
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		for (ZSCondition e : conditions) {
-			sb.append(e.toString());
-			sb.append(",");
+		// Memorize the toString value
+		if (toString == null) {
+			StringBuilder sb = new StringBuilder();
+			for (ZSCondition e : conditions) {
+				sb.append(e.toString());
+				sb.append(",");
+			}
+			sb.append(defaultValue);
+			toString = sb.toString();
 		}
-		sb.append(defaultValue);
-		return sb.toString();
+		return toString;
+	}
+	
+	/**
+	 * Returns TRUE if this switch references the given quest name
+	 * @param p_questName
+	 * @return boolean
+	 */
+	public boolean contains(String p_questName) {
+		return toString().contains(p_questName);
 	}
 }

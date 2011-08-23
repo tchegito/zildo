@@ -152,7 +152,7 @@ public class PersoZildo extends Perso {
 		addPersoSprites(shadow);
 		addPersoSprites(feet);
 		
-		weapon=new Item(ItemKind.SWORD);
+		//weapon=new Item(ItemKind.SWORD);
 		inventory=new ArrayList<Item>();
 		//inventory.add(weapon);
 		
@@ -199,6 +199,9 @@ public class PersoZildo extends Perso {
 	@Override
 	public void attack() {
 		boolean outOfOrder=false;
+		if (weapon == null) {
+			return;	// No weapon ? No attack
+		}
 		switch (weapon.kind) {
 		case SWORD:
 			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAttaque, this);
@@ -916,6 +919,9 @@ public class PersoZildo extends Perso {
 			return;
 		}
 		int sel=inventory.indexOf(weapon);
+		if (sel == -1) {
+			sel = 0;
+		}
 		lookItems(inventory, sel, this, false);
 	}
 	
