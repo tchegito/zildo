@@ -1,4 +1,4 @@
-#labels Phase-Implementation,fr
+#labels Phase-Implementation,fr,Deprecated
 =Documentation technique=
 
 <wiki:toc max_depth="4" />
