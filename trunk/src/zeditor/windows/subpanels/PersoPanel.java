@@ -28,6 +28,8 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -119,7 +121,17 @@ public class PersoPanel extends JPanel {
 		JPanel subPanel = new JPanel();
 		subPanel.setLayout(new BorderLayout());
 		subPanel.add(new JLabel("Dialog"), BorderLayout.WEST);
-		subPanel.add(spinner, BorderLayout.EAST);
+		subPanel.add(spinner, BorderLayout.CENTER);
+		subPanel.add(new JButton(new AbstractAction("X", null) {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (behavior != null) {
+					int val = (Integer) spinner.getValue();
+					behavior.replique[val] = 0;
+					updateDialog();
+				}
+			}
+		}), BorderLayout.EAST);
 
 		// Display the corresponding sentenec
 		dialogZone = new JTextField() {
