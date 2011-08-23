@@ -79,7 +79,7 @@ public class Pnj2 extends SpriteBanque {
 			          // Arbuste mouvant
 			          new Zone(100, 0, 16, 17), new Zone(116, 0, 16, 17),
 			          // Moustachu
-			          new Zone(205, 100, 16, 24), new Zone(221, 100, 16, 24),
+			          new Zone(221, 100, 16, 24),
 			          new Zone(237, 100, 14, 24), new Zone(251, 100, 14, 24),
 			          // Electrique sous le choc
 			          new Zone(108, 98, 15, 24), new Zone(123, 98, 15, 24),
