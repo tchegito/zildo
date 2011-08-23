@@ -37,5 +37,6 @@ public enum ClientEventNature {
 	CHANGINGMAP_SCROLL_LOADED,	// Serve has loaded the new map 
 	CHANGINGMAP_SCROLL,			// Client is scrolling
 	CHANGINGMAP_SCROLLOVER,		// Client has finished scrolling
-	SCRIPT;
+	SCRIPT,
+	CLEAR;				// Disable all fades and clear current map
 }

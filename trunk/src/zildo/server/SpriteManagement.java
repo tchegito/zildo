@@ -185,6 +185,8 @@ public class SpriteManagement extends SpriteStore {
 				element.setScrX((int) element.x);
 				element.setScrY((int) element.y);
 
+				element.setForeground(true);
+				
 				spawnSprite(element);
 				break;
 

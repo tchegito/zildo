@@ -186,7 +186,7 @@ public class PersoNJ extends Perso {
 					case VOLESPECTRE:
 						double alpha;
 						if (cptMouvement==100) {
-							if (quel_spr == PersoDescription.CORBEAU) {
+							if (desc == PersoDescription.CORBEAU) {
 								// Corbeau : on centre la zone de d‚placement sur Zildo}
 								int pasx, pasy;
 								if ((int)zildo.x / 16 > x / 16) {
@@ -270,11 +270,11 @@ public class PersoNJ extends Perso {
                                 setAttente(10 + (int) (Math.random() * 20));
                             }
                         }
-                       	if (!isGhost() && getQuel_spr().equals(PersoDescription.GARDE_CANARD) && !isAlerte()) {
+                       	if (!isGhost() && desc == PersoDescription.GARDE_CANARD && !isAlerte()) {
 							setAlerte(lookForZildo(angle));
 						}
 						if (this.getAttente()!=0) {
-							if (getQuel_spr() == PersoDescription.BAS_GARDEVERT) {
+							if (desc == PersoDescription.BAS_GARDEVERT) {
 								//Garde vert => Il tourne la tˆte pour faire une ronde}
 								if (this.getAttente()==1 && cptMouvement<2) {
 									if (!alerte && lookForZildo(Angle.rotate(angle, PersoGardeVert.mouvetete[cptMouvement]))) {
@@ -352,7 +352,7 @@ public class PersoNJ extends Perso {
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void initPersoFX() {
-		if (getQuel_spr() == PersoDescription.GARDE_CANARD) {	// Guard
+		if (desc == PersoDescription.GARDE_CANARD) {	// Guard
 			String str=getEffect() != null ? getEffect() : getName();
 			if ("jaune".equals(str)) {
 				setSpecialEffect(EngineFX.GUARD_YELLOW);
@@ -390,8 +390,10 @@ public class PersoNJ extends Perso {
 		final int[] seqv={0, 1, 2, 1};	// another 3 sprites
 		
 		int add_spr=0;
-		PersoDescription quelSpriteWithBank=this.getQuel_spr();
+		PersoDescription quelSpriteWithBank=(PersoDescription) desc;
 	
+		int seq2 = (getPos_seqsprite() % (6*Constantes.speed)) / (3*Constantes.speed);
+		
 		// Animated sequence adjustment
 	
 		switch (quelSpriteWithBank) {
@@ -403,7 +405,7 @@ public class PersoNJ extends Perso {
 			   //Poule
 			   add_spr=(getPos_seqsprite() % (8*Constantes.speed)) / (2*Constantes.speed);
 			   if (pathFinder.getTarget() != null && (pathFinder.getTarget().x>getX() && !isAlerte())) {
-				   add_spr+=41;
+				   add_spr+=4;
 			   }
 				break;
 			case VIEUX:
@@ -413,6 +415,24 @@ public class PersoNJ extends Perso {
 				add_spr=getPos_seqsprite();
 				break;
 			case MOUSTACHU:
+				reverse = seq2 == 0 ? 0 : REVERSE_HORIZONTAL;
+				switch (angle) {
+				case NORD:
+					add_spr=1;
+					break;
+				case EST:
+					add_spr=2 + seq2;
+					reverse=REVERSE_HORIZONTAL;
+					break;
+				case SUD:
+					add_spr=0;
+					break;
+				case OUEST:
+					add_spr=2 + seq2;
+					reverse=0;
+					break;
+				}
+				break;
 			case VIEUX_SAGE:
 			case BUCHERON_ASSIS:
 			case BANDIT_CHAPEAU:
@@ -490,7 +510,8 @@ public class PersoNJ extends Perso {
 				break;
 		}
 
-		switch (quel_spr) {
+		PersoDescription d = (PersoDescription) desc;
+		switch (d) {
 			case SOFIASKY:
 			case FERMIERE:
 				reverse = 0;
@@ -499,11 +520,15 @@ public class PersoNJ extends Perso {
 					reverse = REVERSE_HORIZONTAL;
 				}
 				break;
-				
+			case MOUSTACHU_ASSIS:
+				if (quel_deplacement != MouvementPerso.IMMOBILE) {
+					setDesc(PersoDescription.MOUSTACHU);
+				}
+				break;
 		}
 
 	
-		this.setNSpr((this.getQuel_spr().first() + add_spr) % 128);
+		this.setNSpr(d.nth(add_spr) % 128);
 	}
 	
 	/**

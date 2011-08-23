@@ -154,15 +154,6 @@ public abstract class Perso extends Element {
 			break;
 		}
 	}
-
-	public PersoDescription getQuel_spr() {
-		return quel_spr;
-	}
-
-	public void setQuel_spr(PersoDescription quel_spr) {
-		this.quel_spr = quel_spr;
-		this.nBank = quel_spr.getBank();
-	}
 	
 	public int getAttente() {
 		return attente;
@@ -716,6 +707,11 @@ public abstract class Perso extends Element {
 				setAngle(Angle.EST);
 			}
 		}
+	}
+	
+	@Override
+	public PersoDescription getDesc() {
+		return (PersoDescription) desc;
 	}
 	
 	public void setPathFinder(PathFinder p_pf) {

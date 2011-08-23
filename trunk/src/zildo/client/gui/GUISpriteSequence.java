@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
+import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.SpriteDescription;
 

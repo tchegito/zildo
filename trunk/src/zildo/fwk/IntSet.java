@@ -20,9 +20,9 @@
 
 package zildo.fwk;
 
-import java.util.TreeSet;
+import java.util.ArrayList;
 
-public class IntSet extends TreeSet<Integer> {
+public class IntSet extends ArrayList<Integer> {
 
 	/**
 	 * 
@@ -34,5 +34,4 @@ public class IntSet extends TreeSet<Integer> {
 			this.add(a);
 		}
 	}
-
 }

@@ -153,6 +153,10 @@ public class ActionExecutor {
                 case fadeOut:
                 	EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_OUT, FilterEffect.fromInt(p_action.val)));
                 	break;
+                case clear:
+                	EngineZildo.askEvent(new ClientEvent(ClientEventNature.CLEAR));
+                	achieved=true;
+                	break;
                 case map:	// Change current map
         			EngineZildo.mapManagement.loadMap(p_action.text, false);
         			ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());

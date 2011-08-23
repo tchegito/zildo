@@ -116,12 +116,10 @@ public class PersoManagement {
             	}
                 int tx = (int) persoToCompare.getX();
                 int ty = (int) persoToCompare.getY();
+                PersoDescription descToCompare = persoToCompare.getDesc();
                 int rayonPersoToCompare = rayon;
-                if (persoToCompare.getCollision() != null) {
-                	int grossoModoSize=persoToCompare.getSprModel().getTaille_x() / 2;
-                	if (grossoModoSize > rayon) {
-                		rayonPersoToCompare = grossoModoSize;
-                	}
+                if (descToCompare != null) {
+                	rayonPersoToCompare = descToCompare.getRadius();
                 }
                 if (EngineZildo.collideManagement.checkCollisionCircles(x, y, tx, ty, rayon, rayonPersoToCompare)) {
                     if (perso != null && perso.isZildo() && perso.linkedSpritesContains(persoToCompare)) {
@@ -136,7 +134,7 @@ public class PersoManagement {
     }
 
     public Perso collidePerso(int x, int y, Element quelPerso) {
-        return collidePerso(x, y, quelPerso, 5);
+        return collidePerso(x, y, quelPerso, 7);
     }
 	
     public Perso getNamedPerso(String p_name) {
@@ -206,7 +204,7 @@ public class PersoManagement {
         perso.setX(x);
         perso.setY(y);
         perso.setZ(z);
-        perso.setQuel_spr(p_desc);
+        perso.setDesc(p_desc);
         perso.setName(name);
         perso.setMaxpv(1);
         perso.setPv(1);
