@@ -25,7 +25,7 @@ import java.util.List;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
-import zildo.fwk.script.xml.TriggerElement;
+import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
@@ -562,10 +562,12 @@ public abstract class Perso extends Element {
             EngineZildo.soundManagement.broadcastSound(snd, this);
         }
 
-        // Trigger "LOCATION"
-        String mapName=EngineZildo.mapManagement.getCurrentMap().getName();
-        TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x,y));
-        EngineZildo.scriptManagement.trigger(trig);
+        // Trigger "LOCATION" only in single player
+        if (!EngineZildo.game.multiPlayer) {
+	        String mapName=EngineZildo.mapManagement.getCurrentMap().getName();
+	        TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x,y));
+	        EngineZildo.scriptManagement.trigger(trig);
+        }
         return slowDown;
     }
     

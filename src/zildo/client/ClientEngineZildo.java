@@ -288,7 +288,7 @@ public class ClientEngineZildo {
 						mapDisplay.centerCamera();
 						mapDisplay.shiftForMapScroll(p_event.angle);
 
-						retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL;
+						retEvent.nature = ClientEventNature.CHANGINGMAP_WAITSCRIPT;
 					}
 					displayGUI = false;
 					break;

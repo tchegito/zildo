@@ -11,9 +11,9 @@ import javax.swing.table.DefaultTableModel;
 
 import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.filter.FilterEffect;
-import zildo.fwk.script.xml.ActionElement;
-import zildo.fwk.script.xml.ActionElement.ActionKind;
-import zildo.fwk.script.xml.ActionsElement;
+import zildo.fwk.script.xml.element.ActionElement;
+import zildo.fwk.script.xml.element.ActionsElement;
+import zildo.fwk.script.xml.element.ActionElement.ActionKind;
 import zildo.monde.map.Angle;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;

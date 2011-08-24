@@ -32,7 +32,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import zildo.fwk.script.xml.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.ActionElement;
+import zildo.fwk.script.xml.element.AnyElement;
+import zildo.fwk.script.xml.element.TriggerElement;
+import zildo.fwk.script.xml.element.ActionElement.ActionKind;
 import zildo.monde.quest.QuestEvent;
 
 public class ScriptReader {
@@ -79,7 +82,7 @@ public class ScriptReader {
         } else {
         	// General case
 	        name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length()).toLowerCase();
-	        name = "zildo.fwk.script.xml." + name + "Element";
+	        name = "zildo.fwk.script.xml.element." + name + "Element";
 	
 	        try {
 	            s = (AnyElement) Class.forName(name).newInstance();
@@ -95,10 +98,10 @@ public class ScriptReader {
     /**
      * Returns a list of every child node, which name is contained in the provided ones.
      * @param p_element
-     * @param p_nodeName all acceptable node names
+     * @param p_nodeName all acceptable node names (can be null => all childs will be taken)
      * @return List
      */
-    static List<? extends AnyElement> parseNodes(Element p_element, String... p_nodeName) {
+    public static List<? extends AnyElement> parseNodes(Element p_element, String... p_nodeName) {
         List<AnyElement> elements = new ArrayList<AnyElement>();
         if (p_element == null) {	// No child ? Returns an empty list.
         	return elements;
@@ -122,7 +125,7 @@ public class ScriptReader {
         return elements;
     }
     
-    static Element getChildNamed(Element p_element, String p_nodeName) {
+    public static Element getChildNamed(Element p_element, String p_nodeName) {
         NodeList list = p_element.getChildNodes();
         Element returnElement=null;
         for (int i = 0; i < list.getLength(); i++) {

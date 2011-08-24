@@ -25,7 +25,7 @@ import java.util.List;
 
 import zildo.fwk.net.TransferObject;
 import zildo.fwk.script.model.ZSSwitch;
-import zildo.fwk.script.xml.TriggerElement;
+import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.fwk.ui.UIText;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
 import zildo.monde.quest.actions.BuyingAction;

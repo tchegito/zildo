@@ -24,8 +24,8 @@ import java.util.List;
 
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
-import zildo.fwk.script.xml.AdventureElement;
-import zildo.fwk.script.xml.QuestElement;
+import zildo.fwk.script.xml.element.AdventureElement;
+import zildo.fwk.script.xml.element.QuestElement;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.desc.ZildoOutfit;
