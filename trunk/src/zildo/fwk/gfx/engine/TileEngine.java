@@ -35,7 +35,7 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
 import zildo.monde.map.Tile;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 // V1.0
 // --------------------------------------------

@@ -35,7 +35,7 @@ import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.monde.Game;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
 /**

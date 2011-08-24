@@ -43,7 +43,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 public class MapManagement {
 

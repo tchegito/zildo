@@ -18,7 +18,7 @@
  *
  */
 
-package zildo.prefs;
+package zildo.resource;
 
 import org.lwjgl.input.Keyboard;
 

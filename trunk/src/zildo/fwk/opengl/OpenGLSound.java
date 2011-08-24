@@ -32,7 +32,7 @@ import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.SoundStore;
 
 import zildo.fwk.file.EasyReadingFile;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 public class OpenGLSound {
 

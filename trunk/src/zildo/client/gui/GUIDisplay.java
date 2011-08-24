@@ -45,7 +45,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.FontDescription;
 import zildo.monde.sprites.persos.PersoZildo;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 import zildo.server.MultiplayerManagement;
 import zildo.server.state.PlayerState;
 

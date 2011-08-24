@@ -18,7 +18,7 @@
  *
  */
 
-package zildo.prefs;
+package zildo.resource;
 
 import java.io.File;
 

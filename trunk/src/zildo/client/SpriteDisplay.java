@@ -33,7 +33,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.utils.SpriteSorter;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 /**
  * All client side sprite problematic.

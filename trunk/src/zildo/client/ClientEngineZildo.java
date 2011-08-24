@@ -53,7 +53,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoZildo;
-import zildo.prefs.KeysConfiguration;
+import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 
 public class ClientEngineZildo {

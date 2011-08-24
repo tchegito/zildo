@@ -30,8 +30,8 @@ public class UIText {
 	static ResourceBundle gameBundle;
 	
 	static {
-		menuBundle=ResourceBundle.getBundle("zildo.prefs.bundle.menu");
-		gameBundle=ResourceBundle.getBundle("zildo.prefs.bundle.game");
+		menuBundle=ResourceBundle.getBundle("zildo.resource.bundle.menu");
+		gameBundle=ResourceBundle.getBundle("zildo.resource.bundle.game");
 	}
 	
 	static private String getText(ResourceBundle p_bundle, String p_key, Object... p_params) {

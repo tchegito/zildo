@@ -25,7 +25,7 @@ import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.elements.ElementGuardWeapon;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
 import zildo.monde.sprites.utils.MouvementPerso;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 /**
  * Perso garde "canard"

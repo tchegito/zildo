@@ -29,7 +29,7 @@ import org.lwjgl.opengl.GL11;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.opengl.OpenGLStuff;
 import zildo.fwk.opengl.Utils;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 /**
  * Abstract class which provides management of a texture set.

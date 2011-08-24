@@ -28,7 +28,7 @@ import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 public class ElementGuardWeapon extends Element {
 

@@ -30,7 +30,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import zildo.fwk.gfx.GFXBasics;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 /**
  * Tool class for modifying SpriteBank and MotifBank.<br/>

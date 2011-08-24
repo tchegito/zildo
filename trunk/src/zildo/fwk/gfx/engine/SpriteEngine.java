@@ -42,7 +42,7 @@ import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.Outfit;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.elements.Element;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 import zildo.server.SpriteManagement;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.

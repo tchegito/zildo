@@ -25,7 +25,7 @@ import java.util.Iterator;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 /**
  * Perso garde vert.

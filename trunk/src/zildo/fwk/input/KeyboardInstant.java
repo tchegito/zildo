@@ -26,7 +26,7 @@ import org.lwjgl.input.Keyboard;
 
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
-import zildo.prefs.KeysConfiguration;
+import zildo.resource.KeysConfiguration;
 
 public class KeyboardInstant implements EasySerializable {
 

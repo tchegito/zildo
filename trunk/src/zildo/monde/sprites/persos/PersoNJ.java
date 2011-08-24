@@ -33,7 +33,7 @@ import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.action.ShotArrowAction;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
 

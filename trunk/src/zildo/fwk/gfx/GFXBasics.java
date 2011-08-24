@@ -31,7 +31,7 @@ import org.lwjgl.util.vector.Vector4f;
 import org.newdawn.slick.Font;
 
 import zildo.fwk.opengl.OpenGLStuff;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 
 /**
