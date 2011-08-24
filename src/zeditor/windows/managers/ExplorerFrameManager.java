@@ -7,7 +7,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 
 import zeditor.windows.MasterFrame;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 public class ExplorerFrameManager {
 	public static final int SAVE = 0;

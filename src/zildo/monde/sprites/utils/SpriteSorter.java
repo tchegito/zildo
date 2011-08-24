@@ -23,7 +23,7 @@ package zildo.monde.sprites.utils;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 /**
  * Sprite sorter which deals with every entity displayed on screen.<p/>

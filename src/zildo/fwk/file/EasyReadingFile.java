@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 public class EasyReadingFile extends EasyBuffering {
 

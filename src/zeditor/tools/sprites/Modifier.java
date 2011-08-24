@@ -41,7 +41,7 @@ import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.Server;
@@ -73,8 +73,8 @@ public class Modifier {
         //new Modifier().saveElements2();
         //new Modifier().saveFontes2();
         //new Modifier().saveBanque();
-        new Modifier().saveGears();
-        //new Modifier().savePnj2();
+        //new Modifier().saveGears();
+        new Modifier().savePnj2();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
        // new Modifier().ripDialogFromAllMaps();
@@ -162,9 +162,10 @@ public class Modifier {
      
      public void savePnj2() {
          SpriteBankEdit bank=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ2));
-         bank.clear();
-    	 bank.addSpritesFromBank(new Pnj2());
-    	 bank.saveBank();
+         //bank.clear();
+    	 //bank.addSpritesFromBank(new Pnj2());
+         bank.removeSpr(194-128);
+    	 //bank.saveBank();
      }
    
      public void savePnj() {

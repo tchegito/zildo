@@ -27,7 +27,7 @@ import zildo.fwk.gfx.filter.BilinearFilter;
 import zildo.fwk.gfx.filter.FadeScreenFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.ScreenFilter;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 /**
  * Command class for screen filters:

@@ -26,7 +26,7 @@ import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 /**
  * @author eboussaton

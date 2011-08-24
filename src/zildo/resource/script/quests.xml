@@ -1,0 +1,338 @@
+<adventure>
+
+	<quest name="flut_ask">
+		<trigger>
+			<dialog name="papy" num="1"/>
+		</trigger>
+	</quest>
+	<quest name="flut">
+		<trigger>
+			<questDone name="flut_ask"/>
+			<dialog name="gerard" num="2"/>
+		</trigger>
+		<action>
+			<take item="flut"/>
+		</action>
+	</quest>
+	<quest name="chateau_ask">
+		<trigger>
+			<dialog name="papy" num="6"/>
+		</trigger>
+	</quest>
+	<quest name="enlevebuissons_ask">
+		<trigger>
+			<dialog name="christa" num="1"/>
+		</trigger>
+		<action>
+			<moveTo who="christa" pos="16,0" unstoppable="true" delta="true"/>
+			<script who="christa" value="2"/>
+		</action>
+	</quest>
+	<quest name="enlevebuissons">
+		<trigger>
+			<location who="zildo" name="ferme" pos="618,791"/>
+		</trigger>
+	</quest>
+	<quest name="enlevebuissons_win">
+		<trigger>
+			<dialog name="christa" num="2"/>
+		</trigger>
+		<action>
+			<take item="milk"/>
+		</action>
+	</quest>
+	<quest name="fermierperdu_ask">
+		<trigger>
+			<dialog name="laura" num="1"/>
+		</trigger>
+	</quest>
+	<quest name="fermierperdu_bar">
+		<trigger>
+			<dialog name="mostapha" num="2"/>
+		</trigger>
+	</quest>
+	<quest name="fermierperdu">
+		<trigger>
+			<dialog name="charles_bar" num="1"/>
+		</trigger>
+		<action>
+			<script who="charles_bar" value="11"/>
+			<moveTo who="charles_bar" pos="32,0" speed="2" delta="true" unstoppable="true"/>
+			<script who="charles_bar" value="0"/>
+			<moveTo who="charles_bar" pos="192,513" speed="1"/>
+			<remove who="charles_bar"/>
+		</action>
+	</quest>
+	<quest name="gardelaitier">
+		<trigger>
+			<dialog name="roby" num="2"/>
+		</trigger>
+	</quest>
+	<quest name="gardelaitier_win">
+		<trigger>
+			<dialog name="garde" num="2"/>
+		</trigger>
+		<action>
+			<moveTo who="garde" pos="0,-20" delta="true" unstoppable="true"/>
+			<moveTo who="garde" pos="-24,0" delta="true" unstoppable="true"/>
+			<angle who="garde" value="1"/>
+			<speak who="garde" text="d4.garde.3"/>
+			<putDown item="milk"/>
+		</action>
+	</quest>
+	<quest name="empechezildo_bar" repeat="true">
+		<trigger>
+			<location who="zildo" name="coucou" pos="448,520"/>
+			<questDone name="!fermierperdu_bar"/>
+		</trigger>
+		<action>
+			<speak who="zildo" text="d4.noBar"/>
+			<moveTo who="zildo" pos="0,16" delta="true"/>
+		</action>
+	</quest>
+	<quest name="empechezildo_bar2" repeat="true">
+		<trigger>
+			<location who="zildo" name="coucou" pos="464,308"/>
+			<questDone name="!fermierperdu_bar"/>
+		</trigger>
+		<action>
+			<speak who="zildo" text="d4.noBar"/>
+			<moveTo who="zildo" pos="0,-12" delta="true"/>
+		</action>
+	</quest>
+	
+	<quest name="enlevement">
+		<trigger>
+			<location name="bucherons"/>
+			<questDone name="flut"/>
+		</trigger>
+		<action>
+			<exec script="enlevement"/>
+			<map name="bucherons"/>
+			<focus name="zildo" />
+			<moveTo who="zildo" pos="0,1" delta="true"/>
+			<fadeIn type="0"/>
+		</action>
+		<history>
+			<mapReplace what="polaky" name="polakbis"/>
+		</history>
+	</quest>
+
+	<mapReplace>
+		<condition name="coucou" exp="flut">
+			<remove who="roxy" />
+		</condition>
+		<condition name="coucou" exp="gardelaitier_win">
+			<pos who="garde" pos="-24,-20"/>
+			<angle who="garde" value="1"/>
+		</condition>
+		<condition name="ferme" exp="!fermierperdu">
+			<remove who="charles"/>
+		</condition>
+		<condition name="d4m4" exp="fermierperdu">
+			<remove who="charles"/>
+		</condition>
+	</mapReplace>
+	
+	<scene id="intro">
+	    <fadeOut type="0"/>
+	    <map name="coucou"/>
+	    <pos who="zildo" pos="830,200" />
+	    <pos who="roxy" pos="890,340" />
+	    <script who="roxy" value="3" />
+	    <pos what="camera" pos="100,400" />
+	    <fadeIn type="0"/>
+	    <speak what="camera" text="intro.p1"/>
+	    <wait value="90" />
+	    <moveTo what="camera" pos="500,150" unblock="true"/>
+	    <wait value="200" />
+	    <actions>
+	    	<moveTo what="camera" pos="640,150" />
+	        <moveTo who="zildo" speed="1" pos="830,270"/>
+	        <moveTo who="roxy" pos="830,290"/>
+	    </actions>
+	    <angle who="roxy" value="0" />
+	    <speak who="zildo" text="intro.p2" />
+	    <speak who="roxy" text="intro.p3" />
+	    <speak who="zildo" text="intro.p4" />
+	    <moveTo who="roxy" pos="945,370" unblock="true"/>
+	    <moveTo what="camera" pos="700,170" unblock="true"/>
+	    <wait value="100"/>
+	    <moveTo who="zildo" pos="830,300"/>
+	    <moveTo who="zildo" pos="920,370"/>
+	    <moveTo who="roxy" pos="950,278" unblock="true"/>
+	    <moveTo who="zildo" pos="970,370"/>
+	    <moveTo who="zildo" pos="970,292"/>
+	    <angle who="roxy" value="2"/>
+	</scene>
+	
+	<scene id="echange">
+	    <fadeOut type="0"/>
+	    <music name="Angoisse"/>
+	    <map name="promenade2"/>
+	    <spawn type="GARDE_CANARD" speed="1" pos="928,-10" angle="2" fx="jaune" who="emissaire"/>
+	    <spawn type="BANDIT_VERT" speed="1" pos="516,146" angle="2" who="tony"/>
+	    <spawn type="PRINCESSE_COUCHEE" pos="447,234" who="roxy"/>
+	    <focus name="emissaire"/>
+	    <speak what="camera" text="echange.p1" unblock="true"/>
+	    <fadeIn type="0"/>
+ 	    <moveTo pos="935,187" who="emissaire"/>
+ 	    <moveTo pos="860,233" who="emissaire"/>
+	    <moveTo pos="688,326" who="emissaire"/>
+	    <moveTo pos="544,326" who="emissaire"/>
+	    <wait value="20" />
+	    <angle who="emissaire" value="0"/>
+	    <wait value="5" />
+	    <angle who="emissaire" value="2"/>
+	    <wait value="5" />
+	    <moveTo what="camera" pos="0,-120" delta="true"/>
+	    <angle who="emissaire" value="0"/>
+	    <moveTo pos="490,190" who="tony"/>
+	    <wait value="30" />
+	    <speak who="tony" text="echange.tony1" />
+	    <moveTo pos="544,322" who="emissaire"/>
+	    <speak who="tony" text="echange.tony2" />
+	    <moveTo pos="544,246" speed="0.5" who="emissaire"/>
+	    <wait value="15" />
+	    <spawn type="SCEPTER" pos="543,233" what="scepter"/>
+	    <wait value="35" />
+	    <speak who="tony" text="echange.tony3" />
+	    <moveTo pos="544,266" who="emissaire" backward="true" />
+	    <angle who="emissaire" value="3" />
+	    <speak who="emissaire" text="echange.emissaire1" />
+	    <speak who="tony" text="echange.tony4" />
+	    <spawn type="VAUTOUR" speed="3" pos="500,64" who="vautour"/>
+	    <script who="vautour" value="10" />
+	    <wait value="30" />
+	    <script who="emissaire" value="2" fx="vautour"/>
+	    <script who="tony" value="2" fx="vautour"/>
+	    <music name="Surprise"/>
+	    <moveTo who="vautour" pos="543,245"/>
+	    <take who="vautour" what="scepter" />
+	    <actions>
+	    	<moveTo who="vautour" pos="480,400"/>
+	    	<speak who="tony" text="echange.deux" unblock="true"/>
+	    </actions>
+	    <script who="emissaire" value="3"/>
+	    <script who="tony" value="3"/>
+	    <remove who="vautour" />
+	    <speak who="tony" text="echange.tony4b" />
+	    <speak who="tony" text="echange.emissaire1b" />
+	    <moveTo who="emissaire" pos="455,250" speed="1.2" unblock="true"/>
+	    <wait value="10" />
+	    <angle who="emissaire" value="0" />
+	    <moveTo who="tony" pos="490,220" />
+	    <angle who="tony" value="3"/>
+	    <wait value="30" />
+	    <speak who="emissaire" text="echange.emissaire2" />
+	    <speak who="tony" text="echange.tony5" />
+	    <speak who="emissaire" text="echange.emissaire3" />
+	    <speak who="tony" text="echange.tony6" />
+	    <moveTo who="tony" pos="455,220" />
+	    <angle who="tony" value="2" />
+	    <wait value="10" />
+    	    <animation pos="447,234" type="STAR_CIRCLE" />
+    	    <wait value="80" />
+	    <script who="roxy" value="12" />
+	    <wait value="190" />
+	    <script who="roxy" value="3" />
+	    <speak who="roxy" text="echange.roxy1" />
+	    <speak who="emissaire" text="echange.emissaire4" />
+	    <speak who="roxy" text="echange.roxy2" />
+    	    <animation pos="447,234" type="CLOUD_FOG" />
+    	    <wait value="5" />
+    	    <remove who="roxy" />
+    	    <spawn type="PRINCESS_BUNNY" who="roxy_bunny" pos="447,231" />
+	    <wait value="10" />
+	    <actions>
+		    <moveTo who="tony" pos="0,-5" delta="true" backward="true"/>
+		    <moveTo who="emissaire" pos="0,6" delta="true" backward="true"/>
+	    </actions>
+	    <speak who="emissaire" text="echange.emissaire5" />
+	    <moveTo who="roxy_bunny" pos="420,240" unstoppable="true"/>
+	    <script who="tony" value="2" fx="roxy_bunny" />
+	    <script who="emissaire" value="2" fx="roxy_bunny" />
+	    <moveTo who="roxy_bunny" pos="400,246" unstoppable="true"/>
+	    <speak who="emissaire" text="echange.emissaire6" />
+	</scene>
+	
+	<scene id="enlevement" restoreZildo="true">
+	    <music name="Angoisse"/>
+	    <clear/>
+	    <speak who="zildo" text="enlev.p1" />
+	    <fadeOut type="0"/>
+	    <map name="coucou" />
+	    <pos who="zildo" pos="40,40" />
+	    <pos who="roxy" pos="927,234" />
+	    <script who="roxy" value="3" />
+	    <pos what="camera" pos="400,0" />
+	    <fadeIn type="0" unblock="true"/>
+	    <spawn type="GARDE_CANARD" speed="1" pos="520,30" angle="2" fx="noir" who="badguy"/>
+	    <focus name="badguy" />
+	    <moveTo pos="520,145" who="badguy" />
+	    <moveTo pos="830,145" who="badguy" />
+	    <moveTo pos="830,290" who="badguy" />
+	    <moveTo pos="970,370" who="badguy" />
+	    <moveTo pos="970,294" who="badguy"/>
+	    <speak text="enlev.p2" who="badguy" />
+	    <speak text="enlev.p3" who="vieux" />
+	    <speak text="enlev.p4" who="vieux" unblock="true" />
+	    <wait value="80" />
+	    <moveTo pos="927,269" who="roxy" open="true"/>
+	    <moveTo pos="947,269" who="roxy" />
+	    <speak text="enlev.p5" who="roxy" />
+	    <angle who="badguy" value="3" />
+	    <wait value="10" />
+	    <moveTo pos="927,269" who="roxy" backward="true" speed="0.2"/>
+	    <wait value="20" />
+	    <fadeOut type="0" />
+	    <music name="Village"/>
+	</scene>
+
+	<scene id="stairsUp">
+		<sound name="ZildoMonte" />
+		<moveTo who="zildo" pos="0,-9" delta="true" speed="0.1" />
+		<fadeOut type="1" unblock="true" />
+	</scene>
+	
+	<scene id="stairsUpCornerRight">
+		<sound name="ZildoMonte" />
+		<moveTo who="zildo" pos="0,-9" delta="true" speed="0.2" />
+		<moveTo who="zildo" pos="7,0" delta="true" speed="0.2" />
+		<fadeOut type="1" unblock="true" />
+		<wait value="10" />
+		<angle who="zildo" value="0" />
+	</scene>
+	
+	<scene id="stairsUpCornerLeft">
+		<sound name="ZildoMonte" />
+		<moveTo who="zildo" pos="0,-9" delta="true" speed="0.2" />
+		<moveTo who="zildo" pos="-7,0" delta="true" speed="0.1" />
+		<fadeOut type="1" unblock="true" />
+		<wait value="10" />
+		<angle who="zildo" value="0" />
+	</scene>
+	
+	<scene id="stairsUpCornerRightEnd">
+		<pos who="zildo" pos="2,-7" delta="true" />
+		<sound name="ZildoDescend" />
+		<fadeIn type="1" />
+		<moveTo who="zildo" pos="-2,0" delta="true" speed="0.4" />
+		<moveTo who="zildo" pos="0,7" delta="true" speed="0.2" />
+	</scene>
+
+	<scene id="stairsUpCornerLeftEnd">
+		<pos who="zildo" pos="-2,-7" delta="true" />
+		<sound name="ZildoDescend" />
+		<fadeIn type="1" />
+		<moveTo who="zildo" pos="2,0" delta="true" speed="0.1" />
+		<moveTo who="zildo" pos="0,7" delta="true" speed="0.1" />
+	</scene>
+	
+	<scene id="stairsUpEnd">
+		<pos who="zildo" pos="0,-9" delta="true" />
+		<sound name="ZildoDescend" />
+		<fadeIn type="1" unblock="true" />
+		<moveTo who="zildo" pos="0,16" delta="true" speed="0.2" />
+	</scene>
+</adventure>

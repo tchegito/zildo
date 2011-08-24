@@ -1,7 +1,7 @@
 package zildo.fwk.engine.debug;
 
 import zildo.fwk.gfx.engine.TileEngine;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 public class TileEngineDebug extends TileEngine {
 

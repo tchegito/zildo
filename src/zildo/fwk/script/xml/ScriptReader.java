@@ -20,7 +20,7 @@
 
 package zildo.fwk.script.xml;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +34,6 @@ import org.w3c.dom.NodeList;
 
 import zildo.fwk.script.xml.ActionElement.ActionKind;
 import zildo.monde.quest.QuestEvent;
-import zildo.prefs.Constantes;
 
 public class ScriptReader {
 
@@ -47,10 +46,11 @@ public class ScriptReader {
         AnyElement ret = null;
         try {
             DocumentBuilder sxb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            // On charge le fichier de configuration
-            File config = new File(Constantes.DATA_PATH + p_scriptName);
 
-            Document document = sxb.parse(config);
+            // Load the stream
+            InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("zildo/resource/script/"+p_scriptName);
+            
+            Document document = sxb.parse(stream);
             Element racine = document.getDocumentElement();
             
             ret = createNode(racine);

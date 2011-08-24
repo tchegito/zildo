@@ -34,7 +34,7 @@ import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.UIText;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 /**
  * A menu providing creation of a new server.

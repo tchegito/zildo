@@ -25,7 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 public class MapDialog {
 

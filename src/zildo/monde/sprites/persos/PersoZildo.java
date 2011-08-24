@@ -51,7 +51,7 @@ import zildo.monde.sprites.persos.action.HealAction;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.sprites.utils.ShieldEffect;
 import zildo.monde.sprites.utils.ShieldEffect.ShieldType;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 import zildo.server.MultiplayerManagement;
 import zildo.server.Server;

@@ -27,7 +27,7 @@ import zildo.fwk.net.ServerInfo;
 import zildo.fwk.net.TransferObject;
 import zildo.fwk.net.packet.ConnectPacket;
 import zildo.fwk.net.www.NetMessage.Command;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 /**
  * Client on a the WWW network.

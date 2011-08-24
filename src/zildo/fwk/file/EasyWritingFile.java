@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 
 /**
  * Simple object to create a file from a buffer.<p/>

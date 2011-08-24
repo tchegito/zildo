@@ -43,7 +43,7 @@ import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.sprites.SpriteEntity;
-import zildo.prefs.Constantes;
+import zildo.resource.Constantes;
 import zildo.server.SpriteManagement;
 import zildo.server.state.PlayerState;
 
