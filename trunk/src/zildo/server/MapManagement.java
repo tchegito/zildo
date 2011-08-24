@@ -30,7 +30,7 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.gfx.filter.CloudFilter;
-import zildo.fwk.script.xml.TriggerElement;
+import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
@@ -129,6 +129,9 @@ public class MapManagement {
 					ClientEngineZildo.filterCommand.active(CloudFilter.class, false, null);
 					break;
 			}
+
+			// Do the map replacements
+			EngineZildo.scriptManagement.doMapReplacements(adjustedMapName);
 		}
 
 		analyseAltitude();

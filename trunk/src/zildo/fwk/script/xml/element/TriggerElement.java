@@ -18,7 +18,7 @@
  *
  */
 
-package zildo.fwk.script.xml;
+package zildo.fwk.script.xml.element;
 
 import org.w3c.dom.Element;
 

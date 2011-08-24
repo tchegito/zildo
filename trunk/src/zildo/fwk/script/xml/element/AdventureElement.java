@@ -18,22 +18,26 @@
  *
  */
 
-package zildo.fwk.script.xml;
+package zildo.fwk.script.xml.element;
 
 import java.util.List;
 
 import org.w3c.dom.Element;
 
+import zildo.fwk.script.xml.ScriptReader;
+
 public class AdventureElement extends AnyElement {
 
 	List<SceneElement> scenes;
 	List<QuestElement> quests;
+	List<MapscriptElement> mapScripts;
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
 		scenes = (List<SceneElement>) ScriptReader.parseNodes(p_elem, "scene");
 		quests = (List<QuestElement>) ScriptReader.parseNodes(p_elem, "quest");
+		mapScripts=(List<MapscriptElement>) ScriptReader.parseNodes(p_elem, "mapScript");
 	}
 
 	/**
@@ -56,6 +60,10 @@ public class AdventureElement extends AnyElement {
 	
 	public List<SceneElement> getScenes() {
 	    return scenes;
+	}
+	
+	public List<MapscriptElement> getMapScripts() {
+	    return mapScripts;
 	}
 	
 	/**

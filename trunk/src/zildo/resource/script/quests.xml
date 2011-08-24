@@ -118,7 +118,7 @@
 		</history>
 	</quest>
 
-	<mapReplace>
+	<mapScript>
 		<condition name="coucou" exp="flut">
 			<remove who="roxy" />
 		</condition>
@@ -130,9 +130,9 @@
 			<remove who="charles"/>
 		</condition>
 		<condition name="d4m4" exp="fermierperdu">
-			<remove who="charles"/>
+			<remove who="charles_bar"/>
 		</condition>
-	</mapReplace>
+	</mapScript>
 	
 	<scene id="intro">
 	    <fadeOut type="0"/>
@@ -263,7 +263,7 @@
 	    <fadeOut type="0"/>
 	    <map name="coucou" />
 	    <pos who="zildo" pos="40,40" />
-	    <pos who="roxy" pos="927,234" />
+	   	<spawn type="PRINCESSE" pos="927,234" who="roxy"/>
 	    <script who="roxy" value="3" />
 	    <pos what="camera" pos="400,0" />
 	    <fadeIn type="0" unblock="true"/>

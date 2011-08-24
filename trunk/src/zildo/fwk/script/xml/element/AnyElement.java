@@ -18,30 +18,31 @@
  *
  */
 
-package zildo.fwk.script.xml;
-
-import java.util.List;
+package zildo.fwk.script.xml.element;
 
 import org.w3c.dom.Element;
 
-public class SceneElement extends AnyElement {
+public abstract class AnyElement {
 
-    public String id;
-    public boolean restoreZildo;	// TRUE=at the end of the scene, we should restore the previous zildo's state
-    public List<ActionElement> actions;
+    public boolean waiting = false;
+    public boolean done = false;
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void parse(Element p_elem) {
-        id = p_elem.getAttribute("id");
-        restoreZildo = "true".equalsIgnoreCase(p_elem.getAttribute("restoreZildo"));
-        actions = (List<ActionElement>) ScriptReader.parseNodes(p_elem);
+    public abstract void parse(Element p_elem);
+    
+    // Useful operations
+    public boolean isTrue(Element p_elem, String p_attrName) {
+    	String str=p_elem.getAttribute(p_attrName);
+    	return str.equalsIgnoreCase("true");
     }
-
-    public static SceneElement createScene(List<ActionElement> p_actions) {
-    	SceneElement scene=new SceneElement();
-    	scene.id="fromActions";
-    	scene.actions=p_actions;
-    	return scene;
+    
+    /**
+     * Read an attribute's value, and return NULL if it isn't set.
+     * @param p_elem
+     * @param p_attrName
+     * @return String
+     */
+    protected String readAttribute(Element p_elem, String p_attrName) {
+    	String value = p_elem.getAttribute(p_attrName);
+    	return "".equals(value) ? null : value;
     }
 }

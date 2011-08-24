@@ -16,7 +16,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import zeditor.windows.subpanels.ScriptTableModel;
-import zildo.fwk.script.xml.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.ActionElement;
+import zildo.fwk.script.xml.element.SceneElement;
+import zildo.fwk.script.xml.element.ActionElement.ActionKind;
 
 public class ScriptWriter {
 

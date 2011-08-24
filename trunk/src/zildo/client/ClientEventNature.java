@@ -33,6 +33,7 @@ public enum ClientEventNature {
 	FADING_IN,			// Client has started a fade in (for new map)
 	CHANGINGMAP_SCROLL_ASKED, 	// Server says "we need to change the current map, because of client is along a border"
 	CHANGINGMAP_SCROLL_START,	// Client has captured current screen
+	CHANGINGMAP_WAITSCRIPT,	// Client is waiting for the 'map scripts' being rendered
 	CHANGINGMAP_SCROLL_WAIT_MAP, // Client is awaiting for the new map
 	CHANGINGMAP_SCROLL_LOADED,	// Serve has loaded the new map 
 	CHANGINGMAP_SCROLL,			// Client is scrolling

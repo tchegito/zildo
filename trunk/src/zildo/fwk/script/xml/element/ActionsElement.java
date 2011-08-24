@@ -18,31 +18,28 @@
  *
  */
 
-package zildo.fwk.script.xml;
+package zildo.fwk.script.xml.element;
+
+import java.util.List;
 
 import org.w3c.dom.Element;
 
-public abstract class AnyElement {
+import zildo.fwk.script.xml.ScriptReader;
 
-    public boolean waiting = false;
-    public boolean done = false;
+/**
+ * @author eboussaton
+ */
+public class ActionsElement extends ActionElement {
 
-    public abstract void parse(Element p_elem);
-    
-    // Useful operations
-    public boolean isTrue(Element p_elem, String p_attrName) {
-    	String str=p_elem.getAttribute(p_attrName);
-    	return str.equalsIgnoreCase("true");
+    public List<ActionElement> actions;
+
+    public ActionsElement() {
+    	super(null);
     }
     
-    /**
-     * Read an attribute's value, and return NULL if it isn't set.
-     * @param p_elem
-     * @param p_attrName
-     * @return String
-     */
-    protected String readAttribute(Element p_elem, String p_attrName) {
-    	String value = p_elem.getAttribute(p_attrName);
-    	return "".equals(value) ? null : value;
+    @Override
+    @SuppressWarnings("unchecked")
+    public void parse(Element p_elem) {
+        actions = (List<ActionElement>) ScriptReader.parseNodes(p_elem);
     }
 }

@@ -26,12 +26,14 @@ import java.util.List;
 import java.util.Map;
 
 import zildo.fwk.script.command.ScriptExecutor;
-import zildo.fwk.script.xml.ActionElement;
-import zildo.fwk.script.xml.AdventureElement;
-import zildo.fwk.script.xml.QuestElement;
-import zildo.fwk.script.xml.SceneElement;
 import zildo.fwk.script.xml.ScriptReader;
-import zildo.fwk.script.xml.TriggerElement;
+import zildo.fwk.script.xml.element.ActionElement;
+import zildo.fwk.script.xml.element.AdventureElement;
+import zildo.fwk.script.xml.element.ConditionElement;
+import zildo.fwk.script.xml.element.MapscriptElement;
+import zildo.fwk.script.xml.element.QuestElement;
+import zildo.fwk.script.xml.element.SceneElement;
+import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Point;
@@ -42,9 +44,7 @@ import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
 
-/**
- * Delegate class which deals with script.<p/>
- * 
+ /** 
  * It provides two basic functions :<ul>
  * <li>render script (via {@link ScriptExecutor})</li>
  * <li>trigger an event</li>
@@ -103,17 +103,17 @@ public class ScriptManagement {
     public void execute(String p_name) {
     	SceneElement scene=adventure.getSceneNamed(p_name);
     	if (scene != null) {
-    		scriptExecutor.execute(scene);
+    		scriptExecutor.execute(scene, true);
     	} else {
     		throw new RuntimeException("Scene "+p_name+" doesn't exist !");
     	}
     }
 
-    private void execute(List<ActionElement> p_actions) {
+    private void execute(List<ActionElement> p_actions, boolean p_finalEvent) {
     	// Create a SceneElement from the given actions
 		SceneElement scene=SceneElement.createScene(p_actions);
 		// And execute this list
-		scriptExecutor.execute(scene);
+		scriptExecutor.execute(scene, p_finalEvent);
     }
     
     /**
@@ -226,7 +226,7 @@ public class ScriptManagement {
     	// 1) note the history events (mapReplace ...)
     	List<ActionElement> history=p_quest.getHistory();
 		if (history != null) {
-			execute(history);
+			execute(history, true);
 		}
 		
 		// 2) execute the immediate actions (only in-game)
@@ -235,7 +235,7 @@ public class ScriptManagement {
 	    	TriggerElement trig=TriggerElement.createQuestDoneTrigger(p_quest.name);
 	    	trigger(trig);
 			// Execute the corresponding actions
-			execute(p_quest.getActions());
+			execute(p_quest.getActions(), true);
     	}
 
     	
@@ -330,5 +330,15 @@ public class ScriptManagement {
 	
 	public void openDoor(String p_mapName, ChainingPoint p_ch) {
 		accomplishQuest(buildKeyDoor(p_mapName, p_ch), false);
+	}
+	
+	public void doMapReplacements(String p_mapName) {
+		for (MapscriptElement mapScript : adventure.getMapScripts()) {
+			for (ConditionElement condi : mapScript.getConditions()) {
+				if (condi.mapName.equals(p_mapName) && condi.isRight()) {
+					execute(condi.getActions(), false);
+				}
+			}
+		}
 	}
 }

@@ -18,13 +18,14 @@
  *
  */
 
-package zildo.fwk.script.xml;
+package zildo.fwk.script.xml.element;
 
 import java.util.List;
 
 import org.w3c.dom.Element;
 
-import zildo.fwk.script.xml.ActionElement.ActionKind;
+import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.script.xml.element.ActionElement.ActionKind;
 
 public class QuestElement extends AnyElement {
 

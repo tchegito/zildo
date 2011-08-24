@@ -242,6 +242,11 @@ public class EngineZildo {
             		retEvent.nature = ClientEventNature.NOEVENT;
             	}
                 break;
+			case CHANGINGMAP_WAITSCRIPT:	// Engine is doing 'map script' (see MapscriptElement)
+				if (!scriptManagement.isScripting()) {
+					retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL;
+				}
+				break;
             case CHANGINGMAP_SCROLLOVER:
             	persoManagement.getZildo().setGhost(false);
             	spriteManagement.clearSuspendedEntities();
@@ -249,6 +254,7 @@ public class EngineZildo {
             	retEvent.mapChange = false;
             	break;
         }
+
         retEvent.script=scriptManagement.isScripting();
         
         return retEvent;

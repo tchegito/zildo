@@ -28,10 +28,10 @@ import java.util.Stack;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
-import zildo.fwk.script.xml.ActionElement;
-import zildo.fwk.script.xml.ActionsElement;
-import zildo.fwk.script.xml.AnyElement;
-import zildo.fwk.script.xml.SceneElement;
+import zildo.fwk.script.xml.element.ActionElement;
+import zildo.fwk.script.xml.element.ActionsElement;
+import zildo.fwk.script.xml.element.AnyElement;
+import zildo.fwk.script.xml.element.SceneElement;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
@@ -41,13 +41,14 @@ public class ScriptExecutor {
 	Stack<ScriptProcess> scripts = new Stack<ScriptProcess>();	// Stack of current scripts
 	Set<Perso> involved=new HashSet<Perso>();	// All characters involved in script
 	public boolean userEndedAction;				// TRUE if user has ended last action with ACTION keypressed
-
+	
 	/**
-	 * Ask for engine to execute the given script.
+	 *  Ask for engine to execute the given script, with/without a NOEVENT signal at the end (bad for map scripts).
 	 * @param p_script
+	 * @param p_finalEvent
 	 */
-	public void execute(SceneElement p_script) {
-		scripts.push(new ScriptProcess(p_script, this));
+	public void execute(SceneElement p_script, boolean p_finalEvent) {
+		scripts.push(new ScriptProcess(p_script, this, p_finalEvent));
 	}
 	
 	public void render() {
@@ -99,8 +100,9 @@ public class ScriptExecutor {
 			// Stop forced music
 			EngineZildo.soundManagement.setForceMusic(false);
 
-			EngineZildo.askEvent(new ClientEvent(ClientEventNature.NOEVENT));
-
+			if (process.finalEvent) {
+				EngineZildo.askEvent(new ClientEvent(ClientEventNature.NOEVENT));
+			}
 		}
 	}
 	
