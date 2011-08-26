@@ -37,5 +37,6 @@ public enum SpriteAnimation {
 	ARROW,
 	FROMGROUND, // Under bushes
 	STAR_CIRCLE,
-	CLOUD_FOG;	// A fog made by several cloud ElementDescription.SMOKE 
+	CLOUD_FOG,	// A fog made by several cloud ElementDescription.SMOKE
+	HEARTS;	// Hearts flying above a character
 }
