@@ -44,6 +44,7 @@ import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementClouds;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
+import zildo.monde.sprites.elements.ElementHearts;
 import zildo.monde.sprites.elements.ElementSmoke;
 import zildo.monde.sprites.elements.ElementStars;
 import zildo.monde.sprites.elements.ElementWeapon;
@@ -313,6 +314,10 @@ public class SpriteManagement extends SpriteStore {
 				break;
 			case CLOUD_FOG:
 				element = new ElementClouds(x, y);
+				spawnSprite(element);
+				break;
+			case HEARTS:
+				element = new ElementHearts(x, y);
 				spawnSprite(element);
 				break;
 		}

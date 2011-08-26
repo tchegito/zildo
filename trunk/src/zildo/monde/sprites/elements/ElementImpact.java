@@ -73,6 +73,7 @@ public class ElementImpact extends Element {
 	CompositeElement composite;
 
     public ElementImpact(int p_startX, int p_startY, ImpactKind p_kind, Perso p_shooter) {
+    	super();
 		x=p_startX;
 		y=p_startY;
 		z=4;

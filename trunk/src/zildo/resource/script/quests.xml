@@ -168,8 +168,11 @@
 			<spawn who="roxy" pos="100,120" type="PRINCESSE" angle="2"/>
 			<angle who="zildo" value="3"/>
 		</actions>
-		<speak what="camera" text="preintro.8"/> 
+		<wait value="100"/>
 		<angle who="roxy" value="1"/>
+		<animation type="HEARTS" pos="160,120"/>
+		<animation type="HEARTS" pos="100,120"/>
+		<speak what="camera" text="preintro.8"/> 
 		<speak what="camera" text="preintro.9"/> 
 		<speak what="camera" text="preintro.10"/> 
 		<exec script="intro"/>
