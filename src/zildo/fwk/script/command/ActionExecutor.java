@@ -195,7 +195,11 @@ public class ActionExecutor {
                 	if (p_action.who == null || "zildo".equalsIgnoreCase(p_action.who)) {
                 		// This is Zildo
                 		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
-                		zildo.pickItem(ItemKind.fromString(text), null);
+                		if (p_action.val != 0) {
+                			zildo.pickGoodies(null, p_action.val);
+                		} else {
+                			zildo.pickItem(ItemKind.fromString(text), null);
+                		}
                 	} else if (perso != null) {
                 		// This is somebody else
                 		Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
@@ -217,8 +221,12 @@ public class ActionExecutor {
                 	EngineZildo.scriptManagement.execute(text);
                 	break;
                 case music:
-                	BankMusic musicSnd=BankMusic.valueOf(text);
-                	EngineZildo.soundManagement.broadcastSound(musicSnd, (Point) null);
+                	if (text == null) { // Stop music ?
+	                	EngineZildo.soundManagement.broadcastSound((BankMusic) null, (Point) null);
+                	} else {
+	                	BankMusic musicSnd=BankMusic.valueOf(text);
+	                	EngineZildo.soundManagement.broadcastSound(musicSnd, (Point) null);
+                	}
         			EngineZildo.soundManagement.setForceMusic(true);
                 	achieved=true;
                 	break;

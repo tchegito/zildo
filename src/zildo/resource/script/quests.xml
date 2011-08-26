@@ -19,12 +19,13 @@
 			<dialog name="papy" num="6"/>
 		</trigger>
 	</quest>
-	<quest name="enlevebuissons_ask">
+	<quest name="enlevebuissons_ask" repeat="true">
 		<trigger>
 			<dialog name="christa" num="1"/>
 		</trigger>
 		<action>
-			<moveTo who="christa" pos="16,0" unstoppable="true" delta="true"/>
+			<moveTo who="christa" pos="0,14" unstoppable="true" delta="true"/>
+			<moveTo who="christa" pos="23,0" unstoppable="true" delta="true"/>
 			<script who="christa" value="2"/>
 		</action>
 	</quest>
@@ -35,7 +36,7 @@
 	</quest>
 	<quest name="enlevebuissons_win">
 		<trigger>
-			<dialog name="christa" num="2"/>
+			<dialog name="christa" num="3"/>
 		</trigger>
 		<action>
 			<take item="milk"/>
@@ -61,6 +62,14 @@
 			<script who="charles_bar" value="0"/>
 			<moveTo who="charles_bar" pos="192,513" speed="1"/>
 			<remove who="charles_bar"/>
+		</action>
+	</quest>
+	<quest name="fermierperdu_win">
+		<trigger>
+			<dialog name="laura" num="3"/>
+		</trigger>
+		<action>
+			<take value="20"/>
 		</action>
 	</quest>
 	<quest name="gardelaitier">
@@ -134,8 +143,41 @@
 		</condition>
 	</mapScript>
 	
+	<scene id="preintro">
+		<music name=""/>
+		<map name="preintro"/>
+		<speak what="camera" text="preintro.0"/> 
+		<speak what="camera" text="preintro.1"/> 
+		<speak what="camera" text="preintro.2"/> 
+		<speak what="camera" text="preintro.3"/>
+		<pos what="camera" pos="0,0"/>
+		<pos who="zildo" pos="320,120"/>
+		<moveTo who="zildo" pos="160,120"/>
+		<angle who="zildo" value="2"/>
+		<speak what="camera" text="preintro.4"/> 
+		<speak what="camera" text="preintro.5"/>
+		<actions>
+			<animation pos="220,120" type="CLOUD_FOG" />
+			<spawn who="grandpere" pos="220,120" type="VIEUX_SAGE"/>
+			<angle who="zildo" value="1"/>
+		</actions>
+		<speak what="camera" text="preintro.6"/> 
+		<speak what="camera" text="preintro.7"/> 
+		<actions>
+			<animation pos="100,120" type="CLOUD_FOG" />
+			<spawn who="roxy" pos="100,120" type="PRINCESSE" angle="2"/>
+			<angle who="zildo" value="3"/>
+		</actions>
+		<speak what="camera" text="preintro.8"/> 
+		<angle who="roxy" value="1"/>
+		<speak what="camera" text="preintro.9"/> 
+		<speak what="camera" text="preintro.10"/> 
+		<exec script="intro"/>
+	</scene>
+	
 	<scene id="intro">
 	    <fadeOut type="0"/>
+	    <music name="Village"/>
 	    <map name="coucou"/>
 	    <pos who="zildo" pos="830,200" />
 	    <pos who="roxy" pos="890,340" />

@@ -272,6 +272,11 @@ public class ScriptManagement {
 		return adventure;
 	}
 		
+	/**
+	 * Executes some automatic script when Zildo picks an item up.
+	 * @param p_zildo
+	 * @param p_kind
+	 */
 	public void automaticBehavior(PersoZildo p_zildo, ItemKind p_kind) {
         switch (p_kind) {
         case BOW:

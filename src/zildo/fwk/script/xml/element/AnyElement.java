@@ -45,4 +45,19 @@ public abstract class AnyElement {
     	String value = p_elem.getAttribute(p_attrName);
     	return "".equals(value) ? null : value;
     }
+    
+    /**
+     * Read an int value. Returns 0 if null.
+     * @param p_elem
+     * @param p_attrName
+     * @return int
+     */
+    protected int readInt(Element p_elem, String p_attrName) {
+		String strValue = readAttribute(p_elem, "value");
+		if (strValue == null) {
+			return 0;
+		} else {
+			return Integer.valueOf(strValue);
+		}
+    }
 }

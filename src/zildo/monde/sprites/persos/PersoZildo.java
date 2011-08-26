@@ -28,6 +28,7 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.fwk.script.xml.element.TriggerElement;
+import zildo.fwk.ui.UIText;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.items.Item;
@@ -37,6 +38,7 @@ import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
 import zildo.monde.quest.actions.GameOverAction;
+import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
@@ -247,6 +249,13 @@ public class PersoZildo extends Perso {
 				removeItem(ItemKind.FLASK_RED);
 				weapon=null;
 			}
+			break;
+		case MILK:
+			String sentence = UIText.getGameText("milk.action");
+    		EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence));
+			break;
+		case FLUT:
+			EngineZildo.soundManagement.playSound(BankSound.Sort, this);
 			break;
 		}
 		if (outOfOrder) {
@@ -766,61 +775,67 @@ public class PersoZildo extends Perso {
 	
 	/**
 	 * Zildo take some goodies. It could be a heart, an arrow, or a weapon...
-	 * @param p_element
+	 * @param p_element (can be null, if p_money is filled)
+	 * @param p_money >0 ==> Zildo gets some money
 	 * @return boolean : TRUE=element should disappear / FALSE=element stays
 	 */
-	public boolean pickGoodies(Element p_element) {
+	public boolean pickGoodies(Element p_element, int p_money) {
 		// Effect on perso
-		int nSpr=p_element.getNSpr();
 		int money=this.getMoney();
 		int pv=this.getPv();
-		ElementDescription desc=ElementDescription.fromInt(nSpr);
-		if (desc.isWeapon()) {
-			pickItem(desc.getItem(), p_element);
-			return false;
+		if (p_money > 0) {	// Zildo gets some money
+			setMoney(money + p_money);
+			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
 		} else {
-			switch (desc) {
-			case GREENMONEY1:
-				setMoney(money+1);
-				break;
-			case BLUEMONEY1:
-				setMoney(money+5);
-				break;
-			case REDMONEY1:
-				setMoney(money+20);
-				break;
-			case HEART: case HEART_LEFT:
-				setPv(pv+1);
-				break;
-			case ARROW_UP:
-				countArrow+=5;
-				break;
-			case QUAD1:
-				quadDuration=MultiplayerManagement.QUAD_TIME_DURATION;
-				EngineZildo.multiplayerManagement.pickUpQuad();
-				break;
-			case BOMBS3:
-				countBomb+=3;
-				break;
-			case KEY:
-				countKey++;
-				break;
-			}
-			// Sound
-			switch (desc) {
-				case GREENMONEY1: case BLUEMONEY1: case REDMONEY1:
-					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
+			int nSpr=p_element.getNSpr();
+			ElementDescription desc=ElementDescription.fromInt(nSpr);
+			if (desc.isWeapon()) {
+				pickItem(desc.getItem(), p_element);
+				return false;
+			} else {
+				switch (desc) {
+				case GREENMONEY1:
+					setMoney(money+1);
 					break;
-				case QUAD1:
-					EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamage, this);
+				case BLUEMONEY1:
+					setMoney(money+5);
 					break;
-				case KEY:
-					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoKey, this);
+				case REDMONEY1:
+					setMoney(money+20);
 					break;
 				case HEART: case HEART_LEFT:
-					default:
-					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupCoeur, this);
+					setPv(pv+1);
 					break;
+				case ARROW_UP:
+					countArrow+=5;
+					break;
+				case QUAD1:
+					quadDuration=MultiplayerManagement.QUAD_TIME_DURATION;
+					EngineZildo.multiplayerManagement.pickUpQuad();
+					break;
+				case BOMBS3:
+					countBomb+=3;
+					break;
+				case KEY:
+					countKey++;
+					break;
+				}
+				// Sound
+				switch (desc) {
+					case GREENMONEY1: case BLUEMONEY1: case REDMONEY1:
+						EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
+						break;
+					case QUAD1:
+						EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamage, this);
+						break;
+					case KEY:
+						EngineZildo.soundManagement.broadcastSound(BankSound.ZildoKey, this);
+						break;
+					case HEART: case HEART_LEFT:
+						default:
+						EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupCoeur, this);
+						break;
+				}
 			}
 		}
 		return true;
