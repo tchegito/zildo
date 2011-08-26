@@ -97,7 +97,7 @@ public class ElementGoodies extends Element {
 			timeToAcquire--;
 			if (timeToAcquire == 0) {
 				// Zildo will now have the goodies
-				if (((PersoZildo)linkedPerso).pickGoodies(this)) {
+				if (((PersoZildo)linkedPerso).pickGoodies(this, 0)) {
 					dying=true;
 				}
 			}

@@ -75,7 +75,7 @@ public class SinglePlayer {
 
         if (p_game.brandNew) {
 	        // Start 'intro' script
-	       	EngineZildo.scriptManagement.execute("intro");
+	       	EngineZildo.scriptManagement.execute("preintro");
 	       	p_game.brandNew=false;
         }
     }

@@ -143,7 +143,11 @@ public class SoundPlay {
 	public void playSounds(List<WaitingSound> p_sounds) {
 		for (WaitingSound sound : p_sounds) {
 			if (sound.broadcast || sound.client==null) {
-				playSoundFX(sound.name);
+				if (!sound.isSoundFX && sound.name == null) {
+					stopMusic();
+				} else {
+					playSoundFX(sound.name);
+				}
 			}
 		}
 	}

@@ -592,7 +592,7 @@ public class SpriteManagement extends SpriteStore {
 								if (isGoodies) {
 									if (isZildo) {
 										PersoZildo zildo = (PersoZildo) elem;
-										boolean disappear = zildo.pickGoodies(element);
+										boolean disappear = zildo.pickGoodies(element, 0);
 										if (disappear) {
 											element.fall();
 											listToRemove.add(entity);

@@ -39,6 +39,7 @@ import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.Hasard;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.GearDescription;
@@ -51,6 +52,7 @@ import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoNJ;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.server.EngineZildo;
@@ -403,13 +405,15 @@ public class Area implements EasySerializable {
 	    	if (desc != null) {
 	    		sprMgt.spawnSpriteGeneric(anim, p.x, p.y+5, 0, null, desc);
 	    	} else {
-				if (Hasard.lanceDes(Hasard.hazardBushes_Arrow)) {
+	    		boolean multiPlayer = EngineZildo.game.multiPlayer;
+	    		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+				if (Hasard.lanceDes(Hasard.hazardBushes_Arrow) && (multiPlayer || zildo.hasItem(ItemKind.BOW))) {
 					sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 0, null, null);
 				} else if (Hasard.lanceDes(Hasard.hazardBushes_Diamant)) {
 					sprMgt.spawnSpriteGeneric(SpriteAnimation.DIAMOND, p.x, p.y + 5, 0, null, null);
 				} else if (Hasard.lanceDes(Hasard.hazardBushes_Heart)) {
 					sprMgt.spawnSpriteGeneric(SpriteAnimation.HEART, p.x + 3, p.y + 5, p_destroy ? 0 : 1, null, null);
-				} else if (Hasard.lanceDes(Hasard.hazardBushes_Bombs)) {
+				} else if (Hasard.lanceDes(Hasard.hazardBushes_Bombs) && (multiPlayer || zildo.hasItem(ItemKind.BOMB))) {
 					sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 0, null, ElementDescription.BOMBS3);
 				}
 	    	}

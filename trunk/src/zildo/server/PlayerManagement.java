@@ -502,8 +502,8 @@ public class PlayerManagement {
 							// Check for special tile on the map
 							final int add_anglex[]={0,1,0,-1};
 							final int add_angley[]={-1,0,1,0};
-							int newx=((int)heros.x+5*add_anglex[heros.getAngle().value]) / 16;
-							int newy=((int)heros.y+3*add_angley[heros.getAngle().value]) / 16;
+							int newx=((int)heros.x+6*add_anglex[heros.getAngle().value]) / 16;
+							int newy=((int)heros.y+4*add_angley[heros.getAngle().value]) / 16;
 							Area map=EngineZildo.mapManagement.getCurrentMap();
 							int on_map=map.readmap(newx,newy);
 							ElementDescription objDesc=null;

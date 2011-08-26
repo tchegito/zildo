@@ -88,16 +88,16 @@ public class ActionElement extends AnyElement {
             if (!"".equals(strAngle)) {
             	val = Integer.valueOf(strAngle);
             }
-            text = p_elem.getAttribute("type");
+            text = readAttribute(p_elem, "type");
             break;
         case speak:
-            text = p_elem.getAttribute("text");
+            text = readAttribute(p_elem, "text");
             break;
         case sound:
         case map:
         case music:
             // String
-            text = p_elem.getAttribute("name");
+            text = readAttribute(p_elem, "name");
             break;
         case moveTo:
             backward = isTrue(p_elem, "backward");
@@ -110,17 +110,18 @@ public class ActionElement extends AnyElement {
         case script:
         case angle:
         case wait:
-        	val = Integer.valueOf(p_elem.getAttribute("value"));
+        	val = readInt(p_elem, "value");
         	break;
         case fadeIn:
         case fadeOut:
             // Integer
-            val = Integer.valueOf(p_elem.getAttribute("type"));
+            val = readInt(p_elem, "type");
             break;
         case focus:
             who = p_elem.getAttribute("name");
             break;
         case take:
+        	val = readInt(p_elem, "value");
         case putDown:
         	text = p_elem.getAttribute("item");
         	break;
