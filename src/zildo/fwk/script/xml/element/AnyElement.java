@@ -53,7 +53,7 @@ public abstract class AnyElement {
      * @return int
      */
     protected int readInt(Element p_elem, String p_attrName) {
-		String strValue = readAttribute(p_elem, "value");
+		String strValue = readAttribute(p_elem, p_attrName);
 		if (strValue == null) {
 			return 0;
 		} else {
