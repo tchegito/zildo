@@ -132,7 +132,7 @@
 			<remove who="roxy" />
 		</condition>
 		<condition name="coucou" exp="gardelaitier_win">
-			<pos who="garde" pos="-24,-20"/>
+			<pos who="garde" pos="-24,-20" delta="true"/>
 			<angle who="garde" value="1"/>
 		</condition>
 		<condition name="ferme" exp="!fermierperdu">
@@ -220,7 +220,7 @@
 	    <spawn type="PRINCESSE_COUCHEE" pos="447,234" who="roxy"/>
 	    <focus name="emissaire"/>
 	    <speak what="camera" text="echange.p1" unblock="true"/>
-	    <fadeIn type="0"/>
+	    <fadeIn type="5"/>
  	    <moveTo pos="935,187" who="emissaire"/>
  	    <moveTo pos="860,233" who="emissaire"/>
 	    <moveTo pos="688,326" who="emissaire"/>

@@ -178,14 +178,17 @@ public class Maison extends Banque {
 				new Point(208, 0), new Point(224, 0), new Point(240, 0),
 				new Point(128, 64),
 				/* Jarre */
-				new Point(128, 32), new Point(128, 48),
+				new Point(64, 192), new Point(64, 208),
 
 				/* Angle optus */
-				new Point(112, 0), new Point(128, 0), new Point(112, 16),
-				new Point(128, 16), new Point(144, 0), new Point(160, 0),
-				new Point(144, 16), new Point(160, 16) };
+				new Point(0, 192), new Point(16,192), new Point(0, 208),
+				new Point(16,208), new Point(32, 192), new Point(48, 192),
+				new Point(32, 208), new Point(48, 208),
+		
+				/* Full wall */
+				new Point(80, 192), new Point(80, 208)
+			};
 
-		pkmChanges = Arrays.asList(new GraphChange("interia1", 0, 0),
-				new GraphChange("interia2", 239, 192));
+		pkmChanges = Arrays.asList(new GraphChange("interia1", 0, 0));
 	}
 }

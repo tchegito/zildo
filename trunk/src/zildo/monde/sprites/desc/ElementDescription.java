@@ -79,7 +79,10 @@ public enum ElementDescription  implements SpriteDescription {
 	SHIELD_RED, SHIELD_YELLOW, STAR1, STAR2, STAR3,
 	
 	// 155
-	BOMBS3, SCEPTER, SPADE, BOOK_SIGN, LEAF, MILK;
+	BOMBS3, SCEPTER, SPADE, BOOK_SIGN, LEAF, MILK,
+	
+	// 161
+	WINDOW_WOOD, PORTRAIT_MARIO, STAFF_POUM, WATER_BRIDGE;
 
 	
 	public int getBank() {
