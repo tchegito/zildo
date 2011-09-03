@@ -505,6 +505,9 @@ public class PersoNJ extends Perso {
 				int seqPos = (getPos_seqsprite() / 40) % 5;
 				add_spr=seqWakeUp[seqPos];
 				break;
+			case CHAUVESOURIS:
+				add_spr=0;
+				break;
 			default:
 				add_spr=angle.value*2 + (getPos_seqsprite() % (4*Constantes.speed)) / (2*Constantes.speed);
 				break;

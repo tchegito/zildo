@@ -28,8 +28,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.LogManager;
 
+import zeditor.tools.banque.Foret1;
 import zeditor.tools.banque.Foret2;
 import zeditor.tools.banque.Grotte;
+import zeditor.tools.banque.Maison;
+import zeditor.tools.banque.Village;
 import zeditor.tools.tiles.MotifBankEdit;
 import zildo.client.gui.GUIDisplay;
 import zildo.fwk.bank.SpriteBank;
@@ -70,11 +73,12 @@ public class Modifier {
        
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
-        //new Modifier().saveElements2();
+        new Modifier().saveElements3();
         //new Modifier().saveFontes2();
         //new Modifier().saveBanque();
         //new Modifier().saveGears();
-        new Modifier().savePnj2();
+        //new Modifier().savePnj();
+        //new Modifier().savePnj2();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
        // new Modifier().ripDialogFromAllMaps();
@@ -87,7 +91,7 @@ public class Modifier {
      }
      
      public void saveBanque() {
-    	 new Foret2().save();
+    	 new Maison().save();
      }
      
      public void saveElements2() {
@@ -106,9 +110,29 @@ public class Modifier {
 
      public void saveElements3() {
          SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
-   		 bankElem.removeSpr(ElementDescription.SCEPTER.getNSpr()+1);
-    	 //bankElem.loadImage("pnj2", COLOR_BLUE);
-    	 //bankElem.addSprFromImage(ElementDescription.SCEPTER.getNSpr(), 100, 17, 23, 11);
+   		 //bankElem.removeSpr(ElementDescription.SCEPTER.getNSpr()+1);
+    	 bankElem.loadImage("elem", COLOR_BLUE);
+    	 //bankElem.removeSpr(ElementDescription.BOOK_SIGN.getNSpr());
+    	 bankElem.removeSpr(ElementDescription.WINDOW_WOOD.getNSpr());
+    	 bankElem.removeSpr(ElementDescription.WINDOW_WOOD.getNSpr());
+    	 // SPADE : 0,177,11,19
+    	 //bankElem.addSprFromImage(ElementDescription.BOOK_SIGN.getNSpr(), 11, 177, 32, 20);
+    	 //bankElem.addSprFromImage(ElementDescription.LEAF.getNSpr(), 16, 169, 8, 7);
+    	 //bankElem.addSprFromImage(ElementDescription.MILK.getNSpr(), 43, 181, 11, 16);
+    	 Zone[] zones = new ElementsPlus().zones;
+    	 int nSpr=123;
+    	 for (Zone z : zones) {
+    		 if (bankElem.getNSprite() <= nSpr) {
+    			 bankElem.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
+    		 }
+    		 nSpr++;
+    		 if (nSpr == 161) {
+    			 bankElem.loadImage("interia2", COLOR_BLUE);
+    		 }
+    		 if (nSpr == 163) {
+    			 bankElem.loadImage("elem", COLOR_BLUE);
+    		 }
+    	 }
     	 bankElem.saveBank();
      }
      
@@ -162,10 +186,9 @@ public class Modifier {
      
      public void savePnj2() {
          SpriteBankEdit bank=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ2));
-         //bank.clear();
-    	 //bank.addSpritesFromBank(new Pnj2());
-         bank.removeSpr(194-128);
-    	 //bank.saveBank();
+         bank.clear();
+    	 bank.addSpritesFromBank(new Pnj2());
+    	 bank.saveBank();
      }
    
      public void savePnj() {
@@ -211,7 +234,7 @@ public class Modifier {
 
     public void saveAllMaps() {
     	
-		String path=Constantes.DATA_PATH;
+		String path=Constantes.DATA_PATH + Constantes.MAP_PATH;
 		
 		FilenameFilter mapFilter = new FilenameFilter() {
     		public boolean accept(File dir, String name) {
@@ -219,7 +242,7 @@ public class Modifier {
     		}
 		};
 		List<File> mapsFile=new ArrayList<File>();
-		File[] scenarioMaps = new File(path+"/anciens").listFiles(mapFilter);
+		File[] scenarioMaps = new File(path).listFiles(mapFilter);
 		mapsFile.addAll(Arrays.asList(scenarioMaps));
 		LogManager.getLogManager().reset();
 		
@@ -228,7 +251,6 @@ public class Modifier {
 		for (File f : mapsFile) {
 			String name=f.getName();
 			System.out.println("Processing "+name+"...");
-	        Constantes.MAP_PATH="anciens/";
 			MapManagement mapManagement=EngineZildo.mapManagement;
 
 			mapManagement.loadMap(name, false);

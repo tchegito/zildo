@@ -171,6 +171,24 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(18, 56, 3, 3), new Zone(22, 61, 5, 5),
 				new Zone(23, 53, 7, 7),
 				// 3 bombs
-				new Zone(142, 68, 16, 16) };
+				new Zone(142, 68, 16, 16),
+				// Scepter
+				new Zone(100, 17, 23, 11),
+				// Spade
+				new Zone(0,177,11,19),
+				// Book sign
+				new Zone(11, 177, 32, 20),
+				// Leaf
+				new Zone(16, 169, 8, 7),
+				// Milk
+				new Zone(43, 181, 11, 16),
+				// House options
+				new Zone(104, 176, 32, 16),	// Window
+				new Zone(136, 176, 26, 15),	// Portrait
+				// Staff (which makes sound 'poum')
+				new Zone(24, 169, 18, 8),
+				// Water bridge
+				new Zone(111, 0, 32, 24)
+		};
 	}
 }

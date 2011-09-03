@@ -90,10 +90,12 @@ public class Ambient {
 	 * @return Weather
 	 */
 	public Weather getWeather(Area p_map) {
-		if (p_map.getAtmosphere() == Atmosphere.OUTSIDE) {
-			return Weather.CLOUD;
-		} else {
-			return Weather.USUAL;
+		switch (p_map.getAtmosphere()) {
+			case OUTSIDE:
+			case CASTLE:
+				return Weather.CLOUD;
+			default:
+				return Weather.USUAL;
 		}
 	}
 }
