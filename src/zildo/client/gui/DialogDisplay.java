@@ -23,6 +23,7 @@ package zildo.client.gui;
 import java.util.List;
 
 import zildo.client.ClientEngineZildo;
+import zildo.client.ClientEventNature;
 import zildo.client.sound.BankSound;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
@@ -30,13 +31,12 @@ import zildo.monde.dialog.WaitingDialog.CommandDialog;
 public class DialogDisplay {
 	
 	public boolean dialoguing;
-	public boolean topicChoosing;
+	
+	private boolean fullSentenceDisplayed;
 	
 	private String currentSentence;
 	private int positionInSentence;
 	private int numToScroll;
-	private int selectedTopic;
-	private int nProposedTopics;
 
 	public DialogDisplay() {
 		dialoguing=false;
@@ -52,9 +52,7 @@ public class DialogDisplay {
 	// Call the right method to manage interaction between Zildo and his human relative
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void manageDialog() {
-		if (topicChoosing) {
-			manageTopic();
-		} else if (dialoguing) {
+		if (dialoguing) {
 			manageConversation();
 		}
 	}
@@ -68,14 +66,14 @@ public class DialogDisplay {
     	boolean result=false;
         for (WaitingDialog dial : p_queue) {
             if (dial.client == null) {
-            	if (dial.sentence != null) {
+            	if (dial.sentence != null && dial.action != CommandDialog.CONTINUE) {
             		if (dial.console) {
             			ClientEngineZildo.guiDisplay.displayMessage(dial.sentence);
             		} else {
             			launchDialog(dial.sentence, dial.action);
             		}
             	} else {
-            		result=actOnDialog(dial.action);
+            		result=actOnDialog(dial.sentence, dial.action);
             	}
             }
         }
@@ -89,7 +87,9 @@ public class DialogDisplay {
 	 */
 	public void launchDialog(String p_sentence, CommandDialog p_dialAction) {
 		
-		currentSentence=p_sentence;
+		currentSentence=p_sentence.replaceAll("[@|$]", "");
+
+		fullSentenceDisplayed = false;
 
 		int displayMode = GUIDisplay.DIALOGMODE_CLASSIC;
 		if (p_dialAction == CommandDialog.BUYING) {
@@ -100,20 +100,6 @@ public class DialogDisplay {
 		positionInSentence=0;
 		ClientEngineZildo.guiDisplay.setText(currentSentence, displayMode);
 		ClientEngineZildo.guiDisplay.setToDisplay_dialoguing(true);
-		dialoguing=true;
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// launchTopicSelection
-	///////////////////////////////////////////////////////////////////////////////////////
-	public void launchTopicSelection() {
-		String currentSentence="La disparition\nLe mauvais temps\nLa dispute entre Henri et Lisa\nLa revolte des paysans\nLe prix des chaussures";
-		ClientEngineZildo.guiDisplay.setText(currentSentence, GUIDisplay.DIALOGMODE_TOPIC);
-		positionInSentence=0;
-		selectedTopic=0;
-		nProposedTopics=5;
-	
-		topicChoosing=true;
 		dialoguing=true;
 	}
 	
@@ -142,6 +128,10 @@ public class DialogDisplay {
 				if (!entireMessageDisplay) {
 					guiDisplay.scrollAndDisplayTextParts(positionInSentence,currentSentence);
 				}
+			} else if (entireMessageDisplay && !fullSentenceDisplayed) {
+			    // Tell server that sentence is full displayed
+			    ClientEngineZildo.askEvent(ClientEventNature.DIALOG_FULLDISPLAY);
+			    fullSentenceDisplayed = true;
 			}
 		} else if (!visibleMessageDisplay ) {
 			// Draw sentences slowly (word are appearing one after another)
@@ -154,14 +144,6 @@ public class DialogDisplay {
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
-	// manageTopic
-	///////////////////////////////////////////////////////////////////////////////////////
-	void manageTopic() {
-		GUIDisplay guiManagement=ClientEngineZildo.guiDisplay;
-		guiManagement.displayTopics(selectedTopic);
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
 	// actOnDialog
 	///////////////////////////////////////////////////////////////////////////////////////
 	// -We came here when player clicks ACTION, UP or DOWN
@@ -170,45 +152,32 @@ public class DialogDisplay {
 	// .Choose topic
 	// -Returns TRUE if dialog is finished
 	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean actOnDialog(CommandDialog actionDialog) {
+	public boolean actOnDialog(String p_sentence, CommandDialog actionDialog) {
 		GUIDisplay guiDisplay = ClientEngineZildo.guiDisplay;
 		boolean entireMessageDisplay=guiDisplay.isEntireMessageDisplay();
 		boolean visibleMessageDisplay=guiDisplay.isVisibleMessageDisplay();
 	
 		boolean result=false;
 		
-		if (topicChoosing) {
-			// Topic
-			switch (actionDialog) {
-			case ACTION:
-				guiDisplay.setToRemove_dialoguing(true);
-				topicChoosing=false;
-				result=true;
-				break;
-			case DOWN:
-				if (selectedTopic != nProposedTopics - 1) {
-					selectedTopic++;
-				}
-				break;
-			case UP:
-				if (selectedTopic != 0) {
-					selectedTopic--;
-				}
-				break;
-			}
-		} else if (dialoguing) {
+		if (dialoguing) {
 			// Conversation
 			switch (actionDialog) {
 				case ACTION:
+				case CONTINUE:
 					if (entireMessageDisplay || visibleMessageDisplay) {
 						// Two cases : continue or quit
 						if (!entireMessageDisplay) {
 							numToScroll=3;
 						} else {
+						    if (actionDialog == CommandDialog.CONTINUE) {
+							launchDialog(p_sentence, actionDialog);
+							return true;
+						    } else {
 							// Quit dialog
 							guiDisplay.setToRemove_dialoguing(true);
 							dialoguing=false;
 							result=true;
+						    }
 						}
 					}
 					break;

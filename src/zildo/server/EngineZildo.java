@@ -28,8 +28,8 @@ import zildo.client.ClientEventNature;
 import zildo.monde.Game;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.ChainingPoint;
-import zildo.monde.map.Point;
 import zildo.monde.map.ChainingPoint.MapLink;
+import zildo.monde.map.Point;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.state.ClientState;
@@ -253,6 +253,10 @@ public class EngineZildo {
             	retEvent.nature = ClientEventNature.NOEVENT;
             	retEvent.mapChange = false;
             	break;
+            case DIALOG_FULLDISPLAY:
+        	dialogManagement.setFullSentenceDisplayed();
+        	retEvent.nature = ClientEventNature.NOEVENT;
+        	break;
         }
 
         retEvent.script=scriptManagement.isScripting();

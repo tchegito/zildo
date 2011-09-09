@@ -41,9 +41,9 @@ import zildo.server.state.ClientState;
 
 public class DialogManagement {
 	
-	private boolean topicChoosing;
-	
 	List<WaitingDialog> dialogQueue;
+	
+	private boolean currentSentenceFullDisplayed;
 	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
@@ -69,65 +69,96 @@ public class DialogManagement {
 	 * @param p_actionDialog
 	 */
 	public void launchDialog(ClientState p_client, Perso persoToTalk, ActionDialog p_actionDialog ) {
-		MapDialog dialogs=EngineZildo.mapManagement.getCurrentMap().getMapDialog();
-		String sentence;
-		
-		if (persoToTalk != null) {
-			// Dialog with character
-			Behavior behav=dialogs.getBehaviors().get(persoToTalk.getName());
-			if (behav == null) {
-				// This perso can't talk
-				return;
-			}
-			int compteDial=persoToTalk.getCompte_dialogue();
-			
-			// Dialog switch : adjust sentence according to quest elements
-			if (persoToTalk.getDialogSwitch() != null) {
-				ZSSwitch swi = new ZSSwitch(persoToTalk.getDialogSwitch());
-				int posSentence = swi.evaluate();
-				if (posSentence > compteDial) {
-					compteDial = posSentence;
-				}
-			}
-	        sentence = dialogs.getSentence(behav, compteDial);
-			
-	        sentence=UIText.getGameText(sentence);
-	        
-	        // Update perso about next sentence he(she) will say
-	        int posSharp = sentence.indexOf("#");
-	        int posDollar = sentence.indexOf("$");
-	        if (posSharp != -1) {
-	            // La phrase demande explicitement de rediriger vers une autre
-	            persoToTalk.setCompte_dialogue(sentence.charAt(posSharp + 1) - 48);
-	            sentence = sentence.substring(0, posSharp);
-	        } else if (posDollar != -1) {
-	        	// This sentence leads to a buying phase
-	        	sentence = sentence.substring(0, posDollar);
-	        	p_client.dialogState.actionDialog=new BuyingAction(p_client.zildo, persoToTalk);
-	        } else if (behav.replique[compteDial + 1] != 0) {
-	            // On passe à la suivante, puisqu'elle existe
-	            persoToTalk.setCompte_dialogue(compteDial + 1);
-	        }
+	    WaitingDialog even = createWaitingDialog(p_client, persoToTalk);
 
-	        // Adventure trigger
-	        TriggerElement trig=TriggerElement.createDialogTrigger(persoToTalk.getName(), compteDial);
-	        EngineZildo.scriptManagement.trigger(trig);
-
-	        // Set the dialoguing states for each Perso
-	        persoToTalk.setDialoguingWith(p_client.zildo);
-
-		} else {
-			// Ingame event
-			sentence=p_actionDialog.text;
-	        p_client.dialogState.actionDialog = p_actionDialog;
+	    if (even != null) {
+		if (persoToTalk == null) {
+		    // Ingame event
+		    even.sentence = p_actionDialog.text;
+		    p_client.dialogState.actionDialog = p_actionDialog;
 		}
+		p_client.dialogState.continuing = even.sentence.indexOf("@") != -1;
+		even.sentence = even.sentence.trim().replaceAll("@", "");
+		dialogQueue.add(even);
+	    }
+        	
+            p_client.dialogState.dialoguing = true;
+            p_client.zildo.setDialoguingWith(persoToTalk);
+	}
 
-        sentence = sentence.trim();
-        dialogQueue.add(new WaitingDialog(sentence, null, false, p_client == null ? null : p_client.location));
+
+	/**
+	 * Returns a WaitingDialog object, ready to be added to the dialog queue.
+	 * @param p_client
+	 * @param persoToTalk (can't be null)
+	 * @return WaitingDialog
+	 */
+	private WaitingDialog createWaitingDialog(ClientState p_client, Perso persoToTalk) {
+		MapDialog dialogs=EngineZildo.mapManagement.getCurrentMap().getMapDialog();
+		String sentence=null;
+		currentSentenceFullDisplayed = false;
+		
+        	if (persoToTalk != null) {
+        	    // Dialog with character
+        	    Behavior behav = dialogs.getBehaviors().get(persoToTalk.getName());
+        	    if (behav == null) {
+        		// This perso can't talk
+        		return null;
+        	    }
+        	    int compteDial = persoToTalk.getCompte_dialogue();
         
-        p_client.dialogState.dialoguing = true;
-        p_client.zildo.setDialoguingWith(persoToTalk);
-    }
+        	    // Dialog switch : adjust sentence according to quest elements
+        	    if (persoToTalk.getDialogSwitch() != null) {
+        		ZSSwitch swi = new ZSSwitch(persoToTalk.getDialogSwitch());
+        		int posSentence = swi.evaluate();
+        		if (posSentence > compteDial) {
+        		    compteDial = posSentence;
+        		}
+        	    }
+        	    sentence = dialogs.getSentence(behav, compteDial);
+        
+        	    sentence = UIText.getGameText(sentence);
+        
+        	    // Update perso about next sentence he(she) will say
+        	    int posSharp = sentence.indexOf("#");
+        	    int posDollar = sentence.indexOf("$");
+        	    if (posSharp != -1) {
+        		// La phrase demande explicitement de rediriger vers une autre
+        		persoToTalk
+        			.setCompte_dialogue(sentence.charAt(posSharp + 1) - 48);
+        		sentence = sentence.substring(0, posSharp);
+        	    } else if (posDollar != -1) {
+        		// This sentence leads to a buying phase
+        		sentence = sentence.substring(0, posDollar);
+        		p_client.dialogState.actionDialog = new BuyingAction(
+        			p_client.zildo, persoToTalk);
+        	    } else if (behav.replique[compteDial + 1] != 0) {
+        		// On passe à la suivante, puisqu'elle existe
+        		persoToTalk.setCompte_dialogue(compteDial + 1);
+        	    }
+        
+        	    // Adventure trigger
+        	    TriggerElement trig = TriggerElement.createDialogTrigger(
+        		    persoToTalk.getName(), compteDial);
+        	    EngineZildo.scriptManagement.trigger(trig);
+        
+        	    // Set the dialoguing states for each Perso
+        	    persoToTalk.setDialoguingWith(p_client.zildo);
+        	}
+        
+        	return new WaitingDialog(sentence, null, false, p_client == null ? null : p_client.location);	    
+	}
+	
+	public void continueDialog(ClientState p_client) {
+	    WaitingDialog even = createWaitingDialog(p_client, p_client.zildo.getDialoguingWith());
+	    p_client.dialogState.continuing = even.sentence.indexOf("@") != -1;
+
+	    if (even != null) {
+		even.sentence = even.sentence.trim();
+		even.action = CommandDialog.CONTINUE;
+		dialogQueue.add(even);
+	    }
+	}
 	
 	/**
 	 * Stop a dialog, when user press key, or brutally when zildo gets hurt.
@@ -151,27 +182,20 @@ public class DialogManagement {
 		}
 	}
 
+	public void goOnDialog(ClientState p_client) {
+	    if (p_client.dialogState.continuing && currentSentenceFullDisplayed) {
+		continueDialog(p_client);
+	    } else {
+		actOnDialog(p_client.location, CommandDialog.ACTION);
+	    }
+	}
+	
 	public void actOnDialog(TransferObject p_location, CommandDialog p_actionDialog) {
 		dialogQueue.add(new WaitingDialog(null, p_actionDialog, false, p_location));
 	}
 	
 	public void writeConsole(String p_sentence) {
 		dialogQueue.add(new WaitingDialog(p_sentence, null, true, null));
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// launchTopicSelection
-	///////////////////////////////////////////////////////////////////////////////////////
-	public void launchTopicSelection() {
-		//TODO : topic
-	}
-
-	public boolean isTopicChoosing() {
-		return topicChoosing;
-	}
-
-	public void setTopicChoosing(boolean topicChoosing) {
-		this.topicChoosing = topicChoosing;
 	}
 	
 	public List<WaitingDialog> getQueue() {
@@ -182,4 +206,7 @@ public class DialogManagement {
 		dialogQueue.clear();
 	}
 
+	public void setFullSentenceDisplayed() {
+	    currentSentenceFullDisplayed = true;
+	}
 }

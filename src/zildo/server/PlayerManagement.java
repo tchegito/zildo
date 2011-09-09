@@ -24,7 +24,6 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.IntSet;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.input.KeyboardState;
-import zildo.monde.dialog.DialogManagement;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Angle;
@@ -36,8 +35,8 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.resource.Constantes;
 import zildo.resource.KeysConfiguration;
@@ -69,7 +68,6 @@ public class PlayerManagement {
 	// -dispatch the keyboard management between various situations:
 	// *regular moving on the map
 	// *conversation
-	// *topic selection
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void manageKeyboard(ClientState p_state) {
 		// Save key state
@@ -105,16 +103,11 @@ public class PlayerManagement {
 			handleCommon();
 			
 			if (dialogState.dialoguing) {
-				if (EngineZildo.dialogManagement.isTopicChoosing()) {
-					// Topic selection
-					handleTopicSelection();
-				} else {
-					// Conversation
-					handleConversation();
-					if (heros.isInventoring()) {
-						// Inside the zildo's inventory
-						handleInventory();
-					}
+				// Conversation
+				handleConversation();
+				if (heros.isInventoring()) {
+					// Inside the zildo's inventory
+					handleInventory();
 				}
 			} else if (heros.isInventoring()) {
 				// Inside the zildo's inventory
@@ -435,7 +428,7 @@ public class PlayerManagement {
 			if (gamePhase == GamePhase.BUYING) {
 				heros.buyItem();
 			} else if (gamePhase == GamePhase.DIALOG || gamePhase == GamePhase.SCRIPT) {
-				EngineZildo.dialogManagement.actOnDialog(client.location, CommandDialog.ACTION);
+			    EngineZildo.dialogManagement.goOnDialog(client);
 			} else if (gamePhase == GamePhase.INGAME && !heros.isInventoring()) { //
 				if (heros.getMouvement()==MouvementZildo.BRAS_LEVES) {
 					heros.throwSomething();
@@ -582,27 +575,6 @@ public class PlayerManagement {
 			if (heros.getMouvement()==MouvementZildo.TIRE) {
 				heros.setMouvement(MouvementZildo.VIDE);
 			}
-		}
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// keyPressTopic
-	///////////////////////////////////////////////////////////////////////////////////////
-	void keyPressTopic() {
-		if (!keysState.key_topicPressed && !client.dialogState.dialoguing) {
-			DialogManagement dialogManagement=EngineZildo.dialogManagement;
-			dialogManagement.launchTopicSelection();
-	
-			keysState.key_topicPressed=true;
-		}
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// keyReleaseTopic
-	///////////////////////////////////////////////////////////////////////////////////////
-	void keyReleaseTopic() {
-		if (keysState.key_topicPressed) {
-			keysState.key_topicPressed=false;
 		}
 	}
 	

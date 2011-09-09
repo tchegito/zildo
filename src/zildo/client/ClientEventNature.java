@@ -39,5 +39,6 @@ public enum ClientEventNature {
 	CHANGINGMAP_SCROLL,			// Client is scrolling
 	CHANGINGMAP_SCROLLOVER,		// Client has finished scrolling
 	SCRIPT,
+	DIALOG_FULLDISPLAY,		// Client has displayed the whole sentence
 	CLEAR;				// Disable all fades and clear current map
 }
