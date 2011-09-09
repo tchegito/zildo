@@ -24,8 +24,9 @@ import zildo.monde.dialog.ActionDialog;
 
 public class DialogState {
 
-	public boolean dialoguing;
+    public boolean dialoguing;
     public ActionDialog actionDialog;
+    public boolean continuing;	// TRUE=character has another sentence to come
     
 	public DialogState() {
 		dialoguing=false;

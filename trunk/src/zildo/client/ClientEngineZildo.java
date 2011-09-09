@@ -76,6 +76,8 @@ public class ClientEngineZildo {
 
 	public static Client client;
 
+	private static ClientEvent askedEvent;
+	
 	public static boolean editing;
 	
 	// Time left to unblock player's moves
@@ -301,6 +303,12 @@ public class ClientEngineZildo {
 						//mapDisplay.setPreviousMap(null);
 					}
 					break;
+				case NOEVENT:
+				    if (askedEvent != null) {
+					retEvent.nature = askedEvent.nature;
+					askedEvent = null;
+				    }
+				    break;
 			}
 		}
 		// Remove GUI when scripting
@@ -422,6 +430,10 @@ public class ClientEngineZildo {
 
 	public void setOpenGLGestion(OpenGLZildo p_openGLGestion) {
 		openGLGestion = p_openGLGestion;
+	}
+	
+	public static void askEvent(ClientEventNature p_nature) {
+	    askedEvent = new ClientEvent(p_nature);
 	}
 
 }
