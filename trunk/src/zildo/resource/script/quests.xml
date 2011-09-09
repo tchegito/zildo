@@ -201,6 +201,7 @@
 	    <speak who="roxy" text="intro.p3" />
 	    <speak who="zildo" text="intro.p4" />
 	    <moveTo who="roxy" pos="945,370" unblock="true"/>
+	    <speak who="roxy" text="intro.p5" />
 	    <moveTo what="camera" pos="700,170" unblock="true"/>
 	    <wait value="100"/>
 	    <moveTo who="zildo" pos="830,300"/>
