@@ -170,13 +170,13 @@ public class DialogDisplay {
 							numToScroll=3;
 						} else {
 						    if (actionDialog == CommandDialog.CONTINUE) {
-							launchDialog(p_sentence, actionDialog);
-							return true;
+								launchDialog(p_sentence, actionDialog);
+								return false;
 						    } else {
-							// Quit dialog
-							guiDisplay.setToRemove_dialoguing(true);
-							dialoguing=false;
-							result=true;
+								// Quit dialog
+								guiDisplay.setToRemove_dialoguing(true);
+								dialoguing=false;
+								result=true;
 						    }
 						}
 					}
