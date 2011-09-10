@@ -236,7 +236,7 @@ public class ClientEngineZildo {
 		} else {
 			switch (p_event.nature) {
 				case CHANGINGMAP_ASKED :
-					// Changing map : 1/3 we launch the fade out
+					// Ch>anging map : 1/3 we launch the fade out
 					retEvent.effect = FilterEffect.BLEND;
 					// Call Circle filter to focus on Zildo
 					zildo = EngineZildo.persoManagement.getZildo();

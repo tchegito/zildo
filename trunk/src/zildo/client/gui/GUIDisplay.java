@@ -197,6 +197,7 @@ public class GUIDisplay {
 		for (int i=0;i<transcoChar.length();i++) {
 			mapTranscoChar.put(transcoChar.charAt(i), i);
 		}
+		mapTranscoChar.put(' ', -1);
 	}
 	
 	int getIndexCharacter(char a) {
@@ -261,10 +262,15 @@ public class GUIDisplay {
 	
 		for (i=0;i<=texte.length();i++) {
 			char a;
+			boolean signAlone=false;	// Detect if a punctuation sign is alone (? or !)
 			if (i==texte.length()) {
 				a=0;
 			} else {
 				a=texte.charAt(i);
+				if (a==' ' && i+1 != texte.length()) {
+					char b = texte.charAt(i+1);
+					signAlone = (b == '!' || b == '?');
+				}
 			}
 			if (a==' ' || a==0 || a=='#' || a=='\n') {
 				if (sizeCurrentLine+sizeCurrentWord > Constantes.TEXTER_SIZEX || a=='\n') {
@@ -287,12 +293,16 @@ public class GUIDisplay {
 				if  (a==' ') {
 					sizeCurrentLine+=Constantes.TEXTER_SIZESPACE;		// Space size
 					nSpr[nLettre]=-1;
-					lastSpacePosition=nLettre;
+					if (!signAlone) {
+						lastSpacePosition=nLettre;
+					}
 				} else if (a!='\n') {	// 'ENDOFTEXT'
 					break;
 				}
-				sizeCurrentLine+=sizeCurrentWord;
-				sizeCurrentWord=0;
+				if (a!=' ' || !signAlone) {
+					sizeCurrentLine+=sizeCurrentWord;
+					sizeCurrentWord=0;
+				}
 			} else {	// Regular character
 				// Store sprite's index to display for this letter
 				nSpr[nLettre]=getIndexCharacter(a);

@@ -254,9 +254,9 @@ public class EngineZildo {
             	retEvent.mapChange = false;
             	break;
             case DIALOG_FULLDISPLAY:
-        	dialogManagement.setFullSentenceDisplayed();
-        	retEvent.nature = ClientEventNature.NOEVENT;
-        	break;
+	        	dialogManagement.setFullSentenceDisplayed();
+	        	retEvent.nature = ClientEventNature.NOEVENT;
+	        	break;
         }
 
         retEvent.script=scriptManagement.isScripting();

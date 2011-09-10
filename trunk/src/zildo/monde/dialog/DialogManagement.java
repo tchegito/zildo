@@ -184,9 +184,9 @@ public class DialogManagement {
 
 	public void goOnDialog(ClientState p_client) {
 	    if (p_client.dialogState.continuing && currentSentenceFullDisplayed) {
-		continueDialog(p_client);
+	    	continueDialog(p_client);
 	    } else {
-		actOnDialog(p_client.location, CommandDialog.ACTION);
+	    	actOnDialog(p_client.location, CommandDialog.ACTION);
 	    }
 	}
 	
