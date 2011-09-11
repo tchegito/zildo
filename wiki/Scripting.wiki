@@ -46,7 +46,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || fadeIn || int || - || - || V || Start a fade in, with given effect ||
 || fadeOut || int || - || - || V || Start a fade out, with given effect ||
 || map || text || - || - || - || Load the given map ||
-|| focus || text || V || - || - || Focus on given character ||
+|| focus || text || V || - || - || Focus on given character (if delta is TRUE, camera moves smoothly) ||
 || spawn || text || V || V || - || Spawn a new character/sprite ||
 || exec || text || - || - || - || Execute a named script ||
 || take || text || V || V || - || A character (Zildo for example) takes an object ||
