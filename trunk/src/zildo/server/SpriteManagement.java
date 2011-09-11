@@ -320,6 +320,8 @@ public class SpriteManagement extends SpriteStore {
 				element = new ElementHearts(x, y);
 				spawnSprite(element);
 				break;
+			case STAFF_POUM:
+				break;
 		}
 
 	}
