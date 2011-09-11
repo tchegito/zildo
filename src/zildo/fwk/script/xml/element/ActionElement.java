@@ -118,7 +118,7 @@ public class ActionElement extends AnyElement {
             val = readInt(p_elem, "type");
             break;
         case focus:
-            who = p_elem.getAttribute("name");
+        	delta = isTrue(p_elem, "delta");
             break;
         case take:
         	val = readInt(p_elem, "value");

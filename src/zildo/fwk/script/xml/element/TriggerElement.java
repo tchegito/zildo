@@ -34,6 +34,7 @@ public class TriggerElement extends AnyElement {
 	String name;	// dialog, map, item and questDone
 	int numSentence;
 	Point location;
+	int radius;	// For location
 	Zone region;	// Unimplemented yet
 	
 	ZSSwitch questSwitch;
@@ -53,6 +54,7 @@ public class TriggerElement extends AnyElement {
         	numSentence=Integer.valueOf(p_elem.getAttribute("num"));
         case LOCATION:
         	name=readAttribute(p_elem, "name");
+        	radius=readInt(p_elem, "radius");
         	String strPos=readAttribute(p_elem, "pos");
         	if (strPos != null) {
         		location=Point.fromString(strPos);
@@ -96,7 +98,8 @@ public class TriggerElement extends AnyElement {
 						return true;
 					} else if (p_another.location != null && location != null) {
 						float dist = p_another.location.distance(location);
-						return dist < 8f;
+						//System.out.println(dist + "   <   "+(8f + 16*radius));
+						return dist < (8f + 16*radius);
 					}
 				}
 				break;

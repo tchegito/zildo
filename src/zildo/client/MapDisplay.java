@@ -28,6 +28,9 @@ import zildo.monde.sprites.SpriteEntity;
 
 public class MapDisplay {
 
+	public final static int CENTER_X = 16 * 10;
+	public final static int CENTER_Y = 16 * 6;
+	
     private Point camera;		// Current camera locatino
     private Point targetCamera;	// Target camera location (if not null, camera moves smoothly to it)
     private final int cameraSpeed=2;
@@ -62,9 +65,9 @@ public class MapDisplay {
 			int x= (int) focused.x;
 			int y= (int) focused.y;
 			
-			camera.x=x-16*10;
+			camera.x=x - CENTER_X;
 		
-			camera.y=y-16*6;
+			camera.y=y - CENTER_Y;
 		
 			// Overflow tests
 			if (camera.x > (16*currentMap.getDim_x() - 16 * 20)) {
@@ -86,15 +89,17 @@ public class MapDisplay {
 			if (scrollingAngle != null) {	// double speed if map is scrolling
 				camSpeed*=2;
 			}
-			if (camera.x < targetCamera.x) {
-				camera.x+=camSpeed;
-			} else if (camera.x > targetCamera.x) {
-				camera.x-=camSpeed;
+			int diffX = camera.x - targetCamera.x;
+			int diffY = camera.y - targetCamera.y;
+			if (diffX < 0) {
+				camera.x+=Math.min(camSpeed, -diffX);
+			} else if (diffX > 0) {
+				camera.x-=Math.min(camSpeed, diffX);
 			}
-			if (camera.y < targetCamera.y) {
-				camera.y+=camSpeed;
-			} else if (camera.y > targetCamera.y) {
-				camera.y-=camSpeed;
+			if (diffY < 0) {
+				camera.y+=Math.min(camSpeed, -diffY);
+			} else if (diffY > 0) {
+				camera.y-=Math.min(camSpeed, diffY);
 			}
 			
 			if (targetCamera.equals(camera)) {

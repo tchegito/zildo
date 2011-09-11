@@ -118,7 +118,7 @@
 		<action>
 			<exec script="enlevement"/>
 			<map name="bucherons"/>
-			<focus name="zildo" />
+			<focus who="zildo" />
 			<moveTo who="zildo" pos="0,1" delta="true"/>
 			<fadeIn type="0"/>
 		</action>
@@ -127,6 +127,15 @@
 		</history>
 	</quest>
 
+	<quest name="hector_1">
+		<trigger>
+			<location name="prisonext" pos="582,326" radius="4"/>
+		</trigger>
+		<action>
+			<exec script="hector_defi1"/>
+		</action>
+	</quest>
+	
 	<mapScript>
 		<condition name="coucou" exp="flut">
 			<remove who="roxy" />
@@ -210,6 +219,7 @@
 	    <moveTo who="zildo" pos="970,370"/>
 	    <moveTo who="zildo" pos="970,292"/>
 	    <angle who="roxy" value="2"/>
+	    <focus who="zildo" delta="true"/>
 	</scene>
 	
 	<scene id="echange">
@@ -219,7 +229,7 @@
 	    <spawn type="GARDE_CANARD" speed="1" pos="928,-10" angle="2" fx="jaune" who="emissaire"/>
 	    <spawn type="BANDIT_VERT" speed="1" pos="516,146" angle="2" who="tony"/>
 	    <spawn type="PRINCESSE_COUCHEE" pos="447,234" who="roxy"/>
-	    <focus name="emissaire"/>
+	    <focus who="emissaire"/>
 	    <speak what="camera" text="echange.p1" unblock="true"/>
 	    <fadeIn type="5"/>
  	    <moveTo pos="935,187" who="emissaire"/>
@@ -314,7 +324,7 @@
 	    <pos what="camera" pos="400,0" />
 	    <fadeIn type="0" unblock="true"/>
 	    <spawn type="GARDE_CANARD" speed="1" pos="520,30" angle="2" fx="noir" who="badguy"/>
-	    <focus name="badguy" />
+	    <focus who="badguy" />
 	    <moveTo pos="520,145" who="badguy" />
 	    <moveTo pos="830,145" who="badguy" />
 	    <moveTo pos="830,290" who="badguy" />
@@ -335,6 +345,34 @@
 	    <music name="Village"/>
 	</scene>
 
+	<scene id="hector_defi1">
+		<actions>
+			<focus who="hector" delta="true"/>
+			<speak who="hector" text="pext.hector.0" />
+		</actions>
+		<actions>
+			<moveTo who="zildo" pos="634,344"/>
+			<moveTo who="hector" pos="656,344"/>
+		</actions>
+		<angle who="zildo" value="1"/>
+		<speak who="hector" text="pext.hector.1" />
+		<angle who="hector" value="2"/>
+		<actions>
+			<speak who="hector" text="pext.hector.2" />
+			<angle who="zildo" value="2"/>
+			<moveTo what="camera" pos="0,60" delta="true"/>
+		</actions>
+		<speak who="hector" text="pext.hector.3" />
+		<actions>
+			<moveTo what="camera" pos="0,-60" delta="true"/>
+		</actions>
+		<angle who="hector" value="3"/>
+		<angle who="zildo" value="1"/>
+		<speak who="hector" text="pext.hector.4" />
+		<speak who="hector" text="pext.hector.5" />
+		<focus who="zildo" delta="true"/>
+	</scene>
+	
 	<scene id="stairsUp">
 		<sound name="ZildoMonte" />
 		<moveTo who="zildo" pos="0,-9" delta="true" speed="0.1" />

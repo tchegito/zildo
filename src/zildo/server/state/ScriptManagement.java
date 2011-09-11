@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import zildo.SinglePlayer;
 import zildo.fwk.script.command.ScriptExecutor;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.ActionElement;
@@ -126,7 +127,7 @@ public class ScriptManagement {
      	if (p_triggerElement.isLocationSpecific()) {
     		boolean atLeastOne=false;
     		for (TriggerElement trig : locationTriggerOnMap) {
-    			if (trig.match(p_triggerElement)) {
+    			if (!trig.done && trig.match(p_triggerElement)) {
     				trig.done=true;
     				atLeastOne=true;
     			}
@@ -288,7 +289,11 @@ public class ScriptManagement {
         }
     	String label=p_kind.getFoundSentence();
     	if (label != null) {
-    		EngineZildo.dialogManagement.launchDialog(Server.getClientFromZildo(p_zildo), null, new ScriptAction(label));
+    		ClientState client = Server.getClientFromZildo(p_zildo);
+    		if (client == null) {
+    			client = SinglePlayer.getClientState();
+    		}
+    		EngineZildo.dialogManagement.launchDialog(client, null, new ScriptAction(label));
     	}
 	}
 	
