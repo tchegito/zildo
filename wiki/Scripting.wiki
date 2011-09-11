@@ -30,7 +30,16 @@ A quest has a name and a state during the game, which can be 'done' or 'undone'.
 
 _Note_ : when loading a saved game, every accomplished quest launches the execution of each 'history' part, but not 'action' part.
 
-= Commands =
+= Trigger =
+
+A trigger can be of 4 different kinds : (corresponding to [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/quest/QuestEvent.java QuestEvent] )
+
+ * location : when a character reach a given location
+ * dialog : when a specific character say a given sentence
+ * inventory : does Zildo have a given item ?
+ * questDone : has Zildo achieved a given quest ?
+
+= Action =
 
 Every action is a parametered command. Here is an exhaustive list of all existing actions :
 
