@@ -18,26 +18,25 @@
  *
  */
 
-package zildo.monde.sprites.desc;
+package zildo.monde.sprites.elements;
 
 /**
  * @author Tchegito
  *
  */
-public enum SpriteAnimation {
+public class ElementStaffs extends ElementChained {
 
-	BUSHES,          // Stripping bushes
-	DEATH,	// When someone dies
-	ROCKBALL,
-	BREAKING_ROCK,
-	DIAMOND,	// Glittering money
-	HEART,	 // falling heart
-	FROM_CHEST,	// Coming from a chest
-	CHIMNEY_SMOKE,	// Smoke on house's chemney
-	ARROW,
-	FROMGROUND, // Under bushes
-	STAR_CIRCLE,
-	CLOUD_FOG,	// A fog made by several cloud ElementDescription.SMOKE
-	HEARTS,	// Hearts flying above a character
-	STAFF_POUM;	// Throw a staff
+	public ElementStaffs(int p_x, int p_y) {
+		super(p_x, p_y);
+	}
+	
+	/* (non-Javadoc)
+	 * @see zildo.monde.sprites.elements.ElementChained#createOne(int, int)
+	 */
+	@Override
+	protected Element createOne(int p_x, int p_y) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
