@@ -95,7 +95,11 @@ public class Pnj2 extends SpriteBanque {
 			          // Fermière (villageoise rose)
 			          new Zone(147, 175, 16, 24), new Zone(163, 175, 16, 24),
 			          new Zone(179, 175, 14, 24), new Zone(193, 174, 13, 25),
-			          new Zone(206, 174, 16, 25), new Zone(222, 174, 16, 25)
+			          new Zone(206, 174, 16, 25), new Zone(222, 174, 16, 25),
+			          // Hector
+			          new Zone(205, 125, 16, 23), new Zone(221, 125, 16, 24),
+			          new Zone(237, 125, 14, 24), new Zone(251, 125, 14, 24)
+			          
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("pnj", 0, 0), new GraphChange("pnj2", 7, 0), 
