@@ -415,6 +415,7 @@ public class PersoNJ extends Perso {
 				add_spr=getPos_seqsprite();
 				break;
 			case MOUSTACHU:
+			case HECTOR:
 				reverse = seq2 == 0 ? 0 : REVERSE_HORIZONTAL;
 				switch (angle) {
 				case NORD:
@@ -437,6 +438,7 @@ public class PersoNJ extends Perso {
 			case BUCHERON_ASSIS:
 			case BANDIT_CHAPEAU:
 			case MOUSTACHU_ASSIS:
+			case BUCHERON_DEBOUT:
 				//Persos à 1 seul sprite
 				add_spr=0;
 				break;

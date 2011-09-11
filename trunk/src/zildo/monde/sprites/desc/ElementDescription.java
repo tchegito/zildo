@@ -107,7 +107,7 @@ public enum ElementDescription  implements SpriteDescription {
 	}
 	
 	public boolean isWeapon() {
-		return this==ENEMYARC_RIGHT1 || this==BOMB || this==BOOMERANG1;
+		return this==SWORD || this==ENEMYARC_RIGHT1 || this==BOMB || this==BOOMERANG1;
 	}
 	
 	/**
@@ -116,6 +116,8 @@ public enum ElementDescription  implements SpriteDescription {
 	 */
 	public ItemKind getItem() {
 		switch (this) {
+		case SWORD:
+			return ItemKind.SWORD;
 		case ENEMYARC_RIGHT1:
 			return ItemKind.BOW;
 		case BOMB:

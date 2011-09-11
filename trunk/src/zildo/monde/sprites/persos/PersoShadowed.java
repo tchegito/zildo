@@ -27,9 +27,10 @@ import zildo.monde.sprites.elements.Element;
  * @author Tchegito
  * 
  */
-public abstract class PersoShadowed extends PersoNJ {
+public class PersoShadowed extends PersoNJ {
 
 	Element shadow;
+	int addY;
 	
 	public PersoShadowed() {
 		shadow = new Element();
@@ -37,9 +38,10 @@ public abstract class PersoShadowed extends PersoNJ {
 		addPersoSprites(shadow);
 	}
 	
-	public PersoShadowed(ElementDescription p_shadowType) {
+	public PersoShadowed(ElementDescription p_shadowType, int p_addY) {
 		this();
 		shadow.setSprModel(p_shadowType);
+		addY = p_addY;
 	}
 	
 	@Override
@@ -49,7 +51,7 @@ public abstract class PersoShadowed extends PersoNJ {
 	        Element ombre=persoSprites.get(0);
 	        ombre.setX(x);
 	        ombre.setY(y-1);
-	        ombre.setZ(-7);
+	        ombre.setZ(-7 + addY);
 	        ombre.setVisible(z>=0);
 	    }
 	    super.finaliseComportement(compteur_animation);

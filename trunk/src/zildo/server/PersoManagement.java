@@ -26,6 +26,7 @@ import java.util.List;
 
 import zildo.monde.map.Angle;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -33,6 +34,7 @@ import zildo.monde.sprites.persos.PersoGarde;
 import zildo.monde.sprites.persos.PersoGardeVert;
 import zildo.monde.sprites.persos.PersoHen;
 import zildo.monde.sprites.persos.PersoNJ;
+import zildo.monde.sprites.persos.PersoShadowed;
 import zildo.monde.sprites.persos.PersoSquirrel;
 import zildo.monde.sprites.persos.PersoVolant;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -193,13 +195,18 @@ public class PersoManagement {
 			case PRINCESS_BUNNY:
 				perso = new PersoSquirrel(p_desc);
 				break;
+			case BUCHERON_DEBOUT:
+				perso = new PersoShadowed(ElementDescription.SHADOW, 0);
+				break;
+			case ABEILLE:
+				perso = new PersoShadowed(ElementDescription.SHADOW_MINUS, 0);
+				perso.setPathFinder(new PathFinderBee(perso));
+				break;
 			default:
 				perso = new PersoNJ();
-				if (p_desc == PersoDescription.ABEILLE) {
-					perso.setPathFinder(new PathFinderBee(perso));
-				}
 				break;
 		}
+		
 
         perso.setX(x);
         perso.setY(y);

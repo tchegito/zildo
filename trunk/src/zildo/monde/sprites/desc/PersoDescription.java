@@ -78,6 +78,8 @@ public enum PersoDescription implements SpriteDescription {
 	GARCON_BLEU(205, 206),
 	GARCON_JAUNE(207, 208),
 	FERMIERE(209, 210, 211, 212, 213, 214),
+	BUCHERON_DEBOUT(124),
+	HECTOR(215, 216, 217, 218),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 	

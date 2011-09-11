@@ -24,6 +24,7 @@ import zildo.SinglePlayer;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
+import zildo.client.MapDisplay;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.filter.FilterEffect;
@@ -75,7 +76,7 @@ public class ActionExecutor {
                 scriptExec.involved.add(perso); // Note that this perso is concerned
             }
             Point location = p_action.location;
-            if (p_action.delta) {
+            if (p_action.delta && location != null) {
             	Point currentPos = null;
             	if (perso != null) {
             		// Given position is a delta with current one (work ONLY with perso, not with camera)
@@ -158,6 +159,10 @@ public class ActionExecutor {
                 	achieved=true;
                 	break;
                 case focus:	// Camera focus on given character
+                	if (p_action.delta) {
+                		Point cameraLoc = new Point(perso.x-MapDisplay.CENTER_X, perso.y-MapDisplay.CENTER_Y);
+                		ClientEngineZildo.mapDisplay.setTargetCamera(cameraLoc);
+                	}
                     ClientEngineZildo.mapDisplay.setFocusedEntity(perso);
                     achieved = true;
                     break;
