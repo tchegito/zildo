@@ -52,6 +52,7 @@ import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoNJ;
@@ -74,6 +75,7 @@ public class PersoPanel extends JPanel {
 	JTextField name;
 	JComboBox script;
 	JComboBox angle;
+	JComboBox persoType;
 	JTextField object;
 	JComboBox info;
 	JSpinner spinner;
@@ -98,13 +100,16 @@ public class PersoPanel extends JPanel {
 	@SuppressWarnings("serial")
 	private JPanel getSouthPanel() {
 		southPanel = new JPanel();
-		southPanel.setLayout(new GridLayout(7, 1));
+		southPanel.setLayout(new GridLayout(8, 1));
 
 		name = new JTextField();
 		addComp(new JLabel("Nom"), name);
 		script = new JComboBox(ZUtils.getValues(MouvementPerso.class));
 		addComp(new JLabel("Script"), script);
 
+		persoType = new JComboBox(ZUtils.getValues(PersoDescription.class));
+		addComp(new JLabel("Type"), persoType);
+		
 		angle = new JComboBox(ZUtils.getValues(Angle.class));
 		addComp(new JLabel("Angle"), angle);
 
@@ -149,6 +154,7 @@ public class PersoPanel extends JPanel {
 		// Now add the listeners
 		listener = new PersoWidgetListener();
 		name.getDocument().addDocumentListener(listener);
+		persoType.addActionListener(listener);
 		script.addActionListener(listener);
 		angle.addActionListener(listener);
 		object.addActionListener(listener);
@@ -185,6 +191,7 @@ public class PersoPanel extends JPanel {
 
 		if (p_perso == null) {
 			name.setText("");
+			persoType.setSelectedIndex(0);
 			script.setSelectedIndex(0);
 			angle.setSelectedIndex(0);
 			info.setSelectedIndex(0);
@@ -193,6 +200,7 @@ public class PersoPanel extends JPanel {
 			behavior = null;
 		} else {
 			name.setText(p_perso.getName());
+			persoType.setSelectedIndex(p_perso.getDesc().ordinal());
 			script.setSelectedIndex(p_perso.getQuel_deplacement().valeur);
 			angle.setSelectedIndex(p_perso.getAngle().value);
 			info.setSelectedIndex(p_perso.getInfo().ordinal());
@@ -252,11 +260,14 @@ public class PersoPanel extends JPanel {
 		public void actionPerformed(ActionEvent actionevent) {
 			if (!updatingUI) {
 				Component comp = (Component) actionevent.getSource();
-				if (comp == angle || comp == script || comp == info) {
+				if (comp == angle || comp == script || comp == info || comp == persoType) {
 					String val = (String) ((JComboBox) comp).getSelectedItem();
 					if (comp == angle) {
 						Angle a = ZUtils.getField(val, Angle.class);
 						currentPerso.setAngle(a);
+					} else if (comp == persoType) {
+						PersoDescription p = ZUtils.getField(val, PersoDescription.class);
+						currentPerso.setDesc(p);
 					} else if (comp == script) {
 						MouvementPerso s = ZUtils.getField(val, MouvementPerso.class);
 						currentPerso.setQuel_deplacement(s);
