@@ -34,7 +34,6 @@ import zildo.server.EngineZildo;
 public class ElementArrow extends ElementThrown  {
 
 	final static float arrowSpeed=2.0f;
-	private Element shadow;
 	
 	private final static Point sizeHorizontal = new Point(15,5);
 	private final static Point sizeVertical = new Point(5,15);

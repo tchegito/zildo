@@ -188,7 +188,10 @@ public class ActionExecutor {
                 	break;
                 case animation:
                 	SpriteAnimation anim = SpriteAnimation.valueOf(p_action.text);
-                	EngineZildo.spriteManagement.spawnSpriteGeneric(anim, location.x, location.y, 0, null, null);
+                	Element animElem = EngineZildo.spriteManagement.spawnSpriteGeneric(anim, location.x, location.y, 0, null, null);
+                	if (p_action.what != null) {
+                	    animElem.setName(p_action.what);
+                	}
                 	achieved = true;
                 	break;
                 case take:	// Someone takes an item
