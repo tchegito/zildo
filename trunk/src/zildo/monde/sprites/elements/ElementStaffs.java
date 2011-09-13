@@ -20,6 +20,15 @@
 
 package zildo.monde.sprites.elements;
 
+import zildo.client.sound.BankSound;
+import zildo.fwk.bank.SpriteBank;
+import zildo.monde.Hasard;
+import zildo.monde.map.Angle;
+import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.persos.Perso;
+import zildo.server.EngineZildo;
+
+
 /**
  * @author Tchegito
  *
@@ -30,13 +39,59 @@ public class ElementStaffs extends ElementChained {
 		super(p_x, p_y);
 	}
 	
-	/* (non-Javadoc)
-	 * @see zildo.monde.sprites.elements.ElementChained#createOne(int, int)
-	 */
+	boolean left=false;
+	
 	@Override
 	protected Element createOne(int p_x, int p_y) {
-		// TODO Auto-generated method stub
-		return null;
+	    // Throw a staff from left or right
+	    int side = left ? 1 : -1;
+	    left=!left;
+	    
+	    int startX = p_x + 200 * side;
+	    int startY = p_y + Hasard.intervalle(100);
+	    startY = 16 * (startY / 16);	// modulo 16 
+	    Angle a = side == -1 ? Angle.EST : Angle.OUEST;
+	    
+	    delay = 30+Hasard.intervalle(10);
+	    
+	    Element staff = new ElementStaff(a, startX, startY, 15, 2, null);
+	    EngineZildo.soundManagement.broadcastSound(BankSound.FlecheTir, staff);
+
+	    return staff;
+	    
 	}
 
+	public class ElementStaff extends ElementThrown {
+
+	    public ElementStaff(Angle p_angle, int p_startX, int p_startY,
+		    int p_startZ, float p_speed, Perso p_shooter) {
+		super(p_angle, p_startX, p_startY, p_startZ, p_speed, p_shooter);
+	        setSprModel(ElementDescription.STAFF_POUM);
+	        
+	        vz = 0.2f;
+	        vx = 1.3f*vx;
+	        az = -0.005f;
+	        z = 8;
+	        
+	        if (angle == Angle.OUEST) {
+	            reverse = REVERSE_HORIZONTAL;
+	        }
+
+	        // Add a shadow
+	        shadow = new Element();
+	        shadow.x = x;
+	        shadow.y = y;
+	        shadow.z = 0;
+	        shadow.nBank = SpriteBank.BANK_ELEMENTS;
+	        shadow.nSpr = ElementDescription.SHADOW_SMALL.ordinal();
+	        shadow.setSprModel(ElementDescription.SHADOW_SMALL);
+	        EngineZildo.spriteManagement.spawnSprite(shadow);
+	    }
+	    
+	    @Override
+	    public void animate() {
+	        super.animate();
+	        
+	    }
+	}
 }

@@ -46,12 +46,13 @@ import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.elements.ElementHearts;
 import zildo.monde.sprites.elements.ElementSmoke;
+import zildo.monde.sprites.elements.ElementStaffs;
 import zildo.monde.sprites.elements.ElementStars;
-import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.elements.ElementStars.StarKind;
+import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.state.ClientState;
 
 public class SpriteManagement extends SpriteStore {
@@ -162,7 +163,7 @@ public class SpriteManagement extends SpriteStore {
 	// misc :money value (just for DIAMANT)
 	// miscPerso :pointer on perso dying (just for DEATH)
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void spawnSpriteGeneric(SpriteAnimation typeSprite, int x, int y, int misc,
+	public Element spawnSpriteGeneric(SpriteAnimation typeSprite, int x, int y, int misc,
 			Perso miscPerso, ElementDescription desc) {
 		Element element = null;
 		Element element2 = null;
@@ -321,9 +322,11 @@ public class SpriteManagement extends SpriteStore {
 				spawnSprite(element);
 				break;
 			case STAFF_POUM:
+			    	element = new ElementStaffs(x, y);
+			    	spawnSprite(element);
 				break;
 		}
-
+		return element;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////

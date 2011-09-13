@@ -47,7 +47,7 @@ public class Element extends SpriteEntity {
 	protected static Logger logger=Logger.getLogger("Element");
 
 	// Elements that Zildo can throw on enemies
-	private static IntSet damageableElements=new IntSet(0,1,11,12,2,38,42, 71,72,73,74,  106);
+	private static IntSet damageableElements=new IntSet(0,1,11,12,2,38,42, 71,72,73,74,  106, 163);
 	// Elements that Zildo can push
 	private static IntSet pushableElements=new IntSet(28,69,70);
 
@@ -153,7 +153,8 @@ public class Element extends SpriteEntity {
 			(a>=ElementDescription.BOOMERANG1.ordinal() && a<=ElementDescription.BOOMERANG4.ordinal()) ||
 			(a==ElementDescription.BOMB.ordinal()) ||
 			a==ElementDescription.BOMBS3.ordinal() ||
-			a==ElementDescription.KEY.ordinal()
+			a==ElementDescription.KEY.ordinal() ||
+			a==ElementDescription.STAFF_POUM.ordinal()
 			)
 			return true;
 		else

@@ -136,6 +136,24 @@
 		</action>
 	</quest>
 	
+	<quest name="start_defi1">
+		<trigger>
+			<location name="prisonext" pos="647,455" radius="2"/>
+		</trigger>
+		<action>
+			<animation type="STAFF_POUM" what="poum" pos="647,539"/>
+		</action>
+	</quest>
+	
+	<quest name="stop_defi1">
+		<trigger>
+			<inventory item="SWORD"/>
+		</trigger>
+		<action>
+			<remove what="poum"/>
+		</action>
+	</quest>
+	
 	<mapScript>
 		<condition name="coucou" exp="flut">
 			<remove who="roxy" />
