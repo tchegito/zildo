@@ -188,7 +188,16 @@ public class ElementsPlus extends SpriteBanque {
 				// Staff (which makes sound 'poum')
 				new Zone(24, 169, 18, 8),
 				// Water bridge
-				new Zone(111, 0, 32, 24)
+				new Zone(111, 0, 32, 24),
+				// Flag
+				new Zone(55, 95, 32, 24),	// Red
+				new Zone(87, 95, 32, 24),	// Blue
+				// Window (castle)
+				new Zone(55, 119, 23, 32),
+				// Statue
+				new Zone(78, 119, 16, 24),
+				// Door
+				new Zone(55, 151, 16, 16), new Zone(55, 167, 16, 5)
 		};
 	}
 }

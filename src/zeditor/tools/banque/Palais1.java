@@ -74,9 +74,12 @@ public class Palais1 extends Banque {
 				new Point(128, 80), new Point(144, 80), new Point(128, 96),
 				new Point(144, 96), new Point(176, 112), new Point(192, 112),
 				new Point(176, 128), new Point(192, 128),
-				/* Boucliers */
+				/* Coins 2 */
 				new Point(224, 0), new Point(240, 0), new Point(224, 16),
-				new Point(240, 16), new Point(224, 32), new Point(240, 32),
+				new Point(240, 16),
+				// Pilier
+				new Point(224, 32), new Point(224, 48),
+				/* Toremove */
 				new Point(224, 48), new Point(240, 48),
 				/* Portes */
 				new Point(0, 80), new Point(16, 80), new Point(0, 96),
@@ -113,7 +116,12 @@ public class Palais1 extends Banque {
 				new Point(160, 144), new Point(176, 144), new Point(160, 160),
 				new Point(176, 160), new Point(192, 144), new Point(208, 144),
 				new Point(224, 144), new Point(192, 160), new Point(208, 160),
-				new Point(224, 160) };
+				new Point(224, 160),
+				
+				/* Coins diagonaux */
+				new Point(288, 0), new Point(304, 0),
+				new Point(288, 16), new Point(304, 16)
+		};
 
 		pkmChanges = Arrays.asList(new GraphChange[] {new GraphChange("interia4", 0, 0)});
 
