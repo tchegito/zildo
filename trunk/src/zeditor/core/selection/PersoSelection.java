@@ -20,6 +20,8 @@
 
 package zeditor.core.selection;
 
+import java.util.List;
+
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.monde.sprites.persos.Perso;
 
@@ -27,7 +29,7 @@ import zildo.monde.sprites.persos.Perso;
  * @author Tchegito
  *
  */
-public class PersoSelection extends SpriteSelection {
+public class PersoSelection extends SpriteSelection<Perso> {
 
 
 	public PersoSelection(Perso p_perso) {
@@ -38,8 +40,8 @@ public class PersoSelection extends SpriteSelection {
 	public SelectionKind getKind() {
 		return SelectionKind.PERSOS;
 	}
-	
-	public Perso getElement() {
-		return (Perso) sprite;
+
+	public List<Perso> getElement() {
+	    return sprites;
 	}
 }

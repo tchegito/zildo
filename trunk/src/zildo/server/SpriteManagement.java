@@ -345,16 +345,14 @@ public class SpriteManagement extends SpriteStore {
 	 * @param x
 	 * @param y
 	 * @param p_foreground TRUE=above the other sprites (GUI) / FALSE=in-game sprite
-	 * @param p_reverse TODO
-	 * @param nBank
-	 * @param nSpr
+	 * @param p_reverse reverse flag
+	 * @param p_adjustPos TRUE=center the element / FALSE=no location adjustment
 	 */
 	public SpriteEntity spawnSprite(SpriteDescription desc, int x, int y,
-			boolean p_foreground, int p_reverse) {
+			boolean p_foreground, int p_reverse, boolean p_adjustPos) {
 
 		int nBank=desc.getBank();
 		int nSpr=desc.getNSpr();
-		SpriteModel spr = getSpriteBank(desc.getBank()).get_sprite(nSpr);
 
 		if (nSpr == 69 || nSpr == 70 || nSpr == 28) {
 			// Particular sprite (Block that Zildo can move, chest...)
@@ -378,9 +376,18 @@ public class SpriteManagement extends SpriteStore {
 			EngineZildo.multiplayerManagement.spawnQuad(x, y);
 			return null;
 		} else {
-			entity = new SpriteEntity(x, y, true);
-			entity.setAjustedX(x - (spr.getTaille_x() >> 1));
-			entity.setAjustedY(y - (spr.getTaille_y() >> 1));
+		    entity = new SpriteEntity(x, y, true);
+		    int adjustX = 0;
+		    int adjustY = 0;
+		    SpriteModel spr = getSpriteBank(desc.getBank()).get_sprite(nSpr);
+		    adjustX = (spr.getTaille_x() >> 1);
+		    if (p_adjustPos) {
+			adjustY = -(spr.getTaille_y() >> 1);
+		    } else {
+			adjustY = -spr.getTaille_y();
+		    }
+		    entity.setAjustedX(x + adjustX);
+		    entity.setAjustedY(y + adjustY);
 		}
 		
 		entity.setNSpr(nSpr);
@@ -780,12 +787,7 @@ public class SpriteManagement extends SpriteStore {
 	 * @return boolean
 	 */
 	public boolean isSpawned(SpriteEntity p_entity) {
-		for (SpriteEntity e : spriteEntities) {
-			if (e.getId() == p_entity.getId()) {
-				return true;
-			}
-		}
-		return false;
+	    return p_entity.getLinkVertices() != 0 && p_entity.visible;
 	}
 	
 	public void translateEntitiesWithoutZildo(Point p_offset) {

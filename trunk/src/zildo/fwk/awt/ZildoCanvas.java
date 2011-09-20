@@ -22,6 +22,7 @@ package zildo.fwk.awt;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -37,6 +38,7 @@ import zeditor.windows.managers.MasterFrameManager;
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.client.ZildoRenderer;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.monde.collision.Rectangle;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
@@ -150,16 +152,18 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 				break;
 			case SPRITES:
 			case PERSOS:
-				SpriteEntity entity=(SpriteEntity) sel.getElement();
-				EngineZildo.spriteManagement.deleteSprite(entity);
-				if (sel.getKind() == SelectionKind.PERSOS) {
-					Perso perso = (Perso) entity;
-					EngineZildo.persoManagement.removePerso(perso);
-					// Remove dialogs too
-					EngineZildo.mapManagement.getCurrentMap().getMapDialog().removePersoDialog(perso.getName());
-					manager.setPersoSelection(null);
-				} else {
-					manager.setSpriteSelection(null);
+				List<SpriteEntity> entities = (List<SpriteEntity>) sel.getElement();
+				for (SpriteEntity entity : entities) {
+        				EngineZildo.spriteManagement.deleteSprite(entity);
+        				if (sel.getKind() == SelectionKind.PERSOS) {
+        					Perso perso = (Perso) entity;
+        					EngineZildo.persoManagement.removePerso(perso);
+        					// Remove dialogs too
+        					EngineZildo.mapManagement.getCurrentMap().getMapDialog().removePersoDialog(perso.getName());
+        					manager.setPersoSelection(null);
+        				} else {
+        					manager.setSpriteSelection(null);
+        				}
 				}
 			default:
 				break;
@@ -196,13 +200,24 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    int h=(cursorLocation.y - camera.y) / 16;
 	    int width=w-i;
 	    int height=h-j;
-	    List<Case> cases=new ArrayList<Case>();
-	    for (int y=j;y<h;y++) {
-    	    	for (int x=i;x<w;x++) {
-    	    	    cases.add(new Case(map.get_mapcase(x, y + 4 )));
-    	    	}
+	    
+	    SelectionKind selKind=manager.getSelectionKind();
+    	    switch (selKind) {
+    	    case SPRITES:
+    		// Get all sprites in the range
+    		List<SpriteEntity> entities = findEntity(selKind, null, new Zone(i, j, w, h));
+    		MasterFrameManager.switchCopySprites(entities);
+    		break;
+    	    default:
+    		// Get all tiles
+        	    List<Case> cases=new ArrayList<Case>();
+        	    for (int y=j;y<h;y++) {
+            	    	for (int x=i;x<w;x++) {
+            	    	    cases.add(new Case(map.get_mapcase(x, y + 4 )));
+            	    	}
+        	    }
+        	    MasterFrameManager.switchCopyTile(width, height, cases);
 	    }
-	    MasterFrameManager.switchCopyTile(width, height, cases);
 	}
 	
 	public void saveMapFile(String p_mapName) {
@@ -318,8 +333,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 			break;
 	    case SPRITES:
 	    case PERSOS:
-	    	SpriteEntity entity=findEntity(kind, p);
-	    	if (entity != null) {
+	    	List<SpriteEntity> entities=findEntity(kind, p, null);
+	    	if (entities != null && entities.size() > 0) {
+	    	    SpriteEntity entity = entities.get(0);
 		    	if (kind == SelectionKind.SPRITES) {
 		    		manager.setSpriteSelection(new SpriteSelection(entity));
 		    	} else {
@@ -332,22 +348,44 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    }
 	}
 	
-	private SpriteEntity findEntity(SelectionKind p_kind, Point p) {
+	/**
+	 * Returns a set of entities according to a point location, or inside a zone.<br/>
+	 * Result is unique for a point, and multiple for a boundary.
+	 * @param p_kind
+	 * @param p_point
+	 * @param p_zone
+	 * @return List<SpriteEntity>
+	 */
+	private List<SpriteEntity> findEntity(SelectionKind p_kind, Point p_point, Zone p_zone) {
     	List<SpriteEntity> sprites=EngineZildo.spriteManagement.getSpriteEntities(null);
     	Point camera=panel.getPosition();
-    	p.x-=camera.x;
-    	p.y-=camera.y;
+    	Rectangle r = null;
+    	if (p_zone != null) {
+    	    r = new Rectangle(p_zone);
+    	    r.multiply(16);
+    	    r.translate(-camera.x, -camera.y);
+    	} else {
+        	p_point.x-=camera.x;
+            	p_point.y-=camera.y;
+    	}
+    	List<SpriteEntity> results = new ArrayList<SpriteEntity>();
     	for (SpriteEntity entity : sprites) {
     		int typ=entity.getEntityType();
     		if ((typ == SpriteEntity.ENTITYTYPE_PERSO && p_kind == SelectionKind.PERSOS) || 
     			(typ != SpriteEntity.ENTITYTYPE_PERSO && p_kind == SelectionKind.SPRITES)) {
 	    		Zone z=entity.getZone();
-	    		if (z.isInto(p.x, p.y)) {
-	    			return entity;
+	    		if (p_zone != null) {
+	    		    if (r.isCrossing(new Rectangle(z))) {
+	    			results.add(entity);
+	    		    }
+	    		} else {
+	    		    if (z.isInto(p_point.x, p_point.y)) {
+	    			return Arrays.asList(entity);
+	    		    }
 	    		}
     		}
     	}
-    	return null;
+    	return results;
 	}
 	
 	/**
@@ -356,23 +394,50 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 * @param p_sel
 	 */
 	private void placePerso(Point p_point, PersoSelection p_sel) {
-		Perso perso=p_sel.getElement();
-		perso.setX(p_point.x);
-		perso.setY(p_point.y);
-		if (!EngineZildo.spriteManagement.isSpawned(perso)) {
-			EngineZildo.spriteManagement.spawnPerso(perso);
+		List<Perso> elems=p_sel.getElement();
+		boolean first=true;
+		Point delta = new Point(0,0);
+		for (Perso perso : elems) {
+        		if (first) {
+        		    delta.x = (int) perso.x - p_point.x;
+        		    delta.y = (int) perso.y - p_point.y;
+        		    perso.setX(p_point.x);
+        		    perso.setY(p_point.y);
+        		    first = false;
+        		} else {
+        		    perso.setX(perso.getX() + delta.x);
+        		    perso.setY(perso.getY() + delta.y);
+        		}
+        		if (!EngineZildo.spriteManagement.isSpawned(perso)) {
+        			EngineZildo.spriteManagement.spawnPerso(perso);
+        		}
 		}
 		changeSprites=true;	// Ask for sprites updating
 	}
 	
 	private void placeSprite(Point p_point, SpriteSelection p_sel) {
-		SpriteEntity elem=p_sel.getElement();
-		elem.x=p_point.x;
-		elem.y=p_point.y;
-		elem.setAjustedX(p_point.x);
-		elem.setAjustedY(p_point.y);
-		if (!EngineZildo.spriteManagement.isSpawned(elem)) {
-			EngineZildo.spriteManagement.spawnSprite(elem);
+		List<SpriteEntity> elems=p_sel.getElement();
+		boolean first=true;
+		Point delta = new Point(0,0);
+		for (SpriteEntity elem : elems) {
+        		// Note the delta
+        		if (first) {
+        		    delta.x = (int) (p_point.x - elem.x);
+        		    delta.y = (int) (p_point.y - elem.y);
+        		    elem.x=p_point.x;
+        		    elem.y=p_point.y;
+        		    first = false;
+        		} else {
+        		    elem.x+=delta.x;
+        		    elem.y+=delta.y;
+        		}
+
+        		elem.setAjustedX((int) elem.x);
+        		elem.setAjustedY((int) elem.y);
+        		if (!EngineZildo.spriteManagement.isSpawned(elem)) {
+        			EngineZildo.spriteManagement.spawnSprite(elem);
+        		}
+        		
 		}
 		manager.setSpriteSelection(p_sel);
 		changeSprites=true;

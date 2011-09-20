@@ -20,6 +20,8 @@
 
 package zildo.monde.map;
 
+import zildo.monde.collision.Rectangle;
+
 public class Zone {
 
 	public int x1,y1;
@@ -88,6 +90,10 @@ public class Zone {
 	 */
 	public boolean isInto(int px, int py) {
 	    return px >= x1 && py >= y1 && px <= (x1+x2) && py <= (y1+y2);
+	}
+	
+	public boolean isCrossing(Zone p_zone) {
+	    return new Rectangle(this).isCrossing(new Rectangle(p_zone));
 	}
 	
 	public String toString() {

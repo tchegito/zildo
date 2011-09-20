@@ -24,6 +24,8 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.Hasard;
 import zildo.monde.map.Angle;
+import zildo.monde.map.Point;
+import zildo.monde.quest.script.DispatchRoundTrip;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
@@ -35,8 +37,12 @@ import zildo.server.EngineZildo;
  */
 public class ElementStaffs extends ElementChained {
 
+    DispatchRoundTrip dispatcher;
+    
 	public ElementStaffs(int p_x, int p_y) {
 		super(p_x, p_y);
+		
+		dispatcher = new DispatchRoundTrip(new Point(p_x, p_y), new Point(0, 100), 16);
 	}
 	
 	boolean left=false;
@@ -47,14 +53,15 @@ public class ElementStaffs extends ElementChained {
 	    int side = left ? 1 : -1;
 	    left=!left;
 	    
-	    int startX = p_x + 200 * side;
-	    int startY = p_y + Hasard.intervalle(100);
-	    startY = 16 * (startY / 16);	// modulo 16 
+	    Point p = dispatcher.next();
+	    
+	    p.x = p_x + 200 * side;
+
 	    Angle a = side == -1 ? Angle.EST : Angle.OUEST;
 	    
 	    delay = 30+Hasard.intervalle(10);
 	    
-	    Element staff = new ElementStaff(a, startX, startY, 15, 2, null);
+	    Element staff = new ElementStaff(a, p.x, p.y, 15, 2, null);
 	    EngineZildo.soundManagement.broadcastSound(BankSound.FlecheTir, staff);
 
 	    return staff;
