@@ -455,7 +455,7 @@ public class PersoZildo extends Perso {
 		} else if (getMouvement() == MouvementZildo.POUSSE && pushedEntity!=null)  {
 		    // Zildo est en train de pousser : obstacle bidon ou bloc ?
 			
-			if (pushedEntity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+			if (pushedEntity.getEntityType().isElement()) {
 				Element pushedElement=(Element) pushedEntity;
 				if (pushedElement.isPushable()) {
 					pushedElement.moveOnPush(getAngle());

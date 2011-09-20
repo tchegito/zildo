@@ -32,6 +32,7 @@ import zildo.monde.map.Pointf;
 import zildo.monde.map.Tile;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
@@ -274,7 +275,7 @@ public abstract class Perso extends Element {
 	
 	public Perso() {
 		super();
-		entityType=SpriteEntity.ENTITYTYPE_PERSO;
+		entityType=EntityType.PERSO;
 	
 		money=(int)Math.random();
 	

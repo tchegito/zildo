@@ -26,6 +26,7 @@ import zildo.fwk.file.EasySerializable;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.map.Point;
 import zildo.monde.map.Zone;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -48,11 +49,6 @@ import zildo.server.EngineZildo;
 //* Manage collision
 public class SpriteEntity extends Identified implements Cloneable, EasySerializable
 {
-	public static final int ENTITYTYPE_ENTITY =0;
-	public static final int ENTITYTYPE_ELEMENT =1;
-	public static final int ENTITYTYPE_PERSO =2;
-	public static final int ENTITYTYPE_FONT =3;
-
 	public static final int REVERSE_HORIZONTAL = 128;
 	public static final int REVERSE_VERTICAL = 64;
 	public static final int FOREGROUND = 32;	// Only for MAP format
@@ -86,7 +82,7 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	public boolean clientSpecific;	// TRUE if this entity should not appear on all client's screen
 	
 	// To identify which type of entity we're dealing with
-	protected int entityType;
+	protected EntityType entityType;
 	
 	public int getScrX() {
 		return scrX;
@@ -200,11 +196,11 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 		this.specialEffect = specialEffect;
 	}
 
-	public int getEntityType() {
+	public EntityType getEntityType() {
 		return entityType;
 	}
 
-	public void setEntityType(int entityType) {
+	public void setEntityType(EntityType entityType) {
 		this.entityType = entityType;
 	}
 
@@ -232,7 +228,7 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	}
 	
 	private void initialize() {
-		entityType=ENTITYTYPE_ENTITY;
+		entityType=EntityType.ENTITY;
 
 		// Default : entity is visible
 		visible=true;
@@ -314,7 +310,7 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 		p_buffer.put(this.z);
 		p_buffer.put((byte) this.getNBank());
 		p_buffer.put((byte) this.getSpecialEffect().ordinal());
-		p_buffer.put((byte) this.getEntityType());
+		p_buffer.put((byte) this.getEntityType().intValue());
 		p_buffer.put(this.getSprModel().getId());
 	}
 	
@@ -350,7 +346,7 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 		entity.dying=bools[3];
 		entity.setNBank(p_buffer.readUnsignedByte());
 		entity.setSpecialEffect(EngineFX.values()[p_buffer.readUnsignedByte()]);
-		entity.setEntityType(p_buffer.readUnsignedByte());
+		entity.setEntityType(EntityType.fromInt(p_buffer.readUnsignedByte()));
 		int idSprModel=p_buffer.readInt();
 		entity.setSprModel(Identified.fromId(SpriteModel.class, idSprModel));
 		int reverse=0;
@@ -368,7 +364,7 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
     public SpriteEntity clone() {
         try {
             SpriteEntity cloned = (SpriteEntity) super.clone();
-            if (ENTITYTYPE_PERSO == getEntityType()) {
+            if (EntityType.PERSO == getEntityType()) {
                 Perso clonedPerso = (Perso) cloned;
                 clonedPerso.setPersoSprites(null);
             }

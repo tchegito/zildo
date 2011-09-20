@@ -45,6 +45,7 @@ import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
@@ -370,9 +371,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
     	}
     	List<SpriteEntity> results = new ArrayList<SpriteEntity>();
     	for (SpriteEntity entity : sprites) {
-    		int typ=entity.getEntityType();
-    		if ((typ == SpriteEntity.ENTITYTYPE_PERSO && p_kind == SelectionKind.PERSOS) || 
-    			(typ != SpriteEntity.ENTITYTYPE_PERSO && p_kind == SelectionKind.SPRITES)) {
+    		EntityType typ=entity.getEntityType();
+    		if ((typ == EntityType.PERSO && p_kind == SelectionKind.PERSOS) || 
+    			(typ != EntityType.PERSO && p_kind == SelectionKind.SPRITES)) {
 	    		Zone z=entity.getZone();
 	    		if (p_zone != null) {
 	    		    if (r.isCrossing(new Rectangle(z))) {

@@ -36,6 +36,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
@@ -435,7 +436,7 @@ public class SpriteManagement extends SpriteStore {
 		// Mandatory to do that first, because one perso can be connected to
 		// other sprites
 		for (SpriteEntity entity : spriteEntities) {
-			if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+			if (entity.getEntityType().isPerso()) {
 				Perso perso = (Perso) entity;
 				int compt=EngineZildo.compteur_animation; // % (3 * 20);
 				if (!p_blockMoves || perso.getInfo() == PersoInfo.ZILDO) {
@@ -471,7 +472,7 @@ public class SpriteManagement extends SpriteStore {
 			// Calcul physique du sprite
 			if (entity.dying) {
 				toDelete.add(entity);
-			} else if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+			} else if (entity.getEntityType().isElement()) {
 				// X, vX, aX, ...
 				element = (Element) entity;
 				element.animate();
@@ -480,7 +481,7 @@ public class SpriteManagement extends SpriteStore {
 					// L'élément est arrivé au terme de son existence : on le
 					// supprime de la liste
 					if (linkedOne != null
-							&& SpriteEntity.ENTITYTYPE_ELEMENT == linkedOne
+							&& EntityType.ELEMENT == linkedOne
 									.getEntityType()) {
 						toDelete.add(linkedOne);
 					}
@@ -525,14 +526,14 @@ public class SpriteManagement extends SpriteStore {
 				if (entity == zildo) {
 					// This IS Zildo ! So we keep him
 					canDelete = false;
-				} else if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+				} else if (entity.getEntityType().isElement()) {
 					Element element = (Element) entity;
 					if (zildo != null && element.getLinkedPerso() == zildo) {
 						// This is an element related to zildo, so we can't
 						// remove it now
 						canDelete = false;
 					}
-				} else if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+				} else if (entity.getEntityType().isPerso()) {
 					canDelete = false;
 				}
 				if (canDelete) {
@@ -563,7 +564,7 @@ public class SpriteManagement extends SpriteStore {
 		boolean isBlockable;
 		boolean isGoodies;
 		boolean isZildo = elem != null
-				&& elem.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO
+				&& elem.getEntityType().isPerso()
 				&& ((Perso) elem).isZildo();
 		Element element;
 		List<SpriteEntity> listToRemove = new ArrayList<SpriteEntity>();
@@ -571,8 +572,8 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : spriteEntities) {
 			element = null;
 			if (entity != entityRef
-					&& (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT || entity
-							.getEntityType() == SpriteEntity.ENTITYTYPE_ENTITY) && !entity.dying) {
+					&& (entity.getEntityType().isElement() || entity
+							.getEntityType().isEntity()) && !entity.dying) {
 				isBlockable = entity.getDesc().isBlocking();
 				isGoodies = entity.isGoodies();
 				SpriteModel sprModel = entity.getSprModel();
@@ -581,7 +582,7 @@ public class SpriteManagement extends SpriteStore {
 				if (isGoodies || isBlockable) {
 					boolean canDealWith = false;
 					Point center=entity.getCenter();
-					if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+					if (entity.getEntityType().isElement()) {
 						// The elements
 						element = (Element) entity;
 						if (element.getLinkedPerso() == null
@@ -652,12 +653,12 @@ public class SpriteManagement extends SpriteStore {
 	 */
     public Element collideElement(int x, int y, Element quelElement, int radius) {
         Perso perso = null;
-        if (quelElement != null && quelElement.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+        if (quelElement != null && quelElement.getEntityType().isPerso()) {
             perso = (Perso) quelElement;
         }
 
         for (SpriteEntity entity : spriteEntities) {
-        	if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+        	if (entity.getEntityType().isElement()) {
 	            if (entity != quelElement) {
 	                int tx = (int) entity.x;
 	                int ty = (int) entity.y;
@@ -793,7 +794,7 @@ public class SpriteManagement extends SpriteStore {
 	public void translateEntitiesWithoutZildo(Point p_offset) {
 	    for (SpriteEntity entity : spriteEntities) {
 	    	if (!entity.clientSpecific && !entity.isZildo()) {
-	    		if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+	    		if (entity.getEntityType().isElement()) {
 	    			Element e=(Element) entity;
 	    			if (e.getLinkedPerso() != null && e.getLinkedPerso().isZildo()) {
 	    				continue;
@@ -822,7 +823,7 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : suspendedEntities) {
 			if (entity != null && !entity.isZildo()) {
 				// Check if this entity is an element linked to Zildo
-				if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+				if (entity.getEntityType().isElement()) {
 					Element linkedPerso=((Element)entity).getLinkedPerso();
 					if (linkedPerso != null && linkedPerso.isZildo()) {
 						continue;
@@ -842,7 +843,7 @@ public class SpriteManagement extends SpriteStore {
     public Element getNamedElement(String p_name) {
         if (p_name != null && !"".equals(p_name)) {
             for (SpriteEntity p : spriteEntities) {
-            	if (p.getEntityType() != SpriteEntity.ENTITYTYPE_ELEMENT) {
+            	if (p.getEntityType() != EntityType.ELEMENT) {
             		continue;
             	}
             	Element e = (Element) p;

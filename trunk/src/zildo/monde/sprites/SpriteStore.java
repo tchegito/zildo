@@ -26,6 +26,7 @@ import java.util.List;
 import zildo.fwk.Identified;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
@@ -121,7 +122,7 @@ public class SpriteStore {
 	// IN:nBank, nSpr, x, y
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Spawn a font character, same as spawnSprite, instead of :
-	// -type is ENTITYTYPE_FONT
+	// -type is EntityType.FONT
 	// -no alignment
 	public SpriteEntity spawnFont(int nBank, int nSpr, int x, int y, boolean visible)
 	{
@@ -135,7 +136,7 @@ public class SpriteStore {
 		entity.setMoved(false);
 		entity.setForeground(true);	// Fonts are in front of the scene
 	
-		entity.setEntityType(SpriteEntity.ENTITYTYPE_FONT);
+		entity.setEntityType(EntityType.FONT);
 	
 		entity.setVisible(visible);
 	
@@ -186,16 +187,16 @@ public class SpriteStore {
 	{
 		if (entity != null) {
 			spriteEntities.remove(entity);
-			if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+			if (entity.getEntityType().isElement()) {
 				Element element=(Element)entity;
 				SpriteEntity linkedEntity=element.getLinkedPerso();
 				// On regarde si cet élément est lié à un autre élément
-				if (linkedEntity != null && linkedEntity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+				if (linkedEntity != null && linkedEntity.getEntityType().isElement()) {
 					// Oui c'est le cas donc on supprime aussi l'autre élément
 					deleteSprite(element.getLinkedPerso());
 				}
 				element.finalize();
-			} else if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+			} else if (entity.getEntityType().isPerso()) {
 				Perso perso=(Perso)entity;
 				EngineZildo.persoManagement.removePerso(perso);
 				perso.finalize();

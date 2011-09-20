@@ -23,6 +23,7 @@ package zildo.monde.sprites.utils;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.resource.Constantes;
 
 /**
@@ -115,9 +116,9 @@ public class SpriteSorter {
 	{
 		// Get the character's Y to check if it's on the screen
 		int y=sprite.getScrY();
-		if (sprite.getEntityType()==SpriteEntity.ENTITYTYPE_FONT) {
+		if (sprite.getEntityType().isFont()) {
 			y=SORTY_MAX;
-		} else if (sprite.getEntityType()!=SpriteEntity.ENTITYTYPE_ENTITY) {
+		} else if (sprite.getEntityType()!=EntityType.ENTITY) {
 			// To get the right comparison, delete the adjustment done by updateSprites
 			// just for filling the sort array
 			SpriteModel spr=sprite.getSprModel();
