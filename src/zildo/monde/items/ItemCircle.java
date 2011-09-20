@@ -95,7 +95,7 @@ public class ItemCircle {
 		
 		center=new Point((int) perso.x-2, (int) perso.y-12);
 		for (Item item : p_items) {
-            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(item.kind.representation, center.x, center.y, true, 0);
+            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(item.kind.representation, center.x, center.y, true, 0, true);
             e.clientSpecific=true;
             e.setSpecialEffect(EngineFX.FOCUSED);
             guiSprites.add(e);

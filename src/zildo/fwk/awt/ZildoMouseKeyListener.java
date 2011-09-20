@@ -112,7 +112,7 @@ public class ZildoMouseKeyListener
 		}
 	}
 
-	private Point getAdjustedPoint(MouseEvent p_event) {
+	public Point getAdjustedPoint(MouseEvent p_event) {
 		Point p=p_event.getPoint();
 		if (canvas.isZoom()) {
 			p.x/=2;

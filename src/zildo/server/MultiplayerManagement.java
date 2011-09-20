@@ -106,7 +106,7 @@ public class MultiplayerManagement {
     	if (k != null && k != ItemKind.SWORD) {
     	    EngineZildo.spriteManagement.spawnSprite(k.representation, 
     	    		(int) p_zildo.getX(), 
-    	    		(int) p_zildo.getY(), false, 0);
+    	    		(int) p_zildo.getY(), false, 0, true);
     	}
     	
     	// Steal money from the dead Zildo

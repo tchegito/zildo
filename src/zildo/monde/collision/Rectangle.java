@@ -22,6 +22,7 @@
 package zildo.monde.collision;
 
 import zildo.monde.map.Point;
+import zildo.monde.map.Zone;
 
 /**
  * @author tchegito
@@ -49,6 +50,16 @@ public class Rectangle {
         coordinates[2] = cornerBottomLeft;
         coordinates[3] = cornerBottomRight;
         size=p_size;
+    }
+    
+    public Rectangle(Zone p_zone) {
+	coordinates = new Point[4];
+	coordinates[0] = new Point(p_zone.x1, p_zone.y1);
+	coordinates[1] = new Point(p_zone.x2, p_zone.y1);
+	coordinates[2] = new Point(p_zone.x1, p_zone.y2);
+	coordinates[3] = new Point(p_zone.x2, p_zone.y2);
+	center = new Point((p_zone.x1 + p_zone.x2 / 2), (p_zone.y1 + p_zone.y2) / 2);
+	size = new Point(p_zone.x2 - p_zone.x1, p_zone.y2 - p_zone.y1);
     }
 
     public void translate(int p_shiftX, int p_shiftY) {

@@ -24,6 +24,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
@@ -34,6 +35,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import zeditor.core.selection.SpriteSelection;
 import zeditor.core.tiles.SpriteSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.monde.sprites.SpriteEntity;
@@ -59,7 +61,10 @@ public class SpritePanel extends JPanel {
 	
 	boolean updatingUI;
 	
+	SpriteSelection sel;
+	
 	SpriteEntity entity;
+	List<SpriteEntity> entities;	// We can modify a global list of entities
 	
 	public SpritePanel(MasterFrameManager p_manager) {
 		setLayout(new BorderLayout());
@@ -78,16 +83,16 @@ public class SpritePanel extends JPanel {
 		foreground = new JCheckBox(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent actionevent) {
-				if (entity != null) {
-					toggleForeground();
+				if (sel != null) {
+					sel.toggleForeground();
 				}
 			}
 		});
 		panel.add(new JLabel("Foreground"));
 		panel.add(foreground);
 		
-		spinX=new JSpinner(new SpinnerNumberModel(0, 0, 16, -1));
-		spinY=new JSpinner(new SpinnerNumberModel(0, 0, 16, -1));
+		spinX=new JSpinner(new SpinnerNumberModel(0, -1, 16, -1));
+		spinY=new JSpinner(new SpinnerNumberModel(0, -1, 16, -1));
 
 		panel.add(new JLabel("Add-x"));
 		panel.add(spinX);
@@ -99,7 +104,7 @@ public class SpritePanel extends JPanel {
 		reverseHorizontal=new JCheckBox(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent actionevent) {
-				if (entity != null) {
+				if (sel != null) {
 					toggleReverse(true);
 				}
 			}
@@ -111,7 +116,7 @@ public class SpritePanel extends JPanel {
 		reverseVertical=new JCheckBox(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent actionevent) {
-				if (entity != null) {
+				if (sel != null) {
 					toggleReverse(false);
 				}
 			}
@@ -128,30 +133,16 @@ public class SpritePanel extends JPanel {
 	}
 	
 	private void toggleReverse(boolean p_horizontal) {
-		boolean isHorizontal=(entity.reverse & SpriteEntity.REVERSE_HORIZONTAL) != 0;
-		boolean isVertical=(entity.reverse & SpriteEntity.REVERSE_VERTICAL) != 0;
-		
-		if (p_horizontal) {
-			isHorizontal=!isHorizontal;
-		} else {
-			isVertical=!isVertical;
-		}
-		
-		entity.reverse=isVertical ? SpriteEntity.REVERSE_VERTICAL : 0;
-		entity.reverse|=isHorizontal ? SpriteEntity.REVERSE_HORIZONTAL : 0;
+	    	sel.reverse(p_horizontal);
 		// Ask a sprite visual update
 		manager.getZildoCanvas().setChangeSprites(true);
-	}
-	
-	private void toggleForeground() {
-		entity.setForeground(!entity.isForeground());
 	}
 	
 	/**
 	 * Update fields with the given entity's infos.
 	 * @param p_entity
 	 */
-	public void focusSprite(SpriteEntity p_entity) {
+	private void focusSprite(SpriteEntity p_entity) {
 		updatingUI=true;
 		if (p_entity == null) {
 			// Reset fields
@@ -171,27 +162,44 @@ public class SpritePanel extends JPanel {
 		entity=p_entity;
 	}
 	
+	public void focusSprites(SpriteSelection p_sel) {
+	    entities = null;
+	    sel = p_sel;
+	    if (p_sel == null) {
+		focusSprite(null);
+	    } else {
+		List<SpriteEntity> ent = p_sel.getElement();
+		if (ent.size() == 1) {
+        		focusSprite(ent.get(0));
+        	    } else {
+        		// We're dealing with a list
+        		entities = ent;
+        		focusSprite(null);
+        	    }
+	    }
+	}
+	
 	class SpriteFieldsListener implements ChangeListener {
 
 		@Override
 		public void stateChanged(ChangeEvent changeevent) {
 			
 			// If we are focusing on an existing sprite, then update his attributes
-			if (!updatingUI && entity != null) {
+			if (!updatingUI && sel != null) {
 				Component comp=(Component) changeevent.getSource();
 				if (comp instanceof JSpinner) {
-					int val=(Integer) ((JSpinner) comp).getValue();
+				    JSpinner spinner = (JSpinner) comp;
+					int val=(Integer) spinner.getValue();
 					if (comp == spinX) {
-						entity.x=16*(int) (entity.x / 16) + val;
-						entity.setAjustedX((int) entity.x);
+					    sel.addX(val);
 					} else if (comp == spinY) {
-						entity.y=16*(int) (entity.y / 16) + val;
-						entity.setAjustedY((int) entity.y);
-						if (val == 16) {
-							spinY.setValue(0);
-						}
+					    sel.addY(val);
 					}
-					entity.animate();
+					if (val == 16) {
+					    spinner.setValue(0);
+					} else if (val == -1) {
+					    spinner.setValue(15);
+					}
 					manager.getZildoCanvas().setChangeSprites(true);
 				}
 			}	

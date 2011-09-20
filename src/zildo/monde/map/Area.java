@@ -515,6 +515,9 @@ public class Area implements EasySerializable {
 			for (int j = 0; j < this.getDim_x(); j++) {
 				Case temp = this.get_mapcase(j, i + 4);
 				
+				if (temp == null) {
+				    temp = new Case();
+				}
 				temp.serialize(p_file);
 			}
 		}
@@ -667,7 +670,7 @@ public class Area implements EasySerializable {
 									break;
 								}
 							}
-							SpriteEntity entity=spriteManagement.spawnSprite(desc, x, y, false, reverse);
+							SpriteEntity entity=spriteManagement.spawnSprite(desc, x, y, false, reverse, false);
 							if ((multi & SpriteEntity.FOREGROUND) != 0) {
 								entity.setForeground(true);
 							}
