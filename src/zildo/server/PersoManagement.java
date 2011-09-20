@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import zildo.monde.map.Angle;
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
@@ -106,7 +105,7 @@ public class PersoManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
     public Perso collidePerso(int x, int y, Element quelElement, int rayon) {
         Perso perso = null;
-        if (quelElement != null && quelElement.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+        if (quelElement != null && quelElement.getEntityType().isPerso()) {
             perso = (Perso) quelElement;
         }
 

@@ -25,6 +25,7 @@ import zildo.monde.collision.DamageType;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
@@ -60,7 +61,7 @@ public class ElementGuardWeapon extends Element {
 	@Override
 	public void animate() {
 		SpriteEntity linked=getLinkedPerso();
-		if (linked == null || SpriteEntity.ENTITYTYPE_PERSO != linked.getEntityType()) {
+		if (linked == null || EntityType.PERSO != linked.getEntityType()) {
 			dying=true;
 		} else if (weaponKind != null) {
 			Perso guard=(Perso) linked;

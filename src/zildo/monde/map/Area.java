@@ -42,6 +42,7 @@ import zildo.monde.dialog.MapDialog;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
@@ -832,10 +833,10 @@ public class Area implements EasySerializable {
 	public List<SpriteEntity> filterExportableSprites(List<SpriteEntity> p_spriteEntities) {
 		List<SpriteEntity> filteredEntities = new ArrayList<SpriteEntity>();
 		for (SpriteEntity entity : p_spriteEntities) {
-			int type = entity.getEntityType();
+			EntityType type = entity.getEntityType();
 			boolean ok = true;
 			// In singleplayer, we have to exclude the sprites related to others. Indeed, its will be created with the mother entity.
-			if (!EngineZildo.game.multiPlayer && entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT) {
+			if (!EngineZildo.game.multiPlayer && entity.getEntityType().isElement()) {
 				Element elem = (Element) entity;
 				if (elem.getLinkedPerso() != null) {
 					ok = false;
@@ -848,7 +849,7 @@ public class Area implements EasySerializable {
 				ok = false;
 			}
 
-			if (entity.isVisible() && ok && (type == SpriteEntity.ENTITYTYPE_ELEMENT || type == SpriteEntity.ENTITYTYPE_ENTITY)) {
+			if (entity.isVisible() && ok && (type == EntityType.ELEMENT || type == EntityType.ENTITY)) {
 				filteredEntities.add(entity);
 			}
 		}

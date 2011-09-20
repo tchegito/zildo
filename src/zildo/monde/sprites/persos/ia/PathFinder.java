@@ -24,7 +24,7 @@ import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
 import zildo.monde.map.Zone;
-import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.utils.MouvementPerso;
 
@@ -131,7 +131,7 @@ public class PathFinder {
         float x=mobile.x;
         float y=mobile.y;
         
-        if (SpriteEntity.ENTITYTYPE_PERSO != mobile.getEntityType()) {
+        if (EntityType.PERSO != mobile.getEntityType()) {
         	return;
         }
         

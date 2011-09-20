@@ -39,7 +39,7 @@ import zildo.monde.map.Point;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
 import zildo.monde.map.Zone;
-import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -216,7 +216,7 @@ public class MapManagement {
 
 		// Is it a ghost ?
 		boolean ghost = false;
-		Perso p = quelElement != null && quelElement.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO ? (Perso) quelElement : null;
+		Perso p = quelElement != null && quelElement.getEntityType().isPerso() ? (Perso) quelElement : null;
 		if (p != null && p.isUnstoppable()) {
 			return false;
 		}
@@ -231,7 +231,7 @@ public class MapManagement {
 		Point size = new Point(8, 4); // Default size
 		if (quelElement != null && quelElement.flying
 				&& quelElement.getAngle() != null
-				&& SpriteEntity.ENTITYTYPE_PERSO != quelElement.getEntityType()) {
+				&& EntityType.PERSO != quelElement.getEntityType()) {
 			// Flying object
 			angleFlying = quelElement.getAngle();
 

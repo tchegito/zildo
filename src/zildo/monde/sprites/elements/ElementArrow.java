@@ -26,8 +26,8 @@ import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 
@@ -164,7 +164,7 @@ public class ElementArrow extends ElementThrown  {
 	public Collision getCollision() {
     	Point pos=new Point(x, y);
     	Perso perso=null;
-    	if (SpriteEntity.ENTITYTYPE_PERSO == getLinkedPerso().getEntityType()) {
+    	if (EntityType.PERSO == getLinkedPerso().getEntityType()) {
     		perso=(Perso) getLinkedPerso();
     	}
     	if (angle.isHorizontal()) {

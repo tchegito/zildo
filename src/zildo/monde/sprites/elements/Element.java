@@ -34,6 +34,7 @@ import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -75,7 +76,7 @@ public class Element extends SpriteEntity {
 	
 
 	private void initialize() {
-		entityType=ENTITYTYPE_ELEMENT;
+		entityType=EntityType.ELEMENT;
 	
 		// Default Bank & Spr
 		nBank=SpriteBank.BANK_ELEMENTS;
@@ -119,7 +120,7 @@ public class Element extends SpriteEntity {
 		this.linkedPerso=original.linkedPerso;
 		this.nBank=original.nBank;
 	
-		this.entityType=ENTITYTYPE_ELEMENT;
+		this.entityType=EntityType.ELEMENT;
 		//logger.log(Level.INFO, "Copying Element");
 		
 	}
@@ -192,7 +193,7 @@ public class Element extends SpriteEntity {
 			return true;
 		}
 		// S'il s'agit d'un personnage
-		if (entityType==SpriteEntity.ENTITYTYPE_PERSO) {
+		if (entityType.isPerso()) {
 			return true;
 			//PersoDescription desc=((Perso)this).getQuel_spr();
 			//return (desc.equals(PersoDescription.POULE));
@@ -209,7 +210,7 @@ public class Element extends SpriteEntity {
         if (isSolid() || pushableElements.contains(nSpr)) {
         	SpriteEntity linked=this.getLinkedPerso();
         	boolean partOfPerso=false;
-        	if (linked != null && linked.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+        	if (linked != null && linked.getEntityType().isPerso()) {
         		Perso perso = (Perso) this.getLinkedPerso();
         		partOfPerso = perso == null ? false : perso.linkedSpritesContains(this);
         	}
@@ -324,7 +325,7 @@ public class Element extends SpriteEntity {
 		// Default, collision from element is related to the linked Perso
         SpriteEntity linked = linkedPerso;
         Element weapon = this;
-        if (this.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+        if (this.getEntityType().isPerso()) {
         	// If Element we're handling is a Perso, adjust infos
         	linked=this;
         	weapon=null;

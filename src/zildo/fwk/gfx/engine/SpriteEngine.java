@@ -301,7 +301,7 @@ public class SpriteEngine extends TextureEngine {
 	// *On considère que StartInitialization a déjà été appelé*
 	public void addSprite(SpriteEntity entity) {
 		float z=0.0f;
-		if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT)
+		if (entity.getEntityType().isElement())
 			z=((Element)entity).z;
 	
 		SpriteModel spr=entity.getSprModel();
@@ -323,8 +323,8 @@ public class SpriteEngine extends TextureEngine {
 	public void synchronizeSprite(SpriteEntity entity) {
 	
 		float z=0.0f;
-		if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_ELEMENT ||
-				entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO)
+		if (entity.getEntityType().isElement() ||
+				entity.getEntityType().isPerso())
 			z=entity.z;
 
 		// Reverse attribute

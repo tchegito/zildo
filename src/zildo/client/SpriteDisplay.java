@@ -113,7 +113,7 @@ public class SpriteDisplay extends SpriteStore {
 		// Do perso animations
 		// Mandatory to do that first, because one perso can be connected to other sprites
 		for (SpriteEntity entity : entities) {
-			if (entity.getEntityType() == SpriteEntity.ENTITYTYPE_PERSO) {
+			if (entity.getEntityType().isPerso()) {
 				// Camera moves
 				entity.setScrX ( entity.getAjustedX() - cameraNew.x);
 				entity.setScrY ( entity.getAjustedY() - cameraNew.y);
@@ -123,10 +123,10 @@ public class SpriteDisplay extends SpriteStore {
 		for (SpriteEntity entity : entities) {
 			if (entity != null) {
 				// Camera moves
-				if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ENTITY) { 
+				if (entity.getEntityType().isEntity()) { 
 					entity.setScrX(entity.getAjustedX() - cameraNew.x);
 					entity.setScrY(entity.getAjustedY() - cameraNew.y);
-				} else if (entity.getEntityType()==SpriteEntity.ENTITYTYPE_ELEMENT) {
+				} else if (entity.getEntityType().isElement()) {
 					// Center sprite
 					SpriteModel spr=entity.getSprModel();
 					entity.setScrX(entity.getAjustedX() - cameraNew.x - (spr.getTaille_x() >> 1));
