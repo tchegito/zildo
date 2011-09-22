@@ -58,6 +58,7 @@ public class SpritePanel extends JPanel {
 	JCheckBox foreground;
 	JSpinner spinX;
 	JSpinner spinY;
+	JLabel entityType;
 	
 	boolean updatingUI;
 	
@@ -88,6 +89,11 @@ public class SpritePanel extends JPanel {
 				}
 			}
 		});
+		
+		entityType=new JLabel();
+		panel.add(new JLabel("Kind"));
+		panel.add(entityType);
+		
 		panel.add(new JLabel("Foreground"));
 		panel.add(foreground);
 		
@@ -146,12 +152,14 @@ public class SpritePanel extends JPanel {
 		updatingUI=true;
 		if (p_entity == null) {
 			// Reset fields
+		    	entityType.setText("");
 			spinX.setValue(0);
 			spinY.setValue(0);
 			reverseHorizontal.setSelected(false);
 			reverseVertical.setSelected(false);
 			foreground.setSelected(false);
 		} else {
+		    	entityType.setText(p_entity.getEntityType().toString());
 			spinX.setValue((int) p_entity.x % 16);
 			spinY.setValue((int) p_entity.y % 16);
 			reverseHorizontal.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_HORIZONTAL));

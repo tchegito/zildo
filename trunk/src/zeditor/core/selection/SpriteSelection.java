@@ -98,17 +98,19 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 	
 	public void addX(int p_value) {
 	    for (SpriteEntity e : sprites) {
+		int diffx = (int) e.x;
 		e.x=16*(int) (e.x / 16) + p_value;
-		e.setAjustedX((int) e.x);
-		//e.animate();
+		diffx-=e.x;
+		e.setAjustedX(e.getAjustedX() - diffx);
 	    }
 	}
 	
 	public void addY(int p_value) {
 	    for (SpriteEntity e : sprites) {
+		int diffy = (int) e.y;
 		e.y=16*(int) (e.y / 16) + p_value;
-		e.setAjustedY((int) e.y);
-		//e.animate();
+		diffy-=e.y;
+		e.setAjustedY(e.getAjustedY() - diffy);
 	    }
 	}
 
