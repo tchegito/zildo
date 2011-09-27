@@ -262,5 +262,13 @@ public class ChainingPointPanel extends JPanel {
         	return points[p_num];
         }
         
+        @Override
+        public Object getValueAt(int p_row, int p_column) {
+            if (p_row >= points.length) {
+        	return null;	// Changing map => transition, so we return NULL
+            } else {
+        	return super.getValueAt(p_row, p_column);
+            }
+        }
 	}
 }
