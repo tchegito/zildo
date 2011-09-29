@@ -20,6 +20,9 @@
 
 package zeditor.core.prefetch.complex;
 
+import java.util.List;
+
+import zildo.fwk.MultiMap;
 import zildo.monde.map.Area;
 import zildo.monde.map.Point;
 
@@ -76,7 +79,9 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 				} else {
 					patchValue = smallPatch[i*size +j];
 				}
-				arrangeOneTile(p_map, patchValue, p_start.x+j, p_start.y+i);
+				if (patchValue != -1) {
+				    arrangeOneTile(p_map, patchValue, p_start.x+j, p_start.y+i);
+				}
 			}
 		}
 	}
@@ -86,11 +91,7 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 		int val=p_map.readmap(p_x, p_y);
 		val=toBinaryValue(val);
 		// Add patch value
-		if (big) {
-			val=val | p_patchValue;
-		} else {
-			val=val | p_patchValue;
-		}
+		val=val | p_patchValue;
 		// And render the arranged one
 		val=toGraphicalValue(val); 
 		drawOneTile(p_map, p_x, p_y, val);		
@@ -102,5 +103,31 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 
 	final protected void setBigPatch(int[] p_bytes) {
 		bigPatch = p_bytes;
+	}
+	
+	final protected int[] getBigPatch() {
+	    return bigPatch;
+	}
+	
+	final protected byte[] getReverseTab(byte[] p_tab, int p_startTile) {
+	    MultiMap<Integer, Integer> temp=new MultiMap<Integer, Integer>();
+	    int maxTile=0;
+	    for (int i=0;i<=15;i++) {
+		temp.put((int) p_tab[i], i);
+		maxTile = Math.max(p_tab[i], maxTile);
+	    }
+	    byte[] result = new byte[maxTile - p_startTile + 1];
+	    for (int i=p_startTile;i<=maxTile;i++) {
+		List<Integer> vals = temp.get(i);
+		if (vals != null) {
+        		for (Integer v : vals) {
+        		    result[i-p_startTile] = v.byteValue();
+        		}
+		} else {
+		    result[i-p_startTile] = 0;
+		}
+	    }
+	    
+	    return result;
 	}
 }

@@ -20,10 +20,13 @@
 
 package zeditor.core.prefetch;
 
-import zeditor.core.prefetch.complex.TraceDelegateDraw;
+import zeditor.core.prefetch.complex.CastleLow;
+import zeditor.core.prefetch.complex.CastleMiddle1;
+import zeditor.core.prefetch.complex.CompositePatch12;
 import zeditor.core.prefetch.complex.ForestBorder;
 import zeditor.core.prefetch.complex.HillTop;
 import zeditor.core.prefetch.complex.Road;
+import zeditor.core.prefetch.complex.TraceDelegateDraw;
 import zeditor.core.prefetch.complex.Water;
 import zildo.monde.map.Point;
 
@@ -39,7 +42,10 @@ public enum PrefTraceDrop {
 	GrandChemin(new Point(3, 3), new Road(true)),
 	PetiteLisiere(new Point(2, 2), new ForestBorder(false)),
 	GrandeLisiere(new Point(3, 3), new ForestBorder(true)),
-	Eau(new Point(3, 3), new Water());
+	Eau(new Point(3, 3), new Water()),
+	Palais(new Point(3, 3), new CastleLow()),
+	Palais2(new Point(3, 3), new CastleMiddle1()),
+	Palais3(new Point(5, 5), new CompositePatch12(new CastleLow(), new CastleMiddle1()));
 	
 	Point size;
 	TraceDelegateDraw method;

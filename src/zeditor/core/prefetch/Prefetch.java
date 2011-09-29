@@ -39,7 +39,10 @@ public enum Prefetch {
 	Souterrain(PrefKind.TraceDrop), SouterrainLarge(PrefKind.TraceDrop),
 	ArbreRouge(PrefKind.Drop), ArbreJaune(PrefKind.Drop),
 	RouteDesert(PrefKind.TraceDrop),
-	PetiteLisiere(PrefKind.TraceDrop), GrandeLisiere(PrefKind.TraceDrop);
+	PetiteLisiere(PrefKind.TraceDrop), GrandeLisiere(PrefKind.TraceDrop),
+	Palais(PrefKind.TraceDrop),
+	Palais2(PrefKind.TraceDrop),
+	Palais3(PrefKind.TraceDrop);
 	
 	PrefKind kind;
 	
