@@ -437,6 +437,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
         		elem.setAjustedY(elem.getAjustedY() + delta.y);
         		if (!EngineZildo.spriteManagement.isSpawned(elem)) {
         			EngineZildo.spriteManagement.spawnSprite(elem);
+        			elem.animate();
         		}
         		
 		}
