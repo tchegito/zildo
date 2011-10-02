@@ -30,6 +30,17 @@ Plus simple ones :
 
 Note that diagonal values are excluded : 6, 9.
 
+It gives this :
+
+|| 8 || 12 || 4 ||
+|| 10 || 15 || 5 ||
+|| 2 || 3 || 1 ||
+
+and (for inside corners) :
+
+|| 11 || 13 ||
+|| 14 || 7 ||
+
 == Graphical view ==
 
 Let's take the forest border example.
