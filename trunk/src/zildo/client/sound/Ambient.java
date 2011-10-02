@@ -64,6 +64,8 @@ public class Ambient {
 				return 512;
 			case DESERT:
 			    return 256*5 + 59;
+			case CASTLE:
+				return 256*7 + 96;
 			}
 		}
 	}

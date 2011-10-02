@@ -53,4 +53,6 @@ public interface SpriteDescription {
 			throw new RuntimeException("Can't find sprite for bank "+nBank+" and sprite "+nSpr);
 		}
 	}
+	
+	public int ordinal();
 }

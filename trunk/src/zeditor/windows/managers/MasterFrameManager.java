@@ -114,7 +114,9 @@ public class MasterFrameManager {
 
 	public void saveAs(String newMapFile) {
 		currentMapFile=newMapFile;
+		
 		save();
+		updateTitle();
 	}
 	
 	/**
@@ -122,7 +124,7 @@ public class MasterFrameManager {
 	 * pui lance (ou annule) la sauvegarde
 	 */
 	public void saveAs() {
-		display("[A FAIRE] Enregistrer sous...", MESSAGE_ERROR);
+		display("Enregistrer sous...", MESSAGE_ERROR);
 		openFileExplorer(ExplorerFrameManager.SAVE);
 	}
 

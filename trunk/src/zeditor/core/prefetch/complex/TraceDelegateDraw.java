@@ -58,7 +58,7 @@ public abstract class TraceDelegateDraw {
 								if (binaryValue == 0) {
 									p_map.writemap(p.x, p.y, tile);
 								} else {
-									adjDraw.arrangeOneTile(p_map, binaryValue, p.x, p.y);
+									adjDraw.arrangeOneTile(p_map, binaryValue, p.x, p.y, null);
 								}
 							} else {
 								p_map.writemap(p.x, p.y, tile);

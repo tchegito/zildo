@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import zildo.client.ClientEngineZildo;
+import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyReadingFile;
@@ -139,10 +140,12 @@ public class MapManagement {
 	}
 
 	public void clearMap() {
+		Atmosphere savedAtmo = Atmosphere.OUTSIDE;	// Default 
 		if (currentMap != null) {
+			savedAtmo = currentMap.getAtmosphere();
 			deleteCurrentMap();
 		}
-		currentMap = new Area(false);
+		currentMap = new Area(savedAtmo);
 		currentMap.setName("Nouvelle");
 		analyseAltitude();
 	}

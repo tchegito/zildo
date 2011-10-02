@@ -38,6 +38,7 @@ public class Water extends AbstractPatch12 {
 	
 	int startWater = 108;
 
+	// Add hills around the water
 	Adjustment[] adjustments = new Adjustment[] {
 			new Adjustment(121, Angle.NORD, 28, 26, 27),
 			new Adjustment(108, Angle.NORD, 131, 31, 32),
@@ -52,18 +53,7 @@ public class Water extends AbstractPatch12 {
 			new Adjustment(112, Angle.EST, 135, 17),
 			new Adjustment(111, Angle.EST, 137, 17)
 	};
-	
-	class Adjustment {
-		Angle a;
-		int matchTile;
-		int[] addedTiles;
-		
-		public Adjustment(int p_matchTile, Angle p_angle, int... p_addedTiles) {
-			a = p_angle;
-			matchTile = p_matchTile;
-			addedTiles = p_addedTiles;
-		}
-	}
+
 	
 	public Water() {
 		super(true);
@@ -71,22 +61,7 @@ public class Water extends AbstractPatch12 {
 	
 	public void draw(Area p_map, Point p_start) {
 		super.draw(p_map, p_start);
-		
-		// Add hills around the water
-		for (int i=0;i<3;i++) {
-			for (int j=0;j<3;j++) {
-				int val=p_map.readmap(p_start.x+j, p_start.y+i);
-				for (Adjustment adj : adjustments) {
-					if (adj.matchTile == val) {
-						Point p=new Point(p_start).translate(j, i);
-						for (int tile : adj.addedTiles) {
-							p = p.translate(adj.a.coords);
-							//p_map.writemap(p.x, p.y, tile);
-						}
-					}
-				}
-			}
-		}
+
 	}
 	
 	@Override

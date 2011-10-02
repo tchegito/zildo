@@ -22,12 +22,15 @@ package zeditor.windows.subpanels;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -38,7 +41,9 @@ import javax.swing.event.ChangeListener;
 import zeditor.core.selection.SpriteSelection;
 import zeditor.core.tiles.SpriteSet;
 import zeditor.windows.managers.MasterFrameManager;
+import zildo.fwk.ZUtils;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 
 /**
  * @author Tchegito
@@ -56,13 +61,14 @@ public class SpritePanel extends JPanel {
 	JCheckBox reverseHorizontal;
 	JCheckBox reverseVertical;
 	JCheckBox foreground;
+	JComboBox spriteType;
 	JSpinner spinX;
 	JSpinner spinY;
 	JLabel entityType;
 	
 	boolean updatingUI;
 	
-	SpriteSelection sel;
+	SpriteSelection<SpriteEntity> sel;
 	
 	SpriteEntity entity;
 	List<SpriteEntity> entities;	// We can modify a global list of entities
@@ -93,6 +99,11 @@ public class SpritePanel extends JPanel {
 		entityType=new JLabel();
 		panel.add(new JLabel("Kind"));
 		panel.add(entityType);
+		
+		spriteType = new JComboBox(ZUtils.getValues(ElementDescription.class));
+		Dimension d = spriteType.getPreferredSize();
+		panel.add(new JLabel("Type"));
+		panel.add(spriteType);
 		
 		panel.add(new JLabel("Foreground"));
 		panel.add(foreground);
@@ -131,7 +142,8 @@ public class SpritePanel extends JPanel {
 		panel.add(new JLabel("Reverse V"));
 		panel.add(reverseVertical);
 
-		ChangeListener listener=new SpriteFieldsListener();
+		SpriteFieldsListener listener=new SpriteFieldsListener();
+		spriteType.addActionListener(listener);
 		spinX.addChangeListener(listener);
 		spinY.addChangeListener(listener);
 		
@@ -155,11 +167,13 @@ public class SpritePanel extends JPanel {
 		    	entityType.setText("");
 			spinX.setValue(0);
 			spinY.setValue(0);
+			spriteType.setSelectedIndex(0);
 			reverseHorizontal.setSelected(false);
 			reverseVertical.setSelected(false);
 			foreground.setSelected(false);
 		} else {
-		    	entityType.setText(p_entity.getEntityType().toString());
+	    	entityType.setText(p_entity.getEntityType().toString());
+	    	spriteType.setSelectedIndex(p_entity.getDesc().ordinal());
 			spinX.setValue((int) p_entity.x % 16);
 			spinY.setValue((int) p_entity.y % 16);
 			reverseHorizontal.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_HORIZONTAL));
@@ -170,7 +184,7 @@ public class SpritePanel extends JPanel {
 		entity=p_entity;
 	}
 	
-	public void focusSprites(SpriteSelection p_sel) {
+	public void focusSprites(SpriteSelection<SpriteEntity> p_sel) {
 	    entities = null;
 	    sel = p_sel;
 	    if (p_sel == null) {
@@ -187,7 +201,7 @@ public class SpritePanel extends JPanel {
 	    }
 	}
 	
-	class SpriteFieldsListener implements ChangeListener {
+	class SpriteFieldsListener implements ChangeListener, ActionListener {
 
 		@Override
 		public void stateChanged(ChangeEvent changeevent) {
@@ -212,5 +226,18 @@ public class SpritePanel extends JPanel {
 				}
 			}	
 		}
+		
+		public void actionPerformed(ActionEvent actionevent) {
+			if (!updatingUI && sel != null) {
+				Component comp = (Component) actionevent.getSource();
+				if (comp == spriteType) {
+					String val = (String) ((JComboBox) comp).getSelectedItem();
+					ElementDescription desc = ZUtils.getField(val, ElementDescription.class);
+					entity.setDesc(desc);
+				}
+				manager.getZildoCanvas().setChangeSprites(true);
+			}
+		}
 	}
+		
 }
