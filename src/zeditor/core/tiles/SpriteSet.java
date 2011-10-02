@@ -114,6 +114,9 @@ public class SpriteSet extends ImageSet {
     			public boolean isBlocking() {
     				return false;
     			}
+    			public int ordinal() {
+    				return n;
+    			}
     		});
     	}
     	return list;
@@ -225,7 +228,8 @@ public class SpriteSet extends ImageSet {
 	 * @param p_elem
 	 * @return SpriteSelection
 	 */
-	private SpriteSelection buildSelection(Element p_elem) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private <T extends SpriteEntity> SpriteSelection<T> buildSelection(T p_elem) {
 	    switch ((ElementDescription) p_elem.getDesc()) {
 	    	case DOOR_OPEN1:
 	    	    // Create linked elements
@@ -246,7 +250,7 @@ public class SpriteSet extends ImageSet {
 	    	    up2.reverse=Element.REVERSE_HORIZONTAL | Element.REVERSE_VERTICAL;
 	    	    return new SpriteSelection(Arrays.asList(p_elem, el, up1, up2));
 	    	default:
-	    		return new SpriteSelection(p_elem);
+	    		return new SpriteSelection<T>(p_elem);
 	    }
 	}
 

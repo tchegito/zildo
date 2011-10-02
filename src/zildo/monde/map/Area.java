@@ -120,16 +120,17 @@ public class Area implements EasySerializable {
 		offset = new Point(0, 0);
 	}
 
-	public Area(boolean p_outside) {
+	public Area(Atmosphere p_atmo) {
 		this();
 		dim_x=64;
 		dim_y=64;
+		int empty = p_atmo.getEmptyTile();
 		for (int i=0;i<dim_x*dim_y;i++) {
 			int x=i%dim_x;
 			int y=i/dim_x;
-			writemap(x, y, 54);
+			writemap(x, y, empty);
 		}
-		atmosphere=Atmosphere.OUTSIDE;
+		atmosphere=p_atmo;
 	}
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// get_Areacase

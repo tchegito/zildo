@@ -66,7 +66,11 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 	 * Draw a patch on the map, and arrange existing drawing.
 	 */
 	public void draw(Area p_map, Point p_start) {
-		int size=big ? 3 : 2;
+		draw(p_map, p_start, null);
+	}
+	
+	public void draw(Area p_map, Point p_start, CompositePatch12 p_composite) {
+		int size=2;
 		
 		if (big) {
 			size = (int) Math.sqrt(bigPatch.length);
@@ -80,15 +84,18 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 					patchValue = smallPatch[i*size +j];
 				}
 				if (patchValue != -1) {
-				    arrangeOneTile(p_map, patchValue, p_start.x+j, p_start.y+i);
+				    arrangeOneTile(p_map, patchValue, p_start.x+j, p_start.y+i, p_composite);
 				}
 			}
 		}
 	}
 	
-	public void arrangeOneTile(Area p_map, int p_patchValue, int p_x, int p_y) {
+	protected void arrangeOneTile(Area p_map, int p_patchValue, int p_x, int p_y, CompositePatch12 p_composite) {
 		// Get map value
 		int val=p_map.readmap(p_x, p_y);
+		if (p_composite != null && !p_composite.canDraw(val)) {
+			return;
+		}
 		val=toBinaryValue(val);
 		// Add patch value
 		val=val | p_patchValue;
@@ -129,5 +136,15 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 	    }
 	    
 	    return result;
+	}
+	
+	/**
+	 * Returns TRUE if the given value is apart of this patch.
+	 * @param p_val
+	 * @return boolean
+	 */
+	boolean isFromThis(int p_val) {
+		int a = toBinaryValue(p_val);
+		return a != 0;
 	}
 }
