@@ -134,7 +134,7 @@ public class SpriteSorter {
 		// 2) Go the next row and do it again, until we reach the last one
 		if (y>=0 && y<SORTY_REALMAX) {
 			int position=0;
-			while (tab_tri[y][position] != null && y<SORTY_REALMAX) {
+			while (y<SORTY_REALMAX && tab_tri[y][position] != null) {
 				position++;
 				if (position==Constantes.SORTY_ROW_PER_LINE) {
 					y++;
