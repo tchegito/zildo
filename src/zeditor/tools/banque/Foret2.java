@@ -38,14 +38,16 @@ public class Foret2 extends Banque {
 				new Point(96, 16), new Point(112, 16), new Point(64, 32),
 				new Point(80, 32), new Point(96, 32), new Point(112, 32),
 				new Point(64, 48), new Point(80, 48), new Point(96, 48),
-				new Point(112, 48), new Point(64, 64), new Point(112, 64),
-				new Point(64, 80), new Point(80, 80), new Point(96, 80),
-				new Point(112, 80), new Point(80, 96), new Point(96, 96),
+				new Point(112, 48), new Point(64, 64), new Point(80, 64),
+				new Point(96, 64), new Point(112, 64),
+				new Point(80, 80), new Point(96, 80),
+				new Point(304, 64), new Point(272, 112),
 
 				/* Cimetierre EXTERIA5.PKM - 74 */
 				new Point(0, 64), new Point(64, 0), new Point(64, 16),
-				new Point(80, 0), new Point(96, 0), new Point(80, 16),
-				new Point(96, 16), new Point(48, 128), new Point(64, 128),
+				new Point(176, 192), new Point(192, 192),
+				new Point(176, 208), new Point(192, 208),
+				new Point(48, 128), new Point(64, 128),
 				new Point(48, 144), new Point(64, 144), new Point(32, 128),
 				/* Eglise exterieure - 62 */
 				new Point(112, 0), new Point(128, 0), new Point(144, 0),
@@ -116,10 +118,15 @@ public class Foret2 extends Banque {
 
 				/* Cave secrête ! */
 				new Point(96, 128), new Point(96, 144), new Point(112, 144),
-				new Point(96, 160), new Point(112, 160) };
+				new Point(96, 160), new Point(112, 160),
+				
+				/* Castle suit */
+				/*
+				*/
+		};
 
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("exteria5", 0, 0),
 				new GraphChange("exteria6", 34, 192),
-				new GraphChange("exteria5", 75, -192) });
+				new GraphChange("exteria5", 72, -192) });
 	}
 }
