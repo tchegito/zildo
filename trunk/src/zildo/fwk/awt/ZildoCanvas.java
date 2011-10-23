@@ -77,6 +77,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		setRenderer(renderer);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void applyBrush(Point p) {
 		// Get brush
 		Selection sel = manager.getSelection();
@@ -91,7 +92,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 					moveChainingPoint(p, (ChainingPointSelection) sel);
 					break;
 				case SPRITES:
-					placeSprite(p, (SpriteSelection) sel);
+					placeSprite(p, (SpriteSelection<SpriteEntity>) sel);
 					break;
 				case PERSOS:
 					placePerso(p, (PersoSelection) sel);
@@ -153,7 +154,8 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 				break;
 			case SPRITES:
 			case PERSOS:
-				List<SpriteEntity> entities = (List<SpriteEntity>) sel.getElement();
+				@SuppressWarnings("unchecked")
+				List<SpriteEntity> entities = ((SpriteSelection<SpriteEntity>) sel).getElement();
 				for (SpriteEntity entity : entities) {
         				EngineZildo.spriteManagement.deleteSprite(entity);
         				if (sel.getKind() == SelectionKind.PERSOS) {
@@ -338,7 +340,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    	if (entities != null && entities.size() > 0) {
 	    	    SpriteEntity entity = entities.get(0);
 		    	if (kind == SelectionKind.SPRITES) {
-		    		manager.setSpriteSelection(new SpriteSelection(entity));
+		    		manager.setSpriteSelection(new SpriteSelection<SpriteEntity>(entity));
 		    	} else {
 			    	manager.setPersoSelection(new PersoSelection((Perso) entity));
 		    	}
@@ -416,7 +418,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		changeSprites=true;	// Ask for sprites updating
 	}
 	
-	private void placeSprite(Point p_point, SpriteSelection p_sel) {
+	private void placeSprite(Point p_point, SpriteSelection<SpriteEntity> p_sel) {
 		List<SpriteEntity> elems=p_sel.getElement();
 		boolean first=true;
 		Point delta = new Point(0,0);

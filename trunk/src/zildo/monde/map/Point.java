@@ -111,6 +111,13 @@ public class Point {
     	return p.x == x && p.y == y;
     }
     
+    @Override
+    public int hashCode() {
+    	int hash = 17;
+    	hash = hash*31 + x;
+    	hash = hash*31 + y;
+    	return hash;
+    }
     public static Point fromString(String p_text) {
     	String[] coords=p_text.split(",");
     	return new Point(Integer.valueOf(coords[0]), Integer.valueOf(coords[1]));

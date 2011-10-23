@@ -446,7 +446,7 @@ public class MasterFrameManager {
 	}
 	
 	public static void switchCopySprites(List<SpriteEntity> p_entities) {
-	    masterFrame.getManager().setSpriteSelection(new SpriteSelection(p_entities));
+	    masterFrame.getManager().setSpriteSelection(new SpriteSelection<SpriteEntity>(p_entities));
 	    masterFrame.getCopyPasteTool().setSelected(false);
 	}
 
@@ -467,7 +467,7 @@ public class MasterFrameManager {
 	}
 	
 	
-	public void setSpriteSelection(SpriteSelection p_currentSelection) {
+	public void setSpriteSelection(SpriteSelection<SpriteEntity> p_currentSelection) {
 	    if (currentSelection == null || p_currentSelection == null || !p_currentSelection.equals(currentSelection)) {
 	    	if (currentSelection != null) {
 	    		currentSelection.unfocus();
@@ -492,9 +492,11 @@ public class MasterFrameManager {
 	    		currentSelection.unfocus();
 	    	}
 			// Focus the given perso (or focus NULL if selection is empty)
-	    	List<Perso> persos=p_currentSelection == null ? null : p_currentSelection.getElement();
-	    	for (Perso perso : persos) {
-			masterFrame.getPersoPanel().focusPerso(perso);
+	    	if (p_currentSelection != null) {
+	    		List<Perso> persos = p_currentSelection.getElement();
+		    	for (Perso perso : persos) {
+		    		masterFrame.getPersoPanel().focusPerso(perso);
+		    	}
 	    	}
 			currentSelection=p_currentSelection;
 	    }
