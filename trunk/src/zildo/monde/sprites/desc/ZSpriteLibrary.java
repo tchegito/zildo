@@ -2,12 +2,17 @@ package zildo.monde.sprites.desc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-@SuppressWarnings("serial")
-public class ZSpriteLibrary extends ArrayList<SpriteDescription> {
+public class ZSpriteLibrary {
 
+	final static List<SpriteDescription> list = new ArrayList<SpriteDescription>();
 	
-	public ZSpriteLibrary() {
+	public final static List<SpriteDescription> getList() {
+		return list;
+	}
+	
+	static {
 		// Select only posable elements (discard all in-game animations)
 		for (ElementDescription desc : ElementDescription.values()) {
 			switch (desc) {
@@ -84,9 +89,9 @@ public class ZSpriteLibrary extends ArrayList<SpriteDescription> {
 				
 				break;
 			default:
-				add(desc);
+				list.add(desc);
 			}
 		}
-		addAll(Arrays.asList(GearDescription.values()));
+		list.addAll(Arrays.asList(GearDescription.values()));
 	}
 }

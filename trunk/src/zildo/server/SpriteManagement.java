@@ -788,7 +788,7 @@ public class SpriteManagement extends SpriteStore {
 	 * @return boolean
 	 */
 	public boolean isSpawned(SpriteEntity p_entity) {
-	    return p_entity.getLinkVertices() != 0 || p_entity.visible;
+	    return p_entity.getLinkVertices() != 0 || p_entity.getScrX() + p_entity.getScrY() > 0;
 	}
 	
 	public void translateEntitiesWithoutZildo(Point p_offset) {

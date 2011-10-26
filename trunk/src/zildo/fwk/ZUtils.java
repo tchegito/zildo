@@ -97,4 +97,13 @@ public class ZUtils {
 		}
 		return null;
 	}
+	
+	public static <T> T getField(String p_enumString, List<T> p_elems) {
+		for (T e : p_elems) {
+			if (e.toString().equals(p_enumString)) {
+				return e;
+			}
+		}
+		return null;
+	}
 }
