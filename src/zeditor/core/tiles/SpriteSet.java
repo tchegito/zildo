@@ -65,7 +65,7 @@ public class SpriteSet extends ImageSet {
     boolean perso;
     
     final static ZPersoLibrary persoLibrary=new ZPersoLibrary();
-    final static ZSpriteLibrary spriteLibrary=new ZSpriteLibrary();
+    final static List<SpriteDescription> spriteLibrary=ZSpriteLibrary.getList();
     
     /**
      * Initialize the object
@@ -186,6 +186,7 @@ public class SpriteSet extends ImageSet {
     	
     }
     
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void buildSelection() {
 		Zone z=getObjectOnClick(startPoint.x+1, startPoint.y+1);
@@ -212,7 +213,7 @@ public class SpriteSet extends ImageSet {
 					temp.setNBank(desc.getBank());
 					temp.setNSpr(desc.getNSpr());
 					currentSelection=buildSelection(temp);
-					manager.setSpriteSelection((SpriteSelection) currentSelection);
+					manager.setSpriteSelection((SpriteSelection<SpriteEntity>) currentSelection);
 				}
 			}
 		}
@@ -230,28 +231,31 @@ public class SpriteSet extends ImageSet {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private <T extends SpriteEntity> SpriteSelection<T> buildSelection(T p_elem) {
-	    switch ((ElementDescription) p_elem.getDesc()) {
-	    	case DOOR_OPEN1:
-	    	    // Create linked elements
-	    	    Element el = new Element();
-	    	    el.setDesc(ElementDescription.DOOR_OPEN1);
-	    	    el.reverse=Element.REVERSE_HORIZONTAL;
-	    	    el.x+=el.getSprModel().getTaille_x();
-	    	    
-	    	    Element up1 = new Element();
-	    	    up1.setDesc(ElementDescription.DOOR_OPEN2);
-	    	    up1.y-=el.getSprModel().getTaille_y();
-	    	    up1.reverse=Element.REVERSE_VERTICAL;
-	    	    
-	    	    Element up2 = new Element();
-	    	    up2.setDesc(ElementDescription.DOOR_OPEN2);
-	    	    up2.x+=up2.getSprModel().getTaille_x();
-	    	    up2.y-=el.getSprModel().getTaille_y();
-	    	    up2.reverse=Element.REVERSE_HORIZONTAL | Element.REVERSE_VERTICAL;
-	    	    return new SpriteSelection(Arrays.asList(p_elem, el, up1, up2));
-	    	default:
-	    		return new SpriteSelection<T>(p_elem);
-	    }
+		SpriteDescription desc = p_elem.getDesc();
+		if (desc instanceof ElementDescription) {
+		    switch ((ElementDescription) desc) {
+		    	case DOOR_OPEN1:
+		    	    // Create linked elements
+		    	    Element el = new Element();
+		    	    el.setDesc(ElementDescription.DOOR_OPEN1);
+		    	    el.reverse=Element.REVERSE_HORIZONTAL;
+		    	    el.x+=el.getSprModel().getTaille_x();
+		    	    
+		    	    Element up1 = new Element();
+		    	    up1.setDesc(ElementDescription.DOOR_OPEN2);
+		    	    up1.y-=el.getSprModel().getTaille_y();
+		    	    up1.reverse=Element.REVERSE_VERTICAL;
+		    	    
+		    	    Element up2 = new Element();
+		    	    up2.setDesc(ElementDescription.DOOR_OPEN2);
+		    	    up2.x+=up2.getSprModel().getTaille_x();
+		    	    up2.y-=el.getSprModel().getTaille_y();
+		    	    up2.reverse=Element.REVERSE_HORIZONTAL | Element.REVERSE_VERTICAL;
+		    	    return new SpriteSelection(Arrays.asList(p_elem, el, up1, up2));
+		    	default:
+		    }
+		}
+		return new SpriteSelection<T>(p_elem);
 	}
 
 }

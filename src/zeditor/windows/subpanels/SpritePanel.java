@@ -22,7 +22,6 @@ package zeditor.windows.subpanels;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,14 +42,15 @@ import zeditor.core.tiles.SpriteSet;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
 import zildo.monde.sprites.SpriteEntity;
-import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
+import zildo.monde.sprites.desc.ZSpriteLibrary;
 
 /**
  * @author Tchegito
  *
  */
 public class SpritePanel extends JPanel {
-
+	
 	/**
 	 * 
 	 */
@@ -72,6 +72,8 @@ public class SpritePanel extends JPanel {
 	
 	SpriteEntity entity;
 	List<SpriteEntity> entities;	// We can modify a global list of entities
+	
+	final List<SpriteDescription> spriteLib = ZSpriteLibrary.getList();
 	
 	public SpritePanel(MasterFrameManager p_manager) {
 		setLayout(new BorderLayout());
@@ -100,8 +102,7 @@ public class SpritePanel extends JPanel {
 		panel.add(new JLabel("Kind"));
 		panel.add(entityType);
 		
-		spriteType = new JComboBox(ZUtils.getValues(ElementDescription.class));
-		Dimension d = spriteType.getPreferredSize();
+		spriteType = new JComboBox(spriteLib.toArray());
 		panel.add(new JLabel("Type"));
 		panel.add(spriteType);
 		
@@ -173,7 +174,7 @@ public class SpritePanel extends JPanel {
 			foreground.setSelected(false);
 		} else {
 	    	entityType.setText(p_entity.getEntityType().toString());
-	    	spriteType.setSelectedIndex(p_entity.getDesc().ordinal());
+	    	spriteType.setSelectedIndex(spriteLib.indexOf(p_entity.getDesc()));
 			spinX.setValue((int) p_entity.x % 16);
 			spinY.setValue((int) p_entity.y % 16);
 			reverseHorizontal.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_HORIZONTAL));
@@ -232,7 +233,7 @@ public class SpritePanel extends JPanel {
 				Component comp = (Component) actionevent.getSource();
 				if (comp == spriteType) {
 					String val = (String) ((JComboBox) comp).getSelectedItem();
-					ElementDescription desc = ZUtils.getField(val, ElementDescription.class);
+					SpriteDescription desc = ZUtils.getField(val, spriteLib);
 					entity.setDesc(desc);
 				}
 				manager.getZildoCanvas().setChangeSprites(true);
