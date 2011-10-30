@@ -21,53 +21,50 @@
 package zildo.client.gui.menu;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class InGameMenu extends Menu {
 
 	public InGameMenu() {
 		
-		List<ItemMenu> items=new ArrayList<ItemMenu>();
-		
-		final Menu currentMenu=this;
-		
-        items.add(new ItemMenu("m7.continue", null) {
-        	@Override
+		items = new ArrayList<ItemMenu>();
+		items.add(new ItemMenu("m7.continue", null) {
+			@Override
 			public void run() {
-                client.handleMenu(null);
-        	}
-        });
-        
-        // If client is in singleplayer mode, he's allowed to save his game
-        if (!client.isMultiplayer()) {
-        	items.add(new ItemMenu("m7.save", null) {
-        	@Override
+				client.handleMenu(null);
+			}
+		});
+
+		// If client is in singleplayer mode, he's allowed to save his game
+		if (!client.isMultiplayer()) {
+			items.add(new ItemMenu("m7.save", null) {
+				@Override
+				public void run() {
+					client.handleMenu(new SaveGameMenu(false, currentMenu));
+				}
+			});
+		}
+
+		items.add(new ItemMenu("m7.options", null) {
+			@Override
 			public void run() {
-                client.handleMenu(new SaveGameMenu(false, currentMenu));
-        	}
-        });
-        }
-        
-        items.add(new ItemMenu("m7.options", null) {
-        	public void run() {
-        		client.handleMenu(new OptionsMenu(currentMenu));
-        	}
-        });
-        
-        items.add(new ItemMenu("m7.quit") {
-        	@Override
+				client.handleMenu(new OptionsMenu(currentMenu));
+			}
+		});
+
+		items.add(new ItemMenu("m7.quit") {
+			@Override
 			public void run() {
-        		client.stop();
-        	}
-        });
-        
+				client.stop();
+			}
+		});
+
 		setMenu(items);
 		setTitle("m7.title");
 	}

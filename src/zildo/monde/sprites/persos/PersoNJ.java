@@ -184,7 +184,7 @@ public class PersoNJ extends Perso {
 						sight(observed, true);
 						break;
 					case VOLESPECTRE:
-						double alpha;
+						double beta;
 						if (cptMouvement==100) {
 							if (desc == PersoDescription.CORBEAU) {
 								// Corbeau : on centre la zone de d‚placement sur Zildo}
@@ -213,10 +213,10 @@ public class PersoNJ extends Perso {
 									pos_seqsprite=(4*Constantes.speed)+(pos_seqsprite-4*Constantes.speed+1) % (8*Constantes.speed);
 								} else {
 									// Est-ce que Zildo est dans les parages ?}
-									alpha=x-zildo.x;
+									beta=x-zildo.x;
 									float vitesse=y-zildo.y;
-									alpha=Math.sqrt(alpha*alpha+vitesse*vitesse);
-									if (alpha<16*5) {
+									beta=Math.sqrt(beta*beta+vitesse*vitesse);
+									if (beta<16*5) {
 										pos_seqsprite=4*Constantes.speed;
 									}
 									break;
@@ -604,7 +604,7 @@ public class PersoNJ extends Perso {
 	{_Renvoie TRUE si Zildo est dans les parages
 	 _Le monstre qui le cherche … l'index 'i'}
 	 */
-	boolean lookForZildo(Angle angle) {
+	boolean lookForZildo(Angle p_angle) {
 		int dix,diy;
 		boolean temp,r;
 		final int DISTANCEMAX=16*6;
@@ -614,8 +614,8 @@ public class PersoNJ extends Perso {
 		dix=(int) (x-zildo.x);
 		diy=(int) (y-zildo.y);
 		temp=(Math.abs(dix) >Math.abs(diy));
-		if (angle.isHorizontal()==temp) {
-			switch (angle) {
+		if (p_angle.isHorizontal()==temp) {
+			switch (p_angle) {
 			case NORD:if (diy>0 && diy<DISTANCEMAX)  r=true;break;
 			case EST:if (dix>0 && dix<DISTANCEMAX) r=true;break;
 			case SUD:if (diy<0 && diy>-DISTANCEMAX) r=true;break;

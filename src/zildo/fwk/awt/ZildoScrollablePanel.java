@@ -144,8 +144,8 @@ public class ZildoScrollablePanel extends JPanel {
 			}
 			setMinimum(0);
 			setMaximum(max);
-			BoundedRangeModel model=new DefaultBoundedRangeModel(0, extent, 0, max);
-			setModel(model);
+			BoundedRangeModel m=new DefaultBoundedRangeModel(0, extent, 0, max);
+			setModel(m);
 			setUnitIncrement(0);
 		}
 		

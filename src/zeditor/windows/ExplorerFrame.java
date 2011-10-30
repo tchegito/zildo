@@ -1,4 +1,5 @@
 package zeditor.windows;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -17,24 +18,22 @@ import zeditor.windows.managers.ExplorerFrameManager;
 import zildo.resource.Constantes;
 
 /**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
+ * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
+ * Builder, which is free for non-commercial use. If Jigloo is being used
+ * commercially (ie, by a corporation, company or business for any purpose
+ * whatever) then you should purchase a license for each developer using Jigloo.
+ * Please visit www.cloudgarden.com for details. Use of Jigloo implies
+ * acceptance of these licensing terms. A COMMERCIAL LICENSE HAS NOT BEEN
+ * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
+ * ANY CORPORATE OR COMMERCIAL PURPOSE.
+ */
 public class ExplorerFrame extends javax.swing.JDialog {
 
 	{
-		//Set Look & Feel
+		// Set Look & Feel
 		try {
-			//javax.swing.UIManager.setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
-		} catch(Exception e) {
+			// javax.swing.UIManager.setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -48,16 +47,18 @@ public class ExplorerFrame extends javax.swing.JDialog {
 	private JFileChooser fileChooser;
 	private AbstractAction actiondoAction;
 	private AbstractAction actionCancel;
-	//private String mode;
-	//private String title;
 
-	//private ExplorerFrameManager manager;
+	// private String mode;
+	// private String title;
+
+	// private ExplorerFrameManager manager;
 
 	/**
-	* Auto-generated main method to display this JDialog
-	*/
+	 * Auto-generated main method to display this JDialog
+	 */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				JFrame frame = new JFrame();
 				ExplorerFrame inst = new ExplorerFrame(frame, -1);
@@ -65,13 +66,13 @@ public class ExplorerFrame extends javax.swing.JDialog {
 			}
 		});
 	}
-	
+
 	public ExplorerFrame(JFrame frame, int mode) {
 		super(frame);
 		initGUI();
 		manager.init(mode);
 	}
-	
+
 	private void initGUI() {
 		try {
 			{
@@ -82,26 +83,28 @@ public class ExplorerFrame extends javax.swing.JDialog {
 			}
 
 			// Recréation du manager avec les objets en paramètre
-			manager = new ExplorerFrameManager(this, actionButton, getFileChooser());
-			
+			manager = new ExplorerFrameManager(this, actionButton,
+					getFileChooser());
+
 			this.setSize(600, 400);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private ExplorerFrameManager getManager() {
-		if(manager == null) {
+		if (manager == null) {
 			manager = new ExplorerFrameManager();
 		}
 		return manager;
 	}
 
 	private AbstractAction getActionCancel() {
-		if(actionCancel == null) {
+		if (actionCancel == null) {
 			actionCancel = new AbstractAction("Annuler", null) {
 				private static final long serialVersionUID = -707801490025709066L;
 
+				@Override
 				public void actionPerformed(ActionEvent evt) {
 					manager.close();
 				}
@@ -111,10 +114,11 @@ public class ExplorerFrame extends javax.swing.JDialog {
 	}
 
 	private AbstractAction getActiondoAction() {
-		if(actiondoAction == null) {
+		if (actiondoAction == null) {
 			actiondoAction = new AbstractAction("ACTION", null) {
 				private static final long serialVersionUID = -773821287619059041L;
 
+				@Override
 				public void actionPerformed(ActionEvent evt) {
 					manager.doAction();
 				}
@@ -122,24 +126,30 @@ public class ExplorerFrame extends javax.swing.JDialog {
 		}
 		return actiondoAction;
 	}
+
 	private JFileChooser getFileChooser() {
 		if (fileChooser == null) {
 			fileChooser = new JFileChooser();
-			fileChooser.setFileFilter(new FileNameExtensionFilter("Cartes Zildo","MAP"));
-			fileChooser.setCurrentDirectory(new File(Constantes.DATA_PATH+Constantes.MAP_PATH));
+			fileChooser.setFileFilter(new FileNameExtensionFilter(
+					"Cartes Zildo", "MAP"));
+			fileChooser.setCurrentDirectory(new File(Constantes.DATA_PATH
+					+ Constantes.MAP_PATH));
 			fileChooser.setControlButtonsAreShown(false);
 		}
 		return fileChooser;
 	}
+
 	private JPanel getControlPanel() {
 		if (controlPanel == null) {
 			controlPanel = new JPanel();
-			BoxLayout controlPanelLayout = new BoxLayout(controlPanel, javax.swing.BoxLayout.X_AXIS);
+			BoxLayout controlPanelLayout = new BoxLayout(controlPanel,
+					javax.swing.BoxLayout.X_AXIS);
 			controlPanel.setLayout(controlPanelLayout);
 			controlPanel.add(getButtonPanel());
 		}
 		return controlPanel;
 	}
+
 	private JPanel getButtonPanel() {
 		if (buttonPanel == null) {
 			buttonPanel = new JPanel();
@@ -150,6 +160,7 @@ public class ExplorerFrame extends javax.swing.JDialog {
 		}
 		return buttonPanel;
 	}
+
 	private JButton getCancelButton() {
 		if (cancelButton == null) {
 			cancelButton = new JButton();
@@ -158,6 +169,7 @@ public class ExplorerFrame extends javax.swing.JDialog {
 		}
 		return cancelButton;
 	}
+
 	private JButton getActionButton() {
 		if (actionButton == null) {
 			actionButton = new JButton();

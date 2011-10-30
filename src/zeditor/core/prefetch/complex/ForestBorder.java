@@ -20,45 +20,41 @@
 
 package zeditor.core.prefetch.complex;
 
-
 /**
  * @author Tchegito
- *
+ * 
  */
 public class ForestBorder extends AbstractPatch12 {
 
-	byte[] value_border =new byte[] {
-		15, 0, 0, 7, 3, 11, 1, 2,
-		5, 10, 15, 4, 8, 15, 13, 12, 14		
-	};
-	
-	byte[] conv_value_border = new byte[] {
-		73,
-		79, 80, 77, 84, 81, -1, 76, 85,
-		-1, 82, 78, 88, 87, 89, 73, -1
-	};
-	
-	int startRoad=256 * 6 + 73;
-	
+	byte[] value_border = new byte[] { 15, 0, 0, 7, 3, 11, 1, 2, 5, 10, 15, 4,
+			8, 15, 13, 12, 14 };
+
+	byte[] conv_value_border = new byte[] { 73, 79, 80, 77, 84, 81, -1, 76, 85,
+			-1, 82, 78, 88, 87, 89, 73, -1 };
+
+	int startRoad = 256 * 6 + 73;
+
 	public ForestBorder(boolean p_big) {
 		super(p_big);
 	}
-	
+
+	@Override
 	public int toBinaryValue(int p_val) {
-		int i=p_val - startRoad;
-		if (i >=0 && i < value_border.length) {
+		int i = p_val - startRoad;
+		if (i >= 0 && i < value_border.length) {
 			return value_border[i];
 		} else {
 			return 0;
 		}
 	}
-	
+
+	@Override
 	public int toGraphicalValue(int p_val) {
 		int val = conv_value_border[p_val];
 		if (val == -1) {
 			val = 54;
 		} else {
-			val = 256*6 + val;
+			val = 256 * 6 + val;
 		}
 		return val;
 	}

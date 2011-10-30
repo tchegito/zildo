@@ -26,12 +26,16 @@ import zildo.monde.map.Tile;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class DropTreeDrawer extends DropDelegateDraw {
 
-	/* (non-Javadoc)
-	 * @see zeditor.core.prefetch.complex.DropDelegateDraw#draw(zildo.monde.map.Case, zildo.monde.map.Case, boolean)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * zeditor.core.prefetch.complex.DropDelegateDraw#draw(zildo.monde.map.Case,
+	 * zildo.monde.map.Case, boolean)
 	 */
 	@Override
 	public void draw(Case p_mapTile, Case p_toDraw, boolean p_mask) {
@@ -42,31 +46,23 @@ public class DropTreeDrawer extends DropDelegateDraw {
 		if (linkTwoTree(t1, t2)) {
 			return;
 		}
-		
-		// Bad thing !
-		if (false) {
-		if (t1 != null && t2 != null) {
-			p_mapTile.setBackTile(t1.clone());
-			t1.index = t2.index;
-			t1.bank = t2.bank;
-			return;
-		}
-		}
+
 		// 3) back tile
 		t1 = p_mapTile.getBackTile();
 		t2 = p_toDraw.getBackTile();
 		if (linkTwoTree(t1, t2)) {
 			return;
 		}
-		
+
 		// 3) mask on a masked tile
-		
+
 		// The 'mask' parameter has no sense here.
 		super.draw(p_mapTile, p_toDraw, false);
 	}
-	
+
 	/**
 	 * Adjust the link between two trees.
+	 * 
 	 * @param t1
 	 * @param t2
 	 * @return TRUE if the adjustment has been done.
@@ -76,9 +72,9 @@ public class DropTreeDrawer extends DropDelegateDraw {
 		if (t1 != null && t2 != null && t1.bank == 0) {
 			int a = t1.index;
 			int b = t2.index;
-			for (int i=0;i<5;i++) {
-				int c = Math.abs(treeModel[0 + 4*i]);
-				int d = Math.abs(treeModel[3 + 4*i]);
+			for (int i = 0; i < 5; i++) {
+				int c = Math.abs(treeModel[0 + 4 * i]);
+				int d = Math.abs(treeModel[3 + 4 * i]);
 				if ((a == c && b == d) || (a == d && b == c)) {
 					t1.index = 191 + i;
 					t1.bank = 6;

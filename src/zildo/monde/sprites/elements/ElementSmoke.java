@@ -23,43 +23,46 @@ package zildo.monde.sprites.elements;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.server.EngineZildo;
 
-
 /**
  * Chimney smoke.
  * 
  * @author Tchegito
- *
+ * 
  */
 public class ElementSmoke extends Element {
 
 	int startX;
 	int startY;
-	boolean vanishing=false;
-	
+	boolean vanishing = false;
+
 	public ElementSmoke(int p_x, int p_y) {
 		super();
-		startX=p_x;
-		startY=p_y;
+		startX = p_x;
+		startY = p_y;
 		x = p_x + 16.0f;
 		y = p_y + 34.0f;
 
 	}
+
+	@Override
 	public void animate() {
-        physicMoveWithCollision();
-		 if (z > 28 && nSpr == 6) {
-             nSpr = 5; // Smoke
-         } else if (z > 48 && nSpr == 5 && !vanishing) {
-        	 EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, startX, startY, 0, null, null);
-        	 vanishing=true;	// Sprite is vanishing (with alpha channel)
-         } else if (z > 18) {
-    		 alpha-=3;
-         }
-		 
-		 if (alpha < 10) {
-			 dying=true;
-		 }
-		 
-	     setAjustedX((int) x);
-	     setAjustedY((int) y);
+		physicMoveWithCollision();
+		if (z > 28 && nSpr == 6) {
+			nSpr = 5; // Smoke
+		} else if (z > 48 && nSpr == 5 && !vanishing) {
+			EngineZildo.spriteManagement.spawnSpriteGeneric(
+					SpriteAnimation.CHIMNEY_SMOKE, startX, startY, 0, null,
+					null);
+			vanishing = true; // Sprite is vanishing (with alpha channel)
+		} else if (z > 18) {
+			alpha -= 3;
+		}
+
+		if (alpha < 10) {
+			dying = true;
+		}
+
+		setAjustedX((int) x);
+		setAjustedY((int) y);
 	}
 }

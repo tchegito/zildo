@@ -29,46 +29,49 @@ import zildo.server.EngineZildo;
  * Zildo-Script Expression.
  * 
  * @author Tchegito
- *
+ * 
  */
 public class ZSExpression {
 
 	String questName;
 	boolean done;
-	
+
 	public ZSExpression(String p_questName) {
 		questName = p_questName;
 		done = true;
 	}
-	
+
 	public ZSExpression(String p_questName, boolean p_done) {
 		this(p_questName);
 		done = p_done;
 	}
-	
+
 	/**
 	 * Parse a string whose form is a list of "[!]<questName>[&]" expression.
+	 * 
 	 * @param p_parseableString
 	 * @return
 	 */
 	public static List<ZSExpression> parse(String p_parseableString) {
 		List<ZSExpression> expressions = new ArrayList<ZSExpression>();
-		String[] exprs=p_parseableString.split("&");
+		String[] exprs = p_parseableString.split("&");
 		for (String s : exprs) {
 			boolean not = s.startsWith("!");
-			expressions.add(new ZSExpression(s.replaceAll("&", "").replaceAll("!", ""), !not));
+			expressions.add(new ZSExpression(s.replaceAll("&", "").replaceAll(
+					"!", ""), !not));
 		}
 		return expressions;
 	}
-	
+
 	public boolean isTrue() {
 		boolean result = EngineZildo.scriptManagement.isQuestDone(questName);
 		if (!done) {
-			result=!result;
+			result = !result;
 		}
 		return result;
 	}
-	
+
+	@Override
 	public String toString() {
 		return (!done ? "!" : "") + questName;
 	}

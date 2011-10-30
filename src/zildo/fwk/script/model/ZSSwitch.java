@@ -24,33 +24,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Zildo Script Switch.<p/>
+ * Zildo Script Switch.
+ * <p/>
  * 
- * Simple "switch/case/default" clause. Used especially with dialogs.<p/>
+ * Simple "switch/case/default" clause. Used especially with dialogs.
+ * <p/>
  * 
  * Example : "new ZSSwitch("flut&!ferme:8,enlevement:3,0")
+ * 
  * @author Tchegito
- *
+ * 
  */
 public class ZSSwitch {
 
 	List<ZSCondition> conditions;
 	final int defaultValue;
-	String toString=null;
-	
+	String toString = null;
+
 	public ZSSwitch(int p_defaultValue) {
 		if (p_defaultValue == ZSCondition.FALSE) {
-			throw new RuntimeException("Unable to set the reserved value "+ZSCondition.FALSE);
+			throw new RuntimeException("Unable to set the reserved value "
+					+ ZSCondition.FALSE);
 		}
 		defaultValue = p_defaultValue;
 		conditions = new ArrayList<ZSCondition>();
 	}
-	
+
 	public ZSSwitch(List<ZSCondition> p_conditions, int p_defaultValue) {
 		this(p_defaultValue);
 		conditions.addAll(p_conditions);
 	}
-	
+
 	public ZSSwitch(String p_parseableString) {
 		String[] strConds = p_parseableString.split(",");
 		int def = 0;
@@ -59,7 +63,7 @@ public class ZSSwitch {
 		for (String s : strConds) {
 			if (s.indexOf(":") == -1) {
 				def = Integer.valueOf(s);
-				defaultSet=true;
+				defaultSet = true;
 			} else {
 				conditions.add(new ZSCondition(s));
 			}
@@ -69,19 +73,22 @@ public class ZSSwitch {
 		}
 		defaultValue = def;
 	}
+
 	/**
 	 * Fluent method, designed for fast construction, with built condition.
+	 * 
 	 * @param p_condition
 	 * @return ZSSwitch
 	 */
 	public ZSSwitch add(ZSCondition p_condition) {
 		conditions.add(p_condition);
-		toString=null;
+		toString = null;
 		return this;
 	}
-	
+
 	/**
 	 * Fluent method, designed for fast construction, with a parseable string.
+	 * 
 	 * @param p_value
 	 * @param p_expression
 	 * @return ZSSwitch
@@ -90,9 +97,10 @@ public class ZSSwitch {
 		add(new ZSCondition(p_value, p_expression));
 		return this;
 	}
-	
+
 	/**
 	 * Evalute ordered conditions, and return corresponding value.
+	 * 
 	 * @return int
 	 */
 	public int evaluate() {
@@ -105,7 +113,8 @@ public class ZSSwitch {
 		}
 		return defaultValue;
 	}
-	
+
+	@Override
 	public String toString() {
 		// Memorize the toString value
 		if (toString == null) {
@@ -119,9 +128,10 @@ public class ZSSwitch {
 		}
 		return toString;
 	}
-	
+
 	/**
 	 * Returns TRUE if this switch references the given quest name
+	 * 
 	 * @param p_questName
 	 * @return boolean
 	 */

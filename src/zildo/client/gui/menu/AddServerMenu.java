@@ -56,39 +56,39 @@ public class AddServerMenu extends Menu {
 
         previousMenu = p_previousMenu;
 
-        ItemMenu[] items = new ItemMenu[5];
-        items[0] = new EditableItemMenu(name) {
+        ItemMenu[] itms = new ItemMenu[5];
+        itms[0] = new EditableItemMenu(name) {
             @Override
             public void run() {
                 client.handleMenu(currentMenu);
             }
         };
-        items[1] = new EditableItemMenu(ip) {
+        itms[1] = new EditableItemMenu(ip) {
             @Override
             public void run() {
             	client.handleMenu(currentMenu);
             }
         };
-        items[2] = new EditableItemMenu(port) {
+        itms[2] = new EditableItemMenu(port) {
             @Override
             public void run() {
             	client.handleMenu(currentMenu);
             }
         };
-        items[3] = new ItemMenu("m3.add") {
+        itms[3] = new ItemMenu("m3.add") {
             @Override
             public void run() {
             	addServer(name.toString(), ip.toString(), port.toString());
             }
         };
-        items[4] = new ItemMenu("global.back") {
+        itms[4] = new ItemMenu("global.back") {
             @Override
             public void run() {
                 ClientEngineZildo.getClientForMenu().handleMenu(previousMenu);
             }
         };
 
-        setMenu(items);
+        setMenu(itms);
     }
     
     /**
@@ -105,12 +105,12 @@ public class AddServerMenu extends Menu {
     			throw new Exception();
     		}
     		error=0;
-    		int port=Integer.valueOf(p_port);
+    		int intPort=Integer.valueOf(p_port);
     		error=1;
-    		new TransferObject(p_ip, port);
+    		new TransferObject(p_ip, intPort);
     		
     		// Everything's ok if we got here
-    		saveServerInfos(new ServerInfo(p_name, p_ip, port));
+    		saveServerInfos(new ServerInfo(p_name, p_ip, intPort));
     		
     		// And go back to the menu
     		client.handleMenu(new JoinGameMenu(loadServersInfos(), previousMenu.previousMenu));

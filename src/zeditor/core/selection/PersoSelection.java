@@ -27,21 +27,21 @@ import zildo.monde.sprites.persos.Perso;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class PersoSelection extends SpriteSelection<Perso> {
-
 
 	public PersoSelection(Perso p_perso) {
 		super(p_perso);
 	}
-	
+
 	@Override
 	public SelectionKind getKind() {
 		return SelectionKind.PERSOS;
 	}
 
+	@Override
 	public List<Perso> getElement() {
-	    return sprites;
+		return sprites;
 	}
 }

@@ -26,83 +26,90 @@ import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.server.EngineZildo;
 
 /**
- * Special element dealing with stars.<p/>
+ * Special element dealing with stars.
+ * <p/>
  * 
  * It's just an element container, it does not render itself.
+ * 
  * @author Tchegito
- *
+ * 
  */
 public class ElementStars extends ElementChained {
 
 	public enum StarKind {
 		STATIC(4, 8), // Static star
-		TRAIL(2, 3), // Trail turning around a zone 
-		CIRCLE(3, 0);	// Stars drawing a circle (just one)
-		
+		TRAIL(2, 3), // Trail turning around a zone
+		CIRCLE(3, 0); // Stars drawing a circle (just one)
+
 		int delay;
 		int radius;
-		
+
 		/**
-		 * @param p_delay Delay until the next star
-		 * @param p_radius Range of the star focus
+		 * @param p_delay
+		 *            Delay until the next star
+		 * @param p_radius
+		 *            Range of the star focus
 		 */
 		private StarKind(int p_delay, int p_radius) {
-			delay=p_delay;
-			radius=p_radius;
-		}
-	}
-	
-	double alpha=0;
-	StarKind kind;
-	
-	public ElementStars(StarKind p_kind, int p_x, int p_y) {
-		super(p_x, p_y);
-		
-		kind=p_kind;
-		visible=false;
-		
-		if (kind == StarKind.CIRCLE) {
-			EngineZildo.soundManagement.broadcastSound(BankSound.Sort, new Point(p_x, p_y));
+			delay = p_delay;
+			radius = p_radius;
 		}
 	}
 
+	double iota = 0;
+	StarKind kind;
+
+	public ElementStars(StarKind p_kind, int p_x, int p_y) {
+		super(p_x, p_y);
+
+		kind = p_kind;
+		visible = false;
+
+		if (kind == StarKind.CIRCLE) {
+			EngineZildo.soundManagement.broadcastSound(BankSound.Sort,
+					new Point(p_x, p_y));
+		}
+	}
+
+	@Override
 	protected Element createOne(int px, int py) {
 		// Find a spot inside a circle around the initial point
-		double r=Math.random() * kind.radius;
-		double theta=2*Math.PI * Math.random();
-		Element star=new ElementImpact((int) (px + r * Math.cos(theta)), 
-								    (int) (py + r * Math.sin(theta)), ImpactKind.STAR_YELLOW, null);
+		double r = Math.random() * kind.radius;
+		double theta = 2 * Math.PI * Math.random();
+		Element star = new ElementImpact((int) (px + r * Math.cos(theta)),
+				(int) (py + r * Math.sin(theta)), ImpactKind.STAR_YELLOW, null);
 		star.setForeground(true);
-		delay=(int) (Math.random() * 12 + kind.delay);
+		delay = (int) (Math.random() * 12 + kind.delay);
 		return star;
 	}
 
+	@Override
 	public void animate() {
-		
+
 		switch (kind) {
 		case TRAIL:
-			x+=Math.cos(alpha);
-			y+=Math.sin(alpha);
-			double beta=alpha-Math.PI/2;
-			double gamma=alpha+Math.PI/2;
-			boolean direction=true;
+			x += Math.cos(iota);
+			y += Math.sin(iota);
+			double beta = iota - Math.PI / 2;
+			double gamma = iota + Math.PI / 2;
+			boolean direction = true;
 			for (Element e : linkeds) {
-				double angle=beta;
-				direction=!direction;
+				double theta = beta;
+				direction = !direction;
 				if (!direction) {
-					angle=gamma;
+					theta = gamma;
 				}
-				e.x+=0.5*Math.cos(angle);
-				e.y+=0.5*Math.sin(angle);
+				e.x += 0.5 * Math.cos(theta);
+				e.y += 0.5 * Math.sin(theta);
 			}
-			alpha+=0.01f;
+			iota += 0.01f;
 			break;
 		case CIRCLE:
-			x=(float) (initialLocation.x + 8f * Math.cos(alpha));
-			y=(float) (initialLocation.y + 5f * Math.sin(alpha));
-			alpha+=0.06f;
-			if (alpha > Math.PI * 2) {
-				dying=true;	// Just 1 turn
+			x = (float) (initialLocation.x + 8f * Math.cos(iota));
+			y = (float) (initialLocation.y + 5f * Math.sin(iota));
+			iota += 0.06f;
+			if (iota > Math.PI * 2) {
+				dying = true; // Just 1 turn
 			}
 			break;
 		}

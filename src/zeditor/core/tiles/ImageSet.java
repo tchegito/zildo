@@ -229,17 +229,17 @@ public abstract class ImageSet extends JPanel {
      * @param g : Graphics sur lequel on va dessiner
      * @param outer : Couleur de l'extérieur de cadre
      * @param inner : Couleur de l'intérieur de cadre
-     * @param startPoint : Point de départ du cadre
-     * @param stopPoint : Point de fin du cadre
+     * @param p_startPoint : Point de départ du cadre
+     * @param p_stopPoint : Point de fin du cadre
      * @author Drakulo
      */
-    protected void drawRectangle(Graphics g, Color outer, Color inner, Point startPoint, Point stopPoint){
-        if(startPoint != null && stopPoint != null){
+    protected void drawRectangle(Graphics g, Color outer, Color inner, Point p_startPoint, Point p_stopPoint){
+        if(p_startPoint != null && p_stopPoint != null){
             int xDep, yDep, xFin, yFin;
-            xDep = Math.min(startPoint.x, stopPoint.x);
-            xFin = Math.max(startPoint.x, stopPoint.x);
-            yDep = Math.min(startPoint.y, stopPoint.y);
-            yFin = Math.max(startPoint.y, stopPoint.y);
+            xDep = Math.min(p_startPoint.x, p_stopPoint.x);
+            xFin = Math.max(p_startPoint.x, p_stopPoint.x);
+            yDep = Math.min(p_startPoint.y, p_stopPoint.y);
+            yFin = Math.max(p_startPoint.y, p_stopPoint.y);
 
             g.setColor(outer);
             g.drawRect(xDep, yDep, xFin-xDep, yFin-yDep);

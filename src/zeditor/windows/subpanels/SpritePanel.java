@@ -47,17 +47,17 @@ import zildo.monde.sprites.desc.ZSpriteLibrary;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class SpritePanel extends JPanel {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -591070226658678002L;
 
 	MasterFrameManager manager;
-	
+
 	JCheckBox reverseHorizontal;
 	JCheckBox reverseVertical;
 	JCheckBox foreground;
@@ -65,30 +65,30 @@ public class SpritePanel extends JPanel {
 	JSpinner spinX;
 	JSpinner spinY;
 	JLabel entityType;
-	
+
 	boolean updatingUI;
-	
+
 	SpriteSelection<SpriteEntity> sel;
-	
+
 	SpriteEntity entity;
-	List<SpriteEntity> entities;	// We can modify a global list of entities
-	
+	List<SpriteEntity> entities; // We can modify a global list of entities
+
 	final List<SpriteDescription> spriteLib = ZSpriteLibrary.getList();
-	
+
 	public SpritePanel(MasterFrameManager p_manager) {
 		setLayout(new BorderLayout());
 		add(new SpriteSet(false, p_manager), BorderLayout.CENTER);
 		add(getSouthPanel(), BorderLayout.SOUTH);
-		
-		manager=p_manager;
+
+		manager = p_manager;
 	}
 
 	@SuppressWarnings("serial")
 	private JPanel getSouthPanel() {
-		JPanel panel=new JPanel();
-		GridLayout thisLayout = new GridLayout(0,2);
+		JPanel panel = new JPanel();
+		GridLayout thisLayout = new GridLayout(0, 2);
 		panel.setLayout(thisLayout);
-		
+
 		foreground = new JCheckBox(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent actionevent) {
@@ -97,75 +97,75 @@ public class SpritePanel extends JPanel {
 				}
 			}
 		});
-		
-		entityType=new JLabel();
+
+		entityType = new JLabel();
 		panel.add(new JLabel("Kind"));
 		panel.add(entityType);
-		
+
 		spriteType = new JComboBox(spriteLib.toArray());
 		panel.add(new JLabel("Type"));
 		panel.add(spriteType);
-		
+
 		panel.add(new JLabel("Foreground"));
 		panel.add(foreground);
-		
-		spinX=new JSpinner(new SpinnerNumberModel(0, -1, 16, -1));
-		spinY=new JSpinner(new SpinnerNumberModel(0, -1, 16, -1));
+
+		spinX = new JSpinner(new SpinnerNumberModel(0, -1, 16, -1));
+		spinY = new JSpinner(new SpinnerNumberModel(0, -1, 16, -1));
 
 		panel.add(new JLabel("Add-x"));
 		panel.add(spinX);
-		
+
 		panel.add(new JLabel("Add-y"));
 		panel.add(spinY);
-		
 
-		reverseHorizontal=new JCheckBox(new AbstractAction() {
+		reverseHorizontal = new JCheckBox(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent actionevent) {
 				if (sel != null) {
 					toggleReverse(true);
 				}
 			}
-			
+
 		});
 		panel.add(new JLabel("Reverse H"));
 		panel.add(reverseHorizontal);
 
-		reverseVertical=new JCheckBox(new AbstractAction() {
+		reverseVertical = new JCheckBox(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent actionevent) {
 				if (sel != null) {
 					toggleReverse(false);
 				}
 			}
-			
+
 		});
 		panel.add(new JLabel("Reverse V"));
 		panel.add(reverseVertical);
 
-		SpriteFieldsListener listener=new SpriteFieldsListener();
+		SpriteFieldsListener listener = new SpriteFieldsListener();
 		spriteType.addActionListener(listener);
 		spinX.addChangeListener(listener);
 		spinY.addChangeListener(listener);
-		
+
 		return panel;
 	}
-	
+
 	private void toggleReverse(boolean p_horizontal) {
-	    	sel.reverse(p_horizontal);
+		sel.reverse(p_horizontal);
 		// Ask a sprite visual update
 		manager.getZildoCanvas().setChangeSprites(true);
 	}
-	
+
 	/**
 	 * Update fields with the given entity's infos.
+	 * 
 	 * @param p_entity
 	 */
 	private void focusSprite(SpriteEntity p_entity) {
-		updatingUI=true;
+		updatingUI = true;
 		if (p_entity == null) {
 			// Reset fields
-		    	entityType.setText("");
+			entityType.setText("");
 			spinX.setValue(0);
 			spinY.setValue(0);
 			spriteType.setSelectedIndex(0);
@@ -173,61 +173,65 @@ public class SpritePanel extends JPanel {
 			reverseVertical.setSelected(false);
 			foreground.setSelected(false);
 		} else {
-	    	entityType.setText(p_entity.getEntityType().toString());
-	    	spriteType.setSelectedIndex(spriteLib.indexOf(p_entity.getDesc()));
+			entityType.setText(p_entity.getEntityType().toString());
+			spriteType.setSelectedIndex(spriteLib.indexOf(p_entity.getDesc()));
 			spinX.setValue((int) p_entity.x % 16);
 			spinY.setValue((int) p_entity.y % 16);
-			reverseHorizontal.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_HORIZONTAL));
-			reverseVertical.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_VERTICAL));
+			reverseHorizontal
+					.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_HORIZONTAL));
+			reverseVertical
+					.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_VERTICAL));
 			foreground.setSelected(p_entity.isForeground());
 		}
-		updatingUI=false;
-		entity=p_entity;
+		updatingUI = false;
+		entity = p_entity;
 	}
-	
+
 	public void focusSprites(SpriteSelection<SpriteEntity> p_sel) {
-	    entities = null;
-	    sel = p_sel;
-	    if (p_sel == null) {
-		focusSprite(null);
-	    } else {
-		List<SpriteEntity> ent = p_sel.getElement();
-		if (ent.size() == 1) {
-        		focusSprite(ent.get(0));
-        	    } else {
-        		// We're dealing with a list
-        		entities = ent;
-        		focusSprite(null);
-        	    }
-	    }
+		entities = null;
+		sel = p_sel;
+		if (p_sel == null) {
+			focusSprite(null);
+		} else {
+			List<SpriteEntity> ent = p_sel.getElement();
+			if (ent.size() == 1) {
+				focusSprite(ent.get(0));
+			} else {
+				// We're dealing with a list
+				entities = ent;
+				focusSprite(null);
+			}
+		}
 	}
-	
+
 	class SpriteFieldsListener implements ChangeListener, ActionListener {
 
 		@Override
 		public void stateChanged(ChangeEvent changeevent) {
-			
-			// If we are focusing on an existing sprite, then update his attributes
+
+			// If we are focusing on an existing sprite, then update his
+			// attributes
 			if (!updatingUI && sel != null) {
-				Component comp=(Component) changeevent.getSource();
+				Component comp = (Component) changeevent.getSource();
 				if (comp instanceof JSpinner) {
-				    JSpinner spinner = (JSpinner) comp;
-					int val=(Integer) spinner.getValue();
+					JSpinner spinner = (JSpinner) comp;
+					int val = (Integer) spinner.getValue();
 					if (comp == spinX) {
-					    sel.addX(val);
+						sel.addX(val);
 					} else if (comp == spinY) {
-					    sel.addY(val);
+						sel.addY(val);
 					}
 					if (val == 16) {
-					    spinner.setValue(0);
+						spinner.setValue(0);
 					} else if (val == -1) {
-					    spinner.setValue(15);
+						spinner.setValue(15);
 					}
 					manager.getZildoCanvas().setChangeSprites(true);
 				}
-			}	
+			}
 		}
-		
+
+		@Override
 		public void actionPerformed(ActionEvent actionevent) {
 			if (!updatingUI && sel != null) {
 				Component comp = (Component) actionevent.getSource();
@@ -240,5 +244,5 @@ public class SpritePanel extends JPanel {
 			}
 		}
 	}
-		
+
 }

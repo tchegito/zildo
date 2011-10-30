@@ -24,28 +24,31 @@ import zeditor.windows.subpanels.SelectionKind;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public abstract class Selection {
 
 	public abstract SelectionKind getKind();
-	
+
 	public abstract Object getElement();
-	
-	public void unfocus() {}
-	
-    /**
-     * Consider that :<ul>
-     * <li>Selection has ALWAYS an element</li>
-     * <li>Two selections are equals if and only if its have the same element</li>
-     * </ul>
-     * {@inheritDoc}
-     */
-    public boolean equals(Object p_obj) {
-    	Selection sel=(Selection) p_obj;
-    	if (sel.getKind() != getKind()) {
-    		return false;
-    	}
-    	return sel.getElement().equals(getElement());
-    }
+
+	public void unfocus() {
+	}
+
+	/**
+	 * Consider that :
+	 * <ul>
+	 * <li>Selection has ALWAYS an element</li>
+	 * <li>Two selections are equals if and only if its have the same element</li>
+	 * </ul>
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object p_obj) {
+		Selection sel = (Selection) p_obj;
+		if (sel.getKind() != getKind()) {
+			return false;
+		}
+		return sel.getElement().equals(getElement());
+	}
 }

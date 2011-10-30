@@ -79,56 +79,53 @@ import zildo.resource.Constantes;
 
 public class TileEngine extends TextureEngine {
 
-
-	///////////////////////
+	// /////////////////////
 	// Variables
-	///////////////////////
-    private int cameraX;
-    private int cameraY;
+	// /////////////////////
+	private int cameraX;
+	private int cameraY;
 
 	// 3D Objects (vertices and indices per bank)
-    protected TilePrimitive[] meshFORE;
-    protected TilePrimitive[] meshBACK;
-    
-    private boolean initialized=false;
-    List<MotifBank> motifBanks;
-    private int n_banquemotif; // Nombre de banque de motifs en mémoire
+	protected TilePrimitive[] meshFORE;
+	protected TilePrimitive[] meshBACK;
 
-    public int texCloudId;
-    
-	static public String[] tileBankNames={"foret1.dec",
-		"village.dec",
-		"maison.dec",
-		"grotte.dec",
-		"foret2.dec",
-		"foret3.dec",
-		"foret4.dec",
-		"palais1.dec",
-		"palais2.dec"};
-            
-	//////////////////////////////////////////////////////////////////////
+	private boolean initialized = false;
+	List<MotifBank> motifBanks;
+	public int texCloudId;
+
+	static public String[] tileBankNames = { "foret1.dec",
+			"village.dec",
+			"maison.dec",
+			"grotte.dec",
+			"foret2.dec",
+			"foret3.dec",
+			"foret4.dec",
+			"palais1.dec",
+			"palais2.dec" };
+
+	// ////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
-	//////////////////////////////////////////////////////////////////////
-	
+	// ////////////////////////////////////////////////////////////////////
+
 	public TileEngine()
 	{
 		super();
-		
-		cameraX=-1;
-		cameraY=-1;
-		
-		meshFORE=new TilePrimitive[Constantes.NB_MOTIFBANK];
-		meshBACK=new TilePrimitive[Constantes.NB_MOTIFBANK];
-		
-        // Load graphs
-        motifBanks = new ArrayList<MotifBank>();
-        this.charge_tous_les_motifs();
 
-        loadTiles();
-        
-        createCloudTexture();
-    }
-	
+		cameraX = -1;
+		cameraY = -1;
+
+		meshFORE = new TilePrimitive[Constantes.NB_MOTIFBANK];
+		meshBACK = new TilePrimitive[Constantes.NB_MOTIFBANK];
+
+		// Load graphs
+		motifBanks = new ArrayList<MotifBank>();
+		this.charge_tous_les_motifs();
+
+		loadTiles();
+
+		createCloudTexture();
+	}
+
 	public void cleanUp()
 	{
 		for (TilePrimitive tp : meshFORE) {
@@ -141,167 +138,171 @@ public class TileEngine extends TextureEngine {
 				tp.cleanUp();
 			}
 		}
-		
-		initialized=false;
+
+		initialized = false;
 	}
-	
-    // /////////////////////////////////////////////////////////////////////////////////////
-    // charge_tous_les_motifs
-    // /////////////////////////////////////////////////////////////////////////////////////
-    // Load every tile banks
-    // /////////////////////////////////////////////////////////////////////////////////////
-    void charge_tous_les_motifs() {
-        n_banquemotif = 0;
-        for (String bankName : tileBankNames) {
-            this.charge_motifs(bankName.toUpperCase());
-        }
-    }
 
-    // /////////////////////////////////////////////////////////////////////////////////////
-    // charge_motifs
-    // /////////////////////////////////////////////////////////////////////////////////////
-    // IN:filename to load as a tile bank
-    // /////////////////////////////////////////////////////////////////////////////////////
-    void charge_motifs(String filename) {
-        MotifBank motifBank = new MotifBank();
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// charge_tous_les_motifs
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// Load every tile banks
+	// /////////////////////////////////////////////////////////////////////////////////////
+	void charge_tous_les_motifs() {
+		for (String bankName : tileBankNames) {
+			this.charge_motifs(bankName.toUpperCase());
+		}
+	}
 
-        motifBank.charge_motifs(filename);
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// charge_motifs
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// IN:filename to load as a tile bank
+	// /////////////////////////////////////////////////////////////////////////////////////
+	void charge_motifs(String filename) {
+		MotifBank motifBank = new MotifBank();
 
-        motifBanks.add(motifBank);
+		motifBank.charge_motifs(filename);
 
-        // Relase memory allocated for tile graphics, because it's in directX memory now.
-        // delete motifBank;
+		motifBanks.add(motifBank);
 
-        // Increase number of loaded banks
-        n_banquemotif++;
-    }
+		// Relase memory allocated for tile graphics, because it's in directX
+		// memory now.
+		// delete motifBank;
 
-    public MotifBank getMotifBank(int n) {
-        return motifBanks.get(n);
-    }
-    
-    public void loadTiles() {
-        // Create a texture based on the current tiles
-        for (int i = 0; i < tileBankNames.length; i++) {
-            MotifBank motifBank = getMotifBank(i);
-            this.createTextureFromMotifBank(motifBank);
-        }
-    }
+	}
+
+	public MotifBank getMotifBank(int n) {
+		return motifBanks.get(n);
+	}
+
+	public void loadTiles() {
+		// Create a texture based on the current tiles
+		for (int i = 0; i < tileBankNames.length; i++) {
+			MotifBank motifBank = getMotifBank(i);
+			this.createTextureFromMotifBank(motifBank);
+		}
+	}
 
 	// Prepare vertices and indices for drawing tiles
 	public void prepareTiles(Area theMap) {
-	
-		int i,x,y;
-		
-		for (i=0;i<Constantes.NB_MOTIFBANK;i++) {
+
+		int i, x, y;
+
+		for (i = 0; i < Constantes.NB_MOTIFBANK; i++) {
 			meshFORE[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS);
 			meshBACK[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS);
 			meshFORE[i].startInitialization();
 			meshBACK[i].startInitialization();
 		}
-	
-		// Prepare vertices and indices for background map (tiles displayed UNDER sprites)
+
+		// Prepare vertices and indices for background map (tiles displayed
+		// UNDER sprites)
 		// For each tile bank
-		for (y=0;y<Constantes.TILEENGINE_HEIGHT;y++)
+		for (y = 0; y < Constantes.TILEENGINE_HEIGHT; y++)
 		{
-			for (x=0;x<Constantes.TILEENGINE_WIDTH;x++)
+			for (x = 0; x < Constantes.TILEENGINE_WIDTH; x++)
 			{
 				// Get corresponding case on the map
-				Case mapCase=theMap.get_mapcase(x,y+4);
+				Case mapCase = theMap.get_mapcase(x, y + 4);
 				if (mapCase != null) {
 					Tile back = mapCase.getBackTile();
-					int xTex=(back.index % 16) * 16;
-					int yTex=(back.index / 16) * 16 +1;
-					meshBACK[back.bank].addTile( (16 * x),
-													   (16 * y),
-													   xTex,
-													   yTex);
+					int xTex = (back.index % 16) * 16;
+					int yTex = (back.index / 16) * 16 + 1;
+					meshBACK[back.bank].addTile((16 * x),
+							(16 * y),
+							xTex,
+							yTex);
 				}
 			}
 		}
-	
-	
-		// Prepare vertices and indices for foreground map (tiles displayed ON sprites)
+
+		// Prepare vertices and indices for foreground map (tiles displayed ON
+		// sprites)
 		// For each tile bank
-		for (y=0;y<Constantes.TILEENGINE_HEIGHT;y++)
+		for (y = 0; y < Constantes.TILEENGINE_HEIGHT; y++)
 		{
-			for (x=0;x<Constantes.TILEENGINE_WIDTH;x++)
+			for (x = 0; x < Constantes.TILEENGINE_WIDTH; x++)
 			{
 				// Get corresponding foreground case on the map
-				Case mapCase=theMap.get_mapcase(x,y+4);
+				Case mapCase = theMap.get_mapcase(x, y + 4);
 				if (mapCase != null && mapCase.getForeTile() != null) {
 					Tile fore = mapCase.getForeTile();
-					int xTex=(fore.index % 16) * 16;
-					int yTex=(fore.index / 16) * 16+1;
-					meshFORE[fore.bank].addTile( 16 * x,
-									  16 * y,
-									  xTex,
-									  yTex);
-	
+					int xTex = (fore.index % 16) * 16;
+					int yTex = (fore.index / 16) * 16 + 1;
+					meshFORE[fore.bank].addTile(16 * x,
+							16 * y,
+							xTex,
+							yTex);
+
 				}
 			}
 		}
-		for (i=0;i<Constantes.NB_MOTIFBANK;i++) {
+		for (i = 0; i < Constantes.NB_MOTIFBANK; i++) {
 			meshFORE[i].endInitialization();
 			meshBACK[i].endInitialization();
 		}
-		
-		initialized=true;
+
+		initialized = true;
 	}
 
 	public void createTextureFromMotifBank(MotifBank mBank) {
 
 		GFXBasics surface = prepareSurfaceForTexture(true);
-		
+
 		// Display tiles on it
-		int x=0,y=0;
-		for (int n=0;n<mBank.getNb_motifs();n++)
+		int x = 0, y = 0;
+		for (int n = 0; n < mBank.getNb_motifs(); n++)
 		{
-			short[] motif=mBank.get_motif(n);
-			for (int j=0;j< 16;j++)
-				for (int i=0;i< 16;i++) 
+			short[] motif = mBank.get_motif(n);
+			for (int j = 0; j < 16; j++) {
+				for (int i = 0; i < 16; i++)
 				{
-					int a=motif[i+j*16];
-					if (a!=255)	{
-						surface.pset(i+x,j+y,a,null);
+					int a = motif[i + j * 16];
+					if (a != 255) {
+						surface.pset(i + x, j + y, a, null);
 					}
 				}
+			}
 			// Next position
-			x+=16;
-			if (x>=256)	{
-				x=0;
-				y+=16;
+			x += 16;
+			if (x >= 256) {
+				x = 0;
+				y += 16;
 			}
 		}
 
 		generateTexture();
 	}
-	
+
 	public void createCloudTexture() {
 		prepareSurfaceForTexture(false);
-		
-        CloudGenerator cGen=new CloudGenerator(scratch);
-        cGen.generate();
-        
+
+		CloudGenerator cGen = new CloudGenerator(scratch);
+		cGen.generate();
+
 		generateTexture();
-        texCloudId = textureTab[n_Texture-1];
+		texCloudId = textureTab[n_Texture - 1];
 	}
 
 	public void tileRender(boolean backGround) {
 
 		if (initialized) {
-			Vector3f ambient=ClientEngineZildo.ortho.getAmbientColor();
+			Vector3f ambient = ClientEngineZildo.ortho.getAmbientColor();
 			if (ambient != null) {
 				GL11.glColor3f(ambient.x, ambient.y, ambient.z);
 			}
-			
-			// Small optimization: do not draw invisible faces ! (counterclock wise vertices)
-			//pD3DDevice9.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
+			// Small optimization: do not draw invisible faces ! (counterclock
+			// wise vertices)
+			// pD3DDevice9.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 			if (backGround) {
 				// Display BACKGROUND
-				for (int i=0;i<Constantes.NB_MOTIFBANK;i++) {
-					if (meshBACK[i].getNPoints()>0) {
-				        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]);                 // Select Our Second Texture
+				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
+					if (meshBACK[i].getNPoints() > 0) {
+						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]); // Select
+																				// Our
+																				// Second
+																				// Texture
 						meshBACK[i].render();
 					}
 				}
@@ -310,30 +311,34 @@ public class TileEngine extends TextureEngine {
 				// Display FOREGROUND
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				GL11.glEnable(GL11.GL_BLEND);
-	
-				for (int i=0;i<Constantes.NB_MOTIFBANK;i++) {
-					if (meshFORE[i].getNPoints()>0) {
-				        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]);                 // Select Our Second Texture
+
+				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
+					if (meshFORE[i].getNPoints() > 0) {
+						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]); // Select
+																				// Our
+																				// Second
+																				// Texture
 						meshFORE[i].render();
 					}
 				}
 				GL11.glDisable(GL11.GL_BLEND);
 			}
-			
-	        //GL11.glColor3f(1f, 1f, 1f);
+
+			// GL11.glColor3f(1f, 1f, 1f);
 
 		}
 	}
-	
+
 	// Redraw all tiles with updating VertexBuffers.
 	// No need to access particular tile, because we draw every one.
-	// **BUT THIS COULD BE DANGEROUS WHEN A TILE SWITCHES FROM ONE BANK TO ANOTHER**
+	// **BUT THIS COULD BE DANGEROUS WHEN A TILE SWITCHES FROM ONE BANK TO
+	// ANOTHER**
 	public void updateTiles(Point cameraNew, Area[] p_areas, int compteur_animation) {
-	
-		if (initialized && cameraX!=-1 && cameraY!=-1) {
-	
+
+		if (initialized && cameraX != -1 && cameraY != -1) {
+
 			int i;
-			for (i=0;i<Constantes.NB_MOTIFBANK;i++) {
+			for (i = 0; i < Constantes.NB_MOTIFBANK; i++) {
 				meshBACK[i].startInitialization();
 				meshFORE[i].startInitialization();
 			}
@@ -341,74 +346,76 @@ public class TileEngine extends TextureEngine {
 				if (theMap == null) {
 					break;
 				}
-				Point offset=theMap.getOffset();
-				for (int y=0;y<Constantes.TILEENGINE_HEIGHT;y++)
+				Point offset = theMap.getOffset();
+				for (int y = 0; y < Constantes.TILEENGINE_HEIGHT; y++)
 				{
-					for (int x=0;x<Constantes.TILEENGINE_WIDTH;x++)
+					for (int x = 0; x < Constantes.TILEENGINE_WIDTH; x++)
 					{
 						// Get corresponding case on the map
-						Case mapCase=theMap.get_mapcase(x,y+4);
+						Case mapCase = theMap.get_mapcase(x, y + 4);
 						if (mapCase != null) {
 							Tile back = mapCase.getBackTile();
-							int n_motif=mapCase.getAnimatedMotif(compteur_animation);
-							int xTex=(n_motif % 16) * 16;
-							int yTex=(n_motif / 16) * 16;
-							int bank=back.bank;
-							if (bank<0 || bank>=Constantes.NB_MOTIFBANK) {
+							int n_motif = mapCase.getAnimatedMotif(compteur_animation);
+							int xTex = (n_motif % 16) * 16;
+							int yTex = (n_motif / 16) * 16;
+							int bank = back.bank;
+							if (bank < 0 || bank >= Constantes.NB_MOTIFBANK) {
 								throw new RuntimeException("We got a big problem");
 							}
-							meshBACK[bank].updateTile( (16 * x) - cameraNew.x + offset.x ,
-														(16 * y) - cameraNew.y + offset.y,
-														xTex,
-														yTex);
+							meshBACK[bank].updateTile((16 * x) - cameraNew.x + offset.x,
+									(16 * y) - cameraNew.y + offset.y,
+									xTex,
+									yTex);
 							Tile fore = mapCase.getForeTile();
 							if (fore != null) {
-								n_motif=fore.index;
-								xTex=(n_motif % 16) * 16;
-								yTex=(n_motif / 16) * 16; //+1;
-								meshFORE[fore.bank].updateTile( (16 * x) - cameraNew.x + offset.x,
-														(16 * y) - cameraNew.y + offset.y,
-														xTex,
-														yTex);
+								n_motif = fore.index;
+								xTex = (n_motif % 16) * 16;
+								yTex = (n_motif / 16) * 16; // +1;
+								meshFORE[fore.bank].updateTile((16 * x) - cameraNew.x + offset.x,
+										(16 * y) - cameraNew.y + offset.y,
+										xTex,
+										yTex);
 							}
 						}
 					}
 				}
 			}
-			for (i=0;i<Constantes.NB_MOTIFBANK;i++) {
+			for (i = 0; i < Constantes.NB_MOTIFBANK; i++) {
 				meshBACK[i].endInitialization();
 				meshFORE[i].endInitialization();
 			}
 		}
-	
-		cameraX=cameraNew.x;
-		cameraY=cameraNew.y;
-		
+
+		cameraX = cameraNew.x;
+		cameraY = cameraNew.y;
+
 	}
 
 	/**
 	 * Return the bank's index in loaded ones from a given name
+	 * 
 	 * @param p_name
 	 * @return int
 	 */
 	public int getBankFromName(String p_name) {
-		int i=0;
+		int i = 0;
 		for (String s : tileBankNames) {
 			if (s.toUpperCase().indexOf(p_name.toUpperCase()) == 0) {
 				return i;
 			}
 			i++;
 		}
-		throw new RuntimeException("Bank "+p_name+" doesn't exist.");
+		throw new RuntimeException("Bank " + p_name + " doesn't exist.");
 	}
-	
+
 	/**
 	 * Return the bank's name by index
+	 * 
 	 * @param nBank
 	 * @return String
 	 */
 	public String getBankNameFromInt(int nBank) {
-		String response=tileBankNames[nBank];
+		String response = tileBankNames[nBank];
 		return response.substring(0, response.indexOf("."));
 	}
 }

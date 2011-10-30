@@ -27,11 +27,10 @@ import zildo.monde.sprites.persos.Perso;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class PathFinderBee extends PathFinder {
 
-	
 	/**
 	 * @param p_mobile
 	 */
@@ -44,25 +43,28 @@ public class PathFinderBee extends PathFinder {
 	 */
 	@Override
 	public void determineDestination() {
-        float x=mobile.x;
-        float y=mobile.y;
-		target=new Point();
-		target.x=(int)(x+(5.0f+Math.random()*10.0f)*Math.cos(2.0f*Math.PI*Math.random()));
-		target.y=(int)(y+(5.0f+Math.random()*10.0f)*Math.sin(2.0f*Math.PI*Math.random()));
+		float x = mobile.x;
+		float y = mobile.y;
+		target = new Point();
+		target.x = (int) (x + (5.0f + Math.random() * 10.0f)
+				* Math.cos(2.0f * Math.PI * Math.random()));
+		target.y = (int) (y + (5.0f + Math.random() * 10.0f)
+				* Math.sin(2.0f * Math.PI * Math.random()));
 	}
-	
-    public Pointf reachDestination(float p_speed) {
-    	Pointf pos=super.reachDestination(p_speed);
-    	
-    	// Introduce noise
-    	double alpha=Math.random() * 2 * Math.PI;
-    	double dx = Math.cos(alpha) * p_speed;
-    	double dy = Math.sin(alpha) * p_speed;
-    	
-    	pos.add((float) dx, (float) dy);
-    	
-    	mobile.z = 10+Hasard.intervalle(2);
-    	
-    	return pos;
-    }
+
+	@Override
+	public Pointf reachDestination(float p_speed) {
+		Pointf pos = super.reachDestination(p_speed);
+
+		// Introduce noise
+		double alpha = Math.random() * 2 * Math.PI;
+		double dx = Math.cos(alpha) * p_speed;
+		double dy = Math.sin(alpha) * p_speed;
+
+		pos.add((float) dx, (float) dy);
+
+		mobile.z = 10 + Hasard.intervalle(2);
+
+		return pos;
+	}
 }

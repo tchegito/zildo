@@ -22,14 +22,14 @@ package zildo.monde.map;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class Tile implements Cloneable {
 
 	public int index;
 	public int bank;
 	public Case parent;
-	
+
 	public Tile(int p_bank, int p_index, Case p_parent) {
 		if (bank == 73) {
 			throw new RuntimeException();
@@ -38,7 +38,8 @@ public class Tile implements Cloneable {
 		index = p_index;
 		parent = p_parent;
 	}
-	
+
+	@Override
 	public Tile clone() {
 		try {
 			return (Tile) super.clone();
@@ -46,16 +47,16 @@ public class Tile implements Cloneable {
 			throw new RuntimeException("Unable to clone Tile");
 		}
 	}
-	
+
 	public int getValue() {
 		int a = bank & 31;
 		int b = index;
 		a = a << 8;
 		return a + b;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "bank="+bank+" ; index="+index;
+		return "bank=" + bank + " ; index=" + index;
 	}
 }

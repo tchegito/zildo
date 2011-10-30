@@ -27,36 +27,39 @@ import zildo.fwk.net.TransferObject;
 public class WaitingDialog implements EasySerializable {
 
 	public enum CommandDialog {
-		ACTION, // End dialog	
-		UP,	DOWN,	// Line selection 
-		BUYING, 
-		STOP,	// Brutal end
-		CONTINUE;	// continue to next sentence
+		ACTION, // End dialog
+		UP, DOWN, // Line selection
+		BUYING, STOP, // Brutal end
+		CONTINUE; // continue to next sentence
 	}
-	
+
 	public String sentence;
 	public CommandDialog action;
-	public boolean console;			// TRUE=message should be displayed in the console
-	public TransferObject client;	// Only used for sending dialog to the right client. Unused by client side.
-	
-	public WaitingDialog(String p_sentence, CommandDialog p_action, boolean p_console, TransferObject p_client) {
-		sentence=p_sentence;
-		action=p_action;
-		console=p_console;
-		client=p_client;
+	public boolean console; // TRUE=message should be displayed in the console
+	public TransferObject client; // Only used for sending dialog to the right
+									// client. Unused by client side.
+
+	public WaitingDialog(String p_sentence, CommandDialog p_action,
+			boolean p_console, TransferObject p_client) {
+		sentence = p_sentence;
+		action = p_action;
+		console = p_console;
+		client = p_client;
 	}
-	
+
+	@Override
 	public void serialize(EasyBuffering p_buffer) {
 		p_buffer.put(sentence);
 		p_buffer.put((byte) (action == null ? -1 : action.ordinal()));
 		p_buffer.put(console);
 	}
-	
+
 	public static WaitingDialog deserialize(EasyBuffering p_buffer) {
-		String s=p_buffer.readString();
-		int act=p_buffer.readByte();
-		boolean console=p_buffer.readBoolean();
-		CommandDialog actDialog=(act == -1 ? null : CommandDialog.values()[act]);
+		String s = p_buffer.readString();
+		int act = p_buffer.readByte();
+		boolean console = p_buffer.readBoolean();
+		CommandDialog actDialog = (act == -1 ? null
+				: CommandDialog.values()[act]);
 		return new WaitingDialog(s, actDialog, console, null);
 	}
 }

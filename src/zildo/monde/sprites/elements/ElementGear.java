@@ -30,41 +30,46 @@ import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class ElementGear extends Element {
 
 	boolean acting = false;
 	int count = 0;
-	
+
 	public ElementGear(int p_x, int p_y) {
 		super();
-		x=p_x;
-		y=p_y;
+		x = p_x;
+		y = p_y;
 	}
-	
+
 	/**
 	 * Push this gear element.
-	 * @param p_perso Character pushing this gear. (useful for doors, we need to know if character has keys to do so)
+	 * 
+	 * @param p_perso
+	 *            Character pushing this gear. (useful for doors, we need to
+	 *            know if character has keys to do so)
 	 */
 	public void push(PersoZildo p_perso) {
 		if (!acting) {
-			GearDescription gearDesc=(GearDescription) desc;
+			GearDescription gearDesc = (GearDescription) desc;
 			switch (gearDesc) {
 			case GREEN_DOOR:
-				int keys=p_perso.getCountKey();
+				int keys = p_perso.getCountKey();
 				if (keys != 0) {
-					acting=true;
-					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlock, this);
+					acting = true;
+					EngineZildo.soundManagement.broadcastSound(
+							BankSound.ZildoUnlock, this);
 					p_perso.setCountKey(--keys);
-					
+
 					// Trigger door
-					Area map=EngineZildo.mapManagement.getCurrentMap();
-					String mapName=map.getName();
-					// Get the map coordinates in front of Zildo (with his angle)
-					int ax=(int) p_perso.x / 16 + p_perso.angle.coords.x;
-					int ay=(int) p_perso.y / 16 + p_perso.angle.coords.y;
-					ChainingPoint ch=map.getCloseChainingPoint(ax, ay);
+					Area map = EngineZildo.mapManagement.getCurrentMap();
+					String mapName = map.getName();
+					// Get the map coordinates in front of Zildo (with his
+					// angle)
+					int axx = (int) p_perso.x / 16 + p_perso.angle.coords.x;
+					int ayy = (int) p_perso.y / 16 + p_perso.angle.coords.y;
+					ChainingPoint ch = map.getCloseChainingPoint(axx, ayy);
 					if (ch != null) {
 						EngineZildo.scriptManagement.openDoor(mapName, ch);
 					}
@@ -81,15 +86,17 @@ public class ElementGear extends Element {
 			switch (count) {
 			case 10:
 				setDesc(GearDescription.GREEN_DOOR_OPENING);
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlockDouble, this);
+				EngineZildo.soundManagement.broadcastSound(
+						BankSound.ZildoUnlockDouble, this);
 				break;
 			case 20:
-				dying=true;
+				dying = true;
 			}
 			count++;
 		}
 	}
-	
+
+	@Override
 	public Point getCenter() {
 		super.getCenter();
 		center.y = (int) y - sprModel.getTaille_y();
