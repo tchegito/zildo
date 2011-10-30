@@ -31,20 +31,21 @@ import zildo.monde.map.TileInfo;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class CollisionDrawer {
 
 	final Graphics g;
 	static final Map<TileInfo, Image> imagesByTileInfo = new HashMap<TileInfo, Image>();
 	final Color collisionColor = new Color(1, 0, 0, 0.5f);
-	
+
 	public CollisionDrawer(Graphics p_graphics) {
 		g = p_graphics;
 	}
-	
+
 	/**
 	 * Draw a masked image on the graphics, with collision information.
+	 * 
 	 * @param x
 	 * @param y
 	 * @param info
@@ -57,24 +58,25 @@ public class CollisionDrawer {
 		}
 		g.drawImage(img, x, y, null);
 	}
-	
+
 	/**
-	 * Build an image based on the collision description from TileInfo 
+	 * Build an image based on the collision description from TileInfo
+	 * 
 	 * @param info
 	 * @return Image
 	 */
 	private Image buildImage(TileInfo info) {
-    	Image img=new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-		Graphics g = img.getGraphics();
-		g.setColor(collisionColor);
+		Image img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		Graphics gfx = img.getGraphics();
+		gfx.setColor(collisionColor);
 		// Draw the tile according to the collision states
-		for (int i=0;i<16;i++) {
-			for (int j=0;j<16;j++) {
+		for (int i = 0; i < 16; i++) {
+			for (int j = 0; j < 16; j++) {
 				if (info.collide(j, i)) {
-					g.drawLine(j, i, j, i);
+					gfx.drawLine(j, i, j, i);
 				}
 			}
 		}
-    	return img;
+		return img;
 	}
 }

@@ -27,12 +27,12 @@ import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class PathFinderStraightFlying extends PathFinder {
 
 	float alpha;
-	
+
 	/**
 	 * @param p_mobile
 	 */
@@ -40,29 +40,31 @@ public class PathFinderStraightFlying extends PathFinder {
 		super(p_mobile);
 		speed = 1.5f;
 	}
-	
+
+	@Override
 	public void determineDestination() {
 		// A simple bird flying straight toward the map's border.
-		target=new Point(mobile.x, mobile.y);
+		target = new Point(mobile.x, mobile.y);
 		switch (mobile.getAngle()) {
-			case EST:
-			case SUD:
-				target.x=-100;
-				break;
-			default:
-				target.x = 16 * EngineZildo.mapManagement.getCurrentMap().getDim_x() + 100;
-				break;
+		case EST:
+		case SUD:
+			target.x = -100;
+			break;
+		default:
+			target.x = 16 * EngineZildo.mapManagement.getCurrentMap()
+					.getDim_x() + 100;
+			break;
 		}
-		mobile.z=35f;	// Up in the sky
+		mobile.z = 35f; // Up in the sky
 	}
-	
+
 	@Override
 	public Pointf reachDestination(float p_speed) {
 		Pointf p = reachLine(p_speed, true);
-		
+
 		// Swing the bird !
-		alpha+=0.07f;
-		mobile.z+= (float) (0.6f * Math.cos(alpha));
+		alpha += 0.07f;
+		mobile.z += (float) (0.6f * Math.cos(alpha));
 		return p;
 	}
 

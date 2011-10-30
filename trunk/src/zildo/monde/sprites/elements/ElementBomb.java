@@ -32,42 +32,44 @@ public class ElementBomb extends Element {
 
 	Perso shooter;
 	int counter;
-	
+
 	public ElementBomb(int p_startX, int p_startY, int p_startZ, Perso p_shooter) {
-		x=p_startX;
-		y=p_startY;
-		z=p_startZ;
-		shooter=p_shooter;
+		x = p_startX;
+		y = p_startY;
+		z = p_startZ;
+		shooter = p_shooter;
 		setSprModel(ElementDescription.BOMB);
-		counter=120;
-		
-        // Add a shadow
+		counter = 120;
+
+		// Add a shadow
 		addShadow(ElementDescription.SHADOW_SMALL);
-        
-		shooter=p_shooter;
-		
-        EngineZildo.soundManagement.broadcastSound(BankSound.PlanteBombe, this);
+
+		shooter = p_shooter;
+
+		EngineZildo.soundManagement.broadcastSound(BankSound.PlanteBombe, this);
 	}
-	
+
 	@Override
 	public void animate() {
 		counter--;
-		if (counter==0) {
-			dying=true;
-			shadow.dying=true;
-			EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.EXPLOSION, shooter));
-		} else if (counter<30) {
+		if (counter == 0) {
+			dying = true;
+			shadow.dying = true;
+			EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x,
+					(int) y, ImpactKind.EXPLOSION, shooter));
+		} else if (counter < 30) {
 			setSpecialEffect(EngineFX.PERSO_HURT);
 		}
-		
+
 		super.animate();
 	}
-	
-    @Override
-	public Collision getCollision() {
-        return null;
-    }
 
+	@Override
+	public Collision getCollision() {
+		return null;
+	}
+
+	@Override
 	public boolean beingCollided(Perso p_perso) {
 		return true;
 	}

@@ -26,27 +26,28 @@ import zildo.client.ClientEngineZildo;
 
 public class FadeFilter extends FadeScreenFilter {
 
-	boolean complete=true;
-	
+	boolean complete = true;
+
 	@Override
-	public boolean renderFilter()
-	{
+	public boolean renderFilter() {
 		return true;
 	}
-	
+
 	@Override
 	public void preFilter() {
 		float factor = complete ? 255.0f : 768.0f;
-		float coeff=1.0f - (getFadeLevel() / factor);
-		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(coeff, coeff, coeff));
+		float coeff = 1.0f - (getFadeLevel() / factor);
+		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(coeff, coeff,
+				coeff));
 	}
 
+	@Override
 	public void doOnActive(FilterEffect effect) {
 		if (effect == FilterEffect.SEMIFADE) {
-			complete=false;
+			complete = false;
 		} else {
-			complete=true;
+			complete = true;
 		}
 	}
-	
+
 }

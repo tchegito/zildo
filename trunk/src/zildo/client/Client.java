@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 
 import zildo.Zildo;
@@ -48,31 +47,34 @@ import zildo.server.state.PlayerState;
  * <li>Display the scene</li>
  * <li>Store info about connected clients (to display score)</li>
  * </ul>
+ * 
  * @author tchegito
- *
+ * 
  */
 public class Client {
 
 	ClientEngineZildo clientEngineZildo;
 	OpenGLZildo glGestion;
 	static boolean awt;
-	boolean done=false;
-	boolean serverLeft=false;
-	boolean connected=false;	// TRUE so as a connection with a server is established
-	boolean lan=false;
+	boolean done = false;
+	boolean serverLeft = false;
+	boolean connected = false; // TRUE so as a connection with a server is
+								// established
+	boolean lan = false;
 	Menu currentMenu;
 	NetClient netClient;
 	boolean multiplayer;
-	boolean music=Zildo.soundEnabled;
-	
-	ItemMenu action=null;
-	
-    Map<Integer, PlayerState> states;	// All player in the game (reduced info to display scores)
-    
-    KeyboardInstant kbInstant=new KeyboardInstant();
-    
-    InGameMenu ingameMenu;
-    
+	boolean music = Zildo.soundEnabled;
+
+	ItemMenu action = null;
+
+	Map<Integer, PlayerState> states; // All player in the game (reduced info to
+										// display scores)
+
+	KeyboardInstant kbInstant = new KeyboardInstant();
+
+	InGameMenu ingameMenu;
+
 	public enum ClientType {
 		SERVER_AND_CLIENT, CLIENT, ZEDITOR;
 	}
@@ -81,186 +83,183 @@ public class Client {
 	 * Create client with given parameter.
 	 */
 	public Client(boolean p_awt) {
-		awt=p_awt;
-		states=new HashMap<Integer, PlayerState>();
+		awt = p_awt;
+		states = new HashMap<Integer, PlayerState>();
 		// Video
 		initializeDisplay();
 	}
 
 	void initializeDisplay() {
 		if (awt) {
-			glGestion=new OpenGLZildo();
+			glGestion = new OpenGLZildo();
 		} else {
-			glGestion=new OpenGLZildo(Zildo.fullScreen);
+			glGestion = new OpenGLZildo(Zildo.fullScreen);
 		}
-		clientEngineZildo=new ClientEngineZildo(glGestion, awt, this);
+		clientEngineZildo = new ClientEngineZildo(glGestion, awt, this);
 		glGestion.setClientEngineZildo(clientEngineZildo);
 		clientEngineZildo.setOpenGLGestion(glGestion);
 	}
-	
+
 	/**
 	 * Set up network things.
-	 * @param p_type ClientType
-	 * @param p_serverIp 
+	 * 
+	 * @param p_type
+	 *            ClientType
+	 * @param p_serverIp
 	 * @param p_serverPort
 	 */
 	public void setUpNetwork(ClientType p_type, String p_serverIp, int p_serverPort, boolean p_multiplayer) {
-		lan=p_serverIp == null;
+		lan = p_serverIp == null;
 		if (ClientType.CLIENT == p_type) {
 			if (lan) {
-				netClient=new NetClient(this);
+				netClient = new NetClient(this);
 			} else {
-				netClient=new InternetClient(this, p_serverIp, p_serverPort);
+				netClient = new InternetClient(this, p_serverIp, p_serverPort);
 			}
-			connected=false;
+			connected = false;
 		} else {
-			connected=true;	// We don't need to manage connection
+			connected = true; // We don't need to manage connection
 		}
-		multiplayer=p_multiplayer;
+		multiplayer = p_multiplayer;
 	}
-	
+
 	/**
 	 * Initialize OpenGL in the ZEditor frame.
 	 */
 	public void initGL() {
-		try {
-			glGestion.init();
-		} catch (LWJGLException e) {
-			throw new RuntimeException("Problem initializing ZildoRenderer !");
-		}
+		glGestion.init();
 		clientEngineZildo.initializeClient(true);
 		// Set up the map
-        ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
-        // And the sprites
-        EngineZildo.spriteManagement.updateSprites(false);
-        ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null));
-		
-    }
-	
+		ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+		// And the sprites
+		EngineZildo.spriteManagement.updateSprites(false);
+		ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null));
+
+	}
+
 	long time;
-	
-	public boolean render()
-	{
+
+	public boolean render() {
 		if (!awt) {
-	        // Read keyboard
-	        Keyboard.poll();
-	
-	        // Music
-	        if (music) {
-		        long currentTime=ZUtils.getTime();
-		        OpenGLSound.pollMusic((int) (currentTime - time));
-		        time=currentTime;
-	        }
-	        done=glGestion.mainloop();
-	        
-	    	if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !ClientEngineZildo.filterCommand.isFading()) {
-	    		// Escape is pressed and no fade is running
-	            if (connected) {
-	            	if (ingameMenu == null) {
-	            		ingameMenu=new InGameMenu();
-	            	}
-	            	handleMenu(ingameMenu);
-	            } else if (!isIngameMenu()) {
-	            	done=true;
-	            }
-	        }
+			// Read keyboard
+			Keyboard.poll();
+
+			// Music
+			if (music) {
+				long currentTime = ZUtils.getTime();
+				OpenGLSound.pollMusic((int) (currentTime - time));
+				time = currentTime;
+			}
+			done = glGestion.mainloop();
+
+			if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !ClientEngineZildo.filterCommand.isFading()) {
+				// Escape is pressed and no fade is running
+				if (connected) {
+					if (ingameMenu == null) {
+						ingameMenu = new InGameMenu();
+					}
+					handleMenu(ingameMenu);
+				} else if (!isIngameMenu()) {
+					done = true;
+				}
+			}
 
 		}
-		
-        // Display scene
-		glGestion.render(connected);
-		
 
-   		if (action != null && !action.isLaunched()) {
-   			action.setLaunched(true);
-   			action.run();
-   			action=null;
-   		}
-        return done;
+		// Display scene
+		glGestion.render(connected);
+
+		if (action != null && !action.isLaunched()) {
+			action.setLaunched(true);
+			action.run();
+			action = null;
+		}
+		return done;
 	}
-	
+
 	public void serverLeft() {
-		serverLeft=true;
+		serverLeft = true;
 	}
-	
+
 	public void stop() {
-		done=true;
+		done = true;
 	}
-	
+
 	/**
-	 * Two important things:
-	 * -Do the network job
-	 * -Render scene
+	 * Two important things: -Do the network job -Render scene
 	 */
 	public void run() {
-		
-        while (!done && !serverLeft) {
+
+		while (!done && !serverLeft) {
 			// Deals with network
-            if (netClient != null) {
-                netClient.run();
-                connected = netClient.isConnected() && !isIngameMenu();
-        		
-                if (connected) {	// Read keyboard if player is in game
-            		kbInstant.update();
-            		
-                    // Send keyboard (a non-sending during certain time means deconnection)
-                    netClient.sendKeyboard();
-                }
+			if (netClient != null) {
+				netClient.run();
+				connected = netClient.isConnected() && !isIngameMenu();
 
-            }
-       		render();
+				if (connected) { // Read keyboard if player is in game
+					kbInstant.update();
 
-        	ZUtils.sleep(5);
-        }
-	}
-	
-	public void handleMenu(Menu p_menu) {
-		currentMenu=p_menu;
-		if (p_menu == null) {
-			connected=true;
-		} else {
-			currentMenu.refresh();
-			connected=false;
+					// Send keyboard (a non-sending during certain time means
+					// deconnection)
+					netClient.sendKeyboard();
+				}
+
+			}
+			render();
+
+			ZUtils.sleep(5);
 		}
 	}
-	
+
+	public void handleMenu(Menu p_menu) {
+		currentMenu = p_menu;
+		if (p_menu == null) {
+			connected = true;
+		} else {
+			currentMenu.refresh();
+			connected = false;
+		}
+	}
+
 	public void cleanUp() {
-        if (netClient != null) {
-        	netClient.close();
-        }
-        if (glGestion != null) {
-        	glGestion.cleanUp();
-        	glGestion=null;
-        }
+		if (netClient != null) {
+			netClient.close();
+		}
+		if (glGestion != null) {
+			glGestion.cleanUp();
+			glGestion = null;
+		}
 
 	}
 
 	public ClientEngineZildo getEngineZildo() {
 		return clientEngineZildo;
 	}
-	
+
 	public TransferObject getNetClient() {
 		return netClient;
 	}
-	
+
 	public boolean isLAN() {
 		return lan;
 	}
-	
+
 	public Collection<PlayerState> getPlayerStates() {
 		return states.values();
 	}
-	
+
 	/**
 	 * Clients store the provided client in his registry.
+	 * 
 	 * @param p_playerName
 	 */
 	public void registerClient(PlayerState p_state) {
 		states.put(p_state.zildoId, p_state);
 	}
-	
+
 	/**
 	 * Client is gone, so unregister him from the map.
+	 * 
 	 * @param p_zildoId
 	 */
 	public void unregisterClient(int p_zildoId) {
@@ -274,15 +273,15 @@ public class Client {
 	public void setKbInstant(KeyboardInstant kbInstant) {
 		this.kbInstant = kbInstant;
 	}
-	
+
 	public boolean isMultiplayer() {
 		return multiplayer;
 	}
-	
+
 	public static boolean isZEditor() {
 		return awt;
 	}
-	
+
 	public boolean isIngameMenu() {
 		return currentMenu != null && ingameMenu != null;
 	}

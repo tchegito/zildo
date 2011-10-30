@@ -47,45 +47,50 @@ import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 
 public abstract class Perso extends Element {
-	
+
 	public enum PersoInfo {
 		NEUTRAL, ENEMY, ZILDO, SHOOTABLE_NEUTRAL;
 	}
 
 	protected Zone zone_deplacement;
-    protected int compte_dialogue;
-    private String effect;	// String containing desired effect ("noir", "jaune", ...)
-    protected PersoInfo info;					// 0=Neutre  1=Ennemi  2=Zildo
-    protected boolean alerte;				// True=Zildo est reperé (Pieds dans l'eau si c'est Zildo)
-    protected MouvementPerso quel_deplacement;      // Script
-    protected PersoDescription quel_spr;				
-    protected int attente;				// =0 => pas d'attente
-    protected PathFinder pathFinder;				// Destination
-    protected float px,py;				// Quand le perso est propulsé (touché)
-    protected int pos_seqsprite;
-    private Element en_bras;			//If this is Zildo, what he holds. If any perso, his weapon
-    protected MouvementZildo mouvement;			// Situation du perso:debout,couché,attaque...
-    protected int cptMouvement;	// Un compteur pour les mouvements des PNJ
-    private int coming_map;		// 1 si Zildo entre sur une map,sinon 255
-    private int pv,maxpv;			// Points de vie du perso
-	private boolean ghost=false;	// TRUE=script control him
+	protected int compte_dialogue;
+	private String effect; // String containing desired effect ("noir", "jaune",
+							// ...)
+	protected PersoInfo info; // 0=Neutre 1=Ennemi 2=Zildo
+	protected boolean alerte; // True=Zildo est reperé (Pieds dans l'eau si
+								// c'est Zildo)
+	protected MouvementPerso quel_deplacement; // Script
+	protected PersoDescription quel_spr;
+	protected int attente; // =0 => pas d'attente
+	protected PathFinder pathFinder; // Destination
+	protected float px, py; // Quand le perso est propulsé (touché)
+	protected int pos_seqsprite;
+	private Element en_bras; // If this is Zildo, what he holds. If any perso,
+								// his weapon
+	protected MouvementZildo mouvement; // Situation du
+										// perso:debout,couché,attaque...
+	protected int cptMouvement; // Un compteur pour les mouvements des PNJ
+	private int coming_map; // 1 si Zildo entre sur une map,sinon 255
+	private int pv, maxpv; // Points de vie du perso
+	private boolean ghost = false; // TRUE=script control him
 
-    private int money;
-    protected int countArrow;
-    protected int countBomb;
-    protected int countKey;	// How many keys have perso ? (for PNJ, he gives it when he dies)
+	private int money;
+	protected int countArrow;
+	protected int countBomb;
+	protected int countKey; // How many keys have perso ? (for PNJ, he gives it
+							// when he dies)
 
-    protected PersoAction action;	// Perso doing an action
-    
-	private int count=0;
-	protected boolean inWater=false;
-	protected boolean inDirt=false;
-	
-    private boolean wounded;
-    private Perso dialoguingWith;
-	private String dialogSwitch;	// Field parseable by ZSSwitch
-    private Perso following;	// Perso followed by this one
-    
+	protected PersoAction action; // Perso doing an action
+
+	private int count = 0;
+	protected boolean inWater = false;
+	protected boolean inDirt = false;
+
+	private boolean wounded;
+	private Perso dialoguingWith;
+	private String dialogSwitch; // Field parseable by ZSSwitch
+	private Perso following; // Perso followed by this one
+
 	public Perso getFollowing() {
 		return following;
 	}
@@ -94,9 +99,9 @@ public abstract class Perso extends Element {
 		this.following = following;
 	}
 
-
-	// Liste des sprites complémentaires du perso (ex:bouclier+casque pour zildo)
-	List<Element>	persoSprites;
+	// Liste des sprites complémentaires du perso (ex:bouclier+casque pour
+	// zildo)
+	List<Element> persoSprites;
 
 	public Zone getZone_deplacement() {
 		return zone_deplacement;
@@ -140,22 +145,22 @@ public abstract class Perso extends Element {
 		switch (p_script) {
 		case ZONE:
 		case IMMOBILE:
-			pathFinder=new PathFinder(this);
+			pathFinder = new PathFinder(this);
 			pathFinder.setTarget(null);
 			break;
 		case BIRD:
 			pathFinder = new PathFinderStraightFlying(this);
-			pathFinder.setTarget(target);	// Keep the previous target
+			pathFinder.setTarget(target); // Keep the previous target
 			break;
 		case SQUIRREL:
-			pathFinder= new PathFinderSquirrel(this);
+			pathFinder = new PathFinderSquirrel(this);
 			break;
 		case WAKEUP:
-			pos_seqsprite=0;
+			pos_seqsprite = 0;
 			break;
 		}
 	}
-	
+
 	public int getAttente() {
 		return attente;
 	}
@@ -239,11 +244,11 @@ public abstract class Perso extends Element {
 	public void setMoney(int money) {
 		this.money = money;
 	}
-	
+
 	public String getDialogSwitch() {
 		return dialogSwitch;
 	}
-	
+
 	public void setDialogSwitch(String p_dialogSwitch) {
 		if (p_dialogSwitch != null && p_dialogSwitch.length() > 0) {
 			dialogSwitch = p_dialogSwitch;
@@ -251,7 +256,7 @@ public abstract class Perso extends Element {
 			dialogSwitch = null;
 		}
 	}
-	
+
 	public boolean isWounded() {
 		return wounded;
 	}
@@ -272,28 +277,28 @@ public abstract class Perso extends Element {
 		this.persoSprites.add(elem);
 		elem.setLinkedPerso(this);
 	}
-	
+
 	public Perso() {
 		super();
-		entityType=EntityType.PERSO;
-	
-		money=(int)Math.random();
-	
-		wounded=false;
-		alerte=false;
-		px=0.0f;
-		py=0.0f;
-		compte_dialogue=0;
-		attente=0;
-		
-		quel_deplacement=MouvementPerso.IMMOBILE;
-		
-		persoSprites=new ArrayList<Element>();
-	
-		pathFinder=new PathFinder(this);
-	
+		entityType = EntityType.PERSO;
+
+		money = (int) Math.random();
+
+		wounded = false;
+		alerte = false;
+		px = 0.0f;
+		py = 0.0f;
+		compte_dialogue = 0;
+		attente = 0;
+
+		quel_deplacement = MouvementPerso.IMMOBILE;
+
+		persoSprites = new ArrayList<Element>();
+
+		pathFinder = new PathFinder(this);
+
 	}
-	
+
 	@Override
 	public void finalize() {
 		// Delete linked elements
@@ -304,21 +309,21 @@ public abstract class Perso extends Element {
 			persoSprites.clear();
 		}
 	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
+
+	// /////////////////////////////////////////////////////////////////////////////////////
 	// hide
-	///////////////////////////////////////////////////////////////////////////////////////
+	// /////////////////////////////////////////////////////////////////////////////////////
 	// Sets perso unvisible, and every linked sprites too.
-	///////////////////////////////////////////////////////////////////////////////////////
+	// /////////////////////////////////////////////////////////////////////////////////////
 	public void hide() {
-		this.visible=false;
+		this.visible = false;
 		if (this.persoSprites.size() > 0) {
 			for (Element e : persoSprites) {
 				e.setVisible(false);
 			}
 		}
 	}
-	
+
 	@Override
 	public void setSpecialEffect(EngineFX specialEffect) {
 		super.setSpecialEffect(specialEffect);
@@ -328,134 +333,143 @@ public abstract class Perso extends Element {
 			}
 		}
 	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
+
+	// /////////////////////////////////////////////////////////////////////////////////////
 	// getAttackTarget
-	///////////////////////////////////////////////////////////////////////////////////////
+	// /////////////////////////////////////////////////////////////////////////////////////
 	// -return the tile's coordinates immediately near the character
-	///////////////////////////////////////////////////////////////////////////////////////
+	// /////////////////////////////////////////////////////////////////////////////////////
 	public Point getAttackTarget() {
-		
-		final int add_anglex[]={0,1,0,-1};
-		final int add_angley[]={-1,0,1,0};
-	
-		Point p=new Point();
-		p.setX(((int)getX()+5*add_anglex[angle.value]) / 16);
-		p.setY(((int)getY()+5*add_angley[angle.value]) / 16);
-	
+
+		final int add_anglex[] = { 0, 1, 0, -1 };
+		final int add_angley[] = { -1, 0, 1, 0 };
+
+		Point p = new Point();
+		p.setX(((int) getX() + 5 * add_anglex[angle.value]) / 16);
+		p.setY(((int) getY() + 5 * add_angley[angle.value]) / 16);
+
 		return p;
 	}
-	
-    public void placeAt(Point p_point) {
-        placeAt(p_point.getX(), p_point.getY());
-    }
 
-    public void placeAt(int p_posX, int p_posY) {
-        int diffX = (int) x - p_posX;
-        int diffY = (int) y - p_posY;
-        x = p_posX;
-        y = p_posY;
-        for (Element elem : persoSprites) {
-            elem.x += diffX;
-            elem.y += diffY;
-        }
-    }
-    
+	public void placeAt(Point p_point) {
+		placeAt(p_point.getX(), p_point.getY());
+	}
+
+	public void placeAt(int p_posX, int p_posY) {
+		int diffX = (int) x - p_posX;
+		int diffY = (int) y - p_posY;
+		x = p_posX;
+		y = p_posY;
+		for (Element elem : persoSprites) {
+			elem.x += diffX;
+			elem.y += diffY;
+		}
+	}
+
 	@Override
 	public String toString() {
-		StringBuffer sb=new StringBuffer();
-		sb.append("Perso="+name+"\nx="+x+"\ny="+y+"\ninfo="+info+"\nmvt="+mouvement);
+		StringBuffer sb = new StringBuffer();
+		sb.append("Perso=" + name + "\nx=" + x + "\ny=" + y + "\ninfo=" + info + "\nmvt=" + mouvement);
 		return sb.toString();
 	}
 
 	/**
-	 * Push the character away, with a hit point located at the given coordinates.
+	 * Push the character away, with a hit point located at the given
+	 * coordinates.
+	 * 
 	 * @param p_cx
 	 * @param p_cy
 	 */
 	protected void project(float p_cx, float p_cy, int p_speed) {
 		// Project monster away from the enemy
-		float diffx=getX()-p_cx;
-		float diffy=getY()-p_cy;
-		double norme=Math.sqrt( (diffx*diffx) + (diffy*diffy) );
-	    if (norme==0.0f) {
-			norme=1.0f;           //Pour éviter le 'divide by zero'
+		float diffx = getX() - p_cx;
+		float diffy = getY() - p_cy;
+		double norme = Math.sqrt((diffx * diffx) + (diffy * diffy));
+		if (norme == 0.0f) {
+			norme = 1.0f; // Pour éviter le 'divide by zero'
 		}
 		// Et on l'envoie !
-		this.setPx((float) (p_speed*(diffx/norme)));
-		this.setPy((float) (p_speed*(diffy/norme)));		
+		this.setPx((float) (p_speed * (diffx / norme)));
+		this.setPy((float) (p_speed * (diffy / norme)));
 	}
-	
+
 	/**
-	 * Try to move character at the given location, and returns corrected one.<p/>
-	 * The correction is based on two methods:
-	 * -transform diagonal movement into lateral
-	 * -transform lateral movement into diagonal<p/>
+	 * Try to move character at the given location, and returns corrected one.
+	 * <p/>
+	 * The correction is based on two methods: -transform diagonal movement into
+	 * lateral -transform lateral movement into diagonal
+	 * <p/>
 	 * If no one succeeds, returns the original location.
+	 * 
 	 * @param p_xx
 	 * @param p_yy
 	 * @return corrected location, or same one if character can't move at all.
 	 */
-    public Pointf tryMove(float p_xx, float p_yy) {
-        MapManagement mapManagement = EngineZildo.mapManagement;
-        float xx = p_xx;
-        float yy = p_yy;
+	public Pointf tryMove(float p_xx, float p_yy) {
+		MapManagement mapManagement = EngineZildo.mapManagement;
+		float xx = p_xx;
+		float yy = p_yy;
 
-        if (mapManagement.collide((int) xx, (int) yy, this)) {
-            float diffx = xx - x;
-            float diffy = yy - y;
-            if (diffx != 0 && diffy != 0) {
-                // Diagonal move impossible => try lateral move
-                if (!mapManagement.collide((int) xx, (int) y, this))
-                    yy = (int) y;
-                else if (!mapManagement.collide((int) x, (int) yy, this))
-                    xx = (int) x;
-            } else {
+		if (mapManagement.collide((int) xx, (int) yy, this)) {
+			float diffx = xx - x;
+			float diffy = yy - y;
+			if (diffx != 0 && diffy != 0) {
+				// Diagonal move impossible => try lateral move
+				if (!mapManagement.collide((int) xx, (int) y, this)) {
+					yy = (int) y;
+				} else if (!mapManagement.collide((int) x, (int) yy, this)) {
+					xx = (int) x;
+				}
+			} else {
 
-                // Lateral move impossible => try diagonal move
-                float speed;
-                if (diffx == 0) {
-                    speed = Math.abs(diffy);
-                    if (!mapManagement.collide(xx + speed, yy, this))
-                        xx += speed;
-                    else if (!mapManagement.collide(xx - speed, yy, this))
-                        xx -= speed;
-                } else if (diffy == 0) {
-                    speed = Math.abs(diffx);
-                    if (!mapManagement.collide(xx, yy + speed, this))
-                        yy += speed;
-                    else if (!mapManagement.collide(xx, yy - speed, this))
-                        yy -= speed;
-                }
-            }
-            if (mapManagement.collide(xx, yy, this)) {
-            	xx=(int) x;
-            	yy=(int) y;
-            }
-        }
-        return new Pointf(xx, yy);
-    }
-    
+				// Lateral move impossible => try diagonal move
+				float speed;
+				if (diffx == 0) {
+					speed = Math.abs(diffy);
+					if (!mapManagement.collide(xx + speed, yy, this)) {
+						xx += speed;
+					} else if (!mapManagement.collide(xx - speed, yy, this)) {
+						xx -= speed;
+					}
+				} else if (diffy == 0) {
+					speed = Math.abs(diffx);
+					if (!mapManagement.collide(xx, yy + speed, this)) {
+						yy += speed;
+					} else if (!mapManagement.collide(xx, yy - speed, this)) {
+						yy -= speed;
+					}
+				}
+			}
+			if (mapManagement.collide(xx, yy, this)) {
+				xx = (int) x;
+				yy = (int) y;
+			}
+		}
+		return new Pointf(xx, yy);
+	}
+
 	public abstract void initPersoFX();
 
-    public abstract void beingWounded(float cx, float cy, Perso p_shooter, int p_damage);
-    
-    public void parry(float cx, float cy, Perso p_shooter) {}
-    	
+	public abstract void beingWounded(float cx, float cy, Perso p_shooter, int p_damage);
+
+	public void parry(float cx, float cy, Perso p_shooter) {
+	}
+
 	public abstract void stopBeingWounded();
 
 	public abstract void attack();
-	
-    public void die(boolean p_link, Perso p_shooter) {
-        // Death !
-        EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DEATH, (int) x, (int) y, 0, p_link ? this : null, null);
-    }
-    
+
+	public void die(boolean p_link, Perso p_shooter) {
+		// Death !
+		EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DEATH, (int) x, (int) y, 0, p_link ? this
+				: null, null);
+	}
+
 	public abstract void finaliseComportement(int compteur_animation);
-	
+
 	// Default function : nothing
 	public void animate(int compteur) {
-		
+
 		if (action != null && getPv() > 0) {
 			if (attente != 0) {
 				attente--;
@@ -465,115 +479,119 @@ public abstract class Perso extends Element {
 			}
 		}
 	}
-	
+
 	// Default : nothing to do (only Zildo can take up objects for now)
-	public void takeSomething(int objX, int objY, SpriteDescription desc, Element object) {
-		
+	public void takeSomething(int objX, int objY, SpriteDescription d, Element object) {
+
 	}
-	
-    
+
 	private Point transitionCrossed;
 	private Angle transitionAngle;
-	
+
 	/**
 	 * Perso walk on a tile, so he reacts (water), or tile change (door).
-	 * @param p_sound TRUE=play sound when modifying map.
+	 * 
+	 * @param p_sound
+	 *            TRUE=play sound when modifying map.
 	 * @return boolean (TRUE=slow down)
 	 */
-    public boolean walkTile(boolean p_sound) {
-        int cx = (int) (x / 16);
-        int cy = (int) (y / 16);
-        MapManagement mapManagement = EngineZildo.mapManagement;
-       	Tile tile = mapManagement.getCurrentMap().readmap(cx, cy, false);
-       	if (tile == null) {
-       		return false;
-       	}
-        int onmap = tile.getValue(); 
-        if (tile.parent.getTransition() != null) {
-    		// Transitional case
-        	if (transitionCrossed == null) {
-        		setForeground(true);
-        		transitionCrossed = new Point(cx,cy);
-        		transitionAngle = tile.parent.getTransition();
-        	}
-        } else if (transitionCrossed != null) {
-        	// Is Perso gone in the right direction ?
-        	Angle choosed = Angle.fromDirection(cx-transitionCrossed.x, cy-transitionCrossed.y);
-        	if (choosed != transitionAngle) {
-        		setForeground(false);
-        	}
-        	transitionCrossed = null;
-        }
-        boolean slowDown = false;
-        boolean repeatSound = false;
-        inWater = false;
-        inDirt = false;
-        BankSound snd = null;
-        switch (onmap) {
-            case 278:
-            	if (pathFinder.open) {
-	                mapManagement.getCurrentMap().writemap(cx, cy, 314);
-	                mapManagement.getCurrentMap().writemap(cx + 1, cy, 315);
-	                snd = BankSound.OuvrePorte;
-            	}
-                break;
-            case 279:
-            	if (pathFinder.open) {
-	                mapManagement.getCurrentMap().writemap(cx - 1, cy, 314);
-	                mapManagement.getCurrentMap().writemap(cx, cy, 315);
-	                snd = BankSound.OuvrePorte;
-            	}
-                break;
-            case 200:
-            case 374:
-               	snd = BankSound.ZildoGadou;
-               	inDirt=true;
-                repeatSound = true;
-                slowDown = true;
-            	break;
-            case 846:
-                // Water
-                inWater = true;
-                snd = BankSound.ZildoPatauge;
-                repeatSound = true;
-                break;
-            case 857:
-            case 858:
-            case 859:
-            case 860:
-            case 861:
-            case 862:
-            case 863:
-            case 864:
-            case 206: case 207:	// Mountain ladder
-            case 170: case 171: case 172:	// Stairs in forest
-                slowDown = true;
-                break;
-        }
-        if (repeatSound) {
-            if (count > 15) {
-                count = 0;
-            } else {
-            	snd=null;
-                count++;
-            }
-    	}
-        if (snd != null && p_sound && isZildo()) {
-        	
-            EngineZildo.soundManagement.broadcastSound(snd, this);
-        }
+	public boolean walkTile(boolean p_sound) {
+		int cx = (int) (x / 16);
+		int cy = (int) (y / 16);
+		MapManagement mapManagement = EngineZildo.mapManagement;
+		Tile tile = mapManagement.getCurrentMap().readmap(cx, cy, false);
+		if (tile == null) {
+			return false;
+		}
+		int onmap = tile.getValue();
+		if (tile.parent.getTransition() != null) {
+			// Transitional case
+			if (transitionCrossed == null) {
+				setForeground(true);
+				transitionCrossed = new Point(cx, cy);
+				transitionAngle = tile.parent.getTransition();
+			}
+		} else if (transitionCrossed != null) {
+			// Is Perso gone in the right direction ?
+			Angle choosed = Angle.fromDirection(cx - transitionCrossed.x, cy - transitionCrossed.y);
+			if (choosed != transitionAngle) {
+				setForeground(false);
+			}
+			transitionCrossed = null;
+		}
+		boolean slowDown = false;
+		boolean repeatSound = false;
+		inWater = false;
+		inDirt = false;
+		BankSound snd = null;
+		switch (onmap) {
+		case 278:
+			if (pathFinder.open) {
+				mapManagement.getCurrentMap().writemap(cx, cy, 314);
+				mapManagement.getCurrentMap().writemap(cx + 1, cy, 315);
+				snd = BankSound.OuvrePorte;
+			}
+			break;
+		case 279:
+			if (pathFinder.open) {
+				mapManagement.getCurrentMap().writemap(cx - 1, cy, 314);
+				mapManagement.getCurrentMap().writemap(cx, cy, 315);
+				snd = BankSound.OuvrePorte;
+			}
+			break;
+		case 200:
+		case 374:
+			snd = BankSound.ZildoGadou;
+			inDirt = true;
+			repeatSound = true;
+			slowDown = true;
+			break;
+		case 846:
+			// Water
+			inWater = true;
+			snd = BankSound.ZildoPatauge;
+			repeatSound = true;
+			break;
+		case 857:
+		case 858:
+		case 859:
+		case 860:
+		case 861:
+		case 862:
+		case 863:
+		case 864:
+		case 206:
+		case 207: // Mountain ladder
+		case 170:
+		case 171:
+		case 172: // Stairs in forest
+			slowDown = true;
+			break;
+		}
+		if (repeatSound) {
+			if (count > 15) {
+				count = 0;
+			} else {
+				snd = null;
+				count++;
+			}
+		}
+		if (snd != null && p_sound && isZildo()) {
 
-        // Trigger "LOCATION" only in single player
-        if (!EngineZildo.game.multiPlayer) {
-	        String mapName=EngineZildo.mapManagement.getCurrentMap().getName();
-	        TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x,y));
-	        EngineZildo.scriptManagement.trigger(trig);
-        }
-        return slowDown;
-    }
-    
+			EngineZildo.soundManagement.broadcastSound(snd, this);
+		}
+
+		// Trigger "LOCATION" only in single player
+		if (!EngineZildo.game.multiPlayer) {
+			String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
+			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x, y));
+			EngineZildo.scriptManagement.trigger(trig);
+		}
+		return slowDown;
+	}
+
 	public boolean linkedSpritesContains(SpriteEntity entity) {
-		return persoSprites.contains(entity) || en_bras==entity;
+		return persoSprites.contains(entity) || en_bras == entity;
 	}
 
 	@Override
@@ -586,7 +604,7 @@ public abstract class Perso extends Element {
 			getEn_bras().setForeground(p_foreground);
 		}
 	}
-	
+
 	public int getCptMouvement() {
 		return cptMouvement;
 	}
@@ -602,7 +620,7 @@ public abstract class Perso extends Element {
 	public void setDialoguingWith(Perso p_dialoguingWith) {
 		this.dialoguingWith = p_dialoguingWith;
 	}
-	
+
 	public boolean isGhost() {
 		return ghost;
 	}
@@ -610,15 +628,15 @@ public abstract class Perso extends Element {
 	public void setGhost(boolean ghost) {
 		this.ghost = ghost;
 	}
-	
+
 	public boolean isUnstoppable() {
 		return pathFinder.unstoppable;
 	}
-	
+
 	public void setUnstoppable(boolean p_value) {
 		pathFinder.unstoppable = p_value;
 	}
-	
+
 	@Override
 	public void setVisible(boolean p_visible) {
 		super.setVisible(p_visible);
@@ -632,27 +650,27 @@ public abstract class Perso extends Element {
 	}
 
 	public void setTarget(Point target) {
-		this.pathFinder.setTarget( target);
+		this.pathFinder.setTarget(target);
 	}
-	
+
 	public boolean hasReachedTarget() {
 		return pathFinder.getTarget() == null || pathFinder.hasReachedTarget();
 	}
-	
+
 	public void setSpeed(float p_speed) {
 		if (p_speed > 0.0f) {
-			pathFinder.speed=p_speed;
+			pathFinder.speed = p_speed;
 		}
 	}
-	
+
 	public void setForward(boolean p_forward) {
-		pathFinder.backward=p_forward;
+		pathFinder.backward = p_forward;
 	}
-	
+
 	public void setOpen(boolean p_open) {
-		pathFinder.open=p_open;
+		pathFinder.open = p_open;
 	}
-	
+
 	public Pointf reachDestination(float p_speed) {
 		return pathFinder.reachDestination(p_speed);
 	}
@@ -688,41 +706,44 @@ public abstract class Perso extends Element {
 	public void setCountKey(int countKey) {
 		this.countKey = countKey;
 	}
-	
+
 	/**
 	 * Turn character in order to see given perso.
+	 * 
 	 * @param p_target
-	 * @param p_shortRadius TRUE=sight only if target is in short perimeter / FALSE=sight whenever target is
+	 * @param p_shortRadius
+	 *            TRUE=sight only if target is in short perimeter / FALSE=sight
+	 *            whenever target is
 	 */
 	public void sight(Perso p_target, boolean p_shortRadius) {
-		int xx=(int) (getX() - p_target.getX());
-		int yy=(int) (getY() - p_target.getY());
-		if (Math.abs(yy) >= Math.abs(xx) || (p_shortRadius && (Math.abs(xx)>96 || Math.abs(yy)>96))) {
+		int xx = (int) (getX() - p_target.getX());
+		int yy = (int) (getY() - p_target.getY());
+		if (Math.abs(yy) >= Math.abs(xx) || (p_shortRadius && (Math.abs(xx) > 96 || Math.abs(yy) > 96))) {
 			if (yy > 0) {
 				setAngle(Angle.NORD);
 			} else {
 				setAngle(Angle.SUD);
 			}
 		} else {
-			if (xx>0) {
+			if (xx > 0) {
 				setAngle(Angle.OUEST);
 			} else {
 				setAngle(Angle.EST);
 			}
 		}
 	}
-	
+
 	@Override
 	public PersoDescription getDesc() {
 		return (PersoDescription) desc;
 	}
-	
+
 	public void setPathFinder(PathFinder p_pf) {
 		pathFinder = p_pf;
 	}
-	
+
 	public Point getCenteredScreenPosition() {
-		Point pos=new Point(getScrX(), getScrY());
+		Point pos = new Point(getScrX(), getScrY());
 		pos.add(sprModel.getTaille_x() / 2, sprModel.getTaille_y() / 2);
 
 		return pos;

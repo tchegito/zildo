@@ -32,8 +32,8 @@ public class OptionsFrame extends javax.swing.JFrame {
 	{
 		// Set Look & Feel
 		try {
-			//javax.swing.UIManager
-			//		.setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+			// javax.swing.UIManager
+			// .setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -63,6 +63,7 @@ public class OptionsFrame extends javax.swing.JFrame {
 	 */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				OptionsFrame inst = new OptionsFrame();
 				inst.setLocationRelativeTo(null);
@@ -82,16 +83,19 @@ public class OptionsFrame extends javax.swing.JFrame {
 			this.setTitle("Options");
 			this.setAlwaysOnTop(true);
 			this.setResizable(false);
-			BoxLayout thisLayout = new BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS);
+			BoxLayout thisLayout = new BoxLayout(getContentPane(),
+					javax.swing.BoxLayout.Y_AXIS);
 			getContentPane().setLayout(thisLayout);
 			this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			this.setIconImage(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/wrench.png")).getImage());
+			this.setIconImage(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/wrench.png")).getImage());
 			getContentPane().add(getTabbedPane());
 			getContentPane().add(getButtonsGroupPanel());
 
 			// On recrée le manager avec les champs
-			manager = new OptionsFrameManager(this, getUnmappedCheckBox(), getGridCheckBox());
-			
+			manager = new OptionsFrameManager(this, getUnmappedCheckBox(),
+					getGridCheckBox());
+
 			// On initialise la fenêtre avec le paramétrage actuel
 			manager.init();
 
@@ -106,6 +110,7 @@ public class OptionsFrame extends javax.swing.JFrame {
 			CancelAction = new AbstractAction("Annuler", null) {
 				private static final long serialVersionUID = 1446881783266983881L;
 
+				@Override
 				public void actionPerformed(ActionEvent evt) {
 					manager.cancel();
 				}
@@ -119,6 +124,7 @@ public class OptionsFrame extends javax.swing.JFrame {
 			SaveAction = new AbstractAction("Enregistrer", null) {
 				private static final long serialVersionUID = 7216702886325874634L;
 
+				@Override
 				public void actionPerformed(ActionEvent evt) {
 					manager.save();
 				}
@@ -128,40 +134,47 @@ public class OptionsFrame extends javax.swing.JFrame {
 	}
 
 	private OptionsFrameManager getManager() {
-		if(manager == null) {
+		if (manager == null) {
 			manager = new OptionsFrameManager();
 		}
 		return manager;
 	}
+
 	private JTabbedPane getTabbedPane() {
-		if(TabbedPane == null) {
+		if (TabbedPane == null) {
 			TabbedPane = new JTabbedPane();
 			TabbedPane.addTab("Décors", null, getTilesOptions(), null);
 			TabbedPane.addTab("Sprites", null, getSpritesOptions(), null);
-			TabbedPane.addTab("Personnages", null, getCHaractersOptions(), null);
+			TabbedPane
+					.addTab("Personnages", null, getCHaractersOptions(), null);
 		}
 		return TabbedPane;
 	}
+
 	private JPanel getTilesOptions() {
 		if (TilesOptions == null) {
 			TilesOptions = new JPanel();
-			BoxLayout TilesOptionsLayout = new BoxLayout(TilesOptions, javax.swing.BoxLayout.Y_AXIS);
+			BoxLayout TilesOptionsLayout = new BoxLayout(TilesOptions,
+					javax.swing.BoxLayout.Y_AXIS);
 			TilesOptions.setLayout(TilesOptionsLayout);
 			TilesOptions.add(getTilePathPanel());
 			TilesOptions.add(getBoxesPanel());
 		}
 		return TilesOptions;
 	}
+
 	private JPanel getTilePathPanel() {
-		if(TilePathPanel == null) {
+		if (TilePathPanel == null) {
 			TilePathPanel = new JPanel();
-			BoxLayout TilePathPanelLayout = new BoxLayout(TilePathPanel, javax.swing.BoxLayout.X_AXIS);
+			BoxLayout TilePathPanelLayout = new BoxLayout(TilePathPanel,
+					javax.swing.BoxLayout.X_AXIS);
 			TilePathPanel.setLayout(TilePathPanelLayout);
 			TilePathPanel.add(getTilePathLabel());
 			TilePathPanel.add(getStar());
 		}
 		return TilePathPanel;
 	}
+
 	private JLabel getTilePathLabel() {
 		if (TilePathLabel == null) {
 			TilePathLabel = new JLabel();
@@ -169,8 +182,9 @@ public class OptionsFrame extends javax.swing.JFrame {
 		}
 		return TilePathLabel;
 	}
+
 	private JLabel getStar() {
-		if(star == null) {
+		if (star == null) {
 			star = new JLabel();
 			star.setText(" * ");
 		}
@@ -178,7 +192,7 @@ public class OptionsFrame extends javax.swing.JFrame {
 	}
 
 	private JPanel getBoxesPanel() {
-		if(boxesPanel == null) {
+		if (boxesPanel == null) {
 			boxesPanel = new JPanel();
 			BorderLayout UnmappedTilesPanelLayout = new BorderLayout();
 			boxesPanel.setLayout(UnmappedTilesPanelLayout);
@@ -187,55 +201,63 @@ public class OptionsFrame extends javax.swing.JFrame {
 		}
 		return boxesPanel;
 	}
+
 	private JCheckBox getUnmappedCheckBox() {
-		if(unmappedCheckBox == null) {
+		if (unmappedCheckBox == null) {
 			unmappedCheckBox = new JCheckBox();
 			unmappedCheckBox.setText("Afficher les tuiles non mappées");
 		}
 		return unmappedCheckBox;
 	}
+
 	private JCheckBox getGridCheckBox() {
-		if(gridCheckBox == null) {
+		if (gridCheckBox == null) {
 			gridCheckBox = new JCheckBox();
 			gridCheckBox.setText("Afficher la grille");
 		}
 		return gridCheckBox;
 	}
+
 	private JPanel getSpritesOptions() {
-		if(SpritesOptions == null) {
+		if (SpritesOptions == null) {
 			SpritesOptions = new JPanel();
 		}
 		return SpritesOptions;
 	}
+
 	private JPanel getCHaractersOptions() {
-		if(CHaractersOptions == null) {
+		if (CHaractersOptions == null) {
 			CHaractersOptions = new JPanel();
 		}
 		return CHaractersOptions;
 	}
+
 	private JPanel getButtonsGroupPanel() {
 		if (ButtonsGroupPanel == null) {
 			ButtonsGroupPanel = new JPanel();
 			BorderLayout ButtonsGroupPanelLayout = new BorderLayout();
 			ButtonsGroupPanel.setLayout(ButtonsGroupPanelLayout);
 			ButtonsGroupPanel.setSize(517, 35);
-			ButtonsGroupPanel.setPreferredSize(new java.awt.Dimension(517,33));
+			ButtonsGroupPanel.setPreferredSize(new java.awt.Dimension(517, 33));
 			ButtonsGroupPanel.add(getButtonsPanel(), BorderLayout.EAST);
 			ButtonsGroupPanel.add(getInfos(), BorderLayout.CENTER);
 		}
 		return ButtonsGroupPanel;
 	}
+
 	private JPanel getButtonsPanel() {
 		if (ButtonsPanel == null) {
 			ButtonsPanel = new JPanel();
-			BoxLayout ButtonsPanelLayout = new BoxLayout(ButtonsPanel, javax.swing.BoxLayout.X_AXIS);
-			ButtonsPanel.setPreferredSize(new java.awt.Dimension(120,34));
+			BoxLayout ButtonsPanelLayout = new BoxLayout(ButtonsPanel,
+					javax.swing.BoxLayout.X_AXIS);
+			ButtonsPanel.setPreferredSize(new java.awt.Dimension(120, 34));
 			ButtonsPanel.setLayout(ButtonsPanelLayout);
 			ButtonsPanel.add(getCancel());
 			ButtonsPanel.add(getSave());
 		}
 		return ButtonsPanel;
 	}
+
 	private JButton getCancel() {
 		if (Cancel == null) {
 			Cancel = new JButton();
@@ -244,6 +266,7 @@ public class OptionsFrame extends javax.swing.JFrame {
 		}
 		return Cancel;
 	}
+
 	private JButton getSave() {
 		if (Save == null) {
 			Save = new JButton();
@@ -252,8 +275,9 @@ public class OptionsFrame extends javax.swing.JFrame {
 		}
 		return Save;
 	}
+
 	private JLabel getInfos() {
-		if(infos == null) {
+		if (infos == null) {
 			infos = new JLabel();
 			infos.setText(" * : Nécéssite un redémarrage de Zeditor pour être pris en compte");
 		}

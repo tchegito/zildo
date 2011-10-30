@@ -34,7 +34,6 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 
-
 /**
  * Classe de management de la fenêtre principale de Zeditor (MasterFrame.class)
  * 
@@ -44,11 +43,11 @@ public class MasterFrameManager {
 	public static JLabel systemDisplay;
 	private static MasterFrame masterFrame;
 	private JPanel masterPanel;
-	
+
 	private static ZildoCanvas zildoCanvas;
 
 	private static Selection currentSelection;
-	
+
 	private String currentMapFile;
 
 	public final static int MESSAGE_ERROR = 1;
@@ -71,19 +70,21 @@ public class MasterFrameManager {
 	 *            Le JLabel Système de la MasterFrame
 	 * @author Drakulo
 	 */
-	public void initialize(JLabel p_sys,JPanel p_master, ZildoCanvas p_zildoCanvas) {
+	public void initialize(JLabel p_sys, JPanel p_master,
+			ZildoCanvas p_zildoCanvas) {
 		systemDisplay = p_sys;
 		masterPanel = p_master;
 		zildoCanvas = p_zildoCanvas;
 		zildoCanvas.setManager(this);
-		
-		//Make canvas get the focus whenever frame is activated.
+
+		// Make canvas get the focus whenever frame is activated.
 		masterFrame.addWindowFocusListener(new WindowAdapter() {
-		    public void windowGainedFocus(WindowEvent e) {
-		    	zildoCanvas.requestFocusInWindow();
-		    }
+			@Override
+			public void windowGainedFocus(WindowEvent e) {
+				zildoCanvas.requestFocusInWindow();
+			}
 		});
-		
+
 		updateTitle();
 		updateChainingPoints(null);
 		masterFrame.getStatsPanel().updateStats();
@@ -113,12 +114,12 @@ public class MasterFrameManager {
 	}
 
 	public void saveAs(String newMapFile) {
-		currentMapFile=newMapFile;
-		
+		currentMapFile = newMapFile;
+
 		save();
 		updateTitle();
 	}
-	
+
 	/**
 	 * Ouvre l'explorateur afin de sélectionner le nom du fichier à sauvegarder
 	 * pui lance (ou annule) la sauvegarde
@@ -142,10 +143,11 @@ public class MasterFrameManager {
 
 		display("Ouverture du fichier : " + p_mapName, MESSAGE_INFO);
 		try {
-			ChainingPoint ch=zildoCanvas.loadMap(p_mapName, p_fromChainingPoint);
+			ChainingPoint ch = zildoCanvas.loadMap(p_mapName,
+					p_fromChainingPoint);
 			display("Chargement effectué.", MESSAGE_INFO);
 			currentMapFile = p_mapName;
-			
+
 			updateTitle();
 			updateChainingPoints(ch);
 			masterFrame.getStatsPanel().updateStats();
@@ -155,28 +157,27 @@ public class MasterFrameManager {
 		}
 	}
 
-
 	public void updateTitle() {
-		StringBuilder sb=new StringBuilder("ZEditor - ");
-		Area map=EngineZildo.mapManagement.getCurrentMap();
+		StringBuilder sb = new StringBuilder("ZEditor - ");
+		Area map = EngineZildo.mapManagement.getCurrentMap();
 		if (map != null) {
 			sb.append(map.getName());
 			sb.append(" - ");
-			sb.append(map.getDim_x()+" x "+map.getDim_y());
+			sb.append(map.getDim_x() + " x " + map.getDim_y());
 		} else {
 			sb.append("Nouvelle carte");
 		}
-		masterFrame.setTitle(sb.toString());		
+		masterFrame.setTitle(sb.toString());
 	}
-	
+
 	public void updateChainingPoints(ChainingPoint p_ch) {
-		ChainingPointPanel chPanel=masterFrame.getChainingPointPanel();
+		ChainingPointPanel chPanel = masterFrame.getChainingPointPanel();
 		chPanel.updateList(getChainingPointsForCombo());
 		if (p_ch != null) {
 			chPanel.focusPoint(p_ch);
 		}
 	}
-	
+
 	/**
 	 * Crée une nouvelle carte
 	 * 
@@ -197,7 +198,8 @@ public class MasterFrameManager {
 	 */
 	public void changeTileSet(String p_name) {
 		try {
-			masterFrame.getBackgroundPanel().getTileSetPanel().changeTile(p_name);
+			masterFrame.getBackgroundPanel().getTileSetPanel()
+					.changeTile(p_name);
 			display("TileSet '" + p_name + "' chargé.", MESSAGE_INFO);
 		} catch (ZeditorException e) {
 			display(e.getMessage(), MESSAGE_ERROR);
@@ -207,19 +209,20 @@ public class MasterFrameManager {
 	public Object[] getPrefetchForCombo() {
 		return Prefetch.getNames();
 	}
-	
+
 	public ChainingPoint[] getChainingPointsForCombo() {
 		if (EngineZildo.mapManagement == null) {
-			return new ChainingPoint[]{};
+			return new ChainingPoint[] {};
 		}
-		List<ChainingPoint> names=new ArrayList<ChainingPoint>();
-		List<ChainingPoint> points=EngineZildo.mapManagement.getCurrentMap().getListPointsEnchainement();
+		List<ChainingPoint> names = new ArrayList<ChainingPoint>();
+		List<ChainingPoint> points = EngineZildo.mapManagement.getCurrentMap()
+				.getListPointsEnchainement();
 		for (ChainingPoint chp : points) {
 			names.add(chp);
 		}
-		return names.toArray(new ChainingPoint[]{});
+		return names.toArray(new ChainingPoint[] {});
 	}
-	
+
 	/**
 	 * Affiche un message dans le label Système
 	 * 
@@ -233,13 +236,13 @@ public class MasterFrameManager {
 		if (systemDisplay != null) {
 			systemDisplay.setText(" " + p_msg);
 			switch (p_type) {
-				case MESSAGE_ERROR :
-					systemDisplay.setForeground(Color.red);
-					break;
-				case MESSAGE_INFO :
-				default :
-					systemDisplay.setForeground(Color.black);
-					break;
+			case MESSAGE_ERROR:
+				systemDisplay.setForeground(Color.red);
+				break;
+			case MESSAGE_INFO:
+			default:
+				systemDisplay.setForeground(Color.black);
+				break;
 			}
 		}
 	}
@@ -256,18 +259,24 @@ public class MasterFrameManager {
 		optFrame.addWindowListener(new WindowListener() {
 			public void windowActivated(WindowEvent arg0) {
 			}
+
 			public void windowClosed(WindowEvent arg0) {
 			}
+
 			public void windowClosing(WindowEvent arg0) {
 			}
+
 			public void windowDeactivated(WindowEvent arg0) {
 				updateTools();
 				masterPanel.repaint();
 			}
+
 			public void windowDeiconified(WindowEvent arg0) {
 			}
+
 			public void windowIconified(WindowEvent arg0) {
 			}
+
 			public void windowOpened(WindowEvent arg0) {
 			}
 
@@ -319,19 +328,19 @@ public class MasterFrameManager {
 	 */
 	public void updateTools() {
 		// Bouton des tuiles non mappées
-		JToggleButton unmapped=masterFrame.getUnmappedTool();
-		unmapped.setSelected(Boolean.valueOf(OptionHelper.loadOption(Options.SHOW_TILES_UNMAPPED
-					.getValue())));
+		JToggleButton unmapped = masterFrame.getUnmappedTool();
+		unmapped.setSelected(Boolean.valueOf(OptionHelper
+				.loadOption(Options.SHOW_TILES_UNMAPPED.getValue())));
 
 		// Bouton d'affichage de la grille
-		JToggleButton grid=masterFrame.getGridTool();
-		grid.setSelected(Boolean.valueOf(OptionHelper.loadOption(Options.SHOW_TILES_GRID
-					.getValue())));
-		
+		JToggleButton grid = masterFrame.getGridTool();
+		grid.setSelected(Boolean.valueOf(OptionHelper
+				.loadOption(Options.SHOW_TILES_GRID.getValue())));
+
 		// Bouton d'affichage de la grille
-		JToggleButton collision=masterFrame.getCollisionTool();
-		collision.setSelected(Boolean.valueOf(OptionHelper.loadOption(Options.SHOW_COLLISION
-					.getValue())));
+		JToggleButton collision = masterFrame.getCollisionTool();
+		collision.setSelected(Boolean.valueOf(OptionHelper
+				.loadOption(Options.SHOW_COLLISION.getValue())));
 	}
 
 	/**
@@ -359,7 +368,7 @@ public class MasterFrameManager {
 			display("Grille masquée.", MESSAGE_INFO);
 		}
 	}
-	
+
 	public void showCollision(boolean flag) {
 		saveOption(Options.SHOW_COLLISION, String.valueOf(flag));
 		if (flag) {
@@ -401,28 +410,31 @@ public class MasterFrameManager {
 		explorer.setLocationRelativeTo(masterFrame);
 		explorer.setVisible(true);
 	}
+
 	/**
 	 * Initialisation de la fenêtre
 	 */
 	public void init() {
 		updateTools();
-		changeTileSet(masterFrame.getBackgroundPanel().getBackgroundCombo().getSelectedItem().toString());
+		changeTileSet(masterFrame.getBackgroundPanel().getBackgroundCombo()
+				.getSelectedItem().toString());
 	}
 
 	public SelectionKind getSelectionKind() {
-		int sel=masterFrame.getTabsPane().getSelectedIndex();
-		SelectionKind kind=SelectionKind.fromInt(sel);
+		int sel = masterFrame.getTabsPane().getSelectedIndex();
+		SelectionKind kind = SelectionKind.fromInt(sel);
 		return kind;
 	}
-	
+
 	public Selection getSelection() {
-		SelectionKind kind=getSelectionKind();
+		SelectionKind kind = getSelectionKind();
 		if (kind != null) {
 			switch (kind) {
-			case TILES: 
-				return masterFrame.getBackgroundPanel().getTileSetPanel().getCurrentSelection();
-			case PREFETCH:	
-			case CHAININGPOINT: 
+			case TILES:
+				return masterFrame.getBackgroundPanel().getTileSetPanel()
+						.getCurrentSelection();
+			case PREFETCH:
+			case CHAININGPOINT:
 			case PERSOS:
 			case SPRITES:
 				return currentSelection;
@@ -434,71 +446,81 @@ public class MasterFrameManager {
 	public ZildoCanvas getZildoCanvas() {
 		return zildoCanvas;
 	}
-	
+
 	/**
 	 * Stop copy mode and switch to *block* tileset.
 	 */
-	public static void switchCopyTile(int p_width, int p_height, List<Case> p_cases) {
-		if (p_width > 0 && p_height >0) {
-		    masterFrame.getBackgroundPanel().switchCopyTile(p_width, p_height, p_cases);
+	public static void switchCopyTile(int p_width, int p_height,
+			List<Case> p_cases) {
+		if (p_width > 0 && p_height > 0) {
+			masterFrame.getBackgroundPanel().switchCopyTile(p_width, p_height,
+					p_cases);
 		}
-	    masterFrame.getCopyPasteTool().setSelected(false);
+		masterFrame.getCopyPasteTool().setSelected(false);
 	}
-	
+
 	public static void switchCopySprites(List<SpriteEntity> p_entities) {
-	    masterFrame.getManager().setSpriteSelection(new SpriteSelection<SpriteEntity>(p_entities));
-	    masterFrame.getCopyPasteTool().setSelected(false);
+		masterFrame.getManager().setSpriteSelection(
+				new SpriteSelection<SpriteEntity>(p_entities));
+		masterFrame.getCopyPasteTool().setSelected(false);
 	}
 
 	public void setCaseSelection(CaseSelection p_currentSelection) {
 		currentSelection = p_currentSelection;
 		if (currentSelection instanceof TileSelection) {
-			TileSelection tileSel=(TileSelection) currentSelection;
+			TileSelection tileSel = (TileSelection) currentSelection;
 			getZildoCanvas().setCursorSize(tileSel.width, tileSel.height);
 		}
 	}
-	
-	public void setChainingPointSelection(ChainingPointSelection p_currentSelection) {
-	    if (currentSelection == null || !p_currentSelection.equals(currentSelection)) {
-		// Chaining point changes : we hava to update the list
-		masterFrame.getChainingPointPanel().focusPoint(p_currentSelection.getElement());
-		currentSelection=p_currentSelection;
-	    }
+
+	public void setChainingPointSelection(
+			ChainingPointSelection p_currentSelection) {
+		if (currentSelection == null
+				|| !p_currentSelection.equals(currentSelection)) {
+			// Chaining point changes : we hava to update the list
+			masterFrame.getChainingPointPanel().focusPoint(
+					p_currentSelection.getElement());
+			currentSelection = p_currentSelection;
+		}
 	}
-	
-	
-	public void setSpriteSelection(SpriteSelection<SpriteEntity> p_currentSelection) {
-	    if (currentSelection == null || p_currentSelection == null || !p_currentSelection.equals(currentSelection)) {
-	    	if (currentSelection != null) {
-	    		currentSelection.unfocus();
-	    	}
-		// Focus the given sprite
-		currentSelection=p_currentSelection;
-	    }
-	    masterFrame.getSpritePanel().focusSprites(p_currentSelection);
+
+	public void setSpriteSelection(
+			SpriteSelection<SpriteEntity> p_currentSelection) {
+		if (currentSelection == null || p_currentSelection == null
+				|| !p_currentSelection.equals(currentSelection)) {
+			if (currentSelection != null) {
+				currentSelection.unfocus();
+			}
+			// Focus the given sprite
+			currentSelection = p_currentSelection;
+		}
+		masterFrame.getSpritePanel().focusSprites(p_currentSelection);
 	}
-	
+
 	/**
-	 * Set the current Perso selection. Three possible situations: <ul>
+	 * Set the current Perso selection. Three possible situations:
+	 * <ul>
 	 * <li>user gain focus on a character on the map</li>
 	 * <li>user pick a character from the library</li>
 	 * <li>user remove the focuses perso</li>
 	 * </ul>
+	 * 
 	 * @param p_currentSelection
 	 */
 	public void setPersoSelection(PersoSelection p_currentSelection) {
-	    if (currentSelection == null || p_currentSelection == null || !p_currentSelection.equals(currentSelection)) {
-	    	if (currentSelection != null) {
-	    		currentSelection.unfocus();
-	    	}
+		if (currentSelection == null || p_currentSelection == null
+				|| !p_currentSelection.equals(currentSelection)) {
+			if (currentSelection != null) {
+				currentSelection.unfocus();
+			}
 			// Focus the given perso (or focus NULL if selection is empty)
-	    	if (p_currentSelection != null) {
-	    		List<Perso> persos = p_currentSelection.getElement();
-		    	for (Perso perso : persos) {
-		    		masterFrame.getPersoPanel().focusPerso(perso);
-		    	}
-	    	}
-			currentSelection=p_currentSelection;
-	    }
+			if (p_currentSelection != null) {
+				List<Perso> persos = p_currentSelection.getElement();
+				for (Perso perso : persos) {
+					masterFrame.getPersoPanel().focusPerso(perso);
+				}
+			}
+			currentSelection = p_currentSelection;
+		}
 	}
 }

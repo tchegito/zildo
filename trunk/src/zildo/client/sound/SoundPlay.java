@@ -39,43 +39,37 @@ import zildo.monde.map.Area;
 
 public class SoundPlay {
 
+	// CSoundManager* soundManager;
+	private Map<AudioBank, OpenGLSound> tabSounds = new HashMap<AudioBank, OpenGLSound>();
 
-	//CSoundManager* soundManager;
-	private Map<AudioBank, OpenGLSound> tabSounds=new HashMap<AudioBank, OpenGLSound>();
-	private int nSounds;
-	
-	//const GUID GUID_null = { 0, 0, 0, { 0, 0, 0, 0, 0, 0, 0, 0 } };
-	
-	//////////////////////////////////////////////////////////////////////
+	// const GUID GUID_null = { 0, 0, 0, { 0, 0, 0, 0, 0, 0, 0, 0 } };
+
+	// ////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
-	//////////////////////////////////////////////////////////////////////
-	
-	public SoundPlay()
-	{
+	// ////////////////////////////////////////////////////////////////////
 
-		// Load every samples
-		nSounds=0;
+	public SoundPlay() {
+
 		tabSounds.clear();
 		loadAllSoundFX();
 	}
-	
-	public void cleanUp()
-	{
+
+	public void cleanUp() {
 		if (tabSounds != null) {
 			// Release all allocated buffer for samples
 			for (OpenGLSound sound : tabSounds.values()) {
 				if (sound != null) {
 					sound.finalize();
 				}
-				sound=null;
+				sound = null;
 			}
 		}
 		OpenGLSound.cleanUp();
 	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
+
+	// /////////////////////////////////////////////////////////////////////////////////////
 	// loadAllSoundFX
-	///////////////////////////////////////////////////////////////////////////////////////
+	// /////////////////////////////////////////////////////////////////////////////////////
 	void loadAllSoundFX() {
 		for (BankSound snd : BankSound.values()) {
 			// Load every sample from the sound's bank
@@ -86,37 +80,35 @@ public class SoundPlay {
 			loadSound("musics", snd);
 		}
 	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
+
+	// /////////////////////////////////////////////////////////////////////////////////////
 	// loadSound
-	///////////////////////////////////////////////////////////////////////////////////////
+	// /////////////////////////////////////////////////////////////////////////////////////
 	void loadSound(String p_subDirectory, AudioBank p_sound) {
 		if (Zildo.soundEnabled) {
 			// Build entire file name
-			String chemin=p_subDirectory+File.separator;
-			chemin+=p_sound.getFilename();
-			chemin+=".";
-			chemin+=p_sound.getSuffix();
-	
-			OpenGLSound newSound=new OpenGLSound(chemin);
-	
+			String chemin = p_subDirectory + File.separator;
+			chemin += p_sound.getFilename();
+			chemin += ".";
+			chemin += p_sound.getSuffix();
+
+			OpenGLSound newSound = new OpenGLSound(chemin);
+
 			// Store it into the sound's tab
 			tabSounds.put(p_sound, newSound);
-		
-			nSounds++;
 		}
 	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
+
+	// /////////////////////////////////////////////////////////////////////////////////////
 	// playSoundFX
-	///////////////////////////////////////////////////////////////////////////////////////
+	// /////////////////////////////////////////////////////////////////////////////////////
 	// Play sound named 'soundName' from sound's tab
 	// If the given sound name isn't found, do nothing.
-	///////////////////////////////////////////////////////////////////////////////////////
+	// /////////////////////////////////////////////////////////////////////////////////////
 	public void playSoundFX(AudioBank snd) {
 		// Play desired sound and exit
-		Ambient ambient=ClientEngineZildo.ambient;
-		OpenGLSound sound=tabSounds.get(snd);
+		Ambient ambient = ClientEngineZildo.ambient;
+		OpenGLSound sound = tabSounds.get(snd);
 		if (sound != null) {
 			if (snd instanceof BankMusic) {
 				if (ambient.getCurrentMusic() == snd) {
@@ -125,16 +117,17 @@ public class SoundPlay {
 				}
 				ambient.setCurrentMusic((BankMusic) snd);
 			}
-			sound.play(); //0,0,-500);
+			sound.play(); // 0,0,-500);
 		}
 	}
 
 	/**
 	 * Stop given sound (useful for music)
+	 * 
 	 * @param snd
 	 */
 	public void stopSoundFX(AudioBank snd) {
-		OpenGLSound sound=tabSounds.get(snd);
+		OpenGLSound sound = tabSounds.get(snd);
 		if (sound != null) {
 			sound.stop();
 		}
@@ -142,7 +135,7 @@ public class SoundPlay {
 
 	public void playSounds(List<WaitingSound> p_sounds) {
 		for (WaitingSound sound : p_sounds) {
-			if (sound.broadcast || sound.client==null) {
+			if (sound.broadcast || sound.client == null) {
 				if (!sound.isSoundFX && sound.name == null) {
 					stopMusic();
 				} else {
@@ -151,22 +144,23 @@ public class SoundPlay {
 			}
 		}
 	}
-	
+
 	/**
 	 * Play the music related to given map.
+	 * 
 	 * @param p_map
 	 */
 	public void playMapMusic(Area p_map) {
-		BankMusic mus=ClientEngineZildo.ambient.getMusicForMap(p_map);
-        playSoundFX(mus);
+		BankMusic mus = ClientEngineZildo.ambient.getMusicForMap(p_map);
+		playSoundFX(mus);
 	}
-	
+
 	public void playMusic(BankMusic p_mus) {
 		playSoundFX(p_mus);
 	}
-	
+
 	public void stopMusic() {
-		BankMusic mus=ClientEngineZildo.ambient.getCurrentMusic();
+		BankMusic mus = ClientEngineZildo.ambient.getCurrentMusic();
 		stopSoundFX(mus);
 	}
 }

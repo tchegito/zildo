@@ -33,6 +33,7 @@ import javax.swing.plaf.metal.MetalComboBoxUI;
 /**
  * Combobox with adjustable popup.<br/>
  * Code found at "http://www.codeguru.com/java/articles/163.shtml".
+ * 
  * @author Tchegito
  * 
  */
@@ -64,17 +65,20 @@ public class SteppedComboBox extends JComboBox {
 
 	public Dimension getPopupSize() {
 		Dimension size = getSize();
-		if (popupWidth < 1)
+		if (popupWidth < 1) {
 			popupWidth = size.width;
+		}
 		return new Dimension(popupWidth, size.height);
 	}
 }
 
 class SteppedComboBoxUI extends MetalComboBoxUI {
+	@Override
 	protected ComboPopup createPopup() {
 		@SuppressWarnings("serial")
-		BasicComboPopup popup = new BasicComboPopup(comboBox) {
+		BasicComboPopup bcPopup = new BasicComboPopup(comboBox) {
 
+			@Override
 			public void show() {
 				Dimension popupSize = ((SteppedComboBox) comboBox)
 						.getPopupSize();
@@ -101,7 +105,7 @@ class SteppedComboBoxUI extends MetalComboBoxUI {
 				show(comboBox, popupBounds.x, popupBounds.y);
 			}
 		};
-		popup.getAccessibleContext().setAccessibleParent(comboBox);
-		return popup;
+		bcPopup.getAccessibleContext().setAccessibleParent(comboBox);
+		return bcPopup;
 	}
 }

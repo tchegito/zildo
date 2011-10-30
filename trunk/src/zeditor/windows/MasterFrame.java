@@ -18,7 +18,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -38,23 +37,18 @@ import zildo.fwk.awt.ZildoScrollablePanel;
 
 import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
 
-
 /**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
+ * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
+ * Builder, which is free for non-commercial use. If Jigloo is being used
+ * commercially (ie, by a corporation, company or business for any purpose
+ * whatever) then you should purchase a license for each developer using Jigloo.
+ * Please visit www.cloudgarden.com for details. Use of Jigloo implies
+ * acceptance of these licensing terms. A COMMERCIAL LICENSE HAS NOT BEEN
+ * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
+ * ANY CORPORATE OR COMMERCIAL PURPOSE.
+ */
 @SuppressWarnings("serial")
 public class MasterFrame extends javax.swing.JFrame {
-
-
 
 	private JMenuBar menuBar;
 	private MasterFrameManager manager;
@@ -115,21 +109,21 @@ public class MasterFrame extends javax.swing.JFrame {
 	private AbstractAction actionDisplayBackSpriteTool;
 	private AbstractAction actionDisplayForeSpriteTool;
 	private AbstractAction actionTileMask;
-	
+
 	private ZildoScrollablePanel zildoPanel;
 
 	/**
-	* Auto-generated main method to display this JFrame
-	*/
+	 * Auto-generated main method to display this JFrame
+	 */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel(new NimbusLookAndFeel());
 				} catch (UnsupportedLookAndFeelException e) {
-					
+
 				}
-				
+
 				MasterFrame inst = new MasterFrame();
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
@@ -144,14 +138,15 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	private void initGUI() {
 		try {
-			zildoPanel=new ZildoScrollablePanel("coucou");
-			
+			zildoPanel = new ZildoScrollablePanel("coucou");
+
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			BorderLayout thisLayout = new BorderLayout();
 			getContentPane().setLayout(thisLayout);
 			this.setTitle("Zeditor");
 			this.setMinimumSize(new java.awt.Dimension(1010, 600));
-			this.setIconImage(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/map.png")).getImage());
+			this.setIconImage(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/map.png")).getImage());
 			getContentPane().add(getMasterPanel(), BorderLayout.CENTER);
 			getContentPane().add(getSystemPanel(), BorderLayout.SOUTH);
 			{
@@ -164,17 +159,17 @@ public class MasterFrame extends javax.swing.JFrame {
 
 			// On ajoute la carte
 
-	        getContentPane().add(zildoPanel, BorderLayout.EAST);
+			getContentPane().add(zildoPanel, BorderLayout.EAST);
 
-            // Recréation du manager avec les objets en paramètre
-			//manager = new MasterFrameManager(getSystemLabel(), getMasterPanel(), this, zildoPanel.getZildoCanvas());
+			// Recréation du manager avec les objets en paramètre
+			// manager = new MasterFrameManager(getSystemLabel(),
+			// getMasterPanel(), this, zildoPanel.getZildoCanvas());
 
 			// Initialisation de la fenêtre par le manager
 			manager.init();
 
-
 			pack();
-			Dimension d=zildoPanel.getSize();
+			Dimension d = zildoPanel.getSize();
 			this.setSize(640 + 350, d.height);
 
 		} catch (Exception e) {
@@ -183,7 +178,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 
 	private AbstractAction getActionLoad() {
-		if(actionLoad == null) {
+		if (actionLoad == null) {
 			actionLoad = new AbstractAction("Ouvrir", null) {
 				private static final long serialVersionUID = -7397130907033546971L;
 
@@ -196,7 +191,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 
 	private AbstractAction getActionSave() {
-		if(actionSave == null) {
+		if (actionSave == null) {
 			actionSave = new AbstractAction("Enregistrer", null) {
 				private static final long serialVersionUID = -4309279475377395081L;
 
@@ -209,7 +204,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 
 	private AbstractAction getActionExit() {
-		if(actionExit == null) {
+		if (actionExit == null) {
 			actionExit = new AbstractAction("Quitter", null) {
 				private static final long serialVersionUID = 2504166520928298260L;
 
@@ -222,19 +217,20 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 
 	public MasterFrameManager getManager() {
-		if(manager == null) {
-			manager =new MasterFrameManager(this);
-			manager.initialize(getSystemLabel(), getMasterPanel(),  zildoPanel.getZildoCanvas());
+		if (manager == null) {
+			manager = new MasterFrameManager(this);
+			manager.initialize(getSystemLabel(), getMasterPanel(),
+					zildoPanel.getZildoCanvas());
 		}
 		return manager;
 	}
 
-
 	private AbstractAction getActionOpenOptionsFrame() {
-		if(actionOpenOptionsFrame == null) {
+		if (actionOpenOptionsFrame == null) {
 			actionOpenOptionsFrame = new AbstractAction("Options", null) {
 				private static final long serialVersionUID = -4764264927309844210L;
 
+				@Override
 				public void actionPerformed(ActionEvent evt) {
 					manager.openOptionsFrame();
 				}
@@ -244,10 +240,11 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 
 	private AbstractAction getActionReloadConfig() {
-		if(actionReloadConfig == null) {
+		if (actionReloadConfig == null) {
 			actionReloadConfig = new AbstractAction("Recharger la conf.", null) {
 				private static final long serialVersionUID = -3565192878529677669L;
 
+				@Override
 				public void actionPerformed(ActionEvent evt) {
 					manager.reloadConfig();
 				}
@@ -257,14 +254,15 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 
 	private AbstractAction getActionUnmappedTool() {
-		if(actionUnmappedTool == null) {
+		if (actionUnmappedTool == null) {
 			actionUnmappedTool = new AbstractAction("", null) {
 				private static final long serialVersionUID = 7546834766049284479L;
 
+				@Override
 				public void actionPerformed(ActionEvent evt) {
-					if(unmappedTool.isSelected()){
+					if (unmappedTool.isSelected()) {
 						manager.showTileSetUnmapped(true);
-					}else{
+					} else {
 						manager.showTileSetUnmapped(false);
 					}
 				}
@@ -274,14 +272,15 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 
 	private AbstractAction getActionGridTool() {
-		if(actionGridTool == null) {
+		if (actionGridTool == null) {
 			actionGridTool = new AbstractAction("", null) {
 				private static final long serialVersionUID = -416405688673820762L;
 
+				@Override
 				public void actionPerformed(ActionEvent evt) {
-					if(gridTool.isSelected()){
+					if (gridTool.isSelected()) {
 						manager.showTileSetGrid(true);
-					}else{
+					} else {
 						manager.showTileSetGrid(false);
 					}
 				}
@@ -291,12 +290,13 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 
 	private AbstractAction getActionCollisionTool() {
-		if(actionCollisionTool == null) {
+		if (actionCollisionTool == null) {
 			actionCollisionTool = new AbstractAction("", null) {
+				@Override
 				public void actionPerformed(ActionEvent evt) {
-					if(collisionTool.isSelected()){
+					if (collisionTool.isSelected()) {
 						manager.showCollision(true);
-					}else{
+					} else {
 						manager.showCollision(false);
 					}
 				}
@@ -306,87 +306,99 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 
 	private AbstractAction getActionCopyPasteTool() {
-	    if (actionCopyPasteTool == null) {
-	    	actionCopyPasteTool = new AbstractAction(null) {
-			    public void actionPerformed(ActionEvent evt) {
-				zildoPanel.getZildoCanvas().switchCopyMode();
-			    }
+		if (actionCopyPasteTool == null) {
+			actionCopyPasteTool = new AbstractAction(null) {
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					zildoPanel.getZildoCanvas().switchCopyMode();
+				}
 			};
-	    }
-	    return actionCopyPasteTool;
+		}
+		return actionCopyPasteTool;
 	}
-	
+
 	private AbstractAction getActionDisplayBackTileTool() {
-	    if (actionDisplayBackTileTool == null) {
+		if (actionDisplayBackTileTool == null) {
 			actionDisplayBackTileTool = new AbstractAction(null) {
-			    public void actionPerformed(ActionEvent evt) {
-				ClientEngineZildo.mapDisplay.foreBackController.toggleDisplaySpecific(false);
-			    }
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					ClientEngineZildo.mapDisplay.foreBackController
+							.toggleDisplaySpecific(false);
+				}
 			};
-	    }
-	    return actionDisplayBackTileTool;
+		}
+		return actionDisplayBackTileTool;
 	}
-	
+
 	private AbstractAction getActionDisplayForeTileTool() {
-	    if (actionDisplayForeTileTool == null) {
+		if (actionDisplayForeTileTool == null) {
 			actionDisplayForeTileTool = new AbstractAction(null) {
-			    public void actionPerformed(ActionEvent evt) {
-				ClientEngineZildo.mapDisplay.foreBackController.toggleDisplaySpecific(true);
-			    }
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					ClientEngineZildo.mapDisplay.foreBackController
+							.toggleDisplaySpecific(true);
+				}
 			};
-	    }
-	    return actionDisplayForeTileTool;
+		}
+		return actionDisplayForeTileTool;
 	}
-	
+
 	private AbstractAction getActionDisplayBackSpriteTool() {
-	    if (actionDisplayBackSpriteTool == null) {
-		actionDisplayBackSpriteTool = new AbstractAction("", null) {
-		    public void actionPerformed(ActionEvent evt) {
-			ClientEngineZildo.spriteDisplay.foreBackController.toggleDisplaySpecific(false);
-		    }
-		};
-	    }
-	    return actionDisplayBackSpriteTool;
+		if (actionDisplayBackSpriteTool == null) {
+			actionDisplayBackSpriteTool = new AbstractAction("", null) {
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					ClientEngineZildo.spriteDisplay.foreBackController
+							.toggleDisplaySpecific(false);
+				}
+			};
+		}
+		return actionDisplayBackSpriteTool;
 	}
-	
+
 	private AbstractAction getActionDisplayForeSpriteTool() {
-	    if (actionDisplayForeSpriteTool == null) {
-		actionDisplayForeSpriteTool = new AbstractAction("", null) {
-		    public void actionPerformed(ActionEvent evt) {
-			ClientEngineZildo.spriteDisplay.foreBackController.toggleDisplaySpecific(true);
-		    }
-		};
-	    }
-	    return actionDisplayForeSpriteTool;
+		if (actionDisplayForeSpriteTool == null) {
+			actionDisplayForeSpriteTool = new AbstractAction("", null) {
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					ClientEngineZildo.spriteDisplay.foreBackController
+							.toggleDisplaySpecific(true);
+				}
+			};
+		}
+		return actionDisplayForeSpriteTool;
 	}
 
 	private AbstractAction getActionTileMask() {
-	    if (actionTileMask == null) {
-	    	actionTileMask = new AbstractAction("", null) {
-		    public void actionPerformed(ActionEvent evt) {
-		    	zildoPanel.getCanvas().toggleMask();
-		    }
-		};
-	    }
-	    return actionTileMask;
+		if (actionTileMask == null) {
+			actionTileMask = new AbstractAction("", null) {
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					zildoPanel.getCanvas().toggleMask();
+				}
+			};
+		}
+		return actionTileMask;
 	}
-	
+
 	private AbstractAction getActionNewMapTool() {
-	    if (actionNewMapTool == null) {
-		actionNewMapTool = new AbstractAction(null) {
-		    public void actionPerformed(ActionEvent evt) {
-		    	zildoPanel.getCanvas().clearMap();
-		    }
-		};
-	    }
-	    return actionNewMapTool;
+		if (actionNewMapTool == null) {
+			actionNewMapTool = new AbstractAction(null) {
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					zildoPanel.getCanvas().clearMap();
+				}
+			};
+		}
+		return actionNewMapTool;
 	}
-	
+
 	private AbstractAction getActionNew() {
-		if(actionNew == null) {
+		if (actionNew == null) {
 			actionNew = new AbstractAction("Nouveau", null) {
 				private static final long serialVersionUID = -5578117368337210024L;
 
+				@Override
 				public void actionPerformed(ActionEvent evt) {
 					manager.create();
 				}
@@ -396,10 +408,11 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 
 	private AbstractAction getActionSaveAs() {
-		if(actionSaveAs == null) {
+		if (actionSaveAs == null) {
 			actionSaveAs = new AbstractAction("Enregistrer sous ...", null) {
 				private static final long serialVersionUID = 8663451078247792775L;
 
+				@Override
 				public void actionPerformed(ActionEvent evt) {
 					manager.saveAs();
 				}
@@ -407,28 +420,32 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return actionSaveAs;
 	}
+
 	private JPanel getMasterPanel() {
 		if (masterPanel == null) {
 			masterPanel = new JPanel();
-			BoxLayout masterPanelLayout = new BoxLayout(masterPanel, javax.swing.BoxLayout.Y_AXIS);
+			BoxLayout masterPanelLayout = new BoxLayout(masterPanel,
+					javax.swing.BoxLayout.Y_AXIS);
 			masterPanel.setLayout(masterPanelLayout);
 			masterPanel.add(getToolBarContainer());
 			masterPanel.add(getContentPanel());
 		}
 		return masterPanel;
 	}
+
 	private JPanel getToolBarContainer() {
-		if(toolBarContainer == null) {
+		if (toolBarContainer == null) {
 			toolBarContainer = new JPanel();
 			BorderLayout toolBarContainerLayout = new BorderLayout();
 			toolBarContainer.setLayout(toolBarContainerLayout);
-			toolBarContainer.setMaximumSize(new java.awt.Dimension(32767,32));
+			toolBarContainer.setMaximumSize(new java.awt.Dimension(32767, 32));
 			toolBarContainer.add(getToolBar(), BorderLayout.CENTER);
 		}
 		return toolBarContainer;
 	}
+
 	private JToolBar getToolBar() {
-		if(toolBar == null) {
+		if (toolBar == null) {
 			toolBar = new JToolBar();
 			toolBar.add(getNewMapTool());
 			toolBar.add(new JToolBar.Separator());
@@ -447,139 +464,159 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return toolBar;
 	}
+
 	public JToggleButton getUnmappedTool() {
-		if(unmappedTool == null) {
+		if (unmappedTool == null) {
 			unmappedTool = new JToggleButton();
 			unmappedTool.setToolTipText("Afficher les tuiles non mappées.");
 			unmappedTool.setAction(getActionUnmappedTool());
-			unmappedTool.setSelected(Boolean.parseBoolean(getManager().loadOption(Options.SHOW_TILES_UNMAPPED.getValue())));
-			unmappedTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/shading.png")));
+			unmappedTool.setSelected(Boolean.parseBoolean(getManager()
+					.loadOption(Options.SHOW_TILES_UNMAPPED.getValue())));
+			unmappedTool.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/shading.png")));
 		}
 		return unmappedTool;
 	}
+
 	public JToggleButton getGridTool() {
-		if(gridTool == null) {
+		if (gridTool == null) {
 			gridTool = new JToggleButton();
 			gridTool.setAction(getActionGridTool());
-			gridTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/text_columns.png")));
+			gridTool.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/text_columns.png")));
 		}
 		return gridTool;
 	}
-	
+
 	public JToggleButton getCollisionTool() {
-		if(collisionTool == null) {
+		if (collisionTool == null) {
 			collisionTool = new JToggleButton();
 			collisionTool.setAction(getActionCollisionTool());
-			collisionTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/footstep.png")));
+			collisionTool.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/footstep.png")));
 		}
 		return collisionTool;
 	}
-	
+
 	public JToggleButton getCopyPasteTool() {
-		if(copyPasteTool == null) {
-		    copyPasteTool = new JToggleButton();
-		    copyPasteTool.setToolTipText("Copier une zone");
-		    copyPasteTool.setAction(getActionCopyPasteTool());
-		    copyPasteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/copy.PNG")));
+		if (copyPasteTool == null) {
+			copyPasteTool = new JToggleButton();
+			copyPasteTool.setToolTipText("Copier une zone");
+			copyPasteTool.setAction(getActionCopyPasteTool());
+			copyPasteTool.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/copy.PNG")));
 		}
 		return copyPasteTool;
 	}
-	
+
 	public JToggleButton getToggleBackDisplayTool() {
-		if(backTileTool == null) {
-		    backTileTool = new JToggleButton();
-		    backTileTool.setToolTipText("Tiles d'arrière plan");
-		    backTileTool.setAction(getActionDisplayBackTileTool());
-		    backTileTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/backGround.PNG")));
+		if (backTileTool == null) {
+			backTileTool = new JToggleButton();
+			backTileTool.setToolTipText("Tiles d'arrière plan");
+			backTileTool.setAction(getActionDisplayBackTileTool());
+			backTileTool.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/backGround.PNG")));
 		}
 		return backTileTool;
 	}
-	
+
 	public JToggleButton getToggleForeDisplayTool() {
-		if(foreTileTool == null) {
-		    foreTileTool = new JToggleButton();
-		    foreTileTool.setToolTipText("Tiles de premier plan");
-		    foreTileTool.setAction(getActionDisplayForeTileTool());
-		    foreTileTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGround.PNG")));
+		if (foreTileTool == null) {
+			foreTileTool = new JToggleButton();
+			foreTileTool.setToolTipText("Tiles de premier plan");
+			foreTileTool.setAction(getActionDisplayForeTileTool());
+			foreTileTool.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/foreGround.PNG")));
 		}
 		return foreTileTool;
 	}
-	
+
 	public JToggleButton getToggleBackSpriteDisplayTool() {
-		if(backSpriteTool == null) {
-		    backSpriteTool = new JToggleButton();
-		    backSpriteTool.setToolTipText("Sprites d'arrière plan");
-		    backSpriteTool.setAction(getActionDisplayBackSpriteTool());
-		    backSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/backGroundSprite.PNG")));
+		if (backSpriteTool == null) {
+			backSpriteTool = new JToggleButton();
+			backSpriteTool.setToolTipText("Sprites d'arrière plan");
+			backSpriteTool.setAction(getActionDisplayBackSpriteTool());
+			backSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/backGroundSprite.PNG")));
 		}
 		return backSpriteTool;
 	}
-	
+
 	public JToggleButton getToggleForeSpriteDisplayTool() {
-		if(foreSpriteTool == null) {
-		    foreSpriteTool = new JToggleButton();
-		    foreSpriteTool.setToolTipText("Sprites de premier plan plan");
-		    foreSpriteTool.setAction(getActionDisplayForeSpriteTool());
-		    foreSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGroundSprite.PNG")));
+		if (foreSpriteTool == null) {
+			foreSpriteTool = new JToggleButton();
+			foreSpriteTool.setToolTipText("Sprites de premier plan plan");
+			foreSpriteTool.setAction(getActionDisplayForeSpriteTool());
+			foreSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/foreGroundSprite.PNG")));
 		}
 		return foreSpriteTool;
 	}
-	
+
 	public JToggleButton getToggleTileMaskTool() {
-		if(tileMaskTool == null) {
-		    tileMaskTool = new JToggleButton();
-		    tileMaskTool.setToolTipText("Edition du masque");
-		    tileMaskTool.setAction(getActionTileMask());
-		    tileMaskTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/mask.png")));
+		if (tileMaskTool == null) {
+			tileMaskTool = new JToggleButton();
+			tileMaskTool.setToolTipText("Edition du masque");
+			tileMaskTool.setAction(getActionTileMask());
+			tileMaskTool.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/mask.png")));
 		}
 		return tileMaskTool;
 	}
-	
+
 	public JButton getNewMapTool() {
-		if(newMapTool == null) {
-		    newMapTool = new JButton();
-		    newMapTool.setToolTipText("Nouvelle carte");
-		    newMapTool.setAction(getActionNewMapTool());
-		    newMapTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/page.png")));
+		if (newMapTool == null) {
+			newMapTool = new JButton();
+			newMapTool.setToolTipText("Nouvelle carte");
+			newMapTool.setAction(getActionNewMapTool());
+			newMapTool.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/page.png")));
 		}
 		return newMapTool;
 	}
 
 	private JPanel getContentPanel() {
-		if(contentPanel == null) {
+		if (contentPanel == null) {
 			contentPanel = new JPanel();
-			BoxLayout contentPanelLayout = new BoxLayout(contentPanel, javax.swing.BoxLayout.X_AXIS);
+			BoxLayout contentPanelLayout = new BoxLayout(contentPanel,
+					javax.swing.BoxLayout.X_AXIS);
 			contentPanel.setLayout(contentPanelLayout);
 			contentPanel.add(getLeftPanel());
 			contentPanel.add(getRightPanel());
 		}
 		return contentPanel;
 	}
+
 	private JPanel getLeftPanel() {
 		if (leftPanel == null) {
 			leftPanel = new JPanel();
-			BoxLayout leftPanelLayout = new BoxLayout(leftPanel, javax.swing.BoxLayout.Y_AXIS);
+			BoxLayout leftPanelLayout = new BoxLayout(leftPanel,
+					javax.swing.BoxLayout.Y_AXIS);
 			leftPanel.setLayout(leftPanelLayout);
-			leftPanel.setPreferredSize(new java.awt.Dimension(344,487));
+			leftPanel.setPreferredSize(new java.awt.Dimension(344, 487));
 			leftPanel.setSize(344, 539);
-			leftPanel.setMaximumSize(new java.awt.Dimension(344,32767));
+			leftPanel.setMaximumSize(new java.awt.Dimension(344, 32767));
 			leftPanel.add(getTabsPane());
 		}
 		return leftPanel;
 	}
+
 	public JTabbedPane getTabsPane() {
 		if (tabsPane == null) {
-			tabsPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
+			tabsPane = new JTabbedPane(JTabbedPane.TOP,
+					JTabbedPane.WRAP_TAB_LAYOUT);
 			tabsPane.addTab("Décors", null, getBackgroundPanel(), null);
 			tabsPane.addTab("Prefetch", null, getPrefetchPanel(), null);
 			tabsPane.addTab("Sprites", null, getSpritePanel(), null);
 			tabsPane.addTab("Personnages", null, getPersoPanel(), null);
-			tabsPane.addTab("Enchainements", null, getChainingPointPanel(), null);
+			tabsPane.addTab("Enchainements", null, getChainingPointPanel(),
+					null);
 			tabsPane.addTab("Stats", null, getStatsPanel(), null);
 			tabsPane.addTab("Scripts", null, getScriptPanel(), null);
 		}
 		return tabsPane;
 	}
+
 	public BackgroundPanel getBackgroundPanel() {
 		if (backgroundPanel == null) {
 			backgroundPanel = new BackgroundPanel(getManager());
@@ -593,7 +630,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return prefetchPanel;
 	}
-	
+
 	public ChainingPointPanel getChainingPointPanel() {
 		if (chainingPointPanel == null) {
 			chainingPointPanel = new ChainingPointPanel(getManager());
@@ -603,58 +640,66 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	public ScriptPanel getScriptPanel() {
 		if (scriptPanel == null) {
-		    scriptPanel = new ScriptPanel(getManager());
+			scriptPanel = new ScriptPanel(getManager());
 		}
 		return scriptPanel;
 	}
+
 	public SpritePanel getSpritePanel() {
 		if (spritePanel == null) {
 			spritePanel = new SpritePanel(manager);
 		}
 		return spritePanel;
 	}
+
 	public PersoPanel getPersoPanel() {
 		if (persoPanel == null) {
 			persoPanel = new PersoPanel(manager);
 		}
 		return persoPanel;
 	}
+
 	public StatsPanel getStatsPanel() {
-	    if (statsPanel == null) {
-		statsPanel = new StatsPanel();
-	    }
-	    return statsPanel;
+		if (statsPanel == null) {
+			statsPanel = new StatsPanel();
+		}
+		return statsPanel;
 	}
+
 	private JPanel getRightPanel() {
 		if (rightPanel == null) {
 			rightPanel = new JPanel();
-			rightPanel.setBackground(new java.awt.Color(255,255,255));
+			rightPanel.setBackground(new java.awt.Color(255, 255, 255));
 		}
 		return rightPanel;
 	}
+
 	private JPanel getSystemPanel() {
-		if(systemPanel == null) {
+		if (systemPanel == null) {
 			systemPanel = new JPanel();
 			BorderLayout systemPanelLayout = new BorderLayout();
 			systemPanel.setLayout(systemPanelLayout);
-			systemPanel.setPreferredSize(new java.awt.Dimension(10,20));
+			systemPanel.setPreferredSize(new java.awt.Dimension(10, 20));
 			systemPanel.setSize(792, 20);
-			systemPanel.setMaximumSize(new java.awt.Dimension(32767,20));
+			systemPanel.setMaximumSize(new java.awt.Dimension(32767, 20));
 			systemPanel.add(getSystemLabel(), BorderLayout.CENTER);
 		}
 		return systemPanel;
 	}
+
 	private JLabel getSystemLabel() {
-		if(systemLabel == null) {
+		if (systemLabel == null) {
 			systemLabel = new JLabel();
 		}
 		return systemLabel;
 	}
+
 	private JMenu getFileMenu() {
 		if (fileMenu == null) {
 			fileMenu = new JMenu();
 			fileMenu.setText("Fichier");
-			fileMenu.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/application_osx_terminal.png")));
+			fileMenu.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/application_osx_terminal.png")));
 			fileMenu.add(getNewItem());
 			fileMenu.add(getLoadItem());
 			fileMenu.add(getSaveItem());
@@ -664,91 +709,110 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return fileMenu;
 	}
+
 	private JMenuItem getNewItem() {
-		if(newItem == null) {
+		if (newItem == null) {
 			newItem = new JMenuItem();
 			newItem.setText("Nouveau");
 			newItem.setAction(getActionNew());
-			newItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/page_white.png")));
+			newItem.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/page_white.png")));
 		}
 		return newItem;
 	}
+
 	private JMenuItem getLoadItem() {
 		if (loadItem == null) {
 			loadItem = new JMenuItem();
 			loadItem.setText("Ouvrir");
 			loadItem.setAction(getActionLoad());
-			loadItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/folder.png")));
+			loadItem.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/folder.png")));
 		}
 		return loadItem;
 	}
+
 	private JMenuItem getSaveItem() {
 		if (saveItem == null) {
 			saveItem = new JMenuItem();
 			saveItem.setText("Enregistrer");
 			saveItem.setAction(getActionSave());
-			saveItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/disk.png")));
+			saveItem.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/disk.png")));
 		}
 		return saveItem;
 	}
+
 	private JMenuItem getSaveAsItem() {
-		if(saveAsItem == null) {
+		if (saveAsItem == null) {
 			saveAsItem = new JMenuItem();
 			saveAsItem.setText("Enregistrer sous ...");
 			saveAsItem.setAction(getActionSaveAs());
-			saveAsItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/disk.png")));
+			saveAsItem.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/disk.png")));
 		}
 		return saveAsItem;
 	}
+
 	private JSeparator getFileSeparator1() {
-		if(fileSeparator1 == null) {
+		if (fileSeparator1 == null) {
 			fileSeparator1 = new JSeparator();
 		}
 		return fileSeparator1;
 	}
+
 	private JMenuItem getExitItem() {
 		if (exitItem == null) {
 			exitItem = new JMenuItem();
 			exitItem.setText("Quitter");
 			exitItem.setAction(getActionExit());
-			exitItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/door.png")));
+			exitItem.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/door.png")));
 		}
 		return exitItem;
 	}
+
 	private JMenu getParametersMenu() {
-		if(parametersMenu == null) {
+		if (parametersMenu == null) {
 			parametersMenu = new JMenu();
 			parametersMenu.setText("Parmètres");
-			parametersMenu.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/cog.png")));
+			parametersMenu.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/cog.png")));
 			parametersMenu.add(getOptionsItem());
 			parametersMenu.add(getReloadConfigItem());
 		}
 		return parametersMenu;
 	}
+
 	private JMenuItem getOptionsItem() {
 		if (optionsItem == null) {
 			optionsItem = new JMenuItem();
 			optionsItem.setText("Options");
 			optionsItem.setAction(getActionOpenOptionsFrame());
-			optionsItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/wrench.png")));
+			optionsItem.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/wrench.png")));
 			optionsItem.setBounds(-53, 21, 74, 19);
 		}
 		return optionsItem;
 	}
+
 	private JMenuItem getReloadConfigItem() {
-		if(reloadConfigItem == null) {
+		if (reloadConfigItem == null) {
 			reloadConfigItem = new JMenuItem();
 			reloadConfigItem.setText("Recharger la conf.");
 			reloadConfigItem.setAction(getActionReloadConfig());
-			reloadConfigItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/arrow_refresh.png")));
+			reloadConfigItem.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/arrow_refresh.png")));
 		}
 		return reloadConfigItem;
 	}
+
 	private JMenu getDebugMenu() {
-		if(debugMenu == null) {
+		if (debugMenu == null) {
 			debugMenu = new JMenu();
 			debugMenu.setText("Debug");
-			debugMenu.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/bug.png")));
+			debugMenu.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/bug.png")));
 			debugMenu.add(getSpriteMenuItem());
 			debugMenu.add(getCharactersMenuItem());
 		}
@@ -756,18 +820,21 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 
 	private JMenu getSpriteMenuItem() {
-		if(spriteMenuItem == null) {
+		if (spriteMenuItem == null) {
 			spriteMenuItem = new JMenu();
 			spriteMenuItem.setText("Sprites");
-			spriteMenuItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/package.png")));
+			spriteMenuItem.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/package.png")));
 		}
 		return spriteMenuItem;
 	}
+
 	private JMenu getCharactersMenuItem() {
-		if(charactersMenuItem == null) {
+		if (charactersMenuItem == null) {
 			charactersMenuItem = new JMenu();
 			charactersMenuItem.setText("Personnages");
-			charactersMenuItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/user.png")));
+			charactersMenuItem.setIcon(new ImageIcon(getClass()
+					.getClassLoader().getResource("zeditor/images/user.png")));
 		}
 		return charactersMenuItem;
 	}

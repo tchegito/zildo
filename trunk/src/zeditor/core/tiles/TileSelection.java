@@ -76,7 +76,8 @@ public class TileSelection extends CaseSelection {
 		super();
 	}
 
-	protected DropDelegateDraw drawer; // Class that handles the drawing of TileSelection
+	protected DropDelegateDraw drawer; // Class that handles the drawing of
+										// TileSelection
 
 	/**
 	 * Constructeur
@@ -92,12 +93,14 @@ public class TileSelection extends CaseSelection {
 		super(l);
 		width = w;
 		height = h;
-		
-		// Default renderer for TileSelection. This could be overriden in subclasses
+
+		// Default renderer for TileSelection. This could be overriden in
+		// subclasses
 		// (For example : PrefetchSelection)
 		drawer = new DropDelegateDraw();
 	}
 
+	@Override
 	public SelectionKind getKind() {
 		return SelectionKind.TILES;
 	}
@@ -142,7 +145,8 @@ public class TileSelection extends CaseSelection {
 				if (item != null) {
 					dx = p.x + w;
 					dy = p.y + h;
-					if (map.getDim_x() > dx && map.getDim_y() > dy && dy >= 0 && dx >= 0) {
+					if (map.getDim_x() > dx && map.getDim_y() > dy && dy >= 0
+							&& dx >= 0) {
 						// We know that this is a valid location
 						Case c = map.get_mapcase(dx, dy + 4);
 						if (c == null) {
@@ -158,6 +162,7 @@ public class TileSelection extends CaseSelection {
 		}
 	}
 
+	@Override
 	public List<Case> getElement() {
 		return items;
 	}

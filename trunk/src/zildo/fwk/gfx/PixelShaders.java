@@ -252,9 +252,6 @@ public class PixelShaders extends OpenGLStuff {
 	
 	private ByteBuffer toByteString(String str, boolean isNullTerminated)
 	{
-		int length = str.length();
-		if (isNullTerminated)
-			length++;
 		// Reuse the same buffer
 		buff.position(0);
 		buff.limit(buff.capacity());

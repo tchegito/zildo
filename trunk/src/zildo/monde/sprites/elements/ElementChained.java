@@ -27,48 +27,53 @@ import zildo.monde.map.Point;
 import zildo.server.EngineZildo;
 
 /**
- * Abstract class designed for chained elements : when an animation needs several elements created on
- * a time period at a given place.
+ * Abstract class designed for chained elements : when an animation needs
+ * several elements created on a time period at a given place.
+ * 
  * @author Tchegito
- *
+ * 
  */
 public abstract class ElementChained extends Element {
 
-	int count=0;
-	int delay=0;
+	int count = 0;
+	int delay = 0;
 	Point initialLocation;
 
 	List<Element> linkeds;
-	
+
 	public ElementChained(int p_x, int p_y) {
-		x=p_x;
-		y=p_y;
-		initialLocation=new Point(p_x, p_y);
-		
-		linkeds=new ArrayList<Element>();
+		x = p_x;
+		y = p_y;
+		initialLocation = new Point(p_x, p_y);
+
+		linkeds = new ArrayList<Element>();
 	}
-	
+
+	@Override
 	public void animate() {
-		
-		if (count >= delay) {	// After the delay, create another one
+
+		if (count >= delay) { // After the delay, create another one
 			Element elem = createOne((int) x, (int) y);
-			
+
 			linkeds.add(elem);
 			EngineZildo.spriteManagement.spawnSprite(elem);
-			
-			count=0;
+
+			count = 0;
 		}
 		count++;
 	}
-	
+
 	/**
 	 * Delegate method designed for creating an element.<br/>
 	 * It needs to set a delay too.<br/>
+	 * 
 	 * @param p_x
 	 * @param p_y
 	 * @return Element
 	 */
 	protected abstract Element createOne(int p_x, int p_y);
-	
-	public void fall() { }
+
+	@Override
+	public void fall() {
+	}
 }

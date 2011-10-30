@@ -61,7 +61,7 @@ public class SaveGameMenu extends Menu {
 		load = p_load;
 
 		final List<String> savegames = SaveGameMenu.findSavegame();
-		List<ItemMenu> items = new ArrayList<ItemMenu>();
+		items = new ArrayList<ItemMenu>();
 		for (final String s : savegames) {
 			items.add(new ItemMenu(s) {
 				@Override
@@ -113,7 +113,7 @@ public class SaveGameMenu extends Menu {
 				client.handleMenu(previousMenu);
 			}
 		});
-		setMenu(items.toArray(new ItemMenu[]{}));
+		setMenu(items.toArray(new ItemMenu[] {}));
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class SaveGameMenu extends Menu {
 		EasyReadingFile file = new EasyReadingFile(p_filename);
 		game = Game.deserialize(file);
 		EngineZildo.setGame(game);
-		EngineZildo.mapManagement.loadMap("coucou", false); 
+		EngineZildo.mapManagement.loadMap("coucou", false);
 
 		singlePlay.launchGame();
 	}
@@ -165,6 +165,7 @@ public class SaveGameMenu extends Menu {
 	 */
 	public static class SaveGameFilter implements FilenameFilter {
 
+		@Override
 		public boolean accept(File dir, String name) {
 			return name.startsWith(Constantes.SAVEGAME_FILE);
 		}

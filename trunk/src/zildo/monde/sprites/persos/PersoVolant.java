@@ -45,7 +45,7 @@ public class PersoVolant extends PersoNJ {
 		setCptMouvement(100);
 		setForeground(true);
 		setSpeed(2.0f);
-		
+
 		Element ombre = new Element();
 		ombre.setX(x);
 		ombre.setY(y - 12);
@@ -78,8 +78,8 @@ public class PersoVolant extends PersoNJ {
 	@Override
 	public void animate(int compteur_animation) {
 		for (Element e : persoSprites) {
-			ElementDescription desc = (ElementDescription) e.getDesc();
-			if (!desc.isShadow()) {
+			ElementDescription d = (ElementDescription) e.getDesc();
+			if (!d.isShadow()) {
 				Point grabber = grabPoint.get(getDesc());
 				if (grabber == null) {
 					Zone sprZone = getZone();

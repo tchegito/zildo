@@ -25,23 +25,24 @@ import zildo.monde.map.ChainingPoint;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class ChainingPointSelection extends Selection {
 
 	ChainingPoint ch;
-	
+
 	public ChainingPointSelection(ChainingPoint p_ch) {
-		ch=p_ch;
+		ch = p_ch;
 	}
-	
-    public SelectionKind getKind() {
-    	return SelectionKind.CHAININGPOINT;
-    }
-    
-    public ChainingPoint getElement() {
-    	return ch;
-    }
-    
+
+	@Override
+	public SelectionKind getKind() {
+		return SelectionKind.CHAININGPOINT;
+	}
+
+	@Override
+	public ChainingPoint getElement() {
+		return ch;
+	}
 
 }

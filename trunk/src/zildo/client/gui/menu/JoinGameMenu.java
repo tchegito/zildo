@@ -33,34 +33,33 @@ import zildo.fwk.ui.UIText;
 
 public class JoinGameMenu extends Menu {
 
-    public JoinGameMenu(List<ServerInfo> serversReady, Menu p_previous) {
-        super("m4.title");
-        
-        previousMenu=p_previous;
-        
-        List<ItemMenu> items = new ArrayList<ItemMenu>();
-        for (final ServerInfo srv : serversReady) {
-            ItemMenu item = new ItemMenu(UIText.getMenuText("m4.serverInfo", srv.name, srv.nbPlayers)) {
-                @Override
-                public void run() {
-                	if (InternetClient.isResponding(srv)) {
-                		new MultiPlayer(srv);
-                	} else {
-    	                client.handleMenu(new InfoMenu(UIText.getMenuText("m4.error", srv.name), currentMenu));
-                	}
-                }
-            };
-            items.add(item);
-        }
-        
-        items.add(new ItemMenu("global.back") {
-        	@Override
+	public JoinGameMenu(List<ServerInfo> serversReady, Menu p_previous) {
+		super("m4.title");
+
+		previousMenu = p_previous;
+
+		items = new ArrayList<ItemMenu>();
+		for (final ServerInfo srv : serversReady) {
+			ItemMenu item = new ItemMenu(UIText.getMenuText("m4.serverInfo", srv.name, srv.nbPlayers)) {
+				@Override
+				public void run() {
+					if (InternetClient.isResponding(srv)) {
+						new MultiPlayer(srv);
+					} else {
+						client.handleMenu(new InfoMenu(UIText.getMenuText("m4.error", srv.name), currentMenu));
+					}
+				}
+			};
+			items.add(item);
+		}
+
+		items.add(new ItemMenu("global.back") {
+			@Override
 			public void run() {
-        		client.handleMenu(previousMenu);
-        	}
-        });
-        setMenu(items);
-    }
-    
-    
+				client.handleMenu(previousMenu);
+			}
+		});
+		setMenu(items);
+	}
+
 }

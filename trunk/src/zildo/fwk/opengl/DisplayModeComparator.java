@@ -29,6 +29,7 @@ public class DisplayModeComparator implements Comparator<DisplayMode> {
 	/**
 	 * Returns -1 if o1 is better than o2
 	 */
+	@Override
 	public int compare(DisplayMode o1, DisplayMode o2) {
 		if (o1.getBitsPerPixel() >= o2.getBitsPerPixel()) {
 			return -1;

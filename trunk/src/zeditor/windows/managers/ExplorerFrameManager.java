@@ -45,15 +45,15 @@ public class ExplorerFrameManager {
 	
 	/**
 	 * Initialisation de certains champs en fonction du mode d'ouverture (OPEN ou SAVE)
-	 * @param mode est le mode d'ouverture de la fenêtre
+	 * @param p_mode est le mode d'ouverture de la fenêtre
 	 */
-	public void init(int mode){
-		this.mode = mode;
-		if(mode == SAVE){
+	public void init(int p_mode){
+		this.mode = p_mode;
+		if(p_mode == SAVE){
 			masterFrame.setTitle("Enregistrer sous...");
 			actionButton.setText("Enregistrer");
 			
-		}else if(mode == OPEN){
+		}else if(p_mode == OPEN){
 			masterFrame.setTitle("Ouvrir...");
 			actionButton.setText("Ouvrir");
 		}

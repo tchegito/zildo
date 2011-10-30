@@ -21,7 +21,6 @@
 package zildo.client.gui.menu;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
@@ -29,38 +28,38 @@ import zildo.fwk.ui.UIText;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class OptionsMenu extends Menu {
 
 	boolean music = client.isMusic();
-	
+
 	public OptionsMenu(final Menu p_previous) {
-		
-		List<ItemMenu> items=new ArrayList<ItemMenu>();
-		
+
+		items = new ArrayList<ItemMenu>();
+
 		items.add(new ItemMenu(getMusicString()) {
 
 			@Override
 			public void run() {
-				music =!music;
+				music = !music;
 				client.setMusic(music);
 				setText(getMusicString());
-                client.handleMenu(currentMenu);
+				client.handleMenu(currentMenu);
 			}
-			
+
 		});
-		
+
 		items.add(new ItemMenu("global.back") {
 			@Override
 			public void run() {
 				client.handleMenu(p_previous);
 			}
 		});
-		setMenu(items.toArray(new ItemMenu[]{}));
+		setMenu(items.toArray(new ItemMenu[] {}));
 		setTitle("m7.options");
 	}
-	
+
 	String getMusicString() {
 		return UIText.getMenuText("m9.musicPref", music ? "On" : "Off");
 	}

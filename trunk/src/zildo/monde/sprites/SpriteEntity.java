@@ -33,7 +33,6 @@ import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.Sprite;
 import zildo.server.EngineZildo;
 
-
 ////////////////////////////////////////////////////////////////////////////////////////
 //
 // S p r i t e   E n t i t y
@@ -47,29 +46,37 @@ import zildo.server.EngineZildo;
 //-------------
 //* Provide link with SpriteEngine (display textured quad on screen)
 //* Manage collision
-public class SpriteEntity extends Identified implements Cloneable, EasySerializable
-{
+public class SpriteEntity extends Identified implements Cloneable,
+		EasySerializable {
 	public static final int REVERSE_HORIZONTAL = 128;
 	public static final int REVERSE_VERTICAL = 64;
-	public static final int FOREGROUND = 32;	// Only for MAP format
-	
+	public static final int FOREGROUND = 32; // Only for MAP format
+
 	// Class variable
-	public float x,y,z;	// Real position located by center (z is never initialized with entities)
-    private int ajustedX,ajustedY;
-	private int scrX,scrY;	// Screen position (so with camera adjustment)
-	protected SpriteModel sprModel;	// Reference to the sprite being rendered
-	public int nSpr;			// Pour les perso devient une interprétation de 'angle' et 'pos_seqsprite'
+	public float x, y, z; // Real position located by center (z is never
+							// initialized with entities)
+	private int ajustedX, ajustedY;
+	private int scrX, scrY; // Screen position (so with camera adjustment)
+	protected SpriteModel sprModel; // Reference to the sprite being rendered
+	public int nSpr; // Pour les perso devient une interprétation de 'angle' et
+						// 'pos_seqsprite'
 	public int nBank;
-	protected SpriteDescription desc;	// Interpretation of nSpr and nBank
-	private boolean moved;			// True=need to synchronize the vertex buffer, False=no move this frame
-	private int linkVertices;	// Index on VertexBuffer's position about quad describing this sprite
-	public boolean visible;		// TRUE=visible FALSE=invisible
-	private boolean foreground;	// Drawn at last in display sequence. So always on foreground
-	public boolean dying;		// TRUE=we must remove them
-	protected Point center=new Point();	// Defaults : 1) entity : [x/2, y] 2) element : [x/2, y/2]
-	
-	private EngineFX specialEffect;		// Utilisé pour changer la couleur d'un garde par exemple
-	protected int alpha = 255;	// 0..255 alpha channel
+	protected SpriteDescription desc; // Interpretation of nSpr and nBank
+	private boolean moved; // True=need to synchronize the vertex buffer,
+							// False=no move this frame
+	private int linkVertices; // Index on VertexBuffer's position about quad
+								// describing this sprite
+	public boolean visible; // TRUE=visible FALSE=invisible
+	private boolean foreground; // Drawn at last in display sequence. So always
+								// on foreground
+	public boolean dying; // TRUE=we must remove them
+	protected Point center = new Point(); // Defaults : 1) entity : [x/2, y] 2)
+											// element : [x/2, y/2]
+
+	private EngineFX specialEffect; // Utilisé pour changer la couleur d'un
+									// garde par exemple
+	protected int alpha = 255; // 0..255 alpha channel
+
 	public int getAlpha() {
 		return alpha;
 	}
@@ -78,12 +85,13 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 		this.alpha = alpha;
 	}
 
-	public int reverse;		// Combination of REVERSE_HORIZONTAL/VERTICAL (or 0)
-	public boolean clientSpecific;	// TRUE if this entity should not appear on all client's screen
-	
+	public int reverse; // Combination of REVERSE_HORIZONTAL/VERTICAL (or 0)
+	public boolean clientSpecific; // TRUE if this entity should not appear on
+									// all client's screen
+
 	// To identify which type of entity we're dealing with
 	protected EntityType entityType;
-	
+
 	public int getScrX() {
 		return scrX;
 	}
@@ -115,24 +123,24 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	public void setAjustedY(int ajustedY) {
 		this.ajustedY = ajustedY;
 	}
-	
+
 	public SpriteModel getSprModel() {
 		return sprModel;
 	}
 
 	public void setSprModel(SpriteModel sprModel) {
 		this.sprModel = sprModel;
-    }
-    
+	}
+
 	public void calculateCenter() {
 	}
-	
-    public Point getCenter() {
-		center.x=(int) x-sprModel.getTaille_x() / 2;
-        center.y=(int) y-sprModel.getTaille_y() / 2;
-    	return center;
-    }
-    
+
+	public Point getCenter() {
+		center.x = (int) x - sprModel.getTaille_x() / 2;
+		center.y = (int) y - sprModel.getTaille_y() / 2;
+		return center;
+	}
+
 	public int getNSpr() {
 		return nSpr;
 	}
@@ -140,20 +148,20 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	public void setNSpr(int spr) {
 		nSpr = spr;
 	}
-	
+
 	// Set 3 attributes at 1 time
 	public void setSpr(Sprite p_sprite) {
-		nSpr=p_sprite.spr.getNSpr();
-		nBank=p_sprite.spr.getBank();
-		reverse=p_sprite.reverse;
+		nSpr = p_sprite.spr.getNSpr();
+		nBank = p_sprite.spr.getBank();
+		reverse = p_sprite.reverse;
 	}
-	
+
 	public int getNBank() {
 		return nBank;
 	}
 
 	public void setNBank(int bank) {
-	    nBank = bank;
+		nBank = bank;
 	}
 
 	public boolean isMoved() {
@@ -210,12 +218,13 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 	}
 
 	public SpriteEntity(int p_id) {
-		id=p_id;
+		id = p_id;
 	}
-	
+
 	public SpriteEntity(int x, int y, boolean p_createId) {
 		if (p_createId) {
-			// If it's not requested, we don't create a new ID (fonts for example doesn't need an ID because
+			// If it's not requested, we don't create a new ID (fonts for
+			// example doesn't need an ID because
 			// they are only client side)
 			initialize();
 		} else {
@@ -223,80 +232,84 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 			setSpecialEffect(EngineFX.NO_EFFECT);
 		}
 
-		this.x=x;
-		this.y=y;
+		this.x = x;
+		this.y = y;
 	}
-	
+
 	private void initialize() {
-		entityType=EntityType.ENTITY;
+		entityType = EntityType.ENTITY;
 
 		// Default : entity is visible
-		visible=true;
+		visible = true;
 
 		// Default : entity is part of the background
-		foreground=false;
+		foreground = false;
 
-		specialEffect=EngineFX.NO_EFFECT;
-		
-		reverse=0;
-		
+		specialEffect = EngineFX.NO_EFFECT;
+
+		reverse = 0;
+
 		if (id == -1) {
 			// Initialize ID if it's not done yet
 			initializeId(SpriteEntity.class);
 		}
 	}
-	
+
 	public boolean isZildo() {
 		return false;
 	}
-	
+
 	public boolean isGoodies() {
 		return false;
 	}
-	
+
 	/**
 	 * Appelée lorsqu'on supprime cette entité
 	 */
 	public void fall() {
-		
+
 	}
 
 	/**
-	 * @return the SpriteDescription associated to this object (constant, for now)
+	 * @return the SpriteDescription associated to this object (constant, for
+	 *         now)
 	 */
 	public SpriteDescription getDesc() {
 		if (desc == null) {
-			desc=SpriteDescription.Locator.findSpr(nBank, nSpr);
+			desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
 
 		}
 		return desc;
 	}
-	
+
 	public void setDesc(SpriteDescription p_desc) {
-		desc=p_desc;
-		nSpr=p_desc.getNSpr();
-		nBank=p_desc.getBank();
-        setSprModel(EngineZildo.spriteManagement.getSpriteBank(nBank).get_sprite(nSpr));
+		desc = p_desc;
+		nSpr = p_desc.getNSpr();
+		nBank = p_desc.getBank();
+		setSprModel(EngineZildo.spriteManagement.getSpriteBank(nBank)
+				.get_sprite(nSpr));
 	}
-	
+
 	public void animate() {
 		ajustedX = (int) x - (sprModel.getTaille_x() >> 1);
 		ajustedY = (int) y - (sprModel.getTaille_y() >> 1);
 	}
-	
+
 	/**
 	 * Serialize useful fields from this entity.
+	 * 
 	 * @param p_buffer
 	 */
+	@Override
 	public void serialize(EasyBuffering p_buffer) {
-		boolean isZildo=this.isZildo();
-		p_buffer.putBooleans(isZildo, isVisible(), isForeground(), dying, 
-				(reverse & REVERSE_HORIZONTAL) != 0, 
+		boolean isZildo = this.isZildo();
+		p_buffer.putBooleans(isZildo, isVisible(), isForeground(), dying,
+				(reverse & REVERSE_HORIZONTAL) != 0,
 				(reverse & REVERSE_VERTICAL) != 0);
 		p_buffer.put(this.getId());
 		if (isZildo) {
 			// Zildo needs extra info
-			PersoZildo zildo=(PersoZildo) this;
+			PersoZildo zildo = (PersoZildo) this;
 			p_buffer.put((byte) zildo.getMaxpv());
 			p_buffer.put((byte) zildo.getPv());
 			p_buffer.put(zildo.getMoney());
@@ -313,108 +326,115 @@ public class SpriteEntity extends Identified implements Cloneable, EasySerializa
 		p_buffer.put((byte) this.getEntityType().intValue());
 		p_buffer.put(this.getSprModel().getId());
 	}
-	
+
 	/**
 	 * Deserialize a byte buffer into a SpriteEntity
+	 * 
 	 * @param p_buffer
 	 * @return SpriteEntity
 	 */
 	public static SpriteEntity deserialize(EasyBuffering p_buffer) {
-		boolean[] bools=p_buffer.readBooleans(6);
-		boolean isZildo=bools[0];
-		int id=p_buffer.readInt();
+		boolean[] bools = p_buffer.readBooleans(6);
+		boolean isZildo = bools[0];
+		int id = p_buffer.readInt();
 		SpriteEntity entity;
 		if (isZildo) {
-			entity=new PersoZildo(id);
+			entity = new PersoZildo(id);
 			// Zildo needs extra info
-			PersoZildo zildo=(PersoZildo) entity;
+			PersoZildo zildo = (PersoZildo) entity;
 			zildo.setMaxpv(p_buffer.readUnsignedByte());
 			zildo.setPv(p_buffer.readUnsignedByte());
 			zildo.setMoney(p_buffer.readInt());
 			zildo.setCountArrow(p_buffer.readUnsignedByte());
 			zildo.setCountBomb(p_buffer.readUnsignedByte());
 		} else {
-			entity=new SpriteEntity(id);
+			entity = new SpriteEntity(id);
 		}
 		entity.setAjustedX(p_buffer.readInt());
 		entity.setAjustedY(p_buffer.readInt());
-		entity.x=p_buffer.readInt();
-		entity.y=p_buffer.readInt();
-		entity.z=p_buffer.readFloat();
+		entity.x = p_buffer.readInt();
+		entity.y = p_buffer.readInt();
+		entity.z = p_buffer.readFloat();
 		entity.setVisible(bools[1]);
 		entity.setForeground(bools[2]);
-		entity.dying=bools[3];
+		entity.dying = bools[3];
 		entity.setNBank(p_buffer.readUnsignedByte());
 		entity.setSpecialEffect(EngineFX.values()[p_buffer.readUnsignedByte()]);
 		entity.setEntityType(EntityType.fromInt(p_buffer.readUnsignedByte()));
-		int idSprModel=p_buffer.readInt();
+		int idSprModel = p_buffer.readInt();
 		entity.setSprModel(Identified.fromId(SpriteModel.class, idSprModel));
-		int reverse=0;
+		int reverse = 0;
 		if (bools[4]) {
-			reverse|=REVERSE_HORIZONTAL;
+			reverse |= REVERSE_HORIZONTAL;
 		}
 		if (bools[5]) {
-			reverse|=REVERSE_VERTICAL;			
+			reverse |= REVERSE_VERTICAL;
 		}
-        entity.reverse = reverse;
+		entity.reverse = reverse;
 		return entity;
 	}
-	
-    @Override
-    public SpriteEntity clone() {
-        try {
-            SpriteEntity cloned = (SpriteEntity) super.clone();
-            if (EntityType.PERSO == getEntityType()) {
-                Perso clonedPerso = (Perso) cloned;
-                clonedPerso.setPersoSprites(null);
-            }
-            return cloned;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException("Unable to clone entity !");
-        }
-    }
-    
-    /**
-     * Compare each decisive fields between 2 entities.<br/>
-     * We don't override equals methode, because of collection operations. We still want that 'remove', 'get', etc, use the JVM's id as
-     * reference.
-     * @param p_obj
-     * @return boolean
-     */
-    public boolean isSame(SpriteEntity p_other) {
-        if (p_other == null) {
-            return false;
-        }
-        // Compare each decisive fields
-        if (this.x != p_other.x || this.y != p_other.y || this.z != p_other.z) {
-            return false;
-        }
-        if (this.ajustedX != p_other.ajustedX || this.ajustedY != p_other.ajustedY) {
-            return false;
-        }
-        if (this.scrX != p_other.scrX || this.scrY != p_other.scrY) {
-            return false;
-        }
-        if (this.visible != p_other.visible || this.foreground != p_other.foreground || this.reverse != p_other.reverse) {
-            return false;
-        }
-        if (this.sprModel.getId() != p_other.sprModel.getId()) {
-            return false;
-        }
 
-        // Entities are the same
-        return true;
-    }
-    
-    @Override
+	@Override
+	public SpriteEntity clone() {
+		try {
+			SpriteEntity cloned = (SpriteEntity) super.clone();
+			if (EntityType.PERSO == getEntityType()) {
+				Perso clonedPerso = (Perso) cloned;
+				clonedPerso.setPersoSprites(null);
+			}
+			return cloned;
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException("Unable to clone entity !");
+		}
+	}
+
+	/**
+	 * Compare each decisive fields between 2 entities.<br/>
+	 * We don't override equals methode, because of collection operations. We
+	 * still want that 'remove', 'get', etc, use the JVM's id as reference.
+	 * 
+	 * @param p_obj
+	 * @return boolean
+	 */
+	public boolean isSame(SpriteEntity p_other) {
+		if (p_other == null) {
+			return false;
+		}
+		// Compare each decisive fields
+		if (this.x != p_other.x || this.y != p_other.y || this.z != p_other.z) {
+			return false;
+		}
+		if (this.ajustedX != p_other.ajustedX
+				|| this.ajustedY != p_other.ajustedY) {
+			return false;
+		}
+		if (this.scrX != p_other.scrX || this.scrY != p_other.scrY) {
+			return false;
+		}
+		if (this.visible != p_other.visible
+				|| this.foreground != p_other.foreground
+				|| this.reverse != p_other.reverse) {
+			return false;
+		}
+		if (this.sprModel.getId() != p_other.sprModel.getId()) {
+			return false;
+		}
+
+		// Entities are the same
+		return true;
+	}
+
+	@Override
 	public String toString() {
-    	StringBuffer sb=new StringBuffer();
-    	sb.append("Entity id="+id+"\nx="+x+"\ny="+y+"\nnSpr="+nSpr+"\nvisible="+visible);
-    	return sb.toString();
-    }
-    
-    public Zone getZone() {
-    	Zone z=new Zone(scrX, scrY, sprModel.getTaille_x(), sprModel.getTaille_y());
-    	return z;
-    }
+		StringBuffer sb = new StringBuffer();
+		sb.append("Entity id=" + id + "\nx=" + x + "\ny=" + y + "\nnSpr="
+				+ nSpr + "\nvisible=" + visible);
+		return sb.toString();
+	}
+
+	public Zone getZone() {
+		Zone zone = new Zone(scrX, scrY, sprModel.getTaille_x(),
+				sprModel.getTaille_y());
+		return zone;
+	}
 }

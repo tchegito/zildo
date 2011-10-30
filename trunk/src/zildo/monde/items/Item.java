@@ -24,33 +24,36 @@ public class Item {
 
 	public ItemKind kind;
 	public int level;
-	
+
 	public Item(ItemKind p_kind) {
-		kind=p_kind;
-		level=0;
+		kind = p_kind;
+		level = 0;
 	}
 
 	public Item(ItemKind p_kind, int p_level) {
 		this(p_kind);
-		level=p_level;
+		level = p_level;
 	}
-	
+
+	@Override
 	public int hashCode() {
-	    return kind.ordinal() * 15 + level;
+		return kind.ordinal() * 15 + level;
 	}
-	
+
+	@Override
 	public boolean equals(Object p_item) {
-	    return p_item.hashCode() == hashCode();
+		return p_item.hashCode() == hashCode();
 	}
-	
+
 	public int getPrice() {
-		return kind.price * (level+1);
+		return kind.price * (level + 1);
 	}
-	
+
+	@Override
 	public String toString() {
-		String s=kind.getName().toLowerCase();
-		s=s.substring(0,1).toUpperCase() + s.substring(1);
-		s+="\n"+getPrice()+" rupees";
+		String s = kind.getName().toLowerCase();
+		s = s.substring(0, 1).toUpperCase() + s.substring(1);
+		s += "\n" + getPrice() + " rupees";
 		return s;
 	}
 }

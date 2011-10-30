@@ -29,10 +29,10 @@ import javax.swing.table.TableColumn;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.filter.FilterEffect;
-import zildo.fwk.script.xml.element.ActionElement;
-import zildo.fwk.script.xml.element.SceneElement;
-import zildo.fwk.script.xml.element.ActionElement.ActionKind;
 import zildo.fwk.script.xml.ScriptWriter;
+import zildo.fwk.script.xml.element.ActionElement;
+import zildo.fwk.script.xml.element.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.SceneElement;
 import zildo.monde.map.Angle;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -52,11 +52,13 @@ public class ScriptPanel extends JPanel {
 
 	// Specific combos based on enumerated types
 	final Map<Class<?>, JComboBox> combosByEnumClass;
-	final static Class<?>[] managedEnums = { Angle.class, ElementDescription.class, PersoDescription.class,
+	final static Class<?>[] managedEnums = { Angle.class,
+			ElementDescription.class, PersoDescription.class,
 			FilterEffect.class, MouvementPerso.class };
 
 	JScrollPane listScroll;
-	final List<SceneElement> scenes = EngineZildo.scriptManagement.getAdventure().getScenes();
+	final List<SceneElement> scenes = EngineZildo.scriptManagement
+			.getAdventure().getScenes();
 	SceneElement focused;
 
 	@SuppressWarnings("unchecked")
@@ -95,7 +97,8 @@ public class ScriptPanel extends JPanel {
 		updateList(true);
 
 		// Layout
-		BoxLayout backgroundPanelLayout = new BoxLayout(this, javax.swing.BoxLayout.Y_AXIS);
+		BoxLayout backgroundPanelLayout = new BoxLayout(this,
+				javax.swing.BoxLayout.Y_AXIS);
 		setLayout(backgroundPanelLayout);
 
 		// Add components
@@ -118,12 +121,14 @@ public class ScriptPanel extends JPanel {
 	}
 
 	private JComboBox getCombo() {
-		ComboBoxModel backgroundComboModel = new DefaultComboBoxModel(getSceneNames());
+		ComboBoxModel backgroundComboModel = new DefaultComboBoxModel(
+				getSceneNames());
 		JComboBox combo = new JComboBox();
 		combo.setModel(backgroundComboModel);
 		combo.setSize(339, 21);
 		combo.setMaximumSize(new java.awt.Dimension(32767, 21));
 		combo.setAction(new AbstractAction("Changer le Script", null) {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				String sceneName = scriptCombo.getSelectedItem().toString();
 				focusNamedScene(sceneName);
@@ -143,8 +148,10 @@ public class ScriptPanel extends JPanel {
 
 	private JScrollPane getScrollPaneList() {
 		JScrollPane backgroundScroll = new JScrollPane();
-		backgroundScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		backgroundScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		backgroundScroll
+				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		backgroundScroll
+				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		backgroundScroll.setViewportView(scriptList);
 		return backgroundScroll;
 	}
@@ -162,15 +169,12 @@ public class ScriptPanel extends JPanel {
 				return super.getCellEditor(p_row, p_column);
 			}
 
-			/* (non-Javadoc)
-			 * @see javax.swing.JTable#getCellRenderer(int, int)
-			 */
 			@Override
 			public TableCellRenderer getCellRenderer(int row, int column) {
-				// TODO Auto-generated method stub
-				DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) super.getCellRenderer(row, column);
-				ScriptTableModel model = (ScriptTableModel) getModel();
-				renderer.setBackground(model.getLineColor(row));
+				DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) super
+						.getCellRenderer(row, column);
+				ScriptTableModel m = (ScriptTableModel) getModel();
+				renderer.setBackground(m.getLineColor(row));
 				return renderer;
 			}
 		};
@@ -194,7 +198,8 @@ public class ScriptPanel extends JPanel {
 	private void enhanceListWithCombo() {
 		// Action kind
 		TableColumn buttonColumn = scriptList.getColumnModel().getColumn(0);
-		JComboBox comboActions = new UpdateComboBox(ZUtils.getValues(ActionKind.class));
+		JComboBox comboActions = new UpdateComboBox(
+				ZUtils.getValues(ActionKind.class));
 		buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));
 
 		// Angle
@@ -241,7 +246,8 @@ public class ScriptPanel extends JPanel {
 
 		for (int i = 0; i < table.getColumnCount(); i++) {
 			int vColIndex = i;
-			DefaultTableColumnModel colModel = (DefaultTableColumnModel) table.getColumnModel();
+			DefaultTableColumnModel colModel = (DefaultTableColumnModel) table
+					.getColumnModel();
 			TableColumn col = colModel.getColumn(vColIndex);
 			int width = 0;
 
@@ -252,14 +258,16 @@ public class ScriptPanel extends JPanel {
 				renderer = table.getTableHeader().getDefaultRenderer();
 			}
 
-			Component comp = renderer.getTableCellRendererComponent(table, col.getHeaderValue(), false, false, 0, 0);
+			Component comp = renderer.getTableCellRendererComponent(table,
+					col.getHeaderValue(), false, false, 0, 0);
 
 			width = comp.getPreferredSize().width;
 
 			// Get maximum width of column data
 			for (int r = 0; r < table.getRowCount(); r++) {
 				renderer = table.getCellRenderer(r, vColIndex);
-				comp = renderer.getTableCellRendererComponent(table, table.getValueAt(r, vColIndex), false, false, r,
+				comp = renderer.getTableCellRendererComponent(table,
+						table.getValueAt(r, vColIndex), false, false, r,
 						vColIndex);
 				width = Math.max(width, comp.getPreferredSize().width);
 			}

@@ -33,42 +33,47 @@ import zildo.resource.Constantes;
  * Client on a the WWW network.
  * 
  * @author tchegito
- *
+ * 
  */
 public class InternetClient extends NetClient {
 
 	public InternetClient(Client p_client, String p_serverIp, int p_serverPort) {
 		super(p_client);
-		
-		server=new TransferObject(p_serverIp, p_serverPort);
-		
+
+		server = new TransferObject(p_serverIp, p_serverPort);
+
 		findServer(null);
 	}
-	
+
+	@Override
 	public void findServer(PacketSet packets) {
-		ConnectPacket connectPacket=new ConnectPacket(true, playerName, Constantes.CURRENT_VERSION);
+		ConnectPacket connectPacket = new ConnectPacket(true, playerName,
+				Constantes.CURRENT_VERSION);
 		sendPacket(connectPacket, server);
-		serverFound=true;
+		serverFound = true;
 	}
-	
+
 	/**
 	 * Returns TRUE if given server is a valid one.
+	 * 
 	 * @return boolean
 	 */
 	public static boolean isResponding(ServerInfo p_serverInfo) {
-			if (p_serverInfo.port !=0) {
-				try {
-					TransferObject obj=new TransferObject(p_serverInfo.ip, p_serverInfo.port);
-					if (!obj.address.getAddress().isSiteLocalAddress()) {
-						return true;
-					}
-				} catch (RuntimeException e) {
-					// "Unknown host exception" has been wrapped
-			    	NetMessage message=new NetMessage(Command.REMOVE, p_serverInfo.name);
-			    	message.getServerInfo().ip = p_serverInfo.ip;
-					new WorldRegister().askMessage(message, false);
+		if (p_serverInfo.port != 0) {
+			try {
+				TransferObject obj = new TransferObject(p_serverInfo.ip,
+						p_serverInfo.port);
+				if (!obj.address.getAddress().isSiteLocalAddress()) {
+					return true;
 				}
+			} catch (RuntimeException e) {
+				// "Unknown host exception" has been wrapped
+				NetMessage message = new NetMessage(Command.REMOVE,
+						p_serverInfo.name);
+				message.getServerInfo().ip = p_serverInfo.ip;
+				new WorldRegister().askMessage(message, false);
 			}
+		}
 		return false;
 	}
 }

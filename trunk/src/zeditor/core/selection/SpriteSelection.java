@@ -21,7 +21,7 @@
 package zeditor.core.selection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,87 +31,87 @@ import zildo.monde.sprites.SpriteEntity;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class SpriteSelection<T extends SpriteEntity> extends Selection {
 
-    
 	final List<T> sprites;
 	final List<EngineFX> initial;
 	boolean multi = false;
-	
+
 	@Override
 	public SelectionKind getKind() {
 		return SelectionKind.SPRITES;
 	}
-	
+
 	public SpriteSelection(T p_entity) {
-	    this(Arrays.asList(p_entity));
+		this(Collections.singletonList(p_entity));
 	}
-	
+
 	public SpriteSelection(List<T> p_entities) {
-	    sprites=new ArrayList<T>();
-	    initial=new ArrayList<EngineFX>();
-	    sprites.addAll(p_entities);
-	    for (SpriteEntity e : p_entities) {
-		initial.add(e.getSpecialEffect());
-	    }
+		sprites = new ArrayList<T>();
+		initial = new ArrayList<EngineFX>();
+		sprites.addAll(p_entities);
+		for (SpriteEntity e : p_entities) {
+			initial.add(e.getSpecialEffect());
+		}
 	}
-	
+
+	@Override
 	public List<T> getElement() {
 		return sprites;
 	}
-	
+
+	@Override
 	public void unfocus() {
-	    Iterator<EngineFX> it = initial.iterator();
-	    for (SpriteEntity e : sprites) {
-		e.setSpecialEffect(it.next());
-	    }
-	}
-	
-	public void reverse(boolean p_horizontal) {
-	    for (SpriteEntity e : sprites) {
-		reverseEntity(e, p_horizontal);
-	    }
-	}
-	
-	private void reverseEntity(SpriteEntity entity, boolean p_horizontal) {
-		boolean isHorizontal=(entity.reverse & SpriteEntity.REVERSE_HORIZONTAL) != 0;
-		boolean isVertical=(entity.reverse & SpriteEntity.REVERSE_VERTICAL) != 0;
-		
-		if (p_horizontal) {
-			isHorizontal=!isHorizontal;
-		} else {
-			isVertical=!isVertical;
+		Iterator<EngineFX> it = initial.iterator();
+		for (SpriteEntity e : sprites) {
+			e.setSpecialEffect(it.next());
 		}
-		
-		entity.reverse=isVertical ? SpriteEntity.REVERSE_VERTICAL : 0;
-		entity.reverse|=isHorizontal ? SpriteEntity.REVERSE_HORIZONTAL : 0;	    
 	}
-	
-	
+
+	public void reverse(boolean p_horizontal) {
+		for (SpriteEntity e : sprites) {
+			reverseEntity(e, p_horizontal);
+		}
+	}
+
+	private void reverseEntity(SpriteEntity entity, boolean p_horizontal) {
+		boolean isHorizontal = (entity.reverse & SpriteEntity.REVERSE_HORIZONTAL) != 0;
+		boolean isVertical = (entity.reverse & SpriteEntity.REVERSE_VERTICAL) != 0;
+
+		if (p_horizontal) {
+			isHorizontal = !isHorizontal;
+		} else {
+			isVertical = !isVertical;
+		}
+
+		entity.reverse = isVertical ? SpriteEntity.REVERSE_VERTICAL : 0;
+		entity.reverse |= isHorizontal ? SpriteEntity.REVERSE_HORIZONTAL : 0;
+	}
+
 	public void toggleForeground() {
-	    for (SpriteEntity e : sprites) {
-		e.setForeground(!e.isForeground());
-	    }
+		for (SpriteEntity e : sprites) {
+			e.setForeground(!e.isForeground());
+		}
 	}
-	
+
 	public void addX(int p_value) {
-	    for (SpriteEntity e : sprites) {
-		int diffx = (int) e.x;
-		e.x=16*(int) (e.x / 16) + p_value;
-		diffx-=e.x;
-		e.setAjustedX(e.getAjustedX() - diffx);
-	    }
+		for (SpriteEntity e : sprites) {
+			int diffx = (int) e.x;
+			e.x = 16 * (int) (e.x / 16) + p_value;
+			diffx -= e.x;
+			e.setAjustedX(e.getAjustedX() - diffx);
+		}
 	}
-	
+
 	public void addY(int p_value) {
-	    for (SpriteEntity e : sprites) {
-		int diffy = (int) e.y;
-		e.y=16*(int) (e.y / 16) + p_value;
-		diffy-=e.y;
-		e.setAjustedY(e.getAjustedY() - diffy);
-	    }
+		for (SpriteEntity e : sprites) {
+			int diffy = (int) e.y;
+			e.y = 16 * (int) (e.y / 16) + p_value;
+			diffy -= e.y;
+			e.setAjustedY(e.getAjustedY() - diffy);
+		}
 	}
 
 }

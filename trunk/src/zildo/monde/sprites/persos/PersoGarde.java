@@ -30,27 +30,29 @@ import zildo.resource.Constantes;
 /**
  * Perso garde "canard"
  * 
- * Plusieurs particularités:
- * -il peut changer de couleurs à l'aide d'un pixel shader, qui se base sur son nom.
- * -il peut avoir plusieurs armes différente: épée, lance et arc
+ * Plusieurs particularités: -il peut changer de couleurs à l'aide d'un pixel
+ * shader, qui se base sur son nom. -il peut avoir plusieurs armes différente:
+ * épée, lance et arc
+ * 
  * @author tchegito
- *
+ * 
  */
 public class PersoGarde extends PersoNJ {
-	
-	final int[][] seq_gbleu={
-		{0,1,4,1,0,2,3,2},{5,6,7,6,5,6,7,6},
-		{8,9,10,11,8,9,10,11},{12,13,14,13,12,13,14,13}};
-	
+
+	final int[][] seq_gbleu = { { 0, 1, 4, 1, 0, 2, 3, 2 },
+			{ 5, 6, 7, 6, 5, 6, 7, 6 }, { 8, 9, 10, 11, 8, 9, 10, 11 },
+			{ 12, 13, 14, 13, 12, 13, 14, 13 } };
+
 	ElementGuardWeapon weapon;
-	
+
 	public PersoGarde() {
 		super();
-		weapon=new ElementGuardWeapon(this);
+		weapon = new ElementGuardWeapon(this);
 		addPersoSprites(weapon);
 		setEn_bras(weapon);
 	}
-	
+
+	@Override
 	public void setQuel_deplacement(MouvementPerso p_script) {
 		super.setQuel_deplacement(p_script);
 		switch (p_script) {
@@ -62,18 +64,20 @@ public class PersoGarde extends PersoNJ {
 			break;
 		}
 	}
-	
+
 	@Override
 	public void finaliseComportement(int compteur_animation) {
 		super.finaliseComportement(compteur_animation);
-		
-	   //Garde bleu
-	   setNSpr(getDesc().first());
-	   setAddSpr(seq_gbleu[angle.value][(getPos_seqsprite() % (16*Constantes.speed)) / (2*Constantes.speed)]);
+
+		// Garde bleu
+		setNSpr(getDesc().first());
+		setAddSpr(seq_gbleu[angle.value][(getPos_seqsprite() % (16 * Constantes.speed))
+				/ (2 * Constantes.speed)]);
 	}
-	
+
 	@Override
 	public Collision getCollision() {
-		return new Collision((int) x, (int) y, 10, null, this, DamageType.BLUNT, null);
+		return new Collision((int) x, (int) y, 10, null, this,
+				DamageType.BLUNT, null);
 	}
 }

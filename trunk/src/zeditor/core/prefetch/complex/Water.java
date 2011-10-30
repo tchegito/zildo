@@ -26,16 +26,16 @@ import zildo.monde.map.Point;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class Water extends AbstractPatch12 {
 
-	byte[] conv_water ={12, 11, 0, 4, 5, 1, 7, 0, 0, 0, 0, 2, 10, 8, 13, 0, 0, 0, 3, 0, 0, 15, 14};
-	
-	int[] conv_water_value = {
-			0, 113, 119, 126, 111, 112, 0, 114, 121, 
-			0, 120, 109, 108, 122, 130, 129};
-	
+	byte[] conv_water = { 12, 11, 0, 4, 5, 1, 7, 0, 0, 0, 0, 2, 10, 8, 13, 0,
+			0, 0, 3, 0, 0, 15, 14 };
+
+	int[] conv_water_value = { 0, 113, 119, 126, 111, 112, 0, 114, 121, 0, 120,
+			109, 108, 122, 130, 129 };
+
 	int startWater = 108;
 
 	// Add hills around the water
@@ -51,25 +51,26 @@ public class Water extends AbstractPatch12 {
 			new Adjustment(113, Angle.SUD, 18, 21),
 			new Adjustment(113, Angle.EST, 18, 19),
 			new Adjustment(112, Angle.EST, 135, 17),
-			new Adjustment(111, Angle.EST, 137, 17)
-	};
+			new Adjustment(111, Angle.EST, 137, 17) };
 
-	
 	public Water() {
 		super(true);
 	}
-	
+
+	@Override
 	public void draw(Area p_map, Point p_start) {
 		super.draw(p_map, p_start);
 
 	}
-	
+
 	@Override
 	int toBinaryValue(int p_val) {
 		int i = p_val - startWater;
 		if (i >= 0 && i < conv_water.length) {
 			return conv_water[i];
-		} else return 0;
+		} else {
+			return 0;
+		}
 	}
 
 	@Override

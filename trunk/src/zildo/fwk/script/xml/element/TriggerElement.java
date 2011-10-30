@@ -31,92 +31,97 @@ import zildo.monde.quest.QuestEvent;
 public class TriggerElement extends AnyElement {
 
 	public final QuestEvent kind;
-	String name;	// dialog, map, item and questDone
+	String name; // dialog, map, item and questDone
 	int numSentence;
 	Point location;
-	int radius;	// For location
-	Zone region;	// Unimplemented yet
-	
+	int radius; // For location
+	Zone region; // Unimplemented yet
+
 	ZSSwitch questSwitch;
-	
+
 	public TriggerElement(QuestEvent p_kind) {
-		kind=p_kind;
+		kind = p_kind;
 	}
-	
+
 	//
 	@Override
 	public void parse(Element p_elem) {
-        if (kind == null) {
-        	throw new RuntimeException("Trigger kind is unknown !");
-        }
-        switch (kind) {
-        case DIALOG:
-        	numSentence=Integer.valueOf(p_elem.getAttribute("num"));
-        case LOCATION:
-        	name=readAttribute(p_elem, "name");
-        	radius=readInt(p_elem, "radius");
-        	String strPos=readAttribute(p_elem, "pos");
-        	if (strPos != null) {
-        		location=Point.fromString(strPos);
-        	}
-        	break;
-        case QUESTDONE:
-        	name=readAttribute(p_elem, "name");
-        	questSwitch = new ZSSwitch(name+":1,0");
-        	break;
-        case INVENTORY:
-        	name=p_elem.getAttribute("item");
-        	break;
-        }
+		if (kind == null) {
+			throw new RuntimeException("Trigger kind is unknown !");
+		}
+		switch (kind) {
+		case DIALOG:
+			numSentence = Integer.valueOf(p_elem.getAttribute("num"));
+		case LOCATION:
+			name = readAttribute(p_elem, "name");
+			radius = readInt(p_elem, "radius");
+			String strPos = readAttribute(p_elem, "pos");
+			if (strPos != null) {
+				location = Point.fromString(strPos);
+			}
+			break;
+		case QUESTDONE:
+			name = readAttribute(p_elem, "name");
+			questSwitch = new ZSSwitch(name + ":1,0");
+			break;
+		case INVENTORY:
+			name = p_elem.getAttribute("item");
+			break;
+		}
 
 	}
 
 	/**
-	 * Returns TRUE if the given trigger matches the current one.<p/>
+	 * Returns TRUE if the given trigger matches the current one.
+	 * <p/>
 	 * We assume they are same kind, and that given one is undone.
+	 * 
 	 * @param p_another
 	 * @return boolean
 	 */
 	public boolean match(TriggerElement p_another) {
 		if (kind != p_another.kind) {
-			return false;	// Different kinds
+			return false; // Different kinds
 		}
 		switch (kind) {
-			case DIALOG:
-				if (p_another.name.equals(name) && p_another.numSentence == numSentence) {
+		case DIALOG:
+			if (p_another.name.equals(name)
+					&& p_another.numSentence == numSentence) {
+				return true;
+			}
+			break;
+		case INVENTORY:
+			if (p_another.name.equals(name)) {
+				return true;
+			}
+			break;
+		case LOCATION:
+			if (p_another.name.equals(name)) {
+				if (p_another.location == null && location == null) {
 					return true;
+				} else if (p_another.location != null && location != null) {
+					float dist = p_another.location.distance(location);
+					// System.out.println(dist + "   <   "+(8f + 16*radius));
+					return dist < (8f + 16 * radius);
 				}
-				break;
-			case INVENTORY:
-				if (p_another.name.equals(name)) {
-					return true;
-				}
-				break;
-			case LOCATION:
-				if (p_another.name.equals(name)) {
-					if (p_another.location == null && location == null) {
-						return true;
-					} else if (p_another.location != null && location != null) {
-						float dist = p_another.location.distance(location);
-						//System.out.println(dist + "   <   "+(8f + 16*radius));
-						return dist < (8f + 16*radius);
-					}
-				}
-				break;
-			case QUESTDONE:
-				if (questSwitch.contains(p_another.name)) {
-					return questSwitch.evaluate() == 1;
-				}
+			}
+			break;
+		case QUESTDONE:
+			if (questSwitch.contains(p_another.name)) {
+				return questSwitch.evaluate() == 1;
+			}
 		}
 		return false;
 	}
-	
+
 	public boolean isLocationSpecific() {
 		return kind == QuestEvent.LOCATION && name != null && location != null;
 	}
-	
+
 	/**
-	 * The 'done' member isn't reliable, because of the QUESTDONE kind of triggers.
+	 * The 'done' member isn't reliable, because of the QUESTDONE kind of
+	 * triggers.
+	 * 
 	 * @return boolean
 	 */
 	public boolean isDone() {
@@ -126,59 +131,66 @@ public class TriggerElement extends AnyElement {
 			return done;
 		}
 	}
+
 	/**
 	 * Ingame method to check a dialog trigger.
+	 * 
 	 * @param p_name
 	 * @param p_num
 	 * @return TriggerElement for Dialog
 	 */
 	public static TriggerElement createDialogTrigger(String p_name, int p_num) {
-		TriggerElement elem=new TriggerElement(QuestEvent.DIALOG);
-		elem.name=p_name;
-		elem.numSentence=p_num;
+		TriggerElement elem = new TriggerElement(QuestEvent.DIALOG);
+		elem.name = p_name;
+		elem.numSentence = p_num;
 		return elem;
 	}
-	
+
 	/**
 	 * Ingame method to check a inventory trigger.
+	 * 
 	 * @param p_name
 	 * @return TriggerElement for Inventory
 	 */
 	public static TriggerElement createInventoryTrigger(ItemKind p_item) {
-		TriggerElement elem=new TriggerElement(QuestEvent.INVENTORY);
-		elem.name=p_item.toString();
+		TriggerElement elem = new TriggerElement(QuestEvent.INVENTORY);
+		elem.name = p_item.toString();
 		return elem;
 	}
-	
+
 	/**
 	 * Ingame method to check a location trigger.
+	 * 
 	 * @param p_mapName
 	 * @return TriggerElement
 	 */
-	public static TriggerElement createLocationTrigger(String p_mapName, Point p_location) {
-		TriggerElement elem=new TriggerElement(QuestEvent.LOCATION);
-		elem.name=p_mapName;
+	public static TriggerElement createLocationTrigger(String p_mapName,
+			Point p_location) {
+		TriggerElement elem = new TriggerElement(QuestEvent.LOCATION);
+		elem.name = p_mapName;
 		if (p_location != null) {
-			elem.location=p_location;
+			elem.location = p_location;
 		}
 		return elem;
 	}
-	
+
 	/**
 	 * Ingame method to check a 'quest done' trigger.
+	 * 
 	 * @param p_quest
 	 * @return TriggerElement
 	 */
 	public static TriggerElement createQuestDoneTrigger(String p_quest) {
-		TriggerElement elem=new TriggerElement(QuestEvent.QUESTDONE);
-		elem.name=p_quest;
+		TriggerElement elem = new TriggerElement(QuestEvent.QUESTDONE);
+		elem.name = p_quest;
 		return elem;
 	}
 
 	public String getName() {
 		return name;
 	}
-	
+
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(kind.toString());

@@ -25,7 +25,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementGoodies;
 
-public enum ElementDescription  implements SpriteDescription {
+public enum ElementDescription implements SpriteDescription {
 
 	// Elem.spr
 	// 0
@@ -47,76 +47,70 @@ public enum ElementDescription  implements SpriteDescription {
 	// 71
 	ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT,
 	// 75
-	ARROW_LAND_UP1, ARROW_LAND_UP2, ARROW_LAND_UP3,
-	ARROW_LAND_RIGHT1, ARROW_LAND_RIGHT2, ARROW_LAND_RIGHT3,
-	ARROW_LAND_DOWN1, ARROW_LAND_DOWN2, ARROW_LAND_DOWN3,
-	ARROW_LAND_LEFT1, ARROW_LAND_LEFT2, ARROW_LAND_LEFT3,
+	ARROW_LAND_UP1, ARROW_LAND_UP2, ARROW_LAND_UP3, ARROW_LAND_RIGHT1, ARROW_LAND_RIGHT2, ARROW_LAND_RIGHT3, ARROW_LAND_DOWN1, ARROW_LAND_DOWN2, ARROW_LAND_DOWN3, ARROW_LAND_LEFT1, ARROW_LAND_LEFT2, ARROW_LAND_LEFT3,
 	// 87
 	BOOMERANG1, BOOMERANG2, BOOMERANG3, BOOMERANG4,
 	// 91
-	ENEMYARC_UP1, ENEMYARC_UP2,
-	ENEMYARC_RIGHT1, ENEMYARC_RIGHT2, 
-	ENEMYARC_DOWN1, ENEMYARC_DOWN2, 
-	ENEMYARC_LEFT1, ENEMYARC_LEFT2,
+	ENEMYARC_UP1, ENEMYARC_UP2, ENEMYARC_RIGHT1, ENEMYARC_RIGHT2, ENEMYARC_DOWN1, ENEMYARC_DOWN2, ENEMYARC_LEFT1, ENEMYARC_LEFT2,
 	// 99
 	IMPACT1, IMPACT2, IMPACT3, IMPACT4,
 	// 103
 	REDBALL1, REDBALL2, REDBALL3,
 	// 106
 	BOMB, EXPLO1, EXPLO2, EXPLO3, EXPLOSMOKE1, EXPLOSMOKE2, EXPLOSMOKE3,
-	
+
 	// 113, 114
 	FLUT, SWORD,
-	
+
 	// 115
 	QUAD1, QUAD2, QUAD3, QUAD4, QUAD5, QUAD6, QUAD7, QUAD8,
-	
+
 	// 123
-	KEY, SCROLL, BIG_HEART, HEART_FRAGMENT, COMPASS, CRYSTAL, LANTERN, FIRE_STAFF, ICE_STAFF,
-	EXCALIBUR, BOOK, NECKLACE_RED, GLOVE, NECKLACE_GREEN, NECKLACE_BLUE, TINY_VIAL, VIAL, 
-	GRAPNEL, SUPER_GLOVE, FLIPPER, BOOTS, CUP, PURSE, FLASK, FLASK_RED, FLASK_GREEN, FLASK_BLUE,
+	KEY, SCROLL, BIG_HEART, HEART_FRAGMENT, COMPASS, CRYSTAL, LANTERN, FIRE_STAFF, ICE_STAFF, EXCALIBUR, BOOK, NECKLACE_RED, GLOVE, NECKLACE_GREEN, NECKLACE_BLUE, TINY_VIAL, VIAL, GRAPNEL, SUPER_GLOVE, FLIPPER, BOOTS, CUP, PURSE, FLASK, FLASK_RED, FLASK_GREEN, FLASK_BLUE,
 	// 150
 	SHIELD_RED, SHIELD_YELLOW, STAR1, STAR2, STAR3,
-	
+
 	// 155
 	BOMBS3, SCEPTER, SPADE, BOOK_SIGN, LEAF, MILK,
-	
+
 	// 161
 	WINDOW_WOOD, PORTRAIT_MARIO, STAFF_POUM, WATER_BRIDGE,
-	
+
 	// 165
 	CASTLE_RED_FLAG, CASTLE_BLUE_FLAG, CASTLE_WINDOW, STATUE, DOOR_OPEN1, DOOR_OPEN2,
 	// 171
 	CEMETERY_DOOR;
 
-	
 	public int getBank() {
 		return SpriteBank.BANK_ELEMENTS;
 	}
-	
+
 	public static ElementDescription fromInt(int p_value) {
 		return ElementDescription.values()[p_value];
 	}
-	
+
 	public int getNSpr() {
-		int n=this.ordinal();
+		int n = this.ordinal();
 		if (name().startsWith("GEAR")) {
-			n-=156;
+			n -= 156;
 		}
 		return n;
 	}
-	
+
 	public boolean isMoney() {
-		int i=ordinal();
-		return (i >=GREENMONEY1.ordinal() && i<=REDMONEY3.ordinal());		
+		int i = ordinal();
+		return (i >= GREENMONEY1.ordinal() && i <= REDMONEY3.ordinal());
 	}
-	
+
 	public boolean isWeapon() {
-		return this==SWORD || this==ENEMYARC_RIGHT1 || this==BOMB || this==BOOMERANG1;
+		return this == SWORD || this == ENEMYARC_RIGHT1 || this == BOMB
+				|| this == BOOMERANG1;
 	}
-	
+
 	/**
-	 * Get the ItemKind associated with this description. Can return NULL if no one is associated.
+	 * Get the ItemKind associated with this description. Can return NULL if no
+	 * one is associated.
+	 * 
 	 * @return ItemKind
 	 */
 	public ItemKind getItem() {
@@ -139,10 +133,10 @@ public enum ElementDescription  implements SpriteDescription {
 		switch (this) {
 		case BAR_UP:
 		case BAR_HORIZONTAL:
-		case BAR_VERTICAL: 
+		case BAR_VERTICAL:
 		case BARREL:
 		case WOOD_BAR:
-		case CUBE_BLUE: 
+		case CUBE_BLUE:
 		case CUBE_ORANGE:
 		case SPADE:
 			return true;
@@ -150,23 +144,25 @@ public enum ElementDescription  implements SpriteDescription {
 			return false;
 		}
 	}
-	
+
 	public Element createElement() {
 		switch (this) {
-		case HEART: case BOMBS3: case ARROW_UP:
+		case HEART:
+		case BOMBS3:
+		case ARROW_UP:
 			return new ElementGoodies();
 		default:
 			return new Element();
 		}
 	}
-	
+
 	public boolean isShadow() {
 		switch (this) {
-			case SHADOW:
-			case SHADOW_LARGE:
-			case SHADOW_MINUS:
-			case SHADOW_SMALL:
-				return true;
+		case SHADOW:
+		case SHADOW_LARGE:
+		case SHADOW_MINUS:
+		case SHADOW_SMALL:
+			return true;
 		}
 		return false;
 	}

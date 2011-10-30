@@ -26,7 +26,7 @@ import zildo.monde.map.Point;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class HillTop extends AbstractPatch12 {
 
@@ -35,15 +35,15 @@ public class HillTop extends AbstractPatch12 {
 	// 26 = 29
 	// 28 = 30
 	// 33 = 36
-	
-	int[] conv_hill; // ={5, 0, 1, 7, 3, 11, 2, 0, 10, 0, 8, 0, 14, 0, 0, 12, 0, 13, 4};
-	
-	int[] conv_hill_value = {
-			54, 29, 34, 32, 22, 25, 0, 27,
-			20, 0, 17, 35, 21, 23, 19, 49};
-			/*54, 27, 35, 32, 23, 25, 0, 27, 19, 
-			0, 17, 35, 21, 21, 20, 49};
-	*/
+
+	int[] conv_hill; // ={5, 0, 1, 7, 3, 11, 2, 0, 10, 0, 8, 0, 14, 0, 0, 12, 0,
+						// 13, 4};
+
+	int[] conv_hill_value = { 54, 29, 34, 32, 22, 25, 0, 27, 20, 0, 17, 35, 21,
+			23, 19, 49 };
+	/*
+	 * 54, 27, 35, 32, 23, 25, 0, 27, 19, 0, 17, 35, 21, 21, 20, 49};
+	 */
 
 	Adjustment[] adjustments = new Adjustment[] {
 			new Adjustment(32, Angle.SUD, 31, 12),
@@ -62,45 +62,47 @@ public class HillTop extends AbstractPatch12 {
 			new Adjustment(22, Angle.EST, 5),
 			new Adjustment(17, Angle.OUEST, 15),
 			new Adjustment(25, Angle.EST, 9)
-			
+
 	};
-	
-	HillBottom hillBottom=new HillBottom();
-	
+
+	HillBottom hillBottom = new HillBottom();
+
+	@Override
 	public AbstractPatch12 getAdjustmentClass() {
 		return hillBottom;
 	}
+
 	/**
 	 * @param p_big
 	 */
 	public HillTop(boolean p_big) {
 		super(p_big);
 
-		/*setBigPatch(new int[] {0, 0, 12, 0, 0, 
-							   0, 8, 15, 4, 0, 
-							   10, 15, 15, 15, 5, 
-							   0, 2, 15, 1, 0, 
-							   0, 0, 3, 0, 0});
-		*/
+		/*
+		 * setBigPatch(new int[] {0, 0, 12, 0, 0, 0, 8, 15, 4, 0, 10, 15, 15,
+		 * 15, 5, 0, 2, 15, 1, 0, 0, 0, 3, 0, 0});
+		 */
 		conv_hill = new int[74];
-		for (int i=0;i<73;i++) {	// default values
-			conv_hill[i]=0;
+		for (int i = 0; i < 73; i++) { // default values
+			conv_hill[i] = 0;
 		}
-		for (int i=0;i<conv_hill_value.length;i++) {
+		for (int i = 0; i < conv_hill_value.length; i++) {
 			conv_hill[conv_hill_value[i]] = i;
 		}
 	}
 
+	@Override
 	public void draw(Area p_map, Point p_start) {
 		super.draw(p_map, p_start);
 
 		super.drawAdjustments(p_map, p_start);
 	}
-	
+
+	@Override
 	public Adjustment[] getAdjustments() {
 		return adjustments;
 	}
-	
+
 	@Override
 	int toBinaryValue(int p_val) {
 		if (p_val == 73) {
@@ -109,7 +111,9 @@ public class HillTop extends AbstractPatch12 {
 		int i = p_val;
 		if (i >= 0 && i < conv_hill.length) {
 			return conv_hill[i];
-		} else return 0;
+		} else {
+			return 0;
+		}
 	}
 
 	@Override

@@ -109,7 +109,7 @@ public class PersoPanel extends JPanel {
 
 		persoType = new JComboBox(ZUtils.getValues(PersoDescription.class));
 		addComp(new JLabel("Type"), persoType);
-		
+
 		angle = new JComboBox(ZUtils.getValues(Angle.class));
 		addComp(new JLabel("Angle"), angle);
 
@@ -140,6 +140,7 @@ public class PersoPanel extends JPanel {
 
 		// Display the corresponding sentenec
 		dialogZone = new JTextField() {
+			@Override
 			public String getToolTipText() {
 				return UIText.getGameText(this.getText());
 			}
@@ -150,7 +151,7 @@ public class PersoPanel extends JPanel {
 
 		dialogSwitch = new JTextField();
 		addComp(new JLabel("Switch"), dialogSwitch);
-		
+
 		// Now add the listeners
 		listener = new PersoWidgetListener();
 		name.getDocument().addDocumentListener(listener);
@@ -173,7 +174,8 @@ public class PersoPanel extends JPanel {
 		BorderLayout layout = new BorderLayout();
 		layout.setHgap(10);
 		currentPanel.setLayout(layout);
-		p_compRight.setPreferredSize(new Dimension(2 * SpriteSet.width / 3, d.height));
+		p_compRight.setPreferredSize(new Dimension(2 * SpriteSet.width / 3,
+				d.height));
 
 		currentPanel.add(p_compLeft, BorderLayout.WEST);
 		currentPanel.add(p_compRight, BorderLayout.EAST);
@@ -207,7 +209,8 @@ public class PersoPanel extends JPanel {
 			dialogSwitch.setText(p_perso.getDialogSwitch());
 			object.setText("0");
 
-			MapDialog mapDialog = EngineZildo.mapManagement.getCurrentMap().getMapDialog();
+			MapDialog mapDialog = EngineZildo.mapManagement.getCurrentMap()
+					.getMapDialog();
 			behavior = mapDialog.getBehaviors().get(p_perso.getName());
 		}
 		currentPerso = p_perso;
@@ -240,7 +243,8 @@ public class PersoPanel extends JPanel {
 	 * behavior (spinner's position)
 	 */
 	private void updateDialog() {
-		MapDialog mapDialog = EngineZildo.mapManagement.getCurrentMap().getMapDialog();
+		MapDialog mapDialog = EngineZildo.mapManagement.getCurrentMap()
+				.getMapDialog();
 		int val = (Integer) spinner.getValue();
 		String dial = mapDialog.getSentence(behavior, val);
 		dialogZone.setText(dial);
@@ -255,21 +259,26 @@ public class PersoPanel extends JPanel {
 	 * @author Tchegito
 	 * 
 	 */
-	class PersoWidgetListener implements ActionListener, DocumentListener, ChangeListener {
+	class PersoWidgetListener implements ActionListener, DocumentListener,
+			ChangeListener {
 
+		@Override
 		public void actionPerformed(ActionEvent actionevent) {
 			if (!updatingUI) {
 				Component comp = (Component) actionevent.getSource();
-				if (comp == angle || comp == script || comp == info || comp == persoType) {
+				if (comp == angle || comp == script || comp == info
+						|| comp == persoType) {
 					String val = (String) ((JComboBox) comp).getSelectedItem();
 					if (comp == angle) {
 						Angle a = ZUtils.getField(val, Angle.class);
 						currentPerso.setAngle(a);
 					} else if (comp == persoType) {
-						PersoDescription p = ZUtils.getField(val, PersoDescription.class);
+						PersoDescription p = ZUtils.getField(val,
+								PersoDescription.class);
 						currentPerso.setDesc(p);
 					} else if (comp == script) {
-						MouvementPerso s = ZUtils.getField(val, MouvementPerso.class);
+						MouvementPerso s = ZUtils.getField(val,
+								MouvementPerso.class);
 						currentPerso.setQuel_deplacement(s);
 					} else if (comp == info) {
 						PersoInfo i = ZUtils.getField(val, PersoInfo.class);
@@ -280,14 +289,17 @@ public class PersoPanel extends JPanel {
 			}
 		}
 
+		@Override
 		public void changedUpdate(DocumentEvent documentevent) {
 			updateText(documentevent);
 		}
 
+		@Override
 		public void removeUpdate(DocumentEvent documentevent) {
 			updateText(documentevent);
 		}
 
+		@Override
 		public void insertUpdate(DocumentEvent documentevent) {
 			updateText(documentevent);
 		}
@@ -299,7 +311,8 @@ public class PersoPanel extends JPanel {
 
 		private void updateText(DocumentEvent p_event) {
 			if (!updatingUI) {
-				Component comp = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+				Component comp = KeyboardFocusManager
+						.getCurrentKeyboardFocusManager().getFocusOwner();
 				Document doc = p_event.getDocument();
 				try {
 					String txt = doc.getText(0, doc.getLength());
