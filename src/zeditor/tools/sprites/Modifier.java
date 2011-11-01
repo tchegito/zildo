@@ -32,6 +32,7 @@ import zeditor.tools.banque.Foret1;
 import zeditor.tools.banque.Foret2;
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.banque.Maison;
+import zeditor.tools.banque.Palais1;
 import zeditor.tools.banque.Village;
 import zeditor.tools.tiles.MotifBankEdit;
 import zildo.client.gui.GUIDisplay;
@@ -91,7 +92,7 @@ public class Modifier {
      }
      
      public void saveBanque() {
-    	 new Maison().save();
+    	 new Foret1().save();
      }
      
      public void saveElements2() {
@@ -113,8 +114,15 @@ public class Modifier {
    		 //bankElem.removeSpr(ElementDescription.SCEPTER.getNSpr()+1);
     	 bankElem.loadImage("elem", COLOR_BLUE);
     	 //bankElem.removeSpr(ElementDescription.BOOK_SIGN.getNSpr());
-    	 bankElem.removeSpr(ElementDescription.WINDOW_WOOD.getNSpr());
-    	 bankElem.removeSpr(ElementDescription.WINDOW_WOOD.getNSpr());
+    	 //bankElem.removeSpr(ElementDescription.CASTLE_RED_FLAG.getNSpr());
+    	 //bankElem.removeSpr(ElementDescription.CASTLE_RED_FLAG.getNSpr());
+    	 //bankElem.removeSpr(ElementDescription.CASTLE_RED_FLAG.getNSpr());
+    	 //bankElem.removeSpr(ElementDescription.CASTLE_RED_FLAG.getNSpr());
+    	 //bankElem.removeSpr(ElementDescription.CASTLE_RED_FLAG.getNSpr());
+    	 //bankElem.removeSpr(ElementDescription.CASTLE_RED_FLAG.getNSpr());
+    	 //bankElem.removeSpr(ElementDescription.WINDOW_WOOD.getNSpr());
+    	 //bankElem.removeSpr(ElementDescription.WINDOW_WOOD.getNSpr());
+    	 //bankElem.removeSpr(ElementDescription.WINDOW_WOOD.getNSpr());
     	 // SPADE : 0,177,11,19
     	 //bankElem.addSprFromImage(ElementDescription.BOOK_SIGN.getNSpr(), 11, 177, 32, 20);
     	 //bankElem.addSprFromImage(ElementDescription.LEAF.getNSpr(), 16, 169, 8, 7);

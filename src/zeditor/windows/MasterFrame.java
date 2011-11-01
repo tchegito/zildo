@@ -89,6 +89,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JToggleButton backSpriteTool;
 	private JToggleButton foreSpriteTool;
 	private JToggleButton tileMaskTool;
+	private JToggleButton spriteGridTool;
 	private JToolBar toolBar;
 	private JPanel toolBarContainer;
 	private JPanel masterPanel;
@@ -109,6 +110,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private AbstractAction actionDisplayBackSpriteTool;
 	private AbstractAction actionDisplayForeSpriteTool;
 	private AbstractAction actionTileMask;
+	private AbstractAction actionSpriteGrid;
 
 	private ZildoScrollablePanel zildoPanel;
 
@@ -380,7 +382,20 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return actionTileMask;
 	}
-
+	
+	private AbstractAction getActionSpriteGrid() {
+		if (actionSpriteGrid == null) {
+			actionSpriteGrid = new AbstractAction("", null) {
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					zildoPanel.getCanvas().toggleGrid();
+				}
+			};
+		}
+		return actionSpriteGrid;
+	}
+	
+	
 	private AbstractAction getActionNewMapTool() {
 		if (actionNewMapTool == null) {
 			actionNewMapTool = new AbstractAction(null) {
@@ -455,6 +470,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			toolBar.add(new JToolBar.Separator());
 			toolBar.add(getCopyPasteTool());
 			toolBar.add(getToggleTileMaskTool());
+			toolBar.add(getSpriteGridTool());
 			toolBar.add(new JToolBar.Separator());
 			toolBar.add(getToggleBackDisplayTool());
 			toolBar.add(getToggleForeDisplayTool());
@@ -564,6 +580,17 @@ public class MasterFrame extends javax.swing.JFrame {
 		return tileMaskTool;
 	}
 
+	public JToggleButton getSpriteGridTool() {
+		if (spriteGridTool == null) {
+			spriteGridTool = new JToggleButton();
+			spriteGridTool.setToolTipText("Sprite sur une grille de 8x8");
+			spriteGridTool.setAction(getActionSpriteGrid());
+			spriteGridTool.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/grid.png")));
+		}
+		return spriteGridTool;
+	}
+	
 	public JButton getNewMapTool() {
 		if (newMapTool == null) {
 			newMapTool = new JButton();

@@ -37,7 +37,6 @@ import zeditor.core.tiles.TileSelection;
 import zeditor.windows.managers.MasterFrameManager;
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.client.ZildoRenderer;
-import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
@@ -45,6 +44,7 @@ import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
@@ -68,6 +68,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	private static final long serialVersionUID = 1L;
 
 	boolean mask=false;
+	boolean gridSprites=false;
 	
 	public ZildoCanvas(ZildoScrollablePanel p_panel, String p_mapname)
 			throws LWJGLException {
@@ -344,7 +345,6 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		    	} else {
 			    	manager.setPersoSelection(new PersoSelection((Perso) entity));
 		    	}
-				entity.setSpecialEffect(EngineFX.PERSO_HURT);
 	    	}
 	    	break;
 		default:
@@ -419,12 +419,24 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	}
 	
 	private void placeSprite(Point p_point, SpriteSelection<SpriteEntity> p_sel) {
-		p_sel.place(new zildo.monde.map.Point(p_point.x, p_point.y));
+		zildo.monde.map.Point location = new zildo.monde.map.Point(p_point.x, p_point.y);
+		if (gridSprites) {
+			SpriteModel model = p_sel.getElement().get(0).getSprModel();
+			location.x = location.x & (0xffff-7);
+			location.y = location.y & (0xffff-7);
+			location.x+=model.getTaille_x() / 2;
+			location.y+=model.getTaille_y();
+		}
+		p_sel.place(location);
 		manager.setSpriteSelection(p_sel);
 		changeSprites=true;
 	}
 
 	public void toggleMask() {
 		this.mask = !mask;
+	}
+	
+	public void toggleGrid() {
+		this.gridSprites = !gridSprites;
 	}
 }

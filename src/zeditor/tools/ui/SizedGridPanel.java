@@ -40,7 +40,7 @@ import zeditor.core.tiles.SpriteSet;
 public class SizedGridPanel extends JPanel {
 
 	public SizedGridPanel(int p_numLines) {
-		setLayout(new GridLayout(8, 1));
+		setLayout(new GridLayout(p_numLines, 1));
 	}
 	
 	public void addComp(Component p_compLeft, Component p_compRight) {

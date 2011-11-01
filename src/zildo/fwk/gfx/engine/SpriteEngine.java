@@ -338,7 +338,9 @@ public class SpriteEngine extends TextureEngine {
 				  									spr.getTexPos_x(),
 				  									spr.getTexPos_y(),
 				  									revX * spr.getTaille_x(),
-				  									revY * spr.getTaille_y()));
+				  									revY * spr.getTaille_y(), 
+				  									entity.repeatX,
+				  									entity.repeatY));
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////

@@ -32,6 +32,10 @@ public abstract class Selection {
 
 	public abstract Object getElement();
 
+	public void focus() {
+		
+	}
+	
 	public void unfocus() {
 	}
 

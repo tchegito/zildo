@@ -40,7 +40,8 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 
 	final List<T> sprites;
 	final List<EngineFX> initial;
-
+	final List<Point> initialLocations;	// Useful with list of entities, when user's playing with the addX/addY feature
+	
 	Point origin;
 	Point corner;
 	
@@ -56,9 +57,11 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 	public SpriteSelection(List<T> p_entities) {
 		sprites = new ArrayList<T>();
 		initial = new ArrayList<EngineFX>();
+		initialLocations = new ArrayList<Point>();
 		sprites.addAll(p_entities);
 		for (SpriteEntity e : sprites) {
 			initial.add(e.getSpecialEffect());
+			initialLocations.add(new Point(e.getAjustedX(), e.getAjustedY()));
 		}
 		calculateOriginAndSize();
 	}
@@ -68,6 +71,13 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 		return sprites;
 	}
 
+	@Override
+	public void focus() {
+		for (SpriteEntity e : sprites) {
+			e.setSpecialEffect(EngineFX.SHINY);
+		}
+	}
+	
 	@Override
 	public void unfocus() {
 		Iterator<EngineFX> it = initial.iterator();
@@ -116,24 +126,58 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 
 	public void addX(int p_value) {
 		origin.x+=p_value;
-		for (SpriteEntity e : sprites) {
+		if (sprites.size() == 1) {
+			SpriteEntity e = sprites.get(0);
 			int diffx = (int) e.x;
 			e.x = 16 * (int) (e.x / 16) + p_value;
 			diffx -= e.x;
 			e.setAjustedX(e.getAjustedX() - diffx);
+		} else {
+			// List of entities
+			for (int i=0;i<sprites.size();i++) {
+				SpriteEntity e = sprites.get(i);
+				Point p = initialLocations.get(i);
+				int diffx = (int) e.x;
+				e.x = p.x + p_value;
+				diffx -= e.x;
+				e.setAjustedX(e.getAjustedX() - diffx);
+			}
 		}
 	}
 
 	public void addY(int p_value) {
 		origin.y+=p_value;
-		for (SpriteEntity e : sprites) {
+		if (sprites.size() == 1) {
+			SpriteEntity e = sprites.get(0);
 			int diffy = (int) e.y;
 			e.y = 16 * (int) (e.y / 16) + p_value;
 			diffy -= e.y;
 			e.setAjustedY(e.getAjustedY() - diffy);
+		} else {
+			// List of entities
+			for (int i=0;i<sprites.size();i++) {
+				SpriteEntity e = sprites.get(i);
+				Point p = initialLocations.get(i);
+				int diffy = (int) e.y;
+				e.y = p.y + p_value;
+				diffy -= e.y;
+				e.setAjustedY(e.getAjustedY() - diffy);
+			}
+		}
+	}
+	
+	public void setRepeatX(int p_value) {
+		for (SpriteEntity e : sprites) {
+			e.repeatX = (byte) p_value;
 		}
 	}
 
+	public void setRepeatY(int p_value) {
+		for (SpriteEntity e : sprites) {
+			e.repeatY = (byte) p_value;
+		}
+	}
+	
 	public void place(Point p_point) {
 		boolean first=true;
 		Point delta = new Point(0,0);

@@ -77,6 +77,7 @@ public class ZildoMouseKeyListener implements MouseListener,
 			}
 			break;
 		case 4: // Right click
+		case 5: // Right click with LEFT SHIFT
 			canvas.clearWithBrush(p);
 			break;
 		}
