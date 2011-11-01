@@ -22,7 +22,6 @@ package zeditor.windows.subpanels;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -39,6 +38,7 @@ import javax.swing.event.ChangeListener;
 
 import zeditor.core.selection.SpriteSelection;
 import zeditor.core.tiles.SpriteSet;
+import zeditor.tools.ui.SizedGridPanel;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
 import zildo.monde.sprites.SpriteEntity;
@@ -85,9 +85,7 @@ public class SpritePanel extends JPanel {
 
 	@SuppressWarnings("serial")
 	private JPanel getSouthPanel() {
-		JPanel panel = new JPanel();
-		GridLayout thisLayout = new GridLayout(0, 2);
-		panel.setLayout(thisLayout);
+		SizedGridPanel panel = new SizedGridPanel(7);
 
 		foreground = new JCheckBox(new AbstractAction() {
 			@Override
@@ -99,24 +97,19 @@ public class SpritePanel extends JPanel {
 		});
 
 		entityType = new JLabel();
-		panel.add(new JLabel("Kind"));
-		panel.add(entityType);
+		panel.addComp(new JLabel("Kind"), entityType);
 
 		spriteType = new JComboBox(spriteLib.toArray());
-		panel.add(new JLabel("Type"));
-		panel.add(spriteType);
+		panel.addComp(new JLabel("Type"), spriteType);
 
-		panel.add(new JLabel("Foreground"));
-		panel.add(foreground);
+		panel.addComp(new JLabel("Foreground"), foreground);
 
 		spinX = new JSpinner(new SpinnerNumberModel(0, -1, 16, -1));
 		spinY = new JSpinner(new SpinnerNumberModel(0, -1, 16, -1));
 
-		panel.add(new JLabel("Add-x"));
-		panel.add(spinX);
+		panel.addComp(new JLabel("Add-x"), spinX);
 
-		panel.add(new JLabel("Add-y"));
-		panel.add(spinY);
+		panel.addComp(new JLabel("Add-y"), spinY);
 
 		reverseHorizontal = new JCheckBox(new AbstractAction() {
 			@Override
@@ -127,8 +120,7 @@ public class SpritePanel extends JPanel {
 			}
 
 		});
-		panel.add(new JLabel("Reverse H"));
-		panel.add(reverseHorizontal);
+		panel.addComp(new JLabel("Reverse H"), reverseHorizontal);
 
 		reverseVertical = new JCheckBox(new AbstractAction() {
 			@Override
@@ -139,8 +131,7 @@ public class SpritePanel extends JPanel {
 			}
 
 		});
-		panel.add(new JLabel("Reverse V"));
-		panel.add(reverseVertical);
+		panel.addComp(new JLabel("Reverse V"), reverseVertical);
 
 		SpriteFieldsListener listener = new SpriteFieldsListener();
 		spriteType.addActionListener(listener);
