@@ -27,7 +27,10 @@ import java.util.List;
 
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -37,8 +40,10 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 
 	final List<T> sprites;
 	final List<EngineFX> initial;
-	boolean multi = false;
 
+	Point origin;
+	Point corner;
+	
 	@Override
 	public SelectionKind getKind() {
 		return SelectionKind.SPRITES;
@@ -52,9 +57,10 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 		sprites = new ArrayList<T>();
 		initial = new ArrayList<EngineFX>();
 		sprites.addAll(p_entities);
-		for (SpriteEntity e : p_entities) {
+		for (SpriteEntity e : sprites) {
 			initial.add(e.getSpecialEffect());
 		}
+		calculateOriginAndSize();
 	}
 
 	@Override
@@ -70,9 +76,21 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 		}
 	}
 
+	/** Reverse all entities, horizontally or vertically. */
 	public void reverse(boolean p_horizontal) {
 		for (SpriteEntity e : sprites) {
 			reverseEntity(e, p_horizontal);
+			// reverse location
+			if (p_horizontal) {
+				e.x = 2*origin.x + corner.x - e.x;
+			} else {
+				// Axial symetry
+				int diffY = 2*origin.y + corner.y - (int) (2*e.y);
+				// Add size because gravity center was at the bottom of the element => so at the top of the symetric one
+				diffY+=e.getSprModel().getTaille_y();
+				e.y+= diffY;
+				e.setAjustedY(e.getAjustedY() + diffY);
+			}
 		}
 	}
 
@@ -97,6 +115,7 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 	}
 
 	public void addX(int p_value) {
+		origin.x+=p_value;
 		for (SpriteEntity e : sprites) {
 			int diffx = (int) e.x;
 			e.x = 16 * (int) (e.x / 16) + p_value;
@@ -106,6 +125,7 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 	}
 
 	public void addY(int p_value) {
+		origin.y+=p_value;
 		for (SpriteEntity e : sprites) {
 			int diffy = (int) e.y;
 			e.y = 16 * (int) (e.y / 16) + p_value;
@@ -114,4 +134,46 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 		}
 	}
 
+	public void place(Point p_point) {
+		boolean first=true;
+		Point delta = new Point(0,0);
+		for (SpriteEntity elem : sprites) {
+        		// Note the delta
+        		if (first) {
+        		    delta.x = (int) (p_point.x - elem.x);
+        		    delta.y = (int) (p_point.y - elem.y);
+        		    elem.x=p_point.x;
+        		    elem.y=p_point.y;
+        		    first = false;
+        		} else {
+        		    elem.x+=delta.x;
+        		    elem.y+=delta.y;
+        		}
+
+        		elem.setAjustedX(elem.getAjustedX() + delta.x);
+        		elem.setAjustedY(elem.getAjustedY() + delta.y);
+        		if (!EngineZildo.spriteManagement.isSpawned(elem)) {
+        			EngineZildo.spriteManagement.spawnSprite(elem);
+        			elem.animate();
+        		}
+		}
+		calculateOriginAndSize();
+	}
+	
+	private void calculateOriginAndSize() {
+		origin = new Point(500, 500);
+		corner = new Point(0, 0);
+		SpriteModel model;
+		for (SpriteEntity e : sprites) {
+			model = e.getSprModel();
+			int refX = e.getAjustedX();
+			int refY = e.getAjustedY();
+			origin.x = Math.min(origin.x, refX - model.getTaille_x() / 2);
+			origin.y = Math.min(origin.y, refY - model.getTaille_y());
+			corner.x = Math.max(corner.x, refX + model.getTaille_x() / 2);
+			corner.y = Math.max(corner.y, refY);
+		}
+		corner.x-=origin.x;
+		corner.y-=origin.y;
+	}
 }
