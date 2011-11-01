@@ -23,7 +23,6 @@ package zeditor.windows.subpanels;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,6 +44,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import zeditor.core.tiles.SpriteSet;
+import zeditor.tools.ui.SizedGridPanel;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
 import zildo.fwk.ui.UIText;
@@ -85,7 +85,7 @@ public class PersoPanel extends JPanel {
 	Perso currentPerso;
 	Behavior behavior;
 
-	JPanel southPanel;
+	SizedGridPanel southPanel;
 	PersoWidgetListener listener;
 	boolean updatingUI; // To know wether user or UI ask for update
 
@@ -99,25 +99,24 @@ public class PersoPanel extends JPanel {
 
 	@SuppressWarnings("serial")
 	private JPanel getSouthPanel() {
-		southPanel = new JPanel();
-		southPanel.setLayout(new GridLayout(8, 1));
+		southPanel = new SizedGridPanel(8);
 
 		name = new JTextField();
-		addComp(new JLabel("Nom"), name);
+		southPanel.addComp(new JLabel("Nom"), name);
 		script = new JComboBox(ZUtils.getValues(MouvementPerso.class));
-		addComp(new JLabel("Script"), script);
+		southPanel.addComp(new JLabel("Script"), script);
 
 		persoType = new JComboBox(ZUtils.getValues(PersoDescription.class));
-		addComp(new JLabel("Type"), persoType);
+		southPanel.addComp(new JLabel("Type"), persoType);
 
 		angle = new JComboBox(ZUtils.getValues(Angle.class));
-		addComp(new JLabel("Angle"), angle);
+		southPanel.addComp(new JLabel("Angle"), angle);
 
 		object = new JTextField();
-		addComp(new JLabel("Objet"), object);
+		southPanel.addComp(new JLabel("Objet"), object);
 
 		info = new JComboBox(ZUtils.getValues(PersoInfo.class));
-		addComp(new JLabel("Info"), info);
+		southPanel.addComp(new JLabel("Info"), info);
 
 		// Spinner for the dialogs
 		spinner = new JSpinner();
@@ -147,10 +146,10 @@ public class PersoPanel extends JPanel {
 		};
 		ToolTipManager.sharedInstance().registerComponent(dialogZone);
 
-		addComp(subPanel, dialogZone);
+		southPanel.addComp(subPanel, dialogZone);
 
 		dialogSwitch = new JTextField();
-		addComp(new JLabel("Switch"), dialogSwitch);
+		southPanel.addComp(new JLabel("Switch"), dialogSwitch);
 
 		// Now add the listeners
 		listener = new PersoWidgetListener();
@@ -165,22 +164,6 @@ public class PersoPanel extends JPanel {
 		dialogZone.getDocument().addDocumentListener(listener);
 
 		return southPanel;
-	}
-
-	private void addComp(Component p_compLeft, Component p_compRight) {
-		Dimension d = p_compRight.getPreferredSize();
-
-		JPanel currentPanel = new JPanel();
-		BorderLayout layout = new BorderLayout();
-		layout.setHgap(10);
-		currentPanel.setLayout(layout);
-		p_compRight.setPreferredSize(new Dimension(2 * SpriteSet.width / 3,
-				d.height));
-
-		currentPanel.add(p_compLeft, BorderLayout.WEST);
-		currentPanel.add(p_compRight, BorderLayout.EAST);
-
-		southPanel.add(currentPanel);
 	}
 
 	/**
