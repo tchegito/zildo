@@ -64,6 +64,8 @@ public class SpritePanel extends JPanel {
 	JComboBox spriteType;
 	JSpinner spinX;
 	JSpinner spinY;
+	JSpinner repeatX;
+	JSpinner repeatY;
 	JLabel entityType;
 
 	boolean updatingUI;
@@ -85,7 +87,7 @@ public class SpritePanel extends JPanel {
 
 	@SuppressWarnings("serial")
 	private JPanel getSouthPanel() {
-		SizedGridPanel panel = new SizedGridPanel(7);
+		SizedGridPanel panel = new SizedGridPanel(9);
 
 		foreground = new JCheckBox(new AbstractAction() {
 			@Override
@@ -138,6 +140,15 @@ public class SpritePanel extends JPanel {
 		spinX.addChangeListener(listener);
 		spinY.addChangeListener(listener);
 
+		// Repeat fields
+		repeatX = new JSpinner(new SpinnerNumberModel(1, 1, 127, -1));
+		repeatY = new JSpinner(new SpinnerNumberModel(1, 1, 127, -1));
+		repeatX.addChangeListener(listener);
+		repeatY.addChangeListener(listener);
+
+		panel.addComp(new JLabel("Repeat-x"), repeatX);
+
+		panel.addComp(new JLabel("Repeat-y"), repeatY);
 		return panel;
 	}
 
@@ -163,6 +174,8 @@ public class SpritePanel extends JPanel {
 			reverseHorizontal.setSelected(false);
 			reverseVertical.setSelected(false);
 			foreground.setSelected(false);
+			repeatX.setValue(1);
+			repeatY.setValue(1);
 		} else {
 			entityType.setText(p_entity.getEntityType().toString());
 			spriteType.setSelectedIndex(spriteLib.indexOf(p_entity.getDesc()));
@@ -173,6 +186,8 @@ public class SpritePanel extends JPanel {
 			reverseVertical
 					.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_VERTICAL));
 			foreground.setSelected(p_entity.isForeground());
+			repeatX.setValue(p_entity.repeatX);
+			repeatY.setValue(p_entity.repeatY);
 		}
 		updatingUI = false;
 		entity = p_entity;
@@ -211,11 +226,18 @@ public class SpritePanel extends JPanel {
 						sel.addX(val);
 					} else if (comp == spinY) {
 						sel.addY(val);
+					} else if (comp == repeatX){
+						sel.setRepeatX(val);
+					} else if (comp == repeatY) {
+						sel.setRepeatY(val);
 					}
-					if (val == 16) {
-						spinner.setValue(0);
-					} else if (val == -1) {
-						spinner.setValue(15);
+					// Wrap values (only for addX, addY)
+					if (comp == spinX || comp == spinY) {
+						if (val == 16) {
+							spinner.setValue(0);
+						} else if (val == -1) {
+							spinner.setValue(15);
+						}
 					}
 					manager.getZildoCanvas().setChangeSprites(true);
 				}

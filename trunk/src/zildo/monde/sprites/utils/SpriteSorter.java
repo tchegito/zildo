@@ -181,9 +181,15 @@ public class SpriteSorter {
 					if ((!entity.isForeground() && phase==0) ||
 						( entity.isForeground() && phase==1)) {
 						// We got an entity : store it into return array
-						int last=lastInBank[entity.getNBank()]++;
-						quadOrder[entity.getNBank()][last]=entity.getLinkVertices();
-						
+						int linkVertices = entity.getLinkVertices();
+						int nbEntity = entity.repeatX * entity.repeatY;
+						// Repeat entity if its fields are asking to
+						for (int nbEnt=0;nbEnt<nbEntity;nbEnt++) {
+							int last=lastInBank[entity.getNBank()]++;
+							quadOrder[entity.getNBank()][last]=linkVertices;
+							linkVertices+=4;
+						}
+
 						// Check if we need a special effect
 						EngineFX persoFX=entity.getSpecialEffect();
 	
@@ -199,7 +205,7 @@ public class SpriteSorter {
 						currentBank = entity.getNBank();
 						currentFX = persoFX;
 						currentAlpha = entity.getAlpha();
-						nbQuadFromSameBank++;
+						nbQuadFromSameBank+=nbEntity;
 					}
 	
 					position++;

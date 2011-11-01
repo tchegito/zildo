@@ -91,13 +91,23 @@ public class SpritePrimitive extends TilePrimitive {
 	
 	}
 	
-	public int synchronizeSprite(float x, float y, float xTex, float yTex, int sizeX, int sizeY)
+	public int synchronizeSprite(float x, float y, float xTex, float yTex, int sizeX, int sizeY, int repeatX, int repeatY)
 	{
 		// Do not increase indice's and vertice's count
-		nPoints-=4;
-		nIndices-=6;
-		super.addTileSized((int)x,(int)y,xTex,yTex,sizeX,sizeY);
-		return (numQuadSynchronizing++)*4;
+		int returnNumQuad = numQuadSynchronizing * 4;
+		int yy = (int) y;
+		for (int i=0;i<repeatY;i++) {
+			int xx = (int) x;
+			for (int j=0;j<repeatX;j++) {
+				nPoints-=4;
+				nIndices-=6;
+				super.addTileSized(xx, yy, xTex, yTex, sizeX, sizeY);
+				numQuadSynchronizing++;
+				xx+=sizeX;
+			}
+			yy+=sizeY;
+		}
+		return returnNumQuad;
 	}
 	
 	

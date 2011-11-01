@@ -51,6 +51,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	public static final int REVERSE_HORIZONTAL = 128;
 	public static final int REVERSE_VERTICAL = 64;
 	public static final int FOREGROUND = 32; // Only for MAP format
+	public static final int REPEATED = 16; // Fields 'repeatX' and 'repeatY' are different than 1
 
 	// Class variable
 	public float x, y, z; // Real position located by center (z is never
@@ -77,6 +78,8 @@ public class SpriteEntity extends Identified implements Cloneable,
 									// garde par exemple
 	protected int alpha = 255; // 0..255 alpha channel
 
+	public byte repeatX=1, repeatY=1;
+	
 	public int getAlpha() {
 		return alpha;
 	}

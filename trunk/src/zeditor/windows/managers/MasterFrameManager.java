@@ -493,6 +493,9 @@ public class MasterFrameManager {
 			}
 			// Focus the given sprite
 			currentSelection = p_currentSelection;
+			if (currentSelection != null) {
+				currentSelection.focus();
+			}
 		}
 		masterFrame.getSpritePanel().focusSprites(p_currentSelection);
 	}
@@ -521,6 +524,9 @@ public class MasterFrameManager {
 				}
 			}
 			currentSelection = p_currentSelection;
+			if (currentSelection != null) {
+				currentSelection.focus();
+			}
 		}
 	}
 }

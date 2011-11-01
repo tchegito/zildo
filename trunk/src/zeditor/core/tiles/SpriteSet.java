@@ -272,6 +272,10 @@ public class SpriteSet extends ImageSet {
 				up2.reverse = Element.REVERSE_HORIZONTAL
 						| Element.REVERSE_VERTICAL;
 				return new SpriteSelection(Arrays.asList(p_elem, el, up1, up2));
+			case CARPET:
+				p_elem=(T) new SpriteEntity();
+				p_elem.setDesc(desc);
+				p_elem.repeatX=5;
 			default:
 			}
 		}
