@@ -228,8 +228,7 @@ public class SpriteSet extends ImageSet {
 					} else {
 						temp = new Element();
 					}
-					temp.setNBank(desc.getBank());
-					temp.setNSpr(desc.getNSpr());
+					temp.setDesc(desc);
 					currentSelection = buildSelection(temp);
 					manager.setSpriteSelection((SpriteSelection<SpriteEntity>) currentSelection);
 				}

@@ -419,30 +419,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	}
 	
 	private void placeSprite(Point p_point, SpriteSelection<SpriteEntity> p_sel) {
-		List<SpriteEntity> elems=p_sel.getElement();
-		boolean first=true;
-		Point delta = new Point(0,0);
-		for (SpriteEntity elem : elems) {
-        		// Note the delta
-        		if (first) {
-        		    delta.x = (int) (p_point.x - elem.x);
-        		    delta.y = (int) (p_point.y - elem.y);
-        		    elem.x=p_point.x;
-        		    elem.y=p_point.y;
-        		    first = false;
-        		} else {
-        		    elem.x+=delta.x;
-        		    elem.y+=delta.y;
-        		}
-
-        		elem.setAjustedX(elem.getAjustedX() + delta.x);
-        		elem.setAjustedY(elem.getAjustedY() + delta.y);
-        		if (!EngineZildo.spriteManagement.isSpawned(elem)) {
-        			EngineZildo.spriteManagement.spawnSprite(elem);
-        			elem.animate();
-        		}
-        		
-		}
+		p_sel.place(new zildo.monde.map.Point(p_point.x, p_point.y));
 		manager.setSpriteSelection(p_sel);
 		changeSprites=true;
 	}
