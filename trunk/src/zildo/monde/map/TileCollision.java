@@ -23,6 +23,7 @@ package zildo.monde.map;
 
 import zildo.fwk.IntSet;
 import zildo.fwk.gfx.engine.TileEngine;
+import zildo.monde.map.TileInfo.Template;
 
 /**
  * @author tchegito
@@ -70,8 +71,8 @@ public class TileCollision {
         return tileInfos[p_nTile].collide(p_posX, p_posY);
     }
 
-    public boolean collide(int p_nTile) {
-    	return !tileInfos[p_nTile].walkable;
+    public boolean isTileWalkable(int p_nTile) {
+    	return tileInfos[p_nTile].template == Template.WALKABLE;
     }
     
     public TileInfo getTileInfo(int p_nTile) {
@@ -91,19 +92,19 @@ public class TileCollision {
             switch (onmap) {
                 // Mi diagonal mi horizontal : collines bord du haut
                 case 2:
-                    tileInfo.cornerDiagonal = true;
+                    tileInfo.template = Template.CORNER_DIAGONAL;
                     tileInfo.blockAngle = Angle.SUDEST;
                     break;
                 case 4:
-                    tileInfo.cornerDiagonal = true;
+                    tileInfo.template = Template.CORNER_DIAGONAL;
                     tileInfo.blockAngle = Angle.SUDOUEST;
                     break;
                 case 47:
-                    tileInfo.cornerDiagonal = true;
+                    tileInfo.template = Template.CORNER_DIAGONAL;
                     tileInfo.blockAngle = Angle.NORDOUEST;
                     break;
                 case 48:
-                    tileInfo.cornerDiagonal = true;
+                    tileInfo.template = Template.CORNER_DIAGONAL;
                     tileInfo.inverse=true;
                     tileInfo.blockAngle = Angle.NORDEST;    // TODO: check this
                     break;
@@ -117,7 +118,7 @@ public class TileCollision {
                 case 787:
                 case 917:
                 case 1536 + 84:
-                    tileInfo.half=true;
+                    tileInfo.template = Template.HALF;
                     tileInfo.blockAngle=Angle.SUDOUEST;
                     break;
                 case 7:
@@ -129,7 +130,7 @@ public class TileCollision {
                 case 788:
                 case 915:
                 case 1536 + 85:
-                    tileInfo.half=true;
+                    tileInfo.template = Template.HALF;
                     tileInfo.blockAngle=Angle.SUDEST;
                     break;
                 case 13:
@@ -141,7 +142,7 @@ public class TileCollision {
                 case 786:
                 case 913:
                 case 1536 + 80:
-                    tileInfo.half=true;
+                    tileInfo.template = Template.HALF;
                     tileInfo.blockAngle=Angle.NORDEST;
                     break;
                 case 11:
@@ -153,7 +154,7 @@ public class TileCollision {
                 case 785:
                 case 911:
                 case 1536 + 79:
-                    tileInfo.half=true;
+                    tileInfo.template = Template.HALF;
                     tileInfo.blockAngle=Angle.NORDOUEST;
                     break;
 
@@ -189,7 +190,7 @@ public class TileCollision {
                 case 1108:
                 case 192+768:
                 case 196+768:
-                    tileInfo.half=true;
+                    tileInfo.template = Template.HALF;
                     tileInfo.blockAngle=Angle.NORD;
                     break;
 
@@ -212,7 +213,7 @@ public class TileCollision {
                 case 1203:
                 case 194+768:
                 case 198+768:
-                    tileInfo.half=true;
+                    tileInfo.template = Template.HALF;
                     tileInfo.blockAngle=Angle.SUD;
                     break;
 
@@ -251,7 +252,7 @@ public class TileCollision {
                 case 1275: case 1273:	// Cave enter
                 case 181+768:
                 case 187+768:
-                    tileInfo.half=true;
+                    tileInfo.template = Template.HALF;
                     tileInfo.blockAngle=Angle.OUEST;
                     break;
 
@@ -281,7 +282,7 @@ public class TileCollision {
                 case 1214:
                 case 1274: case 1276: // cave enter
                 case 182+768:
-                    tileInfo.half=true;
+                    tileInfo.template = Template.HALF;
                     tileInfo.blockAngle=Angle.EST;
                     break;
 
@@ -292,18 +293,18 @@ public class TileCollision {
                 case 954:
                 case 958:
                 case 191+768:
-                    tileInfo.corner=true;
+                    tileInfo.template = Template.CORNER;
                     tileInfo.blockAngle=Angle.NORDEST;
                     break;
                 case 947:
                 case 199+768:
-                    tileInfo.corner=true;
+                    tileInfo.template = Template.CORNER;
                     tileInfo.blockAngle=Angle.SUDOUEST;
                     break;
                 case 948:
                 case 188+768:	// Stairs up
                 case 193+768:
-                    tileInfo.corner=true;
+                    tileInfo.template = Template.CORNER;
                     tileInfo.blockAngle=Angle.SUDEST;
                     break;
                 case 158:
@@ -311,34 +312,38 @@ public class TileCollision {
                 case 953:
                 case 957:
                 case 197+768:
-                    tileInfo.corner=true;
+                    tileInfo.template = Template.CORNER;
                     tileInfo.blockAngle=Angle.NORDOUEST;
                     break;
                 case 920:
                 case 1171:
-                	tileInfo.corner=true;
+                	tileInfo.template = Template.CORNER;
                 	tileInfo.inverse=true;
                 	tileInfo.blockAngle=Angle.SUDOUEST;
                     break;
                 case 919:
                 case 1172:
-                	tileInfo.corner=true;
+                	tileInfo.template = Template.CORNER;
                 	tileInfo.inverse=true;
                 	tileInfo.blockAngle=Angle.SUDEST;
                     break;
                 case 921:
-                	tileInfo.corner=true;
+                	tileInfo.template = Template.CORNER;
                 	tileInfo.inverse=true;
                 	tileInfo.blockAngle=Angle.NORDEST;
                 	break;
                 case 922:
-                	tileInfo.corner=true;
+                	tileInfo.template = Template.CORNER;
                 	tileInfo.inverse=true;
                 	tileInfo.blockAngle=Angle.NORDOUEST;
                 	break;
 
                 default:
-                	tileInfo.walkable=isWalkable(onmap);
+            		if (isWalkable(onmap)) {
+            			tileInfo.template = Template.WALKABLE;
+            		} else {
+            			tileInfo.template = Template.FULL;
+            		}
 
             }
 

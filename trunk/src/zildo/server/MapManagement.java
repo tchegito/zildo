@@ -186,7 +186,7 @@ public class MapManagement {
 	}
 
 	public boolean isWalkable(int p_onmap) {
-		return tileCollision.collide(p_onmap);
+		return tileCollision.isTileWalkable(p_onmap);
 	}
 
 	/**
