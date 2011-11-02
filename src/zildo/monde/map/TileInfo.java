@@ -21,6 +21,9 @@
 
 package zildo.monde.map;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import zildo.monde.map.Angle;
 
 /**
@@ -31,24 +34,27 @@ import zildo.monde.map.Angle;
  */
 public class TileInfo {
 
-    public boolean walkable; // Entire tile is walkable.
-    public boolean corner; // One quarter of the tile is walkable.
-    public boolean cornerDiagonal; // One quarter + one half quarter (diagonal) is walkable
-    public boolean half; // One half of the tile is walkable.
+	enum Template {
+		WALKABLE, // Entire tile is walkable
+		FULL,	// Entire tile is blocking
+		CORNER, // One quarter of the tile is walkable.
+		CORNER_DIAGONAL, // One quarter + one half quarter (diagonal) is walkable
+		HALF;	// One half of the tile is walkable.
+	}
+	
+	public Template template;
+	
     public boolean inverse; // Inverse walkable and blocking part (in conjunction with 'corner' and 'corner diagonal')
-    public boolean down;	// TRUE if tiles altitude decrease in 'blockAngle' direction
     public Angle blockAngle; // Indicates the collider angle. Can be diagonal
 
+    private static final Map<Integer, TileInfo> tileInfoMap = new HashMap<Integer, TileInfo>();
+    
     private int hash = -1;	// Keep it for optimizing
     
     public TileInfo() {
-    	walkable=true;
-    	corner=false;
-    	cornerDiagonal=false;
-    	half=false;
+    	template = Template.WALKABLE;
     	inverse=false;
     	blockAngle=null;
-    	down=false;
     }
     
     /**
@@ -59,8 +65,13 @@ public class TileInfo {
      */
     public boolean collide(int p_posX, int p_posY) {
 
-    	// 1- half
-        if (half) {
+    	boolean result;
+    	
+    	switch (template) {
+    	case WALKABLE:
+    		return false;
+    		
+    	case HALF:
             switch (blockAngle) {
                 case NORD:
                     return (p_posY < 8);
@@ -79,28 +90,25 @@ public class TileInfo {
                 case NORDOUEST:
                     return (p_posY < (16 - p_posX));
             }
-        }
 
-        // 2- corner
-        if (corner) { // Only diagonal angles
-            boolean result = collideCorner(blockAngle, p_posX, p_posY);
+    	case CORNER: // Only diagonal angles
+            result = collideCorner(blockAngle, p_posX, p_posY);
             if (inverse) {
                 result = !result;
             }
             return result;
-        }
-
-        // 3- cornerDiagonal
-        if (cornerDiagonal) { // Only diagonal angles
-            boolean result = collideCornerDiagonal(blockAngle, p_posX, p_posY);
+        
+    	case CORNER_DIAGONAL: // Only diagonal angles
+            result = collideCornerDiagonal(blockAngle, p_posX, p_posY);
             if (inverse) {
                 result = !result;
             }
             return result;
-        }
-
-        // 4- walkable
-        return !walkable;
+    	
+    	case FULL:
+    	default:
+    		return true;
+    	}
     }
 
     private boolean collideCorner(Angle p_angle, int p_posX, int p_posY) {
@@ -159,15 +167,25 @@ public class TileInfo {
     public int hashCode() {
     	if (hash == -1) {
     		// Just for pleasure ! We could just returned 1, in order to discard the default hashCode behavior.
-    		hash = (walkable ? 1 : 0);
-	    	hash = 2*hash + (corner ? 1 : 0);
-	    	hash = 2*hash + (cornerDiagonal ? 1 : 0);
-			hash = 2*hash + (half ? 1 : 0);
-			hash = 2*hash + (inverse ? 1 : 0);
-			hash = 2*hash + (down ? 1 : 0);
-			hash = 8*hash + (blockAngle == null ? 0 : blockAngle.value);
+    		hash = template.ordinal();	// 3 bits
+			hash+=inverse ? 8 : 0;	// 1 bit
+			hash+=blockAngle == null ? 0 : (blockAngle.value*16);	// 3 bits
     	}
     	
     	return hash;
+    }
+    
+    /** Returns the TileInfo corresponding to an int value. (=reverse hashCode)*/
+    public static TileInfo fromInt(int p_value) {
+    	TileInfo t = tileInfoMap.get(p_value);
+    	if (t == null) {
+    		// Not in the map yet, so we create it and put it into.
+    		t = new TileInfo();
+    		t.template = Template.values()[p_value & 7];
+    		t.inverse = (p_value & 8) != 0 ? true : false;
+    		t.blockAngle = Angle.fromInt(p_value >> 4);
+    		tileInfoMap.put(p_value, t);
+    	}
+    	return t;
     }
 }
