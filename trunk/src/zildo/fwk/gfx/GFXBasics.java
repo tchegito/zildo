@@ -25,6 +25,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
@@ -390,7 +392,16 @@ public class GFXBasics extends OpenGLStuff {
 		return getPalIndex(r, g, b);
 	}
 
+	final static Map<Integer, Integer> palIndexes = new HashMap<Integer, Integer>();
+	
 	private static int getPalIndex(int r, int g, int b) {
+		// Optimization with using a index cache
+		int key= b | g<<8 | r<<16;
+		Integer result = palIndexes.get(key);
+		if (result != null) {
+			return result.intValue();
+		}
+		
 		Vector2f min = new Vector2f(10000, 1); // X=minimal distance /
 												// Y=corresponding color index
 		for (int i = 0; i < palette.length; i++) {
@@ -404,7 +415,8 @@ public class GFXBasics extends OpenGLStuff {
 				}
 			}
 		}
-		// return the closest color's index
+		// return the closest color's index (and update the map)
+		palIndexes.put(key, (int) min.y);
 		return (int) min.y;
 	}
 }

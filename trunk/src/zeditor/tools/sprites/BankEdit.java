@@ -43,6 +43,7 @@ public class BankEdit {
 
 
     public List<short[]> gfxs;
+    
     BufferedImage img;
     int[] imgPixels;    // Parallel image which is a source for inserting new sprites into this bank
    

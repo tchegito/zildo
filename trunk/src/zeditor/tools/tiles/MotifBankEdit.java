@@ -33,6 +33,8 @@ import zildo.fwk.bank.MotifBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.gfx.GFXBasics;
+import zildo.fwk.gfx.engine.TileEngine;
+import zildo.monde.map.TileCollision;
 
 /**
  * @author Tchegito
@@ -42,6 +44,9 @@ public class MotifBankEdit extends MotifBank {
 
 	BankEdit bankEdit;
 	Banque bank;
+
+	private int bankOrder;
+	final static TileCollision infosCollision = TileCollision.getInstance();
 	
 	/**
 	 * Constructor designed for building .DEC with class deriving from {@link Banque}.
@@ -55,6 +60,8 @@ public class MotifBankEdit extends MotifBank {
 		
 		String name=p_bank.getClass().getSimpleName().toUpperCase();
 		setName(name);
+		
+		bankOrder = TileEngine.getBankFromName(name);
 	}
 	
 	/**
@@ -90,11 +97,14 @@ public class MotifBankEdit extends MotifBank {
 	}
     
     public void saveBank() {
-        EasyBuffering buffer=new EasyBuffering(bankEdit.gfxs.size() * 16 *16);
+        EasyBuffering buffer=new EasyBuffering(bankEdit.gfxs.size() * (1 + 16 *16));
         for (int i=0;i<nb_motifs;i++) {
+        	// Put the image
             for (short s : bankEdit.gfxs.get(i)) {
                 buffer.put((byte) s);
             }
+        	// Put the collision info
+        	buffer.put((byte) infosCollision.getTileInfo(256 * bankOrder + i).hashCode());
         }
         EasyWritingFile file=new EasyWritingFile(buffer);
         file.saveFile(getName()+".DEC");

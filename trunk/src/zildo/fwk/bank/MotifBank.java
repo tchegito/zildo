@@ -20,7 +20,11 @@
 
 package zildo.fwk.bank;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import zildo.fwk.file.EasyReadingFile;
+import zildo.monde.map.TileCollision;
 
 
 public class MotifBank {
@@ -29,7 +33,7 @@ public class MotifBank {
 	private String name;				// Max length should be 12
 	protected int nb_motifs;		// Nombre de motifs dans la banque
 
-
+	final static int motifSize = 16*16 + 1; // 1 byte for collision and 256 for graphic
 
 	
 	public String getName() {
@@ -51,30 +55,28 @@ public class MotifBank {
 	public MotifBank() {
 	}
 	
-	//Assignment operator to work out with STL
-	public MotifBank(MotifBank original) {
-		this.motifs_map=original.motifs_map;
-		this.nb_motifs=original.nb_motifs;
-		this.name=original.name;
-	}
-	
 	public void charge_motifs(String filename) {
 		// On récupère la taille du fichier .DEC
-		EasyReadingFile file=new EasyReadingFile(filename);
+		EasyReadingFile file=new EasyReadingFile(filename+".DEC");
 		int size=file.getSize();
 		
-		name=filename.substring(0, filename.indexOf("."));
-		nb_motifs=size / (16*16);
+		name=filename;
+		nb_motifs=size / motifSize;
 	
 		// Load the mini-pictures
 		motifs_map=file.readUnsignedBytes();
-			
+		
+		List<Integer> infoCollisions = new ArrayList<Integer>();
+		for (int i=0;i<nb_motifs;i++) {
+			infoCollisions.add((int) motifs_map[motifSize * (i+1) - 1]);
+		}
+		TileCollision.getInstance().updateInfoCollision(name, infoCollisions);
 	}
 	
 	public short[] get_motif(int quelmotif) {
-		short[] coupe=new short[16*16];
-		int a=quelmotif * 16*16;
-		System.arraycopy(motifs_map, a, coupe, 0, 16*16);
+		short[] coupe=new short[motifSize];
+		int a=quelmotif * motifSize;
+		System.arraycopy(motifs_map, a, coupe, 0, motifSize);
 		return coupe;
 	}
 

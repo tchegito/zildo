@@ -63,7 +63,7 @@ public class TileSet extends ImageSet {
 			if (ClientEngineZildo.tileEngine == null) {
 				return null;
 			}
-			int nBank = ClientEngineZildo.tileEngine.getBankFromName(p_name);
+			int nBank = TileEngine.getBankFromName(p_name);
 			MotifBank bank = ClientEngineZildo.tileEngine.getMotifBank(nBank);
 			tile = bridge.generateImg(bank);
 
@@ -164,8 +164,7 @@ public class TileSet extends ImageSet {
 		List<String> list = new ArrayList<String>();
 
 		for (String bankName : TileEngine.tileBankNames) {
-			String fileName = bankName.substring(0, bankName.indexOf("."));
-			list.add(fileName);
+			list.add(bankName);
 		}
 		list.add("*block*");
 		return list.toArray();
@@ -282,7 +281,7 @@ public class TileSet extends ImageSet {
 		stopY = stopPoint.y;
 
 		Case c;
-		int bank = ClientEngineZildo.tileEngine.getBankFromName(tileName);
+		int bank = TileEngine.getBankFromName(tileName);
 		int nMotif = 0;
 		for (int i = startY; i < stopY; i += 16) {
 			for (int j = startX; j < stopX; j += 16) {
