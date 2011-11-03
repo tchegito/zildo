@@ -59,7 +59,7 @@ public class MapManagement {
 	Angle mapScrollAngle;
 
 	public MapManagement() {
-		tileCollision = new TileCollision();
+		tileCollision = TileCollision.getInstance();
 
 		// Init variables
 		currentMap = null;
@@ -693,4 +693,5 @@ public class MapManagement {
 	public Area getPreviousMap() {
 		return previousMap;
 	}
+
 }

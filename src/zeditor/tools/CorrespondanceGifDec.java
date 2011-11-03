@@ -29,7 +29,7 @@ import zildo.monde.map.TileInfo;
 public class CorrespondanceGifDec {
 
 	final Map<String, Banque> banks;
-	final TileCollision tileCollision = new TileCollision();
+	final TileCollision tileCollision = TileCollision.getInstance();
 	
 	public Banque doTheJob(Banque bank) {
 		Map<Point, Integer> mapCorrespondance = new HashMap<Point, Integer>();

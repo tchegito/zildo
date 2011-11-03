@@ -323,7 +323,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 		p_buffer.put(this.getAjustedY());
 		p_buffer.put((int) this.x);
 		p_buffer.put((int) this.y);
-		p_buffer.put(this.z);
+		p_buffer.put((int) this.z);
 		p_buffer.put((byte) this.getNBank());
 		p_buffer.put((byte) this.getSpecialEffect().ordinal());
 		p_buffer.put((byte) this.getEntityType().intValue());
@@ -357,7 +357,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 		entity.setAjustedY(p_buffer.readInt());
 		entity.x = p_buffer.readInt();
 		entity.y = p_buffer.readInt();
-		entity.z = p_buffer.readFloat();
+		entity.z = p_buffer.readInt();
 		entity.setVisible(bools[1]);
 		entity.setForeground(bools[2]);
 		entity.dying = bools[3];

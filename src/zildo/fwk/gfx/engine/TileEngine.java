@@ -93,15 +93,15 @@ public class TileEngine extends TextureEngine {
 	List<MotifBank> motifBanks;
 	public int texCloudId;
 
-	static public String[] tileBankNames = { "foret1.dec",
-			"village.dec",
-			"maison.dec",
-			"grotte.dec",
-			"foret2.dec",
-			"foret3.dec",
-			"foret4.dec",
-			"palais1.dec",
-			"palais2.dec" };
+	static public String[] tileBankNames = { "foret1",
+			"village",
+			"maison",
+			"grotte",
+			"foret2",
+			"foret3",
+			"foret4",
+			"palais1",
+			"palais2" };
 
 	// ////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
@@ -164,11 +164,6 @@ public class TileEngine extends TextureEngine {
 		motifBank.charge_motifs(filename);
 
 		motifBanks.add(motifBank);
-
-		// Relase memory allocated for tile graphics, because it's in directX
-		// memory now.
-		// delete motifBank;
-
 	}
 
 	public MotifBank getMotifBank(int n) {
@@ -397,10 +392,10 @@ public class TileEngine extends TextureEngine {
 	 * @param p_name
 	 * @return int
 	 */
-	public int getBankFromName(String p_name) {
+	public static int getBankFromName(String p_name) {
 		int i = 0;
 		for (String s : tileBankNames) {
-			if (s.toUpperCase().indexOf(p_name.toUpperCase()) == 0) {
+			if (s.equalsIgnoreCase(p_name)) {
 				return i;
 			}
 			i++;
@@ -415,7 +410,6 @@ public class TileEngine extends TextureEngine {
 	 * @return String
 	 */
 	public String getBankNameFromInt(int nBank) {
-		String response = tileBankNames[nBank];
-		return response.substring(0, response.indexOf("."));
+		return tileBankNames[nBank];
 	}
 }
