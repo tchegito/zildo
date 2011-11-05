@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
@@ -375,5 +376,19 @@ public class TileSet extends ImageSet {
 	 */
 	public TileSelection getCurrentSelection() {
 		return (TileSelection) currentSelection;
+	}
+
+	@Override
+	protected void handleSelectionRightClick(MouseEvent e) {
+		// We need a selection of a single tile
+		TileSelection sel = (TileSelection) currentSelection;
+		if (sel.height !=1 || sel.width != 1) {
+			return;
+		}
+		Image singleTile = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
+		singleTile.getGraphics().drawImage(currentTile, 0, 0, 16, 16, 
+				startPoint.x, startPoint.y, stopPoint.x, stopPoint.y, null); 
+		TilePopupMenu menu = new TilePopupMenu(singleTile);
+		menu.show(e.getComponent(), e.getX(), e.getY());
 	}
 }

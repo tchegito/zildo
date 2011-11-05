@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,5 +79,9 @@ public class CollisionDrawer {
 			}
 		}
 		return img;
+	}
+	
+	public static Collection<TileInfo> getCollisions() {
+		return imagesByTileInfo.keySet();
 	}
 }
