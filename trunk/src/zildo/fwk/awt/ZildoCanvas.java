@@ -206,8 +206,8 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    int height=h-j;
 	    
 	    SelectionKind selKind=manager.getSelectionKind();
-    	    switch (selKind) {
-    	    case SPRITES:
+	    switch (selKind) {
+	    	case SPRITES:
     		// Get all sprites in the range
     		List<SpriteEntity> entities = findEntity(selKind, null, new Zone(i, j, w, h));
     		MasterFrameManager.switchCopySprites(entities);

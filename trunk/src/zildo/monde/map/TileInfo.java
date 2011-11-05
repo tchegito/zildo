@@ -34,7 +34,7 @@ import zildo.monde.map.Angle;
  */
 public class TileInfo {
 
-	enum Template {
+	public enum Template {
 		WALKABLE, // Entire tile is walkable
 		FULL,	// Entire tile is blocking
 		CORNER, // One quarter of the tile is walkable.
@@ -145,7 +145,7 @@ public class TileInfo {
             case SUDOUEST:
                 return (p_posX > 7 && p_posY > p_posX) || (p_posX < 8 && p_posY > 7);
             case NORDOUEST:
-                return (p_posX > 7 && p_posY >= 16 - p_posX) || (p_posX < 8 && p_posY < 8);
+                return (p_posX > 7 && p_posY < 16 - p_posX) || (p_posX < 8 && p_posY < 8);
             default:
                 throw new RuntimeException("No way to determine the tile collision !");
         }
@@ -169,7 +169,7 @@ public class TileInfo {
     		// Just for pleasure ! We could just returned 1, in order to discard the default hashCode behavior.
     		hash = template.ordinal();	// 3 bits
 			hash+=inverse ? 8 : 0;	// 1 bit
-			hash+=blockAngle == null ? 0 : (blockAngle.value*16);	// 3 bits
+			hash+=blockAngle == null ? 0 : (blockAngle.value<<4);	// 3 bits
     	}
     	
     	return hash;
@@ -180,10 +180,25 @@ public class TileInfo {
     	TileInfo t = tileInfoMap.get(p_value);
     	if (t == null) {
     		// Not in the map yet, so we create it and put it into.
+    		if ((p_value&7) >=5 && (p_value&7) <= 7) {
+    			return null;
+    		}
+    		if ((p_value&7) == 0 && p_value>0) {
+    			return null;
+    		}
+    		if ((p_value&7) == 1 && p_value>1) {
+    			return null;
+    		}
     		t = new TileInfo();
     		t.template = Template.values()[p_value & 7];
     		t.inverse = (p_value & 8) != 0 ? true : false;
     		t.blockAngle = Angle.fromInt(p_value >> 4);
+    		if ((t.template == Template.CORNER || t.template == Template.CORNER_DIAGONAL) && !t.blockAngle.isDiagonal()) {
+    			return null;
+    		}
+    		if (t.template == Template.HALF && t.inverse){
+    			return null;
+    		}
     		tileInfoMap.put(p_value, t);
     	}
     	return t;

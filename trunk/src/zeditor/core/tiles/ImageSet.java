@@ -82,12 +82,11 @@ public abstract class ImageSet extends JPanel {
 
         selectables=new ArrayList<Zone>();
 
-        // On ajoute le mouseListene pour détecter les actions à la souris
         this.addMouseListener(new MouseListener() {
             public void mousePressed(MouseEvent e) {
                 if(currentTile != null){
                     if(MouseEvent.BUTTON1 == e.getButton()){
-                        // On réinitialise les points pour la nouvelle sélection
+                        // Reinitialize points for new selection
                         startPoint = null;
                         stopPoint = null;
    
@@ -103,7 +102,10 @@ public abstract class ImageSet extends JPanel {
                             repaint();
                     	}
                     }else if (MouseEvent.BUTTON3 == e.getButton()){
-                        // Click droit
+                    	// right click
+                    	if (currentSelection != null) {
+                    		handleSelectionRightClick(e);
+                    	}
                     }
                 }
             }
@@ -256,4 +258,6 @@ public abstract class ImageSet extends JPanel {
     protected abstract void buildSelection();
     
     protected abstract void specificPaint(Graphics2D p_g2d);
+    
+    protected void handleSelectionRightClick(MouseEvent e) {};
 }
