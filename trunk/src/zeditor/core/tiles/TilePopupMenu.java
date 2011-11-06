@@ -24,9 +24,11 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+
+import zildo.monde.map.Tile;
 
 /**
  * @author Tchegito
@@ -38,13 +40,14 @@ public class TilePopupMenu extends JPopupMenu {
 	JMenuItem item;
 	Image image;
 	
-	public TilePopupMenu(Image p_image) {
+	public TilePopupMenu(final Tile p_tile, Image p_image) {
 		item = new JMenuItem(new AbstractAction("Edit collision", null) {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame frame = new CollisionFrame(image);
-				frame.setVisible(true);
+				JDialog frame = new CollisionDialog(p_tile, image);
 				frame.setLocationRelativeTo(item.getParent().getParent());
+				frame.setModal(true);
+				frame.setVisible(true);
 			}
 		});
 		image = p_image;
