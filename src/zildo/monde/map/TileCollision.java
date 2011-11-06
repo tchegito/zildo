@@ -61,4 +61,8 @@ public class TileCollision {
     		tileInfos[numBank * 256 + i] = TileInfo.fromInt(p_tileInfos.get(i));
     	}
     }
+	
+	public void updateInfoForOneTile(int p_numBank, int p_numTile, TileInfo p_tileInfo) {
+		tileInfos[p_numBank * 256 + p_numTile] = p_tileInfo;
+	}
 }

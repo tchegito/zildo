@@ -257,7 +257,7 @@ public class TileSet extends ImageSet {
 			for (int i = 0; i < currentTile.getWidth(null); i += 16) {
 				TileInfo tileInfo = bridge.getCollisionParPoint(tileName, i, j);
 				if (tileInfo != null) {
-					collisionDrawer.drawCollisionTile(i, j, tileInfo);
+					collisionDrawer.drawCollisionTile(i, j, tileInfo, false);
 				}
 			}
 		}
@@ -385,10 +385,11 @@ public class TileSet extends ImageSet {
 		if (sel.height !=1 || sel.width != 1) {
 			return;
 		}
+		Tile tile = sel.getElement().get(0).getBackTile();
 		Image singleTile = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
 		singleTile.getGraphics().drawImage(currentTile, 0, 0, 16, 16, 
 				startPoint.x, startPoint.y, stopPoint.x, stopPoint.y, null); 
-		TilePopupMenu menu = new TilePopupMenu(singleTile);
+		TilePopupMenu menu = new TilePopupMenu(tile, singleTile);
 		menu.show(e.getComponent(), e.getX(), e.getY());
 	}
 }

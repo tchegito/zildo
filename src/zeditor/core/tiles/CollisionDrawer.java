@@ -50,14 +50,19 @@ public class CollisionDrawer {
 	 * @param x
 	 * @param y
 	 * @param info
+	 * @param doubleSize TODO
 	 */
-	public void drawCollisionTile(int x, int y, TileInfo info) {
+	public void drawCollisionTile(int x, int y, TileInfo info, boolean doubleSize) {
 		Image img = imagesByTileInfo.get(info);
 		if (img == null) {
 			img = buildImage(info);
 			imagesByTileInfo.put(info, img);
 		}
-		g.drawImage(img, x, y, null);
+		if (!doubleSize) {
+			g.drawImage(img, x, y, null);
+		} else {
+			g.drawImage(img, x, y, 32, 32, null);
+		}
 	}
 
 	/**

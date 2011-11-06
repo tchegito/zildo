@@ -25,23 +25,27 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import zeditor.windows.MasterFrame;
+import zeditor.windows.managers.MasterFrameManager;
+import zildo.monde.map.Tile;
+import zildo.monde.map.TileCollision;
 import zildo.monde.map.TileInfo;
 
 /**
@@ -49,7 +53,7 @@ import zildo.monde.map.TileInfo;
  *
  */
 @SuppressWarnings("serial")
-public class CollisionFrame extends JFrame {
+public class CollisionDialog extends JDialog {
 
 	final static List<TileInfo> allPossibleTileInfo = new ArrayList<TileInfo>();
 	
@@ -69,7 +73,7 @@ public class CollisionFrame extends JFrame {
 		});
 	}
 	
-	public CollisionFrame(Image img) {
+	public CollisionDialog(Tile p_tile, Image p_img) {
 		setLayout(new BorderLayout());
 		setTitle("Collision templates");
 		
@@ -82,13 +86,15 @@ public class CollisionFrame extends JFrame {
 			for (int j=0;j<10 && it.hasNext();j++) {
 				JPanel panel = new JPanel();
 				// Duplicate image
-				Image duplicata = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
+				Image duplicata = new BufferedImage(32,	32, 
+						BufferedImage.TYPE_INT_RGB);
 				Graphics g = duplicata.getGraphics();
-				g.drawImage(img, 0, 0, 16, 16, 
+				g.drawImage(p_img, 0, 0, 32, 32, 
 						0, 0, 16, 16, null); 
 				CollisionDrawer collisionDrawer = new CollisionDrawer(g);
-				collisionDrawer.drawCollisionTile(0, 0, it.next());
-				panel.add(new JLabel(new ImageIcon(duplicata)));
+				TileInfo info = it.next();
+				collisionDrawer.drawCollisionTile(0, 0, info, true);
+				panel.add(new CollisionTemplateButton(new ImageIcon(duplicata), p_tile, info));
 				collPanel.add(panel);
 			}
 		}
@@ -104,6 +110,38 @@ public class CollisionFrame extends JFrame {
 		add(collPanel, BorderLayout.CENTER);
 		add(buttonsPanel, BorderLayout.SOUTH);
 		pack();
+		
+		addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+			}
+		});
 	}
 	
 	/**
@@ -113,11 +151,23 @@ public class CollisionFrame extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				CollisionFrame inst = new CollisionFrame(null);
+				CollisionDialog inst = new CollisionDialog(null, null);
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
 		});
 	}
 	
+	private class CollisionTemplateButton extends JButton {
+		
+		public CollisionTemplateButton(ImageIcon p_img, final Tile p_tile, final TileInfo p_info) {
+			setAction(new AbstractAction("", p_img) {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					TileCollision.getInstance().updateInfoForOneTile(p_tile.bank, p_tile.index, p_info);
+					dispose();
+				}
+			});
+		}
+	}
 }
