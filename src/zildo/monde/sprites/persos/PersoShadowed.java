@@ -32,6 +32,8 @@ public class PersoShadowed extends PersoNJ {
 	int addY;
 
 	public PersoShadowed() {
+		super();
+		// TODO: we just have to set here visibility of shadow to 'false' when night has come
 		shadow = new Element();
 		shadow.setSprModel(ElementDescription.SHADOW);
 		addPersoSprites(shadow);
