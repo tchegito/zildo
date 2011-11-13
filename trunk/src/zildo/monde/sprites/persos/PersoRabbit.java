@@ -1,6 +1,7 @@
 package zildo.monde.sprites.persos;
 
 import zildo.monde.Hasard;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 
 /**
@@ -16,13 +17,13 @@ public class PersoRabbit extends PersoShadowed {
 	int idleTime = 0;
 
 	public PersoRabbit() {
-		super();
+		super(ElementDescription.SHADOW, 2);
 		setDesc(PersoDescription.RABBIT);
 	}
 
 	@Override
 	public void animate(int compteur_animation) {
-		if (isAlerte()) {
+		if (isAlerte() || true) {
 			// Rabbit has a target : we make him jump to hit
 			if (idleTime == 0 && !jumping) {
 				jumping = true;
@@ -37,6 +38,7 @@ public class PersoRabbit extends PersoShadowed {
 			z = 0;
 			vz = 0;
 			az = 0;
+			jumping = false;
 		}
 		vz = vz + az;
 	}

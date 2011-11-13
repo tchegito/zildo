@@ -98,7 +98,16 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(206, 174, 16, 25), new Zone(222, 174, 16, 25),
 			          // Hector
 			          new Zone(205, 125, 16, 23), new Zone(221, 125, 16, 24),
-			          new Zone(237, 125, 14, 24), new Zone(251, 125, 14, 24)
+			          new Zone(237, 125, 14, 24), new Zone(251, 125, 14, 24),
+			          // SOM rabbit (regular size)
+			          /*
+			          new Zone(0, 198, 22, 16), new Zone(22, 198, 23, 16),
+			          new Zone(45, 198, 27, 15), new Zone(72, 198, 19, 23),
+			          new Zone(91, 198, 21, 19)
+			          */
+			          new Zone(0, 221, 19, 12), new Zone(19, 221, 19, 12),
+			          new Zone(38, 221, 22, 12), new Zone(61, 221, 15, 17),
+			          new Zone(76, 221, 17, 15)
 			          
 		};
 		
