@@ -28,6 +28,7 @@ import javax.swing.JDialog;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import zeditor.windows.managers.MasterFrameManager;
 import zildo.monde.map.Tile;
 
 /**
@@ -40,11 +41,11 @@ public class TilePopupMenu extends JPopupMenu {
 	JMenuItem item;
 	Image image;
 	
-	public TilePopupMenu(final Tile p_tile, Image p_image) {
+	public TilePopupMenu(final MasterFrameManager p_manager, final Tile p_tile, Image p_image) {
 		item = new JMenuItem(new AbstractAction("Edit collision", null) {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JDialog frame = new CollisionDialog(p_tile, image);
+				JDialog frame = new CollisionDialog(p_manager, p_tile, image);
 				frame.setLocationRelativeTo(item.getParent().getParent());
 				frame.setModal(true);
 				frame.setVisible(true);

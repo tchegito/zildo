@@ -58,10 +58,12 @@ public class MotifBankEdit extends MotifBank {
 		bankEdit=new BankEdit();
 		bank=p_bank;
 		
-		String name=p_bank.getClass().getSimpleName().toUpperCase();
-		setName(name);
+		if (p_bank != null) {
+			String name=p_bank.getClass().getSimpleName().toUpperCase();
+			setName(name);
+			bankOrder = TileEngine.getBankFromName(getName());
+		}
 		
-		bankOrder = TileEngine.getBankFromName(name);
 	}
 	
 	/**
@@ -71,8 +73,14 @@ public class MotifBankEdit extends MotifBank {
 	public MotifBankEdit(MotifBank p_motifBank, Banque p_bank) {
 		this(p_bank);
 		
-		motifs_map=p_motifBank.getMotifs_map();
-		nb_motifs=p_motifBank.getNb_motifs();
+		motifs_map = p_motifBank.getMotifs_map();
+		setName(p_motifBank.getName());
+		
+		bankOrder = TileEngine.getBankFromName(getName());
+
+		for (int i=0;i<p_motifBank.getNb_motifs();i++) {
+			addSpr(i, p_motifBank.get_motif(i));
+		}
 	}
 	
     public void addSpr(int p_position, short[] p_gfx) {
@@ -97,7 +105,7 @@ public class MotifBankEdit extends MotifBank {
 	}
     
     public void saveBank() {
-        EasyBuffering buffer=new EasyBuffering(bankEdit.gfxs.size() * (1 + 16 *16));
+        EasyBuffering buffer=new EasyBuffering(bankEdit.gfxs.size() * MotifBank.motifSize);
         for (int i=0;i<nb_motifs;i++) {
         	// Put the image
             for (short s : bankEdit.gfxs.get(i)) {
@@ -131,7 +139,7 @@ public class MotifBankEdit extends MotifBank {
     	
     	return img;
     }
-    
+
     private void drawImage(Image img, int x, int y, short[] data) {
 
     	int[] intData=new int[data.length];

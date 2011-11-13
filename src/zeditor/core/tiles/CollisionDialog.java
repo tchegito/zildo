@@ -40,9 +40,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
-import zeditor.windows.MasterFrame;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
@@ -56,6 +54,8 @@ import zildo.monde.map.TileInfo;
 public class CollisionDialog extends JDialog {
 
 	final static List<TileInfo> allPossibleTileInfo = new ArrayList<TileInfo>();
+	
+	final MasterFrameManager manager;
 	
 	static {
 		for (int i=0;i<128;i++) {
@@ -73,10 +73,11 @@ public class CollisionDialog extends JDialog {
 		});
 	}
 	
-	public CollisionDialog(Tile p_tile, Image p_img) {
+	public CollisionDialog(MasterFrameManager p_manager, Tile p_tile, Image p_img) {
 		setLayout(new BorderLayout());
 		setTitle("Collision templates");
 		
+		manager = p_manager;
 		
 		JPanel collPanel = new JPanel();
 		// All possible collision templates
@@ -99,7 +100,7 @@ public class CollisionDialog extends JDialog {
 			}
 		}
 		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.add(new JButton(new AbstractAction("OK", null) {
+		buttonsPanel.add(new JButton(new AbstractAction("Cancel", null) {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -135,25 +136,11 @@ public class CollisionDialog extends JDialog {
 			
 			@Override
 			public void windowClosed(WindowEvent e) {
-				
+				 manager.updateTileSet();
 			}
 			
 			@Override
 			public void windowActivated(WindowEvent e) {
-			}
-		});
-	}
-	
-	/**
-	 * Auto-generated main method to display this JFrame
-	 */
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				CollisionDialog inst = new CollisionDialog(null, null);
-				inst.setLocationRelativeTo(null);
-				inst.setVisible(true);
 			}
 		});
 	}

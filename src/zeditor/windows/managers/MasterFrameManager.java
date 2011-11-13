@@ -529,4 +529,8 @@ public class MasterFrameManager {
 			}
 		}
 	}
+	
+	public void updateTileSet() {
+		masterFrame.getBackgroundPanel().repaint();
+	}
 }

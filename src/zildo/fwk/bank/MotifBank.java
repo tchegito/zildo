@@ -33,7 +33,7 @@ public class MotifBank {
 	private String name;				// Max length should be 12
 	protected int nb_motifs;		// Nombre de motifs dans la banque
 
-	final static int motifSize = 16*16 + 1; // 1 byte for collision and 256 for graphic
+	public final static int motifSize = 16*16 + 1; // 1 byte for collision and 256 for graphic
 
 	
 	public String getName() {
@@ -74,9 +74,9 @@ public class MotifBank {
 	}
 	
 	public short[] get_motif(int quelmotif) {
-		short[] coupe=new short[motifSize];
+		short[] coupe=new short[motifSize-1];
 		int a=quelmotif * motifSize;
-		System.arraycopy(motifs_map, a, coupe, 0, motifSize);
+		System.arraycopy(motifs_map, a, coupe, 0, motifSize - 1);	// Doesn't copy collision info
 		return coupe;
 	}
 
