@@ -17,6 +17,7 @@ import zeditor.core.exceptions.ZeditorException;
 import zeditor.core.selection.CaseSelection;
 import zeditor.tools.CorrespondanceGifDec;
 import zeditor.tools.Transparency;
+import zeditor.tools.tiles.MotifBankEdit;
 import zeditor.windows.OptionHelper;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.ClientEngineZildo;
@@ -389,7 +390,17 @@ public class TileSet extends ImageSet {
 		Image singleTile = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
 		singleTile.getGraphics().drawImage(currentTile, 0, 0, 16, 16, 
 				startPoint.x, startPoint.y, stopPoint.x, stopPoint.y, null); 
-		TilePopupMenu menu = new TilePopupMenu(tile, singleTile);
+		TilePopupMenu menu = new TilePopupMenu(manager, tile, singleTile);
 		menu.show(e.getComponent(), e.getX(), e.getY());
+	}
+	
+	public void saveCurrentTileCollision() {
+		if (tileName != null && tileName.indexOf("*") != -1) {
+			MasterFrameManager.display("Can't save collision for tile "+tileName+" !", MasterFrameManager.MESSAGE_ERROR);
+		} else {
+			int nBank = TileEngine.getBankFromName(tileName);
+			MotifBank bank = ClientEngineZildo.tileEngine.getMotifBank(nBank);
+			new MotifBankEdit(bank, null).saveBank();
+		}
 	}
 }

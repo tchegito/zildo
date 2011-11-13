@@ -53,7 +53,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JMenuBar menuBar;
 	private MasterFrameManager manager;
 	private JMenu charactersMenuItem;
-	private JMenu spriteMenuItem;
+	private JMenuItem saveCollisionItem;
 	private JMenu debugMenu;
 	private JMenuItem reloadConfigItem;
 	private JMenuItem optionsItem;
@@ -156,7 +156,7 @@ public class MasterFrame extends javax.swing.JFrame {
 				setJMenuBar(menuBar);
 				menuBar.add(getFileMenu());
 				menuBar.add(getParametersMenu());
-				menuBar.add(getDebugMenu());
+				menuBar.add(getMiscMenu());
 			}
 
 			// On ajoute la carte
@@ -834,26 +834,31 @@ public class MasterFrame extends javax.swing.JFrame {
 		return reloadConfigItem;
 	}
 
-	private JMenu getDebugMenu() {
+	private JMenu getMiscMenu() {
 		if (debugMenu == null) {
 			debugMenu = new JMenu();
-			debugMenu.setText("Debug");
+			debugMenu.setText("Misc");
 			debugMenu.setIcon(new ImageIcon(getClass().getClassLoader()
 					.getResource("zeditor/images/bug.png")));
-			debugMenu.add(getSpriteMenuItem());
+			debugMenu.add(getSaveCollisionItem());
 			debugMenu.add(getCharactersMenuItem());
 		}
 		return debugMenu;
 	}
 
-	private JMenu getSpriteMenuItem() {
-		if (spriteMenuItem == null) {
-			spriteMenuItem = new JMenu();
-			spriteMenuItem.setText("Sprites");
-			spriteMenuItem.setIcon(new ImageIcon(getClass().getClassLoader()
+	private JMenuItem getSaveCollisionItem() {
+		if (saveCollisionItem == null) {
+			saveCollisionItem = new JMenuItem();
+			saveCollisionItem.setAction(new AbstractAction("Save collision", null) {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					getBackgroundPanel().getTileSetPanel().saveCurrentTileCollision();
+				}
+			});
+			saveCollisionItem.setIcon(new ImageIcon(getClass().getClassLoader()
 					.getResource("zeditor/images/package.png")));
 		}
-		return spriteMenuItem;
+		return saveCollisionItem;
 	}
 
 	private JMenu getCharactersMenuItem() {
