@@ -28,15 +28,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.LogManager;
 
+import com.sun.xml.internal.ws.util.StringUtils;
+
 import zeditor.tools.banque.Foret1;
 import zeditor.tools.banque.Foret2;
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.banque.Maison;
 import zeditor.tools.banque.Palais1;
 import zeditor.tools.banque.Village;
+import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.MotifBankEdit;
 import zildo.client.gui.GUIDisplay;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.Game;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
@@ -74,12 +78,13 @@ public class Modifier {
        
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
-        new Modifier().saveElements3();
+        //new Modifier().saveElements3();
         //new Modifier().saveFontes2();
+        //new Modifier().saveAllMotifBank();
         //new Modifier().saveBanque();
         //new Modifier().saveGears();
         //new Modifier().savePnj();
-        //new Modifier().savePnj2();
+        new Modifier().savePnj2();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
        // new Modifier().ripDialogFromAllMaps();
@@ -93,6 +98,23 @@ public class Modifier {
      
      public void saveBanque() {
     	 new Foret1().save();
+     }
+     
+     public void saveAllMotifBank() {
+    	 for (String name : TileEngine.tileBankNames) {
+    		 try {
+    			 
+				Class<?> clazz = Class.forName("zeditor.tools.banque."+StringUtils.capitalize(name));
+				 if (Banque.class.isAssignableFrom(clazz)) {
+					 Banque b = (Banque) clazz.newInstance();
+					 b.save();
+				 } else {
+					 throw new RuntimeException("Class "+name+" should be a motif bank !");
+				 }
+			} catch (Exception e) {
+				throw new RuntimeException("Can't instantiate class "+name);
+			}
+    	 }
      }
      
      public void saveElements2() {
