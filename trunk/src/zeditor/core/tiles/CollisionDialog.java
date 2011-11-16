@@ -28,11 +28,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -48,54 +43,46 @@ import zildo.monde.map.TileInfo;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class CollisionDialog extends JDialog {
 
-	final static List<TileInfo> allPossibleTileInfo = new ArrayList<TileInfo>();
-	
 	final MasterFrameManager manager;
-	
-	static {
-		for (int i=0;i<128;i++) {
-			TileInfo t = TileInfo.fromInt(i);
-			if (t != null) {
-				allPossibleTileInfo.add(t);
-			}
-		}
-		// Sort collision templates
-		Collections.sort(allPossibleTileInfo, new Comparator<TileInfo>() {
-			@Override
-			public int compare(TileInfo o1, TileInfo o2) {
-				return o1.template.compareTo(o2.template);
-			}
-		});
-	}
-	
+
+	// Py every collision template at a user-friendly' location
+	final int[][] disposition = { { 90, 115, 117, 4, 69, 67, 106 },
+			{ 98, 116, 91, -1, 107, 68, 82 },
+			{ 52, 125, 109, 1, 77, 93, 20 },
+			{ 114, 100, 75, 0, 123, 84, 66 },
+			{ 74, 99, 101, 36, 85, 83, 122 } };
+
 	public CollisionDialog(MasterFrameManager p_manager, Tile p_tile, Image p_img) {
 		setLayout(new BorderLayout());
 		setTitle("Collision templates");
-		
+
 		manager = p_manager;
-		
+
 		JPanel collPanel = new JPanel();
 		// All possible collision templates
 		collPanel.setLayout(new GridLayout(5, 10));
-		Iterator<TileInfo> it = allPossibleTileInfo.iterator();
-		for (int i=0;i<5 && it.hasNext();i++) {
-			for (int j=0;j<10 && it.hasNext();j++) {
+
+		for (int[] element : disposition) {
+			for (int j = 0; j < 7; j++) {
+				int hashTile = element[j];
 				JPanel panel = new JPanel();
-				// Duplicate image
-				Image duplicata = new BufferedImage(32,	32, 
-						BufferedImage.TYPE_INT_RGB);
-				Graphics g = duplicata.getGraphics();
-				g.drawImage(p_img, 0, 0, 32, 32, 
-						0, 0, 16, 16, null); 
-				CollisionDrawer collisionDrawer = new CollisionDrawer(g);
-				TileInfo info = it.next();
-				collisionDrawer.drawCollisionTile(0, 0, info, true);
-				panel.add(new CollisionTemplateButton(new ImageIcon(duplicata), p_tile, info));
+				if (hashTile != -1) {
+					// Duplicate image
+					Image duplicata = new BufferedImage(32, 32,
+							BufferedImage.TYPE_INT_RGB);
+					Graphics g = duplicata.getGraphics();
+					g.drawImage(p_img, 0, 0, 32, 32,
+							0, 0, 16, 16, null);
+					CollisionDrawer collisionDrawer = new CollisionDrawer(g);
+					TileInfo info = TileInfo.fromInt(hashTile);
+					collisionDrawer.drawCollisionTile(0, 0, info, true);
+					panel.add(new CollisionTemplateButton(new ImageIcon(duplicata), p_tile, info));
+				}
 				collPanel.add(panel);
 			}
 		}
@@ -106,47 +93,47 @@ public class CollisionDialog extends JDialog {
 				dispose();
 			}
 		}));
-		
+
 		add(new JLabel("Select a template for this tile :"), BorderLayout.NORTH);
 		add(collPanel, BorderLayout.CENTER);
 		add(buttonsPanel, BorderLayout.SOUTH);
 		pack();
-		
+
 		addWindowListener(new WindowListener() {
-			
+
 			@Override
 			public void windowOpened(WindowEvent e) {
 			}
-			
+
 			@Override
 			public void windowIconified(WindowEvent e) {
 			}
-			
+
 			@Override
 			public void windowDeiconified(WindowEvent e) {
 			}
-			
+
 			@Override
 			public void windowDeactivated(WindowEvent e) {
 			}
-			
+
 			@Override
 			public void windowClosing(WindowEvent e) {
 			}
-			
+
 			@Override
 			public void windowClosed(WindowEvent e) {
-				 manager.updateTileSet();
+				manager.updateTileSet();
 			}
-			
+
 			@Override
 			public void windowActivated(WindowEvent e) {
 			}
 		});
 	}
-	
+
 	private class CollisionTemplateButton extends JButton {
-		
+
 		public CollisionTemplateButton(ImageIcon p_img, final Tile p_tile, final TileInfo p_info) {
 			setAction(new AbstractAction("", p_img) {
 				@Override
@@ -157,4 +144,5 @@ public class CollisionDialog extends JDialog {
 			});
 		}
 	}
+
 }
