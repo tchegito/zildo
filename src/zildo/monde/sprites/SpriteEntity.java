@@ -436,8 +436,9 @@ public class SpriteEntity extends Identified implements Cloneable,
 	}
 
 	public Zone getZone() {
-		Zone zone = new Zone(scrX, scrY, sprModel.getTaille_x(),
-				sprModel.getTaille_y());
+		Zone zone = new Zone(scrX, scrY, sprModel.getTaille_x()*repeatX,
+				sprModel.getTaille_y()*repeatY);
+
 		return zone;
 	}
 }
