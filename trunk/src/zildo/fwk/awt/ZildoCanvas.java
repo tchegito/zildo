@@ -209,7 +209,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    switch (selKind) {
 	    	case SPRITES:
     		// Get all sprites in the range
-    		List<SpriteEntity> entities = findEntity(selKind, null, new Zone(i, j, w, h));
+    		List<SpriteEntity> entities = findEntity(selKind, null, new Zone(i, j, w-i, h-j));
     		MasterFrameManager.switchCopySprites(entities);
     		break;
     	    default:
@@ -362,11 +362,11 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	private List<SpriteEntity> findEntity(SelectionKind p_kind, Point p_point, Zone p_zone) {
     	List<SpriteEntity> sprites=EngineZildo.spriteManagement.getSpriteEntities(null);
     	Point camera=panel.getPosition();
-    	Rectangle r = null;
+    	Rectangle filterRect = null;
     	if (p_zone != null) {
-    	    r = new Rectangle(p_zone);
-    	    r.multiply(16);
-    	    r.translate(-camera.x, -camera.y);
+    	    filterRect = new Rectangle(p_zone);
+    	    filterRect.multiply(16);
+    	    filterRect.translate(-camera.x, -camera.y);
     	} else {
         	p_point.x-=camera.x;
             	p_point.y-=camera.y;
@@ -378,7 +378,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
     			(typ != EntityType.PERSO && p_kind == SelectionKind.SPRITES)) {
 	    		Zone z=entity.getZone();
 	    		if (p_zone != null) {
-	    		    if (r.isCrossing(new Rectangle(z))) {
+	    		    if (filterRect.isCrossing(new Rectangle(z))) {
 	    			results.add(entity);
 	    		    }
 	    		} else {
