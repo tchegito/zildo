@@ -313,6 +313,9 @@ public class MasterFrame extends javax.swing.JFrame {
 				@Override
 				public void actionPerformed(ActionEvent evt) {
 					zildoPanel.getZildoCanvas().switchCopyMode();
+					if (manager.getSelection() != null) {
+						manager.getSelection().unfocus();
+					}
 				}
 			};
 		}

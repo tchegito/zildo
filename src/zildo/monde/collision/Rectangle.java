@@ -55,9 +55,9 @@ public class Rectangle {
     public Rectangle(Zone p_zone) {
 	coordinates = new Point[4];
 	coordinates[0] = new Point(p_zone.x1, p_zone.y1);
-	coordinates[1] = new Point(p_zone.x2, p_zone.y1);
-	coordinates[2] = new Point(p_zone.x1, p_zone.y2);
-	coordinates[3] = new Point(p_zone.x2, p_zone.y2);
+	coordinates[1] = new Point(p_zone.x2+p_zone.x1, p_zone.y1);
+	coordinates[2] = new Point(p_zone.x1, p_zone.y2+p_zone.y1);
+	coordinates[3] = new Point(p_zone.x2+p_zone.x1, p_zone.y2+p_zone.y1);
 	center = new Point((p_zone.x1 + p_zone.x2 / 2), (p_zone.y1 + p_zone.y2) / 2);
 	size = new Point(p_zone.x2 - p_zone.x1, p_zone.y2 - p_zone.y1);
     }
@@ -110,12 +110,8 @@ public class Rectangle {
      * @return boolean
      */
     public boolean isCrossing(Rectangle p_other) {
-        for (int i = 0; i < 4; i++) {
-            if (isInside(p_other.coordinates[i])) {
-                return true;
-            }
-        }
-        return false;
+        return p_other.coordinates[0].x <= coordinates[3].x && coordinates[0].x <= p_other.coordinates[3].x &&
+        	   p_other.coordinates[0].y <= coordinates[3].y && coordinates[0].y <= p_other.coordinates[3].y;
     }
 
     /**
@@ -166,5 +162,10 @@ public class Rectangle {
     
     public Point getCornerTopLeft() {
     	return coordinates[0];
+    }
+    
+    @Override
+    public String toString() {
+    	return coordinates[0].toString()+" - "+coordinates[3].toString();
     }
 }
