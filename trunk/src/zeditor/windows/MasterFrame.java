@@ -88,7 +88,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JToggleButton foreTileTool;
 	private JToggleButton backSpriteTool;
 	private JToggleButton foreSpriteTool;
-	private JToggleButton tileMaskTool;
+	private JButton tileMaskTool;
 	private JToggleButton spriteGridTool;
 	private JToolBar toolBar;
 	private JPanel toolBarContainer;
@@ -379,7 +379,18 @@ public class MasterFrame extends javax.swing.JFrame {
 			actionTileMask = new AbstractAction("", null) {
 				@Override
 				public void actionPerformed(ActionEvent evt) {
-					zildoPanel.getCanvas().toggleMask();
+					zildoPanel.getCanvas().switchTileLayer();
+					String imgName="mask";
+					switch (zildoPanel.getCanvas().getTileLayer()) {
+					case 1:
+						imgName="mask2";
+						break;
+					case 2:
+						imgName="mask3";
+						break;
+					}
+					getToggleTileMaskTool().setIcon(new ImageIcon(getClass().getClassLoader()
+							.getResource("zeditor/images/"+imgName+".png")));
 				}
 			};
 		}
@@ -572,9 +583,9 @@ public class MasterFrame extends javax.swing.JFrame {
 		return foreSpriteTool;
 	}
 
-	public JToggleButton getToggleTileMaskTool() {
+	public JButton getToggleTileMaskTool() {
 		if (tileMaskTool == null) {
-			tileMaskTool = new JToggleButton();
+			tileMaskTool = new JButton();
 			tileMaskTool.setToolTipText("Edition du masque");
 			tileMaskTool.setAction(getActionTileMask());
 			tileMaskTool.setIcon(new ImageIcon(getClass().getClassLoader()

@@ -179,7 +179,11 @@ public class Area implements EasySerializable {
 		if (p_foreground && masked) {
 			return temp.getForeTile();
 		} else {
-			return temp.getBackTile();
+			if (temp.getBackTile2() != null) {
+				return temp.getBackTile2();
+			} else {
+				return temp.getBackTile();
+			}
 		}
 	}
 

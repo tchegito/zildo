@@ -24,9 +24,19 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 
 
+/**
+ * Represents a 16x16 region on a map. 
+ * 
+ * On each case, we can have 2 background tiles overlayed, and 1 foreground. 
+ * Only 1 background tile is mandatory, other ones are optional.
+ * 
+ * @author Tchegito
+ *
+ */
 public class Case implements EasySerializable {
 
 	private Tile back;
+	private Tile back2;
 	private Tile fore;
 	
 	private Angle transition; // Back to fore ground	(n_banque | 64)
@@ -141,8 +151,13 @@ public class Case implements EasySerializable {
 	public void serialize(EasyBuffering p_buffer) {
 		int isMasque = fore != null ? 128 : 0;
 		int isTransition = transition != null ? 64 : 0;
+		int isBack2 = back2 != null ? 32 : 0;
 		p_buffer.put((byte) back.index);
-		p_buffer.put((byte) (back.bank | isMasque | isTransition));
+		p_buffer.put((byte) (back.bank | isMasque | isTransition | isBack2));
+		if (back2 != null) {
+			p_buffer.put((byte) back2.index);
+			p_buffer.put((byte) back2.bank);
+		}
 		if (fore != null) {
 			p_buffer.put((byte) fore.index);
 			p_buffer.put((byte) fore.bank);
@@ -171,7 +186,12 @@ public class Case implements EasySerializable {
 		if ((bank1 & 64) != 0) {
 			mapCase.setTransition(Angle.fromInt(p_buffer.readUnsignedByte()));
 		}
-		bank1&=63;
+		if ((bank1 & 32) != 0) {
+			int indexB2 = p_buffer.readUnsignedByte();
+			int bankB2 = p_buffer.readUnsignedByte();
+			mapCase.setBackTile2(new Tile(bankB2, indexB2, mapCase));
+		}
+		bank1&=31;
 		mapCase.setBackTile(new Tile(bank1, index1, mapCase));
 		return mapCase;
 	}
@@ -205,8 +225,18 @@ public class Case implements EasySerializable {
 		return transition;
 	}
 
+
 	public void setTransition(Angle transition) {
 		this.transition = transition;
 	}
+	
+	public Tile getBackTile2() {
+		return back2;
+	}
+
+	public void setBackTile2(Tile back2) {
+		this.back2 = back2;
+	}
+
 	
 }

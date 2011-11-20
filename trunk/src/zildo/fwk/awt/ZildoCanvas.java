@@ -67,7 +67,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	boolean mask=false;
+	int mask=0;
 	boolean gridSprites=false;
 	
 	public ZildoCanvas(ZildoScrollablePanel p_panel, String p_mapname)
@@ -432,8 +432,12 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		changeSprites=true;
 	}
 
-	public void toggleMask() {
-		this.mask = !mask;
+	public void switchTileLayer() {
+		this.mask = (mask+1) % 3;
+	}
+	
+	public int getTileLayer() {
+		return mask;
 	}
 	
 	public void toggleGrid() {
