@@ -900,6 +900,9 @@ public class Area implements EasySerializable {
 		return dialogs;
 	}
 
+	/**
+	 * Respawns disappeared things in multiplayer mode.
+	 */
 	public void update() {
 		if (EngineZildo.game.multiPlayer) {
 			// Only respawn bushes and chests in multiplayer
