@@ -137,7 +137,7 @@ public class TileSelection extends CaseSelection {
 	 * @param p_mask
 	 *            TRUE=user is in 'masked edit' mode
 	 */
-	public void draw(Area map, Point p, boolean p_mask) {
+	public void draw(Area map, Point p, int p_mask) {
 		int dx, dy;
 		for (int h = 0; h < height; h++) {
 			for (int w = 0; w < width; w++) {

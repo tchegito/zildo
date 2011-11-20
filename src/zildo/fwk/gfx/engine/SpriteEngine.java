@@ -380,7 +380,7 @@ public class SpriteEngine extends TextureEngine {
 	// IN: true=render BACKground
 	//	   false=render FOREground
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void spriteRender(boolean backGround) {
+	public void render(boolean backGround) {
 	
 		// Display every sprites
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

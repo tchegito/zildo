@@ -279,7 +279,7 @@ public class TileEngine extends TextureEngine {
 		texCloudId = textureTab[n_Texture - 1];
 	}
 
-	public void tileRender(boolean backGround) {
+	public void render(boolean backGround) {
 
 		if (initialized) {
 			Vector3f ambient = ClientEngineZildo.ortho.getAmbientColor();
@@ -292,15 +292,15 @@ public class TileEngine extends TextureEngine {
 			// pD3DDevice9.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 			if (backGround) {
 				// Display BACKGROUND
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				GL11.glEnable(GL11.GL_BLEND);
 				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
 					if (meshBACK[i].getNPoints() > 0) {
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]); // Select
-																				// Our
-																				// Second
-																				// Texture
+						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]); 
 						meshBACK[i].render();
 					}
 				}
+				GL11.glDisable(GL11.GL_BLEND);
 			}
 			else {
 				// Display FOREGROUND
@@ -309,10 +309,7 @@ public class TileEngine extends TextureEngine {
 
 				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
 					if (meshFORE[i].getNPoints() > 0) {
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]); // Select
-																				// Our
-																				// Second
-																				// Texture
+						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]); 
 						meshFORE[i].render();
 					}
 				}
@@ -351,25 +348,26 @@ public class TileEngine extends TextureEngine {
 						if (mapCase != null) {
 							Tile back = mapCase.getBackTile();
 							int n_motif = mapCase.getAnimatedMotif(compteur_animation);
-							int xTex = (n_motif % 16) * 16;
-							int yTex = (n_motif / 16) * 16;
 							int bank = back.bank;
 							if (bank < 0 || bank >= Constantes.NB_MOTIFBANK) {
 								throw new RuntimeException("We got a big problem");
 							}
-							meshBACK[bank].updateTile((16 * x) - cameraNew.x + offset.x,
-									(16 * y) - cameraNew.y + offset.y,
-									xTex,
-									yTex);
+							updateTilePrimitive(meshBACK[bank],
+									x, y, cameraNew, offset, n_motif);
+							
+							Tile back2 = mapCase.getBackTile2();
+							if (back2 != null) {
+								n_motif = back2.index;
+								updateTilePrimitive(meshBACK[back2.bank],
+										x, y, cameraNew, offset, n_motif);
+							}
+							
 							Tile fore = mapCase.getForeTile();
 							if (fore != null) {
 								n_motif = fore.index;
-								xTex = (n_motif % 16) * 16;
-								yTex = (n_motif / 16) * 16; // +1;
-								meshFORE[fore.bank].updateTile((16 * x) - cameraNew.x + offset.x,
-										(16 * y) - cameraNew.y + offset.y,
-										xTex,
-										yTex);
+								updateTilePrimitive(meshFORE[fore.bank],
+													x, y, cameraNew, offset, fore.index);
+
 							}
 						}
 					}
@@ -384,6 +382,15 @@ public class TileEngine extends TextureEngine {
 		cameraX = cameraNew.x;
 		cameraY = cameraNew.y;
 
+	}
+	
+	private void updateTilePrimitive(TilePrimitive tp, int x, int y, Point cameraNew, Point offset, int n_motif) {
+		int xTex = (n_motif % 16) * 16;
+		int yTex = (n_motif / 16) * 16; // +1;
+		tp.updateTile((16 * x) - cameraNew.x + offset.x,
+				(16 * y) - cameraNew.y + offset.y,
+				xTex,
+				yTex);
 	}
 
 	/**
