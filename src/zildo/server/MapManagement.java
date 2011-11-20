@@ -268,6 +268,30 @@ public class MapManagement {
 
 		}
 
+		// Check collision on tile level
+		boolean collideTile = collideTile(tx, ty, ghost, size, quelElement);
+
+		if (collideTile) {
+			return true;
+		}
+		
+		// Collision with friendly NPC
+		if (EngineZildo.persoManagement.collidePerso(tx, ty, quelElement) != null)
+			return true;
+
+		// Collision with sprites
+		if (EngineZildo.spriteManagement.collideSprite(tx, ty, quelElement))
+			return true;
+
+		// Returns computed result
+		return false;
+	}
+
+	private boolean collideTile(int tx, int ty, boolean ghost, Point size, Element quelElement) {
+		int mx, my; // Position map
+		int on_map;
+		int modx, mody;
+		
 		final int[] tab_add = { -1, -1, 1, 1, -1 };
 
 		// Check on back or fore ground, depending on the character we're checking
@@ -294,15 +318,6 @@ public class MapManagement {
 				return true;
 			}
 		}
-
-		// Collision avec les pnj alliés
-		if (EngineZildo.persoManagement.collidePerso(tx, ty, quelElement) != null)
-			return true;
-
-		if (EngineZildo.spriteManagement.collideSprite(tx, ty, quelElement))
-			return true;
-
-		// Returns computed result
 		return false;
 	}
 
@@ -659,7 +674,7 @@ public class MapManagement {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
 			//points.add(new Point(16*26, 45*16));
-			points.add(new Point(831+50, 360));
+			points.add(new Point(231+50, 160));
 		} else {
 			points = currentMap.getRespawnPoints();
 		}
