@@ -38,7 +38,9 @@ import zeditor.tools.banque.Palais1;
 import zeditor.tools.banque.Village;
 import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.MotifBankEdit;
+import zildo.client.ClientEngineZildo;
 import zildo.client.gui.GUIDisplay;
+import zildo.fwk.bank.MotifBank;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.Game;
@@ -81,10 +83,10 @@ public class Modifier {
         //new Modifier().saveElements3();
         //new Modifier().saveFontes2();
         //new Modifier().saveAllMotifBank();
-        //new Modifier().saveBanque();
+        new Modifier().saveBanque();
         //new Modifier().saveGears();
         //new Modifier().savePnj();
-        new Modifier().savePnj2();
+        //new Modifier().savePnj2();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
        // new Modifier().ripDialogFromAllMaps();
@@ -97,7 +99,8 @@ public class Modifier {
      }
      
      public void saveBanque() {
-    	 new Foret1().save();
+    	 new MotifBank().charge_motifs("palais1");
+    	 new Palais1().save();
      }
      
      public void saveAllMotifBank() {
