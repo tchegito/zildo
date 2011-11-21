@@ -30,7 +30,7 @@ import javax.swing.JPanel;
 import zeditor.core.tiles.SpriteSet;
 
 /**
- * Sublcasses JPanel to obtain a sized grid one, where cells can have a different size between each other.
+ * Subclasses JPanel to obtain a sized grid one, where cells can have a different size between each other.
  * <p/>
  * Default is : 1/3 for left cell, and 2/3 for right.
  * @author Tchegito
