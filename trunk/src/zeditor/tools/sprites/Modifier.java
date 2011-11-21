@@ -103,21 +103,31 @@ public class Modifier {
     	 new Palais1().save();
      }
      
+     public void saveNamedTileBank(String bankName) {
+    	 new MotifBank().charge_motifs(bankName);
+    	 getTileBankClass(bankName).save();
+     }
+     
      public void saveAllMotifBank() {
     	 for (String name : TileEngine.tileBankNames) {
-    		 try {
-    			 
-				Class<?> clazz = Class.forName("zeditor.tools.banque."+StringUtils.capitalize(name));
-				 if (Banque.class.isAssignableFrom(clazz)) {
-					 Banque b = (Banque) clazz.newInstance();
-					 b.save();
-				 } else {
-					 throw new RuntimeException("Class "+name+" should be a motif bank !");
-				 }
-			} catch (Exception e) {
-				throw new RuntimeException("Can't instantiate class "+name);
-			}
+    		 Banque b = getTileBankClass(name);
+			 b.save();
     	 }
+     }
+     
+     private Banque getTileBankClass(String bankName) {
+		 try {
+			 
+			Class<?> clazz = Class.forName("zeditor.tools.banque."+StringUtils.capitalize(bankName));
+			 if (Banque.class.isAssignableFrom(clazz)) {
+				 Banque b = (Banque) clazz.newInstance();
+				 return b;
+			 } else {
+				 throw new RuntimeException("Class "+bankName+" should be a motif bank !");
+			 }
+		} catch (Exception e) {
+			throw new RuntimeException("Can't instantiate class "+bankName);
+		}
      }
      
      public void saveElements2() {

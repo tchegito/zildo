@@ -80,7 +80,7 @@ public class PrefetchSelection extends TileSelection {
 	}
 	
 	@Override
-	public void draw(Area p_map, Point p_start, boolean p_mask) {
+	public void draw(Area p_map, Point p_start, int p_mask) {
 		switch (kind) {
 		case TraceDrop:
 			traceDrop.method.draw(p_map, p_start);

@@ -8,6 +8,7 @@ import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -52,7 +53,7 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	private JMenuBar menuBar;
 	private MasterFrameManager manager;
-	private JMenu charactersMenuItem;
+	private JMenuItem builderMenuItem;
 	private JMenuItem saveCollisionItem;
 	private JMenu debugMenu;
 	private JMenuItem reloadConfigItem;
@@ -855,7 +856,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			debugMenu.setIcon(new ImageIcon(getClass().getClassLoader()
 					.getResource("zeditor/images/bug.png")));
 			debugMenu.add(getSaveCollisionItem());
-			debugMenu.add(getCharactersMenuItem());
+			debugMenu.add(getBuilderItem());
 		}
 		return debugMenu;
 	}
@@ -875,14 +876,23 @@ public class MasterFrame extends javax.swing.JFrame {
 		return saveCollisionItem;
 	}
 
-	private JMenu getCharactersMenuItem() {
-		if (charactersMenuItem == null) {
-			charactersMenuItem = new JMenu();
-			charactersMenuItem.setText("Personnages");
-			charactersMenuItem.setIcon(new ImageIcon(getClass()
+	private JMenuItem getBuilderItem() {
+		if (builderMenuItem == null) {
+			builderMenuItem = new JMenuItem();
+			builderMenuItem.setText("Builder");
+			builderMenuItem.setAction(new AbstractAction("Builder") {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JDialog frame = new BuilderDialog();
+					frame.setLocationRelativeTo(builderMenuItem.getParent().getParent());
+					frame.setModal(true);
+					frame.setVisible(true);
+				}
+			});
+			builderMenuItem.setIcon(new ImageIcon(getClass()
 					.getClassLoader().getResource("zeditor/images/user.png")));
 		}
-		return charactersMenuItem;
+		return builderMenuItem;
 	}
 
 }
