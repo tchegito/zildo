@@ -24,6 +24,8 @@ import org.lwjgl.opengl.GL11;
 
 import zildo.fwk.opengl.OpenGLStuff;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
+import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.SpriteEntity;
 
 /**
  * Class describing the TileEngine main element :<br/>
@@ -203,8 +205,9 @@ public class TilePrimitive extends OpenGLStuff {
      * @param y
      * @param u
      * @param v
+     * @param reverse TODO
      */
-    public void updateTile(float x, float y, float u, float v) {
+    public void updateTile(float x, float y, float u, float v, Reverse reverse) {
         // Get size
         int vBufferPos = bufs.vertices.position(); // - 3*4;
 		int tBufferPos = bufs.textures.position(); // - 2*4;
@@ -226,9 +229,12 @@ public class TilePrimitive extends OpenGLStuff {
         }
         nPoints += 4;
         nIndices += 6;
-        
+		
+		int revX = reverse.isHorizontal() ? -1 : 1;
+		int revY = reverse.isVertical() ? -1 : 1;
+		
         // Move tile
-        putTileSized(x, y, sizeX, sizeY, u, v);
+        putTileSized(x, y, sizeX * revX, sizeY * revY, u, v);
 
     }
 

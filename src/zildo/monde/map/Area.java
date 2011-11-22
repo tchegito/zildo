@@ -40,6 +40,7 @@ import zildo.monde.Hasard;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
@@ -552,7 +553,7 @@ public class Area implements EasySerializable {
 				p_file.put((int) entity.y);
 				int foreground = entity.isForeground() ? SpriteEntity.FOREGROUND : 0;
 				int repeated = (entity.repeatX > 1 || entity.repeatY > 1) ? SpriteEntity.REPEATED : 0;
-				p_file.put((byte) (entity.getNBank() | entity.reverse | foreground | repeated));
+				p_file.put((byte) (entity.getNBank() | entity.reverse.getValue() | foreground | repeated));
 				p_file.put((byte) entity.getNSpr());
 				if (repeated > 0) {
 					p_file.put(entity.repeatX);
@@ -665,7 +666,7 @@ public class Area implements EasySerializable {
 				short nSpr;
 				short multi = p_buffer.readUnsignedByte();
 				int nBank = multi & 15;
-				int reverse = multi & (SpriteEntity.REVERSE_HORIZONTAL | SpriteEntity.REVERSE_VERTICAL);
+				int reverse = multi & Reverse.ALL.getValue();
 				nSpr = p_buffer.readUnsignedByte();
 				if (p_spawn) {
 					// If this sprite is on a chest tile, link them
@@ -695,7 +696,7 @@ public class Area implements EasySerializable {
 						if (desc == ElementDescription.BAR_HORIZONTAL) {
 							System.out.println("sprite BAR, x=" + x + " / y=" + y);
 						}
-						SpriteEntity entity = spriteManagement.spawnSprite(desc, x, y, false, reverse, false);
+						SpriteEntity entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse), false);
 						if ((multi & SpriteEntity.FOREGROUND) != 0) {
 							entity.setForeground(true);
 						}

@@ -328,8 +328,8 @@ public class SpriteEngine extends TextureEngine {
 			z=entity.z;
 
 		// Reverse attribute
-		int revX = (entity.reverse & SpriteEntity.REVERSE_HORIZONTAL)!=0 ? -1 : 1;
-		int revY = (entity.reverse & SpriteEntity.REVERSE_VERTICAL)!=0   ? -1 : 1;
+		int revX = entity.reverse.isHorizontal() ? -1 : 1;
+		int revY = entity.reverse.isVertical()   ? -1 : 1;
 		
 		SpriteModel spr=entity.getSprModel();
 		entity.setLinkVertices(

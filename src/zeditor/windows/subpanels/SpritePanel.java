@@ -181,10 +181,8 @@ public class SpritePanel extends JPanel {
 			spriteType.setSelectedIndex(spriteLib.indexOf(p_entity.getDesc()));
 			spinX.setValue((int) p_entity.x % 16);
 			spinY.setValue((int) p_entity.y % 16);
-			reverseHorizontal
-					.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_HORIZONTAL));
-			reverseVertical
-					.setSelected(0 != (p_entity.reverse & SpriteEntity.REVERSE_VERTICAL));
+			reverseHorizontal.setSelected(p_entity.reverse.isHorizontal());
+			reverseVertical.setSelected(p_entity.reverse.isVertical());
 			foreground.setSelected(p_entity.isForeground());
 			repeatX.setValue(p_entity.repeatX);
 			repeatY.setValue(p_entity.repeatY);

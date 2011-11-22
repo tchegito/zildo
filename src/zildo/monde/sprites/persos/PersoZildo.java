@@ -39,6 +39,7 @@ import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
 import zildo.monde.quest.actions.GameOverAction;
 import zildo.monde.quest.actions.ScriptAction;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
@@ -731,7 +732,7 @@ public class PersoZildo extends Perso {
 	public void finaliseComportement(int compteur_animation) {
 
 		final int[] seq_zildoBow = { 0, 1, 2, 1 };
-		reverse = 0;
+		reverse = Reverse.NOTHING;
 		switch (getMouvement())
 		{
 		case VIDE:
