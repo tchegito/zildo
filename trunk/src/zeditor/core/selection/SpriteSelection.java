@@ -28,6 +28,7 @@ import java.util.List;
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.monde.map.Point;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.server.EngineZildo;
@@ -105,8 +106,8 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 	}
 
 	private void reverseEntity(SpriteEntity entity, boolean p_horizontal) {
-		boolean isHorizontal = (entity.reverse & SpriteEntity.REVERSE_HORIZONTAL) != 0;
-		boolean isVertical = (entity.reverse & SpriteEntity.REVERSE_VERTICAL) != 0;
+		boolean isHorizontal = entity.reverse.isHorizontal();
+		boolean isVertical = entity.reverse.isVertical();
 
 		if (p_horizontal) {
 			isHorizontal = !isHorizontal;
@@ -114,8 +115,7 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 			isVertical = !isVertical;
 		}
 
-		entity.reverse = isVertical ? SpriteEntity.REVERSE_VERTICAL : 0;
-		entity.reverse |= isHorizontal ? SpriteEntity.REVERSE_HORIZONTAL : 0;
+		entity.reverse = Reverse.fromBooleans(isHorizontal, isVertical);
 	}
 
 	public void toggleForeground() {

@@ -31,6 +31,7 @@ import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
 import zildo.monde.map.Point;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -95,7 +96,7 @@ public class ItemCircle {
 		
 		center=new Point((int) perso.x-2, (int) perso.y-12);
 		for (Item item : p_items) {
-            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(item.kind.representation, center.x, center.y, true, 0, true);
+            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(item.kind.representation, center.x, center.y, true, Reverse.NOTHING, true);
             e.clientSpecific=true;
             e.setSpecialEffect(EngineFX.FOCUSED);
             guiSprites.add(e);

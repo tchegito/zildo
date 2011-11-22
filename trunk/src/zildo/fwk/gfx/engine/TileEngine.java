@@ -35,6 +35,7 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Point;
 import zildo.monde.map.Tile;
+import zildo.monde.sprites.Reverse;
 import zildo.resource.Constantes;
 
 // V1.0
@@ -353,20 +354,20 @@ public class TileEngine extends TextureEngine {
 								throw new RuntimeException("We got a big problem");
 							}
 							updateTilePrimitive(meshBACK[bank],
-									x, y, cameraNew, offset, n_motif);
+									x, y, cameraNew, offset, n_motif, back.reverse);
 							
 							Tile back2 = mapCase.getBackTile2();
 							if (back2 != null) {
 								n_motif = back2.index;
 								updateTilePrimitive(meshBACK[back2.bank],
-										x, y, cameraNew, offset, n_motif);
+										x, y, cameraNew, offset, n_motif, back2.reverse);
 							}
 							
 							Tile fore = mapCase.getForeTile();
 							if (fore != null) {
 								n_motif = fore.index;
 								updateTilePrimitive(meshFORE[fore.bank],
-													x, y, cameraNew, offset, fore.index);
+													x, y, cameraNew, offset, fore.index, fore.reverse);
 
 							}
 						}
@@ -384,13 +385,15 @@ public class TileEngine extends TextureEngine {
 
 	}
 	
-	private void updateTilePrimitive(TilePrimitive tp, int x, int y, Point cameraNew, Point offset, int n_motif) {
+	private void updateTilePrimitive(TilePrimitive tp, int x, int y, Point cameraNew, Point offset, int n_motif, Reverse reverse) {
 		int xTex = (n_motif % 16) * 16;
 		int yTex = (n_motif / 16) * 16; // +1;
+
 		tp.updateTile((16 * x) - cameraNew.x + offset.x,
 				(16 * y) - cameraNew.y + offset.y,
 				xTex,
-				yTex);
+				yTex, 
+				reverse);
 	}
 
 	/**

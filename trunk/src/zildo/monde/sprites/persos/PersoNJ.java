@@ -26,6 +26,7 @@ import zildo.monde.Hasard;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.map.Pointf;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.ElementImpact;
@@ -413,21 +414,21 @@ public class PersoNJ extends Perso {
 			break;
 		case MOUSTACHU:
 		case HECTOR:
-			reverse = seq2 == 0 ? 0 : REVERSE_HORIZONTAL;
+			reverse = seq2 == 0 ? Reverse.NOTHING : Reverse.HORIZONTAL;
 			switch (angle) {
 			case NORD:
 				add_spr = 1;
 				break;
 			case EST:
 				add_spr = 2 + seq2;
-				reverse = REVERSE_HORIZONTAL;
+				reverse = Reverse.HORIZONTAL;
 				break;
 			case SUD:
 				add_spr = 0;
 				break;
 			case OUEST:
 				add_spr = 2 + seq2;
-				reverse = 0;
+				reverse = Reverse.NOTHING;
 				break;
 			}
 			break;
@@ -459,10 +460,10 @@ public class PersoNJ extends Perso {
 		case GARCON_BLEU:
 		case GARCON_JAUNE:
 			add_spr = seqp[angle.value];
-			reverse = 0;
+			reverse = Reverse.NOTHING;
 			if (add_spr == 2) {
 				add_spr = 1;
-				reverse = REVERSE_HORIZONTAL;
+				reverse = Reverse.HORIZONTAL;
 			}
 			break;
 		case CURE:
@@ -489,9 +490,9 @@ public class PersoNJ extends Perso {
 			break;
 		case OISEAU_VERT:
 			if (angle == Angle.OUEST) {
-				reverse = REVERSE_HORIZONTAL;
+				reverse = Reverse.HORIZONTAL;
 			} else {
-				reverse = 0;
+				reverse = Reverse.NOTHING;
 			}
 			add_spr = (compteur_animation % 32) / 16;
 			break;
@@ -499,7 +500,7 @@ public class PersoNJ extends Perso {
 		case PRINCESS_BUNNY:
 			addSpr = pathFinder.getTarget() == null ? 0 : 1;
 		case RABBIT:
-			reverse = angle == Angle.OUEST ? REVERSE_HORIZONTAL : 0;
+			reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
 			break;
 		case PRINCESSE_COUCHEE:
 			int seqPos = (getPos_seqsprite() / 40) % 5;
@@ -517,10 +518,10 @@ public class PersoNJ extends Perso {
 		switch (d) {
 		case SOFIASKY:
 		case FERMIERE:
-			reverse = 0;
+			reverse = Reverse.NOTHING;
 			if (add_spr >= 6) {
 				add_spr -= 4;
-				reverse = REVERSE_HORIZONTAL;
+				reverse = Reverse.HORIZONTAL;
 			}
 			break;
 		case MOUSTACHU_ASSIS:

@@ -38,6 +38,7 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Zone;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -257,20 +258,19 @@ public class SpriteSet extends ImageSet {
 				// Create linked elements
 				Element el = new Element();
 				el.setDesc(ElementDescription.DOOR_OPEN1);
-				el.reverse = Element.REVERSE_HORIZONTAL;
+				el.reverse = Reverse.HORIZONTAL;
 				el.x += el.getSprModel().getTaille_x();
 
 				Element up1 = new Element();
 				up1.setDesc(ElementDescription.DOOR_OPEN2);
 				up1.y -= el.getSprModel().getTaille_y();
-				up1.reverse = Element.REVERSE_VERTICAL;
+				up1.reverse = Reverse.VERTICAL;
 
 				Element up2 = new Element();
 				up2.setDesc(ElementDescription.DOOR_OPEN2);
 				up2.x += up2.getSprModel().getTaille_x();
 				up2.y -= el.getSprModel().getTaille_y();
-				up2.reverse = Element.REVERSE_HORIZONTAL
-						| Element.REVERSE_VERTICAL;
+				up2.reverse = Reverse.ALL;
 				return new SpriteSelection(Arrays.asList(p_elem, el, up1, up2));
 			case CARPET:
 				p_elem=(T) new SpriteEntity();

@@ -32,6 +32,7 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
@@ -350,7 +351,7 @@ public class SpriteManagement extends SpriteStore {
 	 * @param p_adjustPos TRUE=center the element / FALSE=no location adjustment
 	 */
 	public SpriteEntity spawnSprite(SpriteDescription desc, int x, int y,
-			boolean p_foreground, int p_reverse, boolean p_adjustPos) {
+			boolean p_foreground, Reverse p_reverse, boolean p_adjustPos) {
 
 		int nBank=desc.getBank();
 		int nSpr=desc.getNSpr();

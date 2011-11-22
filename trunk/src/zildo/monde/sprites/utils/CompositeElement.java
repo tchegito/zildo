@@ -25,7 +25,7 @@ import java.util.List;
 
 import zildo.monde.collision.Collision;
 import zildo.monde.map.Point;
-import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.Element;
@@ -93,9 +93,9 @@ public class CompositeElement {
 		copyBottomLeft.y+=2*p_gapY + model.getTaille_y() + p_gapY;
 		
 		// Reverse
-		copyRight.reverse=SpriteEntity.REVERSE_HORIZONTAL;
-		copyBottomRight.reverse=SpriteEntity.REVERSE_HORIZONTAL | SpriteEntity.REVERSE_VERTICAL;
-		copyBottomLeft.reverse=SpriteEntity.REVERSE_VERTICAL;
+		copyRight.reverse=Reverse.HORIZONTAL;
+		copyBottomRight.reverse=Reverse.ALL;
+		copyBottomLeft.reverse=Reverse.VERTICAL;
 		
 		// Spawn
 		EngineZildo.spriteManagement.spawnSprite(copyRight);

@@ -22,7 +22,7 @@ package zildo.monde.sprites.desc;
 
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.map.Angle;
-import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.utils.Sprite;
 
 public enum ZildoDescription implements SpriteDescription {
@@ -106,10 +106,10 @@ public enum ZildoDescription implements SpriteDescription {
 		}
 		// 2) Moving
 		int n=0;
-		int reverse=0;
+		Reverse reverse=Reverse.NOTHING;
 		if (p_seq != 0) {
 			n=seq_zildoDeplacement[p_angle.value][p_seq];
-			reverse=n<0 ? SpriteEntity.REVERSE_HORIZONTAL : 0;
+			reverse=n<0 ? Reverse.HORIZONTAL : Reverse.NOTHING;
 		}
 		
 		return new Sprite(desc.ordinal() + Math.abs(n), desc.getBank(), reverse);

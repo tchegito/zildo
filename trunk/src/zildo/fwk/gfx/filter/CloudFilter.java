@@ -24,6 +24,7 @@ import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
 import zildo.monde.map.Pointf;
+import zildo.monde.sprites.Reverse;
 
 /**
  * @author Tchegito
@@ -40,7 +41,7 @@ public class CloudFilter extends ScreenFilter {
 	public boolean renderFilter() {
 		
 		super.startInitialization();
-		updateTile(0, 0, u, v);
+		updateTile(0, 0, u, v, Reverse.NOTHING);
 		this.endInitialization();
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);

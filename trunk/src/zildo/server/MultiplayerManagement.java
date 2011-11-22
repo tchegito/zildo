@@ -23,6 +23,7 @@ package zildo.server;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Point;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.elements.ElementQuadDamage;
@@ -106,7 +107,7 @@ public class MultiplayerManagement {
     	if (k != null && k != ItemKind.SWORD) {
     	    EngineZildo.spriteManagement.spawnSprite(k.representation, 
     	    		(int) p_zildo.getX(), 
-    	    		(int) p_zildo.getY(), false, 0, true);
+    	    		(int) p_zildo.getY(), false, Reverse.NOTHING, true);
     	}
     	
     	// Steal money from the dead Zildo

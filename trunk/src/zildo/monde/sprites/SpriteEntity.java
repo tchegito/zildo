@@ -48,8 +48,8 @@ import zildo.server.EngineZildo;
 //* Manage collision
 public class SpriteEntity extends Identified implements Cloneable,
 		EasySerializable {
-	public static final int REVERSE_HORIZONTAL = 128;
-	public static final int REVERSE_VERTICAL = 64;
+	//public static final int Reverse.HORIZONTAL = 128;
+	//public static final int Reverse.VERTICAL = 64;
 	public static final int FOREGROUND = 32; // Only for MAP format
 	public static final int REPEATED = 16; // Fields 'repeatX' and 'repeatY' are different than 1
 
@@ -88,7 +88,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 		this.alpha = alpha;
 	}
 
-	public int reverse; // Combination of REVERSE_HORIZONTAL/VERTICAL (or 0)
+	public Reverse reverse; // Combination of Reverse.HORIZONTAL/VERTICAL (or 0)
 	public boolean clientSpecific; // TRUE if this entity should not appear on
 									// all client's screen
 
@@ -250,7 +250,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 
 		specialEffect = EngineFX.NO_EFFECT;
 
-		reverse = 0;
+		reverse = Reverse.NOTHING;
 
 		if (id == -1) {
 			// Initialize ID if it's not done yet
@@ -307,8 +307,8 @@ public class SpriteEntity extends Identified implements Cloneable,
 	public void serialize(EasyBuffering p_buffer) {
 		boolean isZildo = this.isZildo();
 		p_buffer.putBooleans(isZildo, isVisible(), isForeground(), dying,
-				(reverse & REVERSE_HORIZONTAL) != 0,
-				(reverse & REVERSE_VERTICAL) != 0);
+				reverse == Reverse.HORIZONTAL,
+				reverse == Reverse.VERTICAL);
 		p_buffer.put(this.getId());
 		if (isZildo) {
 			// Zildo needs extra info
@@ -366,14 +366,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 		entity.setEntityType(EntityType.fromInt(p_buffer.readUnsignedByte()));
 		int idSprModel = p_buffer.readInt();
 		entity.setSprModel(Identified.fromId(SpriteModel.class, idSprModel));
-		int reverse = 0;
-		if (bools[4]) {
-			reverse |= REVERSE_HORIZONTAL;
-		}
-		if (bools[5]) {
-			reverse |= REVERSE_VERTICAL;
-		}
-		entity.reverse = reverse;
+		entity.reverse = Reverse.fromBooleans(bools[4], bools[5]);
 		return entity;
 	}
 

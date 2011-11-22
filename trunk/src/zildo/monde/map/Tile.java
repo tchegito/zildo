@@ -20,6 +20,9 @@
 
 package zildo.monde.map;
 
+import zildo.monde.sprites.Reverse;
+
+
 /**
  * @author Tchegito
  * 
@@ -30,6 +33,8 @@ public class Tile implements Cloneable {
 	public int bank;
 	public Case parent;
 
+	public Reverse reverse = Reverse.NOTHING;
+	
 	public Tile(int p_bank, int p_index, Case p_parent) {
 		if (bank == 73) {
 			throw new RuntimeException();

@@ -26,6 +26,7 @@ import zildo.monde.Hasard;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;
 import zildo.monde.quest.script.DispatchRoundTrip;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
@@ -81,7 +82,7 @@ public class ElementStaffs extends ElementChained {
 	        z = 8;
 	        
 	        if (angle == Angle.OUEST) {
-	            reverse = REVERSE_HORIZONTAL;
+	            reverse = Reverse.HORIZONTAL;
 	        }
 
 	        // Add a shadow
