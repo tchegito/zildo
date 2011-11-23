@@ -59,7 +59,7 @@ import zildo.server.MapManagement;
 public class ZildoCanvas extends AWTOpenGLCanvas {
 
 	public enum ZEditMode {
-	    NORMAL, COPY, COPY_DRAG;
+	    NORMAL, COPY, COPY_DRAG, TILE_ROTATE_EDIT;
 	}
 	
 	/**
@@ -112,6 +112,33 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		Selection sel = manager.getSelection();
 		if (sel != null && sel instanceof TileSelection) {
 			((TileSelection)sel).finalizeDraw();
+		}
+	}
+	
+	public void reverseTile(Point p) {
+		Selection sel = manager.getSelection();
+		// Default kind is TILES
+		SelectionKind kind=sel == null ? SelectionKind.TILES : sel.getKind();
+		switch (kind) {
+		case TILES:
+			Area map = EngineZildo.mapManagement.getCurrentMap();
+			Case theCase = map.get_mapcase(p.x/16, p.y/16 + 4);
+			Tile tile;
+			switch (mask) {
+			case 0:
+				tile = theCase.getBackTile();
+				break;
+			case 1:
+				tile =theCase.getBackTile2();
+				break;
+			case 2:
+				tile = theCase.getForeTile();
+				break;
+			default:
+				throw new RuntimeException("Value "+mask+" is wrong for mask !");
+			}
+			tile.reverse = tile.reverse.succ();
+			break;
 		}
 	}
 	/**

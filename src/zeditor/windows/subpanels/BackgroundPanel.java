@@ -7,12 +7,15 @@ import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import zeditor.core.tiles.TileSet;
 import zeditor.windows.managers.MasterFrameManager;
+import zildo.fwk.awt.ZildoCanvas.ZEditMode;
 import zildo.monde.map.Case;
 
 @SuppressWarnings("serial")
@@ -24,13 +27,15 @@ public class BackgroundPanel extends JPanel {
 	JScrollPane backgroundScroll;
 	AbstractAction actionChangeTileSet;
 	TileSet tileSetPanel;
-
+	JCheckBox reverseEditCheck;
+	
 	public BackgroundPanel(MasterFrameManager p_manager) {
 		manager = p_manager;
 
 		BoxLayout backgroundPanelLayout = new BoxLayout(this,
 				javax.swing.BoxLayout.Y_AXIS);
 		setLayout(backgroundPanelLayout);
+		add(getPanelCheckBox());
 		add(getBackgroundCombo());
 		add(getBackgroundScroll());
 	}
@@ -73,6 +78,30 @@ public class BackgroundPanel extends JPanel {
 		return actionChangeTileSet;
 	}
 
+	private JPanel getPanelCheckBox() {
+		JPanel panel = new JPanel();
+		reverseEditCheck = new JCheckBox(new AbstractAction() {
+			
+			ZEditMode previous;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				ZEditMode newMode;
+				if (reverseEditCheck.isSelected()) {
+					previous = manager.getZildoCanvas().getMode();
+					newMode = ZEditMode.TILE_ROTATE_EDIT;
+				} else {
+					newMode = previous;
+				}
+				manager.getZildoCanvas().setMode(newMode);
+			}
+		});
+		panel.add(reverseEditCheck);
+		panel.add(new JLabel("Edit tiles attributes"));
+		return panel;
+	}
+	
 	/**
 	 * Charge la liste des TileSets pour la combo de décors
 	 * 

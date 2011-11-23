@@ -74,6 +74,10 @@ public class ZildoMouseKeyListener implements MouseListener,
 			if (canvas.getMode() == ZEditMode.NORMAL) { // Copy
 				// And apply the brush on it (=selected tiles)
 				canvas.applyBrush(p);
+			} else {
+				if (canvas.getMode() == ZEditMode.TILE_ROTATE_EDIT) {
+					canvas.reverseTile(p);
+				}
 			}
 			break;
 		case 4: // Right click
