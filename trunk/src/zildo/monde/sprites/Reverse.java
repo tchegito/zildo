@@ -15,7 +15,7 @@ public enum Reverse {
 	}
 	
 	public Reverse succ() {
-		return values()[(value+1) % 4];
+		return values()[(ordinal()+1) % 4];
 	}
 	
 	public boolean isHorizontal() {
