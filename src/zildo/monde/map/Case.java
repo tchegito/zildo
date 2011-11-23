@@ -22,6 +22,7 @@ package zildo.monde.map;
 
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
+import zildo.monde.sprites.Reverse;
 
 
 /**
@@ -150,20 +151,40 @@ public class Case implements EasySerializable {
 	 */
 	public void serialize(EasyBuffering p_buffer) {
 		int isMasque = fore != null ? 128 : 0;
-		int isTransition = transition != null ? 64 : 0;
+		int isSpecial = (transition != null || back.reverse != Reverse.NOTHING) ? 64 : 0;
 		int isBack2 = back2 != null ? 32 : 0;
 		p_buffer.put((byte) back.index);
-		p_buffer.put((byte) (back.bank | isMasque | isTransition | isBack2));
+		p_buffer.put((byte) (back.bank | isMasque | isSpecial | isBack2));
+		if (isSpecial > 0) {
+			int val = back.reverse.ordinal();
+			if (transition != null) {
+				val|=transition.value << 4;
+			}
+			p_buffer.put(val);
+		}
 		if (back2 != null) {
-			p_buffer.put((byte) back2.index);
-			p_buffer.put((byte) back2.bank);
+			serializeOneTile(back2, p_buffer);
 		}
 		if (fore != null) {
-			p_buffer.put((byte) fore.index);
-			p_buffer.put((byte) fore.bank);
+			serializeOneTile(fore, p_buffer);
 		}
-		if (transition != null) {
-			p_buffer.put((byte) transition.value);
+
+	}
+	
+	/**
+	 * Serialize just one tile (2 or 3 bytes)
+	 * @param p_tile
+	 * @param p_buffer
+	 */
+	private void serializeOneTile(Tile p_tile, EasyBuffering p_buffer) {
+		int bank = p_tile.bank;
+		p_buffer.put((byte) p_tile.index);
+		if (p_tile.reverse != Reverse.NOTHING) {
+			bank|=64;	// Need extra bit;
+		}
+		p_buffer.put((byte) bank);
+		if ((bank & 64) != 0) {
+			p_buffer.put((byte) p_tile.reverse.ordinal());
 		}
 	}
 	
@@ -176,24 +197,44 @@ public class Case implements EasySerializable {
 		Case mapCase=new Case();
 		int index1 = p_buffer.readUnsignedByte();
 		int bank1 = p_buffer.readUnsignedByte();
-		if ((bank1 & 128) != 0) {
-			int index2 = p_buffer.readUnsignedByte();
-			int bank2 = p_buffer.readUnsignedByte();
-			if ((bank1 & 128) != 0) { //bank2 != 0 || index2 != 0) {
-				mapCase.setForeTile(new Tile(bank2, index2, mapCase));
-			}
-		}
-		if ((bank1 & 64) != 0) {
-			mapCase.setTransition(Angle.fromInt(p_buffer.readUnsignedByte()));
-		}
 		if ((bank1 & 32) != 0) {
-			int indexB2 = p_buffer.readUnsignedByte();
-			int bankB2 = p_buffer.readUnsignedByte();
-			mapCase.setBackTile2(new Tile(bankB2, indexB2, mapCase));
+			Tile t = deserializeOneTile(mapCase, p_buffer);
+			mapCase.setBackTile2(t);
+		}
+		if ((bank1 & 128) != 0) {
+			Tile t = deserializeOneTile(mapCase, p_buffer);
+			mapCase.setForeTile(t);
 		}
 		bank1&=31;
 		mapCase.setBackTile(new Tile(bank1, index1, mapCase));
+		if ((bank1 & 64) != 0) {
+			int value = p_buffer.readUnsignedByte();
+			if ((value & 7) != 0) {
+				mapCase.setTransition(Angle.fromInt(value & 7));
+			}
+			if (value > 7) {
+				mapCase.getBackTile().reverse = Reverse.values()[value >> 4];
+			}
+		}
+
 		return mapCase;
+	}
+	
+	/**
+	 * Serialize just one tile (2 or 3 bytes)
+	 * @param p_case
+	 * @param p_buffer
+	 * @return Tile
+	 */
+	private static Tile deserializeOneTile(Case p_case, EasyBuffering p_buffer) {
+		int index = p_buffer.readUnsignedByte();
+		int bank = p_buffer.readUnsignedByte();
+		Tile t = new Tile(bank & 63, index, p_case);
+		if ((bank & 64) != 0) {
+			int val = p_buffer.readUnsignedByte();
+			t.reverse = Reverse.values()[val & 63];
+		}
+		return t;
 	}
 	
 	/**
