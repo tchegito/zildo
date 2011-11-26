@@ -162,5 +162,6 @@ public class SoundPlay {
 	public void stopMusic() {
 		BankMusic mus = ClientEngineZildo.ambient.getCurrentMusic();
 		stopSoundFX(mus);
+		ClientEngineZildo.ambient.setCurrentMusic(null);
 	}
 }

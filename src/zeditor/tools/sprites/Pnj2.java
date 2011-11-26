@@ -107,7 +107,9 @@ public class Pnj2 extends SpriteBanque {
 			          */
 			          new Zone(0, 221, 19, 12), new Zone(19, 221, 19, 12),
 			          new Zone(38, 221, 22, 12), new Zone(61, 221, 15, 17),
-			          new Zone(76, 221, 17, 15)
+			          new Zone(76, 221, 17, 15),
+			          // King
+			          new Zone(265, 107, 35, 33)
 			          
 		};
 		
