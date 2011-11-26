@@ -154,6 +154,15 @@
 		</action>
 	</quest>
 	
+	<quest name="start_visit1">
+		<trigger>
+			<location name="chateaucoucou2" pos="439,374" radius="4"/>
+		</trigger>
+		<action>
+			<exec script="coucou_visit1"/>
+		</action>
+	</quest>
+	
 	<mapScript>
 		<condition name="coucou" exp="flut">
 			<remove who="roxy" />
@@ -389,6 +398,38 @@
 		<speak who="hector" text="pext.hector.4" />
 		<speak who="hector" text="pext.hector.5" />
 		<focus who="zildo" delta="true"/>
+	</scene>
+	
+	<scene id="coucou_visit1">
+		<moveTo who="zildo" pos="439,311"/>
+		<moveTo what="camera" pos="0,-48" delta="true"/>
+		<speak who="king" text="visit1.king.1"/>
+		<wait value="15"/>
+		<angle who="jaune" value="0"/>
+		<speak who="jaune" text="visit1.maltus.1"/>
+		<speak who="king" text="visit1.king.2"/>
+		<actions>
+			<moveTo who="zildo" pos="0,-32" delta="true" speed="1"/>
+			<moveTo what="camera" pos="0,-32" delta="true"/>
+			<angle who="jaune" value="1"/>
+		</actions>
+		<speak who="zildo" text="visit1.zildo.1"/>
+		<speak who="king" text="visit1.king.3"/>
+		<music name=""/>
+		<speak who="zildo" text="visit1.zildo.2"/>
+		<wait value="20"/>
+		<angle who="jaune" value="1"/>
+		<wait value="10"/>
+		<speak who="king" text="visit1.king.4"/>
+		<speak who="king" text="visit1.king.5"/>
+		<speak who="king" text="visit1.king.6"/>
+		<speak who="zildo" text="visit1.zildo.3"/>
+		<speak who="king" text="visit1.king.7"/>
+		<angle who="jaune" value="0"/>
+		<speak who="jaune" text="visit1.maltus.2"/>
+		<speak who="king" text="visit1.king.8"/>
+		<music name="Chateau"/>
+		<speak who="king" text="visit1.king.9"/>
 	</scene>
 	
 	<scene id="stairsUp">

@@ -88,7 +88,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 		this.alpha = alpha;
 	}
 
-	public Reverse reverse; // Combination of Reverse.HORIZONTAL/VERTICAL (or 0)
+	public Reverse reverse = Reverse.NOTHING; // Combination of Reverse.HORIZONTAL/VERTICAL (or 0)
 	public boolean clientSpecific; // TRUE if this entity should not appear on
 									// all client's screen
 
