@@ -818,7 +818,8 @@ public class PersoZildo extends Perso {
 			setMoney(money + p_money);
 			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
 		} else {
-			ElementDescription d = ElementDescription.fromInt(nSpr);
+			int elemNSpr=p_element.getNSpr();
+			ElementDescription d = ElementDescription.fromInt(elemNSpr);
 			if (d.isWeapon()) {
 				pickItem(d.getItem(), p_element);
 				return false;

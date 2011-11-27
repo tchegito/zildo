@@ -34,7 +34,7 @@ import zildo.server.EngineZildo;
 public class ZSExpression {
 
 	String questName;
-	boolean done;
+	boolean done;	// True if predicate is prefixed by a '!'
 
 	public ZSExpression(String p_questName) {
 		questName = p_questName;
@@ -64,7 +64,7 @@ public class ZSExpression {
 	}
 
 	public boolean isTrue() {
-		boolean result = EngineZildo.scriptManagement.isQuestDone(questName);
+		boolean result = EngineZildo.scriptManagement.isQuestOver(questName);
 		if (!done) {
 			result = !result;
 		}

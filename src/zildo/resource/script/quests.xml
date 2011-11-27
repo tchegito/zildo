@@ -156,10 +156,32 @@
 	
 	<quest name="start_visit1">
 		<trigger>
-			<location name="chateaucoucou2" pos="439,374" radius="4"/>
+			<location name="chateaucoucou2" pos="439,374" radius="2"/>
 		</trigger>
 		<action>
 			<exec script="coucou_visit1"/>
+		</action>
+	</quest>
+	
+	<quest name="suite_visit1_weapon">
+		<trigger>
+			<location name="chateaucoucou2" pos="439,280" radius="2"/>
+			<questDone name="start_visit1"/>
+			<inventory item="SWORD"/>
+		</trigger>
+		<action>
+			<exec script="coucou_visit1_weapon"/>
+		</action>
+	</quest>
+	
+	<quest name="suite_visit1_noweapon" repeat="true">
+		<trigger>
+			<location name="chateaucoucou2" pos="439,280" radius="2"/>
+			<questDone name="start_visit1"/>
+			<inventory item="!SWORD"/>
+		</trigger>
+		<action>
+			<exec script="coucou_visit1_noweapon"/>
 		</action>
 	</quest>
 	
@@ -176,6 +198,9 @@
 		</condition>
 		<condition name="d4m4" exp="fermierperdu">
 			<remove who="charles_bar"/>
+		</condition>
+		<condition name="chateaucoucou2" exp="suite_visit1_weapon">
+			<remove who="maltus"/>
 		</condition>
 	</mapScript>
 	
@@ -405,31 +430,77 @@
 		<moveTo what="camera" pos="0,-48" delta="true"/>
 		<speak who="king" text="visit1.king.1"/>
 		<wait value="15"/>
-		<angle who="jaune" value="0"/>
-		<speak who="jaune" text="visit1.maltus.1"/>
+		<angle who="maltus" value="0"/>
+		<speak who="maltus" text="visit1.maltus.1"/>
 		<speak who="king" text="visit1.king.2"/>
 		<actions>
 			<moveTo who="zildo" pos="0,-32" delta="true" speed="1"/>
 			<moveTo what="camera" pos="0,-32" delta="true"/>
-			<angle who="jaune" value="1"/>
+			<angle who="maltus" value="1"/>
 		</actions>
 		<speak who="zildo" text="visit1.zildo.1"/>
 		<speak who="king" text="visit1.king.3"/>
 		<music name=""/>
 		<speak who="zildo" text="visit1.zildo.2"/>
 		<wait value="20"/>
-		<angle who="jaune" value="1"/>
+		<angle who="maltus" value="1"/>
 		<wait value="10"/>
 		<speak who="king" text="visit1.king.4"/>
 		<speak who="king" text="visit1.king.5"/>
 		<speak who="king" text="visit1.king.6"/>
 		<speak who="zildo" text="visit1.zildo.3"/>
 		<speak who="king" text="visit1.king.7"/>
-		<angle who="jaune" value="0"/>
-		<speak who="jaune" text="visit1.maltus.2"/>
+		<angle who="maltus" value="0"/>
+		<speak who="maltus" text="visit1.maltus.2"/>
 		<speak who="king" text="visit1.king.8"/>
 		<music name="Chateau"/>
 		<speak who="king" text="visit1.king.9"/>
+		<focus who="zildo" delta="true"/>
+	</scene>
+	
+	<scene id="coucou_visit1_noweapon">
+		<angle who="zildo" value="0"/>
+		<moveTo what="camera" pos="0,-48" delta="true"/>
+		<speak who="king" text="visit1.king.10"/>
+		<speak who="zildo" text="visit1.zildo.4"/>
+		<speak who="king" text="visit1.king.11"/>
+		<moveTo who="zildo" pos="0,32" delta="true"/>
+		<focus who="zildo" delta="true"/>
+	</scene>
+	
+	<scene id="coucou_visit1_weapon">
+		<angle who="zildo" value="0"/>
+		<moveTo what="camera" pos="0,-48" delta="true"/>
+		<speak who="king" text="visit1.king.10"/>
+		<speak who="zildo" text="visit1.zildo.5"/>
+		<speak who="king" text="visit1.king.12"/>
+		<angle who="maltus" value="0"/>
+		<speak who="maltus" text="visit1.maltus.3"/>
+		<speak who="king" text="visit1.king.13"/>
+		<speak who="king" text="visit1.king.14"/>
+		<speak who="maltus" text="visit1.maltus.4"/>
+		<angle who="maltus" value="1"/>
+		<speak who="maltus" text="visit1.maltus.5"/>
+		<focus who="zildo" delta="true"/>
+		<moveTo who="zildo" pos="439,295"/>
+		<moveTo who="maltus" pos="409,295"  speed="1"/>
+		<moveTo who="maltus" pos="426,305"  speed="1"/>
+		<actions>
+			<moveTo who="zildo" pos="439,470" speed="1"/>
+			<moveTo who="maltus" pos="424,447" speed="1"/>
+		</actions>
+		<actions>
+			<moveTo who="zildo" pos="187,470" speed="1"/>
+			<moveTo who="maltus" pos="187,448" speed="1"/>
+		</actions>
+		<angle who="maltus" value="2"/>
+		<angle who="zildo" value="0"/>
+		<speak who="maltus" text="visit1.maltus.6"/>
+		<speak who="zildo" text="visit1.zildo.6"/>
+		<speak who="maltus" text="visit1.maltus.7"/>
+		<moveTo who="maltus" pos="80,550"/>
+		<moveTo who="maltus" pos="80,597"/>
+		<remove who="maltus"/>
 	</scene>
 	
 	<scene id="stairsUp">

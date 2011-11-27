@@ -693,9 +693,6 @@ public class Area implements EasySerializable {
 								break;
 							}
 						}
-						if (desc == ElementDescription.BAR_HORIZONTAL) {
-							System.out.println("sprite BAR, x=" + x + " / y=" + y);
-						}
 						SpriteEntity entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse), false);
 						if ((multi & SpriteEntity.FOREGROUND) != 0) {
 							entity.setForeground(true);

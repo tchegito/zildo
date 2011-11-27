@@ -310,6 +310,15 @@ public class ScriptManagement {
 		return quest.done;
 	}
 	
+	public boolean isQuestOver(String p_questName) {
+		boolean first = isQuestDone(p_questName);
+		if (first) {
+			// Check if this quest is currently active
+			return !isScripting();
+		}
+		return false;
+	}
+	
 	public boolean isOpenedChest(String p_mapName, Point p_location) {
 		String questName=p_mapName+p_location.toString();
 		return isQuestDone(questName);

@@ -160,7 +160,7 @@ public class Case implements EasySerializable {
 			if (transition != null) {
 				val|=transition.value << 4;
 			}
-			p_buffer.put(val);
+			p_buffer.put((byte) val);
 		}
 		if (back2 != null) {
 			serializeOneTile(back2, p_buffer);
@@ -205,15 +205,14 @@ public class Case implements EasySerializable {
 			Tile t = deserializeOneTile(mapCase, p_buffer);
 			mapCase.setForeTile(t);
 		}
-		bank1&=31;
-		mapCase.setBackTile(new Tile(bank1, index1, mapCase));
+		mapCase.setBackTile(new Tile(bank1&31, index1, mapCase));
 		if ((bank1 & 64) != 0) {
 			int value = p_buffer.readUnsignedByte();
 			if ((value & 7) != 0) {
-				mapCase.setTransition(Angle.fromInt(value & 7));
+				mapCase.getBackTile().reverse = Reverse.values()[value & 7];
 			}
 			if (value > 7) {
-				mapCase.getBackTile().reverse = Reverse.values()[value >> 4];
+				mapCase.setTransition(Angle.fromInt(value >> 4));
 			}
 		}
 
