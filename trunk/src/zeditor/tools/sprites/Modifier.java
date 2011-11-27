@@ -83,10 +83,10 @@ public class Modifier {
         //new Modifier().saveElements3();
         //new Modifier().saveFontes2();
         //new Modifier().saveAllMotifBank();
-        new Modifier().saveBanque();
+        //new Modifier().saveBanque();
         //new Modifier().saveGears();
         //new Modifier().savePnj();
-        //new Modifier().savePnj2();
+        new Modifier().savePnj2();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
        // new Modifier().ripDialogFromAllMaps();

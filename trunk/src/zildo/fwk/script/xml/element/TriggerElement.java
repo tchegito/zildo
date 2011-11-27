@@ -27,6 +27,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.map.Point;
 import zildo.monde.map.Zone;
 import zildo.monde.quest.QuestEvent;
+import zildo.server.EngineZildo;
 
 public class TriggerElement extends AnyElement {
 
@@ -35,6 +36,7 @@ public class TriggerElement extends AnyElement {
 	int numSentence;
 	Point location;
 	int radius; // For location
+	boolean not;	// Use for inversion of inventory posess
 	Zone region; // Unimplemented yet
 
 	ZSSwitch questSwitch;
@@ -65,7 +67,10 @@ public class TriggerElement extends AnyElement {
 			questSwitch = new ZSSwitch(name + ":1,0");
 			break;
 		case INVENTORY:
+			// TODO: replace this by a switch => most complete
 			name = p_elem.getAttribute("item");
+			not = name.indexOf("!") != -1;
+			name = name.replaceAll("!", "");
 			break;
 		}
 
@@ -92,7 +97,7 @@ public class TriggerElement extends AnyElement {
 			break;
 		case INVENTORY:
 			if (p_another.name.equals(name)) {
-				return true;
+				return !not;
 			}
 			break;
 		case LOCATION:
@@ -125,9 +130,12 @@ public class TriggerElement extends AnyElement {
 	 * @return boolean
 	 */
 	public boolean isDone() {
-		if (kind == QuestEvent.QUESTDONE) {
+		switch (kind) {
+		case QUESTDONE:
 			return questSwitch.evaluate() == 1;
-		} else {
+		case INVENTORY:
+			return EngineZildo.persoManagement.getZildo().hasItem(ItemKind.fromString(name)) == !not;
+		default:
 			return done;
 		}
 	}

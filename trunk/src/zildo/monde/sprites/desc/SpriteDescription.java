@@ -39,6 +39,8 @@ public interface SpriteDescription {
 				return ZildoDescription.fromInt(nSpr);
 			case SpriteBank.BANK_ELEMENTS:
 				return ElementDescription.fromInt(nSpr);
+			case SpriteBank.BANK_FONTES:
+				return null;
 			case SpriteBank.BANK_PNJ:
 			case SpriteBank.BANK_PNJ2:
 				return PersoDescription.fromNSpr(nSpr);

@@ -135,7 +135,7 @@ public class SaveGameMenu extends Menu {
 		EasyReadingFile file = new EasyReadingFile(p_filename);
 		game = Game.deserialize(file);
 		EngineZildo.setGame(game);
-		EngineZildo.mapManagement.loadMap("coucou", false);
+		EngineZildo.mapManagement.loadMap("chateaucoucou1", false);
 
 		singlePlay.launchGame();
 	}

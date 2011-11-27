@@ -434,11 +434,21 @@ public class PersoNJ extends Perso {
 			break;
 		case VIEUX_SAGE:
 		case BUCHERON_ASSIS:
-		case BANDIT_CHAPEAU:
 		case MOUSTACHU_ASSIS:
 		case BUCHERON_DEBOUT:
+		case KING:
 			// Persos à 1 seul sprite
 			add_spr = 0;
+			break;
+		case BANDIT_CHAPEAU:
+			add_spr = (angle.value % 4) * 2;
+			if (angle == Angle.OUEST) {
+				add_spr = 2;
+				reverse = Reverse.HORIZONTAL;
+			} else {
+				reverse = Reverse.NOTHING;
+			}
+			add_spr+=seq2;
 			break;
 		case VOYANT:
 		case DRESSEUR_SERPENT:

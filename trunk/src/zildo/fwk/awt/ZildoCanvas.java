@@ -43,6 +43,7 @@ import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
 import zildo.monde.map.Zone;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.EntityType;
@@ -136,6 +137,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 				break;
 			default:
 				throw new RuntimeException("Value "+mask+" is wrong for mask !");
+			}
+			if (tile.reverse == null) {
+				tile.reverse = Reverse.NOTHING;
 			}
 			tile.reverse = tile.reverse.succ();
 			break;

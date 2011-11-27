@@ -36,31 +36,50 @@ import javax.swing.SwingUtilities;
 import zeditor.tools.sprites.Modifier;
 import zeditor.tools.ui.SizedGridPanel;
 import zildo.fwk.gfx.engine.TileEngine;
+import zildo.monde.sprites.SpriteStore;
 
 @SuppressWarnings("serial")
 public class BuilderDialog extends JDialog {
 
-	JComboBox comboBank;
+	JComboBox comboTileBank;
+	JComboBox comboSpriteBank;
 	
 	public BuilderDialog() {
 		SizedGridPanel panel = new SizedGridPanel(2);
 		
 		// Tile bank combo
-		List<String> list = new ArrayList<String>();
+		List<String> listTileBanks = new ArrayList<String>();
 		for (String bankName : TileEngine.tileBankNames) {
-			list.add(bankName);
+			listTileBanks.add(bankName);
 		}
-		comboBank = new JComboBox(list.toArray(new String[]{}));
-		JButton buttonBuildBank = new JButton(new AbstractAction("Build bank") {
+		comboTileBank = new JComboBox(listTileBanks.toArray(new String[]{}));
+		JButton buttonBuildTileBank = new JButton(new AbstractAction("Build tile bank") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String bankName = (String) comboBank.getSelectedItem();
+				String bankName = (String) comboTileBank.getSelectedItem();
 
 				new Modifier().saveNamedTileBank(bankName);
-				JOptionPane.showMessageDialog(getParent(), "Bank "+bankName+" has been builded !", "Builder", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(getParent(), "Tile bank "+bankName+" has been builded !", "Builder", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		panel.addComp(comboBank, buttonBuildBank);
+		panel.addComp(comboTileBank, buttonBuildTileBank);
+		
+		// Sprite bank combo
+		List<String> listSpriteBanks = new ArrayList<String>();
+		for (String bankName : SpriteStore.sprBankName) {
+			listSpriteBanks.add(bankName);
+		}
+		comboSpriteBank = new JComboBox(listSpriteBanks.toArray(new String[]{}));
+		JButton buttonBuildSpriteBank = new JButton(new AbstractAction("Build sprite bank") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String bankName = (String) comboSpriteBank.getSelectedItem();
+
+				new Modifier().saveNamedTileBank(bankName);
+				JOptionPane.showMessageDialog(getParent(), "Sprite bank "+bankName+" has been builded !", "Builder", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		panel.addComp(comboSpriteBank, buttonBuildSpriteBank);
 		
 		setTitle("ZEditor builder");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
