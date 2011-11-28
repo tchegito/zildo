@@ -28,17 +28,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.LogManager;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
-import zeditor.tools.banque.Foret1;
-import zeditor.tools.banque.Foret2;
 import zeditor.tools.banque.Grotte;
-import zeditor.tools.banque.Maison;
 import zeditor.tools.banque.Palais1;
-import zeditor.tools.banque.Village;
 import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.MotifBankEdit;
-import zildo.client.ClientEngineZildo;
 import zildo.client.gui.GUIDisplay;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.bank.SpriteBank;
@@ -49,12 +42,14 @@ import zildo.monde.dialog.MapDialog;
 import zildo.monde.map.Area;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
-import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.Server;
+
+import com.sun.xml.internal.ws.util.StringUtils;
 
 /**
  * Test class, doesn't apart to real project.<br/>
@@ -103,9 +98,23 @@ public class Modifier {
     	 new Palais1().save();
      }
      
-     public void saveNamedTileBank(String bankName) {
-    	 new MotifBank().charge_motifs(bankName);
-    	 getTileBankClass(bankName).save();
+     public void saveNamedTileBank(String tileBankName) {
+    	 new MotifBank().charge_motifs(tileBankName);
+    	 getTileBankClass(tileBankName).save();
+     }
+     
+     public void saveNamedSpriteBank(String spriteBankName) {
+    	 int indexBank;
+    	 for (indexBank=0;indexBank<Constantes.NB_SPRITEBANK;indexBank++) {
+    		 if (SpriteStore.sprBankName[indexBank].equalsIgnoreCase(spriteBankName)) {
+    			 break;
+    		 }
+    	 }
+         SpriteBankEdit bank=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(indexBank));
+         bank.clear();
+         String nameWithoutExtension = spriteBankName.substring(0, spriteBankName.indexOf("."));
+    	 bank.addSpritesFromBank(getSpriteBankClass(nameWithoutExtension));
+    	 bank.saveBank();
      }
      
      public void saveAllMotifBank() {
@@ -124,6 +133,21 @@ public class Modifier {
 				 return b;
 			 } else {
 				 throw new RuntimeException("Class "+bankName+" should be a motif bank !");
+			 }
+		} catch (Exception e) {
+			throw new RuntimeException("Can't instantiate class "+bankName);
+		}
+     }
+     
+     private SpriteBanque getSpriteBankClass(String bankName) {
+		 try {
+			 
+			Class<?> clazz = Class.forName("zeditor.tools.sprites."+StringUtils.capitalize(bankName));
+			 if (SpriteBanque.class.isAssignableFrom(clazz)) {
+				 SpriteBanque b = (SpriteBanque) clazz.newInstance();
+				 return b;
+			 } else {
+				 throw new RuntimeException("Class "+bankName+" should be a sprite bank !");
 			 }
 		} catch (Exception e) {
 			throw new RuntimeException("Can't instantiate class "+bankName);

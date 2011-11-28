@@ -45,8 +45,8 @@ public class BuilderDialog extends JDialog {
 	JComboBox comboSpriteBank;
 	
 	public BuilderDialog() {
-		SizedGridPanel panel = new SizedGridPanel(2);
-		
+		SizedGridPanel panel = new SizedGridPanel(3, 5);
+
 		// Tile bank combo
 		List<String> listTileBanks = new ArrayList<String>();
 		for (String bankName : TileEngine.tileBankNames) {
@@ -63,6 +63,21 @@ public class BuilderDialog extends JDialog {
 			}
 		});
 		panel.addComp(comboTileBank, buttonBuildTileBank);
+				
+		// All motif bank
+		JButton buttonAllTileBanks = new JButton(new AbstractAction("Build all tile banks") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					new Modifier().saveAllMotifBank();
+					JOptionPane.showMessageDialog(getParent(), "All tile banks builded successfully !", "Builder", JOptionPane.INFORMATION_MESSAGE);
+				} catch (RuntimeException ex) {
+					JOptionPane.showMessageDialog(getParent(), "Error building all tile banks !\n\nCause : "+ex.getMessage(), "Builder", JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				}
+			}
+		});
+		panel.add(buttonAllTileBanks);
 		
 		// Sprite bank combo
 		List<String> listSpriteBanks = new ArrayList<String>();
@@ -75,11 +90,17 @@ public class BuilderDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				String bankName = (String) comboSpriteBank.getSelectedItem();
 
-				new Modifier().saveNamedTileBank(bankName);
-				JOptionPane.showMessageDialog(getParent(), "Sprite bank "+bankName+" has been builded !", "Builder", JOptionPane.INFORMATION_MESSAGE);
+				try {
+					new Modifier().saveNamedSpriteBank(bankName);
+					JOptionPane.showMessageDialog(getParent(), "Sprite bank "+bankName+" has been builded !", "Builder", JOptionPane.INFORMATION_MESSAGE);
+				} catch (RuntimeException ex) {
+					JOptionPane.showMessageDialog(getParent(), "Error building bank "+bankName+"\n\nCause : "+ex.getMessage(), "Builder", JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				}
 			}
 		});
 		panel.addComp(comboSpriteBank, buttonBuildSpriteBank);
+
 		
 		setTitle("ZEditor builder");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
