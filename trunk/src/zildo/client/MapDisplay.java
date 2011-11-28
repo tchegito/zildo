@@ -61,6 +61,7 @@ public class MapDisplay {
 	// centerCamera
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void centerCamera() {
+		Point precCamera = new Point(camera);
 		if (focused != null && targetCamera == null) {
 			int x= (int) focused.x;
 			int y= (int) focused.y;
@@ -68,22 +69,9 @@ public class MapDisplay {
 			camera.x=x - CENTER_X;
 		
 			camera.y=y - CENTER_Y;
-		
-			// Overflow tests
-			if (camera.x > (16*currentMap.getDim_x() - 16 * 20)) {
-				camera.x=16*currentMap.getDim_x() - 16 * 20;
-			}
-			if (camera.y > (16*currentMap.getDim_y() - 16 * 15 )) {	// marche avec 17
-				camera.y=16*currentMap.getDim_y() - 16 * 15 ;
-			}
-		
-			if (camera.x < 0) {
-				camera.x=0;
-			}
-	        if (camera.y < 0) {
-	            camera.y = 0;
-	        }
+
 		} else if (targetCamera != null) {
+			// Save previous camera location
 			// Move the camera to the target
 			int camSpeed=cameraSpeed;
 			if (scrollingAngle != null) {	// double speed if map is scrolling
@@ -101,13 +89,28 @@ public class MapDisplay {
 			} else if (diffY > 0) {
 				camera.y-=Math.min(camSpeed, diffY);
 			}
-			
-			if (targetCamera.equals(camera)) {
+
+        }
+		// Overflow tests
+		if (camera.x > (16*currentMap.getDim_x() - 16 * 20)) {
+			camera.x=16*currentMap.getDim_x() - 16 * 20;
+		}
+		if (camera.y > (16*currentMap.getDim_y() - 16 * 15 )) {	// marche avec 17
+			camera.y=16*currentMap.getDim_y() - 16 * 15 ;
+		}
+		if (camera.x < 0) {
+			camera.x=0;
+		}
+        if (camera.y < 0) {
+            camera.y = 0;
+        }
+        
+        if (targetCamera != null) {
+			if (targetCamera.equals(camera) || camera.equals(precCamera)) {
 				targetCamera=null;
 				scrollingAngle=null;
 			}
         }
-		
 		CloudFilter.setPosition(camera.x, camera.y);
     }
 	
