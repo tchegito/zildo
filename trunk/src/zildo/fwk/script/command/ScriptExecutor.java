@@ -140,6 +140,20 @@ public class ScriptExecutor {
 		return scripts.lastElement();
 	}
 	
+	/**
+	 * Returns TRUE if given name is in the processing queue (i.e. the quest are unfinished)
+	 * @param p_name
+	 * @return boolean
+	 */
+	public boolean isProcessing(String p_name) {
+		for (ScriptProcess process : scripts) {
+			if (p_name.equals(process.scene.id)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void userEndAction() {
 		userEndedAction=true;
 	}
