@@ -110,9 +110,12 @@ public class ScriptManagement {
     	}
     }
 
-    private void execute(List<ActionElement> p_actions, boolean p_finalEvent) {
+    private void execute(List<ActionElement> p_actions, boolean p_finalEvent, String p_questName) {
     	// Create a SceneElement from the given actions
 		SceneElement scene=SceneElement.createScene(p_actions);
+		if (p_questName != null) {
+			scene.id = p_questName;
+		}
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent);
     }
@@ -227,7 +230,7 @@ public class ScriptManagement {
     	// 1) note the history events (mapReplace ...)
     	List<ActionElement> history=p_quest.getHistory();
 		if (history != null) {
-			execute(history, true);
+			execute(history, true, null);
 		}
 		
 		// 2) execute the immediate actions (only in-game)
@@ -236,7 +239,7 @@ public class ScriptManagement {
 	    	TriggerElement trig=TriggerElement.createQuestDoneTrigger(p_quest.name);
 	    	trigger(trig);
 			// Execute the corresponding actions
-			execute(p_quest.getActions(), true);
+			execute(p_quest.getActions(), true, p_quest.name);
     	}
 
     	
@@ -310,13 +313,18 @@ public class ScriptManagement {
 		return quest.done;
 	}
 	
+	/**
+	 * Returns TRUE if the given quest is done and its actions are achieved.
+	 * @param p_questName
+	 * @return boolean
+	 */
 	public boolean isQuestOver(String p_questName) {
-		boolean first = isQuestDone(p_questName);
-		if (first) {
+		boolean done = isQuestDone(p_questName);
+		if (done && isScripting()) {
 			// Check if this quest is currently active
-			return !isScripting();
+			return !scriptExecutor.isProcessing(p_questName);
 		}
-		return false;
+		return done;
 	}
 	
 	public boolean isOpenedChest(String p_mapName, Point p_location) {
@@ -355,7 +363,7 @@ public class ScriptManagement {
 		for (MapscriptElement mapScript : adventure.getMapScripts()) {
 			for (ConditionElement condi : mapScript.getConditions()) {
 				if (condi.mapName.equals(p_mapName) && condi.isRight()) {
-					execute(condi.getActions(), false);
+					execute(condi.getActions(), false, null);
 				}
 			}
 		}
