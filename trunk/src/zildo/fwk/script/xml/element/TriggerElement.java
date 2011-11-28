@@ -27,6 +27,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.map.Point;
 import zildo.monde.map.Zone;
 import zildo.monde.quest.QuestEvent;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
 public class TriggerElement extends AnyElement {
@@ -134,7 +135,8 @@ public class TriggerElement extends AnyElement {
 		case QUESTDONE:
 			return questSwitch.evaluate() == 1;
 		case INVENTORY:
-			return EngineZildo.persoManagement.getZildo().hasItem(ItemKind.fromString(name)) == !not;
+			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+			return zildo != null && zildo.hasItem(ItemKind.fromString(name)) == !not;
 		default:
 			return done;
 		}
