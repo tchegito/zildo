@@ -455,6 +455,7 @@
 		<speak who="king" text="visit1.king.8"/>
 		<music name="Chateau"/>
 		<speak who="king" text="visit1.king.9"/>
+		<angle who="maltus" value="1"/>"
 		<focus who="zildo" delta="true"/>
 	</scene>
 	
