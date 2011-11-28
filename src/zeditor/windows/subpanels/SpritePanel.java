@@ -87,7 +87,7 @@ public class SpritePanel extends JPanel {
 
 	@SuppressWarnings("serial")
 	private JPanel getSouthPanel() {
-		SizedGridPanel panel = new SizedGridPanel(9);
+		SizedGridPanel panel = new SizedGridPanel(9, 0);
 
 		foreground = new JCheckBox(new AbstractAction() {
 			@Override

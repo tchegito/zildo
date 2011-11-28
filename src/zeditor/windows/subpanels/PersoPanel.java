@@ -99,7 +99,7 @@ public class PersoPanel extends JPanel {
 
 	@SuppressWarnings("serial")
 	private JPanel getSouthPanel() {
-		southPanel = new SizedGridPanel(8);
+		southPanel = new SizedGridPanel(8, 0);
 
 		name = new JTextField();
 		southPanel.addComp(new JLabel("Nom"), name);

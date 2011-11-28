@@ -39,8 +39,14 @@ import zeditor.core.tiles.SpriteSet;
 @SuppressWarnings("serial")
 public class SizedGridPanel extends JPanel {
 
-	public SizedGridPanel(int p_numLines) {
-		setLayout(new GridLayout(p_numLines, 1));
+	/**
+	 * @param p_numLines number of rows
+	 * @param p_vGap space between each row
+	 */
+	public SizedGridPanel(int p_numLines, int p_vGap) {
+		GridLayout l = new GridLayout(p_numLines, 1);
+		l.setVgap(p_vGap);
+		setLayout(l);
 	}
 	
 	public void addComp(Component p_compLeft, Component p_compRight) {
