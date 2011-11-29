@@ -63,8 +63,7 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Constructeur avec une liste d'objets correspondant aux différents objets
-	 * de la MasterFrame
+	 * Constructeur avec une liste d'objets correspondant aux différents objets de la MasterFrame
 	 * 
 	 * @param p_sys
 	 *            Le JLabel Système de la MasterFrame
@@ -102,9 +101,8 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Sauve la carte en cours dans la carte en cours. Si la carte en cours n'a
-	 * pas encore été sauvegardée, on appelle la méthode
-	 * {@link MasterPanelManager.saveAs saveAs()}
+	 * Sauve la carte en cours dans la carte en cours. Si la carte en cours n'a pas encore été sauvegardée, on appelle
+	 * la méthode {@link MasterPanelManager.saveAs saveAs()}
 	 * 
 	 * @author Drakulo
 	 */
@@ -121,8 +119,7 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Ouvre l'explorateur afin de sélectionner le nom du fichier à sauvegarder
-	 * pui lance (ou annule) la sauvegarde
+	 * Ouvre l'explorateur afin de sélectionner le nom du fichier à sauvegarder pui lance (ou annule) la sauvegarde
 	 */
 	public void saveAs() {
 		display("Enregistrer sous...", MESSAGE_ERROR);
@@ -321,8 +318,8 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Met à jours les boutons de la ToolBar. Cette méthode est dépendante de la
-	 * structure de la fenêtre. MasterPanel >> ToolbarContainer >> ToolBar
+	 * Met à jours les boutons de la ToolBar. Cette méthode est dépendante de la structure de la fenêtre. MasterPanel >>
+	 * ToolbarContainer >> ToolBar
 	 * 
 	 * @author Drakulo
 	 */
@@ -379,8 +376,7 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Affiche ou masque les tuiles non mappées sur le TileSet suivant le
-	 * paramètre
+	 * Affiche ou masque les tuiles non mappées sur le TileSet suivant le paramètre
 	 * 
 	 * @param flag
 	 *            true : afficher, false : masquer
@@ -401,14 +397,11 @@ public class MasterFrameManager {
 	 * @param mode
 	 *            est les mode (ouverture / sauvegarde) :
 	 *            <p>
-	 *            {@link ExplorerFrameManager.OPEN} /
-	 *            {@link ExplorerFrameManager.SAVE}
+	 *            {@link ExplorerFrameManager.OPEN} / {@link ExplorerFrameManager.SAVE}
 	 *            </p>
 	 */
 	public void openFileExplorer(int mode) {
-		ExplorerFrame explorer = new ExplorerFrame(masterFrame, mode);
-		explorer.setLocationRelativeTo(masterFrame);
-		explorer.setVisible(true);
+		new ExplorerFrame(masterFrame, mode);
 	}
 
 	/**
@@ -529,7 +522,7 @@ public class MasterFrameManager {
 			}
 		}
 	}
-	
+
 	public void updateTileSet() {
 		masterFrame.getBackgroundPanel().repaint();
 	}
