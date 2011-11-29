@@ -2,8 +2,6 @@ package zeditor.windows.managers;
 
 import java.io.File;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 
 import zeditor.windows.MasterFrame;
@@ -12,60 +10,50 @@ import zildo.resource.Constantes;
 public class ExplorerFrameManager {
 	public static final int SAVE = 0;
 	public static final int OPEN = 1;
-	
-	private JDialog masterFrame;
-	private JButton actionButton;
+
+	private MasterFrame masterFrame;
 	private JFileChooser fileChooser;
-	private MasterFrame parent;
 	private int mode;
-	
+
 	/**
 	 * Constructeur vide
 	 */
-	public ExplorerFrameManager(){}
-	
+	public ExplorerFrameManager() {
+	}
+
 	/**
 	 * Constructeur avec paramètres
+	 * 
 	 * @param p_frame
 	 */
-	public ExplorerFrameManager(JDialog p_frame, JButton p_actionButton, JFileChooser p_fileChooser) {
+	public ExplorerFrameManager(MasterFrame p_frame, JFileChooser p_fileChooser) {
 		masterFrame = p_frame;
-		actionButton = p_actionButton;
 		fileChooser = p_fileChooser;
-
-		parent = (MasterFrame)masterFrame.getOwner();
 	}
 
-	/**
-	 * Ferme la fenêtre
-	 */
-	public void close(){
-		masterFrame.dispose();
-	}
-	
 	/**
 	 * Initialisation de certains champs en fonction du mode d'ouverture (OPEN ou SAVE)
-	 * @param p_mode est le mode d'ouverture de la fenêtre
+	 * 
+	 * @param p_mode
+	 *            est le mode d'ouverture de la fenêtre
 	 */
-	public void init(int p_mode){
+	public void init(int p_mode) {
 		this.mode = p_mode;
-		if(p_mode == SAVE){
+		if (p_mode == SAVE) {
 			masterFrame.setTitle("Enregistrer sous...");
-			actionButton.setText("Enregistrer");
-			
-		}else if(p_mode == OPEN){
+
+		} else if (p_mode == OPEN) {
 			masterFrame.setTitle("Ouvrir...");
-			actionButton.setText("Ouvrir");
 		}
 	}
-	
+
 	/**
 	 * Exécute l'action en fonction du mode d'ouverture : sauvegarde ou ouverture
 	 */
-	public void doAction(){
-		if(mode == SAVE){
+	public void doAction() {
+		if (mode == SAVE) {
 			save();
-		}else if(mode == OPEN){
+		} else if (mode == OPEN) {
 			open();
 		}
 	}
@@ -73,31 +61,27 @@ public class ExplorerFrameManager {
 	/**
 	 * Ouvre la carte sélectionnée
 	 */
-	private void open(){
+	public void open() {
 		File f = fileChooser.getSelectedFile();
 		// On teste la nature du fichier (si c'est un *.MAP)
-		if(!f.getName().endsWith(".map")){
+		if (!f.getName().endsWith(".map")) {
 			// TODO Fenêtre d'erreur
 			return;
 		}
-		String relativeFilename=f.getAbsolutePath().replace(Constantes.DATA_PATH+Constantes.MAP_PATH, "");
-		
-		parent.getManager().loadMap(relativeFilename, null);
-		close();
+		String relativeFilename = f.getAbsolutePath().replace(Constantes.DATA_PATH + Constantes.MAP_PATH, "");
+
+		masterFrame.getManager().loadMap(relativeFilename, null);
 
 	}
-	
+
 	/**
 	 * Sauvegarde la carte en cours dans le fichier sélectionné
 	 */
-	private void save(){
-		if(fileChooser.getSelectedFile() == null){
+	public void save() {
+		if (fileChooser.getSelectedFile() == null) {
 			return;
 		}
-		//File f = new File(fileChooser.getSelectedFile().getAbsolutePath());
 
-		parent.getManager().saveAs(fileChooser.getSelectedFile().getName());
-		
-		close();
+		masterFrame.getManager().saveAs(fileChooser.getSelectedFile().getName());
 	}
 }
