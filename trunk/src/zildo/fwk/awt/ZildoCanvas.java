@@ -34,6 +34,8 @@ import zeditor.core.selection.PersoSelection;
 import zeditor.core.selection.Selection;
 import zeditor.core.selection.SpriteSelection;
 import zeditor.core.tiles.TileSelection;
+import zeditor.tools.checker.AreaChecker;
+import zeditor.tools.checker.ErrorDescription;
 import zeditor.windows.managers.MasterFrameManager;
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.client.ZildoRenderer;
@@ -265,26 +267,24 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		if (fileName.indexOf(".") == -1) {
 			fileName += ".map";
 		}
-
-		// Check for sprites out of bound
-		List<SpriteEntity> outOfBoundsEntities = area.getOutOfBoundEntities();
-		if (outOfBoundsEntities.size() > 0) {
-			if (0 == JOptionPane
-					.showConfirmDialog(
-							this,
-							"Some entities are out of bounds. Do you want to remove them ?",
-							"ZEditor", JOptionPane.YES_NO_OPTION)) {
-				for (SpriteEntity e : outOfBoundsEntities) {
-					EngineZildo.spriteManagement.deleteSprite(e);
+		
+		// Check for map errors, and ask user for fix, if it's possible
+		List<ErrorDescription> errors = new AreaChecker(area).check();
+		if (!errors.isEmpty()) {
+			for (ErrorDescription error : errors) {
+				if (error.fixAction == null) {
+					JOptionPane.showMessageDialog(this, "ZEditor : "+error.kind.toString(), error.message, JOptionPane.ERROR_MESSAGE);
+				} else {
+					if (0 == JOptionPane
+							.showConfirmDialog(
+									this,
+									error.message,
+									"ZEditor", JOptionPane.YES_NO_OPTION)) {
+						error.fixAction.run();
+					}
 				}
 			}
 		}
-
-		String m = area.checkBeforeSave();
-		if (m != null) {
-			JOptionPane.showMessageDialog(this, m, "ZEditor : error on 'dialog switch'", JOptionPane.ERROR_MESSAGE);
-		}
-		
 		map.saveMapFile(fileName);
 	}
 

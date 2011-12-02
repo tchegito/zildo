@@ -35,7 +35,6 @@ import zildo.fwk.IntSet;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
-import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.Hasard;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
@@ -372,8 +371,7 @@ public class Area implements EasySerializable {
 	 * @param tileLocation
 	 *            location
 	 * @param p_destroy
-	 *            TRUE if tile is attacked / FALSE for simple action (ex: Zildo
-	 *            picks up a bush)
+	 *            TRUE if tile is attacked / FALSE for simple action (ex: Zildo picks up a bush)
 	 */
 	public void takeSomethingOnTile(Point tileLocation, boolean p_destroy, Perso p_perso) {
 		int on_Area = this.readmap(tileLocation.getX(), tileLocation.getY());
@@ -693,7 +691,8 @@ public class Area implements EasySerializable {
 								break;
 							}
 						}
-						SpriteEntity entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse), false);
+						SpriteEntity entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse),
+								false);
 						if ((multi & SpriteEntity.FOREGROUND) != 0) {
 							entity.setForeground(true);
 						}
@@ -832,8 +831,7 @@ public class Area implements EasySerializable {
 			28 + 256 * 4, 39 + 256 * 4, 40 + 256 * 4, 43 + 256 * 4, 44 + 256 * 4);
 
 	/**
-	 * Add blocking tile on the hidden part of the tree in order to limit the
-	 * move of characters under the tree.
+	 * Add blocking tile on the hidden part of the tree in order to limit the move of characters under the tree.
 	 */
 	private void correctTrees() {
 		for (int j = 0; j < getDim_y(); j++) {
@@ -992,8 +990,7 @@ public class Area implements EasySerializable {
 	}
 
 	/**
-	 * Returns entities outside the map range (0..dim_x, 0..dim_y). Only used in
-	 * ZEditor.
+	 * Returns entities outside the map range (0..dim_x, 0..dim_y). Only used in ZEditor.
 	 * 
 	 * @return List<SpriteEntity>
 	 */
@@ -1003,7 +1000,7 @@ public class Area implements EasySerializable {
 		List<Perso> persos = filterExportablePersos(EngineZildo.persoManagement.tab_perso);
 		entities.addAll(persos);
 		for (SpriteEntity entity : entities) {
-			if (entity.x > dim_x * 16 || entity.y > dim_y * 16) {
+			if (isOutside((int) entity.x, (int) entity.y)) {
 				found.add(entity);
 			}
 		}
@@ -1011,25 +1008,15 @@ public class Area implements EasySerializable {
 	}
 
 	/**
-	 * Returns an error message, designed for ZEditor. Called before save.
+	 * Returns TRUE if the given point (in map coordinates : 0..64,0..64) is outside the map.
 	 * 
-	 * @return String (NULL = no error)
+	 * @param tx
+	 * @param ty
+	 * @return boolean
 	 */
-	public String checkBeforeSave() {
-		String result = null;
-		// 1) dialog switch
-		for (Perso p : EngineZildo.persoManagement.tab_perso) {
-			String swi = p.getDialogSwitch();
-			if (swi != null && swi.length() > 0) {
-				try {
-					new ZSSwitch(swi);
-				} catch (RuntimeException e) {
-					return "Perso " + p.getName() + " : " + e.getMessage();
-				}
-			}
-		}
-
-		return result;
+	public boolean isOutside(int tx, int ty) {
+		return (tx < 0 || ty < 0 ||
+				tx > (dim_x - 1) * 16 + 15 || ty > (dim_y - 1) * 16 + 15);
 	}
 
 	public Atmosphere getAtmosphere() {
