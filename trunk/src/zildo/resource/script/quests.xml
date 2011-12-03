@@ -186,7 +186,7 @@
 	</quest>
 	
 	<mapScript>
-		<condition name="coucou" exp="flut">
+		<condition name="coucou" exp="enlevement">
 			<remove who="roxy" />
 		</condition>
 		<condition name="coucou" exp="gardelaitier_win">
@@ -371,7 +371,7 @@
 	    <fadeOut type="0"/>
 	    <map name="coucou" />
 	    <pos who="zildo" pos="40,40" />
-	   	<spawn type="PRINCESSE" pos="927,234" who="roxy"/>
+	   	<pos pos="927,234" who="roxy"/>
 	    <script who="roxy" value="3" />
 	    <pos what="camera" pos="400,0" />
 	    <fadeIn type="0" unblock="true"/>
