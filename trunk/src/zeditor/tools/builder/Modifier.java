@@ -18,7 +18,7 @@
  *
  */
 
-package zeditor.tools.sprites;
+package zeditor.tools.builder;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -30,6 +30,13 @@ import java.util.logging.LogManager;
 
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.banque.Palais1;
+import zeditor.tools.sprites.ElementsPlus;
+import zeditor.tools.sprites.Fontes;
+import zeditor.tools.sprites.Gears;
+import zeditor.tools.sprites.Pnj;
+import zeditor.tools.sprites.Pnj2;
+import zeditor.tools.sprites.SpriteBankEdit;
+import zeditor.tools.sprites.SpriteBanque;
 import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.MotifBankEdit;
 import zildo.client.gui.GUIDisplay;
@@ -41,8 +48,10 @@ import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.map.Area;
 import zildo.monde.map.Zone;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -81,7 +90,8 @@ public class Modifier {
         //new Modifier().saveBanque();
         //new Modifier().saveGears();
         //new Modifier().savePnj();
-        new Modifier().savePnj2();
+        //new Modifier().savePnj2();
+        new Modifier().adjustSpritePositionOnAllMaps();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
        // new Modifier().ripDialogFromAllMaps();
@@ -186,7 +196,7 @@ public class Modifier {
     	 //bankElem.addSprFromImage(ElementDescription.BOOK_SIGN.getNSpr(), 11, 177, 32, 20);
     	 //bankElem.addSprFromImage(ElementDescription.LEAF.getNSpr(), 16, 169, 8, 7);
     	 //bankElem.addSprFromImage(ElementDescription.MILK.getNSpr(), 43, 181, 11, 16);
-    	 Zone[] zones = new ElementsPlus().zones;
+    	 Zone[] zones = new ElementsPlus().getZones();
     	 int nSpr=123;
     	 for (Zone z : zones) {
     		 if (bankElem.getNSprite() <= nSpr) {
@@ -379,5 +389,22 @@ public class Modifier {
 			}
 			mapManagement.saveMapFile(name);
 		}
+		
     }
+    
+	public void adjustSpritePositionOnAllMaps() {
+		new AllMapProcessor() {
+			
+			@Override
+			public void run() {
+				List<SpriteEntity> entities = EngineZildo.spriteManagement.getSpriteEntities(null);
+				for (SpriteEntity entity : entities) {
+					if (entity.getEntityType() == EntityType.ELEMENT ||
+							entity.getEntityType() == EntityType.ENTITY) {
+						entity.x+=entity.getSprModel().getTaille_x();
+					}
+				}
+			}
+		}.modifyAllMaps();
+	}
 }

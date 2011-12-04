@@ -22,6 +22,7 @@ package zeditor.tools.sprites;
 
 import java.util.Iterator;
 
+import zeditor.tools.builder.Modifier;
 import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.GraphChange;
 import zildo.fwk.bank.SpriteBank;
