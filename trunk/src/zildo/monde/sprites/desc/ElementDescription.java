@@ -150,6 +150,7 @@ public enum ElementDescription implements SpriteDescription {
 		case HEART:
 		case BOMBS3:
 		case ARROW_UP:
+		case HEART_FRAGMENT:
 			return new ElementGoodies();
 		default:
 			return new Element();

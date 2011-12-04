@@ -92,18 +92,20 @@ public class MapDisplay {
 
         }
 		// Overflow tests
-		if (camera.x > (16*currentMap.getDim_x() - 16 * 20)) {
-			camera.x=16*currentMap.getDim_x() - 16 * 20;
+		if (scrollingAngle == null) {
+			if (camera.x > (16*currentMap.getDim_x() - 16 * 20)) {
+				camera.x=16*currentMap.getDim_x() - 16 * 20;
+			}
+			if (camera.y > (16*currentMap.getDim_y() - 16 * 15 )) {	// marche avec 17
+				camera.y=16*currentMap.getDim_y() - 16 * 15 ;
+			}
+			if (camera.x < 0) {
+				camera.x=0;
+			}
+	        if (camera.y < 0) {
+	            camera.y = 0;
+	        }
 		}
-		if (camera.y > (16*currentMap.getDim_y() - 16 * 15 )) {	// marche avec 17
-			camera.y=16*currentMap.getDim_y() - 16 * 15 ;
-		}
-		if (camera.x < 0) {
-			camera.x=0;
-		}
-        if (camera.y < 0) {
-            camera.y = 0;
-        }
         
         if (targetCamera != null) {
 			if (targetCamera.equals(camera) || camera.equals(precCamera)) {

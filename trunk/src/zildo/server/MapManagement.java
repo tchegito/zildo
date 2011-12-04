@@ -209,7 +209,6 @@ public class MapManagement {
 	// OUT:TRUE if the given character collides with something or somebody
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public boolean collide(int tx, int ty, Element quelElement) {
-		int mx, my; // Position map
 		int modx, mody;
 		int on_map; // La case où se déplace le joueur
 
@@ -225,8 +224,7 @@ public class MapManagement {
 		}
 		ghost = p !=null && p.isGhost();
 		
-		if (tx < 0 || ty < 0 || tx > (currentMap.getDim_x() - 1) * 16 + 15
-				|| ty > (currentMap.getDim_y() - 1) * 16 + 15) {
+		if (currentMap.isOutside(tx, ty)) {
 			// Detect element out of the map, except for 3 cases : Zildo, ghosts and single pleyer
 			return quelElement != null && !ghost && (!quelElement.isZildo() || EngineZildo.game.multiPlayer);
 		}
@@ -309,11 +307,10 @@ public class MapManagement {
 			modx = mx % 16;
 			mody = my % 16;
 
-			if (mx < 0 || my < 0 || mx > (currentMap.getDim_x() - 1) * 16 + 15
-					|| my > (currentMap.getDim_y() - 1) * 16 + 15)
+			if (currentMap.isOutside(mx, my)) {
 				// On empêche la collision sur les bords de cartes
-				return !quelElement.isZildo() && !ghost;
-
+				return quelElement != null && !quelElement.isZildo() && !ghost;
+			}
 			if (tileCollision.collide(modx, mody, on_map)) {
 				return true;
 			}
@@ -674,7 +671,7 @@ public class MapManagement {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
 			//points.add(new Point(16*26, 45*16));
-			points.add(new Point(231+250, 160));
+			points.add(new Point(231+450, 160));	// 231+450 is good for preintro
 		} else {
 			points = currentMap.getRespawnPoints();
 		}

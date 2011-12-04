@@ -72,18 +72,20 @@ public class DialogManagement {
 	    WaitingDialog even = createWaitingDialog(p_client, persoToTalk);
 
 	    if (even != null) {
-		if (persoToTalk == null) {
-		    // Ingame event
-		    even.sentence = p_actionDialog.text;
-		    p_client.dialogState.actionDialog = p_actionDialog;
-		}
-		p_client.dialogState.continuing = even.sentence.indexOf("@") != -1;
-		even.sentence = even.sentence.trim().replaceAll("@", "");
-		dialogQueue.add(even);
-	    }
+			if (persoToTalk == null) {
+			    // Ingame event
+			    even.sentence = p_actionDialog.text;
+			    p_client.dialogState.actionDialog = p_actionDialog;
+			}
+			p_client.dialogState.continuing = even.sentence.indexOf("@") != -1;
+			even.sentence = even.sentence.trim().replaceAll("@", "");
+			dialogQueue.add(even);
+			
         	
-            p_client.dialogState.dialoguing = true;
-            p_client.zildo.setDialoguingWith(persoToTalk);
+	        p_client.dialogState.dialoguing = true;
+	        p_client.zildo.setDialoguingWith(persoToTalk);
+	    }
+
 	}
 
 

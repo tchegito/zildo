@@ -382,11 +382,11 @@ public class SpriteManagement extends SpriteStore {
 		    int adjustX = 0;
 		    int adjustY = 0;
 		    SpriteModel spr = getSpriteBank(desc.getBank()).get_sprite(nSpr);
-		    adjustX = (spr.getTaille_x() >> 1);
+		    adjustX = -(spr.getTaille_x() >> 1);
 		    if (p_adjustPos) {
-			adjustY = -(spr.getTaille_y() >> 1);
+		    	adjustY = -(spr.getTaille_y() >> 1);
 		    } else {
-			adjustY = -spr.getTaille_y();
+		    	adjustY = -spr.getTaille_y();
 		    }
 		    entity.setAjustedX(x + adjustX);
 		    entity.setAjustedY(y + adjustY);

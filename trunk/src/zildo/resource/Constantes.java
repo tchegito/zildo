@@ -31,7 +31,7 @@ public class Constantes {
 
 	// File system data
 	//public static String DATA_PATH = "."+File.separator+"Data"+File.separator;	// Pour livraison
-	public static String DATA_PATH = "D:\\Tchegito\\Version 1.095\\Data\\";
+	public static String DATA_PATH = "E:\\ZildoDist\\Version 1.095\\Data\\";
 
 	public static String MAP_PATH = "maps"+File.separator;
 	public static String CONFIGURATION_FILE = "ini"+File.separator+"player.ini";

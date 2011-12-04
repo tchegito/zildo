@@ -82,6 +82,7 @@ public enum PersoDescription implements SpriteDescription {
 	HECTOR(215, 216, 217, 218),
 	RABBIT(219, 220, 221, 222, 223),
 	KING(224),
+	SINGER(230),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
