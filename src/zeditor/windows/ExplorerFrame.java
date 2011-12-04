@@ -1,5 +1,6 @@
 package zeditor.windows;
 
+import java.awt.Dimension;
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -41,7 +42,7 @@ public class ExplorerFrame {
 		fileChooser.setAcceptAllFileFilterUsed(false);
 
 		manager = new ExplorerFrameManager(frame, fileChooser);
-		fileChooser.setSize(600, 400);
+		fileChooser.setPreferredSize(new Dimension(600, 600));
 		if (mode == ExplorerFrameManager.OPEN) {
 			status = fileChooser.showOpenDialog(frame);
 			if (status == JFileChooser.APPROVE_OPTION) {

@@ -185,6 +185,27 @@
 		</action>
 	</quest>
 	
+	<quest name="maltus_foret">
+		<trigger>
+			<questDone name="suite_visit1_weapon"/>
+			<location name="foret" pos="694,533" radius="1"/>
+		</trigger>
+		<action>
+			<exec script="maltus_foret1"/>
+		</action>
+	</quest>
+	
+	<!-- Only for episode 1 ==> need to be removed after -->
+	<quest name="temp_episode1_desert" repeat="true">
+		<trigger>
+			<location name="ferme" pos="232,22" radius="2"></location>
+		</trigger>
+		<action>
+			<speak who="zildo" text="ferme.tempEpisode1"/>
+			<moveTo who="zildo" pos="0,32" delta="true"/>
+		</action>
+	</quest>
+	
 	<mapScript>
 		<condition name="coucou" exp="enlevement">
 			<remove who="roxy" />
@@ -201,6 +222,9 @@
 		</condition>
 		<condition name="chateaucoucou2" exp="suite_visit1_weapon">
 			<remove who="maltus"/>
+		</condition>
+		<condition name="foret" exp="suite_visit1_weapon">
+			<spawn type="BANDIT_CHAPEAU" pos="695,474" who="maltus"/>
 		</condition>
 	</mapScript>
 	
@@ -549,5 +573,13 @@
 		<sound name="ZildoDescend" />
 		<fadeIn type="1" unblock="true" />
 		<moveTo who="zildo" pos="0,16" delta="true" speed="0.2" />
+	</scene>
+	
+	<scene id="maltus_foret1">
+		<angle who="maltus" value="1"/>
+		<moveTo who="zildo" pos="696,489"/>
+		<angle who="maltus" value="2"/>
+		<speak who="maltus" text="foret.maltus.1"/>
+		<speak who="zildo" text="foret.zildo.1"/>
 	</scene>
 </adventure>

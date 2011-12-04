@@ -278,7 +278,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 					if (0 == JOptionPane
 							.showConfirmDialog(
 									this,
-									error.message,
+									error.message+"\n\nDo you want ZEditor to fix this ?",
 									"ZEditor", JOptionPane.YES_NO_OPTION)) {
 						error.fixAction.run();
 					}

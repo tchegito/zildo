@@ -56,7 +56,7 @@ public class ZSSwitch {
 	}
 
 	public ZSSwitch(String p_parseableString) {
-		String[] strConds = p_parseableString.split(",");
+		String[] strConds = p_parseableString.replaceAll("-", "&").split(",");
 		int def = 0;
 		boolean defaultSet = false;
 		conditions = new ArrayList<ZSCondition>();
