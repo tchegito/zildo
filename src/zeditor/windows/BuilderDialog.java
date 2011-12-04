@@ -33,7 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import zeditor.tools.sprites.Modifier;
+import zeditor.tools.builder.Modifier;
 import zeditor.tools.ui.SizedGridPanel;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.sprites.SpriteStore;

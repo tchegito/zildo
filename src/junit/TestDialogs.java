@@ -1,6 +1,7 @@
 package junit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
@@ -17,10 +18,12 @@ public class TestDialogs {
 	final static String BUNDLE_GAME = "zildo.resource.bundle.game";
 	final static String BUNDLE_MENU = "zildo.resource.bundle.menu";
 
+	// Some sentences are the same in french than in english : we must authorize those exceptions
+	final static Set<String> sameSentecesTranslated=Collections.singleton("m7.options");
+	
 	@Test
 	public void checkGameComplete() {
 		checkGivenBundleComplete(BUNDLE_GAME);
-
 	}
 
 	@Test
@@ -74,7 +77,7 @@ public class TestDialogs {
 			String key = keys.nextElement();
 			try {
 				String translated = bundleTranslated.getString(key);
-				if (translated.equals(bundleRef.getString(key))) {
+				if (translated.equals(bundleRef.getString(key)) && !sameSentecesTranslated.contains(key)) {
 					untranslated.add(key);
 				}
 			} catch (MissingResourceException e) {
@@ -82,13 +85,17 @@ public class TestDialogs {
 			}
 		}
 		System.out.println("bundle: " + bundleName);
-		System.out.println("No english messages for keys:\n-----------------------------");
-		for (String s : emptyKey) {
-			System.out.println(s);
+		if (emptyKey.size() != 0) {
+			System.out.println("No english messages for keys:\n-----------------------------");
+			for (String s : emptyKey) {
+				System.out.println(s);
+			}
 		}
-		System.out.println("\n\nMessages aren't translated for keys:\n------------------------------------");
-		for (String s : untranslated) {
-			System.out.println(s);
+		if (untranslated.size() != 0) {
+			System.out.println("\n\nMessages aren't translated for keys:\n------------------------------------");
+			for (String s : untranslated) {
+				System.out.println(s);
+			}
 		}
 		System.out.println("\n\n");
 		Assert.assertEquals("No english messages for keys", 0, emptyKey.size());

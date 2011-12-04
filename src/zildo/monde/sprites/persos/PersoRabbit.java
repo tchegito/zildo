@@ -46,14 +46,17 @@ public class PersoRabbit extends PersoShadowed {
 	@Override
 	public void finaliseComportement(int compteur_animation) {
 		// Look minor variation
-		if (idleTime == 0) {
-			idleTime = 4 + Hasard.rand(10);
-			addSpr = Hasard.rand(2);
+		if (!jumping) {
+			if (idleTime == 0) {
+				idleTime = 4 + Hasard.rand(10);
+				if (!alerte) {
+					idleTime+= 32 + Hasard.rand(10); 
+				}
+				addSpr = Hasard.rand(2);
+			} else {
+				idleTime--;
+			}
 		} else {
-			idleTime--;
-		}
-
-		if (jumping) {
 			addSpr = 2;
 			if (vz >= 0) {
 				addSpr++;
