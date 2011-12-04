@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +36,7 @@ import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.fwk.ui.PageableMenu;
 import zildo.monde.Game;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -42,7 +45,7 @@ import zildo.server.EngineZildo;
  * @author Tchegito
  * 
  */
-public class SaveGameMenu extends Menu {
+public class SaveGameMenu extends PageableMenu {
 
 	final boolean load;
 
@@ -135,7 +138,7 @@ public class SaveGameMenu extends Menu {
 		EasyReadingFile file = new EasyReadingFile(p_filename);
 		game = Game.deserialize(file);
 		EngineZildo.setGame(game);
-		EngineZildo.mapManagement.loadMap("chateaucoucou1", false);
+		EngineZildo.mapManagement.loadMap("coucou", false);
 
 		singlePlay.launchGame();
 	}
@@ -156,7 +159,15 @@ public class SaveGameMenu extends Menu {
 				filenames.add(getSavegameDisplayTitle(f));
 			}
 		}
-
+		// Sort filenames by savegame number
+		Collections.sort(filenames, new Comparator<String>() {
+			@Override
+			public int compare(String s1, String s2) {
+				Integer i1 = Integer.valueOf(s1.substring(0, s1.indexOf(" ")));
+				Integer i2 = Integer.valueOf(s2.substring(0, s2.indexOf(" ")));
+				return i1.compareTo(i2);
+			}
+		});
 		return filenames;
 	}
 
