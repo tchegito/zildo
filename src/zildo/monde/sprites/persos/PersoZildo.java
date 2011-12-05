@@ -853,23 +853,30 @@ public class PersoZildo extends Perso {
 					break;
 				}
 				// Sound
+				BankSound toPlay = null;
 				switch (d) {
 				case GREENMONEY1:
 				case BLUEMONEY1:
 				case REDMONEY1:
-					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
+					toPlay = BankSound.ZildoRecupArgent;
 					break;
 				case QUAD1:
-					EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamage, this);
+					toPlay = BankSound.QuadDamage;
 					break;
 				case KEY:
-					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoKey, this);
+					toPlay = BankSound.ZildoKey;
+					break;
+				case HEART_FRAGMENT:
+					toPlay = BankSound.ZildoCoeur;
 					break;
 				case HEART:
 				case HEART_LEFT:
 				default:
-					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupCoeur, this);
+					toPlay = BankSound.ZildoRecupCoeur;
 					break;
+				}
+				if (toPlay != null) {	// Isn't it obvious ?
+					EngineZildo.soundManagement.broadcastSound(toPlay, this);
 				}
 			}
 		}

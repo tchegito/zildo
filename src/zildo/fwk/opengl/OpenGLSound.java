@@ -76,7 +76,7 @@ public class OpenGLSound {
 	public static void pollMusic(int delta) {
 		try {
 			SoundStore.get().poll(delta);
-		} catch (IndexOutOfBoundsException e) {
+		} catch (Throwable t) {
 			// Not a big deal : music is wrapping
 			System.out.println("coucou");
 		}

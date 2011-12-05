@@ -50,7 +50,7 @@ public class Element extends SpriteEntity {
 	private static IntSet damageableElements = new IntSet(0, 1, 11, 12, 2, 38,
 			42, 71, 72, 73, 74, 106, 163);
 	// Elements that Zildo can push
-	private static IntSet pushableElements = new IntSet(28, 69, 70);
+	private static IntSet pushableElements = new IntSet(28, 69, 70, 169);
 
 	// Class variables
 	private float ancX, ancY, ancZ;
@@ -215,6 +215,9 @@ public class Element extends SpriteEntity {
 	 * @return boolean
 	 */
 	protected boolean physicMoveWithCollision() {
+		if (ax == 0f && ay == 0f && az == 0f && vx == 0f && vy == 0f && vz == 0f) {
+			return false;
+		}
 		physicMove();
 		if (isSolid() || pushableElements.contains(nSpr)) {
 			SpriteEntity linked = this.getLinkedPerso();
@@ -262,6 +265,9 @@ public class Element extends SpriteEntity {
 		// Perso pnj;
 		boolean colli;
 
+		if (getDesc() == ElementDescription.CUBE_ORANGE && vx != 0) {
+			int j=45;
+		}
 		// Si ce sprite est valide, est-il un sprite fixe ?
 		if (this.IsNotFixe()) {
 			// On a trouvé un sprite valide non fixe
@@ -548,8 +554,14 @@ public class Element extends SpriteEntity {
 	public boolean isPushable() {
 		// We shouldn't look for zildo's position normally.
 		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-		return ((nSpr == 69 || nSpr == 70 ||
+		boolean pushable = false;
+		if (desc instanceof ElementDescription) {
+			ElementDescription d = (ElementDescription) desc;
+			pushable = d.isPushable();
+		}
+		return ((pushable ||
 		// Cas spécial : 28=tonneau sur la map 'polakyg' : passage secret !}
+				// TODO:clean this for episode 2
 		(nSpr == 28
 				&& EngineZildo.mapManagement.getCurrentMap().getName()
 						.equals("polakyg") && zildo.getY() >= 7 * 16)) && az == 0.0f);

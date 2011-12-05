@@ -452,6 +452,7 @@
 	<scene id="coucou_visit1">
 		<moveTo who="zildo" pos="439,311"/>
 		<moveTo what="camera" pos="0,-48" delta="true"/>
+		<wait value="30"/>
 		<speak who="king" text="visit1.king.1"/>
 		<wait value="15"/>
 		<angle who="maltus" value="0"/>
