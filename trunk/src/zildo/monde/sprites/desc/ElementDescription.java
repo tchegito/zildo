@@ -139,6 +139,7 @@ public enum ElementDescription implements SpriteDescription {
 		case CUBE_BLUE:
 		case CUBE_ORANGE:
 		case SPADE:
+		case STATUE:
 			return true;
 		default:
 			return false;
@@ -168,4 +169,12 @@ public enum ElementDescription implements SpriteDescription {
 		return false;
 	}
 
+	public boolean isPushable() {
+		switch (this) {
+		case CUBE_BLUE:
+		case CUBE_ORANGE:
+			return true;
+		}
+		return false;
+	}
 }

@@ -116,6 +116,12 @@ public class PersoManagement {
             	if (quelElement != null && persoToCompare.isForeground() != quelElement.isForeground()) {
             		continue;
             	}
+            	if (persoToCompare.isZildo() && quelElement != null && quelElement.getDesc() instanceof ElementDescription) {
+            		ElementDescription d = (ElementDescription) quelElement.getDesc();
+            		if (d.isPushable() && quelElement.vx+quelElement.vy != 0f) {
+            			continue;
+            		}
+            	}
                 int tx = (int) persoToCompare.getX();
                 int ty = (int) persoToCompare.getY();
                 PersoDescription descToCompare = persoToCompare.getDesc();

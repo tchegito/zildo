@@ -140,7 +140,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 
 	public Point getCenter() {
 		center.x = (int) x - sprModel.getTaille_x() / 2;
-		center.y = (int) y - sprModel.getTaille_y() / 2;
+		center.y = (int) y - sprModel.getTaille_y();
 		return center;
 	}
 
