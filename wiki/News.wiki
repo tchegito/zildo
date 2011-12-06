@@ -7,6 +7,8 @@
  * real adventure with quests !!! (really soon)
  * two new musics (again !)
 
+==> in test phase right now ! (06/12/2011)
+
 = Version 1.094 = 
 
  * savegames
