@@ -47,6 +47,7 @@ public enum BankSound implements AudioBank {
 	ZildoKey("getKey"),
 	ZildoUnlock("doorUnlock"),
 	ZildoUnlockDouble("doorDouble"),
+	ZildoAccomplishQuest("queteEpuree"),
 	
 	QuadDamage("quaddamage"),
 	QuadDamageLeaving("damage2"),

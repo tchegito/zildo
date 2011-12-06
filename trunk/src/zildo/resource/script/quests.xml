@@ -51,6 +51,9 @@
 		<trigger>
 			<dialog name="mostapha" num="2"/>
 		</trigger>
+		<action>
+			<sound name="ZildoAccomplishQuest"/>
+		</action>
 	</quest>
 	<quest name="fermierperdu">
 		<trigger>
@@ -62,6 +65,7 @@
 			<script who="charles_bar" value="0"/>
 			<moveTo who="charles_bar" pos="192,513" speed="1"/>
 			<remove who="charles_bar"/>
+			<sound name="ZildoAccomplishQuest"/>
 		</action>
 	</quest>
 	<quest name="fermierperdu_win">
@@ -76,6 +80,9 @@
 		<trigger>
 			<dialog name="roby" num="2"/>
 		</trigger>
+		<action>
+			<sound name="ZildoAccomplishQuest"/>
+		</action>
 	</quest>
 	<quest name="gardelaitier_win">
 		<trigger>
