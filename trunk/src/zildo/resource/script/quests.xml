@@ -96,10 +96,18 @@
 			<putDown item="milk"/>
 		</action>
 	</quest>
+	<quest name="ritou_bar">
+		<trigger>
+			<dialog name="ritou" num="2"/>
+		</trigger>
+		<action>
+			<sound name="ZildoAccomplishQuest"/>
+		</action>
+	</quest>
 	<quest name="empechezildo_bar" repeat="true">
 		<trigger>
 			<location who="zildo" name="coucou" pos="448,520"/>
-			<questDone name="!fermierperdu_bar"/>
+			<questDone name="!fermierperdu_bar-!ritou_bar"/>
 		</trigger>
 		<action>
 			<speak who="zildo" text="d4.noBar"/>
@@ -109,7 +117,7 @@
 	<quest name="empechezildo_bar2" repeat="true">
 		<trigger>
 			<location who="zildo" name="coucou" pos="464,308"/>
-			<questDone name="!fermierperdu_bar"/>
+			<questDone name="!fermierperdu_bar-!ritou_bar"/>
 		</trigger>
 		<action>
 			<speak who="zildo" text="d4.noBar"/>
@@ -230,8 +238,8 @@
 		<condition name="chateaucoucou2" exp="suite_visit1_weapon">
 			<remove who="maltus"/>
 		</condition>
-		<condition name="foret" exp="suite_visit1_weapon">
-			<spawn type="BANDIT_CHAPEAU" pos="695,474" who="maltus"/>
+		<condition name="foret" exp="!suite_visit1_weapon">
+			<remove who="maltus"/>
 		</condition>
 	</mapScript>
 	
