@@ -45,7 +45,7 @@ public class PathFinderFlying extends PathFinder {
 	public void determineDestination() {
         float x=mobile.x;
         float y=mobile.y;
-        if (target == null && mobile.getZone_deplacement() != null) {
+        if (mobile.getZone_deplacement() != null) {
         	super.determineDestination();
         }
         if (target != null) {

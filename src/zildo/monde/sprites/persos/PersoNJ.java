@@ -192,14 +192,14 @@ public class PersoNJ extends Perso {
 							zone_deplacement.incY2(pasy * 3);
 						}
 						attente = 1 + (int) Math.random() * 5;
-						if (pathFinder.getTarget() == null) {
+						if (pathFinder.getTarget() == null || desc == PersoDescription.CORBEAU) {
 							pathFinder.determineDestination();
 						}
 						cptMouvement = 0;
 					} else if (attente != 0) {
 						attente--;
 					} else {
-						if (quel_spr == PersoDescription.CORBEAU) {
+						if (desc == PersoDescription.CORBEAU) {
 							if (pos_seqsprite != 0) {
 								pos_seqsprite = (4 * Constantes.speed) + (pos_seqsprite - 4 * Constantes.speed + 1)
 										% (8 * Constantes.speed);
