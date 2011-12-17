@@ -54,7 +54,7 @@ import zildo.Zildo;
  */
 public abstract class OpenGLGestion {
 
-	private DisplayMode displayMode;
+	private DisplayMode displayMode = null;
 	final String windowTitle; // ="(To override) Window OpenGL";
 	private float lightAmbient[] = { 0.5f, 0.5f, 0.5f, 1.0f }; // Ambient Light
 																// Values ( NEW
@@ -75,21 +75,38 @@ public abstract class OpenGLGestion {
 		windowTitle = p_title;
 	}
 
-	public OpenGLGestion(String p_title, boolean fullscreen) {
+	public OpenGLGestion(String p_title, boolean p_fullscreen) {
 		windowTitle = p_title;
 		try {
-			this.fullscreen = fullscreen;
+			this.fullscreen = p_fullscreen;
 			initDisplay();
 			init();
-			if (fullscreen) {	// Hide mouse in fullscreen
-				Mouse.setGrabbed(true);
-			}
+			switchFullscreen(fullscreen);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 
 	}
 
+	/**
+	 * Switch display with given fullscreen mode (TRUE or FALSE=windowed)
+	 * @param p_fullscreen
+	 */
+	public void switchFullscreen(boolean p_fullscreen) {
+		fullscreen = p_fullscreen;
+		try {
+			if (fullscreen) {	// Hide mouse in fullscreen
+				Mouse.setGrabbed(true);
+			} else {
+				Mouse.setGrabbed(false);
+				Display.setDisplayMode(displayMode);			
+			}
+			Display.setFullscreen(p_fullscreen);
+		} catch (LWJGLException e) {
+			throw new RuntimeException("Failed to switch full/windowed mode");
+		}
+	}
+	
 	private void showDisplayMode(DisplayMode d) {
 		System.out.println("mode: " + d.getWidth() + "x" + d.getHeight() + " "
 				+ d.getBitsPerPixel() + "bpp " + d.getFrequency() + "Hz");

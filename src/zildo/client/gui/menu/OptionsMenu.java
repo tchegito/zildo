@@ -22,6 +22,8 @@ package zildo.client.gui.menu;
 
 import java.util.ArrayList;
 
+import zildo.Zildo;
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.UIText;
@@ -33,7 +35,8 @@ import zildo.fwk.ui.UIText;
 public class OptionsMenu extends Menu {
 
 	boolean music = client.isMusic();
-
+	boolean fullScreen = Zildo.fullScreen;
+	
 	public OptionsMenu(final Menu p_previous) {
 
 		items = new ArrayList<ItemMenu>();
@@ -50,6 +53,16 @@ public class OptionsMenu extends Menu {
 
 		});
 
+		items.add(new ItemMenu(getFullscreenString()) {
+			@Override
+			public void run() {
+				fullScreen = !fullScreen;
+				ClientEngineZildo.openGLGestion.switchFullscreen(fullScreen);
+				setText(getFullscreenString());
+				client.handleMenu(currentMenu);
+			}
+		});
+		
 		items.add(new ItemMenu("global.back") {
 			@Override
 			public void run() {
@@ -62,5 +75,9 @@ public class OptionsMenu extends Menu {
 
 	String getMusicString() {
 		return UIText.getMenuText("m9.musicPref", music ? "On" : "Off");
+	}
+	
+	String getFullscreenString() {
+		return UIText.getMenuText("m9.fullScreenPref", fullScreen ? "On" : "Off");
 	}
 }
