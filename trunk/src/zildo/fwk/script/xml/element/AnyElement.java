@@ -24,6 +24,30 @@ import org.w3c.dom.Element;
 
 public abstract class AnyElement {
 
+	enum XmlElementKind {
+		adventure(AdventureElement.class),
+		scene(SceneElement.class),
+		actions(ActionsElement.class),
+		quest(QuestElement.class),
+		mapscript(MapscriptElement.class),
+		condition(ConditionElement.class);
+		
+		Class<? extends AnyElement> clazz;
+		
+		private XmlElementKind(Class<? extends AnyElement> p_clazz) {
+			clazz = p_clazz;
+		}
+		
+		public static XmlElementKind fromString(String p_name) {
+			for (XmlElementKind x : values()) {
+				if (x.name().equalsIgnoreCase(p_name)) {
+					return x;
+				}
+			}
+			throw new RuntimeException("Unable to find element "+p_name);
+		}
+	}
+	
     public boolean waiting = false;
     public boolean done = false;
 
@@ -59,5 +83,15 @@ public abstract class AnyElement {
 		} else {
 			return Integer.valueOf(strValue);
 		}
+    }
+    
+    static public AnyElement newInstanceFromString(String p_name) {
+    	XmlElementKind kind = XmlElementKind.fromString(p_name);
+    	try {
+    		return (AnyElement) kind.clazz.newInstance();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("Unable to find class " + kind.toString());
+	    }
     }
 }

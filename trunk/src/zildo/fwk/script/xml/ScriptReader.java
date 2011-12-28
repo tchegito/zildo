@@ -82,14 +82,7 @@ public class ScriptReader {
         } else {
         	// General case
 	        name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length()).toLowerCase();
-	        name = "zildo.fwk.script.xml.element." + name + "Element";
-	
-	        try {
-	            s = (AnyElement) Class.forName(name).newInstance();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            throw new RuntimeException("Unable to find class " + name);
-	        }
+            s = AnyElement.newInstanceFromString(name);
         }
         s.parse(p_element);
         return s;

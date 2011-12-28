@@ -157,7 +157,7 @@ public class ScriptPanel extends JPanel {
 	}
 
 	private JTable getScriptList() {
-		JTable list = new JTable(null, ScriptTableModel.columnNames) {
+		JTable list = new JTable(null, ScriptWriter.columnNames) {
 			@Override
 			public TableCellEditor getCellEditor(int p_row, int p_column) {
 				if (p_column >= 1) {

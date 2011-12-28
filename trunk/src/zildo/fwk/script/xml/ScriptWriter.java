@@ -15,7 +15,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import zeditor.windows.subpanels.ScriptTableModel;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.ActionElement.ActionKind;
@@ -23,6 +22,9 @@ import zildo.fwk.script.xml.element.ActionElement.ActionKind;
 public class ScriptWriter {
 
     File file;
+
+	public final static String[] columnNames = new String[] { "Action", "who", "pos", "what", "value", "text", "angle",
+	"name", "type", "delta", "fx", "speed", "backward", "unblock", "unstoppable" };
     
     static public Document document;
     
@@ -54,7 +56,7 @@ public class ScriptWriter {
 		    if (kind != null) {
 			Element actionElement = document.createElement(action.kind.toString());
 			// Append attributes
-			for (String attr : ScriptTableModel.columnNames) {
+			for (String attr : ScriptWriter.columnNames) {
 			    String value = action.readAttribute(attr);
 			    if (value != null) {
 				actionElement.setAttribute(attr, value);
