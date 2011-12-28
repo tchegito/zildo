@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.script.xml.ScriptWriter;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.ActionsElement;
 import zildo.fwk.script.xml.element.ActionElement.ActionKind;
@@ -22,9 +23,6 @@ import zildo.monde.sprites.utils.MouvementPerso;
 @SuppressWarnings("serial")
 public class ScriptTableModel extends DefaultTableModel {
 
-	public final static String[] columnNames = new String[] { "Action", "who", "pos", "what", "value", "text", "angle",
-			"name", "type", "delta", "fx", "speed", "backward", "unblock", "unstoppable" };
-
 	List<ActionElement> actions;
 
 	Map<String, Color> colorByPerso = new HashMap<String, Color>();
@@ -35,13 +33,13 @@ public class ScriptTableModel extends DefaultTableModel {
 	public ScriptTableModel(List<ActionElement> p_actions) {
 		super();
 		// 1st pass : set values
-		setDataVector(transformObjectArray(p_actions), columnNames);
+		setDataVector(transformObjectArray(p_actions), ScriptWriter.columnNames);
 
 		actions = p_actions;
 
 		// 2nd pass : adjust enum values
 		for (int i = 0; i < p_actions.size(); i++) {
-			for (int j = 0; j < columnNames.length; j++) {
+			for (int j = 0; j < ScriptWriter.columnNames.length; j++) {
 				Class clazz = getClassCell(i, j);
 				if (clazz != String.class) {
 					Object val = getValueAt(i, j);
@@ -66,7 +64,7 @@ public class ScriptTableModel extends DefaultTableModel {
 				if (col == -1) { // Sometimes we got here with -1
 					return;
 				}
-				String attr = columnNames[col];
+				String attr = ScriptWriter.columnNames[col];
 				ActionElement action = actions.get(row);
 				String value = (String) getValueAt(row, col);
 
@@ -108,8 +106,8 @@ public class ScriptTableModel extends DefaultTableModel {
 	}
 
 	public final static int findColumnByName(String p_name) {
-		for (int i = 0; i < columnNames.length; i++) {
-			if (columnNames[i].equals(p_name)) {
+		for (int i = 0; i < ScriptWriter.columnNames.length; i++) {
+			if (ScriptWriter.columnNames[i].equals(p_name)) {
 				return i;
 			}
 		}
@@ -117,7 +115,7 @@ public class ScriptTableModel extends DefaultTableModel {
 	}
 
 	private Object[][] transformObjectArray(List<ActionElement> p_actions) {
-		Object[][] data = new Object[p_actions.size()][columnNames.length];
+		Object[][] data = new Object[p_actions.size()][ScriptWriter.columnNames.length];
 		for (int i = 0; i < p_actions.size(); i++) {
 			data[i] = getRow(p_actions.get(i));
 		}
@@ -128,10 +126,10 @@ public class ScriptTableModel extends DefaultTableModel {
 		if (p_action instanceof ActionsElement) {
 			return null;
 		} else {
-			Object[] obj = new Object[columnNames.length];
+			Object[] obj = new Object[ScriptWriter.columnNames.length];
 			obj[0] = p_action.kind.name();
-			for (int i = 1; i < columnNames.length; i++) {
-				obj[i] = p_action.readAttribute(columnNames[i]);
+			for (int i = 1; i < ScriptWriter.columnNames.length; i++) {
+				obj[i] = p_action.readAttribute(ScriptWriter.columnNames[i]);
 			}
 			return obj;
 		}
