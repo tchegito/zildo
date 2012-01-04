@@ -45,8 +45,8 @@ Let's see which are the goal of each packet:
 
  * == `ServerPacket` [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/packet/ServerPacket.java (SVN)] ==
 
- This packet signal that a server exists on a given IP adress. In local area network,  it's send over a given delay in order to clients can see that a server is running.
- On an internet game, it's is nonsense. Client just have to pick up the server's IP to connect to. So this packet is never used in internet game.
+ This packet signal that a server exists on a given IP adress. In local area network,  it's sent over a given delay in order to clients can see that a server is running.
+ On an internet game, it's a nonsense. Client just have to pick up the server's IP to connect to. So this packet is never used in internet game.
 
  * == `ConnectPacket` [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/packet/ConnectPacket.java (SVN)] ==
 
@@ -66,7 +66,7 @@ Let's see which are the goal of each packet:
 
  * == `EventPacket` [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/packet/EventPacket.java (SVN)] ==
 
- It's a packet specifically sent by client, to signal a identifiable event, like a dialog end, or something else, which is relevant to client.
+ It's a packet specifically sent by client, to signal an identifiable event, like a dialog end, or something else, which is relevant to client.
 
 = Dialog =
 
@@ -78,7 +78,7 @@ Let's see concretely the packets exchanged between server and his clients.
 
 As we already said previously, there is two different behaviors between LAN and www game :
 
- * *LAN* : server sends repeatively a *!ServerPacket* with broadcast on all IP addresses with this form x.x.x.255 where the 'x' are server's IP adress members. It means that every client with same three members is targeted.
+ * *LAN* : server sends repeateadly a *!ServerPacket* with broadcast on all IP addresses with this form x.x.x.255 where the 'x' are server's IP adress members. It means that every client with same three members is targeted.
 
  * *www* : server sends nothing. Client has to select the server in a list.
 
@@ -92,16 +92,16 @@ Just after that, the client requires several things : map and entities. So he as
 
 Then the server will return the asked resources.
 
-*Note:* Every entities is sent at this time, because client hasn't any of them at the beginning. We'll see that it will be different after that.
+*Note:* Every entity is sent at this time, because client hasn't any of them at the beginning. We'll see that it will be different after that.
 
 == During the game ==
 
 At each frame, client sends :
 
  * keys pressed
- * *!AskPacket* to get actualised entities
+ * *!AskPacket* to get updated entities
 
-Server deals with all *!AskPacket* he received, and send corresponding resources.
+Server deals with all *!AskPacket* he received, and sends corresponding resources.
 
 When he sends entities to clients, there is two noticeable things :
  * server only sends a delta between the current frame and the previous one. This is for performance issues. Without that, internet gaming was impossible.
