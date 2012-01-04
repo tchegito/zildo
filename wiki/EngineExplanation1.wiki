@@ -23,7 +23,7 @@ On the other side, server is responsible for the general state of the world. It 
 
 == Data protocol ==
 
-To communicate between server and clients, we use only UDP because we don't need all TCP security checks. We need more speed to have acceptable pings on all clients.
+To communicate between server and clients, we only use UDP because we don't need all TCP security checks. We need more speed to have acceptable pings on all clients.
 
 A mini framework exists in Zildo to handle such send/receive operations. Here is a brief representation of it, where all links mean *unheritance*:
 
@@ -33,7 +33,7 @@ The main class is [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/
 
 The second one, [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/NetSend.java NetSend] handles send/receive operations by encapsulating them in Packet classes. We'll see that in the next part.
 
-And the more evoluated objects are designed for client and server purpose. They contains all precise interactions between such actors. We got a [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/InternetClient.java InternetClient] class, opposed to [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/NetClient.java NetClient], which are respectively the www client, and the LAN client.
+And the more evoluated objects are designed for client and server purpose. They contains all precise interactions between such actors. We got an [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/InternetClient.java InternetClient] class, opposed to [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/fwk/net/NetClient.java NetClient], which are respectively the www client, and the LAN client.
 
 = Packet presentation =
 
