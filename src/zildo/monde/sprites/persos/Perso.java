@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.client.sound.BankSound;
-import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.map.Angle;
 import zildo.monde.map.Point;

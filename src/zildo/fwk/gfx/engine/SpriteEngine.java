@@ -31,8 +31,8 @@ import org.newdawn.slick.TrueTypeFont;
 
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.GFXBasics;
-import zildo.fwk.gfx.PixelShaders.EngineFX;
 import zildo.fwk.gfx.SpritePrimitive;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;

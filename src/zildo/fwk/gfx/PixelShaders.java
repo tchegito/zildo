@@ -39,41 +39,6 @@ public class PixelShaders extends OpenGLStuff {
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
 	
-	public enum EngineFX {
-		NO_EFFECT,
-		GUARD_BLUE(new int[]{20, 28, 50}, new int[]{44, 36, 62}), 
-		GUARD_RED(new int[]{46, 16, 28}, new int[]{60, 30, 32}), 
-		GUARD_YELLOW(new int[]{52, 48, 16}, new int[]{60, 54, 16}), 
-		GUARD_BLACK(new int[]{22, 22, 22}, new int[]{30, 30, 34}), 
-		GUARD_GREEN(new int[]{10, 30, 14}, new int[]{30, 46, 8}), 
-		GUARD_PINK(new int[]{58, 24, 44}, new int[]{62, 32, 44}), 
-		PERSO_HURT, 
-		FONT_NORMAL(new int[]{0, 0, 28}, new int[]{62, 62, 62}), 
-		FONT_HIGHLIGHT(new int[]{8, 16, 28}, new int[]{60, 54, 16}), 
-		SHINY, QUAD,
-		FOCUSED;	// FOCUSED is used when we wants to highlight some entity (inventory, or buying something)
-		
-		public final Vector4f darkColor;
-		public final Vector4f brightColor;
-		
-		public boolean needPixelShader() {
-			return !(this==NO_EFFECT || this==SHINY || this==QUAD || this==FOCUSED);
-		}
-		
-		public EngineFX fromInt(int i) {
-			return EngineFX.values()[i];
-		}
-		
-		private EngineFX() { 
-			darkColor = null;
-			brightColor = null;
-		}
-		private EngineFX(int[] dark, int[] bright) {
-			darkColor = OpenGLStuff.createColor64(dark[0], dark[1], dark[2]);
-			brightColor = OpenGLStuff.createColor64(bright[0], bright[1], bright[2]);
-		}
-	}
-    
 	private int n_PixelShaders;
 	private int[] tabPixelShaders;
 	private ByteBuffer buff=BufferUtils.createByteBuffer(256);	// Used for setParameter

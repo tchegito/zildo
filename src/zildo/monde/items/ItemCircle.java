@@ -26,7 +26,7 @@ import java.util.List;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.client.sound.BankSound;
-import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
