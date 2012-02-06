@@ -21,7 +21,7 @@
 package zildo.monde.sprites.persos;
 
 import zildo.client.sound.BankSound;
-import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.fwk.gfx.EngineFX;
 import zildo.monde.Hasard;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.desc.ElementDescription;

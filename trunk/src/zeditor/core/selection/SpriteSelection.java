@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import zeditor.windows.subpanels.SelectionKind;
-import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.fwk.gfx.EngineFX;
 import zildo.monde.map.Point;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;

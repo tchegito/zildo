@@ -23,7 +23,7 @@ package zildo.monde.sprites;
 import zildo.fwk.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
-import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.fwk.gfx.EngineFX;
 import zildo.monde.map.Point;
 import zildo.monde.map.Zone;
 import zildo.monde.sprites.desc.EntityType;

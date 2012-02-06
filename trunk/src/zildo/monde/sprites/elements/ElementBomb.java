@@ -21,7 +21,7 @@
 package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
-import zildo.fwk.gfx.PixelShaders.EngineFX;
+import zildo.fwk.gfx.EngineFX;
 import zildo.monde.collision.Collision;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
