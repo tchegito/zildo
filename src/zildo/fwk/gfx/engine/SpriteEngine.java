@@ -203,58 +203,6 @@ public class SpriteEngine extends TextureEngine {
     }
 	
 	///////////////////////////////////////////////////////////////////////////////////////
-	// createTextureFromFontStyle
-	///////////////////////////////////////////////////////////////////////////////////////
-	public void createTextureFromFontStyle(SpriteBank sprBank)
-	{
-		GFXBasics surfaceGfx = prepareSurfaceForTexture(true);
-
-
-		TrueTypeFont ttFont=(TrueTypeFont) surfaceGfx.getFont();
-		
-		surfaceGfx.StartRendering();
-		surfaceGfx.box(0,0,256,8,255,new Vector4f(0,0,0,0));
-
-		// Draw fonts on it
-	
-		String alphabet= "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.,<>!?()'#$abcdefghijklmnopqrstuvwxyz";
-		int posX=0, posY=0, maxHeight=0;
-		maxHeight=ttFont.getHeight();
-		for (int i=0;i<alphabet.length();i++) {
-			String a=alphabet.charAt(i)+"";
-			int size=ttFont.getWidth(a);
-	
-			// Increase for outline effect
-			size+=1;
-	
-			// We calculate the location for next font, then display it
-			if ( (posX + size) > 256) {
-				posX=0;
-				posY+=maxHeight;
-				maxHeight=0;
-			}
-			//if (size.bottom > maxHeight) {
-			//	maxHeight=size.bottom;
-			//}
-			sprBank.addSpriteReference(posX, posY+1, size, maxHeight);
-	
-			surfaceGfx.aff_texte(posX, posY+1, a ,0xff0000ff, false);
-	
-			posX+=size;
-	
-		}
-
-		/*
-		surfaceGfx.copyFromRenderedSurface();
-		surfaceGfx.outlineBox(0,0,256,256,
-				0xff0000ff,
-				0xff00ff00,false);
-				*/
-		generateTexture();
-
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
 	// prepareSprites
 	///////////////////////////////////////////////////////////////////////////////////////
 	// IN: Bank to transform into texture
