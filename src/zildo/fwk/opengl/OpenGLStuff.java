@@ -20,8 +20,11 @@
 
 package zildo.fwk.opengl;
 
+import java.nio.FloatBuffer;
 import java.util.logging.Logger;
 
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -133,4 +136,34 @@ public class OpenGLStuff {
         fbo.cleanDepthBuffer(id);
         logger.info("Deleted depth buffer " + id);
     }
+    
+	
+	static FloatBuffer floatBuffer = null;
+
+	/**
+	 * Get the current color set with glColor4f
+	 * @param p_info
+	 * @param p_size
+	 * @return float[]
+	 */
+	public float[] getFloat(int p_info,int p_size) {
+		if (floatBuffer == null) {
+			floatBuffer=BufferUtils.createFloatBuffer(16);
+		}
+		GL11.glGetFloat(p_info, floatBuffer);
+		
+		float[] temp=new float[p_size];
+		floatBuffer.get(temp);
+		floatBuffer.position(0);
+		return temp;
+	}
+	
+	
+	/**
+	 * Set the current color from a float array.
+	 * @param p_color
+	 */
+	public void setCurrentColor(float[] p_color) {
+		GL11.glColor4f(p_color[0], p_color[1], p_color[2], p_color[3]);		
+	}
 }

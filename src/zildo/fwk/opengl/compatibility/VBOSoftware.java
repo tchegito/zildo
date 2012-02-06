@@ -29,11 +29,21 @@ public class VBOSoftware implements VBO {
 		return new VBOBuffers(p_numPoints);
 	}
 
+	protected void preDraw() {
+        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+        GL11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
+        GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+	}
+	
 	@Override
 	public void draw(VBOBuffers p_bufs) {
+		preDraw();
 		GL11.glVertexPointer(3, 0, p_bufs.vertices);
 		GL11.glNormalPointer(0, p_bufs.normals);
 		GL11.glTexCoordPointer(2, 0, p_bufs.textures);
+		
+        GL11.glDrawElements(GL11.GL_TRIANGLES, p_bufs.indices);
+
 	}
 
 	@Override

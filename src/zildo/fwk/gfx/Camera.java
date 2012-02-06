@@ -20,7 +20,6 @@
 
 package zildo.fwk.gfx;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
@@ -103,14 +102,7 @@ public class Camera {
 		RotatedZ += Angle;
 		ViewDirChanged = true;
 	}
-	
-	public void render()
-	{
-		GL11.glRotatef(-RotatedX , 1.0f, 0.0f, 0.0f);
-		GL11.glRotatef(-RotatedY , 0.0f, 1.0f, 0.0f);
-		GL11.glRotatef(-RotatedZ , 0.0f, 0.0f, 1.0f);
-		GL11.glTranslatef( -Position.x, -Position.y, -Position.z );
-	}
+
 	
 	public void moveForwards( float Distance )
 	{

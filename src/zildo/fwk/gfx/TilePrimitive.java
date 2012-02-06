@@ -20,12 +20,9 @@
 
 package zildo.fwk.gfx;
 
-import org.lwjgl.opengl.GL11;
-
 import zildo.fwk.opengl.OpenGLStuff;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 import zildo.monde.sprites.Reverse;
-import zildo.monde.sprites.SpriteEntity;
 
 /**
  * Class describing the TileEngine main element :<br/>
@@ -130,16 +127,10 @@ public class TilePrimitive extends OpenGLStuff {
     // /////////////////////////////////////////////////////////////////////////////////////
     public void render() {
 
-        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-        GL11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
-        GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+        // Indices buffer contains indices for 4096 tiles. We have to limit it to the real number of used tiles.
+        bufs.indices.limit(nIndices);
 
         vbo.draw(bufs);
-
-        // Le buffer d'indices contient les indices pour 4096 tiles. On doit le limiter au nombre de tiles
-        // réellement utilisé.
-        bufs.indices.limit(nIndices);
-        GL11.glDrawElements(GL11.GL_TRIANGLES, bufs.indices);
 
     }
 
@@ -205,7 +196,7 @@ public class TilePrimitive extends OpenGLStuff {
      * @param y
      * @param u
      * @param v
-     * @param reverse TODO
+     * @param reverse reverse attribute (horizonta and/or vertical)
      */
     public void updateTile(float x, float y, float u, float v, Reverse reverse) {
         // Get size

@@ -25,12 +25,14 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.SoundStore;
 
+import zildo.Zildo;
 import zildo.fwk.file.EasyReadingFile;
 import zildo.resource.Constantes;
 
@@ -67,10 +69,22 @@ public class OpenGLSound {
 
 	Audio snd = null;
 
-	static {
-		// AL.create();
-		SoundStore.get().init();
-
+	static boolean initialized = false;
+	static boolean failed = false;
+	
+	static public void detectAndInitSoundEngine() {
+		if (failed || initialized) {
+			return;	// No need to try once more
+		}
+		try {
+			AL.create();
+			AL.destroy();
+			SoundStore.get().init();
+			initialized = true;
+		} catch (LWJGLException e) {
+			Zildo.soundEnabled = false;
+			failed = true;	// Avoid to reinit another time
+		}
 	}
 
 	public static void pollMusic(int delta) {

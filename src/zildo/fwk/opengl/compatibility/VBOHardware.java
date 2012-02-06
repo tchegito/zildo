@@ -48,6 +48,8 @@ public class VBOHardware extends VBOSoftware {
 	
 	@Override
 	public void draw(VBOBuffers p_bufs) {
+		preDraw();
+		
         ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, p_bufs.vertexBufferId);
         GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
 
@@ -55,7 +57,10 @@ public class VBOHardware extends VBOSoftware {
         GL11.glNormalPointer(GL11.GL_FLOAT, 0, 0);
 
         ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, p_bufs.textureBufferId);
-        GL11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, 0);		
+        GL11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, 0);	
+        
+        GL11.glDrawElements(GL11.GL_TRIANGLES, p_bufs.indices);
+
 	}
 	
 	@Override
