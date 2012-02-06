@@ -33,7 +33,7 @@ import org.lwjgl.opengl.GL11;
 /**
  * @author eboussaton
  */
-public class Utils {
+public class GLUtils {
 
     public static int generateTexture(int sizeX, int sizeY) {
         IntBuffer buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();

@@ -28,7 +28,7 @@ import org.lwjgl.opengl.GL11;
 
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.opengl.OpenGLStuff;
-import zildo.fwk.opengl.Utils;
+import zildo.fwk.opengl.GLUtils;
 import zildo.resource.Constantes;
 
 /**
@@ -125,6 +125,6 @@ public abstract class TextureEngine extends OpenGLStuff {
     public void saveScreen(int p_texId) {
 
 		// Draw texture with depth
-    	Utils.copyScreenToTexture(p_texId, 1024, 512);
+    	GLUtils.copyScreenToTexture(p_texId, 1024, 512);
     }
 }
