@@ -22,7 +22,7 @@ package zildo.fwk.gfx.filter;
 
 import zildo.Zildo;
 import zildo.fwk.gfx.TilePrimitive;
-import zildo.fwk.opengl.Utils;
+import zildo.fwk.opengl.GLUtils;
 
 
 /**
@@ -45,8 +45,8 @@ public abstract class ScreenFilter extends TilePrimitive {
 	protected static final int sizeX=Zildo.viewPortX;
 	protected static final int sizeY=Zildo.viewPortY;
 	// Resizing for OpenGL storage
-	protected static final int realX=Utils.adjustTexSize(sizeX);
-	protected static final int realY=Utils.adjustTexSize(sizeY);
+	protected static final int realX=GLUtils.adjustTexSize(sizeX);
+	protected static final int realY=GLUtils.adjustTexSize(sizeY);
 	
 	// common members
 	protected int textureID;
@@ -59,7 +59,7 @@ public abstract class ScreenFilter extends TilePrimitive {
 	//////////////////////////////////////////////////////////////////////
 	public ScreenFilter()
 	{
-		super(4,6, Utils.adjustTexSize(sizeX), Utils.adjustTexSize(sizeY));
+		super(4,6, GLUtils.adjustTexSize(sizeX), GLUtils.adjustTexSize(sizeY));
 		// Create a screen sized quad
 		super.startInitialization();
 		this.addTileSized(0,0,0.0f,0.0f,sizeX, sizeY);

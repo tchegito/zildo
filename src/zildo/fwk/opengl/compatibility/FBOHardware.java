@@ -29,7 +29,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
 import zildo.Zildo;
-import zildo.fwk.opengl.Utils;
+import zildo.fwk.opengl.GLUtils;
 
 /**
  * @author tchegito
@@ -89,8 +89,8 @@ public class FBOHardware implements FBO {
 				EXTFramebufferObject.GL_RENDERBUFFER_EXT, depthID);
 		EXTFramebufferObject.glRenderbufferStorageEXT(
 				EXTFramebufferObject.GL_RENDERBUFFER_EXT,
-				GL11.GL_DEPTH_COMPONENT, Utils.adjustTexSize(Zildo.viewPortX),
-				Utils.adjustTexSize(Zildo.viewPortY));
+				GL11.GL_DEPTH_COMPONENT, GLUtils.adjustTexSize(Zildo.viewPortX),
+				GLUtils.adjustTexSize(Zildo.viewPortY));
 
 		return depthID;
 	}
@@ -114,13 +114,13 @@ public class FBOHardware implements FBO {
 
 	@Override
 	public void cleanUp(int id) {
-		EXTFramebufferObject.glDeleteFramebuffersEXT(Utils.getBufferWithId(id));
+		EXTFramebufferObject.glDeleteFramebuffersEXT(GLUtils.getBufferWithId(id));
 	}
 
 	@Override
 	public void cleanDepthBuffer(int id) {
 		EXTFramebufferObject
-				.glDeleteRenderbuffersEXT(Utils.getBufferWithId(id));
+				.glDeleteRenderbuffersEXT(GLUtils.getBufferWithId(id));
 	}
 
 	public void checkCompleteness(int myFBOId) {

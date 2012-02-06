@@ -99,7 +99,7 @@ public class OpenGLStuff {
     // //////////////////////////////////////////////
     // color: TRUE=color texture / FALSE=depth texture
     protected int generateTexture(int sizeX, int sizeY) {
-        int textureId = Utils.generateTexture(sizeX, sizeY);
+        int textureId = GLUtils.generateTexture(sizeX, sizeY);
 
         logger.info("Created texture " + textureId);
         return textureId;
@@ -128,7 +128,7 @@ public class OpenGLStuff {
     }
 
     protected void cleanTexture(int id) {
-        Utils.cleanTexture(id);
+        GLUtils.cleanTexture(id);
         logger.info("Deleted texture " + id);
     }
 

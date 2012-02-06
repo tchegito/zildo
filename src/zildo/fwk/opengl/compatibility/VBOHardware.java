@@ -28,7 +28,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBVertexBufferObject;
 import org.lwjgl.opengl.GL11;
 
-import zildo.fwk.opengl.Utils;
+import zildo.fwk.opengl.GLUtils;
 
 public class VBOHardware extends VBOSoftware {
 	
@@ -38,10 +38,10 @@ public class VBOHardware extends VBOSoftware {
 	public VBOBuffers create(int p_numPoints) {
         
 		VBOBuffers bufs=super.create(p_numPoints);
-		bufs.vertexBufferId = Utils.createVBO();
-		bufs.normalBufferId = Utils.createVBO();
-		bufs.textureBufferId = Utils.createVBO();
-		bufs.indiceBufferId = Utils.createVBO();
+		bufs.vertexBufferId = GLUtils.createVBO();
+		bufs.normalBufferId = GLUtils.createVBO();
+		bufs.textureBufferId = GLUtils.createVBO();
+		bufs.indiceBufferId = GLUtils.createVBO();
         
         return bufs;
 	}
@@ -86,9 +86,9 @@ public class VBOHardware extends VBOSoftware {
 	@Override
 	public void endInitialization(VBOBuffers p_bufs) {
 		super.endInitialization(p_bufs);
-        Utils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices);
-        Utils.bufferData(p_bufs.normalBufferId, p_bufs.normals);
-        Utils.bufferData(p_bufs.textureBufferId, p_bufs.textures);
-        Utils.bufferData(p_bufs.indiceBufferId, p_bufs.indices);		
+        GLUtils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices);
+        GLUtils.bufferData(p_bufs.normalBufferId, p_bufs.normals);
+        GLUtils.bufferData(p_bufs.textureBufferId, p_bufs.textures);
+        GLUtils.bufferData(p_bufs.indiceBufferId, p_bufs.indices);		
 	}
 }

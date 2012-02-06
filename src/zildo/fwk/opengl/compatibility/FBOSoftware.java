@@ -25,7 +25,7 @@ import java.util.Map;
 
 import org.lwjgl.opengl.Util;
 
-import zildo.fwk.opengl.Utils;
+import zildo.fwk.opengl.GLUtils;
 
 /**
  * @author eboussaton
@@ -61,13 +61,13 @@ public class FBOSoftware implements FBO {
 
 	@Override
 	public void endRendering() {
-		Utils.copyScreenToTexture(texRendered, 1024, 512);
+		GLUtils.copyScreenToTexture(texRendered, 1024, 512);
 		Util.checkGLError();
 	}
 
 	@Override
 	public void cleanUp(int id) {
-		Utils.cleanTexture(id);
+		GLUtils.cleanTexture(id);
 	}
 
 	@Override
