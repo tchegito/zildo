@@ -85,6 +85,8 @@ public class SoundPlay {
 	// loadSound
 	// /////////////////////////////////////////////////////////////////////////////////////
 	void loadSound(String p_subDirectory, AudioBank p_sound) {
+		OpenGLSound.detectAndInitSoundEngine();
+
 		if (Zildo.soundEnabled) {
 			// Build entire file name
 			String chemin = p_subDirectory + File.separator;
