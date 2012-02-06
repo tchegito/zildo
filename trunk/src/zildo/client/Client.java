@@ -24,11 +24,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.input.Keyboard;
-
 import zildo.Zildo;
 import zildo.client.gui.menu.InGameMenu;
 import zildo.fwk.ZUtils;
+import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.NetClient;
 import zildo.fwk.net.TransferObject;
@@ -142,7 +141,7 @@ public class Client {
 	public boolean render() {
 		if (!awt) {
 			// Read keyboard
-			Keyboard.poll();
+			KeyboardHandler.poll();
 
 			// Music
 			if (music) {
@@ -152,7 +151,7 @@ public class Client {
 			}
 			done = glGestion.mainloop();
 
-			if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !ClientEngineZildo.filterCommand.isFading()) {
+			if (KeyboardHandler.isKeyDown(KeyboardHandler.KEY_ESCAPE) && !ClientEngineZildo.filterCommand.isFading()) {
 				// Escape is pressed and no fade is running
 				if (connected) {
 					if (ingameMenu == null) {

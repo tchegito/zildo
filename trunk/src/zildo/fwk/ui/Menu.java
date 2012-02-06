@@ -23,11 +23,10 @@ package zildo.fwk.ui;
 import java.util.Arrays;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.BankSound;
+import zildo.fwk.input.KeyboardHandler;
 
 public class Menu {
 
@@ -83,10 +82,10 @@ public class Menu {
         char charKey=' ';
         char upperKey=' ';
         ItemMenu item;
-        while (Keyboard.next()) {
-        	if (Keyboard.getEventKeyState()) {
-	            key = Keyboard.getEventKey(); //Keyboard.getEventCharacter();
-	            charKey = Keyboard.getEventCharacter();
+        while (KeyboardHandler.next()) {
+        	if (KeyboardHandler.getEventKeyState()) {
+	            key = KeyboardHandler.getEventKey(); //Keyboard.getEventCharacter();
+	            charKey = KeyboardHandler.getEventCharacter();
 	            upperKey = Character.toUpperCase(charKey);
         	}
         }
@@ -95,13 +94,13 @@ public class Menu {
             item = items.get(selected);
 
         	switch (key) {
-        	case Keyboard.KEY_UP:
+        	case KeyboardHandler.KEY_UP:
                 move(false);
         		break;
-        	case Keyboard.KEY_DOWN:
+        	case KeyboardHandler.KEY_DOWN:
                 move(true);
         		break;
-        	case Keyboard.KEY_RETURN:
+        	case KeyboardHandler.KEY_RETURN:
                 ClientEngineZildo.soundPlay.playSoundFX(item.sound);
                 item.setLaunched(false);
                 return item;
@@ -110,7 +109,7 @@ public class Menu {
 	        	if (item instanceof EditableItemMenu) {
 	        		EditableItemMenu editableItem=(EditableItemMenu) item;
 	        		switch (key) {
-		        	case Keyboard.KEY_BACK:
+		        	case KeyboardHandler.KEY_BACK:
 		                editableItem.removeLastChar();
 		                displayed=false;
 		                break;

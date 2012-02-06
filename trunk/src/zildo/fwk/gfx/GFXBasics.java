@@ -30,7 +30,6 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
-import org.newdawn.slick.Font;
 
 import zildo.fwk.opengl.OpenGLStuff;
 import zildo.resource.Constantes;
@@ -48,7 +47,6 @@ import zildo.resource.Constantes;
 public class GFXBasics extends OpenGLStuff {
 
 	// Variables
-	private Font pFont; // Fontes crée en init
 	private ByteBuffer pBackBuffer;
 	private static final Vector4f[] palette = new Vector4f[256]; // Palette from
 																	// zildo
@@ -67,39 +65,14 @@ public class GFXBasics extends OpenGLStuff {
 	// private static java.awt.Font[] fonts;
 
 	static {
-		// Load fonts disponibility at startup
-		// GraphicsEnvironment ge =
-		// GraphicsEnvironment.getLocalGraphicsEnvironment();
-		// fonts = ge.getAllFonts();
-
 		// Default palette
 		Load_Palette("GAME1.PAL");
 	}
 
 	public GFXBasics(boolean alpha) {
 		this.alpha = alpha;
-		// On initialise les fontes
-		/**
-		 * HFONT* pFont=new HFONT; pFont = CreateFont( 8, 0, 0, 0, 0,0, // les
-		 * derniers : bold, italic FALSE, FALSE, DEFAULT_CHARSET,
-		 * OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DRAFT_QUALITY,
-		 * DEFAULT_PITCH, null); //"Times new roman" );
-		 */
-
-		// Gourmand : ca rajoute 4 secondes
-		// pFont=new TrueTypeFont(fonts[0], true);
 
 		pBackBuffer = null;
-	}
-
-	void setFonts(Font font) {
-		pFont = font;
-		// On crée la fonte
-		/*
-		 * D3DXCreateFont(pD3DDevice9, 8, 0, 0, 0, FALSE, DEFAULT_CHARSET,
-		 * OUT_DEFAULT_PRECIS, DRAFT_QUALITY, DEFAULT_PITCH, "Times new roman",
-		 * &m_pFont); //"Times new roman" );
-		 */
 	}
 
 	public void SetBackBuffer(ByteBuffer surface, int w, int h) {
@@ -154,24 +127,6 @@ public class GFXBasics extends OpenGLStuff {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public void EndRendering() {
 		// pBackBuffer.UnlockRect();
-	}
-
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// aff_texte
-	// /////////////////////////////////////////////////////////////////////////////////////
-	public void aff_texte(int afx, int afy, String phrase, long color, boolean palettized) {
-		/*
-		 * if (color == -1) { color=D3DCOLOR_COLORVALUE(10,10,10,0); } else if
-		 * (palettized) { color=palette[color]; color|=(255<<24); } RECT
-		 * rr={afx,afy,afx+80*phrase.length(),afy+80}; //STDMETHOD_(INT,
-		 * DrawTextW)(THIS_ LPD3DXSPRITE pSprite, LPCWSTR pString, INT Count,
-		 * LPRECT pRect, DWORD Format, D3DCOLOR Color) PURE;
-		 * 
-		 * m_pFont.DrawText(null,
-		 * phrase.Convchar(),phrase.length(),&rr,0,color);
-		 */
-		// pFont.drawString(afx, afy,phrase);
-		// System.out.println(phrase);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -359,14 +314,6 @@ public class GFXBasics extends OpenGLStuff {
 				pBackBuffer.put(a + 3, (byte) colorValue.w);
 			}
 		}
-	}
-
-	public Font getFont() {
-		return pFont;
-	}
-
-	public void setFont(Font font) {
-		pFont = font;
 	}
 
 	public static Vector4f getColor(int palIndex) {

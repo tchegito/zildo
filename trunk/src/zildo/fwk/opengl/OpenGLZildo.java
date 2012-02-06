@@ -20,11 +20,11 @@
 
 package zildo.fwk.opengl;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
+import zildo.fwk.input.KeyboardHandler;
 import zildo.monde.map.Point;
 import zildo.server.EngineZildo;
 
@@ -385,22 +385,8 @@ public class OpenGLZildo extends OpenGLGestion {
 	@Override
 	protected void mainloopExt() {
 
-		// Pour test
-		if (Keyboard.isKeyDown(Keyboard.KEY_ADD)) { // '+'
-			// z+=0.1f;
-		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_SUBTRACT)) { // '-'
-			// z-=0.1f;
-		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_MULTIPLY)) {
-			pressed = true;
-		}
-		if (!Keyboard.isKeyDown(Keyboard.KEY_MULTIPLY) && pressed) {
-			pressed = false;
-		}
-
 		EngineZildo.extraSpeed = 1;
-		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+		if (KeyboardHandler.isKeyDown(KeyboardHandler.KEY_LSHIFT)) {
 			EngineZildo.extraSpeed = 2;
 		}
 	}

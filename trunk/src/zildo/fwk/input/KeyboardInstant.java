@@ -22,8 +22,6 @@ package zildo.fwk.input;
 
 import java.util.EnumMap;
 
-import org.lwjgl.input.Keyboard;
-
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.resource.KeysConfiguration;
@@ -59,7 +57,7 @@ public class KeyboardInstant implements EasySerializable {
 	 */
 	public void update() {
 		for (KeysConfiguration key : KeysConfiguration.values()) {
-			kbdInstant.put(key, Keyboard.isKeyDown(key.code));
+			kbdInstant.put(key, KeyboardHandler.isKeyDown(key.code));
 		}
 	}
 
