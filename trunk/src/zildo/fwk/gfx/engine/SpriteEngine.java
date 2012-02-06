@@ -30,7 +30,6 @@ import org.lwjgl.util.vector.Vector4f;
 import org.newdawn.slick.TrueTypeFont;
 
 import zildo.client.ClientEngineZildo;
-import zildo.fwk.ZUtils;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.PixelShaders.EngineFX;
@@ -385,7 +384,7 @@ public class SpriteEngine extends TextureEngine {
 		// Display every sprites
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glEnable(GL11.GL_BLEND);
-		float[] color=ZUtils.getFloat(GL11.GL_CURRENT_COLOR, 4);
+		float[] color=getFloat(GL11.GL_CURRENT_COLOR, 4);
 
 		Vector3f ambient=ClientEngineZildo.ortho.getAmbientColor();
 		if (ambient != null) {
@@ -455,7 +454,7 @@ public class SpriteEngine extends TextureEngine {
 	                	break;
 	                default:
 	                	color[3]=alpha / 255.0f;
-	            		ZUtils.setCurrentColor(color);
+	            		setCurrentColor(color);
 	                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 }
 				meshSprites[numBank].render(nbQuads);
