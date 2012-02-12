@@ -23,13 +23,13 @@ package zildo.monde.sprites.persos;
 import java.util.HashMap;
 import java.util.Map;
 
-import zildo.monde.map.Point;
-import zildo.monde.map.Zone;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.ia.PathFinderFlying;
 import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
+import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 
 public class PersoVolant extends PersoNJ {
 

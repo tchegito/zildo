@@ -1,6 +1,6 @@
 package zildo.monde.quest.script;
 
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 /**
  * Modelize a point dispatcher, to provide a nice animation (for example : staff thrown, or arrows shot)

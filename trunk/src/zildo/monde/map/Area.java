@@ -56,6 +56,9 @@ import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 import zildo.server.SpriteManagement;
 

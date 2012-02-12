@@ -21,9 +21,9 @@
 package zildo.monde.sprites.desc;
 
 import zildo.fwk.bank.SpriteBank;
-import zildo.monde.map.Angle;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.utils.Sprite;
+import zildo.monde.util.Angle;
 
 public enum ZildoDescription implements SpriteDescription {
 

@@ -24,12 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.monde.collision.Collision;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 /**

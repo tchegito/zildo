@@ -24,10 +24,10 @@ import org.w3c.dom.Element;
 
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.items.ItemKind;
-import zildo.monde.map.Point;
-import zildo.monde.map.Zone;
 import zildo.monde.quest.QuestEvent;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
 public class TriggerElement extends AnyElement {

@@ -14,7 +14,6 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.AWTGLCanvas;
 import org.lwjgl.opengl.Drawable;
 import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.util.vector.Vector4f;
 
 import zeditor.core.selection.ChainingPointSelection;
 import zeditor.core.selection.Selection;
@@ -26,7 +25,8 @@ import zildo.fwk.awt.ZildoCanvas.ZEditMode;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
-import zildo.monde.map.Zone;
+import zildo.monde.util.Vector4f;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
 /**

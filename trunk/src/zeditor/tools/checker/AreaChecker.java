@@ -9,10 +9,10 @@ import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
-import zildo.monde.map.Point;
 import zildo.monde.map.Tile;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 

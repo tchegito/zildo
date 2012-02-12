@@ -20,7 +20,7 @@
 
 package zildo.monde.collision;
 
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 public class Line {
 

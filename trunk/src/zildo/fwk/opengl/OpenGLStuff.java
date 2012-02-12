@@ -26,7 +26,8 @@ import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
-import org.lwjgl.util.vector.Vector4f;
+
+import zildo.monde.util.Vector4f;
 
 import zildo.fwk.opengl.compatibility.FBO;
 import zildo.fwk.opengl.compatibility.FBOHardware;

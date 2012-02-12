@@ -30,8 +30,6 @@ import java.util.logging.Logger;
 
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
-import zildo.monde.map.Angle;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
@@ -55,6 +53,8 @@ import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 
 public class SpriteManagement extends SpriteStore {

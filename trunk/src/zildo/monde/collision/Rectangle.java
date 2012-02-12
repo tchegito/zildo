@@ -21,8 +21,8 @@
 
 package zildo.monde.collision;
 
-import zildo.monde.map.Point;
-import zildo.monde.map.Zone;
+import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 
 /**
  * @author tchegito

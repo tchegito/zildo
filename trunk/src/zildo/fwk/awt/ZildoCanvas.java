@@ -44,12 +44,12 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
-import zildo.monde.map.Zone;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 
@@ -108,7 +108,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	private void drawBrush(Point p, TileSelection p_sel) {
 		// Apply selected brush to the map
 		Area map = EngineZildo.mapManagement.getCurrentMap();
-		p_sel.draw(map, new zildo.monde.map.Point(p.x / 16, p.y / 16), mask);
+		p_sel.draw(map, new zildo.monde.util.Point(p.x / 16, p.y / 16), mask);
 	}
 
 	public void endBrush() {
@@ -450,7 +450,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	}
 	
 	private void placeSprite(Point p_point, SpriteSelection<SpriteEntity> p_sel) {
-		zildo.monde.map.Point location = new zildo.monde.map.Point(p_point.x, p_point.y);
+		zildo.monde.util.Point location = new zildo.monde.util.Point(p_point.x, p_point.y);
 		if (gridSprites) {
 			SpriteModel model = p_sel.getElement().get(0).getSprModel();
 			location.x = location.x & (0xffff-7);

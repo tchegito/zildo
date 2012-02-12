@@ -21,7 +21,7 @@
 package zeditor.core.prefetch.complex;
 
 import zildo.monde.map.Area;
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 /**
  * Define an interface for drawing specific render.

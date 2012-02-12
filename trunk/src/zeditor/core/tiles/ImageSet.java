@@ -41,7 +41,7 @@ import zeditor.core.selection.Selection;
 import zeditor.tools.Transparency;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
-import zildo.monde.map.Zone;
+import zildo.monde.util.Zone;
 
 /**
  * Abstract class handling image containing arbitrary sized sections.

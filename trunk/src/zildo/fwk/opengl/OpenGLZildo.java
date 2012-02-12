@@ -25,7 +25,7 @@ import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.input.KeyboardHandler;
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 public class OpenGLZildo extends OpenGLGestion {

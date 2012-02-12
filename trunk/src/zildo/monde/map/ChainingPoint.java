@@ -22,6 +22,9 @@ package zildo.monde.map;
 
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
 public class ChainingPoint implements EasySerializable {

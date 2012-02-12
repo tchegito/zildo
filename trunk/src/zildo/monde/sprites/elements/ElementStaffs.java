@@ -23,12 +23,12 @@ package zildo.monde.sprites.elements;
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.Hasard;
-import zildo.monde.map.Angle;
-import zildo.monde.map.Point;
 import zildo.monde.quest.script.DispatchRoundTrip;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 

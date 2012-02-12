@@ -22,13 +22,13 @@ package zildo.monde.sprites.elements;
 
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Point;
 import zildo.resource.Constantes;
 
 public class ElementGuardWeapon extends Element {

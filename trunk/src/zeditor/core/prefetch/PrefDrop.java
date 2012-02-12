@@ -22,7 +22,7 @@ package zeditor.core.prefetch;
 
 import zeditor.core.prefetch.complex.DropDelegateDraw;
 import zeditor.core.prefetch.complex.DropTreeDrawer;
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 /**
  * Description of all the droppable prefetch (ex:tree, rock, ...)

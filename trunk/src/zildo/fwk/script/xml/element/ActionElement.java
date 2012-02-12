@@ -22,7 +22,7 @@ package zildo.fwk.script.xml.element;
 
 import org.w3c.dom.Element;
 
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 public class ActionElement extends AnyElement {
 

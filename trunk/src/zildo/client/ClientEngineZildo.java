@@ -20,8 +20,6 @@
 
 package zildo.client;
 
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import zildo.Zildo;
 import zildo.client.gui.DialogDisplay;
@@ -48,11 +46,13 @@ import zildo.monde.collision.Collision;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Point;
+import zildo.monde.util.Vector3f;
+import zildo.monde.util.Vector4f;
 import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 

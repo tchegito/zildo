@@ -23,9 +23,9 @@ package zildo.monde.sprites.persos;
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.EngineFX;
 import zildo.monde.Hasard;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.utils.MouvementZildo;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 public class PersoHen extends PersoNJ {

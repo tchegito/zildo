@@ -18,22 +18,31 @@
  *
  */
 
-package zeditor.core.prefetch.complex;
-
-import zildo.monde.util.Angle;
+package zildo.monde.util;
 
 /**
  * @author Tchegito
  *
  */
-public class Adjustment {
-	Angle a;
-	int matchTile;
-	int[] addedTiles;
+public class Vector3f {
+
+	public float x;
+    public float y;
+    public float z;
+    
+	public Vector3f(float x, float y, float z)
+    {
+        set(x, y, z);
+    }
 	
-	public Adjustment(int p_matchTile, Angle p_angle, int... p_addedTiles) {
-		a = p_angle;
-		matchTile = p_matchTile;
-		addedTiles = p_addedTiles;
+	public Vector3f(Vector3f v) {
+		set(v.x, v.y, v.z);
 	}
+	
+    public void set(float x, float y, float z)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 }

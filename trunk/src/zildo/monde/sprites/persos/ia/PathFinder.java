@@ -20,13 +20,13 @@
 
 package zildo.monde.sprites.persos.ia;
 
-import zildo.monde.map.Angle;
-import zildo.monde.map.Point;
-import zildo.monde.map.Pointf;
-import zildo.monde.map.Zone;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
+import zildo.monde.util.Zone;
 
 /**
  * Deals with AI for characters.<p/>

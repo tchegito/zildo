@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import zildo.monde.map.Area;
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 /**
  * Composite of several AbstractPatch12, imbricated. Each one is greater than

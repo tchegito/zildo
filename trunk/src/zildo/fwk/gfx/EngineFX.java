@@ -20,7 +20,7 @@
 
 package zildo.fwk.gfx;
 
-import org.lwjgl.util.vector.Vector4f;
+import zildo.monde.util.Vector4f;
 
 import zildo.fwk.opengl.OpenGLStuff;
 

@@ -29,15 +29,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Vector4f;
 
 import zeditor.core.selection.PersoSelection;
 import zeditor.core.selection.SpriteSelection;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
-import zildo.monde.map.Angle;
-import zildo.monde.map.Zone;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
@@ -49,6 +46,9 @@ import zildo.monde.sprites.desc.ZSpriteLibrary;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Vector4f;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
 /**

@@ -29,9 +29,9 @@ import zildo.monde.Game;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.ChainingPoint.MapLink;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 import zildo.server.state.ScriptManagement;
 

@@ -23,8 +23,8 @@ package zildo.fwk.gfx.filter;
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
-import zildo.monde.map.Pointf;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.util.Pointf;
 
 /**
  * @author Tchegito

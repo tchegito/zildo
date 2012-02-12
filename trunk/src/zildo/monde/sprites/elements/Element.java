@@ -28,9 +28,7 @@ import zildo.fwk.IntSet;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
-import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -38,6 +36,8 @@ import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 //TODO: Remove getter/setter for x,y,z

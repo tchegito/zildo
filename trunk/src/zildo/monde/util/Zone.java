@@ -18,7 +18,7 @@
  *
  */
 
-package zildo.monde.map;
+package zildo.monde.util;
 
 import zildo.monde.collision.Rectangle;
 

@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
 
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.bank.MotifBank;
@@ -33,9 +32,10 @@ import zildo.fwk.gfx.TilePrimitive;
 import zildo.fwk.gfx.effect.CloudGenerator;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
-import zildo.monde.map.Point;
 import zildo.monde.map.Tile;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.util.Point;
+import zildo.monde.util.Vector3f;
 import zildo.resource.Constantes;
 
 // V1.0

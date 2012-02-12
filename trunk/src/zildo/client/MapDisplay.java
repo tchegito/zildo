@@ -21,10 +21,10 @@
 package zildo.client;
 
 import zildo.fwk.gfx.filter.CloudFilter;
-import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 
 public class MapDisplay {
 

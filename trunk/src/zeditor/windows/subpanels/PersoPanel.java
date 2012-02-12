@@ -50,13 +50,13 @@ import zildo.fwk.ZUtils;
 import zildo.fwk.ui.UIText;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
-import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
 
 /**

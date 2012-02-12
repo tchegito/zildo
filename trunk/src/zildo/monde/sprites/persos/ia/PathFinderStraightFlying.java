@@ -20,9 +20,9 @@
 
 package zildo.monde.sprites.persos.ia;
 
-import zildo.monde.map.Point;
-import zildo.monde.map.Pointf;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
 /**

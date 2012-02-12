@@ -28,8 +28,8 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector4f;
+import zildo.monde.util.Vector2f;
+import zildo.monde.util.Vector4f;
 
 import zildo.fwk.opengl.OpenGLStuff;
 import zildo.resource.Constantes;

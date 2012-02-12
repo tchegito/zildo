@@ -20,10 +20,10 @@
 
 package zildo.monde.collision;
 
-import zildo.monde.map.Angle;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 
 public class Collision {
 

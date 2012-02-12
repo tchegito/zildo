@@ -24,7 +24,7 @@ import java.util.List;
 
 import zildo.fwk.MultiMap;
 import zildo.monde.map.Area;
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 /**
  * Abstract class which provides a smart drawing from a patch designed with 12 different tiles.<br/>

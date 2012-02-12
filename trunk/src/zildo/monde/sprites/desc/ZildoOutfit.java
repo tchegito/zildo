@@ -1,7 +1,7 @@
 package zildo.monde.sprites.desc;
 
 import zildo.fwk.bank.SpriteBank;
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 /**
  * Different outfits for Zildo.<p/>

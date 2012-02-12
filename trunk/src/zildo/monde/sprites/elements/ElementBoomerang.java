@@ -21,10 +21,10 @@
 package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
-import zildo.monde.map.Angle;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
 
 /**
