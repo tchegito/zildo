@@ -265,9 +265,6 @@ public class Element extends SpriteEntity {
 		// Perso pnj;
 		boolean colli;
 
-		if (getDesc() == ElementDescription.CUBE_ORANGE && vx != 0) {
-			int j=45;
-		}
 		// Si ce sprite est valide, est-il un sprite fixe ?
 		if (this.IsNotFixe()) {
 			// On a trouvé un sprite valide non fixe

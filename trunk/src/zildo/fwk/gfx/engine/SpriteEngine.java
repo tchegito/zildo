@@ -25,7 +25,6 @@ import java.util.Map;
 
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.TrueTypeFont;
 
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.bank.SpriteBank;
@@ -381,8 +380,8 @@ public class SpriteEngine extends TextureEngine {
 							ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(0));
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color1", tabColors[2]);
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color2", tabColors[3]);
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color3", (Vector4f) new Vector4f(tabColors[0]).scale(color[0]));
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color4", (Vector4f) new Vector4f(tabColors[1]).scale(color[0]));
+							ClientEngineZildo.pixelShaders.setParameter(0, "Color3", new Vector4f(tabColors[0]).scale(color[0]));
+							ClientEngineZildo.pixelShaders.setParameter(0, "Color4", new Vector4f(tabColors[1]).scale(color[0]));
 						} else {
 							ARBShaderObjects.glUseProgramObjectARB(0);
 						}

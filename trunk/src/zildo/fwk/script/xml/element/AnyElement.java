@@ -88,7 +88,7 @@ public abstract class AnyElement {
     static public AnyElement newInstanceFromString(String p_name) {
     	XmlElementKind kind = XmlElementKind.fromString(p_name);
     	try {
-    		return (AnyElement) kind.clazz.newInstance();
+    		return kind.clazz.newInstance();
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        throw new RuntimeException("Unable to find class " + kind.toString());
