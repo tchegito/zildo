@@ -27,14 +27,13 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
-import zildo.monde.util.Vector4f;
-
 import zildo.fwk.opengl.compatibility.FBO;
 import zildo.fwk.opengl.compatibility.FBOHardware;
 import zildo.fwk.opengl.compatibility.FBOSoftware;
 import zildo.fwk.opengl.compatibility.VBO;
 import zildo.fwk.opengl.compatibility.VBOHardware;
 import zildo.fwk.opengl.compatibility.VBOSoftware;
+import zildo.monde.util.Vector4f;
 
 public class OpenGLStuff {
 

@@ -36,7 +36,6 @@ public class OpenGLZildo extends OpenGLGestion {
 
 	private float z;
 	private Point zoomPosition;
-	private boolean pressed = false;
 
 	public static final byte[] icon = { 71, -110, 88, -1, 75, -113, 84, -1, 84, -106, 98, -1, 54, 89, 42, -1, 48, 30,
 			0, -1, 110, 51, 26,

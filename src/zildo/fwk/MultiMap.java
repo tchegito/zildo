@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class MultiMap<K, V> extends HashMap<K, List<V>> {
 
     @Override
