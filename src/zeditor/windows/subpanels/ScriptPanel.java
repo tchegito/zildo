@@ -33,10 +33,10 @@ import zildo.fwk.script.xml.ScriptWriter;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.ActionElement.ActionKind;
 import zildo.fwk.script.xml.element.SceneElement;
-import zildo.monde.map.Angle;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
 
 @SuppressWarnings("serial")

@@ -25,8 +25,6 @@ import java.util.Map;
 
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 import org.newdawn.slick.TrueTypeFont;
 
 import zildo.client.ClientEngineZildo;
@@ -34,13 +32,15 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.SpritePrimitive;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.Outfit;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.util.Point;
+import zildo.monde.util.Vector3f;
+import zildo.monde.util.Vector4f;
 import zildo.resource.Constantes;
 import zildo.server.SpriteManagement;
 

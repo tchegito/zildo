@@ -21,8 +21,8 @@
 package zildo.client;
 
 import zildo.fwk.gfx.filter.FilterEffect;
-import zildo.monde.map.Angle;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.util.Angle;
 
 public class ClientEvent {
 

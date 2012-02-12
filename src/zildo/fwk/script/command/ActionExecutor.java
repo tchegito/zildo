@@ -31,8 +31,6 @@ import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.ui.UIText;
 import zildo.monde.items.ItemKind;
-import zildo.monde.map.Angle;
-import zildo.monde.map.Point;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -43,6 +41,8 @@ import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 /**

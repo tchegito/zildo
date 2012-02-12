@@ -24,13 +24,13 @@ import zildo.fwk.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.gfx.EngineFX;
-import zildo.monde.map.Point;
-import zildo.monde.map.Zone;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.Sprite;
+import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
 ////////////////////////////////////////////////////////////////////////////////////////

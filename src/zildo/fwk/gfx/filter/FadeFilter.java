@@ -20,7 +20,7 @@
 
 package zildo.fwk.gfx.filter;
 
-import org.lwjgl.util.vector.Vector3f;
+import zildo.monde.util.Vector3f;
 
 import zildo.client.ClientEngineZildo;
 

@@ -20,10 +20,10 @@
 
 package zildo.monde.sprites.elements;
 
-import zildo.monde.map.Angle;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 /**

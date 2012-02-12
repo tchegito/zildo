@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import zildo.monde.map.Angle;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
@@ -39,6 +38,7 @@ import zildo.monde.sprites.persos.PersoSquirrel;
 import zildo.monde.sprites.persos.PersoVolant;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.ia.PathFinderBee;
+import zildo.monde.util.Angle;
 
 //////////////////////////////////////////////////////////////////////
 // PersoManagement

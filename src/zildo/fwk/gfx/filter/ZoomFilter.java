@@ -23,8 +23,8 @@ package zildo.fwk.gfx.filter;
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 public class ZoomFilter extends FadeScreenFilter {

@@ -32,18 +32,18 @@ import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.script.xml.element.TriggerElement;
-import zildo.monde.map.Angle;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
-import zildo.monde.map.Point;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
-import zildo.monde.map.Zone;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 
 public class MapManagement {
@@ -160,7 +160,7 @@ public class MapManagement {
 	 * @return
 	 */
 	Area loadMapFile(String p_mapname, String p_refMapname) {
-		System.out.println("Loading " + p_mapname);
+		//System.out.println("Loading " + p_mapname);
 
 		// If file name isn't complete, do it.
 		if (p_mapname.indexOf("/") == -1 && p_mapname.indexOf("\\") == -1
@@ -671,7 +671,7 @@ public class MapManagement {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
 			//points.add(new Point(16*26, 45*16));
-			points.add(new Point(231+450, 160));	// 231+450 is good for preintro
+			points.add(new Point(231+650, 360));	// 231+450 is good for preintro
 		} else {
 			points = currentMap.getRespawnPoints();
 		}

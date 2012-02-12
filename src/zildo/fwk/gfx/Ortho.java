@@ -21,13 +21,13 @@
 package zildo.fwk.gfx;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import zildo.Zildo;
 import zildo.fwk.opengl.OpenGLStuff;
 import zildo.monde.collision.Rectangle;
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
+import zildo.monde.util.Vector3f;
+import zildo.monde.util.Vector4f;
 
 /**
  * Class which provides direct draw on render screen, in an orthographic

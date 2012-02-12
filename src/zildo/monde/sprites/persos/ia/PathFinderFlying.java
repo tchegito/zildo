@@ -20,9 +20,9 @@
 
 package zildo.monde.sprites.persos.ia;
 
-import zildo.monde.map.Angle;
-import zildo.monde.map.Pointf;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Pointf;
 
 /**
  * @author Tchegito

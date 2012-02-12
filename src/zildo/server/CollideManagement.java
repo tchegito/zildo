@@ -30,11 +30,11 @@ import zildo.client.sound.BankSound;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.collision.Rectangle;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 
 public class CollideManagement {

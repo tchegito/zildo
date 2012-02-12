@@ -22,13 +22,13 @@ package zildo.server;
 
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.elements.ElementQuadDamage;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 import zildo.server.state.PlayerState;
 

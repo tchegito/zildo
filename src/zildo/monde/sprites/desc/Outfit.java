@@ -1,6 +1,6 @@
 package zildo.monde.sprites.desc;
 
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 public interface Outfit {
 

@@ -26,7 +26,7 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.net.TransferObject;
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 /**
  * @author tchegito

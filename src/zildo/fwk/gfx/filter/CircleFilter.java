@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 /**
  * Draws a circle around a specific center (Zildo !).<br/>

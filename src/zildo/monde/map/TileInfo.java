@@ -23,6 +23,8 @@ package zildo.monde.map;
 import java.util.HashMap;
 import java.util.Map;
 
+import zildo.monde.util.Angle;
+
 /**
  * Class used by the collision engine.<br/>
  * 

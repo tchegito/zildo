@@ -7,7 +7,7 @@ import zeditor.core.selection.CaseSelection;
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 /**
  * Cette classe représente une sélection du TileSet. Elle est composée de :

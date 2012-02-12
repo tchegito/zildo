@@ -31,7 +31,7 @@ import zeditor.core.prefetch.complex.HillTop;
 import zeditor.core.prefetch.complex.Road;
 import zeditor.core.prefetch.complex.TraceDelegateDraw;
 import zeditor.core.prefetch.complex.Water;
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 /**
  * @author Tchegito

@@ -20,7 +20,7 @@
 
 package zeditor.tools.sprites;
 
-import zildo.monde.map.Zone;
+import zildo.monde.util.Zone;
 
 /**
  * @author Tchegito

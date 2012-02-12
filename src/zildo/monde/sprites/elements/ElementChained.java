@@ -23,7 +23,7 @@ package zildo.monde.sprites.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 /**

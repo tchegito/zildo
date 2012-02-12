@@ -23,7 +23,7 @@ package zeditor.tools.sprites;
 import java.util.List;
 
 import zeditor.tools.tiles.GraphChange;
-import zildo.monde.map.Zone;
+import zildo.monde.util.Zone;
 
 /**
  * @author Tchegito

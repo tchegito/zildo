@@ -23,6 +23,7 @@ package zildo.monde.map;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.util.Angle;
 
 
 /**

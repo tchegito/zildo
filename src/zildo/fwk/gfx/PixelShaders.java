@@ -28,7 +28,8 @@ import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.Util;
-import org.lwjgl.util.vector.Vector4f;
+
+import zildo.monde.util.Vector4f;
 
 import zildo.fwk.opengl.OpenGLStuff;
 

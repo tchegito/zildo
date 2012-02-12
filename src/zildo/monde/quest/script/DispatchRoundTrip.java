@@ -1,6 +1,6 @@
 package zildo.monde.quest.script;
 
-import zildo.monde.map.Point;
+import zildo.monde.util.Point;
 
 /**
  * Dispatcher which goes from top to bottom, and bottom to top all over.

@@ -40,8 +40,8 @@ import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
-import zildo.monde.map.Point;
-import zildo.monde.map.Zone;
+import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
 /**

@@ -37,11 +37,11 @@ import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.ChainingPoint;
-import zildo.monde.map.Point;
 import zildo.monde.quest.MapReplacement;
 import zildo.monde.quest.QuestEvent;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
 
@@ -224,7 +224,7 @@ public class ScriptManagement {
      * @param p_trigger TRUE=we have to launch targeted action / FALSE=just set quest to 'done' state
      */
     private void accomplishQuest(QuestElement p_quest, boolean p_trigger) {
-    	System.out.println("Accomplish "+p_quest.name);
+    	//System.out.println("Accomplish "+p_quest.name);
    		p_quest.done=true;
     	
     	// 1) note the history events (mapReplace ...)

@@ -27,10 +27,10 @@ import java.util.List;
 
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.fwk.gfx.EngineFX;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 /**

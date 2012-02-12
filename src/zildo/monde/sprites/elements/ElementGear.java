@@ -23,9 +23,9 @@ package zildo.monde.sprites.elements;
 import zildo.client.sound.BankSound;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 /**

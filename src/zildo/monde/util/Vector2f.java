@@ -18,23 +18,25 @@
  *
  */
 
-package zildo.monde.map;
+package zildo.monde.util;
 
-public class Pointf {
+/**
+ * @author Tchegito
+ *
+ */
+public class Vector2f {
 
-	public float x, y;
+	public float x;
+	public float y;
 	
-	public Pointf(float a, float b) {
-		x=a;
-		y=b;
-	}
-	
-    public void add(Pointf p_point) {
-    	add(p_point.x, p_point.y);
+    public Vector2f(float x, float y)
+    {
+        set(x, y);
     }
     
-    public void add(float p_xPlus, float p_yPlus) {
-        this.x += p_xPlus;
-        this.y += p_yPlus;
+    public void set(float x, float y)
+    {
+        this.x = x;
+        this.y = y;
     }
 }

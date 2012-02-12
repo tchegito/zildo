@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
@@ -45,6 +43,8 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.FontDescription;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Vector3f;
+import zildo.monde.util.Vector4f;
 import zildo.resource.Constantes;
 import zildo.server.MultiplayerManagement;
 import zildo.server.state.PlayerState;

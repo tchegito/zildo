@@ -28,7 +28,7 @@ import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
 import zildo.monde.map.TileInfo;
-import zildo.monde.map.Zone;
+import zildo.monde.util.Zone;
 
 /**
  * Classe de gestion des Tuiles

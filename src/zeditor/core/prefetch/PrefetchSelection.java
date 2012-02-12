@@ -24,8 +24,8 @@ import zeditor.core.prefetch.complex.DropDelegateDraw;
 import zeditor.core.tiles.TileSelection;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
-import zildo.monde.map.Point;
 import zildo.monde.map.Tile;
+import zildo.monde.util.Point;
 
 /**
  * @author Tchegito

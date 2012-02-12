@@ -28,11 +28,11 @@ import java.util.Map;
 
 import zildo.fwk.awt.ZildoScrollablePanel;
 import zildo.fwk.gfx.engine.SpriteEngine;
-import zildo.monde.map.Point;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.utils.SpriteSorter;
+import zildo.monde.util.Point;
 import zildo.resource.Constantes;
 
 /**

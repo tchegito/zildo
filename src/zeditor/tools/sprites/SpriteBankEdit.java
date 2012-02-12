@@ -28,8 +28,8 @@ import zeditor.tools.tiles.GraphChange;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
-import zildo.monde.map.Zone;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.util.Zone;
 
 /**
  * Designed for modifying sprite bank.<br/>
