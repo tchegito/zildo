@@ -1,13 +1,17 @@
 #summary News
 
-= Version 1.095 (work in progress) = 
+= Version 1.096 =
+
+ Sounds like "Android" one !
+
+ ... to be continued
+
+= Version 1.095 : Episode 1 = 
 
  * clouds
  * internet server
  * real adventure with quests !!! (really soon)
  * two new musics (again !)
-
-==> in test phase right now ! (06/12/2011)
 
 = Version 1.094 = 
 
