@@ -1,6 +1,6 @@
 #summary News
 
-= Version 1.096 =
+= Version 1.096 (in progress) =
 
  Sounds like "Android" one !
 
