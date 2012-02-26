@@ -23,17 +23,17 @@ package zildo.fwk.opengl.compatibility;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import org.lwjgl.BufferUtils;
+import zildo.fwk.ZUtils;
 
 public class VBOBuffers {
 	
 	// As indices never changes, we just fix a maximum and use the generated array at start.
 	static final int maxIndices = 2 * 6 * 64 * 64;
 	
-	int vertexBufferId;
-	int	normalBufferId;
-	int textureBufferId;
-	int indiceBufferId;
+	public int vertexBufferId;
+	public int	normalBufferId;
+	public int textureBufferId;
+	public int indiceBufferId;
 
     public FloatBuffer vertices;
     public FloatBuffer normals;
@@ -43,10 +43,10 @@ public class VBOBuffers {
     public VBOBuffers(int p_numPoints) {
         // Allocate buffers
         int numFaces = maxIndices / 3;
-        vertices = BufferUtils.createFloatBuffer(3 * p_numPoints);
-        normals = BufferUtils.createFloatBuffer(3 * numFaces);
-        indices = BufferUtils.createIntBuffer(3 * maxIndices);
-        textures = BufferUtils.createFloatBuffer(2 * p_numPoints);    	
+        vertices = ZUtils.createFloatBuffer(3 * p_numPoints);
+        normals = ZUtils.createFloatBuffer(3 * numFaces);
+        indices = ZUtils.createIntBuffer(3 * maxIndices);
+        textures = ZUtils.createFloatBuffer(2 * p_numPoints);    	
     }
     
 	

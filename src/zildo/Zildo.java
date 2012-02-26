@@ -21,6 +21,7 @@ package zildo;
 import java.util.logging.LogManager;
 
 import zildo.client.Client;
+import zildo.client.PlatformDependentPlugin;
 import zildo.client.gui.menu.StartMenu;
 
 
@@ -36,6 +37,8 @@ public class Zildo {
 	public static boolean log=false;
 	public static boolean logNetwork=true;
 
+	public static final PlatformDependentPlugin pdPlugin = new PlatformDependentPlugin();
+	
 	public static void main(String[] args) {
 		
 		for (String arg : args) {
