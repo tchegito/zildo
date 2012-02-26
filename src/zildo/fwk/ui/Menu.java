@@ -23,10 +23,12 @@ package zildo.fwk.ui;
 import java.util.Arrays;
 import java.util.List;
 
+import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.BankSound;
 import zildo.fwk.input.KeyboardHandler;
+import zildo.fwk.input.KeyboardHandler.Keys;
 
 public class Menu {
 
@@ -41,6 +43,10 @@ public class Menu {
 	// Object to handle any menus
 	protected Client client = ClientEngineZildo.getClientForMenu();
 	protected final Menu currentMenu = this;
+	
+	protected KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
+	
+	final int kUp = kbHandler.getCode(Keys.UP);
 	
 	public Menu() {
 		
@@ -82,10 +88,10 @@ public class Menu {
         char charKey=' ';
         char upperKey=' ';
         ItemMenu item;
-        while (KeyboardHandler.next()) {
-        	if (KeyboardHandler.getEventKeyState()) {
-	            key = KeyboardHandler.getEventKey(); //Keyboard.getEventCharacter();
-	            charKey = KeyboardHandler.getEventCharacter();
+        while (kbHandler.next()) {
+        	if (kbHandler.getEventKeyState()) {
+	            key = kbHandler.getEventKey(); //Keyboard.getEventCharacter();
+	            charKey = kbHandler.getEventCharacter();
 	            upperKey = Character.toUpperCase(charKey);
         	}
         }
@@ -93,32 +99,26 @@ public class Menu {
         if (key != -1 && keyPressed != key) {
             item = items.get(selected);
 
-        	switch (key) {
-        	case KeyboardHandler.KEY_UP:
+        	if (key == kbHandler.getCode(Keys.UP)) {
                 move(false);
-        		break;
-        	case KeyboardHandler.KEY_DOWN:
+        	} else if (key == kbHandler.getCode(Keys.DOWN)) {
                 move(true);
-        		break;
-        	case KeyboardHandler.KEY_RETURN:
+        	} else if (key == kbHandler.getCode(Keys.RETURN)) {
                 ClientEngineZildo.soundPlay.playSoundFX(item.sound);
                 item.setLaunched(false);
                 return item;
-            default:
+        	} else {
             	// Does this item is editable ?
 	        	if (item instanceof EditableItemMenu) {
 	        		EditableItemMenu editableItem=(EditableItemMenu) item;
-	        		switch (key) {
-		        	case KeyboardHandler.KEY_BACK:
+	        		if (key == kbHandler.getCode(Keys.BACK)) {
 		                editableItem.removeLastChar();
 		                displayed=false;
-		                break;
-		        	default:
+	        		} else {
 		        		if (EditableItemMenu.acceptableChar.indexOf(upperKey) != -1) {
 		                    editableItem.addText(charKey);
 		                    displayed = false;
 		        		}
-		        		break;
 		        	}
 		        }
         	}
