@@ -20,26 +20,26 @@
 
 package zildo.resource;
 
-import zildo.fwk.input.KeyboardHandler;
+import zildo.fwk.input.KeyboardHandler.Keys;
 
 // All these keys should be send to server.
 // Its lead to player's movement/action.
 
 public enum KeysConfiguration {
 
-	PLAYERKEY_ACTION(KeyboardHandler.KEY_Q),
-	PLAYERKEY_ATTACK(KeyboardHandler.KEY_W),
-	PLAYERKEY_INVENTORY(KeyboardHandler.KEY_X),
-	PLAYERKEY_UP(KeyboardHandler.KEY_UP),
-	PLAYERKEY_DOWN(KeyboardHandler.KEY_DOWN),
-	PLAYERKEY_RIGHT(KeyboardHandler.KEY_RIGHT),
-	PLAYERKEY_LEFT(KeyboardHandler.KEY_LEFT),
-	PLAYERKEY_TOPIC(KeyboardHandler.KEY_E),
-	PLAYERKEY_TAB(KeyboardHandler.KEY_TAB);
+	PLAYERKEY_ACTION(Keys.Q),
+	PLAYERKEY_ATTACK(Keys.W),
+	PLAYERKEY_INVENTORY(Keys.X),
+	PLAYERKEY_UP(Keys.UP),
+	PLAYERKEY_DOWN(Keys.DOWN),
+	PLAYERKEY_RIGHT(Keys.RIGHT),
+	PLAYERKEY_LEFT(Keys.LEFT),
+	PLAYERKEY_TOPIC(Keys.E),
+	PLAYERKEY_TAB(Keys.TAB);
 	
-	public int code;
+	public Keys code;
 	
-	private KeysConfiguration(int p_code) {
+	private KeysConfiguration(Keys p_code) {
 		this.code=p_code;
 	}
 }
