@@ -20,10 +20,7 @@
 
 package zildo.fwk.gfx;
 
-import org.lwjgl.opengl.GL11;
-
 import zildo.Zildo;
-import zildo.fwk.opengl.OpenGLStuff;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
@@ -41,9 +38,9 @@ import zildo.monde.util.Vector4f;
  * @author tchegito
  * 
  */
-public class Ortho extends OpenGLStuff {
+public abstract class Ortho {
 
-	static char[][][] fonts = new char[][][] { // 63 fonte
+	static protected char[][][] fonts = new char[][][] { // 63 fonte
 	{ { 0, 1, 1, 1, 0 }, { 1, 0, 0, 0, 1 }, { 1, 1, 1, 1, 1 }, { 1, 0, 0, 0, 1 }, { 1, 0, 0, 0, 1 } }, // A
 			{ { 1, 1, 1, 1, 0 }, { 1, 0, 0, 0, 1 }, { 1, 1, 1, 1, 0 }, { 1, 0, 0, 0, 1 }, { 1, 1, 1, 1, 0 } },
 			{ { 0, 1, 1, 1, 1 }, { 1, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0 }, { 0, 1, 1, 1, 1 } },
@@ -110,13 +107,13 @@ public class Ortho extends OpenGLStuff {
 			{ { 0, 0, 0, 1, 0 }, { 0, 0, 0, 1, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } }, // '
 			{ { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 1, 1, 1, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } } }; // -
 
-	int w, h;
-	boolean orthoSetUp;
+	protected int w, h;
+	protected boolean orthoSetUp;
 
-	Vector3f ambientColor; // Current ambient color (could be null)
-	Vector3f filteredColor; // Filtered color (never null, at least 1,1,1)
+	protected Vector3f ambientColor; // Current ambient color (could be null)
+	protected Vector3f filteredColor; // Filtered color (never null, at least 1,1,1)
 
-	final static Vector3f NIGHT_FILTER = new Vector3f(0.5f, 0.6f, 1f);
+	protected final static Vector3f NIGHT_FILTER = new Vector3f(0.5f, 0.6f, 1f);
 
 	public Ortho(int width, int height) {
 		w = width;
@@ -126,36 +123,7 @@ public class Ortho extends OpenGLStuff {
 		filteredColor = new Vector3f(1f, 1f, 1f);
 	}
 
-	public void setOrthographicProjection(boolean p_zoom) {
-		if (!orthoSetUp) {
-			// switch to projection mode
-			GL11.glMatrixMode(GL11.GL_PROJECTION);
-			// save previous matrix which contains the
-			// settings for the perspective projection
-			GL11.glPushMatrix();
-			// reset matrix
-			GL11.glLoadIdentity();
-			// set a 2D orthographic projection
-			if (p_zoom) {
-				GL11.glOrtho(0, w / 2, 0, h / 2, -99999, 99999);
-				GL11.glTranslatef(0, -h / 2, 0);
-			} else {
-				GL11.glOrtho(0, w, 0, h, -99999, 99999);
-			}
-			// invert the y axis, down is positive
-			// GL11.glScalef(1, -1, 1);
-			// GL11.glDisable(GL11.GL_DEPTH_TEST);
-			GL11.glDisable(GL11.GL_CULL_FACE);
-			GL11.glDisable(GL11.GL_BLEND);
-			GL11.glDisable(GL11.GL_ALPHA_TEST);
-			// mover the origin from the bottom left corner
-			// to the upper left corner
-			GL11.glTranslatef(0, h, 0);
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
-			orthoSetUp = true;
-		}
-	}
+	public abstract void setOrthographicProjection(boolean p_zoom);
 
 	/**
 	 * Resize when using ZEditor
@@ -164,24 +132,14 @@ public class Ortho extends OpenGLStuff {
 	 * @param p_y
 	 */
 	public void setSize(int p_x, int p_y, boolean p_zoom) {
-		// Change viewport
-		GL11.glViewport(0, 0, p_x, p_y);
 		// And adapt ortho
-		resetPerspectiveProjection();
+		resetPerspectiveProjection(p_x, p_y);
 		w = p_x;
 		h = p_y;
 		setOrthographicProjection(p_zoom);
 	}
 
-	public void resetPerspectiveProjection() {
-		if (orthoSetUp) {
-			GL11.glMatrixMode(GL11.GL_PROJECTION);
-			GL11.glPopMatrix();
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
-			orthoSetUp = false;
-		}
-	}
+	public abstract void resetPerspectiveProjection(int p_x, int p_y);
 
 	public void drawChar(int x, int y, char a) {
 		int aa = a;
@@ -204,23 +162,13 @@ public class Ortho extends OpenGLStuff {
 				}
 			}
 			if (aa >= 0 && aa < fonts.length) {
-				GL11.glBegin(GL11.GL_POINTS);
-				for (int i = 0; i < 5; i++) {
-					for (int j = 0; j < 5; j++) {
-						char pixel = fonts[aa][j][i];
-						if (pixel == 1) {
-							GL11.glVertex2i(x + i, y + j);
-							GL11.glVertex2f(x + i + 0.5f, y + j);
-							// GL11.glVertex2f(x+i+0.5f, y+j+0.5f);
-							// GL11.glVertex2f(x+i, y+j+0.5f);
-						}
-					}
-				}
-				GL11.glEnd();
+				drawOneChar(x, y, aa);
 			}
 		}
 	}
 
+	public abstract void drawOneChar(int x, int y, int aa);
+	
 	public void drawText(int x, int y, String txt) {
 		for (int i = 0; i < txt.length(); i++) {
 			drawChar(x + 6 * i, y, txt.toLowerCase().charAt(i));
@@ -233,17 +181,20 @@ public class Ortho extends OpenGLStuff {
 		if (x == -1) {
 			x = (Zildo.viewPortX - p_txt.length() * 6) / 2;
 		}
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		enableTexture2d(false);
 		float factor = 0.2f;
-		GL11.glColor3f(p_color.x * factor, p_color.y * factor, p_color.z * factor);
+		setColor(p_color.x * factor, p_color.y * factor, p_color.z * factor);
 		drawText(x + 1, p_y + 1, p_txt);
-		GL11.glColor3f(p_color.x, p_color.y, p_color.z);
+		setColor(p_color.x, p_color.y, p_color.z);
 		drawText(x, p_y, p_txt);
-		GL11.glColor3f(1.0f, 1.0f, 1.0f);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-
+		setColor(1.0f, 1.0f, 1.0f);
+		enableTexture2d(true);
 	}
 
+	public abstract void enableTexture2d(boolean enable);
+	
+	public abstract void setColor(float r, float g, float b);
+	
 	public void box(Rectangle p_rect, int palColor, Vector4f color) {
 		Point cornerTopLeft = p_rect.getCornerTopLeft();
 		Point size = p_rect.getSize();
@@ -279,18 +230,7 @@ public class Ortho extends OpenGLStuff {
 	 * @param palColor
 	 * @param color
 	 */
-	public void boxOpti(int x, int y, int p_w, int p_h, int palColor, Vector4f color) {
-		Vector4f col = color;
-		if (color == null) {
-			col = new Vector4f(GFXBasics.getColor(palColor));
-			col.scale(1.0f / 256.0f);
-		}
-		GL11.glColor4f(col.x, col.y, col.z, col.w);
-		GL11.glVertex2d(x, y);
-		GL11.glVertex2d(x + p_w, y);
-		GL11.glVertex2d(x + p_w, y + p_h);
-		GL11.glVertex2d(x, y + p_h);
-	}
+	public abstract void boxOpti(int x, int y, int p_w, int p_h, int palColor, Vector4f color);
 
 	/**
 	 * Just draw a textured box, without managing glBegin/glEnd
@@ -304,43 +244,19 @@ public class Ortho extends OpenGLStuff {
 	 * @param uw
 	 * @param vh
 	 */
-	public void boxTexturedOpti(int x, int y, int p_w, int p_h, float u, float v, float uw, float vh) {
-		GL11.glTexCoord2f(u, v);
-		GL11.glVertex2d(x, y);
-		GL11.glTexCoord2f(u + uw, v);
-		GL11.glVertex2d(x + p_w, y);
-		GL11.glTexCoord2f(u + uw, v + vh);
-		GL11.glVertex2d(x + p_w, y + p_h);
-		GL11.glTexCoord2f(u, v + vh);
-		GL11.glVertex2d(x, y + p_h);
-	}
+	public abstract void boxTexturedOpti(int x, int y, int p_w, int p_h, float u, float v, float uw, float vh);
 
 	/**
 	 * Initialize the right matrix to draw quads, and do a glBegin.
 	 * 
 	 * @param withTexture
 	 */
-	public void initDrawBox(boolean withTexture) {
-		// On se met au premier plan et on annule le texturing
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glPushMatrix();
-		GL11.glTranslatef(0, 0, 1);
-		if (!withTexture) {
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-		}
-		GL11.glBegin(GL11.GL_QUADS);
-	}
+	public abstract void initDrawBox(boolean withTexture);
 
 	/**
 	 * Get back the original matrix, and go a glEnd.
 	 */
-	public void endDraw() {
-		GL11.glEnd();
-		// On se remet où on était et on réactive le texturing
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glColor3f(1.0f, 1.0f, 1.0f); // , 1.0f);
-		GL11.glPopMatrix();
-	}
+	public abstract void endDraw();
 
 	/**
 	 * Draw an empty box on foreground (z=1), same way that box.
@@ -352,21 +268,11 @@ public class Ortho extends OpenGLStuff {
 	 * @param palColor
 	 * @param color
 	 */
-	public void boxv(int x, int y, int p_w, int p_h, int palColor, Vector4f color) {
-		GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
-		box(x, y, p_w, p_h, palColor, color);
-		GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+	public abstract void boxv(int x, int y, int p_w, int p_h, int palColor, Vector4f color);
 
-	}
+	public abstract void enableBlend();
 
-	public void enableBlend() {
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	}
-
-	public void disableBlend() {
-		GL11.glDisable(GL11.GL_BLEND);
-	}
+	public abstract void disableBlend();
 
 	public Vector3f getAmbientColor() {
 		return ambientColor;

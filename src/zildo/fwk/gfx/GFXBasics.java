@@ -30,8 +30,6 @@ import java.util.Map;
 
 import zildo.monde.util.Vector2f;
 import zildo.monde.util.Vector4f;
-
-import zildo.fwk.opengl.OpenGLStuff;
 import zildo.resource.Constantes;
 
 /**
@@ -44,7 +42,7 @@ import zildo.resource.Constantes;
  * 
  */
 
-public class GFXBasics extends OpenGLStuff {
+public class GFXBasics {
 
 	// Variables
 	private ByteBuffer pBackBuffer;
@@ -101,12 +99,6 @@ public class GFXBasics extends OpenGLStuff {
 		} catch (IOException e) {
 			throw new RuntimeException("Unable to read palette");
 		}
-	}
-
-	@Override
-	public void finalize() {
-		// SafeDelete(m_pFont);
-		// SafeRelease(pBackBuffer);
 	}
 
 	// All these functions assumed that BeginScene has been called
@@ -366,4 +358,15 @@ public class GFXBasics extends OpenGLStuff {
 		palIndexes.put(key, (int) min.y);
 		return (int) min.y;
 	}
+	
+
+    public static Vector4f createColor64(float r, float g, float b) {
+        return new Vector4f(r / 63.0f, g / 63.0f, b / 63.0f, 1.0f);
+    }
+
+    public Vector4f createColor(long value) {
+        Vector4f v = new Vector4f(value & 255, (value >> 8) & 255, (value >> 16) & 255, value >> 24);
+        v.w = 0.5f * 255.0f;
+        return v;
+    }
 }

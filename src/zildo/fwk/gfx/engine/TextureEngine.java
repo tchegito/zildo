@@ -21,37 +21,31 @@
 package zildo.fwk.gfx.engine;
 
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
-
-import org.lwjgl.opengl.GL11;
 
 import zildo.fwk.gfx.GFXBasics;
-import zildo.fwk.opengl.OpenGLStuff;
-import zildo.fwk.opengl.GLUtils;
 import zildo.resource.Constantes;
 
 /**
- * Abstract class which provides management of a texture set.
+ * Abstract class which provides management of a texture set.<p/>
  * 
- * The first phase is the texture creation. It must be done like this:
- * -call prepareSurfaceForTexture()
- * -draw things on the GFXBasics returned
- * -call generateTexture() for adding texture to the texture set
- * 
- * To tell the openGL engine that it must draw with the right texture, just call:
- *  GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]);
+ * The first phase is the texture creation. It must be done like this:<ul>
+ * <li>call prepareSurfaceForTexture()</li>
+ * <li>draw things on the GFXBasics returned</li>
+ * <li>call generateTexture() for adding texture to the texture set</li>
+ * </ul>
+ * To tell the openGL engine that it must draw with the right texture, just call:<br/>
+ *  <code>GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]);</code><br/>
  * where 'i' is the number of the generated texture
  *                   
  * @author tchegito
  *
  */
-public abstract class TextureEngine extends OpenGLStuff {
+public abstract class TextureEngine {
 
     protected int n_Texture;
 
-    public int[] textureTab;
-    int textureFormat;	// Current texture's format
+    protected int[] textureTab;
+    protected boolean textureFormat;	// Current texture's format (TRUE=RGBA / FALSE=RGB)
     protected ByteBuffer scratch;
 
     
@@ -75,10 +69,8 @@ public abstract class TextureEngine extends OpenGLStuff {
         // Create image
     	if (p_alpha) {
     		scratch = ByteBuffer.allocateDirect(256 * 256 * 4);
-    		textureFormat = GL11.GL_RGBA;
     	} else {
     		scratch = ByteBuffer.allocateDirect(256 * 256 * 3);
-    		textureFormat = GL11.GL_RGB;
     	}
 		GFXBasics surface=new GFXBasics(true);
 		surface.SetBackBuffer(scratch, 256, 256);
@@ -86,45 +78,32 @@ public abstract class TextureEngine extends OpenGLStuff {
 		return surface;
     }
     
-    public void generateTexture() {
+    /**
+     * The real call to OpenGL methods
+     * @return int texture ID
+     */
+    public abstract int doGenerateTexture();
 
-        // Create A IntBuffer For Image Address In Memory
-        IntBuffer buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
-        GL11.glGenTextures(buf); // Create Texture In OpenGL
-
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, buf.get(0));
-        // Typical Texture Generation Using Data From The Image
-
-        int wrapping=GL11.GL_REPEAT;	// Wrap texture (useful for cloud)
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, wrapping);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, wrapping);
-        
-        int filtering=GL11.GL_NEAREST;
-        // Linear Filtering
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filtering);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filtering);
-        // Generate The Texture
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, textureFormat, 256, 256, 0, textureFormat, 
-        		GL11.GL_UNSIGNED_BYTE, scratch);
-        
+    public void generateTexture() { 
+    	
+    	int idTexture = doGenerateTexture();
+    	
         // Reset bytebuffer scratch
         scratch.clear();
         
         // Store texture id
-        textureTab[n_Texture]=buf.get(0);
+        textureTab[n_Texture]=idTexture;
 
         // Ready for next one
         n_Texture++;
     }
     
-    public void getTextureImage(int p_texId) {
-	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, p_texId);
-	    GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, textureFormat, GL11.GL_UNSIGNED_BYTE, scratch);
-    }
-    
+    public abstract void getTextureImage(int p_texId);
+/*    
     public void saveScreen(int p_texId) {
 
 		// Draw texture with depth
     	GLUtils.copyScreenToTexture(p_texId, 1024, 512);
     }
+    */
 }

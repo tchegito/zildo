@@ -22,14 +22,14 @@ package zildo.fwk.input;
 
 import java.util.EnumMap;
 
-import zildo.client.PlatformDependentPlugin;
+import zildo.Zildo;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.resource.KeysConfiguration;
 
 public class KeyboardInstant implements EasySerializable {
 
-	KeyboardHandler kbHandler = PlatformDependentPlugin.kbHandler;
+	KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
 	
 	EnumMap<KeysConfiguration, Boolean> kbdInstant;
 	boolean[] bools = new boolean[KEYS_LENGTH];
