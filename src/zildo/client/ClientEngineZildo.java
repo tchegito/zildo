@@ -39,7 +39,6 @@ import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FadeFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.input.KeyboardInstant;
-import zildo.fwk.opengl.OpenGLZildo;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.monde.collision.Collision;
@@ -100,7 +99,7 @@ public class ClientEngineZildo {
 			soundPlay = new SoundPlay();
 		}
 
-		ortho = new Ortho(Zildo.viewPortX, Zildo.viewPortY);
+		ortho = Zildo.pdPlugin.ortho;
 
 		if (!p_awt) {
 
@@ -113,13 +112,13 @@ public class ClientEngineZildo {
 			filterCommand.active(BilinearFilter.class, true, null);
 		}
 
-		pixelShaders = new PixelShaders();
+		pixelShaders = Zildo.pdPlugin.pixelShaders;
 		if (pixelShaders.canDoPixelShader()) {
 			pixelShaders.preparePixelShader();
 		}
 
 		spriteEngine = new SpriteEngine();
-		tileEngine = new TileEngine();
+		tileEngine = Zildo.pdPlugin.tileEngine;
 
 		spriteDisplay = new SpriteDisplay(spriteEngine);
 		mapDisplay = new MapDisplay(null);
