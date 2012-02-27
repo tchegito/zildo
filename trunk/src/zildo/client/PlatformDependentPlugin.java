@@ -23,6 +23,7 @@ package zildo.client;
 import zildo.Zildo;
 import zildo.fwk.Injector;
 import zildo.fwk.gfx.Ortho;
+import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.input.KeyboardHandler;
 
@@ -41,6 +42,7 @@ public class PlatformDependentPlugin {
     public final KeyboardHandler kbHandler;
     public final Ortho ortho;
     public final TileEngine tileEngine;
+    public final PixelShaders pixelShaders;
     
     enum KnownPlugin { Lwjgl, Android };
     
@@ -51,6 +53,7 @@ public class PlatformDependentPlugin {
         kbHandler = createSingleton("zildo.platform.input.KeyboardHandler");
         ortho = createSingleton("zildo.platform.opengl.Ortho", Zildo.viewPortX, Zildo.viewPortY);
         tileEngine = createSingleton("zildo.platform.engine.TileEngine");
+        pixelShaders = createSingleton("zildo.platform.opengl.PixelShaders");
     }
     
     @SuppressWarnings("unchecked")

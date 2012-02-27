@@ -21,28 +21,20 @@
 package zildo.fwk.gfx;
 
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.ARBFragmentShader;
-import org.lwjgl.opengl.ARBShaderObjects;
-import org.lwjgl.opengl.GLContext;
-import org.lwjgl.opengl.Util;
-
+import zildo.fwk.ZUtils;
 import zildo.monde.util.Vector4f;
 
-import zildo.fwk.opengl.OpenGLStuff;
 
-
-public class PixelShaders extends OpenGLStuff {
+public abstract class PixelShaders {
 	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
 	
-	private int n_PixelShaders;
-	private int[] tabPixelShaders;
-	private ByteBuffer buff=BufferUtils.createByteBuffer(256);	// Used for setParameter
+	protected int n_PixelShaders;
+	protected int[] tabPixelShaders;
+	private ByteBuffer buff=ZUtils.createByteBuffer(256);	// Used for setParameter
 	
 	public PixelShaders()
 	{
@@ -53,9 +45,11 @@ public class PixelShaders extends OpenGLStuff {
 	public void cleanUp() {
 		for (int i=0;i<n_PixelShaders;i++) {
 			int id=tabPixelShaders[i];
-			ARBShaderObjects.glDeleteObjectARB(id);
+			deletePixelShader(id);
 		}
 	}
+	
+	protected abstract void deletePixelShader(int id);
 	
 	public int getPixelShader(int n) {
 		return tabPixelShaders[n];
@@ -64,13 +58,7 @@ public class PixelShaders extends OpenGLStuff {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// canDoPixelShader
 	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean canDoPixelShader() {
-        return GLContext.getCapabilities().GL_ARB_shader_objects &&
-        GLContext.getCapabilities().GL_ARB_fragment_shader &&
-        GLContext.getCapabilities().GL_ARB_vertex_shader &&
-        GLContext.getCapabilities().GL_ARB_shading_language_100;
-
-	}
+	public abstract boolean canDoPixelShader();
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// preparePixelShader
@@ -173,7 +161,7 @@ public class PixelShaders extends OpenGLStuff {
 		return true;
 	}
 	
-	public String getShaderCode(String[] lines) {
+	private String getShaderCode(String[] lines) {
 		StringBuilder result=new StringBuilder();
 		for (String l : lines) {
 			result.append(l);
@@ -185,9 +173,9 @@ public class PixelShaders extends OpenGLStuff {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// addPixelShader
 	///////////////////////////////////////////////////////////////////////////////////////
-	void addPixelShader(String strData)
+	private void addPixelShader(String strData)
 	{
-		ByteBuffer shaderPro = BufferUtils.createByteBuffer(strData.length());
+		ByteBuffer shaderPro = ZUtils.createByteBuffer(strData.length());
 		 
 		byte[] shaderBytes=new byte[strData.length()];
 		for (int i=0;i<strData.length();i++) {
@@ -196,25 +184,15 @@ public class PixelShaders extends OpenGLStuff {
 		shaderPro.put(shaderBytes);
 		shaderPro.flip();
 
-		// Create pixel shader
-		int vertexShader= ARBShaderObjects.glCreateShaderObjectARB(ARBFragmentShader.GL_FRAGMENT_SHADER_ARB);
-		ARBShaderObjects.glShaderSourceARB(vertexShader, shaderPro);
-		
-		// Compile, link, validate
-		ARBShaderObjects.glCompileShaderARB(vertexShader);
-		
-		int programObject  = ARBShaderObjects.glCreateProgramObjectARB();
-		ARBShaderObjects.glAttachObjectARB(programObject, vertexShader);
-		
-		ARBShaderObjects.glLinkProgramARB(programObject);
-		ARBShaderObjects.glValidateProgramARB(programObject);
-		
+		int programObject = doCreatePixelShader(shaderPro);
 		// Uniform values
 		
-		printLogInfo(vertexShader);
+
 		tabPixelShaders[n_PixelShaders]=programObject;
 		n_PixelShaders++;
 	}
+	
+	protected abstract int doCreatePixelShader(ByteBuffer shaderPro);
 	
 	private ByteBuffer toByteString(String str, boolean isNullTerminated)
 	{
@@ -229,28 +207,7 @@ public class PixelShaders extends OpenGLStuff {
 		buff.flip();
 		return buff;
 	}
-	
-	private void printLogInfo(int obj)
-	{
-		IntBuffer iVal = BufferUtils.createIntBuffer(1);
-		ARBShaderObjects.glGetObjectParameterARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB, iVal);
- 
-		int length = iVal.get();
-		if (length > 0)
-		{
-			// We have some info we need to output.
-			ByteBuffer infoLog = BufferUtils.createByteBuffer(length);
-			iVal.flip();
-			ARBShaderObjects.glGetInfoLogARB(obj,  iVal, infoLog);
-			byte[] infoBytes = new byte[length];
-			infoLog.get(infoBytes);
-			String out = new String(infoBytes);
- 
-			System.out.println("Info log:\n"+out);
-		}
- 
-		Util.checkGLError();
-	}
+
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// getConstantsForSpecialEffect
@@ -289,7 +246,8 @@ public class PixelShaders extends OpenGLStuff {
 	public void setParameter(int pixelShaderIndex, String uniformName, Vector4f color) {
 		ByteBuffer name = toByteString(uniformName, true);
 		int psId=tabPixelShaders[pixelShaderIndex];
-		int location = ARBShaderObjects.glGetUniformLocationARB(psId, name);
-		ARBShaderObjects.glUniform4fARB(location, color.x, color.y, color.z, color.w);
+		doSetParameter(psId, name, color);
 	}
+	
+	protected abstract void doSetParameter(int psId, ByteBuffer name, Vector4f color);
 }
