@@ -23,10 +23,13 @@ package zildo.client;
 import zildo.Zildo;
 import zildo.fwk.Injector;
 import zildo.fwk.gfx.Ortho;
+import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.input.KeyboardHandler;
 
 /**
- * Mini-injection framework.
+ * Handle all platform-dependent classes.
+ * 
+ * It's a singleton warehouse.
  *
  * @author Tchegito
  *
@@ -37,15 +40,17 @@ public class PlatformDependentPlugin {
 	
     public final KeyboardHandler kbHandler;
     public final Ortho ortho;
+    public final TileEngine tileEngine;
     
     enum KnownPlugin { Lwjgl, Android };
     
-    private KnownPlugin currentPlugin = KnownPlugin.Lwjgl;	// Will be set at runtime
+    private KnownPlugin currentPlugin = KnownPlugin.Lwjgl;	// Constant for now
     
     public PlatformDependentPlugin() {
         // Look for existing stuff in the class loader and create all needed singletons
         kbHandler = createSingleton("zildo.platform.input.KeyboardHandler");
         ortho = createSingleton("zildo.platform.opengl.Ortho", Zildo.viewPortX, Zildo.viewPortY);
+        tileEngine = createSingleton("zildo.platform.engine.TileEngine");
     }
     
     @SuppressWarnings("unchecked")

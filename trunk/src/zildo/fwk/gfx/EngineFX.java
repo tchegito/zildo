@@ -22,8 +22,6 @@ package zildo.fwk.gfx;
 
 import zildo.monde.util.Vector4f;
 
-import zildo.fwk.opengl.OpenGLStuff;
-
 public enum EngineFX {
 	NO_EFFECT,
 	GUARD_BLUE(new int[]{20, 28, 50}, new int[]{44, 36, 62}), 
@@ -54,7 +52,7 @@ public enum EngineFX {
 		brightColor = null;
 	}
 	private EngineFX(int[] dark, int[] bright) {
-		darkColor = OpenGLStuff.createColor64(dark[0], dark[1], dark[2]);
-		brightColor = OpenGLStuff.createColor64(bright[0], bright[1], bright[2]);
+		darkColor = GFXBasics.createColor64(dark[0], dark[1], dark[2]);
+		brightColor = GFXBasics.createColor64(bright[0], bright[1], bright[2]);
 	}
 }
