@@ -66,7 +66,7 @@ public class SpriteEngine extends TextureEngine {
 	{
         super();
 		
-        pixelShaderSupported = isPixelShaderSupported();
+        pixelShaderSupported = ClientEngineZildo.pixelShaders.canDoPixelShader();
     }
 	
 	public void init(SpriteStore p_spriteStore) {
