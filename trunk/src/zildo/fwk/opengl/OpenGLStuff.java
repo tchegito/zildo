@@ -37,8 +37,6 @@ import zildo.monde.util.Vector4f;
 
 public class OpenGLStuff {
 
-    protected OpenGLGestion m_oglGestion;
-
     protected FBO fbo;
     protected VBO vbo;
 
@@ -49,7 +47,6 @@ public class OpenGLStuff {
     // ////////////////////////////////////////////////////////////////////
 
     public OpenGLStuff() {
-        m_oglGestion = null;
         if (isFBOSupported()) {
             fbo = new FBOHardware();
         } else {
@@ -61,12 +58,6 @@ public class OpenGLStuff {
         } else {
         	vbo = new VBOSoftware();
         }
-    }
-
-    public OpenGLStuff(OpenGLGestion oglGestion) {
-        // On récupère les pointeurs vers les objets OpenGL
-        m_oglGestion = oglGestion;
-
     }
     
     /**
@@ -84,14 +75,6 @@ public class OpenGLStuff {
     // ///////////////////////////////////////////////////////////////////////////////////////////////////////
     protected boolean isFBOSupported() {
         return GLContext.getCapabilities().GL_EXT_framebuffer_object;
-    }
-
-    // /////////////////////////////////////////////////////////////////////////////////////
-    // isPixelShaderSupported
-    // /////////////////////////////////////////////////////////////////////////////////////
-    protected boolean isPixelShaderSupported() {
-        return GLContext.getCapabilities().GL_ARB_shader_objects && GLContext.getCapabilities().GL_ARB_fragment_shader
-                && GLContext.getCapabilities().GL_ARB_vertex_shader && GLContext.getCapabilities().GL_ARB_shading_language_100;
     }
 
     // //////////////////////////////////////////////
