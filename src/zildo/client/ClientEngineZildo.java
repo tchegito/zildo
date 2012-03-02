@@ -117,7 +117,7 @@ public class ClientEngineZildo {
 			pixelShaders.preparePixelShader();
 		}
 
-		spriteEngine = new SpriteEngine();
+		spriteEngine = Zildo.pdPlugin.spriteEngine;
 		tileEngine = Zildo.pdPlugin.tileEngine;
 
 		spriteDisplay = new SpriteDisplay(spriteEngine);

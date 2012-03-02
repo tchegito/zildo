@@ -28,6 +28,7 @@ import zildo.Zildo;
 import zildo.client.gui.menu.InGameMenu;
 import zildo.fwk.ZUtils;
 import zildo.fwk.input.KeyboardHandler;
+import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.NetClient;
 import zildo.fwk.net.TransferObject;
@@ -74,6 +75,8 @@ public class Client {
 
 	InGameMenu ingameMenu;
 
+	KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
+	
 	public enum ClientType {
 		SERVER_AND_CLIENT, CLIENT, ZEDITOR;
 	}
@@ -141,7 +144,7 @@ public class Client {
 	public boolean render() {
 		if (!awt) {
 			// Read keyboard
-			KeyboardHandler.poll();
+			Zildo.pdPlugin.kbHandler.poll();
 
 			// Music
 			if (music) {
@@ -151,7 +154,7 @@ public class Client {
 			}
 			done = glGestion.mainloop();
 
-			if (KeyboardHandler.isKeyDown(KeyboardHandler.KEY_ESCAPE) && !ClientEngineZildo.filterCommand.isFading()) {
+			if (kbHandler.isKeyDown(kbHandler.getCode(Keys.ESCAPE)) && !ClientEngineZildo.filterCommand.isFading()) {
 				// Escape is pressed and no fade is running
 				if (connected) {
 					if (ingameMenu == null) {

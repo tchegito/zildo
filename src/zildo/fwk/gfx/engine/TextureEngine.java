@@ -23,6 +23,7 @@ package zildo.fwk.gfx.engine;
 import java.nio.ByteBuffer;
 
 import zildo.fwk.gfx.GFXBasics;
+import zildo.fwk.gfx.GraphicStuff;
 import zildo.resource.Constantes;
 
 /**
@@ -48,8 +49,11 @@ public abstract class TextureEngine {
     protected boolean textureFormat;	// Current texture's format (TRUE=RGBA / FALSE=RGB)
     protected ByteBuffer scratch;
 
+    public GraphicStuff graphicStuff;
     
-    public TextureEngine() {
+    public TextureEngine(GraphicStuff graphStuff) {
+    	
+    	graphicStuff = graphStuff;
     	
 		// Initialize number of textures
 		n_Texture=0;
@@ -84,7 +88,7 @@ public abstract class TextureEngine {
      */
     public abstract int doGenerateTexture();
 
-    public void generateTexture() { 
+    public int generateTexture() { 
     	
     	int idTexture = doGenerateTexture();
     	
@@ -96,6 +100,28 @@ public abstract class TextureEngine {
 
         // Ready for next one
         n_Texture++;
+        
+        return textureTab[n_Texture-1];
+    }
+    
+    public int getNthTexture(int nth) {
+    	return textureTab[nth];
+    }
+    
+    public ByteBuffer getBuffer() {
+    	return scratch;
+    }
+    
+    /** FIXME : need to be changed => wrong to manipulate this internal variable from outside */
+    public void setCurentTexture(int texId) {
+    	n_Texture = texId;
+    }
+    
+    public void cleanTextures() {
+		for (int i=0;i<n_Texture;i++) {
+			int id=textureTab[i];
+			graphicStuff.cleanTexture(id);
+		}
     }
     
     public abstract void getTextureImage(int p_texId);

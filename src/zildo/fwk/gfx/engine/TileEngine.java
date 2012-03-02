@@ -23,9 +23,6 @@ package zildo.fwk.gfx.engine;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
-import zildo.client.ClientEngineZildo;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.TilePrimitive;
@@ -35,7 +32,6 @@ import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.util.Point;
-import zildo.monde.util.Vector3f;
 import zildo.resource.Constantes;
 
 // V1.0
@@ -78,7 +74,7 @@ import zildo.resource.Constantes;
 // Indices : (0,2a+1,2a)   - (0,1,2a+1)
 //			 (2,2a+3,2a+2) - (2,3,2a+3)
 
-public class TileEngine extends TextureEngine {
+public abstract class TileEngine {
 
 	// /////////////////////
 	// Variables
@@ -90,10 +86,12 @@ public class TileEngine extends TextureEngine {
 	protected TilePrimitive[] meshFORE;
 	protected TilePrimitive[] meshBACK;
 
-	private boolean initialized = false;
+	protected boolean initialized = false;
 	List<MotifBank> motifBanks;
 	public int texCloudId;
 
+	protected TextureEngine textureEngine;
+	
 	static public String[] tileBankNames = { "foret1",
 			"village",
 			"maison",
@@ -108,10 +106,12 @@ public class TileEngine extends TextureEngine {
 	// Construction/Destruction
 	// ////////////////////////////////////////////////////////////////////
 
-	public TileEngine()
+	public TileEngine(TextureEngine texEngine)
 	{
 		super();
 
+		textureEngine = texEngine;
+		
 		cameraX = -1;
 		cameraY = -1;
 
@@ -243,7 +243,7 @@ public class TileEngine extends TextureEngine {
 
 	public void createTextureFromMotifBank(MotifBank mBank) {
 
-		GFXBasics surface = prepareSurfaceForTexture(true);
+		GFXBasics surface = textureEngine.prepareSurfaceForTexture(true);
 
 		// Display tiles on it
 		int x = 0, y = 0;
@@ -267,60 +267,19 @@ public class TileEngine extends TextureEngine {
 			}
 		}
 
-		generateTexture();
+		textureEngine.generateTexture();
 	}
 
 	public void createCloudTexture() {
-		prepareSurfaceForTexture(false);
+		textureEngine.prepareSurfaceForTexture(false);
 
-		CloudGenerator cGen = new CloudGenerator(scratch);
+		CloudGenerator cGen = new CloudGenerator(textureEngine.getBuffer());
 		cGen.generate();
 
-		generateTexture();
-		texCloudId = textureTab[n_Texture - 1];
+		texCloudId = textureEngine.generateTexture();
 	}
 
-	public void render(boolean backGround) {
-
-		if (initialized) {
-			Vector3f ambient = ClientEngineZildo.ortho.getAmbientColor();
-			if (ambient != null) {
-				GL11.glColor3f(ambient.x, ambient.y, ambient.z);
-			}
-
-			// Small optimization: do not draw invisible faces ! (counterclock
-			// wise vertices)
-			// pD3DDevice9.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-			if (backGround) {
-				// Display BACKGROUND
-				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-				GL11.glEnable(GL11.GL_BLEND);
-				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-					if (meshBACK[i].getNPoints() > 0) {
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]); 
-						meshBACK[i].render();
-					}
-				}
-				GL11.glDisable(GL11.GL_BLEND);
-			}
-			else {
-				// Display FOREGROUND
-				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-				GL11.glEnable(GL11.GL_BLEND);
-
-				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-					if (meshFORE[i].getNPoints() > 0) {
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]); 
-						meshFORE[i].render();
-					}
-				}
-				GL11.glDisable(GL11.GL_BLEND);
-			}
-
-			// GL11.glColor3f(1f, 1f, 1f);
-
-		}
-	}
+	public abstract void render(boolean backGround);
 
 	// Redraw all tiles with updating VertexBuffers.
 	// No need to access particular tile, because we draw every one.
