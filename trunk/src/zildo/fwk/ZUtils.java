@@ -93,4 +93,24 @@ public class ZUtils {
     {
         return createByteBuffer(size << 2).asFloatBuffer();
     }
+    
+    
+    /**
+     * OpenGL likes "adjusted" size for texture. We take multiple of 256.
+     * @param n Initial size
+     * @return Adjusted size
+     */
+    static public int adjustTexSize(int n) {
+        if (n % 256 == 0) {
+            return n;
+        }
+        return (n & 0xff00) + 256;
+    }
+
+    public static IntBuffer getBufferWithId(int id) {
+        IntBuffer buf = createIntBuffer(1);
+        buf.put(id);
+        buf.rewind();
+        return buf;
+    }
 }

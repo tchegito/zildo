@@ -20,7 +20,7 @@
 
 package zildo.fwk.gfx;
 
-import zildo.fwk.opengl.OpenGLStuff;
+import zildo.fwk.opengl.compatibility.VBO;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 import zildo.monde.sprites.Reverse;
 
@@ -35,7 +35,7 @@ import zildo.monde.sprites.Reverse;
  * @author tchegito
  */
 
-public class TilePrimitive extends OpenGLStuff {
+public class TilePrimitive {
 
     // Class variables
     protected int nPoints;
@@ -43,6 +43,8 @@ public class TilePrimitive extends OpenGLStuff {
     private boolean isLock;
 
     protected VBOBuffers bufs;
+    
+    protected VBO vbo;
     
     private int textureSizeX = 256;
     private int textureSizeY = 256;

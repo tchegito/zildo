@@ -41,7 +41,7 @@ public interface KeyboardHandler {
 	
 	public char getEventCharacter();
 	
-	public enum Keys {Q, W, X, E, UP, DOWN, RIGHT, LEFT, TAB, RETURN, BACK};
+	public enum Keys {Q, W, X, E, UP, DOWN, RIGHT, LEFT, TAB, RETURN, BACK, ESCAPE, LSHIFT};
 	public int getCode(Keys k);
 	
 }

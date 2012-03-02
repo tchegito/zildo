@@ -23,12 +23,8 @@ package zildo.fwk.gfx.engine;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.opengl.ARBShaderObjects;
-import org.lwjgl.opengl.GL11;
-
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.SpritePrimitive;
 import zildo.monde.sprites.SpriteEntity;
@@ -38,7 +34,6 @@ import zildo.monde.sprites.desc.Outfit;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.util.Point;
-import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
 import zildo.resource.Constantes;
 import zildo.server.SpriteManagement;
@@ -51,13 +46,15 @@ import zildo.server.SpriteManagement;
 
 
 
-public class SpriteEngine extends TextureEngine {
+public abstract class SpriteEngine {
 
 	// 3D Objects (vertices and indices per bank)
-	SpritePrimitive meshSprites[]=new SpritePrimitive[Constantes.NB_SPRITEBANK];
+	protected SpritePrimitive meshSprites[]=new SpritePrimitive[Constantes.NB_SPRITEBANK];
 
-    boolean pixelShaderSupported;
+    protected boolean pixelShaderSupported;
     
+	protected TextureEngine textureEngine;
+	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
@@ -78,10 +75,7 @@ public class SpriteEngine extends TextureEngine {
 		for (SpritePrimitive sp : meshSprites) {
 			sp.cleanUp();
 		}
-		for (int i=0;i<n_Texture;i++) {
-			int id=textureTab[i];
-			cleanTexture(id);
-		}
+		textureEngine.cleanTextures();
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -96,7 +90,7 @@ public class SpriteEngine extends TextureEngine {
 	// at the end, indeed. So we can say this is a beautiful method.
 	public void createTextureFromSpriteBank(SpriteBank sBank) {
 	
-		GFXBasics surfaceGfx = prepareSurfaceForTexture(true);
+		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
 
 		surfaceGfx.StartRendering();
 		surfaceGfx.box(0,0,320,256,32,new Vector4f(0,0,0,0));
@@ -131,7 +125,7 @@ public class SpriteEngine extends TextureEngine {
 						if (pixelShaderSupported) {
 							modifiedColor=sBank.modifyPixel(n,a);
 						}
-						replacedColor=modifiedColor==-1?null:createColor(modifiedColor);
+						replacedColor=modifiedColor==-1?null:textureEngine.graphicStuff.createColor(modifiedColor);
 						surfaceGfx.pset(i+x,j+y,a,replacedColor);
 					}
 				}
@@ -141,7 +135,7 @@ public class SpriteEngine extends TextureEngine {
 			if (longY > highestLine)	// Mark the highest sprite on the row
 				highestLine = longY;
 		}
-		generateTexture();
+		textureEngine.generateTexture();
 	}
 	
     /**
@@ -156,10 +150,10 @@ public class SpriteEngine extends TextureEngine {
     public void createTextureFromAnotherReplacement(int p_originalTexture,
 	    Class<? extends Outfit> p_outfitClass) {
 
-	GFXBasics surfaceGfx = prepareSurfaceForTexture(true);
+	GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
 
 	// 1) Store the color indexes once for all
-	getTextureImage(textureTab[p_originalTexture]);
+	textureEngine.getTextureImage(textureEngine.getNthTexture(p_originalTexture));
 	Map<Integer, Integer> colorIndexes = new HashMap<Integer, Integer>();
 	int i, j;
 	for (j = 0; j < 256; j++) {
@@ -180,7 +174,7 @@ public class SpriteEngine extends TextureEngine {
 		continue;	// No replacements
 	    }
 	    if (!textureReady) {
-		surfaceGfx = prepareSurfaceForTexture(true);
+		surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
 	    }
 	    surfaceGfx.StartRendering();
 	    for (j = 0; j < 256; j++) {
@@ -196,7 +190,7 @@ public class SpriteEngine extends TextureEngine {
 		}
 	    }
 
-	    generateTexture();
+	    textureEngine.generateTexture();
 	    textureReady=false;
 	}
     }
@@ -228,7 +222,7 @@ public class SpriteEngine extends TextureEngine {
 		
 		// Create Zildo with all outfits
 		if (!ClientEngineZildo.editing) {
-			n_Texture=SpriteBank.BANK_ZILDOOUTFIT;
+			textureEngine.setCurentTexture(SpriteBank.BANK_ZILDOOUTFIT);
 			createTextureFromAnotherReplacement(SpriteBank.BANK_ZILDO, ZildoOutfit.class);
 		}
 		
@@ -318,103 +312,6 @@ public class SpriteEngine extends TextureEngine {
 			meshSprites[i].initRendering();
 	}
 	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// spriteRender
-	///////////////////////////////////////////////////////////////////////////////////////
-	// Draw every sprite's primitives
-	///////////////////////////////////////////////////////////////////////////////////////
-	// IN: true=render BACKground
-	//	   false=render FOREground
-	///////////////////////////////////////////////////////////////////////////////////////
-	public void render(boolean backGround) {
-	
-		// Display every sprites
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glEnable(GL11.GL_BLEND);
-		float[] color=getFloat(GL11.GL_CURRENT_COLOR, 4);
-
-		Vector3f ambient=ClientEngineZildo.ortho.getAmbientColor();
-		if (ambient != null) {
-			color[0]=ambient.x;
-			color[1]=ambient.y;
-			color[2]=ambient.z;
-		}
-		// Respect order from bankOrder
-		boolean endSequence=false;
-		int posBankOrder=0;
-	
-		// Retrieve the sprite's order
-		int[][] bankOrder = ClientEngineZildo.spriteDisplay.getBankOrder();
-		
-		int phase=(backGround)?0:1;
-		while (!endSequence) {
-			int numBank=bankOrder[phase][posBankOrder*4];
-			if (numBank == -1) {
-				endSequence=true;
-			} else {
-				// Render the n sprites from this bank
-				int nbQuads=bankOrder[phase][posBankOrder*4 + 1];
-				int iCurrentFX=bankOrder[phase][posBankOrder*4 + 2];
-				int alpha=bankOrder[phase][posBankOrder*4 + 3];
-				EngineFX currentFX=EngineFX.values()[iCurrentFX];
-				int texId=textureTab[numBank];
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
-
-				// Select the right pixel shader (if needed)
-                if (pixelShaderSupported) {
-                	switch (currentFX) {
-                	case NO_EFFECT:
-						ARBShaderObjects.glUseProgramObjectARB(0);
-						break;
-                	case PERSO_HURT:
-						// A sprite has been hurt
-						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(1));
-						ClientEngineZildo.pixelShaders.setParameter(1, "randomColor", new Vector4f((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
-						break;
-					default:
-						if (currentFX.needPixelShader()) {
-							// This is a color replacement, so get the right ones
-							Vector4f[] tabColors=ClientEngineZildo.pixelShaders.getConstantsForSpecialEffect(currentFX);
-		
-							// And enable the 'color replacement' pixel shader
-							ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(0));
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color1", tabColors[2]);
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color2", tabColors[3]);
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color3", new Vector4f(tabColors[0]).scale(color[0]));
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color4", new Vector4f(tabColors[1]).scale(color[0]));
-						} else {
-							ARBShaderObjects.glUseProgramObjectARB(0);
-						}
-                	}
-                }
-                switch (currentFX) {
-	                case SHINY:
-	                    GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE); // _MINUS_SRC_ALPHA);
-	                    GL11.glColor4f(1, (float) Math.random(), 0, (float) Math.random());
-	                    break;
-	                case QUAD:
-	                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	                    GL11.glColor4f(0.5f + 0.5f * (float) Math.random(), 0.5f * (float) Math.random(), 0, 1);
-	                    break;
-	                case FOCUSED:
-	                	GL11.glColor3f(1.0f, 1.0f, 1.0f);
-	                	break;
-	                default:
-	                	color[3]=alpha / 255.0f;
-	            		setCurrentColor(color);
-	                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                }
-				meshSprites[numBank].render(nbQuads);
-				posBankOrder++;
-			}
-		}
-
-		// Deactivate pixel shader
-		if (pixelShaderSupported) {
-			ARBShaderObjects.glUseProgramObjectARB(0);
-		}
-		GL11.glDisable(GL11.GL_BLEND);
-	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
 	// buildIndexBuffers
@@ -436,6 +333,8 @@ public class SpriteEngine extends TextureEngine {
 	 * Capture screen before map scroll.
 	 */
 	public void captureScreen() {
-		saveScreen(textureTab[SpriteBank.BANK_COPYSCREEN]);
+		//saveScreen(textureTab[SpriteBank.BANK_COPYSCREEN]);
 	}
+	
+	public abstract void render(boolean backGround);
 }
