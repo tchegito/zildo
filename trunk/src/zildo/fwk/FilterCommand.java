@@ -193,7 +193,7 @@ public class FilterCommand {
 	 */
 	public void active(Class<? extends ScreenFilter> clazz, boolean activ, FilterEffect effect) {
 		for (ScreenFilter filter : filters) {
-			if (clazz == null || filter.getClass().equals(clazz)) {
+			if (clazz == null || clazz.isAssignableFrom(filter.getClass())) {
 				filter.setActive(activ, effect);
 			}
 		}

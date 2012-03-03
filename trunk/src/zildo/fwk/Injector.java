@@ -43,9 +43,10 @@ public class Injector {
         }
         try {
             T o = createInstance(clazz, parameters);
+            System.out.println("created "+p_className);
             return o;
         } catch (Exception e) {
-            throw new RuntimeException("Unable to create instance of class "+p_className);
+            throw new RuntimeException("Unable to create instance of class "+p_className, e);
         }
     }
    
@@ -86,6 +87,8 @@ public class Injector {
                                 }
                             }
                         }
+                    } else {
+                    	right = false;
                     }
                     if ( right ) {
                         ctr = oneCtr;
@@ -101,7 +104,7 @@ public class Injector {
         }
         catch ( Exception e ) {
             throw new RuntimeException( "Can't create instances of " + clazz.getName() + " with parameters [" + params
-                + "]" );
+                + "]", e );
         }
     }
 
@@ -115,14 +118,14 @@ public class Injector {
         if ( c1.isPrimitive() && !c2.isPrimitive() ) {
             return false;
         }
-        return c1 == Integer.class && c2 == Integer.TYPE || //
-            c1 == Byte.class && c2 == Byte.TYPE || //
-            c1 == Character.class && c2 == Character.TYPE || //
-            c1 == Float.class && c2 == Float.TYPE || //
-            c1 == Double.class && c2 == Double.TYPE || //
-            c1 == Long.class && c2 == Long.TYPE || //
-            c1 == Void.class && c2 == Void.TYPE || //
-            c1 == Short.class && c2 == Short.TYPE || //
-            c1 == Boolean.class && c2 == Boolean.TYPE;
+        return (c1 == Integer.class && c2 == Integer.TYPE) || //
+            (c1 == Byte.class && c2 == Byte.TYPE) || //
+            (c1 == Character.class && c2 == Character.TYPE) || //
+            (c1 == Float.class && c2 == Float.TYPE) || //
+            (c1 == Double.class && c2 == Double.TYPE) || //
+            (c1 == Long.class && c2 == Long.TYPE) || //
+            (c1 == Void.class && c2 == Void.TYPE) || //
+            (c1 == Short.class && c2 == Short.TYPE) || //
+            (c1 == Boolean.class && c2 == Boolean.TYPE);
     }
 }

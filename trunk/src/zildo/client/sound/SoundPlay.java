@@ -27,7 +27,8 @@ import java.util.Map;
 
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
-import zildo.fwk.opengl.OpenGLSound;
+import zildo.fwk.opengl.Sound;
+import zildo.fwk.opengl.SoundEngine;
 import zildo.monde.WaitingSound;
 import zildo.monde.map.Area;
 
@@ -39,17 +40,17 @@ import zildo.monde.map.Area;
 
 public class SoundPlay {
 
-	// CSoundManager* soundManager;
-	private Map<AudioBank, OpenGLSound> tabSounds = new HashMap<AudioBank, OpenGLSound>();
-
-	// const GUID GUID_null = { 0, 0, 0, { 0, 0, 0, 0, 0, 0, 0, 0 } };
+	private Map<AudioBank, Sound> tabSounds = new HashMap<AudioBank, Sound>();
 
 	// ////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	// ////////////////////////////////////////////////////////////////////
 
-	public SoundPlay() {
+	SoundEngine soundEngine;
+	
+	public SoundPlay(SoundEngine soundEngine) {
 
+		this.soundEngine = soundEngine;
 		tabSounds.clear();
 		loadAllSoundFX();
 	}
@@ -57,14 +58,14 @@ public class SoundPlay {
 	public void cleanUp() {
 		if (tabSounds != null) {
 			// Release all allocated buffer for samples
-			for (OpenGLSound sound : tabSounds.values()) {
+			for (Sound sound : tabSounds.values()) {
 				if (sound != null) {
 					sound.finalize();
 				}
 				sound = null;
 			}
 		}
-		OpenGLSound.cleanUp();
+		soundEngine.cleanUp();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -85,7 +86,7 @@ public class SoundPlay {
 	// loadSound
 	// /////////////////////////////////////////////////////////////////////////////////////
 	void loadSound(String p_subDirectory, AudioBank p_sound) {
-		OpenGLSound.detectAndInitSoundEngine();
+		soundEngine.detectAndInitSoundEngine();
 
 		if (Zildo.soundEnabled) {
 			// Build entire file name
@@ -94,7 +95,7 @@ public class SoundPlay {
 			chemin += ".";
 			chemin += p_sound.getSuffix();
 
-			OpenGLSound newSound = new OpenGLSound(chemin);
+			Sound newSound = soundEngine.createSound(chemin);
 
 			// Store it into the sound's tab
 			tabSounds.put(p_sound, newSound);
@@ -110,7 +111,7 @@ public class SoundPlay {
 	public void playSoundFX(AudioBank snd) {
 		// Play desired sound and exit
 		Ambient ambient = ClientEngineZildo.ambient;
-		OpenGLSound sound = tabSounds.get(snd);
+		Sound sound = tabSounds.get(snd);
 		if (sound != null) {
 			if (snd instanceof BankMusic) {
 				if (ambient.getCurrentMusic() == snd) {
@@ -129,7 +130,7 @@ public class SoundPlay {
 	 * @param snd
 	 */
 	public void stopSoundFX(AudioBank snd) {
-		OpenGLSound sound = tabSounds.get(snd);
+		Sound sound = tabSounds.get(snd);
 		if (sound != null) {
 			sound.stop();
 		}
