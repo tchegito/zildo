@@ -20,6 +20,7 @@
 
 package zildo.fwk.gfx;
 
+import zildo.Zildo;
 import zildo.fwk.opengl.compatibility.VBO;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 import zildo.monde.sprites.Reverse;
@@ -43,7 +44,6 @@ public class TilePrimitive {
     private boolean isLock;
 
     protected VBOBuffers bufs;
-    
     protected VBO vbo;
     
     private int textureSizeX = 256;
@@ -53,10 +53,6 @@ public class TilePrimitive {
     // Construction/Destruction
     // ////////////////////////////////////////////////////////////////////
 
-    public TilePrimitive() { // Should never been called
-        nPoints = 0;
-        nIndices = 0;
-    }
 
     public TilePrimitive(int numPoints) {
         initialize(numPoints);
@@ -64,6 +60,7 @@ public class TilePrimitive {
 
     private void initialize(int numPoints) {
         // Initialize VBO IDs
+    	vbo = Zildo.pdPlugin.gfxStuff.createVBO();
         bufs=vbo.create(numPoints);
         
         nPoints = 0;

@@ -39,6 +39,8 @@ import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FadeFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.input.KeyboardInstant;
+import zildo.fwk.opengl.OpenGLGestion;
+import zildo.fwk.opengl.SoundEngine;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.monde.collision.Collision;
@@ -58,13 +60,14 @@ import zildo.server.EngineZildo;
 public class ClientEngineZildo {
 
 	// Link to directX object
-	public static OpenGLZildo openGLGestion;
+	public static OpenGLGestion openGLGestion;
 	public static Ortho ortho;
 	public static FilterCommand filterCommand;
 
 	public static SpriteDisplay spriteDisplay;
 	public static MapDisplay mapDisplay;
-
+	public static SoundEngine soundEngine;
+	
 	public static GUIDisplay guiDisplay;
 	public static DialogDisplay dialogDisplay;
 
@@ -96,19 +99,21 @@ public class ClientEngineZildo {
 		guiDisplay = new GUIDisplay();
 		dialogDisplay = new DialogDisplay();
 		if (!p_awt) { // No sound in ZEditor
-			soundPlay = new SoundPlay();
+			soundEngine = Zildo.pdPlugin.soundEngine;
+			soundPlay = new SoundPlay(soundEngine);
 		}
 
 		ortho = Zildo.pdPlugin.ortho;
 
 		if (!p_awt) {
 
-			filterCommand.addFilter(new BilinearFilter());
-			filterCommand.addFilter(new CloudFilter());
-			filterCommand.addFilter(new BlurFilter());
-			filterCommand.addFilter(new BlendFilter());
-			filterCommand.addFilter(new FadeFilter());
-			filterCommand.addFilter(new CircleFilter());
+			Zildo.pdPlugin.initFilters();
+			filterCommand.addFilter(Zildo.pdPlugin.getFilter(BilinearFilter.class));
+			filterCommand.addFilter(Zildo.pdPlugin.getFilter(CloudFilter.class));
+			filterCommand.addFilter(Zildo.pdPlugin.getFilter(BlurFilter.class));
+			filterCommand.addFilter(Zildo.pdPlugin.getFilter(BlendFilter.class));
+			filterCommand.addFilter(Zildo.pdPlugin.getFilter(FadeFilter.class));
+			filterCommand.addFilter(Zildo.pdPlugin.getFilter(CircleFilter.class));
 			filterCommand.active(BilinearFilter.class, true, null);
 		}
 
@@ -138,7 +143,7 @@ public class ClientEngineZildo {
 	 * @param p_awt TRUE=ZEditor / FALSE=game
 	 * @param p_client
 	 */
-	public ClientEngineZildo(OpenGLZildo p_openGLGestion, boolean p_awt,
+	public ClientEngineZildo(OpenGLGestion p_openGLGestion, boolean p_awt,
 			Client p_client) {
 		// Lien avec DirectX
 		ClientEngineZildo.openGLGestion = p_openGLGestion;
@@ -240,7 +245,7 @@ public class ClientEngineZildo {
 					// Call Circle filter to focus on Zildo
 					zildo = EngineZildo.persoManagement.getZildo();
 					zildoPos=zildo.getCenteredScreenPosition();
-					CircleFilter.setCenter(zildoPos.x, zildoPos.y);
+					Zildo.pdPlugin.getFilter(CircleFilter.class).setCenter(zildoPos.x, zildoPos.y);
 				case FADE_OUT :
 					retEvent.nature = ClientEventNature.FADING_OUT;
 					guiDisplay.fadeOut(retEvent.effect);
@@ -277,7 +282,7 @@ public class ClientEngineZildo {
 						// Call Circle filter to focus on Zildo
 						zildo = EngineZildo.persoManagement.getZildo();
 						zildoPos=zildo.getCenteredScreenPosition();
-						CircleFilter.setCenter(zildoPos.x, zildoPos.y);
+						Zildo.pdPlugin.getFilter(CircleFilter.class).setCenter(zildoPos.x, zildoPos.y);
 					}
 					break;
 				case CHANGINGMAP_SCROLL_ASKED :
@@ -427,7 +432,7 @@ public class ClientEngineZildo {
 		return client;
 	}
 
-	public void setOpenGLGestion(OpenGLZildo p_openGLGestion) {
+	public void setOpenGLGestion(OpenGLGestion p_openGLGestion) {
 		openGLGestion = p_openGLGestion;
 	}
 	

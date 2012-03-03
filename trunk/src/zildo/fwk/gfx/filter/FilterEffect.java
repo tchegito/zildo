@@ -20,6 +20,15 @@
 
 package zildo.fwk.gfx.filter;
 
+import zildo.client.PlatformDependentPlugin;
+
+/**
+ * References all declared filters. It's important to have the exhaustivity here, because the
+ * injection framework browses all these classes (see {@link PlatformDependentPlugin#initFilters()}.
+ * 
+ * @author Tchegito
+ *
+ */
 @SuppressWarnings("unchecked")
 public enum FilterEffect {
 	FADE(FadeFilter.class, BilinearFilter.class),
@@ -27,7 +36,8 @@ public enum FilterEffect {
 	BLEND(BlendFilter.class), 
 	BLUR(BlurFilter.class), 
 	ZOOM(ZoomFilter.class),
-	CIRCLE(CircleFilter.class, BilinearFilter.class);
+	CIRCLE(CircleFilter.class, BilinearFilter.class),
+	CLOUD(CloudFilter.class);
 	
 	private Class<? extends ScreenFilter>[] clazz;
 	

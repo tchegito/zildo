@@ -20,6 +20,7 @@
 
 package zildo.client;
 
+import zildo.Zildo;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.SpriteEntity;
@@ -113,7 +114,7 @@ public class MapDisplay {
 				scrollingAngle=null;
 			}
         }
-		CloudFilter.setPosition(camera.x, camera.y);
+        Zildo.pdPlugin.getFilter(CloudFilter.class).setPosition(camera.x, camera.y);
     }
 	
 	public boolean isScrolling() {

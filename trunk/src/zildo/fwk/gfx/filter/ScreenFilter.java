@@ -21,8 +21,9 @@
 package zildo.fwk.gfx.filter;
 
 import zildo.Zildo;
+import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.TilePrimitive;
-import zildo.fwk.opengl.GLUtils;
+import zildo.fwk.ZUtils;
 
 
 /**
@@ -45,8 +46,8 @@ public abstract class ScreenFilter extends TilePrimitive {
 	protected static final int sizeX=Zildo.viewPortX;
 	protected static final int sizeY=Zildo.viewPortY;
 	// Resizing for OpenGL storage
-	protected static final int realX=GLUtils.adjustTexSize(sizeX);
-	protected static final int realY=GLUtils.adjustTexSize(sizeY);
+	protected static final int realX=ZUtils.adjustTexSize(sizeX);
+	protected static final int realY=ZUtils.adjustTexSize(sizeY);
 	
 	// common members
 	protected int textureID;
@@ -54,12 +55,17 @@ public abstract class ScreenFilter extends TilePrimitive {
 	protected int fboId=-1;
 	protected boolean active=true;
 	
+	protected GraphicStuff graphicStuff;
+	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
-	public ScreenFilter()
+	public ScreenFilter(GraphicStuff graphicStuff)
 	{
-		super(4,6, GLUtils.adjustTexSize(sizeX), GLUtils.adjustTexSize(sizeY));
+		super(4,6, ZUtils.adjustTexSize(sizeX), ZUtils.adjustTexSize(sizeY));
+		
+		this.graphicStuff = graphicStuff;
+		
 		// Create a screen sized quad
 		super.startInitialization();
 		this.addTileSized(0,0,0.0f,0.0f,sizeX, sizeY);
@@ -85,9 +91,9 @@ public abstract class ScreenFilter extends TilePrimitive {
 	///////////////////////////////////////////////////////////////////////////////////////
 	private void createBlankTexture(boolean p_withDepth) {
 		
-		textureID=generateTexture(sizeX, sizeY);
+		textureID=graphicStuff.generateTexture(sizeX, sizeY);
 		if (p_withDepth) {
-			depthTextureID=generateDepthBuffer();
+			depthTextureID=graphicStuff.generateDepthBuffer();
 		}
 		
         attachTextureToFBO(textureID, depthTextureID);
@@ -95,9 +101,9 @@ public abstract class ScreenFilter extends TilePrimitive {
 	
 	private void attachTextureToFBO(int texId, int texDepthId) {
 		if (fboId == -1) {
-			fboId=fbo.create();
+			fboId=graphicStuff.fbo.create();
 		}
-        fbo.bindToTextureAndDepth(texId, texDepthId, fboId);
+		graphicStuff.fbo.bindToTextureAndDepth(texId, texDepthId, fboId);
 	}
 
 	public void preFilter() {
@@ -118,9 +124,9 @@ public abstract class ScreenFilter extends TilePrimitive {
 	@Override
 	final public void cleanUp() {
 		if (fboId > 0) {
-			cleanTexture(textureID);
-			cleanDepthBuffer(depthTextureID);
-			cleanFBO(fboId);
+			graphicStuff.cleanTexture(textureID);
+			graphicStuff.cleanDepthBuffer(depthTextureID);
+			graphicStuff.cleanFBO(fboId);
 		}
 	}
 	

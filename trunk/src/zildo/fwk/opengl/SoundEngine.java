@@ -18,27 +18,24 @@
  *
  */
 
-package zildo.fwk.gfx.filter;
+package zildo.fwk.opengl;
 
-import zildo.fwk.gfx.GraphicStuff;
 
 
 /**
- * Draw boxes more and more large onto the screen, to get a soft focus effect.
- * 
- * If square boxes are 1-sized, don't do anything.
- * 
- * @author tchegito
+ * @author Tchegito
  *
  */
-public abstract class BlendFilter extends FadeScreenFilter {
+public abstract class SoundEngine {
 
-	/**
-	 * @param graphicStuff
-	 */
-	public BlendFilter(GraphicStuff graphicStuff) {
-		super(graphicStuff);
-	}
 
+	protected boolean initialized = false;
+	protected boolean failed = false;
 	
+	public abstract void detectAndInitSoundEngine();
+	public abstract void pollMusic(int delta);	
+
+	public abstract void cleanUp();
+	
+	public abstract Sound createSound(String path);
 }
