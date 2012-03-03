@@ -14,7 +14,6 @@ public abstract class GraphicStuff {
 
     protected Logger logger = Logger.getLogger("GraphicStuff");
 
-
     public void cleanFBO(int id) {
         fbo.cleanUp(id);
         logger.info("Deleted FBO " + id);
@@ -25,6 +24,7 @@ public abstract class GraphicStuff {
         logger.info("Deleted depth buffer " + id);
     }
     
+    public abstract VBO createVBO();
 	public abstract float[] getFloat(int p_info,int p_size);
 	public abstract int generateTexture(int sizeX, int sizeY);
 	public abstract int generateDepthBuffer();

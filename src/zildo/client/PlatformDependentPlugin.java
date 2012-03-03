@@ -20,6 +20,9 @@
 
 package zildo.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import zildo.Zildo;
 import zildo.fwk.Injector;
 import zildo.fwk.gfx.GraphicStuff;
@@ -28,7 +31,11 @@ import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
+import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.gfx.filter.ScreenFilter;
 import zildo.fwk.input.KeyboardHandler;
+import zildo.fwk.opengl.OpenGLGestion;
+import zildo.fwk.opengl.SoundEngine;
 
 /**
  * Handle all platform-dependent classes.
@@ -42,31 +49,69 @@ public class PlatformDependentPlugin {
 
     private Injector injector = new Injector();
    
-    public final KeyboardHandler kbHandler;
-    public final Ortho ortho;
-    public final TextureEngine textureEngine;
-    public final TileEngine tileEngine;
-    public final SpriteEngine spriteEngine;
-    public final PixelShaders pixelShaders;
-    public final GraphicStuff gfxStuff;
-   
+    public KeyboardHandler kbHandler;
+    public Ortho ortho;
+    //public final TextureEngine textureEngine;
+    public TileEngine tileEngine;
+    public SpriteEngine spriteEngine;
+    public PixelShaders pixelShaders;
+    public GraphicStuff gfxStuff;
+    public SoundEngine soundEngine;
+    public OpenGLGestion openGLGestion;
+    
+    public Map<Class<ScreenFilter>, ScreenFilter> filters;
+    
     enum KnownPlugin { Lwjgl, Android };
    
     private KnownPlugin currentPlugin = KnownPlugin.Lwjgl;    // Constant for now
    
     final static String PLATFORM_PACKAGE = "zildo.platform.";
     
-    public PlatformDependentPlugin() {
+	public PlatformDependentPlugin() {
+        filters = new HashMap<Class<ScreenFilter>, ScreenFilter>();
+
+    }
+    
+    public void init() {
         // Look for existing stuff in the class loader and create all needed singletons
-        kbHandler = createSingleton("input.KeyboardHandler");
+    	kbHandler = createSingleton("input.KeyboardHandler");
+    	openGLGestion = createSingleton("opengl.OpenGLGestion", Zildo.fullScreen);
+
         ortho = createSingleton("opengl.Ortho", Zildo.viewPortX, Zildo.viewPortY);
         gfxStuff = createSingleton("opengl.GraphicStuff");
-        textureEngine = createSingleton("engine.TextureEngine", gfxStuff);
-        tileEngine = createSingleton("engine.TileEngine", textureEngine);
-        spriteEngine = createSingleton("engine.SpriteEngine", textureEngine);
+        
         pixelShaders = createSingleton("opengl.PixelShaders");
+
+        // Tile and Sprite engine need their own texture engine
+        // So we have to create two of them
+        TextureEngine textureEngine1 = createSingleton("engine.TextureEngine", gfxStuff);
+        tileEngine = createSingleton("engine.TileEngine", textureEngine1);
+        TextureEngine textureEngine2 = createSingleton("engine.TextureEngine", gfxStuff);
+        spriteEngine = createSingleton("engine.SpriteEngine", textureEngine2);
+
+        soundEngine = createSingleton("opengl.SoundEngine");
     }
    
+    @SuppressWarnings("unchecked")
+    public void initFilters() {
+        // Filters
+        for (FilterEffect f : FilterEffect.values()) {
+        	Class<? extends ScreenFilter>[] classes = f.getFilterClass();
+        	for (Class<? extends ScreenFilter> cl : classes) {
+        		if (filters.get(cl) == null) {
+        	        GraphicStuff gfxStuffFilter = createSingleton("opengl.GraphicStuff");
+        			ScreenFilter filter = createSingleton("filter."+cl.getSimpleName(), gfxStuffFilter);
+        			filters.put((Class<ScreenFilter>) cl, filter);
+        		}
+        	}
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+	public <T extends ScreenFilter> T getFilter(Class<T> p_filterClazz) {
+    	return (T) filters.get(p_filterClazz);
+    }
+    
     @SuppressWarnings("unchecked")
     private <T> T createSingleton(String p_className, Object...p_param) {
         // Format the class name with the knonw plugin

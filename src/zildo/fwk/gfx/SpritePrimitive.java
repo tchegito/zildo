@@ -40,10 +40,7 @@ public class SpritePrimitive extends TilePrimitive {
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
 	
-	public SpritePrimitive() {
-		super();
-	}
-	
+
 	public SpritePrimitive(int numPoints){
 		super(numPoints);
 		// VB/IB aren't locked at start

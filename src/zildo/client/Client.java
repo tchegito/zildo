@@ -33,8 +33,7 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.NetClient;
 import zildo.fwk.net.TransferObject;
 import zildo.fwk.net.www.InternetClient;
-import zildo.fwk.opengl.OpenGLSound;
-import zildo.fwk.opengl.OpenGLZildo;
+import zildo.fwk.opengl.OpenGLGestion;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.server.EngineZildo;
@@ -54,7 +53,7 @@ import zildo.server.state.PlayerState;
 public class Client {
 
 	ClientEngineZildo clientEngineZildo;
-	OpenGLZildo glGestion;
+	OpenGLGestion glGestion;
 	static boolean awt;
 	boolean done = false;
 	boolean serverLeft = false;
@@ -93,9 +92,10 @@ public class Client {
 
 	void initializeDisplay() {
 		if (awt) {
-			glGestion = new OpenGLZildo();
+			// TODO : special for AWT
+			glGestion = Zildo.pdPlugin.openGLGestion;
 		} else {
-			glGestion = new OpenGLZildo(Zildo.fullScreen);
+			glGestion = Zildo.pdPlugin.openGLGestion; //new OpenGLZildo(Zildo.fullScreen);
 		}
 		clientEngineZildo = new ClientEngineZildo(glGestion, awt, this);
 		glGestion.setClientEngineZildo(clientEngineZildo);
@@ -149,7 +149,7 @@ public class Client {
 			// Music
 			if (music) {
 				long currentTime = ZUtils.getTime();
-				OpenGLSound.pollMusic((int) (currentTime - time));
+				ClientEngineZildo.soundEngine.pollMusic((int) (currentTime - time));
 				time = currentTime;
 			}
 			done = glGestion.mainloop();

@@ -23,6 +23,7 @@ package zildo.fwk.gfx.engine;
 import java.util.HashMap;
 import java.util.Map;
 
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
@@ -63,7 +64,7 @@ public abstract class SpriteEngine {
 	{
         super();
 		
-        pixelShaderSupported = ClientEngineZildo.pixelShaders.canDoPixelShader();
+        pixelShaderSupported = Zildo.pdPlugin.pixelShaders.canDoPixelShader();
     }
 	
 	public void init(SpriteStore p_spriteStore) {

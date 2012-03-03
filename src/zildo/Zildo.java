@@ -27,7 +27,7 @@ import zildo.client.gui.menu.StartMenu;
 
 public class Zildo {
 
-	public static boolean soundEnabled=true;
+	public static boolean soundEnabled=false;
 	public static boolean fullScreen=false;
 	public static int viewPortX=320;
 	public static int viewPortY=240;
@@ -40,6 +40,8 @@ public class Zildo {
 	public static final PlatformDependentPlugin pdPlugin = new PlatformDependentPlugin();
 	
 	public static void main(String[] args) {
+		
+		pdPlugin.init();
 		
 		for (String arg : args) {
 			if ("fullscreen".equals(arg)) {

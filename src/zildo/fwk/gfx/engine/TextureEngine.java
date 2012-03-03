@@ -46,7 +46,7 @@ public abstract class TextureEngine {
     protected int n_Texture;
 
     protected int[] textureTab;
-    protected boolean textureFormat;	// Current texture's format (TRUE=RGBA / FALSE=RGB)
+    protected boolean alphaChannel;	// Current texture's format (TRUE=RGBA / FALSE=RGB)
     protected ByteBuffer scratch;
 
     public GraphicStuff graphicStuff;
@@ -76,6 +76,7 @@ public abstract class TextureEngine {
     	} else {
     		scratch = ByteBuffer.allocateDirect(256 * 256 * 3);
     	}
+    	alphaChannel = p_alpha;
 		GFXBasics surface=new GFXBasics(true);
 		surface.SetBackBuffer(scratch, 256, 256);
     	

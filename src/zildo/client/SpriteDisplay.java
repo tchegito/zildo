@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import zildo.fwk.awt.ZildoScrollablePanel;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
@@ -91,8 +90,9 @@ public class SpriteDisplay extends SpriteStore {
 		int SORTY_REALMAX=Constantes.SORTY_REALMAX;
 		
 		if (Client.isZEditor()) {
-			SORTY_MAX=ZildoScrollablePanel.viewSizeY+40;
-			SORTY_REALMAX=ZildoScrollablePanel.viewSizeY+80;
+			// TODO put back these values in order to fix ZEditor
+			//SORTY_MAX=ZildoScrollablePanel.viewSizeY+40;
+			//SORTY_REALMAX=ZildoScrollablePanel.viewSizeY+80;
 		}
 
 		spriteSorter=new SpriteSorter(SORTY_MAX, SORTY_REALMAX);

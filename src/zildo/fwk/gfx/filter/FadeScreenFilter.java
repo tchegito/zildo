@@ -21,6 +21,7 @@
 package zildo.fwk.gfx.filter;
 
 import zildo.client.ClientEngineZildo;
+import zildo.fwk.gfx.GraphicStuff;
 
 /**
  * Screen filter which can fade in and out.
@@ -30,6 +31,13 @@ import zildo.client.ClientEngineZildo;
  */
 public abstract class FadeScreenFilter extends ScreenFilter {
 	
+	/**
+	 * @param graphicStuff
+	 */
+	public FadeScreenFilter(GraphicStuff graphicStuff) {
+		super(graphicStuff);
+	}
+
 	/**
 	 * @return Fade level (0..255)
 	 */

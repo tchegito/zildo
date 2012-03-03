@@ -20,26 +20,22 @@
 
 package zildo.fwk.gfx.filter;
 
-import org.lwjgl.opengl.GL11;
-
 import zildo.client.ClientEngineZildo;
+import zildo.fwk.gfx.GraphicStuff;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
-public class ZoomFilter extends FadeScreenFilter {
+public abstract class ZoomFilter extends FadeScreenFilter {
 
-	
-	@Override
-	public boolean renderFilter()
-	{
-		focusOnZildo();
-				
-		GL11.glDisable(GL11.GL_BLEND);
 
-		return true;
+	/**
+	 * @param graphicStuff
+	 */
+	public ZoomFilter(GraphicStuff graphicStuff) {
+		super(graphicStuff);
 	}
-	
+
 	protected void focusOnZildo() {
 		// Focus camera on Zildo, and zoom according to the 'fadeLevel'
 		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
@@ -49,12 +45,5 @@ public class ZoomFilter extends FadeScreenFilter {
 		ClientEngineZildo.openGLGestion.setZ(z);
 		//EngineZildo.getOpenGLGestion().setZ((float) Math.sin(getFadeLevel() * (0.5f*Math.PI / 256.0f)));
 	}
-	
-	/**
-	 * Re-initialize z coordinate
-	 */
-	@Override
-	public void doOnInactive(FilterEffect effect) {
-		ClientEngineZildo.openGLGestion.setZ(0);
-	}	
+
 }
