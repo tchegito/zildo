@@ -1,0 +1,133 @@
+/**
+ * Legend of Zildo
+ * Copyright (C) 2006-2012 Evariste Boussaton
+ * Based on original Zelda : link to the past (C) Nintendo 1992
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+package zildo.client;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import zildo.Zildo;
+import zildo.fwk.Injector;
+import zildo.fwk.gfx.GraphicStuff;
+import zildo.fwk.gfx.Ortho;
+import zildo.fwk.gfx.PixelShaders;
+import zildo.fwk.gfx.engine.SpriteEngine;
+import zildo.fwk.gfx.engine.TextureEngine;
+import zildo.fwk.gfx.engine.TileEngine;
+import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.gfx.filter.ScreenFilter;
+import zildo.fwk.input.KeyboardHandler;
+import zildo.fwk.opengl.OpenGLGestion;
+import zildo.fwk.opengl.SoundEngine;
+
+/**
+ * Handle all platform-dependent classes.
+ *
+ * It's a singleton warehouse.
+ *
+ * @author Tchegito
+ *
+ */
+public class PlatformDependentPlugin {
+
+    private Injector injector = new Injector();
+   
+    public KeyboardHandler kbHandler;
+    public Ortho ortho;
+    //public final TextureEngine textureEngine;
+    public TileEngine tileEngine;
+    public SpriteEngine spriteEngine;
+    public PixelShaders pixelShaders;
+    public GraphicStuff gfxStuff;
+    public SoundEngine soundEngine;
+    public OpenGLGestion openGLGestion;
+    
+    public Map<Class<ScreenFilter>, ScreenFilter> filters;
+    
+    enum KnownPlugin { Lwjgl, Android };
+   
+    private KnownPlugin currentPlugin = KnownPlugin.Lwjgl;    // Constant for now
+   
+    final static String PLATFORM_PACKAGE = "zildo.platform.";
+    
+	public PlatformDependentPlugin() {
+        filters = new HashMap<Class<ScreenFilter>, ScreenFilter>();
+
+    }
+    
+    public void init(boolean p_awt) {
+        // Look for existing stuff in the class loader and create all needed singletons
+    	if (!p_awt) {
+    		kbHandler = createSingleton("input.KeyboardHandler");
+    	}
+    	if (!p_awt) {
+    		openGLGestion = createSingleton("opengl.OpenGLGestion", Zildo.fullScreen);
+    	} else {
+    		openGLGestion = createSingleton("opengl.OpenGLGestion");
+    	}
+        ortho = createSingleton("opengl.Ortho", Zildo.viewPortX, Zildo.viewPortY);
+        gfxStuff = createSingleton("opengl.GraphicStuff");
+        
+        pixelShaders = createSingleton("opengl.PixelShaders");
+
+        // Tile and Sprite engine need their own texture engine
+        // So we have to create two of them
+        TextureEngine textureEngine1 = createSingleton("engine.TextureEngine", gfxStuff);
+        tileEngine = createSingleton("engine.TileEngine", textureEngine1);
+        TextureEngine textureEngine2 = createSingleton("engine.TextureEngine", gfxStuff);
+        spriteEngine = createSingleton("engine.SpriteEngine", textureEngine2);
+
+        if (!p_awt) {
+        	soundEngine = createSingleton("opengl.SoundEngine");
+        }
+    }
+   
+    @SuppressWarnings("unchecked")
+    public void initFilters() {
+        // Filters
+        for (FilterEffect f : FilterEffect.values()) {
+        	Class<? extends ScreenFilter>[] classes = f.getFilterClass();
+        	for (Class<? extends ScreenFilter> cl : classes) {
+        		if (filters.get(cl) == null) {
+        	        GraphicStuff gfxStuffFilter = createSingleton("opengl.GraphicStuff");
+        			ScreenFilter filter = createSingleton("filter."+cl.getSimpleName(), gfxStuffFilter);
+        			filters.put((Class<ScreenFilter>) cl, filter);
+        		}
+        	}
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+	public <T extends ScreenFilter> T getFilter(Class<T> p_filterClazz) {
+    	return (T) filters.get(p_filterClazz);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private <T> T createSingleton(String p_className, Object...p_param) {
+        // Format the class name with the knonw plugin
+        int posPoint = p_className.lastIndexOf(".");
+        String formattedClassName = p_className.substring(0, posPoint+1)+
+                                    currentPlugin.name()+
+                                    p_className.substring(posPoint+1);
+        return (T) injector.createSingleton(PLATFORM_PACKAGE + formattedClassName, p_param);
+    }
+  
+   
+}
