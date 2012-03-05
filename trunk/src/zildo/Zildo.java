@@ -41,8 +41,6 @@ public class Zildo {
 	
 	public static void main(String[] args) {
 		
-		pdPlugin.init();
-		
 		for (String arg : args) {
 			if ("fullscreen".equals(arg)) {
 				fullScreen=true;

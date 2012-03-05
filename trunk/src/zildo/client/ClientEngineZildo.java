@@ -93,9 +93,14 @@ public class ClientEngineZildo {
 	 */
 	public void initializeClient(boolean p_awt) {
 
-		editing = p_awt;
-		
-		filterCommand = new FilterCommand();
+        editing = p_awt;
+       
+        Zildo.pdPlugin.init(editing);
+
+        openGLGestion = Zildo.pdPlugin.openGLGestion;
+        openGLGestion.init();
+       
+        filterCommand = new FilterCommand();
 		guiDisplay = new GUIDisplay();
 		dialogDisplay = new DialogDisplay();
 		if (!p_awt) { // No sound in ZEditor

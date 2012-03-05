@@ -91,16 +91,14 @@ public class Client {
 	}
 
 	void initializeDisplay() {
-		if (awt) {
-			// TODO : special for AWT
-			glGestion = Zildo.pdPlugin.openGLGestion;
-		} else {
-			glGestion = Zildo.pdPlugin.openGLGestion; //new OpenGLZildo(Zildo.fullScreen);
-		}
-		clientEngineZildo = new ClientEngineZildo(glGestion, awt, this);
-		glGestion.setClientEngineZildo(clientEngineZildo);
-		clientEngineZildo.setOpenGLGestion(glGestion);
-	}
+        clientEngineZildo = new ClientEngineZildo(glGestion, awt, this);
+        //glGestion.setClientEngineZildo(clientEngineZildo);
+        glGestion = Zildo.pdPlugin.openGLGestion;
+        if (glGestion != null) {
+            glGestion.setClientEngineZildo(clientEngineZildo);
+        }
+        clientEngineZildo.setOpenGLGestion(glGestion);
+    }
 
 	/**
 	 * Set up network things.
@@ -129,20 +127,26 @@ public class Client {
 	 * Initialize OpenGL in the ZEditor frame.
 	 */
 	public void initGL() {
-		glGestion.init();
-		clientEngineZildo.initializeClient(true);
-		// Set up the map
-		ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
-		// And the sprites
-		EngineZildo.spriteManagement.updateSprites(false);
-		ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null));
+        clientEngineZildo.initializeClient(true);
+        glGestion = Zildo.pdPlugin.openGLGestion;
+        glGestion.setClientEngineZildo(clientEngineZildo);
+        clientEngineZildo.setOpenGLGestion(glGestion);
+        // Set up the map
+        ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+        // And the sprites
+        EngineZildo.spriteManagement.updateSprites(false);
+        ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null));
 
-	}
+    }
 
 	long time;
 
 	public boolean render() {
-		if (!awt) {
+        if (kbHandler == null) {
+            kbHandler = Zildo.pdPlugin.kbHandler;
+        }
+
+        if (!awt) {
 			// Read keyboard
 			Zildo.pdPlugin.kbHandler.poll();
 
