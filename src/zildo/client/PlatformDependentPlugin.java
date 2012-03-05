@@ -72,11 +72,16 @@ public class PlatformDependentPlugin {
 
     }
     
-    public void init() {
+    public void init(boolean p_awt) {
         // Look for existing stuff in the class loader and create all needed singletons
-    	kbHandler = createSingleton("input.KeyboardHandler");
-    	openGLGestion = createSingleton("opengl.OpenGLGestion", Zildo.fullScreen);
-
+    	if (!p_awt) {
+    		kbHandler = createSingleton("input.KeyboardHandler");
+    	}
+    	if (!p_awt) {
+    		openGLGestion = createSingleton("opengl.OpenGLGestion", Zildo.fullScreen);
+    	} else {
+    		openGLGestion = createSingleton("opengl.OpenGLGestion");
+    	}
         ortho = createSingleton("opengl.Ortho", Zildo.viewPortX, Zildo.viewPortY);
         gfxStuff = createSingleton("opengl.GraphicStuff");
         
@@ -89,7 +94,9 @@ public class PlatformDependentPlugin {
         TextureEngine textureEngine2 = createSingleton("engine.TextureEngine", gfxStuff);
         spriteEngine = createSingleton("engine.SpriteEngine", textureEngine2);
 
-        soundEngine = createSingleton("opengl.SoundEngine");
+        if (!p_awt) {
+        	soundEngine = createSingleton("opengl.SoundEngine");
+        }
     }
    
     @SuppressWarnings("unchecked")
