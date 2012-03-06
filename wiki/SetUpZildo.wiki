@@ -8,14 +8,23 @@ So this is the steps you should follow:
   # Install subclipse
    Find the right one on this page
    http://subclipse.tigris.org/servlets/ProjectProcess?pageID=p4wYuA
-  # Check out zildo project with this URL :
-   https://zildo.googlecode.com/svn
+  # Check out zildo projects with this URL : (see note at the bottom)
+   https://zildo.googlecode.com/svn/trunk
   # Create a run configuration on 'zildo.Zildo' class.
     Put these lines in the VM arguments (Arguments tab):<br/>
     `-Djava.library.path="c:\Code\Projets java\lwjgl-2.0.1\native\win32" -Xmx80M -Dsun.java2d.noddraw=false`<br/><br/>
     Where you should replace the path with yours, indeed. 
-  # Edit the `Constantes.java` class at line 7 :<br/>
-    `public static final String DATA_PATH = "C:\\Data\\";`<br/>
+  # Edit the `Constantes.java` class at line 34 :<br/>
+    `public static String DATA_PATH = "C:\\Data\\";`<br/>
     And replace the path by the one where you store the Zildo's data folder.
     If you haven't any one, please download the latest Zildoxxx.jar at the [http://code.google.com/p/zildo/downloads/list downloads section].
   # F11 or CTRL+F11 to debug/run, and you're up to work on this amazing project !
+<p/><p/>
+
+Note: it's not mandatory to check out all projects. But the less you need is :
+  * *zildo* : the core engine
+  * *zildo-platform-lwjgl* : the platform-dependent part, specific for "computers" : Windows/MacOS/Linux
+
+And after that, the other ones are optional :
+  * *zeditor* : the map editor
+  * *zildo-platform-android* : specifically for phones using Android
