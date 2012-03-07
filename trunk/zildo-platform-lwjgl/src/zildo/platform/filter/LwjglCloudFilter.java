@@ -50,7 +50,6 @@ public class LwjglCloudFilter extends CloudFilter {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0,-sizeY,1);
 
-		GL11.glColor3f(1.0f, 1.0f, 1.0f);
 		float colorFactor=0.2f;
 		GL11.glColor4f(colorFactor, colorFactor, colorFactor, 0.1f);
 		GL11.glEnable(GL11.GL_BLEND);
