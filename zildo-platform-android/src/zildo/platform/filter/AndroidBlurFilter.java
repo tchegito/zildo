@@ -20,15 +20,17 @@
 
 package zildo.platform.filter;
 
-import org.lwjgl.opengl.GL11;
+import javax.microedition.khronos.opengles.GL11;
 
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BlurFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 
-public class LwjglBlurFilter extends BlurFilter {
+public class AndroidBlurFilter extends BlurFilter {
 
+	GL11 gl11;
+	
 	final int nImages=10;
 	final float startCoeff=0.3f;
 	final float incCoeff=0.1f;
@@ -36,7 +38,7 @@ public class LwjglBlurFilter extends BlurFilter {
 	int currentImage;
 	int nImagesSaved;
 	
-	public LwjglBlurFilter(GraphicStuff graphicStuff) {
+	public AndroidBlurFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
 		texBuffer=new int[nImages];
 		texBuffer[0]=textureID;
@@ -54,18 +56,18 @@ public class LwjglBlurFilter extends BlurFilter {
 		graphicStuff.fbo.endRendering();
 		
 		// Get on top of screen and disable blending
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    	GL11.glLoadIdentity();
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glPushMatrix();
-		GL11.glTranslatef(0,-sizeY,0);
+		gl11.glMatrixMode(GL11.GL_MODELVIEW);
+		gl11.glLoadIdentity();
+		gl11.glMatrixMode(GL11.GL_PROJECTION);
+		gl11.glPushMatrix();
+		gl11.glTranslatef(0,-sizeY,0);
 
 		//GL11.glDisable(GL11.GL_BLEND);
 		
 		if (nImagesSaved < nImages) {
 			// All images are not stored yet. So we just display the current one.
 			nImagesSaved++;
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texBuffer[currentImage]);
+			gl11.glBindTexture(GL11.GL_TEXTURE_2D, texBuffer[currentImage]);
 			super.render();
 			result=false;
 		} else {
@@ -74,22 +76,22 @@ public class LwjglBlurFilter extends BlurFilter {
 	        // Draw each image, with intensified colors
 			for (int i=0;i<nImages;i++) {
 				float coeff=startCoeff+ i*(incCoeff / nImages);
-		   		GL11.glColor4f(coeff, coeff, coeff, 1.0f);
-		        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texBuffer[(i+currentImage+1) % nImages]);
+				gl11.glColor4f(coeff, coeff, coeff, 1.0f);
+				gl11.glBindTexture(GL11.GL_TEXTURE_2D, texBuffer[(i+currentImage+1) % nImages]);
 				super.render();
 				if (i==0) {
 			        // Enable blend from second one
-					GL11.glEnable(GL11.GL_BLEND);
-					GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE); //_MINUS_SRC_ALPHA);
+					gl11.glEnable(GL11.GL_BLEND);
+					gl11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE); //_MINUS_SRC_ALPHA);
 				}
 			}
 
 		}
         
-		GL11.glPopMatrix();
+		gl11.glPopMatrix();
 		
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glDisable(GL11.GL_BLEND);
+		gl11.glMatrixMode(GL11.GL_MODELVIEW);
+		gl11.glDisable(GL11.GL_BLEND);
 		
 		// Switch
 		currentImage=(currentImage + 1) % nImages;
@@ -102,7 +104,7 @@ public class LwjglBlurFilter extends BlurFilter {
 		// Copy last texture in TexBuffer
 		graphicStuff.fbo.bindToTextureAndDepth(texBuffer[currentImage], depthTextureID, fboId);
 		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
-   		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
+		gl11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
 	}
 	
 	/**
@@ -111,7 +113,7 @@ public class LwjglBlurFilter extends BlurFilter {
 	@Override
 	public void doOnInactive(FilterEffect effect) {
 		ClientEngineZildo.openGLGestion.setZ(0);
-   		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		gl11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
    		nImagesSaved=0;
    		currentImage=0;
 	}
