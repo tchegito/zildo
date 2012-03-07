@@ -20,49 +20,51 @@
 
 package zildo.platform.filter;
 
-import org.lwjgl.opengl.GL11;
+import javax.microedition.khronos.opengles.GL11;
 
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
-import zildo.fwk.gfx.filter.BilinearFilter;
+import zildo.fwk.gfx.filter.CloudFilter;
+import zildo.monde.sprites.Reverse;
 
+/**
+ * @author Tchegito
+ *
+ */
+public class AndroidCloudFilter extends CloudFilter {
 
-public class LwjglBilinearFilter extends BilinearFilter {
-
-	public LwjglBilinearFilter(GraphicStuff graphicStuff) {
+	GL11 gl11;
+	
+	public AndroidCloudFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
 	}
 	
 	@Override
 	public boolean renderFilter() {
-		graphicStuff.fbo.endRendering();
 		
-		// Select right texture
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-        // Disable blend
-		GL11.glDisable(GL11.GL_BLEND);
-
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    	GL11.glLoadIdentity();
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glPushMatrix();
-		GL11.glTranslatef(0,-sizeY,1);
-
-		GL11.glColor3f(1.0f, 1.0f, 1.0f);
+		super.startInitialization();
+		updateTile(0, 0, u, v, Reverse.NOTHING);
+		this.endInitialization();
 		
-		// Draw texture with depth
+		gl11.glMatrixMode(GL11.GL_MODELVIEW);
+		gl11.glLoadIdentity();
+		gl11.glMatrixMode(GL11.GL_PROJECTION);
+		gl11.glPushMatrix();
+		gl11.glTranslatef(0,-sizeY,1);
+
+		float colorFactor=0.2f;
+		gl11.glColor4f(colorFactor, colorFactor, colorFactor, 0.1f);
+		gl11.glEnable(GL11.GL_BLEND);
+		gl11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE_MINUS_SRC_COLOR);
+
+		gl11.glBindTexture(GL11.GL_TEXTURE_2D, ClientEngineZildo.tileEngine.texCloudId);
 		super.render();
 
-		GL11.glPopMatrix();
+		gl11.glDisable(GL11.GL_BLEND);
 		
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		gl11.glPopMatrix();
 		
+		gl11.glMatrixMode(GL11.GL_MODELVIEW);
 		return true;
 	}
-	
-	@Override
-	public void preFilter() {
-		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
-   		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
-	}
-	
 }

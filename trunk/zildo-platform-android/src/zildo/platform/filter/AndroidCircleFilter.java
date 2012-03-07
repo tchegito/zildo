@@ -20,7 +20,7 @@
 
 package zildo.platform.filter;
 
-import org.lwjgl.opengl.GL11;
+import javax.microedition.khronos.opengles.GL11;
 
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
@@ -57,9 +57,11 @@ import zildo.fwk.gfx.filter.CircleFilter;
  * @author Tchegito
  *
  */
-public class LwjglCircleFilter extends CircleFilter {
+public class AndroidCircleFilter extends CircleFilter {
 
-	public LwjglCircleFilter(GraphicStuff graphicStuff) {
+	GL11 gl11;
+	
+	public AndroidCircleFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
 	}
 	
@@ -67,17 +69,17 @@ public class LwjglCircleFilter extends CircleFilter {
 	public boolean renderFilter() {
 		
 		// Get on top of screen and disable blending
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    	GL11.glLoadIdentity();
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glPushMatrix();
-		GL11.glTranslatef(0, -sizeY, 1);
+		gl11.glMatrixMode(GL11.GL_MODELVIEW);
+		gl11.glLoadIdentity();
+		gl11.glMatrixMode(GL11.GL_PROJECTION);
+		gl11.glPushMatrix();
+		gl11.glTranslatef(0, -sizeY, 1);
 		
-		GL11.glColor3f(1f, 1f, 1f);
+		// FIXME: Was previously color3f
+		gl11.glColor4f(1f, 1f, 1f, 1f);
 		
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
+		gl11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
 
-		GL11.glBegin(GL11.GL_QUADS);
 		int radius = (int) (coeffLevel * (255 - getFadeLevel())); // + 20;
 		int radiusSquare = (int) Math.pow(radius, 2);
 		int col = 0;
@@ -108,11 +110,10 @@ public class LwjglCircleFilter extends CircleFilter {
 			ClientEngineZildo.ortho.boxOpti(0, i, x1, 1, col, null);
 			ClientEngineZildo.ortho.boxOpti(x2, i, Zildo.viewPortX - x2, 1, col, null);
 		}
-		GL11.glEnd();
-		GL11.glPopMatrix();
+		gl11.glPopMatrix();
 		
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glDisable(GL11.GL_BLEND);
+		gl11.glMatrixMode(GL11.GL_MODELVIEW);
+		gl11.glDisable(GL11.GL_BLEND);
 
 		return true;
 	}

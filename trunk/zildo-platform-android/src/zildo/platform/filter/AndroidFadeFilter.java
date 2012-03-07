@@ -20,50 +20,40 @@
 
 package zildo.platform.filter;
 
-import org.lwjgl.opengl.GL11;
-
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
-import zildo.fwk.gfx.filter.CloudFilter;
-import zildo.monde.sprites.Reverse;
+import zildo.fwk.gfx.filter.FadeScreenFilter;
+import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.monde.util.Vector3f;
 
-/**
- * @author Tchegito
- *
- */
-public class LwjglCloudFilter extends CloudFilter {
+public class AndroidFadeFilter extends FadeScreenFilter {
 
-	public LwjglCloudFilter(GraphicStuff graphicStuff) {
+	boolean complete = true;
+
+	public AndroidFadeFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
 	}
 	
 	@Override
 	public boolean renderFilter() {
-		
-		super.startInitialization();
-		updateTile(0, 0, u, v, Reverse.NOTHING);
-		this.endInitialization();
-		
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    	GL11.glLoadIdentity();
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glPushMatrix();
-		GL11.glTranslatef(0,-sizeY,1);
-
-		GL11.glColor3f(1.0f, 1.0f, 1.0f);
-		float colorFactor=0.2f;
-		GL11.glColor4f(colorFactor, colorFactor, colorFactor, 0.1f);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE_MINUS_SRC_COLOR);
-
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientEngineZildo.tileEngine.texCloudId);
-		super.render();
-
-		GL11.glDisable(GL11.GL_BLEND);
-		
-		GL11.glPopMatrix();
-		
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		return true;
 	}
+
+	@Override
+	public void preFilter() {
+		float factor = complete ? 255.0f : 768.0f;
+		float coeff = 1.0f - (getFadeLevel() / factor);
+		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(coeff, coeff,
+				coeff));
+	}
+
+	@Override
+	public void doOnActive(FilterEffect effect) {
+		if (effect == FilterEffect.SEMIFADE) {
+			complete = false;
+		} else {
+			complete = true;
+		}
+	}
+
 }
