@@ -48,19 +48,19 @@ SpriteEntity
 }}}
 We got here 3 main classes to design every entity that can be found on a map.
 
- ====a/ `SpriteEntity` [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/decors/SpriteEntity.java (SVN)]====
+ ====a/ `SpriteEntity` [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/SpriteEntity.java (SVN)]====
 
 The first one stand for the static elements, that can't move, et don't block anybody. We have for example : the bushes leafs that are vanishing, the smoking pipes on house's roofs, ...
 
 This class contains coordinates (X, Y) on the screen, graphic informations, and various flags (visible, fore/back ground, visual effects ...)
 
- ====b/ `Element` [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/decors/Element.java (SVN)]====
+ ====b/ `Element` [http://code.google.com/p/zildo/source/browse/trunk/src/zildo/monde/sprites/elements/Element.java (SVN)]====
 
 This is a more particular class, that represents a moving entity in the world. It's under the physic laws. Furthermore, it can block characters or elements coming right away.
 
 It has coordinates (X, Y, Z) on the map, speed, acceleration, and friction forces. It can be linked to another entity.
 
- ====c/ `Perso` [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/persos/Perso.java (SVN)]====
+ ====c/ `Perso` [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/persos/Perso.java (SVN)]====
 
 The most evoluated of the basic calsses represents a character on a map. We got here informations about behavior, action area, friendly/enemy attitude, or dialogs position.
 
