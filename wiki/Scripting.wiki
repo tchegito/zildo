@@ -32,7 +32,7 @@ _Note_ : when loading a saved game, every accomplished quest launches the execut
 
 = Trigger =
 
-A trigger can be of 4 different kinds : (corresponding to [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/monde/quest/QuestEvent.java QuestEvent] )
+A trigger can be of 4 different kinds : (corresponding to [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/quest/QuestEvent.java QuestEvent] )
 
  * location : when a character reach a given location
  * dialog : when a specific character say a given sentence
@@ -60,8 +60,8 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || exec || text || - || - || - || Execute a named script ||
 || take || text || V || V || - || A character (Zildo for example) takes an object ||
 || mapReplace || text || - || V || - || Replace map indicated by 'what' by the one named by 'name'  ||
-|| animation || text || - || - || - || Spawn an animation from the enum [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/monde/sprites/desc/SpriteAnimation.java SpriteAnimation] ||
-|| impact || text || - || - || - || Spawn an animation from the enum [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/monde/sprites/elements/ElementImpact.java ImpactKind] ||
+|| animation || text || - || - || - || Spawn an animation from the enum [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/desc/SpriteAnimation.java SpriteAnimation] ||
+|| impact || text || - || - || - || Spawn an animation from the enum [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/elements/ElementImpact.java ImpactKind] ||
 || remove || text || V || V || - || Remove an element (what) or a character (who) from the current map ||
 || markQuest || text || - || - || - || Accomplish/reset a quest identified by 'name' attribute, according to the 'value' attribute (0=cancel / 1=accomplish) ||
 || putDown || text || - || - || - || Remove an item from Zildo's inventory ||
