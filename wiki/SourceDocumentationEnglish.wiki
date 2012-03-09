@@ -32,7 +32,7 @@ We distinguish 2 kinds of tiles : foreground and background. Foreground tiles ca
 
 Tiles can be animated, like flowers, or water on the seashore.
 
-The class that modelizing theses tiles is [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/Case.java Case].
+The class that modelizing theses tiles is [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/map/Case.java Case].
 
 ===1.2) The sprites===
 
