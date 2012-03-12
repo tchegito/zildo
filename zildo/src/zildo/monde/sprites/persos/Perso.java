@@ -26,6 +26,7 @@ import java.util.List;
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.script.xml.element.TriggerElement;
+import zildo.monde.items.Item;
 import zildo.monde.map.Tile;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.EntityType;
@@ -91,6 +92,16 @@ public abstract class Perso extends Element {
 	private String dialogSwitch; // Field parseable by ZSSwitch
 	private Perso following; // Perso followed by this one
 
+	public Item weapon;
+
+	public Item getWeapon() {
+		return weapon;
+	}
+	
+	public void setWeapon(Item weapon) {
+		this.weapon = weapon;
+	}
+	
 	public Perso getFollowing() {
 		return following;
 	}

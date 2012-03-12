@@ -210,14 +210,13 @@
 		</action>
 	</quest>
 	
-	<!-- Only for episode 1 ==> need to be removed after -->
-	<quest name="temp_episode1_desert" repeat="true">
+	<quest name="maltus_foret_suite">
 		<trigger>
-			<location name="ferme" pos="232,22" radius="2"></location>
+			<questDone name="maltus_foret"/>
+			<location name="foret" pos="694,533" radius="1"/>
 		</trigger>
 		<action>
-			<speak who="zildo" text="ferme.tempEpisode1"/>
-			<moveTo who="zildo" pos="0,32" delta="true"/>
+			<exec script="maltus_foret2"/>
 		</action>
 	</quest>
 	
@@ -597,5 +596,12 @@
 		<angle who="maltus" value="2"/>
 		<speak who="maltus" text="foret.maltus.1"/>
 		<speak who="zildo" text="foret.zildo.1"/>
+	</scene>
+	<scene id="maltus_foret2">
+		<angle who="maltus" value="0"/>
+		<wait value="20"/>
+		<attack who="maltus" item="HAMMER"/>
+		<wait value="20"/>
+		<moveTo who="maltus" pos="0,-50" delta="true"/>
 	</scene>
 </adventure>

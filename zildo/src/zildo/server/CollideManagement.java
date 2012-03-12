@@ -104,11 +104,18 @@ public class CollideManagement {
             }
         	// Check if any tile is damaged (only with cutting/exploding damage)
             DamageType dmgType=collider.damageType;
-            if (dmgType != null && dmgType.isCutting()) {
-            	Set<Point> tilesCollided=getTilesCollided(collider);
-    			// And ask 'map' object to react
-            	for (Point location : tilesCollided) {
-            		EngineZildo.mapManagement.getCurrentMap().attackTile(location);
+            if (dmgType != null) {
+            	if (dmgType.isCutting()) {
+	            	Set<Point> tilesCollided=getTilesCollided(collider);
+	    			// And ask 'map' object to react
+	            	for (Point location : tilesCollided) {
+	            		EngineZildo.mapManagement.getCurrentMap().attackTile(location);
+	            	}
+            	} else if (dmgType == DamageType.SMASH) {
+	            	Set<Point> tilesCollided=getTilesCollided(collider);
+            		for (Point location : tilesCollided) {
+            			EngineZildo.mapManagement.getCurrentMap().smashTile(location);
+            		}
             	}
             }
         }

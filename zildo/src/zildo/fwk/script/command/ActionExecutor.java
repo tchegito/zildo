@@ -30,6 +30,7 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.ui.UIText;
+import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -256,6 +257,14 @@ public class ActionExecutor {
                 		EngineZildo.scriptManagement.resetQuest(p_action.text);
                 	}
                 	achieved=true;
+                	break;
+                case attack:
+                	if (p_action.text != null) {
+                		Item weapon = new Item(ItemKind.fromString(text));
+                		perso.setWeapon(weapon);
+                		perso.attack();
+                		achieved=true;
+                	}
                 	break;
             }
 

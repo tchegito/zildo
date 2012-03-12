@@ -187,12 +187,13 @@ public class EngineZildo {
 		}
 
 		
+		collideManagement.initFrame();
+
 		if (!block) {
 			scriptManagement.render();
 		}
 		
 		// 2) Rest of the world
-		collideManagement.initFrame();
 		spriteManagement.updateSprites(block);
 		collideManagement.manageCollisions(p_clientStates);
 		mapManagement.updateMap();
