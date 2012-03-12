@@ -85,6 +85,7 @@ public enum BankSound implements AudioBank {
 	
 	PlanteBombe("posebomb"),
 	Explosion("explose"),
+	Hammer("marteau"),
 	
 	ChestAppears("appear"),
 	
