@@ -365,7 +365,15 @@ public class Area implements EasySerializable {
 			writemap(tileLocation.x, tileLocation.y, 375);
 			break;
 		}
-
+	}
+	
+	public void smashTile(Point tileLocation) {
+		int onmap = readmap(tileLocation.x, tileLocation.y);
+		switch (onmap) {
+		case 173:
+			writemap(tileLocation.x, tileLocation.y, 174);
+			break;
+		}
 	}
 
 	/**

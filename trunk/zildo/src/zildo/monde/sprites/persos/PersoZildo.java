@@ -84,12 +84,6 @@ public class PersoZildo extends Perso {
 	Element shield;
 	Element feet;
 
-	public Item weapon;
-
-	public Item getWeapon() {
-		return weapon;
-	}
-
 	private SpriteEntity boomerang;
 	private int quadDuration;
 

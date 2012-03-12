@@ -23,6 +23,8 @@ package zildo.monde.sprites.persos;
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.EngineFX;
 import zildo.monde.Hasard;
+import zildo.monde.collision.Collision;
+import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
@@ -50,6 +52,16 @@ public class PersoNJ extends Perso {
 
 	@Override
 	public void attack() {
+		if (weapon != null) {
+			switch (weapon.kind) {
+				case HAMMER:
+					Point smashLocation = angle.coords.multiply(16).translate(new Point(x, y));
+					Collision c = new Collision(smashLocation.x, 
+												smashLocation.y, 8, Angle.NORD, this, DamageType.SMASH, null);
+					EngineZildo.collideManagement.addCollision(c);
+					break;
+			}
+		}
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
