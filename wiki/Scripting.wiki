@@ -65,6 +65,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || remove || text || V || V || - || Remove an element (what) or a character (who) from the current map ||
 || markQuest || text || - || - || - || Accomplish/reset a quest identified by 'name' attribute, according to the 'value' attribute (0=cancel / 1=accomplish) ||
 || putDown || text || - || - || - || Remove an item from Zildo's inventory ||
+|| attack || text || V || - || - || Make a given character attacking in front of him ||
 
 = Misc=
 
