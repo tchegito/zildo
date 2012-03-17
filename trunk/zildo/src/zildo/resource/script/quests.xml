@@ -602,6 +602,34 @@
 		<wait value="20"/>
 		<attack who="maltus" item="HAMMER"/>
 		<wait value="20"/>
-		<moveTo who="maltus" pos="0,-50" delta="true"/>
+		<focus who="maltus" unblock="true" delta="true"/>
+		<moveTo who="maltus" pos="0,-40" delta="true"/>
+		<angle who="maltus" value="2"/>
+		<wait value="10"/>
+		<moveTo who="zildo" pos="0,-210" delta="true" unblock="true"/>
+		<wait value="5"/>
+		<moveTo who="maltus" pos="0,-150" speed="1.8" delta="true"/>
+		<moveTo who="maltus" pos="30,-5" delta="true"/>
+		<wait value="15"/>
+		<actions>
+			<animation pos="660,280" type="CLOUD_FOG" />
+			<spawn who="rabbit1" pos="650,280" type="RABBIT"/>
+			<angle who="maltus" value="3"/>
+			<angle who="zildo" value="3"/>
+		</actions>
+		<wait value="10"/>
+		<actions>
+			<animation pos="740,290" type="CLOUD_FOG" />
+			<spawn who="rabbit2" pos="750,290" type="RABBIT"/>
+			<angle who="maltus" value="1"/>
+			<angle who="zildo" value="1"/>
+		</actions>
+		<wait value="10"/>
+		<speak who="maltus" text="foret.maltus.3"/>
+		<moveTo who="maltus" pos="671,206"/>
+		<remove who="maltus"/>
+		<speak who="zildo" text="foret.zildo.2"/>
+		<script who="rabbit1" value="0"/>
+		<script who="rabbit2" value="0"/>
 	</scene>
 </adventure>

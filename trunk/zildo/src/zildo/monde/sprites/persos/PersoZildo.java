@@ -52,7 +52,6 @@ import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.sprites.utils.ShieldEffect;
 import zildo.monde.sprites.utils.ShieldEffect.ShieldType;
 import zildo.monde.util.Angle;
-import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -62,9 +61,6 @@ import zildo.server.Server;
 public class PersoZildo extends Perso {
 
 	private SpriteEntity pushingSprite;
-	private Point posAvantSaut;
-	private Point posShadowJump;
-	private Angle jumpAngle;
 	private int acceleration; // from 0 to 10
 
 	private Angle sightAngle; // For boomerang
@@ -437,6 +433,9 @@ public class PersoZildo extends Perso {
 			}
 		}
 
+		if (mouvement == MouvementZildo.SAUTE) {
+			moveJump();
+		}
 		SpriteEntity pushedEntity = getPushingSprite();
 
 		if (px != 0.0f || py != 0.0f) {
@@ -615,10 +614,6 @@ public class PersoZildo extends Perso {
 			shadow.setZ(0);
 			shadow.setVisible(true);
 			shield.setVisible(false);
-
-			// Trajectoire en cloche
-			double beta = (Math.PI * attente) / 32.0f;
-			yy = yy - (int) (8.0f * Math.sin(beta));
 
 			break;
 
@@ -1122,31 +1117,6 @@ public class PersoZildo extends Perso {
 		if (object != null && object.getDesc().getBank() == SpriteBank.BANK_GEAR) {
 			((ElementGear) object).push(this);
 		}
-	}
-
-	/**
-	 * Starts a jump in given angle.
-	 * 
-	 * @param p_angle
-	 *            should not be null
-	 */
-	public void jump(Angle p_angle) {
-		// On sauve la position de Zildo avant son saut
-		Point zildoAvantSaut = new Point(x, y);
-		mouvement = MouvementZildo.SAUTE;
-		jumpAngle = p_angle;
-		posShadowJump = p_angle.getLandingPoint().translate((int) x, (int) y);
-		setEn_bras(null);
-		posAvantSaut = zildoAvantSaut;
-		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoTombe, this);
-	}
-
-	public Point getPosAvantSaut() {
-		return posAvantSaut;
-	}
-
-	public Angle getJumpAngle() {
-		return jumpAngle;
 	}
 
 	public int getTouch() {

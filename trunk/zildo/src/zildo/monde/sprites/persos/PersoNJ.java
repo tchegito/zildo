@@ -152,7 +152,9 @@ public class PersoNJ extends Perso {
 		float sx = getX(), sy = getY();
 		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 
-		if (zildo != null) {
+		if (mouvement == MouvementZildo.SAUTE) {
+			moveJump();
+		} else if (zildo != null) {
 			if (px != 0.0f || py != 0.0f) {
 				// Le perso s'est fait toucher !}
 				Pointf location = tryMove(x + px, y + py);
@@ -336,7 +338,7 @@ public class PersoNJ extends Perso {
 							} else if (quel_deplacement == MouvementPerso.BEE) {
 								angle = Angle.fromInt(angle.value & 2);
 							}
-							if (!quel_deplacement.isFlying()) {
+							if (!quel_deplacement.isFlying() && mouvement!=MouvementZildo.SAUTE) {
 								// Collision ?
 								if (EngineZildo.mapManagement.collide((int) x, (int) y, this)) {
 									this.setX(sx);
