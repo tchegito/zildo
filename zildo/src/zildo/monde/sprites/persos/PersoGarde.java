@@ -43,13 +43,13 @@ public class PersoGarde extends PersoNJ {
 			{ 5, 6, 7, 6, 5, 6, 7, 6 }, { 8, 9, 10, 11, 8, 9, 10, 11 },
 			{ 12, 13, 14, 13, 12, 13, 14, 13 } };
 
-	ElementGuardWeapon weapon;
+	ElementGuardWeapon guardWeapon;
 
 	public PersoGarde() {
 		super();
-		weapon = new ElementGuardWeapon(this);
-		addPersoSprites(weapon);
-		setEn_bras(weapon);
+		guardWeapon = new ElementGuardWeapon(this);
+		addPersoSprites(guardWeapon);
+		setEn_bras(guardWeapon);
 	}
 
 	@Override
@@ -57,10 +57,10 @@ public class PersoGarde extends PersoNJ {
 		super.setQuel_deplacement(p_script);
 		switch (p_script) {
 		case ZONELANCE:
-			weapon.setWeapon(GuardWeapon.SPEAR);
+			guardWeapon.setWeapon(GuardWeapon.SPEAR);
 			break;
 		case ZONEARC:
-			weapon.setWeapon(GuardWeapon.BOW);
+			guardWeapon.setWeapon(GuardWeapon.BOW);
 			break;
 		}
 	}

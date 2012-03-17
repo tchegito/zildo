@@ -81,6 +81,11 @@ public abstract class Perso extends Element {
 	protected int countKey; // How many keys have perso ? (for PNJ, he gives it
 							// when he dies)
 
+	// Jump
+	private Point posAvantSaut;
+	protected Point posShadowJump;
+	private Angle jumpAngle;
+
 	protected PersoAction action; // Perso doing an action
 
 	private int count = 0;
@@ -759,5 +764,94 @@ public abstract class Perso extends Element {
 		pos.add(sprModel.getTaille_x() / 2, sprModel.getTaille_y() / 2);
 
 		return pos;
+	}
+	
+
+	/**
+	 * Starts a jump in given angle.
+	 * 
+	 * @param p_angle
+	 *            should not be null
+	 */
+	private void jump(Angle p_angle) {
+		// On sauve la position de Zildo avant son saut
+		Point zildoAvantSaut = new Point(x, y);
+		mouvement = MouvementZildo.SAUTE;
+		jumpAngle = p_angle;
+		posShadowJump = p_angle.getLandingPoint().translate((int) x, (int) y);
+		setEn_bras(null);
+		posAvantSaut = zildoAvantSaut;
+		attente = 0;
+		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoTombe, this);
+	}
+
+	/**
+	 * Check if character is about to jump : near a cliff with room for landing point.<br/>
+	 * If he can, start jumping.
+	 * @param loc
+	 */
+	public void tryJump(Pointf loc) {
+		int cx=(int) (loc.x / 16);
+		int cy=(int) (loc.y / 16);
+		Angle angleResult=EngineZildo.mapManagement.getAngleJump(angle, cx, cy);
+		SpriteEntity pushed = null;
+		if (isZildo()) {
+			pushed = ((PersoZildo)this).getPushingSprite();
+		}
+		if (angleResult!=null && pushed == null) {
+			Point landingPoint=angleResult.getLandingPoint().translate((int) x, (int) y);
+			if (!EngineZildo.mapManagement.collide(landingPoint.x, landingPoint.y, this)) {
+				jump(angleResult);
+			}
+		}
+	}
+	
+	/**
+	 * Character is jumping : move him
+	 * @return TRUE if he has been relocated to his start position (ex: fallen in water)
+	 */
+	public boolean moveJump() {
+		boolean relocate = false;
+		if (getAttente() == 32) {
+			setMouvement(MouvementZildo.VIDE); // Fin du saut, on repasse en mouvement normal
+			// Si Zildo atterit dans l'eau, on le remet à son ancienne position avec un coeur de moins
+			int cx=(int) (x / 16);
+			int cy=(int) (y / 16);
+			int onMap=EngineZildo.mapManagement.getCurrentMap().readmap(cx,cy);
+			if (onMap>=108 && onMap<=138) {
+				Point zildoAvantSaut=getPosAvantSaut();
+				// Character is fallen in the water !
+				x = zildoAvantSaut.getX();
+				y = zildoAvantSaut.getY();
+				relocate=true;
+				beingWounded(x, y, null, 2);
+				stopBeingWounded();
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);
+			} else {
+				setForeground(false);
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
+			}
+			z=0;
+			attente = 0;
+		} else {
+			Point landingPoint=getJumpAngle().getLandingPoint();
+			float pasx=landingPoint.x / 32.0f;
+			float pasy=landingPoint.y / 32.0f;
+			x+=pasx;
+			y+=pasy;
+			// Trajectoire en cloche
+			double beta = (Math.PI * attente) / 32.0f;
+			z =  (int) (8.0f * Math.sin(beta));
+			attente++;
+		}	
+		return relocate;
+	}
+	
+	public Point getPosAvantSaut() {
+		return posAvantSaut;
+	}
+
+	public Angle getJumpAngle() {
+		return jumpAngle;
 	}
 }

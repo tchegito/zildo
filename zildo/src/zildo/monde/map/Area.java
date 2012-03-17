@@ -367,6 +367,10 @@ public class Area implements EasySerializable {
 		}
 	}
 	
+	/**
+	 * A tile being "hammered". Can lower plots.
+	 * @param tileLocation
+	 */
 	public void smashTile(Point tileLocation) {
 		int onmap = readmap(tileLocation.x, tileLocation.y);
 		switch (onmap) {

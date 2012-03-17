@@ -126,6 +126,12 @@ public class ActionExecutor {
                     String param = p_action.fx;
                     if (param != null) {
 	                    switch (script) {
+	                    case ZONE:
+	        				perso.setZone_deplacement(EngineZildo.mapManagement.range(perso.getX() - 16 * 5, 
+	        																	perso.getY() - 16 * 5,
+	        																	perso.getX() + 16 * 5, 
+	        																	perso.getY() + 16 * 5));
+	        				break;
 	                    case OBSERVE:
 	                    	Perso persoToObserve =  EngineZildo.persoManagement.getNamedPerso(param);
 	                    	perso.setFollowing(persoToObserve);

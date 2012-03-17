@@ -7,9 +7,7 @@ import zildo.monde.sprites.desc.PersoDescription;
 /**
  * Secret of Mana's rabbit (he doesn't look like a rabbit at all !)
  * 
- * @author $Author: boussate $
- * @version $Revision: #1 $
- * @since 9 nov. 2011
+ * @author tchegito
  */
 public class PersoRabbit extends PersoShadowed {
 
@@ -19,6 +17,8 @@ public class PersoRabbit extends PersoShadowed {
 	public PersoRabbit() {
 		super(ElementDescription.SHADOW, 2);
 		setDesc(PersoDescription.RABBIT);
+		setInfo(PersoInfo.ENEMY);
+		setPv(2);
 	}
 
 	@Override

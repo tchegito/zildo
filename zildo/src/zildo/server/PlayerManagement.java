@@ -176,37 +176,7 @@ public class PlayerManagement {
 		
 		if (heros.getMouvement() == MouvementZildo.SAUTE) {
 	    	// Zildo est en train de sauter ! Il est donc inactif
-			if (heros.getAttente() == 32) {
-				heros.setMouvement(MouvementZildo.VIDE); // Fin du saut, on repasse en mouvement normal
-				// Si Zildo atterit dans l'eau, on le remet à son ancienne position avec un coeur de moins
-				int cx=(int) (xx / 16);
-				int cy=(int) (yy / 16);
-				onMap=mapManagement.getCurrentMap().readmap(cx,cy);
-				if (onMap>=108 && onMap<=138)
-				{
-					Point zildoAvantSaut=heros.getPosAvantSaut();
-					// Zildo is fallen in the water !
-					heros.setX(zildoAvantSaut.getX());
-					heros.setY(zildoAvantSaut.getY());
-					xx=heros.getX();
-					yy=heros.getY();
-					heros.beingWounded(null, 2);
-					heros.stopBeingWounded();
-					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, heros);
-					
-				} else {
-					heros.setForeground(false);
-					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, heros);
-				}
-				heros.setAttente(0);
-			} else {
-				Point landingPoint=heros.getJumpAngle().getLandingPoint();
-				float pasx=landingPoint.x / 32.0f;
-				float pasy=landingPoint.y / 32.0f;
-				heros.setX(heros.getX()+pasx);
-				heros.setY(heros.getY()+pasy);
-				heros.setAttente(heros.getAttente()+1);
-			}
+			
 		} else {
 			if (heros.getAttente()!=0) {
 				heros.setAttente(heros.getAttente()-1);
@@ -322,15 +292,8 @@ public class PlayerManagement {
 			if (heros.getMouvement()==MouvementZildo.VIDE) {
 				if (heros.getTouch()==15) {
 					//On regarde si Zildo peut sauter
-					int cx=(int) (xx / 16);
-					int cy=(int) (yy / 16);
-					Angle angleResult=EngineZildo.mapManagement.getAngleJump(heros.getAngle(), cx, cy);
-					if (angleResult!=null && heros.getPushingSprite() == null) {
-						Point landingPoint=angleResult.getLandingPoint().translate((int) heros.x, (int) heros.y);
-						if (!EngineZildo.mapManagement.collide(landingPoint.x, landingPoint.y, heros)) {
-							heros.jump(angleResult);
-						}
-					}
+					heros.tryJump(secureLocation);
+
 				}	//if touch=15
 				heros.setPos_seqsprite(-1);
 				heros.setTouch(heros.getTouch()+1);

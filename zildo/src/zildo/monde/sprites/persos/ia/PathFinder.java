@@ -179,12 +179,13 @@ public class PathFinder {
 				mobile.getQuel_deplacement() == MouvementPerso.SQUIRREL) {
 			target=null;
 		} else {
+			mobile.setAttente(10 + (int) (Math.random()*20));
+			mobile.tryJump(new Pointf(mobile.x, mobile.y));
 			if (nbShock++ >= 3 && !mobile.isGhost()) {
 				target=null;
 				mobile.setAlerte(false);
 				nbShock=0;
 			}
-			mobile.setAttente(10 + (int) (Math.random()*20));
 		}
 	}
 	
