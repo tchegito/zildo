@@ -23,6 +23,7 @@ package zildo.monde.sprites.persos.ia;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -111,6 +112,8 @@ public class PathFinder {
         // If there's no movement, stop the target
         if (immo == 2) {
             target=null;
+        } else if (mobile.getMouvement() != MouvementZildo.SAUTE) {
+            pos = mobile.tryMove(pos.x, pos.y);
         }
 
         if (backward && a!= null) {

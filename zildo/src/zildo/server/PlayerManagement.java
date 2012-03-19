@@ -166,16 +166,12 @@ public class PlayerManagement {
 		float xx=heros.getX();
 		float yy=heros.getY();
 	
-		int onMap=-1;
-	
-		MapManagement mapManagement=EngineZildo.mapManagement;
-	
 		boolean needMovementAdjustment=true;
 		
 		float zildoSpeed=Constantes.ZILDO_SPEED * (heros.getAcceleration() / 10 ) * EngineZildo.extraSpeed;
 		
 		if (heros.getMouvement() == MouvementZildo.SAUTE) {
-	    	// Zildo est en train de sauter ! Il est donc inactif
+	    	// Zildo's jumping ! Then he's inactive for player
 			
 		} else {
 			if (heros.getAttente()!=0) {
@@ -290,7 +286,7 @@ public class PlayerManagement {
 
 		if (heros.x == xx && heros.y == yy) {
 			if (heros.getMouvement()==MouvementZildo.VIDE) {
-				if (heros.getTouch()==15) {
+				if (heros.getTouch()>=15) {
 					//On regarde si Zildo peut sauter
 					heros.tryJump(secureLocation);
 

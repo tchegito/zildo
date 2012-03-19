@@ -620,12 +620,21 @@
 		<wait value="10"/>
 		<actions>
 			<animation pos="740,290" type="CLOUD_FOG" />
-			<spawn who="rabbit2" pos="750,290" type="RABBIT"/>
+			<spawn who="rabbit2" pos="760,290" type="RABBIT"/>
 			<angle who="maltus" value="1"/>
 			<angle who="zildo" value="1"/>
 		</actions>
+		<moveTo who="maltus" pos="-5,0" delta="true" backward="true"/>
 		<wait value="10"/>
-		<speak who="maltus" text="foret.maltus.3"/>
+		<actions>
+			<moveTo who="maltus" pos="0,-15" delta="true" backward="true"/>
+			<speak who="maltus" text="foret.maltus.3"/>
+		</actions>	
+		<wait value="15"/>
+		<angle who="maltus" value="0"/>
+		<wait value="15"/>
+		<angle who="maltus" value="2"/>
+		<wait value="10"/>
 		<moveTo who="maltus" pos="671,206"/>
 		<remove who="maltus"/>
 		<speak who="zildo" text="foret.zildo.2"/>
