@@ -33,14 +33,8 @@ import java.lang.reflect.Constructor;
  */
 public class Injector {
 
-	@SuppressWarnings({ "unchecked" })
     public <T> T createSingleton(String p_className, Object... parameters) {
-        Class<T> clazz;
-        try {
-            clazz = (Class<T>) Class.forName(p_className);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to find class for "+p_className);
-        }
+		Class<T> clazz = findClass(p_className);
         try {
             T o = createInstance(clazz, parameters);
             System.out.println("created "+p_className);
@@ -50,6 +44,17 @@ public class Injector {
         }
     }
    
+	@SuppressWarnings("unchecked")
+	public <T> Class<T> findClass(String p_className) {
+        Class<T> clazz;
+        try {
+            clazz = (Class<T>) Class.forName(p_className);
+            return clazz;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to find class for "+p_className);
+        }
+	}
+	
     /**
      * Call the appropriate constructor, according to provided parameters.
      * @param clazz
@@ -57,7 +62,7 @@ public class Injector {
      * @return Object
      */
     @SuppressWarnings("unchecked")
-    private <T> T createInstance( Class<T> clazz, Object... params ) {
+    public <T> T createInstance( Class<T> clazz, Object... params ) {
         try {
             // 1st case : no parameters
             if ( params == null ) {

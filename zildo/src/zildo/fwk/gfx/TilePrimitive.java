@@ -240,13 +240,13 @@ public class TilePrimitive {
         // 3 Indices
         for (int i = 0; i < (numIndices / 6); i++) {
             // Tile's first triangle
-            bufs.indices.put(i * 4).put(i * 4 + 1).put(i * 4 + 2);
+            bufs.indices.put((short) (i * 4)).put((short) (i * 4 + 1)).put((short) (i * 4 + 2));
             // Tile's second triangle
-            bufs.indices.put(i * 4 + 1).put(i * 4 + 3).put(i * 4 + 2);
+            bufs.indices.put((short) (i * 4 + 1)).put((short) (i * 4 + 3)).put((short) (i * 4 + 2));
 
             // Two bufs.normals oriented accross the screen (0,0,-1)
-            bufs.normals.put(0).put(i).put(1);
-            bufs.normals.put(0).put(0).put(1);
+            //bufs.normals.put(0).put(i).put(1);
+            //bufs.normals.put(0).put(0).put(1);
         }
     }
     

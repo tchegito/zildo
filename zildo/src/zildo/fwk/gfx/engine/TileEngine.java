@@ -120,13 +120,14 @@ public abstract class TileEngine {
 
 		// Load graphs
 		motifBanks = new ArrayList<MotifBank>();
+
 		this.charge_tous_les_motifs();
 
 		loadTiles();
 
 		createCloudTexture();
 	}
-
+	
 	public void cleanUp()
 	{
 		for (TilePrimitive tp : meshFORE) {
@@ -150,7 +151,7 @@ public abstract class TileEngine {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	void charge_tous_les_motifs() {
 		for (String bankName : tileBankNames) {
-			this.charge_motifs(bankName.toUpperCase());
+			this.charge_motifs(bankName.toLowerCase());
 		}
 	}
 

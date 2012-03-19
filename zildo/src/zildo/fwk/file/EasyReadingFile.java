@@ -56,17 +56,4 @@ public class EasyReadingFile extends EasyBuffering {
 		}
 		data.flip();
 	}
-
-	public byte[] getArray() {
-        byte bytes[] = null;
-        if(data.hasArray())
-        {
-            bytes = data.array();
-        } else
-        {
-            bytes = new byte[data.capacity()];
-            data.get(bytes);
-        }
-        return bytes;
-	}
 }

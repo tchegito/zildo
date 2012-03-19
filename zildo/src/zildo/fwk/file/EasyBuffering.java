@@ -37,7 +37,7 @@ public class EasyBuffering {
 
 	private static final String nullString="@nul#";
 	
-	ByteBuffer data;
+	protected ByteBuffer data;
 	
 	/**
 	 * Creates an EasyWritingFile object for writing.

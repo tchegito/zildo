@@ -23,9 +23,9 @@ package zildo.client.gui.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.file.EasyBuffering;
-import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.net.ServerInfo;
 import zildo.fwk.net.TransferObject;
@@ -167,7 +167,7 @@ public class AddServerMenu extends Menu {
     static public List<ServerInfo> loadServersInfos() {
 		List<ServerInfo> infos=new ArrayList<ServerInfo>();
     	try {
-        	EasyReadingFile file=new EasyReadingFile(Constantes.SERVER_FILE);
+    		EasyBuffering file=Zildo.pdPlugin.openFile(Constantes.SERVER_FILE);
         	while (!file.eof()) {
         		String name=file.readString();
         		String ip=file.readString();
