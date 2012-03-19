@@ -25,6 +25,8 @@ import java.util.Map;
 
 import zildo.Zildo;
 import zildo.fwk.Injector;
+import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.PixelShaders;
@@ -59,11 +61,13 @@ public class PlatformDependentPlugin {
     public SoundEngine soundEngine;
     public OpenGLGestion openGLGestion;
     
+    private Class<? extends EasyBuffering> fileReader;
+    
     public Map<Class<ScreenFilter>, ScreenFilter> filters;
     
-    enum KnownPlugin { Lwjgl, Android };
+    public enum KnownPlugin { Lwjgl, Android };
    
-    private KnownPlugin currentPlugin = KnownPlugin.Lwjgl;    // Constant for now
+    public static KnownPlugin currentPlugin = KnownPlugin.Lwjgl;    // Constant for now
    
     final static String PLATFORM_PACKAGE = "zildo.platform.";
     
@@ -73,6 +77,12 @@ public class PlatformDependentPlugin {
     }
     
     public void init(boolean p_awt) {
+    	
+    	if (currentPlugin == KnownPlugin.Android) {
+    		fileReader = injector.findClass("com.zildo.AndroidReadingFile");
+    	} else {
+    		fileReader = EasyReadingFile.class;
+    	}
         // Look for existing stuff in the class loader and create all needed singletons
     	if (!p_awt) {
     		kbHandler = createSingleton("input.KeyboardHandler");
@@ -114,6 +124,11 @@ public class PlatformDependentPlugin {
         }
     }
 
+    @SuppressWarnings("unchecked")
+	public <T extends EasyBuffering> T openFile(String path) {
+    	return (T) injector.createInstance(fileReader, path);
+    }
+    
     @SuppressWarnings("unchecked")
 	public <T extends ScreenFilter> T getFilter(Class<T> p_filterClazz) {
     	return (T) filters.get(p_filterClazz);

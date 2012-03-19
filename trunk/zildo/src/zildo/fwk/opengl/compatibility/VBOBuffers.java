@@ -21,7 +21,7 @@
 package zildo.fwk.opengl.compatibility;
 
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 
 import zildo.fwk.ZUtils;
 
@@ -31,21 +31,21 @@ public class VBOBuffers {
 	static final int maxIndices = 2 * 6 * 64 * 64;
 	
 	public int vertexBufferId;
-	public int	normalBufferId;
+	//public int	normalBufferId;
 	public int textureBufferId;
 	public int indiceBufferId;
 
     public FloatBuffer vertices;
-    public FloatBuffer normals;
+    //public FloatBuffer normals;
     public FloatBuffer textures;
-    public IntBuffer indices;
+    public ShortBuffer indices;
     
     public VBOBuffers(int p_numPoints) {
         // Allocate buffers
         int numFaces = maxIndices / 3;
         vertices = ZUtils.createFloatBuffer(3 * p_numPoints);
-        normals = ZUtils.createFloatBuffer(3 * numFaces);
-        indices = ZUtils.createIntBuffer(3 * maxIndices);
+        //normals = ZUtils.createFloatBuffer(3 * numFaces);
+        indices = ZUtils.createShortBuffer(3 * maxIndices);
         textures = ZUtils.createFloatBuffer(2 * p_numPoints);    	
     }
     

@@ -20,17 +20,14 @@
 
 package zildo.fwk.gfx;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
+import zildo.Zildo;
+import zildo.fwk.file.EasyBuffering;
 import zildo.monde.util.Vector2f;
 import zildo.monde.util.Vector4f;
-import zildo.resource.Constantes;
 
 /**
  * Classe qui permet de dessiner sur un buffer.
@@ -64,7 +61,7 @@ public class GFXBasics {
 
 	static {
 		// Default palette
-		Load_Palette("GAME1.PAL");
+		Load_Palette("game1.pal");
 	}
 
 	public GFXBasics(boolean alpha) {
@@ -83,21 +80,14 @@ public class GFXBasics {
 
 	static void Load_Palette(String fileName) {
 		// Load the palette
-		String filename = Constantes.DATA_PATH;
-		filename += fileName;
-		File fi = new File(filename);
-		try {
-			InputStream stream = new FileInputStream(fi);
-			int a, b, c;
-			for (int i = 0; i < 256; i++) {
-				a = stream.read();
-				b = stream.read();
-				c = stream.read();
-				palette[i] = new Vector4f(a, b, c, 1);
-			}
-			stream.close();
-		} catch (IOException e) {
-			throw new RuntimeException("Unable to read palette");
+		EasyBuffering file = Zildo.pdPlugin.openFile(fileName);
+		
+		int a, b, c;
+		for (int i = 0; i < 256; i++) {
+			a = file.readUnsignedByte();
+			b = file.readUnsignedByte();
+			c = file.readUnsignedByte();
+			palette[i] = new Vector4f(a, b, c, 1);
 		}
 	}
 

@@ -299,4 +299,8 @@ public class Client {
 	public void setMusic(boolean music) {
 		this.music = music;
 	}
+	
+	public void setOpenGLGestion(OpenGLGestion glGestion) {
+		this.glGestion = glGestion;
+	}
 }

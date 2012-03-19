@@ -23,7 +23,8 @@ package zildo.fwk.bank;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.fwk.file.EasyReadingFile;
+import zildo.Zildo;
+import zildo.fwk.file.EasyBuffering;
 import zildo.monde.map.TileCollision;
 
 
@@ -57,7 +58,7 @@ public class MotifBank {
 	
 	public void charge_motifs(String filename) {
 		// On récupère la taille du fichier .DEC
-		EasyReadingFile file=new EasyReadingFile(filename+".DEC");
+		EasyBuffering file=Zildo.pdPlugin.openFile(filename+".dec");
 		int size=file.getSize();
 		
 		name=filename;

@@ -24,11 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.IntSet;
 import zildo.fwk.file.EasyBuffering;
-import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.script.xml.element.TriggerElement;
@@ -169,7 +169,7 @@ public class MapManagement {
 		}
 
 		// Infos de base
-		EasyReadingFile file = new EasyReadingFile(Constantes.MAP_PATH+p_mapname);
+		EasyBuffering file=Zildo.pdPlugin.openFile(Constantes.MAP_PATH+p_mapname);
 		Area map = Area.deserialize(file, p_refMapname, true);
 
 		this.logger.info("Map loaded: " + p_mapname);

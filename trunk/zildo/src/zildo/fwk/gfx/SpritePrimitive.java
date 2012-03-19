@@ -166,9 +166,9 @@ public class SpritePrimitive extends TilePrimitive {
 			if (bufs.indices.position() == bufs.indices.limit()) {
 				bufs.indices.limit(bufs.indices.position() + 6);
 			}
-			bufs.indices.put(numQuad).put(numQuad+1).put(numQuad+2);
+			bufs.indices.put((short) numQuad).put((short) (numQuad+1)).put((short) (numQuad+2));
 			// Tile's second triangle
-			bufs.indices.put(numQuad+1).put(numQuad+3).put(numQuad+2);
+			bufs.indices.put((short) (numQuad+1)).put((short) (numQuad+3)).put((short) (numQuad+2));
 			i++;
 		}
 	

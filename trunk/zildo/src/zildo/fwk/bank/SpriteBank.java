@@ -23,7 +23,8 @@ package zildo.fwk.bank;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.fwk.file.EasyReadingFile;
+import zildo.Zildo;
+import zildo.fwk.file.EasyBuffering;
 import zildo.monde.sprites.SpriteModel;
 
 /**
@@ -84,7 +85,7 @@ public class SpriteBank {
 	// Load a sprites bank into memory
 	public void charge_sprites(String filename)
 	{
-		EasyReadingFile file=new EasyReadingFile(filename);
+		EasyBuffering file=Zildo.pdPlugin.openFile(filename);
 		short a,b;
 	    int k;
 	

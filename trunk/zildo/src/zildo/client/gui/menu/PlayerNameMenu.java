@@ -20,8 +20,8 @@
 
 package zildo.client.gui.menu;
 
+import zildo.Zildo;
 import zildo.fwk.file.EasyBuffering;
-import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.ItemMenu;
@@ -69,7 +69,7 @@ public class PlayerNameMenu extends Menu {
      */
     static public String loadPlayerName() {
     	try {
-        	EasyReadingFile file=new EasyReadingFile(Constantes.CONFIGURATION_FILE);
+    		EasyBuffering file=Zildo.pdPlugin.openFile(Constantes.CONFIGURATION_FILE);
     		return file.readString();
     	} catch (Exception e) {
     		return "Zildo";
