@@ -3,23 +3,25 @@
 <wiki:toc max_depth="4" />
 
 
-= Description =
+= Model Description =
 
 The scripting module in Zildo is divided into two essentials sections :
  * scenes
  * quests
 
+== Main elements ==
+
 All is described in a single XML file, containing an ADVENTURE root.
 
 But let's see how works the 2 sections.
 
-== Scenes ==
+=== Scenes ===
 
 A scene is a cinematic sequence, where player can't act. He just has to show events happening like in a movie.
 
 Basically, it's a list of mini-actions which are launched sequentially. Some can be launched simultaneously. (see the 'Misc' section)
 
-== Quests ==
+=== Quests ===
 
 A quest is an objective for the player. It has 3 parts:
  * *trigger* : what the player has to do in order to accomplish the quest
@@ -30,7 +32,9 @@ A quest has a name and a state during the game, which can be 'done' or 'undone'.
 
 _Note_ : when loading a saved game, every accomplished quest launches the execution of each 'history' part, but not 'action' part.
 
-= Trigger =
+== Trigger & Action ==
+
+=== Trigger ===
 
 A trigger can be of 4 different kinds : (corresponding to [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/quest/QuestEvent.java QuestEvent] )
 
@@ -39,7 +43,7 @@ A trigger can be of 4 different kinds : (corresponding to [http://code.google.co
  * inventory : does Zildo have a given item ?
  * questDone : has Zildo achieved a given quest ?
 
-= Action =
+=== Action ===
 
 Every action is a parametered command. Here is an exhaustive list of all existing actions :
 
@@ -67,21 +71,23 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || putDown || text || - || - || - || Remove an item from Zildo's inventory ||
 || attack || text || V || - || - || Make a given character attacking in front of him ||
 
-= Misc=
+=== Misc===
 
 Here is some details for particular commands.
-
-== Simultaneous actions ==
 
 Basically, each command is launched when the previous one is finished.
 But, there's two possibilities to avoid this kind of mechanic.
 
-=== actions ===
+==== actions ====
 
 Into the command 'actions', you can add a sublist of actions. It means that each one should happen in the same time.
 
 It's useful when two people have to walk in the same direction, or when the camera should follow a character and so on.
 
-=== unblock ===
+==== unblock ====
 
 With the attribute 'unblock', the given command is said to be unblocking. It means that next action can start without waiting for the current one.
+
+= Class modelization =
+
+[https://plus.google.com/u/0/photos/108999619236154877010/albums/5327446206646450737/5721964623679438434]
