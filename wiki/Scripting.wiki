@@ -90,4 +90,11 @@ With the attribute 'unblock', the given command is said to be unblocking. It mea
 
 = Class modelization =
 
+Here is a class model representation :
+
 [http://lh6.googleusercontent.com/-_0tQGqmH-aA/T2iAgkvDvmI/AAAAAAAABpI/qd8MEWq5p5I/w1420-h284-k/scriptclasses.PNG]
+
+We can see that ScriptManagement handle all the stuff related to script (as PersoManagement, MapManagement in its respective fields). It has two main linked objects :
+
+ * AdventureElement : a representation of all game scripts (see quests.xml), containing the model described in the start of this document. Note that this object is dynamic, and is the mirror of the instant game situation (issued from a savegame for example). It's not a finished state.
+ * ScriptExecutor : an object dealing with current executing scripts (if any).
