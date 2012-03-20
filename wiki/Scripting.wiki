@@ -90,4 +90,4 @@ With the attribute 'unblock', the given command is said to be unblocking. It mea
 
 = Class modelization =
 
-[https://plus.google.com/u/0/photos/108999619236154877010/albums/5327446206646450737/5721964623679438434]
+[http://lh6.googleusercontent.com/-_0tQGqmH-aA/T2iAgkvDvmI/AAAAAAAABpI/qd8MEWq5p5I/w1420-h284-k/scriptclasses.png classes]
