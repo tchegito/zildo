@@ -167,11 +167,15 @@ public class ActionExecutor {
                 	achieved=true;
                 	break;
                 case focus:	// Camera focus on given character
+                	Element toFocus = perso;
+                	if (p_action.what != null) {
+                		toFocus = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+                	}
                 	if (p_action.delta) {
-                		Point cameraLoc = new Point(perso.x-MapDisplay.CENTER_X, perso.y-MapDisplay.CENTER_Y);
+                		Point cameraLoc = new Point(toFocus.x-MapDisplay.CENTER_X, toFocus.y-MapDisplay.CENTER_Y);
                 		ClientEngineZildo.mapDisplay.setTargetCamera(cameraLoc);
                 	}
-                    ClientEngineZildo.mapDisplay.setFocusedEntity(perso);
+                    ClientEngineZildo.mapDisplay.setFocusedEntity(toFocus);
                     achieved = true;
                     break;
                 case spawn:	// Spawn a new character
@@ -251,7 +255,7 @@ public class ActionExecutor {
                 	if (p_action.what != null) {
                 		toRemove = EngineZildo.spriteManagement.getNamedElement(p_action.what);
                 	} else {
-                		toRemove = EngineZildo.persoManagement.getNamedPerso(p_action.who);
+                		toRemove = perso;
                     	EngineZildo.persoManagement.removePerso((Perso) toRemove);
                 	}             	
                 	EngineZildo.spriteManagement.deleteSprite(toRemove);

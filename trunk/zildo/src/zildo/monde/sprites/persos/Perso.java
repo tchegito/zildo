@@ -72,7 +72,7 @@ public abstract class Perso extends Element {
 										// perso:debout,couché,attaque...
 	protected int cptMouvement; // Un compteur pour les mouvements des PNJ
 	private int coming_map; // 1 si Zildo entre sur une map,sinon 255
-	private int pv, maxpv; // Points de vie du perso
+	protected int pv, maxpv; // Points de vie du perso
 	private boolean ghost = false; // TRUE=script control him
 
 	private int money;
@@ -238,11 +238,7 @@ public abstract class Perso extends Element {
 	}
 
 	public void setPv(int pv) {
-		if (pv > maxpv) {
-			this.pv = maxpv;
-		} else {
-			this.pv = pv;
-		}
+		this.pv = pv;
 	}
 
 	public int getMaxpv() {
@@ -479,6 +475,8 @@ public abstract class Perso extends Element {
 		// Death !
 		EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DEATH, (int) x, (int) y, 0, p_link ? this
 				: null, null);
+		TriggerElement trig = TriggerElement.createDeathTrigger(name);
+		EngineZildo.scriptManagement.trigger(trig);
 	}
 
 	public abstract void finaliseComportement(int compteur_animation);

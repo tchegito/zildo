@@ -223,8 +223,8 @@ public abstract class SpriteEngine {
 		
 		// Create Zildo with all outfits
 		if (!ClientEngineZildo.editing) {
-			textureEngine.setCurentTexture(SpriteBank.BANK_ZILDOOUTFIT);
-			createTextureFromAnotherReplacement(SpriteBank.BANK_ZILDO, ZildoOutfit.class);
+			//textureEngine.setCurentTexture(SpriteBank.BANK_ZILDOOUTFIT);
+			//createTextureFromAnotherReplacement(SpriteBank.BANK_ZILDO, ZildoOutfit.class);
 		}
 		
 		// Prepare screen copy texture
