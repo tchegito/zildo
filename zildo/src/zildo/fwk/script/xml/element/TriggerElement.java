@@ -20,6 +20,10 @@
 
 package zildo.fwk.script.xml.element;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.w3c.dom.Element;
 
 import zildo.fwk.script.model.ZSSwitch;
@@ -40,6 +44,8 @@ public class TriggerElement extends AnyElement {
 	boolean not;	// Use for inversion of inventory posess
 	Zone region; // Unimplemented yet
 
+	List<String> deadPersos;	// Perso expected to be dead
+	
 	ZSSwitch questSwitch;
 
 	public TriggerElement(QuestEvent p_kind) {
@@ -72,6 +78,11 @@ public class TriggerElement extends AnyElement {
 			name = p_elem.getAttribute("item");
 			not = name.indexOf("!") != -1;
 			name = name.replaceAll("!", "");
+			break;
+		case DEAD:
+			String persos = p_elem.getAttribute("who");
+			deadPersos = new ArrayList<String>();
+			deadPersos.addAll(Arrays.asList(persos.split(",")));
 			break;
 		}
 
@@ -116,6 +127,10 @@ public class TriggerElement extends AnyElement {
 			if (questSwitch.contains(p_another.name)) {
 				return questSwitch.evaluate() == 1;
 			}
+			break;
+		case DEAD:
+			deadPersos.remove(p_another.name);
+			return deadPersos.size() == 0;
 		}
 		return false;
 	}
@@ -193,6 +208,17 @@ public class TriggerElement extends AnyElement {
 	public static TriggerElement createQuestDoneTrigger(String p_quest) {
 		TriggerElement elem = new TriggerElement(QuestEvent.QUESTDONE);
 		elem.name = p_quest;
+		return elem;
+	}
+
+	/**
+	 * Ingame method to check a set of persos death.
+	 * @param p_name
+	 * @return TriggerElement
+	 */
+	public static TriggerElement createDeathTrigger(String p_name) {
+		TriggerElement elem = new TriggerElement(QuestEvent.DEAD);
+		elem.name = p_name;
 		return elem;
 	}
 

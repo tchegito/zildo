@@ -802,7 +802,6 @@ public class PersoZildo extends Perso {
 	public boolean pickGoodies(Element p_element, int p_money) {
 		// Effect on perso
 		int money = this.getMoney();
-		int pv = this.getPv();
 		if (p_money > 0) { // Zildo gets some money
 			setMoney(money + p_money);
 			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
@@ -825,7 +824,9 @@ public class PersoZildo extends Perso {
 					break;
 				case HEART:
 				case HEART_LEFT:
-					setPv(pv + 1);
+					if (pv < maxpv) {
+						pv++;
+					}
 					break;
 				case ARROW_UP:
 					countArrow += 5;
@@ -1043,7 +1044,7 @@ public class PersoZildo extends Perso {
 			mouvement = MouvementZildo.FIERTEOBJET;
 			Element elem = p_element;
 			if (elem == null) {
-				elem = EngineZildo.spriteManagement.spawnElement((ElementDescription) p_kind.representation,
+				elem = EngineZildo.spriteManagement.spawnElement(p_kind.representation,
 						(int) x,
 						(int) y, 0);
 			}

@@ -48,6 +48,7 @@ public enum BankSound implements AudioBank {
 	ZildoUnlock("doorUnlock"),
 	ZildoUnlockDouble("doorDouble"),
 	ZildoAccomplishQuest("queteEpuree"),
+	ZildoElectric("electric"),
 	
 	QuadDamage("quaddamage"),
 	QuadDamageLeaving("damage2"),
@@ -61,6 +62,8 @@ public enum BankSound implements AudioBank {
 	
 	Poule1("poule1"),
 	Poule2("poule2"),
+	
+	Bee("bee"),	// repeat
 	
 	CasseBuisson("feuilles"),
 	CassePierre("brise"),
@@ -86,9 +89,17 @@ public enum BankSound implements AudioBank {
 	PlanteBombe("posebomb"),
 	Explosion("explose"),
 	Hammer("marteau"),
+	CannonBall("cannonball"),
+	
+	BossHit("bosshit"),
+	BossSand1("sand1"),
+	BossSand2("sand2"),
+	Fuite("fuite"),
+	Whip("whip"),
 	
 	ChestAppears("appear"),
 	
+	FloorTile("floortile1"),
 	Sort("sort");
 
 	String filename;

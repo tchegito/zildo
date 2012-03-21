@@ -220,6 +220,21 @@
 		</action>
 	</quest>
 	
+	<quest name="maltus_foret_zildo_defeat">
+		<trigger>
+			<location name="foret"/>
+			<dead who="rabbit1,rabbit2,rabbit3"/>
+		</trigger>
+		<action>
+			<focus what="caveDoor" delta="true"/>
+			<wait value="80"/>
+			<activate what="caveDoor" value="true"/>
+			<wait value="20"/>
+			<music name="Village"/>
+			<focus who="zildo" delta="true"/>
+		</action>
+	</quest>
+	
 	<mapScript>
 		<condition name="coucou" exp="enlevement">
 			<remove who="roxy" />
@@ -612,15 +627,23 @@
 		<moveTo who="maltus" pos="30,-5" delta="true"/>
 		<wait value="15"/>
 		<actions>
-			<animation pos="660,280" type="CLOUD_FOG" />
-			<spawn who="rabbit1" pos="650,280" type="RABBIT"/>
+			<animation pos="790,260" type="CLOUD_FOG" />
+			<spawn who="rabbit1" pos="790,260" type="RABBIT"/>
+			<angle who="maltus" value="1"/>
+			<angle who="zildo" value="1"/>
+		</actions>
+		<music name="Surprise"/>
+		<wait value="10"/>
+		<actions>
+			<animation pos="650,280" type="CLOUD_FOG" />
+			<spawn who="rabbit2" pos="650,280" type="RABBIT"/>
 			<angle who="maltus" value="3"/>
 			<angle who="zildo" value="3"/>
 		</actions>
 		<wait value="10"/>
 		<actions>
-			<animation pos="740,290" type="CLOUD_FOG" />
-			<spawn who="rabbit2" pos="760,290" type="RABBIT"/>
+			<animation pos="760,290" type="CLOUD_FOG" />
+			<spawn who="rabbit3" pos="760,290" type="RABBIT"/>
 			<angle who="maltus" value="1"/>
 			<angle who="zildo" value="1"/>
 		</actions>
@@ -644,5 +667,6 @@
 		<script who="zildo" value="3"/>
 		<script who="rabbit1" value="0"/>
 		<script who="rabbit2" value="0"/>
+		<script who="rabbit3" value="0"/>
 	</scene>
 </adventure>

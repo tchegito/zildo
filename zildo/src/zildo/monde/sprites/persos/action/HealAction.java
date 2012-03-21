@@ -46,7 +46,9 @@ public class HealAction implements PersoAction {
 			return true;
 		} else {
 			if (perso.getAttente() == 0) {
-				perso.setPv(pv+1);
+				if (perso.getPv() < perso.getMaxpv()) {
+					perso.setPv(pv+1);
+				}
 				numPv--;
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupVie, perso);
 				perso.setAttente(8 * 2);

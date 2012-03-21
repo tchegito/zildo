@@ -222,9 +222,8 @@ public class PersoManagement {
         perso.setZ(z);
         perso.setDesc(p_desc);
         perso.setName(name);
-        perso.setMaxpv(1);
-        perso.setPv(1);
         perso.setAngle(Angle.fromInt(angle));
+        perso.setMaxpv(perso.getPv());
 
         return perso;
     }

@@ -22,7 +22,7 @@ package zildo.monde.quest;
 
 public enum QuestEvent {
 
-    LOCATION, DIALOG, INVENTORY, QUESTDONE;
+    LOCATION, DIALOG, INVENTORY, QUESTDONE, DEAD;
     
     
     public static QuestEvent fromString(String p_name) {

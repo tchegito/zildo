@@ -169,8 +169,11 @@ public class ScriptManagement {
     			} else {
     				// Reset only the 'location' trigger to 'undone' (because they have to be immediate)
     				for (TriggerElement trig : quest.getTriggers()) {
-    					if (QuestEvent.LOCATION == trig.kind) {
-    						trig.done=false;
+    					if (QuestEvent.LOCATION == trig.kind && trig.done) {
+    						TriggerElement currentMapTrigger = EngineZildo.mapManagement.currentMapTrigger;
+    						if (trig.isLocationSpecific() || !trig.match(currentMapTrigger)) {
+    							trig.done=false;
+    						}
     					}
     				}    				
     			}

@@ -277,7 +277,7 @@ public class PersoNJ extends Perso {
 							setAttente(10 + (int) (Math.random() * 20));
 						}
 					}
-					if (!isGhost() && desc == PersoDescription.GARDE_CANARD && !isAlerte()) {
+					if (!isGhost() && info == PersoInfo.ENEMY && !isAlerte()) {
 						setAlerte(lookForZildo(angle));
 					}
 					if (this.getAttente() != 0) {
@@ -326,6 +326,7 @@ public class PersoNJ extends Perso {
 
 						if (pathFinder.getTarget() != null) { // Move character if he has a target
 							Pointf loc = pathFinder.reachDestination(vitesse);
+							boolean hasCollided = loc.x == x && loc.y == y;
 							x = loc.x;
 							y = loc.y;
 
@@ -340,7 +341,7 @@ public class PersoNJ extends Perso {
 							}
 							if (!quel_deplacement.isFlying() && mouvement!=MouvementZildo.SAUTE) {
 								// Collision ?
-								if (EngineZildo.mapManagement.collide((int) x, (int) y, this)) {
+								if (hasCollided) {
 									this.setX(sx);
 									this.setY(sy);
 									pathFinder.collide();

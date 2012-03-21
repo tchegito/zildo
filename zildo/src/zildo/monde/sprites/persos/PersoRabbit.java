@@ -23,7 +23,7 @@ public class PersoRabbit extends PersoShadowed {
 
 	@Override
 	public void animate(int compteur_animation) {
-		if (isAlerte() || true) {
+		if (isAlerte()) {
 			// Rabbit has a target : we make him jump to hit
 			if (idleTime == 0 && !jumping) {
 				jumping = true;
@@ -48,9 +48,9 @@ public class PersoRabbit extends PersoShadowed {
 		// Look minor variation
 		if (!jumping) {
 			if (idleTime == 0) {
-				idleTime = 4 + Hasard.rand(10);
+				idleTime = 4 + Hasard.rand(5);
 				if (!alerte) {
-					idleTime+= 32 + Hasard.rand(10); 
+					idleTime+= 4 + Hasard.rand(10); 
 				}
 				addSpr = Hasard.rand(2);
 			} else {

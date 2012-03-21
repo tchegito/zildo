@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.sprites.Reverse;
@@ -325,6 +326,7 @@ public class SpriteManagement extends SpriteStore {
 			case CLOUD_FOG:
 				element = new ElementClouds(x, y);
 				spawnSprite(element);
+				EngineZildo.soundManagement.broadcastSound(BankSound.CannonBall, element);
 				break;
 			case HEARTS:
 				element = new ElementHearts(x, y);
