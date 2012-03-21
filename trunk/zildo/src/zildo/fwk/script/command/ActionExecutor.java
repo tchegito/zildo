@@ -33,10 +33,11 @@ import zildo.fwk.ui.UIText;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.quest.actions.ScriptAction;
-import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
@@ -182,7 +183,7 @@ public class ActionExecutor {
                        	newOne.initPersoFX();
                         EngineZildo.spriteManagement.spawnPerso(newOne);
                 	} else {	// Spawn a new element
-                		ElementDescription desc = ElementDescription.valueOf(p_action.text);
+                		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.text);
                 		Element elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0);
                 		elem.setName(p_action.what);
                 	}
@@ -272,6 +273,11 @@ public class ActionExecutor {
                 		achieved=true;
                 	}
                 	break;
+                case activate:
+            		Element toActivate = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+            		ElementGear gearToActivate = (ElementGear) toActivate;
+            		gearToActivate.activate(p_action.activate);
+            		break;
             }
 
             p_action.done = achieved;
@@ -305,6 +311,11 @@ public class ActionExecutor {
             case fadeIn:
             case fadeOut:
            		achieved=ClientEngineZildo.guiDisplay.isFadeOver();
+            	break;
+            case activate:
+        		Element toActivate = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+        		ElementGear gearToActivate = (ElementGear) toActivate;
+        		achieved=!gearToActivate.isActing();
             	break;
             case exec:
             	achieved=true;

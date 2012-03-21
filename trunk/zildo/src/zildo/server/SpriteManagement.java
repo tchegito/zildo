@@ -110,7 +110,14 @@ public class SpriteManagement extends SpriteStore {
 	public Element spawnElement(int nBank, int nSpr, int x, int y, int z) {
 
 		// SpriteEntity informations
-		Element element = new Element();
+		Element element;
+		if (nBank == SpriteBank.BANK_GEAR) {
+			element = new ElementGear(x, y);
+			element.setAjustedX(x);
+			element.setAjustedY(y);
+		} else {
+			element = new Element();
+		}
 		element.setX(x);
 		element.setY(y);
 		element.setZ(z);
@@ -131,7 +138,7 @@ public class SpriteManagement extends SpriteStore {
 	 * @param z
 	 * @return Element
 	 */
-	public Element spawnElement(ElementDescription desc, int x, int y, int z) {
+	public Element spawnElement(SpriteDescription desc, int x, int y, int z) {
 		return spawnElement(desc.getBank(), desc.getNSpr(), x, y, z);
 	}
 

@@ -61,7 +61,7 @@ public class PlatformDependentPlugin {
     public SoundEngine soundEngine;
     public OpenGLGestion openGLGestion;
     
-    private Class<? extends EasyBuffering> fileReader;
+    private Class<? extends EasyBuffering> fileReader = EasyReadingFile.class;
     
     public Map<Class<ScreenFilter>, ScreenFilter> filters;
     
@@ -80,8 +80,6 @@ public class PlatformDependentPlugin {
     	
     	if (currentPlugin == KnownPlugin.Android) {
     		fileReader = injector.findClass("com.zildo.AndroidReadingFile");
-    	} else {
-    		fileReader = EasyReadingFile.class;
     	}
         // Look for existing stuff in the class loader and create all needed singletons
     	if (!p_awt) {

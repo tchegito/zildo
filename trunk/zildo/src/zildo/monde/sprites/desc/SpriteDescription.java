@@ -54,6 +54,16 @@ public interface SpriteDescription {
 			}
 			throw new RuntimeException("Can't find sprite for bank "+nBank+" and sprite "+nSpr);
 		}
+		
+		public static SpriteDescription findNamedSpr(String val) {
+			SpriteDescription desc = null;
+			try {
+				desc = ElementDescription.valueOf(val);
+			} catch (IllegalArgumentException e) {
+				desc = GearDescription.valueOf(val);
+			}
+			return desc;
+		}
 	}
 	
 	public int ordinal();
