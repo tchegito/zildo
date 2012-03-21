@@ -70,6 +70,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || markQuest || text || - || - || - || Accomplish/reset a quest identified by 'name' attribute, according to the 'value' attribute (0=cancel / 1=accomplish) ||
 || putDown || text || - || - || - || Remove an item from Zildo's inventory ||
 || attack || text || V || - || - || Make a given character attacking in front of him ||
+|| activate || text || - || V || V || Activate a gear (door, button, ...) with boolean 'active' to turn on/off the gear (according to TRUE/FALSE value) ||
 
 === Misc===
 
@@ -96,5 +97,5 @@ Here is a class model representation :
 
 We can see that ScriptManagement handle all the stuff related to script (as PersoManagement, MapManagement in its respective fields). It has two main linked objects :
 
- * AdventureElement : a representation of all game scripts (see quests.xml), containing the model described in the start of this document. Note that this object is dynamic, and is the mirror of the instant game situation (issued from a savegame for example). It's not a finished state.
- * ScriptExecutor : an object dealing with current executing scripts (if any).
+ * *AdventureElement* : a representation of all game scripts (see quests.xml), containing the model described in the start of this document. Note that this object is dynamic, and is the mirror of the instant game situation (issued from a savegame for example). It's not a finished state.
+ * *ScriptExecutor* : an object dealing with current executing scripts (if any).
