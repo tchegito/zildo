@@ -629,6 +629,7 @@
 		<actions>
 			<moveTo who="maltus" pos="0,-15" delta="true" backward="true"/>
 			<speak who="maltus" text="foret.maltus.3"/>
+			<script who="zildo" value="2" fx="maltus"/>
 		</actions>	
 		<wait value="15"/>
 		<angle who="maltus" value="0"/>
@@ -636,8 +637,11 @@
 		<angle who="maltus" value="2"/>
 		<wait value="10"/>
 		<moveTo who="maltus" pos="671,206"/>
+		<spawn what="caveDoor" type="CAVE_SIMPLEDOOR" pos="673,204"/>
+		<activate what="caveDoor" value="false"/>
 		<remove who="maltus"/>
 		<speak who="zildo" text="foret.zildo.2"/>
+		<script who="zildo" value="3"/>
 		<script who="rabbit1" value="0"/>
 		<script who="rabbit2" value="0"/>
 	</scene>

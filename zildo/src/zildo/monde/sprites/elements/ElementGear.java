@@ -34,9 +34,10 @@ import zildo.server.EngineZildo;
  */
 public class ElementGear extends Element {
 
-	boolean acting = false;
+	boolean acting = false;	// Is this gear moving ?
 	int count = 0;
-
+	boolean activate;	// is this gear asked to turn on/off ?
+	
 	public ElementGear(int p_x, int p_y) {
 		super();
 		x = p_x;
@@ -75,24 +76,51 @@ public class ElementGear extends Element {
 					}
 				}
 				break;
+
 			}
 		}
 
 	}
 
+	public void activate(boolean value) {
+		count=0;
+		acting=true;
+		activate=value;
+	}
+	
 	@Override
 	public void animate() {
 		if (acting) {
-			switch (count) {
-			case 10:
-				setDesc(GearDescription.GREEN_DOOR_OPENING);
-				EngineZildo.soundManagement.broadcastSound(
-						BankSound.ZildoUnlockDouble, this);
-				break;
-			case 20:
-				dying = true;
+			GearDescription gearDesc = (GearDescription) desc;
+			switch (gearDesc) {
+				case GREEN_DOOR:
+				case GREEN_DOOR_OPENING:
+					switch (count) {
+						case 10:
+							setDesc(GearDescription.GREEN_DOOR_OPENING);
+							EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlockDouble, this);
+							break;
+						case 20:
+							dying = true;
+					}
+					count++;
+					break;
+				case CAVE_SIMPLEDOOR:
+					int pas = activate ? -6 : 6;	// Closing or opening ?
+					switch (count) {
+					case 20:
+						acting=false;
+					case 10:
+						EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPousse, this);
+						y+=pas;
+					default:
+						break;
+					}
+					setAjustedX((int)x);
+					setAjustedY((int)y);
+					count++;
+					break;
 			}
-			count++;
 		}
 	}
 
@@ -101,5 +129,9 @@ public class ElementGear extends Element {
 		super.getCenter();
 		center.y = (int) y - sprModel.getTaille_y();
 		return center;
+	}
+	
+	public boolean isActing() {
+		return acting;
 	}
 }

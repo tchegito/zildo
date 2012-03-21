@@ -61,6 +61,7 @@ public enum GearDescription implements SpriteDescription {
 		switch (this) {
 			case GREEN_DOOR:
 			case GREEN_DOOR_OPENING:
+			case CAVE_SIMPLEDOOR:
 				return true;
 			default:
 				return false;
