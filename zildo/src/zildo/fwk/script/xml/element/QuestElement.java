@@ -43,6 +43,8 @@ public class QuestElement extends AnyElement {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
+		xmlElement = p_elem;
+		
 		name = p_elem.getAttribute("name");
 
 		Element triggerContainer = ScriptReader
@@ -59,8 +61,8 @@ public class QuestElement extends AnyElement {
 					.parseNodes(historyContainer);
 		}
 
-		both = isTrue(p_elem, "both");
-		repeat = isTrue(p_elem, "repeat");
+		both = isTrue("both");
+		repeat = isTrue("repeat");
 
 		if (repeat) {
 			// Add a final action to reset this quest (it must be "repeatable")

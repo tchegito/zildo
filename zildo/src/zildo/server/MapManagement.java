@@ -57,7 +57,8 @@ public class MapManagement {
 
 	ChainingPoint changingMapPoint;
 	Angle mapScrollAngle;
-
+	TriggerElement currentMapTrigger;
+	
 	public MapManagement() {
 		tileCollision = TileCollision.getInstance();
 
@@ -109,9 +110,9 @@ public class MapManagement {
 
 		// Trigger the location
 		if (!EngineZildo.game.editing) {
-			TriggerElement trig = TriggerElement
+			currentMapTrigger = TriggerElement
 					.createLocationTrigger(adjustedMapName, null);
-			EngineZildo.scriptManagement.trigger(trig);
+			EngineZildo.scriptManagement.trigger(currentMapTrigger);
 			EngineZildo.scriptManagement.prepareMapSubTriggers(adjustedMapName);
 		}
 
@@ -704,6 +705,10 @@ public class MapManagement {
 
 	public Area getPreviousMap() {
 		return previousMap;
+	}
+	
+	public TriggerElement getCurrentMapTrigger() {
+		return currentMapTrigger;
 	}
 
 }

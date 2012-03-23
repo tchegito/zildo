@@ -48,36 +48,40 @@ public abstract class AnyElement {
 		}
 	}
 	
+	protected Element xmlElement;
+	
     public boolean waiting = false;
     public boolean done = false;
 
+    /**
+     * This method should set the "xmlElement" member variable, in order to have readAttribute, isTrue... get working.
+     * @param p_elem
+     */
     public abstract void parse(Element p_elem);
     
     // Useful operations
-    public boolean isTrue(Element p_elem, String p_attrName) {
-    	String str=p_elem.getAttribute(p_attrName);
+    public boolean isTrue(String p_attrName) {
+    	String str=xmlElement.getAttribute(p_attrName);
     	return str.equalsIgnoreCase("true");
     }
     
     /**
      * Read an attribute's value, and return NULL if it isn't set.
-     * @param p_elem
      * @param p_attrName
      * @return String
      */
-    protected String readAttribute(Element p_elem, String p_attrName) {
-    	String value = p_elem.getAttribute(p_attrName);
+    public String readAttribute(String p_attrName) {
+    	String value = xmlElement.getAttribute(p_attrName);
     	return "".equals(value) ? null : value;
     }
     
     /**
      * Read an int value. Returns 0 if null.
-     * @param p_elem
      * @param p_attrName
      * @return int
      */
-    protected int readInt(Element p_elem, String p_attrName) {
-		String strValue = readAttribute(p_elem, p_attrName);
+    protected int readInt(String p_attrName) {
+		String strValue = readAttribute(p_attrName);
 		if (strValue == null) {
 			return 0;
 		} else {

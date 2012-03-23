@@ -16,8 +16,10 @@ public class ConditionElement extends AnyElement {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
-		mapName = readAttribute(p_elem, "name");
-		expression = new ZSSwitch(readAttribute(p_elem, "exp")+":1,0");	// 1 will be the right value
+		xmlElement = p_elem;
+		
+		mapName = readAttribute("name");
+		expression = new ZSSwitch(readAttribute("exp")+":1,0");	// 1 will be the right value
 		actions = (List<ActionElement>) ScriptReader.parseNodes(p_elem);
 	}
 

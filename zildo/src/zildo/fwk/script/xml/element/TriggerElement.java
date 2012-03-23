@@ -58,19 +58,21 @@ public class TriggerElement extends AnyElement {
 		if (kind == null) {
 			throw new RuntimeException("Trigger kind is unknown !");
 		}
+		xmlElement = p_elem;
+		
 		switch (kind) {
 		case DIALOG:
 			numSentence = Integer.valueOf(p_elem.getAttribute("num"));
 		case LOCATION:
-			name = readAttribute(p_elem, "name");
-			radius = readInt(p_elem, "radius");
-			String strPos = readAttribute(p_elem, "pos");
+			name = readAttribute("name");
+			radius = readInt("radius");
+			String strPos = readAttribute("pos");
 			if (strPos != null) {
 				location = Point.fromString(strPos);
 			}
 			break;
 		case QUESTDONE:
-			name = readAttribute(p_elem, "name");
+			name = readAttribute("name");
 			questSwitch = new ZSSwitch(name + ":1,0");
 			break;
 		case INVENTORY:
