@@ -176,14 +176,6 @@ public class PersoNJ extends Perso {
 				walkTile(true);
 			} else {
 				switch (this.getQuel_deplacement()) {
-				case OBSERVE:
-					// Persos qui regardent en direction de Zildo
-					Perso observed = this.getFollowing();
-					if (observed == null) {
-						observed = zildo;
-					}
-					sight(observed, true);
-					break;
 				case VOLESPECTRE:
 					double beta;
 					if (cptMouvement == 100) {

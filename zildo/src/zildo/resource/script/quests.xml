@@ -227,11 +227,12 @@
 		</trigger>
 		<action>
 			<focus what="caveDoor" delta="true"/>
+			<focus/>
 			<wait value="80"/>
 			<activate what="caveDoor" value="true"/>
 			<wait value="20"/>
 			<music name="Village"/>
-			<focus who="zildo" delta="true"/>
+			<focus who="zildo" unblock="true" delta="true"/>
 		</action>
 	</quest>
 	
@@ -324,7 +325,7 @@
 	    <moveTo who="zildo" pos="970,370"/>
 	    <moveTo who="zildo" pos="970,292"/>
 	    <angle who="roxy" value="2"/>
-	    <focus who="zildo" delta="true"/>
+	    <focus who="zildo" unblock="true" delta="true"/>
 	</scene>
 	
 	<scene id="echange">
@@ -475,7 +476,7 @@
 		<angle who="zildo" value="1"/>
 		<speak who="hector" text="pext.hector.4" />
 		<speak who="hector" text="pext.hector.5" />
-		<focus who="zildo" delta="true"/>
+		<focus who="zildo" unblock="true" delta="true"/>
 	</scene>
 	
 	<scene id="coucou_visit1">
@@ -510,7 +511,7 @@
 		<music name="Chateau"/>
 		<speak who="king" text="visit1.king.9"/>
 		<angle who="maltus" value="1"/>"
-		<focus who="zildo" delta="true"/>
+		<focus who="zildo" unblock="true" delta="true"/>
 	</scene>
 	
 	<scene id="coucou_visit1_noweapon">
@@ -520,7 +521,7 @@
 		<speak who="zildo" text="visit1.zildo.4"/>
 		<speak who="king" text="visit1.king.11"/>
 		<moveTo who="zildo" pos="0,32" delta="true"/>
-		<focus who="zildo" delta="true"/>
+		<focus who="zildo" unblock="true" delta="true"/>
 	</scene>
 	
 	<scene id="coucou_visit1_weapon">
