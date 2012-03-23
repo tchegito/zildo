@@ -171,12 +171,16 @@ public class ActionExecutor {
                 	if (p_action.what != null) {
                 		toFocus = EngineZildo.spriteManagement.getNamedElement(p_action.what);
                 	}
+                	if (toFocus == null) {
+                		ClientEngineZildo.mapDisplay.setFocusedEntity(null);
+                	}
                 	if (p_action.delta) {
                 		Point cameraLoc = new Point(toFocus.x-MapDisplay.CENTER_X, toFocus.y-MapDisplay.CENTER_Y);
                 		ClientEngineZildo.mapDisplay.setTargetCamera(cameraLoc);
                 	}
                     ClientEngineZildo.mapDisplay.setFocusedEntity(toFocus);
-                    achieved = true;
+                    // If delta, we go smoothly to the target, except if it's explicitly asked to be unblocking
+                    achieved = !p_action.delta || p_action.unblock;
                     break;
                 case spawn:	// Spawn a new character
                 	if (p_action.who != null) {
@@ -306,6 +310,9 @@ public class ActionExecutor {
             		achieved=ClientEngineZildo.mapDisplay.getTargetCamera() == null;
             	}
                 break;
+            case focus:
+        		achieved=ClientEngineZildo.mapDisplay.getTargetCamera() == null;
+            	break;
             case speak:
                 achieved = scriptExec.userEndedAction;
                 break;

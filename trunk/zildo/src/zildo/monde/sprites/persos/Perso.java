@@ -492,6 +492,17 @@ public abstract class Perso extends Element {
 				action = null;
 			}
 		}
+		
+		switch (this.getQuel_deplacement()) {
+		case OBSERVE:
+			// Persos qui regardent en direction de Zildo
+			Perso observed = this.getFollowing();
+			if (observed == null || !isZildo()) {
+				observed = EngineZildo.persoManagement.getZildo();
+			}
+			sight(observed, true);
+			break;
+		}
 	}
 
 	// Default : nothing to do (only Zildo can take up objects for now)

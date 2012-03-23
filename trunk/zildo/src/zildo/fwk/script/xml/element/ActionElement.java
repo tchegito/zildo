@@ -121,7 +121,7 @@ public class ActionElement extends AnyElement {
 		case focus:
 			delta = isTrue("delta");
 			if (readAttribute("unblock") == null) { 
-					unblock = true;
+				unblock = true;
 			}
 			break;
 		case take:
