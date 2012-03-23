@@ -72,9 +72,9 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || attack || text || V || - || - || Make a given character attacking in front of him ||
 || activate || text || - || V || V || Activate a gear (door, button, ...) with boolean 'value' to turn on/off the gear (according to TRUE/FALSE value) ||
 
-=== Misc===
+=== Multithread ===
 
-Here is some details for particular commands.
+Here is some details for particular commands about multithreading actions.
 
 Basically, each command is launched when the previous one is finished.
 But, there's two possibilities to avoid this kind of mechanic.
@@ -88,6 +88,20 @@ It's useful when two people have to walk in the same direction, or when the came
 ==== unblock ====
 
 With the attribute 'unblock', the given command is said to be unblocking. It means that next action can start without waiting for the current one.
+
+=== Misc ===
+
+==== Focusing entities ====
+
+It's possible to focus on character, or element, with the simple command *focus*. It commands the camera to put the given element on the center of attention.
+
+This command, by default, moves instantly the camera, by setting its position to the desired one. But you can go smoothly to it, by using the attribute _delta_. This attribute has another consequence : the action will be achieved when camera will be at its target. So the attribute _unblocking_ could be useful in such case.
+
+A last thing to notice about focusing is that the element moves, camera will move too. That's pretty natural for a focus feature ! But you can reset camera focusing by calling *pos* command on camera with the same postion. Here is an example :
+<code>
+			<focus what="caveDoor" delta="true"/>
+			<pos what="camera" pos="0,0" delta="true"/>
+</code>
 
 = Class modelization =
 
