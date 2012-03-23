@@ -18,10 +18,12 @@
  *
  */
 
-package zeditor.core.prefetch.complex;
+package zeditor.core.prefetch.patch;
 
 import java.util.List;
 
+import zeditor.core.prefetch.complex.CompositePatch12;
+import zeditor.core.prefetch.complex.TraceDelegateDraw;
 import zildo.fwk.MultiMap;
 import zildo.monde.map.Area;
 import zildo.monde.util.Point;
@@ -52,14 +54,14 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 	 * @param p_val
 	 * @return int
 	 */
-	abstract int toBinaryValue(int p_val);
+	public abstract int toBinaryValue(int p_val);
 
 	/**
 	 * Returns a tile number from a 0..15 value.
 	 * @param p_val
 	 * @return int
 	 */
-	abstract int toGraphicalValue(int p_val);
+	public abstract int toGraphicalValue(int p_val);
 		
 	@Override
 	/**
@@ -90,7 +92,7 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 		}
 	}
 	
-	protected void arrangeOneTile(Area p_map, int p_patchValue, int p_x, int p_y, CompositePatch12 p_composite) {
+	public void arrangeOneTile(Area p_map, int p_patchValue, int p_x, int p_y, CompositePatch12 p_composite) {
 		// Get map value
 		int val=p_map.readmap(p_x, p_y);
 		if (p_composite != null && !p_composite.canDraw(val)) {
@@ -108,11 +110,11 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 		p_map.writemap(p_x, p_y, p_val);
 	}
 
-	final protected void setBigPatch(int[] p_bytes) {
+	final public void setBigPatch(int[] p_bytes) {
 		bigPatch = p_bytes;
 	}
 	
-	final protected int[] getBigPatch() {
+	final public int[] getBigPatch() {
 	    return bigPatch;
 	}
 	
@@ -143,7 +145,7 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 	 * @param p_val
 	 * @return boolean
 	 */
-	boolean isFromThis(int p_val) {
+	public boolean isFromThis(int p_val) {
 		int a = toBinaryValue(p_val);
 		return a != 0;
 	}

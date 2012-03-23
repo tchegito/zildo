@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import zeditor.core.prefetch.patch.AbstractPatch12;
 import zildo.monde.map.Area;
 import zildo.monde.util.Point;
 

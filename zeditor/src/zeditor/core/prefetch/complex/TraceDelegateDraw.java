@@ -20,6 +20,7 @@
 
 package zeditor.core.prefetch.complex;
 
+import zeditor.core.prefetch.patch.AbstractPatch12;
 import zildo.monde.map.Area;
 import zildo.monde.util.Point;
 

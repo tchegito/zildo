@@ -18,8 +18,9 @@
  *
  */
 
-package zeditor.core.prefetch.complex;
+package zeditor.core.prefetch.patch;
 
+import zeditor.core.prefetch.complex.Adjustment;
 import zildo.monde.map.Area;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -104,6 +105,7 @@ public class HillTop extends AbstractPatch12 {
 	}
 
 	@Override
+	public
 	int toBinaryValue(int p_val) {
 		if (p_val == 73) {
 			return 15;
@@ -117,6 +119,7 @@ public class HillTop extends AbstractPatch12 {
 	}
 
 	@Override
+	public
 	int toGraphicalValue(int p_val) {
 		return conv_hill_value[p_val];
 	}

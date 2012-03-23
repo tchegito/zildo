@@ -18,27 +18,29 @@
  *
  */
 
-package zeditor.core.prefetch.complex;
+package zeditor.core.prefetch.patch;
+
 
 /**
  * @author Tchegito
  *
  */
-public class CastleMiddle2 extends AbstractPatch12 {
+public class CastleUp extends AbstractPatch12 {
 
     final byte[] conv_value =
-    { 0, 13, 11, 12, 6, 10, 0, 108, 4, 0, 8, 107, 5, 106, 105, 0};
-
-    final byte[] value = // Valeurs en zone des chemins
-	    getReverseTab(conv_value, 4);
+    { 96, 16, 14, 15, 2, 7, -1, 81, 0, -1, 3, 80, 1, 79, 78, -1};
     
-	public CastleMiddle2() {
+    final byte[] value = // Valeurs en zone des chemins
+	    getReverseTab(conv_value, 0);
+    
+	public CastleUp() {
 		super(true);
 	}
 
 	@Override
+	public
 	int toBinaryValue(int p_val) {
-		int a = p_val - 256 * 7 - 4;
+		int a = p_val - 256 * 7;
 		if (a < 0 || a >= value.length) {
 			return 0;
 		}
@@ -46,6 +48,7 @@ public class CastleMiddle2 extends AbstractPatch12 {
 	}
 
 	@Override
+	public
 	int toGraphicalValue(int p_val) {
 		return conv_value[p_val] + 256 * 7;
 	}
