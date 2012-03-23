@@ -20,17 +20,17 @@
 
 package zeditor.core.prefetch;
 
-import zeditor.core.prefetch.complex.CastleLow;
-import zeditor.core.prefetch.complex.CastleLow2;
-import zeditor.core.prefetch.complex.CastleMiddle1;
-import zeditor.core.prefetch.complex.CastleMiddle2;
-import zeditor.core.prefetch.complex.CastleUp;
 import zeditor.core.prefetch.complex.CompositePatch12;
-import zeditor.core.prefetch.complex.ForestBorder;
-import zeditor.core.prefetch.complex.HillTop;
-import zeditor.core.prefetch.complex.Road;
 import zeditor.core.prefetch.complex.TraceDelegateDraw;
-import zeditor.core.prefetch.complex.Water;
+import zeditor.core.prefetch.patch.CastleLow;
+import zeditor.core.prefetch.patch.CastleLow2;
+import zeditor.core.prefetch.patch.CastleMiddle1;
+import zeditor.core.prefetch.patch.CastleMiddle2;
+import zeditor.core.prefetch.patch.CastleUp;
+import zeditor.core.prefetch.patch.ForestBorder;
+import zeditor.core.prefetch.patch.HillTop;
+import zeditor.core.prefetch.patch.Road;
+import zeditor.core.prefetch.patch.Water;
 import zildo.monde.util.Point;
 
 /**
