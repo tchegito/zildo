@@ -56,8 +56,6 @@ public class ActionElement extends AnyElement {
 	public int val;
 	public float speed;
 	public boolean activate;
-	
-	private Element xmlElement;
 
 	public ActionElement(ActionKind p_kind) {
 		kind = p_kind;
@@ -74,12 +72,12 @@ public class ActionElement extends AnyElement {
 		xmlElement = p_elem;
 
 		// Read common attributes
-		who = readAttribute(p_elem, "who");
-		what = readAttribute(p_elem, "what");
+		who = readAttribute("who");
+		what = readAttribute("what");
 		fx = p_elem.getAttribute("fx");
-		unblock = isTrue(p_elem, "unblock");
+		unblock = isTrue("unblock");
 		speed = Float.valueOf("0" + p_elem.getAttribute("speed"));
-		unstoppable = isTrue(p_elem, "unstoppable");
+		unstoppable = isTrue("unstoppable");
 		// Read less common ones
 		String strPos = p_elem.getAttribute("pos");
 		String strAngle = p_elem.getAttribute("angle");
@@ -91,40 +89,43 @@ public class ActionElement extends AnyElement {
 			if (!"".equals(strAngle)) {
 				val = Integer.valueOf(strAngle);
 			}
-			text = readAttribute(p_elem, "type");
+			text = readAttribute("type");
 			break;
 		case speak:
-			text = readAttribute(p_elem, "text");
+			text = readAttribute("text");
 			break;
 		case sound:
 		case map:
 		case music:
 			// String
-			text = readAttribute(p_elem, "name");
+			text = readAttribute("name");
 			break;
 		case moveTo:
-			backward = isTrue(p_elem, "backward");
-			open = isTrue(p_elem, "open");
+			backward = isTrue("backward");
+			open = isTrue("open");
 		case pos:
 			// Position
 			location = Point.fromString(strPos);
-			delta = isTrue(p_elem, "delta");
+			delta = isTrue("delta");
 			break;
 		case script:
 		case angle:
 		case wait:
-			val = readInt(p_elem, "value");
+			val = readInt("value");
 			break;
 		case fadeIn:
 		case fadeOut:
 			// Integer
-			val = readInt(p_elem, "type");
+			val = readInt("type");
 			break;
 		case focus:
-			delta = isTrue(p_elem, "delta");
+			delta = isTrue("delta");
+			if (readAttribute("unblock") == null) { 
+					unblock = true;
+			}
 			break;
 		case take:
-			val = readInt(p_elem, "value");
+			val = readInt("value");
 		case putDown:
 		case attack:
 			text = p_elem.getAttribute("item");
@@ -136,24 +137,13 @@ public class ActionElement extends AnyElement {
 			text = p_elem.getAttribute("name");
 			break;
 		case markQuest:
-			text = readAttribute(p_elem, "name");
-			val = isTrue(p_elem, "value") ? 1 : 0;
+			text = readAttribute("name");
+			val = isTrue("value") ? 1 : 0;
 			break;
 		case activate:
-			activate = isTrue(p_elem, "value");
+			activate = isTrue("value");
 			break;
 		}
-	}
-
-	/**
-	 * Returns the attribute's value from the XML representation. (used in
-	 * ZEditor)
-	 * 
-	 * @param p_name
-	 * @return String
-	 */
-	public String readAttribute(String p_name) {
-		return readAttribute(xmlElement, p_name);
 	}
 
 	/**
