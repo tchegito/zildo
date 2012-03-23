@@ -97,10 +97,11 @@ It's possible to focus on character, or element, with the simple command *focus*
 
 This command, by default, moves instantly the camera, by setting its position to the desired one. But you can go smoothly to it, by using the attribute _delta_. This attribute has another consequence : the action will be achieved when camera will be at its target. So the attribute _unblocking_ could be useful in such case.
 
-A last thing to notice about focusing is that the element moves, camera will move too. That's pretty natural for a focus feature ! But you can reset camera focusing by calling *pos* command on camera with the same postion. Here is an example :
-<code>
+A last thing to notice about focusing is that if the element moves, camera will move too. That's pretty natural for a focus feature ! But you can reset camera focusing by calling *pos* command on camera with the same postion. Here is an example :
+<code>{{{
 			<focus what="caveDoor" delta="true"/>
 			<pos what="camera" pos="0,0" delta="true"/>
+}}}
 </code>
 
 = Class modelization =
