@@ -18,31 +18,47 @@
  *
  */
 
-package zeditor.core.prefetch.complex;
+package zeditor.core.prefetch.patch;
+
+import zildo.monde.Hasard;
+import zildo.monde.map.Area;
 
 /**
+ * Render for road (little or big one)
+ * 
  * @author Tchegito
  * 
  */
-public class ForestBorder extends AbstractPatch12 {
+public class Road extends AbstractPatch12 {
 
-	byte[] value_border = new byte[] { 15, 0, 0, 7, 3, 11, 1, 2, 5, 10, 15, 4,
-			8, 15, 13, 12, 14 };
+	byte[] value_chemin = // Valeurs en zone des chemins
+	{ 0, 0, 0, 0, 0, 0, 0, 0, 8, 12, 4, 5, 1, 3, 2, 10, 14, 13, 7, 11, 14, 13,
+			7, 11, 15 };
 
-	byte[] conv_value_border = new byte[] { 73, 79, 80, 77, 84, 81, -1, 76, 85,
-			-1, 82, 78, 88, 87, 89, 73, -1 };
+	byte[] conv_value_chemin = // Renvoie le motif en fonction de la valeur en
+								// zone}
+	{ -3, 4, 6, 5, 2, 3, 16, 10, 0, 16, 7, 15, 1, 13, 12, 16 };
 
-	int startRoad = 256 * 6 + 73;
+	int startRoad = 49;
 
-	public ForestBorder(boolean p_big) {
+	public Road(boolean p_big) {
 		super(p_big);
+	}
+
+	@Override
+	public void drawOneTile(Area p_map, int p_x, int p_y, int p_val) {
+		if (p_val > startRoad + 8 + 11 && p_val < startRoad + 8 + 16
+				&& Hasard.lanceDes(5)) {
+			p_val -= 4;
+		}
+		p_map.writemap(p_x, p_y, p_val);
 	}
 
 	@Override
 	public int toBinaryValue(int p_val) {
 		int i = p_val - startRoad;
-		if (i >= 0 && i < value_border.length) {
-			return value_border[i];
+		if (i >= 0 && i < value_chemin.length) {
+			return value_chemin[i];
 		} else {
 			return 0;
 		}
@@ -50,13 +66,6 @@ public class ForestBorder extends AbstractPatch12 {
 
 	@Override
 	public int toGraphicalValue(int p_val) {
-		int val = conv_value_border[p_val];
-		if (val == -1) {
-			val = 54;
-		} else {
-			val = 256 * 6 + val;
-		}
-		return val;
+		return conv_value_chemin[p_val] + startRoad + 8;
 	}
-
 }

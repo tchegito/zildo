@@ -18,8 +18,9 @@
  *
  */
 
-package zeditor.core.prefetch.complex;
+package zeditor.core.prefetch.patch;
 
+import zeditor.core.prefetch.complex.Adjustment;
 import zildo.monde.map.Area;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -64,6 +65,7 @@ public class Water extends AbstractPatch12 {
 	}
 
 	@Override
+	public
 	int toBinaryValue(int p_val) {
 		int i = p_val - startWater;
 		if (i >= 0 && i < conv_water.length) {
@@ -74,6 +76,7 @@ public class Water extends AbstractPatch12 {
 	}
 
 	@Override
+	public
 	int toGraphicalValue(int p_val) {
 		return conv_water_value[p_val];
 	}

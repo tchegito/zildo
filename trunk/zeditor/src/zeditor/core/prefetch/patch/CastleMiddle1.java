@@ -1,4 +1,5 @@
-package zeditor.core.prefetch.complex;
+package zeditor.core.prefetch.patch;
+
 
 public class CastleMiddle1 extends AbstractPatch12 {
 
@@ -13,6 +14,7 @@ public class CastleMiddle1 extends AbstractPatch12 {
 	}
 
 	@Override
+	public
 	int toBinaryValue(int p_val) {
 		int a = p_val - 256 * 7 - 33;
 		if (a < 0 || a >= value.length) {
@@ -22,6 +24,7 @@ public class CastleMiddle1 extends AbstractPatch12 {
 	}
 
 	@Override
+	public
 	int toGraphicalValue(int p_val) {
 		return conv_value[p_val] + 256 * 7;
 	}

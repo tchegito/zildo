@@ -18,36 +18,55 @@
  *
  */
 
-package zeditor.core.prefetch.complex;
+package zeditor.core.prefetch.patch;
+
+
 
 /**
  * @author Tchegito
  *
  */
-public class CastleUp extends AbstractPatch12 {
-
-    final byte[] conv_value =
-    { 96, 16, 14, 15, 2, 7, -1, 81, 0, -1, 3, 80, 1, 79, 78, -1};
-    
-    final byte[] value = // Valeurs en zone des chemins
-	    getReverseTab(conv_value, 0);
-    
-	public CastleUp() {
+public class HillBottom extends AbstractPatch12 {
+	
+	int[] conv_hill;
+	int[] conv_hill_value = {54, 11, 13, 12, 4, 9, 0, 136, 
+							 2, 0, 15, 137, 3, 138, 246, 49};
+	
+	/**
+	 * @param p_big
+	 */
+	public HillBottom() {
 		super(true);
+		
+		// creat Conv_hill
+		conv_hill = new int[247];
+		for (int i=0;i<73;i++) {	// default values
+			conv_hill[i]=0;
+		}
+		for (int i=0;i<conv_hill_value.length;i++) {
+			conv_hill[conv_hill_value[i]] = i;
+		}
 	}
 
 	@Override
+	public
 	int toBinaryValue(int p_val) {
-		int a = p_val - 256 * 7;
-		if (a < 0 || a >= value.length) {
+		if (p_val == 54) {
 			return 0;
 		}
-		return value[a];
+		int i = p_val;
+		if (i >= 0 && i < conv_hill.length) {
+			return conv_hill[i];
+		} else return 15;
 	}
 
 	@Override
+	public
 	int toGraphicalValue(int p_val) {
-		return conv_value[p_val] + 256 * 7;
+		if (p_val == 0) {
+			return 54;
+		}
+		return conv_hill_value[p_val];
 	}
 
 }
