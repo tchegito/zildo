@@ -27,6 +27,11 @@ import zeditor.core.prefetch.patch.CastleLow2;
 import zeditor.core.prefetch.patch.CastleMiddle1;
 import zeditor.core.prefetch.patch.CastleMiddle2;
 import zeditor.core.prefetch.patch.CastleUp;
+import zeditor.core.prefetch.patch.CaveFloor;
+import zeditor.core.prefetch.patch.CaveLow;
+import zeditor.core.prefetch.patch.CaveMiddle;
+import zeditor.core.prefetch.patch.CaveMiddle2;
+import zeditor.core.prefetch.patch.CaveTop;
 import zeditor.core.prefetch.patch.ForestBorder;
 import zeditor.core.prefetch.patch.HillTop;
 import zeditor.core.prefetch.patch.Road;
@@ -47,7 +52,9 @@ public enum PrefTraceDrop {
 	GrandeLisiere(new Point(3, 3), new ForestBorder(true)),
 	Eau(new Point(3, 3), new Water()),
 	PalaisBas(new Point(9, 9), new CompositePatch12(new CastleLow(), new CastleMiddle1(), new CastleMiddle2(), new CastleUp())),
-	PalaisHaut(new Point(7, 7), new CompositePatch12(new CastleLow2(), new CastleUp()));
+	PalaisHaut(new Point(7, 7), new CompositePatch12(new CastleLow2(), new CastleUp())),
+	Souterrain(new Point(5, 5), new CompositePatch12(new CaveMiddle(), new CaveTop())),
+	SouterrainBas(new Point(9, 9), new CompositePatch12(new CaveFloor(), new CaveLow(), new CaveMiddle2(), new CaveTop()));
 	
 	Point size;
 	TraceDelegateDraw method;

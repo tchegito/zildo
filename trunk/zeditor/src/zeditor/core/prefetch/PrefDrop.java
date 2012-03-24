@@ -48,7 +48,8 @@ public enum PrefDrop {
 		-1066, -1067, -1068, -1069, 1070, 1071, 1072, 1073, 155, 156, 157, 158}),
 	PetiteLisiere(new Point(2, 2)),
 	GrandeLisiere(new Point(3, 3)),
-	Eau(new Point(3, 3));
+	Eau(new Point(3, 3)),
+	Souterrain(new Point(3, 3));
 
 	
 	Point size;
