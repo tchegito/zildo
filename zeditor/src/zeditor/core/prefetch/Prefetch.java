@@ -36,12 +36,13 @@ public enum Prefetch {
 	
 	Arbre(PrefKind.Drop), Souche(PrefKind.Drop), Statue(PrefKind.Drop), ArcheVillage(PrefKind.Drop), GrossePierre(PrefKind.Drop),
 	MaisonRouge(PrefKind.TraceDrop), MaisonBleue(PrefKind.Colour), MaisonVerte(PrefKind.Colour),
-	Souterrain(PrefKind.TraceDrop), SouterrainLarge(PrefKind.TraceDrop),
 	ArbreRouge(PrefKind.Drop), ArbreJaune(PrefKind.Drop),
 	RouteDesert(PrefKind.TraceDrop),
 	PetiteLisiere(PrefKind.TraceDrop), GrandeLisiere(PrefKind.TraceDrop),
 	PalaisHaut(PrefKind.TraceDrop),
-	PalaisBas(PrefKind.TraceDrop);
+	PalaisBas(PrefKind.TraceDrop),
+	Souterrain(PrefKind.TraceDrop),
+	SouterrainBas(PrefKind.TraceDrop);
 	
 	PrefKind kind;
 	
