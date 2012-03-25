@@ -500,7 +500,9 @@ public abstract class Perso extends Element {
 			if (observed == null || !isZildo()) {
 				observed = EngineZildo.persoManagement.getZildo();
 			}
-			sight(observed, true);
+			if (observed != null) {
+				sight(observed, true);
+			}
 			break;
 		}
 	}
@@ -579,12 +581,22 @@ public abstract class Perso extends Element {
 			break;
 		case 857:
 		case 858:
-		case 859:
-		case 860:
 		case 861:
 		case 862:
+			if (!isGhost()) {
+				EngineZildo.scriptManagement.execute("miniStairsDown");
+			}
+			slowDown = true;
+			break;
+		case 859:
+		case 860:
 		case 863:
-		case 864:
+		case 864:	// Cave stairs
+			if (!isGhost()) {
+				EngineZildo.scriptManagement.execute("miniStairsUp");
+			}
+			slowDown = true;
+			break;
 		case 206:
 		case 207: // Mountain ladder
 		case 170:
