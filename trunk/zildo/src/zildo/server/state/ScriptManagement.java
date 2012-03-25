@@ -98,13 +98,15 @@ public class ScriptManagement {
     }
     
     /**
-     * Execute the given named script, if it exists.
+     * Execute the given named script, if it exists, and it's not already running.
      * @param p_name
      */
     public void execute(String p_name) {
     	SceneElement scene=adventure.getSceneNamed(p_name);
     	if (scene != null) {
-    		scriptExecutor.execute(scene, true);
+    		 if (!scriptExecutor.isProcessing(p_name)) {
+    			 scriptExecutor.execute(scene, true);
+    		 }
     	} else {
     		throw new RuntimeException("Scene "+p_name+" doesn't exist !");
     	}

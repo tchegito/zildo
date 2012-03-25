@@ -559,6 +559,16 @@
 		<remove who="maltus"/>
 	</scene>
 	
+	<scene id="miniStairsUp">
+		<sound name="ZildoDescendPeu"/>
+		<moveTo who="zildo" pos="0,-32" delta="true"/>
+	</scene>
+	
+	<scene id="miniStairsDown">
+		<sound name="ZildoMontePeu"/>
+		<moveTo who="zildo" pos="0,34" delta="true"/>
+	</scene>
+	
 	<scene id="stairsUp">
 		<sound name="ZildoMonte" />
 		<moveTo who="zildo" pos="0,-9" delta="true" speed="0.1" />

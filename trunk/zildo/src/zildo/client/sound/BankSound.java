@@ -41,6 +41,8 @@ public enum BankSound implements AudioBank {
 	ZildoPousse("pousse"),
 	ZildoMonte("escalmon"),
 	ZildoDescend("escaldes"),
+	ZildoMontePeu("escalhaut"),
+	ZildoDescendPeu("escalbas"),
 	ZildoTrouve("trouve"),
 	ZildoCoeur("heartPiece"),
 	ZildoSecret("secret"),

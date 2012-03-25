@@ -370,7 +370,7 @@ public class MapManagement {
 				break;
 			case SUD:
 				onMap = area.readmap(cx, cy + 1);
-				if (onMap == 32 || onMap == 31 || onMap == 844)
+				if (onMap == 32 || onMap == 31 || onMap == 3*256 + 76 || onMap == 3*256 + 5)
 					result = Angle.SUD;
 				break;
 			case OUEST:
@@ -672,7 +672,7 @@ public class MapManagement {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
 			//points.add(new Point(16*26, 45*16));
-			points.add(new Point(231+650, 360));	// 231+450 is good for preintro
+			points.add(new Point(231+650-350, 360+130));	// 231+450 is good for preintro
 		} else {
 			points = currentMap.getRespawnPoints();
 		}

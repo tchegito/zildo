@@ -321,7 +321,7 @@ public class PlayerManagement {
 			if (ralentit || (diffx!=0 && diffy!=0 && heros.getMouvement()!=MouvementZildo.TOUCHE))
 			{
 				if (ralentit)
-					coeff=0.5f;
+					coeff=0.4f;
 				else
 					coeff=0.7f;
 			}
