@@ -35,6 +35,7 @@ import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.TileCollision;
+import zildo.monde.map.TileInfo;
 
 /**
  * @author Tchegito
@@ -112,7 +113,12 @@ public class MotifBankEdit extends MotifBank {
                 buffer.put((byte) s);
             }
         	// Put the collision info
-        	buffer.put((byte) infosCollision.getTileInfo(256 * bankOrder + i).hashCode());
+            TileInfo info = infosCollision.getTileInfo(256 * bankOrder + i);
+            byte hash = (byte) TileInfo.Template.FULL.hashCode();
+            if (info != null) {
+            	hash = (byte) info.hashCode();
+            }
+        	buffer.put(hash);
         }
         EasyWritingFile file=new EasyWritingFile(buffer);
         file.saveFile(getName()+".DEC");
