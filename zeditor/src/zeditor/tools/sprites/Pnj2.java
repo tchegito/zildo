@@ -115,7 +115,10 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(32, 239, 16, 25), new Zone(48, 240, 16, 24),
 			          new Zone(64, 239, 16, 25),
 			          // Singer
-			          new Zone(0, 265, 16, 25), new Zone(16, 265, 16, 25)
+			          new Zone(0, 265, 16, 25), new Zone(16, 265, 16, 25),
+			          // Fire thing
+			          new Zone(0, 291, 6, 6), new Zone(0, 298, 6, 6),
+			          new Zone(7, 291, 12, 12), new Zone(19, 291, 16, 16)
 			          
 		};
 		
