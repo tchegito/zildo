@@ -112,7 +112,7 @@ public class PathFinder {
         // If there's no movement, stop the target
         if (immo == 2) {
             target=null;
-        } else if (mobile.getMouvement() != MouvementZildo.SAUTE) {
+        } else if (mobile.getMouvement() != MouvementZildo.SAUTE && mobile.getQuel_deplacement() != MouvementPerso.VOLESPECTRE) {
             pos = mobile.tryMove(pos.x, pos.y);
         }
 

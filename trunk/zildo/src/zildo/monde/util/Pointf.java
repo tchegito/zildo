@@ -37,4 +37,9 @@ public class Pointf {
         this.x += p_xPlus;
         this.y += p_yPlus;
     }
+    
+    @Override
+	public String toString() {
+    	return "("+x+", "+y+")";
+    }
 }
