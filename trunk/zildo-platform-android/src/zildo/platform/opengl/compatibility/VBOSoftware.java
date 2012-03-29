@@ -24,6 +24,7 @@ import javax.microedition.khronos.opengles.GL11;
 
 import zildo.fwk.opengl.compatibility.VBO;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
+import zildo.platform.opengl.AndroidOpenGLGestion;
 
 public class VBOSoftware implements VBO {
 
@@ -35,8 +36,11 @@ public class VBOSoftware implements VBO {
 	}
 
 	protected void preDraw() {
+		if (gl11 == null) {	// get the GL instance
+			gl11 = (GL11) AndroidOpenGLGestion.gl10;
+		}
+		gl11.glEnable(GL11.GL_TEXTURE_2D);
 		gl11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-		gl11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
 		gl11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 	}
 	
@@ -44,15 +48,15 @@ public class VBOSoftware implements VBO {
 	public void draw(VBOBuffers p_bufs) {
 		preDraw();
 		gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, p_bufs.vertices);
-		gl11.glNormalPointer(0, 0, p_bufs.normals);
-		gl11.glTexCoordPointer(2, 0, 0, p_bufs.textures);
+		gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, p_bufs.textures);
 		
-		// TODO: check this ! it hasn't be tested yet
-		int count = p_bufs.indices.limit() - p_bufs.indices.position();
-		count = count / 3;
-		gl11.glDrawElements(GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_SHORT, count, p_bufs.indices);
-
-	}
+		int count = p_bufs.indices.remaining();
+		gl11.glDrawElements(GL11.GL_TRIANGLES, count, GL11.GL_UNSIGNED_SHORT, p_bufs.indices);
+		
+		gl11.glDisable(GL11.GL_TEXTURE_2D);
+		gl11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
+		gl11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+	}		
 
 	@Override
 	public void cleanUp(VBOBuffers p_bufs) {
@@ -65,9 +69,6 @@ public class VBOSoftware implements VBO {
 		if (p_bufs.vertices.position() != 0) {
 			// On se repositionne à zéro uniquement si on y est pas déjà
 			p_bufs.vertices.flip();
-		}
-		if (p_bufs.normals.position() != 0) {
-			p_bufs.normals.flip();
 		}
 		if (p_bufs.textures.position() != 0) {
 			p_bufs.textures.flip();

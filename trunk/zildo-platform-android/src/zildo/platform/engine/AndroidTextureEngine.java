@@ -27,8 +27,11 @@ import java.nio.IntBuffer;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
+import android.util.Log;
+
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.engine.TextureEngine;
+import zildo.platform.opengl.AndroidOpenGLGestion;
 
 /**
  * Abstract class which provides management of a texture set.
@@ -51,6 +54,7 @@ public class AndroidTextureEngine extends TextureEngine {
 	
 	public AndroidTextureEngine(GraphicStuff graphicStuff) {
 		super(graphicStuff);
+    	gl10 = AndroidOpenGLGestion.gl10;
 	}
 	
     private int getTextureFormat() {
@@ -67,6 +71,7 @@ public class AndroidTextureEngine extends TextureEngine {
         IntBuffer buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
         gl10.glGenTextures(1, buf); // Create Texture In OpenGL
 
+        Log.d("texture", "generate texture "+buf.get(0));
         gl10.glBindTexture(GL11.GL_TEXTURE_2D, buf.get(0));
         // Typical Texture Generation Using Data From The Image
 

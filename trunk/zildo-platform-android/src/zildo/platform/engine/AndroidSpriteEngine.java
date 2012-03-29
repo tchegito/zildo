@@ -28,6 +28,7 @@ import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.monde.util.Vector3f;
+import zildo.platform.opengl.AndroidOpenGLGestion;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.
 //
@@ -43,6 +44,7 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	
 	public AndroidSpriteEngine(TextureEngine texEngine) {
 		this.textureEngine = texEngine;
+    	gl10 = AndroidOpenGLGestion.gl10;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -55,12 +57,16 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void render(boolean backGround) {
-	
+		
 		// Display every sprites
-		gl10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		gl10.glEnable(GL11.GL_BLEND);
-		float[] color=textureEngine.graphicStuff.getFloat(GL11.GL_CURRENT_COLOR, 4);
-
+		
+		float[] color = new float[4]; //=textureEngine.graphicStuff.getFloat(GL11.GL_CURRENT_COLOR, 4);
+		color[0]=1f;
+		color[1]=1f;
+		color[2]=1f;
+		color[3]=1f;
+		
 		Vector3f ambient=ClientEngineZildo.ortho.getAmbientColor();
 		if (ambient != null) {
 			color[0]=ambient.x;
@@ -128,6 +134,7 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	                	gl10.glColor4f(0.5f + 0.5f * (float) Math.random(), 0.5f * (float) Math.random(), 0, 1);
 	                    break;
 	                case FOCUSED:
+	            		gl10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	                	// FIXME: previously color3f
 	                	gl10.glColor4f(1.0f, 1.0f, 1.0f, 1f);
 	                	break;
@@ -146,6 +153,7 @@ public class AndroidSpriteEngine extends SpriteEngine {
 			//ARBShaderObjects.glUseProgramObjectARB(0);
 		}
 		gl10.glDisable(GL11.GL_BLEND);
+		gl10.glDisable(GL11.GL_TEXTURE_2D);
 	}
 
 }

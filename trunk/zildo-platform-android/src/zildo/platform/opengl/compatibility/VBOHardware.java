@@ -38,7 +38,7 @@ public class VBOHardware extends VBOSoftware {
 		}
 		VBOBuffers bufs=super.create(p_numPoints);
 		bufs.vertexBufferId = GLUtils.createVBO();
-		bufs.normalBufferId = GLUtils.createVBO();
+		//bufs.normalBufferId = GLUtils.createVBO();
 		bufs.textureBufferId = GLUtils.createVBO();
 		bufs.indiceBufferId = GLUtils.createVBO();
         
@@ -89,7 +89,7 @@ public class VBOHardware extends VBOSoftware {
 	public void endInitialization(VBOBuffers p_bufs) {
 		super.endInitialization(p_bufs);
         GLUtils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices);
-        GLUtils.bufferData(p_bufs.normalBufferId, p_bufs.normals);
+        //GLUtils.bufferData(p_bufs.normalBufferId, p_bufs.normals);
         GLUtils.bufferData(p_bufs.textureBufferId, p_bufs.textures);
         GLUtils.bufferData(p_bufs.indiceBufferId, p_bufs.indices);		
 	}

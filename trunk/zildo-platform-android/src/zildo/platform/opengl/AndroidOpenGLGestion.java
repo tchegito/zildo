@@ -17,27 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
+ 
 package zildo.platform.opengl;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
+
+import android.util.Log;
 
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.ZUtils;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.opengl.OpenGLGestion;
-import zildo.platform.input.LwjglKeyboardHandler;
+import zildo.platform.input.AndroidKeyboardHandler;
 import zildo.server.EngineZildo;
 
 public class AndroidOpenGLGestion extends OpenGLGestion {
 
-	GL10 gl10;
+	public static GL10 gl10;
 	
 	final static String title = "Zildo OpenGL";
 
@@ -379,7 +377,6 @@ public class AndroidOpenGLGestion extends OpenGLGestion {
 
 	public AndroidOpenGLGestion(boolean fullscreen) {
 		super(title, fullscreen);
-
 		z = 0.0f;
 	}
 
@@ -387,7 +384,7 @@ public class AndroidOpenGLGestion extends OpenGLGestion {
 	protected void mainloopExt() {
 
 		EngineZildo.extraSpeed = 1;
-		if (kbHandler.isKeyDown(LwjglKeyboardHandler.KEY_LSHIFT)) {
+		if (kbHandler.isKeyDown(AndroidKeyboardHandler.KEY_LSHIFT)) {
 			EngineZildo.extraSpeed = 2;
 		}
 	}
@@ -396,18 +393,19 @@ public class AndroidOpenGLGestion extends OpenGLGestion {
 	public void render(boolean p_clientReady) {
 
 		// Clear the screen and the depth buffer
-		gl10.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
+		//gl10.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
 
-		gl10.glLoadIdentity(); // Reset The Projection Matrix
+		gl10.glMatrixMode(GL11.GL_MODELVIEW);
+		gl10.glLoadIdentity(); // Reset The model view Matrix
 
 		// invert the y axis, down is positive
 		float zz = z * 5.0f;
 		if (zz != 0.0f) {
 			gl10.glTranslatef(-zoomPosition.getX() * zz, zoomPosition.getY() * zz, 0.0f);
 		}
-		gl10.glScalef(1 + zz, -1 - zz, 1);
+		//gl10.glScalef(1 + zz, -1 - zz, 1);
 		if (ClientEngineZildo.filterCommand != null) {
-			ClientEngineZildo.filterCommand.doPreFilter();
+			//ClientEngineZildo.filterCommand.doPreFilter();
 		}
 
 		clientEngineZildo.renderFrame(awt);
@@ -416,8 +414,8 @@ public class AndroidOpenGLGestion extends OpenGLGestion {
 		}
 
 		if (ClientEngineZildo.filterCommand != null) {
-			ClientEngineZildo.filterCommand.doFilter();
-			ClientEngineZildo.filterCommand.doPostFilter();
+			//ClientEngineZildo.filterCommand.doFilter();
+			//ClientEngineZildo.filterCommand.doPostFilter();
 		}
 
 		if (framerate != 0) {
@@ -452,34 +450,7 @@ public class AndroidOpenGLGestion extends OpenGLGestion {
 	}
 
 	private void initGL() {
-		gl10.glEnable(GL11.GL_TEXTURE_2D); // Enable Texture Mapping
-		gl10.glShadeModel(GL11.GL_SMOOTH); // Enable Smooth Shading
-		gl10.glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black Background
-		gl10.glClearDepthf(1.0f); // Depth Buffer Setup
-		gl10.glEnable(GL11.GL_DEPTH_TEST); // Enables Depth Testing
-		gl10.glDepthFunc(GL11.GL_LEQUAL); // The Type Of Depth Testing To Do
-
-        // initProjectionScene();
-
-		gl10.glEnable(GL11.GL_CULL_FACE);
-
-        ByteBuffer temp = ByteBuffer.allocateDirect(16);
-        temp.order(ByteOrder.nativeOrder());
-        gl10.glLightfv(GL11.GL_LIGHT1, GL11.GL_AMBIENT, (FloatBuffer) temp
-                        .asFloatBuffer().put(lightAmbient).flip()); // Setup The Ambient
-                                                                                                                // Light
-        gl10.glLightfv(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, (FloatBuffer) temp
-                        .asFloatBuffer().put(lightDiffuse).flip()); // Setup The Diffuse
-                                                                                                                // Light
-        gl10.glLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, (FloatBuffer) temp
-                        .asFloatBuffer().put(lightPosition).flip()); // Position The
-                                                                                                                        // Light
-        gl10.glEnable(GL11.GL_LIGHT1); // Enable Light One
-
-        // GL11.glEnable(GL11.GL_LIGHTING);
-
-        //Display.setVSyncEnabled(true);
-
+		// Done in OpenGLRenderer
 	}
 
 	@Override
@@ -505,4 +476,8 @@ public class AndroidOpenGLGestion extends OpenGLGestion {
 		return ZUtils.getTime();
 	}
 	
+	public static void setGL(GL10 gl) {
+		gl10 = gl;
+		GLUtils.gl10 = gl;
+	}
 }

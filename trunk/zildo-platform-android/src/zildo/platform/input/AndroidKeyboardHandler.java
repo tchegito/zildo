@@ -22,15 +22,13 @@ package zildo.platform.input;
 
 import java.util.EnumMap;
 
-import org.lwjgl.input.Keyboard;
-
 import zildo.fwk.input.KeyboardHandler;
 
 /**
  * @author Tchegito
  *
  */
-public class LwjglKeyboardHandler implements KeyboardHandler {
+public class AndroidKeyboardHandler implements KeyboardHandler {
 
 	final static EnumMap<Keys, Integer> platformKeys = new EnumMap<Keys, Integer>(Keys.class);
 	
@@ -65,30 +63,30 @@ public class LwjglKeyboardHandler implements KeyboardHandler {
 	}
 
 	public Boolean isKeyDown(int p_code) {
-		return Keyboard.isKeyDown(p_code);		
+		return false; //Keyboard.isKeyDown(p_code);		
 	}
 	
 	public void poll() {
-		Keyboard.poll();
+		//Keyboard.poll();
 	}
 	
 	/**
 	 * @return true if a keyboard event was read, false otherwise
 	 */
 	public boolean next() {
-		return Keyboard.next();
+		return false; //Keyboard.next();
 	}
 	
 	public boolean getEventKeyState() {
-		return Keyboard.getEventKeyState();
+		return false; //Keyboard.getEventKeyState();
 	}
 	
 	public int getEventKey() {
-		return Keyboard.getEventKey();
+		return 0; //Keyboard.getEventKey();
 	}
 	
 	public char getEventCharacter() {
-		return Keyboard.getEventCharacter();
+		return 0; //Keyboard.getEventCharacter();
 	}
 	
 	public int getCode(Keys k) {
