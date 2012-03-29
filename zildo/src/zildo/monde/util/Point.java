@@ -99,6 +99,10 @@ public class Point {
         return (float) Math.sqrt(c);
     }
     
+    public static float distance(float ax, float ay, float bx, float by) {
+    	return new Point(ax, ay).distance(new Point(bx, by));
+    }
+    
     /**
      * Returns TRUE if given point have same coordinates as current one.
      */

@@ -524,6 +524,7 @@ public class PersoNJ extends Perso {
 			add_spr = seqWakeUp[seqPos];
 			break;
 		case CHAUVESOURIS:
+		case FIRETHING:
 			add_spr = 0;
 			break;
 		default:
