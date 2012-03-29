@@ -24,6 +24,7 @@ import javax.microedition.khronos.opengles.GL11;
 
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BilinearFilter;
+import zildo.platform.opengl.AndroidOpenGLGestion;
 
 
 public class AndroidBilinearFilter extends BilinearFilter {
@@ -32,6 +33,7 @@ public class AndroidBilinearFilter extends BilinearFilter {
 	
 	public AndroidBilinearFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
+    	gl11 = (GL11) AndroidOpenGLGestion.gl10;
 	}
 	
 	@Override

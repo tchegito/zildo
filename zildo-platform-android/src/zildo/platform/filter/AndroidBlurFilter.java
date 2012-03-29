@@ -26,6 +26,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BlurFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.platform.opengl.AndroidOpenGLGestion;
 
 public class AndroidBlurFilter extends BlurFilter {
 
@@ -46,6 +47,7 @@ public class AndroidBlurFilter extends BlurFilter {
 			texBuffer[i]=graphicStuff.generateTexture(sizeX, sizeY);
 		}
 		currentImage=0;
+		gl11 = (GL11) AndroidOpenGLGestion.gl10;
 	}
 	
 	@Override
@@ -113,7 +115,9 @@ public class AndroidBlurFilter extends BlurFilter {
 	@Override
 	public void doOnInactive(FilterEffect effect) {
 		ClientEngineZildo.openGLGestion.setZ(0);
-		gl11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		if (gl11 != null) {
+			gl11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		}
    		nImagesSaved=0;
    		currentImage=0;
 	}

@@ -24,6 +24,8 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL11;
 
+import android.util.Log;
+
 import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.opengl.compatibility.VBO;
@@ -35,9 +37,10 @@ import zildo.platform.opengl.compatibility.VBOSoftware;
 
 public class AndroidGraphicStuff extends GraphicStuff {
 
-	GL11 gl10;
+	GL11 gl11;
 	
     public AndroidGraphicStuff() {
+    	gl11 = (GL11) AndroidOpenGLGestion.gl10;
         if (isFBOSupported()) {
             fbo = new FBOHardware();
         } else {
@@ -102,14 +105,16 @@ public class AndroidGraphicStuff extends GraphicStuff {
 	 */
 	@Override
 	public float[] getFloat(int p_info,int p_size) {
+		Log.d("graphicstuff", "getfloatv : start");
 		if (floatBuffer == null) {
 			floatBuffer=ZUtils.createFloatBuffer(16);
 		}
-		gl10.glGetFloatv(p_info, floatBuffer);
+		gl11.glGetFloatv(p_info, floatBuffer);
 		
 		float[] temp=new float[p_size];
 		floatBuffer.get(temp);
 		floatBuffer.position(0);
+		Log.d("graphicstuff", "getfloatv : end");
 		return temp;
 	}
 	
@@ -120,7 +125,7 @@ public class AndroidGraphicStuff extends GraphicStuff {
 	 */
 	@Override
 	public void setCurrentColor(float[] p_color) {
-		gl10.glColor4f(p_color[0], p_color[1], p_color[2], p_color[3]);		
+		gl11.glColor4f(p_color[0], p_color[1], p_color[2], p_color[3]);		
 	}
 	
     @Override

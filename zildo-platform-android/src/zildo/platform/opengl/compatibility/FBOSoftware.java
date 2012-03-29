@@ -23,6 +23,8 @@ package zildo.platform.opengl.compatibility;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.util.Log;
+
 import zildo.fwk.opengl.compatibility.FBO;
 import zildo.platform.opengl.GLUtils;
 
@@ -56,10 +58,13 @@ public class FBOSoftware implements FBO {
 	@Override
 	public void startRendering(int myFBOId, int sizeX, int sizeY) {
 		texRendered = texFboID.get(myFBOId);
+		Log.d("fbo", "rendering : start");
+
 	}
 
 	@Override
 	public void endRendering() {
+		Log.d("fbo", "rendering : stop");
 		GLUtils.copyScreenToTexture(texRendered, 1024, 512);
 		//Util.checkGLError();
 	}

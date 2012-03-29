@@ -20,55 +20,47 @@
 
 package zildo.platform.opengl;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.openal.AL;
-import org.newdawn.slick.openal.SoundStore;
-
-import zildo.Zildo;
 import zildo.fwk.opengl.Sound;
 import zildo.fwk.opengl.SoundEngine;
+import android.media.AudioManager;
+import android.media.SoundPool;
 
 /**
  * @author Tchegito
  *
  */
-public class LwjglSoundEngine extends SoundEngine {
+public class AndroidSoundEngine extends SoundEngine {
 
+	SoundPool soundPool;
+	
 	@Override
 	public Sound createSound(String path) {
-		return new LwjglSound(path);
+		int soundId = 1; //soundPool.load("resources/musics/Angoisse.ogg", 1);
+		return new AndroidSound(soundId);
 	}
 	
 	@Override
 	public void detectAndInitSoundEngine() {
-		if (failed || initialized || !Zildo.soundEnabled) {
-			return;	// No need to try once more
-		}
-		try {
-			AL.create();
-			AL.destroy();
-			SoundStore.get().init();
+		if (!initialized) {
+			//soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+			//int soundId = soundPool.load("resources/musics/Angoisse.ogg", 1);
+			//soundPool.play(soundId, 1, 1, 1, 0, 1);
 			initialized = true;
-		} catch (LWJGLException e) {
-			Zildo.soundEnabled = false;
-			failed = true;	// Avoid to reinit another time
 		}
 	}
 	
 
 	@Override
 	public void pollMusic(int delta) {
-		try {
-			SoundStore.get().poll(delta);
-		} catch (Throwable t) {
-			// Not a big deal : music is wrapping
-			System.out.println("coucou");
-		}
 	}
 	
 
 	@Override
 	public void cleanUp() {
-		AL.destroy();
+		if (soundPool != null) {
+			soundPool.release();
+			soundPool = null;	// Is that really helpful ?
+		}
+		initialized=false;
 	}
 }

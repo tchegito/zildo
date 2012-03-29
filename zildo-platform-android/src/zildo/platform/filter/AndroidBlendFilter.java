@@ -27,6 +27,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BlendFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
+import zildo.platform.opengl.AndroidOpenGLGestion;
 
 /**
  * Draw boxes more and more large onto the screen, to get a soft focus effect.
@@ -44,6 +45,7 @@ public class AndroidBlendFilter extends BlendFilter {
 	
 	public AndroidBlendFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
+    	gl11 = (GL11) AndroidOpenGLGestion.gl10;
 	}
 	
 	private int getCurrentSquareSize() {

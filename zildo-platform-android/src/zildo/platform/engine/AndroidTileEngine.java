@@ -27,6 +27,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.util.Vector3f;
+import zildo.platform.opengl.AndroidOpenGLGestion;
 import zildo.resource.Constantes;
 
 // V1.0
@@ -75,6 +76,7 @@ public class AndroidTileEngine extends TileEngine {
 	
 	public AndroidTileEngine(TextureEngine texEngine) {
 		super(texEngine);
+    	gl10 = AndroidOpenGLGestion.gl10;
 	}
 	
 	@Override
@@ -87,9 +89,6 @@ public class AndroidTileEngine extends TileEngine {
 				gl10.glColor4f(ambient.x, ambient.y, ambient.z, 1f);
 			}
 
-			// Small optimization: do not draw invisible faces ! (counterclock
-			// wise vertices)
-			// pD3DDevice9.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 			if (backGround) {
 				// Display BACKGROUND
 				gl10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -116,8 +115,7 @@ public class AndroidTileEngine extends TileEngine {
 				gl10.glDisable(GL11.GL_BLEND);
 			}
 
-			// GL11.glColor3f(1f, 1f, 1f);
-
 		}
+
 	}
 }

@@ -23,6 +23,8 @@ package zildo.platform.opengl;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
+import android.util.Log;
+
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.util.Vector4f;
@@ -51,6 +53,7 @@ public class AndroidOrtho extends Ortho {
 	public AndroidOrtho(int width, int height) {
 		super(width, height);
 		
+		gl11 = (GL11) AndroidOpenGLGestion.gl10;
 		verticesBuffer = new Bufferizer(25 * 4);
 		texCoordBuffer = new Bufferizer(25 * 4);
 	}
@@ -63,6 +66,7 @@ public class AndroidOrtho extends Ortho {
 	public void setOrthographicProjection(boolean p_zoom) {
 		// 'zoom' variable isn't used
 		if (!orthoSetUp) {
+			Log.d("ortho", "set orthographic projection");
 			// switch to projection mode
 			gl11.glMatrixMode(GL11.GL_PROJECTION);
 			// save previous matrix which contains the
@@ -163,6 +167,7 @@ public class AndroidOrtho extends Ortho {
 			    x + p_w, y + p_h,
 			    x, y + p_h};
 				
+		gl11.glDisable(GL11.GL_TEXTURE_2D);
 		gl11.glEnableClientState (GL10.GL_VERTEX_ARRAY);
 		gl11.glVertexPointer (2, GL10.GL_FLOAT, 0, verticesBuffer.store(vertices));	
 		gl11.glDrawArrays (mode, 0, 4);		
@@ -192,6 +197,7 @@ public class AndroidOrtho extends Ortho {
 				u + uw, v + vh,
 				u, v + vh};
 		
+		gl11.glEnable(GL11.GL_TEXTURE_2D);
 		gl11.glEnableClientState (GL10.GL_VERTEX_ARRAY);
 		gl11.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		gl11.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texCoordBuffer.store(texCoords));
