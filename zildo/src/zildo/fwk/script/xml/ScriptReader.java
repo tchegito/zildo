@@ -33,9 +33,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import zildo.fwk.script.xml.element.ActionElement;
+import zildo.fwk.script.xml.element.ActionElement.ActionKind;
 import zildo.fwk.script.xml.element.AnyElement;
 import zildo.fwk.script.xml.element.TriggerElement;
-import zildo.fwk.script.xml.element.ActionElement.ActionKind;
 import zildo.monde.quest.QuestEvent;
 
 public class ScriptReader {
@@ -51,7 +51,11 @@ public class ScriptReader {
             DocumentBuilder sxb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
             // Load the stream
-            InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("zildo/resource/script/"+p_scriptName);
+            String filename = "zildo/resource/script/"+p_scriptName;
+            InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
+            if (stream == null) {
+            	stream = ScriptReader.class.getClassLoader().getResourceAsStream(filename);
+            }
             
             Document document = sxb.parse(stream);
             Element racine = document.getDocumentElement();
