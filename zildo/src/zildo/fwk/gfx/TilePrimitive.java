@@ -41,6 +41,7 @@ public class TilePrimitive {
     // Class variables
     protected int nPoints;
     protected int nIndices;
+    
     private boolean isLock;
 
     protected VBOBuffers bufs;
@@ -61,7 +62,7 @@ public class TilePrimitive {
     private void initialize(int numPoints) {
         // Initialize VBO IDs
     	vbo = Zildo.pdPlugin.gfxStuff.createVBO();
-        bufs=vbo.create(numPoints);
+        bufs=vbo.create(numPoints, isTiles());
         
         nPoints = 0;
         nIndices = 0;
@@ -76,6 +77,10 @@ public class TilePrimitive {
         initialize(numPoints);
     }
 
+    protected boolean isTiles() {
+    	return true;
+    }
+    
     public void cleanUp() {
        	vbo.cleanUp(bufs);
         nPoints = 0;
@@ -111,6 +116,7 @@ public class TilePrimitive {
         int saveNIndices = nIndices;
         int limit = bufs.indices.limit();
 
+        //bufs.indices.limit(startingQuad * 6 + nbQuadsToRender * 6);
         bufs.indices.position(startingQuad * 6);
         nIndices = nbQuadsToRender * 6 + startingQuad * 6;
         render();
@@ -236,6 +242,9 @@ public class TilePrimitive {
     // where indices are like this :
     // (v1,v2,v3) - (v2,v4,v3)
     void generateAllIndices() {
+    	if (bufs.indices.position() > 0) {
+    		return;	// Already generated
+    	}
     	int numIndices=bufs.indices.limit() / 3;
         // 3 Indices
         for (int i = 0; i < (numIndices / 6); i++) {
@@ -248,6 +257,7 @@ public class TilePrimitive {
             //bufs.normals.put(0).put(i).put(1);
             //bufs.normals.put(0).put(0).put(1);
         }
+        
     }
     
     public int getNPoints() {
