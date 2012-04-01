@@ -36,16 +36,25 @@ public class VBOBuffers {
 	public int indiceBufferId;
 
     public FloatBuffer vertices;
-    //public FloatBuffer normals;
     public FloatBuffer textures;
     public ShortBuffer indices;
     
-    public VBOBuffers(int p_numPoints) {
+    static ShortBuffer tileIndices;		// Same indice buffer for all tiles
+    static FloatBuffer tileVertices;	// Same vertex buffer for all tiles
+    
+    public VBOBuffers(int p_numPoints, boolean p_forTiles) {
         // Allocate buffers
-        int numFaces = maxIndices / 3;
         vertices = ZUtils.createFloatBuffer(3 * p_numPoints);
-        //normals = ZUtils.createFloatBuffer(3 * numFaces);
-        indices = ZUtils.createShortBuffer(3 * maxIndices);
+        if (!p_forTiles || tileIndices == null) {
+            indices = ZUtils.createShortBuffer(3 * maxIndices);
+            if (p_forTiles) {
+            	tileIndices = indices;	// Same reference
+            	tileVertices = vertices;	// Same reference
+            }
+        } else {
+        	indices = tileIndices;
+        	//vertices = tileVertices;
+        }
         textures = ZUtils.createFloatBuffer(2 * p_numPoints);    	
     }
     

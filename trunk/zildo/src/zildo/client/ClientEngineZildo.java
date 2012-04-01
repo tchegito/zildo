@@ -41,8 +41,10 @@ import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.fwk.opengl.SoundEngine;
+import zildo.fwk.ui.DefaultMenuListener;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.fwk.ui.MenuListener;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.map.Area;
@@ -79,6 +81,8 @@ public class ClientEngineZildo {
 	public static Client client;
 
 	private static ClientEvent askedEvent;
+	
+	private MenuListener menuListener;
 	
 	public static boolean editing;
 	
@@ -136,7 +140,8 @@ public class ClientEngineZildo {
 
 		// GUI
 		guiDisplay.setToDisplay_generalGui(false);
-
+		menuListener = new DefaultMenuListener();
+		
 		ortho.setOrthographicProjection(false);
 
 	}
@@ -330,16 +335,16 @@ public class ClientEngineZildo {
 	 * Render menu. Keys are managed directly from Menu object.
 	 */
 	public void renderMenu() {
-		Menu menu = client.currentMenu;
+		Menu menu = client.getCurrentMenu();
 		if (menu != null) {
-			ItemMenu item = menu.act();
+			ItemMenu item = menuListener.act(menu);
 			if (item == null) {
 				guiDisplay.displayMenu(menu);
 			} else {
 				// Terminates menu and schedule selected action to execute
 				guiDisplay.endMenu();
-				client.currentMenu.displayed = false;
-				client.currentMenu = null;
+				menu.displayed = false;
+				client.setCurrentMenu(null);
 				client.action = item;
 			}
 		}
@@ -445,4 +450,7 @@ public class ClientEngineZildo {
 	    askedEvent = new ClientEvent(p_nature);
 	}
 
+	public void setMenuListener(MenuListener p_menuListener) {
+		menuListener = p_menuListener;
+	}
 }

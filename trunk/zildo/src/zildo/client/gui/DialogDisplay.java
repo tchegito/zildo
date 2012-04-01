@@ -24,6 +24,7 @@ import java.util.List;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEventNature;
+import zildo.client.gui.GUIDisplay.DialogMode;
 import zildo.client.sound.BankSound;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
@@ -91,10 +92,10 @@ public class DialogDisplay {
 
 		fullSentenceDisplayed = false;
 
-		int displayMode = GUIDisplay.DIALOGMODE_CLASSIC;
+		DialogMode displayMode = DialogMode.CLASSIC;
 		if (p_dialAction == CommandDialog.BUYING) {
 			// Hero is looking items in a store : so display sentence centered and directly
-			displayMode = GUIDisplay.DIALOGMODE_MENU;
+			displayMode = DialogMode.MENU;
 		}
 
 		positionInSentence=0;

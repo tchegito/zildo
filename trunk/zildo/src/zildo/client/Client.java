@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import zildo.Zildo;
+import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.menu.InGameMenu;
 import zildo.fwk.ZUtils;
 import zildo.fwk.input.KeyboardHandler;
@@ -60,7 +61,7 @@ public class Client {
 	boolean connected = false; // TRUE so as a connection with a server is
 								// established
 	boolean lan = false;
-	Menu currentMenu;
+	private Menu currentMenu;
 	NetClient netClient;
 	boolean multiplayer;
 	boolean music = Zildo.soundEnabled;
@@ -196,7 +197,7 @@ public class Client {
 	 */
 	public void run() {
 
-		while (!done && !serverLeft) {
+		while (!done && !serverLeft && PlatformDependentPlugin.currentPlugin != KnownPlugin.Android) {
 			// Deals with network
 			if (netClient != null) {
 				netClient.run();
@@ -302,5 +303,13 @@ public class Client {
 	
 	public void setOpenGLGestion(OpenGLGestion glGestion) {
 		this.glGestion = glGestion;
+	}
+	
+	public Menu getCurrentMenu() {
+		return currentMenu;
+	}
+	
+	public void setCurrentMenu(Menu menu) {
+		currentMenu = menu;
 	}
 }

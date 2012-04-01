@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Stack;
 
 
@@ -45,6 +46,7 @@ import zildo.monde.sprites.desc.FontDescription;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
+import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 import zildo.server.MultiplayerManagement;
 import zildo.server.state.PlayerState;
@@ -63,18 +65,17 @@ import zildo.server.state.PlayerState;
 
 public class GUIDisplay {
 
-	public static final int DIALOGMODE_CLASSIC = 1;
-	public static final int DIALOGMODE_TOPIC = 2;
-	public static final int DIALOGMODE_MENU = 3;
-
+	public enum DialogMode {
+		CLASSIC, TOPIC, MENU;
+	}
+	
 	// External variables for interacting with GUI
 	private boolean toDisplay_dialoguing;
 	private boolean toRemove_dialoguing;
 	private boolean toDisplay_generalGui;
 	private boolean toDisplay_scores;
 
-	private int toDisplay_dialogMode; // Contient DIALOGMODE_CLASSIC ou
-										// DIALOGMODE_TOPIC
+	private DialogMode toDisplay_dialogMode;
 
 	// External flags for text display
 	private boolean visibleMessageDisplay; // FALSE=Visible text isn't display
@@ -93,6 +94,9 @@ public class GUIDisplay {
 													// GUI
 	private GUISpriteSequence menuSequence; // Cursors for menu
 
+	// Menu items location (for Android)
+	private Map<ItemMenu, Zone> itemsOnScreen = new HashMap<ItemMenu, Zone>();
+	
 	private FilterCommand filterCommand;
 
 	public float alpha;
@@ -120,8 +124,36 @@ public class GUIDisplay {
 		countMoney = 0;
 
 		messageQueue = new Stack<GameMessage>();
+		
+		initTransco();
 	}
 
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// getIndexCharacter
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// IN :character in text sequence
+	// OUT:given character's font position in the FONTES.PNJ sprite bank
+	// /////////////////////////////////////////////////////////////////////////////////////
+	public static final String transcoChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+			+ "-.,<>!?()'#$ÁÈÍË‡˚Ó‚Ù¸ˆ‰ÔÎ˘" + "abcdefghijklmnopqrstuvwxyz"
+			+ "0123456789~£ß/:%";
+	final Map<Character, Integer> mapTranscoChar = new HashMap<Character, Integer>();
+
+	private void initTransco() {
+		for (int i = 0; i < transcoChar.length(); i++) {
+			mapTranscoChar.put(transcoChar.charAt(i), i);
+		}
+		mapTranscoChar.put(' ', -1);
+	}
+
+	int getIndexCharacter(char a) {
+		Integer c = mapTranscoChar.get(a);
+		if (c == null) {
+			return 0;	// 'A' instead of NullPointer !
+		}
+		return c.intValue();
+	}
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// draw
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -174,59 +206,32 @@ public class GUIDisplay {
 		}
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// setText
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// Determine text to display in the frame on the bottom of the screen
-	// and spawn fonts corresponding to the given text.
-	// /////////////////////////////////////////////////////////////////////////////////////
-	public void setText(String texte, int dialogMode) {
+	/**
+	 * Determine text to display in the frame on the bottom of the screen and spawn fonts 
+	 * corresponding to the given text.
+	 */
+	public void setText(String texte, DialogMode dialogMode) {
 		toDisplay_dialogMode = dialogMode;
 		removePreviousTextInFrame();
 		prepareTextInFrame(texte, Constantes.TEXTER_COORDINATE_X,
 				Constantes.TEXTER_COORDINATE_Y);
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// getIndexCharacter
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// IN :character in text sequence
-	// OUT:given character's font position in the FONTES.PNJ sprite bank
-	// /////////////////////////////////////////////////////////////////////////////////////
-	public static final String transcoChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-			+ "-.,<>!?()'#$ÁÈÍË‡˚Ó‚Ù¸ˆ‰ÔÎ˘" + "abcdefghijklmnopqrstuvwxyz"
-			+ "0123456789~£ß/:%";
-	static final Map<Character, Integer> mapTranscoChar = new HashMap<Character, Integer>();
-
-	static {
-		for (int i = 0; i < transcoChar.length(); i++) {
-			mapTranscoChar.put(transcoChar.charAt(i), i);
-		}
-		mapTranscoChar.put(' ', -1);
-	}
-
-	int getIndexCharacter(char a) {
-		return mapTranscoChar.get(a);
-	}
-
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// prepareTextInFrame
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// Display text inside a frame drawn by another method.
-	// -.Build a sequence of characters corresponding to text format inside the
-	// text frame.
-	// Use '-1' as 'SPACE'
-	// '-2' as 'ENDOFLINE'
-	// -.Spawn fonts at text place
-	// /////////////////////////////////////////////////////////////////////////////////////
-	public void prepareTextInFrame(String texte, int p_posX, int p_posY) {
-		// 1) Split sequence into list of words
-		// and measure size of text to render
-		// int* nSpr=(int*)malloc(sizeof(int) * (texte.length() + 3)); // 3 for
-		// each carriage return
+	/**
+	 * Build a sequence of characters corresponding to text format inside the
+	 * text frame.<ul>
+	 * <li>Use '-1' as 'SPACE'</li>
+	 * <li>'-2' as 'ENDOFLINE'</li></ul>
+	 * @param texte text to display
+	 * @param p_posX start X position
+	 * @param p_posY start Y postiion
+	 * @return zone containing the calculated text
+	 */ 
+	public Zone prepareTextInFrame(String texte, int p_posX, int p_posY) {
+		// 1) Split sequence into list of words and measure size of text to render
 		int length = texte.length() + 10;
 		int[] nSpr = new int[length];
-		SpriteModel spr;
+		SpriteModel spr = null;
 		int nLettre = 0;
 		int nLigne = 0;
 		int sizeCurrentWord = 0;
@@ -245,21 +250,21 @@ public class GUIDisplay {
 													// fonts
 
 		switch (toDisplay_dialogMode) {
-		case DIALOGMODE_CLASSIC:
+		case CLASSIC:
 		default:
 			nBank = SpriteBank.BANK_FONTES;
 			sizeLine = Constantes.TEXTER_SIZELINE;
 			visibleFont = false;
 			center = false;
 			break;
-		case DIALOGMODE_MENU:
+		case MENU:
 			nBank = SpriteBank.BANK_FONTES;
 			sizeLine = Constantes.TEXTER_SIZELINE;
 			visibleFont = true;
 			center = true;
 			seq = textMenuSequence;
 			break;
-		case DIALOGMODE_TOPIC:
+		case TOPIC:
 			nBank = SpriteBank.BANK_FONTES2;
 			sizeLine = Constantes.TEXTER_TOPIC_SIZELINE;
 			visibleFont = true;
@@ -336,6 +341,9 @@ public class GUIDisplay {
 		}
 		nLigne = 0;
 		SpriteEntity lettre;
+		Zone filledZone = new Zone();
+		filledZone.x1 = offsetX;
+		filledZone.y1 = y + offsetY;
 		for (i = 0; i < nLettre; i++) {
 			int indexSpr = nSpr[i];
 			if (indexSpr == -1) {
@@ -357,30 +365,34 @@ public class GUIDisplay {
 				offsetX += (spr.getTaille_x() + 1);
 			}
 		}
+		filledZone.x2 = x + offsetX - filledZone.x1;
+		filledZone.y2 = y + offsetY - filledZone.y1;
+		if (spr != null) {
+			filledZone.y2 += spr.getTaille_y();
+		}
 
-		visibleMessageDisplay = visibleFont; // Say that the message is not
-												// complete yet at screen
+		// Say that the message is not complete yet at screen
+		visibleMessageDisplay = visibleFont; 
+												
 		entireMessageDisplay = visibleFont;
+		
+		return filledZone;
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// removePreviousTextInFrame
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// Remove current text. It can be Dialog or Menu
-	// /////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Remove current text. It can be Dialog or Menu
+	 */
 	void removePreviousTextInFrame() {
 		GUISpriteSequence seq = textDialogSequence;
-		if (toDisplay_dialogMode == DIALOGMODE_MENU) {
+		if (toDisplay_dialogMode == DialogMode.MENU) {
 			seq = textMenuSequence;
 		}
 		seq.clear();
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// removeFrame
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// Remove the frame's corner
-	// /////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Remove the frame's corner
+	 */
 	void removeFrame() {
 		frameDialogSequence.clear();
 	}
@@ -505,19 +517,22 @@ public class GUIDisplay {
 		int startY = (Zildo.viewPortY - sizeY) / 2;
 		if (!p_menu.displayed) {
 			// Display menu's text
-			ClientEngineZildo.guiDisplay
-					.setToDisplay_dialogMode(GUIDisplay.DIALOGMODE_MENU);
+			setToDisplay_dialogMode(DialogMode.MENU);
 			int posY = startY;
 			removePreviousTextInFrame();
 			// Title
 			prepareTextInFrame(p_menu.title, Constantes.TEXTER_COORDINATE_X,
 					posY);
 			posY += 2 * Constantes.TEXTER_MENU_SIZEY;
+			
 			// Items
+			itemsOnScreen.clear();
 			for (ItemMenu item : p_menu.items) {
-				prepareTextInFrame(item.getText(),
+				Zone z = prepareTextInFrame(item.getText(),
 						Constantes.TEXTER_COORDINATE_X, posY);
 				posY += Constantes.TEXTER_MENU_SIZEY;
+				// Store item location
+				itemsOnScreen.put(item, z);
 			}
 			p_menu.displayed = true;
 		}
@@ -534,7 +549,7 @@ public class GUIDisplay {
 		menuSequence.clear();
 		removePreviousTextInFrame();
 		// Put back in default mode
-		toDisplay_dialogMode = DIALOGMODE_CLASSIC;
+		toDisplay_dialogMode = DialogMode.CLASSIC;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -681,11 +696,11 @@ public class GUIDisplay {
 		this.toDisplay_generalGui = toDisplay_generalGui;
 	}
 
-	public int getToDisplay_dialogMode() {
+	public DialogMode getToDisplay_dialogMode() {
 		return toDisplay_dialogMode;
 	}
 
-	public void setToDisplay_dialogMode(int toDisplay_dialogMode) {
+	public void setToDisplay_dialogMode(DialogMode toDisplay_dialogMode) {
 		this.toDisplay_dialogMode = toDisplay_dialogMode;
 	}
 
@@ -693,6 +708,21 @@ public class GUIDisplay {
 		this.toDisplay_scores = p_active;
 	}
 
+	/**
+	 * Returns item on given location, if there's any. NULL otherwise.
+	 * @param x
+	 * @param y
+	 * @return item (or NULL)
+	 */
+	public ItemMenu getItemOnLocation(int x, int y) {
+		for (Entry<ItemMenu, Zone> e : itemsOnScreen.entrySet()) {
+			if (e.getValue().isInto(x, y)) {
+				return e.getKey();
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * Draw the score panel.
 	 */

@@ -104,8 +104,7 @@ public class Menu {
         	} else if (key == kbHandler.getCode(Keys.DOWN)) {
                 move(true);
         	} else if (key == kbHandler.getCode(Keys.RETURN)) {
-                ClientEngineZildo.soundPlay.playSoundFX(item.sound);
-                item.setLaunched(false);
+                activateItem(item);
                 return item;
         	} else {
             	// Does this item is editable ?
@@ -127,6 +126,11 @@ public class Menu {
         	keyPressed=0;
         }
         return null;
+    }
+    
+    public void activateItem(ItemMenu item) {
+        ClientEngineZildo.soundPlay.playSoundFX(item.sound);
+        item.setLaunched(false);
     }
     
     public void refresh() {
