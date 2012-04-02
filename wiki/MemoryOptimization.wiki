@@ -2,7 +2,8 @@
 
 = Goal of this document =
 
-With the development of the Android port of Zildo, memory become a crucial consideration. Especially when ADB runner responds by a `OutOfMemoryException` !
+With the development of the Android port of Zildo, memory became a crucial consideration. Especially when ADB runner responds by a `OutOfMemoryException` !
+
 So in this document, we will try to reduce the memory usage in order to be accepted by an Android device, which is around 8Mb (on mine, which is my first objective).
 
 = Inventory of fixtures =
@@ -27,3 +28,41 @@ Let's calculate the size of each buffer :
  * normals : 3 x _numFaces_ x 4 = 3 x 8192 x 4= 98 304
 
 So the total size is this multiplied by 15 (total number of banks) = *20 152 320* bytes.
+
+It's OK for every platforms adressed by LWJGL, but too much for a smartphone. So let's see how we can do better.
+
+= Reduction =
+
+Due to some mistakes or forgotten ideas, there's some immediate enhancement we can make, to gain some Mb.
+
+== Easy : immediate cut ==
+
+There's two things we can do easily, without risking any danger.
+
+=== 1) remove normals ===
+
+Normals aren't used now. It was planned to put lights around torch, one day, but this isn't done yet. So there's no harm with this removal.
+
+=== 2) reduce precision for indexes ===
+
+Index buffer manipulates numbers between 0 and a maximum calculated like this : 64 x 64 x 4 = 16384.
+
+So we doesn't need a IntBuffer : a ShortBuffer is enough.
+
+=== 3) reuse index buffers ===
+
+Since all tile primitives draw tiles at the same places, with a similar index buffers, we could allocate just one, and reuse it for all primitive.
+
+Instead of 15 buffers, we would have only 1.
+
+=== Total ===
+
+So we have a delta of :
+
+-98 304 * 15 ( _normals removal_ )
+
+- 589 824 * 16 ( _all index buffers removal_ )
+
++ 3 * 49152 * 2 ( _only one index buffer with ShortBuffer_ )
+
+= 10 616 832 Mb
