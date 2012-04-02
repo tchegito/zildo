@@ -1,0 +1,37 @@
+#summary Memory optimization
+
+= Goal of this document =
+
+With the development of the Android port of Zildo, memory become a crucial consideration. Especially when ADB runner responds by a "OutOfMemoryException" !
+
+= Inventory of fixtures =
+
+Let's try to evaluate memory allocated by the game. Following is a description of what we have in 1.095 (aka Episode 1).
+
+There is 9 tile banks, and 6 sprite banks. Each one is carrying a VBOBuffers, itself having 4 buffers :
+ * vertices ( *float* ) sized by 3 x _numPoints_
+ * textures ( *float* ) sized by 2 x _numPoints_
+ * indices ( *int* ) sized by 3 x _maxIndices_
+ * normals ( *float* ) sized by 2 x _numFaces_
+
+The two variables are defined like this ( multiplied by 2 because we consider 2 maps at a time) :
+ * _numPoints_ is 2 x 4 x 64 x 64 : 4 vertices per tile
+ * _maxIndices_ is 2 x 6 x 64 x 64 : 6 indices per tile
+ * _numFaces_ is _maxIndices_ / 3
+
+Let's calculate the size of each buffer :
+ * vertices : 3 x _numPoints_ x 4 = 3 x 32768 x 4 = 393 216
+ * textures : 2 x _numPoints_ x 4 = 2 x 32768 x 4 = 262 144
+ * indices : 3 x _maxIndices_ x 4 = 3 x 49152 x 4 = 589 824
+ * normals : 3 x _numFaces_ x 4 = 3 x 8192 x 4= 98 304
+
+So the total size is this multiplied by 15 (total number of banks) = 20 152 320 bytes.
+
+
+So we need a total memory size of : 
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
