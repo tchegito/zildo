@@ -37,7 +37,7 @@ Due to some mistakes or forgotten ideas, there's some immediate enhancement we c
 
 == Easy : immediate cut ==
 
-There's two things we can do easily, without risking any danger.
+There's three things we can do easily, without risking any danger.
 
 === 1) remove normals ===
 
