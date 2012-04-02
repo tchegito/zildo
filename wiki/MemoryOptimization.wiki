@@ -47,7 +47,7 @@ Normals aren't used now. It was planned to put lights around torch, one day, but
 
 Index buffer manipulates numbers between 0 and a maximum calculated like this : 64 x 64 x 4 = 16384.
 
-So we doesn't need a IntBuffer : a ShortBuffer is enough.
+So we doesn't need an `IntBuffer` : a `ShortBuffer` is enough.
 
 === 3) reuse index buffers ===
 
@@ -59,10 +59,10 @@ Instead of 15 buffers, we would have only 1.
 
 So we have a delta of :
 
--98 304 * 15 ( _normals removal_ )
+-98 304 x 15 ( _normals removal_ )
 
-- 589 824 * 16 ( _all index buffers removal_ )
+- 589 824 x 16 ( _all index buffers removal_ )
 
-+ 3 * 49152 * 2 ( _only one index buffer with ShortBuffer_ )
++ 3 x 49152 x 2 ( _only one index buffer with ShortBuffer_ )
 
 = 10 616 832 Mb
