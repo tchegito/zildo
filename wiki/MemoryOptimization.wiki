@@ -7,7 +7,7 @@ So in this document, we will try to reduce the memory usage in order to be accep
 
 = Inventory of fixtures =
 
-Let's try to evaluate memory allocated by the game. In this study, we'll focus on NIO buffers allocated via Sprite and Tile engines, respectively [http://http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/fwk/gfx/engine/SpriteEngine.java SpriteEngine] and [http://http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/fwk/gfx/engine/TileEngine.java TileEngine]. Following is a description of what we have in 1.095 (aka Episode 1).
+Let's try to evaluate memory allocated by the game. In this study, we'll focus on NIO buffers allocated via Sprite and Tile engines, respectively [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/fwk/gfx/engine/SpriteEngine.java SpriteEngine] and [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/fwk/gfx/engine/TileEngine.java TileEngine]. Following is a description of what we have in 1.095 (aka Episode 1).
 
 There is 9 tile banks, and 6 sprite banks. Each one is carrying a VBOBuffers, itself having 4 buffers :
  * vertices ( *float* ) sized by 3 x _numPoints_
