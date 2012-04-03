@@ -58,11 +58,13 @@ Instead of 15 buffers, we would have only 1.
 === Total ===
 
 So we have a delta of :
-
+<code>
 -98 304 x 15 ( _normals removal_ )
 
 - 589 824 x 16 ( _all index buffers removal_ )
 
 + 3 x 49152 x 2 ( _only one index buffer with ShortBuffer_ )
 
-= 10 616 832 Mb
+= *10 616 832 Mb*
+</code>
+== 
