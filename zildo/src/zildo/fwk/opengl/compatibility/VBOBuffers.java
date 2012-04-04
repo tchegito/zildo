@@ -25,13 +25,22 @@ import java.nio.ShortBuffer;
 
 import zildo.fwk.ZUtils;
 
+/**
+ * Simple class being a composition of all buffers attached to a mesh. We provide here :<ul>
+ * <li>vertice buffer (default shared)</li>
+ * <li>texture buffer (default shared)</li>
+ * <li>indice buffer (never shared)</li>
+ * </ul>
+ * Here, <i>sharing</i> means that a second call to this class' constructor will reuse the last
+ * buffer of same kind.<br/>
+ * <b>Important:</b> texture buffer can be reallocated by calling {@link #resetTextureBuffer()} if
+ * you don't want to have two meshes sharing the same buffer.
+ * @author Tchegito
+ *
+ */
 public class VBOBuffers {
 	
-	// As indices never changes, we just fix a maximum and use the generated array at start.
-	static final int maxIndices = 2 * 6 * 64 * 64;
-	
 	public int vertexBufferId;
-	//public int	normalBufferId;
 	public int textureBufferId;
 	public int indiceBufferId;
 
@@ -39,7 +48,6 @@ public class VBOBuffers {
     public FloatBuffer textures;
     public ShortBuffer indices;
     
-    static ShortBuffer tileIndices;		// Same indice buffer for all tiles
     static FloatBuffer tileVertices;	// Same vertex buffer for all tiles
     static FloatBuffer tileTextures;	// Same texture buffer for all tiles
     
@@ -57,6 +65,10 @@ public class VBOBuffers {
         	vertices = tileVertices;
         	textures = tileTextures;
         }
+    }
+    
+    public static void resetTextureBuffer() {
+    	tileTextures = null;
     }
     
     public void doubleCapacity() {

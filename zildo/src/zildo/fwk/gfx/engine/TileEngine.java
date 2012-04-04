@@ -26,11 +26,10 @@ import java.util.List;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.effect.CloudGenerator;
-import zildo.fwk.gfx.primitive.TilePrimitive;
+import zildo.fwk.gfx.primitive.TileGroupPrimitive;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
-import zildo.monde.sprites.Reverse;
 import zildo.monde.util.Point;
 import zildo.resource.Constantes;
 
@@ -83,8 +82,8 @@ public abstract class TileEngine {
 	private int cameraY;
 
 	// 3D Objects (vertices and indices per bank)
-	protected TilePrimitive[] meshFORE;
-	protected TilePrimitive[] meshBACK;
+	protected TileGroupPrimitive meshFORE;
+	protected TileGroupPrimitive meshBACK;
 
 	protected boolean initialized = false;
 	List<MotifBank> motifBanks;
@@ -115,8 +114,8 @@ public abstract class TileEngine {
 		cameraX = -1;
 		cameraY = -1;
 
-		meshFORE = new TilePrimitive[Constantes.NB_MOTIFBANK];
-		meshBACK = new TilePrimitive[Constantes.NB_MOTIFBANK];
+		meshFORE = new TileGroupPrimitive(Constantes.NB_MOTIFBANK);
+		meshBACK = new TileGroupPrimitive(Constantes.NB_MOTIFBANK);
 
 		// Load graphs
 		motifBanks = new ArrayList<MotifBank>();
@@ -130,16 +129,8 @@ public abstract class TileEngine {
 	
 	public void cleanUp()
 	{
-		for (TilePrimitive tp : meshFORE) {
-			if (tp != null) {
-				tp.cleanUp();
-			}
-		}
-		for (TilePrimitive tp : meshBACK) {
-			if (tp != null) {
-				tp.cleanUp();
-			}
-		}
+		meshFORE.cleanUp();
+		meshBACK.cleanUp();
 
 		initialized = false;
 	}
@@ -184,18 +175,10 @@ public abstract class TileEngine {
 	// Prepare vertices and indices for drawing tiles
 	public void prepareTiles(Area theMap) {
 
-		int i, x, y;
+		int x, y;
 
-		for (i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-			if (meshFORE[i] == null) {
-				meshFORE[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS);
-			}
-			if (meshBACK[i] == null) {
-				meshBACK[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS);
-			}
-			meshFORE[i].startInitialization();
-			meshBACK[i].startInitialization();
-		}
+		meshFORE.startInitialization();
+		meshBACK.startInitialization();
 
 		// Prepare vertices and indices for background map (tiles displayed
 		// UNDER sprites)
@@ -210,7 +193,7 @@ public abstract class TileEngine {
 					Tile back = mapCase.getBackTile();
 					int xTex = (back.index % 16) * 16;
 					int yTex = (back.index / 16) * 16 + 1;
-					meshBACK[back.bank].addTile((16 * x),
+					meshBACK.addTile(back.bank, (16 * x),
 							(16 * y),
 							xTex,
 							yTex);
@@ -231,7 +214,7 @@ public abstract class TileEngine {
 					Tile fore = mapCase.getForeTile();
 					int xTex = (fore.index % 16) * 16;
 					int yTex = (fore.index / 16) * 16 + 1;
-					meshFORE[fore.bank].addTile(16 * x,
+					meshFORE.addTile(fore.bank, 16 * x,
 							16 * y,
 							xTex,
 							yTex);
@@ -239,10 +222,8 @@ public abstract class TileEngine {
 				}
 			}
 		}
-		for (i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-			meshFORE[i].endInitialization();
-			meshBACK[i].endInitialization();
-		}
+		meshFORE.endInitialization();
+		meshBACK.endInitialization();
 
 		initialized = true;
 	}
@@ -295,11 +276,8 @@ public abstract class TileEngine {
 
 		if (initialized && cameraX != -1 && cameraY != -1) {
 
-			int i;
-			for (i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-				meshBACK[i].startInitialization();
-				meshFORE[i].startInitialization();
-			}
+			meshBACK.startInitialization();
+			meshFORE.startInitialization();
 			for (Area theMap : p_areas) {
 				if (theMap == null) {
 					break;
@@ -318,20 +296,20 @@ public abstract class TileEngine {
 							if (bank < 0 || bank >= Constantes.NB_MOTIFBANK) {
 								throw new RuntimeException("We got a big problem");
 							}
-							updateTilePrimitive(meshBACK[bank],
+							meshBACK.updateTile(bank,
 									x, y, cameraNew, offset, n_motif, back.reverse);
 							
 							Tile back2 = mapCase.getBackTile2();
 							if (back2 != null) {
 								n_motif = back2.index;
-								updateTilePrimitive(meshBACK[back2.bank],
+								meshBACK.updateTile(back2.bank,
 										x, y, cameraNew, offset, n_motif, back2.reverse);
 							}
 							
 							Tile fore = mapCase.getForeTile();
 							if (fore != null) {
 								n_motif = fore.index;
-								updateTilePrimitive(meshFORE[fore.bank],
+								meshFORE.updateTile(fore.bank,
 													x, y, cameraNew, offset, fore.index, fore.reverse);
 
 							}
@@ -339,26 +317,13 @@ public abstract class TileEngine {
 					}
 				}
 			}
-			for (i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-				meshBACK[i].endInitialization();
-				meshFORE[i].endInitialization();
-			}
+			meshBACK.endInitialization();
+			meshFORE.endInitialization();
 		}
 
 		cameraX = cameraNew.x;
 		cameraY = cameraNew.y;
 
-	}
-	
-	private void updateTilePrimitive(TilePrimitive tp, int x, int y, Point cameraNew, Point offset, int n_motif, Reverse reverse) {
-		int xTex = (n_motif % 16) * 16;
-		int yTex = (n_motif / 16) * 16; // +1;
-
-		tp.updateTile(16 * x,
-				16 * y,
-				xTex,
-				yTex, 
-				reverse);
 	}
 
 	/**
