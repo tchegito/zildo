@@ -27,12 +27,11 @@ import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.GFXBasics;
-import zildo.fwk.gfx.SpritePrimitive;
+import zildo.fwk.gfx.primitive.SpritePrimitive;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.Outfit;
-import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector4f;
@@ -114,7 +113,7 @@ public abstract class SpriteEngine {
 			// On place le sprite sur la texture
 			short[] motif=sBank.getSpriteGfx(n);
 			Vector4f replacedColor;
-			for (int j=0;j< longY;j++)
+			for (int j=0;j< longY;j++) {
 				
 				for (int i=0;i< longX;i++)
 				{
@@ -130,12 +129,14 @@ public abstract class SpriteEngine {
 						surfaceGfx.pset(i+x,j+y,a,replacedColor);
 					}
 				}
+			}
 
 			// Next position
 			x+=longX;
 			if (longY > highestLine)	// Mark the highest sprite on the row
 				highestLine = longY;
 		}
+		sBank.freeTempBuffer();
 		textureEngine.generateTexture();
 	}
 	
@@ -201,7 +202,7 @@ public abstract class SpriteEngine {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// IN: Bank to transform into texture
 	///////////////////////////////////////////////////////////////////////////////////////
-	// Prepare vertices and indices for drawing tiles
+	// Prepare vertices and indices for drawing sprites
 	void prepareSprites(SpriteStore p_spriteStore) {
 		int i;
 	

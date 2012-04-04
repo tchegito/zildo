@@ -31,14 +31,13 @@ public class VBOHardware extends VBOSoftware {
 	static Map<Integer, VBOBuffers> vboId = new HashMap<Integer, VBOBuffers>();
 	
 	@Override
-	public VBOBuffers create(int p_numPoints) {
+	public VBOBuffers create(int p_numPoints, boolean p_forTiles) {
         
 		if (true) {
 			throw new RuntimeException("VBO hardware not implemented !");
 		}
-		VBOBuffers bufs=super.create(p_numPoints);
+		VBOBuffers bufs=super.create(p_numPoints, p_forTiles);
 		bufs.vertexBufferId = GLUtils.createVBO();
-		//bufs.normalBufferId = GLUtils.createVBO();
 		bufs.textureBufferId = GLUtils.createVBO();
 		bufs.indiceBufferId = GLUtils.createVBO();
         
@@ -51,9 +50,6 @@ public class VBOHardware extends VBOSoftware {
 		/*
         ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, p_bufs.vertexBufferId);
         GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
-
-        ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, p_bufs.normalBufferId);
-        GL11.glNormalPointer(GL11.GL_FLOAT, 0, 0);
 
         ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, p_bufs.textureBufferId);
         GL11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, 0);	
@@ -72,10 +68,6 @@ public class VBOHardware extends VBOSoftware {
         ARBVertexBufferObject.glDeleteBuffersARB(buf);
         buf = BufferUtils.createIntBuffer(1);
         buf.put(p_bufs.textureBufferId);
-        buf.flip();
-        ARBVertexBufferObject.glDeleteBuffersARB(buf);
-        buf = BufferUtils.createIntBuffer(1);
-        buf.put(p_bufs.normalBufferId);
         buf.flip();
         ARBVertexBufferObject.glDeleteBuffersARB(buf);
         buf = BufferUtils.createIntBuffer(1);
