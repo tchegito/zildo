@@ -79,6 +79,8 @@ A simple enhancement would be to reuse the edge of a tile for the next one. So, 
 
 But that implies that we have a completely filled vertices buffer, and that isn't the case now ! We just put vertices that we are using.
 
+<font color='red'> *Impossible* : </font>vertex and texture buffers need to be synchronized. It means that vertex could be reduced, but textures need to have 4 dots per face. So we need to have the same for vertices.
+
 === 2) double buffers if needed ===
 
 Instead of allocating max size for each buffer, we could allocate a default size, relatively small, and double it when it becomes insufficient. It means reallocation, with all existing bytes duplication into another buffer, and previous buffer free.
