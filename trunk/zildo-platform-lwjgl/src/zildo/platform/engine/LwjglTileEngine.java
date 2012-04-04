@@ -25,9 +25,9 @@ import org.lwjgl.opengl.GL11;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
+import zildo.fwk.gfx.primitive.TileGroupPrimitive.ActionNthRunner;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
-import zildo.resource.Constantes;
 
 // V1.0
 // --------------------------------------------
@@ -75,6 +75,8 @@ public class LwjglTileEngine extends TileEngine {
 		super(texEngine);
 	}
 	
+	private TextureBinder texBinder = new TextureBinder();
+	
 	@Override
 	public void render(boolean backGround) {
 
@@ -92,12 +94,7 @@ public class LwjglTileEngine extends TileEngine {
 				// Display BACKGROUND
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				GL11.glEnable(GL11.GL_BLEND);
-				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-					if (!meshBACK[i].isEmpty()) {
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureEngine.getNthTexture(i)); 
-						meshBACK[i].render();
-					}
-				}
+				meshBACK.render(texBinder);
 				GL11.glDisable(GL11.GL_BLEND);
 			}
 			else {
@@ -105,17 +102,19 @@ public class LwjglTileEngine extends TileEngine {
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				GL11.glEnable(GL11.GL_BLEND);
 
-				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-					if (!meshFORE[i].isEmpty()) {
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureEngine.getNthTexture(i)); 
-						meshFORE[i].render();
-					}
-				}
+				meshFORE.render(texBinder);
+				
 				GL11.glDisable(GL11.GL_BLEND);
 			}
 
 			// GL11.glColor3f(1f, 1f, 1f);
 			GL11.glPopMatrix();
+		}
+	}
+	
+	private class TextureBinder implements ActionNthRunner {
+		public void execute(final int i) {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureEngine.getNthTexture(i));
 		}
 	}
 }

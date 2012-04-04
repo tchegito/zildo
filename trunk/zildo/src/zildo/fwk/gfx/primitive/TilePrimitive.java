@@ -135,7 +135,6 @@ public class TilePrimitive extends QuadPrimitive {
     			x = 0;
     			y += 16;
     		}
-    		System.out.println("x="+x/16+" y="+y/16);
     	}
     }
 

@@ -26,9 +26,9 @@ import javax.microedition.khronos.opengles.GL11;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
+import zildo.fwk.gfx.primitive.TileGroupPrimitive.ActionNthRunner;
 import zildo.monde.util.Vector3f;
 import zildo.platform.opengl.AndroidOpenGLGestion;
-import zildo.resource.Constantes;
 
 // V1.0
 // --------------------------------------------
@@ -79,6 +79,8 @@ public class AndroidTileEngine extends TileEngine {
     	gl10 = AndroidOpenGLGestion.gl10;
 	}
 	
+	private TextureBinder texBinder = new TextureBinder();
+	
 	@Override
 	public void render(boolean backGround) {
 
@@ -93,12 +95,8 @@ public class AndroidTileEngine extends TileEngine {
 				// Display BACKGROUND
 				gl10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				gl10.glEnable(GL11.GL_BLEND);
-				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-					if (!meshBACK[i].isEmpty()) {
-						gl10.glBindTexture(GL11.GL_TEXTURE_2D, textureEngine.getNthTexture(i)); 
-						meshBACK[i].render();
-					}
-				}
+				meshBACK.render(texBinder);
+
 				gl10.glDisable(GL11.GL_BLEND);
 			}
 			else {
@@ -106,16 +104,18 @@ public class AndroidTileEngine extends TileEngine {
 				gl10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				gl10.glEnable(GL11.GL_BLEND);
 
-				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-					if (!meshFORE[i].isEmpty()) {
-						gl10.glBindTexture(GL11.GL_TEXTURE_2D, textureEngine.getNthTexture(i)); 
-						meshFORE[i].render();
-					}
-				}
+				meshFORE.render(texBinder);
+
 				gl10.glDisable(GL11.GL_BLEND);
 			}
 
 		}
 
+	}
+	
+	private class TextureBinder implements ActionNthRunner {
+		public void execute(final int i) {
+			gl10.glBindTexture(GL11.GL_TEXTURE_2D, textureEngine.getNthTexture(i)); 
+		}
 	}
 }
