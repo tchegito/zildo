@@ -18,7 +18,7 @@
  *
  */
 
-package zildo.fwk.gfx;
+package zildo.fwk.gfx.primitive;
 
 /**
  * Provides a set of sprite from the same 256x256 texture..
@@ -28,7 +28,7 @@ package zildo.fwk.gfx;
  *
  */
 
-public class SpritePrimitive extends TilePrimitive {
+public class SpritePrimitive extends QuadPrimitive {
 
 	private int nbQuadsRendered;
 	private int numQuadSynchronizing;	// To know the synchronizeSprite situation
@@ -48,7 +48,7 @@ public class SpritePrimitive extends TilePrimitive {
 	}
 	
 	public SpritePrimitive(int numPoints, int numIndices, int texSizeX, int texSizeY) {
-		super(numPoints, numIndices, texSizeX, texSizeY);
+		super(numPoints, texSizeX, texSizeY);
 	}
 	
 	@Override
@@ -89,7 +89,7 @@ public class SpritePrimitive extends TilePrimitive {
 	public int addSprite(float x, float y, float xTex, float yTex, int sizeX, int sizeY)
 	{
 		// Simpliest way to manage VB/IB locking, but need to improve !
-		return super.addTileSized((int)x,(int)y,xTex,yTex,sizeX,sizeY);
+		return super.addQuadSized((int)x,(int)y,xTex,yTex,sizeX,sizeY);
 	
 	}
 	
@@ -103,7 +103,7 @@ public class SpritePrimitive extends TilePrimitive {
 			for (int j=0;j<repeatX;j++) {
 				nPoints-=4;
 				nIndices-=6;
-				super.addTileSized(xx, yy, xTex, yTex, sizeX, sizeY);
+				super.addQuadSized(xx, yy, xTex, yTex, sizeX, sizeY);
 				numQuadSynchronizing++;
 				xx+=sizeX;
 			}

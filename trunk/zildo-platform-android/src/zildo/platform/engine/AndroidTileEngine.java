@@ -94,7 +94,7 @@ public class AndroidTileEngine extends TileEngine {
 				gl10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				gl10.glEnable(GL11.GL_BLEND);
 				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-					if (meshBACK[i].getNPoints() > 0) {
+					if (!meshBACK[i].isEmpty()) {
 						gl10.glBindTexture(GL11.GL_TEXTURE_2D, textureEngine.getNthTexture(i)); 
 						meshBACK[i].render();
 					}
@@ -107,7 +107,7 @@ public class AndroidTileEngine extends TileEngine {
 				gl10.glEnable(GL11.GL_BLEND);
 
 				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-					if (meshFORE[i].getNPoints() > 0) {
+					if (!meshFORE[i].isEmpty()) {
 						gl10.glBindTexture(GL11.GL_TEXTURE_2D, textureEngine.getNthTexture(i)); 
 						meshFORE[i].render();
 					}

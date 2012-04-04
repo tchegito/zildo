@@ -22,11 +22,11 @@ package zildo.platform.engine;
 
 import org.lwjgl.opengl.GL11;
 
-import zildo.monde.util.Vector3f;
-
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
+import zildo.monde.util.Point;
+import zildo.monde.util.Vector3f;
 import zildo.resource.Constantes;
 
 // V1.0
@@ -83,16 +83,17 @@ public class LwjglTileEngine extends TileEngine {
 			if (ambient != null) {
 				GL11.glColor3f(ambient.x, ambient.y, ambient.z);
 			}
+			
+			Point p = ClientEngineZildo.mapDisplay.getCamera();
+			GL11.glPushMatrix();
+			GL11.glTranslatef(-p.x, -p.y, 0f);
 
-			// Small optimization: do not draw invisible faces ! (counterclock
-			// wise vertices)
-			// pD3DDevice9.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 			if (backGround) {
 				// Display BACKGROUND
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				GL11.glEnable(GL11.GL_BLEND);
 				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-					if (meshBACK[i].getNPoints() > 0) {
+					if (!meshBACK[i].isEmpty()) {
 						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureEngine.getNthTexture(i)); 
 						meshBACK[i].render();
 					}
@@ -105,7 +106,7 @@ public class LwjglTileEngine extends TileEngine {
 				GL11.glEnable(GL11.GL_BLEND);
 
 				for (int i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-					if (meshFORE[i].getNPoints() > 0) {
+					if (!meshFORE[i].isEmpty()) {
 						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureEngine.getNthTexture(i)); 
 						meshFORE[i].render();
 					}
@@ -114,7 +115,7 @@ public class LwjglTileEngine extends TileEngine {
 			}
 
 			// GL11.glColor3f(1f, 1f, 1f);
-
+			GL11.glPopMatrix();
 		}
 	}
 }

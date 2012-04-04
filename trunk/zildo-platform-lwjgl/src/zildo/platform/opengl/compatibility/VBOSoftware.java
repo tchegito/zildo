@@ -28,21 +28,19 @@ import zildo.fwk.opengl.compatibility.VBOBuffers;
 public class VBOSoftware implements VBO {
 
 	@Override
-	public VBOBuffers create(int p_numPoints) {
-		return new VBOBuffers(p_numPoints);
+	public VBOBuffers create(int p_numPoints, boolean p_forTiles) {
+		return new VBOBuffers(p_numPoints, p_forTiles);
 	}
 
 	protected void preDraw() {
         GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-        GL11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
         GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 	}
 	
 	@Override
 	public void draw(VBOBuffers p_bufs) {
 		preDraw();
-		GL11.glVertexPointer(3, 0, p_bufs.vertices);
-		GL11.glNormalPointer(0, p_bufs.normals);
+		GL11.glVertexPointer(2, 0, p_bufs.vertices);
 		GL11.glTexCoordPointer(2, 0, p_bufs.textures);
 		
         GL11.glDrawElements(GL11.GL_TRIANGLES, p_bufs.indices);
@@ -60,9 +58,6 @@ public class VBOSoftware implements VBO {
 		if (p_bufs.vertices.position() != 0) {
 			// On se repositionne à zéro uniquement si on y est pas déjà
 			p_bufs.vertices.flip();
-		}
-		if (p_bufs.normals.position() != 0) {
-			p_bufs.normals.flip();
 		}
 		if (p_bufs.textures.position() != 0) {
 			p_bufs.textures.flip();

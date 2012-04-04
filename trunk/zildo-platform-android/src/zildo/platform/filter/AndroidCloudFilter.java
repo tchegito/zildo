@@ -43,7 +43,7 @@ public class AndroidCloudFilter extends CloudFilter {
 	public boolean renderFilter() {
 		
 		super.startInitialization();
-		updateTile(0, 0, u, v, Reverse.NOTHING);
+		updateQuad(0, 0, u, v, Reverse.NOTHING);
 		this.endInitialization();
 		
 		gl11.glMatrixMode(GL11.GL_MODELVIEW);

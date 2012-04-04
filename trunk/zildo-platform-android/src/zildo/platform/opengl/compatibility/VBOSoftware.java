@@ -31,8 +31,8 @@ public class VBOSoftware implements VBO {
 	GL11 gl11;
 	
 	@Override
-	public VBOBuffers create(int p_numPoints) {
-		return new VBOBuffers(p_numPoints);
+	public VBOBuffers create(int p_numPoints, boolean p_forTiles) {
+		return new VBOBuffers(p_numPoints, p_forTiles);
 	}
 
 	protected void preDraw() {

@@ -25,8 +25,8 @@ import java.util.List;
 
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.gfx.GFXBasics;
-import zildo.fwk.gfx.TilePrimitive;
 import zildo.fwk.gfx.effect.CloudGenerator;
+import zildo.fwk.gfx.primitive.TilePrimitive;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
@@ -177,6 +177,7 @@ public abstract class TileEngine {
 		for (int i = 0; i < tileBankNames.length; i++) {
 			MotifBank motifBank = getMotifBank(i);
 			this.createTextureFromMotifBank(motifBank);
+			motifBank.freeTempBuffer();
 		}
 	}
 
@@ -186,8 +187,12 @@ public abstract class TileEngine {
 		int i, x, y;
 
 		for (i = 0; i < Constantes.NB_MOTIFBANK; i++) {
-			meshFORE[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS);
-			meshBACK[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS);
+			if (meshFORE[i] == null) {
+				meshFORE[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS);
+			}
+			if (meshBACK[i] == null) {
+				meshBACK[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS);
+			}
 			meshFORE[i].startInitialization();
 			meshBACK[i].startInitialization();
 		}
@@ -349,8 +354,8 @@ public abstract class TileEngine {
 		int xTex = (n_motif % 16) * 16;
 		int yTex = (n_motif / 16) * 16; // +1;
 
-		tp.updateTile((16 * x) - cameraNew.x + offset.x,
-				(16 * y) - cameraNew.y + offset.y,
+		tp.updateTile(16 * x,
+				16 * y,
 				xTex,
 				yTex, 
 				reverse);

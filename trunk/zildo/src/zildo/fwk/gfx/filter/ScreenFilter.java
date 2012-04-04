@@ -21,9 +21,9 @@
 package zildo.fwk.gfx.filter;
 
 import zildo.Zildo;
-import zildo.fwk.gfx.GraphicStuff;
-import zildo.fwk.gfx.TilePrimitive;
 import zildo.fwk.ZUtils;
+import zildo.fwk.gfx.GraphicStuff;
+import zildo.fwk.gfx.primitive.QuadPrimitive;
 
 
 /**
@@ -40,7 +40,7 @@ import zildo.fwk.ZUtils;
  * @author tchegito
  *
  */
-public abstract class ScreenFilter extends TilePrimitive {
+public abstract class ScreenFilter extends QuadPrimitive {
 
 	// Screen size
 	protected static final int sizeX=Zildo.viewPortX;
@@ -62,13 +62,13 @@ public abstract class ScreenFilter extends TilePrimitive {
 	//////////////////////////////////////////////////////////////////////
 	public ScreenFilter(GraphicStuff graphicStuff)
 	{
-		super(4,6, ZUtils.adjustTexSize(sizeX), ZUtils.adjustTexSize(sizeY));
+		super(4,ZUtils.adjustTexSize(sizeX), ZUtils.adjustTexSize(sizeY));
 		
 		this.graphicStuff = graphicStuff;
 		
 		// Create a screen sized quad
 		super.startInitialization();
-		this.addTileSized(0,0,0.0f,0.0f,sizeX, sizeY);
+		this.addQuadSized(0,0,0.0f,0.0f,sizeX, sizeY);
 		this.endInitialization();
 	
 		// Create texture for alpha blending
@@ -77,6 +77,11 @@ public abstract class ScreenFilter extends TilePrimitive {
 		setActive(false, null);
 	}
 	
+	@Override
+	protected boolean isTiles() {
+		return false;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////
 	// renderFilter
 	///////////////////////////////////////////////////////////////////////////////////////

@@ -41,23 +41,27 @@ public class VBOBuffers {
     
     static ShortBuffer tileIndices;		// Same indice buffer for all tiles
     static FloatBuffer tileVertices;	// Same vertex buffer for all tiles
+    static FloatBuffer tileTextures;	// Same texture buffer for all tiles
     
     public VBOBuffers(int p_numPoints, boolean p_forTiles) {
         // Allocate buffers
-        vertices = ZUtils.createFloatBuffer(3 * p_numPoints);
-        if (!p_forTiles || tileIndices == null) {
-            indices = ZUtils.createShortBuffer(3 * maxIndices);
+        indices = ZUtils.createShortBuffer(3 * p_numPoints / 2);
+        if (!p_forTiles || tileTextures == null) {
+            vertices = ZUtils.createFloatBuffer(2 * p_numPoints);
+            textures = ZUtils.createFloatBuffer(2 * p_numPoints);    	
             if (p_forTiles) {
-            	tileIndices = indices;	// Same reference
+            	tileTextures = textures;	// Same reference
             	tileVertices = vertices;	// Same reference
             }
         } else {
-        	indices = tileIndices;
-        	//vertices = tileVertices;
+        	vertices = tileVertices;
+        	textures = tileTextures;
         }
-        textures = ZUtils.createFloatBuffer(2 * p_numPoints);    	
     }
     
+    public void doubleCapacity() {
+    	
+    }
 	
 	@Override
 	public String toString() {
