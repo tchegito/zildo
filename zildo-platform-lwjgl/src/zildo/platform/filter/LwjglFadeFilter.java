@@ -22,11 +22,11 @@ package zildo.platform.filter;
 
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
-import zildo.fwk.gfx.filter.FadeScreenFilter;
+import zildo.fwk.gfx.filter.FadeFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.monde.util.Vector3f;
 
-public class LwjglFadeFilter extends FadeScreenFilter {
+public class LwjglFadeFilter extends FadeFilter {
 
 	boolean complete = true;
 
