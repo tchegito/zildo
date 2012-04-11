@@ -27,6 +27,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.primitive.TileGroupPrimitive.ActionNthRunner;
+import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
 import zildo.platform.opengl.AndroidOpenGLGestion;
 
@@ -91,6 +92,10 @@ public class AndroidTileEngine extends TileEngine {
 				gl10.glColor4f(ambient.x, ambient.y, ambient.z, 1f);
 			}
 
+			Point p = ClientEngineZildo.mapDisplay.getCamera();
+			gl10.glPushMatrix();
+			gl10.glTranslatef(-p.x, -p.y, 0f);
+			
 			if (backGround) {
 				// Display BACKGROUND
 				gl10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -108,7 +113,7 @@ public class AndroidTileEngine extends TileEngine {
 
 				gl10.glDisable(GL11.GL_BLEND);
 			}
-
+			gl10.glPopMatrix();
 		}
 
 	}

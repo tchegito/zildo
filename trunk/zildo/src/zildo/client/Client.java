@@ -142,7 +142,29 @@ public class Client {
 
 	long time;
 
-	public boolean render() {
+	boolean rendered;
+	
+	public boolean mainLoop() {
+		if (PlatformDependentPlugin.currentPlugin != KnownPlugin.Android) {
+			render();
+		} else {
+			// Wait for render
+			while (!rendered) {
+				ZUtils.sleep(5);
+			}
+			rendered = false;
+		}
+		
+		if (action != null && !action.isLaunched()) {
+			action.setLaunched(true);
+			action.run();
+			action = null;
+		}
+		
+		return done;
+	}
+	
+	public void render() {
         if (kbHandler == null) {
             kbHandler = Zildo.pdPlugin.kbHandler;
         }
@@ -175,13 +197,8 @@ public class Client {
 
 		// Display scene
 		glGestion.render(connected);
-
-		if (action != null && !action.isLaunched()) {
-			action.setLaunched(true);
-			action.run();
-			action = null;
-		}
-		return done;
+		
+		rendered = true;
 	}
 
 	public void serverLeft() {
@@ -197,7 +214,7 @@ public class Client {
 	 */
 	public void run() {
 
-		while (!done && !serverLeft && PlatformDependentPlugin.currentPlugin != KnownPlugin.Android) {
+		while (!done && !serverLeft) {
 			// Deals with network
 			if (netClient != null) {
 				netClient.run();
@@ -212,8 +229,8 @@ public class Client {
 				}
 
 			}
-			render();
-
+			mainLoop();
+			
 			ZUtils.sleep(5);
 		}
 	}
@@ -311,5 +328,9 @@ public class Client {
 	
 	public void setCurrentMenu(Menu menu) {
 		currentMenu = menu;
+	}
+	
+	public boolean isReady() {
+		return glGestion != null;
 	}
 }
