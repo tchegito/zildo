@@ -161,7 +161,7 @@ public class SinglePlayer {
             ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(state));
 
             // Render client
-            done = client.render();
+            done = client.mainLoop();
 
             // Render sounds
             ClientEngineZildo.soundPlay.playSounds(EngineZildo.soundManagement.getQueue());
