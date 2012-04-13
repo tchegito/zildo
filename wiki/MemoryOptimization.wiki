@@ -85,6 +85,16 @@ But that implies that we have a completely filled vertices buffer, and that isn'
 
 Instead of allocating max size for each buffer, we could allocate a default size, relatively small, and double it when it becomes insufficient. It means reallocation, with all existing bytes duplication into another buffer, and previous buffer free.
 
+<font color='red'>It remains at the state of idea.</font> We'll see why in the next chapter.
+
 === 3) remove 'z' component from vertices buffer ===
 
 As we only have two dimension for tiles, there's no sense to have a 'z' component in our vertices. Moreover, it's initialized with 0 everywhere.
+
+== Last phase : conclude ==
+
+After all these ideas, I realised that some where good, but some others couldn't be implemented, like the first one.
+
+Instead of reducing vertex buffer, another solution has been considered.
+
+[https://lh3.googleusercontent.com/-qU8cBw5DT1M/T4g_0XF1PsI/AAAAAAAABqI/bFn7skiQJg8/w242-h186-k/memory.png]
