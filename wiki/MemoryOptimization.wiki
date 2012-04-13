@@ -1,5 +1,7 @@
 #summary Memory optimization
 
+<wiki:toc max_depth="4" />
+
 = Goal of this document =
 
 With the development of the Android port of Zildo, memory became a crucial consideration. Especially when ADB runner responds by a `OutOfMemoryException` !
