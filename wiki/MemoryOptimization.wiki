@@ -103,7 +103,7 @@ At each level, we share a buffer, as we can see in the following schema :
 
 All primitives shared the same vertex buffer, composed of the complete grid (64x64x4 vertices). Primitives from a group inside a layer shares the same texture buffer, and each primitve has its own indices buffer.
 
-So instead of having 3 * 7 * 3 (layer * bank * buffers) = 63 buffers, we have 1 + 3 +  7 * 3 = 25 buffers, for tiles. We should note that vertex buffer was very high, and now that it's unique, it's a great gain.
+So instead of having 3 x 7 x 3 (layer * bank * buffers) = 63 buffers, we have 1 + 3 +  7 x 3 = 25 buffers, for tiles. We should note that vertex buffer was very high, and now that it's unique, it's a great gain.
 
 With such techniques, the memory usage has reduced to 1.8Mb !
 
