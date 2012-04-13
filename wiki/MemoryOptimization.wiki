@@ -96,7 +96,7 @@ As we only have two dimension for tiles, there's no sense to have a 'z' componen
 After all these ideas, I realised that some where good, but some others couldn't be implemented, like the first one.
 
 Instead of reducing vertex buffer, another solution has been considered.
-We manipulated primitive with TilePrimitive object. But each one was coming from an orginin composed of two attributes : layer (foreground, background and masked) and sprite bank. So we have 3 differents layers, and 7 (and 8) differents sprite (and tile) banks. So it lacked a class level to modelize a layer. So I added the TileGroupPrimitive.
+We manipulated primitive with `TilePrimitive` object. But each one was coming from an orginin composed of two attributes : layer (foreground, background and masked) and sprite bank. So we have 3 differents layers, and 7 (and 8) differents sprite (and tile) banks. So it lacked a class level to modelize a layer. So I added the `TileGroupPrimitive`.
 
 At each level, we share a buffer, as we can see in the following schema :
 [https://lh4.googleusercontent.com/-qU8cBw5DT1M/T4g_0XF1PsI/AAAAAAAABqI/bFn7skiQJg8/s469/memory.png]
