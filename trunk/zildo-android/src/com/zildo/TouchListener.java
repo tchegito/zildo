@@ -20,10 +20,16 @@
 
 package com.zildo;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.monde.util.Point;
+import zildo.platform.input.AndroidKeyboardHandler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,9 +45,21 @@ public class TouchListener implements OnTouchListener {
 	
 	public TouchListener(Client client) {
 		this.client = client;
+		touchedPoints = new ArrayList<Point>();
+
 	}
 
+	/**
+	 * Share touched points with the "keyboard" handler, so as to detect which button is pressed.
+	 */
+	public void init() {
+		AndroidKeyboardHandler kbHandler = (AndroidKeyboardHandler) Zildo.pdPlugin.kbHandler;
+		kbHandler.setTouchedPoints(touchedPoints);
+	}
+	
 	ItemMenu item;
+	
+	final List<Point> touchedPoints;
 	
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
@@ -52,11 +70,21 @@ public class TouchListener implements OnTouchListener {
 		Log.d("touch", "pos = "+x+", "+y+" action = "+event.getAction());
 		
 		Menu menu = client.getCurrentMenu();
-		if (menu != null && event.getAction() == MotionEvent.ACTION_UP) {
-			item = ClientEngineZildo.guiDisplay.getItemOnLocation(x, y);
-			if (item != null) {
-				Log.d("touch", "item "+item.getText());
-				menu.activateItem(item);
+		if (menu != null) {
+			if (event.getAction() == MotionEvent.ACTION_UP) {
+				item = ClientEngineZildo.guiDisplay.getItemOnLocation(x, y);
+				if (item != null) {
+					Log.d("touch", "item "+item.getText());
+					menu.activateItem(item);
+				}
+			}
+		} else {
+			// No menu ==> player is in game
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_UP:
+				touchedPoints.add(new Point(x,y));
+				Log.d("touch", "add points");
+				break;
 			}
 		}
 		return true;

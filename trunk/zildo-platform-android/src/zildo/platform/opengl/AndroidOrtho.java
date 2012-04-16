@@ -23,8 +23,10 @@ package zildo.platform.opengl;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
+import android.opengl.GLU;
 import android.util.Log;
 
+import zildo.Zildo;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.util.Vector4f;
@@ -71,13 +73,15 @@ public class AndroidOrtho extends Ortho {
 			gl11.glMatrixMode(GL11.GL_PROJECTION);
 			// save previous matrix which contains the
 			// settings for the perspective projection
-			gl11.glPushMatrix();
+			//gl11.glPushMatrix();
 			// reset matrix
+			gl11.glViewport(0, 0, Zildo.viewPortX, Zildo.viewPortY);
 			gl11.glLoadIdentity();
 			// set a 2D orthographic projection
-			gl11.glOrthof(0, 320, 0, 480, -99999, 99999);
+			GLU.gluOrtho2D(gl11, 0, (float)Zildo.viewPortX, (float)Zildo.viewPortY, 0); 
+			//gl11.glOrthof(0, Zildo.viewPortX, 0, Zildo.viewPortY, -99999, 99999);
 			// invert the y axis, down is positive
-			gl11.glScalef(1, -1, 1);
+			gl11.glScalef(1, 1, 1);
 			// GL11.glDisable(GL11.GL_DEPTH_TEST);
 			gl11.glDisable(GL11.GL_CULL_FACE);
 			gl11.glDisable(GL11.GL_BLEND);
@@ -91,6 +95,13 @@ public class AndroidOrtho extends Ortho {
 		}
 	}
 
+	public void forceOrtho(int sizeX, int sizeY) {
+		orthoSetUp = false;
+		Zildo.viewPortX = sizeX;
+		Zildo.viewPortY = sizeY;
+		setOrthographicProjection(false);
+	}
+	
 	@Override
 	public void resetPerspectiveProjection(int p_x, int p_y) {
 		// No need to do that in Android

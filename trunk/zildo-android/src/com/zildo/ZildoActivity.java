@@ -6,8 +6,8 @@ import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.menu.StartMenu;
 import zildo.fwk.ZUtils;
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
-import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +29,8 @@ public class ZildoActivity extends Activity {
 
         // Initialize platform dependent
         
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
         PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;
         
         AssetManager assetManager = getAssets();
@@ -65,7 +67,8 @@ public class ZildoActivity extends Activity {
     		}
     		Log.d("client", "Client runs !");
             client.handleMenu(new StartMenu());
-           	client.run();
+           	//client.run();
+            
     	}
     	
     	public Client getClient() {

@@ -26,7 +26,8 @@ import javax.microedition.khronos.opengles.GL11;
 
 import zildo.Zildo;
 import zildo.client.Client;
-import zildo.monde.util.Vector4f;
+import zildo.client.stage.GameStage;
+import zildo.fwk.ZUtils;
 import zildo.platform.opengl.AndroidOpenGLGestion;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
@@ -36,6 +37,7 @@ public class OpenGLRenderer implements Renderer {
 	
 	Client client;
 	TouchListener touchListener;
+	GameStage game;
 	
 	public OpenGLRenderer(Client client, TouchListener touchListener) {
 		this.client = client;
@@ -44,7 +46,7 @@ public class OpenGLRenderer implements Renderer {
 	
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		gl.glClearColor(0.0f, 0.0f, 0f, 0.0f);
+		gl.glClearColor(1.0f, 0.0f, 0f, 1.0f);
 		gl.glShadeModel(GL11.GL_SMOOTH);
 		gl.glClearDepthf(1.0f);
 		gl.glDisable(GL11.GL_DEPTH_TEST);
@@ -78,16 +80,18 @@ public class OpenGLRenderer implements Renderer {
 		
 		// Share GL context for other classes
         AndroidOpenGLGestion.setGL(gl);
-        Zildo.viewPortX = 320;
-        Zildo.viewPortY = 480;
+        Zildo.viewPortX = 480;
+        Zildo.viewPortY = 320;
         
         client.getEngineZildo().initializeClient(false);
-        client.getEngineZildo().setMenuListener(new AndroidMenuListener(touchListener));
+        client.setMenuListener(new AndroidMenuListener(touchListener));
+        touchListener.init();
         // Holes
         client.setOpenGLGestion(Zildo.pdPlugin.openGLGestion);
         Zildo.pdPlugin.openGLGestion.setClientEngineZildo(client.getEngineZildo());
         
-        
+		gl.glClearColor(0.0f, 0.0f, 0f, 0.0f);
+
         Log.d("renderer", "init finished - start main menu");
 
 
@@ -98,19 +102,46 @@ public class OpenGLRenderer implements Renderer {
         gl.glDisable(GL11.GL_LIGHTING);
 	}
 	
+	int i=0;
+	
 	@Override
 	public void onDrawFrame(GL10 gl) {
 		// Clears the screen and depth buffer.
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | // OpenGL docs.
-                           GL10.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT); // | // OpenGL docs.
+                           //GL10.GL_DEPTH_BUFFER_BIT);
 
+		long t1 = ZUtils.getTime();
 		/*
 		Zildo.pdPlugin.ortho.box(10, 10, 20, 20, 0, new Vector4f(0.5f, 0.1f, 0.3f, 1.0f));
 		Zildo.pdPlugin.ortho.drawText(0,0,"Coucou zildo");
 		Zildo.pdPlugin.ortho.drawText(0,100,"Coucou zildo100");
 		Zildo.pdPlugin.ortho.drawText(200,200,"Coucou zildo200");
 		*/
-		client.render();
+		client.mainLoop();
+
+		long t2 = ZUtils.getTime();
+
+		i++;
+		if (i%50 == 0) {
+			Log.d("time", "elapsed "+(t2-t1));
+		}
+		/*
+		for (GameStage stage : client.getCurrentStages()) {
+			stage.updateGame();
+			stage.renderGame();
+		}
+		
+		if (game != null) {
+			game.updateGame();
+			game.renderGame();
+		} else {
+			game = client.getGame();
+			if (game == null) {
+				client.mainLoop();
+			}
+		}
+		*/
+		
 	}
 	
 	@Override

@@ -20,9 +20,15 @@
 
 package zildo.platform.input;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 
+import android.util.Log;
+
+import zildo.Zildo;
 import zildo.fwk.input.KeyboardHandler;
+import zildo.monde.util.Point;
 
 /**
  * @author Tchegito
@@ -61,13 +67,39 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 		platformKeys.put(Keys.RIGHT, KEY_RIGHT);
 		platformKeys.put(Keys.DOWN, KEY_DOWN);
 	}
-
-	public Boolean isKeyDown(int p_code) {
-		return false; //Keyboard.isKeyDown(p_code);		
+	
+	List<Point> liveTouchedPoints;
+	List<Point> polledTouchedPoints;
+	
+	public AndroidKeyboardHandler() {
+		liveTouchedPoints = new ArrayList<Point>();
+		polledTouchedPoints = new ArrayList<Point>();
+	}
+	
+	public void setTouchedPoints(List<Point> points) {
+		this.liveTouchedPoints = points;
+	}
+	
+	public boolean isKeyDown(int p_code) {
+		if (!polledTouchedPoints.isEmpty()) {
+			Point p = polledTouchedPoints.get(0);
+			Log.d("keyboardhandler", "received one point");
+			switch (p_code) {
+			case KEY_Q:
+				return p.x > (Zildo.viewPortX / 2);
+			}
+		}
+		return false;
 	}
 	
 	public void poll() {
-		//Keyboard.poll();
+		polledTouchedPoints.clear();
+		if (!liveTouchedPoints.isEmpty()) {
+			Log.d("touch", "poll points");
+			polledTouchedPoints.clear();
+			polledTouchedPoints.addAll(liveTouchedPoints);
+			liveTouchedPoints.clear();
+		}
 	}
 	
 	/**
