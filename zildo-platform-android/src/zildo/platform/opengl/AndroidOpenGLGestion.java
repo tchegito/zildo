@@ -23,10 +23,9 @@ package zildo.platform.opengl;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
-import android.util.Log;
-
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
+import zildo.client.stage.GameStage;
 import zildo.fwk.ZUtils;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.opengl.OpenGLGestion;
@@ -409,10 +408,16 @@ public class AndroidOpenGLGestion extends OpenGLGestion {
 		}
 
 		clientEngineZildo.renderFrame(awt);
+		/*
 		if (!p_clientReady && !awt) {
 			clientEngineZildo.renderMenu();
 		}
-
+		 */
+		
+		for (GameStage stage : ClientEngineZildo.getClientForGame().getCurrentStages()) {
+			stage.renderGame();
+		}
+		
 		if (ClientEngineZildo.filterCommand != null) {
 			//ClientEngineZildo.filterCommand.doFilter();
 			//ClientEngineZildo.filterCommand.doPostFilter();
