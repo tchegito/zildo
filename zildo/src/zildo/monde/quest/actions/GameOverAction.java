@@ -20,9 +20,9 @@
 
 package zildo.monde.quest.actions;
 
-import zildo.SinglePlayer;
 import zildo.client.ClientEngineZildo;
 import zildo.client.gui.menu.StartMenu;
+import zildo.client.stage.SinglePlayer;
 import zildo.monde.dialog.ActionDialog;
 import zildo.server.EngineZildo;
 import zildo.server.state.ClientState;
