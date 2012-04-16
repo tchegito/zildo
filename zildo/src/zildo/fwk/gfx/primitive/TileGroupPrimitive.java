@@ -22,7 +22,6 @@ package zildo.fwk.gfx.primitive;
 
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 import zildo.monde.sprites.Reverse;
-import zildo.monde.util.Point;
 import zildo.resource.Constantes;
 
 /**
@@ -70,15 +69,19 @@ public class TileGroupPrimitive {
     	meshes[nth].addTile(x, y, u, v);
     }
     
-    public void updateTile(int nth, int x, int y, Point cameraNew, Point offset, int n_motif, Reverse reverse) {
-		int xTex = (n_motif % 16) * 16;
-		int yTex = (n_motif / 16) * 16; // +1;
-
-		meshes[nth].updateTile(16 * x,
-				16 * y,
-				xTex,
-				yTex, 
-				reverse);
+    public void updateTile(int nth, int x, int y, int n_motif, Reverse reverse, boolean hasChanged) {
+    	if (hasChanged) {
+			int xTex = (n_motif % 16) * 16;
+			int yTex = (n_motif / 16) * 16; // +1;
+	
+			meshes[nth].updateTile(16 * x,
+					16 * y,
+					xTex,
+					yTex, 
+					reverse);
+    	} else {
+    		meshes[nth].skipTile();
+    	}
 	}
     
     public boolean isEmpty(int nth) {

@@ -404,7 +404,7 @@ public class AndroidOpenGLGestion extends OpenGLGestion {
 		}
 		//gl10.glScalef(1 + zz, -1 - zz, 1);
 		if (ClientEngineZildo.filterCommand != null) {
-			//ClientEngineZildo.filterCommand.doPreFilter();
+			ClientEngineZildo.filterCommand.doPreFilter();
 		}
 
 		clientEngineZildo.renderFrame(awt);
@@ -419,8 +419,8 @@ public class AndroidOpenGLGestion extends OpenGLGestion {
 		}
 		
 		if (ClientEngineZildo.filterCommand != null) {
-			//ClientEngineZildo.filterCommand.doFilter();
-			//ClientEngineZildo.filterCommand.doPostFilter();
+			ClientEngineZildo.filterCommand.doFilter();
+			ClientEngineZildo.filterCommand.doPostFilter();
 		}
 
 		if (framerate != 0) {

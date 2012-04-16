@@ -20,13 +20,18 @@
 
 package zildo.client;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import zildo.Zildo;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.menu.InGameMenu;
+import zildo.client.stage.GameStage;
+import zildo.client.stage.MenuStage;
+import zildo.client.stage.SinglePlayer;
 import zildo.fwk.ZUtils;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardHandler.Keys;
@@ -35,8 +40,10 @@ import zildo.fwk.net.NetClient;
 import zildo.fwk.net.TransferObject;
 import zildo.fwk.net.www.InternetClient;
 import zildo.fwk.opengl.OpenGLGestion;
+import zildo.fwk.ui.DefaultMenuListener;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.fwk.ui.MenuListener;
 import zildo.server.EngineZildo;
 import zildo.server.state.PlayerState;
 
@@ -76,6 +83,10 @@ public class Client {
 	InGameMenu ingameMenu;
 
 	KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
+
+	MenuListener menuListener;
+	
+	List<GameStage> stages;
 	
 	public enum ClientType {
 		SERVER_AND_CLIENT, CLIENT, ZEDITOR;
@@ -89,6 +100,9 @@ public class Client {
 		states = new HashMap<Integer, PlayerState>();
 		// Video
 		initializeDisplay();
+		
+		stages = new ArrayList<GameStage>();
+		menuListener = new DefaultMenuListener();
 	}
 
 	void initializeDisplay() {
@@ -142,19 +156,31 @@ public class Client {
 
 	long time;
 
-	boolean rendered;
-	
 	public boolean mainLoop() {
-		if (PlatformDependentPlugin.currentPlugin != KnownPlugin.Android) {
-			render();
-		} else {
-			// Wait for render
-			while (!rendered) {
-				ZUtils.sleep(5);
+		// Render current stage and remove those which are finished
+		long t1 = ZUtils.getTime();
+		
+		List<GameStage> toRemove = new ArrayList<GameStage>();
+		for (GameStage stage : stages) {
+			if (stage.isDone()) {
+				toRemove.add(stage);
+			} else {
+				stage.updateGame();
 			}
-			rendered = false;
+		}
+		if (!toRemove.isEmpty()) {
+			for (GameStage stage : toRemove) {
+				stages.remove(stage);
+			}
 		}
 		
+		long t2 = ZUtils.getTime();
+		
+		render();
+		
+		long t3 = ZUtils.getTime();
+		
+		//System.out.println("time update : "+(t2-t1)+"ms / time render : "+(t3-t2)+"ms / number of stage : "+stages.size());
 		if (action != null && !action.isLaunched()) {
 			action.setLaunched(true);
 			action.run();
@@ -169,7 +195,7 @@ public class Client {
             kbHandler = Zildo.pdPlugin.kbHandler;
         }
 
-        if (!awt) {
+        if (!awt || PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
 			// Read keyboard
 			Zildo.pdPlugin.kbHandler.poll();
 
@@ -197,8 +223,6 @@ public class Client {
 
 		// Display scene
 		glGestion.render(connected);
-		
-		rendered = true;
 	}
 
 	public void serverLeft() {
@@ -240,6 +264,7 @@ public class Client {
 		if (p_menu == null) {
 			connected = true;
 		} else {
+			addStage(new MenuStage(p_menu, menuListener));
 			currentMenu.refresh();
 			connected = false;
 		}
@@ -332,5 +357,32 @@ public class Client {
 	
 	public boolean isReady() {
 		return glGestion != null;
+	}
+	
+	public void setAction(ItemMenu action) {
+		this.action = action;
+	}
+	
+	public void setMenuListener(MenuListener p_menuListener) {
+		menuListener = p_menuListener;
+	}
+	
+	public List<GameStage> getCurrentStages() {
+		return stages;
+	}
+	
+	public void addStage(GameStage stage) {
+		stages.add(stage);
+	}
+	
+	//TODO: to remove !!! This is heresy ! just for test Android
+	GameStage singlePlayerGame;
+	
+	public void setSinglePlayerGame(GameStage game) {
+		singlePlayerGame = game;
+	}
+	
+	public GameStage getGame() {
+		return singlePlayerGame;
 	}
 }

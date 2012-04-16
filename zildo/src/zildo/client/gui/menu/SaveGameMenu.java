@@ -29,8 +29,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import zildo.SinglePlayer;
 import zildo.Zildo;
+import zildo.client.stage.SinglePlayer;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.ui.InfoMenu;
@@ -138,7 +138,7 @@ public class SaveGameMenu extends PageableMenu {
 		EasyBuffering file=Zildo.pdPlugin.openFile(p_filename);
 		game = Game.deserialize(file);
 		EngineZildo.setGame(game);
-		EngineZildo.mapManagement.loadMap("coucou", false);
+		EngineZildo.mapManagement.loadMap("foretg", false);
 
 		singlePlay.launchGame();
 	}

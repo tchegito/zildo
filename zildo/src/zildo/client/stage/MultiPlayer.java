@@ -19,7 +19,7 @@
  */
 
 
-package zildo;
+package zildo.client.stage;
 
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;

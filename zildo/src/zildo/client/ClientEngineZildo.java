@@ -27,6 +27,7 @@ import zildo.client.gui.GUIDisplay;
 import zildo.client.sound.Ambient;
 import zildo.client.sound.SoundPlay;
 import zildo.fwk.FilterCommand;
+import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
@@ -41,10 +42,6 @@ import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.fwk.opengl.SoundEngine;
-import zildo.fwk.ui.DefaultMenuListener;
-import zildo.fwk.ui.ItemMenu;
-import zildo.fwk.ui.Menu;
-import zildo.fwk.ui.MenuListener;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.map.Area;
@@ -82,7 +79,7 @@ public class ClientEngineZildo {
 
 	private static ClientEvent askedEvent;
 	
-	private MenuListener menuListener;
+
 	
 	public static boolean editing;
 	
@@ -140,7 +137,6 @@ public class ClientEngineZildo {
 
 		// GUI
 		guiDisplay.setToDisplay_generalGui(false);
-		menuListener = new DefaultMenuListener();
 		
 		ortho.setOrthographicProjection(false);
 
@@ -171,6 +167,8 @@ public class ClientEngineZildo {
 			return;
 		}
 
+		long t1 = ZUtils.getTime();
+		
 		// Focus camera on player
 		if (!p_editor && client.connected) {
 			if (mapDisplay.getCurrentMap() != null) {
@@ -184,11 +182,17 @@ public class ClientEngineZildo {
 
 		}
 
+		long t2 = ZUtils.getTime();
+
 		// Tile engine
 		Area[] maps=new Area[]{ mapDisplay.getCurrentMap(), mapDisplay.getPreviousMap()};
 		tileEngine.updateTiles(mapDisplay.getCamera(), maps, mapDisplay.getCompteur_animation());
 		
+		long t3 = ZUtils.getTime();
+
 		spriteDisplay.updateSpritesClient(mapDisplay.getCamera());
+
+		long t4 = ZUtils.getTime();
 
 		ClientEngineZildo.openGLGestion.beginScene();
 
@@ -201,21 +205,29 @@ public class ClientEngineZildo {
 		    tileEngine.render(true);
 		}
 
+		long t5 = ZUtils.getTime();
+
 		// Display BACKGROUND sprites
 		if (spriteDisplay.foreBackController.isDisplayBackground()) {
 		    spriteEngine.render(true);
 		}
 		
+		long t6 = ZUtils.getTime();
+
 		// Display FOREGROUND tiles
 		if (mapDisplay.foreBackController.isDisplayForeground()) {
 		    tileEngine.render(false);
 		}
+
+		long t7 = ZUtils.getTime();
 
 		// Display FOREGROUND sprites
 		if (spriteDisplay.foreBackController.isDisplayForeground()) {
 		    spriteEngine.render(false);
 		}
 		
+		long t8 = ZUtils.getTime();
+
 		if (Zildo.infoDebug && !p_editor) {
 			this.debug();
 		}
@@ -233,6 +245,10 @@ public class ClientEngineZildo {
 
 		guiDisplay.draw();
 
+		long t9 = ZUtils.getTime();
+
+		System.out.println("t2 = "+(t2-t1)+"ms t3="+(t3-t2)+"ms t4="+(t4-t3)+"ms t5="+(t5-t4)+"ms t6="+(t6-t5)+"ms t7="+(t7-t6)+"ms t8="+(t8-t7)+"ms "+(t9-t8));
+		
 		openGLGestion.endScene();
 	}
 
@@ -329,25 +345,6 @@ public class ClientEngineZildo {
 		guiDisplay.setToDisplay_generalGui(displayGUI);
 
 		return retEvent;
-	}
-
-	/**
-	 * Render menu. Keys are managed directly from Menu object.
-	 */
-	public void renderMenu() {
-		Menu menu = client.getCurrentMenu();
-		if (menu != null) {
-			ItemMenu item = menuListener.act(menu);
-			if (item == null) {
-				guiDisplay.displayMenu(menu);
-			} else {
-				// Terminates menu and schedule selected action to execute
-				guiDisplay.endMenu();
-				menu.displayed = false;
-				client.setCurrentMenu(null);
-				client.action = item;
-			}
-		}
 	}
 
 	public static void cleanUp() {
@@ -450,7 +447,4 @@ public class ClientEngineZildo {
 	    askedEvent = new ClientEvent(p_nature);
 	}
 
-	public void setMenuListener(MenuListener p_menuListener) {
-		menuListener = p_menuListener;
-	}
 }

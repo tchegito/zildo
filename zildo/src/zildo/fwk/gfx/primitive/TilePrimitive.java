@@ -137,5 +137,12 @@ public class TilePrimitive extends QuadPrimitive {
     		}
     	}
     }
+    
+    void skipTile() {
+    	bufs.indices.position(bufs.indices.position() + 6);
+    	bufs.textures.position(bufs.textures.position() + 8);
+        nPoints += 4;
+        nIndices += 6;
+    }
 
 }

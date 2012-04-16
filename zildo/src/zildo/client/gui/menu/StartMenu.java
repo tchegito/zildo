@@ -22,10 +22,10 @@ package zildo.client.gui.menu;
 
 import java.util.List;
 
-import zildo.MultiPlayer;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
+import zildo.client.stage.MultiPlayer;
 import zildo.fwk.net.ServerInfo;
 import zildo.fwk.net.www.WorldRegister;
 import zildo.fwk.ui.InfoMenu;

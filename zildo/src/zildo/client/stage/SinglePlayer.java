@@ -19,14 +19,14 @@
  */
 
 
-package zildo;
+package zildo.client.stage;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import zildo.client.Client;
-import zildo.client.ClientEngineZildo;
 import zildo.client.Client.ClientType;
+import zildo.client.ClientEngineZildo;
 import zildo.client.gui.menu.PlayerNameMenu;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
@@ -49,13 +49,18 @@ import zildo.server.state.ClientState;
  * </ul>
  * @author tchegito
  */
-public class SinglePlayer {
+public class SinglePlayer implements GameStage {
 
     EngineZildo engineZildo;
     ClientEngineZildo clientEngineZildo;
     Server server;
+    Client client;
     static ClientState state;	// The single-player client / or multi-player server's client
     
+    Set<ClientState> states=new HashSet<ClientState>();
+    KeyboardInstant instant=new KeyboardInstant();
+    boolean done = false;
+
     /**
      * Multiplayer, where current player is the server.
      * @param p_server
@@ -86,7 +91,7 @@ public class SinglePlayer {
      * -the same, but in fake mode : we emulate a network traffic
      */
     public void launchGame() {
-        Client client = ClientEngineZildo.getClientForGame();
+        client = ClientEngineZildo.getClientForGame();
         client.setUpNetwork(ClientType.SERVER_AND_CLIENT, null, 0, server!=null);
         clientEngineZildo = client.getEngineZildo();
 
@@ -96,8 +101,7 @@ public class SinglePlayer {
         	ClientEngineZildo.mapDisplay.setCurrentMap(map);
         }
 
-        boolean done = false;
-        Set<ClientState> states=new HashSet<ClientState>();
+
 
         // Create Zildo !
         int zildoId;
@@ -121,51 +125,70 @@ public class SinglePlayer {
         SpriteEntity zildo=EngineZildo.persoManagement.getZildo();
         ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
         
-        KeyboardInstant instant=new KeyboardInstant();
+        client.setSinglePlayerGame(this);
         
+        client.addStage(this);
+        /*
         while (!done && !state.gameOver) {
-        	states.clear();
-
-            // Server's network job
-            if (server != null) {
-                server.networkJob();
-                
-                states.addAll(server.getClientStates());
-            }
-            
-            // Render events (1: server and 2: client)
-            state.event = engineZildo.renderEvent(state.event);
-            state.event = clientEngineZildo.renderEvent(state.event);
-	            
-        	EngineZildo.dialogManagement.resetQueue();
-            //if (state.event.nature == ClientEventNature.NOEVENT) {
-	            // Reset queues
-	        	EngineZildo.soundManagement.resetQueue();
-            //}
-            // Read keyboard
-            instant.update();
-            state.keys = instant;
-            client.setKbInstant(instant);
-
-            states.add(state);
-
-            // Update server
-            engineZildo.renderFrame(states);
-
-            // Dialogs
-            if (ClientEngineZildo.dialogDisplay.launchDialog(EngineZildo.dialogManagement.getQueue())) {
-            	EngineZildo.dialogManagement.stopDialog(state, false);
-            }
-
-            // Update client
-            ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(state));
-
-            // Render client
-            done = client.mainLoop();
-
-            // Render sounds
-            ClientEngineZildo.soundPlay.playSounds(EngineZildo.soundManagement.getQueue());
+        	updateGame();
+        	renderGame();
         }
+
+        endGame();
+        */
+    }
+    
+    /**
+     * Game internal loop. Read inputs and update all entities, dialogs, sounds.
+     * @return boolean (TRUE if game is over)
+     */
+    public void updateGame() {
+    	states.clear();
+
+        // Server's network job
+        if (server != null) {
+            server.networkJob();
+            
+            states.addAll(server.getClientStates());
+        }
+        
+        // Render events (1: server and 2: client)
+        state.event = engineZildo.renderEvent(state.event);
+        state.event = clientEngineZildo.renderEvent(state.event);
+            
+    	EngineZildo.dialogManagement.resetQueue();
+        //if (state.event.nature == ClientEventNature.NOEVENT) {
+            // Reset queues
+        	EngineZildo.soundManagement.resetQueue();
+        //}
+        // Read keyboard
+        instant.update();
+        state.keys = instant;
+        client.setKbInstant(instant);
+
+        states.add(state);
+
+        // Update server
+        engineZildo.renderFrame(states);
+
+        // Dialogs
+        if (ClientEngineZildo.dialogDisplay.launchDialog(EngineZildo.dialogManagement.getQueue())) {
+        	EngineZildo.dialogManagement.stopDialog(state, false);
+        }
+
+        // Update client
+        ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(state));
+    }
+    
+    public void renderGame() {
+        // Render client
+        //done = client.mainLoop();
+
+        // Render sounds
+        ClientEngineZildo.soundPlay.playSounds(EngineZildo.soundManagement.getQueue());
+    }
+    
+    public void endGame() {
         
         if (server != null) {
         	// Tells all clients that we're leaving
@@ -177,5 +200,9 @@ public class SinglePlayer {
     
     public static ClientState getClientState() {
     	return state;
+    }
+    
+    public boolean isDone() {
+    	return done;
     }
 }

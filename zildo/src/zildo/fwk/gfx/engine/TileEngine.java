@@ -282,7 +282,8 @@ public abstract class TileEngine {
 				if (theMap == null) {
 					break;
 				}
-				Point offset = theMap.getOffset();
+				//TODO: think about offset ! (in LWJG/Android TileEngine set camera))
+				//Point offset = theMap.getOffset();
 				for (int y = 0; y < Constantes.TILEENGINE_HEIGHT; y++)
 				{
 					for (int x = 0; x < Constantes.TILEENGINE_WIDTH; x++)
@@ -290,6 +291,7 @@ public abstract class TileEngine {
 						// Get corresponding case on the map
 						Case mapCase = theMap.get_mapcase(x, y + 4);
 						if (mapCase != null) {
+							boolean changed = mapCase.hasChanged();
 							Tile back = mapCase.getBackTile();
 							int n_motif = mapCase.getAnimatedMotif(compteur_animation);
 							int bank = back.bank;
@@ -297,22 +299,23 @@ public abstract class TileEngine {
 								throw new RuntimeException("We got a big problem");
 							}
 							meshBACK.updateTile(bank,
-									x, y, cameraNew, offset, n_motif, back.reverse);
+									x, y, n_motif, back.reverse, changed);
 							
 							Tile back2 = mapCase.getBackTile2();
 							if (back2 != null) {
 								n_motif = back2.index;
 								meshBACK.updateTile(back2.bank,
-										x, y, cameraNew, offset, n_motif, back2.reverse);
+										x, y, n_motif, back2.reverse, changed);
 							}
 							
 							Tile fore = mapCase.getForeTile();
 							if (fore != null) {
 								n_motif = fore.index;
 								meshFORE.updateTile(fore.bank,
-													x, y, cameraNew, offset, fore.index, fore.reverse);
+													x, y, fore.index, fore.reverse, changed);
 
 							}
+							mapCase.markUnchanged();
 						}
 					}
 				}
