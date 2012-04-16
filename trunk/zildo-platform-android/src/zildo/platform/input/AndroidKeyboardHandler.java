@@ -95,7 +95,6 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 	public void poll() {
 		polledTouchedPoints.clear();
 		if (!liveTouchedPoints.isEmpty()) {
-			Log.d("touch", "poll points");
 			polledTouchedPoints.clear();
 			polledTouchedPoints.addAll(liveTouchedPoints);
 			liveTouchedPoints.clear();

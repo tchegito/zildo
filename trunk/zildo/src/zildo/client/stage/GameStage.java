@@ -18,30 +18,19 @@
  *
  */
 
-package zildo.fwk.input;
+package zildo.client.stage;
 
 /**
  * @author Tchegito
  *
  */
-public interface KeyboardHandler {
+public interface GameStage {
 
-	public boolean isKeyDown(int p_code);
+	public void updateGame();
 	
-	public void poll();
+	public void renderGame();
 	
-	/**
-	 * @return true if a keyboard event was read, false otherwise
-	 */
-	public boolean next();
-	
-	public boolean getEventKeyState();
-	
-	public int getEventKey();
-	
-	public char getEventCharacter();
-	
-	public enum Keys {Q, W, X, E, UP, DOWN, RIGHT, LEFT, TAB, RETURN, BACK, ESCAPE, LSHIFT};
-	public int getCode(Keys k);
-	
+	public void launchGame();
+
+	public boolean isDone();
 }

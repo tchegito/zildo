@@ -152,4 +152,5 @@ public abstract class OpenGLGestion {
 
 	public abstract double getTimeInSeconds();
 
+	public void requestRender() {};
 }

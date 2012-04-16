@@ -23,7 +23,7 @@ package zildo.client.gui.menu;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.MultiPlayer;
+import zildo.client.stage.MultiPlayer;
 import zildo.fwk.net.ServerInfo;
 import zildo.fwk.net.www.InternetClient;
 import zildo.fwk.ui.InfoMenu;

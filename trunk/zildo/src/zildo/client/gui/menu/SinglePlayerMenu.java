@@ -20,8 +20,8 @@
 
 package zildo.client.gui.menu;
 
-import zildo.SinglePlayer;
 import zildo.client.sound.BankSound;
+import zildo.client.stage.SinglePlayer;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.monde.Game;
