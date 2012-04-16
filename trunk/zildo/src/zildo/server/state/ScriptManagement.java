@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import zildo.SinglePlayer;
+import zildo.client.stage.SinglePlayer;
 import zildo.fwk.script.command.ScriptExecutor;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.ActionElement;

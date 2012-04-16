@@ -20,13 +20,13 @@
 
 package zildo.fwk.script.command;
 
-import zildo.SinglePlayer;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.client.MapDisplay;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
+import zildo.client.stage.SinglePlayer;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.ui.UIText;
@@ -191,9 +191,12 @@ public class ActionExecutor {
                        	newOne.initPersoFX();
                         EngineZildo.spriteManagement.spawnPerso(newOne);
                 	} else {	// Spawn a new element
-                		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.text);
-                		Element elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0);
-                		elem.setName(p_action.what);
+                		if (EngineZildo.spriteManagement.getNamedElement(p_action.what) != null) {
+                			// Spawn only if doesn't exist yet
+	                		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.text);
+	                		Element elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0);
+	                		elem.setName(p_action.what);
+                		}
                 	}
                     achieved = true;
                     break;
@@ -322,6 +325,7 @@ public class ActionExecutor {
             case fadeIn:
             case fadeOut:
            		achieved=ClientEngineZildo.guiDisplay.isFadeOver();
+           		System.out.println("waiting for fade");
             	break;
             case activate:
         		Element toActivate = EngineZildo.spriteManagement.getNamedElement(p_action.what);

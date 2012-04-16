@@ -23,8 +23,8 @@ package zildo.monde.sprites.persos;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.SinglePlayer;
 import zildo.client.sound.BankSound;
+import zildo.client.stage.SinglePlayer;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.script.xml.element.TriggerElement;
