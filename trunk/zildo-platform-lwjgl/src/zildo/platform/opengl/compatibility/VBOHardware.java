@@ -21,19 +21,16 @@
 package zildo.platform.opengl.compatibility;
 
 import java.nio.IntBuffer;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBVertexBufferObject;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 import zildo.platform.opengl.GLUtils;
 
 public class VBOHardware extends VBOSoftware {
-	
-	static Map<Integer, VBOBuffers> vboId = new HashMap<Integer, VBOBuffers>();
 	
 	@Override
 	public VBOBuffers create(int p_numPoints, boolean p_forTiles) {
@@ -51,15 +48,27 @@ public class VBOHardware extends VBOSoftware {
 		preDraw();
 		
         ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, p_bufs.vertexBufferId);
-        GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
+        GL11.glVertexPointer(2, GL11.GL_FLOAT, 0, 0);
 
         ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, p_bufs.textureBufferId);
         GL11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, 0);	
-        
-        GL11.glDrawElements(GL11.GL_TRIANGLES, p_bufs.indices);
 
+        ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ELEMENT_ARRAY_BUFFER_ARB, p_bufs.indiceBufferId);
+
+		int count = p_bufs.indices.remaining();
+        GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, count, count, GL11.GL_UNSIGNED_SHORT, 0);
+        //GL11.glDrawElements(GL11.GL_TRIANGLES, p_bufs.indices);
 	}
-	
+	/*
+	GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+	ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, vertexBufferID);
+	GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
+	 
+	 
+	ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ELEMENT_ARRAY_BUFFER_ARB, indexBufferID);
+	GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, maxIndex, indexBufferSize,
+	GL11.GL_UNSIGNED_INT, 0);
+	*/
 	@Override
 	public void cleanUp(VBOBuffers p_bufs) {
         IntBuffer buf = BufferUtils.createIntBuffer(1);
@@ -79,8 +88,8 @@ public class VBOHardware extends VBOSoftware {
 	@Override
 	public void endInitialization(VBOBuffers p_bufs) {
 		super.endInitialization(p_bufs);
-        GLUtils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices);
-        GLUtils.bufferData(p_bufs.textureBufferId, p_bufs.textures);
-        GLUtils.bufferData(p_bufs.indiceBufferId, p_bufs.indices);		
+        GLUtils.bufferData(p_bufs.indiceBufferId, p_bufs.indices, false);
+        GLUtils.bufferData(p_bufs.textureBufferId, p_bufs.textures, false);
+        GLUtils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices, false);
 	}
 }
