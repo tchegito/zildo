@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBVertexBufferObject;
@@ -62,14 +63,21 @@ public class GLUtils {
     }
     
     // Vertex & Indices Buffer
-    public static void bufferData(int id, Buffer buffer) {
+    public static void bufferData(int id, Buffer buffer, boolean statically) {
+    	int mode = ARBVertexBufferObject.GL_DYNAMIC_DRAW_ARB;
+    	if (statically) {
+    		mode = ARBVertexBufferObject.GL_STATIC_DRAW_ARB;
+    	}
         ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, id);
         if (buffer instanceof FloatBuffer) {
             ARBVertexBufferObject.glBufferDataARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, (FloatBuffer) buffer,
-                    ARBVertexBufferObject.GL_STREAM_DRAW_ARB);
+            		mode);
         } else if (buffer instanceof IntBuffer) {
             ARBVertexBufferObject.glBufferDataARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, (IntBuffer) buffer,
-                    ARBVertexBufferObject.GL_STREAM_DRAW_ARB);
+            		mode);
+        } else if (buffer instanceof ShortBuffer) {
+            ARBVertexBufferObject.glBufferDataARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, (ShortBuffer) buffer,
+            		mode);
         }
     }
 
