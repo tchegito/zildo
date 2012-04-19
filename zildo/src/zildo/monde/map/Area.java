@@ -59,6 +59,7 @@ import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 import zildo.server.SpriteManagement;
 
@@ -86,7 +87,7 @@ public class Area implements EasySerializable {
 
 	private int dim_x, dim_y;
 	private String name;
-	private Map<Integer, Case> mapdata;
+	private Case[][] mapdata;
 	private List<ChainingPoint> listChainingPoint;
 	private MapDialog dialogs;
 
@@ -107,7 +108,7 @@ public class Area implements EasySerializable {
 	}
 
 	public Area() {
-		mapdata = new HashMap<Integer, Case>();
+		mapdata = new Case[Constantes.TILEENGINE_HEIGHT + 4][Constantes.TILEENGINE_HEIGHT + 4];
 		listChainingPoint = new ArrayList<ChainingPoint>();
 
 		changes = new HashSet<Point>();
@@ -139,7 +140,7 @@ public class Area implements EasySerializable {
 	// OUT: Case object at the given coordinates
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public Case get_mapcase(int x, int y) {
-		return mapdata.get(y * lineSize + x);
+		return mapdata[y][x];
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -148,7 +149,7 @@ public class Area implements EasySerializable {
 	// IN:coordinates, Case object
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public void set_mapcase(int x, int y, Case c) {
-		mapdata.put(y * lineSize + x, c);
+		mapdata[y][x] = c; //.put(y * lineSize + x, c);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
