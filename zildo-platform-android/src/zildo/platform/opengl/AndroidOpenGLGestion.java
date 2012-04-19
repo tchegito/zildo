@@ -483,6 +483,6 @@ public class AndroidOpenGLGestion extends OpenGLGestion {
 	
 	public static void setGL(GL10 gl) {
 		gl10 = gl;
-		GLUtils.gl10 = gl;
+		GLUtils.gl11 = (GL11) gl;
 	}
 }
