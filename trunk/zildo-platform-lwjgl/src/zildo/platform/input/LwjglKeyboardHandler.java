@@ -64,7 +64,7 @@ public class LwjglKeyboardHandler implements KeyboardHandler {
 		platformKeys.put(Keys.DOWN, KEY_DOWN);
 	}
 
-	public Boolean isKeyDown(int p_code) {
+	public boolean isKeyDown(int p_code) {
 		return Keyboard.isKeyDown(p_code);		
 	}
 	
