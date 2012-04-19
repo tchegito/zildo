@@ -24,8 +24,8 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 
-import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import zildo.fwk.ZUtils;
@@ -35,52 +35,55 @@ import zildo.fwk.ZUtils;
  */
 public class GLUtils {
 
-	static GL10 gl10;
+	static GL11 gl11;
 	
     public static int generateTexture(int sizeX, int sizeY) {
         IntBuffer buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
-        gl10.glGenTextures(1, buf); // Create Texture In OpenGL
+        gl11.glGenTextures(1, buf); // Create Texture In OpenGL
         int textureID = buf.get(0);
-        gl10.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-        gl10.glTexParameterx(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        gl10.glTexParameterx(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        gl11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
+        gl11.glTexParameterx(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        gl11.glTexParameterx(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
         
-        gl10.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, ZUtils.adjustTexSize(sizeX), ZUtils.adjustTexSize(sizeY), 0, GL11.GL_RGBA,
+        gl11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, ZUtils.adjustTexSize(sizeX), ZUtils.adjustTexSize(sizeY), 0, GL11.GL_RGBA,
                 GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
 
         return textureID;
     }
 
     public static void cleanTexture(int id) {
-    	gl10.glDeleteTextures(1, ZUtils.getBufferWithId(id));
+    	gl11.glDeleteTextures(1, ZUtils.getBufferWithId(id));
     }
 
     public static int createVBO() {
-        IntBuffer buffer = ZUtils.createIntBuffer(1);
-        //ARBVertexBufferObject.glGenBuffersARB(buffer);
-        return buffer.get();    	
+    	int[] buffer = new int[1];
+    	gl11.glGenBuffers(1, buffer, 0);
+    	return buffer[0];
     }
     
     // Vertex & Indices Buffer
-    public static void bufferData(int id, Buffer buffer) {
-    	/*
-        ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, id);
-        if (buffer instanceof FloatBuffer) {
-            ARBVertexBufferObject.glBufferDataARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, (FloatBuffer) buffer,
-                    ARBVertexBufferObject.GL_STREAM_DRAW_ARB);
-        } else if (buffer instanceof IntBuffer) {
-            ARBVertexBufferObject.glBufferDataARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, (IntBuffer) buffer,
-                    ARBVertexBufferObject.GL_STREAM_DRAW_ARB);
+    public static void bufferData(int id, Buffer buffer, boolean statically) {
+    	//glBufferData(GL_ARRAY_BUFFER, vertex_size+color_size, 0, GL_STATIC_DRAW);
+    	int mode = GL11.GL_DYNAMIC_DRAW;
+    	if (statically) {
+    		mode = GL11.GL_STATIC_DRAW;
+    	}
+        gl11.glBindBuffer(GL11.GL_ARRAY_BUFFER, id);
+        int size = buffer.remaining();
+        if (buffer instanceof ShortBuffer) {
+        	size = size << 1;
+        } else {
+        	size = size << 2;
         }
-        */
+       	gl11.glBufferData(GL11.GL_ARRAY_BUFFER, size, buffer, mode);
     }
 
     public static void copyScreenToTexture(int p_texId, int p_sizeX, int p_sizeY) {
-    	gl10.glBindTexture(GL11.GL_TEXTURE_2D, p_texId);
+    	gl11.glBindTexture(GL11.GL_TEXTURE_2D, p_texId);
 
-    	gl10.glTexParameterx(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-    	gl10.glTexParameterx(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+    	gl11.glTexParameterx(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+    	gl11.glTexParameterx(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 
-    	gl10.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, p_sizeX, p_sizeY, 0);
+    	gl11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, p_sizeX, p_sizeY, 0);
     }
 }
