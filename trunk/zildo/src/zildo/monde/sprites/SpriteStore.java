@@ -133,7 +133,6 @@ public class SpriteStore {
 		entity.setScrY(y);
 		entity.setNSpr(nSpr);
 		entity.setNBank(nBank);
-		entity.setMoved(false);
 		entity.setForeground(true);	// Fonts are in front of the scene
 	
 		entity.setEntityType(EntityType.FONT);
