@@ -63,8 +63,6 @@ public class SpriteEntity extends Identified implements Cloneable,
 						// 'pos_seqsprite'
 	public int nBank;
 	protected SpriteDescription desc; // Interpretation of nSpr and nBank
-	private boolean moved; // True=need to synchronize the vertex buffer,
-							// False=no move this frame
 	private int linkVertices; // Index on VertexBuffer's position about quad
 								// describing this sprite
 	public boolean visible; // TRUE=visible FALSE=invisible
@@ -165,14 +163,6 @@ public class SpriteEntity extends Identified implements Cloneable,
 
 	public void setNBank(int bank) {
 		nBank = bank;
-	}
-
-	public boolean isMoved() {
-		return moved;
-	}
-
-	public void setMoved(boolean moved) {
-		this.moved = moved;
 	}
 
 	public int getLinkVertices() {

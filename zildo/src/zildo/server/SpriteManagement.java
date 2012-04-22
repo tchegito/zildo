@@ -124,7 +124,6 @@ public class SpriteManagement extends SpriteStore {
 		element.setZ(z);
 		element.setNSpr(nSpr);
 		element.setNBank(nBank);
-		element.setMoved(false);
 
 		spawnSprite(element);
 
@@ -152,7 +151,6 @@ public class SpriteManagement extends SpriteStore {
 		SpriteEntity entity = perso;
 		entity.setScrX((int) perso.x);
 		entity.setScrY((int) perso.y);
-		entity.setMoved(false);
 
 		spawnSprite(entity);
 
@@ -403,7 +401,6 @@ public class SpriteManagement extends SpriteStore {
 		
 		entity.setNSpr(nSpr);
 		entity.setNBank(nBank);
-		entity.setMoved(false);
 		entity.setForeground(p_foreground);
 
 
