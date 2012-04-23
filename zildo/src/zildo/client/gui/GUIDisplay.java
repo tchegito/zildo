@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
 
-
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
@@ -94,6 +93,8 @@ public class GUIDisplay {
 													// GUI
 	private GUISpriteSequence menuSequence; // Cursors for menu
 
+	private ScreenConstant sc;
+	
 	// Menu items location (for Android)
 	private Map<ItemMenu, Zone> itemsOnScreen = new HashMap<ItemMenu, Zone>();
 	
@@ -126,6 +127,9 @@ public class GUIDisplay {
 		messageQueue = new Stack<GameMessage>();
 		
 		initTransco();
+		
+		// Screen constants
+		sc = ClientEngineZildo.screenConstant;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -213,8 +217,8 @@ public class GUIDisplay {
 	public void setText(String texte, DialogMode dialogMode) {
 		toDisplay_dialogMode = dialogMode;
 		removePreviousTextInFrame();
-		prepareTextInFrame(texte, Constantes.TEXTER_COORDINATE_X,
-				Constantes.TEXTER_COORDINATE_Y);
+		prepareTextInFrame(texte, sc.TEXTER_COORDINATE_X,
+				sc.TEXTER_COORDINATE_Y);
 	}
 
 	/**
@@ -253,13 +257,13 @@ public class GUIDisplay {
 		case CLASSIC:
 		default:
 			nBank = SpriteBank.BANK_FONTES;
-			sizeLine = Constantes.TEXTER_SIZELINE;
+			sizeLine = sc.TEXTER_SIZELINE;
 			visibleFont = false;
 			center = false;
 			break;
 		case MENU:
 			nBank = SpriteBank.BANK_FONTES;
-			sizeLine = Constantes.TEXTER_SIZELINE;
+			sizeLine = sc.TEXTER_SIZELINE;
 			visibleFont = true;
 			center = true;
 			seq = textMenuSequence;
@@ -286,7 +290,7 @@ public class GUIDisplay {
 				}
 			}
 			if (a == ' ' || a == 0 || a == '#' || a == '\n') {
-				if (sizeCurrentLine + sizeCurrentWord > Constantes.TEXTER_SIZEX
+				if (sizeCurrentLine + sizeCurrentWord > sc.TEXTER_SIZEX
 						|| a == '\n') {
 					// We must cut the line before the current word
 					if (a == '\n') {
@@ -306,7 +310,7 @@ public class GUIDisplay {
 					sizeCurrentLine = 0;
 				}
 				if (a == ' ') {
-					sizeCurrentLine += Constantes.TEXTER_SIZESPACE; // Space
+					sizeCurrentLine += sc.TEXTER_SIZESPACE; // Space
 																	// size
 					nSpr[nLettre] = -1;
 					if (!signAlone) {
@@ -337,7 +341,7 @@ public class GUIDisplay {
 		int offsetX = 0;
 		int offsetY = 0;
 		if (center) {
-			offsetX += (Constantes.TEXTER_SIZEX - sizesLine[0]) / 2;
+			offsetX = (sc.TEXTER_SIZEX - sizesLine[0]) / 2;
 		}
 		nLigne = 0;
 		SpriteEntity lettre;
@@ -348,13 +352,13 @@ public class GUIDisplay {
 			int indexSpr = nSpr[i];
 			if (indexSpr == -1) {
 				// Space
-				offsetX += Constantes.TEXTER_SIZESPACE;
+				offsetX += sc.TEXTER_SIZESPACE;
 			} else if (indexSpr == -2) {
 				offsetX = 0;
 				offsetY += sizeLine;
 				nLigne++;
 				if (center) {
-					offsetX += (Constantes.TEXTER_SIZEX - sizesLine[nLigne]) / 2;
+					offsetX = (sc.TEXTER_SIZEX - sizesLine[nLigne]) / 2;
 				}
 			} else {
 				// Store font's pointer to easily remove it later and scroll
@@ -405,28 +409,35 @@ public class GUIDisplay {
 	private final int couleur_cadre[] = { 3, 9, 9, 169, 3 };
 
 	void drawFrame() {
+		int sizeX = sc.TEXTER_SIZEX;
+		int sizeY = sc.TEXTER_SIZELINE * sc.TEXTER_NUMLINE + 2;
+		int posX1 = sc.TEXTER_COORDINATE_X - 10;
+		int posX2 = sc.TEXTER_COORDINATE_X + sizeX;
+		int posY1 = sc.TEXTER_COORDINATE_Y - 10;
+		int posY2 = sc.TEXTER_COORDINATE_Y + sizeY;
+		
 		// Draw corner frame
 		if (!frameDialogSequence.isDrawn()) {
 			frameDialogSequence
-					.addSprite(FontDescription.FRAME_UPLEFT, 40, 170);
-			frameDialogSequence.addSprite(FontDescription.FRAME_UPRIGHT, 280,
-					170);
-			frameDialogSequence.addSprite(FontDescription.FRAME_DOWNLEFT, 40,
-					230);
-			frameDialogSequence.addSprite(FontDescription.FRAME_DOWNRIGHT, 280,
-					230);
+					.addSprite(FontDescription.FRAME_UPLEFT, posX1, posY1);
+			frameDialogSequence.addSprite(FontDescription.FRAME_UPRIGHT, posX2,
+					posY1);
+			frameDialogSequence.addSprite(FontDescription.FRAME_DOWNLEFT, posX1,
+					posY2);
+			frameDialogSequence.addSprite(FontDescription.FRAME_DOWNRIGHT, posX2,
+					posY2);
 		}
 
 		// Draw frame's bars
 		for (int i = 0; i < 5; i++) {
 			ClientEngineZildo.ortho.initDrawBox(false);
-			ClientEngineZildo.ortho.boxOpti(47, 170 + i, 233, 1,
+			ClientEngineZildo.ortho.boxOpti(posX1+7, posY1 + i, sizeX+3, 1,
 					couleur_cadre[i], null);
-			ClientEngineZildo.ortho.boxOpti(47, 236 - i, 233, 1,
+			ClientEngineZildo.ortho.boxOpti(posX1+7, posY2+6 - i, sizeX+3, 1,
 					couleur_cadre[i], null);
-			ClientEngineZildo.ortho.boxOpti(40 + i, 177, 1, 53,
+			ClientEngineZildo.ortho.boxOpti(posX1 + i, posY1+7, 1, sizeY+3,
 					couleur_cadre[i], null);
-			ClientEngineZildo.ortho.boxOpti(286 - i, 177, 1, 53,
+			ClientEngineZildo.ortho.boxOpti(posX2+6 - i, posY1+7, 1, sizeY+3,
 					couleur_cadre[i], null);
 			ClientEngineZildo.ortho.endDraw();
 		}
@@ -450,10 +461,10 @@ public class GUIDisplay {
 			if (a == ' ' || i == sentence.length()) {
 				for (int k = 0; k < (i - j) && it.hasNext(); k++) {
 					SpriteEntity entity = it.next();
-					if (entity.getScrY() < Constantes.TEXTER_COORDINATE_Y) {
+					if (entity.getScrY() < sc.TEXTER_COORDINATE_Y) {
 						entity.setVisible(false);
-					} else if (entity.getScrY() < (Constantes.TEXTER_COORDINATE_Y
-							+ (Constantes.TEXTER_NUMLINE * Constantes.TEXTER_SIZELINE) - 10)) {
+					} else if (entity.getScrY() < (sc.TEXTER_COORDINATE_Y
+							+ (Constantes.TEXTER_NUMLINE * sc.TEXTER_SIZELINE) - 10)) {
 						entity.setVisible(true);
 						if (i == sentence.length()) {
 							entireMessageDisplay = true;
@@ -483,7 +494,7 @@ public class GUIDisplay {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public void scrollAndDisplayTextParts(int position, String sentence) {
 		for (SpriteEntity entity : textDialogSequence) {
-			entity.setScrY(entity.getScrY() - Constantes.TEXTER_SIZELINE);
+			entity.setScrY(entity.getScrY() - sc.TEXTER_SIZELINE);
 		}
 
 		displayTextParts(position, sentence, false);
@@ -495,7 +506,7 @@ public class GUIDisplay {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public void displayTopics(int selected) {
 		for (SpriteEntity entity : textDialogSequence) {
-			int numLigne = (entity.getScrY() - Constantes.TEXTER_COORDINATE_Y)
+			int numLigne = (entity.getScrY() - sc.TEXTER_COORDINATE_Y)
 					/ Constantes.TEXTER_TOPIC_SIZELINE;
 			if (numLigne == selected) {
 				entity.setSpecialEffect(EngineFX.FONT_HIGHLIGHT);
@@ -513,7 +524,7 @@ public class GUIDisplay {
 	 *            (can't be null)
 	 */
 	public void displayMenu(Menu p_menu) {
-		int sizeY = (p_menu.items.size() + 2) * Constantes.TEXTER_MENU_SIZEY;
+		int sizeY = (p_menu.items.size() + 2) * sc.TEXTER_MENU_SIZEY;
 		int startY = (Zildo.viewPortY - sizeY) / 2;
 		if (!p_menu.displayed) {
 			// Display menu's text
@@ -521,23 +532,23 @@ public class GUIDisplay {
 			int posY = startY;
 			removePreviousTextInFrame();
 			// Title
-			prepareTextInFrame(p_menu.title, Constantes.TEXTER_COORDINATE_X,
+			prepareTextInFrame(p_menu.title, sc.TEXTER_COORDINATE_X,
 					posY);
-			posY += 2 * Constantes.TEXTER_MENU_SIZEY;
+			posY += 2 * sc.TEXTER_MENU_SIZEY;
 			
 			// Items
 			itemsOnScreen.clear();
 			for (ItemMenu item : p_menu.items) {
 				Zone z = prepareTextInFrame(item.getText(),
-						Constantes.TEXTER_COORDINATE_X, posY);
-				posY += Constantes.TEXTER_MENU_SIZEY;
+						sc.TEXTER_COORDINATE_X, posY);
+				posY += sc.TEXTER_MENU_SIZEY;
 				// Store item location
 				itemsOnScreen.put(item, z);
 			}
 			p_menu.displayed = true;
 		}
 		menuSequence.clear();
-		int y = startY + (p_menu.selected + 2) * Constantes.TEXTER_MENU_SIZEY;
+		int y = startY + (p_menu.selected + 2) * sc.TEXTER_MENU_SIZEY;
 		alpha += 0.1f;
 		int wave = (int) (10.0f * Math.sin(alpha));
 		menuSequence.addSprite(FontDescription.FRAME_UPRIGHT, 40 + wave, y + 2);
