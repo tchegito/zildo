@@ -24,6 +24,7 @@ package zildo.client;
 import zildo.Zildo;
 import zildo.client.gui.DialogDisplay;
 import zildo.client.gui.GUIDisplay;
+import zildo.client.gui.ScreenConstant;
 import zildo.client.sound.Ambient;
 import zildo.client.sound.SoundPlay;
 import zildo.fwk.FilterCommand;
@@ -67,6 +68,7 @@ public class ClientEngineZildo {
 	public static MapDisplay mapDisplay;
 	public static SoundEngine soundEngine;
 	
+	public static ScreenConstant screenConstant;
 	public static GUIDisplay guiDisplay;
 	public static DialogDisplay dialogDisplay;
 
@@ -101,6 +103,8 @@ public class ClientEngineZildo {
         openGLGestion = Zildo.pdPlugin.openGLGestion;
         openGLGestion.init();
        
+        screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
+        
         filterCommand = new FilterCommand();
 		guiDisplay = new GUIDisplay();
 		dialogDisplay = new DialogDisplay();
