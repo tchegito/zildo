@@ -23,10 +23,17 @@ package zildo.resource;
 import java.io.File;
 
 import zildo.Zildo;
+import zildo.client.gui.ScreenConstant;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.sprites.desc.ZildoOutfit;
 
-
+/**
+ * All size concerning screen sprites are referring to a standard of 320x240.<p/>
+ * 
+ * An adjustment is done via {@link ScreenConstant} class.
+ * @author evariste.boussaton
+ *
+ */
 public class Constantes {
 
 	// File system data
