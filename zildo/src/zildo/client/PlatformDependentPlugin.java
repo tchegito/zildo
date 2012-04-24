@@ -20,13 +20,16 @@
 
 package zildo.client;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.HashMap;
 import java.util.Map;
 
 import zildo.Zildo;
 import zildo.fwk.Injector;
+import zildo.fwk.file.ClassicFileUtil;
 import zildo.fwk.file.EasyBuffering;
-import zildo.fwk.file.EasyReadingFile;
+import zildo.fwk.file.FileUtil;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.PixelShaders;
@@ -61,7 +64,7 @@ public class PlatformDependentPlugin {
     public SoundEngine soundEngine;
     public OpenGLGestion openGLGestion;
     
-    private Class<? extends EasyBuffering> fileReader = EasyReadingFile.class;
+    private FileUtil fileUtil = new ClassicFileUtil();
     
     public Map<Class<ScreenFilter>, ScreenFilter> filters;
     
@@ -79,7 +82,7 @@ public class PlatformDependentPlugin {
     public void init(boolean p_awt) {
     	
     	if (currentPlugin == KnownPlugin.Android) {
-    		fileReader = injector.findClass("com.zildo.AndroidReadingFile");
+    		fileUtil = injector.createSingleton("com.zildo.AndroidFileUtil");
     	}
         // Look for existing stuff in the class loader and create all needed singletons
     	if (!p_awt) {
@@ -122,9 +125,12 @@ public class PlatformDependentPlugin {
         }
     }
 
-    @SuppressWarnings("unchecked")
-	public <T extends EasyBuffering> T openFile(String path) {
-    	return (T) injector.createInstance(fileReader, path);
+	public EasyBuffering openFile(String path) {
+    	return fileUtil.openFile(path);
+    }
+    
+    public File[] listFiles(String path, FilenameFilter filter) {
+    	return fileUtil.listFiles(path, filter);
     }
     
     @SuppressWarnings("unchecked")

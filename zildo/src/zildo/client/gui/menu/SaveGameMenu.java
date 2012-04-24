@@ -138,7 +138,7 @@ public class SaveGameMenu extends PageableMenu {
 		EasyBuffering file=Zildo.pdPlugin.openFile(p_filename);
 		game = Game.deserialize(file);
 		EngineZildo.setGame(game);
-		EngineZildo.mapManagement.loadMap("foretg", false);
+		EngineZildo.mapManagement.loadMap("coucou", false);
 
 		singlePlay.launchGame();
 	}
@@ -149,9 +149,7 @@ public class SaveGameMenu extends PageableMenu {
 	 * @return List<String>
 	 */
 	public static List<String> findSavegame() {
-		File saveDirectory = new File(Constantes.DATA_PATH
-				+ Constantes.SAVEGAME_DIR);
-		File[] savegames = saveDirectory.listFiles(new SaveGameFilter());
+		File[] savegames = Zildo.pdPlugin.listFiles(Constantes.SAVEGAME_DIR, new SaveGameFilter());
 		List<String> filenames = new ArrayList<String>();
 		if (savegames != null && savegames.length > 0) { // Is there any
 															// savegames ?
