@@ -15,6 +15,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 public class ZildoActivity extends Activity {
+	
+	TouchListener touchListener;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,9 +40,10 @@ public class ZildoActivity extends Activity {
         AndroidReadingFile.assetManager = assetManager;
 
         ClientThread clientThread = new ClientThread();
+        
         Client client = clientThread.getClient();
         
-        TouchListener touchListener = new TouchListener(client);
+        touchListener = new TouchListener(client);
         
    		view.setRenderer(new OpenGLRenderer(client, touchListener));
    		view.setOnTouchListener(touchListener);
@@ -47,13 +51,20 @@ public class ZildoActivity extends Activity {
    		clientThread.start();
    		
         setContentView(view);
-        
 
+    }
+    
+
+	
+    @Override
+    public void onBackPressed() {
+    	touchListener.pressBackButton();
     }
     
     class ClientThread extends Thread {
     	
     	Client client;
+    	
     	boolean ready = false;
     	
     	public ClientThread() {
@@ -68,7 +79,16 @@ public class ZildoActivity extends Activity {
     		Log.d("client", "Client runs !");
             client.handleMenu(new StartMenu());
            	//client.run();
+
             
+            while (!client.isDone()) {
+            	ZUtils.sleep(500);
+            }
+            System.out.println("ask finish");
+            finish();
+            System.out.println("still there");
+            android.os.Process.killProcess(android.os.Process.myPid());
+
     	}
     	
     	public Client getClient() {

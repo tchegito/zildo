@@ -24,10 +24,9 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import android.util.Log;
-
 import zildo.Zildo;
 import zildo.fwk.input.KeyboardHandler;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 
 /**
@@ -68,37 +67,73 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 		platformKeys.put(Keys.DOWN, KEY_DOWN);
 	}
 	
-	List<Point> liveTouchedPoints;
 	List<Point> polledTouchedPoints;
+	TouchMovement tm;
+	boolean resetBack;
+	AndroidInputInfos infos;
 	
 	public AndroidKeyboardHandler() {
-		liveTouchedPoints = new ArrayList<Point>();
 		polledTouchedPoints = new ArrayList<Point>();
+		tm = new TouchMovement(polledTouchedPoints);
+		infos = new AndroidInputInfos();
 	}
 	
-	public void setTouchedPoints(List<Point> points) {
-		this.liveTouchedPoints = points;
+	public void setAndroidInputInfos(AndroidInputInfos infos) {
+		this.infos = infos;
 	}
+	
+	static final int middleX = Zildo.viewPortX / 2;
+	static final int middleY = Zildo.viewPortY / 2;
 	
 	public boolean isKeyDown(int p_code) {
 		if (!polledTouchedPoints.isEmpty()) {
 			Point p = polledTouchedPoints.get(0);
-			Log.d("keyboardhandler", "received one point");
 			switch (p_code) {
 			case KEY_Q:
-				return p.x > (Zildo.viewPortX / 2);
+				return p.x >= middleX && p.y < middleY;
+			case KEY_W:
+				return p.x >= middleX && p.y >= middleY;
 			}
+		}
+		Angle direction = tm.getCurrent();
+		if (direction != null) {
+			switch (p_code) {
+			case KEY_UP:
+				return Angle.isContained(direction, Angle.NORD);
+			case KEY_DOWN:
+				return Angle.isContained(direction, Angle.SUD);
+			case KEY_LEFT:
+				return Angle.isContained(direction, Angle.OUEST);
+			case KEY_RIGHT:
+				return Angle.isContained(direction, Angle.EST);
+			}
+		}
+		
+		if (p_code == KEY_ESCAPE) {
+			if (infos.backPressed) {
+				resetBack = true;
+			}
+			return infos.backPressed;
 		}
 		return false;
 	}
 	
+	Angle previous;
+	
 	public void poll() {
-		polledTouchedPoints.clear();
-		if (!liveTouchedPoints.isEmpty()) {
-			polledTouchedPoints.clear();
-			polledTouchedPoints.addAll(liveTouchedPoints);
-			liveTouchedPoints.clear();
+		if (resetBack) {
+			infos.backPressed = false;	// Reinitialize back button press
+			resetBack = false;
 		}
+		polledTouchedPoints.clear();
+		if (!infos.liveTouchedPoints.isEmpty()) {
+			polledTouchedPoints.clear();
+			polledTouchedPoints.addAll(infos.liveTouchedPoints);
+			//liveTouchedPoints.clear();
+			System.out.println("polledpoints size = "+polledTouchedPoints.size());
+		}
+		tm.render();
+		previous = tm.getCurrent();
 	}
 	
 	/**
