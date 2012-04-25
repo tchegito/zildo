@@ -118,13 +118,13 @@ public class ClientEngineZildo {
 		if (!p_awt) {
 
 			Zildo.pdPlugin.initFilters();
-			filterCommand.addFilter(Zildo.pdPlugin.getFilter(BilinearFilter.class));
+			//filterCommand.addFilter(Zildo.pdPlugin.getFilter(BilinearFilter.class));
 			filterCommand.addFilter(Zildo.pdPlugin.getFilter(CloudFilter.class));
 			filterCommand.addFilter(Zildo.pdPlugin.getFilter(BlurFilter.class));
 			filterCommand.addFilter(Zildo.pdPlugin.getFilter(BlendFilter.class));
 			filterCommand.addFilter(Zildo.pdPlugin.getFilter(FadeFilter.class));
 			filterCommand.addFilter(Zildo.pdPlugin.getFilter(CircleFilter.class));
-			filterCommand.active(BilinearFilter.class, true, null);
+			//filterCommand.active(BilinearFilter.class, true, null);
 		}
 
 		pixelShaders = Zildo.pdPlugin.pixelShaders;
@@ -247,11 +247,13 @@ public class ClientEngineZildo {
 			guiDisplay.setToDisplay_scores(tabPressed);
 		}
 
-		guiDisplay.draw();
-
+		if (!p_editor) {
+			guiDisplay.draw();
+		}
+		
 		long t9 = ZUtils.getTime();
 
-		System.out.println("t2 = "+(t2-t1)+"ms t3="+(t3-t2)+"ms t4="+(t4-t3)+"ms t5="+(t5-t4)+"ms t6="+(t6-t5)+"ms t7="+(t7-t6)+"ms t8="+(t8-t7)+"ms "+(t9-t8));
+		//System.out.println("t2 = "+(t2-t1)+"ms t3="+(t3-t2)+"ms t4="+(t4-t3)+"ms t5="+(t5-t4)+"ms t6="+(t6-t5)+"ms t7="+(t7-t6)+"ms t8="+(t8-t7)+"ms "+(t9-t8));
 		
 		openGLGestion.endScene();
 	}
@@ -271,7 +273,7 @@ public class ClientEngineZildo {
 			switch (p_event.nature) {
 				case CHANGINGMAP_ASKED :
 					// Ch>anging map : 1/3 we launch the fade out
-					retEvent.effect = FilterEffect.BLEND;
+					retEvent.effect = FilterEffect.FADE; //BLEND;
 					// Call Circle filter to focus on Zildo
 					zildo = EngineZildo.persoManagement.getZildo();
 					zildoPos=zildo.getCenteredScreenPosition();

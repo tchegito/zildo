@@ -862,10 +862,12 @@ public class Area implements EasySerializable {
 		for (int j = 0; j < getDim_y(); j++) {
 			for (int i = 0; i < getDim_x(); i++) {
 				Case c = get_mapcase(i, j + 4);
-				Tile foreTile = c.getForeTile();
-				if (foreTile != null && treeToBlock.contains(foreTile.index + foreTile.bank * 256)) {
-					c.getBackTile().index = 152;
-					c.getBackTile().bank = 0;
+				if (c != null) {
+					Tile foreTile = c.getForeTile();
+					if (foreTile != null && treeToBlock.contains(foreTile.index + foreTile.bank * 256)) {
+						c.getBackTile().index = 152;
+						c.getBackTile().bank = 0;
+					}
 				}
 			}
 		}
