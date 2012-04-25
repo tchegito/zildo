@@ -125,7 +125,7 @@ public class MapManagement {
 			}
 			switch (ClientEngineZildo.ambient.getWeather(currentMap)) {
 				case CLOUD:
-					ClientEngineZildo.filterCommand.active(CloudFilter.class, true, null);
+					//ClientEngineZildo.filterCommand.active(CloudFilter.class, true, null);
 					break;
 				case USUAL:
 					ClientEngineZildo.filterCommand.active(CloudFilter.class, false, null);
@@ -629,16 +629,18 @@ public class MapManagement {
 		// Read left to right
 		for (j = 0; j < sizeY; j++) {
 			c = map.get_mapcase(0, j + 4);
-			int currentZ = c.getZ();
-			for (i = 0; i < sizeX; i++) {
-				c = map.get_mapcase(i, j + 4);
-				int onmap = map.readmap(i, j);
-				if (leftIncreaseZ.contains(onmap)) {
-					currentZ++;
-				}
-				tabZ[j][i] = currentZ;
-				if (rightDecreaseZ.contains(onmap)) {
-					currentZ--;
+			if (c != null) {
+				int currentZ = c.getZ();
+				for (i = 0; i < sizeX; i++) {
+					c = map.get_mapcase(i, j + 4);
+					int onmap = map.readmap(i, j);
+					if (leftIncreaseZ.contains(onmap)) {
+						currentZ++;
+					}
+					tabZ[j][i] = currentZ;
+					if (rightDecreaseZ.contains(onmap)) {
+						currentZ--;
+					}
 				}
 			}
 		}
@@ -657,8 +659,9 @@ public class MapManagement {
 				int currentZ = tabZ[j][i];
 				currentZ -= min; // correct altitude with threshold
 				c = map.get_mapcase(i, j + 4);
-				c.setZ(currentZ);
-
+				if (c != null) {
+					c.setZ(currentZ);
+				}
 			}
 		}
 	}
