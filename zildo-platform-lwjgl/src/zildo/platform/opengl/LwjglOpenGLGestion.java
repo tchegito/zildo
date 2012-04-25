@@ -36,6 +36,7 @@ import org.lwjgl.opengl.GL11;
 
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
+import zildo.client.stage.GameStage;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.platform.input.LwjglKeyboardHandler;
@@ -404,6 +405,7 @@ public class LwjglOpenGLGestion extends OpenGLGestion {
 		// Clear the screen and the depth buffer
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
 
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity(); // Reset The Projection Matrix
 
 		// invert the y axis, down is positive
@@ -417,10 +419,15 @@ public class LwjglOpenGLGestion extends OpenGLGestion {
 		}
 
 		clientEngineZildo.renderFrame(awt);
+		/*
 		if (!p_clientReady && !awt) {
 			clientEngineZildo.renderMenu();
 		}
-
+*/
+		for (GameStage stage : ClientEngineZildo.getClientForGame().getCurrentStages()) {
+			stage.renderGame();
+		}
+		
 		if (ClientEngineZildo.filterCommand != null) {
 			ClientEngineZildo.filterCommand.doFilter();
 			ClientEngineZildo.filterCommand.doPostFilter();

@@ -53,18 +53,8 @@ public class VBOBuffers {
     
     public VBOBuffers(int p_numPoints, boolean p_forTiles) {
         // Allocate buffers
-        indices = ZUtils.createShortBuffer(3 * p_numPoints / 2);
-        if (!p_forTiles || tileTextures == null) {
-            vertices = ZUtils.createFloatBuffer(2 * p_numPoints);
-            textures = ZUtils.createFloatBuffer(2 * p_numPoints);    	
-            if (p_forTiles) {
-            	tileTextures = textures;	// Same reference
-            	tileVertices = vertices;	// Same reference
-            }
-        } else {
-        	vertices = tileVertices;
-        	textures = tileTextures;
-        }
+        vertices = ZUtils.createFloatBuffer(2 * 3 * (p_numPoints / 2));
+        textures = ZUtils.createFloatBuffer(2 * 3 * (p_numPoints / 2));    	
     }
     
     public static void resetTextureBuffer() {
@@ -86,9 +76,11 @@ public class VBOBuffers {
 		for (int i=0;i<textures.limit();i++) {
 			sb.append(textures.get(i)+", ");
 		}
-		sb.append("]\nIndices : [");
-		for (int i=0;i<indices.limit();i++) {
-			sb.append(indices.get(i)+", ");
+		if (indices != null) {
+			sb.append("]\nIndices : [");
+			for (int i=0;i<indices.limit();i++) {
+				sb.append(indices.get(i)+", ");
+			}
 		}
 		sb.append("]");
 		return sb.toString();

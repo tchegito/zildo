@@ -131,4 +131,12 @@ public enum Angle {
 		}
 		return null;
 	}
+	
+	public static boolean isContained(Angle ref, Angle component) {
+		if (ref == null) {
+			return false;
+		}
+		return ((component.coords.x == ref.coords.x && ref.coords.x != 0) ||
+				(component.coords.y == ref.coords.y && ref.coords.y != 0));
+	}
 }

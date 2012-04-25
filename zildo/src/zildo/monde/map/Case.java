@@ -45,7 +45,7 @@ public class Case implements EasySerializable {
 	
 	private int z;	// Result of analysis
 	
-	private boolean hasChanged;
+	private boolean modified;
 	
 	public Case(Case p_original) {
 		this.back = p_original.getBackTile().clone();
@@ -75,15 +75,15 @@ public class Case implements EasySerializable {
 		back = new Tile(0, 0, this);
 		fore = null;
 		z=0;
-		hasChanged = true;
+		modified = true;
 	}
 
-	public boolean hasChanged() {
-		return hasChanged;
+	public boolean isModified() {
+		return modified;
 	}
 	
-	public void markUnchanged() {
-		hasChanged = false;
+	public void setModified(boolean value) {
+		modified = value;
 	}
 	
 	public int getAnimatedMotif(int compteur_animation)

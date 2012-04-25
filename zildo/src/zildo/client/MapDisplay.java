@@ -29,8 +29,8 @@ import zildo.monde.util.Point;
 
 public class MapDisplay {
 
-	public final static int CENTER_X = 16 * 10;
-	public final static int CENTER_Y = 16 * 6;
+	public static int CENTER_X = 16 * 10;
+	public static int CENTER_Y = 16 * 6;
 	
     private Point camera;		// Current camera locatino
     private Point targetCamera;	// Target camera location (if not null, camera moves smoothly to it)
@@ -51,6 +51,8 @@ public class MapDisplay {
     boolean displayForeground=true;
     
     public MapDisplay(Area p_map) {
+    	CENTER_X = Zildo.viewPortX / 2;
+    	CENTER_Y = Zildo.viewPortY / 2;
     	currentMap=p_map;
     	
 		// Inits map parameters
@@ -94,11 +96,11 @@ public class MapDisplay {
         }
 		// Overflow tests
 		if (scrollingAngle == null) {
-			if (camera.x > (16*currentMap.getDim_x() - 16 * 20)) {
-				camera.x=16*currentMap.getDim_x() - 16 * 20;
+			if (camera.x > (16*currentMap.getDim_x() - (CENTER_X << 1))) {
+				camera.x=16*currentMap.getDim_x() - (CENTER_X << 1);
 			}
-			if (camera.y > (16*currentMap.getDim_y() - 16 * 15 )) {	// marche avec 17
-				camera.y=16*currentMap.getDim_y() - 16 * 15 ;
+			if (camera.y > (16*currentMap.getDim_y() - (CENTER_Y << 1) )) {	// marche avec 17
+				camera.y=16*currentMap.getDim_y() - (CENTER_Y << 1) ;
 			}
 			if (camera.x < 0) {
 				camera.x=0;
@@ -144,7 +146,7 @@ public class MapDisplay {
 	
 	public void setCurrentMap(Area map) {
 		currentMap=map;
-		ClientEngineZildo.tileEngine.prepareTiles(map);
+		ClientEngineZildo.tileEngine.prepareTiles();
 	}
 	
 	public void setTargetCamera(Point p_point) {

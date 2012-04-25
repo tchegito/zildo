@@ -173,4 +173,8 @@ public class SpriteBank {
 	public short[] getSprites_buf() {
 		return sprites_buf;
 	}
+	
+	public void freeTempBuffer() {
+		//sprites_buf = null;		// Optim for android but wrong for zeditor
+	}
 }

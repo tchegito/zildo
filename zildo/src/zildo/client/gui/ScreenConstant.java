@@ -21,11 +21,14 @@ public class ScreenConstant {
 	final int TEXTER_SIZELINE = Constantes.TEXTER_SIZELINE;	// Idem
 	
 	public ScreenConstant(int screenX, int screenY) {
+		
+		System.out.println("Screenconstant calculating for "+screenX+","+screenY);
 		SORTY_MAX = Constantes.SORTY_MAX + screenY + 40;
 		SORTY_REALMAX = Constantes.SORTY_REALMAX + screenY + 40 + 80;
 		
-		float ratioX = screenX / 320;
-		float ratioY = screenY / 240;
+		
+		float ratioX = screenX / 320f;
+		float ratioY = screenY / 240f;
 		
 		// Texter
 		TEXTER_COORDINATE_X= (int) (Constantes.TEXTER_COORDINATE_X * ratioX); 

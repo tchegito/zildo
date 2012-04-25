@@ -60,9 +60,6 @@ public class QuadPrimitive {
         
         nPoints = 0;
         nIndices = 0;
-
-        // Generate all indices at primitve instanciation (it never change)
-       	generateAllIndices();
     }
     
     protected boolean isTiles() {
@@ -77,12 +74,6 @@ public class QuadPrimitive {
     public void startInitialization() {
     	nPoints = 0;
     	nIndices = 0;
-    	if (isTiles()) {
-    		// Reinit indices and textures buffer
-    		bufs.indices.position(0);
-    		bufs.textures.limit(bufs.textures.capacity());
-    		bufs.indices.limit(bufs.indices.capacity());
-    	}
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////
@@ -97,28 +88,6 @@ public class QuadPrimitive {
         nPoints = 0;
         nIndices = 0;
     }
-    
-    // Generate indices for maximum tile authorized.
-    // We can do this once for all, because every tiles is a quad made by 2 triangles
-    // where indices are like this :
-    // (v1,v2,v3) - (v2,v4,v3)
-    void generateAllIndices() {
-    	/*
-    	if (bufs.indices.position() > 0) {
-    		return;	// Already generated
-    	}
-    	*/
-    	int numIndices=bufs.indices.limit();
-        // 3 Indices
-        for (int i = 0; i < numIndices / 6; i++) {
-            // Tile's first triangle
-            bufs.indices.put((short) (i * 4)).put((short) (i * 4 + 1)).put((short) (i * 4 + 2));
-            // Tile's second triangle
-            bufs.indices.put((short) (i * 4 + 1)).put((short) (i * 4 + 3)).put((short) (i * 4 + 2));
-        }
-        
-    }
-    
     
     public boolean isLock() {
         return isLock;
@@ -162,8 +131,9 @@ public class QuadPrimitive {
 
     }
     
+    float[][] texCoords = new float[4][2];
 
-    protected void putTexture(float xTex, float yTex, float sizeX, float sizeY) {
+    protected void putTexture(float xTex, float yTex, float sizeX, float sizeY, boolean six) {
         float texStartX=xTex;
         float texStartY=yTex;
         if (sizeX < 0) {
@@ -177,8 +147,22 @@ public class QuadPrimitive {
             float texPosX = texStartX + sizeX * (i % 2);
             float texPosY = texStartY + sizeY * (i / 2);
 
-            bufs.textures.put(texPosX / textureSizeX);
-            bufs.textures.put(texPosY / textureSizeY);
+            texCoords[i][0] = texPosX / textureSizeX;
+            texCoords[i][1] = texPosY / textureSizeY;
+        }
+        if (!six) {
+            bufs.textures.put(texCoords[0][0]).put(texCoords[0][1]);
+            bufs.textures.put(texCoords[1][0]).put(texCoords[1][1]);
+            bufs.textures.put(texCoords[2][0]).put(texCoords[2][1]);
+            bufs.textures.put(texCoords[3][0]).put(texCoords[3][1]);
+        } else {
+            bufs.textures.put(texCoords[0][0]).put(texCoords[0][1]);
+            bufs.textures.put(texCoords[1][0]).put(texCoords[1][1]);
+            bufs.textures.put(texCoords[2][0]).put(texCoords[2][1]);
+            bufs.textures.put(texCoords[1][0]).put(texCoords[1][1]);
+            bufs.textures.put(texCoords[3][0]).put(texCoords[3][1]);
+            bufs.textures.put(texCoords[2][0]).put(texCoords[2][1]);
+        	
         }
     }
     
@@ -192,7 +176,7 @@ public class QuadPrimitive {
         }
         float pixSizeX=Math.abs(sizeX);
         float pixSizeY=Math.abs(sizeY);
-        putTexture(xTex, yTex, sizeX, sizeY);
+        putTexture(xTex, yTex, sizeX, sizeY, false);
         
         for (int i = 0; i < 4; i++) {
             bufs.vertices.put(x + pixSizeX * (i % 2)); // x
@@ -205,28 +189,40 @@ public class QuadPrimitive {
 
     // Return the quad position in Vertex Buffer
     protected int addQuadSized(int x, int y, float xTex, float yTex, int sizeX, int sizeY) {
-        putQuadSized(x, y, sizeX, sizeY, xTex, yTex);
-
+        //putQuadSized(x, y, sizeX, sizeY, xTex, yTex);
+        addSprite(x, y, xTex, yTex, sizeX, sizeY);
+        
         return nPoints - 4;
     }
 
-    /**
-     * Ask OpenGL to render quad from this mesh, from a position to another
-     * @param startingQuad starting quad
-     * @param nbQuadsToRender number of quads to render
-     */
-    void renderPartial(int startingQuad, int nbQuadsToRender) {
-        int position = bufs.indices.position();
-        int saveNIndices = nIndices;
-        int limit = bufs.indices.limit();
+    float[][] vertices = new float[4][2];
+    protected void addSprite(float x, float y, float xTex, float yTex, float sizeX, float sizeY ) {
+    	
+        // 4 bufs.vertices
+        if (bufs.vertices.position() == bufs.vertices.limit()) {
+            // On rajoute une place
+            bufs.vertices.limit(bufs.vertices.position() + 2 * 6);
+            bufs.textures.limit(bufs.textures.position() + 2 * 6);
+        }
+        float pixSizeX=Math.abs(sizeX);
+        float pixSizeY=Math.abs(sizeY);
+        
+        for (int i = 0; i < 4; i++) {
+        	vertices[i][0] = x + pixSizeX * (i % 2);	// x
+        	vertices[i][1] = y + pixSizeY * (i / 2);	// y
+        }
+        
+        bufs.vertices.put(vertices[0][0]).put(vertices[0][1]);
+        bufs.vertices.put(vertices[1][0]).put(vertices[1][1]);
+        bufs.vertices.put(vertices[2][0]).put(vertices[2][1]);
+        bufs.vertices.put(vertices[1][0]).put(vertices[1][1]);
+        bufs.vertices.put(vertices[3][0]).put(vertices[3][1]);
+        bufs.vertices.put(vertices[2][0]).put(vertices[2][1]);
 
-        //bufs.indices.limit(startingQuad * 6 + nbQuadsToRender * 6);
-        bufs.indices.position(startingQuad * 6);
-        nIndices = nbQuadsToRender * 6 + startingQuad * 6;
-        render();
-        bufs.indices.position(position);
-        nIndices = saveNIndices;
-        bufs.indices.limit(limit);
+        putTexture(xTex, yTex, sizeX, sizeY, true);
+        
+        nPoints += 4;
+        nIndices += 6;
     }
     
     /**
@@ -235,9 +231,13 @@ public class QuadPrimitive {
     public void render() {
 
         // Indices buffer contains indices for 4096 tiles. We have to limit it to the real number of used tiles.
-        bufs.indices.limit(nIndices);
+        if (bufs.indices != null) {
+        	bufs.indices.limit(nIndices);
+            vbo.draw(bufs);
+        } else {
+        	vbo.draw(bufs, 0, nIndices);
+        }
 
-        vbo.draw(bufs);
 
     }
     

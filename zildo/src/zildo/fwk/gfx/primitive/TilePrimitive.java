@@ -21,7 +21,9 @@
 package zildo.fwk.gfx.primitive;
 
 import zildo.Zildo;
+import zildo.fwk.CycleIntBuffer;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.util.Point;
 
 /**
  * Class describing the TileEngine main element :<br/>
@@ -37,13 +39,57 @@ import zildo.monde.sprites.Reverse;
 public class TilePrimitive extends QuadPrimitive {
 
 
+	int startCamera;
+	int endCamera;
+	
+	int indexBuffer[][];
+
+	CycleIntBuffer freeIndex;
+	//int freeIndex[];
+	//int freeCount;
+	CycleIntBuffer displayed;
+	//int displayed[];
+	//int displayCount;
+	
     // ////////////////////////////////////////////////////////////////////
     // Construction/Destruction
     // ////////////////////////////////////////////////////////////////////
     public TilePrimitive(int numPoints) {
     	super(numPoints);
+    	
+    	indexBuffer = new int[200][200];
+    	for (int i=0;i<indexBuffer.length;i++) {
+        	for (int j=0;j<indexBuffer.length;j++) {
+        		indexBuffer[i][j] = -1;
+        	}
+    	}
+    	int bufSize = 512;
+    	int nbTiles = numPoints / 8;
+    	while (nbTiles > bufSize) {
+    		bufSize+= 256;
+    	}
+    	freeIndex = new CycleIntBuffer(bufSize);
+    	freeIndex.init(-1);
+    	for (int i=0;i<nbTiles;i++) {
+    		freeIndex.set(i, i * 6);
+    	}
+    	displayed = new CycleIntBuffer(bufSize);
+    	displayed.init(-1);
     }
 
+    @Override
+	public void startInitialization() {
+    	super.startInitialization();
+    	// Reinit indices and textures buffer
+    	bufs.textures.position(0);
+    	bufs.vertices.position(0);
+    	bufs.vertices.limit(bufs.vertices.capacity());
+    	bufs.textures.limit(bufs.textures.capacity());
+    	
+    	startCamera = 6*16;
+    	endCamera = 0;
+    }
+    
     @Override
 	protected void initialize(int numPoints) {
         // Initialize VBO IDs
@@ -63,16 +109,6 @@ public class TilePrimitive extends QuadPrimitive {
     }
 
     /**
-     * Add standard tile : 16x16
-     * @return position in bufs.vertices buffer for the added tile's first vertex
-     */
-    public void addTile(int x, int y, float u, float v) {
-        addTile(x, y, u, v, 16, 16);
-    }
-
-
-
-    /**
      * Add a tile, considering that we have a unique vertices buffer, with the full grid.<br/>
      * We just have to append in <b>indice</b> and <b>texture</b> buffers.
      * @param x
@@ -84,37 +120,108 @@ public class TilePrimitive extends QuadPrimitive {
      */
     private void addTile(int x, int y, float xTex, float yTex, int sizeX, int sizeY) {
 
-        // Find the right vertices
-        int indexVertices =  x / 4 + (y / 16) * 64 * 4;
-    	bufs.indices.put((short) indexVertices).put((short) (indexVertices+1)).put((short) (indexVertices+2));
-    	bufs.indices.put((short) (indexVertices+1)).put((short) (indexVertices+3)).put((short) (indexVertices+2));
-    	bufs.textures.position(indexVertices*2);
-        
-        putTexture(xTex, yTex, sizeX, sizeY);
-        
-        nPoints += 4;
-        nIndices += 6;
+    	addSprite(x, y, xTex, yTex, sizeX, sizeY);
+    	
+        // Get the highest indices
+        if (nIndices-6 < startCamera) {
+        	startCamera = nIndices-6;
+        }
+    	if (nIndices > endCamera) {
+    		endCamera = nIndices;
+    	}
     }
 
 
     /**
      * Update a tile's texture (don't change size or location)<br/>
      * {@link #startInitialization()} should be called first.
-     * @param x
-     * @param y
+     * @param gridX 0..64
+     * @param gridY 0..64
      * @param u
      * @param v
      * @param reverse reverse attribute (horizonta and/or vertical)
      */
-    public void updateTile(int x, int y, float u, float v, Reverse reverse) {
+    public void updateTile(int gridX, int gridY, float u, float v, Reverse reverse, boolean changed) {
         int sizeX = 16;
         int sizeY = 16;
 
 		int revX = reverse.isHorizontal() ? -1 : 1;
 		int revY = reverse.isVertical() ? -1 : 1;
 		
-        // Move tile
-        addTile(x, y, u, v, sizeX * revX, sizeY * revY );
+		// Locate at the right position in vertex/texture buffers
+		boolean tileReused = reuseIndex(gridX, gridY);
+		
+		if (changed || !tileReused) {
+			// Move tile
+			addTile(gridX << 4, gridY << 4, u, v, sizeX * revX, sizeY * revY );
+		} else {
+			skipTile(gridX, gridY);
+		}
+    }
+    
+    int previousFreed;
+    
+    void fillFreeIndex(Point camera) {
+		int tileStartX = camera.x >> 4;
+		int tileStartY = camera.y >> 4;
+		int tileEndX = tileStartX + (Zildo.viewPortX >> 4);
+		int tileEndY = tileStartY + (Zildo.viewPortY >> 4);
+    	for (int i=0;i<displayed.length();i++) {
+    		int disp = displayed.get(i);
+    		if (disp == -1) {
+    			continue;
+    		}
+    		int gridX = disp & 255;
+    		int gridY = disp >> 8;
+    		boolean out = false;
+    		if (gridX < tileStartX || gridX > (tileEndX + 1)) {
+    			out = true;
+    		}
+    		if (gridY < tileStartY || gridY > (tileEndY + 1)) {
+    			out = true;
+    		}
+    		if (out) {
+				// Out of the map !
+        		int index = indexBuffer[gridY][gridX];
+				
+				// Add it to the free index buffer
+				freeIndex.lookForEmpty();
+				freeIndex.push(index);
+				// Notify that it is no longer displayed
+				displayed.set(i, -1);
+				indexBuffer[gridY][gridX] = -1;
+    		}
+    	}
+    	freeIndex.rewind();
+    	
+    }
+    boolean reuseIndex(int gridX, int gridY) {
+    	int index = indexBuffer[gridY][gridX];
+    	boolean reused = true;
+    	if (index != -1) { // Tile is already present
+    		nIndices = index;
+    	} else {
+    		// New tile to render
+    		nIndices = getFreePosition();
+    		indexBuffer[gridY][gridX] = nIndices;
+    		// Look for a value
+    		displayed.lookForEmpty();
+    		displayed.push((gridY << 8) + gridX);
+    		// Notify that tile is new
+    		reused=false;
+    	}
+    	bufs.vertices.position(nIndices * 2);
+		bufs.textures.position(nIndices * 2);
+		return reused;
+    }
+    
+    int getFreePosition() {
+    	int val = freeIndex.pop();
+    	if (val == -1) {
+    		return displayed.getNbValues() * 6; //endCamera;
+    	} else {
+    		return val;
+    	}
     }
     
     /**
@@ -138,11 +245,27 @@ public class TilePrimitive extends QuadPrimitive {
     	}
     }
     
-    void skipTile() {
-    	bufs.indices.position(bufs.indices.position() + 6);
-    	bufs.textures.position(bufs.textures.position() + 8);
+    void skipTile(int gridX, int gridY) {
+        
         nPoints += 4;
         nIndices += 6;
-    }
 
+        // Get the highest indices
+        if ((nIndices-6) < startCamera) {
+        	startCamera = nIndices-6;
+        }
+    	if (nIndices > endCamera) {
+    		endCamera = nIndices;
+    	}
+    }
+    
+    /**
+     * Ask OpenGL to render every quad from this mesh.
+     */
+    @Override
+	public void render() {
+
+        // Indices buffer contains indices for 4096 tiles. We have to limit it to the real number of used tiles.
+        vbo.draw(bufs, startCamera, endCamera);
+    }
 }

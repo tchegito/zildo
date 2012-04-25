@@ -31,7 +31,6 @@ import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.menu.InGameMenu;
 import zildo.client.stage.GameStage;
 import zildo.client.stage.MenuStage;
-import zildo.client.stage.SinglePlayer;
 import zildo.fwk.ZUtils;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardHandler.Keys;
@@ -205,7 +204,7 @@ public class Client {
 				ClientEngineZildo.soundEngine.pollMusic((int) (currentTime - time));
 				time = currentTime;
 			}
-			done = glGestion.mainloop();
+			done |= glGestion.mainloop();
 
 			if (kbHandler.isKeyDown(kbHandler.getCode(Keys.ESCAPE)) && !ClientEngineZildo.filterCommand.isFading()) {
 				// Escape is pressed and no fade is running
@@ -375,14 +374,7 @@ public class Client {
 		stages.add(stage);
 	}
 	
-	//TODO: to remove !!! This is heresy ! just for test Android
-	GameStage singlePlayerGame;
-	
-	public void setSinglePlayerGame(GameStage game) {
-		singlePlayerGame = game;
-	}
-	
-	public GameStage getGame() {
-		return singlePlayerGame;
+	public boolean isDone() {
+		return done;
 	}
 }

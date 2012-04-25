@@ -23,6 +23,7 @@ package zildo.fwk.gfx.engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.Zildo;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.effect.CloudGenerator;
@@ -171,63 +172,7 @@ public abstract class TileEngine {
 			motifBank.freeTempBuffer();
 		}
 	}
-
-	// Prepare vertices and indices for drawing tiles
-	public void prepareTiles(Area theMap) {
-
-		int x, y;
-
-		meshFORE.startInitialization();
-		meshBACK.startInitialization();
-
-		// Prepare vertices and indices for background map (tiles displayed
-		// UNDER sprites)
-		// For each tile bank
-		for (y = 0; y < Constantes.TILEENGINE_HEIGHT; y++)
-		{
-			for (x = 0; x < Constantes.TILEENGINE_WIDTH; x++)
-			{
-				// Get corresponding case on the map
-				Case mapCase = theMap.get_mapcase(x, y + 4);
-				if (mapCase != null) {
-					Tile back = mapCase.getBackTile();
-					int xTex = (back.index % 16) * 16;
-					int yTex = (back.index / 16) * 16 + 1;
-					meshBACK.addTile(back.bank, (16 * x),
-							(16 * y),
-							xTex,
-							yTex);
-				}
-			}
-		}
-
-		// Prepare vertices and indices for foreground map (tiles displayed ON
-		// sprites)
-		// For each tile bank
-		for (y = 0; y < Constantes.TILEENGINE_HEIGHT; y++)
-		{
-			for (x = 0; x < Constantes.TILEENGINE_WIDTH; x++)
-			{
-				// Get corresponding foreground case on the map
-				Case mapCase = theMap.get_mapcase(x, y + 4);
-				if (mapCase != null && mapCase.getForeTile() != null) {
-					Tile fore = mapCase.getForeTile();
-					int xTex = (fore.index % 16) * 16;
-					int yTex = (fore.index / 16) * 16 + 1;
-					meshFORE.addTile(fore.bank, 16 * x,
-							16 * y,
-							xTex,
-							yTex);
-
-				}
-			}
-		}
-		meshFORE.endInitialization();
-		meshBACK.endInitialization();
-
-		initialized = true;
-	}
-
+	
 	public void createTextureFromMotifBank(MotifBank mBank) {
 
 		GFXBasics surface = textureEngine.prepareSurfaceForTexture(true);
@@ -268,54 +213,86 @@ public abstract class TileEngine {
 
 	public abstract void render(boolean backGround);
 
+	// Prepare vertices and indices for drawing tiles
+	public void prepareTiles() {
+		initialized=true;
+	}
+	
 	// Redraw all tiles with updating VertexBuffers.
 	// No need to access particular tile, because we draw every one.
 	// **BUT THIS COULD BE DANGEROUS WHEN A TILE SWITCHES FROM ONE BANK TO
 	// ANOTHER**
 	public void updateTiles(Point cameraNew, Area[] p_areas, int compteur_animation) {
 
-		if (initialized && cameraX != -1 && cameraY != -1) {
+		if (meshBACK != null && cameraX != -1 && cameraY != -1) {
 
 			meshBACK.startInitialization();
 			meshFORE.startInitialization();
+			
+			if (cameraX != cameraNew.x || cameraY != cameraNew.y) {
+				meshBACK.initFreeBuffer(cameraNew);
+				meshFORE.initFreeBuffer(cameraNew);
+			}
 			for (Area theMap : p_areas) {
 				if (theMap == null) {
 					break;
 				}
 				//TODO: think about offset ! (in LWJG/Android TileEngine set camera))
 				//Point offset = theMap.getOffset();
-				for (int y = 0; y < Constantes.TILEENGINE_HEIGHT; y++)
+				Point offset = theMap.getOffset();
+				int tileStartX = cameraNew.x >> 4;
+				int tileStartY = cameraNew.y >> 4;
+				int tileEndX = tileStartX + (Zildo.viewPortX >> 4);
+				int tileEndY = tileStartY + (Zildo.viewPortY >> 4);
+
+				boolean yOut = false;
+				boolean xOut = false;
+
+				for (int ay = 0; ay < Constantes.TILEENGINE_HEIGHT; ay++)
 				{
-					for (int x = 0; x < Constantes.TILEENGINE_WIDTH; x++)
+					int y = ay + (offset.y >> 4);
+					yOut = (y < tileStartY || y > tileEndY+1);
+					if (yOut) {
+						continue;
+					}
+					for (int ax = 0; ax < Constantes.TILEENGINE_WIDTH; ax++)
 					{
+						int x = ax; // + (offset.x >> 4);
+						xOut = x < tileStartX || x > tileEndX;
+						if (xOut) {
+							continue;
+						}
+						int n_motif = 0, n_animated_motif;
 						// Get corresponding case on the map
 						Case mapCase = theMap.get_mapcase(x, y + 4);
 						if (mapCase != null) {
-							boolean changed = mapCase.hasChanged();
+							boolean changed = mapCase.isModified();
 							Tile back = mapCase.getBackTile();
-							int n_motif = mapCase.getAnimatedMotif(compteur_animation);
 							int bank = back.bank;
-							if (bank < 0 || bank >= Constantes.NB_MOTIFBANK) {
-								throw new RuntimeException("We got a big problem");
+							n_motif = back.index;
+							n_animated_motif = mapCase.getAnimatedMotif(compteur_animation);
+							if (n_animated_motif != n_motif) {
+								changed = true;
+								n_motif = n_animated_motif;
 							}
 							meshBACK.updateTile(bank,
-									x, y, n_motif, back.reverse, changed);
+									x, y, n_motif, offset, back.reverse, changed);
 							
 							Tile back2 = mapCase.getBackTile2();
 							if (back2 != null) {
 								n_motif = back2.index;
 								meshBACK.updateTile(back2.bank,
-										x, y, n_motif, back2.reverse, changed);
+										x, y, n_motif, offset, back2.reverse, changed);
 							}
 							
 							Tile fore = mapCase.getForeTile();
 							if (fore != null) {
 								n_motif = fore.index;
 								meshFORE.updateTile(fore.bank,
-													x, y, fore.index, fore.reverse, changed);
+													x, y, fore.index, offset, fore.reverse, changed);
 
 							}
-							mapCase.markUnchanged();
+							mapCase.setModified(false);
 						}
 					}
 				}

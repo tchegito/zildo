@@ -59,6 +59,15 @@ public class VBOSoftware implements VBO {
 	}		
 
 	@Override
+	public void draw(VBOBuffers p_bufs, int start, int count) {
+		preDraw();
+		gl11.glVertexPointer(2, GL11.GL_FLOAT, 0, p_bufs.vertices);
+		gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, p_bufs.textures);
+		
+		gl11.glDrawArrays(GL11.GL_TRIANGLES, start, count);
+	}
+	
+	@Override
 	public void cleanUp(VBOBuffers p_bufs) {
 		p_bufs.vertices.clear();
 		p_bufs.textures.clear();
@@ -73,7 +82,7 @@ public class VBOSoftware implements VBO {
 		if (p_bufs.textures.position() != 0) {
 			p_bufs.textures.flip();
 		}
-		if (p_bufs.indices.position() != 0) {
+		if (p_bufs.indices != null && p_bufs.indices.position() != 0) {
 			p_bufs.indices.flip();
 		}
 	}
