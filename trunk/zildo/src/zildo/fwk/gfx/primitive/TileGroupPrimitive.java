@@ -20,9 +20,10 @@
 
 package zildo.fwk.gfx.primitive;
 
+import zildo.Zildo;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 import zildo.monde.sprites.Reverse;
-import zildo.resource.Constantes;
+import zildo.monde.util.Point;
 
 /**
  * Groupe of primitive from same layer. They share all the same vertex and textures buffer.<br/>
@@ -41,10 +42,10 @@ public class TileGroupPrimitive {
 	public void startInitialization() {
 		for (int i = 0; i < meshes.length; i++) {
 			if (meshes[i] == null) {
-				if (i == 0) {
-					VBOBuffers.resetTextureBuffer();
-				}
-				meshes[i] = new TilePrimitive(Constantes.TILEENGINE_MAXPOINTS);
+				int maxScreenPoints = ((Zildo.viewPortX >> 4)+1) * ((Zildo.viewPortY >> 4)+1);
+				maxScreenPoints*=4;	// 4 vertices for a quad
+				maxScreenPoints*=2;	// 2 screens for be quiet
+				meshes[i] = new TilePrimitive(maxScreenPoints);
 			}		
 			meshes[i].startInitialization();
 		}
@@ -64,30 +65,27 @@ public class TileGroupPrimitive {
 			}
 		}
 	}
-	
-    public void addTile(int nth, int x, int y, float u, float v) {
-    	meshes[nth].addTile(x, y, u, v);
-    }
     
-    public void updateTile(int nth, int x, int y, int n_motif, Reverse reverse, boolean hasChanged) {
-    	if (hasChanged) {
-			int xTex = (n_motif % 16) * 16;
-			int yTex = (n_motif / 16) * 16; // +1;
-	
-			meshes[nth].updateTile(16 * x,
-					16 * y,
-					xTex,
-					yTex, 
-					reverse);
-    	} else {
-    		meshes[nth].skipTile();
-    	}
+    public void updateTile(int nth, int x, int y, int n_motif, Point offset, Reverse reverse, boolean hasChanged) {
+		int xTex = (n_motif % 16) << 4;
+		int yTex = (n_motif >> 4) << 4; // +1;
+
+		meshes[nth].updateTile(x + (offset.x >> 4),
+				y + (offset.y >> 4),
+				xTex,
+				yTex, 
+				reverse, hasChanged);
 	}
-    
+
     public boolean isEmpty(int nth) {
     	return meshes[nth].isEmpty();
     }
     
+    public void initFreeBuffer(Point camera) {
+    	for (int i=0;i<meshes.length;i++) {
+    		meshes[i].fillFreeIndex(camera);
+    	}
+    }
     /**
      * Render every mesh only if there's some vertices in it.
      * @param action action to be executed before render of each mesh (useful for texture binding)

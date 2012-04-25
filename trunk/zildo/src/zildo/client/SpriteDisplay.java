@@ -20,12 +20,12 @@
 
 package zildo.client;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
@@ -108,7 +108,7 @@ public class SpriteDisplay extends SpriteStore {
 		// Reset the sort array used for sprites
 		spriteSorter.clearSortArray();
 		
-		Collection<SpriteEntity> entities=spriteEntities;
+		List<SpriteEntity> entities=spriteEntities;
 		
 		// Do perso animations
 		// Mandatory to do that first, because one perso can be connected to other sprites
@@ -134,28 +134,39 @@ public class SpriteDisplay extends SpriteStore {
 				}
 			}
 		}
-		
+
 		// Iterate through every entities to synchronize data with vertex buffer
 		// spriteEntities list order correspond to the creation order with spawn*** methods.
 		spriteEngine.startInitialization();
 		
 		boolean displayBackSprite=ClientEngineZildo.mapDisplay.foreBackController.isDisplayBackground();
 		
+		int indexEntity = 0;
 		for (SpriteEntity entity : entities) {
 			// Manage sprite in the sort array
 			if (entity.isVisible() && (entity.isForeground() || displayBackSprite)) {
 				// Add in the sort array
 				spriteSorter.insertSpriteInSortArray(entity);
 				// Add in vertices buffer
-				spriteEngine.synchronizeSprite(entity);
+				//entity.setLinkVertices(indEntity[entity.getNBank()]*4);
+				entity.setLinkVertices(indexEntity);
 			}
+			indexEntity++;
 		}
 		
-		spriteEngine.endInitialization();
+		long t1 = ZUtils.getTime();
 		
 		// Sort perso along the Y-axis
 		spriteSorter.orderSpritesByBank();			// Fill the quadOrder and bankOrder arrays
-		spriteEngine.buildIndexBuffers(spriteSorter.getQuadOrder());
+		long t2 = ZUtils.getTime();
+		spriteEngine.buildBuffers(spriteSorter.getQuadOrder(), entities);
+
+		long t3 = ZUtils.getTime();
+		
+		spriteEngine.endInitialization();
+
+		//System.out.println("update spriteDisplay : t2 = "+(t2-t1)+"ms t3="+(t3-t2)+"ms ");
+
 	}
 
 	public int[][] getBankOrder() {

@@ -33,6 +33,8 @@ public class VBOHardware extends VBOSoftware {
 	
 	static Map<Integer, VBOBuffers> vboId = new HashMap<Integer, VBOBuffers>();
 	
+	boolean tiles;
+	
 	@Override
 	public VBOBuffers create(int p_numPoints, boolean p_forTiles) {
         
@@ -41,6 +43,8 @@ public class VBOHardware extends VBOSoftware {
 		bufs.textureBufferId = GLUtils.createVBO();
 		bufs.indiceBufferId = GLUtils.createVBO();
         
+		tiles = p_forTiles;
+		
         return bufs;
 	}
 	
@@ -56,6 +60,21 @@ public class VBOHardware extends VBOSoftware {
 		int count = p_bufs.indices.remaining();
         gl11.glDrawElements(GL11.GL_TRIANGLES, count, GL10.GL_UNSIGNED_SHORT, p_bufs.indices);
 		
+        gl11.glBindBuffer(GL11.GL_ARRAY_BUFFER, 0);
+	}
+	
+	@Override
+	public void draw(VBOBuffers p_bufs, int start, int count) {
+		preDraw();
+		
+		int stride = 4 * 4;
+        gl11.glBindBuffer(GL11.GL_ARRAY_BUFFER, p_bufs.vertexBufferId);
+        gl11.glVertexPointer(2, GL11.GL_FLOAT, stride, 0);
+        gl11.glTexCoordPointer(2, GL11.GL_FLOAT, stride, 2 * 4);	
+
+        //GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, count, count, GL11.GL_UNSIGNED_SHORT, 0);
+        gl11.glDrawArrays(GL11.GL_TRIANGLES, start, count);
+        
         gl11.glBindBuffer(GL11.GL_ARRAY_BUFFER, 0);
 	}
 	
@@ -77,11 +96,22 @@ public class VBOHardware extends VBOSoftware {
         */
 	}
 	
+	boolean done = false;
+	
 	@Override
 	public void endInitialization(VBOBuffers p_bufs) {
 		super.endInitialization(p_bufs);
-        //GLUtils.bufferData(p_bufs.indiceBufferId, p_bufs.indices, false);		
-        GLUtils.bufferData(p_bufs.textureBufferId, p_bufs.textures, false);
-        GLUtils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices, false);
+		if (p_bufs.indices != null) {
+			GLUtils.bufferData(p_bufs.indiceBufferId, p_bufs.indices, false);
+		}
+		GLUtils.bufferData(p_bufs.textureBufferId, p_bufs.textures, false);
+		if (tiles) {
+			if (!done) {
+				GLUtils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices, true);
+				done = true;
+			}
+		} else {
+			GLUtils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices, false);
+		}
 	}
 }

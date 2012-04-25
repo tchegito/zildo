@@ -187,7 +187,7 @@ public class SpriteSorter {
 						for (int nbEnt=0;nbEnt<nbEntity;nbEnt++) {
 							int last=lastInBank[entity.getNBank()]++;
 							quadOrder[entity.getNBank()][last]=linkVertices;
-							linkVertices+=4;
+							linkVertices+=6;
 						}
 
 						// Check if we need a special effect

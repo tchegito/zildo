@@ -223,6 +223,8 @@ public class Area implements EasySerializable {
 		Case temp = this.get_mapcase(x, y + 4);
 		if (temp == null) {
 			temp = new Case();
+		} else {
+			temp.setModified(true);
 		}
 		Tile back = temp.getBackTile();
 		back.index = quoi & 255;

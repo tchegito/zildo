@@ -25,7 +25,6 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBVertexBufferObject;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 import zildo.platform.opengl.GLUtils;
@@ -39,7 +38,7 @@ public class VBOHardware extends VBOSoftware {
 		bufs.vertexBufferId = GLUtils.createVBO();
 		bufs.textureBufferId = GLUtils.createVBO();
 		bufs.indiceBufferId = GLUtils.createVBO();
-        
+    
         return bufs;
 	}
 	
@@ -53,22 +52,26 @@ public class VBOHardware extends VBOSoftware {
         ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, p_bufs.textureBufferId);
         GL11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, 0);	
 
-        ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ELEMENT_ARRAY_BUFFER_ARB, p_bufs.indiceBufferId);
+        //ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ELEMENT_ARRAY_BUFFER_ARB, p_bufs.indiceBufferId);
 
 		int count = p_bufs.indices.remaining();
-        GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, count, count, GL11.GL_UNSIGNED_SHORT, 0);
-        //GL11.glDrawElements(GL11.GL_TRIANGLES, p_bufs.indices);
+        //GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, count, count, GL11.GL_UNSIGNED_SHORT, 0);
+        GL11.glDrawElements(GL11.GL_TRIANGLES, p_bufs.indices);
 	}
-	/*
-	GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-	ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, vertexBufferID);
-	GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
-	 
-	 
-	ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ELEMENT_ARRAY_BUFFER_ARB, indexBufferID);
-	GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, maxIndex, indexBufferSize,
-	GL11.GL_UNSIGNED_INT, 0);
-	*/
+
+	@Override
+	public void draw(VBOBuffers p_bufs, int start, int count) {
+		preDraw();
+		
+		int stride = 4 * 4;
+        ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, p_bufs.vertexBufferId);
+        GL11.glVertexPointer(2, GL11.GL_FLOAT, stride, 0);
+        GL11.glTexCoordPointer(2, GL11.GL_FLOAT, stride, 2 * 4);	
+
+        //GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, count, count, GL11.GL_UNSIGNED_SHORT, 0);
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, start, count);
+	}
+	
 	@Override
 	public void cleanUp(VBOBuffers p_bufs) {
         IntBuffer buf = BufferUtils.createIntBuffer(1);
@@ -85,11 +88,17 @@ public class VBOHardware extends VBOSoftware {
         ARBVertexBufferObject.glDeleteBuffersARB(buf);		
 	}
 	
+	boolean done = false;
+	
 	@Override
 	public void endInitialization(VBOBuffers p_bufs) {
 		super.endInitialization(p_bufs);
-        GLUtils.bufferData(p_bufs.indiceBufferId, p_bufs.indices, false);
-        GLUtils.bufferData(p_bufs.textureBufferId, p_bufs.textures, false);
-        GLUtils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices, false);
+		if (p_bufs.indices != null) {
+			GLUtils.bufferData(p_bufs.indiceBufferId, p_bufs.indices, false);
+		}
+		if (p_bufs.textures != p_bufs.vertices) {
+			GLUtils.bufferData(p_bufs.textureBufferId, p_bufs.textures, false);
+		}
+		GLUtils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices, false);
 	}
 }

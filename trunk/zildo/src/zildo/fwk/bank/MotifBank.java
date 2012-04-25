@@ -84,4 +84,8 @@ public class MotifBank {
 	public short[] getMotifs_map() {
 		return motifs_map;
 	}
+	
+	public void freeTempBuffer() {
+		//motifs_map = null;	// Optim for android but wrong for zeditor
+	}
 }

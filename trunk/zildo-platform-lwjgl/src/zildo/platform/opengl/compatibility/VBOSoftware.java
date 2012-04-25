@@ -27,6 +27,7 @@ import zildo.fwk.opengl.compatibility.VBOBuffers;
 
 public class VBOSoftware implements VBO {
 
+	
 	@Override
 	public VBOBuffers create(int p_numPoints, boolean p_forTiles) {
 		return new VBOBuffers(p_numPoints, p_forTiles);
@@ -47,10 +48,26 @@ public class VBOSoftware implements VBO {
 
 	}
 
+	/**
+	 * Render vertices/textures without indices. So one quad is a double triangle represented by 
+	 * 6 vertices and 6 texcoords.
+	 */
+	@Override
+	public void draw(VBOBuffers p_bufs, int start, int count) {
+		preDraw();
+		GL11.glVertexPointer(2, 0, p_bufs.vertices);
+		GL11.glTexCoordPointer(2, 0, p_bufs.textures);
+		
+		GL11.glDrawArrays(GL11.GL_TRIANGLES, start, count);
+	}
+	
 	@Override
 	public void cleanUp(VBOBuffers p_bufs) {
 		p_bufs.vertices.clear();
 		p_bufs.textures.clear();
+		if (p_bufs.indices != null) {
+			p_bufs.indices.clear();
+		}
 	}
 
 	@Override
@@ -62,7 +79,7 @@ public class VBOSoftware implements VBO {
 		if (p_bufs.textures.position() != 0) {
 			p_bufs.textures.flip();
 		}
-		if (p_bufs.indices.position() != 0) {
+		if (p_bufs.indices != null && p_bufs.indices.position() != 0) {
 			p_bufs.indices.flip();
 		}
 	}

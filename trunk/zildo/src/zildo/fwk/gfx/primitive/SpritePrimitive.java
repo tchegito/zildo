@@ -20,6 +20,7 @@
 
 package zildo.fwk.gfx.primitive;
 
+
 /**
  * Provides a set of sprite from the same 256x256 texture..
  * This is segmented for performance issues, to avoid too much texture switching.
@@ -93,23 +94,20 @@ public class SpritePrimitive extends QuadPrimitive {
 	
 	}
 	
-	public int synchronizeSprite(float x, float y, float xTex, float yTex, int sizeX, int sizeY, int repeatX, int repeatY)
+	public void synchronizeSprite(float x, float y, float xTex, float yTex, int sizeX, int sizeY, int repeatX, int repeatY)
 	{
-		// Do not increase indice's and vertice's count
-		int returnNumQuad = numQuadSynchronizing * 4;
 		int yy = (int) y;
 		for (int i=0;i<repeatY;i++) {
 			int xx = (int) x;
 			for (int j=0;j<repeatX;j++) {
 				nPoints-=4;
 				nIndices-=6;
-				super.addQuadSized(xx, yy, xTex, yTex, sizeX, sizeY);
+				super.addSprite(xx, yy, xTex, yTex, sizeX, sizeY);
 				numQuadSynchronizing++;
 				xx+=sizeX;
 			}
 			yy+=sizeY;
 		}
-		return returnNumQuad;
 	}
 	
 	
@@ -131,43 +129,18 @@ public class SpritePrimitive extends QuadPrimitive {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void render(int nbQuads) {
 	
-		super.renderPartial(nbQuadsRendered, nbQuads);
+		renderPartial(nbQuadsRendered, nbQuads);
 		nbQuadsRendered+=nbQuads;
 	}
 	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// buildIndexBuffer
-	///////////////////////////////////////////////////////////////////////////////////////
-	// IN : quad order (ex: {1,3,6,2,-1}
-	///////////////////////////////////////////////////////////////////////////////////////
-	// Build index buffer as described in the received order sequence.
-	// Always -1 marks the end of sequence.
-	///////////////////////////////////////////////////////////////////////////////////////
-	public void buildIndexBuffer(int quadOrder[]) {
-	
-		startInitialization();
-		
-		// 3 Indices
-		int i=0;
-		while (true) {
-	
-			// Get the first quad's vertex
-			int numQuad=quadOrder[i];
-			if (numQuad == -1)
-				break;
-	
-			// Tile's first triangle
-			if (bufs.indices.position() == bufs.indices.limit()) {
-				bufs.indices.limit(bufs.indices.position() + 6);
-			}
-			bufs.indices.put((short) numQuad).put((short) (numQuad+1)).put((short) (numQuad+2));
-			// Tile's second triangle
-			bufs.indices.put((short) (numQuad+1)).put((short) (numQuad+3)).put((short) (numQuad+2));
-			i++;
-		}
-	
-		endInitialization();
-		
-	}
+    
+    /**
+     * Ask OpenGL to render quad from this mesh, from a position to another
+     * @param startingQuad starting quad
+     * @param nbQuadsToRender number of quads to render
+     */
+    void renderPartial(int startingQuad, int nbQuadsToRender) {
+        vbo.draw(bufs, startingQuad * 6, nbQuadsToRender * 6);
+    }
 
 }

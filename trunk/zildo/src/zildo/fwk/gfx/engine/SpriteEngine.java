@@ -21,6 +21,7 @@
 package zildo.fwk.gfx.engine;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import zildo.Zildo;
@@ -274,7 +275,7 @@ public abstract class SpriteEngine {
 		int revY = entity.reverse.isVertical()   ? -1 : 1;
 		
 		SpriteModel spr=entity.getSprModel();
-		entity.setLinkVertices(
+	
 		meshSprites[entity.getNBank()].synchronizeSprite(entity.getScrX(),
 				  									entity.getScrY() - z,
 				  									spr.getTexPos_x(),
@@ -282,7 +283,8 @@ public abstract class SpriteEngine {
 				  									revX * spr.getTaille_x(),
 				  									revY * spr.getTaille_y(), 
 				  									entity.repeatX,
-				  									entity.repeatY));
+				  									entity.repeatY);
+		
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -314,19 +316,29 @@ public abstract class SpriteEngine {
 			meshSprites[i].initRendering();
 	}
 	
-
-	///////////////////////////////////////////////////////////////////////////////////////
-	// buildIndexBuffers
-	///////////////////////////////////////////////////////////////////////////////////////
-	// IN: quad order (sorted by texture, and by Y-position), number of quad on each one
-	///////////////////////////////////////////////////////////////////////////////////////
-	// Call the homonym method on each sprite's primitive
-	///////////////////////////////////////////////////////////////////////////////////////
-	public void buildIndexBuffers(int[][] quadOrder) {
+	/**
+	 * Build buffers as described in the received order sequence.
+	 * Always -1 marks the end of sequence.
+	 * @param quadOrder quad order (sorted by texture, and by Y-position), number of quad on each one
+	 * @param entities
+	 */
+	public void buildBuffers(int[][] quadOrder, List<SpriteEntity> entities) {
 		for (int i=0;i<Constantes.NB_SPRITEBANK;i++) {
 			int[] quadOrderForOneBank=quadOrder[i];
 			if (quadOrderForOneBank != null) {
-				meshSprites[i].buildIndexBuffer(quadOrderForOneBank);
+				int j=0;
+				while (true) {
+			
+					// Get the first quad's vertex
+					int numQuad=quadOrderForOneBank[j];
+					if (numQuad == -1)
+						break;
+					
+					SpriteEntity entity = entities.get(numQuad);
+					synchronizeSprite(entity);
+					
+					j++;
+				}
 			}
 		}
 	}
