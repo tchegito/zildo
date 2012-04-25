@@ -29,6 +29,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.monde.util.Point;
+import zildo.platform.input.AndroidInputInfos;
 import zildo.platform.input.AndroidKeyboardHandler;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -46,27 +47,27 @@ public class TouchListener implements OnTouchListener {
 	public TouchListener(Client client) {
 		this.client = client;
 		touchedPoints = new ArrayList<Point>();
-
 	}
-
+	
 	/**
 	 * Share touched points with the "keyboard" handler, so as to detect which button is pressed.
 	 */
 	public void init() {
 		AndroidKeyboardHandler kbHandler = (AndroidKeyboardHandler) Zildo.pdPlugin.kbHandler;
-		kbHandler.setTouchedPoints(touchedPoints);
+		infos = new AndroidInputInfos();
+		infos.liveTouchedPoints = touchedPoints;
+		kbHandler.setAndroidInputInfos(infos);
 	}
 	
 	ItemMenu item;
 	
+	AndroidInputInfos infos;
 	final List<Point> touchedPoints;
 	
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		// TODO Auto-generated method stub
 		int x = (int) (event.getX() * event.getXPrecision());
 		int y = (int) (event.getY() * event.getYPrecision());
-		//int a = MotionEvent.ACTION_DOWN;
 		Log.d("touch", "pos = "+x+", "+y+" action = "+event.getAction());
 		
 		Menu menu = client.getCurrentMenu();
@@ -80,14 +81,32 @@ public class TouchListener implements OnTouchListener {
 			}
 		} else {
 			// No menu ==> player is in game
+			Point p = new Point(x,y);
 			switch (event.getAction()) {
-			case MotionEvent.ACTION_UP:
-				touchedPoints.add(new Point(x,y));
+			case MotionEvent.ACTION_DOWN:
 				Log.d("touch", "add points");
+				touchedPoints.add(p);
+				break;
+			case MotionEvent.ACTION_MOVE:
+				if (touchedPoints.size() != 1) {
+					System.out.println("very strange !");
+					touchedPoints.clear();
+					touchedPoints.add(p);
+				}
+				touchedPoints.set(0, p);
+				Log.d("touch", "maintained");
+				break;
+			case MotionEvent.ACTION_UP:
+				touchedPoints.clear();
+				Log.d("touch", "remove point");
 				break;
 			}
 		}
 		return true;
+	}
+	
+	public void pressBackButton() {
+		infos.backPressed = true;
 	}
 	
 	public ItemMenu popItem() {
