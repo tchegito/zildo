@@ -164,6 +164,10 @@ public class DialogDisplay {
 			// Conversation
 			switch (actionDialog) {
 				case ACTION:
+					if (!visibleMessageDisplay && !entireMessageDisplay) {
+						guiDisplay.skipDialog(p_sentence);
+						break;
+					}
 				case CONTINUE:
 					if (entireMessageDisplay || visibleMessageDisplay) {
 						// Two cases : continue or quit

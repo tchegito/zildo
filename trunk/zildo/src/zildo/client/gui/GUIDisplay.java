@@ -463,8 +463,7 @@ public class GUIDisplay {
 					SpriteEntity entity = it.next();
 					if (entity.getScrY() < sc.TEXTER_COORDINATE_Y) {
 						entity.setVisible(false);
-					} else if (entity.getScrY() < (sc.TEXTER_COORDINATE_Y
-							+ (Constantes.TEXTER_NUMLINE * sc.TEXTER_SIZELINE) - 10)) {
+					} else if (entity.getScrY() < (sc.TEXTER_BOTTOM_Y)) {
 						entity.setVisible(true);
 						if (i == sentence.length()) {
 							entireMessageDisplay = true;
@@ -486,6 +485,16 @@ public class GUIDisplay {
 		}
 	}
 
+	public void skipDialog(String sentence) {
+		for (SpriteEntity entity : textDialogSequence) {
+			if (entity.getScrY() >= sc.TEXTER_COORDINATE_Y &&
+					entity.getScrY() < (sc.TEXTER_BOTTOM_Y)) {
+				entity.setVisible(true);
+			}
+		}
+		visibleMessageDisplay = true;
+	}
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// scrollAndDisplayTextParts
 	// /////////////////////////////////////////////////////////////////////////////////////
