@@ -486,13 +486,17 @@ public class GUIDisplay {
 	}
 
 	public void skipDialog(String sentence) {
+		boolean entire = true;
 		for (SpriteEntity entity : textDialogSequence) {
-			if (entity.getScrY() >= sc.TEXTER_COORDINATE_Y &&
-					entity.getScrY() < (sc.TEXTER_BOTTOM_Y)) {
+			int y = entity.getScrY();
+			if (y >= sc.TEXTER_COORDINATE_Y && y < sc.TEXTER_BOTTOM_Y) {
 				entity.setVisible(true);
+			} else if (y > sc.TEXTER_BOTTOM_Y) {
+				entire = false;	// There's still some text to display
 			}
 		}
 		visibleMessageDisplay = true;
+		entireMessageDisplay = entire;
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////
