@@ -251,6 +251,8 @@ public class EngineZildo {
             case CHANGINGMAP_SCROLLOVER:
             	persoManagement.getZildo().setGhost(false);
             	spriteManagement.clearSuspendedEntities();
+            	mapManagement.notifiyScrollOver();
+                ClientEngineZildo.mapDisplay.setPreviousMap(EngineZildo.mapManagement.getPreviousMap());
             	retEvent.nature = ClientEventNature.NOEVENT;
             	retEvent.mapChange = false;
             	break;

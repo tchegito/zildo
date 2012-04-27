@@ -706,6 +706,10 @@ public class MapManagement {
 		}
 	}
 
+	public void notifiyScrollOver() {
+		previousMap = null;
+	}
+	
 	public Area getPreviousMap() {
 		return previousMap;
 	}

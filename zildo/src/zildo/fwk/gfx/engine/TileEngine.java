@@ -169,7 +169,7 @@ public abstract class TileEngine {
 		for (int i = 0; i < tileBankNames.length; i++) {
 			MotifBank motifBank = getMotifBank(i);
 			this.createTextureFromMotifBank(motifBank);
-			motifBank.freeTempBuffer();
+			//motifBank.freeTempBuffer();
 		}
 	}
 	
@@ -216,6 +216,8 @@ public abstract class TileEngine {
 	// Prepare vertices and indices for drawing tiles
 	public void prepareTiles() {
 		initialized=true;
+		meshBACK.clearBuffers();
+		meshFORE.clearBuffers();
 	}
 	
 	// Redraw all tiles with updating VertexBuffers.
@@ -229,7 +231,14 @@ public abstract class TileEngine {
 			meshBACK.startInitialization();
 			meshFORE.startInitialization();
 			
-			if (cameraX != cameraNew.x || cameraY != cameraNew.y) {
+			int previousX = cameraX >> 4;
+			int previousY = cameraY >> 4;
+			int tileStartX = cameraNew.x >> 4;
+			int tileStartY = cameraNew.y >> 4;
+			int tileEndX = tileStartX + (Zildo.viewPortX >> 4);
+			int tileEndY = tileStartY + (Zildo.viewPortY >> 4);
+			
+			if (previousX != tileStartX || previousY != tileStartY) {
 				meshBACK.initFreeBuffer(cameraNew);
 				meshFORE.initFreeBuffer(cameraNew);
 			}
@@ -238,12 +247,7 @@ public abstract class TileEngine {
 					break;
 				}
 				//TODO: think about offset ! (in LWJG/Android TileEngine set camera))
-				//Point offset = theMap.getOffset();
 				Point offset = theMap.getOffset();
-				int tileStartX = cameraNew.x >> 4;
-				int tileStartY = cameraNew.y >> 4;
-				int tileEndX = tileStartX + (Zildo.viewPortX >> 4);
-				int tileEndY = tileStartY + (Zildo.viewPortY >> 4);
 
 				boolean yOut = false;
 				boolean xOut = false;
@@ -257,14 +261,14 @@ public abstract class TileEngine {
 					}
 					for (int ax = 0; ax < Constantes.TILEENGINE_WIDTH; ax++)
 					{
-						int x = ax; // + (offset.x >> 4);
+						int x = ax + (offset.x >> 4);
 						xOut = x < tileStartX || x > tileEndX;
 						if (xOut) {
 							continue;
 						}
 						int n_motif = 0, n_animated_motif;
 						// Get corresponding case on the map
-						Case mapCase = theMap.get_mapcase(x, y + 4);
+						Case mapCase = theMap.get_mapcase((x+64) % 64, (y+64) % 64 + 4);
 						if (mapCase != null) {
 							boolean changed = mapCase.isModified();
 							Tile back = mapCase.getBackTile();
@@ -276,20 +280,20 @@ public abstract class TileEngine {
 								n_motif = n_animated_motif;
 							}
 							meshBACK.updateTile(bank,
-									x, y, n_motif, offset, back.reverse, changed);
+									x, y, n_motif, back.reverse, changed);
 							
 							Tile back2 = mapCase.getBackTile2();
 							if (back2 != null) {
 								n_motif = back2.index;
 								meshBACK.updateTile(back2.bank,
-										x, y, n_motif, offset, back2.reverse, changed);
+										x, y, n_motif, back2.reverse, changed);
 							}
 							
 							Tile fore = mapCase.getForeTile();
 							if (fore != null) {
 								n_motif = fore.index;
 								meshFORE.updateTile(fore.bank,
-													x, y, fore.index, offset, fore.reverse, changed);
+													x, y, fore.index, fore.reverse, changed);
 
 							}
 							mapCase.setModified(false);
