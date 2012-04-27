@@ -48,6 +48,7 @@ public class TilePrimitive extends QuadPrimitive {
 	//int freeIndex[];
 	//int freeCount;
 	CycleIntBuffer displayed;
+	int bufSize;
 	//int displayed[];
 	//int displayCount;
 	
@@ -58,23 +59,16 @@ public class TilePrimitive extends QuadPrimitive {
     	super(numPoints);
     	
     	indexBuffer = new int[200][200];
-    	for (int i=0;i<indexBuffer.length;i++) {
-        	for (int j=0;j<indexBuffer.length;j++) {
-        		indexBuffer[i][j] = -1;
-        	}
-    	}
-    	int bufSize = 512;
+
+    	bufSize = 512;
     	int nbTiles = numPoints / 8;
     	while (nbTiles > bufSize) {
     		bufSize+= 256;
     	}
     	freeIndex = new CycleIntBuffer(bufSize);
-    	freeIndex.init(-1);
-    	for (int i=0;i<nbTiles;i++) {
-    		freeIndex.set(i, i * 6);
-    	}
     	displayed = new CycleIntBuffer(bufSize);
-    	displayed.init(-1);
+
+    	clearBuffers();
     }
 
     @Override
@@ -98,9 +92,6 @@ public class TilePrimitive extends QuadPrimitive {
         
         nPoints = 0;
         nIndices = 0;
-
-        // Generate all indices at primitve instanciation (it never change)
-        generateAllVertices();
     }
 
     @Override
@@ -139,7 +130,7 @@ public class TilePrimitive extends QuadPrimitive {
      * @param gridY 0..64
      * @param u
      * @param v
-     * @param reverse reverse attribute (horizonta and/or vertical)
+     * @param reverse reverse attribute (horizontal and/or vertical)
      */
     public void updateTile(int gridX, int gridY, float u, float v, Reverse reverse, boolean changed) {
         int sizeX = 16;
@@ -158,8 +149,6 @@ public class TilePrimitive extends QuadPrimitive {
 			skipTile(gridX, gridY);
 		}
     }
-    
-    int previousFreed;
     
     void fillFreeIndex(Point camera) {
 		int tileStartX = camera.x >> 4;
@@ -182,31 +171,31 @@ public class TilePrimitive extends QuadPrimitive {
     		}
     		if (out) {
 				// Out of the map !
-        		int index = indexBuffer[gridY][gridX];
+        		int index = getIndexBuffer(gridX, gridY);
 				
 				// Add it to the free index buffer
 				freeIndex.lookForEmpty();
 				freeIndex.push(index);
 				// Notify that it is no longer displayed
 				displayed.set(i, -1);
-				indexBuffer[gridY][gridX] = -1;
+				setIndexBuffer(gridX, gridY, -1);
     		}
     	}
     	freeIndex.rewind();
     	
     }
     boolean reuseIndex(int gridX, int gridY) {
-    	int index = indexBuffer[gridY][gridX];
+    	int index = getIndexBuffer(gridX, gridY);
     	boolean reused = true;
     	if (index != -1) { // Tile is already present
     		nIndices = index;
     	} else {
     		// New tile to render
     		nIndices = getFreePosition();
-    		indexBuffer[gridY][gridX] = nIndices;
+    		setIndexBuffer(gridX, gridY, nIndices);
     		// Look for a value
     		displayed.lookForEmpty();
-    		displayed.push((gridY << 8) + gridX);
+    		displayed.push((((gridY+64)%64) << 8) + (gridX+64) % 64);
     		// Notify that tile is new
     		reused=false;
     	}
@@ -218,31 +207,32 @@ public class TilePrimitive extends QuadPrimitive {
     int getFreePosition() {
     	int val = freeIndex.pop();
     	if (val == -1) {
-    		return displayed.getNbValues() * 6; //endCamera;
+    		throw new RuntimeException("r");
+    		//return displayed.getNbValues() * 6; //endCamera;
     	} else {
     		return val;
     	}
     }
     
-    /**
-     * Generate the complete grid of 64x64 tiles : each one has 4 vertices.
-     */
-    void generateAllVertices() {
-    	bufs.vertices.position(0);
-    	float x = 0;
-    	float y = 0;
-    	int numVertices = bufs.vertices.limit() / 2 / 4;
-    	for (int i = 0; i < numVertices; i++) {
-    		bufs.vertices.put(x).put(y);
-    		bufs.vertices.put(x + 16).put(y);
-    		bufs.vertices.put(x).put(y + 16);
-    		bufs.vertices.put(x + 16).put(y + 16);
-    		x += 16;
-    		if (x == 64*16) {
-    			x = 0;
-    			y += 16;
-    		}
+    public int getIndexBuffer(int gridX, int gridY) {
+    	return indexBuffer[(gridY + 64) % 64][(gridX + 64) % 64];
+    }
+    
+    public void setIndexBuffer(int gridX, int gridY, int value) {
+    	indexBuffer[(gridY + 64) % 64][(gridX + 64) % 64] = value;
+    }
+
+    public void clearBuffers() {
+    	for (int i=0;i<indexBuffer.length;i++) {
+        	for (int j=0;j<indexBuffer.length;j++) {
+        		indexBuffer[i][j] = -1;
+        	}
     	}
+    	for (int i=0;i<bufSize;i++) {
+    		freeIndex.set(i, i * 6);
+    	}
+    	displayed.init(-1);
+
     }
     
     void skipTile(int gridX, int gridY) {

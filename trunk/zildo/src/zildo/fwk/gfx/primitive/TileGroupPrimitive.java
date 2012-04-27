@@ -57,6 +57,13 @@ public class TileGroupPrimitive {
 		}
 	}
 	
+	public void clearBuffers() {
+		for (int i = 0; i < meshes.length; i++) {
+			if (meshes[i] != null) {
+				meshes[i].clearBuffers();
+			}
+		}
+	}
 	public void cleanUp()
 	{
 		for (TilePrimitive tp : meshes) {
@@ -66,12 +73,12 @@ public class TileGroupPrimitive {
 		}
 	}
     
-    public void updateTile(int nth, int x, int y, int n_motif, Point offset, Reverse reverse, boolean hasChanged) {
+    public void updateTile(int nth, int x, int y, int n_motif, Reverse reverse, boolean hasChanged) {
 		int xTex = (n_motif % 16) << 4;
 		int yTex = (n_motif >> 4) << 4; // +1;
 
-		meshes[nth].updateTile(x + (offset.x >> 4),
-				y + (offset.y >> 4),
+		meshes[nth].updateTile(x,
+				y,
 				xTex,
 				yTex, 
 				reverse, hasChanged);
