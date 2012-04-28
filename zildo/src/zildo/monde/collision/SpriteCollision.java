@@ -23,7 +23,6 @@ package zildo.monde.collision;
 import java.util.List;
 
 import zildo.fwk.CycleIntBuffer;
-import zildo.fwk.ZUtils;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
@@ -77,7 +76,6 @@ public class SpriteCollision {
 	}
 	
 	public void initFrame(List<SpriteEntity> entities) {
-		long tt1 = ZUtils.getTime();
 		int nbRecensed = 0;
 		for (SpriteEntity entity : entities) {
 			if ((entity.getEntityType().isElement() || entity.getEntityType().isEntity()) 
@@ -108,8 +106,6 @@ public class SpriteCollision {
 			}
 		}
 		
-		long tt2 = ZUtils.getTime();
-		//System.out.println("sprite collision : init "+((tt2-tt1)/1000000)+"ms");
 	}
 	
 	private boolean isOutOfBounds(int tx, int ty) {
@@ -154,6 +150,9 @@ public class SpriteCollision {
 							continue;
 						}
 					}
+					if (entity.dying) {	// Bugfix: Zildo could take goodies several items !
+						continue;
+					}
 					// Rules not directly related to check (is it bad ?)
 					boolean isGoodies = entity.isGoodies();
 
@@ -169,6 +168,7 @@ public class SpriteCollision {
 								elem.fall();
 								elem.dying = true;
 							}
+							break;
 						} else {
 							if (elem != null && elem.getClass().equals(
 									ElementBoomerang.class)) {
@@ -195,7 +195,6 @@ public class SpriteCollision {
 		int y = entity.getCenter().y;
 		int id = entity.getId();
 		applyPatch(entity, id, x, y);
-		System.out.println(id);
 	}
 	
 	private void removePatch(SpriteEntity entity) {
