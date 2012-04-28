@@ -162,16 +162,16 @@ public class MapDisplay {
     	Point movedCam;
     	switch (p_angle) {
     	case NORD:
-    		movedCam=cam.translate(0, 240);
+    		movedCam=cam.translate(0, Zildo.viewPortY);
     		break;
     	case EST:
-    		movedCam=cam.translate(-320, 0);
+    		movedCam=cam.translate(-Zildo.viewPortX, 0);
     		break;
     	case SUD:
-    		movedCam=cam.translate(0, -240);
+    		movedCam=cam.translate(0, -Zildo.viewPortY);
     		break;
     	case OUEST:
-    		movedCam=cam.translate(320, 0);
+    		movedCam=cam.translate(Zildo.viewPortX, 0);
     		break;
     	default:
     		throw new RuntimeException("Can't scroll to "+p_angle+" !");
