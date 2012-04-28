@@ -401,6 +401,25 @@ public class PersoZildo extends Perso {
 		setSpecialEffect(EngineFX.NO_EFFECT);
 	}
 
+
+	final int decalxSword[][] = {
+			{ 1, -1, -1, -5, -10, -13 }, { 0, 2, 3, 2, 1, 1 },
+			{ -5, -6, -4, -4, -4, -4 }, { -2, -12, -18, -14, -13, -8 } };
+	final int decalySword[][] = {
+			{ 2, -6, -11, -6, -3, 1 }, { 1, 0, 3, 3, 2, 2 },
+			{ 1, 3, 3, 6, 3, 3 }, { 1, 0, 3, 3, 2, 2 } };
+
+	final int decalxBow[][] = {
+			{ -2, -5, -5 }, { 0, 0, 0 }, { 0, 0, 0 }, { -1, -3, -4 }
+	};
+	final int decalyBow[][] = {
+			{ 2, 3, 2 }, { 1, 2, 1 }, { 3, 2, 2 }, { 1, 2, 1 }
+	};
+	final int decalboucliery[] = { 0, 0, 0, -1, -2, -1 };
+	final int decalbouclier2y[] = { 0, -1, -1, 0, -1, -1, 0, 0 };
+	final int decalbouclier3y[] = { 0, 0, -1, -2, 0, -1, 0, 0 };
+
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// animate
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -462,23 +481,6 @@ public class PersoZildo extends Perso {
 				}
 			}
 		}
-
-		final int decalxSword[][] = {
-				{ 1, -1, -1, -5, -10, -13 }, { 0, 2, 3, 2, 1, 1 },
-				{ -5, -6, -4, -4, -4, -4 }, { -2, -12, -18, -14, -13, -8 } };
-		final int decalySword[][] = {
-				{ 2, -6, -11, -6, -3, 1 }, { 1, 0, 3, 3, 2, 2 },
-				{ 1, 3, 3, 6, 3, 3 }, { 1, 0, 3, 3, 2, 2 } };
-
-		final int decalxBow[][] = {
-				{ -2, -5, -5 }, { 0, 0, 0 }, { 0, 0, 0 }, { -1, -3, -4 }
-		};
-		final int decalyBow[][] = {
-				{ 2, 3, 2 }, { 1, 2, 1 }, { 3, 2, 2 }, { 1, 2, 1 }
-		};
-		int decalboucliery[] = { 0, 0, 0, -1, -2, -1 };
-		int decalbouclier2y[] = { 0, -1, -1, 0, -1, -1, 0, 0 };
-		int decalbouclier3y[] = { 0, 0, -1, -2, 0, -1, 0, 0 };
 
 		boolean touche;
 
@@ -675,12 +677,6 @@ public class PersoZildo extends Perso {
 				en_bras.setX(objX);
 				en_bras.setY(objY);
 				en_bras.setZ(objZ + variation);
-			}
-			if (en_bras.getNSpr() == 32) {// Il s'agit d'une poule
-				// spriteManagement.aff_sprite(BANK_PNJ,35+compteur_animation /
-				// 20,xx-7,yy-21-8);
-			} else {
-				// spriteManagement.aff_sprite(BANK_ELEMENTS,en_bras,xx-7,yy-21-8);
 			}
 		} else if (mouvement == MouvementZildo.SOULEVE)
 		{

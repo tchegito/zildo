@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
+import zildo.monde.collision.SpriteCollision;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
@@ -41,7 +42,6 @@ import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementAnimMort;
-import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementClouds;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
@@ -53,7 +53,6 @@ import zildo.monde.sprites.elements.ElementStars.StarKind;
 import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
-import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
@@ -77,6 +76,8 @@ public class SpriteManagement extends SpriteStore {
 												// have been modified in the
 												// current frame
 
+	SpriteCollision sprColli ;
+	
 	public SpriteManagement() {
 
 		super();
@@ -85,6 +86,7 @@ public class SpriteManagement extends SpriteStore {
 		spriteEntitiesToAdd = new ArrayList<SpriteEntity>();
 		suspendedEntities = new ArrayList<SpriteEntity>();
 		backupEntities = new HashMap<Integer, SpriteEntity>();
+		sprColli = new SpriteCollision();
 	}
 
 	@Override
@@ -420,13 +422,12 @@ public class SpriteManagement extends SpriteStore {
 		}
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// updateSprites
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// IN:camerax, cameray
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// Do sprite's stuff
-	// -animate sprites & persos
+	/**
+	 * Do sprite's stuff<ul>
+	 * <li>animate sprites & persos<li>
+	 * <li>delete if need (the only place to do this)</li></ul>
+	 * @param p_blockMoves TRUE=don't animate perso except Zildo
+	 */
 	public void updateSprites(boolean p_blockMoves) {
 		spriteUpdating = true;
 		spriteEntitiesToAdd.clear();
@@ -439,13 +440,15 @@ public class SpriteManagement extends SpriteStore {
 			}
 		}
 
+		sprColli.initFrame(spriteEntities);
+
 		// Do perso animations
 		// Mandatory to do that first, because one perso can be connected to
 		// other sprites
+		int compt=EngineZildo.compteur_animation; // % (3 * 20);
 		for (SpriteEntity entity : spriteEntities) {
 			if (entity.getEntityType().isPerso()) {
 				Perso perso = (Perso) entity;
-				int compt=EngineZildo.compteur_animation; // % (3 * 20);
 				if (!p_blockMoves || perso.getInfo() == PersoInfo.ZILDO) {
 					// Animate persos
 					perso.animate(compt);
@@ -507,6 +510,7 @@ public class SpriteManagement extends SpriteStore {
 		// Remove what need to
 		for (SpriteEntity entity : toDelete) {
 			deleteSprite(entity);
+			sprColli.notifySpriteDeletion(entity);
 		}
 
 		spriteUpdating = false;
@@ -563,93 +567,9 @@ public class SpriteManagement extends SpriteStore {
 	// item...)
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public boolean collideSprite(int tx, int ty, Element elem) {
-		final int tab_add[] = {-1, -1, 1, 1, -1};
-
-		SpriteEntity entityRef = elem;
-		boolean found = false;
-		int x = 0, y = 0;
-		boolean isBlockable;
-		boolean isGoodies;
-		boolean isZildo = elem != null
-				&& elem.getEntityType().isPerso()
-				&& ((Perso) elem).isZildo();
-		Element element;
-		List<SpriteEntity> listToRemove = new ArrayList<SpriteEntity>();
-
-		for (SpriteEntity entity : spriteEntities) {
-			element = null;
-			if (entity != entityRef
-					&& (entity.getEntityType().isElement() || entity
-							.getEntityType().isEntity()) && !entity.dying) {
-				isBlockable = entity.getDesc().isBlocking();
-				isGoodies = entity.isGoodies();
-				SpriteModel sprModel = entity.getSprModel();
-				int sx = sprModel.getTaille_x();
-				int sy = sprModel.getTaille_y();
-				if (isGoodies || isBlockable) {
-					boolean canDealWith = false;
-					Point center=entity.getCenter();
-					if (entity.getEntityType().isElement()) {
-						// The elements
-						element = (Element) entity;
-						if (element.getLinkedPerso() == null
-								|| element.getLinkedPerso() != elem) {
-							canDealWith = true;
-						}
-					} else {
-						canDealWith = true;
-					}
-					if (canDealWith) {
-						// Test collision with element
-						x = center.x;
-						y = center.y;
-						for (int j = 0; j < 4 && !found; j++) {
-							int px = tx + 4 * tab_add[j];
-							int py = ty + 2 * tab_add[j + 1];
-							if (px >= x && py >= y && px <= (x + sx)
-									&& py <= (y + sy)) {
-								// Notify that Zildo is pushing an entity
-								if (!isGoodies && isZildo) {
-									((PersoZildo) elem).pushSomething(element);
-								}
-								found=true;
-								// Is it a goodies ?
-								if (isGoodies) {
-									if (isZildo) {
-										PersoZildo zildo = (PersoZildo) elem;
-										boolean disappear = zildo.pickGoodies(element, 0);
-										if (disappear) {
-											element.fall();
-											listToRemove.add(entity);
-										}
-									} else {
-										if (elem != null && elem.getClass().equals(
-												ElementBoomerang.class)) {
-											// Boomerang catches some goodies
-											((ElementBoomerang) elem)
-													.grab(element);
-										} else {
-											found=false;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-
-			}
-		}
-
-		for (SpriteEntity entity : listToRemove) {
-			// Next method might remove an element linked to this one (example: shadow)
-			entity.dying = true;
-		}
-
-		// Return collision
-		return found;
+		return sprColli.checkCollision(tx, ty, elem);
 	}
-
+	
 	/**
 	 * Find an element near a given one.
 	 * @param x
@@ -860,5 +780,9 @@ public class SpriteManagement extends SpriteStore {
             }
         }
         return null;
+    }
+    
+    public void initForNewMap() {
+    	sprColli.clear();
     }
 }

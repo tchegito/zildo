@@ -37,6 +37,7 @@ import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -83,6 +84,8 @@ public class MapManagement {
 
 		EngineZildo.spriteManagement.clearSpritesWithoutZildo();
 
+    	SpriteEntity.flipCounter(SpriteEntity.class);
+
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -118,6 +121,7 @@ public class MapManagement {
 
 		// Load a new one
 		currentMap = loadMapFile(adjustedMapName, p_mapname);
+		EngineZildo.spriteManagement.initForNewMap();
 
 		if (!EngineZildo.game.editing) {
 			if (!EngineZildo.soundManagement.isForceMusic()) {

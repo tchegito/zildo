@@ -75,6 +75,21 @@ public abstract class Identified {
 		}
 	}
 	
+	/**
+	 * Modify counter to the max of indexed elements. Then we won't increase counter with
+	 * nonsense values.
+	 * @param p_clazz
+	 */
+	public static void flipCounter(Class<? extends Identified> p_clazz) {
+		int maxId = 0;
+		for (Key k : objects.keySet()) {
+			if (k.clazz == p_clazz && k.id > maxId) {
+				maxId = k.id;
+			}
+		}
+		idsCounter.put(p_clazz, maxId+1);
+	}
+	
 	protected int getCounter(Class<? extends Identified> p_clazz) {
 		Class<? extends Identified> refClass=this.getClass();
 		if( p_clazz != null) {
@@ -109,5 +124,18 @@ public abstract class Identified {
 	public static <E extends Identified> E fromId(Class<E> p_clazz, int p_id) {
 		Key p_key=new Key(p_id, p_clazz);
 		return (E) objects.get(p_key);
+	}
+	
+	/**
+	 * Remove an object for the register.
+	 * @param <E>
+	 * @param clazz
+	 * @param p_id
+	 */
+	public static <E extends Identified> void remove(Class<E> clazz, int p_id) {
+		if (p_id != -1) {
+			Key p_key=new Key(p_id, clazz);
+			objects.remove(p_key);
+		}
 	}
 }

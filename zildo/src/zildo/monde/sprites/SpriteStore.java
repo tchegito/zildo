@@ -201,6 +201,7 @@ public class SpriteStore {
 				perso.finalize();
 			}
 			entity.visible=false;
+			Identified.remove(SpriteEntity.class, entity.getId());
 		}
 	}
 }
