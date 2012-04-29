@@ -110,3 +110,9 @@ So instead of having 3 x 7 x 3 (layer * bank * buffers) = 63 buffers, we have 1 
 With such techniques, the memory usage has reduced to 1.8Mb !
 
 So, problem is solved.
+
+== Post-conclusion : need to think again about memory ==
+
+Considering the last proposition, memory usage is acceptable, and quite excellent though. But performance isn't the same. This isn't enough, and speed issues need this to be challenged.
+
+To be continued in this document.
