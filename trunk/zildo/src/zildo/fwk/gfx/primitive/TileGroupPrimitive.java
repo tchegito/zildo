@@ -99,7 +99,7 @@ public class TileGroupPrimitive {
      */
     public void render(ActionNthRunner action) {
     	for (int i=0;i<meshes.length;i++) {
-    		if (!meshes[i].isEmpty()) {
+    		if (meshes[i] != null && !meshes[i].isEmpty()) {
     			action.execute(i);
     			meshes[i].render();
     		}

@@ -61,6 +61,7 @@ public class Case implements EasySerializable {
 	
 	public void setBackTile(Tile p_tile) {
 		this.back = p_tile;
+		modified = true;
 	}
 	
 	public Tile getForeTile() {
@@ -69,6 +70,7 @@ public class Case implements EasySerializable {
 	
 	public void setForeTile(Tile p_tile) {
 		this.fore = p_tile;
+		modified = true;
 	}
 	
 	public Case() {
@@ -287,6 +289,7 @@ public class Case implements EasySerializable {
 
 	public void setBackTile2(Tile back2) {
 		this.back2 = back2;
+		modified = true;
 	}
 
 	
