@@ -184,12 +184,9 @@ public class SpriteSorter {
 						int linkVertices = entity.getLinkVertices();
 						int nbEntity = entity.repeatX * entity.repeatY;
 						// Repeat entity if its fields are asking to
-						for (int nbEnt=0;nbEnt<nbEntity;nbEnt++) {
-							int last=lastInBank[entity.getNBank()]++;
-							quadOrder[entity.getNBank()][last]=linkVertices;
-							linkVertices+=6;
-						}
-
+						int last=lastInBank[entity.getNBank()]++;
+						quadOrder[entity.getNBank()][last]=linkVertices;
+						
 						// Check if we need a special effect
 						EngineFX persoFX=entity.getSpecialEffect();
 	
