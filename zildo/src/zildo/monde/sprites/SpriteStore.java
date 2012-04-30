@@ -23,8 +23,8 @@ package zildo.monde.sprites;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.fwk.Identified;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.db.Identified;
 import zildo.fwk.gfx.EngineFX;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;

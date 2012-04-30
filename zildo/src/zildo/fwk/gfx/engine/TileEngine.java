@@ -252,6 +252,11 @@ public abstract class TileEngine {
 				boolean yOut = false;
 				boolean xOut = false;
 
+				int dx = theMap.getDim_x();
+				int dy = theMap.getDim_y(); // + offset.y;
+				if (offset.y > 0) {
+					dy+= offset.y / 16;
+				}
 				for (int ay = 0; ay < Constantes.TILEENGINE_HEIGHT; ay++)
 				{
 					int y = ay + (offset.y >> 4);
@@ -268,7 +273,8 @@ public abstract class TileEngine {
 						}
 						int n_motif = 0, n_animated_motif;
 						// Get corresponding case on the map
-						Case mapCase = theMap.get_mapcase((x+64) % 64, (y+64) % 64 + 4);
+
+						Case mapCase = theMap.get_mapcase((x+dx) % dx, (y+dy) % dy + 4);
 						if (mapCase != null) {
 							boolean changed = mapCase.isModified();
 							Tile back = mapCase.getBackTile();

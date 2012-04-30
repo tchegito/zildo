@@ -20,7 +20,7 @@
 
 package zildo.monde.sprites;
 
-import zildo.fwk.Identified;
+import zildo.fwk.db.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.gfx.EngineFX;

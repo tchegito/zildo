@@ -18,7 +18,7 @@
  *
  */
 
-package zildo.fwk;
+package zildo.fwk.collection;
 
 /**
  * @author Tchegito
@@ -28,24 +28,17 @@ public class CycleIntBuffer {
 
 	int[] buffer;
 	int cursor;
-	int nbValues;
 	
 	/**
 	 * @param size should be a power of 2.
 	 */
 	public CycleIntBuffer(int size) {
 		buffer = new int[size];
-		nbValues = 0;
 	}
 	
 	public void init(int value) {
 		for (int i=0;i<buffer.length;i++) {
 			buffer[i] = value;
-		}
-		if (value == -1) {
-			nbValues = 0;
-		} else {
-			nbValues = buffer.length;
 		}
 	}
 	
@@ -60,7 +53,6 @@ public class CycleIntBuffer {
 			ind = buffer[cursor];
 			if (ind != -1) {
 				buffer[cursor] = -1;	// Place is taken
-				nbValues--;
 			}
 			cursor = (cursor+1) % buffer.length;
 			if (startCursor == cursor) {
@@ -91,11 +83,6 @@ public class CycleIntBuffer {
 	}
 	
 	public void set(int index, int value) {
-		if (buffer[index] == -1 && value != -1) {
-			nbValues++;
-		} else if (buffer[index] != -1 && value == -1) {
-			nbValues--;
-		}
 		buffer[index] = value;
 	}
 	
@@ -109,13 +96,5 @@ public class CycleIntBuffer {
 	
 	public void rewind() {
 		cursor = 0;
-	}
-	
-	/**
-	 * Return non-null (!= -1) values.
-	 * @return
-	 */
-	public int getNbValues() {
-		return nbValues;
 	}
 }

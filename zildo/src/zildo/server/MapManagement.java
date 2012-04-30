@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.Ambient.Atmosphere;
-import zildo.fwk.IntSet;
+import zildo.fwk.collection.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.gfx.filter.CloudFilter;
@@ -37,7 +37,6 @@ import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -84,8 +83,6 @@ public class MapManagement {
 
 		EngineZildo.spriteManagement.clearSpritesWithoutZildo();
 
-    	SpriteEntity.flipCounter(SpriteEntity.class);
-
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -129,7 +126,7 @@ public class MapManagement {
 			}
 			switch (ClientEngineZildo.ambient.getWeather(currentMap)) {
 				case CLOUD:
-					//ClientEngineZildo.filterCommand.active(CloudFilter.class, true, null);
+					ClientEngineZildo.filterCommand.active(CloudFilter.class, true, null);
 					break;
 				case USUAL:
 					ClientEngineZildo.filterCommand.active(CloudFilter.class, false, null);
@@ -679,7 +676,7 @@ public class MapManagement {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
 			//points.add(new Point(16*26, 45*16));
-			points.add(new Point(231+650-350, 360+130));	// 231+450 is good for preintro
+			points.add(new Point(231+650-350-200, 360+130-50));	// 231+450 is good for preintro
 		} else {
 			points = currentMap.getRespawnPoints();
 		}
