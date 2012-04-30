@@ -27,6 +27,7 @@
 			<moveTo who="christa" pos="0,14" unstoppable="true" delta="true"/>
 			<moveTo who="christa" pos="23,0" unstoppable="true" delta="true"/>
 			<script who="christa" value="2"/>
+			<music name="Vitesse"/>
 		</action>
 	</quest>
 	<quest name="enlevebuissons">
@@ -39,6 +40,7 @@
 			<dialog name="christa" num="3"/>
 		</trigger>
 		<action>
+		    <music name="Village"/>
 			<take item="milk"/>
 		</action>
 	</quest>
