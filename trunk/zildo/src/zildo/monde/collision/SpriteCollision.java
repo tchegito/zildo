@@ -130,9 +130,13 @@ public class SpriteCollision {
 	 * @return boolean
 	 */
 	public boolean checkCollision(int tx, int ty, SpriteEntity entityRef) {
-		int refId = entityRef.getId();
+		int refId = -1;
+		boolean isZildo = false;
+		if (entityRef != null) {
+			refId = entityRef.getId();
+			isZildo = entityRef.isZildo();
+		}
 		boolean found = false;
-		boolean isZildo = entityRef.isZildo();
 		Element elem = null;
 		for (int i=0;i<patchCoords.length && !found;i++) {
 			Point p = patchCoords[i];

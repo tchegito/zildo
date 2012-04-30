@@ -48,6 +48,7 @@ public class PersoNJ extends Perso {
 	public PersoNJ() {
 		super();
 		setPos_seqsprite(0);
+		pv = 1;
 	}
 
 	@Override
