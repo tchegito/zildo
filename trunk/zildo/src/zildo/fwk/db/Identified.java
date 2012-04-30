@@ -18,10 +18,13 @@
  *
  */
 
-package zildo.fwk;
+package zildo.fwk.db;
 
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
+
+import zildo.fwk.collection.IdGenerator;
 
 /**
  * Mini-database mechanism.
@@ -38,9 +41,10 @@ import java.util.Map;
 public abstract class Identified {
 
 	protected int id=-1;
+	public static final int DEFAULT_MAX_ID = 512;
 	
-	protected static Map<Class<? extends Identified>, Integer> idsCounter=
-		new HashMap<Class<? extends Identified>, Integer>();
+	protected static Map<Class<? extends Identified>, IdGenerator> idsCounter=
+		new HashMap<Class<? extends Identified>, IdGenerator>();
 
 	protected static class Key {
 		int id;
@@ -69,25 +73,10 @@ public abstract class Identified {
 	private static Map<Key, Identified> objects;
 	
 	public static void resetCounter(Class<? extends Identified> p_clazz) {
-		idsCounter.put(p_clazz, 0);
+		idsCounter.put(p_clazz, new IdGenerator(retrieveMaxId(p_clazz)));
 		if (objects == null) {
 			objects=new HashMap<Key, Identified>();
 		}
-	}
-	
-	/**
-	 * Modify counter to the max of indexed elements. Then we won't increase counter with
-	 * nonsense values.
-	 * @param p_clazz
-	 */
-	public static void flipCounter(Class<? extends Identified> p_clazz) {
-		int maxId = 0;
-		for (Key k : objects.keySet()) {
-			if (k.clazz == p_clazz && k.id > maxId) {
-				maxId = k.id;
-			}
-		}
-		idsCounter.put(p_clazz, maxId+1);
 	}
 	
 	protected int getCounter(Class<? extends Identified> p_clazz) {
@@ -95,18 +84,22 @@ public abstract class Identified {
 		if( p_clazz != null) {
 			refClass=p_clazz;
 		}
-		Integer i=idsCounter.get(refClass);
-		if (i== null) {
-			i=0;
+		IdGenerator idGen=idsCounter.get(refClass);
+		if (idGen== null) {
+			idGen = new IdGenerator(retrieveMaxId(refClass));
+			idsCounter.put(refClass, idGen);
 		}
-		idsCounter.put(refClass, i.intValue()+1);
-		return i;
+		return idGen.pop();
 	}
 	
 	protected void initializeId() {
 		initializeId(null);
 	}
 
+	/**
+	 * Allocate an ID and assign it to the current object.
+	 * @param p_clazz
+	 */
 	protected void initializeId(Class<? extends Identified> p_clazz) {
 		Class<? extends Identified> refClass=this.getClass();
 		if (p_clazz != null) {
@@ -136,6 +129,26 @@ public abstract class Identified {
 		if (p_id != -1) {
 			Key p_key=new Key(p_id, clazz);
 			objects.remove(p_key);
+			IdGenerator idGen=idsCounter.get(clazz);
+			if (idGen != null) {	// It should never be null !
+				idGen.remove(p_id);
+			}
 		}
 	}
+	
+	/**
+	 * Retrieve the max ID defined by annotation in given class. There's a default value in case
+	 * when no annotation is found.
+	 * @param p_clazz
+	 * @return int
+	 */
+	private static int retrieveMaxId(Class<? extends Identified> p_clazz) {
+		for (Annotation a : p_clazz.getAnnotations()) {
+			if (a.annotationType() == MaxId.class) {
+				return ((MaxId) a).n();
+			}
+		}
+		return DEFAULT_MAX_ID;
+	}
+
 }

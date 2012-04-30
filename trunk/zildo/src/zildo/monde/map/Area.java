@@ -31,8 +31,8 @@ import java.util.Map.Entry;
 
 import zildo.client.sound.Ambient.Atmosphere;
 import zildo.client.sound.BankSound;
-import zildo.fwk.IntSet;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.collection.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.monde.Hasard;

@@ -22,7 +22,7 @@ package zildo.monde.collision;
 
 import java.util.List;
 
-import zildo.fwk.CycleIntBuffer;
+import zildo.fwk.collection.CycleIntBuffer;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;

@@ -23,7 +23,7 @@ package zildo.server.state;
 
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
-import zildo.fwk.Identified;
+import zildo.fwk.db.Identified;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.input.KeyboardState;
 import zildo.fwk.net.TransferObject;

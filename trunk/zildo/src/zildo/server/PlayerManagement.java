@@ -21,7 +21,7 @@
 package zildo.server;
 
 import zildo.client.sound.BankSound;
-import zildo.fwk.IntSet;
+import zildo.fwk.collection.IntSet;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.input.KeyboardState;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;

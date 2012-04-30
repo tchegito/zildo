@@ -1,4 +1,4 @@
-package zildo.fwk;
+package zildo.fwk.collection;
 
 import java.util.ArrayList;
 import java.util.Collections;

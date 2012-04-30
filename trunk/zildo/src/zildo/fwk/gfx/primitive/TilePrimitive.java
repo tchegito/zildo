@@ -21,7 +21,7 @@
 package zildo.fwk.gfx.primitive;
 
 import zildo.Zildo;
-import zildo.fwk.CycleIntBuffer;
+import zildo.fwk.collection.CycleIntBuffer;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.util.Point;
 

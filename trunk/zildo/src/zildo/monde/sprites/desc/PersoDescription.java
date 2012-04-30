@@ -20,8 +20,8 @@
 
 package zildo.monde.sprites.desc;
 
-import zildo.fwk.IntSet;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.collection.IntSet;
 
 public enum PersoDescription implements SpriteDescription {
 

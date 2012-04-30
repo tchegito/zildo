@@ -18,20 +18,17 @@
  *
  */
 
-package zildo.fwk;
+package zildo.fwk.db;
 
-import java.util.ArrayList;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * @author Tchegito
  *
  */
-@SuppressWarnings("serial")
-public class InheritedEnumSet <E> extends ArrayList<E> {
+@Retention(RetentionPolicy.RUNTIME)
+public @interface MaxId {
 
-	public InheritedEnumSet(E... obj) {
-		for (E e : obj) {
-			this.add(e);
-		}
-	}
+	int n();
 }
