@@ -23,11 +23,17 @@ public abstract class GraphicStuff {
         fbo.cleanDepthBuffer(id);
         logger.info("Deleted depth buffer " + id);
     }
+	
+    public int generateDepthBuffer() {
+        int depthId = fbo.generateDepthBuffer();
+
+        logger.info("Created depth buffer " + depthId);
+        return depthId;
+    }
     
     public abstract VBO createVBO();
 	public abstract float[] getFloat(int p_info,int p_size);
 	public abstract int generateTexture(int sizeX, int sizeY);
-	public abstract int generateDepthBuffer();
     public abstract void cleanTexture(int id);
     public abstract Vector4f createColor(long value);
 	public abstract void setCurrentColor(float[] p_color);
