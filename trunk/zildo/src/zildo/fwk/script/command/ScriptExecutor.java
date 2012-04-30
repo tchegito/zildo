@@ -75,6 +75,11 @@ public class ScriptExecutor {
 						renderAction(process, action, false);
 					}
 				}
+				
+				// Did the last action finished ? So we'll avoid GUI blinking with 1-frame long script. (issue 28)
+				if (process.getCurrentNode() == null) {
+					terminate();
+				}
 			}
 		}
 	}
