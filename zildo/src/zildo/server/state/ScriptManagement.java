@@ -116,7 +116,7 @@ public class ScriptManagement {
     	// Create a SceneElement from the given actions
 		SceneElement scene=SceneElement.createScene(p_actions);
 		if (p_questName != null) {
-			scene.id = p_questName;
+			scene.id = "@scene@"+p_questName;
 		}
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent);
