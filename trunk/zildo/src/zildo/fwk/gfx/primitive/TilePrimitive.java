@@ -58,7 +58,7 @@ public class TilePrimitive extends QuadPrimitive {
     public TilePrimitive(int numPoints) {
     	super(numPoints);
     	
-    	indexBuffer = new int[200][200];
+    	indexBuffer = new int[64][64];
 
     	bufSize = 512;
     	int nbTiles = numPoints / 8;

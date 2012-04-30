@@ -127,7 +127,7 @@ public class QuadPrimitive {
 		int revY = reverse.isVertical() ? -1 : 1;
 		
         // Move tile
-        putQuadSized(x, y, sizeX * revX, sizeY * revY, u, v);
+        addSprite(x, y, u, v, sizeX * revX, sizeY * revY);
 
     }
     
@@ -164,27 +164,6 @@ public class QuadPrimitive {
             bufs.textures.put(texCoords[2][0]).put(texCoords[2][1]);
         	
         }
-    }
-    
-    private void putQuadSized(float x, float y, float sizeX, float sizeY, float xTex, float yTex) {
-    	
-        // 4 bufs.vertices
-        if (bufs.vertices.position() == bufs.vertices.limit()) {
-            // On rajoute une place
-            bufs.vertices.limit(bufs.vertices.position() + 2 * 4);
-            bufs.textures.limit(bufs.textures.position() + 2 * 4);
-        }
-        float pixSizeX=Math.abs(sizeX);
-        float pixSizeY=Math.abs(sizeY);
-        putTexture(xTex, yTex, sizeX, sizeY, false);
-        
-        for (int i = 0; i < 4; i++) {
-            bufs.vertices.put(x + pixSizeX * (i % 2)); // x
-            bufs.vertices.put(y + pixSizeY * (i / 2)); // y
-        }
-
-        nPoints += 4;
-        nIndices += 6;
     }
 
     // Return the quad position in Vertex Buffer
