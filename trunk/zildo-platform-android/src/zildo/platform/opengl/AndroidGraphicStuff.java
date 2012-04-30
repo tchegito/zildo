@@ -74,7 +74,7 @@ public class AndroidGraphicStuff extends GraphicStuff {
     // Frame Buffer Object : provide an offscreen render, which can be used further as a texture.
     // ///////////////////////////////////////////////////////////////////////////////////////////////////////
     protected boolean isFBOSupported() {
-        return false;
+        return true;
     }
 
     // //////////////////////////////////////////////
@@ -127,14 +127,6 @@ public class AndroidGraphicStuff extends GraphicStuff {
 	public void setCurrentColor(float[] p_color) {
 		gl11.glColor4f(p_color[0], p_color[1], p_color[2], p_color[3]);		
 	}
-	
-    @Override
-    public int generateDepthBuffer() {
-        int depthId = fbo.generateDepthBuffer();
-
-        logger.info("Created depth buffer " + depthId);
-        return depthId;
-    }
 
     public Vector4f createColor64(float r, float g, float b) {
         return new Vector4f(r / 63.0f, g / 63.0f, b / 63.0f, 1.0f);
