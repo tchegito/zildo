@@ -236,15 +236,6 @@
 		</action>
 	</quest>
 	
-	<quest name="foretg_button" repeat="true">
-		<spawn type="CAVE_SIMPLEDOOR" what="inDoor" pos="55,308"/>
-		<spawn type="CAVE_SIMPLEDOOR" what="outDoor" pos="126,536"/>
-		<actions>
-			<activate what="inDoor" value="true"/>
-			<activate what="outDoor" value="false"/>
-		</actions>
-	</quest>
-	
 	<mapScript>
 		<condition name="coucou" exp="enlevement">
 			<remove who="roxy" />
@@ -688,5 +679,14 @@
 		<script who="rabbit1" value="0"/>
 		<script who="rabbit2" value="0"/>
 		<script who="rabbit3" value="0"/>
+	</scene>
+		
+	<scene name="foretg_button" repeat="true">
+		<spawn type="CAVE_SIMPLEDOOR" what="inDoor" pos="55,308"/>
+		<spawn type="CAVE_SIMPLEDOOR" what="outDoor" pos="126,536"/>
+		<actions>
+			<activate what="inDoor" value="true"/>
+			<activate what="outDoor" value="false"/>
+		</actions>
 	</scene>
 </adventure>
