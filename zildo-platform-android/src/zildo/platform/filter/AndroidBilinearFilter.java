@@ -42,6 +42,9 @@ public class AndroidBilinearFilter extends BilinearFilter {
 		
 		// Select right texture
 		gl11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
+        gl11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        gl11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        
         // Disable blend
 		gl11.glDisable(GL11.GL_BLEND);
 
@@ -49,8 +52,9 @@ public class AndroidBilinearFilter extends BilinearFilter {
 		gl11.glLoadIdentity();
 		gl11.glMatrixMode(GL11.GL_PROJECTION);
 		gl11.glPushMatrix();
-		gl11.glTranslatef(0,-sizeY,1);
-
+		// Flip the image vertically
+		gl11.glTranslatef(0,sizeY,0);
+		gl11.glScalef(1, -1, 1);
 		// FIXME: was previously color3f
 		gl11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		
@@ -67,7 +71,7 @@ public class AndroidBilinearFilter extends BilinearFilter {
 	@Override
 	public void preFilter() {
 		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
-		gl11.glClear(GL11.GL_COLOR_BUFFER_BIT); // Clear The Screen And The Depth Buffer
+		//gl11.glClear(GL11.GL_COLOR_BUFFER_BIT); // Clear The Screen And The Depth Buffer
 	}
 	
 }
