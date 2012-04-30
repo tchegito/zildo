@@ -20,9 +20,18 @@
 
 package zildo.platform.opengl.compatibility;
 
-import javax.microedition.khronos.opengles.GL11;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
 
+import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
+import javax.microedition.khronos.opengles.GL11ExtensionPack;
+
+import zildo.Zildo;
+import zildo.fwk.ZUtils;
 import zildo.fwk.opengl.compatibility.FBO;
+import zildo.platform.opengl.AndroidOpenGLGestion;
 
 /**
  * @author tchegito
@@ -30,50 +39,39 @@ import zildo.fwk.opengl.compatibility.FBO;
 public class FBOHardware implements FBO {
 
 	GL11 gl11;
+	GL11ExtensionPack gl11Ext;
 	
 	//TODO: not implemented yet, but check later the NDK (native development kit)
 	//Apparently, we could use native code for opengl es
 	
 	@Override
-	public int create() {/*
-		if (GLContext.getCapabilities().GL_EXT_framebuffer_object) {
-			IntBuffer buffer = ByteBuffer.allocateDirect(1 * 4)
-					.order(ByteOrder.nativeOrder()).asIntBuffer(); // allocate a
-																	// 1 int
-																	// byte
-			// buffer
-			EXTFramebufferObject.glGenFramebuffersEXT(buffer); // generate
-			int fboId = buffer.get();
+	public int create() {
+		if (gl11 == null) {
+			gl11 = (GL11) AndroidOpenGLGestion.gl10;
+			gl11Ext = (GL11ExtensionPack) AndroidOpenGLGestion.gl10;
+		}
+		IntBuffer buffer = ByteBuffer.allocateDirect(1 * 4).order(ByteOrder.nativeOrder()).asIntBuffer();
+		gl11Ext.glGenFramebuffersOES(1, buffer); // generate
+		int fboId = buffer.get();
 
-			checkCompleteness(fboId);
+		checkCompleteness(fboId);
 
-			return fboId;
-		} else {
-			throw new RuntimeException("Unable to create FBO");
-		}*/
-		return 0;
+		return fboId;
 	}
 
 	@Override
 	public void bindToTextureAndDepth(int myTextureId, int myDepthId,
-			int myFBOId) {/*
+			int myFBOId) {
 		// On bind le FBO à la texture
-		EXTFramebufferObject.glBindFramebufferEXT(
-				EXTFramebufferObject.GL_FRAMEBUFFER_EXT, myFBOId);
-		if (myDepthId > 0) {
-			EXTFramebufferObject.glFramebufferRenderbufferEXT(
-					EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
-					EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT,
-					EXTFramebufferObject.GL_RENDERBUFFER_EXT, myDepthId);
-		}
-		EXTFramebufferObject.glFramebufferTexture2DEXT(
-				EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
-				EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT,
-				GL11.GL_TEXTURE_2D, myTextureId, 0);
+		gl11Ext.glBindFramebufferOES(GL11ExtensionPack.GL_FRAMEBUFFER_OES, myFBOId);
+
+		gl11Ext.glFramebufferTexture2DOES(GL11ExtensionPack.GL_FRAMEBUFFER_OES, 
+				GL11ExtensionPack.GL_COLOR_ATTACHMENT0_OES,
+				GL10.GL_TEXTURE_2D, myTextureId, 0);
+
 
 		// Puis on détache la texture de la vue
-		EXTFramebufferObject.glBindFramebufferEXT(
-				EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);*/
+		gl11Ext.glBindFramebufferOES(GL11ExtensionPack.GL_FRAMEBUFFER_OES, 0);
 	}
 
 	@Override
@@ -96,26 +94,24 @@ public class FBOHardware implements FBO {
 	}
 
 	@Override
-	public void startRendering(int myFBOId, int sizeX, int sizeY) {/*
-		EXTFramebufferObject.glBindFramebufferEXT(
-				EXTFramebufferObject.GL_FRAMEBUFFER_EXT, myFBOId);
+	public void startRendering(int myFBOId, int sizeX, int sizeY) {
 
-		GL11.glPushAttrib(GL11.GL_VIEWPORT_BIT);
-		GL11.glViewport(0, 0, Zildo.viewPortX, Zildo.viewPortY);
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);*/
+		gl11Ext.glBindFramebufferOES(GL11ExtensionPack.GL_FRAMEBUFFER_OES, myFBOId);
+		
+		//gl11.glPushAttrib(GL11.GL_VIVIEWPORT);
+		gl11.glViewport(0, 0, Zildo.viewPortX, Zildo.viewPortY);
+		gl11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 	}
 
 	@Override
-	public void endRendering() {/*
-		EXTFramebufferObject.glBindFramebufferEXT(
-				EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
-		GL11.glPopAttrib();*/
+	public void endRendering() {
+		gl11Ext.glBindFramebufferOES(GL11ExtensionPack.GL_FRAMEBUFFER_OES, 0);
 	}
 
 	@Override
-	public void cleanUp(int id) { /*
-		EXTFramebufferObject.glDeleteFramebuffersEXT(ZUtils.getBufferWithId(id));
-	*/}
+	public void cleanUp(int id) { 
+		gl11Ext.glDeleteFramebuffersOES(1, ZUtils.getBufferWithId(id));
+	}
 
 	@Override
 	public void cleanDepthBuffer(int id) { /*
