@@ -62,7 +62,8 @@ public class AndroidBlurFilter extends BlurFilter {
 		gl11.glLoadIdentity();
 		gl11.glMatrixMode(GL11.GL_PROJECTION);
 		gl11.glPushMatrix();
-		gl11.glTranslatef(0,-sizeY,0);
+		gl11.glTranslatef(0,sizeY,0);
+		gl11.glScalef(1, -1, 1);
 
 		//GL11.glDisable(GL11.GL_BLEND);
 		
@@ -106,7 +107,7 @@ public class AndroidBlurFilter extends BlurFilter {
 		// Copy last texture in TexBuffer
 		graphicStuff.fbo.bindToTextureAndDepth(texBuffer[currentImage], depthTextureID, fboId);
 		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
-		gl11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
+		//gl11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
 	}
 	
 	/**

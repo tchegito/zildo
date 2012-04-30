@@ -26,6 +26,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.monde.sprites.Reverse;
+import zildo.platform.opengl.AndroidOpenGLGestion;
 
 /**
  * @author Tchegito
@@ -37,20 +38,21 @@ public class AndroidCloudFilter extends CloudFilter {
 	
 	public AndroidCloudFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
+    	gl11 = (GL11) AndroidOpenGLGestion.gl10;
 	}
 	
 	@Override
 	public boolean renderFilter() {
 		
 		super.startInitialization();
-		updateQuad(0, 0, u, v, Reverse.NOTHING);
+		updateQuad(0, 0, u, -v, Reverse.NOTHING);
 		this.endInitialization();
 		
 		gl11.glMatrixMode(GL11.GL_MODELVIEW);
 		gl11.glLoadIdentity();
 		gl11.glMatrixMode(GL11.GL_PROJECTION);
 		gl11.glPushMatrix();
-		gl11.glTranslatef(0,-sizeY,1);
+		//gl11.glTranslatef(0,-sizeY,1);
 
 		float colorFactor=0.2f;
 		gl11.glColor4f(colorFactor, colorFactor, colorFactor, 0.1f);
