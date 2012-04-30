@@ -252,19 +252,25 @@ public abstract class TileEngine {
 				boolean yOut = false;
 				boolean xOut = false;
 
-				int dx = theMap.getDim_x();
-				int dy = theMap.getDim_y(); // + offset.y;
-				if (offset.y > 0) {
-					dy+= offset.y / 16;
+				int sizeX = theMap.getDim_x();
+				int sizeY = theMap.getDim_y();
+				int dx = sizeX;
+				int dy = sizeY;
+				if (offset.x > 0) {
+					dx = offset.x >> 4; 
 				}
-				for (int ay = 0; ay < Constantes.TILEENGINE_HEIGHT; ay++)
+				if (offset.y > 0) {
+					dy = offset.y >> 4;
+				}
+				for (int ay = 0; ay < sizeY; ay++)
 				{
 					int y = ay + (offset.y >> 4);
 					yOut = (y < tileStartY || y > tileEndY+1);
 					if (yOut) {
 						continue;
 					}
-					for (int ax = 0; ax < Constantes.TILEENGINE_WIDTH; ax++)
+
+					for (int ax = 0; ax < sizeX; ax++)
 					{
 						int x = ax + (offset.x >> 4);
 						xOut = x < tileStartX || x > tileEndX;
