@@ -87,13 +87,21 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 	
 	public boolean isKeyDown(int p_code) {
 		if (!polledTouchedPoints.isEmpty()) {
-			Point p = polledTouchedPoints.get(0);
-			switch (p_code) {
-			case KEY_Q:
-				return p.x >= middleX && p.y < middleY;
-			case KEY_W:
-				return p.x >= middleX && p.y >= middleY;
+			for (Point p : polledTouchedPoints) {
+				switch (p_code) {
+				case KEY_Q:
+					return p.x >= middleX && p.y < middleY;
+				case KEY_W:
+					return p.x >= middleX && p.y >= middleY;
+				case KEY_X:
+					Point zildoPos = infos.getZildoPos();
+					if (zildoPos != null) {
+						//System.out.println("zildo :"+zildoPos+" - distance="+zildoPos.distance(p));
+					}
+					return (zildoPos != null && zildoPos.distance(p) < 16);
+				}
 			}
+			
 		}
 		Angle direction = tm.getCurrent();
 		if (direction != null) {
@@ -115,6 +123,8 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 			}
 			return infos.backPressed;
 		}
+		
+
 		return false;
 	}
 	
@@ -130,7 +140,7 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 			polledTouchedPoints.clear();
 			polledTouchedPoints.addAll(infos.liveTouchedPoints);
 			//liveTouchedPoints.clear();
-			System.out.println("polledpoints size = "+polledTouchedPoints.size());
+			//System.out.println("polledpoints size = "+polledTouchedPoints.size());
 		}
 		tm.render();
 		previous = tm.getCurrent();
