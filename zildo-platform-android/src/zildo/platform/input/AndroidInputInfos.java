@@ -23,7 +23,10 @@ package zildo.platform.input;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -32,9 +35,26 @@ import zildo.monde.util.Point;
 public class AndroidInputInfos {
 	public List<Point> liveTouchedPoints;
 	public boolean backPressed;
-	
+	PersoZildo zildo;
+	Point zildoPos;
+
 	public AndroidInputInfos() {
 		liveTouchedPoints = new ArrayList<Point>();
 		backPressed = false;
+		zildo = null;
+		zildoPos = new Point(0,0);
+	}
+	
+	public Point getZildoPos() {
+		if (zildo == null) {
+			zildo = EngineZildo.persoManagement.getZildo();
+		}
+		if (zildo != null) {
+			SpriteModel model = zildo.getSprModel();
+			zildoPos.x = zildo.getScrX(); // + model.getTaille_x() >> 1;
+			zildoPos.y = zildo.getScrY(); // + model.getTaille_y() >> 1;
+			return zildoPos;
+		}
+		return null;
 	}
 }
