@@ -28,6 +28,7 @@ import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BlendFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
 import zildo.platform.opengl.AndroidOpenGLGestion;
+import zildo.platform.opengl.AndroidOrtho;
 
 /**
  * Draw boxes more and more large onto the screen, to get a soft focus effect.
@@ -42,10 +43,12 @@ public class AndroidBlendFilter extends BlendFilter {
 	static final int SQUARE_SIZE = 20;
 	
 	GL11 gl11;
+	AndroidOrtho ortho;
 	
 	public AndroidBlendFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
     	gl11 = (GL11) AndroidOpenGLGestion.gl10;
+    	ortho = (AndroidOrtho) ClientEngineZildo.ortho;
 	}
 	
 	private int getCurrentSquareSize() {
@@ -78,11 +81,17 @@ public class AndroidBlendFilter extends BlendFilter {
 		gl11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
 
 		for (int i=0;i<nSquareY+1;i++) {
+			if (i % 4 == 0) {
+				ortho.initOptiDraw();
+			}
 			for (int j=0;j<nSquareX+1;j++) {
-				ClientEngineZildo.ortho.boxTexturedOpti(j*currentSquareSize, i*currentSquareSize,
+				ortho.addBoxTexturedOpti(j*currentSquareSize, i*currentSquareSize,
 						              currentSquareSize, currentSquareSize, 
 						              (j*currentSquareSize) / (float) ScreenFilter.realX, 
 						              (i*currentSquareSize) / (float) ScreenFilter.realY,0, 0);
+			}
+			if (i % 4 == 3) {
+				ortho.drawTexturedBufferized();
 			}
 		}
 		gl11.glPopMatrix();

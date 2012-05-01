@@ -23,13 +23,12 @@ package zildo.platform.opengl;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
-import android.opengl.GLU;
-import android.util.Log;
-
 import zildo.Zildo;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.util.Vector4f;
+import android.opengl.GLU;
+import android.util.Log;
 
 /**
  * Class which provides direct draw on render screen, in an orthographic
@@ -56,8 +55,8 @@ public class AndroidOrtho extends Ortho {
 		super(width, height);
 		
 		gl11 = (GL11) AndroidOpenGLGestion.gl10;
-		verticesBuffer = new Bufferizer(25 * 4);
-		texCoordBuffer = new Bufferizer(25 * 4);
+		verticesBuffer = new Bufferizer((Zildo.viewPortX+1) * 6 * 2 * 4);
+		texCoordBuffer = new Bufferizer((Zildo.viewPortX+1) * 6 * 2 * 4);
 	}
 
 	public void setGL(GL11 gl) {
@@ -180,7 +179,7 @@ public class AndroidOrtho extends Ortho {
 				
 		gl11.glDisable(GL11.GL_TEXTURE_2D);
 		gl11.glEnableClientState (GL10.GL_VERTEX_ARRAY);
-		gl11.glVertexPointer (2, GL10.GL_FLOAT, 0, verticesBuffer.store(vertices));	
+		gl11.glVertexPointer (2, GL10.GL_FLOAT, 0, verticesBuffer.storeAndFlip(vertices));	
 		gl11.glDrawArrays (mode, 0, 4);		
 	}
 
@@ -211,11 +210,45 @@ public class AndroidOrtho extends Ortho {
 		gl11.glEnable(GL11.GL_TEXTURE_2D);
 		gl11.glEnableClientState (GL10.GL_VERTEX_ARRAY);
 		gl11.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-		gl11.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texCoordBuffer.store(texCoords));
-		gl11.glVertexPointer (2, GL10.GL_FLOAT, 0, verticesBuffer.store(vertices));
+		gl11.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texCoordBuffer.storeAndFlip(texCoords));
+		gl11.glVertexPointer (2, GL10.GL_FLOAT, 0, verticesBuffer.storeAndFlip(vertices));
 		gl11.glDrawArrays (GL10.GL_TRIANGLE_FAN, 0, 4);
 	}
 
+	public void addBoxTexturedOpti(int x, int y, int p_w, int p_h, float u, float v, float uw, float vh) {
+		float[] vertices = {x,  y,
+			    x + p_w, y,
+			    x, y + p_h,
+				x + p_w, y,
+			    x + p_w, y + p_h,
+				x, y + p_h};
+
+		float[] texCoords = {u, v, 
+				u + uw, v,
+				u, v + vh,
+				u + uw, v,
+				u + uw, v + vh,
+				u, v + vh};
+		
+		verticesBuffer.store(vertices);
+		texCoordBuffer.store(texCoords);
+	}
+	
+	public void initOptiDraw() {
+		verticesBuffer.rewind();
+		texCoordBuffer.rewind();
+	}
+	
+	public void drawTexturedBufferized() {
+		int count = verticesBuffer.getCount() / 2;
+		gl11.glEnable(GL11.GL_TEXTURE_2D);
+		gl11.glEnableClientState (GL10.GL_VERTEX_ARRAY);
+		gl11.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		gl11.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texCoordBuffer.rewind());
+		gl11.glVertexPointer (2, GL10.GL_FLOAT, 0, verticesBuffer.rewind());
+		gl11.glDrawArrays (GL10.GL_TRIANGLES, 0, count);
+	}
+	
 	/**
 	 * Initialize the right matrix to draw quads, and do a glBegin.
 	 * 
