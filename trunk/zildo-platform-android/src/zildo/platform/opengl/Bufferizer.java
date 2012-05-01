@@ -38,8 +38,12 @@ public class Bufferizer {
 		bBuffer.order(ByteOrder.nativeOrder());
 		fBuffer = bBuffer.asFloatBuffer();
 	}
-	public FloatBuffer store(float[] p_floats) {
+	public void store(float[] p_floats) {
 		fBuffer.put(p_floats, 0, p_floats.length);
+	}
+	
+	public FloatBuffer storeAndFlip(float[] p_floats) {
+		store(p_floats);
 		return rewind();
 	}
 	
@@ -52,5 +56,9 @@ public class Bufferizer {
 		for (float ff : f) {
 			fBuffer.put(ff);
 		}
+	}
+	
+	public int getCount() {
+		return fBuffer.position();
 	}
 }
