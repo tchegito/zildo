@@ -80,7 +80,7 @@ public class TilePrimitive extends QuadPrimitive {
     	bufs.vertices.limit(bufs.vertices.capacity());
     	bufs.textures.limit(bufs.textures.capacity());
     	
-    	startCamera = 6*16;
+    	startCamera = -1;
     	endCamera = 0;
     }
     
@@ -114,7 +114,7 @@ public class TilePrimitive extends QuadPrimitive {
     	addSprite(x, y, xTex, yTex, sizeX, sizeY);
     	
         // Get the highest indices
-        if (nIndices-6 < startCamera) {
+        if (nIndices-6 < startCamera || startCamera == -1) {
         	startCamera = nIndices-6;
         }
     	if (nIndices > endCamera) {
@@ -231,7 +231,9 @@ public class TilePrimitive extends QuadPrimitive {
     	for (int i=0;i<bufSize;i++) {
     		freeIndex.set(i, i * 6);
     	}
+    	freeIndex.rewind();
     	displayed.init(-1);
+    	displayed.rewind();
 
     }
     
@@ -241,7 +243,7 @@ public class TilePrimitive extends QuadPrimitive {
         nIndices += 6;
 
         // Get the highest indices
-        if ((nIndices-6) < startCamera) {
+        if ((nIndices-6) < startCamera || startCamera == -1) {
         	startCamera = nIndices-6;
         }
     	if (nIndices > endCamera) {
@@ -256,6 +258,6 @@ public class TilePrimitive extends QuadPrimitive {
 	public void render() {
 
         // Indices buffer contains indices for 4096 tiles. We have to limit it to the real number of used tiles.
-        vbo.draw(bufs, startCamera, endCamera);
+        vbo.draw(bufs, startCamera, endCamera-startCamera);
     }
 }
