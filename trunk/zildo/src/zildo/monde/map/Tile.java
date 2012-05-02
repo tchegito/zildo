@@ -30,6 +30,7 @@ import zildo.monde.sprites.Reverse;
 public class Tile implements Cloneable {
 
 	public int index;
+	public int renderedIndex;	// for animated tiles
 	public int bank;
 	public Case parent;
 

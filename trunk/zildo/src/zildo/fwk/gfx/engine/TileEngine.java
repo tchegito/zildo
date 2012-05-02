@@ -287,9 +287,10 @@ public abstract class TileEngine {
 							int bank = back.bank;
 							n_motif = back.index;
 							n_animated_motif = mapCase.getAnimatedMotif(compteur_animation);
-							if (n_animated_motif != n_motif) {
+							if (n_animated_motif != back.renderedIndex) {
 								changed = true;
 								n_motif = n_animated_motif;
+								back.renderedIndex = n_motif;
 							}
 							meshBACK.updateTile(bank,
 									x, y, n_motif, back.reverse, changed);
