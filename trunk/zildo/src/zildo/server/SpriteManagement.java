@@ -29,8 +29,10 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import zildo.client.sound.BankSound;
+import zildo.fwk.ZUtils;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
+import zildo.monde.collision.PersoCollision;
 import zildo.monde.collision.SpriteCollision;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
@@ -76,7 +78,8 @@ public class SpriteManagement extends SpriteStore {
 												// have been modified in the
 												// current frame
 
-	SpriteCollision sprColli ;
+	SpriteCollision sprColli;
+	public PersoCollision persoColli;
 	
 	public SpriteManagement() {
 
@@ -87,6 +90,7 @@ public class SpriteManagement extends SpriteStore {
 		suspendedEntities = new ArrayList<SpriteEntity>();
 		backupEntities = new HashMap<Integer, SpriteEntity>();
 		sprColli = new SpriteCollision();
+		persoColli = new PersoCollision();
 	}
 
 	@Override
@@ -429,9 +433,13 @@ public class SpriteManagement extends SpriteStore {
 	 * @param p_blockMoves TRUE=don't animate perso except Zildo
 	 */
 	public void updateSprites(boolean p_blockMoves) {
+		long t1 = ZUtils.getTime();
+		
 		spriteUpdating = true;
 		spriteEntitiesToAdd.clear();
 
+		EngineZildo.persoManagement.parcours = 0;
+		
 		// Backup current entities, if backup buffer is empty
 		if (backupEntities.size() == 0) {
 			for (SpriteEntity entity : spriteEntities) {
@@ -441,6 +449,7 @@ public class SpriteManagement extends SpriteStore {
 		}
 
 		sprColli.initFrame(spriteEntities);
+		persoColli.initFrame(EngineZildo.persoManagement.tab_perso);
 
 		// Do perso animations
 		// Mandatory to do that first, because one perso can be connected to
@@ -515,6 +524,9 @@ public class SpriteManagement extends SpriteStore {
 
 		spriteUpdating = false;
 		spriteEntities.addAll(spriteEntitiesToAdd);
+		
+		long t2 = ZUtils.getTime();
+		System.out.println("updates sprites model : "+(t2-t1)+"ms parcoursPerso="+EngineZildo.persoManagement.parcours+" times");
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -784,5 +796,6 @@ public class SpriteManagement extends SpriteStore {
     
     public void initForNewMap() {
     	sprColli.clear();
+    	persoColli.clear();
     }
 }

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import zildo.monde.collision.PersoCollision;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
@@ -55,10 +56,12 @@ public class PersoManagement {
 
 
 	public List<Perso> tab_perso;
+	PersoCollision persoColli;
 	
 	public PersoManagement()
 	{
 		tab_perso=new ArrayList<Perso>();
+		persoColli = EngineZildo.spriteManagement.persoColli;
 	}
 	
 	public PersoZildo getZildo()
@@ -98,6 +101,8 @@ public class PersoManagement {
 
 	}
 	
+	public static int parcours;
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// collidePerso
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -107,40 +112,7 @@ public class PersoManagement {
 	// Checks wether two characters being collided
 	///////////////////////////////////////////////////////////////////////////////////////
     public Perso collidePerso(int x, int y, Element quelElement, int rayon) {
-        Perso perso = null;
-        if (quelElement != null && quelElement.getEntityType().isPerso()) {
-            perso = (Perso) quelElement;
-        }
-
-        for (Perso persoToCompare : tab_perso) {
-            if (persoToCompare.getPv() > 0 && persoToCompare != quelElement) {
-            	// Check if the compared characters are on different layers
-            	if (quelElement != null && persoToCompare.isForeground() != quelElement.isForeground()) {
-            		continue;
-            	}
-            	if (persoToCompare.isZildo() && quelElement != null && quelElement.getDesc() instanceof ElementDescription) {
-            		ElementDescription d = (ElementDescription) quelElement.getDesc();
-            		if (d.isPushable() && quelElement.vx+quelElement.vy != 0f) {
-            			continue;
-            		}
-            	}
-                int tx = (int) persoToCompare.getX();
-                int ty = (int) persoToCompare.getY();
-                PersoDescription descToCompare = persoToCompare.getDesc();
-                int rayonPersoToCompare = rayon;
-                if (descToCompare != null) {
-                	rayonPersoToCompare = descToCompare.getRadius();
-                }
-                if (EngineZildo.collideManagement.checkCollisionCircles(x, y, tx, ty, rayon, rayonPersoToCompare)) {
-                    if (perso != null && perso.isZildo() && perso.linkedSpritesContains(persoToCompare)) {
-                        // Collision entre Zildo et l'objet qu'il porte dans les mains => on laisse
-                    } else if (quelElement == null || quelElement.getLinkedPerso() != persoToCompare) {
-                        return persoToCompare;
-                    }
-                }
-            }
-        }
-        return null;
+   		return persoColli.checkCollision(x, y, quelElement, rayon);
     }
 
     public Perso collidePerso(int x, int y, Element quelPerso) {
