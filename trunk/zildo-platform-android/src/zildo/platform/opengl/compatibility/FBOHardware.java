@@ -69,7 +69,6 @@ public class FBOHardware implements FBO {
 				GL11ExtensionPack.GL_COLOR_ATTACHMENT0_OES,
 				GL10.GL_TEXTURE_2D, myTextureId, 0);
 
-
 		// Puis on détache la texture de la vue
 		gl11Ext.glBindFramebufferOES(GL11ExtensionPack.GL_FRAMEBUFFER_OES, 0);
 	}

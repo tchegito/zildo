@@ -44,27 +44,16 @@ public class VBOBuffers {
 	public int textureBufferId;
 	public int indiceBufferId;
 
-    public FloatBuffer vertices;
+    public ShortBuffer vertices;
     public FloatBuffer textures;
     public ShortBuffer indices;
-    
-    static FloatBuffer tileVertices;	// Same vertex buffer for all tiles
-    static FloatBuffer tileTextures;	// Same texture buffer for all tiles
-    
+
     public VBOBuffers(int p_numPoints, boolean p_forTiles) {
         // Allocate buffers
-        vertices = ZUtils.createFloatBuffer(2 * 3 * (p_numPoints / 2));
+        vertices = ZUtils.createShortBuffer(2 * 3 * (p_numPoints / 2));
         textures = ZUtils.createFloatBuffer(2 * 3 * (p_numPoints / 2));    	
     }
-    
-    public static void resetTextureBuffer() {
-    	tileTextures = null;
-    }
-    
-    public void doubleCapacity() {
-    	
-    }
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb=new StringBuilder();
