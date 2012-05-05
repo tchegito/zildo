@@ -174,7 +174,7 @@ public class QuadPrimitive {
         return nPoints - 4;
     }
 
-    float[][] vertices = new float[4][2];
+    short[][] vertices = new short[4][2];
     protected void addSprite(float x, float y, float xTex, float yTex, float sizeX, float sizeY ) {
     	
         // 4 bufs.vertices
@@ -187,8 +187,8 @@ public class QuadPrimitive {
         float pixSizeY=Math.abs(sizeY);
         
         for (int i = 0; i < 4; i++) {
-        	vertices[i][0] = x + pixSizeX * (i % 2);	// x
-        	vertices[i][1] = y + pixSizeY * (i / 2);	// y
+        	vertices[i][0] = (short) (x + pixSizeX * (i % 2));	// x
+        	vertices[i][1] = (short) (y + pixSizeY * (i / 2));	// y
         }
         
         bufs.vertices.put(vertices[0][0]).put(vertices[0][1]);

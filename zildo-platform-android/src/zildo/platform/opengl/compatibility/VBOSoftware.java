@@ -47,7 +47,7 @@ public class VBOSoftware implements VBO {
 	@Override
 	public void draw(VBOBuffers p_bufs) {
 		preDraw();
-		gl11.glVertexPointer(2, GL11.GL_FLOAT, 0, p_bufs.vertices);
+		gl11.glVertexPointer(2, GL11.GL_SHORT, 0, p_bufs.vertices);
 		gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, p_bufs.textures);
 		
 		int count = p_bufs.indices.remaining();
@@ -61,7 +61,7 @@ public class VBOSoftware implements VBO {
 	@Override
 	public void draw(VBOBuffers p_bufs, int start, int count) {
 		preDraw();
-		gl11.glVertexPointer(2, GL11.GL_FLOAT, 0, p_bufs.vertices);
+		gl11.glVertexPointer(2, GL11.GL_SHORT, 0, p_bufs.vertices);
 		gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, p_bufs.textures);
 		
 		gl11.glDrawArrays(GL11.GL_TRIANGLES, start, count);
