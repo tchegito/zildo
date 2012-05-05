@@ -19,6 +19,7 @@ public class PersoRabbit extends PersoShadowed {
 		setDesc(PersoDescription.RABBIT);
 		setInfo(PersoInfo.ENEMY);
 		setPv(2);
+		az = -0.1f;
 	}
 
 	@Override
