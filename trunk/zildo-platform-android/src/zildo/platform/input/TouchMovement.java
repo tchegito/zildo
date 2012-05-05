@@ -55,8 +55,11 @@ public class TouchMovement {
 				save = new Point(points.get(0));
 				if (!prec.equals(save)) {
 					// Deduce an angle (if points are sufficiently far away)
-					if (prec.distance(save) >= 5) {
-						Angle tempAngle = Angle.fromDirection((save.x - prec.x), (save.y - prec.y));
+					float dist = prec.distance(save);
+					if (dist >= 5) {
+						int dx = Math.round((save.x - prec.x) / dist);
+						int dy = Math.round((save.y - prec.y) / dist);
+						Angle tempAngle = Angle.fromDirection(dx, dy);
 						//System.out.println("touch mouvement : deduce angle = "+current);
 						if (tempAngle != current) {
 							current = tempAngle;
