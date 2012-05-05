@@ -31,53 +31,57 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
-import zildo.server.PersoManagement;
 
 /**
+ * Perso specific collision engine. The goal was to avoid a huge amount of 'for each' to determine
+ * a Perso collision. So we store perso's ID in two presence array (1 for foreground, and 1 for back)
+ * in order to know quickly if there's one on the given grid case.<p/>
+ * 
  * @author Tchegito
  *
  */
 public class PersoCollision {
 
-	int[][][] presences;
-	int[][][] presencesForeground;
+	
+	CollBuffer[] buffers;	// 0=foreground persos / 1=background persos
+	int[][] capillarity;
 	
 	public PersoCollision() {
-		presences = new int[64][64][2];
-		presencesForeground = new int[64][64][2];
+		buffers = new CollBuffer[2];
+		for (int i=0;i<buffers.length;i++) {
+			buffers[i] = new CollBuffer();
+		}
+
 	}
 	
 	public void clear() {
-		// Clear
-		for (int i=0;i<64;i++) {
-			for (int j=0;j<64;j++) {
-				for (int k=0;k<2;k++) {
-					presences[i][j][k] = -1;
-					presencesForeground[i][j][k] = -1;
-				}
-			}
-		}
+		buffers[0].clear();
+		buffers[1].clear();
 	}
 	
 	public void initFrame(List<Perso> persos) {
-		clear();
 		for (Perso p : persos) {
 			if (p.getPv() > 0) {
 				int gridX = (int) p.getX() >> 4;
 				int gridY = (int) p.getY() >> 4;
-				if (!isOutOfBounds(gridX, gridY)) {
+				if (!CollBuffer.isOutOfBounds(gridX, gridY)) {
 					if (p.isForeground()) {
-						setId(gridX, gridY, presencesForeground, p.getId());
+						buffers[0].updateId(gridX, gridY, p.getId());
 					} else {
-						setId(gridX, gridY, presences, p.getId());
+						buffers[1].updateId(gridX, gridY, p.getId());
 					}
 				}
 			}
 		}
 	}
-	
-	private boolean isOutOfBounds(int tx, int ty) {
-		return (tx < 0 || ty < 0 || tx >= presences.length || ty >= presences.length);
+
+	public void notifyDeletion(Perso removedPerso) {
+		int id = removedPerso.getId();
+		if (removedPerso.isForeground()) {
+			buffers[0].remove(id);
+		} else {
+			buffers[1].remove(id);
+		}
 	}
 	
 	/**
@@ -100,15 +104,22 @@ public class PersoCollision {
 		if (perso != null && checkCollisionOnPerso(x, y, quelElement, perso, rayon)) {
 			return perso;
 		}				
+		int nbPersoAround = CollBuffer.howManyAround(gridX, gridY);
+		if (nbPersoAround <= 1) {
+			return null;
+		}
+		nbPersoAround--;
+		if (nbPersoAround != 0) {
+			for (Angle a : Angle.values()) {
+				Point offset = a.coords;
+				int gx = gridX + offset.x;
+				int gy = gridY + offset.y;
+				perso = locatePerso(gx, gy, foreGround, fromId);
+				if (perso != null && checkCollisionOnPerso(x, y, quelElement, perso, rayon)) {
+					return perso;
+				}
 
-		for (Angle a : Angle.values()) {
-			Point offset = a.coords;
-			int gx = gridX + offset.x;
-			int gy = gridY + offset.y;
-			perso = locatePerso(gx, gy, foreGround, fromId);
-			if (perso != null && checkCollisionOnPerso(x, y, quelElement, perso, rayon)) {
-				return perso;
-			}				
+			}
 		}
 		return null;
 	}
@@ -122,39 +133,21 @@ public class PersoCollision {
 	 */
 	private Perso locatePerso(int gridX, int gridY, boolean foreGround, int fromId) {
 		int id = -1;
-		if (!isOutOfBounds(gridX, gridY)) {
+		if (!CollBuffer.isOutOfBounds(gridX, gridY)) {
 			if (foreGround) {
-				id = getId(gridX, gridY, presencesForeground, fromId);
+				id = buffers[0].getId(gridX, gridY, fromId);
 			} else {
-				id = getId(gridX, gridY, presences, fromId);
+				id = buffers[1].getId(gridX, gridY, fromId);
 			}
 		}
 		if (id != -1 && id != fromId) {
-			PersoManagement.parcours++;
 			return (Perso) Identified.fromId(SpriteEntity.class, id);
 		} else {
 			return null;
 		}
 		
 	}
-	
-	private int getId(int gridX, int gridY, int[][][] array, int fromId) {
-		int id = array[gridY][gridX][0];
-		if (id == fromId) {
-			id = array[gridY][gridX][1];
-		}
-		return id;
-	}
-	
-	private void setId(int gridX, int gridY, int[][][] array, int fromId) {
-		int id = array[gridY][gridX][0];
-		if (id == -1) {
-			array[gridY][gridX][0] = fromId;
-		} else {
-			// TODO: and what should we do if this room isn't empty ?
-			array[gridY][gridX][1] = fromId;
-		}
-	}
+
 	
 	/**
 	 * Check if 'quelPerso' is colliding with the given element.
@@ -191,7 +184,7 @@ public class PersoCollision {
                 return true;
             }
         }
-		// No one found
+		// No collision
 		return false;
 	}
 }

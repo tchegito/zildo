@@ -437,8 +437,6 @@ public class SpriteManagement extends SpriteStore {
 		
 		spriteUpdating = true;
 		spriteEntitiesToAdd.clear();
-
-		EngineZildo.persoManagement.parcours = 0;
 		
 		// Backup current entities, if backup buffer is empty
 		if (backupEntities.size() == 0) {
@@ -519,14 +517,18 @@ public class SpriteManagement extends SpriteStore {
 		// Remove what need to
 		for (SpriteEntity entity : toDelete) {
 			deleteSprite(entity);
-			sprColli.notifySpriteDeletion(entity);
+			if (entity.getEntityType().isPerso()) {
+				persoColli.notifyDeletion((Perso) entity);
+			} else {
+				sprColli.notifyDeletion(entity);
+			}
 		}
 
 		spriteUpdating = false;
 		spriteEntities.addAll(spriteEntitiesToAdd);
 		
 		long t2 = ZUtils.getTime();
-		System.out.println("updates sprites model : "+(t2-t1)+"ms parcoursPerso="+EngineZildo.persoManagement.parcours+" times");
+		System.out.println("updates sprites model : "+(t2-t1)+"ms");
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
