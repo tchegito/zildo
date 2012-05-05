@@ -58,7 +58,7 @@ public class SpriteCollision {
 			int cy = i / 2;
 			patchCoords[i] = new Point((cx*2 - 1) * 4, ((cy*2 - 1) * 2));
 		}
-		// TODO: be careful with 512 ! if entity's id is superior then crash !
+		// Spriteentity'ID are less than 512
 		indexSpr = new CycleIntBuffer(512);
 	}
 	
@@ -91,7 +91,7 @@ public class SpriteCollision {
 					int y = entity.getCenter().y;
 					int loc = (y << 10) + x;	// << 10 means *64*16
 					int previousLoc = indexSpr.get(id);
-					if (indexSpr.get(id) != loc) {
+					if (previousLoc != loc) {
 						if (previousLoc != -1) {
 							// Element has moved => delete his previous patch
 							int ancy = previousLoc >> 10;
@@ -112,14 +112,13 @@ public class SpriteCollision {
 		return (tx < 0 || ty < 0 || tx >= presences.length || ty >= presences.length);
 	}
 	
-	public void notifySpriteDeletion(SpriteEntity removedEntity) {
+	public void notifyDeletion(SpriteEntity removedEntity) {
 		int id = removedEntity.getId();
 		int loc = indexSpr.get(id);
 		if (loc != -1) {	// Did this entity been present ?
 			indexSpr.set(id, -1);
 			removePatch(removedEntity);
 		}
-
 	}
 	
 	/**
