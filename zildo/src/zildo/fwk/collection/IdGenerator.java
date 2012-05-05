@@ -21,6 +21,9 @@
 package zildo.fwk.collection;
 
 /**
+ * Class able to generate an ID between 0 and a maximum given to the constructor.<br/>
+ * ID are recycled in a cycle buffer.
+ * 
  * @author Tchegito
  *
  */
