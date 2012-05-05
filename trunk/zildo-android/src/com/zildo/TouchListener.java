@@ -68,15 +68,22 @@ public class TouchListener implements OnTouchListener {
 	public boolean onTouch(View v, MotionEvent event) {
 		int x = (int) (event.getX() * event.getXPrecision());
 		int y = (int) (event.getY() * event.getYPrecision());
-		Log.d("touch", "pos = "+x+", "+y+" action = "+event.getAction());
+		//Log.d("touch", "pos = "+x+", "+y+" action = "+event.getAction());
 		
 		Menu menu = client.getCurrentMenu();
 		if (menu != null) {
-			if (event.getAction() == MotionEvent.ACTION_UP) {
-				item = ClientEngineZildo.guiDisplay.getItemOnLocation(x, y);
-				if (item != null) {
+			ItemMenu tempItem = ClientEngineZildo.guiDisplay.getItemOnLocation(x, y);
+			if (tempItem != null) {
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_UP:
+					item = tempItem;
 					Log.d("touch", "item "+item.getText());
 					menu.activateItem(item);
+					break;
+				case MotionEvent.ACTION_DOWN:
+				case MotionEvent.ACTION_MOVE:
+					menu.selectItem(tempItem);
+					break;
 				}
 			}
 		} else {
@@ -84,7 +91,7 @@ public class TouchListener implements OnTouchListener {
 			Point p = new Point(x,y);
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-				Log.d("touch", "add points");
+				//Log.d("touch", "add points");
 				touchedPoints.add(p);
 				break;
 			case MotionEvent.ACTION_MOVE:
@@ -94,11 +101,11 @@ public class TouchListener implements OnTouchListener {
 					touchedPoints.add(p);
 				}
 				touchedPoints.set(0, p);
-				Log.d("touch", "maintained");
+				//Log.d("touch", "maintained");
 				break;
 			case MotionEvent.ACTION_UP:
 				touchedPoints.clear();
-				Log.d("touch", "remove point");
+				//Log.d("touch", "remove point");
 				break;
 			}
 		}
