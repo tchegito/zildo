@@ -42,8 +42,12 @@ public class GLUtils {
         gl11.glGenTextures(1, buf); // Create Texture In OpenGL
         int textureID = buf.get(0);
         gl11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-        gl11.glTexParameterx(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        gl11.glTexParameterx(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        gl11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        gl11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        
+        int wrapping=GL11.GL_REPEAT;	// Wrap texture (useful for cloud)
+        gl11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, wrapping);
+        gl11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, wrapping);
         
         gl11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, ZUtils.adjustTexSize(sizeX), ZUtils.adjustTexSize(sizeY), 0, GL11.GL_RGBA,
                 GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
@@ -80,7 +84,8 @@ public class GLUtils {
 
     public static void copyScreenToTexture(int p_texId, int p_sizeX, int p_sizeY) {
     	gl11.glBindTexture(GL11.GL_TEXTURE_2D, p_texId);
-
+    	System.out.println("trying to bind framebuffer");
+    	//((GL11ExtensionPack)gl11).glBindFramebufferOES();
     	gl11.glTexParameterx(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
     	gl11.glTexParameterx(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 

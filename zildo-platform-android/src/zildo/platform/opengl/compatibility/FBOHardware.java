@@ -97,7 +97,6 @@ public class FBOHardware implements FBO {
 
 		gl11Ext.glBindFramebufferOES(GL11ExtensionPack.GL_FRAMEBUFFER_OES, myFBOId);
 		
-		//gl11.glPushAttrib(GL11.GL_VIVIEWPORT);
 		gl11.glViewport(0, 0, Zildo.viewPortX, Zildo.viewPortY);
 		gl11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 	}
@@ -105,6 +104,9 @@ public class FBOHardware implements FBO {
 	@Override
 	public void endRendering() {
 		gl11Ext.glBindFramebufferOES(GL11ExtensionPack.GL_FRAMEBUFFER_OES, 0);
+		// Restore viewport
+		gl11.glViewport(0, 0, Zildo.screenX, Zildo.screenY);
+
 	}
 
 	@Override

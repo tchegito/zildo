@@ -55,8 +55,8 @@ public class AndroidOrtho extends Ortho {
 		super(width, height);
 		
 		gl11 = (GL11) AndroidOpenGLGestion.gl10;
-		verticesBuffer = new Bufferizer((Zildo.viewPortX+1) * 6 * 2 * 4);
-		texCoordBuffer = new Bufferizer((Zildo.viewPortX+1) * 6 * 2 * 4);
+		verticesBuffer = new Bufferizer((Zildo.viewPortX+1) * 2 * 64);
+		texCoordBuffer = new Bufferizer((Zildo.viewPortX+1) * 2 * 64);
 	}
 
 	public void setGL(GL11 gl) {
@@ -74,10 +74,10 @@ public class AndroidOrtho extends Ortho {
 			// settings for the perspective projection
 			//gl11.glPushMatrix();
 			// reset matrix
-			gl11.glViewport(0, 0, Zildo.viewPortX, Zildo.viewPortY);
+			//gl11.glViewport(0, 0, Zildo.viewPortX, Zildo.viewPortY);
 			gl11.glLoadIdentity();
 			// set a 2D orthographic projection
-			GLU.gluOrtho2D(gl11, 0, (float)Zildo.viewPortX, (float)Zildo.viewPortY, 0); 
+			GLU.gluOrtho2D(gl11, 0, w, h, 0); 
 			//gl11.glOrthof(0, Zildo.viewPortX, 0, Zildo.viewPortY, -99999, 99999);
 			// invert the y axis, down is positive
 			gl11.glScalef(1, 1, 1);
@@ -92,13 +92,6 @@ public class AndroidOrtho extends Ortho {
 
 			orthoSetUp = true;
 		}
-	}
-
-	public void forceOrtho(int sizeX, int sizeY) {
-		orthoSetUp = false;
-		Zildo.viewPortX = sizeX;
-		Zildo.viewPortY = sizeY;
-		setOrthographicProjection(false);
 	}
 	
 	@Override
@@ -215,20 +208,10 @@ public class AndroidOrtho extends Ortho {
 		gl11.glDrawArrays (GL10.GL_TRIANGLE_FAN, 0, 4);
 	}
 
-	public void addBoxTexturedOpti(int x, int y, int p_w, int p_h, float u, float v, float uw, float vh) {
-		float[] vertices = {x,  y,
-			    x + p_w, y,
-			    x, y + p_h,
-				x + p_w, y,
-			    x + p_w, y + p_h,
-				x, y + p_h};
+	public void addPointTexturedOpti(int x, int y, float u, float v) {
+		float[] vertices = {x,  y};
 
-		float[] texCoords = {u, v, 
-				u + uw, v,
-				u, v + vh,
-				u + uw, v,
-				u + uw, v + vh,
-				u, v + vh};
+		float[] texCoords = {u, v};
 		
 		verticesBuffer.store(vertices);
 		texCoordBuffer.store(texCoords);
@@ -239,14 +222,17 @@ public class AndroidOrtho extends Ortho {
 		texCoordBuffer.rewind();
 	}
 	
-	public void drawTexturedBufferized() {
+	public void drawTexturedBufferized(int size) {
 		int count = verticesBuffer.getCount() / 2;
 		gl11.glEnable(GL11.GL_TEXTURE_2D);
 		gl11.glEnableClientState (GL10.GL_VERTEX_ARRAY);
 		gl11.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		gl11.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texCoordBuffer.rewind());
 		gl11.glVertexPointer (2, GL10.GL_FLOAT, 0, verticesBuffer.rewind());
-		gl11.glDrawArrays (GL10.GL_TRIANGLES, 0, count);
+		gl11.glPointSize(size);
+		gl11.glDrawArrays (GL10.GL_POINTS, 0, count);
+		verticesBuffer.rewind();
+		texCoordBuffer.rewind();
 	}
 	
 	/**
