@@ -20,37 +20,59 @@
 
 package zildo.platform.input;
 
-import zildo.monde.sprites.persos.PersoZildo;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import zildo.monde.util.Point;
-import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
  *
  */
-public class AndroidInputInfos {
-	public TouchPoints liveTouchedPoints;
-	public boolean backPressed;
-	PersoZildo zildo;
-	Point zildoPos;
+public class TouchPoints {
 
-	public AndroidInputInfos() {
-		liveTouchedPoints = new TouchPoints();
-		backPressed = false;
-		zildo = null;
-		zildoPos = new Point(0,0);
+	Map<Integer, Point> points;
+	
+	public TouchPoints() {
+		points = new HashMap<Integer, Point>();
 	}
 	
-	public Point getZildoPos() {
-		if (zildo == null) {
-			zildo = EngineZildo.persoManagement.getZildo();
+	public Collection<Point> getAll() {
+		return points.values();
+	}
+	
+	public Point getFirst() {
+		return points.get(0);
+	}
+	
+	public Point getSecond() {
+		return points.get(1);
+	}
+
+	private void put(Integer i, Point p) {
+		if (p == null) {
+			points.remove(i);
+		} else {
+			points.put(i, p);
 		}
-		if (zildo != null) {
-			//SpriteModel model = zildo.getSprModel();
-			zildoPos.x = zildo.getScrX(); // + model.getTaille_x() >> 1;
-			zildoPos.y = zildo.getScrY(); // + model.getTaille_y() >> 1;
-			return zildoPos;
+	}
+	
+	public void set(int i, Point p) {
+		if (i >=0 && i <= 1) {
+			put(i, p);
 		}
-		return null;
+	}
+
+	public void clear() {
+		points.clear();
+	}
+	
+	public synchronized void putAll(TouchPoints tp) {
+		points.putAll(tp.points);
+	}
+	
+	public int size() {
+		return points.size();
 	}
 }

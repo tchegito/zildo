@@ -20,9 +20,6 @@
 
 package com.zildo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
@@ -31,6 +28,7 @@ import zildo.fwk.ui.Menu;
 import zildo.monde.util.Point;
 import zildo.platform.input.AndroidInputInfos;
 import zildo.platform.input.AndroidKeyboardHandler;
+import zildo.platform.input.TouchPoints;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,9 +42,12 @@ public class TouchListener implements OnTouchListener {
 
 	private Client client;
 	
+	private float ratioX;
+	private float ratioY;
+	
 	public TouchListener(Client client) {
 		this.client = client;
-		touchedPoints = new ArrayList<Point>();
+		touchedPoints = new TouchPoints();
 	}
 	
 	/**
@@ -57,18 +58,25 @@ public class TouchListener implements OnTouchListener {
 		infos = new AndroidInputInfos();
 		infos.liveTouchedPoints = touchedPoints;
 		kbHandler.setAndroidInputInfos(infos);
+		
+		ratioX = (float) Zildo.viewPortX / (float) Zildo.screenX;
+		ratioY = (float) Zildo.viewPortY / (float) Zildo.screenY;
 	}
 	
 	ItemMenu item;
 	
 	AndroidInputInfos infos;
-	final List<Point> touchedPoints;
+	
+	final TouchPoints touchedPoints;
 	
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		int x = (int) (event.getX() * event.getXPrecision());
-		int y = (int) (event.getY() * event.getYPrecision());
-		//Log.d("touch", "pos = "+x+", "+y+" action = "+event.getAction());
+		int pointerCount = event.getPointerCount();
+		int index = event.getActionIndex();
+
+		// Deal with current point for menu
+		int x = (int) (event.getX(index) * event.getXPrecision() * ratioX);
+		int y = (int) (event.getY(index) * event.getYPrecision() * ratioY);
 		
 		Menu menu = client.getCurrentMenu();
 		if (menu != null) {
@@ -88,28 +96,37 @@ public class TouchListener implements OnTouchListener {
 			}
 		} else {
 			// No menu ==> player is in game
-			Point p = new Point(x,y);
-			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				//Log.d("touch", "add points");
-				touchedPoints.add(p);
-				break;
-			case MotionEvent.ACTION_MOVE:
-				if (touchedPoints.size() != 1) {
-					System.out.println("very strange !");
-					touchedPoints.clear();
-					touchedPoints.add(p);
-				}
-				touchedPoints.set(0, p);
-				//Log.d("touch", "maintained");
-				break;
-			case MotionEvent.ACTION_UP:
-				touchedPoints.clear();
-				//Log.d("touch", "remove point");
-				break;
-			}
+			// Deal with all points
+			for (int p = 0; p < pointerCount; p++) {
+	             float xx = event.getX(p) * event.getXPrecision();
+	             float yy = event.getY(p) * event.getYPrecision();
+	             interpretEvent(event.getActionMasked(), p, xx, yy);
+		     }
+
 		}
 		return true;
+	}
+	
+	private void interpretEvent(int actionMasked, int index, float xx, float yy) {
+		int x = (int) (xx * ratioX);
+		int y = (int) (yy * ratioY);
+
+		Point p = new Point(x,y);
+		switch (actionMasked) {
+		case MotionEvent.ACTION_DOWN:
+		case MotionEvent.ACTION_POINTER_DOWN:
+			touchedPoints.set(index, p);
+			break;
+		case MotionEvent.ACTION_MOVE:
+			touchedPoints.set(index, p);
+			break;
+		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_POINTER_UP:
+			touchedPoints.set(index, null);
+			break;
+		default:
+			System.out.println("undetected action "+actionMasked);
+		}
 	}
 	
 	public void pressBackButton() {

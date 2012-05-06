@@ -133,6 +133,10 @@ public class Menu {
         item.setLaunched(false);
     }
     
+    public void selectItem(ItemMenu item) {
+		selected=items.indexOf(item);   	
+    }
+    
     public void refresh() {
     
     }
