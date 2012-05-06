@@ -29,46 +29,6 @@ import zildo.fwk.gfx.primitive.TileGroupPrimitive.ActionNthRunner;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
 
-// V1.0
-// --------------------------------------------
-// 4 vertices ---> 2 triangles ---> 1 tile
-// 6 vertices ---> 4 triangles ---> 2 tiles
-// 8 vertices ---> 6 triangles ---> 3 tiles
-// (...)
-// 42 vertices --> 40 triangles ---> 20 tiles
-
-// x----x----x----x ... x----x				a=TILEENGINE_WIDTH
-// |0   |1   |2   | ... |a-1 |a
-// |    |    |    | ... |    |
-// |    |    |    | ... |    |
-// x----x----x----x ... x----x
-// |a+1 |a+2 |a+3 | ... |2a  |2a+1
-
-// Indices : (0,a+2,a+1) - (0,1,a+2)
-//			 (1,a+3,a+2) - (1,2,a+3)
-//                (...)
-//           (a-1,2a+1,2a) - (a-1,a,2a+1)
-
-// V2.0
-// --------------------------------------------
-// 4 vertices ---> 2 triangles ---> 1 tile
-// 8 vertices ---> 4 triangles ---> 2 tiles
-// 12 vertices --> 6 triangles ---> 3 tiles
-// (...)
-// 80 vertices --> 40 triangles --> 20 tiles
-
-// x----x x----x x----x ... x----x				a=TILEENGINE_WIDTH
-// |0  1| |2  3| |4  5| ... |2a-2|2a-1
-// |    | |    | |    | ... |    |
-// |2a  | |2a+2| |2a+4| ... |4a-2|
-// x----x x----x x----x ... x----x
-//   2a+1   2a+3   2a+5       4a-1
-// x----x x----x x----x ... x----x
-// |4a  | |4a+2| |4a+4| ... |6a-2|6a-1
-
-// Indices : (0,2a+1,2a)   - (0,1,2a+1)
-//			 (2,2a+3,2a+2) - (2,3,2a+3)
-
 public class LwjglTileEngine extends TileEngine {
 
 	public LwjglTileEngine(TextureEngine texEngine) {
