@@ -22,6 +22,7 @@ package zildo.platform.opengl;
 
 import org.lwjgl.opengl.GL11;
 
+import zildo.Zildo;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.util.Vector4f;
@@ -55,6 +56,7 @@ public class LwjglOrtho extends Ortho {
 			// reset matrix
 			GL11.glLoadIdentity();
 			// set a 2D orthographic projection
+			GL11.glViewport(0, 0, Zildo.screenX, Zildo.screenY);
 			if (p_zoom) {
 				GL11.glOrtho(0, w / 2, 0, h / 2, -99999, 99999);
 				GL11.glTranslatef(0, -h / 2, 0);

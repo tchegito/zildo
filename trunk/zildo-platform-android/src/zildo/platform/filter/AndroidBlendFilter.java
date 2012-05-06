@@ -59,10 +59,12 @@ public class AndroidBlendFilter extends BlendFilter {
 	public boolean renderFilter() {
 		int currentSquareSize = getCurrentSquareSize();
 
+
+		graphicStuff.fbo.endRendering();
+
 		if (currentSquareSize == 1) {
 			return true;
 		}
-		graphicStuff.fbo.endRendering();
 
 		// Get on top of screen and disable blending
 		gl11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -79,25 +81,37 @@ public class AndroidBlendFilter extends BlendFilter {
 		int nSquareX=Zildo.viewPortX / currentSquareSize;
 		int nSquareY=Zildo.viewPortY / currentSquareSize;
 		gl11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-
+		gl11.glDisable(GL11.GL_BLEND);
+		
+		int ii = 0;
+		float sizeIi = 0;
+		float pasIi = currentSquareSize / (float) ScreenFilter.realY;
+		int sizeBuffer = 64;
 		for (int i=0;i<nSquareY+1;i++) {
-			if (i % 4 == 0) {
+			if (i % sizeBuffer == 0) {
 				ortho.initOptiDraw();
 			}
+			int jj = 0;
+			float sizeJj = 0;
+			float pasJj= currentSquareSize / (float) ScreenFilter.realX;
 			for (int j=0;j<nSquareX+1;j++) {
-				ortho.addBoxTexturedOpti(j*currentSquareSize, i*currentSquareSize,
-						              currentSquareSize, currentSquareSize, 
-						              (j*currentSquareSize) / (float) ScreenFilter.realX, 
-						              (i*currentSquareSize) / (float) ScreenFilter.realY,0, 0);
+				ortho.addPointTexturedOpti(jj, ii, sizeJj, sizeIi);
+				jj += currentSquareSize;
+				sizeJj += pasJj;
 			}
-			if (i % 4 == 3) {
-				ortho.drawTexturedBufferized();
+			ii += currentSquareSize;
+			sizeIi += pasIi;
+			if (i % sizeBuffer == (sizeBuffer-1)) {
+				ortho.drawTexturedBufferized(currentSquareSize);
 			}
+		}
+		if (nSquareY % sizeBuffer != (sizeBuffer-1)) {
+			ortho.drawTexturedBufferized(currentSquareSize);
 		}
 		gl11.glPopMatrix();
 		
 		gl11.glMatrixMode(GL11.GL_MODELVIEW);
-		gl11.glDisable(GL11.GL_BLEND);
+
 
 		return true;
 	}
@@ -111,5 +125,6 @@ public class AndroidBlendFilter extends BlendFilter {
 		graphicStuff.fbo.bindToTextureAndDepth(textureID, depthTextureID, fboId);
 		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
 		//gl11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
+
 	}
 }
