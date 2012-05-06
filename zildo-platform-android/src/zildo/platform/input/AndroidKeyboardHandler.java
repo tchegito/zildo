@@ -20,9 +20,7 @@
 
 package zildo.platform.input;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.List;
 
 import zildo.Zildo;
 import zildo.fwk.input.KeyboardHandler;
@@ -67,13 +65,13 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 		platformKeys.put(Keys.DOWN, KEY_DOWN);
 	}
 	
-	List<Point> polledTouchedPoints;
+	TouchPoints polledTouchedPoints;
 	TouchMovement tm;
 	boolean resetBack;
 	AndroidInputInfos infos;
 	
 	public AndroidKeyboardHandler() {
-		polledTouchedPoints = new ArrayList<Point>();
+		polledTouchedPoints = new TouchPoints();
 		tm = new TouchMovement(polledTouchedPoints);
 		infos = new AndroidInputInfos();
 	}
@@ -86,19 +84,28 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 	static final int middleY = Zildo.viewPortY / 2;
 	
 	public boolean isKeyDown(int p_code) {
-		if (!polledTouchedPoints.isEmpty()) {
-			for (Point p : polledTouchedPoints) {
+		if (polledTouchedPoints.size() != 0) {
+			for (Point p : polledTouchedPoints.getAll()) {
 				switch (p_code) {
 				case KEY_Q:
-					return p.x >= middleX && p.y < middleY;
+					if (p.x >= middleX && p.y < middleY) {
+						return true;
+					}
+					break;
 				case KEY_W:
-					return p.x >= middleX && p.y >= middleY;
+					if (p.x >= middleX && p.y >= middleY) {
+						return true;
+					}
+					break;
 				case KEY_X:
 					Point zildoPos = infos.getZildoPos();
 					if (zildoPos != null) {
 						//System.out.println("zildo :"+zildoPos+" - distance="+zildoPos.distance(p));
 					}
-					return (zildoPos != null && zildoPos.distance(p) < 16);
+					if (zildoPos != null && zildoPos.distance(p) < 16) {
+						return true;
+					}
+					break;
 				}
 			}
 			
@@ -136,9 +143,9 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 			resetBack = false;
 		}
 		polledTouchedPoints.clear();
-		if (!infos.liveTouchedPoints.isEmpty()) {
+		if (infos.liveTouchedPoints.size() != 0) {
 			polledTouchedPoints.clear();
-			polledTouchedPoints.addAll(infos.liveTouchedPoints);
+			polledTouchedPoints.putAll(infos.liveTouchedPoints);
 			//liveTouchedPoints.clear();
 			//System.out.println("polledpoints size = "+polledTouchedPoints.size());
 		}

@@ -20,8 +20,6 @@
 
 package zildo.platform.input;
 
-import java.util.List;
-
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 
@@ -31,12 +29,12 @@ import zildo.monde.util.Point;
  */
 public class TouchMovement {
 
-	List<Point> points;
+	TouchPoints points;
 	Angle current;
 	Point save;
 	Point prec;
 	
-	public TouchMovement(List<Point> points) {
+	public TouchMovement(TouchPoints points) {
 		this.points = points;
 		this.current = null;
 		this.save = null;
@@ -45,25 +43,28 @@ public class TouchMovement {
 	
 	public void render() {
 		if (points.size() != 0) {
-			// There's a point
-			if (save == null) {
-				save = new Point(points.get(0));	// First one
-			} else {
-				if (prec == null) {
-					prec = save;
-				}
-				save = new Point(points.get(0));
-				if (!prec.equals(save)) {
-					// Deduce an angle (if points are sufficiently far away)
-					float dist = prec.distance(save);
-					if (dist >= 5) {
-						int dx = Math.round((save.x - prec.x) / dist);
-						int dy = Math.round((save.y - prec.y) / dist);
-						Angle tempAngle = Angle.fromDirection(dx, dy);
-						//System.out.println("touch mouvement : deduce angle = "+current);
-						if (tempAngle != current) {
-							current = tempAngle;
-							prec = new Point(save);
+			Point temp = points.getFirst();
+			if (temp != null) {
+				// There's a point
+				if (save == null) {
+					save = new Point(temp);	// First one
+				} else {
+					if (prec == null) {
+						prec = save;
+					}
+					save = new Point(temp);
+					if (!prec.equals(save)) {
+						// Deduce an angle (if points are sufficiently far away)
+						float dist = prec.distance(save);
+						if (dist >= 5) {
+							int dx = Math.round((save.x - prec.x) / dist);
+							int dy = Math.round((save.y - prec.y) / dist);
+							Angle tempAngle = Angle.fromDirection(dx, dy);
+							//System.out.println("touch mouvement : deduce angle = "+current);
+							if (tempAngle != current) {
+								current = tempAngle;
+								prec = new Point(save);
+							}
 						}
 					}
 				}
