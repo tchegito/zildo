@@ -96,9 +96,7 @@ public class VBOHardware extends VBOSoftware {
 		if (p_bufs.indices != null) {
 			GLUtils.bufferData(p_bufs.indiceBufferId, p_bufs.indices, false);
 		}
-		if (p_bufs.textures != p_bufs.vertices) {
-			GLUtils.bufferData(p_bufs.textureBufferId, p_bufs.textures, false);
-		}
+		GLUtils.bufferData(p_bufs.textureBufferId, p_bufs.textures, false);
 		GLUtils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices, false);
 	}
 }
