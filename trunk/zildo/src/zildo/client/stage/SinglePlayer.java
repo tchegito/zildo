@@ -179,9 +179,6 @@ public class SinglePlayer implements GameStage {
     }
     
     public void renderGame() {
-        // Render client
-        //done = client.mainLoop();
-
         // Render sounds
         ClientEngineZildo.soundPlay.playSounds(EngineZildo.soundManagement.getQueue());
     }
@@ -192,8 +189,11 @@ public class SinglePlayer implements GameStage {
         	// Tells all clients that we're leaving
         	server.disconnectServer();
         }
-
+        
+		EngineZildo.persoManagement.clearPersos(true);
+        EngineZildo.spriteManagement.clearSprites(true);
         engineZildo.cleanUp();
+        done = true;
     }
     
     public static ClientState getClientState() {
