@@ -23,7 +23,6 @@ package zildo.monde.sprites.utils;
 import zildo.fwk.gfx.EngineFX;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
-import zildo.monde.sprites.desc.EntityType;
 import zildo.resource.Constantes;
 
 /**
@@ -115,18 +114,23 @@ public class SpriteSorter {
 	public void insertSpriteInSortArray(SpriteEntity sprite)
 	{
 		// Get the character's Y to check if it's on the screen
-		int y=sprite.getScrY();
+		int y = (int) (sprite.getScrY() - sprite.z);
 		if (sprite.getEntityType().isFont()) {
 			y=SORTY_MAX;
-		} else if (sprite.getEntityType()!=EntityType.ENTITY) {
-			// To get the right comparison, delete the adjustment done by updateSprites
-			// just for filling the sort array
-			SpriteModel spr=sprite.getSprModel();
-			y+=spr.getTaille_y() - 3;
 		} else {
-			// Entity : make its always UNDER Zildo and other characters, at the same level
-			// as the map tiles in fact.
-			y=0;
+			SpriteModel spr=sprite.getSprModel();
+			if (!sprite.getEntityType().isEntity()) {
+				// To get the right comparison, delete the adjustment done by updateSprites
+				// just for filling the sort array
+				y+=spr.getTaille_y() - 3 + 2;
+			} else {
+				// Entity : make its always UNDER Zildo and other characters, at the same level
+				// as the map tiles in fact.
+				y=0;
+			}
+			if (!sprite.isInsideView()) {
+				y = -1;	// Doesn't display it => it's outside the camera
+			}
 		}
 	
 		// Find a placement for the entity in the sort array

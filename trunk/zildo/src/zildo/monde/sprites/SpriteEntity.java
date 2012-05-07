@@ -20,6 +20,7 @@
 
 package zildo.monde.sprites;
 
+import zildo.Zildo;
 import zildo.fwk.db.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
@@ -410,6 +411,17 @@ public class SpriteEntity extends Identified implements Cloneable,
 		return true;
 	}
 
+	/**
+	 * Check if entity is inside the viewport (TRUE).
+	 * @return boolean
+	 */
+	public boolean isInsideView() {
+		return (scrX+(sprModel.getTaille_x()*repeatX) >= 0 && 
+			   (scrY+(sprModel.getTaille_y()*repeatY)+1) >= 0 && 
+		        scrX <= Zildo.viewPortX && 
+		        scrY <= Zildo.viewPortY);		
+	}
+	
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
