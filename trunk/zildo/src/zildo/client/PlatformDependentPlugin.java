@@ -133,6 +133,10 @@ public class PlatformDependentPlugin {
     	return fileUtil.listFiles(path, filter);
     }
     
+    public Object openFd(String path) {
+    	return fileUtil.openFd(path);
+    }
+    
     @SuppressWarnings("unchecked")
 	public <T extends ScreenFilter> T getFilter(Class<T> p_filterClazz) {
     	return (T) filters.get(p_filterClazz);

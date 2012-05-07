@@ -42,4 +42,10 @@ public class ClassicFileUtil implements FileUtil {
 		return startPath.listFiles(filter);
 	}
 
+	@Override
+	public Object openFd(String file) {
+		// This method is here only to implement correcly the interface.
+		// But this is only intended for Android.
+		throw new RuntimeException("Don't call me !");
+	}
 }
