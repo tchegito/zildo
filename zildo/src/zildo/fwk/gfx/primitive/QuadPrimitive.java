@@ -62,10 +62,6 @@ public class QuadPrimitive {
         nIndices = 0;
     }
     
-    protected boolean isTiles() {
-    	return false;
-    }
-    
     // /////////////////////////////////////////////////////////////////////////////////////
     // startInitialization
     // /////////////////////////////////////////////////////////////////////////////////////
@@ -133,7 +129,7 @@ public class QuadPrimitive {
     
     float[][] texCoords = new float[4][2];
 
-    protected void putTexture(float xTex, float yTex, float sizeX, float sizeY, boolean six) {
+    protected void putTexture(float xTex, float yTex, float sizeX, float sizeY) {
         float texStartX=xTex;
         float texStartY=yTex;
         if (sizeX < 0) {
@@ -150,20 +146,12 @@ public class QuadPrimitive {
             texCoords[i][0] = texPosX / textureSizeX;
             texCoords[i][1] = texPosY / textureSizeY;
         }
-        if (!six) {
-            bufs.textures.put(texCoords[0][0]).put(texCoords[0][1]);
-            bufs.textures.put(texCoords[1][0]).put(texCoords[1][1]);
-            bufs.textures.put(texCoords[2][0]).put(texCoords[2][1]);
-            bufs.textures.put(texCoords[3][0]).put(texCoords[3][1]);
-        } else {
-            bufs.textures.put(texCoords[0][0]).put(texCoords[0][1]);
-            bufs.textures.put(texCoords[1][0]).put(texCoords[1][1]);
-            bufs.textures.put(texCoords[2][0]).put(texCoords[2][1]);
-            bufs.textures.put(texCoords[1][0]).put(texCoords[1][1]);
-            bufs.textures.put(texCoords[3][0]).put(texCoords[3][1]);
-            bufs.textures.put(texCoords[2][0]).put(texCoords[2][1]);
-        	
-        }
+        bufs.textures.put(texCoords[0][0]).put(texCoords[0][1]);
+        bufs.textures.put(texCoords[1][0]).put(texCoords[1][1]);
+        bufs.textures.put(texCoords[2][0]).put(texCoords[2][1]);
+        bufs.textures.put(texCoords[1][0]).put(texCoords[1][1]);
+        bufs.textures.put(texCoords[3][0]).put(texCoords[3][1]);
+        bufs.textures.put(texCoords[2][0]).put(texCoords[2][1]);
     }
 
     // Return the quad position in Vertex Buffer
@@ -198,7 +186,7 @@ public class QuadPrimitive {
         bufs.vertices.put(vertices[3][0]).put(vertices[3][1]);
         bufs.vertices.put(vertices[2][0]).put(vertices[2][1]);
 
-        putTexture(xTex, yTex, sizeX, sizeY, true);
+        putTexture(xTex, yTex, sizeX, sizeY);
         
         nPoints += 4;
         nIndices += 6;

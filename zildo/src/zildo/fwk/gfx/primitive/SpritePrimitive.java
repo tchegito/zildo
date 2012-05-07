@@ -51,11 +51,6 @@ public class SpritePrimitive extends QuadPrimitive {
 	public SpritePrimitive(int numPoints, int numIndices, int texSizeX, int texSizeY) {
 		super(numPoints, texSizeX, texSizeY);
 	}
-	
-	@Override
-    protected boolean isTiles() {
-    	return false;
-    }
     
 	///////////////////////////////////////////////////////////////////////////////////////
 	// startInitialization

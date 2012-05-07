@@ -76,11 +76,6 @@ public abstract class ScreenFilter extends QuadPrimitive {
 		
 		setActive(false, null);
 	}
-	
-	@Override
-	protected boolean isTiles() {
-		return false;
-	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
 	// renderFilter
