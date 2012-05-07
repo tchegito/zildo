@@ -542,15 +542,15 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : spriteEntities) {
 			if (entity != null) {
 				boolean canDelete = true;
-				if (entity == zildo || !includingZildo) {
+				if (entity == zildo) {
 					// This IS Zildo ! So we keep him
-					canDelete = false;
+					canDelete = includingZildo;
 				} else if (entity.getEntityType().isElement()) {
 					Element element = (Element) entity;
-					if ((zildo != null && element.getLinkedPerso() == zildo) || !includingZildo) {
+					if (zildo != null && element.getLinkedPerso() == zildo) {
 						// This is an element related to zildo, so we can't
 						// remove it now
-						canDelete = false;
+						canDelete = includingZildo;
 					}
 				} else if (entity.getEntityType().isPerso()) {
 					canDelete = false;
