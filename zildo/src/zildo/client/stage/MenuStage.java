@@ -76,6 +76,10 @@ public class MenuStage implements GameStage {
 		}
 	}
 
+	@Override
+	public void endGame() { }
+	
+	@Override
 	public boolean isDone() {
 		return done;
 	}

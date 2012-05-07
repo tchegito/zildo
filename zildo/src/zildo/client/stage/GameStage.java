@@ -32,5 +32,7 @@ public interface GameStage {
 	
 	public void launchGame();
 
+	public void endGame();
+	
 	public boolean isDone();
 }
