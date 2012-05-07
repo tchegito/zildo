@@ -29,8 +29,6 @@ import zildo.monde.util.Point;
  * Class describing the TileEngine main element :<br/>
  * <ul>
  * <li>set of vertices</li>
- * <li>set of indices</li>
- * <li>set of normals (all the same)</li>
  * <li>set of textures coordinates</li>
  * </ul>
  * @author tchegito
@@ -45,12 +43,8 @@ public class TilePrimitive extends QuadPrimitive {
 	int indexBuffer[][];
 
 	CycleIntBuffer freeIndex;
-	//int freeIndex[];
-	//int freeCount;
 	CycleIntBuffer displayed;
 	int bufSize;
-	//int displayed[];
-	//int displayCount;
 	
     // ////////////////////////////////////////////////////////////////////
     // Construction/Destruction
@@ -92,11 +86,6 @@ public class TilePrimitive extends QuadPrimitive {
         
         nPoints = 0;
         nIndices = 0;
-    }
-
-    @Override
-	protected boolean isTiles() {
-    	return true;
     }
 
     /**
