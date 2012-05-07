@@ -57,9 +57,6 @@ public class SpriteStore {
 			}
 		}
 		
-		// Create another bank for thin dialog's font
-		buildFontBank();
-		
 		// Initialize entities list
 		spriteEntities=new ArrayList<SpriteEntity>();
 	}
@@ -77,31 +74,6 @@ public class SpriteStore {
 		
 		// Increase number of loaded banks
 		n_bankspr++;
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// buildFontBank
-	///////////////////////////////////////////////////////////////////////////////////////
-	public void buildFontBank()
-	{
-	
-		/*
-		HFONT dialogFont= CreateFont( 10, 0, 0, 0, 0,0,	// les derniers : bold, italic
-	                                 FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
-	                                 CLIP_DEFAULT_PRECIS, DRAFT_QUALITY,
-	                                 DEFAULT_PITCH, null); //"Times new roman" );
-	
-	*/
-		SpriteBank sprBank=new SpriteBank();
-		sprBank.setName("FONTES2.spr");
-
-		//EngineZildo.spriteEngine.createTextureFromFontStyle(sprBank);
-	
-		banque_spr.add(sprBank);
-	
-		// Increase number of loaded banks
-		n_bankspr++;
-	
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
