@@ -72,7 +72,6 @@ public enum BankSound implements AudioBank {
 	OuvrePorte("porte"),
 
 	AfficheTexte("texte1"),
-	AfficheTexte2("texte2"),
 	AfficheTexteFin("textefin"),
 
 	FlecheTir("tire"),
