@@ -20,10 +20,14 @@
 
 package zildo.platform.opengl;
 
+import zildo.Zildo;
 import zildo.fwk.opengl.Sound;
 import zildo.fwk.opengl.SoundEngine;
+import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.util.Log;
 
 /**
  * @author Tchegito
@@ -31,20 +35,43 @@ import android.media.SoundPool;
  */
 public class AndroidSoundEngine extends SoundEngine {
 
-	SoundPool soundPool;
+	static SoundPool soundPool;
+	float streamVolumeCurrent;
+	float streamVolumeMax;
+	
+	static MediaPlayer currentMusic;
 	
 	@Override
 	public Sound createSound(String path) {
-		int soundId = 1; //soundPool.load("resources/musics/Angoisse.ogg", 1);
-		return new AndroidSound(soundId);
+		boolean music = path.contains("music");
+		System.out.println("ok load sound "+music);
+		AssetFileDescriptor afd = (AssetFileDescriptor) Zildo.pdPlugin.openFd(path);
+		MediaPlayer mp = null;
+		int soundId = 0;
+		
+		if (music) {
+			try {
+				mp = new MediaPlayer();
+				mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+				afd.close();//Don't forget to close, the documentation of setDataSource is very specific about it
+	
+				mp.prepare();
+			} catch (Exception e) {
+				Log.e("sound", "can't create music "+path);
+			}
+		} else {
+			soundId = soundPool.load(afd, 1);
+		}
+
+		
+		return new AndroidSound(soundId, mp);
 	}
 	
 	@Override
 	public void detectAndInitSoundEngine() {
 		if (!initialized) {
-			//soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
-			//int soundId = soundPool.load("resources/musics/Angoisse.ogg", 1);
-			//soundPool.play(soundId, 1, 1, 1, 0, 1);
+			soundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
+			currentMusic = null;
 			initialized = true;
 		}
 	}
