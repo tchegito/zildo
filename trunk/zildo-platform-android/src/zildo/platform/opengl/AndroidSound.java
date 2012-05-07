@@ -21,47 +21,58 @@
 package zildo.platform.opengl;
 
 import zildo.fwk.opengl.Sound;
+import android.media.MediaPlayer;
 
 public class AndroidSound extends Sound {
 
 	private final int soundId;
+	private final MediaPlayer music;
+	
+	private int streamId;
 	
 	@Override
 	public void finalize() {
 		
 	}
 	
-	public AndroidSound(int soundId) {
+	public AndroidSound(int soundId, MediaPlayer music) {
 		this.soundId = soundId;
+		this.music = music;
 	}
 	
 
 	@Override
 	public void play() {
-		/*
-		if (snd != null) {
-			snd.playAsMusic(1.0f, 1.0f, true);
+		float volume = 1f;
+		if (music != null) {
+			if (AndroidSoundEngine.currentMusic != null) {
+				AndroidSoundEngine.currentMusic.stop();
+			}
+			music.setLooping(true);
+			music.seekTo(0);
+			music.start();
+			AndroidSoundEngine.currentMusic = music;
 		} else {
-			AL10.alSourcePlay(source.get(0));
-		}*/
+			int loop = 0;	// No loop
+			streamId = AndroidSoundEngine.soundPool.play(soundId, volume, volume, 1, loop, 1f);
+		}
 	}
 
 	@Override
 	public void stop() {
-		/*
-		if (snd != null) {
-			snd.stop();
-		} else {
-			AL10.alSourceStop(source.get(0));
-		}*/
+		if (music != null) {
+			music.stop();
+			AndroidSoundEngine.currentMusic = null;
+		} else if (streamId != 0) {
+			AndroidSoundEngine.soundPool.stop(streamId);
+		}
 	}
 
 	public void pause() {
-		/*
-		if (snd != null) {
-			snd.stop();
-		} else {
-			AL10.alSourcePause(source.get(0));
-		}*/
+		if (music != null) {
+			music.pause();
+		} else if (streamId != 0) {
+			AndroidSoundEngine.soundPool.pause(streamId);
+		}
 	}
 }
