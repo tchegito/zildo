@@ -478,7 +478,7 @@ public class LwjglOpenGLGestion extends OpenGLGestion {
 		DisplayMode d[] = Display.getAvailableDisplayModes();
 		List<DisplayMode> selecteds = new ArrayList<DisplayMode>();
 		for (DisplayMode element : d) {
-			if (element.getWidth() == Zildo.viewPortX * 2 && element.getHeight() == Zildo.viewPortY * 2
+			if (element.getWidth() == Zildo.screenX && element.getHeight() == Zildo.screenY
 			// && d[i].getBitsPerPixel() == 32
 			) {
 				selecteds.add(element);
