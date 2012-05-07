@@ -74,12 +74,7 @@ public class PersoManagement {
 		return null;
 	}
 	
-	public void clearPersos()
-	{
-		tab_perso.clear();
-	}
-	
-	public void clearPersosWithoutZildo()
+	public void clearPersos(boolean includingZildo)
 	{
 		Iterator<Perso> it=tab_perso.iterator();
 		if (tab_perso.size() < 1) {
@@ -90,7 +85,7 @@ public class PersoManagement {
 		// Destroy entities
 		while (it.hasNext()) {
 			Perso perso=it.next();
-			if (perso != null && !perso.isZildo()) {
+			if (perso != null && (!perso.isZildo() || includingZildo)) {
 				persoToRemove.add(perso);
 				it.remove();
 			}
