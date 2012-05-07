@@ -281,7 +281,7 @@ public class Element extends SpriteEntity {
 				}
 			}
 			// Débordement}
-			if (x < -4 || y < -4 || x > 64 * 16 || y > 64 * 16) {
+			if (x < -4 || y < -4 || x > 64 * 16 || (y-z) > 64 * 16) {
 				die();
 				dying = true;
 			} else {
