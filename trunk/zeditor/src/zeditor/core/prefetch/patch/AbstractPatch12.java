@@ -24,7 +24,7 @@ import java.util.List;
 
 import zeditor.core.prefetch.complex.CompositePatch12;
 import zeditor.core.prefetch.complex.TraceDelegateDraw;
-import zildo.fwk.MultiMap;
+import zildo.fwk.collection.MultiMap;
 import zildo.monde.map.Area;
 import zildo.monde.util.Point;
 
