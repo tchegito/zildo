@@ -132,9 +132,17 @@ public class Menu {
         ClientEngineZildo.soundPlay.playSoundFX(item.sound);
         item.setLaunched(false);
     }
-    
+
+    /**
+     * Used with touchscreen platform.
+     * @param item
+     */
     public void selectItem(ItemMenu item) {
-		selected=items.indexOf(item);   	
+		int pos = items.indexOf(item);
+    	if (selected != pos) {
+    		selected=pos;
+    		ClientEngineZildo.soundPlay.playSoundFX(BankSound.MenuMove);
+    	}
     }
     
     public void refresh() {
