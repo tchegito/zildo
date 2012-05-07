@@ -29,6 +29,7 @@ import java.util.Map;
 import zildo.Zildo;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.menu.InGameMenu;
+import zildo.client.gui.menu.StartMenu;
 import zildo.client.stage.GameStage;
 import zildo.client.stage.MenuStage;
 import zildo.fwk.ZUtils;
@@ -372,6 +373,20 @@ public class Client {
 	
 	public void addStage(GameStage stage) {
 		stages.add(stage);
+	}
+	
+	/**
+	 * Player quit game and return to main menu.
+	 */
+	public void quitGame() {
+		for (GameStage stage : stages) {
+			stage.endGame();
+		}
+		
+		ClientEngineZildo.mapDisplay.setCurrentMap(null);
+		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(false);
+		ClientEngineZildo.spriteDisplay.clearSprites();
+		handleMenu(new StartMenu());
 	}
 	
 	public boolean isDone() {

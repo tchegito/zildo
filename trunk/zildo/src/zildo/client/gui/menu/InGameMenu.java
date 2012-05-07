@@ -61,7 +61,7 @@ public class InGameMenu extends Menu {
 		items.add(new ItemMenu("m7.quit") {
 			@Override
 			public void run() {
-				client.stop();
+				client.quitGame();
 			}
 		});
 

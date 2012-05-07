@@ -169,6 +169,10 @@ public class SpriteDisplay extends SpriteStore {
 
 	}
 
+	public void clearSprites() {
+		spriteEntities.clear();
+	}
+	
 	public int[][] getBankOrder() {
 		return spriteSorter.getBankOrder();
 	}

@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import zildo.client.sound.BankSound;
-import zildo.fwk.ZUtils;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.collision.PersoCollision;
@@ -433,8 +432,6 @@ public class SpriteManagement extends SpriteStore {
 	 * @param p_blockMoves TRUE=don't animate perso except Zildo
 	 */
 	public void updateSprites(boolean p_blockMoves) {
-		long t1 = ZUtils.getTime();
-		
 		spriteUpdating = true;
 		spriteEntitiesToAdd.clear();
 		
@@ -526,9 +523,6 @@ public class SpriteManagement extends SpriteStore {
 
 		spriteUpdating = false;
 		spriteEntities.addAll(spriteEntitiesToAdd);
-		
-		long t2 = ZUtils.getTime();
-		System.out.println("updates sprites model : "+(t2-t1)+"ms");
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -538,7 +532,7 @@ public class SpriteManagement extends SpriteStore {
 	// -Clean the sort array
 	// -Reinitializes local camera
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void clearSpritesWithoutZildo() {
+	public void clearSprites(boolean includingZildo) {
 		// Get Zildo to avoid to remove it
 		Perso zildo = EngineZildo.persoManagement.getZildo();
 
@@ -548,12 +542,12 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : spriteEntities) {
 			if (entity != null) {
 				boolean canDelete = true;
-				if (entity == zildo) {
+				if (entity == zildo || !includingZildo) {
 					// This IS Zildo ! So we keep him
 					canDelete = false;
 				} else if (entity.getEntityType().isElement()) {
 					Element element = (Element) entity;
-					if (zildo != null && element.getLinkedPerso() == zildo) {
+					if ((zildo != null && element.getLinkedPerso() == zildo) || !includingZildo) {
 						// This is an element related to zildo, so we can't
 						// remove it now
 						canDelete = false;

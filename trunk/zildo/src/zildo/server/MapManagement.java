@@ -79,9 +79,9 @@ public class MapManagement {
 
 		// Before, it was a guiManagement.clean() here
 
-		EngineZildo.persoManagement.clearPersosWithoutZildo();
+		EngineZildo.persoManagement.clearPersos(false);
 
-		EngineZildo.spriteManagement.clearSpritesWithoutZildo();
+		EngineZildo.spriteManagement.clearSprites(false);
 
 	}
 
