@@ -109,24 +109,6 @@ public class EngineZildo {
 
 	}
 	
-	@Override
-	public void finalize()
-	{
-		// L'ordre des suppression est TRES important ! En effet, le vidage des cartes passe
-		// par le vidage de tous les sprites/persos qui y sont référencés. Donc on a besoin
-		// d'avoir à ce moment là l'objet 'spriteManagement'.
-		/*
-		delete mapManagement;
-		delete spriteManagement;
-		delete persoManagement;
-		delete playerManagement;
-		delete guiManagement;
-		delete dialogManagement;
-		delete soundManagement;
-		delete collideManagement;
-	*/
-	}	
-	
 	public void renderFrame(Collection<ClientState> p_clientStates) {
 		// Animate the world
 		// 1) Players
