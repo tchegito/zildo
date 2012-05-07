@@ -101,6 +101,7 @@ public class AndroidTileEngine extends TileEngine {
 				gl10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				gl10.glEnable(GL11.GL_BLEND);
 				meshBACK.render(texBinder);
+				meshBACK2.render(texBinder);
 
 				gl10.glDisable(GL11.GL_BLEND);
 			}

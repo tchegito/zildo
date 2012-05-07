@@ -55,6 +55,7 @@ public class LwjglTileEngine extends TileEngine {
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				GL11.glEnable(GL11.GL_BLEND);
 				meshBACK.render(texBinder);
+				meshBACK2.render(texBinder);
 				GL11.glDisable(GL11.GL_BLEND);
 			}
 			else {

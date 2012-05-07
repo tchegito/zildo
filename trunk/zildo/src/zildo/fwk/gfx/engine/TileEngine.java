@@ -85,6 +85,7 @@ public abstract class TileEngine {
 	// 3D Objects (vertices and indices per bank)
 	protected TileGroupPrimitive meshFORE;
 	protected TileGroupPrimitive meshBACK;
+	protected TileGroupPrimitive meshBACK2;
 
 	protected boolean initialized = false;
 	List<MotifBank> motifBanks;
@@ -117,6 +118,7 @@ public abstract class TileEngine {
 
 		meshFORE = new TileGroupPrimitive(Constantes.NB_MOTIFBANK);
 		meshBACK = new TileGroupPrimitive(Constantes.NB_MOTIFBANK);
+		meshBACK2 = new TileGroupPrimitive(Constantes.NB_MOTIFBANK);
 
 		// Load graphs
 		motifBanks = new ArrayList<MotifBank>();
@@ -132,6 +134,7 @@ public abstract class TileEngine {
 	{
 		meshFORE.cleanUp();
 		meshBACK.cleanUp();
+		meshBACK2.cleanUp();
 
 		initialized = false;
 	}
@@ -216,6 +219,7 @@ public abstract class TileEngine {
 	// Prepare vertices and indices for drawing tiles
 	public void prepareTiles() {
 		initialized=true;
+		meshBACK2.clearBuffers();
 		meshBACK.clearBuffers();
 		meshFORE.clearBuffers();
 	}
@@ -229,6 +233,7 @@ public abstract class TileEngine {
 		if (meshBACK != null && cameraX != -1 && cameraY != -1) {
 
 			meshBACK.startInitialization();
+			meshBACK2.startInitialization();
 			meshFORE.startInitialization();
 			
 			int previousX = cameraX >> 4;
@@ -240,6 +245,7 @@ public abstract class TileEngine {
 			
 			if (previousX != tileStartX || previousY != tileStartY) {
 				meshBACK.initFreeBuffer(cameraNew);
+				meshBACK2.initFreeBuffer(cameraNew);
 				meshFORE.initFreeBuffer(cameraNew);
 			}
 			for (Area theMap : p_areas) {
@@ -298,7 +304,7 @@ public abstract class TileEngine {
 							Tile back2 = mapCase.getBackTile2();
 							if (back2 != null) {
 								n_motif = back2.index;
-								meshBACK.updateTile(back2.bank,
+								meshBACK2.updateTile(back2.bank,
 										x, y, n_motif, back2.reverse, changed);
 							}
 							
@@ -315,6 +321,7 @@ public abstract class TileEngine {
 				}
 			}
 			meshBACK.endInitialization();
+			meshBACK2.endInitialization();
 			meshFORE.endInitialization();
 		}
 
