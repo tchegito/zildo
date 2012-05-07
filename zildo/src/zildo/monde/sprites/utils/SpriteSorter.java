@@ -114,7 +114,8 @@ public class SpriteSorter {
 	public void insertSpriteInSortArray(SpriteEntity sprite)
 	{
 		// Get the character's Y to check if it's on the screen
-		int y = (int) (sprite.getScrY() - sprite.z);
+		int y = sprite.getScrY();
+		
 		if (sprite.getEntityType().isFont()) {
 			y=SORTY_MAX;
 		} else {
