@@ -126,14 +126,6 @@ public class SinglePlayer implements GameStage {
         ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
         
         client.addStage(this);
-        /*
-        while (!done && !state.gameOver) {
-        	updateGame();
-        	renderGame();
-        }
-
-        endGame();
-        */
     }
     
     /**
