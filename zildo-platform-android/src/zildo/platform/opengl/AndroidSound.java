@@ -46,7 +46,7 @@ public class AndroidSound extends Sound {
 		float volume = 1f;
 		if (music != null) {
 			if (AndroidSoundEngine.currentMusic != null) {
-				AndroidSoundEngine.currentMusic.stop();
+				AndroidSoundEngine.currentMusic.pause();
 			}
 			music.setLooping(true);
 			music.seekTo(0);
@@ -61,7 +61,7 @@ public class AndroidSound extends Sound {
 	@Override
 	public void stop() {
 		if (music != null) {
-			music.stop();
+			music.pause();
 			AndroidSoundEngine.currentMusic = null;
 		} else if (streamId != 0) {
 			AndroidSoundEngine.soundPool.stop(streamId);
