@@ -32,4 +32,7 @@ public interface FileUtil {
 	EasyBuffering openFile(String path);
 	
 	File[] listFiles(String path, FilenameFilter filter);
+	
+	// Method used only in Android to get an AssetFileDescriptor
+	Object openFd(String path);
 }
