@@ -22,13 +22,11 @@ package zildo.client;
 
 
 import zildo.Zildo;
-import zildo.client.gui.DialogDisplay;
 import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.ScreenConstant;
 import zildo.client.sound.Ambient;
 import zildo.client.sound.SoundPlay;
 import zildo.fwk.FilterCommand;
-import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
@@ -70,7 +68,6 @@ public class ClientEngineZildo {
 	
 	public static ScreenConstant screenConstant;
 	public static GUIDisplay guiDisplay;
-	public static DialogDisplay dialogDisplay;
 
 	public static SpriteEngine spriteEngine;
 	public static TileEngine tileEngine;
@@ -107,7 +104,6 @@ public class ClientEngineZildo {
         
         filterCommand = new FilterCommand();
 		guiDisplay = new GUIDisplay();
-		dialogDisplay = new DialogDisplay();
 		if (!p_awt) { // No sound in ZEditor
 			soundEngine = Zildo.pdPlugin.soundEngine;
 			soundPlay = new SoundPlay(soundEngine);
@@ -180,10 +176,7 @@ public class ClientEngineZildo {
 			}
 
 			// Is Zildo talking with somebody ?
-			if (dialogDisplay.isDialoguing()) {
-				dialogDisplay.manageDialog();
-			}
-
+			guiDisplay.manageDialog();
 		}
 
 		//long t2 = ZUtils.getTime();
