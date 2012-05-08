@@ -89,7 +89,11 @@ public class CollBuffer {
 	}
 	
 	public static int howManyAround(int gridX, int gridY) {
-		return capillarity[gridY][gridX];
+		if (isOutOfBounds(gridX, gridY)) {
+			return 0;
+		} else {
+			return capillarity[gridY][gridX];
+		}
 	}
 	
 	private void setId(int gridX, int gridY, int fromId) {
