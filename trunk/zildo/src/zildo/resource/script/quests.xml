@@ -133,7 +133,7 @@
 			<questDone name="flut"/>
 		</trigger>
 		<action>
-			<exec script="enlevement"/>
+			<exec script="enlevementScene"/>
 			<map name="bucherons"/>
 			<focus who="zildo" />
 			<moveTo who="zildo" pos="0,1" delta="true"/>
@@ -257,6 +257,9 @@
 		</condition>
 		<condition name="foret" exp="!suite_visit1_weapon">
 			<remove who="maltus"/>
+		</condition>
+		<condition name="prisonext" exp="start_defi1-!stop_defi1">
+		    <markQuest name="start_defi1" value="0"/>
 		</condition>
 	</mapScript>
 	
@@ -420,7 +423,7 @@
 	    <speak who="emissaire" text="echange.emissaire6" />
 	</scene>
 	
-	<scene id="enlevement" restoreZildo="true">
+	<scene id="enlevementScene" restoreZildo="true">
 	    <music name="Angoisse"/>
 	    <clear/>
 	    <speak who="zildo" text="enlev.p1" />
@@ -522,7 +525,7 @@
 		<speak who="king" text="visit1.king.10"/>
 		<speak who="zildo" text="visit1.zildo.4"/>
 		<speak who="king" text="visit1.king.11"/>
-		<moveTo who="zildo" pos="0,32" delta="true"/>
+		<moveTo who="zildo" pos="0,48" delta="true"/>
 		<focus who="zildo" unblock="true" delta="true"/>
 	</scene>
 	
