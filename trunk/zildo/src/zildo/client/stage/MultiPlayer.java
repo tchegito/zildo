@@ -59,7 +59,7 @@ public class MultiPlayer {
 
         SinglePlayer singlePlayer = new SinglePlayer(server);
         singlePlayer.launchGame();
-        server.cleanUp();
+        //server.cleanUp();
     }
 
     /**

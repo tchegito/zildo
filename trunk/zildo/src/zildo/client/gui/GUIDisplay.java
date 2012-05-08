@@ -39,6 +39,7 @@ import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.FontDescription;
@@ -77,11 +78,10 @@ public class GUIDisplay {
 	private DialogMode toDisplay_dialogMode;
 
 	// External flags for text display
-	private boolean visibleMessageDisplay; // FALSE=Visible text isn't display
-											// yet at screen
-	private boolean entireMessageDisplay; // FALSE=Entire sentence aren't
-											// display yet at screen.
 
+	DialogContext dialogContext;
+	DialogDisplay dialogDisplay;
+	
 	private int countMoney;
 
 	private GUISpriteSequence textDialogSequence; // All fonts displayed in
@@ -130,6 +130,9 @@ public class GUIDisplay {
 		
 		// Screen constants
 		sc = ClientEngineZildo.screenConstant;
+		
+		dialogContext = new DialogContext();
+		dialogDisplay = new DialogDisplay(dialogContext);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -250,8 +253,7 @@ public class GUIDisplay {
 		boolean visibleFont;
 		boolean center;
 		int i;
-		GUISpriteSequence seq = textDialogSequence; // Default sequence to add
-													// fonts
+		GUISpriteSequence seq = textDialogSequence; // Default sequence to add fonts
 
 		switch (toDisplay_dialogMode) {
 		case CLASSIC:
@@ -278,8 +280,7 @@ public class GUIDisplay {
 
 		for (i = 0; i <= texte.length(); i++) {
 			char a;
-			boolean signAlone = false; // Detect if a punctuation sign is alone
-										// (? or !)
+			boolean signAlone = false; // Detect if a punctuation sign is alone (? or !)
 			if (i == texte.length()) {
 				a = 0;
 			} else {
@@ -299,19 +300,18 @@ public class GUIDisplay {
 						nSpr[nLettre] = -2;
 					} else {
 						sizesLine[nLigne] = sizeCurrentLine;
-						if (lastSpacePosition != -1) { // Put 'ENDOFLINE' at the
-														// last space
+						if (lastSpacePosition != -1) { // Put 'ENDOFLINE' at the last space
 							nSpr[lastSpacePosition] = -2;
 						} else { // No space from the beginning of the message
 							nSpr[nLettre] = -2;
 						}
 					}
+					dialogContext.add(i);
 					nLigne++;
 					sizeCurrentLine = 0;
 				}
 				if (a == ' ') {
-					sizeCurrentLine += sc.TEXTER_SIZESPACE; // Space
-																	// size
+					sizeCurrentLine += sc.TEXTER_SIZESPACE; // Space size
 					nSpr[nLettre] = -1;
 					if (!signAlone) {
 						lastSpacePosition = nLettre;
@@ -376,9 +376,9 @@ public class GUIDisplay {
 		}
 
 		// Say that the message is not complete yet at screen
-		visibleMessageDisplay = visibleFont; 
+		dialogContext.visibleMessageDisplay = visibleFont; 
 												
-		entireMessageDisplay = visibleFont;
+		dialogContext.entireMessageDisplay = visibleFont;
 		
 		return filledZone;
 	}
@@ -446,32 +446,31 @@ public class GUIDisplay {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// displayTextParts
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void displayTextParts(int position, String sentence,
-			boolean scrolling) {
+	public void displayTextParts(boolean scrolling) {
 		Iterator<SpriteEntity> it = textDialogSequence.iterator();
 		int j = 0;
 		char a = 0;
 
 		// We have to know how much font have to be enabled/disabled (with
 		// visibility)
-		for (int i = 0; i < position + 1; i++) {
-			if (i < sentence.length()) {
-				a = sentence.charAt(i);
+		for (int i = 0; i < dialogContext.pos + 1; i++) {
+			if (i < dialogContext.sentence.length()) {
+				a = dialogContext.sentence.charAt(i);
 			}
-			if (a == ' ' || i == sentence.length()) {
+			if (a == ' ' || i == dialogContext.sentence.length()) {
 				for (int k = 0; k < (i - j) && it.hasNext(); k++) {
 					SpriteEntity entity = it.next();
 					if (entity.getScrY() < sc.TEXTER_COORDINATE_Y) {
 						entity.setVisible(false);
 					} else if (entity.getScrY() < (sc.TEXTER_BOTTOM_Y)) {
 						entity.setVisible(true);
-						if (i == sentence.length()) {
-							entireMessageDisplay = true;
+						if (i == dialogContext.sentence.length()) {
+							dialogContext.entireMessageDisplay = true;
 							ClientEngineZildo.soundPlay
 									.playSoundFX(BankSound.AfficheTexteFin);
 						}
 					} else {
-						visibleMessageDisplay = true;
+						dialogContext.visibleMessageDisplay = true;
 						// If the text has another line to scroll, don't play
 						// sound
 						if (!scrolling) {
@@ -489,14 +488,19 @@ public class GUIDisplay {
 		boolean entire = true;
 		for (SpriteEntity entity : textDialogSequence) {
 			int y = entity.getScrY();
-			if (y >= sc.TEXTER_COORDINATE_Y && y < sc.TEXTER_BOTTOM_Y) {
+			if (y < sc.TEXTER_COORDINATE_Y) {
+				entity.setVisible(false);
+			} else if (y >= sc.TEXTER_COORDINATE_Y && y < sc.TEXTER_BOTTOM_Y) {
 				entity.setVisible(true);
 			} else if (y > sc.TEXTER_BOTTOM_Y) {
 				entire = false;	// There's still some text to display
 			}
 		}
-		visibleMessageDisplay = true;
-		entireMessageDisplay = entire;
+		if (!entire) {
+			dialogContext.setLine(sc.TEXTER_NUMLINE);
+		}
+		dialogContext.visibleMessageDisplay = true;
+		dialogContext.entireMessageDisplay = entire;
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -505,13 +509,13 @@ public class GUIDisplay {
 	// Scroll every fonts one row to the height
 	// And display fonts which are inside the frame
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void scrollAndDisplayTextParts(int position, String sentence) {
+	public void scrollAndDisplayTextParts() {
 		for (SpriteEntity entity : textDialogSequence) {
 			entity.setScrY(entity.getScrY() - sc.TEXTER_SIZELINE);
 		}
 
-		displayTextParts(position, sentence, false);
-		visibleMessageDisplay = false;
+		displayTextParts(false);
+		dialogContext.visibleMessageDisplay = false;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -680,22 +684,6 @@ public class GUIDisplay {
 		guiSpritesSequence.clear();
 	}
 
-	public boolean isVisibleMessageDisplay() {
-		return visibleMessageDisplay;
-	}
-
-	public void setVisibleMessageDisplay(boolean visibleMessageDisplay) {
-		this.visibleMessageDisplay = visibleMessageDisplay;
-	}
-
-	public boolean isEntireMessageDisplay() {
-		return entireMessageDisplay;
-	}
-
-	public void setEntireMessageDisplay(boolean entireMessageDisplay) {
-		this.entireMessageDisplay = entireMessageDisplay;
-	}
-
 	public boolean isToDisplay_dialoguing() {
 		return toDisplay_dialoguing;
 	}
@@ -786,5 +774,15 @@ public class GUIDisplay {
 		ClientEngineZildo.ortho.boxv(posX - 1, posY - 1, sizeX + 2, sizeY + 2,
 				4, new Vector4f(0.8f, 0.6f, 0.4f, 0.4f));
 
+	}
+	
+	public void manageDialog() {
+		if (dialogDisplay.isDialoguing()) {
+			dialogDisplay.manageDialog();
+		}		
+	}
+	
+	public boolean launchDialog(List<WaitingDialog> p_queue) {
+		return dialogDisplay.launchDialog(p_queue);
 	}
 }

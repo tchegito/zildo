@@ -162,7 +162,7 @@ public class SinglePlayer implements GameStage {
         engineZildo.renderFrame(states);
 
         // Dialogs
-        if (ClientEngineZildo.dialogDisplay.launchDialog(EngineZildo.dialogManagement.getQueue())) {
+        if (ClientEngineZildo.guiDisplay.launchDialog(EngineZildo.dialogManagement.getQueue())) {
         	EngineZildo.dialogManagement.stopDialog(state, false);
         }
 

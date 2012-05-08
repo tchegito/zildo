@@ -32,15 +32,11 @@ import zildo.monde.dialog.WaitingDialog.CommandDialog;
 public class DialogDisplay {
 	
 	public boolean dialoguing;
-	
-	private boolean fullSentenceDisplayed;
-	
-	private String currentSentence;
-	private int positionInSentence;
-	private int numToScroll;
+	public DialogContext context;
 
-	public DialogDisplay() {
-		dialoguing=false;
+	public DialogDisplay(DialogContext dialogContext) {
+		dialoguing = false;
+		context = dialogContext;
 	}
 	
 	public boolean isDialoguing() {
@@ -87,26 +83,16 @@ public class DialogDisplay {
 	 * @param p_dialAction optional
 	 */
 	public void launchDialog(String p_sentence, CommandDialog p_dialAction) {
-		
-		currentSentence=p_sentence.replaceAll("[@|$]", "");
-
-		fullSentenceDisplayed = false;
-
 		DialogMode displayMode = DialogMode.CLASSIC;
 		if (p_dialAction == CommandDialog.BUYING) {
 			// Hero is looking items in a store : so display sentence centered and directly
 			displayMode = DialogMode.MENU;
 		}
 
-		positionInSentence=0;
-		ClientEngineZildo.guiDisplay.setText(currentSentence, displayMode);
+		context.setSentence(p_sentence.replaceAll("[@|$]", ""));
+		ClientEngineZildo.guiDisplay.setText(context.sentence, displayMode);
 		ClientEngineZildo.guiDisplay.setToDisplay_dialoguing(true);
 		dialoguing=true;
-	}
-	
-	public void clearDialogs() {
-		positionInSentence=-1;
-		numToScroll=0;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -120,27 +106,24 @@ public class DialogDisplay {
 	void manageConversation() {
 		GUIDisplay guiDisplay=ClientEngineZildo.guiDisplay;
 	
-		boolean entireMessageDisplay=guiDisplay.isEntireMessageDisplay();
-		boolean visibleMessageDisplay=guiDisplay.isVisibleMessageDisplay();
-	
-		if (entireMessageDisplay || visibleMessageDisplay) {
-			if (numToScroll!=0) {
-				numToScroll--;
-				if (!entireMessageDisplay) {
-					guiDisplay.scrollAndDisplayTextParts(positionInSentence,currentSentence);
+		if (context.entireMessageDisplay || context.visibleMessageDisplay) {
+			if (context.numToScroll!=0) {
+				context.numToScroll--;
+				if (!context.entireMessageDisplay) {
+					guiDisplay.scrollAndDisplayTextParts();
 				}
-			} else if (entireMessageDisplay && !fullSentenceDisplayed) {
+			} else if (context.entireMessageDisplay && !context.fullSentenceDisplayed) {
 			    // Tell server that sentence is full displayed
 			    ClientEngineZildo.askEvent(ClientEventNature.DIALOG_FULLDISPLAY);
-			    fullSentenceDisplayed = true;
+			    context.fullSentenceDisplayed = true;
 			}
-		} else if (!visibleMessageDisplay ) {
+		} else if (!context.visibleMessageDisplay ) {
 			// Draw sentences slowly (word are appearing one after another)
-			positionInSentence++;
-			if (positionInSentence % 3 ==0 && (Math.random()*10)>7) {
+			context.pos++;
+			if (context.pos % 3 ==0 && (Math.random()*10)>7) {
 				ClientEngineZildo.soundPlay.playSoundFX(BankSound.AfficheTexte);
 			}
-			guiDisplay.displayTextParts(positionInSentence,currentSentence,(numToScroll!=0));
+			guiDisplay.displayTextParts(context.numToScroll!=0);
 		}
 	}
 	
@@ -155,8 +138,6 @@ public class DialogDisplay {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public boolean actOnDialog(String p_sentence, CommandDialog actionDialog) {
 		GUIDisplay guiDisplay = ClientEngineZildo.guiDisplay;
-		boolean entireMessageDisplay=guiDisplay.isEntireMessageDisplay();
-		boolean visibleMessageDisplay=guiDisplay.isVisibleMessageDisplay();
 	
 		boolean result=false;
 		
@@ -164,15 +145,15 @@ public class DialogDisplay {
 			// Conversation
 			switch (actionDialog) {
 				case ACTION:
-					if (!visibleMessageDisplay && !entireMessageDisplay) {
+					if (!context.visibleMessageDisplay && !context.entireMessageDisplay) {
 						guiDisplay.skipDialog(p_sentence);
 						break;
 					}
 				case CONTINUE:
-					if (entireMessageDisplay || visibleMessageDisplay) {
+					if (context.entireMessageDisplay || context.visibleMessageDisplay) {
 						// Two cases : continue or quit
-						if (!entireMessageDisplay) {
-							numToScroll=3;
+						if (!context.entireMessageDisplay) {
+							context.numToScroll=3;
 						} else {
 						    if (actionDialog == CommandDialog.CONTINUE) {
 								launchDialog(p_sentence, actionDialog);
