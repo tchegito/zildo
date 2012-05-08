@@ -116,6 +116,10 @@ public class MapManagement {
 			EngineZildo.scriptManagement.prepareMapSubTriggers(adjustedMapName);
 		}
 
+
+		// Do the map replacements
+		EngineZildo.scriptManagement.doMapReplacements(adjustedMapName);
+		
 		// Load a new one
 		currentMap = loadMapFile(adjustedMapName, p_mapname);
 		EngineZildo.spriteManagement.initForNewMap();
@@ -133,8 +137,6 @@ public class MapManagement {
 					break;
 			}
 
-			// Do the map replacements
-			EngineZildo.scriptManagement.doMapReplacements(adjustedMapName);
 		}
 
 		analyseAltitude();
@@ -676,7 +678,7 @@ public class MapManagement {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
 			//points.add(new Point(16*26, 45*16));
-			points.add(new Point(231+650-350-200, 360+130-50));	// 231+450 is good for preintro
+			points.add(new Point(231+450, 360+130-50-150));	// 231+450 is good for preintro
 		} else {
 			points = currentMap.getRespawnPoints();
 		}
