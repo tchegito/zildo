@@ -20,10 +20,8 @@
 
 package zildo.client;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.engine.SpriteEngine;
@@ -55,8 +53,9 @@ public class SpriteDisplay extends SpriteStore {
 
 	public int zildoId;
 	
-	// We use a map to ease the access to an entity with his ID
-	Map<Integer, SpriteEntity> mapEntities=new HashMap<Integer, SpriteEntity>();
+	// We use an map to ease the access to an entity with his ID
+	// Replaced by an array for performance reason on Android (Dalvik's hashmap are slow)
+	SpriteEntity[] arrayEntities = new SpriteEntity[512];
 	
 	// ZEditor only
 	public ForeBackController foreBackController=new ForeBackController();
@@ -66,10 +65,10 @@ public class SpriteDisplay extends SpriteStore {
 		for (SpriteEntity entity : p_entities) {
 			if (entity.dying) {
 				// This entity should be removed
-				mapEntities.remove(entity.getId());
+				arrayEntities[entity.getId()] = null;
 			} else {
 				// Update or create this one
-				mapEntities.put(entity.getId(), entity);
+				arrayEntities[entity.getId()] = entity;
 			}
 		}
 		for (Iterator<SpriteEntity> it=spriteEntities.iterator();it.hasNext();) {
@@ -78,7 +77,12 @@ public class SpriteDisplay extends SpriteStore {
 				it.remove();
 			}
 		}
-		spriteEntities.addAll(mapEntities.values());
+		for (int i=0;i<arrayEntities.length;i++) {
+			SpriteEntity entity = arrayEntities[i];
+			if (entity != null) {
+				spriteEntities.add(entity);
+			}
+		}
 	}
 	
 	public SpriteDisplay(SpriteEngine spriteEngine) {
@@ -178,7 +182,7 @@ public class SpriteDisplay extends SpriteStore {
 	}
 
 	public SpriteEntity getZildo() {
-		return mapEntities.get(zildoId);
+		return arrayEntities[zildoId];
 	}
 	
 	public void setZildoId(int p_zildoId) {
