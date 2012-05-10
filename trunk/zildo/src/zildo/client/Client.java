@@ -87,6 +87,7 @@ public class Client {
 	MenuListener menuListener;
 	
 	List<GameStage> stages;
+	GameStage ongoingStage;
 	
 	public enum ClientType {
 		SERVER_AND_CLIENT, CLIENT, ZEDITOR;
@@ -168,6 +169,12 @@ public class Client {
 				stage.updateGame();
 			}
 		}
+		// Is there a new stage being requested during the updating ?
+		if (ongoingStage != null) {	
+			stages.add(ongoingStage);
+			ongoingStage = null;
+		}
+		// Is there some deletion asked ?
 		if (!toRemove.isEmpty()) {
 			for (GameStage stage : toRemove) {
 				stages.remove(stage);
@@ -264,7 +271,7 @@ public class Client {
 		if (p_menu == null) {
 			connected = true;
 		} else {
-			addStage(new MenuStage(p_menu, menuListener));
+			askStage(new MenuStage(p_menu, menuListener));
 			currentMenu.refresh();
 			connected = false;
 		}
@@ -371,8 +378,8 @@ public class Client {
 		return stages;
 	}
 	
-	public void addStage(GameStage stage) {
-		stages.add(stage);
+	public void askStage(GameStage stage) {
+		ongoingStage = stage;
 	}
 	
 	/**
@@ -385,6 +392,7 @@ public class Client {
 		
 		ClientEngineZildo.mapDisplay.setCurrentMap(null);
 		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(false);
+		ClientEngineZildo.guiDisplay.setToDisplay_dialoguing(false);
 		ClientEngineZildo.spriteDisplay.clearSprites();
 		handleMenu(new StartMenu());
 	}

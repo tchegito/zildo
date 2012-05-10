@@ -125,7 +125,7 @@ public class SinglePlayer implements GameStage {
         SpriteEntity zildo=EngineZildo.persoManagement.getZildo();
         ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
         
-        client.addStage(this);
+        client.askStage(this);
     }
     
     /**
