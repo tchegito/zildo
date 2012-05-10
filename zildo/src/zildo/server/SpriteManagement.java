@@ -113,7 +113,7 @@ public class SpriteManagement extends SpriteStore {
 	// Spawn an element with minimal requirements
 	// -build an element with given parameters
 	// -add it to the sprite engine
-	public Element spawnElement(int nBank, int nSpr, int x, int y, int z) {
+	public Element spawnElement(int nBank, int nSpr, int x, int y, int z, Reverse reverse) {
 
 		// SpriteEntity informations
 		Element element;
@@ -129,7 +129,8 @@ public class SpriteManagement extends SpriteStore {
 		element.setZ(z);
 		element.setNSpr(nSpr);
 		element.setNBank(nBank);
-
+		element.reverse = reverse;
+		
 		spawnSprite(element);
 
 		return element;
@@ -141,10 +142,11 @@ public class SpriteManagement extends SpriteStore {
 	 * @param x
 	 * @param y
 	 * @param z
+	 * @param reverse TODO
 	 * @return Element
 	 */
-	public Element spawnElement(SpriteDescription desc, int x, int y, int z) {
-		return spawnElement(desc.getBank(), desc.getNSpr(), x, y, z);
+	public Element spawnElement(SpriteDescription desc, int x, int y, int z, Reverse reverse) {
+		return spawnElement(desc.getBank(), desc.getNSpr(), x, y, z, reverse);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -370,7 +372,7 @@ public class SpriteManagement extends SpriteStore {
 
 		if (nSpr == 69 || nSpr == 70 || nSpr == 28) {
 			// Particular sprite (Block that Zildo can move, chest...)
-			return spawnElement(nBank, nSpr, x, y, 0); // + spr.getTaille_y() / 2 - 3,
+			return spawnElement(nBank, nSpr, x, y, 0, Reverse.NOTHING); // + spr.getTaille_y() / 2 - 3,
 					//0);
 		}
 
