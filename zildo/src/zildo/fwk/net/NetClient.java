@@ -262,7 +262,7 @@ public class NetClient extends NetSend {
         EasyBuffering buffer = new EasyBuffering(p_packet.getBuffer());
     	WaitingDialog dial=WaitingDialog.deserialize(buffer);
     	
-    	boolean dialogEnded=ClientEngineZildo.dialogDisplay.launchDialog(Collections.singletonList(dial));
+    	boolean dialogEnded=ClientEngineZildo.guiDisplay.launchDialog(Collections.singletonList(dial));
     	if (dialogEnded) {
     		EventPacket packet=new EventPacket(EventType.DIALOG_ENDED);
     		sendPacket(packet, server);
