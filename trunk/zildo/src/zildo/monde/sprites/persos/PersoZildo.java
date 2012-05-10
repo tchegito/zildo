@@ -324,7 +324,7 @@ public class PersoZildo extends Perso {
 	@Override
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 
-		if (mouvement == MouvementZildo.SAUTE) {
+		if (mouvement == MouvementZildo.SAUTE || inventoring) {
 			return;
 		}
 		// Project Zildo away from the enemy
@@ -1042,7 +1042,7 @@ public class PersoZildo extends Perso {
 			if (elem == null) {
 				elem = EngineZildo.spriteManagement.spawnElement(p_kind.representation,
 						(int) x,
-						(int) y, 0);
+						(int) y, 0, Reverse.NOTHING);
 			}
 			// Place item right above Zildo
 			elem.x = x + 5;
