@@ -118,7 +118,7 @@
 	</quest>
 	<quest name="empechezildo_bar2" repeat="true">
 		<trigger>
-			<location who="zildo" name="coucou" pos="464,308"/>
+			<location who="zildo" name="coucou" pos="464,323" radius="1"/>
 			<questDone name="!fermierperdu_bar-!ritou_bar"/>
 		</trigger>
 		<action>
@@ -236,6 +236,15 @@
 			<music name="Village"/>
 			<focus who="zildo" unblock="true" delta="true"/>
 		</action>
+	</quest>
+	
+	<quest name="foretg_button_trig" repeat="true">
+	    <trigger>
+	        <location name="foretg" tilePos="5,27"/>
+	    </trigger>
+	    <action>
+	        <exec script="foretg_button"/>
+	    </action>
 	</quest>
 	
 	<mapScript>
@@ -566,12 +575,12 @@
 	
 	<scene id="miniStairsUp">
 		<sound name="ZildoDescendPeu"/>
-		<moveTo who="zildo" pos="0,-32" delta="true"/>
+		<moveTo who="zildo" pos="0,-32" speed="1" delta="true"/>
 	</scene>
 	
 	<scene id="miniStairsDown">
 		<sound name="ZildoMontePeu"/>
-		<moveTo who="zildo" pos="0,34" delta="true"/>
+		<moveTo who="zildo" pos="0,34" speed="1" delta="true"/>
 	</scene>
 	
 	<scene id="stairsUp">
@@ -686,10 +695,10 @@
 		<script who="rabbit3" value="0"/>
 	</scene>
 		
-	<scene name="foretg_button" repeat="true">
-		<spawn type="CAVE_SIMPLEDOOR" what="inDoor" pos="55,308"/>
-		<spawn type="CAVE_SIMPLEDOOR" what="outDoor" pos="126,536"/>
+	<scene id="foretg_button">
 		<actions>
+	   		<spawn type="CAVE_SIMPLEDOOR" what="inDoor" pos="55,308" reverse="128"/>
+			<spawn type="CAVE_SIMPLEDOOR" what="outDoor" pos="128,540" reverse="64"/>
 			<activate what="inDoor" value="true"/>
 			<activate what="outDoor" value="false"/>
 		</actions>
