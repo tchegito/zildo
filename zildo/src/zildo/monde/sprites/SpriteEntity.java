@@ -417,9 +417,9 @@ public class SpriteEntity extends Identified implements Cloneable,
 	 */
 	public boolean isInsideView() {
 		return (scrX+(sprModel.getTaille_x()*repeatX) >= 0 && 
-			   (scrY+(sprModel.getTaille_y()*repeatY)+1) >= 0 && 
+			   (scrY-z+(sprModel.getTaille_y()*repeatY)+1) >= 0 && 
 		        scrX <= Zildo.viewPortX && 
-		        scrY <= Zildo.viewPortY);		
+		        (scrY-z) <= Zildo.viewPortY);		
 	}
 	
 	@Override
