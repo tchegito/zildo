@@ -50,10 +50,11 @@ public class ElementSmoke extends Element {
 		if (z > 28 && nSpr == 6) {
 			nSpr = 5; // Smoke
 		} else if (z > 48 && nSpr == 5 && !vanishing) {
-			EngineZildo.spriteManagement.spawnSpriteGeneric(
-					SpriteAnimation.CHIMNEY_SMOKE, startX, startY, 0, null,
-					null);
-			vanishing = true; // Sprite is vanishing (with alpha channel)
+			if (isInsideView()) {
+				EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, 
+						startX, startY, 0, null,	null);
+				vanishing = true; // Sprite is vanishing (with alpha channel)
+			}
 		} else if (z > 18) {
 			alpha -= 3;
 		}
