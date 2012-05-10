@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import zildo.fwk.ZUtils;
+import zildo.fwk.db.Identified;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
@@ -61,7 +62,6 @@ public class SpriteDisplay extends SpriteStore {
 	public ForeBackController foreBackController=new ForeBackController();
 	    
 	public void setEntities(List<SpriteEntity> p_entities) {
-		//mapEntities.clear();
 		for (SpriteEntity entity : p_entities) {
 			if (entity.dying) {
 				// This entity should be removed
@@ -175,6 +175,7 @@ public class SpriteDisplay extends SpriteStore {
 
 	public void clearSprites() {
 		spriteEntities.clear();
+		Identified.resetCounter(SpriteEntity.class);
 	}
 	
 	public int[][] getBankOrder() {
