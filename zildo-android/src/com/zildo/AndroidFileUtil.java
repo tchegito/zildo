@@ -28,6 +28,7 @@ import java.util.List;
 
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.FileUtil;
+import android.util.Log;
 
 /**
  * @author Tchegito
@@ -55,4 +56,15 @@ public class AndroidFileUtil implements FileUtil {
 		return files.toArray(new File[] {});
 	}
 
+	@Override
+	public Object openFd(String file) {
+		String completeFilename="resources/"+file;
+		Log.d("file", "open "+file);
+		try {
+			return AndroidReadingFile.assetManager.openFd(completeFilename);
+		} catch (IOException e) {
+			Log.e("sound", "can't load "+file);
+			return null;
+		}
+	}
 }

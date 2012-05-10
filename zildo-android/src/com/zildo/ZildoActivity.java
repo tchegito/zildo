@@ -6,8 +6,10 @@ import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.menu.StartMenu;
 import zildo.fwk.ZUtils;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
+import android.media.AudioManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +19,7 @@ import android.view.WindowManager;
 public class ZildoActivity extends Activity {
 	
 	TouchListener touchListener;
+	public static AudioManager mgr;
 	
     /** Called when the activity is first created. */
     @Override
@@ -50,7 +53,13 @@ public class ZildoActivity extends Activity {
    		
    		clientThread.start();
    		
+   		mgr = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+	    float streamVolumeCurrent = mgr.getStreamVolume(AudioManager.STREAM_MUSIC);
+	    float streamVolumeMax = mgr.getStreamMaxVolume(AudioManager.STREAM_MUSIC); 
+	    //System.out.println("Volumes are "+streamVolumeCurrent+" and "+streamVolumeMax);
+	    
         setContentView(view);
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
     }
     
