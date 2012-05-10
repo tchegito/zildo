@@ -103,6 +103,8 @@ public class PersoFireThing extends PersoNJ {
 			positions.remove(10);
 		}
 		direction+=0.01f;
+		
+		super.animate(compteur_animation);
 	}
 	
 	private void orderElements(Element... elements) {
