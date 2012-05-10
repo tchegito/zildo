@@ -70,13 +70,10 @@ public abstract class Identified {
 	}
 	
 	// Database
-	private static Map<Key, Identified> objects;
+	private static Map<Key, Identified> objects = new HashMap<Key, Identified>();
 	
 	public static void resetCounter(Class<? extends Identified> p_clazz) {
 		idsCounter.put(p_clazz, new IdGenerator(retrieveMaxId(p_clazz)));
-		if (objects == null) {
-			objects=new HashMap<Key, Identified>();
-		}
 	}
 	
 	protected int getCounter(Class<? extends Identified> p_clazz) {
