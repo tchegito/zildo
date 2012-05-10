@@ -23,6 +23,7 @@ package zildo.monde.sprites.elements;
 import zildo.client.sound.BankSound;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
@@ -107,6 +108,9 @@ public class ElementGear extends Element {
 					break;
 				case CAVE_SIMPLEDOOR:
 					int pas = activate ? -6 : 6;	// Closing or opening ?
+					if (reverse == Reverse.VERTICAL) {
+						pas = -pas;
+					}
 					switch (count) {
 					case 20:
 						acting=false;

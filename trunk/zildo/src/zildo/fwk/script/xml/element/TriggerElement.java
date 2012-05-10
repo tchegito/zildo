@@ -40,10 +40,13 @@ public class TriggerElement extends AnyElement {
 	String name; // dialog, map, item and questDone
 	int numSentence;
 	Point location;
+	Point tileLocation;
 	int radius; // For location
 	boolean not;	// Use for inversion of inventory posess
 	Zone region; // Unimplemented yet
 
+	boolean pressed = false;	// For buttons being pressed during the game
+	
 	List<String> deadPersos;	// Perso expected to be dead
 	
 	ZSSwitch questSwitch;
@@ -69,6 +72,10 @@ public class TriggerElement extends AnyElement {
 			String strPos = readAttribute("pos");
 			if (strPos != null) {
 				location = Point.fromString(strPos);
+			}
+			strPos = readAttribute("tilePos");
+			if (strPos != null) {
+				tileLocation = Point.fromString(strPos);
 			}
 			break;
 		case QUESTDONE:
@@ -116,8 +123,19 @@ public class TriggerElement extends AnyElement {
 			break;
 		case LOCATION:
 			if (p_another.name.equals(name)) {
-				if (p_another.location == null && location == null) {
+				if (p_another.location == null && location == null && tileLocation == null) {
 					return true;
+				} else if (tileLocation != null && p_another.location != null) {
+					int gridX = p_another.location.x / 16;
+					int gridY = p_another.location.y / 16;
+					boolean onIt = tileLocation.x == gridX && tileLocation.y == gridY;
+					if (onIt && !pressed) {
+						pressed = true;
+						return true;
+					} else if (!onIt) {
+						pressed = false;
+					}
+					return false;
 				} else if (p_another.location != null && location != null) {
 					float dist = p_another.location.distance(location);
 					// System.out.println(dist + "   <   "+(8f + 16*radius));
@@ -138,7 +156,7 @@ public class TriggerElement extends AnyElement {
 	}
 
 	public boolean isLocationSpecific() {
-		return kind == QuestEvent.LOCATION && name != null && location != null;
+		return kind == QuestEvent.LOCATION && name != null && (location != null || tileLocation != null);
 	}
 
 	/**

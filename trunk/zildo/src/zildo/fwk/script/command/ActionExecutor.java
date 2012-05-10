@@ -33,6 +33,7 @@ import zildo.fwk.ui.UIText;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.quest.actions.ScriptAction;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
@@ -191,10 +192,11 @@ public class ActionExecutor {
                        	newOne.initPersoFX();
                         EngineZildo.spriteManagement.spawnPerso(newOne);
                 	} else {	// Spawn a new element
-                		if (EngineZildo.spriteManagement.getNamedElement(p_action.what) != null) {
+                		if (EngineZildo.spriteManagement.getNamedElement(p_action.what) == null) {
                 			// Spawn only if doesn't exist yet
 	                		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.text);
-	                		Element elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0);
+	                		Reverse rev = Reverse.fromInt(p_action.reverse);
+	                		Element elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0, rev);
 	                		elem.setName(p_action.what);
                 		}
                 	}
@@ -325,7 +327,6 @@ public class ActionExecutor {
             case fadeIn:
             case fadeOut:
            		achieved=ClientEngineZildo.guiDisplay.isFadeOver();
-           		System.out.println("waiting for fade");
             	break;
             case activate:
         		Element toActivate = EngineZildo.spriteManagement.getNamedElement(p_action.what);

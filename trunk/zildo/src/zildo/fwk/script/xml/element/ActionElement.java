@@ -54,6 +54,7 @@ public class ActionElement extends AnyElement {
 	public Point location;
 	public String text;
 	public int val;
+	public int reverse;
 	public float speed;
 	public boolean activate;
 
@@ -83,6 +84,7 @@ public class ActionElement extends AnyElement {
 		String strAngle = p_elem.getAttribute("angle");
 		switch (kind) {
 		case spawn:
+			reverse = readInt("reverse");
 		case animation:
 		case impact:
 			location = Point.fromString(strPos);
