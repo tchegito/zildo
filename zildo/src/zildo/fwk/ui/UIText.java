@@ -23,11 +23,17 @@ package zildo.fwk.ui;
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import zildo.client.PlatformDependentPlugin;
 
 public class UIText {
 
 	static ResourceBundle menuBundle;
 	static ResourceBundle gameBundle;
+	
+	final static Pattern pdRegex = Pattern.compile("%([a-z|A-Z| |\\.]*)%");
 	
 	static {
 		menuBundle=Utf8ResourceBundle.getBundle("zildo.resource.bundle.menu");
@@ -38,7 +44,22 @@ public class UIText {
 		try {
 			String message = p_bundle.getString(p_key);
 			message = message.replaceAll("'", "''");
-			return MessageFormat.format(message, p_params);
+			String returned = MessageFormat.format(message, p_params);
+			if (returned.contains("%")) {
+				// Platform specific messages
+				Matcher matcher = pdRegex.matcher(returned);
+				StringBuffer sb = new StringBuffer();
+				while (matcher.find()) {
+					String pdKey = matcher.group(1);
+					String expr = PlatformDependentPlugin.currentPlugin.toString() + "." + pdKey.replaceAll("%", "");
+					String value = gameBundle.getString(expr);
+					
+					matcher.appendReplacement(sb,  value);
+				}
+				matcher.appendTail(sb);
+				returned = sb.toString();
+			}
+			return returned;
 		} catch (MissingResourceException e) {
 			return p_key;	// This is mandatory for item menus with parameters (ex: player name)
 		}
