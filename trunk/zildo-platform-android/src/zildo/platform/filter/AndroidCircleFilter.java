@@ -26,6 +26,7 @@ import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.CircleFilter;
+import zildo.platform.opengl.AndroidOpenGLGestion;
 
 /**
  * Draws a circle around a specific center (Zildo !).<br/>
@@ -63,6 +64,7 @@ public class AndroidCircleFilter extends CircleFilter {
 	
 	public AndroidCircleFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
+    	gl11 = (GL11) AndroidOpenGLGestion.gl10;
 	}
 	
 	@Override
@@ -73,7 +75,8 @@ public class AndroidCircleFilter extends CircleFilter {
 		gl11.glLoadIdentity();
 		gl11.glMatrixMode(GL11.GL_PROJECTION);
 		gl11.glPushMatrix();
-		gl11.glTranslatef(0, -sizeY, 1);
+		gl11.glTranslatef(0,sizeY,0);
+		gl11.glScalef(1, -1, 1);
 		
 		// FIXME: Was previously color3f
 		gl11.glColor4f(1f, 1f, 1f, 1f);
@@ -82,17 +85,17 @@ public class AndroidCircleFilter extends CircleFilter {
 
 		int radius = (int) (coeffLevel * (255 - getFadeLevel())); // + 20;
 		int radiusSquare = (int) Math.pow(radius, 2);
-		int col = 0;
+		int col = 3;
 		
 		int sizeA = center.y - radius;
 		int sizeB = Zildo.viewPortY - (center.y + radius);
 
 		// 1) Draw the two areas outside the circle
 		if (sizeA > 0) {
-			ClientEngineZildo.ortho.boxOpti(0, 0, Zildo.viewPortX, sizeA, 2, null);
+			ClientEngineZildo.ortho.boxOpti(0, 0, Zildo.viewPortX, sizeA, 3, null);
 		}
 		if (sizeB > 0) {
-			ClientEngineZildo.ortho.boxOpti(0, center.y + radius, Zildo.viewPortX, sizeB, 2, null);
+			ClientEngineZildo.ortho.boxOpti(0, center.y + radius, Zildo.viewPortX, sizeB, 3, null);
 		}
 		
 		// 2) Draw the circle area
