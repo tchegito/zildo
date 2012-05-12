@@ -102,11 +102,11 @@ public class AndroidBlendFilter extends BlendFilter {
 			ii += currentSquareSize;
 			sizeIi += pasIi;
 			if (i % sizeBuffer == (sizeBuffer-1)) {
-				ortho.drawTexturedBufferized(currentSquareSize);
+				ortho.drawGlPoints(currentSquareSize);
 			}
 		}
 		if (nSquareY % sizeBuffer != (sizeBuffer-1)) {
-			ortho.drawTexturedBufferized(currentSquareSize);
+			ortho.drawGlPoints(currentSquareSize);
 		}
 		gl11.glPopMatrix();
 		

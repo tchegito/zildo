@@ -27,6 +27,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.platform.opengl.AndroidOpenGLGestion;
+import zildo.platform.opengl.AndroidOrtho;
 
 /**
  * Draws a circle around a specific center (Zildo !).<br/>
@@ -61,10 +62,12 @@ import zildo.platform.opengl.AndroidOpenGLGestion;
 public class AndroidCircleFilter extends CircleFilter {
 
 	GL11 gl11;
+	AndroidOrtho ortho;
 	
 	public AndroidCircleFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
     	gl11 = (GL11) AndroidOpenGLGestion.gl10;
+    	ortho = (AndroidOrtho) ClientEngineZildo.ortho;
 	}
 	
 	@Override
@@ -81,7 +84,7 @@ public class AndroidCircleFilter extends CircleFilter {
 		// FIXME: Was previously color3f
 		gl11.glColor4f(1f, 1f, 1f, 1f);
 		
-		gl11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
+		gl11.glDisable(GL11.GL_TEXTURE_2D);
 
 		int radius = (int) (coeffLevel * (255 - getFadeLevel())); // + 20;
 		int radiusSquare = (int) Math.pow(radius, 2);
@@ -92,16 +95,18 @@ public class AndroidCircleFilter extends CircleFilter {
 
 		// 1) Draw the two areas outside the circle
 		if (sizeA > 0) {
-			ClientEngineZildo.ortho.boxOpti(0, 0, Zildo.viewPortX, sizeA, 3, null);
+			ClientEngineZildo.ortho.boxOpti(0, 0, Zildo.viewPortX, sizeA, col, null);
 		}
 		if (sizeB > 0) {
-			ClientEngineZildo.ortho.boxOpti(0, center.y + radius, Zildo.viewPortX, sizeB, 3, null);
+			ClientEngineZildo.ortho.boxOpti(0, center.y + radius, Zildo.viewPortX, sizeB, col, null);
 		}
 		
 		// 2) Draw the circle area
 		int startI = Math.max(0, sizeA);
 		int endI = Math.min(Zildo.viewPortY, center.y + radius);
 		
+		gl11.glColor4f(0, 0, 0, 1f);
+		ortho.initOptiDraw();
 		for (int i=startI;i<endI;i++) {
 			int start = (int) Math.pow(i-center.y, 2);
 
@@ -110,9 +115,11 @@ public class AndroidCircleFilter extends CircleFilter {
 			double squareRootDelta = Math.sqrt(delta);
 			int x1 = (int) (center.x - squareRootDelta / 2);
 			int x2 = (int) (center.x + squareRootDelta / 2);
-			ClientEngineZildo.ortho.boxOpti(0, i, x1, 1, col, null);
-			ClientEngineZildo.ortho.boxOpti(x2, i, Zildo.viewPortX - x2, 1, col, null);
+			
+			ortho.addBoxOpti(0, i, x1, 1);
+			ortho.addBoxOpti(x2, i, Zildo.viewPortX - x2, 1);
 		}
+		ortho.drawBufferized(GL11.GL_TRIANGLES, false);
 		gl11.glPopMatrix();
 		
 		gl11.glMatrixMode(GL11.GL_MODELVIEW);
