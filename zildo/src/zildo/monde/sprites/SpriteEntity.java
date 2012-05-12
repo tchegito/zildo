@@ -52,7 +52,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	//public static final int Reverse.HORIZONTAL = 128;
 	//public static final int Reverse.VERTICAL = 64;
 	public static final int FOREGROUND = 32; // Only for MAP format
-	public static final int REPEATED = 16; // Fields 'repeatX' and 'repeatY' are different than 1
+	public static final int REPEATED_OR_ROTATED = 16; // Fields 'repeatX' and 'repeatY' are different than 1
 
 	// Class variable
 	public float x, y, z; // Real position located by center (z is never
@@ -88,6 +88,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	}
 
 	public Reverse reverse = Reverse.NOTHING; // Combination of Reverse.HORIZONTAL/VERTICAL (or 0)
+	public Rotation rotation = Rotation.NOTHING;
 	public boolean clientSpecific; // TRUE if this entity should not appear on
 									// all client's screen
 
@@ -297,9 +298,11 @@ public class SpriteEntity extends Identified implements Cloneable,
 	@Override
 	public void serialize(EasyBuffering p_buffer) {
 		boolean isZildo = this.isZildo();
+		boolean[] boolRot = rotation.getBooleans();
 		p_buffer.putBooleans(isZildo, isVisible(), isForeground(), dying,
 				reverse == Reverse.HORIZONTAL,
-				reverse == Reverse.VERTICAL);
+				reverse == Reverse.VERTICAL,
+				boolRot[0], boolRot[1]);
 		p_buffer.put(this.getId());
 		if (isZildo) {
 			// Zildo needs extra info
@@ -328,7 +331,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	 * @return SpriteEntity
 	 */
 	public static SpriteEntity deserialize(EasyBuffering p_buffer) {
-		boolean[] bools = p_buffer.readBooleans(6);
+		boolean[] bools = p_buffer.readBooleans(8);
 		boolean isZildo = bools[0];
 		int id = p_buffer.readInt();
 		SpriteEntity entity;
@@ -358,6 +361,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 		int idSprModel = p_buffer.readInt();
 		entity.setSprModel(Identified.fromId(SpriteModel.class, idSprModel));
 		entity.reverse = Reverse.fromBooleans(bools[4], bools[5]);
+		entity.rotation = Rotation.fromBooleans(bools[6], bools[7]);
 		return entity;
 	}
 

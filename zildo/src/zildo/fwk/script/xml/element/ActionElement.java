@@ -55,6 +55,7 @@ public class ActionElement extends AnyElement {
 	public String text;
 	public int val;
 	public int reverse;
+	public int rotation;
 	public float speed;
 	public boolean activate;
 
@@ -85,6 +86,7 @@ public class ActionElement extends AnyElement {
 		switch (kind) {
 		case spawn:
 			reverse = readInt("reverse");
+			rotation = readInt("rotation");
 		case animation:
 		case impact:
 			location = Point.fromString(strPos);

@@ -34,6 +34,7 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
@@ -196,7 +197,8 @@ public class ActionExecutor {
                 			// Spawn only if doesn't exist yet
 	                		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.text);
 	                		Reverse rev = Reverse.fromInt(p_action.reverse);
-	                		Element elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0, rev);
+	                		Rotation rot = Rotation.fromInt(p_action.rotation);
+	                		Element elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0, rev, rot);
 	                		elem.setName(p_action.what);
                 		}
                 	}

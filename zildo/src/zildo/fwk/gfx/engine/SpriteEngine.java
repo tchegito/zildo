@@ -283,7 +283,8 @@ public abstract class SpriteEngine {
 				  									revX * spr.getTaille_x(),
 				  									revY * spr.getTaille_y(), 
 				  									entity.repeatX,
-				  									entity.repeatY);
+				  									entity.repeatY, 
+													entity.rotation);
 		
 	}
 	

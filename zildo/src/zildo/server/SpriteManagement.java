@@ -34,6 +34,7 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.monde.collision.PersoCollision;
 import zildo.monde.collision.SpriteCollision;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
@@ -113,7 +114,7 @@ public class SpriteManagement extends SpriteStore {
 	// Spawn an element with minimal requirements
 	// -build an element with given parameters
 	// -add it to the sprite engine
-	public Element spawnElement(int nBank, int nSpr, int x, int y, int z, Reverse reverse) {
+	public Element spawnElement(int nBank, int nSpr, int x, int y, int z, Reverse reverse, Rotation rotation) {
 
 		// SpriteEntity informations
 		Element element;
@@ -130,6 +131,7 @@ public class SpriteManagement extends SpriteStore {
 		element.setNSpr(nSpr);
 		element.setNBank(nBank);
 		element.reverse = reverse;
+		element.rotation = rotation;
 		
 		spawnSprite(element);
 
@@ -143,10 +145,11 @@ public class SpriteManagement extends SpriteStore {
 	 * @param y
 	 * @param z
 	 * @param reverse TODO
+	 * @param rotation TODO
 	 * @return Element
 	 */
-	public Element spawnElement(SpriteDescription desc, int x, int y, int z, Reverse reverse) {
-		return spawnElement(desc.getBank(), desc.getNSpr(), x, y, z, reverse);
+	public Element spawnElement(SpriteDescription desc, int x, int y, int z, Reverse reverse, Rotation rotation) {
+		return spawnElement(desc.getBank(), desc.getNSpr(), x, y, z, reverse, rotation);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -372,7 +375,7 @@ public class SpriteManagement extends SpriteStore {
 
 		if (nSpr == 69 || nSpr == 70 || nSpr == 28) {
 			// Particular sprite (Block that Zildo can move, chest...)
-			return spawnElement(nBank, nSpr, x, y, 0, Reverse.NOTHING); // + spr.getTaille_y() / 2 - 3,
+			return spawnElement(nBank, nSpr, x, y, 0, Reverse.NOTHING, Rotation.NOTHING); // + spr.getTaille_y() / 2 - 3,
 					//0);
 		}
 
