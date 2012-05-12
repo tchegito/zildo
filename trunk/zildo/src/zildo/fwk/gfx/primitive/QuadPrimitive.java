@@ -24,6 +24,7 @@ import zildo.Zildo;
 import zildo.fwk.opengl.compatibility.VBO;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
 
 /**
  * @author Tchegito
@@ -123,7 +124,7 @@ public class QuadPrimitive {
 		int revY = reverse.isVertical() ? -1 : 1;
 		
         // Move tile
-        addSprite(x, y, u, v, sizeX * revX, sizeY * revY);
+        addSprite(x, y, u, v, sizeX * revX, sizeY * revY, Rotation.NOTHING);
 
     }
     
@@ -157,13 +158,15 @@ public class QuadPrimitive {
     // Return the quad position in Vertex Buffer
     protected int addQuadSized(int x, int y, float xTex, float yTex, int sizeX, int sizeY) {
         //putQuadSized(x, y, sizeX, sizeY, xTex, yTex);
-        addSprite(x, y, xTex, yTex, sizeX, sizeY);
+        addSprite(x, y, xTex, yTex, sizeX, sizeY, Rotation.NOTHING);
         
         return nPoints - 4;
     }
 
     short[][] vertices = new short[4][2];
-    protected void addSprite(float x, float y, float xTex, float yTex, float sizeX, float sizeY ) {
+    byte[][] orders = {{0, 1, 2, 3}, {2, 0, 3, 1}, {1, 3, 0, 2}, {3, 2, 1, 0}};
+    
+    protected void addSprite(float x, float y, float xTex, float yTex, float sizeX, float sizeY, Rotation rotation ) {
     	
         // 4 bufs.vertices
         if (bufs.vertices.position() == bufs.vertices.limit()) {
@@ -174,9 +177,16 @@ public class QuadPrimitive {
         float pixSizeX=Math.abs(sizeX);
         float pixSizeY=Math.abs(sizeY);
         
+        if (rotation != Rotation.NOTHING) {
+        	if (rotation != Rotation.UPSIDEDOWN) {
+        		float siz = pixSizeX;
+        		pixSizeX = pixSizeY;
+        		pixSizeY = siz;
+        	}
+        }
         for (int i = 0; i < 4; i++) {
-        	vertices[i][0] = (short) (x + pixSizeX * (i % 2));	// x
-        	vertices[i][1] = (short) (y + pixSizeY * (i / 2));	// y
+        	vertices[orders[rotation.value][i]][0] = (short) (x + pixSizeX * (i % 2));	// x
+        	vertices[orders[rotation.value][i]][1] = (short) (y + pixSizeY * (i / 2));	// y
         }
         
         bufs.vertices.put(vertices[0][0]).put(vertices[0][1]);

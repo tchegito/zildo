@@ -23,6 +23,7 @@ package zildo.fwk.gfx.primitive;
 import zildo.Zildo;
 import zildo.fwk.collection.CycleIntBuffer;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.util.Point;
 
 /**
@@ -100,7 +101,7 @@ public class TilePrimitive extends QuadPrimitive {
      */
     private void addTile(int x, int y, float xTex, float yTex, int sizeX, int sizeY) {
 
-    	addSprite(x, y, xTex, yTex, sizeX, sizeY);
+    	addSprite(x, y, xTex, yTex, sizeX, sizeY, Rotation.NOTHING);
     	
         // Get the highest indices
         if (nIndices-6 < startCamera || startCamera == -1) {

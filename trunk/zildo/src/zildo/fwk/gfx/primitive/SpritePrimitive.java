@@ -20,6 +20,8 @@
 
 package zildo.fwk.gfx.primitive;
 
+import zildo.monde.sprites.Rotation;
+
 
 /**
  * Provides a set of sprite from the same 256x256 texture..
@@ -89,7 +91,7 @@ public class SpritePrimitive extends QuadPrimitive {
 	
 	}
 	
-	public void synchronizeSprite(float x, float y, float xTex, float yTex, int sizeX, int sizeY, int repeatX, int repeatY)
+	public void synchronizeSprite(float x, float y, float xTex, float yTex, int sizeX, int sizeY, int repeatX, int repeatY, Rotation rotation)
 	{
 		int yy = (int) y;
 		for (int i=0;i<repeatY;i++) {
@@ -97,7 +99,7 @@ public class SpritePrimitive extends QuadPrimitive {
 			for (int j=0;j<repeatX;j++) {
 				nPoints-=4;
 				nIndices-=6;
-				super.addSprite(xx, yy, xTex, yTex, sizeX, sizeY);
+				super.addSprite(xx, yy, xTex, yTex, sizeX, sizeY, rotation);
 				numQuadSynchronizing++;
 				xx+=sizeX;
 			}

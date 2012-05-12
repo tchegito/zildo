@@ -40,6 +40,7 @@ import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
@@ -575,10 +576,13 @@ public class Area implements EasySerializable {
 				p_file.put((int) entity.x);
 				p_file.put((int) entity.y);
 				int foreground = entity.isForeground() ? SpriteEntity.FOREGROUND : 0;
-				int repeated = (entity.repeatX > 1 || entity.repeatY > 1) ? SpriteEntity.REPEATED : 0;
+				int repeated = (entity.repeatX > 1 || entity.repeatY > 1 || entity.rotation != Rotation.NOTHING) ? SpriteEntity.REPEATED_OR_ROTATED : 0;
 				p_file.put((byte) (entity.getNBank() | entity.reverse.getValue() | foreground | repeated));
 				p_file.put((byte) entity.getNSpr());
 				if (repeated > 0) {
+					if (entity.rotation != Rotation.NOTHING) {
+						p_file.put((byte) (entity.rotation.value | 128));
+					}
 					p_file.put(entity.repeatX);
 					p_file.put(entity.repeatY);
 				}
@@ -721,8 +725,13 @@ public class Area implements EasySerializable {
 						if ((multi & SpriteEntity.FOREGROUND) != 0) {
 							entity.setForeground(true);
 						}
-						if ((multi & SpriteEntity.REPEATED) != 0) {
-							entity.repeatX = p_buffer.readByte();
+						if ((multi & SpriteEntity.REPEATED_OR_ROTATED) != 0) {
+							int temp = p_buffer.readByte();
+							if ((temp & 128) != 0) {
+								entity.rotation = Rotation.fromInt(temp & 127);
+								temp = p_buffer.readByte();
+							}
+							entity.repeatX = (byte) temp;
 							entity.repeatY = p_buffer.readByte();
 						}
 						break;

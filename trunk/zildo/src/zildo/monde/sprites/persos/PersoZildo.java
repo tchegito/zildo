@@ -1042,7 +1042,7 @@ public class PersoZildo extends Perso {
 			if (elem == null) {
 				elem = EngineZildo.spriteManagement.spawnElement(p_kind.representation,
 						(int) x,
-						(int) y, 0, Reverse.NOTHING);
+						(int) y, 0, Reverse.NOTHING, null);
 			}
 			// Place item right above Zildo
 			elem.x = x + 5;
