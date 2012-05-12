@@ -217,22 +217,56 @@ public class AndroidOrtho extends Ortho {
 		texCoordBuffer.store(texCoords);
 	}
 	
+	public void addLineOpti(int x, int y, float x2, float y2) {
+		float[] vertices = {x,  y, x2, y2};
+
+		verticesBuffer.store(vertices);
+	}
+	
+	public void addBoxOpti(int x, int y, float p_w, float p_h) {
+		float[] vertices = {x,  y,
+			    x + p_w, y,
+			    x, y + p_h,
+				x + p_w, y,
+			    x + p_w, y + p_h,
+			    x, y + p_h};
+
+		verticesBuffer.store(vertices);
+	}
+
 	public void initOptiDraw() {
 		verticesBuffer.rewind();
 		texCoordBuffer.rewind();
 	}
 	
-	public void drawTexturedBufferized(int size) {
-		int count = verticesBuffer.getCount() / 2;
-		gl11.glEnable(GL11.GL_TEXTURE_2D);
-		gl11.glEnableClientState (GL10.GL_VERTEX_ARRAY);
-		gl11.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-		gl11.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texCoordBuffer.rewind());
-		gl11.glVertexPointer (2, GL10.GL_FLOAT, 0, verticesBuffer.rewind());
+	public void drawGlPoints(int size) {
 		gl11.glPointSize(size);
-		gl11.glDrawArrays (GL10.GL_POINTS, 0, count);
+		drawTexturedBufferized(GL11.GL_POINTS);
+	}
+	
+	public void drawTexturedBufferized(int glMode) {
+		drawBufferized(glMode, true);
+	}
+	
+	public void drawBufferized(int glMode, boolean textured) {
+		int count = verticesBuffer.getCount();
+		switch (glMode) {
+		case GL11.GL_LINES:
+		case GL11.GL_POINTS:
+			count>>= 1;
+		} 
+		gl11.glEnableClientState (GL10.GL_VERTEX_ARRAY);
+		if (textured) {
+			gl11.glEnable(GL11.GL_TEXTURE_2D);
+			gl11.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+			gl11.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texCoordBuffer.rewind());
+		}
+		gl11.glVertexPointer (2, GL10.GL_FLOAT, 0, verticesBuffer.rewind());
+		gl11.glDrawArrays (glMode, 0, count);
 		verticesBuffer.rewind();
-		texCoordBuffer.rewind();
+		if (textured) {
+			texCoordBuffer.rewind();
+		}
 	}
 	
 	/**
