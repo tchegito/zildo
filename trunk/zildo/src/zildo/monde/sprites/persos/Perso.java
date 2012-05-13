@@ -620,7 +620,7 @@ public abstract class Perso extends Element {
 		}
 
 		// Trigger "LOCATION" only in single player
-		if (!EngineZildo.game.multiPlayer) {
+		if (!EngineZildo.game.multiPlayer && isZildo()) {
 			String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
 			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x, y));
 			EngineZildo.scriptManagement.trigger(trig);
