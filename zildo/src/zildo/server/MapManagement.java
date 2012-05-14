@@ -41,6 +41,7 @@ import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
@@ -523,7 +524,11 @@ public class MapManagement {
 				zildo.setAngle(a);
 				zildo.setX(movedX);
 				zildo.setY(movedY);
-				zildo.setEn_bras(null); // Loose his object
+				if (zildo.getEn_bras() != null) {
+					zildo.getEn_bras().dying = true;
+					zildo.setMouvement(MouvementZildo.VIDE);
+					zildo.setEn_bras(null); // Loose his object
+				}
 				zildo.walkTile(false);
 			}
 			zildo.finaliseComportement(EngineZildo.compteur_animation);
@@ -673,7 +678,7 @@ public class MapManagement {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
 			//points.add(new Point(16*26, 45*16));
-			points.add(new Point(231+450, 360+130-50-150 +250));	// 231+450 is good for preintro
+			points.add(new Point(231+450-200, 360+130-50-150 +250));	// 231+450 is good for preintro
 		} else {
 			points = currentMap.getRespawnPoints();
 		}
