@@ -206,6 +206,9 @@ public class Element extends SpriteEntity {
 			// PersoDescription desc=((Perso)this).getQuel_spr();
 			// return (desc.equals(PersoDescription.POULE));
 		}
+		if (desc.isBlocking()) {
+			return true;
+		}
 		return false;
 	}
 
