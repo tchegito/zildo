@@ -111,7 +111,7 @@ public class DialogManagement {
         
         	    // Dialog switch : adjust sentence according to quest elements
         	    if (persoToTalk.getDialogSwitch() != null) {
-        		ZSSwitch swi = new ZSSwitch(persoToTalk.getDialogSwitch());
+        		ZSSwitch swi = ZSSwitch.parseForDialog(persoToTalk.getDialogSwitch());
         		int posSentence = swi.evaluate();
         		if (posSentence > compteDial) {
         		    compteDial = posSentence;

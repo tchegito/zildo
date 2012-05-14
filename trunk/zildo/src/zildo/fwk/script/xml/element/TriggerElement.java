@@ -81,7 +81,7 @@ public class TriggerElement extends AnyElement {
 			break;
 		case QUESTDONE:
 			name = readAttribute("name");
-			questSwitch = new ZSSwitch(name + ":1,0");
+			questSwitch = ZSSwitch.parseForScript(name);
 			break;
 		case INVENTORY:
 			// TODO: replace this by a switch => most complete

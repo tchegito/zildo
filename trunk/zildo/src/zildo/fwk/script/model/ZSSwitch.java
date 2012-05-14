@@ -27,10 +27,14 @@ import java.util.List;
  * Zildo Script Switch.
  * <p/>
  * 
- * Simple "switch/case/default" clause. Used especially with dialogs.
+ * Simple "switch/case/default" clause. Used especially with dialogs.<br/>
+ * <b>&</b> means AND<br/><b>,</b> means OR.
+ * <b>:</b> introduce a return value. This value is optional for scripts, because we only expect
+ * boolean result, represented by 0 or 1.
  * <p/>
  * 
- * Example : "new ZSSwitch("flut&!ferme:8,enlevement:3,0")
+ * Example : <ul><li><code>new ZSSwitch("flut&!ferme:8,enlevement:3,0")</code></li>
+ *           <li><code>new ZSSwitch("quete1&quete2,quete3")</code></li></ul>
  * 
  * @author Tchegito
  * 
@@ -55,7 +59,7 @@ public class ZSSwitch {
 		conditions.addAll(p_conditions);
 	}
 
-	public ZSSwitch(String p_parseableString) {
+	private ZSSwitch(String p_parseableString) {
 		String[] strConds = p_parseableString.replaceAll("-", "&").split(",");
 		int def = 0;
 		boolean defaultSet = false;
@@ -72,6 +76,20 @@ public class ZSSwitch {
 			throw new RuntimeException("Default value must be set");
 		}
 		defaultValue = def;
+	}
+
+	public static ZSSwitch parseForDialog(String p_parseableString) {
+		return new ZSSwitch(p_parseableString);
+	}
+	
+	/**
+	 * Add ":1" to each condition, and "0" at the end.
+	 * @param p_parseableString
+	 * @return ZSSwitch
+	 */
+	public static ZSSwitch parseForScript(String p_parseableString) {
+		String replacement = p_parseableString.replaceAll(",", ":1,");
+		return new ZSSwitch(replacement + ":1,0");
 	}
 
 	/**

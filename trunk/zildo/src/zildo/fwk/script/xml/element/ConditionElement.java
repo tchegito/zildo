@@ -19,7 +19,7 @@ public class ConditionElement extends AnyElement {
 		xmlElement = p_elem;
 		
 		mapName = readAttribute("name");
-		expression = new ZSSwitch(readAttribute("exp")+":1,0");	// 1 will be the right value
+		expression =ZSSwitch.parseForScript(readAttribute("exp"));	// 1 will be the right value
 		actions = (List<ActionElement>) ScriptReader.parseNodes(p_elem);
 	}
 

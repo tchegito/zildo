@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.script.xml.element.ActionElement;
+import zildo.fwk.script.xml.element.ActionsElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
@@ -55,6 +56,9 @@ public class ScriptProcess {
 				duplicateZildo=(PersoZildo) EngineZildo.persoManagement.getZildo().clone();
 			}
 		}
+		
+		// Initialize all actions state
+		p_scene.reset();
 	}
 	
 	/**
