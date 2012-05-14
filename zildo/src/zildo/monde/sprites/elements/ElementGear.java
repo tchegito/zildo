@@ -38,6 +38,7 @@ public class ElementGear extends Element {
 	boolean acting = false;	// Is this gear moving ?
 	int count = 0;
 	boolean activate;	// is this gear asked to turn on/off ?
+	Boolean state=null;	// TRUE=open / FALSE=close
 	
 	public ElementGear(int p_x, int p_y) {
 		super();
@@ -84,9 +85,13 @@ public class ElementGear extends Element {
 	}
 
 	public void activate(boolean value) {
-		count=0;
-		acting=true;
-		activate=value;
+		if (state == null || value != state) {
+			count=0;
+			acting=true;
+			activate=value;
+			
+			state = value;
+		}
 	}
 	
 	@Override
@@ -111,12 +116,25 @@ public class ElementGear extends Element {
 					if (reverse == Reverse.VERTICAL) {
 						pas = -pas;
 					}
+					int pasX = 0;
+					int pasY = pas;
+					switch (rotation) {
+					case CLOCKWISE:
+						pasX = -pasY;
+						pasY = 0;
+						break;
+					case COUNTERCLOCKWISE:
+						pasX = pasY;
+						pasY = 0;
+						break;
+					}
 					switch (count) {
 					case 20:
 						acting=false;
 					case 10:
 						EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPousse, this);
-						y+=pas;
+						x+=pasX;
+						y+=pasY;
 					default:
 						break;
 					}
@@ -137,5 +155,14 @@ public class ElementGear extends Element {
 	
 	public boolean isActing() {
 		return acting;
+	}
+	
+	@Override
+	public boolean isSolid() {
+		if (Boolean.TRUE == state) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

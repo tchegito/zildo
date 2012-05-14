@@ -179,4 +179,7 @@ public class ActionElement extends AnyElement {
 		return sb.toString();
 	}
 
+	public void reset() {
+		done = false;
+	}
 }

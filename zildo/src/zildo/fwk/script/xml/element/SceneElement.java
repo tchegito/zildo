@@ -46,4 +46,10 @@ public class SceneElement extends AnyElement {
     	scene.actions=p_actions;
     	return scene;
     }
+    
+    public void reset() {
+		for (ActionElement action : actions) {
+			action.reset();
+		}    	
+    }
 }
