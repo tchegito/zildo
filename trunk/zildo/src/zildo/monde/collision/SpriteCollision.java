@@ -24,6 +24,7 @@ import java.util.List;
 
 import zildo.fwk.collection.CycleIntBuffer;
 import zildo.monde.map.Area;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.elements.Element;
@@ -78,7 +79,8 @@ public class SpriteCollision {
 	public void initFrame(List<SpriteEntity> entities) {
 		int nbRecensed = 0;
 		for (SpriteEntity entity : entities) {
-			if ((entity.getEntityType().isElement() || entity.getEntityType().isEntity()) 
+			boolean isElement = entity.getEntityType().isElement();
+			if ((isElement || entity.getEntityType().isEntity()) 
 					&& !entity.dying) {
 				boolean isBlockable = entity.getDesc().isBlocking();
 				boolean isGoodies = entity.isGoodies();
@@ -152,6 +154,10 @@ public class SpriteCollision {
 						if (elem.getLinkedPerso() == entityRef) {
 							continue;
 						}
+						if (!elem.isGoodies() && !elem.isSolid()) {
+							found = false;
+							continue;
+						}
 					}
 					if (entity.dying) {	// Bugfix: Zildo could take goodies several items !
 						continue;
@@ -210,6 +216,15 @@ public class SpriteCollision {
 		SpriteModel sprModel = entity.getSprModel();
 		int sx = sprModel.getTaille_x();
 		int sy = sprModel.getTaille_y();
+		// Is the sprite repeated ?
+		sx*=entity.repeatX;
+		sy*=entity.repeatY;
+		// Is the sprite rotated ?
+		if (entity.rotation == Rotation.CLOCKWISE || entity.rotation == Rotation.COUNTERCLOCKWISE) {
+			int tempSize = sx;
+			sx = sy;
+			sy = tempSize;
+		}
 		for (int a = 0;a < sy;a++) {
 			for (int b = 0;b < sx;b++) {
 				if (!isOutOfBounds(x + b, y + a)) {
