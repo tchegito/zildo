@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+import zildo.client.sound.BankSound;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.items.ItemKind;
 import zildo.monde.quest.QuestEvent;
@@ -130,6 +131,7 @@ public class TriggerElement extends AnyElement {
 					int gridY = p_another.location.y / 16;
 					boolean onIt = tileLocation.x == gridX && tileLocation.y == gridY;
 					if (onIt && !pressed) {
+						EngineZildo.soundManagement.broadcastSound(BankSound.Switch, location);
 						pressed = true;
 						return true;
 					} else if (!onIt) {

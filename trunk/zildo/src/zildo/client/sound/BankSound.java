@@ -101,7 +101,8 @@ public enum BankSound implements AudioBank {
 	ChestAppears("appear"),
 	
 	FloorTile("floortile1"),
-	Sort("sort");
+	Sort("sort"),
+	Switch("switch");
 
 	String filename;
 	
