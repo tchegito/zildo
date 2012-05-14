@@ -12,6 +12,7 @@ public class PersoBat extends PersoShadowed {
 	
 	public PersoBat() {
 		pathFinder = new PathFinderFlying(this);
+		pv = 2;
 	}
 	
 	@Override
@@ -38,6 +39,7 @@ public class PersoBat extends PersoShadowed {
 				pathFinder.reachDestination((float) currentSpeed);
 			}
 		}
+		super.animate(compteur_animation);
 	}
 	
 	@Override
