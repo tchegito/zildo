@@ -586,6 +586,11 @@ public class Area implements EasySerializable {
 					p_file.put(entity.repeatX);
 					p_file.put(entity.repeatY);
 				}
+				String entityName = "";
+				if (entity.getEntityType().isElement()) {
+					entityName = ((Element)entity).getName();
+				}
+				p_file.put(entityName);
 			}
 		}
 
@@ -695,6 +700,7 @@ public class Area implements EasySerializable {
 				int nBank = multi & 15;
 				int reverse = multi & Reverse.ALL.getValue();
 				nSpr = p_buffer.readUnsignedByte();
+				SpriteEntity entity = null;
 				if (p_spawn) {
 					// If this sprite is on a chest tile, link them
 					int ax = x / 16;
@@ -720,7 +726,7 @@ public class Area implements EasySerializable {
 								break;
 							}
 						}
-						SpriteEntity entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse),
+						entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse),
 								false);
 						if ((multi & SpriteEntity.FOREGROUND) != 0) {
 							entity.setForeground(true);
@@ -735,6 +741,10 @@ public class Area implements EasySerializable {
 							entity.repeatY = p_buffer.readByte();
 						}
 						break;
+					}
+					String entName= p_buffer.readString();
+					if (entity != null && entity.getEntityType().isElement()) {
+						((Element)entity).setName(entName);
 					}
 				}
 			}
@@ -797,8 +807,10 @@ public class Area implements EasySerializable {
 					zo.setX2(map.roundAndRange(perso.getX() + 16 * 5, Area.ROUND_X));
 					zo.setY2(map.roundAndRange(perso.getY() + 16 * 5, Area.ROUND_Y));
 					perso.setZone_deplacement(zo);
-					perso.setMaxpv(3);
-					perso.setPv(3);
+					if (perso.getMaxpv() == 0) {
+						perso.setMaxpv(3);
+						perso.setPv(3);
+					}
 					perso.setTarget(null);
 					perso.setMouvement(MouvementZildo.VIDE);
 					perso.setDialogSwitch(dialogSwitch);
