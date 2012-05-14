@@ -3,7 +3,6 @@ package zildo.monde.sprites.persos;
 import java.util.LinkedList;
 import java.util.List;
 
-import zildo.client.sound.BankSound;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.util.Pointf;
@@ -51,12 +50,16 @@ public class PersoFireThing extends PersoNJ {
 		eye2.setDesc(PersoDescription.FIRETHING);
 		eye2.setAddSpr(1);
 		addPersoSprites(eye2);
+		
+		pv = 2;
 	}
 	
 	float keepy = -999;
 	@Override
 	public void animate(int compteur_animation) {
-		//super.animate(compteur_animation);
+		if (pv == 0) {	//TODO: should be integrated in common part
+			return;
+		}
 		
 		if (keepy == -999) {
 			keepy = y;
@@ -66,7 +69,6 @@ public class PersoFireThing extends PersoNJ {
 		float yy=keepy + (float) (speed * Math.sin(direction));
 		Pointf pos = new Pointf(xx, yy);
 		if (EngineZildo.mapManagement.collide((int) xx, (int) yy, this)) {
-			EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
 			direction+=Math.PI/2;
 			pos.x = x;
 			pos.y = keepy;
@@ -77,14 +79,14 @@ public class PersoFireThing extends PersoNJ {
 		}
 		positions.add(0, pos);
 		
-		if (positions.size() > 4) {
-			pos = positions.get(4);
+		if (positions.size() > 6) {
+			pos = positions.get(6);
 		}
 		middle.x = pos.x;
 		middle.y = pos.y;
 		
-		if (positions.size() > 8) {
-			pos = positions.get(8);
+		if (positions.size() > 10) {
+			pos = positions.get(10);
 		}
 		tail.x = pos.x;
 		tail.y = pos.y;
@@ -99,8 +101,8 @@ public class PersoFireThing extends PersoNJ {
 		orderElements(tail, middle, this, eye1, eye2);
 		
 		// Max 10 elements
-		if (positions.size() > 10) {
-			positions.remove(10);
+		if (positions.size() > 12) {
+			positions.remove(12);
 		}
 		direction+=0.01f;
 		
