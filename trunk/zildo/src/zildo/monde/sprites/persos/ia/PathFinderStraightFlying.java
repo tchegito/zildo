@@ -32,13 +32,17 @@ import zildo.server.EngineZildo;
 public class PathFinderStraightFlying extends PathFinder {
 
 	float alpha;
-
+	float swingAmplitude;
+	float swingBase;
+	
 	/**
 	 * @param p_mobile
 	 */
-	public PathFinderStraightFlying(Perso p_mobile) {
+	public PathFinderStraightFlying(Perso p_mobile, float p_swingBase, float p_swingAmplitude) {
 		super(p_mobile);
 		speed = 1.5f;
+		swingAmplitude = p_swingAmplitude;
+		swingBase = p_swingBase;
 	}
 
 	@Override
@@ -55,7 +59,7 @@ public class PathFinderStraightFlying extends PathFinder {
 					.getDim_x() + 100;
 			break;
 		}
-		mobile.z = 35f; // Up in the sky
+		mobile.z = swingBase; // Up in the sky
 	}
 
 	@Override
@@ -64,7 +68,7 @@ public class PathFinderStraightFlying extends PathFinder {
 
 		// Swing the bird !
 		alpha += 0.07f;
-		mobile.z += (float) (0.6f * Math.cos(alpha));
+		mobile.z = swingBase + (float) (swingAmplitude * Math.cos(alpha));
 		return p;
 	}
 

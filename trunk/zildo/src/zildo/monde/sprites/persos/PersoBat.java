@@ -1,17 +1,18 @@
 package zildo.monde.sprites.persos;
 
-import zildo.monde.sprites.persos.ia.PathFinderFlying;
+import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Point;
-
+import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
 public class PersoBat extends PersoShadowed {
 
 	double currentSpeed;
+	double speedAlpha;
 	
 	public PersoBat() {
-		pathFinder = new PathFinderFlying(this);
+		pathFinder = new PathFinderStraightFlying(this, 6, 2);
 		pv = 2;
 	}
 	
@@ -33,10 +34,17 @@ public class PersoBat extends PersoShadowed {
 				double yy = 2*zildo.y - y;
 				pathFinder.setTarget(new Point((int) xx, (int) yy));
 				
-				currentSpeed = 1.5f * Math.random();
+				currentSpeed = 1f + 0.5f * Math.random();
 				quel_deplacement = MouvementPerso.VOLESPECTRE;
+				
+				speedAlpha = 0;
 			} else {
-				pathFinder.reachDestination((float) currentSpeed);
+				speedAlpha+= 0.02f;
+				Pointf pos = pathFinder.reachDestination((float) (currentSpeed*Math.sin(speedAlpha)));
+				if (pos.x != Float.NaN && pos.y != Float.NaN) { 
+					x = pos.x;
+					y = pos.y;
+				}
 			}
 		}
 		super.animate(compteur_animation);

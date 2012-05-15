@@ -53,8 +53,8 @@ public class PersoGarde extends PersoNJ {
 	}
 
 	@Override
-	public void setQuel_deplacement(MouvementPerso p_script) {
-		super.setQuel_deplacement(p_script);
+	public void setQuel_deplacement(MouvementPerso p_script, boolean p_updatePathFinder) {
+		super.setQuel_deplacement(p_script, p_updatePathFinder);
 		switch (p_script) {
 		case ZONELANCE:
 			guardWeapon.setWeapon(GuardWeapon.SPEAR);

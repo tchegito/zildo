@@ -792,10 +792,10 @@ public class Area implements EasySerializable {
 							angle);
 
 					perso.setInfo(PersoInfo.values()[info]);
-					perso.setQuel_deplacement(MouvementPerso.fromInt(move));
+					perso.setQuel_deplacement(MouvementPerso.fromInt(move), false);
 					if (desc == PersoDescription.PANNEAU && perso.getQuel_deplacement() != MouvementPerso.IMMOBILE) {
 						// Fix a map bug : sign perso should be unmoveable
-						perso.setQuel_deplacement(MouvementPerso.IMMOBILE);
+						perso.setQuel_deplacement(MouvementPerso.IMMOBILE, true);
 					} else if (desc == PersoDescription.GARDE_CANARD && perso.getInfo() != PersoInfo.ENEMY) {
 						// Another map bug : guards are always hostile
 						perso.setInfo(PersoInfo.ENEMY);
