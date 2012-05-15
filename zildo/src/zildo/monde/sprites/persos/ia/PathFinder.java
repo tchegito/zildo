@@ -199,20 +199,22 @@ public class PathFinder {
 	final protected Pointf reachLine(float p_speed, boolean p_twoAngles) {
 		Pointf p =new Pointf(mobile.x, mobile.y);
 		if (target != null) {
-			float hypothenuse = target.distance(new Point(mobile.x, mobile.y));
-			double cosAngle = (target.x - mobile.x) / hypothenuse;
-			double sinAngle = (target.y - mobile.y) / hypothenuse;
-			p.x+=cosAngle * p_speed;
-			p.y+=sinAngle * p_speed;
-			if (hypothenuse < p_speed) {
-				target=null;
-			}
-			// Set the angle
-			if (p_twoAngles) {
-				if (cosAngle < 0) {
-					mobile.setAngle(Angle.OUEST);
-				} else {
-					mobile.setAngle(Angle.EST);
+			float hypothenuse = target.distance(new Point(Math.round(mobile.x), Math.round(mobile.y)));
+			if (hypothenuse == 0f || hypothenuse < p_speed) {
+				target = null;
+			} else {
+				double cosAngle = (target.x - mobile.x) / hypothenuse;
+				double sinAngle = (target.y - mobile.y) / hypothenuse;
+				p.x+=cosAngle * p_speed;
+				p.y+=sinAngle * p_speed;
+				
+				// Set the angle
+				if (p_twoAngles) {
+					if (cosAngle < 0) {
+						mobile.setAngle(Angle.OUEST);
+					} else {
+						mobile.setAngle(Angle.EST);
+					}
 				}
 			}
 		}

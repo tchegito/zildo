@@ -54,7 +54,7 @@ public class PersoVolant extends PersoNJ {
 
 		switch (p_desc) {
 		case OISEAU_VERT:
-			pathFinder = new PathFinderStraightFlying(this);
+			pathFinder = new PathFinderStraightFlying(this, 35f, 8.3f);
 			break;
 		default:
 			pathFinder = new PathFinderFlying(this);

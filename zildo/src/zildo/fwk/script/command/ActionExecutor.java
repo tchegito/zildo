@@ -125,7 +125,7 @@ public class ActionExecutor {
                     break;
                 case script:
                 	MouvementPerso script = MouvementPerso.fromInt(p_action.val);
-                    perso.setQuel_deplacement(script);
+                    perso.setQuel_deplacement(script, true);
                     String param = p_action.fx;
                     if (param != null) {
 	                    switch (script) {
@@ -336,7 +336,7 @@ public class ActionExecutor {
         		achieved=!gearToActivate.isActing();
             	break;
             case exec:
-            	achieved=true;
+            	//achieved=true;
             	break;
         }
         p_action.waiting = !achieved;

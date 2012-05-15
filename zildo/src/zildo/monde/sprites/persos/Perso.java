@@ -155,25 +155,27 @@ public abstract class Perso extends Element {
 		return quel_deplacement;
 	}
 
-	public void setQuel_deplacement(MouvementPerso p_script) {
+	public void setQuel_deplacement(MouvementPerso p_script, boolean p_updatePathFinder) {
 		quel_deplacement = p_script;
-		Point target = pathFinder.getTarget();
-		switch (p_script) {
-		case ZONE:
-		case IMMOBILE:
-			pathFinder = new PathFinder(this);
-			pathFinder.setTarget(null);
-			break;
-		case BIRD:
-			pathFinder = new PathFinderStraightFlying(this);
-			pathFinder.setTarget(target); // Keep the previous target
-			break;
-		case SQUIRREL:
-			pathFinder = new PathFinderSquirrel(this);
-			break;
-		case WAKEUP:
-			pos_seqsprite = 0;
-			break;
+		if (p_updatePathFinder) {
+			Point target = pathFinder.getTarget();
+			switch (p_script) {
+			case ZONE:
+			case IMMOBILE:
+				pathFinder = new PathFinder(this);
+				pathFinder.setTarget(null);
+				break;
+			case BIRD:
+				pathFinder = new PathFinderStraightFlying(this, 35f, 8.3f);
+				pathFinder.setTarget(target); // Keep the previous target
+				break;
+			case SQUIRREL:
+				pathFinder = new PathFinderSquirrel(this);
+				break;
+			case WAKEUP:
+				pos_seqsprite = 0;
+				break;
+			}
 		}
 	}
 
