@@ -324,7 +324,7 @@ public class Element extends SpriteEntity {
 				 * //spawnsprite_generic(SPR_ECLATEPIERRE,round(x),round(y),0);
 				 * }
 				 */
-			} else if (!isGoodies()) {
+			} else if (!isGoodies() && damageableElements.contains(nSpr)) {
 				// Collision avec les ennemis (uniquement dans le cas où l'objet
 				// est en mouvement)
 				Collision collision = getCollision();
