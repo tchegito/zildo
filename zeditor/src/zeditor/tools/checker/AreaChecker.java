@@ -52,7 +52,7 @@ public class AreaChecker {
 			String swi = p.getDialogSwitch();
 			if (swi != null && swi.length() > 0) {
 				try {
-					new ZSSwitch(swi);
+					ZSSwitch.parseForDialog(swi);
 				} catch (RuntimeException e) {
 					result = "Perso " + p.getName() + " : " + e.getMessage();
 					addList(new ErrorDescription(

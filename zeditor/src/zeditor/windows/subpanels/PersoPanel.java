@@ -262,7 +262,7 @@ public class PersoPanel extends JPanel {
 					} else if (comp == script) {
 						MouvementPerso s = ZUtils.getField(val,
 								MouvementPerso.class);
-						currentPerso.setQuel_deplacement(s);
+						currentPerso.setQuel_deplacement(s, false);
 					} else if (comp == info) {
 						PersoInfo i = ZUtils.getField(val, PersoInfo.class);
 						currentPerso.setInfo(i);

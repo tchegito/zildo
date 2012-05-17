@@ -36,6 +36,7 @@ import javax.swing.JScrollBar;
 
 import org.lwjgl.LWJGLException;
 
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
 import zildo.monde.map.Area;
@@ -60,8 +61,8 @@ public class ZildoScrollablePanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static final int viewSizeX=640;
-	public static final int viewSizeY=480+26; // + 32 + 16 - 4 - 2;
+	public static final int viewSizeX=Zildo.screenX;
+	public static final int viewSizeY=Zildo.screenY+26; // + 32 + 16 - 4 - 2;
 	
 	ZildoCanvas zildoCanvas;
 	MapScrollBar horizontal;

@@ -34,6 +34,7 @@ import zeditor.windows.subpanels.PrefetchPanel;
 import zeditor.windows.subpanels.ScriptPanel;
 import zeditor.windows.subpanels.SpritePanel;
 import zeditor.windows.subpanels.StatsPanel;
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 
 import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
@@ -127,6 +128,8 @@ public class MasterFrame extends javax.swing.JFrame {
 
 				}
 
+				Zildo.screenX = 640;
+				Zildo.screenY = 480;
 				MasterFrame inst = new MasterFrame();
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
