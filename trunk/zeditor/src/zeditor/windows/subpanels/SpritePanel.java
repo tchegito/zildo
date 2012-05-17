@@ -22,6 +22,8 @@ package zeditor.windows.subpanels;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -32,18 +34,25 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 
 import zeditor.core.selection.SpriteSelection;
 import zeditor.core.tiles.SpriteSet;
 import zeditor.tools.ui.SizedGridPanel;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.desc.ZSpriteLibrary;
+import zildo.monde.sprites.elements.Element;
 
 /**
  * @author Tchegito
@@ -62,11 +71,13 @@ public class SpritePanel extends JPanel {
 	JCheckBox reverseVertical;
 	JCheckBox foreground;
 	JComboBox spriteType;
+	JComboBox rotation;
 	JSpinner spinX;
 	JSpinner spinY;
 	JSpinner repeatX;
 	JSpinner repeatY;
 	JLabel entityType;
+	JTextField elementName;
 
 	boolean updatingUI;
 
@@ -99,7 +110,14 @@ public class SpritePanel extends JPanel {
 		});
 
 		entityType = new JLabel();
-		panel.addComp(new JLabel("Kind"), entityType);
+		JPanel panelKindName = new JPanel();
+		panelKindName.add(entityType);
+		elementName = new JTextField(12);
+		panelKindName.add(elementName);
+		Dimension d = elementName.getPreferredSize();
+		d.height = entityType.getPreferredSize().height;
+		panelKindName.setPreferredSize(d);
+		panel.addComp(new JLabel("Kind - name"), panelKindName);
 
 		spriteType = new JComboBox(spriteLib.toArray());
 		panel.addComp(new JLabel("Type"), spriteType);
@@ -113,6 +131,7 @@ public class SpritePanel extends JPanel {
 
 		panel.addComp(new JLabel("Add-y"), spinY);
 
+		// Reverse
 		reverseHorizontal = new JCheckBox(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent actionevent) {
@@ -122,8 +141,6 @@ public class SpritePanel extends JPanel {
 			}
 
 		});
-		panel.addComp(new JLabel("Reverse H"), reverseHorizontal);
-
 		reverseVertical = new JCheckBox(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent actionevent) {
@@ -133,13 +150,24 @@ public class SpritePanel extends JPanel {
 			}
 
 		});
-		panel.addComp(new JLabel("Reverse V"), reverseVertical);
+		JPanel panelReverse = new JPanel();
+		panelReverse.add(reverseHorizontal);
+		panelReverse.add(new JLabel("H"));
+		panelReverse.add(reverseVertical);
+		panelReverse.add(new JLabel("V"));
+		panel.addComp(new JLabel("Reverse"), panelReverse);
 
+		// Rotation
+		rotation = new JComboBox(Rotation.values());
+		panel.addComp(new JLabel("Rotation"), rotation);
+		
 		SpriteFieldsListener listener = new SpriteFieldsListener();
 		spriteType.addActionListener(listener);
+		rotation.addActionListener(listener);
 		spinX.addChangeListener(listener);
 		spinY.addChangeListener(listener);
-
+		elementName.getDocument().addDocumentListener(listener);
+		
 		// Repeat fields
 		repeatX = new JSpinner(new SpinnerNumberModel(1, 1, 127, -1));
 		repeatY = new JSpinner(new SpinnerNumberModel(1, 1, 127, -1));
@@ -173,19 +201,31 @@ public class SpritePanel extends JPanel {
 			spriteType.setSelectedIndex(0);
 			reverseHorizontal.setSelected(false);
 			reverseVertical.setSelected(false);
+			rotation.setSelectedIndex(0);
 			foreground.setSelected(false);
 			repeatX.setValue(1);
 			repeatY.setValue(1);
+			elementName.setText("");
 		} else {
-			entityType.setText(p_entity.getEntityType().toString());
+			EntityType kind = p_entity.getEntityType();
+			entityType.setText(kind.toString());
 			spriteType.setSelectedIndex(spriteLib.indexOf(p_entity.getDesc()));
 			spinX.setValue((int) p_entity.x % 16);
 			spinY.setValue((int) p_entity.y % 16);
 			reverseHorizontal.setSelected(p_entity.reverse.isHorizontal());
 			reverseVertical.setSelected(p_entity.reverse.isVertical());
+			rotation.setSelectedIndex(p_entity.rotation.value);
 			foreground.setSelected(p_entity.isForeground());
 			repeatX.setValue(p_entity.repeatX);
 			repeatY.setValue(p_entity.repeatY);
+			String name = "";
+			elementName.setEnabled(kind.isElement());
+			if (kind.isElement()) {
+				name = ((Element)p_entity).getName();
+			} else {
+				elementName.setEnabled(false);
+			}
+			elementName.setText(name);
 		}
 		updatingUI = false;
 		entity = p_entity;
@@ -208,7 +248,7 @@ public class SpritePanel extends JPanel {
 		}
 	}
 
-	class SpriteFieldsListener implements ChangeListener, ActionListener {
+	class SpriteFieldsListener implements ChangeListener, ActionListener, DocumentListener {
 
 		@Override
 		public void stateChanged(ChangeEvent changeevent) {
@@ -247,13 +287,48 @@ public class SpritePanel extends JPanel {
 			if (!updatingUI && sel != null) {
 				Component comp = (Component) actionevent.getSource();
 				if (comp == spriteType) {
-					String val = (String) ((JComboBox) comp).getSelectedItem();
+					String val = (String) spriteType.getSelectedItem();
 					SpriteDescription desc = ZUtils.getField(val, spriteLib);
 					entity.setDesc(desc);
+				} else if (comp == rotation) {
+					Rotation rot = (Rotation) rotation.getSelectedItem();
+					entity.rotation = rot;
 				}
 				manager.getZildoCanvas().setChangeSprites(true);
 			}
 		}
+
+		@Override
+		public void insertUpdate(DocumentEvent e) {
+			updateText(e);
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+			updateText(e);
+		}
+
+		@Override
+		public void changedUpdate(DocumentEvent e) {
+			updateText(e);
+		}
 	}
 
+	
+	private void updateText(DocumentEvent e) {
+		if (!updatingUI) {
+			Component comp = KeyboardFocusManager
+					.getCurrentKeyboardFocusManager().getFocusOwner();
+			Document doc = e.getDocument();
+			try {
+				String txt = doc.getText(0, doc.getLength());
+				if (comp == elementName && entity.getEntityType().isElement()) {
+					Element elem = (Element) entity;
+					elem.setName(txt);
+				}
+			} catch (Exception ex) {
+				
+			}
+		}
+	}
 }
