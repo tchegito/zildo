@@ -77,29 +77,31 @@ public class OpenGLRenderer implements Renderer {
 
         
 
-		
-		// Share GL context for other classes
-        AndroidOpenGLGestion.setGL(gl);
-        Zildo.viewPortX = 480;
-        Zildo.viewPortY = 320;
-        
-        client.getEngineZildo().initializeClient(false);
-        client.setMenuListener(new AndroidMenuListener(touchListener));
-        touchListener.init();
-        // Holes
-        client.setOpenGLGestion(Zildo.pdPlugin.openGLGestion);
-        Zildo.pdPlugin.openGLGestion.setClientEngineZildo(client.getEngineZildo());
-        
-		gl.glClearColor(0.0f, 0.0f, 0f, 0.0f);
-
-        Log.d("renderer", "init finished - start main menu");
-
-
-        
-        //client.run();
-        //client.cleanUp();
-		
-        gl.glDisable(GL11.GL_LIGHTING);
+		if (Zildo.screenX != 480 || true) {	// Doesn't work at each attempt
+			
+			// Share GL context for other classes
+	        AndroidOpenGLGestion.setGL(gl);
+	        Zildo.screenX = 480;
+	        Zildo.screenY = 320;
+	        
+	        client.getEngineZildo().initializeClient(false);
+	        client.setMenuListener(new AndroidMenuListener(touchListener));
+	        touchListener.init();
+	        // Holes
+	        client.setOpenGLGestion(Zildo.pdPlugin.openGLGestion);
+	        Zildo.pdPlugin.openGLGestion.setClientEngineZildo(client.getEngineZildo());
+	        
+			gl.glClearColor(0.0f, 0.0f, 0f, 0.0f);
+	
+	        Log.d("renderer", "init finished - start main menu");
+	
+	
+	        
+	        //client.run();
+	        //client.cleanUp();
+			
+	        gl.glDisable(GL11.GL_LIGHTING);
+		}
 	}
 	
 	int i=0;
