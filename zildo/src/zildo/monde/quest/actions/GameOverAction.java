@@ -21,7 +21,6 @@
 package zildo.monde.quest.actions;
 
 import zildo.client.ClientEngineZildo;
-import zildo.client.gui.menu.StartMenu;
 import zildo.client.stage.SinglePlayer;
 import zildo.monde.dialog.ActionDialog;
 import zildo.server.EngineZildo;
@@ -52,7 +51,7 @@ public class GameOverAction extends ActionDialog {
 		// Stop this game
 		SinglePlayer.getClientState().gameOver=true;
 		// Return on the start menu
-		ClientEngineZildo.getClientForMenu().handleMenu(new StartMenu());
+		ClientEngineZildo.getClientForMenu().quitGame();
 	}
 
 }
