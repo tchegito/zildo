@@ -64,7 +64,8 @@ public class PersoCollision {
 			if (p.getPv() > 0) {
 				int gridX = (int) p.getX() >> 4;
 				int gridY = (int) p.getY() >> 4;
-				if (!CollBuffer.isOutOfBounds(gridX, gridY)) {
+				// TODO: poor solution => need to identify flying perso
+				if (!CollBuffer.isOutOfBounds(gridX, gridY) && p.getDesc() != PersoDescription.CHAUVESOURIS) {
 					if (p.isForeground()) {
 						buffers[0].updateId(gridX, gridY, p.getId());
 					} else {

@@ -37,6 +37,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.quest.actions.GameOverAction;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
@@ -1042,7 +1043,7 @@ public class PersoZildo extends Perso {
 			if (elem == null) {
 				elem = EngineZildo.spriteManagement.spawnElement(p_kind.representation,
 						(int) x,
-						(int) y, 0, Reverse.NOTHING, null);
+						(int) y, 0, Reverse.NOTHING, Rotation.NOTHING);
 			}
 			// Place item right above Zildo
 			elem.x = x + 5;

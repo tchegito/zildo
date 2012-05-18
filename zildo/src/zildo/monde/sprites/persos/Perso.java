@@ -65,6 +65,8 @@ public abstract class Perso extends Element {
 	protected int attente; // =0 => pas d'attente
 	protected PathFinder pathFinder; // Destination
 	protected float px, py; // Quand le perso est propulsé (touché)
+	protected float prevX, prevY;	// Previous location (to calculate a delta)
+	public float deltaMoveX, deltaMoveY;	// Previous location (to calculate a delta)
 	protected int pos_seqsprite;
 	private Element en_bras; // If this is Zildo, what he holds. If any perso,
 								// his weapon
@@ -486,6 +488,12 @@ public abstract class Perso extends Element {
 	// Default function : nothing
 	public void animate(int compteur) {
 
+		deltaMoveX = x - prevX;
+		deltaMoveY = y - prevY;
+		
+		prevX = x;
+		prevY = y;
+		
 		if (action != null && getPv() > 0) {
 			if (attente != 0) {
 				attente--;
