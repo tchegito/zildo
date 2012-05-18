@@ -5,11 +5,22 @@
 Add your content here.
 
 
-= Details =
+= Anticipate a target movement =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+It's a common need in video game in order to enhance the IA behavior. For example, in Quake, when a bot is shooting a rocket on a player, he has to target the future location of the player, not his current one.
+
+In Zildo, the first implementation came with the bat. Indeed, if the bat fly on Zildo, it has to anticipate. If it doesn't, Zildo has nothing to worry about : he might never be wounded at all !
+
+== Theory ==
+
+Consider a bat at the M position, and Zildo at Z. We know that Zildo is moving along the blue axis, according to the delta of his current location, and previous frame. So where does the bat fly in order to hit him ?
+
+Let's write Zildo location :
+
+<code> {{{
+       x = Zx + n * deltaX
+       y = Zy + n * deltaY
+}}}
+</code>
 
 [https://lh5.googleusercontent.com/-Mnel-k7LQfM/T7aXJREqHpI/AAAAAAAABrA/mOC5alIcWF8/s261/anticipe.png]
