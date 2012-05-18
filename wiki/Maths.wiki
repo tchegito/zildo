@@ -1,0 +1,15 @@
+#summary Maths in Zildo
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
+
+[https://lh5.googleusercontent.com/-Mnel-k7LQfM/T7aXJREqHpI/AAAAAAAABrA/mOC5alIcWF8/s261/anticipe.png]
