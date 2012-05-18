@@ -1,11 +1,13 @@
 #summary Maths in Zildo
 
+<wiki:toc max_depth="4" />
+
 = Introduction =
 
 This page is only a reminder about encountered maths problematic during Zildo development. Some things aren't easy to describe in Javadoc !
 
 
-= Anticipate a target movement =
+= 1) Anticipate a target movement =
 
 It's a common need in video game in order to enhance the IA behavior. For example, in Quake, when a bot is shooting a rocket on a player, he has to target the future location of the player, not his current one.
 
@@ -54,12 +56,12 @@ b = 2 * Dx * deltaX + 2 * Dy * deltaY
 c = Dx² + Dy²
 </code>
 There is one special case, when `a = 0` : so the root is just `-c / n`. But otherwise we have :
-<code>
+{{{
 delta = b² - 4 * a * c
 
-r1 = (-b - sqrt(delta) / (2 * a)
-r1 = (-b + sqrt(delta) / (2 * a)
-</code>
+r1 = (-b - sqrt(delta)) / (2 * a)
+r2 = (-b + sqrt(delta)) / (2 * a)
+}}}
 Negative values are nonsense !
 
 And once we have the number of frames, we just have to use Zildo's movement equation to determine the collision location.
