@@ -62,7 +62,7 @@ delta = b² - 4 * a * c
 r1 = (-b - sqrt(delta)) / (2 * a)
 r2 = (-b + sqrt(delta)) / (2 * a)
 }}}
-Negative values are nonsense !
+Negatives can occur, so we have to get the absolute value for `n`.
 
 And once we have the number of frames, we just have to use Zildo's movement equation to determine the collision location.
 
