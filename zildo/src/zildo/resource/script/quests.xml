@@ -139,9 +139,6 @@
 			<moveTo who="zildo" pos="0,1" delta="true"/>
 			<fadeIn type="0"/>
 		</action>
-		<history>
-			<mapReplace what="polaky" name="polakbis"/>
-		</history>
 	</quest>
 
 	<quest name="hector_1">
