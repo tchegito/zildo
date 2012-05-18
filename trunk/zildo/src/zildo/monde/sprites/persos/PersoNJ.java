@@ -169,6 +169,11 @@ public class PersoNJ extends Perso {
 				}
 			}
 
+			// TODO: Poor attempt to bypass the code below. We need to do better !
+			if (desc == PersoDescription.FIRETHING || desc == PersoDescription.CHAUVESOURIS) {
+				return;
+			}
+			
 			if (isAlerte() && MouvementPerso.VOLESPECTRE != quel_deplacement
 					&& MouvementPerso.ZONEARC != quel_deplacement) {
 				// Zildo has been caught, so the monster try to reach him, or run away (hen)
@@ -176,7 +181,7 @@ public class PersoNJ extends Perso {
 				reachAvoidTarget(zildo, fear);
 				walkTile(true);
 			} else {
-				switch (this.getQuel_deplacement()) {
+				switch (quel_deplacement) {
 				case VOLESPECTRE:
 					double beta;
 					if (cptMouvement == 100) {
@@ -303,7 +308,7 @@ public class PersoNJ extends Perso {
 							// Script du rat => plus rapide, et crache des pierres}
 							vitesse += 1;
 							pos_seqsprite = pos_seqsprite % (8 * Constantes.speed - 1);
-							if (quel_spr.equals(PersoDescription.CRABE) && Math.random() * 40 == 2) {
+							if (quel_spr == PersoDescription.CRABE && Math.random() * 40 == 2) {
 								// On crache une boule de pierre}
 								pos_seqsprite = 8 * Constantes.speed;
 								EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.ROCKBALL, (int) x,
