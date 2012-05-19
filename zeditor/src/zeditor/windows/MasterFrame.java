@@ -130,6 +130,8 @@ public class MasterFrame extends javax.swing.JFrame {
 
 				Zildo.screenX = 640;
 				Zildo.screenY = 480;
+				Zildo.viewPortX=Zildo.screenX;
+				Zildo.viewPortY=Zildo.screenY + 26;
 				MasterFrame inst = new MasterFrame();
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
