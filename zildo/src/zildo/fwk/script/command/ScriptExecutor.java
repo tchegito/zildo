@@ -20,10 +20,11 @@
 
 package zildo.fwk.script.command;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
@@ -35,11 +36,12 @@ import zildo.fwk.script.xml.element.SceneElement;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
-import zildo.server.state.ScriptManagement;
 
 public class ScriptExecutor {
 
-	Stack<ScriptProcess> scripts = new Stack<ScriptProcess>();	// Stack of current scripts
+	// Stack of current scripts
+	List<ScriptProcess> scripts = new ArrayList<ScriptProcess>();
+	
 	Set<Perso> involved=new HashSet<Perso>();	// All characters involved in script
 	public boolean userEndedAction;				// TRUE if user has ended last action with ACTION keypressed
 	
@@ -47,9 +49,17 @@ public class ScriptExecutor {
 	 *  Ask for engine to execute the given script, with/without a NOEVENT signal at the end (bad for map scripts).
 	 * @param p_script
 	 * @param p_finalEvent
+	 * @param p_topPriority TRUE=this script will be executed before all others
 	 */
-	public void execute(SceneElement p_script, boolean p_finalEvent) {
-		scripts.push(new ScriptProcess(p_script, this, p_finalEvent));
+	public void execute(SceneElement p_script, boolean p_finalEvent, boolean p_topPriority) {
+		ScriptProcess sp = new ScriptProcess(p_script, this, p_finalEvent, p_topPriority);
+		int i;
+		for (i=0;i<scripts.size();i++) {
+			if (!scripts.get(i).topPriority) {
+				break;
+			}
+		}
+		scripts.add(i, sp);
 	}
 	
 	public void render() {
@@ -89,9 +99,10 @@ public class ScriptExecutor {
 	 * Script just terminated.
 	 */
 	private void terminate() {
-		ScriptProcess process=scripts.pop();
+		ScriptProcess process=scripts.get(0);
+		scripts.remove(0);
 		process.terminate();
-		if (scripts.empty()) {
+		if (!isScripting()) {
 			// Get back to life the involved characters
 			for (Perso p : involved) {
 				p.setGhost(false);
@@ -139,11 +150,11 @@ public class ScriptExecutor {
 	}
 	
 	public boolean isScripting() {
-		return !scripts.empty();
+		return !scripts.isEmpty();
 	}
 	
 	public ScriptProcess getCurrent() {
-		return scripts.lastElement();
+		return scripts.size() == 0 ? null : scripts.get(0);
 	}
 	
 	/**
@@ -154,8 +165,6 @@ public class ScriptExecutor {
 	public boolean isProcessing(String p_name) {
 		for (ScriptProcess process : scripts) {
 			if (p_name.equals(process.scene.id)) {
-				return true;
-			} else if ((ScriptManagement.MARQUER_SCENE + p_name).equals(process.scene.id)) {
 				return true;
 			}
 		}

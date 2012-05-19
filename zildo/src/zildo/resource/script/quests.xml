@@ -259,6 +259,40 @@
    	    </action>
 	</quest>
 	
+	<quest name="foretg_apres_grotte">
+	    <trigger>
+	        <location name="foret" pos="894,351" radius="3"/>
+	    </trigger>
+	    <action>
+	        <exec script="maltus_foretg"/>
+	    </action>>
+	</quest>
+	
+	<quest name="bosquet_kill_gards">
+	    <trigger>
+	        <dead who="g1,g2"/>
+	    </trigger>
+	</quest>
+	
+		<quest name="bosquet_still_gard" repeat="true">
+	    <trigger>
+	        <dialog name="maltus" num="1"/>
+	        <questDone name="!bosquet_kill_gards"/>
+	    </trigger>
+	    <action>
+	        <speak who="maltus" text="bosquet.maltus.2"/>
+	    </action>
+	</quest>
+	<quest name="bosquet_free_way">
+	    <trigger>
+	        <dialog name="maltus" num="1"/>
+	        <questDone name="bosquet_kill_gards"/>
+	    </trigger>
+	    <action>
+	        <speak who="maltus" text="bosquet.maltus.3"/>
+	    </action>
+	</quest>
+	
 	<mapScript>
 		<condition name="coucou" exp="enlevement">
 			<remove who="roxy" />
@@ -725,4 +759,38 @@
 			<activate what="outDoor" value="true"/>
 		</actions>
 	</scene>
+	
+	<scene id="maltus_foretg">
+	    <spawn who="maltus" type="BANDIT_CHAPEAU" angle="1" pos="904,415"/>
+	    <wait value="20"/>
+	    <angle who="maltus" value="0"/>
+	    <wait value="10"/>
+	    <actions>
+	        <moveTo who="maltus" pos="0,-20" delta="true" speed="2"/>
+	        <speak who="maltus" text="foret.maltus.4"/>
+     	</actions>
+	    <speak who="maltus" text="foret.zildo.3"/>
+		<speak who="maltus" text="foret.maltus.5"/>
+        <speak who="maltus" text="foret.zildo.4"/>
+		<speak who="maltus" text="foret.maltus.6"/>
+		<angle who="maltus" angle="1"/>
+        <speak who="maltus" text="foret.maltus.7"/>
+        <actions>
+	        <moveTo who="zildo" pos="894,380"/>
+	        <moveTo who="maltus" pos="904,447"/>
+        </actions>
+        <actions>
+            <moveTo who="maltus" pos="1022,447" speed="1"/>
+            <moveTo who="zildo" pos="1022,427" speed="1"/>
+        </actions>
+        <moveTo who="maltus" pos="40,0" delta="true"/>
+        <actions>
+            <moveTo who="zildo" pos="84,425" speed="1"/>
+        	<moveTo who="maltus" pos="97,382" speed="1"/>
+        </actions>
+        <wait value="20"/>
+        <angle who="maltus" value="2" />
+        <speak who="maltus" text="bosquet.maltus.1"/>
+        <angle who="maltus" value="1" />
+    </scene>
 </adventure>
