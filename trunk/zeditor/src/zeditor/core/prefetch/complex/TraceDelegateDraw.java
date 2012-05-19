@@ -54,15 +54,17 @@ public abstract class TraceDelegateDraw {
 						Point p=new Point(p_start).translate(j, i);
 						for (int tile : adj.addedTiles) {
 							p = p.translate(adj.a.coords);
-							if (adjDraw != null) {
-								int binaryValue=adjDraw.toBinaryValue(tile);
-								if (binaryValue == 0) {
-									p_map.writemap(p.x, p.y, tile);
+							if (!p_map.isOutside(p.x, p.y)) {
+								if (adjDraw != null) {
+									int binaryValue=adjDraw.toBinaryValue(tile);
+									if (binaryValue == 0) {
+										p_map.writemap(p.x, p.y, tile);
+									} else {
+										adjDraw.arrangeOneTile(p_map, binaryValue, p.x, p.y, null);
+									}
 								} else {
-									adjDraw.arrangeOneTile(p_map, binaryValue, p.x, p.y, null);
+									p_map.writemap(p.x, p.y, tile);
 								}
-							} else {
-								p_map.writemap(p.x, p.y, tile);
 							}
 						}
 					}
