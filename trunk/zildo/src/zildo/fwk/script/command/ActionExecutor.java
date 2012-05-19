@@ -336,7 +336,7 @@ public class ActionExecutor {
         		achieved=!gearToActivate.isActing();
             	break;
             case exec:
-            	//achieved=true;
+            	achieved=true;
             	break;
         }
         p_action.waiting = !achieved;

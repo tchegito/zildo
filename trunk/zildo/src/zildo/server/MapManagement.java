@@ -678,7 +678,7 @@ public class MapManagement {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
 			//points.add(new Point(16*26, 45*16));
-			points.add(new Point(231+450-200, 360+130-50-150 +250));	// 231+450 is good for preintro
+			points.add(new Point(231+450-220+30, 360+130-50-150 +250));	// 231+450 is good for preintro
 		} else {
 			points = currentMap.getRespawnPoints();
 		}

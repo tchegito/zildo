@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.script.xml.element.ActionElement;
-import zildo.fwk.script.xml.element.ActionsElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
@@ -40,14 +39,16 @@ public class ScriptProcess {
 	public ActionExecutor actionExec;					// Delegate object designed for rendering actions
 	public SceneElement scene;
 	public boolean finalEvent;	// TRUE=send NOEVENT at the end of the script execution / FALSE=nothing
+	boolean topPriority;
 	
 	PersoZildo duplicateZildo;
 	
 	List<ActionElement> currentActions=new ArrayList<ActionElement>();
 
-	public ScriptProcess(SceneElement p_scene, ScriptExecutor p_scriptExecutor, boolean p_finalEvent) {
+	public ScriptProcess(SceneElement p_scene, ScriptExecutor p_scriptExecutor, boolean p_finalEvent, boolean p_topPriority) {
 		scene=p_scene;
 		cursor=0;
+		topPriority = p_topPriority;
 		actionExec=new ActionExecutor(p_scriptExecutor);
 		
 		if (scene.restoreZildo) {

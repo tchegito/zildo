@@ -38,7 +38,6 @@ import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.quest.MapReplacement;
-import zildo.monde.quest.QuestEvent;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
@@ -68,9 +67,6 @@ public class ScriptManagement {
     
     // 'LOCATION' trigs for specific location on the current map
     final List<TriggerElement> locationTriggerOnMap;	
-    
-    // Marker to identify that a scene is created from an 'action' quest's tag
-    public final static String MARQUER_SCENE = "@scene@";
     
     public ScriptManagement() {
         // Load adventure
@@ -108,21 +104,18 @@ public class ScriptManagement {
     	SceneElement scene=adventure.getSceneNamed(p_name);
     	if (scene != null) {
     		 if (!scriptExecutor.isProcessing(p_name)) {
-    			 scriptExecutor.execute(scene, true);
+    			 scriptExecutor.execute(scene, true, false);
     		 }
     	} else {
     		throw new RuntimeException("Scene "+p_name+" doesn't exist !");
     	}
     }
 
-    private void execute(List<ActionElement> p_actions, boolean p_finalEvent, String p_questName) {
+    private void execute(List<ActionElement> p_actions, boolean p_finalEvent, String p_questName, boolean p_topPriority) {
     	// Create a SceneElement from the given actions
 		SceneElement scene=SceneElement.createScene(p_actions);
-		if (p_questName != null) {
-			scene.id = MARQUER_SCENE+p_questName;
-		}
 		// And execute this list
-		scriptExecutor.execute(scene, p_finalEvent);
+		scriptExecutor.execute(scene, p_finalEvent, p_topPriority);
     }
     
     /**
@@ -172,12 +165,20 @@ public class ScriptManagement {
     					trig.done=false;
     				}
     			} else {
-    				// Reset only the 'location' trigger to 'undone' (because they have to be immediate)
+    				// Reset only the 'location' and 'dialog' trigger to 'undone' 
+    				// (because they have to be immediate)
     				for (TriggerElement trig : quest.getTriggers()) {
-    					if (QuestEvent.LOCATION == trig.kind && trig.done) {
-    						TriggerElement currentMapTrigger = EngineZildo.mapManagement.getCurrentMapTrigger();
-    						if (trig.isLocationSpecific() || !trig.match(currentMapTrigger)) {
-    							trig.done=false;
+    					if (trig.done){
+    						switch (trig.kind) {
+    						case LOCATION:
+	    						TriggerElement currentMapTrigger = EngineZildo.mapManagement.getCurrentMapTrigger();
+	    						if (trig.isLocationSpecific() || !trig.match(currentMapTrigger)) {
+	    							trig.done = false;
+	    						}
+	    						break;
+    						case DIALOG:
+    							trig.done = false;
+    							break;
     						}
     					}
     				}    				
@@ -238,7 +239,7 @@ public class ScriptManagement {
     	// 1) note the history events (mapReplace ...)
     	List<ActionElement> history=p_quest.getHistory();
 		if (history != null) {
-			execute(history, true, null);
+			execute(history, true, null, false);
 		}
 		
 		// 2) execute the immediate actions (only in-game)
@@ -247,7 +248,7 @@ public class ScriptManagement {
 	    	TriggerElement trig=TriggerElement.createQuestDoneTrigger(p_quest.name);
 	    	trigger(trig);
 			// Execute the corresponding actions
-			execute(p_quest.getActions(), true, p_quest.name);
+			execute(p_quest.getActions(), true, p_quest.name, false);
     	}
 
     	
@@ -371,7 +372,8 @@ public class ScriptManagement {
 		for (MapscriptElement mapScript : adventure.getMapScripts()) {
 			for (ConditionElement condi : mapScript.getConditions()) {
 				if (condi.mapName.equals(p_mapName) && condi.isRight()) {
-					execute(condi.getActions(), false, null);
+					// Execute the 'mapscript' before all, with topPriority=TRUE
+					execute(condi.getActions(), false, null, true);
 				}
 			}
 		}

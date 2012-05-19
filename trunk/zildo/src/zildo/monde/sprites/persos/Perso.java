@@ -503,7 +503,7 @@ public abstract class Perso extends Element {
 			}
 		}
 		
-		switch (this.getQuel_deplacement()) {
+		switch (this.quel_deplacement) {
 		case OBSERVE:
 			// Persos qui regardent en direction de Zildo
 			Perso observed = this.getFollowing();
@@ -669,6 +669,7 @@ public abstract class Perso extends Element {
 		this.dialoguingWith = p_dialoguingWith;
 	}
 
+	@Override
 	public boolean isGhost() {
 		return ghost;
 	}

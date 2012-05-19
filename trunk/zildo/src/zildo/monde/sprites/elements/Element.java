@@ -659,6 +659,15 @@ public class Element extends SpriteEntity {
 	}
 
 	@Override
+	public boolean isGhost() {
+		if (linkedPerso != null && linkedPerso.getEntityType().isPerso()) {
+			Perso p = (Perso) linkedPerso;
+			return p.isGhost();
+		}
+		return false;
+	}
+	
+	@Override
 	public String toString() {
 		String s = x + ", " + y;
 		if (nBank == SpriteBank.BANK_ELEMENTS) {

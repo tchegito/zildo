@@ -753,7 +753,14 @@ public class SpriteManagement extends SpriteStore {
 		if (!p_loading) {
 			// Loading is over. We have to keep all current entities in order to delete
 			// them at the end of the scroll.
-			suspendedEntities.addAll(spriteEntities);
+			// Except those are currently manipulated by script (ghost is TRUE)
+			for (SpriteEntity entity : spriteEntities) {
+				if (entity.isGhost()) {
+					continue;
+				} else {
+					suspendedEntities.add(entity);
+				}
+			}
 			spriteEntities.addAll(spriteEntitiesToAdd);
 			spriteEntitiesToAdd.clear();
 		}

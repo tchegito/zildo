@@ -104,7 +104,10 @@ public class DialogManagement {
         	    // Dialog with character
         	    Behavior behav = dialogs.getBehaviors().get(persoToTalk.getName());
         	    if (behav == null) {
-        		// This perso can't talk
+        		// This perso can't talk, but trigger this although
+            	    TriggerElement trig = TriggerElement.createDialogTrigger(
+                		    persoToTalk.getName(), 1);
+                	    EngineZildo.scriptManagement.trigger(trig);
         		return null;
         	    }
         	    int compteDial = persoToTalk.getCompte_dialogue();

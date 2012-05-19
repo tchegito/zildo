@@ -434,6 +434,14 @@ public class SpriteEntity extends Identified implements Cloneable,
 		return sb.toString();
 	}
 
+	/**
+	 * Returns TRUE only if entity is manipulated by a script currently processing.
+	 * @return boolean
+	 */
+	public boolean isGhost() {
+		return false;
+	}
+	
 	public Zone getZone() {
 		Zone zone = new Zone(scrX, scrY, sprModel.getTaille_x()*repeatX,
 				sprModel.getTaille_y()*repeatY);
