@@ -68,6 +68,9 @@ public class ScriptManagement {
     // 'LOCATION' trigs for specific location on the current map
     final List<TriggerElement> locationTriggerOnMap;	
     
+    // Marker to identify that a scene is created from an 'action' quest's tag
+    public final static String MARQUER_SCENE = "@scene@";
+
     public ScriptManagement() {
         // Load adventure
         adventure=(AdventureElement) ScriptReader.loadScript("quests.xml");
@@ -114,6 +117,9 @@ public class ScriptManagement {
     private void execute(List<ActionElement> p_actions, boolean p_finalEvent, String p_questName, boolean p_topPriority) {
     	// Create a SceneElement from the given actions
 		SceneElement scene=SceneElement.createScene(p_actions);
+		if (p_questName != null) {
+			scene.id = MARQUER_SCENE+p_questName;
+		}
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent, p_topPriority);
     }

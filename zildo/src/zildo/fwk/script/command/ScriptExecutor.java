@@ -36,6 +36,7 @@ import zildo.fwk.script.xml.element.SceneElement;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
+import zildo.server.state.ScriptManagement;
 
 public class ScriptExecutor {
 
@@ -165,6 +166,8 @@ public class ScriptExecutor {
 	public boolean isProcessing(String p_name) {
 		for (ScriptProcess process : scripts) {
 			if (p_name.equals(process.scene.id)) {
+				return true;
+			} else if ((ScriptManagement.MARQUER_SCENE + p_name).equals(process.scene.id)) {
 				return true;
 			}
 		}
