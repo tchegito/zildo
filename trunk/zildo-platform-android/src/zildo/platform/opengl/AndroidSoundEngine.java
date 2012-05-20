@@ -44,7 +44,6 @@ public class AndroidSoundEngine extends SoundEngine {
 	@Override
 	public Sound createSound(String path) {
 		boolean music = path.contains("music");
-		System.out.println("ok load sound "+music);
 		AssetFileDescriptor afd = (AssetFileDescriptor) Zildo.pdPlugin.openFd(path);
 		MediaPlayer mp = null;
 		int soundId = 0;
