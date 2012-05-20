@@ -585,9 +585,11 @@ public abstract class Perso extends Element {
 			break;
 		case 846:
 			// Water
-			inWater = true;
-			snd = BankSound.ZildoPatauge;
-			repeatSound = true;
+			if (!flying) {
+				inWater = true;
+				snd = BankSound.ZildoPatauge;
+				repeatSound = true;
+			}
 			break;
 		case 857:
 		case 858:
@@ -624,7 +626,7 @@ public abstract class Perso extends Element {
 				count++;
 			}
 		}
-		if (snd != null && p_sound && isZildo()) {
+		if (snd != null && p_sound) {
 
 			EngineZildo.soundManagement.broadcastSound(snd, this);
 		}
@@ -831,6 +833,13 @@ public abstract class Perso extends Element {
 			pushed = ((PersoZildo)this).getPushingSprite();
 		}
 		if (angleResult!=null && pushed == null) {
+			// Is there a sprite colliding on the jump ? (example: bar blocking jump, in polaky4)
+			int xx = (int) (loc.x + angleResult.coords.x * 4);
+			int yy = (int) (loc.y + angleResult.coords.y * 4);
+			if (EngineZildo.spriteManagement.collideSprite(xx, yy, this)) {
+				return;
+			}
+			
 			Point landingPoint=angleResult.getLandingPoint().translate((int) x, (int) y);
 			if (!EngineZildo.mapManagement.collide(landingPoint.x, landingPoint.y, this)) {
 				jump(angleResult);
@@ -879,6 +888,20 @@ public abstract class Perso extends Element {
 		return relocate;
 	}
 	
+	@Override
+	public void setDesc(SpriteDescription p_desc) {
+		super.setDesc(p_desc);
+		switch ((PersoDescription) desc) {
+			case ABEILLE:
+			case CORBEAU:
+			case VAUTOUR:
+			case CHAUVESOURIS:
+			case SPECTRE:
+			case OISEAU_VERT:
+				flying = true;
+		}
+
+	}
 	public Point getPosAvantSaut() {
 		return posAvantSaut;
 	}
