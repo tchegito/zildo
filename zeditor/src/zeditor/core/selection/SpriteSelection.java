@@ -62,7 +62,7 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 		sprites.addAll(p_entities);
 		for (SpriteEntity e : sprites) {
 			initial.add(e.getSpecialEffect());
-			initialLocations.add(new Point(e.getAjustedX(), e.getAjustedY()));
+			initialLocations.add(new Point(e.x, e.y));
 		}
 		calculateOriginAndSize();
 	}
