@@ -12,6 +12,8 @@ import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,24 +22,35 @@ public class ZildoActivity extends Activity {
 	
 	TouchListener touchListener;
 	public static AudioManager mgr;
+	Handler handler;
+	
+	final int RESET_SPLASHSCREEN = 99;
+	
+	
+	interface SimpleCallback {
+		public void doIt();
+	}
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         // Enable fullscreen
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        GLSurfaceView view = new GLSurfaceView(this);
-        //view.setBackgroundColor(Color.BLUE);
+        final GLSurfaceView view = new GLSurfaceView(this);
 
+        // Display splash screen
+        view.setBackgroundResource(R.drawable.splashscreen480320);
+        
         // Initialize platform dependent
+        PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;
         
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;
         
         AssetManager assetManager = getAssets();
         AndroidReadingFile.assetManager = assetManager;
@@ -54,17 +67,28 @@ public class ZildoActivity extends Activity {
    		clientThread.start();
    		
    		mgr = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-	    float streamVolumeCurrent = mgr.getStreamVolume(AudioManager.STREAM_MUSIC);
-	    float streamVolumeMax = mgr.getStreamMaxVolume(AudioManager.STREAM_MUSIC); 
+	    //float streamVolumeCurrent = mgr.getStreamVolume(AudioManager.STREAM_MUSIC);
+	    //float streamVolumeMax = mgr.getStreamMaxVolume(AudioManager.STREAM_MUSIC); 
 	    //System.out.println("Volumes are "+streamVolumeCurrent+" and "+streamVolumeMax);
 	    
         setContentView(view);
+        
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        
+        handler = new Handler(){
+        	@Override
+        	public void handleMessage(Message msg) {
+        	switch(msg.what){
+        	     case RESET_SPLASHSCREEN:
+        	            // Remove splashscreen
+        	    	 	view.setBackgroundResource(0); 
+        	            break;
+        	   }
+        	}
+        };
 
     }
     
-
-	
     @Override
     public void onBackPressed() {
     	touchListener.pressBackButton();
@@ -85,10 +109,12 @@ public class ZildoActivity extends Activity {
     		while (!client.isReady()) {
     			ZUtils.sleep(500);
     		}
+    		
+    		// Game is loaded => ask to remove the splashscreen
+    		handler.sendEmptyMessage(RESET_SPLASHSCREEN);
+    		
     		Log.d("client", "Client runs !");
             client.handleMenu(new StartMenu());
-           	//client.run();
-
             
             while (!client.isDone()) {
             	ZUtils.sleep(500);
