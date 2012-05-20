@@ -149,42 +149,47 @@ public class SpriteCollision {
 
 					// Check if element is linked to entityRef
 					SpriteEntity entity = SpriteEntity.fromId(SpriteEntity.class, id);
-					if (entity.getEntityType().isElement()) {
-						elem = (Element) entity;
-						if (elem.getLinkedPerso() == entityRef) {
-							continue;
-						}
-						if (!elem.isGoodies() && !elem.isSolid()) {
-							found = false;
-							continue;
-						}
-					}
-					if (entity.dying) {	// Bugfix: Zildo could take goodies several items !
-						continue;
-					}
-					// Rules not directly related to check (is it bad ?)
-					boolean isGoodies = entity.isGoodies();
-
-					if (!isGoodies && isZildo) {
-						((PersoZildo) entityRef).pushSomething(elem);
-					}
-					// Is it a goodies ?
-					if (isGoodies) {
-						if (isZildo) {
-							PersoZildo zildo = (PersoZildo) entityRef;
-							boolean disappear = zildo.pickGoodies(elem, 0);
-							if (disappear) {
-								elem.fall();
-								elem.dying = true;
+					if (entity == null) {	// Entity doesn't exist anymore
+						presences[ty + p.y][tx + p.x] = -1;
+						found = false;
+					} else {
+						if (entity.getEntityType().isElement()) {
+							elem = (Element) entity;
+							if (elem.getLinkedPerso() == entityRef) {
+								continue;
 							}
-							break;
-						} else {
-							if (elem != null && elem.getClass().equals(
-									ElementBoomerang.class)) {
-								// Boomerang catches some goodies
-								((ElementBoomerang) elem).grab(elem);
+							if (!elem.isGoodies() && !elem.isSolid()) {
+								found = false;
+								continue;
+							}
+						}
+						if (entity.dying) {	// Bugfix: Zildo could take goodies several items !
+							continue;
+						}
+						// Rules not directly related to check (is it bad ?)
+						boolean isGoodies = entity.isGoodies();
+	
+						if (!isGoodies && isZildo) {
+							((PersoZildo) entityRef).pushSomething(elem);
+						}
+						// Is it a goodies ?
+						if (isGoodies) {
+							if (isZildo) {
+								PersoZildo zildo = (PersoZildo) entityRef;
+								boolean disappear = zildo.pickGoodies(elem, 0);
+								if (disappear) {
+									elem.fall();
+									elem.dying = true;
+								}
+								break;
 							} else {
-								found=false;
+								if (elem != null && elem.getClass().equals(
+										ElementBoomerang.class)) {
+									// Boomerang catches some goodies
+									((ElementBoomerang) elem).grab(elem);
+								} else {
+									found=false;
+								}
 							}
 						}
 					}

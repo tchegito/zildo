@@ -122,19 +122,21 @@ public class CollBuffer {
 	
 	public void remove(int id) {
 		int loc = indexPerso.get(id);
-		int gridX = loc & 63;
-		int gridY = loc >> 6;
-		int a = presences[gridY][gridX][0];
-		int b = presences[gridY][gridX][1];
-		if (a == id) {
-			presences[gridY][gridX][0] = b;
-			if (b != -1) {
+		if (loc != -1) {
+			int gridX = loc & 63;
+			int gridY = loc >> 6;
+			int a = presences[gridY][gridX][0];
+			int b = presences[gridY][gridX][1];
+			if (a == id) {
+				presences[gridY][gridX][0] = b;
+				if (b != -1) {
+					presences[gridY][gridX][1] = -1;
+				}
+			} else {
 				presences[gridY][gridX][1] = -1;
 			}
-		} else {
-			presences[gridY][gridX][1] = -1;
+			applyPatch(gridX, gridY, false);
 		}
-		applyPatch(gridX, gridY, false);
 	}
 	
 	public static boolean isOutOfBounds(int tx, int ty) {
