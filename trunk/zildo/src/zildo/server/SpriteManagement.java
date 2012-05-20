@@ -584,7 +584,9 @@ public class SpriteManagement extends SpriteStore {
 	}
 	
 	/**
-	 * Find an element near a given one.
+	 * Find an element near a given one.<br/>
+	 * WARNING: it's an unoptimized method, contrary to {@link #collideSprite(int, int, Element)}, but it's used only once when
+	 * player press action key. So it's acceptable now.
 	 * @param x
 	 * @param y
 	 * @param quelElement

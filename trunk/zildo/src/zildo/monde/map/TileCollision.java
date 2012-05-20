@@ -25,6 +25,7 @@ import java.util.List;
 
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.TileInfo.Template;
+import zildo.monde.sprites.Reverse;
 
 /**
  * @author tchegito
@@ -42,8 +43,23 @@ public class TileCollision {
     	return instance;
     }
     
-    public boolean collide(int p_posX, int p_posY, int p_nTile) {
-        return tileInfos[p_nTile].collide(p_posX, p_posY);
+    public boolean collide(int p_posX, int p_posY, int p_nTile, Reverse p_reverse) {
+    	int px = p_posX;
+    	int py = p_posY;
+    	//if (true) return false;
+    	if (p_reverse != Reverse.NOTHING) {
+    		switch (p_reverse) {
+    		case HORIZONTAL:
+    			px = 16-px;
+    			break;
+    		case ALL:
+    			px = 16-px;
+    		case VERTICAL:
+    			py = 16-py;
+    			break;
+    		}
+    	}
+		return tileInfos[p_nTile].collide(px, py);
     }
 
     public boolean isTileWalkable(int p_nTile) {
