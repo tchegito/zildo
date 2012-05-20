@@ -52,4 +52,9 @@ public class SceneElement extends AnyElement {
 			action.reset();
 		}    	
     }
+    
+    @Override
+	public String toString() {
+    	return id+"\n"+actions.toString();
+    }
 }
