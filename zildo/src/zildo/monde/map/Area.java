@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import zildo.Zildo;
 import zildo.client.sound.Ambient.Atmosphere;
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
@@ -78,6 +79,9 @@ public class Area implements EasySerializable {
 		int cnt = 5000;
 	}
 
+	final static int TILE_VIEWPORT_X = (Zildo.viewPortX / 16) + 1;
+	final static int TILE_VIEWPORT_Y = (Zildo.viewPortY / 16) + 1;
+	
 	// For roundAndRange
 	static public int ROUND_X = 0;
 	static public int ROUND_Y = 0;
@@ -846,6 +850,11 @@ public class Area implements EasySerializable {
 			}
 		}
 
+		if (!zeditor) {
+			// Complete outside of map visible in the viewport with empty tile
+			map.arrange();
+		}
+		
 		if (p_spawn) {
 			map.correctDoorHouse();
 			map.correctTrees();
@@ -1073,5 +1082,27 @@ public class Area implements EasySerializable {
 
 	public void setAtmosphere(Atmosphere atmosphere) {
 		this.atmosphere = atmosphere;
+	}
+	
+	private void arrange() {
+		// Complete map size with minimum viewport
+		int emptyTile = atmosphere.getEmptyTile();
+		for (int dy = dim_y ; dy < TILE_VIEWPORT_Y ; dy++) {
+			for (int dx = 0; dx < Math.max(TILE_VIEWPORT_X, dim_x); dx++) {
+				writemap(dx, dy, emptyTile);
+			}
+		}
+		for (int dx = dim_x ; dx < TILE_VIEWPORT_X ; dx++) {
+			for (int dy = 0; dy < Math.max(TILE_VIEWPORT_Y, dim_y); dy++) {
+				writemap(dx, dy, emptyTile);
+			}
+		}
+		if (dim_x < TILE_VIEWPORT_X) {
+			dim_x = TILE_VIEWPORT_X;
+		}
+		if (dim_y < TILE_VIEWPORT_Y) {
+			dim_y = TILE_VIEWPORT_Y;
+		}
+		
 	}
 }
