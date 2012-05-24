@@ -272,7 +272,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		List<ErrorDescription> errors = new AreaChecker(area).check();
 		if (!errors.isEmpty()) {
 			for (ErrorDescription error : errors) {
-				if (error.fixAction == null) {
+				if (error.autofix) {
+					JOptionPane.showMessageDialog(this, "ZEditor : "+error.kind.toString()+"\n\nAutomatically fixed.", error.message, JOptionPane.INFORMATION_MESSAGE);
+				} else if (error.fixAction == null) {
 					JOptionPane.showMessageDialog(this, "ZEditor : "+error.kind.toString(), error.message, JOptionPane.ERROR_MESSAGE);
 				} else {
 					if (0 == JOptionPane

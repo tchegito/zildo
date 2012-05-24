@@ -93,16 +93,16 @@ public class Case implements EasySerializable {
 		int motif=back.index;
 		switch (back.bank)
 		{
-		// On gère les sprites animés
+		// Animated tiles
 			case 0:
-			// L'eau
+			// Water
 				if (motif>=108 && motif<=130 && motif !=129) {
 					if (compteur_animation > 40)
 						motif+=100;
 					else if (compteur_animation > 20)
 						motif+=100+23;
 				} else if (motif==52 || motif==53) {
-					//Les fleurs
+					// Flowers
 					if (compteur_animation > 40)
 						motif+=3;
 					else if (compteur_animation > 20)

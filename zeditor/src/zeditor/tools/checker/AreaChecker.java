@@ -6,6 +6,7 @@ import java.util.List;
 import zeditor.tools.checker.ErrorDescription.Action;
 import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.script.model.ZSSwitch;
+import zildo.monde.map.AnimatedTiles;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
@@ -35,6 +36,7 @@ public class AreaChecker {
 		checkDialogSwitch();
 		checkOutOfBoundsEntities();
 		checkChainingPointsUncovered();
+		checkWrongAnimatedTiles();
 		
 		return errors;
 	}
@@ -136,6 +138,34 @@ public class AreaChecker {
 					}
 				}
 			}));
+		}
+	}
+	
+	private void checkWrongAnimatedTiles() {
+		boolean found = false;
+		for (int y = 0; y<area.getDim_y(); y++) {
+			for (int x = 0; x<area.getDim_x(); x++) {
+				int v = area.readmap(x,  y);
+				for (AnimatedTiles at : AnimatedTiles.values()) {
+					int addBank = at.bank.getOffset();
+					int nbRepeat = 1;
+					if (at.repeat != null) {
+						nbRepeat = at.repeat.until - at.reference + 1;
+					}
+					for (int rep = 0 ; rep < nbRepeat; rep++) {
+						for (int i : at.others) {
+							if (v == ( i + addBank + rep)) {
+								found = true;
+								area.writemap(x, y, at.reference + rep + addBank);
+							}
+						}
+					}
+				}
+			}
+		}
+		if (found) {
+			String message="Wrong animated tiles !";
+			addList(new ErrorDescription(CheckError.WRONG_ANIMATED_TILE, message, true));
 		}
 	}
 }
