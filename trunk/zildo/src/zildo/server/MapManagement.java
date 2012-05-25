@@ -243,7 +243,12 @@ public class MapManagement {
 			int cx = (tx / 16);
 			int cy = (ty / 16);
 			int caseZ = currentMap.readAltitude(cx, cy);
-			on_map = currentMap.readmap(cx, cy);
+			Tile tile = currentMap.readmap(cx, cy, false);
+			if (tile == null) {
+				on_map = -1;
+			} else {
+				on_map = tile.index;
+			}
 			int elemAltitude = quelElement.relativeZ + (int) quelElement.getZ()
 					/ 16;
 
@@ -258,7 +263,7 @@ public class MapManagement {
 			} else if (caseZ > elemAltitude) {
 				return true; // Obstacle
 			}
-			if (tileCollision.collide(modx, mody, on_map)) {
+			if (tileCollision.collide(modx, mody, on_map, tile.reverse)) {
 				return true;
 			}
 			return EngineZildo.spriteManagement.collideSprite(tx, ty,
@@ -311,7 +316,7 @@ public class MapManagement {
 				// On empêche la collision sur les bords de cartes
 				return quelElement != null && !quelElement.isZildo() && !ghost;
 			}
-			if (tileCollision.collide(modx, mody, on_map)) {
+			if (tileCollision.collide(modx, mody, on_map, tile.reverse)) {
 				return true;
 			}
 		}
