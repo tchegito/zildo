@@ -1,0 +1,115 @@
+/**
+ * Legend of Zildo
+ * Copyright (C) 2006-2012 Evariste Boussaton
+ * Based on original Zelda : link to the past (C) Nintendo 1992
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+package zildo.platform.opengl;
+
+import java.nio.ByteBuffer;
+
+import zildo.fwk.gfx.PixelShaders;
+import zildo.monde.util.Vector4f;
+import android.opengl.GLES20;
+import android.util.Log;
+
+/**
+ * @author Tchegito
+ *
+ */
+public class AndroidPixelShaders extends PixelShaders {
+
+	public static Shaders shaders;
+	
+	public AndroidPixelShaders() {
+		super();
+
+		shaders = new Shaders(this);
+	}
+	
+	@Override
+	public boolean canDoPixelShader() {
+        return false;
+	}
+	
+	@Override
+	protected int doCreateShader(String shaderPro, boolean pixel) {
+        // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
+        // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
+		int type = GLES20.GL_VERTEX_SHADER;
+		if (pixel) {
+			type = GLES20.GL_FRAGMENT_SHADER;
+		}
+        int shader = GLES20.glCreateShader(type); 
+        
+        // add the source code to the shader and compile it
+        GLES20.glShaderSource(shader, shaderPro);
+        GLES20.glCompileShader(shader);
+        
+        final int[] compileStatus = new int[1];
+        GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compileStatus, 0);
+        if (compileStatus[0] == 0) {
+            String message = GLES20.glGetShaderInfoLog(shader);
+        	Log.d("shaders", "can't compile, message="+message);
+        } else {
+        	Log.d("shaders", "Compilation ok");
+        }
+        
+        return shader;
+	}
+
+	@Override
+	protected void doSetParameter(int psId, ByteBuffer name, Vector4f color) {
+	}
+
+	@Override
+	protected void deletePixelShader(int id) {
+	}
+	
+
+
+	/**
+	 * Compile both vertex and fragment shader, and return linked program reference.
+	 * @param vertexCode
+	 * @param pixelCode
+	 * @return int
+	 */
+	protected int loadCompleteShader(String vertexCode, String pixelCode) {
+		// Init shaders
+		int vertexShader = doCreateShader(vertexCode, false);
+        int fragmentShader = doCreateShader(pixelCode, true);
+        
+        int mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+        GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+        GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+        
+        GLES20.glLinkProgram(mProgram);                  // creates OpenGL program executables
+        
+     // Get the link status.
+        final int[] linkStatus = new int[1];
+        GLES20.glGetProgramiv(mProgram, GLES20.GL_LINK_STATUS, linkStatus, 0);
+     
+        // If the link failed, delete the program.
+        if (linkStatus[0] == 0)
+        {
+        	Log.d("shaders", "link failed !");
+            GLES20.glDeleteProgram(mProgram);
+            mProgram = 0;
+        }
+        return mProgram;
+	}
+}
