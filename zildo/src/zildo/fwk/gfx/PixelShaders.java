@@ -175,16 +175,7 @@ public abstract class PixelShaders {
 	///////////////////////////////////////////////////////////////////////////////////////
 	private void addPixelShader(String strData)
 	{
-		ByteBuffer shaderPro = ZUtils.createByteBuffer(strData.length());
-		 
-		byte[] shaderBytes=new byte[strData.length()];
-		for (int i=0;i<strData.length();i++) {
-			shaderBytes[i]=(byte) strData.charAt(i);
-		}
-		shaderPro.put(shaderBytes);
-		shaderPro.flip();
-
-		int programObject = doCreatePixelShader(shaderPro);
+		int programObject = doCreateShader(strData, true);
 		// Uniform values
 		
 
@@ -192,7 +183,13 @@ public abstract class PixelShaders {
 		n_PixelShaders++;
 	}
 	
-	protected abstract int doCreatePixelShader(ByteBuffer shaderPro);
+	/**
+	 * Create and compile a shader, from kind depending of the given boolean.
+	 * @param strData shader's code
+	 * @param pixel TRUE=fragment (pixel) / FALSE=vertex
+	 * @return int
+	 */
+	protected abstract int doCreateShader(String strData, boolean pixel);
 	
 	private ByteBuffer toByteString(String str, boolean isNullTerminated)
 	{
