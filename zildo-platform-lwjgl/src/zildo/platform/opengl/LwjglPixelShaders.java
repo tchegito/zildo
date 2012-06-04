@@ -25,6 +25,7 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
+import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.Util;
 
@@ -46,10 +47,30 @@ public class LwjglPixelShaders extends PixelShaders {
         GLContext.getCapabilities().GL_ARB_shading_language_100;
 	}
 	
+	private ByteBuffer transformStringIntoByteBuffer(String strData) {
+		ByteBuffer shaderBuffer = ZUtils.createByteBuffer(strData.length());
+		 
+		byte[] shaderBytes=new byte[strData.length()];
+		for (int i=0;i<strData.length();i++) {
+			shaderBytes[i]=(byte) strData.charAt(i);
+		}
+		shaderBuffer.put(shaderBytes);
+		shaderBuffer.flip();
+		
+		return shaderBuffer;
+	}
+	
 	@Override
-	protected int doCreatePixelShader(ByteBuffer shaderPro) {
+	protected int doCreateShader(String strData, boolean pixel) {
+		
+		ByteBuffer shaderPro = transformStringIntoByteBuffer(strData);
+		
 		// Create pixel shader
-		int vertexShader= ARBShaderObjects.glCreateShaderObjectARB(ARBFragmentShader.GL_FRAGMENT_SHADER_ARB);
+		int type = ARBFragmentShader.GL_FRAGMENT_SHADER_ARB;
+		if (!pixel) {
+			type = ARBVertexShader.GL_VERTEX_SHADER_ARB;
+		}
+		int vertexShader= ARBShaderObjects.glCreateShaderObjectARB(type);
 		ARBShaderObjects.glShaderSourceARB(vertexShader, shaderPro);
 		
 		// Compile, link, validate
