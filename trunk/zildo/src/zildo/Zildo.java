@@ -27,11 +27,11 @@ import zildo.client.gui.menu.StartMenu;
 
 public class Zildo {
 
-	public static boolean soundEnabled=false;
+	public static boolean soundEnabled=true;
 	public static boolean fullScreen=false;
 	// Define the game viewport
-	public static final int viewPortX=320;
-	public static final int viewPortY=240;
+	public static int viewPortX=320;
+	public static int viewPortY=240;
 	// Define the platform resolution (viewport will be adapated to fit)
 	public static int screenX=800; //640;
 	public static int screenY=600; //480;
