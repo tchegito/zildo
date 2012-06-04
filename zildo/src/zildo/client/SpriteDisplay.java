@@ -93,7 +93,7 @@ public class SpriteDisplay extends SpriteStore {
 		int SORTY_MAX=Constantes.SORTY_MAX;
 		int SORTY_REALMAX=Constantes.SORTY_REALMAX;
 		
-		if (Client.isZEditor()) {
+		if (ClientEngineZildo.editing) {
 			// TODO put back these values in order to fix ZEditor
 			//SORTY_MAX=ZildoScrollablePanel.viewSizeY+40;
 			//SORTY_REALMAX=ZildoScrollablePanel.viewSizeY+80;

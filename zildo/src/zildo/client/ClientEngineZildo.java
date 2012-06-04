@@ -146,16 +146,16 @@ public class ClientEngineZildo {
 	 * Client intialization, with real network
 	 * 
 	 * @param p_openGLGestion
-	 * @param p_awt TRUE=ZEditor / FALSE=game
+	 * @param p_selfInitialization TRUE=initialize at construction / FALSE=will be initialized later
 	 * @param p_client
 	 */
-	public ClientEngineZildo(OpenGLGestion p_openGLGestion, boolean p_awt,
+	public ClientEngineZildo(OpenGLGestion p_openGLGestion, boolean p_selfInitialization,
 			Client p_client) {
 		// Lien avec DirectX
 		ClientEngineZildo.openGLGestion = p_openGLGestion;
 
-		if (!p_awt) {
-			initializeClient(p_awt);
+		if (p_selfInitialization) {
+			initializeClient(false);
 		}
 
 		client = p_client;

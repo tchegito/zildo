@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import zildo.Zildo;
-import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.menu.InGameMenu;
 import zildo.client.gui.menu.StartMenu;
 import zildo.client.stage.GameStage;
@@ -62,7 +61,7 @@ public class Client {
 
 	ClientEngineZildo clientEngineZildo;
 	OpenGLGestion glGestion;
-	static boolean awt;
+	static boolean selfInitialization;
 	boolean done = false;
 	boolean serverLeft = false;
 	boolean connected = false; // TRUE so as a connection with a server is
@@ -95,9 +94,10 @@ public class Client {
 
 	/**
 	 * Create client with given parameter.
+	 * @param p_delegateInitialization TRUE=initialization will be done later / FALSE=complete initialization now
 	 */
-	public Client(boolean p_awt) {
-		awt = p_awt;
+	public Client(boolean p_delegateInitialization) {
+		selfInitialization = !p_delegateInitialization;
 		states = new HashMap<Integer, PlayerState>();
 		// Video
 		initializeDisplay();
@@ -107,7 +107,7 @@ public class Client {
 	}
 
 	void initializeDisplay() {
-        clientEngineZildo = new ClientEngineZildo(glGestion, awt, this);
+        clientEngineZildo = new ClientEngineZildo(glGestion, selfInitialization, this);
         //glGestion.setClientEngineZildo(clientEngineZildo);
         glGestion = Zildo.pdPlugin.openGLGestion;
         if (glGestion != null) {
@@ -202,7 +202,7 @@ public class Client {
             kbHandler = Zildo.pdPlugin.kbHandler;
         }
 
-        if (!awt || PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
+        if (!ClientEngineZildo.editing) {
 			// Read keyboard
 			Zildo.pdPlugin.kbHandler.poll();
 
@@ -332,10 +332,6 @@ public class Client {
 
 	public boolean isMultiplayer() {
 		return multiplayer;
-	}
-
-	public static boolean isZEditor() {
-		return awt;
 	}
 
 	public boolean isIngameMenu() {
