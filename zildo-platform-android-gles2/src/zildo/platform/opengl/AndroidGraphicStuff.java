@@ -124,7 +124,7 @@ public class AndroidGraphicStuff extends GraphicStuff {
 	 */
 	@Override
 	public void setCurrentColor(float[] p_color) {
-		gl11.glColor4f(p_color[0], p_color[1], p_color[2], p_color[3]);		
+		//gl11.glColor4f(p_color[0], p_color[1], p_color[2], p_color[3]);		
 	}
 
     public Vector4f createColor64(float r, float g, float b) {

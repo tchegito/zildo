@@ -20,13 +20,14 @@
 
 package zildo.platform.filter;
 
-import javax.microedition.khronos.opengles.GL11;
-
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.monde.sprites.Reverse;
-import zildo.platform.opengl.AndroidOpenGLGestion;
+import zildo.monde.util.Vector4f;
+import zildo.platform.opengl.AndroidPixelShaders;
+import zildo.platform.opengl.Shaders;
+import android.opengl.GLES20;
 
 /**
  * @author Tchegito
@@ -34,11 +35,12 @@ import zildo.platform.opengl.AndroidOpenGLGestion;
  */
 public class AndroidCloudFilter extends CloudFilter {
 
-	GL11 gl11;
+	Shaders shaders;
 	
 	public AndroidCloudFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
-    	gl11 = (GL11) AndroidOpenGLGestion.gl10;
+		
+		shaders = AndroidPixelShaders.shaders;
 	}
 	
 	@Override
@@ -47,26 +49,18 @@ public class AndroidCloudFilter extends CloudFilter {
 		super.startInitialization();
 		updateQuad(0, 0, u, -v, Reverse.NOTHING);
 		this.endInitialization();
-		
-		gl11.glMatrixMode(GL11.GL_MODELVIEW);
-		gl11.glLoadIdentity();
-		gl11.glMatrixMode(GL11.GL_PROJECTION);
-		gl11.glPushMatrix();
-		//gl11.glTranslatef(0,-sizeY,1);
 
 		float colorFactor=0.2f;
-		gl11.glColor4f(colorFactor, colorFactor, colorFactor, 0.1f);
-		gl11.glEnable(GL11.GL_BLEND);
-		gl11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE_MINUS_SRC_COLOR);
+		GLES20.glEnable(GLES20.GL_BLEND);
+		
+		shaders.setColor(new Vector4f(colorFactor, colorFactor, colorFactor, 0.1f));
 
-		gl11.glBindTexture(GL11.GL_TEXTURE_2D, ClientEngineZildo.tileEngine.texCloudId);
+		GLES20.glBlendFunc(GLES20.GL_ZERO, GLES20.GL_ONE_MINUS_SRC_COLOR);
+		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, ClientEngineZildo.tileEngine.texCloudId);
 		super.render();
 
-		gl11.glDisable(GL11.GL_BLEND);
+		GLES20.glDisable(GLES20.GL_BLEND);
 		
-		gl11.glPopMatrix();
-		
-		gl11.glMatrixMode(GL11.GL_MODELVIEW);
 		return true;
 	}
 }
