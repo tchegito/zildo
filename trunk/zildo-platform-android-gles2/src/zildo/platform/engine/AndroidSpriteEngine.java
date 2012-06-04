@@ -20,16 +20,14 @@
 
 package zildo.platform.engine;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.monde.util.Vector3f;
-import zildo.platform.opengl.AndroidOpenGLGestion;
+import zildo.platform.opengl.AndroidPixelShaders;
+import zildo.platform.opengl.Shaders;
 import android.opengl.GLES20;
-import android.util.Log;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.
 //
@@ -41,11 +39,11 @@ import android.util.Log;
 
 public class AndroidSpriteEngine extends SpriteEngine {
     
-	GL10 gl10;
+	Shaders shaders;
 	
 	public AndroidSpriteEngine(TextureEngine texEngine) {
 		this.textureEngine = texEngine;
-    	gl10 = AndroidOpenGLGestion.gl10;
+		shaders = AndroidPixelShaders.shaders;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -59,7 +57,6 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	@Override
 	public void render(boolean backGround) {
 		
-		Log.d("sprite", "test_start");
 		// Display every sprites
 		GLES20.glEnable(GLES20.GL_BLEND);
 		
@@ -129,22 +126,22 @@ public class AndroidSpriteEngine extends SpriteEngine {
                 */
                 switch (currentFX) {
 	                case SHINY:
-	                	//GLES20.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE); // _MINUS_SRC_ALPHA);
-	                	//GLES20.glColor4f(1, (float) Math.random(), 0, (float) Math.random());
+	                	GLES20.glBlendFunc(GLES20.GL_SRC_COLOR, GLES20.GL_ONE); // _MINUS_SRC_ALPHA);
+	                	shaders.setColor(1, (float) Math.random(), 0, (float) Math.random());
 	                    break;
 	                case QUAD:
-	                	//GLES20.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	                	//GLES20.glColor4f(0.5f + 0.5f * (float) Math.random(), 0.5f * (float) Math.random(), 0, 1);
+	                	GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+	                	shaders.setColor(0.5f + 0.5f * (float) Math.random(), 0.5f * (float) Math.random(), 0, 1);
 	                    break;
 	                case FOCUSED:
-	            		//GLES20.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	            		GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 	                	// FIXME: previously color3f
-	                	//GLES20.glColor4f(1.0f, 1.0f, 1.0f, 1f);
+	                	shaders.setColor(1.0f, 1.0f, 1.0f, 1f);
 	                	break;
 	                default:
 	                	color[3]=alpha / 255.0f;
 	                	textureEngine.graphicStuff.setCurrentColor(color);
-	                	//GLES20.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	                	GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
                 }
 				meshSprites[numBank].render(nbQuads);
 				posBankOrder++;
@@ -158,7 +155,6 @@ public class AndroidSpriteEngine extends SpriteEngine {
 		GLES20.glDisable(GLES20.GL_BLEND);
 		//GLES20.glDisable(GLES20.GL_TEXTURE_2D);
 		
-		Log.d("sprite", "test_end");
 	}
 
 }

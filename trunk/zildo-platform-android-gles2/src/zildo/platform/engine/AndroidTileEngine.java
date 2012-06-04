@@ -27,8 +27,11 @@ import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.primitive.TileGroupPrimitive.ActionNthRunner;
 import zildo.monde.util.Point;
+import zildo.monde.util.Vector2f;
 import zildo.monde.util.Vector3f;
 import zildo.platform.opengl.AndroidOpenGLGestion;
+import zildo.platform.opengl.AndroidPixelShaders;
+import zildo.platform.opengl.Shaders;
 import android.opengl.GLES20;
 
 // V1.0
@@ -74,10 +77,14 @@ import android.opengl.GLES20;
 public class AndroidTileEngine extends TileEngine {
 
 	GL10 gl10;
+
+	Shaders shaders;
 	
 	public AndroidTileEngine(TextureEngine texEngine) {
 		super(texEngine);
     	gl10 = AndroidOpenGLGestion.gl10;
+    	
+    	shaders = AndroidPixelShaders.shaders;
 	}
 	
 	private TextureBinder texBinder = new TextureBinder();
@@ -88,13 +95,11 @@ public class AndroidTileEngine extends TileEngine {
 		if (initialized) {
 			Vector3f ambient = ClientEngineZildo.ortho.getAmbientColor();
 			if (ambient != null) {
-            	// FIXME: previously color3f
-				//GLES20.glColor4f(ambient.x, ambient.y, ambient.z, 1f);
+				shaders.setColor(ambient);
 			}
 
 			Point p = ClientEngineZildo.mapDisplay.getCamera();
-			//GLES20.glPushMatrix();
-			//GLES20.glTranslatef(-p.x, -p.y, 0f);
+			shaders.setTranslation(new Vector2f(-p.x, -p.y));
 			
 			if (backGround) {
 				// Display BACKGROUND
@@ -114,7 +119,7 @@ public class AndroidTileEngine extends TileEngine {
 
 				GLES20.glDisable(GLES20.GL_BLEND);
 			}
-			//GLES20.glPopMatrix();
+			shaders.setTranslation(new Vector2f(0, 0));
 		}
 
 	}

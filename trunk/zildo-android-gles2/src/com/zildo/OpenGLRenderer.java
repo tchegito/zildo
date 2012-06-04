@@ -110,14 +110,8 @@ public class OpenGLRenderer implements Renderer {
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT); // | // OpenGL docs.
                            //GLES20.GL_DEPTH_BUFFER_BIT);
 
-		/*
-		Zildo.pdPlugin.ortho.box(0, 0, 50, 50, 1, null);
-		Zildo.pdPlugin.ortho.box(10, 150, 50, 50, 12, null);
-		
-		GLES20.glActiveTexture(0);
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 1); 
-		Zildo.pdPlugin.ortho.boxTexturedOpti(200, 150, 50, 50, 0, 0, 1, 1);
-		*/
+		GLES20.glViewport(0, 0, Zildo.viewPortX, Zildo.viewPortY);
+
 		long t1 = ZUtils.getTime();
 		client.mainLoop();
 

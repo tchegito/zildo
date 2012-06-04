@@ -59,9 +59,9 @@ public class AndroidTextureEngine extends TextureEngine {
 	
     private int getTextureFormat() {
     	if (alphaChannel) {
-    		return GL11.GL_RGBA;
+    		return GLES20.GL_RGBA;
     	} else {
-    		return GL11.GL_RGB;
+    		return GLES20.GL_RGB;
     	}
     }
     @Override
@@ -72,27 +72,27 @@ public class AndroidTextureEngine extends TextureEngine {
         GLES20.glGenTextures(1, buf); // Create Texture In OpenGL
 
         Log.d("texture", "generate texture "+buf.get(0));
-        GLES20.glBindTexture(GL11.GL_TEXTURE_2D, buf.get(0));
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, buf.get(0));
         // Typical Texture Generation Using Data From The Image
 
         int wrapping=GL11.GL_REPEAT;	// Wrap texture (useful for cloud)
-        GLES20.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, wrapping);
-        GLES20.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, wrapping);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, wrapping);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, wrapping);
         
         int filtering=GL11.GL_NEAREST;
         // Linear Filtering
-        GLES20.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filtering);
-        GLES20.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filtering);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, filtering);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, filtering);
         // Generate The Texture
-        GLES20.glTexImage2D(GL11.GL_TEXTURE_2D, 0, getTextureFormat(), 256, 256, 0, getTextureFormat(), 
-        		GL11.GL_UNSIGNED_BYTE, scratch);
+        GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, getTextureFormat(), 256, 256, 0, getTextureFormat(), 
+        		GLES20.GL_UNSIGNED_BYTE, scratch);
         
         return buf.get(0);
     }
     
     @Override
 	public void getTextureImage(int p_texId) {
-    	GLES20.glBindTexture(GL11.GL_TEXTURE_2D, p_texId);
+    	GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, p_texId);
     	// FIXME: this method doesn't exist in OpenGL ES, so we have to find another solution
     	// This method is only called for Zildo outfits : it's not urgent for now
     	//gL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, getTextureFormat(), GL11.GL_UNSIGNED_BYTE, scratch);

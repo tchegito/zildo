@@ -20,50 +20,36 @@
 
 package zildo.platform.filter;
 
-import javax.microedition.khronos.opengles.GL11;
-
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BilinearFilter;
-import zildo.platform.opengl.AndroidOpenGLGestion;
+import zildo.monde.sprites.Reverse;
+import android.opengl.GLES20;
 
 
 public class AndroidBilinearFilter extends BilinearFilter {
 
-	GL11 gl11;
-	
 	public AndroidBilinearFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
-    	gl11 = (GL11) AndroidOpenGLGestion.gl10;
+
+		// Flip the image vertically
+		super.startInitialization();
+		updateQuad(0, 0, 0, 0, Reverse.VERTICAL);
+		super.endInitialization();
 	}
 	
 	@Override
 	public boolean renderFilter() {
 		graphicStuff.fbo.endRendering();
-		
+
+
 		// Select right texture
-		gl11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-        gl11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        gl11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        
-        // Disable blend
-		gl11.glDisable(GL11.GL_BLEND);
+		GLES20.glActiveTexture(0);
+		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureID);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
 
-		gl11.glMatrixMode(GL11.GL_MODELVIEW);
-		gl11.glLoadIdentity();
-		gl11.glMatrixMode(GL11.GL_PROJECTION);
-		gl11.glPushMatrix();
-		// Flip the image vertically
-		gl11.glTranslatef(0,sizeY,0);
-		gl11.glScalef(1, -1, 1);
-		// FIXME: was previously color3f
-		gl11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		
-		// Draw texture with depth
+		// Draw texture
 		super.render();
-
-		gl11.glPopMatrix();
-		
-		gl11.glMatrixMode(GL11.GL_MODELVIEW);
 		
 		return true;
 	}
@@ -71,7 +57,6 @@ public class AndroidBilinearFilter extends BilinearFilter {
 	@Override
 	public void preFilter() {
 		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
-		//gl11.glClear(GL11.GL_COLOR_BUFFER_BIT); // Clear The Screen And The Depth Buffer
 	}
 	
 }

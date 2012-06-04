@@ -24,6 +24,7 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 import zildo.Zildo;
+import zildo.monde.util.Vector2f;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
 
@@ -56,21 +57,25 @@ public class Shaders {
 	// Textured program
 	
 	private final String orthoVertexTexturedShader = 
-        "attribute vec2 vPosition;	\n" +	// Vertex position
-		"attribute vec2 TexCoord;	\n" +
-		"uniform mat4 uMVPMatrix;	\n" +	// Ortho matrix
+        "attribute lowp vec4 vPosition;	\n" +	// Vertex position
+		"attribute mediump vec2 TexCoord;	\n" +
+		"uniform highp mat4 uMVPMatrix;	\n" +	// Ortho matrix
+		"uniform lowp vec2 vTranslate;	\n" +	// Translation
 		"varying mediump vec2 vTexCoord;	\n" +
+		"highp vec4 translated;	\n" +
         "void main(){				\n" +
-        "	gl_Position = uMVPMatrix * vec4(vPosition, 0.0, 1.0); \n" +
+        "   translated = vec4(vPosition.x + vTranslate.x, vPosition.y + vTranslate.y, vPosition.z, vPosition.w); \n" +
+        "	gl_Position = uMVPMatrix * translated; \n" +
         "	vTexCoord=TexCoord;	\n" +
         "}							\n";
 	
 	private final String orthoFragmentTexturedShader =
-        "precision mediump float;  \n" +
+        //"precision highp float;  \n" +
 		"uniform sampler2D sTexture;		\n" +
+		"uniform lowp vec4 CurColor;	\n" +	// Ortho matrix
 		"varying mediump vec2 vTexCoord;	\n" +
 		"void main(){						\n" +
-		"	gl_FragColor = texture2D(sTexture, vTexCoord);\n"+
+		"	gl_FragColor = texture2D(sTexture, vTexCoord) * CurColor;\n"+
 		"}	\n";
 
 	
@@ -80,14 +85,19 @@ public class Shaders {
 	
 	// attribute handles
 	int hTexturedPosition;
+	int hTextureTranslation;
 	int hUntexturedPosition;
 	int hTexturedTexPosition;
 	int hTexturedOrthoMatrix;
 	int hUntexturedOrthoMatrix;
 	int hTextureIndex;
 	int hColor;
+	int hTexturedColor;
 	
 	float[] orthoMatrix;
+	
+	Vector4f curColor = new Vector4f(1, 1, 1, 1);
+	Vector2f translation = new Vector2f(0, 0);
 	
 	AndroidPixelShaders aps;
 	
@@ -113,13 +123,16 @@ public class Shaders {
 
 		
 		hColor = GLES20.glGetUniformLocation(mPUntexturedOrtho, "CurColor");
-
+		hTexturedColor = GLES20.glGetUniformLocation(mPTexturedOrtho, "CurColor");
+		hTextureTranslation = GLES20.glGetUniformLocation(mPTexturedOrtho, "vTranslate");
 		
 		
 		Log.d("shaders", "handle for hTexturedOrthoMatrix = "+hTexturedOrthoMatrix);
 		Log.d("shaders", "handle for hTexturedPosition = "+hTexturedPosition);
 		Log.d("shaders", "handle for hTexturedTexPosition = "+hTexturedTexPosition);
 		Log.d("shaders", "handle for hColor = "+hColor);
+		Log.d("shaders", "handle for hTexturedColor = "+hTexturedColor);
+		Log.d("shaders", "handle for hTextureTranslation = "+hTextureTranslation);
 
 	}
 	
@@ -147,6 +160,8 @@ public class Shaders {
         GLES20.glUniform1i(hTextureIndex, 0); 
         
 		GLES20.glUniformMatrix4fv(hTexturedOrthoMatrix, 1, false, orthoMatrix, 0);
+		GLES20.glUniform2f(hTextureTranslation, translation.x, translation.y);
+		GLES20.glUniform4f(hTexturedColor, curColor.x, curColor.y, curColor.z, curColor.w);
 
         GLES20.glDrawArrays(elementType, start, count);
 	}
@@ -165,6 +180,8 @@ public class Shaders {
         GLES20.glEnableVertexAttribArray(hTexturedTexPosition);
         
         GLES20.glUniform1i(hTextureIndex, 0); 
+		GLES20.glUniform2f(hTextureTranslation, translation.x, translation.y);
+		GLES20.glUniform4f(hTexturedColor, curColor.x, curColor.y, curColor.z, curColor.w);
 
 		GLES20.glUniformMatrix4fv(hTexturedOrthoMatrix, 1, false, orthoMatrix, 0);
 
@@ -186,16 +203,28 @@ public class Shaders {
         GLES20.glEnableVertexAttribArray(hUntexturedPosition);
 
 		GLES20.glUniformMatrix4fv(hUntexturedOrthoMatrix, 1, false, orthoMatrix, 0);
+		GLES20.glUniform4f(hTexturedColor, curColor.x, curColor.y, curColor.z, curColor.w);
 
         GLES20.glDrawArrays(elementType, 0, count);
 	}
 
 	public void setColor(Vector3f col) {
-		GLES20.glUniform4f(hColor, col.x, col.y, col.z, 1f);
+		curColor.set(col.x, col.y, col.z, 1f);
 	}
 	
 	public void setColor(Vector4f col) {
-		GLES20.glUniform4f(hColor, col.x, col.y, col.z, 1f);
+		curColor.set(col.x, col.y, col.z, col.w);
+	}
+	
+	public void setColor(float r, float g, float b, float a) {
+		curColor.x = r;
+		curColor.y = g;
+		curColor.z = b;
+		curColor.w = a;
+	}
+
+	public void setTranslation(Vector2f translate) {
+		translation.set(translate.x, translate.y);
 	}
 	
 	public void setOrthographicProjection() {
