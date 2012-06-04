@@ -243,12 +243,6 @@ public class MapManagement {
 			int cx = (tx / 16);
 			int cy = (ty / 16);
 			int caseZ = currentMap.readAltitude(cx, cy);
-			Tile tile = currentMap.readmap(cx, cy, false);
-			if (tile == null) {
-				on_map = -1;
-			} else {
-				on_map = tile.index;
-			}
 			int elemAltitude = quelElement.relativeZ + (int) quelElement.getZ()
 					/ 16;
 
@@ -263,6 +257,12 @@ public class MapManagement {
 			} else if (caseZ > elemAltitude) {
 				return true; // Obstacle
 			}
+
+			Tile tile = currentMap.readmap(cx, cy, false);
+			if (tile == null) {
+				return false;
+			}
+			on_map = tile.getValue();
 			if (tileCollision.collide(modx, mody, on_map, tile.reverse)) {
 				return true;
 			}
@@ -682,8 +682,9 @@ public class MapManagement {
 	public Point getRespawnPosition() {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
-			//points.add(new Point(16*26, 45*16));
-			points.add(new Point(231+450-220+30, 360+130-50-150 +250));	// 231+450 is good for preintro
+			points.add(new Point(231+450-220+30-20, 360+130-50-150 +250));	// for coucou
+			//points.add(new Point(231+450-220+30-20, 360+130-50-150 +250-40));	// for foretg2
+			//points.add(new Point(231+450-220+30, 360+130-50-150 +250+50));	// 231+450 is good for preintro
 		} else {
 			points = currentMap.getRespawnPoints();
 		}
