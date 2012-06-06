@@ -88,10 +88,12 @@ public class AndroidPixelShaders extends PixelShaders {
 	 * @param pixelCode
 	 * @return int
 	 */
-	protected int loadCompleteShader(String vertexCode, String pixelCode) {
+	protected int loadCompleteShader(String shaderName) {
+		ShaderReader sr = new ShaderReader(shaderName);
+		
 		// Init shaders
-		int vertexShader = doCreateShader(vertexCode, false);
-        int fragmentShader = doCreateShader(pixelCode, true);
+		int vertexShader = doCreateShader(sr.getVertexCode(), false);
+        int fragmentShader = doCreateShader(sr.getFragmentCode(), true);
         
         int mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
         GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
