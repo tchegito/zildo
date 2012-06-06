@@ -27,7 +27,6 @@ import zildo.Zildo;
 import zildo.monde.util.Vector2f;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
-
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.util.Log;
@@ -37,47 +36,6 @@ import android.util.Log;
  *
  */
 public class Shaders {
-
-	// Untextured program
-	private final String orthoVertexShader = 
-		"uniform mat4 uMVPMatrix;  \n" +	// Ortho matrix
-        "attribute vec2 vPosition; \n" +	// Vertex position
-        "void main(){              \n" +
-        "	gl_Position = uMVPMatrix * vec4(vPosition, 0.0, 1.0); \n" +
-        "}                         \n";
-	
-	
-	private final String orthoFragmentShader =
-        //"precision mediump float;  \n" +
-		"uniform lowp vec4 CurColor;		\n" +
-		"void main(){						\n" +
-		"	gl_FragColor = CurColor;\n"+
-		"}	\n";
-	
-	// Textured program
-	
-	private final String orthoVertexTexturedShader = 
-        "attribute lowp vec4 vPosition;	\n" +	// Vertex position
-		"attribute mediump vec2 TexCoord;	\n" +
-		"uniform highp mat4 uMVPMatrix;	\n" +	// Ortho matrix
-		"uniform lowp vec2 vTranslate;	\n" +	// Translation
-		"varying mediump vec2 vTexCoord;	\n" +
-		"highp vec4 translated;	\n" +
-        "void main(){				\n" +
-        "   translated = vec4(vPosition.x + vTranslate.x, vPosition.y + vTranslate.y, vPosition.z, vPosition.w); \n" +
-        "	gl_Position = uMVPMatrix * translated; \n" +
-        "	vTexCoord=TexCoord;	\n" +
-        "}							\n";
-	
-	private final String orthoFragmentTexturedShader =
-        //"precision highp float;  \n" +
-		"uniform sampler2D sTexture;		\n" +
-		"uniform lowp vec4 CurColor;	\n" +	// Ortho matrix
-		"varying mediump vec2 vTexCoord;	\n" +
-		"void main(){						\n" +
-		"	gl_FragColor = texture2D(sTexture, vTexCoord) * CurColor;\n"+
-		"}	\n";
-
 	
 	// programs
 	int mPTexturedOrtho;
@@ -106,7 +64,7 @@ public class Shaders {
 		aps = p_aps;
 		
 		// Create all basic shaders
-		mPTexturedOrtho = aps.loadCompleteShader(orthoVertexTexturedShader, orthoFragmentTexturedShader);
+		mPTexturedOrtho = aps.loadCompleteShader("textured");
         // get handle to the shader attributes
 		hTexturedPosition = GLES20.glGetAttribLocation(mPTexturedOrtho, "vPosition");
 		hTexturedTexPosition = GLES20.glGetAttribLocation(mPTexturedOrtho, "TexCoord");
@@ -116,7 +74,7 @@ public class Shaders {
 
 		
 		
-		mPUntexturedOrtho = aps.loadCompleteShader(orthoVertexShader, orthoFragmentShader);
+		mPUntexturedOrtho = aps.loadCompleteShader("uniColor");
 
 		hUntexturedPosition = GLES20.glGetAttribLocation(mPUntexturedOrtho, "vPosition");
 		hUntexturedOrthoMatrix = GLES20.glGetUniformLocation(mPUntexturedOrtho, "uMVPMatrix");
