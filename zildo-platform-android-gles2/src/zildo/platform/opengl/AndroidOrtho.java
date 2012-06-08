@@ -255,25 +255,22 @@ public class AndroidOrtho extends Ortho {
 	 */
 	@Override
 	public void initDrawBox(boolean withTexture) {
-		// On se met au premier plan et on annule le texturing
-		//GLES20.glMatrixMode(GLES20.GL_MODELVIEW);
-		//GLES20.glPushMatrix();
-		//GLES20.glTranslatef(0, 0, 1);
+		// Disable texturing, if asked
 		if (!withTexture) {
 			GLES20.glDisable(GLES20.GL_TEXTURE_2D);
 		}
 	}
 
+	Vector4f saveColor = new Vector4f(1, 1, 1, 1);
+	
 	/**
 	 * Get back the original matrix, and go a glEnd.
 	 */
 	@Override
 	public void endDraw() {
-		// On se remet où on était et on réactive le texturing
+		// Re-enable texturing and color
 		GLES20.glEnable(GLES20.GL_TEXTURE_2D);
-		// FIXME: was a color3f
-		//GLES20.glColor4f(1.0f, 1.0f, 1.0f , 1.0f);
-		//GLES20.glPopMatrix();
+		shaders.setColor(1, 1, 1, 1);
 	}
 
 	/**
