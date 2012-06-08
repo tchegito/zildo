@@ -117,7 +117,7 @@ public class Shaders {
         GLES20.glUseProgram(GLShaders.textured.id);
         
         // Prepare the vertices data
-        GLES20.glVertexAttribPointer(hTexturedPosition, 2, GLES20.GL_UNSIGNED_SHORT, false, 0, verticesBuffer);
+        GLES20.glVertexAttribPointer(hTexturedPosition, 2, GLES20.GL_SHORT, false, 0, verticesBuffer);
         GLES20.glEnableVertexAttribArray(hTexturedPosition);
         
         // Prepare the texture data
@@ -139,7 +139,7 @@ public class Shaders {
         GLES20.glUseProgram(GLShaders.textured.id);
         
         // Prepare the vertices data
-        GLES20.glVertexAttribPointer(hTexturedPosition, 2, GLES20.GL_UNSIGNED_SHORT, false, 0, verticesBuffer);
+        GLES20.glVertexAttribPointer(hTexturedPosition, 2, GLES20.GL_SHORT, false, 0, verticesBuffer);
         GLES20.glEnableVertexAttribArray(hTexturedPosition);
         
         // Prepare the texture data
@@ -166,7 +166,7 @@ public class Shaders {
         GLES20.glUseProgram(GLShaders.uniColor.id);
         
         // Prepare the triangle data
-        GLES20.glVertexAttribPointer(hUntexturedPosition, 2, GLES20.GL_UNSIGNED_SHORT, false, 0, verticesBuffer);
+        GLES20.glVertexAttribPointer(hUntexturedPosition, 2, GLES20.GL_SHORT, false, 0, verticesBuffer);
         GLES20.glEnableVertexAttribArray(hUntexturedPosition);
 
 		GLES20.glUniformMatrix4fv(hUntexturedOrthoMatrix, 1, false, orthoMatrix, 0);
@@ -184,10 +184,11 @@ public class Shaders {
 	}
 	
 	public void setColor(float r, float g, float b, float a) {
-		curColor.x = r;
-		curColor.y = g;
-		curColor.z = b;
-		curColor.w = a;
+		curColor.set(r, g, b, a);
+	}
+	
+	public Vector4f getColor() {
+		return curColor;
 	}
 
 	public void setTranslation(Vector2f translate) {
