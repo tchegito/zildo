@@ -51,6 +51,8 @@ public class PersoGardeVert extends PersoNJ {
 		teteGarde.setNBank(SpriteBank.BANK_PNJ);
 		teteGarde.setNSpr(PersoDescription.HAUT_GARDEVERT.first());
 		addPersoSprites(teteGarde);
+		
+		pv = 2;
 	}
 	
 	@Override
