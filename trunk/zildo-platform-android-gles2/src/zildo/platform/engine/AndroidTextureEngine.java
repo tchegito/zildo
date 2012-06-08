@@ -24,12 +24,10 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
-import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.engine.TextureEngine;
-import zildo.platform.opengl.AndroidOpenGLGestion;
 import android.opengl.GLES20;
 import android.util.Log;
 
@@ -49,12 +47,9 @@ import android.util.Log;
  *
  */
 public class AndroidTextureEngine extends TextureEngine {
-    
-	GL10 gl10;
 	
 	public AndroidTextureEngine(GraphicStuff graphicStuff) {
 		super(graphicStuff);
-    	gl10 = AndroidOpenGLGestion.gl10;
 	}
 	
     private int getTextureFormat() {

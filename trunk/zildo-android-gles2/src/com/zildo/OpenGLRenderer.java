@@ -81,7 +81,6 @@ public class OpenGLRenderer implements Renderer {
 		if (Zildo.screenX != 480 || true) {	// Doesn't work at each attempt
 			
 			// Share GL context for other classes
-	        AndroidOpenGLGestion.setGL(unused);
 	        //Zildo.screenX = 480;
 	        //Zildo.screenY = 320;
 	        

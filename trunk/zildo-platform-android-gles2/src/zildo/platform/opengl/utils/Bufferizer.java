@@ -18,12 +18,48 @@
  *
  */
 
-package zildo.platform.opengl;
+package zildo.platform.opengl.utils;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 
 /**
  * @author Tchegito
  *
  */
-public class GenericBufferizer {
+public class Bufferizer {
 
+	FloatBuffer fBuffer;
+	
+	public Bufferizer(int length) {
+		ByteBuffer bBuffer;
+		bBuffer = ByteBuffer.allocateDirect(length * 4);
+		bBuffer.order(ByteOrder.nativeOrder());
+		fBuffer = bBuffer.asFloatBuffer();
+	}
+	
+	public void store(float[] p_floats) {
+		fBuffer.put(p_floats, 0, p_floats.length);
+	}
+	
+	public FloatBuffer storeAndFlip(float[] p_floats) {
+		store(p_floats);
+		return rewind();
+	}
+	
+	public FloatBuffer rewind() {
+		fBuffer.position(0);
+		return fBuffer;
+	}
+	
+	public void addFloat(float... f) {
+		for (float ff : f) {
+			fBuffer.put(ff);
+		}
+	}
+	
+	public int getCount() {
+		return fBuffer.position();
+	}
 }

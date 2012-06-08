@@ -20,9 +20,6 @@
  
 package zildo.platform.opengl;
 
-import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
-
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.stage.GameStage;
@@ -34,8 +31,6 @@ import zildo.server.EngineZildo;
 
 public class AndroidOpenGLGestion extends OpenGLGestion {
 
-	public static GL10 gl10;
-	
 	final static String title = "Zildo OpenGL";
 
 	KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
@@ -476,10 +471,5 @@ public class AndroidOpenGLGestion extends OpenGLGestion {
 	@Override
 	public double getTimeInSeconds() {
 		return ZUtils.getTime();
-	}
-	
-	public static void setGL(GL10 gl) {
-		gl10 = gl;
-		GLUtils.gl11 = (GL11) gl;
 	}
 }

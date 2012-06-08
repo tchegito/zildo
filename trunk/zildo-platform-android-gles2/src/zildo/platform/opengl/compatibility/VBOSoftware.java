@@ -22,13 +22,11 @@ package zildo.platform.opengl.compatibility;
 
 import javax.microedition.khronos.opengles.GL11;
 
-import android.opengl.GLES20;
-
+import shader.Shaders;
 import zildo.fwk.opengl.compatibility.VBO;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
-import zildo.platform.opengl.AndroidOpenGLGestion;
 import zildo.platform.opengl.AndroidPixelShaders;
-import zildo.platform.opengl.Shaders;
+import android.opengl.GLES20;
 
 public class VBOSoftware implements VBO {
 
@@ -41,33 +39,18 @@ public class VBOSoftware implements VBO {
 	}
 
 	protected void preDraw() {
-		if (gl11 == null) {	// get the GL instance
-			gl11 = (GL11) AndroidOpenGLGestion.gl10;
-		}
 		if (shaders == null) {
 			shaders = AndroidPixelShaders.shaders;
 		}
 		
-		//gl11.glEnable(GL11.GL_TEXTURE_2D);
-		//gl11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-		//gl11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 	}
 	
 	@Override
 	public void draw(VBOBuffers p_bufs) {
 		preDraw();
 		
-		//gl11.glVertexPointer(2, GL11.GL_SHORT, 0, p_bufs.vertices);
-		//gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, p_bufs.textures);
-		
 		int count = p_bufs.indices.remaining();
 		shaders.drawIndicedAndTexture(p_bufs.vertices, p_bufs.textures, p_bufs.indices, GLES20.GL_TRIANGLES, count);
-				
-		//gl11.glDrawElements(GL11.GL_TRIANGLES, count, GL11.GL_UNSIGNED_SHORT, p_bufs.indices);
-		
-		//gl11.glDisable(GL11.GL_TEXTURE_2D);
-		//gl11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
-		//gl11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 	}		
 
 	@Override
@@ -75,8 +58,6 @@ public class VBOSoftware implements VBO {
 		preDraw();
 
 		shaders.drawTexture(p_bufs.vertices, p_bufs.textures, GLES20.GL_TRIANGLES, start, count);
-
-		//gl11.glDrawArrays(GL11.GL_TRIANGLES, start, count);
 	}
 	
 	@Override

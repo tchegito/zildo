@@ -18,7 +18,7 @@
  *
  */
 
-package zildo.platform.opengl;
+package zildo.platform.opengl.utils;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

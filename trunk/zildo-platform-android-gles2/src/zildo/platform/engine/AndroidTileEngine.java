@@ -20,8 +20,7 @@
 
 package zildo.platform.engine;
 
-import javax.microedition.khronos.opengles.GL10;
-
+import shader.Shaders;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
@@ -29,9 +28,7 @@ import zildo.fwk.gfx.primitive.TileGroupPrimitive.ActionNthRunner;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 import zildo.monde.util.Vector3f;
-import zildo.platform.opengl.AndroidOpenGLGestion;
 import zildo.platform.opengl.AndroidPixelShaders;
-import zildo.platform.opengl.Shaders;
 import android.opengl.GLES20;
 
 // V1.0
@@ -76,14 +73,10 @@ import android.opengl.GLES20;
 
 public class AndroidTileEngine extends TileEngine {
 
-	GL10 gl10;
-
 	Shaders shaders;
 	
 	public AndroidTileEngine(TextureEngine texEngine) {
 		super(texEngine);
-    	gl10 = AndroidOpenGLGestion.gl10;
-    	
     	shaders = AndroidPixelShaders.shaders;
 	}
 	

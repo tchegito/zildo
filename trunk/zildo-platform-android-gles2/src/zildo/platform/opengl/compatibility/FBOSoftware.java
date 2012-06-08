@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import zildo.fwk.opengl.compatibility.FBO;
-import zildo.platform.opengl.GLUtils;
+import zildo.platform.opengl.utils.GLUtils;
 
 /**
  * @author eboussaton

@@ -20,13 +20,9 @@
 
 package zildo.platform.filter;
 
-import javax.microedition.khronos.opengles.GL11;
-
-import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.CircleFilter;
-import zildo.platform.opengl.AndroidOpenGLGestion;
 import zildo.platform.opengl.AndroidOrtho;
 
 /**
@@ -61,18 +57,17 @@ import zildo.platform.opengl.AndroidOrtho;
  */
 public class AndroidCircleFilter extends CircleFilter {
 
-	GL11 gl11;
 	AndroidOrtho ortho;
 	
 	public AndroidCircleFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
-    	gl11 = (GL11) AndroidOpenGLGestion.gl10;
     	ortho = (AndroidOrtho) ClientEngineZildo.ortho;
 	}
 	
 	@Override
 	public boolean renderFilter() {
 		
+		/*
 		// Get on top of screen and disable blending
 		gl11.glMatrixMode(GL11.GL_MODELVIEW);
 		gl11.glLoadIdentity();
@@ -125,6 +120,7 @@ public class AndroidCircleFilter extends CircleFilter {
 		gl11.glMatrixMode(GL11.GL_MODELVIEW);
 		gl11.glDisable(GL11.GL_BLEND);
 
+*/
 		return true;
 	}
 }
