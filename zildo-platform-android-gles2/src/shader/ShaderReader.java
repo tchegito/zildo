@@ -1,4 +1,4 @@
-package zildo.platform.opengl;
+package shader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,6 +7,12 @@ import java.io.InputStreamReader;
 
 import zildo.fwk.script.xml.ScriptReader;
 
+/**
+ * Read a 'shader' file and extract 2 string sections : vertex and fragment.
+ * 
+ * @author Tchegito
+ *
+ */
 public class ShaderReader {
 
 	String vertexCode;
@@ -20,7 +26,7 @@ public class ShaderReader {
 	 * @param filename file name without the extension (.shader)
 	 */
 	public ShaderReader(String shadername) {
-        String filename = "shaders/"+shadername+".shader";
+        String filename = "shader/glsl/"+shadername+".shader";
         InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
         if (stream == null) {
         	stream = ScriptReader.class.getClassLoader().getResourceAsStream(filename);

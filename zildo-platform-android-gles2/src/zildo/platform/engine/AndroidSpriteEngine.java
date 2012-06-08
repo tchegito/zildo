@@ -20,13 +20,13 @@
 
 package zildo.platform.engine;
 
+import shader.Shaders;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.monde.util.Vector3f;
 import zildo.platform.opengl.AndroidPixelShaders;
-import zildo.platform.opengl.Shaders;
 import android.opengl.GLES20;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.
@@ -95,7 +95,6 @@ public class AndroidSpriteEngine extends SpriteEngine {
 				GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texId);
 
 				// Select the right pixel shader (if needed)
-				// FIXME: shader disabled for now (there's no ARBShaderObjects)
 				/*
                 if (pixelShaderSupported) {
                 	switch (currentFX) {
@@ -140,7 +139,7 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	                	break;
 	                default:
 	                	color[3]=alpha / 255.0f;
-	                	textureEngine.graphicStuff.setCurrentColor(color);
+	                	shaders.setColor(color[0], color[1], color[2], color[3]);
 	                	GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
                 }
 				meshSprites[numBank].render(nbQuads);

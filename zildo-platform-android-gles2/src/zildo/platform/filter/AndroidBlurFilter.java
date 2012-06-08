@@ -20,18 +20,13 @@
 
 package zildo.platform.filter;
 
-import javax.microedition.khronos.opengles.GL11;
-
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BlurFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
-import zildo.platform.opengl.AndroidOpenGLGestion;
 
 public class AndroidBlurFilter extends BlurFilter {
 
-	GL11 gl11;
-	
 	final int nImages=10;
 	final float startCoeff=0.3f;
 	final float incCoeff=0.1f;
@@ -47,7 +42,6 @@ public class AndroidBlurFilter extends BlurFilter {
 			texBuffer[i]=graphicStuff.generateTexture(sizeX, sizeY);
 		}
 		currentImage=0;
-		gl11 = (GL11) AndroidOpenGLGestion.gl10;
 	}
 	
 	@Override
@@ -57,6 +51,7 @@ public class AndroidBlurFilter extends BlurFilter {
 		
 		graphicStuff.fbo.endRendering();
 		
+		/*
 		// Get on top of screen and disable blending
 		gl11.glMatrixMode(GL11.GL_MODELVIEW);
 		gl11.glLoadIdentity();
@@ -99,6 +94,7 @@ public class AndroidBlurFilter extends BlurFilter {
 		// Switch
 		currentImage=(currentImage + 1) % nImages;
 
+*/
 		return result;
 	}
 	
@@ -116,9 +112,11 @@ public class AndroidBlurFilter extends BlurFilter {
 	@Override
 	public void doOnInactive(FilterEffect effect) {
 		ClientEngineZildo.openGLGestion.setZ(0);
+		/*
 		if (gl11 != null) {
 			gl11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		}
+		*/
    		nImagesSaved=0;
    		currentImage=0;
 	}

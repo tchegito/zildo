@@ -20,13 +20,13 @@
 
 package zildo.platform.filter;
 
+import shader.Shaders;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.util.Vector4f;
 import zildo.platform.opengl.AndroidPixelShaders;
-import zildo.platform.opengl.Shaders;
 import android.opengl.GLES20;
 
 /**

@@ -20,13 +20,14 @@
 
 package zildo.platform.opengl;
 
-import javax.microedition.khronos.opengles.GL11;
-
+import shader.Shaders;
 import zildo.Zildo;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
+import zildo.platform.opengl.utils.Bufferizer;
+import zildo.platform.opengl.utils.ShortBufferizer;
 import android.opengl.GLES20;
 import android.util.Log;
 
@@ -47,7 +48,6 @@ import android.util.Log;
  */
 public class AndroidOrtho extends Ortho {
 
-	GL11 gl11;
 	Shaders shaders;
 	
 	// Private buffer in order to draw boxes (OpenGL ES doesn't allow single vertex definition
@@ -57,8 +57,7 @@ public class AndroidOrtho extends Ortho {
 
 	public AndroidOrtho(int width, int height) {
 		super(width, height);
-		
-		gl11 = (GL11) AndroidOpenGLGestion.gl10;
+
 		verticesBuffer = new ShortBufferizer((Zildo.viewPortX+1) * 2 * 64);
 		texCoordBuffer = new Bufferizer((Zildo.viewPortX+1) * 2 * 64);
 	}

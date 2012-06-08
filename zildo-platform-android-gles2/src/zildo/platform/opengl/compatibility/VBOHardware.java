@@ -26,7 +26,7 @@ import java.util.Map;
 import javax.microedition.khronos.opengles.GL11;
 
 import zildo.fwk.opengl.compatibility.VBOBuffers;
-import zildo.platform.opengl.GLUtils;
+import zildo.platform.opengl.utils.GLUtils;
 import android.opengl.GLES20;
 
 public class VBOHardware extends VBOSoftware {

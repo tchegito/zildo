@@ -18,7 +18,7 @@
  *
  */
 
-package zildo.platform.opengl;
+package shader;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
@@ -27,6 +27,7 @@ import zildo.Zildo;
 import zildo.monde.util.Vector2f;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
+import zildo.platform.opengl.AndroidPixelShaders;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.util.Log;
@@ -37,9 +38,18 @@ import android.util.Log;
  */
 public class Shaders {
 	
-	// programs
-	int mPTexturedOrtho;
-	int mPUntexturedOrtho;
+	enum GLShaders {
+		// Basic one (flat and textured)
+		uniColor, textured,
+		// Filters
+		blendFilter, circleFilter,
+		// Specific for guards, and wounded enemies
+		switchColor;
+		
+		public int id;	// program id
+	}
+	
+	final static int nbShaders = GLShaders.values().length;
 	
 	// attribute handles
 	int hTexturedPosition;
@@ -63,26 +73,25 @@ public class Shaders {
 		
 		aps = p_aps;
 		
-		// Create all basic shaders
-		mPTexturedOrtho = aps.loadCompleteShader("textured");
+		// Compile and link all shaders
+		for (GLShaders sh : GLShaders.values()) {
+			sh.id = aps.loadCompleteShader(sh.toString());
+		}
+		
+		//mPTexturedOrtho = aps.loadCompleteShader("textured");
         // get handle to the shader attributes
-		hTexturedPosition = GLES20.glGetAttribLocation(mPTexturedOrtho, "vPosition");
-		hTexturedTexPosition = GLES20.glGetAttribLocation(mPTexturedOrtho, "TexCoord");
+		hTexturedPosition = GLES20.glGetAttribLocation(GLShaders.textured.id, "vPosition");
+		hTexturedTexPosition = GLES20.glGetAttribLocation(GLShaders.textured.id, "TexCoord");
 		// get handle to shader uniforms
-		hTexturedOrthoMatrix = GLES20.glGetUniformLocation(mPTexturedOrtho, "uMVPMatrix");
-		hTextureIndex = GLES20.glGetUniformLocation(mPTexturedOrtho, "sTexture");
+		hTexturedOrthoMatrix = GLES20.glGetUniformLocation(GLShaders.textured.id, "uMVPMatrix");
+		hTextureIndex = GLES20.glGetUniformLocation(GLShaders.textured.id, "sTexture");
 
+		hTexturedColor = GLES20.glGetUniformLocation(GLShaders.textured.id, "CurColor");
+		hTextureTranslation = GLES20.glGetUniformLocation(GLShaders.textured.id, "vTranslate");
 		
-		
-		mPUntexturedOrtho = aps.loadCompleteShader("uniColor");
-
-		hUntexturedPosition = GLES20.glGetAttribLocation(mPUntexturedOrtho, "vPosition");
-		hUntexturedOrthoMatrix = GLES20.glGetUniformLocation(mPUntexturedOrtho, "uMVPMatrix");
-
-		
-		hColor = GLES20.glGetUniformLocation(mPUntexturedOrtho, "CurColor");
-		hTexturedColor = GLES20.glGetUniformLocation(mPTexturedOrtho, "CurColor");
-		hTextureTranslation = GLES20.glGetUniformLocation(mPTexturedOrtho, "vTranslate");
+		hUntexturedPosition = GLES20.glGetAttribLocation(GLShaders.uniColor.id, "vPosition");
+		hUntexturedOrthoMatrix = GLES20.glGetUniformLocation(GLShaders.uniColor.id, "uMVPMatrix");
+		hColor = GLES20.glGetUniformLocation(GLShaders.uniColor.id, "CurColor");
 		
 		
 		Log.d("shaders", "handle for hTexturedOrthoMatrix = "+hTexturedOrthoMatrix);
@@ -105,7 +114,7 @@ public class Shaders {
 	public void drawTexture(ShortBuffer verticesBuffer, FloatBuffer textureBuffer,
 							int elementType, int start, int count) {
 		// Add program to OpenGL environment
-        GLES20.glUseProgram(mPTexturedOrtho);
+        GLES20.glUseProgram(GLShaders.textured.id);
         
         // Prepare the vertices data
         GLES20.glVertexAttribPointer(hTexturedPosition, 2, GLES20.GL_UNSIGNED_SHORT, false, 0, verticesBuffer);
@@ -127,7 +136,7 @@ public class Shaders {
 	public void drawIndicedAndTexture(ShortBuffer verticesBuffer, FloatBuffer textureBuffer,
 									  ShortBuffer indicesBuffer, int elementType, int count) {
 		// Add program to OpenGL environment
-        GLES20.glUseProgram(mPTexturedOrtho);
+        GLES20.glUseProgram(GLShaders.textured.id);
         
         // Prepare the vertices data
         GLES20.glVertexAttribPointer(hTexturedPosition, 2, GLES20.GL_UNSIGNED_SHORT, false, 0, verticesBuffer);
@@ -144,8 +153,8 @@ public class Shaders {
 		GLES20.glUniformMatrix4fv(hTexturedOrthoMatrix, 1, false, orthoMatrix, 0);
 
 		GLES20.glDrawElements(elementType, count, GLES20.GL_UNSIGNED_SHORT, indicesBuffer);
-		
 	}
+
 	/**
 	 * Draw untextured elements in orthographic mode.
 	 * @param verticesBuffer
@@ -154,14 +163,14 @@ public class Shaders {
 	 */
 	public void drawUntexture(ShortBuffer verticesBuffer, int elementType, int count) {
 		// Add program to OpenGL environment
-        GLES20.glUseProgram(mPUntexturedOrtho);
+        GLES20.glUseProgram(GLShaders.uniColor.id);
         
         // Prepare the triangle data
         GLES20.glVertexAttribPointer(hUntexturedPosition, 2, GLES20.GL_UNSIGNED_SHORT, false, 0, verticesBuffer);
         GLES20.glEnableVertexAttribArray(hUntexturedPosition);
 
 		GLES20.glUniformMatrix4fv(hUntexturedOrthoMatrix, 1, false, orthoMatrix, 0);
-		GLES20.glUniform4f(hTexturedColor, curColor.x, curColor.y, curColor.z, curColor.w);
+		GLES20.glUniform4f(hColor, curColor.x, curColor.y, curColor.z, curColor.w);
 
         GLES20.glDrawArrays(elementType, 0, count);
 	}
