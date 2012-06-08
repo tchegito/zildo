@@ -20,9 +20,6 @@
 
 package zildo.monde.sprites.elements;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.collection.IntSet;
@@ -43,8 +40,6 @@ import zildo.server.EngineZildo;
 //TODO: Remove getter/setter for x,y,z
 
 public class Element extends SpriteEntity {
-
-	protected static Logger logger = Logger.getLogger("Element");
 
 	// Elements that Zildo can throw on enemies
 	private static IntSet damageableElements = new IntSet(0, 1, 11, 12, 2, 38,
@@ -133,7 +128,6 @@ public class Element extends SpriteEntity {
 
 	@Override
 	public void finalize() {
-		logger.log(Level.INFO, "Deleting Element");
 		linkedPerso = null;
 
 	}
