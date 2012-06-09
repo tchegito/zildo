@@ -22,15 +22,17 @@ package shader;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 import zildo.Zildo;
+import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
 import zildo.platform.opengl.AndroidPixelShaders;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
-import android.util.Log;
 
 /**
  * @author Tchegito
@@ -38,7 +40,7 @@ import android.util.Log;
  */
 public class Shaders {
 	
-	enum GLShaders {
+	public enum GLShaders {
 		// Basic one (flat and textured)
 		uniColor, textured,
 		// Filters
@@ -47,27 +49,41 @@ public class Shaders {
 		switchColor;
 		
 		public int id;	// program id
+		// One map for all shaders
+		static Map<String, Integer> uniforms = new HashMap<String, Integer>();
+		
+		public void setUniforms(String... names) {
+			for (String s : names) {
+				int uniformId = GLES20.glGetUniformLocation(id, s);
+				uniforms.put(""+id+s, uniformId);
+			}
+		}
+		
+		public int getUniform(String name) {
+			return uniforms.get(""+id+name);	// Beware to NPE !!!
+		}
 	}
 	
 	final static int nbShaders = GLShaders.values().length;
 	
 	// attribute handles
 	int hTexturedPosition;
-	int hTextureTranslation;
 	int hUntexturedPosition;
 	int hTexturedTexPosition;
-	int hTexturedOrthoMatrix;
-	int hUntexturedOrthoMatrix;
-	int hTextureIndex;
-	int hColor;
-	int hTexturedColor;
 	
 	float[] orthoMatrix;
 	
+	// All varying values
 	Vector4f curColor = new Vector4f(1, 1, 1, 1);
 	Vector2f translation = new Vector2f(0, 0);
+	int squareSize;
+	int radius;
+	Vector2f center = new Vector2f(0, 0);
+	
+	GLShaders current = GLShaders.textured;	// Default is 'textured'
 	
 	AndroidPixelShaders aps;
+	
 	
 	public Shaders(AndroidPixelShaders p_aps) {
 		
@@ -77,30 +93,17 @@ public class Shaders {
 		for (GLShaders sh : GLShaders.values()) {
 			sh.id = aps.loadCompleteShader(sh.toString());
 		}
-		
-		//mPTexturedOrtho = aps.loadCompleteShader("textured");
+
+		GLShaders.textured.setUniforms("uMVPMatrix", "sTexture", "CurColor", "vTranslate");
+		GLShaders.uniColor.setUniforms("uMVPMatrix", "CurColor");
+		GLShaders.blendFilter.setUniforms("uMVPMatrix", "sTexture", "squareSize");
+		GLShaders.circleFilter.setUniforms("uMVPMatrix", "sTexture", "radius", "center");
+
         // get handle to the shader attributes
 		hTexturedPosition = GLES20.glGetAttribLocation(GLShaders.textured.id, "vPosition");
 		hTexturedTexPosition = GLES20.glGetAttribLocation(GLShaders.textured.id, "TexCoord");
-		// get handle to shader uniforms
-		hTexturedOrthoMatrix = GLES20.glGetUniformLocation(GLShaders.textured.id, "uMVPMatrix");
-		hTextureIndex = GLES20.glGetUniformLocation(GLShaders.textured.id, "sTexture");
-
-		hTexturedColor = GLES20.glGetUniformLocation(GLShaders.textured.id, "CurColor");
-		hTextureTranslation = GLES20.glGetUniformLocation(GLShaders.textured.id, "vTranslate");
 		
 		hUntexturedPosition = GLES20.glGetAttribLocation(GLShaders.uniColor.id, "vPosition");
-		hUntexturedOrthoMatrix = GLES20.glGetUniformLocation(GLShaders.uniColor.id, "uMVPMatrix");
-		hColor = GLES20.glGetUniformLocation(GLShaders.uniColor.id, "CurColor");
-		
-		
-		Log.d("shaders", "handle for hTexturedOrthoMatrix = "+hTexturedOrthoMatrix);
-		Log.d("shaders", "handle for hTexturedPosition = "+hTexturedPosition);
-		Log.d("shaders", "handle for hTexturedTexPosition = "+hTexturedTexPosition);
-		Log.d("shaders", "handle for hColor = "+hColor);
-		Log.d("shaders", "handle for hTexturedColor = "+hTexturedColor);
-		Log.d("shaders", "handle for hTextureTranslation = "+hTextureTranslation);
-
 	}
 	
 	/**
@@ -114,7 +117,7 @@ public class Shaders {
 	public void drawTexture(ShortBuffer verticesBuffer, FloatBuffer textureBuffer,
 							int elementType, int start, int count) {
 		// Add program to OpenGL environment
-        GLES20.glUseProgram(GLShaders.textured.id);
+        GLES20.glUseProgram(current.id);
         
         // Prepare the vertices data
         GLES20.glVertexAttribPointer(hTexturedPosition, 2, GLES20.GL_SHORT, false, 0, verticesBuffer);
@@ -124,11 +127,13 @@ public class Shaders {
         GLES20.glVertexAttribPointer(hTexturedTexPosition, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
         GLES20.glEnableVertexAttribArray(hTexturedTexPosition);
         
+        int hTextureIndex = current.getUniform("sTexture");
         GLES20.glUniform1i(hTextureIndex, 0); 
         
+        int hTexturedOrthoMatrix = current.getUniform("uMVPMatrix");
 		GLES20.glUniformMatrix4fv(hTexturedOrthoMatrix, 1, false, orthoMatrix, 0);
-		GLES20.glUniform2f(hTextureTranslation, translation.x, translation.y);
-		GLES20.glUniform4f(hTexturedColor, curColor.x, curColor.y, curColor.z, curColor.w);
+		
+		specificShaders();
 
         GLES20.glDrawArrays(elementType, start, count);
 	}
@@ -136,7 +141,7 @@ public class Shaders {
 	public void drawIndicedAndTexture(ShortBuffer verticesBuffer, FloatBuffer textureBuffer,
 									  ShortBuffer indicesBuffer, int elementType, int count) {
 		// Add program to OpenGL environment
-        GLES20.glUseProgram(GLShaders.textured.id);
+        GLES20.glUseProgram(current.id);
         
         // Prepare the vertices data
         GLES20.glVertexAttribPointer(hTexturedPosition, 2, GLES20.GL_SHORT, false, 0, verticesBuffer);
@@ -146,13 +151,32 @@ public class Shaders {
         GLES20.glVertexAttribPointer(hTexturedTexPosition, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
         GLES20.glEnableVertexAttribArray(hTexturedTexPosition);
         
+        int hTextureIndex = current.getUniform("sTexture");
         GLES20.glUniform1i(hTextureIndex, 0); 
-		GLES20.glUniform2f(hTextureTranslation, translation.x, translation.y);
-		GLES20.glUniform4f(hTexturedColor, curColor.x, curColor.y, curColor.z, curColor.w);
 
+        int hTexturedOrthoMatrix = current.getUniform("uMVPMatrix");
 		GLES20.glUniformMatrix4fv(hTexturedOrthoMatrix, 1, false, orthoMatrix, 0);
 
+		specificShaders();
+
 		GLES20.glDrawElements(elementType, count, GLES20.GL_UNSIGNED_SHORT, indicesBuffer);
+	}
+	
+	private void specificShaders() {
+		switch (current) {
+			case blendFilter:
+				GLES20.glUniform1i(current.getUniform("squareSize"), squareSize);
+				break;
+			case circleFilter:
+				GLES20.glUniform1i(current.getUniform("radius"), radius);
+				GLES20.glUniform2f(current.getUniform("center"), center.x, center.y);
+				System.out.println("radius="+radius+" center="+center);
+				break;
+			default:
+				GLES20.glUniform4f(current.getUniform("CurColor"), curColor.x, curColor.y, curColor.z, curColor.w);
+				GLES20.glUniform2f(current.getUniform("vTranslate"), translation.x, translation.y);
+				break;
+		}
 	}
 
 	/**
@@ -169,12 +193,15 @@ public class Shaders {
         GLES20.glVertexAttribPointer(hUntexturedPosition, 2, GLES20.GL_SHORT, false, 0, verticesBuffer);
         GLES20.glEnableVertexAttribArray(hUntexturedPosition);
 
-		GLES20.glUniformMatrix4fv(hUntexturedOrthoMatrix, 1, false, orthoMatrix, 0);
+        int hMatrix = current.getUniform("uMVPMatrix");
+		GLES20.glUniformMatrix4fv(hMatrix, 1, false, orthoMatrix, 0);
+
+		int hColor = current.getUniform("CurColor");
 		GLES20.glUniform4f(hColor, curColor.x, curColor.y, curColor.z, curColor.w);
 
         GLES20.glDrawArrays(elementType, 0, count);
 	}
-
+	
 	public void setColor(Vector3f col) {
 		curColor.set(col.x, col.y, col.z, 1f);
 	}
@@ -201,4 +228,16 @@ public class Shaders {
 		Matrix.orthoM(orthoMatrix, 0, 0, Zildo.viewPortX, Zildo.viewPortY, 0, -1f, 1f);
 	}
 
+	public void setCurrentShader(GLShaders sh) {
+		current = sh;
+	}
+	
+	public void setBlendSquareSize(int size) {
+		squareSize = size;
+	}
+	
+	public void setCircleParams(int radius, Point center) {
+		this.radius = radius;
+		this.center.set(center.x, center.y);
+	}
 }

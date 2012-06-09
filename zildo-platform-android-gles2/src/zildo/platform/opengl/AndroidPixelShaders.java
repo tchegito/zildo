@@ -67,7 +67,7 @@ public class AndroidPixelShaders extends PixelShaders {
         GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compileStatus, 0);
         if (compileStatus[0] == 0) {
             String message = GLES20.glGetShaderInfoLog(shader);
-        	Log.d("shaders", "can't compile, message="+message);
+        	Log.d("shaders", "can't compile, message="+message+" code="+shaderPro);
         } else {
         	Log.d("shaders", "Compilation ok");
         }
@@ -95,6 +95,7 @@ public class AndroidPixelShaders extends PixelShaders {
 		ShaderReader sr = new ShaderReader(shaderName);
 		
 		// Init shaders
+        Log.d("shaders", "shader: "+shaderName);
 		int vertexShader = doCreateShader(sr.getVertexCode(), false);
         int fragmentShader = doCreateShader(sr.getFragmentCode(), true);
         

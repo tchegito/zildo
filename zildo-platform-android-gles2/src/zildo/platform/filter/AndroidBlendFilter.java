@@ -20,10 +20,15 @@
 
 package zildo.platform.filter;
 
+import shader.Shaders;
+import shader.Shaders.GLShaders;
+import android.opengl.GLES20;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BlendFilter;
+import zildo.monde.sprites.Reverse;
 import zildo.platform.opengl.AndroidOrtho;
+import zildo.platform.opengl.AndroidPixelShaders;
 
 /**
  * Draw boxes more and more large onto the screen, to get a soft focus effect.
@@ -38,10 +43,17 @@ public class AndroidBlendFilter extends BlendFilter {
 	static final int SQUARE_SIZE = 20;
 	
 	AndroidOrtho ortho;
+	Shaders shaders;
 	
 	public AndroidBlendFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
     	ortho = (AndroidOrtho) ClientEngineZildo.ortho;
+    	shaders = AndroidPixelShaders.shaders;
+    	
+		// Flip the image vertically
+		super.startInitialization();
+		updateQuad(0, 0, 0, 0, Reverse.VERTICAL);
+		super.endInitialization();
 	}
 	
 	private int getCurrentSquareSize() {
@@ -54,67 +66,29 @@ public class AndroidBlendFilter extends BlendFilter {
 
 
 		graphicStuff.fbo.endRendering();
-
-		if (currentSquareSize == 1) {
-			return true;
-		}
-
-		/*
-		// Get on top of screen and disable blending
-		gl11.glMatrixMode(GL11.GL_MODELVIEW);
-		gl11.glLoadIdentity();
-		gl11.glMatrixMode(GL11.GL_PROJECTION);
-		gl11.glPushMatrix();
-		gl11.glTranslatef(0,sizeY,0);
-		gl11.glScalef(1, -1, 1);
 		
 		// FIXME: was previously 3f
-		gl11.glColor4f(1f, 1f, 1f, 1f);
+		shaders.setColor(1f, 1f, 1f, 1f);
 		
 		// Draw squares
-		int nSquareX=Zildo.viewPortX / currentSquareSize;
-		int nSquareY=Zildo.viewPortY / currentSquareSize;
-		gl11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-		gl11.glDisable(GL11.GL_BLEND);
-		
-		int ii = 0;
-		float sizeIi = 0;
-		float pasIi = currentSquareSize / (float) ScreenFilter.realY;
-		int sizeBuffer = 64;
-		for (int i=0;i<nSquareY+1;i++) {
-			if (i % sizeBuffer == 0) {
-				ortho.initOptiDraw();
-			}
-			int jj = 0;
-			float sizeJj = 0;
-			float pasJj= currentSquareSize / (float) ScreenFilter.realX;
-			for (int j=0;j<nSquareX+1;j++) {
-				ortho.addPointTexturedOpti(jj, ii, sizeJj, sizeIi);
-				jj += currentSquareSize;
-				sizeJj += pasJj;
-			}
-			ii += currentSquareSize;
-			sizeIi += pasIi;
-			if (i % sizeBuffer == (sizeBuffer-1)) {
-				ortho.drawGlPoints(currentSquareSize);
-			}
-		}
-		if (nSquareY % sizeBuffer != (sizeBuffer-1)) {
-			ortho.drawGlPoints(currentSquareSize);
-		}
-		gl11.glPopMatrix();
-		
-		gl11.glMatrixMode(GL11.GL_MODELVIEW);
-*/
+		// Select right texture
+		GLES20.glActiveTexture(0);
+		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureID);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+
+		// Draw texture
+		shaders.setCurrentShader(GLShaders.blendFilter);
+		shaders.setBlendSquareSize(currentSquareSize);
+		super.render();
+		shaders.setCurrentShader(GLShaders.textured);
+
 
 		return true;
 	}
 
 	@Override
 	public void preFilter() {
-		if (getCurrentSquareSize() == 1) {
-			return;
-		}
 		// Copy last texture in TexBuffer
 		graphicStuff.fbo.bindToTextureAndDepth(textureID, depthTextureID, fboId);
 		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
