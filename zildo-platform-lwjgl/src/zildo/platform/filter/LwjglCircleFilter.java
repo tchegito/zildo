@@ -64,6 +64,12 @@ public class LwjglCircleFilter extends CircleFilter {
 	}
 	
 	@Override
+	public void setCenter(int p_x, int p_y) {
+		center.x = p_x;
+		center.y = Zildo.viewPortY - p_y;
+	}
+	
+	@Override
 	public boolean renderFilter() {
 		
 		// Get on top of screen and disable blending
