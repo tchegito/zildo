@@ -71,6 +71,6 @@ public abstract class CircleFilter extends FadeScreenFilter {
 		
 	public void setCenter(int p_x, int p_y) {
 		center.x = p_x;
-		center.y = Zildo.viewPortY - p_y;
+		center.y = p_y;
 	}
 }

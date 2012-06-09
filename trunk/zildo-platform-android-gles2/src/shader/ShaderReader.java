@@ -26,7 +26,7 @@ public class ShaderReader {
 	 * @param filename file name without the extension (.shader)
 	 */
 	public ShaderReader(String shadername) {
-        String filename = "shader/glsl/"+shadername+".shader";
+        String filename = "shader/essl/"+shadername+".shader";
         InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
         if (stream == null) {
         	stream = ScriptReader.class.getClassLoader().getResourceAsStream(filename);

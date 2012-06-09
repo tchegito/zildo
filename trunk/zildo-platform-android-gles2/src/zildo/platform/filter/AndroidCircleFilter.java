@@ -20,10 +20,15 @@
 
 package zildo.platform.filter;
 
+import shader.Shaders;
+import shader.Shaders.GLShaders;
+import android.opengl.GLES20;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.CircleFilter;
+import zildo.monde.sprites.Reverse;
 import zildo.platform.opengl.AndroidOrtho;
+import zildo.platform.opengl.AndroidPixelShaders;
 
 /**
  * Draws a circle around a specific center (Zildo !).<br/>
@@ -58,69 +63,53 @@ import zildo.platform.opengl.AndroidOrtho;
 public class AndroidCircleFilter extends CircleFilter {
 
 	AndroidOrtho ortho;
+	Shaders shaders;
 	
 	public AndroidCircleFilter(GraphicStuff graphicStuff) {
+		
 		super(graphicStuff);
     	ortho = (AndroidOrtho) ClientEngineZildo.ortho;
+    	shaders = AndroidPixelShaders.shaders;
+    	
+		// Flip the image vertically
+		super.startInitialization();
+		updateQuad(0, 0, 0, 0, Reverse.VERTICAL);
+		super.endInitialization();
 	}
 	
 	@Override
 	public boolean renderFilter() {
 		
-		/*
-		// Get on top of screen and disable blending
-		gl11.glMatrixMode(GL11.GL_MODELVIEW);
-		gl11.glLoadIdentity();
-		gl11.glMatrixMode(GL11.GL_PROJECTION);
-		gl11.glPushMatrix();
-		gl11.glTranslatef(0,sizeY,0);
-		gl11.glScalef(1, -1, 1);
-		
-		// FIXME: Was previously color3f
-		gl11.glColor4f(1f, 1f, 1f, 1f);
-		
-		gl11.glDisable(GL11.GL_TEXTURE_2D);
-
+		ClientEngineZildo.filterCommand.displayActive();
 		int radius = (int) (coeffLevel * (255 - getFadeLevel())); // + 20;
-		int radiusSquare = (int) Math.pow(radius, 2);
-		int col = 3;
-		
-		int sizeA = center.y - radius;
-		int sizeB = Zildo.viewPortY - (center.y + radius);
 
-		// 1) Draw the two areas outside the circle
-		if (sizeA > 0) {
-			ClientEngineZildo.ortho.boxOpti(0, 0, Zildo.viewPortX, sizeA, col, null);
-		}
-		if (sizeB > 0) {
-			ClientEngineZildo.ortho.boxOpti(0, center.y + radius, Zildo.viewPortX, sizeB, col, null);
-		}
-		
-		// 2) Draw the circle area
-		int startI = Math.max(0, sizeA);
-		int endI = Math.min(Zildo.viewPortY, center.y + radius);
-		
-		gl11.glColor4f(0, 0, 0, 1f);
-		ortho.initOptiDraw();
-		for (int i=startI;i<endI;i++) {
-			int start = (int) Math.pow(i-center.y, 2);
 
-			// Calculate DELTA and 2 roots x1 & x2
-			double delta = 4 * (radiusSquare - start);
-			double squareRootDelta = Math.sqrt(delta);
-			int x1 = (int) (center.x - squareRootDelta / 2);
-			int x2 = (int) (center.x + squareRootDelta / 2);
-			
-			ortho.addBoxOpti(0, i, x1, 1);
-			ortho.addBoxOpti(x2, i, Zildo.viewPortX - x2, 1);
-		}
-		ortho.drawBufferized(GL11.GL_TRIANGLES, false);
-		gl11.glPopMatrix();
+		graphicStuff.fbo.endRendering();
 		
-		gl11.glMatrixMode(GL11.GL_MODELVIEW);
-		gl11.glDisable(GL11.GL_BLEND);
+		// FIXME: was previously 3f
+		shaders.setColor(1f, 1f, 1f, 1f);
+		
+		// Draw squares
+		// Select right texture
+		GLES20.glActiveTexture(0);
+		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureID);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
 
-*/
+		// Draw texture
+		shaders.setCurrentShader(GLShaders.circleFilter);
+		shaders.setCircleParams(radius, center);
+		super.render();
+		shaders.setCurrentShader(GLShaders.textured);
 		return true;
+	}
+	
+	@Override
+	public void preFilter() {
+		// Copy last texture in TexBuffer
+		graphicStuff.fbo.bindToTextureAndDepth(textureID, depthTextureID, fboId);
+		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
+		//gl11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
+
 	}
 }
