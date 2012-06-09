@@ -12,10 +12,10 @@ void main(){
 }
 
 [FRAGMENT]
-uniform vec4 Color1;
-uniform vec4 Color2;
-uniform vec4 Color3;
-uniform vec4 Color4;
+uniform lowp vec4 Color1;
+uniform lowp vec4 Color2;
+uniform lowp vec4 Color3;
+uniform lowp vec4 Color4;
 uniform sampler2D tex;
 
 varying mediump vec2 vTexCoord;
