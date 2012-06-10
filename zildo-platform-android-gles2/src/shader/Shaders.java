@@ -46,7 +46,7 @@ public class Shaders {
 		// Filters
 		blendFilter, circleFilter,
 		// Specific for guards, and wounded enemies
-		switchColor;
+		switchColor, wounded;
 		
 		public int id;	// program id
 		// One map for all shaders
@@ -79,7 +79,8 @@ public class Shaders {
 	int squareSize;
 	int radius;
 	Vector2f center = new Vector2f(0, 0);
-	Vector4f[] switchedColors;
+	Vector4f[] switchedColors = new Vector4f[4];
+	Vector4f woundedColor = new Vector4f(1, 1, 1, 1);
 	
 	GLShaders current = GLShaders.textured;	// Default is 'textured'
 	
@@ -100,6 +101,11 @@ public class Shaders {
 		hTexturedTexPosition = GLES20.glGetAttribLocation(GLShaders.textured.id, "TexCoord");
 		
 		hUntexturedPosition = GLES20.glGetAttribLocation(GLShaders.uniColor.id, "vPosition");
+		
+		// Init switched colors array
+		for (int i=0;i<switchedColors.length;i++) {
+			switchedColors[i] = new Vector4f(0, 0, 0, 0);
+		}
 	}
 	
 	/**
@@ -166,14 +172,15 @@ public class Shaders {
 			case circleFilter:
 				GLES20.glUniform1i(current.getUniform("radius"), radius);
 				GLES20.glUniform2f(current.getUniform("center"), center.x, center.y);
-				System.out.println("radius="+radius+" center="+center);
 				break;
 			case switchColor:
-				System.out.println("switch colors !");
 				uniform4f(current.getUniform("Color1"), switchedColors[0]);
 				uniform4f(current.getUniform("Color2"), switchedColors[1]);
 				uniform4f(current.getUniform("Color3"), switchedColors[2]);
 				uniform4f(current.getUniform("Color4"), switchedColors[3]);
+				break;
+			case wounded:
+				uniform4f(current.getUniform("randomColor"), woundedColor);
 				break;
 			default:
 				uniform4f(current.getUniform("CurColor"), curColor);
@@ -253,5 +260,9 @@ public class Shaders {
 		switchedColors[1].set(tab[3]);
 		switchedColors[2].set(tab[0]);
 		switchedColors[3].set(tab[1]);
+	}
+	
+	public void setWoundedColor(Vector4f v) {
+		woundedColor.set(v);
 	}
 }
