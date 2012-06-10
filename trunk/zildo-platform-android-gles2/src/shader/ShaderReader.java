@@ -4,11 +4,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import zildo.fwk.script.xml.ScriptReader;
 
 /**
- * Read a 'shader' file and extract 2 string sections : vertex and fragment.
+ * Read a 'shader' file and extract 2 string sections : vertex and fragment.<p/>
+ * 
+ * Extract uniform fields and provide them via a return method : {@link #getUniforms()}.
  * 
  * @author Tchegito
  *
@@ -20,6 +26,10 @@ public class ShaderReader {
 	
 	final static String delimiterVertex = "[VERTEX]";
 	final static String delimiterFragment = "[FRAGMENT]";
+	
+	Pattern uniformParser = Pattern.compile("uniform .* (.*);(.*)");
+	
+	List<String> uniforms = new ArrayList<String>();
 	
 	/**
 	 * Constructs the shader reader.
@@ -46,6 +56,8 @@ public class ShaderReader {
 	        		sb.setLength(0);
 	        		check--;
 	        	} else {
+	        		// Look for uniform
+	        		parseUniform(strLine);
 	        		sb.append(strLine).append("\n");
 	        	}
 	        }
@@ -66,6 +78,13 @@ public class ShaderReader {
         }
 	}
 	
+	private void parseUniform(String str) {
+		Matcher m = uniformParser.matcher(str);
+		if (m.matches()) {
+			uniforms.add(m.group(1));
+		}
+	}
+	
 	public String getVertexCode() {
 		return vertexCode;
 	}
@@ -73,4 +92,9 @@ public class ShaderReader {
 	public String getFragmentCode() {
 		return fragmentCode;
 	}
+	
+	public String[] getUniforms() {
+		return uniforms.toArray(new String[] {});
+	}
+
 }
