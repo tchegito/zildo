@@ -182,6 +182,7 @@ public class Element extends SpriteEntity {
 			fx *= 4;
 			fy *= 4;
 			fz *= 4;
+			fall();
 		}
 	}
 
@@ -239,8 +240,7 @@ public class Element extends SpriteEntity {
 		}
 		// Out of the map
 		Area map = EngineZildo.mapManagement.getCurrentMap();
-		if (x < 0 || y < 0 || x > map.getDim_x() * 16
-				|| y > map.getDim_y() * 16) {
+		if (map.isOutside((int) x, (int) y)) {
 			return true;
 		}
 		return false;

@@ -30,6 +30,8 @@ import zildo.server.EngineZildo;
 
 public class PersoHen extends PersoNJ {
 
+	int countSound;
+	
     public PersoHen(int x, int y) {
     	super();
         // Add a shadow
@@ -46,16 +48,16 @@ public class PersoHen extends PersoNJ {
 
         if (linkedPerso != null && !flying) {
             // In Zildo's arms
-            if (attente == 0) {
+            if (countSound == 0) {
                 // Play a hen random sound
                 BankSound snd = BankSound.Poule1;
                 if (Hasard.lanceDes(5)) {
                     snd = BankSound.Poule2;
                 }
                 EngineZildo.soundManagement.broadcastSound(snd, new Point(x, y));
-                attente = 24;
+                countSound = 24;
             } else {
-                attente--;
+            	countSound--;
             }
             info = PersoInfo.NEUTRAL;
         } else {
@@ -64,6 +66,14 @@ public class PersoHen extends PersoNJ {
             shadow.y+=2;
         }
         
+    }
+    
+    /* (non-Javadoc)
+     * @see zildo.monde.sprites.elements.Element#fall()
+     */
+    @Override
+    public void fall() {
+		flying = false;
     }
 
     @Override
