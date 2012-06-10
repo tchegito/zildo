@@ -79,6 +79,7 @@ public class Shaders {
 	int squareSize;
 	int radius;
 	Vector2f center = new Vector2f(0, 0);
+	Vector4f[] switchedColors;
 	
 	GLShaders current = GLShaders.textured;	// Default is 'textured'
 	
@@ -91,13 +92,8 @@ public class Shaders {
 		
 		// Compile and link all shaders
 		for (GLShaders sh : GLShaders.values()) {
-			sh.id = aps.loadCompleteShader(sh.toString());
+			aps.loadCompleteShader(sh);
 		}
-
-		GLShaders.textured.setUniforms("uMVPMatrix", "sTexture", "CurColor", "vTranslate");
-		GLShaders.uniColor.setUniforms("uMVPMatrix", "CurColor");
-		GLShaders.blendFilter.setUniforms("uMVPMatrix", "sTexture", "squareSize");
-		GLShaders.circleFilter.setUniforms("uMVPMatrix", "sTexture", "radius", "center");
 
         // get handle to the shader attributes
 		hTexturedPosition = GLES20.glGetAttribLocation(GLShaders.textured.id, "vPosition");
@@ -172,11 +168,22 @@ public class Shaders {
 				GLES20.glUniform2f(current.getUniform("center"), center.x, center.y);
 				System.out.println("radius="+radius+" center="+center);
 				break;
+			case switchColor:
+				System.out.println("switch colors !");
+				uniform4f(current.getUniform("Color1"), switchedColors[0]);
+				uniform4f(current.getUniform("Color2"), switchedColors[1]);
+				uniform4f(current.getUniform("Color3"), switchedColors[2]);
+				uniform4f(current.getUniform("Color4"), switchedColors[3]);
+				break;
 			default:
-				GLES20.glUniform4f(current.getUniform("CurColor"), curColor.x, curColor.y, curColor.z, curColor.w);
+				uniform4f(current.getUniform("CurColor"), curColor);
 				GLES20.glUniform2f(current.getUniform("vTranslate"), translation.x, translation.y);
 				break;
 		}
+	}
+
+	private void uniform4f(int uniformId, Vector4f v) {
+		GLES20.glUniform4f(uniformId, v.x, v.y, v.z, v.w);
 	}
 
 	/**
@@ -239,5 +246,12 @@ public class Shaders {
 	public void setCircleParams(int radius, Point center) {
 		this.radius = radius;
 		this.center.set(center.x, center.y);
+	}
+	
+	public void setSwitchColors(Vector4f[] tab) {
+		switchedColors[0].set(tab[2]);
+		switchedColors[1].set(tab[3]);
+		switchedColors[2].set(tab[0]);
+		switchedColors[3].set(tab[1]);
 	}
 }

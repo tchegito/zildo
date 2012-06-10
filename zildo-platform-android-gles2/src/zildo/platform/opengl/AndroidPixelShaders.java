@@ -24,6 +24,7 @@ import java.nio.ByteBuffer;
 
 import shader.ShaderReader;
 import shader.Shaders;
+import shader.Shaders.GLShaders;
 
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.util.Vector4f;
@@ -46,7 +47,7 @@ public class AndroidPixelShaders extends PixelShaders {
 	
 	@Override
 	public boolean canDoPixelShader() {
-        return false;
+        return true;
 	}
 	
 	@Override
@@ -84,14 +85,18 @@ public class AndroidPixelShaders extends PixelShaders {
 	}
 	
 
+	public class ShReturn {
+		public int programId;
+		public String[] uniforms;
+	}
 
 	/**
-	 * Compile both vertex and fragment shader, and return linked program reference.
-	 * @param vertexCode
-	 * @param pixelCode
-	 * @return int
+	 * Compile both vertex and fragment shader, and link program reference.<br/>
+	 * The uniform field are automatically parsed and set into the given GLShaders.
+	 * @param GLShaders
 	 */
-	public int loadCompleteShader(String shaderName) {
+	public void loadCompleteShader(GLShaders sh) {
+		String shaderName = sh.toString();
 		ShaderReader sr = new ShaderReader(shaderName);
 		
 		// Init shaders
@@ -116,6 +121,7 @@ public class AndroidPixelShaders extends PixelShaders {
             GLES20.glDeleteProgram(mProgram);
             mProgram = 0;
         }
-        return mProgram;
+        sh.id = mProgram;
+        sh.setUniforms(sr.getUniforms());
 	}
 }
