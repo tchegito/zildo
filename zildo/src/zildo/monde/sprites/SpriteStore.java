@@ -111,7 +111,7 @@ public class SpriteStore {
 	
 		entity.setVisible(visible);
 	
-		entity.setSpecialEffect(EngineFX.FONT_HIGHLIGHT);
+		entity.setSpecialEffect(EngineFX.NO_EFFECT);
 	
 		spawnSprite(entity);
 	
