@@ -21,11 +21,13 @@
 package zildo.platform.engine;
 
 import shader.Shaders;
+import shader.Shaders.GLShaders;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.monde.util.Vector3f;
+import zildo.monde.util.Vector4f;
 import zildo.platform.opengl.AndroidPixelShaders;
 import android.opengl.GLES20;
 
@@ -95,16 +97,20 @@ public class AndroidSpriteEngine extends SpriteEngine {
 				GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texId);
 
 				// Select the right pixel shader (if needed)
-				/*
+				
                 if (pixelShaderSupported) {
                 	switch (currentFX) {
                 	case NO_EFFECT:
-						ARBShaderObjects.glUseProgramObjectARB(0);
+						shaders.setCurrentShader(GLShaders.textured);
 						break;
                 	case PERSO_HURT:
 						// A sprite has been hurt
+						shaders.setCurrentShader(GLShaders.wounded);
+						shaders.setWoundedColor(new Vector4f((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
+                		/*
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(1));
-						ClientEngineZildo.pixelShaders.setParameter(1, "randomColor", new Vector4f((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
+						ClientEngineZildo.pixelShaders.setParameter(1, "randomColor", );
+						*/
 						break;
 					default:
 						if (currentFX.needPixelShader()) {
@@ -112,17 +118,20 @@ public class AndroidSpriteEngine extends SpriteEngine {
 							Vector4f[] tabColors=ClientEngineZildo.pixelShaders.getConstantsForSpecialEffect(currentFX);
 		
 							// And enable the 'color replacement' pixel shader
-							ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(0));
+							shaders.setCurrentShader(GLShaders.switchColor);
+							shaders.setSwitchColors(tabColors);
+							/*
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color1", tabColors[2]);
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color2", tabColors[3]);
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color3", tabColors[0].scale(color[0]));
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color4", tabColors[1].scale(color[0]));
+							*/
 						} else {
-							ARBShaderObjects.glUseProgramObjectARB(0);
+							shaders.setCurrentShader(GLShaders.textured);
 						}
                 	}
                 }
-                */
+                
                 switch (currentFX) {
 	                case SHINY:
 	                	GLES20.glBlendFunc(GLES20.GL_SRC_COLOR, GLES20.GL_ONE); // _MINUS_SRC_ALPHA);
@@ -149,11 +158,9 @@ public class AndroidSpriteEngine extends SpriteEngine {
 
 		// Deactivate pixel shader
 		if (pixelShaderSupported) {
-			//ARBShaderObjects.glUseProgramObjectARB(0);
+			shaders.setCurrentShader(GLShaders.textured);
 		}
 		GLES20.glDisable(GLES20.GL_BLEND);
-		//GLES20.glDisable(GLES20.GL_TEXTURE_2D);
-		
 	}
 
 }
