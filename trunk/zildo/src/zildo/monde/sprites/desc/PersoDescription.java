@@ -84,6 +84,7 @@ public enum PersoDescription implements SpriteDescription {
 	KING(224),
 	SINGER(230),
 	FIRETHING(232, 233, 234, 235),
+	RAT(236, 237, 238, 239, 240, 241, 242, 243),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
