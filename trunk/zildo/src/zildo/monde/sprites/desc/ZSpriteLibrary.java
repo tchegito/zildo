@@ -1,7 +1,6 @@
 package zildo.monde.sprites.desc;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ZSpriteLibrary {
@@ -92,6 +91,14 @@ public class ZSpriteLibrary {
 				list.add(desc);
 			}
 		}
-		list.addAll(Arrays.asList(GearDescription.values()));
+		for (GearDescription descGear : GearDescription.values()) {
+			switch (descGear) {		
+			case GREEN_DOOR_OPENING:
+			case CAVE_KEYDOOR_OPENING:
+				break;
+			default:
+				list.add(descGear);
+			}
+		}
 	}
 }
