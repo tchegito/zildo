@@ -116,7 +116,7 @@ public class TransferObject {
 	}
 	
 	public boolean isOpen() {
-		return channel.isOpen();
+		return channel != null && channel.isOpen();
 	}
 
 	public void close() {
