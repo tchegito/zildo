@@ -36,7 +36,8 @@ public enum GearDescription implements SpriteDescription {
 	BOULDER,
 	
 	CAVE_SIMPLEDOOR, CAVE_MASTERDOOR, CAVE_KEYDOOR,
-	
+	CAVE_KEYDOOR_OPENING,
+
 	BOULDER2;
 	
 	public int getBank() {
@@ -62,6 +63,7 @@ public enum GearDescription implements SpriteDescription {
 			case GREEN_DOOR:
 			case GREEN_DOOR_OPENING:
 			case CAVE_SIMPLEDOOR:
+			case CAVE_KEYDOOR:
 				return true;
 			default:
 				return false;

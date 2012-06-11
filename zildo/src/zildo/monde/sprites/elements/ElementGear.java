@@ -58,6 +58,8 @@ public class ElementGear extends Element {
 			GearDescription gearDesc = (GearDescription) desc;
 			switch (gearDesc) {
 			case GREEN_DOOR:
+			case CAVE_SIMPLEDOOR:
+			case CAVE_KEYDOOR:
 				int keys = p_perso.getCountKey();
 				if (keys != 0) {
 					acting = true;
@@ -108,6 +110,18 @@ public class ElementGear extends Element {
 							break;
 						case 20:
 							dying = true;
+					}
+					count++;
+					break;
+				case CAVE_KEYDOOR:
+				case CAVE_KEYDOOR_OPENING:
+					switch (count) {
+					case 10:
+						setDesc(GearDescription.CAVE_KEYDOOR_OPENING);
+						EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlockDouble, this);
+						break;
+					case 20:
+						dying = true;
 					}
 					count++;
 					break;

@@ -53,9 +53,11 @@ public class Gears extends SpriteBanque {
 				new Zone(248, 48, 24, 16),	// Master key
 				new Zone(272, 48, 24, 16),  // Regular key
 				
+				
+				new Zone(288, 64, 24, 16),	// Regular key opening
+
 				/* Explodable wall */
 				new Zone(296, 48, 16, 16)
-				
 				
 		};
 		
