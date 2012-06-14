@@ -98,4 +98,12 @@ public enum MouvementPerso {
 		this != OBSERVE &&
 		this != WAKEUP;
 	}
+	
+	/**
+	 * Does the character looking for Zildo ?
+	 * @return TRUE = he look for / FALSE = he can't be in alert
+	 */
+	public boolean isAlertable() {
+		return this != RAT && this != ELECTRIC;
+	}
 }

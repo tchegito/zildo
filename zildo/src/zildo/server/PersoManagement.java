@@ -36,6 +36,7 @@ import zildo.monde.sprites.persos.PersoGardeVert;
 import zildo.monde.sprites.persos.PersoHen;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoRabbit;
+import zildo.monde.sprites.persos.PersoRat;
 import zildo.monde.sprites.persos.PersoShadowed;
 import zildo.monde.sprites.persos.PersoSquirrel;
 import zildo.monde.sprites.persos.PersoVolant;
@@ -183,6 +184,9 @@ public class PersoManagement {
 				break;
 			case CHAUVESOURIS:
 				perso = new PersoBat();
+				break;
+			case RAT:
+				perso = new PersoRat();
 				break;
 			default:
 				perso = new PersoNJ();

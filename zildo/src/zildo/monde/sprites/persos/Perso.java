@@ -457,8 +457,8 @@ public abstract class Perso extends Element {
 				}
 			}
 			if (mapManagement.collide(xx, yy, this)) {
-				xx = (int) x;
-				yy = (int) y;
+				xx = x;
+				yy = y;
 			}
 		}
 		return new Pointf(xx, yy);
