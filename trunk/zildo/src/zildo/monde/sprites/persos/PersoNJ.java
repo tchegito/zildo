@@ -97,7 +97,9 @@ public class PersoNJ extends Perso {
 		project(cx, cy, 6);
 		this.setMouvement(MouvementZildo.TOUCHE);
 		this.setWounded(true);
-		this.setAlerte(true); // Zildo is detected, if it wasn't done !
+		if (quel_deplacement.isAlertable()) {
+			this.setAlerte(true); // Zildo is detected, if it wasn't done !
+		}
 		this.setPv(getPv() - p_damage);
 		this.setSpecialEffect(EngineFX.PERSO_HURT);
 
@@ -270,10 +272,7 @@ public class PersoNJ extends Perso {
 					if (pathFinder.getTarget() != null && this.getX() == pathFinder.getTarget().x
 							&& this.getY() == pathFinder.getTarget().y) {
 						pathFinder.setTarget(null);
-						if (!isGhost() && quel_deplacement != MouvementPerso.BEE
-								&& (quel_deplacement != MouvementPerso.RAT || Hasard.lanceDes(8))) {
-							setAttente(10 + (int) (Math.random() * 20));
-						}
+						destinationReached();
 					}
 					if (!isGhost() && info == PersoInfo.ENEMY && !isAlerte()) {
 						setAlerte(lookForZildo(angle));
@@ -306,7 +305,7 @@ public class PersoNJ extends Perso {
 						float vitesse = pathFinder.speed;
 						if (quel_deplacement == MouvementPerso.RAT) {
 							// Script du rat => plus rapide, et crache des pierres}
-							vitesse += 1;
+							vitesse += 1.5;
 							pos_seqsprite = pos_seqsprite % (8 * Constantes.speed - 1);
 							if (quel_spr == PersoDescription.CRABE && Math.random() * 40 == 2) {
 								// On crache une boule de pierre}
@@ -533,6 +532,23 @@ public class PersoNJ extends Perso {
 		case FIRETHING:
 			add_spr = 0;
 			break;
+		case RAT:
+			add_spr = angle.value * 2;
+			if (angle == Angle.EST){
+				reverse = Reverse.HORIZONTAL;
+			} else {
+				reverse = Reverse.NOTHING;
+				if (angle == Angle.OUEST) {
+					add_spr = 2;
+				}
+			}
+			int varying = (getPos_seqsprite() % (4 * Constantes.speed)) / (2 * Constantes.speed);
+			if (angle.isHorizontal()) {
+				add_spr += varying;
+			} else if (varying == 1) {
+				reverse = (reverse == Reverse.HORIZONTAL) ? Reverse.NOTHING : Reverse.HORIZONTAL;
+			}
+			break;
 		default:
 			add_spr = angle.value * 2 + (getPos_seqsprite() % (4 * Constantes.speed)) / (2 * Constantes.speed);
 			break;
@@ -598,8 +614,8 @@ public class PersoNJ extends Perso {
 				setX(sx);
 				setY(sy);
 				setPos_seqsprite(0);
-				setAlerte(false);
 				pathFinder.setTarget(null);
+				setAlerte(false);
 				setAttente(10);
 				// On replace la zone de déplacement autour de l'ennemi
 				setZone_deplacement(EngineZildo.mapManagement.range(x - 16 * 5, y - 16 * 5, x + 16 * 5, y + 16 * 5));
@@ -626,10 +642,21 @@ public class PersoNJ extends Perso {
 
 	}
 
-	/*
-	 * {_Renvoie TRUE si Zildo est dans les parages _Le monstre qui le cherche … l'index 'i'}
+	protected void destinationReached() {
+		if (!isGhost() && quel_deplacement != MouvementPerso.BEE
+				&& (quel_deplacement != MouvementPerso.RAT || Hasard.lanceDes(8))) {
+			setAttente(10 + (int) (Math.random() * 20));
+		}
+	}
+
+	/**
+	 * Look for Zildo around him, only if the character is "alertable".
+	 * @return TRUE = Zildo is around the character / FALSE = not in the field of view
 	 */
 	boolean lookForZildo(Angle p_angle) {
+		if (!quel_deplacement.isAlertable()) {
+			return false;
+		}
 		int dix, diy;
 		boolean temp, r;
 		final int DISTANCEMAX = 16 * 6;
