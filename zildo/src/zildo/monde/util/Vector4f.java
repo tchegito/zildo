@@ -38,7 +38,7 @@ public class Vector4f {
     }
 	
 	public Vector4f(Vector4f v) {
-		set(v.x, v.y, v.z, v.w);
+		set(v);
 	}
 	
     public void set(float x, float y, float z, float w)
@@ -49,6 +49,10 @@ public class Vector4f {
         this.w = w;
     }
     
+    public void set(Vector4f v) {
+    	set(v.x, v.y, v.z, v.w);
+    }
+    
     public Vector4f scale(float scale)
     {
         x *= scale;
@@ -56,5 +60,10 @@ public class Vector4f {
         z *= scale;
         w *= scale;
         return this;
+    }
+    
+    @Override
+	public String toString() {
+    	return "x:"+x+", y:"+y+", z:"+z+", w:"+w;
     }
 }
