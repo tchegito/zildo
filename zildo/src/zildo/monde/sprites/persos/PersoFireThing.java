@@ -109,6 +109,14 @@ public class PersoFireThing extends PersoNJ {
 		super.animate(compteur_animation);
 	}
 	
+	@Override
+	public void manageCollision() {
+		// Collision with head, middle and tail (not the eyes)
+		super.manageCollision();
+		tail.manageCollision();
+		middle.manageCollision();
+	}
+	
 	private void orderElements(Element... elements) {
 		int startZ = 0;
 		for (Element e : elements) {
