@@ -22,7 +22,7 @@ public class PersoBat extends PersoShadowed {
 	}
 	
 	@Override
-	public void animate(int compteur_animation) {
+	public void move() {
 		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		if (!alerte) {
 			// Detects Zildo
@@ -63,7 +63,6 @@ public class PersoBat extends PersoShadowed {
 				}
 			}
 		}
-		super.animate(compteur_animation);
 	}
 	
 	@Override

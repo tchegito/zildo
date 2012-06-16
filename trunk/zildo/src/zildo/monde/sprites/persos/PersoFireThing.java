@@ -56,7 +56,7 @@ public class PersoFireThing extends PersoNJ {
 	
 	float keepy = -999;
 	@Override
-	public void animate(int compteur_animation) {
+	public void move() {
 		if (pv == 0) {	//TODO: should be integrated in common part
 			return;
 		}
@@ -65,20 +65,25 @@ public class PersoFireThing extends PersoNJ {
 			keepy = y;
 		}
 		// Move
-		float xx=x + (float) (speed * Math.cos(direction));
-		float yy=keepy + (float) (speed * Math.sin(direction));
-		Pointf pos = new Pointf(xx, yy);
-		if (EngineZildo.mapManagement.collide((int) xx, (int) yy, this)) {
-			direction+=Math.PI/2;
-			pos.x = x;
-			pos.y = keepy;
-			y = keepy;
+		Pointf pos = new Pointf(x, keepy);
+		if (px == 0f && py == 0f) {
+			float xx=x + (float) (speed * Math.cos(direction));
+			float yy=keepy + (float) (speed * Math.sin(direction));
+			pos = new Pointf(xx, yy);
+			if (EngineZildo.mapManagement.collide((int) xx, (int) yy, this)) {
+				direction+=Math.PI/2;
+				pos.x = x;
+				pos.y = keepy;
+				y = keepy;
+			} else {
+				x = xx;
+				y = yy;
+			}
+			positions.add(0, pos);
 		} else {
-			x = xx;
-			y = yy;
+			positions.add(0, pos);
+			y = keepy;
 		}
-		positions.add(0, pos);
-		
 		if (positions.size() > 6) {
 			pos = positions.get(6);
 		}
@@ -106,7 +111,6 @@ public class PersoFireThing extends PersoNJ {
 		}
 		direction+=0.01f;
 		
-		super.animate(compteur_animation);
 	}
 	
 	@Override
