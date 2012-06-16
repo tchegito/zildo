@@ -322,6 +322,7 @@ public class PersoNJ extends Perso {
 						pathFinder.determineDestination();
 					}
 					float vitesse = pathFinder.speed;
+					/*
 					if (quel_deplacement == MouvementPerso.RAT) {
 						// Script du rat => plus rapide, et crache des pierres}
 						vitesse += 1.5;
@@ -339,7 +340,7 @@ public class PersoNJ extends Perso {
 					} else if (quel_deplacement == MouvementPerso.ELECTRIC) {
 						vitesse = 0.2f;
 					}
-
+*/
 					if (pathFinder.getTarget() != null) { // Move character if he has a target
 						Pointf loc = pathFinder.reachDestination(vitesse);
 						boolean hasCollided = loc.x == x && loc.y == y;

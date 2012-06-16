@@ -248,6 +248,11 @@ public class TriggerElement extends AnyElement {
 		return name;
 	}
 
+	public void reset() {
+		parse(xmlElement);
+		done = false;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
