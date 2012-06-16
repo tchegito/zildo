@@ -269,7 +269,7 @@ public class ScriptManagement {
     	if( quest != null) {
     		quest.done = false;
     		for (TriggerElement trigger : quest.getTriggers()) {
-    			trigger.done = false;
+    			trigger.reset();
     		}
     	}
     }

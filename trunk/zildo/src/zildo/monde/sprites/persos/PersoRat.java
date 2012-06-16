@@ -22,7 +22,6 @@ package zildo.monde.sprites.persos;
 
 import zildo.monde.Hasard;
 import zildo.monde.sprites.Reverse;
-import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.resource.Constantes;
 
@@ -30,13 +29,13 @@ import zildo.resource.Constantes;
  * @author Tchegito
  *
  */
-public class PersoRat extends PersoShadowed {
+public class PersoRat extends PersoNJ {
 
 	int waitingCount;
 	
 	public PersoRat() {
-		super(ElementDescription.SHADOW_SMALL, 2);
-		pathFinder.speed = 0;
+		super();
+		pathFinder.speed = 1.5f;
 		pv = 2;
 	}
 

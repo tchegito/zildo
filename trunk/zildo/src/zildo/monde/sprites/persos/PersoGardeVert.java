@@ -62,7 +62,7 @@ public class PersoGardeVert extends PersoNJ {
 		// On affiche la tête du garde vert
 		Iterator<Element> it=this.persoSprites.iterator();
 		Element teteGarde=it.next();
-		//TODO: found why we use an array 'mouvetete' on the nSpr property. getMouvement() seems to always return 0.
+
 		teteGarde.setNSpr(PersoDescription.HAUT_GARDEVERT.first() + (angle.value + mouvetete[cptMouvement])  % 4);
 		teteGarde.setX(x);
 		teteGarde.setY(y);
