@@ -136,8 +136,21 @@ public class PersoNJ extends Perso {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// animate
 	// /////////////////////////////////////////////////////////////////////////////////////
-	// Move a PNJ to his location (dx,dy) set by determineDestination()
+	// Common animation for PNJ. D
+	// Move a PNJ to his target location (dx,dy) set by determineDestination()
 	// /////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Common animation for PNJ. Do following things: <ol>
+	 * <li>Run <b>custom action</b>, if any</li>
+	 * <li>Is he dead, or dialoguing ? If so, quit.</li>
+	 * <li><b>Jump</b> movement, if he is doing so.</li>
+	 * <li><b>Projection</b>, if character is being wounded.</li>
+	 * <li><b>Reach</b> his target, if any.</li>
+	 * <li>Common move based on {@link MouvementPerso}.</li>
+	 * <li>Call to specific {@link #move()} method.</li>
+	 * </ol>
+	 * @param compteur_animation
+	 */
 	@Override
 	public void animate(int compteur_animation) {
 
@@ -152,12 +165,10 @@ public class PersoNJ extends Perso {
 			return;
 		}
 
-		float sx = getX(), sy = getY();
-		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 
 		if (mouvement == MouvementZildo.SAUTE) {
 			moveJump();
-		} else if (zildo != null) {
+		} else {
 			if (px != 0.0f || py != 0.0f) {
 				// Le perso s'est fait toucher !}
 				Pointf location = tryMove(x + px, y + py);
@@ -171,190 +182,195 @@ public class PersoNJ extends Perso {
 				}
 			}
 
-			// TODO: Poor attempt to bypass the code below. We need to do better !
-			if (desc == PersoDescription.FIRETHING || desc == PersoDescription.CHAUVESOURIS) {
-				return;
-			}
-			
-			if (isAlerte() && MouvementPerso.VOLESPECTRE != quel_deplacement
-					&& MouvementPerso.ZONEARC != quel_deplacement) {
-				// Zildo has been caught, so the monster try to reach him, or run away (hen)
-				boolean fear = quel_deplacement.isAfraid();
-				reachAvoidTarget(zildo, fear);
-				walkTile(true);
-			} else {
-				switch (quel_deplacement) {
-				case VOLESPECTRE:
-					double beta;
-					if (cptMouvement == 100) {
-						if (desc == PersoDescription.CORBEAU) {
-							// Corbeau : on centre la zone de d‚placement sur Zildo}
-							int pasx, pasy;
-							if ((int) zildo.x / 16 > x / 16) {
-								pasx = 16;
-							} else {
-								pasx = -16;
-							}
-							if ((int) zildo.y / 16 > y / 16) {
-								pasy = 16;
-							} else {
-								pasy = -16;
-							}
-							zone_deplacement.incX1(pasx * 3);
-							zone_deplacement.incY1(pasy * 3);
-							zone_deplacement.incX2(pasx * 3);
-							zone_deplacement.incY2(pasy * 3);
-						}
-						attente = 1 + (int) Math.random() * 5;
-						if (pathFinder.getTarget() == null || desc == PersoDescription.CORBEAU) {
-							pathFinder.determineDestination();
-						}
-						cptMouvement = 0;
-					} else if (attente != 0) {
-						attente--;
-					} else {
-						if (desc == PersoDescription.CORBEAU) {
-							if (pos_seqsprite != 0) {
-								pos_seqsprite = (4 * Constantes.speed) + (pos_seqsprite - 4 * Constantes.speed + 1)
-										% (8 * Constantes.speed);
-							} else {
-								// Est-ce que Zildo est dans les parages ?}
-								beta = x - zildo.x;
-								float vitesse = y - zildo.y;
-								beta = Math.sqrt(beta * beta + vitesse * vitesse);
-								if (beta < 16 * 5) {
-									pos_seqsprite = 4 * Constantes.speed;
-								}
-								break;
-							}
-						}
-						// On se déplace en courbe
-						pathFinder.reachDestination(0); // Speed is unused
-						cptMouvement++;
-					}
-					break;
-				case HEN:
-					if (z > 0) { // La poule est en l'air, elle n'est plus libre de ses mouvements
-						physicMoveWithCollision();
-					} // Sinon elle agit comme les scripts de zone
-					break;
-				case ZONEARC:
-					if (!isWounded() && isAlerte()) {
-						// Get the enemy aligned with Zildo to draw arrows
-						int xx = (int) getX();
-						int yy = (int) getY();
-						int deltaX = Math.abs((int) (zildo.x - xx));
-						int deltaY = Math.abs((int) (zildo.y - yy));
-						if (deltaX <= 1 || deltaY <= 1) {
-							// Get sight on Zildo and shoot !
-							sight(zildo, false);
-							action = new ShotArrowAction(this);
-							break;
-						}
-						// Gets on a right position to shoot Zildo
-						if (deltaX <= deltaY) {
-							pathFinder.setTarget(new Point(zildo.x, yy));
-						} else {
-							pathFinder.setTarget(new Point(xx, zildo.y));
-						}
-					} else if (lookForZildo(angle)) {
-						setAlerte(true);
-					}
-					break;
-				case WAKEUP:
-					pos_seqsprite++;
-					break;
-				default:
-					break;
-				}
-				if (quel_deplacement != MouvementPerso.OBSERVE &&
-						quel_deplacement != MouvementPerso.VOLESPECTRE) {
-					if (pathFinder.getTarget() != null && this.getX() == pathFinder.getTarget().x
-							&& this.getY() == pathFinder.getTarget().y) {
-						pathFinder.setTarget(null);
-						destinationReached();
-					}
-					if (!isGhost() && info == PersoInfo.ENEMY && !isAlerte()) {
-						setAlerte(lookForZildo(angle));
-					}
-					if (this.getAttente() != 0) {
-						if (desc == PersoDescription.BAS_GARDEVERT) {
-							// Garde vert => Il tourne la tˆte pour faire une ronde}
-							if (this.getAttente() == 1 && cptMouvement < 2) {
-								if (!alerte
-										&& lookForZildo(Angle.rotate(angle, PersoGardeVert.mouvetete[cptMouvement]))) {
-									alerte = true;
-									EngineZildo.soundManagement.broadcastSound(BankSound.MonstreTrouve, this);
-								}
-								cptMouvement++;
-								setAttente(20);
-							}
-						}
-						else {
-							this.setAttente(getAttente() - 1);
-							// Stop hen's movements when it's flying (TODO : this isn't very clean)
-						}
-					} else if (quel_deplacement != MouvementPerso.HEN || z == 0) {
-						// On déplace le PNJ
-						if (pathFinder.getTarget() == null && quel_deplacement.isMobile()) {
-							// Pas de destination, donc on en fixe une dans la zone de déplacement
-							cptMouvement = 0;
-
-							pathFinder.determineDestination();
-						}
-						float vitesse = pathFinder.speed;
-						if (quel_deplacement == MouvementPerso.RAT) {
-							// Script du rat => plus rapide, et crache des pierres}
-							vitesse += 1.5;
-							pos_seqsprite = pos_seqsprite % (8 * Constantes.speed - 1);
-							if (quel_spr == PersoDescription.CRABE && Math.random() * 40 == 2) {
-								// On crache une boule de pierre}
-								pos_seqsprite = 8 * Constantes.speed;
-								EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.ROCKBALL, (int) x,
-										(int) y,
-										(int) (angle.value + Math.random() * 4) // Attention : math.random() était 'i'
-																				// en pascal
-										, null, null);
-								attente = (int) (Math.random() * 5);
-							}
-						} else if (quel_deplacement == MouvementPerso.ELECTRIC) {
-							vitesse = 0.2f;
-						}
-
-						if (pathFinder.getTarget() != null) { // Move character if he has a target
-							Pointf loc = pathFinder.reachDestination(vitesse);
-							boolean hasCollided = loc.x == x && loc.y == y;
-							x = loc.x;
-							y = loc.y;
-
-							walkTile(true);
-
-							// suite_mouvement
-							if (quel_deplacement == MouvementPerso.ELECTRIC) {
-								angle = Angle.NORD;
-
-							} else if (quel_deplacement == MouvementPerso.BEE) {
-								angle = Angle.fromInt(angle.value & 2);
-							}
-							if (!quel_deplacement.isFlying() && mouvement!=MouvementZildo.SAUTE) {
-								// Collision ?
-								if (hasCollided) {
-									this.setX(sx);
-									this.setY(sy);
-									pathFinder.collide();
-								} else {
-									this.setPos_seqsprite((getPos_seqsprite() + 1) % 512);
-								}
-							}
-						}
-					}
-				}
-
-			}
+			move();
 		}
 
 	}
 
+	/**
+	 * Move method for PNJ. Classes deriving from this one should override this method
+	 * for specific moves. Note that common one like projection, or target reaching and so on,
+	 * are handled by {@link #animate(int)} method.
+	 */
+	public void move() {
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+		float sx = getX(), sy = getY();
+
+		if (isAlerte() && MouvementPerso.VOLESPECTRE != quel_deplacement
+				&& MouvementPerso.ZONEARC != quel_deplacement) {
+			// Zildo has been caught, so the monster try to reach him, or run away (hen)
+			boolean fear = quel_deplacement.isAfraid();
+			reachAvoidTarget(zildo, fear);
+			walkTile(true);
+		} else {
+			// Common moves
+			switch (quel_deplacement) {
+			case VOLESPECTRE:
+				double beta;
+				if (cptMouvement == 100) {
+					if (desc == PersoDescription.CORBEAU) {
+						// Black bird : focus moving zone on Zildo
+						int pasx, pasy;
+						if ((int) zildo.x / 16 > x / 16) {
+							pasx = 16;
+						} else {
+							pasx = -16;
+						}
+						if ((int) zildo.y / 16 > y / 16) {
+							pasy = 16;
+						} else {
+							pasy = -16;
+						}
+						zone_deplacement.incX1(pasx * 3);
+						zone_deplacement.incY1(pasy * 3);
+						zone_deplacement.incX2(pasx * 3);
+						zone_deplacement.incY2(pasy * 3);
+					}
+					attente = 1 + (int) Math.random() * 5;
+					if (pathFinder.getTarget() == null || desc == PersoDescription.CORBEAU) {
+						pathFinder.determineDestination();
+					}
+					cptMouvement = 0;
+				} else if (attente != 0) {
+					attente--;
+				} else {
+					if (desc == PersoDescription.CORBEAU) {
+						if (pos_seqsprite != 0) {
+							pos_seqsprite = (4 * Constantes.speed) + (pos_seqsprite - 4 * Constantes.speed + 1)
+									% (8 * Constantes.speed);
+						} else {
+							// Est-ce que Zildo est dans les parages ?}
+							beta = x - zildo.x;
+							float vitesse = y - zildo.y;
+							beta = Math.sqrt(beta * beta + vitesse * vitesse);
+							if (beta < 16 * 5) {
+								pos_seqsprite = 4 * Constantes.speed;
+							}
+							break;
+						}
+					}
+					// On se déplace en courbe
+					pathFinder.reachDestination(0); // Speed is unused
+					cptMouvement++;
+				}
+				break;
+			case HEN:
+				if (z > 0) { // La poule est en l'air, elle n'est plus libre de ses mouvements
+					physicMoveWithCollision();
+				} // Sinon elle agit comme les scripts de zone
+				break;
+			case ZONEARC:
+				if (!isWounded() && isAlerte()) {
+					// Get the enemy aligned with Zildo to draw arrows
+					int xx = (int) getX();
+					int yy = (int) getY();
+					int deltaX = Math.abs((int) (zildo.x - xx));
+					int deltaY = Math.abs((int) (zildo.y - yy));
+					if (deltaX <= 1 || deltaY <= 1) {
+						// Get sight on Zildo and shoot !
+						sight(zildo, false);
+						action = new ShotArrowAction(this);
+						break;
+					}
+					// Gets on a right position to shoot Zildo
+					if (deltaX <= deltaY) {
+						pathFinder.setTarget(new Point(zildo.x, yy));
+					} else {
+						pathFinder.setTarget(new Point(xx, zildo.y));
+					}
+				} else if (lookForZildo(angle)) {
+					setAlerte(true);
+				}
+				break;
+			case WAKEUP:
+				pos_seqsprite++;
+				break;
+			default:
+				break;
+			}
+			if (quel_deplacement != MouvementPerso.OBSERVE &&
+					quel_deplacement != MouvementPerso.VOLESPECTRE) {
+				if (pathFinder.getTarget() != null && this.getX() == pathFinder.getTarget().x
+						&& this.getY() == pathFinder.getTarget().y) {
+					pathFinder.setTarget(null);
+					destinationReached();
+				}
+				if (!isGhost() && info == PersoInfo.ENEMY && !isAlerte()) {
+					setAlerte(lookForZildo(angle));
+				}
+				if (this.getAttente() != 0) {
+					if (desc == PersoDescription.BAS_GARDEVERT) {
+						// Turns his head around to look for Zildo
+						if (attente == 1 && cptMouvement < 3) {
+							if (!alerte
+									&& lookForZildo(Angle.rotate(angle, PersoGardeVert.mouvetete[cptMouvement]))) {
+								alerte = true;
+								EngineZildo.soundManagement.broadcastSound(BankSound.MonstreTrouve, this);
+							}
+							cptMouvement++;
+							setAttente(20);
+						}
+					}
+					attente--;
+					// Stop hen's movements when it's flying (TODO : this isn't very clean)
+				} else if (quel_deplacement != MouvementPerso.HEN || z == 0) {
+					// On déplace le PNJ
+					if (pathFinder.getTarget() == null && quel_deplacement.isMobile()) {
+						// Pas de destination, donc on en fixe une dans la zone de déplacement
+						cptMouvement = 0;
+
+						pathFinder.determineDestination();
+					}
+					float vitesse = pathFinder.speed;
+					if (quel_deplacement == MouvementPerso.RAT) {
+						// Script du rat => plus rapide, et crache des pierres}
+						vitesse += 1.5;
+						pos_seqsprite = pos_seqsprite % (8 * Constantes.speed - 1);
+						if (quel_spr == PersoDescription.CRABE && Math.random() * 40 == 2) {
+							// On crache une boule de pierre}
+							pos_seqsprite = 8 * Constantes.speed;
+							EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.ROCKBALL, (int) x,
+									(int) y,
+									(int) (angle.value + Math.random() * 4) // Attention : math.random() était 'i'
+																			// en pascal
+									, null, null);
+							attente = (int) (Math.random() * 5);
+						}
+					} else if (quel_deplacement == MouvementPerso.ELECTRIC) {
+						vitesse = 0.2f;
+					}
+
+					if (pathFinder.getTarget() != null) { // Move character if he has a target
+						Pointf loc = pathFinder.reachDestination(vitesse);
+						boolean hasCollided = loc.x == x && loc.y == y;
+						x = loc.x;
+						y = loc.y;
+
+						walkTile(true);
+
+						// suite_mouvement
+						if (quel_deplacement == MouvementPerso.ELECTRIC) {
+							angle = Angle.NORD;
+
+						} else if (quel_deplacement == MouvementPerso.BEE) {
+							angle = Angle.fromInt(angle.value & 2);
+						}
+						if (!quel_deplacement.isFlying() && mouvement!=MouvementZildo.SAUTE) {
+							// Collision ?
+							if (hasCollided) {
+								this.setX(sx);
+								this.setY(sy);
+								pathFinder.collide();
+							} else {
+								this.setPos_seqsprite((getPos_seqsprite() + 1) % 512);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// initPersoFX
 	// /////////////////////////////////////////////////////////////////////////////////////
