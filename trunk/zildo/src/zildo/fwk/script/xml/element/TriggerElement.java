@@ -249,6 +249,7 @@ public class TriggerElement extends AnyElement {
 	}
 
 	public void reset() {
+		// Set all fields like it was at the beginning
 		parse(xmlElement);
 		done = false;
 	}
