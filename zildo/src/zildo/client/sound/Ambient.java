@@ -46,7 +46,8 @@ public class Ambient {
 		BAR(false, BankMusic.PianoBar),	// 3
 		DESERT(false, BankMusic.Village), // 4
 		CASTLE(false, BankMusic.Chateau),
-		CASTLEINSIDE(false, BankMusic.Chateau);
+		CASTLEINSIDE(false, BankMusic.Chateau),
+		DANGERINSIDE(false, BankMusic.Surprise);
 		
 		public boolean outside;
 		public BankMusic music;
@@ -62,6 +63,7 @@ public class Ambient {
 			case HOUSE:
 			case BAR:
 			case CAVE:
+			case DANGERINSIDE:
 				return 512;
 			case DESERT:
 			    return 256*5 + 59;
