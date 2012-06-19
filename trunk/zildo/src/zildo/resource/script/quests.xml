@@ -329,6 +329,9 @@
 		<condition name="bosquet" exp="bosquet_kill_gards-!bosquet_free_way">
 			<markQuest name="bosquet_kill_gards" value="0"/>
 		</condition>
+		<condition name="polaky" exp="bosquet_free_way">
+		    <remove who="sofiasky"/>
+		</condition>
 	</mapScript>
 	
 	<scene id="preintro">
@@ -849,11 +852,12 @@
     	    <speak who="maltus" text="polaky.maltus.4"/>
     	    <script who="sofiasky" value="3"/>
         </actions>
-        <speak who="ritasky" text="polaky.sofiasky.4"/>
+        <speak who="sofiasky" text="polaky.sofiasky.4"/>
         <actions>
         	<focus who="zildo" delta="true"/>
         	<moveTo who="sofiasky" pos="522,847" unstoppable="true"/>
         </actions>
+        <angle who="sofiasky" value="1"/>
         <moveTo who="maltus" pos="540,847"/>
     </scene>
 </adventure>
