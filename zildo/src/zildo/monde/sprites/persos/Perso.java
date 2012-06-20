@@ -205,6 +205,13 @@ public abstract class Perso extends Element {
 		this.py = py;
 	}
 
+	/**
+	 * Returns TRUE if Zildo is currently being wounded, and projected by shock.
+	 */
+	public boolean isProjected() {
+		return px != 0f || py != 0f;
+	}
+	
 	public int getPos_seqsprite() {
 		return pos_seqsprite;
 	}

@@ -396,14 +396,13 @@ public class MapManagement {
 		float x = p_zildo.getX();
 		float y = p_zildo.getY();
 		// Store the changing point to use it when processing map swap
-		boolean noChange = changingMapPoint == null;
 		if (currentMap != null) {
-			changingMapPoint = currentMap.isChangingMap(x, y, p_zildo
-					.getAngle());
-		}
-		if (changingMapPoint != null && noChange) {
-			// EngineZildo.soundManagement.playSound(BankSound.ZildoMonte,
-			// p_zildo);
+			// Determine angle, according to previous location
+			Angle ang = p_zildo.getAngle();
+			if (p_zildo.isProjected()) {
+				ang = Angle.rotate(ang, 2);	// Zildo is stepping back, so inverse his angle
+			}
+			changingMapPoint = currentMap.isChangingMap(x, y, ang);
 		}
 		return (changingMapPoint != null);
 	}
