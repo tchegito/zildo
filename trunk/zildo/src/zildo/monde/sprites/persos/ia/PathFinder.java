@@ -23,6 +23,7 @@ package zildo.monde.sprites.persos.ia;
 import zildo.monde.Hasard;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoHen;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
@@ -77,18 +78,23 @@ public class PathFinder {
         
     	float velocity=speed == 0 ? p_speed : speed;
         int immo = 0;
+        int move = 0;
         Angle a=mobile.getAngle();
         
         if (x < target.x - 0.5f) {
             pos.x += velocity;
             if (pos.x > target.x) {
                 pos.x = target.x;
+            } else {
+            	move++;
             }
             a=Angle.EST;
         } else if (x > target.x + 0.5f) {
             pos.x -= velocity;
             if (pos.x < target.x) {
                 pos.x = target.x;
+            } else {
+            	move++;
             }
             a=Angle.OUEST;
         } else {
@@ -98,18 +104,31 @@ public class PathFinder {
             pos.y += velocity;
             if (pos.y > target.y + 0.5f) {
                 pos.y = target.y;
+            } else {
+            	move++;
             }
             a=Angle.SUD;
         } else if (y > target.y + 0.5f) {
             pos.y -= velocity;
             if (pos.y < target.y - 0.5f) {
                 pos.y = target.y;
+            } else {
+            	move++;
             }
             a=Angle.NORD;
         } else {
             immo++;
         }
 
+        if (move == 2 && !mobile.getClass().equals(PersoHen.class)) {
+        	// diagonal move ==> adjust with coeff
+            float diffX = pos.x - mobile.x;
+            float diffY = pos.y - mobile.y;
+            float coeff = 0.7f;
+            pos.x = mobile.x + diffX * coeff;
+            pos.y = mobile.y + diffY * coeff;
+        }
+        
         // If there's no movement, stop the target
         if (immo == 2) {
             target=null;

@@ -30,4 +30,13 @@ public class ConditionElement extends AnyElement {
 	public List<ActionElement> getActions() {
 		return actions;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("map:").append(mapName);
+		sb.append(", if:").append(expression);
+		sb.append(", then:").append(actions);
+		return sb.toString();
+	}
 }

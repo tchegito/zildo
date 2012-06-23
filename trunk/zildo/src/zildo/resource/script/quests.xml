@@ -319,7 +319,7 @@
 		<condition name="foretg" exp="foretg_button_trig">
 		    <exec script="foretg_button"/>
 		</condition>
-		<condition name="bosquet" exp="!bosquet_free_way">
+		<condition name="bosquet" exp="!bosquet_free_way-foretg_apres_grotte">
 		    <spawn who="maltus" pos="97,382" type="BANDIT_CHAPEAU"/>
 		</condition>
 		<condition name="polaky1" exp="polaky_mission">
@@ -779,7 +779,7 @@
 	    <angle who="maltus" value="0"/>
 	    <wait value="10"/>
 	    <actions>
-	        <moveTo who="maltus" pos="0,-20" delta="true" speed="2"/>
+	        <moveTo who="maltus" pos="0,-20" delta="true" speed="1"/>
 	        <speak who="maltus" text="foret.maltus.4"/>
      	</actions>
 	    <speak who="maltus" text="foret.zildo.3"/>
@@ -789,7 +789,7 @@
 		<angle who="maltus" angle="1"/>
         <speak who="maltus" text="foret.maltus.7"/>
         <actions>
-	        <moveTo who="zildo" pos="894,380"/>
+	        <moveTo who="zildo" pos="894,400"/>
 	        <moveTo who="maltus" pos="904,447"/>
         </actions>
         <actions>
