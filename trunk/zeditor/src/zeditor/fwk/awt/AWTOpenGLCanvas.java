@@ -137,7 +137,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		}
 		if (changeSprites) {
 			// And the sprites
-			EngineZildo.spriteManagement.updateSprites(false);
+			EngineZildo.spriteManagement.updateSprites(true);
 			ClientEngineZildo.spriteDisplay
 					.setEntities(EngineZildo.spriteManagement
 							.getSpriteEntities(null));
