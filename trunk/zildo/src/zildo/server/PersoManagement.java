@@ -115,7 +115,11 @@ public class PersoManagement {
 	
     public Perso getNamedPerso(String p_name) {
         if (p_name != null && !"".equals(p_name)) {
-            for (Perso p : tab_perso) {
+        	// Iterate in reverse order => useful when map is scrolling
+        	// In this case, we have two maps in memory, and potentially two characters
+        	// with the same name. So, the one on the new map is more interesting.          
+        	for (int i = tab_perso.size() - 1; i>=0; i--) {
+        		Perso p = tab_perso.get(i);
                 if (p_name.equalsIgnoreCase(p.getName())) {
                     return p;
                 }
