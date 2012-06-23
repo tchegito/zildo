@@ -120,7 +120,7 @@ public class PathFinder {
             immo++;
         }
 
-        if (move == 2 && !mobile.getClass().equals(PersoHen.class)) {
+        if (move == 2) {
         	// diagonal move ==> adjust with coeff
             float diffX = pos.x - mobile.x;
             float diffY = pos.y - mobile.y;
