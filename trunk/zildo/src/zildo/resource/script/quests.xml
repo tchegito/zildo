@@ -336,7 +336,9 @@
 	
 	<scene id="preintro">
 		<music name=""/>
+		<fadeOut type="0"/>
 		<map name="preintro"/>
+ 	    <fadeIn type="0"/>
 		<speak what="camera" text="preintro.0"/> 
 		<speak what="camera" text="preintro.1"/> 
 		<speak what="camera" text="preintro.2"/> 
@@ -397,7 +399,7 @@
 	    <wait value="100"/>
 	    <moveTo who="zildo" pos="830,300"/>
 	    <moveTo who="zildo" pos="920,370"/>
-	    <moveTo who="roxy" pos="950,278" unblock="true"/>
+	    <moveTo who="roxy" pos="950,278" unstoppable="true" unblock="true"/>
 	    <moveTo who="zildo" pos="970,370"/>
 	    <moveTo who="zildo" pos="970,292"/>
 	    <angle who="roxy" value="2"/>
@@ -811,12 +813,12 @@
         <speak who="maltus" text="bosquet.maltus.3"/>
         <moveTo who="maltus" pos="97,335" unstoppable="true"/>
         <actions>
-            <moveTo who="maltus" pos="124,312" speed="1"/>
+            <moveTo who="maltus" pos="124,312" unstoppable="true" speed="1"/>
             <moveTo who="zildo" pos="110,325" speed="1"/>
         </actions>
         <actions>
             <speak who="maltus" text="bosquet.maltus.4" unblock="true"/>
-            <moveTo who="maltus" pos="463,312"/>
+            <moveTo who="maltus" pos="463,312" unstoppable="true"/>
             <moveTo who="zildo" pos="463,325"/>
         </actions>
         <actions>
