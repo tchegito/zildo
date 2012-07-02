@@ -677,7 +677,7 @@ public class PersoZildo extends Perso {
 
 				en_bras.setX(objX);
 				en_bras.setY(objY);
-				en_bras.setZ(objZ + variation);
+				en_bras.setZ(objZ - variation);
 			}
 		} else if (mouvement == MouvementZildo.SOULEVE)
 		{

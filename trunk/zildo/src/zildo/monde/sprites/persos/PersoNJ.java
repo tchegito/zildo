@@ -429,6 +429,9 @@ public class PersoNJ extends Perso {
 			break;
 		case POULE:
 			// Poule
+			if (linkedPerso != null) {
+				pos_seqsprite++;
+			}
 			add_spr = (getPos_seqsprite() % (8 * Constantes.speed)) / (2 * Constantes.speed);
 			if (pathFinder.getTarget() != null && (pathFinder.getTarget().x > getX() && !isAlerte())) {
 				add_spr += 4;
