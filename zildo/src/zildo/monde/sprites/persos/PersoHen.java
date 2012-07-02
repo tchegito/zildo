@@ -74,6 +74,7 @@ public class PersoHen extends PersoNJ {
     @Override
     public void fall() {
 		flying = false;
+		linkedPerso = null;
     }
 
     @Override
