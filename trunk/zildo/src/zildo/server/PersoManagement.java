@@ -197,6 +197,9 @@ public class PersoManagement {
 				break;
 		}
 		
+		if (p_desc == PersoDescription.SQUELETTE) {
+			perso.setPv(2);
+		}
 
         perso.setX(x);
         perso.setY(y);
