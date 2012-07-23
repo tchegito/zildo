@@ -795,7 +795,7 @@
 	        <moveTo who="maltus" pos="904,447"/>
         </actions>
         <actions>
-            <moveTo who="maltus" pos="1022,447" speed="1"/>
+            <moveTo who="maltus" pos="1022,447" speed="0.5"/>
             <moveTo who="zildo" pos="1022,427" speed="1"/>
         </actions>
         <moveTo who="maltus" pos="40,0" delta="true"/>

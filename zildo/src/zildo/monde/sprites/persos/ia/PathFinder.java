@@ -23,7 +23,6 @@ package zildo.monde.sprites.persos.ia;
 import zildo.monde.Hasard;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoHen;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
