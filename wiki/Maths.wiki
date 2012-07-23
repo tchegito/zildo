@@ -49,7 +49,7 @@ Dx² + 2 * n *deltaX + n² * deltaX² + Dy² + 2 * Dy * n * deltaY + n² * delta
 
 n² * (deltaX² + deltaY² - speed²) + n * (2 * Dx * deltaX + 2 * Dy * deltaY) + Dx² + Dy² = 0
 </code>
-So we have a typical quadratic equation (Ax² + Bx + c = 0). Let's find the discriminator delta, and resolve it with following variables :
+So we have a typical quadratic equation (Ax² + Bx + C = 0). Let's find the discriminator delta, and resolve it with following variables :
 <code>
 a = deltaX² + deltaY² - speed²
 b = 2 * Dx * deltaX + 2 * Dy * deltaY
