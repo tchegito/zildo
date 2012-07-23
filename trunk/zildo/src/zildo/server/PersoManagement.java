@@ -197,8 +197,14 @@ public class PersoManagement {
 				break;
 		}
 		
-		if (p_desc == PersoDescription.SQUELETTE) {
-			perso.setPv(2);
+		switch (p_desc) {
+			case SQUELETTE:
+				perso.setPv(2);
+				break;
+			case CREATURE:
+				perso.setPv(2);
+				perso.setSpeed(1.5f);
+				break;
 		}
 
         perso.setX(x);
