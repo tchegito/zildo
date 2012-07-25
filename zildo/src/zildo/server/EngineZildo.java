@@ -167,6 +167,7 @@ public class EngineZildo {
 					//TODO: check this ! It's sensitive
 					state.event.chPoint=askedEvent.chPoint;
 				}
+				state.event.mapChange = askedEvent.mapChange;
 				askedEvent=null;
 			}
 		}
@@ -233,6 +234,7 @@ public class EngineZildo {
 				if (!scriptManagement.isScripting()) {
 					retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL;
 				}
+				retEvent.chPoint = null;
 				break;
             case CHANGINGMAP_SCROLLOVER:
             	persoManagement.getZildo().setGhost(false);
