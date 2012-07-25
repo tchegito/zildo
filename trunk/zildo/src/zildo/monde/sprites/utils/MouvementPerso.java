@@ -104,6 +104,6 @@ public enum MouvementPerso {
 	 * @return TRUE = he look for / FALSE = he can't be in alert
 	 */
 	public boolean isAlertable() {
-		return this != RAT && this != ELECTRIC;
+		return this != RAT && this != ELECTRIC && this != BEE;
 	}
 }
