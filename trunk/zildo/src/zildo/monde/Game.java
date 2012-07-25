@@ -28,6 +28,7 @@ import zildo.fwk.script.xml.element.AdventureElement;
 import zildo.fwk.script.xml.element.QuestElement;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.map.Area;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
@@ -84,6 +85,12 @@ public class Game implements EasySerializable {
 			p_buffer.put(item.kind.toString());
 			p_buffer.put(item.level);
 		}
+		
+        // 4: map (since 1.096)
+        Area area = EngineZildo.mapManagement.getCurrentMap();
+        p_buffer.put(area.getName());
+        p_buffer.put((int) zildo.getX());
+        p_buffer.put((int) zildo.getY());
 	}
 
 	/**
@@ -92,7 +99,7 @@ public class Game implements EasySerializable {
 	 * @return Game
 	 */
 	public static Game deserialize(EasyBuffering p_buffer) {
-        Game game = new Game("a4", false);
+        Game game = new Game(null, false);
 
         // 1: quest diary
         int questNumber = p_buffer.readInt();
@@ -121,6 +128,13 @@ public class Game implements EasySerializable {
             String kind = p_buffer.readString();
             int level = p_buffer.readInt();
             items.add(new Item(ItemKind.fromString(kind), level));
+        }
+        
+        // 4: map (since 1.096)
+        if (!p_buffer.eof()) {
+	        game.mapName = p_buffer.readString();
+	        zildo.setX(p_buffer.readInt());
+	        zildo.setY(p_buffer.readInt());
         }
         return game;
     }
