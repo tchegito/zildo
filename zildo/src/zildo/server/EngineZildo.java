@@ -163,7 +163,10 @@ public class EngineZildo {
 				// Use the asked event and reset it
 				state.event.nature=askedEvent.nature;
 				state.event.effect=askedEvent.effect;
-				state.event.chPoint=askedEvent.chPoint;
+				if (askedEvent.chPoint != null) {
+					//TODO: check this ! It's sensitive
+					state.event.chPoint=askedEvent.chPoint;
+				}
 				askedEvent=null;
 			}
 		}
@@ -220,6 +223,7 @@ public class EngineZildo {
 								retEvent.nature = ClientEventNature.CHANGINGMAP_LOADED;
 								break;
 						}
+						retEvent.chPoint = null;
 	                }
             	} else {
             		retEvent.nature = ClientEventNature.NOEVENT;
@@ -237,6 +241,7 @@ public class EngineZildo {
                 ClientEngineZildo.mapDisplay.setPreviousMap(EngineZildo.mapManagement.getPreviousMap());
             	retEvent.nature = ClientEventNature.NOEVENT;
             	retEvent.mapChange = false;
+            	retEvent.chPoint = null;
             	break;
             case DIALOG_FULLDISPLAY:
 	        	dialogManagement.setFullSentenceDisplayed();

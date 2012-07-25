@@ -113,6 +113,7 @@ public class ChainingPoint implements EasySerializable {
 	}
 
 	public ChainingPoint() {
+		done = false;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
