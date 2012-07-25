@@ -110,6 +110,7 @@ public class ScriptExecutor {
 				if (p.isZildo()) {
 					p.setOpen(true);
 				}
+				p.setUnstoppable(false);	// Reset this status
 			}
 			involved.clear();
 			// Focus on Zildo

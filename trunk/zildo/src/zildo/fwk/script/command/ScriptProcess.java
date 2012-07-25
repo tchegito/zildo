@@ -50,6 +50,7 @@ public class ScriptProcess {
 		cursor=0;
 		topPriority = p_topPriority;
 		actionExec=new ActionExecutor(p_scriptExecutor);
+		finalEvent = p_finalEvent;
 		
 		if (scene.restoreZildo) {
 			PersoZildo zildo = EngineZildo.persoManagement.getZildo();

@@ -655,16 +655,16 @@
 	
 	<scene id="stairsUpCornerRight">
 		<sound name="ZildoMonte" />
-		<moveTo who="zildo" pos="0,-9" delta="true" speed="0.2" />
-		<moveTo who="zildo" pos="7,0" delta="true" speed="0.2" />
+		<moveTo who="zildo" pos="0,-7" delta="true" speed="0.2" />
+		<moveTo who="zildo" pos="7,0" delta="true" unstoppable="true" speed="0.2" />
 		<fadeOut type="1" unblock="true" />
 		<wait value="10" />
-		<angle who="zildo" value="0" />
+		<angle who="zildo" value="2" />
 	</scene>
 	
 	<scene id="stairsUpCornerLeft">
 		<sound name="ZildoMonte" />
-		<moveTo who="zildo" pos="0,-9" delta="true" speed="0.2" />
+		<moveTo who="zildo" pos="0,-7" delta="true" speed="0.2" />
 		<moveTo who="zildo" pos="-7,0" delta="true" speed="0.1" />
 		<fadeOut type="1" unblock="true" />
 		<wait value="10" />
