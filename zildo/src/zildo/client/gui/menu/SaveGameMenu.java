@@ -138,7 +138,10 @@ public class SaveGameMenu extends PageableMenu {
 		EasyBuffering file=Zildo.pdPlugin.openFile(p_filename);
 		game = Game.deserialize(file);
 		EngineZildo.setGame(game);
-		EngineZildo.mapManagement.loadMap("coucou", false);
+		if (game.mapName == null) {
+			game.mapName = "foretg2";
+		}
+		EngineZildo.mapManagement.loadMap(game.mapName, false);
 
 		singlePlay.launchGame();
 	}
