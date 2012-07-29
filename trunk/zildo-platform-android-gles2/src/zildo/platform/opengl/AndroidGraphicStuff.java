@@ -114,11 +114,4 @@ public class AndroidGraphicStuff extends GraphicStuff {
     public Vector4f createColor64(float r, float g, float b) {
         return new Vector4f(r / 63.0f, g / 63.0f, b / 63.0f, 1.0f);
     }
-    
-    @Override
-	public Vector4f createColor(long value) {
-        Vector4f v = new Vector4f(value & 255, (value >> 8) & 255, (value >> 16) & 255, value >> 24);
-        v.w = 0.5f * 255.0f;
-        return v;
-    }
 }

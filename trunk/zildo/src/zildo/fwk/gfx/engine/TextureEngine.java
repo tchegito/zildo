@@ -71,15 +71,20 @@ public abstract class TextureEngine {
     
     public GFXBasics prepareSurfaceForTexture(boolean p_alpha) {
         // Create image
-    	if (p_alpha) {
-    		scratch = ByteBuffer.allocateDirect(256 * 256 * 4);
-    	} else {
-    		scratch = ByteBuffer.allocateDirect(256 * 256 * 3);
+    	if (scratch == null) {	// Allocate only once
+	    	if (p_alpha) {
+	    		scratch = ByteBuffer.allocateDirect(256 * 256 * 4);
+	    	} else {
+	    		scratch = ByteBuffer.allocateDirect(256 * 256 * 3);
+	    	}
     	}
     	alphaChannel = p_alpha;
 		GFXBasics surface=new GFXBasics(true);
 		surface.SetBackBuffer(scratch, 256, 256);
     	
+        // Reset bytebuffer scratch
+		scratch.clear();
+		
 		return surface;
     }
     
@@ -91,10 +96,10 @@ public abstract class TextureEngine {
 
     public int generateTexture() { 
     	
+        scratch.position(0);
     	int idTexture = doGenerateTexture();
     	
-        // Reset bytebuffer scratch
-        scratch.clear();
+    	//saveImage();
         
         // Store texture id
         textureTab[n_Texture]=idTexture;

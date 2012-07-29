@@ -31,10 +31,15 @@ public abstract class GraphicStuff {
         return depthId;
     }
     
+    private Vector4f cColor = new Vector4f(0, 0, 0, 0);
+	public Vector4f createColor(long value) {
+        cColor.set(value & 255, (value >> 8) & 255, (value >> 16) & 255, value >> 24);
+        cColor.w = 0.5f * 255.0f;
+        return cColor;
+    }
     public abstract VBO createVBO();
 	public abstract float[] getFloat(int p_info,int p_size);
 	public abstract int generateTexture(int sizeX, int sizeY);
     public abstract void cleanTexture(int id);
-    public abstract Vector4f createColor(long value);
 	public abstract void setCurrentColor(float[] p_color);
 }

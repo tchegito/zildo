@@ -26,9 +26,12 @@ import javax.microedition.khronos.opengles.GL11;
 
 import zildo.Zildo;
 import zildo.client.Client;
+import zildo.client.ClientEngineZildo;
+import zildo.client.SpriteDisplay;
 import zildo.client.stage.GameStage;
 import zildo.fwk.ZUtils;
-import zildo.platform.opengl.AndroidOpenGLGestion;
+import zildo.fwk.gfx.engine.TileEngine;
+import zildo.platform.opengl.AndroidPixelShaders;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
@@ -40,11 +43,15 @@ public class OpenGLRenderer implements Renderer {
 	TouchListener touchListener;
 	GameStage game;
 	
+	boolean initialized = false;
+	
 	public OpenGLRenderer(Client client, TouchListener touchListener) {
 		this.client = client;
 		this.touchListener = touchListener;
 	}
 	
+	public void resume() {
+	}
 	@Override
 	public void onSurfaceCreated(GL10 unused, EGLConfig config) {
 		GLES20.glClearColor(0.0f, 0.0f, 0f, 1.0f);
@@ -77,13 +84,9 @@ public class OpenGLRenderer implements Renderer {
         //Display.setVSyncEnabled(true);
 
         
+		Log.d("openglrenderer", "createSurface : initialized = "+initialized);
+		if (!initialized) {	// Doesn't work at each attempt
 
-		if (Zildo.screenX != 480 || true) {	// Doesn't work at each attempt
-			
-			// Share GL context for other classes
-	        //Zildo.screenX = 480;
-	        //Zildo.screenY = 320;
-	        
 	        client.getEngineZildo().initializeClient(false);
 	        client.setMenuListener(new AndroidMenuListener(touchListener));
 	        touchListener.init();
@@ -97,28 +100,44 @@ public class OpenGLRenderer implements Renderer {
 			
 	        //unused.glDisable(GL11.GL_LIGHTING);
 	        
-	        
+	        initialized = true;
+		} else {
+			// Recreate context by reloading all textures and shaders
+			Log.d("openglrenderer", "recreating context");
+			SpriteDisplay spriteDisplay = ClientEngineZildo.spriteDisplay;
+			TileEngine tileEngine = ClientEngineZildo.tileEngine;
+			tileEngine.loadTiles();
+			tileEngine.createCloudTexture();
+			Zildo.pdPlugin.initFilters(true);
+			ClientEngineZildo.spriteEngine.init(spriteDisplay);
+			AndroidPixelShaders.shaders.load();
 		}
 	}
+	
 	
 	int i=0;
 	
 	@Override
 	public void onDrawFrame(GL10 gl) {
-		// Clears the screen and depth buffer.
-		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT); // | // OpenGL docs.
-                           //GLES20.GL_DEPTH_BUFFER_BIT);
-
-		GLES20.glViewport(0, 0, Zildo.viewPortX, Zildo.viewPortY);
-
-		long t1 = ZUtils.getTime();
-		client.mainLoop();
-
-		long t2 = ZUtils.getTime();
-
-		i++;
-		if (i%50 == 0) {
-			Log.d("time", "elapsed "+(t2-t1));
+		if (initialized) {
+			// Clears the screen and depth buffer.
+			GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT); // | // OpenGL docs.
+	                           //GLES20.GL_DEPTH_BUFFER_BIT);
+	
+			GLES20.glViewport(0, 0, Zildo.viewPortX, Zildo.viewPortY);
+	
+			i++;
+			long t1=0,t2;
+			
+			if (i%50 == 0) {
+				t1 = ZUtils.getTime();
+			}
+			client.mainLoop();
+	
+			if (i%50 == 0) {
+				t2 = ZUtils.getTime();
+				Log.d("time", "OpenGL ES 2 : Elapsed "+(t2-t1)+"ms");
+			}
 		}
 	}
 	

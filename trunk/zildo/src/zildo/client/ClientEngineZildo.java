@@ -113,7 +113,7 @@ public class ClientEngineZildo {
 
 		if (!p_awt) {
 
-			Zildo.pdPlugin.initFilters();
+			Zildo.pdPlugin.initFilters(false);
 			filterCommand.addFilter(Zildo.pdPlugin.getFilter(BilinearFilter.class));
 			filterCommand.addFilter(Zildo.pdPlugin.getFilter(CloudFilter.class));
 			filterCommand.addFilter(Zildo.pdPlugin.getFilter(BlurFilter.class));
