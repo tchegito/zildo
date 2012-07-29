@@ -23,6 +23,8 @@ package zildo.client.gui.menu;
 import java.util.List;
 
 import zildo.client.ClientEngineZildo;
+import zildo.client.PlatformDependentPlugin;
+import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
 import zildo.client.stage.MultiPlayer;
@@ -61,6 +63,12 @@ public class StartMenu extends Menu {
 
             @Override
             public void run() {
+            	// TODO: Dirty way to check Android platform : need to be cleaned with
+            	// a better injection mechanism.
+            	if (PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
+            		client.handleMenu(new InfoMenu("info.multiandroid", currentMenu));
+            		return;
+            	}
                 ItemMenu itemCreate = new ItemMenu("m2.create", BankSound.MenuSelectGame) {
                     @Override
                     public void run() {
