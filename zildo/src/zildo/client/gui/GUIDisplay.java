@@ -343,6 +343,9 @@ public class GUIDisplay {
 		if (center) {
 			offsetX = (sc.TEXTER_SIZEX - sizesLine[0]) / 2;
 		}
+		if (toDisplay_dialogMode == DialogMode.MENU) {
+			offsetY-= (sc.TEXTER_SIZELINE * (nLigne+0)) ;
+		}
 		nLigne = 0;
 		SpriteEntity lettre;
 		Zone filledZone = new Zone();
