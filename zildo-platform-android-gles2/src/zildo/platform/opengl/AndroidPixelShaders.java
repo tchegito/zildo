@@ -51,6 +51,11 @@ public class AndroidPixelShaders extends PixelShaders {
 	}
 	
 	@Override
+	public void preparePixelShader() {
+		// Do nothing : to squeeze super method
+	}
+	
+	@Override
 	protected int doCreateShader(String shaderPro, boolean pixel) {
         // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
         // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
