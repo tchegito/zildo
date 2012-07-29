@@ -90,6 +90,16 @@ public class Shaders {
 	public Shaders(AndroidPixelShaders p_aps) {
 		
 		aps = p_aps;
+
+		load();
+		
+		// Init switched colors array
+		for (int i=0;i<switchedColors.length;i++) {
+			switchedColors[i] = new Vector4f(0, 0, 0, 0);
+		}
+	}
+	
+	public void load() {
 		
 		// Compile and link all shaders
 		for (GLShaders sh : GLShaders.values()) {
@@ -102,10 +112,6 @@ public class Shaders {
 		
 		hUntexturedPosition = GLES20.glGetAttribLocation(GLShaders.uniColor.id, "vPosition");
 		
-		// Init switched colors array
-		for (int i=0;i<switchedColors.length;i++) {
-			switchedColors[i] = new Vector4f(0, 0, 0, 0);
-		}
 	}
 	
 	/**
