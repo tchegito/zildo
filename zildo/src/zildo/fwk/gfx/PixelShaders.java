@@ -63,7 +63,7 @@ public abstract class PixelShaders {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// preparePixelShader
 	///////////////////////////////////////////////////////////////////////////////////////
-	public boolean preparePixelShader() {
+	public void preparePixelShader() {
 	
 			String cPSGuard[] = {
 			"uniform vec4 Color1;",
@@ -157,8 +157,6 @@ public abstract class PixelShaders {
 		
 		shaderCode=getShaderCode(cPSGuardHurt);
 		addPixelShader(shaderCode);
-	
-		return true;
 	}
 	
 	private String getShaderCode(String[] lines) {

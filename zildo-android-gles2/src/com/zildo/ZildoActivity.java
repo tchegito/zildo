@@ -24,6 +24,7 @@ public class ZildoActivity extends Activity {
 	TouchListener touchListener;
 	public static AudioManager mgr;
 	Handler handler;
+	OpenGLES20SurfaceView view;
 	
 	final int RESET_SPLASHSCREEN = 99;
 	
@@ -43,7 +44,7 @@ public class ZildoActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        final OpenGLES20SurfaceView view = new OpenGLES20SurfaceView(this);
+        view = new OpenGLES20SurfaceView(this);
 
         // Display splash screen
         view.setBackgroundResource(R.drawable.splashscreen480320);
@@ -97,11 +98,25 @@ public class ZildoActivity extends Activity {
     }
     
     @Override
+    protected void onPause() {
+    	super.onPause();
+    	view.onPause();
+    }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	if (view != null) {
+    		view.onResume();
+    	}
+    }
+    
+    @Override
     public void onBackPressed() {
     	touchListener.pressBackButton();
     }
     
-    class ClientThread extends Thread {
+        class ClientThread extends Thread {
     	
     	Client client;
     	

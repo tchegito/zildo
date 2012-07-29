@@ -48,8 +48,11 @@ import android.util.Log;
  */
 public class AndroidTextureEngine extends TextureEngine {
 	
+	IntBuffer buf;
+	
 	public AndroidTextureEngine(GraphicStuff graphicStuff) {
 		super(graphicStuff);
+        buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
 	}
 	
     private int getTextureFormat() {
@@ -59,15 +62,17 @@ public class AndroidTextureEngine extends TextureEngine {
     		return GLES20.GL_RGB;
     	}
     }
+    
     @Override
 	public int doGenerateTexture() {
 
         // Create A IntBuffer For Image Address In Memory
-        IntBuffer buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
         GLES20.glGenTextures(1, buf); // Create Texture In OpenGL
 
-        Log.d("texture", "generate texture "+buf.get(0));
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, buf.get(0));
+        int id = buf.get(0);
+        
+        Log.d("texture", "generate texture "+id);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, id);
         // Typical Texture Generation Using Data From The Image
 
         int wrapping=GL11.GL_REPEAT;	// Wrap texture (useful for cloud)
@@ -82,7 +87,7 @@ public class AndroidTextureEngine extends TextureEngine {
         GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, getTextureFormat(), 256, 256, 0, getTextureFormat(), 
         		GLES20.GL_UNSIGNED_BYTE, scratch);
         
-        return buf.get(0);
+        return id;
     }
     
     @Override

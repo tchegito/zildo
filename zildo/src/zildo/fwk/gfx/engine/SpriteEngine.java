@@ -94,9 +94,11 @@ public abstract class SpriteEngine {
 		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
 
 		surfaceGfx.StartRendering();
-		surfaceGfx.box(0,0,320,256,32,new Vector4f(0,0,0,0));
-	
+		Vector4f black = new Vector4f(0, 0, 0, 0);
+		// NOTE: surface might be not clean, so we have to draw each pixel
+
 		int x=0,y=0,highestLine=0;
+
 		for (int n=0;n<sBank.getNSprite();n++)
 		{
 			SpriteModel spr=sBank.get_sprite(n);
@@ -127,7 +129,9 @@ public abstract class SpriteEngine {
 							modifiedColor=sBank.modifyPixel(n,a);
 						}
 						replacedColor=modifiedColor==-1?null:textureEngine.graphicStuff.createColor(modifiedColor);
-						surfaceGfx.pset(i+x,j+y,a,replacedColor);
+						surfaceGfx.pset(i+x, j+y, a, replacedColor);
+					} else {
+						surfaceGfx.pset(i+x, j+y, a, black);
 					}
 				}
 			}
@@ -216,6 +220,7 @@ public abstract class SpriteEngine {
 			}
 		}
 		// Load sprite banks
+		textureEngine.n_Texture = 0;
 		for (i=0;i<SpriteManagement.sprBankName.length;i++) {
 			SpriteBank sprBank=p_spriteStore.getSpriteBank(i);
 

@@ -52,7 +52,8 @@ public class GFXBasics {
 	private int height;
 
 	boolean alpha;
-
+	byte[] bytes;
+	
 	// ////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	// ////////////////////////////////////////////////////////////////////
@@ -68,6 +69,7 @@ public class GFXBasics {
 		this.alpha = alpha;
 
 		pBackBuffer = null;
+		bytes = new byte[alpha ? 4 : 3];
 	}
 
 	public void SetBackBuffer(ByteBuffer surface, int w, int h) {
@@ -160,13 +162,25 @@ public class GFXBasics {
 				pBackBuffer.put(a + 2, (byte) color.z);
 				if (alpha) {
 					pBackBuffer.put(a + 3, (byte) color.w);
+					a++;
 				}
-				a++;
+				a+=3;
 			}
 			a += pitch * (width - wx);
 		}
 	}
 
+	public void clear(Vector4f color) {
+		
+		for (int a=0;a< 256*256; a++) {
+			pBackBuffer.put((byte) color.x);
+			pBackBuffer.put((byte) color.y);
+			pBackBuffer.put((byte) color.z);
+			if (alpha) {
+				pBackBuffer.put(a + 3, (byte) color.w);
+			}
+		}
+	}
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// boxv
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -187,8 +201,9 @@ public class GFXBasics {
 					pBackBuffer.put(a + 2, (byte) color.z);
 					if (alpha) {
 						pBackBuffer.put(a + 3, (byte) colorValue.w);
+						a++;
 					}
-					a++;
+					a+=3;
 				}
 				a += pitch * (width - wx);
 			} else {
@@ -265,39 +280,54 @@ public class GFXBasics {
 
 	}
 
+	Vector4f colPset = new Vector4f(0, 0, 0, 0);
+	
 	// Put a pixel on the screen at desired location, with mask consideration
 	// If the fourth parameter is not zero-valued, this is the RGBA color
 	// without
 	// palettized mode. (useful for blue/green guard)
+	// NOTE: this method alterates the position in pBackBuffer
 	public void pset(int xx, int yy, int colorIndex, Vector4f colorValue) {
 		// Check that pixel coordinates is inside screen
 		if (xx >= 0 && xx <= width && yy >= 0 && yy <= height) {
-			Vector4f color = new Vector4f(palette[colorIndex]);
 			if (colorValue != null) {
-				color = colorValue;
+				colPset.set(colorValue);
 			} else {
 				// if (colorIndex!=255)
 				// Enable mask display with alpha key = 0
-				color.w = 255.0f; // color.x; //|=(255 << 24);
+				colPset.set(palette[colorIndex]);
+				colPset.w = 255.0f; // color.x; //|=(255 << 24);
 			}
-			pset(xx, yy, color);
+			pset(xx, yy, colPset);
 		}
 	}
-
+	
 	// Basic pset
+	// NOTE: this method alterates the position in pBackBuffer
 	public void pset(int xx, int yy, Vector4f colorValue) {
 		// Check that pixel coordinates is inside screen
 		if (xx >= 0 && xx <= width && yy >= 0 && yy <= height) {
 			int a = yy * width * pitch + xx * pitch;
-			pBackBuffer.put(a, (byte) colorValue.x);
-			pBackBuffer.put(a + 1, (byte) colorValue.y);
-			pBackBuffer.put(a + 2, (byte) colorValue.z);
 			if (alpha) {
-				pBackBuffer.put(a + 3, (byte) colorValue.w);
+				putBytes(a, colorValue.x, colorValue.y, colorValue.z, colorValue.w);
+			} else {
+				putBytes(a, colorValue.x, colorValue.y, colorValue.z);
 			}
 		}
 	}
 
+	private void putBytes(int pos, float... floats) {
+		pBackBuffer.position(pos);
+		putBytesNext(floats);
+	}
+	
+	private void putBytesNext(float...floats) {
+		for (int i=0;i<floats.length;i++) {
+			bytes[i] = (byte) floats[i];
+		}
+		pBackBuffer.put(bytes);
+	}
+	
 	public static Vector4f getColor(int palIndex) {
 		return palette[palIndex];
 	}

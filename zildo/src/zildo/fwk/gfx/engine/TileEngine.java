@@ -32,6 +32,7 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
 import zildo.monde.util.Point;
+import zildo.monde.util.Vector4f;
 import zildo.resource.Constantes;
 
 // V1.0
@@ -109,8 +110,6 @@ public abstract class TileEngine {
 
 	public TileEngine(TextureEngine texEngine)
 	{
-		super();
-
 		textureEngine = texEngine;
 		
 		cameraX = -1;
@@ -169,6 +168,7 @@ public abstract class TileEngine {
 
 	public void loadTiles() {
 		// Create a texture based on the current tiles
+		textureEngine.n_Texture = 0;
 		for (int i = 0; i < tileBankNames.length; i++) {
 			MotifBank motifBank = getMotifBank(i);
 			this.createTextureFromMotifBank(motifBank);
@@ -181,17 +181,22 @@ public abstract class TileEngine {
 		GFXBasics surface = textureEngine.prepareSurfaceForTexture(true);
 
 		// Display tiles on it
+		// NOTE: surface might be not clean, so we have to draw each pixel
 		int x = 0, y = 0;
+		Vector4f black = new Vector4f(64, 64, 0, 0);
+		
 		for (int n = 0; n < mBank.getNb_motifs(); n++)
 		{
 			short[] motif = mBank.get_motif(n);
-			for (int j = 0; j < 16; j++) {
-				for (int i = 0; i < 16; i++)
-				{
-					int a = motif[i + j * 16];
-					if (a != 255) {
-						surface.pset(i + x, j + y, a, null);
-					}
+			int i,j;
+			for (int ij = 0 ; ij < 256; ij++) {
+				i = ij & 0xf;
+				j = ij >> 4;
+				int a = motif[i + j * 16];
+				if (a != 255) {
+					surface.pset(i + x, j + y, a, null);
+				} else {
+					surface.pset(i + x, j + y, 0, black);
 				}
 			}
 			// Next position
