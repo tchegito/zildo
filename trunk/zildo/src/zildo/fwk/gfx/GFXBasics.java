@@ -177,7 +177,7 @@ public class GFXBasics {
 			pBackBuffer.put((byte) color.y);
 			pBackBuffer.put((byte) color.z);
 			if (alpha) {
-				pBackBuffer.put(a + 3, (byte) color.w);
+				pBackBuffer.put((byte) color.w);
 			}
 		}
 	}

@@ -20,15 +20,25 @@
 
 package zildo.platform.engine;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
+import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
+import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TextureEngine;
+import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.SpriteStore;
+import zildo.monde.sprites.desc.Outfit;
+import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
+import zildo.server.SpriteManagement;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.
 //
@@ -141,6 +151,159 @@ public class LwjglSpriteEngine extends SpriteEngine {
 			ARBShaderObjects.glUseProgramObjectARB(0);
 		}
 		GL11.glDisable(GL11.GL_BLEND);
+	}
+	
+	
+	protected void loadTextures(SpriteStore p_spriteStore) {
+		// Load sprite banks
+		textureEngine.init();
+		for (int i = 0; i < SpriteManagement.sprBankName.length; i++) {
+			SpriteBank sprBank = p_spriteStore.getSpriteBank(i);
+
+			// Create a DirectX9 texture based on the current tiles
+			createTextureFromSpriteBank(sprBank);
+		}
+
+		// Create Zildo with all outfits
+		if (!ClientEngineZildo.editing) {
+			// textureEngine.setCurentTexture(SpriteBank.BANK_ZILDOOUTFIT);
+			// createTextureFromAnotherReplacement(SpriteBank.BANK_ZILDO,
+			// ZildoOutfit.class);
+		}
+
+		// Prepare screen copy texture
+		// textureTab[SpriteBank.BANK_COPYSCREEN]=generateTexture(0,64); //,
+		// 1024); //, Zildo.viewPortY);
+		// n_Texture++;
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	// createTextureFromSpriteBank
+	///////////////////////////////////////////////////////////////////////////////////////
+	// IN: Bank to transform into texture
+	///////////////////////////////////////////////////////////////////////////////////////
+	// Create a Direct3DTexture9 object from a sprite bank. Every sprite is added at the
+	// right side of the previous one. If it is too long, we shift to next line, which is
+	// calculated as the highest sprite on the line. And so on.
+	// Here we use a GFXBasics object to gain in readability and comfort. This one will be deleted
+	// at the end, indeed. So we can say this is a beautiful method.
+	private void createTextureFromSpriteBank(SpriteBank sBank) {
+	
+		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
+
+		surfaceGfx.StartRendering();
+		Vector4f black = new Vector4f(0, 0, 0, 0);
+		// NOTE: surface might be not clean, so we have to draw each pixel
+
+		int x=0,y=0,highestLine=0;
+
+		for (int n=0;n<sBank.getNSprite();n++)
+		{
+			SpriteModel spr=sBank.get_sprite(n);
+			int longX=spr.getTaille_x();
+			int longY=spr.getTaille_y();
+			// Test de dépassement sur la texture
+			if ( (x+longX) > 256 ) {
+				x=0;
+				y+=highestLine;
+				highestLine=0;
+			}
+			// On stocke la position du sprite sur la texture
+			spr.setTexPos_x(x);
+			spr.setTexPos_y(y); //+1);
+			// On place le sprite sur la texture
+			short[] motif=sBank.getSpriteGfx(n);
+			Vector4f replacedColor;
+			for (int j=0;j< longY;j++) {
+				
+				for (int i=0;i< longX;i++)
+				{
+					int a=motif[i+j*longX];
+					if (a!=255)
+					{
+						// Regular size
+						long modifiedColor=-1;
+						if (pixelShaderSupported) {
+							modifiedColor=sBank.modifyPixel(n,a);
+						}
+						replacedColor=modifiedColor==-1?null:textureEngine.graphicStuff.createColor(modifiedColor);
+						surfaceGfx.pset(i+x, j+y, a, replacedColor);
+					} else {
+						surfaceGfx.pset(i+x, j+y, a, black);
+					}
+				}
+			}
+
+			// Next position
+			x+=longX;
+			if (longY > highestLine)	// Mark the highest sprite on the row
+				highestLine = longY;
+		}
+		//sBank.freeTempBuffer();
+		textureEngine.generateTexture();
+	}
+	
+    /**
+     * Create a new texture from a given one, and replace colors as specified by
+     * the {@link Outfit} class.<br/>
+     * 
+     * @param p_originalTexture
+     * @param p_replacements
+     *            list of replacements : for a point (x,y), color-index <b>x</b>
+     *            become color-index <b>y</b>.
+     */
+	private void createTextureFromAnotherReplacement(int p_originalTexture,
+			Class<? extends Outfit> p_outfitClass) {
+
+		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
+
+		// 1) Store the color indexes once for all
+		textureEngine.getTextureImage(textureEngine
+				.getNthTexture(p_originalTexture));
+		Map<Integer, Integer> colorIndexes = new HashMap<Integer, Integer>();
+		int i, j;
+		for (j = 0; j < 256; j++) {
+			for (i = 0; i < 256; i++) {
+				Vector4f color = surfaceGfx.getPixel(i, j);
+				if (color.w != 0) {
+					colorIndexes
+							.put(j * 256 + i, surfaceGfx.getPalIndex(color));
+				}
+			}
+		}
+
+		// 2) Create all textures according to the outfits
+		boolean textureReady = true;
+		Outfit[] outfits = p_outfitClass.getEnumConstants();
+		for (Outfit outfit : outfits) {
+			Point[] replacements = outfit.getTransforms();
+			if (replacements.length == 0) {
+				continue; // No replacements
+			}
+			if (!textureReady) {
+				surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
+			}
+			surfaceGfx.StartRendering();
+			for (j = 0; j < 256; j++) {
+				for (i = 0; i < 256; i++) {
+					Integer palIndex = colorIndexes.get(j * 256 + i);
+					if (palIndex != null) {
+						for (Point p : replacements) {
+							if (palIndex == p.x) {
+								surfaceGfx.pset(i, j, p.y, null);
+							}
+						}
+					}
+				}
+			}
+
+			textureEngine.generateTexture();
+			textureReady = false;
+		}
+	}
+	
+	public void saveTextures() {
+		textureEngine.saveAllTextures("sprite");
 	}
 
 }

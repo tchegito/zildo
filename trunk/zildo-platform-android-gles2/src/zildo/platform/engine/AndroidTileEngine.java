@@ -123,4 +123,11 @@ public class AndroidTileEngine extends TileEngine {
 			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureEngine.getNthTexture(i)); 
 		}
 	}
+
+	@Override
+	protected void loadTextures() {
+	    for (int i=0;i<tileBankNames.length + 1;i++) {
+		    ((AndroidTextureEngine)textureEngine).loadTexture("tile"+i);
+	    }
+	}
 }

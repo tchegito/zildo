@@ -20,10 +20,16 @@
 
 package zildo.fwk.gfx.engine;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+
+import javax.imageio.ImageIO;
 
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.GraphicStuff;
+import zildo.monde.util.Vector4f;
 import zildo.resource.Constantes;
 
 /**
@@ -84,7 +90,7 @@ public abstract class TextureEngine {
     	
         // Reset bytebuffer scratch
 		scratch.clear();
-		
+		surface.clear(new Vector4f(0, 0, 0, 0));
 		return surface;
     }
     
@@ -98,8 +104,6 @@ public abstract class TextureEngine {
     	
         scratch.position(0);
     	int idTexture = doGenerateTexture();
-    	
-    	//saveImage();
         
         // Store texture id
         textureTab[n_Texture]=idTexture;
@@ -110,6 +114,28 @@ public abstract class TextureEngine {
         return textureTab[n_Texture-1];
     }
     
+    public void saveImage(String filename) {
+    	BufferedImage bufImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
+		scratch.position(0);
+    	for (int y = 0;y<256;y++) {
+    		for (int x = 0;x<256;x++) {
+				int r = 0xff & scratch.get();
+				int g = 0xff & scratch.get();
+				int b = 0xff & scratch.get();
+				if (alphaChannel) {
+					scratch.get();	// alpha channel => unused
+				}
+				int rgb = r << 16 | g << 8 | b;
+				bufImage.setRGB(x,  y, rgb);
+	   		}
+    	}
+    	try {
+			ImageIO.write(bufImage, "png", new File(filename+".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
     public int getNthTexture(int nth) {
     	return textureTab[nth];
     }
@@ -118,15 +144,22 @@ public abstract class TextureEngine {
     	return scratch;
     }
     
-    /** FIXME : need to be changed => wrong to manipulate this internal variable from outside */
-    public void setCurentTexture(int texId) {
-    	n_Texture = texId;
-    }
-    
     public void cleanTextures() {
 		for (int i=0;i<n_Texture;i++) {
 			int id=textureTab[i];
 			graphicStuff.cleanTexture(id);
+		}
+    }
+    
+    public void init() {
+    	n_Texture = 0;
+    }
+    
+    public void saveAllTextures(String name) {
+		for (int i=0;i<n_Texture;i++) {
+			int id=textureTab[i];
+			getTextureImage(id);
+			saveImage(name+i);
 		}
     }
     

@@ -26,9 +26,11 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TextureEngine;
+import zildo.monde.sprites.SpriteStore;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
 import zildo.platform.opengl.AndroidPixelShaders;
+import zildo.server.SpriteManagement;
 import android.opengl.GLES20;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.
@@ -163,4 +165,10 @@ public class AndroidSpriteEngine extends SpriteEngine {
 		GLES20.glDisable(GLES20.GL_BLEND);
 	}
 
+	protected void loadTextures(SpriteStore p_spriteStore) {
+		textureEngine.init();
+		for (int i = 0; i < SpriteManagement.sprBankName.length; i++) {
+		    ((AndroidTextureEngine)textureEngine).loadTexture("sprite"+i);
+	    }
+	}
 }

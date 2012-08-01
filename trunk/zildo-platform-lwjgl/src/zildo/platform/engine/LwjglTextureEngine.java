@@ -85,6 +85,7 @@ public class LwjglTextureEngine extends TextureEngine {
     @Override
 	public void getTextureImage(int p_texId) {
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, p_texId);
+	    scratch.position(0);
 	    GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, getTextureFormat(), GL11.GL_UNSIGNED_BYTE, scratch);
     }
     
