@@ -25,14 +25,11 @@ import java.util.List;
 
 import zildo.Zildo;
 import zildo.fwk.bank.MotifBank;
-import zildo.fwk.gfx.GFXBasics;
-import zildo.fwk.gfx.effect.CloudGenerator;
 import zildo.fwk.gfx.primitive.TileGroupPrimitive;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
 import zildo.monde.util.Point;
-import zildo.monde.util.Vector4f;
 import zildo.resource.Constantes;
 
 // V1.0
@@ -75,6 +72,16 @@ import zildo.resource.Constantes;
 // Indices : (0,2a+1,2a)   - (0,1,2a+1)
 //			 (2,2a+3,2a+2) - (2,3,2a+3)
 
+/**
+ * Tile engine.<p/>
+ * 
+ * Two things are important here, and splitted into each platform-dependent part via abstract methods:<ol>
+ * <li><b>render</b> : obviously, this is specific for each targeted platform</li>
+ * <li><b>texture</b> : according to platform performances, we create textures from banks (lwjgl) or load directly ready-to-use textures (android).</li>
+ * </ol>
+ * @author tchegito
+ *
+ */
 public abstract class TileEngine {
 
 	// /////////////////////
@@ -122,11 +129,9 @@ public abstract class TileEngine {
 		// Load graphs
 		motifBanks = new ArrayList<MotifBank>();
 
-		this.charge_tous_les_motifs();
+		this.loadAllTileBanks();
 
-		loadTiles();
-
-		createCloudTexture();
+		loadTextures();
 	}
 	
 	public void cleanUp()
@@ -138,23 +143,25 @@ public abstract class TileEngine {
 		initialized = false;
 	}
 
+	protected abstract void loadTextures();
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// charge_tous_les_motifs
 	// /////////////////////////////////////////////////////////////////////////////////////
-	// Load every tile banks
+	// Load every tile banks (but doesn't create any texture)
 	// /////////////////////////////////////////////////////////////////////////////////////
-	void charge_tous_les_motifs() {
+	void loadAllTileBanks() {
 		for (String bankName : tileBankNames) {
-			this.charge_motifs(bankName.toLowerCase());
+			loadTileBank(bankName.toLowerCase());
 		}
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
-	// charge_motifs
+	// loadTileBank
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// IN:filename to load as a tile bank
 	// /////////////////////////////////////////////////////////////////////////////////////
-	void charge_motifs(String filename) {
+	private void loadTileBank(String filename) {
 		MotifBank motifBank = new MotifBank();
 
 		motifBank.charge_motifs(filename);
@@ -164,59 +171,6 @@ public abstract class TileEngine {
 
 	public MotifBank getMotifBank(int n) {
 		return motifBanks.get(n);
-	}
-
-	public void loadTiles() {
-		// Create a texture based on the current tiles
-		textureEngine.n_Texture = 0;
-		for (int i = 0; i < tileBankNames.length; i++) {
-			MotifBank motifBank = getMotifBank(i);
-			this.createTextureFromMotifBank(motifBank);
-			//motifBank.freeTempBuffer();
-		}
-	}
-	
-	public void createTextureFromMotifBank(MotifBank mBank) {
-
-		GFXBasics surface = textureEngine.prepareSurfaceForTexture(true);
-
-		// Display tiles on it
-		// NOTE: surface might be not clean, so we have to draw each pixel
-		int x = 0, y = 0;
-		Vector4f black = new Vector4f(64, 64, 0, 0);
-		
-		for (int n = 0; n < mBank.getNb_motifs(); n++)
-		{
-			short[] motif = mBank.get_motif(n);
-			int i,j;
-			for (int ij = 0 ; ij < 256; ij++) {
-				i = ij & 0xf;
-				j = ij >> 4;
-				int a = motif[i + j * 16];
-				if (a != 255) {
-					surface.pset(i + x, j + y, a, null);
-				} else {
-					surface.pset(i + x, j + y, 0, black);
-				}
-			}
-			// Next position
-			x += 16;
-			if (x >= 256) {
-				x = 0;
-				y += 16;
-			}
-		}
-
-		textureEngine.generateTexture();
-	}
-
-	public void createCloudTexture() {
-		textureEngine.prepareSurfaceForTexture(false);
-
-		CloudGenerator cGen = new CloudGenerator(textureEngine.getBuffer());
-		cGen.generate();
-
-		texCloudId = textureEngine.generateTexture();
 	}
 
 	public abstract void render(boolean backGround);
@@ -257,7 +211,6 @@ public abstract class TileEngine {
 				if (theMap == null) {
 					break;
 				}
-				//TODO: think about offset ! (in LWJG/Android TileEngine set camera))
 				Point offset = theMap.getOffset();
 
 				boolean yOut = false;
@@ -360,5 +313,9 @@ public abstract class TileEngine {
 	 */
 	public String getBankNameFromInt(int nBank) {
 		return tileBankNames[nBank];
+	}
+	
+	public void saveTextures() {
+		// Default : do nothing. Only LWJGL version can do that.
 	}
 }

@@ -23,12 +23,26 @@ package zildo.platform.engine;
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
+import zildo.fwk.bank.MotifBank;
+import zildo.fwk.gfx.GFXBasics;
+import zildo.fwk.gfx.effect.CloudGenerator;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.primitive.TileGroupPrimitive.ActionNthRunner;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
+import zildo.monde.util.Vector4f;
 
+/**
+ * LWJGL customisation for tile engine.<p/>
+ * 
+ * Two things are important here, and splitted into each platform-dependent part :<ol>
+ * <li><b>render</b> : obviously, this is specific for each targeted platform</li>
+ * <li><b>texture</b> : according to platform performance, we create texture from bank (lwjgl) or use directly ready-to-use textures (android).</li>
+ * </ol>
+ * @author evariste.boussaton
+ *
+ */
 public class LwjglTileEngine extends TileEngine {
 
 	public LwjglTileEngine(TextureEngine texEngine) {
@@ -78,4 +92,71 @@ public class LwjglTileEngine extends TileEngine {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureEngine.getNthTexture(i));
 		}
 	}
+
+	@Override
+	protected void loadTextures() {
+		loadTiles();
+
+		createCloudTexture();
+	}
+
+	private void loadTiles() {
+		// Create a texture based on the current tiles
+		textureEngine.init();
+		for (int i = 0; i < tileBankNames.length; i++) {
+			MotifBank motifBank = getMotifBank(i);
+			this.createTextureFromMotifBank(motifBank);
+			//motifBank.freeTempBuffer();
+		}
+	}
+	
+	private void createTextureFromMotifBank(MotifBank mBank) {
+
+		GFXBasics surface = textureEngine.prepareSurfaceForTexture(true);
+
+		// Display tiles on it
+		// NOTE: surface might be not clean, so we have to draw each pixel
+		int x = 0, y = 0;
+		Vector4f black = new Vector4f(64, 64, 0, 0);
+		
+		for (int n = 0; n < mBank.getNb_motifs(); n++)
+		{
+			short[] motif = mBank.get_motif(n);
+			int i,j;
+			for (int ij = 0 ; ij < 256; ij++) {
+				i = ij & 0xf;
+				j = ij >> 4;
+				int a = motif[i + j * 16];
+				if (a != 255) {
+					surface.pset(i + x, j + y, a, null);
+				} else {
+					surface.pset(i + x, j + y, 0, black);
+				}
+			}
+			// Next position
+			x += 16;
+			if (x >= 256) {
+				x = 0;
+				y += 16;
+			}
+		}
+
+		textureEngine.generateTexture();
+	}
+
+	private void createCloudTexture() {
+		textureEngine.prepareSurfaceForTexture(false);
+
+		CloudGenerator cGen = new CloudGenerator(textureEngine.getBuffer());
+		cGen.generate();
+
+		texCloudId = textureEngine.generateTexture();
+	}
+	
+	public void saveTextures() {
+		// Default : do nothing. Only LWJGL version can do that.
+		textureEngine.saveAllTextures("tile");
+	}
+
+	
 }
