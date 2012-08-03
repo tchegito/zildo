@@ -105,7 +105,8 @@ public class LwjglTileEngine extends TileEngine {
 		textureEngine.init();
 		for (int i = 0; i < tileBankNames.length; i++) {
 			MotifBank motifBank = getMotifBank(i);
-			this.createTextureFromMotifBank(motifBank);
+			textureEngine.loadTexture("tile"+i);
+			//this.createTextureFromMotifBank(motifBank);
 			//motifBank.freeTempBuffer();
 		}
 	}

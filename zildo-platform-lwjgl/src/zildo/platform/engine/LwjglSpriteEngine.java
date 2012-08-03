@@ -160,8 +160,11 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		for (int i = 0; i < SpriteManagement.sprBankName.length; i++) {
 			SpriteBank sprBank = p_spriteStore.getSpriteBank(i);
 
+			createModelsFromSpriteBank(sprBank);
+
 			// Create a DirectX9 texture based on the current tiles
 			createTextureFromSpriteBank(sprBank);
+			//textureEngine.loadTexture("sprite"+i);
 		}
 
 		// Create Zildo with all outfits
@@ -193,24 +196,14 @@ public class LwjglSpriteEngine extends SpriteEngine {
 
 		surfaceGfx.StartRendering();
 		Vector4f black = new Vector4f(0, 0, 0, 0);
-		// NOTE: surface might be not clean, so we have to draw each pixel
-
-		int x=0,y=0,highestLine=0;
 
 		for (int n=0;n<sBank.getNSprite();n++)
 		{
 			SpriteModel spr=sBank.get_sprite(n);
 			int longX=spr.getTaille_x();
 			int longY=spr.getTaille_y();
-			// Test de dépassement sur la texture
-			if ( (x+longX) > 256 ) {
-				x=0;
-				y+=highestLine;
-				highestLine=0;
-			}
-			// On stocke la position du sprite sur la texture
-			spr.setTexPos_x(x);
-			spr.setTexPos_y(y); //+1);
+			int x = spr.getTexPos_x();
+			int y = spr.getTexPos_y();
 			// On place le sprite sur la texture
 			short[] motif=sBank.getSpriteGfx(n);
 			Vector4f replacedColor;
@@ -233,17 +226,12 @@ public class LwjglSpriteEngine extends SpriteEngine {
 					}
 				}
 			}
-
-			// Next position
-			x+=longX;
-			if (longY > highestLine)	// Mark the highest sprite on the row
-				highestLine = longY;
 		}
 		//sBank.freeTempBuffer();
 		textureEngine.generateTexture();
 	}
-	
-    /**
+
+	/**
      * Create a new texture from a given one, and replace colors as specified by
      * the {@link Outfit} class.<br/>
      * 
@@ -258,8 +246,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
 
 		// 1) Store the color indexes once for all
-		textureEngine.getTextureImage(textureEngine
-				.getNthTexture(p_originalTexture));
+		textureEngine.getTextureImage(p_originalTexture);
 		Map<Integer, Integer> colorIndexes = new HashMap<Integer, Integer>();
 		int i, j;
 		for (j = 0; j < 256; j++) {

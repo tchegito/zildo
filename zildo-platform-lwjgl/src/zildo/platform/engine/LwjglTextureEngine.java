@@ -20,14 +20,18 @@
 
 package zildo.platform.engine;
 
+import java.io.FileInputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.engine.TextureEngine;
+import zildo.resource.Constantes;
 
 /**
  * Abstract class which provides management of a texture set.
@@ -83,10 +87,29 @@ public class LwjglTextureEngine extends TextureEngine {
     }
     
     @Override
-	public void getTextureImage(int p_texId) {
-	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, p_texId);
+	public void getTextureImage(int p_nthTex) {
+	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, getNthTexture(p_nthTex));
 	    scratch.position(0);
+	    alphaChannel = alphaTab[p_nthTex]; 
 	    GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, getTextureFormat(), GL11.GL_UNSIGNED_BYTE, scratch);
+    }
+    
+    public int loadTexture(String name) {
+	    try {
+			Texture tex = TextureLoader.getTexture("PNG", new FileInputStream(Constantes.DATA_PATH+"textures/"+name+".png"));
+			
+	        // Store texture id
+	        textureTab[n_Texture] = tex.getTextureID();
+	        alphaTab[n_Texture] = true;
+	        
+	        // Ready for next one
+	        n_Texture++;
+	        
+			return tex.getTextureID();
+		} catch (Exception e) {
+			throw new RuntimeException("Can't load texture "+name, e.getCause());
+		}
+    	
     }
     
     /**
