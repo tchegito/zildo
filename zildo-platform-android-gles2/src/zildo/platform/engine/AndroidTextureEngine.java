@@ -20,6 +20,8 @@
 
 package zildo.platform.engine;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -30,7 +32,6 @@ import zildo.fwk.gfx.engine.TextureEngine;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.util.Log;
@@ -55,7 +56,6 @@ public class AndroidTextureEngine extends TextureEngine {
 	IntBuffer buf;
 	
 	Bitmap bitmap;
-	Matrix flip;
 	BitmapFactory.Options opts;
 	
 	public AndroidTextureEngine(GraphicStuff graphicStuff) {
@@ -66,10 +66,6 @@ public class AndroidTextureEngine extends TextureEngine {
 	    // (Thanks to Matthew Marshall for this bit)
 	    opts = new BitmapFactory.Options();
 	    opts.inScaled = false;
-
-	    // We need to flip the textures vertically:
-	    flip = new Matrix();
-	    flip.postScale(1f, -1f);
 	}
     
     @Override
@@ -93,7 +89,11 @@ public class AndroidTextureEngine extends TextureEngine {
         GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, filtering);
         GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, filtering);
         
-        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, bitmap, 0);
+        
+        // Free bitmap memory
+    	bitmap.recycle();
+
         return id;
     }
     
@@ -105,17 +105,21 @@ public class AndroidTextureEngine extends TextureEngine {
     	//gL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, getTextureFormat(), GL11.GL_UNSIGNED_BYTE, scratch);
     }
     
-    public int loadTexture(String name) {
-    	AssetFileDescriptor afd = (AssetFileDescriptor) Zildo.pdPlugin.openFd("textures/"+name);
-	    Bitmap temp = BitmapFactory.decodeFileDescriptor(afd.getFileDescriptor(), null, opts);
-	    bitmap = Bitmap.createBitmap(temp, 0, 0, temp.getWidth(), temp.getHeight(), flip, true);
-	    temp.recycle();
-	    
+    @Override
+	public int loadTexture(String name) {
+    	AssetFileDescriptor afd = (AssetFileDescriptor) Zildo.pdPlugin.openFd("textures/"+name+".png");
+    	InputStream is = null;
+		try {
+			is = afd.createInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    bitmap = BitmapFactory.decodeStream(is, null, opts);
 	    return super.generateTexture();
     	
     }
-    
-    public int generateTexture() { 
+    @Override
+	public int generateTexture() { 
 	    throw new RuntimeException("Should never been called ! All is going by #loadTexture method.");
     }
     
