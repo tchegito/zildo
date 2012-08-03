@@ -169,7 +169,8 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	/**
 	 * Load prepared textures and calculate sprite locations.
 	 */
-	protected void loadTextures(SpriteStore p_spriteStore) {
+	@Override
+	public void loadTextures(SpriteStore p_spriteStore) {
 		textureEngine.init();
 		
 		for (int i = 0; i < SpriteManagement.sprBankName.length; i++) {

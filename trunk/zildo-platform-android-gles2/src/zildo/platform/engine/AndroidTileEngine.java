@@ -125,7 +125,8 @@ public class AndroidTileEngine extends TileEngine {
 	}
 
 	@Override
-	protected void loadTextures() {
+	public void loadTextures() {
+		textureEngine.init();
 	    for (int i=0;i<tileBankNames.length + 1;i++) {
 		    ((AndroidTextureEngine)textureEngine).loadTexture("tile"+i);
 	    }

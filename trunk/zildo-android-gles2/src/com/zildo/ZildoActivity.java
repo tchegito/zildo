@@ -43,6 +43,7 @@ public class ZildoActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         view = new OpenGLES20SurfaceView(this);
 
@@ -97,6 +98,13 @@ public class ZildoActivity extends Activity {
 
     }
     
+/*
+    @Override
+    protected void onStop() {
+    	super.onStop();
+    	view.onPause();
+    }
+  */  
     @Override
     protected void onPause() {
     	super.onPause();

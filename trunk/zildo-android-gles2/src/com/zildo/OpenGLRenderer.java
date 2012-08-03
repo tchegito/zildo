@@ -106,8 +106,7 @@ public class OpenGLRenderer implements Renderer {
 			Log.d("openglrenderer", "recreating context");
 			SpriteDisplay spriteDisplay = ClientEngineZildo.spriteDisplay;
 			TileEngine tileEngine = ClientEngineZildo.tileEngine;
-			tileEngine.loadTiles();
-			tileEngine.createCloudTexture();
+			tileEngine.loadTextures();
 			Zildo.pdPlugin.initFilters(true);
 			ClientEngineZildo.spriteEngine.init(spriteDisplay);
 			AndroidPixelShaders.shaders.load();
