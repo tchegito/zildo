@@ -20,11 +20,10 @@
 
 package zildo.fwk.file;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
-import zildo.resource.Constantes;
+import zildo.Zildo;
 
 /**
  * Simple object to create a file from a buffer.<p/>
@@ -45,10 +44,10 @@ public class EasyWritingFile extends EasyBuffering {
     	
         OutputStream fileOut = null;
         try {
-            fileOut = new FileOutputStream(new File(Constantes.DATA_PATH+p_fileName));
+        	fileOut = Zildo.pdPlugin.prepareSaveFile(p_fileName);
             fileOut.write(data.array(), 0, data.limit());
             fileOut.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new RuntimeException("Unable to write " + p_fileName + " !");
         }
     }
