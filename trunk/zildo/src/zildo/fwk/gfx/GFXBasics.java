@@ -72,12 +72,13 @@ public class GFXBasics {
 		bytes = new byte[alpha ? 4 : 3];
 	}
 
-	public void SetBackBuffer(ByteBuffer surface, int w, int h) {
+	public void setBackBuffer(ByteBuffer surface, int w, int h, boolean alpha) {
 		pBackBuffer = surface;
 		// Get the width/height for displaying right proportions
 		this.width = w;
 		this.height = h;
 		this.pitch = 4; // One pixel size in memory (R, G, B, A)
+		this.alpha = alpha;
 	}
 
 	static void Load_Palette(String fileName) {

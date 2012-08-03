@@ -52,6 +52,8 @@ public abstract class TextureEngine {
     protected int n_Texture;
 
     protected int[] textureTab;
+    //TODO: see if the following arrays could not be static
+    protected boolean[] alphaTab;	// TRUE=nth texture has alpha channel
     protected boolean alphaChannel;	// Current texture's format (TRUE=RGBA / FALSE=RGB)
     protected ByteBuffer scratch;
 
@@ -65,6 +67,7 @@ public abstract class TextureEngine {
 		n_Texture=0;
 	
 		textureTab=new int[Constantes.NB_MOTIFBANK + Constantes.NB_SPRITEBANK];
+		alphaTab=new boolean[Constantes.NB_MOTIFBANK + Constantes.NB_SPRITEBANK];
     }
     
     @Override
@@ -86,7 +89,7 @@ public abstract class TextureEngine {
     	}
     	alphaChannel = p_alpha;
 		GFXBasics surface=new GFXBasics(true);
-		surface.SetBackBuffer(scratch, 256, 256);
+		surface.setBackBuffer(scratch, 256, 256, alphaChannel);
     	
         // Reset bytebuffer scratch
 		scratch.clear();
@@ -106,27 +109,29 @@ public abstract class TextureEngine {
     	int idTexture = doGenerateTexture();
         
         // Store texture id
-        textureTab[n_Texture]=idTexture;
-
+        textureTab[n_Texture] = idTexture;
+        alphaTab[n_Texture] = alphaChannel;
+        
         // Ready for next one
         n_Texture++;
         
         return textureTab[n_Texture-1];
     }
     
-    public void saveImage(String filename) {
-    	BufferedImage bufImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
+    private void saveImage(String filename, boolean alpha) {
+    	BufferedImage bufImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
 		scratch.position(0);
     	for (int y = 0;y<256;y++) {
     		for (int x = 0;x<256;x++) {
 				int r = 0xff & scratch.get();
 				int g = 0xff & scratch.get();
 				int b = 0xff & scratch.get();
-				if (alphaChannel) {
-					scratch.get();	// alpha channel => unused
+				int a = 0;
+				if (alpha) {
+					a = 0xff & scratch.get();
 				}
-				int rgb = r << 16 | g << 8 | b;
-				bufImage.setRGB(x,  y, rgb);
+				int argb = a << 24 | r << 16 | g << 8 | b;
+				bufImage.setRGB(x,  y, argb);
 	   		}
     	}
     	try {
@@ -157,12 +162,17 @@ public abstract class TextureEngine {
     
     public void saveAllTextures(String name) {
 		for (int i=0;i<n_Texture;i++) {
-			int id=textureTab[i];
-			getTextureImage(id);
-			saveImage(name+i);
+			getTextureImage(i);
+			saveImage(name+i, alphaTab[i]);
 		}
     }
     
+    /**
+     * Load a texture and returns its ID.
+     * @param name
+     * @return int
+     */
+    public abstract int loadTexture(String name);
     public abstract void getTextureImage(int p_texId);
 /*    
     public void saveScreen(int p_texId) {

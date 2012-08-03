@@ -201,6 +201,37 @@ public abstract class SpriteEngine {
 		}
 	}
 	
+	
+	/**
+	 * Fills the {@link SpriteModel} objects with real texture coordinates (in range 0..256, 0..256) based on
+	 * sizes from {@link SpriteBank} objects.
+	 * @param sBank
+	 */
+	protected void createModelsFromSpriteBank(SpriteBank sBank) {
+		int x=0,y=0,highestLine=0;
+
+		for (int n=0;n<sBank.getNSprite();n++)
+		{
+			SpriteModel spr=sBank.get_sprite(n);
+			int longX=spr.getTaille_x();
+			int longY=spr.getTaille_y();
+			// check for outer boundaries
+			if ( (x+longX) > 256 ) {
+				x=0;
+				y+=highestLine;
+				highestLine=0;
+			}
+			// Store sprite location on texture
+			spr.setTexPos_x(x);
+			spr.setTexPos_y(y); //+1);
+
+			// Next position
+			x+=longX;
+			if (longY > highestLine)	// Mark the highest sprite on the row
+				highestLine = longY;
+		}
+	}
+	
 	/**
 	 * Capture screen before map scroll.
 	 */

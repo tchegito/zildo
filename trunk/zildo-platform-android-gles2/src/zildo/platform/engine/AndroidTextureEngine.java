@@ -114,6 +114,7 @@ public class AndroidTextureEngine extends TextureEngine {
 	    return super.generateTexture();
     	
     }
+    
     public int generateTexture() { 
 	    throw new RuntimeException("Should never been called ! All is going by #loadTexture method.");
     }
