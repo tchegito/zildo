@@ -135,10 +135,10 @@ public class SaveGameMenu extends PageableMenu {
 		game.brandNew = false;
 		SinglePlayer singlePlay = new SinglePlayer(game);
 
-		EasyBuffering file=Zildo.pdPlugin.openFile(p_filename);
+		EasyBuffering file=Zildo.pdPlugin.openPrivateFile(p_filename);
 		game = Game.deserialize(file);
 		EngineZildo.setGame(game);
-		if (game.mapName == null) {
+		if (game.mapName == null) {	// For backward compatibility
 			game.mapName = "foretg2";
 		}
 		EngineZildo.mapManagement.loadMap(game.mapName, false);
@@ -154,8 +154,7 @@ public class SaveGameMenu extends PageableMenu {
 	public static List<String> findSavegame() {
 		File[] savegames = Zildo.pdPlugin.listFiles(Constantes.SAVEGAME_DIR, new SaveGameFilter());
 		List<String> filenames = new ArrayList<String>();
-		if (savegames != null && savegames.length > 0) { // Is there any
-															// savegames ?
+		if (savegames != null && savegames.length > 0) { // Is there any savegames ?
 			for (File f : savegames) {
 				filenames.add(getSavegameDisplayTitle(f));
 			}

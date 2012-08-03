@@ -20,10 +20,13 @@
 
 package com.zildo;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 import zildo.fwk.file.EasyBuffering;
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
@@ -34,17 +37,22 @@ import android.util.Log;
 public class AndroidReadingFile extends EasyBuffering {
 
 	public static AssetManager assetManager;
+	public static Context context;
 	
 	static byte[] buf = new byte[4000];	// One file at a time => static
 	
-	public AndroidReadingFile(String path) {
+	private AndroidReadingFile(String path, boolean asset) {
 		super(null);	// Cancel first allocation
-		String completeFilename="resources/"+path;
 		Log.d("file", "open "+path);
 		int done = 0;
 		boolean finished = false;
 		try {
-			InputStream stream = assetManager.open(completeFilename);
+			InputStream stream;
+			if (asset) {
+				stream = openAssetFile(path);
+			} else {
+				stream = openPrivateFile(path);
+			}
 			data = ByteBuffer.allocate(stream.available());
 			while (!finished) {
 		        int read = stream.read(buf);
@@ -62,6 +70,30 @@ public class AndroidReadingFile extends EasyBuffering {
 		data.flip();
 	}
 
+	public static AndroidReadingFile open(String path) {
+		return new AndroidReadingFile(path, true);
+	}
+	
+	public static AndroidReadingFile openPrivate(String path) {
+		return new AndroidReadingFile(path, false);
+	}
+	
+	private InputStream openAssetFile(String path) {
+		String completeFilename="resources/"+path;
+		try {
+			return assetManager.open(completeFilename);
+		} catch (IOException e) {
+			throw new RuntimeException("Unable to find "+path);
+		}
+		
+	}
+	private InputStream openPrivateFile(String path) {
+		try {
+			return context.openFileInput(path);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("Unable to find "+path);
+		}
+	}
 	
 	
 }

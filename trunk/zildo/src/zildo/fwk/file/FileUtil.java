@@ -22,6 +22,7 @@ package zildo.fwk.file;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.OutputStream;
 
 /**
  * @author Tchegito
@@ -30,9 +31,12 @@ import java.io.FilenameFilter;
 public interface FileUtil {
 
 	EasyBuffering openFile(String path);
+	EasyBuffering openPrivateFile(String path);
+	OutputStream prepareSaveFile(String path);
 	
 	File[] listFiles(String path, FilenameFilter filter);
 	
 	// Method used only in Android to get an AssetFileDescriptor
 	Object openFd(String path);
+	
 }

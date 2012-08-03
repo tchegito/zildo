@@ -38,7 +38,6 @@ public class ZildoActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         // Enable fullscreen
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -57,7 +56,8 @@ public class ZildoActivity extends Activity {
         
         AssetManager assetManager = getAssets();
         AndroidReadingFile.assetManager = assetManager;
-
+        AndroidReadingFile.context = getBaseContext();
+        
         ClientThread clientThread = new ClientThread();
         
         Client client = clientThread.getClient();

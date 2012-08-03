@@ -21,7 +21,10 @@
 package zildo.fwk.file;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.OutputStream;
 
 import zildo.resource.Constantes;
 
@@ -36,6 +39,14 @@ public class ClassicFileUtil implements FileUtil {
 		return new EasyReadingFile(path);
 	}
 
+	public OutputStream prepareSaveFile(String path) {
+        try {
+			return new FileOutputStream(new File(Constantes.DATA_PATH+path));
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("Unable to write " + path + " !");
+		}
+	}
+	
 	@Override
 	public File[] listFiles(String path, FilenameFilter filter) {
 		File startPath = new File(Constantes.DATA_PATH + path);
@@ -47,5 +58,11 @@ public class ClassicFileUtil implements FileUtil {
 		// This method is here only to implement correcly the interface.
 		// But this is only intended for Android.
 		throw new RuntimeException("Don't call me !");
+	}
+
+	@Override
+	public EasyBuffering openPrivateFile(String path) {
+		// Private file is nonsense for LWJGL platforms => same as openFile
+		return openFile(path);
 	}
 }
