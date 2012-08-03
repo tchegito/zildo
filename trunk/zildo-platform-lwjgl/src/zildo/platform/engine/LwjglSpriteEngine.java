@@ -115,10 +115,10 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		
 							// And enable the 'color replacement' pixel shader
 							ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(0));
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color1", tabColors[2]);
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color2", tabColors[3]);
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color3", tabColors[0].scale(color[0]));
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color4", tabColors[1].scale(color[0]));
+							ClientEngineZildo.pixelShaders.setParameter(0, "Color1", tabColors[2].scale(color[0]));
+							ClientEngineZildo.pixelShaders.setParameter(0, "Color2", tabColors[3].scale(color[0]));
+							ClientEngineZildo.pixelShaders.setParameter(0, "Color3", tabColors[0]);
+							ClientEngineZildo.pixelShaders.setParameter(0, "Color4", tabColors[1]);
 						} else {
 							ARBShaderObjects.glUseProgramObjectARB(0);
 						}
@@ -154,7 +154,8 @@ public class LwjglSpriteEngine extends SpriteEngine {
 	}
 	
 	
-	protected void loadTextures(SpriteStore p_spriteStore) {
+	@Override
+	public void loadTextures(SpriteStore p_spriteStore) {
 		// Load sprite banks
 		textureEngine.init();
 		for (int i = 0; i < SpriteManagement.sprBankName.length; i++) {
@@ -289,6 +290,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		}
 	}
 	
+	@Override
 	public void saveTextures() {
 		textureEngine.saveAllTextures("sprite");
 	}

@@ -31,7 +31,6 @@ import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.primitive.TileGroupPrimitive.ActionNthRunner;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
-import zildo.monde.util.Vector4f;
 
 /**
  * LWJGL customisation for tile engine.<p/>
@@ -94,7 +93,7 @@ public class LwjglTileEngine extends TileEngine {
 	}
 
 	@Override
-	protected void loadTextures() {
+	public void loadTextures() {
 		loadTiles();
 
 		createCloudTexture();
@@ -105,8 +104,8 @@ public class LwjglTileEngine extends TileEngine {
 		textureEngine.init();
 		for (int i = 0; i < tileBankNames.length; i++) {
 			MotifBank motifBank = getMotifBank(i);
-			textureEngine.loadTexture("tile"+i);
-			//this.createTextureFromMotifBank(motifBank);
+			//textureEngine.loadTexture("tile"+i);
+			createTextureFromMotifBank(motifBank);
 			//motifBank.freeTempBuffer();
 		}
 	}
@@ -116,9 +115,7 @@ public class LwjglTileEngine extends TileEngine {
 		GFXBasics surface = textureEngine.prepareSurfaceForTexture(true);
 
 		// Display tiles on it
-		// NOTE: surface might be not clean, so we have to draw each pixel
 		int x = 0, y = 0;
-		Vector4f black = new Vector4f(64, 64, 0, 0);
 		
 		for (int n = 0; n < mBank.getNb_motifs(); n++)
 		{
@@ -130,8 +127,6 @@ public class LwjglTileEngine extends TileEngine {
 				int a = motif[i + j * 16];
 				if (a != 255) {
 					surface.pset(i + x, j + y, a, null);
-				} else {
-					surface.pset(i + x, j + y, 0, black);
 				}
 			}
 			// Next position
@@ -146,7 +141,7 @@ public class LwjglTileEngine extends TileEngine {
 	}
 
 	private void createCloudTexture() {
-		textureEngine.prepareSurfaceForTexture(false);
+		textureEngine.prepareSurfaceForTexture(true);
 
 		CloudGenerator cGen = new CloudGenerator(textureEngine.getBuffer());
 		cGen.generate();
@@ -154,6 +149,7 @@ public class LwjglTileEngine extends TileEngine {
 		texCloudId = textureEngine.generateTexture();
 	}
 	
+	@Override
 	public void saveTextures() {
 		// Default : do nothing. Only LWJGL version can do that.
 		textureEngine.saveAllTextures("tile");
