@@ -20,10 +20,15 @@
 
 package zildo.platform.engine;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
+
+import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
@@ -63,6 +68,7 @@ public class LwjglTextureEngine extends TextureEngine {
     }
     @Override
 	public int doGenerateTexture() {
+		scratch.position(0);
 
         // Create A IntBuffer For Image Address In Memory
         IntBuffer buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
@@ -94,7 +100,8 @@ public class LwjglTextureEngine extends TextureEngine {
 	    GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, getTextureFormat(), GL11.GL_UNSIGNED_BYTE, scratch);
     }
     
-    public int loadTexture(String name) {
+    @Override
+	public int loadTexture(String name) {
 	    try {
 			Texture tex = TextureLoader.getTexture("PNG", new FileInputStream(Constantes.DATA_PATH+"textures/"+name+".png"));
 			
@@ -110,6 +117,30 @@ public class LwjglTextureEngine extends TextureEngine {
 			throw new RuntimeException("Can't load texture "+name, e.getCause());
 		}
     	
+    }
+    
+    @Override
+	protected void saveImage(String filename, boolean alpha) {
+    	BufferedImage bufImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+		scratch.position(0);
+    	for (int y = 0;y<256;y++) {
+    		for (int x = 0;x<256;x++) {
+				int r = 0xff & scratch.get();
+				int g = 0xff & scratch.get();
+				int b = 0xff & scratch.get();
+				int a = 0;
+				if (alpha) {
+					a = 0xff & scratch.get();
+				}
+				int argb = a << 24 | r << 16 | g << 8 | b;
+				bufImage.setRGB(x,  y, argb);
+	   		}
+    	}
+    	try {
+			ImageIO.write(bufImage, "png", new File(filename+".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
     
     /**
