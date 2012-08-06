@@ -115,8 +115,8 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		
 							// And enable the 'color replacement' pixel shader
 							ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(0));
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color1", tabColors[2].scale(color[0]));
-							ClientEngineZildo.pixelShaders.setParameter(0, "Color2", tabColors[3].scale(color[0]));
+							ClientEngineZildo.pixelShaders.setParameter(0, "Color1", tabColors[2]); //.scale(color[0]));
+							ClientEngineZildo.pixelShaders.setParameter(0, "Color2", tabColors[3]); //.scale(color[0]));
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color3", tabColors[0]);
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color4", tabColors[1]);
 						} else {
