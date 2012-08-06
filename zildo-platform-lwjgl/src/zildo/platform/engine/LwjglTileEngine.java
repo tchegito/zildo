@@ -141,7 +141,7 @@ public class LwjglTileEngine extends TileEngine {
 	}
 
 	private void createCloudTexture() {
-		textureEngine.prepareSurfaceForTexture(true);
+		textureEngine.prepareSurfaceForTexture(false);
 
 		CloudGenerator cGen = new CloudGenerator(textureEngine.getBuffer());
 		cGen.generate();

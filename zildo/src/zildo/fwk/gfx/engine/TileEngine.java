@@ -143,7 +143,7 @@ public abstract class TileEngine {
 		initialized = false;
 	}
 
-	protected abstract void loadTextures();
+	public abstract void loadTextures();
 	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// charge_tous_les_motifs

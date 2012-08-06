@@ -20,12 +20,7 @@
 
 package zildo.fwk.gfx.engine;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
-
-import javax.imageio.ImageIO;
 
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.GraphicStuff;
@@ -105,7 +100,6 @@ public abstract class TextureEngine {
 
     public int generateTexture() { 
     	
-        scratch.position(0);
     	int idTexture = doGenerateTexture();
         
         // Store texture id
@@ -118,27 +112,8 @@ public abstract class TextureEngine {
         return textureTab[n_Texture-1];
     }
     
-    private void saveImage(String filename, boolean alpha) {
-    	BufferedImage bufImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
-		scratch.position(0);
-    	for (int y = 0;y<256;y++) {
-    		for (int x = 0;x<256;x++) {
-				int r = 0xff & scratch.get();
-				int g = 0xff & scratch.get();
-				int b = 0xff & scratch.get();
-				int a = 0;
-				if (alpha) {
-					a = 0xff & scratch.get();
-				}
-				int argb = a << 24 | r << 16 | g << 8 | b;
-				bufImage.setRGB(x,  y, argb);
-	   		}
-    	}
-    	try {
-			ImageIO.write(bufImage, "png", new File(filename+".png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    protected void saveImage(String filename, boolean alpha) {
+    	// Default : nothing, because only LWJGL has to do that.
     }
     
     public int getNthTexture(int nth) {
