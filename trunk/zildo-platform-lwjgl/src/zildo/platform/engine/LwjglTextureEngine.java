@@ -121,7 +121,11 @@ public class LwjglTextureEngine extends TextureEngine {
     
     @Override
 	protected void saveImage(String filename, boolean alpha) {
-    	BufferedImage bufImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+    	int format = BufferedImage.TYPE_INT_RGB;
+    	if (alpha) {
+    		format = BufferedImage.TYPE_INT_ARGB;
+        }
+    	BufferedImage bufImage = new BufferedImage(256, 256, format);
 		scratch.position(0);
     	for (int y = 0;y<256;y++) {
     		for (int x = 0;x<256;x++) {

@@ -115,6 +115,7 @@ public class AndroidTextureEngine extends TextureEngine {
 			e.printStackTrace();
 		}
 	    bitmap = BitmapFactory.decodeStream(is, null, opts);
+	    System.out.println(bitmap.getConfig());
 	    return super.generateTexture();
     	
     }

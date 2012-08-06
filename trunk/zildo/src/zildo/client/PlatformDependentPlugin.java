@@ -22,6 +22,7 @@ package zildo.client;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -127,10 +128,27 @@ public class PlatformDependentPlugin {
         }
     }
 
+    /**
+     * Open an unmodifiable file.
+     * @param path
+     * @return EasyBuffering
+     */
 	public EasyBuffering openFile(String path) {
     	return fileUtil.openFile(path);
     }
     
+	public OutputStream prepareSaveFile(String path) {
+		return fileUtil.prepareSaveFile(path);
+	}
+	/**
+	 * For savegames (distinction with {@link #openFile(String)} exists only with Android)
+	 * @param path
+	 * @return EasyBuffering
+	 */
+	public EasyBuffering openPrivateFile(String path) {
+    	return fileUtil.openPrivateFile(path);
+    }
+	
     public File[] listFiles(String path, FilenameFilter filter) {
     	return fileUtil.listFiles(path, filter);
     }
