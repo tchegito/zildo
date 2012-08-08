@@ -20,6 +20,9 @@
 
 package zeditor.tools.sprites;
 
+import java.util.Arrays;
+
+import zeditor.tools.tiles.GraphChange;
 import zildo.monde.util.Zone;
 
 /**
@@ -53,6 +56,9 @@ public class Fontes extends SpriteBanque {
 
 				// Jauge etc...
 				new Zone(185, 0, 16, 42),
-				new Zone(201, 21, 8, 2), new Zone(201, 0, 22, 21) };
+				new Zone(201, 22, 8, 2), new Zone(201, 0, 22, 22) };
+		
+		pkmChanges = Arrays.asList(new GraphChange[]{
+				new GraphChange("fontes", 0, 0)});
 	}
 }
