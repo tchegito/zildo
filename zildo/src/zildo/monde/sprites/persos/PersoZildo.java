@@ -1094,6 +1094,17 @@ public class PersoZildo extends Perso {
 		return false;
 	}
 
+	@Override
+	public Item getWeapon() {
+		Item item = super.getWeapon();
+		if (item == null && !inventory.isEmpty()) {
+			// No weapon is selected => take the first one, if it exists
+			// This case occurs only after game has just been loaded
+			weapon = inventory.get(0);
+			item = weapon;
+		}
+		return item;
+	}
 	/**
 	 * Return all Zildo's inventory. Useful for saving a game.
 	 * 
