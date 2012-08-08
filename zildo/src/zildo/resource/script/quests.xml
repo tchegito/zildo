@@ -293,6 +293,32 @@
 	    </action>
 	</quest>
 	
+	<quest name="polaky_greg">
+		<trigger>
+		    <dialog name="gregoire" num="3"/>
+		</trigger>
+	</quest>
+	
+	<!-- Only for episode 1 ==> need to be removed after -->
+	<quest name="temp_episode1_desert" repeat="true">
+		<trigger>
+			<location name="ferme" pos="232,22" radius="2"></location>
+		</trigger>
+		<action>
+			<speak who="zildo" text="ferme.tempEpisode1"/>
+			<moveTo who="zildo" pos="0,32" delta="true"/>
+		</action>
+	</quest>
+	
+	<quest name="zildo_polaky">
+		<trigger>
+		    <location name="polaky" pos="616,75" radius="1"/>
+		</trigger>
+		<action>
+		    <exec script="polaky_castle"/>
+		</action>
+	</quest>
+	
 	<mapScript>
 		<condition name="coucou" exp="enlevement">
 			<remove who="roxy" />
@@ -862,4 +888,53 @@
         <angle who="sofiasky" value="1"/>
         <moveTo who="maltus" pos="540,847"/>
     </scene>
+    
+	<scene id="polaky_castle">
+	    <wait value="20"/>
+	    <remove who="green1"/>
+	    <remove who="green2"/>
+	    <spawn who="gard1" type="GARDE_CANARD" angle="0" pos="520,261" fx="noir"/>
+	    <spawn who="gard2" type="GARDE_CANARD" angle="0" pos="712,261" fx="noir"/>
+	    <angle who="zildo" value="2"/>
+	    <music name="Surprise"/>
+	    <actions>
+	        <moveTo who="gard1" pos="0,-48" delta="true"/>
+	    	<moveTo who="gard2" pos="0,-48" delta="true"/>
+	    </actions>
+	    <moveTo who="zildo" pos="615,109"/>
+	    <spawn who="gard3" type="GARDE_CANARD" angle="0" pos="616,256" fx="noir"/>
+	    <actions>
+		    <moveTo who="gard1" pos="600,111"/>
+		    <moveTo who="gard2" pos="632,111"/>
+		    <moveTo who="gard3" pos="0,-48" delta="true" speed="0.25"/>
+	    </actions>
+	    <speak who="gard1" text="polaky.gard.0"/>
+	    <angle who="gard1" value="1"/>
+	    <angle who="gard2" value="3"/>
+	    <speak who="gard1" text="polaky.gard.1"/>
+	    <speak who="gard1" text="polaky.gard.2"/>
+	    <actions>
+	        <moveTo who="zildo" pos="0,2" delta="true"/>
+	        <moveTo who="gard1" pos="0,1" delta="true"/>
+	        <moveTo who="gard2" pos="0,1" delta="true"/>
+	    </actions>
+	    <angle who="gard1" value="1"/>
+	    <angle who="gard2" value="3"/>
+	    <speak who="gard1" text="polaky.gard.3"/>
+	    <wait value="10"/>
+	    <actions>
+		    <moveTo who="zildo" pos="615,172" speed="0.7"/>
+	        <moveTo who="gard1" pos="600,172" speed="0.7"/>
+	        <moveTo who="gard2" pos="632,172" speed="0.7"/>
+	    </actions>
+	    <actions>
+			<moveTo who="gard3" pos="616,411" speed="1"/>
+			<moveTo who="zildo" pos="616,385" speed="1"/>	        
+	    </actions>
+	    <moveTo who="gard3" pos="584,443"/>
+	    <angle who="gard3" value="0"/>
+	    <speak who="gard3" text="polaky.gard.4"/>
+	    <script who="gard3" value="2" fx="zildo"/>
+	    <moveTo who="zildo" pos="616,511" unstoppable="true"/>
+	</scene>
 </adventure>
