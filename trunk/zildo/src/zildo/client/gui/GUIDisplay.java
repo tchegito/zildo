@@ -40,9 +40,11 @@ import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.monde.dialog.WaitingDialog;
+import zildo.monde.items.Item;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.FontDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
@@ -657,6 +659,18 @@ public class GUIDisplay {
 		// Keys
 		guiSpritesSequence.addSprite(FontDescription.GUI_KEY, 41, 10);
 		displayNumber(zildo.getCountKey(), 1, 40, 20);
+		
+		// Current weapon
+		guiSpritesSequence.addSprite(FontDescription.GUI_WEAPONFRAME, 14, 8);
+		Item weapon = zildo.getWeapon();
+		if (weapon != null) {
+			SpriteDescription desc = weapon.kind.representation;
+			SpriteModel spr = ClientEngineZildo.spriteDisplay.getSpriteBank(desc.getBank())
+					.get_sprite(desc.getNSpr());
+			int sx = spr.getTaille_x();
+			int sy = spr.getTaille_y();
+			guiSpritesSequence.addSprite(desc, 25-(sx >> 1), 18-(sy >> 1));
+		}
 	}
 
 	private void displayNumber(int p_number, int p_numDigit, int p_x, int p_y) {
