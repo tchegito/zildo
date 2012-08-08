@@ -55,6 +55,8 @@ public class SpriteBank {
 	protected int nSprite;
 	protected String name;
 	
+	private boolean toModif = false;	// For optimization reason : pnj.spr will be modified
+	
 	public SpriteBank()
 	{
 		this.nSprite=0;
@@ -109,6 +111,8 @@ public class SpriteBank {
 			k+=taille;
 			nSprite++;
 		}
+		
+		toModif = name.equals("pnj.spr");
 	}
 	
 	public SpriteModel get_sprite(int nspr)
@@ -120,8 +124,7 @@ public class SpriteBank {
 	public long modifyPixel(int nSpr, int color)
 	{
 		long toaff=-1;
-		String banqueGarde="pnj.spr";
-		if (name.equals(banqueGarde) && nSpr>=20 && nSpr<=34) {
+		if (toModif && nSpr>=20 && nSpr<=34) {
 			if (color == 198) {
 				toaff=0xff + (127 << 24);
 			} else if (color == 199) {
