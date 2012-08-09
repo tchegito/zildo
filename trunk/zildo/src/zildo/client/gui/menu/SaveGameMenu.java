@@ -141,6 +141,13 @@ public class SaveGameMenu extends PageableMenu {
 		if (game.mapName == null) {	// For backward compatibility
 			game.mapName = "foretg2";
 		}
+		// Wait for all history script to be finishied
+		// This could be dangerous : if a script can't finish => end of the story
+		// (though it could happen, as soon as a script is broken ...)
+		while (EngineZildo.scriptManagement.isScripting()) {
+			EngineZildo.scriptManagement.render();
+		}
+		
 		EngineZildo.mapManagement.loadMap(game.mapName, false);
 
 		singlePlay.launchGame();
