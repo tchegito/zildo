@@ -77,6 +77,8 @@ public class PersoZildo extends Perso {
 
 	private ZildoOutfit outfit;
 
+	private int heartQuarter;
+
 	// Linked elements
 	Element shield;
 	Element feet;
@@ -809,6 +811,8 @@ public class PersoZildo extends Perso {
 				pickItem(d.getItem(), p_element);
 				return false;
 			} else {
+				// Automatic behavior (presentation text, ammos adjustments)
+				EngineZildo.scriptManagement.automaticBehavior(this, null, d);
 				switch (d) {
 				case GREENMONEY1:
 					setMoney(money + 1);
@@ -855,6 +859,7 @@ public class PersoZildo extends Perso {
 					break;
 				case HEART_FRAGMENT:
 					toPlay = BankSound.ZildoCoeur;
+					heartQuarter++;
 					break;
 				case HEART:
 				case HEART_LEFT:
@@ -1053,7 +1058,7 @@ public class PersoZildo extends Perso {
 			EngineZildo.soundManagement.playSound(BankSound.ZildoTrouve, this);
 
 			// Automatic behavior (presentation text, ammos adjustments)
-			EngineZildo.scriptManagement.automaticBehavior(this, p_kind);
+			EngineZildo.scriptManagement.automaticBehavior(this, p_kind, null);
 
 			// Adventure trigger
 			if (!EngineZildo.game.multiPlayer) {
@@ -1147,7 +1152,15 @@ public class PersoZildo extends Perso {
 	public boolean isQuadDamaging() {
 		return quadDuration > 0;
 	}
+	
+	public int getHeartQuarter() {
+		return heartQuarter;
+	}
 
+	public void setHeartQuarter(int heartQuarter) {
+		this.heartQuarter = heartQuarter;
+	}
+	
 	int[] accels = new int[] { 0, 1, 1, 1, 2, 2, 3, 6, 8, 10, 10 };
 
 	public float getAcceleration() {

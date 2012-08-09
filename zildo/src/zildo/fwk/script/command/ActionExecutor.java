@@ -313,6 +313,9 @@ public class ActionExecutor {
             case moveTo:
             	if (perso != null) {
 	                achieved=perso.hasReachedTarget();
+	                if (achieved) {
+	                	perso.setTarget(null);
+	                }
             	} else if ("camera".equals(p_action.what)) {
             		achieved=ClientEngineZildo.mapDisplay.getTargetCamera() == null;
             	}

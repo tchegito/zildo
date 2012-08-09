@@ -72,7 +72,7 @@ public class Game implements EasySerializable {
 		
 		// 2: zildo's information
 		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
-		p_buffer.put(zildo.getMaxpv());
+		p_buffer.put(zildo.getMaxpv() | (zildo.getHeartQuarter() << 8));
 		p_buffer.put(zildo.getCountArrow());
 		p_buffer.put(zildo.getCountBomb());
 		p_buffer.put((byte) zildo.getCountKey());
@@ -114,7 +114,9 @@ public class Game implements EasySerializable {
         // 2: Zildo
         EngineZildo.spawnClient(ZildoOutfit.Zildo);
         PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-        zildo.setMaxpv(p_buffer.readInt());
+        int maxPvHeartQuarter = p_buffer.readInt();
+        zildo.setMaxpv(maxPvHeartQuarter & 255);
+        zildo.setHeartQuarter(maxPvHeartQuarter >> 8);
         zildo.setCountArrow(p_buffer.readInt());
         zildo.setCountBomb(p_buffer.readInt());
         zildo.setCountKey(p_buffer.readByte());
