@@ -21,6 +21,7 @@
 package zildo.monde.sprites.desc;
 
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.ui.UIText;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementGoodies;
@@ -176,5 +177,13 @@ public enum ElementDescription implements SpriteDescription {
 			return true;
 		}
 		return false;
+	}
+	
+	public String getFoundSentence() {
+    	String label=UIText.getGameText("automatic."+name());
+    	if (label.startsWith("automatic.")) {
+    		return null;	// Label doesn't exist (security but this shouldn't occur)
+    	}
+    	return label;
 	}
 }

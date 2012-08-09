@@ -317,6 +317,21 @@
 		<action>
 		    <exec script="polaky_castle"/>
 		</action>
+		<history>
+		    <mapReplace what="foret" name="foretb"/>
+		</history>
+	</quest>
+	
+	<quest name="foret_back">
+		<trigger>
+		    <location name="foretb" pos="920,429" radius="2"/>
+		</trigger>
+		<action>
+		    <moveTo what="camera" pos="-40,0" delta="true"/> 
+		    <speak who="zildo" text="foretb.zildo.0"/>
+			<sound name="ZildoAccomplishQuest"/>
+			<focus who="zildo" unblock="true" delta="true"/>
+		</action>
 	</quest>
 	
 	<mapScript>
@@ -357,6 +372,10 @@
 		</condition>
 		<condition name="polaky" exp="bosquet_free_way">
 		    <remove who="sofiasky"/>
+		</condition>
+		<condition name="polaky1" exp="zildo_polaky">
+		    <remove who="maltus"/>
+		    <script who="sofiasky" value="0"/>
 		</condition>
 	</mapScript>
 	
@@ -891,6 +910,8 @@
     
 	<scene id="polaky_castle">
 	    <wait value="20"/>
+	    <!-- Remove guards in order to avoid a crash when Zildo comes out of the castle -->
+	    <!-- We could also set them standing, instead of moving. -->
 	    <remove who="green1"/>
 	    <remove who="green2"/>
 	    <spawn who="gard1" type="GARDE_CANARD" angle="0" pos="520,261" fx="noir"/>
@@ -936,5 +957,6 @@
 	    <speak who="gard3" text="polaky.gard.4"/>
 	    <script who="gard3" value="2" fx="zildo"/>
 	    <moveTo who="zildo" pos="616,511" unstoppable="true"/>
+	    <music name="Village"/>
 	</scene>
 </adventure>
