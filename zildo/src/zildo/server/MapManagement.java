@@ -109,7 +109,7 @@ public class MapManagement {
 			currentMapTrigger = TriggerElement
 					.createLocationTrigger(adjustedMapName, null);
 			EngineZildo.scriptManagement.trigger(currentMapTrigger);
-			EngineZildo.scriptManagement.prepareMapSubTriggers(adjustedMapName);
+			EngineZildo.scriptManagement.prepareMapSubTriggers(p_mapname);
 		}
 
 
@@ -117,7 +117,7 @@ public class MapManagement {
 		EngineZildo.scriptManagement.doMapReplacements(adjustedMapName);
 		
 		// Load a new one
-		currentMap = loadMapFile(adjustedMapName);
+		currentMap = loadMapFile(adjustedMapName, p_mapname);
 		EngineZildo.spriteManagement.initForNewMap();
 
 		if (!EngineZildo.game.editing) {
@@ -159,9 +159,8 @@ public class MapManagement {
 	 *            original file name (without adjustment due to quests)
 	 * @return
 	 */
-	Area loadMapFile(String p_mapname) {
-		//System.out.println("Loading " + p_mapname);
-		String refMapname = p_mapname;
+	Area loadMapFile(String p_mapname, String p_refMapname) {
+		System.out.println("Loading " + p_mapname + "("+p_refMapname+")");
 		
 		// If file name isn't complete, do it.
 		if (p_mapname.indexOf("/") == -1 && p_mapname.indexOf("\\") == -1
@@ -171,7 +170,7 @@ public class MapManagement {
 
 		// Infos de base
 		EasyBuffering file=Zildo.pdPlugin.openFile(Constantes.MAP_PATH+p_mapname);
-		Area map = Area.deserialize(file, refMapname, true);
+		Area map = Area.deserialize(file, p_refMapname, true);
 
 		this.logger.info("Map loaded: " + p_mapname);
 
