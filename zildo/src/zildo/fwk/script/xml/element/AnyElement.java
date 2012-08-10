@@ -80,10 +80,14 @@ public abstract class AnyElement {
      * @param p_attrName
      * @return int
      */
-    protected int readInt(String p_attrName) {
+    protected int readInt(String p_attrName, int... defaultValue) {
+    	int def = 0;
+    	if (defaultValue.length > 0) {
+    		def = defaultValue[0];
+    	}
 		String strValue = readAttribute(p_attrName);
 		if (strValue == null) {
-			return 0;
+			return def;
 		} else {
 			return Integer.valueOf(strValue);
 		}
