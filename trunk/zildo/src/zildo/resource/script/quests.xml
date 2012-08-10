@@ -909,6 +909,52 @@
         <moveTo who="maltus" pos="540,847"/>
     </scene>
     
+    <scene id="open_castle_door">
+    	<actions>
+			<animation pos="600,476" type="CLOUD_FOG" />
+			<animation pos="616,476" type="CLOUD_FOG" />
+			<animation pos="632,476" type="CLOUD_FOG" />
+    	</actions>
+    	<wait value="4"/>
+    	<actions>
+    		<!-- 333 = 256 +77 -->
+    		<!-- 1221 = 256 * 4 + 197 -->
+			<sound name="ZildoPousse"/>
+    		<tile pos="37,30" back="333"/>
+    		<tile pos="38,30" back="333"/>
+    		<tile pos="39,30" back="333"/>
+    	</actions>
+    	<wait value="10"/>
+    	<actions>
+    		<tile pos="37,29" back="333" fore="1221"/>	
+    		<tile pos="38,29" back="333" fore="1221"/>
+    		<tile pos="39,29" back="333" fore="1221"/>
+    	</actions>
+    </scene>
+    
+    <scene id="close_castle_door">
+    	<actions>
+			<animation pos="600,476" type="CLOUD_FOG" />
+			<animation pos="616,476" type="CLOUD_FOG" />
+			<animation pos="632,476" type="CLOUD_FOG" />
+    	</actions>
+    	<wait value="4"/>
+    	<actions>
+    		<!-- 1256 = 256 * 4 + 232 -->
+    		<!-- 1257 = 256 * 4 + 233 -->
+			<sound name="ZildoPousse"/>
+    		<tile pos="37,30" back="1257"/>
+    		<tile pos="38,30" back="1257"/>
+    		<tile pos="39,30" back="1257"/>
+    	</actions>
+    	<wait value="10"/>
+    	<actions>
+    		<tile pos="37,29" back="1256"/>	
+    		<tile pos="38,29" back="1256"/>
+    		<tile pos="39,29" back="1256"/>
+    	</actions>
+    </scene>
+    
 	<scene id="polaky_castle">
 	    <wait value="20"/>
 	    <!-- Remove guards in order to avoid a crash when Zildo comes out of the castle -->
@@ -957,7 +1003,9 @@
 	    <angle who="gard3" value="0"/>
 	    <speak who="gard3" text="polaky.gard.4"/>
 	    <script who="gard3" value="2" fx="zildo"/>
+	    <exec script="open_castle_door"/>
 	    <moveTo who="zildo" pos="616,511" unstoppable="true"/>
+	    <exec script="close_castle_door"/>
 	    <music name="Village"/>
 	</scene>
 </adventure>

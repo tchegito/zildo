@@ -32,6 +32,9 @@ import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.ui.UIText;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.map.Area;
+import zildo.monde.map.Case;
+import zildo.monde.map.Tile;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
@@ -293,6 +296,21 @@ public class ActionExecutor {
             		ElementGear gearToActivate = (ElementGear) toActivate;
             		gearToActivate.activate(p_action.activate);
             		break;
+                case tile:
+                	// Change tile on map
+                	Area area = EngineZildo.mapManagement.getCurrentMap();
+                	Case c = area.get_mapcase(location.x, location.y+4);
+                	if (p_action.back != -1) {
+                		c.setBackTile(new Tile(p_action.back, c));
+                	}
+                	if (p_action.back2 != -1) {
+                		c.setBackTile2(new Tile(p_action.back2, c));
+                	}
+                	if (p_action.fore != -1) {
+                		c.setForeTile(new Tile(p_action.fore, c));
+                	}
+                	EngineZildo.mapManagement.getCurrentMap().set_mapcase(location.x, location.y+4, c);
+                	achieved=true;
             }
 
             p_action.done = achieved;

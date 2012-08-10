@@ -33,6 +33,7 @@ public class ElementClouds extends ElementChained {
 	
 	public ElementClouds(int p_x, int p_y) {
 		super(p_x, p_y);
+		setForeground(true);
 	}
 	
 	@Override
