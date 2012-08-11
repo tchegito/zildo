@@ -196,7 +196,6 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
 
 		surfaceGfx.StartRendering();
-		Vector4f black = new Vector4f(0, 0, 0, 0);
 
 		for (int n=0;n<sBank.getNSprite();n++)
 		{
@@ -222,8 +221,6 @@ public class LwjglSpriteEngine extends SpriteEngine {
 						}
 						replacedColor=modifiedColor==-1?null:textureEngine.graphicStuff.createColor(modifiedColor);
 						surfaceGfx.pset(i+x, j+y, a, replacedColor);
-					} else {
-						surfaceGfx.pset(i+x, j+y, a, black);
 					}
 				}
 			}
