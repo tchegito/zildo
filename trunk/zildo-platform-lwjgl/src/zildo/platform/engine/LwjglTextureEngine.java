@@ -105,6 +105,21 @@ public class LwjglTextureEngine extends TextureEngine {
 	    try {
 			Texture tex = TextureLoader.getTexture("PNG", new FileInputStream(Constantes.DATA_PATH+"textures/"+name+".png"));
 			
+			int id = tex.getTextureID();
+			
+	        GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+	        // Typical Texture Generation Using Data From The Image
+
+	        int wrapping=GL11.GL_REPEAT;	// Wrap texture (useful for cloud)
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, wrapping);
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, wrapping);
+	        
+	        int filtering=GL11.GL_NEAREST;
+	        // Linear Filtering
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filtering);
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filtering);
+	 
+	        
 	        // Store texture id
 	        textureTab[n_Texture] = tex.getTextureID();
 	        alphaTab[n_Texture] = true;
