@@ -70,7 +70,7 @@ public class Case implements EasySerializable {
 	}
 	
 	public void setForeTile(Tile p_tile) {
-		if (fore != null) {
+		if (fore != null && p_tile != null) {
 			p_tile.previousBank = fore.bank;
 		}
 		this.fore = p_tile;
@@ -292,7 +292,7 @@ public class Case implements EasySerializable {
 	}
 
 	public void setBackTile2(Tile p_tile) {
-		if (back2 != null) {
+		if (back2 != null && p_tile != null) {
 			p_tile.previousBank = back2.bank;
 		}
 		this.back2 = p_tile;
