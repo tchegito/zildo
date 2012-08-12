@@ -204,6 +204,9 @@ public class PersoNJ extends Perso {
 			walkTile(true);
 		} else {
 			// Common moves
+			if (zildo == null) {
+				return;
+			}
 			switch (quel_deplacement) {
 			case VOLESPECTRE:
 				double beta;
