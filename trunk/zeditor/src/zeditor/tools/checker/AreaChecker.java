@@ -134,7 +134,7 @@ public class AreaChecker {
 						c.setForeTile(back.clone());
 						// Put an empty one on back tile
 						back.index = empty & 255;
-						back.bank = empty >> 8;
+						back.bank = (byte) (empty >> 8);
 					}
 				}
 			}));
