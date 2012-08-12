@@ -171,7 +171,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 				// Get the right empty tile associated to map's "atmosphere"
 				int nTile=EngineZildo.mapManagement.getCurrentMap().getAtmosphere().getEmptyTile();
 				Tile back = empty.getBackTile();
-				back.bank = nTile / 256;
+				back.bank = (byte) (nTile >> 8);
 				back.index = nTile % 256;	// Empty in outside
 				for (int i=0;i<size.x*size.y;i++) {
 				    cases.add(new Case(empty));

@@ -58,7 +58,7 @@ public class PrefetchSelection extends TileSelection {
 						aCase.setForeTile(new Tile(-d / 256, -d % 256, aCase));
 					} else {
 						back.index = d % 256;
-						back.bank = d / 256;
+						back.bank = (byte) (d >> 8);
 					}
 					items.add(aCase);
 				}
