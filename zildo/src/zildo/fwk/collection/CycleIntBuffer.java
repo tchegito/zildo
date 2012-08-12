@@ -63,7 +63,7 @@ public class CycleIntBuffer {
 	}
 	
 	/**
-	 * Look for a specific value.
+	 * Look for a specific value. WARNING: if buffer is too small => inifinite loop
 	 * @param value
 	 */
 	public void lookForEmpty() {

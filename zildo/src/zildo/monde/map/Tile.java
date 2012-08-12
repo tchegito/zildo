@@ -31,19 +31,20 @@ public class Tile implements Cloneable {
 
 	public int index;
 	public int renderedIndex;	// for animated tiles
-	public int bank;
+	public byte bank;
+	public byte previousBank;	// Save previous bank, in case of bank switching
 	public Case parent;
 
 	public Reverse reverse = Reverse.NOTHING;
 	
 	public Tile(int p_bank, int p_index, Case p_parent) {
-		bank = p_bank & 63;
+		bank = (byte) (p_bank & 63);
 		index = p_index;
 		parent = p_parent;
 	}
 
 	public Tile(int p_value, Case p_parent) {
-		bank = (p_value >> 8) & 63;
+		bank = (byte) ((p_value >> 8) & 63);
 		index = p_value & 255;
 		parent = p_parent;
 	}

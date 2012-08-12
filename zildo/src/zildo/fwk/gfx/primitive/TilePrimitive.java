@@ -41,10 +41,13 @@ public class TilePrimitive extends QuadPrimitive {
 	int startCamera;
 	int endCamera;
 	
+	// Representing screen grid, where all element represents a position in index buffer
 	int indexBuffer[][];
 
 	CycleIntBuffer freeIndex;
+	//	Contains all displayed tiles in the form of an integer I = y << 8 + x
 	CycleIntBuffer displayed;
+	
 	int bufSize;
 	
     // ////////////////////////////////////////////////////////////////////
@@ -140,6 +143,17 @@ public class TilePrimitive extends QuadPrimitive {
 		}
     }
     
+    public void removeTile(int gridX, int gridY) {
+    	int n = nIndices;
+		reuseIndex(gridX, gridY);
+		nIndices = n;
+		addSprite(0, -32, 0, 0, 16, 16, Rotation.NOTHING);
+    }
+    
+    /**
+     * Iterates over all displayed tiles from this bank, and remove those which are out of the map.
+     * @param camera
+     */
     void fillFreeIndex(Point camera) {
 		int tileStartX = camera.x >> 4;
 		int tileStartY = camera.y >> 4;

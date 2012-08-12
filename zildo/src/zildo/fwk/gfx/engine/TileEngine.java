@@ -248,7 +248,6 @@ public abstract class TileEngine {
 						if (mapCase != null) {
 							boolean changed = mapCase.isModified();
 							Tile back = mapCase.getBackTile();
-							int bank = back.bank;
 							n_motif = back.index;
 							n_animated_motif = mapCase.getAnimatedMotif(compteur_animation);
 							if (n_animated_motif != back.renderedIndex) {
@@ -256,21 +255,18 @@ public abstract class TileEngine {
 								n_motif = n_animated_motif;
 								back.renderedIndex = n_motif;
 							}
-							meshBACK.updateTile(bank,
-									x, y, n_motif, back.reverse, changed);
+							meshBACK.updateTile(back, x, y, n_motif, changed);
 							
 							Tile back2 = mapCase.getBackTile2();
 							if (back2 != null) {
-								n_motif = back2.index;
-								meshBACK2.updateTile(back2.bank,
-										x, y, n_motif, back2.reverse, changed);
+								meshBACK2.updateTile(back2,
+										x, y, back2.index, changed);
 							}
 							
 							Tile fore = mapCase.getForeTile();
 							if (fore != null) {
-								n_motif = fore.index;
-								meshFORE.updateTile(fore.bank,
-													x, y, fore.index, fore.reverse, changed);
+								meshFORE.updateTile(fore,
+													x, y, fore.index, changed);
 
 							}
 							mapCase.setModified(false);
