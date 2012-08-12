@@ -22,7 +22,7 @@ package zildo.fwk.gfx.primitive;
 
 import zildo.Zildo;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
-import zildo.monde.sprites.Reverse;
+import zildo.monde.map.Tile;
 import zildo.monde.util.Point;
 
 /**
@@ -73,16 +73,37 @@ public class TileGroupPrimitive {
 		}
 	}
     
-    public void updateTile(int nth, int x, int y, int n_motif, Reverse reverse, boolean hasChanged) {
+	/**
+	 * Update tile at given location. If the tile's bank is different (and inferior to previous one)
+	 * we have to remove the previous tile. Because its are displayed in ascendant order, so
+	 * greater bank win at display phase.
+	 * @param tile
+	 * @param x
+	 * @param y
+	 * @param n_motif
+	 * @param hasChanged
+	 */
+	public void updateTile(Tile tile, int x, int y, int n_motif, boolean hasChanged) {
+		byte bank = tile.bank;
+		if (tile.previousBank > tile.bank) {
+			// Remove tile from previous primitive
+			removeTile(tile.previousBank, x, y);
+			tile.previousBank = tile.bank;
+		}
+
 		int xTex = (n_motif % 16) << 4;
 		int yTex = (n_motif >> 4) << 4; // +1;
 
-		meshes[nth].updateTile(x,
+		meshes[bank].updateTile(x,
 				y,
 				xTex,
 				yTex, 
-				reverse, hasChanged);
+				tile.reverse, hasChanged);
 	}
+    
+    private void removeTile(int nth, int x, int y) {
+    	meshes[nth].removeTile(x, y);
+    }
 
     public boolean isEmpty(int nth) {
     	return meshes[nth].isEmpty();

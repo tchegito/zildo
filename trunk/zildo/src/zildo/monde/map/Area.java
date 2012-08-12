@@ -222,7 +222,7 @@ public class Area implements EasySerializable {
 		}
 		Tile back = temp.getBackTile();
 		back.index = quoi & 255;
-		back.bank = quoi >> 8;
+		back.bank = (byte) (quoi >> 8);
 		this.set_mapcase(x, y + 4, temp);
 
 		changes.add(new Point(x, y + 4));
