@@ -274,7 +274,7 @@
 	    </trigger>
 	</quest>
 	
-		<quest name="bosquet_still_gard" repeat="true">
+	<quest name="bosquet_still_gard" repeat="true">
 	    <trigger>
 	        <dialog name="maltus" num="1"/>
 	        <questDone name="!bosquet_kill_gards"/>
@@ -335,7 +335,30 @@
 		</action>
 	</quest>
 	
+	<quest name="start_visit2">
+		<trigger>
+			<location name="chateaucoucou2" pos="420,460" radius="2"/>
+			<questDone name="zildo_polaky"/>
+		</trigger>
+		<action>
+			<exec script="coucou_visit2"/>
+		</action>
+	</quest>
+	
+	<quest name="promenade_block" repeat="true">
+	    <trigger>
+	        <location name="promenade" pos="70,40" radius="1"/>
+			<questDone name="!echange"/>	        
+	    </trigger>
+	    <action>
+	        <speak who="zildo" text="promenade.zildo.block"/>
+	        <moveTo who="zildo" pos="0,32" delta="true"/>
+	    </action>
+	</quest>
+	
 	<mapScript>
+	    <!--  , means OR  -->
+	    <!--  - means AND -->
 		<condition name="coucou" exp="enlevement">
 			<remove who="roxy" />
 		</condition>
@@ -349,8 +372,12 @@
 		<condition name="d4m4" exp="fermierperdu">
 			<remove who="charles_bar"/>
 		</condition>
-		<condition name="chateaucoucou2" exp="suite_visit1_weapon">
+		<condition name="chateaucoucou2" exp="suite_visit1_weapon-!zildo_polaky">
 			<remove who="maltus"/>
+		</condition>
+		<condition name="chateaucoucou2" exp="zildo_polaky">
+			<pos who="maltus" pos="438,460"/>
+			<angle who="maltus" angle="3"/>
 		</condition>
 		<condition name="foret" exp="!suite_visit1_weapon,maltus_foret_zildo_defeat">
 			<remove who="maltus"/>
@@ -1007,5 +1034,89 @@
 	    <moveTo who="zildo" pos="616,511" unstoppable="true"/>
 	    <exec script="close_castle_door"/>
 	    <music name="Village"/>
+	</scene>
+	
+	<scene id="coucou_visit2">
+	    <angle who="maltus" value="3"/>
+	    <moveTo who="zildo" pos="420,460"/>
+	    <speak who="maltus" text="visit2.maltus.0"/>
+	    <speak who="zildo" text="visit2.zildo.0"/>
+	    <speak who="maltus" text="visit2.maltus.1"/>
+	    <actions>
+	    	<moveTo who="maltus" pos="445,309" speed="1"/>
+	    	<moveTo who="zildo" pos="420,309" speed="1"/>
+	    </actions>
+	    <moveTo what="camera" pos="0,-48" delta="true"/>
+		<speak who="maltus" text="visit2.maltus.2"/>
+	    <speak who="king" text="visit2.king.0"/>
+	    <speak who="zildo" text="visit2.zildo.1"/>
+	    <speak who="king" text="visit2.king.1"/>
+		<speak who="king" text="visit2.king.2"/>
+		<speak who="maltus" text="visit2.maltus.3"/>
+		<moveTo who="maltus" pos="440,470" speed="1.5" unblock="true"/>
+		<wait value="20"/>
+		<angle who="zildo" value="2"/>
+		<wait value="60"/>
+		<angle who="zildo" value="0"/>
+		<wait value="60"/>
+		<speak who="king" text="visit2.king.3"/>
+		<speak who="king" text="visit2.king.4"/>
+	    <speak who="zildo" text="visit2.zildo.2"/>
+	    <spawn who="hector" type="HECTOR" pos="420,475"/>
+    	<moveTo who="maltus" pos="455,309" speed="1" unblock="true"/>
+        <moveTo who="hector" pos="440,322" speed="1" unblock="true"/>
+        <wait value="40"/>
+	    <script who="zildo" value="2" fx="maltus"/>
+        <wait value="150"/>
+        <script who="zildo" value="3"/>
+        <speak who="king" text="visit2.king.5"/>
+        <moveTo who="hector" pos="0,-20" delta="true" speed="0.5"/>
+        <angle who="zildo" value="0"/>
+		<speak who="hector" text="visit2.hector.0"/>
+		<speak who="king" text="visit2.king.6"/>
+		<speak who="hector" text="visit2.hector.1"/>
+		<speak who="king" text="visit2.king.7"/>
+		<speak who="hector" text="visit2.hector.2"/>
+		<speak who="king" text="visit2.king.8"/>
+		<wait value="50"/>
+		<angle who="hector" value="3"/>
+		<wait value="100"/>
+		<angle who="hector" value="0"/>
+		<speak who="hector" text="visit2.hector.3"/>
+		<speak who="king" text="visit2.king.9"/>
+		<speak who="king" text="visit2.king.10"/>
+		<speak who="maltus" text="visit2.maltus.4"/>
+		<wait value="20"/>
+		<angle who="maltus" value="3"/>
+		<speak who="maltus" text="visit2.maltus.5"/>
+		<moveTo who="maltus" pos="0,80" delta="true" unblock="true" speed="1"/>			        
+		<moveTo who="zildo" pos="0,80" delta="true" unblock="true" speed="1"/>
+		<wait value="40"/>
+		<angle who="hector" value="2"/>
+		<fadeOut type="0"/>
+		<exec script="zildo_avant_echange"/>
+	</scene>
+	
+	<scene id="zildo_avant_echange">
+	    <music name=""/>
+	    <speak who="camera" text="promenade.off"/>
+		<pos who="zildo" pos="57,79"/>
+		<focus who="zildo"/>
+	    <map name="promenade"/>
+		<spawn who="maltus" type="BANDIT_CHAPEAU" angle="2" pos="74,79"/>
+		<fadeIn type="5"/>
+		<wait value="20"/>
+		<angle who="zildo" value="1"/>
+		<speak who="maltus" text="promenade.maltus.0"/>
+		<angle who="maltus" value="3"/>
+		<speak who="maltus" text="promenade.maltus.1"/>
+		<moveTo who="maltus" pos="73,70" speed="0.5"/>
+		<wait value="40"/>
+		<angle who="maltus" value="3"/>
+		<wait value="30"/>
+		<speak who="maltus" text="promenade.maltus.2"/>
+		<moveTo who="maltus" pos="73,39"/>
+		<remove who="maltus"/>
+		<music name="Village"/>
 	</scene>
 </adventure>
