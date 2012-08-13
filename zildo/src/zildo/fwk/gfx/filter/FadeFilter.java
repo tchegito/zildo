@@ -20,7 +20,9 @@
 
 package zildo.fwk.gfx.filter;
 
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
+import zildo.monde.util.Vector3f;
 
 public abstract class FadeFilter extends FadeScreenFilter {
 
@@ -33,6 +35,14 @@ public abstract class FadeFilter extends FadeScreenFilter {
 
 	boolean complete = true;
 
+	@Override
+	public void preFilter() {
+		float factor = complete ? 255.0f : 768.0f;
+		float coeff = 1.0f - (getFadeLevel() / factor);
+		
+		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(coeff, coeff, coeff));
+	}
+	
 	@Override
 	public boolean renderFilter() {
 		return true;

@@ -113,7 +113,8 @@ public abstract class Ortho {
 	protected Vector3f ambientColor; // Current ambient color (could be null)
 	protected Vector3f filteredColor; // Filtered color (never null, at least 1,1,1)
 
-	protected final static Vector3f NIGHT_FILTER = new Vector3f(0.5f, 0.6f, 1f);
+	public final static Vector3f SEMI_NIGHT_FILTER = new Vector3f(0.75f, 0.85f, 1f);
+	public final static Vector3f NIGHT_FILTER = new Vector3f(0.5f, 0.6f, 1f);
 
 	public Ortho(int width, int height) {
 		w = width;
@@ -280,5 +281,13 @@ public abstract class Ortho {
 
 	public void setAmbientColor(Vector3f ambientColor) {
 		this.ambientColor = ambientColor;
+	}
+	
+	public Vector3f getFilteredColor() {
+		return filteredColor;
+	}
+	
+	public void setFilteredColor(Vector3f filtered) {
+		this.filteredColor = filtered;
 	}
 }
