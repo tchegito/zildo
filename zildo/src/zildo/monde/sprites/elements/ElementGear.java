@@ -25,6 +25,7 @@ import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.GearDescription;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
@@ -149,6 +150,12 @@ public class ElementGear extends Element {
 						EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPousse, this);
 						x+=pasX;
 						y+=pasY;
+						Perso perso = EngineZildo.persoManagement.collidePerso((int)x, getCenter().y, this, 6);
+						if (perso != null) {
+							// A character will be blocked by the gear => push him with same vector
+							perso.x+=pasX;
+							perso.y+=pasY;
+						}
 					default:
 						break;
 					}

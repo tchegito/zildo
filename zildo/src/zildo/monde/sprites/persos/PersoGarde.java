@@ -30,16 +30,17 @@ import zildo.resource.Constantes;
 /**
  * Perso garde "canard"
  * 
- * Plusieurs particularités: -il peut changer de couleurs à l'aide d'un pixel
- * shader, qui se base sur son nom. -il peut avoir plusieurs armes différente:
- * épée, lance et arc
+ * Some characteristics:<ul>
+ * <li>he can change colors following his name (or set via FX attribute in a script) thanks to a pixel shader</li>
+ * <li>he can have different weapons : sword, spear and bow, via {@link MouvementPerso}</li>
+ * </ul>
  * 
  * @author tchegito
  * 
  */
 public class PersoGarde extends PersoNJ {
 
-	final int[][] seq_gbleu = { { 0, 1, 4, 1, 0, 2, 3, 2 },
+	static final int[][] seq_gbleu = { { 0, 1, 4, 1, 0, 2, 3, 2 },
 			{ 5, 6, 7, 6, 5, 6, 7, 6 }, { 8, 9, 10, 11, 8, 9, 10, 11 },
 			{ 12, 13, 14, 13, 12, 13, 14, 13 } };
 
@@ -50,6 +51,7 @@ public class PersoGarde extends PersoNJ {
 		guardWeapon = new ElementGuardWeapon(this);
 		addPersoSprites(guardWeapon);
 		setEn_bras(guardWeapon);
+		pv = 2;
 	}
 
 	@Override

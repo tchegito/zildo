@@ -694,6 +694,20 @@ public class Area implements EasySerializable {
 				int reverse = multi & Reverse.ALL.getValue();
 				nSpr = p_buffer.readUnsignedByte();
 				SpriteEntity entity = null;
+				
+				Rotation rot = Rotation.NOTHING;
+				byte repX=0, repY=0;
+				
+				if ((multi & SpriteEntity.REPEATED_OR_ROTATED) != 0) {
+					int temp = p_buffer.readByte();
+					if ((temp & 128) != 0) {
+						rot = Rotation.fromInt(temp & 127);
+						temp = p_buffer.readByte();
+					}
+					repX = (byte) temp;
+					repY = p_buffer.readByte();
+				}
+				
 				if (p_spawn) {
 					// If this sprite is on a chest tile, link them
 					int ax = x / 16;
@@ -726,13 +740,9 @@ public class Area implements EasySerializable {
 							entity.setForeground(true);
 						}
 						if ((multi & SpriteEntity.REPEATED_OR_ROTATED) != 0) {
-							int temp = p_buffer.readByte();
-							if ((temp & 128) != 0) {
-								entity.rotation = Rotation.fromInt(temp & 127);
-								temp = p_buffer.readByte();
-							}
-							entity.repeatX = (byte) temp;
-							entity.repeatY = p_buffer.readByte();
+							entity.rotation = rot;
+							entity.repeatX = repX;
+							entity.repeatY = repY;
 						}
 						break;
 					}

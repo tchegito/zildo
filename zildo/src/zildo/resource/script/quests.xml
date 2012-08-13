@@ -270,6 +270,7 @@
 	
 	<quest name="bosquet_kill_gards">
 	    <trigger>
+	    	<location name="bosquet"/>
 	        <dead who="g1,g2"/>
 	    </trigger>
 	</quest>
@@ -313,6 +314,7 @@
 	<quest name="zildo_polaky">
 		<trigger>
 		    <location name="polaky" pos="616,75" radius="1"/>
+		    <dead who="g1,g2"/>
 		</trigger>
 		<action>
 		    <exec script="polaky_castle"/>
@@ -354,6 +356,20 @@
 	        <speak who="zildo" text="promenade.zildo.block"/>
 	        <moveTo who="zildo" pos="0,32" delta="true"/>
 	    </action>
+	</quest>
+	
+	<quest name="trig_echange">
+		<trigger>
+			<location name="promenade2" pos="492,251" radius="4"/>
+		</trigger>
+		<action>
+			<speak who="zildo" text="promenade2.zildo.pret"/>
+			<moveTo who="zildo" pos="32,-32" delta="true" speed="0.5" unblock="true"/>
+			<fadeOut type="0"/>
+			<wait value="20"/>
+			<moveTo who="zildo" pos="0,0" delta="true"/>
+			<exec script="echange"/>
+		</action>
 	</quest>
 	
 	<mapScript>
@@ -404,6 +420,12 @@
 		<condition name="polaky1" exp="zildo_polaky">
 		    <remove who="maltus"/>
 		    <script who="sofiasky" value="0"/>
+		</condition>
+		<condition name="promenade" exp="!echange">
+			<filter type="2"/>
+		</condition>
+		<condition name="promenade2" exp="!echange">
+			<filter type="2"/>
 		</condition>
 	</mapScript>
 	
@@ -480,15 +502,17 @@
 	</scene>
 	
 	<scene id="echange">
-	    <fadeOut type="0"/>
+	    <pos who="zildo" pos="577,169"/>
+	    <angle who="zildo" value="2"/>
 	    <music name="Angoisse"/>
 	    <map name="promenade2"/>
+	    <filter type="1"/>
 	    <spawn type="GARDE_CANARD" speed="1" pos="928,-10" angle="2" fx="jaune" who="emissaire"/>
 	    <spawn type="BANDIT_VERT" speed="1" pos="516,146" angle="2" who="tony"/>
 	    <spawn type="PRINCESSE_COUCHEE" pos="447,234" who="roxy"/>
 	    <focus who="emissaire"/>
-	    <speak what="camera" text="echange.p1" unblock="true"/>
 	    <fadeIn type="5"/>
+	    <speak what="camera" text="echange.p1" unblock="true"/>
  	    <moveTo pos="935,187" who="emissaire"/>
  	    <moveTo pos="860,233" who="emissaire"/>
 	    <moveTo pos="688,326" who="emissaire"/>
@@ -498,7 +522,7 @@
 	    <wait value="5" />
 	    <angle who="emissaire" value="2"/>
 	    <wait value="5" />
-	    <moveTo what="camera" pos="0,-120" delta="true"/>
+	    <moveTo what="camera" pos="0,-100" delta="true"/>
 	    <angle who="emissaire" value="0"/>
 	    <moveTo pos="490,190" who="tony"/>
 	    <wait value="30" />
@@ -530,8 +554,9 @@
 	    <script who="tony" value="3"/>
 	    <remove who="vautour" />
 	    <speak who="tony" text="echange.tony4b" />
-	    <speak who="tony" text="echange.emissaire1b" />
-	    <moveTo who="emissaire" pos="455,250" speed="1.2" unblock="true"/>
+	    <speak who="emissaire" text="echange.emissaire1b" />
+	    <moveTo who="emissaire" pos="455,250" speed="1.2" unstoppable="true" unblock="true"/>
+	    <moveTo what="camera" pos="-64,0" delta="true"/>
 	    <wait value="10" />
 	    <angle who="emissaire" value="0" />
 	    <moveTo who="tony" pos="490,220" />
@@ -567,6 +592,8 @@
 	    <script who="emissaire" value="2" fx="roxy_bunny" />
 	    <moveTo who="roxy_bunny" pos="400,246" unstoppable="true"/>
 	    <speak who="emissaire" text="echange.emissaire6" />
+	    <moveTo who="zildo" pos="0,24" delta="true" speed="1" unstoppable="true"/>
+	    <moveTo who="zildo" pos="-16,0" delta="true" unstoppable="true"/>
 	</scene>
 	
 	<scene id="enlevementScene" restoreZildo="true">
@@ -1029,8 +1056,10 @@
 	    <moveTo who="gard3" pos="584,443"/>
 	    <angle who="gard3" value="0"/>
 	    <speak who="gard3" text="polaky.gard.4"/>
-	    <script who="gard3" value="2" fx="zildo"/>
+	    <angle who="gard3" value="3"/>
+	    <wait value="20"/>
 	    <exec script="open_castle_door"/>
+	    <script who="gard3" value="2" fx="zildo"/>
 	    <moveTo who="zildo" pos="616,511" unstoppable="true"/>
 	    <exec script="close_castle_door"/>
 	    <music name="Village"/>
@@ -1104,6 +1133,7 @@
 		<focus who="zildo"/>
 	    <map name="promenade"/>
 		<spawn who="maltus" type="BANDIT_CHAPEAU" angle="2" pos="74,79"/>
+		<filter type="2"/>
 		<fadeIn type="5"/>
 		<wait value="20"/>
 		<angle who="zildo" value="1"/>
