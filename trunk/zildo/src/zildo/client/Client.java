@@ -43,6 +43,7 @@ import zildo.fwk.ui.DefaultMenuListener;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.MenuListener;
+import zildo.monde.util.Vector3f;
 import zildo.server.EngineZildo;
 import zildo.server.state.PlayerState;
 
@@ -390,6 +391,8 @@ public class Client {
 		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(false);
 		ClientEngineZildo.guiDisplay.setToDisplay_dialoguing(false);
 		ClientEngineZildo.spriteDisplay.clearSprites();
+		ClientEngineZildo.ortho.setFilteredColor(new Vector3f(1, 1, 1));
+		
 		handleMenu(new StartMenu());
 	}
 	

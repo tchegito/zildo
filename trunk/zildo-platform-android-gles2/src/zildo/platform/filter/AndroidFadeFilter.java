@@ -20,11 +20,9 @@
 
 package zildo.platform.filter;
 
-import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.FadeFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
-import zildo.monde.util.Vector3f;
 
 public class AndroidFadeFilter extends FadeFilter {
 
@@ -37,14 +35,6 @@ public class AndroidFadeFilter extends FadeFilter {
 	@Override
 	public boolean renderFilter() {
 		return true;
-	}
-
-	@Override
-	public void preFilter() {
-		float factor = complete ? 255.0f : 768.0f;
-		float coeff = 1.0f - (getFadeLevel() / factor);
-		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(coeff, coeff,
-				coeff));
 	}
 
 	@Override

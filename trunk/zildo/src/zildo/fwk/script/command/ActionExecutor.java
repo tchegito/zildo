@@ -27,6 +27,7 @@ import zildo.client.MapDisplay;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
 import zildo.client.stage.SinglePlayer;
+import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.ui.UIText;
@@ -50,6 +51,7 @@ import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Vector3f;
 import zildo.server.EngineZildo;
 
 /**
@@ -310,6 +312,20 @@ public class ActionExecutor {
                 		c.setForeTile(new Tile(p_action.fore, c));
                 	}
                 	EngineZildo.mapManagement.getCurrentMap().set_mapcase(location.x, location.y+4, c);
+                	achieved=true;
+                	break;
+                case filter:
+                	switch (p_action.val) {
+                	case 0: // REGULAR
+                		ClientEngineZildo.ortho.setFilteredColor(new Vector3f(1, 1, 1));
+                		break;
+                	case 1: // NIGHT
+                		ClientEngineZildo.ortho.setFilteredColor(Ortho.NIGHT_FILTER);
+                		break;
+                	case 2: // SEMI_NIGHT
+                		ClientEngineZildo.ortho.setFilteredColor(Ortho.SEMI_NIGHT_FILTER);
+                		break;
+                	}
                 	achieved=true;
             }
 

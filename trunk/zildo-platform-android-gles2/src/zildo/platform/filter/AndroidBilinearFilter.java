@@ -20,9 +20,12 @@
 
 package zildo.platform.filter;
 
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BilinearFilter;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.util.Vector3f;
+import zildo.platform.opengl.AndroidPixelShaders;
 import android.opengl.GLES20;
 
 
@@ -48,6 +51,10 @@ public class AndroidBilinearFilter extends BilinearFilter {
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
 
+		// Change all screen colors
+		Vector3f col = ClientEngineZildo.ortho.getFilteredColor();
+		AndroidPixelShaders.shaders.setColor(col);
+		
 		// Draw texture
 		super.render();
 		

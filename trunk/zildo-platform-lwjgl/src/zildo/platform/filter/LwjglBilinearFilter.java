@@ -22,8 +22,10 @@ package zildo.platform.filter;
 
 import org.lwjgl.opengl.GL11;
 
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BilinearFilter;
+import zildo.monde.util.Vector3f;
 
 
 public class LwjglBilinearFilter extends BilinearFilter {
@@ -47,7 +49,9 @@ public class LwjglBilinearFilter extends BilinearFilter {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0,-sizeY,1);
 
-		GL11.glColor3f(1.0f, 1.0f, 1.0f);
+		// This filter is in charge to alter all screen colors
+		Vector3f v = ClientEngineZildo.ortho.getFilteredColor();
+		GL11.glColor3f(v.x, v.y, v.z);
 		
 		// Draw texture with depth
 		super.render();
