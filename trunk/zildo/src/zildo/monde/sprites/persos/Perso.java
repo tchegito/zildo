@@ -514,7 +514,7 @@ public abstract class Perso extends Element {
 		case OBSERVE:
 			// Persos qui regardent en direction de Zildo
 			Perso observed = this.getFollowing();
-			if (observed == null || !isZildo()) {
+			if (observed == null && !isZildo()) {
 				observed = EngineZildo.persoManagement.getZildo();
 			}
 			if (observed != null) {

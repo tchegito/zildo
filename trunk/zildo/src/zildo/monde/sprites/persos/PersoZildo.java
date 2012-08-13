@@ -119,8 +119,8 @@ public class PersoZildo extends Perso {
 		setPos_seqsprite(-1);
 		setMouvement(MouvementZildo.VIDE);
 		setInfo(PersoInfo.ZILDO);
-		setMaxpv(10);
-		setPv(10);
+		setMaxpv(6);
+		setPv(6);
 		setAlerte(false);
 		setCompte_dialogue(0);
 		setMoney(0);

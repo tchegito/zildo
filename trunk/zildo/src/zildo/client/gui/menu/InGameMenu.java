@@ -22,8 +22,10 @@ package zildo.client.gui.menu;
 
 import java.util.ArrayList;
 
+import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -46,7 +48,13 @@ public class InGameMenu extends Menu {
 			items.add(new ItemMenu("m7.save", null) {
 				@Override
 				public void run() {
-					client.handleMenu(new SaveGameMenu(false, currentMenu));
+					Menu menu;
+					if (EngineZildo.scriptManagement.isScripting()) {
+						menu = new InfoMenu("m8.impossible", currentMenu);
+					} else {
+						menu = new SaveGameMenu(false, currentMenu);
+					}
+					client.handleMenu(menu);
 				}
 			});
 		}

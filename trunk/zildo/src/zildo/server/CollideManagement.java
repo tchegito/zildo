@@ -269,7 +269,7 @@ public class CollideManagement {
 		// Check for same layer (except for flying ones)
 		if (p_collider.perso != null && p_collided.perso != null) {
 			if (p_collider.perso.isForeground() != p_collided.perso.isForeground() &&
-					p_collider.perso.flying != p_collided.perso.flying) {
+					!p_collider.perso.flying) {
 				return false;
 			}
 		}
