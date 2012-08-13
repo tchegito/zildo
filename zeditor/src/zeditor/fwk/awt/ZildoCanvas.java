@@ -140,10 +140,12 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 			default:
 				throw new RuntimeException("Value "+mask+" is wrong for mask !");
 			}
-			if (tile.reverse == null) {
-				tile.reverse = Reverse.NOTHING;
+			if (tile != null) {
+				if (tile.reverse == null) {
+					tile.reverse = Reverse.NOTHING;
+				}
+				tile.reverse = tile.reverse.succ();
 			}
-			tile.reverse = tile.reverse.succ();
 			break;
 		}
 	}
