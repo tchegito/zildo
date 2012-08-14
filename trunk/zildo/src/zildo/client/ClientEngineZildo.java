@@ -301,6 +301,7 @@ public class ClientEngineZildo {
 					if (guiDisplay.isFadeOver()) {
 						// Changing map : 3/3 we unblock the player
 						filterCommand.active(retEvent.effect.getFilterClass()[0], false, null);
+						filterCommand.active(BilinearFilter.class, true, null);
 						retEvent.nature = ClientEventNature.NOEVENT;
 						retEvent.mapChange = false;
 					} else {
