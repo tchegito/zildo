@@ -27,6 +27,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.util.Vector3f;
 import zildo.platform.opengl.AndroidOrtho;
 import zildo.platform.opengl.AndroidPixelShaders;
 
@@ -80,14 +81,13 @@ public class AndroidCircleFilter extends CircleFilter {
 	@Override
 	public boolean renderFilter() {
 		
-		ClientEngineZildo.filterCommand.displayActive();
 		int radius = (int) (coeffLevel * (255 - getFadeLevel())); // + 20;
 
 
 		graphicStuff.fbo.endRendering();
 		
-		// FIXME: was previously 3f
-		shaders.setColor(1f, 1f, 1f, 1f);
+		Vector3f col = ClientEngineZildo.ortho.getFilteredColor();
+		shaders.setColor(col);
 		
 		// Draw squares
 		// Select right texture
@@ -106,10 +106,7 @@ public class AndroidCircleFilter extends CircleFilter {
 	
 	@Override
 	public void preFilter() {
-		// Copy last texture in TexBuffer
-		graphicStuff.fbo.bindToTextureAndDepth(textureID, depthTextureID, fboId);
 		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
-		//gl11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
-
 	}
+	
 }

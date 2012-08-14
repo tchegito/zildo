@@ -56,6 +56,9 @@ public class LwjglBilinearFilter extends BilinearFilter {
 		// Draw texture with depth
 		super.render();
 
+		// Reset full color
+		GL11.glColor3f(1, 1, 1);
+
 		GL11.glPopMatrix();
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);

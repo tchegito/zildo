@@ -26,8 +26,6 @@ import zildo.fwk.gfx.filter.FilterEffect;
 
 public class LwjglFadeFilter extends FadeFilter {
 
-	boolean complete = true;
-
 	public LwjglFadeFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
 	}

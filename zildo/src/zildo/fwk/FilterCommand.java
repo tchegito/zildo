@@ -80,6 +80,7 @@ public class FilterCommand {
 	 * Calculate fade level, and render active filters.
 	 */
 	public void doFilter() {
+		//System.out.println(displayActive());
 		boolean progressFadeLevel=true;
 		for (ScreenFilter filter : filters) {
 			if (filter.isActive()) {
@@ -98,7 +99,7 @@ public class FilterCommand {
 				}
 			}
 			if (asked_FadeIn) {
-				if (fadeLevel > 0) {
+				if (fadeLevel >= 0) {
 					fadeLevel-=Constantes.FADE_SPEED;
 				} else {
 					fadeLevel=0;
@@ -121,6 +122,9 @@ public class FilterCommand {
 		asked_FadeIn  = true;
 		asked_FadeOut = false;
 		fadeStarted = true;
+		// Disable all filters
+		restoreFilters();	
+		// Even bilinear
 		active(BilinearFilter.class, false, null);
 		for (FilterEffect effect : p_effects) {
 			for (Class<? extends ScreenFilter> clazz : effect.getFilterClass()) {
@@ -168,7 +172,7 @@ public class FilterCommand {
 		if (!fadeStarted) {
 			return false;
 		}
-		if (asked_FadeIn && fadeLevel == 0) {
+		if (asked_FadeIn && fadeLevel < 0) {
 			return true;
 		} else if (asked_FadeOut && fadeLevel == 255) {
 			return true;
@@ -199,6 +203,15 @@ public class FilterCommand {
 		}
 	}
 	
+	public String displayActive() {
+		StringBuilder sb = new StringBuilder();
+		for (ScreenFilter filter : filters) {
+			if (filter.isActive()) {
+				sb.append(filter.getClass().getSimpleName()).append(",");
+			}
+		}
+		return sb.toString();
+	}
 	/**
 	 * Restore default filters.
 	 */

@@ -17,13 +17,14 @@ void main(){
 uniform sampler2D sTexture;
 uniform int radius;
 uniform lowp vec2 center;
+uniform lowp vec4 CurColor;		// Current color
 
 varying mediump vec2 vTexCoord;
 varying mediump vec2 interpPosition;
 
 void main(){
 	if (int(distance(interpPosition.xy, center)) < radius) 
-		gl_FragColor = texture2D(sTexture, vTexCoord);
+		gl_FragColor = texture2D(sTexture, vTexCoord) * CurColor;
 	else
 		discard;
 }

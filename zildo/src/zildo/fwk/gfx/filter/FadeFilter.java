@@ -33,7 +33,7 @@ public abstract class FadeFilter extends FadeScreenFilter {
 		super(graphicStuff);
 	}
 
-	boolean complete = true;
+	protected boolean complete = true;
 
 	@Override
 	public void preFilter() {

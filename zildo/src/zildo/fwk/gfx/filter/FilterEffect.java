@@ -36,7 +36,7 @@ public enum FilterEffect {
 	BLEND(BlendFilter.class), 
 	BLUR(BlurFilter.class), 
 	ZOOM(ZoomFilter.class),
-	CIRCLE(CircleFilter.class, BilinearFilter.class),
+	CIRCLE(CircleFilter.class),
 	CLOUD(CloudFilter.class);
 	
 	private Class<? extends ScreenFilter>[] clazz;
