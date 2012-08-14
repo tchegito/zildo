@@ -17,7 +17,7 @@ void main(){
 [FRAGMENT]
 precision highp float;
 uniform sampler2D sTexture;
-uniform lowp vec4 CurColor;		// Ortho matrix
+uniform lowp vec4 CurColor;		// Current color
 varying mediump vec2 vTexCoord;
 void main(){
 	gl_FragColor = texture2D(sTexture, vTexCoord) * CurColor;

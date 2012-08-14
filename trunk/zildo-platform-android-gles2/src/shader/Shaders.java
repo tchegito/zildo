@@ -178,6 +178,7 @@ public class Shaders {
 			case circleFilter:
 				GLES20.glUniform1i(current.getUniform("radius"), radius);
 				GLES20.glUniform2f(current.getUniform("center"), center.x, center.y);
+				uniform4f(current.getUniform("CurColor"), curColor);
 				break;
 			case switchColor:
 				uniform4f(current.getUniform("Color1"), switchedColors[0]);

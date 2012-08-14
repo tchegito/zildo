@@ -26,6 +26,8 @@ import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.CircleFilter;
+import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.monde.util.Vector3f;
 
 /**
  * Draws a circle around a specific center (Zildo !).<br/>
@@ -71,7 +73,8 @@ public class LwjglCircleFilter extends CircleFilter {
 	
 	@Override
 	public boolean renderFilter() {
-		
+		graphicStuff.fbo.endRendering();
+
 		// Get on top of screen and disable blending
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
     	GL11.glLoadIdentity();
@@ -79,10 +82,11 @@ public class LwjglCircleFilter extends CircleFilter {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0, -sizeY, 1);
 		
-		GL11.glColor3f(1f, 1f, 1f);
+		Vector3f curColor = ClientEngineZildo.ortho.getFilteredColor();
+		GL11.glColor3f(curColor.x, curColor.y, curColor.z);
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-
+		super.render();
 		GL11.glBegin(GL11.GL_QUADS);
 		int radius = (int) (coeffLevel * (255 - getFadeLevel())); // + 20;
 		int radiusSquare = (int) Math.pow(radius, 2);
@@ -117,9 +121,22 @@ public class LwjglCircleFilter extends CircleFilter {
 		GL11.glEnd();
 		GL11.glPopMatrix();
 		
+		// Reset full color
+		GL11.glColor3f(1, 1, 1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glDisable(GL11.GL_BLEND);
 
 		return true;
+	}
+	
+	@Override
+	public void preFilter() {
+		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
+   		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
+	}
+	
+	@Override
+	public void doOnActive(FilterEffect effect) {
+		ClientEngineZildo.ortho.setAmbientColor(ClientEngineZildo.ortho.getFilteredColor());
 	}
 }

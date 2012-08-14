@@ -26,15 +26,8 @@ import zildo.fwk.gfx.filter.FilterEffect;
 
 public class AndroidFadeFilter extends FadeFilter {
 
-	boolean complete = true;
-
 	public AndroidFadeFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
-	}
-	
-	@Override
-	public boolean renderFilter() {
-		return true;
 	}
 
 	@Override

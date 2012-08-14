@@ -21,9 +21,11 @@
 package zildo.fwk.gfx.filter;
 
 import zildo.Zildo;
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.primitive.QuadPrimitive;
+import zildo.monde.util.Vector3f;
 
 
 /**
@@ -106,9 +108,13 @@ public abstract class ScreenFilter extends QuadPrimitive {
 		graphicStuff.fbo.bindToTextureAndDepth(texId, texDepthId, fboId);
 	}
 
+	/**
+	 * Default preFilter : full color
+	 */
 	public void preFilter() {
-		
+		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(1, 1, 1));
 	}
+
 	public void postFilter() {
 		
 	}

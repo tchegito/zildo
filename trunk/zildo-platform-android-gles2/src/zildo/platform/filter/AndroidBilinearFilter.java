@@ -40,6 +40,8 @@ public class AndroidBilinearFilter extends BilinearFilter {
 		super.endInitialization();
 	}
 	
+	private Vector3f full = new Vector3f(1, 1, 1);
+	
 	@Override
 	public boolean renderFilter() {
 		graphicStuff.fbo.endRendering();
@@ -57,6 +59,8 @@ public class AndroidBilinearFilter extends BilinearFilter {
 		
 		// Draw texture
 		super.render();
+		// Reset full color
+		AndroidPixelShaders.shaders.setColor(full);
 		
 		return true;
 	}
