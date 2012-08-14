@@ -53,6 +53,19 @@ public class Vector4f {
     	set(v.x, v.y, v.z, v.w);
     }
     
+    /**
+     * Set and multiply each component by another vector component, without fourth one.<br/>
+     * Useful for Color filtering, where alpha channel doesn't need to be changed.
+     * @param v
+     * @param coeff
+     */
+    public void setAndScale3(Vector4f v, Vector3f coeff) {
+    	set(v.x * coeff.x, 
+    			v.y * coeff.y, 
+    			v.z * coeff.y, 
+    			v.w);
+    }
+    
     public Vector4f scale(float scale)
     {
         x *= scale;

@@ -22,7 +22,9 @@ package zildo.fwk.gfx;
 
 import java.nio.ByteBuffer;
 
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.ZUtils;
+import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
 
 
@@ -215,19 +217,25 @@ public abstract class PixelShaders {
 	// colorReplace2 will be replaced by darkColor
 	///////////////////////////////////////////////////////////////////////////////////////
 
+	private static Vector4f darkColor=new Vector4f(0,0,0,0);
+	private static Vector4f brightColor=new Vector4f(0,0,0,0);
+	private static Vector4f colorReplace1=new Vector4f(1,0,0.0f,0.5f);
+	private static Vector4f colorReplace2=new Vector4f(0,1.0f,0,0.5f);
+
+	Vector4f coeffedDark = new Vector4f(1, 1, 1, 1);
+	Vector4f coeffedBright = new Vector4f(1, 1, 1, 1);
+	
 	public Vector4f[] getConstantsForSpecialEffect(EngineFX specialEffect)
 	{
-		Vector4f darkColor=new Vector4f(0,0,0,0);
-		Vector4f brightColor=new Vector4f(0,0,0,0);
-		Vector4f colorReplace1=new Vector4f(1,0,0.0f,0.5f);
-		Vector4f colorReplace2=new Vector4f(0,1.0f,0,0.5f);
-	
 		if (specialEffect.darkColor != null) {
 			darkColor = specialEffect.darkColor;
 			brightColor = specialEffect.brightColor;
 		}
+		Vector3f coeff = ClientEngineZildo.ortho.getAmbientColor();
+		coeffedDark.setAndScale3(darkColor, coeff);
+		coeffedBright.setAndScale3(brightColor, coeff);
 		
-		Vector4f[] tab={brightColor, darkColor, colorReplace1, colorReplace2};
+		Vector4f[] tab={coeffedBright, coeffedDark, colorReplace1, colorReplace2};
 
 		return tab;
 	}
