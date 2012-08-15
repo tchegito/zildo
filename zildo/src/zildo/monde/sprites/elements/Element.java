@@ -32,7 +32,6 @@ import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
@@ -64,7 +63,8 @@ public class Element extends SpriteEntity {
 									// linked entity die too.
 
 	protected Element shadow;
-
+	protected boolean pushable;
+	
 	public Element() {
 		super();
 		this.initialize();
@@ -546,21 +546,13 @@ public class Element extends SpriteEntity {
 	 * @return boolean
 	 */
 	public boolean isPushable() {
-		// We shouldn't look for zildo's position normally.
-		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-		boolean pushable = false;
-		if (desc instanceof ElementDescription) {
-			ElementDescription d = (ElementDescription) desc;
-			pushable = d.isPushable();
-		}
-		return ((pushable ||
-		// Cas spécial : 28=tonneau sur la map 'polakyg' : passage secret !}
-				// TODO:clean this for episode 2
-		(nSpr == 28
-				&& EngineZildo.mapManagement.getCurrentMap().getName()
-						.equals("polakyg") && zildo.getY() >= 7 * 16)) && az == 0.0f);
+		return pushable;
 	}
 
+	public void setPushable(boolean pushable) {
+		this.pushable = pushable;
+	}
+	
 	public float getFx() {
 		return fx;
 	}
@@ -588,6 +580,8 @@ public class Element extends SpriteEntity {
 		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPousse,
 				new Point(x, y));
 		az = 1.0f;
+		// One push only
+		pushable = false;
 	}
 
 	/**

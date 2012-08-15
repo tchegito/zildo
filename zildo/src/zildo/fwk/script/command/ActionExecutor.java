@@ -92,6 +92,9 @@ public class ActionExecutor {
             		currentPos = new Point(perso.x, perso.y);
             	} else if ("camera".equals(p_action.what)) {
             		currentPos = ClientEngineZildo.mapDisplay.getCamera();
+            	} else {
+                	Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+                	currentPos = new Point(elem.x, elem.y);
             	}
             	if (currentPos == null) {
             		throw new RuntimeException("We need valid 'who' or 'what' attribute");
@@ -107,6 +110,12 @@ public class ActionExecutor {
                     } else if ("camera".equals(p_action.what)) {
                         ClientEngineZildo.mapDisplay.setCamera(location);
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
+                    } else {
+                    	Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+                    	elem.x = location.x;
+                    	elem.y = location.y;
+                    	// TODO:the 'pushable' attribute shouldn't be set by this default way
+                    	elem.setPushable(false);
                     }
                     achieved = true;
                     break;

@@ -565,12 +565,19 @@ public class Area implements EasySerializable {
 
 		// 4) Sprites
 		if (n_sprites != 0) {
+			Element elem;
+			String entityName;
 			for (SpriteEntity entity : entities) {
+				elem = null;
+				if (entity.getEntityType().isElement()) {
+					elem = (Element) entity;
+				}
 				p_file.put((int) entity.x);
 				p_file.put((int) entity.y);
 				int foreground = entity.isForeground() ? SpriteEntity.FOREGROUND : 0;
 				int repeated = (entity.repeatX > 1 || entity.repeatY > 1 || entity.rotation != Rotation.NOTHING) ? SpriteEntity.REPEATED_OR_ROTATED : 0;
-				p_file.put((byte) (entity.getNBank() | entity.reverse.getValue() | foreground | repeated));
+				int pushable = (elem != null && elem.isPushable()) ? SpriteEntity.PUSHABLE : 0;
+				p_file.put((byte) (entity.getNBank() | entity.reverse.getValue() | foreground | repeated | pushable));
 				p_file.put((byte) entity.getNSpr());
 				if (repeated > 0) {
 					if (entity.rotation != Rotation.NOTHING) {
@@ -579,10 +586,7 @@ public class Area implements EasySerializable {
 					p_file.put(entity.repeatX);
 					p_file.put(entity.repeatY);
 				}
-				String entityName = "";
-				if (entity.getEntityType().isElement()) {
-					entityName = ((Element)entity).getName();
-				}
+				entityName = elem != null ? elem.getName() : "";
 				p_file.put(entityName);
 			}
 		}
@@ -690,6 +694,10 @@ public class Area implements EasySerializable {
 				int y = p_buffer.readInt();
 				short nSpr;
 				short multi = p_buffer.readUnsignedByte();
+				// Multi contains many information : 0--15 : bank
+				// 16 : REPEATED or ROTATED
+				// 32 : FOREGROUND
+				// 64 : PUSHABLE
 				int nBank = multi & 15;
 				int reverse = multi & Reverse.ALL.getValue();
 				nSpr = p_buffer.readUnsignedByte();
@@ -748,7 +756,9 @@ public class Area implements EasySerializable {
 					}
 					String entName= p_buffer.readString();
 					if (entity != null && entity.getEntityType().isElement()) {
-						((Element)entity).setName(entName);
+						Element elem = (Element) entity;
+						elem.setName(entName);
+						elem.setPushable((multi & SpriteEntity.PUSHABLE) != 0);
 					}
 				}
 			}

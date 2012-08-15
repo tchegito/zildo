@@ -382,6 +382,16 @@
 		</action>
 	</quest>
 	
+	<quest name="tonneau_polakyg">
+		<trigger>
+		    <location name="polakyg"/>
+		    <push name="barrel1" angle="2"/>
+		</trigger>    
+		<action>
+		    <sound name="ZildoSecret"/>
+		</action>
+	</quest>
+	
 	<mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->
@@ -436,6 +446,9 @@
 		</condition>
 		<condition name="promenade2" exp="!echange">
 			<filter type="2"/>
+		</condition>
+		<condition name="polakyg" exp="tonneau_polakyg">
+		    <pos what="barrel1" pos="0,16" delta="true"/>
 		</condition>
 	</mapScript>
 	

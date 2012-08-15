@@ -53,7 +53,8 @@ public class SpriteEntity extends Identified implements Cloneable,
 	//public static final int Reverse.VERTICAL = 64;
 	public static final int FOREGROUND = 32; // Only for MAP format
 	public static final int REPEATED_OR_ROTATED = 16; // Fields 'repeatX' and 'repeatY' are different than 1
-
+	public static final int PUSHABLE = 64;	// Only for elements, TRUE if Zildo can push it
+	
 	// Class variable
 	public float x, y, z; // Real position located by center (z is never
 							// initialized with entities)
