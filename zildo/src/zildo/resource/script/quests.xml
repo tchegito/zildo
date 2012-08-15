@@ -75,7 +75,7 @@
 			<dialog name="laura" num="3"/>
 		</trigger>
 		<action>
-			<take value="20"/>
+			<take item="FLASK_RED"/>
 		</action>
 	</quest>
 	<quest name="gardelaitier">
@@ -101,6 +101,7 @@
 	<quest name="ritou_bar">
 		<trigger>
 			<dialog name="ritou" num="2"/>
+			<questDone name="!gardelaitier"/>
 		</trigger>
 		<action>
 			<sound name="ZildoAccomplishQuest"/>
