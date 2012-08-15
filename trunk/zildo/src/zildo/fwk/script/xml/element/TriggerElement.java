@@ -31,6 +31,7 @@ import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.items.ItemKind;
 import zildo.monde.quest.QuestEvent;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
@@ -46,6 +47,7 @@ public class TriggerElement extends AnyElement {
 	boolean not;	// Use for inversion of inventory posess
 	Zone region; // Unimplemented yet
 	boolean immediate;	// TRUE=trigger is disabled just after activation (default:true)
+	Angle angle;
 	
 	boolean pressed = false;	// For buttons being pressed during the game
 	
@@ -81,6 +83,11 @@ public class TriggerElement extends AnyElement {
 			if (strPos != null) {
 				tileLocation = Point.fromString(strPos);
 			}
+			break;
+		case PUSH:
+			name = readAttribute("name");	// Name of element to push
+			String txt =readAttribute("angle");
+			angle = Angle.fromInt(Integer.parseInt(txt));
 			break;
 		case QUESTDONE:
 			name = readAttribute("name");
@@ -156,6 +163,10 @@ public class TriggerElement extends AnyElement {
 		case DEAD:
 			deadPersos.remove(p_another.name);
 			return deadPersos.size() == 0;
+		case PUSH:
+			boolean nameGood = name.equals(p_another.name);
+			boolean angleGood = angle == null || angle == p_another.angle;
+			return nameGood && angleGood;
 		}
 		return false;
 	}
@@ -247,6 +258,19 @@ public class TriggerElement extends AnyElement {
 		return elem;
 	}
 
+	/**
+	 * Ingame method to check an object being pushed
+	 * @param p_name
+	 * @param p_angle
+	 * @return TriggerElement
+	 */
+	public static TriggerElement createPushTrigger(String p_name, Angle p_angle) {
+		TriggerElement elem = new TriggerElement(QuestEvent.PUSH);
+		elem.angle = p_angle;
+		elem.name = p_name;
+		return elem;
+	}
+	
 	public String getName() {
 		return name;
 	}
