@@ -1,0 +1,92 @@
+/**
+ * Legend of Zildo
+ * Copyright (C) 2006-2012 Evariste Boussaton
+ * Based on original Zelda : link to the past (C) Nintendo 1992
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+package junit;
+
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+/**
+ * @author Tchegito
+ *
+ */
+public class CheckDialogs extends TestCase {
+
+	static ResourceBundle dialFR;
+	static ResourceBundle dialEN;
+	
+	static {
+		dialFR = ResourceBundle.getBundle("zildo.resource.bundle.game", Locale.FRANCE);
+		Locale.setDefault(Locale.US);
+		dialEN = ResourceBundle.getBundle("zildo.resource.bundle.game");
+	}
+
+	public void testCompletude() {
+		Enumeration<String> keys = dialFR.getKeys();
+		while (keys.hasMoreElements()) {
+			String key = keys.nextElement();
+			String valueEN = dialEN.getString(key);
+			Assert.assertTrue("No value for key "+key+" in game.properties", valueEN != null);
+		}				
+	}
+	
+	public void testTranslation() {
+		Enumeration<String> keys = dialFR.getKeys();
+		while (keys.hasMoreElements()) {
+			String key = keys.nextElement();
+			try {
+				String valueFR = dialFR.getString(key);
+				String valueEN = dialEN.getString(key);
+				if (valueEN != null) {
+					Assert.assertTrue("Sentence isn't translated for "+key+" in game.properties", !valueEN.equals(valueFR));
+				}		
+			} catch (MissingResourceException m) {
+				
+			}
+		}
+	}
+
+	public void testSpecialChars() {
+		Enumeration<String> keys = dialFR.getKeys();
+		while (keys.hasMoreElements()) {
+			String key = keys.nextElement();
+			try {
+				String valueFR = dialFR.getString(key);
+				String valueEN = dialEN.getString(key);
+				if (valueEN != null) {
+					boolean sharp = charIdem(valueFR, valueEN, '#');
+					boolean arobase = charIdem(valueFR, valueEN, '@');
+					Assert.assertTrue("Translation hasn't the same special character for "+key+" in game.properties", sharp && arobase);
+				}
+			} catch (MissingResourceException m) {
+				
+			}
+		}
+	}
+	
+	private boolean charIdem(String s1, String s2, char a) {
+		return (s1.indexOf(a) * s2.indexOf(a)) > 0;
+	}
+}
