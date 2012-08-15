@@ -29,7 +29,7 @@ import zildo.monde.util.Point;
  */
 public class TouchMovement {
 
-	TouchPoints points;
+	final TouchPoints points;
 	Angle current;
 	Point save;
 	Point prec;

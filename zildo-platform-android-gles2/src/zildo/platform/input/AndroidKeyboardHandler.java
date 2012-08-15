@@ -99,11 +99,10 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 					break;
 				case KEY_X:
 					Point zildoPos = infos.getZildoPos();
-					if (zildoPos != null) {
-						//System.out.println("zildo :"+zildoPos+" - distance="+zildoPos.distance(p));
-					}
-					if (zildoPos != null && zildoPos.distance(p) < 16) {
-						return true;
+					// Inventory only if player isn't moving (tm.getCurrent) and close enough
+					// to zildo location
+					if (zildoPos != null && tm.getCurrent() == null && zildoPos.distance(p) < 24) {
+						 return true;
 					}
 					break;
 				}
@@ -145,7 +144,9 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 		polledTouchedPoints.clear();
 		if (infos.liveTouchedPoints.size() != 0) {
 			polledTouchedPoints.clear();
-			polledTouchedPoints.putAll(infos.liveTouchedPoints);
+			synchronized (infos.liveTouchedPoints) {
+				polledTouchedPoints.putAll(infos.liveTouchedPoints);
+			}
 			//liveTouchedPoints.clear();
 			//System.out.println("polledpoints size = "+polledTouchedPoints.size());
 		}
