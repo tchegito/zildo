@@ -60,6 +60,7 @@ public class PersoVolant extends PersoNJ {
 			pathFinder = new PathFinderFlying(this);
 			break;
 		}
+		pv = 2;
 		desc = p_desc;
 	}
 
