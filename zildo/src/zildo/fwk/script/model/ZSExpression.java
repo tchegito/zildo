@@ -64,6 +64,11 @@ public class ZSExpression {
 	}
 
 	public boolean isTrue() {
+		if (questName.startsWith("money")) {
+			int price=Integer.valueOf(questName.substring("money".length()));
+			int zildoMoney = EngineZildo.persoManagement.getZildo().getMoney();
+			return price<=zildoMoney;
+		}
 		boolean result = EngineZildo.scriptManagement.isQuestOver(questName);
 		if (!done) {
 			result = !result;

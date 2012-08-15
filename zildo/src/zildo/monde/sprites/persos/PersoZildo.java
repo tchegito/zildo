@@ -801,9 +801,13 @@ public class PersoZildo extends Perso {
 	public boolean pickGoodies(Element p_element, int p_money) {
 		// Effect on perso
 		int money = this.getMoney();
-		if (p_money > 0) { // Zildo gets some money
+		if (p_money != 0) { // Zildo gets some money
 			setMoney(money + p_money);
-			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
+			if (p_money > 0) {
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
+			} else {
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoGagneArgent, this);
+			}
 		} else {
 			int elemNSpr=p_element.getNSpr();
 			ElementDescription d = ElementDescription.fromInt(elemNSpr);
