@@ -62,7 +62,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || focus || text || V || - || - || Focus on given character (if delta is TRUE, camera moves smoothly) ||
 || spawn || text || V || V || - || Spawn a new character/sprite ||
 || exec || text || - || - || - || Execute a named script ||
-|| take || text || V || V || - || A character (Zildo for example) takes an object ||
+|| take || text || V || V || - || A character (Zildo for example) takes an object or money. Could be negative value, if Zildo buy something. ||
 || mapReplace || text || - || V || - || Replace map indicated by 'what' by the one named by 'name'  ||
 || animation || text || - || - || - || Spawn an animation from the enum [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/desc/SpriteAnimation.java SpriteAnimation] ||
 || impact || text || - || - || - || Spawn an animation from the enum [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/elements/ElementImpact.java ImpactKind] ||
