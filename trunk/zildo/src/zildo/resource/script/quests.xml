@@ -250,6 +250,7 @@
 	<quest name="foretg_button_trig2">
 	    <trigger>
 	        <location name="foretg" tilePos="7,17"/>
+	        <questDone name="foretg_button_trig"/>
 	    </trigger>
 	    <action>
 	        <actions>
@@ -833,9 +834,15 @@
 		<moveTo who="maltus" pos="0,-40" delta="true"/>
 		<angle who="maltus" value="2"/>
 		<wait value="10"/>
-		<moveTo who="zildo" pos="0,-210" delta="true" unblock="true"/>
+		<moveTo who="zildo" pos="0,-70" delta="true" unblock="true"/>
 		<wait value="5"/>
-		<moveTo who="maltus" pos="0,-150" speed="1.8" delta="true"/>
+		<moveTo who="maltus" pos="0,-30" speed="1.8" delta="true"/>
+		<!-- Maltus is looking for a way -->
+		<moveTo who="maltus" pos="30,-10" speed="1" delta="true"/>
+		<wait value="20"/>
+		<speak who="maltus" text="foret.maltus.1.5"/>
+		<moveTo who="maltus" pos="-30,-110" delta="true" speed="1.8"/>
+		<moveTo who="zildo" pos="0,-140" delta="true" unblock="true"/>
 		<moveTo who="maltus" pos="30,-5" delta="true"/>
 		<wait value="15"/>
 		<actions>
@@ -1184,9 +1191,11 @@
 	    <wait value="50"/>
 	    <animation type="CLOUD_FOG" pos="97,79"/>
 	    <pos who="vipere" pos="97,79"/>
+	    <wait value="30"/>
 	    <music name=""/>
 	    <take value="-20"/>
 	    <filter type="2"/>
+	    <wait value="20"/>
 	    <speak who="vipere" text="d4m8.vipere.3"/>
 	    <angle who="zildo" value="3"/>
 	    <speak who="vipere" text="d4m8.vipere.4"/>
