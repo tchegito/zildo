@@ -199,6 +199,7 @@ public class PersoManagement {
 		
 		switch (p_desc) {
 			case SQUELETTE:
+			case ELECTRIQUE:
 				perso.setPv(2);
 				break;
 			case CREATURE:
