@@ -42,6 +42,8 @@ A trigger can be of 4 different kinds : (corresponding to [http://code.google.co
  * dialog : when a specific character say a given sentence
  * inventory : does Zildo have a given item ?
  * questDone : has Zildo achieved a given quest ?
+ * dead : does a set of creatures died ?
+ * push : is someone pushing an element ?
 
 === Action ===
 
@@ -71,6 +73,9 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || putDown || text || - || - || - || Remove an item from Zildo's inventory ||
 || attack || text || V || - || - || Make a given character attacking in front of him ||
 || activate || text || - || V || V || Activate a gear (door, button, ...) with boolean 'value' to turn on/off the gear (according to TRUE/FALSE value) ||
+|| tile || text || - || - || - || Change a map tile ||
+|| filter || text || - || - || - || Add a color filter : 0=normal / 1=night / 2=evening ||
+
 
 === Multithread ===
 
