@@ -36,7 +36,7 @@ _Note_ : when loading a saved game, every accomplished quest launches the execut
 
 === Trigger ===
 
-A trigger can be of 4 different kinds : (corresponding to [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/quest/QuestEvent.java QuestEvent] )
+A trigger can be of 6 different kinds : (corresponding to [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/quest/QuestEvent.java QuestEvent] )
 
  * location : when a character reach a given location
  * dialog : when a specific character say a given sentence
