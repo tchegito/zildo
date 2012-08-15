@@ -58,7 +58,7 @@ public class TouchPoints {
 		}
 	}
 	
-	public synchronized void set(int i, Point p) {
+	public void set(int i, Point p) {
 		if (i >=0 && i <= 1) {
 			put(i, p);
 		}
@@ -68,7 +68,7 @@ public class TouchPoints {
 		points.clear();
 	}
 	
-	public synchronized void putAll(TouchPoints tp) {
+	public void putAll(TouchPoints tp) {
 		points.putAll(tp.points);
 	}
 	

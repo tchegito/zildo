@@ -42,13 +42,13 @@ public class AndroidInputInfos {
 	}
 	
 	public Point getZildoPos() {
-		if (zildo == null || !zildo.isZildo()) {
+		if (zildo == null || !zildo.visible) {
 			zildo = EngineZildo.persoManagement.getZildo();
 		}
 		if (zildo != null) {
 			//SpriteModel model = zildo.getSprModel();
-			zildoPos.x = zildo.getScrX(); // + model.getTaille_x() >> 1;
-			zildoPos.y = zildo.getScrY(); // + model.getTaille_y() >> 1;
+			zildoPos.x = zildo.getScrX()+8; // + model.getTaille_x() >> 1;
+			zildoPos.y = zildo.getScrY()+8; // + model.getTaille_y() >> 1;
 			return zildoPos;
 		}
 		return null;
