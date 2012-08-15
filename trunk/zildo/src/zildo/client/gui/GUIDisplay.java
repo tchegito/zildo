@@ -701,6 +701,15 @@ public class GUIDisplay {
 		guiSpritesSequence.clear();
 	}
 
+	/**
+	 * Reinit GUI when a game is finished, to be ready next time.
+	 */
+	public void clearGui() {
+		setToDisplay_generalGui(false);
+		setToDisplay_dialoguing(false);
+		countMoney = 0;
+	}
+	
 	public boolean isToDisplay_dialoguing() {
 		return toDisplay_dialoguing;
 	}

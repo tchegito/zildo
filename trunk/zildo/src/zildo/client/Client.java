@@ -160,7 +160,7 @@ public class Client {
 
 	public boolean mainLoop() {
 		// Render current stage and remove those which are finished
-		long t1 = ZUtils.getTime();
+		//long t1 = ZUtils.getTime();
 		
 		List<GameStage> toRemove = new ArrayList<GameStage>();
 		for (GameStage stage : stages) {
@@ -182,11 +182,11 @@ public class Client {
 			}
 		}
 		
-		long t2 = ZUtils.getTime();
+		//long t2 = ZUtils.getTime();
 		
 		render();
 		
-		long t3 = ZUtils.getTime();
+		//long t3 = ZUtils.getTime();
 		
 		//System.out.println("time update : "+(t2-t1)+"ms / time render : "+(t3-t2)+"ms / number of stage : "+stages.size());
 		if (action != null && !action.isLaunched()) {
@@ -388,8 +388,7 @@ public class Client {
 		}
 		
 		ClientEngineZildo.mapDisplay.setCurrentMap(null);
-		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(false);
-		ClientEngineZildo.guiDisplay.setToDisplay_dialoguing(false);
+		ClientEngineZildo.guiDisplay.clearGui();
 		ClientEngineZildo.spriteDisplay.clearSprites();
 		ClientEngineZildo.ortho.setFilteredColor(new Vector3f(1, 1, 1));
 		
