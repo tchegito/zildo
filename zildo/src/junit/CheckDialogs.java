@@ -79,6 +79,13 @@ public class CheckDialogs extends TestCase {
 					boolean sharp = charIdem(valueFR, valueEN, '#');
 					boolean arobase = charIdem(valueFR, valueEN, '@');
 					Assert.assertTrue("Translation hasn't the same special character for "+key+" in game.properties", sharp && arobase);
+					
+					int i = valueFR.indexOf("#");
+					if (i != -1) {
+						char pos = valueFR.charAt(i+1);
+						char pos2 = valueEN.charAt(valueEN.indexOf("#") + 1);
+						Assert.assertTrue("Sharp doesn't lead to same sentence for "+key+" in game.properties", pos == pos2);
+					}
 				}
 			} catch (MissingResourceException m) {
 				
