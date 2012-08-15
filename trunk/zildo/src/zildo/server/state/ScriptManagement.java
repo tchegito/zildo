@@ -175,7 +175,7 @@ public class ScriptManagement {
     				// Reset only the 'location' and 'dialog' trigger to 'undone' 
     				// (because they have to be immediate)
     				for (TriggerElement trig : quest.getTriggers()) {
-    					if (trig.done){
+    					if (trig.done && trig.isImmediate()){
     						switch (trig.kind) {
     						case LOCATION:
 	    						TriggerElement currentMapTrigger = EngineZildo.mapManagement.getCurrentMapTrigger();

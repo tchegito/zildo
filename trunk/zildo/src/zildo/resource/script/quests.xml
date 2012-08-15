@@ -372,6 +372,16 @@
 		</action>
 	</quest>
 	
+	<quest name="voyante">
+		<trigger>
+		    <dialog name="vipere" num="2" immediate="false"/>
+		    <location name="d4m8" pos="143,70"/>
+		</trigger>
+		<action>
+		    <exec script="voyance"/>
+		</action>
+	</quest>
+	
 	<mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->
@@ -1149,4 +1159,22 @@
 		<remove who="maltus"/>
 		<music name="Village"/>
 	</scene>
+	
+	<scene id="voyance">
+	    <animation type="CLOUD_FOG" pos="103,120"/>
+	    <pos who="vipere" pos="400,400"/>
+	    <wait value="50"/>
+	    <animation type="CLOUD_FOG" pos="97,79"/>
+	    <pos who="vipere" pos="97,79"/>
+	    <music name=""/>
+	    <take value="-20"/>
+	    <filter type="2"/>
+	    <speak who="vipere" text="d4m8.vipere.3"/>
+	    <angle who="zildo" value="3"/>
+	    <speak who="vipere" text="d4m8.vipere.4"/>
+	    <speak who="vipere" text="d4m8.vipere.5"/>
+	    <speak who="vipere" text="d4m8.vipere.6"/>
+	    <filter type="0"/>
+	    <music name="Village"/>
+   	</scene>
 </adventure>

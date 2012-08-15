@@ -45,7 +45,8 @@ public class TriggerElement extends AnyElement {
 	int radius; // For location
 	boolean not;	// Use for inversion of inventory posess
 	Zone region; // Unimplemented yet
-
+	boolean immediate;	// TRUE=trigger is disabled just after activation (default:true)
+	
 	boolean pressed = false;	// For buttons being pressed during the game
 	
 	List<String> deadPersos;	// Perso expected to be dead
@@ -63,6 +64,8 @@ public class TriggerElement extends AnyElement {
 			throw new RuntimeException("Trigger kind is unknown !");
 		}
 		xmlElement = p_elem;
+		
+		immediate = !"false".equals(readAttribute("immediate"));
 		
 		switch (kind) {
 		case DIALOG:
@@ -269,5 +272,9 @@ public class TriggerElement extends AnyElement {
 			sb.append(numSentence);
 		}
 		return sb.toString();
+	}
+	
+	public boolean isImmediate() {
+		return immediate;
 	}
 }
