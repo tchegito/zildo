@@ -160,7 +160,7 @@ public class MapManagement {
 	 * @return
 	 */
 	Area loadMapFile(String p_mapname, String p_refMapname) {
-		System.out.println("Loading " + p_mapname + "("+p_refMapname+")");
+		//System.out.println("Loading " + p_mapname + "("+p_refMapname+")");
 		
 		// If file name isn't complete, do it.
 		if (p_mapname.indexOf("/") == -1 && p_mapname.indexOf("\\") == -1
@@ -682,8 +682,8 @@ public class MapManagement {
 		List<Point> points = new ArrayList<Point>();
 		if (currentMap == null) {
 			//points.add(new Point(231+450-220+30-20, 360+130-50-150 +250));	// for coucou
-			//points.add(new Point(231+450-220+30-20, 360+130-50-150 +250-40));	// for foretg2
-			points.add(new Point(231+450, 360+130-50-150 +250+50));	// 231+450 is good for preintro
+			points.add(new Point(231+450+30-20, 360+130-50-150 +250));	// for foretg2
+			//points.add(new Point(231+450, 360+130-50-150 +250+50));	// 231+450 is good for preintro
 		} else {
 			points = currentMap.getRespawnPoints();
 		}

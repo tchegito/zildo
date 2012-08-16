@@ -116,12 +116,15 @@ public abstract class OpenGLGestion {
 
 	public void beginScene() {
 		// time elapsed since we last rendered
+		/*
 		double secondsSinceLastFrame = getTimeInSeconds() - simulationTime;
 
 		// update the simulation current time
 		simulationTime += secondsSinceLastFrame;
 
 		fps = 1 / secondsSinceLastFrame;
+		*/
+		
 		// long toWait=(long) (2/(framerate*1000) -
 		// secondsSinceLastFrame*1000.0f);
 		/*

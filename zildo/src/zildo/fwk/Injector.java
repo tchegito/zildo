@@ -37,7 +37,7 @@ public class Injector {
 		Class<T> clazz = findClass(p_className);
         try {
             T o = createInstance(clazz, parameters);
-            System.out.println("created "+p_className);
+            //System.out.println("created "+p_className);
             return o;
         } catch (Exception e) {
             throw new RuntimeException("Unable to create instance of class "+p_className, e);
