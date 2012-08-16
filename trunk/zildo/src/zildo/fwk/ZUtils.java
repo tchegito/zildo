@@ -85,7 +85,7 @@ public class ZUtils {
     public static ByteBuffer createByteBuffer(int size)
     {
     	totalsize+=size;
-    	System.out.println("allocate "+size+" / total ="+totalsize);
+    	//System.out.println("allocate "+size+" / total ="+totalsize);
         return ByteBuffer.allocateDirect(size).order(ByteOrder.nativeOrder());
     }
     

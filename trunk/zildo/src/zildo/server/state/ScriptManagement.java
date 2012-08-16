@@ -240,7 +240,7 @@ public class ScriptManagement {
      * @param p_trigger TRUE=we have to launch targeted action / FALSE=just set quest to 'done' state
      */
     private void accomplishQuest(QuestElement p_quest, boolean p_trigger) {
-    	System.out.println("Accomplish "+p_quest.name);
+    	//System.out.println("Accomplish "+p_quest.name);
    		p_quest.done=true;
     	
     	// 1) note the history events (mapReplace ...)

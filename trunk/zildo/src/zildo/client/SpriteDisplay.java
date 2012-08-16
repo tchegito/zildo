@@ -23,7 +23,6 @@ package zildo.client;
 import java.util.Iterator;
 import java.util.List;
 
-import zildo.fwk.ZUtils;
 import zildo.fwk.db.Identified;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.monde.sprites.SpriteEntity;
@@ -158,14 +157,14 @@ public class SpriteDisplay extends SpriteStore {
 			indexEntity++;
 		}
 		
-		long t1 = ZUtils.getTime();
+		//long t1 = ZUtils.getTime();
 		
 		// Sort perso along the Y-axis
 		spriteSorter.orderSpritesByBank();			// Fill the quadOrder and bankOrder arrays
-		long t2 = ZUtils.getTime();
+		//long t2 = ZUtils.getTime();
 		spriteEngine.buildBuffers(spriteSorter.getQuadOrder(), entities);
 
-		long t3 = ZUtils.getTime();
+		//long t3 = ZUtils.getTime();
 		
 		spriteEngine.endInitialization();
 
