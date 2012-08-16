@@ -263,11 +263,11 @@ public class PersoNJ extends Perso {
 				} // Sinon elle agit comme les scripts de zone
 				break;
 			case ZONEARC:
-				if (!isWounded() && isAlerte()) {
+				if (!isWounded() && isAlerte() && zildo.isAlive()) {
 					// Get the enemy aligned with Zildo to draw arrows
 					int xx = (int) getX();
 					int yy = (int) getY();
-					int deltaX = Math.abs((int) (zildo.x - xx));
+					int deltaX = Math.abs((int) (zildo.x - xx-2));
 					int deltaY = Math.abs((int) (zildo.y - yy));
 					if (deltaX <= 1 || deltaY <= 1) {
 						// Get sight on Zildo and shoot !
@@ -680,10 +680,13 @@ public class PersoNJ extends Perso {
 		if (!quel_deplacement.isAlertable()) {
 			return false;
 		}
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+		if (!zildo.isAlive()) {	// Maybe he's dead ?
+			return false;
+		}
 		int dix, diy;
 		boolean temp, r;
 		final int DISTANCEMAX = 16 * 6;
-		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		r = false;
 		// On calcule la distance en x et en y entre le perso et Zildo
 		dix = (int) (x - zildo.x);
