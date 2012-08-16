@@ -22,6 +22,8 @@ package zildo.monde.quest.actions;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.stage.SinglePlayer;
+import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.ui.UIText;
 import zildo.monde.dialog.ActionDialog;
 import zildo.server.EngineZildo;
 import zildo.server.state.ClientState;
@@ -38,7 +40,8 @@ import zildo.server.state.ClientState;
 public class GameOverAction extends ActionDialog {
 
 	public GameOverAction() {
-		super("Game over ! Merci d'avoir joue a la legende de Zildo.");
+		super(UIText.getGameText("game.over"));
+		ClientEngineZildo.filterCommand.fadeOut(FilterEffect.SEMIFADE);
 	}
 	
 	@Override
@@ -48,6 +51,7 @@ public class GameOverAction extends ActionDialog {
 		ClientEngineZildo.tileEngine.cleanUp();
 		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(false);
 		ClientEngineZildo.soundPlay.stopMusic();
+		ClientEngineZildo.filterCommand.fadeIn(FilterEffect.SEMIFADE);
 		// Stop this game
 		SinglePlayer.getClientState().gameOver=true;
 		// Return on the start menu

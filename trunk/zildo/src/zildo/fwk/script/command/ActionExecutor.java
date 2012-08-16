@@ -36,6 +36,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
+import zildo.monde.quest.actions.GameOverAction;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
@@ -336,6 +337,9 @@ public class ActionExecutor {
                 		break;
                 	}
                 	achieved=true;
+                	break;
+                case end:
+                	new GameOverAction().launchAction(null);
             }
 
             p_action.done = achieved;

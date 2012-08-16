@@ -29,7 +29,7 @@ public class ActionElement extends AnyElement {
 	public enum ActionKind {
 		actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, 
 		map, focus, spawn, exec, take, mapReplace, music, animation, impact, remove, markQuest, putDown, attack, activate,
-		tile, filter;
+		tile, filter, end;
 
 		public static ActionKind fromString(String p_name) {
 			for (ActionKind kind : values()) {

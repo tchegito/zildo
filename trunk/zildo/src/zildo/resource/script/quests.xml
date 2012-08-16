@@ -232,7 +232,7 @@
 			<activate what="caveDoor" value="true"/>
 			<wait value="20"/>
 			<music name="Village"/>
-			<focus who="zildo" unblock="true" delta="true"/>
+			<focus who="zildo" delta="true"/>
 		</action>
 	</quest>
 	
@@ -619,6 +619,16 @@
 	    <speak who="emissaire" text="echange.emissaire6" />
 	    <moveTo who="zildo" pos="0,24" delta="true" speed="1" unstoppable="true"/>
 	    <moveTo who="zildo" pos="-16,0" delta="true" unstoppable="true"/>
+	    <focus who="zildo" delta="true"/>
+	    <!--  End of episode 1 -->
+	    <wait value="200"/>
+	    <speak who="camera" text="game.endEpisode1"/>
+	    <fadeOut type="0"/>
+	    <map name="preintro"/>
+	    <pos what="camera" pos="0,0"/>
+	    <fadeIn type="0"/>
+	    <speak who="camera" text="game.endEpisode1.end"/>
+	    <end/>
 	</scene>
 	
 	<scene id="enlevementScene" restoreZildo="true">
@@ -888,6 +898,7 @@
 		<script who="rabbit1" value="0"/>
 		<script who="rabbit2" value="0"/>
 		<script who="rabbit3" value="0"/>
+		<focus who="zildo" delta="true"/>
 	</scene>
 		
 	<scene id="foretg_button">
