@@ -22,18 +22,16 @@ package zildo.platform.engine;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
 import zildo.Zildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.engine.TextureEngine;
+import zildo.platform.opengl.utils.GLUtils;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
-import android.opengl.GLUtils;
 import android.util.Log;
 
 /**
@@ -53,14 +51,11 @@ import android.util.Log;
  */
 public class AndroidTextureEngine extends TextureEngine {
 	
-	IntBuffer buf;
-	
 	Bitmap bitmap;
 	BitmapFactory.Options opts;
 	
 	public AndroidTextureEngine(GraphicStuff graphicStuff) {
 		super(graphicStuff);
-        buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
         
 		// This will tell the BitmapFactory to not scale based on the device's pixel density:
 	    // (Thanks to Matthew Marshall for this bit)
@@ -74,9 +69,7 @@ public class AndroidTextureEngine extends TextureEngine {
 	public int doGenerateTexture() {
 
         // Create A IntBuffer For Image Address In Memory
-        GLES20.glGenTextures(1, buf); // Create Texture In OpenGL
-
-        int id = buf.get(0);
+        int id = GLUtils.genTextureId();
         
         Log.d("texture", "generate texture "+id);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, id);

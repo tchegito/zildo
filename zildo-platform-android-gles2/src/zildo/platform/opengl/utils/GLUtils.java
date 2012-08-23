@@ -35,10 +35,14 @@ import zildo.fwk.ZUtils;
  */
 public class GLUtils {
 
+	private static int current = 0;
+	
+	public static int genTextureId() {
+		return ++current;
+	}
+	
     public static int generateTexture(int sizeX, int sizeY) {
-        IntBuffer buf = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
-        GLES20.glGenTextures(1, buf); // Create Texture In OpenGL
-        int textureID = buf.get(0);
+        int textureID = genTextureId();
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureID);
         GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
         GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
