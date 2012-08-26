@@ -75,8 +75,8 @@ public class TouchListener implements OnTouchListener {
 		int index = event.getActionIndex();
 
 		// Deal with current point for menu
-		int x = (int) (event.getX(index) * event.getXPrecision() * ratioX);
-		int y = (int) (event.getY(index) * event.getYPrecision() * ratioY);
+		int x = (int) (event.getX(index) * ratioX);
+		int y = (int) (event.getY(index) * ratioY);
 		
 		Menu menu = client.getCurrentMenu();
 		if (menu != null) {
@@ -85,7 +85,7 @@ public class TouchListener implements OnTouchListener {
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_UP:
 					item = tempItem;
-					Log.d("touch", "item "+item.getText());
+					Log.d("touch", "item "+tempItem.getText());
 					menu.activateItem(item);
 					break;
 				case MotionEvent.ACTION_DOWN:
@@ -98,8 +98,8 @@ public class TouchListener implements OnTouchListener {
 			// No menu ==> player is in game
 			// Deal with all points
 			for (int p = 0; p < pointerCount; p++) {
-	             float xx = event.getX(p) * event.getXPrecision();
-	             float yy = event.getY(p) * event.getYPrecision();
+	             float xx = event.getX(p); // * event.getXPrecision();
+	             float yy = event.getY(p); // * event.getYPrecision();
 	             interpretEvent(event.getActionMasked(), p, xx, yy);
 		     }
 
