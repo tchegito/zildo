@@ -491,7 +491,7 @@ public class PlayerManagement {
                                 map.takeSomethingOnTile(new Point(newx, newy), false, heros);
 								// Mark this event : chest opened
 								EngineZildo.scriptManagement.openChest(map.getName(), new Point(newx, newy));
-							} else if (!EngineZildo.mapManagement.isWalkable(on_map)) {
+							} else if (on_map >= 0 && !EngineZildo.mapManagement.isWalkable(on_map)) {
 								heros.setMouvement(MouvementZildo.TIRE);
 							}
 						}
