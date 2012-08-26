@@ -136,7 +136,7 @@ public class ZildoActivity extends Activity {
     	
     	@Override
 		public void run() {
-    		while (!client.isReady() && handler != null) {
+    		while (!client.isReady() || handler == null) {
     			ZUtils.sleep(500);
     		}
     		
