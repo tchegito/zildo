@@ -62,6 +62,11 @@ public class TileCollision {
 		return tileInfos[p_nTile].collide(px, py);
     }
 
+    /**
+     * Assume that p_nTile is in range 0..<maxTile (now : 2304)
+     * @param p_nTile
+     * @return
+     */
     public boolean isTileWalkable(int p_nTile) {
     	return tileInfos[p_nTile].template == Template.WALKABLE;
     }
