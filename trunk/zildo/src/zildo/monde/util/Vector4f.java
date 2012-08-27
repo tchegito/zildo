@@ -62,7 +62,7 @@ public class Vector4f {
     public void setAndScale3(Vector4f v, Vector3f coeff) {
     	set(v.x * coeff.x, 
     			v.y * coeff.y, 
-    			v.z * coeff.y, 
+    			v.z * coeff.z, 
     			v.w);
     }
     
