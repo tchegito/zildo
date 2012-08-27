@@ -185,6 +185,7 @@ public class Shaders {
 				uniform4f(current.getUniform("Color2"), switchedColors[1]);
 				uniform4f(current.getUniform("Color3"), switchedColors[2]);
 				uniform4f(current.getUniform("Color4"), switchedColors[3]);
+				uniform4f(current.getUniform("CurColor"), curColor);
 				break;
 			case wounded:
 				uniform4f(current.getUniform("randomColor"), woundedColor);
