@@ -21,8 +21,8 @@
 package zildo.platform.input;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import zildo.monde.util.Point;
 
@@ -35,7 +35,7 @@ public class TouchPoints {
 	Map<Integer, Point> points;
 	
 	public TouchPoints() {
-		points = new HashMap<Integer, Point>();
+		points = new ConcurrentHashMap<Integer, Point>();
 	}
 	
 	public Collection<Point> getAll() {
