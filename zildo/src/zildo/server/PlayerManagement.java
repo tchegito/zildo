@@ -436,6 +436,7 @@ public class PlayerManagement {
 		
 								// Launch the dialog
 								EngineZildo.dialogManagement.launchDialog(client, persoToTalk, null);
+								gamePhase= GamePhase.DIALOG;
 							}
 						}
 					} else {
