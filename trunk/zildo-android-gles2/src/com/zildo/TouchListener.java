@@ -130,7 +130,9 @@ public class TouchListener implements OnTouchListener {
 	}
 	
 	public void pressBackButton() {
-		infos.backPressed = true;
+		if (infos != null) {
+			infos.backPressed = true;
+		}
 	}
 	
 	public ItemMenu popItem() {
