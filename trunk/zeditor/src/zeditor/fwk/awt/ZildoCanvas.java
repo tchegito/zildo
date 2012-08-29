@@ -303,6 +303,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		MapManagement mapManagement = EngineZildo.mapManagement;
 		String previousMapName=mapManagement.getCurrentMap().getName();
 		mapManagement.loadMap(p_mapName, false);
+		EngineZildo.spriteManagement.updateSprites(false);
 		changeMap = true;
 		Point p=new Point(0, 0);
 		ChainingPoint ch=null;
