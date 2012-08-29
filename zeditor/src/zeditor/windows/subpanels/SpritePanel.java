@@ -72,6 +72,7 @@ public class SpritePanel extends JPanel {
 	JCheckBox foreground;
 	JComboBox spriteType;
 	JComboBox rotation;
+	JCheckBox pushable;
 	JSpinner spinX;
 	JSpinner spinY;
 	JSpinner repeatX;
@@ -122,8 +123,21 @@ public class SpritePanel extends JPanel {
 		spriteType = new JComboBox(spriteLib.toArray());
 		panel.addComp(new JLabel("Type"), spriteType);
 
-		panel.addComp(new JLabel("Foreground"), foreground);
-
+		JPanel panelForegroundPushable = new JPanel();
+		pushable = new JCheckBox(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent actionevent) {
+				if (sel != null) {
+					togglePushable(true);
+				}
+			}
+		});
+		panelForegroundPushable.add(foreground);
+		panelForegroundPushable.add(new JLabel("Foreground")); 
+		panelForegroundPushable.add(pushable);
+		panelForegroundPushable.add(new JLabel("Pushable")); 
+		panel.addComp(new JLabel(""), panelForegroundPushable);
+		
 		spinX = new JSpinner(new SpinnerNumberModel(0, -1, 16, -1));
 		spinY = new JSpinner(new SpinnerNumberModel(0, -1, 16, -1));
 
@@ -186,6 +200,15 @@ public class SpritePanel extends JPanel {
 		manager.getZildoCanvas().setChangeSprites(true);
 	}
 
+	private void togglePushable(boolean p_pushable) {
+		for (SpriteEntity ent : sel.getElement()) {
+			if (ent.getEntityType().isElement()) {
+				Element elem = (Element) ent;
+				elem.setPushable(!elem.isPushable());
+			}
+		}
+	}
+
 	/**
 	 * Update fields with the given entity's infos.
 	 * 
@@ -203,6 +226,7 @@ public class SpritePanel extends JPanel {
 			reverseVertical.setSelected(false);
 			rotation.setSelectedIndex(0);
 			foreground.setSelected(false);
+			pushable.setSelected(false);
 			repeatX.setValue(1);
 			repeatY.setValue(1);
 			elementName.setText("");
@@ -221,7 +245,9 @@ public class SpritePanel extends JPanel {
 			String name = "";
 			elementName.setEnabled(kind.isElement());
 			if (kind.isElement()) {
-				name = ((Element)p_entity).getName();
+				Element elem = (Element) p_entity;
+				name = elem.getName();
+				pushable.setSelected(elem.isPushable());
 			} else {
 				elementName.setEnabled(false);
 			}
