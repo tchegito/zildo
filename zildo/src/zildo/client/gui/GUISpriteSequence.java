@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
+import zildo.fwk.gfx.EngineFX;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.SpriteDescription;
 
@@ -58,20 +59,25 @@ public class GUISpriteSequence extends ArrayList<SpriteEntity> {
 	// -ask sprite management to add sprite in the engine with given parameters
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public SpriteEntity addSprite(int p_nBank, int p_nSpr, int x, int y,
-			boolean visible) {
+			boolean visible, int alpha) {
 		SpriteDisplay spriteDisplay = ClientEngineZildo.spriteDisplay;
 		SpriteEntity entity = spriteDisplay.spawnFont(p_nBank, p_nSpr, x, y,
 				visible);
-
+		entity.setAlpha(alpha);
+		entity.setSpecialEffect(EngineFX.FOCUSED);
+		
 		this.add(entity);
-
 		sequenceDrawn = true;
 
 		return entity;
 	}
 
 	public SpriteEntity addSprite(SpriteDescription p_desc, int x, int y) {
-		return addSprite(p_desc.getBank(), p_desc.getNSpr(), x, y, true);
+		return addSprite(p_desc.getBank(), p_desc.getNSpr(), x, y, true, 255);
+	}
+	
+	public SpriteEntity addSprite(SpriteDescription p_desc, int x, int y, int alpha) {
+		return addSprite(p_desc.getBank(), p_desc.getNSpr(), x, y, true, alpha);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////

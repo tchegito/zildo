@@ -28,7 +28,8 @@ public enum BankMusic implements AudioBank {
 	 Surprise("Surprise"),
 	 PianoBar("PianoBar"),
 	 Chateau("Chateau"),
-	 Vitesse("Vitesse");
+	 Vitesse("Vitesse"),
+	 ZildoMort("ZildoMort");
 	 
 	 private String filename;
 	 

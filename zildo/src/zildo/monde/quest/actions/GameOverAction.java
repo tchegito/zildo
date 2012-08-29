@@ -41,7 +41,6 @@ public class GameOverAction extends ActionDialog {
 
 	public GameOverAction() {
 		super(UIText.getGameText("game.over"));
-		ClientEngineZildo.filterCommand.fadeOut(FilterEffect.SEMIFADE);
 	}
 	
 	@Override

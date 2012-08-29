@@ -628,7 +628,7 @@
 	    <pos what="camera" pos="0,0"/>
 	    <fadeIn type="0"/>
 	    <speak who="camera" text="game.endEpisode1.end"/>
-	    <end/>
+	    <end type="0"/>
 	</scene>
 	
 	<scene id="enlevementScene" restoreZildo="true">
@@ -827,6 +827,28 @@
 		<sound name="ZildoDescend" />
 		<fadeIn type="1" unblock="true" />
 		<moveTo who="zildo" pos="0,16" delta="true" speed="0.2" />
+	</scene>
+	
+	<scene id="death">
+		<music name="ZildoMort"/>
+		<fadeOut type="5"/>
+		<fadeIn type="7"/>
+		<angle who="zildo" value="0"/>
+		<wait value="5"/>
+		<angle who="zildo" value="1"/>
+		<wait value="5"/>
+		<angle who="zildo" value="2"/>
+		<wait value="5"/>
+		<angle who="zildo" value="3"/>
+		<wait value="5"/>
+		<angle who="zildo" value="0"/>
+		<wait value="7"/>
+		<angle who="zildo" value="1"/>
+		<wait value="8"/>
+		<angle who="zildo" value="2"/>
+		<wait value="9"/>
+		<fadeOut type="0"/>
+		<end type="1"/>
 	</scene>
 	
 	<scene id="maltus_foret1">

@@ -34,7 +34,6 @@ import zildo.monde.collision.DamageType;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
 import zildo.monde.items.ItemKind;
-import zildo.monde.quest.actions.GameOverAction;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
@@ -341,6 +340,10 @@ public class PersoZildo extends Perso {
 		setPx(8 * (diffx / norme));
 		setPy(8 * (diffy / norme));
 
+		if (p_shooter != null && p_shooter.getQuel_deplacement().isAlertable()) {
+			p_shooter.setAlerte(true);
+		}
+		
 		beingWounded(p_shooter, p_damage);
 	}
 
@@ -382,12 +385,13 @@ public class PersoZildo extends Perso {
 	 */
 	@Override
 	public void die(boolean p_link, Perso p_shooter) {
-		super.die(p_link, p_shooter);
 		if (EngineZildo.game.multiPlayer) {
+			super.die(p_link, p_shooter);
 			EngineZildo.multiplayerManagement.kill(this, p_shooter);
 		} else {
 			// Game over
-			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new GameOverAction());
+			setSpecialEffect(EngineFX.FOCUSED);
+			EngineZildo.scriptManagement.execute("death");
 		}
 	}
 
@@ -436,7 +440,9 @@ public class PersoZildo extends Perso {
 
 		// If zildo's dead, don't display him
 		if (getPv() <= 0) {
-			setVisible(false);
+			if (EngineZildo.game.multiPlayer) {
+				setVisible(false);
+			}
 			return;
 		}
 
