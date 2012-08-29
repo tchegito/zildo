@@ -37,8 +37,10 @@ public enum FilterEffect {
 	BLUR(BlurFilter.class), 
 	ZOOM(ZoomFilter.class),
 	CIRCLE(CircleFilter.class),
-	CLOUD(CloudFilter.class),
-	REDFADE(FadeFilter.class, BilinearFilter.class);
+	CLOUD(CloudFilter.class);
+
+	// RedFilter isn't declared here because it doesn't need
+	// to be platform-specific. It's just a red box on whole screen.
 	
 	private Class<? extends ScreenFilter>[] clazz;
 	

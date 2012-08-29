@@ -38,6 +38,7 @@ import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FadeFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.fwk.opengl.SoundEngine;
@@ -120,6 +121,7 @@ public class ClientEngineZildo {
 			filterCommand.addFilter(Zildo.pdPlugin.getFilter(BlendFilter.class));
 			filterCommand.addFilter(Zildo.pdPlugin.getFilter(FadeFilter.class));
 			filterCommand.addFilter(Zildo.pdPlugin.getFilter(CircleFilter.class));
+			filterCommand.addFilter(new RedFilter(Zildo.pdPlugin.gfxStuff));
 			filterCommand.active(BilinearFilter.class, true, null);
 		}
 

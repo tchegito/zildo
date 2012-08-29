@@ -28,7 +28,9 @@ import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
 import zildo.client.stage.SinglePlayer;
 import zildo.fwk.gfx.Ortho;
+import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.ui.UIText;
 import zildo.monde.items.Item;
@@ -50,6 +52,7 @@ import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
@@ -139,21 +142,25 @@ public class ActionExecutor {
                     scriptExec.userEndedAction = false;
                     break;
                 case script:
-                	MouvementPerso script = MouvementPerso.fromInt(p_action.val);
-                    perso.setQuel_deplacement(script, true);
-                    String param = p_action.fx;
-                    if (param != null) {
-	                    switch (script) {
-	                    case ZONE:
-	        				perso.setZone_deplacement(EngineZildo.mapManagement.range(perso.getX() - 16 * 5, 
-	        																	perso.getY() - 16 * 5,
-	        																	perso.getX() + 16 * 5, 
-	        																	perso.getY() + 16 * 5));
-	        				break;
-	                    case OBSERVE:
-	                    	Perso persoToObserve =  EngineZildo.persoManagement.getNamedPerso(param);
-	                    	perso.setFollowing(persoToObserve);
-	                    	break;
+                    if (p_action.text != null) {
+                        perso.setMouvement(MouvementZildo.valueOf(p_action.text));
+                    } else {
+	                	MouvementPerso script = MouvementPerso.fromInt(p_action.val);
+	                    perso.setQuel_deplacement(script, true);
+	                    String param = p_action.fx;
+	                    if (param != null) {
+		                    switch (script) {
+		                    case ZONE:
+		        				perso.setZone_deplacement(EngineZildo.mapManagement.range(perso.getX() - 16 * 5, 
+		        																	perso.getY() - 16 * 5,
+		        																	perso.getX() + 16 * 5, 
+		        																	perso.getY() + 16 * 5));
+		        				break;
+		                    case OBSERVE:
+		                    	Perso persoToObserve =  EngineZildo.persoManagement.getNamedPerso(param);
+		                    	perso.setFollowing(persoToObserve);
+		                    	break;
+		                    }
 	                    }
                     }
                     achieved = true;
@@ -277,14 +284,18 @@ public class ActionExecutor {
                 	achieved=true;
                 	break;
                 case remove:
-                	Element toRemove;
-                	if (p_action.what != null) {
-                		toRemove = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+                	if (p_action.what == null && p_action.who == null) {
+                		EngineZildo.persoManagement.clearPersos(false);
                 	} else {
-                		toRemove = perso;
-                    	EngineZildo.persoManagement.removePerso((Perso) toRemove);
-                	}             	
-                	EngineZildo.spriteManagement.deleteSprite(toRemove);
+	                	Element toRemove;
+	                	if (p_action.what != null) {
+	                		toRemove = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+	                	} else {
+	                		toRemove = perso;
+	                    	EngineZildo.persoManagement.removePerso((Perso) toRemove);
+	                	}
+	                	EngineZildo.spriteManagement.deleteSprite(toRemove);
+                	}
                 	achieved = true;
                 	break;
                 case markQuest:
@@ -334,6 +345,12 @@ public class ActionExecutor {
                 		break;
                 	case 2: // SEMI_NIGHT
                 		ClientEngineZildo.ortho.setFilteredColor(Ortho.SEMI_NIGHT_FILTER);
+                		break;
+                	case 3: // RED
+                		//ClientEngineZildo.ortho.setBasicColor(Ortho.RED_FILTER);
+                		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(false, false);
+                		ClientEngineZildo.filterCommand.active(CloudFilter.class, false, null);
+                		ClientEngineZildo.filterCommand.active(RedFilter.class, true, null);
                 		break;
                 	}
                 	achieved=true;

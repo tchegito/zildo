@@ -136,6 +136,7 @@ public class Area implements EasySerializable {
 			writemap(x, y, empty);
 		}
 		atmosphere = p_atmo;
+		dialogs = new MapDialog();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////

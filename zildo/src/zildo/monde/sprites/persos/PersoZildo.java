@@ -390,7 +390,6 @@ public class PersoZildo extends Perso {
 			EngineZildo.multiplayerManagement.kill(this, p_shooter);
 		} else {
 			// Game over
-			setSpecialEffect(EngineFX.FOCUSED);
 			EngineZildo.scriptManagement.execute("death");
 		}
 	}
@@ -442,8 +441,8 @@ public class PersoZildo extends Perso {
 		if (getPv() <= 0) {
 			if (EngineZildo.game.multiPlayer) {
 				setVisible(false);
+				return;
 			}
-			return;
 		}
 
 		if (getEn_bras() != null && getEn_bras().dying) {
@@ -493,8 +492,6 @@ public class PersoZildo extends Perso {
 				}
 			}
 		}
-
-		boolean touche;
 
 		// Get variables to reduce code amount
 		Element en_bras = getEn_bras();
@@ -650,14 +647,19 @@ public class PersoZildo extends Perso {
 		}
 		feet.setForeground(false);
 
-		touche = (mouvement == MouvementZildo.TOUCHE || getCompte_dialogue() != 0);
-		// Zildo blink
-		touche = (touche && ((compteur_animation >> 1) % 2) == 0);
-		visible = !touche;
-		for (Element elem : persoSprites) { // Blink linked elements too
-			if (elem.isVisible()) {
-				elem.setVisible(visible);
+		if (pv > 0) {
+			boolean touche = (mouvement == MouvementZildo.TOUCHE || getCompte_dialogue() != 0);
+			// Zildo blink
+			touche = (touche && ((compteur_animation >> 1) % 2) == 0);
+			visible = !touche;
+			for (Element elem : persoSprites) { // Blink linked elements too
+				if (elem.isVisible()) {
+					elem.setVisible(visible);
+				}
 			}
+		} else {
+			// Zildo should stay focused at die scene
+			setSpecialEffect(EngineFX.FOCUSED);
 		}
 
 		// Ajustemenent

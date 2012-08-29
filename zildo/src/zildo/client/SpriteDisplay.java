@@ -142,7 +142,7 @@ public class SpriteDisplay extends SpriteStore {
 		// spriteEntities list order correspond to the creation order with spawn*** methods.
 		spriteEngine.startInitialization();
 		
-		boolean displayBackSprite=ClientEngineZildo.mapDisplay.foreBackController.isDisplayBackground();
+		boolean displayBackSprite=ClientEngineZildo.spriteDisplay.foreBackController.isDisplayBackground();
 		
 		int indexEntity = 0;
 		for (SpriteEntity entity : entities) {
