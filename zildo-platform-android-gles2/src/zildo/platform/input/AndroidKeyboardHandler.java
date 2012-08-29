@@ -26,6 +26,7 @@ import zildo.Zildo;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 
 /**
  * @author Tchegito
@@ -33,7 +34,44 @@ import zildo.monde.util.Point;
  */
 public class AndroidKeyboardHandler implements KeyboardHandler {
 
+	// Relations between given key and its location on screen, inside virtual pad
+	enum KeyLocation {
+		VP_UP(29, 11, 23, 19, true, KEY_UP),
+		VP_LEFT(11, 29, 19, 23, true, KEY_LEFT),
+		VP_RIGHT(51, 29, 19, 23, true, KEY_RIGHT),
+		VP_DOWN(29, 52, 23, 19, true, KEY_DOWN),
+		// diagonals
+		VP_UP_LEFT(11, 11, 18, 18, true, KEY_UP, KEY_LEFT),
+		VP_UP_RIGHT(51, 11, 18, 18, true, KEY_UP, KEY_RIGHT),
+		VP_DOWN_LEFT(11, 52, 18, 18, true, KEY_DOWN, KEY_LEFT),
+		VP_DOWN_RIGHT(51, 52, 18, 18, true, KEY_DOWN, KEY_RIGHT),
+		VP_BUTTON_A(4, 33, 26, 26, false, KEY_Q),
+		VP_BUTTON_B(36, 58, 26, 26, false, KEY_W),
+		VP_BUTTON_C(36, 8, 26, 26, false, KEY_X);
+		
+		public final Zone z;
+		public final int keyCode;
+		public final int keyCode2;
+		
+		private KeyLocation(int x, int y, int wx, int wy, boolean isDirection, int... keys) {
+			int addX = 0;
+			int addY = Zildo.viewPortY - 80;
+			if (!isDirection) {
+				addX = Zildo.viewPortX - 98;
+				addY = Zildo.viewPortY - 87;
+			}
+			z = new Zone(x + addX, y + addY, wx, wy);
+			keyCode = keys[0];
+			if (keys.length > 1) {
+				keyCode2 = keys[1];
+			} else {
+				keyCode2 = -1;
+			}
+		}
+	}
+	
 	final static EnumMap<Keys, Integer> platformKeys = new EnumMap<Keys, Integer>(Keys.class);
+	boolean[] keyStates = new boolean[255];
 	
 	private static final int KEY_ESCAPE          = 0x01;
 	private static final int KEY_BACK            = 0x0E; /* backspace */
@@ -66,13 +104,12 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 	}
 	
 	TouchPoints polledTouchedPoints;
-	TouchMovement tm;
+	//TouchMovement tm;
 	boolean resetBack;
 	AndroidInputInfos infos;
 	
 	public AndroidKeyboardHandler() {
 		polledTouchedPoints = new TouchPoints();
-		tm = new TouchMovement(polledTouchedPoints);
 		infos = new AndroidInputInfos();
 	}
 	
@@ -84,45 +121,6 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 	static final int middleY = Zildo.viewPortY / 2;
 	
 	public boolean isKeyDown(int p_code) {
-		if (polledTouchedPoints.size() != 0) {
-			for (Point p : polledTouchedPoints.getAll()) {
-				switch (p_code) {
-				case KEY_Q:
-					if (p.x >= middleX && p.y < middleY) {
-						return true;
-					}
-					break;
-				case KEY_W:
-					if (p.x >= middleX && p.y >= middleY) {
-						return true;
-					}
-					break;
-				case KEY_X:
-					Point zildoPos = infos.getZildoPos();
-					// Inventory only if player isn't moving (tm.getCurrent) and close enough
-					// to zildo location
-					if (zildoPos != null && tm.getCurrent() == null && zildoPos.distance(p) < 24) {
-						 return true;
-					}
-					break;
-				}
-			}
-			
-		}
-		Angle direction = tm.getCurrent();
-		if (direction != null) {
-			switch (p_code) {
-			case KEY_UP:
-				return Angle.isContained(direction, Angle.NORD);
-			case KEY_DOWN:
-				return Angle.isContained(direction, Angle.SUD);
-			case KEY_LEFT:
-				return Angle.isContained(direction, Angle.OUEST);
-			case KEY_RIGHT:
-				return Angle.isContained(direction, Angle.EST);
-			}
-		}
-		
 		if (p_code == KEY_ESCAPE) {
 			if (infos.backPressed) {
 				resetBack = true;
@@ -130,13 +128,17 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 			return infos.backPressed;
 		}
 		
-
-		return false;
+		return keyStates[p_code];
 	}
 	
 	Angle previous;
 	
 	public void poll() {
+		// Clear all keys state
+		for (int i : platformKeys.values()) {
+			keyStates[i] = false;
+		}
+		
 		if (resetBack) {
 			infos.backPressed = false;	// Reinitialize back button press
 			resetBack = false;
@@ -147,11 +149,23 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 			synchronized (infos.liveTouchedPoints) {
 				polledTouchedPoints.putAll(infos.liveTouchedPoints);
 			}
-			//liveTouchedPoints.clear();
-			//System.out.println("polledpoints size = "+polledTouchedPoints.size());
+
+			// Update all keys state
+			for (Point p : polledTouchedPoints.getAll()) {
+				for (KeyLocation kLoc : KeyLocation.values()) {
+					if (kLoc.z.isInto(p.x, p.y)) {
+						keyStates[kLoc.keyCode] = true;
+						if (kLoc.keyCode2 != -1) {
+							keyStates[kLoc.keyCode2] = true;
+						}
+					}
+				}
+			}
 		}
-		tm.render();
-		previous = tm.getCurrent();
+		//tm.render();
+		//previous = tm.getCurrent();
+		
+
 	}
 	
 	/**

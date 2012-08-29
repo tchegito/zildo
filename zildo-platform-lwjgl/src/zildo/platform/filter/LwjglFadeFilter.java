@@ -22,7 +22,6 @@ package zildo.platform.filter;
 
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.FadeFilter;
-import zildo.fwk.gfx.filter.FilterEffect;
 
 public class LwjglFadeFilter extends FadeFilter {
 
@@ -33,15 +32,6 @@ public class LwjglFadeFilter extends FadeFilter {
 	@Override
 	public boolean renderFilter() {
 		return true;
-	}
-
-	@Override
-	public void doOnActive(FilterEffect effect) {
-		if (effect == FilterEffect.SEMIFADE) {
-			complete = false;
-		} else {
-			complete = true;
-		}
 	}
 
 }
