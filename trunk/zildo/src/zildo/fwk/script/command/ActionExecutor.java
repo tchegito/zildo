@@ -339,7 +339,13 @@ public class ActionExecutor {
                 	achieved=true;
                 	break;
                 case end:
-                	new GameOverAction().launchAction(null);
+                	if (p_action.val == 0) {
+                		// Player finish the game !
+                		new GameOverAction().launchAction(null);
+                	} else if (p_action.val == 1) {
+                		// Game over : player died !
+            			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new GameOverAction());
+                	}
             }
 
             p_action.done = achieved;

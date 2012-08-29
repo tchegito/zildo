@@ -31,6 +31,7 @@ import java.util.Stack;
 
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
+import zildo.client.PlatformDependentPlugin;
 import zildo.client.SpriteDisplay;
 import zildo.client.sound.BankSound;
 import zildo.fwk.FilterCommand;
@@ -70,6 +71,9 @@ public class GUIDisplay {
 	public enum DialogMode {
 		CLASSIC, TOPIC, MENU;
 	}
+	
+	// Alpha channel for virtual pad (specific Android) : range is 0..255
+	final static int alphaPad = 128;
 	
 	// External variables for interacting with GUI
 	private boolean toDisplay_dialoguing;
@@ -369,7 +373,7 @@ public class GUIDisplay {
 				// Store font's pointer to easily remove it later and scroll
 				// into the frame
 				lettre = seq.addSprite(nBank, indexSpr, x + offsetX, y
-						+ offsetY, visibleFont);
+						+ offsetY, visibleFont, 255);
 				spr = lettre.getSprModel();
 				offsetX += (spr.getTaille_x() + 1);
 			}
@@ -670,6 +674,12 @@ public class GUIDisplay {
 			int sx = spr.getTaille_x();
 			int sy = spr.getTaille_y();
 			guiSpritesSequence.addSprite(desc, 25-(sx >> 1), 18-(sy >> 1));
+		}
+		
+		// virtual pad
+		if (PlatformDependentPlugin.currentPlugin == PlatformDependentPlugin.KnownPlugin.Android) {
+			guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, 0, Zildo.viewPortY-80, alphaPad);
+			guiSpritesSequence.addSprite(FontDescription.VIRTUAL_BUTTONS, Zildo.viewPortX-98, Zildo.viewPortY-87, alphaPad);
 		}
 	}
 

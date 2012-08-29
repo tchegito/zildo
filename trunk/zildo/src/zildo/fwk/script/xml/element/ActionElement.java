@@ -123,6 +123,7 @@ public class ActionElement extends AnyElement {
 		case fadeIn:
 		case fadeOut:
 		case filter:
+		case end:
 			// Integer
 			val = readInt("type");
 			break;

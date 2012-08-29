@@ -34,13 +34,21 @@ public abstract class FadeFilter extends FadeScreenFilter {
 	}
 
 	protected boolean complete = true;
-
+	protected boolean red = false;
+	
 	@Override
 	public void preFilter() {
 		float factor = complete ? 255.0f : 768.0f;
 		float coeff = 1.0f - (getFadeLevel() / factor);
 		
-		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(coeff, coeff, coeff));
+		Vector3f v = new Vector3f(coeff, coeff, coeff);
+		if (red) {
+			//v.x = coeff;
+			v.y = 0;
+			v.z = 0;
+		}
+		
+		ClientEngineZildo.ortho.setAmbientColor(v);
 	}
 	
 	@Override
@@ -55,6 +63,7 @@ public abstract class FadeFilter extends FadeScreenFilter {
 		} else {
 			complete = true;
 		}
+		red = effect == FilterEffect.REDFADE;
 	}
 
 }
