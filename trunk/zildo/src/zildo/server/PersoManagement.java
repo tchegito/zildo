@@ -192,6 +192,9 @@ public class PersoManagement {
 			case RAT:
 				perso = new PersoRat();
 				break;
+			case ZILDO:
+				perso = new PersoZildo(x, y, null);
+				break;
 			default:
 				perso = new PersoNJ();
 				break;

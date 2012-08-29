@@ -20,43 +20,34 @@
 
 package zildo.fwk.gfx.filter;
 
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.monde.util.Vector3f;
+import zildo.monde.util.Vector4f;
 
-public abstract class FadeFilter extends FadeScreenFilter {
+/**
+ * @author Tchegito
+ *
+ */
+public class RedFilter extends ScreenFilter {
 
 	/**
 	 * @param graphicStuff
 	 */
-	public FadeFilter(GraphicStuff graphicStuff) {
+	public RedFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
 	}
 
-	protected boolean complete = true;
-	
 	@Override
 	public void preFilter() {
-		float factor = complete ? 255.0f : 768.0f;
-		float coeff = 1.0f - (getFadeLevel() / factor);
-		
-		Vector3f v = new Vector3f(coeff, coeff, coeff);
-		
-		ClientEngineZildo.ortho.setAmbientColor(v);
-	}
-	
-	@Override
-	public boolean renderFilter() {
-		return true;
+		Vector3f v = ClientEngineZildo.ortho.getAmbientColor();
+		ClientEngineZildo.ortho.box(0, 0, Zildo.viewPortX, Zildo.viewPortY, 0, new Vector4f(1*v.x, 0, 0, 1));
 	}
 
 	@Override
-	public void doOnActive(FilterEffect effect) {
-		if (effect == FilterEffect.SEMIFADE) {
-			complete = false;
-		} else {
-			complete = true;
-		}
+	public boolean renderFilter() {
+		return true;
 	}
 
 }

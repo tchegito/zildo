@@ -188,7 +188,7 @@ public class LwjglOrtho extends Ortho {
 		// On se met au premier plan et on annule le texturing
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glPushMatrix();
-		GL11.glTranslatef(0, 0, 1);
+		//GL11.glTranslatef(0, 0, 1);
 		if (!withTexture) {
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 		}

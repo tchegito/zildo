@@ -215,7 +215,7 @@ public class FilterCommand {
 	/**
 	 * Restore default filters.
 	 */
-	private void restoreFilters() {
+	public void restoreFilters() {
 		for (ScreenFilter filter : filters) {
 			if (FadeScreenFilter.class.isAssignableFrom(filter.getClass())) {
 				active(filter.getClass(), false, null);

@@ -51,6 +51,9 @@ public class GameOverAction extends ActionDialog {
 		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(false);
 		ClientEngineZildo.soundPlay.stopMusic();
 		ClientEngineZildo.filterCommand.fadeIn(FilterEffect.SEMIFADE);
+		ClientEngineZildo.filterCommand.restoreFilters();
+		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(true, true);
+		
 		// Stop this game
 		SinglePlayer.getClientState().gameOver=true;
 		// Return on the start menu

@@ -116,6 +116,7 @@ public class ActionElement extends AnyElement {
 			delta = isTrue("delta");
 			break;
 		case script:
+			text = readAttribute("text");
 		case angle:
 		case wait:
 			val = readInt("value");

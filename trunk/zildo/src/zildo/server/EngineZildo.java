@@ -181,7 +181,9 @@ public class EngineZildo {
 		
 		// 2) Rest of the world
 		spriteManagement.updateSprites(block);
-		collideManagement.manageCollisions(p_clientStates);
+		if (!block) {
+			collideManagement.manageCollisions(p_clientStates);
+		}
 		mapManagement.updateMap();
 		
 		compteur_animation++;

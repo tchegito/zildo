@@ -832,7 +832,19 @@
 	<scene id="death">
 		<music name="ZildoMort"/>
 		<fadeOut type="5"/>
-		<fadeIn type="7"/>
+				<remove/>
+		<filter type="3"/>
+		<fadeIn type="0" unblock="true"/>
+		<sound name="ZildoDying"/>
+		<script who="zildo" text="VIDE"/>
+		<angle who="zildo" value="0"/>
+		<wait value="5"/>
+		<angle who="zildo" value="1"/>
+		<wait value="5"/>
+		<angle who="zildo" value="2"/>
+		<wait value="5"/>
+		<angle who="zildo" value="3"/>
+		<wait value="5"/>
 		<angle who="zildo" value="0"/>
 		<wait value="5"/>
 		<angle who="zildo" value="1"/>
@@ -847,6 +859,7 @@
 		<wait value="8"/>
 		<angle who="zildo" value="2"/>
 		<wait value="9"/>
+		<wait value="50"/>
 		<fadeOut type="0"/>
 		<end type="1"/>
 	</scene>
