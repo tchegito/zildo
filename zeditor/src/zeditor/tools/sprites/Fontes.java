@@ -53,10 +53,14 @@ public class Fontes extends SpriteBanque {
 				new Zone(56, 95, 7, 7), new Zone(63, 95, 7, 7),
 				// Vie
 				new Zone(0, 102, 44, 7), new Zone(44, 87, 7, 7),
-
+				new Zone(0, 109, 44, 7),
+				
 				// Jauge etc...
 				new Zone(185, 0, 16, 42),
-				new Zone(201, 22, 8, 2), new Zone(201, 0, 22, 22) };
+				new Zone(201, 22, 8, 2), new Zone(201, 0, 22, 22),
+				
+				// 	Virtual pad
+				new Zone(223, 0, 80, 80)};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
 				new GraphChange("fontes", 0, 0)});
