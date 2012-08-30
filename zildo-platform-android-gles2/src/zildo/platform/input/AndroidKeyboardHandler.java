@@ -36,18 +36,20 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 
 	// Relations between given key and its location on screen, inside virtual pad
 	enum KeyLocation {
-		VP_UP(29, 11, 23, 19, true, KEY_UP),
-		VP_LEFT(11, 29, 19, 23, true, KEY_LEFT),
-		VP_RIGHT(51, 29, 19, 23, true, KEY_RIGHT),
-		VP_DOWN(29, 52, 23, 19, true, KEY_DOWN),
+		VP_UP(29, 5, 23, 25, true, KEY_UP),	// Real zone : 29, 11, 23, 19
+		VP_LEFT(5, 29, 25, 23, true, KEY_LEFT),	// Real zone : 11, 29, 19, 23
+		VP_RIGHT(51, 29, 25, 23, true, KEY_RIGHT),	// Real zone : 51, 29, 19, 23
+		VP_DOWN(29, 52, 23, 25, true, KEY_DOWN),	// Real zone : 29, 52, 23, 19
 		// diagonals
 		VP_UP_LEFT(11, 11, 18, 18, true, KEY_UP, KEY_LEFT),
 		VP_UP_RIGHT(51, 11, 18, 18, true, KEY_UP, KEY_RIGHT),
 		VP_DOWN_LEFT(11, 52, 18, 18, true, KEY_DOWN, KEY_LEFT),
-		VP_DOWN_RIGHT(51, 52, 18, 18, true, KEY_DOWN, KEY_RIGHT),
+		VP_DOWN_RIGHT(51, 52, 18, 18, true, KEY_DOWN, KEY_RIGHT);
+		/*
 		VP_BUTTON_A(4, 33, 26, 26, false, KEY_Q),
 		VP_BUTTON_B(36, 58, 26, 26, false, KEY_W),
 		VP_BUTTON_C(36, 8, 26, 26, false, KEY_X);
+		*/
 		
 		public final Zone z;
 		public final int keyCode;
@@ -126,9 +128,36 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 				resetBack = true;
 			}
 			return infos.backPressed;
+		} else if (p_code == KEY_Q || p_code == KEY_W || p_code == KEY_X) {
+			if (polledTouchedPoints.size() != 0) {
+				for (Point p : polledTouchedPoints.getAll()) {
+					switch (p_code) {
+					case KEY_Q:
+						if (p.x >= middleX && p.y < middleY) {
+							return true;
+						}
+						break;
+					case KEY_W:
+						if (p.x >= middleX && p.y >= middleY) {
+							return true;
+						}
+						break;
+					case KEY_X:
+						Point zildoPos = infos.getZildoPos();
+						// Inventory only if player isn't moving (tm.getCurrent) and close enough
+						// to zildo location
+						if (zildoPos != null //&& tm.getCurrent() == null 
+								&& zildoPos.distance(p) < 24) {
+							 return true;
+						}
+						break;
+					}
+				}
+			}			
+		} else {
+			return keyStates[p_code];
 		}
-		
-		return keyStates[p_code];
+		return false;
 	}
 	
 	Angle previous;

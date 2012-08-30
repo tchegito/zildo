@@ -147,7 +147,7 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	                case FOCUSED:
 	            		GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 	                	// FIXME: previously color3f
-	                	shaders.setColor(1.0f, 1.0f, 1.0f, 1f);
+	                	shaders.setColor(1.0f, 1.0f, 1.0f, alpha / 255.0f);
 	                	break;
 	                default:
 	                	color[3]=alpha / 255.0f;
@@ -179,5 +179,6 @@ public class AndroidSpriteEngine extends SpriteEngine {
 		    // Calculate sprite locations on texture
 			createModelsFromSpriteBank(sprBank);
 	    }
+		
 	}
 }
