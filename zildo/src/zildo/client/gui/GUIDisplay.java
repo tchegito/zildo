@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
@@ -107,7 +108,8 @@ public class GUIDisplay {
 	private FilterCommand filterCommand;
 
 	public float alpha;
-
+	private boolean lang_fr;
+	
 	Stack<GameMessage> messageQueue;
 
 	// ////////////////////////////////////////////////////////////////////
@@ -139,6 +141,9 @@ public class GUIDisplay {
 		
 		dialogContext = new DialogContext();
 		dialogDisplay = new DialogDisplay(dialogContext);
+		
+		// French or english ?
+		lang_fr = Locale.getDefault().getLanguage().equals(new Locale("fr").getLanguage());
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -622,7 +627,8 @@ public class GUIDisplay {
 
 		int i;
 		// Life
-		guiSpritesSequence.addSprite(FontDescription.GUI_LIFE, 207, 10);
+		FontDescription lifeGui = lang_fr ? FontDescription.GUI_LIFE : FontDescription.GUI_LIFE_ENGLISH;
+		guiSpritesSequence.addSprite(lifeGui, 207, 10);
 		for (i = 0; i < zildo.getMaxpv() / 2; i++) {
 			int pv = zildo.getPv();
 			FontDescription desc;
@@ -678,8 +684,11 @@ public class GUIDisplay {
 		
 		// virtual pad
 		if (PlatformDependentPlugin.currentPlugin == PlatformDependentPlugin.KnownPlugin.Android) {
-			guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, 0, Zildo.viewPortY-80, alphaPad);
-			guiSpritesSequence.addSprite(FontDescription.VIRTUAL_BUTTONS, Zildo.viewPortX-98, Zildo.viewPortY-87, alphaPad);
+			int alpha = alphaPad;
+			if (dialogDisplay.isDialoguing()) {
+				alpha>>=2;
+			}
+			guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, 0, Zildo.viewPortY-80, alpha);
 		}
 	}
 

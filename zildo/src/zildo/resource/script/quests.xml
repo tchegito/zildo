@@ -859,6 +859,7 @@
 		<wait value="8"/>
 		<angle who="zildo" value="2"/>
 		<wait value="9"/>
+		<script who="zildo" text="MORT"/>
 		<wait value="50"/>
 		<fadeOut type="0"/>
 		<end type="1"/>

@@ -78,8 +78,9 @@ public enum ZildoDescription implements SpriteDescription {
 	BOW_LEFT1, BOW_LEFT2, BOW_LEFT3,
 	
 	// 119
-	DIRT1, DIRT2, DIRT3;	// feet in dirt
+	DIRT1, DIRT2, DIRT3,	// feet in dirt
 	
+	LAYDOWN;
 	
 	
 	

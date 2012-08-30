@@ -37,12 +37,13 @@ public enum FontDescription implements SpriteDescription {
 	// Number
 	N_0, N_1, N_2, N_3, N_4, N_5, N_6, N_7, N_8, N_9, 
 	// Life
-	GUI_LIFE, GUI_HEARTHALF,
+	GUI_LIFE, GUI_HEARTHALF, GUI_LIFE_ENGLISH,
+	
 	// Others
 	GUI_GAUGE, GUI_AMOUNT, GUI_WEAPONFRAME,
 	
 	// Android
-	VIRTUAL_PAD, VIRTUAL_BUTTONS;
+	VIRTUAL_PAD;
 	
 	@Override
 	public int getBank() {

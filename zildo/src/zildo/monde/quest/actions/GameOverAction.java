@@ -50,8 +50,8 @@ public class GameOverAction extends ActionDialog {
 		ClientEngineZildo.tileEngine.cleanUp();
 		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(false);
 		ClientEngineZildo.soundPlay.stopMusic();
-		ClientEngineZildo.filterCommand.fadeIn(FilterEffect.SEMIFADE);
 		ClientEngineZildo.filterCommand.restoreFilters();
+		ClientEngineZildo.filterCommand.fadeIn(FilterEffect.SEMIFADE);
 		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(true, true);
 		
 		// Stop this game

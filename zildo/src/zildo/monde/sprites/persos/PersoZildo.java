@@ -471,7 +471,7 @@ public class PersoZildo extends Perso {
 			yy += py;
 			px *= 0.8f;
 			py *= 0.8f;
-			if (Math.abs(px) + Math.abs(py) < 0.2f) {
+			if (pv > 0 && Math.abs(px) + Math.abs(py) < 0.2f) {
 				stopBeingWounded();
 			}
 			Pointf p = tryMove(xx, yy);
@@ -631,6 +631,10 @@ public class PersoZildo extends Perso {
 		case FIERTEOBJET:
 			nSpr = ZildoDescription.ARMSRAISED.ordinal();
 			yy++;
+			break;
+		case MORT:
+			yy+=9;
+			xx-=2;
 			break;
 		}
 
@@ -792,6 +796,9 @@ public class PersoZildo extends Perso {
 				EngineZildo.spriteManagement.spawnSprite(arrow);
 				countArrow--;
 			}
+			break;
+		case MORT:
+			setNSpr(ZildoDescription.LAYDOWN.getNSpr());
 			break;
 		}
 
