@@ -134,7 +134,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
 	                    GL11.glColor4f(0.5f + 0.5f * (float) Math.random(), 0.5f * (float) Math.random(), 0, 1);
 	                    break;
 	                case FOCUSED:
-	                	GL11.glColor3f(1.0f, 1.0f, 1.0f);
+	                	GL11.glColor4f(1.0f, 1.0f, 1.0f, alpha / 255.0f);
 	                	break;
 	                default:
 	                	color[3]=alpha / 255.0f;
