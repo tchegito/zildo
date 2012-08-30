@@ -33,6 +33,7 @@ import zeditor.tools.banque.Palais1;
 import zeditor.tools.sprites.ElementsPlus;
 import zeditor.tools.sprites.Fontes;
 import zeditor.tools.sprites.Gears;
+import zeditor.tools.sprites.PjZildo;
 import zeditor.tools.sprites.Pnj;
 import zeditor.tools.sprites.Pnj2;
 import zeditor.tools.sprites.SpriteBankEdit;
@@ -89,9 +90,10 @@ public class Modifier {
         //new Modifier().saveAllMotifBank();
         //new Modifier().saveBanque();
         //new Modifier().saveGears();
+        new Modifier().saveZildo();
         //new Modifier().savePnj();
         //new Modifier().savePnj2();
-        new Modifier().adjustSpritePositionOnAllMaps();
+        //new Modifier().adjustSpritePositionOnAllMaps();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
        // new Modifier().ripDialogFromAllMaps();
@@ -213,19 +215,33 @@ public class Modifier {
     	 bankElem.saveBank();
      }
      
+     public void saveZildo() {
+         SpriteBankEdit bankZildo=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO));
+    	 bankZildo.loadImage("link3b", COLOR_BLUE);
+    	 Zone[] zones = new PjZildo().getZones();
+    	 int nSpr=bankZildo.getNSprite();
+    	 for (Zone z : zones) {
+    		 if (bankZildo.getNSprite() <= nSpr) {
+    			 bankZildo.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
+    		 }
+    		 nSpr++;
+    	 }
+    	 bankZildo.saveBank();
+     }
+     
      public void saveFontes2() {
-         SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_FONTES));
-         bankElem.clear();
-         bankElem.loadImage("fontes", COLOR_BLUE);
+         SpriteBankEdit bankFont=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_FONTES));
+         bankFont.clear();
+         bankFont.loadImage("fontes", COLOR_BLUE);
          
          // Capture the fonts
          int startX=0;
          int startY=0;
          for (int i=0;i<GUIDisplay.transcoChar.length();i++) {
         	 // Get size
-        	 int width=bankElem.getWidth(startX, startY, 16);
+        	 int width=bankFont.getWidth(startX, startY, 16);
         	 if (width > 1) {
-	        	 bankElem.addSprFromImage(i, startX, startY, width, 16);
+	        	 bankFont.addSprFromImage(i, startX, startY, width, 16);
 	        	 
 	        	 System.out.println(startX+" , "+startY+" size="+width);
 
@@ -240,13 +256,13 @@ public class Modifier {
         		 i--;
         	 }
          }
-         int nSpr=bankElem.getNSprite();
+         int nSpr=bankFont.getNSprite();
          Zone[] elements=new Fontes().getZones();
          for (Zone z : elements) {
-         	bankElem.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
+         	bankFont.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
          	nSpr++;
          }
-         bankElem.saveBank();
+         bankFont.saveBank();
      }
      
      public void saveGears() {
