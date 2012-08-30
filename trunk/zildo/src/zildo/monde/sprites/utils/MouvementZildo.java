@@ -33,6 +33,7 @@ public enum MouvementZildo {
     ATTAQUE_BOOMERANG,
     TOUCHE,   	// Quand Zildo se fait toucher
 	SAUTE,   		// Zildo saute une colline ! -> inactif pendant le saut
-	FIERTEOBJET;	// Zildo brandit fièrement un objet
+	FIERTEOBJET,	// Zildo brandit fièrement un objet
+	MORT;
 
 }

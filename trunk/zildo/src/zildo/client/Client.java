@@ -391,6 +391,7 @@ public class Client {
 		ClientEngineZildo.guiDisplay.clearGui();
 		ClientEngineZildo.spriteDisplay.clearSprites();
 		ClientEngineZildo.ortho.setFilteredColor(new Vector3f(1, 1, 1));
+		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(1, 1, 1));
 		ClientEngineZildo.filterCommand.restoreFilters();
 		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(true, true);
 		

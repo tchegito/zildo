@@ -26,6 +26,7 @@ import java.util.List;
 import zildo.fwk.gfx.filter.BilinearFilter;
 import zildo.fwk.gfx.filter.FadeScreenFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
 import zildo.resource.Constantes;
 
@@ -221,6 +222,7 @@ public class FilterCommand {
 				active(filter.getClass(), false, null);
 			}
 		}
+		active(RedFilter.class, false, null);
 		active(BilinearFilter.class, true, null);
 	}
 	
