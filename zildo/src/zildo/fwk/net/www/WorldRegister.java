@@ -113,13 +113,15 @@ public class WorldRegister extends Thread {
 			StringBuilder request = new StringBuilder();
 			request.append(url).append("/").append(serverServlet);
 			request.append("?command=").append(p_command.toString());
-			request.append("&name=").append(
-					URLEncoder.encode(p_serverInfo.name, charset));
-			request.append("&port=").append(p_serverInfo.port);
-			if (p_serverInfo.ip != null) {
-				request.append("&ip=").append(p_serverInfo.ip);
+			if (p_serverInfo != null) {
+				request.append("&name=").append(
+						URLEncoder.encode(p_serverInfo.name, charset));
+				request.append("&port=").append(p_serverInfo.port);
+				if (p_serverInfo.ip != null) {
+					request.append("&ip=").append(p_serverInfo.ip);
+				}
+				request.append("&nbPlayers=").append(p_serverInfo.nbPlayers);
 			}
-			request.append("&nbPlayers=").append(p_serverInfo.nbPlayers);
 			URL objUrl = new URL(request.toString());
 			URLConnection urlConnect = objUrl.openConnection();
 
@@ -135,5 +137,10 @@ public class WorldRegister extends Thread {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public static List<String> findChampions() {
+		//sendRequest(Command.GET_CHAMPIONS, null);
+		return null;
 	}
 }

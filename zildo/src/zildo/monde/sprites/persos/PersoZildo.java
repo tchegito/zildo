@@ -390,6 +390,7 @@ public class PersoZildo extends Perso {
 			EngineZildo.multiplayerManagement.kill(this, p_shooter);
 		} else {
 			// Game over
+			pos_seqsprite = 0;
 			EngineZildo.scriptManagement.execute("death");
 		}
 	}

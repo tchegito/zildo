@@ -31,7 +31,8 @@ public class NetMessage {
 
 	
 	public enum Command {
-		CREATE, UPDATE, REMOVE;
+		CREATE, UPDATE, REMOVE, 
+		REGISTER_CHAMPION, GET_CHAMPIONS;
 	}
 	
 	Command command;
