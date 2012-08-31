@@ -86,7 +86,7 @@ public class TouchListener implements OnTouchListener {
 				case MotionEvent.ACTION_UP:
 					item = tempItem;
 					Log.d("touch", "item "+tempItem.getText());
-					menu.activateItem(item);
+					menu.activateItem(tempItem);
 					break;
 				case MotionEvent.ACTION_DOWN:
 				case MotionEvent.ACTION_MOVE:
