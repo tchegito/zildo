@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import zildo.client.ClientEngineZildo;
+import zildo.client.stage.SinglePlayer;
 import zildo.fwk.ZUtils;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.net.NetServer;
@@ -217,7 +218,7 @@ public class Server extends Thread {
 
     static public ClientState getClientFromZildo(PersoZildo p_zildo) {
     	if (!EngineZildo.game.multiPlayer) {
-    		return null;
+    		return SinglePlayer.getClientState();
     	}
         for (ClientState cl : clients.values()) {
             if (cl.zildo == p_zildo) {

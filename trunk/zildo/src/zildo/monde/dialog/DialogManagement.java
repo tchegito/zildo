@@ -160,16 +160,12 @@ public class DialogManagement {
 	
 	public void continueDialog(ClientState p_client) {
 	    WaitingDialog even = createWaitingDialog(p_client, p_client.zildo.getDialoguingWith());
-	    System.out.println("even = "+even);
-	    System.out.println("p_client = "+p_client);
-	    System.out.println("dialogState = "+p_client.dialogState);
-	    System.out.println("sentence = "+even.sentence);
 	    p_client.dialogState.continuing = even.sentence.indexOf("@") != -1;
 
 	    if (even != null) {
-		even.sentence = even.sentence.trim();
-		even.action = CommandDialog.CONTINUE;
-		dialogQueue.add(even);
+			even.sentence = even.sentence.trim();
+			even.action = CommandDialog.CONTINUE;
+			dialogQueue.add(even);
 	    }
 	}
 	
