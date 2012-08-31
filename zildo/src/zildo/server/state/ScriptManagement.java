@@ -314,9 +314,6 @@ public class ScriptManagement {
 		}
     	if (label != null) {
     		ClientState client = Server.getClientFromZildo(p_zildo);
-    		if (client == null) {
-    			client = SinglePlayer.getClientState();
-    		}
     		EngineZildo.dialogManagement.launchDialog(client, null, new ScriptAction(label));
     	}
 	}
