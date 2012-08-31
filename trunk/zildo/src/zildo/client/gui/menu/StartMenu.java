@@ -130,6 +130,13 @@ public class StartMenu extends Menu {
 
         };
         
+        ItemMenu itemHof=new ItemMenu("m1.hof") {
+        	@Override
+			public void run() {
+        		client.handleMenu(new HallOfFameMenu());
+        	}
+        };
+        
         ItemMenu itemQuit=new ItemMenu("m1.quit", BankSound.MenuSelectGame) {
         	@Override
 			public void run() {
@@ -137,7 +144,7 @@ public class StartMenu extends Menu {
         	}
         };
         
-        setMenu(itemSinglePlayer, itemMultiPlayer, itemQuit);
+        setMenu(itemSinglePlayer, itemMultiPlayer, itemHof, itemQuit);
         setTitle("m1.title");
 	}
 }
