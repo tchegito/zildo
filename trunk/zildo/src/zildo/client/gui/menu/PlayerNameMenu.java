@@ -33,18 +33,25 @@ import zildo.resource.Constantes;
  */
 public class PlayerNameMenu extends Menu {
 
-    public PlayerNameMenu(final StringBuilder p_playerName, Menu p_previous) {
+	ItemMenu runnable;
+	
+    public PlayerNameMenu(final StringBuilder p_playerName, Menu p_previous, ItemMenu p_runnable) {
         super("m5.title");
 
         previousMenu = p_previous;
-
+        runnable = p_runnable;
+        
         ItemMenu itemName = new EditableItemMenu(p_playerName) {
             @Override
             public void run() {
             	// Save playername on disk
             	savePlayerName(p_playerName.toString());
-            	// Back to previous menu
-            	client.handleMenu(previousMenu);
+            	if (runnable != null) {
+            		runnable.run();
+            	} else {
+            		// Back to previous menu
+            		client.handleMenu(previousMenu);
+            	}
             }
         };
 

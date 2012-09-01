@@ -94,7 +94,7 @@ public class StartMenu extends Menu {
                 final ItemMenu itemPlayerName = new ItemMenu(getPlayerNameString()) {
                     @Override
                     public void run() {
-                        client.handleMenu(new PlayerNameMenu(playerName, multiMenu));
+                        client.handleMenu(new PlayerNameMenu(playerName, multiMenu, null));
                     }
                 };
                 ItemMenu itemToggleNetwork = new ItemMenu(getNetTypeString()) {

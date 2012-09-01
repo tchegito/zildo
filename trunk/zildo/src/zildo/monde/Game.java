@@ -48,12 +48,18 @@ public class Game implements EasySerializable {
     public boolean multiPlayer;
     public boolean deathmatch; // Defines the game rules
     public String mapName;
+    public String playerName;
     
     public Game(String p_mapName, boolean p_editing) {
         mapName = p_mapName;
         editing = p_editing;
         multiPlayer = false;
         brandNew = true;
+    }
+
+    public Game(String p_mapName, String p_playerName) {
+    	this(p_mapName, false);
+    	playerName = p_playerName;
     }
 
     public Game(boolean p_editing) {
