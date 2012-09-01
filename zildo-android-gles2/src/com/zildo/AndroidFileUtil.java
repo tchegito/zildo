@@ -92,6 +92,7 @@ public class AndroidFileUtil implements FileUtil {
 	
 	
 	private String removePaths(String s) {
-		return s.replaceAll(Constantes.SAVEGAME_DIR, "");
+		return s.replaceAll(Constantes.SAVEGAME_DIR, "")
+				.replaceAll(Constantes.INI_DIR, "");
 	}
 }

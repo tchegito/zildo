@@ -39,6 +39,7 @@ import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.monde.dialog.WaitingDialog;
@@ -573,6 +574,11 @@ public class GUIDisplay {
 				Zone z = prepareTextInFrame(item.getText(),
 						sc.TEXTER_COORDINATE_X, posY);
 				posY += sc.TEXTER_MENU_SIZEY;
+				if (item instanceof EditableItemMenu) {
+					z.x1 = sc.TEXTER_COORDINATE_X;
+					z.x2 = sc.TEXTER_SIZEX;
+					z.y2 = sc.TEXTER_SIZELINE;
+				}
 				// Store item location
 				itemsOnScreen.put(item, z);
 			}
