@@ -66,7 +66,7 @@ public class PlayerNameMenu extends Menu {
     	EasyBuffering buffer=new EasyBuffering(p_playerName.length()*2);
     	buffer.put(p_playerName);
     	EasyWritingFile file=new EasyWritingFile(buffer);
-    	file.saveFile(Constantes.CONFIGURATION_FILE);
+    	file.saveFile(Constantes.INI_DIR + Constantes.CONFIGURATION_FILE);
     }
     
     /**
@@ -76,7 +76,7 @@ public class PlayerNameMenu extends Menu {
      */
     static public String loadPlayerName() {
     	try {
-    		EasyBuffering file=Zildo.pdPlugin.openFile(Constantes.CONFIGURATION_FILE);
+    		EasyBuffering file=Zildo.pdPlugin.openFile(Constantes.INI_DIR + Constantes.CONFIGURATION_FILE);
     		return file.readString();
     	} catch (Exception e) {
     		return "Zildo";

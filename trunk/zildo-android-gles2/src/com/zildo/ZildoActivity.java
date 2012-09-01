@@ -15,6 +15,7 @@ import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.menu.StartMenu;
 import zildo.fwk.ZUtils;
+import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.UIText;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,14 +41,18 @@ public class ZildoActivity extends Activity {
 	
 	AlertDialog hafWorked;
 	AlertDialog hafProblem;
+	ZildoDialogs zd;
 	
 	final static int RESET_SPLASHSCREEN = 99;
+	final static int PLAYERNAME_DIALOG = 98;
 
 	static class SplashHandler extends Handler {
 			OpenGLES20SurfaceView view;
+			ZildoDialogs zd;
 			
-		public SplashHandler(OpenGLES20SurfaceView view) {
+		public SplashHandler(OpenGLES20SurfaceView view, ZildoDialogs zd) {
 			this.view = view;
+			this.zd = zd;
 		}
 		
     	@Override
@@ -57,6 +62,9 @@ public class ZildoActivity extends Activity {
     	            // Remove splashscreen
     	    	 	view.setBackgroundResource(0); 
     	            break;
+    	     case PLAYERNAME_DIALOG:
+    	    	 zd.askPlayerName((EditableItemMenu) msg.obj);
+    	    	 break;
     	   }
     	}
 	}
@@ -113,16 +121,11 @@ public class ZildoActivity extends Activity {
         
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         
-        handler = new SplashHandler(view);
-
-        //Log.d("zildo", "trying httpconnection");
-        //sendAchievementMessage();
-        Log.d("zildo", "trying worldregister");
         
         createDialogs();
 
-        //sendRequest();
-    
+        handler = new SplashHandler(view, zd);
+
     }
     
 
@@ -237,6 +240,7 @@ public class ZildoActivity extends Activity {
     
     private void createDialogs() {
         
+    	// 1
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(UIText.getMenuText("dialog.haf"))
                .setCancelable(false)
@@ -246,6 +250,7 @@ public class ZildoActivity extends Activity {
                });
         hafWorked = builder.create();
         
+        // 2
         builder = new AlertDialog.Builder(this);
         builder.setMessage(UIText.getMenuText("dialog.haf.noInternet"))
                .setCancelable(false)
@@ -256,7 +261,9 @@ public class ZildoActivity extends Activity {
                    public void onClick(DialogInterface dialog, int id) {
                    }
                });
-        hafProblem = builder.create();        
-    	
-    }
+        hafProblem = builder.create();  
+        
+        // 3 : player name
+        zd = new ZildoDialogs(new AlertDialog.Builder(this), getBaseContext());
+   }
 }

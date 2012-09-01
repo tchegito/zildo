@@ -20,7 +20,10 @@
 
 package com.zildo;
 
+import android.os.Message;
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.ui.DefaultMenuListener;
+import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 
@@ -36,8 +39,28 @@ public class AndroidMenuListener extends DefaultMenuListener {
 		this.touchListener = touchListener;
 	}
 	
+	EditableItemMenu editable = null;
+	
 	@Override
 	public ItemMenu act(Menu menu) {
-		return touchListener.popItem();	
+		if (editable != null) {
+			// Player is editing an item => wait for he finished
+			if (!editable.getText().isEmpty()) {
+				return editable;
+			}
+		}
+		ItemMenu item = touchListener.popItem();
+		if (item != null && item instanceof EditableItemMenu) {
+			// For now, only editable item is "player name", so it's ugly, but works
+			// TODO: need to be refactored later
+			Message msg = new Message();
+			msg.what = ZildoActivity.PLAYERNAME_DIALOG;
+			msg.obj = item;
+			editable = (EditableItemMenu) item;
+			ZildoActivity.handler.sendMessage(msg);
+			ClientEngineZildo.getClientForMenu().handleMenu(null);
+			item = null;
+		}
+		return item;
 	}
 }
