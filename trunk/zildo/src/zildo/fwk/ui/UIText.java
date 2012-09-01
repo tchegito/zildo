@@ -33,6 +33,8 @@ public class UIText {
 	static ResourceBundle menuBundle;
 	static ResourceBundle gameBundle;
 	
+	static String characterName = "Tchegito"; // Default
+	
 	final static Pattern pdRegex = Pattern.compile("%([a-z|A-Z| |\\.]*)%");
 	
 	static {
@@ -75,14 +77,18 @@ public class UIText {
 		return getText(menuBundle, p_key, p_params);
 	}
 	
+	public static void setCharacterName(String name) {
+		characterName = name;
+	}
+	
 	/**
 	 * Returns a label with a given key and given parameters from the <b>game</b> bundle properties.
 	 * @param p_key
 	 * @param p_params
 	 * @return String
 	 */
-	public static String getGameText(String p_key, Object... p_params) {
-		return getText(gameBundle, p_key, p_params);
+	public static String getGameText(String p_key) {
+		return getText(gameBundle, p_key, characterName);
 	}
 	
 	
