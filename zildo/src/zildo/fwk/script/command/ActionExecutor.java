@@ -88,6 +88,7 @@ public class ActionExecutor {
             waitForEndAction(p_action);
             achieved = p_action.done;
         } else {
+        	PersoZildo zildo;
             Perso perso = EngineZildo.persoManagement.getNamedPerso(p_action.who);
             if (perso != null) {
                 scriptExec.involved.add(perso); // Note that this perso is concerned
@@ -246,7 +247,7 @@ public class ActionExecutor {
                 case take:	// Someone takes an item
                 	if (p_action.who == null || "zildo".equalsIgnoreCase(p_action.who)) {
                 		// This is Zildo
-                		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
+                		zildo=EngineZildo.persoManagement.getZildo();
                 		if (p_action.val != 0) {
                 			zildo.pickGoodies(null, p_action.val);
                 		} else {
@@ -260,7 +261,7 @@ public class ActionExecutor {
                 	achieved=true;
                 	break;
                 case putDown:	// Zildo loses an item
-            		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
+            		zildo=EngineZildo.persoManagement.getZildo();
             		zildo.removeItem(ItemKind.fromString(text));
             		achieved=true;
             		break;
@@ -360,10 +361,11 @@ public class ActionExecutor {
                 	break;
                 case end:
                 	if (p_action.val == 0) {
-                		// Player finish the game !
+                		// Player finished the game !
                 		// Register him
-                		//Champion ch = new Champion("zildo", 2, "Episode 1", new Date());
-                		//new WorldRegister().registerChampion(ch);
+                		zildo = EngineZildo.persoManagement.getZildo();
+                		Champion ch = new Champion(zildo.getName(), zildo.getHeartQuarter(), "Episode 1", new Date());
+                		new WorldRegister().registerChampion(ch);
                 		// And finish
                 		new GameOverAction().launchAction(null);
                 	} else if (p_action.val == 1) {
