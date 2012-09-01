@@ -121,7 +121,7 @@ public class ZildoActivity extends Activity {
         
         createDialogs();
 
-        sendRequest();
+        //sendRequest();
     
     }
     

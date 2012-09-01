@@ -684,11 +684,11 @@ public class GUIDisplay {
 		
 		// virtual pad
 		if (PlatformDependentPlugin.currentPlugin == PlatformDependentPlugin.KnownPlugin.Android) {
-			int alpha = alphaPad;
+			int curAlpha = alphaPad;
 			if (dialogDisplay.isDialoguing()) {
-				alpha>>=2;
+				curAlpha>>=2;
 			}
-			guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, 0, Zildo.viewPortY-80, alpha);
+			guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, 0, Zildo.viewPortY-80, curAlpha);
 		}
 	}
 

@@ -24,7 +24,10 @@ import java.util.List;
 
 import zildo.fwk.net.www.WorldRegister;
 import zildo.fwk.ui.ItemMenu;
+import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.PageableMenu;
+import zildo.fwk.ui.UnselectableItemMenu;
+import zildo.monde.Champion;
 
 /**
  * @author Tchegito
@@ -32,12 +35,24 @@ import zildo.fwk.ui.PageableMenu;
  */
 public class HallOfFameMenu extends PageableMenu {
 
-	public HallOfFameMenu() {
+	
+	public HallOfFameMenu(Menu p_previousMenu) {
 		super("m10.title");
 
-		final List<String> champions = WorldRegister.findChampions();
+		this.previousMenu = p_previousMenu;
 		items = new ArrayList<ItemMenu>();
-
+		
+		// Ask internet server about the champions
+		final List<Champion> champions = WorldRegister.getChampions();
+		if (champions == null) {
+			items.add(new UnselectableItemMenu("m10.internet.out") { });
+			setTitle("");
+		} else {
+			// Display all champions
+			for (Champion ch : champions) {
+				items.add(new UnselectableItemMenu(ch.toString()) { });
+			}
+		}
 		items.add(new ItemMenu("global.back") {
 			@Override
 			public void run() {

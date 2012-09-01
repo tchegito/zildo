@@ -133,7 +133,7 @@ public class StartMenu extends Menu {
         ItemMenu itemHof=new ItemMenu("m1.hof") {
         	@Override
 			public void run() {
-        		client.handleMenu(new HallOfFameMenu());
+        		client.handleMenu(new HallOfFameMenu(currentMenu));
         	}
         };
         
