@@ -20,6 +20,8 @@
 
 package zildo.fwk.script.command;
 
+import java.util.Date;
+
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
@@ -31,8 +33,10 @@ import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.RedFilter;
+import zildo.fwk.net.www.WorldRegister;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.ui.UIText;
+import zildo.monde.Champion;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
@@ -347,7 +351,6 @@ public class ActionExecutor {
                 		ClientEngineZildo.ortho.setFilteredColor(Ortho.SEMI_NIGHT_FILTER);
                 		break;
                 	case 3: // RED
-                		//ClientEngineZildo.ortho.setBasicColor(Ortho.RED_FILTER);
                 		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(false, false);
                 		ClientEngineZildo.filterCommand.active(CloudFilter.class, false, null);
                 		ClientEngineZildo.filterCommand.active(RedFilter.class, true, null);
@@ -358,6 +361,10 @@ public class ActionExecutor {
                 case end:
                 	if (p_action.val == 0) {
                 		// Player finish the game !
+                		// Register him
+                		//Champion ch = new Champion("zildo", 2, "Episode 1", new Date());
+                		//new WorldRegister().registerChampion(ch);
+                		// And finish
                 		new GameOverAction().launchAction(null);
                 	} else if (p_action.val == 1) {
                 		// Game over : player died !

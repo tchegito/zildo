@@ -49,33 +49,54 @@ public class Menu {
 	final int kUp = kbHandler.getCode(Keys.UP);
 	
 	public Menu() {
-		
+
 	}
 	
 	public Menu(String p_title, ItemMenu... p_items) {
-		title=UIText.getMenuText(p_title);
+		setTitle(p_title);
 		setMenu(p_items);
 	}
 	
 	public void setMenu(ItemMenu... p_items) {
 		items=Arrays.asList(p_items);
 		displayed=false;
+		init();
 	}
+
 	public void setMenu(List<ItemMenu> p_items) {
 		items=p_items;
 		displayed=false;
+		init();
 	}
 	
 	public void setTitle(String p_title) {
 		title=UIText.getMenuText(p_title);
 	}
 	
+	protected void init() {
+		// Find the first selectable item
+		selected = 0;
+		for (ItemMenu i : items) {
+			if (!i.isSelectable()) {
+				selected++;
+			} else {
+				break;
+			}
+		}	
+	}
+
 	/**
 	 * @param p_direction FALSE=UP / TRUE=DOWN
 	 */
 	public void move(boolean p_direction) {
 		int add=p_direction ? 1 : items.size()-1;
-		selected=(selected+add) % items.size();
+		while(true) {
+			selected=(selected+add) % items.size();
+			ItemMenu item = items.get(selected);
+			if (item.isSelectable()) {
+				break;
+			}
+		}
 		ClientEngineZildo.soundPlay.playSoundFX(BankSound.MenuMove);
 	}
 	
@@ -139,7 +160,7 @@ public class Menu {
      */
     public void selectItem(ItemMenu item) {
 		int pos = items.indexOf(item);
-    	if (selected != pos) {
+    	if (selected != pos && item.isSelectable()) {
     		selected=pos;
     		ClientEngineZildo.soundPlay.playSoundFX(BankSound.MenuMove);
     	}

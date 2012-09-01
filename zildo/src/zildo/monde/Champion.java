@@ -18,53 +18,42 @@
  *
  */
 
-package zildo.fwk.ui;
+package zildo.monde;
 
-import zildo.client.sound.BankSound;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public abstract class ItemMenu {
+/**
+ * @author Tchegito
+ *
+ */
+public class Champion {
 
-	private  String text;
-	public BankSound sound=BankSound.MenuSelect;
-	private boolean launched;
+	public final String playerName;
+	public final int heartQuarter;
+	public final String episodeName;
+	public final Date finishDate;
 	
-	public ItemMenu() {
-		
-	}
+	private static DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
-	public ItemMenu(String p_text) {
-		text=UIText.getMenuText(p_text);
-	}
-
-	public ItemMenu(String p_text, BankSound p_sound) {
-		this(p_text);
-		sound=p_sound;
-	}
-
-	public String getText() {
-		return text;
-	}
+	private String ret = null;
 	
-	/**
-	 * Set an item name without bundle
-	 * @param p_text
-	 */
-	public void setText(String p_text) {
-		text=p_text;
+	public Champion(String name, int heartQuarter, String episodeName, Date finishDate) {
+		this.playerName = name;
+		this.heartQuarter = heartQuarter;
+		this.episodeName = episodeName;
+		this.finishDate = finishDate;
 	}
 	
-	public abstract void run();
-
-	public boolean isLaunched() {
-		return launched;
+	@Override
+	public String toString() {
+		if (ret == null) {
+			ret = playerName + " - "+df.format(finishDate)+" : "+heartQuarter+" piece";
+			if (heartQuarter > 1) {
+				ret += "s";
+			}
+		}
+		return ret;
 	}
-
-	public void setLaunched(boolean launched) {
-		this.launched = launched;
-	}
-	
-	public boolean isSelectable() {
-		return true;
-	}
-		
 }

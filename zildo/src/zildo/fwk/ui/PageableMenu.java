@@ -50,6 +50,8 @@ public class PageableMenu extends Menu {
 			// Too much items => get a sublist, and add a 'next page' item
 			currentPage = 0;
 			initCurrentPage();
+		} else if (p_items.length > 0){
+			init();
 		}
 	}
 	
@@ -82,5 +84,7 @@ public class PageableMenu extends Menu {
 				}
 			});
 		}
+		init();
+
 	}
 }

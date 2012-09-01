@@ -29,12 +29,14 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Deque;
 import java.util.List;
 
 import zildo.fwk.ZUtils;
 import zildo.fwk.net.ServerInfo;
 import zildo.fwk.net.www.NetMessage.Command;
+import zildo.monde.Champion;
 
 /**
  * @author Tchegito
@@ -43,7 +45,8 @@ import zildo.fwk.net.www.NetMessage.Command;
 public class WorldRegister extends Thread {
 
 	private final static String url = "http://legendofzildo.appspot.com";
-	private final static String displayServlet = "display";
+	private final static String displayServerServlet = "displayServers";
+	private final static String displayChampionServlet = "displayChampions";
 	private final static String serverServlet = "srv";
 	private final static String charset = "UTF-8";
 
@@ -67,7 +70,7 @@ public class WorldRegister extends Thread {
 		List<ServerInfo> infos = new ArrayList<ServerInfo>();
 		try {
 			StringBuilder request = new StringBuilder();
-			request.append(url).append("/").append(displayServlet);
+			request.append(url).append("/").append(displayServerServlet);
 			request.append("?ingame=1");
 			URL objUrl = new URL(request.toString());
 			URLConnection urlConnect = objUrl.openConnection();
@@ -75,9 +78,12 @@ public class WorldRegister extends Thread {
 			InputStream in = urlConnect.getInputStream();
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(in));
-			while (reader.ready()) {
+			while (true) {	// reader.ready() doesn't work on Android
 				// 4 line per server
 				String name = reader.readLine();
+				if (name == null) {
+					break;
+				}
 				String ip = reader.readLine();
 				int port = Integer.valueOf(reader.readLine());
 				ServerInfo server = new ServerInfo(name, ip, port);
@@ -92,6 +98,43 @@ public class WorldRegister extends Thread {
 		}
 	}
 
+	/**
+	 * Returns all registered champion on Zildo server.
+	 * NULL as returned value means that internet connection doesn't work.
+	 * @return List<Champion>
+	 */
+	public static List<Champion> getChampions() {
+		List<Champion> hall = new ArrayList<Champion>();
+		try {
+			StringBuilder request = new StringBuilder();
+			request.append(url).append("/").append(displayChampionServlet);
+			request.append("?ingame=1");
+			URL objUrl = new URL(request.toString());
+			URLConnection urlConnect = objUrl.openConnection();
+
+			InputStream in = urlConnect.getInputStream();
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(in));
+			while (true) {	// reader.ready() doesn't work on Android
+				// 4 line per champion
+				String name = reader.readLine();
+				if (name == null) {
+					break;
+				}
+				int hq = Integer.valueOf(reader.readLine());
+				String episode = reader.readLine();
+				long finish = Long.valueOf(reader.readLine());
+				Champion ch = new Champion(name, hq, episode, new Date(finish));
+				hall.add(ch);
+			}
+			in.close();
+
+			return hall;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
 	@Override
 	public void run() {
 		while (true) {
@@ -139,8 +182,36 @@ public class WorldRegister extends Thread {
 		}
 	}
 	
-	public static List<String> findChampions() {
-		//sendRequest(Command.GET_CHAMPIONS, null);
-		return null;
+	/**
+	 * Register given champion on the Zildo server. Assume that champion is not null.
+	 * @param ch
+	 * @return boolean
+	 */
+	public boolean registerChampion(Champion ch) {
+		try {
+			StringBuilder request = new StringBuilder();
+			request.append(url).append("/").append(serverServlet);
+			request.append("?command=REG_CH");
+
+			request.append("&name=").append(
+					URLEncoder.encode(ch.playerName, charset));
+			request.append("&episode=").append(URLEncoder.encode(ch.episodeName, charset));
+			request.append("&hq=").append(ch.heartQuarter);
+			
+			URL objUrl = new URL(request.toString());
+			URLConnection urlConnect = objUrl.openConnection();
+
+			// Add server infos
+			InputStream in = urlConnect.getInputStream();
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(in));
+			int result = reader.read();
+			in.close();
+
+			return result == 48; // ASCII code of '0'
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

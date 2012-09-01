@@ -20,51 +20,23 @@
 
 package zildo.fwk.ui;
 
-import zildo.client.sound.BankSound;
+/**
+ * @author Tchegito
+ *
+ */
+public abstract class UnselectableItemMenu extends ItemMenu {
 
-public abstract class ItemMenu {
-
-	private  String text;
-	public BankSound sound=BankSound.MenuSelect;
-	private boolean launched;
-	
-	public ItemMenu() {
-		
-	}
-	
-	public ItemMenu(String p_text) {
-		text=UIText.getMenuText(p_text);
+	public UnselectableItemMenu(String p_sentence) {
+		super(p_sentence);
 	}
 
-	public ItemMenu(String p_text, BankSound p_sound) {
-		this(p_text);
-		sound=p_sound;
-	}
-
-	public String getText() {
-		return text;
+	@Override
+	public void run() {
+		// Nothing to do : we aren't selectable !
 	}
 	
-	/**
-	 * Set an item name without bundle
-	 * @param p_text
-	 */
-	public void setText(String p_text) {
-		text=p_text;
-	}
-	
-	public abstract void run();
-
-	public boolean isLaunched() {
-		return launched;
-	}
-
-	public void setLaunched(boolean launched) {
-		this.launched = launched;
-	}
-	
+	@Override
 	public boolean isSelectable() {
-		return true;
+		return false;
 	}
-		
 }
