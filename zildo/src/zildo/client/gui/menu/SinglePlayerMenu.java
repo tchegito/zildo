@@ -24,6 +24,7 @@ import zildo.client.sound.BankSound;
 import zildo.client.stage.SinglePlayer;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.fwk.ui.UIText;
 import zildo.monde.Game;
 
 /**
@@ -34,11 +35,24 @@ public class SinglePlayerMenu extends Menu {
 
 	public SinglePlayerMenu(Menu p_previous) {
 		previousMenu=p_previous;
-		
-        ItemMenu itemNew=new ItemMenu("m6.new", BankSound.MenuSelectGame) {
+		final StringBuilder sb = new StringBuilder();
+
+		// Create the hidden item, just here to launch the game, once player has set his name
+		final ItemMenu runSingle = new ItemMenu("hidden", BankSound.MenuSelectGame) {
+			@Override
+			public void run() {
+				// Create single player game, with setting player name
+				String playerName = sb.toString();
+				UIText.setCharacterName(playerName);
+                new SinglePlayer(new Game(null, playerName)).launchGame();
+			}
+		};
+
+		ItemMenu itemNew=new ItemMenu("m6.new", BankSound.MenuSelectGame) {
         	@Override
 			public void run() {
-                new SinglePlayer(new Game(null, false)).launchGame();
+        		client.handleMenu(new PlayerNameMenu(sb, null, runSingle));
+
         	}
         };
         
