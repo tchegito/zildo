@@ -20,6 +20,7 @@
 
 package zildo.monde;
 
+import java.util.Date;
 import java.util.List;
 
 import zildo.fwk.file.EasyBuffering;
@@ -48,7 +49,10 @@ public class Game implements EasySerializable {
     public boolean multiPlayer;
     public boolean deathmatch; // Defines the game rules
     public String mapName;
-    public String playerName;
+    public String heroName;
+    public int timeSpent;	// Number of seconds spent into the game
+    
+    private Date startPlay;
     
     public Game(String p_mapName, boolean p_editing) {
         mapName = p_mapName;
@@ -59,7 +63,9 @@ public class Game implements EasySerializable {
 
     public Game(String p_mapName, String p_playerName) {
     	this(p_mapName, false);
-    	playerName = p_playerName;
+    	heroName = p_playerName;
+    	timeSpent = 0;
+    	startPlay = new Date();
     }
 
     public Game(boolean p_editing) {
@@ -78,11 +84,13 @@ public class Game implements EasySerializable {
 		
 		// 2: zildo's information
 		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
+		p_buffer.put((byte) zildo.getPv());
 		p_buffer.put(zildo.getMaxpv() | (zildo.getHeartQuarter() << 8));
 		p_buffer.put(zildo.getCountArrow());
 		p_buffer.put(zildo.getCountBomb());
 		p_buffer.put((byte) zildo.getCountKey());
 		p_buffer.put(zildo.getMoney());
+		p_buffer.put(heroName);
 
 		// 3: inventory
 		List<Item> items=zildo.getInventory();
@@ -97,6 +105,13 @@ public class Game implements EasySerializable {
         p_buffer.put(area.getName());
         p_buffer.put((int) zildo.getX());
         p_buffer.put((int) zildo.getY());
+        
+        // 5: time spent
+        Date now = new Date();
+        long diff = now.getTime() - startPlay.getTime();
+        timeSpent += diff / 1000;
+        startPlay = now;
+        p_buffer.put(timeSpent);
 	}
 
 	/**
@@ -105,45 +120,53 @@ public class Game implements EasySerializable {
 	 * @return Game
 	 */
 	public static Game deserialize(EasyBuffering p_buffer) {
-        Game game = new Game(null, false);
 
-        // 1: quest diary
-        int questNumber = p_buffer.readInt();
-        for (int i = 0; i < questNumber; i++) {
-            String questName = p_buffer.readString();
-            boolean questDone = p_buffer.readBoolean();
-            if (questDone) {
-                EngineZildo.scriptManagement.accomplishQuest(questName, false);
-            }
-        }
-
-        // 2: Zildo
-        EngineZildo.spawnClient(ZildoOutfit.Zildo);
-        PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-        int maxPvHeartQuarter = p_buffer.readInt();
-        zildo.setMaxpv(maxPvHeartQuarter & 255);
-        zildo.setHeartQuarter(maxPvHeartQuarter >> 8);
-        zildo.setCountArrow(p_buffer.readInt());
-        zildo.setCountBomb(p_buffer.readInt());
-        zildo.setCountKey(p_buffer.readByte());
-        zildo.setMoney(p_buffer.readInt());
-        
-        // 3: Inventory
-        List<Item> items = zildo.getInventory();
-        items.clear();
-        int itemNumber = p_buffer.readInt();
-        for (int i = 0; i < itemNumber; i++) {
-            String kind = p_buffer.readString();
-            int level = p_buffer.readInt();
-            items.add(new Item(ItemKind.fromString(kind), level));
-        }
-        
-        // 4: map (since 1.096)
-        if (!p_buffer.eof()) {
+        try {
+	        // 1: quest diary
+	        int questNumber = p_buffer.readInt();
+	        for (int i = 0; i < questNumber; i++) {
+	            String questName = p_buffer.readString();
+	            boolean questDone = p_buffer.readBoolean();
+	            if (questDone) {
+	                EngineZildo.scriptManagement.accomplishQuest(questName, false);
+	            }
+	        }
+	
+	        // 2: Zildo
+	        EngineZildo.spawnClient(ZildoOutfit.Zildo);
+	        PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+	        zildo.setPv(p_buffer.readByte());
+	        int maxPvHeartQuarter = p_buffer.readInt();
+	        zildo.setMaxpv(maxPvHeartQuarter & 255);
+	        zildo.setHeartQuarter(maxPvHeartQuarter >> 8);
+	        zildo.setCountArrow(p_buffer.readInt());
+	        zildo.setCountBomb(p_buffer.readInt());
+	        zildo.setCountKey(p_buffer.readByte());
+	        zildo.setMoney(p_buffer.readInt());
+	        String heroName = p_buffer.readString();
+	        Game game = new Game(null, heroName);
+	        
+	        // 3: Inventory
+	        List<Item> items = zildo.getInventory();
+	        items.clear();
+	        int itemNumber = p_buffer.readInt();
+	        for (int i = 0; i < itemNumber; i++) {
+	            String kind = p_buffer.readString();
+	            int level = p_buffer.readInt();
+	            items.add(new Item(ItemKind.fromString(kind), level));
+	        }
+	        
+	        // 4: map (since 1.096)
 	        game.mapName = p_buffer.readString();
 	        zildo.setX(p_buffer.readInt());
 	        zildo.setY(p_buffer.readInt());
+	        
+	        // 5: time spent
+	        game.timeSpent = p_buffer.readInt();
+	        
+	        return game;
+        } catch (Exception e) {
+        	return null;
         }
-        return game;
     }
 }

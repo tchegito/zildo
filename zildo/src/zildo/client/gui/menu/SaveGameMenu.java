@@ -37,6 +37,7 @@ import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.PageableMenu;
+import zildo.fwk.ui.UIText;
 import zildo.monde.Game;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -76,7 +77,9 @@ public class SaveGameMenu extends PageableMenu {
 						client.handleMenu(new InfoMenu("m8.info.ok",
 								previousMenu));
 					} else {
-						loadGame(filename);
+						if (!loadGame(filename)) {
+							client.handleMenu(new InfoMenu("m8.info.nok", currentMenu));
+						}
 					}
 				}
 			});
@@ -129,7 +132,7 @@ public class SaveGameMenu extends PageableMenu {
 		file.saveFile(p_filename);
 	}
 
-	private void loadGame(String p_filename) {
+	private boolean loadGame(String p_filename) {
 		// Create a dummy game object, just to initialize server
 		Game game = new Game(null, false);
 		game.brandNew = false;
@@ -137,6 +140,11 @@ public class SaveGameMenu extends PageableMenu {
 
 		EasyBuffering file=Zildo.pdPlugin.openPrivateFile(p_filename);
 		game = Game.deserialize(file);
+		if (game == null) {
+			// Problem occured while loading game
+			return false;
+		}
+		UIText.setCharacterName(game.heroName);
 		EngineZildo.setGame(game);
 		if (game.mapName == null) {	// For backward compatibility
 			game.mapName = "foretg2";
@@ -151,6 +159,7 @@ public class SaveGameMenu extends PageableMenu {
 		EngineZildo.mapManagement.loadMap(game.mapName, false);
 
 		singlePlay.launchGame();
+		return true;	// success
 	}
 
 	/**
