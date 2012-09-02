@@ -803,7 +803,7 @@ public abstract class Perso extends Element {
 
 	public Point getCenteredScreenPosition() {
 		Point pos = new Point(getScrX(), getScrY());
-		pos.add(sprModel.getTaille_x() / 2, sprModel.getTaille_y() / 2);
+		pos.add(sprModel.getTaille_x() / 2, sprModel.getTaille_y());
 
 		return pos;
 	}
