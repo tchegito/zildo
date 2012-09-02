@@ -82,6 +82,13 @@ public class UIText {
 	}
 	
 	/**
+	 * Way or knowing the hero name for current game.
+	 */
+	public static String getCharacterName() {
+		return characterName;
+	}
+	
+	/**
 	 * Returns a label with a given key and given parameters from the <b>game</b> bundle properties.
 	 * @param p_key
 	 * @param p_params
