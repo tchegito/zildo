@@ -174,6 +174,9 @@ public class SpriteDisplay extends SpriteStore {
 
 	public void clearSprites() {
 		spriteEntities.clear();
+		for (int i=0;i<arrayEntities.length;i++) {
+			arrayEntities[i] = null;
+		}
 		Identified.resetCounter(SpriteEntity.class);
 	}
 	

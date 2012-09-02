@@ -21,6 +21,7 @@
 package com.zildo;
 
 import zildo.fwk.ui.EditableItemMenu;
+import zildo.fwk.ui.UIText;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,8 +40,8 @@ public class ZildoDialogs {
 	
 	public ZildoDialogs(AlertDialog.Builder builder, Context context) {
 
-        builder.setTitle("New game");  
-        builder.setMessage("Register your name");  
+        builder.setTitle(UIText.getMenuText("m11.title"));  
+        builder.setMessage(UIText.getMenuText("m11.mess"));  
         
         final EditText editText = new EditText(context);
         // 10 characters max for name

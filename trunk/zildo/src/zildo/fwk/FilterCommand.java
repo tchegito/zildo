@@ -23,7 +23,13 @@ package zildo.fwk;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.Zildo;
 import zildo.fwk.gfx.filter.BilinearFilter;
+import zildo.fwk.gfx.filter.BlendFilter;
+import zildo.fwk.gfx.filter.BlurFilter;
+import zildo.fwk.gfx.filter.CircleFilter;
+import zildo.fwk.gfx.filter.CloudFilter;
+import zildo.fwk.gfx.filter.FadeFilter;
 import zildo.fwk.gfx.filter.FadeScreenFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.RedFilter;
@@ -57,10 +63,14 @@ public class FilterCommand {
 		asked_FadeOut =false;
 	}
 	
-    public void addFilter(ScreenFilter filter) {
+    private void addFilter(ScreenFilter filter) {
     	filters.add(filter);
     }
 	
+    public void removeAll() {
+    	filters.clear();
+    }
+    
 	public void doPreFilter() {
 		for (ScreenFilter filter : filters) {
 			if (filter.isActive()) {
@@ -231,4 +241,31 @@ public class FilterCommand {
 			filter.cleanUp();
 		}
 	}
+	
+	public void recreateContext() {
+		// Read all filters state
+		List<Class<? extends ScreenFilter>> actives = new ArrayList<Class<? extends ScreenFilter>>();
+		for (ScreenFilter f : filters) {
+			if (f.isActive()) {
+				actives.add(f.getClass());
+			}
+		}
+		Zildo.pdPlugin.initFilters();
+		addDefaultFilters();
+		// Restore all filters state
+		for (Class<? extends ScreenFilter> f : actives) {
+			active(f, true, null);
+		}
+	}
+	
+	public void addDefaultFilters() {
+		addFilter(Zildo.pdPlugin.getFilter(BilinearFilter.class));
+		addFilter(Zildo.pdPlugin.getFilter(CloudFilter.class));
+		addFilter(Zildo.pdPlugin.getFilter(BlurFilter.class));
+		addFilter(Zildo.pdPlugin.getFilter(BlendFilter.class));
+		addFilter(Zildo.pdPlugin.getFilter(FadeFilter.class));
+		addFilter(Zildo.pdPlugin.getFilter(CircleFilter.class));
+		addFilter(new RedFilter(Zildo.pdPlugin.gfxStuff));
+		active(BilinearFilter.class, true, null);		
+	}	
 }

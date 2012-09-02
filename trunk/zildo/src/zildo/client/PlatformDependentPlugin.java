@@ -111,18 +111,20 @@ public class PlatformDependentPlugin {
         }
     }
    
+    /**
+     * Create instances of all filters declared in {@link FilterEffect}.
+     */
     @SuppressWarnings("unchecked")
-    public void initFilters(boolean force) {
+    public void initFilters() {
+    	filters.clear();
         // Filters
         for (FilterEffect f : FilterEffect.values()) {
         	Class<? extends ScreenFilter>[] classes = f.getFilterClass();
         	for (Class<? extends ScreenFilter> cl : classes) {
-        		if (filters.get(cl) == null || force) {
+        		if (filters.get(cl) == null) {
         	        GraphicStuff gfxStuffFilter = createSingleton("opengl.GraphicStuff");
         			ScreenFilter filter = createSingleton("filter."+cl.getSimpleName(), gfxStuffFilter);
         			filters.put((Class<ScreenFilter>) cl, filter);
-        		} else {
-        			System.out.println("Filter "+cl+" does already exist !");
         		}
         	}
         }
