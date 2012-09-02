@@ -55,7 +55,7 @@ public class MenuStage implements GameStage {
 	@Override
 	public void updateGame() {
 		item = menuListener.act(menu);
-		if (item != null) {
+		if (item != null && item.isSelectable()) {
 			// Terminates menu and schedule selected action to execute
 			guiDisplay.endMenu();
 			menu.displayed = false;
