@@ -20,6 +20,9 @@
 
 package zildo.monde;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -90,7 +93,14 @@ public class Game implements EasySerializable {
 		p_buffer.put(zildo.getCountBomb());
 		p_buffer.put((byte) zildo.getCountKey());
 		p_buffer.put(zildo.getMoney());
-		p_buffer.put(heroName);
+		String encodedName = null;
+		try {
+			encodedName = URLEncoder.encode(heroName, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			encodedName = "Zildo";
+		}
+		p_buffer.put(encodedName);
 
 		// 3: inventory
 		List<Item> items=zildo.getInventory();
@@ -143,7 +153,7 @@ public class Game implements EasySerializable {
 	        zildo.setCountBomb(p_buffer.readInt());
 	        zildo.setCountKey(p_buffer.readByte());
 	        zildo.setMoney(p_buffer.readInt());
-	        String heroName = p_buffer.readString();
+	        String heroName = URLDecoder.decode(p_buffer.readString(), "UTF-8");
 	        Game game = new Game(null, heroName);
 	        
 	        // 3: Inventory

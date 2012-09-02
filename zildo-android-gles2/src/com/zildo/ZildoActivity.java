@@ -1,14 +1,5 @@
 package com.zildo;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
-
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.PlatformDependentPlugin;
@@ -16,11 +7,9 @@ import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.menu.StartMenu;
 import zildo.fwk.ZUtils;
 import zildo.fwk.ui.EditableItemMenu;
-import zildo.fwk.ui.UIText;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
@@ -39,8 +28,6 @@ public class ZildoActivity extends Activity {
 	static Handler handler;
 	OpenGLES20SurfaceView view;
 	
-	AlertDialog hafWorked;
-	AlertDialog hafProblem;
 	ZildoDialogs zd;
 	
 	final static int RESET_SPLASHSCREEN = 99;
@@ -113,9 +100,6 @@ public class ZildoActivity extends Activity {
    		clientThread.start();
    		
    		mgr = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-	    //float streamVolumeCurrent = mgr.getStreamVolume(AudioManager.STREAM_MUSIC);
-	    //float streamVolumeMax = mgr.getStreamMaxVolume(AudioManager.STREAM_MUSIC); 
-	    //System.out.println("Volumes are "+streamVolumeCurrent+" and "+streamVolumeMax);
 	    
         setContentView(view);
         
@@ -191,78 +175,7 @@ public class ZildoActivity extends Activity {
     	}
     }
     
-	private final static String url = "http://legendofzildo.appspot.com";
-	private final static String serverServlet = "srv";
-	private final static String charset = "UTF-8";
-
-    private boolean sendRequest() {
-		try {
-			 //ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-			 //conMgr.get
-			 
-			 
-			StringBuilder request = new StringBuilder();
-			request.append(url).append("/").append(serverServlet);
-			request.append("?command=CREATE");
-			request.append("&name=").append(
-					URLEncoder.encode("jeremiade_a_achete_son_tel_a_la", charset));
-			request.append("&port=").append("123");
-			request.append("&ip=").append("fete_foraine");
-			request.append("&nbPlayers=").append(37);
-	        Log.d("zildo", "sending message...");
-
-			URL objUrl = new URL(request.toString());
-			URLConnection urlConnect = objUrl.openConnection();
-
-	        Log.d("zildo", "awaiting response...");
-
-			// Add server infos
-			InputStream in = urlConnect.getInputStream();
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(in));
-			int result = reader.read();
-			in.close();
-
-			if (result == 48) { // ASCII code of '0') {
-				hafWorked.show();
-				return true;
-			}
-			return false;
-		} catch (UnknownHostException e) {
-			hafProblem.show();
-			Log.d("zildo", "No internet connection !");
-			return false;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-    
     private void createDialogs() {
-        
-    	// 1
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(UIText.getMenuText("dialog.haf"))
-               .setCancelable(false)
-               .setPositiveButton(UIText.getMenuText("dialog.haf.ok"), new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int id) {
-                   }
-               });
-        hafWorked = builder.create();
-        
-        // 2
-        builder = new AlertDialog.Builder(this);
-        builder.setMessage(UIText.getMenuText("dialog.haf.noInternet"))
-               .setCancelable(false)
-               .setPositiveButton(UIText.getMenuText("dialog.haf.retry"), new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int id) {
-                   }
-               }).setNegativeButton(UIText.getMenuText("dialog.haf.cancel"), new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int id) {
-                   }
-               });
-        hafProblem = builder.create();  
-        
         // 3 : player name
         zd = new ZildoDialogs(new AlertDialog.Builder(this), getBaseContext());
    }
