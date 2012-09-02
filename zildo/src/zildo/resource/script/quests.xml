@@ -857,13 +857,12 @@
 		<angle who="zildo" value="3"/>
 		<wait value="5"/>
 		<angle who="zildo" value="0"/>
-		<wait value="7"/>
+		<wait value="3"/>
 		<angle who="zildo" value="1"/>
-		<wait value="8"/>
+		<wait value="4"/>
 		<angle who="zildo" value="2"/>
-		<wait value="9"/>
 		<script who="zildo" text="MORT"/>
-		<wait value="50"/>
+		<wait value="59"/>
 		<fadeOut type="0"/>
 		<end type="1"/>
 	</scene>

@@ -32,6 +32,7 @@ import zildo.client.gui.menu.StartMenu;
 import zildo.client.stage.GameStage;
 import zildo.client.stage.MenuStage;
 import zildo.fwk.ZUtils;
+import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.input.KeyboardInstant;
@@ -393,6 +394,7 @@ public class Client {
 		ClientEngineZildo.ortho.setFilteredColor(new Vector3f(1, 1, 1));
 		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(1, 1, 1));
 		ClientEngineZildo.filterCommand.restoreFilters();
+		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
 		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(true, true);
 		connected = false;
 		
