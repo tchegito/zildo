@@ -394,6 +394,7 @@ public class Client {
 		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(1, 1, 1));
 		ClientEngineZildo.filterCommand.restoreFilters();
 		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(true, true);
+		connected = false;
 		
 		handleMenu(new StartMenu());
 	}

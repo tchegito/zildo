@@ -32,13 +32,8 @@ import zildo.fwk.gfx.PixelShaders;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.BilinearFilter;
-import zildo.fwk.gfx.filter.BlendFilter;
-import zildo.fwk.gfx.filter.BlurFilter;
 import zildo.fwk.gfx.filter.CircleFilter;
-import zildo.fwk.gfx.filter.CloudFilter;
-import zildo.fwk.gfx.filter.FadeFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
-import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.fwk.opengl.SoundEngine;
@@ -113,16 +108,8 @@ public class ClientEngineZildo {
 		ortho = Zildo.pdPlugin.ortho;
 
 		if (!p_awt) {
-
-			Zildo.pdPlugin.initFilters(false);
-			filterCommand.addFilter(Zildo.pdPlugin.getFilter(BilinearFilter.class));
-			filterCommand.addFilter(Zildo.pdPlugin.getFilter(CloudFilter.class));
-			filterCommand.addFilter(Zildo.pdPlugin.getFilter(BlurFilter.class));
-			filterCommand.addFilter(Zildo.pdPlugin.getFilter(BlendFilter.class));
-			filterCommand.addFilter(Zildo.pdPlugin.getFilter(FadeFilter.class));
-			filterCommand.addFilter(Zildo.pdPlugin.getFilter(CircleFilter.class));
-			filterCommand.addFilter(new RedFilter(Zildo.pdPlugin.gfxStuff));
-			filterCommand.active(BilinearFilter.class, true, null);
+			Zildo.pdPlugin.initFilters();
+			filterCommand.addDefaultFilters();
 		}
 
 		pixelShaders = Zildo.pdPlugin.pixelShaders;
