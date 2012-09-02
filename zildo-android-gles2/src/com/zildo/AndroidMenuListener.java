@@ -46,7 +46,9 @@ public class AndroidMenuListener extends DefaultMenuListener {
 		if (editable != null) {
 			// Player is editing an item => wait for he finished
 			if (!editable.getText().isEmpty()) {
-				return editable;
+				ItemMenu temp = editable;
+				editable = null;
+				return temp;
 			}
 		}
 		ItemMenu item = touchListener.popItem();
