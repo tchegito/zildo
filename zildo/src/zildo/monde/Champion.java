@@ -31,28 +31,37 @@ import java.util.Date;
 public class Champion {
 
 	public final String playerName;
-	public final int heartQuarter;
+	public final int heartQuarter;	// PV * 4 + number of pieces of heart
 	public final String episodeName;
+	public final int money;
+	public final long timeSpent;
 	public final Date finishDate;
 	
-	private static DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	private static DateFormat df = new SimpleDateFormat("dd/MM/yy");
 	
 	private String ret = null;
 	
-	public Champion(String name, int heartQuarter, String episodeName, Date finishDate) {
+	public Champion(String name, int heartQuarter, String episodeName, Date finishDate, int money, long timeSpent) {
 		this.playerName = name;
 		this.heartQuarter = heartQuarter;
 		this.episodeName = episodeName;
 		this.finishDate = finishDate;
+		this.money = money;
+		this.timeSpent = timeSpent;
 	}
 	
 	@Override
 	public String toString() {
 		if (ret == null) {
-			ret = playerName + " - "+df.format(finishDate)+" : "+heartQuarter+" piece";
-			if (heartQuarter > 1) {
-				ret += "s";
+			int nbMinutes = (int) (timeSpent / 60);
+			String strHq = "" + heartQuarter / 4;
+			int quarter = heartQuarter % 4;
+			if (quarter > 0) {
+				strHq+= "." +
+						"" + 25 * quarter;
 			}
+			ret = playerName + " - ";
+			ret += nbMinutes+"min"+timeSpent % 60+" - "+strHq+"^ "+money+"¤";
 		}
 		return ret;
 	}

@@ -20,6 +20,8 @@
 package zildo.client.gui.menu;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import zildo.fwk.net.www.WorldRegister;
@@ -48,6 +50,20 @@ public class HallOfFameMenu extends PageableMenu {
 			items.add(new UnselectableItemMenu("m10.internet.out") { });
 			setTitle("");
 		} else {
+			// Sort champions
+			Collections.sort(champions, new Comparator<Champion>() {
+				@Override
+				public int compare(Champion o1, Champion o2) {
+					int value = new Long(o1.timeSpent).compareTo(o2.timeSpent);
+					if (value == 0) {
+						value = -new Integer(o1.heartQuarter).compareTo(o2.heartQuarter);
+						if (value == 0) {
+							value = -new Integer(o1.money).compareTo(o2.money);
+						}
+					}
+					return value;
+				}
+			});
 			// Display all champions
 			for (Champion ch : champions) {
 				items.add(new UnselectableItemMenu(ch.toString()) { });
