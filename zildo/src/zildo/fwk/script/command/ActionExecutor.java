@@ -364,8 +364,10 @@ public class ActionExecutor {
                 		// Player finished the game !
                 		// Register him
                 		zildo = EngineZildo.persoManagement.getZildo();
-                		Champion ch = new Champion(UIText.getCharacterName(), zildo.getHeartQuarter(), "Episode 1", new Date());
-                		new WorldRegister().registerChampion(ch);
+                		int timeSpent = EngineZildo.game.timeSpent;
+                		int heartQuarter = zildo.getMaxpv() + zildo.getHeartQuarter();
+                		Champion ch = new Champion(UIText.getCharacterName(), heartQuarter, "Episode 1", new Date(), zildo.getMoney(), timeSpent);
+                		boolean success = new WorldRegister().registerChampion(ch);
                 		// And finish
                 		new GameOverAction().launchAction(null);
                 	} else if (p_action.val == 1) {
