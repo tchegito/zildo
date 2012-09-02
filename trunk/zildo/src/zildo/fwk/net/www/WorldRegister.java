@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -121,6 +122,7 @@ public class WorldRegister extends Thread {
 				if (name == null) {
 					break;
 				}
+				name = URLDecoder.decode(name, charset);
 				int hq = Integer.valueOf(reader.readLine());
 				String episode = reader.readLine();
 				long finish = Long.valueOf(reader.readLine());
@@ -195,8 +197,8 @@ public class WorldRegister extends Thread {
 			request.append(url).append("/").append(serverServlet);
 			request.append("?command=REG_CH");
 
-			request.append("&name=").append(
-					URLEncoder.encode(ch.playerName, charset));
+			request.append("&name=").append(URLEncoder.encode(ch.playerName, charset));
+			
 			request.append("&episode=").append(URLEncoder.encode(ch.episodeName, charset));
 			request.append("&hq=").append(ch.heartQuarter);
 			request.append("&money=").append(ch.money);

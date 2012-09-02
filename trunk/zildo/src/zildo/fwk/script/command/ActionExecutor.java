@@ -20,12 +20,11 @@
 
 package zildo.fwk.script.command;
 
-import java.util.Date;
-
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.client.MapDisplay;
+import zildo.client.gui.menu.RegisterChampionMenu;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
 import zildo.client.stage.SinglePlayer;
@@ -33,10 +32,8 @@ import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.RedFilter;
-import zildo.fwk.net.www.WorldRegister;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.ui.UIText;
-import zildo.monde.Champion;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
@@ -363,13 +360,7 @@ public class ActionExecutor {
                 	if (p_action.val == 0) {
                 		// Player finished the game !
                 		// Register him
-                		zildo = EngineZildo.persoManagement.getZildo();
-                		int timeSpent = EngineZildo.game.timeSpent;
-                		int heartQuarter = zildo.getMaxpv() + zildo.getHeartQuarter();
-                		Champion ch = new Champion(UIText.getCharacterName(), heartQuarter, "Episode 1", new Date(), zildo.getMoney(), timeSpent);
-                		boolean success = new WorldRegister().registerChampion(ch);
-                		// And finish
-                		new GameOverAction().launchAction(null);
+               			ClientEngineZildo.client.handleMenu(new RegisterChampionMenu());
                 	} else if (p_action.val == 1) {
                 		// Game over : player died !
             			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new GameOverAction());
