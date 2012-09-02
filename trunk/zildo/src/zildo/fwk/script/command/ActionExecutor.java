@@ -364,7 +364,7 @@ public class ActionExecutor {
                 		// Player finished the game !
                 		// Register him
                 		zildo = EngineZildo.persoManagement.getZildo();
-                		Champion ch = new Champion(zildo.getName(), zildo.getHeartQuarter(), "Episode 1", new Date());
+                		Champion ch = new Champion(UIText.getCharacterName(), zildo.getHeartQuarter(), "Episode 1", new Date());
                 		new WorldRegister().registerChampion(ch);
                 		// And finish
                 		new GameOverAction().launchAction(null);

@@ -626,6 +626,9 @@
 	    <fadeOut type="0"/>
 	    <map name="preintro"/>
 	    <pos what="camera" pos="0,0"/>
+	    <wait value="30"/>
+	    <music name="ZildoMort"/>
+	    <wait value="50"/>
 	    <fadeIn type="0"/>
 	    <speak who="camera" text="game.endEpisode1.end"/>
 	    <end type="0"/>
