@@ -66,7 +66,9 @@ public class AndroidFileUtil implements FileUtil {
 
 		for (String s : strFiles) {
 			File saveFile = AndroidReadingFile.context.getFileStreamPath(s);
-			files.add(saveFile);
+			if (saveFile.getName().startsWith(Constantes.SAVEGAME_FILE)) {
+				files.add(saveFile);
+			}
 		}
 		return files.toArray(new File[] {});
 	}

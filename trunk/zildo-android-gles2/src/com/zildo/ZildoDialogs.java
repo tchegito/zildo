@@ -43,6 +43,7 @@ public class ZildoDialogs {
         builder.setMessage("Register your name");  
         
         final EditText editText = new EditText(context);
+        // 10 characters max for name
         editText.getText().setFilters(new InputFilter[] {new InputFilter.LengthFilter(10) });
         builder.setView(editText);
         
@@ -54,7 +55,7 @@ public class ZildoDialogs {
             	for (int i=0;i<result.length();i++) {
             		item.addText(result.charAt(i));
             	}
-            	//item.run();
+            	playerNameDialog.dismiss();
               }  
             });         
     	playerNameDialog = builder.create();		
