@@ -32,6 +32,7 @@ import zildo.client.stage.GameStage;
 import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.platform.opengl.AndroidPixelShaders;
+import zildo.platform.opengl.utils.GLUtils;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
@@ -104,6 +105,7 @@ public class OpenGLRenderer implements Renderer {
 		} else {
 			// Recreate context by reloading all textures and shaders
 			Log.d("openglrenderer", "recreating context");
+			GLUtils.resetTexId();
 			SpriteDisplay spriteDisplay = ClientEngineZildo.spriteDisplay;
 			TileEngine tileEngine = ClientEngineZildo.tileEngine;
 			tileEngine.loadTextures();
