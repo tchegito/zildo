@@ -124,7 +124,9 @@ public class WorldRegister extends Thread {
 				int hq = Integer.valueOf(reader.readLine());
 				String episode = reader.readLine();
 				long finish = Long.valueOf(reader.readLine());
-				Champion ch = new Champion(name, hq, episode, new Date(finish));
+				int money = Integer.valueOf(reader.readLine());
+				long timeSpent = Long.valueOf(reader.readLine());
+				Champion ch = new Champion(name, hq, episode, new Date(finish), money, timeSpent);
 				hall.add(ch);
 			}
 			in.close();
@@ -197,6 +199,8 @@ public class WorldRegister extends Thread {
 					URLEncoder.encode(ch.playerName, charset));
 			request.append("&episode=").append(URLEncoder.encode(ch.episodeName, charset));
 			request.append("&hq=").append(ch.heartQuarter);
+			request.append("&money=").append(ch.money);
+			request.append("&timeSpent=").append(ch.timeSpent);
 			
 			URL objUrl = new URL(request.toString());
 			URLConnection urlConnect = objUrl.openConnection();

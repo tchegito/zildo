@@ -42,6 +42,7 @@ import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.items.Item;
 import zildo.monde.sprites.SpriteEntity;
@@ -162,6 +163,10 @@ public class GUIDisplay {
 		for (int i = 0; i < transcoChar.length(); i++) {
 			mapTranscoChar.put(transcoChar.charAt(i), i);
 		}
+		// Extra characters
+		mapTranscoChar.put('^', FontDescription.GUI_HEART.getNSpr());
+		mapTranscoChar.put('¤', FontDescription.GUI_RUPEE.getNSpr());
+		
 		mapTranscoChar.put(' ', -1);
 	}
 
@@ -233,7 +238,7 @@ public class GUIDisplay {
 		toDisplay_dialogMode = dialogMode;
 		removePreviousTextInFrame();
 		prepareTextInFrame(texte, sc.TEXTER_COORDINATE_X,
-				sc.TEXTER_COORDINATE_Y);
+				sc.TEXTER_COORDINATE_Y, false);
 	}
 
 	/**
@@ -246,7 +251,7 @@ public class GUIDisplay {
 	 * @param p_posY start Y postiion
 	 * @return zone containing the calculated text
 	 */ 
-	public Zone prepareTextInFrame(String texte, int p_posX, int p_posY) {
+	public Zone prepareTextInFrame(String texte, int p_posX, int p_posY, boolean fullWidth) {
 		// 1) Split sequence into list of words and measure size of text to render
 		int length = texte.length() + 10;
 		int[] nSpr = new int[length];
@@ -267,6 +272,8 @@ public class GUIDisplay {
 		int i;
 		GUISpriteSequence seq = textDialogSequence; // Default sequence to add fonts
 
+		int width = fullWidth ? Zildo.viewPortX : sc.TEXTER_SIZEX;
+		
 		switch (toDisplay_dialogMode) {
 		case CLASSIC:
 		default:
@@ -303,7 +310,7 @@ public class GUIDisplay {
 				}
 			}
 			if (a == ' ' || a == 0 || a == '#' || a == '\n') {
-				if (sizeCurrentLine + sizeCurrentWord > sc.TEXTER_SIZEX
+				if (sizeCurrentLine + sizeCurrentWord > width
 						|| a == '\n') {
 					// We must cut the line before the current word
 					if (a == '\n') {
@@ -565,14 +572,15 @@ public class GUIDisplay {
 			removePreviousTextInFrame();
 			// Title
 			prepareTextInFrame(p_menu.title, sc.TEXTER_COORDINATE_X,
-					posY);
+					posY, false);
 			posY += 2 * sc.TEXTER_MENU_SIZEY;
 			
 			// Items
 			itemsOnScreen.clear();
 			for (ItemMenu item : p_menu.items) {
+				boolean unselectable = item instanceof UnselectableItemMenu;
 				Zone z = prepareTextInFrame(item.getText(),
-						sc.TEXTER_COORDINATE_X, posY);
+						sc.TEXTER_COORDINATE_X, posY, unselectable);
 				posY += sc.TEXTER_MENU_SIZEY;
 				if (item instanceof EditableItemMenu) {
 					z.x1 = sc.TEXTER_COORDINATE_X;
