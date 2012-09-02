@@ -23,10 +23,12 @@ package zildo.monde.sprites.persos;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.Zildo;
 import zildo.client.sound.BankSound;
 import zildo.client.stage.SinglePlayer;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
+import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.fwk.ui.UIText;
 import zildo.monde.collision.Collision;
@@ -52,6 +54,7 @@ import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.sprites.utils.ShieldEffect;
 import zildo.monde.sprites.utils.ShieldEffect.ShieldType;
 import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -443,6 +446,9 @@ public class PersoZildo extends Perso {
 			if (EngineZildo.game.multiPlayer) {
 				setVisible(false);
 				return;
+			} else {
+				Point zPos = getCenteredScreenPosition();
+				Zildo.pdPlugin.getFilter(CircleFilter.class).setCenter(zPos.x, zPos.y);
 			}
 		}
 
