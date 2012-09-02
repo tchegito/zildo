@@ -23,6 +23,7 @@ package zildo.monde.quest.actions;
 import zildo.client.ClientEngineZildo;
 import zildo.client.stage.SinglePlayer;
 import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.ui.UIText;
 import zildo.monde.dialog.ActionDialog;
 import zildo.server.EngineZildo;
@@ -51,6 +52,7 @@ public class GameOverAction extends ActionDialog {
 		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(false);
 		ClientEngineZildo.soundPlay.stopMusic();
 		ClientEngineZildo.filterCommand.restoreFilters();
+		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
 		ClientEngineZildo.filterCommand.fadeIn(FilterEffect.SEMIFADE);
 		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(true, true);
 		

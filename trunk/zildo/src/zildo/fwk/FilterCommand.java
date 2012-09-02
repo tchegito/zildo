@@ -225,6 +225,7 @@ public class FilterCommand {
 	}
 	/**
 	 * Restore default filters.
+	 * NOTE: we don't touch RedFilter here, because it's special.
 	 */
 	public void restoreFilters() {
 		for (ScreenFilter filter : filters) {
@@ -232,7 +233,6 @@ public class FilterCommand {
 				active(filter.getClass(), false, null);
 			}
 		}
-		active(RedFilter.class, false, null);
 		active(BilinearFilter.class, true, null);
 	}
 	
