@@ -22,13 +22,10 @@ package zildo.platform.opengl.utils;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
-import android.opengl.GLES20;
-
 import zildo.fwk.ZUtils;
+import android.opengl.GLES20;
 
 /**
  * @author eboussaton
@@ -37,6 +34,9 @@ public class GLUtils {
 
 	private static int current = 0;
 	
+	public static void resetTexId() {
+		current=0;
+	}
 	public static int genTextureId() {
 		return ++current;
 	}
