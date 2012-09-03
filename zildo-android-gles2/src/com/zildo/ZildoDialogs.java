@@ -23,9 +23,13 @@ package com.zildo;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.UIText;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputFilter;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 
 /**
@@ -37,13 +41,14 @@ public class ZildoDialogs {
 	public AlertDialog playerNameDialog;
 	
 	private EditableItemMenu item;
+	final EditText editText;
 	
 	public ZildoDialogs(AlertDialog.Builder builder, Context context) {
 
         builder.setTitle(UIText.getMenuText("m11.title"));  
         builder.setMessage(UIText.getMenuText("m11.mess"));  
         
-        final EditText editText = new EditText(context);
+        editText = new EditText(context);
         // 10 characters max for name
         editText.getText().setFilters(new InputFilter[] {new InputFilter.LengthFilter(10) });
         builder.setView(editText);
@@ -51,19 +56,36 @@ public class ZildoDialogs {
         builder.setCancelable(false)	// No back button
         	.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
             public void onClick(DialogInterface dialog, int whichButton) {
-            	String result = editText.getText().toString();
+            	
+              }  
+            });   
+        
+        
+    	playerNameDialog = builder.create();	
+
+	}
+	
+	class CustomListener implements OnClickListener {
+        private final Dialog dialog;
+        public CustomListener(Dialog dialog) {
+            this.dialog = dialog;
+        }
+        @Override
+        public void onClick(View v) {
+        	String result = editText.getText().toString();
+        	if (result != null && result.length() >= 1) {
             	// Append to the item menu string builder
             	for (int i=0;i<result.length();i++) {
             		item.addText(result.charAt(i));
             	}
-            	playerNameDialog.dismiss();
-              }  
-            });         
-    	playerNameDialog = builder.create();		
-	}
-	
+            	dialog.dismiss();
+        	}
+        }
+    }
 	public void askPlayerName(EditableItemMenu p_item) {
 		item = p_item;
 		playerNameDialog.show();
+    	Button b = playerNameDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+  	  	b.setOnClickListener(new CustomListener(playerNameDialog));
 	}
 }
