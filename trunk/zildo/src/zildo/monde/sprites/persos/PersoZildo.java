@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.Zildo;
+import zildo.client.ClientEngineZildo;
 import zildo.client.sound.BankSound;
 import zildo.client.stage.SinglePlayer;
 import zildo.fwk.bank.SpriteBank;
@@ -859,7 +860,7 @@ public class PersoZildo extends Perso {
 				case HEART:
 				case HEART_LEFT:
 					if (pv < maxpv) {
-						pv++;
+						pv = Math.max(pv+2, maxpv);
 					}
 					break;
 				case ARROW_UP:

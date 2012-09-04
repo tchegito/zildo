@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
@@ -60,8 +59,6 @@ import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 
 public class SpriteManagement extends SpriteStore {
-
-	protected Logger logger = Logger.getLogger("SpriteManagement");
 
 	EnumSet<ElementDescription> pickableSprites = EnumSet.of(ElementDescription.BOMB);
 	
@@ -567,7 +564,6 @@ public class SpriteManagement extends SpriteStore {
 		}
 
 		for (SpriteEntity entity : listToRemove) {
-			this.logger.info("Removing entity");
 			deleteSprite(entity);
 		}
 	}
