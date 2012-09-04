@@ -27,7 +27,6 @@ import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
-import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.platform.opengl.AndroidPixelShaders;
 import zildo.platform.opengl.utils.GLUtils;
@@ -49,11 +48,9 @@ public class OpenGLRenderer implements Renderer {
 	
 	@Override
 	public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-		GLES20.glClearColor(0.0f, 1.0f, 0f, 1.0f);
+		GLES20.glClearColor(0.0f, 0.0f, 0f, 1.0f);
 		GLES20.glClearDepthf(1.0f);
 		GLES20.glDisable(GLES20.GL_DEPTH_TEST);
-
-
 		GLES20.glDisable(GLES20.GL_CULL_FACE);
 
 
@@ -94,18 +91,21 @@ public class OpenGLRenderer implements Renderer {
 	                           //GLES20.GL_DEPTH_BUFFER_BIT);
 			
 			GLES20.glViewport(0, 0, Zildo.viewPortX, Zildo.viewPortY);
+			/*
 			i++;
 			long t1=0,t2;
 			
 			if (i%50 == 0) {
 				t1 = ZUtils.getTime();
 			}
+			*/
 			client.mainLoop();
 	
+			/*
 			if (i%50 == 0) {
 				t2 = ZUtils.getTime();
 				Log.d("time", "OpenGL ES 2 : Elapsed "+(t2-t1)+"ms");
-			}
+			}*/
 		}
 	}
 	

@@ -56,7 +56,6 @@ public class Shaders {
 			for (String s : names) {
 				int uniformId = GLES20.glGetUniformLocation(id, s);
 				uniforms.put(""+id+s, uniformId);
-				System.out.println("uniform "+s+"/"+"program"+id+" returned "+uniformId);
 			}
 		}
 		
