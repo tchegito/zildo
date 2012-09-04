@@ -41,8 +41,9 @@ public class Constantes {
 	public static String DATA_PATH = "E:\\ZildoDist\\Version 1.096\\Data\\";
 
 	public static String MAP_PATH = "maps"+File.separator;
-	public static String CONFIGURATION_FILE = "ini"+File.separator+"player.ini";
-	public static String SERVER_FILE = "ini"+File.separator+"servers.ini";
+	public static String INI_DIR = "ini"+File.separator;
+	public static String CONFIGURATION_FILE = "player.ini";
+	public static String SERVER_FILE = INI_DIR + "servers.ini";
 	public static String SAVEGAME_DIR = "saves"+File.separator;
 	public static String SAVEGAME_FILE = "save.z";
 	
