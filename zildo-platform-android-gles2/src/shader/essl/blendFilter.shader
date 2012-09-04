@@ -1,8 +1,8 @@
 [VERTEX]
-attribute lowp vec4 vPosition;		// Vertex position
+attribute vec2 vPosition;		// Vertex position
 attribute mediump vec2 TexCoord;
 
-uniform highp mat4 uMVPMatrix;		// Ortho matrix
+uniform mat4 uMVPMatrix;		// Ortho matrix
 
 varying mediump vec2 vTexCoord;
 
