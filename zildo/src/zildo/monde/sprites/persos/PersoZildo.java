@@ -1010,6 +1010,10 @@ public class PersoZildo extends Perso {
 		lookItems(inventory, sel, this, false);
 	}
 
+	public int getIndexSelection() {
+		return inventory.indexOf(getWeapon());
+	}
+	
 	public void lookItems(List<Item> p_items, int p_sel, Perso p_involved, boolean p_buying) {
 		inventoring = true;
 		guiCircle = new ItemCircle(this);
