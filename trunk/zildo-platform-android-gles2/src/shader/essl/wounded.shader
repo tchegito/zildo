@@ -7,7 +7,7 @@ uniform mat4 uMVPMatrix;        // Ortho matrix
 varying mediump vec2 vTexCoord;
 
 void main(){
-    gl_Position = uMVPMatrix * vPosition;
+    gl_Position = uMVPMatrix * vec4(vPosition, 0.0, 1.0);
     vTexCoord=TexCoord;
 }
 
