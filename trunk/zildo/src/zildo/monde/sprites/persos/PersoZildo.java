@@ -608,14 +608,18 @@ public class PersoZildo extends Perso {
 			break;
 
 		case ATTAQUE_EPEE:
-			xx += decalxSword[angle.value][nSpr - (54 + 6 * angle.value)];
-			yy += decalySword[angle.value][nSpr - (54 + 6 * angle.value)];
+			if (!angle.isDiagonal()) {
+				xx += decalxSword[angle.value][nSpr - (54 + 6 * angle.value)];
+				yy += decalySword[angle.value][nSpr - (54 + 6 * angle.value)];
+			}
 			shield.setVisible(false);
 			break;
 
 		case ATTAQUE_ARC:
-			xx += decalxBow[angle.value][nSpr - (108 + 3 * angle.value)];
-			yy += decalyBow[angle.value][nSpr - (108 + 3 * angle.value)];
+			if (!angle.isDiagonal()) {
+				xx += decalxBow[angle.value][nSpr - (108 + 3 * angle.value)];
+				yy += decalyBow[angle.value][nSpr - (108 + 3 * angle.value)];
+			}
 			shield.setVisible(false);
 			break;
 		case TOUCHE:
