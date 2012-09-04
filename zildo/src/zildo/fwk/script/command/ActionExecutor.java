@@ -288,6 +288,7 @@ public class ActionExecutor {
                 case remove:
                 	if (p_action.what == null && p_action.who == null) {
                 		EngineZildo.persoManagement.clearPersos(false);
+                		EngineZildo.spriteManagement.clearSprites(false);
                 	} else {
 	                	Element toRemove;
 	                	if (p_action.what != null) {

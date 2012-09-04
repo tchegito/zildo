@@ -835,7 +835,7 @@
 	<scene id="death">
 		<music name="ZildoMort"/>
 		<fadeOut type="5"/>
-				<remove/>
+		<remove/>
 		<filter type="3"/>
 		<fadeIn type="0" unblock="true"/>
 		<sound name="ZildoDying"/>
