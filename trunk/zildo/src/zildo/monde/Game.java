@@ -101,7 +101,8 @@ public class Game implements EasySerializable {
 			encodedName = "Zildo";
 		}
 		p_buffer.put(encodedName);
-
+		p_buffer.put((byte) zildo.getIndexSelection());
+		
 		// 3: inventory
 		List<Item> items=zildo.getInventory();
 		p_buffer.put(items.size());
@@ -154,6 +155,9 @@ public class Game implements EasySerializable {
 	        zildo.setCountKey(p_buffer.readByte());
 	        zildo.setMoney(p_buffer.readInt());
 	        String heroName = URLDecoder.decode(p_buffer.readString(), "UTF-8");
+	        byte indexSel = p_buffer.readByte();
+	        
+	        
 	        Game game = new Game(null, heroName);
 	        
 	        // 3: Inventory
@@ -163,7 +167,11 @@ public class Game implements EasySerializable {
 	        for (int i = 0; i < itemNumber; i++) {
 	            String kind = p_buffer.readString();
 	            int level = p_buffer.readInt();
-	            items.add(new Item(ItemKind.fromString(kind), level));
+	            Item item = new Item(ItemKind.fromString(kind), level);
+	            items.add(item);
+	            if (indexSel == i) {
+	            	zildo.setWeapon(item);
+	            }
 	        }
 	        
 	        // 4: map (since 1.096)
