@@ -10,7 +10,6 @@ import zildo.fwk.ui.EditableItemMenu;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -76,7 +75,7 @@ public class ZildoActivity extends Activity {
         // Initialize platform dependent
         PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;
         
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         
         AssetManager assetManager = getAssets();
         AndroidReadingFile.assetManager = assetManager;

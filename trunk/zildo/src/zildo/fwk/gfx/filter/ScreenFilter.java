@@ -74,7 +74,7 @@ public abstract class ScreenFilter extends QuadPrimitive {
 		this.endInitialization();
 	
 		// Create texture for alpha blending
-		this.createBlankTexture(true);
+		this.createBlankTexture();
 		
 		setActive(false, null);
 	}
@@ -91,21 +91,18 @@ public abstract class ScreenFilter extends QuadPrimitive {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Create a OpenGL texture object, and attach a FBO to it.
 	///////////////////////////////////////////////////////////////////////////////////////
-	private void createBlankTexture(boolean p_withDepth) {
+	private void createBlankTexture() {
 		
 		textureID=graphicStuff.generateTexture(sizeX, sizeY);
-		if (p_withDepth) {
-			depthTextureID=graphicStuff.generateDepthBuffer();
-		}
 		
-        attachTextureToFBO(textureID, depthTextureID);
+        attachTextureToFBO(textureID);
 	}
 	
-	private void attachTextureToFBO(int texId, int texDepthId) {
+	private void attachTextureToFBO(int texId) {
 		if (fboId == -1) {
 			fboId=graphicStuff.fbo.create();
 		}
-		graphicStuff.fbo.bindToTextureAndDepth(texId, texDepthId, fboId);
+		graphicStuff.fbo.bindToTexture(texId, fboId);
 	}
 
 	/**
@@ -131,7 +128,6 @@ public abstract class ScreenFilter extends QuadPrimitive {
 	final public void cleanUp() {
 		if (fboId > 0) {
 			graphicStuff.cleanTexture(textureID);
-			graphicStuff.cleanDepthBuffer(depthTextureID);
 			graphicStuff.cleanFBO(fboId);
 		}
 	}

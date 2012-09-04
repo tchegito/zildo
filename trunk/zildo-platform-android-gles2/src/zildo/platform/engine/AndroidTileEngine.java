@@ -119,7 +119,7 @@ public class AndroidTileEngine extends TileEngine {
 	
 	private class TextureBinder implements ActionNthRunner {
 		public void execute(final int i) {
-			GLES20.glActiveTexture(0);
+			GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureEngine.getNthTexture(i)); 
 		}
 	}

@@ -25,7 +25,6 @@ import java.nio.ByteBuffer;
 import shader.ShaderReader;
 import shader.Shaders;
 import shader.Shaders.GLShaders;
-
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.util.Vector4f;
 import android.opengl.GLES20;
@@ -118,7 +117,7 @@ public class AndroidPixelShaders extends PixelShaders {
      // Get the link status.
         final int[] linkStatus = new int[1];
         GLES20.glGetProgramiv(mProgram, GLES20.GL_LINK_STATUS, linkStatus, 0);
-     
+        
         // If the link failed, delete the program.
         if (linkStatus[0] == 0)
         {

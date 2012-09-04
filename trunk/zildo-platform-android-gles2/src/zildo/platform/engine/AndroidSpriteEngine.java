@@ -96,7 +96,7 @@ public class AndroidSpriteEngine extends SpriteEngine {
 				int alpha=bankOrder[phase][posBankOrder*4 + 3];
 				EngineFX currentFX=EngineFX.values()[iCurrentFX];
 				int texId=textureEngine.getNthTexture(numBank);
-				GLES20.glActiveTexture(0);
+				GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 				GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texId);
 
 				// Select the right pixel shader (if needed)

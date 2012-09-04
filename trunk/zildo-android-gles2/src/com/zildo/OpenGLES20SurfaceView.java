@@ -24,9 +24,6 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 
 class OpenGLES20SurfaceView extends GLSurfaceView {
-
-	boolean mPreserveEGLContextOnPause; 
-	OpenGLRenderer renderer;
 	
     public OpenGLES20SurfaceView(Context context){
         super(context);
@@ -37,15 +34,7 @@ class OpenGLES20SurfaceView extends GLSurfaceView {
 		
     }
     
-    @Override
-    public void onResume() {
-    	super.onResume();
-    	if (renderer != null) {
-    		renderer.resume();
-    	}
-    }
-    
-	public void setViewRenderer(OpenGLRenderer renderer) {
+	public void setViewRenderer(Renderer renderer) {
     	// Set the Renderer for drawing on the GLSurfaceView
         super.setRenderer(renderer);        	
     }

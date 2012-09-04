@@ -33,15 +33,11 @@ public interface FBO {
 
     public int create();
 
-    public int generateDepthBuffer();
-
-    public void bindToTextureAndDepth(int myTextureId, int myDepthId, int myFBOId);
+    public void bindToTexture(int myTextureId, int myFBOId);
 
     public void startRendering(int myFBOId, int sizeX, int sizeY);
 
     public void endRendering();
 
     public void cleanUp(int id);
-
-    public void cleanDepthBuffer(int id);
 }

@@ -121,9 +121,9 @@ public class AndroidOrtho extends Ortho {
 	@Override
 	public void enableTexture2d(boolean enable) {
 		if (enable) {
-			GLES20.glEnable(GLES20.GL_TEXTURE_2D);
+			//GLES20.glEnable(GLES20.GL_TEXTURE_2D);
 		} else {
-			GLES20.glDisable(GLES20.GL_TEXTURE_2D);
+			//GLES20.glDisable(GLES20.GL_TEXTURE_2D);
 		}
 	}
 
@@ -257,7 +257,7 @@ public class AndroidOrtho extends Ortho {
 	public void initDrawBox(boolean withTexture) {
 		// Disable texturing, if asked
 		if (!withTexture) {
-			GLES20.glDisable(GLES20.GL_TEXTURE_2D);
+			//GLES20.glDisable(GLES20.GL_TEXTURE_2D);
 		}
 	}
 
@@ -269,7 +269,7 @@ public class AndroidOrtho extends Ortho {
 	@Override
 	public void endDraw() {
 		// Re-enable texturing and color
-		GLES20.glEnable(GLES20.GL_TEXTURE_2D);
+		//GLES20.glEnable(GLES20.GL_TEXTURE_2D);
 		shaders.setColor(1, 1, 1, 1);
 	}
 
