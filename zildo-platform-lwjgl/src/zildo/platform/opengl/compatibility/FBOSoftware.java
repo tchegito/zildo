@@ -44,13 +44,7 @@ public class FBOSoftware implements FBO {
 	}
 
 	@Override
-	public int generateDepthBuffer() {
-		return 0;
-	}
-
-	@Override
-	public void bindToTextureAndDepth(int myTextureId, int myDepthId,
-			int myFBOId) {
+	public void bindToTexture(int myTextureId, int myFBOId) {
 		// Keep a link between myTextureId and myFBOId
 		texFboID.put(myFBOId, myTextureId);
 	}
@@ -69,10 +63,5 @@ public class FBOSoftware implements FBO {
 	@Override
 	public void cleanUp(int id) {
 		GLUtils.cleanTexture(id);
-	}
-
-	@Override
-	public void cleanDepthBuffer(int id) {
-
 	}
 }

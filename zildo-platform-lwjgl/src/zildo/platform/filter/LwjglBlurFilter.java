@@ -100,7 +100,7 @@ public class LwjglBlurFilter extends BlurFilter {
 	@Override
 	public void preFilter() {
 		// Copy last texture in TexBuffer
-		graphicStuff.fbo.bindToTextureAndDepth(texBuffer[currentImage], depthTextureID, fboId);
+		graphicStuff.fbo.bindToTexture(texBuffer[currentImage], fboId);
 		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
    		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
 	}

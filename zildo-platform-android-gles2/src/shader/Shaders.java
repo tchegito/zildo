@@ -56,6 +56,7 @@ public class Shaders {
 			for (String s : names) {
 				int uniformId = GLES20.glGetUniformLocation(id, s);
 				uniforms.put(""+id+s, uniformId);
+				System.out.println("uniform "+s+"/"+"program"+id+" returned "+uniformId);
 			}
 		}
 		
@@ -213,12 +214,12 @@ public class Shaders {
         
         // Prepare the triangle data
         GLES20.glVertexAttribPointer(hUntexturedPosition, 2, GLES20.GL_SHORT, false, 0, verticesBuffer);
-        GLES20.glEnableVertexAttribArray(hUntexturedPosition);
+		GLES20.glEnableVertexAttribArray(hUntexturedPosition);
 
-        int hMatrix = current.getUniform("uMVPMatrix");
+        int hMatrix = GLShaders.uniColor.getUniform("uMVPMatrix");
 		GLES20.glUniformMatrix4fv(hMatrix, 1, false, orthoMatrix, 0);
 
-		int hColor = current.getUniform("CurColor");
+		int hColor = GLShaders.uniColor.getUniform("CurColor");
 		GLES20.glUniform4f(hColor, curColor.x, curColor.y, curColor.z, curColor.w);
 
         GLES20.glDrawArrays(elementType, 0, count);

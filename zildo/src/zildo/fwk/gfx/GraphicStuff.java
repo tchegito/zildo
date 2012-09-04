@@ -19,18 +19,6 @@ public abstract class GraphicStuff {
         logger.info("Deleted FBO " + id);
     }
 
-    public void cleanDepthBuffer(int id) {
-        fbo.cleanDepthBuffer(id);
-        logger.info("Deleted depth buffer " + id);
-    }
-	
-    public int generateDepthBuffer() {
-        int depthId = fbo.generateDepthBuffer();
-
-        logger.info("Created depth buffer " + depthId);
-        return depthId;
-    }
-    
     private Vector4f cColor = new Vector4f(0, 0, 0, 0);
 	public Vector4f createColor(long value) {
         cColor.set(value & 255, (value >> 8) & 255, (value >> 16) & 255, value >> 24);

@@ -72,7 +72,7 @@ public class AndroidBlendFilter extends BlendFilter {
 		
 		// Draw squares
 		// Select right texture
-		GLES20.glActiveTexture(0);
+		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureID);
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
@@ -90,7 +90,7 @@ public class AndroidBlendFilter extends BlendFilter {
 	@Override
 	public void preFilter() {
 		// Copy last texture in TexBuffer
-		graphicStuff.fbo.bindToTextureAndDepth(textureID, depthTextureID, fboId);
+		graphicStuff.fbo.bindToTexture(textureID, fboId);
 		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
 		//gl11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
 

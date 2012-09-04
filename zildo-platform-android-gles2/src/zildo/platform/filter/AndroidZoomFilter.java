@@ -20,8 +20,6 @@
 
 package zildo.platform.filter;
 
-import javax.microedition.khronos.opengles.GL11;
-
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.FilterEffect;
@@ -29,11 +27,10 @@ import zildo.fwk.gfx.filter.ZoomFilter;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
+import android.opengl.GLES20;
 
 public class AndroidZoomFilter extends ZoomFilter {
 
-	GL11 gl11;
-	
 	public AndroidZoomFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
 	}
@@ -43,7 +40,7 @@ public class AndroidZoomFilter extends ZoomFilter {
 	{
 		focusOnZildo();
 				
-		gl11.glDisable(GL11.GL_BLEND);
+		GLES20.glDisable(GLES20.GL_BLEND);
 
 		return true;
 	}

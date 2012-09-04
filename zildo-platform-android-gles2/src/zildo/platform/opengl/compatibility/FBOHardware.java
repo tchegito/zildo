@@ -52,8 +52,7 @@ public class FBOHardware implements FBO {
 	}
 
 	@Override
-	public void bindToTextureAndDepth(int myTextureId, int myDepthId,
-			int myFBOId) {
+	public void bindToTexture(int myTextureId, int myFBOId) {
 		// On bind le FBO à la texture
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, myFBOId);
 
@@ -63,25 +62,6 @@ public class FBOHardware implements FBO {
 
 		// Puis on détache la texture de la vue
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
-	}
-
-	@Override
-	public int generateDepthBuffer() {/*
-		IntBuffer buf = ByteBuffer.allocateDirect(4)
-				.order(ByteOrder.nativeOrder()).asIntBuffer();
-		EXTFramebufferObject.glGenRenderbuffersEXT(buf); // Create Texture In
-															// OpenGL
-		int depthID = buf.get(0);
-
-		EXTFramebufferObject.glBindRenderbufferEXT(
-				EXTFramebufferObject.GL_RENDERBUFFER_EXT, depthID);
-		EXTFramebufferObject.glRenderbufferStorageEXT(
-				EXTFramebufferObject.GL_RENDERBUFFER_EXT,
-				GL11.GL_DEPTH_COMPONENT, ZUtils.adjustTexSize(Zildo.viewPortX),
-				ZUtils.adjustTexSize(Zildo.viewPortY));
-
-		return depthID;*/
-		return 0;
 	}
 
 	@Override
@@ -105,12 +85,6 @@ public class FBOHardware implements FBO {
 	public void cleanUp(int id) { 
 		GLES20.glDeleteFramebuffers(1, ZUtils.getBufferWithId(id));
 	}
-
-	@Override
-	public void cleanDepthBuffer(int id) { /*
-		EXTFramebufferObject
-				.glDeleteRenderbuffersEXT(ZUtils.getBufferWithId(id));
-	*/}
 
 	public void checkCompleteness(int myFBOId) {
 		/*

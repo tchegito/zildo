@@ -57,17 +57,10 @@ public class FBOHardware implements FBO {
 	}
 
 	@Override
-	public void bindToTextureAndDepth(int myTextureId, int myDepthId,
-			int myFBOId) {
+	public void bindToTexture(int myTextureId, int myFBOId) {
 		// On bind le FBO à la texture
 		EXTFramebufferObject.glBindFramebufferEXT(
 				EXTFramebufferObject.GL_FRAMEBUFFER_EXT, myFBOId);
-		if (myDepthId > 0) {
-			EXTFramebufferObject.glFramebufferRenderbufferEXT(
-					EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
-					EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT,
-					EXTFramebufferObject.GL_RENDERBUFFER_EXT, myDepthId);
-		}
 		EXTFramebufferObject.glFramebufferTexture2DEXT(
 				EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
 				EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT,
@@ -76,24 +69,6 @@ public class FBOHardware implements FBO {
 		// Puis on détache la texture de la vue
 		EXTFramebufferObject.glBindFramebufferEXT(
 				EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
-	}
-
-	@Override
-	public int generateDepthBuffer() {
-		IntBuffer buf = ByteBuffer.allocateDirect(4)
-				.order(ByteOrder.nativeOrder()).asIntBuffer();
-		EXTFramebufferObject.glGenRenderbuffersEXT(buf); // Create Texture In
-															// OpenGL
-		int depthID = buf.get(0);
-
-		EXTFramebufferObject.glBindRenderbufferEXT(
-				EXTFramebufferObject.GL_RENDERBUFFER_EXT, depthID);
-		EXTFramebufferObject.glRenderbufferStorageEXT(
-				EXTFramebufferObject.GL_RENDERBUFFER_EXT,
-				GL11.GL_DEPTH_COMPONENT, ZUtils.adjustTexSize(Zildo.viewPortX),
-				ZUtils.adjustTexSize(Zildo.viewPortY));
-
-		return depthID;
 	}
 
 	@Override
@@ -116,12 +91,6 @@ public class FBOHardware implements FBO {
 	@Override
 	public void cleanUp(int id) {
 		EXTFramebufferObject.glDeleteFramebuffersEXT(ZUtils.getBufferWithId(id));
-	}
-
-	@Override
-	public void cleanDepthBuffer(int id) {
-		EXTFramebufferObject
-				.glDeleteRenderbuffersEXT(ZUtils.getBufferWithId(id));
 	}
 
 	public void checkCompleteness(int myFBOId) {

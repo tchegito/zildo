@@ -43,7 +43,7 @@ import android.util.Log;
  * -call generateTexture() for adding texture to the texture set
  * 
  * To tell the openGL engine that it must draw with the right texture, just call:
- *  GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureTab[i]);
+ *  GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureTab[i]);
  * where 'i' is the number of the generated texture
  *                   
  * @author tchegito
