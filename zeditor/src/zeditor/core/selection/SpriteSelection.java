@@ -75,7 +75,7 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 	@Override
 	public void focus() {
 		for (SpriteEntity e : sprites) {
-			//e.setSpecialEffect(EngineFX.SHINY);
+			e.setSpecialEffect(EngineFX.SHINY);
 		}
 	}
 	
