@@ -288,7 +288,8 @@
 	</quest>
 	<quest name="bosquet_free_way">
 	    <trigger>
-	        <dialog name="maltus" num="1"/>
+	        <location name="bosquet"/>
+	        <dialog name="maltus" num="1" immediate="true"/>
 	        <questDone name="bosquet_kill_gards"/>
 	    </trigger>
 	    <action>
