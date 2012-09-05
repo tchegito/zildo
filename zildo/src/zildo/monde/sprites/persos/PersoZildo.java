@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.Zildo;
-import zildo.client.ClientEngineZildo;
 import zildo.client.sound.BankSound;
 import zildo.client.stage.SinglePlayer;
 import zildo.fwk.bank.SpriteBank;
@@ -530,6 +529,8 @@ public class PersoZildo extends Perso {
 		} else if (angle == Angle.OUEST) {
 			xx += 2;
 		}
+		
+		int v;
 
 		switch (mouvement) {
 		// Bouclier
@@ -609,17 +610,19 @@ public class PersoZildo extends Perso {
 			break;
 
 		case ATTAQUE_EPEE:
-			if (!angle.isDiagonal()) {
-				xx += decalxSword[angle.value][nSpr - (54 + 6 * angle.value)];
-				yy += decalySword[angle.value][nSpr - (54 + 6 * angle.value)];
+			v = nSpr - 54 + 6 * angle.value;
+			if (v>=0 && v<6) {
+				xx += decalxSword[angle.value][v];
+				yy += decalySword[angle.value][v];
 			}
 			shield.setVisible(false);
 			break;
 
 		case ATTAQUE_ARC:
-			if (!angle.isDiagonal()) {
-				xx += decalxBow[angle.value][nSpr - (108 + 3 * angle.value)];
-				yy += decalyBow[angle.value][nSpr - (108 + 3 * angle.value)];
+			v = nSpr - (108 + 3 * angle.value);
+			if (v>=0 && v<6) {
+				xx += decalxBow[angle.value][v];
+				yy += decalyBow[angle.value][v];
 			}
 			shield.setVisible(false);
 			break;
