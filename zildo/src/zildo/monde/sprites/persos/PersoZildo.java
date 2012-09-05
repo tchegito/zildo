@@ -860,7 +860,7 @@ public class PersoZildo extends Perso {
 				case HEART:
 				case HEART_LEFT:
 					if (pv < maxpv) {
-						pv = Math.max(pv+2, maxpv);
+						pv = Math.min(pv+2, maxpv);
 					}
 					break;
 				case ARROW_UP:
