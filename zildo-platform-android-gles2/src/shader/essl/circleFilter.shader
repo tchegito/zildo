@@ -1,6 +1,6 @@
 [VERTEX]
 attribute vec2 vPosition;		// Vertex position
-attribute mediump vec2 TexCoord;
+attribute vec2 TexCoord;
 
 uniform mat4 uMVPMatrix;		// Ortho matrix
 
@@ -14,10 +14,11 @@ void main(){
 }
 
 [FRAGMENT]
+precision mediump float;
 uniform sampler2D sTexture;
 uniform int radius;
-uniform lowp vec2 center;
-uniform lowp vec4 CurColor;		// Current color
+uniform vec2 center;
+uniform vec4 CurColor;		// Current color
 
 varying mediump vec2 vTexCoord;
 varying mediump vec2 interpPosition;

@@ -12,12 +12,13 @@ void main(){
 }
 
 [FRAGMENT]
-uniform lowp vec4 Color1;
-uniform lowp vec4 Color2;
-uniform lowp vec4 Color3;
-uniform lowp vec4 Color4;
+precision mediump float;
+uniform vec4 Color1;
+uniform vec4 Color2;
+uniform vec4 Color3;
+uniform vec4 Color4;
 uniform sampler2D sTexture;
-uniform lowp vec4 CurColor;		// Current color
+uniform vec4 CurColor;		// Current color
 
 varying mediump vec2 vTexCoord;
 
