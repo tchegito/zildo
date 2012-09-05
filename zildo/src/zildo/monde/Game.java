@@ -126,65 +126,73 @@ public class Game implements EasySerializable {
 	}
 
 	/**
-	 * Create a game from a saved file. At this point, we assume that EngineZildo is already instancied.
-	 * @param p_buffer
-	 * @return Game
-	 */
-	public static Game deserialize(EasyBuffering p_buffer) {
+     * Create a game from a saved file. At this point, we assume that EngineZildo is already instancied.
+     * @param p_buffer
+     * @param p_legacy TODO
+     * @return Game
+     */
+    public static Game deserialize(EasyBuffering p_buffer, boolean p_legacy) {
 
         try {
-	        // 1: quest diary
-	        int questNumber = p_buffer.readInt();
-	        for (int i = 0; i < questNumber; i++) {
-	            String questName = p_buffer.readString();
-	            boolean questDone = p_buffer.readBoolean();
-	            if (questDone) {
-	                EngineZildo.scriptManagement.accomplishQuest(questName, false);
-	            }
-	        }
-	
-	        // 2: Zildo
-	        EngineZildo.spawnClient(ZildoOutfit.Zildo);
-	        PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-	        zildo.setPv(p_buffer.readByte());
-	        int maxPvHeartQuarter = p_buffer.readInt();
-	        zildo.setMaxpv(maxPvHeartQuarter & 255);
-	        zildo.setHeartQuarter(maxPvHeartQuarter >> 8);
-	        zildo.setCountArrow(p_buffer.readInt());
-	        zildo.setCountBomb(p_buffer.readInt());
-	        zildo.setCountKey(p_buffer.readByte());
-	        zildo.setMoney(p_buffer.readInt());
-	        String heroName = URLDecoder.decode(p_buffer.readString(), "UTF-8");
-	        byte indexSel = p_buffer.readByte();
-	        
-	        
-	        Game game = new Game(null, heroName);
-	        
-	        // 3: Inventory
-	        List<Item> items = zildo.getInventory();
-	        items.clear();
-	        int itemNumber = p_buffer.readInt();
-	        for (int i = 0; i < itemNumber; i++) {
-	            String kind = p_buffer.readString();
-	            int level = p_buffer.readInt();
-	            Item item = new Item(ItemKind.fromString(kind), level);
-	            items.add(item);
-	            if (indexSel == i) {
-	            	zildo.setWeapon(item);
-	            }
-	        }
-	        
-	        // 4: map (since 1.096)
-	        game.mapName = p_buffer.readString();
-	        zildo.setX(p_buffer.readInt());
-	        zildo.setY(p_buffer.readInt());
-	        
-	        // 5: time spent
-	        game.timeSpent = p_buffer.readInt();
-	        
-	        return game;
+            // 1: quest diary
+            int questNumber = p_buffer.readInt();
+            for (int i = 0; i < questNumber; i++) {
+                String questName = p_buffer.readString();
+                boolean questDone = p_buffer.readBoolean();
+                if (questDone) {
+                    EngineZildo.scriptManagement.accomplishQuest(questName, false);
+                }
+            }
+   
+            // 2: Zildo
+            EngineZildo.spawnClient(ZildoOutfit.Zildo);
+            PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+            if (!p_legacy) {
+                zildo.setPv(p_buffer.readByte());
+            }
+            int maxPvHeartQuarter = p_buffer.readInt();
+            zildo.setMaxpv(maxPvHeartQuarter & 255);
+            zildo.setHeartQuarter(maxPvHeartQuarter >> 8);
+            zildo.setCountArrow(p_buffer.readInt());
+            zildo.setCountBomb(p_buffer.readInt());
+            zildo.setCountKey(p_buffer.readByte());
+            zildo.setMoney(p_buffer.readInt());
+            String heroName="Zildo";
+            byte indexSel = 0;
+            if (!p_legacy) {
+                heroName = URLDecoder.decode(p_buffer.readString(), "UTF-8");
+                indexSel = p_buffer.readByte();
+            }
+           
+            Game game = new Game(null, heroName);
+           
+            // 3: Inventory
+            List<Item> items = zildo.getInventory();
+            items.clear();
+            int itemNumber = p_buffer.readInt();
+            for (int i = 0; i < itemNumber; i++) {
+                String kind = p_buffer.readString();
+                int level = p_buffer.readInt();
+                Item item = new Item(ItemKind.fromString(kind), level);
+                items.add(item);
+                if (indexSel == i) {
+                    zildo.setWeapon(item);
+                }
+            }
+           
+            // 4: map (since 1.096)
+            game.mapName = p_buffer.readString();
+            zildo.setX(p_buffer.readInt());
+            zildo.setY(p_buffer.readInt());
+           
+            if (!p_legacy) {
+                // 5: time spent
+                game.timeSpent = p_buffer.readInt();
+            }
+           
+            return game;
         } catch (Exception e) {
-        	return null;
+            return null;
         }
     }
 }
