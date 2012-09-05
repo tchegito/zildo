@@ -3,7 +3,7 @@ attribute vec2 vPosition;		// Vertex position
 attribute mediump vec2 TexCoord;
 
 uniform mat4 uMVPMatrix;		// Ortho matrix
-uniform lowp vec2 vTranslate;		// Translation
+uniform vec2 vTranslate;		// Translation
 
 varying mediump vec2 vTexCoord;
 

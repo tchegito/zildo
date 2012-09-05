@@ -9,7 +9,7 @@ void main(){
 [FRAGMENT]
 
 precision mediump float;
-uniform lowp vec4 CurColor;
+uniform vec4 CurColor;
 void main(){
 	gl_FragColor = CurColor;
 }

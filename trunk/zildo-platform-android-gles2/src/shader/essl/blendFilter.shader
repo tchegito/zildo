@@ -1,6 +1,6 @@
 [VERTEX]
 attribute vec2 vPosition;		// Vertex position
-attribute mediump vec2 TexCoord;
+attribute vec2 TexCoord;
 
 uniform mat4 uMVPMatrix;		// Ortho matrix
 
@@ -12,8 +12,9 @@ void main(){
 }
 
 [FRAGMENT]
+precision mediump float;
 uniform sampler2D sTexture;
-uniform lowp int squareSize;
+uniform int squareSize;
 
 varying mediump vec2 vTexCoord;
 
