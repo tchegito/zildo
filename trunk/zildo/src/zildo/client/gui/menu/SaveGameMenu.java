@@ -77,9 +77,15 @@ public class SaveGameMenu extends PageableMenu {
 						client.handleMenu(new InfoMenu("m8.info.ok",
 								previousMenu));
 					} else {
-						if (!loadGame(filename)) {
-							client.handleMenu(new InfoMenu("m8.info.nok", currentMenu));
-						}
+						if (!loadGame(filename, false)) {
+                            if (!loadGame(filename, true)) {
+                            	// Load failed !
+                                client.handleMenu(new InfoMenu("m8.info.nok", currentMenu));
+                            } else {
+                            	// Game has been loaded in legacy (previous version) without name
+                            	// ==> can't display message for now !
+                            }
+                        }
 					}
 				}
 			});
@@ -132,14 +138,14 @@ public class SaveGameMenu extends PageableMenu {
 		file.saveFile(p_filename);
 	}
 
-	private boolean loadGame(String p_filename) {
+	private boolean loadGame(String p_filename, boolean p_legacy) {
 		// Create a dummy game object, just to initialize server
 		Game game = new Game(null, false);
 		game.brandNew = false;
 		SinglePlayer singlePlay = new SinglePlayer(game);
 
 		EasyBuffering file=Zildo.pdPlugin.openPrivateFile(p_filename);
-		game = Game.deserialize(file);
+		game = Game.deserialize(file, p_legacy);
 		if (game == null) {
 			// Problem occured while loading game
 			return false;
