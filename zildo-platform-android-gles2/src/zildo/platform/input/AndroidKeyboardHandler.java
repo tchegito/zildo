@@ -36,15 +36,15 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 
 	// Relations between given key and its location on screen, inside virtual pad
 	enum KeyLocation {
-		VP_UP(29, 5, 23, 25, true, KEY_UP),	// Real zone : 29, 11, 23, 19
-		VP_LEFT(5, 29, 25, 23, true, KEY_LEFT),	// Real zone : 11, 29, 19, 23
-		VP_RIGHT(51, 29, 25, 23, true, KEY_RIGHT),	// Real zone : 51, 29, 19, 23
-		VP_DOWN(29, 52, 23, 25, true, KEY_DOWN),	// Real zone : 29, 52, 23, 19
+		VP_UP(29, 0, 22, 29, true, KEY_UP),	// Real zone : 29, 11, 23, 19
+		VP_LEFT(0, 29, 29, 23, true, KEY_LEFT),	// Real zone : 11, 29, 19, 23
+		VP_RIGHT(51, 29, 29, 23, true, KEY_RIGHT),	// Real zone : 51, 29, 19, 23
+		VP_DOWN(29, 52, 22, 28, true, KEY_DOWN),	// Real zone : 29, 52, 23, 19
 		// diagonals
-		VP_UP_LEFT(11, 11, 18, 18, true, KEY_UP, KEY_LEFT),
-		VP_UP_RIGHT(51, 11, 18, 18, true, KEY_UP, KEY_RIGHT),
-		VP_DOWN_LEFT(11, 52, 18, 18, true, KEY_DOWN, KEY_LEFT),
-		VP_DOWN_RIGHT(51, 52, 18, 18, true, KEY_DOWN, KEY_RIGHT);
+		VP_UP_LEFT(0, 0, 29, 29, true, KEY_UP, KEY_LEFT),
+		VP_UP_RIGHT(51, 0, 29, 29, true, KEY_UP, KEY_RIGHT),
+		VP_DOWN_LEFT(0, 52, 29, 28, true, KEY_DOWN, KEY_LEFT),
+		VP_DOWN_RIGHT(51, 52, 29, 28, true, KEY_DOWN, KEY_RIGHT);
 		/*
 		VP_BUTTON_A(4, 33, 26, 26, false, KEY_Q),
 		VP_BUTTON_B(36, 58, 26, 26, false, KEY_W),
