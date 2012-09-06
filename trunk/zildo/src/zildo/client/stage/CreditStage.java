@@ -3,7 +3,11 @@ package zildo.client.stage;
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
 import zildo.client.gui.GUIDisplay;
+import zildo.client.gui.menu.StartMenu;
+import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.ui.UIText;
+import zildo.resource.KeysConfiguration;
 
 public class CreditStage implements GameStage {
 
@@ -12,6 +16,10 @@ public class CreditStage implements GameStage {
 	String[] creditText;
 	int currentLine;
 	int counter;
+	KeyboardInstant instant;
+	boolean askQuit = false;
+	int endCounter=0;
+	boolean done;
 	
 	public CreditStage() {
 		launchGame();
@@ -23,6 +31,23 @@ public class CreditStage implements GameStage {
 		if ((counter & 15) == 0) {
 			currentLine++;
 		}
+		// Does user quit ?
+        instant.update();
+        if (!askQuit) {
+        	askQuit = instant.isKeyDown(KeysConfiguration.PLAYERKEY_ACTION);
+        	if (askQuit) {
+                ClientEngineZildo.filterCommand.fadeOut(FilterEffect.FADE);
+        	}
+        } else {
+        	endCounter++;
+    		// Let the fade doing his job
+        	if (endCounter > 100) {
+        		ClientEngineZildo.getClientForMenu().quitGame();
+        		ClientEngineZildo.getClientForMenu().handleMenu(new StartMenu());
+        		done = true;
+        	}
+        }
+		
 	}
 
 	@Override
@@ -32,6 +57,7 @@ public class CreditStage implements GameStage {
 			sentence = creditText[currentLine];
 			guiDisplay.displayCredits(counter, sentence);
 		}
+		// Scroll is stopped as soon as there's no sentence to display
 	}
 
 	@Override
@@ -43,17 +69,16 @@ public class CreditStage implements GameStage {
 		creditText = wholeCredits.split("\n");
 		currentLine = 0;
 		counter = 0;
+		instant = new KeyboardInstant();
 	}
 
 	@Override
 	public void endGame() {
-
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return done;
 	}
 
 }
