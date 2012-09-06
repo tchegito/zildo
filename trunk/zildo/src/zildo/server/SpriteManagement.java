@@ -702,7 +702,7 @@ public class SpriteManagement extends SpriteStore {
 				// send it
 				returned.add(entity);
 			} else {
-				// If this entity has been backed up, we must check wether it
+				// If this entity has been backed up, we must check whether it
 				// has changed
 				if (!backedUp.isSame(entity)) {
 					returned.add(entity);
