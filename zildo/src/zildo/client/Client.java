@@ -28,7 +28,6 @@ import java.util.Map;
 
 import zildo.Zildo;
 import zildo.client.gui.menu.InGameMenu;
-import zildo.client.gui.menu.StartMenu;
 import zildo.client.stage.GameStage;
 import zildo.client.stage.MenuStage;
 import zildo.fwk.ZUtils;
