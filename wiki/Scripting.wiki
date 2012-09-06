@@ -68,13 +68,14 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || mapReplace || text || - || V || - || Replace map indicated by 'what' by the one named by 'name'  ||
 || animation || text || - || - || - || Spawn an animation from the enum [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/desc/SpriteAnimation.java SpriteAnimation] ||
 || impact || text || - || - || - || Spawn an animation from the enum [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/elements/ElementImpact.java ImpactKind] ||
-|| remove || text || V || V || - || Remove an element (what) or a character (who) from the current map ||
+|| remove || text || V || V || - || Remove an element (what) or a character (who) from the current map. Without parameters, this command removes all sprites except Zildo. ||
 || markQuest || text || - || - || - || Accomplish/reset a quest identified by 'name' attribute, according to the 'value' attribute (0=cancel / 1=accomplish) ||
 || putDown || text || - || - || - || Remove an item from Zildo's inventory ||
 || attack || text || V || - || - || Make a given character attacking in front of him ||
 || activate || text || - || V || V || Activate a gear (door, button, ...) with boolean 'value' to turn on/off the gear (according to TRUE/FALSE value) ||
 || tile || text || - || - || - || Change a map tile ||
-|| filter || text || - || - || - || Add a color filter : 0=normal / 1=night / 2=evening ||
+|| filter || text || - || - || - || Add a color filter : 0=normal / 1=night / 2=evening / 3=red ||
+|| end || text || - || - || - || For game over, depending on type attribute : 0=player wins / 1=player dies ||
 
 
 === Multithread ===
