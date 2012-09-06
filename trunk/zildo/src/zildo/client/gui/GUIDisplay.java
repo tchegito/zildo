@@ -556,9 +556,17 @@ public class GUIDisplay {
 		setToDisplay_dialogMode(DialogMode.CREDITS);
 
 		// All moves upward
+		List<SpriteEntity> toRemove = new ArrayList<SpriteEntity>();
 		for (SpriteEntity entity : creditSequence) {
 			int y = entity.getScrY();
+			if (y < -16) {
+				toRemove.add(entity);
+			}
 			entity.setScrY(y -1);
+		}
+		for (SpriteEntity ent : toRemove) {
+			creditSequence.remove(ent);
+			ClientEngineZildo.spriteDisplay.deleteSprite(ent);
 		}
 
 		// New line
