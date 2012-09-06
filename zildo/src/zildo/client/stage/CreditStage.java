@@ -30,8 +30,8 @@ public class CreditStage implements GameStage {
 		String sentence = "";
 		if (currentLine < creditText.length) {
 			sentence = creditText[currentLine];
+			guiDisplay.displayCredits(counter, sentence);
 		}
-		guiDisplay.displayCredits(counter, sentence);
 	}
 
 	@Override
