@@ -297,6 +297,28 @@
 	    </action>
 	</quest>
 	
+	<quest name="polaky_without_maltus" repeat="true">
+		<trigger>
+		    <location name="polaky" pos="566,955" radius="2"/>
+		    <questDone name="!bosquet_free_way"/>
+		</trigger>
+		<action>
+		    <speak who="zildo" text="bosquet.zildo.wait"/>
+		    <moveTo who="zildo" pos="567,998"/>
+		</action>
+	</quest>
+	
+	<quest name="polaky_without_maltus2" repeat="true">
+		<trigger>
+		    <location name="polaky" pos="614,955" radius="2"/>
+		    <questDone name="!bosquet_free_way"/>
+		</trigger>
+		<action>
+		    <speak who="zildo" text="bosquet.zildo.wait"/>
+		    <moveTo who="zildo" pos="614,998"/>
+		</action>
+	</quest>
+	
 	<quest name="polaky_greg">
 		<trigger>
 		    <dialog name="gregoire" num="3"/>
