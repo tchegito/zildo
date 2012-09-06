@@ -396,8 +396,6 @@ public class Client {
 		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
 		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(true, true);
 		connected = false;
-		
-		handleMenu(new StartMenu());
 	}
 	
 	public boolean isDone() {

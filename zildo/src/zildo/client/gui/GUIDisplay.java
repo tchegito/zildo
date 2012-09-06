@@ -274,6 +274,7 @@ public class GUIDisplay {
 		int width = fullWidth ? Zildo.viewPortX : sc.TEXTER_SIZEX;
 		nBank = SpriteBank.BANK_FONTES;
 		sizeLine = sc.TEXTER_SIZELINE;
+		EngineFX fx = EngineFX.FOCUSED;
 		
 		switch (toDisplay_dialogMode) {
 		case CLASSIC:
@@ -290,6 +291,7 @@ public class GUIDisplay {
 			center = true;
 			visibleFont = true;
 			seq = creditSequence;
+			fx = EngineFX.NO_EFFECT;
 			break;
 		}
 
@@ -305,7 +307,7 @@ public class GUIDisplay {
 					signAlone = (b == '!' || b == '?');
 				}
 			}
-			if (a == ' ' || a == 0 || a == '#' || a == '\n') {
+			if (a == ' ' || a == 0 || (a == '#' && toDisplay_dialogMode != DialogMode.CREDITS) || a == '\n') {
 				if (sizeCurrentLine + sizeCurrentWord > width
 						|| a == '\n') {
 					// We must cut the line before the current word
@@ -383,6 +385,7 @@ public class GUIDisplay {
 				// into the frame
 				lettre = seq.addSprite(nBank, indexSpr, x + offsetX, y
 						+ offsetY, visibleFont, 255);
+				lettre.setSpecialEffect(fx);
 				spr = lettre.getSprModel();
 				offsetX += (spr.getTaille_x() + 1);
 			}

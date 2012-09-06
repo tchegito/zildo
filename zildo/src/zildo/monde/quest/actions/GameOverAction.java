@@ -20,7 +20,9 @@
 
 package zildo.monde.quest.actions;
 
+import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
+import zildo.client.stage.CreditStage;
 import zildo.client.stage.SinglePlayer;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.RedFilter;
@@ -44,13 +46,15 @@ public class GameOverAction extends ActionDialog {
 		super(UIText.getGameText("game.over"));
 	}
 	
+	/**
+	 * @param p_clientState if NULL, it means that player has won the game.
+	 */
 	@Override
 	public void launchAction(ClientState p_clientState) {
 		// Reset map / GUI
 		EngineZildo.mapManagement.deleteCurrentMap();
 		ClientEngineZildo.tileEngine.cleanUp();
 		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(false);
-		ClientEngineZildo.soundPlay.stopMusic();
 		ClientEngineZildo.filterCommand.restoreFilters();
 		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
 		ClientEngineZildo.filterCommand.fadeIn(FilterEffect.SEMIFADE);
@@ -59,7 +63,15 @@ public class GameOverAction extends ActionDialog {
 		// Stop this game
 		SinglePlayer.getClientState().gameOver=true;
 		// Return on the start menu
-		ClientEngineZildo.getClientForMenu().quitGame();
+		Client client = ClientEngineZildo.getClientForMenu();
+		client.quitGame();
+		
+		if (p_clientState == null) {
+			// Keep music and launch credits
+            client.askStage(new CreditStage());
+		} else {
+			ClientEngineZildo.soundPlay.stopMusic();
+		}
 	}
 
 }
