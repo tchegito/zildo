@@ -50,6 +50,7 @@ public class MenuStage implements GameStage {
 	@Override
 	public void launchGame() {
         client = ClientEngineZildo.getClientForGame();
+        menu.refresh();
 	}
 	
 	@Override

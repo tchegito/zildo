@@ -72,7 +72,7 @@ import zildo.server.state.PlayerState;
 public class GUIDisplay {
 
 	public enum DialogMode {
-		CLASSIC, TOPIC, MENU;
+		CLASSIC, MENU, CREDITS;
 	}
 	
 	// Alpha channel for virtual pad (specific Android) : range is 0..255
@@ -93,14 +93,12 @@ public class GUIDisplay {
 	
 	private int countMoney;
 
-	private GUISpriteSequence textDialogSequence; // All fonts displayed in
-													// dialog
+	private GUISpriteSequence textDialogSequence; // All fonts displayed in dialog
 	private GUISpriteSequence textMenuSequence; // All fonts displayed in menu
-	private GUISpriteSequence frameDialogSequence; // Yellow frame for display
-													// dialog
-	private GUISpriteSequence guiSpritesSequence; // All sprites designing the
-													// GUI
+	private GUISpriteSequence frameDialogSequence; // Yellow frame for display dialog
+	private GUISpriteSequence guiSpritesSequence; // All sprites designing the GUI
 	private GUISpriteSequence menuSequence; // Cursors for menu
+	private GUISpriteSequence creditSequence; // Credits
 
 	private ScreenConstant sc;
 	
@@ -131,7 +129,8 @@ public class GUIDisplay {
 		frameDialogSequence = new GUISpriteSequence();
 		guiSpritesSequence = new GUISpriteSequence();
 		menuSequence = new GUISpriteSequence();
-
+		creditSequence = new GUISpriteSequence();
+		
 		countMoney = 0;
 
 		messageQueue = new Stack<GameMessage>();
@@ -273,27 +272,24 @@ public class GUIDisplay {
 		GUISpriteSequence seq = textDialogSequence; // Default sequence to add fonts
 
 		int width = fullWidth ? Zildo.viewPortX : sc.TEXTER_SIZEX;
+		nBank = SpriteBank.BANK_FONTES;
+		sizeLine = sc.TEXTER_SIZELINE;
 		
 		switch (toDisplay_dialogMode) {
 		case CLASSIC:
 		default:
-			nBank = SpriteBank.BANK_FONTES;
-			sizeLine = sc.TEXTER_SIZELINE;
 			visibleFont = false;
 			center = false;
 			break;
 		case MENU:
-			nBank = SpriteBank.BANK_FONTES;
-			sizeLine = sc.TEXTER_SIZELINE;
 			visibleFont = true;
 			center = true;
 			seq = textMenuSequence;
 			break;
-		case TOPIC:
-			nBank = SpriteBank.BANK_FONTES2;
-			sizeLine = Constantes.TEXTER_TOPIC_SIZELINE;
-			visibleFont = true;
+		case CREDITS:
 			center = true;
+			visibleFont = true;
+			seq = creditSequence;
 			break;
 		}
 
@@ -556,6 +552,23 @@ public class GUIDisplay {
 
 	}
 
+	public void displayCredits(int counter, String nextSentence) {
+		setToDisplay_dialogMode(DialogMode.CREDITS);
+
+		// All moves upward
+		for (SpriteEntity entity : creditSequence) {
+			int y = entity.getScrY();
+			entity.setScrY(y -1);
+		}
+
+		// New line
+		if (counter % 16 == 0) {
+			int y = Zildo.viewPortY; //counter >> 4; // divided by 16
+			prepareTextInFrame(nextSentence, sc.TEXTER_COORDINATE_X, y, true);
+		}
+		
+	}
+	
 	/**
 	 * Display a menu
 	 * 

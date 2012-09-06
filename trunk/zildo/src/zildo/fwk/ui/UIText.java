@@ -32,6 +32,7 @@ public class UIText {
 
 	static ResourceBundle menuBundle;
 	static ResourceBundle gameBundle;
+	static ResourceBundle creditBundle;
 	
 	static String characterName = "Tchegito"; // Default
 	
@@ -40,6 +41,7 @@ public class UIText {
 	static {
 		menuBundle=Utf8ResourceBundle.getBundle("zildo.resource.bundle.menu");
 		gameBundle=Utf8ResourceBundle.getBundle("zildo.resource.bundle.game");
+		creditBundle=Utf8ResourceBundle.getBundle("zildo.resource.bundle.credits");
 	}
 	
 	static private String getText(ResourceBundle p_bundle, String p_key, Object... p_params) {
@@ -75,6 +77,16 @@ public class UIText {
 	 */
 	public static String getMenuText(String p_key, Object... p_params) {
 		return getText(menuBundle, p_key, p_params);
+	}
+	
+	/**
+	 * Returns the complete credits text.
+	 * @param p_key
+	 * @param p_params (unused now)
+	 * @return String
+	 */
+	public static String getCreditText(String p_key, Object... p_params) {
+		return getText(creditBundle, p_key, p_params);
 	}
 	
 	public static void setCharacterName(String name) {

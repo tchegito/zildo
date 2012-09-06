@@ -274,7 +274,6 @@ public class Client {
 			connected = true;
 		} else {
 			askStage(new MenuStage(p_menu, menuListener));
-			currentMenu.refresh();
 			connected = false;
 		}
 	}

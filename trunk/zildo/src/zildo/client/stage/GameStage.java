@@ -26,10 +26,19 @@ package zildo.client.stage;
  */
 public interface GameStage {
 
+	/**
+	 * Called each frame, for updating state.
+	 */
 	public void updateGame();
 	
+	/**
+	 * Called each frame, to render.
+	 */
 	public void renderGame();
 	
+	/**
+	 * Called once for starting the stage.
+	 */
 	public void launchGame();
 
 	public void endGame();

@@ -22,7 +22,7 @@ import java.util.logging.LogManager;
 
 import zildo.client.Client;
 import zildo.client.PlatformDependentPlugin;
-import zildo.client.gui.menu.StartMenu;
+import zildo.client.stage.CreditStage;
 
 
 public class Zildo {
@@ -44,6 +44,8 @@ public class Zildo {
 	public static final PlatformDependentPlugin pdPlugin = new PlatformDependentPlugin();
 	
 	public static void main(String[] args) {
+	
+		//Locale.setDefault(Locale.US);
 		
 		for (String arg : args) {
 			if ("fullscreen".equals(arg)) {
@@ -56,7 +58,8 @@ public class Zildo {
 		
         final Client client=new Client(false);
 
-        client.handleMenu(new StartMenu());
+        client.askStage(new CreditStage());
+        //client.handleMenu(new StartMenu());
         client.run();
         client.cleanUp();
         
