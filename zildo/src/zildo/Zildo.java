@@ -22,7 +22,7 @@ import java.util.logging.LogManager;
 
 import zildo.client.Client;
 import zildo.client.PlatformDependentPlugin;
-import zildo.client.stage.CreditStage;
+import zildo.client.gui.menu.StartMenu;
 
 
 public class Zildo {
@@ -58,8 +58,7 @@ public class Zildo {
 		
         final Client client=new Client(false);
 
-        client.askStage(new CreditStage());
-        //client.handleMenu(new StartMenu());
+        client.handleMenu(new StartMenu());
         client.run();
         client.cleanUp();
         
