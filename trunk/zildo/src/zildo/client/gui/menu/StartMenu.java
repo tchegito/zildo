@@ -28,6 +28,7 @@ import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
 import zildo.client.stage.MultiPlayer;
+import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.net.ServerInfo;
 import zildo.fwk.net.www.WorldRegister;
 import zildo.fwk.ui.InfoMenu;
@@ -48,6 +49,7 @@ public class StartMenu extends Menu {
         
 		// Play menu music
 		ClientEngineZildo.soundPlay.playMusic(BankMusic.Triste);
+        ClientEngineZildo.filterCommand.fadeIn(FilterEffect.FADE);
 
         ItemMenu itemSinglePlayer = new ItemMenu("m1.single", null) {
             @Override
