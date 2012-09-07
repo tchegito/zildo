@@ -44,7 +44,9 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 		VP_UP_LEFT(0, 0, 29, 29, true, KEY_UP, KEY_LEFT),
 		VP_UP_RIGHT(51, 0, 29, 29, true, KEY_UP, KEY_RIGHT),
 		VP_DOWN_LEFT(0, 52, 29, 28, true, KEY_DOWN, KEY_LEFT),
-		VP_DOWN_RIGHT(51, 52, 29, 28, true, KEY_DOWN, KEY_RIGHT);
+		VP_DOWN_RIGHT(51, 52, 29, 28, true, KEY_DOWN, KEY_RIGHT),
+		// inventory
+		VP_INVENTORY(14, 8, 22, 22, false, KEY_X);
 		/*
 		VP_BUTTON_A(4, 33, 26, 26, false, KEY_Q),
 		VP_BUTTON_B(36, 58, 26, 26, false, KEY_W),
@@ -57,10 +59,9 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 		
 		private KeyLocation(int x, int y, int wx, int wy, boolean isDirection, int... keys) {
 			int addX = 0;
-			int addY = Zildo.viewPortY - 80;
-			if (!isDirection) {
-				addX = Zildo.viewPortX - 98;
-				addY = Zildo.viewPortY - 87;
+			int addY = 0;
+			if (isDirection) {
+				addY = Zildo.viewPortY - 80;
 			}
 			z = new Zone(x + addX, y + addY, wx, wy);
 			keyCode = keys[0];
@@ -128,7 +129,7 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 				resetBack = true;
 			}
 			return infos.backPressed;
-		} else if (p_code == KEY_Q || p_code == KEY_W || p_code == KEY_X) {
+		} else if (p_code == KEY_Q || p_code == KEY_W) {
 			if (polledTouchedPoints.size() != 0) {
 				for (Point p : polledTouchedPoints.getAll()) {
 					switch (p_code) {
@@ -142,6 +143,7 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 							return true;
 						}
 						break;
+						/*
 					case KEY_X:
 						Point zildoPos = infos.getZildoPos();
 						// Inventory only if player isn't moving (tm.getCurrent) and close enough
@@ -151,6 +153,7 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 							 return true;
 						}
 						break;
+					*/
 					}
 				}
 			}			
