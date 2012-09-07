@@ -43,7 +43,9 @@ public class AndroidInputInfos {
 	
 	public Point getZildoPos() {
 		if (zildo == null || !zildo.visible) {
-			zildo = EngineZildo.persoManagement.getZildo();
+			if (EngineZildo.persoManagement != null) {
+				zildo = EngineZildo.persoManagement.getZildo();
+			}
 		}
 		if (zildo != null) {
 			//SpriteModel model = zildo.getSprModel();
