@@ -9,9 +9,9 @@ Before talking about dialogs in Zildo, we'll start by a brief topo on UI texts. 
 Dialog are a subset of all User Interface text existing in the project. Let's present all the UI text in Zildo.
 
 They are divided into 3 sections : menu, game, and credits. Their meaning is pretty clear, but in details :
- * menu : all text labels found on the menu side : main menu, in-game menu, all messages about internet connection or whatever.
- * game : all messages displayed inside the game, including dialogs (which is this wikipage subjects happily), multiplayer messages, items name and automatic text for the first time Zildo picks an item.
- * credits : text displayed in the credits. There's only one multi-line value
+ * *menu* : all text labels found on the menu side : main menu, in-game menu, all messages about internet connection or whatever
+ * *game* : all messages displayed inside the game, including dialogs, multiplayer messages, items name and automatic text for the first time Zildo picks an item
+ * [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/resource/bundle/credits.properties *credits*] : text displayed in the credits. There's only one multi-line value
 
 == i18n ==
 
