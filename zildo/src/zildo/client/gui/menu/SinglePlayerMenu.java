@@ -51,7 +51,7 @@ public class SinglePlayerMenu extends Menu {
 		ItemMenu itemNew=new ItemMenu("m6.new", BankSound.MenuSelectGame) {
         	@Override
 			public void run() {
-        		client.handleMenu(new PlayerNameMenu(sb, null, runSingle));
+        		client.handleMenu(new PlayerNameMenu(sb, currentMenu, runSingle));
 
         	}
         };
