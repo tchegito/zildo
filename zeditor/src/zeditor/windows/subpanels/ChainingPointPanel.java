@@ -41,6 +41,7 @@ import javax.swing.table.TableColumn;
 import zeditor.core.selection.ChainingPointSelection;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
 
 /**
@@ -55,8 +56,8 @@ public class ChainingPointPanel extends JPanel {
 	JTable pointsList;
 	ChainingPointTableModel model;
 	private final String[] columnNames = new String[] { "Carte", "Vertical",
-			"Bord", "Single", "", "" };
-	private final int[] columnSizes = { 80, 40, 40, 40, 60, 60 };
+			"Bord", "Single", "Angle", "", "" };
+	private final int[] columnSizes = { 80, 40, 40, 40, 20, 50, 50 };
 
 	MasterFrameManager manager;
 
@@ -136,7 +137,7 @@ public class ChainingPointPanel extends JPanel {
 		pointsList.setModel(model);
 
 		// Set buttons
-		TableColumn buttonColumn = pointsList.getColumnModel().getColumn(4);
+		TableColumn buttonColumn = pointsList.getColumnModel().getColumn(5);
 		buttonColumn.setCellRenderer(new ChainingPointCellRenderer(
 				new AbstractAction("X", null) {
 					@Override
@@ -149,7 +150,7 @@ public class ChainingPointPanel extends JPanel {
 					}
 				}));
 
-		buttonColumn = pointsList.getColumnModel().getColumn(5);
+		buttonColumn = pointsList.getColumnModel().getColumn(6);
 		buttonColumn.setCellRenderer(new ChainingPointCellRenderer(
 				new AbstractAction("Go", null) {
 					@Override
@@ -230,7 +231,7 @@ public class ChainingPointPanel extends JPanel {
 		 */
 		@Override
 		public boolean isCellEditable(int i, int j) {
-			if (j > 3) {
+			if (j > 4) {
 				return false;
 			}
 			return super.isCellEditable(i, j);
@@ -262,6 +263,9 @@ public class ChainingPointPanel extends JPanel {
 					case 3: // single
 						ch.setSingle((Boolean) getValueAt(row, col));
 						break;
+					case 4: // angle
+						ch.setComingAngle((Angle) getValueAt(row, col));
+						break;
 					}
 				}
 			});
@@ -269,7 +273,7 @@ public class ChainingPointPanel extends JPanel {
 		}
 
 		private static Object[][] transformObjectArray(ChainingPoint[] p_points) {
-			Object[][] data = new Object[p_points.length][5];
+			Object[][] data = new Object[p_points.length][6];
 			for (int i = 0; i < p_points.length; i++) {
 				data[i] = getRow(p_points[i]);
 			}
@@ -278,7 +282,7 @@ public class ChainingPointPanel extends JPanel {
 
 		private static Object[] getRow(ChainingPoint ch) {
 			Object[] obj = new Object[] { ch.getMapname(), ch.isVertical(),
-					ch.isBorder(), ch.isSingle(), new JButton("creer"), null };
+					ch.isBorder(), ch.isSingle(), ch.getComingAngle(), new JButton("creer"), null };
 			return obj;
 		}
 

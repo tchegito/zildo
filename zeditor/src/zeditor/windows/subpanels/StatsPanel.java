@@ -68,7 +68,7 @@ public class StatsPanel extends JPanel {
 		Area map = EngineZildo.mapManagement.getCurrentMap();
 		int nbPerso = EngineZildo.persoManagement.tab_perso.size();
 		int nbSpr = EngineZildo.spriteManagement.getSpriteEntities(null).size();
-		int nbChPoint = map.getListPointsEnchainement().size();
+		int nbChPoint = map.getChainingPoints().size();
 		MapDialog dialogs = map.getMapDialog();
 		int nbDial = dialogs == null ? 0 : dialogs.getN_phrases();
 		dim.setText(map.getDim_x() + " x " + map.getDim_y());

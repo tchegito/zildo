@@ -362,7 +362,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    switch (kind) {
 	    case CHAININGPOINT:
 	    	Area map=EngineZildo.mapManagement.getCurrentMap();
-			List<ChainingPoint> points=EngineZildo.mapManagement.getCurrentMap().getListPointsEnchainement();
+			List<ChainingPoint> points=EngineZildo.mapManagement.getCurrentMap().getChainingPoints();
 			for (ChainingPoint ch : points) {
 			    Zone z=ch.getZone(map);
 			    if (z.isInto(p.x, p.y)) {
