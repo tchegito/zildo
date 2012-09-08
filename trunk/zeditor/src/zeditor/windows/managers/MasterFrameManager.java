@@ -213,7 +213,7 @@ public class MasterFrameManager {
 		}
 		List<ChainingPoint> names = new ArrayList<ChainingPoint>();
 		List<ChainingPoint> points = EngineZildo.mapManagement.getCurrentMap()
-				.getListPointsEnchainement();
+				.getChainingPoints();
 		for (ChainingPoint chp : points) {
 			names.add(chp);
 		}

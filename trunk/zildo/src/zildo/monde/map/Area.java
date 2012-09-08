@@ -501,7 +501,7 @@ public class Area implements EasySerializable {
 		this.name = name;
 	}
 
-	public List<ChainingPoint> getListPointsEnchainement() {
+	public List<ChainingPoint> getChainingPoints() {
 		return listChainingPoint;
 	}
 
@@ -559,7 +559,7 @@ public class Area implements EasySerializable {
 
 		// 3) Chaining points
 		if (n_pe != 0) {
-			for (ChainingPoint ch : this.getListPointsEnchainement()) {
+			for (ChainingPoint ch : this.getChainingPoints()) {
 				ch.serialize(p_file);
 			}
 		}
@@ -768,7 +768,7 @@ public class Area implements EasySerializable {
 		// Les persos
 		if (n_persos != 0) {
 			for (int i = 0; i < n_persos; i++) {
-				PersoNJ perso;
+				Perso perso;
 				int x = p_buffer.readInt();
 				int y = p_buffer.readInt();
 				int z = p_buffer.readInt();
@@ -803,7 +803,7 @@ public class Area implements EasySerializable {
 				if (!p_spawn) {
 					perso = new PersoNJ();
 				} else {
-					perso = (PersoNJ) EngineZildo.persoManagement.createPerso((PersoDescription) desc, x, y, z, name,
+					perso = EngineZildo.persoManagement.createPerso((PersoDescription) desc, x, y, z, name,
 							angle);
 
 					perso.setInfo(PersoInfo.values()[info]);
@@ -1041,7 +1041,7 @@ public class Area implements EasySerializable {
 	 * @return ChainingPoint
 	 */
 	public ChainingPoint getCloseChainingPoint(int p_px, int p_py) {
-		List<ChainingPoint> points = getListPointsEnchainement();
+		List<ChainingPoint> points = getChainingPoints();
 		for (ChainingPoint ch : points) {
 			Zone z = ch.getZone(this);
 			for (Angle a : Angle.values()) {

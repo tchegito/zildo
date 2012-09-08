@@ -52,6 +52,15 @@ public class ChainingPoint implements EasySerializable {
 							// this. (useful for stairs)
 
 	private Zone zone;
+	private Angle comingAngle;	// Angle which character is pointing when spawning from this point
+	
+	public Angle getComingAngle() {
+		return comingAngle;
+	}
+
+	public void setComingAngle(Angle comingAngle) {
+		this.comingAngle = comingAngle;
+	}
 
 	public String getMapname() {
 		return mapname;
@@ -244,6 +253,7 @@ public class ChainingPoint implements EasySerializable {
 		ChainingPoint pe = new ChainingPoint();
 		pe.px = p_buffer.readUnsignedByte();
 		pe.py = p_buffer.readUnsignedByte();
+		pe.comingAngle = Angle.fromInt(p_buffer.readUnsignedByte());
 		String mapName = p_buffer.readString();
 		pe.mapname = mapName;
 
@@ -281,6 +291,7 @@ public class ChainingPoint implements EasySerializable {
 		}
 		p_buffer.put((byte) saveX);
 		p_buffer.put((byte) saveY);
+		p_buffer.put((byte) comingAngle.value);
 		p_buffer.put(mapname);
 	}
 

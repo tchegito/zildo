@@ -173,7 +173,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			// Draw chaining points
 			Point shift=panel.getPosition();
 			Area map=EngineZildo.mapManagement.getCurrentMap();
-			List<ChainingPoint> chaining=map.getListPointsEnchainement();
+			List<ChainingPoint> chaining=map.getChainingPoints();
 			Selection sel=manager.getSelection();
 			ChainingPoint selected=null;
 			if (sel != null && sel.getKind()==SelectionKind.CHAININGPOINT) {
@@ -191,6 +191,12 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 				    		  p.x2-2,                p.y2-2, 0, col);
 				    ortho.disableBlend();
 				}
+				// Draw coming angle
+				int centerX = (2*p.x1 + p.x2) / 2;
+				int centerY = (2*p.y1 + p.y2) / 2;
+				int arrowX = 1 + ch.getComingAngle().coords.x * 32;
+				int arrowY = 1 + ch.getComingAngle().coords.y * 32;
+				ortho.box(centerX - shift.x, centerY - shift.y, arrowX, arrowY, 0, col);
 			}
 
 			

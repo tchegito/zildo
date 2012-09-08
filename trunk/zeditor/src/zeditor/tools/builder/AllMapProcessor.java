@@ -41,7 +41,13 @@ import zildo.server.Server;
  */
 public abstract class AllMapProcessor {
 
-	public abstract void run();
+	String mapName;
+	
+	public abstract boolean run();
+
+	public String getMapname() {
+		return mapName;
+	}
 	
 	/**
 	 * For each map : load, call run method, and save.
@@ -62,16 +68,18 @@ public abstract class AllMapProcessor {
         Game game = new Game(null, true);
         new Server(game, true);
 		for (File f : mapsFile) {
-			String name=f.getName();
-			System.out.println("Processing "+name+"...");
+			mapName=f.getName();
+			System.out.println("Processing "+mapName+"...");
 			MapManagement mapManagement=EngineZildo.mapManagement;
 
-			mapManagement.loadMap(name, false);
+			mapManagement.loadMap(mapName, false);
 
 			// Do the thing !
-			run();
+			boolean shouldSave = run();
 			
-			mapManagement.saveMapFile(name);
+			if (shouldSave) {
+				mapManagement.saveMapFile(mapName);
+			}
 		}		
 	}
 }
