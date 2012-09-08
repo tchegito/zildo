@@ -93,6 +93,14 @@ public abstract class AnyElement {
 		}
     }
     
+    /**
+     * Merge two elements of same kind. Not necessarily overrided.
+     * @param elem
+     */
+    public void merge(AnyElement elem) {
+    	// Default : empty
+    }
+    
     static public AnyElement newInstanceFromString(String p_name) {
     	XmlElementKind kind = XmlElementKind.fromString(p_name);
     	try {

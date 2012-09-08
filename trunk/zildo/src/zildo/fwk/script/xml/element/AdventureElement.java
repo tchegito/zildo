@@ -73,4 +73,15 @@ public class AdventureElement extends AnyElement {
 	public void addQuest(QuestElement p_quest) {
 		quests.add(p_quest);
 	}
+	
+    @Override
+	public void merge(AnyElement elem) {
+    	if (elem != null && elem instanceof AdventureElement) {
+    		// Merge 2 adventures
+    		AdventureElement toMerge = (AdventureElement) elem;
+    		mapScripts.addAll(toMerge.mapScripts);
+    		quests.addAll(toMerge.quests);
+    		scenes.addAll(toMerge.scenes);
+    	}
+    }
 }
