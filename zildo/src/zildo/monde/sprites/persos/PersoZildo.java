@@ -610,7 +610,7 @@ public class PersoZildo extends Perso {
 			break;
 
 		case ATTAQUE_EPEE:
-			v = nSpr - 54 + 6 * angle.value;
+			v = nSpr - (54 + 6 * angle.value);
 			if (v>=0 && v<6) {
 				xx += decalxSword[angle.value][v];
 				yy += decalySword[angle.value][v];
