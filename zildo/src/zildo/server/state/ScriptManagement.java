@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import zildo.client.stage.SinglePlayer;
 import zildo.fwk.script.command.ScriptExecutor;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.ActionElement;
@@ -74,7 +73,7 @@ public class ScriptManagement {
 
     public ScriptManagement() {
         // Load adventure
-        adventure=(AdventureElement) ScriptReader.loadScript("quests.xml");
+        adventure=(AdventureElement) ScriptReader.loadScript("common.xml", "episode1.xml");
 
         scriptExecutor=new ScriptExecutor();
         

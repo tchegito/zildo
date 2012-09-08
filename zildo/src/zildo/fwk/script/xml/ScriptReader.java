@@ -45,27 +45,34 @@ public class ScriptReader {
      * @param p_scriptName
      * @return AnyElement
      */
-    public static AnyElement loadScript(String p_scriptName) {
+    public static AnyElement loadScript(String... p_scriptNames) {
         AnyElement ret = null;
-        try {
-            DocumentBuilder sxb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-
-            // Load the stream
-            String filename = "zildo/resource/script/"+p_scriptName;
-            InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
-            if (stream == null) {
-            	stream = ScriptReader.class.getClassLoader().getResourceAsStream(filename);
-            }
-            
-            Document document = sxb.parse(stream);
-            Element racine = document.getDocumentElement();
-            
-            ret = createNode(racine);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to parse " + p_scriptName, e);
-        }
-        return ret;
+    	for (String scriptName : p_scriptNames) {
+    		try {
+	            DocumentBuilder sxb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+	
+	            // Load the stream
+	            String filename = "zildo/resource/script/"+scriptName;
+	            InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
+	            if (stream == null) {
+	            	stream = ScriptReader.class.getClassLoader().getResourceAsStream(filename);
+	            }
+	            
+	            Document document = sxb.parse(stream);
+	            Element racine = document.getDocumentElement();
+	            
+	            AnyElement root = createNode(racine);
+	            if (ret == null) {
+	            	ret = root;
+	            } else {
+	            	// Append read nodes to the previous one
+	            	ret.merge(root);
+	            }
+	        } catch (Exception e) {
+	            throw new RuntimeException("Unable to parse " + scriptName, e);
+	        }
+    	}
+    	return ret;
     }
 
     /**
