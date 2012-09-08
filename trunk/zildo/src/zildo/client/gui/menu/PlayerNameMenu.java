@@ -44,13 +44,17 @@ public class PlayerNameMenu extends Menu {
         ItemMenu itemName = new EditableItemMenu(p_playerName) {
             @Override
             public void run() {
-            	// Save playername on disk
-            	savePlayerName(p_playerName.toString());
-            	if (runnable != null) {
-            		runnable.run();
-            	} else {
-            		// Back to previous menu
+            	if (p_playerName.length() == 0) {
             		client.handleMenu(previousMenu);
+            	} else {
+	            	// Save playername on disk
+	            	savePlayerName(p_playerName.toString());
+	            	if (runnable != null) {
+	            		runnable.run();
+	            	} else {
+	            		// Back to previous menu
+	            		client.handleMenu(previousMenu);
+	            	}
             	}
             }
         };
