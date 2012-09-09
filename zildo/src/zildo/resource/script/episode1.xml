@@ -607,14 +607,14 @@
 	    <moveTo what="camera" pos="-64,0" delta="true"/>
 	    <wait value="10" />
 	    <angle who="emissaire" value="0" />
-	    <moveTo who="tony" pos="490,220" />
+	    <moveTo who="tony" pos="490,220" unstoppable="true" />
 	    <angle who="tony" value="3"/>
 	    <wait value="30" />
 	    <speak who="emissaire" text="echange.emissaire2" />
 	    <speak who="tony" text="echange.tony5" />
 	    <speak who="emissaire" text="echange.emissaire3" />
 	    <speak who="tony" text="echange.tony6" />
-	    <moveTo who="tony" pos="455,220" />
+	    <moveTo who="tony" pos="455,220" unstoppable="true" />
 	    <angle who="tony" value="2" />
 	    <wait value="10" />
     	    <animation pos="447,234" type="STAR_CIRCLE" />
@@ -631,8 +631,8 @@
     	    <spawn type="PRINCESS_BUNNY" who="roxy_bunny" pos="447,231" />
 	    <wait value="10" />
 	    <actions>
-		    <moveTo who="tony" pos="0,-5" delta="true" backward="true"/>
-		    <moveTo who="emissaire" pos="0,6" delta="true" backward="true"/>
+		    <moveTo who="tony" pos="0,-5" delta="true" unstoppable="true" backward="true"/>
+		    <moveTo who="emissaire" pos="0,6" delta="true" unstoppable="true" backward="true"/>
 	    </actions>
 	    <speak who="emissaire" text="echange.emissaire5" />
 	    <moveTo who="roxy_bunny" pos="420,240" unstoppable="true"/>
@@ -759,7 +759,7 @@
 		<speak who="king" text="visit1.king.10"/>
 		<speak who="zildo" text="visit1.zildo.4"/>
 		<speak who="king" text="visit1.king.11"/>
-		<moveTo who="zildo" pos="0,48" delta="true"/>
+		<moveTo who="zildo" pos="440,336"/>
 		<focus who="zildo" unblock="true" delta="true"/>
 	</scene>
 	
