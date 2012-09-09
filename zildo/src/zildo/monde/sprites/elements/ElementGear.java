@@ -63,20 +63,20 @@ public class ElementGear extends Element {
 			case CAVE_KEYDOOR:
 				int keys = p_perso.getCountKey();
 				if (keys != 0) {
-					acting = true;
-					EngineZildo.soundManagement.broadcastSound(
-							BankSound.ZildoUnlock, this);
-					p_perso.setCountKey(--keys);
-
-					// Trigger door
-					Area map = EngineZildo.mapManagement.getCurrentMap();
-					String mapName = map.getName();
 					// Get the map coordinates in front of Zildo (with his
 					// angle)
 					int axx = (int) p_perso.x / 16 + p_perso.angle.coords.x;
 					int ayy = (int) p_perso.y / 16 + p_perso.angle.coords.y;
+					Area map = EngineZildo.mapManagement.getCurrentMap();
 					ChainingPoint ch = map.getCloseChainingPoint(axx, ayy);
 					if (ch != null) {
+						acting = true;
+						EngineZildo.soundManagement.broadcastSound(
+								BankSound.ZildoUnlock, this);
+						p_perso.setCountKey(--keys);
+	
+						// Trigger door
+						String mapName = map.getName();
 						EngineZildo.scriptManagement.openDoor(mapName, ch);
 					}
 				}
