@@ -93,7 +93,7 @@ public class AreaChecker {
 		// Chaining points
 		String mess="";
 		final List<Case> errorCases = new ArrayList<Case>();
-		for (ChainingPoint ch : area.getListPointsEnchainement()) {
+		for (ChainingPoint ch : area.getChainingPoints()) {
 			if (ch.isBorder() || ch.isVertical()) {
 				continue;
 			}

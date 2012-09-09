@@ -196,7 +196,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 				int centerY = (2*p.y1 + p.y2) / 2;
 				int arrowX = 1 + ch.getComingAngle().coords.x * 32;
 				int arrowY = 1 + ch.getComingAngle().coords.y * 32;
-				ortho.box(centerX - shift.x, centerY - shift.y, arrowX, arrowY, 0, col);
+				ortho.box(centerX - shift.x - 1, centerY - shift.y -1, arrowX + 1, arrowY + 1, 0, col);
 			}
 
 			
