@@ -29,6 +29,7 @@ import org.w3c.dom.Element;
 import zildo.client.sound.BankSound;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.items.ItemKind;
+import zildo.monde.map.Area;
 import zildo.monde.quest.QuestEvent;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Angle;
@@ -188,6 +189,11 @@ public class TriggerElement extends AnyElement {
 		case INVENTORY:
 			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 			return zildo != null && zildo.hasItem(ItemKind.fromString(name)) == !not;
+		case LOCATION:
+			Area map = EngineZildo.mapManagement.getCurrentMap();
+			if (map != null && !isLocationSpecific() && name.equals(EngineZildo.mapManagement.getCurrentMap().getName())) {
+				return true;
+			}
 		default:
 			return done;
 		}

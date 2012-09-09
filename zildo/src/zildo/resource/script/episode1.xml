@@ -279,6 +279,7 @@
 	
 	<quest name="bosquet_still_gard" repeat="true">
 	    <trigger>
+	        <location name="bosquet"/>
 	        <dialog name="maltus" num="1"/>
 	        <questDone name="!bosquet_kill_gards"/>
 	    </trigger>
@@ -289,10 +290,11 @@
 	<quest name="bosquet_free_way">
 	    <trigger>
 	        <location name="bosquet"/>
-	        <dialog name="maltus" num="1" immediate="true"/>
+	        <dialog name="maltus" num="1"/>
 	        <questDone name="bosquet_kill_gards"/>
 	    </trigger>
 	    <action>
+	        <markQuest name="trip_polaky" value="true"/>
 			<exec script="bosquet_duo"/>
 	    </action>
 	</quest>
@@ -300,7 +302,7 @@
 	<quest name="polaky_without_maltus" repeat="true">
 		<trigger>
 		    <location name="polaky" pos="566,955" radius="2"/>
-		    <questDone name="!bosquet_free_way"/>
+		    <questDone name="!trip_polaky"/>
 		</trigger>
 		<action>
 		    <speak who="zildo" text="bosquet.zildo.wait"/>
