@@ -26,7 +26,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -40,6 +42,8 @@ import javax.swing.table.TableColumn;
 
 import zeditor.core.selection.ChainingPointSelection;
 import zeditor.windows.managers.MasterFrameManager;
+import zildo.fwk.ZUtils;
+import zildo.fwk.ZUtils.Conditioner;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
@@ -57,7 +61,7 @@ public class ChainingPointPanel extends JPanel {
 	ChainingPointTableModel model;
 	private final String[] columnNames = new String[] { "Carte", "Vertical",
 			"Bord", "Single", "Angle", "", "" };
-	private final int[] columnSizes = { 80, 40, 40, 40, 20, 50, 50 };
+	private final int[] columnSizes = { 70, 40, 40, 40, 50, 40, 50 };
 
 	MasterFrameManager manager;
 
@@ -136,8 +140,18 @@ public class ChainingPointPanel extends JPanel {
 		model = new ChainingPointTableModel(p_points, columnNames);
 		pointsList.setModel(model);
 
+		// Set angle combo
+		TableColumn buttonColumn = pointsList.getColumnModel().getColumn(4);
+		JComboBox comboActions = new JComboBox(ZUtils.getValues(Angle.class, new Conditioner<Angle>() {
+			@Override
+			public boolean accept(Angle a) {
+				return !a.isDiagonal();
+			}
+		}));
+		buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));		
+
 		// Set buttons
-		TableColumn buttonColumn = pointsList.getColumnModel().getColumn(5);
+		buttonColumn = pointsList.getColumnModel().getColumn(5);
 		buttonColumn.setCellRenderer(new ChainingPointCellRenderer(
 				new AbstractAction("X", null) {
 					@Override
@@ -264,7 +278,7 @@ public class ChainingPointPanel extends JPanel {
 						ch.setSingle((Boolean) getValueAt(row, col));
 						break;
 					case 4: // angle
-						ch.setComingAngle((Angle) getValueAt(row, col));
+						ch.setComingAngle(Angle.valueOf( (String) getValueAt(row, col)));
 						break;
 					}
 				}
