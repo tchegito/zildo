@@ -22,6 +22,7 @@ package zildo.monde.quest.actions;
 
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
+import zildo.client.gui.menu.StartMenu;
 import zildo.client.stage.CreditStage;
 import zildo.client.stage.SinglePlayer;
 import zildo.fwk.gfx.filter.FilterEffect;
@@ -71,6 +72,7 @@ public class GameOverAction extends ActionDialog {
             client.askStage(new CreditStage());
 		} else {
 			ClientEngineZildo.soundPlay.stopMusic();
+			client.handleMenu(new StartMenu());
 		}
 	}
 
