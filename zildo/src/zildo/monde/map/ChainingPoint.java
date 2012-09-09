@@ -154,33 +154,6 @@ public class ChainingPoint implements EasySerializable {
 		return false;
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// getAngle
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// IN : x,y (pixel coordinates in range 0..63*16,0..63*16
-	// /////////////////////////////////////////////////////////////////////////////////////
-	public Angle getAngle(int x, int y, Angle startAngle) {
-		Angle angle = startAngle;
-		if (border && (px == 0 || px == EngineZildo.mapManagement.getCurrentMap().getDim_x() - 1)) {
-			// Vertical border
-			if (x % 16 > 8) {
-				angle = Angle.EST;
-			} else {
-				angle = Angle.OUEST;
-			}
-		} else if (border) {
-			// Horizontal one
-			if ((y % 16) > 8) {
-				angle = Angle.SUD;
-			} else {
-				angle = Angle.NORD;
-			}
-		}
-
-		// Return the 'computed' angle
-		return angle;
-	}
-
 	public boolean isBorder() {
 		return border;
 	}

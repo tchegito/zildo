@@ -46,6 +46,14 @@ public class ZUtils {
 	public static int randomRange(int p_range) {
 		return (int) (p_range * Math.random()) - (p_range / 2);
 	}
+
+	public static <T extends Enum<T>>  Object[] getValues(Class<T> p_content) {
+		return getValues(p_content, null);
+	}
+	
+	public static abstract class Conditioner<T> {
+		public abstract boolean accept(T obj);
+	}
 	
 	/**
 	 * Return an array of string, representing the text to be displayed in a combo, for a given enum type.
@@ -53,11 +61,13 @@ public class ZUtils {
 	 * @param p_content
 	 * @return String[]
 	 */
-	public static <T extends Enum<T>>  Object[] getValues(Class<T> p_content) {
+	public static <T extends Enum<T>>  Object[] getValues(Class<T> p_content, Conditioner<T> p_cond) {
 		List<String> str=new ArrayList<String>();
 		T[] enumConst=p_content.getEnumConstants();
 		for (T mvt : enumConst) {
-			str.add(mvt.name());
+			if (p_cond == null || p_cond.accept(mvt)) {
+				str.add(mvt.name());
+			}
 		}
 		return str.toArray(new String[]{});
 	}

@@ -436,8 +436,7 @@ public class MapManagement {
 			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 
 			// 1/3 : angle
-			mapScrollAngle = p_changingMapPoint.getAngle((int) zildo.getX(),
-					(int) zildo.getY(), zildo.getAngle());
+			mapScrollAngle = p_changingMapPoint.getComingAngle().opposite();
 			zildo.setAngle(mapScrollAngle);
 			int orderX = p_changingMapPoint.getOrderX();
 			int orderY = p_changingMapPoint.getOrderY();
@@ -493,36 +492,24 @@ public class MapManagement {
 					zildo.setX(zx - 8);
 					zildo.setY(zy + 8);
 				}
-				Angle a = mapScrollAngle;
+				Angle a = chPointTarget.getComingAngle();
 				int movedX = (int) zx;
 				int movedY = (int) zy;
-				// We will try 2 different angles. Usually Zildo gets in and out
-				// with the same angle.
-				// But stairs are always north to north.
-				for (int i = 0; i < 2; i++) {
-					movedX = (int) zx;
-					movedY = (int) zy;
-					switch (a) {
-					case NORD:
-						movedY -= 16;
-						break;
-					case EST:
-						movedX += 16;
-						movedY += 4;
-						break;
-					case SUD:
-						movedY += 16;
-						break;
-					case OUEST:
-						movedX -= 32;
-						movedY += 4;
-						break;
-					}
-					if (collide(2 * movedX - (int) zx, 2 * movedY - (int) zy, zildo)) {
-						a = Angle.rotate(a, 2);
-					} else {
-						break;
-					}
+				switch (a) {
+				case NORD:
+					movedY -= 16;
+					break;
+				case EST:
+					movedX += 16;
+					movedY += 4;
+					break;
+				case SUD:
+					movedY += 16;
+					break;
+				case OUEST:
+					movedX -= 32;
+					movedY += 4;
+					break;
 				}
 				changingMapPoint = chPointTarget;
 				zildo.setAngle(a);

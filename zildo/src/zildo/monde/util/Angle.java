@@ -66,6 +66,11 @@ public enum Angle {
 			return fromInt(val+4);
 		}
 	}
+	
+	public Angle opposite() {
+		return Angle.rotate(this, 2);
+	}
+	
 	static public Angle fromInt(int val) {
 		for (Angle a : Angle.values()) {
 			if (a.value == val) {
