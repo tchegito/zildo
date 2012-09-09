@@ -287,7 +287,7 @@ public class Area implements EasySerializable {
 		} else if (candidates.size() > 0) {
 			// More than one possibility : we must be on a map corner
 			for (ChainingPoint ch : candidates) {
-				Angle chAngle = ch.getAngle((int) x, (int) y, p_angle);
+				Angle chAngle = ch.getComingAngle().opposite();
 				if (chAngle == p_angle) {
 					return ch;
 				}
