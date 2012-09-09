@@ -386,14 +386,13 @@ public class Client {
 			stage.endGame();
 		}
 		
-		ClientEngineZildo.mapDisplay.setCurrentMap(null);
 		ClientEngineZildo.guiDisplay.clearGui();
 		ClientEngineZildo.spriteDisplay.clearSprites();
 		ClientEngineZildo.ortho.setFilteredColor(new Vector3f(1, 1, 1));
 		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(1, 1, 1));
 		ClientEngineZildo.filterCommand.restoreFilters();
 		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
-		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(true, true);
+		ClientEngineZildo.mapDisplay.reset();
 		connected = false;
 	}
 	

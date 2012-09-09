@@ -196,4 +196,14 @@ public class MapDisplay {
 	public void setPreviousMap(Area p_previousMap) {
 		previousMap = p_previousMap;
 	}
+	
+	/**
+	 * Reset map display, when game is over.
+	 */
+	public void reset() {
+		setCurrentMap(null);
+		foreBackController.setDisplaySpecific(true, true);
+		targetCamera = null;
+		scrollingAngle = null;
+	}
 }
