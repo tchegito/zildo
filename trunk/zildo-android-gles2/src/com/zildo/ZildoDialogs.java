@@ -73,6 +73,7 @@ public class ZildoDialogs {
         @Override
         public void onClick(View v) {
         	String result = editText.getText().toString();
+        	result = result.replaceAll(System.getProperty("line.separator"), "");
         	if (result != null && result.length() >= 1) {
             	// Append to the item menu string builder
             	for (int i=0;i<result.length();i++) {

@@ -161,6 +161,7 @@ public class Game implements EasySerializable {
             byte indexSel = 0;
             if (!p_legacy) {
                 heroName = URLDecoder.decode(p_buffer.readString(), "UTF-8");
+                heroName = heroName.replaceAll(System.getProperty("line.separator"), "");
                 indexSel = p_buffer.readByte();
             }
            
