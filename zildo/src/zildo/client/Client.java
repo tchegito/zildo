@@ -339,11 +339,16 @@ public class Client {
 	}
 
 	public boolean isMusic() {
-		return music;
+		return music && Zildo.soundEnabled;
 	}
 
 	public void setMusic(boolean music) {
 		this.music = music;
+		if (!music) {
+			ClientEngineZildo.soundPlay.disableMusic();
+		} else {
+			ClientEngineZildo.soundPlay.enableMusic();
+		}
 	}
 	
 	public void setOpenGLGestion(OpenGLGestion glGestion) {

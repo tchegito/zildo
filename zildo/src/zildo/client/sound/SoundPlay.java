@@ -47,12 +47,16 @@ public class SoundPlay {
 	// ////////////////////////////////////////////////////////////////////
 
 	SoundEngine soundEngine;
+	// Store the current music, in case when player enable/disable music
+	BankMusic currentMusic;
+	boolean musicEnabled;
 	
 	public SoundPlay(SoundEngine soundEngine) {
 
 		this.soundEngine = soundEngine;
 		tabSounds.clear();
 		loadAllSoundFX();
+		musicEnabled = Zildo.soundEnabled;
 	}
 
 	public void cleanUp() {
@@ -155,13 +159,28 @@ public class SoundPlay {
 	 */
 	public void playMapMusic(Area p_map) {
 		BankMusic mus = ClientEngineZildo.ambient.getMusicForMap(p_map);
-		playSoundFX(mus);
+		currentMusic = mus;
+		if (musicEnabled) {
+			playSoundFX(mus);
+		}
 	}
 
 	public void playMusic(BankMusic p_mus) {
-		playSoundFX(p_mus);
+		currentMusic = p_mus;
+		if (musicEnabled) {
+			playSoundFX(p_mus);
+		}
 	}
 
+	public void disableMusic() {
+		stopMusic();
+		musicEnabled = false;
+	}
+	public void enableMusic() {
+		musicEnabled = true;
+		playMusic(currentMusic);
+	}
+	
 	public void stopMusic() {
 		BankMusic mus = ClientEngineZildo.ambient.getCurrentMusic();
 		stopSoundFX(mus);

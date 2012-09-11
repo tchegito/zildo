@@ -45,9 +45,11 @@ public class OptionsMenu extends Menu {
 
 			@Override
 			public void run() {
-				music = !music;
-				client.setMusic(music);
-				setText(getMusicString());
+				if (Zildo.soundEnabled) {
+					music = !music;
+					client.setMusic(music);
+					setText(getMusicString());
+				}
 				client.handleMenu(currentMenu);
 			}
 
