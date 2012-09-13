@@ -22,6 +22,7 @@ package com.zildo;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.AttributeSet;
 
 class OpenGLES20SurfaceView extends GLSurfaceView {
 	
@@ -30,10 +31,18 @@ class OpenGLES20SurfaceView extends GLSurfaceView {
     
         // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
-        
-		
     }
     
+
+    /**
+     * Standard View constructor. In order to render something, you
+     * must call {@link #setRenderer} to register a renderer.
+     */
+    public OpenGLES20SurfaceView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        setEGLContextClientVersion(2);
+    }
+
 	public void setViewRenderer(Renderer renderer) {
     	// Set the Renderer for drawing on the GLSurfaceView
         super.setRenderer(renderer);        	

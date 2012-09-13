@@ -44,6 +44,9 @@ public class OpenGLRenderer implements Renderer {
 	public OpenGLRenderer(Client client, TouchListener touchListener) {
 		this.client = client;
 		this.touchListener = touchListener;
+
+		// When this class is recreated and there was a previous context, we need to reinitialize the ID
+		//GLUtils.resetTexId();
 	}
 	
 	@Override

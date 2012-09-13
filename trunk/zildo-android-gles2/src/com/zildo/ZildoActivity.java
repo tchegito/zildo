@@ -9,7 +9,6 @@ import zildo.fwk.ZUtils;
 import zildo.fwk.ui.EditableItemMenu;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -22,10 +21,11 @@ import android.view.WindowManager;
 
 public class ZildoActivity extends Activity {
 	
-	TouchListener touchListener;
-	public static AudioManager mgr;
-	static Handler handler;
+	static TouchListener touchListener = null;
+	static Handler handler = null;
 	OpenGLES20SurfaceView view;
+	static ClientThread clientThread;
+	static OpenGLRenderer renderer;
 	
 	ZildoDialogs zd;
 	
@@ -67,10 +67,14 @@ public class ZildoActivity extends Activity {
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        view = new OpenGLES20SurfaceView(this);
-
-        // Display splash screen
-        view.setBackgroundResource(R.drawable.splashscreen480320);
+        setContentView(R.layout.main);
+       	view = (OpenGLES20SurfaceView) findViewById(R.id.glsurfaceview);
+	    
+        if (clientThread == null) {
+        	clientThread = new ClientThread();
+	    	// Display splash screen
+	    	view.setBackgroundResource(R.drawable.splashscreen480320);
+        }
 
         // Initialize platform dependent
         PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;
@@ -81,47 +85,53 @@ public class ZildoActivity extends Activity {
         AndroidReadingFile.assetManager = assetManager;
         AndroidReadingFile.context = getBaseContext();
 
-        ClientThread clientThread = new ClientThread();
-        
-        Client client = clientThread.getClient();
-        
-        touchListener = new TouchListener(client);
-        
+    	client = clientThread.getClient();
+    
+    	if (touchListener == null) {
+    		touchListener = new TouchListener(client);
+    	}
+    	
      // Get phone resolution
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         Zildo.screenX = metrics.widthPixels;
         Zildo.screenY = metrics.heightPixels;
         
-   		view.setViewRenderer(new OpenGLRenderer(client, touchListener));
+        if (renderer == null) {
+        	renderer = new OpenGLRenderer(client, touchListener);
+        }
+        
+   		view.setViewRenderer(renderer);
    		view.setOnTouchListener(touchListener);
    		
-   		clientThread.start();
-   		
-   		mgr = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-	    
-        setContentView(view);
+   		if (!clientThread.isAlive()) {
+   			clientThread.start();
+   		}	    
         
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         
         
-        createDialogs();
-
-        handler = new SplashHandler(view, zd);
-
+        if (zd == null) {
+        	createDialogs();
+        }
+        if (handler == null) {
+        	handler = new SplashHandler(view, zd);
+        }
+        
     }
     
 
     @Override
     protected void onStop() {
     	super.onStop();
-    	view.onPause();
     }
     
     @Override
     protected void onPause() {
     	super.onPause();
-    	view.onPause();
+    	if (view != null) {
+    		view.onPause();
+    	}
     }
     
     @Override
@@ -137,14 +147,17 @@ public class ZildoActivity extends Activity {
     	touchListener.pressBackButton();
     }
     
-    class ClientThread extends Thread {
+	static Client client;
+
+	class ClientThread extends Thread {
     	
-    	Client client;
     	
     	boolean ready = false;
     	
     	public ClientThread() {
-    		client = new Client(true);
+    		if (client == null) {
+    			client = new Client(true);
+    		}
     	}
     	
     	@Override
