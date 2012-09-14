@@ -70,6 +70,9 @@ public class InGameMenu extends Menu {
 			@Override
 			public void run() {
 				client.quitGame();
+				
+				client.handleMenu(new StartMenu());
+				
 			}
 		});
 
