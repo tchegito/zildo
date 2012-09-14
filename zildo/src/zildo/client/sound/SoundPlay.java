@@ -32,12 +32,15 @@ import zildo.fwk.opengl.SoundEngine;
 import zildo.monde.WaitingSound;
 import zildo.monde.map.Area;
 
-// SoundManagement.cpp: implementation of the SoundManagement class.
-//
-// V1.00: -load a bank of sound, defined in SoundManagement.h
-//        -play sample on demand,without additional parameters.
-//////////////////////////////////////////////////////////////////////
-
+/**
+ * SoundPlay : common engine for all platforms.
+ * 
+ * Note: it seems that there is too much methods to do the same thing (playSoundFX, playMusic,
+ * playMapMusic ...). Maybe a small refactor should be planned.
+ * 
+ * @author Tchegito
+ *
+ */
 public class SoundPlay {
 
 	private Map<AudioBank, Sound> tabSounds = new HashMap<AudioBank, Sound>();
@@ -146,7 +149,12 @@ public class SoundPlay {
 				if (!sound.isSoundFX && sound.name == null) {
 					stopMusic();
 				} else {
-					playSoundFX(sound.name);
+					if (!sound.isSoundFX) {
+						currentMusic = (BankMusic) sound.name;
+					}
+					if (sound.isSoundFX || musicEnabled) {
+						playSoundFX(sound.name);
+					}
 				}
 			}
 		}
