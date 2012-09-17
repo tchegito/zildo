@@ -119,12 +119,7 @@ public class SaveGameMenu extends PageableMenu {
 			});
 		}
 
-		items.add(new ItemMenu("global.back") {
-			@Override
-			public void run() {
-				client.handleMenu(previousMenu);
-			}
-		});
+		// Back button is handled by the PageableMenu
 		setMenu(items.toArray(new ItemMenu[] {}));
 	}
 

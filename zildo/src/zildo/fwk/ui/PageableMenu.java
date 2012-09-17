@@ -50,6 +50,9 @@ public class PageableMenu extends Menu {
 			// Too much items => get a sublist, and add a 'next page' item
 			currentPage = 0;
 			initCurrentPage();
+			
+			// Display number of items in title
+			super.setTitle(title + " ("+p_items.length+")");
 		} else if (p_items.length > 0){
 			init();
 		}
@@ -84,6 +87,15 @@ public class PageableMenu extends Menu {
 				}
 			});
 		}
+		
+		// Back button
+		items.add(new ItemMenu("global.back") {
+			@Override
+			public void run() {
+				client.handleMenu(previousMenu);
+			}
+		});
+		
 		init();
 
 	}
