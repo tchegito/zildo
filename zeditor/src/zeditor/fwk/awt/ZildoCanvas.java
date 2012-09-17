@@ -44,7 +44,6 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
-import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.EntityType;
@@ -89,6 +88,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 			SelectionKind kind=sel.getKind();
 			switch (kind) {
 				case TILES:
+					if (getMode() == ZEditMode.TILE_ROTATE_EDIT) {
+						reverseTile(p);
+						break;
+					}
 				case PREFETCH:
 					drawBrush(p, (TileSelection) sel);
 					break;
@@ -121,31 +124,14 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	public void reverseTile(Point p) {
 		Selection sel = manager.getSelection();
 		// Default kind is TILES
-		SelectionKind kind=sel == null ? SelectionKind.TILES : sel.getKind();
+		if (sel == null) {
+			return;
+		}
+		SelectionKind kind=sel.getKind();
 		switch (kind) {
 		case TILES:
 			Area map = EngineZildo.mapManagement.getCurrentMap();
-			Case theCase = map.get_mapcase(p.x/16, p.y/16 + 4);
-			Tile tile;
-			switch (mask) {
-			case 0:
-				tile = theCase.getBackTile();
-				break;
-			case 1:
-				tile =theCase.getBackTile2();
-				break;
-			case 2:
-				tile = theCase.getForeTile();
-				break;
-			default:
-				throw new RuntimeException("Value "+mask+" is wrong for mask !");
-			}
-			if (tile != null) {
-				if (tile.reverse == null) {
-					tile.reverse = Reverse.NOTHING;
-				}
-				tile.reverse = tile.reverse.succ();
-			}
+			((TileSelection)sel).reverse(map, new zildo.monde.util.Point(p.x, p.y), mask);
 			break;
 		}
 	}
