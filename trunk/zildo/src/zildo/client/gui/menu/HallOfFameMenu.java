@@ -19,12 +19,14 @@
  */
 package zildo.client.gui.menu;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import zildo.fwk.net.www.WorldRegister;
+import zildo.fwk.net.www.WorldRegister.GoogleQuotaException;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.PageableMenu;
@@ -45,10 +47,25 @@ public class HallOfFameMenu extends PageableMenu {
 		items = new ArrayList<ItemMenu>();
 		
 		// Ask internet server about the champions
-		final List<Champion> champions = WorldRegister.getChampions();
-		if (champions == null) {
-			items.add(new UnselectableItemMenu("m10.internet.out") { });
+		String messageError = null;
+		List<Champion> champions = null;
+		try {
+			champions = WorldRegister.getChampions();
+		} catch (GoogleQuotaException e) {
+			messageError = "m10.internet.quota";
+		} catch (UnknownHostException e) {
+			messageError = "m10.internet.out";
+		}
+		if (messageError != null) {
+			items.add(new UnselectableItemMenu(messageError) { });
 			setTitle("");
+			// Back button
+			items.add(new ItemMenu("global.back") {
+				@Override
+				public void run() {
+					client.handleMenu(previousMenu);
+				}
+			});
 		} else {
 			// Sort champions
 			Collections.sort(champions, new Comparator<Champion>() {

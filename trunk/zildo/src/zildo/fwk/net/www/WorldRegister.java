@@ -28,6 +28,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +52,11 @@ public class WorldRegister extends Thread {
 	private final static String serverServlet = "srv";
 	private final static String charset = "UTF-8";
 
+	@SuppressWarnings("serial")
+	public static class GoogleQuotaException extends Exception {
+		
+	}
+	
 	private Deque<NetMessage> messages = new ArrayDeque<NetMessage>();
 
 	public void askMessage(NetMessage p_message, boolean p_asynchronous) {
@@ -100,11 +106,11 @@ public class WorldRegister extends Thread {
 	}
 
 	/**
-	 * Returns all registered champion on Zildo server.
+	 * Returns all registered champions on Zildo server.
 	 * NULL as returned value means that internet connection doesn't work.
 	 * @return List<Champion>
 	 */
-	public static List<Champion> getChampions() {
+	public static List<Champion> getChampions()  throws GoogleQuotaException, UnknownHostException {
 		List<Champion> hall = new ArrayList<Champion>();
 		try {
 			StringBuilder request = new StringBuilder();
@@ -134,9 +140,15 @@ public class WorldRegister extends Thread {
 			in.close();
 
 			return hall;
+		} catch (IOException e) {
+			// Is this an error due to appengine quota ?
+			if (e.getMessage() != null && e.getMessage().indexOf("500") >= 0) {
+				throw new GoogleQuotaException();
+			}
 		} catch (Exception e) {
-			return null;
+			// Nothing to do in this block
 		}
+		throw new UnknownHostException();
 	}
 	
 	@Override
