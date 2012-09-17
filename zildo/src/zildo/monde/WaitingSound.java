@@ -48,6 +48,7 @@ public class WaitingSound implements EasySerializable {
 		location = p_location;
 		client = p_client;
 		broadcast = p_broadcast;
+		isSoundFX = p_name instanceof BankSound;
 	}
 
 	@Override
