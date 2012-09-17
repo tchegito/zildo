@@ -77,7 +77,6 @@ public class SpriteCollision {
 	}
 	
 	public void initFrame(List<SpriteEntity> entities) {
-		int nbRecensed = 0;
 		for (SpriteEntity entity : entities) {
 			boolean isElement = entity.getEntityType().isElement();
 			if ((isElement || entity.getEntityType().isEntity()) 
@@ -103,7 +102,6 @@ public class SpriteCollision {
 						addPatch(entity);
 						indexSpr.set(id, loc);
 					}
-					nbRecensed++;
 				}
 			}
 		}
