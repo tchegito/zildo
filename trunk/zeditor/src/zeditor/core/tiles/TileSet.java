@@ -55,6 +55,8 @@ public class TileSet extends ImageSet {
 		// Construction du pont de correspondance
 		bridge = new CorrespondanceGifDec();
 
+		// Default selection : tile 1x1 sized
+		currentSelection = new TileSelection(1, 1, null);
 	}
 
 	private Image getTileNamed(String p_name) {

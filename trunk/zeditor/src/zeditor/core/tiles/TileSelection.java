@@ -7,6 +7,8 @@ import zeditor.core.selection.CaseSelection;
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
+import zildo.monde.map.Tile;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.util.Point;
 
 /**
@@ -162,6 +164,43 @@ public class TileSelection extends CaseSelection {
 		}
 	}
 
+	/**
+	 * Modifiy 'reverse' attribute for a set of tile, at 'p' location, with the current size.
+	 * @param map
+	 * @param p
+	 * @param p_mask
+	 */
+	public void reverse(Area map, Point p, int p_mask) {
+			for (int h = 0; h < height; h++) {
+				for (int w = 0; w < width; w++) {
+					Case item =  map.get_mapcase(p.x/16 + w, p.y/16 + h + 4);
+					if (item != null) {
+						Tile tile;
+						switch (p_mask) {
+						case 0:
+							tile = item.getBackTile();
+							break;
+						case 1:
+							tile = item.getBackTile2();
+							break;
+						case 2:
+							tile = item.getForeTile();
+							break;
+						default:
+							throw new RuntimeException("Value "+p_mask+" is wrong for mask !");
+						}
+						if (tile != null) {
+							if (tile.reverse == null) {
+								tile.reverse = Reverse.NOTHING;
+							}
+							tile.reverse = tile.reverse.succ();
+						}
+						item.setModified(true);
+					}
+				}
+			}
+			
+	}
 	@Override
 	public List<Case> getElement() {
 		return items;
