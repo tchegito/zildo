@@ -396,6 +396,7 @@
 			<wait value="20"/>
 			<moveTo who="zildo" pos="0,0" delta="true"/>
 			<exec script="echange"/>
+			<exec script="ep1_closure"/>
 		</action>
 	</quest>
 	
@@ -563,10 +564,10 @@
 	    <focus who="emissaire"/>
 	    <fadeIn type="5"/>
 	    <speak what="camera" text="echange.p1" unblock="true"/>
- 	    <moveTo pos="935,187" who="emissaire"/>
- 	    <moveTo pos="860,233" who="emissaire"/>
-	    <moveTo pos="688,326" who="emissaire"/>
-	    <moveTo pos="544,326" who="emissaire"/>
+ 	    <moveTo pos="935,187" who="emissaire" unstoppable="true"/>
+ 	    <moveTo pos="860,233" who="emissaire" unstoppable="true"/>
+	    <moveTo pos="688,326" who="emissaire" unstoppable="true"/>
+	    <moveTo pos="544,326" who="emissaire" unstoppable="true"/>
 	    <wait value="20" />
 	    <angle who="emissaire" value="0"/>
 	    <wait value="5" />
@@ -644,6 +645,9 @@
 	    <speak who="emissaire" text="echange.emissaire6" />
 	    <moveTo who="zildo" pos="0,24" delta="true" speed="1" unstoppable="true"/>
 	    <moveTo who="zildo" pos="-16,0" delta="true" unstoppable="true"/>
+	</scene>
+
+	<scene id="ep1_closure">
 	    <focus who="zildo" delta="true"/>
 	    <!--  End of episode 1 -->
 	    <wait value="200"/>
@@ -656,9 +660,9 @@
 	    <wait value="50"/>
 	    <fadeIn type="0"/>
 	    <speak who="camera" text="game.endEpisode1.end"/>
-	    <end type="0"/>
+	    <end type="0"/>	
 	</scene>
-	
+	    	
 	<scene id="enlevementScene" restoreZildo="true">
 	    <music name="Angoisse"/>
 	    <clear/>
