@@ -52,7 +52,7 @@ public class ScriptReader {
 	            DocumentBuilder sxb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 	
 	            // Load the stream
-	            String filename = "zildo/resource/script/"+scriptName;
+	            String filename = "zildo/resource/script/"+scriptName+".xml";
 	            InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
 	            if (stream == null) {
 	            	stream = ScriptReader.class.getClassLoader().getResourceAsStream(filename);
