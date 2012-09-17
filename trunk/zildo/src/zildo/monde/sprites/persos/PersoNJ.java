@@ -572,6 +572,20 @@ public class PersoNJ extends Perso {
 				reverse = (reverse == Reverse.HORIZONTAL) ? Reverse.NOTHING : Reverse.HORIZONTAL;
 			}
 			break;
+		case FOX:
+			add_spr = angle.value * 2;
+			if (angle == Angle.EST) {
+				reverse = Reverse.HORIZONTAL;
+			} else {
+				reverse = Reverse.NOTHING;
+				if (angle == Angle.OUEST) {
+					add_spr = 2;
+				}
+			}
+			if (angle.isHorizontal()) {
+				//add_spr +=
+			}
+			
 		default:
 			add_spr = angle.value * 2 + (getPos_seqsprite() % (4 * Constantes.speed)) / (2 * Constantes.speed);
 			break;
