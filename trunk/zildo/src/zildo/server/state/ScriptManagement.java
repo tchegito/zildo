@@ -73,7 +73,7 @@ public class ScriptManagement {
 
     public ScriptManagement() {
         // Load adventure
-        adventure=(AdventureElement) ScriptReader.loadScript("common.xml", "episode1.xml");
+        adventure=(AdventureElement) ScriptReader.loadScript("common", "episode1", "episode2");
 
         scriptExecutor=new ScriptExecutor();
         
