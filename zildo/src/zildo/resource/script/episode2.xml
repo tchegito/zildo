@@ -1,0 +1,8 @@
+<adventure>
+	<scene id="intro_episode2">
+		<fadeOut type="0"/>
+		<text speak=""/>
+		<exec script="echange"/>
+		<focus who="zildo" delta="true"/>
+	</scene>    
+</adventure>
