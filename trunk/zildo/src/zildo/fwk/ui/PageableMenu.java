@@ -53,7 +53,14 @@ public class PageableMenu extends Menu {
 			
 			// Display number of items in title
 			super.setTitle(title + " ("+p_items.length+")");
-		} else if (p_items.length > 0){
+		} else if (items != null) { //if (p_items.length > 0){
+			// Back button
+			items.add(new ItemMenu("global.back") {
+				@Override
+				public void run() {
+					client.handleMenu(previousMenu);
+				}
+			});
 			init();
 		}
 	}

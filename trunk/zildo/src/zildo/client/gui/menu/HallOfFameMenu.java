@@ -59,13 +59,6 @@ public class HallOfFameMenu extends PageableMenu {
 		if (messageError != null) {
 			items.add(new UnselectableItemMenu(messageError) { });
 			setTitle("");
-			// Back button
-			items.add(new ItemMenu("global.back") {
-				@Override
-				public void run() {
-					client.handleMenu(previousMenu);
-				}
-			});
 		} else {
 			// Sort champions
 			Collections.sort(champions, new Comparator<Champion>() {
