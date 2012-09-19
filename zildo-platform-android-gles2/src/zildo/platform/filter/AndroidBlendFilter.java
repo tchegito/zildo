@@ -78,7 +78,7 @@ public class AndroidBlendFilter extends BlendFilter {
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
 
 		// Draw texture
-		shaders.setCurrentShader(GLShaders.blendFilter);
+		shaders.setCurrentShader(GLShaders.pixelateFilter);
 		shaders.setBlendSquareSize(currentSquareSize);
 		super.render();
 		shaders.setCurrentShader(GLShaders.textured);

@@ -44,7 +44,7 @@ public class Shaders {
 		// Basic one (flat and textured)
 		uniColor, textured,
 		// Filters
-		blendFilter, circleFilter,
+		pixelateFilter, circleFilter,
 		// Specific for guards, and wounded enemies
 		switchColor, wounded;
 		
@@ -172,8 +172,8 @@ public class Shaders {
 	
 	private void specificShaders() {
 		switch (current) {
-			case blendFilter:
-				GLES20.glUniform1i(current.getUniform("squareSize"), squareSize);
+			case pixelateFilter:
+				GLES20.glUniform1f(current.getUniform("squareSize"), squareSize);
 				break;
 			case circleFilter:
 				GLES20.glUniform1i(current.getUniform("radius"), radius);
