@@ -46,10 +46,9 @@ import zildo.monde.Champion;
  */
 public class WorldRegister extends Thread {
 
-	private final static String url = "http://legendofzildo.appspot.com";
+	public static String url = "http://legendofzildo.acemod.fr/index.php";
 	private final static String displayServerServlet = "displayServers";
-	private final static String displayChampionServlet = "displayChampions";
-	private final static String serverServlet = "srv";
+	private final static String displayChampionServlet = "command=LIST_CH";
 	private final static String charset = "UTF-8";
 
 	@SuppressWarnings("serial")
@@ -114,8 +113,8 @@ public class WorldRegister extends Thread {
 		List<Champion> hall = new ArrayList<Champion>();
 		try {
 			StringBuilder request = new StringBuilder();
-			request.append(url).append("/").append(displayChampionServlet);
-			request.append("?ingame=1");
+			request.append(url).append("?").append(displayChampionServlet);
+			request.append("&ingame=1");
 			URL objUrl = new URL(request.toString());
 			URLConnection urlConnect = objUrl.openConnection();
 
@@ -170,7 +169,7 @@ public class WorldRegister extends Thread {
 	private boolean sendRequest(Command p_command, ServerInfo p_serverInfo) {
 		try {
 			StringBuilder request = new StringBuilder();
-			request.append(url).append("/").append(serverServlet);
+			request.append(url);
 			request.append("?command=").append(p_command.toString());
 			if (p_serverInfo != null) {
 				request.append("&name=").append(
@@ -206,7 +205,7 @@ public class WorldRegister extends Thread {
 	public boolean registerChampion(Champion ch) {
 		try {
 			StringBuilder request = new StringBuilder();
-			request.append(url).append("/").append(serverServlet);
+			request.append(url);
 			request.append("?command=REG_CH");
 
 			request.append("&name=").append(URLEncoder.encode(ch.playerName, charset));
@@ -226,7 +225,7 @@ public class WorldRegister extends Thread {
 			int result = reader.read();
 			in.close();
 
-			return result == 48; // ASCII code of '0'
+			return result == -1; // ASCII code of '0'
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
