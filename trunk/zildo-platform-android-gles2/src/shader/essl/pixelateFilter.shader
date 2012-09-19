@@ -7,21 +7,21 @@ uniform mat4 uMVPMatrix;		// Ortho matrix
 varying mediump vec2 vTexCoord;
 
 void main(){
-	gl_Position = uMVPMatrix * vec4(vPosition, 0.0, 1.0);
+	gl_Position = uMVPMatrix * vec4(vPosition.x, vPosition.y, 0.0, 1.0);
 	vTexCoord=TexCoord;
 }
 
 [FRAGMENT]
 precision mediump float;
 uniform sampler2D sTexture;
-uniform int squareSize;
+uniform float squareSize;
 
 varying mediump vec2 vTexCoord;
 
 void main(){
-	int dx = int(vTexCoord.x * 256.0 / float(squareSize));
-	int dy = int(vTexCoord.y * 256.0 / float(squareSize*2));
-	mediump float tx = float(dx * squareSize) / 256.0;
-	mediump float ty = float(dy * squareSize*2) / 256.0;
+	float dx = floor(vTexCoord.x * 256.0 / squareSize);
+	float dy = floor(vTexCoord.y * 256.0 / (squareSize*2.0));
+	float tx = dx * squareSize / 256.0;
+	float ty = (dy * squareSize * 2.0) / 256.0;
 	gl_FragColor = texture2D(sTexture, vec2(tx, ty) );
 }
