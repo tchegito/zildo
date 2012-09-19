@@ -29,6 +29,7 @@ import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +52,8 @@ public class WorldRegister extends Thread {
 	private final static String displayChampionServlet = "command=LIST_CH";
 	private final static String charset = "UTF-8";
 
+	static Charset utf8 = Charset.forName(charset);
+	
 	@SuppressWarnings("serial")
 	public static class GoogleQuotaException extends Exception {
 		
@@ -120,7 +123,7 @@ public class WorldRegister extends Thread {
 
 			InputStream in = urlConnect.getInputStream();
 			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(in));
+					new InputStreamReader(in, utf8));
 			while (true) {	// reader.ready() doesn't work on Android
 				// 4 line per champion
 				String name = reader.readLine();
@@ -210,14 +213,14 @@ public class WorldRegister extends Thread {
 
 			request.append("&name=").append(URLEncoder.encode(ch.playerName, charset));
 			
-			request.append("&episode=").append(URLEncoder.encode(ch.episodeName, charset));
+			request.append("&episode=").append(ch.episodeName);
 			request.append("&hq=").append(ch.heartQuarter);
 			request.append("&money=").append(ch.money);
 			request.append("&timeSpent=").append(ch.timeSpent);
 			
 			URL objUrl = new URL(request.toString());
 			URLConnection urlConnect = objUrl.openConnection();
-
+			
 			// Add server infos
 			InputStream in = urlConnect.getInputStream();
 			BufferedReader reader = new BufferedReader(
@@ -225,7 +228,7 @@ public class WorldRegister extends Thread {
 			int result = reader.read();
 			in.close();
 
-			return result == -1; // ASCII code of '0'
+			return result == 48; // ASCII code of '0'
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
