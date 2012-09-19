@@ -259,6 +259,7 @@ public class FilterCommand {
 	}
 	
 	public void addDefaultFilters() {
+		removeAll();
 		addFilter(Zildo.pdPlugin.getFilter(BilinearFilter.class));
 		addFilter(Zildo.pdPlugin.getFilter(CloudFilter.class));
 		addFilter(Zildo.pdPlugin.getFilter(BlurFilter.class));
