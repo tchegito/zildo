@@ -359,14 +359,20 @@ public class PersoNJ extends Perso {
 						} else if (quel_deplacement == MouvementPerso.BEE) {
 							angle = Angle.fromInt(angle.value & 2);
 						}
+						// Does character reach his destination ?
+						if (pathFinder.getTarget() == null) {
+							pos_seqsprite = 0;
+						}
+
 						if (!quel_deplacement.isFlying() && mouvement!=MouvementZildo.SAUTE) {
 							// Collision ?
 							if (hasCollided) {
 								this.setX(sx);
 								this.setY(sy);
 								pathFinder.collide();
+								pos_seqsprite = 0;
 							} else {
-								this.setPos_seqsprite((getPos_seqsprite() + 1) % 512);
+								pos_seqsprite = (pos_seqsprite + 1) % 512;
 							}
 						}
 					}
@@ -382,7 +388,7 @@ public class PersoNJ extends Perso {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void initPersoFX() {
-		if (desc == PersoDescription.GARDE_CANARD) { // Guard
+		if (desc == PersoDescription.GARDE_CANARD || desc == PersoDescription.FOX) { // Guard
 			String str = getEffect() != null ? getEffect() : getName();
 			if ("jaune".equals(str)) {
 				setSpecialEffect(EngineFX.GUARD_YELLOW);
@@ -582,9 +588,24 @@ public class PersoNJ extends Perso {
 					add_spr = 2;
 				}
 			}
-			if (angle.isHorizontal()) {
-				//add_spr +=
+			if (pos_seqsprite != 0) {
+				int vr;
+				if (angle.isHorizontal()) {
+					vr = (pos_seqsprite % (4 * Constantes.speed)) / (2 * Constantes.speed);
+				} else {
+					vr = (pos_seqsprite % (8 * Constantes.speed)) / (2 * Constantes.speed);
+					reverse = Reverse.NOTHING;
+					if (vr >= 2) {
+						vr-=2;
+						reverse = Reverse.HORIZONTAL;
+					}
+				}
+				add_spr+=vr;
 			}
+			//if (angle.isHorizontal()) {
+				//add_spr +=
+			//}
+			break;
 			
 		default:
 			add_spr = angle.value * 2 + (getPos_seqsprite() % (4 * Constantes.speed)) / (2 * Constantes.speed);
