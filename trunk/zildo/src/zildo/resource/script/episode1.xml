@@ -377,7 +377,7 @@
 	<quest name="promenade_block" repeat="true">
 	    <trigger>
 	        <location name="promenade" pos="70,40" radius="1"/>
-			<questDone name="!echange"/>	        
+			<questDone name="!trig_echange"/>	        
 	    </trigger>
 	    <action>
 	        <speak who="zildo" text="promenade.zildo.block"/>
@@ -396,7 +396,7 @@
 			<wait value="20"/>
 			<moveTo who="zildo" pos="0,0" delta="true"/>
 			<exec script="echange"/>
-			<exec script="ep1_closure"/>
+			<exec script="intro_episode2"/>
 		</action>
 	</quest>
 	

@@ -112,7 +112,7 @@ public class SpriteBank {
 			nSprite++;
 		}
 		
-		toModif = name.equals("pnj.spr");
+		toModif = name.equals("pnj.spr") || name.equals("pnj2.spr");
 	}
 	
 	public SpriteModel get_sprite(int nspr)
@@ -124,11 +124,23 @@ public class SpriteBank {
 	public long modifyPixel(int nSpr, int color)
 	{
 		long toaff=-1;
-		if (toModif && nSpr>=20 && nSpr<=34) {
-			if (color == 198) {
-				toaff=0xff + (127 << 24);
-			} else if (color == 199) {
-				toaff=0xff00 + (127 << 24);
+		if (toModif) {
+			if (name.equals("pnj.spr")) {
+				if (nSpr>=20 && nSpr<=34) {
+					if (color == 198) {
+						toaff = 0xff + (127 << 24);
+					} else if (color == 199) {
+						toaff = 0xff00 + (127 << 24);
+					}
+				}
+			} else { // name = pnj2.spr
+				if (nSpr>=(244-128) && nSpr<=(249-128)) {
+					if (color == 171) {
+						toaff = 0xff + (127 << 24);
+					} else if (color == 172) {
+						toaff = 0xff00 + (127 << 24);
+					}
+				}
 			}
 		}
 		return toaff;

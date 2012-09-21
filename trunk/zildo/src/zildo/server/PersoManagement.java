@@ -31,6 +31,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoBat;
 import zildo.monde.sprites.persos.PersoFireThing;
+import zildo.monde.sprites.persos.PersoFox;
 import zildo.monde.sprites.persos.PersoGarde;
 import zildo.monde.sprites.persos.PersoGardeVert;
 import zildo.monde.sprites.persos.PersoHen;
@@ -191,6 +192,9 @@ public class PersoManagement {
 				break;
 			case RAT:
 				perso = new PersoRat();
+				break;
+			case FOX:
+				perso = new PersoFox();
 				break;
 			case ZILDO:
 				perso = new PersoZildo(x, y, null);
