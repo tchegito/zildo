@@ -298,7 +298,8 @@ public class PersoNJ extends Perso {
 					pathFinder.setTarget(null);
 					destinationReached();
 				}
-				if (!isGhost() && info == PersoInfo.ENEMY && !isAlerte()) {
+				if (!isGhost() && info == PersoInfo.ENEMY && !isAlerte() &&
+						quel_deplacement != MouvementPerso.IMMOBILE) {
 					setAlerte(lookForZildo(angle));
 				}
 				if (this.getAttente() != 0) {
