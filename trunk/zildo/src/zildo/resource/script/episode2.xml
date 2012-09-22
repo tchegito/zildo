@@ -12,7 +12,18 @@
             <wait value="20"/>
             <moveTo who="tony" pos="0,-100" delta="true"/>
             <remove who="tony"/>
+            <script who="bunny" value="8"/>
         </action>
+    </quest>
+    
+    <quest name="vert_seen">
+    	<trigger>
+    	    <location name="voleurs" pos="592,850" radius="1"/>
+    	</trigger>
+    	<action>
+    	    <moveTo who="vert" pos="-30,0" delta="true"/>
+    	    <moveTo who="vert" pos="-2,-60" unblock="true"/>
+    	</action>    
     </quest>
     
     <mapScript>
@@ -22,16 +33,49 @@
 	    	<spawn type="BANDIT_VERT" speed="1.3" pos="935,369" angle="0" who="tony"/>
 	    	<script who="bunny" value="3"/>
 	    </condition>
+	    <condition name="voleurs" exp="!vol">
+	        <pos who="vert" pos="32,0" foreground="true" delta="true"/>
+	    </condition>
 	</mapScript>
 
 	<scene id="intro_episode2">
 		<fadeOut type="0"/>
-		<speak text="zz"/>
 		<!--  Preambule => remove for release -->
-	    <pos who="zildo" pos="561,145"/>
-	    <spawn who="emissaire" pos="455,250" type="GARDE_CANARD" angle="3"/>
+		<map name="promenade2"/>
+	    <pos who="zildo" pos="561,193"/>
+	    <spawn who="emissaire" pos="455,250" fx="jaune" type="GARDE_CANARD" angle="3"/>
 	    <spawn who="tony" type="BANDIT_VERT" pos="455,220" angle="3"/>
-		<focus who="zildo" delta="true"/>
+		<focus who="emissaire"/>
+	    <fadeIn type="1"/>
+	    <!--  Real scene -->
+	    <moveTo who="tony" pos="32,2" delta="true" unstoppable="true" speed="2"/>
+	    <actions>
+		    <angle who="emissaire" value="1"/>
+		    <angle who="zildo" value="2"/>
+		    <speak who="emissaire" text="echange.ep2.emissaire1"/>
+		    <moveTo who="tony" pos="96,96" delta="true" unstoppable="true" />
+	    </actions>
+   	    <actions>
+   	    	<moveTo who="tony" pos="60,0" delta="true" unstoppable="true" />
+   	       	<moveTo who="emissaire" pos="4,6" delta="true"/>
+   	    </actions>
+	    <remove who="tony"/>
+	    <moveTo who="zildo" pos="0,8" delta="true"/>
+	    <wait value="10"/>
+	    <moveTo who="emissaire" pos="-8,2" delta="true"/>
+	    <wait value="10"/>
+	    <moveTo who="emissaire" pos="2,0" delta="true"/>
+	    <wait value="20"/>
+	    <speak who="emissaire" text="echange.ep2.emissaire"/>
+	    <actions>
+	        <moveTo who="zildo" pos="-8,4" delta="true"/>
+			<speak who="zildo" text="echange.ep2.zildo"/>
+	    </actions>
+		<speak who="emissaire" text="echange.ep2.emissaire2"/>
+		<actions>
+		    <focus who="zildo" delta="true"/>
+		    <moveTo who="emissaire" pos="-42,2" delta="true" speed="0.5"/>
+		</actions>
 	</scene>
 	
 </adventure>

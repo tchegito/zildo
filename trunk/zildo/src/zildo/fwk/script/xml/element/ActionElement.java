@@ -51,6 +51,7 @@ public class ActionElement extends AnyElement {
 									// should be added to current location
 	public boolean unstoppable = false; // TRUE=no collision for this movement
 										// (for 'moveTo')
+	public boolean foreground = false;	// Is sprite/perso on foreground?
 	public ActionKind kind;
 	public Point location;
 	public String text;
@@ -83,6 +84,7 @@ public class ActionElement extends AnyElement {
 		unblock = isTrue("unblock");
 		speed = Float.valueOf("0" + p_elem.getAttribute("speed"));
 		unstoppable = isTrue("unstoppable");
+		foreground = isTrue("foreground");
 		// Read less common ones
 		String strPos = p_elem.getAttribute("pos");
 		String strAngle = p_elem.getAttribute("angle");

@@ -162,8 +162,9 @@ public abstract class Perso extends Element {
 		if (p_updatePathFinder) {
 			Point target = pathFinder.getTarget();
 			switch (p_script) {
-			case ZONE:
 			case IMMOBILE:
+				setAlerte(false);
+			case ZONE:
 				pathFinder = new PathFinder(this);
 				pathFinder.setTarget(null);
 				break;

@@ -113,6 +113,9 @@ public class ActionExecutor {
                     if (perso != null) {
                         perso.x = location.x;
                         perso.y = location.y;
+                        if (p_action.foreground) {
+                        	perso.setForeground(true);
+                        }
                     } else if ("camera".equals(p_action.what)) {
                         ClientEngineZildo.mapDisplay.setCamera(location);
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
@@ -133,6 +136,9 @@ public class ActionExecutor {
                         perso.setSpeed(p_action.speed);
                         perso.setOpen(p_action.open);
                         perso.setUnstoppable(p_action.unstoppable);
+                        if (p_action.foreground) {
+                        	perso.setForeground(true);
+                        }
                     } else if ("camera".equals(p_action.what)) {
                         ClientEngineZildo.mapDisplay.setTargetCamera(location);
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
