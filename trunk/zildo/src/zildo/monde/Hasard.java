@@ -52,6 +52,15 @@ public class Hasard {
 	}
 
 	/**
+	 * Returns a number between -p_range/2 and p_range/2.
+	 * 
+	 * @param p_range
+	 * @return int
+	 */
+	static public float intervalle(float p_range) {
+		return (float) (Math.random() * p_range) - (p_range / 2.0f);
+	}
+	/**
 	 * Returns an integer n where 0 <= n < max.
 	 * 
 	 * @param max

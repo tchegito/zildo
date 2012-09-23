@@ -290,4 +290,8 @@ public abstract class Ortho {
 	public void setFilteredColor(Vector3f filtered) {
 		this.filteredColor = filtered;
 	}
+	
+	public boolean isNight() {
+		return filteredColor == Ortho.NIGHT_FILTER;
+	}
 }

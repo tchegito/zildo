@@ -22,7 +22,7 @@
     	</trigger>
     	<action>
     	    <moveTo who="vert" pos="-30,0" delta="true"/>
-    	    <moveTo who="vert" pos="-2,-60" unblock="true"/>
+    	    <moveTo who="vert" pos="-2,-60" delta="true" unblock="true"/>
     	</action>    
     </quest>
     
@@ -36,6 +36,10 @@
 	    <condition name="voleurs" exp="!vol">
 	        <pos who="vert" pos="32,0" foreground="true" delta="true"/>
 	    </condition>
+   		<condition name="voleurs" exp="!fini_voleur">
+			<filter type="2"/>
+			<music name="Nuit"/>
+		</condition>
 	</mapScript>
 
 	<scene id="intro_episode2">

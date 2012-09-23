@@ -30,6 +30,7 @@ import java.util.Map;
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
+import zildo.monde.Hasard;
 import zildo.monde.collision.PersoCollision;
 import zildo.monde.collision.SpriteCollision;
 import zildo.monde.sprites.Reverse;
@@ -47,9 +48,11 @@ import zildo.monde.sprites.elements.ElementClouds;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.elements.ElementHearts;
+import zildo.monde.sprites.elements.ElementLauncher;
 import zildo.monde.sprites.elements.ElementSmoke;
 import zildo.monde.sprites.elements.ElementStaffs;
 import zildo.monde.sprites.elements.ElementStars;
+import zildo.monde.sprites.elements.ElementThrown;
 import zildo.monde.sprites.elements.ElementStars.StarKind;
 import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
@@ -337,6 +340,21 @@ public class SpriteManagement extends SpriteStore {
 				element = new ElementHearts(x, y);
 				spawnSprite(element);
 				break;
+			case ROCKBALL:
+				element = new ElementThrown(Angle.EST, x, y, 15, 2.9f, null) {
+				    @Override
+				    public void animate() {
+				        super.animate();
+				    }					
+				};
+				element.vy = Hasard.intervalle(0.2f);
+				element.vz = 1.2f;
+				element.az = -0.1f;
+				//element.fx = 0.01f;
+				element.setDesc(ElementDescription.ROCK_BALL);
+				element.setForeground(true);
+				spawnSprite(element);
+				break;
 			case STAFF_POUM:
 			    	element = new ElementStaffs(x, y);
 			    	spawnSprite(element);
@@ -384,6 +402,10 @@ public class SpriteManagement extends SpriteStore {
 		}
 		if (!p_foreground && elemDesc != null && elemDesc.isWeapon()) {
 			entity = new ElementWeapon(x, y);
+		} else if (desc == ElementDescription.LAUNCHER1) {
+			entity = new ElementLauncher(x, y);
+			entity.setAjustedX(x);
+			entity.setAjustedY(y);
 		} else if (desc.getBank() == SpriteBank.BANK_GEAR) {
 			entity = new ElementGear(x, y);
 			entity.setAjustedX(x);

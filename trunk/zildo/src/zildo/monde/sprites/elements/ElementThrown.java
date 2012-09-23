@@ -47,7 +47,8 @@ public abstract class ElementThrown extends Element {
     public ElementThrown(Angle p_angle, int p_startX, int p_startY, int p_startZ, float p_speed, Perso p_shooter) {
         x = p_startX;
         y = p_startY;
-
+        z = p_startZ;
+        
         if (p_shooter != null) {
         	relativeZ=EngineZildo.mapManagement.getCurrentMap().readAltitude((int) p_shooter.x/16, (int) p_shooter.y/16);
         } else {
