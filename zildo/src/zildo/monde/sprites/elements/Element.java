@@ -307,7 +307,7 @@ public class Element extends SpriteEntity {
 		}
 		if (isSolid() || flying) {// Tous les sprites n'entrent pas en collision
 			// On teste la collision avec le décor
-			if (nSpr == 42) {
+			if (false && nSpr == 42) {
 				// Collision avec Zildo}
 				z = z - vz;
 				/*

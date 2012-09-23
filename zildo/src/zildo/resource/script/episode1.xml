@@ -469,11 +469,13 @@
 		    <remove who="maltus"/>
 		    <script who="sofiasky" value="0"/>
 		</condition>
-		<condition name="promenade" exp="!echange">
+		<condition name="promenade" exp="!fini_voleur">
 			<filter type="2"/>
+			<music name="Nuit"/>
 		</condition>
-		<condition name="promenade2" exp="!echange">
+		<condition name="promenade2" exp="!fini_voleur">
 			<filter type="2"/>
+			<music name="Nuit"/>
 		</condition>
 		<condition name="polakyg" exp="tonneau_polakyg">
 		    <pos what="barrel1" pos="0,16" delta="true"/>

@@ -20,6 +20,7 @@
 
 package zildo.client.sound;
 
+import zildo.client.ClientEngineZildo;
 import zildo.monde.map.Area;
 
 /**
@@ -78,7 +79,11 @@ public class Ambient {
 	
 	public BankMusic getMusicForMap(Area p_map) {
 		Atmosphere atm=p_map.getAtmosphere();
-		return atm.music;
+		if (ClientEngineZildo.ortho.isNight()) {
+			return BankMusic.Nuit;
+		} else {
+			return atm.music;
+		}
 	}
 	
 	public BankMusic getCurrentMusic() {

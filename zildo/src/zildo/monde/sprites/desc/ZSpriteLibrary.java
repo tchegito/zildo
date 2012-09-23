@@ -85,7 +85,7 @@ public class ZSpriteLibrary {
 			case EXPLOSMOKE3:
 			case QUAD2:	case QUAD3: case QUAD4: case QUAD5:
 			case QUAD6:	case QUAD7: case QUAD8:
-				
+			case LAUNCHER2:
 				break;
 			default:
 				list.add(desc);

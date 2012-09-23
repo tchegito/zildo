@@ -80,7 +80,9 @@ public enum ElementDescription implements SpriteDescription {
 	// 165
 	CASTLE_RED_FLAG, CASTLE_BLUE_FLAG, CASTLE_WINDOW, STATUE, DOOR_OPEN1, DOOR_OPEN2,
 	// 171
-	CEMETERY_DOOR, CARPET;
+	CEMETERY_DOOR, CARPET,
+	// 173
+	LAUNCHER1, LAUNCHER2;
 
 	public int getBank() {
 		return SpriteBank.BANK_ELEMENTS;
