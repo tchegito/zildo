@@ -28,6 +28,7 @@ import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
+import org.newdawn.slick.openal.SoundStore;
 
 import zildo.fwk.opengl.Sound;
 import zildo.resource.Constantes;
@@ -52,9 +53,14 @@ public class LwjglSound extends Sound {
 		File file=new File(Constantes.DATA_PATH + p_filename);
 		
 		try {
-			InputStream stream=new FileInputStream(file);
-			snd = AudioLoader.getAudio(format, stream);
+			System.out.println(p_filename);
 			music = "OGG".equals(format);
+			if (music) {
+				snd = SoundStore.get().getOggStream(Constantes.DATA_PATH+p_filename);
+			} else {
+				InputStream stream=new FileInputStream(file);
+				snd = AudioLoader.getAudio(format, stream);
+			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
