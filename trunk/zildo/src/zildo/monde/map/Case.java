@@ -147,7 +147,21 @@ public class Case implements EasySerializable {
 			// L'eau dans les grottes/palais
 				if (motif==78)
 					motif=78+(compteur_animation / 20);
+				else if (motif == 217) {	// Lava
+					if (compteur_animation >=40) {
+						motif = 219;
+					} else if (compteur_animation >=20) {
+						motif = 218;
+					}
+				} else if( motif == 230) {
+					if (compteur_animation >=40) {
+						motif = 232;
+					} else if (compteur_animation >=20) {
+						motif = 231;
+					}
+				}
 				break;
+				
 	
 			case 5:
 				// FORET3.DEC animation d'eau supplémentaire

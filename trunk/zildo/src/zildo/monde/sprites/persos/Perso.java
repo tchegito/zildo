@@ -626,6 +626,13 @@ public abstract class Perso extends Element {
 		case 228+512: case 229+512: case 230+512:	// Stairs
 			slowDown = true;
 			break;
+		// Falls
+		case 768+215: case 768+216: case 768+224: case 768+225: case 768+226: case 768+227: case 768+228: // grotte
+		case 1536+198: // foret4
+			if (isZildo()) {
+				mouvement = MouvementZildo.TOMBE;
+			}
+			break;
 		}
 		if (repeatSound) {
 			if (count > 15) {
