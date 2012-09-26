@@ -84,9 +84,12 @@ public class AreaChecker {
 		}
 	}
 
-	final static Point[] mustBeMasked = new Point[] { new Point(-1, 0), new Point(0, 0), new Point(1, 0), new Point(2, 0),
+	final static Point[] vertical_mustBeMasked = new Point[] { new Point(-1, 0), new Point(0, 0), new Point(1, 0), new Point(2, 0),
 			new Point(0, 1), new Point(1, 1),
 			new Point(0, 2), new Point(1, 2) };
+	
+	final static Point[] horizontal_mustBeMasked = new Point[] { new Point(0, -1), new Point(1, -1), new Point(0, 0), new Point(1, 0),
+		new Point(0, 1), new Point(1, 1) };
 	
 	private void checkChainingPointsUncovered() {
 		MapManagement mapManagement = EngineZildo.mapManagement;
@@ -94,13 +97,22 @@ public class AreaChecker {
 		String mess="";
 		final List<Case> errorCases = new ArrayList<Case>();
 		for (ChainingPoint ch : area.getChainingPoints()) {
-			if (ch.isBorder() || ch.isVertical()) {
+			Point[] mustBeMasked;
+			int x = ch.getPx();
+			int y = ch.getPy();
+			if (ch.isBorder()) {
 				continue;
+			} else if (ch.isVertical()) {
+				mustBeMasked = horizontal_mustBeMasked;
+				x -= 3;
+			} else {
+				mustBeMasked = vertical_mustBeMasked;
+				// Ok we got an horizontal one => find the walkable side
+				y += 2;
 			}
-			// Ok we got an horizontal one => find the walkable side
-			int y = ch.getPy() + 2;
 			int factor = 1;
-			if (!mapManagement.collide(ch.getPx() * 16, y * 16, null)) {
+			
+			if (!area.isOutside(x, y) && !mapManagement.collide(x * 16, y * 16, null)) {
 				//System.out.print("Chaining point haut=>bas");
 			} else {
 				//System.out.print("Chaining point bas=>haut");
@@ -110,7 +122,7 @@ public class AreaChecker {
 
 			// Check all expected tiles
 			
-			for (Point p : mustBeMasked) {
+			for (Point p : vertical_mustBeMasked) {
 				Point toCheck = new Point(ch.getPx() + p.x, ch.getPy() + p.y
 						* factor);
 				if (!area.isOutside(toCheck.x << 4, toCheck.y << 4)) {

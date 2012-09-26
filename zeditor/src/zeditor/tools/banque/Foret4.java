@@ -112,7 +112,9 @@ public class Foret4 extends Banque {
 				/* Buche creuse */
 				new Point(208, 112),
 				/* Wood stairs */
-				new Point(272, 128)
+				new Point(272, 128),
+				/* Hole in the ground */
+				new Point(304, 112)
 		};
 
 		pkmChanges = Arrays.asList(new GraphChange[] {new GraphChange("exteria8", 0, 0)});

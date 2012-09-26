@@ -25,6 +25,7 @@ import zildo.client.IRenderable;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Vector4f;
 import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
@@ -194,9 +195,15 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 				// Draw coming angle
 				int centerX = (2*p.x1 + p.x2) / 2;
 				int centerY = (2*p.y1 + p.y2) / 2;
-				int arrowX = 1 + ch.getComingAngle().coords.x * 32;
-				int arrowY = 1 + ch.getComingAngle().coords.y * 32;
-				ortho.box(centerX - shift.x - 1, centerY - shift.y -1, arrowX + 1, arrowY + 1, 0, col);
+				Angle coming = ch.getComingAngle();
+				if (coming != Angle.NULL) {
+					int arrowX = 1 + coming.coords.x * 32;
+					int arrowY = 1 + coming.coords.y * 32;
+					ortho.box(centerX - shift.x - 1, centerY - shift.y -1, arrowX + 1, arrowY + 1, 0, col);
+				} else {
+					// Angle is null => chaining point is a landing position
+					ortho.boxv(centerX - shift.x - 24, centerY - shift.y - 12, 48, 24, 0, col);
+				}
 			}
 
 			

@@ -77,6 +77,7 @@ public class ChainingPointPanel extends JPanel {
 					public void actionPerformed(ActionEvent actionevent) {
 						ChainingPoint ch = new ChainingPoint();
 						ch.setMapname("nouveau");
+						ch.setComingAngle(Angle.NORD); // Default : north
 						EngineZildo.mapManagement.getCurrentMap()
 								.addChainingPoint(ch);
 						manager.updateChainingPoints(null);
@@ -278,7 +279,7 @@ public class ChainingPointPanel extends JPanel {
 						ch.setSingle((Boolean) getValueAt(row, col));
 						break;
 					case 4: // angle
-						ch.setComingAngle(Angle.valueOf( (String) getValueAt(row, col)));
+						ch.setComingAngle(Angle.valueOf((String) getValueAt(row, col)));
 						break;
 					}
 				}
