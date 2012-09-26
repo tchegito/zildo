@@ -79,6 +79,7 @@ public class ActionExecutor {
      * @param p_action
      * @return boolean
      */
+    //TODO: refactor the 'pos' and 'moveTo' which have a lot in common
     public boolean render(ActionElement p_action) {
         boolean achieved = false;
         if (p_action.waiting) {
@@ -111,8 +112,14 @@ public class ActionExecutor {
             switch (p_action.kind) {
                 case pos:
                     if (perso != null) {
-                        perso.x = location.x;
-                        perso.y = location.y;
+                    	if (location != null) {
+                    		perso.x = location.x;
+                    		perso.y = location.y;
+                    	}
+                    	if (p_action.z != -1) {
+                    		perso.z = p_action.z;
+                    		perso.az=-0.1f;
+                    	}
                         if (p_action.foreground) {
                         	perso.setForeground(true);
                         }
@@ -121,8 +128,13 @@ public class ActionExecutor {
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
                     } else {
                     	Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
-                    	elem.x = location.x;
-                    	elem.y = location.y;
+                    	if (location != null) {
+                    		elem.x = location.x;
+                    		elem.y = location.y;
+                    	}
+                    	if (p_action.z != -1) {
+                    		elem.z = p_action.z;
+                    	}
                     	// TODO:the 'pushable' attribute shouldn't be set by this default way
                     	elem.setPushable(false);
                     }

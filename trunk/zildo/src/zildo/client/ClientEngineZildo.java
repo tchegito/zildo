@@ -256,10 +256,6 @@ public class ClientEngineZildo {
 				case CHANGINGMAP_ASKED :
 					// Changing map : 1/3 we launch the fade out
 					retEvent.effect = FilterEffect.BLEND;
-					// Call Circle filter to focus on Zildo
-					zildo = EngineZildo.persoManagement.getZildo();
-					zildoPos=zildo.getCenteredScreenPosition();
-					Zildo.pdPlugin.getFilter(CircleFilter.class).setCenter(zildoPos.x, zildoPos.y);
 				case FADE_OUT :
 					retEvent.nature = ClientEventNature.FADING_OUT;
 					guiDisplay.fadeOut(retEvent.effect);
@@ -267,6 +263,8 @@ public class ClientEngineZildo {
 				case FADING_OUT :
 					if (guiDisplay.isFadeOver()) {
 						retEvent.nature = ClientEventNature.FADEOUT_OVER;
+					} else {
+						circleOnZildo();
 					}
 					break;
 				case CLEAR:
@@ -295,9 +293,7 @@ public class ClientEngineZildo {
 						retEvent.mapChange = false;
 					} else {
 						// Call Circle filter to focus on Zildo
-						zildo = EngineZildo.persoManagement.getZildo();
-						zildoPos=zildo.getCenteredScreenPosition();
-						Zildo.pdPlugin.getFilter(CircleFilter.class).setCenter(zildoPos.x, zildoPos.y);
+						circleOnZildo();
 					}
 					break;
 				case CHANGINGMAP_SCROLL_ASKED :
@@ -336,6 +332,15 @@ public class ClientEngineZildo {
 		return retEvent;
 	}
 
+	/**
+	 * Call Circle filter to focus on Zildo.
+	 */
+	private void circleOnZildo() {
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+		Point zildoPos=zildo.getCenteredScreenPosition();
+		Zildo.pdPlugin.getFilter(CircleFilter.class).setCenter(zildoPos.x, zildoPos.y);		
+	}
+	
 	public static void cleanUp() {
 		filterCommand.cleanUp();
 		pixelShaders.cleanUp();

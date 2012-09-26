@@ -275,6 +275,9 @@ public class Area implements EasySerializable {
 		List<ChainingPoint> candidates = new ArrayList<ChainingPoint>();
 		if (listChainingPoint.size() != 0) {
 			for (ChainingPoint chPoint : listChainingPoint) {
+				if (chPoint.getComingAngle() == Angle.NULL) {
+					continue;	// This point is only a landing position
+				}
 				// Area's borders
 				border = isAlongBorder((int) x, (int) y);
 				if (chPoint.isCollide(ax, ay, border)) {

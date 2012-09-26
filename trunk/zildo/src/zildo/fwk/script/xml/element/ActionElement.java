@@ -58,6 +58,7 @@ public class ActionElement extends AnyElement {
 	public int val;
 	public int reverse;
 	public int rotation;
+	public int z;	// Z coordinate for location
 	public float speed;
 	public boolean activate;
 	
@@ -114,8 +115,11 @@ public class ActionElement extends AnyElement {
 			open = isTrue("open");
 		case pos:
 			// Position
-			location = Point.fromString(strPos);
+			if (!strPos.isEmpty()) {
+				location = Point.fromString(strPos);
+			}
 			delta = isTrue("delta");
+			z = readInt("z", -1);
 			break;
 		case script:
 			text = readAttribute("text");
