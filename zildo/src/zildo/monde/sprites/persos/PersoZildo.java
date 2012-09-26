@@ -815,6 +815,9 @@ public class PersoZildo extends Perso {
 		case MORT:
 			setNSpr(ZildoDescription.LAYDOWN.getNSpr());
 			break;
+		case TOMBE:
+			setNSpr(ZildoDescription.FALLING.getNSpr());
+			break;
 		}
 
 		if (outfit != null && nBank == SpriteBank.BANK_ZILDO) {

@@ -77,13 +77,10 @@ public enum ZildoDescription implements SpriteDescription {
 	BOW_DOWN1, BOW_DOWN2, BOW_DOWN3,
 	BOW_LEFT1, BOW_LEFT2, BOW_LEFT3,
 	
-	// 119
+	// 120
 	DIRT1, DIRT2, DIRT3,	// feet in dirt
 	
-	LAYDOWN;
-	
-	
-	
+	LAYDOWN, FALLING;
 	
 	
 	public int getBank() {
