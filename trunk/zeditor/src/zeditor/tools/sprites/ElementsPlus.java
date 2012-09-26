@@ -201,7 +201,9 @@ public class ElementsPlus extends SpriteBanque {
 				// Cemetery's door
 				new Zone(44, 39, 8, 22),
 				// Carpet
-				new Zone(18, 145, 8, 8)
+				new Zone(18, 145, 8, 8),
+				// Thief Launcher
+				new Zone(35, 71, 8, 7), new Zone(44, 71, 8, 9)
 		};
 	}
 }

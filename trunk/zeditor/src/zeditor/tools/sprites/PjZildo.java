@@ -9,7 +9,8 @@ public class PjZildo extends SpriteBanque {
 
 	public PjZildo() {
 		zones=new Zone[] {
-				new Zone(87, 0, 24, 15)
+				//new Zone(87, 0, 24, 15),
+				new Zone(49, 24, 22, 21)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
