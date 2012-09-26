@@ -137,9 +137,9 @@ public class PersoZildo extends Perso {
 								// returning TRUE)
 
 		shadow = new Element(this);
-		shadow.setNBank(SpriteBank.BANK_ZILDO);
-		shadow.setNSpr(103);
-
+		shadow.setNBank(SpriteBank.BANK_ELEMENTS);
+		shadow.setNSpr(2);
+		
 		feet = new Element(this);
 		feet.setNBank(SpriteBank.BANK_ZILDO);
 		feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
@@ -635,8 +635,6 @@ public class PersoZildo extends Perso {
 
 			shadow.setX(posShadowJump.x); // (float) (xx-ax)); //-6;)
 			shadow.setY(posShadowJump.y); // (float) (yy-ay)-3);
-			shadow.setNSpr(2);
-			shadow.setNBank(SpriteBank.BANK_ELEMENTS);
 			shadow.setZ(0);
 			shadow.setVisible(true);
 			shield.setVisible(false);
@@ -646,6 +644,22 @@ public class PersoZildo extends Perso {
 		case FIERTEOBJET:
 			nSpr = ZildoDescription.ARMSRAISED.ordinal();
 			yy++;
+			break;
+		case TOMBE:
+			xx-=4;
+			shadow.setVisible(true);
+			shadow.setX(x);
+			shadow.setY(y);
+			shadow.setZ(0);
+			if (z > 0) {
+				z+=vz;
+				vz+=az;
+			} else if (az != 0) {
+				z=0;
+				az=0;
+				mouvement = MouvementZildo.VIDE;
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
+			}
 			break;
 		case MORT:
 			yy+=9;

@@ -48,9 +48,11 @@ public class ElementLauncher extends Element {
 		} else if (count == 0) {
 			// Look for Zildo
 			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-			if (zildo.x > x && zildo.x <= x+RANGEX &&
-				zildo.y >= (y-RANGEY / 2) && zildo.y <= (y+RANGEY)) {
-				firing = DELAY;
+			if (zildo != null) {
+				if (zildo.x > x && zildo.x <= x+RANGEX &&
+					zildo.y >= (y-RANGEY / 2) && zildo.y <= (y+RANGEY)) {
+					firing = DELAY;
+				}
 			}
 		} else {
 			count--;

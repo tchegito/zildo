@@ -31,6 +31,7 @@ import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.ChainingPoint.MapLink;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 import zildo.server.state.ScriptManagement;
@@ -143,6 +144,9 @@ public class EngineZildo {
 						state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_ASKED);
 					} else {
 						switch (linkType) {
+						case PIT:
+							EngineZildo.scriptManagement.execute("fallPit");
+							break;
 						case STAIRS_CORNER_RIGHT:
 							EngineZildo.scriptManagement.execute("stairsUpCornerRight");
 							break;
@@ -205,27 +209,33 @@ public class EngineZildo {
 	                } else {
 	                	// Do the right animation when Zildo came on the new map
 	                	ChainingPoint ch = mapManagement.getChainingPoint();
-						MapLink linkType=MapLink.REGULAR;
-						if (ch != null) {
-							linkType=ch.getLinkType();
-						}
-						switch (linkType) {
-							case STAIRS_CORNER_LEFT:
-								EngineZildo.scriptManagement.execute("stairsUpCornerLeftEnd");
-								retEvent.nature=ClientEventNature.SCRIPT;
-								break;
-							case STAIRS_CORNER_RIGHT:
-								EngineZildo.scriptManagement.execute("stairsUpCornerRightEnd");
-								retEvent.nature=ClientEventNature.SCRIPT;
-								break;
-							case STAIRS_STRAIGHT:
-								EngineZildo.scriptManagement.execute("stairsUpEnd");
-								retEvent.nature=ClientEventNature.SCRIPT;
-								break;
-							case REGULAR:
-								retEvent.nature = ClientEventNature.CHANGINGMAP_LOADED;
-								break;
-						}
+	                	if (ch.getComingAngle() == Angle.NULL) {
+		                	// Zildo is just falling
+		                	EngineZildo.scriptManagement.execute("endFallPit");
+							retEvent.nature=ClientEventNature.SCRIPT;
+	                	} else {
+							MapLink linkType=MapLink.REGULAR;
+							if (ch != null) {
+								linkType=ch.getLinkType();
+							}
+							switch (linkType) {
+								case STAIRS_CORNER_LEFT:
+									EngineZildo.scriptManagement.execute("stairsUpCornerLeftEnd");
+									retEvent.nature=ClientEventNature.SCRIPT;
+									break;
+								case STAIRS_CORNER_RIGHT:
+									EngineZildo.scriptManagement.execute("stairsUpCornerRightEnd");
+									retEvent.nature=ClientEventNature.SCRIPT;
+									break;
+								case STAIRS_STRAIGHT:
+									EngineZildo.scriptManagement.execute("stairsUpEnd");
+									retEvent.nature=ClientEventNature.SCRIPT;
+									break;
+								case REGULAR:
+									retEvent.nature = ClientEventNature.CHANGINGMAP_LOADED;
+									break;
+							}
+	                	}
 						retEvent.chPoint = null;
 	                }
             	} else {

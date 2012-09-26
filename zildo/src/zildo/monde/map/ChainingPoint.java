@@ -34,7 +34,7 @@ public class ChainingPoint implements EasySerializable {
 	// ////////////////////////////////////////////////////////////////////
 
 	public enum MapLink {
-		REGULAR, STAIRS_STRAIGHT, STAIRS_CORNER_LEFT, STAIRS_CORNER_RIGHT;
+		REGULAR, STAIRS_STRAIGHT, STAIRS_CORNER_LEFT, STAIRS_CORNER_RIGHT, PIT;
 	}
 
 	private String mapname; // max length=8
@@ -112,6 +112,8 @@ public class ChainingPoint implements EasySerializable {
 		case 1024 + 249:
 		case 1024 + 250:
 			return MapLink.STAIRS_STRAIGHT;
+		case 1536 + 198:
+			return MapLink.PIT;
 		default:
 			return MapLink.REGULAR;
 		}

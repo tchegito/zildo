@@ -31,7 +31,8 @@ public enum Angle {
 	NORDEST(4, new Point(1,-1)),
 	SUDEST(5, new Point(1,1)),
 	SUDOUEST(6, new Point(-1,1)),
-	NORDOUEST(7, new Point(-1,-1));
+	NORDOUEST(7, new Point(-1,-1)),
+	NULL(8, new Point(0, 0));	// A null angle, but serializable
 	
 	public int value;
 	public Point coords;
@@ -55,7 +56,7 @@ public enum Angle {
 	}
 
     public boolean isDiagonal() {
-        return value > 3;
+        return value > 3 && this != NULL;
     }
     
 	public static Angle rotate(Angle a, int quart) {

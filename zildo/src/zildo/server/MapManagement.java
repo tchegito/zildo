@@ -493,28 +493,32 @@ public class MapManagement {
 					zildo.setY(zy + 8);
 				}
 				Angle a = chPointTarget.getComingAngle();
-				int movedX = (int) zx;
-				int movedY = (int) zy;
-				switch (a) {
-				case NORD:
-					movedY -= 16;
-					break;
-				case EST:
-					movedX += 16;
-					movedY += 4;
-					break;
-				case SUD:
-					movedY += 16;
-					break;
-				case OUEST:
-					movedX -= 32;
-					movedY += 4;
-					break;
+				if (a == Angle.NULL) {
+					a = Angle.SUD;	// Special angle => Zildo just fell
+				} else {
+					int movedX = (int) zx;
+					int movedY = (int) zy;
+					switch (a) {
+					case NORD:
+						movedY -= 16;
+						break;
+					case EST:
+						movedX += 16;
+						movedY += 4;
+						break;
+					case SUD:
+						movedY += 16;
+						break;
+					case OUEST:
+						movedX -= 32;
+						movedY += 4;
+						break;
+					}
+					zildo.setX(movedX);
+					zildo.setY(movedY);
 				}
 				changingMapPoint = chPointTarget;
 				zildo.setAngle(a);
-				zildo.setX(movedX);
-				zildo.setY(movedY);
 				if (zildo.getEn_bras() != null) {
 					zildo.getEn_bras().dying = true;
 					zildo.setMouvement(MouvementZildo.VIDE);

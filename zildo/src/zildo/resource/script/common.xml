@@ -1,4 +1,5 @@
 <adventure>
+    <!-- All transition scene MUST handle the fade in/out when map changes -->
     <scene id="miniStairsUp">
 		<sound name="ZildoDescendPeu"/>
 		<moveTo who="zildo" pos="0,-32" speed="1" unstoppable="true" delta="true"/>
@@ -89,5 +90,18 @@
 		<wait value="59"/>
 		<fadeOut type="0"/>
 		<end type="1"/>
+	</scene>
+	
+	<scene id="fallPit">
+	    <sound name="ZildoFall"/>
+	    <script who="zildo" text="TOMBE"/>
+	    <fadeOut type="5"/>
+	    <wait value="30"/>
+	</scene>
+	
+	<scene id="endFallPit">
+	    <fadeIn type="5" unblock="true" />
+	    <pos who="zildo" z="30"/>
+	    <wait value="15"/>
 	</scene>
 </adventure>
