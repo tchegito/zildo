@@ -66,7 +66,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || exec || text || - || - || - || Execute a named script ||
 || take || text || V || V || - || A character (Zildo for example) takes an object or money. Could be negative value, if Zildo buy something. ||
 || mapReplace || text || - || V || - || Replace map indicated by 'what' by the one named by 'name'  ||
-|| animation || text || - || - || - || Spawn an animation from the enum [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/desc/SpriteAnimation.java SpriteAnimation] ||
+|| animation || text || - || - || - || Spawn an animation from the enum [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/desc/SpriteAnimation.java SpriteAnimation]. _what_ attribute permits to name the future animation element. _who_ attribute allow to localize animation on a specific character. ||
 || impact || text || - || - || - || Spawn an animation from the enum [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/elements/ElementImpact.java ImpactKind] ||
 || remove || text || V || V || - || Remove an element (what) or a character (who) from the current map. Without parameters, this command removes all sprites except Zildo. ||
 || markQuest || text || - || - || - || Accomplish/reset a quest identified by 'name' attribute, according to the 'value' attribute (0=cancel / 1=accomplish) ||
