@@ -40,6 +40,10 @@
 			<filter type="2"/>
 			<music name="Nuit"/>
 		</condition>
+		<condition name="voleursg3" exp="trig_echange">
+		    <spawn type="BIG_FIRE_BALL" what="fireb1" pos="144,282" fx="QUAD"/>
+		    <moveTo what="fireb1" pos="0,-282" unstoppable="true" delta="true" speed="2" unblock="true"/>
+		</condition>
 	</mapScript>
 
 	<scene id="intro_episode2">

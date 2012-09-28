@@ -646,11 +646,14 @@ public class PersoZildo extends Perso {
 			yy++;
 			break;
 		case TOMBE:
-			xx-=4;
-			shadow.setVisible(true);
-			shadow.setX(x);
-			shadow.setY(y);
-			shadow.setZ(0);
+			xx=x-6;	// Calculate from x, because xx has already been modified
+			yy=y+8;
+			if (z != 0) {
+				shadow.setVisible(true);
+				shadow.setX(x);
+				shadow.setY(y);
+				shadow.setZ(0);
+			}
 			if (z > 0) {
 				z+=vz;
 				vz+=az;
@@ -699,12 +702,6 @@ public class PersoZildo extends Perso {
 		xx -= 7;
 		yy -= 21;
 
-		if (isAlerte()) {
-			// Zildo a les pieds dans l'eau
-			// spriteManagement.aff_spriteplace(BANK_ZILDO,100+(compteur_animation
-			// / 20),xx+1,yy+1);
-		}
-
 		if (mouvement == MouvementZildo.BRAS_LEVES)
 		{
 			// On affiche ce que Zildo a dans les mains
@@ -725,15 +722,8 @@ public class PersoZildo extends Perso {
 				en_bras.setY(objY);
 				en_bras.setZ(objZ - variation);
 			}
-		} else if (mouvement == MouvementZildo.SOULEVE)
-		{
-			// Si Zildo est en train de soulever un objet, on l'affiche
-			// xx-=8;yy-=11;
-			// if (angle==1) xx+=6;
-			// else if (angle==3) xx-=6;
-			// spriteManagement.aff_sprite(BANK_ELEMENTS,en_bras,xx,yy-8);
 		}
-
+		
 		// GUI circle
 		if (guiCircle != null) {
 			guiCircle.animate();
@@ -752,6 +742,9 @@ public class PersoZildo extends Perso {
 		}
 		setAjustedX((int) xx);
 		setAjustedY((int) yy);
+		if (!askedVisible) {
+			setVisible(false);
+		}
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////

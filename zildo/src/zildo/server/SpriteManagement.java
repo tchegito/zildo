@@ -48,12 +48,14 @@ import zildo.monde.sprites.elements.ElementClouds;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.elements.ElementHearts;
+import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementLauncher;
+import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.elements.ElementSmoke;
 import zildo.monde.sprites.elements.ElementStaffs;
 import zildo.monde.sprites.elements.ElementStars;
-import zildo.monde.sprites.elements.ElementThrown;
 import zildo.monde.sprites.elements.ElementStars.StarKind;
+import zildo.monde.sprites.elements.ElementThrown;
 import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
@@ -329,6 +331,11 @@ public class SpriteManagement extends SpriteStore {
 				break;
 			case STAR_CIRCLE:
 				element = new ElementStars(StarKind.CIRCLE, x, y);
+				spawnSprite(element);
+				break;
+			case STAR_SHINE:
+				element = new ElementImpact(x, y, ImpactKind.STAR_YELLOW, null);
+				element.setForeground(true);
 				spawnSprite(element);
 				break;
 			case CLOUD_FOG:

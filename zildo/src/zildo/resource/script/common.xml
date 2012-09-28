@@ -95,11 +95,21 @@
 	<scene id="fallPit">
 	    <sound name="ZildoFall"/>
 	    <script who="zildo" text="TOMBE"/>
-	    <fadeOut type="5"/>
 	    <wait value="30"/>
+    	<visible who="zildo" value="false"/>
+	    <animation who="zildo" pos="0,5" type="STAR_SHINE" />
+	    <wait value="30"/>
+    	<fadeOut type="5"/>
+   	</scene>
+	
+	<scene id="dieInPit">
+		<exec script="fallPit"/>
+		<respawn/>
+		<fadeIn type="5"/>    
 	</scene>
 	
 	<scene id="endFallPit">
+	    <visible who="zildo" value="true"/>
 	    <fadeIn type="5" unblock="true" />
 	    <pos who="zildo" z="30"/>
 	    <wait value="15"/>

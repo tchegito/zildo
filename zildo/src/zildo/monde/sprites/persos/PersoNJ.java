@@ -184,7 +184,9 @@ public class PersoNJ extends Perso {
 
 			move();
 		}
-
+		if (!askedVisible) {
+			setVisible(false);
+		}
 	}
 
 	/**

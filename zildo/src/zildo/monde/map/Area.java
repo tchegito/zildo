@@ -723,7 +723,7 @@ public class Area implements EasySerializable {
 				if (p_spawn) {
 					// If this sprite is on a chest tile, link them
 					int ax = x / 16;
-					int ay = y / 16;
+					int ay = (y-1) / 16;
 					int tileDesc = map.readmap(ax, ay);
 					switch (tileDesc) {
 					case 744: // Opened chest (don't spawn the linked item)

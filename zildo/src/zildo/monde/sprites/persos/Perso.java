@@ -94,6 +94,8 @@ public abstract class Perso extends Element {
 	protected boolean inWater = false;
 	protected boolean inDirt = false;
 
+	protected boolean askedVisible = true;	// FALSE=a script ask this character to be invisible
+	
 	private boolean wounded;
 	private Perso dialoguingWith;
 	private String dialogSwitch; // Field parseable by ZSSwitch
@@ -235,6 +237,15 @@ public abstract class Perso extends Element {
 
 	public void setMouvement(MouvementZildo mouvement) {
 		this.mouvement = mouvement;
+		// Handle particular cases
+		switch (mouvement) {
+		case TOMBE:
+			// Center Zildo on his tile
+			x = 16 * (int) (x/16) + 8;
+			y = 16 * (int) (y/16) + 8;
+			System.out.println("tombe:"+x+", "+y);
+			break;
+		}
 	}
 
 	public int getComing_map() {
@@ -628,9 +639,9 @@ public abstract class Perso extends Element {
 			break;
 		// Falls
 		case 768+215: case 768+216: case 768+224: case 768+225: case 768+226: case 768+227: case 768+228: // grotte
-		case 1536+198: // foret4
+		//case 1536+198: // foret4
 			if (isZildo()) {
-				mouvement = MouvementZildo.TOMBE;
+				EngineZildo.scriptManagement.execute("dieInPit");
 			}
 			break;
 		}
@@ -712,6 +723,10 @@ public abstract class Perso extends Element {
 		}
 	}
 
+	public void askVisible(boolean p_visible) {
+		askedVisible = p_visible;
+	}
+	
 	public Point getTarget() {
 		return pathFinder.getTarget();
 	}
