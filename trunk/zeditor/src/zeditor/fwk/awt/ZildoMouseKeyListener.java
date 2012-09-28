@@ -29,6 +29,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import zeditor.fwk.awt.ZildoCanvas.ZEditMode;
 import zeditor.windows.managers.MasterFrameManager;
 
 public class ZildoMouseKeyListener implements MouseListener,
@@ -71,7 +72,9 @@ public class ZildoMouseKeyListener implements MouseListener,
 		switch (but) {
 		case 16: // Left click
 			// Copy and apply the brush on it (=selected tiles)
-			canvas.applyBrush(p);
+			if (canvas.getMode() != ZEditMode.COPY && canvas.getMode() != ZEditMode.COPY_DRAG) {
+				canvas.applyBrush(p);
+			}
 			break;
 		case 4: // Right click
 		case 5: // Right click with LEFT SHIFT

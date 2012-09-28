@@ -203,7 +203,11 @@ public class ElementsPlus extends SpriteBanque {
 				// Carpet
 				new Zone(18, 145, 8, 8),
 				// Thief Launcher
-				new Zone(35, 71, 8, 7), new Zone(44, 71, 8, 9)
+				new Zone(35, 71, 8, 7), new Zone(44, 71, 8, 9),
+				// Projectiles
+				new Zone(85, 28, 16, 16), new Zone(101, 28, 16, 16),
+				new Zone(117, 24, 31, 31),
+				new Zone(206, 0, 16, 16)
 		};
 	}
 }
