@@ -36,7 +36,8 @@ public enum SpriteAnimation {
 	CHIMNEY_SMOKE,	// Smoke on house's chemney
 	ARROW,
 	FROMGROUND, // Under bushes
-	STAR_CIRCLE,
+	STAR_CIRCLE,	// Circle of stars
+	STAR_SHINE,		// Just a shining star
 	CLOUD_FOG,	// A fog made by several cloud ElementDescription.SMOKE
 	HEARTS,	// Hearts flying above a character
 	STAFF_POUM;	// Throw a staff

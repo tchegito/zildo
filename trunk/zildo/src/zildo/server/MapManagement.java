@@ -60,6 +60,10 @@ public class MapManagement {
 	Angle mapScrollAngle;
 	TriggerElement currentMapTrigger;
 	
+	// Keep the location/angle Zildo had when entering on this map
+	Angle startAngle;
+	Point startLocation;
+	
 	public MapManagement() {
 		tileCollision = TileCollision.getInstance();
 
@@ -528,6 +532,13 @@ public class MapManagement {
 			}
 			zildo.finaliseComportement(EngineZildo.compteur_animation);
 
+			// Save starting location
+			startAngle = zildo.getAngle();
+			startLocation = new Point(zildo.x, zildo.y);
+			if (zildo.getTarget() != null) {
+				startLocation = zildo.getTarget();
+			}
+			
 			// Adjust map at Zildo's location
 			if (zildo != null) {
 				zildo.walkTile(false);
@@ -664,6 +675,19 @@ public class MapManagement {
 		}
 	}
 
+	/**
+	 * Respawn Zildo to his starting location in the current area.
+	 */
+	public void respawn() {
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+		zildo.setX(startLocation.x);
+		zildo.setY(startLocation.y);
+		zildo.setAngle(startAngle);
+		zildo.beingWounded(null, 1);
+		zildo.stopBeingWounded();
+		zildo.askVisible(true);	// Set him back to visible
+	}
+	
 	/**
 	 * Return a respawn position, at an empty place.
 	 * 

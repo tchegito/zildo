@@ -28,6 +28,7 @@ import zildo.client.gui.menu.RegisterChampionMenu;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
 import zildo.client.stage.SinglePlayer;
+import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
@@ -154,6 +155,12 @@ public class ActionExecutor {
                     } else if ("camera".equals(p_action.what)) {
                         ClientEngineZildo.mapDisplay.setTargetCamera(location);
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
+                    } else {
+                    	Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+                    	if (location != null && p_action.delta) {
+                    		elem.setVx(Math.signum(location.x) * p_action.speed);
+                    		elem.setVy(Math.signum(location.y) * p_action.speed);
+                    	}
                     }
                     break;
                 case speak:
@@ -242,6 +249,9 @@ public class ActionExecutor {
 	                		Rotation rot = Rotation.fromInt(p_action.rotation);
 	                		Element elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0, rev, rot);
 	                		elem.setName(p_action.what);
+	                		if (p_action.fx != null) {
+	                			elem.setSpecialEffect(EngineFX.valueOf(p_action.fx));
+	                		}
                 		}
                 	}
                     achieved = true;
@@ -253,7 +263,12 @@ public class ActionExecutor {
                 	break;
                 case animation:
                 	SpriteAnimation anim = SpriteAnimation.valueOf(p_action.text);
-                	Element animElem = EngineZildo.spriteManagement.spawnSpriteGeneric(anim, location.x, location.y, 0, null, null);
+                	Point loc = new Point(location);
+                	if (perso != null) {
+                		loc.x+=perso.x;
+                		loc.y+=perso.y;
+                	}
+                	Element animElem = EngineZildo.spriteManagement.spawnSpriteGeneric(anim, loc.x, loc.y, 0, null, null);
                 	if (p_action.what != null) {
                 	    animElem.setName(p_action.what);
                 	}
@@ -373,7 +388,7 @@ public class ActionExecutor {
                 		ClientEngineZildo.filterCommand.active(RedFilter.class, true, null);
                 		break;
                 	}
-                	achieved=true;
+                	achieved = true;
                 	break;
                 case end:
                 	if (p_action.val == 0) {
@@ -384,6 +399,23 @@ public class ActionExecutor {
                 		// Game over : player died !
             			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new GameOverAction());
                 	}
+                	break;
+                case respawn:	// Replace Zildo at his previous location
+                	EngineZildo.mapManagement.respawn();
+                	achieved = true;
+                	break;
+                case visible:
+                	if (perso != null) {
+                		// Characters are set visible in their own 'animate' overriden method
+                		// So we can't just set them invisible, because it would be unefficient.
+                		perso.askVisible(p_action.activate);
+                	} else if (p_action.what != null) {
+                    	Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+                		if (elem != null) {
+                			elem.setVisible(p_action.activate);
+                		}
+                	}
+                	achieved = true;
             }
 
             p_action.done = achieved;

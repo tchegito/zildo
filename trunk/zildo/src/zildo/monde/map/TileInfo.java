@@ -211,26 +211,30 @@ public class TileInfo {
 	public static TileInfo fromInt(int p_value) {
 		TileInfo t = tileInfoMap.get(p_value);
 		if (t == null) {
-			// Not in the map yet, so we create it and put it into.
-			// According to valid value
-			if ((p_value & 7) >= 6 && (p_value & 7) <= 7) {
-				return null;
-			}
-			if ((p_value & 7) == 0 && p_value > 0) {
-				return null;
-			}
-			if ((p_value & 7) == 1 && p_value > 1) {
-				return null;
-			}
-			t = new TileInfo();
-			t.template = Template.values()[p_value & 7];
-			t.inverse = (p_value & 8) != 0 ? true : false;
-			t.blockAngle = Angle.fromInt(p_value >> 4);
-			if ((t.template == Template.CORNER || t.template == Template.CORNER_DIAGONAL) && !t.blockAngle.isDiagonal()) {
-				return null;
-			}
-			if (t.template == Template.HALF && t.inverse) {
-				return null;
+			try {
+				// Not in the map yet, so we create it and put it into.
+				// According to valid value
+				if ((p_value & 7) >= 6 && (p_value & 7) <= 7) {
+					return null;
+				}
+				if ((p_value & 7) == 0 && p_value > 0) {
+					return null;
+				}
+				if ((p_value & 7) == 1 && p_value > 1) {
+					return null;
+				}
+				t = new TileInfo();
+				t.template = Template.values()[p_value & 7];
+				t.inverse = (p_value & 8) != 0 ? true : false;
+				t.blockAngle = Angle.fromInt(p_value >> 4);
+				if ((t.template == Template.CORNER || t.template == Template.CORNER_DIAGONAL) && !t.blockAngle.isDiagonal()) {
+					return null;
+				}
+				if (t.template == Template.HALF && t.inverse) {
+					return null;
+				}
+			} catch (Exception e) {
+				t = TileInfo.fromInt(0);
 			}
 			tileInfoMap.put(p_value, t);
 		}
