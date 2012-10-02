@@ -4,18 +4,19 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import zeditor.core.tiles.TileSet;
-import zeditor.windows.managers.MasterFrameManager;
 import zeditor.fwk.awt.ZildoCanvas.ZEditMode;
+import zeditor.windows.managers.MasterFrameManager;
 import zildo.monde.map.Case;
 
 @SuppressWarnings("serial")
@@ -27,7 +28,10 @@ public class BackgroundPanel extends JPanel {
 	JScrollPane backgroundScroll;
 	AbstractAction actionChangeTileSet;
 	TileSet tileSetPanel;
-	JCheckBox reverseEditCheck;
+	
+	JRadioButton radioDraw;
+	JRadioButton radioReverse;
+	JRadioButton radioRotate;
 	
 	public BackgroundPanel(MasterFrameManager p_manager) {
 		manager = p_manager;
@@ -80,7 +84,7 @@ public class BackgroundPanel extends JPanel {
 
 	private JPanel getPanelCheckBox() {
 		JPanel panel = new JPanel();
-		reverseEditCheck = new JCheckBox(new AbstractAction() {
+		Action radioAction = new AbstractAction() {
 			
 			ZEditMode previous;
 
@@ -88,17 +92,41 @@ public class BackgroundPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				ZEditMode newMode;
-				if (reverseEditCheck.isSelected()) {
-					previous = manager.getZildoCanvas().getMode();
+				ZEditMode m = manager.getZildoCanvas().getMode();
+				if (radioRotate.isSelected()) {
 					newMode = ZEditMode.TILE_ROTATE_EDIT;
+					if (!m.isTileAttributeLinked()) {
+						previous = m;
+					}
+				} else if (radioReverse.isSelected()) {
+					newMode = ZEditMode.TILE_REVERSE_EDIT;
+					if (!m.isTileAttributeLinked()) {
+						previous = m;
+					}
 				} else {
 					newMode = previous;
 				}
 				manager.getZildoCanvas().setMode(newMode);
 			}
-		});
-		panel.add(reverseEditCheck);
-		panel.add(new JLabel("Edit tiles attributes"));
+		};
+		radioDraw = new JRadioButton("Draw");
+		radioReverse = new JRadioButton("Reverse");
+		radioRotate = new JRadioButton("Rotation");
+		ButtonGroup group = new ButtonGroup();
+		group.add(radioDraw);
+		group.add(radioReverse);
+		group.add(radioRotate);
+		JPanel line = new JPanel();
+		line.add(radioDraw);
+		line.add(radioReverse);
+		line.add(radioRotate);
+		radioDraw.addActionListener(radioAction);
+		radioReverse.addActionListener(radioAction);
+		radioRotate.addActionListener(radioAction);
+		
+		radioDraw.setSelected(true);
+		
+		panel.add(line);
 		return panel;
 	}
 	
