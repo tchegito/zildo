@@ -61,7 +61,11 @@ import zildo.server.MapManagement;
 public class ZildoCanvas extends AWTOpenGLCanvas {
 
 	public enum ZEditMode {
-	    NORMAL, COPY, COPY_DRAG, TILE_ROTATE_EDIT;
+	    NORMAL, COPY, COPY_DRAG, TILE_REVERSE_EDIT, TILE_ROTATE_EDIT;
+	    
+	    public boolean isTileAttributeLinked() {
+	    	return this == TILE_REVERSE_EDIT || this == TILE_ROTATE_EDIT;
+	    }
 	}
 	
 	/**
@@ -88,8 +92,15 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 			SelectionKind kind=sel.getKind();
 			switch (kind) {
 				case TILES:
-					if (getMode() == ZEditMode.TILE_ROTATE_EDIT) {
-						reverseTile(p);
+					if (getMode().isTileAttributeLinked()) {
+						switch (getMode()) {
+							case TILE_REVERSE_EDIT:
+								reverseTile(p);
+								break;
+							case TILE_ROTATE_EDIT:
+								rotateTile(p);
+								break;
+							}
 						break;
 					}
 				case PREFETCH:
@@ -135,6 +146,22 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 			break;
 		}
 	}
+	
+	public void rotateTile(Point p) {
+		Selection sel = manager.getSelection();
+		// Default kind is TILES
+		if (sel == null) {
+			return;
+		}
+		SelectionKind kind=sel.getKind();
+		switch (kind) {
+		case TILES:
+			Area map = EngineZildo.mapManagement.getCurrentMap();
+			((TileSelection)sel).rotate(map, new zildo.monde.util.Point(p.x, p.y), mask);
+			break;
+		}
+	}
+	
 	/**
 	 * Action launched by right-clicking on the map. Depends on the kind of selection.<br/>
 	 * With Tiles, : lear a region of the map sized by the selected brush.<br/>

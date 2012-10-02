@@ -129,6 +129,11 @@ public class SpriteSet extends ImageSet {
 				public int ordinal() {
 					return n;
 				}
+
+				@Override
+				public boolean isDamageable() {
+					return false;
+				}
 			});
 		}
 		return list;

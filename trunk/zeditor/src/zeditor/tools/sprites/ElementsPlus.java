@@ -207,7 +207,9 @@ public class ElementsPlus extends SpriteBanque {
 				// Projectiles
 				new Zone(85, 28, 16, 16), new Zone(101, 28, 16, 16),
 				new Zone(117, 24, 31, 31),
-				new Zone(206, 0, 16, 16)
+				new Zone(206, 0, 16, 16),
+				// Platform
+				new Zone(242, 0, 32, 32)
 		};
 	}
 }
