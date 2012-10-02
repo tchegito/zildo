@@ -729,6 +729,22 @@ public class MapManagement {
 		}
 	}
 
+	public void setStartLocation(Point loc) {
+		startLocation = new Point(loc);
+	}
+	
+	public void setStartAngle(Angle a) {
+		startAngle = a;
+	}
+	
+	public Point getStartLocation() {
+		return startLocation;
+	}
+	
+	public Angle getStartAngle() {
+		return startAngle;
+	}
+
 	public void notifiyScrollOver() {
 		previousMap = null;
 	}

@@ -45,6 +45,7 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementAnimMort;
 import zildo.monde.sprites.elements.ElementClouds;
+import zildo.monde.sprites.elements.ElementFireballs;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.elements.ElementHearts;
@@ -366,6 +367,10 @@ public class SpriteManagement extends SpriteStore {
 			    	element = new ElementStaffs(x, y);
 			    	spawnSprite(element);
 				break;
+			case BIG_FIREBALL:
+				element = new ElementFireballs(x, y, Angle.fromInt(misc));
+				spawnSprite(element);
+				break;
 		}
 		return element;
 	}
@@ -395,7 +400,7 @@ public class SpriteManagement extends SpriteStore {
 		int nBank=desc.getBank();
 		int nSpr=desc.getNSpr();
 
-		if (nSpr == 69 || nSpr == 70 || nSpr == 28) {
+		if (nSpr == 69 || nSpr == 70 || nSpr == 28 || nSpr == 179) {
 			// Particular sprite (Block that Zildo can move, chest...)
 			return spawnElement(nBank, nSpr, x, y, 0, Reverse.NOTHING, Rotation.NOTHING); // + spr.getTaille_y() / 2 - 3,
 					//0);

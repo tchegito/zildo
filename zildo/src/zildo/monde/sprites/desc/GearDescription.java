@@ -71,4 +71,10 @@ public enum GearDescription implements SpriteDescription {
 		}
 
 	}
+	
+
+	@Override
+	public boolean isDamageable() {
+		return false;
+	}
 }

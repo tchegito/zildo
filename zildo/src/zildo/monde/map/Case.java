@@ -23,6 +23,7 @@ package zildo.monde.map;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.util.Angle;
 
 
@@ -182,12 +183,14 @@ public class Case implements EasySerializable {
 	 */
 	public void serialize(EasyBuffering p_buffer) {
 		int isMasque = fore != null ? 128 : 0;
-		int isSpecial = (transition != null || back.reverse != Reverse.NOTHING) ? 64 : 0;
+		int isSpecial = (transition != null || back.reverse != Reverse.NOTHING || back.rotation != Rotation.NOTHING) ? 64 : 0;
 		int isBack2 = back2 != null ? 32 : 0;
 		p_buffer.put((byte) back.index);
 		p_buffer.put((byte) (back.bank | isMasque | isSpecial | isBack2));
 		if (isSpecial > 0) {
 			int val = back.reverse.ordinal();
+			val |= back.rotation.ordinal() << 2;
+			System.out.println(val);
 			if (transition != null) {
 				val|=transition.value << 4;
 			}
@@ -210,12 +213,12 @@ public class Case implements EasySerializable {
 	private void serializeOneTile(Tile p_tile, EasyBuffering p_buffer) {
 		int bank = p_tile.bank;
 		p_buffer.put((byte) p_tile.index);
-		if (p_tile.reverse != Reverse.NOTHING) {
+		if (p_tile.reverse != Reverse.NOTHING || p_tile.rotation != Rotation.NOTHING) {
 			bank|=64;	// Need extra bit;
 		}
 		p_buffer.put((byte) bank);
 		if ((bank & 64) != 0) {
-			p_buffer.put((byte) p_tile.reverse.ordinal());
+			p_buffer.put((byte) (p_tile.reverse.ordinal() | (p_tile.rotation.ordinal() << 2)));
 		}
 	}
 	
@@ -239,10 +242,13 @@ public class Case implements EasySerializable {
 		mapCase.setBackTile(new Tile(bank1&31, index1, mapCase));
 		if ((bank1 & 64) != 0) {
 			int value = p_buffer.readUnsignedByte();
-			if ((value & 7) != 0) {
-				mapCase.getBackTile().reverse = Reverse.values()[value & 7];
+			if ((value & 3) != 0) {
+				mapCase.getBackTile().reverse = Reverse.values()[value & 3];
 			}
-			if (value > 7) {
+			if ((value & 15) > 3) {
+				mapCase.getBackTile().rotation = Rotation.values()[(value>>2) & 3];
+			}
+			if (value > 15) {
 				mapCase.setTransition(Angle.fromInt(value >> 4));
 			}
 		}
@@ -262,7 +268,8 @@ public class Case implements EasySerializable {
 		Tile t = new Tile(bank & 63, index, p_case);
 		if ((bank & 64) != 0) {
 			int val = p_buffer.readUnsignedByte();
-			t.reverse = Reverse.values()[val & 63];
+			t.reverse = Reverse.values()[val & 3];
+			t.rotation = Rotation.values()[(val>>2) & 3];
 		}
 		return t;
 	}

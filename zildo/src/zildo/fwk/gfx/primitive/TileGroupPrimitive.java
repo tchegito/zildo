@@ -98,7 +98,7 @@ public class TileGroupPrimitive {
 				y,
 				xTex,
 				yTex, 
-				tile.reverse, hasChanged);
+				tile.reverse, tile.rotation, hasChanged);
 	}
     
     private void removeTile(int nth, int x, int y) {

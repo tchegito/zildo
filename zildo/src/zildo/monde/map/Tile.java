@@ -21,6 +21,7 @@
 package zildo.monde.map;
 
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
 
 
 /**
@@ -36,6 +37,7 @@ public class Tile implements Cloneable {
 	public Case parent;
 
 	public Reverse reverse = Reverse.NOTHING;
+	public Rotation rotation = Rotation.NOTHING;
 	
 	public Tile(int p_bank, int p_index, Case p_parent) {
 		bank = (byte) (p_bank & 63);

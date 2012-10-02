@@ -101,10 +101,11 @@ public class TilePrimitive extends QuadPrimitive {
      * @param yTex
      * @param sizeX (16 or -16)
      * @param sizeY (16 or -16)
+     * @param rotation TODO
      */
-    private void addTile(int x, int y, float xTex, float yTex, int sizeX, int sizeY) {
+    private void addTile(int x, int y, float xTex, float yTex, int sizeX, int sizeY, Rotation rotation) {
 
-    	addSprite(x, y, xTex, yTex, sizeX, sizeY, Rotation.NOTHING);
+    	addSprite(x, y, xTex, yTex, sizeX, sizeY, rotation, 255);
     	
         // Get the highest indices
         if (nIndices-6 < startCamera || startCamera == -1) {
@@ -124,8 +125,9 @@ public class TilePrimitive extends QuadPrimitive {
      * @param u
      * @param v
      * @param reverse reverse attribute (horizontal and/or vertical)
+     * @param rotation TODO
      */
-    public void updateTile(int gridX, int gridY, float u, float v, Reverse reverse, boolean changed) {
+    public void updateTile(int gridX, int gridY, float u, float v, Reverse reverse, Rotation rotation, boolean changed) {
         int sizeX = 16;
         int sizeY = 16;
 
@@ -137,7 +139,7 @@ public class TilePrimitive extends QuadPrimitive {
 		
 		if (changed || !tileReused) {
 			// Move tile
-			addTile(gridX << 4, gridY << 4, u, v, sizeX * revX, sizeY * revY );
+			addTile(gridX << 4, gridY << 4, u, v, sizeX * revX, sizeY * revY, rotation );
 		} else {
 			skipTile(gridX, gridY);
 		}
@@ -147,7 +149,7 @@ public class TilePrimitive extends QuadPrimitive {
     	int n = nIndices;
 		reuseIndex(gridX, gridY);
 		nIndices = n;
-		addSprite(0, -32, 0, 0, 16, 16, Rotation.NOTHING);
+		addSprite(0, -32, 0, 0, 16, 16, Rotation.NOTHING, 255);
     }
     
     /**

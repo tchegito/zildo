@@ -35,6 +35,8 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 /**
@@ -123,6 +125,13 @@ public class Game implements EasySerializable {
         timeSpent += diff / 1000;
         startPlay = now;
         p_buffer.put(timeSpent);
+        
+        // 6: map start location
+        Point loc = EngineZildo.mapManagement.getStartLocation();
+        Angle a = EngineZildo.mapManagement.getStartAngle();
+        p_buffer.put((int) loc.x);
+        p_buffer.put((int) loc.y);
+        p_buffer.put((byte) a.value);
 	}
 
 	/**
@@ -183,14 +192,23 @@ public class Game implements EasySerializable {
            
             // 4: map (since 1.096)
             game.mapName = p_buffer.readString();
-            zildo.setX(p_buffer.readInt());
-            zildo.setY(p_buffer.readInt());
+            Point loc = new Point(p_buffer.readInt(), p_buffer.readInt());
+            zildo.setX(loc.x);
+            zildo.setY(loc.y);
            
             if (!p_legacy) {
                 // 5: time spent
                 game.timeSpent = p_buffer.readInt();
             }
-           
+
+            Angle a = Angle.NORD;
+            if (!p_buffer.eof()) {
+	            // 6: map start location
+            	loc = new Point(p_buffer.readInt(), p_buffer.readInt());
+            	a = Angle.fromInt(p_buffer.readByte());
+            }
+            EngineZildo.mapManagement.setStartLocation(loc);
+            EngineZildo.mapManagement.setStartAngle(a);
             return game;
         } catch (Exception e) {
             return null;

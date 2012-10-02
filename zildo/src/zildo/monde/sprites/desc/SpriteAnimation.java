@@ -40,5 +40,6 @@ public enum SpriteAnimation {
 	STAR_SHINE,		// Just a shining star
 	CLOUD_FOG,	// A fog made by several cloud ElementDescription.SMOKE
 	HEARTS,	// Hearts flying above a character
-	STAFF_POUM;	// Throw a staff
+	STAFF_POUM,	// Throw a staff
+	BIG_FIREBALL;
 }

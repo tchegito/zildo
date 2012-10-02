@@ -26,6 +26,24 @@
     	</action>    
     </quest>
     
+    <quest name="vg5_but1">
+    	<trigger>
+    	    <location name="voleursg5" tilePos="52,26"/>
+    	</trigger>
+    	<action>
+    	    <exec script="move_vg5_plat1"/>
+    	</action>
+    </quest>
+
+    <quest name="vg5_but2">
+    	<trigger>
+    	    <location name="voleursg5" tilePos="25,26"/>
+    	</trigger>
+    	<action>
+    	    <exec script="move_vg5_plat2" unblock="true"/>
+    	</action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -41,9 +59,16 @@
 			<music name="Nuit"/>
 		</condition>
 		<condition name="voleursg3" exp="trig_echange">
-		    <spawn type="BIG_FIRE_BALL" what="fireb1" pos="144,282" fx="QUAD"/>
-		    <moveTo what="fireb1" pos="0,-282" unstoppable="true" delta="true" speed="2" unblock="true"/>
-		</condition>
+		    <actions>
+		    	<animation type="BIG_FIREBALL" what="fireb1" angle="0" pos="144,302"/>
+		    	<animation type="BIG_FIREBALL" what="fireb2" angle="0" pos="224,302"/>
+		    </actions>
+		    <wait value="20"/>
+		    <actions>
+			   	<animation type="BIG_FIREBALL" what="fireb3" angle="3" pos="320,131"/>
+			    <animation type="BIG_FIREBALL" what="fireb4" angle="3" pos="320,211"/>
+		    </actions>
+   		</condition>
 	</mapScript>
 
 	<scene id="intro_episode2">
@@ -86,4 +111,11 @@
 		</actions>
 	</scene>
 	
+	<scene id="move_vg5_plat1">
+	    <moveTo what="platform" pos="-80,0" delta="true" speed="2"/>
+	    <wait value="10"/>
+	    <moveTo what="platform" pos="80,0" delta="true" speed="2"/>
+	    <wait value="10"/>
+	    <markQuest name="vg5_but1" value="0"/>
+	</scene>
 </adventure>

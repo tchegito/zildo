@@ -53,6 +53,7 @@ import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.ia.BasicMover;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
@@ -157,9 +158,8 @@ public class ActionExecutor {
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
                     } else {
                     	Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
-                    	if (location != null && p_action.delta) {
-                    		elem.setVx(Math.signum(location.x) * p_action.speed);
-                    		elem.setVy(Math.signum(location.y) * p_action.speed);
+                    	if (elem != null) {
+                    		elem.setMover(new BasicMover(elem, location.x, location.y));
                     	}
                     }
                     break;
@@ -268,7 +268,7 @@ public class ActionExecutor {
                 		loc.x+=perso.x;
                 		loc.y+=perso.y;
                 	}
-                	Element animElem = EngineZildo.spriteManagement.spawnSpriteGeneric(anim, loc.x, loc.y, 0, null, null);
+                	Element animElem = EngineZildo.spriteManagement.spawnSpriteGeneric(anim, loc.x, loc.y, p_action.val, null, null);
                 	if (p_action.what != null) {
                 	    animElem.setName(p_action.what);
                 	}
@@ -416,6 +416,12 @@ public class ActionExecutor {
                 		}
                 	}
                 	achieved = true;
+                	break;
+                case zoom:
+                	if (perso != null) {
+                		perso.zoom = p_action.val;
+                	}
+                	achieved = true;
             }
 
             p_action.done = achieved;
@@ -441,6 +447,9 @@ public class ActionExecutor {
 	                }
             	} else if ("camera".equals(p_action.what)) {
             		achieved=ClientEngineZildo.mapDisplay.getTargetCamera() == null;
+            	} else {
+            		Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+            		achieved = (elem != null && elem.getMover() == null);
             	}
                 break;
             case focus:
