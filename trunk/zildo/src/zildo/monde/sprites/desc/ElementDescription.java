@@ -84,8 +84,11 @@ public enum ElementDescription implements SpriteDescription {
 	// 173
 	LAUNCHER1, LAUNCHER2,
 	// 175
-	PROJ_LAVA, PROJ_ICE, BIG_FIRE_BALL, SMALL_FIRE_BALL;
+	PROJ_LAVA, PROJ_ICE, BIG_FIRE_BALL, SMALL_FIRE_BALL,
+	PLATFORM;
 
+	Boolean damage;
+	
 	public int getBank() {
 		return SpriteBank.BANK_ELEMENTS;
 	}
@@ -95,11 +98,7 @@ public enum ElementDescription implements SpriteDescription {
 	}
 
 	public int getNSpr() {
-		int n = this.ordinal();
-		if (name().startsWith("GEAR")) {
-			n -= 156;
-		}
-		return n;
+		return this.ordinal();
 	}
 
 	public boolean isMoney() {
@@ -183,6 +182,32 @@ public enum ElementDescription implements SpriteDescription {
 		return false;
 	}
 	
+	// Elements that Zildo can throw on enemies
+	public boolean isDamageable() {
+		if (damage == null) {
+			damage = false;
+			switch (this) {
+				case JAR:
+				case BUSHES:
+				case SHADOW:		// ???
+				case STONE:
+				case STONE_HEAVY:
+				case DEATH_ANIM6:	// ???
+				case ROCK_BALL:
+				case ARROW_UP:
+				case ARROW_DOWN:
+				case ARROW_RIGHT:
+				case ARROW_LEFT:
+				case BOMB:
+				case STAFF_POUM:
+				case BIG_FIRE_BALL:
+					damage = true;
+					break;
+			}
+		}
+		return damage;
+	}
+
 	public String getFoundSentence() {
     	String label=UIText.getGameText("automatic."+name());
     	if (label.startsWith("automatic.")) {

@@ -48,7 +48,7 @@ public class PathFinder {
 	Perso mobile;
 	protected Point target;
 	public float speed;	// Should be used if different of 0
-	public boolean backward;	// Default FALSE. TRUE means character is steping back
+	public boolean backward;	// Default FALSE. TRUE means character is stepping back
 	public boolean open;	// Default FALSE. TRUE means character can open doors.
 	public boolean unstoppable;	// TRUE = no collision for this character
     protected int nbShock;				// Number of times character hit something going to his target

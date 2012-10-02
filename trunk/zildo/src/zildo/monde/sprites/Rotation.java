@@ -34,6 +34,10 @@ public enum Rotation {
 		this.value = value;
 	}
 	
+	public Rotation succ() {
+		return values()[(ordinal()+1) % 4];
+	}
+	
 	public static Rotation fromInt(int v) {
 		for (Rotation r : values()) {
 			if (r.value == v) {

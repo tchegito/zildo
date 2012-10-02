@@ -96,11 +96,23 @@
 	    <sound name="ZildoFall"/>
 	    <script who="zildo" text="TOMBE"/>
 	    <wait value="30"/>
-    	<visible who="zildo" value="false"/>
-	    <animation who="zildo" pos="0,5" type="STAR_SHINE" />
+	    <zoom who="zildo" value="200"/>
+	    <wait value="20"/>
+	    <zoom who="zildo" value="170"/>
+	    <wait value="10"/>
+	    <zoom who="zildo" value="140"/>
+	    <wait value="10"/>
+	    <zoom who="zildo" value="100"/>
+	    <wait value="10"/>
+	   	<visible who="zildo" value="false"/>
+	    <animation who="zildo" pos="-3,2" type="STAR_SHINE" />
+	    <!-- 
+	   	<animation who="zildo" pos="0,5" type="STAR_SHINE" />
+	   	-->
 	    <wait value="30"/>
     	<fadeOut type="5"/>
-   	</scene>
+	    <zoom who="zildo" value="255"/>
+    </scene>
 	
 	<scene id="dieInPit">
 		<exec script="fallPit"/>

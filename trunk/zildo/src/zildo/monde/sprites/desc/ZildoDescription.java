@@ -124,4 +124,8 @@ public enum ZildoDescription implements SpriteDescription {
 	public boolean isBlocking() {
 		return false;
 	}
+
+	public boolean isDamageable() {
+		return false;
+	}
 }

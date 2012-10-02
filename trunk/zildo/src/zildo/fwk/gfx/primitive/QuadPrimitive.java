@@ -124,7 +124,7 @@ public class QuadPrimitive {
 		int revY = reverse.isVertical() ? -1 : 1;
 		
         // Move tile
-        addSprite(x, y, u, v, sizeX * revX, sizeY * revY, Rotation.NOTHING);
+        addSprite(x, y, u, v, sizeX * revX, sizeY * revY, Rotation.NOTHING, 255);
 
     }
     
@@ -158,7 +158,7 @@ public class QuadPrimitive {
     // Return the quad position in Vertex Buffer
     protected int addQuadSized(int x, int y, float xTex, float yTex, int sizeX, int sizeY) {
         //putQuadSized(x, y, sizeX, sizeY, xTex, yTex);
-        addSprite(x, y, xTex, yTex, sizeX, sizeY, Rotation.NOTHING);
+        addSprite(x, y, xTex, yTex, sizeX, sizeY, Rotation.NOTHING, 255);
         
         return nPoints - 4;
     }
@@ -166,7 +166,7 @@ public class QuadPrimitive {
     short[][] vertices = new short[4][2];
     byte[][] orders = {{0, 1, 2, 3}, {2, 0, 3, 1}, {1, 3, 0, 2}, {3, 2, 1, 0}};
     
-    protected void addSprite(float x, float y, float xTex, float yTex, float sizeX, float sizeY, Rotation rotation ) {
+    protected void addSprite(float x, float y, float xTex, float yTex, float sizeX, float sizeY, Rotation rotation, int zoom ) {
     	
         // 4 bufs.vertices
         if (bufs.vertices.position() == bufs.vertices.limit()) {
@@ -184,9 +184,20 @@ public class QuadPrimitive {
         		pixSizeY = siz;
         	}
         }
+        //float zoom = (float) (0.8f + 0.5f * Math.cos(al));
+        float startX = x;
+        float startY = y;
+        if (zoom != 255) {
+        	float z = zoom / 255f;
+        	startX+= (pixSizeX/2) * (1-z);
+        	startY+= (pixSizeY/2) * (1-z);
+        	pixSizeX*=z;
+        	pixSizeY*=z;
+        }
+        
         for (int i = 0; i < 4; i++) {
-        	vertices[orders[rotation.value][i]][0] = (short) (x + pixSizeX * (i % 2));	// x
-        	vertices[orders[rotation.value][i]][1] = (short) (y + pixSizeY * (i / 2));	// y
+        	vertices[orders[rotation.value][i]][0] = (short) (startX + pixSizeX * (i % 2));	// x
+        	vertices[orders[rotation.value][i]][1] = (short) (startY + pixSizeY * (i / 2));	// y
         }
         
         bufs.vertices.put(vertices[0][0]).put(vertices[0][1]);

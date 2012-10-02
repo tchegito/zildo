@@ -32,6 +32,8 @@ public interface SpriteDescription {
 	
 	public boolean isBlocking();
 	
+	public boolean isDamageable();
+	
 	class Locator {
 		public static SpriteDescription findSpr(int nBank, int nSpr) {
 			switch (nBank) {

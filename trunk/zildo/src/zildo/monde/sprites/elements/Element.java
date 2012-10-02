@@ -32,6 +32,7 @@ import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.ia.Mover;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
@@ -40,9 +41,6 @@ import zildo.server.EngineZildo;
 
 public class Element extends SpriteEntity {
 
-	// Elements that Zildo can throw on enemies
-	private static IntSet damageableElements = new IntSet(0, 1, 11, 12, 2, 38,
-			42, 71, 72, 73, 74, 106, 163);
 	// Elements that Zildo can push
 	private static IntSet pushableElements = new IntSet(28, 69, 70, 169);
 
@@ -62,6 +60,8 @@ public class Element extends SpriteEntity {
 	protected Element linkedPerso; // When this element dies, any non-perso
 									// linked entity die too.
 
+	protected Mover mover;	// Allow moving without physics (if NULL => regular movement)
+	
 	protected Element shadow;
 	protected boolean pushable;
 	
@@ -154,7 +154,8 @@ public class Element extends SpriteEntity {
 						.ordinal()) || (a == ElementDescription.BOMB.ordinal())
 				|| a == ElementDescription.BOMBS3.ordinal()
 				|| a == ElementDescription.KEY.ordinal()
-				|| a == ElementDescription.STAFF_POUM.ordinal()) {
+				|| a == ElementDescription.STAFF_POUM.ordinal()
+				|| a == ElementDescription.BIG_FIRE_BALL.ordinal()) {
 			return true;
 		} else {
 			return false;
@@ -192,7 +193,7 @@ public class Element extends SpriteEntity {
 	 * @return boolean
 	 */
 	public boolean isSolid() {
-		if (damageableElements.contains(nSpr)) {
+		if (desc.isDamageable()) {
 			return true;
 		}
 		// S'il s'agit d'un personnage
@@ -262,74 +263,82 @@ public class Element extends SpriteEntity {
 		// Perso pnj;
 		boolean colli;
 
-		// Si ce sprite est valide, est-il un sprite fixe ?
-		if (this.IsNotFixe()) {
-			// On a trouvé un sprite valide non fixe
-			// On calcule sa nouvelle position absolue
-			colli = physicMoveWithCollision();
-
-			if (nSpr >= 44 && nSpr <= 47) { // Sprite d'animation
-				// Morceaux de pierres
-				z = z - vz; // On revient en arrière
-				vz = vz - az;
-				az = az - 1;
-				if (az == 0) {
-					dying = true;
-				}
+		if (mover != null) {
+			// Moving is delegated to another object
+			if (mover.reachTarget()) {
+				mover = null;
 			}
-			// Débordement}
-			if (x < -4 || y < -4 || x > 64 * 16 || (y-z) > 64 * 16) {
-				die();
-				dying = true;
-			} else {
-
-				if (pushableElements.contains(nSpr)) {
-					z = ancZ; // z-vz;
+		} else {
+			
+			// Si ce sprite est valide, est-il un sprite fixe ?
+			if (this.IsNotFixe()) {
+				// On a trouvé un sprite valide non fixe
+				// On calcule sa nouvelle position absolue
+				colli = physicMoveWithCollision();
+	
+				if (nSpr >= 44 && nSpr <= 47) { // Sprite d'animation
+					// Morceaux de pierres
+					z = z - vz; // On revient en arrière
 					vz = vz - az;
-					if (az != 0) {
-						if (colli || az == 32) {
-							vx = 0;
-							vy = 0;
-							az = 32;
-							vz = 0;
-						} else {
-							az = az + 1;
-						}
-					}
-				} else if (!isGoodies() && ((z < 4 && vz != 0.0f) || colli)) {
-					if (!beingCollided(null)) {
-						// Le sprite doit 'mourir'
-						fall();
+					az = az - 1;
+					if (az == 0) {
 						dying = true;
 					}
 				}
-			}
-		}
-		if (isSolid() || flying) {// Tous les sprites n'entrent pas en collision
-			// On teste la collision avec le décor
-			if (false && nSpr == 42) {
-				// Collision avec Zildo}
-				z = z - vz;
-				/*
-				 * colli=collide(round(x+vx),round(y+vy-z),round(vz)); with
-				 * tab_colli[n_colliseur] do begin
-				 * cx=round(x)-camerax;cy=round(y)-round(z)-cameray; cr=8;
-				 * n_colliseur++; if (colli) {
-				 * //spawnsprite_generic(SPR_ECLATEPIERRE,round(x),round(y),0);
-				 * }
-				 */
-			} else if (!isGoodies() && damageableElements.contains(nSpr)) {
-				// Collision avec les ennemis (uniquement dans le cas où l'objet
-				// est en mouvement)
-				Collision collision = getCollision();
-				if (vx != 0 || vy != 0 || vz != 0 || collision != null) {
-					manageCollision();
+				// Débordement}
+				if (x < -4 || y < -4 || x > 64 * 16 || (y-z) > 64 * 16) {
+					die();
+					dying = true;
+				} else {
+	
+					if (pushableElements.contains(nSpr)) {
+						z = ancZ; // z-vz;
+						vz = vz - az;
+						if (az != 0) {
+							if (colli || az == 32) {
+								vx = 0;
+								vy = 0;
+								az = 32;
+								vz = 0;
+							} else {
+								az = az + 1;
+							}
+						}
+					} else if (!isGoodies() && ((z < 4 && vz != 0.0f) || colli)) {
+						if (!beingCollided(null)) {
+							// Le sprite doit 'mourir'
+							fall();
+							dying = true;
+						}
+					}
 				}
 			}
-		}
-		if (shadow != null) {
-			shadow.x = x;
-			shadow.y = y - 1;
+			if (isSolid() || flying) {// Tous les sprites n'entrent pas en collision
+				// On teste la collision avec le décor
+				if (false && nSpr == 42) {
+					// Collision avec Zildo}
+					z = z - vz;
+					/*
+					 * colli=collide(round(x+vx),round(y+vy-z),round(vz)); with
+					 * tab_colli[n_colliseur] do begin
+					 * cx=round(x)-camerax;cy=round(y)-round(z)-cameray; cr=8;
+					 * n_colliseur++; if (colli) {
+					 * //spawnsprite_generic(SPR_ECLATEPIERRE,round(x),round(y),0);
+					 * }
+					 */
+				} else if (!isGoodies() && desc.isDamageable()) {
+					// Collision avec les ennemis (uniquement dans le cas où l'objet
+					// est en mouvement)
+					Collision collision = getCollision();
+					if (vx != 0 || vy != 0 || vz != 0 || collision != null) {
+						manageCollision();
+					}
+				}
+			}
+			if (shadow != null) {
+				shadow.x = x;
+				shadow.y = y - 1;
+			}
 		}
 		setAjustedX((int) x);
 		setAjustedY((int) y);
@@ -366,11 +375,13 @@ public class Element extends SpriteEntity {
 		EngineZildo.collideManagement.addCollision(collision);
 	}
 
+	//TODO: this should be removed, and replaced by setDesc
 	public void setSprModel(ElementDescription p_desc) {
 		this.setNBank(SpriteBank.BANK_ELEMENTS);
 		this.setNSpr(p_desc.ordinal());
 		this.setSprModel(EngineZildo.spriteManagement.getSpriteBank(nBank)
 				.get_sprite(p_desc.ordinal()));
+		desc = p_desc;
 	}
 
 	public void setSprModel(ElementDescription p_desc, int p_addSpr) {
@@ -653,6 +664,14 @@ public class Element extends SpriteEntity {
 			return p.isGhost();
 		}
 		return false;
+	}
+	
+	public void setMover(Mover m) {
+		mover = m;
+	}
+	
+	public Mover getMover() {
+		return mover;
 	}
 	
 	@Override

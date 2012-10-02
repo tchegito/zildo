@@ -60,4 +60,8 @@ public enum FontDescription implements SpriteDescription {
 		return false;
 	}
 
+	@Override
+	public boolean isDamageable() {
+		return false;
+	}
 }

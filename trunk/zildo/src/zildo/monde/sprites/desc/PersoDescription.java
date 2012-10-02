@@ -157,4 +157,9 @@ public enum PersoDescription implements SpriteDescription {
 		return false;
 	}
 
+	@Override
+	public boolean isDamageable() {
+		return false;
+	}
+
 }
