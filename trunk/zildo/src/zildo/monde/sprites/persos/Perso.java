@@ -615,7 +615,7 @@ public abstract class Perso extends Element {
 		case 861:
 		case 862:
 			if (!isGhost() && isZildo()) {
-				EngineZildo.scriptManagement.execute("miniStairsDown");
+				EngineZildo.scriptManagement.execute("miniStairsDown", false);
 			}
 			slowDown = true;
 			break;
@@ -624,7 +624,7 @@ public abstract class Perso extends Element {
 		case 863:
 		case 864:	// Cave stairs
 			if (!isGhost() && isZildo()) {
-				EngineZildo.scriptManagement.execute("miniStairsUp");
+				EngineZildo.scriptManagement.execute("miniStairsUp", false);
 			}
 			slowDown = true;
 			break;
@@ -641,7 +641,9 @@ public abstract class Perso extends Element {
 		case 768+215: case 768+216: case 768+224: case 768+225: case 768+226: case 768+227: case 768+228: // grotte
 		//case 1536+198: // foret4
 			if (isZildo()) {
-				EngineZildo.scriptManagement.execute("dieInPit");
+				stopBeingWounded();	// Stop potential projection
+				setCompte_dialogue(0);	// Stop Zildo blink
+				EngineZildo.scriptManagement.execute("dieInPit", false);
 			}
 			break;
 		}

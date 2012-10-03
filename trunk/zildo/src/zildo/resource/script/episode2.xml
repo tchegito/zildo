@@ -31,7 +31,7 @@
     	    <location name="voleursg5" tilePos="52,26"/>
     	</trigger>
     	<action>
-    	    <exec script="move_vg5_plat1"/>
+    	    <exec script="move_vg5_plat1" unblock="true"/>
     	</action>
     </quest>
 
@@ -40,7 +40,7 @@
     	    <location name="voleursg5" tilePos="25,26"/>
     	</trigger>
     	<action>
-    	    <exec script="move_vg5_plat2" unblock="true"/>
+    	    <exec script="move_vg5_plat2"/>
     	</action>
     </quest>
     

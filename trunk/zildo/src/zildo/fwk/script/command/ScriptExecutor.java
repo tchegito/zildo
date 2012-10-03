@@ -64,14 +64,14 @@ public class ScriptExecutor {
 	}
 	
 	public void render() {
-		if (isScripting()) {
+		if (!scripts.isEmpty()) {
 			
 			ScriptProcess process=getCurrent();
 			
 			AnyElement currentNode=process.getCurrentNode();
 			if (currentNode == null) {
 				// We reach the end of the script
-				terminate();
+				terminate(process);
 			} else {
 				Class<? extends AnyElement> clazz=currentNode.getClass();
 				if (ActionElement.class.isAssignableFrom(clazz)) {
@@ -90,7 +90,7 @@ public class ScriptExecutor {
 				
 				// Did the last action finished ? So we'll avoid GUI blinking with 1-frame long script. (issue 28)
 				if (process.getCurrentNode() == null) {
-					terminate();
+					terminate(process);
 				}
 			}
 		}
@@ -98,10 +98,10 @@ public class ScriptExecutor {
 
 	/**
 	 * Script just terminated.
+	 * @param process TODO
 	 */
-	private void terminate() {
-		ScriptProcess process=scripts.get(0);
-		scripts.remove(0);
+	private void terminate(ScriptProcess process) {
+		scripts.remove(process);
 		process.terminate();
 		if (!isScripting()) {
 			// Get back to life the involved characters
@@ -152,7 +152,16 @@ public class ScriptExecutor {
 	}
 	
 	public boolean isScripting() {
-		return !scripts.isEmpty();
+		if (scripts.isEmpty()) {
+			return false;
+		}
+		for (ScriptProcess process : scripts) {
+			// Is this script unblocking ?
+			if (!process.scene.unblock) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public ScriptProcess getCurrent() {

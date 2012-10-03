@@ -30,13 +30,16 @@ public class SceneElement extends AnyElement {
 
     public String id;
     public boolean restoreZildo;	// TRUE=at the end of the scene, we should restore the previous zildo's state
+    public boolean unblock;	// TRUE=game isn't blocked during scene / FALSE=default behavior (blocked) (calculated value, according to an exec command)
     public List<ActionElement> actions;
 
     @Override
     @SuppressWarnings("unchecked")
     public void parse(Element p_elem) {
-        id = p_elem.getAttribute("id");
-        restoreZildo = "true".equalsIgnoreCase(p_elem.getAttribute("restoreZildo"));
+		xmlElement = p_elem;
+		
+        id = readAttribute("id");
+        restoreZildo = isTrue("restoreZildo");
         actions = (List<ActionElement>) ScriptReader.parseNodes(p_elem);
     }
 

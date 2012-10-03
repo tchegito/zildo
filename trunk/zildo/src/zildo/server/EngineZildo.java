@@ -145,16 +145,16 @@ public class EngineZildo {
 					} else {
 						switch (linkType) {
 						case PIT:
-							EngineZildo.scriptManagement.execute("fallPit");
+							EngineZildo.scriptManagement.execute("fallPit", false);
 							break;
 						case STAIRS_CORNER_RIGHT:
-							EngineZildo.scriptManagement.execute("stairsUpCornerRight");
+							EngineZildo.scriptManagement.execute("stairsUpCornerRight", false);
 							break;
 						case STAIRS_CORNER_LEFT:
-							EngineZildo.scriptManagement.execute("stairsUpCornerLeft");
+							EngineZildo.scriptManagement.execute("stairsUpCornerLeft", false);
 							break;
 						case STAIRS_STRAIGHT:
-							EngineZildo.scriptManagement.execute("stairsUp");
+							EngineZildo.scriptManagement.execute("stairsUp", false);
 							break;
 						}
 						state.event.nature=ClientEventNature.SCRIPT;
@@ -211,7 +211,7 @@ public class EngineZildo {
 	                	ChainingPoint ch = mapManagement.getChainingPoint();
 	                	if (ch.getComingAngle() == Angle.NULL) {
 		                	// Zildo is just falling
-		                	EngineZildo.scriptManagement.execute("endFallPit");
+		                	EngineZildo.scriptManagement.execute("endFallPit", false);
 							retEvent.nature=ClientEventNature.SCRIPT;
 	                	} else {
 							MapLink linkType=MapLink.REGULAR;
@@ -220,15 +220,15 @@ public class EngineZildo {
 							}
 							switch (linkType) {
 								case STAIRS_CORNER_LEFT:
-									EngineZildo.scriptManagement.execute("stairsUpCornerLeftEnd");
+									EngineZildo.scriptManagement.execute("stairsUpCornerLeftEnd", false);
 									retEvent.nature=ClientEventNature.SCRIPT;
 									break;
 								case STAIRS_CORNER_RIGHT:
-									EngineZildo.scriptManagement.execute("stairsUpCornerRightEnd");
+									EngineZildo.scriptManagement.execute("stairsUpCornerRightEnd", false);
 									retEvent.nature=ClientEventNature.SCRIPT;
 									break;
 								case STAIRS_STRAIGHT:
-									EngineZildo.scriptManagement.execute("stairsUpEnd");
+									EngineZildo.scriptManagement.execute("stairsUpEnd", false);
 									retEvent.nature=ClientEventNature.SCRIPT;
 									break;
 								case REGULAR:
