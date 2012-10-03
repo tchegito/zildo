@@ -394,7 +394,7 @@ public class PersoZildo extends Perso {
 		} else {
 			// Game over
 			pos_seqsprite = 0;
-			EngineZildo.scriptManagement.execute("death");
+			EngineZildo.scriptManagement.execute("death", false);
 		}
 	}
 
@@ -478,6 +478,7 @@ public class PersoZildo extends Perso {
 			yy += py;
 			px *= 0.8f;
 			py *= 0.8f;
+			walkTile(false);
 			if (pv > 0 && Math.abs(px) + Math.abs(py) < 0.2f) {
 				stopBeingWounded();
 			}

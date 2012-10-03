@@ -301,7 +301,7 @@ public class ActionExecutor {
                 	break;
                 case exec:
                 	// Note : we can sequence scripts in an action tag.
-                	EngineZildo.scriptManagement.execute(text);
+                	EngineZildo.scriptManagement.execute(text, p_action.unblock);
                 	break;
                 case music:
                 	if (text == null) { // Stop music ?
