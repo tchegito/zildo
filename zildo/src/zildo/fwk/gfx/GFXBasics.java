@@ -62,7 +62,7 @@ public class GFXBasics {
 
 	static {
 		// Default palette
-		Load_Palette("game1.pal");
+		loadPalette("game1.pal");
 	}
 
 	public GFXBasics(boolean alpha) {
@@ -81,7 +81,7 @@ public class GFXBasics {
 		this.alpha = alpha;
 	}
 
-	static void Load_Palette(String fileName) {
+	static void loadPalette(String fileName) {
 		// Load the palette
 		EasyBuffering file = Zildo.pdPlugin.openFile(fileName);
 		
