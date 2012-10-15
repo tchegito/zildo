@@ -626,6 +626,12 @@ public class PersoZildo extends Perso {
 				yy += decalyBow[angle.value][v];
 			}
 			shield.setVisible(false);
+			if (attente == 2 * 8) {
+				EngineZildo.soundManagement.broadcastSound(BankSound.FlecheTir, this);
+				Element arrow = new ElementArrow(angle, (int) x, (int) y, 0, this);
+				EngineZildo.spriteManagement.spawnSprite(arrow);
+				countArrow--;
+			}			
 			break;
 		case TOUCHE:
 			nSpr = 78 + angle.value;
@@ -753,6 +759,7 @@ public class PersoZildo extends Perso {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Manage character's graphic side, depending on the position in the
 	// animated sequence.
+	// NOTE: Especially for Zildo, is called TWICE. BAD, very bad !
 	// /////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void finaliseComportement(int compteur_animation) {
@@ -811,14 +818,7 @@ public class PersoZildo extends Perso {
 			setNSpr(angle.value * 6 + (((6 * 2 - getAttente() - 1) % (6 * 2)) / 2) + 54);
 			break;
 		case ATTAQUE_ARC:
-
 			setNSpr(angle.value * 3 + seq_zildoBow[(((4 * 8 - getAttente() - 1) % (4 * 8)) / 8)] + 108);
-			if (attente == 2 * 8) {
-				EngineZildo.soundManagement.broadcastSound(BankSound.FlecheTir, this);
-				Element arrow = new ElementArrow(angle, (int) x, (int) y, 0, this);
-				EngineZildo.spriteManagement.spawnSprite(arrow);
-				countArrow--;
-			}
 			break;
 		case MORT:
 			setNSpr(ZildoDescription.LAYDOWN.getNSpr());

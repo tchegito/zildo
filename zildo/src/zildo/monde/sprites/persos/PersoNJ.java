@@ -61,6 +61,9 @@ public class PersoNJ extends Perso {
 												smashLocation.y, 8, Angle.NORD, this, DamageType.SMASH, null);
 					EngineZildo.collideManagement.addCollision(c);
 					break;
+				case BOW:
+					action = new ShotArrowAction(this);
+					break;
 			}
 		}
 	}

@@ -277,7 +277,7 @@ public abstract class Perso extends Element {
 	}
 
 	public void setMoney(int money) {
-		this.money = money;
+		this.money = Math.max(0, money);
 	}
 
 	public String getDialogSwitch() {
@@ -644,6 +644,11 @@ public abstract class Perso extends Element {
 				stopBeingWounded();	// Stop potential projection
 				setCompte_dialogue(0);	// Stop Zildo blink
 				EngineZildo.scriptManagement.execute("dieInPit", false);
+			}
+			break;
+		case 1277:	// Knives
+			if (isZildo()) {
+				beingWounded(x + deltaMoveX, y + deltaMoveY, null, 1);
 			}
 			break;
 		}
