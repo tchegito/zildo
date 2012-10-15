@@ -18,11 +18,18 @@
     
     <quest name="vert_seen">
     	<trigger>
-    	    <location name="voleurs" pos="592,850" radius="1"/>
+    	    <location name="voleurs" pos="612,830" radius="2"/>
     	</trigger>
     	<action>
     	    <moveTo who="vert" pos="-30,0" delta="true"/>
     	    <moveTo who="vert" pos="-2,-60" delta="true" unblock="true"/>
+    	    <!-- Put knives -->
+    	    <tile pos="55,32" back2="1277"/>
+    	    <tile pos="56,32" back2="1277"/>
+    	    <tile pos="57,32" back2="1277"/>
+    	    <!-- Post guard -->
+    	    <spawn type="FOX" who="fox1" fx="rouge" pos="870,878"/>
+    	    <spawn type="FOX" who="fox2" fx="bleu" pos="1039,922"/>
     	</action>    
     </quest>
     
@@ -42,6 +49,15 @@
     	<action>
     	    <exec script="move_vg5_plat2"/>
     	</action>
+    </quest>
+    
+    <quest name="attaque_voleurs">
+        <trigger>
+            <location name="voleurs" pos="877,989" radius="1"/>
+        </trigger>
+        <action>
+            <exec script="attaqueV"/>
+        </action>
     </quest>
     
     <mapScript>
@@ -111,6 +127,60 @@
 		</actions>
 	</scene>
 	
+	<scene id="attaqueV">
+	    <speak who="fox1" text="voleurs.fox1" unblock="true"/>
+	    <actions>
+            <moveTo who="fox1" pos="-32,4" delta="true" unstoppable="true" speed="1.5"/>
+            <moveTo who="fox2" pos="-68,8" delta="true" unstoppable="true" speed="1.5"/>
+            <angle who="zildo" value="1"/>
+	    </actions>
+	    <actions>
+        	<moveTo who="fox1" pos="0,64" delta="true"/>
+			<moveTo who="fox2" pos="913,998"/>
+			<moveTo who="zildo" pos="890,1005" speed="0.5"/>     
+	    </actions>
+	    <pos who="vert" pos="713,764"/>
+	    <angle who="fox2" value="3"/>
+	    <moveTo who="fox1" pos="870,980"/>
+	    <angle who="fox1" value="2"/>
+	    <angle who="zildo" value="0"/>
+	    <speak who="fox2" text="voleurs.fox2"/>
+	    <angle who="zildo" value="2"/>
+	    <moveTo who="fox1" pos="872,982" unblock="true"/>
+	    <speak who="fox1" text="voleurs.fox3"/>
+	    <moveTo who="fox2" pos="910,998" unblock="true"/>
+	    <angle who="zildo" value="1"/>
+	    <moveTo who="vert" pos="807,906" unblock="true"/>
+	    <speak who="fox2" text="voleurs.fox4"/>
+	    <actions>
+	        <moveTo who="fox2" pos="900,998"/>
+	        <moveTo who="zildo" pos="880,1005" backward="true"/>
+	    </actions>
+   	    <speak who="fox2" text="voleurs.fox5"/>
+   	    <moveTo who="fox1" pos="874,985" unblock="true"/>
+   	    <speak who="fox2" text="voleurs.fox6"/>
+   	    <actions>
+   	    	<moveTo who="fox2" pos="889,1005"/>
+   	    	<moveTo who="zildo" pos="875,1005" backward="true"/>
+   	    </actions>
+   	    <take value="-999"/>
+   	    <speak who="fox2" text="voleurs.fox7"/>
+   	    <actions>
+   	    	<moveTo who="fox2" pos="-20,0" delta="true" speed="1.5"/>
+   	    	<moveTo who="zildo" pos="-25,0" delta="true" backward="true" speed="1.5"/>
+	   	    <speak who="fox2" text="voleurs.fox8"/>
+	   	    <moveTo who="vert" pos="839,926"/>
+   	    </actions>
+   	    <angle who="fox1" value="3"/>
+   	    <angle who="vert" value="2"/>
+   	    <attack who="vert"/>
+   	    <wait value="10"/>
+   	    <angle who="zildo" value="0"/>
+   	   	<wait value="5"/>
+   	    <moveTo who="zildo" pos="-32,0" delta="true"/>
+   	    <angle who="zildo" value="1"/>
+   	</scene>
+   	
 	<scene id="move_vg5_plat1">
 	    <moveTo what="platform" pos="-80,0" delta="true" speed="2"/>
 	    <wait value="10"/>
