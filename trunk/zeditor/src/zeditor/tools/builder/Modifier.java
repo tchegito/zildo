@@ -20,14 +20,21 @@
 
 package zeditor.tools.builder;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.IndexColorModel;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.LogManager;
 
+import javax.imageio.ImageIO;
+
+import zeditor.tools.banque.Foret1;
+import zeditor.tools.banque.Foret4;
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.banque.Palais1;
 import zeditor.tools.sprites.ElementsPlus;
@@ -40,9 +47,15 @@ import zeditor.tools.sprites.SpriteBankEdit;
 import zeditor.tools.sprites.SpriteBanque;
 import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.MotifBankEdit;
+import zildo.Zildo;
+import zildo.client.Client;
+import zildo.client.ClientEngineZildo;
 import zildo.client.gui.GUIDisplay;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasyWritingFile;
+import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.Game;
 import zildo.monde.dialog.Behavior;
@@ -53,6 +66,7 @@ import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.util.Vector3f;
 import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -80,23 +94,28 @@ public class Modifier {
 	
      public static void main(String[] args) {
          // Intialize game engine
+    	 Zildo.soundEnabled = false;
+    	 //new Modifier().textureBuilder();
+    	 //if (true) System.exit(0);
         Game g=new Game(null, true);
         new EngineZildo(g);
        
+        //new Modifier().savePalette();
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
         //new Modifier().saveElements3();
         //new Modifier().saveFontes2();
         //new Modifier().saveAllMotifBank();
-        //new Modifier().saveBanque();
+        new Modifier().saveBanque();
         //new Modifier().saveGears();
-        new Modifier().saveZildo();
+        //new Modifier().saveZildo();
         //new Modifier().savePnj();
         //new Modifier().savePnj2();
+        //new Modifier().modifyAllMaps();
         //new Modifier().adjustSpritePositionOnAllMaps();
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
-       // new Modifier().ripDialogFromAllMaps();
+       //new Modifier().ripDialogFromAllMaps();
     }
      
      public void generateImg() {
@@ -106,8 +125,8 @@ public class Modifier {
      }
      
      public void saveBanque() {
-    	 new MotifBank().charge_motifs("palais1");
-    	 new Palais1().save();
+    	 new MotifBank().charge_motifs("foret1");
+    	 new Foret1().save();
      }
      
      public void saveNamedTileBank(String tileBankName) {
@@ -290,6 +309,47 @@ public class Modifier {
     	 bank.addSpritesFromBank(new Pnj());
     	 bank.saveBank();
      }
+    
+     public void savePalette() {
+    	 Vector3f[] palette = loadPalette("../FreeGraph/exteria1.png");
+    	 EasyBuffering buf = new EasyBuffering(768);
+    	 for (int i = 0;i<256;i++) {
+    		 buf.put((byte) palette[i].x);
+    		 buf.put((byte) palette[i].y);
+    		 buf.put((byte) palette[i].z);
+    	 }
+    	 
+    	 new EasyWritingFile(buf).saveFile("game1.pal");
+     }
+     
+     
+     private Vector3f[] loadPalette(String p_filename) {
+ 		BufferedImage img = null;
+ 		String fileName=p_filename;
+ 		fileName=Banque.PKM_PATH + p_filename;
+ 		try {
+ 			img = ImageIO.read(new File(fileName));
+ 		} catch (IOException e) {
+ 		}
+ 		IndexColorModel colors = (IndexColorModel) img.getColorModel();
+ 		Vector3f[] ret = new Vector3f[256];
+ 		for (int i=0;i<256;i++) {
+ 			Vector3f col = new Vector3f(colors.getRed(i), colors.getGreen(i), colors.getBlue(i));
+ 			System.out.println("col "+i+
+ 					" R" + col.x+
+ 					" G"+col.y+
+ 					" B"+col.z);
+ 			ret[i] = col;
+ 		}
+ 		return ret;
+     }
+     
+     public void saveFontes() {
+         SpriteBankEdit bank=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_FONTES));
+         bank.clear();
+    	 bank.addSpritesFromBank(new Fontes());
+    	 bank.saveBank();
+     }
      
      /** Not useful anymore. It remains here as an example. **/
     public void fixPnj2() {
@@ -355,64 +415,52 @@ public class Modifier {
     }
     
     public void ripDialogFromAllMaps() {
-    	
-		String path=Constantes.DATA_PATH+"anciens";
-		File directory=new File(path);
-		
-		File[] maps = directory.listFiles(new FilenameFilter() {
-    		public boolean accept(File dir, String name) {
-    			return name.toLowerCase().endsWith(".map");
+    	new AllMapProcessor() {
+    		@Override
+    		public boolean run() {
+    			boolean polakyMap = mapName.startsWith("polaky");
+    			if (polakyMap) {
+    				MapManagement mapManagement=EngineZildo.mapManagement;
+    				Area map = mapManagement.getCurrentMap();
+    				MapDialog dialogs = map.getMapDialog();
+    				
+    				String name=mapName.substring(0, mapName.indexOf("."));
+    				
+    				// Behavior
+    				Map<String, Behavior> behaviors = dialogs.getBehaviors();
+    				
+    				for (String key : behaviors.keySet()) {
+    					Behavior b=behaviors.get(key);
+    					for (int i=0;i<10;i++) {
+    						if (b.replique[i] == 0) {
+    							break;
+    						}
+    						String s = dialogs.getSentence(b, i);
+    						if (s != null) {
+
+    							String sentenceKey=name+"."+key+"."+i;
+    							System.out.println(sentenceKey+"="+s);
+    							
+    							// Replace sentence by key in the map file
+    				    		dialogs.setSentence(b, i, sentenceKey);
+
+    						}
+    					}
+    				}
+    				return true;
+    			} else {
+    				return false;
+    			}
+    			
     		}
-		});
-		LogManager.getLogManager().reset();
-		
-        Game game = new Game(null, true);
-        new Server(game, true);
-		for (File f : maps) {
-			String name=f.getName();
-			EngineZildo.mapManagement.loadMap("..\\anciens\\"+name, false);
-		        
-	        // Save the map into a temporary file
-			MapManagement mapManagement=EngineZildo.mapManagement;
-			Area map = mapManagement.getCurrentMap();
-			MapDialog dialogs = map.getMapDialog();
-			
-			String mapName=map.getName().substring("..\\anciens\\".length());
-			mapName=mapName.substring(0, mapName.indexOf("."));
-			
-			// Behavior
-			Map<String, Behavior> behaviors = dialogs.getBehaviors();
-
-			System.out.println("\n## "+mapName);
-
-			for (String key : behaviors.keySet()) {
-				Behavior b=behaviors.get(key);
-				for (int i=0;i<10;i++) {
-					if (b.replique[i] == 0) {
-						break;
-					}
-					String s = dialogs.getSentence(b, i);
-					if (s != null) {
-
-						String sentenceKey=mapName+"."+key+"."+i;
-						System.out.println(sentenceKey+"="+s);
-						
-						// Replace sentence by key in the map file
-			    		dialogs.setSentence(b, i, sentenceKey);
-
-					}
-				}
-			}
-			mapManagement.saveMapFile(name);
-		}
-		
+    	}.modifyAllMaps();
     }
     
 	public void adjustSpritePositionOnAllMaps() {
 		new AllMapProcessor() {
 			
 			@Override
-			public void run() {
+			public boolean run() {
 				List<SpriteEntity> entities = EngineZildo.spriteManagement.getSpriteEntities(null);
 				for (SpriteEntity entity : entities) {
 					if (entity.getEntityType() == EntityType.ELEMENT ||
@@ -420,7 +468,19 @@ public class Modifier {
 						entity.x+=entity.getSprModel().getTaille_x();
 					}
 				}
+				return true;
 			}
 		}.modifyAllMaps();
 	}
+	
+	public void textureBuilder() {
+		Client cl = new Client(false);
+
+		// Save all textures
+		TileEngine tileEngine = ClientEngineZildo.tileEngine;
+		SpriteEngine spriteEngine = ClientEngineZildo.spriteEngine;
+		tileEngine.saveTextures();
+		spriteEngine.saveTextures();
+	}
+	
 }
