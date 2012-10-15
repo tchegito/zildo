@@ -397,7 +397,9 @@ public class Area implements EasySerializable {
 	 *            TRUE if tile is attacked / FALSE for simple action (ex: Zildo picks up a bush)
 	 */
 	public void takeSomethingOnTile(Point tileLocation, boolean p_destroy, Perso p_perso) {
-		int on_Area = this.readmap(tileLocation.getX(), tileLocation.getY());
+		int x = tileLocation.getX();
+		int y = tileLocation.getY();
+		int on_Area = readmap(x, y);
 		int resultTile;
 		SpriteAnimation anim = SpriteAnimation.FROMGROUND;
 		switch (on_Area) {
@@ -424,8 +426,13 @@ public class Area implements EasySerializable {
 		spawnTile.previousCase = new Case(get_mapcase(tileLocation.x, tileLocation.y + 4));
 		toRespawn.add(spawnTile);
 
-		this.writemap(tileLocation.getX(), tileLocation.getY(), resultTile);
-
+		// Remove tile on back2, if present
+		Case temp = this.get_mapcase(x, y + 4);
+		if (temp.getBackTile2() != null) {
+			temp.setBackTile2(null);
+		} else {
+			this.writemap(tileLocation.getX(), tileLocation.getY(), resultTile);
+		}
 		// Is there something planned to appear ?
 		Point p = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
 		ElementDescription desc = getCaseItem(tileLocation.x, tileLocation.y);
