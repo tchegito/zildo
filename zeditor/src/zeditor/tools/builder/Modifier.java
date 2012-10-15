@@ -1,7 +1,7 @@
 /**
  * Legend of Zildo
  * Copyright (C) 2006-2012 Evariste Boussaton
- * Based on original Zelda : link to the past (C) Nintendo 1992
+ * 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,9 +34,7 @@ import java.util.logging.LogManager;
 import javax.imageio.ImageIO;
 
 import zeditor.tools.banque.Foret1;
-import zeditor.tools.banque.Foret4;
 import zeditor.tools.banque.Grotte;
-import zeditor.tools.banque.Palais1;
 import zeditor.tools.sprites.ElementsPlus;
 import zeditor.tools.sprites.Fontes;
 import zeditor.tools.sprites.Gears;
