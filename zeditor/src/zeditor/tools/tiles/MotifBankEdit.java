@@ -101,8 +101,16 @@ public class MotifBankEdit extends MotifBank {
 	}
     
     public void loadImage(String p_filename, int p_transparentColor) {
-    	String imageName=Banque.PKM_PATH + p_filename + ".png";
-		bankEdit.loadImage(imageName, p_transparentColor);
+    	String imageName=Banque.PKM_PATH;
+    	// New engine with free tiles
+    	// 1) Try with folder containing free tiles
+    	String completeName = imageName + "../FreeGraph/" + p_filename + ".png";
+    	try {
+    		bankEdit.loadImage(completeName, p_transparentColor);
+    	} catch (Exception e) {
+        	completeName = imageName + p_filename + ".png";
+    		bankEdit.loadImage(completeName, p_transparentColor);
+    	}
 	}
     
     public void saveBank() {

@@ -120,9 +120,8 @@ public class Foret2 extends Banque {
 				new Point(96, 128), new Point(96, 144), new Point(112, 144),
 				new Point(96, 160), new Point(112, 160),
 				
-				/* Castle suit */
-				/*
-				*/
+				/* Knives */
+				new Point(0, 80)
 		};
 
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("exteria5", 0, 0),
