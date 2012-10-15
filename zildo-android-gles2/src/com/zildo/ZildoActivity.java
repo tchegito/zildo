@@ -27,18 +27,18 @@ public class ZildoActivity extends Activity {
 	static ClientThread clientThread;
 	static OpenGLRenderer renderer;
 	
-	ZildoDialogs zd;
+	static ZildoDialogs zd;
 	
 	final static int RESET_SPLASHSCREEN = 99;
 	final static int PLAYERNAME_DIALOG = 98;
 
 	static class SplashHandler extends Handler {
 			OpenGLES20SurfaceView view;
-			ZildoDialogs zd;
+			ZildoDialogs zds;
 			
 		public SplashHandler(OpenGLES20SurfaceView view, ZildoDialogs zd) {
 			this.view = view;
-			this.zd = zd;
+			this.zds = zd;
 		}
 		
     	@Override
