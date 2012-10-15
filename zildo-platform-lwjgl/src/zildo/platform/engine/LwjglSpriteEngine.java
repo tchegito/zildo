@@ -71,10 +71,12 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		float[] color=textureEngine.graphicStuff.getFloat(GL11.GL_CURRENT_COLOR, 4);
 
 		Vector3f ambient=ClientEngineZildo.ortho.getAmbientColor();
+		Vector4f ambient4f = new Vector4f(1, 1, 1, 1);
 		if (ambient != null) {
 			color[0]=ambient.x;
 			color[1]=ambient.y;
 			color[2]=ambient.z;
+			ambient4f = new Vector4f(color[0], color[1], color[2], 1);
 		}
 		// Respect order from bankOrder
 		boolean endSequence=false;
@@ -119,6 +121,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color2", tabColors[3]); //.scale(color[0]));
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color3", tabColors[0]);
 							ClientEngineZildo.pixelShaders.setParameter(0, "Color4", tabColors[1]);
+							ClientEngineZildo.pixelShaders.setParameter(0, "curColor", ambient4f);
 						} else {
 							ARBShaderObjects.glUseProgramObjectARB(0);
 						}

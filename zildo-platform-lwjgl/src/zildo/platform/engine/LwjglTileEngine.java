@@ -60,6 +60,8 @@ public class LwjglTileEngine extends TileEngine {
 			}
 			
 			Point p = ClientEngineZildo.mapDisplay.getCamera();
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
 			GL11.glPushMatrix();
 			GL11.glTranslatef(-p.x, -p.y, 0f);
 
