@@ -20,6 +20,9 @@
 
 package zeditor.tools.sprites;
 
+import java.util.Arrays;
+
+import zeditor.tools.tiles.GraphChange;
 import zildo.monde.util.Zone;
 
 /**
@@ -32,7 +35,7 @@ public class ElementsPlus extends SpriteBanque {
 
 	public ElementsPlus() {
 		zones = new Zone[] {
-/*
+
 				// Buisson,pot,ombre
 				new Zone(0, 0, 12, 13),
 				new Zone(0, 13, 16, 15),
@@ -54,7 +57,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(0, 72, 16, 15),
 				new Zone(16, 72, 16, 15),
 
-				// Sprites fixes
+				// Sprites fixes (13)
 				// Eau
 				new Zone(152, 0, 8, 8),
 				new Zone(160, 0, 16, 8),
@@ -69,7 +72,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(190, 0, 6, 6),
 				new Zone(184, 6, 6, 6),
 				new Zone(190, 6, 6, 6),
-				// Rambardes grotte
+				// Rambardes grotte (25)
 				new Zone(184, 12, 8, 8),
 				new Zone(184, 24, 16, 8),
 				new Zone(196, 0, 8, 16),
@@ -94,7 +97,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(20, 4, 8, 7),
 				new Zone(24, 11, 8, 7),
 
-				// Boule en pierre,ombre et éclats
+				// Boule en pierre,ombre et éclats (42)
 				new Zone(16, 46, 8, 8),
 				new Zone(12, 30, 8, 4),
 				new Zone(20, 56, 6, 7),
@@ -113,7 +116,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(8, 131, 8, 14),
 				new Zone(16, 131, 8, 14),
 
-				// Fumée
+				// Fumée (57)
 				new Zone(17, 87, 8, 8),
 				new Zone(25, 87, 7, 7),
 				new Zone(17, 95, 5, 5),
@@ -126,7 +129,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(192, 32, 8, 8),
 				new Zone(192, 40, 8, 8),
 
-				// Rocher et ombre
+				// Rocher et ombre (64)
 				new Zone(24, 95, 31, 31),
 				new Zone(24, 126, 31, 31),
 				new Zone(24, 18, 18, 6),
@@ -137,11 +140,50 @@ public class ElementsPlus extends SpriteBanque {
 				// Pilier de bois
 				new Zone(26, 48, 8, 16),
 
-				// Blocs à bouger
+				// Blocs à bouger (69)
 				new Zone(0, 145, 16, 16),
 				new Zone(0, 161, 16, 16),
-*/
-				// From here :Objets.png
+
+				// Arrows (4 same sprites : N-E-S-O) (71)
+				new Zone(0, 0, 5, 15), new Zone(5, 0, 15, 5),
+				new Zone(20, 0, 5, 15), new Zone(25, 0, 15, 5),
+				// Arrows landing (4 3-sized sequences with N-E-S-O)
+				new Zone(40, 0, 5, 12), 
+				new Zone(45, 0, 6, 11),	new Zone(51, 0, 6, 11), 
+				new Zone(57, 0, 12, 5), 
+				new Zone(69, 0, 11, 6), new Zone(80, 0, 11, 6),
+				new Zone(91, 0, 5, 12),
+				new Zone(96, 0, 6, 11), new Zone(102, 0, 6, 11),
+				new Zone(108, 0, 12, 5),
+				new Zone(120, 0, 11, 6), new Zone(131, 0, 11, 6),
+				// Boomerang (4 sprites identically rotated) (87)
+				new Zone(142, 0, 10, 10), new Zone(152, 0, 10, 10),
+				new Zone(162, 0, 10, 10), new Zone(172, 0, 10, 10),
+				// Bow (4 2-sized sequences with N-E-S-O)
+				new Zone(182, 0, 16, 7), new Zone(198, 0, 14, 8),
+				new Zone(212, 0, 6, 16), new Zone(0, 16, 8, 14),
+				new Zone(8, 16, 16, 7), new Zone(24, 16, 14, 8),
+				new Zone(38, 16, 6, 16), new Zone(44, 16, 8, 14),
+				// Explosion (99)
+				new Zone(52, 16, 8, 8), new Zone(60, 16, 12, 12),
+				new Zone(72, 16, 14, 14), new Zone(86, 16, 16, 16),
+				// Red projectile (103)
+				new Zone(102, 16, 3, 3), new Zone(105, 16, 4, 4),
+				new Zone(109, 16, 7, 7), 
+				// Bomb (and explosion) (106)
+				new Zone(116, 16, 13, 14), new Zone(129, 16, 14, 14),
+				new Zone(143, 16, 15, 15), new Zone(158, 16, 15, 16),
+				new Zone(173, 16, 14, 14), new Zone(187, 16, 15, 15),
+				new Zone(212, 16, 8, 8),
+				// Flut and sword (113)
+				new Zone(220, 16, 14, 14), new Zone(234, 15, 6, 15),
+				// Quad (115)
+				new Zone(0, 35, 17, 23), new Zone(17, 35, 17, 23),
+				new Zone(34, 35, 17, 23), new Zone(51, 35, 17, 23),
+				new Zone(68, 35, 17, 23), new Zone(85, 35, 17, 23),
+				new Zone(102, 35, 17, 23), new Zone(119, 35, 17, 23),
+				
+				// From here :Objets.png (123)
 				new Zone(36, 0, 8, 15),
 				new Zone(48, 0, 16, 16),
 				new Zone(65, 2, 14, 13),
@@ -151,7 +193,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(130, 0, 12, 16),
 				new Zone(144, 0, 16, 16),
 				new Zone(144, 17, 16, 16),
-				// Excalibur
+				// Excalibur (132)
 				new Zone(163, 0, 10, 22), new Zone(178, 0, 13, 16),
 				new Zone(193, 0, 15, 16), new Zone(209, 0, 14, 16),
 				new Zone(193, 17, 14, 16), new Zone(193, 34, 14, 16),
@@ -161,30 +203,30 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(113, 17, 14, 16),
 				new Zone(128, 17, 16, 17),
 				new Zone(208, 35, 15, 15),
-				// Coupe
+				// Coupe (144)
 				new Zone(0, 52, 16, 16), new Zone(208, 52, 16, 16),
 				new Zone(26, 70, 12, 14), new Zone(42, 70, 12, 14),
 				new Zone(58, 70, 12, 14),
 				new Zone(74, 70, 12, 14),
-				// Bouclier rouge
+				// Bouclier rouge (150)
 				new Zone(89, 69, 14, 16), new Zone(121, 69, 14, 16),
 				new Zone(18, 56, 3, 3), new Zone(22, 61, 5, 5),
 				new Zone(23, 53, 7, 7),
 				// 3 bombs
-				new Zone(142, 68, 16, 16),
+				new Zone(142, 69, 16, 16),
 				// Scepter
-				new Zone(100, 17, 23, 11),
+				new Zone(52, 46, 24, 11),
 				// Spade
 				new Zone(0,177,11,19),
 				// Book sign
 				new Zone(11, 177, 32, 20),
 				// Leaf
 				new Zone(16, 169, 8, 7),
-				// Milk
+				// Milk (160)
 				new Zone(43, 181, 11, 16),
 				// House options
-				new Zone(104, 176, 32, 16),	// Window
-				new Zone(136, 176, 26, 15),	// Portrait
+				new Zone(204, 0, 32, 16),	// Window
+				new Zone(236, 0, 26, 15),	// Portrait
 				// Staff (which makes sound 'poum')
 				new Zone(24, 169, 18, 8),
 				// Water bridge
@@ -199,17 +241,22 @@ public class ElementsPlus extends SpriteBanque {
 				// Door
 				new Zone(55, 151, 16, 16), new Zone(55, 167, 16, 5),
 				// Cemetery's door
-				new Zone(44, 39, 8, 22),
+				new Zone(42, 39, 8, 22),
 				// Carpet
-				new Zone(18, 145, 8, 8),
+				new Zone(16, 145, 8, 8),
 				// Thief Launcher
-				new Zone(35, 71, 8, 7), new Zone(44, 71, 8, 9),
+				new Zone(33, 71, 8, 7), new Zone(42, 71, 8, 9),
 				// Projectiles
 				new Zone(85, 28, 16, 16), new Zone(101, 28, 16, 16),
 				new Zone(117, 24, 31, 31),
-				new Zone(206, 0, 16, 16),
+				new Zone(76, 46, 16, 16),
 				// Platform
 				new Zone(242, 0, 32, 32)
 		};
+		
+		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
+				new GraphChange("elem2", 71, 0), 
+				new GraphChange("objets", 123, 0),
+				new GraphChange("elem", 156, 0)});
 	}
 }
