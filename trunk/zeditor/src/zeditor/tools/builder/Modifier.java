@@ -34,7 +34,11 @@ import java.util.logging.LogManager;
 import javax.imageio.ImageIO;
 
 import zeditor.tools.banque.Foret1;
+import zeditor.tools.banque.Foret2;
+import zeditor.tools.banque.Foret3;
+import zeditor.tools.banque.Foret4;
 import zeditor.tools.banque.Grotte;
+import zeditor.tools.banque.Village;
 import zeditor.tools.sprites.ElementsPlus;
 import zeditor.tools.sprites.Fontes;
 import zeditor.tools.sprites.Gears;
@@ -62,6 +66,7 @@ import zildo.monde.map.Area;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.util.Vector3f;
@@ -98,7 +103,7 @@ public class Modifier {
         Game g=new Game(null, true);
         new EngineZildo(g);
        
-        //new Modifier().savePalette();
+        new Modifier().savePalette();
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
         //new Modifier().saveElements3();
@@ -125,6 +130,20 @@ public class Modifier {
      public void saveBanque() {
     	 new MotifBank().charge_motifs("foret1");
     	 new Foret1().save();
+    	 
+    	 new MotifBank().charge_motifs("foret2");
+    	 new Foret2().save();
+
+    	 new MotifBank().charge_motifs("foret3");
+    	 new Foret3().save();
+
+    	 new MotifBank().charge_motifs("foret4");
+    	 new Foret4().save();
+
+    	 new MotifBank().charge_motifs("village");
+    	 new Village().save();
+
+    	 saveElements();
      }
      
      public void saveNamedTileBank(String tileBankName) {
@@ -229,6 +248,18 @@ public class Modifier {
     			 bankElem.loadImage("elem", COLOR_BLUE);
     		 }
     	 }
+    	 bankElem.saveBank();
+     }
+     
+     public void saveElements() {
+         SpriteBankEdit bankElem=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
+   		 //bankElem.removeSpr(ElementDescription.SCEPTER.getNSpr()+1);
+    	 bankElem.loadImage("elem", COLOR_BLUE);
+    	 bankElem.clear();
+    	 Zone[] zones = new ElementsPlus().getZones();
+    	 System.out.println("elemntsplus size="+zones.length);
+    	 System.out.println("elemDescription size="+ElementDescription.class.getEnumConstants().length);
+    	 bankElem.addSpritesFromBank(new ElementsPlus());
     	 bankElem.saveBank();
      }
      
