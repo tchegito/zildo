@@ -27,6 +27,7 @@ import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.GraphChange;
 import zildo.client.gui.GUIDisplay;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.db.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.monde.sprites.SpriteModel;
@@ -60,6 +61,8 @@ public class SpriteBankEdit extends SpriteBank {
             short[] gfx=p_bank.getSpriteGfx(i);
             bankEdit.gfxs.add(gfx);
         }
+        
+        Identified.resetCounter(SpriteModel.class);
     }
     
     public void addSpr(int p_position, int p_tailleX, int p_tailleY, short[] p_gfx) {
