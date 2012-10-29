@@ -277,7 +277,7 @@ public class GUIDisplay {
 		int sizeCurrentWord = 0;
 		int sizeCurrentLine = 0;
 		int lastSpacePosition = -1;
-		int[] sizesLine = new int[Constantes.MAX_TOPICS];
+		int[] sizesLine = new int[Constantes.TEXTER_NUMLINE * 3];	// Total rows (with scroll)
 
 		// Interpret dialog Mode
 		int nBank;
@@ -332,6 +332,7 @@ public class GUIDisplay {
 			if (a == ' ' || a == 0 || (a == '#' && toDisplay_dialogMode != DialogMode.CREDITS) || a == '\n') {
 				if (sizeCurrentLine + sizeCurrentWord > width
 						|| a == '\n') {
+					System.out.println("current line size = "+sizeCurrentLine);
 					// We must cut the line before the current word
 					if (a == '\n') {
 						sizesLine[nLigne] = sizeCurrentLine + sizeCurrentWord;
@@ -369,6 +370,11 @@ public class GUIDisplay {
 				spr = ClientEngineZildo.spriteDisplay.getSpriteBank(nBank)
 						.get_sprite(nSpr[nLettre] + offsetNSpr);
 				sizeCurrentWord += (spr.getTaille_x() + 1);
+				
+				if (toDisplay_dialogMode.isScript()) { // && i < nLettre && texte.charAt(i+1) != ' ') {
+					sizeCurrentWord--;
+					sizeCurrentWord-= scriptLegibility[nSpr[nLettre]];
+				}
 			}
 			nLettre++;
 		}
@@ -411,7 +417,8 @@ public class GUIDisplay {
 				lettre.setSpecialEffect(fx);
 				spr = lettre.getSprModel();
 				offsetX += (spr.getTaille_x() + 1);
-				if (toDisplay_dialogMode.isScript() && i < nLettre && nSpr[i+1] >= 0) { 
+				
+				if (toDisplay_dialogMode.isScript()) {// && i < nLettre && nSpr[i+1] >= 0) { 
 					// Special fonts with legibility (and no space after)
 					offsetX--;
 					offsetX-= scriptLegibility[indexSpr];
@@ -564,22 +571,6 @@ public class GUIDisplay {
 
 		displayTextParts(false);
 		dialogContext.visibleMessageDisplay = false;
-	}
-
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// displayTopics
-	// /////////////////////////////////////////////////////////////////////////////////////
-	public void displayTopics(int selected) {
-		for (SpriteEntity entity : textDialogSequence) {
-			int numLigne = (entity.getScrY() - sc.TEXTER_COORDINATE_Y)
-					/ Constantes.TEXTER_TOPIC_SIZELINE;
-			if (numLigne == selected) {
-				entity.setSpecialEffect(EngineFX.FONT_HIGHLIGHT);
-			} else {
-				entity.setSpecialEffect(EngineFX.FONT_NORMAL);
-			}
-		}
-
 	}
 
 	public void displayCredits(int counter, String nextSentence) {

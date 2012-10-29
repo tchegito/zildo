@@ -30,7 +30,7 @@ import zildo.fwk.bank.SpriteBank;
 public enum FontDescription implements SpriteDescription {
 
 	// Frame
-	FRAME_UPLEFT, FRAME_UPRIGHT, FRAME_DOWNLEFT, FRAME_DOWNRIGHT,
+	FRAME_CORNER,
 	// GUI icons
 	GUI_HEART, GUI_HEARTEMPTY, GUI_RUPEE,
 	GUI_BOMB, GUI_ARROW, GUI_KEY,
@@ -52,7 +52,7 @@ public enum FontDescription implements SpriteDescription {
 
 	@Override
 	public int getNSpr() {
-		return ordinal() + GUIDisplay.transcoChar.length();
+		return ordinal() + 2 * GUIDisplay.transcoChar.length();
 	}
 
 	@Override

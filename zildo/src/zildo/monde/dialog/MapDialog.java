@@ -25,15 +25,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import zildo.resource.Constantes;
-
 public class MapDialog {
 
 	private int n_topics;
 
 	private List<String> dialogs = new ArrayList<String>();
 	private Map<String, Behavior> behaviors;
-	private DialogTopic[] topics = new DialogTopic[Constantes.MAX_TOPICS];
 
 	public MapDialog() {
 		n_topics = 0;
@@ -86,17 +83,6 @@ public class MapDialog {
 
 	public void addBehavior(Behavior p_behav) {
 		behaviors.put(p_behav.persoName, p_behav);
-	}
-
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// addBehavior
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// IN:character's name and behavior (array of 9 integers)
-	// /////////////////////////////////////////////////////////////////////////////////////
-	void addTopic(String topicName) {
-		// Initialize first one with ID=1;
-		n_topics++;
-		topics[n_topics] = new DialogTopic(n_topics, topicName);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
