@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
 import zildo.fwk.gfx.EngineFX;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.SpriteDescription;
 
@@ -78,6 +79,12 @@ public class GUISpriteSequence extends ArrayList<SpriteEntity> {
 	
 	public SpriteEntity addSprite(SpriteDescription p_desc, int x, int y, int alpha) {
 		return addSprite(p_desc.getBank(), p_desc.getNSpr(), x, y, true, alpha);
+	}
+	
+	public SpriteEntity addSprite(SpriteDescription p_desc, int x, int y, Reverse rev) {
+		SpriteEntity entity = addSprite(p_desc.getBank(), p_desc.getNSpr(), x, y, true, 255);
+		entity.reverse = rev;
+		return entity;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////

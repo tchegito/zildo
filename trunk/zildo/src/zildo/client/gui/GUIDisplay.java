@@ -45,6 +45,7 @@ import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.items.Item;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.FontDescription;
@@ -73,6 +74,10 @@ public class GUIDisplay {
 
 	public enum DialogMode {
 		CLASSIC, MENU, CREDITS;
+		
+		public boolean isScript() {
+			return this == CLASSIC || this == CREDITS;
+		}
 	}
 	
 	// Alpha channel for virtual pad (specific Android) : range is 0..255
@@ -158,6 +163,8 @@ public class GUIDisplay {
 			+ "0123456789~£§/:%";
 	final Map<Character, Integer> mapTranscoChar = new HashMap<Character, Integer>();
 
+	public static final int[] scriptLegibility = new int[transcoChar.length()];
+	
 	private void initTransco() {
 		for (int i = 0; i < transcoChar.length(); i++) {
 			mapTranscoChar.put(transcoChar.charAt(i), i);
@@ -167,6 +174,16 @@ public class GUIDisplay {
 		mapTranscoChar.put('¤', FontDescription.GUI_RUPEE.getNSpr());
 		
 		mapTranscoChar.put(' ', -1);
+		
+		// Legibility
+		for (int i=0;i<scriptLegibility.length;i++) {
+			scriptLegibility[i] = 0;
+		}
+		scriptLegibility[transcoChar.indexOf("L")] = 5;
+		scriptLegibility[transcoChar.indexOf("R")] = 5;
+		scriptLegibility[transcoChar.indexOf("M")] = 3;
+		scriptLegibility[transcoChar.indexOf("Q")] = 3;
+		scriptLegibility[transcoChar.indexOf("N")] = 3;
 	}
 
 	int getIndexCharacter(char a) {
@@ -274,6 +291,11 @@ public class GUIDisplay {
 		int width = fullWidth ? Zildo.viewPortX : sc.TEXTER_SIZEX;
 		nBank = SpriteBank.BANK_FONTES;
 		sizeLine = sc.TEXTER_SIZELINE;
+		int offsetNSpr = 0;
+		if (toDisplay_dialogMode.isScript()) {
+			offsetNSpr =transcoChar.length();
+			sizeLine = sc.TEXTER_SIZELINE_SCRIPT;
+		}
 		EngineFX fx = EngineFX.FOCUSED;
 		
 		switch (toDisplay_dialogMode) {
@@ -345,7 +367,7 @@ public class GUIDisplay {
 				nSpr[nLettre] = getIndexCharacter(a);
 				// Get sprite model to obtain horizontal size
 				spr = ClientEngineZildo.spriteDisplay.getSpriteBank(nBank)
-						.get_sprite(nSpr[nLettre]);
+						.get_sprite(nSpr[nLettre] + offsetNSpr);
 				sizeCurrentWord += (spr.getTaille_x() + 1);
 			}
 			nLettre++;
@@ -383,11 +405,17 @@ public class GUIDisplay {
 			} else {
 				// Store font's pointer to easily remove it later and scroll
 				// into the frame
-				lettre = seq.addSprite(nBank, indexSpr, x + offsetX, y
-						+ offsetY, visibleFont, 255);
+				lettre = seq.addSprite(nBank, indexSpr + offsetNSpr, 
+						x + offsetX, y + offsetY, 
+						visibleFont, 255);
 				lettre.setSpecialEffect(fx);
 				spr = lettre.getSprModel();
 				offsetX += (spr.getTaille_x() + 1);
+				if (toDisplay_dialogMode.isScript() && i < nLettre && nSpr[i+1] >= 0) { 
+					// Special fonts with legibility (and no space after)
+					offsetX--;
+					offsetX-= scriptLegibility[indexSpr];
+				}
 			}
 		}
 		filledZone.x2 = x + offsetX - filledZone.x1;
@@ -427,11 +455,11 @@ public class GUIDisplay {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Draw frame around displayed text
 	// /////////////////////////////////////////////////////////////////////////////////////
-	private final int couleur_cadre[] = { 3, 9, 9, 169, 3 };
+	private final int couleur_cadre[] = { 3, 203, 204, 203, 3 };
 
 	void drawFrame() {
 		int sizeX = sc.TEXTER_SIZEX;
-		int sizeY = sc.TEXTER_SIZELINE * sc.TEXTER_NUMLINE + 2;
+		int sizeY = sc.TEXTER_SIZELINE_SCRIPT * sc.TEXTER_NUMLINE + 2;
 		int posX1 = sc.TEXTER_COORDINATE_X - 10;
 		int posX2 = sc.TEXTER_COORDINATE_X + sizeX;
 		int posY1 = sc.TEXTER_COORDINATE_Y - 10;
@@ -439,19 +467,15 @@ public class GUIDisplay {
 		
 		// Draw corner frame
 		if (!frameDialogSequence.isDrawn()) {
-			frameDialogSequence
-					.addSprite(FontDescription.FRAME_UPLEFT, posX1, posY1);
-			frameDialogSequence.addSprite(FontDescription.FRAME_UPRIGHT, posX2,
-					posY1);
-			frameDialogSequence.addSprite(FontDescription.FRAME_DOWNLEFT, posX1,
-					posY2);
-			frameDialogSequence.addSprite(FontDescription.FRAME_DOWNRIGHT, posX2,
-					posY2);
+			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER, posX1, posY1);
+			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER, posX2, posY1, Reverse.HORIZONTAL);
+			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER, posX1, posY2, Reverse.VERTICAL);
+			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER, posX2, posY2, Reverse.ALL); 
 		}
 
 		// Draw frame's bars
+		ClientEngineZildo.ortho.initDrawBox(false);
 		for (int i = 0; i < 5; i++) {
-			ClientEngineZildo.ortho.initDrawBox(false);
 			ClientEngineZildo.ortho.boxOpti(posX1+7, posY1 + i, sizeX+3, 1,
 					couleur_cadre[i], null);
 			ClientEngineZildo.ortho.boxOpti(posX1+7, posY2+6 - i, sizeX+3, 1,
@@ -460,8 +484,11 @@ public class GUIDisplay {
 					couleur_cadre[i], null);
 			ClientEngineZildo.ortho.boxOpti(posX2+6 - i, posY1+7, 1, sizeY+3,
 					couleur_cadre[i], null);
-			ClientEngineZildo.ortho.endDraw();
 		}
+		ClientEngineZildo.ortho.endDraw();
+		ClientEngineZildo.ortho.enableBlend();
+		ClientEngineZildo.ortho.box(posX1+5, posY1+5, sizeX+7, sizeY+7, 0, new Vector4f(0.4f, 0.2f, 0.1f, 0.7f));
+		ClientEngineZildo.ortho.disableBlend();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -620,9 +647,9 @@ public class GUIDisplay {
 		int y = startY + (p_menu.selected + 2) * sc.TEXTER_MENU_SIZEY;
 		alpha += 0.1f;
 		int wave = (int) (10.0f * Math.sin(alpha));
-		menuSequence.addSprite(FontDescription.FRAME_UPRIGHT, 40 + wave, y + 2);
-		menuSequence.addSprite(FontDescription.FRAME_UPLEFT, Zildo.viewPortX
-				- 40 - wave, y + 2);
+		menuSequence.addSprite(FontDescription.FRAME_CORNER, 40 + wave, y + 2);
+		menuSequence.addSprite(FontDescription.FRAME_CORNER, Zildo.viewPortX
+				- 40 - wave, y + 2, Reverse.HORIZONTAL);
 	}
 
 	public void endMenu() {

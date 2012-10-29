@@ -112,4 +112,8 @@ public class BankEdit {
     	}
     	return false;
     }
+    
+    public int getImageWidth() {
+    	return img.getWidth();
+    }
 }

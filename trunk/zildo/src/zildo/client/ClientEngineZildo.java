@@ -207,6 +207,9 @@ public class ClientEngineZildo {
 
 		//long t7 = ZUtils.getTime();
 
+		if (!p_editor && client.connected) {
+			guiDisplay.draw();
+		}
 		// Display FOREGROUND sprites
 		if (spriteDisplay.foreBackController.isDisplayForeground()) {
 		    spriteEngine.render(false);
@@ -229,9 +232,7 @@ public class ClientEngineZildo {
 			guiDisplay.setToDisplay_scores(tabPressed);
 		}
 
-		if (!p_editor && client.connected) {
-			guiDisplay.draw();
-		}
+
 		
 		//long t9 = ZUtils.getTime();
 

@@ -1,7 +1,7 @@
 /**
  * Legend of Zildo
  * Copyright (C) 2006-2012 Evariste Boussaton
- * 
+ * Based on original Zelda : link to the past (C) Nintendo 1992
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,9 +35,6 @@ public class Fontes extends SpriteBanque {
 		zones = new Zone[] {
 				// Le cadre
 				new Zone(0, 73, 7, 7),
-				new Zone(7, 73, 7, 7),
-				new Zone(0, 80, 7, 7),
-				new Zone(7, 80, 7, 7),
 				// Les icones de l'interface
 				new Zone(0, 87, 7, 7),
 				new Zone(7, 87, 7, 7),

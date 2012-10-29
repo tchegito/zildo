@@ -24,7 +24,7 @@ public abstract class Banque {
 	Map<Point, Integer> motifParPoint;
 	Map<Integer, Point> pointParMotif;
 	
-	public static final String PKM_PATH = "F:\\Code\\Projets Pascal\\Zildo\\Developpement\\Graph\\";
+	public static final String PKM_PATH = "C:\\Users\\evariste.boussaton\\Desktop\\graphs\\Graph\\";
 	
 	// Ensemble des points correspondant à la position haute-gauche de chaque
 	// tile

@@ -33,12 +33,8 @@ import java.util.logging.LogManager;
 
 import javax.imageio.ImageIO;
 
-import zeditor.tools.banque.Foret1;
-import zeditor.tools.banque.Foret2;
-import zeditor.tools.banque.Foret3;
 import zeditor.tools.banque.Foret4;
 import zeditor.tools.banque.Grotte;
-import zeditor.tools.banque.Village;
 import zeditor.tools.sprites.ElementsPlus;
 import zeditor.tools.sprites.Fontes;
 import zeditor.tools.sprites.Gears;
@@ -52,7 +48,6 @@ import zeditor.tools.tiles.MotifBankEdit;
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
-import zildo.client.gui.GUIDisplay;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
@@ -107,7 +102,7 @@ public class Modifier {
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
         //new Modifier().saveElements3();
-        //new Modifier().saveFontes2();
+        new Modifier().saveFontes2();
         //new Modifier().saveAllMotifBank();
         new Modifier().saveBanque();
         //new Modifier().saveGears();
@@ -128,22 +123,8 @@ public class Modifier {
      }
      
      public void saveBanque() {
-    	 new MotifBank().charge_motifs("foret1");
-    	 new Foret1().save();
-    	 
-    	 new MotifBank().charge_motifs("foret2");
-    	 new Foret2().save();
-
-    	 new MotifBank().charge_motifs("foret3");
-    	 new Foret3().save();
-
     	 new MotifBank().charge_motifs("foret4");
     	 new Foret4().save();
-
-    	 new MotifBank().charge_motifs("village");
-    	 new Village().save();
-
-    	 saveElements();
      }
      
      public void saveNamedTileBank(String tileBankName) {
@@ -280,30 +261,11 @@ public class Modifier {
      public void saveFontes2() {
          SpriteBankEdit bankFont=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_FONTES));
          bankFont.clear();
-         bankFont.loadImage("fontes", COLOR_BLUE);
+         bankFont.loadImage("fontes2", COLOR_BLUE);
          
-         // Capture the fonts
-         int startX=0;
-         int startY=0;
-         for (int i=0;i<GUIDisplay.transcoChar.length();i++) {
-        	 // Get size
-        	 int width=bankFont.getWidth(startX, startY, 16);
-        	 if (width > 1) {
-	        	 bankFont.addSprFromImage(i, startX, startY, width, 16);
-	        	 
-	        	 System.out.println(startX+" , "+startY+" size="+width);
-
-	        	 startX+=width + 1;
-	        	 if (startX >= 184) {
-	        		 startX=0;
-	        		 startY+=16;
-	        	 }
-        	 } else {
-        		 startX = 0;
-        		 startY+=16;
-        		 i--;
-        	 }
-         }
+         bankFont.captureFonts(153, 19);
+         bankFont.captureFonts(261, 16);
+         
          int nSpr=bankFont.getNSprite();
          Zone[] elements=new Fontes().getZones();
          for (Zone z : elements) {

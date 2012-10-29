@@ -19,6 +19,7 @@ public class ScreenConstant {
 	final int TEXTER_SIZESPACE;
 	final int TEXTER_NUMLINE = Constantes.TEXTER_NUMLINE;	// Unchanged for now
 	final int TEXTER_SIZELINE = Constantes.TEXTER_SIZELINE;	// Idem
+	final int TEXTER_SIZELINE_SCRIPT = Constantes.TEXTER_SIZELINE_SCRIPT;	// Idem
 	final int TEXTER_BOTTOM_Y;
 	
 	public ScreenConstant(int screenX, int screenY) {
@@ -35,7 +36,7 @@ public class ScreenConstant {
 		TEXTER_COORDINATE_X= (int) (Constantes.TEXTER_COORDINATE_X * ratioX); 
 		TEXTER_COORDINATE_Y= (int) (Constantes.TEXTER_COORDINATE_Y * ratioY); 
 		TEXTER_SIZEX= (int) (Constantes.TEXTER_SIZEX * ratioX); 
-		TEXTER_MENU_SIZEY= (int) (Constantes.TEXTER_MENU_SIZEY * ratioY); 
+		TEXTER_MENU_SIZEY= (int) (TEXTER_SIZELINE * ratioY); 
 		TEXTER_SIZESPACE= (int) (Constantes.TEXTER_SIZESPACE * ratioX);
 		TEXTER_BOTTOM_Y= TEXTER_COORDINATE_Y + (TEXTER_NUMLINE * TEXTER_SIZELINE) - 10;
 	}
