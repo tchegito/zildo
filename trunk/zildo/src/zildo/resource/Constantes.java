@@ -77,7 +77,6 @@ public class Constantes {
 	public static final	float ZILDO_SPEED = 1.5f;
 	public static final	float MONSTER_SPEED = 0.85f; // Vitesse du monstre en alerte
 	public static final	int MAX_DIALOG = 256;
-	public static final	int MAX_TOPICS = 100;
 
 	// Texter
 	public static final	int TEXTER_SIZEX = 230;
@@ -86,9 +85,9 @@ public class Constantes {
 	public static final int TEXTER_NUMLINE = 3;
 	public static final int TEXTER_COORDINATE_X = 50;
 	public static final int TEXTER_COORDINATE_Y = 180;
-	public static final int TEXTER_TOPIC_SIZELINE = 12;
 	public static final int TEXTER_MENU_SIZEY = 16;
-
+	public static final int TEXTER_SIZELINE_SCRIPT = 16;
+	
 	public static final	int FADE_SPEED = 5;
 
 	public static final	float mathPi = 3.1415926535f;
