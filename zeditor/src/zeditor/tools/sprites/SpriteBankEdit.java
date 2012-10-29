@@ -25,6 +25,7 @@ import java.util.Iterator;
 import zeditor.tools.builder.Modifier;
 import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.GraphChange;
+import zildo.client.gui.GUIDisplay;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
@@ -149,5 +150,38 @@ public class SpriteBankEdit extends SpriteBank {
       	addSprFromImage(startSpr + i, z.x1, z.y1, z.x2, z.y2);
       	i++;
       }		
+	}
+	
+	public void captureFonts(int posY, int fontHeight) {
+		// Capture the fonts
+        int startX = 0;
+        int startY = posY;
+        int nTentativ = 0;
+        int imgWidth = bankEdit.getImageWidth();
+        int offsetnSprite = nSprite;
+        for (int i=0;i<GUIDisplay.transcoChar.length();i++) {
+       	 // Get size
+       	 int width = getWidth(startX, startY, fontHeight);
+       	 if (width > 1) {
+       		 System.out.println(GUIDisplay.transcoChar.charAt(i));
+	        	 addSprFromImage(offsetnSprite + i, startX, startY, width, fontHeight);
+	        	 
+	        	 System.out.println(startX+" , "+startY+" size="+width);
+
+	        	 startX+=width + 1;
+	        	 nTentativ = 0;
+       	 } else {
+       		 if (nTentativ == 3 || startX >= imgWidth) {
+       			 startX = 0;
+       			 startY+=fontHeight;
+       			 i--;
+       			 nTentativ=0;
+       		 } else {
+       			 nTentativ++;
+       			 startX++;
+       			 i--;
+       		 }
+       	 }
+        }		
 	}
 }
