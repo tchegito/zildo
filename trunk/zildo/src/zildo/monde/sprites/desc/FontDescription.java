@@ -30,7 +30,7 @@ import zildo.fwk.bank.SpriteBank;
 public enum FontDescription implements SpriteDescription {
 
 	// Frame
-	FRAME_CORNER,
+	FRAME_CORNER_LEFT, FRAME_CORNER_RIGHT,
 	// GUI icons
 	GUI_HEART, GUI_HEARTEMPTY, GUI_RUPEE,
 	GUI_BOMB, GUI_ARROW, GUI_KEY,
