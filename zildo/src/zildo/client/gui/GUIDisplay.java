@@ -38,6 +38,7 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
+import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.ItemMenu;
@@ -184,6 +185,8 @@ public class GUIDisplay {
 		scriptLegibility[transcoChar.indexOf("M")] = 3;
 		scriptLegibility[transcoChar.indexOf("Q")] = 3;
 		scriptLegibility[transcoChar.indexOf("N")] = 3;
+		scriptLegibility[transcoChar.indexOf("d")] = 1;
+		scriptLegibility[transcoChar.indexOf("l")] = 1;
 	}
 
 	int getIndexCharacter(char a) {
@@ -462,7 +465,7 @@ public class GUIDisplay {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Draw frame around displayed text
 	// /////////////////////////////////////////////////////////////////////////////////////
-	private final int couleur_cadre[] = { 3, 203, 204, 203, 3 };
+	private final int couleur_cadre[] = {48, 239, 238, 239, 48}; //{ 3, 203, 204, 203, 3 };
 
 	void drawFrame() {
 		int sizeX = sc.TEXTER_SIZEX;
@@ -474,18 +477,18 @@ public class GUIDisplay {
 		
 		// Draw corner frame
 		if (!frameDialogSequence.isDrawn()) {
-			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER, posX1, posY1);
-			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER, posX2, posY1, Reverse.HORIZONTAL);
-			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER, posX1, posY2, Reverse.VERTICAL);
-			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER, posX2, posY2, Reverse.ALL); 
+			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_LEFT, posX1 - 3, posY1 - 3);
+			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_RIGHT, posX2, posY1 - 3);
+			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_RIGHT, posX1 - 3, posY2 - 4, Reverse.ALL);
+			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_LEFT, posX2 + 0, posY2 - 4, Reverse.ALL); 
 		}
 
 		// Draw frame's bars
 		ClientEngineZildo.ortho.initDrawBox(false);
 		for (int i = 0; i < 5; i++) {
-			ClientEngineZildo.ortho.boxOpti(posX1+7, posY1 + i, sizeX+3, 1,
+			ClientEngineZildo.ortho.boxOpti(posX1+7, posY1 + i, sizeX+4, 1,
 					couleur_cadre[i], null);
-			ClientEngineZildo.ortho.boxOpti(posX1+7, posY2+6 - i, sizeX+3, 1,
+			ClientEngineZildo.ortho.boxOpti(posX1+6, posY2+6 - i, sizeX+4, 1,
 					couleur_cadre[i], null);
 			ClientEngineZildo.ortho.boxOpti(posX1 + i, posY1+7, 1, sizeY+3,
 					couleur_cadre[i], null);
@@ -638,8 +641,8 @@ public class GUIDisplay {
 		int y = startY + (p_menu.selected + 2) * sc.TEXTER_MENU_SIZEY;
 		alpha += 0.1f;
 		int wave = (int) (10.0f * Math.sin(alpha));
-		menuSequence.addSprite(FontDescription.FRAME_CORNER, 40 + wave, y + 2);
-		menuSequence.addSprite(FontDescription.FRAME_CORNER, Zildo.viewPortX
+		menuSequence.addSprite(FontDescription.GUI_HEART, 40 + wave, y + 2);
+		menuSequence.addSprite(FontDescription.GUI_HEART, Zildo.viewPortX
 				- 40 - wave, y + 2, Reverse.HORIZONTAL);
 	}
 
@@ -681,12 +684,33 @@ public class GUIDisplay {
 			return;
 		}
 
+		final int GUI_Y = 4; //35;
+		final int WEAPON_X = 8;
+		final int DROPS_X = 248;
+		
+		Ortho ortho = ClientEngineZildo.ortho;
+		// Draw frame under GUI
+		ortho.enableBlend();
+		ortho.initDrawBox(false);
+		ortho.boxOpti(0, GUI_Y - 4, Zildo.viewPortX, 17, 0, new Vector4f(0.4f, 0.2f, 0.1f, 0.7f));
+		ortho.boxOpti(0, GUI_Y + 13, Zildo.viewPortX, 1, 0, new Vector4f(0.7f, 0.7f, 0.6f, 0.9f));
+		ortho.boxOpti(0, GUI_Y + 14, Zildo.viewPortX, 1, 0, new Vector4f(0.5f, 0.5f, 0.4f, 0.9f));
+
+		ortho.boxOpti(DROPS_X - 4 - 8, GUI_Y - 4, 1, 17, 0, new Vector4f(0.7f, 0.7f, 0.6f, 0.9f));
+		ortho.boxOpti(DROPS_X - 5 - 8, GUI_Y - 4, 1, 17, 0, new Vector4f(0.5f, 0.5f, 0.4f, 0.9f));
+
+		ortho.boxOpti(WEAPON_X + 16, GUI_Y - 4, 1, 17, 0, new Vector4f(0.7f, 0.7f, 0.6f, 0.9f));
+		ortho.boxOpti(WEAPON_X + 15, GUI_Y - 4, 1, 17, 0, new Vector4f(0.5f, 0.5f, 0.4f, 0.9f));
+
+		ortho.endDraw();
+		ortho.disableBlend();
+
 		int i;
 		// Life
-		FontDescription lifeGui = lang_fr ? FontDescription.GUI_LIFE : FontDescription.GUI_LIFE_ENGLISH;
-		guiSpritesSequence.addSprite(lifeGui, 207, 10);
-		for (i = 0; i < zildo.getMaxpv() / 2; i++) {
-			int pv = zildo.getPv();
+		//FontDescription lifeGui = lang_fr ? FontDescription.GUI_LIFE : FontDescription.GUI_LIFE_ENGLISH;
+		//guiSpritesSequence.addSprite(lifeGui, 207, 10);
+		for (i = 0; i < (0*zildo.getMaxpv()+20) / 2; i++) {
+			int pv = zildo.getPv()*0 + 10;
 			FontDescription desc;
 			if (i == pv >> 1 && pv % 2 == 1) {
 				desc = FontDescription.GUI_HEARTHALF; // Half heart
@@ -695,12 +719,12 @@ public class GUIDisplay {
 			} else {
 				desc = FontDescription.GUI_HEART; // Full heart
 			}
-			guiSpritesSequence.addSprite(desc, 190 + ((i - 1) % 10) * 8,
-					20 + 8 * ((i - 1) / 10));
+			guiSpritesSequence.addSprite(desc, DROPS_X + ((i - 1) % 10) * 8,
+					GUI_Y); //20 + 8 * ((i - 1) / 10));
 		}
 
 		// Money
-		guiSpritesSequence.addSprite(FontDescription.GUI_RUPEE, 72, 10);
+		guiSpritesSequence.addSprite(FontDescription.GUI_RUPEE, 97, GUI_Y);
 		if (countMoney != zildo.getMoney()) {
 			if (countMoney < zildo.getMoney()) {
 				countMoney++;
@@ -712,22 +736,22 @@ public class GUIDisplay {
 						.playSoundFX(BankSound.ZildoGagneArgent);
 			}
 		}
-		displayNumber(countMoney, 3, 66, 20);
+		displayNumber(countMoney, 3, 87, GUI_Y);
 
 		// Bombs
-		guiSpritesSequence.addSprite(FontDescription.GUI_BOMB, 110, 10);
-		displayNumber(zildo.getCountBomb(), 2, 107, 20);
+		guiSpritesSequence.addSprite(FontDescription.GUI_BOMB, 136, GUI_Y - 2);
+		displayNumber(zildo.getCountBomb(), 2, 126, GUI_Y);
 
 		// Arrows
-		guiSpritesSequence.addSprite(FontDescription.GUI_ARROW, 149, 10);
-		displayNumber(zildo.getCountArrow(), 2, 148, 20);
+		guiSpritesSequence.addSprite(FontDescription.GUI_ARROW, 174, GUI_Y);
+		displayNumber(zildo.getCountArrow(), 2, 164, GUI_Y);
 
 		// Keys
-		guiSpritesSequence.addSprite(FontDescription.GUI_KEY, 41, 10);
-		displayNumber(zildo.getCountKey(), 1, 40, 20);
+		guiSpritesSequence.addSprite(FontDescription.GUI_KEY, 211, GUI_Y + 2);
+		displayNumber(zildo.getCountKey(), 1, 201, GUI_Y);
 		
 		// Current weapon
-		guiSpritesSequence.addSprite(FontDescription.GUI_WEAPONFRAME, 14, 8);
+		//guiSpritesSequence.addSprite(FontDescription.GUI_WEAPONFRAME, WEAPON_X, 0);
 		Item weapon = zildo.getWeapon();
 		if (weapon != null) {
 			SpriteDescription desc = weapon.kind.representation;
@@ -735,7 +759,7 @@ public class GUIDisplay {
 					.get_sprite(desc.getNSpr());
 			int sx = spr.getTaille_x();
 			int sy = spr.getTaille_y();
-			guiSpritesSequence.addSprite(desc, 25-(sx >> 1), 18-(sy >> 1));
+			guiSpritesSequence.addSprite(desc, WEAPON_X + 4-(sx >> 1), 8-(sy >> 1));
 		}
 		
 		// virtual pad
@@ -749,13 +773,15 @@ public class GUIDisplay {
 	}
 
 	private void displayNumber(int p_number, int p_numDigit, int p_x, int p_y) {
-		int lastPos = p_x + p_numDigit * 7 - 7;
+		int lastPos = p_x + 2;
 		for (int i = 0; i < p_numDigit; i++) {
 			int j = p_number;
-			if (i == 2) {
+			if (i == 2 && p_number >= 100) {
 				j = j / 100;
-			} else if (i == 1) {
+			} else if (i == 1 && p_number >= 10) {
 				j = j / 10;
+			} else if (i > 0) {
+				break;
 			}
 			j = j % 10;
 			FontDescription desc = FontDescription.values()[FontDescription.N_0
