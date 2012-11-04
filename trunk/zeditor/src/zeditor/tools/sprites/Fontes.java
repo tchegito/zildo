@@ -34,22 +34,23 @@ public class Fontes extends SpriteBanque {
 	public Fontes() {
 		zones = new Zone[] {
 				// Le cadre
-				new Zone(0, 73, 7, 7),
+				new Zone(0, 0, 10, 14),
+				new Zone(12, 0, 10, 14),
 				// Les icones de l'interface
-				new Zone(0, 87, 7, 7),
-				new Zone(7, 87, 7, 7),
-				new Zone(14, 87, 8, 8),
-				new Zone(22, 87, 8, 8),
-				new Zone(30, 87, 14, 8),
-				new Zone(51, 87, 8, 8),
+				new Zone(0, 87, 7, 7),	// Blue drop
+				new Zone(7, 87, 7, 7),	// Empty drop
+				new Zone(14, 87, 9, 8),	// Coin
+				new Zone(24, 84, 7, 11),	// Dynamite
+				new Zone(31, 85, 10, 9),	// Arrow
+				new Zone(50, 89, 11, 5),	// Key
 				// Les 10 chiffres
-				new Zone(0, 95, 7, 7), new Zone(7, 95, 7, 7),
-				new Zone(14, 95, 7, 7), new Zone(21, 95, 7, 7),
-				new Zone(28, 95, 7, 7), new Zone(35, 95, 7, 7),
-				new Zone(42, 95, 7, 7), new Zone(49, 95, 7, 7),
-				new Zone(56, 95, 7, 7), new Zone(63, 95, 7, 7),
+				new Zone(0, 117, 7, 9), new Zone(7, 117, 7, 9),
+				new Zone(14, 117, 7, 9), new Zone(21, 117, 7, 9),
+				new Zone(28, 117, 7, 9), new Zone(35, 117, 7, 9),
+				new Zone(42, 117, 7, 9), new Zone(49, 117, 7, 9),
+				new Zone(56, 117, 7, 9), new Zone(63, 117, 7, 9),
 				// Vie
-				new Zone(0, 102, 44, 7), new Zone(44, 87, 7, 7),
+				new Zone(0, 102, 44, 7), new Zone(43, 87, 7, 7),	// Small drop
 				new Zone(0, 109, 44, 7),
 				
 				// Jauge etc...
