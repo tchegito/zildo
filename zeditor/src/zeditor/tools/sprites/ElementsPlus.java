@@ -176,7 +176,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(173, 16, 14, 14), new Zone(187, 16, 15, 15),
 				new Zone(212, 16, 8, 8),
 				// Flut and sword (113)
-				new Zone(220, 16, 14, 14), new Zone(234, 15, 6, 15),
+				new Zone(210, 16, 15, 15), new Zone(225, 16, 15, 15),
 				// Quad (115)
 				new Zone(0, 35, 17, 23), new Zone(17, 35, 17, 23),
 				new Zone(34, 35, 17, 23), new Zone(51, 35, 17, 23),
