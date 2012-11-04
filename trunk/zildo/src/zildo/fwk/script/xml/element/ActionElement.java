@@ -81,7 +81,7 @@ public class ActionElement extends AnyElement {
 		// Read common attributes
 		who = readAttribute("who");
 		what = readAttribute("what");
-		fx = p_elem.getAttribute("fx");
+		fx = readAttribute("fx");
 		unblock = isTrue("unblock");
 		speed = Float.valueOf("0" + p_elem.getAttribute("speed"));
 		unstoppable = isTrue("unstoppable");

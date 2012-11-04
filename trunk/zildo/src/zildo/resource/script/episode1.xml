@@ -124,7 +124,7 @@
 		</trigger>
 		<action>
 			<speak who="zildo" text="d4.noBar"/>
-			<moveTo who="zildo" pos="0,-12" delta="true"/>
+			<moveTo who="zildo" pos="464,294"/>
 		</action>
 	</quest>
 	
