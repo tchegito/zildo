@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
@@ -34,6 +33,7 @@ import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.SpriteDisplay;
+import zildo.client.gui.menu.HallOfFameMenu;
 import zildo.client.sound.BankSound;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.SpriteBank;
@@ -74,10 +74,18 @@ import zildo.server.state.PlayerState;
 public class GUIDisplay {
 
 	public enum DialogMode {
-		CLASSIC, MENU, CREDITS;
+		CLASSIC, MENU, CREDITS, HALLOFFAME;
 		
 		public boolean isScript() {
-			return this == CLASSIC || this == CREDITS;
+			return true; //this == CLASSIC || this == CREDITS;
+		}
+		
+		public boolean isBig() {
+			return this == MENU;
+		}
+		
+		public boolean isMenu() {
+			return this == MENU || this == HALLOFFAME;
 		}
 	}
 	
@@ -114,7 +122,6 @@ public class GUIDisplay {
 	private FilterCommand filterCommand;
 
 	public float alpha;
-	private boolean lang_fr;
 	
 	Stack<GameMessage> messageQueue;
 
@@ -149,8 +156,6 @@ public class GUIDisplay {
 		dialogContext = new DialogContext();
 		dialogDisplay = new DialogDisplay(dialogContext);
 		
-		// French or english ?
-		lang_fr = Locale.getDefault().getLanguage().equals(new Locale("fr").getLanguage());
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -164,15 +169,16 @@ public class GUIDisplay {
 			+ "0123456789~£§/:%";
 	final Map<Character, Integer> mapTranscoChar = new HashMap<Character, Integer>();
 
-	public static final int[] scriptLegibility = new int[transcoChar.length()];
+	public static final int[] scriptLegibility = new int[transcoChar.length() + 6];
+	public static final int[] scriptBigLegibility = new int[transcoChar.length()];
 	
 	private void initTransco() {
 		for (int i = 0; i < transcoChar.length(); i++) {
 			mapTranscoChar.put(transcoChar.charAt(i), i);
 		}
 		// Extra characters
-		mapTranscoChar.put('^', FontDescription.GUI_HEART.getNSpr());
-		mapTranscoChar.put('¤', FontDescription.GUI_RUPEE.getNSpr());
+		mapTranscoChar.put('^', FontDescription.GUI_HEART.getNSpr() - transcoChar.length());
+		mapTranscoChar.put('¤', FontDescription.GUI_RUPEE.getNSpr() - transcoChar.length());
 		
 		mapTranscoChar.put(' ', -1);
 		
@@ -187,6 +193,15 @@ public class GUIDisplay {
 		scriptLegibility[transcoChar.indexOf("N")] = 3;
 		scriptLegibility[transcoChar.indexOf("d")] = 1;
 		scriptLegibility[transcoChar.indexOf("l")] = 1;
+		for (int i=0;i<scriptBigLegibility.length;i++) {
+			scriptBigLegibility[i] = scriptLegibility[i] * 2;
+		}
+		scriptBigLegibility[transcoChar.indexOf("Q")]--;
+		scriptBigLegibility[transcoChar.indexOf("T")] = 5;
+		scriptBigLegibility[transcoChar.indexOf("A")] = 4;
+		scriptBigLegibility[transcoChar.indexOf("N")] = 8;
+		scriptBigLegibility[transcoChar.indexOf("P")] = 2;
+		scriptBigLegibility[transcoChar.indexOf("J")] = 1;
 	}
 
 	int getIndexCharacter(char a) {
@@ -295,7 +310,7 @@ public class GUIDisplay {
 		nBank = SpriteBank.BANK_FONTES;
 		sizeLine = sc.TEXTER_SIZELINE;
 		int offsetNSpr = 0;
-		if (toDisplay_dialogMode.isScript()) {
+		if (!toDisplay_dialogMode.isBig()) {
 			offsetNSpr =transcoChar.length();
 			sizeLine = sc.TEXTER_SIZELINE_SCRIPT;
 		}
@@ -308,6 +323,7 @@ public class GUIDisplay {
 			center = false;
 			break;
 		case MENU:
+		case HALLOFFAME:
 			visibleFont = true;
 			center = true;
 			seq = textMenuSequence;
@@ -335,7 +351,6 @@ public class GUIDisplay {
 			if (a == ' ' || a == 0 || (a == '#' && toDisplay_dialogMode != DialogMode.CREDITS) || a == '\n') {
 				if (sizeCurrentLine + sizeCurrentWord > width
 						|| a == '\n') {
-					System.out.println("current line size = "+sizeCurrentLine);
 					// We must cut the line before the current word
 					if (a == '\n') {
 						sizesLine[nLigne] = sizeCurrentLine + sizeCurrentWord;
@@ -376,7 +391,7 @@ public class GUIDisplay {
 				
 				if (toDisplay_dialogMode.isScript()) { // && i < nLettre && texte.charAt(i+1) != ' ') {
 					sizeCurrentWord--;
-					sizeCurrentWord-= scriptLegibility[nSpr[nLettre]];
+					sizeCurrentWord-= getLegibility(nSpr[nLettre]);
 				}
 			}
 			nLettre++;
@@ -424,7 +439,7 @@ public class GUIDisplay {
 				if (toDisplay_dialogMode.isScript()) {// && i < nLettre && nSpr[i+1] >= 0) { 
 					// Special fonts with legibility (and no space after)
 					offsetX--;
-					offsetX-= scriptLegibility[indexSpr];
+					offsetX-= getLegibility(indexSpr);
 				}
 			}
 		}
@@ -442,12 +457,20 @@ public class GUIDisplay {
 		return filledZone;
 	}
 
+	private int getLegibility(int indexSpr) {
+		if (toDisplay_dialogMode.isBig()) {
+			return scriptBigLegibility[indexSpr];
+		} else {
+			return scriptLegibility[indexSpr];
+		}
+	}
+	
 	/**
 	 * Remove current text. It can be Dialog or Menu
 	 */
 	void removePreviousTextInFrame() {
 		GUISpriteSequence seq = textDialogSequence;
-		if (toDisplay_dialogMode == DialogMode.MENU) {
+		if (toDisplay_dialogMode.isMenu()) {
 			seq = textMenuSequence;
 		}
 		seq.clear();
@@ -465,7 +488,8 @@ public class GUIDisplay {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Draw frame around displayed text
 	// /////////////////////////////////////////////////////////////////////////////////////
-	private final int couleur_cadre[] = {48, 239, 238, 239, 48}; //{ 3, 203, 204, 203, 3 };
+	private final int couleur_cadre[] = {48, 149, 150, 149, 48};
+	//private final int couleur_cadre[] = {48, 239, 238, 239, 48}; //{ 3, 203, 204, 203, 3 };
 
 	void drawFrame() {
 		int sizeX = sc.TEXTER_SIZEX;
@@ -612,7 +636,11 @@ public class GUIDisplay {
 		int startY = (Zildo.viewPortY - sizeY) / 2;
 		if (!p_menu.displayed) {
 			// Display menu's text
-			setToDisplay_dialogMode(DialogMode.MENU);
+			if (p_menu instanceof HallOfFameMenu) {
+				setToDisplay_dialogMode(DialogMode.HALLOFFAME);
+			} else {
+				setToDisplay_dialogMode(DialogMode.MENU);
+			}
 			int posY = startY;
 			removePreviousTextInFrame();
 			// Title
@@ -707,7 +735,6 @@ public class GUIDisplay {
 
 		int i;
 		// Life
-		//FontDescription lifeGui = lang_fr ? FontDescription.GUI_LIFE : FontDescription.GUI_LIFE_ENGLISH;
 		//guiSpritesSequence.addSprite(lifeGui, 207, 10);
 		for (i = 0; i < (0*zildo.getMaxpv()+20) / 2; i++) {
 			int pv = zildo.getPv()*0 + 10;
