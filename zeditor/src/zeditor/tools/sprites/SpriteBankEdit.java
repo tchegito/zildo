@@ -71,7 +71,14 @@ public class SpriteBankEdit extends SpriteBank {
         models.add(p_position, model);
         nSprite++;
     }
-   
+    
+    public void setSpr(int p_position, int p_tailleX, int p_tailleY, short[] p_gfx) {
+        SpriteModel model=new SpriteModel(p_tailleX, p_tailleY, 0);    // don't care about 'offset'
+        bankEdit.gfxs.set(p_position, p_gfx);
+        models.set(p_position, model);
+        nSprite++;
+    }
+    
     public void removeSpr(int p_position) {
         models.remove(p_position);
         bankEdit.gfxs.remove(p_position);
@@ -84,6 +91,13 @@ public class SpriteBankEdit extends SpriteBank {
     	}
     }
     
+    public void fillNSprite(int number) {
+    	for (int i=0;i<number;i++) {
+	    	bankEdit.gfxs.add(new short[] {});
+	    	models.add(new SpriteModel());
+    	}
+    }
+    
     public void addSprFromImage(int p_position, int p_startX, int p_startY,
 			int p_tailleX, int p_tailleY) {
 		// Extract sprite from image
@@ -91,6 +105,13 @@ public class SpriteBankEdit extends SpriteBank {
 		addSpr(p_position, p_tailleX, p_tailleY, sprite);
 	}
    
+    public void setSprFromImage(int p_position, int p_startX, int p_startY,
+			int p_tailleX, int p_tailleY) {
+		// Extract sprite from image
+		short[] sprite = bankEdit.getRectFromImage(p_startX, p_startY, p_tailleX, p_tailleY);
+		setSpr(p_position, p_tailleX, p_tailleY, sprite);
+	}
+    
     public void loadImage(String p_filename, int p_transparentColor) {
 		String imageName=Banque.PKM_PATH;
     	// New engine with free tiles
@@ -128,7 +149,7 @@ public class SpriteBankEdit extends SpriteBank {
      */
 	public int getWidth(int p_startX, int p_startY, int p_height) {
 		int width = 0;
-		while (bankEdit.isLineFilled(p_startX + width, p_startY, p_height)) {
+		while (p_startX < bankEdit.getImageWidth() && bankEdit.isLineFilled(p_startX + width, p_startY, p_height)) {
 			width++;
 		}
 		return width;
@@ -155,36 +176,54 @@ public class SpriteBankEdit extends SpriteBank {
       }		
 	}
 	
-	public void captureFonts(int posY, int fontHeight) {
+	public void captureFonts(int posY, int fontHeight, String chars, int constantWidth, int heightSpace) {
 		// Capture the fonts
-        int startX = 0;
-        int startY = posY;
-        int nTentativ = 0;
-        int imgWidth = bankEdit.getImageWidth();
-        int offsetnSprite = nSprite;
-        for (int i=0;i<GUIDisplay.transcoChar.length();i++) {
-       	 // Get size
-       	 int width = getWidth(startX, startY, fontHeight);
-       	 if (width > 1) {
-       		 System.out.println(GUIDisplay.transcoChar.charAt(i));
-	        	 addSprFromImage(offsetnSprite + i, startX, startY, width, fontHeight);
-	        	 
-	        	 System.out.println(startX+" , "+startY+" size="+width);
+		int startX = 0;
+		int startY = posY;
+		int nTentativ = 0;
+		final int imgWidth = bankEdit.getImageWidth();
+		final int offsetnSprite = nSprite;
+		int width;
+		for (int i = 0; i < GUIDisplay.transcoChar.length(); i++) {
+			// Get size
+			if (constantWidth != 0) {
+				width = constantWidth;
+			} else {
+				width = getWidth(startX, startY, fontHeight);
+			}
+			int offsetFont = i;	// Default i-nth font
+			char c = GUIDisplay.transcoChar.charAt(i);
+			if (chars != null) {
+				c = chars.charAt(i);
+				offsetFont = GUIDisplay.transcoChar.indexOf(chars.charAt(i));
+			}
+			if (width > 1) {
+				//System.out.println(c);
+				if (chars == null) {
+					addSprFromImage(offsetnSprite + offsetFont, startX, startY, width, fontHeight);
+				} else {
+					setSprFromImage(offsetnSprite + offsetFont, startX, startY, width, fontHeight);
+				}
 
-	        	 startX+=width + 1;
-	        	 nTentativ = 0;
-       	 } else {
-       		 if (nTentativ == 3 || startX >= imgWidth) {
-       			 startX = 0;
-       			 startY+=fontHeight;
-       			 i--;
-       			 nTentativ=0;
-       		 } else {
-       			 nTentativ++;
-       			 startX++;
-       			 i--;
-       		 }
-       	 }
-        }		
+				//System.out.println(startX + " , " + startY + " size=" + width);
+
+				startX += width + 1;
+				if (constantWidth > 0) {
+					startX--;	// No need to space fonts, if width is constant
+				}
+				nTentativ = 0;
+			} else {
+				if (nTentativ == 5 || startX >= imgWidth) {
+					startX = 0;
+					startY += fontHeight + heightSpace;
+					i--;
+					nTentativ = 0;
+				} else {
+					nTentativ++;
+					startX++;
+					i--;
+				}
+			}
+		}
 	}
 }

@@ -38,6 +38,7 @@ import zeditor.tools.banque.Foret2;
 import zeditor.tools.banque.Foret3;
 import zeditor.tools.banque.Foret4;
 import zeditor.tools.banque.Grotte;
+import zeditor.tools.banque.Maison;
 import zeditor.tools.banque.Village;
 import zeditor.tools.sprites.ElementsPlus;
 import zeditor.tools.sprites.Fontes;
@@ -52,9 +53,9 @@ import zeditor.tools.tiles.MotifBankEdit;
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
+import zildo.client.gui.GUIDisplay;
 import zildo.fwk.bank.MotifBank;
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.collection.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.gfx.engine.SpriteEngine;
@@ -63,8 +64,6 @@ import zildo.monde.Game;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.map.Area;
-import zildo.monde.map.Case;
-import zildo.monde.map.Tile;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
@@ -106,14 +105,16 @@ public class Modifier {
         new EngineZildo(g);
         System.out.println();
        
-        new Modifier().adjustBackToBack2Tiles();
         //new Modifier().savePalette();
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
         //new Modifier().saveElements3();
-        new Modifier().saveFontes2();
+        //new Modifier().saveFontes2();
         //new Modifier().saveAllMotifBank();
         new Modifier().saveBanque();
+        //new ReplaceAllMapsWindows().modifyAllMaps();
+        new AdjustBackTiles().modifyAllMaps();
+        //new ReplaceAllMapsFloor().modifyAllMaps();
         //new Modifier().saveGears();
         //new Modifier().saveZildo();
         //new Modifier().savePnj();
@@ -147,6 +148,9 @@ public class Modifier {
     	 new MotifBank().charge_motifs("village");
     	 new Village().save();
 
+    	 new MotifBank().charge_motifs("maison");
+    	 new Maison().save();
+    	 
     	 saveElements();
      }
      
@@ -281,22 +285,26 @@ public class Modifier {
     	 bankZildo.saveBank();
      }
      
-     public void saveFontes2() {
-         SpriteBankEdit bankFont=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_FONTES));
-         bankFont.clear();
-         bankFont.loadImage("fontes2", COLOR_BLUE);
-         
-         bankFont.captureFonts(153, 19);
-         bankFont.captureFonts(261, 16);
-         
-         int nSpr=bankFont.getNSprite();
-         Zone[] elements=new Fontes().getZones();
-         for (Zone z : elements) {
-         	bankFont.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
-         	nSpr++;
-         }
-         bankFont.saveBank();
-     }
+	public void saveFontes2() {
+		SpriteBankEdit bankFont = new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_FONTES));
+		bankFont.clear();
+		bankFont.fillNSprite(GUIDisplay.transcoChar.length());
+		bankFont.loadImage("fontes5", COLOR_BLUE);
+
+		String fontOrder = "KRWXMLNQFDAUTYHBVG." + "EOPwCZJSmIfnd7?xüuvûyù40pq-k%"
+				+ "9a6z£àâ5oceghj~$23çèéêë8r§#bsi!>ïtl1)</:" + "',(äîôö";
+
+		bankFont.captureFonts(156, 22, fontOrder, 0, 0);
+		bankFont.captureFonts(261, 16, null, 0, 0);
+
+		int nSpr = bankFont.getNSprite();
+		Zone[] elements = new Fontes().getZones();
+		for (Zone z : elements) {
+			bankFont.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
+			nSpr++;
+		}
+		bankFont.saveBank();
+	}
      
      public void saveGears() {
          SpriteBankEdit bank=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
@@ -480,53 +488,6 @@ public class Modifier {
 					if (entity.getEntityType() == EntityType.ELEMENT ||
 							entity.getEntityType() == EntityType.ENTITY) {
 						entity.x+=entity.getSprModel().getTaille_x();
-					}
-				}
-				return true;
-			}
-		}.modifyAllMaps();
-	}
-	
-	IntSet maskedTiles = new IntSet(
-			// Foret
-			159, 160, 161, 162,
-			179, 180, 181, 182, 184, 185, 167, 169,
-			// Village
-			256+0, 256+4, 256+191, 256+195, 256+213, 256+217,
-			256+17, 256+208, 256+230,
-			256+24, 256+28, 256+30, 256+33,
-			256+25, 256+34, 256+35, 256+36, 256+37,
-			256+67, 256+68, 256+70, 256+71, 256+72, 256+73, 256+74, 
-			256+78, 256+79, 256+80, 256+81, 256+82, 256+83, 256+84, 256+85,
-			256+90, 256+91, 256+92, 256+99, 256+100,
-			256+105, 256+106, 256+107, 256+108, 256+109,
-			256+114, 256+115, 256+116, 256+117,	// Swamp
-			256+125, 256+129, 256+130,
-			256+131, 256+132, 256+133, 256+134,
-			256+148, 256+149, 256+151, 256+152,
-			// Foret2
-			256*4+12, 256*4+13,
-			256*4+14, 256*4+15, 256*4+16, 256*4+17
-			);
-	
-	public void adjustBackToBack2Tiles() {
-		new AllMapProcessor() {
-			
-			@Override
-			public boolean run() {
-				MapManagement mapManagement = EngineZildo.mapManagement;
-				Area area = mapManagement.getCurrentMap();
-				int emptyTile = area.getAtmosphere().getEmptyTile();
-				for (int y = 0 ; y < area.getDim_y() ; y++) {
-					for (int x = 0 ; x < area.getDim_x() ; x++) {
-						Case mapCase = area.get_mapcase(x, y+4);
-						if (mapCase.getBackTile2() == null) {
-							if (maskedTiles.contains(mapCase.getBackTile().getValue())) {
-								System.out.println("Replace tile at "+x+","+y);
-								mapCase.setBackTile2(mapCase.getBackTile());
-								mapCase.setBackTile(new Tile(emptyTile, mapCase));
-							}
-						}
 					}
 				}
 				return true;
