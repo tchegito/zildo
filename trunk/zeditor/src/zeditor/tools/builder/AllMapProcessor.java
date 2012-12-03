@@ -43,7 +43,7 @@ public abstract class AllMapProcessor {
 
 	String mapName;
 	
-	public abstract boolean run();
+	protected abstract boolean run();
 
 	public String getMapname() {
 		return mapName;
