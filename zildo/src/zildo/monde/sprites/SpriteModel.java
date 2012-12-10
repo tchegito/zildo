@@ -121,4 +121,9 @@ public class SpriteModel extends Identified {
 	public void setOffset(int offset) {
 		this.offset = offset;
 	}
+	
+	@Override
+	public String toString() {
+		return taille_x+"x"+taille_y;
+	}
 }

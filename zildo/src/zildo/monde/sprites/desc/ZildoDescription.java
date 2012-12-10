@@ -42,8 +42,8 @@ public enum ZildoDescription implements SpriteDescription {
 	HANDSUP_RIGHT1, HANDSUP_RIGHT2,
 	HANDSUP_DOWN_FIXED,
 	HANDSUP_DOWN1, HANDSUP_DOWN2, HANDSUP_DOWN3, HANDSUP_DOWN4,
-	HANDSUP_LEFT_FIXED,
-	HANDSUP_LEFT1, HANDSUP_LEFT2,	// 43
+	//HANDSUP_LEFT_FIXED,
+	//HANDSUP_LEFT1, HANDSUP_LEFT2,	// 43
 	
 	PULL_UP1, PULL_UP2,
 	PULL_RIGHT1, PULL_RIGHT2,
@@ -52,10 +52,10 @@ public enum ZildoDescription implements SpriteDescription {
 	
 	LIFT_RIGHT, LIFT_LEFT,
 	
-	ATTACK_UP1, ATTACK_UP2, ATTACK_UP3, ATTACK_UP4, ATTACK_UP5, ATTACK_UP6,
-	ATTACK_RIGHT1, ATTACK_RIGHT2, ATTACK_RIGHT3, ATTACK_RIGHT4, ATTACK_RIGHT5, ATTACK_RIGHT6,
-	ATTACK_DOWN1, ATTACK_DOWN2, ATTACK_DOWN3, ATTACK_DOWN4, ATTACK_DOWN5, ATTACK_DOWN6,
-	ATTACK_LEFT1, ATTACK_LEFT2, ATTACK_LEFT3, ATTACK_LEFT4, ATTACK_LEFT5, ATTACK_LEFT6,
+	ATTACK_UP1, ATTACK_UP2, ATTACK_UP3, ATTACK_UP4, ATTACK_UP5, //ATTACK_UP6,
+	ATTACK_RIGHT1, ATTACK_RIGHT2, ATTACK_RIGHT3, ATTACK_RIGHT4, ATTACK_RIGHT5, //ATTACK_RIGHT6,
+	ATTACK_DOWN1, ATTACK_DOWN2, ATTACK_DOWN3, ATTACK_DOWN4, ATTACK_DOWN5, //ATTACK_DOWN6,
+	//ATTACK_LEFT1, ATTACK_LEFT2, ATTACK_LEFT3, ATTACK_LEFT4, ATTACK_LEFT5, ATTACK_LEFT6,
 	
 	WOUND_UP, WOUND_RIGHT, WOUND_DOWN, WOUND_LEFT,	// 81
 	
@@ -75,12 +75,15 @@ public enum ZildoDescription implements SpriteDescription {
 	BOW_UP1, BOW_UP2, BOW_UP3,
 	BOW_RIGHT1, BOW_RIGHT2, BOW_RIGHT3,
 	BOW_DOWN1, BOW_DOWN2, BOW_DOWN3,
-	BOW_LEFT1, BOW_LEFT2, BOW_LEFT3,
+	//BOW_LEFT1, BOW_LEFT2, BOW_LEFT3,
 	
 	// 120
 	DIRT1, DIRT2, DIRT3,	// feet in dirt
 	
-	LAYDOWN, FALLING;
+	LAYDOWN, FALLING,
+	
+	SWORD0, SWORD1, SWORD2, SWORD3;
+	
 	
 	
 	public int getBank() {
@@ -91,6 +94,8 @@ public enum ZildoDescription implements SpriteDescription {
 			{1,2,3,4,-1,5, 6,-2} ,{0,1,2,3,7,6,4,5},
 			{1,2,3,4,-1,2,-3,-4},{0,1,2,3,7,6,4,5}};
 	
+	static final int[] seq_zildoBow = { 0, 1, 2, 1 };
+
 	public static Sprite getMoving(Angle p_angle, int p_seq) {
 		// 1) Fixed position
 		ZildoDescription desc=ZildoDescription.UP_FIXED;
@@ -112,6 +117,36 @@ public enum ZildoDescription implements SpriteDescription {
 		
 		return new Sprite(desc.ordinal() + Math.abs(n), desc.getBank(), reverse);
 	}
+	
+	public static Sprite getBowAttacking(Angle p_angle, int p_seq) {
+		ZildoDescription desc = ZildoDescription.BOW_UP1;
+		Reverse reverse=Reverse.NOTHING;
+		switch (p_angle) {
+		case OUEST:
+			reverse=Reverse.HORIZONTAL;
+		case EST:
+			desc=BOW_RIGHT1;break;
+		case SUD:
+			desc=BOW_DOWN1;break;
+		}
+		int n = seq_zildoBow[(((4 * 8 - p_seq - 1) % (4 * 8)) / 8)];
+		return new Sprite(desc.ordinal() + n, desc.getBank(), reverse);
+	}
+	
+	public static Sprite getSwordAttacking(Angle p_angle, int p_seq) {
+		ZildoDescription desc=ZildoDescription.ATTACK_UP1;
+		Reverse reverse=Reverse.NOTHING;
+		switch (p_angle) {
+		case OUEST:
+			reverse=Reverse.HORIZONTAL;
+		case EST:
+			desc=ATTACK_RIGHT1;break;
+		case SUD:
+			desc=ATTACK_DOWN1;break;
+		}
+		return new Sprite(desc.ordinal() + p_seq, desc.getBank(), reverse);
+	}
+
 	
 	public static ZildoDescription fromInt(int p_value) {
 		return ZildoDescription.values()[p_value];

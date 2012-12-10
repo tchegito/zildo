@@ -113,6 +113,7 @@ public class Modifier {
         //new Modifier().saveAllMotifBank();
         new Modifier().saveBanque();
         //new ReplaceAllMapsWindows().modifyAllMaps();
+        new Modifier().saveZildo();
         new AdjustBackTiles().modifyAllMaps();
         //new ReplaceAllMapsFloor().modifyAllMaps();
         //new Modifier().saveGears();
@@ -273,6 +274,9 @@ public class Modifier {
      
      public void saveZildo() {
          SpriteBankEdit bankZildo=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO));
+         bankZildo.clear();
+         bankZildo.addSpritesFromBank(new PjZildo());
+         /*
     	 bankZildo.loadImage("link3b", COLOR_BLUE);
     	 Zone[] zones = new PjZildo().getZones();
     	 int nSpr=bankZildo.getNSprite();
@@ -281,7 +285,7 @@ public class Modifier {
     			 bankZildo.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
     		 }
     		 nSpr++;
-    	 }
+    	 }*/
     	 bankZildo.saveBank();
      }
      

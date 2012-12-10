@@ -764,7 +764,6 @@ public class PersoZildo extends Perso {
 	@Override
 	public void finaliseComportement(int compteur_animation) {
 
-		final int[] seq_zildoBow = { 0, 1, 2, 1 };
 		reverse = Reverse.NOTHING;
 		switch (getMouvement())
 		{
@@ -815,10 +814,11 @@ public class PersoZildo extends Perso {
 			}
 			break;
 		case ATTAQUE_EPEE:
-			setNSpr(angle.value * 6 + (((6 * 2 - getAttente() - 1) % (6 * 2)) / 2) + 54);
+			setSpr(ZildoDescription.getSwordAttacking(angle, (((6 * 2 - getAttente() - 1) % (6 * 2)) / 2)));
+//			setNSpr(angle.value * 6 +  + 54);
 			break;
 		case ATTAQUE_ARC:
-			setNSpr(angle.value * 3 + seq_zildoBow[(((4 * 8 - getAttente() - 1) % (4 * 8)) / 8)] + 108);
+			setSpr(ZildoDescription.getBowAttacking(angle, getAttente()));
 			break;
 		case MORT:
 			setNSpr(ZildoDescription.LAYDOWN.getNSpr());
