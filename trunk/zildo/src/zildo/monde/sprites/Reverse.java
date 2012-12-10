@@ -26,6 +26,19 @@ public enum Reverse {
 		return this == VERTICAL || this == ALL;
 	}
 	
+	public Reverse flipHorizontal() {
+		switch (this) {
+		case HORIZONTAL:
+			return NOTHING;
+		case VERTICAL:
+			return ALL;
+		case NOTHING:
+			return HORIZONTAL;
+		case ALL:
+			default:
+			return VERTICAL;
+		}
+	}
 	public static Reverse fromBooleans(boolean h, boolean v) {
 		int val = h ? HORIZONTAL.getValue() : 0;
 		val|=v ? VERTICAL.getValue() : 0;
