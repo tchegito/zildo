@@ -81,7 +81,7 @@ public class SpriteBank {
 			it++;
 		}
 	*/
-		models.clear();
+		//models.clear();
 	}
 	
 	// Load a sprites bank into memory
