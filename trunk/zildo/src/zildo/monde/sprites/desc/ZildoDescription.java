@@ -126,8 +126,7 @@ public enum ZildoDescription implements SpriteDescription {
 				reverse = reverse.flipHorizontal();
 			}
 		}
-		
-		return new Sprite(desc.ordinal() + Math.abs(n), desc.getBank(), reverse);
+		return fillSprite(desc, Math.abs(n), reverse);
 	}
 	
 	/**
@@ -160,7 +159,7 @@ public enum ZildoDescription implements SpriteDescription {
 			}
 		}
 		
-		return new Sprite(desc.ordinal() + n, desc.getBank(), reverse);
+		return fillSprite(desc, n, reverse);
 	}
 	
 	public static Sprite getBowAttacking(Angle p_angle, int p_seq) {
@@ -175,7 +174,7 @@ public enum ZildoDescription implements SpriteDescription {
 			desc=BOW_DOWN1;break;
 		}
 		int n = seq_zildoBow[(((4 * 8 - p_seq - 1) % (4 * 8)) / 8)];
-		return new Sprite(desc.ordinal() + n, desc.getBank(), reverse);
+		return fillSprite(desc, n, reverse);
 	}
 	
 	public static Sprite getSwordAttacking(Angle p_angle, int p_seq) {
@@ -189,7 +188,8 @@ public enum ZildoDescription implements SpriteDescription {
 		case SUD:
 			desc=ATTACK_DOWN1;break;
 		}
-		return new Sprite(desc.ordinal() + p_seq, desc.getBank(), reverse);
+
+		return fillSprite(desc, p_seq, reverse);
 	}
 
 	public static Sprite getPushing(Angle p_angle, int p_seq) {
@@ -212,7 +212,7 @@ public enum ZildoDescription implements SpriteDescription {
 			add+= p_angle.value * 3 + seq_1[(p_seq / 2 % (4 * Constantes.speed)) / Constantes.speed];
 		}
 		
-		return new Sprite(desc.ordinal() + add, desc.getBank(), reverse);
+		return fillSprite(desc, add, reverse);
 	}
 	
 	public static Sprite getPulling(Angle p_angle, int p_seq) {
@@ -225,7 +225,7 @@ public enum ZildoDescription implements SpriteDescription {
 			add-= 4;
 		default:
 		}
-		return new Sprite(desc.ordinal() + add, desc.getBank(), reverse);
+		return fillSprite(desc, add, reverse);
 	}
 	
 	final static Sprite sprReturned = new Sprite(0,  0, Reverse.NOTHING);
