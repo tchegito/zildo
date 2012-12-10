@@ -47,28 +47,28 @@ public class PjZildo extends SpriteBanque {
 				// DOWN
 				new Zone(0, 136, 16, 20), new Zone(16, 136, 16, 20),
 				// left should be removed
-				new Zone(0, 156, 16, 23), new Zone(16, 156, 16, 23),
+				//new Zone(0, 156, 16, 23), new Zone(16, 156, 16, 23),
 				
-				// Lift (41)
+				// Lift (39)
 				new Zone(0, 179, 17, 21), new Zone(0, 179, 17, 21),
 				
 				// Attack with sword
-				// UP (43)
+				// UP (41)
 				new Zone(249, 17, 16, 24), new Zone(249, 41, 16, 24),
 				new Zone(249, 65, 16, 24), new Zone(249, 89, 16, 24), new Zone(249, 113, 16, 24),
-				// RIGHT (48)
-				new Zone(266, 17, 16, 24), new Zone(266, 41, 16, 24),
-				new Zone(266, 65, 16, 24), new Zone(266, 89, 16, 24), new Zone(266, 113, 16, 24),
-				// DOWN (53)
+				// RIGHT (46)
 				new Zone(283, 17, 16, 24), new Zone(283, 41, 16, 24),
 				new Zone(283, 65, 16, 24), new Zone(283, 89, 16, 24), new Zone(283, 113, 16, 24),
+				// DOWN (51)
+				new Zone(266, 17, 16, 24), new Zone(266, 41, 16, 24),
+				new Zone(266, 65, 16, 24), new Zone(266, 89, 16, 24), new Zone(266, 113, 16, 24),
 				// 6 left removed
 				
-				// WOUND (58) LEFT has to be removed
+				// WOUND (56) LEFT has to be removed
 				new Zone(0, 159, 16, 20), new Zone(16, 158, 16, 21),
 				new Zone(32, 160, 16, 19), new Zone(48, 158, 16, 21),
 				
-				// PUSH (62)
+				// PUSH (60)
 				// UP
 				new Zone(125, 0, 16, 22), new Zone(141, 0, 16, 22),
 				new Zone(157, 0, 16, 22), new Zone(173, 0, 16, 22), new Zone(189, 0, 16, 22),
@@ -77,20 +77,20 @@ public class PjZildo extends SpriteBanque {
 				// DOWN
 				new Zone(125, 45, 16, 20), new Zone(141, 45, 16, 20), new Zone(157, 45, 16, 20),
 				// LEFT (has to be removed)
-				new Zone(125, 65, 16, 23), new Zone(141, 65, 16, 23), new Zone(157, 65, 16, 23),
+				//new Zone(125, 65, 16, 23), new Zone(141, 65, 16, 23), new Zone(157, 65, 16, 23),
 				
-				// JUMP (76)
+				// JUMP (74)
 				new Zone(214, 0, 16, 20), new Zone(230, 0, 16, 20),
 				new Zone(246, 0, 16, 20), new Zone(262, 0, 16, 20),
 				
-				// WATER FEET (80)
+				// WATER FEET (78)
 				new Zone(50, 70, 16, 8), new Zone(50, 79, 16, 8), new Zone(50, 88, 16, 8),
 
 				// SHIELD (LEFT has to be removed)
 				new Zone(34, 101, 6, 8), new Zone(42, 100, 4, 10),
 				new Zone(33, 91, 8, 10), new Zone(47, 100, 4, 10),
 				
-				// ARMSRAISED (87)
+				// ARMSRAISED (85)
 				new Zone(126, 96, 16, 23),
 				
 				// Attack with bow (need to be reviewed => without bow)
@@ -102,10 +102,10 @@ public class PjZildo extends SpriteBanque {
 				new Zone(172, 1, 18, 21), new Zone(192, 1, 17, 24), new Zone(211, 0, 18, 22),
 				// LEFT : removed
 				
-				// DIRT (97)
+				// DIRT (95)
 				new Zone(67, 70, 16, 8), new Zone(67, 79, 16, 8), new Zone(67, 88, 16, 8),
 				
-				// LAYDOWN (100)
+				// LAYDOWN (98)
 				new Zone(0, 181, 24, 15),
 				
 				// FALLING
@@ -117,9 +117,10 @@ public class PjZildo extends SpriteBanque {
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
-		new GraphChange("link2b", 0, 0), new GraphChange("link1b", 43, 0),
-		new GraphChange("link2b", 58, 0), new GraphChange("link3b", 62, 0),
-		new GraphChange("link1b", 88, 0), new GraphChange("link2b", 100, 0)
+		new GraphChange("link2b", 0, 0),new GraphChange("link3b", 33, 0), 
+		new GraphChange("link1b", 41, 0),
+		new GraphChange("link2b", 56, 0), new GraphChange("link3b", 60, 0),
+		new GraphChange("link1b", 86, 0), new GraphChange("link2b", 98, 0)
 		});
 	}
 }

@@ -133,7 +133,7 @@ public class PersoZildo extends Perso {
 		shield.setX(getX());
 		shield.setY(getY());
 		shield.setNBank(SpriteBank.BANK_ZILDO);
-		shield.setNSpr(103); // Assign initial nSpr to avoid 'isNotFixe'
+		shield.setNSpr(ZildoDescription.SHIELD_UP.ordinal()); // Assign initial nSpr to avoid 'isNotFixe'
 								// returning TRUE)
 
 		shadow = new Element(this);
@@ -562,7 +562,7 @@ public class PersoZildo extends Perso {
 					break;
 				case OUEST:
 					shield.setX(xx - 8);
-					shield.setY(yy - 2 + decalbouclier2y[(nSpr - ZildoDescription.LEFT_FIXED.ordinal()) % 8]);
+					shield.setY(yy - 2 + decalbouclier2y[(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8]);
 					shield.setZ(0.0f);
 					shield.setNSpr(106);
 					shield.setNBank(SpriteBank.BANK_ZILDO);
@@ -601,13 +601,13 @@ public class PersoZildo extends Perso {
 			}
 			break;
 
-		case POUSSE:
+		case POUSSE:/*
 			yy += 1;
 			if (angle == Angle.NORD) {
 				yy += 1;
 			} else if (angle == Angle.SUD) {
 				yy += 3;
-			}
+			}*/
 			break;
 
 		case ATTAQUE_EPEE:
@@ -706,8 +706,9 @@ public class PersoZildo extends Perso {
 		}
 
 		// Ajustemenent
+		sprModel = EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO).get_sprite(nSpr + addSpr);
 		xx -= 7;
-		yy -= 21;
+		yy -= sprModel.getTaille_y() - 2; //21;
 
 		if (mouvement == MouvementZildo.BRAS_LEVES)
 		{
@@ -769,49 +770,37 @@ public class PersoZildo extends Perso {
 		{
 		case VIDE:
 			setSpr(ZildoDescription.getMoving(angle, ((pos_seqsprite + 1) % (8 * Constantes.speed)) / Constantes.speed));
-			// setNSpr(angle.value*7 +
-			// seq_zildoDeplacement[angle.value][((pos_seqsprite+1) %
-			// (8*Constantes.speed)) / Constantes.speed]);
 			break;
 		case SAUTE:
 			setNSpr(angle.value + 96);
 			break;
 		case BRAS_LEVES:
-			if (angle.isVertical()) {
-				setNSpr(angle.value * 4 + seq_2[(pos_seqsprite % (8 * Constantes.speed)) / Constantes.speed] + 28);
-			} else {
-				setNSpr(((angle.value - 1) / 2) * 8
-						+ seq_1[(pos_seqsprite % (4 * Constantes.speed)) / Constantes.speed] + 33);
-			}
+			setSpr(ZildoDescription.getArmraisedMoving(angle, (pos_seqsprite % (8 * Constantes.speed)) / Constantes.speed));
 			break;
 		case SOULEVE:
 			switch (angle) {
 			case NORD:
-				setNSpr(44);
+				setNSpr(ZildoDescription.PULL_UP1.ordinal());
 				break;
 			case EST:
-				setNSpr(52);
+				setNSpr(ZildoDescription.LIFT_RIGHT.ordinal());
 				break;
 			case SUD:
-				setNSpr(48);
+				setNSpr(ZildoDescription.PULL_DOWN1.ordinal());
 				break;
 			case OUEST:
-				setNSpr(53);
+				setNSpr(ZildoDescription.LIFT_LEFT.ordinal());
 				break;
 			}
 			break;
 		case TIRE:
-			setNSpr(44 + 2 * angle.value + pos_seqsprite);
+			setSpr(ZildoDescription.getPulling(angle,  pos_seqsprite));
 			break;
 		case TOUCHE:
 			setNSpr(78 + angle.value);
 			break;
 		case POUSSE:
-			if (angle == Angle.NORD) {
-				setNSpr(seq_2[(pos_seqsprite / 2 % (8 * Constantes.speed)) / Constantes.speed] + 82);
-			} else {
-				setNSpr(angle.value * 3 + seq_1[(pos_seqsprite / 2 % (4 * Constantes.speed)) / Constantes.speed] + 84);
-			}
+			setSpr(ZildoDescription.getPushing(angle, pos_seqsprite));
 			break;
 		case ATTAQUE_EPEE:
 			setSpr(ZildoDescription.getSwordAttacking(angle, (((6 * 2 - getAttente() - 1) % (6 * 2)) / 2)));
