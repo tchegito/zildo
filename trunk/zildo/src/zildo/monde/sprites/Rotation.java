@@ -20,6 +20,8 @@
 
 package zildo.monde.sprites;
 
+import zildo.monde.util.Angle;
+
 /**
  * @author Tchegito
  *
@@ -60,6 +62,19 @@ public enum Rotation {
 		}
 	}
 	
+	public static Rotation fromAngle(Angle a) {
+		switch (a) {
+		case NORD:
+		default:
+			return NOTHING;
+		case EST:
+			return CLOCKWISE;
+		case OUEST:
+			return COUNTERCLOCKWISE;
+		case SUD:
+			return UPSIDEDOWN;
+		}
+	}
 	public boolean[] getBooleans() {
 		boolean[] res = new boolean[2];
 		res[0] = this == UPSIDEDOWN || this == CLOCKWISE;

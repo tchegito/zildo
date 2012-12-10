@@ -159,6 +159,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 		nSpr = p_sprite.spr.getNSpr();
 		nBank = p_sprite.spr.getBank();
 		reverse = p_sprite.reverse;
+		rotation = p_sprite.rotate == null ? Rotation.NOTHING : p_sprite.rotate;
 	}
 
 	public int getNBank() {
