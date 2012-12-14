@@ -117,7 +117,7 @@ public class PjZildo extends SpriteBanque {
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
-		new GraphChange("link2b", 0, 0),new GraphChange("link3b", 33, 0), 
+		new GraphChange("link2b", 0, 0),new GraphChange("link3b", 20, 0), 
 		new GraphChange("link1b", 41, 0),
 		new GraphChange("link2b", 56, 0), new GraphChange("link3b", 60, 0),
 		new GraphChange("link1b", 86, 0), new GraphChange("link2b", 98, 0)
