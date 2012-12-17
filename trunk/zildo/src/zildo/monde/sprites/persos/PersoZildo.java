@@ -40,10 +40,12 @@ import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.desc.ZildoDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
+import zildo.monde.sprites.desc.ZildoSprSequence;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementArrow;
 import zildo.monde.sprites.elements.ElementBomb;
@@ -84,7 +86,10 @@ public class PersoZildo extends Perso {
 	// Linked elements
 	Element shield;
 	Element feet;
+	Element sword;
 
+	ZildoSprSequence swordSequence = new ZildoSprSequence();
+	
 	private SpriteEntity boomerang;
 	private int quadDuration;
 
@@ -144,11 +149,16 @@ public class PersoZildo extends Perso {
 		feet.setNBank(SpriteBank.BANK_ZILDO);
 		feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
 
+		sword = new Element(this);
+		sword.setNBank(SpriteBank.BANK_ZILDO);
+		sword.setNSpr(ZildoDescription.SWORD0.getNSpr());
+		
 		shieldEffect = null;
 
 		addPersoSprites(shield);
 		addPersoSprites(shadow);
 		addPersoSprites(feet);
+		addPersoSprites(sword);
 
 		// weapon=new Item(ItemKind.SWORD);
 		inventory = new ArrayList<Item>();
@@ -508,7 +518,8 @@ public class PersoZildo extends Perso {
 		shadow.setVisible(false);
 		feet.setVisible(inWater || inDirt);
 		shield.setVisible(false);
-
+		sword.setVisible(false);
+		
 		if (isQuadDamaging()) {
 			if (shieldEffect == null) {
 				shieldEffect = new ShieldEffect(this, ShieldType.REDBALL);
@@ -611,12 +622,34 @@ public class PersoZildo extends Perso {
 			break;
 
 		case ATTAQUE_EPEE:
+			/*
 			v = nSpr - (54 + 6 * angle.value);
 			if (v>=0 && v<6) {
 				xx += decalxSword[angle.value][v];
 				yy += decalySword[angle.value][v];
 			}
+			*/
 			shield.setVisible(false);
+			sword.setVisible(true);
+			v = pos_seqsprite;
+			sword.setSpr(swordSequence.getSpr(angle, v));
+			Point p = swordSequence.getOffset(angle, v);
+			SpriteModel swModel = EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO).get_sprite(sword.nSpr);
+
+			int tx = swModel.getTaille_x();
+			int ty = swModel.getTaille_y();
+			if (sword.rotation == Rotation.CLOCKWISE || sword.rotation == Rotation.COUNTERCLOCKWISE) {
+				//ty = swModel.getTaille_x();
+				//tx = swModel.getTaille_y();
+			}
+			sword.setX(xx - 4 + p.x + tx / 2);
+			sword.setY(yy + 1 - p.y + ty); // - ty / 2);
+			if (angle == Angle.SUD) {
+				// Sword must be over Zildo
+				sword.setZ(15);
+				sword.setY(sword.getY() + 15);
+			}
+			System.out.println(-p.y + ty);
 			break;
 
 		case ATTAQUE_ARC:
@@ -803,7 +836,8 @@ public class PersoZildo extends Perso {
 			setSpr(ZildoDescription.getPushing(angle, pos_seqsprite));
 			break;
 		case ATTAQUE_EPEE:
-			setSpr(ZildoDescription.getSwordAttacking(angle, (((6 * 2 - getAttente() - 1) % (6 * 2)) / 2)));
+			pos_seqsprite = (((6 * 2 - getAttente() - 1) % (6 * 2)) / 2);
+			setSpr(ZildoDescription.getSwordAttacking(angle, pos_seqsprite));
 //			setNSpr(angle.value * 6 +  + 54);
 			break;
 		case ATTAQUE_ARC:

@@ -23,6 +23,7 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.utils.Sprite;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 
 /**
@@ -48,6 +49,9 @@ public class ZildoSprSequence {
 			  spr(2, null, Reverse.HORIZONTAL),
 			  spr(1, Rotation.COUNTERCLOCKWISE, Reverse.VERTICAL)
 			  }; 
+	
+	Sprite[] seqLeft = null;
+	
 	Sprite[] seqDown = new Sprite[]{spr(0, null, null),
 			  spr(2, null, null),
 			  spr(3, null, null),
@@ -62,10 +66,54 @@ public class ZildoSprSequence {
 	Point[] seqRightPts = new Point[]{new Point(11, -1), new Point(14, -2), new Point(19, 10), 
 			new Point(16, 13), new Point(14, 14), new Point(9, 19)};
 	
-	Point[] seqDownPts = new Point[]{new Point(-5, 11), new Point(-6, 10), new Point(6, 19),
-			new Point(9, 19), new Point(10, 15), new Point(16, 13)};
+	//Point[] seqDownPts = new Point[]{new Point(-5, 11), new Point(-6, 10), new Point(6, 19),
+		//	new Point(9, 19), new Point(10, 15), new Point(16, 13)};
 	
+	Point[] seqDownPts = new Point[]{new Point(-9, 11), new Point(-8, 10), new Point(4, 2),
+			new Point(9, 0), new Point(8, 7), new Point(14, 9)};
+	Point[] seqLeftPts;
 	
+	public Sprite getSpr(Angle angle, int pos) {
+		if (seqLeft == null) {
+			seqLeft = new Sprite[6];
+			int i=0;
+			for (Sprite spr : seqRight) {
+				seqLeft[i++] = new Sprite(spr.nSpr, spr.nBank, spr.reverse.flipHorizontal(), spr.rotate);
+			}
+		}
+		switch (angle) {
+		case NORD:
+			return seqUp[pos];
+		case SUD:
+			return seqDown[pos];
+		case OUEST:
+			return seqRight[pos];
+		case EST:
+			default:
+			return seqLeft[pos];
+		}
+	}
+	
+	public Point getOffset(Angle angle, int pos) {
+		if (seqLeftPts == null) {
+			seqLeftPts = new Point[6];
+			int i=0;
+			for (Point p : seqRightPts) {
+				seqLeftPts[i++] = new Point(p.x, p.y);
+			}
+		}
+		switch (angle) {
+		case NORD:
+			return seqUpPts[pos];
+		case SUD:
+			return seqDownPts[pos];
+		case OUEST:
+			return seqRightPts[pos];
+		case EST:
+			default:
+			return seqLeftPts[pos];
+		}
+	}
 	private Sprite spr(int sword, Rotation rot, Reverse rev) {
 		return new Sprite(ZildoDescription.SWORD0.getNSpr() + sword, 
 				SpriteBank.BANK_ZILDO, rev, rot);

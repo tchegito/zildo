@@ -113,14 +113,15 @@ public class PjZildo extends SpriteBanque {
 				
 				// SWORD
 				new Zone(75, 146, 12, 6), new Zone(88, 146, 12, 14),
-				new Zone(101, 146, 12, 14), new Zone(116, 146, 7, 12)
+				new Zone(101, 146, 14, 14), new Zone(116, 146, 7, 12)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
 		new GraphChange("link2b", 0, 0),new GraphChange("link3b", 20, 0), 
 		new GraphChange("link1b", 41, 0),
 		new GraphChange("link2b", 56, 0), new GraphChange("link3b", 60, 0),
-		new GraphChange("link1b", 86, 0), new GraphChange("link2b", 98, 0)
+		new GraphChange("link1b", 86, 0), new GraphChange("link2b", 92, 0),
+		new GraphChange("link1b", 97, 0)
 		});
 	}
 }
