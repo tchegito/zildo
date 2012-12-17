@@ -193,6 +193,7 @@ public class GUIDisplay {
 		scriptLegibility[transcoChar.indexOf("N")] = 3;
 		scriptLegibility[transcoChar.indexOf("d")] = 1;
 		scriptLegibility[transcoChar.indexOf("l")] = 1;
+		scriptLegibility[transcoChar.indexOf("A")] = 1;
 		for (int i=0;i<scriptBigLegibility.length;i++) {
 			scriptBigLegibility[i] = scriptLegibility[i] * 2;
 		}
