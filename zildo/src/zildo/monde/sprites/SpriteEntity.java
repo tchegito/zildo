@@ -156,7 +156,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 
 	// Set 3 attributes at 1 time
 	public void setSpr(Sprite p_sprite) {
-		nSpr = p_sprite.spr.getNSpr();
+		nSpr = p_sprite.nSpr;
 		nBank = p_sprite.spr.getBank();
 		reverse = p_sprite.reverse;
 		rotation = p_sprite.rotate == null ? Rotation.NOTHING : p_sprite.rotate;
