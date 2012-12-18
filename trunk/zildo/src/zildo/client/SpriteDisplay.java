@@ -132,8 +132,14 @@ public class SpriteDisplay extends SpriteStore {
 				} else if (entity.getEntityType().isElement()) {
 					// Center sprite
 					SpriteModel spr=entity.getSprModel();
-					entity.setScrX(entity.getAjustedX() - cameraNew.x - (spr.getTaille_x() >> 1));
-					entity.setScrY(entity.getAjustedY() - cameraNew.y - spr.getTaille_y());
+					int tx = spr.getTaille_x();
+					int ty = spr.getTaille_y();
+					if (entity.rotation.isWidthHeightSwitched() ) {
+						tx = spr.getTaille_y();
+						ty = spr.getTaille_x();
+					}
+					entity.setScrX(entity.getAjustedX() - cameraNew.x - (tx >> 1));
+					entity.setScrY(entity.getAjustedY() - cameraNew.y - ty);
 				}
 			}
 		}
