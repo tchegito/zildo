@@ -32,11 +32,11 @@ We distinguish 2 kinds of tiles : foreground and background. Foreground tiles ca
 
 Tiles can be animated, like flowers, or water on the seashore.
 
-The class that modelizing theses tiles is [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/map/Case.java Case].
+The class that modelizing these tiles is [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/map/Case.java Case].
 
 ===1.2) The sprites===
 
-The class that define every sprite, from the most static to the most evoluate is `SpriteEntity`. This class represents the minimal informations to modelize any entity on a map.
+The class that defines every sprite, from the most static to the most evoluate is `SpriteEntity`. This class represents the minimal informations to modelize any entity on a map.
 
 From this class, we derive to complexify the entity concept and we can observe the following class hierarchy:
 {{{
@@ -50,7 +50,7 @@ We got here 3 main classes to design every entity that can be found on a map.
 
  ====a/ `SpriteEntity` [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/SpriteEntity.java (SVN)]====
 
-The first one stand for the static elements, that can't move, et don't block anybody. We have for example : the bushes leafs that are vanishing, the smoking pipes on house's roofs, ...
+The first one stand for the static elements, that can't move, and doesn't block anybody. We have for example : the bushes leafs that are vanishing, the smoking pipes on house's roofs, ...
 
 This class contains coordinates (X, Y) on the screen, graphic informations, and various flags (visible, fore/back ground, visual effects ...)
 
