@@ -62,7 +62,7 @@ It has coordinates (X, Y, Z) on the map, speed, acceleration, and friction force
 
  ====c/ `Perso` [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/persos/Perso.java (SVN)]====
 
-The most evoluated of the basic calsses represents a character on a map. We got here informations about behavior, action area, friendly/enemy attitude, or dialogs position.
+The most evoluated of the basic classes represents a character on a map. We got here informations about behavior, action area, friendly/enemy attitude, or dialogs position.
 
  ====d/ More complete hierarchy====
 
