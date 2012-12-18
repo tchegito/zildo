@@ -62,6 +62,10 @@ public enum Rotation {
 		}
 	}
 	
+	public boolean isWidthHeightSwitched() {
+		return this == CLOCKWISE || this == COUNTERCLOCKWISE;
+	}
+	
 	public static Rotation fromAngle(Angle a) {
 		switch (a) {
 		case NORD:

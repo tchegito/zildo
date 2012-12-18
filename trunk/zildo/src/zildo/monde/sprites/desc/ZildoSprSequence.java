@@ -35,7 +35,7 @@ public class ZildoSprSequence {
 	
 	// Sword attack sequence
 	// UP
-	Sprite[] seqUp = new Sprite[]{spr(3, Rotation.COUNTERCLOCKWISE, Reverse.VERTICAL),
+	Sprite[] seqUp = new Sprite[]{spr(3, Rotation.COUNTERCLOCKWISE, Reverse.HORIZONTAL),
 								  spr(1, Rotation.COUNTERCLOCKWISE, null),
 								  spr(0, Rotation.CLOCKWISE, null),
 								  spr(3, null, Reverse.VERTICAL),
@@ -60,8 +60,8 @@ public class ZildoSprSequence {
 			  spr(1, null, null)
 			  }; 
 	
-	Point[] seqUpPts = new Point[]{new Point(-10, -16), new Point(8, -7), new Point(0, -8),
-			new Point(-4, -6), new Point(-9, -5), new Point(-12, -1)};
+	Point[] seqUpPts = new Point[]{new Point(8, 9), new Point(8, 17), new Point(-3, 22),
+			new Point(-6, 18), new Point(-12, 12), new Point(-15, 8)};
 	
 	Point[] seqRightPts = new Point[]{new Point(11, -1), new Point(14, -2), new Point(19, 10), 
 			new Point(16, 13), new Point(14, 14), new Point(9, 19)};
@@ -69,8 +69,10 @@ public class ZildoSprSequence {
 	//Point[] seqDownPts = new Point[]{new Point(-5, 11), new Point(-6, 10), new Point(6, 19),
 		//	new Point(9, 19), new Point(10, 15), new Point(16, 13)};
 	
-	Point[] seqDownPts = new Point[]{new Point(-9, 11), new Point(-8, 10), new Point(4, 2),
-			new Point(9, 0), new Point(8, 7), new Point(14, 9)};
+	//Point[] seqDownPts = new Point[]{new Point(-9, 11), new Point(-8, 10), new Point(4, 2),
+	//		new Point(9, 0), new Point(8, 7), new Point(14, 9)};
+	Point[] seqDownPts = new Point[]{new Point(-9, 5), new Point(-8, -4), new Point(4, -10),
+			new Point(6, -12), new Point(8, -7), new Point(14, -5)};
 	Point[] seqLeftPts;
 	
 	public Sprite getSpr(Angle angle, int pos) {

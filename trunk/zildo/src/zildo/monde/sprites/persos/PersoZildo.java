@@ -638,18 +638,20 @@ public class PersoZildo extends Perso {
 
 			int tx = swModel.getTaille_x();
 			int ty = swModel.getTaille_y();
-			if (sword.rotation == Rotation.CLOCKWISE || sword.rotation == Rotation.COUNTERCLOCKWISE) {
-				//ty = swModel.getTaille_x();
-				//tx = swModel.getTaille_y();
+			if (sword.rotation.isWidthHeightSwitched()) {
+				ty = swModel.getTaille_x();
+				tx = swModel.getTaille_y();
 			}
+			// TX should be removed too (like TY) => ZildoSprSequence will be impacted
 			sword.setX(xx - 4 + p.x + tx / 2);
-			sword.setY(yy + 1 - p.y + ty); // - ty / 2);
+			sword.setY(yy + 1 - p.y);
 			if (angle == Angle.SUD) {
 				// Sword must be over Zildo
 				sword.setZ(15);
 				sword.setY(sword.getY() + 15);
+			} else {
+				sword.setZ(0);
 			}
-			System.out.println(-p.y + ty);
 			break;
 
 		case ATTAQUE_ARC:
