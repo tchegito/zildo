@@ -22,9 +22,11 @@ package zildo.monde.sprites.desc;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
+import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.utils.Sprite;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -47,7 +49,7 @@ public class ZildoSprSequence {
 			  spr(0, null, Reverse.HORIZONTAL),
 			  spr(3, Rotation.COUNTERCLOCKWISE, null),
 			  spr(2, null, Reverse.HORIZONTAL),
-			  spr(1, Rotation.COUNTERCLOCKWISE, Reverse.VERTICAL)
+			  spr(1, Rotation.CLOCKWISE, Reverse.VERTICAL)
 			  }; 
 	
 	Sprite[] seqLeft = null;
@@ -60,19 +62,21 @@ public class ZildoSprSequence {
 			  spr(1, null, null)
 			  }; 
 	
-	Point[] seqUpPts = new Point[]{new Point(8, 9), new Point(8, 17), new Point(-3, 22),
-			new Point(-6, 18), new Point(-12, 12), new Point(-15, 8)};
+	Point[] seqUpPts = new Point[]{new Point(14, 9), new Point(15, 17), new Point(0, 22),
+			new Point(-3, 18), new Point(-5, 12), new Point(-9, 8)};
 	
-	Point[] seqRightPts = new Point[]{new Point(11, -1), new Point(14, -2), new Point(19, 10), 
-			new Point(16, 13), new Point(14, 14), new Point(9, 19)};
+	//Point[] seqRightPts = new Point[]{new Point(9, 12), new Point(11, 10), new Point(15, 4), 
+	//		new Point(14, 0), new Point(11, -6), new Point(6, -9)};
+	Point[] seqRightPts = new Point[]{new Point(12, 12), new Point(17, 10), new Point(20, 4), 
+			new Point(20, 0), new Point(18, -6), new Point(13, -9)};
 	
 	//Point[] seqDownPts = new Point[]{new Point(-5, 11), new Point(-6, 10), new Point(6, 19),
 		//	new Point(9, 19), new Point(10, 15), new Point(16, 13)};
 	
 	//Point[] seqDownPts = new Point[]{new Point(-9, 11), new Point(-8, 10), new Point(4, 2),
 	//		new Point(9, 0), new Point(8, 7), new Point(14, 9)};
-	Point[] seqDownPts = new Point[]{new Point(-9, 5), new Point(-8, -4), new Point(4, -10),
-			new Point(6, -12), new Point(8, -7), new Point(14, -5)};
+	Point[] seqDownPts = new Point[]{new Point(-3, 5), new Point(-1, -4), new Point(7, -10),
+			new Point(9, -12), new Point(15, -7), new Point(20, -5)};
 	Point[] seqLeftPts;
 	
 	public Sprite getSpr(Angle angle, int pos) {
@@ -80,7 +84,14 @@ public class ZildoSprSequence {
 			seqLeft = new Sprite[6];
 			int i=0;
 			for (Sprite spr : seqRight) {
-				seqLeft[i++] = new Sprite(spr.nSpr, spr.nBank, spr.reverse.flipHorizontal(), spr.rotate);
+				Reverse rev = spr.reverse;
+				Rotation rot = spr.rotate;
+				if (rot == Rotation.NOTHING || rot == Rotation.UPSIDEDOWN) {
+					rev = rev.flipHorizontal();
+				} else if (rot == Rotation.CLOCKWISE || rot == Rotation.COUNTERCLOCKWISE) {
+					rev = rev.flipVertical();
+				}
+				seqLeft[i++] = new Sprite(spr.nSpr, spr.nBank, rev, rot);
 			}
 		}
 		switch (angle) {
@@ -89,10 +100,10 @@ public class ZildoSprSequence {
 		case SUD:
 			return seqDown[pos];
 		case OUEST:
-			return seqRight[pos];
+			return seqLeft[pos];
 		case EST:
 			default:
-			return seqLeft[pos];
+			return seqRight[pos];
 		}
 	}
 	
@@ -101,7 +112,27 @@ public class ZildoSprSequence {
 			seqLeftPts = new Point[6];
 			int i=0;
 			for (Point p : seqRightPts) {
-				seqLeftPts[i++] = new Point(p.x, p.y);
+				// Not so simple ! Position in seqRightPts takes into account "x + spriteSizeX / 2.
+				// So to get a correct reverse, we must remove the "spriteSizeX /2" component,
+				// and add the new "spriteSizeX / 2", because it could be different.
+				/*
+				SpriteModel model = EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO).get_sprite(seqRight[i].nSpr);
+				int addX = 0;
+				int tx = model.getTaille_x();
+				if (seqLeft[i].rotate.isWidthHeightSwitched()) {
+					tx = model.getTaille_y();
+				}
+				addX = -tx/2;
+				System.out.println("remove "+addX);
+				model = EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO).get_sprite(seqLeft[i].nSpr);
+				tx = model.getTaille_x();
+				if (seqLeft[i].rotate.isWidthHeightSwitched()) {
+					tx = model.getTaille_y();
+				}
+				addX += tx/2;
+				System.out.println("add "+addX);
+				*/
+				seqLeftPts[i++] = new Point(9-p.x, p.y);
 			}
 		}
 		switch (angle) {
@@ -110,10 +141,10 @@ public class ZildoSprSequence {
 		case SUD:
 			return seqDownPts[pos];
 		case OUEST:
-			return seqRightPts[pos];
+			return seqLeftPts[pos];
 		case EST:
 			default:
-			return seqLeftPts[pos];
+			return seqRightPts[pos];
 		}
 	}
 	private Sprite spr(int sword, Rotation rot, Reverse rev) {

@@ -50,7 +50,7 @@ public class PjZildo extends SpriteBanque {
 				//new Zone(0, 156, 16, 23), new Zone(16, 156, 16, 23),
 				
 				// Lift (39)
-				new Zone(0, 179, 17, 21), new Zone(0, 179, 17, 21),
+				new Zone(2, 179, 15, 21), new Zone(17, 179, 15, 21),
 				
 				// Attack with sword
 				// UP (41)
@@ -58,7 +58,7 @@ public class PjZildo extends SpriteBanque {
 				new Zone(249, 65, 16, 24), new Zone(249, 89, 16, 24), new Zone(249, 113, 16, 24),
 				// RIGHT (46)
 				new Zone(283, 17, 16, 24), new Zone(283, 41, 16, 24),
-				new Zone(283, 65, 16, 24), new Zone(283, 89, 16, 24), new Zone(283, 113, 16, 24),
+				new Zone(283, 65, 18, 24), new Zone(283, 89, 16, 24), new Zone(283, 113, 16, 24),
 				// DOWN (51)
 				new Zone(266, 17, 16, 24), new Zone(266, 41, 16, 24),
 				new Zone(266, 65, 16, 24), new Zone(266, 89, 16, 24), new Zone(266, 113, 16, 24),
@@ -81,7 +81,7 @@ public class PjZildo extends SpriteBanque {
 				
 				// JUMP (74)
 				new Zone(214, 0, 16, 20), new Zone(230, 0, 16, 20),
-				new Zone(246, 0, 16, 20), new Zone(262, 0, 16, 20),
+				new Zone(246, 0, 15, 21), new Zone(261, 0, 16, 20),
 				
 				// WATER FEET (78)
 				new Zone(50, 70, 16, 8), new Zone(50, 79, 16, 8), new Zone(50, 88, 16, 8),
