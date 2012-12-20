@@ -32,6 +32,8 @@ public class Sprite {
 	public SpriteDescription spr;	// Identify the sprite (Bank + sprite number)
 	public Reverse reverse;				// Reverse (horizontal and/or vertical)
 	public Rotation rotate;
+	public int nSpr;
+	public int nBank;
 	
 	public Sprite(int p_nSpr, int p_nBank, Reverse p_reverse) {
 		switch (p_nBank) {
@@ -42,11 +44,13 @@ public class Sprite {
 			spr = ZildoDescription.fromInt(p_nSpr);
 			break;
 		}
-		reverse = p_reverse;
+		reverse = p_reverse == null ? Reverse.NOTHING : p_reverse;
+		nBank = p_nBank;
+		nSpr = p_nSpr;
 	}
 	
 	public Sprite(int p_nSpr, int p_nBank, Reverse p_reverse, Rotation p_rotation) {
 		this(p_nSpr, p_nBank, p_reverse);
-		rotate = p_rotation;
+		rotate = p_rotation == null ? Rotation.NOTHING : p_rotation;
 	}
 }
