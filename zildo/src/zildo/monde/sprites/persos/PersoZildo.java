@@ -40,7 +40,6 @@ import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
-import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.desc.ZildoDescription;
@@ -421,14 +420,10 @@ public class PersoZildo extends Perso {
 		setSpecialEffect(EngineFX.NO_EFFECT);
 	}
 
-
 	final int decalxSword[][] = {
-			{ 1, -1, -1, -5, -10, -13 }, { 0, 2, 3, 2, 1, 1 },
-			{ -5, -6, -4, -4, -4, -4 }, { -2, -12, -18, -14, -13, -8 } };
-	final int decalySword[][] = {
-			{ 2, -6, -11, -6, -3, 1 }, { 1, 0, 3, 3, 2, 2 },
-			{ 1, 3, 3, 6, 3, 3 }, { 1, 0, 3, 3, 2, 2 } };
-
+			{ 0, 0, 0, 0, 0, 0 }, { 0, 2, 3, 2, 1, 1 },
+			{ 0, 0, 0, 0, 0, 0 }, { 0, -2, -5, -2, -1, -1 } };
+	
 	final int decalxBow[][] = {
 			{ -2, -5, -5 }, { 0, 0, 0 }, { 0, 0, 0 }, { -1, -3, -4 }
 	};
@@ -584,9 +579,12 @@ public class PersoZildo extends Perso {
 			break;
 
 		case BRAS_LEVES:
-			yy++;
+			//yy++;
+			if (angle == Angle.EST) {
+				xx-=2;
+			}
 			if (angle.isVertical()) {
-				yy++;
+				//yy++;
 			}
 			if (en_bras != null) {
 				en_bras.setX(xx + 1);
@@ -595,7 +593,10 @@ public class PersoZildo extends Perso {
 			}
 			break;
 		case SOULEVE:
-			yy += 3;
+			 if (angle == Angle.OUEST){
+					xx-=1;
+				}
+			//yy += 3;
 			break;
 		case TIRE:
 			if (angle.isHorizontal()) {
@@ -622,37 +623,27 @@ public class PersoZildo extends Perso {
 			break;
 
 		case ATTAQUE_EPEE:
-			/*
-			v = nSpr - (54 + 6 * angle.value);
-			if (v>=0 && v<6) {
-				xx += decalxSword[angle.value][v];
-				yy += decalySword[angle.value][v];
-			}
-			*/
+
 			shield.setVisible(false);
 			sword.setVisible(true);
 			v = pos_seqsprite;
+			if (v>=0 && v<6) {
+				xx += decalxSword[angle.value][v];
+			}
 			sword.setSpr(swordSequence.getSpr(angle, v));
 			Point p = swordSequence.getOffset(angle, v);
-			SpriteModel swModel = EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO).get_sprite(sword.nSpr);
-
-			int tx = swModel.getTaille_x();
-			int ty = swModel.getTaille_y();
-			if (sword.rotation.isWidthHeightSwitched()) {
-				ty = swModel.getTaille_x();
-				tx = swModel.getTaille_y();
-			}
-			// TX should be removed too (like TY) => ZildoSprSequence will be impacted
-			sword.setX(xx - 4 + p.x + tx / 2);
+			sword.setX(xx - 4 + p.x);
 			sword.setY(yy + 1 - p.y);
-			if (angle == Angle.SUD) {
+			switch (angle) {
+			case SUD:
 				// Sword must be over Zildo
 				sword.setZ(15);
 				sword.setY(sword.getY() + 15);
-			} else {
+				break;
+			default:
 				sword.setZ(0);
-			}
 			break;
+			}
 
 		case ATTAQUE_ARC:
 			v = nSpr - (108 + 3 * angle.value);
