@@ -79,18 +79,18 @@ public class PjZildo extends SpriteBanque {
 				// LEFT (has to be removed)
 				//new Zone(125, 65, 16, 23), new Zone(141, 65, 16, 23), new Zone(157, 65, 16, 23),
 				
-				// JUMP (74)
+				// JUMP (71)
 				new Zone(214, 0, 16, 20), new Zone(230, 0, 16, 20),
 				new Zone(246, 0, 15, 21), new Zone(261, 0, 16, 20),
 				
-				// WATER FEET (78)
+				// WATER FEET (75)
 				new Zone(50, 70, 16, 8), new Zone(50, 79, 16, 8), new Zone(50, 88, 16, 8),
 
 				// SHIELD (LEFT has to be removed)
 				new Zone(34, 101, 6, 8), new Zone(42, 100, 4, 10),
 				new Zone(33, 91, 8, 10), new Zone(47, 100, 4, 10),
 				
-				// ARMSRAISED (85)
+				// ARMSRAISED (82)
 				new Zone(126, 96, 16, 23),
 				
 				// Attack with bow (need to be reviewed => without bow)
@@ -102,10 +102,10 @@ public class PjZildo extends SpriteBanque {
 				new Zone(172, 1, 18, 21), new Zone(192, 1, 17, 24), new Zone(211, 0, 18, 22),
 				// LEFT : removed
 				
-				// DIRT (95)
+				// DIRT (92)
 				new Zone(67, 70, 16, 8), new Zone(67, 79, 16, 8), new Zone(67, 88, 16, 8),
 				
-				// LAYDOWN (98)
+				// LAYDOWN (95)
 				new Zone(0, 181, 24, 15),
 				
 				// FALLING
@@ -118,7 +118,7 @@ public class PjZildo extends SpriteBanque {
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
 		new GraphChange("link2b", 0, 0),new GraphChange("link3b", 20, 0), 
-		new GraphChange("link1b", 41, 0),
+		new GraphChange("link1c", 41, 0),
 		new GraphChange("link2b", 56, 0), new GraphChange("link3b", 60, 0),
 		new GraphChange("link1b", 86, 0), new GraphChange("link2b", 92, 0),
 		new GraphChange("link1b", 97, 0)

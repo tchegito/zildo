@@ -22,11 +22,9 @@ package zildo.monde.sprites.desc;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
-import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.utils.Sprite;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
-import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -112,26 +110,6 @@ public class ZildoSprSequence {
 			seqLeftPts = new Point[6];
 			int i=0;
 			for (Point p : seqRightPts) {
-				// Not so simple ! Position in seqRightPts takes into account "x + spriteSizeX / 2.
-				// So to get a correct reverse, we must remove the "spriteSizeX /2" component,
-				// and add the new "spriteSizeX / 2", because it could be different.
-				/*
-				SpriteModel model = EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO).get_sprite(seqRight[i].nSpr);
-				int addX = 0;
-				int tx = model.getTaille_x();
-				if (seqLeft[i].rotate.isWidthHeightSwitched()) {
-					tx = model.getTaille_y();
-				}
-				addX = -tx/2;
-				System.out.println("remove "+addX);
-				model = EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO).get_sprite(seqLeft[i].nSpr);
-				tx = model.getTaille_x();
-				if (seqLeft[i].rotate.isWidthHeightSwitched()) {
-					tx = model.getTaille_y();
-				}
-				addX += tx/2;
-				System.out.println("add "+addX);
-				*/
 				seqLeftPts[i++] = new Point(9-p.x, p.y);
 			}
 		}

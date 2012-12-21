@@ -420,6 +420,7 @@ public class PersoZildo extends Perso {
 		setSpecialEffect(EngineFX.NO_EFFECT);
 	}
 
+
 	final int decalxSword[][] = {
 			{ 0, 0, 0, 0, 0, 0 }, { 0, 2, 3, 2, 1, 1 },
 			{ 0, 0, 0, 0, 0, 0 }, { 0, -2, -5, -2, -1, -1 } };
@@ -659,10 +660,6 @@ public class PersoZildo extends Perso {
 				countArrow--;
 			}			
 			break;
-		case TOUCHE:
-			nSpr = 78 + angle.value;
-			break;
-
 		case SAUTE:
 			// Zildo est en train de sauter, on affiche l'ombre à son arrivée
 
@@ -798,7 +795,7 @@ public class PersoZildo extends Perso {
 			setSpr(ZildoDescription.getMoving(angle, ((pos_seqsprite + 1) % (8 * Constantes.speed)) / Constantes.speed));
 			break;
 		case SAUTE:
-			setNSpr(angle.value + 96);
+			setNSpr(angle.value + ZildoDescription.JUMP_UP.getNSpr());
 			break;
 		case BRAS_LEVES:
 			setSpr(ZildoDescription.getArmraisedMoving(angle, (pos_seqsprite % (8 * Constantes.speed)) / Constantes.speed));
@@ -823,7 +820,7 @@ public class PersoZildo extends Perso {
 			setSpr(ZildoDescription.getPulling(angle,  pos_seqsprite));
 			break;
 		case TOUCHE:
-			setNSpr(78 + angle.value);
+			setNSpr(ZildoDescription.WOUND_UP.getNSpr() + angle.value);
 			break;
 		case POUSSE:
 			setSpr(ZildoDescription.getPushing(angle, pos_seqsprite));
