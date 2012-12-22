@@ -40,13 +40,13 @@ public class Tile implements Cloneable {
 	public Rotation rotation = Rotation.NOTHING;
 	
 	public Tile(int p_bank, int p_index, Case p_parent) {
-		bank = (byte) (p_bank & 63);
+		bank = (byte) (p_bank & 15);
 		index = p_index;
 		parent = p_parent;
 	}
 
 	public Tile(int p_value, Case p_parent) {
-		bank = (byte) ((p_value >> 8) & 63);
+		bank = (byte) ((p_value >> 8) & 15);
 		index = p_value & 255;
 		parent = p_parent;
 	}
