@@ -41,7 +41,8 @@ public enum ItemKind {
 	SHIELD_LARGE(ElementDescription.SHIELD_YELLOW, 60),
 	FLASK_RED(ElementDescription.FLASK_RED, 10),
 	SCEPTER(ElementDescription.SCEPTER, 0),
-	MILK(ElementDescription.MILK, 0);
+	MILK(ElementDescription.MILK, 0),
+	NECKLACE(ElementDescription.NECKLACE, 0);
 	
 	public SpriteDescription representation;
 	public int price;

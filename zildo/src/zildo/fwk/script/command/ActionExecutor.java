@@ -1,7 +1,6 @@
 /**
  * Legend of Zildo
  * Copyright (C) 2006-2012 Evariste Boussaton
- * 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +33,7 @@ import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.script.xml.element.ActionElement;
+import zildo.fwk.script.xml.element.ActionElement.ActionKind;
 import zildo.fwk.ui.UIText;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -96,7 +96,9 @@ public class ActionExecutor {
             Point location = p_action.location;
             if (p_action.delta && location != null) {
             	Point currentPos = null;
-            	if (perso != null) {
+            	if (p_action.kind == ActionKind.spawn) {	// Possiblity to spawn relative to zildo
+            		currentPos = EngineZildo.persoManagement.getZildo().getCenter();
+            	} else if (perso != null) {
             		// Given position is a delta with current one (work ONLY with perso, not with camera)
             		currentPos = new Point(perso.x, perso.y);
             	} else if ("camera".equals(p_action.what)) {
@@ -252,6 +254,9 @@ public class ActionExecutor {
 	                		if (p_action.fx != null) {
 	                			elem.setSpecialEffect(EngineFX.valueOf(p_action.fx));
 	                		}
+	                		if (p_action.foreground) {
+	                			elem.setForeground(true);
+	                		}
                 		}
                 	}
                     achieved = true;
@@ -346,9 +351,9 @@ public class ActionExecutor {
                 	if (p_action.text != null) {
                 		Item weapon = new Item(ItemKind.fromString(text));
                 		perso.setWeapon(weapon);
-                		perso.attack();
-                		achieved=true;
                 	}
+            		perso.attack();
+            		achieved=true;
                 	break;
                 case activate:
             		Element toActivate = EngineZildo.spriteManagement.getNamedElement(p_action.what);
@@ -422,6 +427,19 @@ public class ActionExecutor {
                 		perso.zoom = p_action.val;
                 	}
                 	achieved = true;
+                	break;
+                case herospecial:	// Specific action for hero (to avoid designing too much XML tag)
+                	zildo = EngineZildo.persoManagement.getZildo();
+                	switch (p_action.val) {
+                	case 0:
+                		zildo.gainHPWithNecklace();
+                		break;
+                	case 1:
+                		zildo.gainHP();
+                		break;
+                	}
+                	achieved = true;
+                	break;
             }
 
             p_action.done = achieved;

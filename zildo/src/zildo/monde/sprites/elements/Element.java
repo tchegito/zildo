@@ -155,7 +155,8 @@ public class Element extends SpriteEntity {
 				|| a == ElementDescription.BOMBS3.ordinal()
 				|| a == ElementDescription.KEY.ordinal()
 				|| a == ElementDescription.STAFF_POUM.ordinal()
-				|| a == ElementDescription.BIG_FIRE_BALL.ordinal()) {
+				|| a == ElementDescription.BIG_FIRE_BALL.ordinal()
+				|| a == ElementDescription.HEART_FRAGMENT.ordinal()) {
 			return true;
 		} else {
 			return false;
@@ -285,10 +286,12 @@ public class Element extends SpriteEntity {
 						dying = true;
 					}
 				}
-				// Débordement}
-				if (x < -4 || y < -4 || x > 64 * 16 || (y-z) > 64 * 16) {
-					die();
-					dying = true;
+				// Débordement
+				if (desc != null && !((ElementDescription)desc).isOutmapAllowed()) {
+					if (x < -4 || y < -4 || x > 64 * 16 || (y-z) > 64 * 16) {
+						die();
+						dying = true;
+					}
 				} else {
 	
 					if (pushableElements.contains(nSpr)) {

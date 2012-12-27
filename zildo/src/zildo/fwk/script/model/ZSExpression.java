@@ -68,6 +68,10 @@ public class ZSExpression {
 			int price=Integer.valueOf(questName.substring("money".length()));
 			int zildoMoney = EngineZildo.persoManagement.getZildo().getMoney();
 			return price<=zildoMoney;
+		} else if (questName.startsWith("moon")) {
+			int moonFragment=Integer.valueOf(questName.substring("moon".length()));
+			int currentFragmentNb = EngineZildo.persoManagement.getZildo().getHeartQuarter();
+			return currentFragmentNb == moonFragment;
 		}
 		boolean result = EngineZildo.scriptManagement.isQuestOver(questName);
 		if (!done) {
