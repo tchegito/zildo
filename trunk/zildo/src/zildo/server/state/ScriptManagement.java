@@ -301,7 +301,16 @@ public class ScriptManagement {
 	public void automaticBehavior(PersoZildo p_zildo, ItemKind p_kind, ElementDescription p_desc) {
 		String label;
 		if (p_kind == null) {
-			label = p_desc.getFoundSentence();
+			String add="";
+	    	if (p_desc == ElementDescription.HEART_FRAGMENT || p_desc == ElementDescription.HEART_FRAGMENT2) {
+	    		// Specific for moon fragment
+	    		if (p_zildo.getPv() > 6) {
+	    			add="no";
+	    		} else if (p_zildo.getHeartQuarter() == 1) {
+	    			add="2";
+	    		} 
+	    	}
+			label = p_desc.getFoundSentence(add);
 		} else {
 	        switch (p_kind) {
 	        case BOW:

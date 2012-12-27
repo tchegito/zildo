@@ -209,6 +209,7 @@ public class PersoZildo extends Perso {
 		if (weapon == null) {
 			return; // No weapon ? No attack
 		}
+		String sentence;
 		switch (weapon.kind) {
 		case SWORD:
 			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAttaque, this);
@@ -259,11 +260,16 @@ public class PersoZildo extends Perso {
 			}
 			break;
 		case MILK:
-			String sentence = UIText.getGameText("milk.action");
+			sentence = UIText.getGameText("milk.action");
 			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence));
 			break;
 		case FLUT:
 			EngineZildo.soundManagement.playSound(BankSound.Sort, this);
+			break;
+		case NECKLACE:
+			String hq = heartQuarter > 0 ? ""+heartQuarter : "";
+			sentence = UIText.getGameText("necklace.action"+hq);
+			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence));
 			break;
 		}
 		if (outOfOrder) {
@@ -868,7 +874,7 @@ public class PersoZildo extends Perso {
 		} else {
 			int elemNSpr=p_element.getNSpr();
 			ElementDescription d = ElementDescription.fromInt(elemNSpr);
-			if (d.isWeapon()) {
+			if (d.isWeapon() || d == ElementDescription.NECKLACE) {
 				pickItem(d.getItem(), p_element);
 				return false;
 			} else {
@@ -1245,5 +1251,16 @@ public class PersoZildo extends Perso {
 		if (acceleration > 1) {
 			acceleration -= 1;
 		}
+	}
+	
+	public void gainHP() {
+		heartQuarter = 0;
+		maxpv++;
+		pv = maxpv;
+	}
+	
+	public void gainHPWithNecklace() {
+		gainHP();
+		setMoney(getMoney()-50);
 	}
 }

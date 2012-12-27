@@ -29,7 +29,7 @@ public class ActionElement extends AnyElement {
 	public enum ActionKind {
 		actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, 
 		map, focus, spawn, exec, take, mapReplace, music, animation, impact, remove, markQuest, putDown, attack, activate,
-		tile, filter, end, visible, respawn, zoom;
+		tile, filter, end, visible, respawn, zoom, herospecial;
 
 		public static ActionKind fromString(String p_name) {
 			for (ActionKind kind : values()) {
@@ -91,6 +91,7 @@ public class ActionElement extends AnyElement {
 		String strAngle = p_elem.getAttribute("angle");
 		switch (kind) {
 		case spawn:
+			delta = isTrue("delta");
 			reverse = readInt("reverse");
 			rotation = readInt("rotation");
 		case animation:
@@ -126,6 +127,7 @@ public class ActionElement extends AnyElement {
 		case angle:
 		case wait:
 		case zoom:
+		case herospecial:
 			val = readInt("value");
 			break;
 		case fadeIn:
@@ -145,7 +147,7 @@ public class ActionElement extends AnyElement {
 			val = readInt("value");
 		case putDown:
 		case attack:
-			text = p_elem.getAttribute("item");
+			text = readAttribute("item");
 			break;
 		case exec:
 			text = p_elem.getAttribute("script");

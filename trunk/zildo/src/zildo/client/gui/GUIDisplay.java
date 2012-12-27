@@ -46,6 +46,7 @@ import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
@@ -737,18 +738,20 @@ public class GUIDisplay {
 		int i;
 		// Life
 		//guiSpritesSequence.addSprite(lifeGui, 207, 10);
-		for (i = 0; i < (0*zildo.getMaxpv()+20) / 2; i++) {
-			int pv = zildo.getPv()*0 + 10;
-			FontDescription desc;
-			if (i == pv >> 1 && pv % 2 == 1) {
-				desc = FontDescription.GUI_HEARTHALF; // Half heart
-			} else if (pv >> 1 <= i) {
-				desc = FontDescription.GUI_HEARTEMPTY; // Empty heart
-			} else {
-				desc = FontDescription.GUI_HEART; // Full heart
+		if (zildo.hasItem(ItemKind.NECKLACE)) {
+			for (i = 0; i < (0*zildo.getMaxpv()+20) / 2; i++) {
+				int pv = zildo.getPv()*0 + 10;
+				FontDescription desc;
+				if (i == pv >> 1 && pv % 2 == 1) {
+					desc = FontDescription.GUI_HEARTHALF; // Half heart
+				} else if (pv >> 1 <= i) {
+					desc = FontDescription.GUI_HEARTEMPTY; // Empty heart
+				} else {
+					desc = FontDescription.GUI_HEART; // Full heart
+				}
+				guiSpritesSequence.addSprite(desc, DROPS_X + ((i - 1) % 10) * 8,
+						GUI_Y); //20 + 8 * ((i - 1) / 10));
 			}
-			guiSpritesSequence.addSprite(desc, DROPS_X + ((i - 1) % 10) * 8,
-					GUI_Y); //20 + 8 * ((i - 1) / 10));
 		}
 
 		// Money
@@ -767,13 +770,17 @@ public class GUIDisplay {
 		displayNumber(countMoney, 3, 87, GUI_Y);
 
 		// Bombs
-		guiSpritesSequence.addSprite(FontDescription.GUI_BOMB, 136, GUI_Y - 2);
-		displayNumber(zildo.getCountBomb(), 2, 126, GUI_Y);
+		if (zildo.hasItem(ItemKind.BOMB)) {
+			guiSpritesSequence.addSprite(FontDescription.GUI_BOMB, 136, GUI_Y - 2);
+			displayNumber(zildo.getCountBomb(), 2, 126, GUI_Y);
+		}
 
 		// Arrows
-		guiSpritesSequence.addSprite(FontDescription.GUI_ARROW, 174, GUI_Y);
-		displayNumber(zildo.getCountArrow(), 2, 164, GUI_Y);
-
+		if (zildo.hasItem(ItemKind.BOW)) {
+			guiSpritesSequence.addSprite(FontDescription.GUI_ARROW, 174, GUI_Y);
+			displayNumber(zildo.getCountArrow(), 2, 164, GUI_Y);
+		}
+		
 		// Keys
 		guiSpritesSequence.addSprite(FontDescription.GUI_KEY, 211, GUI_Y + 2);
 		displayNumber(zildo.getCountKey(), 1, 201, GUI_Y);

@@ -126,4 +126,30 @@
 	    <pos who="zildo" z="30"/>
 	    <wait value="15"/>
 	</scene>
+	   	
+	<scene id="moonfusion">
+	    <spawn what="moon1" type="HEART_FRAGMENT" pos="8,-160" foreground="true" delta="true"/>
+	    <spawn what="moon2" type="HEART_FRAGMENT2" pos="-152,0" foreground="true" delta="true"/>
+	    <moveTo what="moon1" pos="-7,-3" delta="true"/>
+	    
+	    <moveTo what="moon1" pos="2,0" delta="true"/>
+	   	<moveTo what="moon2" pos="2,0" delta="true"/>
+	    	    	    
+	    <actions>
+	        <moveTo what="moon1" pos="0,160" delta="true"/>
+	        <moveTo what="moon2" pos="160,0" delta="true"/>
+	    </actions>
+	    <wait value="20"/>
+	    <fadeOut type="3"/>
+	    <fadeIn type="3"/>
+	    <actions>
+	    	<remove what="moon1"/>
+	    	<remove what="moon2"/>
+	        <spawn what="moon3" type="BIG_HEART" pos="8,0" foreground="true" delta="true"/>	        
+	    </actions>
+	    <wait value="50"/>
+	    <herospecial value="0"/>	<!-- Gain 1 HP with paying 50 gold -->
+	    <speak who="camera" text="fullmoon.action"/>
+	    <remove what="moon3"/>
+	</scene>
 </adventure>

@@ -410,6 +410,16 @@
 		</action>
 	</quest>
 	
+	<quest name="sorciere_coucou_moon" repeat="true">
+		<trigger>
+		    <dialog name="sorciere" num="2"/>
+		    <location name="d4m3"/>
+		</trigger>	    
+		<action>
+		    <exec script="moonfusion"/>
+		</action>
+	</quest>
+	
 	<quest name="tonneau_polakyg">
 		<trigger>
 		    <location name="polakyg"/>
@@ -1194,4 +1204,5 @@
 	    <filter type="0"/>
 	    <music name="Village"/>
    	</scene>
+
 </adventure>

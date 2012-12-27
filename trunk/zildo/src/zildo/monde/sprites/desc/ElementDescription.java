@@ -85,7 +85,9 @@ public enum ElementDescription implements SpriteDescription {
 	LAUNCHER1, LAUNCHER2,
 	// 175
 	PROJ_LAVA, PROJ_ICE, BIG_FIRE_BALL, SMALL_FIRE_BALL,
-	PLATFORM;
+	PLATFORM,
+	// 180
+	HEART_FRAGMENT2, NECKLACE;
 
 	Boolean damage;
 	
@@ -127,6 +129,8 @@ public enum ElementDescription implements SpriteDescription {
 			return ItemKind.BOMB;
 		case BOOMERANG1:
 			return ItemKind.BOOMERANG;
+		case NECKLACE:
+			return ItemKind.NECKLACE;
 		default:
 			return null;
 		}
@@ -208,8 +212,12 @@ public enum ElementDescription implements SpriteDescription {
 		return damage;
 	}
 
-	public String getFoundSentence() {
-    	String label=UIText.getGameText("automatic."+name());
+	public boolean isOutmapAllowed() {
+		return this == HEART_FRAGMENT || this == HEART_FRAGMENT2;
+	}
+
+	public String getFoundSentence(String add) {
+    	String label=UIText.getGameText("automatic."+name()+add);
     	if (label.startsWith("automatic.")) {
     		return null;	// Label doesn't exist (security but this shouldn't occur)
     	}
