@@ -186,14 +186,14 @@ public class ElementsPlus extends SpriteBanque {
 				// From here :Objets.png (123)
 				new Zone(36, 0, 8, 15),
 				new Zone(48, 0, 16, 16),
-				new Zone(65, 2, 14, 13),
-				new Zone(80, 1, 16, 15),
+				new Zone(16, 85, 19, 19),	// FULL_MOON
+				new Zone(35, 85, 9, 16),	 // MOON_FRAGMENT1
 				new Zone(96, 0, 16, 16),
 				new Zone(114, 0, 12, 16),
 				new Zone(130, 0, 12, 16),
 				new Zone(144, 0, 16, 16),
 				new Zone(144, 17, 16, 16),
-				// Excalibur (132)
+				// Excalibur (133)
 				new Zone(163, 0, 10, 22), new Zone(178, 0, 13, 16),
 				new Zone(193, 0, 15, 16), new Zone(209, 0, 14, 16),
 				new Zone(193, 17, 14, 16), new Zone(193, 34, 14, 16),
@@ -203,12 +203,12 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(113, 17, 14, 16),
 				new Zone(128, 17, 16, 17),
 				new Zone(208, 35, 15, 15),
-				// Coupe (144)
+				// Coupe (145)
 				new Zone(0, 52, 16, 16), new Zone(208, 52, 16, 16),
-				new Zone(26, 70, 12, 14), new Zone(42, 70, 12, 14),
-				new Zone(58, 70, 12, 14),
-				new Zone(74, 70, 12, 14),
-				// Bouclier rouge (150)
+				new Zone(25, 68, 14, 16), new Zone(41, 68, 14, 16),
+				new Zone(57, 68, 14, 16),
+				new Zone(73, 68, 14, 16),
+				// Bouclier rouge (151)
 				new Zone(89, 69, 14, 16), new Zone(121, 69, 14, 16),
 				new Zone(18, 56, 3, 3), new Zone(22, 61, 5, 5),
 				new Zone(23, 53, 7, 7),
@@ -222,7 +222,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(11, 177, 32, 20),
 				// Leaf
 				new Zone(16, 169, 8, 7),
-				// Milk (160)
+				// Milk (161)
 				new Zone(43, 181, 11, 16),
 				// House options
 				new Zone(204, 0, 32, 16),	// Window
@@ -251,12 +251,17 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(117, 24, 31, 31),
 				new Zone(76, 46, 16, 16),
 				// Platform
-				new Zone(242, 0, 32, 32)
+				new Zone(242, 0, 32, 32),
+				// Back on "objets.png"
+				new Zone(44, 85, 15, 10),	// MOON_FRAGMENT2
+				new Zone(0, 85, 16, 16),	// NECKLACE
+
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
 				new GraphChange("elem2", 71, 0), 
 				new GraphChange("objets", 123, 0),
-				new GraphChange("elem", 156, 0)});
+				new GraphChange("elem", 156, 0),
+				new GraphChange("objets", 180, 0)});
 	}
 }
