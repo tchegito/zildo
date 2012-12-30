@@ -15,10 +15,10 @@ public class PjZildo extends SpriteBanque {
 				new Zone(48, 110, 16, 24), new Zone(80, 110, 16, 24), new Zone(96, 110, 16, 24),
 				
 				// RIGHT_FIXED
-				new Zone(125, 60, 14, 22),
-				new Zone(0, 86, 16, 24), new Zone(16, 86, 16, 24), new Zone(32, 86, 16, 24),
-				new Zone(48, 86, 16, 24), new Zone(64, 86, 16, 24), new Zone(80, 86, 16, 24),
-				new Zone(96, 86, 16, 24),
+				new Zone(124, 59, 16, 23),
+				new Zone(1, 86, 15, 24), new Zone(16, 86, 16, 24), new Zone(33, 86, 16, 24),
+				new Zone(50, 86, 16, 24), new Zone(66, 86, 16, 24), new Zone(82, 86, 16, 24),
+				new Zone(97, 86, 16, 24),
 				
 				// DOWN_FIXED (15)
 				new Zone(1, 1, 16, 22),
@@ -121,7 +121,7 @@ public class PjZildo extends SpriteBanque {
 		new GraphChange("link1c", 41, 0),
 		new GraphChange("link2b", 56, 0), new GraphChange("link3b", 60, 0),
 		new GraphChange("link1b", 86, 0), new GraphChange("link2b", 92, 0),
-		new GraphChange("link1b", 97, 0)
+		new GraphChange("link1c", 97, 0)
 		});
 	}
 }
