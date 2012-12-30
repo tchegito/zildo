@@ -31,6 +31,7 @@ import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.ActionElement.ActionKind;
@@ -380,6 +381,8 @@ public class ActionExecutor {
                 	switch (p_action.val) {
                 	case 0: // REGULAR
                 		ClientEngineZildo.ortho.setFilteredColor(new Vector3f(1, 1, 1));
+                		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
+                		ClientEngineZildo.filterCommand.active(LightningFilter.class, false, null);
                 		break;
                 	case 1: // NIGHT
                 		ClientEngineZildo.ortho.setFilteredColor(Ortho.NIGHT_FILTER);
@@ -391,6 +394,10 @@ public class ActionExecutor {
                 		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(false, false);
                 		ClientEngineZildo.filterCommand.active(CloudFilter.class, false, null);
                 		ClientEngineZildo.filterCommand.active(RedFilter.class, true, null);
+                		break;
+                	case 4: // LIGHTNING
+                		ClientEngineZildo.filterCommand.active(CloudFilter.class, false, null);
+                		ClientEngineZildo.filterCommand.active(LightningFilter.class, true, null);
                 		break;
                 	}
                 	achieved = true;

@@ -739,8 +739,8 @@ public class GUIDisplay {
 		// Life
 		//guiSpritesSequence.addSprite(lifeGui, 207, 10);
 		if (zildo.hasItem(ItemKind.NECKLACE)) {
-			for (i = 0; i < (0*zildo.getMaxpv()+20) / 2; i++) {
-				int pv = zildo.getPv()*0 + 10;
+			for (i = 0; i < (zildo.getMaxpv()) / 2; i++) {
+				int pv = zildo.getPv();
 				FontDescription desc;
 				if (i == pv >> 1 && pv % 2 == 1) {
 					desc = FontDescription.GUI_HEARTHALF; // Half heart

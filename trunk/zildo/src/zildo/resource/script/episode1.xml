@@ -412,11 +412,12 @@
 	
 	<quest name="sorciere_coucou_moon" repeat="true">
 		<trigger>
-		    <dialog name="sorciere" num="2"/>
+		    <dialog name="sorciere" num="3"/>
 		    <location name="d4m3"/>
 		</trigger>	    
 		<action>
 		    <exec script="moonfusion"/>
+		    <music name="Village"/>
 		</action>
 	</quest>
 	
