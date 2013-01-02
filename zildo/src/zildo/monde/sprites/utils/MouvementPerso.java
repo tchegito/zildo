@@ -38,7 +38,8 @@ public enum MouvementPerso {
 	BEE(9),
 	BIRD(10),
 	SQUIRREL(11),
-	WAKEUP(12);
+	WAKEUP(12),
+	INVOKE(13);	// addSpr = 1
 	
 	public int valeur;
 	
@@ -96,7 +97,8 @@ public enum MouvementPerso {
 	public boolean isMobile() {
 		return this != IMMOBILE &&
 		this != OBSERVE &&
-		this != WAKEUP;
+		this != WAKEUP &&
+		this != INVOKE;
 	}
 	
 	/**

@@ -291,6 +291,7 @@ public class PersoNJ extends Perso {
 				}
 				break;
 			case WAKEUP:
+			case INVOKE:
 				pos_seqsprite++;
 				break;
 			default:
@@ -508,6 +509,18 @@ public class PersoNJ extends Perso {
 		case VIEUX_SAGE2:
 			// Persos toujours de face, à 2 sprites seulement
 			add_spr = (compteur_animation / 30) % 2;
+			break;
+		case SORCERER:
+			if (quel_deplacement == MouvementPerso.INVOKE) {
+				reverse = Reverse.NOTHING;
+				add_spr = 1;
+			} else {
+				if (((compteur_animation / 30) % 2) == 0) {
+					reverse = Reverse.HORIZONTAL;
+				} else {
+					reverse = Reverse.NOTHING;
+				}
+			}
 			break;
 		case ENFANT:
 		case VOLEUR:
