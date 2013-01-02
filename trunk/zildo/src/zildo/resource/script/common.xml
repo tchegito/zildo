@@ -132,6 +132,7 @@
 	    <music name=""/>
 	    <wait value="20"/>
 	    <fadeOut type="1"/>
+	    <script who="sorciere" value="13"/>
 	    <spawn what="moon1" type="HEART_FRAGMENT" pos="8,-160" foreground="true" fx="FOCUSED" delta="true"/>
 	    <spawn what="moon2" type="HEART_FRAGMENT2" pos="-152,0" foreground="true" fx="FOCUSED" delta="true"/>
 	    <moveTo what="moon1" pos="-7,-3" delta="true"/>
@@ -159,6 +160,8 @@
 	    <wait value="50"/>
 	    <herospecial value="0"/>	<!-- Gain 1 HP with paying 50 gold -->
 	    <speak who="camera" text="fullmoon.action"/>
+	    <script who="sorciere" value="3"/>
+	    <script who="zildo" text="VIDE"/>	    
 	    <remove what="moon3"/>
 	    <fadeIn type="1"/>
 	</scene>

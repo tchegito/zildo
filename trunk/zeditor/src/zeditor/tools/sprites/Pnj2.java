@@ -73,12 +73,12 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(178, 53, 18, 16), new Zone (196, 53, 26, 15),
 			          new Zone(222, 53, 14, 16), new Zone (236, 53, 16, 15),
 			          new Zone(252, 53, 18, 16), new Zone (270, 53, 24, 14),
-			          // Princesse couchée
+			          // Princesse couchée (60)
 			          new Zone(0, 182, 24, 15), new Zone(24, 182, 22, 16),
 			          new Zone(98, 173, 24, 15), new Zone(122, 173, 24, 15),
 			          // Arbuste mouvant
 			          new Zone(100, 0, 16, 17), new Zone(116, 0, 16, 17),
-			          // Moustachu
+			          // Moustachu (66)
 			          new Zone(221, 100, 16, 24),
 			          new Zone(237, 100, 14, 24), new Zone(251, 100, 14, 24),
 			          // Electrique sous le choc
@@ -92,7 +92,7 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(210, 73, 16, 24), new Zone(226, 73, 14, 24),
 			          // Garçon jaune
 			          new Zone(241, 73, 16, 24), new Zone(257, 73, 14, 24),
-			          // Fermière (villageoise rose)
+			          // Fermière (villageoise rose) (81)
 			          new Zone(147, 175, 16, 24), new Zone(163, 175, 16, 24),
 			          new Zone(179, 175, 14, 24), new Zone(193, 174, 13, 25),
 			          new Zone(206, 174, 16, 25), new Zone(222, 174, 16, 25),
@@ -108,7 +108,7 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(0, 221, 19, 12), new Zone(19, 221, 19, 12),
 			          new Zone(38, 221, 22, 12), new Zone(61, 221, 15, 17),
 			          new Zone(76, 221, 17, 15),
-			          // King
+			          // King (96)
 			          new Zone(265, 107, 35, 33),
 			          // Hat burglar
 			          new Zone(0, 239, 16, 25), new Zone(16,240, 16, 24),
@@ -119,20 +119,23 @@ public class Pnj2 extends SpriteBanque {
 			          // Fire thing
 			          new Zone(0, 291, 6, 6), new Zone(0, 298, 6, 6),
 			          new Zone(7, 291, 12, 12), new Zone(19, 291, 16, 16),
-			          // Rat
+			          // Rat (108)
 			          new Zone(147, 200, 12, 16), new Zone(159, 200, 12, 15),
 			          new Zone(171, 200, 16, 11), new Zone(187, 200, 16, 12),
 			          new Zone(203, 200, 15, 16), new Zone(218, 200, 15, 16),
 			          new Zone(233, 201, 12, 15), new Zone(245, 200, 12, 16),
-			          // Fox
+			          // Fox (116)
 			          new Zone(221, 150, 16, 22), new Zone(205, 150, 16, 22),
 			          new Zone(237, 150, 14, 24), new Zone(251, 150, 15, 24),
-			          new Zone(282, 150, 16, 23), new Zone(266, 150, 16, 23)
+			          new Zone(282, 150, 16, 23), new Zone(266, 150, 16, 23),
+			          // Sorcerer (perso) (122)
+			          new Zone(272, 163, 16, 25), new Zone(291, 163, 16, 25)
 			          
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("pnj", 0, 0), new GraphChange("pnj2", 7, 0), 
 				new GraphChange("pnj", 23, 0),
-				new GraphChange("pnj2", 31, 0)});
+				new GraphChange("pnj2", 31, 0),
+				new GraphChange("pnj", 122, 0)});
 	}
 }
