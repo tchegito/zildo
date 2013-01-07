@@ -169,7 +169,9 @@ public class Grotte extends Banque {
 				new Point(160, 112), new Point(176, 112),
 				new Point(144, 112), new Point(144, 128), new Point(160, 128), new Point(176, 128),
 				/* Torch */
-				new Point(288, 80), new Point(304, 80), new Point(304, 96)
+				new Point(288, 80), new Point(304, 80), new Point(304, 96),
+				/* Additional walls */
+				new Point(192, 96), new Point(208, 96), new Point(192, 112), new Point(208, 112)
 		};
 				
 		pkmChanges = Arrays.asList(new GraphChange("interia3", 0, 0),
