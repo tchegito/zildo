@@ -1,5 +1,7 @@
 #summary What about Dialogs ?
 
+<wiki:toc max_depth="4" />
+
 = Introduction =
 
 Before talking about dialogs in Zildo, we'll start by a brief topo on UI texts. Then, we'll approach the ways dialogs are stored, displayed and articulated inside the game.
