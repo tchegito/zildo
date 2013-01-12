@@ -446,13 +446,19 @@ public class PersoNJ extends Perso {
 
 			break;
 		case POULE:
+		case CANARD:
 			// Poule
 			if (linkedPerso != null) {
 				pos_seqsprite++;
 			}
 			add_spr = (getPos_seqsprite() % (8 * Constantes.speed)) / (2 * Constantes.speed);
+			if (add_spr > 1) {
+				setAjustedY(getAjustedY() - (add_spr - 1));
+				add_spr = 1;
+			}
+			reverse = Reverse.NOTHING;
 			if (pathFinder.getTarget() != null && (pathFinder.getTarget().x > getX() && !isAlerte())) {
-				add_spr += 4;
+				reverse = Reverse.HORIZONTAL;
 			}
 			break;
 		case VIEUX:
