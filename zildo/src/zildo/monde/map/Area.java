@@ -673,7 +673,9 @@ public class Area implements EasySerializable {
 
 				if (p_spawn && !EngineZildo.game.editing) {
 					Tile backTile = temp.getBackTile();
-					if (backTile.index == 99 && backTile.bank == 1) {
+					Tile backTile2 = temp.getBackTile2();
+					
+					if (backTile.getValue() == 256 + 99 || (backTile2 != null && backTile2.getValue() == 256+99)) {
 						// Fumée de cheminée
 						spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, 0, null,
 								null);

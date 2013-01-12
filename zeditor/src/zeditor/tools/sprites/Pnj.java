@@ -78,8 +78,8 @@ public class Pnj extends SpriteBanque {
 				// Poule - 35
 				new Zone(32, 2, 16, 17),
 				new Zone(48, 2, 15, 17),
-				new Zone(63, 1, 15, 18),
-				new Zone(78, 0, 15, 19),
+				new Zone(63, 4, 15, 14),
+				new Zone(78, 4, 15, 14),
 				// Garçon - 39
 				new Zone(33, 20, 14, 22),
 				new Zone(47, 20, 14, 22),
