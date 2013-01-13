@@ -409,7 +409,8 @@ public class PlayerManagement {
 		
 					if (persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY && !persoToTalk.isZildo()) {
 					 // On vérifie qu'il ne s'agit pas d'une poule
-						if (persoToTalk.getDesc() == PersoDescription.POULE) {
+						if (persoToTalk.getDesc() == PersoDescription.POULE ||
+								persoToTalk.getDesc() == PersoDescription.CANARD) {
 							heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, ElementDescription.HEN, persoToTalk);
 						} else if (persoToTalk.getDialoguingWith() == null) {
 							// On vérifie que Zildo regarde la personne

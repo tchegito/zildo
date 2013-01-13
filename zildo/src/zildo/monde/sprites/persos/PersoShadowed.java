@@ -57,4 +57,8 @@ public class PersoShadowed extends PersoNJ {
 		}
 		super.finaliseComportement(compteur_animation);
 	}
+	
+	public Element getShadow() {
+		return shadow;
+	}
 }

@@ -26,7 +26,7 @@ import zildo.fwk.collection.IntSet;
 public enum PersoDescription implements SpriteDescription {
 
 	// PNJ.SPR
-	PRINCESSE(0, 1, 2, 3, 4, 5, 6, 7),
+	PRINCESSE(0, 1, 2, 3, 4, 5), // , 6, 7),
 	BAS_GARDEVERT(8, 9, 10, 11, 12, 13, 14, 15),
 	HAUT_GARDEVERT(16, 17, 18, 19),
 	GARDE_CANARD(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34),
@@ -88,7 +88,8 @@ public enum PersoDescription implements SpriteDescription {
 	RAT(242, 243, 238, 239, 236, 237, 240, 241),
 	FOX(248, 249, 246, 247, 244, 245),
 	SORCERER(250, 251),
-	
+	BROWN_CAT(76, 77, 6),
+	GREY_CAT(78, 79, 7),
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
 	IntSet sprUsed;

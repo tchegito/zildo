@@ -40,8 +40,10 @@ public class Pnj extends SpriteBanque {
 				new Zone(13, 23, 14, 23),
 				new Zone(0, 46, 16, 23),
 				new Zone(16, 46, 16, 23),
-				new Zone(0, 69, 13, 23),
-				new Zone(13, 69, 14, 23),
+				// Standing cat (brown and grey)
+				new Zone(162, 0, 8, 13), new Zone(162, 13, 8, 13),
+				//new Zone(0, 69, 13, 23),
+				//new Zone(13, 69, 14, 23),
 
 				// Corps du garde vert - 8
 				new Zone(68, 109, 16, 17),
@@ -128,11 +130,17 @@ public class Pnj extends SpriteBanque {
 				new Zone(199, 158, 16, 25),
 				new Zone(215, 158, 15, 25),
 				new Zone(184, 158, 15, 25),
+				/*
 				// Poule suite - 76
 				new Zone(129, 3, 16, 17),
 				new Zone(145, 3, 15, 17),
 				new Zone(160, 2, 15, 18),
 				new Zone(175, 1, 15, 19),
+				*/
+				// Grey cat
+				new Zone(129, 3, 16, 10), new Zone(145, 3, 16, 10),
+				// Brown cat
+				new Zone(129, 14, 16, 10), new Zone(145, 14, 16, 10),
 				// Sorcier violet - 80
 				new Zone(231, 161, 16, 23),
 				new Zone(247, 162, 16, 22),
