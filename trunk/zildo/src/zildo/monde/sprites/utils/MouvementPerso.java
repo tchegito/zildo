@@ -39,7 +39,8 @@ public enum MouvementPerso {
 	BIRD(10),
 	SQUIRREL(11),
 	WAKEUP(12),
-	INVOKE(13);	// addSpr = 1
+	INVOKE(13),	// addSpr = 1
+	CAT(14);
 	
 	public int valeur;
 	
@@ -77,7 +78,7 @@ public enum MouvementPerso {
 	 * @return TRUE = character runs away / FALSE = character runs on his target
 	 */
 	public boolean isAfraid() {
-		return this == HEN;
+		return this == HEN || this == CAT;
 	}
 	/**
 	 * Does this script make the character move diagonally ?
@@ -87,7 +88,8 @@ public enum MouvementPerso {
 		return this == HEN ||
 		this == VOLESPECTRE ||
 		this == ELECTRIC ||
-		this == SQUIRREL;
+		this == SQUIRREL ||
+		this == CAT;
 	}
 	
 	/**

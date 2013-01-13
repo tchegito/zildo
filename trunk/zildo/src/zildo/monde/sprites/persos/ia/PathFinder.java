@@ -23,6 +23,7 @@ package zildo.monde.sprites.persos.ia;
 import zildo.monde.Hasard;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
@@ -196,18 +197,23 @@ public class PathFinder {
 	}
 	
 	public void collide() {
-		if (mobile.getQuel_deplacement() == MouvementPerso.HEN ||
-				mobile.getQuel_deplacement() == MouvementPerso.BEE ||
-				mobile.getQuel_deplacement() == MouvementPerso.SQUIRREL) {
-			target=null;
-		} else {
-			mobile.setAttente(10 + (int) (Math.random()*20));
-			mobile.tryJump(new Pointf(mobile.x, mobile.y));
-			if (nbShock++ >= 3 && !mobile.isGhost()) {
+		switch (mobile.getQuel_deplacement()) {
+			case HEN:
+			case BEE:
+			case SQUIRREL:
 				target=null;
-				mobile.setAlerte(false);
-				nbShock=0;
-			}
+				break;
+			case CAT:
+				((PersoNJ)mobile).destinationReached();
+				break;
+			default:
+				mobile.setAttente(10 + (int) (Math.random()*20));
+				mobile.tryJump(new Pointf(mobile.x, mobile.y));
+				if (nbShock++ >= 3 && !mobile.isGhost()) {
+					target=null;
+					mobile.setAlerte(false);
+					nbShock=0;
+				}
 		}
 	}
 	

@@ -180,6 +180,10 @@ public abstract class Perso extends Element {
 			case WAKEUP:
 				pos_seqsprite = 0;
 				break;
+			case CAT:
+				pathFinder = new PathFinder(this);
+				pathFinder.speed = 0.2f;
+				break;
 			}
 		}
 	}

@@ -368,6 +368,7 @@ public class PersoNJ extends Perso {
 						}
 						// Does character reach his destination ?
 						if (pathFinder.getTarget() == null) {
+							destinationReached();
 							pos_seqsprite = 0;
 						}
 
@@ -447,18 +448,25 @@ public class PersoNJ extends Perso {
 			break;
 		case POULE:
 		case CANARD:
+		case GREY_CAT:
+		case BROWN_CAT:
 			// Poule
 			if (linkedPerso != null) {
 				pos_seqsprite++;
 			}
 			add_spr = (getPos_seqsprite() % (8 * Constantes.speed)) / (2 * Constantes.speed);
 			if (add_spr > 1) {
-				setAjustedY(getAjustedY() - (add_spr - 1));
+				if (quel_deplacement == MouvementPerso.HEN) {
+					setAjustedY(getAjustedY() - (add_spr - 1));
+				}
 				add_spr = 1;
 			}
 			reverse = Reverse.NOTHING;
 			if (pathFinder.getTarget() != null && (pathFinder.getTarget().x > getX() && !isAlerte())) {
 				reverse = Reverse.HORIZONTAL;
+			}
+			if (quel_deplacement == MouvementPerso.CAT && pathFinder.getTarget() == null) {
+				add_spr = 2;
 			}
 			break;
 		case VIEUX:
@@ -641,6 +649,15 @@ public class PersoNJ extends Perso {
 
 		PersoDescription d = (PersoDescription) desc;
 		switch (d) {
+		case PRINCESSE:
+			if (angle == Angle.OUEST) {
+				add_spr -= 4;
+				reverse = Reverse.HORIZONTAL;
+			} else {
+				reverse = Reverse.NOTHING;
+			}
+			break;
+
 		case SOFIASKY:
 		case FERMIERE:
 			reverse = Reverse.NOTHING;
@@ -727,10 +744,23 @@ public class PersoNJ extends Perso {
 
 	}
 
-	protected void destinationReached() {
+	public void destinationReached() {
 		if (!isGhost() && quel_deplacement != MouvementPerso.BEE
 				&& (quel_deplacement != MouvementPerso.RAT || Hasard.lanceDes(8))) {
-			setAttente(10 + (int) (Math.random() * 20));
+			switch (quel_deplacement) {
+			case BEE:
+				break;	// No wait
+			case CAT:
+				setAttente(60 + Hasard.rand(40));
+				break;
+			case RAT:
+				if (Hasard.lanceDes(8)) {
+					break;
+				}
+			case HEN:
+				setAttente(10 + Hasard.rand(20));
+				break;
+			}
 		}
 	}
 

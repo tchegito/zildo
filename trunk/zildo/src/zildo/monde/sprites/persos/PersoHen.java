@@ -28,14 +28,14 @@ import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
-public class PersoHen extends PersoNJ {
+public class PersoHen extends PersoShadowed {
 
 	int countSound;
 	
     public PersoHen(int x, int y) {
-    	super();
+    	super(ElementDescription.SHADOW, 0);
         // Add a shadow
-    	addShadow(ElementDescription.SHADOW);
+    	shadow.z = -2;
     }
 
     @Override

@@ -43,6 +43,7 @@ import zildo.monde.sprites.persos.PersoSquirrel;
 import zildo.monde.sprites.persos.PersoVolant;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.ia.PathFinderBee;
+import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 
 //////////////////////////////////////////////////////////////////////
@@ -156,7 +157,14 @@ public class PersoManagement {
 		Perso perso;
 		switch (p_desc) {
 			case POULE:
+			case CANARD:
 	            perso = new PersoHen(x, y);
+	            break;
+			case BROWN_CAT:
+			case GREY_CAT:
+	            perso = new PersoHen(x, y);
+	            ((PersoHen)perso).getShadow().setDesc(ElementDescription.SHADOW_SMALL);
+	            perso.setQuel_deplacement(MouvementPerso.CAT, true);
 				break;
 			case BAS_GARDEVERT:
 				perso = new PersoGardeVert();
