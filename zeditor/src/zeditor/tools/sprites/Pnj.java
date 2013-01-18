@@ -34,12 +34,14 @@ public class Pnj extends SpriteBanque {
 	public Pnj() {
 		zones = new Zone[] {
 				// Princesse Roxy
-				new Zone(0, 0, 15, 23),
-				new Zone(15, 0, 15, 23),
-				new Zone(0, 23, 13, 23),
-				new Zone(13, 23, 14, 23),
-				new Zone(0, 46, 16, 23),
-				new Zone(16, 46, 16, 23),
+				new Zone(17, 225, 17, 23), new Zone(34, 225, 17, 23), 
+				//new Zone(0, 0, 15, 23),
+				//new Zone(15, 0, 15, 23),
+				new Zone(0, 23, 14, 23),
+				new Zone(14, 23, 14, 23),
+				//new Zone(0, 46, 16, 23),
+				//new Zone(16, 46, 16, 23),
+				new Zone(17, 201, 17, 23), new Zone(34, 201, 17, 23),
 				// Standing cat (brown and grey)
 				new Zone(162, 0, 8, 13), new Zone(162, 13, 8, 13),
 				//new Zone(0, 69, 13, 23),
