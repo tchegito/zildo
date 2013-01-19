@@ -558,7 +558,7 @@
 	    <wait value="100"/>
 	    <moveTo who="zildo" pos="830,300"/>
 	    <moveTo who="zildo" pos="920,370"/>
-	    <moveTo who="roxy" pos="950,278" unstoppable="true" unblock="true"/>
+	    <moveTo who="roxy" pos="950,274" unstoppable="true" unblock="true"/>
 	    <moveTo who="zildo" pos="970,370"/>
 	    <moveTo who="zildo" pos="970,292"/>
 	    <angle who="roxy" value="2"/>
