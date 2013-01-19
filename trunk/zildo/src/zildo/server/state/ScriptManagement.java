@@ -304,8 +304,10 @@ public class ScriptManagement {
 			String add="";
 	    	if (p_desc == ElementDescription.HEART_FRAGMENT || p_desc == ElementDescription.HEART_FRAGMENT2) {
 	    		// Specific for moon fragment
-	    		if (p_zildo.getPv() > 6) {
-	    			add="no";
+	    		if (!p_zildo.hasItem(ItemKind.NECKLACE)) {
+	    			add="0";
+	    		} else if (p_zildo.getHeartQuarter() >= 2) {
+	    			add="3";
 	    		} else if (p_zildo.getHeartQuarter() == 1) {
 	    			add="2";
 	    		} 

@@ -647,7 +647,7 @@ public class Element extends SpriteEntity {
 		this.name = name;
 	}
 
-	protected void addShadow(ElementDescription p_typeShadow) {
+	public void addShadow(ElementDescription p_typeShadow) {
 		// Add a shadow
 		shadow = new Element();
 		shadow.x = x;
