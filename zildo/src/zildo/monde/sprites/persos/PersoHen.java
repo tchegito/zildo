@@ -33,9 +33,7 @@ public class PersoHen extends PersoShadowed {
 	int countSound;
 	
     public PersoHen(int x, int y) {
-    	super(ElementDescription.SHADOW, 0);
-        // Add a shadow
-    	shadow.z = -2;
+    	super(ElementDescription.SHADOW, 2);
     }
 
     @Override

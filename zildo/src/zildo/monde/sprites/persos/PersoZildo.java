@@ -595,8 +595,8 @@ public class PersoZildo extends Perso {
 			}
 			if (en_bras != null) {
 				en_bras.setX(xx + 1);
-				en_bras.setY(yy + 3);
-				en_bras.setZ(17);
+				en_bras.setY(yy); // + 3);
+				en_bras.setZ(17 - 3);
 			}
 			break;
 		case SOULEVE:
@@ -962,6 +962,7 @@ public class PersoZildo extends Perso {
 			elem = new Element();
 			elem.setNBank(d.getBank());
 			elem.setNSpr(d.getNSpr());
+			elem.addShadow(ElementDescription.SHADOW);
 		}
 		elem.setScrX(objX);
 		elem.setScrY(objY);
@@ -970,7 +971,8 @@ public class PersoZildo extends Perso {
 		elem.setZ(4);
 		elem.setVisible(true);
 		elem.flying = false;
-
+		elem.setForeground(true);
+		
 		elem.setLinkedPerso(this); // Link to Zildo
 
 		if (object == null) {
@@ -1004,6 +1006,7 @@ public class PersoZildo extends Perso {
 			element.setAx(0.0f);
 			element.setAy(0.0f);
 			element.setAz(-0.07f);
+			element.setForeground(false);
 			element.setLinkedPerso(this); // Declare this element thrown by Zildo
 											// (so it can't collide with him)
 			element.setAngle(angle);

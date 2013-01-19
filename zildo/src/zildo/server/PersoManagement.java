@@ -185,6 +185,9 @@ public class PersoManagement {
 			case BUCHERON_DEBOUT:
 				perso = new PersoShadowed(ElementDescription.SHADOW, 0);
 				break;
+			case PRINCESSE:
+				perso = new PersoShadowed(ElementDescription.SHADOW, 2);
+				break;
 			case ABEILLE:
 				perso = new PersoShadowed(ElementDescription.SHADOW_MINUS, 0);
 				perso.setPathFinder(new PathFinderBee(perso));
