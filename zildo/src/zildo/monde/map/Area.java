@@ -429,7 +429,14 @@ public class Area implements EasySerializable {
 		// Remove tile on back2, if present
 		Case temp = this.get_mapcase(x, y + 4);
 		if (temp.getBackTile2() != null) {
-			temp.setBackTile2(null);
+			if (anim == SpriteAnimation.FROM_CHEST) {
+				// A chest is open => replace by the right tile
+				temp.getBackTile2().index = resultTile;
+				temp.setModified(true);
+			} else {
+				// Remove back2 (bush/jar/whatever is taken => remove it)
+				temp.setBackTile2(null);
+			}
 		} else {
 			this.writemap(tileLocation.getX(), tileLocation.getY(), resultTile);
 		}
