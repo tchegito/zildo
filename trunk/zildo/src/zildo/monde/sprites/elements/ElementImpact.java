@@ -35,7 +35,8 @@ public class ElementImpact extends Element {
 		EXPLOSION(ElementDescription.EXPLO1, new int[] {0,0,0,1,1,2,2,1,1,2,2,3}, 2), 
 		FIRESMOKE(ElementDescription.EXPLOSMOKE1, 3,8),
 		SMOKE(ElementDescription.SMOKE, new int[] {0,1,52,53,54}, 8),
-		STAR_YELLOW(ElementDescription.STAR1, new int[] {0,1,2,1,0}, 8);
+		STAR_YELLOW(ElementDescription.STAR1, new int[] {0,1,2,1,0}, 8),
+		DROP_ENERGY(ElementDescription.BLUE_ENERGY, 1,1);
 		
 		ElementDescription desc;
 		int seqLong;	// Size of the sequence of the sprite's life
@@ -90,6 +91,16 @@ public class ElementImpact extends Element {
 				y+=getSprModel().getTaille_y()/2;
 				composite=new CompositeElement(this);
 				EngineZildo.soundManagement.broadcastSound(BankSound.Explosion, this);
+				break;
+			case DROP_ENERGY:
+				setSprModel(ElementDescription.BLUE_ENERGY);
+				y+=getSprModel().getTaille_y()/2;
+				zoom = 1;
+				setForeground(true);
+				composite=new CompositeElement(this);
+				composite.squareShape(0,0);
+				alpha = 255;
+				break;
 		}
 		addSpr=0;
         setLinkedPerso(p_shooter);
@@ -117,6 +128,19 @@ public class ElementImpact extends Element {
 				setAjustedX((int) x);
 				setAjustedY((int) y+getSprModel().getTaille_y()/2);
 				break;
+        	case DROP_ENERGY:
+        		if (counter >= 2*255) {
+        			composite.die(false);
+        			dying = true;
+        		} else {
+        			counter++;
+        			composite.setZoom(5 * counter);
+        			composite.setAlpha(Math.max(0, alpha));
+        			alpha-=2;
+        			composite.focus(linkedPerso);
+        		}
+        		
+        		break;
 			case EXPLOSION:
 				if (valCounter == kind.seq.length) {	// End of the sequence
 					composite.die(false);

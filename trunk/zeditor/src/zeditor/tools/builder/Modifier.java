@@ -39,6 +39,7 @@ import zeditor.tools.banque.Foret3;
 import zeditor.tools.banque.Foret4;
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.banque.Maison;
+import zeditor.tools.banque.Palais1;
 import zeditor.tools.banque.Village;
 import zeditor.tools.sprites.ElementsPlus;
 import zeditor.tools.sprites.Fontes;
@@ -105,21 +106,27 @@ public class Modifier {
         new EngineZildo(g);
         System.out.println();
        
-        //new Modifier().savePalette();
+        // ***IMPORTANT ***
+        // Exteria1 is the reference picture for palette
+        // ***IMPORTANT ***
+        new Modifier().savePalette();
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
-        //new Modifier().saveElements3();
-        //new Modifier().saveFontes2();
+        new Modifier().saveElements();
+        new Modifier().saveFontes2();
         //new Modifier().saveAllMotifBank();
         new Modifier().saveBanque();
         //new ReplaceAllMapsWindows().modifyAllMaps();
+        //new AdjustGrotte().modifyAllMaps();
         new Modifier().saveZildo();
-        new AdjustBackTiles().modifyAllMaps();
+        //new ReplaceSpritesModel().modifyAllMaps();
+        //new AdjustChestBackTiles().modifyAllMaps();
+        //new AdjustBackTiles().modifyAllMaps();
         //new ReplaceAllMapsFloor().modifyAllMaps();
         //new Modifier().saveGears();
         //new Modifier().saveZildo();
-        //new Modifier().savePnj();
-        //new Modifier().savePnj2();
+        new Modifier().savePnj();
+        new Modifier().savePnj2();
         //new Modifier().modifyAllMaps();
         //new Modifier().adjustSpritePositionOnAllMaps();
         //new Modifier().generateImg();
@@ -151,6 +158,12 @@ public class Modifier {
 
     	 new MotifBank().charge_motifs("maison");
     	 new Maison().save();
+    	 
+    	 new MotifBank().charge_motifs("palais1");
+    	 new Palais1().save();
+    	 
+    	 new MotifBank().charge_motifs("grotte");
+    	 new Grotte().save();
     	 
     	 saveElements();
      }
@@ -361,10 +374,12 @@ public class Modifier {
  		Vector3f[] ret = new Vector3f[256];
  		for (int i=0;i<256;i++) {
  			Vector3f col = new Vector3f(colors.getRed(i), colors.getGreen(i), colors.getBlue(i));
+ 			/*
  			System.out.println("col "+i+
  					" R" + col.x+
  					" G"+col.y+
  					" B"+col.z);
+ 					*/
  			ret[i] = col;
  		}
  		return ret;

@@ -50,6 +50,8 @@ import zildo.monde.sprites.elements.ElementArrow;
 import zildo.monde.sprites.elements.ElementBomb;
 import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementGear;
+import zildo.monde.sprites.elements.ElementImpact;
+import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.action.HealAction;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.sprites.utils.ShieldEffect;
@@ -895,6 +897,9 @@ public class PersoZildo extends Perso {
 				case DROP_MEDIUM:
 					if (pv < maxpv) {
 						pv = Math.min(pv+2, maxpv);
+						// Blue energy animation 
+						ElementImpact energy = new ElementImpact((int) x, (int) y, ImpactKind.DROP_ENERGY, this);
+						EngineZildo.spriteManagement.spawnSprite(energy);
 					}
 					break;
 				case ARROW_UP:

@@ -87,6 +87,8 @@ public enum ElementDescription implements SpriteDescription {
 	PROJ_LAVA, PROJ_ICE, BIG_FIRE_BALL, SMALL_FIRE_BALL,
 	PLATFORM,
 	// 180
+	BLUE_ENERGY,
+	// 181
 	HEART_FRAGMENT2, NECKLACE;
 
 	Boolean damage;

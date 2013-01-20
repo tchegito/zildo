@@ -28,6 +28,7 @@ public class ZSpriteLibrary {
 			case DEATH_ANIM5:
 			case DEATH_ANIM6:
 			case DEATH_ANIM7:
+			case HEART:
 			case DROP_SMALL:
 			case DROP_MEDIUM:
 			case SPARK_LEFT:
