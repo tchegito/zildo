@@ -456,8 +456,6 @@ public class Area implements EasySerializable {
 			} else {
 				boolean multiPlayer = EngineZildo.game.multiPlayer;
 				PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-				// To remove :::
-				sprMgt.spawnSpriteGeneric(SpriteAnimation.HEART, p.x + 3, p.y + 5, p_destroy ? 0 : 1, null, null);
 
 				if (Hasard.lanceDes(Hasard.hazardBushes_Arrow) && (multiPlayer || zildo.hasItem(ItemKind.BOW))) {
 					sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 0, null, null);
