@@ -222,8 +222,10 @@ public class SpriteManagement extends SpriteStore {
 					element.setVx(0.2f * (j - 1));
 					element.setVz((float) (-0.5f + Math.random() * 3 * 0.1f));
 					element.setAx(-0.05f * element.getVx());
-					element.setNSpr(ElementDescription.LEAF1.ordinal()
-							+ (j % 2));
+					element.setNSpr(ElementDescription.LEAF_GREEN.ordinal());
+					if ( (j%2) == 0) {
+						element.reverse = Reverse.HORIZONTAL;
+					}
 					spawnSprite(element);
 					// Peut-être qu'un diamant va apparaitre !
 				}
@@ -275,13 +277,14 @@ public class SpriteManagement extends SpriteStore {
 					element.setX(x-3);
 					element.setY(y);
 					element.setZ(0);
-					element.setSprModel(ElementDescription.HEART);
+					element.setSprModel(ElementDescription.DROP_FLOOR);
 				} else {
 					element.setZ(11.0f);
-					element.setVx(0.15f);
+					//element.setVx(0.15f);
 					element.setVz(-0.04f);
-					element.setAx(-0.01f);
-					element.setSprModel(ElementDescription.HEART_LEFT);
+					element.setAz(-0.01f);
+					//element.setAx(-0.01f);
+					element.setSprModel(ElementDescription.DROP_SMALL);
 				}
 				spawnSprite(element);
 				break;
