@@ -20,6 +20,7 @@
 
 package zildo.monde.sprites.elements;
 
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -61,30 +62,34 @@ public class ElementGoodies extends Element {
 		}
 		
 		ElementDescription spr=ElementDescription.fromInt(nSpr);
-		if (spr == ElementDescription.HEART_LEFT) {
+		if (spr == ElementDescription.DROP_SMALL || spr == ElementDescription.DROP_MEDIUM) {
 			// Coeur voletant vers le sol
 			if (vx<=-0.15) {
 				ax=0.01f;
+				reverse = Reverse.NOTHING;
 				addSpr=0;	// Coeur tourné vers la gauche
 			} else if (vx>=0.15) {
 				ax=-0.01f;
+				reverse = Reverse.HORIZONTAL;
 				addSpr=1;	// Coeur tourné vers la droite
 			}
 			if (z<=4) {
-				nSpr=10;
+				nSpr=ElementDescription.DROP_FLOOR.ordinal();
 				addSpr=0;
 				vx=0;
 				ax=0;
 				y=y+3;
+			} else if (z<=8) {
+				nSpr = ElementDescription.DROP_MEDIUM.ordinal();
 			}
 		}
 		
 		
-		if (spr==ElementDescription.HEART || spr.isMoney()) {
+		if (spr==ElementDescription.DROP_FLOOR || spr.isMoney()) {
 			// Il s'agit d'un diamant ou du coeur (10)
 			int eff=EngineZildo.compteur_animation % 100;
 			// 1) brillance
-			if (eff<33 && spr!=ElementDescription.HEART) {		// Les diamants brillent
+			if (eff<33 && spr!=ElementDescription.DROP_FLOOR) {		// Les diamants brillent
 				addSpr=(eff / 10) % 3;
 			}
 			// 2) s'arrête sur le sol

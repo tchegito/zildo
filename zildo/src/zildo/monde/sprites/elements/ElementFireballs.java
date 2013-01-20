@@ -24,7 +24,7 @@ public class ElementFireballs extends ElementChained {
 	
 	public class ElementFireball extends ElementThrown {
 
-		int count;
+		int counter;
 		
 	    public ElementFireball(Angle p_angle, int p_startX, int p_startY,
 		    int p_startZ, float p_speed, Perso p_shooter) {
@@ -35,8 +35,8 @@ public class ElementFireballs extends ElementChained {
 	    
 	    @Override
 	    public void animate() {
-	    	count++;
-	    	if (count % 4 == 0) {
+	    	counter++;
+	    	if (counter % 4 == 0) {
 	    		rotation = Rotation.fromInt((rotation.value + 1) % 4);
 	    	}
 	        super.animate();

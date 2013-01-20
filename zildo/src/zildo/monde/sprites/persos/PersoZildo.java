@@ -890,8 +890,9 @@ public class PersoZildo extends Perso {
 				case REDMONEY1:
 					setMoney(money + 20);
 					break;
-				case HEART:
-				case HEART_LEFT:
+				case DROP_FLOOR:
+				case DROP_SMALL:
+				case DROP_MEDIUM:
 					if (pv < maxpv) {
 						pv = Math.min(pv+2, maxpv);
 					}
@@ -925,11 +926,12 @@ public class PersoZildo extends Perso {
 					toPlay = BankSound.ZildoKey;
 					break;
 				case HEART_FRAGMENT:
-					toPlay = BankSound.ZildoCoeur;
+					toPlay = BankSound.ZildoMoon;
 					heartQuarter++;
 					break;
-				case HEART:
-				case HEART_LEFT:
+				case DROP_FLOOR:
+				case DROP_SMALL:
+				case DROP_MEDIUM:
 				default:
 					toPlay = BankSound.ZildoRecupCoeur;
 					break;

@@ -42,7 +42,9 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(0, 28, 12, 6),
 				// Feuilles
 				new Zone(16, 13, 8, 8),
-				new Zone(16, 21, 8, 8),
+				new Zone(32, 9, 7, 9),	// Drop on the floor
+				//new Zone(32, 7, 8, 11),	
+				//new Zone(16, 21, 8, 8),
 				// Fumée
 				new Zone(0, 34, 14, 14),
 				new Zone(14, 34, 12, 12),
@@ -93,9 +95,11 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(61, 24, 22, 22),
 				new Zone(83, 0, 28, 28),
 
-				// Coeur qui vole
-				new Zone(20, 4, 8, 7),
-				new Zone(24, 11, 8, 7),
+				// Falling drop (ex: Coeur qui vole)
+				new Zone(41, 10, 3, 3),
+				new Zone(40, 0, 3, 5),
+				//new Zone(20, 4, 8, 7),
+				//new Zone(24, 11, 8, 7),
 
 				// Boule en pierre,ombre et éclats (42)
 				new Zone(16, 46, 8, 8),
@@ -257,6 +261,7 @@ public class ElementsPlus extends SpriteBanque {
 				// Back on "objets.png"
 				new Zone(44, 85, 15, 10),	// MOON_FRAGMENT2
 				new Zone(0, 85, 16, 16),	// NECKLACE
+				new Zone(94, 130, 8, 12)	// Blue effect (take drop)
 
 		};
 		

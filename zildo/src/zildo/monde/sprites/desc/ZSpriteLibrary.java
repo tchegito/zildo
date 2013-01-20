@@ -19,7 +19,6 @@ public class ZSpriteLibrary {
 			case SHADOW_LARGE:
 			case SHADOW_MINUS:
 			case SHADOW_SMALL:
-			case LEAF2:
 			case SMOKE_SMALL:
 			case TINY_ROCK2:
 			case DEATH_ANIM1:
@@ -29,8 +28,8 @@ public class ZSpriteLibrary {
 			case DEATH_ANIM5:
 			case DEATH_ANIM6:
 			case DEATH_ANIM7:
-			case HEART_LEFT:
-			case HEART_RIGHT:
+			case DROP_SMALL:
+			case DROP_MEDIUM:
 			case SPARK_LEFT:
 			case SPARK_RIGHT:
 			case SPARK_UPLEFT:
