@@ -88,8 +88,11 @@ public enum MouvementPerso {
 		return this == HEN ||
 		this == VOLESPECTRE ||
 		this == ELECTRIC ||
-		this == SQUIRREL ||
-		this == CAT;
+		this == SQUIRREL;
+	}
+	
+	public boolean isOnlyHorizontal() {
+		return this == CAT;
 	}
 	
 	/**

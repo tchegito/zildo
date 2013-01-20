@@ -707,6 +707,7 @@ public class MapManagement {
 		//EngineZildo.spriteManagement.spawnSprite(new ElementStars(
 		//		StarKind.TRAIL, 150, 360));
 
+		points.add(new Point(231+450+30-20, 360+130-50-150 +250));	// for foretg2
 		Point p = new Point(points.get(n));
 		while (collide(p.x, p.y, null)) {
 			p.x += 16;

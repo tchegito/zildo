@@ -58,11 +58,17 @@ public class CompositeElement {
 	Shape shape;
 	
 	int gapX, gapY;	// Space in pixels between middle and element
+	int zoom;
+	float startX, startY;
 	
 	public CompositeElement(Element p_refElement) {
 		composite=new ArrayList<Element>();
 		composite.add(p_refElement);
 		shape=null;
+		zoom = p_refElement.zoom;
+		// Save initial location to keep moving
+		startX = p_refElement.x;
+		startY = p_refElement.y;
 	}
 	
 	/**
@@ -78,19 +84,22 @@ public class CompositeElement {
 		if (composite.size() != 1) {
 			throw new RuntimeException("Impossible to transform to square : we need just one element at this time.");
 		}
+		
 		Element refElement=composite.get(0);
 		SpriteModel model=refElement.getSprModel();
-		refElement.x-=p_gapX + model.getTaille_x() / 2;
-		refElement.y-=p_gapY + model.getTaille_y() / 2;
+		int mx = (int) (model.getTaille_x() * (zoom / 255f));
+		int my = (int) (model.getTaille_y() * (zoom / 255f));
+		refElement.x-=p_gapX + mx / 2;
+		refElement.y-=p_gapY + my / 2;
 		Element copyRight=new Element(refElement);
 		Element copyBottomRight=new Element(refElement);
 		Element copyBottomLeft=new Element(refElement);
 		
 		// Adjust locations
-		copyRight.x+=2*p_gapX + model.getTaille_x();
-		copyBottomRight.x+=2*p_gapX + model.getTaille_x() + p_gapX;
-		copyBottomRight.y+=2*p_gapY + model.getTaille_y() + p_gapY;
-		copyBottomLeft.y+=2*p_gapY + model.getTaille_y() + p_gapY;
+		copyRight.x+=2*p_gapX + mx;
+		copyBottomRight.x+=2*p_gapX + mx + p_gapX;
+		copyBottomRight.y+=2*p_gapY + my + p_gapY;
+		copyBottomLeft.y+=2*p_gapY + my + p_gapY;
 		
 		// Reverse
 		copyRight.reverse=Reverse.HORIZONTAL;
@@ -250,5 +259,63 @@ public class CompositeElement {
      */
     public Element getRefElement() {
     	return composite.get(0);
+    }
+    
+    /**
+     * Set the zoom factor for every element of the composition.
+     * @param p_zoomFactor 0..255 : 255=full size
+     */
+    public void setZoom(int p_zoomFactor) {
+    	for (Element elmt : composite) {
+    		elmt.zoom = p_zoomFactor;
+    	}
+    	
+		Element refElement=composite.get(0);
+		SpriteModel model=refElement.getSprModel();
+		int m1x = (int) (model.getTaille_x() * (zoom / 255f));
+		int m1y = (int) (model.getTaille_y() * (zoom / 255f));
+		int m2x = (int) (model.getTaille_x() * (p_zoomFactor / 255f));
+		int m2y = (int) (model.getTaille_y() * (p_zoomFactor / 255f));
+
+		int shiftX=m2x - m1x;
+		int shiftY=m2y - m1y;
+		
+		int n=0;
+		for (Element elmt : composite) {
+			elmt.x+=shiftX * (squareShiftX[n] + 0.5f);	// +0.5f to keep junction centered
+			elmt.y+=shiftY * (squareShiftY[n] + 0.5f);
+			elmt.setAjustedX((int) elmt.x);
+			elmt.setAjustedY((int) elmt.y);
+			n++;
+		}
+		
+    	zoom = p_zoomFactor;
+    }
+    
+    /**
+     * Focus on the given element. Useful for (de)zooming.
+     * @param p_focused
+     */
+    public void focus(Element p_focused) {
+    	float diffX = p_focused.x - startX;
+    	float diffY = p_focused.y - startY;
+    	for (Element e : composite) {
+    		e.x += diffX;
+    		e.y += diffY;
+			e.setAjustedX((int) e.x);
+			e.setAjustedY((int) e.y);
+    	}
+    	startX = p_focused.x;
+    	startY = p_focused.y;
+    }
+    
+    /**
+     * Set the alpha channel for each element.
+     * @param p_alpha
+     */
+    public void setAlpha(int p_alpha) {
+    	for (Element elmt : composite) {
+    		elmt.setAlpha(p_alpha);
+    	}
     }
 }

@@ -169,7 +169,7 @@ public class PathFinder {
 			if (j%2==0 || mvt.isDiagonal() )
 				target.x+= (16*Math.random()*j) - 8*j;
 	
-			if (j%2==1 || mvt.isDiagonal() )
+			if (!mvt.isOnlyHorizontal() && (j%2==1 || mvt.isDiagonal()) )
 				target.y+= (16*Math.random()*j) - 8*j;
 	
 			j--; // On diminue le rayon jusqu'à être dans la zone
