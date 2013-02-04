@@ -313,8 +313,7 @@ public class SpritePanel extends JPanel {
 			if (!updatingUI && sel != null) {
 				Component comp = (Component) actionevent.getSource();
 				if (comp == spriteType) {
-					String val = (String) spriteType.getSelectedItem();
-					SpriteDescription desc = ZUtils.getField(val, spriteLib);
+					SpriteDescription desc = (SpriteDescription) spriteType.getSelectedItem();
 					entity.setDesc(desc);
 				} else if (comp == rotation) {
 					Rotation rot = (Rotation) rotation.getSelectedItem();
