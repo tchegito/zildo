@@ -1,5 +1,7 @@
 package com.zildo;
 
+import java.util.Locale;
+
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.PlatformDependentPlugin;
@@ -73,7 +75,11 @@ public class ZildoActivity extends Activity {
         if (clientThread == null) {
         	clientThread = new ClientThread();
 	    	// Display splash screen
-	    	view.setBackgroundResource(R.drawable.splashscreen480320);
+        	if ("fr".equals(Locale.getDefault().getLanguage())) {
+        		view.setBackgroundResource(R.drawable.splash480320_fr);
+        	} else {
+        		view.setBackgroundResource(R.drawable.splash480320_en);
+        	}
         }
 
         // Initialize platform dependent
