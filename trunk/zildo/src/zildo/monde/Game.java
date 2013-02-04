@@ -128,9 +128,15 @@ public class Game implements EasySerializable {
         
         // 6: map start location
         Point loc = EngineZildo.mapManagement.getStartLocation();
+        if (loc == null) {	// When zildo has been placed by script (ex: intro)
+        	loc = new Point(zildo.getX(), zildo.getY());
+        }
         Angle a = EngineZildo.mapManagement.getStartAngle();
-        p_buffer.put((int) loc.x);
-        p_buffer.put((int) loc.y);
+        if (a == null) {
+        	a = Angle.SUD;
+        }
+        p_buffer.put(loc.x);
+        p_buffer.put(loc.y);
         p_buffer.put((byte) a.value);
 	}
 
