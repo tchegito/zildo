@@ -887,7 +887,7 @@ public class PersoZildo extends Perso {
 					setMoney(money + 1);
 					break;
 				case BLUEMONEY1:
-					setMoney(money + 5);
+					setMoney(money + 3);
 					break;
 				case REDMONEY1:
 					setMoney(money + 20);
