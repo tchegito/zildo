@@ -671,9 +671,9 @@ public class GUIDisplay {
 		int y = startY + (p_menu.selected + 2) * sc.TEXTER_MENU_SIZEY;
 		alpha += 0.1f;
 		int wave = (int) (10.0f * Math.sin(alpha));
-		menuSequence.addSprite(FontDescription.GUI_HEART, 40 + wave, y + 2);
+		menuSequence.addSprite(FontDescription.GUI_HEART, 40 + wave, y + 5);
 		menuSequence.addSprite(FontDescription.GUI_HEART, Zildo.viewPortX
-				- 40 - wave, y + 2, Reverse.HORIZONTAL);
+				- 40 - wave, y + 5, Reverse.HORIZONTAL);
 	}
 
 	public void endMenu() {
@@ -720,6 +720,7 @@ public class GUIDisplay {
 		
 		Ortho ortho = ClientEngineZildo.ortho;
 		// Draw frame under GUI
+		/*
 		ortho.enableBlend();
 		ortho.initDrawBox(false);
 		ortho.boxOpti(0, GUI_Y - 4, Zildo.viewPortX, 17, 0, new Vector4f(0.4f, 0.2f, 0.1f, 0.7f));
@@ -734,7 +735,7 @@ public class GUIDisplay {
 
 		ortho.endDraw();
 		ortho.disableBlend();
-
+*/
 		int i;
 		// Life
 		//guiSpritesSequence.addSprite(lifeGui, 207, 10);
@@ -794,7 +795,15 @@ public class GUIDisplay {
 					.get_sprite(desc.getNSpr());
 			int sx = spr.getTaille_x();
 			int sy = spr.getTaille_y();
-			guiSpritesSequence.addSprite(desc, WEAPON_X + 4-(sx >> 1), 8-(sy >> 1));
+			guiSpritesSequence.addSprite(desc, WEAPON_X + 4-(sx >> 1), GUI_Y + 4 -(sy >> 1));
+			
+			if (weapon.kind == ItemKind.NECKLACE) {
+				// Display number of moon fragments
+				int nQuarter = zildo.getHeartQuarter();
+				if (nQuarter > 0 && nQuarter < 10) {
+					displayNumber(nQuarter, 1, WEAPON_X + 6, GUI_Y + 6);
+				}
+			}
 		}
 		
 		// virtual pad

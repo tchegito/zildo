@@ -37,8 +37,8 @@ public class Fontes extends SpriteBanque {
 				new Zone(0, 0, 10, 14),
 				new Zone(12, 0, 10, 14),
 				// Les icones de l'interface
-				new Zone(0, 87, 7, 7),	// Blue drop
-				new Zone(7, 87, 7, 7),	// Empty drop
+				new Zone(0, 86, 7, 9),	// Blue drop
+				new Zone(7, 86, 7, 9),	// Empty drop
 				new Zone(14, 87, 9, 8),	// Coin
 				new Zone(24, 84, 7, 11),	// Dynamite
 				new Zone(31, 85, 10, 9),	// Arrow
@@ -50,7 +50,7 @@ public class Fontes extends SpriteBanque {
 				new Zone(42, 117, 7, 9), new Zone(49, 117, 7, 9),
 				new Zone(56, 117, 7, 9), new Zone(63, 117, 7, 9),
 				// Vie
-				new Zone(0, 102, 44, 7), new Zone(43, 87, 7, 7),	// Small drop
+				new Zone(0, 102, 44, 7), new Zone(43, 86, 7, 9),	// Small drop
 				new Zone(0, 109, 44, 7),
 				
 				// Jauge etc...
