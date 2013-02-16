@@ -757,6 +757,9 @@ public class PersoNJ extends Perso {
 				if (Hasard.lanceDes(8)) {
 					break;
 				}
+			case SQUIRREL:
+				setAttente(5 + Hasard.rand(15));
+				break;
 			case HEN:
 				setAttente(10 + Hasard.rand(20));
 				break;

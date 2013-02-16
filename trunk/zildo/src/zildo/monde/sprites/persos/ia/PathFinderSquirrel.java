@@ -40,7 +40,7 @@ public class PathFinderSquirrel extends PathFinder {
    
     @Override
     public void determineDestination() {
-	    if (mobile.z == 0) {
+	    if (mobile.z == 0 && mobile.getAttente() == 0) {
 	    	if (nbJump == 0) {
 	    		alpha+=Math.random() - 0.5f;
 	    		correctAlpha();
@@ -56,6 +56,7 @@ public class PathFinderSquirrel extends PathFinder {
 	    		correctAlpha();
 	        } else {
 	        	setTarget(tempTarget);
+	        	//mobile.setAttente(20);
 	        }
 	    }
     }

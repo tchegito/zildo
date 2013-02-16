@@ -1268,7 +1268,7 @@ public class PersoZildo extends Perso {
 	}
 	
 	public void gainHP() {
-		heartQuarter = 0;
+		heartQuarter -= 2;
 		maxpv+=2;
 		pv = maxpv;
 	}
