@@ -1,6 +1,6 @@
 /**
- * Legend of Zildo
- * Copyright (C) 2006-2012 Evariste Boussaton
+ * The Land of Alembrum
+ * Copyright (C) 2006-2013 Evariste Boussaton
  * 
  *
  * This program is free software: you can redistribute it and/or modify
@@ -71,7 +71,7 @@ public class ZSExpression {
 		} else if (questName.startsWith("moon")) {
 			int moonFragment=Integer.valueOf(questName.substring("moon".length()));
 			int currentFragmentNb = EngineZildo.persoManagement.getZildo().getHeartQuarter();
-			return currentFragmentNb == moonFragment;
+			return currentFragmentNb >= moonFragment;
 		}
 		boolean result = EngineZildo.scriptManagement.isQuestOver(questName);
 		if (!done) {

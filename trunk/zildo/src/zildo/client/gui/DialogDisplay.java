@@ -1,6 +1,6 @@
 /**
- * Legend of Zildo
- * Copyright (C) 2006-2012 Evariste Boussaton
+ * The Land of Alembrum
+ * Copyright (C) 2006-2013 Evariste Boussaton
  * 
  *
  * This program is free software: you can redistribute it and/or modify
@@ -119,10 +119,13 @@ public class DialogDisplay {
 			}
 		} else if (!context.visibleMessageDisplay ) {
 			// Draw sentences slowly (word are appearing one after another)
+			
 			context.pos++;
+			/*
 			if (context.pos % 3 ==0 && (Math.random()*10)>7) {
 				ClientEngineZildo.soundPlay.playSoundFX(BankSound.AfficheTexte);
 			}
+			*/
 			guiDisplay.displayTextParts(context.numToScroll!=0);
 		}
 	}
@@ -155,6 +158,7 @@ public class DialogDisplay {
 						if (!context.entireMessageDisplay) {
 							context.numToScroll=3;
 						} else {
+							ClientEngineZildo.soundPlay.playSoundFX(BankSound.AfficheTexteSuivant);
 						    if (actionDialog == CommandDialog.CONTINUE) {
 								launchDialog(p_sentence, actionDialog);
 								return false;

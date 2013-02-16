@@ -1,6 +1,6 @@
 /**
- * Legend of Zildo
- * Copyright (C) 2006-2012 Evariste Boussaton
+ * The Land of Alembrum
+ * Copyright (C) 2006-2013 Evariste Boussaton
  * 
  *
  * This program is free software: you can redistribute it and/or modify
@@ -869,7 +869,7 @@ public class PersoZildo extends Perso {
 		if (p_money != 0) { // Zildo gets some money
 			setMoney(money + p_money);
 			if (p_money > 0) {
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupArgent, this);
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupItem, this);
 			} else {
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoGagneArgent, this);
 			}
@@ -919,11 +919,13 @@ public class PersoZildo extends Perso {
 				// Sound
 				BankSound toPlay = null;
 				switch (d) {
+				/*
 				case GREENMONEY1:
 				case BLUEMONEY1:
 				case REDMONEY1:
-					toPlay = BankSound.ZildoRecupArgent;
+					toPlay = BankSound.ZildoItem;
 					break;
+					*/
 				case QUAD1:
 					toPlay = BankSound.QuadDamage;
 					break;
@@ -937,8 +939,10 @@ public class PersoZildo extends Perso {
 				case DROP_FLOOR:
 				case DROP_SMALL:
 				case DROP_MEDIUM:
-				default:
 					toPlay = BankSound.ZildoRecupCoeur;
+					break;
+				default:
+					toPlay = BankSound.ZildoRecupItem;
 					break;
 				}
 				if (toPlay != null) {	// Isn't it obvious ?
@@ -1271,6 +1275,5 @@ public class PersoZildo extends Perso {
 	
 	public void gainHPWithNecklace() {
 		gainHP();
-		setMoney(getMoney()-50);
 	}
 }

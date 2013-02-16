@@ -416,6 +416,7 @@
 		    <location name="d4m3"/>
 		</trigger>	    
 		<action>
+		    <take value="-50"/>
 		    <exec script="moonfusion"/>
 		    <music name="Village"/>
 		</action>

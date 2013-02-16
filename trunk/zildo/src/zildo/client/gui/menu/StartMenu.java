@@ -1,6 +1,6 @@
 /**
- * Legend of Zildo
- * Copyright (C) 2006-2012 Evariste Boussaton
+ * The Land of Alembrum
+ * Copyright (C) 2006-2013 Evariste Boussaton
  * 
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,7 @@ import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
+import zildo.client.stage.CreditStage;
 import zildo.client.stage.MultiPlayer;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.net.ServerInfo;
@@ -51,7 +52,7 @@ public class StartMenu extends Menu {
 		ClientEngineZildo.soundPlay.playMusic(BankMusic.Triste);
         ClientEngineZildo.filterCommand.fadeIn(FilterEffect.FADE);
 
-        ItemMenu itemSinglePlayer = new ItemMenu("m1.single", null) {
+        ItemMenu itemSinglePlayer = new ItemMenu("m1.single") {
             @Override
             public void run() {
     			client.handleMenu(new SinglePlayerMenu(currentMenu));
@@ -139,6 +140,13 @@ public class StartMenu extends Menu {
         	}
         };
         
+        ItemMenu itemCredits=new ItemMenu("m1.credits") {
+        	@Override
+			public void run() {
+        		client.askStage(new CreditStage());
+        	}
+        };
+        
         ItemMenu itemQuit=new ItemMenu("m1.quit", BankSound.MenuSelectGame) {
         	@Override
 			public void run() {
@@ -146,7 +154,7 @@ public class StartMenu extends Menu {
         	}
         };
         
-        setMenu(itemSinglePlayer, itemMultiPlayer, itemHof, itemQuit);
+        setMenu(itemSinglePlayer, itemMultiPlayer, itemHof, itemCredits, itemQuit);
         setTitle("m1.title");
 	}
 }

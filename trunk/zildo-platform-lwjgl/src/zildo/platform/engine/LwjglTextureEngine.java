@@ -1,6 +1,6 @@
 /**
- * Legend of Zildo
- * Copyright (C) 2006-2012 Evariste Boussaton
+ * The Land of Alembrum
+ * Copyright (C) 2006-2013 Evariste Boussaton
  * 
  *
  * This program is free software: you can redistribute it and/or modify
@@ -156,7 +156,7 @@ public class LwjglTextureEngine extends TextureEngine {
 	   		}
     	}
     	try {
-			ImageIO.write(bufImage, "png", new File(filename+".png"));
+			ImageIO.write(bufImage, "png", new File("c:\\kikoo\\"+filename+".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
