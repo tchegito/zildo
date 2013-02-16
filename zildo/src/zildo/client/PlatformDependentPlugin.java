@@ -83,7 +83,7 @@ public class PlatformDependentPlugin {
     public void init(boolean p_awt) {
     	
     	if (currentPlugin == KnownPlugin.Android) {
-    		fileUtil = injector.createSingleton("com.zildo.AndroidFileUtil");
+    		fileUtil = injector.createSingleton("com.alembrum.AndroidFileUtil");
     	}
         // Look for existing stuff in the class loader and create all needed singletons
     	if (!p_awt) {

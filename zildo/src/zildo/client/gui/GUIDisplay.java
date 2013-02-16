@@ -1,6 +1,6 @@
 /**
- * Legend of Zildo
- * Copyright (C) 2006-2012 Evariste Boussaton
+ * The Land of Alembrum
+ * Copyright (C) 2006-2013 Evariste Boussaton
  * 
  *
  * This program is free software: you can redistribute it and/or modify
@@ -548,12 +548,12 @@ public class GUIDisplay {
 						entity.setVisible(false);
 					} else if (entity.getScrY() < (sc.TEXTER_BOTTOM_Y)) {
 						entity.setVisible(true);
-						if (i == dialogContext.sentence.length()) {
+						if (i == dialogContext.sentence.length() && !dialogContext.entireMessageDisplay) {
 							dialogContext.entireMessageDisplay = true;
 							ClientEngineZildo.soundPlay
 									.playSoundFX(BankSound.AfficheTexteFin);
 						}
-					} else {
+					} else if (!dialogContext.visibleMessageDisplay) {
 						dialogContext.visibleMessageDisplay = true;
 						// If the text has another line to scroll, don't play
 						// sound

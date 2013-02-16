@@ -1,6 +1,6 @@
 /**
- * Legend of Zildo
- * Copyright (C) 2006-2012 Evariste Boussaton
+ * The Land of Alembrum
+ * Copyright (C) 2006-2013 Evariste Boussaton
  * 
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@ public enum BankSound implements AudioBank {
 	ZildoGadou("vase"),
 	ZildoRecupVie("vie"),
 	ZildoRecupCoeur("coeur"),
-	ZildoRecupArgent("argent3"),
+	ZildoRecupItem("item"),
 	ZildoGagneArgent("argent"),
 	ZildoOuvreCoffre("coffre"),
 	ZildoCogne("choc"),
@@ -44,7 +44,7 @@ public enum BankSound implements AudioBank {
 	ZildoMontePeu("escalhaut"),
 	ZildoDescendPeu("escalbas"),
 	ZildoTrouve("trouve"),
-	ZildoMoon("heartPiece"),
+	ZildoMoon("moonPiece"),
 	ZildoSecret("secret"),
 	ZildoKey("getKey"),
 	ZildoUnlock("doorUnlock"),
@@ -73,14 +73,14 @@ public enum BankSound implements AudioBank {
 	CassePierre("brise"),
 	OuvrePorte("porte"),
 
-	AfficheTexte("texte1"),
+	AfficheTexteSuivant("pageturn"),
 	AfficheTexteFin("textefin"),
 
 	FlecheTir("tire"),
 	FlechePlante("plante"),
 	
 	Boomerang("boomeran"),
-	BoomerangTape("argent2"),
+	BoomerangTape("impact"),
 	
 	MenuIn("menu1"),
 	MenuOut("menu2"),
