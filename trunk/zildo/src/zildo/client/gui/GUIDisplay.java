@@ -38,7 +38,6 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
-import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.ItemMenu;
@@ -718,7 +717,7 @@ public class GUIDisplay {
 		final int WEAPON_X = 8;
 		final int DROPS_X = 248;
 		
-		Ortho ortho = ClientEngineZildo.ortho;
+		//Ortho ortho = ClientEngineZildo.ortho;
 		// Draw frame under GUI
 		/*
 		ortho.enableBlend();
