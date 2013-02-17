@@ -48,22 +48,41 @@ public class PersoHen extends PersoShadowed {
             // In Zildo's arms
             if (countSound == 0) {
                 // Play a hen random sound
-                BankSound snd = BankSound.Poule1;
+                BankSound snd = BankSound.Poule2;
                 if (Hasard.lanceDes(5)) {
-                    snd = BankSound.Poule2;
+                    //snd = BankSound.Poule2;
                 }
-                EngineZildo.soundManagement.broadcastSound(snd, new Point(x, y));
+                EngineZildo.soundManagement.broadcastSound(snd, this);
                 countSound = 24;
-            } else {
-            	countSound--;
             }
             info = PersoInfo.NEUTRAL;
         } else {
             // Hen is free
             info = PersoInfo.SHOOTABLE_NEUTRAL;
             shadow.y+=2;
+            
+            if (countSound == 0 && Hasard.lanceDes(8)) {
+            	int h = Hasard.rand(13);
+                BankSound snd = BankSound.Poule1;
+            	if (h < 3) {
+            		snd = BankSound.Poule2;
+            	} else if (h < 6) {
+            		snd = BankSound.Poule3;
+            	} else if (h < 9) {
+            		snd = BankSound.Poule4;
+            	} else {
+            		snd = BankSound.Poule5;
+            	}
+            	snd = getSound();
+                countSound = 150 + Hasard.rand(100);
+                EngineZildo.soundManagement.broadcastSound(snd, this);
+            }
         }
-        
+
+        if (countSound != 0) {
+        	countSound--;
+        }
+
     }
     
     /* (non-Javadoc)
@@ -84,5 +103,17 @@ public class PersoHen extends PersoShadowed {
         this.setSpecialEffect(EngineFX.PERSO_HURT);
 
         EngineZildo.soundManagement.broadcastSound(BankSound.MonstreTouche2, this);
+    }
+    
+    static BankSound currentSnd = BankSound.Poule1;
+    private static BankSound out = BankSound.Poule5.next();
+    
+    static final BankSound getSound() {
+        BankSound next = currentSnd.next();
+        if (next == out) {
+        	next = BankSound.Poule1;
+        }
+        currentSnd = next;
+        return next;
     }
 }

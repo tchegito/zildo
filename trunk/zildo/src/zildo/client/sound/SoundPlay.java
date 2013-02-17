@@ -31,6 +31,7 @@ import zildo.fwk.opengl.Sound;
 import zildo.fwk.opengl.SoundEngine;
 import zildo.monde.WaitingSound;
 import zildo.monde.map.Area;
+import zildo.monde.util.Point;
 
 /**
  * SoundPlay : common engine for all platforms.
@@ -115,7 +116,7 @@ public class SoundPlay {
 	// Play sound named 'soundName' from sound's tab
 	// If the given sound name isn't found, do nothing.
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void playSoundFX(AudioBank snd) {
+	public void playSoundFX(AudioBank snd, float x, float y) {
 		// Play desired sound and exit
 		Ambient ambient = ClientEngineZildo.ambient;
 		Sound sound = tabSounds.get(snd);
@@ -127,10 +128,28 @@ public class SoundPlay {
 				}
 				ambient.setCurrentMusic((BankMusic) snd);
 			}
-			sound.play(); // 0,0,-500);
+			if (x == 0f && y == 0f) {
+				sound.play();
+			} else {
+/*
+ * 	final static Pointf left = new Pointf(-1f, 0f);
+	final static Pointf right = new Pointf(1f, 0f);
+	
+				float distLeft = left.distance(x, y);
+				float distRight = right.distance(x, y);
+				float volumeLeft = Math.max(1 - 0.1f * distLeft * distLeft, 0f);
+				float volumeRight = Math.max(1 - 0.1f * distRight * distRight, 0f);
+				*/
+				//System.out.println("play at "+x+","+y+" ============>      "+volumeLeft+" - "+volumeRight);
+				sound.playAt(x, y); // 0,0,-500);
+			}
 		}
 	}
 
+	public void playSoundFX(AudioBank snd) {
+		playSoundFX(snd, 0f, 0f);
+	}
+	
 	/**
 	 * Stop given sound (useful for music)
 	 * 
@@ -144,6 +163,12 @@ public class SoundPlay {
 	}
 
 	public void playSounds(List<WaitingSound> p_sounds) {
+		Point camera = ClientEngineZildo.mapDisplay.getCamera();
+		Point listeningPoint = new Point(Zildo.viewPortX >> 1, Zildo.viewPortY >> 1);	// / 2 (middle)
+		if (camera != null) {
+			listeningPoint.x = camera.x + listeningPoint.x;
+			listeningPoint.y = camera.y + listeningPoint.y;
+		}
 		for (WaitingSound sound : p_sounds) {
 			if (sound.broadcast || sound.client == null) {
 				if (!sound.isSoundFX && sound.name == null) {
@@ -153,7 +178,13 @@ public class SoundPlay {
 						currentMusic = (BankMusic) sound.name;
 					}
 					if (sound.isSoundFX || musicEnabled) {
-						playSoundFX(sound.name);
+						float dx = 0f;
+						float dy = 0f;
+						if (sound.location != null) {
+							dx = (sound.location.x - listeningPoint.x) / 16f / 16f;
+							dy = (sound.location.y - listeningPoint.y) / 16f / 8f;
+						}
+						playSoundFX(sound.name, dx, dy);
 					}
 				}
 			}

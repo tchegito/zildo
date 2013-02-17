@@ -591,8 +591,7 @@ public class Element extends SpriteEntity {
 			vx = -0.5f;
 			break;
 		}
-		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPousse,
-				new Point(x, y));
+		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPousse, this);
 		az = 1.0f;
 		// One push only
 		pushable = false;

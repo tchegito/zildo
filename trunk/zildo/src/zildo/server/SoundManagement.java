@@ -74,7 +74,7 @@ public class SoundManagement {
 	 * @param p_source
 	 */
 	public void broadcastSound(AudioBank p_soundName, SpriteEntity p_source) {
-	    addSound(p_soundName, (int) p_source.x / 16, (int) p_source.y / 16, true, null);
+	    addSound(p_soundName, (int) p_source.x, (int) p_source.y, true, null);
 	}
 	
 	/**

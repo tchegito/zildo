@@ -83,6 +83,15 @@ public class LwjglSound extends Sound {
 	}
 
 	@Override
+	public void playAt(float x, float y) {
+		if (music) {
+			play();
+		} else {
+			snd.playAsSoundEffect(1.0f, 1.0f, false, x, y, 0);
+		}
+	}
+	
+	@Override
 	public void stop() {
 		snd.stop();
 	}
