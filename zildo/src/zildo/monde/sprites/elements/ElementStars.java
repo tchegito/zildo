@@ -66,8 +66,7 @@ public class ElementStars extends ElementChained {
 		visible = false;
 
 		if (kind == StarKind.CIRCLE) {
-			EngineZildo.soundManagement.broadcastSound(BankSound.Sort,
-					new Point(p_x, p_y));
+			EngineZildo.soundManagement.broadcastSound(BankSound.Sort, this);
 		}
 	}
 

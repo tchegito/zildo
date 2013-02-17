@@ -64,8 +64,11 @@ public enum BankSound implements AudioBank {
 	MonstreTrouve("alerte"),
 	MonstreTire("tire2"),
 	
-	Poule1("poule1"),
-	Poule2("poule2"),
+	Poule1("poulea1"),
+	Poule2("poulea2"),
+	Poule3("poulea3"),
+	Poule4("poulea4"),
+	Poule5("poulea5"),
 	
 	Bee("bee"),	// repeat
 	
@@ -118,5 +121,9 @@ public enum BankSound implements AudioBank {
 	
 	public String getSuffix() {
 		return "wav";
+	}
+	
+	public BankSound next() {
+		return values()[this.ordinal() + 1];
 	}
  }

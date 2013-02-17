@@ -42,4 +42,18 @@ public class Pointf {
 	public String toString() {
     	return "("+x+", "+y+")";
     }
+    
+    /**
+     * Returns the distance between the current point and a given one.
+     * @param p_other
+     * @return float
+     */
+    public float distance(float x2, float y2) {
+    	float c = x - x2;
+    	float d = y - y2;
+        c = c * c;
+        c += d * d;
+        return (float) Math.sqrt(c);
+    }
+
 }
