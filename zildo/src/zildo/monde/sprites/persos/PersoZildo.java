@@ -588,12 +588,8 @@ public class PersoZildo extends Perso {
 			break;
 
 		case BRAS_LEVES:
-			//yy++;
 			if (angle == Angle.EST) {
 				xx-=2;
-			}
-			if (angle.isVertical()) {
-				//yy++;
 			}
 			if (en_bras != null) {
 				en_bras.setX(xx + 1);
@@ -605,31 +601,17 @@ public class PersoZildo extends Perso {
 			 if (angle == Angle.OUEST){
 					xx-=1;
 				}
-			//yy += 3;
 			break;
 		case TIRE:
-			if (angle.isHorizontal()) {
-				yy += 1;
-			} else {
-				if (angle == Angle.NORD) {
-					yy += 3;
-				} else {
-					yy += 4;
+			if (nSpr == 36) {
+				if (angle == Angle.OUEST){
+					xx += 1;
+				} else if (angle == Angle.EST){
+					xx -= 2;
 				}
-			}
-			if (nSpr == 47) {
-				xx -= 3;
 			}
 			break;
 
-		case POUSSE:/*
-			yy += 1;
-			if (angle == Angle.NORD) {
-				yy += 1;
-			} else if (angle == Angle.SUD) {
-				yy += 3;
-			}*/
-			break;
 
 		case ATTAQUE_EPEE:
 
@@ -703,7 +685,6 @@ public class PersoZildo extends Perso {
 			}
 			break;
 		case MORT:
-			yy+=9;
 			xx-=2;
 			break;
 		}
