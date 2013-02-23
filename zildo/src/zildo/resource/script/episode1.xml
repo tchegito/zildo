@@ -1194,7 +1194,7 @@
 	    <animation type="CLOUD_FOG" pos="97,79"/>
 	    <pos who="vipere" pos="97,79"/>
 	    <wait value="30"/>
-	    <music name=""/>
+	    <music name="Triste"/>
 	    <take value="-20"/>
 	    <filter type="2"/>
 	    <wait value="20"/>
