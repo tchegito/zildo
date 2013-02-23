@@ -69,4 +69,14 @@ public class Hasard {
 	static public int rand(int max) {
 		return (int) (Math.random() * max);
 	}
+	
+	/**
+	 * Returns an integer x as start <= x <= end
+	 * @param start
+	 * @param end
+	 * @return int
+	 */
+	static public int rangeInt(int start, int end) {
+		return rand(end - start + 1) + start;
+	}
 }
