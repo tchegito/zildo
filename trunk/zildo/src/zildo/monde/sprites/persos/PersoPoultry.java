@@ -24,16 +24,44 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.EngineFX;
 import zildo.monde.Hasard;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.utils.MouvementZildo;
-import zildo.monde.util.Point;
+import zildo.monde.sprites.utils.SoundGetter;
+import zildo.monde.sprites.utils.SoundWrapper;
+import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
 
-public class PersoHen extends PersoShadowed {
+public class PersoPoultry extends PersoShadowed {
 
 	int countSound;
 	
-    public PersoHen(int x, int y) {
+	// Sound getters are static to avoid several poultries of same kind rendering same sound
+	// At the same time (ugly)
+	private static SoundGetter henFree = new SoundGetter(BankSound.Poule1, BankSound.Poule5);
+	private static SoundGetter henCaught = new SoundGetter(BankSound.Poule6, BankSound.Poule8, true);
+	private static SoundGetter duckFree = new SoundGetter(BankSound.Duck1, BankSound.Duck3);
+	private static SoundGetter duckCaught = new SoundGetter(BankSound.Duck4, BankSound.Duck6, true);
+	
+	// Wrappers allows each individual to switch between free and caught stance
+	SoundWrapper henSound = new SoundWrapper(henFree, henCaught);
+	SoundWrapper duckSound = new SoundWrapper(duckFree, duckCaught);
+	
+	SoundWrapper specSound;
+	
+    public PersoPoultry(PersoDescription desc, int x, int y) {
     	super(ElementDescription.SHADOW, 2);
+    	
+    	setDesc(desc);
+    	switch (desc) {
+    	case CANARD:
+    		specSound = duckSound;
+    		break;
+    	case POULE:
+    	default:
+    		specSound = henSound;
+    		break;
+    	}
     }
 
     @Override
@@ -47,11 +75,8 @@ public class PersoHen extends PersoShadowed {
         if (linkedPerso != null && !flying) {
             // In Zildo's arms
             if (countSound == 0) {
-                // Play a hen random sound
-                BankSound snd = BankSound.Poule2;
-                if (Hasard.lanceDes(5)) {
-                    //snd = BankSound.Poule2;
-                }
+                // Play a caught animal random sound
+                BankSound snd = specSound.getSound();
                 EngineZildo.soundManagement.broadcastSound(snd, this);
                 countSound = 24;
             }
@@ -62,18 +87,7 @@ public class PersoHen extends PersoShadowed {
             shadow.y+=2;
             
             if (countSound == 0 && Hasard.lanceDes(8)) {
-            	int h = Hasard.rand(13);
-                BankSound snd = BankSound.Poule1;
-            	if (h < 3) {
-            		snd = BankSound.Poule2;
-            	} else if (h < 6) {
-            		snd = BankSound.Poule3;
-            	} else if (h < 9) {
-            		snd = BankSound.Poule4;
-            	} else {
-            		snd = BankSound.Poule5;
-            	}
-            	snd = getSound();
+            	BankSound snd = specSound.getSound();
                 countSound = 150 + Hasard.rand(100);
                 EngineZildo.soundManagement.broadcastSound(snd, this);
             }
@@ -85,9 +99,6 @@ public class PersoHen extends PersoShadowed {
 
     }
     
-    /* (non-Javadoc)
-     * @see zildo.monde.sprites.elements.Element#fall()
-     */
     @Override
     public void fall() {
 		flying = false;
@@ -95,6 +106,18 @@ public class PersoHen extends PersoShadowed {
     }
 
     @Override
+	public void beingTaken() {
+    	specSound.switchTo(1);
+    	countSound = 0;
+	}
+    
+    @Override
+    public void beingThrown(float fromX, float fromY, Angle throwingAngle, Element thrower) {
+    	super.beingThrown(fromX, fromY, throwingAngle, thrower);
+    	specSound.switchTo(0);
+    }
+
+	@Override
     public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
         project(cx, cy, 1);
         this.setMouvement(MouvementZildo.TOUCHE);
@@ -103,17 +126,5 @@ public class PersoHen extends PersoShadowed {
         this.setSpecialEffect(EngineFX.PERSO_HURT);
 
         EngineZildo.soundManagement.broadcastSound(BankSound.MonstreTouche2, this);
-    }
-    
-    static BankSound currentSnd = BankSound.Poule1;
-    private static BankSound out = BankSound.Poule5.next();
-    
-    static final BankSound getSound() {
-        BankSound next = currentSnd.next();
-        if (next == out) {
-        	next = BankSound.Poule1;
-        }
-        currentSnd = next;
-        return next;
     }
 }

@@ -34,7 +34,6 @@ import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.ia.Mover;
 import zildo.monde.util.Angle;
-import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 //TODO: Remove getter/setter for x,y,z
@@ -597,6 +596,58 @@ public class Element extends SpriteEntity {
 		pushable = false;
 	}
 
+	/**
+	 * Overridable method, called when element is taken by someone. (example: hen, duck...)
+	 */
+	public void beingTaken() { };
+	
+	/**
+	 * 
+	 * @param fromX
+	 * @param fromY
+	 * @param throwingAngle
+	 * @param thrower optional
+	 */
+	public void beingThrown(float fromX, float fromY, Angle throwingAngle, Element thrower) {
+		// Element shouldn't be null, but it happened !
+		setLinkedPerso(null);
+		x = fromX + 1;
+		y = fromY;
+		z = 21.0f + 1.0f;
+		vx = 0.0f;
+		vy = 0.0f;
+		vz = 0.0f;
+		ax = 0.0f;
+		ay = 0.0f;
+		az = -0.07f;
+		setForeground(false);
+		setLinkedPerso(thrower); // Declare this element thrown by Zildo
+										// (so it can't collide with him)
+		setAngle(throwingAngle);
+		flying = true;
+		relativeZ = EngineZildo.mapManagement.getCurrentMap().readAltitude((int) x / 16, (int) y / 16);
+
+		switch (getAngle()) {
+		case NORD:
+			vy = -4.0f;
+			fy = 0.04f;
+			break;
+		case EST:
+			vx = 4.0f;
+			fx = 0.04f;
+			break;
+		case SUD:
+			vy = 4.0f;
+			fy = 0.04f;
+			break;
+		case OUEST:
+			vx = -4.0f;
+			fx = 0.04f;
+			break;
+		}
+		
+	}
+	
 	/**
 	 * Called when this element is collided by something.
 	 * 

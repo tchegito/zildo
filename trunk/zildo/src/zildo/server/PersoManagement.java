@@ -34,7 +34,7 @@ import zildo.monde.sprites.persos.PersoFireThing;
 import zildo.monde.sprites.persos.PersoFox;
 import zildo.monde.sprites.persos.PersoGarde;
 import zildo.monde.sprites.persos.PersoGardeVert;
-import zildo.monde.sprites.persos.PersoHen;
+import zildo.monde.sprites.persos.PersoPoultry;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoRabbit;
 import zildo.monde.sprites.persos.PersoRat;
@@ -158,12 +158,12 @@ public class PersoManagement {
 		switch (p_desc) {
 			case POULE:
 			case CANARD:
-	            perso = new PersoHen(x, y);
+	            perso = new PersoPoultry(p_desc, x, y);
 	            break;
 			case BROWN_CAT:
 			case GREY_CAT:
-	            perso = new PersoHen(x, y);
-	            ((PersoHen)perso).getShadow().setDesc(ElementDescription.SHADOW_SMALL);
+	            perso = new PersoPoultry(p_desc, x, y);
+	            ((PersoPoultry)perso).getShadow().setDesc(ElementDescription.SHADOW_SMALL);
 	            perso.setQuel_deplacement(MouvementPerso.CAT, true);
 				break;
 			case BAS_GARDEVERT:

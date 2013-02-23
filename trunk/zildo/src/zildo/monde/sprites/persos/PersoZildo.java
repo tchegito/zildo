@@ -956,6 +956,7 @@ public class PersoZildo extends Perso {
 			elem.setNSpr(d.getNSpr());
 			elem.addShadow(ElementDescription.SHADOW);
 		}
+		elem.beingTaken();
 		elem.setScrX(objX);
 		elem.setScrY(objY);
 		elem.setX(objX);
@@ -986,43 +987,8 @@ public class PersoZildo extends Perso {
 		Element element = getEn_bras();
 		setMouvement(MouvementZildo.VIDE);
 		if (element != null) {
-			// Element shouldn't be null, but it happened !
 			setEn_bras(null);
-			element.setLinkedPerso(null);
-			element.setX(getX() + 1);
-			element.setY(getY());
-			element.setZ(21.0f + 1.0f);
-			element.setVx(0.0f);
-			element.setVy(0.0f);
-			element.setVz(0.0f);
-			element.setAx(0.0f);
-			element.setAy(0.0f);
-			element.setAz(-0.07f);
-			element.setForeground(false);
-			element.setLinkedPerso(this); // Declare this element thrown by Zildo
-											// (so it can't collide with him)
-			element.setAngle(angle);
-			element.flying = true;
-			element.relativeZ = EngineZildo.mapManagement.getCurrentMap().readAltitude((int) x / 16, (int) y / 16);
-	
-			switch (getAngle()) {
-			case NORD:
-				element.setVy(-4.0f);
-				element.setFy(0.04f);
-				break;
-			case EST:
-				element.setVx(4.0f);
-				element.setFx(0.04f);
-				break;
-			case SUD:
-				element.setVy(4.0f);
-				element.setFy(0.04f);
-				break;
-			case OUEST:
-				element.setVx(-4.0f);
-				element.setFx(0.04f);
-				break;
-			}
+			element.beingThrown(x, y, angle, this);
 			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoLance, this);
 		}
 	}

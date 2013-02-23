@@ -69,6 +69,16 @@ public enum BankSound implements AudioBank {
 	Poule3("poulea3"),
 	Poule4("poulea4"),
 	Poule5("poulea5"),
+	Poule6("pouleb1"),
+	Poule7("pouleb2"),
+	Poule8("pouleb3"),
+	
+	Duck1("ducka1"),
+	Duck2("ducka2"),
+	Duck3("ducka3"),
+	Duck4("duckb1"),
+	Duck5("duckb2"),
+	Duck6("duckb3"),
 	
 	Bee("bee"),	// repeat
 	
