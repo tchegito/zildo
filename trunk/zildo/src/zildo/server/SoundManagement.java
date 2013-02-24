@@ -84,11 +84,14 @@ public class SoundManagement {
 	 */
 	public void playSound(AudioBank p_soundName, PersoZildo p_zildo) {
 		TransferObject obj=null;
+		int x=0, y=0;
 		if (p_zildo != null) {
 			ClientState cl=Server.getClientFromZildo(p_zildo);
 			obj=cl != null ? cl.location : null;
+			x = (int) p_zildo.x;
+			y = (int) p_zildo.y;
 		}
-	    addSound(p_soundName, 0,0, false, obj);
+	    addSound(p_soundName, x, y, false, obj);
 	}
 
 	public boolean isForceMusic() {
