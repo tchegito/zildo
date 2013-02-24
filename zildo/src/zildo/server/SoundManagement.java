@@ -53,8 +53,8 @@ public class SoundManagement {
 	
 	/**
 	 * Send to all clients a sound from given entity's location
-	 * @param p_soundName
-	 * @param p_source
+	 * @param p_name
+	 * @param p_location (in pixel coordinates)
 	 */
 	public void broadcastSound(AudioBank p_name, Point p_location) {
 		soundQueue.add(new WaitingSound(p_name, p_location, true, null));
@@ -71,7 +71,7 @@ public class SoundManagement {
 	/**
 	 * Send to all clients a sound from given entity's location
 	 * @param p_soundName
-	 * @param p_source
+	 * @param p_source (in pixel coordinates)
 	 */
 	public void broadcastSound(AudioBank p_soundName, SpriteEntity p_source) {
 	    addSound(p_soundName, (int) p_source.x, (int) p_source.y, true, null);
@@ -80,7 +80,7 @@ public class SoundManagement {
 	/**
 	 * Send to one client a sound from given entity's location
 	 * @param p_soundName
-	 * @param p_source
+	 * @param p_zildo
 	 */
 	public void playSound(AudioBank p_soundName, PersoZildo p_zildo) {
 		TransferObject obj=null;

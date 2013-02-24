@@ -383,7 +383,7 @@ public class Area implements EasySerializable {
 		switch (onmap) {
 		case 173:
 			writemap(tileLocation.x, tileLocation.y, 174);
-			EngineZildo.soundManagement.broadcastSound(BankSound.Hammer, tileLocation);
+			EngineZildo.soundManagement.broadcastSound(BankSound.Hammer, tileLocation.multiply(16f));
 			break;
 		}
 	}
