@@ -38,14 +38,16 @@ public class PersoPoultry extends PersoShadowed {
 	
 	// Sound getters are static to avoid several poultries of same kind rendering same sound
 	// At the same time (ugly)
-	private static SoundGetter henFree = new SoundGetter(BankSound.Poule1, BankSound.Poule5);
-	private static SoundGetter henCaught = new SoundGetter(BankSound.Poule6, BankSound.Poule8, true);
-	private static SoundGetter duckFree = new SoundGetter(BankSound.Duck1, BankSound.Duck3);
-	private static SoundGetter duckCaught = new SoundGetter(BankSound.Duck4, BankSound.Duck6, true);
+	private static SoundGetter henFree = new SoundGetter(BankSound.Poule1, BankSound.Poule5, 150);
+	private static SoundGetter henCaught = new SoundGetter(BankSound.Poule6, BankSound.Poule8, 24, true);
+	private static SoundGetter duckFree = new SoundGetter(BankSound.Duck1, BankSound.Duck3, 150);
+	private static SoundGetter duckCaught = new SoundGetter(BankSound.Duck4, BankSound.Duck6, 24, true);
+	private static SoundGetter cat = new SoundGetter(BankSound.Cat1, BankSound.Cat3, 500);
 	
 	// Wrappers allows each individual to switch between free and caught stance
 	SoundWrapper henSound = new SoundWrapper(henFree, henCaught);
 	SoundWrapper duckSound = new SoundWrapper(duckFree, duckCaught);
+	SoundWrapper catSound = new SoundWrapper(cat);
 	
 	SoundWrapper specSound;
 	
@@ -61,7 +63,12 @@ public class PersoPoultry extends PersoShadowed {
     	default:
     		specSound = henSound;
     		break;
+    	case BROWN_CAT:
+    	case GREY_CAT:
+    		specSound = catSound;
     	}
+    	// To avoid all sounds starting together
+    	countSound = Hasard.rand(specSound.getDuration());
     }
 
     @Override
@@ -78,7 +85,7 @@ public class PersoPoultry extends PersoShadowed {
                 // Play a caught animal random sound
                 BankSound snd = specSound.getSound();
                 EngineZildo.soundManagement.broadcastSound(snd, this);
-                countSound = 24;
+                countSound = specSound.getDuration();
             }
             info = PersoInfo.NEUTRAL;
         } else {
@@ -88,7 +95,7 @@ public class PersoPoultry extends PersoShadowed {
             
             if (countSound == 0 && Hasard.lanceDes(8)) {
             	BankSound snd = specSound.getSound();
-                countSound = 150 + Hasard.rand(100);
+                countSound = specSound.getDuration() + Hasard.rand(100);
                 EngineZildo.soundManagement.broadcastSound(snd, this);
             }
         }

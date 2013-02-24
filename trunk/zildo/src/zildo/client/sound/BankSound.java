@@ -80,6 +80,12 @@ public enum BankSound implements AudioBank {
 	Duck5("duckb2"),
 	Duck6("duckb3"),
 	
+	Cat1("cat1"),
+	Cat2("cat2"),
+	Cat3("cat3"),
+	
+	Bat("bat"),
+	
 	Bee("bee"),	// repeat
 	
 	CasseBuisson("feuilles"),

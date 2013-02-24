@@ -32,21 +32,27 @@ public class SoundGetter {
 	final BankSound start;
 	final BankSound out;	// The next sound after given end
     private BankSound currentSnd;
+	int duration;
 	
     boolean shuffle;	// TRUE=random sound, but different than the previous one
     
-	public SoundGetter(BankSound p_start, BankSound p_end) {
-		this(p_start, p_end, false);
+	public SoundGetter(BankSound p_start, BankSound p_end, int p_duration) {
+		this(p_start, p_end, p_duration, false);
 	}
 	
-	public SoundGetter(BankSound p_start, BankSound p_end, boolean p_shuffle) {
+	public SoundGetter(BankSound p_start, BankSound p_end, int p_duration, boolean p_shuffle) {
 		start = p_start;
 		out = p_end.next();
+		
+		duration = p_duration;
 		
 		currentSnd = p_start;
 		shuffle = p_shuffle;
 	}
 	
+	public int getDuration() {
+		return duration;
+	}
     
     public final BankSound getSound() {
     	BankSound next;
