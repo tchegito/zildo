@@ -42,7 +42,11 @@ public class SoundWrapper {
 		return soundGetters[current].getSound();
 	}
 	
+	public int getDuration() {
+		return soundGetters[current].getDuration();
+	}
+	
 	public void switchTo(int newOne) {
-		current = newOne;
+		current = Math.min(newOne, soundGetters.length-1);
 	}
 }

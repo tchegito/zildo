@@ -1,5 +1,6 @@
 package zildo.monde.sprites.persos;
 
+import zildo.client.sound.BankSound;
 import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Anticiper;
@@ -13,6 +14,7 @@ public class PersoBat extends PersoShadowed {
 	double speedAlpha;
 	
 	final float distanceSight = 48f;
+	int countSound = 0;
 	
 	static Anticiper anticiper = new Anticiper(1.5f);
 	
@@ -49,6 +51,10 @@ public class PersoBat extends PersoShadowed {
 					currentSpeed = 1.4f + 0.2f * Math.random();
 					quel_deplacement = MouvementPerso.VOLESPECTRE;
 					
+					if (countSound <= 0) {
+						EngineZildo.soundManagement.broadcastSound(BankSound.Bat, this);
+						countSound = 24;
+					}
 					speedAlpha = 0;
 				}
 			} else {
@@ -61,6 +67,9 @@ public class PersoBat extends PersoShadowed {
 					x = pos.x;
 					y = pos.y;
 				}
+			}
+			if (countSound > 0){
+				countSound--;
 			}
 		}
 	}
