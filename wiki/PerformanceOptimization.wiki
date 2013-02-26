@@ -15,12 +15,15 @@ And this concerns several sections of the game :
 
 == Tiles ==
 
-There was 2 problems at the tiling engine, as it was in the 1.095 release. We was iterating over the whole map, even if current tile isn't displayed at screen. And we was updating every tile in the graphic buffers, even it hasn't changed.
+There was 2 problems at the tiling engine, as it was in the 1.095 release. 
+ # We were iterating over the whole map, even if current tile isn't displayed at screen.
+ # We were updating every tile in the graphic buffers, even if it hasn't changed.
 
-So these 2 points need to be adressed. Each on could be easily done separately. But the implementation of both was problematic. We need to manage a buffer of tiles actually rendered at screen, and update only those which changed during the frame.
+So these 2 points need to be addressed. Each one could be easily done separately. But the implementation of both was problematic. We need to manage a buffer of tiles actually rendered at screen, and update only those which changed during the frame.
 
-To get rid of this, I chosed a system of combining buffers :
+To get rid of this, I choose a system of combining buffers :
  * one representing the complete grid :
+
 == Sprites ==
 
 = Collision =
