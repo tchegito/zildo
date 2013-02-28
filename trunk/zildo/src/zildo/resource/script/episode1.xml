@@ -1184,7 +1184,6 @@
 		<speak who="maltus" text="promenade.maltus.2"/>
 		<moveTo who="maltus" pos="73,39"/>
 		<remove who="maltus"/>
-		<music name="Village"/>
 	</scene>
 	
 	<scene id="voyance">
