@@ -40,6 +40,7 @@ import zildo.monde.sprites.persos.ia.PathFinderSquirrel;
 import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
+import zildo.monde.sprites.utils.SoundGetter;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -100,6 +101,8 @@ public abstract class Perso extends Element {
 	private Perso dialoguingWith;
 	private String dialogSwitch; // Field parseable by ZSSwitch
 	private Perso following; // Perso followed by this one
+
+	private static SoundGetter footWater = new SoundGetter(BankSound.ZildoPatauge, BankSound.ZildoPatauge2, 500);
 
 	public Item weapon;
 
@@ -610,7 +613,7 @@ public abstract class Perso extends Element {
 			// Water
 			if (!flying) {
 				inWater = true;
-				snd = BankSound.ZildoPatauge;
+				snd = footWater.getSound();
 				repeatSound = true;
 			}
 			break;
