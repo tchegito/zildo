@@ -128,6 +128,7 @@ public class SoundPlay {
 				}
 				ambient.setCurrentMusic((BankMusic) snd);
 			}
+			System.out.println("play "+snd.toString());
 			if (x == 0f && y == 0f) {
 				sound.play();
 			} else {

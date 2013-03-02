@@ -212,7 +212,7 @@ public class CollideManagement {
         		perso.parry(p_collider.cx, p_collider.cy, perso);
         	} else {
         		// How much damage ?
-        		int dmg=1;
+        		int dmg = p_collider.damageType == null ? 1 : p_collider.damageType.getHP();
         		Perso attacker=p_collider.perso;
         		if (attacker != null && p_collider.perso.isZildo()) {
         			PersoZildo zildo=(PersoZildo) attacker;
