@@ -78,7 +78,8 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || end || text || - || - || - || For game over, depending on type attribute : 0=player wins / 1=player dies ||
 || respawn || text || - || - || - || Respawn player at his starting location in the current area. ||
 || visible || text || - || - || - || Set a character/element visibility depending on _value_ attribute (true or false) ||
-
+|| zoom || text || - || - || - || Set a character's zoom attribute (0..255) where 255 is full size ||
+|| herospecial || text || - || - || - || Special actions about hero, set accordingly with 'value'. 0=> Hero gain 1 blue drop, and loose 2 moon fragments. ||
 
 === Multithread ===
 
