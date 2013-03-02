@@ -11,7 +11,7 @@ The scripting module in Zildo is divided into two essentials sections :
 
 == Main elements ==
 
-All is described in a set of XML file, each one containing an ADVENTURE root. The division of files is only intended to separate adventures in episodes, to enhance understanding.
+All is described in a set of XML files, each one containing an ADVENTURE root. The division of files is only intended to separate adventure in episodes, to enhance understanding.
 
 But let's see how works the 2 sections.
 
