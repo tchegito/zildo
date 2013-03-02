@@ -321,7 +321,8 @@ public class ActionExecutor {
                 	break;
                 case sound:
                 	BankSound snd=BankSound.valueOf(text);
-                	EngineZildo.soundManagement.playSound(snd, null);
+                	zildo=EngineZildo.persoManagement.getZildo();
+                	EngineZildo.soundManagement.playSound(snd, zildo);
                 	achieved=true;
                 	break;
                 case remove:

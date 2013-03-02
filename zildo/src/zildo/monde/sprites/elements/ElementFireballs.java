@@ -1,6 +1,7 @@
 package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
+import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
@@ -41,5 +42,12 @@ public class ElementFireballs extends ElementChained {
 	    	}
 	        super.animate();
 	    }
+	    
+		@Override
+		public DamageType getDamageType() {
+			return DamageType.FIRE;
+		}
 	}
+	
+	
 }
