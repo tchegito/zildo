@@ -56,7 +56,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || script || int || V || - || - || Set character's script. _value_ attribute points to an index in [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/utils/MouvementPerso.java MouvementPerso]. _text_ attribute points to an item name in [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/utils/MouvementZildo.java MouvementZildo]. ||
 || angle || int || V || - || - || Set character's angle ||
 || wait || int || - || - || V || Wait for a given number of frame ||
-|| sound || text || V || V || V || Play a given sound ||
+|| sound || text || V || V || V || Play a given sound (default location is hero's one.) ||
 || music || text || V || V || V || Play a given music||
 || fadeIn || int || - || - || V || Start a fade in, with given effect ||
 || fadeOut || int || - || - || V || Start a fade out, with given effect ||
