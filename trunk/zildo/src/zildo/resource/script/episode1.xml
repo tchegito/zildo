@@ -756,7 +756,9 @@
 		<speak who="king" text="visit1.king.3"/>
 		<music name=""/>
 		<speak who="zildo" text="visit1.zildo.2"/>
+		<filter type="4"/>
 		<wait value="20"/>
+		<filter type="0"/>
 		<angle who="maltus" value="1"/>
 		<wait value="10"/>
 		<speak who="king" text="visit1.king.4"/>

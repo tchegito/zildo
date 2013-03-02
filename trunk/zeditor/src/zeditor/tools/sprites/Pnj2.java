@@ -34,7 +34,7 @@ public class Pnj2 extends SpriteBanque {
 	public Pnj2() {
 		zones=new Zone[] {
 			      // Maitre d'hotel - Oncle - Vieux
-			          new Zone(95,80,16,24),new Zone(112,80,26,24),new Zone(139,83,16,21),
+			          new Zone(95,80,16,24),new Zone(112,80,26,24),new Zone(139,83,16,22),
 			          // Brigand - 3
 			          new Zone(138,106,16,23),new Zone(170,106,16,23),new Zone(154,106,16,23),
 			          // Brigand 2 - 6
@@ -136,8 +136,10 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(237, 150, 14, 24), new Zone(251, 150, 15, 24),
 			          new Zone(282, 150, 16, 23), new Zone(266, 150, 16, 23),
 			          // Sorcerer (perso) (122)
-			          new Zone(272, 163, 16, 25), new Zone(291, 163, 16, 25)
-			          
+			          new Zone(272, 163, 16, 25), new Zone(291, 163, 16, 25),
+			          // Vieux bleu (123)
+			          new Zone(171, 1, 16, 22)
+
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("pnj", 0, 0), new GraphChange("pnj2", 7, 0), 

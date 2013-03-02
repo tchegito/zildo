@@ -186,6 +186,8 @@ public class PersoManagement {
 				perso = new PersoShadowed(ElementDescription.SHADOW, 0);
 				break;
 			case PRINCESSE:
+			case VIEUX_SAGE:
+			case VIEUX_SAGE2:
 				perso = new PersoShadowed(ElementDescription.SHADOW, 2);
 				break;
 			case ABEILLE:
