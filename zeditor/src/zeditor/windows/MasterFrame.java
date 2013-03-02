@@ -822,7 +822,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JMenu getParametersMenu() {
 		if (parametersMenu == null) {
 			parametersMenu = new JMenu();
-			parametersMenu.setText("Parmètres");
+			parametersMenu.setText("Paramètres");
 			parametersMenu.setIcon(new ImageIcon(getClass().getClassLoader()
 					.getResource("zeditor/images/cog.png")));
 			parametersMenu.add(getOptionsItem());
