@@ -442,9 +442,6 @@ public class ActionExecutor {
                 	case 0:
                 		zildo.gainHPWithNecklace();
                 		break;
-                	case 1:
-                		zildo.gainHP();
-                		break;
                 	}
                 	achieved = true;
                 	break;

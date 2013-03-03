@@ -1214,13 +1214,11 @@ public class PersoZildo extends Perso {
 		}
 	}
 	
-	public void gainHP() {
+	/** Hero HP increases, using 2 moon fragments. */
+	public void gainHPWithNecklace() {
 		heartQuarter -= 2;
 		maxpv+=2;
 		pv = maxpv;
 	}
 	
-	public void gainHPWithNecklace() {
-		gainHP();
-	}
 }
