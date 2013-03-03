@@ -119,8 +119,11 @@ public class Grotte extends Banque {
 				new Point(48, 64), new Point(32, 48), new Point(144, 80),
 				new Point(160, 80), new Point(144, 96), new Point(160, 96),
 				/* Sol */
-				new Point(64, 48), new Point(64, 32), new Point(112, 80),
-				new Point(128, 80), new Point(112, 96), new Point(128, 96),
+				new Point(64, 48), new Point(64, 32),
+				/* Corner enhancer */
+				new Point(192, 80), new Point(192, 96),
+				//new Point(112, 80),	new Point(128, 80), 
+				new Point(112, 96), new Point(128, 96),
 				/* Fenˆtre */
 				new Point(80, 0), new Point(96, 0), new Point(80, 16),
 				new Point(96, 16), new Point(80, 80), new Point(96, 80),
@@ -171,7 +174,10 @@ public class Grotte extends Banque {
 				/* Torch */
 				new Point(288, 80), new Point(304, 80), new Point(304, 96),
 				/* Additional walls */
-				new Point(192, 96), new Point(208, 96), new Point(192, 112), new Point(208, 112)
+				new Point(192, 96), new Point(208, 96), new Point(192, 112), new Point(208, 112),
+				/* Side hill */
+				new Point(192, 128), new Point(208, 128), new Point(192, 144), new Point(208, 144),
+				new Point(176, 144), new Point(176, 160),
 		};
 				
 		pkmChanges = Arrays.asList(new GraphChange("interia3", 0, 0),
