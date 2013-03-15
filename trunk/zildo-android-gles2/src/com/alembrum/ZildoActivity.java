@@ -9,6 +9,7 @@ import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.menu.StartMenu;
 import zildo.fwk.ZUtils;
 import zildo.fwk.ui.EditableItemMenu;
+import zildo.platform.opengl.AndroidSoundEngine;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.res.AssetManager;
@@ -67,7 +68,7 @@ public class ZildoActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.main);
        	view = (OpenGLES20SurfaceView) findViewById(R.id.glsurfaceview);
@@ -138,6 +139,9 @@ public class ZildoActivity extends Activity {
     	if (view != null) {
     		view.onPause();
     	}
+    	Log.d("zildo", "onPause");
+       	Log.d("zildo", "pause sounds");
+   		AndroidSoundEngine.pauseAll();
     }
     
     @Override
@@ -146,6 +150,9 @@ public class ZildoActivity extends Activity {
     	if (view != null) {
     		view.onResume();
     	}
+    	Log.d("zildo", "onResume");
+       	Log.d("zildo", "resume sounds");
+   		AndroidSoundEngine.resumeAll();
     }
     
     @Override

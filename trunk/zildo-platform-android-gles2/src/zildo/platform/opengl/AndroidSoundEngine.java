@@ -89,4 +89,22 @@ public class AndroidSoundEngine extends SoundEngine {
 		}
 		initialized=false;
 	}
+	
+	public static void pauseAll() {
+		if (currentMusic != null) {
+			currentMusic.pause();
+		}
+		if (soundPool != null) {
+			soundPool.autoPause();
+		}
+	}
+	
+	public static void resumeAll() {
+		if (currentMusic != null) {
+			currentMusic.start();
+		}
+		if (soundPool != null) {
+			soundPool.autoResume();
+		}
+	}
 }
