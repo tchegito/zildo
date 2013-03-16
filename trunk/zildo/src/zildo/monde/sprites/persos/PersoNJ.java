@@ -497,6 +497,7 @@ public class PersoNJ extends Perso {
 			}
 			break;
 		case VIEUX_SAGE:
+		case VIEUX_SAGE3:
 		case BUCHERON_ASSIS:
 		case MOUSTACHU_ASSIS:
 		case BUCHERON_DEBOUT:
