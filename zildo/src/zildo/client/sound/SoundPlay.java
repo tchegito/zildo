@@ -27,6 +27,7 @@ import java.util.Map;
 
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
+import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.opengl.Sound;
 import zildo.fwk.opengl.SoundEngine;
 import zildo.monde.WaitingSound;
@@ -201,6 +202,12 @@ public class SoundPlay {
 		currentMusic = mus;
 		if (musicEnabled) {
 			playSoundFX(mus);
+			// Lower music volume if inside a house
+			int percentage = 100;
+			if (p_map.getAtmosphere() == Atmosphere.HOUSE) {
+				percentage = 50;
+			}
+			ClientEngineZildo.soundEngine.setMusicVolume(percentage);
 		}
 	}
 

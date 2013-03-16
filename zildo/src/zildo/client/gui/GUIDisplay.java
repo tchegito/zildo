@@ -786,7 +786,10 @@ public class GUIDisplay {
 		displayNumber(zildo.getCountKey(), 1, 201, GUI_Y);
 		
 		// Current weapon
-		//guiSpritesSequence.addSprite(FontDescription.GUI_WEAPONFRAME, WEAPON_X, 0);
+		guiSpritesSequence.addSprite(FontDescription.GUI_WEAPONFRAME, WEAPON_X, 0, Reverse.NOTHING, alphaPad);
+		guiSpritesSequence.addSprite(FontDescription.GUI_WEAPONFRAME, WEAPON_X+16, 0, Reverse.HORIZONTAL, alphaPad);
+		guiSpritesSequence.addSprite(FontDescription.GUI_WEAPONFRAME, WEAPON_X+0, 15, Reverse.VERTICAL, alphaPad);
+		guiSpritesSequence.addSprite(FontDescription.GUI_WEAPONFRAME, WEAPON_X+16, 15, Reverse.ALL, alphaPad);
 		Item weapon = zildo.getWeapon();
 		if (weapon != null) {
 			SpriteDescription desc = weapon.kind.representation;
@@ -794,13 +797,13 @@ public class GUIDisplay {
 					.get_sprite(desc.getNSpr());
 			int sx = spr.getTaille_x();
 			int sy = spr.getTaille_y();
-			guiSpritesSequence.addSprite(desc, WEAPON_X + 4-(sx >> 1), GUI_Y + 4 -(sy >> 1));
+			guiSpritesSequence.addSprite(desc, WEAPON_X + 11 + 4-(sx >> 1), GUI_Y + 8 + 4 -(sy >> 1));
 			
 			if (weapon.kind == ItemKind.NECKLACE) {
 				// Display number of moon fragments
 				int nQuarter = zildo.getHeartQuarter();
 				if (nQuarter > 0 && nQuarter < 10) {
-					displayNumber(nQuarter, 1, WEAPON_X + 6, GUI_Y + 6);
+					displayNumber(nQuarter, 1, WEAPON_X + 11 + 6, GUI_Y + 8 + 6);
 				}
 			}
 		}

@@ -87,6 +87,12 @@ public class GUISpriteSequence extends ArrayList<SpriteEntity> {
 		return entity;
 	}
 
+	public SpriteEntity addSprite(SpriteDescription p_desc, int x, int y, Reverse rev, int alpha) {
+		SpriteEntity entity = addSprite(p_desc.getBank(), p_desc.getNSpr(), x, y, true, alpha);
+		entity.reverse = rev;
+		return entity;
+	}
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// clear
 	// /////////////////////////////////////////////////////////////////////////////////////
