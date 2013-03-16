@@ -46,7 +46,7 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 		VP_DOWN_LEFT(0, 52, 29, 28, true, KEY_DOWN, KEY_LEFT),
 		VP_DOWN_RIGHT(51, 52, 29, 28, true, KEY_DOWN, KEY_RIGHT),
 		// inventory
-		VP_INVENTORY(0, 0, 22, 22, false, KEY_X);
+		VP_INVENTORY(0, 0, 40, 31, false, KEY_X);
 		/*
 		VP_BUTTON_A(4, 33, 26, 26, false, KEY_Q),
 		VP_BUTTON_B(36, 58, 26, 26, false, KEY_W),

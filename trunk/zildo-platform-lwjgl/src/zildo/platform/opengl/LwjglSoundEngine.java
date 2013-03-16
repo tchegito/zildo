@@ -69,4 +69,9 @@ public class LwjglSoundEngine extends SoundEngine {
 	public void cleanUp() {
 		AL.destroy();
 	}
+	
+	@Override
+	public void setMusicVolume(int percentage) {
+		SoundStore.get().setCurrentMusicVolume(percentage / 100f);
+	}
 }

@@ -34,7 +34,8 @@ public abstract class SoundEngine {
 	
 	public abstract void detectAndInitSoundEngine();
 	public abstract void pollMusic(int delta);	
-
+	public abstract void setMusicVolume(int percentage);
+	
 	public abstract void cleanUp();
 	
 	public abstract Sound createSound(String path);

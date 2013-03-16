@@ -107,4 +107,10 @@ public class AndroidSoundEngine extends SoundEngine {
 			soundPool.autoResume();
 		}
 	}
+	
+	@Override
+	public void setMusicVolume(int percentage) {
+		float v = percentage / 100f;
+		currentMusic.setVolume(v, v);
+	}
 }

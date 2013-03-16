@@ -142,12 +142,10 @@ public class PlayerManagement {
 		}
 		if (heros.isAlive()) {
 			
-			if (heros.getEn_bras() == null && gamePhase.moves) {
-				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ATTACK)) {
-					keyPressAttack();
-				} else {
-					keyReleaseAttack();
-				}
+			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_ATTACK)) {
+				keyPressAttack();
+			} else {
+				keyReleaseAttack();
 			}
 			
 			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
@@ -520,9 +518,13 @@ public class PlayerManagement {
 	// keyPressAttack
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyPressAttack() {
-		if (!keysState.key_attackPressed && heros.getEn_bras() == null && !client.dialogState.dialoguing && !heros.isInventoring()) {
-			// Set Zildo in attack stance
-			heros.attack();
+		if (!keysState.key_attackPressed) {
+			if (gamePhase == GamePhase.DIALOG || gamePhase == GamePhase.SCRIPT) {
+				EngineZildo.dialogManagement.goOnDialog(client);
+			} else if (gamePhase.moves && heros.getEn_bras() == null && !client.dialogState.dialoguing && !heros.isInventoring()) {
+				// Set Zildo in attack stance
+				heros.attack();
+			}
 		}
 		keysState.key_attackPressed=true;
 	}
