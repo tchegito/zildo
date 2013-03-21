@@ -320,5 +320,20 @@ public class Case implements EasySerializable {
 		modified = true;
 	}
 
+	/**
+	 * Get one of the tile from back and back2, which is valued by the given integer.
+	 * Returns NULL if none has this value.
+	 * @param val
+	 * @return Tile
+	 */
+	public Tile getOneValued(int val) {
+		if (back.getValue() == val) {
+			return back;
+		}
+		if (back2 != null && back2.getValue() == val) {
+			return back2;
+		}
+		return null;
+	}
 	
 }
