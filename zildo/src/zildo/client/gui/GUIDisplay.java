@@ -715,7 +715,7 @@ public class GUIDisplay {
 
 		final int GUI_Y = 4; //35;
 		final int WEAPON_X = 8;
-		final int DROPS_X = 248;
+		final int DROPS_X = 300; //248;
 		
 		//Ortho ortho = ClientEngineZildo.ortho;
 		// Draw frame under GUI
@@ -749,7 +749,7 @@ public class GUIDisplay {
 				} else {
 					desc = FontDescription.GUI_HEART; // Full heart
 				}
-				guiSpritesSequence.addSprite(desc, DROPS_X + ((i - 1) % 10) * 8,
+				guiSpritesSequence.addSprite(desc, DROPS_X - ((i - 1) % 10) * 8,
 						GUI_Y); //20 + 8 * ((i - 1) / 10));
 			}
 		}
@@ -782,8 +782,10 @@ public class GUIDisplay {
 		}
 		
 		// Keys
-		guiSpritesSequence.addSprite(FontDescription.GUI_KEY, 211, GUI_Y + 2);
-		displayNumber(zildo.getCountKey(), 1, 201, GUI_Y);
+		if (zildo.getCountKey() > 0) {
+			guiSpritesSequence.addSprite(FontDescription.GUI_KEY, 211, GUI_Y + 2);
+			displayNumber(zildo.getCountKey(), 1, 201, GUI_Y);
+		}
 		
 		// Current weapon
 		guiSpritesSequence.addSprite(FontDescription.GUI_WEAPONFRAME, WEAPON_X, 0, Reverse.NOTHING, alphaPad);
