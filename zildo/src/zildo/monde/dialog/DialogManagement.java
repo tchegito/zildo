@@ -65,7 +65,7 @@ public class DialogManagement {
 	 * <li>if <code>p_actionDialog</code> is not null, displays text and launch delegate action.</li>
 	 * </ul>
 	 * @param p_client Zildo who's talking
-	 * @param p_persoToTalk perso to talk with
+	 * @param p_persoToTalk perso to talk with (NULL if there's from an automatic behavior)
 	 * @param p_actionDialog
 	 */
 	public void launchDialog(ClientState p_client, Perso persoToTalk, ActionDialog p_actionDialog ) {
@@ -82,8 +82,14 @@ public class DialogManagement {
 			dialogQueue.add(even);
 			
         	
+			if (persoToTalk != null) {
+		        p_client.zildo.setDialoguingWith(persoToTalk);
+			} else if (p_client.zildo.getDialoguingWith() != null) {
+				// Zildo is talking with someone, and an automatic behavior happens (he takes an item).
+				// After this automatic dialog, he should get back to the conversation.
+				p_client.dialogState.continuing = true;
+			}
 	        p_client.dialogState.dialoguing = true;
-	        p_client.zildo.setDialoguingWith(persoToTalk);
 	    }
 
 	}

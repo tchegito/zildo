@@ -16,8 +16,11 @@
 	</quest>
 	<quest name="chateau_ask">
 		<trigger>
-			<dialog name="papy" num="6"/>
+			<dialog name="papy" num="8"/>
 		</trigger>
+		<action>
+		    <take item="necklace"/>
+		</action>
 	</quest>
 	<quest name="enlevebuissons_ask" repeat="true">
 		<trigger>
