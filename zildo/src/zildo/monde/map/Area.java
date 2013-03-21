@@ -680,18 +680,17 @@ public class Area implements EasySerializable {
 				map.set_mapcase(j, i + 4, temp);
 
 				if (p_spawn && !EngineZildo.game.editing) {
-					Tile backTile = temp.getBackTile();
-					Tile backTile2 = temp.getBackTile2();
 					
-					if (backTile.getValue() == 256 + 99 || (backTile2 != null && backTile2.getValue() == 256+99)) {
+					if (temp.getOneValued(256 + 99) != null) {
 						// Fumée de cheminée
 						spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, 0, null,
 								null);
 					}
+					Tile tile = temp.getOneValued(512 + 231);
 					// Is this chest already opened ?
-					if (backTile.index == (743 & 255) && backTile.bank == 2) {
+					if (tile != null ) {
 						if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
-							backTile.index = 744 & 255;
+							tile.index = 744 & 255;
 						}
 					}
 				}
