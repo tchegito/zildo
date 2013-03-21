@@ -46,6 +46,7 @@ public enum BankSound implements AudioBank {
 	ZildoDescendPeu("escalbas"),
 	ZildoTrouve("trouve"),
 	ZildoMoon("moonPiece"),
+	ZildoOneUp("moon"),
 	ZildoSecret("secret"),
 	ZildoKey("getKey"),
 	ZildoUnlock("doorUnlock"),
@@ -54,6 +55,8 @@ public enum BankSound implements AudioBank {
 	ZildoElectric("electric"),
 	ZildoDying("dying"),
 	ZildoFall("chute"),
+	
+	MoonFusion("moonfusion"),
 	
 	QuadDamage("quaddamage"),
 	QuadDamageLeaving("damage2"),

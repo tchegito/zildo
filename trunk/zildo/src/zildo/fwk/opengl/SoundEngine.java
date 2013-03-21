@@ -31,6 +31,7 @@ public abstract class SoundEngine {
 
 	protected boolean initialized = false;
 	protected boolean failed = false;
+	protected int musicVolume = 100;
 	
 	public abstract void detectAndInitSoundEngine();
 	public abstract void pollMusic(int delta);	

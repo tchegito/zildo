@@ -147,6 +147,7 @@
 	    <wait value="20"/>
 	    <animation who="zildo" pos="6,-20" type="STAR_SHINE" />
 	    <filter type="4"/>
+   		<sound name="MoonFusion"/>
 	    <actions>
 	    	<remove what="moon1"/>
 	    	<remove what="moon2"/>
@@ -158,6 +159,7 @@
 	   	<script who="zildo" text="FIERTEOBJET"/>
 	    <animation who="zildo" pos="2,-26" type="STAR_SHINE" />
 	    <wait value="50"/>
+	    <sound name="ZildoOneUp"/>
 	    <herospecial value="0"/>	<!-- Gain 1 HP with paying 50 gold -->
 	    <speak who="camera" text="fullmoon.action"/>
 	    <script who="sorciere" value="3"/>
