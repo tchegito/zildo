@@ -33,31 +33,34 @@ public class Gears extends SpriteBanque {
 
 	public Gears() {
 		zones=new Zone[] {
-				new Zone(104, 144, 16, 32),
+				new Zone(0, 505, 16, 32),
 				/* Idem à demi ouverte */
-				new Zone(120, 144, 16, 32),
+				new Zone(16, 505, 16, 32),
 				
 				/* Grey door without knob */
-				new Zone(136, 144, 16, 32),
-				new Zone(152, 144, 16, 32),
+				new Zone(32, 505, 16, 32),
+				new Zone(48, 505, 16, 32),
 				
 				/* Prison */
-				new Zone(176, 0, 8, 32),
-				new Zone(184, 0, 8, 5),
+				new Zone(64, 505, 8, 32),
+				new Zone(72, 505, 8, 5),
 				
 				/* Boulder on a hill */
-				new Zone(88, 160, 16, 20),
+				new Zone(80, 505, 16, 20),
 
 				/* Cave - Closed door */
-				new Zone(224, 48, 24, 16),
-				new Zone(248, 48, 24, 16),	// Master key
-				new Zone(272, 48, 24, 16),  // Regular key
+				new Zone(96, 505, 24, 16),
+				new Zone(120, 505, 24, 16),	// Master key
+				new Zone(144, 505, 24, 16),  // Regular key
 				
 				
-				new Zone(288, 64, 24, 16),	// Regular key opening
+				new Zone(168, 505, 24, 16),	// Regular key opening
 
 				/* Explodable wall */
-				new Zone(296, 48, 16, 16)
+				new Zone(192, 505, 16, 16),
+				
+				/* Big blue door */
+				new Zone(0, 538, 24, 20)
 				
 		};
 		
