@@ -428,9 +428,9 @@ public abstract class Perso extends Element {
 		float diffy = getY() - p_cy;
 		double norme = Math.sqrt((diffx * diffx) + (diffy * diffy));
 		if (norme == 0.0f) {
-			norme = 1.0f; // Pour éviter le 'divide by zero'
+			norme = 1.0f; // To avoid 'divide by zero'
 		}
-		// Et on l'envoie !
+		// Then throw it !
 		this.setPx((float) (p_speed * (diffx / norme)));
 		this.setPy((float) (p_speed * (diffy / norme)));
 	}
@@ -438,9 +438,10 @@ public abstract class Perso extends Element {
 	/**
 	 * Try to move character at the given location, and returns corrected one.
 	 * <p/>
-	 * The correction is based on two methods: -transform diagonal movement into
-	 * lateral -transform lateral movement into diagonal
-	 * <p/>
+	 * The correction is based on two methods: <ul>
+	 * <li>transform diagonal movement into lateral</li>
+	 * <li>transform lateral movement into diagonal</li>
+	 * </ul>
 	 * If no one succeeds, returns the original location.
 	 * 
 	 * @param p_xx
@@ -452,14 +453,14 @@ public abstract class Perso extends Element {
 		float xx = p_xx;
 		float yy = p_yy;
 
-		if (mapManagement.collide((int) xx, (int) yy, this)) {
+		if (mapManagement.collide(xx, yy, this)) {
 			float diffx = xx - x;
 			float diffy = yy - y;
 			if (diffx != 0 && diffy != 0) {
 				// Diagonal move impossible => try lateral move
-				if (!mapManagement.collide((int) xx, (int) y, this)) {
+				if (!mapManagement.collide(xx, y, this)) {
 					yy = (int) y;
-				} else if (!mapManagement.collide((int) x, (int) yy, this)) {
+				} else if (!mapManagement.collide(x, yy, this)) {
 					xx = (int) x;
 				}
 			} else {

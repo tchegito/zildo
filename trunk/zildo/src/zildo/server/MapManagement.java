@@ -207,7 +207,7 @@ public class MapManagement {
 	 * @return
 	 */
 	public boolean collide(float tx, float ty, Element quelElement) {
-		return collide((int) tx, (int) ty, quelElement);
+		return collide(Math.round(tx), Math.round(ty), quelElement);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////

@@ -63,9 +63,9 @@ public class PathFinder {
 	}
 	
     /**
-     * Shouldn't modify heros location !
+     * Shouldn't modify mobile location ! But update his angle.
      * @param p_speed
-     * @return int
+     * @return Pointf
      */
     public Pointf reachDestination(float p_speed) {
 
@@ -76,7 +76,7 @@ public class PathFinder {
             return pos;
         }
         
-    	float velocity=speed == 0 ? p_speed : speed;
+    	float velocity=speed == 0f ? p_speed : speed;
         int immo = 0;
         int move = 0;
         Angle a=mobile.getAngle();
