@@ -305,6 +305,10 @@ public class ActionExecutor {
                 	EngineZildo.scriptManagement.addReplacedMapName(p_action.what, text);
                 	achieved = true;
                 	break;
+                case zikReplace:
+                	EngineZildo.scriptManagement.addReplacedZikName(p_action.what, text);
+                	achieved = true;
+                	break;
                 case exec:
                 	// Note : we can sequence scripts in an action tag.
                 	EngineZildo.scriptManagement.execute(text, p_action.unblock);

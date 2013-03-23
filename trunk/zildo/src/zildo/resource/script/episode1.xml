@@ -375,6 +375,9 @@
 		<action>
 			<exec script="coucou_visit2"/>
 		</action>
+		<history>
+		    <zikReplace what="Village" name="Nuit"/> 
+		</history>
 	</quest>
 	
 	<quest name="promenade_block" repeat="true">
@@ -486,11 +489,9 @@
 		</condition>
 		<condition name="promenade" exp="!fini_voleur">
 			<filter type="2"/>
-			<music name="Nuit"/>
 		</condition>
 		<condition name="promenade2" exp="!fini_voleur">
 			<filter type="2"/>
-			<music name="Nuit"/>
 		</condition>
 		<condition name="polakyg" exp="tonneau_polakyg">
 		    <pos what="barrel1" pos="0,16" delta="true"/>

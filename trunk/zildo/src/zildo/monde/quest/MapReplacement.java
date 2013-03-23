@@ -41,4 +41,13 @@ public class MapReplacement extends HashMap<String, String> {
     public MapReplacement(MapReplacement p_replaces) {
         putAll(p_replaces);
     }
+    
+    public String getValue(String p_name) {
+        String name = get(p_name);
+        if (name == null) {
+            return p_name;
+        } else {
+            return name;
+        }
+    }
 }

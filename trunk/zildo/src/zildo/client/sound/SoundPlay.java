@@ -31,7 +31,6 @@ import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.opengl.Sound;
 import zildo.fwk.opengl.SoundEngine;
 import zildo.monde.WaitingSound;
-import zildo.monde.map.Area;
 import zildo.monde.util.Point;
 
 /**
@@ -191,30 +190,22 @@ public class SoundPlay {
 			}
 		}
 	}
-
+	
 	/**
-	 * Play the music related to given map.
-	 * 
-	 * @param p_map
+	 * Play music with given atmosphere. For example, inside house, volume is lowered.
+	 * @param p_mus
+	 * @param atmo
 	 */
-	public void playMapMusic(Area p_map) {
-		BankMusic mus = ClientEngineZildo.ambient.getMusicForMap(p_map);
-		currentMusic = mus;
-		if (musicEnabled) {
-			playSoundFX(mus);
-			// Lower music volume if inside a house
-			int percentage = 100;
-			if (p_map.getAtmosphere() == Atmosphere.HOUSE) {
-				percentage = 50;
-			}
-			ClientEngineZildo.soundEngine.setMusicVolume(percentage);
-		}
-	}
-
-	public void playMusic(BankMusic p_mus) {
+	public void playMusic(BankMusic p_mus, Atmosphere atmo) {
 		currentMusic = p_mus;
 		if (musicEnabled) {
 			playSoundFX(p_mus);
+			// Lower music volume if inside a house
+			int percentage = 100;
+			if (atmo == Atmosphere.HOUSE) {
+				percentage = 50;
+			}
+			ClientEngineZildo.soundEngine.setMusicVolume(percentage);
 		}
 	}
 
@@ -224,7 +215,7 @@ public class SoundPlay {
 	}
 	public void enableMusic() {
 		musicEnabled = true;
-		playMusic(currentMusic);
+		playMusic(currentMusic, null);
 	}
 	
 	public void stopMusic() {

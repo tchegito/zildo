@@ -49,7 +49,7 @@ public class StartMenu extends Menu {
 	public StartMenu() {
         
 		// Play menu music
-		ClientEngineZildo.soundPlay.playMusic(BankMusic.Triste);
+		ClientEngineZildo.soundPlay.playMusic(BankMusic.Triste, null);
         ClientEngineZildo.filterCommand.fadeIn(FilterEffect.FADE);
 
         ItemMenu itemSinglePlayer = new ItemMenu("m1.single") {
