@@ -28,7 +28,8 @@ public class ActionElement extends AnyElement {
 
 	public enum ActionKind {
 		actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, 
-		map, focus, spawn, exec, take, mapReplace, music, animation, impact, remove, markQuest, putDown, attack, activate,
+		map, focus, spawn, exec, take, mapReplace, zikReplace, music, animation, impact, remove, 
+		markQuest, putDown, attack, activate,
 		tile, filter, end, visible, respawn, zoom, herospecial;
 
 		public static ActionKind fromString(String p_name) {
@@ -153,6 +154,7 @@ public class ActionElement extends AnyElement {
 			text = p_elem.getAttribute("script");
 			break;
 		case mapReplace:
+		case zikReplace:
 			text = p_elem.getAttribute("name");
 			break;
 		case markQuest:

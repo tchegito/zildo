@@ -61,7 +61,8 @@ public class ScriptManagement {
 
     ScriptExecutor scriptExecutor;
     AdventureElement adventure=null;
-    MapReplacement replaces;
+    MapReplacement areaReplaces;
+    MapReplacement zikReplaces;
     
     final Map<String, QuestElement> questsByName;
     
@@ -77,7 +78,8 @@ public class ScriptManagement {
 
         scriptExecutor=new ScriptExecutor();
         
-        replaces=new MapReplacement();
+        areaReplaces=new MapReplacement();
+        zikReplaces=new MapReplacement();
         
         questsByName = new HashMap<String, QuestElement>();
         for (QuestElement quest : adventure.getQuests()) {
@@ -241,7 +243,7 @@ public class ScriptManagement {
      * @param p_trigger TRUE=we have to launch targeted action / FALSE=just set quest to 'done' state
      */
     private void accomplishQuest(QuestElement p_quest, boolean p_trigger) {
-    	//System.out.println("Accomplish "+p_quest.name);
+    	System.out.println("Accomplish "+p_quest.name);
    		p_quest.done=true;
     	
     	// 1) note the history events (mapReplace ...)
@@ -277,18 +279,21 @@ public class ScriptManagement {
     }
     
     public String getReplacedMapName(String p_mapName) {
-        String name = replaces.get(p_mapName);
-        if (name == null) {
-            return p_mapName;
-        } else {
-            return name;
-        }
+        return areaReplaces.getValue(p_mapName);
+    }
+    
+    public String getReplacedZikName(String p_zikName) {
+        return zikReplaces.getValue(p_zikName);
     }
     
     public void addReplacedMapName(String p_ancient, String p_new) {
-    	replaces.put(p_ancient, p_new);
+    	areaReplaces.put(p_ancient, p_new);
     }
 
+    public void addReplacedZikName(String p_ancient, String p_new) {
+    	zikReplaces.put(p_ancient, p_new);
+    }
+    
 	public AdventureElement getAdventure() {
 		return adventure;
 	}

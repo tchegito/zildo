@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.Ambient.Atmosphere;
+import zildo.client.sound.BankMusic;
 import zildo.fwk.collection.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
@@ -126,7 +127,10 @@ public class MapManagement {
 
 		if (!EngineZildo.game.editing) {
 			if (!EngineZildo.soundManagement.isForceMusic()) {
-				ClientEngineZildo.soundPlay.playMapMusic(currentMap);
+				Atmosphere atmo = currentMap.getAtmosphere();
+				BankMusic mus = BankMusic.forName(EngineZildo.scriptManagement.getReplacedZikName(atmo.music.name()));
+				
+				ClientEngineZildo.soundPlay.playMusic(mus, atmo);
 			}
 			switch (ClientEngineZildo.ambient.getWeather(currentMap)) {
 				case CLOUD:

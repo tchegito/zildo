@@ -42,6 +42,14 @@ public enum BankMusic implements AudioBank {
 		return filename;
 	}
 	
+	public static BankMusic forName(String p_name) {
+		for (BankMusic b : values()) {
+			if (b.name().equals(p_name)) {
+				return b;
+			}
+		}
+		throw new RuntimeException("The music '+p_name+' doesn't exist !");
+	}
 	
 	public String getSuffix() {
 		return "ogg";
