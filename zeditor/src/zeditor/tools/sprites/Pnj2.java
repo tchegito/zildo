@@ -56,7 +56,8 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(299,129,16,7),new Zone(300,120,14,8),new Zone(300,76,8,14),new Zone(309,75,6,16),
 			          new Zone(299,46,16,7),new Zone(300,54,14,8),new Zone(312,94,8,14),new Zone(305,93,6,16),
 			          // Electrique vert - 31
-			          new Zone(70,105,13,17),new Zone(83,101,12,21),new Zone(95,105,13,17),
+			          new Zone(0, 307, 12, 21), new Zone(12, 308, 12, 20), new Zone(24, 309, 12, 19),
+			          //new Zone(70,105,13,17),new Zone(83,101,12,21),new Zone(95,105,13,17),
 			          // Squelette - 34
 			          new Zone(200,28,16,25),new Zone(216,28,16,25),
 			          new Zone(258,27,12,26),new Zone(270,27,14,26),
@@ -82,7 +83,8 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(221, 100, 16, 24),
 			          new Zone(237, 100, 14, 24), new Zone(251, 100, 14, 24),
 			          // Electrique sous le choc
-			          new Zone(108, 98, 15, 24), new Zone(123, 98, 15, 24),
+			          new Zone(36, 309, 14, 19), new Zone(50, 311, 16, 17),
+			          //new Zone(108, 98, 15, 24), new Zone(123, 98, 15, 24),
 			          new Zone(138, 99, 16, 23), new Zone(154, 99, 16, 23),
 			          // Chauve-souris
 			          new Zone(272, 67, 17, 15), new Zone(289, 67, 23, 15),

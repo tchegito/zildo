@@ -43,6 +43,7 @@ import zildo.monde.sprites.persos.PersoSquirrel;
 import zildo.monde.sprites.persos.PersoVolant;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.ia.PathFinderBee;
+import zildo.monde.sprites.persos.ia.PathFinderGreenBlob;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 
@@ -193,6 +194,10 @@ public class PersoManagement {
 			case ABEILLE:
 				perso = new PersoShadowed(ElementDescription.SHADOW_MINUS, 0);
 				perso.setPathFinder(new PathFinderBee(perso));
+				break;
+			case ELECTRIQUE:
+				perso = new PersoShadowed(ElementDescription.SHADOW, 1);
+				perso.setPathFinder(new PathFinderGreenBlob(perso));
 				break;
 			case RABBIT:
 				perso = new PersoRabbit();
