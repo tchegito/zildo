@@ -92,6 +92,8 @@ public enum BankSound implements AudioBank {
 	
 	Bee("bee"),	// repeat
 	
+	Blob("blob1"),	// Green blob
+	
 	CasseBuisson("feuilles"),
 	CassePierre("brise"),
 	OuvrePorte("porte"),

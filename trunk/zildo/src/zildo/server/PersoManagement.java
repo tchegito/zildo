@@ -34,8 +34,9 @@ import zildo.monde.sprites.persos.PersoFireThing;
 import zildo.monde.sprites.persos.PersoFox;
 import zildo.monde.sprites.persos.PersoGarde;
 import zildo.monde.sprites.persos.PersoGardeVert;
-import zildo.monde.sprites.persos.PersoPoultry;
+import zildo.monde.sprites.persos.PersoGreenBlob;
 import zildo.monde.sprites.persos.PersoNJ;
+import zildo.monde.sprites.persos.PersoPoultry;
 import zildo.monde.sprites.persos.PersoRabbit;
 import zildo.monde.sprites.persos.PersoRat;
 import zildo.monde.sprites.persos.PersoShadowed;
@@ -43,7 +44,6 @@ import zildo.monde.sprites.persos.PersoSquirrel;
 import zildo.monde.sprites.persos.PersoVolant;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.ia.PathFinderBee;
-import zildo.monde.sprites.persos.ia.PathFinderGreenBlob;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 
@@ -195,9 +195,8 @@ public class PersoManagement {
 				perso = new PersoShadowed(ElementDescription.SHADOW_MINUS, 0);
 				perso.setPathFinder(new PathFinderBee(perso));
 				break;
-			case ELECTRIQUE:
-				perso = new PersoShadowed(ElementDescription.SHADOW, 1);
-				perso.setPathFinder(new PathFinderGreenBlob(perso));
+			case GREEN_BLOB:
+				perso = new PersoGreenBlob();
 				break;
 			case RABBIT:
 				perso = new PersoRabbit();
@@ -224,7 +223,6 @@ public class PersoManagement {
 		
 		switch (p_desc) {
 			case SQUELETTE:
-			case ELECTRIQUE:
 				perso.setPv(2);
 				break;
 			case CREATURE:

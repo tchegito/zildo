@@ -19,7 +19,6 @@
 
 package zildo.monde.sprites.persos.ia;
 
-import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Pointf;
@@ -42,7 +41,7 @@ public class PathFinderGreenBlob extends PathFinder {
 	
 	@Override
 	public Pointf reachDestination(float p_speed) {
-		int nspr = mobile.getCompte_dialogue();
+		int nspr = mobile.getAddSpr();
 		float mulSpeed = 1f * coeff[nspr];
 		Pointf p = super.reachDestination(mulSpeed);
 		if (p.x < mobile.x) {
