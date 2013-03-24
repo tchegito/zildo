@@ -62,7 +62,6 @@ public abstract class Perso extends Element {
 	protected boolean alerte; // True=Zildo est reperé (Pieds dans l'eau si
 								// c'est Zildo)
 	protected MouvementPerso quel_deplacement; // Script
-	protected PersoDescription quel_spr;
 	protected int attente; // =0 => pas d'attente
 	protected PathFinder pathFinder; // Destination
 	protected float px, py; // Quand le perso est propulsé (touché)

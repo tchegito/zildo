@@ -431,7 +431,6 @@ public class PersoNJ extends Perso {
 
 		final int[] seqp = { 0, 2, 0, 1 }; // 3 sprites characters
 		final int[] seqv = { 0, 1, 2, 1 }; // another 3 sprites
-		final int[] seqGreen = {0, 3, 4, 3 };
 		
 		int add_spr = 0;
 		PersoDescription quelSpriteWithBank = (PersoDescription) desc;
@@ -556,17 +555,9 @@ public class PersoNJ extends Perso {
 			// Persos à 4 sprites : prêtre,garde bouclier
 			add_spr = angle.value;
 			break;
-		case ELECTRIQUE:
-			reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
-			if (deltaMoveX != 0) {
-				add_spr = seqGreen[(compteur_animation / 20) % 4];
-				setCompte_dialogue(add_spr);
-				break;
-			}
 		case VAUTOUR:
 			// Persos à 3 sprite et 1 angle
 			add_spr = seqv[(compteur_animation / 20) % 4];
-			setCompte_dialogue(add_spr);
 			break;
 		case SPECTRE:
 			// Perso à 2 sprites (gauche/droite)
