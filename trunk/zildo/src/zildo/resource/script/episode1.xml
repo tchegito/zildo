@@ -112,7 +112,7 @@
 	</quest>
 	<quest name="empechezildo_bar" repeat="true">
 		<trigger>
-			<location who="zildo" name="coucou" pos="448,520"/>
+			<location who="zildo" name="coucou" radius="2" pos="448,520"/>
 			<questDone name="!fermierperdu_bar-!ritou_bar"/>
 		</trigger>
 		<action>
