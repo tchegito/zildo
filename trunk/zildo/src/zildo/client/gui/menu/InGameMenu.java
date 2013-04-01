@@ -22,6 +22,7 @@ package zildo.client.gui.menu;
 
 import java.util.ArrayList;
 
+import zildo.fwk.ui.ConfirmMenu;
 import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
@@ -69,9 +70,19 @@ public class InGameMenu extends Menu {
 		items.add(new ItemMenu("m7.quit") {
 			@Override
 			public void run() {
-				client.quitGame();
+				client.handleMenu(new ConfirmMenu("m7.quitConfirm", new ItemMenu("global.yes") {
+					@Override
+					public void run() {
+						client.quitGame();
+						client.handleMenu(new StartMenu());
+					}
+				}, new ItemMenu("global.no") {
+					@Override
+					public void run() {
+						client.handleMenu(currentMenu);
+					}
+				}));
 				
-				client.handleMenu(new StartMenu());
 				
 			}
 		});

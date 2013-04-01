@@ -200,9 +200,21 @@ public class GUIDisplay {
 		scriptBigLegibility[transcoChar.indexOf("Q")]--;
 		scriptBigLegibility[transcoChar.indexOf("T")] = 5;
 		scriptBigLegibility[transcoChar.indexOf("A")] = 4;
+		scriptBigLegibility[transcoChar.indexOf("H")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("N")] = 8;
-		scriptBigLegibility[transcoChar.indexOf("P")] = 2;
+		scriptBigLegibility[transcoChar.indexOf("P")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("J")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("S")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("p")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("o")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("s")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("i")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("u")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("r")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("b")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("e")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("m")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("f")] = 1;
 	}
 
 	int getIndexCharacter(char a) {

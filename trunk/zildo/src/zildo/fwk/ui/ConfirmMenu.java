@@ -20,28 +20,18 @@
 package zildo.fwk.ui;
 
 /**
+ * Confirm menu, with two provided item menu.
+ * 
+ * It hasn't a high interest, for now ...
+ * 
  * @author Tchegito
  * 
  */
 public class ConfirmMenu extends Menu {
 
-	public ConfirmMenu(String p_message, final Menu p_nextYes, final Menu p_nextNo) {
+	public ConfirmMenu(String p_message, final ItemMenu p_nextYes, final ItemMenu p_nextNo) {
 		super(p_message);
 		
-		ItemMenu itemYes = new ItemMenu("global.yes") {
-			@Override
-			public void run() {
-				client.handleMenu(p_nextYes);
-			}
-		};
-
-		ItemMenu itemNo = new ItemMenu("global.yes") {
-			@Override
-			public void run() {
-				client.handleMenu(p_nextNo);
-			}
-		};
-
-		setMenu(itemYes, itemNo);
+		setMenu(p_nextYes, p_nextNo);
 	}
 }
