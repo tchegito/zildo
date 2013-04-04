@@ -258,7 +258,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(76, 46, 16, 16),
 				// Platform
 				new Zone(242, 0, 32, 32),
-				new Zone(94, 130, 8, 12),	// Blue effect (take drop)
+				new Zone(110, 130, 16, 22), //94, 130, 8, 12),	// Blue effect (take drop)
 				// Back on "objets.png"
 				new Zone(44, 85, 15, 10),	// MOON_FRAGMENT2
 				new Zone(0, 85, 16, 16),	// NECKLACE
