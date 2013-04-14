@@ -38,6 +38,14 @@ public class PathFinderGreenBlob extends PathFinder {
 	}
 	
 	private static final float[] coeff={0.1f, 0.1f, 0.1f, 0.2f,0.5f};
+
+	@Override
+	public void determineDestination() {
+		super.determineDestination();
+		if (target.x == (int) mobile.x){
+			target.x += Math.random() * 5f;
+		}
+	}
 	
 	@Override
 	public Pointf reachDestination(float p_speed) {
