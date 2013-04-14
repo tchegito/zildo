@@ -1069,7 +1069,7 @@
 	    <spawn who="gard3" type="GARDE_CANARD" angle="0" pos="616,256" fx="noir"/>
 	    <actions>
 		    <moveTo who="gard1" pos="600,111"/>
-		    <moveTo who="gard2" pos="632,111"/>
+		    <moveTo who="gard2" pos="632,111" unstoppable="true"/>
 		    <moveTo who="gard3" pos="0,-48" delta="true" speed="0.25"/>
 	    </actions>
 	    <speak who="gard1" text="polaky.gard.0"/>
