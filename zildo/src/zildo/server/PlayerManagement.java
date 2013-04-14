@@ -59,6 +59,8 @@ public class PlayerManagement {
 	{
 	}
 	
+	static float cosPiSur4 = 0.66f; //(float) Math.cos(Math.PI / 4f);
+
 	///////////////////////////////////////////////////////////////////////////////////////
 	// manageKeyboard
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -126,7 +128,7 @@ public class PlayerManagement {
 		Pointf pos=heros.reachDestination(Constantes.ZILDO_SPEED);
 	 	
 		adjustMovement(pos.x, pos.y);
-		heros.finaliseComportement(EngineZildo.compteur_animation);
+		//heros.finaliseComportement(EngineZildo.compteur_animation);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -319,9 +321,9 @@ public class PlayerManagement {
 			if (ralentit || (diffx!=0 && diffy!=0 && heros.getMouvement()!=MouvementZildo.TOUCHE))
 			{
 				if (ralentit)
-					coeff=0.4f;
+					coeff = 0.4f;
 				else
-					coeff=0.7f;
+					coeff = cosPiSur4;
 			}
 
 			heros.setX(heros.getX()+diffx*coeff);

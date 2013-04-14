@@ -288,8 +288,10 @@ public class Element extends SpriteEntity {
 				// Débordement
 				if (x < -4 || y < -4 || x > 64 * 16 || (y-z) > 64 * 16) {
 					if (desc == null || !((ElementDescription)desc).isOutmapAllowed()) {
-						die();
-						dying = true;
+						if (!isLinkedToZildo()) {
+							die();
+							dying = true;
+						}
 					}
 				} else {
 	
@@ -725,6 +727,23 @@ public class Element extends SpriteEntity {
 	
 	public Mover getMover() {
 		return mover;
+	}
+	
+	public boolean isLinkedToZildo() {
+		if (linkedPerso == null) {
+			return false;
+		}
+		if (linkedPerso.isZildo()) {
+			return true;
+		}
+		Element linkedLinkedPerso=linkedPerso.getLinkedPerso();
+		if (linkedLinkedPerso == null) {
+			return false;
+		}
+		if (linkedLinkedPerso.isZildo()) {
+			return true;
+		}
+		return false;
 	}
 	
 	@Override
