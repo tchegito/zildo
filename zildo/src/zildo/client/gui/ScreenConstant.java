@@ -24,7 +24,6 @@ public class ScreenConstant {
 	
 	public ScreenConstant(int screenX, int screenY) {
 		
-		System.out.println("Screenconstant calculating for "+screenX+","+screenY);
 		SORTY_MAX = Constantes.SORTY_MAX + screenY + 40;
 		SORTY_REALMAX = Constantes.SORTY_REALMAX + screenY + 40 + 80;
 		
