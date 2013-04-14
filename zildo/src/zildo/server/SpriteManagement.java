@@ -807,8 +807,16 @@ public class SpriteManagement extends SpriteStore {
 				// Check if this entity is an element linked to Zildo
 				if (entity.getEntityType().isElement()) {
 					Element linkedPerso=((Element)entity).getLinkedPerso();
-					if (linkedPerso != null && linkedPerso.isZildo()) {
-						continue;
+					if (linkedPerso != null) {
+						if (linkedPerso.isZildo()) {
+							continue;
+						} else {
+							// Two link to get Zildo (example: shadow LINKED to a bush LINKED to Zildo)
+							Element linkedLinkedPerso=linkedPerso.getLinkedPerso();
+							if  (linkedLinkedPerso != null && linkedLinkedPerso.isZildo()) {
+								continue;
+							}
+						}
 					}
 				}
 				deleteSprite(entity);
