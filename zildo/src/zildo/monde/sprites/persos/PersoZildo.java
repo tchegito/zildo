@@ -515,9 +515,6 @@ public class PersoZildo extends Perso {
 			}
 		}
 
-		// Get variables to reduce code amount
-		Element en_bras = getEn_bras();
-
 		// Default : invisible
 		shadow.setVisible(false);
 		feet.setVisible(inWater || inDirt);
@@ -587,16 +584,6 @@ public class PersoZildo extends Perso {
 			}
 			break;
 
-		case BRAS_LEVES:
-			if (angle == Angle.EST) {
-				xx-=2;
-			}
-			if (en_bras != null) {
-				en_bras.setX(xx + 1);
-				en_bras.setY(yy); // + 3);
-				en_bras.setZ(17 - 3);
-			}
-			break;
 		case SOULEVE:
 			 if (angle == Angle.OUEST){
 					xx-=1;
@@ -721,28 +708,6 @@ public class PersoZildo extends Perso {
 		sprModel = EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO).get_sprite(nSpr + addSpr);
 		xx -= 7;
 		yy -= sprModel.getTaille_y() - 2; //21;
-
-		if (mouvement == MouvementZildo.BRAS_LEVES)
-		{
-			// On affiche ce que Zildo a dans les mains
-
-			// Corrections...
-			if (en_bras != null) {
-				int objX = (int) en_bras.getX();
-				int objY = (int) en_bras.getY();
-				int objZ = (int) en_bras.getZ();
-				if (angle == Angle.EST) {
-					objX++;
-				} else if (angle == Angle.OUEST) {
-					objX--;
-				}
-				int variation = seq_1[((getPos_seqsprite() % (4 * Constantes.speed)) / Constantes.speed)];
-
-				en_bras.setX(objX);
-				en_bras.setY(objY);
-				en_bras.setZ(objZ - variation);
-			}
-		}
 		
 		// GUI circle
 		if (guiCircle != null) {
@@ -772,7 +737,7 @@ public class PersoZildo extends Perso {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Manage character's graphic side, depending on the position in the
 	// animated sequence.
-	// NOTE: Especially for Zildo, is called TWICE. BAD, very bad !
+	// NOTE: Called even if Zildo is in ghost mode (automatic movement in cinematic).
 	// /////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void finaliseComportement(int compteur_animation) {
@@ -787,6 +752,32 @@ public class PersoZildo extends Perso {
 			setNSpr(angle.value + ZildoDescription.JUMP_UP.getNSpr());
 			break;
 		case BRAS_LEVES:
+
+			// On affiche ce que Zildo a dans les mains
+			Element en_bras = getEn_bras();
+			// Corrections...
+			if (en_bras != null) {
+				int objZ = (int) en_bras.getZ();
+
+				int variation = seq_1[((getPos_seqsprite() % (4 * Constantes.speed)) / Constantes.speed)];
+
+				//en_bras.setX(objX);
+				//en_bras.setY(objY);
+				en_bras.setZ(objZ - variation);
+				
+				// Corrections , décalages du sprite
+				float xx = x;
+				float yy = y;
+				if (angle == Angle.EST) {
+					xx -= 2;
+				} else if (angle == Angle.OUEST) {
+					xx += 2;
+				}
+
+				en_bras.setX(xx + 1);
+				en_bras.setY(yy); // + 3);
+				en_bras.setZ(17 - 3 - variation);
+			}
 			setSpr(ZildoDescription.getArmraisedMoving(angle, (pos_seqsprite % (8 * Constantes.speed)) / Constantes.speed));
 			break;
 		case SOULEVE:
