@@ -134,7 +134,7 @@ public class ElementImpact extends Element {
         			dying = true;
         		} else {
         			counter++;
-        			composite.setZoom(5 * counter);
+        			composite.setZoom(4 * counter);
         			composite.setAlpha(Math.max(0, alpha));
         			alpha-=2;
         			composite.focus(linkedPerso);
