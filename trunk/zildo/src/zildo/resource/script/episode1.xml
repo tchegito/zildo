@@ -140,7 +140,7 @@
 			<exec script="enlevementScene"/>
 			<map name="bucherons"/>
 			<focus who="zildo" />
-			<moveTo who="zildo" pos="0,1" delta="true"/>
+			<moveTo who="zildo" pos="0,1" open="true" delta="true"/>
 			<fadeIn type="0"/>
 		</action>
 	</quest>
