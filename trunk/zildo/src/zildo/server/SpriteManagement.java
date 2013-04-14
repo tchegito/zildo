@@ -515,8 +515,7 @@ public class SpriteManagement extends SpriteStore {
 		}
 
 		List<SpriteEntity> toDelete = new ArrayList<SpriteEntity>();
-		for (Iterator<SpriteEntity> it = spriteEntities.iterator(); it
-				.hasNext() && !p_blockMoves;) {
+		for (Iterator<SpriteEntity> it = spriteEntities.iterator(); it.hasNext();) {
 			SpriteEntity entity = it.next();
 			if (toDelete.contains(entity)) {
 				continue; // It's a dead one
@@ -528,23 +527,25 @@ public class SpriteManagement extends SpriteStore {
 			} else if (entity.getEntityType().isElement()) {
 				// X, vX, aX, ...
 				element = (Element) entity;
-				element.animate();
-				if (element.dying) {
-					SpriteEntity linkedOne = element.getLinkedPerso();
-					// L'élément est arrivé au terme de son existence : on le
-					// supprime de la liste
-					if (linkedOne != null
-							&& EntityType.ELEMENT == linkedOne
-									.getEntityType()) {
-						toDelete.add(linkedOne);
-					}
-					toDelete.add(element);
-				} else {
-					if (element.isVisible()) {
-						SpriteModel spr = getSpriteBank(entity.getNBank())
-								.get_sprite(
-										entity.getNSpr() + element.getAddSpr());
-						entity.setSprModel(spr);
+				if (! p_blockMoves || element.isLinkedToZildo()) {
+					element.animate();
+					if (element.dying) {
+						SpriteEntity linkedOne = element.getLinkedPerso();
+						// L'élément est arrivé au terme de son existence : on le
+						// supprime de la liste
+						if (linkedOne != null
+								&& EntityType.ELEMENT == linkedOne
+										.getEntityType()) {
+							toDelete.add(linkedOne);
+						}
+						toDelete.add(element);
+					} else {
+						if (element.isVisible()) {
+							SpriteModel spr = getSpriteBank(entity.getNBank())
+									.get_sprite(
+											entity.getNSpr() + element.getAddSpr());
+							entity.setSprModel(spr);
+						}
 					}
 				}
 			}
@@ -805,19 +806,8 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : suspendedEntities) {
 			if (entity != null && !entity.isZildo()) {
 				// Check if this entity is an element linked to Zildo
-				if (entity.getEntityType().isElement()) {
-					Element linkedPerso=((Element)entity).getLinkedPerso();
-					if (linkedPerso != null) {
-						if (linkedPerso.isZildo()) {
-							continue;
-						} else {
-							// Two link to get Zildo (example: shadow LINKED to a bush LINKED to Zildo)
-							Element linkedLinkedPerso=linkedPerso.getLinkedPerso();
-							if  (linkedLinkedPerso != null && linkedLinkedPerso.isZildo()) {
-								continue;
-							}
-						}
-					}
+				if (entity.getEntityType().isElement() && ((Element)entity).isLinkedToZildo()) {
+					continue;
 				}
 				deleteSprite(entity);
 			}
