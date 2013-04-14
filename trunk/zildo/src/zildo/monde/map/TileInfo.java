@@ -82,7 +82,7 @@ public class TileInfo {
 			case EST:
 				return (p_posX > 7);
 			case SUDEST:
-				return (p_posY > (16 - p_posX));
+				return (p_posY > (15 - p_posX));
 			case SUD:
 				return (p_posY > 7);
 			case SUDOUEST:
