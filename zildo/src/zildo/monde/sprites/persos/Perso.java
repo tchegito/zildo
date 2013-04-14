@@ -455,6 +455,8 @@ public abstract class Perso extends Element {
 		if (mapManagement.collide(xx, yy, this)) {
 			float diffx = xx - x;
 			float diffy = yy - y;
+			float keepX = xx;
+			float keepY = yy;
 			if (diffx != 0 && diffy != 0) {
 				// Diagonal move impossible => try lateral move
 				if (!mapManagement.collide(xx, y, this)) {
@@ -482,7 +484,7 @@ public abstract class Perso extends Element {
 					}
 				}
 			}
-			if (mapManagement.collide(xx, yy, this)) {
+			if (xx == keepX && yy == keepY) { //mapManagement.collide(xx, yy, this)) {
 				xx = x;
 				yy = y;
 			}
