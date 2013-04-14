@@ -38,7 +38,8 @@ public class Pnj2 extends SpriteBanque {
 			          // Brigand - 3
 			          new Zone(138,106,16,23),new Zone(170,106,16,23),new Zone(154,106,16,23),
 			          // Brigand 2 - 6
-			          new Zone(128,54,16,24),
+			          new Zone(80, 239, 16, 24),
+			          //new Zone(128,54,16,24),
 			          // Brigand 3 - 7
 			          new Zone(65,123,16,24),new Zone(81,123,16,24),
 			          new Zone(65,147,15,24),new Zone(80,147,16,24),
@@ -144,7 +145,7 @@ public class Pnj2 extends SpriteBanque {
 
 		};
 		
-		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("pnj", 0, 0), new GraphChange("pnj2", 7, 0), 
+		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("pnj", 0, 0), new GraphChange("pnj2", 6, 0), 
 				new GraphChange("pnj", 23, 0),
 				new GraphChange("pnj2", 31, 0),
 				new GraphChange("pnj", 122, 0)});
