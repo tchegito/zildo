@@ -190,7 +190,6 @@ public class Case implements EasySerializable {
 		if (isSpecial > 0) {
 			int val = back.reverse.ordinal();
 			val |= back.rotation.ordinal() << 2;
-			System.out.println(val);
 			if (transition != null) {
 				val|=transition.value << 4;
 			}
