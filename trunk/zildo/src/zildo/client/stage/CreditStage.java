@@ -19,7 +19,7 @@ public class CreditStage implements GameStage {
 	KeyboardInstant instant;
 	boolean askQuit = false;
 	int endCounter=0;
-	boolean done;
+	boolean done = false;
 	
 	public CreditStage() {
 		launchGame();
