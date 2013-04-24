@@ -20,6 +20,7 @@
 
 package zildo.platform.opengl;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -59,7 +60,7 @@ public class LwjglSound extends Sound {
 				snd = SoundStore.get().getOggStream(Constantes.DATA_PATH+p_filename);
 			} else {
 				InputStream stream=new FileInputStream(file);
-				snd = AudioLoader.getAudio(format, stream);
+				snd = AudioLoader.getAudio(format, new BufferedInputStream(stream));
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
