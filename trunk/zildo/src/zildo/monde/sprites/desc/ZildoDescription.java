@@ -87,8 +87,9 @@ public enum ZildoDescription implements SpriteDescription {
 	
 	LAYDOWN, FALLING,
 	
-	SWORD0, SWORD1, SWORD2, SWORD3;	// 97
+	SWORD0, SWORD1, SWORD2, SWORD3,	// 97
 	
+	ZILDO_FLUT;
 	
 	
 	public int getBank() {

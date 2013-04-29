@@ -52,6 +52,7 @@ import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
+import zildo.monde.sprites.persos.action.FlutAction;
 import zildo.monde.sprites.persos.action.HealAction;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.sprites.utils.ShieldEffect;
@@ -266,7 +267,9 @@ public class PersoZildo extends Perso {
 			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence));
 			break;
 		case FLUT:
-			EngineZildo.soundManagement.playSound(BankSound.Sort, this);
+			if (attente == 0 && mouvement == MouvementZildo.VIDE) {
+				action = new FlutAction(this);
+			}
 			break;
 		case NECKLACE:
 			String hq = moonQuarter > 0 ? ""+Math.min(moonQuarter, 2) : "";
@@ -818,6 +821,9 @@ public class PersoZildo extends Perso {
 			break;
 		case TOMBE:
 			setNSpr(ZildoDescription.FALLING.getNSpr());
+			break;
+		case PLAYING_FLUT:
+			setNSpr(ZildoDescription.ZILDO_FLUT.getNSpr());
 			break;
 		}
 

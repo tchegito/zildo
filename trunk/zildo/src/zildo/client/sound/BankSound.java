@@ -56,6 +56,8 @@ public enum BankSound implements AudioBank {
 	ZildoDying("dying"),
 	ZildoFall("chute"),
 	
+	Flut("flut"),
+	
 	MoonFusion("moonfusion"),
 	
 	QuadDamage("quaddamage"),
