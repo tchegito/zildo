@@ -113,7 +113,10 @@ public class PjZildo extends SpriteBanque {
 				
 				// SWORD
 				new Zone(75, 146, 12, 6), new Zone(88, 146, 12, 14),
-				new Zone(101, 146, 14, 14), new Zone(116, 146, 7, 12)
+				new Zone(101, 146, 14, 14), new Zone(116, 146, 7, 12),
+				
+				// Zildo playing flut
+				new Zone(4, 165, 15, 23)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
