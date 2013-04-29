@@ -638,7 +638,9 @@ public class PersoNJ extends Perso {
 				//add_spr +=
 			//}
 			break;
-			
+		case PANNEAU:
+			add_spr = 0;
+			break;
 		default:
 			add_spr = angle.value * 2 + (getPos_seqsprite() % (4 * Constantes.speed)) / (2 * Constantes.speed);
 			break;

@@ -35,6 +35,7 @@ public enum MouvementZildo {
 	SAUTE,   		// Zildo saute une colline ! -> inactif pendant le saut
 	FIERTEOBJET,	// Zildo brandit fièrement un objet
 	MORT,
-	TOMBE;	// Falling in a pit
+	TOMBE,	// Falling in a pit
+	PLAYING_FLUT;
 
 }

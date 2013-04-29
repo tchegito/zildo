@@ -44,7 +44,6 @@ public class ZSpriteLibrary {
 			case SMOKE_FEET1:
 			case SMOKE_FEET2:
 			case SMOKE_FEET3:
-			case ROCK_BIG2:
 			case ARROW_DOWN:
 			case ARROW_LAND_DOWN1:
 			case ARROW_LAND_DOWN2:

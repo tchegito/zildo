@@ -48,6 +48,7 @@ public class Element extends SpriteEntity {
 	public float ax, ay, az;
 	public float vx, vy, vz;
 	public float fx, fy, fz; // Frottements
+	public float alphaV, alphaA;	// Speed and acceleration for alpha
 	protected char spe; // Spe est utilisé selon l'usage
 	protected Angle angle;
 	public boolean flying;
@@ -155,7 +156,8 @@ public class Element extends SpriteEntity {
 				|| a == ElementDescription.KEY.ordinal()
 				|| a == ElementDescription.STAFF_POUM.ordinal()
 				|| a == ElementDescription.BIG_FIRE_BALL.ordinal()
-				|| a == ElementDescription.HEART_FRAGMENT.ordinal()) {
+				|| a == ElementDescription.HEART_FRAGMENT.ordinal()
+				|| a == ElementDescription.NOTE.ordinal()) {
 			return true;
 		} else {
 			return false;
@@ -263,6 +265,10 @@ public class Element extends SpriteEntity {
 		// Perso pnj;
 		boolean colli;
 
+		// Alpha channel evolution
+		alphaV += alphaA;
+		alpha += alphaV;
+		
 		if (mover != null) {
 			// Moving is delegated to another object
 			if (mover.reachTarget()) {
