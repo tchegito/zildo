@@ -24,6 +24,8 @@ import java.util.ArrayList;
 
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
+import zildo.client.PlatformDependentPlugin;
+import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.UIText;
@@ -55,15 +57,19 @@ public class OptionsMenu extends Menu {
 
 		});
 
-		items.add(new ItemMenu(getFullscreenString()) {
-			@Override
-			public void run() {
-				fullScreen = !fullScreen;
-				ClientEngineZildo.openGLGestion.switchFullscreen(fullScreen);
-				setText(getFullscreenString());
-				client.handleMenu(currentMenu);
-			}
-		});
+    	// TODO: Dirty way to check Android platform : need to be cleaned with
+    	// a better injection mechanism.
+    	if (PlatformDependentPlugin.currentPlugin != KnownPlugin.Android) {
+			items.add(new ItemMenu(getFullscreenString()) {
+				@Override
+				public void run() {
+					fullScreen = !fullScreen;
+					ClientEngineZildo.openGLGestion.switchFullscreen(fullScreen);
+					setText(getFullscreenString());
+					client.handleMenu(currentMenu);
+				}
+			});
+    	}
 		
 		items.add(new ItemMenu("global.back") {
 			@Override
