@@ -430,10 +430,7 @@ public class PlayerManagement {
 								} else {
 									if (cy>heros.getY()) persoangle=Angle.NORD; else persoangle=Angle.SUD;
 								}
-								//perso.setAngle((persoangle+2) % 4);
-								// Est-ce que ce perso/sprite a plusieurs angles ?
-								if (persoToTalk.getNSpr()!=82 && persoToTalk.getNSpr()!=83 && persoToTalk.getNSpr()!=84)
-									persoToTalk.setAngle(persoangle);
+								persoToTalk.setAngle(persoangle);
 		
 								// Launch the dialog
 								EngineZildo.dialogManagement.launchDialog(client, persoToTalk, null);
@@ -547,7 +544,8 @@ public class PlayerManagement {
 	// keyPressInventory
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyPressInventory() {
-		if (!keysState.key_inventoryPressed && gamePhase != GamePhase.DIALOG && gamePhase != GamePhase.SCRIPT && heros.getMouvement()==MouvementZildo.VIDE) {
+		if (!keysState.key_inventoryPressed && gamePhase != GamePhase.DIALOG && gamePhase != GamePhase.SCRIPT 
+				&& heros.getMouvement()==MouvementZildo.VIDE && heros.getAttente() == 0) {
 			if (!heros.isInventoring()) {
 				heros.lookInventory();
 			} else {
