@@ -137,7 +137,7 @@ public class ElementsPlus extends SpriteBanque {
 
 				// Rocher et ombre (64)
 				new Zone(24, 95, 31, 31),
-				new Zone(24, 126, 31, 31),
+				new Zone(0, 197, 32, 19),
 				new Zone(24, 18, 18, 6),
 
 				// Bouclier
@@ -262,6 +262,10 @@ public class ElementsPlus extends SpriteBanque {
 				// Back on "objets.png"
 				new Zone(44, 85, 15, 10),	// MOON_FRAGMENT2
 				new Zone(0, 85, 16, 16),	// NECKLACE
+				// Note
+				new Zone(27, 64, 4, 7),
+				// Psychic and sorcerer sign
+				new Zone(32, 197, 32, 19), new Zone(0, 216, 32, 16)
 
 		};
 		
@@ -269,6 +273,7 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem2", 71, 0), 
 				new GraphChange("objets", 123, 0),
 				new GraphChange("elem", 156, 0),
-				new GraphChange("objets", 181, 0)});
+				new GraphChange("objets", 181, 0),
+				new GraphChange("elem", 183, 0)});
 	}
 }
