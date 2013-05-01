@@ -74,7 +74,7 @@ public abstract class Banque {
     	for (Point p : coords) {
     		if (current != null && current.nTile == nTile) {
     			System.out.println("Loading "+current.imageName);
-    			bankEdit.loadImage(current.imageName, 0);	// 0 as transparency color
+    			bankEdit.loadImage(current.imageName, 255);	// 0 as transparency color
     			if (it.hasNext()) {
     				current=it.next();
     			} else {
