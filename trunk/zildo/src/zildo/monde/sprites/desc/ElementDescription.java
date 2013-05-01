@@ -91,7 +91,7 @@ public enum ElementDescription implements SpriteDescription {
 	// 181
 	HEART_FRAGMENT2, NECKLACE,
 	// 183
-	NOTE, PSYCHIC_SIGN, WITCH_SIGN;
+	NOTE, PSYCHIC_SIGN, WITCH_SIGN, NOTE2;
 
 	Boolean damage;
 	

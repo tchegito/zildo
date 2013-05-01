@@ -157,7 +157,8 @@ public class Element extends SpriteEntity {
 				|| a == ElementDescription.STAFF_POUM.ordinal()
 				|| a == ElementDescription.BIG_FIRE_BALL.ordinal()
 				|| a == ElementDescription.HEART_FRAGMENT.ordinal()
-				|| a == ElementDescription.NOTE.ordinal()) {
+				|| a == ElementDescription.NOTE.ordinal()
+				|| a == ElementDescription.NOTE2.ordinal()) {
 			return true;
 		} else {
 			return false;

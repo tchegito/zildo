@@ -20,6 +20,7 @@
 package zildo.monde.sprites.persos.action;
 
 import zildo.client.sound.BankSound;
+import zildo.monde.Hasard;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -47,6 +48,7 @@ public class FlutAction implements PersoAction {
 	public boolean launchAction() {
 		if (perso.getAttente() < 2) {
 			perso.setMouvement(MouvementZildo.VIDE);
+			return true;
 		} else if (perso.getAttente() % 40 == 0) {
 			// Drop a note
 			Element element = new Element();
@@ -55,12 +57,16 @@ public class FlutAction implements PersoAction {
 			element.z = 4;
 			element.vx = 0.2f+0.1f*(float) Math.random();
 			element.ax = -0.01f;
-			element.az = 0.01f; // + rnd()*0.005f);
+			element.az = 0.015f; // + rnd()*0.005f);
 			element.fx = 0.04f * (float) Math.random();
 			
-			element.alphaA = -0.04f;
+			element.alphaA = -0.06f;
 			
-			element.setSprModel(ElementDescription.NOTE);
+			ElementDescription desc = ElementDescription.NOTE;
+			if (Hasard.lanceDes(5)) {
+				desc = ElementDescription.NOTE2;
+			}
+			element.setSprModel(desc);
 
 			element.setScrX((int) element.x);
 			element.setScrY((int) element.y);
