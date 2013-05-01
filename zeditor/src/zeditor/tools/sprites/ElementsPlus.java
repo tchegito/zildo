@@ -263,9 +263,12 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(44, 85, 15, 10),	// MOON_FRAGMENT2
 				new Zone(0, 85, 16, 16),	// NECKLACE
 				// Note
-				new Zone(27, 64, 4, 7),
+				//new Zone(27, 64, 4, 7),
+				new Zone(51, 58, 3, 8),
 				// Psychic and sorcerer sign
-				new Zone(32, 197, 32, 19), new Zone(0, 216, 32, 16)
+				new Zone(32, 197, 32, 19), new Zone(0, 216, 32, 16),
+				// Note 2
+				new Zone(55, 58, 7, 8)
 
 		};
 		
