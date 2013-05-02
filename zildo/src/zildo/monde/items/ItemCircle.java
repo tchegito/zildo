@@ -99,6 +99,7 @@ public class ItemCircle {
             SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(item.kind.representation, center.x, center.y, true, Reverse.NOTHING, true);
             e.clientSpecific=true;
             e.setSpecialEffect(EngineFX.FOCUSED);
+            e.zoom = 0;
             guiSprites.add(e);
 		}
 		display();
@@ -134,7 +135,7 @@ public class ItemCircle {
 			int itemY=(int) (center.getY() - rayon*Math.cos(alpha));
 			entity.setAjustedX(itemX);
 			entity.setAjustedY(itemY);
-			
+			entity.zoom = Math.min(255, rayon * 8); //16; //255 * (33 / (33-rayon));
 			alpha+=pas;
 		}		
 	}
