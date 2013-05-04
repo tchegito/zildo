@@ -402,7 +402,7 @@
 			<wait value="20"/>
 			<moveTo who="zildo" pos="0,0" delta="true"/>
 			<exec script="echange"/>
-			<exec script="intro_episode2"/>
+			<exec script="ep1_closure"/>
 		</action>
 	</quest>
 	
@@ -575,7 +575,7 @@
 	</scene>
 	
 	<scene id="echange">
-	    <pos who="zildo" pos="577,169"/>
+	    <pos who="zildo" pos="880,368"/>
 	    <angle who="zildo" value="2"/>
 	    <music name="Angoisse"/>
 	    <map name="promenade2"/>
@@ -586,7 +586,8 @@
 	    <focus who="emissaire"/>
 	    <fadeIn type="5"/>
 	    <speak what="camera" text="echange.p1" unblock="true"/>
- 	    <moveTo pos="935,187" who="emissaire" unstoppable="true"/>
+	    <pos who="zildo" pos="577,169"/>
+	    <moveTo pos="935,187" who="emissaire" unstoppable="true"/>
  	    <moveTo pos="860,233" who="emissaire" unstoppable="true"/>
 	    <moveTo pos="688,326" who="emissaire" unstoppable="true"/>
 	    <moveTo pos="544,326" who="emissaire" unstoppable="true"/>
@@ -667,6 +668,7 @@
 	    <speak who="emissaire" text="echange.emissaire6" />
 	    <moveTo who="zildo" pos="0,24" delta="true" speed="1" unstoppable="true"/>
 	    <moveTo who="zildo" pos="-16,0" delta="true" unstoppable="true"/>
+	    <music name="Nuit"/>
 	</scene>
 
 	<scene id="ep1_closure">
@@ -1176,6 +1178,7 @@
 	    <fadeIn type="0"/>
 	    <speak who="camera" text="promenade.off"/>
 	    <fadeOut type="0"/>
+	    <music name="Nuit"/>
 		<pos who="zildo" pos="57,79"/>
 		<focus who="zildo"/>
 	    <map name="promenade"/>
