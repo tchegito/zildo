@@ -1109,6 +1109,9 @@ public class PersoZildo extends Perso {
 		int index = 0;
 		for (Item i : inventory) {
 			if (i.kind == p_kind) {
+				if (super.getWeapon() == i) {
+					setWeapon(null);
+				}
 				inventory.remove(index);
 				return;
 			}
