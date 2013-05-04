@@ -110,14 +110,15 @@ public class WorldRegister extends Thread {
 	/**
 	 * Returns all registered champions on Zildo server.
 	 * NULL as returned value means that internet connection doesn't work.
+	 * @param episode name of episode to query
 	 * @return List<Champion>
 	 */
-	public static List<Champion> getChampions()  throws GoogleQuotaException, UnknownHostException {
+	public static List<Champion> getChampions(String episode)  throws GoogleQuotaException, UnknownHostException {
 		List<Champion> hall = new ArrayList<Champion>();
 		try {
 			StringBuilder request = new StringBuilder();
 			request.append(url).append("?").append(displayChampionServlet);
-			request.append("&ingame=1");
+			request.append("&ingame=1&episode="+episode);
 			URL objUrl = new URL(request.toString());
 			URLConnection urlConnect = objUrl.openConnection();
 
@@ -132,7 +133,7 @@ public class WorldRegister extends Thread {
 				}
 				name = URLDecoder.decode(name, charset);
 				int hq = Integer.valueOf(reader.readLine());
-				String episode = reader.readLine();
+				//String ep = reader.readLine();
 				long finish = Long.valueOf(reader.readLine());
 				int money = Integer.valueOf(reader.readLine());
 				long timeSpent = Long.valueOf(reader.readLine());
@@ -214,7 +215,7 @@ public class WorldRegister extends Thread {
 			request.append("&name=").append(URLEncoder.encode(ch.playerName, charset));
 			
 			request.append("&episode=").append(ch.episodeName);
-			request.append("&hq=").append(ch.heartQuarter);
+			request.append("&hq=").append(ch.moonHalf);
 			request.append("&money=").append(ch.money);
 			request.append("&timeSpent=").append(ch.timeSpent);
 			

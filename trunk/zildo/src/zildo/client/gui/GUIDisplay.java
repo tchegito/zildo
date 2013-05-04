@@ -191,6 +191,7 @@ public class GUIDisplay {
 		scriptLegibility[transcoChar.indexOf("M")] = 3;
 		scriptLegibility[transcoChar.indexOf("Q")] = 3;
 		scriptLegibility[transcoChar.indexOf("N")] = 3;
+		scriptLegibility[transcoChar.indexOf("K")] = 7;
 		scriptLegibility[transcoChar.indexOf("d")] = 1;
 		scriptLegibility[transcoChar.indexOf("l")] = 1;
 		scriptLegibility[transcoChar.indexOf("A")] = 1;
@@ -815,7 +816,7 @@ public class GUIDisplay {
 			
 			if (weapon.kind == ItemKind.NECKLACE) {
 				// Display number of moon fragments
-				int nQuarter = zildo.getHeartQuarter();
+				int nQuarter = zildo.getMoonHalf();
 				if (nQuarter > 0 && nQuarter < 10) {
 					displayNumber(nQuarter, 1, WEAPON_X + 11 + 6, GUI_Y + 8 + 6);
 				}
