@@ -32,6 +32,7 @@ import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.PageableMenu;
 import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.Champion;
+import zildo.resource.Constantes;
 
 /**
  * @author Tchegito
@@ -50,7 +51,7 @@ public class HallOfFameMenu extends PageableMenu {
 		String messageError = null;
 		List<Champion> champions = null;
 		try {
-			champions = WorldRegister.getChampions();
+			champions = WorldRegister.getChampions(Constantes.currentEpisode);
 		} catch (GoogleQuotaException e) {
 			messageError = "m10.internet.quota";
 		} catch (UnknownHostException e) {
@@ -66,7 +67,7 @@ public class HallOfFameMenu extends PageableMenu {
 				public int compare(Champion o1, Champion o2) {
 					int value = new Long(o1.timeSpent).compareTo(o2.timeSpent);
 					if (value == 0) {
-						value = -new Integer(o1.heartQuarter).compareTo(o2.heartQuarter);
+						value = -new Integer(o1.moonHalf).compareTo(o2.moonHalf);
 						if (value == 0) {
 							value = -new Integer(o1.money).compareTo(o2.money);
 						}

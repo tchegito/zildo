@@ -70,7 +70,7 @@ public class ZSExpression {
 			return price<=zildoMoney;
 		} else if (questName.startsWith("moon")) {
 			int moonFragment=Integer.valueOf(questName.substring("moon".length()));
-			int currentFragmentNb = EngineZildo.persoManagement.getZildo().getHeartQuarter();
+			int currentFragmentNb = EngineZildo.persoManagement.getZildo().getMoonHalf();
 			return currentFragmentNb >= moonFragment;
 		}
 		boolean result = EngineZildo.scriptManagement.isQuestOver(questName);

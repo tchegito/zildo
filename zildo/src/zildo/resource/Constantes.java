@@ -47,6 +47,9 @@ public class Constantes {
 	public static String SAVEGAME_DIR = "saves"+File.separator;
 	public static String SAVEGAME_FILE = "save.z";
 	
+	// When player finish the game, he'll be registered with this episode name
+	public static final String currentEpisode = "Alemb1";
+
 	public static int CURRENT_VERSION = 1096;	// Version 1.095
 	
 	// Tile Engine

@@ -83,7 +83,7 @@ public class PersoZildo extends Perso {
 
 	private ZildoOutfit outfit;
 
-	private int moonQuarter;
+	private int moonHalf;
 
 	// Linked elements
 	Element shield;
@@ -272,7 +272,7 @@ public class PersoZildo extends Perso {
 			}
 			break;
 		case NECKLACE:
-			String hq = moonQuarter > 0 ? ""+Math.min(moonQuarter, 2) : "";
+			String hq = moonHalf > 0 ? ""+Math.min(moonHalf, 2) : "";
 			sentence = UIText.getGameText("necklace.action"+hq);
 			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence));
 			break;
@@ -912,7 +912,7 @@ public class PersoZildo extends Perso {
 					break;
 				case HEART_FRAGMENT:
 					toPlay = BankSound.ZildoMoon;
-					moonQuarter++;
+					moonHalf++;
 					break;
 				case DROP_FLOOR:
 				case DROP_SMALL:
@@ -1188,12 +1188,12 @@ public class PersoZildo extends Perso {
 		return quadDuration > 0;
 	}
 	
-	public int getHeartQuarter() {
-		return moonQuarter;
+	public int getMoonHalf() {
+		return moonHalf;
 	}
 
-	public void setHeartQuarter(int heartQuarter) {
-		this.moonQuarter = heartQuarter;
+	public void setMoonHalf(int moonHalf) {
+		this.moonHalf = moonHalf;
 	}
 	
 	int[] accels = new int[] { 0, 1, 1, 1, 2, 2, 3, 6, 8, 10, 10 };
@@ -1216,7 +1216,7 @@ public class PersoZildo extends Perso {
 	
 	/** Hero HP increases, using 2 moon fragments. */
 	public void gainHPWithNecklace() {
-		moonQuarter -= 2;
+		moonHalf -= 2;
 		maxpv+=2;
 		pv = maxpv;
 	}
