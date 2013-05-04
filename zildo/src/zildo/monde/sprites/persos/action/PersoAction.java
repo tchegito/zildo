@@ -28,5 +28,9 @@ package zildo.monde.sprites.persos.action;
  */
 public interface PersoAction {
 
+	/**
+	 * Run the action.
+	 * @return TRUE to remove this action from linked character.
+	 */
 	public boolean launchAction();
 }
