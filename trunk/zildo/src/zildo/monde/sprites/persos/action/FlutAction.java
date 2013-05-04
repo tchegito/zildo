@@ -39,7 +39,7 @@ public class FlutAction implements PersoAction {
 	public FlutAction(PersoZildo zildo) {
 		perso = zildo;
 		EngineZildo.soundManagement.playSound(BankSound.Flut, perso);
-		perso.setAttente(110);
+		perso.setAttente(200);
 		perso.setAngle(Angle.SUD);
 		perso.setMouvement(MouvementZildo.PLAYING_FLUT);
 	}
@@ -49,7 +49,7 @@ public class FlutAction implements PersoAction {
 		if (perso.getAttente() < 2) {
 			perso.setMouvement(MouvementZildo.VIDE);
 			return true;
-		} else if (perso.getAttente() % 40 == 0) {
+		} else if (perso.getAttente() % 80 == 0) {
 			// Drop a note
 			Element element = new Element();
 			element.x = perso.x-6;
@@ -57,7 +57,8 @@ public class FlutAction implements PersoAction {
 			element.z = 4;
 			element.vx = 0.2f+0.1f*(float) Math.random();
 			element.ax = -0.01f;
-			element.az = 0.015f; // + rnd()*0.005f);
+			element.vz = 0.1f;
+			element.az = 0.011f; // + rnd()*0.005f);
 			element.fx = 0.04f * (float) Math.random();
 			
 			element.alphaA = -0.06f;
