@@ -341,10 +341,17 @@
 		</action>
 	</quest>
 	
+	<quest name="zildo_polaky_killguards">
+	    <trigger>
+	        <location name="polaky"/>
+		    <dead who="g1,g2"/>
+	    </trigger>
+   	</quest>
+	
 	<quest name="zildo_polaky">
 		<trigger>
 		    <location name="polaky" pos="616,75" radius="1"/>
-		    <dead who="g1,g2"/>
+		    <questDone name="zildo_polaky_killguards"/>
 		</trigger>
 		<action>
 		    <exec script="polaky_castle"/>
@@ -487,6 +494,9 @@
 		<condition name="polaky" exp="bosquet_free_way">
 		    <remove who="sofiasky"/>
 		</condition>
+		<condition name="polaky" exp="zildo_polaky_killguards-!zildo_polaky">
+		    <markQuest name="zildo_polaky_killguards" value="0"/>
+		</condition>
 		<condition name="polaky1" exp="zildo_polaky">
 		    <remove who="maltus"/>
 		    <script who="sofiasky" value="0"/>
@@ -519,14 +529,14 @@
 		<speak what="camera" text="preintro.5"/>
 		<actions>
 			<animation pos="220,120" type="CLOUD_FOG" />
-			<spawn who="grandpere" pos="220,120" type="VIEUX_SAGE"/>
+			<spawn who="grandpere" pos="220,119" type="VIEUX_SAGE"/>
 			<angle who="zildo" value="1"/>
 		</actions>
 		<speak what="camera" text="preintro.6"/> 
 		<speak what="camera" text="preintro.7"/> 
 		<actions>
 			<animation pos="100,120" type="CLOUD_FOG" />
-			<spawn who="roxy" pos="100,120" type="PRINCESSE" angle="2"/>
+			<spawn who="roxy" pos="100,119" type="PRINCESSE" angle="2"/>
 			<angle who="zildo" value="3"/>
 		</actions>
 		<wait value="100"/>
