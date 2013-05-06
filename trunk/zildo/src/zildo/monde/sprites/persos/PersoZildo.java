@@ -1055,8 +1055,11 @@ public class PersoZildo extends Perso {
 	 * 
 	 * @param p_item
 	 */
-	public void addInventory(Item p_item) {
+	private void addInventory(Item p_item) {
 		inventory.add(p_item);
+		if (getWeapon() == null) {
+			setWeapon(p_item);
+        }
 	}
 
 	public boolean isInventoring() {
