@@ -613,7 +613,7 @@
 	    <speak who="tony" text="echange.tony1" />
 	    <moveTo pos="544,322" who="emissaire"/>
 	    <speak who="tony" text="echange.tony2" />
-	    <moveTo pos="544,246" speed="0.5" who="emissaire"/>
+	    <moveTo pos="544,246" speed="0.5" unstoppable="true" who="emissaire"/>
 	    <wait value="15" />
 	    <spawn type="SCEPTER" pos="543,233" what="scepter"/>
 	    <wait value="35" />
@@ -976,7 +976,7 @@
             <moveTo who="zildo" pos="463,326"/>
         </actions>
         <actions>
-            <moveTo who="maltus" pos="548,254"/>
+            <moveTo who="maltus" pos="548,254" unstoppable="true"/>
             <moveTo who="zildo" pos="572,272"/>
         </actions>
         <actions>
