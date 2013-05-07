@@ -54,7 +54,7 @@ public class LwjglSound extends Sound {
 		File file=new File(Constantes.DATA_PATH + p_filename);
 		
 		try {
-			System.out.println(p_filename);
+			//System.out.println(p_filename);
 			music = "OGG".equals(format);
 			if (music) {
 				snd = SoundStore.get().getOggStream(Constantes.DATA_PATH+p_filename);
