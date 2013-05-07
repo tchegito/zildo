@@ -420,7 +420,7 @@ public class GUIDisplay {
 		if (center) {
 			offsetX = (sc.TEXTER_SIZEX - sizesLine[0]) / 2;
 		}
-		if (toDisplay_dialogMode == DialogMode.MENU) {
+		if (toDisplay_dialogMode.isMenu()) {
 			offsetY-= (sc.TEXTER_SIZELINE * (nLigne+0)) ;
 		}
 		nLigne = 0;
