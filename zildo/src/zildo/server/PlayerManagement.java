@@ -373,6 +373,8 @@ public class PlayerManagement {
 		}
 	}
 	
+	IntSet pickableTiles = new IntSet(165,167,169,751);
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// keyPressAction
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -458,7 +460,7 @@ public class PlayerManagement {
 							Area map=EngineZildo.mapManagement.getCurrentMap();
 							int on_map=map.readmap(newx,newy);
 							ElementDescription objDesc=null;
-							if (new IntSet(165,167,169,751).contains(on_map)) {
+							if (pickableTiles.contains(on_map)) {
 								//On ramasse l'objet
 								switch (on_map) {
 								case 165:

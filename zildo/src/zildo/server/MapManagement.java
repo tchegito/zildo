@@ -298,6 +298,10 @@ public class MapManagement {
 		return false;
 	}
 
+	private final static IntSet particularTiles = 
+		new IntSet(256 + 22, 256+23)
+		.addRange(256*3 + 89, 256*3 + 96);
+
 	private boolean collideTile(int tx, int ty, boolean ghost, Point size, Element quelElement) {
 		int mx, my; // Position map
 		int on_map;
@@ -308,24 +312,38 @@ public class MapManagement {
 		// Check on back or fore ground, depending on the character we're checking
 		boolean foreground = quelElement != null && quelElement.isForeground();
 
-		// On teste les 4 coins d'un carré de 4x4
+		// Check 4 corners of a 4x4 sized square
 		for (int i = 0; i < 4; i++) {
 			mx = (tx + (size.x / 2) * tab_add[i]);
 			my = (ty + (size.y / 2) * tab_add[i + 1]);
+
+			if (currentMap.isOutside(mx, my)) {
+				// Avoid collision on the map's borders
+				return quelElement != null && !quelElement.isZildo() && !ghost;
+			}
+
 			Tile tile = currentMap.readmap((mx / 16), (my / 16), foreground);
 			if (tile == null) {
 				continue;
 			}
+
 			on_map = tile.getValue();
 			modx = mx % 16;
 			mody = my % 16;
 
-			if (currentMap.isOutside(mx, my)) {
-				// On empêche la collision sur les bords de cartes
-				return quelElement != null && !quelElement.isZildo() && !ghost;
-			}
 			if (tileCollision.collide(modx, mody, on_map, tile.reverse)) {
 				return true;
+			} else {
+				// Special case : impassable for NPC, but right for hero
+				if (particularTiles.contains(on_map)) {
+					// Okay => check if given element is a character which is allowed
+					// to pass particular tiles
+					if (quelElement != null && quelElement.getEntityType() == EntityType.PERSO) {
+						Perso perso = (Perso) quelElement;
+						return !perso.isOpen();
+					}
+				}
+				
 			}
 		}
 		return false;
@@ -616,9 +634,9 @@ public class MapManagement {
 	}
 
 	// Hill boundaries
-	private final IntSet leftIncreaseZ = new IntSet(100, 106, 107); // 17, 15,
+	private final static IntSet leftIncreaseZ = new IntSet(100, 106, 107); // 17, 15,
 																	// 841, 15);
-	private final IntSet rightDecreaseZ = new IntSet(102, 103, 104); // 25, 9,
+	private final static IntSet rightDecreaseZ = new IntSet(102, 103, 104); // 25, 9,
 																		// 842,
 																		// 9);
 
