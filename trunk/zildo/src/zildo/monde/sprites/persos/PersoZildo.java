@@ -859,6 +859,8 @@ public class PersoZildo extends Perso {
 				return false;
 			} else {
 				// Automatic behavior (presentation text, ammos adjustments)
+				BankSound toPlay = null;
+
 				EngineZildo.scriptManagement.automaticBehavior(this, null, d);
 				switch (d) {
 				case GREENMONEY1:
@@ -878,6 +880,9 @@ public class PersoZildo extends Perso {
 						// Blue energy animation 
 						ElementImpact energy = new ElementImpact((int) x, (int) y, ImpactKind.DROP_ENERGY, this);
 						EngineZildo.spriteManagement.spawnSprite(energy);
+						toPlay = BankSound.ZildoRecupCoeur;
+					} else {
+						toPlay = BankSound.ZildoRecupItem;
 					}
 					break;
 				case ARROW_UP:
@@ -895,7 +900,6 @@ public class PersoZildo extends Perso {
 					break;
 				}
 				// Sound
-				BankSound toPlay = null;
 				switch (d) {
 				/*
 				case GREENMONEY1:
@@ -917,8 +921,7 @@ public class PersoZildo extends Perso {
 				case DROP_FLOOR:
 				case DROP_SMALL:
 				case DROP_MEDIUM:
-					toPlay = BankSound.ZildoRecupCoeur;
-					break;
+					break;	// Already done
 				default:
 					toPlay = BankSound.ZildoRecupItem;
 					break;
