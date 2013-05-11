@@ -590,14 +590,14 @@ public abstract class Perso extends Element {
 		inDirt = false;
 		BankSound snd = null;
 		switch (onmap) {
-		case 278:
+		case 256 + 22:
 			if (pathFinder.open) {
 				mapManagement.getCurrentMap().writemap(cx, cy, 314);
 				mapManagement.getCurrentMap().writemap(cx + 1, cy, 315);
 				snd = BankSound.OuvrePorte;
 			}
 			break;
-		case 279:
+		case 256 + 23:
 			if (pathFinder.open) {
 				mapManagement.getCurrentMap().writemap(cx - 1, cy, 314);
 				mapManagement.getCurrentMap().writemap(cx, cy, 315);
@@ -767,6 +767,11 @@ public abstract class Perso extends Element {
 
 	public void setOpen(boolean p_open) {
 		pathFinder.open = p_open;
+	}
+	
+	// Is this perso allowed to pass door/stairs ?
+	public boolean isOpen() {
+		return pathFinder.open;
 	}
 
 	public Pointf reachDestination(float p_speed) {

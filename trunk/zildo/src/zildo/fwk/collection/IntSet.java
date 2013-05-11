@@ -21,17 +21,38 @@
 package zildo.fwk.collection;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class IntSet extends ArrayList<Integer> {
+public class IntSet {
 
+	List<Integer> backed;
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	public IntSet(int... startSet) {
+		backed = new ArrayList<Integer>(startSet.length);
 		for (int a : startSet) {
-			this.add(a);
+			backed.add(a);
 		}
 	}
+	
+	public IntSet addRange(int first, int last) {
+		for (int i = first; i<=last; i++) {
+			backed.add(i);
+		}
+		return this;
+	}
+	
+	// Wrapped method
+	public boolean contains(Integer i) {
+		return backed.contains(i);
+	}
+	
+	public Integer get(int nth) {
+		return backed.get(nth);
+	}
+	
 }

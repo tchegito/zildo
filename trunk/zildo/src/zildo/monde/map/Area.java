@@ -1103,7 +1103,8 @@ public class Area implements EasySerializable {
 	 */
 	public boolean isOutside(int tx, int ty) {
 		return (tx < 0 || ty < 0 ||
-				tx > (dim_x - 1) * 16 + 15 || ty > (dim_y - 1) * 16 + 15);
+				tx > ((dim_x - 1) << 4) + 15 || 
+				ty > ((dim_y - 1) << 4) + 15);
 	}
 
 	public Atmosphere getAtmosphere() {
