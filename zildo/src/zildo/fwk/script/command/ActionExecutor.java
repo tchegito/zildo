@@ -446,6 +446,14 @@ public class ActionExecutor {
                 	case 0:
                 		zildo.gainHPWithNecklace();
                 		break;
+                	case 1:
+                		// Block every non-hero characters
+                		EngineZildo.spriteManagement.blockNonHero();
+                		break;
+                	case 2:
+                		// Block every non-hero characters
+                		EngineZildo.spriteManagement.unblockNonHero();
+                		break;
                 	}
                 	achieved = true;
                 	break;
