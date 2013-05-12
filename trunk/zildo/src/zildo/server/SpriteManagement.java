@@ -84,6 +84,8 @@ public class SpriteManagement extends SpriteStore {
 	SpriteCollision sprColli;
 	public PersoCollision persoColli;
 	
+	private boolean temporaryBlocked;
+	
 	public SpriteManagement() {
 
 		super();
@@ -485,6 +487,8 @@ public class SpriteManagement extends SpriteStore {
 		sprColli.initFrame(spriteEntities);
 		persoColli.initFrame(EngineZildo.persoManagement.tab_perso);
 
+		boolean blockNPC = p_blockMoves || temporaryBlocked;
+		
 		// Do perso animations
 		// Mandatory to do that first, because one perso can be connected to
 		// other sprites
@@ -492,7 +496,8 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : spriteEntities) {
 			if (entity.getEntityType().isPerso()) {
 				Perso perso = (Perso) entity;
-				if (!p_blockMoves || perso.getInfo() == PersoInfo.ZILDO) {
+				boolean allowedToMoveAndCollide = !blockNPC || perso.getInfo() == PersoInfo.ZILDO;
+				if (allowedToMoveAndCollide) {
 					// Animate persos
 					perso.animate(compt);
 				}
@@ -501,8 +506,10 @@ public class SpriteManagement extends SpriteStore {
 				SpriteModel spr = getSpriteBank(entity.getNBank())
 						.get_sprite(perso.getNSpr() + perso.getAddSpr());
 				perso.setSprModel(spr);
-				perso.manageCollision();
-
+				if (allowedToMoveAndCollide) {
+					perso.manageCollision();
+				}
+				
 				if (!perso.isZildo()) {
 					// Non-zildo sprite haven't same way to display
 					// correctly (bad...)
@@ -527,7 +534,7 @@ public class SpriteManagement extends SpriteStore {
 			} else if (entity.getEntityType().isElement()) {
 				// X, vX, aX, ...
 				element = (Element) entity;
-				if (! p_blockMoves || element.isLinkedToZildo()) {
+				if (!blockNPC || element.isLinkedToZildo()) {
 					element.animate();
 					if (element.dying) {
 						SpriteEntity linkedOne = element.getLinkedPerso();
@@ -835,8 +842,17 @@ public class SpriteManagement extends SpriteStore {
         return null;
     }
     
+    public void blockNonHero() {
+    	temporaryBlocked = true;
+    }
+    
+    public void unblockNonHero() {
+    	temporaryBlocked = false;
+    }
+    
     public void initForNewMap() {
     	sprColli.clear();
     	persoColli.clear();
+    	unblockNonHero();
     }
 }
