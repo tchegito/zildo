@@ -110,11 +110,14 @@ public class EngineZildo {
 
 	}
 	
+	//TODO: confuse between state.zildo and persoManagement.getZildo ==> one should be removed
+	//TODO: client.isIngameMenu should be replaced by an attribute in ClientState
 	public void renderFrame(Collection<ClientState> p_clientStates) {
 		// Animate the world
 		// 1) Players
 		boolean block=false;
 		boolean blockKeyboard=false;
+		PersoZildo zildo = persoManagement.getZildo();
 		for (ClientState 
 				state : p_clientStates) {
 			
@@ -122,9 +125,9 @@ public class EngineZildo {
 			if (game.multiPlayer) {
 				multiplayerManagement.render();
 			} else {	// Block everything in single player
-				block=blockKeyboard;
-				block|=state.event.nature == ClientEventNature.CHANGINGMAP_SCROLL;
-				block|=persoManagement.getZildo().isInventoring();
+				block = blockKeyboard;
+				block |= state.event.nature == ClientEventNature.CHANGINGMAP_SCROLL;
+				block |= (zildo != null && zildo.isInventoring());
 			}
 			
 			// If client has pressed keys and he's not blocked, we manage them, then clear.
@@ -134,7 +137,7 @@ public class EngineZildo {
 			state.keys=null;
 			
 			// Look for map change (only in single player for now)
-			if (!game.multiPlayer && mapManagement.isChangingMap(state.zildo) && state.event.nature==ClientEventNature.NOEVENT) {
+			if (!game.multiPlayer && zildo != null && mapManagement.isChangingMap(state.zildo) && state.event.nature==ClientEventNature.NOEVENT) {
 				ChainingPoint ch=mapManagement.getChainingPoint();
 				if (ch.isBorder()) {
 					state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_SCROLL_ASKED);

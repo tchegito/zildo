@@ -209,93 +209,92 @@ public class PersoNJ extends Perso {
 			walkTile(true);
 		} else {
 			// Common moves
-			if (zildo == null) {
-				return;
-			}
-			switch (quel_deplacement) {
-			case VOLESPECTRE:
-				double beta;
-				if (cptMouvement == 100) {
-					if (desc == PersoDescription.CORBEAU) {
-						// Black bird : focus moving zone on Zildo
-						int pasx, pasy;
-						if ((int) zildo.x / 16 > x / 16) {
-							pasx = 16;
-						} else {
-							pasx = -16;
-						}
-						if ((int) zildo.y / 16 > y / 16) {
-							pasy = 16;
-						} else {
-							pasy = -16;
-						}
-						zone_deplacement.incX1(pasx * 3);
-						zone_deplacement.incY1(pasy * 3);
-						zone_deplacement.incX2(pasx * 3);
-						zone_deplacement.incY2(pasy * 3);
-					}
-					attente = 1 + (int) Math.random() * 5;
-					if (pathFinder.getTarget() == null || desc == PersoDescription.CORBEAU) {
-						pathFinder.determineDestination();
-					}
-					cptMouvement = 0;
-				} else if (attente != 0) {
-					attente--;
-				} else {
-					if (desc == PersoDescription.CORBEAU) {
-						if (pos_seqsprite != 0) {
-							pos_seqsprite = (4 * Constantes.speed) + (pos_seqsprite - 4 * Constantes.speed + 1)
-									% (8 * Constantes.speed);
-						} else {
-							// Est-ce que Zildo est dans les parages ?}
-							beta = x - zildo.x;
-							float vitesse = y - zildo.y;
-							beta = Math.sqrt(beta * beta + vitesse * vitesse);
-							if (beta < 16 * 5) {
-								pos_seqsprite = 4 * Constantes.speed;
+			if (zildo != null) {
+				switch (quel_deplacement) {
+				case VOLESPECTRE:
+					double beta;
+					if (cptMouvement == 100) {
+						if (desc == PersoDescription.CORBEAU) {
+							// Black bird : focus moving zone on Zildo
+							int pasx, pasy;
+							if ((int) zildo.x / 16 > x / 16) {
+								pasx = 16;
+							} else {
+								pasx = -16;
 							}
+							if ((int) zildo.y / 16 > y / 16) {
+								pasy = 16;
+							} else {
+								pasy = -16;
+							}
+							zone_deplacement.incX1(pasx * 3);
+							zone_deplacement.incY1(pasy * 3);
+							zone_deplacement.incX2(pasx * 3);
+							zone_deplacement.incY2(pasy * 3);
+						}
+						attente = 1 + (int) Math.random() * 5;
+						if (pathFinder.getTarget() == null || desc == PersoDescription.CORBEAU) {
+							pathFinder.determineDestination();
+						}
+						cptMouvement = 0;
+					} else if (attente != 0) {
+						attente--;
+					} else {
+						if (desc == PersoDescription.CORBEAU) {
+							if (pos_seqsprite != 0) {
+								pos_seqsprite = (4 * Constantes.speed) + (pos_seqsprite - 4 * Constantes.speed + 1)
+										% (8 * Constantes.speed);
+							} else {
+								// Est-ce que Zildo est dans les parages ?}
+								beta = x - zildo.x;
+								float vitesse = y - zildo.y;
+								beta = Math.sqrt(beta * beta + vitesse * vitesse);
+								if (beta < 16 * 5) {
+									pos_seqsprite = 4 * Constantes.speed;
+								}
+								break;
+							}
+						}
+						// On se déplace en courbe
+						pathFinder.reachDestination(0); // Speed is unused
+						cptMouvement++;
+					}
+					break;
+				case HEN:
+					if (z > 0) { // La poule est en l'air, elle n'est plus libre de ses mouvements
+						physicMoveWithCollision();
+					} // Sinon elle agit comme les scripts de zone
+					break;
+				case ZONEARC:
+					if (!isWounded() && isAlerte() && zildo.isAlive()) {
+						// Get the enemy aligned with Zildo to draw arrows
+						int xx = (int) getX();
+						int yy = (int) getY();
+						int deltaX = Math.abs((int) (zildo.x - xx-2));
+						int deltaY = Math.abs((int) (zildo.y - yy));
+						if (deltaX <= 1 || deltaY <= 1) {
+							// Get sight on Zildo and shoot !
+							sight(zildo, false);
+							action = new ShotArrowAction(this);
 							break;
 						}
+						// Gets on a right position to shoot Zildo
+						if (deltaX <= deltaY) {
+							pathFinder.setTarget(new Point(zildo.x, yy));
+						} else {
+							pathFinder.setTarget(new Point(xx, zildo.y));
+						}
+					} else if (lookForZildo(angle)) {
+						setAlerte(true);
 					}
-					// On se déplace en courbe
-					pathFinder.reachDestination(0); // Speed is unused
-					cptMouvement++;
+					break;
+				case WAKEUP:
+				case INVOKE:
+					pos_seqsprite++;
+					break;
+				default:
+					break;
 				}
-				break;
-			case HEN:
-				if (z > 0) { // La poule est en l'air, elle n'est plus libre de ses mouvements
-					physicMoveWithCollision();
-				} // Sinon elle agit comme les scripts de zone
-				break;
-			case ZONEARC:
-				if (!isWounded() && isAlerte() && zildo.isAlive()) {
-					// Get the enemy aligned with Zildo to draw arrows
-					int xx = (int) getX();
-					int yy = (int) getY();
-					int deltaX = Math.abs((int) (zildo.x - xx-2));
-					int deltaY = Math.abs((int) (zildo.y - yy));
-					if (deltaX <= 1 || deltaY <= 1) {
-						// Get sight on Zildo and shoot !
-						sight(zildo, false);
-						action = new ShotArrowAction(this);
-						break;
-					}
-					// Gets on a right position to shoot Zildo
-					if (deltaX <= deltaY) {
-						pathFinder.setTarget(new Point(zildo.x, yy));
-					} else {
-						pathFinder.setTarget(new Point(xx, zildo.y));
-					}
-				} else if (lookForZildo(angle)) {
-					setAlerte(true);
-				}
-				break;
-			case WAKEUP:
-			case INVOKE:
-				pos_seqsprite++;
-				break;
-			default:
-				break;
 			}
 			if (quel_deplacement != MouvementPerso.OBSERVE &&
 					quel_deplacement != MouvementPerso.VOLESPECTRE) {
