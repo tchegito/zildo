@@ -544,39 +544,37 @@ public class GUIDisplay {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public void displayTextParts(boolean scrolling) {
 		Iterator<SpriteEntity> it = textDialogSequence.iterator();
-		int j = 0;
-		char a = 0;
-
+		SpriteEntity entity = null;
+		char a = ' ';
+		
 		// We have to know how much font have to be enabled/disabled (with
 		// visibility)
 		for (int i = 0; i < dialogContext.pos + 1; i++) {
+			
 			if (i < dialogContext.sentence.length()) {
 				a = dialogContext.sentence.charAt(i);
 			}
-			if (a == ' ' || i == dialogContext.sentence.length()) {
-				for (int k = 0; k < (i - j) && it.hasNext(); k++) {
-					SpriteEntity entity = it.next();
-					if (entity.getScrY() < sc.TEXTER_COORDINATE_Y) {
-						entity.setVisible(false);
-					} else if (entity.getScrY() < (sc.TEXTER_BOTTOM_Y)) {
-						entity.setVisible(true);
-						if (i == dialogContext.sentence.length() && !dialogContext.entireMessageDisplay) {
-							dialogContext.entireMessageDisplay = true;
-							ClientEngineZildo.soundPlay
-									.playSoundFX(BankSound.AfficheTexteFin);
-						}
-					} else if (!dialogContext.visibleMessageDisplay) {
-						dialogContext.visibleMessageDisplay = true;
-						// If the text has another line to scroll, don't play
-						// sound
-						if (!scrolling) {
-							ClientEngineZildo.soundPlay
-									.playSoundFX(BankSound.AfficheTexteFin);
-						}
+			
+			if (a != ' ' && it.hasNext()) { // || i == dialogContext.sentence.length()) {
+				entity = it.next();
+			}
+				if (entity.getScrY() < sc.TEXTER_COORDINATE_Y) {
+					entity.setVisible(false);
+				} else if (entity.getScrY() < (sc.TEXTER_BOTTOM_Y)) {
+					entity.setVisible(true);
+					if (i == dialogContext.sentence.length() && !dialogContext.entireMessageDisplay) {
+						dialogContext.entireMessageDisplay = true;
+						ClientEngineZildo.soundPlay
+								.playSoundFX(BankSound.AfficheTexteFin);
+					}
+				} else if (!dialogContext.visibleMessageDisplay) {
+					dialogContext.visibleMessageDisplay = true;
+					// If the text has another line to scroll, don't play sound
+					if (!scrolling) {
+						ClientEngineZildo.soundPlay
+								.playSoundFX(BankSound.AfficheTexteFin);
 					}
 				}
-				j = i + 1;
-			}
 		}
 	}
 

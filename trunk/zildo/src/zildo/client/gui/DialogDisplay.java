@@ -119,8 +119,9 @@ public class DialogDisplay {
 			}
 		} else if (!context.visibleMessageDisplay ) {
 			// Draw sentences slowly (word are appearing one after another)
-			
-			context.pos++;
+			if (context.sentence.length() > context.pos) {
+				context.pos++;
+			}
 			/*
 			if (context.pos % 3 ==0 && (Math.random()*10)>7) {
 				ClientEngineZildo.soundPlay.playSoundFX(BankSound.AfficheTexte);
