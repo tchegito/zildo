@@ -241,7 +241,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(55, 95, 32, 24),	// Red
 				new Zone(87, 95, 32, 24),	// Blue
 				// Window (castle)
-				new Zone(55, 119, 23, 32),
+				new Zone(55, 119, 22, 32),
 				// Statue
 				new Zone(78, 119, 16, 24),
 				// Door
