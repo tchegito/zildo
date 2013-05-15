@@ -29,11 +29,11 @@ import zildo.resource.Constantes;
 public enum ZildoDescription implements SpriteDescription {
 
 	UP_FIXED,
-	UP1, UP2, UP3, UP4, UP5, UP6,
+	UP1, UP2, UP3, UP4, UP5, UP6, UP7, UP8,
 	RIGHT_FIXED,
 	RIGHT1, RIGHT2, RIGHT3, RIGHT4, RIGHT5, RIGHT6, RIGHT7,
 	DOWN_FIXED,
-	DOWN1, DOWN2, DOWN3, DOWN4,
+	DOWN1, DOWN2, DOWN3, DOWN4, DOWN5, DOWN6, DOWN7,
 	/* all LEFT are now unused */
 	/*
 	LEFT_FIXED,
@@ -97,8 +97,10 @@ public enum ZildoDescription implements SpriteDescription {
 	}
 	
 	static final int[][] seq_zildoDeplacement={
-			{1,2,3,4,-1,5, 6,-2} ,{0,1,2,3,7,6,4,5},
-			{1,2,3,4,-1,2,-3,-4},{0,1,2,3,7,6,4,5}};
+		{1,2,3,4,7,5, 6, 8} ,{0,1,2,3,7,6,4,5},
+		{1,2,3,4, 5, 2,6,7},{0,1,2,3,7,6,4,5}};
+	//	{1,2,3,4,-1,5, 6,-2} ,{0,1,2,3,7,6,4,5},
+	//	{1,2,3,4,-1,2,-3,-4},{0,1,2,3,7,6,4,5}};
 	
 	static int seq_1[] = { 0, 1, 2, 1 };
 	static int seq_2[] = { 0, 1, 2, 1, 0, 3, 4, 3 };
