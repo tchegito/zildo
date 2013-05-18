@@ -826,14 +826,14 @@ public class PersoNJ extends Perso {
 			switch (k) {
 			case 5:
 			case 6:
-				anim = SpriteAnimation.HEART;
+				anim = SpriteAnimation.BLUE_DROP;
 				break;
 			case 3:
 			case 4:
-				anim = SpriteAnimation.DIAMOND;
+				anim = SpriteAnimation.GOLDCOIN;
 				break;
 			case 1:
-				anim = SpriteAnimation.DIAMOND;
+				anim = SpriteAnimation.GOLDCOIN;
 				m = 2;
 				break;
 			}

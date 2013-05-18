@@ -179,13 +179,17 @@ public class SpriteManagement extends SpriteStore {
 		EngineZildo.persoManagement.addPerso(perso);
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// spawnSpriteGeneric
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// IN:sprite type, coordinates and :
-	// misc :money value (just for DIAMANT)
-	// miscPerso :pointer on perso dying (just for DEATH)
-	// /////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Spawns a generic sprite animation (see note for particular case)
+	 * @param typeSprite
+	 * @param x
+	 * @param y
+	 * @param misc money value (just for GOLDCOIN)
+	 * @param miscPerso perso dying (just for DEATH)
+	 * @param desc
+	 * @return Spawned {@link Element}
+	 * Note: Can return NULL (example: ask for a blue drop, but hero hasn't necklace ==> nothing spawned)
+	 */
 	public Element spawnSpriteGeneric(SpriteAnimation typeSprite, int x, int y, int misc,
 			Perso miscPerso, ElementDescription desc) {
 		Element element = null;
@@ -233,7 +237,7 @@ public class SpriteManagement extends SpriteStore {
 				}
 				break;
 
-			case DIAMOND :
+			case GOLDCOIN :
 			case ARROW :
 			case FROMGROUND :
 				// Diamond, arrows, everything coming from ground
@@ -243,16 +247,16 @@ public class SpriteManagement extends SpriteStore {
 				element.setZ(4.0f);
 				element.setVz(1.5f);
 				element.setAz(-0.1f);
-				if (typeSprite == SpriteAnimation.DIAMOND) {
+				if (typeSprite == SpriteAnimation.GOLDCOIN) {
 					switch (misc) {
 					case 0:
-						element.setDesc(ElementDescription.GREENMONEY1);
+						element.setDesc(ElementDescription.GOLDCOIN1);
 						break;
 					case 1:
-						element.setDesc(ElementDescription.BLUEMONEY1);
+						element.setDesc(ElementDescription.THREEGOLDCOINS1);
 						break;
 					default:
-						element.setDesc(ElementDescription.REDMONEY1);
+						element.setDesc(ElementDescription.GOLDPURSE1);
 						break;
 					}
 				} else if (typeSprite == SpriteAnimation.FROMGROUND) {
@@ -271,24 +275,26 @@ public class SpriteManagement extends SpriteStore {
 				spawnSprite(element);
 				break;
 
-			case HEART :
-				element = new ElementGoodies();
-				element.setX(x - 1);
-				element.setY(y);
-				if (misc == 1) { // Heart should be on the ground
-					element.setX(x-3);
+			case BLUE_DROP :
+				if (EngineZildo.scriptManagement.isBlueDropDisplayable()) {
+					element = new ElementGoodies();
+					element.setX(x - 1);
 					element.setY(y);
-					element.setZ(0);
-					element.setSprModel(ElementDescription.DROP_FLOOR);
-				} else {
-					element.setZ(11.0f);
-					//element.setVx(0.15f);
-					element.setVz(-0.04f);
-					element.setAz(-0.01f);
-					//element.setAx(-0.01f);
-					element.setSprModel(ElementDescription.DROP_SMALL);
+					if (misc == 1) { // Heart should be on the ground
+						element.setX(x-3);
+						element.setY(y);
+						element.setZ(0);
+						element.setSprModel(ElementDescription.DROP_FLOOR);
+					} else {
+						element.setZ(11.0f);
+						//element.setVx(0.15f);
+						element.setVz(-0.04f);
+						element.setAz(-0.01f);
+						//element.setAx(-0.01f);
+						element.setSprModel(ElementDescription.DROP_SMALL);
+					}
+					spawnSprite(element);
 				}
-				spawnSprite(element);
 				break;
 
 			case DEATH :

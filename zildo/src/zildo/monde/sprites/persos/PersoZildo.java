@@ -863,13 +863,13 @@ public class PersoZildo extends Perso {
 
 				EngineZildo.scriptManagement.automaticBehavior(this, null, d);
 				switch (d) {
-				case GREENMONEY1:
+				case GOLDCOIN1:
 					setMoney(money + 1);
 					break;
-				case BLUEMONEY1:
+				case THREEGOLDCOINS1:
 					setMoney(money + 3);
 					break;
-				case REDMONEY1:
+				case GOLDPURSE1:
 					setMoney(money + 20);
 					break;
 				case DROP_FLOOR:

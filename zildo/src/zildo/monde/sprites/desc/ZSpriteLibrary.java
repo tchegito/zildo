@@ -35,12 +35,12 @@ public class ZSpriteLibrary {
 			case SPARK_RIGHT:
 			case SPARK_UPLEFT:
 			case SPARK_UPRIGHT:
-			case GREENMONEY2:
-			case GREENMONEY3:
-			case BLUEMONEY2:
-			case BLUEMONEY3:
-			case REDMONEY2:
-			case REDMONEY3:
+			case GOLDCOIN2:
+			case GOLDCOIN3:
+			case THREEGOLDCOINS2:
+			case THREEGOLDCOINS3:
+			case GOLDPURSE2:
+			case GOLDPURSE3:
 			case SMOKE_FEET1:
 			case SMOKE_FEET2:
 			case SMOKE_FEET3:
