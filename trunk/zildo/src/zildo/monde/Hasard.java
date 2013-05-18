@@ -27,8 +27,8 @@ public class Hasard {
 	// the weapon first, and after take some ammos.
 
 	// Hazard
-	public static final int hazardBushes_Diamant = 7;
-	public static final int hazardBushes_Heart = 9;
+	public static final int hazardBushes_GoldCoin = 7;
+	public static final int hazardBushes_BlueDrop = 9;
 	public static final int hazardBushes_Arrow = 9;
 	public static final int hazardBushes_Bombs = 9;
 
