@@ -40,7 +40,7 @@ public enum ElementDescription implements SpriteDescription {
 	// 40
 	DROP_SMALL, DROP_MEDIUM, ROCK_BALL, SHADOW_SMALL, SPARK_LEFT, SPARK_RIGHT, SPARK_UPLEFT, SPARK_UPRIGHT,
 	// 48
-	GREENMONEY1, GREENMONEY2, GREENMONEY3, BLUEMONEY1, BLUEMONEY2, BLUEMONEY3, REDMONEY1, REDMONEY2, REDMONEY3,
+	GOLDCOIN1, GOLDCOIN2, GOLDCOIN3, THREEGOLDCOINS1, THREEGOLDCOINS2, THREEGOLDCOINS3, GOLDPURSE1, GOLDPURSE2, GOLDPURSE3,
 	// 57
 	SMOKE_FEET1, SMOKE_FEET2, SMOKE_FEET3, SHADOW_MINUS,
 	// 61
@@ -109,7 +109,7 @@ public enum ElementDescription implements SpriteDescription {
 
 	public boolean isMoney() {
 		int i = ordinal();
-		return (i >= GREENMONEY1.ordinal() && i <= REDMONEY3.ordinal());
+		return (i >= GOLDCOIN1.ordinal() && i <= GOLDPURSE3.ordinal());
 	}
 
 	public boolean isWeapon() {

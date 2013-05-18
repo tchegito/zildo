@@ -30,8 +30,8 @@ public enum SpriteAnimation {
 	DEATH,	// When someone dies
 	ROCKBALL,
 	BREAKING_ROCK,
-	DIAMOND,	// Glittering money
-	HEART,	 // falling heart
+	GOLDCOIN,	// Glittering money
+	BLUE_DROP,	 // falling drop
 	FROM_CHEST,	// Coming from a chest
 	CHIMNEY_SMOKE,	// Smoke on house's chemney
 	ARROW,

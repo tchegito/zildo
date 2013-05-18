@@ -404,4 +404,14 @@ public class ScriptManagement {
 			}
 		}
 	}
+	
+	/**
+	 * Returns TRUE if we can propose blue drop to the player.<br/>
+	 * It's allowed only when player got the necklace.<br/>
+	 * @return boolean
+	 */
+	public boolean isBlueDropDisplayable() {
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+		return (zildo != null && zildo.hasItem(ItemKind.NECKLACE));
+	}
 }

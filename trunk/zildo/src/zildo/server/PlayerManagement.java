@@ -466,7 +466,7 @@ public class PlayerManagement {
 								case 165:
 									objDesc=ElementDescription.BUSHES;
 									if (((int)Math.random()*6)==5) {
-										EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DIAMOND,newx*16+8,newy*16+10,0, null, null);
+										EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN,newx*16+8,newy*16+10,0, null, null);
 									}
 									break;
 								case 167:	// With any gloves, Zildo can lift this stone

@@ -447,7 +447,7 @@ public class Area implements EasySerializable {
 
 		if (p_perso != null && anim == SpriteAnimation.FROM_CHEST) {
 			if (desc == null) {
-				desc = ElementDescription.BLUEMONEY1;
+				desc = ElementDescription.THREEGOLDCOINS1;
 			}
 			sprMgt.spawnSpriteGeneric(SpriteAnimation.FROM_CHEST, p.x, p.y + 8, 0, p_perso, desc);
 		} else {
@@ -459,10 +459,10 @@ public class Area implements EasySerializable {
 
 				if (Hasard.lanceDes(Hasard.hazardBushes_Arrow) && (multiPlayer || zildo.hasItem(ItemKind.BOW))) {
 					sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 0, null, null);
-				} else if (Hasard.lanceDes(Hasard.hazardBushes_Diamant)) {
-					sprMgt.spawnSpriteGeneric(SpriteAnimation.DIAMOND, p.x, p.y + 5, 0, null, null);
-				} else if (Hasard.lanceDes(Hasard.hazardBushes_Heart)) {
-					sprMgt.spawnSpriteGeneric(SpriteAnimation.HEART, p.x + 3, p.y + 5, p_destroy ? 0 : 1, null, null);
+				} else if (Hasard.lanceDes(Hasard.hazardBushes_GoldCoin)) {
+					sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, p.x, p.y + 5, 0, null, null);
+				} else if (Hasard.lanceDes(Hasard.hazardBushes_BlueDrop)) {
+					sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, p.x + 3, p.y + 5, p_destroy ? 0 : 1, null, null);
 				} else if (Hasard.lanceDes(Hasard.hazardBushes_Bombs) && (multiPlayer || zildo.hasItem(ItemKind.BOMB))) {
 					sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 0, null,
 							ElementDescription.BOMBS3);
