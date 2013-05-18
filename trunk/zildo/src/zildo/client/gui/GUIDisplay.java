@@ -215,7 +215,10 @@ public class GUIDisplay {
 		scriptBigLegibility[transcoChar.indexOf("b")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("e")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("m")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("n")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("f")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("h")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("x")] = 1;
 	}
 
 	int getIndexCharacter(char a) {
