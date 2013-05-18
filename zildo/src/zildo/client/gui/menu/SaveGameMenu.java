@@ -38,6 +38,7 @@ import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.PageableMenu;
 import zildo.fwk.ui.UIText;
+import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.Game;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -66,29 +67,34 @@ public class SaveGameMenu extends PageableMenu {
 
 		final List<String> savegames = SaveGameMenu.findSavegame();
 		items = new ArrayList<ItemMenu>();
-		for (final String s : savegames) {
-			items.add(new ItemMenu(s) {
-				@Override
-				public void run() {
-					int number = getSavegameNumber(s);
-					String filename = getSavegameFilename(number);
-					if (!load) {
-						saveGame(filename);
-						client.handleMenu(new InfoMenu("m8.info.ok",
-								previousMenu));
-					} else {
-						if (!loadGame(filename, false)) {
-                            if (!loadGame(filename, true)) {
-                            	// Load failed !
-                                client.handleMenu(new InfoMenu("m8.info.nok", currentMenu));
-                            } else {
-                            	// Game has been loaded in legacy (previous version) without name
-                            	// ==> can't display message for now !
-                            }
-                        }
+		if (p_load && savegames.isEmpty()) {
+			items.add(new UnselectableItemMenu("m8.info.nosave") { });
+			setTitle("");
+		} else {
+			for (final String s : savegames) {
+				items.add(new ItemMenu(s) {
+					@Override
+					public void run() {
+						int number = getSavegameNumber(s);
+						String filename = getSavegameFilename(number);
+						if (!load) {
+							saveGame(filename);
+							client.handleMenu(new InfoMenu("m8.info.ok",
+									previousMenu));
+						} else {
+							if (!loadGame(filename, false)) {
+	                            if (!loadGame(filename, true)) {
+	                            	// Load failed !
+	                                client.handleMenu(new InfoMenu("m8.info.nok", currentMenu));
+	                            } else {
+	                            	// Game has been loaded in legacy (previous version) without name
+	                            	// ==> can't display message for now !
+	                            }
+	                        }
+						}
 					}
-				}
-			});
+				});
+			}
 		}
 
 		if (!p_load) {
