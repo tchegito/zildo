@@ -406,9 +406,14 @@ public class PlayerManagement {
 					   with_dialogue=i;
 					until (with_dialogue<>0) or (i=MAX_PERSO-1);
 				*/
+					// Get a spot reachable in hero's direction
+					int locX = (int) heros.x + heros.getAngle().coords.x * 6;
+					int locY = (int) heros.y + heros.getAngle().coords.y * 6;
+					
 					Perso persoToTalk=EngineZildo.persoManagement.
-						collidePerso((int) heros.x, (int) heros.y, heros, 10);
+						collidePerso(locX, locY, heros, 4);
 		
+					
 					if (persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY && !persoToTalk.isZildo()) {
 					 // On vérifie qu'il ne s'agit pas d'une poule
 						if (persoToTalk.getDesc() == PersoDescription.POULE ||
@@ -441,7 +446,7 @@ public class PlayerManagement {
 						}
 					} else {
 						// Check for Sprite
-						Element elem = EngineZildo.spriteManagement.collideElement((int) heros.x, (int) heros.y, heros, 10);
+						Element elem = EngineZildo.spriteManagement.collideElement(locX, locY, heros, 4);
 						if (elem != null) {
 							if (elem.getLinkedPerso() != null) {
 								elem=elem.getLinkedPerso();
