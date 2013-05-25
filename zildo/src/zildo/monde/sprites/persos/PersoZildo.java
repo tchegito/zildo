@@ -105,6 +105,7 @@ public class PersoZildo extends Perso {
 
 	public PersoZildo(int p_id) { // Only used to create Zildo on a client
 		id = p_id;
+		inventory = new ArrayList<Item>();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////

@@ -774,7 +774,7 @@ public class PersoNJ extends Perso {
 			return false;
 		}
 		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-		if (!zildo.isAlive()) {	// Maybe he's dead ?
+		if (zildo == null || !zildo.isAlive()) {	// Maybe he's dead ?
 			return false;
 		}
 		int dix, diy;
