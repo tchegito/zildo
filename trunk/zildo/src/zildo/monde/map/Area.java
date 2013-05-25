@@ -735,7 +735,9 @@ public class Area implements EasySerializable {
 					repX = (byte) temp;
 					repY = p_buffer.readByte();
 				}
-				
+
+				String entName= p_buffer.readString();
+
 				if (p_spawn) {
 					// If this sprite is on a chest tile, link them
 					int ax = x / 16;
@@ -774,7 +776,6 @@ public class Area implements EasySerializable {
 						}
 						break;
 					}
-					String entName= p_buffer.readString();
 					if (entity != null && entity.getEntityType().isElement()) {
 						Element elem = (Element) entity;
 						elem.setName(entName);
