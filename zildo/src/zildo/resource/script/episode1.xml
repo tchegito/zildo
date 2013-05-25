@@ -462,7 +462,7 @@
 			<remove who="charles_bar"/>
 		</condition>
 		<condition name="chateaucoucou2" exp="!echange">
-		    <spawn type="SCEPTER" pos="386,221" foreground="true" rotation="1" what="scepter"/>
+		    <spawn type="SCEPTER" pos="388,222" foreground="true" rotation="1" what="scepter"/>
 		    <pos what="scepter" z="10"/>
 		</condition>
 		<condition name="chateaucoucou2" exp="suite_visit1_weapon-!zildo_polaky">
