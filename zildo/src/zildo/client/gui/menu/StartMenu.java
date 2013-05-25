@@ -143,7 +143,7 @@ public class StartMenu extends Menu {
         ItemMenu itemCredits=new ItemMenu("m1.credits") {
         	@Override
 			public void run() {
-        		client.askStage(new CreditStage());
+        		client.askStage(new CreditStage(false));
         	}
         };
         
