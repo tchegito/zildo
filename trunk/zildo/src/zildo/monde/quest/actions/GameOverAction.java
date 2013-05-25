@@ -71,7 +71,7 @@ public class GameOverAction extends ActionDialog {
 		
 		if (p_clientState == null) {
 			// Keep music and launch credits
-            client.askStage(new CreditStage());
+            client.askStage(new CreditStage(true));
 		} else {
 			ClientEngineZildo.soundPlay.stopMusic();
 			client.handleMenu(new StartMenu());

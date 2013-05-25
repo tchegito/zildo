@@ -20,8 +20,14 @@ public class CreditStage implements GameStage {
 	boolean askQuit = false;
 	int endCounter=0;
 	boolean done = false;
+	boolean endScene;
 	
-	public CreditStage() {
+	/**
+	 * Create a stage displaying credits.
+	 * @param p_endScene TRUE means we want the special text for player finishing the game
+	 */
+	public CreditStage(boolean p_endScene) {
+		endScene = p_endScene;
 		launchGame();
 	}
 
@@ -66,6 +72,9 @@ public class CreditStage implements GameStage {
 		guiDisplay = ClientEngineZildo.guiDisplay;
 		mapDisplay = ClientEngineZildo.mapDisplay;
 		String wholeCredits = UIText.getCreditText("credits");
+		if (endScene) {
+			wholeCredits = UIText.getCreditText("endscene") + wholeCredits;
+		}
 		// Analyze text to cut out into lines
 		creditText = wholeCredits.split("\n");
 		currentLine = 0;
