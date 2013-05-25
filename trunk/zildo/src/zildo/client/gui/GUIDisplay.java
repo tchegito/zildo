@@ -567,15 +567,15 @@ public class GUIDisplay {
 					entity.setVisible(true);
 					if (i == dialogContext.sentence.length() && !dialogContext.entireMessageDisplay) {
 						dialogContext.entireMessageDisplay = true;
-						ClientEngineZildo.soundPlay
-								.playSoundFX(BankSound.AfficheTexteFin);
+						//ClientEngineZildo.soundPlay
+						//		.playSoundFX(BankSound.AfficheTexteFin);
 					}
 				} else if (!dialogContext.visibleMessageDisplay) {
 					dialogContext.visibleMessageDisplay = true;
 					// If the text has another line to scroll, don't play sound
 					if (!scrolling) {
-						ClientEngineZildo.soundPlay
-								.playSoundFX(BankSound.AfficheTexteFin);
+						//ClientEngineZildo.soundPlay
+						//		.playSoundFX(BankSound.AfficheTexteFin);
 					}
 				}
 		}
