@@ -214,11 +214,11 @@ public class DialogDisplay {
 		entity.setNSpr(arrowSprite + sprite);
 		entity.setSprModel(EngineZildo.spriteManagement.getSpriteBank(entity.getNBank())
 				.get_sprite(entity.getNSpr()));
-		if (arrowDisplay == 2) {
+		if (arrowDisplay == 2) {	// Vertical
 			entity.rotation = Rotation.CLOCKWISE;
-			entity.setScrX(arrowX);
+			entity.setScrX(arrowX - 2);
 			entity.setScrY(arrowY + shift);
-		} else {
+		} else {	// Horizontal
 			entity.rotation = Rotation.NOTHING;
 			entity.setScrX(arrowX + shift);
 			entity.setScrY(arrowY);
