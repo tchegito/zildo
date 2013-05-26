@@ -324,7 +324,7 @@ public class GUIDisplay {
 		int i;
 		GUISpriteSequence seq = textDialogSequence; // Default sequence to add fonts
 
-		int width = fullWidth ? Zildo.viewPortX : sc.TEXTER_SIZEX;
+		int width = fullWidth ? Zildo.viewPortX : sc.TEXTER_SIZEX-4;
 		nBank = SpriteBank.BANK_FONTES;
 		sizeLine = sc.TEXTER_SIZELINE;
 		int offsetNSpr = 0;
@@ -607,6 +607,9 @@ public class GUIDisplay {
 		}
 		if (!entire) {
 			dialogContext.setLine(sc.TEXTER_NUMLINE);
+			dialogDisplay.displayArrow(2);
+		} else {
+			dialogDisplay.displayArrow(1);
 		}
 		dialogContext.visibleMessageDisplay = true;
 		dialogContext.entireMessageDisplay = entire;
