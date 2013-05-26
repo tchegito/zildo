@@ -28,15 +28,32 @@ import zildo.client.gui.GUIDisplay.DialogMode;
 import zildo.client.sound.BankSound;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
+import zildo.monde.sprites.Rotation;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.server.EngineZildo;
 
 public class DialogDisplay {
 	
 	public boolean dialoguing;
 	public DialogContext context;
-
-	public DialogDisplay(DialogContext dialogContext) {
+	private int beta;
+	private int arrowDisplay;	// 0=no arrow / 1=horizontal / 2=vertical
+	
+	final int[] curve = {0,1,2,3,4,4,5,5,5};
+	final int[] spr = { 0,0,0,1,1,1,1,2,2};
+	final int arrowX;
+	final int arrowY;
+	final int arrowSprite;
+	
+	public DialogDisplay(DialogContext dialogContext, int sprite) {
 		dialoguing = false;
 		context = dialogContext;
+		
+		// Screen constants
+		ScreenConstant sc = ClientEngineZildo.screenConstant;
+		arrowX = sc.TEXTER_COORDINATE_X + sc.TEXTER_SIZEX - 12;
+		arrowY = sc.TEXTER_COORDINATE_Y + sc.TEXTER_SIZELINE * 3 + 8 - 16;
+		arrowSprite = sprite;
 	}
 	
 	public boolean isDialoguing() {
@@ -93,6 +110,8 @@ public class DialogDisplay {
 		ClientEngineZildo.guiDisplay.setText(context.sentence, displayMode);
 		ClientEngineZildo.guiDisplay.setToDisplay_dialoguing(true);
 		dialoguing=true;
+		
+		displayArrow(0);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -181,4 +200,30 @@ public class DialogDisplay {
 		return result;
 	}
 
+	public void displayArrow(int arr) {
+		arrowDisplay = arr;
+	}
+	
+	public void animateArrow(SpriteEntity entity) {
+		if (arrowDisplay == 0) {
+			entity.setVisible(false);
+			return;
+		}
+		int shift = curve[(beta/4) % curve.length];
+		int sprite = spr[(beta/4) % spr.length];
+		entity.setNSpr(arrowSprite + sprite);
+		entity.setSprModel(EngineZildo.spriteManagement.getSpriteBank(entity.getNBank())
+				.get_sprite(entity.getNSpr()));
+		if (arrowDisplay == 2) {
+			entity.rotation = Rotation.CLOCKWISE;
+			entity.setScrX(arrowX);
+			entity.setScrY(arrowY + shift);
+		} else {
+			entity.rotation = Rotation.NOTHING;
+			entity.setScrX(arrowX + shift);
+			entity.setScrY(arrowY);
+		}
+		entity.setVisible(true);
+		beta++;
+	}
 }
