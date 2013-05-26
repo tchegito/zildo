@@ -120,8 +120,8 @@ public class GUIDisplay {
 	private Map<ItemMenu, Zone> itemsOnScreen = new HashMap<ItemMenu, Zone>();
 	
 	private FilterCommand filterCommand;
-
-	public float alpha;
+	private int arrowSprite;
+	private float alpha;
 	
 	Stack<GameMessage> messageQueue;
 
@@ -154,8 +154,7 @@ public class GUIDisplay {
 		sc = ClientEngineZildo.screenConstant;
 		
 		dialogContext = new DialogContext();
-		dialogDisplay = new DialogDisplay(dialogContext);
-		
+		dialogDisplay = new DialogDisplay(dialogContext, arrowSprite);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -219,6 +218,8 @@ public class GUIDisplay {
 		scriptBigLegibility[transcoChar.indexOf("f")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("h")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("x")] = 1;
+		
+		arrowSprite = transcoChar.length() + mapTranscoChar.get('~');
 	}
 
 	int getIndexCharacter(char a) {
@@ -522,6 +523,15 @@ public class GUIDisplay {
 			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_RIGHT, posX2, posY1 - 3);
 			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_RIGHT, posX1 - 3, posY2 - 4, Reverse.ALL);
 			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_LEFT, posX2 + 0, posY2 - 4, Reverse.ALL); 
+			
+			
+			frameDialogSequence.addSprite(SpriteBank.BANK_FONTES, arrowSprite, 
+					0,300,	// No matters coordinates, they will be update by dialogDisplay#animateArrow 
+					false, 255);
+		} else {
+			// Animate arrow indicating next dialog, if necessary
+			SpriteEntity entity = frameDialogSequence.get(4);
+			dialogDisplay.animateArrow(entity);
 		}
 
 		// Draw frame's bars
@@ -567,11 +577,13 @@ public class GUIDisplay {
 					entity.setVisible(true);
 					if (i == dialogContext.sentence.length() && !dialogContext.entireMessageDisplay) {
 						dialogContext.entireMessageDisplay = true;
+						dialogDisplay.displayArrow(1);
 						//ClientEngineZildo.soundPlay
 						//		.playSoundFX(BankSound.AfficheTexteFin);
 					}
 				} else if (!dialogContext.visibleMessageDisplay) {
 					dialogContext.visibleMessageDisplay = true;
+					dialogDisplay.displayArrow(2);
 					// If the text has another line to scroll, don't play sound
 					if (!scrolling) {
 						//ClientEngineZildo.soundPlay
