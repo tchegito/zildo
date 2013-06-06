@@ -109,6 +109,8 @@ public class Modifier {
         // ***IMPORTANT ***
         // Exteria1 is the reference picture for palette
         // ***IMPORTANT ***
+        
+        
         new Modifier().savePalette();
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
@@ -123,7 +125,7 @@ public class Modifier {
         //new AdjustChestBackTiles().modifyAllMaps();
         //new AdjustBackTiles().modifyAllMaps();
         //new ReplaceAllMapsFloor().modifyAllMaps();
-        //new Modifier().saveGears();
+        new Modifier().saveGears();
         //new Modifier().saveZildo();
         new Modifier().savePnj();
         new Modifier().savePnj2();
@@ -132,6 +134,8 @@ public class Modifier {
         //new Modifier().generateImg();
         //new Modifier().fixZildo();
        //new Modifier().ripDialogFromAllMaps();
+        
+        //new Modifier().temporaryFixPolakym();
     }
      
      public void generateImg() {
@@ -327,7 +331,7 @@ public class Modifier {
          SpriteBankEdit bank=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS));
 
          bank.clear();
-         bank.loadImage("interia2", COLOR_BLUE);
+         bank.loadImage("interia3", COLOR_BLUE);
 
     	 // Add doors
     	 bank.addSpritesFromBank(new Gears());
@@ -512,6 +516,10 @@ public class Modifier {
 				return true;
 			}
 		}.modifyAllMaps();
+	}
+	
+	public void temporaryFixPolakym() {
+		new AdjustBackTiles().modifyOneMap("polakym");
 	}
 	
 	public void textureBuilder() {
