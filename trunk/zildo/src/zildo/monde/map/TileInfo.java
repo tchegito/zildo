@@ -171,7 +171,7 @@ public class TileInfo {
 	private boolean collideHalfCorner(Angle p_angle, int p_posX, int p_posY) {
 		switch (p_angle) {
 		case NORDEST:
-			return p_posY < (p_posX - 8);
+			return p_posY <= (p_posX - 8); 
 		case SUDEST:
 			return p_posY > (24 - p_posX);
 		case SUDOUEST:
