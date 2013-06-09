@@ -302,20 +302,23 @@ public class MapManagement {
 		new IntSet(256 + 22, 256+23)
 		.addRange(256*3 + 89, 256*3 + 96);
 
+	final static Point[] tabPointRef = new Point[] {
+		new Point(-1, -1), new Point(-1, 1),
+		new Point(-1, 1),  new Point(1, 1)};
+		
+
 	private boolean collideTile(int tx, int ty, boolean ghost, Point size, Element quelElement) {
 		int mx, my; // Position map
 		int on_map;
 		int modx, mody;
 		
-		final int[] tab_add = { -1, -1, 1, 1, -1 };
-
 		// Check on back or fore ground, depending on the character we're checking
 		boolean foreground = quelElement != null && quelElement.isForeground();
 
 		// Check 4 corners of a 4x4 sized square
-		for (int i = 0; i < 4; i++) {
-			mx = (tx + (size.x / 2) * tab_add[i]);
-			my = (ty + (size.y / 2) * tab_add[i + 1]);
+		for (Point pt : tabPointRef) {
+			mx = (tx + (size.x / 2) * pt.x);
+			my = (ty + (size.y / 2) * pt.y);
 
 			if (currentMap.isOutside(mx, my)) {
 				// Avoid collision on the map's borders
@@ -340,7 +343,9 @@ public class MapManagement {
 					// to pass particular tiles
 					if (quelElement != null && quelElement.getEntityType() == EntityType.PERSO) {
 						Perso perso = (Perso) quelElement;
-						return !perso.isOpen();
+						if (!perso.isOpen()) {
+							return true;
+						}
 					}
 				}
 				
