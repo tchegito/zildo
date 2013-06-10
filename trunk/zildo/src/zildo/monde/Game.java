@@ -55,7 +55,7 @@ public class Game implements EasySerializable {
     public boolean deathmatch; // Defines the game rules
     public String mapName;
     public String heroName;
-    public int timeSpent;	// Number of seconds spent into the game
+    private int timeSpent;	// Number of seconds spent into the game
     
     private Date startPlay;
     
@@ -120,11 +120,7 @@ public class Game implements EasySerializable {
         p_buffer.put((int) zildo.getY());
         
         // 5: time spent
-        Date now = new Date();
-        long diff = now.getTime() - startPlay.getTime();
-        timeSpent += diff / 1000;
-        startPlay = now;
-        p_buffer.put(timeSpent);
+        p_buffer.put(getTimeSpent());
         
         // 6: map start location
         Point loc = EngineZildo.mapManagement.getStartLocation();
@@ -219,5 +215,15 @@ public class Game implements EasySerializable {
         } catch (Exception e) {
             return null;
         }
+    }
+    
+    public int getTimeSpent() {
+    	// Update time spent
+        Date now = new Date();
+        long diff = now.getTime() - startPlay.getTime();
+        timeSpent += diff / 1000;
+        startPlay = now;
+        // Return it
+    	return timeSpent;
     }
 }
