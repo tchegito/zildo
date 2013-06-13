@@ -30,7 +30,7 @@ public class ActionElement extends AnyElement {
 		actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, 
 		map, focus, spawn, exec, take, mapReplace, zikReplace, music, animation, impact, remove, 
 		markQuest, putDown, attack, activate,
-		tile, filter, end, visible, respawn, zoom, herospecial;
+		tile, filter, end, visible, respawn, zoom, herospecial, perso;
 
 		public static ActionKind fromString(String p_name) {
 			for (ActionKind kind : values()) {
@@ -60,6 +60,7 @@ public class ActionElement extends AnyElement {
 	public int reverse;
 	public int rotation;
 	public int z;	// Z coordinate for location
+	public String info;	// PersoInfo
 	public float speed;
 	public boolean activate;
 	
@@ -101,7 +102,9 @@ public class ActionElement extends AnyElement {
 			if (!"".equals(strAngle)) {
 				val = Integer.valueOf(strAngle);
 			}
+		case perso:
 			text = readAttribute("type");
+			info = readAttribute("info");
 			break;
 		case speak:
 			text = readAttribute("text");

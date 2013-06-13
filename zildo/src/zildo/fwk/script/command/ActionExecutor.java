@@ -53,6 +53,7 @@ import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.ia.BasicMover;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -454,6 +455,23 @@ public class ActionExecutor {
                 		// Block every non-hero characters
                 		EngineZildo.spriteManagement.unblockNonHero();
                 		break;
+                	}
+                	achieved = true;
+                	break;
+                case perso:	// Change character attribute (type)
+                	if (perso != null) {
+                		if (p_action.text != null) {
+                			PersoDescription desc = PersoDescription.valueOf(p_action.text);
+                			EngineZildo.spriteManagement.deleteSprite(perso);
+                			perso = EngineZildo.persoManagement.createPerso(desc, (int) perso.x, (int) perso.y, (int) perso.z, perso.getName(), perso.getAngle().value);
+                			EngineZildo.spriteManagement.spawnPerso(perso);
+                		}
+                		if (p_action.info != null) {
+                			perso.setInfo(PersoInfo.valueOf(p_action.info));
+                		}
+                		if (p_action.fx != null) {
+                			perso.setSpecialEffect(EngineFX.valueOf(p_action.fx));
+                		}
                 	}
                 	achieved = true;
                 	break;
