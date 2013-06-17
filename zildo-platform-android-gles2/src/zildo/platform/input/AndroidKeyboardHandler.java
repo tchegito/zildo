@@ -46,7 +46,9 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 		VP_DOWN_LEFT(0, 52, 29, 28, true, KEY_DOWN, KEY_LEFT),
 		VP_DOWN_RIGHT(51, 52, 29, 28, true, KEY_DOWN, KEY_RIGHT),
 		// inventory
-		VP_INVENTORY(0, 0, 40, 31, false, KEY_X);
+		VP_INVENTORY(0, 0, 40, 31, false, KEY_X),
+		VP_BUTTON_X(294, 200, 25, 24, false, KEY_Q),
+		VP_BUTTON_Y(294, 170, 25, 24, false, KEY_W);
 		/*
 		VP_BUTTON_A(4, 33, 26, 26, false, KEY_Q),
 		VP_BUTTON_B(36, 58, 26, 26, false, KEY_W),
@@ -129,7 +131,8 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 				resetBack = true;
 			}
 			return infos.backPressed;
-		} else if (p_code == KEY_Q || p_code == KEY_W) {
+		}
+		/*else if (p_code == KEY_Q || p_code == KEY_W) {
 			if (polledTouchedPoints.size() != 0) {
 				for (Point p : polledTouchedPoints.getAll()) {
 					switch (p_code) {
@@ -153,14 +156,13 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 							 return true;
 						}
 						break;
-					*/
+					*//*
 					}
 				}
 			}			
-		} else {
+		} */else {
 			return keyStates[p_code];
 		}
-		return false;
 	}
 	
 	Angle previous;

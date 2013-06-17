@@ -50,9 +50,8 @@ public class Fontes extends SpriteBanque {
 				new Zone(42, 117, 7, 9), new Zone(49, 117, 7, 9),
 				new Zone(56, 117, 7, 9), new Zone(63, 117, 7, 9),
 				// Vie
-				new Zone(0, 102, 44, 7), new Zone(43, 86, 7, 9),	// Small drop
-				new Zone(0, 109, 44, 7),
-				
+				new Zone(43, 86, 7, 9),	// Small drop
+								
 				// Jauge etc...
 				new Zone(185, 0, 16, 42),
 				new Zone(201, 22, 8, 2),
@@ -61,6 +60,9 @@ public class Fontes extends SpriteBanque {
 				
 				// 	Virtual pad
 				new Zone(223, 0, 80, 80),
+				// Buttons (X and Y)
+				new Zone(0, 524, 24, 25), new Zone(26, 524, 24, 25),
+				new Zone(0, 551, 24, 25), new Zone(26, 551, 24, 25)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{

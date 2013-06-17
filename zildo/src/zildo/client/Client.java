@@ -73,7 +73,8 @@ public class Client {
 	NetClient netClient;
 	boolean multiplayer;
 	boolean music = Zildo.soundEnabled;
-
+	boolean leftHanded;	// For touch screen
+	
 	ItemMenu action = null;
 
 	Map<Integer, PlayerState> states; // All player in the game (reduced info to
@@ -350,6 +351,14 @@ public class Client {
 		} else {
 			ClientEngineZildo.soundPlay.enableMusic();
 		}
+	}
+	
+	public void setLeftHanded(boolean lh) {
+		leftHanded = lh;
+	}
+	
+	public boolean isLeftHanded() {
+		return leftHanded;
 	}
 	
 	public void setOpenGLGestion(OpenGLGestion glGestion) {

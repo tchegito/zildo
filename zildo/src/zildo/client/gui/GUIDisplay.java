@@ -846,6 +846,8 @@ public class GUIDisplay {
 				curAlpha>>=2;
 			}
 			guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, 0, Zildo.viewPortY-80, curAlpha);
+			guiSpritesSequence.addSprite(FontDescription.BUTTON_X, Zildo.viewPortX - 26, Zildo.viewPortY-40, curAlpha);
+			guiSpritesSequence.addSprite(FontDescription.BUTTON_Y, Zildo.viewPortX - 26, Zildo.viewPortY-70, curAlpha);
 		}
 	}
 

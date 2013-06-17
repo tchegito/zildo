@@ -104,6 +104,8 @@ public class ZildoActivity extends Activity {
         Zildo.screenX = metrics.widthPixels;
         Zildo.screenY = metrics.heightPixels;
         
+        client.setLeftHanded(getPreferences(MODE_PRIVATE).getBoolean("leftHanded", false));
+        
         if (renderer == null) {
         	renderer = new OpenGLRenderer(client, touchListener);
         }
@@ -188,9 +190,11 @@ public class ZildoActivity extends Activity {
             while (!client.isDone()) {
             	ZUtils.sleep(500);
             }
-            System.out.println("ask finish");
+            
+            // End of the application : save preferences
+            getPreferences(MODE_PRIVATE).edit().putBoolean("leftHanded", client.isLeftHanded()).commit();
+            // And quit
             finish();
-            System.out.println("still there");
             android.os.Process.killProcess(android.os.Process.myPid());
 
     	}
