@@ -38,7 +38,8 @@ public class OptionsMenu extends Menu {
 
 	boolean music = client.isMusic();
 	boolean fullScreen = Zildo.fullScreen;
-	
+	boolean leftHanded = client.isLeftHanded();
+
 	public OptionsMenu(final Menu p_previous) {
 
 		items = new ArrayList<ItemMenu>();
@@ -69,6 +70,16 @@ public class OptionsMenu extends Menu {
 					client.handleMenu(currentMenu);
 				}
 			});
+    	} else {
+    		items.add(new ItemMenu(getLeftHandedString()) {
+    			@Override
+    			public void run() {
+    				leftHanded = !leftHanded;
+    				setText(getLeftHandedString());
+    				client.setLeftHanded(leftHanded);
+					client.handleMenu(currentMenu);
+    			}
+    		});
     	}
 		
 		items.add(new ItemMenu("global.back") {
@@ -87,5 +98,9 @@ public class OptionsMenu extends Menu {
 	
 	String getFullscreenString() {
 		return UIText.getMenuText("m9.fullScreenPref", fullScreen ? "On" : "Off");
+	}
+	
+	String getLeftHandedString() {
+		return UIText.getMenuText("m9.leftHanded", leftHanded ? "On" : "Off");
 	}
 }
