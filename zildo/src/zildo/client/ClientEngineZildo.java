@@ -99,7 +99,6 @@ public class ClientEngineZildo {
         screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
         
         filterCommand = new FilterCommand();
-		guiDisplay = new GUIDisplay();
 		if (!p_awt) { // No sound in ZEditor
 			soundEngine = Zildo.pdPlugin.soundEngine;
 			soundPlay = new SoundPlay(soundEngine);
@@ -122,6 +121,7 @@ public class ClientEngineZildo {
 
 		spriteDisplay = new SpriteDisplay(spriteEngine);
 		mapDisplay = new MapDisplay(null);
+		guiDisplay = new GUIDisplay();
 		spriteEngine.init(spriteDisplay);
 
 		// GUI

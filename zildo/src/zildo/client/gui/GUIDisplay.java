@@ -125,6 +125,9 @@ public class GUIDisplay {
 	
 	Stack<GameMessage> messageQueue;
 
+	final int padSizeX;
+	final int buttonSizeX;
+	
 	// ////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	// ////////////////////////////////////////////////////////////////////
@@ -155,6 +158,11 @@ public class GUIDisplay {
 		
 		dialogContext = new DialogContext();
 		dialogDisplay = new DialogDisplay(dialogContext, arrowSprite);
+		
+		// Get icon size, to handle left handed symetry
+		SpriteBank fntBank = ClientEngineZildo.spriteDisplay.getSpriteBank(SpriteBank.BANK_FONTES);
+		padSizeX = fntBank.get_sprite(FontDescription.VIRTUAL_PAD.getNSpr()).getTaille_x();
+		buttonSizeX = fntBank.get_sprite(FontDescription.BUTTON_X.getNSpr()).getTaille_x();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -845,10 +853,25 @@ public class GUIDisplay {
 			if (dialogDisplay.isDialoguing()) {
 				curAlpha>>=2;
 			}
-			guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, 0, Zildo.viewPortY-80, curAlpha);
-			guiSpritesSequence.addSprite(FontDescription.BUTTON_X, Zildo.viewPortX - 26, Zildo.viewPortY-40, curAlpha);
-			guiSpritesSequence.addSprite(FontDescription.BUTTON_Y, Zildo.viewPortX - 26, Zildo.viewPortY-70, curAlpha);
+			int x1 = computeForLeftHanded(0, FontDescription.VIRTUAL_PAD);
+			int x2 = computeForLeftHanded(Zildo.viewPortX - 26, FontDescription.BUTTON_X);
+			guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, x1, Zildo.viewPortY-80, curAlpha);
+			guiSpritesSequence.addSprite(FontDescription.BUTTON_X, x2, Zildo.viewPortY-40, curAlpha);
+			guiSpritesSequence.addSprite(FontDescription.BUTTON_Y, x2, Zildo.viewPortY-70, curAlpha);
 		}
+	}
+
+	private int computeForLeftHanded(int x, FontDescription desc) {
+		if (ClientEngineZildo.client.isLeftHanded()) {
+			switch (desc) {
+			case VIRTUAL_PAD:
+				return Zildo.viewPortX - x - padSizeX;
+			case BUTTON_X: case BUTTON_X_PRESSED:
+			case BUTTON_Y: case BUTTON_Y_PRESSED:
+				return Zildo.viewPortX - x - buttonSizeX;
+			}
+		}
+		return x;
 	}
 
 	private void displayNumber(int p_number, int p_numDigit, int p_x, int p_y) {
