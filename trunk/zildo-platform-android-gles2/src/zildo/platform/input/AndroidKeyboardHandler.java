@@ -23,6 +23,7 @@ package zildo.platform.input;
 import java.util.EnumMap;
 
 import zildo.Zildo;
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -56,6 +57,7 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 		*/
 		
 		public final Zone z;
+		public final Zone zLeftHanded;
 		public final int keyCode;
 		public final int keyCode2;
 		
@@ -71,6 +73,24 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 				keyCode2 = keys[1];
 			} else {
 				keyCode2 = -1;
+			}
+			// Calculate zone for left handed
+			if (keys[0] == KEY_X) {	// Inventory stay at the same place
+				zLeftHanded = z;
+			} else {
+				int symetricX = Zildo.viewPortX - x - addX - wx;
+				if (isDirection) {
+					symetricX = Zildo.viewPortX - 80 + x + addX; 
+				}
+				zLeftHanded = new Zone(symetricX, y + addY, wx, wy);
+			}
+		}
+		
+		protected boolean isInto(Point p, boolean leftHanded) {
+			if (!leftHanded) {
+				return z.isInto(p.x, p.y);
+			} else {
+				return zLeftHanded.isInto(p.x, p.y);
 			}
 		}
 	}
@@ -185,9 +205,10 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 			}
 
 			// Update all keys state
+			boolean leftHanded = ClientEngineZildo.client.isLeftHanded();
 			for (Point p : polledTouchedPoints.getAll()) {
 				for (KeyLocation kLoc : KeyLocation.values()) {
-					if (kLoc.z.isInto(p.x, p.y)) {
+					if (kLoc.isInto(p, leftHanded)) {
 						keyStates[kLoc.keyCode] = true;
 						if (kLoc.keyCode2 != -1) {
 							keyStates[kLoc.keyCode2] = true;
