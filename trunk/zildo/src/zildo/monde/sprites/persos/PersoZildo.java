@@ -611,11 +611,11 @@ public class PersoZildo extends Perso {
 			v = pos_seqsprite;
 			if (v>=0 && v<6) {
 				xx += decalxSword[angle.value][v];
+				sword.setSpr(swordSequence.getSpr(angle, v));
+				Point p = swordSequence.getOffset(angle, v);
+				sword.setX(xx - 4 + p.x);
+				sword.setY(yy + 1 - p.y);
 			}
-			sword.setSpr(swordSequence.getSpr(angle, v));
-			Point p = swordSequence.getOffset(angle, v);
-			sword.setX(xx - 4 + p.x);
-			sword.setY(yy + 1 - p.y);
 			switch (angle) {
 			case SUD:
 				// Sword must be over Zildo
