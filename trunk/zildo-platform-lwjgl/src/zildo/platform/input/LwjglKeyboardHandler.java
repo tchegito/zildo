@@ -24,13 +24,13 @@ import java.util.EnumMap;
 
 import org.lwjgl.input.Keyboard;
 
-import zildo.fwk.input.KeyboardHandler;
+import zildo.fwk.input.CommonKeyboardHandler;
 
 /**
  * @author Tchegito
  *
  */
-public class LwjglKeyboardHandler implements KeyboardHandler {
+public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 
 	final static EnumMap<Keys, Integer> platformKeys = new EnumMap<Keys, Integer>(Keys.class);
 	
@@ -62,6 +62,7 @@ public class LwjglKeyboardHandler implements KeyboardHandler {
 		platformKeys.put(Keys.LEFT, KEY_LEFT);
 		platformKeys.put(Keys.RIGHT, KEY_RIGHT);
 		platformKeys.put(Keys.DOWN, KEY_DOWN);
+		platformKeys.put(Keys.DIALOG_FRAME, KEY_Q);	// Nonsense without touch screen
 	}
 
 	public boolean isKeyDown(int p_code) {

@@ -46,8 +46,6 @@ public class Menu {
 	
 	protected KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
 	
-	final int kUp = kbHandler.getCode(Keys.UP);
-	
 	public Menu() {
 
 	}

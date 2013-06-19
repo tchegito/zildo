@@ -95,6 +95,11 @@ public class PlayerManagement {
 			gamePhase=GamePhase.INGAME;
 		} 
 
+		// Specific for touchscreen : "touch frame" is equivalent to "touch Action key"
+		if (dialogState.dialoguing && instant.isKeyDown(KeysConfiguration.PLAYERKEY_DIALOG)) {
+			instant.setKeyDown(KeysConfiguration.PLAYERKEY_ACTION);
+		}
+		
 		if (ghost) {
 			// Scripting move
 			automaticMove();

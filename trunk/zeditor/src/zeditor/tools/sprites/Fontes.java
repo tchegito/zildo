@@ -61,8 +61,9 @@ public class Fontes extends SpriteBanque {
 				// 	Virtual pad
 				new Zone(223, 0, 80, 80),
 				// Buttons (X and Y)
-				new Zone(0, 524, 24, 25), new Zone(26, 524, 24, 25),
-				new Zone(0, 551, 24, 25), new Zone(26, 551, 24, 25)
+				new Zone(0, 577, 24, 24), new Zone(24, 577, 24, 24)
+				//new Zone(0, 524, 24, 25), new Zone(26, 524, 24, 25),
+				//new Zone(0, 551, 24, 25), new Zone(26, 551, 24, 25)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{

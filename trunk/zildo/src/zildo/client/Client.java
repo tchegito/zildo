@@ -217,7 +217,7 @@ public class Client {
 			}
 			done |= glGestion.mainloop();
 
-			if (kbHandler.isKeyDown(kbHandler.getCode(Keys.ESCAPE)) && !ClientEngineZildo.filterCommand.isFading()) {
+			if (kbHandler.isKeyDown(Keys.ESCAPE) && !ClientEngineZildo.filterCommand.isFading()) {
 				// Escape is pressed and no fade is running
 				if (connected) {
 					if (ingameMenu == null) {

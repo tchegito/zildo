@@ -43,7 +43,7 @@ public enum FontDescription implements SpriteDescription {
 	GUI_GAUGE, GUI_AMOUNT, GUI_WEAPONFRAME,
 	
 	// Android
-	VIRTUAL_PAD, BUTTON_X, BUTTON_X_PRESSED, BUTTON_Y, BUTTON_Y_PRESSED;
+	VIRTUAL_PAD, BUTTON_X, BUTTON_Y;
 	
 	@Override
 	public int getBank() {

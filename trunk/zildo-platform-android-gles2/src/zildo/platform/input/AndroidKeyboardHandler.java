@@ -24,7 +24,7 @@ import java.util.EnumMap;
 
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
-import zildo.fwk.input.KeyboardHandler;
+import zildo.fwk.input.CommonKeyboardHandler;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
@@ -33,7 +33,7 @@ import zildo.monde.util.Zone;
  * @author Tchegito
  *
  */
-public class AndroidKeyboardHandler implements KeyboardHandler {
+public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 
 	// Relations between given key and its location on screen, inside virtual pad
 	enum KeyLocation {
@@ -48,8 +48,9 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 		VP_DOWN_RIGHT(51, 52, 29, 28, true, KEY_DOWN, KEY_RIGHT),
 		// inventory
 		VP_INVENTORY(0, 0, 40, 31, false, KEY_X),
-		VP_BUTTON_X(294, 200, 25, 24, false, KEY_Q),
-		VP_BUTTON_Y(294, 170, 25, 24, false, KEY_W);
+		VP_BUTTON_X(286, 200, 25, 24, false, KEY_Q),
+		VP_BUTTON_Y(294, 170, 25, 24, false, KEY_W),
+		VP_FRAME(0, 180, 320, 240, false, KEY_DIALOG_FRAME);
 		/*
 		VP_BUTTON_A(4, 33, 26, 26, false, KEY_Q),
 		VP_BUTTON_B(36, 58, 26, 26, false, KEY_W),
@@ -111,6 +112,7 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 	private static final int KEY_LEFT            = 0xCB; /* LeftArrow on arrow keypad */
 	private static final int KEY_RIGHT           = 0xCD; /* RightArrow on arrow keypad */
 	private static final int KEY_DOWN            = 0xD0; /* DownArrow on arrow keypad */
+	private static final int KEY_DIALOG_FRAME	= 0xD1;	/* Random */
 	
 	static {
 		platformKeys.put(Keys.BACK, KEY_BACK);
@@ -126,6 +128,7 @@ public class AndroidKeyboardHandler implements KeyboardHandler {
 		platformKeys.put(Keys.LEFT, KEY_LEFT);
 		platformKeys.put(Keys.RIGHT, KEY_RIGHT);
 		platformKeys.put(Keys.DOWN, KEY_DOWN);
+		platformKeys.put(Keys.DIALOG_FRAME, KEY_DIALOG_FRAME);
 	}
 	
 	TouchPoints polledTouchedPoints;
