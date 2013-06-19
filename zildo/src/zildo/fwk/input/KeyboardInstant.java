@@ -55,8 +55,8 @@ public class KeyboardInstant implements EasySerializable {
 		return kbdInstant.get(key);
 	}
 	
-	public void setKeyDown(KeysConfiguration key) {
-		kbdInstant.put(key, true);
+	public void setKey(KeysConfiguration key, boolean value) {
+		kbdInstant.put(key, value);
 	}
 
 	/**
