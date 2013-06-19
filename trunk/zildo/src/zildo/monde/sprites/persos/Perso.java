@@ -249,7 +249,6 @@ public abstract class Perso extends Element {
 			// Center Zildo on his tile
 			x = 16 * (int) (x/16) + 8;
 			y = 16 * (int) (y/16) + 8;
-			System.out.println("tombe:"+x+", "+y);
 			break;
 		}
 	}

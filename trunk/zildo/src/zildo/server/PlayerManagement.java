@@ -20,6 +20,8 @@
 
 package zildo.server;
 
+import zildo.client.PlatformDependentPlugin;
+import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.sound.BankSound;
 import zildo.fwk.collection.IntSet;
 import zildo.fwk.input.KeyboardInstant;
@@ -96,8 +98,9 @@ public class PlayerManagement {
 		} 
 
 		// Specific for touchscreen : "touch frame" is equivalent to "touch Action key"
-		if (dialogState.dialoguing && instant.isKeyDown(KeysConfiguration.PLAYERKEY_DIALOG)) {
-			instant.setKeyDown(KeysConfiguration.PLAYERKEY_ACTION);
+		if (dialogState.dialoguing && PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
+			instant.setKey(KeysConfiguration.PLAYERKEY_ACTION,
+					instant.isKeyDown(KeysConfiguration.PLAYERKEY_DIALOG));
 		}
 		
 		if (ghost) {
