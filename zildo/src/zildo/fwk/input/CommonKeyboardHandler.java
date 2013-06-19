@@ -1,7 +1,6 @@
 /**
  * The Land of Alembrum
  * Copyright (C) 2006-2013 Evariste Boussaton
- * 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,29 +19,14 @@
 
 package zildo.fwk.input;
 
+
 /**
  * @author Tchegito
  *
  */
-public interface KeyboardHandler {
-
-	public boolean isKeyDown(int p_code);
-	public boolean isKeyDown(Keys key);
+public abstract class CommonKeyboardHandler implements KeyboardHandler{
 	
-	public void poll();
-	
-	/**
-	 * @return true if a keyboard event was read, false otherwise
-	 */
-	public boolean next();
-	
-	public boolean getEventKeyState();
-	
-	public int getEventKey();
-	
-	public char getEventCharacter();
-	
-	public enum Keys {Q, W, X, E, UP, DOWN, RIGHT, LEFT, TAB, RETURN, BACK, ESCAPE, LSHIFT, DIALOG_FRAME};
-	public int getCode(Keys k);
-	
+	public boolean isKeyDown(Keys key) {
+		return isKeyDown(getCode(key));
+	}
 }

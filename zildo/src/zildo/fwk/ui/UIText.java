@@ -58,6 +58,9 @@ public class UIText {
 					String expr = PlatformDependentPlugin.currentPlugin.toString() + "." + pdKey.replaceAll("%", "");
 					String value = gameBundle.getString(expr);
 					
+					if (matcher.start() == 0) {
+						value = Character.toUpperCase(value.charAt(0)) + value.substring(1);
+					}
 					matcher.appendReplacement(sb,  value);
 				}
 				matcher.appendTail(sb);

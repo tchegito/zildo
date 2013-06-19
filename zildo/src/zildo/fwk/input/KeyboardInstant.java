@@ -54,6 +54,10 @@ public class KeyboardInstant implements EasySerializable {
 	public boolean isKeyDown(KeysConfiguration key) {
 		return kbdInstant.get(key);
 	}
+	
+	public void setKeyDown(KeysConfiguration key) {
+		kbdInstant.put(key, true);
+	}
 
 	/**
 	 * Update keyboard state
@@ -63,8 +67,7 @@ public class KeyboardInstant implements EasySerializable {
 			kbHandler = Zildo.pdPlugin.kbHandler;
 		}
 		for (KeysConfiguration key : KeysConfiguration.values()) {
-			int code = kbHandler.getCode(key.code);
-			kbdInstant.put(key, kbHandler.isKeyDown(code));
+			kbdInstant.put(key, kbHandler.isKeyDown(key.code));
 		}
 	}
 

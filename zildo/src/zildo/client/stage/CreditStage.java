@@ -42,6 +42,7 @@ public class CreditStage implements GameStage {
         if (!askQuit) {
         	askQuit = instant.isKeyDown(KeysConfiguration.PLAYERKEY_ACTION);
         	askQuit |= instant.isKeyDown(KeysConfiguration.PLAYERKEY_ATTACK);
+        	askQuit |= instant.isKeyDown(KeysConfiguration.PLAYERKEY_DIALOG);
         	if (askQuit) {
                 ClientEngineZildo.filterCommand.fadeOut(FilterEffect.FADE);
         	}
