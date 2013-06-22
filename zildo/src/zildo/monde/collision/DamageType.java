@@ -22,6 +22,9 @@ package zildo.monde.collision;
 
 public enum DamageType {
 
+	// NOTE: All causes a damage of 1, except FIRE, which causes 2.
+	// Interesting to have another scale of damage depending on the weapon. We could add or multiply such damages scores.
+	
 	BLUNT, // Boomerang
 	PIERCING, // Arrow
 	CUTTING, // Sword

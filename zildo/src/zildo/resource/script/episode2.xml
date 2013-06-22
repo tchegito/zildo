@@ -87,10 +87,10 @@
    		</condition>
    		<condition name="prisonext" exp="trig_echange">
    		    <perso who="gardenord" type="GARDE_CANARD" fx="GUARD_BLACK"/>
-   		    <perso who="gard2" type="GARDE_CANARD" fx="GUARD_BLACK" info="ENEMY"/>
-   		    <perso who="gard3" type="GARDE_CANARD" fx="GUARD_BLACK" info="ENEMY"/>
-   		    <perso who="gard4" type="GARDE_CANARD" fx="GUARD_BLACK" info="ENEMY"/>
-   		    <perso who="gard5" type="GARDE_CANARD" fx="GUARD_BLACK" info="ENEMY"/>
+   		    <perso who="gard2" type="GARDE_CANARD" fx="noir" info="ENEMY"/>
+   		    <perso who="gard3" type="GARDE_CANARD" fx="noir" info="ENEMY"/>
+   		    <perso who="gard4" type="GARDE_CANARD" fx="noir" info="ENEMY"/>
+   		    <perso who="gard5" type="GARDE_CANARD" fx="noir" info="ENEMY"/>
    		    <script who="gardenord" value="3"/>
    		    <script who="gard2" value="3"/>
    		    <script who="gard3" value="3"/>

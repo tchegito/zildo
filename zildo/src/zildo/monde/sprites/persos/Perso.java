@@ -431,6 +431,8 @@ public abstract class Perso extends Element {
 		// Then throw it !
 		this.setPx((float) (p_speed * (diffx / norme)));
 		this.setPy((float) (p_speed * (diffy / norme)));
+		// Stop current potential attack
+		setMouvement(MouvementZildo.VIDE);
 	}
 
 	/**

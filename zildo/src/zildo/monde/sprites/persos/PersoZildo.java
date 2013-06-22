@@ -72,8 +72,7 @@ public class PersoZildo extends Perso {
 
 	private Angle sightAngle; // For boomerang
 
-	private int touch; // number of frames zildo is touching something without
-						// moving
+	private int touch; // number of frames zildo is touching something without moving
 
 	private boolean inventoring = false;
 	private boolean buying = false;
@@ -203,7 +202,7 @@ public class PersoZildo extends Perso {
 	public SpriteEntity getPushingSprite() {
 		return pushingSprite;
 	}
-
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// attack
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -384,7 +383,7 @@ public class PersoZildo extends Perso {
 
 		setMouvement(MouvementZildo.TOUCHE);
 		setWounded(true);
-		this.setPv(getPv() - p_damage);
+		pv -= p_damage;
 
 		if (guiCircle != null) {
 			guiCircle.kill();
@@ -426,7 +425,9 @@ public class PersoZildo extends Perso {
 	public void stopBeingWounded()
 	{
 		setMouvement(MouvementZildo.VIDE);
-		setCompte_dialogue(64); // Temps d'invulnerabilité de Zildo
+		if (isWounded()) {
+			setCompte_dialogue(64); // Temps d'invulnerabilité de Zildo
+		}
 		setPx(0.0f);
 		setPy(0.0f);
 		setSpecialEffect(EngineFX.NO_EFFECT);
