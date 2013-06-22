@@ -20,12 +20,16 @@
 
 package zildo.monde.sprites.persos;
 
+import zildo.client.sound.BankSound;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.elements.ElementGuardWeapon;
+import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
+import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.resource.Constantes;
+import zildo.server.EngineZildo;
 
 /**
  * Perso garde "canard"
@@ -81,5 +85,20 @@ public class PersoGarde extends PersoNJ {
 	public Collision getCollision() {
 		return new Collision((int) x, (int) y, 10, null, this,
 				DamageType.BLUNT, null);
+	}
+	
+	/* (non-Javadoc)
+	 * @see zildo.monde.sprites.persos.PersoNJ#beingWounded(float, float, zildo.monde.sprites.persos.Perso, int)
+	 */
+	@Override
+	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
+		if ("noir".equals(getEffect()) && p_damage == 1) {
+			// No strength enough to wound (is it the right place to check this ???)
+			EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
+			EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null));
+			p_shooter.project(cx, cy, 1);
+		} else {
+			super.beingWounded(cx, cy, p_shooter, p_damage);
+		}
 	}
 }

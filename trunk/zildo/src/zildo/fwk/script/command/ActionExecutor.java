@@ -470,7 +470,8 @@ public class ActionExecutor {
                 			perso.setInfo(PersoInfo.valueOf(p_action.info));
                 		}
                 		if (p_action.fx != null) {
-                			perso.setSpecialEffect(EngineFX.valueOf(p_action.fx));
+                			perso.setEffect(p_action.fx);
+                			perso.initPersoFX();
                 		}
                 	}
                 	achieved = true;
