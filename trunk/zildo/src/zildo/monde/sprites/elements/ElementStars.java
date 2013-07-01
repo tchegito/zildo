@@ -22,7 +22,6 @@ package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
-import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 /**
