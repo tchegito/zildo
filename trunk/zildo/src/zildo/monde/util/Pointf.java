@@ -25,10 +25,14 @@ public class Pointf {
 	public float x, y;
 	
 	public Pointf(float a, float b) {
-		x=a;
-		y=b;
+		x = a;
+		y = b;
 	}
 	
+	public Pointf(Pointf source) {
+		x = source.x;
+		y = source.y;
+	}
     public void add(Pointf p_point) {
     	add(p_point.x, p_point.y);
     }
@@ -43,6 +47,10 @@ public class Pointf {
     	return "("+x+", "+y+")";
     }
     
+    public boolean isEmpty() {
+    	return x == 0 && y == 0;
+    }
+    
     /**
      * Returns the distance between the current point and a given one.
      * @param p_other
@@ -54,6 +62,10 @@ public class Pointf {
         c = c * c;
         c += d * d;
         return (float) Math.sqrt(c);
+    }
+    
+    public boolean equals(Pointf p) {
+    	return x == p.x && y == p.y;
     }
 
 }
