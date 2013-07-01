@@ -320,6 +320,11 @@ public abstract class Perso extends Element {
 
 	public Perso() {
 		super();
+		
+		initFields();
+	}
+	
+	protected void initFields() {
 		entityType = EntityType.PERSO;
 
 		money = (int) Math.random();
@@ -336,9 +341,12 @@ public abstract class Perso extends Element {
 		persoSprites = new ArrayList<Element>();
 
 		pathFinder = new PathFinder(this);
-
 	}
 
+	public Perso(int id) {
+		super(id);
+	}
+	
 	@Override
 	public void finalize() {
 		// Delete linked elements

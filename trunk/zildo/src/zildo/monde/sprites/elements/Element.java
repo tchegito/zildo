@@ -70,6 +70,10 @@ public class Element extends SpriteEntity {
 		this.initialize();
 	}
 
+	public Element(int id) {
+		super(id);
+	}
+	
 	private void initialize() {
 		entityType = EntityType.ELEMENT;
 
