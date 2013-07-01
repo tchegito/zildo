@@ -113,6 +113,8 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 	private static final int KEY_RIGHT           = 0xCD; /* RightArrow on arrow keypad */
 	private static final int KEY_DOWN            = 0xD0; /* DownArrow on arrow keypad */
 	private static final int KEY_DIALOG_FRAME	= 0xD1;	/* Random */
+	private static final int KEY_TOUCH_MENU	= 0xD2;	/* Random */
+	private static final int KEY_TOUCH_BACK	= 0xD3;	/* Random */
 	
 	static {
 		platformKeys.put(Keys.BACK, KEY_BACK);
@@ -129,11 +131,12 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 		platformKeys.put(Keys.RIGHT, KEY_RIGHT);
 		platformKeys.put(Keys.DOWN, KEY_DOWN);
 		platformKeys.put(Keys.DIALOG_FRAME, KEY_DIALOG_FRAME);
+		platformKeys.put(Keys.TOUCH_MENU, KEY_TOUCH_MENU);
+		platformKeys.put(Keys.TOUCH_BACK, KEY_TOUCH_BACK);
 	}
 	
 	TouchPoints polledTouchedPoints;
 	//TouchMovement tm;
-	boolean resetBack;
 	AndroidInputInfos infos;
 	
 	public AndroidKeyboardHandler() {
@@ -149,41 +152,12 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 	static final int middleY = Zildo.viewPortY / 2;
 	
 	public boolean isKeyDown(int p_code) {
-		if (p_code == KEY_ESCAPE) {
-			if (infos.backPressed) {
-				resetBack = true;
-			}
+		switch (p_code) {
+		case KEY_TOUCH_BACK:
 			return infos.backPressed;
-		}
-		/*else if (p_code == KEY_Q || p_code == KEY_W) {
-			if (polledTouchedPoints.size() != 0) {
-				for (Point p : polledTouchedPoints.getAll()) {
-					switch (p_code) {
-					case KEY_Q:
-						if (p.x >= middleX && p.y < middleY) {
-							return true;
-						}
-						break;
-					case KEY_W:
-						if (p.x >= middleX && p.y >= middleY) {
-							return true;
-						}
-						break;
-						/*
-					case KEY_X:
-						Point zildoPos = infos.getZildoPos();
-						// Inventory only if player isn't moving (tm.getCurrent) and close enough
-						// to zildo location
-						if (zildoPos != null //&& tm.getCurrent() == null 
-								&& zildoPos.distance(p) < 24) {
-							 return true;
-						}
-						break;
-					*//*
-					}
-				}
-			}			
-		} */else {
+		case KEY_TOUCH_MENU:
+			return infos.menuPressed;
+		default:
 			return keyStates[p_code];
 		}
 	}
@@ -196,10 +170,6 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 			keyStates[i] = false;
 		}
 		
-		if (resetBack) {
-			infos.backPressed = false;	// Reinitialize back button press
-			resetBack = false;
-		}
 		polledTouchedPoints.clear();
 		if (infos.liveTouchedPoints.size() != 0) {
 			polledTouchedPoints.clear();
@@ -220,10 +190,6 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 				}
 			}
 		}
-		//tm.render();
-		//previous = tm.getCurrent();
-		
-
 	}
 	
 	/**

@@ -26,9 +26,29 @@ package zildo.fwk.ui;
  */
 public class DefaultMenuListener implements MenuListener {
 
+	ItemMenu asked;
+	
 	@Override
-	public ItemMenu act(Menu menu) {
+	public final ItemMenu act(Menu menu) {
+		if (asked != null) {
+			menu.activateItem(asked);
+			ItemMenu dobble = asked;
+			asked = null;
+			return dobble;
+		}
+		return actSpe(menu);
+	}
+	
+	/**
+	 * Overridable "get item" method.
+	 * @param menu
+	 * @return ItemMenu
+	 */
+	public ItemMenu actSpe(Menu menu) {
 		return menu.act();
 	}
-
+	
+	public final void askFor(ItemMenu item) {
+		asked = item;
+	}
 }

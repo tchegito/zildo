@@ -28,6 +28,7 @@ public interface KeyboardHandler {
 
 	public boolean isKeyDown(int p_code);
 	public boolean isKeyDown(Keys key);
+	public boolean isKeyPressed(Keys key);
 	
 	public void poll();
 	
@@ -42,7 +43,9 @@ public interface KeyboardHandler {
 	
 	public char getEventCharacter();
 	
-	public enum Keys {Q, W, X, E, UP, DOWN, RIGHT, LEFT, TAB, RETURN, BACK, ESCAPE, LSHIFT, DIALOG_FRAME};
+	public enum Keys {Q, W, X, E, UP, DOWN, RIGHT, LEFT, TAB, RETURN, BACK, ESCAPE, LSHIFT,
+		// Specific for touch screen
+		DIALOG_FRAME, TOUCH_MENU, TOUCH_BACK};
 	public int getCode(Keys k);
 	
 }

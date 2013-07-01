@@ -24,6 +24,7 @@ import zildo.client.sound.BankSound;
 
 public abstract class ItemMenu {
 
+	private String keyText;	// Original key value from bundle
 	private  String text;
 	public BankSound sound=BankSound.MenuSelect;
 	private boolean launched;
@@ -33,6 +34,7 @@ public abstract class ItemMenu {
 	}
 	
 	public ItemMenu(String p_text) {
+		keyText = p_text;
 		text=UIText.getMenuText(p_text);
 	}
 
@@ -65,6 +67,10 @@ public abstract class ItemMenu {
 	
 	public boolean isSelectable() {
 		return true;
+	}
+	
+	public String getKey() {
+		return keyText;
 	}
 		
 }

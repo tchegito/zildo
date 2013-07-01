@@ -31,12 +31,14 @@ import zildo.server.EngineZildo;
 public class AndroidInputInfos {
 	public TouchPoints liveTouchedPoints;
 	public boolean backPressed;
+	public boolean menuPressed;
 	PersoZildo zildo;
 	Point zildoPos;
 
 	public AndroidInputInfos() {
 		liveTouchedPoints = new TouchPoints();
 		backPressed = false;
+		menuPressed = false;
 		zildo = null;
 		zildoPos = new Point(0,0);
 	}
