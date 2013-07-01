@@ -47,6 +47,8 @@ public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 	private static final int KEY_LEFT            = 0xCB; /* LeftArrow on arrow keypad */
 	private static final int KEY_RIGHT           = 0xCD; /* RightArrow on arrow keypad */
 	private static final int KEY_DOWN            = 0xD0; /* DownArrow on arrow keypad */
+	private static final int KEY_R               = 0x13;
+	private static final int KEY_T               = 0x14;
 	
 	static {
 		platformKeys.put(Keys.BACK, KEY_BACK);
@@ -62,7 +64,9 @@ public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 		platformKeys.put(Keys.LEFT, KEY_LEFT);
 		platformKeys.put(Keys.RIGHT, KEY_RIGHT);
 		platformKeys.put(Keys.DOWN, KEY_DOWN);
-		platformKeys.put(Keys.DIALOG_FRAME, KEY_Q);	// Nonsense without touch screen
+		platformKeys.put(Keys.DIALOG_FRAME, KEY_E);	// Nonsense without touch screen
+		platformKeys.put(Keys.TOUCH_MENU, KEY_R);	// Nonsense without touch screen
+		platformKeys.put(Keys.TOUCH_BACK, KEY_T);	// Nonsense without touch screen
 	}
 
 	public boolean isKeyDown(int p_code) {

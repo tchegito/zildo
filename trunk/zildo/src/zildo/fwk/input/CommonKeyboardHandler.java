@@ -26,7 +26,21 @@ package zildo.fwk.input;
  */
 public abstract class CommonKeyboardHandler implements KeyboardHandler{
 	
+	boolean[] keyPressed = new boolean[256];
+	
 	public boolean isKeyDown(Keys key) {
 		return isKeyDown(getCode(key));
+	}
+	
+	/**
+	 * Returns TRUE if given key is just being pressed. Meaning that if this method returns TRUE, the next
+	 * call should return FALSE (unless player is not human ;) )
+	 */
+	public final boolean isKeyPressed(Keys key) {
+		boolean down = isKeyDown(getCode(key));
+		int value = key.ordinal();
+		boolean pressed = down && !keyPressed[value];
+		keyPressed[value] = down;
+		return pressed;
 	}
 }

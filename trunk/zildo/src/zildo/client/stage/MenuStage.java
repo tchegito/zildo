@@ -85,4 +85,7 @@ public class MenuStage implements GameStage {
 		return done;
 	}
 
+	public void askForItemMenu(ItemMenu it) {
+		menuListener.askFor(it);
+	}
 }

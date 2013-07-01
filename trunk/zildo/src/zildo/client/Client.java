@@ -82,7 +82,7 @@ public class Client {
 
 	KeyboardInstant kbInstant = new KeyboardInstant();
 
-	InGameMenu ingameMenu;
+	final InGameMenu ingameMenu;
 
 	KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
 
@@ -107,6 +107,8 @@ public class Client {
 		
 		stages = new ArrayList<GameStage>();
 		menuListener = new DefaultMenuListener();
+		
+		ingameMenu = new InGameMenu();
 	}
 
 	void initializeDisplay() {
@@ -217,22 +219,66 @@ public class Client {
 			}
 			done |= glGestion.mainloop();
 
-			if (kbHandler.isKeyDown(Keys.ESCAPE) && !ClientEngineZildo.filterCommand.isFading()) {
-				// Escape is pressed and no fade is running
-				if (connected) {
-					if (ingameMenu == null) {
-						ingameMenu = new InGameMenu();
-					}
-					handleMenu(ingameMenu);
-				} else if (!isIngameMenu()) {
-					done = true;
-				}
-			}
+			handleKeys();
 
 		}
 
 		// Display scene
 		glGestion.render(connected);
+	}
+
+	/**
+	 * Handle system keys : ESCAPE for computer, BACK/MENU for touchscreen devices
+	 */
+	private void handleKeys() {
+		if (kbHandler.isKeyPressed(Keys.ESCAPE)) {
+			// Escape is pressed and no fade is running
+			if (connected) {
+				handleMenu(ingameMenu);
+			} else if (currentMenu != ingameMenu) {
+				done = true;
+			} else {
+				askForItemMenu(ingameMenu, "m7.continue");
+			}
+		}
+		
+		if (kbHandler.isKeyPressed(Keys.TOUCH_MENU)) {
+			if (connected && !isIngameMenu()) {
+				handleMenu(ingameMenu);
+			}
+		}
+		
+		if (kbHandler.isKeyPressed(Keys.TOUCH_BACK)) {
+			if (!connected) {
+				if (currentMenu == ingameMenu) {
+					askForItemMenu(ingameMenu, "m7.quit");
+				} else if (currentMenu != null) {
+					if ("m7.quitConfirm".equals(currentMenu.getKey())) {
+						askForItemMenu(currentMenu, "global.yes");
+					} else if ("m1.title".equals(currentMenu.getKey())) {
+						done = true;
+					}
+				} else {
+					askForItemMenu(ingameMenu, "m7.quit");
+				}
+			} else {
+				handleMenu(ingameMenu);
+				askForItemMenu(ingameMenu, "m7.quit");
+			}
+		}
+	}
+
+	/**
+	 * Simulate an item selection. Assume that a menu is displayed.
+	 * @param item
+	 */
+	private void askForItemMenu(Menu menu, String itemKey) {
+		ItemMenu item = menu.getItemNamed(itemKey);
+		for (GameStage stage : stages) {
+			if (stage instanceof MenuStage) {
+				((MenuStage)stage).askForItemMenu(item);
+			}
+		}
 	}
 
 	public void serverLeft() {

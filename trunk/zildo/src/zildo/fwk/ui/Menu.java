@@ -43,6 +43,7 @@ public class Menu {
 	// Object to handle any menus
 	protected Client client = ClientEngineZildo.getClientForMenu();
 	protected final Menu currentMenu = this;
+	protected String keyText;
 	
 	protected KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
 	
@@ -68,6 +69,7 @@ public class Menu {
 	}
 	
 	public void setTitle(String p_title) {
+		keyText = p_title;
 		title=UIText.getMenuText(p_title);
 	}
 	
@@ -170,5 +172,26 @@ public class Menu {
     
     public Menu getPrevious() {
     	return previousMenu;
+    }
+    
+    /**
+     * Retrieve item from the menu whose bundle key is the given name.
+     * @param name
+     * @return ItemMenu (NULL if no such key can be found)
+     */
+    public ItemMenu getItemNamed(String name) {
+    	if (name == null) {
+    		return null;
+    	}
+    	for (ItemMenu item : items) {
+    		if (name.equals(item.getKey())) {
+    			return item;
+    		}
+    	}
+    	return null;	// No item found with the given name
+    }
+    
+    public String getKey() {
+    	return keyText;
     }
 }
