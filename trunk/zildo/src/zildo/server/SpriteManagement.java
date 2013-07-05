@@ -247,6 +247,7 @@ public class SpriteManagement extends SpriteStore {
 				element.setZ(4.0f);
 				element.setVz(1.5f);
 				element.setAz(-0.1f);
+				ElementDescription shadow = ElementDescription.SHADOW_MINUS;
 				if (typeSprite == SpriteAnimation.GOLDCOIN) {
 					switch (misc) {
 					case 0:
@@ -254,6 +255,7 @@ public class SpriteManagement extends SpriteStore {
 						break;
 					case 1:
 						element.setDesc(ElementDescription.THREEGOLDCOINS1);
+						 shadow = ElementDescription.SHADOW;
 						break;
 					default:
 						element.setDesc(ElementDescription.GOLDPURSE1);
@@ -269,7 +271,7 @@ public class SpriteManagement extends SpriteStore {
 				element2 = new Element();
 				element2.setX(x);
 				element2.setY(y - 2);
-				element2.setSprModel(ElementDescription.SHADOW_MINUS);
+				element2.setSprModel(shadow);
 				spawnSprite(element2);
 				element.setLinkedPerso(element2);
 				spawnSprite(element);
@@ -288,7 +290,7 @@ public class SpriteManagement extends SpriteStore {
 					} else {
 						element.setZ(11.0f);
 						//element.setVx(0.15f);
-						element.setVz(-0.04f);
+						element.setVz(-0.02f);
 						element.setAz(-0.01f);
 						//element.setAx(-0.01f);
 						element.setSprModel(ElementDescription.DROP_SMALL);
