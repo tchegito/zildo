@@ -241,7 +241,7 @@
 	
 	<quest name="foretg_button_trig">
 	    <trigger>
-	        <location name="foretg" tilePos="5,27"/>
+	        <location name="foretg" tilePos="5,27" gear="BUTTON"/>
 	    </trigger>
 	    <action>
 	        <actions>
@@ -253,7 +253,7 @@
 	
 	<quest name="foretg_button_trig2">
 	    <trigger>
-	        <location name="foretg" tilePos="7,17"/>
+	        <location name="foretg" tilePos="7,17" gear="BUTTON"/>
 	        <questDone name="foretg_button_trig"/>
 	    </trigger>
 	    <action>

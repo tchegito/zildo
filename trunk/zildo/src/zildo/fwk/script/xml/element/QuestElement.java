@@ -37,7 +37,8 @@ public class QuestElement extends AnyElement {
 	boolean both; // TRUE=each trigger element must be done AT THE SAME TIME to
 					// launch the actions
 	boolean repeat; // TRUE=can be accomplished unlimited time
-
+	public boolean locked;	// TRUE=block the game (default) / FALSE=player can move during script
+	
 	// 'done' is TRUE when zildo has accomplished that
 
 	@Override
@@ -63,7 +64,8 @@ public class QuestElement extends AnyElement {
 
 		both = isTrue("both");
 		repeat = isTrue("repeat");
-
+		locked = !"false".equals(readAttribute("locked"));	// Default is false
+		
 		if (repeat) {
 			// Add a final action to reset this quest (it must be "repeatable")
 			ActionElement actionResetQuest = new ActionElement(

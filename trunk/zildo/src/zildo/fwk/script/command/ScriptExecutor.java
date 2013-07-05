@@ -157,7 +157,7 @@ public class ScriptExecutor {
 		}
 		for (ScriptProcess process : scripts) {
 			// Is this script unblocking ?
-			if (!process.scene.unblock) {
+			if (process.scene.locked) {
 				return true;
 			}
 		}

@@ -106,11 +106,11 @@ public class ScriptManagement {
      * @param p_name
      * @param p_unblock FALSE=default:blocking scene / TRUE=non blocking scene
      */
-    public void execute(String p_name, boolean p_unblock) {
+    public void execute(String p_name, boolean p_locked) {
     	SceneElement scene=adventure.getSceneNamed(p_name);
     	if (scene != null) {
     		 if (!scriptExecutor.isProcessing(p_name)) {
-    			 scene.unblock = p_unblock;
+    			 scene.locked = p_locked;
     			 scriptExecutor.execute(scene, true, false);
     		 }
     	} else {
@@ -118,11 +118,12 @@ public class ScriptManagement {
     	}
     }
 
-    private void execute(List<ActionElement> p_actions, boolean p_finalEvent, String p_questName, boolean p_topPriority) {
+    private void execute(List<ActionElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority) {
     	// Create a SceneElement from the given actions
 		SceneElement scene=SceneElement.createScene(p_actions);
-		if (p_questName != null) {
-			scene.id = MARQUER_SCENE+p_questName;
+		if (p_quest != null) {
+			scene.id = MARQUER_SCENE+p_quest.name;
+			scene.locked = p_quest.locked;
 		}
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent, p_topPriority);
@@ -258,7 +259,7 @@ public class ScriptManagement {
 	    	TriggerElement trig=TriggerElement.createQuestDoneTrigger(p_quest.name);
 	    	trigger(trig);
 			// Execute the corresponding actions
-			execute(p_quest.getActions(), true, p_quest.name, false);
+			execute(p_quest.getActions(), true, p_quest, false);
     	}
 
     	
@@ -360,6 +361,10 @@ public class ScriptManagement {
 			return !scriptExecutor.isProcessing(p_questName);
 		}
 		return done;
+	}
+	
+	public boolean isQuestProcessing(String p_questName) {
+		return scriptExecutor.isProcessing(p_questName);
 	}
 	
 	public boolean isOpenedChest(String p_mapName, Point p_location) {

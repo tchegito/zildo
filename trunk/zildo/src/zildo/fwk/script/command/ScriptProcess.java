@@ -49,7 +49,7 @@ public class ScriptProcess {
 		scene=p_scene;
 		cursor=0;
 		topPriority = p_topPriority;
-		actionExec=new ActionExecutor(p_scriptExecutor);
+		actionExec=new ActionExecutor(p_scriptExecutor, p_scene.locked);
 		finalEvent = p_finalEvent;
 		
 		if (scene.restoreZildo) {
