@@ -244,18 +244,20 @@ public class GUIDisplay {
 	// Main method for this class.
 	// Should handle all events happening here.
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void draw() {
-		// Re-initialize the gui's sprites sequence.
-		// Each frame, we re-add the sprites to avoid doing test about what
-		// exactly changes
-		// from last frame.
-		clean();
-
-		if (toDisplay_generalGui) {
-			// Draw the general GUI (life, money...)
-			drawGeneralGUI();
+	public void draw(boolean isMenu) {
+		if (!isMenu) {
+			// Re-initialize the gui's sprites sequence.
+			// Each frame, we re-add the sprites to avoid doing test about what
+			// exactly changes
+			// from last frame.
+			clean();
+	
+			if (toDisplay_generalGui) {
+				// Draw the general GUI (life, money...)
+				drawGeneralGUI();
+			}
 		}
-
+		
 		if (toRemove_dialoguing) {
 			// Remove frame and text inside it
 			removePreviousTextInFrame();
