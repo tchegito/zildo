@@ -49,15 +49,27 @@ public class TriggerElement extends AnyElement {
 	Zone region; // Unimplemented yet
 	boolean immediate;	// TRUE=trigger is disabled just after activation (default:true)
 	Angle angle;
+	Gear gearType;
+	
+	enum Gear {	// Type of mechanism (for LOCATION trigger only)
+		BUTTON,	// Button can be pressed
+		TIMED_BUTTON // Button can be pressed and return as action is over (and character is away from the button)
+	};
 	
 	boolean pressed = false;	// For buttons being pressed during the game
 	
 	List<String> deadPersos;	// Perso expected to be dead
 	
 	ZSSwitch questSwitch;
-
+	String questName;	// Name of the quest containing this trigger (used for buttons)
+	
 	public TriggerElement(QuestEvent p_kind) {
 		kind = p_kind;
+	}
+
+	public TriggerElement(QuestEvent p_kind, String p_questName) {
+		this(p_kind);
+		questName = p_questName;
 	}
 
 	//
@@ -76,6 +88,10 @@ public class TriggerElement extends AnyElement {
 		case LOCATION:
 			name = readAttribute("name");
 			radius = readInt("radius");
+			String gear = readAttribute("gear");
+			if (gear != null) {
+				gearType = Gear.valueOf(gear);
+			}
 			String strPos = readAttribute("pos");
 			if (strPos != null) {
 				location = Point.fromString(strPos);
@@ -142,7 +158,15 @@ public class TriggerElement extends AnyElement {
 					int gridY = p_another.location.y / 16;
 					boolean onIt = tileLocation.x == gridX && tileLocation.y == gridY;
 					if (onIt && !pressed) {
-						EngineZildo.soundManagement.broadcastSound(BankSound.Switch, location);
+						if (gearType != null) {
+							switch (gearType) {
+							case TIMED_BUTTON:
+								EngineZildo.mapManagement.getCurrentMap().addSpawningTile(tileLocation, questName, 0, false);
+							case BUTTON:
+								EngineZildo.soundManagement.broadcastSound(BankSound.Switch, location);
+								EngineZildo.mapManagement.getCurrentMap().writemap(gridX,  gridY, 256 * 4+212);
+							}
+						}
 						pressed = true;
 						return true;
 					} else if (!onIt) {

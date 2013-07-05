@@ -30,12 +30,12 @@
     	</action>    
     </quest>
     
-    <quest name="vg5_but1">
+    <quest name="vg5_but1" locked="false">
     	<trigger>
-    	    <location name="voleursg5" tilePos="52,26"/>
+    	    <location name="voleursg5" tilePos="52,26" gear="TIMED_BUTTON"/>
     	</trigger>
     	<action>
-    	    <exec script="move_vg5_plat1" unblock="true"/>
+    	    <exec script="move_vg5_plat1"/>
     	</action>
     </quest>
 
@@ -198,6 +198,5 @@
 	    <wait value="10"/>
 	    <moveTo what="platform" pos="80,0" delta="true" speed="2"/>
 	    <wait value="10"/>
-	    <markQuest name="vg5_but1" value="0"/>
 	</scene>
 </adventure>

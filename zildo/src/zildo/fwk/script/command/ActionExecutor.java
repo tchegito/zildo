@@ -74,9 +74,11 @@ public class ActionExecutor {
 
     ScriptExecutor scriptExec;
     int count;
+    boolean locked;
     
-    public ActionExecutor(ScriptExecutor p_scriptExec) {
+    public ActionExecutor(ScriptExecutor p_scriptExec, boolean p_locked) {
         scriptExec = p_scriptExec;
+        locked = p_locked;
     }
 
     /**
@@ -312,7 +314,7 @@ public class ActionExecutor {
                 	break;
                 case exec:
                 	// Note : we can sequence scripts in an action tag.
-                	EngineZildo.scriptManagement.execute(text, p_action.unblock);
+                	EngineZildo.scriptManagement.execute(text, locked);
                 	break;
                 case music:
                 	if (text == null) { // Stop music ?

@@ -89,7 +89,8 @@ public class ScriptReader {
         if (kind != null && kind != ActionKind.actions) { 
         	s=new ActionElement(kind);
         } else if (event != null) {
-        	s=new TriggerElement(event);
+        	String questName = ((Element)p_element.getParentNode().getParentNode()).getAttribute("name");
+        	s=new TriggerElement(event, questName);
         } else {
         	// General case
 	        name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length()).toLowerCase();
