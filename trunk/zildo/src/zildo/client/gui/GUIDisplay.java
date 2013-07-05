@@ -476,9 +476,11 @@ public class GUIDisplay {
 		}
 
 		// Say that the message is not complete yet at screen
-		dialogContext.visibleMessageDisplay = visibleFont; 
+		if (toDisplay_dialogMode == DialogMode.CLASSIC) {
+			dialogContext.visibleMessageDisplay = visibleFont; 
 												
-		dialogContext.entireMessageDisplay = visibleFont;
+			dialogContext.entireMessageDisplay = visibleFont;
+		}
 		
 		return filledZone;
 	}
