@@ -207,8 +207,8 @@ public class ClientEngineZildo {
 
 		//long t7 = ZUtils.getTime();
 
-		if (!p_editor && client.connected) {
-			guiDisplay.draw();
+		if (!p_editor) {
+			guiDisplay.draw(!client.connected);
 		}
 		// Display FOREGROUND sprites
 		if (spriteDisplay.foreBackController.isDisplayForeground()) {
