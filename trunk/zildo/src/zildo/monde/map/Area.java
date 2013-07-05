@@ -76,11 +76,15 @@ public class Area implements EasySerializable {
 	class SpawningTile {
 		Case previousCase;
 		int x, y;
-		int cnt = 5000;
+		int cnt;
+		String awaitedQuest;	// Name of the awaited quest to be done
+		boolean fog;	// display a fog during the respawn
 	}
 
 	final static int TILE_VIEWPORT_X = (Zildo.viewPortX / 16) + 1;
 	final static int TILE_VIEWPORT_Y = (Zildo.viewPortY / 16) + 1;
+	
+	final static int DEFAULT_SPAWNING_TIME = 5000;	// Number of frames until the tile respawns
 	
 	// For roundAndRange
 	static public int ROUND_X = 0;
@@ -419,12 +423,10 @@ public class Area implements EasySerializable {
 			anim = SpriteAnimation.FROM_CHEST;
 			break;
 		}
-		// Notify that this case should reappear after a given time
-		SpawningTile spawnTile = new SpawningTile();
-		spawnTile.x = tileLocation.x;
-		spawnTile.y = tileLocation.y;
-		spawnTile.previousCase = new Case(get_mapcase(tileLocation.x, tileLocation.y + 4));
-		toRespawn.add(spawnTile);
+		// Notify that this case should reappear after a given time (only in multiplayer mode)
+		if (EngineZildo.game.multiPlayer) {
+			addSpawningTile(tileLocation, null, DEFAULT_SPAWNING_TIME, true);
+		}
 
 		// Remove tile on back2, if present
 		Case temp = this.get_mapcase(x, y + 4);
@@ -485,6 +487,17 @@ public class Area implements EasySerializable {
 				targetArea.set_mapcase(j + shiftX, i + shiftY, tempCase);
 			}
 		}
+	}
+	
+	public void addSpawningTile(Point tileLocation, String awaitedQuest, int time, boolean fog) {
+		SpawningTile spawnTile = new SpawningTile();
+		spawnTile.x = tileLocation.x;
+		spawnTile.y = tileLocation.y;
+		spawnTile.previousCase = new Case(get_mapcase(tileLocation.x, tileLocation.y + 4));
+		spawnTile.cnt = time;
+		spawnTile.awaitedQuest = awaitedQuest;
+		spawnTile.fog = fog;
+		toRespawn.add(spawnTile);
 	}
 
 	public void addChainingPoint(ChainingPoint ch) {
@@ -992,26 +1005,32 @@ public class Area implements EasySerializable {
 	 * Respawns disappeared things in multiplayer mode.
 	 */
 	public void update() {
-		if (EngineZildo.game.multiPlayer) {
-			// Only respawn bushes and chests in multiplayer
-			for (Iterator<SpawningTile> it = toRespawn.iterator(); it.hasNext();) {
-				SpawningTile spawnTile = it.next();
-				if (spawnTile.cnt == 0) {
-					int x = spawnTile.x * 16 + 8;
-					int y = spawnTile.y * 16 + 8;
-					// Respawn the tile if nothing bothers at location
-					int radius = 8;
-					if (EngineZildo.mapManagement.collideSprite(x, y, radius, null)) {
-						spawnTile.cnt++;
-					} else {
-						this.set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);
-						EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
-						changes.add(new Point(spawnTile.x, spawnTile.y + 4));
-						it.remove();
-					}
-				} else {
-					spawnTile.cnt--;
+		// Only respawn bushes and chests in multiplayer
+		for (Iterator<SpawningTile> it = toRespawn.iterator(); it.hasNext();) {
+			SpawningTile spawnTile = it.next();
+			if (spawnTile.awaitedQuest != null) {
+				if (EngineZildo.scriptManagement.isQuestProcessing(spawnTile.awaitedQuest)) {
+					// Wait for given quest to be over
+					continue;
 				}
+			}
+			if (spawnTile.cnt == 0) {
+				int x = spawnTile.x * 16 + 8;
+				int y = spawnTile.y * 16 + 8;
+				// Respawn the tile if nothing bothers at location
+				int radius = 8;
+				if (EngineZildo.mapManagement.collideSprite(x, y, radius, null)) {
+					spawnTile.cnt++;
+				} else {
+					this.set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);
+					if (spawnTile.fog) { 
+						EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
+					}
+					changes.add(new Point(spawnTile.x, spawnTile.y + 4));
+					it.remove();
+				}
+			} else {
+				spawnTile.cnt--;
 			}
 		}
 	}
