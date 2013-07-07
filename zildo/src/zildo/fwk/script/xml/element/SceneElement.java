@@ -30,7 +30,7 @@ public class SceneElement extends AnyElement {
 
     public String id;
     public boolean restoreZildo;	// TRUE=at the end of the scene, we should restore the previous zildo's state
-    public boolean locked;	// FALSE=game isn't blocked during scene / TRUE=default behavior (blocked)
+    public boolean locked = true;	// FALSE=game isn't blocked during scene / TRUE=default behavior (blocked)
     public List<ActionElement> actions;
 
     @Override

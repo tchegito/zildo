@@ -80,7 +80,7 @@ public class SinglePlayer implements GameStage {
 
         if (p_game.brandNew) {
 	        // Start 'intro' script
-	       	EngineZildo.scriptManagement.execute("preintro", false);
+	       	EngineZildo.scriptManagement.execute("preintro", true);
 	       	p_game.brandNew=false;
         }
     }
