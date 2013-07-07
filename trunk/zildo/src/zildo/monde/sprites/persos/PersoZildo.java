@@ -416,7 +416,7 @@ public class PersoZildo extends Perso {
 		} else {
 			// Game over
 			pos_seqsprite = 0;
-			EngineZildo.scriptManagement.execute("death", false);
+			EngineZildo.scriptManagement.execute("death", true);
 		}
 	}
 

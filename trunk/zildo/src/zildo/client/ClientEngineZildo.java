@@ -247,9 +247,6 @@ public class ClientEngineZildo {
 
 		boolean displayGUI = !p_event.script && !p_event.mapChange;
 
-		PersoZildo zildo;
-		Point zildoPos;
-		
 		if (p_event.wait != 0) {
 			p_event.wait--;
 		} else {

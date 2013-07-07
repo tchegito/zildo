@@ -104,7 +104,7 @@ public class ScriptManagement {
     /**
      * Execute the given named script, if it exists, and it's not already running.
      * @param p_name
-     * @param p_unblock FALSE=default:blocking scene / TRUE=non blocking scene
+     * @param p_locked TRUE=default:blocking scene / FALSE=non blocking scene
      */
     public void execute(String p_name, boolean p_locked) {
     	SceneElement scene=adventure.getSceneNamed(p_name);
