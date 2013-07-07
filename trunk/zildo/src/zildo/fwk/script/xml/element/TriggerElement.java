@@ -164,7 +164,7 @@ public class TriggerElement extends AnyElement {
 								EngineZildo.mapManagement.getCurrentMap().addSpawningTile(tileLocation, questName, 0, false);
 							case BUTTON:
 								EngineZildo.soundManagement.broadcastSound(BankSound.Switch, location);
-								EngineZildo.mapManagement.getCurrentMap().writemap(gridX,  gridY, 256 * 4+212);
+								EngineZildo.mapManagement.getCurrentMap().writemap(gridX,  gridY, 256 * 3+212);
 							}
 						}
 						pressed = true;

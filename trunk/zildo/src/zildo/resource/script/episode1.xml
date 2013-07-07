@@ -247,6 +247,7 @@
 	        <actions>
 		        <exec script="foretg_button"/>
 			    <markQuest name="foretg_button_trig2" value="0" />
+			    <tile pos="7,17" back="981"/>
 	        </actions>
 		</action>
 	</quest>
@@ -260,7 +261,8 @@
 	        <actions>
 		        <exec script="foretg_button2"/>
 		        <markQuest name="foretg_button_trig" value="0" />
-	        </actions>
+			    <tile pos="5,27" back="981"/>
+			</actions>
    	    </action>
 	</quest>
 	
