@@ -1021,7 +1021,8 @@ public class Area implements EasySerializable {
 				if (EngineZildo.mapManagement.collideSprite(x, y, radius, null)) {
 					spawnTile.cnt++;
 				} else {
-					this.set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);
+					set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);
+					spawnTile.previousCase.setModified(true);
 					if (spawnTile.fog) { 
 						EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
 					}

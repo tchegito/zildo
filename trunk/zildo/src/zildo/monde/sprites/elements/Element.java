@@ -569,6 +569,7 @@ public class Element extends SpriteEntity {
 		return pushable;
 	}
 
+	@Override
 	public void setPushable(boolean pushable) {
 		this.pushable = pushable;
 	}

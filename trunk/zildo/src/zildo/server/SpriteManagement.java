@@ -75,6 +75,8 @@ public class SpriteManagement extends SpriteStore {
 											// the animation phase
 	List<SpriteEntity> suspendedEntities;
 	
+	List<SpriteEntity> walkableEntities;	// Platforms
+	
 	/** See {@link #updateSprites()} **/
 	//
 	Map<Integer, SpriteEntity> backupEntities; // To identify entities which
@@ -96,6 +98,7 @@ public class SpriteManagement extends SpriteStore {
 		backupEntities = new HashMap<Integer, SpriteEntity>();
 		sprColli = new SpriteCollision();
 		persoColli = new PersoCollision();
+		walkableEntities = new ArrayList<SpriteEntity>();
 	}
 
 	@Override
@@ -462,6 +465,11 @@ public class SpriteManagement extends SpriteStore {
 		
 		spawnSprite(entity);
 
+		// Store walkable entities
+		if (desc == ElementDescription.PLATFORM) {
+			walkableEntities.add(entity);
+		}
+		
 		return entity;
 	}
 
@@ -621,6 +629,8 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : listToRemove) {
 			deleteSprite(entity);
 		}
+		
+		walkableEntities.clear();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -868,6 +878,10 @@ public class SpriteManagement extends SpriteStore {
         return null;
     }
     
+    public List<SpriteEntity> getWalkableEntities() {
+    	return walkableEntities;
+    }
+    
     public void blockNonHero() {
     	temporaryBlocked = true;
     }
@@ -875,7 +889,10 @@ public class SpriteManagement extends SpriteStore {
     public void unblockNonHero() {
     	temporaryBlocked = false;
     }
-    
+
+    /**
+     * Called just after map has been loaded.
+     */
     public void initForNewMap() {
     	sprColli.clear();
     	persoColli.clear();
