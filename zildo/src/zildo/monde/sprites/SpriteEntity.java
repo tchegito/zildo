@@ -29,6 +29,7 @@ import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.ia.Mover;
 import zildo.monde.sprites.utils.Sprite;
 import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
@@ -73,6 +74,9 @@ public class SpriteEntity extends Identified implements Cloneable,
 	public boolean dying; // TRUE=we must remove them
 	protected Point center = new Point(); // Defaults : 1) entity : [x/2, y] 2)
 											// element : [x/2, y/2]
+
+	protected String name;
+	protected Mover mover;	// Allow moving without physics (if NULL => regular movement)
 
 	private EngineFX specialEffect; // Utilisé pour changer la couleur d'un
 									// garde par exemple
@@ -288,9 +292,20 @@ public class SpriteEntity extends Identified implements Cloneable,
 				.get_sprite(nSpr));
 	}
 
+	/**
+	 * Basically, an entity doesn't move. Except for specific sprites on which hero can walk (moving platform for example).
+	 */
 	public void animate() {
-		ajustedX = (int) x - (sprModel.getTaille_x() >> 1);
-		ajustedY = (int) y - (sprModel.getTaille_y() >> 1);
+		if (mover != null && mover.isActive()) {
+			// Moving is delegated to another object
+			int dx = ajustedX - (int) x;
+			int dy = ajustedY - (int) y;
+			mover.reachTarget();
+				
+			ajustedX = (int) x + dx;
+			ajustedY = (int) y + dy;
+			return;
+		}
 	}
 
 	/**
@@ -450,5 +465,30 @@ public class SpriteEntity extends Identified implements Cloneable,
 				sprModel.getTaille_y()*repeatY);
 
 		return zone;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setMover(Mover m) {
+		if (mover != null) {
+			mover.merge(m);
+		} else {
+			mover = m;
+		}
+	}
+	
+	public Mover getMover() {
+		return mover;
+	}
+	
+	// Just for inheritance. No meaning for an entity
+	public void setPushable(boolean pushable) {
+		
 	}
 }

@@ -198,7 +198,14 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
         		elem.setAjustedY(elem.getAjustedY() + delta.y);
         		if (!EngineZildo.spriteManagement.isSpawned(elem)) {
         			EngineZildo.spriteManagement.spawnSprite(elem);
-        			elem.animate();
+        			if (elem.getEntityType().isElement()) {
+        				elem.animate();
+        			} else {
+        				SpriteEntity entity = (SpriteEntity) elem;
+        				SpriteModel sprModel = entity.getSprModel();
+        				entity.setAjustedX( (int) entity.x - (sprModel.getTaille_x() >> 1) );
+        				entity.setAjustedY( (int) entity.y - (sprModel.getTaille_y() >> 1) );
+        			}
         		}
 		}
 		calculateOriginAndSize();

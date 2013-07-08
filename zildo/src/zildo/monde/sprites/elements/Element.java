@@ -32,7 +32,6 @@ import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.ia.Mover;
 import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
 
@@ -53,14 +52,11 @@ public class Element extends SpriteEntity {
 	protected Angle angle;
 	public boolean flying;
 
-	protected String name;
-
 	public int relativeZ; // Simulate the altitude delta
 	protected int addSpr; // Pour les animations (exemple:diamants qui brillent)
 	protected Element linkedPerso; // When this element dies, any non-perso
 									// linked entity die too.
 
-	protected Mover mover;	// Allow moving without physics (if NULL => regular movement)
 	
 	protected Element shadow;
 	protected boolean pushable;
@@ -274,11 +270,9 @@ public class Element extends SpriteEntity {
 		alphaV += alphaA;
 		alpha += alphaV;
 		
-		if (mover != null) {
+		if (mover != null && mover.isActive()) {
 			// Moving is delegated to another object
-			if (mover.reachTarget()) {
-				mover = null;
-			}
+			mover.reachTarget();
 		} else {
 			
 			// Si ce sprite est valide, est-il un sprite fixe ?
@@ -396,7 +390,7 @@ public class Element extends SpriteEntity {
 		this.setNSpr(p_desc.ordinal());
 		this.setSprModel(EngineZildo.spriteManagement.getSpriteBank(nBank)
 				.get_sprite(p_desc.ordinal()));
-		desc = p_desc;
+		//desc = p_desc;
 	}
 
 	public void setSprModel(ElementDescription p_desc, int p_addSpr) {
@@ -702,14 +696,6 @@ public class Element extends SpriteEntity {
 		this.angle = angle;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public void addShadow(ElementDescription p_typeShadow) {
 		// Add a shadow
 		shadow = new Element();
@@ -730,14 +716,6 @@ public class Element extends SpriteEntity {
 			return p.isGhost();
 		}
 		return false;
-	}
-	
-	public void setMover(Mover m) {
-		mover = m;
-	}
-	
-	public Mover getMover() {
-		return mover;
 	}
 	
 	public boolean isLinkedToZildo() {
