@@ -42,7 +42,7 @@ public class AndroidMenuListener extends DefaultMenuListener {
 	EditableItemMenu editable = null;
 	
 	@Override
-	public ItemMenu act(Menu menu) {
+	public ItemMenu actSpe(Menu menu) {
 		if (editable != null) {
 			// Player is editing an item => wait for he finished
 			if (!editable.getText().isEmpty()) {

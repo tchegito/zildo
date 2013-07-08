@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -141,8 +142,6 @@ public class ZildoActivity extends Activity {
     	if (view != null) {
     		view.onPause();
     	}
-    	Log.d("zildo", "onPause");
-       	Log.d("zildo", "pause sounds");
    		AndroidSoundEngine.pauseAll();
     }
     
@@ -152,14 +151,35 @@ public class ZildoActivity extends Activity {
     	if (view != null) {
     		view.onResume();
     	}
-    	Log.d("zildo", "onResume");
-       	Log.d("zildo", "resume sounds");
    		AndroidSoundEngine.resumeAll();
     }
     
     @Override
-    public void onBackPressed() {
-    	touchListener.pressBackButton();
+    public boolean onKeyDown(int keyCode, KeyEvent event) { 
+    	switch (keyCode) {
+    	case KeyEvent.KEYCODE_MENU:
+            //do your work
+        	touchListener.pressMenuButton(true);
+            return true;
+    	case KeyEvent.KEYCODE_BACK:
+    		touchListener.pressBackButton(true);
+    		return true;
+        }
+        return super.onKeyDown(keyCode, event); 
+    }
+    
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+    	switch (keyCode) {
+    	case KeyEvent.KEYCODE_MENU:
+            //do your work
+        	touchListener.pressMenuButton(false);
+            return true;
+    	case KeyEvent.KEYCODE_BACK:
+    		touchListener.pressBackButton(false);
+    		return true;
+        }
+        return super.onKeyUp(keyCode, event); 
     }
     
 	static Client client;
