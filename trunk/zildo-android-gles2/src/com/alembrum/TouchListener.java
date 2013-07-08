@@ -29,7 +29,6 @@ import zildo.monde.util.Point;
 import zildo.platform.input.AndroidInputInfos;
 import zildo.platform.input.AndroidKeyboardHandler;
 import zildo.platform.input.TouchPoints;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -85,7 +84,6 @@ public class TouchListener implements OnTouchListener {
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_UP:
 					item = tempItem;
-					Log.d("touch", "item "+tempItem.getText());
 					menu.activateItem(tempItem);
 					break;
 				case MotionEvent.ACTION_DOWN:
@@ -129,9 +127,15 @@ public class TouchListener implements OnTouchListener {
 		}
 	}
 	
-	public void pressBackButton() {
+	public void pressBackButton(boolean pressed) {
 		if (infos != null) {
-			infos.backPressed = true;
+			infos.backPressed = pressed;
+		}
+	}
+	
+	public void pressMenuButton(boolean pressed) {
+		if (infos != null) {
+			infos.menuPressed = pressed;
 		}
 	}
 	
