@@ -30,7 +30,6 @@ import zildo.monde.items.Item;
 import zildo.monde.map.Tile;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
-import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
@@ -574,14 +573,13 @@ public abstract class Perso extends Element {
 	public boolean walkTile(boolean p_sound) {
 		
 		// Check sprite collision
-		//TODO: store only walkable entities in a separate buffer, instead of retrieving all entities
-		for (SpriteEntity entity : EngineZildo.spriteManagement.getSpriteEntities(null)) {
-			if (entity.getMover() != null && entity.getDesc() == ElementDescription.PLATFORM) {
+		for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
+			if (entity.getMover() != null) {
 				// found a platform. Is perso on it ?
-				Point center = entity.getCenter();
+				Point middle = entity.getCenter();
 				SpriteModel model = entity.getSprModel();
-				Zone z = new Zone(center.x, center.y, model.getTaille_x(), model.getTaille_y());
-				if (z.isInto((int) x, (int) y)) {
+				Zone zz = new Zone(middle.x, middle.y, model.getTaille_x(), model.getTaille_y());
+				if (zz.isInto((int) x, (int) y)) {
 					entity.getMover().linkEntity(this);
 					System.out.println("perso sur la plateforme !");
 					return false;
@@ -676,6 +674,7 @@ public abstract class Perso extends Element {
 			break;
 		// Falls
 		case 768+215: case 768+216: case 768+224: case 768+225: case 768+226: case 768+227: case 768+228: // grotte
+		case 768+217:
 		//case 1536+198: // foret4
 			if (isZildo()) {
 				stopBeingWounded();	// Stop potential projection
