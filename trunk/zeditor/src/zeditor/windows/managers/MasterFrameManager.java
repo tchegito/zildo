@@ -20,13 +20,13 @@ import zeditor.core.selection.PersoSelection;
 import zeditor.core.selection.Selection;
 import zeditor.core.selection.SpriteSelection;
 import zeditor.core.tiles.TileSelection;
+import zeditor.fwk.awt.ZildoCanvas;
 import zeditor.windows.ExplorerFrame;
 import zeditor.windows.MasterFrame;
 import zeditor.windows.OptionHelper;
 import zeditor.windows.OptionsFrame;
 import zeditor.windows.subpanels.ChainingPointPanel;
 import zeditor.windows.subpanels.SelectionKind;
-import zeditor.fwk.awt.ZildoCanvas;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
@@ -88,7 +88,7 @@ public class MasterFrameManager {
 		updateChainingPoints(null);
 		masterFrame.getStatsPanel().updateStats();
 	}
-
+	
 	/**
 	 * Ferme la fenêtre de Zeditor
 	 * 

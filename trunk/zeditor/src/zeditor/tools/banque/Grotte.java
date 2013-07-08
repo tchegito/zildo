@@ -160,7 +160,7 @@ public class Grotte extends Banque {
 				/* Lit de prison */
 				new Point(144,0), new Point(160, 0),
 				new Point(144, 16), new Point(160, 16),
-				new Point(144, 32), new Point(160, 32),
+				new Point(144, 32), new Point(80, 96),	// Pushed button
 				
 				/* Bouton */
 				new Point(64, 96),
@@ -182,6 +182,6 @@ public class Grotte extends Banque {
 				
 		pkmChanges = Arrays.asList(new GraphChange("interia3", 0, 0),
 				new GraphChange("interia2", 126, 192),
-				new GraphChange("interia3", 213, -192));
+				new GraphChange("interia3", 212, -192));
 	}
 }
