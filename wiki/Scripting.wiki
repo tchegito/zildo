@@ -100,6 +100,17 @@ It's useful when two people have to walk in the same direction, or when the came
 
 With the attribute 'unblock', the given command is said to be unblocking. It means that next action can start without waiting for the current one.
 
+==== locked ====
+
+By default, a scene is blocking all player movements, because it's a cinematic which player should see like a movie.
+But sometimes, we need to execute a script without blocking the player. For example, a moving platform on which hero has to climb to reach a distant area. And for this, we have the "locked" attribute :
+{{{
+<quest name="vg5_but1" locked="false">
+     (...)
+</quest>
+}}}
+It means that this quest doesn't lock the player movements. He can move around during this quest is executing its actions, as if no script was going on. Basically, all scripts executed from this quest unherits the locked attribute.
+
 === Misc ===
 
 ==== Focusing entities ====
@@ -116,6 +127,16 @@ A last thing to notice about focusing is that if the element moves, camera will 
 }}}
 
 This is going to focus on an element named `caveDoor` and once camera is on it, the focus will finish. It means that camera won't move at this time, and stay at its current position. But it won't follow any movement anymore of this element.
+
+==== Sub-execution ====
+
+A script can execute another one. To handle this and the priorities rules coming from this, this is how it works :
+* a queue is storing all executing scripts
+* when a new one is launched, it goes on the top of the queue
+* as long as the first script isn't finish, the second won't run
+
+There's an exception to this priority rules, driven by the "mapscripts". They need to be ran before all, in order to get a correct aspect for the current map. So they have a "top priority" flag, to avoid another script launched before.
+
 
 = Class modelization =
 
