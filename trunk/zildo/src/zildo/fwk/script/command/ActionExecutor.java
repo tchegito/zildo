@@ -45,6 +45,7 @@ import zildo.monde.quest.actions.GameOverAction;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
@@ -108,8 +109,8 @@ public class ActionExecutor {
             	} else if ("camera".equals(p_action.what)) {
             		currentPos = ClientEngineZildo.mapDisplay.getCamera();
             	} else {
-                	Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
-                	currentPos = new Point(elem.x, elem.y);
+                	SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
+                	currentPos = new Point(entity.x, entity.y);
             	}
             	if (currentPos == null) {
             		throw new RuntimeException("We need valid 'who' or 'what' attribute");
@@ -135,16 +136,16 @@ public class ActionExecutor {
                         ClientEngineZildo.mapDisplay.setCamera(location);
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
                     } else {
-                    	Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+                    	SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
                     	if (location != null) {
-                    		elem.x = location.x;
-                    		elem.y = location.y;
+                    		entity.x = location.x;
+                    		entity.y = location.y;
                     	}
                     	if (p_action.z != -1) {
-                    		elem.z = p_action.z;
+                    		entity.z = p_action.z;
                     	}
                     	// TODO:the 'pushable' attribute shouldn't be set by this default way
-                    	elem.setPushable(false);
+                    	entity.setPushable(false);
                     }
                     achieved = true;
                     break;
@@ -163,9 +164,9 @@ public class ActionExecutor {
                         ClientEngineZildo.mapDisplay.setTargetCamera(location);
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
                     } else {
-                    	Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
-                    	if (elem != null) {
-                    		elem.setMover(new BasicMover(elem, location.x, location.y));
+                    	SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
+                    	if (entity != null) {
+                    		entity.setMover(new BasicMover(entity, location.x, location.y));
                     	}
                     }
                     break;
@@ -224,9 +225,9 @@ public class ActionExecutor {
                 	achieved=true;
                 	break;
                 case focus:	// Camera focus on given character
-                	Element toFocus = perso;
+                	SpriteEntity toFocus = perso;
                 	if (p_action.what != null) {
-                		toFocus = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+                		toFocus = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
                 	}
                 	if (toFocus == null) {
                 		ClientEngineZildo.mapDisplay.setFocusedEntity(null);
@@ -504,8 +505,8 @@ public class ActionExecutor {
             	} else if ("camera".equals(p_action.what)) {
             		achieved=ClientEngineZildo.mapDisplay.getTargetCamera() == null;
             	} else {
-            		Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
-            		achieved = (elem != null && elem.getMover() == null);
+            		SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
+            		achieved = (entity != null && entity.getMover() != null && !entity.getMover().isActive());
             	}
                 break;
             case focus:

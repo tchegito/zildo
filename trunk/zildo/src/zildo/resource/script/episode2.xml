@@ -30,7 +30,7 @@
     	</action>    
     </quest>
     
-    <quest name="vg5_but1" locked="false">
+    <quest name="vg5_but1" repeat="true" locked="false">
     	<trigger>
     	    <location name="voleursg5" tilePos="52,26" gear="TIMED_BUTTON"/>
     	</trigger>

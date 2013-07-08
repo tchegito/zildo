@@ -413,7 +413,7 @@ public class SpriteManagement extends SpriteStore {
 		int nBank=desc.getBank();
 		int nSpr=desc.getNSpr();
 
-		if (nSpr == 69 || nSpr == 70 || nSpr == 28 || nSpr == 179) {
+		if (nSpr == 69 || nSpr == 70 || nSpr == 28) { // || nSpr == 179) {
 			// Particular sprite (Block that Zildo can move, chest...)
 			return spawnElement(nBank, nSpr, x, y, 0, Reverse.NOTHING, Rotation.NOTHING); // + spr.getTaille_y() / 2 - 3,
 					//0);
@@ -539,6 +539,8 @@ public class SpriteManagement extends SpriteStore {
 			// Calcul physique du sprite
 			if (entity.dying) {
 				toDelete.add(entity);
+			} else if (entity.getEntityType().isEntity()) {
+				entity.animate();
 			} else if (entity.getEntityType().isElement()) {
 				// X, vX, aX, ...
 				element = (Element) entity;
@@ -844,6 +846,22 @@ public class SpriteManagement extends SpriteStore {
             	Element e = (Element) p;
                 if (p_name.equalsIgnoreCase(e.getName())) {
                     return e;
+                }
+            }
+        }
+        return null;
+    }
+    
+	/**
+	 * Returned the entity with given name.
+	 * @param p_name
+	 * @return element
+	 */
+    public SpriteEntity getNamedEntity(String p_name) {
+        if (p_name != null && !"".equals(p_name)) {
+            for (SpriteEntity p : spriteEntities) {
+                if (p_name.equalsIgnoreCase(p.getName())) {
+                    return p;
                 }
             }
         }

@@ -618,7 +618,7 @@ public class Area implements EasySerializable {
 					p_file.put(entity.repeatX);
 					p_file.put(entity.repeatY);
 				}
-				entityName = elem != null ? elem.getName() : "";
+				entityName = entity.getName();
 				p_file.put(entityName);
 			}
 		}
@@ -789,10 +789,9 @@ public class Area implements EasySerializable {
 						}
 						break;
 					}
-					if (entity != null && entity.getEntityType().isElement()) {
-						Element elem = (Element) entity;
-						elem.setName(entName);
-						elem.setPushable((multi & SpriteEntity.PUSHABLE) != 0);
+					if (entity != null) {
+						entity.setName(entName);
+						entity.setPushable((multi & SpriteEntity.PUSHABLE) != 0);
 					}
 				}
 			}

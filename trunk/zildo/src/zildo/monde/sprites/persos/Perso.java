@@ -29,6 +29,8 @@ import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.items.Item;
 import zildo.monde.map.Tile;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
@@ -570,6 +572,23 @@ public abstract class Perso extends Element {
 	 * @return boolean (TRUE=slow down)
 	 */
 	public boolean walkTile(boolean p_sound) {
+		
+		// Check sprite collision
+		//TODO: store only walkable entities in a separate buffer, instead of retrieving all entities
+		for (SpriteEntity entity : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+			if (entity.getMover() != null && entity.getDesc() == ElementDescription.PLATFORM) {
+				// found a platform. Is perso on it ?
+				Point center = entity.getCenter();
+				SpriteModel model = entity.getSprModel();
+				Zone z = new Zone(center.x, center.y, model.getTaille_x(), model.getTaille_y());
+				if (z.isInto((int) x, (int) y)) {
+					entity.getMover().linkEntity(this);
+					System.out.println("perso sur la plateforme !");
+					return false;
+				}
+			}
+		}
+		
 		int cx = (int) (x / 16);
 		int cy = (int) (y / 16);
 		MapManagement mapManagement = EngineZildo.mapManagement;

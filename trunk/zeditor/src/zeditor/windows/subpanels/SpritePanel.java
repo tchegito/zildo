@@ -46,7 +46,6 @@ import zeditor.core.selection.SpriteSelection;
 import zeditor.core.tiles.SpriteSet;
 import zeditor.tools.ui.SizedGridPanel;
 import zeditor.windows.managers.MasterFrameManager;
-import zildo.fwk.ZUtils;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.EntityType;
@@ -243,13 +242,10 @@ public class SpritePanel extends JPanel {
 			repeatX.setValue(p_entity.repeatX);
 			repeatY.setValue(p_entity.repeatY);
 			String name = "";
-			elementName.setEnabled(kind.isElement());
+			name = p_entity.getName();
 			if (kind.isElement()) {
 				Element elem = (Element) p_entity;
-				name = elem.getName();
 				pushable.setSelected(elem.isPushable());
-			} else {
-				elementName.setEnabled(false);
 			}
 			elementName.setText(name);
 		}
@@ -347,10 +343,7 @@ public class SpritePanel extends JPanel {
 			Document doc = e.getDocument();
 			try {
 				String txt = doc.getText(0, doc.getLength());
-				if (comp == elementName && entity.getEntityType().isElement()) {
-					Element elem = (Element) entity;
-					elem.setName(txt);
-				}
+				entity.setName(txt);
 			} catch (Exception ex) {
 				
 			}
