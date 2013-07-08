@@ -131,9 +131,9 @@ This is going to focus on an element named `caveDoor` and once camera is on it, 
 ==== Sub-execution ====
 
 A script can execute another one. To handle this and the priorities rules coming from this, this is how it works :
-* a queue is storing all executing scripts
-* when a new one is launched, it goes on the top of the queue
-* as long as the first script isn't finish, the second won't run
+ * a queue is storing all executing scripts
+ * when a new one is launched, it goes on the top of the queue
+ * as long as the first script isn't finished, the second won't run
 
 There's an exception to this priority rules, driven by the "mapscripts". They need to be ran before all, in order to get a correct aspect for the current map. So they have a "top priority" flag, to avoid another script launched before.
 
