@@ -39,9 +39,9 @@
     	</action>
     </quest>
 
-    <quest name="vg5_but2">
+    <quest name="vg5_but2" repeat="true" locked="false">
     	<trigger>
-    	    <location name="voleursg5" tilePos="25,26"/>
+    	    <location name="voleursg5" tilePos="25,26" gear="TIMED_BUTTON"/>
     	</trigger>
     	<action>
     	    <exec script="move_vg5_plat2"/>
@@ -194,9 +194,16 @@
    	</scene>
    	
 	<scene id="move_vg5_plat1">
-	    <moveTo what="platform" pos="-80,0" delta="true" speed="2"/>
-	    <wait value="10"/>
-	    <moveTo what="platform" pos="80,0" delta="true" speed="2"/>
+	    <moveTo what="platform" pos="-220,0" delta="true" speed="2"/>
+	    <wait value="30"/>
+	    <moveTo what="platform" pos="220,0" delta="true" speed="2"/>
 	    <wait value="10"/>
 	</scene>
+	<scene id="move_vg5_plat2">
+	    <moveTo what="platform2" pos="0,128" delta="true" speed="2"/>
+	    <wait value="60"/>
+	    <moveTo what="platform2" pos="0,-128" delta="true" speed="2"/>
+	    <wait value="10"/>
+	</scene>
+	
 </adventure>

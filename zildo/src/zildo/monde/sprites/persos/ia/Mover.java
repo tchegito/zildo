@@ -52,6 +52,14 @@ public abstract class Mover {
 		linkedEntities.put(e.getId(), e);
 	}
 	
+	/**
+	 * Unlink an entity : it isn't on the moving entity anymore.
+	 * @param e
+	 */
+	public void unlinkEntity(SpriteEntity e) {
+		linkedEntities.remove(e.getId());
+	}
+	
 	public void reachTarget() {
 		Point delta = move();
 		// Move the linked entities
