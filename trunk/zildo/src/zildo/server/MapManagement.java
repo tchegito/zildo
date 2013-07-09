@@ -712,6 +712,7 @@ public class MapManagement {
 		zildo.setAngle(startAngle);
 		zildo.beingWounded(null, 1);
 		zildo.stopBeingWounded();
+		zildo.setForeground(false);
 		zildo.askVisible(true);	// Set him back to visible
 	}
 	

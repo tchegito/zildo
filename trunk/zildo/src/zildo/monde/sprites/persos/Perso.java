@@ -574,16 +574,17 @@ public abstract class Perso extends Element {
 		
 		// Check sprite collision
 		for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
-			if (entity.getMover() != null) {
-				// found a platform. Is perso on it ?
-				Point middle = entity.getCenter();
-				SpriteModel model = entity.getSprModel();
-				Zone zz = new Zone(middle.x, middle.y, model.getTaille_x(), model.getTaille_y());
-				if (zz.isInto((int) x, (int) y)) {
-					entity.getMover().linkEntity(this);
-					System.out.println("perso sur la plateforme !");
-					return false;
-				}
+			// found a platform. Is perso on it ?
+			Point middle = entity.getCenter();
+			SpriteModel model = entity.getSprModel();
+			Zone zz = new Zone(middle.x, middle.y, model.getTaille_x(), model.getTaille_y());
+			if (zz.isInto((int) x, (int) y)) {
+				entity.getMover().linkEntity(this);
+				// Be careful : 'return' here, means that no trigger could be activated
+				// But it avoid character to die in lava.
+				return false;
+			} else {
+				entity.getMover().unlinkEntity(this);
 			}
 		}
 		

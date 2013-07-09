@@ -60,6 +60,7 @@ import zildo.monde.sprites.elements.ElementThrown;
 import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.persos.ia.BasicMover;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
@@ -467,6 +468,7 @@ public class SpriteManagement extends SpriteStore {
 
 		// Store walkable entities
 		if (desc == ElementDescription.PLATFORM) {
+			entity.setMover(new BasicMover(entity));
 			walkableEntities.add(entity);
 		}
 		
