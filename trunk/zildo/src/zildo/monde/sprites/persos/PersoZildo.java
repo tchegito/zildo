@@ -286,9 +286,10 @@ public class PersoZildo extends Perso {
 				peeble.y = y;
 				EngineZildo.spriteManagement.spawnSprite(peeble);
 				peeble.beingThrown(x, y, angle, this);
-				peeble.z = 10;
+				peeble.z = 12;
 				
 				setMouvement(MouvementZildo.ATTAQUE_ROCKBAG);
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoLance, this);
 				setAttente(2 * 6);
 			}
 			break;
