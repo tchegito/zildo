@@ -112,6 +112,9 @@ public class Area implements EasySerializable {
 	// Respawn points for Zildo (multiplayer only)
 	private final List<Point> respawnPoints;
 
+	private Point alertLocation;	// Sound able to alert enemies
+	private int alertDuration = 0;
+	
 	public List<Point> getRespawnPoints() {
 		return respawnPoints;
 	}
@@ -1036,6 +1039,11 @@ public class Area implements EasySerializable {
 				spawnTile.cnt--;
 			}
 		}
+		if (alertDuration == 0) {
+			alertLocation = null;
+		} else {
+			alertDuration--;
+		}
 	}
 
 	/**
@@ -1136,6 +1144,25 @@ public class Area implements EasySerializable {
 
 	public void setAtmosphere(Atmosphere atmosphere) {
 		this.atmosphere = atmosphere;
+	}
+	
+	public void alertAtLocation(Point p) {
+		alertLocation = p;
+		alertDuration = 5;
+	}
+	
+	final float distanceHeard = 64f;
+	
+	public boolean isAnAlertAtLocation(float x, float y) {
+		if (alertLocation == null) {
+			return false;
+		}
+		double distance = Point.distance(x, y, alertLocation.x, alertLocation.y);
+		return distance < distanceHeard;
+	}
+	
+	public Point getAlertLocation() {
+		return new Point(alertLocation);
 	}
 	
 	private void arrange() {
