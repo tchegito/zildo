@@ -34,6 +34,7 @@ import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 //TODO: Remove getter/setter for x,y,z
@@ -665,11 +666,15 @@ public class Element extends SpriteEntity {
 	 * @return FALSE if element must disappear, TRUE otherwise.
 	 */
 	public boolean beingCollided(Perso p_perso) {
-		if (desc == ElementDescription.PEEBLE && z > 4 && p_perso == null) {
-			// Produce impact sound only on wall (not enemies)
-			Element impact = new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null);
-			EngineZildo.spriteManagement.spawnSprite(impact);
-			EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
+		if (desc == ElementDescription.PEEBLE) {
+			if (z > 4 && p_perso == null) {
+				// Produce impact sound only on wall (not enemies)
+				Element impact = new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null);
+				EngineZildo.spriteManagement.spawnSprite(impact);
+				EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
+			}
+			// Alert that a sound happened at this location
+			EngineZildo.mapManagement.getCurrentMap().alertAtLocation(new Point(x, y));
 		}
 		return false;
 	}
