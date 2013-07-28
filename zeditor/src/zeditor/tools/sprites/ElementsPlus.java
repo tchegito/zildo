@@ -268,7 +268,9 @@ public class ElementsPlus extends SpriteBanque {
 				// Psychic and sorcerer sign
 				new Zone(32, 197, 32, 19), new Zone(0, 216, 32, 16),
 				// Note 2
-				new Zone(55, 58, 7, 8)
+				new Zone(55, 58, 7, 8),
+				// Rock bag
+				new Zone(59, 85, 16, 16), new Zone(75, 85, 4, 4)
 
 		};
 		
@@ -277,6 +279,7 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("objets", 123, 0),
 				new GraphChange("elem", 156, 0),
 				new GraphChange("objets", 181, 0),
-				new GraphChange("elem", 183, 0)});
+				new GraphChange("elem", 183, 0),
+				new GraphChange("objets", 187, 0)});
 	}
 }

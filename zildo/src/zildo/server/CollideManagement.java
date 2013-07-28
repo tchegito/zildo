@@ -213,15 +213,17 @@ public class CollideManagement {
         	} else {
         		// How much damage ?
         		int dmg = p_collider.damageType == null ? 1 : p_collider.damageType.getHP();
-        		Perso attacker=p_collider.perso;
-        		if (attacker != null && p_collider.perso.isZildo()) {
-        			PersoZildo zildo=(PersoZildo) attacker;
-        			if (zildo.isQuadDamaging()) {
-        				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamaging, zildo);
-        				dmg*=4;
-        			}
+        		if (dmg > 0) {
+	        		Perso attacker=p_collider.perso;
+	        		if (attacker != null && p_collider.perso.isZildo()) {
+	        			PersoZildo zildo=(PersoZildo) attacker;
+	        			if (zildo.isQuadDamaging()) {
+	        				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamaging, zildo);
+	        				dmg*=4;
+	        			}
+	        		}
+	        		perso.beingWounded(p_collider.cx, p_collider.cy, p_collider.perso, dmg);
         		}
-        		perso.beingWounded(p_collider.cx, p_collider.cy, p_collider.perso, dmg);
         	}
         	
             if (p_collider.weapon != null) {
