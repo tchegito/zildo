@@ -665,9 +665,11 @@ public class Element extends SpriteEntity {
 	 * @return FALSE if element must disappear, TRUE otherwise.
 	 */
 	public boolean beingCollided(Perso p_perso) {
-		if (desc == ElementDescription.PEEBLE) {
+		if (desc == ElementDescription.PEEBLE && z > 4 && p_perso == null) {
+			// Produce impact sound only on wall (not enemies)
 			Element impact = new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null);
 			EngineZildo.spriteManagement.spawnSprite(impact);
+			EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
 		}
 		return false;
 	}
