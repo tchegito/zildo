@@ -29,6 +29,7 @@ import zildo.fwk.input.KeyboardState;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
+import zildo.monde.map.Tile;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
@@ -188,22 +189,7 @@ public class PlayerManagement {
 					needMovementAdjustment=false;
 				}
 			} else {
-				//TODO: Move that section into PersoZildo
-				switch (heros.getMouvement()) {
-					case SOULEVE:
-						heros.setMouvement(MouvementZildo.BRAS_LEVES);
-						break;
-                    case FIERTEOBJET:
-                    	if (heros.getEn_bras() != null) {
-                    		heros.getEn_bras().dying=true;
-                    	}
-                    	heros.setAngle(Angle.SUD);
-                    case ATTAQUE_EPEE:
-                    case ATTAQUE_ARC:
-                    case ATTAQUE_BOOMERANG:
-						heros.setMouvement(MouvementZildo.VIDE);		// Awaiting for key pressed
-						break;
-				}
+				heros.endMovement();
 			}
 	
 	
@@ -498,7 +484,7 @@ public class PlayerManagement {
 	                                heros.takeSomething(newx * 16 + 8, newy * 16 + 14, objDesc, null);
 	                                map.takeSomethingOnTile(new Point(newx, newy), false, heros);
 	                            }
-							} else if (on_map==743 && heros.getAngle()==Angle.NORD) {
+							} else if (Tile.isClosedChest(on_map) && heros.getAngle()==Angle.NORD) {
 								//Zildo a trouvé un coffre ! C'est pas formidable ?
 								EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
 								heros.setAttente(60);
