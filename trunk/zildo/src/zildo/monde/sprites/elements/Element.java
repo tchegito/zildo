@@ -550,6 +550,9 @@ public class Element extends SpriteEntity {
 	 * @return DamageType
 	 */
 	public DamageType getDamageType() {
+		if (desc == ElementDescription.PEEBLE) {
+			return DamageType.HARMLESS;
+		}
 		return null;
 	}
 
