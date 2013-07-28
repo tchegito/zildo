@@ -278,6 +278,20 @@ public class PersoZildo extends Perso {
 			sentence = UIText.getGameText("necklace.action"+hq);
 			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence));
 			break;
+		case ROCK_BAG:
+			if (attente == 0) {
+				Element peeble = new Element();
+				peeble.setDesc(ElementDescription.PEEBLE);
+				peeble.x = x;
+				peeble.y = y;
+				EngineZildo.spriteManagement.spawnSprite(peeble);
+				peeble.beingThrown(x, y, angle, this);
+				peeble.z = 10;
+				
+				setMouvement(MouvementZildo.ATTAQUE_ROCKBAG);
+				setAttente(2 * 6);
+			}
+			break;
 		}
 		if (outOfOrder) {
 			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
@@ -608,7 +622,6 @@ public class PersoZildo extends Perso {
 
 
 		case ATTAQUE_EPEE:
-
 			shield.setVisible(false);
 			sword.setVisible(true);
 			v = pos_seqsprite;
@@ -627,8 +640,8 @@ public class PersoZildo extends Perso {
 				break;
 			default:
 				sword.setZ(0);
-			break;
 			}
+			break;
 
 		case ATTAQUE_ARC:
 			v = nSpr - (108 + 3 * angle.value);
@@ -815,7 +828,10 @@ public class PersoZildo extends Perso {
 		case ATTAQUE_EPEE:
 			pos_seqsprite = (((6 * 2 - getAttente() - 1) % (6 * 2)) / 2);
 			setSpr(ZildoDescription.getSwordAttacking(angle, pos_seqsprite));
-//			setNSpr(angle.value * 6 +  + 54);
+			break;
+		case ATTAQUE_ROCKBAG:
+			pos_seqsprite = (((2 * 6 - getAttente() - 1) % (2 * 6)) / 6);
+			setSpr(ZildoDescription.getSwordAttacking(angle, pos_seqsprite));
 			break;
 		case ATTAQUE_ARC:
 			setSpr(ZildoDescription.getBowAttacking(angle, getAttente()));
@@ -997,6 +1013,28 @@ public class PersoZildo extends Perso {
 		}
 	}
 
+	/**
+	 * Called when 'attente' is equals to 0.
+	 */
+	public void endMovement() {
+		switch (mouvement) {
+		case SOULEVE:
+			setMouvement(MouvementZildo.BRAS_LEVES);
+			break;
+        case FIERTEOBJET:
+        	if (getEn_bras() != null) {
+        		getEn_bras().dying=true;
+        	}
+        	setAngle(Angle.SUD);
+        case ATTAQUE_EPEE:
+        case ATTAQUE_ARC:
+        case ATTAQUE_BOOMERANG:
+        case ATTAQUE_ROCKBAG:
+			setMouvement(MouvementZildo.VIDE);		// Awaiting for key pressed
+			break;
+	}
+		
+	}
 	/**
 	 * Display Zildo's inventory around him
 	 */

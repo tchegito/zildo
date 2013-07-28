@@ -406,22 +406,23 @@ public class Area implements EasySerializable {
 		int on_Area = readmap(x, y);
 		int resultTile;
 		SpriteAnimation anim = SpriteAnimation.FROMGROUND;
-		switch (on_Area) {
-		case 165: // Bush
-		default:
-			resultTile = 166;
-			break;
-		case 167: // Rock
-		case 169: // Heavy rock
-			resultTile = 168;
-			break;
-		case 751: // Jar
-			resultTile = 752;
-			break;
-		case 743: // Chest
-			resultTile = 744;
+		if (Tile.isClosedChest(on_Area)) {	// Chest ?
+			resultTile = Tile.getOpenedChest(on_Area);
 			anim = SpriteAnimation.FROM_CHEST;
-			break;
+		} else {
+			switch (on_Area) {
+			case 165: // Bush
+			default:
+				resultTile = 166;
+				break;
+			case 167: // Rock
+			case 169: // Heavy rock
+				resultTile = 168;
+				break;
+			case 751: // Jar
+				resultTile = 752;
+				break;
+			}
 		}
 		// Notify that this case should reappear after a given time (only in multiplayer mode)
 		if (EngineZildo.game.multiPlayer) {
@@ -757,9 +758,11 @@ public class Area implements EasySerializable {
 					int ay = (y-1) / 16;
 					int tileDesc = map.readmap(ax, ay);
 					switch (tileDesc) {
-					case 744: // Opened chest (don't spawn the linked item)
+					case 512 + 238: // Opened chest (don't spawn the linked item)
+					case 512 + 48: case 512 + 58: case 512+60:
 						break;
-					case 743: // Chest
+					case 512 + 231: // Chest
+					case 512 + 49: case 512 + 59: case 512 + 61:
 					case 165: // Bushes
 					case 167: // Stone
 					case 169: // Heavy stone

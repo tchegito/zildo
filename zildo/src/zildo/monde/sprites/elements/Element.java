@@ -31,6 +31,7 @@ import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteAnimation;
+import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
@@ -158,7 +159,8 @@ public class Element extends SpriteEntity {
 				|| a == ElementDescription.BIG_FIRE_BALL.ordinal()
 				|| a == ElementDescription.HEART_FRAGMENT.ordinal()
 				|| a == ElementDescription.NOTE.ordinal()
-				|| a == ElementDescription.NOTE2.ordinal()) {
+				|| a == ElementDescription.NOTE2.ordinal()
+				|| a == ElementDescription.PEEBLE.ordinal()) {
 			return true;
 		} else {
 			return false;
@@ -202,8 +204,6 @@ public class Element extends SpriteEntity {
 		// S'il s'agit d'un personnage
 		if (entityType.isPerso()) {
 			return true;
-			// PersoDescription desc=((Perso)this).getQuel_spr();
-			// return (desc.equals(PersoDescription.POULE));
 		}
 		if (desc.isBlocking()) {
 			return true;
@@ -662,6 +662,10 @@ public class Element extends SpriteEntity {
 	 * @return FALSE if element must disappear, TRUE otherwise.
 	 */
 	public boolean beingCollided(Perso p_perso) {
+		if (desc == ElementDescription.PEEBLE) {
+			Element impact = new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null);
+			EngineZildo.spriteManagement.spawnSprite(impact);
+		}
 		return false;
 	}
 
