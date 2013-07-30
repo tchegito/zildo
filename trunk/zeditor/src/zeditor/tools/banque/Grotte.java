@@ -178,6 +178,7 @@ public class Grotte extends Banque {
 				/* Side hill */
 				new Point(192, 128), new Point(208, 128), new Point(192, 144), new Point(208, 144),
 				new Point(176, 144), new Point(176, 160),
+				new Point(192, 160), new Point(208, 160), new Point(304, 0), new Point(304, 16)
 		};
 				
 		pkmChanges = Arrays.asList(new GraphChange("interia3", 0, 0),
