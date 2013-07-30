@@ -36,6 +36,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.engine.TextureEngine;
+import zildo.platform.opengl.GLUtils;
 import zildo.resource.Constantes;
 
 /**
@@ -136,30 +137,7 @@ public class LwjglTextureEngine extends TextureEngine {
     
     @Override
 	protected void saveImage(String filename, boolean alpha) {
-    	int format = BufferedImage.TYPE_INT_RGB;
-    	if (alpha) {
-    		format = BufferedImage.TYPE_INT_ARGB;
-        }
-    	BufferedImage bufImage = new BufferedImage(256, 256, format);
-		scratch.position(0);
-    	for (int y = 0;y<256;y++) {
-    		for (int x = 0;x<256;x++) {
-				int r = 0xff & scratch.get();
-				int g = 0xff & scratch.get();
-				int b = 0xff & scratch.get();
-				int a = 0;
-				if (alpha) {
-					a = 0xff & scratch.get();
-				}
-				int argb = a << 24 | r << 16 | g << 8 | b;
-				bufImage.setRGB(x,  y, argb);
-	   		}
-    	}
-    	try {
-			ImageIO.write(bufImage, "png", new File("c:\\kikoo\\"+filename+".png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    	GLUtils.saveBufferAsPNG("c:\\kikoo\\"+filename+".png", scratch, 256, 256, alpha);
     }
     
     /**

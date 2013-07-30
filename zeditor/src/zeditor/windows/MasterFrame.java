@@ -25,6 +25,7 @@ import javax.swing.WindowConstants;
 
 import zeditor.core.Options;
 import zeditor.core.tiles.TileSet;
+import zeditor.fwk.awt.ZildoCanvas;
 import zeditor.fwk.awt.ZildoScrollablePanel;
 import zeditor.windows.managers.MasterFrameManager;
 import zeditor.windows.subpanels.BackgroundPanel;
@@ -54,9 +55,10 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	private JMenuBar menuBar;
 	private MasterFrameManager manager;
+	private JMenuItem mapCaptureItem;
 	private JMenuItem builderMenuItem;
 	private JMenuItem saveCollisionItem;
-	private JMenu debugMenu;
+	private JMenu miscMenu;
 	private JMenuItem reloadConfigItem;
 	private JMenuItem optionsItem;
 	private JMenu parametersMenu;
@@ -855,15 +857,16 @@ public class MasterFrame extends javax.swing.JFrame {
 	}
 
 	private JMenu getMiscMenu() {
-		if (debugMenu == null) {
-			debugMenu = new JMenu();
-			debugMenu.setText("Misc");
-			debugMenu.setIcon(new ImageIcon(getClass().getClassLoader()
+		if (miscMenu == null) {
+			miscMenu = new JMenu();
+			miscMenu.setText("Misc");
+			miscMenu.setIcon(new ImageIcon(getClass().getClassLoader()
 					.getResource("zeditor/images/bug.png")));
-			debugMenu.add(getSaveCollisionItem());
-			debugMenu.add(getBuilderItem());
+			miscMenu.add(getSaveCollisionItem());
+			miscMenu.add(getBuilderItem());
+			miscMenu.add(getMapCaptureItem());
 		}
-		return debugMenu;
+		return miscMenu;
 	}
 
 	private JMenuItem getSaveCollisionItem() {
@@ -899,5 +902,22 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return builderMenuItem;
 	}
+	
+	private JMenuItem getMapCaptureItem() {
+		if (mapCaptureItem == null) {
+			mapCaptureItem = new JMenuItem();
+			mapCaptureItem.setText("Capture map");
+			mapCaptureItem.setAction(new AbstractAction("Capture map") {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					zildoPanel.getZildoCanvas().askCapture();
+				}
+			});
+			mapCaptureItem.setIcon(new ImageIcon(getClass()
+					.getClassLoader().getResource("zeditor/images/user.png")));
+		}
+		return mapCaptureItem;
+	}
+	
 
 }
