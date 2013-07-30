@@ -20,12 +20,17 @@
 
 package zildo.platform.opengl;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
+
+import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBVertexBufferObject;
@@ -89,4 +94,55 @@ public class GLUtils {
 
         GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, p_sizeX, p_sizeY, 0);
     }
+    
+    /**
+     * 
+     * @param filename file name with full path, without ".png"
+     * @param scratch byte buffer containing data to save
+     * @param width
+     * @param height
+     * @param alpha
+     */
+    public static void saveBufferAsPNG(String filename, ByteBuffer scratch, int width, int height, boolean alpha) {
+    	int format = BufferedImage.TYPE_INT_RGB;
+    	if (alpha) {
+    		format = BufferedImage.TYPE_INT_ARGB;
+        }
+    	BufferedImage bufImage = new BufferedImage(width, height, format);
+		scratch.position(0);
+    	for (int y = 0;y<height;y++) {
+    		for (int x = 0;x<width;x++) {
+				int r = 0xff & scratch.get();
+				int g = 0xff & scratch.get();
+				int b = 0xff & scratch.get();
+				int a = 0;
+				if (alpha) {
+					a = 0xff & scratch.get();
+				}
+				int argb = a << 24 | r << 16 | g << 8 | b;
+				bufImage.setRGB(x,  y, argb);
+	   		}
+    	}
+    	try {
+			ImageIO.write(bufImage, "png", new File(filename));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}    	
+    }
+    
+	public static void copy(ByteBuffer source, ByteBuffer dest, int width, int height, int destWidth, int dx, int dy, boolean alpha) {
+		int bpp = 3 + (alpha ? 1 : 0);
+    	for (int y = 0;y<height;y++) {
+    		source.position(bpp * width * (height - y - 1));
+    		dest.position(bpp * (destWidth * (dy + y) + dx));
+    		for (int x = 0;x<width;x++) {
+				dest.put(source.get());
+				dest.put(source.get());
+				dest.put(source.get());
+				if (alpha) {
+					dest.put(source.get());
+				}
+	   		}
+    	}
+	}
 }

@@ -8,8 +8,12 @@ package zeditor.fwk.awt;
 
 import java.awt.GraphicsDevice;
 import java.awt.Point;
+import java.nio.ByteBuffer;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.AWTGLCanvas;
 import org.lwjgl.opengl.Drawable;
@@ -20,6 +24,7 @@ import zeditor.core.selection.Selection;
 import zeditor.fwk.awt.ZildoCanvas.ZEditMode;
 import zeditor.windows.managers.MasterFrameManager;
 import zeditor.windows.subpanels.SelectionKind;
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.IRenderable;
 import zildo.fwk.gfx.Ortho;
@@ -28,6 +33,7 @@ import zildo.monde.map.ChainingPoint;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Vector4f;
 import zildo.monde.util.Zone;
+import zildo.platform.opengl.GLUtils;
 import zildo.server.EngineZildo;
 
 /**
@@ -76,7 +82,9 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	private int sizeY;
 
 	private boolean needToResize = false;
-
+	private boolean needCapture = false;
+	private boolean blockPaint = false;
+	
 	private float alpha;
 	
 	public AWTOpenGLCanvas() throws LWJGLException {
@@ -130,6 +138,10 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	
 	@Override
 	public void paintGL() {
+		if (blockPaint) {
+			System.out.println("Waiting for capture");
+			return;
+		}
 		if (changeMap) {
 			Area map = EngineZildo.mapManagement.getCurrentMap();
 			ClientEngineZildo.mapDisplay.setCurrentMap(map);
@@ -166,8 +178,16 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 				}
 
 			}
-			renderer.renderScene();
 			
+			if (needCapture) {
+				blockPaint = true;
+				captureEntireMap();
+				JOptionPane.showMessageDialog(this, "ZEditor", "PNG file saved.", JOptionPane.INFORMATION_MESSAGE);
+				blockPaint = false;
+				needCapture = false;
+			} else {
+				renderer.renderScene();
+			}
 			alpha+=0.04f;
 			float sin=(float) Math.sin(alpha);
 			
@@ -335,6 +355,47 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 
 	}
 
+	private void captureEntireMap() throws LWJGLException {
+		Ortho ortho = ClientEngineZildo.ortho;
+		Area area = EngineZildo.mapManagement.getCurrentMap();
+		int totalWidth = area.getDim_x() * 16;
+		int totalHeight = area.getDim_y() * 16;
+		System.out.println("Image size: "+totalWidth+"x"+totalHeight);
+		ortho.setSize(sizeX, sizeY, false);
+		// Save the rendered scene
+		ByteBuffer bigOne = BufferUtils.createByteBuffer(totalWidth * totalHeight * 3);
+		int width = Zildo.screenX;
+		int height= Zildo.screenY;
+		int y = 0;
+		int pas;
+		zildo.monde.util.Point camera = new zildo.monde.util.Point(ClientEngineZildo.mapDisplay.getCamera());
+		while (true) { // y
+			int x = 0;
+			while (true) {	// X
+				ClientEngineZildo.mapDisplay.setCamera(new zildo.monde.util.Point(x, y));
+				makeCurrent();
+				renderer.renderScene();
+				swapBuffers();
+				ByteBuffer temp = ClientEngineZildo.openGLGestion.capture();
+				GLUtils.copy(temp,  bigOne, width, height, totalWidth, x, y, false);
+				pas = Math.min(width, totalWidth - x - width);
+				if (pas == 0) {
+					break;
+				}
+				x += pas;
+			}
+			pas = Math.min(height, totalHeight - y - height);
+			if (pas == 0) {
+				break;
+			}
+			y += pas;
+		}
+		GLUtils.saveBufferAsPNG("c:\\kikoo\\map.png", bigOne, totalWidth, totalHeight, false);
+		// Reset camera and zoom
+		ClientEngineZildo.mapDisplay.setCamera(camera);
+		ortho.setSize(sizeX, sizeY, zoom);
+	}
+
 	/**
 	 * @return the mode
 	 */
@@ -351,5 +412,9 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	
 	public void setChangeSprites(boolean p_value) {
 		changeSprites=p_value;
+	}
+	
+	public void askCapture() {
+		needCapture = true;
 	}
 }

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Mouse;
@@ -431,4 +432,15 @@ public class LwjglOpenGLGestion extends OpenGLGestion {
 		return (((double) Sys.getTime()) / (double) ticksPerSecond);
 	}
 	
+	public ByteBuffer capture() {
+		GL11.glReadBuffer(GL11.GL_FRONT);
+		int width = Zildo.screenX;
+		int height= Zildo.screenY;
+		int bpp = 3; // Assuming a 32-bit display with a byte each for red, green, blue, and alpha.
+		ByteBuffer buffer = BufferUtils.createByteBuffer(width * height * bpp);
+		GL11.glReadPixels(0, 0, width, height, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, buffer );
+		
+		return buffer;
+	}
+
 }
