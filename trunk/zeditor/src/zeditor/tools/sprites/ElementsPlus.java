@@ -283,6 +283,6 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("objets", 181, 0),
 				new GraphChange("elem", 183, 0),
 				new GraphChange("objets", 187, 0),
-				new GraphChange("elem", 188, 0)});
+				new GraphChange("elem", 189, 0)});
 	}
 }
