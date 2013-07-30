@@ -270,7 +270,9 @@ public class ElementsPlus extends SpriteBanque {
 				// Note 2
 				new Zone(55, 58, 7, 8),
 				// Rock bag
-				new Zone(59, 85, 16, 16), new Zone(75, 85, 4, 4)
+				new Zone(59, 85, 16, 16), new Zone(75, 85, 4, 4),
+				// Rock pillar
+				new Zone(262, 0, 35, 35)
 
 		};
 		
@@ -280,6 +282,7 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem", 156, 0),
 				new GraphChange("objets", 181, 0),
 				new GraphChange("elem", 183, 0),
-				new GraphChange("objets", 187, 0)});
+				new GraphChange("objets", 187, 0),
+				new GraphChange("elem", 188, 0)});
 	}
 }
