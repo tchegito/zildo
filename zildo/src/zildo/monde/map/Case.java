@@ -325,12 +325,14 @@ public class Case implements EasySerializable {
 	 * @param val
 	 * @return Tile
 	 */
-	public Tile getOneValued(int val) {
-		if (back.getValue() == val) {
-			return back;
-		}
-		if (back2 != null && back2.getValue() == val) {
-			return back2;
+	public Tile getOneValued(int... vals) {
+		for (int val : vals) {
+			if (back.getValue() == val) {
+				return back;
+			}
+			if (back2 != null && back2.getValue() == val) {
+				return back2;
+			}
 		}
 		return null;
 	}

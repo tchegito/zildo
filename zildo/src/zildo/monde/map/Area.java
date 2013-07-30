@@ -703,11 +703,11 @@ public class Area implements EasySerializable {
 						spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, 0, null,
 								null);
 					}
-					Tile tile = temp.getOneValued(512 + 231);
+					Tile tile = temp.getOneValued(512 + 231, 512 + 49, 512 + 59, 512 + 61);
 					// Is this chest already opened ?
 					if (tile != null ) {
 						if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
-							tile.index = 744 & 255;
+							tile.index = Tile.getOpenedChest(tile.getValue()) & 255;
 						}
 					}
 				}

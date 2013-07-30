@@ -93,7 +93,7 @@ public enum ElementDescription implements SpriteDescription {
 	// 183
 	NOTE, PSYCHIC_SIGN, WITCH_SIGN, NOTE2,
 	// 187
-	ROCK_BAG, PEEBLE;
+	ROCK_BAG, PEEBLE, ROCK_PILLAR;
 
 	Boolean damage;
 	
