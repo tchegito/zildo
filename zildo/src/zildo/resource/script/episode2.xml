@@ -201,7 +201,7 @@
 	</scene>
 	<scene id="move_vg5_plat2">
 	    <moveTo what="platform2" pos="0,128" delta="true" speed="2"/>
-	    <wait value="60"/>
+	    <wait value="80"/>
 	    <moveTo what="platform2" pos="0,-128" delta="true" speed="2"/>
 	    <wait value="10"/>
 	</scene>
