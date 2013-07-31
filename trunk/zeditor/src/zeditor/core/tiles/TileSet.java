@@ -335,8 +335,12 @@ public class TileSet extends ImageSet {
 			for (int i = 0; i < width; i++) {
 				Case theCase = itCase.next();
 				Tile back = theCase.getBackTile();
+				Tile back2 = theCase.getBackTile2();
 				Tile fore = theCase.getForeTile();
 				drawMotif(i, j, back.bank, back.index, false);
+				if (back2 != null) {
+					drawMotif(i, j, back2.bank, back2.index, true);
+				}
 				if (fore != null) {
 					drawMotif(i, j, fore.bank, fore.index, true);
 				}

@@ -50,6 +50,9 @@ public class Case implements EasySerializable {
 	
 	public Case(Case p_original) {
 		this.back = p_original.getBackTile().clone();
+		if (p_original.getBackTile2() != null) {
+			this.back2 = p_original.getBackTile2().clone();
+		}
 		if (p_original.getForeTile() != null) {
 			this.fore = p_original.getForeTile().clone();
 		}
