@@ -38,12 +38,18 @@ _Note_ : when loading a saved game, every accomplished quest launches the execut
 
 A trigger can be of 6 different kinds : (corresponding to [http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/quest/QuestEvent.java QuestEvent] )
 
- * location : when a character reach a given location
- * dialog : when a specific character say a given sentence
- * inventory : does Zildo have a given item ?
- * questDone : has Zildo achieved a given quest ?
- * dead : does a set of creatures died ?
- * push : is someone pushing an element ?
+ * *location* : when a character reach a given location
+   * name: map name
+   * pos: location, in pixel coordinates
+   * radius: radius around the point indicated by 'pos'
+   * tilePos: location, in tile coordinates
+   * gear: mechanism type (BUTTON, TIMED_BUTTON)
+   * mover: name of a moving platform
+ * *dialog* : when a specific character say a given sentence
+ * *inventory* : does Zildo have a given item ?
+ * *questDone* : has Zildo achieved a given quest ?
+ * *dead* : does a set of creatures died ?
+ * *push* : is someone pushing an element ?
 
 === Action ===
 
