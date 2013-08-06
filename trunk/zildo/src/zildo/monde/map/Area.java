@@ -1159,6 +1159,9 @@ public class Area implements EasySerializable {
 	 * @return boolean
 	 */
 	public boolean isOutside(int tx, int ty) {
+		if (EngineZildo.mapManagement.getPreviousMap() != null) {
+			return false;
+		}
 		return (tx < 0 || ty < 0 ||
 				tx > ((dim_x - 1) << 4) + 15 || 
 				ty > ((dim_y - 1) << 4) + 15);
