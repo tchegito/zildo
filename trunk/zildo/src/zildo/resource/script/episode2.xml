@@ -158,7 +158,7 @@
             <angle who="zildo" value="1"/>
 	    </actions>
 	    <actions>
-        	<moveTo who="fox1" pos="0,64" delta="true"/>
+        	<moveTo who="fox1" pos="0,100" delta="true"/>
 			<moveTo who="fox2" pos="913,998"/>
 			<moveTo who="zildo" pos="890,1005" speed="0.5"/>     
 	    </actions>
@@ -192,7 +192,7 @@
    	    	<moveTo who="fox2" pos="-20,0" delta="true" speed="1.5"/>
    	    	<moveTo who="zildo" pos="-25,0" delta="true" backward="true" speed="1.5"/>
 	   	    <speak who="fox2" text="voleurs.fox8"/>
-	   	    <moveTo who="vert" pos="839,926"/>
+	   	    <moveTo who="vert" pos="839,924"/>
    	    </actions>
    	    <angle who="fox1" value="3"/>
    	    <angle who="vert" value="2"/>
