@@ -85,6 +85,17 @@
 			    <animation type="BIG_FIREBALL" what="fireb4" angle="3" pos="320,211"/>
 		    </actions>
    		</condition>
+   		<condition name="voleursg6" exp="trig_echange">
+		    <actions>
+		    	<animation type="BIG_FIREBALL" what="fireb1" angle="0" pos="144,302"/>
+		    	<animation type="BIG_FIREBALL" what="fireb2" angle="0" pos="224,302"/>
+		    </actions>
+		    <wait value="30"/>
+		    <actions>
+			   	<animation type="BIG_FIREBALL" what="fireb3" angle="1" pos="29,131"/>
+			    <animation type="BIG_FIREBALL" what="fireb4" angle="1" pos="29,211"/>
+		    </actions>
+   		</condition>
    		<condition name="prisonext" exp="trig_echange">
    		    <perso who="gardenord" type="GARDE_CANARD" fx="GUARD_BLACK"/>
    		    <perso who="gard2" type="GARDE_CANARD" fx="noir" info="ENEMY"/>
