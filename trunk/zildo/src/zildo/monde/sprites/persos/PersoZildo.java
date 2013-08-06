@@ -366,7 +366,8 @@ public class PersoZildo extends Perso {
 	@Override
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 
-		if (mouvement == MouvementZildo.SAUTE || inventoring) {
+		if (mouvement == MouvementZildo.SAUTE ||
+				mouvement == MouvementZildo.TOMBE || inventoring) {
 			return;
 		}
 		// Project Zildo away from the enemy
