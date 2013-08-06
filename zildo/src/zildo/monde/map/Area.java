@@ -172,13 +172,23 @@ public class Area implements EasySerializable {
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
-	// readArea
+	// readmap
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// IN : coordinates on Area
 	// foreground: FALSE=on the floor TRUE=foreground
 	// OUT: return motif + bank*256
 	// /////////////////////////////////////////////////////////////////////////////////////
-	// Return n_motif + n_banque*256 from a given position on the Area
+	/**
+	 * Basically, return the higher tile from given map coordinates, with a little bit of intelligence.<ol>
+	 * <li>if 'foreground' is asked, and if case has a foreground tile => return it</li>
+	 * <li>if tile has a back2, return it</li>
+	 * <li>else return back tile</li>
+	 * </ol>
+	 * @param x
+	 * @param y
+	 * @param p_foreground TRUE=> returns the foreground tile, if it exists.
+	 * @return Tile
+	 */
 	public Tile readmap(int x, int y, boolean p_foreground) {
 		Case temp = this.get_mapcase(x, y + 4);
 		if (temp == null) {
@@ -198,7 +208,23 @@ public class Area implements EasySerializable {
 			}
 		}
 	}
+	
+	/**
+	 * Returns TRUE if case is bottom less (example: lava or void)
+	 */
+	public boolean isCaseBottomLess(int x, int y) {
+		Case temp = this.get_mapcase(x, y + 4);
+		if (temp == null) {
+			return false;
+		}
+		int val = temp.getBackTile().getValue();
+		if (val == 256 * 3 + 217) {
+			return true;
+		}
+		return false;
+	}
 
+	// Return n_motif + n_banque*256 from a given position on the Area
 	public int readmap(int x, int y) {
 		Tile tile = readmap(x, y, false);
 		if (tile == null) {

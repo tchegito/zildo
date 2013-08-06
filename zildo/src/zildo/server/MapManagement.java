@@ -325,6 +325,10 @@ public class MapManagement {
 				return quelElement != null && !quelElement.isZildo() && !ghost;
 			}
 
+			// Don't collide if case is bottom less (example: lava tile)
+			if (currentMap.isCaseBottomLess(mx / 16, my / 16)) {
+				continue;
+			}
 			Tile tile = currentMap.readmap((mx / 16), (my / 16), foreground);
 			if (tile == null) {
 				continue;
