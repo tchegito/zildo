@@ -27,7 +27,10 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.items.Item;
+import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
+import zildo.monde.map.TileCollision;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.EntityType;
@@ -104,6 +107,8 @@ public abstract class Perso extends Element {
 
 	private static SoundGetter footWater = new SoundGetter(BankSound.ZildoPatauge, BankSound.ZildoPatauge2, 500);
 
+	private static TileCollision tileCollision = TileCollision.getInstance();
+	
 	public Item weapon;
 
 	public Item getWeapon() {
@@ -590,8 +595,9 @@ public abstract class Perso extends Element {
 		
 		int cx = (int) (x / 16);
 		int cy = (int) (y / 16);
-		MapManagement mapManagement = EngineZildo.mapManagement;
-		Tile tile = mapManagement.getCurrentMap().readmap(cx, cy, false);
+		Area area = EngineZildo.mapManagement.getCurrentMap();
+		boolean bottomLess = area.isCaseBottomLess(cx,  cy);
+		Tile tile = area.readmap(cx, cy, false);
 		if (tile == null) {
 			return false;
 		}
@@ -613,21 +619,22 @@ public abstract class Perso extends Element {
 		}
 		boolean slowDown = false;
 		boolean repeatSound = false;
+		boolean fall = false;
 		inWater = false;
 		inDirt = false;
 		BankSound snd = null;
 		switch (onmap) {
 		case 256 + 22:
 			if (pathFinder.open) {
-				mapManagement.getCurrentMap().writemap(cx, cy, 314);
-				mapManagement.getCurrentMap().writemap(cx + 1, cy, 315);
+				area.writemap(cx, cy, 314);
+				area.writemap(cx + 1, cy, 315);
 				snd = BankSound.OuvrePorte;
 			}
 			break;
 		case 256 + 23:
 			if (pathFinder.open) {
-				mapManagement.getCurrentMap().writemap(cx - 1, cy, 314);
-				mapManagement.getCurrentMap().writemap(cx, cy, 315);
+				area.writemap(cx - 1, cy, 314);
+				area.writemap(cx, cy, 315);
 				snd = BankSound.OuvrePorte;
 			}
 			break;
@@ -674,13 +681,10 @@ public abstract class Perso extends Element {
 			slowDown = true;
 			break;
 		// Falls
-		case 768+215: case 768+216: case 768+224: case 768+225: case 768+226: case 768+227: case 768+228: // grotte
-		case 768+217:
+		case 768+217:	// grotte
 		//case 1536+198: // foret4
 			if (isZildo()) {
-				stopBeingWounded();	// Stop potential projection
-				setCompte_dialogue(0);	// Stop Zildo blink
-				EngineZildo.scriptManagement.execute("dieInPit", true);
+				fall = true;
 			}
 			break;
 		case 1277:	// Knives
@@ -688,6 +692,19 @@ public abstract class Perso extends Element {
 				beingWounded(x + deltaMoveX, y + deltaMoveY, null, 1);
 			}
 			break;
+		default:
+			if (isZildo() && bottomLess) {
+				// Make hero fall if he reach the border of the hill
+				if (!tileCollision.collide((int) x % 16, (int) y % 16, onmap, Reverse.NOTHING)) {
+					fall = true;
+				}
+				break;
+			}
+		}
+		if (fall) {
+			stopBeingWounded();	// Stop potential projection
+			setCompte_dialogue(0);	// Stop Zildo blink
+			EngineZildo.scriptManagement.execute("dieInPit", true);
 		}
 		if (repeatSound) {
 			if (count > 15) {
@@ -704,7 +721,7 @@ public abstract class Perso extends Element {
 
 		// Trigger "LOCATION" only in single player
 		if (!EngineZildo.game.multiPlayer && isZildo()) {
-			String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
+			String mapName = area.getName();
 			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x, y));
 			EngineZildo.scriptManagement.trigger(trig);
 		}

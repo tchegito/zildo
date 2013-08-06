@@ -51,11 +51,14 @@ public class CollisionDialog extends JDialog {
 	final MasterFrameManager manager;
 
 	// Py every collision template at a user-friendly' location
-	final int[][] disposition = { { 90, 115, 117, 4, 69, 67, 106 },
-			{ 98, 116, 91, -1, 107, 68, 82 },
-			{ 52, 125, 109, 1, 77, 93, 20 },
-			{ 114, 100, 75, 0, 123, 84, 66 },
-			{ 74, 99, 101, 36, 85, 83, 122 } };
+	final int[][] disposition = {
+			{ -1, -1, -1, -1, 6, -1,- 1, -1, -1},
+			{ -1, 90, 115, 117, 4, 69, 67, 106, -1 },
+			{ -1, 98, 116, 91, -1, 107, 68, 82, -1 },
+			{ 54, 52, 125, 109, 1, 77, 93, 20, 22 },
+			{ -1, 114, 100, 75, 0, 123, 84, 66, -1 },
+			{ -1, 74, 99, 101, 36, 85, 83, 122, -1 },
+			{ -1, -1, -1, -1, 38, -1,- 1, -1, -1}};
 
 	public CollisionDialog(MasterFrameManager p_manager, Tile p_tile, Image p_img) {
 		setLayout(new BorderLayout());
@@ -65,10 +68,10 @@ public class CollisionDialog extends JDialog {
 
 		JPanel collPanel = new JPanel();
 		// All possible collision templates
-		collPanel.setLayout(new GridLayout(5, 10));
+		collPanel.setLayout(new GridLayout(7, 12));
 
 		for (int[] element : disposition) {
-			for (int j = 0; j < 7; j++) {
+			for (int j = 0; j < 9; j++) {
 				int hashTile = element[j];
 				JPanel panel = new JPanel();
 				if (hashTile != -1) {
