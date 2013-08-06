@@ -48,6 +48,16 @@
     	</action>
     </quest>
     
+    <quest name="vg5_back" repeat="true" locked="false">
+	    <trigger>
+	        <location name="voleursg5" mover="platform2"/>
+	        <questDone name="!move_vg5_plat2"/>
+	    </trigger>
+	    <action>
+	        <exec script="move_vg5_plat2"/>
+	    </action>
+    </quest>
+    
     <quest name="attaque_voleurs">
         <trigger>
             <location name="voleurs" pos="877,989" radius="1"/>
@@ -212,7 +222,7 @@
 	</scene>
 	<scene id="move_vg5_plat2">
 	    <moveTo what="platform2" pos="0,128" delta="true" speed="2"/>
-	    <wait value="80"/>
+	    <wait value="100"/>
 	    <moveTo what="platform2" pos="0,-128" delta="true" speed="2"/>
 	    <wait value="10"/>
 	</scene>

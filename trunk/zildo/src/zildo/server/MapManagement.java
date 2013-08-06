@@ -112,7 +112,7 @@ public class MapManagement {
 		// Trigger the location
 		if (!EngineZildo.game.editing) {
 			currentMapTrigger = TriggerElement
-					.createLocationTrigger(adjustedMapName, null);
+					.createLocationTrigger(adjustedMapName, null, null);
 			EngineZildo.scriptManagement.trigger(currentMapTrigger);
 			EngineZildo.scriptManagement.prepareMapSubTriggers(p_mapname);
 		}

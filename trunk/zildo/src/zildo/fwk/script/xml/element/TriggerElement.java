@@ -41,6 +41,7 @@ public class TriggerElement extends AnyElement {
 
 	public final QuestEvent kind;
 	String name; // dialog, map, item and questDone
+	String mover;
 	int numSentence;
 	Point location;
 	Point tileLocation;
@@ -87,6 +88,7 @@ public class TriggerElement extends AnyElement {
 			numSentence = Integer.valueOf(p_elem.getAttribute("num"));
 		case LOCATION:
 			name = readAttribute("name");
+			mover = readAttribute("mover");
 			radius = readInt("radius");
 			String gear = readAttribute("gear");
 			if (gear != null) {
@@ -150,9 +152,12 @@ public class TriggerElement extends AnyElement {
 			}
 			break;
 		case LOCATION:
+			//TODO: Take into account the 'mover' attribute for trigger element
 			if (p_another.name.equals(name)) {
-				if (p_another.location == null && location == null && tileLocation == null) {
+				if (p_another.location == null && mover == null && location == null && tileLocation == null) {
 					return true;
+				} else if (mover != null) {
+					return mover.equals(p_another.mover);
 				} else if (tileLocation != null && p_another.location != null) {
 					int gridX = p_another.location.x / 16;
 					int gridY = p_another.location.y / 16;
@@ -197,7 +202,7 @@ public class TriggerElement extends AnyElement {
 	}
 
 	public boolean isLocationSpecific() {
-		return kind == QuestEvent.LOCATION && name != null && (location != null || tileLocation != null);
+		return kind == QuestEvent.LOCATION && name != null && (location != null || tileLocation != null || mover != null);
 	}
 
 	/**
@@ -253,14 +258,19 @@ public class TriggerElement extends AnyElement {
 	 * Ingame method to check a location trigger.
 	 * 
 	 * @param p_mapName
+	 * @param p_location (not mandatory)
+	 * @param p_mover name of the moving platform (not mandatory)
 	 * @return TriggerElement
 	 */
 	public static TriggerElement createLocationTrigger(String p_mapName,
-			Point p_location) {
+			Point p_location, String p_mover) {
 		TriggerElement elem = new TriggerElement(QuestEvent.LOCATION);
 		elem.name = p_mapName;
 		if (p_location != null) {
 			elem.location = p_location;
+		}
+		if (p_mover != null) {
+			elem.mover = p_mover;
 		}
 		return elem;
 	}
