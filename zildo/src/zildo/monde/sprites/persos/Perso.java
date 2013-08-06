@@ -584,7 +584,12 @@ public abstract class Perso extends Element {
 			SpriteModel model = entity.getSprModel();
 			Zone zz = new Zone(middle.x, middle.y, model.getTaille_x(), model.getTaille_y());
 			if (zz.isInto((int) x, (int) y)) {
-				entity.getMover().linkEntity(this);
+				boolean justLinked = entity.getMover().linkEntity(this);
+				if (justLinked) {
+					String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
+					TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName());
+					EngineZildo.scriptManagement.trigger(trigger);
+				}
 				// Be careful : 'return' here, means that no trigger could be activated
 				// But it avoid character to die in lava.
 				return false;
@@ -722,7 +727,7 @@ public abstract class Perso extends Element {
 		// Trigger "LOCATION" only in single player
 		if (!EngineZildo.game.multiPlayer && isZildo()) {
 			String mapName = area.getName();
-			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x, y));
+			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x, y), null);
 			EngineZildo.scriptManagement.trigger(trig);
 		}
 		return slowDown;

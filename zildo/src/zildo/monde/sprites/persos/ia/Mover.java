@@ -49,9 +49,10 @@ public abstract class Mover {
 	/**
 	 * Link an entity to this mover.
 	 * @param e
+	 * @return TRUE if entity is just newly associated (=it wasn't before)
 	 */
-	public void linkEntity(SpriteEntity e) {
-		linkedEntities.put(e.getId(), e);
+	public boolean linkEntity(SpriteEntity e) {
+		return linkedEntities.put(e.getId(), e) == null;
 	}
 	
 	/**
