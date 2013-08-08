@@ -15,7 +15,7 @@
             <script who="bunny" value="8"/>
         </action>
     </quest>
-    
+
     <quest name="vert_seen">
     	<trigger>
     	    <location name="voleurs" pos="612,830" radius="2"/>
@@ -56,6 +56,12 @@
 	    <action>
 	        <exec script="move_vg5_plat2"/>
 	    </action>
+    </quest>
+    
+    <!--  Just to set hero on foreground from this location -->
+    <quest name="zcave_foreground" repeat="true" locked="false">
+    	<trigger><location name="voleursg5" pos="615,485" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="true"/></action>
     </quest>
     
     <quest name="attaque_voleurs">

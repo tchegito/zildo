@@ -129,8 +129,8 @@ public class ActionExecutor {
                     		perso.z = p_action.z;
                     		perso.az=-0.1f;
                     	}
-                        if (p_action.foreground) {
-                        	perso.setForeground(true);
+                        if (p_action.foreground != null) {
+                        	perso.setForeground(p_action.foreground);
                         }
                     } else if ("camera".equals(p_action.what)) {
                         ClientEngineZildo.mapDisplay.setCamera(location);
@@ -157,8 +157,8 @@ public class ActionExecutor {
                         perso.setSpeed(p_action.speed);
                         perso.setOpen(p_action.open);
                         perso.setUnstoppable(p_action.unstoppable);
-                        if (p_action.foreground) {
-                        	perso.setForeground(true);
+                        if (p_action.foreground != null) {
+                        	perso.setForeground(p_action.foreground);
                         }
                     } else if ("camera".equals(p_action.what)) {
                         ClientEngineZildo.mapDisplay.setTargetCamera(location);
@@ -259,8 +259,8 @@ public class ActionExecutor {
 	                		if (p_action.fx != null) {
 	                			elem.setSpecialEffect(EngineFX.valueOf(p_action.fx));
 	                		}
-	                		if (p_action.foreground) {
-	                			elem.setForeground(true);
+	                		if (p_action.foreground != null) {
+	                			elem.setForeground(p_action.foreground);
 	                		}
                 		}
                 	}
