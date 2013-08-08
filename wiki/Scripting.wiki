@@ -32,6 +32,12 @@ A quest has a name and a state during the game, which can be 'done' or 'undone'.
 
 _Note_ : when loading a saved game, every accomplished quest launches the execution of each 'history' part, but not 'action' part.
 
+==== Attributes ====
+
+ * repeat : 'false' (by default) means only one execution of this quest is possible
+ * locked : 'true' by default => it means that the triggering of this quest freeze the game
+
+
 == Trigger & Action ==
 
 === Trigger ===
