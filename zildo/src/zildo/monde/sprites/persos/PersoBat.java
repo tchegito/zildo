@@ -23,6 +23,7 @@ public class PersoBat extends PersoShadowed {
 	public PersoBat() {
 		pathFinder = new PathFinderStraightFlying(this, 6, 2);
 		pv = 2;
+		setForeground(true);
 	}
 	
 	@Override
