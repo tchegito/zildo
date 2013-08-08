@@ -31,6 +31,7 @@ import zildo.fwk.gfx.Ortho;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.util.Angle;
+import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
 import zildo.monde.util.Zone;
 import zildo.platform.opengl.GLUtils;
@@ -72,6 +73,8 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	private final static Vector4f colChainingPoint = new Vector4f(0.8f, 0.7f, 0.8f, 1);
 	private final static Vector4f colChainingPointSelected = new Vector4f(0.6f, 0.9f, 0.9f, 0.8f);
 	private final static Vector4f colCursor = new Vector4f(1, 1, 1, 1);
+	private final static Vector4f colCursorFore = new Vector4f(1, 1, 0, 1);
+	private final static Vector3f colCursorText = new Vector3f(1, 0.2f, 0);
 	
 	// We have to communicate orders via boolean to this canvas
 	// because we can use OpenGL outside of the paint process
@@ -80,7 +83,9 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 
 	private int sizeX;
 	private int sizeY;
-
+	
+	int mask=0;	// 0=back / 1=back2 / 2=fore
+	
 	private boolean needToResize = false;
 	private boolean needCapture = false;
 	private boolean blockPaint = false;
@@ -244,6 +249,20 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 					size.translate(-camera.x, -camera.y);
 			    }
 			    ortho.boxv(start.x, start.y, size.x, size.y, 0, colCursor);
+			    if (mask > 0) {
+				    ortho.boxv(start.x + 2, start.y + 2, size.x - 4, size.y - 4, 0, colCursor);
+				    if (mask > 1) {
+					    ortho.boxv(start.x + 4, start.y + 4, size.x - 8, size.y - 8, 0, colCursorFore);
+				    }
+			    }
+			    switch (mode) {
+			    case TILE_REVERSE_EDIT:
+			    	ortho.drawText(start.x + 2, start.y + 6, "Rev", colCursorText);
+			    	break;
+			    case TILE_ROTATE_EDIT:
+			    	ortho.drawText(start.x + 2, start.y + 6, "Rot", colCursorText);
+			    	break;
+			    }
 			}
 
 			// Draw map limits

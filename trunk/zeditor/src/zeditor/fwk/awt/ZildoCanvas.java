@@ -73,7 +73,6 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	int mask=0;
 	boolean gridSprites=false;
 	
 	public ZildoCanvas(ZildoScrollablePanel p_panel, String p_mapname)
