@@ -21,8 +21,10 @@
 package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
+import zildo.monde.Hasard;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.utils.CompositeElement;
@@ -36,7 +38,9 @@ public class ElementImpact extends Element {
 		FIRESMOKE(ElementDescription.EXPLOSMOKE1, 3,8),
 		SMOKE(ElementDescription.SMOKE, new int[] {0,1,52,53,54}, 8),
 		STAR_YELLOW(ElementDescription.STAR1, new int[] {0,1,2,1,0}, 8),
-		DROP_ENERGY(ElementDescription.BLUE_ENERGY, 1,1);
+		DROP_ENERGY(ElementDescription.BLUE_ENERGY, 1,1),
+		LAVA_DROP(ElementDescription.LAVADROP1, 4, 2),
+		DUST(ElementDescription.DUST1, 3, 3);
 		
 		ElementDescription desc;
 		int seqLong;	// Size of the sequence of the sprite's life
@@ -81,9 +85,13 @@ public class ElementImpact extends Element {
 		counter=0;
 		kind=p_kind;
 		switch (p_kind) {
+			case DUST:
+				if (Hasard.lanceDes(5)) 
+					reverse = Reverse.HORIZONTAL;
 			case SIMPLEHIT:
 			case FIRESMOKE:
 			case STAR_YELLOW:
+			case LAVA_DROP:
 				setSprModel(kind.desc);
 				break;
 			case EXPLOSION:
@@ -117,7 +125,9 @@ public class ElementImpact extends Element {
 			case STAR_YELLOW:
         	case SIMPLEHIT:
         	case FIRESMOKE:
+        	case LAVA_DROP:
         	case SMOKE:
+        	case DUST:
 				if (valCounter == kind.seqLong) {
 					dying=true;
 					visible=false;

@@ -511,33 +511,34 @@ public class Element extends SpriteEntity {
 				EngineZildo.spriteManagement
 						.spawnSpriteGeneric(SpriteAnimation.BUSHES, (int) x,
 								(int) y, 0, null, null);
-				EngineZildo.soundManagement.broadcastSound(
-						BankSound.CasseBuisson, this);
+				EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
 				break;
 			case JAR:
 			case STONE:
 			case STONE_HEAVY:
 			case ROCK_BALL:
 				EngineZildo.spriteManagement.spawnSpriteGeneric(
-						SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, 0,
-						null, null);
-				EngineZildo.soundManagement.broadcastSound(
-						BankSound.CassePierre, this);
+						SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, 0, null, null);
+				EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
 				break;
 			case BOMB:
 				break;
-			case HEN:
-				// La poule reprend vie dans le tableau de perso
-				/*
-				 * pnj.x=x; pnj.y=y;pnj.z=0; with pnj do begin
-				 * zone_deplacement[0]=round(x-16*5);
-				 * zone_deplacement[1]=round(y-16*5);
-				 * zone_deplacement[2]=round(x+16*5);
-				 * zone_deplacement[3]=round(y+16*5);
-				 * quel_spr=35;quel_deplacement=SCRIPT_POULE; info=0;
-				 * nom='poule'; px=0; py=0; alerte=false;pv=1; attente=0; end;
-				 * spawn_perso(pnj);
-				 */
+			case PEEBLE:
+				// Floor or lava ?
+				int cx = (int) (x / 16);
+				int cy = (int) (y / 16);
+				Area area = EngineZildo.mapManagement.getCurrentMap();
+				boolean bottomLess = area.isCaseBottomLess(cx,  cy);
+				if (bottomLess) {
+					EngineZildo.soundManagement.broadcastSound(BankSound.LavaDrop, this);
+					EngineZildo.spriteManagement.spawnSpriteGeneric(
+							SpriteAnimation.LAVA_DROP, (int) x, (int) y, 0,	null, null);
+				} else {
+					EngineZildo.soundManagement.broadcastSound(BankSound.PeebleFloor, this);
+					EngineZildo.spriteManagement.spawnSpriteGeneric(
+							SpriteAnimation.DUST, (int) x, (int) y, 0,	null, null);
+				}
+				break;
 			}
 		}
 		if (shadow != null) {

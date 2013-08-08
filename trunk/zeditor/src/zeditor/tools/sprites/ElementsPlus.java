@@ -272,8 +272,11 @@ public class ElementsPlus extends SpriteBanque {
 				// Rock bag
 				new Zone(59, 85, 16, 16), new Zone(75, 85, 4, 4),
 				// Rock pillar
-				new Zone(262, 0, 35, 35)
-
+				new Zone(262, 0, 35, 35),
+				// Lava drop animation
+				new Zone(185, 49, 9, 9), new Zone(195, 49, 9, 9), new Zone(205, 49, 9, 9), new Zone(215, 49, 9, 9),
+				// Dust
+				new Zone(185, 59, 3, 6), new Zone(189, 59, 3, 6), new Zone(193, 59, 3, 6)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
