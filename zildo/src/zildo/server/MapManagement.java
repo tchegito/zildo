@@ -266,6 +266,9 @@ public class MapManagement {
 				return true; // Obstacle
 			}
 
+			if (currentMap.isCaseBottomLess(cx, cy)) {
+				return false;
+			}
 			Tile tile = currentMap.readmap(cx, cy, false);
 			if (tile == null) {
 				return false;

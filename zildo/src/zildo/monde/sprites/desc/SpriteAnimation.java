@@ -41,5 +41,7 @@ public enum SpriteAnimation {
 	CLOUD_FOG,	// A fog made by several cloud ElementDescription.SMOKE
 	HEARTS,	// Hearts flying above a character
 	STAFF_POUM,	// Throw a staff
-	BIG_FIREBALL;
+	BIG_FIREBALL,
+	LAVA_DROP,
+	DUST;
 }

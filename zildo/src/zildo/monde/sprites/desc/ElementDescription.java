@@ -93,8 +93,12 @@ public enum ElementDescription implements SpriteDescription {
 	// 183
 	NOTE, PSYCHIC_SIGN, WITCH_SIGN, NOTE2,
 	// 187
-	ROCK_BAG, PEEBLE, ROCK_PILLAR;
-
+	ROCK_BAG, PEEBLE, ROCK_PILLAR,
+	// 190
+	LAVADROP1, LAVADROP2, LAVADROP3, LAVADROP4,
+	// 194
+	DUST1, DUST2, DUST3;
+	
 	Boolean damage;
 	
 	public int getBank() {

@@ -131,8 +131,10 @@ public enum BankSound implements AudioBank {
 	
 	FloorTile("floortile1"),
 	Sort("sort"),
-	Switch("switch");
-
+	Switch("switch"),
+	LavaDrop("lavadrop"),
+	PeebleFloor("peeble");
+	
 	String filename;
 	
 	private BankSound(String p_filename) {

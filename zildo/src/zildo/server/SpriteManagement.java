@@ -388,6 +388,14 @@ public class SpriteManagement extends SpriteStore {
 				element = new ElementFireballs(x, y, Angle.fromInt(misc));
 				spawnSprite(element);
 				break;
+			case LAVA_DROP:
+				element = new ElementImpact(x, y, ImpactKind.LAVA_DROP, null);
+				spawnSprite(element);
+				break;
+			case DUST:
+				element = new ElementImpact(x, y, ImpactKind.DUST, null);
+				spawnSprite(element);
+				break;
 		}
 		return element;
 	}
