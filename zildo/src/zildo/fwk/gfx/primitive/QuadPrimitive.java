@@ -164,7 +164,7 @@ public class QuadPrimitive {
     }
 
     short[][] vertices = new short[4][2];
-    byte[][] orders = {{0, 1, 2, 3}, {2, 0, 3, 1}, {1, 3, 0, 2}, {3, 2, 1, 0}};
+    byte[][] orders = {{0, 1, 2, 3}, {2, 0, 3, 1}, {3, 2, 1, 0}, {1, 3, 0, 2} };
     
     protected void addSprite(float x, float y, float xTex, float yTex, float sizeX, float sizeY, Rotation rotation, int zoom ) {
     	

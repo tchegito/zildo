@@ -237,6 +237,22 @@ public class TileSelection extends CaseSelection {
 					}
 				}
 			}
+			// Rotate all tiles inside the zone
+			if (width > 1 || height > 1) {
+				int rotH=0, rotW=0;
+				Case[] keepCase = new Case[width * height];
+				for (int h = 0; h < height; h++) {
+					for (int w = 0; w < width; w++) {
+						rotW = h; rotH = width - w - 1;
+						keepCase[h * width + w] = map.get_mapcase(p.x/16 + rotW, p.y/16 + rotH + 4);
+					}
+				}
+				for (int h = 0; h < height; h++) {
+					for (int w = 0; w < width; w++) {
+						map.set_mapcase(p.x/16 + w, p.y/16 + h + 4, keepCase[h * width + w]);
+					}
+				}
+			}
 	}
 	
 	@Override
