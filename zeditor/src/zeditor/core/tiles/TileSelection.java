@@ -172,6 +172,7 @@ public class TileSelection extends CaseSelection {
 	 * @param p_mask
 	 */
 	public void reverse(Area map, Point p, int p_mask) {
+		Reverse ref = null;
 			for (int h = 0; h < height; h++) {
 				for (int w = 0; w < width; w++) {
 					Case item =  map.get_mapcase(p.x/16 + w, p.y/16 + h + 4);
@@ -195,8 +196,34 @@ public class TileSelection extends CaseSelection {
 								tile.reverse = Reverse.NOTHING;
 							}
 							tile.reverse = tile.reverse.succ();
+							if (ref == null) {
+								ref = tile.reverse; // Keep a reference reverse value
+							}
 						}
 						item.setModified(true);
+					}
+				}
+			}
+			// Reverse all tiles inside the zone
+			if (width > 1 || height > 1) {
+				int revH=0, revW=0;
+				Case[] keepCase = new Case[width * height];
+				for (int h = 0; h < height; h++) {
+					for (int w = 0; w < width; w++) {
+						switch (ref) {
+						case ALL: case HORIZONTAL:
+							revW = width - w - 1; revH = h; break;
+						case VERTICAL:
+							revW = w; revH = height - h - 1; break;
+						case NOTHING:
+							revW = width - w - 1; revH = height - h - 1;break;
+						}
+						keepCase[h * width + w] = map.get_mapcase(p.x/16 + revW, p.y/16 + revH + 4);
+					}
+				}
+				for (int h = 0; h < height; h++) {
+					for (int w = 0; w < width; w++) {
+						map.set_mapcase(p.x/16 + w, p.y/16 + h + 4, keepCase[h * width + w]);
 					}
 				}
 			}
@@ -238,7 +265,7 @@ public class TileSelection extends CaseSelection {
 				}
 			}
 			// Rotate all tiles inside the zone
-			if (width > 1 || height > 1) {
+			if ((width > 1 || height > 1) && width == height) {
 				int rotH=0, rotW=0;
 				Case[] keepCase = new Case[width * height];
 				for (int h = 0; h < height; h++) {
