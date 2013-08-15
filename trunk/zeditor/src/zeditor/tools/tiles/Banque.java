@@ -19,6 +19,7 @@ public abstract class Banque {
 
 	// Données d'entrée
 	protected Point[] coords;
+	
 	protected List<GraphChange> pkmChanges;
 	// Données construites par {@link GenereCorrespondanceDec#doTheJob()}
 	Map<Point, Integer> motifParPoint;
@@ -29,6 +30,14 @@ public abstract class Banque {
 	// Ensemble des points correspondant à la position haute-gauche de chaque
 	// tile
 	public Point[] getCoords() {
+		if (coords == null) {
+			int[][] coordsInt = getCoordsInt();
+			coords = new Point[coordsInt.length];
+			int p=0;
+			for (int[] crds : coordsInt) {
+				coords[p++] = new Point(crds[0], crds[1]);
+			}
+		}
 		return coords;
 	}
 
@@ -71,7 +80,7 @@ public abstract class Banque {
     	Iterator<GraphChange> it=getPkmChanges().iterator();
     	GraphChange current=it.next();
     	int nTile=0;
-    	for (Point p : coords) {
+    	for (Point p : getCoords()) {
     		if (current != null && current.nTile == nTile) {
     			System.out.println("Loading "+current.imageName);
     			bankEdit.loadImage(current.imageName, 255);	// 0 as transparency color
@@ -89,5 +98,9 @@ public abstract class Banque {
     	bankEdit.saveBank();
     	
     	System.out.println("Ok");
+    }
+    
+    protected int[][] getCoordsInt() {
+    	return new int[][] {};
     }
 }
