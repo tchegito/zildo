@@ -196,6 +196,10 @@ public class DialogDisplay {
 					dialoguing=false;
 					break;
 			}
+		} else {
+			// Dialog is already over, so we inform the caller (this happens when player press ACTION and ATTACK at the same time
+			// during a dialog).
+			result = true;
 		}
 		return result;
 	}
