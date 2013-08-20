@@ -50,7 +50,7 @@ public class Constantes {
 	// When player finish the game, he'll be registered with this episode name
 	public static final String currentEpisode = "Alemb1";
 
-	public static int CURRENT_VERSION = 1096;	// Version 1.095
+	public static int CURRENT_VERSION = 1096;	// Version 1.096
 	
 	// Tile Engine
 	public static final int TILEENGINE_WIDTH = 64;		// Max Number of tiles
