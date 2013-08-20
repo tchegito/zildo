@@ -45,7 +45,7 @@ public class AndroidSound extends Sound {
 	@Override
 	public void play() {
 		float volume = 1f;
-		if (music != null) {
+		if (music != null && music != AndroidSoundEngine.currentMusic) {
 			if (AndroidSoundEngine.currentMusic != null) {
 				AndroidSoundEngine.currentMusic.pause();
 			}
