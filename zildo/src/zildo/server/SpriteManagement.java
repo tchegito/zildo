@@ -60,7 +60,6 @@ import zildo.monde.sprites.elements.ElementThrown;
 import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
-import zildo.monde.sprites.persos.ia.BasicMover;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
@@ -75,8 +74,6 @@ public class SpriteManagement extends SpriteStore {
 	List<SpriteEntity> spriteEntitiesToAdd; // Used for sprites created during
 											// the animation phase
 	List<SpriteEntity> suspendedEntities;
-	
-	List<SpriteEntity> walkableEntities;	// Platforms
 	
 	/** See {@link #updateSprites()} **/
 	//
@@ -99,7 +96,6 @@ public class SpriteManagement extends SpriteStore {
 		backupEntities = new HashMap<Integer, SpriteEntity>();
 		sprColli = new SpriteCollision();
 		persoColli = new PersoCollision();
-		walkableEntities = new ArrayList<SpriteEntity>();
 	}
 
 	@Override
@@ -388,14 +384,6 @@ public class SpriteManagement extends SpriteStore {
 				element = new ElementFireballs(x, y, Angle.fromInt(misc));
 				spawnSprite(element);
 				break;
-			case LAVA_DROP:
-				element = new ElementImpact(x, y, ImpactKind.LAVA_DROP, null);
-				spawnSprite(element);
-				break;
-			case DUST:
-				element = new ElementImpact(x, y, ImpactKind.DUST, null);
-				spawnSprite(element);
-				break;
 		}
 		return element;
 	}
@@ -474,12 +462,6 @@ public class SpriteManagement extends SpriteStore {
 		
 		spawnSprite(entity);
 
-		// Store walkable entities
-		if (desc == ElementDescription.PLATFORM) {
-			entity.setMover(new BasicMover(entity));
-			walkableEntities.add(entity);
-		}
-		
 		return entity;
 	}
 
@@ -639,8 +621,6 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : listToRemove) {
 			deleteSprite(entity);
 		}
-		
-		walkableEntities.clear();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -888,10 +868,6 @@ public class SpriteManagement extends SpriteStore {
         return null;
     }
     
-    public List<SpriteEntity> getWalkableEntities() {
-    	return walkableEntities;
-    }
-    
     public void blockNonHero() {
     	temporaryBlocked = true;
     }
@@ -899,10 +875,7 @@ public class SpriteManagement extends SpriteStore {
     public void unblockNonHero() {
     	temporaryBlocked = false;
     }
-
-    /**
-     * Called just after map has been loaded.
-     */
+    
     public void initForNewMap() {
     	sprColli.clear();
     	persoColli.clear();

@@ -5,15 +5,6 @@ import zildo.monde.util.Point;
 
 public class BasicMover extends Mover {
 
-	/**
-	 * Construct an inactive mover.
-	 * @param mobile
-	 */
-	public BasicMover(SpriteEntity mobile) {
-		super(mobile, (int) mobile.x, (int) mobile.y);
-		active = false;
-	}
-	
 	public BasicMover(SpriteEntity mobile, int x, int y) {
 		super(mobile, x, y);
 	}

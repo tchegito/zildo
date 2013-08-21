@@ -5,7 +5,6 @@
 		<sound name="ZildoDescendPeu"/>
 		<moveTo who="zildo" pos="0,-32" speed="1" unstoppable="true" delta="true"/>
         <herospecial value="2"/>
-        <pos who="zildo" foreground="true"/>
 	</scene>
 	
 	<scene id="miniStairsDown">
@@ -13,7 +12,6 @@
 	    <sound name="ZildoMontePeu"/>
 		<moveTo who="zildo" pos="0,34" speed="1" unstoppable="true" delta="true"/>
 		<herospecial value="2"/>
-        <pos who="zildo" foreground="false"/>
 	</scene>
 	
 	<scene id="stairsUp">

@@ -185,18 +185,14 @@ public class SpriteCollision {
 			if (!isOutOfBounds(tx + p.x, ty + p.y)) {
 				int id = presences[ty + p.y][tx + p.x];
 				if (id != 0 && id != refId) {
-					// Check if element is linked to entityRef
-					SpriteEntity entity = SpriteEntity.fromId(SpriteEntity.class, id);
 					found = true;
 
+					// Check if element is linked to entityRef
+					SpriteEntity entity = SpriteEntity.fromId(SpriteEntity.class, id);
 					if (entity == null) {	// Entity doesn't exist anymore
 						presences[ty + p.y][tx + p.x] = -1;
 						found = false;
 					} else {
-						if (entity.isForeground() != entityRef.isForeground()) {
-							found = false;	// Different layer
-							continue;
-						}
 						if (entity.getEntityType().isElement()) {
 							elem = (Element) entity;
 							if (elem.getLinkedPerso() == entityRef) {

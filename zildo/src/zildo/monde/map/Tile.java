@@ -71,29 +71,4 @@ public class Tile implements Cloneable {
 	public String toString() {
 		return "bank=" + bank + " ; index=" + index;
 	}
-	
-	public static boolean isClosedChest(int value) {
-		switch (value) {
-		case 512 + 231: // Chest
-		case 512 + 49: case 512 + 59: case 512 + 61:
-			return true;
-		default:
-			return false;
-		}
-	}
-	
-	/**
-	 * Return the corresponding tile value from closed to opened chest.
-	 * @param value
-	 * @return int
-	 */
-	public static int getOpenedChest(int value) {
-		switch (value) {
-		case 512 + 231: return 512 + 238;
-		case 512 + 49:	return 512 + 48;
-		case 512 + 59:	return 512 + 58;
-		case 512 + 61:	return 512 + 60;
-		default:	return 0;
-		}
-	}
 }

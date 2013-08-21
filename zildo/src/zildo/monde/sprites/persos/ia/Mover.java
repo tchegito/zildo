@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import zildo.monde.sprites.SpriteEntity;
-import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Point;
-import zildo.monde.util.Pointf;
 
 public abstract class Mover {
 
@@ -49,34 +47,17 @@ public abstract class Mover {
 	/**
 	 * Link an entity to this mover.
 	 * @param e
-	 * @return TRUE if entity is just newly associated (=it wasn't before)
 	 */
-	public boolean linkEntity(SpriteEntity e) {
-		return linkedEntities.put(e.getId(), e) == null;
-	}
-	
-	/**
-	 * Unlink an entity : it isn't on the moving entity anymore.
-	 * @param e
-	 */
-	public void unlinkEntity(SpriteEntity e) {
-		linkedEntities.remove(e.getId());
+	public void linkEntity(SpriteEntity e) {
+		linkedEntities.put(e.getId(), e);
 	}
 	
 	public void reachTarget() {
 		Point delta = move();
 		// Move the linked entities
 		for (SpriteEntity entity : linkedEntities.values()) {
-			// Handle collision for Perso (but is it really necessary ? Maybe for later !)
-			if (entity.getEntityType().isPerso()) {
-				Perso p = (Perso) entity;
-				Pointf result = p.tryMove(p.x + delta.x, p.y + delta.y);
-				p.x = result.x;
-				p.y = result.y;
-			} else {
-				entity.x += delta.x;
-				entity.y += delta.y;
-			}
+			entity.x += delta.x;
+			entity.y += delta.y;
 		}
 		if (mobile.x == target.x && mobile.y == target.y) {
 			// Mover has accomplished his duty

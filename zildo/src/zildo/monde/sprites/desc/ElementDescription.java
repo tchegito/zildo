@@ -91,14 +91,8 @@ public enum ElementDescription implements SpriteDescription {
 	// 181
 	HEART_FRAGMENT2, NECKLACE,
 	// 183
-	NOTE, PSYCHIC_SIGN, WITCH_SIGN, NOTE2,
-	// 187
-	ROCK_BAG, PEEBLE, ROCK_PILLAR,
-	// 190
-	LAVADROP1, LAVADROP2, LAVADROP3, LAVADROP4,
-	// 194
-	DUST1, DUST2, DUST3;
-	
+	NOTE, PSYCHIC_SIGN, WITCH_SIGN, NOTE2;
+
 	Boolean damage;
 	
 	public int getBank() {
@@ -120,7 +114,7 @@ public enum ElementDescription implements SpriteDescription {
 
 	public boolean isWeapon() {
 		return this == SWORD || this == ENEMYARC_RIGHT1 || this == BOMB
-				|| this == BOOMERANG1 || this == ROCK_BAG;
+				|| this == BOOMERANG1;
 	}
 
 	/**
@@ -141,8 +135,6 @@ public enum ElementDescription implements SpriteDescription {
 			return ItemKind.BOOMERANG;
 		case NECKLACE:
 			return ItemKind.NECKLACE;
-		case ROCK_BAG:
-			return ItemKind.ROCK_BAG;
 		default:
 			return null;
 		}
@@ -217,7 +209,6 @@ public enum ElementDescription implements SpriteDescription {
 				case BOMB:
 				case STAFF_POUM:
 				case BIG_FIRE_BALL:
-				case PEEBLE:
 					damage = true;
 					break;
 			}

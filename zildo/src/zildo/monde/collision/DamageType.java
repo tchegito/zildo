@@ -25,7 +25,6 @@ public enum DamageType {
 	// NOTE: All causes a damage of 1, except FIRE, which causes 2.
 	// Interesting to have another scale of damage depending on the weapon. We could add or multiply such damages scores.
 	
-	HARMLESS,	// Useful for peebles
 	BLUNT, // Boomerang
 	PIERCING, // Arrow
 	CUTTING, // Sword
@@ -42,8 +41,6 @@ public enum DamageType {
 		switch (this) {
 		case FIRE:
 			return 2;
-		case HARMLESS:
-			return 0;
 		default:
 			return 1;
 		}

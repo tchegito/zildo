@@ -28,7 +28,7 @@ import zildo.monde.util.Angle;
  */
 public enum Rotation {
 
-	NOTHING(0), CLOCKWISE(1), UPSIDEDOWN(2), COUNTERCLOCKWISE(3);
+	NOTHING(0), CLOCKWISE(1), COUNTERCLOCKWISE(2), UPSIDEDOWN(3);
 	
 	public int value;
 	

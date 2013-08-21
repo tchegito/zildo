@@ -1,8 +1,6 @@
 package zildo.monde.sprites.persos;
 
 import zildo.client.sound.BankSound;
-import zildo.monde.Hasard;
-import zildo.monde.map.Area;
 import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Anticiper;
@@ -23,7 +21,6 @@ public class PersoBat extends PersoShadowed {
 	public PersoBat() {
 		pathFinder = new PathFinderStraightFlying(this, 6, 2);
 		pv = 2;
-		setForeground(true);
 	}
 	
 	@Override
@@ -35,16 +32,6 @@ public class PersoBat extends PersoShadowed {
 				double distance = Point.distance(x,  y, zildo.x, zildo.y);
 				if (distance < distanceSight) {
 					alerte = true;
-				} else {
-					Area area = EngineZildo.mapManagement.getCurrentMap();
-					if (area.isAnAlertAtLocation(x, y)) {
-						currentSpeed = 1.4f + 0.2f * Math.random();
-						Point p = area.getAlertLocation();
-						p.x += Hasard.intervalle(12);
-						p.y += Hasard.intervalle(12);
-						pathFinder.setTarget(p);
-						alerte = true;
-					}
 				}
 			}
 		} else {

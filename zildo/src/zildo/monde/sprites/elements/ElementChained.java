@@ -47,7 +47,6 @@ public abstract class ElementChained extends Element {
 		initialLocation = new Point(p_x, p_y);
 
 		linkeds = new ArrayList<Element>();
-		visible = false;
 	}
 
 	@Override

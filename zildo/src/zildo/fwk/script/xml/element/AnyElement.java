@@ -65,16 +65,6 @@ public abstract class AnyElement {
     	return str.equalsIgnoreCase("true");
     }
     
-    public Boolean readBoolean(String p_attrName) {
-    	String str=xmlElement.getAttribute(p_attrName);
-    	if (str.equalsIgnoreCase("true")) {
-    		return true;
-    	} else if (str.equalsIgnoreCase("false")) {
-    		return false;
-    	}
-    	return null;
-    }
-    
     /**
      * Read an attribute's value, and return NULL if it isn't set.
      * @param p_attrName

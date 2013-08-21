@@ -40,8 +40,7 @@ public class TileInfo {
 		CORNER, // One quarter of the tile is walkable.
 		CORNER_DIAGONAL, // One quarter + one half quarter (diagonal) is walkable
 		HALF, // One half of the tile is walkable.
-		HALF_CORNER, // One half-quarter is walkable (diagonally)
-		QUARTER,	// 4 pixel-sized bar
+		HALF_CORNER; // One half-quarter is walkable (diagonally)
 	}
 
 	public Template template;
@@ -115,9 +114,6 @@ public class TileInfo {
 			}
 			return result;
 
-		case QUARTER:
-			return collideQuarter(blockAngle, p_posX, p_posY);
-			
 		case FULL:
 		default:
 			return true;
@@ -187,21 +183,6 @@ public class TileInfo {
 		}
 	}
 
-	private boolean collideQuarter(Angle p_angle, int p_posX, int p_posY) {
-		switch (p_angle) {
-		case NORD:
-			return p_posY < 4;
-		case SUD:
-			return p_posY > 11;
-		case EST:
-			return p_posX > 11;
-		case OUEST:
-			return p_posX < 4;
-		default:
-			throw new RuntimeException("No way to determine the tile collision !");
-		}
-	}
-	
 	/**
 	 * Returns TRUE if given TileInfo is equals to the current one.
 	 */
@@ -233,10 +214,7 @@ public class TileInfo {
 			try {
 				// Not in the map yet, so we create it and put it into.
 				// According to valid value
-				if (p_value > ((7 << 4) + 15)) {
-					return null;
-				}
-				if ((p_value & 7) > 6 && (p_value & 7) <= 7) {
+				if ((p_value & 7) >= 6 && (p_value & 7) <= 7) {
 					return null;
 				}
 				if ((p_value & 7) == 0 && p_value > 0) {
@@ -249,9 +227,6 @@ public class TileInfo {
 				t.template = Template.values()[p_value & 7];
 				t.inverse = (p_value & 8) != 0 ? true : false;
 				t.blockAngle = Angle.fromInt(p_value >> 4);
-				if (t.template == Template.QUARTER && (t.inverse || t.blockAngle.value > 3)) {
-					return null;
-				}
 				if ((t.template == Template.CORNER || t.template == Template.CORNER_DIAGONAL) && !t.blockAngle.isDiagonal()) {
 					return null;
 				}

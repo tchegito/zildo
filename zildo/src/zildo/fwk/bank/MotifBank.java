@@ -26,18 +26,8 @@ import java.util.List;
 import zildo.Zildo;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.map.TileCollision;
-import zildo.monde.map.TileInfo;
 
-/**
- * Load a DEC file.<br/>
- * 
- * Such file is modelized by a sequence of following buffers:<ul>
- * <li>16*16 bytes (values between 0..255 corresponding to a palette index)</li>
- * <li>1 byte : collision value (represents a {@link TileInfo} element)</li>
- * </ul>
- * @author evariste.boussaton
- *
- */
+
 public class MotifBank {
 
 	protected short[] motifs_map; // Pointeur sur nos graphs

@@ -112,9 +112,6 @@ public class Area implements EasySerializable {
 	// Respawn points for Zildo (multiplayer only)
 	private final List<Point> respawnPoints;
 
-	private Point alertLocation;	// Sound able to alert enemies
-	private int alertDuration = 0;
-	
 	public List<Point> getRespawnPoints() {
 		return respawnPoints;
 	}
@@ -172,23 +169,13 @@ public class Area implements EasySerializable {
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
-	// readmap
+	// readArea
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// IN : coordinates on Area
 	// foreground: FALSE=on the floor TRUE=foreground
 	// OUT: return motif + bank*256
 	// /////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * Basically, return the higher tile from given map coordinates, with a little bit of intelligence.<ol>
-	 * <li>if 'foreground' is asked, and if case has a foreground tile => return it</li>
-	 * <li>if tile has a back2, return it</li>
-	 * <li>else return back tile</li>
-	 * </ol>
-	 * @param x
-	 * @param y
-	 * @param p_foreground TRUE=> returns the foreground tile, if it exists.
-	 * @return Tile
-	 */
+	// Return n_motif + n_banque*256 from a given position on the Area
 	public Tile readmap(int x, int y, boolean p_foreground) {
 		Case temp = this.get_mapcase(x, y + 4);
 		if (temp == null) {
@@ -208,23 +195,7 @@ public class Area implements EasySerializable {
 			}
 		}
 	}
-	
-	/**
-	 * Returns TRUE if case is bottom less (example: lava or void)
-	 */
-	public boolean isCaseBottomLess(int x, int y) {
-		Case temp = this.get_mapcase(x, y + 4);
-		if (temp == null) {
-			return false;
-		}
-		int val = temp.getBackTile().getValue();
-		if (val == 256 * 3 + 217) {
-			return true;
-		}
-		return false;
-	}
 
-	// Return n_motif + n_banque*256 from a given position on the Area
 	public int readmap(int x, int y) {
 		Tile tile = readmap(x, y, false);
 		if (tile == null) {
@@ -435,23 +406,22 @@ public class Area implements EasySerializable {
 		int on_Area = readmap(x, y);
 		int resultTile;
 		SpriteAnimation anim = SpriteAnimation.FROMGROUND;
-		if (Tile.isClosedChest(on_Area)) {	// Chest ?
-			resultTile = Tile.getOpenedChest(on_Area);
+		switch (on_Area) {
+		case 165: // Bush
+		default:
+			resultTile = 166;
+			break;
+		case 167: // Rock
+		case 169: // Heavy rock
+			resultTile = 168;
+			break;
+		case 751: // Jar
+			resultTile = 752;
+			break;
+		case 743: // Chest
+			resultTile = 744;
 			anim = SpriteAnimation.FROM_CHEST;
-		} else {
-			switch (on_Area) {
-			case 165: // Bush
-			default:
-				resultTile = 166;
-				break;
-			case 167: // Rock
-			case 169: // Heavy rock
-				resultTile = 168;
-				break;
-			case 751: // Jar
-				resultTile = 752;
-				break;
-			}
+			break;
 		}
 		// Notify that this case should reappear after a given time (only in multiplayer mode)
 		if (EngineZildo.game.multiPlayer) {
@@ -729,11 +699,11 @@ public class Area implements EasySerializable {
 						spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, 0, null,
 								null);
 					}
-					Tile tile = temp.getOneValued(512 + 231, 512 + 49, 512 + 59, 512 + 61);
+					Tile tile = temp.getOneValued(512 + 231);
 					// Is this chest already opened ?
 					if (tile != null ) {
 						if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
-							tile.index = Tile.getOpenedChest(tile.getValue()) & 255;
+							tile.index = 744 & 255;
 						}
 					}
 				}
@@ -787,11 +757,9 @@ public class Area implements EasySerializable {
 					int ay = (y-1) / 16;
 					int tileDesc = map.readmap(ax, ay);
 					switch (tileDesc) {
-					case 512 + 238: // Opened chest (don't spawn the linked item)
-					case 512 + 48: case 512 + 58: case 512+60:
+					case 744: // Opened chest (don't spawn the linked item)
 						break;
-					case 512 + 231: // Chest
-					case 512 + 49: case 512 + 59: case 512 + 61:
+					case 743: // Chest
 					case 165: // Bushes
 					case 167: // Stone
 					case 169: // Heavy stone
@@ -1053,8 +1021,7 @@ public class Area implements EasySerializable {
 				if (EngineZildo.mapManagement.collideSprite(x, y, radius, null)) {
 					spawnTile.cnt++;
 				} else {
-					set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);
-					spawnTile.previousCase.setModified(true);
+					this.set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);
 					if (spawnTile.fog) { 
 						EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
 					}
@@ -1064,11 +1031,6 @@ public class Area implements EasySerializable {
 			} else {
 				spawnTile.cnt--;
 			}
-		}
-		if (alertDuration == 0) {
-			alertLocation = null;
-		} else {
-			alertDuration--;
 		}
 	}
 
@@ -1159,9 +1121,6 @@ public class Area implements EasySerializable {
 	 * @return boolean
 	 */
 	public boolean isOutside(int tx, int ty) {
-		if (EngineZildo.mapManagement.getPreviousMap() != null) {
-			return false;
-		}
 		return (tx < 0 || ty < 0 ||
 				tx > ((dim_x - 1) << 4) + 15 || 
 				ty > ((dim_y - 1) << 4) + 15);
@@ -1173,25 +1132,6 @@ public class Area implements EasySerializable {
 
 	public void setAtmosphere(Atmosphere atmosphere) {
 		this.atmosphere = atmosphere;
-	}
-	
-	public void alertAtLocation(Point p) {
-		alertLocation = p;
-		alertDuration = 5;
-	}
-	
-	final float distanceHeard = 64f;
-	
-	public boolean isAnAlertAtLocation(float x, float y) {
-		if (alertLocation == null) {
-			return false;
-		}
-		double distance = Point.distance(x, y, alertLocation.x, alertLocation.y);
-		return distance < distanceHeard;
-	}
-	
-	public Point getAlertLocation() {
-		return new Point(alertLocation);
 	}
 	
 	private void arrange() {

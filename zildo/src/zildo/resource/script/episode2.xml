@@ -15,7 +15,7 @@
             <script who="bunny" value="8"/>
         </action>
     </quest>
-
+    
     <quest name="vert_seen">
     	<trigger>
     	    <location name="voleurs" pos="612,830" radius="2"/>
@@ -39,29 +39,13 @@
     	</action>
     </quest>
 
-    <quest name="vg5_but2" repeat="true" locked="false">
+    <quest name="vg5_but2">
     	<trigger>
-    	    <location name="voleursg5" tilePos="25,26" gear="TIMED_BUTTON"/>
+    	    <location name="voleursg5" tilePos="25,26"/>
     	</trigger>
     	<action>
     	    <exec script="move_vg5_plat2"/>
     	</action>
-    </quest>
-    
-    <quest name="vg5_back" repeat="true" locked="false">
-	    <trigger>
-	        <location name="voleursg5" mover="platform2"/>
-	        <questDone name="!move_vg5_plat2"/>
-	    </trigger>
-	    <action>
-	        <exec script="move_vg5_plat2"/>
-	    </action>
-    </quest>
-    
-    <!--  Just to set hero on foreground from this location -->
-    <quest name="zcave_foreground" repeat="true" locked="false">
-    	<trigger><location name="voleursg5" pos="615,485" radius="2"/></trigger>
-    	<action><pos who="zildo" foreground="true"/></action>
     </quest>
     
     <quest name="attaque_voleurs">
@@ -99,17 +83,6 @@
 		    <actions>
 			   	<animation type="BIG_FIREBALL" what="fireb3" angle="3" pos="320,131"/>
 			    <animation type="BIG_FIREBALL" what="fireb4" angle="3" pos="320,211"/>
-		    </actions>
-   		</condition>
-   		<condition name="voleursg6" exp="trig_echange">
-		    <actions>
-		    	<animation type="BIG_FIREBALL" what="fireb1" angle="0" pos="144,302"/>
-		    	<animation type="BIG_FIREBALL" what="fireb2" angle="0" pos="224,302"/>
-		    </actions>
-		    <wait value="30"/>
-		    <actions>
-			   	<animation type="BIG_FIREBALL" what="fireb3" angle="1" pos="29,131"/>
-			    <animation type="BIG_FIREBALL" what="fireb4" angle="1" pos="29,211"/>
 		    </actions>
    		</condition>
    		<condition name="prisonext" exp="trig_echange">
@@ -174,7 +147,7 @@
             <angle who="zildo" value="1"/>
 	    </actions>
 	    <actions>
-        	<moveTo who="fox1" pos="0,100" delta="true"/>
+        	<moveTo who="fox1" pos="0,64" delta="true"/>
 			<moveTo who="fox2" pos="913,998"/>
 			<moveTo who="zildo" pos="890,1005" speed="0.5"/>     
 	    </actions>
@@ -208,7 +181,7 @@
    	    	<moveTo who="fox2" pos="-20,0" delta="true" speed="1.5"/>
    	    	<moveTo who="zildo" pos="-25,0" delta="true" backward="true" speed="1.5"/>
 	   	    <speak who="fox2" text="voleurs.fox8"/>
-	   	    <moveTo who="vert" pos="839,924"/>
+	   	    <moveTo who="vert" pos="839,926"/>
    	    </actions>
    	    <angle who="fox1" value="3"/>
    	    <angle who="vert" value="2"/>
@@ -221,16 +194,9 @@
    	</scene>
    	
 	<scene id="move_vg5_plat1">
-	    <moveTo what="platform" pos="-220,0" delta="true" speed="2"/>
-	    <wait value="30"/>
-	    <moveTo what="platform" pos="220,0" delta="true" speed="2"/>
+	    <moveTo what="platform" pos="-80,0" delta="true" speed="2"/>
+	    <wait value="10"/>
+	    <moveTo what="platform" pos="80,0" delta="true" speed="2"/>
 	    <wait value="10"/>
 	</scene>
-	<scene id="move_vg5_plat2">
-	    <moveTo what="platform2" pos="0,128" delta="true" speed="2"/>
-	    <wait value="100"/>
-	    <moveTo what="platform2" pos="0,-128" delta="true" speed="2"/>
-	    <wait value="10"/>
-	</scene>
-	
 </adventure>

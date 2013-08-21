@@ -112,7 +112,7 @@ public class MapManagement {
 		// Trigger the location
 		if (!EngineZildo.game.editing) {
 			currentMapTrigger = TriggerElement
-					.createLocationTrigger(adjustedMapName, null, null);
+					.createLocationTrigger(adjustedMapName, null);
 			EngineZildo.scriptManagement.trigger(currentMapTrigger);
 			EngineZildo.scriptManagement.prepareMapSubTriggers(p_mapname);
 		}
@@ -266,9 +266,6 @@ public class MapManagement {
 				return true; // Obstacle
 			}
 
-			if (currentMap.isCaseBottomLess(cx, cy)) {
-				return false;
-			}
 			Tile tile = currentMap.readmap(cx, cy, false);
 			if (tile == null) {
 				return false;
@@ -328,10 +325,6 @@ public class MapManagement {
 				return quelElement != null && !quelElement.isZildo() && !ghost;
 			}
 
-			// Don't collide if case is bottom less (example: lava tile)
-			if (currentMap.isCaseBottomLess(mx / 16, my / 16)) {
-				continue;
-			}
 			Tile tile = currentMap.readmap((mx / 16), (my / 16), foreground);
 			if (tile == null) {
 				continue;
@@ -719,7 +712,6 @@ public class MapManagement {
 		zildo.setAngle(startAngle);
 		zildo.beingWounded(null, 1);
 		zildo.stopBeingWounded();
-		zildo.setForeground(false);
 		zildo.askVisible(true);	// Set him back to visible
 	}
 	

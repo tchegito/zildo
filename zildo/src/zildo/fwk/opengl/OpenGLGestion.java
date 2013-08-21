@@ -20,8 +20,6 @@
 
 package zildo.fwk.opengl;
 
-import java.nio.ByteBuffer;
-
 import zildo.client.ClientEngineZildo;
 import zildo.monde.util.Point;
 
@@ -158,7 +156,4 @@ public abstract class OpenGLGestion {
 	public abstract double getTimeInSeconds();
 
 	public void requestRender() {};
-	
-	// Default capture : nothing
-	public ByteBuffer capture() { return null; };
 }

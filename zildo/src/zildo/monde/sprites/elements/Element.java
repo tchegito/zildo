@@ -31,10 +31,8 @@ import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteAnimation;
-import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
-import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 //TODO: Remove getter/setter for x,y,z
@@ -160,8 +158,7 @@ public class Element extends SpriteEntity {
 				|| a == ElementDescription.BIG_FIRE_BALL.ordinal()
 				|| a == ElementDescription.HEART_FRAGMENT.ordinal()
 				|| a == ElementDescription.NOTE.ordinal()
-				|| a == ElementDescription.NOTE2.ordinal()
-				|| a == ElementDescription.PEEBLE.ordinal()) {
+				|| a == ElementDescription.NOTE2.ordinal()) {
 			return true;
 		} else {
 			return false;
@@ -205,6 +202,8 @@ public class Element extends SpriteEntity {
 		// S'il s'agit d'un personnage
 		if (entityType.isPerso()) {
 			return true;
+			// PersoDescription desc=((Perso)this).getQuel_spr();
+			// return (desc.equals(PersoDescription.POULE));
 		}
 		if (desc.isBlocking()) {
 			return true;
@@ -511,34 +510,33 @@ public class Element extends SpriteEntity {
 				EngineZildo.spriteManagement
 						.spawnSpriteGeneric(SpriteAnimation.BUSHES, (int) x,
 								(int) y, 0, null, null);
-				EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
+				EngineZildo.soundManagement.broadcastSound(
+						BankSound.CasseBuisson, this);
 				break;
 			case JAR:
 			case STONE:
 			case STONE_HEAVY:
 			case ROCK_BALL:
 				EngineZildo.spriteManagement.spawnSpriteGeneric(
-						SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, 0, null, null);
-				EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
+						SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, 0,
+						null, null);
+				EngineZildo.soundManagement.broadcastSound(
+						BankSound.CassePierre, this);
 				break;
 			case BOMB:
 				break;
-			case PEEBLE:
-				// Floor or lava ?
-				int cx = (int) (x / 16);
-				int cy = (int) (y / 16);
-				Area area = EngineZildo.mapManagement.getCurrentMap();
-				boolean bottomLess = area.isCaseBottomLess(cx,  cy);
-				if (bottomLess) {
-					EngineZildo.soundManagement.broadcastSound(BankSound.LavaDrop, this);
-					EngineZildo.spriteManagement.spawnSpriteGeneric(
-							SpriteAnimation.LAVA_DROP, (int) x, (int) y, 0,	null, null);
-				} else {
-					EngineZildo.soundManagement.broadcastSound(BankSound.PeebleFloor, this);
-					EngineZildo.spriteManagement.spawnSpriteGeneric(
-							SpriteAnimation.DUST, (int) x, (int) y, 0,	null, null);
-				}
-				break;
+			case HEN:
+				// La poule reprend vie dans le tableau de perso
+				/*
+				 * pnj.x=x; pnj.y=y;pnj.z=0; with pnj do begin
+				 * zone_deplacement[0]=round(x-16*5);
+				 * zone_deplacement[1]=round(y-16*5);
+				 * zone_deplacement[2]=round(x+16*5);
+				 * zone_deplacement[3]=round(y+16*5);
+				 * quel_spr=35;quel_deplacement=SCRIPT_POULE; info=0;
+				 * nom='poule'; px=0; py=0; alerte=false;pv=1; attente=0; end;
+				 * spawn_perso(pnj);
+				 */
 			}
 		}
 		if (shadow != null) {
@@ -552,9 +550,6 @@ public class Element extends SpriteEntity {
 	 * @return DamageType
 	 */
 	public DamageType getDamageType() {
-		if (desc == ElementDescription.PEEBLE) {
-			return DamageType.HARMLESS;
-		}
 		return null;
 	}
 
@@ -574,7 +569,6 @@ public class Element extends SpriteEntity {
 		return pushable;
 	}
 
-	@Override
 	public void setPushable(boolean pushable) {
 		this.pushable = pushable;
 	}
@@ -667,16 +661,6 @@ public class Element extends SpriteEntity {
 	 * @return FALSE if element must disappear, TRUE otherwise.
 	 */
 	public boolean beingCollided(Perso p_perso) {
-		if (desc == ElementDescription.PEEBLE) {
-			if (z > 4 && p_perso == null) {
-				// Produce impact sound only on wall (not enemies)
-				Element impact = new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null);
-				EngineZildo.spriteManagement.spawnSprite(impact);
-				EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
-			}
-			// Alert that a sound happened at this location
-			EngineZildo.mapManagement.getCurrentMap().alertAtLocation(new Point(x, y));
-		}
 		return false;
 	}
 

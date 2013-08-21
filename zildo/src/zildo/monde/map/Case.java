@@ -50,9 +50,6 @@ public class Case implements EasySerializable {
 	
 	public Case(Case p_original) {
 		this.back = p_original.getBackTile().clone();
-		if (p_original.getBackTile2() != null) {
-			this.back2 = p_original.getBackTile2().clone();
-		}
 		if (p_original.getForeTile() != null) {
 			this.fore = p_original.getForeTile().clone();
 		}
@@ -328,14 +325,12 @@ public class Case implements EasySerializable {
 	 * @param val
 	 * @return Tile
 	 */
-	public Tile getOneValued(int... vals) {
-		for (int val : vals) {
-			if (back.getValue() == val) {
-				return back;
-			}
-			if (back2 != null && back2.getValue() == val) {
-				return back2;
-			}
+	public Tile getOneValued(int val) {
+		if (back.getValue() == val) {
+			return back;
+		}
+		if (back2 != null && back2.getValue() == val) {
+			return back2;
 		}
 		return null;
 	}
