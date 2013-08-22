@@ -646,9 +646,13 @@ public class MapManagement {
 	}
 
 	// Hill boundaries
-	private final static IntSet leftIncreaseZ = new IntSet(100, 106, 107); // 17, 15,
+	private final static IntSet leftIncreaseZ = new IntSet(100, 106, 107, 
+															16, 17, 18,
+															81, 83, 86); // 17, 15,
 																	// 841, 15);
-	private final static IntSet rightDecreaseZ = new IntSet(102, 103, 104); // 25, 9,
+	private final static IntSet rightDecreaseZ = new IntSet(102, 103, 104,
+															24, 25, 26,
+															80, 82, 85); // 25, 9,
 																		// 842,
 																		// 9);
 
