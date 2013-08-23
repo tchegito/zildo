@@ -36,6 +36,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBVertexBufferObject;
 import org.lwjgl.opengl.GL11;
 
+import zildo.Zildo;
 import zildo.fwk.ZUtils;
 
 /**
@@ -124,7 +125,7 @@ public class GLUtils {
 	   		}
     	}
     	try {
-			ImageIO.write(bufImage, "png", new File(filename));
+			ImageIO.write(bufImage, "png", new File(filename+".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}    	
@@ -133,7 +134,7 @@ public class GLUtils {
 	public static void copy(ByteBuffer source, ByteBuffer dest, int width, int height, int destWidth, int dx, int dy, boolean alpha) {
 		int bpp = 3 + (alpha ? 1 : 0);
     	for (int y = 0;y<height;y++) {
-    		source.position(bpp * width * (height - y - 1));
+    		source.position(bpp * Zildo.screenX * (height - y - 1));
     		dest.position(bpp * (destWidth * (dy + y) + dx));
     		for (int x = 0;x<width;x++) {
 				dest.put(source.get());

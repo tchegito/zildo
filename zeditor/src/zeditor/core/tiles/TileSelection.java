@@ -206,6 +206,9 @@ public class TileSelection extends CaseSelection {
 			}
 			// Reverse all tiles inside the zone
 			if (width > 1 || height > 1) {
+				if (ref == null) {
+					ref = Reverse.NOTHING;
+				}
 				int revH=0, revW=0;
 				Case[] keepCase = new Case[width * height];
 				for (int h = 0; h < height; h++) {

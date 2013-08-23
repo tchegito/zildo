@@ -144,7 +144,6 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	@Override
 	public void paintGL() {
 		if (blockPaint) {
-			System.out.println("Waiting for capture");
 			return;
 		}
 		if (changeMap) {
@@ -187,7 +186,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			if (needCapture) {
 				blockPaint = true;
 				captureEntireMap();
-				JOptionPane.showMessageDialog(this, "ZEditor", "PNG file saved.", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(this, "PNG file saved.", "ZEditor", JOptionPane.INFORMATION_MESSAGE);
 				blockPaint = false;
 				needCapture = false;
 			} else {
@@ -396,20 +395,21 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 				renderer.renderScene();
 				swapBuffers();
 				ByteBuffer temp = ClientEngineZildo.openGLGestion.capture();
-				GLUtils.copy(temp,  bigOne, width, height, totalWidth, x, y, false);
+				GLUtils.copy(temp,  bigOne, Math.min(width, totalWidth), Math.min(height, totalHeight), totalWidth, x, y, false);
 				pas = Math.min(width, totalWidth - x - width);
-				if (pas == 0) {
+				if (pas <= 0) {
 					break;
 				}
 				x += pas;
 			}
 			pas = Math.min(height, totalHeight - y - height);
-			if (pas == 0) {
+			if (pas <= 0) {
 				break;
 			}
 			y += pas;
 		}
-		GLUtils.saveBufferAsPNG("c:\\kikoo\\map.png", bigOne, totalWidth, totalHeight, false);
+		String name = area.getName().replace(".map", "");
+		GLUtils.saveBufferAsPNG("c:\\kikoo\\"+name, bigOne, totalWidth, totalHeight, false);
 		// Reset camera and zoom
 		ClientEngineZildo.mapDisplay.setCamera(camera);
 		ortho.setSize(sizeX, sizeY, zoom);
