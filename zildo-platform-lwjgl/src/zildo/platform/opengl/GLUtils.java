@@ -131,10 +131,13 @@ public class GLUtils {
 		}    	
     }
     
-	public static void copy(ByteBuffer source, ByteBuffer dest, int width, int height, int destWidth, int dx, int dy, boolean alpha) {
+    /**
+     * Copy a portion of a 640x480 sized image into a bigger one.
+     */
+	public static void copy(ByteBuffer source, ByteBuffer dest, int width, int height, int destWidth, int dx, int dy, int addY, boolean alpha) {
 		int bpp = 3 + (alpha ? 1 : 0);
     	for (int y = 0;y<height;y++) {
-    		source.position(bpp * Zildo.screenX * (height - y - 1));
+    		source.position(bpp * Zildo.screenX * (height - y - 1 + addY));
     		dest.position(bpp * (destWidth * (dy + y) + dx));
     		for (int x = 0;x<width;x++) {
 				dest.put(source.get());

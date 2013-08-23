@@ -386,6 +386,10 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		int height= Zildo.screenY;
 		int y = 0;
 		int pas;
+		int addY = 0;
+		if (totalHeight < height) {
+			addY = height - totalHeight;
+		}
 		zildo.monde.util.Point camera = new zildo.monde.util.Point(ClientEngineZildo.mapDisplay.getCamera());
 		while (true) { // y
 			int x = 0;
@@ -395,7 +399,9 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 				renderer.renderScene();
 				swapBuffers();
 				ByteBuffer temp = ClientEngineZildo.openGLGestion.capture();
-				GLUtils.copy(temp,  bigOne, Math.min(width, totalWidth), Math.min(height, totalHeight), totalWidth, x, y, false);
+				int copyWidth = Math.min(width, totalWidth);
+				int copyHeight = Math.min(height, totalHeight);
+				GLUtils.copy(temp,  bigOne, copyWidth, copyHeight, totalWidth, x, y, addY, false);
 				pas = Math.min(width, totalWidth - x - width);
 				if (pas <= 0) {
 					break;
