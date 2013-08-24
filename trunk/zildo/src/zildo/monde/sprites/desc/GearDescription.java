@@ -67,6 +67,7 @@ public enum GearDescription implements SpriteDescription {
 			case CAVE_SIMPLEDOOR:
 			case CAVE_KEYDOOR:
 			case BOULDER:
+			case CAVE_MASTERDOOR:
 				return true;
 			default:
 				return false;
