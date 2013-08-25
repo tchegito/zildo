@@ -91,6 +91,8 @@ public enum PersoDescription implements SpriteDescription {
 	BROWN_CAT(76, 77, 6),
 	GREY_CAT(78, 79, 7),
 	VIEUX_SAGE3(252),
+	STONE_SPIDER(253, 254),
+	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
 	IntSet sprUsed;
