@@ -152,6 +152,8 @@ public class Pnj2 extends SpriteBanque {
 				new GraphChange("pnj2", 6, 0), 
 				new GraphChange("pnj", 23, 0),
 				new GraphChange("pnj2", 31, 0),
-				new GraphChange("pnj", 122, 0)});
+				new GraphChange("pnj", 123, 0),
+				new GraphChange("pnj2", 125, 0)
+				});
 	}
 }
