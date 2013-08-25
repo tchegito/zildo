@@ -141,7 +141,9 @@ public class Pnj2 extends SpriteBanque {
 			          // Sorcerer (perso) (122)
 			          new Zone(272, 163, 16, 25), new Zone(291, 163, 16, 25),
 			          // Vieux bleu (123)
-			          new Zone(171, 1, 16, 22)
+			          new Zone(171, 1, 16, 22),
+			          // Stone spider
+			          new Zone(0, 329, 13, 13), new Zone(14, 329, 14, 13)
 
 		};
 		
