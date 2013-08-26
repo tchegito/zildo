@@ -6,6 +6,7 @@ import javax.swing.JFileChooser;
 
 import zeditor.windows.MasterFrame;
 import zildo.resource.Constantes;
+import zildo.server.EngineZildo;
 
 public class ExplorerFrameManager {
 	public static final int SAVE = 0;
@@ -68,7 +69,8 @@ public class ExplorerFrameManager {
 			// TODO Fenêtre d'erreur
 			return;
 		}
-		String relativeFilename = f.getAbsolutePath().replace(Constantes.DATA_PATH + Constantes.MAP_PATH, "");
+		// Apply "toLowerCase" to avoid a bug when use double clicks on a file, instead of click on "Open"
+		String relativeFilename = f.getAbsolutePath().toLowerCase().replace((Constantes.DATA_PATH + Constantes.MAP_PATH).toLowerCase(), "");
 
 		masterFrame.getManager().loadMap(relativeFilename, null);
 
@@ -82,6 +84,8 @@ public class ExplorerFrameManager {
 			return;
 		}
 
-		masterFrame.getManager().saveAs(fileChooser.getSelectedFile().getName());
+		String name = fileChooser.getSelectedFile().getName();
+		EngineZildo.mapManagement.getCurrentMap().setName(name);
+		masterFrame.getManager().saveAs(name);
 	}
 }
