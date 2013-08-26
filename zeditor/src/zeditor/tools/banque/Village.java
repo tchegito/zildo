@@ -221,10 +221,16 @@ public class Village extends Banque {
 				new Point(160, 0), new Point(160, 16), new Point(160, 32),
 				
 				/* Champ */
-				new Point(0, 192), new Point(16, 192), new Point(32, 192), new Point(48, 192)};
+				new Point(0, 192), new Point(16, 192), new Point(32, 192), new Point(48, 192),
+				/* Red house second floor */
+				new Point(0, 192), new Point(16, 192),
+				/* Squeaky floor */
+				new Point(16, 112)
+				};
 
 		pkmChanges = Arrays.asList(new GraphChange("exteria3", 0, 0), 
-				new GraphChange("exteria4", 191, 192), new GraphChange("exteria6", 235, 96));
+				new GraphChange("exteria4", 191, 192), new GraphChange("exteria6", 235, 96),
+				new GraphChange("exteria3", 247, -192-96));
 	}
 
 }
