@@ -37,6 +37,7 @@ import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.UIText;
 import zildo.monde.Game;
+import zildo.resource.Constantes;
 
 /**
  * Class handling all actions user can access from the start menu.
@@ -51,6 +52,9 @@ public class StartMenu extends Menu {
 		// Play menu music
 		ClientEngineZildo.soundPlay.playMusic(BankMusic.Triste, null);
         ClientEngineZildo.filterCommand.fadeIn(FilterEffect.FADE);
+
+        // Display version
+		ClientEngineZildo.guiDisplay.displayMessage("v" + Constantes.CURRENT_VERSION_DISPlAYED);
 
         ItemMenu itemSinglePlayer = new ItemMenu("m1.single") {
             @Override

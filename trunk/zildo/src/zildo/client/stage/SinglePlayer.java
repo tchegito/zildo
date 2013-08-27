@@ -95,6 +95,9 @@ public class SinglePlayer implements GameStage {
         client.setUpNetwork(ClientType.SERVER_AND_CLIENT, null, 0, server!=null);
         clientEngineZildo = client.getEngineZildo();
 
+        // Clear potential messages (version display)
+        ClientEngineZildo.guiDisplay.clearMessages();
+        
         // Initialize map
         Area map=EngineZildo.mapManagement.getCurrentMap();
         if (map != null) {

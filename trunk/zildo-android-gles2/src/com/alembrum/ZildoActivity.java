@@ -10,8 +10,10 @@ import zildo.client.gui.menu.StartMenu;
 import zildo.fwk.ZUtils;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.platform.opengl.AndroidSoundEngine;
+import zildo.resource.Constantes;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -84,6 +86,14 @@ public class ZildoActivity extends Activity {
         	}
         }
 
+        String versionName = "0.00";
+        try {
+        	versionName = getPackageManager().getPackageInfo("com.alembrum", 0).versionName;
+        } catch (NameNotFoundException e) {
+        	
+        }
+        Constantes.CURRENT_VERSION_DISPlAYED = versionName;
+        
         // Initialize platform dependent
         PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;
         

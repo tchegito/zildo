@@ -51,6 +51,7 @@ public class Constantes {
 	public static final String currentEpisode = "Alemb1";
 
 	public static int CURRENT_VERSION = 1096;	// Version 1.096
+	public static String CURRENT_VERSION_DISPlAYED = "1.096";	// Dynamic value, initialized at startup
 	
 	// Tile Engine
 	public static final int TILEENGINE_WIDTH = 64;		// Max Number of tiles
