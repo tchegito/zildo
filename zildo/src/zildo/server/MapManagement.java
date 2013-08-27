@@ -716,12 +716,12 @@ public class MapManagement {
 	/**
 	 * Respawn Zildo to his starting location in the current area.
 	 */
-	public void respawn() {
+	public void respawn(int damage) {
 		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		zildo.setX(startLocation.x);
 		zildo.setY(startLocation.y);
 		zildo.setAngle(startAngle);
-		zildo.beingWounded(null, 1);
+		zildo.beingWounded(null, damage);
 		zildo.stopBeingWounded();
 		zildo.setForeground(false);
 		zildo.askVisible(true);	// Set him back to visible

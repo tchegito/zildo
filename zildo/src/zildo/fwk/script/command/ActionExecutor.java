@@ -419,10 +419,11 @@ public class ActionExecutor {
                 	} else if (p_action.val == 1) {
                 		// Game over : player died !
             			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new GameOverAction());
+                        scriptExec.userEndedAction = false;
                 	}
                 	break;
                 case respawn:	// Replace Zildo at his previous location
-                	EngineZildo.mapManagement.respawn();
+                	EngineZildo.mapManagement.respawn(1);	// 1 HP damage
                 	achieved = true;
                 	break;
                 case visible:
@@ -513,6 +514,7 @@ public class ActionExecutor {
         		achieved=ClientEngineZildo.mapDisplay.getTargetCamera() == null;
             	break;
             case speak:
+            case end:
                 achieved = scriptExec.userEndedAction;
                 break;
             case wait:
