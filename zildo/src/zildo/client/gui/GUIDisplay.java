@@ -901,6 +901,10 @@ public class GUIDisplay {
 	public void displayMessage(String text) {
 		messageQueue.add(0, new GameMessage(text));
 	}
+	
+	public void clearMessages() {
+		messageQueue.clear();
+	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// clean
