@@ -88,6 +88,7 @@ public class AndroidOrtho extends Ortho {
 		// No need to do that in Android
 	}
 
+	//TODO: Need to optimize seriously  ! The whole fonts could be saved before on a texture.
 	@Override
 	public void drawOneChar(int x, int y, int aa) {
 		verticesBuffer.rewind();
