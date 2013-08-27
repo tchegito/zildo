@@ -388,8 +388,12 @@ public class PersoZildo extends Perso {
 		beingWounded(p_shooter, p_damage);
 	}
 
+	/**
+	 * @param p_shooter
+	 * @param p_damage HP loss (0 means no sound)
+	 */
 	public void beingWounded(Perso p_shooter, int p_damage) {
-		// Si Zildo a quelque chose dans les mains, on doit le laisser tomber
+		// If hero is carrying something, let it fall
 		if (getEn_bras() != null) {
 			getEn_bras().az = -0.07f;
 			if (getMouvement() == MouvementZildo.FIERTEOBJET) {
@@ -397,8 +401,10 @@ public class PersoZildo extends Perso {
 			}
 			setEn_bras(null);
 		}
-		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoTouche, this);
-
+		if (p_damage > 0) {
+			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoTouche, this);
+		}
+		
 		setMouvement(MouvementZildo.TOUCHE);
 		setWounded(true);
 		pv -= p_damage;
