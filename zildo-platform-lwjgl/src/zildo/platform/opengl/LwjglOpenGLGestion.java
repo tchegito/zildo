@@ -432,6 +432,7 @@ public class LwjglOpenGLGestion extends OpenGLGestion {
 		return (((double) Sys.getTime()) / (double) ticksPerSecond);
 	}
 	
+	@Override
 	public ByteBuffer capture() {
 		GL11.glReadBuffer(GL11.GL_FRONT);
 		int width = Zildo.screenX;
