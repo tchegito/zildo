@@ -52,47 +52,31 @@ public class GameOverAction extends ActionDialog {
 	 */
 	@Override
 	public void launchAction(ClientState p_clientState) {
-		ClientEngineZildo.filterCommand.restoreFilters();
-		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
-		ClientEngineZildo.filterCommand.active(LightningFilter.class, false, null);
-		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(true, true);
-
-		
-		if (p_clientState == null) {
-			// Keep music and launch credits
-			finishGame();
-			Client client = ClientEngineZildo.getClientForMenu();
-			client.quitGame();
-            client.askStage(new CreditStage(true));
-		} else {
-			// Get player back at his entry point in the current room
-			EngineZildo.scriptManagement.userEndAction();
-			EngineZildo.soundManagement.setForceMusic(false);
-			String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
-			EngineZildo.mapManagement.loadMap(mapName, false);
-			// Just to reinitialize the tile engine optimizations
-			ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
-        	EngineZildo.persoManagement.getZildo().setPv(1);
-        	EngineZildo.mapManagement.respawn(0);
-        	ClientEngineZildo.filterCommand.fadeIn(FilterEffect.CIRCLE);
-    		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(true);
-
-			//ClientEngineZildo.soundPlay.stopMusic();
-			//client.handleMenu(new StartMenu());
-		}
-	}
-
-	private void finishGame() {
 		// Reset map / GUI
 		EngineZildo.mapManagement.deleteCurrentMap();
 		ClientEngineZildo.tileEngine.cleanUp();
 		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(false);
+		ClientEngineZildo.filterCommand.restoreFilters();
+		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
+		ClientEngineZildo.filterCommand.active(LightningFilter.class, false, null);
 		ClientEngineZildo.filterCommand.fadeIn(FilterEffect.SEMIFADE);
+		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(true, true);
 		
 		// Stop this game
 		SinglePlayer.getClientState().gameOver=true;
 		// Return on the start menu
-
-
+		Client client = ClientEngineZildo.getClientForMenu();
+		client.quitGame();
+		
+		if (p_clientState == null) {
+			// Keep music and launch credits
+            client.askStage(new CreditStage(true));
+		} else {
+			ClientEngineZildo.soundPlay.stopMusic();
+			ClientEngineZildo.filterCommand.fadeIn(FilterEffect.CIRCLE);
+			EngineZildo.restoreBackedUpGame();
+			//client.handleMenu(new StartMenu());
+		}
 	}
+
 }

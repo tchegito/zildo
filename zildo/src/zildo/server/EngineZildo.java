@@ -25,6 +25,8 @@ import java.util.Collection;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
+import zildo.client.gui.menu.SaveGameMenu;
+import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Game;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.ChainingPoint;
@@ -50,6 +52,7 @@ public class EngineZildo {
     public static ScriptManagement scriptManagement;
     
     public static Game game;
+    public static EasyBuffering backedUpGame;	// When hero dies, we restore this game
     public static int compteur_animation;
 	
     private static ClientEvent askedEvent;
@@ -271,13 +274,27 @@ public class EngineZildo {
         return retEvent;
     }
 
+    public static void setBackedUpGame(EasyBuffering p_buffer) {
+    	backedUpGame = p_buffer;
+    }
 	
+    public static void backUpGame() {
+		EasyBuffering buffer = new EasyBuffering();
+		game.serialize(buffer);
+		backedUpGame = buffer;
+    }
+    
+    public static void restoreBackedUpGame() {
+    	backedUpGame.getAll().position(0);
+    	SaveGameMenu.loadGameFromBuffer(backedUpGame, false);
+    }
+    
 	public static void askEvent(ClientEvent p_event) {
 		askedEvent=p_event;
 	}
 
-	public static void setGame(Game game) {
-		EngineZildo.game = game;
+	public static void setGame(Game p_game) {
+		EngineZildo.game = p_game;
 	}
 	
 	
