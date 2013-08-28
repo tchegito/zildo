@@ -568,10 +568,11 @@ public class MapManagement {
 
 			// Save starting location
 			startAngle = zildo.getAngle();
-			startLocation = new Point(zildo.x, zildo.y);
+			setStartLocation(new Point(zildo.x, zildo.y));
 			if (zildo.getTarget() != null) {
-				startLocation = zildo.getTarget();
+				setStartLocation(zildo.getTarget());
 			}
+			EngineZildo.backUpGame();	// Save an automatic backup game to restore if hero dies
 			
 			// Adjust map at Zildo's location
 			if (zildo != null) {

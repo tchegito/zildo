@@ -140,12 +140,17 @@ public class SaveGameMenu extends PageableMenu {
 	}
 
 	private boolean loadGame(String p_filename, boolean p_legacy) {
+		EasyBuffering file=Zildo.pdPlugin.openPrivateFile(p_filename);
+
+		return loadGameFromBuffer(file, p_legacy);
+	}
+
+	public static boolean loadGameFromBuffer(EasyBuffering file, boolean p_legacy) {
 		// Create a dummy game object, just to initialize server
 		Game game = new Game(null, false);
 		game.brandNew = false;
 		SinglePlayer singlePlay = new SinglePlayer(game);
 
-		EasyBuffering file=Zildo.pdPlugin.openPrivateFile(p_filename);
 		game = Game.deserialize(file, p_legacy);
 		if (game == null) {
 			// Problem occured while loading game
