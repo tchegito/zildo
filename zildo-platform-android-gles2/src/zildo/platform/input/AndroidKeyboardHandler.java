@@ -48,7 +48,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 		VP_DOWN_RIGHT(51, 52, 29, 28, true, KEY_DOWN, KEY_RIGHT),
 		// inventory
 		VP_INVENTORY(0, 0, 40, 31, false, KEY_X),
-		VP_BUTTON_X(286, 200, 25, 24, false, KEY_Q),
+		VP_BUTTON_X(274, 200, 25, 24, false, KEY_Q),
 		VP_BUTTON_Y(294, 170, 25, 24, false, KEY_W),
 		VP_FRAME(0, 180, 320, 240, false, KEY_DIALOG_FRAME);
 		/*
