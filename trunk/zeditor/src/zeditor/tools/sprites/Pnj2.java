@@ -148,8 +148,6 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(94, 89, 9, 11),
 			          // Sleeping fox
 			          new Zone(299, 149, 14, 14), new Zone(299, 164, 13, 14),
-			          // Zzz
-			          new Zone(313, 149, 7, 7), new Zone(313, 164, 7, 6)
 
 		};
 		

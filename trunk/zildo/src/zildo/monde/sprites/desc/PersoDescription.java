@@ -128,18 +128,22 @@ public enum PersoDescription implements SpriteDescription {
 	 * @return int
 	 */
 	public int nth(int p_nth) {
-		return sprUsed.get(p_nth).intValue();
+		int f = sprUsed.get(p_nth).intValue();
+		if (f > 127) {
+			f-=128;
+		}
+		return f;
 	}
 
 	public int getNSpr() {
-		return first() % 128;
+		return first();
 	}
 
 	public int getBank() {
 		if (this == ZILDO) {
 			return SpriteBank.BANK_ZILDO;
 		}
-		if (first() < 128) {
+		if (sprUsed.get(0) < 128) {
 			return SpriteBank.BANK_PNJ;
 		} else {
 			return SpriteBank.BANK_PNJ2;

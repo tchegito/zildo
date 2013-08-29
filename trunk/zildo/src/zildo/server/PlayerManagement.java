@@ -401,8 +401,8 @@ public class PlayerManagement {
 					until (with_dialogue<>0) or (i=MAX_PERSO-1);
 				*/
 					// Get a spot reachable in hero's direction
-					int locX = (int) heros.x + heros.getAngle().coords.x * 6;
-					int locY = (int) heros.y + heros.getAngle().coords.y * 6;
+					int locX = (int) heros.x + heros.getAngle().coords.x * 8;
+					int locY = (int) heros.y + heros.getAngle().coords.y * 8;
 					
 					Perso persoToTalk=EngineZildo.persoManagement.
 						collidePerso(locX, locY, heros, 4);

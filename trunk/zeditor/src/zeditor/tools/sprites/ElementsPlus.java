@@ -276,7 +276,10 @@ public class ElementsPlus extends SpriteBanque {
 				// Lava drop animation
 				new Zone(185, 49, 9, 9), new Zone(195, 49, 9, 9), new Zone(205, 49, 9, 9), new Zone(215, 49, 9, 9),
 				// Dust
-				new Zone(185, 59, 3, 6), new Zone(189, 59, 3, 6), new Zone(193, 59, 3, 6)
+				new Zone(185, 59, 3, 6), new Zone(189, 59, 3, 6), new Zone(193, 59, 3, 6),
+  	            // Zzz
+		        new Zone(63, 58, 7, 7), new Zone(63, 66, 7, 6)
+
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
