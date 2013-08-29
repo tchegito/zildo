@@ -56,7 +56,7 @@ public class PersoRat extends PersoNJ {
 		if (attente != 0) {
 			int varying = (attente % (4 * Constantes.speed)) / (2 * Constantes.speed);
 			if (angle.isHorizontal()) {
-				nSpr = (PersoDescription.RAT.nth(6) + varying) % 128;
+				nSpr = PersoDescription.RAT.nth(6) + varying;
 			} else {
 				nSpr += 1;
 				if (varying == 1) {

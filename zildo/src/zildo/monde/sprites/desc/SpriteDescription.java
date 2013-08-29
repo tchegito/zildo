@@ -44,8 +44,9 @@ public interface SpriteDescription {
 			case SpriteBank.BANK_FONTES:
 				return null;
 			case SpriteBank.BANK_PNJ:
-			case SpriteBank.BANK_PNJ2:
 				return PersoDescription.fromNSpr(nSpr);
+			case SpriteBank.BANK_PNJ2:
+				return PersoDescription.fromNSpr(nSpr > 127 ? nSpr : nSpr + 128);
 			case SpriteBank.BANK_GEAR:
 				return GearDescription.fromNSpr(nSpr);
 			default:

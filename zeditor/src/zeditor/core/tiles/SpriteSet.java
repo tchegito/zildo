@@ -150,7 +150,7 @@ public class SpriteSet extends ImageSet {
 					.getBank());
 			int nSpr = sprite.getNSpr();
 			if (bank.getName().equals("pnj2.spr")) {
-				nSpr = nSpr % 128;
+				//nSpr = nSpr - 128;
 			}
 			SpriteModel model = bank.get_sprite(nSpr);
 

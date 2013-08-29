@@ -297,7 +297,8 @@ public class PersoNJ extends Perso {
 				}
 			}
 			if (quel_deplacement != MouvementPerso.OBSERVE &&
-					quel_deplacement != MouvementPerso.VOLESPECTRE) {
+					quel_deplacement != MouvementPerso.VOLESPECTRE &&
+					quel_deplacement != MouvementPerso.SLEEPING) {
 				if (pathFinder.getTarget() != null && this.getX() == pathFinder.getTarget().x
 						&& this.getY() == pathFinder.getTarget().y) {
 					pathFinder.setTarget(null);
@@ -611,35 +612,9 @@ public class PersoNJ extends Perso {
 				reverse = (reverse == Reverse.HORIZONTAL) ? Reverse.NOTHING : Reverse.HORIZONTAL;
 			}
 			break;
-		case FOX:
-			add_spr = angle.value * 2;
-			if (angle == Angle.EST) {
-				reverse = Reverse.HORIZONTAL;
-			} else {
-				reverse = Reverse.NOTHING;
-				if (angle == Angle.OUEST) {
-					add_spr = 2;
-				}
-			}
-			if (pos_seqsprite != 0) {
-				int vr;
-				if (angle.isHorizontal()) {
-					vr = (pos_seqsprite % (4 * Constantes.speed)) / (2 * Constantes.speed);
-				} else {
-					vr = (pos_seqsprite % (8 * Constantes.speed)) / (2 * Constantes.speed);
-					reverse = Reverse.NOTHING;
-					if (vr >= 2) {
-						vr-=2;
-						reverse = Reverse.HORIZONTAL;
-					}
-				}
-				add_spr+=vr;
-			}
-			//if (angle.isHorizontal()) {
-				//add_spr +=
-			//}
-			break;
+		
 		case PANNEAU:
+		case PAPER_NOTE:
 			add_spr = 0;
 			break;
 		default:
@@ -673,7 +648,7 @@ public class PersoNJ extends Perso {
 			break;
 		}
 
-		this.setNSpr(d.nth(add_spr) % 128);
+		this.setNSpr(d.nth(add_spr));
 	}
 
 	/**

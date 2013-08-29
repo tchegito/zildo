@@ -40,7 +40,8 @@ public enum MouvementPerso {
 	SQUIRREL(11),
 	WAKEUP(12),
 	INVOKE(13),	// addSpr = 1
-	CAT(14);
+	CAT(14),
+	SLEEPING(15);
 	
 	public int valeur;
 	

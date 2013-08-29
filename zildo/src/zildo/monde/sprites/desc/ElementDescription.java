@@ -97,7 +97,9 @@ public enum ElementDescription implements SpriteDescription {
 	// 190
 	LAVADROP1, LAVADROP2, LAVADROP3, LAVADROP4,
 	// 194
-	DUST1, DUST2, DUST3;
+	DUST1, DUST2, DUST3,
+	// 197
+	ZZZ1, ZZZ2;
 	
 	Boolean damage;
 	
