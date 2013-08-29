@@ -24,15 +24,16 @@ import zildo.monde.util.Vector4f;
 
 public enum EngineFX {
 	NO_EFFECT,
-	GUARD_BLUE(new int[]{20, 28, 50}, new int[]{44, 36, 62}), 
-	GUARD_RED(new int[]{46, 16, 28}, new int[]{60, 30, 32}), 
-	GUARD_YELLOW(new int[]{52, 48, 16}, new int[]{60, 54, 16}), 
-	GUARD_BLACK(new int[]{22, 22, 22}, new int[]{30, 30, 34}), 
-	GUARD_GREEN(new int[]{10, 30, 14}, new int[]{30, 46, 8}), 
-	GUARD_PINK(new int[]{58, 24, 44}, new int[]{62, 32, 44}), 
+	GUARD_BLUE(new int[]{80, 112, 200}, new int[]{176, 144, 248}), 
+	GUARD_RED(new int[]{184, 64, 112}, new int[]{240, 120, 128}), 
+	GUARD_YELLOW(new int[]{208, 192, 64}, new int[]{240, 216, 64}), 
+	GUARD_BLACK(new int[]{88, 88, 88}, new int[]{120, 120, 136}),
+	GUARD_GREEN(new int[]{40, 120, 56}, new int[]{120, 184, 32}), 
+	GUARD_PINK(new int[]{232, 96, 176}, new int[]{248, 128, 176}),
+	ROBBER_PURPLE(new int[]{81, 105, 170}, new int[]{146, 170, 235}),
 	PERSO_HURT, 
-	FONT_NORMAL(new int[]{0, 0, 28}, new int[]{62, 62, 62}), 
-	FONT_HIGHLIGHT(new int[]{8, 16, 28}, new int[]{60, 54, 16}), 
+	FONT_NORMAL(new int[]{0, 0, 112}, new int[]{248, 248, 248}),
+	FONT_HIGHLIGHT(new int[]{32, 64, 112}, new int[]{240, 216, 64}), 
 	SHINY, QUAD,
 	FOCUSED;	// FOCUSED is used when we wants to highlight some entity (inventory, or buying something)
 	
@@ -52,7 +53,7 @@ public enum EngineFX {
 		brightColor = null;
 	}
 	private EngineFX(int[] dark, int[] bright) {
-		darkColor = GFXBasics.createColor64(dark[0], dark[1], dark[2]);
-		brightColor = GFXBasics.createColor64(bright[0], bright[1], bright[2]);
+		darkColor = GFXBasics.createColor256(dark[0], dark[1], dark[2]);
+		brightColor = GFXBasics.createColor256(bright[0], bright[1], bright[2]);
 	}
 }

@@ -381,7 +381,7 @@ public class GFXBasics {
 	}
 	
 
-    public static Vector4f createColor64(float r, float g, float b) {
-        return new Vector4f(r / 63.0f, g / 63.0f, b / 63.0f, 1.0f);
+    public static Vector4f createColor256(float r, float g, float b) {
+        return new Vector4f(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
     }
 }
