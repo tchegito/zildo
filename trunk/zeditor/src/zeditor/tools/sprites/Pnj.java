@@ -121,8 +121,8 @@ public class Pnj extends SpriteBanque {
 				new Zone(95, 0, 16, 27),
 				new Zone(111, 1, 16, 27),
 				// Vieille sans balai - 67
-				new Zone(121, 134, 16, 24),
-				new Zone(137, 135, 16, 23),
+				new Zone(121, 133, 16, 25),
+				new Zone(137, 134, 16, 24),
 				// Prêtre - 69
 				new Zone(121, 159, 16, 24),
 				new Zone(137, 159, 14, 24),
