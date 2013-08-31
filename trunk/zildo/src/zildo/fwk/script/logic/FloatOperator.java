@@ -1,0 +1,79 @@
+/**
+ * The Land of Alembrum
+ * Copyright (C) 2006-2013 Evariste Boussaton
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+package zildo.fwk.script.logic;
+
+import zildo.fwk.script.logic.IEvaluationContext;
+
+/**
+ * @author Tchegito
+ *
+ */
+public class FloatOperator implements FloatASTNode{
+
+	// All operators have 2 operands
+	enum Operator { 
+		PLUS('+'), MINUS('-'), MULTIPLY('*'), DIVIDE('/');
+		
+		char symbol;
+		
+		private Operator(char s) {
+			symbol = s;
+		}
+		
+		boolean isPriority() {
+			return this == MULTIPLY || this == DIVIDE;
+		}
+		
+		public char getChar() {
+			return symbol;
+		}
+	}
+	FloatASTNode operand1;
+	FloatASTNode operand2;
+	Operator op;
+	
+	public FloatOperator(Operator p_op, FloatASTNode p_n1, FloatASTNode p_n2) {
+		operand1 = p_n1;
+		operand2 = p_n2;
+		op = p_op;
+	}
+	
+	public float evaluate(IEvaluationContext c) {
+		float f1 = operand1.evaluate(c);
+		float f2 = operand2.evaluate(c);
+
+		switch (op) {
+			case PLUS:
+				return f1 + f2;
+			case MINUS:
+				return f1 - f2;
+			case MULTIPLY:
+				return f1 * f2;
+			case DIVIDE:
+			default:
+				return f1 / f2;
+		}
+	}
+
+	@Override
+	public String toString() {
+		return op+"("+operand1.toString()+", "+operand2.toString()+")";
+	}
+}
