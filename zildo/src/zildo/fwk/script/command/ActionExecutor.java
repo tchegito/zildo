@@ -477,6 +477,9 @@ public class ActionExecutor {
                 			perso.setEffect(p_action.fx);
                 			perso.initPersoFX();
                 		}
+                		if (p_action.val != -1) {
+                			perso.setAttente(p_action.val);
+                		}
                 	}
                 	achieved = true;
                 	break;

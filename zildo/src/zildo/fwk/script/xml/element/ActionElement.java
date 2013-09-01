@@ -105,6 +105,7 @@ public class ActionElement extends AnyElement {
 		case perso:
 			text = readAttribute("type");
 			info = readAttribute("info");
+			val = readInt("attente", -1);
 			break;
 		case speak:
 			text = readAttribute("text");
