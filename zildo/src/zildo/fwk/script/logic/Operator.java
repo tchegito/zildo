@@ -19,43 +19,27 @@
 
 package zildo.fwk.script.logic;
 
-import zildo.fwk.script.logic.IEvaluationContext;
-
-/**
- * @author Tchegito
- *
- */
-public class FloatOperator implements FloatASTNode{
-
-	FloatASTNode operand1;
-	FloatASTNode operand2;
-	Operator op;
+enum Operator { 
+	PLUS('+'), MINUS('-'), MULTIPLY('*'), DIVIDE('/');
 	
-	public FloatOperator(Operator p_op, FloatASTNode p_n1, FloatASTNode p_n2) {
-		operand1 = p_n1;
-		operand2 = p_n2;
-		op = p_op;
+	char symbol;
+	
+	private Operator(char s) {
+		symbol = s;
 	}
 	
-	public float evaluate(IEvaluationContext c) {
-		float f1 = operand1.evaluate(c);
-		float f2 = operand2.evaluate(c);
-
-		switch (op) {
-			case PLUS:
-				return f1 + f2;
-			case MINUS:
-				return f1 - f2;
-			case MULTIPLY:
-				return f1 * f2;
-			case DIVIDE:
-			default:
-				return f1 / f2;
-		}
+	boolean isPriority() {
+		return this == MULTIPLY || this == DIVIDE || this == MINUS;
 	}
-
-	@Override
-	public String toString() {
-		return op+"("+operand1.toString()+", "+operand2.toString()+")";
+	
+	public char getChar() {
+		return symbol;
+	}
+	
+	/**
+	 * Return TRUE if current operator has priority on the given one.
+	 */
+	public boolean hasPriority(Operator o) {
+		return this.ordinal() > o.ordinal();
 	}
 }

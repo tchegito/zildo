@@ -1,6 +1,5 @@
 package zildo.fwk.script.logic;
 
-import zildo.fwk.script.logic.FloatOperator.Operator;
 
 
 /**
@@ -19,7 +18,7 @@ public class FloatExpression {
 	
 	public FloatExpression(String p_expression) {
 		ExprScanner scan = new ExprScanner(p_expression);
-		entireExp = parse(scan, false, false);
+		entireExp = parse(scan, null, false, false);
 	}
 
 	@Override
@@ -27,7 +26,7 @@ public class FloatExpression {
 		return entireExp.toString();
 	}
 	
-	private FloatASTNode parse(ExprScanner scan, boolean priority, boolean parenthese) {
+	private FloatASTNode parse(ExprScanner scan, Operator previous, boolean parenthese, boolean negative) {
 		
 		FloatASTNode leftNode = null;
 		while (scan.hasNext()) {
@@ -38,16 +37,27 @@ public class FloatExpression {
 			Operator op = whichOperator(val);
 			if (op != null) {
 				if (leftNode == null) {
-					throw new RuntimeException("MISSING_LEFT_OP "+ op.toString()+" at "+ startPos);
+					if (op == Operator.MINUS) {
+						negative = !negative;
+						continue;
+					} else {
+						throw new RuntimeException("MISSING_LEFT_OP "+ op.toString()+" at "+ startPos);
+					}
+				} else {
+					// Check operator precedence
+					if (previous != null && !op.hasPriority(previous)) {
+						scan.goBack();
+						return leftNode;
+					}
 				}
-				FloatASTNode rightNode = parse(scan, op.isPriority(), false);
+				FloatASTNode rightNode = parse(scan, op, false, negative);
 				if (rightNode == null) {
 					throw new RuntimeException("MISSING_RIGHT_OP "+op.toString()+" at "+ scan.position());
 				}
 				leftNode = new FloatOperator(op, leftNode, rightNode);
 			// Look for parentheses
 			} else if ("(".equals(val)) {
-				leftNode = parse(scan, false, true);
+				leftNode = parse(scan, null, true, negative);
 			} else if (")".equals(val)) {
 				if (!parenthese) {
 					scan.goBack();
@@ -58,10 +68,11 @@ public class FloatExpression {
 				if (leftNode != null) {
 					throw new RuntimeException("MISSING_OPERATOR at "+startPos);
 				}
+				if (negative) {
+					val = "-"+val;
+					negative = !negative;
+				}
 				leftNode = getFloatValue(val);
-			}
-			if (priority) { // || (op != null && op.isPriority())) {
-				return leftNode;
 			}
 		}
 		return leftNode;
