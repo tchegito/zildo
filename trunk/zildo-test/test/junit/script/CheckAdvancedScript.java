@@ -29,7 +29,7 @@ import zildo.fwk.script.logic.SpriteEntityContext;
 import zildo.monde.sprites.SpriteEntity;
 
 /**
- * Check the evaluation with reference.<br/>
+ * Check the float expression evaluator with variables handling.<br/>
  * 
  * For example : <li>
  * <ul>x+8</ul>
@@ -144,7 +144,7 @@ public class CheckAdvancedScript {
 	}
 	
 	@Test
-	public void temp() {
+	public void trickyExpressions() {
 		FloatExpression expr;
 		
 		expr = new FloatExpression("1+(2*3)+4");
