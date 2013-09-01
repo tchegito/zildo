@@ -31,13 +31,15 @@ public class AdventureElement extends AnyElement {
 	List<SceneElement> scenes;
 	List<QuestElement> quests;
 	List<MapscriptElement> mapScripts;
+	List<PersoActionElement> persoActions;
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
 		scenes = (List<SceneElement>) ScriptReader.parseNodes(p_elem, "scene");
 		quests = (List<QuestElement>) ScriptReader.parseNodes(p_elem, "quest");
-		mapScripts=(List<MapscriptElement>) ScriptReader.parseNodes(p_elem, "mapScript");
+		mapScripts = (List<MapscriptElement>) ScriptReader.parseNodes(p_elem, "mapScript");
+		persoActions = (List<PersoActionElement>) ScriptReader.parseNodes(p_elem, "persoAction"); 
 	}
 
 	/**

@@ -187,4 +187,25 @@
 	    <remove what="moon3"/>
 	    <fadeIn type="1"/>
 	</scene>
+	
+	<persoAction name="flut">
+		<start>
+		    <angle who="self" value="2"/>
+			<perso who="self" attente="200"/>
+			<script who="self" text="PLAYING_FLUT"/>
+		</start>
+		<time intervalle="80">
+			<spawn  what="dice10() > 5 ? NOTE2 : NOTE"
+					foreground="true"
+					x="x-6" y="y" z="4" 
+					vx="0.2+0.1*random" vz="0.1" 
+					ax="-0.01" az="0.011"
+					fx="0.04 * random"
+					alphaA="-0.06"/>
+		</time>
+		<end attente="2">
+			<script who="self" text="VIDE"/> 
+		</end>
+	</persoAction>
+	
 </adventure>

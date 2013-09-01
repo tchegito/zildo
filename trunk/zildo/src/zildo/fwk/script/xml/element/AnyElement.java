@@ -30,7 +30,8 @@ public abstract class AnyElement {
 		actions(ActionsElement.class),
 		quest(QuestElement.class),
 		mapscript(MapscriptElement.class),
-		condition(ConditionElement.class);
+		condition(ConditionElement.class),
+		persoaction(PersoActionElement.class);
 		
 		Class<? extends AnyElement> clazz;
 		
