@@ -69,9 +69,14 @@ public class AreaChecker {
 		final List<SpriteEntity> outOfBoundsEntities = area
 				.getOutOfBoundEntities();
 		if (outOfBoundsEntities.size() > 0) {
+			String str = "";
+			for (SpriteEntity entity : outOfBoundsEntities) {
+				str+=entity.getDesc()+", ";
+			}
+			str = str.substring(0, str.length() - 2);	// Remove the last ", "
 			addList(new ErrorDescription(
 					CheckError.SPRITES_OUT_OF_BOUNDS,
-					"Some entities are out of bounds. Do you want to remove them ?",
+					"Some entities are out of bounds ("+str+"). Do you want to remove them ?",
 					new Action() {
 
 						@Override
