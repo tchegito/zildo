@@ -88,7 +88,7 @@
 			<music name="Nuit"/>
 			<!-- Post guard -->
     	    <spawn type="FOX" who="fox1" fx="rouge" pos="870,878"/>
-    	    <spawn type="FOX" who="fox2" fx="bleu" pos="1039,922"/>			
+    	    <spawn type="FOX" who="fox2" fx="violet" pos="1039,922"/>			
 		</condition>
 		<condition name="voleursg3" exp="trig_echange">
 		    <actions>
