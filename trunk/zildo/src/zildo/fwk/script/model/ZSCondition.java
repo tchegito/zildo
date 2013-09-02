@@ -33,17 +33,17 @@ import java.util.List;
 public class ZSCondition {
 
 	final List<ZSExpression> expressions;
-	final int result; // Awaited result when all expressions are TRUE
+	final String result; // Awaited result when all expressions are TRUE
 
-	static final int FALSE = -999; // Value which means "expression is false"
-	public static final int TRUE = 1;
+	static final String FALSE = "-999"; // Value which means "expression is false"
+	public static final String TRUE = "1";
 	
 	public ZSCondition(int p_result) {
-		result = p_result;
+		result = "" + p_result;
 		expressions = new ArrayList<ZSExpression>();
 	}
 
-	public ZSCondition(int p_result, List<ZSExpression> p_expressions) {
+	public ZSCondition(String p_result, List<ZSExpression> p_expressions) {
 		this(p_result);
 		expressions.addAll(p_expressions);
 	}
@@ -60,7 +60,7 @@ public class ZSCondition {
 			throw new RuntimeException(
 					"Condition should be <expression>:<value>");
 		}
-		result = Integer.valueOf(strExpr[1]);
+		result = strExpr[1];
 		expressions = ZSExpression.parse(strExpr[0]);
 	}
 
@@ -78,7 +78,7 @@ public class ZSCondition {
 		}
 	}
 
-	public int evaluate() {
+	public String evaluate() {
 		for (ZSExpression expr : expressions) {
 			if (!expr.isTrue()) {
 				return FALSE;
