@@ -96,9 +96,16 @@ public class ActionExecutor {
         	PersoZildo zildo;
             Perso perso = EngineZildo.persoManagement.getNamedPerso(p_action.who);
             if (perso != null) {
+            	// Set context for runtime evaluation
+            	if (p_action.location != null) {
+            		p_action.location.setContext(perso);
+            	}
                 scriptExec.involved.add(perso); // Note that this perso is concerned
             }
-            Point location = p_action.location;
+            Point location = null;
+            if (p_action.location != null) {
+            	location = p_action.location.getPoint();
+            }
             if (p_action.delta && location != null) {
             	Point currentPos = null;
             	if (p_action.kind == ActionKind.spawn) {	// Possiblity to spawn relative to zildo
@@ -478,7 +485,7 @@ public class ActionExecutor {
                 			perso.initPersoFX();
                 		}
                 		if (p_action.val != -1) {
-                			perso.setAttente(p_action.val);
+                			perso.setAttente(p_action.attente);
                 		}
                 	}
                 	achieved = true;

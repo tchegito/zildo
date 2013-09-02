@@ -105,6 +105,18 @@ public abstract class AnyElement {
     }
     
     /**
+     * Convenience method, when we want to read a different XML element.
+     * @return int
+     */
+    protected int readInt(Element p_xmlElement, String p_attrName, int... defaultValue) {
+    	Element save = xmlElement;
+    	xmlElement = p_xmlElement;
+    	int result = readInt(p_attrName, defaultValue);
+    	this.xmlElement = save;
+    	return result;
+    }
+    
+    /**
      * Merge two elements of same kind. Not necessarily overrided.
      * @param elem
      */

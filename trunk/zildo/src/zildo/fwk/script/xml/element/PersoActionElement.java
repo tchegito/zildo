@@ -39,6 +39,9 @@ import zildo.fwk.script.xml.ScriptReader;
 public class PersoActionElement extends AnyElement {
 
 	public String name;
+	public int intervalle;
+	public int endAttente;
+	
 	List<ActionElement> start;
 	List<ActionElement> time;
 	List<ActionElement> end;
@@ -48,7 +51,7 @@ public class PersoActionElement extends AnyElement {
 	public void parse(Element p_elem) {
 		xmlElement = p_elem;
 		
-		name = p_elem.getAttribute("name");
+		name = readAttribute("name");
 		
 		Element startContainer = ScriptReader.getChildNamed(p_elem, "start");
 		Element timeContainer = ScriptReader.getChildNamed(p_elem, "time");
@@ -58,7 +61,8 @@ public class PersoActionElement extends AnyElement {
 		time = (List<ActionElement>) ScriptReader.parseNodes(timeContainer);
 		end = (List<ActionElement>) ScriptReader.parseNodes(endContainer);
 		
-		startContainer.getAttribute("");
+		intervalle = readInt(timeContainer, "intervalle");
+		endAttente = readInt(endContainer, "attente");
 	}
 
 }

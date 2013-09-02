@@ -17,36 +17,42 @@
  *
  */
 
-package zildo.fwk.script.logic;
+package zildo.fwk.script.model.point;
 
-import zildo.fwk.script.model.point.IPoint;
-import zildo.fwk.script.model.point.PointEvaluator;
-import zildo.fwk.script.model.point.PointFixed;
+import zildo.fwk.script.logic.FloatExpression;
+import zildo.fwk.script.logic.IEvaluationContext;
+import zildo.fwk.script.logic.SpriteEntityContext;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.util.Point;
 
 /**
  * @author Tchegito
  *
  */
-public class SpriteEntityContext implements IEvaluationContext {
+public class PointEvaluator extends IPoint {
 
-	SpriteEntity entity;
+	FloatExpression exprX, exprY;
+	IEvaluationContext context;
 	
-	public SpriteEntityContext(SpriteEntity p_entity) {
-		entity = p_entity;
+	public PointEvaluator(String str, IEvaluationContext ctx) {
+		context = ctx;
+		String[] strCoords = str.split(",");
+		exprX = new FloatExpression(strCoords[0]);
+		exprY = new FloatExpression(strCoords[1]);
 	}
+	
 	@Override
-	public float getValue(String key) {
-		if (key.length() == 1) {	// Filter length to avoid too much comparisons
-			if ("x".equals(key)) {
-				return entity.x;
-			} else if ("y".equals(key)) {
-				return entity.y;
-			} else if ("z".equals(key)) {
-				return entity.z;
-			}
+	public void setContext(SpriteEntity entity) {
+		if (context == null) {
+			context = new SpriteEntityContext(entity);
 		}
-		// Don't crash ! But result could be weird
-		return 0;
 	}
+	
+	@Override
+	public Point getPoint() {
+		float x = exprX.evaluate(context);
+		float y = exprY.evaluate(context);
+		return new Point(x, y);
+	}
+
 }

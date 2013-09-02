@@ -22,7 +22,7 @@ package zildo.fwk.script.xml.element;
 
 import org.w3c.dom.Element;
 
-import zildo.monde.util.Point;
+import zildo.fwk.script.model.point.IPoint;
 
 public class ActionElement extends AnyElement {
 
@@ -54,11 +54,12 @@ public class ActionElement extends AnyElement {
 										// (for 'moveTo')
 	public Boolean foreground = false;	// Is sprite/perso on foreground?
 	public ActionKind kind;
-	public Point location;
+	public IPoint location;
 	public String text;
 	public int val;
 	public int reverse;
 	public int rotation;
+	public int attente;
 	public int z;	// Z coordinate for location
 	public String info;	// PersoInfo
 	public float speed;
@@ -98,14 +99,14 @@ public class ActionElement extends AnyElement {
 			rotation = readInt("rotation");
 		case animation:
 		case impact:
-			location = Point.fromString(strPos);
+			location = IPoint.fromString(strPos);
 			if (!"".equals(strAngle)) {
 				val = Integer.valueOf(strAngle);
 			}
 		case perso:
 			text = readAttribute("type");
 			info = readAttribute("info");
-			val = readInt("attente", -1);
+			attente = readInt("attente", -1);
 			break;
 		case speak:
 			text = readAttribute("text");
@@ -122,7 +123,7 @@ public class ActionElement extends AnyElement {
 		case pos:
 			// Position
 			if (!strPos.isEmpty()) {
-				location = Point.fromString(strPos);
+				location = IPoint.fromString(strPos);
 			}
 			delta = isTrue("delta");
 			z = readInt("z", -1);
@@ -170,7 +171,7 @@ public class ActionElement extends AnyElement {
 			activate = isTrue("value");
 			break;
 		case tile:
-			location = Point.fromString(strPos);
+			location = IPoint.fromString(strPos);
 			back = readInt("back", -1);
 			back2 = readInt("back2", -1);
 			fore = readInt("fore", -1);

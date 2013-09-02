@@ -17,36 +17,25 @@
  *
  */
 
-package zildo.fwk.script.logic;
+package zildo.fwk.script.model.point;
 
-import zildo.fwk.script.model.point.IPoint;
-import zildo.fwk.script.model.point.PointEvaluator;
-import zildo.fwk.script.model.point.PointFixed;
-import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.util.Point;
 
 /**
  * @author Tchegito
  *
  */
-public class SpriteEntityContext implements IEvaluationContext {
+public class PointFixed extends IPoint {
 
-	SpriteEntity entity;
+	final Point p;
 	
-	public SpriteEntityContext(SpriteEntity p_entity) {
-		entity = p_entity;
+	public PointFixed(String str) {
+		p = Point.fromString(str);
 	}
+	
 	@Override
-	public float getValue(String key) {
-		if (key.length() == 1) {	// Filter length to avoid too much comparisons
-			if ("x".equals(key)) {
-				return entity.x;
-			} else if ("y".equals(key)) {
-				return entity.y;
-			} else if ("z".equals(key)) {
-				return entity.z;
-			}
-		}
-		// Don't crash ! But result could be weird
-		return 0;
+	public Point getPoint() {
+		return p;
 	}
+
 }
