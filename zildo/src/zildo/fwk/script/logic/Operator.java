@@ -20,7 +20,7 @@
 package zildo.fwk.script.logic;
 
 enum Operator { 
-	PLUS('+'), MINUS('-'), MULTIPLY('*'), DIVIDE('/'), EQUALS('=');
+	PLUS('+'), MINUS('-'), MULTIPLY('*'), DIVIDE('/'), EQUALS('='), LESSER('<'), GREATER('>');
 	
 	char symbol;
 	

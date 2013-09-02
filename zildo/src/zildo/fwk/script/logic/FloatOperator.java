@@ -51,8 +51,13 @@ public class FloatOperator implements FloatASTNode{
 			case DIVIDE:
 			default:
 				return f1 / f2;
+			// Comparison
 			case EQUALS:
 				return f1 == f2 ? 1 : 0;
+			case LESSER:
+				return f1 < f2 ? 1 : 0;
+			case GREATER:
+				return f1 > f2 ?1 : 0;
 		}
 	}
 

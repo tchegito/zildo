@@ -124,7 +124,7 @@ public class DialogManagement {
 			if (persoToTalk.getDialogSwitch() != null) {
 				ZSSwitch swi = ZSSwitch.parseForDialog(persoToTalk
 						.getDialogSwitch());
-				int posSentence = swi.evaluate();
+				int posSentence = swi.evaluateInt();
 				if (posSentence > compteDial) {
 					compteDial = posSentence;
 				}

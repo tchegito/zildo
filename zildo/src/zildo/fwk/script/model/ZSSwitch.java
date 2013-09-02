@@ -42,31 +42,31 @@ import java.util.List;
 public class ZSSwitch {
 
 	List<ZSCondition> conditions;
-	final int defaultValue;
+	final String defaultValue;
 	String toString = null;
 
 	public ZSSwitch(int p_defaultValue) {
-		if (p_defaultValue == ZSCondition.FALSE) {
+		if (""+p_defaultValue == ZSCondition.FALSE) {
 			throw new RuntimeException("Unable to set the reserved value "
 					+ ZSCondition.FALSE);
 		}
-		defaultValue = p_defaultValue;
+		defaultValue = "" + p_defaultValue;
 		conditions = new ArrayList<ZSCondition>();
 	}
 
-	public ZSSwitch(List<ZSCondition> p_conditions, int p_defaultValue) {
+	public ZSSwitch(List<ZSCondition> p_conditions, String p_defaultValue) {
 		this(p_defaultValue);
 		conditions.addAll(p_conditions);
 	}
 
 	private ZSSwitch(String p_parseableString) {
 		String[] strConds = p_parseableString.replaceAll("-", "&").split(",");
-		int def = 0;
+		String def = "0";
 		boolean defaultSet = false;
 		conditions = new ArrayList<ZSCondition>();
 		for (String s : strConds) {
 			if (s.indexOf(":") == -1) {
-				def = Integer.valueOf(s);
+				def = s;
 				defaultSet = true;
 			} else {
 				conditions.add(new ZSCondition(s));
@@ -121,8 +121,8 @@ public class ZSSwitch {
 	 * 
 	 * @return int
 	 */
-	public int evaluate() {
-		int result;
+	public String evaluate() {
+		String result;
 		for (ZSCondition cond : conditions) {
 			result = cond.evaluate();
 			if (result != ZSCondition.FALSE) {
@@ -132,6 +132,11 @@ public class ZSSwitch {
 		return defaultValue;
 	}
 
+	public int evaluateInt() {
+		String str = evaluate();
+		return Integer.valueOf(str);
+	}
+	
 	@Override
 	public String toString() {
 		// Memorize the toString value

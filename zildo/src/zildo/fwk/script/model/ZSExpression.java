@@ -23,6 +23,7 @@ package zildo.fwk.script.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.fwk.script.logic.FloatExpression;
 import zildo.server.EngineZildo;
 
 /**
@@ -36,6 +37,8 @@ public class ZSExpression {
 	String questName;
 	boolean done;	// True if predicate is prefixed by a '!'
 
+	FloatExpression floatExpr = null;
+	
 	public ZSExpression(String p_questName) {
 		questName = p_questName;
 		done = true;
@@ -44,6 +47,10 @@ public class ZSExpression {
 	public ZSExpression(String p_questName, boolean p_done) {
 		this(p_questName);
 		done = p_done;
+		
+		if (p_questName.indexOf('<') != -1 || p_questName.indexOf('>') != -1) {
+			floatExpr = new FloatExpression(p_questName);
+		}
 	}
 
 	/**
@@ -64,6 +71,9 @@ public class ZSExpression {
 	}
 
 	public boolean isTrue() {
+		if (floatExpr != null) {
+			return floatExpr.evaluate(null) == 1;
+		}
 		if (questName.startsWith("money")) {
 			int price=Integer.valueOf(questName.substring("money".length()));
 			int zildoMoney = EngineZildo.persoManagement.getZildo().getMoney();
