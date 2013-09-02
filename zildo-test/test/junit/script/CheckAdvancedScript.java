@@ -27,6 +27,8 @@ import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.logic.IEvaluationContext;
 import zildo.fwk.script.logic.SpriteEntityContext;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoNJ;
 
 /**
  * Check the float expression evaluator with variables handling.<br/>
@@ -164,10 +166,8 @@ public class CheckAdvancedScript {
 		
 		expr = new FloatExpression("2*(x+y)-40/2");
 		Assert.assertEquals("MINUS(MULTIPLY(2.0, PLUS(x, y)), DIVIDE(40.0, 2.0))", expr.toString());
-		
-		
-
 	}
+
 	@Test
 	public void builtInFunction() {
 		SpriteEntity entity = new SpriteEntity(160, 100, false);
@@ -182,5 +182,23 @@ public class CheckAdvancedScript {
 		expr = new FloatExpression("dice10 + 3");
 		ret = expr.evaluate(context);
 		Assert.assertTrue(ret >= 3 && ret <= 13);
+	}
+	
+	@Test
+	public void equals() {
+		Perso perso = new PersoNJ();
+		perso.setAttente(100);
+		IEvaluationContext context = new SpriteEntityContext(perso);
+		FloatExpression expr;
+		float ret;
+		
+		expr = new FloatExpression("attente=2");
+		ret = expr.evaluate(context);
+		Assert.assertTrue(ret == 0);
+		
+		perso.setAttente(2);
+		ret = expr.evaluate(context);
+		Assert.assertTrue(ret == 1);
+		
 	}
 }

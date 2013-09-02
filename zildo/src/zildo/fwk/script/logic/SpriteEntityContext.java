@@ -19,10 +19,8 @@
 
 package zildo.fwk.script.logic;
 
-import zildo.fwk.script.model.point.IPoint;
-import zildo.fwk.script.model.point.PointEvaluator;
-import zildo.fwk.script.model.point.PointFixed;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.persos.Perso;
 
 /**
  * @author Tchegito
@@ -31,9 +29,13 @@ import zildo.monde.sprites.SpriteEntity;
 public class SpriteEntityContext implements IEvaluationContext {
 
 	SpriteEntity entity;
+	Perso perso;
 	
 	public SpriteEntityContext(SpriteEntity p_entity) {
 		entity = p_entity;
+		if (Perso.class.isAssignableFrom(entity.getClass())){
+			perso = (Perso) entity;
+		}
 	}
 	@Override
 	public float getValue(String key) {
@@ -45,8 +47,16 @@ public class SpriteEntityContext implements IEvaluationContext {
 			} else if ("z".equals(key)) {
 				return entity.z;
 			}
+		} else {
+			if ("attente".equals(key)) {
+				return perso.getAttente();
+			}
 		}
 		// Don't crash ! But result could be weird
 		return 0;
+	}
+	
+	public SpriteEntity getActor() {
+		return perso;
 	}
 }

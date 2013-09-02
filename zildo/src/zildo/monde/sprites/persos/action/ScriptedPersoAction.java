@@ -17,34 +17,29 @@
  *
  */
 
-package zildo.fwk.script.logic;
+package zildo.monde.sprites.persos.action;
 
-enum Operator { 
-	PLUS('+'), MINUS('-'), MULTIPLY('*'), DIVIDE('/'), EQUALS('=');
+import zildo.monde.sprites.persos.Perso;
+import zildo.server.EngineZildo;
+
+/**
+ * @author Tchegito
+ *
+ */
+public class ScriptedPersoAction implements PersoAction {
+
+	Perso perso;
+	String actionName;
 	
-	char symbol;
-	
-	private Operator(char s) {
-		symbol = s;
+	public ScriptedPersoAction(Perso p_perso, String p_actionName) {
+		perso = p_perso;
+		actionName = p_actionName;
+		EngineZildo.scriptManagement.runPersoAction(perso, actionName);
 	}
 	
-	public char getChar() {
-		return symbol;
-	}
-	
-	/**
-	 * Return TRUE if current operator has priority on the given one.
-	 */
-	public boolean hasPriority(Operator o) {
-		return this.ordinal() > o.ordinal();
-	}
-	
-	public static boolean isOneOfThem(char c) {
-		for (Operator o : values()) {
-			if (o.symbol == c) {
-				return true;
-			}
-		}
+	@Override
+	public boolean launchAction() {
 		return false;
 	}
+
 }

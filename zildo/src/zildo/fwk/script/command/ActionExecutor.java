@@ -33,8 +33,10 @@ import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
+import zildo.fwk.script.logic.IEvaluationContext;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.TimerElement;
 import zildo.fwk.ui.UIText;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -76,10 +78,13 @@ public class ActionExecutor {
     ScriptExecutor scriptExec;
     int count;
     boolean locked;
-    
-    public ActionExecutor(ScriptExecutor p_scriptExec, boolean p_locked) {
+
+	final IEvaluationContext context;
+	
+    public ActionExecutor(ScriptExecutor p_scriptExec, boolean p_locked, IEvaluationContext p_context) {
         scriptExec = p_scriptExec;
         locked = p_locked;
+        context = p_context;
     }
 
     /**
@@ -94,12 +99,18 @@ public class ActionExecutor {
             achieved = p_action.done;
         } else {
         	PersoZildo zildo;
-            Perso perso = EngineZildo.persoManagement.getNamedPerso(p_action.who);
+        	Perso perso;
+        	if ("self".equals(p_action.who)) {
+        		// Reserved word : perso himself, in case of a contextual script
+        		perso = (Perso) context.getActor();
+        	} else {
+        		perso = EngineZildo.persoManagement.getNamedPerso(p_action.who);
+        	}
+        	// Set context for runtime evaluation
+        	if (p_action.location != null) {
+        		p_action.location.setContext(context);
+        	}
             if (perso != null) {
-            	// Set context for runtime evaluation
-            	if (p_action.location != null) {
-            		p_action.location.setContext(perso);
-            	}
                 scriptExec.involved.add(perso); // Note that this perso is concerned
             }
             Point location = null;
@@ -490,6 +501,9 @@ public class ActionExecutor {
                 	}
                 	achieved = true;
                 	break;
+                case timer:
+                	count = 0;
+                	break;
             }
 
             p_action.done = achieved;
@@ -541,6 +555,18 @@ public class ActionExecutor {
             	break;
             case exec:
             	achieved=true;
+            	break;
+            case timer:
+            	TimerElement timer = (TimerElement) p_action;
+            	if (timer.endCondition.evaluate(context) == 1) {
+            		achieved = true;
+                	EngineZildo.scriptManagement.execute(timer.end, true, null, false, context);
+            	} else if (count == timer.each) {
+            		count = 0;
+                	EngineZildo.scriptManagement.execute(timer.actions, true, null, false, context);
+            	} else {
+            		count++;
+            	}
             	break;
         }
         p_action.waiting = !achieved;

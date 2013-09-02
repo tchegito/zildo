@@ -23,35 +23,44 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.ScriptReader;
 
 /**
- * Handle an action linked to a given character (Perso).<br/>
+ * Particular action : timer.<br/>
  * 
- * It consists of 3 parts, each one containing a list of {@link ActionElement} :<ol>
- * <li><b>&lt;start&gt;</b> indicating the whole action duration</li>
- * <li><b>&lt;time&gt;</b> will trigger the action list at given time rate</li>
- * <li><b>&lt;end&gt;</b> launch actions when duration is over</li>
- * </ol>
+ * Consists of a set of actions to run every 'each' frame, a stop condition, and another set of actions
+ * to execute when end condition is reached.
+ * 
  * @author Tchegito
  *
  */
-public class PersoActionElement extends AnyElement {
+public class TimerElement extends ActionElement {
 
-	public String id;
-	public int intervalle;
-	public int endAttente;
-	
+	public int each;
+	public FloatExpression endCondition;
+
 	public List<ActionElement> actions;
+	public List<ActionElement> end;
+
+	public TimerElement() {
+    	super(null);
+    	kind = ActionKind.timer;
+    }
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
 		xmlElement = p_elem;
 		
-		id = readAttribute("id");
-		
-		actions = (List<ActionElement>) ScriptReader.parseNodes(xmlElement);
-	}
+			//TimerElement(int each, List<ActionElement> actions, String endCondition, List<ActionElement> end) {
+		Element actionsContainer = ScriptReader.getChildNamed(p_elem, "action");
+		Element endContainer = ScriptReader.getChildNamed(p_elem, "end");
 
+		actions = (List<ActionElement>) ScriptReader.parseNodes(actionsContainer);
+		end = (List<ActionElement>) ScriptReader.parseNodes(endContainer);
+		
+		each = readInt("each");
+		endCondition = new FloatExpression(endContainer.getAttribute("when"));
+	}
 }

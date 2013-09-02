@@ -68,6 +68,24 @@ public class AdventureElement extends AnyElement {
 	    return mapScripts;
 	}
 	
+	public List<PersoActionElement> getPersoActions() {
+	    return persoActions;
+	}
+	
+	/**
+	 * Get the named perso action, if it exists.
+	 * @param p_name
+	 * @return PersoActionElement
+	 */
+	public PersoActionElement getPersoActionNamed(String p_name) {
+		for (PersoActionElement pAction : persoActions) {
+			if (pAction.id.equalsIgnoreCase(p_name)) {
+				return pAction;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * Manually add a quest to the adventure. (only for automatic behaviors like chest and doors)
 	 * @param p_quest

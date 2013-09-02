@@ -36,7 +36,8 @@ public class ZSCondition {
 	final int result; // Awaited result when all expressions are TRUE
 
 	static final int FALSE = -999; // Value which means "expression is false"
-
+	public static final int TRUE = 1;
+	
 	public ZSCondition(int p_result) {
 		result = p_result;
 		expressions = new ArrayList<ZSExpression>();

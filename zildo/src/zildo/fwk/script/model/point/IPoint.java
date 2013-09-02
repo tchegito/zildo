@@ -34,10 +34,14 @@ public abstract class IPoint {
 
 	public abstract Point getPoint();
 	
-	public void setContext(SpriteEntity entity) { 
+	public void setContextFromEntity(SpriteEntity entity) { 
 		// Default : do nothing (for PointFixed)
 	};
 
+	public void setContext(IEvaluationContext context) { 
+		// Default : do nothing (for PointFixed)
+	};
+	
 	/**
 	 * Returns an IPoint object : either fixed, or runtime evaluated.<br/>
 	 * Note that context is not provided here. But it need to be later.

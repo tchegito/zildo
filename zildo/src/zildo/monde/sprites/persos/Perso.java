@@ -1012,4 +1012,8 @@ public abstract class Perso extends Element {
 	public Angle getJumpAngle() {
 		return jumpAngle;
 	}
+	
+	public void setAction(PersoAction p_action) {
+		action = p_action;
+	}
 }

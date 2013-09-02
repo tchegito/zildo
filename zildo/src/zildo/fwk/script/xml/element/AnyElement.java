@@ -31,7 +31,8 @@ public abstract class AnyElement {
 		quest(QuestElement.class),
 		mapscript(MapscriptElement.class),
 		condition(ConditionElement.class),
-		persoaction(PersoActionElement.class);
+		persoaction(PersoActionElement.class),
+		timer(TimerElement.class);
 		
 		Class<? extends AnyElement> clazz;
 		

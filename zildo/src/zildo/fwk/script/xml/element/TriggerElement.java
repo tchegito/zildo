@@ -27,6 +27,7 @@ import java.util.List;
 import org.w3c.dom.Element;
 
 import zildo.client.sound.BankSound;
+import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
@@ -187,7 +188,7 @@ public class TriggerElement extends AnyElement {
 			break;
 		case QUESTDONE:
 			if (questSwitch.contains(p_another.name)) {
-				return questSwitch.evaluate() == 1;
+				return questSwitch.evaluate() == ZSCondition.TRUE;
 			}
 			break;
 		case DEAD:
@@ -214,7 +215,7 @@ public class TriggerElement extends AnyElement {
 	public boolean isDone() {
 		switch (kind) {
 		case QUESTDONE:
-			return questSwitch.evaluate() == 1;
+			return questSwitch.evaluate() == ZSCondition.TRUE;
 		case INVENTORY:
 			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 			return zildo != null && zildo.hasItem(ItemKind.fromString(name)) == !not;

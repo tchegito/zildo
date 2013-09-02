@@ -28,7 +28,7 @@ import java.util.List;
  * <p/>
  * 
  * Simple "switch/case/default" clause. Used especially with dialogs.<br/>
- * <b>&</b> means AND<br/><b>,</b> means OR.
+ * <b>&</b> means AND<br/><b>,</b> means OR.<br/>
  * <b>:</b> introduce a return value. This value is optional for scripts, because we only expect
  * boolean result, represented by 0 or 1.
  * <p/>
