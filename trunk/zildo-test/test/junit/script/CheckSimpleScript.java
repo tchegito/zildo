@@ -20,7 +20,12 @@
 
 package junit.script;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import zildo.fwk.script.logic.FloatVariable;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.server.EngineZildo;
 import zildo.server.state.ScriptManagement;
@@ -30,24 +35,26 @@ import zildo.server.state.ScriptManagement;
  * @author Tchegito
  *
  */
-public class CheckSimpleScript extends TestCase {
+public class CheckSimpleScript {
 
 	ScriptManagement scriptMgmt;
 	
-	@Override
+	@Before
 	public void setUp() {
 		scriptMgmt = new ScriptManagement();
 		EngineZildo.scriptManagement = scriptMgmt;
 	}
 	
-	public void testSimpleSwitch() {
+	@Test
+	public void simpleSwitch() {
 		// Create a switch case : case 'flut' => 8 / case 'enlevement' => 3 / default => 0
 		ZSSwitch simple = new ZSSwitch(0).addCondition("flut", 8).addCondition("enlevement",3);
 		
 		checkSwitch(simple);
 	}
 	
-	public void testParsedSwitch() {
+	@Test
+	public void parsedSwitch() {
 		ZSSwitch parsed = ZSSwitch.parseForDialog("flut&!ferme:8,enlevement:3,0");
 		
 		checkSwitch(parsed);
@@ -55,19 +62,44 @@ public class CheckSimpleScript extends TestCase {
 	
 	private void checkSwitch(ZSSwitch sw) {
 		// Default
-		assertEquals(0, sw.evaluate());
+		Assert.assertEquals(0, sw.evaluateInt());
 		
 		// enlevement
 		scriptMgmt.accomplishQuest("enlevement", false);
-		assertEquals(3, sw.evaluate());
+		Assert.assertEquals(3, sw.evaluateInt());
 
 		// flut
 		scriptMgmt.accomplishQuest("flut", false);
-		assertEquals(8, sw.evaluate());
+		Assert.assertEquals(8, sw.evaluateInt());
 	
 	}
 	
-	@Override
+	/**
+	 * Note that 'dice10' built-in function is defined into {@link FloatVariable}.
+	 */
+	@Test
+	public void conditional() {
+		ZSSwitch parsed = ZSSwitch.parseForDialog("dice10 > 5:NOTE2,NOTE"	);
+		int cnt1 = 0;
+		int cnt2 = 0;
+		for (int i=0;i<20;i++) {
+			String res = parsed.evaluate();
+			if ("NOTE2".equals(res)) {
+				cnt1++;
+			} else if ("NOTE".equals(res)) {
+				cnt2++;
+			}
+		}
+		Assert.assertTrue(cnt1 > 0 && cnt2 > 0);
+	}
+	
+	@Test
+	public void withoutCondition() {
+		ZSSwitch parsed = ZSSwitch.parseForDialog("NOTE2");
+		Assert.assertTrue(parsed.evaluate().equals("NOTE2"));
+	}
+	
+	@After
 	public void tearDown() {
 		EngineZildo.scriptManagement = null;
 	}

@@ -39,7 +39,8 @@ public class ScriptedPersoAction implements PersoAction {
 	
 	@Override
 	public boolean launchAction() {
-		return false;
+		return perso.getAttente() == 0;
+		//return false;
 	}
 
 }

@@ -128,6 +128,8 @@ public class ScriptManagement {
 		if (p_quest != null) {
 			scene.id = MARQUER_SCENE+p_quest.name;
 			scene.locked = p_quest.locked;
+		} else if (p_context != null) {
+			scene.locked = false;	// Unlock when scene is contextual (may be tuned later)
 		}
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context);

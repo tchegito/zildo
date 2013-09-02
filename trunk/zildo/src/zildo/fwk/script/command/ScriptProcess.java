@@ -80,10 +80,6 @@ public class ScriptProcess {
 	}
 	
 	public void terminate() {
-		if (actionExec.context != null) {
-			Perso perso = (Perso) actionExec.context.getActor();
-			perso.setAction(null);
-		}
 		if (scene.restoreZildo) {
 			PersoZildo zildo=EngineZildo.persoManagement.getZildo();
 			// Reset current zildo

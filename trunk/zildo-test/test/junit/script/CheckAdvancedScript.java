@@ -185,7 +185,7 @@ public class CheckAdvancedScript {
 	}
 	
 	@Test
-	public void equals() {
+	public void comparison() {
 		Perso perso = new PersoNJ();
 		perso.setAttente(100);
 		IEvaluationContext context = new SpriteEntityContext(perso);
@@ -200,5 +200,17 @@ public class CheckAdvancedScript {
 		ret = expr.evaluate(context);
 		Assert.assertTrue(ret == 1);
 		
+		expr = new FloatExpression("attente<8");
+		ret = expr.evaluate(context);
+		Assert.assertTrue(ret == 1);
+
+		expr = new FloatExpression("attente>15");
+		ret = expr.evaluate(context);
+		Assert.assertTrue(ret == 0);
+
+		expr = new FloatExpression("attente>0");
+		ret = expr.evaluate(context);
+		Assert.assertTrue(ret == 1);
+
 	}
 }

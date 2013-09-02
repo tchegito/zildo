@@ -153,8 +153,8 @@
 	    <wait value="20"/>
 	    <fadeOut type="1"/>
 	    <script who="sorciere" value="13"/>
-	    <spawn what="moon1" type="HEART_FRAGMENT" pos="8,-160" foreground="true" fx="FOCUSED" delta="true"/>
-	    <spawn what="moon2" type="HEART_FRAGMENT2" pos="-152,0" foreground="true" fx="FOCUSED" delta="true"/>
+	    <spawn what="moon1" type="HEART_FRAGMENT" pos="8,-160" foreground="true" effect="FOCUSED" delta="true"/>
+	    <spawn what="moon2" type="HEART_FRAGMENT2" pos="-152,0" foreground="true" effect="FOCUSED" delta="true"/>
 	    <moveTo what="moon1" pos="-7,-3" delta="true"/>
 	    
 	    <moveTo what="moon1" pos="2,0" delta="true"/>
@@ -171,7 +171,7 @@
 	    <actions>
 	    	<remove what="moon1"/>
 	    	<remove what="moon2"/>
-	        <spawn what="moon3" type="BIG_HEART" pos="8,0" fx="FOCUSED" foreground="true" delta="true"/>	        
+	        <spawn what="moon3" type="BIG_HEART" pos="8,0" effect="FOCUSED" foreground="true" delta="true"/>	        
 	    </actions>
 	    <wait value="6"/>
 	    <filter type="0"/>
@@ -191,15 +191,15 @@
 	<persoAction id="flut">
 		<actions>
 		    <angle who="self" value="2"/>
-			<perso who="self" attente="200"/>
+			<perso who="self" attente="100"/>
 			<script who="self" text="PLAYING_FLUT"/>
+			<sound name="Flut"/>
 		</actions>
-		<timer each="80">
+		<timer each="40">
 			<action>
-			    dice10>5:NOTE2,NOTE
-				<spawn  type="dice10 > 5 ? NOTE2 : NOTE"
+				<spawn  type="dice10 > 5:NOTE2,NOTE"
 						foreground="true"
-						pos="x-6,y" z="4" 
+						pos=" x-6,y" z="4" 
 						vx="0.2+0.1*random" vz="0.1" 
 						ax="-0.01" az="0.011"
 						fx="0.04 * random"
