@@ -87,8 +87,8 @@
 			<filter type="2"/>
 			<music name="Nuit"/>
 			<!-- Post guard -->
-    	    <spawn type="FOX" who="fox1" fx="rouge" pos="870,878"/>
-    	    <spawn type="FOX" who="fox2" fx="violet" pos="1039,922"/>			
+    	    <spawn type="FOX" who="fox1" effect="rouge" pos="870,878"/>
+    	    <spawn type="FOX" who="fox2" effect="violet" pos="1039,922"/>			
 		</condition>
 		<condition name="voleursg3" exp="trig_echange">
 		    <actions>
@@ -113,11 +113,11 @@
 		    </actions>
    		</condition>
    		<condition name="prisonext" exp="trig_echange">
-   		    <perso who="gardenord" type="GARDE_CANARD" fx="GUARD_BLACK"/>
-   		    <perso who="gard2" type="GARDE_CANARD" fx="noir" info="ENEMY"/>
-   		    <perso who="gard3" type="GARDE_CANARD" fx="noir" info="ENEMY"/>
-   		    <perso who="gard4" type="GARDE_CANARD" fx="noir" info="ENEMY"/>
-   		    <perso who="gard5" type="GARDE_CANARD" fx="noir" info="ENEMY"/>
+   		    <perso who="gardenord" type="GARDE_CANARD" effect="GUARD_BLACK"/>
+   		    <perso who="gard2" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <perso who="gard3" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <perso who="gard4" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <perso who="gard5" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
    		    <script who="gardenord" value="3"/>
    		    <script who="gard2" value="3"/>
    		    <script who="gard3" value="3"/>
@@ -131,7 +131,7 @@
 		<!--  Preambule => remove for release -->
 		<map name="promenade2"/>
 	    <pos who="zildo" pos="561,193"/>
-	    <spawn who="emissaire" pos="455,250" fx="jaune" type="GARDE_CANARD" angle="3"/>
+	    <spawn who="emissaire" pos="455,250" effect="jaune" type="GARDE_CANARD" angle="3"/>
 	    <spawn who="tony" type="BANDIT_VERT" pos="455,220" angle="3"/>
 		<focus who="emissaire"/>
 	    <fadeIn type="1"/>

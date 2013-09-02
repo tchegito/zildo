@@ -592,7 +592,7 @@
 	    <music name="Angoisse"/>
 	    <map name="promenade2"/>
 	    <filter type="1"/>
-	    <spawn type="GARDE_CANARD" speed="1" pos="928,-10" angle="2" fx="jaune" who="emissaire"/>
+	    <spawn type="GARDE_CANARD" speed="1" pos="928,-10" angle="2" effect="jaune" who="emissaire"/>
 	    <spawn type="BANDIT_VERT" speed="1" pos="516,146" angle="2" who="tony"/>
 	    <spawn type="PRINCESSE_COUCHEE" pos="447,234" who="roxy"/>
 	    <focus who="emissaire"/>
@@ -627,8 +627,8 @@
 	    <spawn type="VAUTOUR" speed="3" pos="500,64" who="vautour"/>
 	    <script who="vautour" value="10" />
 	    <wait value="30" />
-	    <script who="emissaire" value="2" fx="vautour"/>
-	    <script who="tony" value="2" fx="vautour"/>
+	    <script who="emissaire" value="2" effect="vautour"/>
+	    <script who="tony" value="2" effect="vautour"/>
 	    <music name="Surprise"/>
 	    <moveTo who="vautour" pos="543,245"/>
 	    <take who="vautour" what="scepter" />
@@ -674,8 +674,8 @@
 	    </actions>
 	    <speak who="emissaire" text="echange.emissaire5" />
 	    <moveTo who="roxy_bunny" pos="420,240" unstoppable="true"/>
-	    <script who="tony" value="2" fx="roxy_bunny" />
-	    <script who="emissaire" value="2" fx="roxy_bunny" />
+	    <script who="tony" value="2" effect="roxy_bunny" />
+	    <script who="emissaire" value="2" effect="roxy_bunny" />
 	    <moveTo who="roxy_bunny" pos="400,246" unstoppable="true"/>
 	    <speak who="emissaire" text="echange.emissaire6" />
 	    <moveTo who="zildo" pos="0,24" delta="true" speed="1" unstoppable="true"/>
@@ -710,7 +710,7 @@
 	    <script who="roxy" value="3" />
 	    <pos what="camera" pos="400,0" />
 	    <fadeIn type="0" unblock="true"/>
-	    <spawn type="GARDE_CANARD" speed="1" pos="520,30" angle="2" fx="noir" who="badguy"/>
+	    <spawn type="GARDE_CANARD" speed="1" pos="520,30" angle="2" effect="noir" who="badguy"/>
 	    <focus who="badguy" />
 	    <moveTo pos="520,145" who="badguy" />
 	    <moveTo pos="830,145" who="badguy" />
@@ -896,7 +896,7 @@
 		<actions>
 			<moveTo who="maltus" pos="0,-15" delta="true" backward="true"/>
 			<speak who="maltus" text="foret.maltus.3"/>
-			<script who="zildo" value="2" fx="maltus"/>
+			<script who="zildo" value="2" effect="maltus"/>
 		</actions>	
 		<wait value="15"/>
 		<angle who="maltus" value="0"/>
@@ -1071,8 +1071,8 @@
 	    <!-- We could also set them standing, instead of moving. -->
 	    <remove who="green1"/>
 	    <remove who="green2"/>
-	    <spawn who="gard1" type="GARDE_CANARD" angle="0" pos="520,261" fx="noir"/>
-	    <spawn who="gard2" type="GARDE_CANARD" angle="0" pos="712,261" fx="noir"/>
+	    <spawn who="gard1" type="GARDE_CANARD" angle="0" pos="520,261" effect="noir"/>
+	    <spawn who="gard2" type="GARDE_CANARD" angle="0" pos="712,261" effect="noir"/>
 	    <angle who="zildo" value="2"/>
 	    <music name="Surprise"/>
 	    <actions>
@@ -1080,7 +1080,7 @@
 	    	<moveTo who="gard2" pos="0,-48" delta="true"/>
 	    </actions>
 	    <moveTo who="zildo" pos="615,109"/>
-	    <spawn who="gard3" type="GARDE_CANARD" angle="0" pos="616,256" fx="noir"/>
+	    <spawn who="gard3" type="GARDE_CANARD" angle="0" pos="616,256" effect="noir"/>
 	    <actions>
 		    <moveTo who="gard1" pos="600,111"/>
 		    <moveTo who="gard2" pos="632,111" unstoppable="true"/>
@@ -1115,7 +1115,7 @@
 	    <angle who="gard3" value="3"/>
 	    <wait value="20"/>
 	    <exec script="open_castle_door"/>
-	    <script who="gard3" value="2" fx="zildo"/>
+	    <script who="gard3" value="2" effect="zildo"/>
 	    <moveTo who="zildo" pos="616,511" unstoppable="true"/>
 	    <exec script="close_castle_door"/>
 	    <music name="Village"/>
@@ -1151,7 +1151,7 @@
     	<moveTo who="maltus" pos="455,309" speed="1" unblock="true"/>
         <moveTo who="hector" pos="440,322" speed="1" unblock="true"/>
         <wait value="40"/>
-	    <script who="zildo" value="2" fx="maltus"/>
+	    <script who="zildo" value="2" effect="maltus"/>
         <wait value="150"/>
         <script who="zildo" value="3"/>
         <speak who="king" text="visit2.king.5"/>

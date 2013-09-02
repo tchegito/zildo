@@ -22,6 +22,8 @@ package zildo.fwk.script.xml.element;
 
 import org.w3c.dom.Element;
 
+import zildo.fwk.script.logic.FloatExpression;
+import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.model.point.IPoint;
 
 public class ActionElement extends AnyElement {
@@ -45,7 +47,7 @@ public class ActionElement extends AnyElement {
 
 	public String who; // Characters
 	public String what; // Camera, elements
-	public String fx;
+	public String effect;
 	public boolean unblock;
 	public boolean backward = false; // Character moves back
 	public boolean open = false; // Can open doors
@@ -61,10 +63,17 @@ public class ActionElement extends AnyElement {
 	public int reverse;
 	public int rotation;
 	public int attente;
-	public int z;	// Z coordinate for location
+	public FloatExpression z;	// Z coordinate for location
 	public String info;	// PersoInfo
 	public float speed;
 	public boolean activate;
+	
+	private ZSSwitch switchExpression;
+	
+	public FloatExpression[] v;
+	public FloatExpression[] a;
+	public FloatExpression[] f;
+	public FloatExpression alphaA;
 	
 	public int back, back2, fore;	// just for Tile action
 	
@@ -84,7 +93,7 @@ public class ActionElement extends AnyElement {
 		// Read common attributes
 		who = readAttribute("who");
 		what = readAttribute("what");
-		fx = readAttribute("fx");
+		effect = readAttribute("effect");
 		unblock = isTrue("unblock");
 		speed = Float.valueOf("0" + p_elem.getAttribute("speed"));
 		unstoppable = isTrue("unstoppable");
@@ -97,6 +106,10 @@ public class ActionElement extends AnyElement {
 			delta = isTrue("delta");
 			reverse = readInt("reverse");
 			rotation = readInt("rotation");
+			String temp = readAttribute("z");
+			if (temp != null) {
+				z = new FloatExpression(temp);
+			}
 		case animation:
 		case impact:
 			location = IPoint.fromString(strPos);
@@ -126,7 +139,7 @@ public class ActionElement extends AnyElement {
 				location = IPoint.fromString(strPos);
 			}
 			delta = isTrue("delta");
-			z = readInt("z", -1);
+			z = new FloatExpression(readInt("z", -1));
 			break;
 		case script:
 			text = readAttribute("text");
@@ -177,8 +190,40 @@ public class ActionElement extends AnyElement {
 			fore = readInt("fore", -1);
 			break;
 		}
+		
+		// As several variables are used for different usage (which is bad), make specific here
+		if (kind == ActionKind.spawn) {
+			switchExpression = ZSSwitch.parseForDialog(text);
+			// Read V,A and F coordinates
+			v = read3Coordinates("v");
+			a = read3Coordinates("a");
+			f = read3Coordinates("f");
+			alphaA = getFloatExpr("alphaA");
+		}
 	}
 
+	private FloatExpression[] read3Coordinates(String prefix) {
+		FloatExpression[] coords = null;
+		FloatExpression coordX = getFloatExpr(prefix+"x");
+		FloatExpression coordY = getFloatExpr(prefix+"y");
+		FloatExpression coordZ = getFloatExpr(prefix+"z");
+		if (coordX != null || coordY != null || coordZ != null) {
+			coords = new FloatExpression[3];
+			coords[0] = coordX;
+			coords[1] = coordY;
+			coords[2] = coordZ;
+		}
+		return coords;
+	}
+	
+	private FloatExpression getFloatExpr(String attName) {
+		String expr = readAttribute(attName);
+		if (expr == null || expr.length() == 0) {
+			return null;
+		}
+		return new FloatExpression(expr);
+	}
+	
 	/**
 	 * Update attribute's value. (used only for ZEditor)
 	 * 
@@ -206,6 +251,10 @@ public class ActionElement extends AnyElement {
 			sb.append(text).append(" ");
 		}
 		return sb.toString();
+	}
+
+	public String getSpawnType() {
+		return switchExpression.evaluate();
 	}
 
 	public void reset() {

@@ -33,6 +33,7 @@ import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
+import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.logic.IEvaluationContext;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.ActionElement.ActionKind;
@@ -138,13 +139,14 @@ public class ActionExecutor {
             String text = p_action.text;
             switch (p_action.kind) {
                 case pos:
+                	float zz = p_action.z.evaluate(context);
                     if (perso != null) {
                     	if (location != null) {
                     		perso.x = location.x;
                     		perso.y = location.y;
                     	}
-                    	if (p_action.z != -1) {
-                    		perso.z = p_action.z;
+                    	if (zz != -1) {
+                    		perso.z = zz;
                     		perso.az=-0.1f;
                     	}
                         if (p_action.foreground != null) {
@@ -159,8 +161,8 @@ public class ActionExecutor {
                     		entity.x = location.x;
                     		entity.y = location.y;
                     	}
-                    	if (p_action.z != -1) {
-                    		entity.z = p_action.z;
+                    	if (zz != -1) {
+                    		entity.z = zz;
                     	}
                     	// TODO:the 'pushable' attribute shouldn't be set by this default way
                     	entity.setPushable(false);
@@ -199,7 +201,7 @@ public class ActionExecutor {
                     } else {
 	                	MouvementPerso script = MouvementPerso.fromInt(p_action.val);
 	                    perso.setQuel_deplacement(script, true);
-	                    String param = p_action.fx;
+	                    String param = p_action.effect;
 	                    switch (script) {
 	                    case ZONE:
 	        				perso.setZone_deplacement(EngineZildo.mapManagement.range(perso.getX() - 16 * 5, 
@@ -260,25 +262,41 @@ public class ActionExecutor {
                     break;
                 case spawn:	// Spawn a new character
                 	if (p_action.who != null) {
-                		PersoDescription desc = PersoDescription.valueOf(p_action.text);
+                		PersoDescription desc = PersoDescription.valueOf(p_action.getSpawnType());
                 		Perso newOne = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, p_action.who, p_action.val);
                        	newOne.setSpeed(p_action.speed);
-                       	newOne.setEffect(p_action.fx);
+                       	newOne.setEffect(p_action.effect);
                        	newOne.initPersoFX();
                         EngineZildo.spriteManagement.spawnPerso(newOne);
                 	} else {	// Spawn a new element
                 		if (EngineZildo.spriteManagement.getNamedElement(p_action.what) == null) {
                 			// Spawn only if doesn't exist yet
-	                		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.text);
+	                		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
 	                		Reverse rev = Reverse.fromInt(p_action.reverse);
 	                		Rotation rot = Rotation.fromInt(p_action.rotation);
 	                		Element elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0, rev, rot);
 	                		elem.setName(p_action.what);
-	                		if (p_action.fx != null) {
-	                			elem.setSpecialEffect(EngineFX.valueOf(p_action.fx));
+	                		if (p_action.effect != null) {
+	                			elem.setSpecialEffect(EngineFX.valueOf(p_action.effect));
 	                		}
 	                		if (p_action.foreground != null) {
 	                			elem.setForeground(p_action.foreground);
+	                		}
+	                		// Physics attributes
+	                		elem.vx = convenientFloatEvaluation(p_action.v[0]);
+	                		elem.vy = convenientFloatEvaluation(p_action.v[1]);
+	                		elem.vz = convenientFloatEvaluation(p_action.v[2]);
+	                		elem.ax = convenientFloatEvaluation(p_action.a[0]);
+	                		elem.ay = convenientFloatEvaluation(p_action.a[1]);
+	                		elem.az = convenientFloatEvaluation(p_action.a[2]);
+	                		elem.fx = convenientFloatEvaluation(p_action.f[0]);
+	                		elem.fy = convenientFloatEvaluation(p_action.f[1]);
+	                		elem.fz = convenientFloatEvaluation(p_action.f[2]);
+	                		if (p_action.z != null) {
+	                			elem.z = p_action.z.evaluate(context);
+	                		}
+	                		if (p_action.alphaA != null) {
+	                			elem.alphaA = p_action.alphaA.evaluate(context);
 	                		}
                 		}
                 	}
@@ -491,8 +509,8 @@ public class ActionExecutor {
                 		if (p_action.info != null) {
                 			perso.setInfo(PersoInfo.valueOf(p_action.info));
                 		}
-                		if (p_action.fx != null) {
-                			perso.setEffect(p_action.fx);
+                		if (p_action.effect != null) {
+                			perso.setEffect(p_action.effect);
                 			perso.initPersoFX();
                 		}
                 		if (p_action.val != -1) {
@@ -571,5 +589,13 @@ public class ActionExecutor {
         }
         p_action.waiting = !achieved;
         p_action.done = achieved;
+    }
+    
+    private float convenientFloatEvaluation(FloatExpression expr) {
+    	if (expr == null) {
+    		return 0f;
+    	} else {
+    		return expr.evaluate(context);
+    	}
     }
 }

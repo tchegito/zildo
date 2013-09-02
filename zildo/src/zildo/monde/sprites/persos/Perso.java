@@ -538,7 +538,7 @@ public abstract class Perso extends Element {
 		prevY = y;
 		
 		if (action != null && getPv() > 0) {
-			if (attente != 0) {
+			if (attente != 0 && !isZildo()) {	// Zildo's attente field decrease is already handled in PlayerManagement
 				attente--;
 			}
 			if (action.launchAction()) {

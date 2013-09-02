@@ -16,6 +16,13 @@ public class FloatExpression {
 
 	private FloatASTNode entireExp;
 	
+	float value;
+	
+	public FloatExpression(float p_immediateValue) {
+		value = p_immediateValue;
+		entireExp = null;
+	}
+	
 	public FloatExpression(String p_expression) {
 		ExprScanner scan = new ExprScanner(p_expression);
 		entireExp = parse(scan, null, false, false);
@@ -23,7 +30,7 @@ public class FloatExpression {
 
 	@Override
 	public String toString() {
-		return entireExp.toString();
+		return entireExp == null ? ""+value : entireExp.toString();
 	}
 	
 	private FloatASTNode parse(ExprScanner scan, Operator previous, boolean parenthese, boolean negative) {
@@ -100,7 +107,11 @@ public class FloatExpression {
 	 * @return boolean
 	 */
 	public float evaluate(IEvaluationContext c) {
-		return entireExp.evaluate(c);
+		if (entireExp == null) {
+			return value;
+		} else {
+			return entireExp.evaluate(c);
+		}
 	}
 
 	/**
