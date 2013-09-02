@@ -86,7 +86,7 @@ public class ScriptReader {
         // Check for ActionElement
         ActionKind kind=ActionKind.fromString(name);
         QuestEvent event=QuestEvent.fromString(name);
-        if (kind != null && kind != ActionKind.actions) { 
+        if (kind != null && kind != ActionKind.actions && kind != ActionKind.timer) { 
         	s=new ActionElement(kind);
         } else if (event != null) {
         	String questName = ((Element)p_element.getParentNode().getParentNode()).getAttribute("name");

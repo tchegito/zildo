@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.xml.ScriptReader;
 
@@ -24,7 +25,7 @@ public class ConditionElement extends AnyElement {
 	}
 
 	public boolean isRight() {
-		return expression.evaluate() == 1;
+		return expression.evaluate() == ZSCondition.TRUE;
 	}
 	
 	public List<ActionElement> getActions() {

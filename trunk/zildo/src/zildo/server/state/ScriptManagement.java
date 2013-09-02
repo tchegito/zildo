@@ -26,11 +26,14 @@ import java.util.List;
 import java.util.Map;
 
 import zildo.fwk.script.command.ScriptExecutor;
+import zildo.fwk.script.logic.IEvaluationContext;
+import zildo.fwk.script.logic.SpriteEntityContext;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.AdventureElement;
 import zildo.fwk.script.xml.element.ConditionElement;
 import zildo.fwk.script.xml.element.MapscriptElement;
+import zildo.fwk.script.xml.element.PersoActionElement;
 import zildo.fwk.script.xml.element.QuestElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.TriggerElement;
@@ -39,6 +42,7 @@ import zildo.monde.map.ChainingPoint;
 import zildo.monde.quest.MapReplacement;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
@@ -111,14 +115,14 @@ public class ScriptManagement {
     	if (scene != null) {
     		 if (!scriptExecutor.isProcessing(p_name)) {
     			 scene.locked = p_locked;
-    			 scriptExecutor.execute(scene, true, false);
+    			 scriptExecutor.execute(scene, true, false, null);
     		 }
     	} else {
     		throw new RuntimeException("Scene "+p_name+" doesn't exist !");
     	}
     }
 
-    private void execute(List<ActionElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority) {
+    public void execute(List<ActionElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority, IEvaluationContext p_context) {
     	// Create a SceneElement from the given actions
 		SceneElement scene=SceneElement.createScene(p_actions);
 		if (p_quest != null) {
@@ -126,7 +130,7 @@ public class ScriptManagement {
 			scene.locked = p_quest.locked;
 		}
 		// And execute this list
-		scriptExecutor.execute(scene, p_finalEvent, p_topPriority);
+		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context);
     }
     
     /**
@@ -250,7 +254,7 @@ public class ScriptManagement {
     	// 1) note the history events (mapReplace ...)
     	List<ActionElement> history=p_quest.getHistory();
 		if (history != null) {
-			execute(history, true, null, false);
+			execute(history, true, null, false, null);
 		}
 		
 		// 2) execute the immediate actions (only in-game)
@@ -259,7 +263,7 @@ public class ScriptManagement {
 	    	TriggerElement trig=TriggerElement.createQuestDoneTrigger(p_quest.name);
 	    	trigger(trig);
 			// Execute the corresponding actions
-			execute(p_quest.getActions(), true, p_quest, false);
+			execute(p_quest.getActions(), true, p_quest, false, null);
     	}
 
     	
@@ -336,6 +340,14 @@ public class ScriptManagement {
     	}
 	}
 	
+	public void runPersoAction(Perso perso, String name) {
+		PersoActionElement action = adventure.getPersoActionNamed(name);
+		if (action != null) {
+			SpriteEntityContext context = new SpriteEntityContext(perso);
+			execute(action.actions, true, null, false, context);
+		}
+	}
+	
 	/**
 	 * Returns TRUE if the given quest is marked as done.
 	 * @param p_questName
@@ -404,7 +416,7 @@ public class ScriptManagement {
 			for (ConditionElement condi : mapScript.getConditions()) {
 				if (condi.mapName.equals(p_mapName) && condi.isRight()) {
 					// Execute the 'mapscript' before all, with topPriority=TRUE
-					execute(condi.getActions(), false, null, true);
+					execute(condi.getActions(), false, null, true, null);
 				}
 			}
 		}

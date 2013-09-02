@@ -52,8 +52,8 @@ import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
-import zildo.monde.sprites.persos.action.FlutAction;
 import zildo.monde.sprites.persos.action.HealAction;
+import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.sprites.utils.ShieldEffect;
 import zildo.monde.sprites.utils.ShieldEffect.ShieldType;
@@ -270,7 +270,7 @@ public class PersoZildo extends Perso {
 			break;
 		case FLUT:
 			if (attente == 0 && mouvement == MouvementZildo.VIDE) {
-				action = new FlutAction(this);
+				action = new ScriptedPersoAction(this, "flut");
 			}
 			break;
 		case NECKLACE:

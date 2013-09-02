@@ -42,10 +42,15 @@ public class PointEvaluator extends IPoint {
 	}
 	
 	@Override
-	public void setContext(SpriteEntity entity) {
+	public void setContextFromEntity(SpriteEntity p_entity) {
 		if (context == null) {
-			context = new SpriteEntityContext(entity);
+			context = new SpriteEntityContext(p_entity);
 		}
+	}
+	
+	@Override
+	public void setContext(IEvaluationContext p_context) {
+		context = p_context;
 	}
 	
 	@Override

@@ -30,7 +30,8 @@ public class ActionElement extends AnyElement {
 		actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, 
 		map, focus, spawn, exec, take, mapReplace, zikReplace, music, animation, impact, remove, 
 		markQuest, putDown, attack, activate,
-		tile, filter, end, visible, respawn, zoom, herospecial, perso;
+		tile, filter, end, visible, respawn, zoom, herospecial, perso,
+		timer;
 
 		public static ActionKind fromString(String p_name) {
 			for (ActionKind kind : values()) {
@@ -66,10 +67,9 @@ public class ActionElement extends AnyElement {
 	public boolean activate;
 	
 	public int back, back2, fore;	// just for Tile action
-
+	
 	public ActionElement(ActionKind p_kind) {
 		kind = p_kind;
-		// xmlElement = ScriptWriter.document.createElement(kind.toString());
 	}
 
 	@Override

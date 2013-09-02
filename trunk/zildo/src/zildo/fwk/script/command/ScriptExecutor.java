@@ -29,6 +29,7 @@ import java.util.Set;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
+import zildo.fwk.script.logic.IEvaluationContext;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.ActionsElement;
 import zildo.fwk.script.xml.element.AnyElement;
@@ -51,9 +52,10 @@ public class ScriptExecutor {
 	 * @param p_script
 	 * @param p_finalEvent
 	 * @param p_topPriority TRUE=this script will be executed before all others
+	 * @param p_context TODO
 	 */
-	public void execute(SceneElement p_script, boolean p_finalEvent, boolean p_topPriority) {
-		ScriptProcess sp = new ScriptProcess(p_script, this, p_finalEvent, p_topPriority);
+	public void execute(SceneElement p_script, boolean p_finalEvent, boolean p_topPriority, IEvaluationContext p_context) {
+		ScriptProcess sp = new ScriptProcess(p_script, this, p_finalEvent, p_topPriority, p_context);
 		int i;
 		for (i=0;i<scripts.size();i++) {
 			if (!scripts.get(i).topPriority) {

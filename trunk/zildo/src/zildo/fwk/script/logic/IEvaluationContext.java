@@ -1,5 +1,6 @@
 package zildo.fwk.script.logic;
 
+
 /**
  * Describe a context for evaluation boolean expression.<p/>
  * 
@@ -12,4 +13,6 @@ package zildo.fwk.script.logic;
 public interface IEvaluationContext {
 
 	public float getValue(String key);
+	
+	public Object getActor();
 }

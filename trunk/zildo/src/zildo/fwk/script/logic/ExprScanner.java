@@ -75,7 +75,7 @@ public class ExprScanner {
 	}
 	
 	private boolean isDelimiter(char a) {
-		return (a == '+' || a=='-' || a=='*' || a=='/');
+		return Operator.isOneOfThem(a);
 	}
 	
 	public void goBack() {

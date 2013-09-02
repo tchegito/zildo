@@ -23,8 +23,10 @@ package zildo.fwk.script.command;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.fwk.script.logic.IEvaluationContext;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.SceneElement;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
@@ -45,11 +47,13 @@ public class ScriptProcess {
 	
 	List<ActionElement> currentActions=new ArrayList<ActionElement>();
 
-	public ScriptProcess(SceneElement p_scene, ScriptExecutor p_scriptExecutor, boolean p_finalEvent, boolean p_topPriority) {
+	public ScriptProcess(SceneElement p_scene, ScriptExecutor p_scriptExecutor, 
+			boolean p_finalEvent, boolean p_topPriority,
+			IEvaluationContext context) {
 		scene=p_scene;
 		cursor=0;
 		topPriority = p_topPriority;
-		actionExec=new ActionExecutor(p_scriptExecutor, p_scene.locked);
+		actionExec=new ActionExecutor(p_scriptExecutor, p_scene.locked, context);
 		finalEvent = p_finalEvent;
 		
 		if (scene.restoreZildo) {
@@ -76,6 +80,10 @@ public class ScriptProcess {
 	}
 	
 	public void terminate() {
+		if (actionExec.context != null) {
+			Perso perso = (Perso) actionExec.context.getActor();
+			perso.setAction(null);
+		}
 		if (scene.restoreZildo) {
 			PersoZildo zildo=EngineZildo.persoManagement.getZildo();
 			// Reset current zildo
