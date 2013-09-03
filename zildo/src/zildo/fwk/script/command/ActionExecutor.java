@@ -59,6 +59,7 @@ import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.monde.sprites.persos.ia.BasicMover;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
@@ -521,6 +522,9 @@ public class ActionExecutor {
                 		}
                 		if (p_action.val != -1) {
                 			perso.setAttente(p_action.attente);
+                		}
+                		if (p_action.action != null) {
+                			perso.setAction(new ScriptedPersoAction(perso, p_action.action));
                 		}
                 	}
                 	achieved = true;

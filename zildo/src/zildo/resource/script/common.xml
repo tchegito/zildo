@@ -188,10 +188,9 @@
 	    <fadeIn type="1"/>
 	</scene>
 	
-	<persoAction id="flut">
+	<persoAction id="flut" duration="100">
 		<actions>
 		    <angle who="self" value="2"/>
-			<perso who="self" attente="100"/>
 			<script who="self" text="PLAYING_FLUT"/>
 			<sound name="Flut"/>
 		</actions>

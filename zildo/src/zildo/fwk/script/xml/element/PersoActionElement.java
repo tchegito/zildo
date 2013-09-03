@@ -41,6 +41,7 @@ public class PersoActionElement extends AnyElement {
 	public String id;
 	public int intervalle;
 	public int endAttente;
+	public int duration;
 	
 	public List<ActionElement> actions;
 	
@@ -50,6 +51,7 @@ public class PersoActionElement extends AnyElement {
 		xmlElement = p_elem;
 		
 		id = readAttribute("id");
+		duration = readInt("duration", -1);	// Default is -1, which means infinite
 		
 		actions = (List<ActionElement>) ScriptReader.parseNodes(xmlElement);
 	}

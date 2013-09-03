@@ -11,7 +11,7 @@ import zildo.fwk.script.xml.ScriptReader;
 public class ConditionElement extends AnyElement {
 
 	public String mapName;
-	ZSSwitch expression;
+	ZSSwitch expression;	// No expression means it's always verified
 	List<ActionElement> actions;
 	
 	@Override
@@ -20,12 +20,13 @@ public class ConditionElement extends AnyElement {
 		xmlElement = p_elem;
 		
 		mapName = readAttribute("name");
-		expression =ZSSwitch.parseForScript(readAttribute("exp"));	// 1 will be the right value
+		String strExp = readAttribute("exp");
+		expression = strExp == null ? null : ZSSwitch.parseForScript(strExp);	// 1 will be the right value
 		actions = (List<ActionElement>) ScriptReader.parseNodes(p_elem);
 	}
 
 	public boolean isRight() {
-		return expression.evaluate().equals(ZSCondition.TRUE);
+		return expression == null || expression.evaluate().equals(ZSCondition.TRUE);
 	}
 	
 	public List<ActionElement> getActions() {

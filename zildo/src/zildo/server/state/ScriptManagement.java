@@ -347,9 +347,16 @@ public class ScriptManagement {
 		if (action != null) {
 			SpriteEntityContext context = new SpriteEntityContext(perso);
 			execute(action.actions, true, null, false, context);
+			perso.setAttente(action.duration);
 		}
 	}
 	
+	/**
+	 * Clear all scripts that are non blocking (example: PersoAction, or moving platforms)
+	 */
+	public void clearUnlockingScripts() {
+		scriptExecutor.clearUnlockingScripts();
+	}
 	/**
 	 * Returns TRUE if the given quest is marked as done.
 	 * @param p_questName
