@@ -84,6 +84,8 @@ public class MapManagement {
 
 		EngineZildo.spriteManagement.clearSprites(false);
 
+		EngineZildo.scriptManagement.clearUnlockingScripts();
+		
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -100,7 +102,7 @@ public class MapManagement {
 										// phasis
 		} else {
 			if (currentMap != null) {
-				this.deleteCurrentMap();
+				deleteCurrentMap();
 			}
 			previousMap = null;
 		}

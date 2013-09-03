@@ -67,6 +67,7 @@ public class ActionElement extends AnyElement {
 	public String info;	// PersoInfo
 	public float speed;
 	public boolean activate;
+	public String action;	// To run a PersoAction, with "perso" ActionKind
 	
 	private ZSSwitch switchExpression;
 	
@@ -120,6 +121,7 @@ public class ActionElement extends AnyElement {
 			text = readAttribute("type");
 			info = readAttribute("info");
 			attente = readInt("attente", -1);
+			action = readAttribute("action");
 			break;
 		case speak:
 			text = readAttribute("text");

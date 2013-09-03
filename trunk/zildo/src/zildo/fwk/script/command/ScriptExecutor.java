@@ -215,6 +215,15 @@ public class ScriptExecutor {
 		return false;
 	}
 	
+	public void clearUnlockingScripts() {
+		for (Iterator<ScriptProcess> it = scripts.iterator();it.hasNext();) {
+			ScriptProcess process = it.next();
+			if (!process.scene.locked) {
+				it.remove();
+			}
+		}
+	}
+	
 	public void userEndAction() {
 		userEndedAction=true;
 	}

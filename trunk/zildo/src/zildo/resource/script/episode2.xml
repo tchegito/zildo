@@ -124,6 +124,10 @@
    		    <script who="gard4" value="3"/>
    		    <script who="gard5" value="3"/>
 		</condition>
+		<condition name="voleursm1">
+		    <perso who="rouge" action="sleeping"/>
+		    <perso who="violet" action="sleeping"/>
+		</condition>
 	</mapScript>
 
 	<scene id="intro_episode2">
@@ -234,7 +238,6 @@
 	</scene>
 	
 	<persoAction id="sleeping">
-    	<perso who="self" attente="-1"/>
 	    <timer each="40+20*random">
 	        <action>
 		        <spawn type="dice10>4:ZZZ1,ZZZ2"

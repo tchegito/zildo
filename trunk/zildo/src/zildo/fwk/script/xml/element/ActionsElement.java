@@ -45,8 +45,8 @@ public class ActionsElement extends ActionElement {
     
 	@Override
 	public void reset() {
-		for (ActionElement action : actions) {
-			action.reset();
+		for (ActionElement oneAction : actions) {
+			oneAction.reset();
 		}
 	}
 }
