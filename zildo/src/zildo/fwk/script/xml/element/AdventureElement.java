@@ -102,6 +102,7 @@ public class AdventureElement extends AnyElement {
     		mapScripts.addAll(toMerge.mapScripts);
     		quests.addAll(toMerge.quests);
     		scenes.addAll(toMerge.scenes);
+    		persoActions.addAll(toMerge.persoActions);
     	}
     }
 }

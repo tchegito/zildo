@@ -233,4 +233,16 @@
 	    <wait value="10"/>
 	</scene>
 	
+	<persoAction id="sleeping">
+    	<perso who="self" attente="-1"/>
+	    <timer each="40+20*random">
+	        <action>
+		        <spawn type="dice10>4:ZZZ1,ZZZ2"
+		               pos="x, y" z="4"
+		               vx="0.1" vz="0.1"
+		               foreground="true"
+		               alphaA="-0.1"/>
+	        </action>
+	    </timer>
+	</persoAction>
 </adventure>

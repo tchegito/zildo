@@ -37,7 +37,7 @@ import zildo.fwk.script.xml.ScriptReader;
  */
 public class TimerElement extends ActionElement {
 
-	public int each;
+	public FloatExpression each;
 	public FloatExpression endCondition;
 
 	public List<ActionElement> actions;
@@ -60,7 +60,9 @@ public class TimerElement extends ActionElement {
 		actions = (List<ActionElement>) ScriptReader.parseNodes(actionsContainer);
 		end = (List<ActionElement>) ScriptReader.parseNodes(endContainer);
 		
-		each = readInt("each");
-		endCondition = new FloatExpression(endContainer.getAttribute("when"));
+		each = new FloatExpression(readAttribute("each"));
+		if (endContainer != null) {
+			endCondition = new FloatExpression(endContainer.getAttribute("when"));
+		}
 	}
 }

@@ -77,7 +77,7 @@ import zildo.server.EngineZildo;
 public class ActionExecutor {
 
     ScriptExecutor scriptExec;
-    int count;
+    int count, nextStep;
     boolean locked;
 
 	final IEvaluationContext context;
@@ -283,15 +283,21 @@ public class ActionExecutor {
 	                			elem.setForeground(p_action.foreground);
 	                		}
 	                		// Physics attributes
-	                		elem.vx = convenientFloatEvaluation(p_action.v[0]);
-	                		elem.vy = convenientFloatEvaluation(p_action.v[1]);
-	                		elem.vz = convenientFloatEvaluation(p_action.v[2]);
-	                		elem.ax = convenientFloatEvaluation(p_action.a[0]);
-	                		elem.ay = convenientFloatEvaluation(p_action.a[1]);
-	                		elem.az = convenientFloatEvaluation(p_action.a[2]);
-	                		elem.fx = convenientFloatEvaluation(p_action.f[0]);
-	                		elem.fy = convenientFloatEvaluation(p_action.f[1]);
-	                		elem.fz = convenientFloatEvaluation(p_action.f[2]);
+	                		if (p_action.v != null) {	// Speed
+		                		elem.vx = convenientFloatEvaluation(p_action.v[0]);
+		                		elem.vy = convenientFloatEvaluation(p_action.v[1]);
+		                		elem.vz = convenientFloatEvaluation(p_action.v[2]);
+	                		}
+	                		if (p_action.a != null) {	// Acceleration
+		                		elem.ax = convenientFloatEvaluation(p_action.a[0]);
+		                		elem.ay = convenientFloatEvaluation(p_action.a[1]);
+		                		elem.az = convenientFloatEvaluation(p_action.a[2]);
+	                		}
+	                		if (p_action.f != null) {	// Friction
+		                		elem.fx = convenientFloatEvaluation(p_action.f[0]);
+		                		elem.fy = convenientFloatEvaluation(p_action.f[1]);
+		                		elem.fz = convenientFloatEvaluation(p_action.f[2]);
+	                		}
 	                		if (p_action.z != null) {
 	                			elem.z = p_action.z.evaluate(context);
 	                		}
@@ -521,6 +527,7 @@ public class ActionExecutor {
                 	break;
                 case timer:
                 	count = 0;
+            		nextStep = (int) ((TimerElement)p_action).each.evaluate(context);
                 	break;
             }
 
@@ -576,12 +583,13 @@ public class ActionExecutor {
             	break;
             case timer:
             	TimerElement timer = (TimerElement) p_action;
-            	if (timer.endCondition.evaluate(context) == 1) {
+            	if (timer.endCondition != null && timer.endCondition.evaluate(context) == 1) {
             		achieved = true;
-                	EngineZildo.scriptManagement.execute(timer.end, true, null, false, context);
-            	} else if (count == timer.each) {
+                	EngineZildo.scriptManagement.execute(timer.end, false, null, false, context);
+            	} else if (count == nextStep) {
             		count = 0;
-                	EngineZildo.scriptManagement.execute(timer.actions, true, null, false, context);
+            		nextStep = (int) timer.each.evaluate(context);
+                	EngineZildo.scriptManagement.execute(timer.actions, false, null, false, context);
             	} else {
             		count++;
             	}
