@@ -161,7 +161,9 @@ public class Element extends SpriteEntity {
 				|| a == ElementDescription.HEART_FRAGMENT.ordinal()
 				|| a == ElementDescription.NOTE.ordinal()
 				|| a == ElementDescription.NOTE2.ordinal()
-				|| a == ElementDescription.PEEBLE.ordinal()) {
+				|| a == ElementDescription.PEEBLE.ordinal()
+				|| a== ElementDescription.ZZZ1.ordinal() 
+				|| a== ElementDescription.ZZZ2.ordinal()) {
 			return true;
 		} else {
 			return false;

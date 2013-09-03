@@ -47,60 +47,93 @@ public class ScriptExecutor {
 	Set<Perso> involved=new HashSet<Perso>();	// All characters involved in script
 	public boolean userEndedAction;				// TRUE if user has ended last action with ACTION keypressed
 	
+	List<ScriptProcess> toTerminate = new ArrayList<ScriptProcess>();
+	List<ScriptProcess> toExecute = new ArrayList<ScriptProcess>();
+	
 	/**
-	 *  Ask for engine to execute the given script, with/without a NOEVENT signal at the end (bad for map scripts).
+	 * Ask for engine to execute the given script, with/without a NOEVENT signal at the end (bad for map scripts).
 	 * @param p_script
 	 * @param p_finalEvent
 	 * @param p_topPriority TRUE=this script will be executed before all others
-	 * @param p_context TODO
+	 * @param p_context context (optional)
 	 */
 	public void execute(SceneElement p_script, boolean p_finalEvent, boolean p_topPriority, IEvaluationContext p_context) {
 		ScriptProcess sp = new ScriptProcess(p_script, this, p_finalEvent, p_topPriority, p_context);
-		int i;
-		for (i=0;i<scripts.size();i++) {
-			if (!scripts.get(i).topPriority) {
-				break;
-			}
+		if (scripts.size() == 0) {
+			scripts.add(sp);
+		} else {
+			// Scripts are actually processing, so keep it ready to be added during the #render method.
+			toExecute.add(sp);
 		}
-		scripts.add(i, sp);
 	}
 	
+	/**
+	 * Execute a frame inside the current locking script, and all non locking ones.
+	 */
 	public void render() {
 		if (!scripts.isEmpty()) {
 			
-			ScriptProcess process=getCurrent();
+			toTerminate.clear();
 			
-			AnyElement currentNode=process.getCurrentNode();
-			if (currentNode == null) {
-				// We reach the end of the script
-				terminate(process);
-			} else {
-				Class<? extends AnyElement> clazz=currentNode.getClass();
-				if (ActionElement.class.isAssignableFrom(clazz)) {
-					renderAction(process, (ActionElement) currentNode, true);
-				}
+			// 1) Render current scripts
+			for (ScriptProcess process : scripts) {
 				
-				// Render current actions too
-				for (Iterator<ActionElement> it=process.currentActions.iterator();it.hasNext();) {
-					ActionElement action=it.next();
-					if (action.done) {	// It's done, so remove the action
-						it.remove();
-					} else {
-						renderAction(process, action, false);
+				AnyElement currentNode=process.getCurrentNode();
+				if (currentNode == null) {
+					// We reach the end of the script
+					toTerminate.add(process);
+				} else {
+					Class<? extends AnyElement> clazz=currentNode.getClass();
+					if (ActionElement.class.isAssignableFrom(clazz)) {
+						renderAction(process, (ActionElement) currentNode, true);
+					}
+					
+					// Render current actions too
+					for (Iterator<ActionElement> it=process.currentActions.iterator();it.hasNext();) {
+						ActionElement action=it.next();
+						if (action.done) {	// It's done, so remove the action
+							it.remove();
+						} else {
+							renderAction(process, action, false);
+						}
+					}
+					
+					// Did the last action finished ? So we'll avoid GUI blinking with 1-frame long script. (issue 28)
+					if (process.getCurrentNode() == null) {
+						toTerminate.add(process);
 					}
 				}
 				
-				// Did the last action finished ? So we'll avoid GUI blinking with 1-frame long script. (issue 28)
-				if (process.getCurrentNode() == null) {
-					terminate(process);
+				// end condition
+				if (process.scene.locked) {
+					break;
 				}
 			}
+			
+			// 2) Terminate those who are waiting
+			for (ScriptProcess process : toTerminate) {
+				terminate(process);
+			}
+			toTerminate.clear();
+			
+			// 3) Create the awaiting one
+			for (ScriptProcess process : toExecute) {
+				int i=0;
+				for (;i<scripts.size();i++) {
+					if (!scripts.get(i).topPriority) {
+						break;
+					}
+				}
+				scripts.add(i, process);
+			}
+			toExecute.clear();
+
 		}
 	}
 
 	/**
 	 * Script just terminated.
-	 * @param process TODO
+	 * @param process
 	 */
 	private void terminate(ScriptProcess process) {
 		scripts.remove(process);
@@ -165,11 +198,7 @@ public class ScriptExecutor {
 		}
 		return false;
 	}
-	
-	public ScriptProcess getCurrent() {
-		return scripts.size() == 0 ? null : scripts.get(0);
-	}
-	
+
 	/**
 	 * Returns TRUE if given name is in the processing queue (i.e. the quest are unfinished)
 	 * @param p_name

@@ -26,7 +26,6 @@ import java.util.List;
 import zildo.fwk.script.logic.IEvaluationContext;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.SceneElement;
-import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
