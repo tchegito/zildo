@@ -5,15 +5,21 @@ package zildo.fwk.script.logic;
 /**
  * Grammar:<br/>
  * <ul>
- * <li>Val = [NOT] a</li> 
- * <li>Op = [AND|OR]</li>
- * <li>Predicate = [NOT] [(]* [Val | Predicate Op Predicate] [)]*</li>
+ * <li>Val = [-] a</li> 
+ * <li>Op = [+|-|*|/|=|<|>]</li>
+ * <li>Predicate = [(]* [Val | Predicate Op Predicate] [)]*</li>
 
  * @author evariste.boussaton
  *
  */
 public class FloatExpression {
 
+	// Flag to ask optimization or not. It exists just for testing purpose.
+	public static boolean OPTIMIZE = true;
+	
+	protected static final String RESERVED_WORD_RANDOM = "random";
+	protected static final String RESERVED_WORD_DICE10 = "dice10";
+	
 	private FloatASTNode entireExp;
 	
 	float value;
@@ -26,6 +32,22 @@ public class FloatExpression {
 	public FloatExpression(String p_expression) {
 		ExprScanner scan = new ExprScanner(p_expression);
 		entireExp = parse(scan, null, false, false);
+		
+		// Optimization : if all predicates are immediate values (means that no context is necessary to evaluate)
+		// So we simplify all predicates into one single value
+		if (OPTIMIZE) {
+			try {
+				value = entireExp.evaluate(null);
+				// Look for any reserved word
+				if (p_expression.indexOf(RESERVED_WORD_DICE10) == -1 &&
+						p_expression.indexOf(RESERVED_WORD_RANDOM) == -1) {
+					entireExp = null;
+				}
+			} catch (NullPointerException e) {
+				// We need a context ! So give up this optimization.
+			}
+		}
+		
 	}
 
 	@Override
@@ -128,5 +150,9 @@ public class FloatExpression {
 			// It must be a variable
 			return new FloatVariable(val);
 		}
+	}
+	
+	public boolean isImmediate() {
+		return entireExp == null;
 	}
 }
