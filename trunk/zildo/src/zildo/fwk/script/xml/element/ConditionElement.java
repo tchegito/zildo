@@ -25,7 +25,7 @@ public class ConditionElement extends AnyElement {
 	}
 
 	public boolean isRight() {
-		return expression.evaluate() == ZSCondition.TRUE;
+		return expression.evaluate().equals(ZSCondition.TRUE);
 	}
 	
 	public List<ActionElement> getActions() {
