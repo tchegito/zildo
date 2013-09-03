@@ -21,6 +21,7 @@ package junit.script;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import zildo.fwk.script.logic.FloatExpression;
@@ -148,6 +149,7 @@ public class CheckAdvancedScript {
 	@Test
 	public void trickyExpressions() {
 		FloatExpression expr;
+		FloatExpression.OPTIMIZE = false;
 		
 		expr = new FloatExpression("1+(2*3)+4");
 		Assert.assertEquals("PLUS(PLUS(1.0, MULTIPLY(2.0, 3.0)), 4.0)", expr.toString());
@@ -211,6 +213,27 @@ public class CheckAdvancedScript {
 		expr = new FloatExpression("attente>0");
 		ret = expr.evaluate(context);
 		Assert.assertTrue(ret == 1);
+	}
+	
+	@Test
+	public void optimized() {
+		FloatExpression expr;
+		
+		expr = new FloatExpression(3.5f);
+		Assert.assertTrue(expr.isImmediate());
 
+		expr = new FloatExpression("3.5f");
+		Assert.assertTrue(expr.isImmediate());
+		
+		expr = new FloatExpression("3.5+1.2");
+		Assert.assertTrue(expr.isImmediate());
+		
+		expr = new FloatExpression("1+8*random");
+		Assert.assertTrue(!expr.isImmediate());
+	}
+	
+	@Before
+	public void setup() {
+		FloatExpression.OPTIMIZE = true;		
 	}
 }

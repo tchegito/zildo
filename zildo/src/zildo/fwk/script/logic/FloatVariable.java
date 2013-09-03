@@ -37,9 +37,9 @@ public class FloatVariable implements FloatASTNode {
 	@Override
 	public float evaluate(IEvaluationContext context) {
 		// Built-in functions
-		if ("random".equals(variable)) {
+		if (FloatExpression.RESERVED_WORD_RANDOM.equals(variable)) {
 			return (float) Math.random();
-		} else if ("dice10".equals(variable)) {
+		} else if (FloatExpression.RESERVED_WORD_DICE10.equals(variable)) {
 			return Hasard.rand(10);
 		} else {
 			// Context specific
