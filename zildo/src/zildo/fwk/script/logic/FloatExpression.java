@@ -19,6 +19,8 @@ public class FloatExpression {
 	
 	protected static final String RESERVED_WORD_RANDOM = "random";
 	protected static final String RESERVED_WORD_DICE10 = "dice10";
+	protected static final String RESERVED_WORD_ZILDOX = "zildo.x";
+	protected static final String RESERVED_WORD_ZILDOY = "zildo.y";
 	
 	private FloatASTNode entireExp;
 	

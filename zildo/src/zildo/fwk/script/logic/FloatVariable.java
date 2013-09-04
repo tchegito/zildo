@@ -20,6 +20,7 @@
 package zildo.fwk.script.logic;
 
 import zildo.monde.Hasard;
+import zildo.server.EngineZildo;
 
 
 /**
@@ -41,6 +42,10 @@ public class FloatVariable implements FloatASTNode {
 			return (float) Math.random();
 		} else if (FloatExpression.RESERVED_WORD_DICE10.equals(variable)) {
 			return Hasard.rand(10);
+		} else if (FloatExpression.RESERVED_WORD_ZILDOX.equals(variable)) {
+			return EngineZildo.persoManagement.getZildo().x;
+		} else if (FloatExpression.RESERVED_WORD_ZILDOY.equals(variable)) {
+			return EngineZildo.persoManagement.getZildo().y;
 		} else {
 			// Context specific
 			return context.getValue(variable);

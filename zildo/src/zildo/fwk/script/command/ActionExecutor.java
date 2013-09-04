@@ -51,6 +51,7 @@ import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
@@ -86,6 +87,7 @@ public class ActionExecutor {
     ScriptExecutor scriptExec;
     int count, nextStep;
     boolean locked;
+    SpriteEntity onStack;	// May be soft reference ?
 
 	final IEvaluationContext context;
 	
@@ -108,7 +110,7 @@ public class ActionExecutor {
         } else {
         	PersoZildo zildo;
         	Perso perso;
-        	if ("self".equals(p_action.who)) {
+        	if (context != null && "self".equals(p_action.who)) {
         		// Reserved word : perso himself, in case of a contextual script
         		perso = (Perso) context.getActor();
         	} else {
@@ -191,9 +193,25 @@ public class ActionExecutor {
                         ClientEngineZildo.mapDisplay.setTargetCamera(location);
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
                     } else {
-                    	SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
+                    	SpriteEntity entity;
+                    	if ("pop".equals(p_action.what)) {
+                    		entity = onStack;
+                    	} else {
+                    		entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
+                    	}
                     	if (entity != null) {
-                    		entity.setMover(new BasicMover(entity, location.x, location.y));
+                    		if ("PHYSIC".equals(p_action.text)) {	// Only works with element
+	                    		if (entity.getEntityType().isElement()) {
+	                    			Element elem = (Element) entity;
+	                    			// Normalize speed vector
+	                    			float distance = Point.distance(elem.x, elem.y, location.x, location.y);
+	                    			elem.vx = p_action.speed * (location.x - elem.x) / distance;
+	                    			elem.vy = p_action.speed * (location.y - elem.y) / distance;
+	                    			achieved = true;
+	                    		}
+                    		} else {
+                    			entity.setMover(new BasicMover(entity, location.x, location.y));
+                    		}
                     	}
                     }
                     break;
@@ -311,6 +329,11 @@ public class ActionExecutor {
 	                		if (p_action.alphaA != null) {
 	                			elem.alphaA = p_action.alphaA.evaluate(context);
 	                		}
+	                		if (p_action.shadow != null) {
+		                		ElementDescription descShadow = (ElementDescription) SpriteDescription.Locator.findNamedSpr(p_action.shadow);
+	                			elem.addShadow(descShadow);
+	                		}
+	                		onStack = elem;	// Keep element for next actions
                 		}
                 	}
                     achieved = true;

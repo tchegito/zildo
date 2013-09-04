@@ -69,6 +69,7 @@ public class ActionElement extends AnyElement {
 	public float speed;
 	public boolean activate;
 	public String action;	// To run a PersoAction, with "perso" ActionKind
+	public String shadow;	// Only used in "spawn"
 	
 	private ZSSwitch switchExpression;
 	
@@ -112,6 +113,7 @@ public class ActionElement extends AnyElement {
 			if (temp != null) {
 				z = new FloatExpression(temp);
 			}
+			shadow = readAttribute("shadow");
 		case animation:
 		case impact:
 			location = IPoint.fromString(strPos);
@@ -139,6 +141,7 @@ public class ActionElement extends AnyElement {
 		case moveTo:
 			backward = isTrue("backward");
 			open = isTrue("open");
+			text = readAttribute("way");
 		case pos:
 			// Position
 			if (!strPos.isEmpty()) {
