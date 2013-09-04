@@ -20,6 +20,7 @@
 package zildo.monde.sprites.utils;
 
 import zildo.client.sound.BankSound;
+import zildo.fwk.ZUtils;
 import zildo.monde.Hasard;
 
 /**
@@ -30,9 +31,10 @@ import zildo.monde.Hasard;
 public class SoundGetter {
 
 	final BankSound start;
-	final BankSound out;	// The next sound after given end
+	final int end;	// The next sound index after given end
     private BankSound currentSnd;
 	int duration;
+	long lastTime = 0;
 	
     boolean shuffle;	// TRUE=random sound, but different than the previous one
     
@@ -42,7 +44,7 @@ public class SoundGetter {
 	
 	public SoundGetter(BankSound p_start, BankSound p_end, int p_duration, boolean p_shuffle) {
 		start = p_start;
-		out = p_end.next();
+		end = p_end.ordinal();
 		
 		duration = p_duration;
 		
@@ -61,17 +63,32 @@ public class SoundGetter {
     		int chosen = currentSnd.ordinal();
     		int previous = chosen;
     		while (chosen == previous) {
-    			chosen = Hasard.rangeInt(start.ordinal(), out.ordinal() - 1);
+    			chosen = Hasard.rangeInt(start.ordinal(), end);
     		}
     		next = BankSound.values()[chosen];
     	} else {
     		// Picks the following sound, wrapping if necessary
-	        next = currentSnd.next();
-	        if (next == out) {
-	        	next = start;
-	        }
+    		if (currentSnd.ordinal() == end) {
+    			next = start;
+    		} else {
+    			next = currentSnd.next();
+    		}
     	}
         currentSnd = next;
         return next;
+    }
+    
+    /**
+     * Returns the next sound, considering a delay between last one at least equals to 'duration'.<br/>
+     * If delay is not fullfilled, returns NULL.
+     * @return BankSound
+     */
+    public final BankSound getSingleSound() {
+    	long now = ZUtils.getTime();
+    	if (now > (lastTime + duration)) {
+    		lastTime = ZUtils.getTime();
+    		return getSound();
+    	}
+    	return null;
     }
 }

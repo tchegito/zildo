@@ -106,6 +106,7 @@ public abstract class Perso extends Element {
 	private Perso following; // Perso followed by this one
 
 	private static SoundGetter footWater = new SoundGetter(BankSound.ZildoPatauge, BankSound.ZildoPatauge2, 500);
+	private static SoundGetter footOnSqueak = new SoundGetter(BankSound.Squeak1, BankSound.Squeak2, 800, true);
 
 	private static TileCollision tileCollision = TileCollision.getInstance();
 	
@@ -697,6 +698,10 @@ public abstract class Perso extends Element {
 			if (isZildo()) {
 				beingWounded(x + deltaMoveX, y + deltaMoveY, null, 1);
 			}
+			break;
+		case 256*2 + 57:
+			// Squeaky floor
+			snd = footOnSqueak.getSingleSound();
 			break;
 		default:
 			if (isZildo() && bottomLess) {
