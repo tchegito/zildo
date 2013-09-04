@@ -247,9 +247,10 @@
 	</scene>
 	
 	<scene id="disturbVoleurs">
-		<lookFor who="zildo" radius="6" info="ENEMY">
+		<lookFor who="zildo" radius="8" info="ENEMY">
 		    <spawn type="TINY_ROCK1" pos="x,y"
-		           vx="2" vy="2" z="4" vz="1" az="-0.08"/>
+		           z="4" vz="1.2" az="-0.08" shadow="SHADOW_MINUS"/>
+		    <moveTo what="pop" pos="zildo.x+random*12-6,zildo.y+random*12-6" speed="1.6" way="PHYSIC"/>
 		</lookFor>
 		<wait value="50"/>
 	</scene>

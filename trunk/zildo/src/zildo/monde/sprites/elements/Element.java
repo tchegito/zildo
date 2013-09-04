@@ -273,6 +273,10 @@ public class Element extends SpriteEntity {
 		alphaV += alphaA;
 		alpha += alphaV;
 		
+		if (alpha < 0) {
+			fall();
+			dying = true;
+		}
 		if (mover != null && mover.isActive()) {
 			// Moving is delegated to another object
 			mover.reachTarget();
