@@ -133,7 +133,10 @@ public enum BankSound implements AudioBank {
 	Sort("sort"),
 	Switch("switch"),
 	LavaDrop("lavadrop"),
-	PeebleFloor("peeble");
+	PeebleFloor("peeble"),
+	
+	Squeak1("squeak1"),
+	Squeak2("squeak2");
 	
 	String filename;
 	
