@@ -52,6 +52,7 @@ public class TriggerElement extends AnyElement {
 	boolean immediate;	// TRUE=trigger is disabled just after activation (default:true)
 	Angle angle;
 	Gear gearType;
+	int tileValue;
 	
 	enum Gear {	// Type of mechanism (for LOCATION trigger only)
 		BUTTON,	// Button can be pressed
@@ -95,14 +96,9 @@ public class TriggerElement extends AnyElement {
 			if (gear != null) {
 				gearType = Gear.valueOf(gear);
 			}
-			String strPos = readAttribute("pos");
-			if (strPos != null) {
-				location = Point.fromString(strPos);
-			}
-			strPos = readAttribute("tilePos");
-			if (strPos != null) {
-				tileLocation = Point.fromString(strPos);
-			}
+			location = readPoint("pos");
+			tileLocation = readPoint("tilePos");
+			tileValue = readInt("tileValue", -1);
 			break;
 		case PUSH:
 			name = readAttribute("name");	// Name of element to push
@@ -153,10 +149,11 @@ public class TriggerElement extends AnyElement {
 			}
 			break;
 		case LOCATION:
-			//TODO: Take into account the 'mover' attribute for trigger element
 			if (p_another.name.equals(name)) {
-				if (p_another.location == null && mover == null && location == null && tileLocation == null) {
+				if (p_another.location == null && tileValue == -1 && mover == null && location == null && tileLocation == null) {
 					return true;
+				} else if (tileValue != -1) {
+					return tileValue == p_another.tileValue;
 				} else if (mover != null) {
 					return mover.equals(p_another.mover);
 				} else if (tileLocation != null && p_another.location != null) {
@@ -203,12 +200,11 @@ public class TriggerElement extends AnyElement {
 	}
 
 	public boolean isLocationSpecific() {
-		return kind == QuestEvent.LOCATION && name != null && (location != null || tileLocation != null || mover != null);
+		return kind == QuestEvent.LOCATION && name != null && (location != null || tileLocation != null || mover != null || tileValue != -1);
 	}
 
 	/**
-	 * The 'done' member isn't reliable, because of the QUESTDONE kind of
-	 * triggers.
+	 * The 'done' member isn't reliable, because of the QUESTDONE kind of triggers.
 	 * 
 	 * @return boolean
 	 */
@@ -261,10 +257,11 @@ public class TriggerElement extends AnyElement {
 	 * @param p_mapName
 	 * @param p_location (not mandatory)
 	 * @param p_mover name of the moving platform (not mandatory)
+	 * @param p_tileValue tile value (=nBank * 256 + nIndex)
 	 * @return TriggerElement
 	 */
 	public static TriggerElement createLocationTrigger(String p_mapName,
-			Point p_location, String p_mover) {
+			Point p_location, String p_mover, int p_tileValue) {
 		TriggerElement elem = new TriggerElement(QuestEvent.LOCATION);
 		elem.name = p_mapName;
 		if (p_location != null) {
@@ -273,6 +270,7 @@ public class TriggerElement extends AnyElement {
 		if (p_mover != null) {
 			elem.mover = p_mover;
 		}
+		elem.tileValue = p_tileValue;
 		return elem;
 	}
 

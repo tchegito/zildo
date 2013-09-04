@@ -35,8 +35,10 @@ import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.logic.IEvaluationContext;
+import zildo.fwk.script.logic.SpriteEntityContext;
 import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.LookforElement;
 import zildo.fwk.script.xml.element.TimerElement;
 import zildo.fwk.ui.UIText;
 import zildo.monde.items.Item;
@@ -57,7 +59,6 @@ import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.monde.sprites.persos.ia.BasicMover;
@@ -69,9 +70,14 @@ import zildo.monde.util.Vector3f;
 import zildo.server.EngineZildo;
 
 /**
- * Class splitted from ScriptExecutor, in order to clarify things.
- * <p/>
- * This class has just to render one action.
+ * <p>Class splitted from ScriptExecutor, in order to clarify things.
+ * </p>
+ * This class has just to render one action.<br/>
+ * <br/>
+ * <b>PROBLEM</b>:This class has a critical problem, based upon repetition. If more than one script is running the same sequence of actions,
+ * we won't be able to distinguish wich process is done or not. Because the 'done' state is marked inside the ActionElement, which is
+ * the descriptor AND the statefull script. This should be two distinct objects.
+ * 
  * @author tchegito
  */
 
@@ -514,7 +520,7 @@ public class ActionExecutor {
                 			EngineZildo.spriteManagement.spawnPerso(perso);
                 		}
                 		if (p_action.info != null) {
-                			perso.setInfo(PersoInfo.valueOf(p_action.info));
+                			perso.setInfo(p_action.info);
                 		}
                 		if (p_action.effect != null) {
                 			perso.setEffect(p_action.effect);
@@ -532,6 +538,16 @@ public class ActionExecutor {
                 case timer:
                 	count = 0;
             		nextStep = (int) ((TimerElement)p_action).each.evaluate(context);
+                	break;
+                case lookFor: // Look for a character around another inside a given radius
+                	LookforElement lookFor = (LookforElement) p_action;
+                	Perso found = EngineZildo.persoManagement.lookFor(perso, lookFor.radius, p_action.info);
+                	if (found != null) {
+                		IEvaluationContext persoContext = new SpriteEntityContext(found);
+                    	EngineZildo.scriptManagement.execute(lookFor.actions, false, null, false, persoContext);
+                	} else {
+                		achieved = true;
+                	}
                 	break;
             }
 
@@ -597,6 +613,11 @@ public class ActionExecutor {
             	} else {
             		count++;
             	}
+            	break;
+            case lookFor:
+            	LookforElement lookFor = (LookforElement) p_action;
+            	int last = lookFor.actions.size() - 1;
+            	achieved = lookFor.actions.get(last).done;
             	break;
         }
         p_action.waiting = !achieved;

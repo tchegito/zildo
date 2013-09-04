@@ -22,6 +22,8 @@ package zildo.fwk.script.xml.element;
 
 import org.w3c.dom.Element;
 
+import zildo.monde.util.Point;
+
 public abstract class AnyElement {
 
 	enum XmlElementKind {
@@ -32,7 +34,8 @@ public abstract class AnyElement {
 		mapscript(MapscriptElement.class),
 		condition(ConditionElement.class),
 		persoaction(PersoActionElement.class),
-		timer(TimerElement.class);
+		timer(TimerElement.class),
+		lookfor(LookforElement.class);
 		
 		Class<? extends AnyElement> clazz;
 		
@@ -115,6 +118,15 @@ public abstract class AnyElement {
     	int result = readInt(p_attrName, defaultValue);
     	this.xmlElement = save;
     	return result;
+    }
+    
+    protected Point readPoint(String p_attrName) {
+    	String strPos = readAttribute(p_attrName);
+		if (strPos != null) {
+			return Point.fromString(strPos);
+		} else {
+			return null;
+		}
     }
     
     /**

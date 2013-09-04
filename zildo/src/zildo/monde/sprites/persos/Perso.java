@@ -588,7 +588,7 @@ public abstract class Perso extends Element {
 				boolean justLinked = entity.getMover().linkEntity(this);
 				if (justLinked) {
 					String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
-					TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName());
+					TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName(), -1);
 					EngineZildo.scriptManagement.trigger(trigger);
 				}
 				// Be careful : 'return' here, means that no trigger could be activated
@@ -733,7 +733,7 @@ public abstract class Perso extends Element {
 		// Trigger "LOCATION" only in single player
 		if (!EngineZildo.game.multiPlayer && isZildo()) {
 			String mapName = area.getName();
-			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x, y), null);
+			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x, y), null, onmap);
 			EngineZildo.scriptManagement.trigger(trig);
 		}
 		return slowDown;
