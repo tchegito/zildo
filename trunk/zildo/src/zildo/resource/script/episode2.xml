@@ -73,6 +73,15 @@
         </action>
     </quest>
     
+    <quest name="squeaky_floor_voleurs" repeat="true" locked="false">
+        <trigger>	<!-- 2*256 + 57 = 569 --> 
+            <location name="voleursm1" tileValue="569"/>
+        </trigger>
+        <action>
+            <exec script="disturbVoleurs"/>
+        </action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -235,6 +244,14 @@
 	    <wait value="100"/>
 	    <moveTo what="platform2" pos="0,-128" delta="true" speed="2"/>
 	    <wait value="10"/>
+	</scene>
+	
+	<scene id="disturbVoleurs">
+		<lookFor who="zildo" radius="6" info="ENEMY">
+		    <spawn type="TINY_ROCK1" pos="x,y"
+		           vx="2" vy="2" z="4" vz="1" az="-0.08"/>
+		</lookFor>
+		<wait value="50"/>
 	</scene>
 	
 	<persoAction id="sleeping">

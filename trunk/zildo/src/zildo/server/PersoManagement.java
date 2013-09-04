@@ -29,6 +29,7 @@ import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoBat;
 import zildo.monde.sprites.persos.PersoFireThing;
 import zildo.monde.sprites.persos.PersoFox;
@@ -46,6 +47,7 @@ import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.ia.PathFinderBee;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 
 //////////////////////////////////////////////////////////////////////
 // PersoManagement
@@ -241,5 +243,22 @@ public class PersoManagement {
 
         return perso;
     }
-	
+
+	/**
+	 * Return the first discoverd character inside a circular zone around a given character.
+	 * @param p_looker Looking character
+	 * @param radius radius of the circular zone
+	 * @return Perso
+	 */
+	public Perso lookFor(Perso p_looker, int radius, PersoInfo p_info) {
+		for (Perso p : tab_perso) {
+			if (p != p_looker && (p_info == null || p.getInfo() == p_info)) {
+				double distance = Point.distance(p_looker.x,  p_looker.y, p.x, p.y);
+				if (distance < radius * 16) {
+					return p;
+				}
+			}
+		}
+		return null;
+	}
 }

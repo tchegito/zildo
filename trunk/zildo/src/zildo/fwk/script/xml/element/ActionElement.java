@@ -25,6 +25,7 @@ import org.w3c.dom.Element;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.model.point.IPoint;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 
 public class ActionElement extends AnyElement {
 
@@ -33,7 +34,7 @@ public class ActionElement extends AnyElement {
 		map, focus, spawn, exec, take, mapReplace, zikReplace, music, animation, impact, remove, 
 		markQuest, putDown, attack, activate,
 		tile, filter, end, visible, respawn, zoom, herospecial, perso,
-		timer;
+		timer, lookFor;
 
 		public static ActionKind fromString(String p_name) {
 			for (ActionKind kind : values()) {
@@ -64,7 +65,7 @@ public class ActionElement extends AnyElement {
 	public int rotation;
 	public int attente;
 	public FloatExpression z;	// Z coordinate for location
-	public String info;	// PersoInfo
+	public PersoInfo info;	// PersoInfo
 	public float speed;
 	public boolean activate;
 	public String action;	// To run a PersoAction, with "perso" ActionKind
@@ -119,7 +120,10 @@ public class ActionElement extends AnyElement {
 			}
 		case perso:
 			text = readAttribute("type");
-			info = readAttribute("info");
+			String strInfo = readAttribute("info");
+			if (strInfo != null) {
+				info = PersoInfo.valueOf(strInfo);
+			}
 			attente = readInt("attente", -1);
 			action = readAttribute("action");
 			break;
