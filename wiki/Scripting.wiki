@@ -51,6 +51,7 @@ A trigger can be of 6 different kinds : (corresponding to [http://code.google.co
    * tilePos: location, in tile coordinates
    * gear: mechanism type (BUTTON, TIMED_BUTTON)
    * mover: name of a moving platform
+   * tileValue: a value for a given tile (bank*256 + index)
  * *dialog* : when a specific character say a given sentence
  * *inventory* : does Zildo have a given item ?
  * *questDone* : has Zildo achieved a given quest ?
@@ -94,6 +95,8 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || zoom || text || - || - || - || Set a character's zoom attribute (0..255) where 255 is full size ||
 || herospecial || text || - || - || - || Special actions about hero, set accordingly with 'value'. 0=> Hero gains 1 blue drop, and loose 2 moon fragments. ||
 || perso || text || - || - || - || Change some character's attributes : type, info, fx. ||
+|| timer || text || - || - || - || Do a repetition of actions on a desired rate. ||
+|| lookFor || text || - || - || - || Look for some characters around another, with a desired radius. The first discovered one become the new context for nested action elements. ||
 
 === Multithread ===
 
