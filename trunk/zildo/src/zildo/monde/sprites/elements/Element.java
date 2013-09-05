@@ -30,6 +30,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
@@ -403,10 +404,17 @@ public class Element extends SpriteEntity {
 	public void setSprModel(ElementDescription p_desc, int p_addSpr) {
 		setSprModel(p_desc);
 		addSpr = p_addSpr;
-		this.setSprModel(EngineZildo.spriteManagement.getSpriteBank(nBank)
+		setSprModel(EngineZildo.spriteManagement.getSpriteBank(nBank)
 				.get_sprite(p_desc.ordinal() + p_addSpr));
 	}
 
+	public void setSprModel(PersoDescription p_desc, int p_addSpr) {
+		setNBank(p_desc.getBank());
+		setNSpr(p_desc.nth(p_addSpr));
+		//addSpr = p_desc.nth(p_addSpr);
+		setSprModel(EngineZildo.spriteManagement.getSpriteBank(nBank)
+				.get_sprite(nSpr));
+	}
 	public float getX() {
 		return x;
 	}

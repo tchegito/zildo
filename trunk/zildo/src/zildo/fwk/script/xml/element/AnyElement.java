@@ -22,6 +22,9 @@ package zildo.fwk.script.xml.element;
 
 import org.w3c.dom.Element;
 
+import zildo.fwk.script.xml.element.action.ActionsElement;
+import zildo.fwk.script.xml.element.action.LookforElement;
+import zildo.fwk.script.xml.element.action.TimerElement;
 import zildo.monde.util.Point;
 
 public abstract class AnyElement {

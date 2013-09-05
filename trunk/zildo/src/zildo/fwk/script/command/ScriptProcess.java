@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.script.logic.IEvaluationContext;
-import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.SceneElement;
+import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
@@ -86,5 +86,10 @@ public class ScriptProcess {
 			zildo.y=duplicateZildo.y;
 			zildo.z=duplicateZildo.z;
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return "["+cursor+" on "+scene.toString()+"]";
 	}
 }

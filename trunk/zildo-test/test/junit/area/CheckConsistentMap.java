@@ -63,6 +63,7 @@ public class CheckConsistentMap {
 					case SQUELETTE:
 					case VAUTOUR:
 					case VOLANT_BLEU:
+					case FOX:
 						shouldBeEnemy = true;
 					}
 					Assert.assertTrue("Aaaaie ! "+p.getName()+" ("+p.getDesc()+") at ("+(int) p.getX()+","+(int) p.getY()+") should be enemy !", realEnemy == shouldBeEnemy);

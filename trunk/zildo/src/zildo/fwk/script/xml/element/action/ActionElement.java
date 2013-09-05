@@ -18,13 +18,14 @@
  *
  */
 
-package zildo.fwk.script.xml.element;
+package zildo.fwk.script.xml.element.action;
 
 import org.w3c.dom.Element;
 
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.model.point.IPoint;
+import zildo.fwk.script.xml.element.AnyElement;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 
 public class ActionElement extends AnyElement {
@@ -34,7 +35,7 @@ public class ActionElement extends AnyElement {
 		map, focus, spawn, exec, take, mapReplace, zikReplace, music, animation, impact, remove, 
 		markQuest, putDown, attack, activate,
 		tile, filter, end, visible, respawn, zoom, herospecial, perso,
-		timer, lookFor;
+		timer, lookFor, launch;
 
 		public static ActionKind fromString(String p_name) {
 			for (ActionKind kind : values()) {
@@ -59,7 +60,9 @@ public class ActionElement extends AnyElement {
 	public Boolean foreground = false;	// Is sprite/perso on foreground?
 	public ActionKind kind;
 	public IPoint location;
+	public IPoint target;	// For 'launch' action
 	public String text;
+	public String way;	// For 'launch' action
 	public int val;
 	public int reverse;
 	public int rotation;
@@ -105,6 +108,9 @@ public class ActionElement extends AnyElement {
 		String strPos = p_elem.getAttribute("pos");
 		String strAngle = p_elem.getAttribute("angle");
 		switch (kind) {
+		case launch:
+			target = IPoint.fromString(readAttribute("to"));
+			way = readAttribute("way");
 		case spawn:
 			delta = isTrue("delta");
 			reverse = readInt("reverse");
@@ -201,7 +207,7 @@ public class ActionElement extends AnyElement {
 		}
 		
 		// As several variables are used for different usage (which is bad), make specific here
-		if (kind == ActionKind.spawn) {
+		if (kind == ActionKind.spawn || kind == ActionKind.launch) {
 			switchExpression = ZSSwitch.parseForDialog(text);
 			// Read V,A and F coordinates
 			v = read3Coordinates("v");

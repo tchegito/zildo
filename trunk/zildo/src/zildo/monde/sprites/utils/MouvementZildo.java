@@ -20,21 +20,29 @@
 
 package zildo.monde.sprites.utils;
 
+/**
+ * Character's movements (at the beginning, it was only for hero)<br/>
+ * <br/>
+ * Be careful, because these names are used inside the XML scripts. So it would be dangerous to modify them.
+ * 
+ * @author tchegito
+ *
+ */
 public enum MouvementZildo {
 	
-	// Mouvements de Zildo
+	// 
 	VIDE,
 	SOULEVE,
 	BRAS_LEVES,
-	TIRE,			// Pas à l'arc : pousser/tirer
+	TIRE,			// Not with a bow : push/pull
 	POUSSE,
 	ATTAQUE_EPEE,
 	ATTAQUE_ARC,
     ATTAQUE_BOOMERANG,
     ATTAQUE_ROCKBAG,
-    TOUCHE,   	// Quand Zildo se fait toucher
-	SAUTE,   		// Zildo saute une colline ! -> inactif pendant le saut
-	FIERTEOBJET,	// Zildo brandit fièrement un objet
+    TOUCHE,   	// Character being wounded
+	SAUTE,   		// Jump from a higher ground ! -> inactive during jump
+	FIERTEOBJET,	// hero proudly brandish proudly an object
 	MORT,
 	TOMBE,	// Falling in a pit
 	PLAYING_FLUT;

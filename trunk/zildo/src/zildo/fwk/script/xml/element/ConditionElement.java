@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.script.xml.element.action.ActionElement;
 
 public class ConditionElement extends AnyElement {
 
