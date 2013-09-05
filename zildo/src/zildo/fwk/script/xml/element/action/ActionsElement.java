@@ -18,7 +18,7 @@
  *
  */
 
-package zildo.fwk.script.xml.element;
+package zildo.fwk.script.xml.element.action;
 
 import java.util.List;
 

@@ -36,10 +36,10 @@ import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.logic.IEvaluationContext;
 import zildo.fwk.script.logic.SpriteEntityContext;
-import zildo.fwk.script.xml.element.ActionElement;
-import zildo.fwk.script.xml.element.ActionElement.ActionKind;
-import zildo.fwk.script.xml.element.LookforElement;
-import zildo.fwk.script.xml.element.TimerElement;
+import zildo.fwk.script.xml.element.action.ActionElement;
+import zildo.fwk.script.xml.element.action.LookforElement;
+import zildo.fwk.script.xml.element.action.TimerElement;
+import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
 import zildo.fwk.ui.UIText;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -87,7 +87,6 @@ public class ActionExecutor {
     ScriptExecutor scriptExec;
     int count, nextStep;
     boolean locked;
-    SpriteEntity onStack;	// May be soft reference ?
 
 	final IEvaluationContext context;
 	
@@ -194,11 +193,7 @@ public class ActionExecutor {
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
                     } else {
                     	SpriteEntity entity;
-                    	if ("pop".equals(p_action.what)) {
-                    		entity = onStack;
-                    	} else {
-                    		entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
-                    	}
+                   		entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
                     	if (entity != null) {
                     		if ("PHYSIC".equals(p_action.text)) {	// Only works with element
 	                    		if (entity.getEntityType().isElement()) {
@@ -207,6 +202,9 @@ public class ActionExecutor {
 	                    			float distance = Point.distance(elem.x, elem.y, location.x, location.y);
 	                    			elem.vx = p_action.speed * (location.x - elem.x) / distance;
 	                    			elem.vy = p_action.speed * (location.y - elem.y) / distance;
+	                    			// calculate z
+	                    			float finalT = distance / p_action.speed;
+	                    			elem.vz = (float) -(finalT * elem.az) / 2;
 	                    			achieved = true;
 	                    		}
                     		} else {
@@ -286,57 +284,8 @@ public class ActionExecutor {
                     achieved = !p_action.delta || p_action.unblock;
                     break;
                 case spawn:	// Spawn a new character
-                	if (p_action.who != null) {
-                		PersoDescription desc = PersoDescription.valueOf(p_action.getSpawnType());
-                		Perso newOne = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, p_action.who, p_action.val);
-                       	newOne.setSpeed(p_action.speed);
-                       	newOne.setEffect(p_action.effect);
-                       	newOne.initPersoFX();
-                        EngineZildo.spriteManagement.spawnPerso(newOne);
-                	} else {	// Spawn a new element
-                		if (EngineZildo.spriteManagement.getNamedElement(p_action.what) == null) {
-                			// Spawn only if doesn't exist yet
-	                		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
-	                		Reverse rev = Reverse.fromInt(p_action.reverse);
-	                		Rotation rot = Rotation.fromInt(p_action.rotation);
-	                		Element elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0, rev, rot);
-	                		elem.setName(p_action.what);
-	                		if (p_action.effect != null) {
-	                			elem.setSpecialEffect(EngineFX.valueOf(p_action.effect));
-	                		}
-	                		if (p_action.foreground != null) {
-	                			elem.setForeground(p_action.foreground);
-	                		}
-	                		// Physics attributes
-	                		if (p_action.v != null) {	// Speed
-		                		elem.vx = convenientFloatEvaluation(p_action.v[0]);
-		                		elem.vy = convenientFloatEvaluation(p_action.v[1]);
-		                		elem.vz = convenientFloatEvaluation(p_action.v[2]);
-	                		}
-	                		if (p_action.a != null) {	// Acceleration
-		                		elem.ax = convenientFloatEvaluation(p_action.a[0]);
-		                		elem.ay = convenientFloatEvaluation(p_action.a[1]);
-		                		elem.az = convenientFloatEvaluation(p_action.a[2]);
-	                		}
-	                		if (p_action.f != null) {	// Friction
-		                		elem.fx = convenientFloatEvaluation(p_action.f[0]);
-		                		elem.fy = convenientFloatEvaluation(p_action.f[1]);
-		                		elem.fz = convenientFloatEvaluation(p_action.f[2]);
-	                		}
-	                		if (p_action.z != null) {
-	                			elem.z = p_action.z.evaluate(context);
-	                		}
-	                		if (p_action.alphaA != null) {
-	                			elem.alphaA = p_action.alphaA.evaluate(context);
-	                		}
-	                		if (p_action.shadow != null) {
-		                		ElementDescription descShadow = (ElementDescription) SpriteDescription.Locator.findNamedSpr(p_action.shadow);
-	                			elem.addShadow(descShadow);
-	                		}
-	                		onStack = elem;	// Keep element for next actions
-                		}
-                	}
-                    achieved = true;
+                	actionSpawn(p_action, location, false);
+                	achieved = true;
                     break;
                 case impact:
                 	ImpactKind impactKind = ImpactKind.valueOf(p_action.text);
@@ -572,6 +521,25 @@ public class ActionExecutor {
                 		achieved = true;
                 	}
                 	break;
+                case launch:
+                	Element elem = actionSpawn(p_action, location, true);	// Ignore 'who' because it's for the throw
+                	location = p_action.target.getPoint();
+                	// Turn character in the right direction
+                	perso.sight(EngineZildo.persoManagement.getZildo(), true);
+                	if ("BELL".equals(p_action.way)) {
+            			// Normalize speed vector
+            			float distance = Point.distance(elem.x, elem.y, location.x, location.y);
+            			elem.vx = p_action.speed * (location.x - elem.x) / distance;
+            			elem.vy = p_action.speed * (location.y - elem.y) / distance;
+            			// calculate z
+            			float finalT = distance / p_action.speed;
+            			elem.vz = (float) -(finalT * elem.az) / 2;
+                	}
+                	elem.setLinkedPerso(perso);
+                	elem.flying = true;
+                	elem.setAngle(Angle.EST);
+        			achieved = true;
+                	break;
             }
 
             p_action.done = achieved;
@@ -653,5 +621,60 @@ public class ActionExecutor {
     	} else {
     		return expr.evaluate(context);
     	}
+    }
+
+    private Element actionSpawn(ActionElement p_action, Point location, boolean p_ignoreWho) {
+    	Element elem = null;
+    	if (!p_ignoreWho && p_action.who != null) {
+    		PersoDescription desc = PersoDescription.valueOf(p_action.getSpawnType());
+    		elem = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, p_action.who, p_action.val);
+    		Perso perso = (Perso) elem;
+    		perso.setSpeed(p_action.speed);
+    		perso.setEffect(p_action.effect);
+    		perso.initPersoFX();
+            EngineZildo.spriteManagement.spawnPerso(perso);
+    	} else {	// Spawn a new element
+    		if (EngineZildo.spriteManagement.getNamedElement(p_action.what) == null) {
+    			// Spawn only if doesn't exist yet
+        		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
+        		Reverse rev = Reverse.fromInt(p_action.reverse);
+        		Rotation rot = Rotation.fromInt(p_action.rotation);
+        		elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0, rev, rot);
+        		elem.setName(p_action.what);
+        		if (p_action.effect != null) {
+        			elem.setSpecialEffect(EngineFX.valueOf(p_action.effect));
+        		}
+        		if (p_action.foreground != null) {
+        			elem.setForeground(p_action.foreground);
+        		}
+        		// Physics attributes
+        		if (p_action.v != null) {	// Speed
+            		elem.vx = convenientFloatEvaluation(p_action.v[0]);
+            		elem.vy = convenientFloatEvaluation(p_action.v[1]);
+            		elem.vz = convenientFloatEvaluation(p_action.v[2]);
+        		}
+        		if (p_action.a != null) {	// Acceleration
+            		elem.ax = convenientFloatEvaluation(p_action.a[0]);
+            		elem.ay = convenientFloatEvaluation(p_action.a[1]);
+            		elem.az = convenientFloatEvaluation(p_action.a[2]);
+        		}
+        		if (p_action.f != null) {	// Friction
+            		elem.fx = convenientFloatEvaluation(p_action.f[0]);
+            		elem.fy = convenientFloatEvaluation(p_action.f[1]);
+            		elem.fz = convenientFloatEvaluation(p_action.f[2]);
+        		}
+        		if (p_action.z != null) {
+        			elem.z = p_action.z.evaluate(context);
+        		}
+        		if (p_action.alphaA != null) {
+        			elem.alphaA = p_action.alphaA.evaluate(context);
+        		}
+        		if (p_action.shadow != null) {
+            		ElementDescription descShadow = (ElementDescription) SpriteDescription.Locator.findNamedSpr(p_action.shadow);
+        			elem.addShadow(descShadow);
+        		}
+    		}
+    	}    	
+    	return elem;
     }
 }

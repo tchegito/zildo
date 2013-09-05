@@ -17,43 +17,52 @@
  *
  */
 
-package zildo.fwk.script.xml.element;
+package zildo.fwk.script.xml.element.action;
 
 import java.util.List;
 
 import org.w3c.dom.Element;
 
+import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.ScriptReader;
-import zildo.monde.sprites.persos.Perso.PersoInfo;
-
 
 /**
+ * Particular action : timer.<br/>
+ * 
+ * Consists of a set of actions to run every 'each' frame, a stop condition, and another set of actions
+ * to execute when end condition is reached.
+ * 
  * @author Tchegito
  *
  */
-public class LookforElement extends ActionElement {
+public class TimerElement extends ActionElement {
+
+	public FloatExpression each;
+	public FloatExpression endCondition;
 
 	public List<ActionElement> actions;
-	public int radius;
-	
-	public LookforElement() {
+	public List<ActionElement> end;
+
+	public TimerElement() {
     	super(null);
-    	kind = ActionKind.lookFor;
+    	kind = ActionKind.timer;
     }
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
 		xmlElement = p_elem;
-
-		who = readAttribute("who");
-		radius = readInt("radius");
-		String strInfo = readAttribute("info");
-		if (strInfo != null) {
-			info = PersoInfo.valueOf(strInfo);
-		}
 		
-		actions = (List<ActionElement>) ScriptReader.parseNodes(xmlElement);
+			//TimerElement(int each, List<ActionElement> actions, String endCondition, List<ActionElement> end) {
+		Element actionsContainer = ScriptReader.getChildNamed(p_elem, "action");
+		Element endContainer = ScriptReader.getChildNamed(p_elem, "end");
+
+		actions = (List<ActionElement>) ScriptReader.parseNodes(actionsContainer);
+		end = (List<ActionElement>) ScriptReader.parseNodes(endContainer);
+		
+		each = new FloatExpression(readAttribute("each"));
+		if (endContainer != null) {
+			endCondition = new FloatExpression(endContainer.getAttribute("when"));
+		}
 	}
-	
 }

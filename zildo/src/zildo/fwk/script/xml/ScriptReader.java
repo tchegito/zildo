@@ -32,8 +32,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import zildo.fwk.script.xml.element.ActionElement;
-import zildo.fwk.script.xml.element.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.action.ActionElement;
+import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
 import zildo.fwk.script.xml.element.AnyElement;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.quest.QuestEvent;

@@ -126,7 +126,7 @@ public class CollideManagement {
             PersoZildo zildo = state.zildo;
             Perso damager = p_colli.perso;
             // Zildo can't damage himself, excepted with explosion
-            if (damager == null || !damager.equals(zildo) || p_colli.damageType == DamageType.EXPLOSION) {
+            if (zildo != null && (damager == null || !damager.equals(zildo) || p_colli.damageType == DamageType.EXPLOSION)) {
                 checkZildoWound(state.zildo, p_colli);
             }
         }

@@ -11,9 +11,9 @@ import javax.swing.table.DefaultTableModel;
 
 import zildo.fwk.ZUtils;
 import zildo.fwk.script.xml.ScriptWriter;
-import zildo.fwk.script.xml.element.ActionElement;
-import zildo.fwk.script.xml.element.ActionsElement;
-import zildo.fwk.script.xml.element.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.action.ActionElement;
+import zildo.fwk.script.xml.element.action.ActionsElement;
+import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.utils.MouvementPerso;

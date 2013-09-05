@@ -86,7 +86,7 @@ public enum PersoDescription implements SpriteDescription {
 	SINGER(230),
 	FIRETHING(232, 233, 234, 235),
 	RAT(242, 243, 238, 239, 236, 237, 240, 241),
-	FOX(248, 249, 246, 247, 244, 245, 256, 257),
+	FOX(248, 249, 246, 247, 244, 245, 256, 257, 258),
 	SORCERER(250, 251),
 	BROWN_CAT(76, 77, 6),
 	GREY_CAT(78, 79, 7),

@@ -15,9 +15,9 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import zildo.fwk.script.xml.element.ActionElement;
 import zildo.fwk.script.xml.element.SceneElement;
-import zildo.fwk.script.xml.element.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.action.ActionElement;
+import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
 
 public class ScriptWriter {
 

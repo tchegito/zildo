@@ -134,7 +134,7 @@ public class SpriteBank {
 					}
 				}
 			} else { // name = pnj2.spr
-				if ((nSpr>=(244-128) && nSpr<=(249-128)) || nSpr == 256-128 || nSpr == 257-128) {
+				if ((nSpr>=(244-128) && nSpr<=(249-128)) || nSpr == 256-128 || nSpr == 258-128) {
 					if (color == 172) {
 						toaff = 0xff + (127 << 24);
 					} else if (color == 171) {

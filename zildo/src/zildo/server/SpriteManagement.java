@@ -161,11 +161,10 @@ public class SpriteManagement extends SpriteStore {
 		return spawnElement(desc.getBank(), desc.getNSpr(), x, y, z, reverse, rotation);
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// spawnPerso
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// IN:Perso object
-	// /////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Spawn a character, and all his linked "persoSprites".
+	 * @param perso
+	 */
 	public void spawnPerso(Perso perso) {
 		SpriteEntity entity = perso;
 		entity.setScrX((int) perso.x);

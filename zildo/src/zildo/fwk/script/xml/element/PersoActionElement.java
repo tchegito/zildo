@@ -24,6 +24,7 @@ import java.util.List;
 import org.w3c.dom.Element;
 
 import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.script.xml.element.action.ActionElement;
 
 /**
  * Handle an action linked to a given character (Perso).<br/>

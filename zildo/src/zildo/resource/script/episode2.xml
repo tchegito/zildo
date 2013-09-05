@@ -248,9 +248,13 @@
 	
 	<scene id="disturbVoleurs">
 		<lookFor who="zildo" radius="8" info="ENEMY">
-		    <spawn type="TINY_ROCK1" pos="x,y"
-		           z="4" vz="1.2" az="-0.08" shadow="SHADOW_MINUS"/>
-		    <moveTo what="pop" pos="zildo.x+random*12-6,zildo.y+random*12-6" speed="1.6" way="PHYSIC"/>
+            <wait value="4"/>
+            <sound name="ZildoLance"/> 
+            <script who="self" text="BRAS_LEVES"/>
+		    <launch who="self" pos="x+7, y+4" to="zildo.x+random*12-6,zildo.y+random*12-6" speed="1.6"
+       		 		type="ROCK_BALL" shadow="SHADOW_MINUS" z="16" az="-0.08" way="BELL"/>
+		    <wait value="20"/>
+		    <script who="self" text="VIDE"/>
 		</lookFor>
 		<wait value="50"/>
 	</scene>

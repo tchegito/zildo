@@ -30,10 +30,10 @@ import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.fwk.script.logic.IEvaluationContext;
-import zildo.fwk.script.xml.element.ActionElement;
-import zildo.fwk.script.xml.element.ActionsElement;
 import zildo.fwk.script.xml.element.AnyElement;
 import zildo.fwk.script.xml.element.SceneElement;
+import zildo.fwk.script.xml.element.action.ActionElement;
+import zildo.fwk.script.xml.element.action.ActionsElement;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
@@ -72,7 +72,6 @@ public class ScriptExecutor {
 	 */
 	public void render() {
 		if (!scripts.isEmpty()) {
-			
 			toTerminate.clear();
 			
 			// 1) Render current scripts
