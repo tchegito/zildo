@@ -82,6 +82,15 @@
         </action>
     </quest>
     
+    <quest name="squeaky_floor_voleurs" repeat="true" locked="false">
+        <trigger>
+            <location name="voleursm2" tileValue="569"/>
+        </trigger>
+        <action>
+            <exec script="disturbVoleurs"/>
+        </action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -136,6 +145,9 @@
 		<condition name="voleursm1">
 		    <perso who="rouge" action="sleeping"/>
 		    <perso who="violet" action="sleeping"/>
+		</condition>
+		<condition name="voleursm2">
+		    <perso who="vert" action="sleeping"/>
 		</condition>
 	</mapScript>
 
