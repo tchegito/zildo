@@ -81,24 +81,26 @@ public class PersoFox extends PersoShadowed {
 			}
 		}
 		
-		switch (mouvement) {
-		case BRAS_LEVES:
-			if (arm == null) {
-				arm = new Element(this);
-				arm.setSprModel(PersoDescription.FOX, 8);
-				arm.setSpecialEffect(this.getSpecialEffect());
-				addPersoSprites(arm);
-				EngineZildo.spriteManagement.spawnSprite(arm);
-			} else {
-				arm.setVisible(true);
-			}
-			arm.x = x + (angle == Angle.OUEST ? -7 : 7);
-			arm.y = y + 2;
-			break;
-		case VIDE:
-			if(arm != null) {
-				arm.setVisible(false);
-				arm = null;
+		if( mouvement != null) {
+			switch (mouvement) {
+			case BRAS_LEVES:
+				if (arm == null) {
+					arm = new Element(this);
+					arm.setSprModel(PersoDescription.FOX, 8);
+					arm.setSpecialEffect(this.getSpecialEffect());
+					addPersoSprites(arm);
+					EngineZildo.spriteManagement.spawnSprite(arm);
+				} else {
+					arm.setVisible(true);
+				}
+				arm.x = x + (angle == Angle.OUEST ? -7 : 7);
+				arm.y = y + 2;
+				break;
+			case VIDE:
+				if(arm != null) {
+					arm.setVisible(false);
+					arm = null;
+				}
 			}
 		}
 		PersoDescription d = (PersoDescription) desc;
