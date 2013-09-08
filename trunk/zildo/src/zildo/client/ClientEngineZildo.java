@@ -33,7 +33,6 @@ import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.BilinearFilter;
 import zildo.fwk.gfx.filter.CircleFilter;
-import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.fwk.opengl.SoundEngine;
