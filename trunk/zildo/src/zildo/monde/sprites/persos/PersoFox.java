@@ -107,4 +107,11 @@ public class PersoFox extends PersoShadowed {
 		this.setNSpr(d.nth(add_spr));
 		
 	}
+	
+	@Override
+	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
+		// Make fox invulnerable if sleeping (how coward it is to shoot a sleeping one ? ;) )
+		int damage = quel_deplacement == MouvementPerso.SLEEPING ? 0 : p_damage;
+		super.beingWounded(cx, cy, p_shooter, damage);
+	}
 }

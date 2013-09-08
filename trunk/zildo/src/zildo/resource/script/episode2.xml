@@ -82,7 +82,7 @@
         </action>
     </quest>
     
-    <quest name="squeaky_floor_voleurs" repeat="true" locked="false">
+    <quest name="squeaky_floor_voleurs2" repeat="true" locked="false">
         <trigger>
             <location name="voleursm2" tileValue="569"/>
         </trigger>

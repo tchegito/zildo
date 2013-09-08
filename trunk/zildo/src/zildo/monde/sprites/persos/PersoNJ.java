@@ -161,6 +161,7 @@ public class PersoNJ extends Perso {
 
 		// If character has a delegate action, then do nothing else
 		if (action != null) {
+			blinkIfWounded();
 			return;
 		}
 
@@ -172,18 +173,7 @@ public class PersoNJ extends Perso {
 		if (mouvement == MouvementZildo.SAUTE) {
 			moveJump();
 		} else {
-			if (px != 0.0f || py != 0.0f) {
-				// Le perso s'est fait toucher !}
-				Pointf location = tryMove(x + px, y + py);
-				x = location.x;
-				y = location.y;
-				px *= 0.9f;
-				py *= 0.9f;
-				setAttente(0);
-				if ((Math.abs(px) + Math.abs(py)) < 0.4f) {
-					this.stopBeingWounded();
-				}
-			}
+			blinkIfWounded();
 
 			move();
 		}
@@ -192,6 +182,20 @@ public class PersoNJ extends Perso {
 		}
 	}
 
+	private void blinkIfWounded() {
+		if (px != 0.0f || py != 0.0f) {
+			// Le perso s'est fait toucher !}
+			Pointf location = tryMove(x + px, y + py);
+			x = location.x;
+			y = location.y;
+			px *= 0.9f;
+			py *= 0.9f;
+			setAttente(0);
+			if ((Math.abs(px) + Math.abs(py)) < 0.4f) {
+				stopBeingWounded();
+			}
+		}		
+	}
 	/**
 	 * Move method for PNJ. Classes deriving from this one should override this method
 	 * for specific moves. Note that common one like projection, or target reaching and so on,
