@@ -44,6 +44,7 @@ import zeditor.core.selection.ChainingPointSelection;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
 import zildo.fwk.ZUtils.Conditioner;
+import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
@@ -60,9 +61,9 @@ public class ChainingPointPanel extends JPanel {
 	JTable pointsList;
 	ChainingPointTableModel model;
 	private final String[] columnNames = new String[] { "Carte", "Vertical",
-			"Bord", "Single", "Angle", "", "" };
-	private final int[] columnSizes = { 70, 40, 40, 40, 50, 40, 50 };
-
+			"Bord", "Single", "Angle", "Anim", "", "" };
+	private final int[] columnSizes = { 70, 30, 30, 30, 50, 60, 40, 45 };
+	
 	MasterFrameManager manager;
 
 	public ChainingPointPanel(MasterFrameManager p_manager) {
@@ -78,6 +79,7 @@ public class ChainingPointPanel extends JPanel {
 						ChainingPoint ch = new ChainingPoint();
 						ch.setMapname("nouveau");
 						ch.setComingAngle(Angle.NORD); // Default : north
+						ch.setTransitionAnim(FilterEffect.BLEND);
 						EngineZildo.mapManagement.getCurrentMap()
 								.addChainingPoint(ch);
 						manager.updateChainingPoints(null);
@@ -93,6 +95,7 @@ public class ChainingPointPanel extends JPanel {
 		if (pointsList == null) {
 
 			pointsList = new JTable(null, columnNames);
+			
 			pointsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 			pointsList.getSelectionModel().addListSelectionListener(
@@ -143,16 +146,26 @@ public class ChainingPointPanel extends JPanel {
 
 		// Set angle combo
 		TableColumn buttonColumn = pointsList.getColumnModel().getColumn(4);
-		JComboBox comboActions = new JComboBox(ZUtils.getValues(Angle.class, new Conditioner<Angle>() {
+		JComboBox comboAngle = new JComboBox(ZUtils.getValues(Angle.class, new Conditioner<Angle>() {
 			@Override
 			public boolean accept(Angle a) {
 				return !a.isDiagonal();
 			}
 		}));
-		buttonColumn.setCellEditor(new DefaultCellEditor(comboActions));		
+		buttonColumn.setCellEditor(new DefaultCellEditor(comboAngle));		
 
-		// Set buttons
+		// Set transition anim combo
 		buttonColumn = pointsList.getColumnModel().getColumn(5);
+		JComboBox comboActionsAnim = new JComboBox(ZUtils.getValues(FilterEffect.class, new Conditioner<FilterEffect>() {
+			@Override
+			public boolean accept(FilterEffect a) {
+				return a != FilterEffect.CLOUD;
+			}
+		}));
+		buttonColumn.setCellEditor(new DefaultCellEditor(comboActionsAnim));	
+		
+		// Set buttons
+		buttonColumn = pointsList.getColumnModel().getColumn(6);
 		buttonColumn.setCellRenderer(new ChainingPointCellRenderer(
 				new AbstractAction("X", null) {
 					@Override
@@ -165,7 +178,7 @@ public class ChainingPointPanel extends JPanel {
 					}
 				}));
 
-		buttonColumn = pointsList.getColumnModel().getColumn(6);
+		buttonColumn = pointsList.getColumnModel().getColumn(7);
 		buttonColumn.setCellRenderer(new ChainingPointCellRenderer(
 				new AbstractAction("Go", null) {
 					@Override
@@ -246,7 +259,7 @@ public class ChainingPointPanel extends JPanel {
 		 */
 		@Override
 		public boolean isCellEditable(int i, int j) {
-			if (j > 4) {
+			if (j > 5) {
 				return false;
 			}
 			return super.isCellEditable(i, j);
@@ -265,21 +278,25 @@ public class ChainingPointPanel extends JPanel {
 					int col = e.getColumn();
 					int row = e.getFirstRow();
 					ChainingPoint ch = points[row];
+					Object o = getValueAt(row, col);
 					switch (col) {
 					case 0: // mapname
-						ch.setMapname((String) getValueAt(row, col));
+						ch.setMapname((String) o);
 						break;
 					case 1: // vertical
-						ch.setVertical((Boolean) getValueAt(row, col));
+						ch.setVertical((Boolean) o);
 						break;
 					case 2: // bord
-						ch.setBorder((Boolean) getValueAt(row, col));
+						ch.setBorder((Boolean) o);
 						break;
 					case 3: // single
-						ch.setSingle((Boolean) getValueAt(row, col));
+						ch.setSingle((Boolean) o);
 						break;
 					case 4: // angle
-						ch.setComingAngle(Angle.valueOf((String) getValueAt(row, col)));
+						ch.setComingAngle(Angle.valueOf((String) o));
+						break;
+					case 5: // anim
+						ch.setTransitionAnim(FilterEffect.valueOf((String) o));
 						break;
 					}
 				}
@@ -297,7 +314,7 @@ public class ChainingPointPanel extends JPanel {
 
 		private static Object[] getRow(ChainingPoint ch) {
 			Object[] obj = new Object[] { ch.getMapname(), ch.isVertical(),
-					ch.isBorder(), ch.isSingle(), ch.getComingAngle(), new JButton("creer"), null };
+					ch.isBorder(), ch.isSingle(), ch.getComingAngle().toString(), ch.getTransitionAnim().toString(), new JButton("creer"), null };
 			return obj;
 		}
 
