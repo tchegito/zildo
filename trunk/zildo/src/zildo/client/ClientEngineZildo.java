@@ -253,7 +253,7 @@ public class ClientEngineZildo {
 			switch (p_event.nature) {
 				case CHANGINGMAP_ASKED :
 					// Changing map : 1/3 we launch the fade out
-					retEvent.effect = FilterEffect.BLEND;
+					retEvent.effect = p_event.effect; //FilterEffect.BLEND;
 				case FADE_OUT :
 					retEvent.nature = ClientEventNature.FADING_OUT;
 					guiDisplay.fadeOut(retEvent.effect);

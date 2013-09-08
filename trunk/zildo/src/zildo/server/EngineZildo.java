@@ -147,7 +147,7 @@ public class EngineZildo {
 				} else {
 					MapLink linkType=ch.getLinkType();
 					if (ch.isDone() || linkType == MapLink.REGULAR) {
-						state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_ASKED);
+						state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_ASKED, ch.getTransitionAnim());
 					} else {
 						switch (linkType) {
 						case PIT:

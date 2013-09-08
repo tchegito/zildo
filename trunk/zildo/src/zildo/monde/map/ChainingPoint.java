@@ -22,6 +22,7 @@ package zildo.monde.map;
 
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
+import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
@@ -53,7 +54,16 @@ public class ChainingPoint implements EasySerializable {
 
 	private Zone zone;
 	private Angle comingAngle;	// Angle which character is pointing when spawning from this point
+	private FilterEffect transitionAnim;
 	
+	public FilterEffect getTransitionAnim() {
+		return transitionAnim;
+	}
+
+	public void setTransitionAnim(FilterEffect transitionAnim) {
+		this.transitionAnim = transitionAnim;
+	}
+
 	public Angle getComingAngle() {
 		return comingAngle;
 	}
@@ -229,6 +239,7 @@ public class ChainingPoint implements EasySerializable {
 		pe.px = p_buffer.readUnsignedByte();
 		pe.py = p_buffer.readUnsignedByte();
 		pe.comingAngle = Angle.fromInt(p_buffer.readUnsignedByte());
+		pe.transitionAnim = FilterEffect.values()[p_buffer.readUnsignedByte()];
 		String mapName = p_buffer.readString();
 		pe.mapname = mapName;
 
@@ -267,6 +278,7 @@ public class ChainingPoint implements EasySerializable {
 		p_buffer.put((byte) saveX);
 		p_buffer.put((byte) saveY);
 		p_buffer.put((byte) comingAngle.value);
+		p_buffer.put((byte) transitionAnim.ordinal());
 		p_buffer.put(mapname);
 	}
 
