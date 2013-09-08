@@ -1,5 +1,7 @@
 package zildo.fwk.script.logic;
 
+import zildo.fwk.script.logic.FloatVariable.NoContextException;
+
 
 
 /**
@@ -45,7 +47,7 @@ public class FloatExpression {
 						p_expression.indexOf(RESERVED_WORD_RANDOM) == -1) {
 					entireExp = null;
 				}
-			} catch (NullPointerException e) {
+			} catch (NoContextException e) {
 				// We need a context ! So give up this optimization.
 			}
 		}
