@@ -20,6 +20,7 @@
 package zildo.fwk.script.logic;
 
 import zildo.monde.Hasard;
+import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 
 
@@ -29,6 +30,10 @@ import zildo.server.EngineZildo;
  */
 public class FloatVariable implements FloatASTNode {
 
+	@SuppressWarnings("serial")
+	class NoContextException extends RuntimeException {
+		
+	}
 	String variable;
 	
 	public FloatVariable(String p_variable) {
@@ -43,11 +48,16 @@ public class FloatVariable implements FloatASTNode {
 		} else if (FloatExpression.RESERVED_WORD_DICE10.equals(variable)) {
 			return Hasard.rand(10);
 		} else if (FloatExpression.RESERVED_WORD_ZILDOX.equals(variable)) {
-			return EngineZildo.persoManagement.getZildo().x;
+			Perso p = EngineZildo.persoManagement.getZildo();
+			return p == null ? 0 : p.x;
 		} else if (FloatExpression.RESERVED_WORD_ZILDOY.equals(variable)) {
-			return EngineZildo.persoManagement.getZildo().y;
+			Perso p = EngineZildo.persoManagement.getZildo();
+			return p == null ? 0 : p.y;
 		} else {
 			// Context specific
+			if (context == null) {
+				throw new NoContextException();
+			}
 			return context.getValue(variable);
 		}
 	}
