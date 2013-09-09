@@ -102,11 +102,16 @@
 	        <pos who="vert" pos="32,0" foreground="true" delta="true"/>
 	    </condition>
    		<condition name="voleurs" exp="!fini_voleur">
-			<filter type="2"/>
-			<music name="Nuit"/>
+			<filter type="1"/>
 			<!-- Post guard -->
     	    <spawn type="FOX" who="fox1" effect="rouge" pos="870,878"/>
     	    <spawn type="FOX" who="fox2" effect="violet" pos="1039,922"/>			
+		</condition>
+		<condition name="voleursm1" exp="!fini_voleur">
+			<filter type="1"/>
+		</condition>
+		<condition name="voleursm2" exp="!fini_voleur">
+			<filter type="1"/>
 		</condition>
 		<condition name="voleursg3" exp="trig_echange">
 		    <actions>

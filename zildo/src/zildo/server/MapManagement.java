@@ -45,6 +45,7 @@ import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Vector3f;
 import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 
@@ -128,11 +129,15 @@ public class MapManagement {
 		EngineZildo.spriteManagement.initForNewMap();
 
 		if (!EngineZildo.game.editing) {
+			Atmosphere atmo = currentMap.getAtmosphere();
 			if (!EngineZildo.soundManagement.isForceMusic()) {
-				Atmosphere atmo = currentMap.getAtmosphere();
 				BankMusic mus = BankMusic.forName(EngineZildo.scriptManagement.getReplacedZikName(atmo.music.name()));
 				
 				ClientEngineZildo.soundPlay.playMusic(mus, atmo);
+			}
+			if (atmo == Atmosphere.CAVE) {
+				// Inside cave, we want full light
+				ClientEngineZildo.ortho.setFilteredColor(new Vector3f(1, 1, 1));
 			}
 			switch (ClientEngineZildo.ambient.getWeather(currentMap)) {
 				case CLOUD:
