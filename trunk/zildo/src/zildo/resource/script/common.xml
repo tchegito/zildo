@@ -77,6 +77,44 @@
 		<moveTo who="zildo" pos="0,16" delta="true" speed="0.2" />
 	</scene>
 	
+	<scene id="woodStairsUpCornerLeft">
+        <herospecial value="1"/>
+        <sound name="ZildoMonte" />
+		<moveTo who="zildo" pos="0,-10" delta="true" unstoppable="true" speed="1"/>
+        <fadeOut type="2" unblock="true" />
+		<moveTo who="zildo" pos="0,-18" delta="true" unstoppable="true" speed="1"/>
+		<moveTo who="zildo" pos="-7,0" delta="true" unstoppable="true"/>
+		<wait value="20"/>
+	    <herospecial value="2"/>
+	</scene>
+	
+	<scene id="woodStairsDown">
+	    <herospecial value="1"/>
+        <sound name="ZildoMonte" />
+		<moveTo who="zildo" pos="8,2" delta="true" unstoppable="true" speed="0.8"/>
+   		<fadeOut type="2" unblock="true" />
+		<moveTo who="zildo" pos="8,2" delta="true" unstoppable="true" speed="0.8"/>
+        <herospecial value="2"/>
+	</scene>
+	
+	<scene id="woodStairsUpEnd">
+	    <herospecial value="1"/>
+        <sound name="ZildoDescend" />
+        <pos who="zildo" pos="36,0" delta="true"/>
+        <fadeIn type="2" unblock="true"/>
+		<moveTo who="zildo" pos="-24,-2" delta="true" unstoppable="true" speed="0.5"/>
+        <herospecial value="2"/>
+	</scene>
+	
+	<scene id="woodStairsDownEnd">
+	    <herospecial value="1"/>
+        <sound name="ZildoDescend" />
+        <pos who="zildo" pos="-8, -4" delta="true"/>
+        <fadeIn type="2" unblock="true"/>
+		<moveTo who="zildo" pos="0,16" delta="true" unstoppable="true" speed="0.5"/>
+        <herospecial value="2"/>
+	</scene>
+	
 	<scene id="death">
 		<music name="ZildoMort"/>
 		<fadeOut type="5"/>

@@ -34,10 +34,26 @@ public class ChainingPoint implements EasySerializable {
 	// Construction/Destruction
 	// ////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Transition between map: 1 script for getting in , and 1 for getting out.
+	 */
 	public enum MapLink {
-		REGULAR, STAIRS_STRAIGHT, STAIRS_CORNER_LEFT, STAIRS_CORNER_RIGHT, PIT;
+		REGULAR(null, null), 
+		STAIRS_STRAIGHT("stairsUp", "stairsUpEnd"),
+		STAIRS_CORNER_LEFT("stairsUpCornerLeft", "stairsUpCornerLeftEnd"), 
+		STAIRS_CORNER_RIGHT("stairsUpCornerRight", "stairsUpCornerRightEnd"),
+		PIT("fallPit", ""),
+		WOODSTAIRS_CORNER_LEFT("woodStairsUpCornerLeft", "woodStairsDownEnd"),
+		WOODSTAIRS_END("woodStairsDown", "woodStairsUpEnd");
+		
+		public final String scriptIn, scriptOut;
+		
+		private MapLink(String p_scriptIn, String p_scriptOut) {
+			scriptIn = p_scriptIn;
+			scriptOut = p_scriptOut;
+		}
 	}
-
+	
 	private String mapname; // max length=8
 	private short px, py;
 
@@ -124,6 +140,10 @@ public class ChainingPoint implements EasySerializable {
 			return MapLink.STAIRS_STRAIGHT;
 		case 1536 + 198:
 			return MapLink.PIT;
+		case 512 + 198:
+			return MapLink.WOODSTAIRS_CORNER_LEFT;
+		case 512 + 201:
+			return MapLink.WOODSTAIRS_END;
 		default:
 			return MapLink.REGULAR;
 		}

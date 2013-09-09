@@ -619,6 +619,7 @@ public class PersoNJ extends Perso {
 		
 		case PANNEAU:
 		case PAPER_NOTE:
+		case STONE_SPIDER:
 			add_spr = 0;
 			break;
 		default:
