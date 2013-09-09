@@ -25,17 +25,18 @@ import org.w3c.dom.Element;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.model.point.IPoint;
-import zildo.fwk.script.xml.element.AnyElement;
+import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.server.EngineZildo;
 
-public class ActionElement extends AnyElement {
+public class ActionElement extends LanguageElement {
 
 	public enum ActionKind {
 		actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, 
 		map, focus, spawn, exec, take, mapReplace, zikReplace, music, animation, impact, remove, 
 		markQuest, putDown, attack, activate,
 		tile, filter, end, visible, respawn, zoom, herospecial, perso,
-		timer, lookFor, launch;
+		timer, lookFor, _throw;
 
 		public static ActionKind fromString(String p_name) {
 			for (ActionKind kind : values()) {
@@ -44,6 +45,11 @@ public class ActionElement extends AnyElement {
 				}
 			}
 			return null;
+		}
+		
+		@Override
+		public String toString() {
+			return this == _throw ? "throw" : super.toString();
 		}
 	}
 
@@ -93,8 +99,8 @@ public class ActionElement extends AnyElement {
 			throw new RuntimeException("Action kind is unknown !");
 		}
 
-		// Store XML element in order to read easier from ZEditor
-		xmlElement = p_elem;
+		// Store XML element in order to read easier from ZEditor, and use all convenience read methods
+		super.parse(p_elem);
 
 		// Read common attributes
 		who = readAttribute("who");
@@ -108,7 +114,7 @@ public class ActionElement extends AnyElement {
 		String strPos = p_elem.getAttribute("pos");
 		String strAngle = p_elem.getAttribute("angle");
 		switch (kind) {
-		case launch:
+		case _throw:
 			target = IPoint.fromString(readAttribute("to"));
 			way = readAttribute("way");
 		case spawn:
@@ -207,13 +213,18 @@ public class ActionElement extends AnyElement {
 		}
 		
 		// As several variables are used for different usage (which is bad), make specific here
-		if (kind == ActionKind.spawn || kind == ActionKind.launch) {
+		if (kind == ActionKind.spawn || kind == ActionKind._throw) {
 			switchExpression = ZSSwitch.parseForDialog(text);
 			// Read V,A and F coordinates
 			v = read3Coordinates("v");
 			a = read3Coordinates("a");
 			f = read3Coordinates("f");
 			alphaA = getFloatExpr("alphaA");
+		}
+		
+		// Not needed anymore : free some memory
+		if (!EngineZildo.game.editing) {
+			xmlElement = null;
 		}
 	}
 
@@ -272,6 +283,7 @@ public class ActionElement extends AnyElement {
 		return switchExpression.evaluate();
 	}
 
+	@Override
 	public void reset() {
 		done = false;
 	}

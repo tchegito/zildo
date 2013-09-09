@@ -25,6 +25,7 @@ import org.w3c.dom.Element;
 import zildo.fwk.script.xml.element.action.ActionsElement;
 import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
+import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.monde.util.Point;
 
 public abstract class AnyElement {
@@ -38,7 +39,8 @@ public abstract class AnyElement {
 		condition(ConditionElement.class),
 		persoaction(PersoActionElement.class),
 		timer(TimerElement.class),
-		lookfor(LookforElement.class);
+		lookfor(LookforElement.class),
+		var(VarElement.class);
 		
 		Class<? extends AnyElement> clazz;
 		

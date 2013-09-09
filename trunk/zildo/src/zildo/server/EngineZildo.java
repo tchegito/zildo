@@ -61,7 +61,9 @@ public class EngineZildo {
 	public static int extraSpeed=1;
 	
 	private void initializeServer(Game p_game) {
-		// Inits de départ
+        setGame(p_game);
+
+        // Inits de départ
 		spriteManagement=new SpriteManagement();
 		mapManagement=new MapManagement();
 		persoManagement=new PersoManagement();
@@ -70,9 +72,7 @@ public class EngineZildo {
 		soundManagement=new SoundManagement();
 		playerManagement=new PlayerManagement();
         multiplayerManagement = new MultiplayerManagement();
-        scriptManagement = new ScriptManagement();
-        
-        setGame(p_game);
+        scriptManagement = new ScriptManagement();  
 
 		// Charge une map
 		String mapName=p_game.mapName;

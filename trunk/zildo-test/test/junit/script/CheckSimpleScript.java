@@ -22,29 +22,19 @@ package junit.script;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import zildo.fwk.script.logic.FloatVariable;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.server.EngineZildo;
-import zildo.server.state.ScriptManagement;
 
 /**
  * Checks the {@link ZSSwitch} and linked classes.
  * @author Tchegito
  *
  */
-public class CheckSimpleScript {
+public class CheckSimpleScript extends EngineScript {
 
-	ScriptManagement scriptMgmt;
-	
-	@Before
-	public void setUp() {
-		scriptMgmt = new ScriptManagement();
-		EngineZildo.scriptManagement = scriptMgmt;
-	}
-	
 	@Test
 	public void simpleSwitch() {
 		// Create a switch case : case 'flut' => 8 / case 'enlevement' => 3 / default => 0

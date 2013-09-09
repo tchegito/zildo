@@ -47,12 +47,19 @@ public class FloatVariable implements FloatASTNode {
 			return (float) Math.random();
 		} else if (FloatExpression.RESERVED_WORD_DICE10.equals(variable)) {
 			return Hasard.rand(10);
-		} else if (FloatExpression.RESERVED_WORD_ZILDOX.equals(variable)) {
+		} else if (variable.startsWith(FloatExpression.RESERVED_WORD_ZILDO)) {
+			if (EngineZildo.persoManagement == null) {
+				throw new NoContextException();
+			}
 			Perso p = EngineZildo.persoManagement.getZildo();
-			return p == null ? 0 : p.x;
-		} else if (FloatExpression.RESERVED_WORD_ZILDOY.equals(variable)) {
-			Perso p = EngineZildo.persoManagement.getZildo();
-			return p == null ? 0 : p.y;
+			if (FloatExpression.RESERVED_WORD_ZILDOX.equals(variable)) {
+				return p == null ? 0 : p.x;
+			} else if (FloatExpression.RESERVED_WORD_ZILDOY.equals(variable)) {
+				return p == null ? 0 : p.y;
+			} else if (FloatExpression.RESERVED_WORD_ZILDOMONEY.equals(variable)) {
+				return p == null ? 0f : (float) p.getMoney();
+			}
+			return 0;	// Not understood variable
 		} else {
 			// Context specific
 			if (context == null) {

@@ -15,6 +15,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
@@ -51,18 +52,22 @@ public class ScriptWriter {
 	    for (SceneElement scene : p_scenes) {
 		Element sceneElement = document.createElement("scene");
 		sceneElement.setAttribute("id", scene.id);
-		for (ActionElement action : scene.actions) {
-		    ActionKind kind = action.kind;
-		    if (kind != null) {
-			Element actionElement = document.createElement(action.kind.toString());
-			// Append attributes
-			for (String attr : ScriptWriter.columnNames) {
-			    String value = action.readAttribute(attr);
-			    if (value != null) {
-				actionElement.setAttribute(attr, value);
+		for (LanguageElement elem : scene.actions) {
+			//TODO : save LanguageElement too !!!
+			if (elem instanceof ActionElement) {
+				ActionElement action = (ActionElement) elem;
+			    ActionKind kind = action.kind;
+			    if (kind != null) {
+					Element actionElement = document.createElement(action.kind.toString());
+					// Append attributes
+					for (String attr : ScriptWriter.columnNames) {
+					    String value = action.readAttribute(attr);
+					    if (value != null) {
+						actionElement.setAttribute(attr, value);
+					    }
+					}
+					sceneElement.appendChild(actionElement);
 			    }
-			}
-			sceneElement.appendChild(actionElement);
 		    }
 		}
 		root.appendChild(sceneElement);
