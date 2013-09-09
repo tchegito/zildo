@@ -41,6 +41,7 @@ import zildo.monde.sprites.persos.PersoPoultry;
 import zildo.monde.sprites.persos.PersoRabbit;
 import zildo.monde.sprites.persos.PersoRat;
 import zildo.monde.sprites.persos.PersoShadowed;
+import zildo.monde.sprites.persos.PersoSpider;
 import zildo.monde.sprites.persos.PersoSquirrel;
 import zildo.monde.sprites.persos.PersoVolant;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -217,6 +218,9 @@ public class PersoManagement {
 				break;
 			case ZILDO:
 				perso = new PersoZildo(x, y, null);
+				break;
+			case STONE_SPIDER:
+				perso = new PersoSpider(x, y);
 				break;
 			default:
 				perso = new PersoNJ();
