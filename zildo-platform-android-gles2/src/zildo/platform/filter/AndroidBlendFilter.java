@@ -67,7 +67,6 @@ public class AndroidBlendFilter extends BlendFilter {
 
 		graphicStuff.fbo.endRendering();
 		
-		// FIXME: was previously 3f
 		shaders.setColor(1f, 1f, 1f, 1f);
 		
 		// Draw squares
