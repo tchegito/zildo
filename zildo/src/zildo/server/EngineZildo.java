@@ -144,25 +144,14 @@ public class EngineZildo {
 				ChainingPoint ch=mapManagement.getChainingPoint();
 				if (ch.isBorder()) {
 					state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_SCROLL_ASKED);
-				} else {
+				} else if (!state.event.script) {
 					MapLink linkType=ch.getLinkType();
 					if (ch.isDone() || linkType == MapLink.REGULAR) {
 						state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_ASKED, ch.getTransitionAnim());
 					} else {
-						switch (linkType) {
-						case PIT:
-							EngineZildo.scriptManagement.execute("fallPit", true);
-							break;
-						case STAIRS_CORNER_RIGHT:
-							EngineZildo.scriptManagement.execute("stairsUpCornerRight", true);
-							break;
-						case STAIRS_CORNER_LEFT:
-							EngineZildo.scriptManagement.execute("stairsUpCornerLeft", true);
-							break;
-						case STAIRS_STRAIGHT:
-							EngineZildo.scriptManagement.execute("stairsUp", true);
-							break;
-						}
+						String scriptName = linkType.scriptIn;
+						EngineZildo.scriptManagement.execute(scriptName, true);
+
 						state.event.nature=ClientEventNature.SCRIPT;
 						ch.setDone(true);
 					}
@@ -225,20 +214,15 @@ public class EngineZildo {
 								linkType=ch.getLinkType();
 							}
 							switch (linkType) {
-								case STAIRS_CORNER_LEFT:
-									EngineZildo.scriptManagement.execute("stairsUpCornerLeftEnd", true);
-									retEvent.nature=ClientEventNature.SCRIPT;
-									break;
-								case STAIRS_CORNER_RIGHT:
-									EngineZildo.scriptManagement.execute("stairsUpCornerRightEnd", true);
-									retEvent.nature=ClientEventNature.SCRIPT;
-									break;
-								case STAIRS_STRAIGHT:
-									EngineZildo.scriptManagement.execute("stairsUpEnd", true);
-									retEvent.nature=ClientEventNature.SCRIPT;
+								default:
+									String scriptName = linkType.scriptOut;
+									EngineZildo.scriptManagement.execute(scriptName, true);
+									retEvent.nature = ClientEventNature.SCRIPT;
 									break;
 								case REGULAR:
 									retEvent.nature = ClientEventNature.CHANGINGMAP_LOADED;
+									break;
+								case PIT:
 									break;
 							}
 	                	}
