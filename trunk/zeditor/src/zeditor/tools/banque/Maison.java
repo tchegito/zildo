@@ -154,9 +154,15 @@ public class Maison extends Banque {
 				/* Suite feu forgeron */
 				new Point(272, 160), new Point(272, 176),
 				/* Rideaux */
-				new Point(64, 160), new Point(80, 160), new Point(96, 160),
+				//new Point(64, 160), new Point(80, 160), new Point(96, 160),
+				/* Stairs */
+				new Point(0, 224), new Point(0, 240), new Point(16, 240), new Point(0, 256), new Point(16, 256),
+				new Point(16, 224), new Point(32, 224),
+				new Point(48, 160),
+				/*
 				new Point(64, 176), new Point(80, 176), new Point(96, 176),
 				new Point(48, 160), new Point(48, 176),
+				*/
 				/* Bar */
 				new Point(176, 144), new Point(176, 160), new Point(176, 176),
 				new Point(144, 176), new Point(160, 176), new Point(256, 0),
@@ -186,7 +192,8 @@ public class Maison extends Banque {
 				new Point(32, 208), new Point(48, 208),
 		
 				/* Full wall */
-				new Point(80, 192), new Point(80, 208)
+				new Point(80, 192), new Point(80, 208),
+
 			};
 
 		pkmChanges = Arrays.asList(new GraphChange("interia1", 0, 0));

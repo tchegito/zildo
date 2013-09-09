@@ -11,8 +11,6 @@ import java.awt.Point;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.AWTGLCanvas;
@@ -186,7 +184,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			if (needCapture) {
 				blockPaint = true;
 				captureEntireMap();
-				JOptionPane.showMessageDialog(this, "PNG file saved.", "ZEditor", JOptionPane.INFORMATION_MESSAGE);
+				MasterFrameManager.display("PNG file saved.", MasterFrameManager.MESSAGE_INFO);
 				blockPaint = false;
 				needCapture = false;
 			} else {
