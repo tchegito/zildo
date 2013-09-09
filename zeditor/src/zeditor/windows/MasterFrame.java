@@ -25,7 +25,6 @@ import javax.swing.WindowConstants;
 
 import zeditor.core.Options;
 import zeditor.core.tiles.TileSet;
-import zeditor.fwk.awt.ZildoCanvas;
 import zeditor.fwk.awt.ZildoScrollablePanel;
 import zeditor.windows.managers.MasterFrameManager;
 import zeditor.windows.subpanels.BackgroundPanel;
