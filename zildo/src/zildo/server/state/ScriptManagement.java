@@ -31,12 +31,12 @@ import zildo.fwk.script.logic.SpriteEntityContext;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.AdventureElement;
 import zildo.fwk.script.xml.element.ConditionElement;
+import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.MapscriptElement;
 import zildo.fwk.script.xml.element.PersoActionElement;
 import zildo.fwk.script.xml.element.QuestElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.TriggerElement;
-import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.quest.MapReplacement;
@@ -70,6 +70,8 @@ public class ScriptManagement {
     
     final Map<String, QuestElement> questsByName;
     
+    final Map<String, String> variables;
+    
     // 'LOCATION' trigs for specific location on the current map
     final List<TriggerElement> locationTriggerOnMap;	
     
@@ -89,6 +91,8 @@ public class ScriptManagement {
         for (QuestElement quest : adventure.getQuests()) {
         	questsByName.put(quest.name, quest);
         }
+        
+        variables = new HashMap<String, String>();
         
     	locationTriggerOnMap = new ArrayList<TriggerElement>();
     }
@@ -122,7 +126,7 @@ public class ScriptManagement {
     	}
     }
 
-    public void execute(List<ActionElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority, IEvaluationContext p_context) {
+    public void execute(List<LanguageElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority, IEvaluationContext p_context) {
     	// Create a SceneElement from the given actions
 		SceneElement scene=SceneElement.createScene(p_actions);
 		if (p_quest != null) {
@@ -254,7 +258,7 @@ public class ScriptManagement {
    		p_quest.done=true;
     	
     	// 1) note the history events (mapReplace ...)
-    	List<ActionElement> history=p_quest.getHistory();
+    	List<LanguageElement> history=p_quest.getHistory();
 		if (history != null) {
 			execute(history, true, null, false, null);
 		}
@@ -439,5 +443,9 @@ public class ScriptManagement {
 	public boolean isBlueDropDisplayable() {
 		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		return (zildo != null && zildo.hasItem(ItemKind.NECKLACE));
+	}
+	
+	public Map<String, String> getVariables() {
+		return variables;
 	}
 }

@@ -25,6 +25,7 @@ import org.w3c.dom.Element;
 
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.script.xml.element.LanguageElement;
 
 /**
  * Particular action : timer.<br/>
@@ -40,8 +41,8 @@ public class TimerElement extends ActionElement {
 	public FloatExpression each;
 	public FloatExpression endCondition;
 
-	public List<ActionElement> actions;
-	public List<ActionElement> end;
+	public List<LanguageElement> actions;
+	public List<LanguageElement> end;
 
 	public TimerElement() {
     	super(null);
@@ -57,8 +58,8 @@ public class TimerElement extends ActionElement {
 		Element actionsContainer = ScriptReader.getChildNamed(p_elem, "action");
 		Element endContainer = ScriptReader.getChildNamed(p_elem, "end");
 
-		actions = (List<ActionElement>) ScriptReader.parseNodes(actionsContainer);
-		end = (List<ActionElement>) ScriptReader.parseNodes(endContainer);
+		actions = (List<LanguageElement>) ScriptReader.parseNodes(actionsContainer);
+		end = (List<LanguageElement>) ScriptReader.parseNodes(endContainer);
 		
 		each = new FloatExpression(readAttribute("each"));
 		if (endContainer != null) {

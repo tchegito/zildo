@@ -37,9 +37,9 @@ import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.logic.IEvaluationContext;
 import zildo.fwk.script.logic.SpriteEntityContext;
 import zildo.fwk.script.xml.element.action.ActionElement;
+import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
 import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
-import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
 import zildo.fwk.ui.UIText;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -204,7 +204,7 @@ public class ActionExecutor {
 	                    			elem.vy = p_action.speed * (location.y - elem.y) / distance;
 	                    			// calculate z
 	                    			float finalT = distance / p_action.speed;
-	                    			elem.vz = (float) -(finalT * elem.az) / 2;
+	                    			elem.vz = -(finalT * elem.az) / 2;
 	                    			achieved = true;
 	                    		}
                     		} else {
@@ -521,7 +521,7 @@ public class ActionExecutor {
                 		achieved = true;
                 	}
                 	break;
-                case launch:
+                case _throw:
                 	Element elem = actionSpawn(p_action, location, true);	// Ignore 'who' because it's for the throw
                 	location = p_action.target.getPoint();
                 	// Turn character in the right direction
@@ -533,7 +533,7 @@ public class ActionExecutor {
             			elem.vy = p_action.speed * (location.y - elem.y) / distance;
             			// calculate z
             			float finalT = distance / p_action.speed;
-            			elem.vz = (float) -(finalT * elem.az) / 2;
+            			elem.vz = -(finalT * elem.az) / 2;
                 	}
                 	elem.setLinkedPerso(perso);
                 	elem.flying = true;

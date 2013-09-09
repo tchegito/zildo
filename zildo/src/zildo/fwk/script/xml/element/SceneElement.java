@@ -25,14 +25,13 @@ import java.util.List;
 import org.w3c.dom.Element;
 
 import zildo.fwk.script.xml.ScriptReader;
-import zildo.fwk.script.xml.element.action.ActionElement;
 
 public class SceneElement extends AnyElement {
 
     public String id;
     public boolean restoreZildo;	// TRUE=at the end of the scene, we should restore the previous zildo's state
     public boolean locked = true;	// FALSE=game isn't blocked during scene / TRUE=default behavior (blocked)
-    public List<ActionElement> actions;
+    public List<LanguageElement> actions;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -41,10 +40,10 @@ public class SceneElement extends AnyElement {
 		
         id = readAttribute("id");
         restoreZildo = isTrue("restoreZildo");
-        actions = (List<ActionElement>) ScriptReader.parseNodes(p_elem);
+        actions = (List<LanguageElement>) ScriptReader.parseNodes(p_elem);
     }
 
-    public static SceneElement createScene(List<ActionElement> p_actions) {
+    public static SceneElement createScene(List<LanguageElement> p_actions) {
     	SceneElement scene=new SceneElement();
     	scene.id="fromActions";
     	scene.actions=p_actions;
@@ -52,7 +51,7 @@ public class SceneElement extends AnyElement {
     }
     
     public void reset() {
-		for (ActionElement action : actions) {
+		for (LanguageElement action : actions) {
 			action.reset();
 		}    	
     }

@@ -17,44 +17,34 @@
  *
  */
 
-package zildo.fwk.script.xml.element.action;
-
-import java.util.List;
+package zildo.fwk.script.xml.element.logic;
 
 import org.w3c.dom.Element;
 
-import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.element.LanguageElement;
-import zildo.monde.sprites.persos.Perso.PersoInfo;
-
 
 /**
  * @author Tchegito
  *
  */
-public class LookforElement extends ActionElement {
+public class VarElement extends LanguageElement {
 
-	public List<LanguageElement> actions;
-	public int radius;
-	
-	public LookforElement() {
-    	super(null);
-    	kind = ActionKind.lookFor;
-    }
-	
-	@Override
-	@SuppressWarnings("unchecked")
-	public void parse(Element p_elem) {
-		xmlElement = p_elem;
-
-		who = readAttribute("who");
-		radius = readInt("radius");
-		String strInfo = readAttribute("info");
-		if (strInfo != null) {
-			info = PersoInfo.valueOf(strInfo);
-		}
-		
-		actions = (List<LanguageElement>) ScriptReader.parseNodes(xmlElement);
+	public enum VarKind {
+		var, _if;
 	}
 	
+	public VarKind kind;
+	public String name;
+	public FloatExpression value;
+	
+	@Override
+	public void parse(Element p_elem) {
+		super.parse(p_elem);
+		
+		kind = VarKind.valueOf(p_elem.getNodeName());
+		name = readAttribute("name");
+		value = new FloatExpression(readAttribute("value"));
+	}
+
 }

@@ -32,8 +32,8 @@ public class QuestElement extends AnyElement {
 
 	public String name;
 	List<TriggerElement> triggers;
-	List<ActionElement> actions;
-	List<ActionElement> history;
+	List<LanguageElement> actions;
+	List<LanguageElement> history;
 
 	boolean both; // TRUE=each trigger element must be done AT THE SAME TIME to
 					// launch the actions
@@ -56,10 +56,10 @@ public class QuestElement extends AnyElement {
 				.getChildNamed(p_elem, "history");
 		triggers = (List<TriggerElement>) ScriptReader
 				.parseNodes(triggerContainer);
-		actions = (List<ActionElement>) ScriptReader
+		actions = (List<LanguageElement>) ScriptReader
 				.parseNodes(actionContainer);
 		if (historyContainer != null) {
-			history = (List<ActionElement>) ScriptReader
+			history = (List<LanguageElement>) ScriptReader
 					.parseNodes(historyContainer);
 		}
 
@@ -81,11 +81,11 @@ public class QuestElement extends AnyElement {
 		return triggers;
 	}
 
-	public List<ActionElement> getActions() {
+	public List<LanguageElement> getActions() {
 		return actions;
 	}
 
-	public List<ActionElement> getHistory() {
+	public List<LanguageElement> getHistory() {
 		return history;
 	}
 

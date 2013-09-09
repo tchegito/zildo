@@ -31,9 +31,11 @@ import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.fwk.script.logic.IEvaluationContext;
 import zildo.fwk.script.xml.element.AnyElement;
+import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionsElement;
+import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
@@ -82,18 +84,15 @@ public class ScriptExecutor {
 					// We reach the end of the script
 					toTerminate.add(process);
 				} else {
-					Class<? extends AnyElement> clazz=currentNode.getClass();
-					if (ActionElement.class.isAssignableFrom(clazz)) {
-						renderAction(process, (ActionElement) currentNode, true);
-					}
+					renderElement(process, currentNode, true);
 					
 					// Render current actions too
-					for (Iterator<ActionElement> it=process.currentActions.iterator();it.hasNext();) {
-						ActionElement action=it.next();
+					for (Iterator<LanguageElement> it=process.currentActions.iterator();it.hasNext();) {
+						LanguageElement action=it.next();
 						if (action.done) {	// It's done, so remove the action
 							it.remove();
 						} else {
-							renderAction(process, action, false);
+							renderElement(process, action, false);
 						}
 					}
 					
@@ -183,6 +182,19 @@ public class ScriptExecutor {
 				p_process.cursor++;
 			}
 		}
+	}
+	
+	private void renderVariable(ScriptProcess process, VarElement p_elem) {
+		process.varExec.render(p_elem);
+	}
+	
+	private void renderElement(ScriptProcess process, AnyElement currentNode, boolean moveCursor) {
+		Class<? extends AnyElement> clazz=currentNode.getClass();
+		if (ActionElement.class.isAssignableFrom(clazz)) {
+			renderAction(process, (ActionElement) currentNode, moveCursor);
+		} else if (VarElement.class.isAssignableFrom(clazz)) {
+			renderVariable(process, (VarElement) currentNode);
+		}		
 	}
 	
 	public boolean isScripting() {

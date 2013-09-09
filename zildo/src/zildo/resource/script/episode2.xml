@@ -232,6 +232,9 @@
    	    	<moveTo who="fox2" pos="889,1005"/>
    	    	<moveTo who="zildo" pos="875,1005" backward="true"/>
    	    </actions>
+   	    <!-- 
+   	    <var name="moneyStolen" value="zildo.money"/>
+   	    -->
    	    <take value="-999"/>
    	    <speak who="fox2" text="voleurs.fox7"/>
    	    <actions>
@@ -268,8 +271,8 @@
             <wait value="4"/>
             <sound name="ZildoLance"/> 
             <script who="self" text="BRAS_LEVES"/>
-		    <launch who="self" pos="x+7, y+4" to="zildo.x+random*12-6,zildo.y+random*12-6" speed="1.6"
-       		 		type="ROCK_BALL" shadow="SHADOW_MINUS" z="16" az="-0.08" way="BELL"/>
+		    <throw who="self" pos="x+7, y+4" to="zildo.x+random*12-6,zildo.y+random*12-6" speed="1.6"
+       		 	   type="ROCK_BALL" shadow="SHADOW_MINUS" z="16" az="-0.08" way="BELL"/>
 		    <wait value="20"/>
 		    <script who="self" text="VIDE"/>
 		</lookFor>

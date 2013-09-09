@@ -7,13 +7,12 @@ import org.w3c.dom.Element;
 import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.xml.ScriptReader;
-import zildo.fwk.script.xml.element.action.ActionElement;
 
 public class ConditionElement extends AnyElement {
 
 	public String mapName;
 	ZSSwitch expression;	// No expression means it's always verified
-	List<ActionElement> actions;
+	List<LanguageElement> actions;
 	
 	@Override
 	@SuppressWarnings("unchecked")
@@ -23,14 +22,14 @@ public class ConditionElement extends AnyElement {
 		mapName = readAttribute("name");
 		String strExp = readAttribute("exp");
 		expression = strExp == null ? null : ZSSwitch.parseForScript(strExp);	// 1 will be the right value
-		actions = (List<ActionElement>) ScriptReader.parseNodes(p_elem);
+		actions = (List<LanguageElement>) ScriptReader.parseNodes(p_elem);
 	}
 
 	public boolean isRight() {
 		return expression == null || expression.evaluate().equals(ZSCondition.TRUE);
 	}
 	
-	public List<ActionElement> getActions() {
+	public List<LanguageElement> getActions() {
 		return actions;
 	}
 	

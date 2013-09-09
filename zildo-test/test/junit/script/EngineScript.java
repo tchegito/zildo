@@ -17,44 +17,36 @@
  *
  */
 
-package zildo.fwk.script.xml.element.action;
+package junit.script;
 
-import java.util.List;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
-import org.w3c.dom.Element;
+import org.junit.Before;
 
 import zildo.fwk.script.xml.ScriptReader;
-import zildo.fwk.script.xml.element.LanguageElement;
-import zildo.monde.sprites.persos.Perso.PersoInfo;
-
+import zildo.monde.Game;
+import zildo.server.EngineZildo;
+import zildo.server.state.ScriptManagement;
 
 /**
  * @author Tchegito
  *
  */
-public class LookforElement extends ActionElement {
+public class EngineScript {
 
-	public List<LanguageElement> actions;
-	public int radius;
+	ScriptManagement scriptMgmt;
 	
-	public LookforElement() {
-    	super(null);
-    	kind = ActionKind.lookFor;
-    }
+	@Before
+	public void setUp() {
+		EngineZildo.setGame(new Game(false));
+		scriptMgmt = new ScriptManagement();
+		EngineZildo.scriptManagement = scriptMgmt;
+	}
 	
-	@Override
-	@SuppressWarnings("unchecked")
-	public void parse(Element p_elem) {
-		xmlElement = p_elem;
-
-		who = readAttribute("who");
-		radius = readInt("radius");
-		String strInfo = readAttribute("info");
-		if (strInfo != null) {
-			info = PersoInfo.valueOf(strInfo);
-		}
-		
-		actions = (List<LanguageElement>) ScriptReader.parseNodes(xmlElement);
+	protected void loadXMLAsString(String string) throws Exception {
+		InputStream stream = new ByteArrayInputStream(string.getBytes());
+		scriptMgmt.getAdventure().merge(ScriptReader.loadStream(stream));		
 	}
 	
 }

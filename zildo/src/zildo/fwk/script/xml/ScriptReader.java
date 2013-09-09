@@ -20,17 +20,20 @@
 
 package zildo.fwk.script.xml;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
@@ -49,8 +52,6 @@ public class ScriptReader {
         AnyElement ret = null;
     	for (String scriptName : p_scriptNames) {
     		try {
-	            DocumentBuilder sxb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-	
 	            // Load the stream
 	            String filename = "zildo/resource/script/"+scriptName+".xml";
 	            InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
@@ -58,10 +59,8 @@ public class ScriptReader {
 	            	stream = ScriptReader.class.getClassLoader().getResourceAsStream(filename);
 	            }
 	            
-	            Document document = sxb.parse(stream);
-	            Element racine = document.getDocumentElement();
+	            AnyElement root = loadStream(stream);
 	            
-	            AnyElement root = createNode(racine);
 	            if (ret == null) {
 	            	ret = root;
 	            } else {
@@ -75,6 +74,16 @@ public class ScriptReader {
     	return ret;
     }
 
+	public static AnyElement loadStream(InputStream p_stream) throws ParserConfigurationException, IOException, SAXException {
+		DocumentBuilder sxb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+
+		Document document = sxb.parse(p_stream);
+		Element racine = document.getDocumentElement();
+
+		AnyElement root = createNode(racine);
+		return root;
+	}
+	
     /**
      * Create an understandable element from the given node.
      * @param p_element
