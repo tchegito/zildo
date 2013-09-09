@@ -27,6 +27,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BlendFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
+import zildo.monde.util.Vector3f;
 
 /**
  * Draw boxes more and more large onto the screen, to get a soft focus effect.
@@ -52,9 +53,6 @@ public class LwjglBlendFilter extends BlendFilter {
 	public boolean renderFilter() {
 		int currentSquareSize = getCurrentSquareSize();
 
-		if (currentSquareSize == 1) {
-			return true;
-		}
 		graphicStuff.fbo.endRendering();
 
 		// Get on top of screen and disable blending
@@ -64,23 +62,29 @@ public class LwjglBlendFilter extends BlendFilter {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0,-sizeY,0);
 		
-		GL11.glColor3f(1f, 1f, 1f);
+		Vector3f v = ClientEngineZildo.ortho.getFilteredColor();
+		GL11.glColor3f(v.x, v.y, v.z);
 		
 		// Draw squares
 		int nSquareX=Zildo.viewPortX / currentSquareSize;
 		int nSquareY=Zildo.viewPortY / currentSquareSize;
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
 
-		GL11.glBegin(GL11.GL_QUADS);
-		for (int i=0;i<nSquareY+1;i++) {
-			for (int j=0;j<nSquareX+1;j++) {
-				ClientEngineZildo.ortho.boxTexturedOpti(j*currentSquareSize, i*currentSquareSize,
-						              currentSquareSize, currentSquareSize, 
-						              (j*currentSquareSize) / (float) ScreenFilter.realX, 
-						              (i*currentSquareSize) / (float) ScreenFilter.realY,0, 0);
+		if (currentSquareSize == 1) {	// Square size=1 means this effect is useless !
+			super.render();
+		} else {
+			GL11.glBegin(GL11.GL_QUADS);
+	
+			for (int i=0;i<nSquareY+1;i++) {
+				for (int j=0;j<nSquareX+1;j++) {
+					ClientEngineZildo.ortho.boxTexturedOpti(j*currentSquareSize, i*currentSquareSize,
+							              currentSquareSize, currentSquareSize, 
+							              (j*currentSquareSize) / (float) ScreenFilter.realX, 
+							              (i*currentSquareSize) / (float) ScreenFilter.realY,0, 0);
+				}
 			}
+			GL11.glEnd();
 		}
-		GL11.glEnd();
 		GL11.glPopMatrix();
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -91,9 +95,6 @@ public class LwjglBlendFilter extends BlendFilter {
 
 	@Override
 	public void preFilter() {
-		if (getCurrentSquareSize() == 1) {
-			return;
-		}
 		// Copy last texture in TexBuffer
 		graphicStuff.fbo.bindToTexture(textureID, fboId);
 		graphicStuff.fbo.startRendering(fboId, sizeX, sizeY);
