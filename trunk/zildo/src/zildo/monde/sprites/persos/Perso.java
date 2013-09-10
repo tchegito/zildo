@@ -424,7 +424,12 @@ public abstract class Perso extends Element {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("Perso=" + name + "\nx=" + x + "\ny=" + y + "\ninfo=" + info + "\nmvt=" + mouvement);
+		sb.append("Perso=" + name + "\nCoords:(" + x + "," + y + ")");
+		if (pathFinder != null && pathFinder.getTarget() != null) {
+			Point p = pathFinder.getTarget();
+			sb.append(" ==> ("+p.x+","+p.y+")");
+		}
+		sb.append("\ninfo=" + info + "\nmvt=" + mouvement);
 		return sb.toString();
 	}
 
@@ -476,9 +481,9 @@ public abstract class Perso extends Element {
 			if (diffx != 0 && diffy != 0) {
 				// Diagonal move impossible => try lateral move
 				if (!mapManagement.collide(xx, y, this)) {
-					yy = (int) y;
+					yy = y;
 				} else if (!mapManagement.collide(x, yy, this)) {
-					xx = (int) x;
+					xx = x;
 				}
 			} else {
 

@@ -480,6 +480,9 @@ public class ActionExecutor {
                 		// Block every non-hero characters
                 		EngineZildo.spriteManagement.unblockNonHero();
                 		break;
+                	case 3:
+                		EngineZildo.backUpGame();
+                		break;
                 	}
                 	achieved = true;
                 	break;

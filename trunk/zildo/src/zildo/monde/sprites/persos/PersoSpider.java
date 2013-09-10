@@ -19,11 +19,14 @@
 
 package zildo.monde.sprites.persos;
 
+import zildo.monde.Hasard;
+import zildo.monde.Trigo;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.ia.PathFinder;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -39,6 +42,7 @@ public class PersoSpider extends PersoShadowed {
 		x = p_x;
 		y = p_y;
 		pathFinder = new PathFinder(this);
+		pathFinder.speed = 0;
 		pv = 2;
 	}
 	
@@ -46,21 +50,27 @@ public class PersoSpider extends PersoShadowed {
 	public void move() {
 		if (pathFinder.getTarget() == null) {
 			// Look for a random point
-			attackSpeed = 3f + Math.random() * 2.2f;
+			attackSpeed = 0.5f + Math.random() * 0.1f;
 			if (opposite) {
-				attackAngle = attackAngle + Math.PI;
+				attackAngle = attackAngle + Math.PI/4;
 				attackSpeed += 1f;
 				opposite = false;
 			} else {
 				// Look for Zildo
-				attackAngle = Math.random() * 2 * Math.PI;
+				Perso zildo = EngineZildo.persoManagement.lookFor(this, 4, PersoInfo.ZILDO);
+				if (zildo != null) {
+					attackAngle = Trigo.getAngleRadian(x, y, zildo.x, zildo.y);
+					attackAngle += Hasard.intervalle((float) (Math.PI / 8f));
+				} else {
+					attackAngle = Math.random() * 2 * Math.PI;
+				}
 			}
-			Point target = new Point((int) (x + attackSpeed * Math.cos(15 * attackAngle)),
-								     (int) (y + attackSpeed * Math.sin(15 * attackAngle)) );
+			Point target = new Point((int) (x + 6 * attackSpeed * Math.cos(attackAngle)),
+								     (int) (y + 6 * attackSpeed * Math.sin(attackAngle)) );
 			pathFinder.setTarget(target);
 		} else {
 			Pointf pos = pathFinder.reachDestination((float) attackSpeed);
-			if (pos.x == x && pos.y == y) {
+			if (pathFinder.getTarget() != null && pos.x == x && pos.y == y) {
 				opposite = true;	// Collision, so go in the opposite next time
 				pathFinder.setTarget(null);
 			} else {
@@ -74,7 +84,10 @@ public class PersoSpider extends PersoShadowed {
 				}
 			}
 		}
+
 	}
+	
+	boolean lastFrameCollide;
 	
 	@Override
 	public void finaliseComportement(int compteur_animation) {

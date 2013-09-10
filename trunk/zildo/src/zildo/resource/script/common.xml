@@ -82,9 +82,9 @@
         <sound name="ZildoMonte" />
 		<moveTo who="zildo" pos="0,-10" delta="true" unstoppable="true" speed="1"/>
         <fadeOut type="2" unblock="true" />
-		<moveTo who="zildo" pos="0,-18" delta="true" unstoppable="true" speed="1"/>
-		<moveTo who="zildo" pos="-7,0" delta="true" unstoppable="true"/>
-		<wait value="20"/>
+		<moveTo who="zildo" pos="0,-18" delta="true" unstoppable="true" speed="0.8"/>
+		<moveTo who="zildo" pos="-1,0" delta="true" unstoppable="true"/>
+		<wait value="10"/>
 	    <herospecial value="2"/>
 	</scene>
 	
@@ -224,6 +224,10 @@
 	    <script who="zildo" text="VIDE"/>	    
 	    <remove what="moon3"/>
 	    <fadeIn type="1"/>
+	</scene>
+	
+	<scene id="backupGame">
+		<herospecial value="3"/>	    
 	</scene>
 	
 	<persoAction id="flut" duration="100">

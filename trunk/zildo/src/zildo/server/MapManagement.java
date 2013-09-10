@@ -42,6 +42,7 @@ import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -297,9 +298,19 @@ public class MapManagement {
 		}
 		
 		// Collision with friendly NPC
-		if (EngineZildo.persoManagement.collidePerso(tx, ty, quelElement) != null)
+		Perso perso = EngineZildo.persoManagement.collidePerso(tx, ty, quelElement);
+		if (perso != null) {
+			if (p != null) {
+				if (p.isZildo() && perso.getInfo() == PersoInfo.ENEMY) {
+					return false;
+				}
+				if (p.getInfo() == PersoInfo.ENEMY && perso.isZildo()) {
+					return false;
+				}
+			}
 			return true;
-
+		}
+		
 		// Collision with sprites
 		if (EngineZildo.spriteManagement.collideSprite(tx, ty, quelElement))
 			return true;
