@@ -61,6 +61,13 @@ public class FloatVariable implements FloatASTNode {
 			}
 			return 0;	// Not understood variable
 		} else {
+			// Try global variables
+			if (EngineZildo.scriptManagement != null) {
+				String val = EngineZildo.scriptManagement.getVarValue(variable);
+				if (val != null) {
+					return new FloatExpression(val).evaluate(context);
+				}
+			}
 			// Context specific
 			if (context == null) {
 				throw new NoContextException();

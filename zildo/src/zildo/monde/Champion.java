@@ -28,7 +28,7 @@ import java.util.Date;
  */
 public class Champion {
 
-	public final String playerName;
+	public String playerName;
 	public final int moonHalf;	// PV * 4
 	public final String episodeName;
 	public final int money;

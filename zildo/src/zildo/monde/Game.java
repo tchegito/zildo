@@ -25,6 +25,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
@@ -78,13 +79,22 @@ public class Game implements EasySerializable {
     }
     
 	public void serialize(EasyBuffering p_buffer) {
+		p_buffer.getAll().position(0);
 		// 1: quest diary
 		AdventureElement adventure=EngineZildo.scriptManagement.getAdventure();
 		List<QuestElement> quests=adventure.getQuests();
-		p_buffer.put(quests.size());
+		int nbQuest = 0;	// First pass to count the done quests
 		for (QuestElement quest : quests) {
-			p_buffer.put(quest.name);
-			p_buffer.put(quest.done);
+			if (quest.done) {
+				nbQuest++;
+			}
+		}
+		p_buffer.put(nbQuest);
+		for (QuestElement quest : quests) {
+			if (quest.done) {
+				p_buffer.put(quest.name);
+				p_buffer.put(quest.done);
+			}
 		}
 		
 		// 2: zildo's information
@@ -135,18 +145,25 @@ public class Game implements EasySerializable {
         p_buffer.put(loc.y);
         p_buffer.put((byte) a.value);
         
+        // 7: variables
+        for (Entry<String, String> entry : EngineZildo.scriptManagement.getVariables().entrySet()) {
+        	p_buffer.put(entry.getKey());
+        	p_buffer.put(entry.getValue());
+        }
+        
         // Backup quest state to restore if hero dies
         EngineZildo.setBackedUpGame(p_buffer);
 	}
 
 	/**
-     * Create a game from a saved file. At this point, we assume that EngineZildo is already instancied.
+     * Create a game from a saved file. At this point, we assume that EngineZildo is already instantiated and
+     * ScriptManagement is empty.
      * @param p_buffer
-     * @param p_legacy TODO
+     * @param p_legacy TRUE that we accept older savegame format.
      * @return Game
      */
     public static Game deserialize(EasyBuffering p_buffer, boolean p_legacy) {
-
+    	p_buffer.getAll().position(0);
         try {
             // 1: quest diary
             int questNumber = p_buffer.readInt();
@@ -216,6 +233,13 @@ public class Game implements EasySerializable {
             }
             EngineZildo.mapManagement.setStartLocation(loc);
             EngineZildo.mapManagement.setStartAngle(a);
+            
+            // 7: variables
+            while (!p_buffer.eof()) {
+            	String key = p_buffer.readString();
+            	String value = p_buffer.readString();
+            	EngineZildo.scriptManagement.getVariables().put(key, value);
+            }
             return game;
         } catch (Exception e) {
             return null;

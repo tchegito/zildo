@@ -38,7 +38,7 @@ public class Constantes {
 
 	// File system data
 	//public static String DATA_PATH = "."+File.separator+"Data"+File.separator;	// Pour livraison
-	public static String DATA_PATH = "E:\\ZildoDist\\Version 1.096\\Data\\";
+	public static String DATA_PATH = "c:\\eboussaton\\Version 1.096\\Data\\";
 
 	public static String MAP_PATH = "maps"+File.separator;
 	public static String INI_DIR = "ini"+File.separator;

@@ -232,9 +232,7 @@
    	    	<moveTo who="fox2" pos="889,1005"/>
    	    	<moveTo who="zildo" pos="875,1005" backward="true"/>
    	    </actions>
-   	    <!-- 
    	    <var name="moneyStolen" value="zildo.money"/>
-   	    -->
    	    <take value="-999"/>
    	    <speak who="fox2" text="voleurs.fox7"/>
    	    <actions>
