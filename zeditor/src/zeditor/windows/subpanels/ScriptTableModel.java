@@ -10,27 +10,29 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import zildo.fwk.ZUtils;
+import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.script.xml.ScriptWriter;
+import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
-import zildo.fwk.script.xml.element.action.ActionsElement;
 import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.action.ActionsElement;
+import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
-import zildo.fwk.gfx.filter.FilterEffect;
 
 @SuppressWarnings("serial")
 public class ScriptTableModel extends DefaultTableModel {
 
-	List<ActionElement> actions;
+	List<LanguageElement> actions;
 
 	Map<String, Color> colorByPerso = new HashMap<String, Color>();
 	
 	final static Color[] colors = new Color[] {Color.CYAN, Color.RED, Color.YELLOW, Color.PINK, Color.ORANGE, Color.LIGHT_GRAY, Color.MAGENTA};
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public ScriptTableModel(List<ActionElement> p_actions) {
+	public ScriptTableModel(List<LanguageElement> p_actions) {
 		super();
 		// 1st pass : set values
 		setDataVector(transformObjectArray(p_actions), ScriptWriter.columnNames);
@@ -65,40 +67,46 @@ public class ScriptTableModel extends DefaultTableModel {
 					return;
 				}
 				String attr = ScriptWriter.columnNames[col];
-				ActionElement action = actions.get(row);
+				LanguageElement elem = actions.get(row);
 				String value = (String) getValueAt(row, col);
 
-				if (col == 0) {
-					// Kind of action
-					ActionKind kind = ZUtils.getField(value, ActionKind.class);
-					if (action.kind != kind) { // New action ?
-						actions.set(row, new ActionElement(kind));
+				if (elem instanceof ActionElement) {
+					ActionElement action = (ActionElement) elem;
+					if (col == 0) {
+						// Kind of action
+						ActionKind kind = ZUtils.getField(value, ActionKind.class);
+						if (action.kind != kind) { // New action ?
+							actions.set(row, new ActionElement(kind));
+						}
+					} else {
+						Class clazz = getClassCell(row, col);
+						if (clazz != String.class && clazz != PersoDescription.class && clazz != ElementDescription.class) {
+							// Special cells
+							int intValue = ZUtils.getField(value, clazz).ordinal();
+							value = String.valueOf(intValue);
+						}
+						action.setAttribute(attr, value);
 					}
-				} else {
-					Class clazz = getClassCell(row, col);
-					if (clazz != String.class && clazz != PersoDescription.class && clazz != ElementDescription.class) {
-						// Special cells
-						int intValue = ZUtils.getField(value, clazz).ordinal();
-						value = String.valueOf(intValue);
-					}
-					action.setAttribute(attr, value);
 				}
 			}
 		});
 		
 		// Colors
-		for (ActionElement action : actions) {
-			String whowhat = action.who == null ? action.what : action.who;
-			if (whowhat != null) {
-				Color c = colorByPerso.get(whowhat);
-				if (c == null) {
-					int nbColors = colorByPerso.values().size();
-					if (nbColors < colors.length) {
-						c = colors[nbColors];
-					} else {
-						c = Color.white;
+		for (LanguageElement elem : actions) {
+			if (elem instanceof ActionElement) {
+				ActionElement action = (ActionElement) elem;
+				String whowhat = action.who == null ? action.what : action.who;
+				if (whowhat != null) {
+					Color c = colorByPerso.get(whowhat);
+					if (c == null) {
+						int nbColors = colorByPerso.values().size();
+						if (nbColors < colors.length) {
+							c = colors[nbColors];
+						} else {
+							c = Color.white;
+						}
+						colorByPerso.put(whowhat, c);
 					}
-					colorByPerso.put(whowhat, c);
 				}
 			}
 		}
@@ -114,7 +122,7 @@ public class ScriptTableModel extends DefaultTableModel {
 		throw new RuntimeException("Unable to find the '" + p_name + "' column");
 	}
 
-	private Object[][] transformObjectArray(List<ActionElement> p_actions) {
+	private Object[][] transformObjectArray(List<LanguageElement> p_actions) {
 		Object[][] data = new Object[p_actions.size()][ScriptWriter.columnNames.length];
 		for (int i = 0; i < p_actions.size(); i++) {
 			data[i] = getRow(p_actions.get(i));
@@ -122,17 +130,22 @@ public class ScriptTableModel extends DefaultTableModel {
 		return data;
 	}
 
-	private Object[] getRow(ActionElement p_action) {
-		if (p_action instanceof ActionsElement) {
+	private Object[] getRow(LanguageElement p_elem) {
+		if (p_elem instanceof ActionsElement) {
 			return null;
-		} else {
+		} else if (p_elem instanceof VarElement) {
+			//TODO: Do the VarElement too
+			return null;
+		} else if (p_elem instanceof ActionElement) {
+			ActionElement action = (ActionElement) p_elem;
 			Object[] obj = new Object[ScriptWriter.columnNames.length];
-			obj[0] = p_action.kind.name();
+			obj[0] = action.kind.name();
 			for (int i = 1; i < ScriptWriter.columnNames.length; i++) {
-				obj[i] = p_action.readAttribute(ScriptWriter.columnNames[i]);
+				obj[i] = action.readAttribute(ScriptWriter.columnNames[i]);
 			}
 			return obj;
 		}
+		return null;
 	}
 
 	@Override
@@ -173,10 +186,13 @@ public class ScriptTableModel extends DefaultTableModel {
 	 * @return Color
 	 */
 	public Color getLineColor(int p_row) {
-		ActionElement action = actions.get(p_row);
-		String whowhat = action.who == null ? action.what : action.who;
-		if (whowhat != null) {
-			return colorByPerso.get(whowhat);
+		LanguageElement elem = actions.get(p_row);
+		if (elem instanceof ActionElement) {
+			ActionElement action = (ActionElement) elem;
+			String whowhat = action.who == null ? action.what : action.who;
+			if (whowhat != null) {
+				return colorByPerso.get(whowhat);
+			}
 		}
 		return Color.white;
 	}
