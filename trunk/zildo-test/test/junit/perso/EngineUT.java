@@ -39,6 +39,7 @@ import zildo.monde.Game;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoZildo;
@@ -122,7 +123,8 @@ public class EngineUT {
 	
 	@Before
 	public void setUp() {
-		Game game = new Game(true);
+		Game game = new Game(null, "hero");
+		game.editing = true;
 		engine = new EngineZildo(game);
 		// Create standard map
 		//EngineZildo.soundManagement.setForceMusic(true);
@@ -150,6 +152,9 @@ public class EngineUT {
 	public void tearDown() {
 		for (Perso perso : EngineZildo.persoManagement.tab_perso) {
 			Identified.remove(SpriteEntity.class, perso.getId());
+			for (Element elem : perso.getPersoSprites()) {
+				Identified.remove(SpriteEntity.class, elem.getId());
+			}
 		}
 		Identified.resetCounter(SpriteEntity.class);
 	}

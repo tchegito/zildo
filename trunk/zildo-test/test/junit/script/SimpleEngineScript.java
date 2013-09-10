@@ -22,6 +22,8 @@ package junit.script;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import junit.perso.EngineUT;
+
 import org.junit.Before;
 
 import zildo.fwk.script.xml.ScriptReader;
@@ -30,10 +32,12 @@ import zildo.server.EngineZildo;
 import zildo.server.state.ScriptManagement;
 
 /**
+ * Simulation of simple zildo's engine, just with ScriptManagement.
+ * 
  * @author Tchegito
  *
  */
-public class EngineScript {
+public class SimpleEngineScript extends EngineUT {
 
 	ScriptManagement scriptMgmt;
 	

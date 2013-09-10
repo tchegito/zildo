@@ -23,15 +23,21 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import zildo.fwk.file.EasyBuffering;
+import zildo.monde.Game;
+import zildo.server.EngineZildo;
+import zildo.server.state.ScriptManagement;
+
 /**
  * @author Tchegito
  *
  */
-public class CheckVariablesHandling extends EngineScript {
+public class CheckVariablesHandling extends EngineScriptUT {
 
 	String basicXML="<adventure>"+
 					" <scene id='test1'>"+
 					"  <var name='stolenMoney' value='48'/>" +
+					"  <var name='double' value='stolenMoney*2'/>" +
 					" </scene>"+
 					"</adventure>";
 	
@@ -44,5 +50,28 @@ public class CheckVariablesHandling extends EngineScript {
 		scriptMgmt.render();
 		
 		Assert.assertEquals("48.0", scriptMgmt.getVariables().get("stolenMoney"));
+		scriptMgmt.render();
+		Assert.assertEquals("96.0", scriptMgmt.getVariables().get("double"));
+	}
+	
+	@Test
+	public void saveVariables() throws Exception {
+		loadXMLAsString(basicXML);
+		
+		scriptMgmt.execute("test1", false);
+		scriptMgmt.render();
+		
+		EasyBuffering buffer = new EasyBuffering();
+		EngineZildo.game.heroName="tirou";	// Random
+		EngineZildo.game.getTimeSpent();
+		EngineZildo.game.serialize(buffer);
+		buffer.getAll().flip();
+		
+		EngineZildo.scriptManagement = new ScriptManagement();
+		scriptMgmt = EngineZildo.scriptManagement;
+		
+		Game.deserialize(buffer, false);
+		Assert.assertEquals("48.0", scriptMgmt.getVariables().get("stolenMoney"));
+		
 	}
 }
