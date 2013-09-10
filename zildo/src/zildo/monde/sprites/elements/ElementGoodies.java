@@ -20,6 +20,7 @@
 
 package zildo.monde.sprites.elements;
 
+import zildo.fwk.script.logic.FloatExpression;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
@@ -102,7 +103,11 @@ public class ElementGoodies extends Element {
 			timeToAcquire--;
 			if (timeToAcquire == 0) {
 				// Zildo will now have the goodies
-				if (((PersoZildo)linkedPerso).pickGoodies(this, 0)) {
+				int value = 0;
+				if (name != null) {
+					value = (int) new FloatExpression(name).evaluate(null);
+				}
+				if (((PersoZildo)linkedPerso).pickGoodies(this, value)) {
 					dying=true;
 				}
 			}

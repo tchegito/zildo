@@ -103,7 +103,7 @@ public class Area implements EasySerializable {
 	private Atmosphere atmosphere;
 
 	// Elements linked to a given case (into chest, bushes, jar ...)
-	private Map<Integer, ElementDescription> caseItem;
+	private Map<Integer, CaseItem> caseItem;
 
 	// To diffuse changes to clients
 	private final Collection<Point> changes;
@@ -126,7 +126,7 @@ public class Area implements EasySerializable {
 		changes = new HashSet<Point>();
 		toRespawn = new HashSet<SpawningTile>();
 
-		caseItem = new HashMap<Integer, ElementDescription>();
+		caseItem = new HashMap<Integer, CaseItem>();
 		respawnPoints = new ArrayList<Point>();
 
 		offset = new Point(0, 0);
@@ -474,17 +474,20 @@ public class Area implements EasySerializable {
 		}
 		// Is there something planned to appear ?
 		Point p = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
-		ElementDescription desc = getCaseItem(tileLocation.x, tileLocation.y);
+		CaseItem item = getCaseItem(tileLocation.x, tileLocation.y);
+		ElementDescription desc = item == null ? null : item.desc;
 		SpriteManagement sprMgt = EngineZildo.spriteManagement;
 
 		if (p_perso != null && anim == SpriteAnimation.FROM_CHEST) {
 			if (desc == null) {
 				desc = ElementDescription.THREEGOLDCOINS1;
 			}
-			sprMgt.spawnSpriteGeneric(SpriteAnimation.FROM_CHEST, p.x, p.y + 8, 0, p_perso, desc);
+			Element elem = sprMgt.spawnSpriteGeneric(SpriteAnimation.FROM_CHEST, p.x, p.y + 8, 0, p_perso, desc);
+			elem.setName(item.name);
 		} else {
 			if (desc != null) {
-				sprMgt.spawnSpriteGeneric(anim, p.x, p.y + 5, 0, null, desc);
+				Element elem = sprMgt.spawnSpriteGeneric(anim, p.x, p.y + 5, 0, null, desc);
+				elem.setName(item.name);
 			} else {
 				boolean multiPlayer = EngineZildo.game.multiPlayer;
 				PersoZildo zildo = EngineZildo.persoManagement.getZildo();
@@ -796,7 +799,7 @@ public class Area implements EasySerializable {
 					case 167: // Stone
 					case 169: // Heavy stone
 					case 751: // Jar
-						map.setCaseItem(ax, ay, nSpr);
+						map.setCaseItem(ax, ay, nSpr, entName);
 						if (!zeditor) { // We have to see the sprites in ZEditor
 							break;
 						}
@@ -1072,6 +1075,16 @@ public class Area implements EasySerializable {
 		}
 	}
 
+	static class CaseItem {
+		ElementDescription desc;
+		String name;			// Name is used for example to store the quantity of gold in a purse
+		
+		public CaseItem(ElementDescription desc, String name) {
+			this.desc = desc;
+			this.name = name;
+		}
+	}
+	
 	/**
 	 * Link a tile with an item description. (useful for chest)
 	 * 
@@ -1080,10 +1093,11 @@ public class Area implements EasySerializable {
 	 * @param p_y
 	 *            map Y coordinate
 	 * @param p_nSpr
+	 * @param p_name TODO
 	 */
-	public void setCaseItem(int p_x, int p_y, int p_nSpr) {
+	public void setCaseItem(int p_x, int p_y, int p_nSpr, String p_name) {
 		ElementDescription desc = ElementDescription.fromInt(p_nSpr);
-		caseItem.put(lineSize * p_y + p_x, desc);
+		caseItem.put(lineSize * p_y + p_x, new CaseItem(desc, p_name));
 	}
 
 	/**
@@ -1093,9 +1107,9 @@ public class Area implements EasySerializable {
 	 *            map X coordinate
 	 * @param p_y
 	 *            map Y coordinate
-	 * @return ElementDescription
+	 * @return CaseItem
 	 */
-	public ElementDescription getCaseItem(int p_x, int p_y) {
+	public CaseItem getCaseItem(int p_x, int p_y) {
 		return caseItem.get(lineSize * p_y + p_x);
 	}
 

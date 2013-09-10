@@ -144,6 +144,7 @@ public class EngineZildo {
 				ChainingPoint ch=mapManagement.getChainingPoint();
 				if (ch.isBorder()) {
 					state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_SCROLL_ASKED);
+					state.event.chPoint=ch;
 				} else if (!state.event.script) {
 					MapLink linkType=ch.getLinkType();
 					if (ch.isDone() || linkType == MapLink.REGULAR) {
@@ -155,8 +156,8 @@ public class EngineZildo {
 						state.event.nature=ClientEventNature.SCRIPT;
 						ch.setDone(true);
 					}
+					state.event.chPoint=ch;
 				}
-				state.event.chPoint=ch;
 				state.event.mapChange=true;
 			} else if (askedEvent != null) {
 				// Use the asked event and reset it
@@ -216,6 +217,7 @@ public class EngineZildo {
 							switch (linkType) {
 								default:
 									String scriptName = linkType.scriptOut;
+									EngineZildo.scriptManagement.execute("backupGame", true);
 									EngineZildo.scriptManagement.execute(scriptName, true);
 									retEvent.nature = ClientEventNature.SCRIPT;
 									break;
