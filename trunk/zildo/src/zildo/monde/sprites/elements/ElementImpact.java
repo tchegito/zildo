@@ -139,10 +139,11 @@ public class ElementImpact extends Element {
 				setAjustedY((int) y+getSprModel().getTaille_y()/2);
 				break;
         	case DROP_ENERGY:
-        		if (counter >= 2*255) {
+        		if (counter >= 2*255) {	// End of the animation
         			composite.die(false);
         			dying = true;
         		} else {
+        			addSpr = kind.seq[Math.min(kind.seqLong - 1, valCounter)];
         			counter++;
         			composite.setZoom(4 * counter);
         			composite.setAlpha(Math.max(0, alpha));

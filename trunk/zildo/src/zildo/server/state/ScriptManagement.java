@@ -448,4 +448,11 @@ public class ScriptManagement {
 	public Map<String, String> getVariables() {
 		return variables;
 	}
+	
+	public String getVarValue(String p_varName) {
+		if (variables == null) {
+			return null;
+		}
+		return variables.get(p_varName);
+	}
 }

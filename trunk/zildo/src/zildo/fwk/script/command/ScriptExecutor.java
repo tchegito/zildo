@@ -186,6 +186,7 @@ public class ScriptExecutor {
 	
 	private void renderVariable(ScriptProcess process, VarElement p_elem) {
 		process.varExec.render(p_elem);
+		process.cursor++;
 	}
 	
 	private void renderElement(ScriptProcess process, AnyElement currentNode, boolean moveCursor) {

@@ -18,6 +18,7 @@
  *
  */
 package zildo;
+import java.util.Locale;
 import java.util.logging.LogManager;
 
 import zildo.client.Client;
@@ -32,7 +33,7 @@ public class Zildo {
 	// Define the game viewport
 	public static int viewPortX=320;
 	public static int viewPortY=240;
-	// Define the platform resolution (viewport will be adapated to fit)
+	// Define the platform resolution (viewport will be adapted to fit)
 	public static int screenX=800; //640;
 	public static int screenY=600; //480;
 	public static boolean infoDebug=false;
@@ -45,7 +46,7 @@ public class Zildo {
 	
 	public static void main(String[] args) {
 	
-		//Locale.setDefault(Locale.US);
+		Locale.setDefault(Locale.US);
 		
 		for (String arg : args) {
 			if ("fullscreen".equals(arg)) {

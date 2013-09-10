@@ -40,6 +40,9 @@ import zildo.fwk.ui.PageableMenu;
 import zildo.fwk.ui.UIText;
 import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.Game;
+import zildo.monde.map.Area;
+import zildo.monde.map.Case;
+import zildo.monde.util.Angle;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -161,6 +164,12 @@ public class SaveGameMenu extends PageableMenu {
 		if (game.mapName == null) {	// For backward compatibility
 			game.mapName = "foretg2";
 		}
+		
+		
+		//game.mapName = "voleurs";
+		//EngineZildo.persoManagement.getZildo().x+=50;
+		
+		
 		// Wait for all history script to be finishied
 		// This could be dangerous : if a script can't finish => end of the story
 		// (though it could happen, as soon as a script is broken ...)
@@ -170,6 +179,23 @@ public class SaveGameMenu extends PageableMenu {
 		
 		EngineZildo.mapManagement.loadMap(game.mapName, false);
 
+		//Area area = EngineZildo.mapManagement.getCurrentMap();
+		/*
+		Case c = area.get_mapcase(28, 47+4);
+		c.setTransition(Angle.EST);
+		c = area.get_mapcase(43, 47+4);
+		c.setTransition(Angle.OUEST);
+		*//*
+		Case c = area.get_mapcase(29, 25+4);
+		c.setTransition(Angle.NORD);
+		c = area.get_mapcase(30, 25+4);
+		c.setTransition(Angle.NORD);
+
+		c = area.get_mapcase(29, 17+4);
+		c.setTransition(Angle.SUD);
+		c = area.get_mapcase(30, 17+4);
+		c.setTransition(Angle.SUD);
+		*/
 		singlePlay.launchGame();
 		return true;	// success
 	}

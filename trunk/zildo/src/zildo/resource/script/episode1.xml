@@ -411,7 +411,9 @@
 			<wait value="20"/>
 			<moveTo who="zildo" pos="0,0" delta="true"/>
 			<exec script="echange"/>
+			<!-- 
 			<exec script="ep1_closure"/>
+			-->
 		</action>
 	</quest>
 	

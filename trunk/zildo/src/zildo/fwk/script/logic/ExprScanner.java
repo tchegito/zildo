@@ -4,7 +4,7 @@ package zildo.fwk.script.logic;
 /**
  * Simple string bufferizer, with operators as token.<br/>
  * 
- * String as in-parameter is converted to lower case and all spaces are removed.<br/>
+ * String as in-parameter has all its spaces removed.<br/>
  * @author evariste.boussaton
  *
  */
@@ -22,8 +22,8 @@ public class ExprScanner {
 		}
 		cursor = 0;
 		value = new StringBuilder();
-		// Remove spaces and converts to lower
-		exp = expression.replace(" ", "").toLowerCase().replace("[^\\+]\\-", "+-");
+		// Remove spaces
+		exp = expression.replace(" ", "").replace("[^\\+]\\-", "+-");
 	}
 	
 	public String next() {
