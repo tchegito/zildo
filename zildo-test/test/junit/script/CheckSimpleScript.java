@@ -33,7 +33,7 @@ import zildo.server.EngineZildo;
  * @author Tchegito
  *
  */
-public class CheckSimpleScript extends EngineScript {
+public class CheckSimpleScript extends SimpleEngineScript {
 
 	@Test
 	public void simpleSwitch() {
