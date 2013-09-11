@@ -276,12 +276,7 @@
 		</lookFor>
 		<wait value="50"/>
 	</scene>
-	
-	<scene id="testMoney">
-	    <var name="moneyStolen" value="zildo.money"/>
-   	    <take value="-999"/>
-	</scene>
-	
+
 	<persoAction id="sleeping">
 	    <timer each="40+20*random">
 	        <action>

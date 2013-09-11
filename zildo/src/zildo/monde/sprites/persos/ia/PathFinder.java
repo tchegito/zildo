@@ -257,4 +257,30 @@ public class PathFinder {
 	public void setTarget(Point target) {
 		this.target = target;
 	}
+	
+	/**
+	 * Move the mobile, with given algorithm.
+	 * @param p_speed
+	 * @return TRUE if mobile has moved / FALSE if collision (means that target has been set to NULL)
+	 */
+	public boolean move(float p_speed, MoveAlgo p_algo) {
+		Pointf loc = null;
+		switch (p_algo) {
+		case APPROACH:
+			loc = reachDestination(p_speed);
+			break;
+		case STRAIGHT:
+			loc = reachLine(p_speed, true);
+			break;
+		}
+		if (target != null && loc.x == mobile.x && loc.y == mobile.y) {
+			target = null;
+			return false;
+		}
+		if (loc.x != Float.NaN && loc.y != Float.NaN) { 
+			mobile.x = loc.x;
+			mobile.y = loc.y;
+		}
+		return true;
+	}
 }

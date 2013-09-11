@@ -23,9 +23,9 @@ import zildo.monde.Hasard;
 import zildo.monde.Trigo;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.persos.ia.MoveAlgo;
 import zildo.monde.sprites.persos.ia.PathFinder;
 import zildo.monde.util.Point;
-import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
 /**
@@ -60,7 +60,8 @@ public class PersoSpider extends PersoShadowed {
 				Perso zildo = EngineZildo.persoManagement.lookFor(this, 4, PersoInfo.ZILDO);
 				if (zildo != null) {
 					attackAngle = Trigo.getAngleRadian(x, y, zildo.x, zildo.y);
-					attackAngle += Hasard.intervalle((float) (Math.PI / 8f));
+					attackAngle += Hasard.intervalle((float) (Math.PI / 4f));
+					attackSpeed += Math.random() * 0.5f;
 				} else {
 					attackAngle = Math.random() * 2 * Math.PI;
 				}
@@ -69,19 +70,13 @@ public class PersoSpider extends PersoShadowed {
 								     (int) (y + 6 * attackSpeed * Math.sin(attackAngle)) );
 			pathFinder.setTarget(target);
 		} else {
-			Pointf pos = pathFinder.reachDestination((float) attackSpeed);
-			if (pathFinder.getTarget() != null && pos.x == x && pos.y == y) {
-				opposite = true;	// Collision, so go in the opposite next time
-				pathFinder.setTarget(null);
-			} else {
-				if (pos.x != Float.NaN && pos.y != Float.NaN) { 
-					x = pos.x;
-					y = pos.y;
-				}
+			if (pathFinder.move((float) attackSpeed, MoveAlgo.APPROACH)) {
 				attackSpeed *= 0.95f;
 				if (attackSpeed <= 0.1f) {
 					pathFinder.setTarget(null);
 				}
+			} else {
+				opposite = true;	// Collision, so go in the opposite next time
 			}
 		}
 
