@@ -22,7 +22,12 @@ package zildo.monde.quest;
 
 public enum QuestEvent {
 
-    LOCATION, DIALOG, INVENTORY, QUESTDONE, DEAD, PUSH;
+    LOCATION,	// Some one walks on a specific location 
+    DIALOG, 	// Hero speaks to someone
+    INVENTORY,	// Hero has a particular item 
+    QUESTDONE, 	// Hero has completed a quest
+    DEAD, 		// Some enemies have died
+    PUSH; 		// Hero has pushed a block or something
     
     
     public static QuestEvent fromString(String p_name) {
