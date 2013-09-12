@@ -165,6 +165,7 @@
 	
 	<quest name="stop_defi1">
 		<trigger>
+		    <location name="prisonext"/>
 			<inventory item="SWORD"/>
 		</trigger>
 		<action>
