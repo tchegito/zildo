@@ -174,10 +174,11 @@ public class ScriptManagement {
     	for (QuestElement quest : adventure.getQuests()) {
     		if (!quest.done) {
     			// For each quest undone yet :
-    			boolean achieved=true;
+    			boolean achieved = quest.getTriggers().size() != 0;
     			for (TriggerElement trig : quest.getTriggers()) {
     				achieved&=trig.isDone();
     			}
+    			// Particular case : no triggers at all IS NOT considered as achieved
     			if (achieved) {
     				accomplishQuest(quest, true);
     			} else if (quest.isTriggersBoth()) {
@@ -315,6 +316,9 @@ public class ScriptManagement {
 	 * @param p_kind
 	 */
 	public void automaticBehavior(PersoZildo p_zildo, ItemKind p_kind, ElementDescription p_desc) {
+		if (isScripting()) {
+			return;	// Go away, because a script has already taken the lead
+		}
 		String label;
 		if (p_kind == null) {
 			String add="";
@@ -399,7 +403,7 @@ public class ScriptManagement {
 	
 	public void openChest(String p_mapName, Point p_location) {
 		String questName=p_mapName+p_location.toString();
-		accomplishQuest(questName, false);
+		accomplishQuest(questName, true);
 	}
 	
 	/**
