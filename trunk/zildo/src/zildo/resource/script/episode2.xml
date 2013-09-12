@@ -91,6 +91,18 @@
         </action>
     </quest>
     
+    <quest name="voleursm2u(4, 3)">
+    	<action>
+    	    <speak who="zildo" text="voleurs.m2u.money"/>
+    	</action>
+    </quest>
+    
+    <quest name="voleursm2u(10, 7)">
+    	<action>
+    	    <speak who="zildo" text="voleurs.m2u.sword"/>
+    	</action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
