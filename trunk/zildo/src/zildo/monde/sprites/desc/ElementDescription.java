@@ -99,7 +99,11 @@ public enum ElementDescription implements SpriteDescription {
 	// 194
 	DUST1, DUST2, DUST3,
 	// 197
-	ZZZ1, ZZZ2;
+	ZZZ1, ZZZ2,
+	// 199
+	CRATE, CRATE2, SMALL_TABLE,
+	// 202
+	PLATE, FORK, CANDLE1, CANDLE2, CANDLE3;
 	
 	Boolean damage;
 	
@@ -162,6 +166,7 @@ public enum ElementDescription implements SpriteDescription {
 		case CUBE_ORANGE:
 		case SPADE:
 		case STATUE:
+		case CRATE:
 			return true;
 		default:
 			return false;
@@ -195,6 +200,9 @@ public enum ElementDescription implements SpriteDescription {
 		switch (this) {
 		case CUBE_BLUE:
 		case CUBE_ORANGE:
+		case BARREL:
+		case CRATE:
+		case STATUE:
 			return true;
 		}
 		return false;

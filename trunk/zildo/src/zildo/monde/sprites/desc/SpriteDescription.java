@@ -31,6 +31,8 @@ public interface SpriteDescription {
 	public int getNSpr();
 	
 	public boolean isBlocking();
+
+	public boolean isPushable();
 	
 	public boolean isDamageable();
 	
