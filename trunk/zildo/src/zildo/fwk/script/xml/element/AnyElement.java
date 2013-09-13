@@ -22,6 +22,7 @@ package zildo.fwk.script.xml.element;
 
 import org.w3c.dom.Element;
 
+import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.element.action.ActionsElement;
 import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
@@ -134,6 +135,24 @@ public abstract class AnyElement {
 		}
     }
     
+    /**
+     * Used for expression that we know to be immediate.
+     * @param p_attrName
+     * @param defaultValue
+     * @return 
+     */
+    protected float evaluateFloat(String p_attrName, int... defaultValue) {
+    	String str = readAttribute(p_attrName);
+    	int def = 0;
+    	if (defaultValue.length > 0) {
+    		def = defaultValue[0];
+    	}
+    	if (str == null) {
+    		return def;
+    	}
+        return (int) new FloatExpression(str).evaluate(null);
+    }
+
     /**
      * Merge two elements of same kind. Not necessarily overrided.
      * @param elem
