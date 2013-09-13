@@ -217,7 +217,7 @@
 	<quest name="maltus_foret_suite">
 		<trigger>
 			<questDone name="maltus_foret"/>
-			<location name="foret" pos="694,533" radius="1"/>
+			<location name="foret" pos="694,490" radius="1"/>
 		</trigger>
 		<action>
 			<exec script="maltus_foret2"/>
@@ -412,9 +412,7 @@
 			<wait value="20"/>
 			<moveTo who="zildo" pos="0,0" delta="true"/>
 			<exec script="echange"/>
-			<!-- 
 			<exec script="ep1_closure"/>
-			-->
 		</action>
 	</quest>
 	

@@ -152,6 +152,7 @@ public class Game implements EasySerializable {
         }
         
         // Backup quest state to restore if hero dies
+        p_buffer.getAll().flip();
         EngineZildo.setBackedUpGame(p_buffer);
 	}
 
@@ -217,8 +218,6 @@ public class Game implements EasySerializable {
             Point loc = new Point(p_buffer.readInt(), p_buffer.readInt());
             zildo.setX(loc.x);
             zildo.setY(loc.y);
-            // Backup quest state to restore if hero dies
-            EngineZildo.setBackedUpGame(p_buffer);
 			
             if (!p_legacy) {
                 // 5: time spent
@@ -240,6 +239,10 @@ public class Game implements EasySerializable {
             	String value = p_buffer.readString();
             	EngineZildo.scriptManagement.getVariables().put(key, value);
             }
+
+            // Backup quest state to restore if hero dies
+            EngineZildo.setBackedUpGame(p_buffer);
+            
             return game;
         } catch (Exception e) {
             return null;

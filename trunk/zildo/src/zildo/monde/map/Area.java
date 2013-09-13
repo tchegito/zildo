@@ -483,7 +483,9 @@ public class Area implements EasySerializable {
 				desc = ElementDescription.THREEGOLDCOINS1;
 			}
 			Element elem = sprMgt.spawnSpriteGeneric(SpriteAnimation.FROM_CHEST, p.x, p.y + 8, 0, p_perso, desc);
-			elem.setName(item.name);
+			if (item != null) {
+				elem.setName(item.name);
+			}
 		} else {
 			if (desc != null) {
 				Element elem = sprMgt.spawnSpriteGeneric(anim, p.x, p.y + 5, 0, null, desc);

@@ -267,7 +267,6 @@ public class EngineZildo {
     public static void backUpGame() {
 		EasyBuffering buffer = new EasyBuffering();
 		game.serialize(buffer);
-		backedUpGame = buffer;
     }
     
     public static void restoreBackedUpGame() {
