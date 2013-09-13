@@ -44,6 +44,7 @@ import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.dialog.WaitingDialog;
+import zildo.monde.dialog.WaitingDialog.CommandDialog;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
@@ -74,14 +75,14 @@ import zildo.server.state.PlayerState;
 public class GUIDisplay {
 
 	public enum DialogMode {
-		CLASSIC, MENU, CREDITS, HALLOFFAME;
+		CLASSIC, MENU, CREDITS, HALLOFFAME, INFO;
 		
 		public boolean isScript() {
 			return true; //this == CLASSIC || this == CREDITS;
 		}
 		
 		public boolean isBig() {
-			return this == MENU;
+			return this == MENU || this == INFO;
 		}
 		
 		public boolean isMenu() {
@@ -113,6 +114,7 @@ public class GUIDisplay {
 	private GUISpriteSequence guiSpritesSequence; // All sprites designing the GUI
 	private GUISpriteSequence menuSequence; // Cursors for menu
 	private GUISpriteSequence creditSequence; // Credits
+	private GUISpriteSequence infoSequence; // For displaying infos
 
 	private ScreenConstant sc;
 	
@@ -146,6 +148,7 @@ public class GUIDisplay {
 		guiSpritesSequence = new GUISpriteSequence();
 		menuSequence = new GUISpriteSequence();
 		creditSequence = new GUISpriteSequence();
+		infoSequence = new GUISpriteSequence();
 		
 		countMoney = 0;
 
@@ -361,6 +364,11 @@ public class GUIDisplay {
 			visibleFont = true;
 			seq = creditSequence;
 			fx = EngineFX.NO_EFFECT;
+			break;
+		case INFO:
+			center = true;
+			visibleFont = false;
+			seq = infoSequence;
 			break;
 		}
 
@@ -642,6 +650,11 @@ public class GUIDisplay {
 		dialogContext.visibleMessageDisplay = false;
 	}
 
+	/**
+	 * Display scrolling credits
+	 * @param counter position in the sequence of lines
+	 * @param nextSentence incoming sentence
+	 */
 	public void displayCredits(int counter, String nextSentence) {
 		setToDisplay_dialogMode(DialogMode.CREDITS);
 
@@ -667,6 +680,16 @@ public class GUIDisplay {
 		
 	}
 	
+	public void displayInfo(int y, String nextSentence, EntityTransformer action) {
+		setToDisplay_dialogMode(DialogMode.INFO);	
+		
+		if (nextSentence != null) {
+			prepareTextInFrame(nextSentence, sc.TEXTER_COORDINATE_X, y, true);
+		}
+		for (SpriteEntity ent : infoSequence) {
+			action.transform(ent);
+		}
+	}
 	/**
 	 * Display a menu
 	 * 
@@ -920,6 +943,7 @@ public class GUIDisplay {
 		setToDisplay_generalGui(false);
 		setToDisplay_dialoguing(false);
 		countMoney = 0;
+		clearSequences(127);
 	}
 	
 	public boolean isToDisplay_dialoguing() {
@@ -1022,5 +1046,30 @@ public class GUIDisplay {
 	
 	public boolean launchDialog(List<WaitingDialog> p_queue) {
 		return dialogDisplay.launchDialog(p_queue);
+	}
+	
+	public void clearSequences(int p_which) {
+		if ((p_which & 1) != 0) {
+			textDialogSequence.clear();
+			dialogDisplay.actOnDialog(null, CommandDialog.STOP);
+		}
+		if ((p_which & 2) != 0) {
+			textMenuSequence.clear();
+		}
+		if ((p_which & 4) != 0) {
+			frameDialogSequence.clear();
+		}
+		if ((p_which & 8) != 0) {
+			guiSpritesSequence.clear();
+		}
+		if ((p_which & 16) != 0) {
+			menuSequence.clear();
+		}
+		if ((p_which & 32) != 0) {
+			creditSequence.clear();
+		}
+		if ((p_which & 64) != 0) {
+			infoSequence.clear();
+		}
 	}
 }

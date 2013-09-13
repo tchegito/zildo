@@ -27,6 +27,7 @@ import zildo.client.gui.menu.RegisterChampionMenu;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
 import zildo.client.stage.SinglePlayer;
+import zildo.client.stage.TitleStage;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.filter.CloudFilter;
@@ -215,8 +216,14 @@ public class ActionExecutor {
                     break;
                 case speak:
                 	String sentence = UIText.getGameText(text);
-                    EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence));
-                    scriptExec.userEndedAction = false;
+                	if ("synthe".equals(p_action.who)) {
+                		// Particular case : incrust some texts on the middle of the screen
+                		ClientEngineZildo.client.askStage(new TitleStage(sentence));
+                		achieved = true;	// Titlestage is stand-alone
+                	} else {
+	                    EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence));
+	                    scriptExec.userEndedAction = false;
+                	}
                     break;
                 case script:
                     if (p_action.text != null) {

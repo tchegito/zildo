@@ -85,6 +85,7 @@ public class CreditStage implements GameStage {
 
 	@Override
 	public void endGame() {
+		ClientEngineZildo.guiDisplay.clearSequences(32);
 	}
 
 	@Override

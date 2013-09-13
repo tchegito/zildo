@@ -78,7 +78,9 @@ public class MenuStage implements GameStage {
 	}
 
 	@Override
-	public void endGame() { }
+	public void endGame() {
+		guiDisplay.clearSequences(2);
+	}
 	
 	@Override
 	public boolean isDone() {

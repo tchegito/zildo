@@ -1,7 +1,6 @@
 /**
  * The Land of Alembrum
  * Copyright (C) 2006-2013 Evariste Boussaton
- * 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,35 +17,15 @@
  *
  */
 
-package zildo.client.stage;
+package zildo.client.gui;
 
-import zildo.client.Client;
+import zildo.monde.sprites.SpriteEntity;
 
 /**
- * To add a new stage to the game engine, just call:<br/>
- *         {@link Client#askStage(GameStage)}
- *         
  * @author Tchegito
  *
  */
-public interface GameStage {
+public interface EntityTransformer {
 
-	/**
-	 * Called each frame, for updating state.
-	 */
-	public void updateGame();
-	
-	/**
-	 * Called each frame, to render.
-	 */
-	public void renderGame();
-	
-	/**
-	 * Called once for starting the stage.
-	 */
-	public void launchGame();
-
-	public void endGame();
-	
-	public boolean isDone();
+	public void transform(SpriteEntity p_entity);
 }
