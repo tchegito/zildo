@@ -40,7 +40,9 @@ public class EasyWritingFile extends EasyBuffering {
 	
     public void saveFile(String p_fileName) {
     	// Wrap the buffer
-    	data.flip();
+    	if (data.position() != 0) {
+    		data.flip();
+    	}
     	
         OutputStream fileOut = null;
         try {

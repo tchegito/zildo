@@ -185,7 +185,7 @@ public class TriggerElement extends AnyElement {
 			break;
 		case QUESTDONE:
 			if (questSwitch.contains(p_another.name)) {
-				return questSwitch.evaluate() == ZSCondition.TRUE;
+				return questSwitch.evaluate().equals(ZSCondition.TRUE);
 			}
 			break;
 		case DEAD:

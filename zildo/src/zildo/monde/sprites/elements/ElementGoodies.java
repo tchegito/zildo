@@ -104,7 +104,7 @@ public class ElementGoodies extends Element {
 			if (timeToAcquire == 0) {
 				// Zildo will now have the goodies
 				int value = 0;
-				if (name != null) {
+				if (name != null && name.length() != 0) {
 					value = (int) new FloatExpression(name).evaluate(null);
 				}
 				if (((PersoZildo)linkedPerso).pickGoodies(this, value)) {
