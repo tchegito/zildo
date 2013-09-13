@@ -89,12 +89,10 @@ public class TitleStage implements GameStage {
 		if (lineWaiting == 255) {
 			if (currentLine < infosText.length) {
 				sentence = infosText[currentLine];
-				System.out.println(sentence);
 			} else if (currentLine == infosText.length) {
 				// Nothing
 			} else if (currentLine == infosText.length + 1) {
 				action = new DisappearTitle();
-				System.out.println("disappear");
 			} else {
 				endGame();
 			}
@@ -118,7 +116,6 @@ public class TitleStage implements GameStage {
 	@Override
 	public void endGame() {
 		ClientEngineZildo.guiDisplay.clearSequences(64);
-		System.out.println("remove title");
 		done = true;
 	}
 
