@@ -24,6 +24,7 @@ public class EngineScriptUT extends EngineUT {
 
 		ScriptManagement scriptMgmt;
 		
+		@Override
 		@Before
 		public void setUp() {
 			super.setUp();
@@ -41,6 +42,7 @@ public class EngineScriptUT extends EngineUT {
 			scriptMgmt.getAdventure().merge(ScriptReader.loadStream(stream));		
 		}
 		
+		@Override
 		@After
 		public void tearDown() {
 			super.tearDown();

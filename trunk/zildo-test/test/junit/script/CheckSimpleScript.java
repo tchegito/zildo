@@ -25,6 +25,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import zildo.fwk.script.logic.FloatVariable;
+import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.server.EngineZildo;
 
@@ -89,6 +90,19 @@ public class CheckSimpleScript extends SimpleEngineScript {
 		Assert.assertTrue(parsed.evaluate().equals("NOTE2"));
 	}
 	
+	@Test
+	public void parenthese() {
+		// Make sure this doesn't hang up
+		ZSSwitch sw = ZSSwitch.parseForScript("!voleursm3(8,8)");
+		
+		Assert.assertTrue(sw.evaluate().equals(ZSCondition.TRUE));
+		
+		EngineZildo.scriptManagement.accomplishQuest("voleursm3(8,8)", false);
+		Assert.assertTrue(!sw.evaluate().equals(ZSCondition.TRUE));
+		
+	}
+	
+	@Override
 	@After
 	public void tearDown() {
 		EngineZildo.scriptManagement = null;

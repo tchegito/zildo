@@ -61,5 +61,9 @@ public class MapUtils {
 		writemap(x+1, y+1, 49, 256 + 37, -1);		
 	}
 	
+	public void loadMap(String name) {
+		EngineZildo.mapManagement.loadMap(name, false);
+		area = EngineZildo.mapManagement.getCurrentMap();
+	}
 }
 
