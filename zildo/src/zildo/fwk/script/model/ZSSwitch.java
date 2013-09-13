@@ -64,13 +64,22 @@ public class ZSSwitch {
 		String def = "0";
 		boolean defaultSet = false;
 		conditions = new ArrayList<ZSCondition>();
-		for (String s : strConds) {
+		String s ="";
+		for (int i=0;i<strConds.length;i++) {
+			String str = strConds[i];
+			if (str.indexOf("(") != -1) {
+				s=str+",";
+				continue;
+			} else {
+				s+=str;
+			}
 			if (s.indexOf(":") == -1) {
 				def = s;
 				defaultSet = true;
 			} else {
 				conditions.add(new ZSCondition(s));
 			}
+			s="";
 		}
 		if (!defaultSet) {
 			throw new RuntimeException("Default value must be set");
@@ -88,7 +97,8 @@ public class ZSSwitch {
 	 * @return ZSSwitch
 	 */
 	public static ZSSwitch parseForScript(String p_parseableString) {
-		String replacement = p_parseableString.replaceAll(",", ":1,");
+		// Replace all "," which is not preceded by a 3 digits max number
+		String replacement = p_parseableString.replaceAll("(?<!\\([0-9]{1,3}),", ":1,");
 		return new ZSSwitch(replacement + ":1,0");
 	}
 

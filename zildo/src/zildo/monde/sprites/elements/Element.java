@@ -22,7 +22,6 @@ package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.collection.IntSet;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.map.Area;
@@ -41,9 +40,6 @@ import zildo.server.EngineZildo;
 //TODO: Remove getter/setter for x,y,z
 
 public class Element extends SpriteEntity {
-
-	// Elements that Zildo can push
-	private static IntSet pushableElements = new IntSet(28, 69, 70, 169);
 
 	// Class variables
 	private float ancX, ancY, ancZ;
@@ -164,7 +160,8 @@ public class Element extends SpriteEntity {
 				|| a == ElementDescription.NOTE2.ordinal()
 				|| a == ElementDescription.PEEBLE.ordinal()
 				|| a== ElementDescription.ZZZ1.ordinal() 
-				|| a== ElementDescription.ZZZ2.ordinal()) {
+				|| a== ElementDescription.ZZZ2.ordinal()
+				|| a== ElementDescription.CRATE.ordinal()) {
 			return true;
 		} else {
 			return false;
@@ -225,7 +222,7 @@ public class Element extends SpriteEntity {
 			return false;
 		}
 		physicMove();
-		if (isSolid() || pushableElements.contains(nSpr)) {
+		if (isSolid() || desc.isPushable()) {
 			SpriteEntity linked = this.getLinkedPerso();
 			boolean partOfPerso = false;
 			if (linked != null && linked.getEntityType().isPerso()) {
@@ -233,9 +230,10 @@ public class Element extends SpriteEntity {
 				partOfPerso = perso == null ? false : perso
 						.linkedSpritesContains(this);
 			}
+			int subY = getSprModel().getTaille_y() >> 1;
 			if (!partOfPerso
 					&& EngineZildo.mapManagement
-							.collide((int) x, (int) y, this)) {
+							.collide(x, y-subY, this)) {
 				// Collision : on stoppe le mouvement, on ne laisse plus que la
 				// chute pour finir au sol
 				x = ancX;
@@ -308,7 +306,7 @@ public class Element extends SpriteEntity {
 					}
 				} else {
 	
-					if (pushableElements.contains(nSpr)) {
+					if (desc.isPushable()) {
 						z = ancZ; // z-vz;
 						vz = vz - az;
 						if (az != 0) {

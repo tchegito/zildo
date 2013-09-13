@@ -211,7 +211,7 @@ public class TriggerElement extends AnyElement {
 	public boolean isDone() {
 		switch (kind) {
 		case QUESTDONE:
-			return questSwitch.evaluate() == ZSCondition.TRUE;
+			return questSwitch.evaluate().equals( ZSCondition.TRUE );
 		case INVENTORY:
 			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 			return zildo != null && zildo.hasItem(ItemKind.fromString(name)) == !not;

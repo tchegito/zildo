@@ -172,5 +172,11 @@ public enum PersoDescription implements SpriteDescription {
 	public boolean isDamageable() {
 		return false;
 	}
+	
+	@Override
+	public boolean isPushable() {
+		return false;
+	}
+
 
 }

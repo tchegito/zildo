@@ -424,7 +424,7 @@ public class SpriteManagement extends SpriteStore {
 		int nBank=desc.getBank();
 		int nSpr=desc.getNSpr();
 
-		if (nSpr == 69 || nSpr == 70 || nSpr == 28) { // || nSpr == 179) {
+		if (desc.isPushable()) { // || nSpr == 179) {
 			// Particular sprite (Block that Zildo can move, chest...)
 			return spawnElement(nBank, nSpr, x, y, 0, Reverse.NOTHING, Rotation.NOTHING); // + spr.getTaille_y() / 2 - 3,
 					//0);
