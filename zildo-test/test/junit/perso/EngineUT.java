@@ -57,7 +57,7 @@ public class EngineUT {
 
 	protected EngineZildo engine;
 	protected List<ClientState> clients;
-	MapUtils mapUtils;	// To easily manipulate the map
+	protected MapUtils mapUtils;	// To easily manipulate the map
 	
 	protected Perso spawnTypicalPerso(String name, int x, int y) {
 		Perso perso = new PersoNJ();

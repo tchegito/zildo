@@ -41,6 +41,7 @@ public class SimpleEngineScript extends EngineUT {
 
 	ScriptManagement scriptMgmt;
 	
+	@Override
 	@Before
 	public void setUp() {
 		EngineZildo.setGame(new Game(false));
