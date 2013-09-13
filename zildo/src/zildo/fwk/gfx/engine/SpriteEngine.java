@@ -20,6 +20,8 @@
 
 package zildo.fwk.gfx.engine;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import zildo.Zildo;
@@ -210,9 +212,23 @@ public abstract class SpriteEngine {
 	protected void createModelsFromSpriteBank(SpriteBank sBank) {
 		int x=0,y=0,highestLine=0;
 
-		for (int n=0;n<sBank.getNSprite();n++)
-		{
+
+		// First pass to sort sprites on lower heights
+		List<SpriteModel> modelSorted = new java.util.ArrayList<SpriteModel>();
+		int n;
+		for (n=0;n<sBank.getNSprite();n++) {
 			SpriteModel spr=sBank.get_sprite(n);
+			modelSorted.add(spr);
+		}
+		Collections.sort(modelSorted, new Comparator<SpriteModel>() {
+
+			@Override
+			public int compare(SpriteModel o1, SpriteModel o2) {
+				return -Integer.valueOf(o1.getTaille_y()).compareTo(o2.getTaille_y());
+			}
+		});
+		
+		for (SpriteModel spr : modelSorted) {
 			int longX=spr.getTaille_x();
 			int longY=spr.getTaille_y();
 			// check for outer boundaries
