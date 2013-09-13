@@ -108,7 +108,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || putDown || text || - || - || - || Remove an item from Zildo's inventory ||
 || attack || text || V || - || - || Make a given character attacking in front of him ||
 || activate || text || - || V || V || Activate a gear (door, button, ...) with boolean 'value' to turn on/off the gear (according to TRUE/FALSE value) ||
-|| tile || text || - || - || - || Change a map tile ||
+|| tile || text || - || - || - || Change a map tile. Used with attributes 'back', 'back2' and fore. Set to -1 to remove one of these tiles. ||
 || filter || text || - || - || - || Add a color filter : 0=normal / 1=night / 2=evening / 3=red / 4=lightning ||
 || end || text || - || - || - || For game over, depending on type attribute : 0=player wins / 1=player dies ||
 || respawn || text || - || - || - || Respawn player at his starting location in the current area. ||
