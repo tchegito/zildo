@@ -206,9 +206,9 @@ public class ActionElement extends LanguageElement {
 			break;
 		case tile:
 			location = IPoint.fromString(strPos);
-			back = (int) evaluateFloat("back", -1);
-			back2 = (int) evaluateFloat("back2", -1);
-			fore = (int) evaluateFloat("fore", -1);
+			back = (int) evaluateFloat("back", -2);
+			back2 = (int) evaluateFloat("back2", -2);
+			fore = (int) evaluateFloat("fore", -2);
 			break;
 		}
 		

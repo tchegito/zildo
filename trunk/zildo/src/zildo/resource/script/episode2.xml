@@ -110,7 +110,10 @@
             <questDone name="!voleursm3(8,8)"/>
         </trigger>
         <action>
-            <tile pos="8,8" back="231+256*2"/>
+            <animation pos="136,136" type="CLOUD_FOG" />
+            <sound name="ChestAppears"/>
+            <wait value="2"/>
+            <tile pos="8,8" back2="231+256*2"/>
         </action>
     </quest>
     
@@ -178,7 +181,7 @@
 		    <perso who="vert" action="sleeping"/>
 		</condition>
 		<condition name="voleursm3" exp="!v3_crate-!voleursm3(8,8)">
-		    <tile pos="8,8" back="256*2+40"/>
+		    <tile pos="8,8" back2="-1"/>
 		</condition>
 	</mapScript>
 
@@ -245,8 +248,9 @@
 	    <speak who="fox1" text="voleurs.fox3"/>
 	    <moveTo who="fox2" pos="910,998" unblock="true"/>
 	    <angle who="zildo" value="1"/>
-	    <moveTo who="vert" pos="807,906" unblock="true"/>
+	    <moveTo who="vert" pos="723,893" unblock="true" speed="1"/>
 	    <speak who="fox2" text="voleurs.fox4"/>
+	    
 	    <actions>
 	        <moveTo who="fox2" pos="900,998"/>
 	        <moveTo who="zildo" pos="880,1005" backward="true"/>
@@ -260,6 +264,7 @@
    	    </actions>
    	    <var name="moneyStolen" value="zildo.money"/>
    	    <take value="-999"/>
+   	    <moveTo who="vert" pos="807,906" unblock="true"/>
    	    <speak who="fox2" text="voleurs.fox7"/>
    	    <actions>
    	    	<moveTo who="fox2" pos="-20,0" delta="true" speed="1.5"/>

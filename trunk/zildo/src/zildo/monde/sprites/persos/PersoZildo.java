@@ -537,9 +537,6 @@ public class PersoZildo extends Perso {
 					pushedElement.moveOnPush(getAngle());
 					// Break link between Zildo and pushed object
 					pushSomething(null);
-					// Trigger an object being pushed
-					TriggerElement trig = TriggerElement.createPushTrigger(pushedElement.getName(), getAngle());
-					EngineZildo.scriptManagement.trigger(trig);
 				}
 			}
 		}
