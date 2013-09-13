@@ -412,7 +412,10 @@
 			<wait value="20"/>
 			<moveTo who="zildo" pos="0,0" delta="true"/>
 			<exec script="echange"/>
+			<exec script="intro_episode2"/>
+			<!-- 
 			<exec script="ep1_closure"/>
+			-->
 		</action>
 	</quest>
 	
@@ -561,6 +564,7 @@
 	    <script who="roxy" value="3" />
 	    <pos what="camera" pos="100,400" />
 	    <fadeIn type="0"/>
+	    <speak who="synthe" text="info.episode1"/>
 	    <speak what="camera" text="intro.p1"/>
 	    <wait value="90" />
 	    <moveTo what="camera" pos="500,150" unblock="true"/>
@@ -619,6 +623,7 @@
 	    <moveTo pos="544,246" speed="0.5" unstoppable="true" who="emissaire"/>
 	    <wait value="15" />
 	    <spawn type="SCEPTER" pos="543,233" what="scepter"/>
+	    <sound name="MenuSelect"/>
 	    <wait value="35" />
 	    <speak who="tony" text="echange.tony3" />
 	    <moveTo pos="544,266" who="emissaire" backward="true" />
@@ -631,7 +636,7 @@
 	    <script who="emissaire" value="2" effect="vautour"/>
 	    <script who="tony" value="2" effect="vautour"/>
 	    <music name="Surprise"/>
-	    <moveTo who="vautour" pos="543,245"/>
+	    <moveTo who="vautour" pos="543,250"/>
 	    <take who="vautour" what="scepter" />
 	    <actions>
 	    	<moveTo who="vautour" pos="480,400"/>

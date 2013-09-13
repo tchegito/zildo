@@ -35,13 +35,14 @@ public enum EngineFX {
 	FONT_NORMAL(new int[]{0, 0, 112}, new int[]{248, 248, 248}),
 	FONT_HIGHLIGHT(new int[]{32, 64, 112}, new int[]{240, 216, 64}), 
 	SHINY, QUAD,
+	INFO,
 	FOCUSED;	// FOCUSED is used when we wants to highlight some entity (inventory, or buying something)
 	
 	public final Vector4f darkColor;
 	public final Vector4f brightColor;
 	
 	public boolean needPixelShader() {
-		return !(this==NO_EFFECT || this==SHINY || this==QUAD || this==FOCUSED);
+		return !(this==NO_EFFECT || this==SHINY || this==QUAD || this==FOCUSED || this==INFO);
 	}
 	
 	public EngineFX fromInt(int i) {
