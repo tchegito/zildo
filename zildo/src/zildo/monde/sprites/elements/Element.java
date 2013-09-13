@@ -22,6 +22,7 @@ package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.map.Area;
@@ -252,17 +253,12 @@ public class Element extends SpriteEntity {
 		return false;
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// animate
-	// -animate the current element, and we expect that arranged position is
-	// stored in
-	// ajustedX and ajustedY.
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// OUT : List of element which have to be removed from element's list
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// Be careful : we can animate an element which is declared as invisible (by
-	// VISIBLE boolean)
-	// /////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Animate the current element, and we expect that arranged position will be stored in 
+	 * ajustedX and ajustedY.<br/>
+	 * Be careful : we can animate an element which is declared invisible (by
+	 * VISIBLE boolean).
+	 */
 	@Override
 	public void animate() {
 		// Perso pnj;
@@ -315,6 +311,10 @@ public class Element extends SpriteEntity {
 								vy = 0;
 								az = 32;
 								vz = 0;
+								// Trigger a push event
+								// Trigger an object being pushed
+								TriggerElement trig = TriggerElement.createPushTrigger(name, angle);
+								EngineZildo.scriptManagement.trigger(trig);
 							} else {
 								az = az + 1;
 							}
@@ -617,6 +617,7 @@ public class Element extends SpriteEntity {
 		}
 		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPousse, this);
 		az = 1.0f;
+		angle = ang;
 		// One push only
 		pushable = false;
 	}

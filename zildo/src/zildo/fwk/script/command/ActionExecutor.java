@@ -395,14 +395,14 @@ public class ActionExecutor {
                 	// Change tile on map
                 	Area area = EngineZildo.mapManagement.getCurrentMap();
                 	Case c = area.get_mapcase(location.x, location.y+4);
-                	if (p_action.back != -1) {
-                		c.setBackTile(new Tile(p_action.back, c));
+                	if (p_action.back != -2) {
+                		c.setBackTile(p_action.back == -1 ? null : new Tile(p_action.back, c));
                 	}
-                	if (p_action.back2 != -1) {
-                		c.setBackTile2(new Tile(p_action.back2, c));
+                	if (p_action.back2 != -2) {
+                		c.setBackTile2(p_action.back2 == -1 ? null : new Tile(p_action.back2, c));
                 	}
-                	if (p_action.fore != -1) {
-                		c.setForeTile(new Tile(p_action.fore, c));
+                	if (p_action.fore != -2) {
+                		c.setForeTile(p_action.fore == -1 ? null : new Tile(p_action.fore, c));
                 	}
                 	EngineZildo.mapManagement.getCurrentMap().set_mapcase(location.x, location.y+4, c);
                 	achieved=true;

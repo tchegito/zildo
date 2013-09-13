@@ -43,7 +43,7 @@ public class PersoSpider extends PersoShadowed {
 		y = p_y;
 		pathFinder = new PathFinder(this);
 		pathFinder.speed = 0;
-		pv = 2;
+		pv = 1;
 	}
 	
 	@Override
