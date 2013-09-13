@@ -934,30 +934,9 @@ public class Area implements EasySerializable {
 		}
 		
 		if (p_spawn) {
-			map.correctDoorHouse();
 			map.correctTrees();
 		}
 		return map;
-	}
-
-	private void correctDoorHouse() {
-		Case c;
-		for (int j = 0; j < getDim_y(); j++) {
-			for (int i = 0; i < getDim_x(); i++) {
-				int onmap = readmap(i, j);
-				if (onmap == 278) {
-					// We found a door on a house
-					for (int l = -3; l < 0; l++) {
-						for (int k = -2; k < 3; k++) {
-							c = get_mapcase(i + k, j + 4 + l);
-							if (c.getForeTile() == null) {
-								c.setForeTile(c.getBackTile());
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 
 	private final static IntSet treeToBlock = new IntSet(144, 145, 148, 149, 23 + 256 * 4, 24 + 256 * 4, 27 + 256 * 4,
