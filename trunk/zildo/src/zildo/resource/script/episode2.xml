@@ -103,6 +103,17 @@
     	</action>
     </quest>
     
+    <quest name="v3_crate">
+        <trigger>
+            <location name="voleursm3"/>
+            <push name="crate" angle="1"/>
+            <questDone name="!voleursm3(8,8)"/>
+        </trigger>
+        <action>
+            <tile pos="8,8" back="231+256*2"/>
+        </action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -110,7 +121,7 @@
 	    	<spawn type="BANDIT_VERT" speed="1.3" pos="935,369" angle="0" who="tony"/>
 	    	<script who="bunny" value="3"/>
 	    </condition>
-	    <condition name="voleurs" exp="!vol">
+	    <condition name="voleurs" exp="!attaque_voleurs">
 	        <pos who="vert" pos="32,0" foreground="true" delta="true"/>
 	    </condition>
    		<condition name="voleurs" exp="!fini_voleur">
@@ -165,6 +176,9 @@
 		</condition>
 		<condition name="voleursm2">
 		    <perso who="vert" action="sleeping"/>
+		</condition>
+		<condition name="voleursm3" exp="!v3_crate-!voleursm3(8,8)">
+		    <tile pos="8,8" back="256*2+40"/>
 		</condition>
 	</mapScript>
 
