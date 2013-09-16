@@ -159,7 +159,6 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			changeSprites=false;
 		}
 		if (!initialize) {
-			System.out.println("initializing");
 			initRenderThread();
 			initOpenGL();
 			// give the renderer a note that we have initialized our main render
@@ -376,7 +375,6 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		Area area = EngineZildo.mapManagement.getCurrentMap();
 		int totalWidth = area.getDim_x() * 16;
 		int totalHeight = area.getDim_y() * 16;
-		System.out.println("Image size: "+totalWidth+"x"+totalHeight);
 		ortho.setSize(sizeX, sizeY, false);
 		// Save the rendered scene
 		ByteBuffer bigOne = BufferUtils.createByteBuffer(totalWidth * totalHeight * 3);

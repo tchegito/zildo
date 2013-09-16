@@ -31,6 +31,10 @@ import java.awt.event.MouseWheelListener;
 
 import zeditor.fwk.awt.ZildoCanvas.ZEditMode;
 import zeditor.windows.managers.MasterFrameManager;
+import zildo.fwk.gfx.engine.TileEngine;
+import zildo.monde.map.Case;
+import zildo.monde.map.Tile;
+import zildo.server.EngineZildo;
 
 public class ZildoMouseKeyListener implements MouseListener,
 		MouseMotionListener, KeyListener, MouseWheelListener {
@@ -166,6 +170,8 @@ public class ZildoMouseKeyListener implements MouseListener,
 	@Override
 	public void mouseMoved(MouseEvent mouseevent) {
 		Point p = getPosition(mouseevent);
+		
+		// Display location in system message
 		StringBuilder message = new StringBuilder();
 		message.append("X: ");
 		message.append(p.x / 16);
@@ -184,6 +190,13 @@ public class ZildoMouseKeyListener implements MouseListener,
 		MasterFrameManager.display(message.toString(),
 				MasterFrameManager.MESSAGE_INFO);
 
+		// Display case info
+		Case c = EngineZildo.mapManagement.getCurrentMap().get_mapcase(p.x/16, p.y/16+4);
+		if (c != null) {
+			message.setLength(0);
+			caseToString(message, c);
+			MasterFrameManager.displayCaseInfo(message.toString());
+		}
 		if (focusOnCursor) {
 			canvas.setObjectOnCursor(p);
 		}
@@ -254,5 +267,22 @@ public class ZildoMouseKeyListener implements MouseListener,
 		} else {
 			canvas.setZoom(true);
 		}
+	}
+	
+	private void caseToString(StringBuilder sb, Case c) {
+		sb.append("back:");
+		tileToString(sb, c.getBackTile());
+		if (c.getBackTile2() != null) {
+			sb.append(" - back2:");
+			tileToString(sb, c.getBackTile2());
+		}
+		if (c.getForeTile() != null) {
+			sb.append(" - fore:");
+			tileToString(sb,c.getForeTile());
+		}
+	}
+	
+	private void tileToString(StringBuilder sb, Tile t) {
+		sb.append(TileEngine.tileBankNames[t.bank]).append("(").append(t.index+")");
 	}
 }
