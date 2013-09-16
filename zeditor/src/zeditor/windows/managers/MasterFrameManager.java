@@ -41,6 +41,7 @@ import zildo.server.EngineZildo;
  */
 public class MasterFrameManager {
 	public static JLabel systemDisplay;
+	public static JLabel caseInfoDisplay;
 	private static MasterFrame masterFrame;
 	private JPanel masterPanel;
 
@@ -69,9 +70,10 @@ public class MasterFrameManager {
 	 *            Le JLabel Système de la MasterFrame
 	 * @author Drakulo
 	 */
-	public void initialize(JLabel p_sys, JPanel p_master,
+	public void initialize(JLabel p_sys, JLabel p_caseInfo, JPanel p_master,
 			ZildoCanvas p_zildoCanvas) {
 		systemDisplay = p_sys;
+		caseInfoDisplay = p_caseInfo;
 		masterPanel = p_master;
 		zildoCanvas = p_zildoCanvas;
 		zildoCanvas.setManager(this);
@@ -244,6 +246,13 @@ public class MasterFrameManager {
 		}
 	}
 
+	public static void displayCaseInfo(String p_msg) {
+		if (caseInfoDisplay != null) {
+			caseInfoDisplay.setText(" " + p_msg);
+			caseInfoDisplay.setForeground(Color.black);
+		}
+	}
+	
 	/**
 	 * Ouvre la fenêtre de paramétrage des options
 	 * 

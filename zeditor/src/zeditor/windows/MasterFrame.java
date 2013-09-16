@@ -69,6 +69,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JMenuItem newItem;
 	private JMenu fileMenu;
 	private JLabel systemLabel;
+	private JLabel caseInfoLabel;
 	private JPanel systemPanel;
 	private JPanel rightPanel;
 	private PersoPanel persoPanel;
@@ -170,10 +171,6 @@ public class MasterFrame extends javax.swing.JFrame {
 
 			getContentPane().add(zildoPanel, BorderLayout.EAST);
 
-			// Recréation du manager avec les objets en paramètre
-			// manager = new MasterFrameManager(getSystemLabel(),
-			// getMasterPanel(), this, zildoPanel.getZildoCanvas());
-
 			// Initialisation de la fenêtre par le manager
 			manager.init();
 
@@ -228,7 +225,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	public MasterFrameManager getManager() {
 		if (manager == null) {
 			manager = new MasterFrameManager(this);
-			manager.initialize(getSystemLabel(), getMasterPanel(),
+			manager.initialize(getSystemLabel(), getCaseInfoLabel(), getMasterPanel(),
 					zildoPanel.getZildoCanvas());
 		}
 		return manager;
@@ -730,7 +727,8 @@ public class MasterFrame extends javax.swing.JFrame {
 			systemPanel.setPreferredSize(new java.awt.Dimension(10, 20));
 			systemPanel.setSize(792, 20);
 			systemPanel.setMaximumSize(new java.awt.Dimension(32767, 20));
-			systemPanel.add(getSystemLabel(), BorderLayout.CENTER);
+			systemPanel.add(getSystemLabel(), BorderLayout.LINE_START);
+			systemPanel.add(getCaseInfoLabel(), BorderLayout.LINE_END);
 		}
 		return systemPanel;
 	}
@@ -742,6 +740,14 @@ public class MasterFrame extends javax.swing.JFrame {
 		return systemLabel;
 	}
 
+	private JLabel getCaseInfoLabel() {
+		if (caseInfoLabel == null) {
+			caseInfoLabel = new JLabel();
+		}
+		return caseInfoLabel;
+	}
+	
+	
 	private JMenu getFileMenu() {
 		if (fileMenu == null) {
 			fileMenu = new JMenu();
