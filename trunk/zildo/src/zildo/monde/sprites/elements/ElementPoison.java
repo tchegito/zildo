@@ -43,12 +43,15 @@ public class ElementPoison extends Element {
 	double duration;
 	Collision collision;
 	
+	public static int CLOUD_DURATION = 1000;
+	
 	public ElementPoison(int x, int y, Perso p_shooter) {
 		clouds = new ArrayList<Element>();
 		int des12 = 0;
 		double gamma = 0;
 		Zone zc = new Zone(1024, 1024, -1024, -1024);
 		// Place 5 small clouds
+		int size = 0;
 		for (int i=0;i<6;i++) {
 			Element cloud = new Element();
 			double rayon = 8 + Math.random() * 4;
@@ -75,16 +78,17 @@ public class ElementPoison extends Element {
 			clouds.add(cloud);
 			
 			// Determining collision zone
-			int size = cloud.getSprModel().getTaille_x() / 2;	// Assume that width is the same than height
+			size = cloud.getSprModel().getTaille_x() / 2;	// Assume that width is the same than height
 			zc.x1 = (int) Math.min(zc.x1, cloud.x - size);
 			zc.y1 = (int) Math.min(zc.y1, cloud.y - size);
 			zc.x2 = (int) Math.max(zc.x2, cloud.x + size);
 			zc.y2 = (int) Math.max(zc.y2, cloud.y + size);
 		}
-		duration = 1000;
+		duration = CLOUD_DURATION;
 		
 		zc.x2 = zc.x2 - zc.x1;
 		zc.y2 = zc.y2 - zc.y1;
+		zc.y2 -= size / 2;
 		collision = new Collision(zc.getCenter(), new Point(zc.x2, zc.y2), p_shooter, DamageType.POISON, null);
 	}
 	
@@ -131,7 +135,7 @@ public class ElementPoison extends Element {
 	
     @Override
 	public Collision getCollision() {
-    	if (duration > 50) {
+    	if (duration > 100) {
     		return collision;
     	} else {	// Cloud is going to disappear
     		return null;
