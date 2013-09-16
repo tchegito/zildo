@@ -275,24 +275,7 @@ public class Case implements EasySerializable {
 		}
 		return t;
 	}
-	
-	/**
-	 * Deserialize a byte buffer into a Case
-	 * @param p_buffer
-	 * @return SpriteEntity
-	 */
-	public static Case oldDeserialize(EasyBuffering p_buffer) {
-		Case mapCase=new Case();
-		int index1 = p_buffer.readUnsignedByte();
-		int bank1 = p_buffer.readUnsignedByte();
-		int index2 = p_buffer.readUnsignedByte();
-		int bank2 = p_buffer.readUnsignedByte();
-		mapCase.setBackTile(new Tile(bank1, index1, mapCase));
-		if (bank1 > 63) {
-			mapCase.setForeTile(new Tile(bank2, index2, mapCase));
-		}
-		return mapCase;
-	}
+
 	public int getZ() {
 		return z;
 	}
