@@ -65,5 +65,17 @@ public class MapUtils {
 		EngineZildo.mapManagement.loadMap(name, false);
 		area = EngineZildo.mapManagement.getCurrentMap();
 	}
+	
+	public void displayAltitude() {
+		System.out.println("altitude");
+		for (int y=0;y<area.getDim_x();y++) {
+			System.out.print("y="+String.format("%02d",y)+" ");
+			for (int x=0;x<area.getDim_y();x++) {
+				int alt = area.readAltitude(x, y);
+				System.out.print(alt);
+			}
+			System.out.println();
+		}		
+	}
 }
 

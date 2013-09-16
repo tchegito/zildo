@@ -232,6 +232,7 @@ public class MapManagement {
 			return false;
 		}
 
+		//if (true) return false;
 		// Is it a ghost ?
 		boolean ghost = false;
 		Perso p = quelElement != null && quelElement.getEntityType().isPerso() ? (Perso) quelElement : null;
@@ -666,12 +667,14 @@ public class MapManagement {
 
 	// Hill boundaries
 	private final static IntSet leftIncreaseZ = new IntSet(100, 106, 107, 
-															16, 17, 18,
-															81, 83, 86); // 17, 15,
+															16, 17, 18, 20,
+															81, 83, 86,
+															93, 95); // 17, 15,
 																	// 841, 15);
 	private final static IntSet rightDecreaseZ = new IntSet(102, 103, 104,
 															24, 25, 26,
-															80, 82, 85); // 25, 9,
+															80, 82, 85,
+															92, 94); // 25, 9,
 																		// 842,
 																		// 9);
 
