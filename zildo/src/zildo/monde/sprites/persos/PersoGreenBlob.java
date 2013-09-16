@@ -20,11 +20,16 @@
 package zildo.monde.sprites.persos;
 
 import zildo.client.sound.BankSound;
+import zildo.monde.Hasard;
+import zildo.monde.Trigo;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteAnimation;
+import zildo.monde.sprites.elements.ElementPoison;
 import zildo.monde.sprites.persos.ia.PathFinderGreenBlob;
 import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 /**
@@ -34,6 +39,11 @@ import zildo.server.EngineZildo;
 public class PersoGreenBlob extends PersoShadowed {
 
 	int delay;
+	int cloudDelay;	// Number of frame to wait before launching a poison cloud
+	boolean enemyFound;	// TRUE when he found Zildo and wants to spit his poison cloud
+	boolean approaching;	// TRUE when he found Zildo and is getting closer
+	Perso enemy;
+	double correctAngle;
 	
 	public PersoGreenBlob() {
 		super(ElementDescription.SHADOW, 1);
@@ -41,6 +51,8 @@ public class PersoGreenBlob extends PersoShadowed {
 		setPv(2);
 		setNSpr(PersoDescription.GREEN_BLOB.first());
 		setDesc(PersoDescription.GREEN_BLOB);
+		
+		cloudDelay = 0;
 	}
 	
 	final int[] seqStill = { 0, 1, 2, 1 }; // another 3 sprites
@@ -72,5 +84,42 @@ public class PersoGreenBlob extends PersoShadowed {
 		setAddSpr(add_spr);
 		setNSpr(PersoDescription.GREEN_BLOB.nth(add_spr) - add_spr);
 		
+	}
+	
+	@Override
+	public void animate(int compteur_animation) {
+		super.animate(compteur_animation);
+		
+		if (pathFinder.getTarget() == null) {
+			if (enemyFound) {
+				// Makes him getting closer to Zildo
+				double gamma = Trigo.getAngleRadian(x, y, enemy.x, enemy.y);
+				gamma += Hasard.intervalle((float) (Math.PI / 4f));
+				gamma += correctAngle;
+				Point p = new Point((int) (x + 12 * Math.cos(gamma)),
+					     			(int) (y + 12 * Math.sin(gamma)) );
+				pathFinder.setTarget(p);
+				approaching = true;
+			} else if (approaching ) {
+				int xx = (int) (x + angle.coords.x * 16);
+				int yy = (int) (y + angle.coords.y * 16);
+				cloudDelay = ElementPoison.CLOUD_DURATION;
+				EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.POISONCLOUD, xx, yy, 0, this, null);
+				EngineZildo.soundManagement.broadcastSound(BankSound.PoisonCloud, new Point(x,y));
+				approaching = false;
+				correctAngle = 0;
+			}
+			enemyFound = false;
+		}
+		if (!approaching && !enemyFound) {
+			Perso zildo = EngineZildo.persoManagement.lookFor(this, 5, PersoInfo.ZILDO);
+			if (zildo != null && isFacing(zildo) && cloudDelay == 0) {
+				enemyFound = true;
+				enemy = zildo;
+			}
+		}
+		if (cloudDelay > 0) {
+			cloudDelay--;
+		}
 	}
 }

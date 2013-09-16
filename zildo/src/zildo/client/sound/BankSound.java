@@ -134,6 +134,7 @@ public enum BankSound implements AudioBank {
 	Switch("switch"),
 	LavaDrop("lavadrop"),
 	PeebleFloor("peeble"),
+	PoisonCloud("poison"),
 	
 	Squeak1("squeak1"),
 	Squeak2("squeak2");
