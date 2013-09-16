@@ -32,15 +32,15 @@ public class DropDelegateDraw {
 
 	/**
 	 * Delegate method to draw a {@link Case} object from a {@link TileSelection} on the map.
-	 * @param p_mapTile
+	 * @param p_mapCase
 	 * @param p_toDraw
 	 * @param p_mask 0/1/2
 	 */
-	public void draw(Case p_mapTile, Case p_toDraw, int p_mask) {
+	public void draw(Case p_mapCase, Case p_toDraw, int p_mask) {
 		// Apply modifications
 		Tile tile = p_toDraw.getBackTile();
 		if (tile.index != -1 && p_mask == 0) {	// Smash the previous tile
-			p_mapTile.setBackTile(p_toDraw.getBackTile().clone());
+			p_mapCase.setBackTile(p_toDraw.getBackTile().clone());
 		} else {
 			//TODO : Check this
 			/*
@@ -52,20 +52,20 @@ public class DropDelegateDraw {
 			*/
 		}
 		if (p_mask == 2) {
-			p_mapTile.setForeTile(p_toDraw.getBackTile().clone());
+			p_mapCase.setForeTile(p_toDraw.getBackTile().clone());
 		} else if (p_mask == 1) {
-			p_mapTile.setBackTile2(p_toDraw.getBackTile().clone());
+			p_mapCase.setBackTile2(p_toDraw.getBackTile().clone());
 		} else {
 			Tile clonedForeTile = null;
 			if (p_toDraw.getForeTile() != null) {
 				clonedForeTile = p_toDraw.getForeTile().clone();
 			}
-			p_mapTile.setForeTile(clonedForeTile);
+			p_mapCase.setForeTile(clonedForeTile);
 			Tile cloneBackTile2 = null;
 			if (p_toDraw.getBackTile2() != null) {
 				cloneBackTile2 = p_toDraw.getBackTile2().clone();
 			}
-			p_mapTile.setBackTile2(cloneBackTile2);
+			p_mapCase.setBackTile2(cloneBackTile2);
 		}
 	}
 }
