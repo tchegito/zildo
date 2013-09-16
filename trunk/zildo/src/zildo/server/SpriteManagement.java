@@ -52,6 +52,7 @@ import zildo.monde.sprites.elements.ElementHearts;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementLauncher;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
+import zildo.monde.sprites.elements.ElementPoison;
 import zildo.monde.sprites.elements.ElementSmoke;
 import zildo.monde.sprites.elements.ElementStaffs;
 import zildo.monde.sprites.elements.ElementStars;
@@ -393,6 +394,10 @@ public class SpriteManagement extends SpriteStore {
 				break;
 			case DUST:
 				element = new ElementImpact(x, y, ImpactKind.DUST, null);
+				spawnSprite(element);
+				break;
+			case POISONCLOUD:
+				element = new ElementPoison(x, y, miscPerso);
 				spawnSprite(element);
 				break;
 		}

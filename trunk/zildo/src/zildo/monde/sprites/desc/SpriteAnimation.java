@@ -43,5 +43,6 @@ public enum SpriteAnimation {
 	STAFF_POUM,	// Throw a staff
 	BIG_FIREBALL,
 	LAVA_DROP,
-	DUST;
+	DUST,
+	POISONCLOUD;
 }

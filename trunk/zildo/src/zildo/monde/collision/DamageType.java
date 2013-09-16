@@ -32,7 +32,8 @@ public enum DamageType {
 	CUTTING_FRONT, // Sword just in front of character
 	EXPLOSION, // Bomb
 	SMASH, // Hammer
-	FIRE;	// Fire (big damage)
+	FIRE,	// Fire (big damage)
+	POISON;
 	
 	public boolean isCutting() {
 		return CUTTING==this || CUTTING_FRONT==this || EXPLOSION==this; 
