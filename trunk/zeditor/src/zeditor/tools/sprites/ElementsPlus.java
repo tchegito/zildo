@@ -285,7 +285,9 @@ public class ElementsPlus extends SpriteBanque {
 		        new Zone(32, 150, 16, 15),
 		        // Decors (plate, fork and candle)
 		        new Zone(232, 16, 16, 15), new Zone(250, 16, 4, 12), 
-		        new Zone(88, 81, 7, 14), new Zone(96, 81, 7, 14), new Zone(104, 81, 7, 14)
+		        new Zone(88, 81, 7, 14), new Zone(96, 81, 7, 14), new Zone(104, 81, 7, 14),
+		        // Poison
+		        new Zone(113, 56, 16, 16), new Zone(129, 56, 16, 16), new Zone(129, 72, 16, 16)
 
 		};
 		
