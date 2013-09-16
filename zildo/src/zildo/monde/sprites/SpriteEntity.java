@@ -69,7 +69,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	private int linkVertices; // Index on VertexBuffer's position about quad
 								// describing this sprite
 	public boolean visible; // TRUE=visible FALSE=invisible
-	private boolean foreground; // Drawn at last in display sequence. So always
+	protected boolean foreground; // Drawn at last in display sequence. So always
 								// on foreground
 	public boolean dying; // TRUE=we must remove them
 	protected Point center = new Point(); // Defaults : 1) entity : [x/2, y] 2)

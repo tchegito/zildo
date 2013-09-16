@@ -103,7 +103,9 @@ public enum ElementDescription implements SpriteDescription {
 	// 199
 	CRATE, CRATE2, SMALL_TABLE,
 	// 202
-	PLATE, FORK, CANDLE1, CANDLE2, CANDLE3;
+	PLATE, FORK, CANDLE1, CANDLE2, CANDLE3,
+	// 207
+	POISON1, POISON2, POISON3;
 	
 	Boolean damage;
 	
@@ -229,6 +231,7 @@ public enum ElementDescription implements SpriteDescription {
 				case STAFF_POUM:
 				case BIG_FIRE_BALL:
 				case PEEBLE:
+				case POISON1: case POISON3:
 					damage = true;
 					break;
 			}
