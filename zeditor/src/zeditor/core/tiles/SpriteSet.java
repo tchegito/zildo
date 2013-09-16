@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import zeditor.core.selection.PersoSelection;
 import zeditor.core.selection.SpriteSelection;
 import zeditor.windows.managers.MasterFrameManager;
@@ -134,6 +133,12 @@ public class SpriteSet extends ImageSet {
 				public boolean isDamageable() {
 					return false;
 				}
+				
+				@Override
+				public boolean isPushable() {
+					return false;
+				}
+
 			});
 		}
 		return list;
