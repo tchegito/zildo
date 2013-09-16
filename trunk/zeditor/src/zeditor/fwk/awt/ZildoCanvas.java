@@ -247,8 +247,8 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	    Point cameraCorrection=panel.getPosition();
 	    int i=(startBlock.x+cameraCorrection.x % 16) / 16;
 	    int j=(startBlock.y+cameraCorrection.y % 16) / 16;
-	    int w=(cursorLocation.x - camera.x) / 16;
-	    int h=(cursorLocation.y - camera.y) / 16;
+	    int w=Math.min(map.getDim_x(), (cursorLocation.x - camera.x) / 16);
+	    int h=Math.min(map.getDim_y(), (cursorLocation.y - camera.y) / 16);
 	    int width=w-i;
 	    int height=h-j;
 	    
@@ -264,7 +264,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
         	    List<Case> cases=new ArrayList<Case>();
         	    for (int y=j;y<h;y++) {
             	    	for (int x=i;x<w;x++) {
-            	    	    cases.add(new Case(map.get_mapcase(x, y + 4 )));
+            	    		Case c = map.get_mapcase(x, y + 4 );
+            	    		if (c != null) {
+            	    			cases.add(new Case(c));
+            	    		}
             	    	}
         	    }
         	    MasterFrameManager.switchCopyTile(width, height, cases);
