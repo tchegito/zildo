@@ -38,17 +38,17 @@ public class DropTreeDrawer extends DropDelegateDraw {
 	 * zildo.monde.map.Case, boolean)
 	 */
 	@Override
-	public void draw(Case p_mapTile, Case p_toDraw, int p_mask) {
+	public void draw(Case p_mapCase, Case p_toDraw, int p_mask) {
 		// Between 2 trees
 		// 1) fore tile
-		Tile t1 = p_mapTile.getForeTile();
+		Tile t1 = p_mapCase.getForeTile();
 		Tile t2 = p_toDraw.getForeTile();
 		if (linkTwoTree(t1, t2)) {
 			return;
 		}
 
 		// 3) back tile
-		t1 = p_mapTile.getBackTile();
+		t1 = p_mapCase.getBackTile();
 		t2 = p_toDraw.getBackTile();
 		if (linkTwoTree(t1, t2)) {
 			return;
@@ -57,7 +57,7 @@ public class DropTreeDrawer extends DropDelegateDraw {
 		// 3) mask on a masked tile
 
 		// The 'mask' parameter has no sense here.
-		super.draw(p_mapTile, p_toDraw, p_mask);
+		super.draw(p_mapCase, p_toDraw, p_mask);
 	}
 
 	/**
