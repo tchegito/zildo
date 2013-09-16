@@ -230,7 +230,7 @@ public class Village extends Banque {
 
 		pkmChanges = Arrays.asList(new GraphChange("exteria3", 0, 0), 
 				new GraphChange("exteria4", 191, 192), new GraphChange("exteria6", 235, 96),
-				new GraphChange("exteria3", 247, -192-96));
+				new GraphChange("exteria3", 248, -192-96));
 	}
 
 }
