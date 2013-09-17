@@ -93,7 +93,7 @@ public enum PersoDescription implements SpriteDescription {
 	VIEUX_SAGE3(252),
 	STONE_SPIDER(253, 254),
 	PAPER_NOTE(255),
-	
+	FALCOR(263, 264, 261, 262, 259, 260, 265), 
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
 	IntSet sprUsed;
@@ -129,7 +129,9 @@ public enum PersoDescription implements SpriteDescription {
 	 */
 	public int nth(int p_nth) {
 		int f = sprUsed.get(p_nth).intValue();
-		if (f > 127) {
+		if (f > 258) {
+			f-=259;
+		} else if (f > 127) {
 			f-=128;
 		}
 		return f;
@@ -143,10 +145,13 @@ public enum PersoDescription implements SpriteDescription {
 		if (this == ZILDO) {
 			return SpriteBank.BANK_ZILDO;
 		}
-		if (sprUsed.get(0) < 128) {
+		int s = sprUsed.get(0);
+		if (s < 128) {
 			return SpriteBank.BANK_PNJ;
-		} else {
+		} else if (s < 259) {
 			return SpriteBank.BANK_PNJ2;
+		} else {
+			return SpriteBank.BANK_PNJ3;
 		}
 	}
 
