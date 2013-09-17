@@ -94,6 +94,10 @@ public class SpritePrimitive extends QuadPrimitive {
 	public void synchronizeSprite(float x, float y, float xTex, float yTex, int sizeX, int sizeY, int repeatX, int repeatY, Rotation rotation, int zoom)
 	{
 		int yy = (int) y;
+		int sx = sizeX; int sy = sizeY;
+		if (rotation == Rotation.CLOCKWISE || rotation == Rotation.COUNTERCLOCKWISE) {
+			sx = sizeY ; sy = sizeX;
+		}
 		for (int i=0;i<repeatY;i++) {
 			int xx = (int) x;
 			for (int j=0;j<repeatX;j++) {
@@ -101,9 +105,9 @@ public class SpritePrimitive extends QuadPrimitive {
 				nIndices-=6;
 				super.addSprite(xx, yy, xTex, yTex, sizeX, sizeY, rotation, zoom);
 				numQuadSynchronizing++;
-				xx+=sizeX;
+				xx+=sx;
 			}
-			yy+=sizeY;
+			yy+=sy;
 		}
 	}
 	
