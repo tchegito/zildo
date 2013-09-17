@@ -377,6 +377,10 @@
 	    <angle who="rouge" value="3"/>
 	    <speak who="vert" text="voleurs.chat.vert2"/>
 	    <wait value="20"/>
+	    <moveTo who="violet" pos="16,-32" delta="true" unblock="true"/>
+	    <moveTo who="vert" pos="0,-32" delta="true" unblock="true"/>
+	    <wait value="10"/>
+	    <moveTo who="rouge" pos="48,0" delta="true" unblock="true"/>
 	    <fadeOut type="0"/>
 	</scene>
 	
