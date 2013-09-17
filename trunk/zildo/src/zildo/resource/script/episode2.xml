@@ -117,6 +117,12 @@
         </action>
     </quest>
     
+    <quest name="voleursm4_button">
+	    <trigger>
+	        <location name="voleursm4b" tilePos="3,11" gear="BUTTON"/>
+	    </trigger>
+	</quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -188,6 +194,14 @@
 		</condition>
 		<condition name="voleursm3" exp="!v3_crate-!voleursm3(8,8)">
 		    <tile pos="8,8" back2="-1"/>
+		</condition>
+		<condition name="voleursm4" exp="!voleursm4_button">
+		    <tile pos="16,11" back="256*2+33"/>
+			<tile pos="17,11" back="256*2+33"/>
+			<remove chaining="voleurscave"/>
+		</condition>
+		<condition name="voleursm4b" exp="voleursm4_button">
+		    <tile pos="3,11"  back="256*3+212" back2="-1"/>"
 		</condition>
 	</mapScript>
 

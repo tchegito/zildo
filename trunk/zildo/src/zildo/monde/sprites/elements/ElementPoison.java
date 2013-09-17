@@ -70,7 +70,7 @@ public class ElementPoison extends Element {
 				cloud.reverse = Reverse.ALL;
 			}
 			if (Hasard.lanceDes(5)) {
-				cloudDesc = ElementDescription.POISON3;
+				cloudDesc = ElementDescription.POISON2;
 			}
 			cloud.setDesc(cloudDesc);
 			cloud.setForeground(true);
