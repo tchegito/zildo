@@ -291,7 +291,9 @@ public class ElementsPlus extends SpriteBanque {
 		        // Carpet border
 		        new Zone(146,71, 16, 8),
 		        // Water lily
-		        new Zone(146, 57, 18, 13)
+		        new Zone(146, 57, 18, 13),
+		        // Bottles
+		        new Zone(165, 57, 8, 11), new Zone(174, 57, 6, 11)
 				
 
 		};
