@@ -105,7 +105,9 @@ public enum ElementDescription implements SpriteDescription {
 	// 202
 	PLATE, FORK, CANDLE1, CANDLE2, CANDLE3,
 	// 207
-	POISON1, POISON2, POISON3;
+	POISON1, POISON2, CARPET2,
+	// 210
+	WATER_LILY;
 	
 	Boolean damage;
 	
@@ -231,7 +233,7 @@ public enum ElementDescription implements SpriteDescription {
 				case STAFF_POUM:
 				case BIG_FIRE_BALL:
 				case PEEBLE:
-				case POISON1: case POISON3:
+				case POISON1: case POISON2:
 					damage = true;
 					break;
 			}

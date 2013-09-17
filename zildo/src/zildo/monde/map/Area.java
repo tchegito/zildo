@@ -81,8 +81,8 @@ public class Area implements EasySerializable {
 		boolean fog;	// display a fog during the respawn
 	}
 
-	final static int TILE_VIEWPORT_X = (Zildo.viewPortX / 16) + 1;
-	final static int TILE_VIEWPORT_Y = (Zildo.viewPortY / 16) + 1;
+	final static int TILE_VIEWPORT_X = (Zildo.viewPortX / 16);// + 1;
+	final static int TILE_VIEWPORT_Y = (Zildo.viewPortY / 16);// + 1;
 	
 	final static int DEFAULT_SPAWNING_TIME = 5000;	// Number of frames until the tile respawns
 	
@@ -539,6 +539,20 @@ public class Area implements EasySerializable {
 		listChainingPoint.add(ch);
 	}
 
+	/**
+	 * Returns chaining point linked to given map name.
+	 * @param name
+	 * @return ChainingPoint
+	 */
+	public ChainingPoint getNamedChainingPoint(String p_name) {
+		for (ChainingPoint ch : listChainingPoint) {
+			if (ch.getMapname().equals(p_name)) {
+				return ch;
+			}
+		}
+		return null;
+	}
+	
 	public void removeChainingPoint(ChainingPoint ch) {
 		listChainingPoint.remove(ch);
 	}

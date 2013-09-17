@@ -441,7 +441,7 @@
 		</action>
 	</quest>
 	
-	<quest name="tonneau_polakyg">
+	<quest name="tonneau_polakyg" locked="false">
 		<trigger>
 		    <location name="polakyg"/>
 		    <push name="barrel1" angle="2"/>

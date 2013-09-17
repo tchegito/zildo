@@ -46,6 +46,7 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
+import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
 import zildo.monde.quest.actions.GameOverAction;
 import zildo.monde.quest.actions.ScriptAction;
@@ -362,7 +363,13 @@ public class ActionExecutor {
                 	achieved=true;
                 	break;
                 case remove:
-                	if (p_action.what == null && p_action.who == null) {
+                	if (p_action.text != null) { // Remove a chaining point
+                		Area area = EngineZildo.mapManagement.getCurrentMap();
+                		ChainingPoint ch = area.getNamedChainingPoint(p_action.text);
+                		if (ch != null) {	// Doesn't crash if chaining point can't be found
+                			area.removeChainingPoint(ch);
+                		}
+                	} else if (p_action.what == null && p_action.who == null) {
                 		EngineZildo.persoManagement.clearPersos(false);
                 		EngineZildo.spriteManagement.clearSprites(false);
                 	} else {

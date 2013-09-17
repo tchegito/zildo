@@ -210,6 +210,9 @@ public class ActionElement extends LanguageElement {
 			back2 = (int) evaluateFloat("back2", -2);
 			fore = (int) evaluateFloat("fore", -2);
 			break;
+		case remove:
+			text = readAttribute("chaining");
+			break;
 		}
 		
 		// As several variables are used for different usage (which is bad), make specific here
