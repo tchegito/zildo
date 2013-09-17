@@ -172,6 +172,7 @@ public enum ElementDescription implements SpriteDescription {
 		case STATUE:
 		case CRATE:
 		case CRATE2:
+		case SMALL_TABLE:
 			return true;
 		default:
 			return false;
@@ -208,6 +209,7 @@ public enum ElementDescription implements SpriteDescription {
 		case BARREL:
 		case CRATE:
 		case STATUE:
+		case CANDLE1:
 			return true;
 		}
 		return false;

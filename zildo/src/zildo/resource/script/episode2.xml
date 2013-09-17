@@ -73,6 +73,18 @@
         </action>
     </quest>
     
+    <quest name="meanwhile_voleurs">
+        <trigger>
+            <location name="voleursg3"/>
+        </trigger>
+        <action>
+            <exec script="voleurs_discutent"/>
+            <map name="voleursg3"/>
+			<focus who="zildo" />
+			<fadeIn type="0"/>
+        </action>
+    </quest>
+    
     <quest name="squeaky_floor_voleurs" repeat="true" locked="false">
         <trigger>	<!-- 2*256 + 57 = 569 --> 
             <location name="voleursm1" tileValue="569"/>
@@ -194,6 +206,11 @@
 		</condition>
 		<condition name="voleursm3" exp="!v3_crate-!voleursm3(8,8)">
 		    <tile pos="8,8" back2="-1"/>
+		</condition>
+		<condition name="voleursm4b">
+		    <perso who="falcor" action="sleeping"/>
+		    <!-- Just to place correctly the candle on the small table -->
+		    <pos what="candle" pos="0,6" delta="true" z="6"/>
 		</condition>
 		<condition name="voleursm4" exp="!voleursm4_button">
 		    <tile pos="16,11" back="256*2+33"/>
@@ -325,6 +342,44 @@
 		<wait value="50"/>
 	</scene>
 
+	<scene id="voleurs_discutent" restoreZildo="true">
+	    <clear/>
+	    <speak who="zildo" text="voleurs.chat.off" />
+	    <fadeOut type="0"/>
+	    <map name="voleurs" />
+	   	<spawn pos="122,664" type="FOX" who="rouge" angle="2" fx="rouge"/>
+	    <spawn pos="81,666" type="FOX" who="violet" angle="1" fx="violet"/>
+	   	<spawn pos="139,702" type="FOX" who="vert" angle="3" fx="vert"/>
+	    	   	
+	    <pos what="camera" pos="8,570" />
+	    <moveTo who="rouge" pos="40,0" delta="true" unblock="true"/>
+	    <fadeIn type="0"/>
+	    <wait value="120"/>
+	    <moveTo who="rouge" pos="-40,8" delta="true"/>
+	    <wait value="20"/>
+	    <angle who="rouge" value="2"/>
+	    <speak who="rouge" text="voleurs.chat.rouge0"/>
+	    <speak who="rouge" text="voleurs.chat.rouge1"/>
+	    <angle who="rouge" value="3"/>
+	    <speak who="violet" text="voleurs.chat.violet1"/>
+	    <attack who="vert"/>
+	    <wait value="90"/>
+	    <angle who="rouge" value="2"/>
+	    <angle who="vert" value="0"/>
+		<speak who="vert" text="voleurs.chat.vert1"/>
+	   	<speak who="rouge" text="voleurs.chat.rouge2"/>
+	   	<wait value="20"/>
+		<moveTo who="rouge" pos="128,-32" delta="true" unblock="true"/>
+   	    <speak who="rouge" text="voleurs.chat.rouge3" unblock="true"/>
+   	    <wait value="150"/>
+	    <speak who="violet" text="voleurs.chat.violet2"/>
+	    <angle who="vert" value="0"/>
+	    <angle who="rouge" value="3"/>
+	    <speak who="vert" text="voleurs.chat.vert2"/>
+	    <wait value="20"/>
+	    <fadeOut type="0"/>
+	</scene>
+	
 	<persoAction id="sleeping">
 	    <timer each="40+20*random">
 	        <action>

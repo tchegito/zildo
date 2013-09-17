@@ -85,11 +85,7 @@ public abstract class SpriteEngine {
 	void prepareSprites() {
 		// Allocate meshes
 		for (int i=0;i<Constantes.NB_SPRITEBANK;i++) {
-			if (i==SpriteBank.BANK_COPYSCREEN) {
-				meshSprites[i] = new SpritePrimitive(4, 6, 512, 256);
-			} else {
-				meshSprites[i] = new SpritePrimitive(Constantes.NB_SPRITE_PER_PRIMITIVE*4);
-			}
+			meshSprites[i] = new SpritePrimitive(Constantes.NB_SPRITE_PER_PRIMITIVE*4);
 		}
 	}
 	
@@ -246,13 +242,6 @@ public abstract class SpriteEngine {
 			if (longY > highestLine)	// Mark the highest sprite on the row
 				highestLine = longY;
 		}
-	}
-	
-	/**
-	 * Capture screen before map scroll.
-	 */
-	public void captureScreen() {
-		//saveScreen(textureTab[SpriteBank.BANK_COPYSCREEN]);
 	}
 	
 	public void saveTextures() {

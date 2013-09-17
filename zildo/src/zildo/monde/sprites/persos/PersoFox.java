@@ -104,7 +104,7 @@ public class PersoFox extends PersoShadowed {
 			}
 		}
 		PersoDescription d = (PersoDescription) desc;
-		this.setNSpr(d.nth(add_spr));
+		setNSpr(d.nth(add_spr));
 		
 	}
 	

@@ -214,6 +214,7 @@ public class PersoManagement {
 				perso = new PersoRat();
 				break;
 			case FOX:
+			case FALCOR:
 				perso = new PersoFox();
 				break;
 			case ZILDO:
