@@ -135,9 +135,9 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(207, 217, 20, 12), new Zone(228, 217, 21, 12),
 			          new Zone(249, 217, 9, 16), new Zone(258, 217, 8, 18),
 			          // Fox (116)
-			          new Zone(221, 149, 16, 23), new Zone(205, 149, 16, 23),
-			          new Zone(237, 149, 14, 25), new Zone(251, 149, 15, 25),
-			          new Zone(282, 149, 16, 24), new Zone(266, 149, 16, 24),
+			          new Zone(221, 149, 16, 20), new Zone(205, 149, 16, 21),
+			          new Zone(237, 149, 14, 23), new Zone(251, 149, 15, 24),
+			          new Zone(282, 149, 16, 21), new Zone(266, 149, 16, 22),
 			          // Sorcerer (perso) (122)
 			          new Zone(272, 163, 16, 25), new Zone(291, 163, 16, 25),
 			          // Vieux bleu (123)
