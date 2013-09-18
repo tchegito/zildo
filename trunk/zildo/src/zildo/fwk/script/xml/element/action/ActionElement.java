@@ -79,6 +79,7 @@ public class ActionElement extends LanguageElement {
 	public boolean activate;
 	public String action;	// To run a PersoAction, with "perso" ActionKind
 	public String shadow;	// Only used in "spawn"
+	public String weapon;	// For 'perso' and 'spawn'
 	
 	private ZSSwitch switchExpression;
 	
@@ -140,6 +141,7 @@ public class ActionElement extends LanguageElement {
 			}
 			attente = readInt("attente", -1);
 			action = readAttribute("action");
+			weapon = readAttribute("weapon");
 			break;
 		case speak:
 			text = readAttribute("text");

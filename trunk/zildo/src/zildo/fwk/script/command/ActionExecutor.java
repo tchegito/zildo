@@ -60,8 +60,10 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementImpact;
+import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.monde.sprites.persos.ia.BasicMover;
@@ -521,6 +523,11 @@ public class ActionExecutor {
                 		if (p_action.action != null) {
                 			perso.setAction(new ScriptedPersoAction(perso, p_action.action));
                 		}
+                    	if (p_action.weapon != null) {
+                    		//TODO: not very clever ! setActiveWeapon and setWeapon should merge. So as
+                    		//guardWeapon and weapon attributes.
+                    		((PersoNJ)perso).setActiveWeapon(GuardWeapon.valueOf(p_action.weapon));
+                    	}
                 	}
                 	achieved = true;
                 	break;
@@ -649,6 +656,11 @@ public class ActionExecutor {
     		perso.setSpeed(p_action.speed);
     		perso.setEffect(p_action.effect);
     		perso.initPersoFX();
+        	if (p_action.weapon != null) {
+        		//TODO: not very clever ! setActiveWeapon and setWeapon should merge. So as
+        		//guardWeapon and weapon attributes.
+        		((PersoNJ)perso).setActiveWeapon(GuardWeapon.valueOf(p_action.weapon));
+        	}
             EngineZildo.spriteManagement.spawnPerso(perso);
     	} else {	// Spawn a new element
     		if (EngineZildo.spriteManagement.getNamedElement(p_action.what) == null) {

@@ -25,10 +25,14 @@ import zildo.fwk.gfx.EngineFX;
 import zildo.monde.Hasard;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
+import zildo.monde.sprites.elements.ElementGuardWeapon;
 import zildo.monde.sprites.elements.ElementImpact;
+import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.action.ShotArrowAction;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -45,6 +49,8 @@ import zildo.server.EngineZildo;
 
 public class PersoNJ extends Perso {
 
+	ElementGuardWeapon guardWeapon;
+	
 	public PersoNJ() {
 		super();
 		setPos_seqsprite(0);
@@ -620,6 +626,8 @@ public class PersoNJ extends Perso {
 		case PANNEAU:
 		case PAPER_NOTE:
 		case STONE_SPIDER:
+		case FOX:
+		case FALCOR:
 			add_spr = 0;
 			break;
 		default:
@@ -822,6 +830,33 @@ public class PersoNJ extends Perso {
 			if (anim != null) {
 				EngineZildo.spriteManagement.spawnSpriteGeneric(anim, (int) x, (int) y, m, null, null);
 			}
+		}
+	}
+
+	protected void initWeapon() {
+		guardWeapon = new ElementGuardWeapon(this);
+		addPersoSprites(guardWeapon);
+		setEn_bras(guardWeapon);
+	}
+
+	/**
+	 * Modify character's weapon. Suppose that {@link GuardWeapon} has been properly initialized.
+	 * @param weapon GuardWeapon
+	 */
+	public void setActiveWeapon(GuardWeapon weapon) {
+		if (guardWeapon != null) {
+			guardWeapon.setWeapon(weapon);
+			switch (weapon) {
+			case BOW:
+				setWeapon(new Item(ItemKind.BOW));
+				break;
+			case SPEAR:
+				break;
+			case SWORD:
+				setWeapon(new Item(ItemKind.SWORD));
+				break;
+			}
+			guardWeapon.setVisible(weapon != null);
 		}
 	}
 

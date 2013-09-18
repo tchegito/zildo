@@ -23,9 +23,8 @@ package zildo.monde.sprites.persos;
 import zildo.client.sound.BankSound;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
-import zildo.monde.sprites.elements.ElementGuardWeapon;
-import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
+import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.resource.Constantes;
@@ -48,13 +47,9 @@ public class PersoGarde extends PersoNJ {
 			{ 5, 6, 7, 6, 5, 6, 7, 6 }, { 8, 9, 10, 11, 8, 9, 10, 11 },
 			{ 12, 13, 14, 13, 12, 13, 14, 13 } };
 
-	ElementGuardWeapon guardWeapon;
-
 	public PersoGarde() {
 		super();
-		guardWeapon = new ElementGuardWeapon(this);
-		addPersoSprites(guardWeapon);
-		setEn_bras(guardWeapon);
+		initWeapon();
 		pv = 2;
 	}
 
@@ -63,10 +58,10 @@ public class PersoGarde extends PersoNJ {
 		super.setQuel_deplacement(p_script, p_updatePathFinder);
 		switch (p_script) {
 		case ZONELANCE:
-			guardWeapon.setWeapon(GuardWeapon.SPEAR);
+			setActiveWeapon(GuardWeapon.SPEAR);
 			break;
 		case ZONEARC:
-			guardWeapon.setWeapon(GuardWeapon.BOW);
+			setActiveWeapon(GuardWeapon.BOW);
 			break;
 		}
 	}
