@@ -109,10 +109,20 @@
     	</action>
     </quest>
     
-    <quest name="voleursm2u(10, 7)">
+    <quest name="voleursm4(13, 3)">
     	<action>
     	    <speak who="zildo" text="voleurs.m2u.sword"/>
     	</action>
+    </quest>
+    
+    <quest name="trig_falcor">
+        <trigger>
+            <questDone name="voleursm4(13, 3)"/>
+            <location name="voleursm4" pos="215,64" radius="2"/>
+        </trigger>
+        <action>
+    	    <exec script="falcor_arrive"/>
+        </action>
     </quest>
     
     <quest name="v3_crate">
@@ -208,9 +218,14 @@
 		    <tile pos="8,8" back2="-1"/>
 		</condition>
 		<condition name="voleursm4b">
-		    <perso who="falcor" action="sleeping"/>
-		    <!-- Just to place correctly the candle on the small table -->
+			<!-- Just to place correctly the candle on the small table -->
 		    <pos what="candle" pos="0,6" delta="true" z="6"/>
+		</condition>
+		<condition name="voleursm4b" exp="!voleursm4(13, 3)">
+		    <perso who="falcor" action="sleeping"/>
+		</condition>
+		<condition name="voleursm4b" exp="voleursm4(13, 3)">
+		    <remove who="falcor"/>
 		</condition>
 		<condition name="voleursm4" exp="!voleursm4_button">
 		    <tile pos="16,11" back="256*2+33"/>
@@ -349,7 +364,7 @@
 	    <map name="voleurs" />
 	   	<spawn pos="122,664" type="FOX" who="rouge" angle="2" fx="rouge"/>
 	    <spawn pos="81,666" type="FOX" who="violet" angle="1" fx="violet"/>
-	   	<spawn pos="139,702" type="FOX" who="vert" angle="3" fx="vert"/>
+	   	<spawn pos="139,702" type="FOX" who="vert" weapon="BOW" angle="3" fx="vert"/>
 	    	   	
 	    <pos what="camera" pos="8,570" />
 	    <moveTo who="rouge" pos="40,0" delta="true" unblock="true"/>
@@ -368,20 +383,36 @@
 	    <angle who="vert" value="0"/>
 		<speak who="vert" text="voleurs.chat.vert1"/>
 	   	<speak who="rouge" text="voleurs.chat.rouge2"/>
+	    <speak who="vert" text="voleurs.chat.vert2"/>
+	   	<speak who="rouge" text="voleurs.chat.rouge3"/>
 	   	<wait value="20"/>
-		<moveTo who="rouge" pos="128,-32" delta="true" unblock="true"/>
-   	    <speak who="rouge" text="voleurs.chat.rouge3" unblock="true"/>
+	   	<moveTo who="rouge" pos="128,-32" delta="true" unblock="true"/>
+		<speak who="rouge" text="voleurs.chat.rouge4" unblock="true"/>
    	    <wait value="150"/>
 	    <speak who="violet" text="voleurs.chat.violet2"/>
 	    <angle who="vert" value="0"/>
 	    <angle who="rouge" value="3"/>
-	    <speak who="vert" text="voleurs.chat.vert2"/>
+	    <speak who="vert" text="voleurs.chat.vert3"/>
 	    <wait value="20"/>
 	    <moveTo who="violet" pos="16,-32" delta="true" unblock="true"/>
 	    <moveTo who="vert" pos="0,-32" delta="true" unblock="true"/>
 	    <wait value="10"/>
 	    <moveTo who="rouge" pos="48,0" delta="true" unblock="true"/>
 	    <fadeOut type="0"/>
+	</scene>
+	
+	<scene id="falcor_arrive">
+	    <wait value="60"/>
+	    <music name=""/>
+	    <sound name="MenuSelect"/>"
+	    <angle who="zildo" value="1"/>
+	    <wait value="30"/>
+	    <spawn who="falcor" type="FALCOR" pos="301,69" speed="1"/>
+	    <moveTo who="falcor" pos="-36,0" delta="true"/>
+	    <filter type="4"/>
+		<wait value="20"/>
+		<filter type="0"/>
+	    <speak who="falcor" text="voleursm4.falcor1"/>
 	</scene>
 	
 	<persoAction id="sleeping">
