@@ -114,12 +114,14 @@ public class SinglePlayer implements GameStage {
         	state=server.getClientStates().iterator().next();
     		ClientEngineZildo.guiDisplay.displayMessage("server started");
         } else {
-            	PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-            	if (zildo == null) {
-            	    zildoId = EngineZildo.spawnClient(ZildoOutfit.Zildo);
-            	} else {
-            	    zildoId = zildo.getId();
-            	}
+        	PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+        	if (zildo == null) {
+        	    zildoId = EngineZildo.spawnClient(ZildoOutfit.Zildo);
+        	} else {
+        	    zildoId = zildo.getId();
+        	}
+            ClientEngineZildo.guiDisplay.setupHero(zildo);
+
         	state = new ClientState(null, zildoId);
         }
         ClientEngineZildo.spriteDisplay.setZildoId(zildoId);

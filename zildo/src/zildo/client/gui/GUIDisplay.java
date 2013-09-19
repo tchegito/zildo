@@ -929,10 +929,14 @@ public class GUIDisplay {
 		messageQueue.clear();
 	}
 
+	public void setupHero(PersoZildo zildo) {
+		countMoney = zildo.getMoney();
+	}
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// clean
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void clean() {
+	private void clean() {
 		guiSpritesSequence.clear();
 	}
 
