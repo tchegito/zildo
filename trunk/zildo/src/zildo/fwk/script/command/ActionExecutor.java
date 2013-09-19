@@ -585,6 +585,7 @@ public class ActionExecutor {
             	if (perso != null) {
 	                achieved=perso.hasReachedTarget();
 	                if (achieved) {
+	                	perso.setPos_seqsprite(0);
 	                	perso.setTarget(null);
 	                }
             	} else if ("camera".equals(p_action.what)) {

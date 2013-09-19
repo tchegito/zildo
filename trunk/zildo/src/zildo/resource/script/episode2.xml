@@ -402,19 +402,79 @@
 	</scene>
 	
 	<scene id="falcor_arrive">
-	    <wait value="60"/>
 	    <music name=""/>
 	    <sound name="MenuSelect"/>"
+	    <moveTo who="zildo" pos="215,70"/>
+	    <angle who="zildo" value="1"/>
+	    <wait value="60"/>
 	    <angle who="zildo" value="1"/>
 	    <wait value="30"/>
-	    <spawn who="falcor" type="FALCOR" pos="301,69" speed="1"/>
+	    <spawn who="falcor" type="FALCOR" pos="301,68" speed="1"/>
 	    <moveTo who="falcor" pos="-36,0" delta="true"/>
 	    <filter type="4"/>
 		<wait value="20"/>
 		<filter type="0"/>
-	    <speak who="falcor" text="voleursm4.falcor1"/>
+		<filter type="1"/>
+		<speak who="falcor" text="voleursm4.falcor1"/>
+	    <speak who="falcor" text="voleursm4.falcor2"/>
+	    <actions>
+		    <speak who="zildo" text="voleursm4.zildo1"/>
+			<moveTo who="zildo" pos="-4,0" delta="true" backward="true"/>	        
+	    </actions>
+	    <angle who="zildo" value="1"/>
+	    <actions>
+		    <speak who="falcor" text="voleursm4.falcor3"/>
+		    <moveTo who="falcor" pos="229,68"/>
+	    </actions>
+		<speak who="zildo" text="voleursm4.zildo2"/>
+		<actions>
+		    <speak who="falcor" text="voleursm4.falcor4"/>
+		    <moveTo who="falcor" pos="-2,0" delta="true"/>
+		</actions>
+	    <speak who="zildo" text="voleursm4.zildo3"/>
+		<speak who="falcor" text="voleursm4.falcor5"/>
+		<moveTo who="falcor" pos="0,16" delta="true"/>
+		<wait value="50"/>
+		<angle who="falcor" value="0"/>
+		<moveTo who="falcor" pos="0,-14" delta="true" speed="0.5"/>
+		<wait value="25"/>
+		<angle who="falcor" value="3"/>
+		<speak who="falcor" text="voleursm4.falcor6"/>
+		<speak who="zildo" text="voleursm4.zildo4"/>
+		<speak who="falcor" text="voleursm4.falcor7"/>
+		<speak who="zildo" text="voleursm4.zildo5"/>
+		<speak who="falcor" text="voleursm4.falcor8"/>
+		<speak who="falcor" text="voleursm4.falcor9"/>
+		<moveTo who="falcor" pos="243,149" unblock="true" speed="1"/>
+		<wait value="10"/>
+		<moveTo who="zildo" pos="240,130" speed="1"/>
+		<actions>
+			<moveTo who="falcor" pos="160,186"/>
+		    <moveTo who="zildo" pos="240,186"/>
+		</actions>
+		<actions>
+		    <moveTo who="falcor" pos="160,237"/>
+		    <moveTo who="zildo" pos="160,186"/>
+		</actions>
+		<moveTo who="zildo" pos="160,220"/>
+		<fadeOut type="2"/>
+		<map name="voleurs"/>
+		<spawn who="falcor" type="FALCOR" pos="223,607"/>
+		<pos who="zildo" pos="223,590"/>
+		<fadeIn type="2"/>
+		<moveTo who="falcor" pos="0,10" delta="true" open="true"/>
+		<moveTo who="falcor" pos="16,0" delta="true"/>
+		<angle who="falcor" value="3"/>
+		<moveTo who="zildo" pos="0,48" delta="true"/>
+		<moveTo who="falcor" pos="-14,0" delta="true"/>
+		<angle who="falcor" value="2"/>
+		<angle who="zildo" value="0"/>
+		<speak who="falcor" text="voleursm4.falcor10"/>
+		<speak who="falcor" text="voleursm4.zildo6"/>
+		<speak who="falcor" text="voleursm4.falcor11"/>
+		<music name="Nuit"/>
 	</scene>
-	
+
 	<persoAction id="sleeping">
 	    <timer each="40+20*random">
 	        <action>
