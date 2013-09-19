@@ -140,7 +140,7 @@ public class EngineZildo {
 			state.keys=null;
 			
 			// Look for map change (only in single player for now)
-			if (!game.multiPlayer && zildo != null && mapManagement.isChangingMap(state.zildo) && state.event.nature==ClientEventNature.NOEVENT) {
+			if (askedEvent == null && !game.multiPlayer && zildo != null && mapManagement.isChangingMap(state.zildo) && state.event.nature==ClientEventNature.NOEVENT) {
 				ChainingPoint ch=mapManagement.getChainingPoint();
 				if (ch.isBorder()) {
 					state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_SCROLL_ASKED);
