@@ -91,7 +91,7 @@
 	<scene id="woodStairsDown">
 	    <herospecial value="1"/>
         <sound name="ZildoMonte" />
-		<moveTo who="zildo" pos="8,2" delta="true" unstoppable="true" speed="0.8"/>
+		<moveTo who="zildo" pos="8,0" delta="true" unstoppable="true" speed="0.8"/>
    		<fadeOut type="2" unblock="true" />
 		<moveTo who="zildo" pos="8,2" delta="true" unstoppable="true" speed="0.8"/>
         <herospecial value="2"/>
