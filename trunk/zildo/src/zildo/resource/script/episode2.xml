@@ -139,7 +139,7 @@
         </action>
     </quest>
     
-    <quest name="voleursm4_button">
+    <quest name="voleursm4_button" locked="false">
 	    <trigger>
 	        <location name="voleursm4b" tilePos="3,11" gear="BUTTON"/>
 	    </trigger>
