@@ -415,6 +415,7 @@
 		<wait value="20"/>
 		<filter type="0"/>
 		<filter type="1"/>
+		<music name="Falcor"/>
 		<speak who="falcor" text="voleursm4.falcor1"/>
 	    <speak who="falcor" text="voleursm4.falcor2"/>
 	    <actions>
