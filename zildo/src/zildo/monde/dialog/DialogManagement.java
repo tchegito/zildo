@@ -23,6 +23,7 @@ package zildo.monde.dialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.fwk.ZUtils;
 import zildo.fwk.net.TransferObject;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.xml.element.TriggerElement;
@@ -72,13 +73,20 @@ public class DialogManagement {
 	    WaitingDialog even = createWaitingDialog(p_client, persoToTalk);
 
 	    if (even != null) {
+	    	String whoSpeaking ="";
 			if (persoToTalk == null) {
 			    // Ingame event
 			    even.sentence = p_actionDialog.text;
+			    whoSpeaking = p_actionDialog.who;
 			    p_client.dialogState.actionDialog = p_actionDialog;
+			} else {
+				whoSpeaking = persoToTalk.getName();
 			}
+			whoSpeaking = getPeopleName(whoSpeaking);
 			p_client.dialogState.continuing = even.sentence.indexOf("@") != -1;
 			even.sentence = even.sentence.trim().replaceAll("@", "");
+			even.sentence = whoSpeaking + even.sentence;
+			
 			dialogQueue.add(even);
 			
         	
@@ -95,6 +103,22 @@ public class DialogManagement {
 	}
 
 
+	private String getPeopleName(String p_name) {
+		String result = "";
+		if (p_name != null) {
+			// 1) Look for mapping
+			String name = EngineZildo.scriptManagement.getReplacedPersoName(p_name);
+			// 2) Look for translation
+			result = UIText.getGameText("people."+name);
+			if (result.startsWith("people.")) {
+				result = name;	// Nothing found in translation
+			}
+			if (result.length() > 0) {
+				result = ZUtils.capitalize(result) + ": ";
+			}
+		}
+		return result;
+	}
 	/**
 	 * Returns a WaitingDialog object, ready to be added to the dialog queue.
 	 * @param p_client

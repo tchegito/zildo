@@ -930,7 +930,9 @@ public class GUIDisplay {
 	}
 
 	public void setupHero(PersoZildo zildo) {
-		countMoney = zildo.getMoney();
+		if (zildo != null) {
+			countMoney = zildo.getMoney();
+		}
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////

@@ -123,6 +123,9 @@
         <action>
     	    <exec script="falcor_arrive"/>
         </action>
+        <history>
+			<nameReplace who="falcor" name="falcor"/>
+        </history>
     </quest>
     
     <quest name="v3_crate">
@@ -296,6 +299,7 @@
 	    <speak who="fox1" text="voleurs.fox3"/>
 	    <moveTo who="fox2" pos="910,998" unblock="true"/>
 	    <angle who="zildo" value="1"/>
+	    <perso who="vert" weapon="BOW"/>
 	    <moveTo who="vert" pos="723,893" unblock="true" speed="1"/>
 	    <speak who="fox2" text="voleurs.fox4"/>
 	    
@@ -359,7 +363,7 @@
 
 	<scene id="voleurs_discutent" restoreZildo="true">
 	    <clear/>
-	    <speak who="zildo" text="voleurs.chat.off" />
+	    <speak what="camera" text="voleurs.chat.off" />
 	    <fadeOut type="0"/>
 	    <map name="voleurs" />
 	   	<spawn pos="122,664" type="FOX" who="rouge" angle="2" fx="rouge"/>
@@ -434,6 +438,7 @@
 		</actions>
 	    <speak who="zildo" text="voleursm4.zildo3"/>
 		<speak who="falcor" text="voleursm4.falcor5"/>
+		<wait value="20"/>
 		<moveTo who="falcor" pos="0,16" delta="true"/>
 		<wait value="50"/>
 		<angle who="falcor" value="0"/>
@@ -444,6 +449,7 @@
 		<speak who="zildo" text="voleursm4.zildo4"/>
 		<speak who="falcor" text="voleursm4.falcor7"/>
 		<speak who="zildo" text="voleursm4.zildo5"/>
+		<nameReplace who="falcor" name="falcor"/>
 		<speak who="falcor" text="voleursm4.falcor8"/>
 		<speak who="falcor" text="voleursm4.falcor9"/>
 		<moveTo who="falcor" pos="243,149" unblock="true" speed="1"/>
@@ -471,7 +477,7 @@
 		<angle who="falcor" value="2"/>
 		<angle who="zildo" value="0"/>
 		<speak who="falcor" text="voleursm4.falcor10"/>
-		<speak who="falcor" text="voleursm4.zildo6"/>
+		<speak who="zildo" text="voleursm4.zildo6"/>
 		<speak who="falcor" text="voleursm4.falcor11"/>
 		<music name="Nuit"/>
 	</scene>
