@@ -39,7 +39,7 @@ import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.ChainingPoint;
-import zildo.monde.quest.MapReplacement;
+import zildo.monde.quest.StringReplacement;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
@@ -65,8 +65,9 @@ public class ScriptManagement {
 
     ScriptExecutor scriptExecutor;
     AdventureElement adventure=null;
-    MapReplacement areaReplaces;
-    MapReplacement zikReplaces;
+    StringReplacement areaReplaces;
+    StringReplacement zikReplaces;
+    StringReplacement nameReplaces;
     
     final Map<String, QuestElement> questsByName;
     
@@ -78,14 +79,20 @@ public class ScriptManagement {
     // Marker to identify that a scene is created from an 'action' quest's tag
     public final static String MARQUER_SCENE = "@scene@";
 
+    /**
+     * Build a script management object.<br/>
+     * Note that each time player loads/restarts a game, a new instance of this object is created.<br/>
+     * So we have not to reinitialize all quest 'done' states, because previous object is garbage collected.
+     */
     public ScriptManagement() {
         // Load adventure
-        adventure=(AdventureElement) ScriptReader.loadScript("common", "episode1", "episode2");
+        adventure=(AdventureElement) ScriptReader.loadScript("common", "people", "episode1", "episode2");
 
         scriptExecutor=new ScriptExecutor();
         
-        areaReplaces=new MapReplacement();
-        zikReplaces=new MapReplacement();
+        areaReplaces=new StringReplacement();
+        zikReplaces=new StringReplacement();
+        nameReplaces = new StringReplacement();
         
         questsByName = new HashMap<String, QuestElement>();
         for (QuestElement quest : adventure.getQuests()) {
@@ -95,6 +102,8 @@ public class ScriptManagement {
         variables = new HashMap<String, String>();
         
     	locationTriggerOnMap = new ArrayList<TriggerElement>();
+    	
+    	execute("setupPeople", true);
     }
     
     public void render() {
@@ -258,13 +267,9 @@ public class ScriptManagement {
     	//System.out.println("Accomplish "+p_quest.name);
    		p_quest.done=true;
     	
-    	// 1) note the history events (mapReplace ...)
-    	List<LanguageElement> history=p_quest.getHistory();
-		if (history != null) {
-			execute(history, true, null, false, null);
-		}
+
 		
-		// 2) execute the immediate actions (only in-game)
+		// 1) execute the immediate actions (only in-game)
     	if (p_trigger) {
 	    	// Target potentials triggers
 	    	TriggerElement trig=TriggerElement.createQuestDoneTrigger(p_quest.name);
@@ -273,6 +278,12 @@ public class ScriptManagement {
 			execute(p_quest.getActions(), true, p_quest, false, null);
     	}
 
+    	// 2) note the history events (mapReplace ...)
+    	// It will be executed AFTER the entire script in 'actions' tag
+    	List<LanguageElement> history=p_quest.getHistory();
+		if (history != null) {
+			execute(history, true, null, false, null);
+		}
     	
     }
     
@@ -298,12 +309,23 @@ public class ScriptManagement {
         return zikReplaces.getValue(p_zikName);
     }
     
+    public String getReplacedPersoName(String p_persoName) {
+    	return nameReplaces.getValue(p_persoName);
+    }
+    
     public void addReplacedMapName(String p_ancient, String p_new) {
     	areaReplaces.put(p_ancient, p_new);
     }
 
     public void addReplacedZikName(String p_ancient, String p_new) {
     	zikReplaces.put(p_ancient, p_new);
+    }
+    
+    public void addReplacedPersoName(String p_ancient, String p_new) {
+    	String[] names = p_ancient.split(",");
+    	for (String s : names) {
+    		nameReplaces.put(s, p_new);
+    	}
     }
     
 	public AdventureElement getAdventure() {

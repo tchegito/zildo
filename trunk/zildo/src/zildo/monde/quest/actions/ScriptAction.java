@@ -30,6 +30,10 @@ public class ScriptAction extends ActionDialog {
 		super(p_text);
 	}
 	
+	public ScriptAction(String p_text, String p_who) {
+		super(p_text, p_who);
+	}
+	
 	@Override
 	public void launchAction(ClientState p_clientState) {
 		EngineZildo.scriptManagement.userEndAction();

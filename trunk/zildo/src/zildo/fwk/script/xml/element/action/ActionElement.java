@@ -33,7 +33,9 @@ public class ActionElement extends LanguageElement {
 
 	public enum ActionKind {
 		actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, 
-		map, focus, spawn, exec, take, mapReplace, zikReplace, music, animation, impact, remove, 
+		map, focus, spawn, exec, take, 
+		mapReplace, zikReplace, nameReplace,	// History actions
+		music, animation, impact, remove, 
 		markQuest, putDown, attack, activate,
 		tile, filter, end, visible, respawn, zoom, herospecial, perso,
 		timer, lookFor, _throw;
@@ -196,6 +198,7 @@ public class ActionElement extends LanguageElement {
 			break;
 		case mapReplace:
 		case zikReplace:
+		case nameReplace:
 			text = p_elem.getAttribute("name");
 			break;
 		case markQuest:

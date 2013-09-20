@@ -224,7 +224,7 @@ public class ActionExecutor {
                 		ClientEngineZildo.client.askStage(new TitleStage(sentence));
                 		achieved = true;	// Titlestage is stand-alone
                 	} else {
-	                    EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence));
+	                    EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence, p_action.who));
 	                    scriptExec.userEndedAction = false;
                 	}
                     break;
@@ -342,6 +342,10 @@ public class ActionExecutor {
                 	break;
                 case zikReplace:
                 	EngineZildo.scriptManagement.addReplacedZikName(p_action.what, text);
+                	achieved = true;
+                	break;
+                case nameReplace:
+                	EngineZildo.scriptManagement.addReplacedPersoName(p_action.who, text);
                 	achieved = true;
                 	break;
                 case exec:
@@ -517,7 +521,7 @@ public class ActionExecutor {
                 			perso.setEffect(p_action.effect);
                 			perso.initPersoFX();
                 		}
-                		if (p_action.val != -1) {
+                		if (p_action.attente != -1) {
                 			perso.setAttente(p_action.attente);
                 		}
                 		if (p_action.action != null) {

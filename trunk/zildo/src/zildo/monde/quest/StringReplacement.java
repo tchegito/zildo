@@ -21,33 +21,37 @@
 package zildo.monde.quest;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import zildo.server.state.ScriptManagement;
 
 /**
  * Just a simple class to encapsulate a <String, String> map.
- * It provides map (=area) replacement according to a quest status. (See {@link ScriptManagement})
+ * It's used for map (=area) replacement according to a quest status. (See {@link ScriptManagement})
+ * Same for music and character's names.
  * @author tchegito
  *
  */
-public class MapReplacement extends HashMap<String, String> {
+public class StringReplacement {
 
 	private static final long serialVersionUID = 1L;
 
-	public MapReplacement() {
-        super();
-    }
-
-    public MapReplacement(MapReplacement p_replaces) {
-        putAll(p_replaces);
+	Map<String, String> map;
+	
+	public StringReplacement() {
+        map = new HashMap<String, String>();
     }
     
     public String getValue(String p_name) {
-        String name = get(p_name);
+        String name = map.get(p_name);
         if (name == null) {
             return p_name;
         } else {
             return name;
         }
+    }
+    
+    public void put(String p_key, String p_value) {
+    	map.put(p_key, p_value);
     }
 }
