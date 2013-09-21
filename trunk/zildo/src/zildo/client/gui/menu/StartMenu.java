@@ -54,7 +54,7 @@ public class StartMenu extends Menu {
         ClientEngineZildo.filterCommand.fadeIn(FilterEffect.FADE);
 
         // Display version
-		ClientEngineZildo.guiDisplay.displayMessage("v" + Constantes.CURRENT_VERSION_DISPlAYED);
+		ClientEngineZildo.guiDisplay.displayMessage("v" + Constantes.CURRENT_VERSION_DISPLAYED);
 
         ItemMenu itemSinglePlayer = new ItemMenu("m1.single") {
             @Override

@@ -1,0 +1,20 @@
+<adventure>
+    <scene id="setupPeople">
+	    <nameReplace who="garde,gard1,gard2,gard3,gard4,gard5,gardenord" name="gard"/>
+	    <nameReplace who="vieille,sarah" name="oldLady"/>
+	    <nameReplace who="alcolo,aaaaaaaa,saaaaaaa,zzzsss,zzzzzmzz,bbbbggbg,aaaaaa" name="citizen"/>
+	    <nameReplace who="fffff,qqqqqq" name="citizen"/>
+	    <nameReplace who="pipo" name="anselme"/>
+	    <nameReplace who="charles_bar" name="charles"/>
+	    <nameReplace who="roby,super" name="???"/>
+	    <nameReplace who="vi" name="oldLady"/>
+	    <nameReplace who="vk" name="oldMan"/>
+	    <nameReplace who="vipere" name="viper"/>
+	    <nameReplace who="pano,note" name=""/>
+	    <nameReplace who="grandmere" name="oldLady"/>
+	    <nameReplace who="barmasky" name="barman"/>
+	    <nameReplace who="falcor" name="???"/>
+	    <nameReplace who="tony" name="bandit"/>
+	    <nameReplace who="emissaire" name="gard"/>
+    </scene>
+</adventure>

@@ -92,7 +92,7 @@ public class ZildoActivity extends Activity {
         } catch (NameNotFoundException e) {
         	
         }
-        Constantes.CURRENT_VERSION_DISPlAYED = versionName;
+        Constantes.CURRENT_VERSION_DISPLAYED = versionName;
         
         // Initialize platform dependent
         PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;

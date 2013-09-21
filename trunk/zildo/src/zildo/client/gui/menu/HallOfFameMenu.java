@@ -65,9 +65,9 @@ public class HallOfFameMenu extends PageableMenu {
 			Collections.sort(champions, new Comparator<Champion>() {
 				@Override
 				public int compare(Champion o1, Champion o2) {
-					int value = new Long(o1.timeSpent).compareTo(o2.timeSpent);
+					int value = -new Integer(o1.moonHalf).compareTo(o2.moonHalf);
 					if (value == 0) {
-						value = -new Integer(o1.moonHalf).compareTo(o2.moonHalf);
+						value = new Long(o1.timeSpent).compareTo(o2.timeSpent);
 						if (value == 0) {
 							value = -new Integer(o1.money).compareTo(o2.money);
 						}
