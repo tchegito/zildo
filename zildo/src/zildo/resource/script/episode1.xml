@@ -412,10 +412,10 @@
 			<wait value="20"/>
 			<moveTo who="zildo" pos="0,0" delta="true"/>
 			<exec script="echange"/>
-			<exec script="intro_episode2"/>
 			<!-- 
+			<exec script="intro_episode2"/>
+			--> 
 			<exec script="ep1_closure"/>
-			-->
 		</action>
 	</quest>
 	
@@ -502,6 +502,11 @@
 		</condition>
 		<condition name="polaky" exp="zildo_polaky_killguards-!zildo_polaky">
 		    <markQuest name="zildo_polaky_killguards" value="0"/>
+		</condition>
+		<condition name="polaky" exp="zildo_polaky">
+		    <!-- If hero has already been told to meet in clearing at midnight, he can't go out. -->
+		    <!-- So we remove the guard at left to let him pass. -->
+		    <remove who="gard1"/>
 		</condition>
 		<condition name="polaky1" exp="zildo_polaky">
 		    <remove who="maltus"/>
