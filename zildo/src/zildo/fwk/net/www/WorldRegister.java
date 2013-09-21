@@ -40,6 +40,7 @@ import zildo.fwk.ZUtils;
 import zildo.fwk.net.ServerInfo;
 import zildo.fwk.net.www.NetMessage.Command;
 import zildo.monde.Champion;
+import zildo.resource.Constantes;
 
 /**
  * @author Tchegito
@@ -218,6 +219,7 @@ public class WorldRegister extends Thread {
 			request.append("&hq=").append(ch.moonHalf);
 			request.append("&money=").append(ch.money);
 			request.append("&timeSpent=").append(ch.timeSpent);
+			request.append("&appVersion=").append(Constantes.CURRENT_VERSION_DISPLAYED);
 			
 			URL objUrl = new URL(request.toString());
 			URLConnection urlConnect = objUrl.openConnection();
