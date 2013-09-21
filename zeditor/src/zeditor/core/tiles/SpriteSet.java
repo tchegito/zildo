@@ -228,6 +228,17 @@ public class SpriteSet extends ImageSet {
 							persoDesc, 0, 0, 0, "new", Angle.NORD.value);
 					temp.setInfo(PersoInfo.NEUTRAL);
 					temp.initPersoFX();
+					switch (persoDesc) {
+						case PANNEAU:
+							temp.setName("pano");
+							break;
+						case PAPER_NOTE:
+							temp.setName("note");
+							break;
+						case GARDE_BOUCLIER:
+							temp.setName("garde");
+							break;
+					}
 					persoLibrary.initialize(temp);
 
 					currentSelection = new PersoSelection(temp);
