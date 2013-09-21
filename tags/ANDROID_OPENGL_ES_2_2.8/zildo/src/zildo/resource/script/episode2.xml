@@ -1,0 +1,496 @@
+<adventure>
+
+    <quest name="fuite_tony1">
+        <trigger>
+            <location name="promenade"/>
+            <questDone name="trig_echange"/>
+        </trigger>
+        <action>
+            <speak who="zildo" text="promenade.fuite.zildo"/>
+            <moveTo who="tony" pos="0,-12" delta="true"/>
+            <angle who="tony" value="2"/>
+            <wait value="20"/>
+            <moveTo who="tony" pos="0,-100" delta="true"/>
+            <remove who="tony"/>
+            <script who="bunny" value="8"/>
+        </action>
+    </quest>
+
+    <quest name="vert_seen">
+    	<trigger>
+    	    <location name="voleurs" pos="612,830" radius="2"/>
+    	</trigger>
+    	<action>
+    	    <moveTo who="vert" pos="-30,0" delta="true"/>
+    	    <moveTo who="vert" pos="-2,-60" delta="true" unblock="true"/>
+    	    <!-- Put knives -->
+    	    <tile pos="55,32" back2="1277"/>
+    	    <tile pos="56,32" back2="1277"/>
+    	    <tile pos="57,32" back2="1277"/>
+    	</action>    
+    </quest>
+    
+    <quest name="vg5_but1" repeat="true" locked="false">
+    	<trigger>
+    	    <location name="voleursg5" tilePos="52,26" gear="TIMED_BUTTON"/>
+    	</trigger>
+    	<action>
+    	    <exec script="move_vg5_plat1"/>
+    	</action>
+    </quest>
+
+    <quest name="vg5_but2" repeat="true" locked="false">
+    	<trigger>
+    	    <location name="voleursg5" tilePos="25,26" gear="TIMED_BUTTON"/>
+    	</trigger>
+    	<action>
+    	    <exec script="move_vg5_plat2"/>
+    	</action>
+    </quest>
+    
+    <quest name="vg5_back" repeat="true" locked="false">
+	    <trigger>
+	        <location name="voleursg5" mover="platform2"/>
+	        <questDone name="!move_vg5_plat2"/>
+	    </trigger>
+	    <action>
+	        <exec script="move_vg5_plat2"/>
+	    </action>
+    </quest>
+    
+    <!--  Just to set hero on foreground from this location -->
+    <quest name="zcave_foreground" repeat="true" locked="false">
+    	<trigger><location name="voleursg5" pos="615,485" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="true"/></action>
+    </quest>
+    
+    <quest name="attaque_voleurs">
+        <trigger>
+            <location name="voleurs" pos="877,989" radius="1"/>
+        </trigger>
+        <action>
+            <exec script="attaqueV"/>
+        </action>
+    </quest>
+    
+    <quest name="meanwhile_voleurs">
+        <trigger>
+            <location name="voleursg3"/>
+        </trigger>
+        <action>
+            <exec script="voleurs_discutent"/>
+            <map name="voleursg3"/>
+			<focus who="zildo" />
+			<fadeIn type="0"/>
+        </action>
+    </quest>
+    
+    <quest name="squeaky_floor_voleurs" repeat="true" locked="false">
+        <trigger>	<!-- 2*256 + 57 = 569 --> 
+            <location name="voleursm1" tileValue="569"/>
+        </trigger>
+        <action>
+            <exec script="disturbVoleurs"/>
+        </action>
+    </quest>
+    
+    <quest name="squeaky_floor_voleurs2" repeat="true" locked="false">
+        <trigger>
+            <location name="voleursm2" tileValue="569"/>
+        </trigger>
+        <action>
+            <exec script="disturbVoleurs"/>
+        </action>
+    </quest>
+    
+    <quest name="voleursm2u(4, 3)">
+    	<action>
+    	    <speak who="zildo" text="voleurs.m2u.money"/>
+    	</action>
+    </quest>
+    
+    <quest name="voleursm4(13, 3)">
+    	<action>
+    	    <speak who="zildo" text="voleurs.m2u.sword"/>
+    	</action>
+    </quest>
+    
+    <quest name="trig_falcor">
+        <trigger>
+            <questDone name="voleursm4(13, 3)"/>
+            <location name="voleursm4" pos="215,64" radius="2"/>
+        </trigger>
+        <action>
+    	    <exec script="falcor_arrive"/>
+        </action>
+        <history>
+			<nameReplace who="falcor" name="falcor"/>
+        </history>
+    </quest>
+    
+    <quest name="v3_crate">
+        <trigger>
+            <location name="voleursm3"/>
+            <push name="crate" angle="1"/>
+            <questDone name="!voleursm3(8,8)"/>
+        </trigger>
+        <action>
+            <animation pos="136,136" type="CLOUD_FOG" />
+            <sound name="ChestAppears"/>
+            <wait value="2"/>
+            <tile pos="8,8" back2="231+256*2"/>
+        </action>
+    </quest>
+    
+    <quest name="voleursm4_button" locked="false">
+	    <trigger>
+	        <location name="voleursm4b" tilePos="3,11" gear="BUTTON"/>
+	    </trigger>
+	</quest>
+    
+    <mapScript>
+	    <!--  , means OR  -->
+	    <!--  - means AND -->        
+	    <condition name="promenade" exp="trig_echange-!fuite_tony1">
+			<filter type="1"/>
+	        <spawn type="BANDIT_VERT" speed="1.3" pos="935,369" angle="0" who="tony"/>
+	    	<script who="bunny" value="3"/>
+	    </condition>
+	    <condition name="promenade2" exp="trig_echange">
+	        <spawn who="emissaire" pos="425,255" effect="jaune" type="GARDE_CANARD" angle="3"/>
+	        <script who="emissaire" value="0"/>
+	        <filter type="1"/>
+	    </condition>
+	    <condition name="voleurs" exp="!attaque_voleurs">
+	        <pos who="vert" pos="32,0" foreground="true" delta="true"/>
+	    </condition>
+   		<condition name="voleurs" exp="!fini_voleur">
+			<filter type="1"/>
+			<!-- Post guard -->
+    	    <spawn type="FOX" who="fox1" effect="rouge" pos="870,878"/>
+    	    <spawn type="FOX" who="fox2" effect="violet" pos="1039,922"/>			
+		</condition>
+		<condition name="voleursm1" exp="!fini_voleur">
+			<filter type="1"/>
+		</condition>
+		<condition name="voleursm2" exp="!fini_voleur">
+			<filter type="1"/>
+		</condition>
+		<condition name="voleursg3" exp="trig_echange">
+		    <actions>
+		    	<animation type="BIG_FIREBALL" what="fireb1" angle="0" pos="144,302"/>
+		    	<animation type="BIG_FIREBALL" what="fireb2" angle="0" pos="224,302"/>
+		    </actions>
+		    <wait value="20"/>
+		    <actions>
+			   	<animation type="BIG_FIREBALL" what="fireb3" angle="3" pos="320,131"/>
+			    <animation type="BIG_FIREBALL" what="fireb4" angle="3" pos="320,211"/>
+		    </actions>
+   		</condition>
+   		<condition name="voleursg6" exp="trig_echange">
+		    <actions>
+		    	<animation type="BIG_FIREBALL" what="fireb1" angle="0" pos="144,302"/>
+		    	<animation type="BIG_FIREBALL" what="fireb2" angle="0" pos="224,302"/>
+		    </actions>
+		    <wait value="30"/>
+		    <actions>
+			   	<animation type="BIG_FIREBALL" what="fireb3" angle="1" pos="29,131"/>
+			    <animation type="BIG_FIREBALL" what="fireb4" angle="1" pos="29,211"/>
+		    </actions>
+   		</condition>
+   		<condition name="prisonext" exp="trig_echange">
+   		    <perso who="gardenord" type="GARDE_CANARD" effect="GUARD_BLACK"/>
+   		    <perso who="gard2" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <perso who="gard3" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <perso who="gard4" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <perso who="gard5" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <script who="gardenord" value="3"/>
+   		    <script who="gard2" value="3"/>
+   		    <script who="gard3" value="3"/>
+   		    <script who="gard4" value="3"/>
+   		    <script who="gard5" value="3"/>
+		</condition>
+		<condition name="voleursm1">
+		    <perso who="rouge" action="sleeping"/>
+		    <perso who="violet" action="sleeping"/>
+		</condition>
+		<condition name="voleursm2">
+		    <perso who="vert" action="sleeping"/>
+		</condition>
+		<condition name="voleursm3" exp="!v3_crate-!voleursm3(8,8)">
+		    <tile pos="8,8" back2="-1"/>
+		</condition>
+		<condition name="voleursm4b">
+			<!-- Just to place correctly the candle on the small table -->
+		    <pos what="candle" pos="0,6" delta="true" z="6"/>
+		</condition>
+		<condition name="voleursm4b" exp="!voleursm4(13, 3)">
+		    <perso who="falcor" action="sleeping"/>
+		</condition>
+		<condition name="voleursm4b" exp="voleursm4(13, 3)">
+		    <remove who="falcor"/>
+		</condition>
+		<condition name="voleursm4" exp="!voleursm4_button">
+		    <tile pos="16,11" back="256*2+33"/>
+			<tile pos="17,11" back="256*2+33"/>
+			<remove chaining="voleurscave"/>
+		</condition>
+		<condition name="voleursm4b" exp="voleursm4_button">
+		    <tile pos="3,11"  back="256*3+212" back2="-1"/>"
+		</condition>
+	</mapScript>
+
+	<scene id="intro_episode2">
+	    <speak who="synthe" text="info.episode2"/>
+	    <!-- Get back to life for the two people -->
+	    <script who="tony" value="3"/>
+	    <script who="emissaire" value="3"/>
+	   	<!--  Real scene -->
+	    <moveTo who="tony" pos="32,2" delta="true" unstoppable="true" speed="2"/>
+	    <actions>
+		    <angle who="emissaire" value="1"/>
+		    <angle who="zildo" value="2"/>
+		    <speak who="emissaire" text="echange.ep2.emissaire1"/>
+		    <moveTo who="tony" pos="96,96" delta="true" unstoppable="true" />
+	    </actions>
+   	    <actions>
+   	    	<moveTo who="tony" pos="60,0" delta="true" unstoppable="true" />
+   	       	<moveTo who="emissaire" pos="4,6" delta="true"/>
+   	    </actions>
+	    <remove who="tony"/>
+	    <moveTo who="zildo" pos="0,8" delta="true"/>
+	    <wait value="10"/>
+	    <moveTo who="emissaire" pos="-8,2" delta="true"/>
+	    <wait value="10"/>
+	    <moveTo who="emissaire" pos="2,0" delta="true"/>
+	    <wait value="20"/>
+	    <speak who="emissaire" text="echange.ep2.emissaire"/>
+	    <actions>
+	        <moveTo who="zildo" pos="-8,4" delta="true"/>
+			<speak who="zildo" text="echange.ep2.zildo"/>
+	    </actions>
+		<speak who="emissaire" text="echange.ep2.emissaire2"/>
+		<actions>
+		    <focus who="zildo" delta="true"/>
+		    <moveTo who="emissaire" pos="-42,2" delta="true" speed="0.5"/>
+		</actions>
+	</scene>
+	
+	<scene id="attaqueV">
+	    <speak who="fox1" text="voleurs.fox1" unblock="true"/>
+	    <actions>
+            <moveTo who="fox1" pos="-32,4" delta="true" unstoppable="true" speed="1.5"/>
+            <moveTo who="fox2" pos="-68,8" delta="true" unstoppable="true" speed="1.5"/>
+            <angle who="zildo" value="1"/>
+	    </actions>
+	    <actions>
+        	<moveTo who="fox1" pos="0,100" delta="true"/>
+			<moveTo who="fox2" pos="913,998"/>
+			<moveTo who="zildo" pos="890,1005" speed="0.5"/>     
+	    </actions>
+	    <pos who="vert" pos="713,764"/>
+	    <angle who="fox2" value="3"/>
+	    <moveTo who="fox1" pos="870,980"/>
+	    <angle who="fox1" value="2"/>
+	    <angle who="zildo" value="0"/>
+	    <speak who="fox2" text="voleurs.fox2"/>
+	    <angle who="zildo" value="2"/>
+	    <moveTo who="fox1" pos="872,982" unblock="true"/>
+	    <speak who="fox1" text="voleurs.fox3"/>
+	    <moveTo who="fox2" pos="910,998" unblock="true"/>
+	    <angle who="zildo" value="1"/>
+	    <perso who="vert" weapon="BOW"/>
+	    <moveTo who="vert" pos="723,893" unblock="true" speed="1"/>
+	    <speak who="fox2" text="voleurs.fox4"/>
+	    
+	    <actions>
+	        <moveTo who="fox2" pos="900,998"/>
+	        <moveTo who="zildo" pos="880,1005" backward="true"/>
+	    </actions>
+   	    <speak who="fox2" text="voleurs.fox5"/>
+   	    <moveTo who="fox1" pos="874,985" unblock="true"/>
+   	    <putDown item="SWORD"/>
+   	    <speak who="fox2" text="voleurs.fox6"/>
+   	    <actions>
+   	    	<moveTo who="fox2" pos="889,1005"/>
+   	    	<moveTo who="zildo" pos="875,1005" backward="true"/>
+   	    </actions>
+   	    <var name="moneyStolen" value="zildo.money"/>
+   	    <take value="-999"/>
+   	    <moveTo who="vert" pos="807,906" unblock="true"/>
+   	    <speak who="fox2" text="voleurs.fox7"/>
+   	    <actions>
+   	    	<moveTo who="fox2" pos="-20,0" delta="true" speed="1.5"/>
+   	    	<moveTo who="zildo" pos="-25,0" delta="true" backward="true" speed="1.5"/>
+	   	    <speak who="fox2" text="voleurs.fox8"/>
+	   	    <moveTo who="vert" pos="839,924"/>
+   	    </actions>
+   	    <angle who="fox1" value="3"/>
+   	    <angle who="vert" value="2"/>
+   	    <attack who="vert"/>
+   	    <wait value="10"/>
+   	    <angle who="zildo" value="0"/>
+   	   	<wait value="5"/>
+   	    <moveTo who="zildo" pos="-32,0" delta="true"/>
+   	    <angle who="zildo" value="1"/>
+   	</scene>
+   	
+	<scene id="move_vg5_plat1">
+	    <moveTo what="platform" pos="-220,0" delta="true" speed="2"/>
+	    <wait value="30"/>
+	    <moveTo what="platform" pos="220,0" delta="true" speed="2"/>
+	    <wait value="10"/>
+	</scene>
+	<scene id="move_vg5_plat2">
+	    <moveTo what="platform2" pos="0,128" delta="true" speed="2"/>
+	    <wait value="100"/>
+	    <moveTo what="platform2" pos="0,-128" delta="true" speed="2"/>
+	    <wait value="10"/>
+	</scene>
+	
+	<scene id="disturbVoleurs">
+		<lookFor who="zildo" radius="8" info="ENEMY">
+            <wait value="4"/>
+            <sound name="ZildoLance"/> 
+            <script who="self" text="BRAS_LEVES"/>
+		    <throw who="self" pos="x+7, y+4" to="zildo.x+random*12-6,zildo.y+random*12-6" speed="1.6"
+       		 	   type="ROCK_BALL" shadow="SHADOW_MINUS" z="16" az="-0.08" way="BELL"/>
+		    <wait value="20"/>
+		    <script who="self" text="VIDE"/>
+		</lookFor>
+		<wait value="50"/>
+	</scene>
+
+	<scene id="voleurs_discutent" restoreZildo="true">
+	    <clear/>
+	    <speak what="camera" text="voleurs.chat.off" />
+	    <fadeOut type="0"/>
+	    <map name="voleurs" />
+	   	<spawn pos="122,664" type="FOX" who="rouge" angle="2" fx="rouge"/>
+	    <spawn pos="81,666" type="FOX" who="violet" angle="1" fx="violet"/>
+	   	<spawn pos="139,702" type="FOX" who="vert" weapon="BOW" angle="3" fx="vert"/>
+	    	   	
+	    <pos what="camera" pos="8,570" />
+	    <moveTo who="rouge" pos="40,0" delta="true" unblock="true"/>
+	    <fadeIn type="0"/>
+	    <wait value="120"/>
+	    <moveTo who="rouge" pos="-40,8" delta="true"/>
+	    <wait value="20"/>
+	    <angle who="rouge" value="2"/>
+	    <speak who="rouge" text="voleurs.chat.rouge0"/>
+	    <speak who="rouge" text="voleurs.chat.rouge1"/>
+	    <angle who="rouge" value="3"/>
+	    <speak who="violet" text="voleurs.chat.violet1"/>
+	    <attack who="vert"/>
+	    <wait value="90"/>
+	    <angle who="rouge" value="2"/>
+	    <angle who="vert" value="0"/>
+		<speak who="vert" text="voleurs.chat.vert1"/>
+	   	<speak who="rouge" text="voleurs.chat.rouge2"/>
+	    <speak who="vert" text="voleurs.chat.vert2"/>
+	   	<speak who="rouge" text="voleurs.chat.rouge3"/>
+	   	<wait value="20"/>
+	   	<moveTo who="rouge" pos="128,-32" delta="true" unblock="true"/>
+		<speak who="rouge" text="voleurs.chat.rouge4" unblock="true"/>
+   	    <wait value="150"/>
+	    <speak who="violet" text="voleurs.chat.violet2"/>
+	    <angle who="vert" value="0"/>
+	    <angle who="rouge" value="3"/>
+	    <speak who="vert" text="voleurs.chat.vert3"/>
+	    <wait value="20"/>
+	    <moveTo who="violet" pos="16,-32" delta="true" unblock="true"/>
+	    <moveTo who="vert" pos="0,-32" delta="true" unblock="true"/>
+	    <wait value="10"/>
+	    <moveTo who="rouge" pos="48,0" delta="true" unblock="true"/>
+	    <fadeOut type="0"/>
+	</scene>
+	
+	<scene id="falcor_arrive">
+	    <music name=""/>
+	    <sound name="MenuSelect"/>"
+	    <moveTo who="zildo" pos="215,70"/>
+	    <angle who="zildo" value="1"/>
+	    <wait value="60"/>
+	    <angle who="zildo" value="1"/>
+	    <wait value="30"/>
+	    <spawn who="falcor" type="FALCOR" pos="301,68" speed="1"/>
+	    <moveTo who="falcor" pos="-36,0" delta="true"/>
+	    <filter type="4"/>
+		<wait value="20"/>
+		<filter type="0"/>
+		<filter type="1"/>
+		<music name="Falcor"/>
+		<speak who="falcor" text="voleursm4.falcor1"/>
+	    <speak who="falcor" text="voleursm4.falcor2"/>
+	    <actions>
+		    <speak who="zildo" text="voleursm4.zildo1"/>
+			<moveTo who="zildo" pos="-4,0" delta="true" backward="true"/>	        
+	    </actions>
+	    <angle who="zildo" value="1"/>
+	    <actions>
+		    <speak who="falcor" text="voleursm4.falcor3"/>
+		    <moveTo who="falcor" pos="229,68"/>
+	    </actions>
+		<speak who="zildo" text="voleursm4.zildo2"/>
+		<actions>
+		    <speak who="falcor" text="voleursm4.falcor4"/>
+		    <moveTo who="falcor" pos="-2,0" delta="true"/>
+		</actions>
+	    <speak who="zildo" text="voleursm4.zildo3"/>
+		<speak who="falcor" text="voleursm4.falcor5"/>
+		<wait value="20"/>
+		<moveTo who="falcor" pos="0,16" delta="true"/>
+		<wait value="50"/>
+		<angle who="falcor" value="0"/>
+		<moveTo who="falcor" pos="0,-14" delta="true" speed="0.5"/>
+		<wait value="25"/>
+		<angle who="falcor" value="3"/>
+		<speak who="falcor" text="voleursm4.falcor6"/>
+		<speak who="zildo" text="voleursm4.zildo4"/>
+		<speak who="falcor" text="voleursm4.falcor7"/>
+		<speak who="zildo" text="voleursm4.zildo5"/>
+		<nameReplace who="falcor" name="falcor"/>
+		<speak who="falcor" text="voleursm4.falcor8"/>
+		<speak who="falcor" text="voleursm4.falcor9"/>
+		<moveTo who="falcor" pos="243,149" unblock="true" speed="1"/>
+		<wait value="10"/>
+		<moveTo who="zildo" pos="240,130" speed="1"/>
+		<actions>
+			<moveTo who="falcor" pos="160,186"/>
+		    <moveTo who="zildo" pos="240,186"/>
+		</actions>
+		<actions>
+		    <moveTo who="falcor" pos="160,237"/>
+		    <moveTo who="zildo" pos="160,186"/>
+		</actions>
+		<moveTo who="zildo" pos="160,220"/>
+		<fadeOut type="2"/>
+		<map name="voleurs"/>
+		<spawn who="falcor" type="FALCOR" pos="223,607"/>
+		<pos who="zildo" pos="223,590"/>
+		<fadeIn type="2"/>
+		<moveTo who="falcor" pos="0,10" delta="true" open="true"/>
+		<moveTo who="falcor" pos="16,0" delta="true"/>
+		<angle who="falcor" value="3"/>
+		<moveTo who="zildo" pos="0,48" delta="true"/>
+		<moveTo who="falcor" pos="-14,0" delta="true"/>
+		<angle who="falcor" value="2"/>
+		<angle who="zildo" value="0"/>
+		<speak who="falcor" text="voleursm4.falcor10"/>
+		<speak who="zildo" text="voleursm4.zildo6"/>
+		<speak who="falcor" text="voleursm4.falcor11"/>
+		<music name="Nuit"/>
+	</scene>
+
+	<persoAction id="sleeping">
+	    <timer each="40+20*random">
+	        <action>
+		        <spawn type="dice10>4:ZZZ1,ZZZ2"
+		               pos="x, y" z="4"
+		               vx="0.1" vz="0.1"
+		               foreground="true"
+		               alphaA="-0.1"/>
+	        </action>
+	    </timer>
+	</persoAction>
+</adventure>
