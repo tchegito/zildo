@@ -880,7 +880,7 @@ public class GUIDisplay {
 			if (dialogDisplay.isDialoguing()) {
 				curAlpha>>=2;
 			}
-			int x1 = computeForLeftHanded(0, FontDescription.VIRTUAL_PAD);
+			int x1 = computeForLeftHanded(10, FontDescription.VIRTUAL_PAD);
 			int x2 = computeForLeftHanded(Zildo.viewPortX - 24, FontDescription.BUTTON_Y);
 			int x3 = computeForLeftHanded(Zildo.viewPortX - 48, FontDescription.BUTTON_X);
 			guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, x1, Zildo.viewPortY-80, curAlpha);

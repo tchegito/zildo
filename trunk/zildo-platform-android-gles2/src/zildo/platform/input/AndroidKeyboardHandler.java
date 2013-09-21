@@ -37,15 +37,15 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 
 	// Relations between given key and its location on screen, inside virtual pad
 	enum KeyLocation {
-		VP_UP(29, 0, 22, 29, true, KEY_UP),	// Real zone : 29, 11, 23, 19
-		VP_LEFT(0, 29, 29, 23, true, KEY_LEFT),	// Real zone : 11, 29, 19, 23
-		VP_RIGHT(51, 29, 29, 23, true, KEY_RIGHT),	// Real zone : 51, 29, 19, 23
-		VP_DOWN(29, 52, 22, 28, true, KEY_DOWN),	// Real zone : 29, 52, 23, 19
+		VP_UP(29, -10, 22, 39, true, KEY_UP),	// Real zone : 29, 11, 23, 19
+		VP_LEFT(-10, 29, 39, 23, true, KEY_LEFT),	// Real zone : 11, 29, 19, 23
+		VP_RIGHT(51, 29, 39, 23, true, KEY_RIGHT),	// Real zone : 51, 29, 19, 23
+		VP_DOWN(29, 52, 22, 38, true, KEY_DOWN),	// Real zone : 29, 52, 23, 19
 		// diagonals
-		VP_UP_LEFT(0, 0, 29, 29, true, KEY_UP, KEY_LEFT),
-		VP_UP_RIGHT(51, 0, 29, 29, true, KEY_UP, KEY_RIGHT),
-		VP_DOWN_LEFT(0, 52, 29, 28, true, KEY_DOWN, KEY_LEFT),
-		VP_DOWN_RIGHT(51, 52, 29, 28, true, KEY_DOWN, KEY_RIGHT),
+		VP_UP_LEFT(-10, -10, 39, 39, true, KEY_UP, KEY_LEFT),
+		VP_UP_RIGHT(51, -10, 39, 39, true, KEY_UP, KEY_RIGHT),
+		VP_DOWN_LEFT(-10, 52, 39, 38, true, KEY_DOWN, KEY_LEFT),
+		VP_DOWN_RIGHT(51, 52, 39, 38, true, KEY_DOWN, KEY_RIGHT),
 		// inventory
 		VP_INVENTORY(0, 0, 40, 31, false, KEY_X),
 		VP_BUTTON_X(274, 200, 25, 24, false, KEY_Q),
@@ -67,6 +67,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 			int addY = 0;
 			if (isDirection) {
 				addY = Zildo.viewPortY - 80;
+				addX = 10;
 			}
 			z = new Zone(x + addX, y + addY, wx, wy);
 			keyCode = keys[0];
