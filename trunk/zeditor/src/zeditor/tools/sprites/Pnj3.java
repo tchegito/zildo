@@ -37,10 +37,13 @@ public class Pnj3 extends SpriteBanque {
 		    new Zone(162, 235, 16, 21), new Zone(147, 235, 15, 22),
 		    new Zone(178, 235, 13, 24), new Zone(192, 235, 14, 25),
 		    new Zone(222, 235, 16, 22), new Zone(206, 235, 16, 23),
-		    new Zone(238, 235, 14, 14)
+		    new Zone(238, 235, 14, 14),
+		    // Bramble
+		    new Zone(253, 237, 16, 16)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("pnj2", 0, 0), 
+				
 				});
 	}
 }
