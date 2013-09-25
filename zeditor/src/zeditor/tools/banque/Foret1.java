@@ -198,11 +198,15 @@ public class Foret1 extends Banque {
 				new Point(64, 16), new Point(64, 0), new Point(208, 0),
 				new Point(32, 48), new Point(208, 32), new Point(48, 128),
 				new Point(128, 16), new Point(32, 128), new Point(80, 32),
-				new Point(16, 16), new Point(80, 0) };
+				new Point(16, 16), new Point(80, 0),
+				// Bramble
+				new Point(144,48)};
 
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("exteria1", 0, 0), 
 				new GraphChange("exteria2", 108, 192),
 				new GraphChange("exteria1", 139, -192), new GraphChange("exteria3", 186, 192 + 176),
-				new GraphChange("exteria2", 208, -176) });
+				new GraphChange("exteria2", 208, -176),
+				new GraphChange("exteria1", 254, -192),
+				});
 	}
 }

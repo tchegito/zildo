@@ -63,16 +63,25 @@ public class Palais3 extends Banque {
 				{96, 0}, {96, 16}, {96, 32}, {112, 0}, {128, 0}, {112, 16}, {128, 16},
 				{144, 0}, {144, 16}, {144, 32},
 				// Lit floor
-				{32, 48}, {48, 48}, {32, 64}, {48, 64},
+				{112, 32}, {128, 32}, {32, 64}, {48, 64},
 				// Ledge interior corner (with void)
-				{48, 144}, {48, 160}
+				{48, 144}, {48, 160},
+				// Wall with shadow
+				{208, 0}, {208, 16},
+				// Floor with soil
+				{64, 32}, {80, 32},
+				// Lit door
+				{224, 0}, {240, 0}, {256, 0},
+				{224, 16}, {240, 16}, {256, 16},
+				{224, 32}, {240, 32}, {256, 32},
+				
 		};
 				
 		coordsInt = c;
 				
 		
 	
-		pkmChanges = Arrays.asList(new GraphChange("interia6", 0, 0)); 
+		pkmChanges = Arrays.asList(new GraphChange("palace1", 0, 0)); 
 	}
 	
 	@Override
