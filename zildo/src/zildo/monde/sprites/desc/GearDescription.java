@@ -85,4 +85,8 @@ public enum GearDescription implements SpriteDescription {
 	public boolean isPushable() {
 		return false;
 	}
+	
+	public boolean isNotFixe() {
+		return false;
+	}
 }

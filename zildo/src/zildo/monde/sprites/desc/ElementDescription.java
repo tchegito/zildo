@@ -255,4 +255,33 @@ public enum ElementDescription implements SpriteDescription {
     	}
     	return label;
 	}
+	
+	/**
+	 * If this methods returns TRUE, then element is submitted to physics.
+	 */
+	public boolean isNotFixe() {
+		switch (this) {
+		case JAR: case BUSHES:
+		case LEAF_GREEN: case DROP_FLOOR: case SMOKE:
+		case SMOKE_SMALL: case TINY_ROCK1: case TINY_ROCK2:
+		case BIG_KEY: case HEART: case STONE_HEAVY: case STONE:
+		case BARREL:
+		case DROP_SMALL: case DROP_MEDIUM: case ROCK_BALL:
+		case SPARK_LEFT: case SPARK_RIGHT: case SPARK_UPLEFT: case SPARK_UPRIGHT:
+		case GOLDCOIN1: case GOLDCOIN2: case GOLDCOIN3:
+		case THREEGOLDCOINS1: case THREEGOLDCOINS2: case THREEGOLDCOINS3:
+		case GOLDPURSE1: case GOLDPURSE2: case GOLDPURSE3:
+		case CUBE_BLUE: case CUBE_ORANGE:
+		case ARROW_UP: case ARROW_RIGHT: case ARROW_DOWN: case ARROW_LEFT:
+		case BOOMERANG1: case BOOMERANG2: case BOOMERANG3: case BOOMERANG4:
+		case BOMB: case BOMBS3:
+		case KEY: case STAFF_POUM: case BIG_FIRE_BALL:
+		case HEART_FRAGMENT: case NOTE: case NOTE2:
+		case PEEBLE: case ZZZ1: case ZZZ2:
+		case CRATE:
+			return true;
+		default:
+			return false;
+		}		
+	}
 }

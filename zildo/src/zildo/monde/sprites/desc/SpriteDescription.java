@@ -74,4 +74,6 @@ public interface SpriteDescription {
 	}
 	
 	public int ordinal();
+	
+	public boolean isNotFixe();
 }
