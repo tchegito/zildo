@@ -94,6 +94,8 @@ public enum PersoDescription implements SpriteDescription {
 	STONE_SPIDER(253, 254),
 	PAPER_NOTE(255),
 	FALCOR(263, 264, 261, 262, 259, 260, 265), 
+	BRAMBLE(266),
+	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
 	IntSet sprUsed;
@@ -180,6 +182,11 @@ public enum PersoDescription implements SpriteDescription {
 	
 	@Override
 	public boolean isPushable() {
+		return false;
+	}
+
+	@Override
+	public boolean isNotFixe() {
 		return false;
 	}
 

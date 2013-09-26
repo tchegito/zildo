@@ -55,6 +55,7 @@ public enum FontDescription implements SpriteDescription {
 		return ordinal() + 2 * GUIDisplay.transcoChar.length();
 	}
 
+	// All the following methods are nonsense for this kind of SpriteDescription
 	@Override
 	public boolean isBlocking() {
 		return false;
@@ -67,6 +68,11 @@ public enum FontDescription implements SpriteDescription {
 	
 	@Override
 	public boolean isPushable() {
+		return false;
+	}
+
+	@Override
+	public boolean isNotFixe() {
 		return false;
 	}
 }

@@ -134,43 +134,6 @@ public class Element extends SpriteEntity {
 	}
 
 	/**
-	 * If this methods returns TRUE, then element is submitted to physics.
-	 * 
-	 * @return boolean
-	 */
-	public boolean IsNotFixe() {
-		int a = this.nSpr;
-		if (nBank == SpriteBank.BANK_GEAR) {
-			return false;
-		}
-		if ((a > 2 && a <= 12)
-				|| (a == 0 || a == 1)
-				|| (a == 28)
-				||
-				// (a>=32 && a<=39) ||
-				(a >= 40 && a <= 42)
-				|| (a >= 44 && a <= 56)
-				|| (a >= 69 && a <= 74)
-				|| (a >= ElementDescription.BOOMERANG1.ordinal() && a <= ElementDescription.BOOMERANG4
-						.ordinal()) || (a == ElementDescription.BOMB.ordinal())
-				|| a == ElementDescription.BOMBS3.ordinal()
-				|| a == ElementDescription.KEY.ordinal()
-				|| a == ElementDescription.STAFF_POUM.ordinal()
-				|| a == ElementDescription.BIG_FIRE_BALL.ordinal()
-				|| a == ElementDescription.HEART_FRAGMENT.ordinal()
-				|| a == ElementDescription.NOTE.ordinal()
-				|| a == ElementDescription.NOTE2.ordinal()
-				|| a == ElementDescription.PEEBLE.ordinal()
-				|| a== ElementDescription.ZZZ1.ordinal() 
-				|| a== ElementDescription.ZZZ2.ordinal()
-				|| a== ElementDescription.CRATE.ordinal()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
 	 * Let's do the physical law job.
 	 */
 	protected void physicMove() {
@@ -279,7 +242,7 @@ public class Element extends SpriteEntity {
 		} else {
 			
 			// Si ce sprite est valide, est-il un sprite fixe ?
-			if (this.IsNotFixe()) {
+			if (desc.isNotFixe()) {
 				// On a trouvé un sprite valide non fixe
 				// On calcule sa nouvelle position absolue
 				colli = physicMoveWithCollision();
@@ -355,6 +318,11 @@ public class Element extends SpriteEntity {
 				shadow.x = x;
 				shadow.y = y - 1;
 			}
+		}
+		
+		// Animated sprites
+		if (desc == ElementDescription.CANDLE1) {
+			addSpr = (spe++ % (3*8)) / 8;
 		}
 		setAjustedX((int) x);
 		setAjustedY((int) y);
@@ -484,14 +452,6 @@ public class Element extends SpriteEntity {
 
 	public void setVz(float vz) {
 		this.vz = vz;
-	}
-
-	public char getSpe() {
-		return spe;
-	}
-
-	public void setSpe(char spe) {
-		this.spe = spe;
 	}
 
 	public int getAddSpr() {

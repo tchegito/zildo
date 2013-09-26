@@ -263,5 +263,9 @@ public enum ZildoDescription implements SpriteDescription {
 	public boolean isPushable() {
 		return false;
 	}
+	
+	public boolean isNotFixe() {
+		return false;
+	}
 
 }
