@@ -570,11 +570,8 @@ public class SpriteManagement extends SpriteStore {
 					element.animate();
 					if (element.dying) {
 						SpriteEntity linkedOne = element.getLinkedPerso();
-						// L'élément est arrivé au terme de son existence : on le
-						// supprime de la liste
-						if (linkedOne != null
-								&& EntityType.ELEMENT == linkedOne
-										.getEntityType()) {
+						// L'élément est arrivé au terme de son existence : on le supprime de la liste
+						if (linkedOne != null && EntityType.ELEMENT == linkedOne.getEntityType()) {
 							toDelete.add(linkedOne);
 						}
 						toDelete.add(element);
