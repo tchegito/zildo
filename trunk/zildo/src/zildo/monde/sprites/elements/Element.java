@@ -515,7 +515,7 @@ public class Element extends SpriteEntity {
 				break;
 			}
 			if (questTrigger) {	// Only for bank ELEMENTS now
-				// Activate a trigger if there is one
+				// Activate a quest if we're asked for
 				String questName = EngineZildo.scriptManagement.buildKeyItem(area.getName(), cx, cy, d);
 				EngineZildo.scriptManagement.accomplishQuest(questName, false);
 			}
