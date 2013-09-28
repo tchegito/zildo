@@ -42,6 +42,7 @@ import zildo.monde.map.ChainingPoint;
 import zildo.monde.quest.StringReplacement;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
@@ -450,6 +451,33 @@ public class ScriptManagement {
 		accomplishQuest(buildKeyDoor(p_mapName, p_ch), false);
 	}
 	
+	public boolean isTakenItem(String p_mapName, int p_x, int p_y, ElementDescription p_desc) {
+		return isQuestDone(buildKeyItem(p_mapName, p_x, p_y, p_desc));
+	}
+
+	/**
+	 * Build a quest's keyname about a taken item.
+	 * @return String
+	 */
+	public String buildKeyItem(String p_mapName, int p_x, int p_y, ElementDescription p_desc) {
+		String key=p_mapName + p_x + p_y + p_desc.toString();
+
+		return key;
+	}
+	
+	/**
+	 * Take an item : accomplish a corresponding quest name.<br/>
+	 * Note that this method is never called for now, because item accomplishes quest themselves, in
+	 * @link {@link Element#fall()}.
+	 * @param p_mapName
+	 * @param p_x
+	 * @param p_y
+	 * @param p_desc
+	 */
+	public void takeItem(String p_mapName, int p_x, int p_y, ElementDescription p_desc) {
+		accomplishQuest(buildKeyItem(p_mapName, p_x, p_y, p_desc), false);
+	}
+
 	public void doMapReplacements(String p_mapName) {
 		for (MapscriptElement mapScript : adventure.getMapScripts()) {
 			for (ConditionElement condi : mapScript.getConditions()) {

@@ -57,6 +57,7 @@ public class Element extends SpriteEntity {
 	protected Element linkedPerso; // When this element dies, any non-perso
 									// linked entity die too.
 
+	private boolean questTrigger;	// TRUE=taking this element leads to a quest accomplishment
 	
 	protected Element shadow;
 	protected boolean pushable;
@@ -476,6 +477,9 @@ public class Element extends SpriteEntity {
 	@Override
 	public void fall() {
 		if (nBank == SpriteBank.BANK_ELEMENTS) {
+			Area area = EngineZildo.mapManagement.getCurrentMap();
+			int cx = (int) (x / 16);
+			int cy = (int) (y / 16);
 			// TODO: basically, we shouldn't do that because desc should be set
 			ElementDescription d = ElementDescription.fromInt(nSpr);
 			switch (d) {
@@ -498,9 +502,6 @@ public class Element extends SpriteEntity {
 				break;
 			case PEEBLE:
 				// Floor or lava ?
-				int cx = (int) (x / 16);
-				int cy = (int) (y / 16);
-				Area area = EngineZildo.mapManagement.getCurrentMap();
 				boolean bottomLess = area.isCaseBottomLess(cx,  cy);
 				if (bottomLess) {
 					EngineZildo.soundManagement.broadcastSound(BankSound.LavaDrop, this);
@@ -512,6 +513,11 @@ public class Element extends SpriteEntity {
 							SpriteAnimation.DUST, (int) x, (int) y, 0,	null, null);
 				}
 				break;
+			}
+			if (questTrigger) {	// Only for bank ELEMENTS now
+				// Activate a trigger if there is one
+				String questName = EngineZildo.scriptManagement.buildKeyItem(area.getName(), cx, cy, d);
+				EngineZildo.scriptManagement.accomplishQuest(questName, false);
 			}
 		}
 		if (shadow != null) {
@@ -723,6 +729,10 @@ public class Element extends SpriteEntity {
 			return true;
 		}
 		return false;
+	}
+
+	public void setTrigger(boolean p_trigger) {
+		questTrigger = p_trigger;
 	}
 	
 	@Override

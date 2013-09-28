@@ -488,8 +488,17 @@ public class Area implements EasySerializable {
 			}
 		} else {
 			if (desc != null) {
+				boolean questTrigger = false;
+				if (desc == ElementDescription.KEY) {
+					if (EngineZildo.scriptManagement.isTakenItem(name, tileLocation.x, tileLocation.y, desc)) {
+						return;	// Don't spawn item because player has already taken it
+					} else {
+						questTrigger = true;
+					}
+				}
 				Element elem = sprMgt.spawnSpriteGeneric(anim, p.x, p.y + 5, 0, null, desc);
 				elem.setName(item.name);
+				elem.setTrigger(questTrigger);
 			} else {
 				boolean multiPlayer = EngineZildo.game.multiPlayer;
 				PersoZildo zildo = EngineZildo.persoManagement.getZildo();
