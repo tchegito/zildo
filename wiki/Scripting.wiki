@@ -59,6 +59,8 @@ A trigger can be of 6 different kinds : (corresponding to [http://code.google.co
  * *questDone* : has Zildo achieved a given quest ?
  * *dead* : does a set of creatures died ?
  * *push* : is someone pushing an element ?
+ * *lift* : is hero taking some jar/bush ?
+ * *use* : does hero use one of his items ?
 
 ==== Particular cases ====
 
