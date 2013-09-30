@@ -120,6 +120,10 @@ public class TriggerElement extends AnyElement {
 			deadPersos = new ArrayList<String>();
 			deadPersos.addAll(Arrays.asList(persos.split(",")));
 			break;
+		case LIFT:
+			tileLocation = readPoint("tilePos");
+			name = readAttribute("name");
+			break;
 		}
 
 	}
@@ -195,6 +199,8 @@ public class TriggerElement extends AnyElement {
 			boolean nameGood = name.equals(p_another.name);
 			boolean angleGood = angle == null || angle == p_another.angle;
 			return nameGood && angleGood;
+		case LIFT:
+			return name.equals(p_another.name) && tileLocation.equals(p_another.tileLocation);
 		}
 		return false;
 	}
@@ -306,6 +312,19 @@ public class TriggerElement extends AnyElement {
 	public static TriggerElement createPushTrigger(String p_name, Angle p_angle) {
 		TriggerElement elem = new TriggerElement(QuestEvent.PUSH);
 		elem.angle = p_angle;
+		elem.name = p_name;
+		return elem;
+	}
+	
+	/**
+	 * Ingame method to check an object being lifted.
+	 * @param p_name
+	 * @param p_tilePos
+	 * @return TriggerElement
+	 */
+	public static TriggerElement createLiftTrigger(String p_name, Point p_tilePos) {
+		TriggerElement elem = new TriggerElement(QuestEvent.LIFT);
+		elem.tileLocation = p_tilePos;
 		elem.name = p_name;
 		return elem;
 	}

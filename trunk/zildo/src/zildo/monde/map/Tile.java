@@ -96,4 +96,13 @@ public class Tile implements Cloneable {
 		default:	return 0;
 		}
 	}
+	
+	public static boolean isButton(int value) {
+		switch (value) {
+		case 768 + 212: case 768 + 213:
+			return true;
+		default:
+			return false;
+		}
+	}
 }

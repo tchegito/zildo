@@ -142,6 +142,15 @@
         </action>
     </quest>
     
+    <quest name="voleursm4_hiddenbutton" locked="false">
+        <trigger>
+            <lift name="voleursm4b" tilePos="3,11"/>
+        </trigger>
+        <action>
+            <sound name="ZildoSecret"/>
+        </action>
+    </quest>
+    
     <quest name="voleursm4_button" locked="false">
 	    <trigger>
 	        <location name="voleursm4b" tilePos="3,11" gear="BUTTON"/>
@@ -223,6 +232,9 @@
 		<condition name="voleursm4b">
 			<!-- Just to place correctly the candle on the small table -->
 		    <pos what="candle" pos="0,6" delta="true" z="6"/>
+		</condition>
+		<condition name="voleursm4" exp="!voleursm4(13, 3)">
+		    <remove who="falcor"/>
 		</condition>
 		<condition name="voleursm4b" exp="!voleursm4(13, 3)">
 		    <perso who="falcor" action="sleeping"/>
