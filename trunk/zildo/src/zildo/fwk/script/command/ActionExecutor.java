@@ -212,7 +212,7 @@ public class ActionExecutor {
 	                    			achieved = true;
 	                    		}
                     		} else {
-                    			entity.setMover(new BasicMover(entity, location.x, location.y));
+                    			entity.setMover(new BasicMover(entity, location.x, location.y, p_action.speed));
                     		}
                     	}
                     }
@@ -244,8 +244,8 @@ public class ActionExecutor {
 	        				break;
 	                    case OBSERVE:
 		                    if (param != null) {
-		                    	Perso persoToObserve =  EngineZildo.persoManagement.getNamedPerso(param);
-		                    	perso.setFollowing(persoToObserve);
+		                    	Element elemToObserve =  EngineZildo.spriteManagement.getNamedElement(param);
+		                    	perso.setFollowing(elemToObserve);
 		                    }
 	                    	break;
 	                    }

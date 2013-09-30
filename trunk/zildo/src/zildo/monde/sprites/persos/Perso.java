@@ -103,7 +103,7 @@ public abstract class Perso extends Element {
 	private boolean wounded;
 	private Perso dialoguingWith;
 	private String dialogSwitch; // Field parseable by ZSSwitch
-	private Perso following; // Perso followed by this one
+	private Element following; // Perso followed by this one
 
 	private static SoundGetter footWater = new SoundGetter(BankSound.ZildoPatauge, BankSound.ZildoPatauge2, 500);
 	private static SoundGetter footOnSqueak = new SoundGetter(BankSound.Squeak1, BankSound.Squeak2, 800, true);
@@ -120,11 +120,11 @@ public abstract class Perso extends Element {
 		this.weapon = weapon;
 	}
 	
-	public Perso getFollowing() {
+	public Element getFollowing() {
 		return following;
 	}
 
-	public void setFollowing(Perso following) {
+	public void setFollowing(Element following) {
 		this.following = following;
 	}
 
@@ -555,7 +555,7 @@ public abstract class Perso extends Element {
 		switch (this.quel_deplacement) {
 		case OBSERVE:
 			// Persos qui regardent en direction de Zildo
-			Perso observed = this.getFollowing();
+			Element observed = getFollowing();
 			if (observed == null && !isZildo()) {
 				observed = EngineZildo.persoManagement.getZildo();
 			}
@@ -882,7 +882,7 @@ public abstract class Perso extends Element {
 	 *            TRUE=sight only if target is in short perimeter / FALSE=sight
 	 *            whenever target is
 	 */
-	public void sight(Perso p_target, boolean p_shortRadius) {
+	public void sight(Element p_target, boolean p_shortRadius) {
 		int xx = (int) (getX() - p_target.getX());
 		int yy = (int) (getY() - p_target.getY());
 		if (Math.abs(yy) >= Math.abs(xx) || (p_shortRadius && (Math.abs(xx) > 96 || Math.abs(yy) > 96))) {

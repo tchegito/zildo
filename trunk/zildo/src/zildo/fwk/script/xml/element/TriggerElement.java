@@ -53,6 +53,8 @@ public class TriggerElement extends AnyElement {
 	Angle angle;
 	Gear gearType;
 	int tileValue;
+	ItemKind item;
+	
 	
 	enum Gear {	// Type of mechanism (for LOCATION trigger only)
 		BUTTON,	// Button can be pressed
@@ -123,6 +125,9 @@ public class TriggerElement extends AnyElement {
 		case LIFT:
 			tileLocation = readPoint("tilePos");
 			name = readAttribute("name");
+			break;
+		case USE:
+			item = ItemKind.fromString(readAttribute("item"));
 			break;
 		}
 
@@ -201,6 +206,8 @@ public class TriggerElement extends AnyElement {
 			return nameGood && angleGood;
 		case LIFT:
 			return name.equals(p_another.name) && tileLocation.equals(p_another.tileLocation);
+		case USE:
+			return item == p_another.item;
 		}
 		return false;
 	}
@@ -326,6 +333,17 @@ public class TriggerElement extends AnyElement {
 		TriggerElement elem = new TriggerElement(QuestEvent.LIFT);
 		elem.tileLocation = p_tilePos;
 		elem.name = p_name;
+		return elem;
+	}
+	
+	/**
+	 * Ingame method to check that hero just used an item.
+	 * @param p_item
+	 * @return TriggerElement
+	 */
+	public static TriggerElement createUseTrigger(ItemKind p_item, Point p_pos) {
+		TriggerElement elem = new TriggerElement(QuestEvent.USE);
+		elem.item = p_item;
 		return elem;
 	}
 	

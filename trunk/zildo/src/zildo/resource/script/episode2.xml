@@ -1,5 +1,35 @@
 <adventure>
 
+    <quest name="promenade2_flut1" repeat="true" locked="false">
+        <trigger>
+            <location name="promenade2" pos="422,230" radius="2"/>
+            <use item="flut"/>
+        </trigger>
+        <action>
+            <wait value="80"/>
+            <sound name="Sort"/>
+            <wait value="5"/>
+            <animation what="stars" type="STAR_TRAIL" pos="388,263"/>
+            <moveTo what="stars" pos="64,-10" delta="true" speed="1"/>
+            <script who="zildo" value="2" effect="stars"/>
+            <speak what="camera" text="promenade2.stars.0" unblock="true"/>
+            <moveTo what="stars" way="physic" pos="40,-10" delta="true" speed="0.8"/>
+            <moveTo what="stars" way="physic" pos="-15,40" delta="true" speed="0.6"/>
+            <moveTo what="stars" way="physic" pos="-60,-40" delta="true" speed="0.5"/>
+            <moveTo what="stars" way="physic" pos="-30,-30" delta="true" speed="0.4"/>
+
+            <speak what="camera" text="promenade2.stars.1" unblock="true"/>
+            
+            <moveTo what="stars" way="physic" pos="40,-50" delta="true" speed="0.5"/>
+            <moveTo what="stars" way="physic" pos="-30,-50" delta="true" speed="1"/>
+            <moveTo what="stars" way="physic" pos="20,-50" delta="true" speed="1.5"/>
+            
+            <wait value="20"/>
+            <remove what="stars"/>
+            <script who="zildo" value="0"/>
+        </action>
+    </quest>
+    
     <quest name="fuite_tony1">
         <trigger>
             <location name="promenade"/>

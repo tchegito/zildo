@@ -61,6 +61,11 @@ public abstract class ElementChained extends Element {
 
 			count = 0;
 		}
+		
+		if (mover != null && mover.isActive()) {
+			// Moving is delegated to another object
+			mover.reachTarget();
+		}
 		count++;
 	}
 

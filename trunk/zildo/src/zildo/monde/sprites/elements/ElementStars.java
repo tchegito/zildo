@@ -86,8 +86,8 @@ public class ElementStars extends ElementChained {
 
 		switch (kind) {
 		case TRAIL:
-			x += Math.cos(iota);
-			y += Math.sin(iota);
+			x += 0.2*Math.cos(iota);
+			y += 0.2*Math.sin(iota);
 			double beta = iota - Math.PI / 2;
 			double gamma = iota + Math.PI / 2;
 			boolean direction = true;
@@ -100,7 +100,16 @@ public class ElementStars extends ElementChained {
 				e.x += 0.5 * Math.cos(theta);
 				e.y += 0.5 * Math.sin(theta);
 			}
-			iota += 0.01f;
+			
+			int size = linkeds.size();
+			if (size > 2) {
+				Element last = linkeds.get(1);
+				if (!last.visible) {
+					linkeds.remove(0);
+					linkeds.remove(1);
+				}
+			}
+			iota += 0.05f;
 			break;
 		case CIRCLE:
 			x = (float) (initialLocation.x + 8f * Math.cos(iota));

@@ -38,6 +38,7 @@ public enum SpriteAnimation {
 	FROMGROUND, // Under bushes
 	STAR_CIRCLE,	// Circle of stars
 	STAR_SHINE,		// Just a shining star
+	STAR_TRAIL,	// Trail of stars
 	CLOUD_FOG,	// A fog made by several cloud ElementDescription.SMOKE
 	HEARTS,	// Hearts flying above a character
 	STAFF_POUM,	// Throw a staff
