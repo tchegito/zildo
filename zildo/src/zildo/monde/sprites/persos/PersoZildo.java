@@ -301,6 +301,10 @@ public class PersoZildo extends Perso {
 			weapon = inventory.get(0);
 		}
 
+		walkTile(false);	// To activate any location trigger
+		// Trigger the USE one
+		TriggerElement trigger = TriggerElement.createUseTrigger(weapon.kind, new Point(x, y) );
+		EngineZildo.scriptManagement.trigger(trigger);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////

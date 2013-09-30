@@ -78,7 +78,7 @@ public abstract class Mover {
 				entity.y += delta.y;
 			}
 		}
-		if (mobile.x == target.x && mobile.y == target.y) {
+		if ((int) mobile.x == target.x && (int) mobile.y == target.y) {
 			// Mover has accomplished his duty
 			active = false;
 		}

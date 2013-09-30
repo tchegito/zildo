@@ -77,6 +77,8 @@ public class ScriptManagement {
     // 'LOCATION' trigs for specific location on the current map
     final List<TriggerElement> locationTriggerOnMap;	
     
+    boolean planComputeTriggers;
+    
     // Marker to identify that a scene is created from an 'action' quest's tag
     public final static String MARQUER_SCENE = "@scene@";
 
@@ -105,10 +107,16 @@ public class ScriptManagement {
     	locationTriggerOnMap = new ArrayList<TriggerElement>();
     	
     	execute("setupPeople", true);
+    	
+    	planComputeTriggers = false;
     }
     
     public void render() {
     	scriptExecutor.render();
+    	
+    	if (planComputeTriggers) {
+    		computeTriggers();
+    	}
     }
     
     public boolean isScripting() {
@@ -169,7 +177,7 @@ public class ScriptManagement {
     		}
     	}
     	
-    	// 1: check the existing triggers to potentially enable them
+    	// Check the existing triggers to potentially enable them
     	for (QuestElement quest : adventure.getQuests()) {
     		if (!quest.done) {
     			// For each quest undone yet :
@@ -180,7 +188,17 @@ public class ScriptManagement {
     			}
     		}
     	}
-    	// 2: recheck all triggers to potentially accomplish a quest
+    	
+    	// Plan to check all triggers on next frame beginning
+    	planComputeTriggers = true;
+    }
+    
+    /**
+     * Called just after a frame where triggers have been activated. We'll check here if all triggers
+     * inside a quest are accomplished, and reset those who need to be.
+     */
+    public void computeTriggers() {
+    	// Recheck all triggers to potentially accomplish a quest
     	for (QuestElement quest : adventure.getQuests()) {
     		if (!quest.done) {
     			// For each quest undone yet :
@@ -209,6 +227,9 @@ public class ScriptManagement {
 	    						}
 	    						break;
     						case DIALOG:
+    							trig.done = false;
+    							break;
+    						case USE:
     							trig.done = false;
     							break;
     						}

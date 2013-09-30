@@ -356,6 +356,10 @@ public class SpriteManagement extends SpriteStore {
 				element.setForeground(true);
 				spawnSprite(element);
 				break;
+			case STAR_TRAIL:
+				element = new ElementStars(StarKind.TRAIL, x, y);
+				spawnSprite(element);
+				break;
 			case CLOUD_FOG:
 				element = new ElementClouds(x, y);
 				spawnSprite(element);

@@ -5,6 +5,7 @@ import zildo.monde.util.Point;
 
 public class BasicMover extends Mover {
 
+	protected float speed = 1;
 	/**
 	 * Construct an inactive mover.
 	 * @param mobile
@@ -14,8 +15,11 @@ public class BasicMover extends Mover {
 		active = false;
 	}
 	
-	public BasicMover(SpriteEntity mobile, int x, int y) {
+	public BasicMover(SpriteEntity mobile, int x, int y, float speed) {
 		super(mobile, x, y);
+		if (speed != 0) {
+			this.speed = speed;
+		}
 	}
 	
 	Point delta = new Point(0,0);
@@ -25,10 +29,15 @@ public class BasicMover extends Mover {
 		delta.x = (int) Math.signum( ( target.x - mobile.x));
 		delta.y = (int) Math.signum( ( target.y - mobile.y));
 		
-		mobile.x+=delta.x;
-		mobile.y+=delta.y;
+		mobile.x += speed * delta.x;
+		mobile.y += speed * delta.y;
 	
 		return delta;
 	}
 
+	@Override
+	public void merge(Mover m) {
+		super.merge(m);
+		this.speed = ((BasicMover) m).speed;		
+	}
 }
