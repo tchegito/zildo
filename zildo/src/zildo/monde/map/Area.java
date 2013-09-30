@@ -36,6 +36,7 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.collection.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
+import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.Hasard;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
@@ -458,7 +459,12 @@ public class Area implements EasySerializable {
 			addSpawningTile(tileLocation, null, DEFAULT_SPAWNING_TIME, true);
 		}
 
+		// Trigger
+		TriggerElement trigger = TriggerElement.createLiftTrigger(name, tileLocation);
+		EngineZildo.scriptManagement.trigger(trigger);
+		
 		// Remove tile on back2, if present
+		boolean spawnGoodies = true;
 		Case temp = this.get_mapcase(x, y + 4);
 		if (temp.getBackTile2() != null) {
 			if (anim == SpriteAnimation.FROM_CHEST) {
@@ -468,9 +474,13 @@ public class Area implements EasySerializable {
 			} else {
 				// Remove back2 (bush/jar/whatever is taken => remove it)
 				temp.setBackTile2(null);
+				// Particular case : button under a jar !
+				if (Tile.isButton(temp.getBackTile().getValue())) {
+					spawnGoodies = false;
+				}
 			}
 		} else {
-			this.writemap(tileLocation.getX(), tileLocation.getY(), resultTile);
+			writemap(tileLocation.getX(), tileLocation.getY(), resultTile);
 		}
 		// Is there something planned to appear ?
 		Point p = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
@@ -501,17 +511,19 @@ public class Area implements EasySerializable {
 				elem.setTrigger(questTrigger);
 			} else {
 				boolean multiPlayer = EngineZildo.game.multiPlayer;
-				PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-
-				if (Hasard.lanceDes(Hasard.hazardBushes_Arrow) && (multiPlayer || zildo.hasItem(ItemKind.BOW))) {
-					sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 0, null, null);
-				} else if (Hasard.lanceDes(Hasard.hazardBushes_GoldCoin)) {
-					sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, p.x, p.y + 5, 0, null, null);
-				} else if (Hasard.lanceDes(Hasard.hazardBushes_BlueDrop)) {
-					sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, p.x + 3, p.y + 5, p_destroy ? 0 : 1, null, null);
-				} else if (Hasard.lanceDes(Hasard.hazardBushes_Bombs) && (multiPlayer || zildo.hasItem(ItemKind.BOMB))) {
-					sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 0, null,
-							ElementDescription.BOMBS3);
+				if (spawnGoodies) {
+					PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+	
+					if (Hasard.lanceDes(Hasard.hazardBushes_Arrow) && (multiPlayer || zildo.hasItem(ItemKind.BOW))) {
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 0, null, null);
+					} else if (Hasard.lanceDes(Hasard.hazardBushes_GoldCoin)) {
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, p.x, p.y + 5, 0, null, null);
+					} else if (Hasard.lanceDes(Hasard.hazardBushes_BlueDrop)) {
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, p.x + 3, p.y + 5, p_destroy ? 0 : 1, null, null);
+					} else if (Hasard.lanceDes(Hasard.hazardBushes_Bombs) && (multiPlayer || zildo.hasItem(ItemKind.BOMB))) {
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 0, null,
+								ElementDescription.BOMBS3);
+					}
 				}
 			}
 		}

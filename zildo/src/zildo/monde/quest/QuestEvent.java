@@ -27,7 +27,8 @@ public enum QuestEvent {
     INVENTORY,	// Hero has a particular item 
     QUESTDONE, 	// Hero has completed a quest
     DEAD, 		// Some enemies have died
-    PUSH; 		// Hero has pushed a block or something
+    PUSH, 		// Hero has pushed a block or something
+    LIFT;		// Hero picks up some jar/bushes
     
     
     public static QuestEvent fromString(String p_name) {

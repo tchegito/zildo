@@ -1001,7 +1001,6 @@ public class PersoZildo extends Perso {
 		setMouvement(MouvementZildo.SOULEVE);
 		setAttente(20);
 		setEn_bras(elem);
-
 	}
 
 	/**
