@@ -108,7 +108,9 @@ public enum ElementDescription implements SpriteDescription {
 	POISON1, POISON2, CARPET2,
 	// 210
 	WATER_LILY,
-	BOTTLE_EMPTY, BOTTLE_RED;
+	BOTTLE_EMPTY, BOTTLE_RED,
+	// 213
+	WATER_LEAF;
 	
 	Boolean damage;
 	

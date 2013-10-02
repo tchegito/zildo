@@ -483,7 +483,7 @@ public class SpriteManagement extends SpriteStore {
 		spawnSprite(entity);
 
 		// Store walkable entities
-		if (desc == ElementDescription.PLATFORM) {
+		if (desc == ElementDescription.PLATFORM || desc == ElementDescription.WATER_LEAF) {
 			entity.setMover(new BasicMover(entity));
 			walkableEntities.add(entity);
 		}

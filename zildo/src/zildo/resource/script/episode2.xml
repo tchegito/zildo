@@ -7,6 +7,7 @@
         </trigger>
         <action>
             <wait value="80"/>
+            <music name=""/>
             <sound name="Sort"/>
             <wait value="5"/>
             <animation what="stars" type="STAR_TRAIL" pos="388,263"/>
@@ -27,6 +28,7 @@
             <wait value="20"/>
             <remove what="stars"/>
             <script who="zildo" value="0"/>
+            <music name="Nuit"/>
         </action>
     </quest>
     
