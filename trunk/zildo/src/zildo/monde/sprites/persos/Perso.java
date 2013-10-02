@@ -574,15 +574,7 @@ public abstract class Perso extends Element {
 	private Point transitionCrossed;
 	private Angle transitionAngle;
 
-	/**
-	 * Perso walk on a tile, so he reacts (water), or tile change (door).
-	 * 
-	 * @param p_sound
-	 *            TRUE=play sound when modifying map.
-	 * @return boolean (TRUE=slow down)
-	 */
-	public boolean walkTile(boolean p_sound) {
-		
+	private boolean checkPlatformUnder() {
 		// Check sprite collision
 		for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
 			// found a platform. Is perso on it ?
@@ -596,12 +588,28 @@ public abstract class Perso extends Element {
 					TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName(), -1);
 					EngineZildo.scriptManagement.trigger(trigger);
 				}
-				// Be careful : 'return' here, means that no trigger could be activated
-				// But it avoid character to die in lava.
-				return false;
+
+				return true;
 			} else {
 				entity.getMover().unlinkEntity(this);
 			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Perso walk on a tile, so he reacts (water), or tile change (door).
+	 * 
+	 * @param p_sound
+	 *            TRUE=play sound when modifying map.
+	 * @return boolean (TRUE=slow down)
+	 */
+	public boolean walkTile(boolean p_sound) {
+
+		if (checkPlatformUnder()) {
+			// Be careful : 'return' here, means that no trigger could be activated
+			// But it avoid character to die in lava.
+			return false;	// Perso is on a platform
 		}
 		
 		int cx = (int) (x / 16);
@@ -634,90 +642,95 @@ public abstract class Perso extends Element {
 		inWater = false;
 		inDirt = false;
 		BankSound snd = null;
-		switch (onmap) {
-		case 256 + 22:
-			if (pathFinder.open) {
-				area.writemap(cx, cy, 314);
-				area.writemap(cx + 1, cy, 315);
-				snd = BankSound.OuvrePorte;
-			}
-			break;
-		case 256 + 23:
-			if (pathFinder.open) {
-				area.writemap(cx - 1, cy, 314);
-				area.writemap(cx, cy, 315);
-				snd = BankSound.OuvrePorte;
-			}
-			break;
-		case 200:
-		case 374:
-			snd = BankSound.ZildoGadou;
-			inDirt = true;
-			repeatSound = true;
-			slowDown = true;
-			break;
-		case 846:
+		if (onmap>=108 && onmap<=138) {
 			// Water
-			if (!flying) {
-				inWater = true;
-				snd = footWater.getSound();
+			diveAndWound();
+		} else {
+			switch (onmap) {
+			case 256 + 22:
+				if (pathFinder.open) {
+					area.writemap(cx, cy, 314);
+					area.writemap(cx + 1, cy, 315);
+					snd = BankSound.OuvrePorte;
+				}
+				break;
+			case 256 + 23:
+				if (pathFinder.open) {
+					area.writemap(cx - 1, cy, 314);
+					area.writemap(cx, cy, 315);
+					snd = BankSound.OuvrePorte;
+				}
+				break;
+			case 200:
+			case 374:
+				snd = BankSound.ZildoGadou;
+				inDirt = true;
 				repeatSound = true;
-			}
-			break;
-		case 857:
-		case 858:
-		case 861:
-		case 862:
-			if (!isGhost() && isZildo()) {
-				EngineZildo.scriptManagement.execute("miniStairsDown", true);
-			}
-			slowDown = true;
-			break;
-		case 859:
-		case 860:
-		case 863:
-		case 864:	// Cave stairs
-		case 768 + 248:	// Rock on back2 for stairs (careful with this !!!)
-			if (!isGhost() && isZildo()) {
-				EngineZildo.scriptManagement.execute("miniStairsUp", true);
-			}
-			break;
-		case 256*2 + 200: case 256 * 2 + 198:	// Wood stairs going up
-		case 256*2 + 201:	// Wood stairs going down (on the right)
-			slowDown = true;
-			break;
-		case 206:
-		case 207: // Mountain ladder
-		case 170:
-		case 171:
-		case 172: // Stairs in forest
-		case 91+7*256:	// Stairs in palace1
-		case 228+512: case 229+512: case 230+512:	// Stairs
-			slowDown = true;
-			break;
-		// Falls
-		case 768+217:	// grotte
-		//case 1536+198: // foret4
-			if (isZildo()) {
-				fall = true;
-			}
-			break;
-		case 1277:	// Knives
-			if (isZildo()) {
-				beingWounded(x + deltaMoveX, y + deltaMoveY, null, 1);
-			}
-			break;
-		case 256*2 + 57:
-			// Squeaky floor
-			snd = footOnSqueak.getSingleSound();
-			break;
-		default:
-			if (isZildo() && bottomLess) {
-				// Make hero fall if he reach the border of the hill
-				if (!tileCollision.collide((int) x % 16, (int) y % 16, onmap, Reverse.NOTHING)) {
+				slowDown = true;
+				break;
+			case 846:
+				// Water
+				if (!flying) {
+					inWater = true;
+					snd = footWater.getSound();
+					repeatSound = true;
+				}
+				break;
+			case 857:
+			case 858:
+			case 861:
+			case 862:
+				if (!isGhost() && isZildo()) {
+					EngineZildo.scriptManagement.execute("miniStairsDown", true);
+				}
+				slowDown = true;
+				break;
+			case 859:
+			case 860:
+			case 863:
+			case 864:	// Cave stairs
+			case 768 + 248:	// Rock on back2 for stairs (careful with this !!!)
+				if (!isGhost() && isZildo()) {
+					EngineZildo.scriptManagement.execute("miniStairsUp", true);
+				}
+				break;
+			case 256*2 + 200: case 256 * 2 + 198:	// Wood stairs going up
+			case 256*2 + 201:	// Wood stairs going down (on the right)
+				slowDown = true;
+				break;
+			case 206:
+			case 207: // Mountain ladder
+			case 170:
+			case 171:
+			case 172: // Stairs in forest
+			case 91+7*256:	// Stairs in palace1
+			case 228+512: case 229+512: case 230+512:	// Stairs
+				slowDown = true;
+				break;
+			// Falls
+			case 768+217:	// grotte
+			//case 1536+198: // foret4
+				if (isZildo()) {
 					fall = true;
 				}
 				break;
+			case 1277:	// Knives
+				if (isZildo()) {
+					beingWounded(x + deltaMoveX, y + deltaMoveY, null, 1);
+				}
+				break;
+			case 256*2 + 57:
+				// Squeaky floor
+				snd = footOnSqueak.getSingleSound();
+				break;
+			default:
+				if (isZildo() && bottomLess) {
+					// Make hero fall if he reach the border of the hill
+					if (!tileCollision.collide((int) x % 16, (int) y % 16, onmap, Reverse.NOTHING)) {
+						fall = true;
+					}
+					break;
+				}
 			}
 		}
 		if (fall) {
@@ -975,15 +988,16 @@ public abstract class Perso extends Element {
 			int cx=(int) (x / 16);
 			int cy=(int) (y / 16);
 			int onMap=EngineZildo.mapManagement.getCurrentMap().readmap(cx,cy);
-			if (onMap>=108 && onMap<=138) {
+			
+			boolean platformUnder = checkPlatformUnder();
+			
+			if (!platformUnder && onMap>=108 && onMap<=138) {
 				Point zildoAvantSaut=getPosAvantSaut();
 				// Character is fallen in the water !
 				x = zildoAvantSaut.getX();
 				y = zildoAvantSaut.getY();
 				relocate=true;
-				beingWounded(x, y, null, 2);
-				stopBeingWounded();
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);
+				diveAndWound();
 			} else {
 				setForeground(false);
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
@@ -1004,6 +1018,12 @@ public abstract class Perso extends Element {
 		return relocate;
 	}
 	
+	public void diveAndWound() {
+		beingWounded(x, y, null, 2);
+		stopBeingWounded();
+		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);		
+	}
+
 	@Override
 	public void setDesc(SpriteDescription p_desc) {
 		super.setDesc(p_desc);
