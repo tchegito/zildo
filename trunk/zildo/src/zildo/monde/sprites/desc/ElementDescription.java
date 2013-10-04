@@ -280,7 +280,7 @@ public enum ElementDescription implements SpriteDescription {
 		case KEY: case STAFF_POUM: case BIG_FIRE_BALL:
 		case HEART_FRAGMENT: case NOTE: case NOTE2:
 		case PEEBLE: case ZZZ1: case ZZZ2:
-		case CRATE:
+		case CRATE: case WATER_LEAF:
 			return true;
 		default:
 			return false;

@@ -175,6 +175,9 @@ public class Element extends SpriteEntity {
 		if (desc.isBlocking()) {
 			return true;
 		}
+		if (desc == ElementDescription.WATER_LEAF) {
+			return true;
+		}
 		return false;
 	}
 

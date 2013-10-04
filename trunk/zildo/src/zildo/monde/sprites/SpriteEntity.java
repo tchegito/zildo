@@ -29,7 +29,8 @@ import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
-import zildo.monde.sprites.persos.ia.Mover;
+import zildo.monde.sprites.persos.ia.mover.Mover;
+import zildo.monde.sprites.persos.ia.mover.WrapperMover;
 import zildo.monde.sprites.utils.Sprite;
 import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
@@ -76,7 +77,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 											// element : [x/2, y/2]
 
 	protected String name;
-	protected Mover mover;	// Allow moving without physics (if NULL => regular movement)
+	protected WrapperMover mover;	// Allow moving without physics (if NULL => regular movement)
 
 	private EngineFX specialEffect; // Utilisé pour changer la couleur d'un
 									// garde par exemple
@@ -474,16 +475,17 @@ public class SpriteEntity extends Identified implements Cloneable,
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public void setMover(Mover m) {
-		if (mover != null) {
-			mover.merge(m);
-		} else {
-			mover = m;
-		}
+
+	// Tells this entity that it could move by a Mover
+	public void initMover() {
+		mover = new WrapperMover();
 	}
 	
-	public Mover getMover() {
+	public void setMover(Mover m) {
+		mover.merge(m);
+	}
+	
+	public WrapperMover getMover() {
 		return mover;
 	}
 	

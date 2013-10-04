@@ -66,7 +66,8 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.action.ScriptedPersoAction;
-import zildo.monde.sprites.persos.ia.BasicMover;
+import zildo.monde.sprites.persos.ia.mover.BasicMover;
+import zildo.monde.sprites.persos.ia.mover.PhysicMover;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
@@ -199,22 +200,13 @@ public class ActionExecutor {
                     	SpriteEntity entity;
                    		entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
                     	if (entity != null) {
-                    		if ("PHYSIC".equals(p_action.text)) {	// Only works with element
-	                    		if (entity.getEntityType().isElement()) {
-	                    			Element elem = (Element) entity;
-	                    			// Normalize speed vector
-	                    			float distance = Point.distance(elem.x, elem.y, location.x, location.y);
-	                    			elem.vx = p_action.speed * (location.x - elem.x) / distance;
-	                    			elem.vy = p_action.speed * (location.y - elem.y) / distance;
-	                    			// calculate z
-	                    			float finalT = distance / p_action.speed;
-	                    			elem.vz = -(finalT * elem.az) / 2;
-	                    			achieved = true;
-	                    		}
+                    		if ("physic".equals(p_action.text)) {	// Only works with element
+	                    		entity.setMover(new PhysicMover(entity, location.x, location.y));
                     		} else {
                     			entity.setMover(new BasicMover(entity, location.x, location.y, p_action.speed));
                     		}
                     	}
+                    	achieved = p_action.unblock;
                     }
                     break;
                 case speak:

@@ -52,12 +52,19 @@ public class FloatVariable implements FloatASTNode {
 				throw new NoContextException();
 			}
 			Perso p = EngineZildo.persoManagement.getZildo();
+			if (p == null) {
+				throw new NoContextException();
+			}
 			if (FloatExpression.RESERVED_WORD_ZILDOX.equals(variable)) {
 				return p == null ? 0 : p.x;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOY.equals(variable)) {
 				return p == null ? 0 : p.y;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOMONEY.equals(variable)) {
 				return p == null ? 0f : (float) p.getMoney();
+			} else if (FloatExpression.RESERVED_WORD_ZILDOANGLEX.equals(variable)) {
+				return p.getAngle().coords.x;
+			} else if (FloatExpression.RESERVED_WORD_ZILDOANGLEY.equals(variable)) {
+				return p.getAngle().coords.y;
 			}
 			return 0;	// Not understood variable
 		} else {
