@@ -50,8 +50,8 @@ import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.elements.ElementHearts;
 import zildo.monde.sprites.elements.ElementImpact;
-import zildo.monde.sprites.elements.ElementLauncher;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
+import zildo.monde.sprites.elements.ElementLauncher;
 import zildo.monde.sprites.elements.ElementPoison;
 import zildo.monde.sprites.elements.ElementSmoke;
 import zildo.monde.sprites.elements.ElementStaffs;
@@ -61,7 +61,6 @@ import zildo.monde.sprites.elements.ElementThrown;
 import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
-import zildo.monde.sprites.persos.ia.BasicMover;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
@@ -484,7 +483,7 @@ public class SpriteManagement extends SpriteStore {
 
 		// Store walkable entities
 		if (desc == ElementDescription.PLATFORM || desc == ElementDescription.WATER_LEAF) {
-			entity.setMover(new BasicMover(entity));
+			entity.initMover();
 			walkableEntities.add(entity);
 		}
 		

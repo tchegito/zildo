@@ -1,7 +1,7 @@
-package zildo.monde.sprites.persos.ia;
+package zildo.monde.sprites.persos.ia.mover;
 
 import zildo.monde.sprites.SpriteEntity;
-import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 
 public class BasicMover extends Mover {
 
@@ -22,22 +22,20 @@ public class BasicMover extends Mover {
 		}
 	}
 	
-	Point delta = new Point(0,0);
+	Pointf delta = new Pointf(0,0);
 	
 	@Override
-	protected Point move() {
-		delta.x = (int) Math.signum( ( target.x - mobile.x));
-		delta.y = (int) Math.signum( ( target.y - mobile.y));
+	protected Pointf move() {
+		delta.x = Math.signum( ( target.x - mobile.x));
+		delta.y = Math.signum( ( target.y - mobile.y));
 		
 		mobile.x += speed * delta.x;
 		mobile.y += speed * delta.y;
 	
+		if ((int) mobile.x == target.x && (int) mobile.y == target.y) {
+			// Mover has accomplished his duty
+			active = false;
+		}
 		return delta;
-	}
-
-	@Override
-	public void merge(Mover m) {
-		super.merge(m);
-		this.speed = ((BasicMover) m).speed;		
 	}
 }

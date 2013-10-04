@@ -14,16 +14,16 @@
             <moveTo what="stars" pos="64,-10" delta="true" speed="1"/>
             <script who="zildo" value="2" effect="stars"/>
             <speak what="camera" text="promenade2.stars.0" unblock="true"/>
-            <moveTo what="stars" way="physic" pos="40,-10" delta="true" speed="0.8"/>
-            <moveTo what="stars" way="physic" pos="-15,40" delta="true" speed="0.6"/>
-            <moveTo what="stars" way="physic" pos="-60,-40" delta="true" speed="0.5"/>
-            <moveTo what="stars" way="physic" pos="-30,-30" delta="true" speed="0.4"/>
+            <moveTo what="stars" pos="40,-10" delta="true" speed="0.8"/>
+            <moveTo what="stars" pos="-15,40" delta="true" speed="0.6"/>
+            <moveTo what="stars" pos="-60,-40" delta="true" speed="0.5"/>
+            <moveTo what="stars" pos="-30,-30" delta="true" speed="0.4"/>
 
             <speak what="camera" text="promenade2.stars.1" unblock="true"/>
             
-            <moveTo what="stars" way="physic" pos="40,-50" delta="true" speed="0.5"/>
-            <moveTo what="stars" way="physic" pos="-30,-50" delta="true" speed="1"/>
-            <moveTo what="stars" way="physic" pos="20,-50" delta="true" speed="1.5"/>
+            <moveTo what="stars" pos="40,-50" delta="true" speed="0.5"/>
+            <moveTo what="stars" pos="-30,-50" delta="true" speed="1"/>
+            <moveTo what="stars" pos="20,-50" delta="true" speed="1.5"/>
             
             <wait value="20"/>
             <remove what="stars"/>
@@ -189,6 +189,16 @@
 	    </trigger>
 	</quest>
     
+    <quest name="lily" repeat="true" locked="false">
+		<trigger>
+	    	<location name="igorlily" mover="leaf"/>
+	    	<use item="sword"/>
+	    </trigger>
+	    <action>
+	        <exec script="moveLeaf"/>
+	    </action>
+	</quest>
+	
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -526,6 +536,10 @@
 		<music name="Nuit"/>
 	</scene>
 
+	<scene id="moveLeaf">
+	    <moveTo what="leaf" pos="-4*zildo.angle.x,-4*zildo.angle.y" way="physic" unblock="true"/>
+	</scene>
+	
 	<persoAction id="sleeping">
 	    <timer each="40+20*random">
 	        <action>
