@@ -19,7 +19,6 @@
 
 package zildo.monde.sprites.persos.ia.mover;
 
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.util.Pointf;
 
@@ -27,41 +26,48 @@ import zildo.monde.util.Pointf;
  * @author Tchegito
  *
  */
-public class PhysicMover extends Mover {
+public class PhysicMoveOrder extends MoveOrder {
 
-	Element placeHolder;
-	
 	/**
 	 * Build a physic mover with (x,y) as speed vector coordinates.
 	 * @param mobile
 	 * @param x
 	 * @param y
 	 */
-	public PhysicMover(SpriteEntity mobile, int x, int y) {
-		super(mobile, x, y);
-		placeHolder = new Element();
-		placeHolder.x = mobile.x;
-		placeHolder.y = mobile.y;
-		placeHolder.vx = x;
-		placeHolder.vy = y;
-		placeHolder.setDesc(mobile.getDesc());
-		// Random friction vector
-		placeHolder.fx = 0.1f;
-		placeHolder.fy = 0.1f;
+	public PhysicMoveOrder(int x, int y) {
+		super(x, y);
+		
 	}
 
 	@Override
 	protected Pointf move() {
+		Element placeHolder = wrapper.elemPlaceHolder;
 		placeHolder.animate();
 
 		Pointf p = new Pointf(placeHolder.x - mobile.x, placeHolder.y - mobile.y);
 		mobile.x = placeHolder.x;
 		mobile.y = placeHolder.y;
 		
-		if (Math.abs(placeHolder.vx) <= 0.01 && Math.abs(placeHolder.vy) <= 0.01 && Math.abs(placeHolder.vz) <= 0.01) {
+		if (Math.abs(placeHolder.vx) <= 0.01 && 
+			Math.abs(placeHolder.vy) <= 0.01 && 
+			Math.abs(placeHolder.vz) <= 0.01) {
 			active = false;
 		}
 		return p;
+	}
+	
+	@Override
+	void init(Mover p_wrapper) {
+		super.init(p_wrapper);
+		Element placeHolder = p_wrapper.getPlaceHolder();
+		placeHolder.x = mobile.x;
+		placeHolder.y = mobile.y;
+		placeHolder.vx += target.x;
+		placeHolder.vy += target.y;
+		placeHolder.setDesc(mobile.getDesc());
+		// Random friction vector
+		placeHolder.fx = 0.1f;
+		placeHolder.fy = 0.1f;
 	}
 	
 }
