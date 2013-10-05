@@ -3,20 +3,20 @@ package zildo.monde.sprites.persos.ia.mover;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.util.Pointf;
 
-public class BasicMover extends Mover {
+public class BasicMoveOrder extends MoveOrder {
 
 	protected float speed = 1;
 	/**
 	 * Construct an inactive mover.
 	 * @param mobile
 	 */
-	public BasicMover(SpriteEntity mobile) {
-		super(mobile, (int) mobile.x, (int) mobile.y);
+	public BasicMoveOrder(SpriteEntity mobile) {
+		super((int) mobile.x, (int) mobile.y);
 		active = false;
 	}
 	
-	public BasicMover(SpriteEntity mobile, int x, int y, float speed) {
-		super(mobile, x, y);
+	public BasicMoveOrder(int x, int y, float speed) {
+		super(x, y);
 		if (speed != 0) {
 			this.speed = speed;
 		}
