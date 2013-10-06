@@ -89,4 +89,9 @@ public enum GearDescription implements SpriteDescription {
 	public boolean isNotFixe() {
 		return false;
 	}
+	
+	@Override
+	public boolean isSliping() {
+		return false;
+	}
 }

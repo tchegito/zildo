@@ -76,4 +76,11 @@ public interface SpriteDescription {
 	public int ordinal();
 	
 	public boolean isNotFixe();
+	
+	/**
+	 * Is this sprite supposed to slip on the ground/water ? Basically, an element stops as soon as it
+	 * collides. But some of them (water leaf for example), may slip on the water, along the coast borders.
+	 * @return
+	 */
+	public boolean isSliping();
 }
