@@ -248,7 +248,10 @@ public class MapManagement {
 		Angle angleFlying = null;
 		Point size = new Point(8, 4); // Default size
 		if (quelElement.getCollision() != null) {
-			size = quelElement.getCollision().size;
+			Point elemSize = quelElement.getCollision().size;
+			if (elemSize != null) {
+				size = elemSize;
+			}
 		}
 		if (quelElement != null && quelElement.flying
 				&& quelElement.getAngle() != null
