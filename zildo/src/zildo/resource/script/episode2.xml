@@ -537,7 +537,7 @@
 	</scene>
 
 	<scene id="moveLeaf">
-	    <moveTo what="leaf" pos="-4*zildo.angle.x,-4*zildo.angle.y" way="physic" unblock="true"/>
+	    <moveTo what="leaf" pos="-2*zildo.angle.x,-2*zildo.angle.y" way="physic" unblock="true"/>
 	</scene>
 	
 	<persoAction id="sleeping">

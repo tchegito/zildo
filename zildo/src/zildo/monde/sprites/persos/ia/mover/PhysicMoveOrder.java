@@ -48,9 +48,9 @@ public class PhysicMoveOrder extends MoveOrder {
 		mobile.x = placeHolder.x;
 		mobile.y = placeHolder.y;
 		
-		if (Math.abs(placeHolder.vx) <= 0.01 && 
-			Math.abs(placeHolder.vy) <= 0.01 && 
-			Math.abs(placeHolder.vz) <= 0.01) {
+		if (Math.abs(placeHolder.vx) <= 0.1 && 
+			Math.abs(placeHolder.vy) <= 0.1 && 
+			Math.abs(placeHolder.vz) <= 0.1) {
 			active = false;
 		}
 		return p;
@@ -66,8 +66,8 @@ public class PhysicMoveOrder extends MoveOrder {
 		placeHolder.vy += target.y;
 		placeHolder.setDesc(mobile.getDesc());
 		// Random friction vector
-		placeHolder.fx = 0.1f;
-		placeHolder.fy = 0.1f;
+		placeHolder.fx = 0.03f;
+		placeHolder.fy = 0.03f;
 	}
 	
 }
