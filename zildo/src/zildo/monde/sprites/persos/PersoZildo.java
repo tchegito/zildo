@@ -270,7 +270,7 @@ public class PersoZildo extends Perso {
 			break;
 		case FLUT:
 			if (attente == 0 && mouvement == MouvementZildo.VIDE) {
-				action = new ScriptedPersoAction(this, "flut");
+				setAction(new ScriptedPersoAction(this, "flut"));
 			}
 			break;
 		case NECKLACE:
