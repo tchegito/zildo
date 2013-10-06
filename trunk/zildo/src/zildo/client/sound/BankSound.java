@@ -127,6 +127,9 @@ public enum BankSound implements AudioBank {
 	Fuite("fuite"),
 	Whip("whip"),
 	
+	SlipWater1("slipwater1"),
+	SlipWater2("slipwater2"),
+	
 	ChestAppears("appear"),
 	
 	FloorTile("floortile1"),

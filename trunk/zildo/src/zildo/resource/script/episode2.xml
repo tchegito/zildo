@@ -206,7 +206,9 @@
         </trigger>
         <action>
             <wait value="80"/>
+      	    <sound name="SlipWater1"/>
             <moveTo what="leaf" pos="294,154"/>
+      	    <sound name="SlipWater2"/>
             <moveTo what="leaf" pos="176,169"/>
         </action>
     </quest>
@@ -550,6 +552,8 @@
 
 	<scene id="moveLeaf">
 	    <moveTo what="leaf" pos="-2*zildo.angle.x,-2*zildo.angle.y" way="physic" unblock="true"/>
+	    <wait value="5"/>
+	    <sound name="SlipWater1"/>
 	</scene>
 	
 	<persoAction id="sleeping">
