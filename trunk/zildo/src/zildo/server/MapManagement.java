@@ -298,10 +298,11 @@ public class MapManagement {
 			return true;
 		}
 		
-		// Collision with friendly NPC
+		// Collision with characters
 		Perso perso = EngineZildo.persoManagement.collidePerso(tx, ty, quelElement);
 		if (perso != null) {
 			if (p != null) {
+				// If zildo crosses an enemy, this is not a collision, but a wound !
 				if (p.isZildo() && perso.getInfo() == PersoInfo.ENEMY) {
 					return false;
 				}

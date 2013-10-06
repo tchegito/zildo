@@ -22,9 +22,13 @@ package zildo.monde.sprites.persos.ia.mover;
 import java.util.HashMap;
 import java.util.Map;
 
+import zildo.monde.collision.Collision;
+import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 
 /**
@@ -76,6 +80,9 @@ public class Mover {
 	 * @return TRUE if entity is just newly associated (=it wasn't before)
 	 */
 	public boolean linkEntity(SpriteEntity e) {
+		if (elemPlaceHolder != null && !e.getEntityType().isEntity()) {
+			elemPlaceHolder.setLinkedPerso((Element) e);
+		}
 		return linkedEntities.put(e.getId(), e) == null;
 	}
 	
@@ -89,7 +96,16 @@ public class Mover {
 	
 	Element getPlaceHolder() {
 		if (elemPlaceHolder == null) {
-			elemPlaceHolder = new Element();
+			elemPlaceHolder = new Element() {
+				@Override
+				public Collision getCollision() {
+					SpriteModel spr = mobile.getSprModel();
+					Point pCenter = new Point(mobile.x, mobile.y); // + spr.getTaille_y() / 2);
+					Point size = new Point(spr.getTaille_x(), spr.getTaille_y()); 
+					Collision c = new Collision(pCenter, size, null, DamageType.HARMLESS, null);
+					return c;
+				}
+			};
 		}
 		return elemPlaceHolder;
 	}

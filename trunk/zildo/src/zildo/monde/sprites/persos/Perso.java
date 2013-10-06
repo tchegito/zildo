@@ -50,7 +50,6 @@ import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
-import zildo.server.MapManagement;
 
 public abstract class Perso extends Element {
 
@@ -453,64 +452,6 @@ public abstract class Perso extends Element {
 		this.setPy((float) (p_speed * (diffy / norme)));
 		// Stop current potential attack
 		setMouvement(MouvementZildo.VIDE);
-	}
-
-	/**
-	 * Try to move character at the given location, and returns corrected one.
-	 * <p/>
-	 * The correction is based on two methods: <ul>
-	 * <li>transform diagonal movement into lateral</li>
-	 * <li>transform lateral movement into diagonal</li>
-	 * </ul>
-	 * If no one succeeds, returns the original location.
-	 * 
-	 * @param p_xx
-	 * @param p_yy
-	 * @return corrected location, or same one if character can't move at all.
-	 */
-	public Pointf tryMove(float p_xx, float p_yy) {
-		MapManagement mapManagement = EngineZildo.mapManagement;
-		float xx = p_xx;
-		float yy = p_yy;
-
-		if (mapManagement.collide(xx, yy, this)) {
-			float diffx = xx - x;
-			float diffy = yy - y;
-			float keepX = xx;
-			float keepY = yy;
-			if (diffx != 0 && diffy != 0) {
-				// Diagonal move impossible => try lateral move
-				if (!mapManagement.collide(xx, y, this)) {
-					yy = y;
-				} else if (!mapManagement.collide(x, yy, this)) {
-					xx = x;
-				}
-			} else {
-
-				// Lateral move impossible => try diagonal move
-				float speed;
-				if (diffx == 0) {
-					speed = Math.abs(diffy);
-					if (!mapManagement.collide(xx + speed, yy, this)) {
-						xx += speed;
-					} else if (!mapManagement.collide(xx - speed, yy, this)) {
-						xx -= speed;
-					}
-				} else if (diffy == 0) {
-					speed = Math.abs(diffx);
-					if (!mapManagement.collide(xx, yy + speed, this)) {
-						yy += speed;
-					} else if (!mapManagement.collide(xx, yy - speed, this)) {
-						yy -= speed;
-					}
-				}
-			}
-			if (xx == keepX && yy == keepY) { //mapManagement.collide(xx, yy, this)) {
-				xx = x;
-				yy = y;
-			}
-		}
-		return new Pointf(xx, yy);
 	}
 
 	public abstract void initPersoFX();

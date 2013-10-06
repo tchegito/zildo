@@ -36,7 +36,9 @@ import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
 
 //TODO: Remove getter/setter for x,y,z
 
@@ -199,18 +201,24 @@ public class Element extends SpriteEntity {
 				partOfPerso = perso == null ? false : perso
 						.linkedSpritesContains(this);
 			}
+			manageCollision();
 			int subY = getSprModel().getTaille_y() >> 1;
-			if (!partOfPerso
-					&& EngineZildo.mapManagement
-							.collide(x, y-subY, this)) {
-				// Collision : on stoppe le mouvement, on ne laisse plus que la
-				// chute pour finir au sol
-				x = ancX;
-				y = ancY;
-				z = ancZ;
-				vx = 0;
-				vy = 0;
-				return true;
+			if (!partOfPerso && EngineZildo.mapManagement.collide(x, y-subY, this)) {
+				if (desc.isSliping()) {
+					float movedX = x; float movedY = y-subY;
+					x = ancX; y = ancY - subY;
+					Pointf loc = tryMove(movedX, movedY);
+					x = loc.x;
+					y = loc.y + subY;
+				} else {
+					// Stops the movement, just let the element falling
+					x = ancX;
+					y = ancY;
+					z = ancZ;
+					vx = 0;
+					vy = 0;
+					return true;
+				}
 			}
 		}
 		// Out of the map
@@ -528,6 +536,64 @@ public class Element extends SpriteEntity {
 		}
 	}
 
+	/**
+	 * Try to move character at the given location, and returns corrected one.
+	 * <p/>
+	 * The correction is based on two methods: <ul>
+	 * <li>transform diagonal movement into lateral</li>
+	 * <li>transform lateral movement into diagonal</li>
+	 * </ul>
+	 * If no one succeeds, returns the original location.
+	 * 
+	 * @param p_xx
+	 * @param p_yy
+	 * @return corrected location, or same one if character can't move at all.
+	 */
+	public Pointf tryMove(float p_xx, float p_yy) {
+		MapManagement mapManagement = EngineZildo.mapManagement;
+		float xx = p_xx;
+		float yy = p_yy;
+
+		if (mapManagement.collide(xx, yy, this)) {
+			float diffx = xx - x;
+			float diffy = yy - y;
+			float keepX = xx;
+			float keepY = yy;
+			if (diffx != 0 && diffy != 0) {
+				// Diagonal move impossible => try lateral move
+				if (!mapManagement.collide(xx, y, this)) {
+					yy = y;
+				} else if (!mapManagement.collide(x, yy, this)) {
+					xx = x;
+				}
+			} else {
+
+				// Lateral move impossible => try diagonal move
+				float speed;
+				if (diffx == 0) {
+					speed = Math.abs(diffy);
+					if (!mapManagement.collide(xx + speed, yy, this)) {
+						xx += speed;
+					} else if (!mapManagement.collide(xx - speed, yy, this)) {
+						xx -= speed;
+					}
+				} else if (diffy == 0) {
+					speed = Math.abs(diffx);
+					if (!mapManagement.collide(xx, yy + speed, this)) {
+						yy += speed;
+					} else if (!mapManagement.collide(xx, yy - speed, this)) {
+						yy -= speed;
+					}
+				}
+			}
+			if (xx == keepX && yy == keepY) { //mapManagement.collide(xx, yy, this)) {
+				xx = x;
+				yy = y;
+			}
+		}
+		return new Pointf(xx, yy);
+	}
+	
 	/**
 	 * Some elements can damage. Default is no damage.
 	 * 
