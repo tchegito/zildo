@@ -286,4 +286,9 @@ public enum ElementDescription implements SpriteDescription {
 			return false;
 		}		
 	}
+	
+	@Override
+	public boolean isSliping() {
+		return this == WATER_LEAF;
+	}
 }

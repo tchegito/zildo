@@ -75,4 +75,9 @@ public enum FontDescription implements SpriteDescription {
 	public boolean isNotFixe() {
 		return false;
 	}
+	
+	@Override
+	public boolean isSliping() {
+		return true;
+	}
 }
