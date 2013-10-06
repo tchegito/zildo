@@ -490,6 +490,7 @@ public abstract class Perso extends Element {
 			}
 			if (action.launchAction()) {
 				action = null;
+				ghost = false;	// Allow player movements
 			}
 		}
 		
@@ -989,6 +990,7 @@ public abstract class Perso extends Element {
 	
 	public void setAction(PersoAction p_action) {
 		action = p_action;
+		ghost = true;	// Cancel player movements
 	}
 	
 	public boolean isFacing(Perso p_other) {

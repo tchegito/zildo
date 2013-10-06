@@ -199,6 +199,18 @@
 	    </action>
 	</quest>
 	
+    <quest name="summonLeaf" locked="false">
+        <trigger>
+            <location name="igorlily"/>
+            <use item="flut"/>
+        </trigger>
+        <action>
+            <wait value="80"/>
+            <moveTo what="leaf" pos="294,154"/>
+            <moveTo what="leaf" pos="176,169"/>
+        </action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
