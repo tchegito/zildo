@@ -482,6 +482,9 @@ public class SpriteEntity extends Identified implements Cloneable,
 	}
 	
 	public void setMover(MoveOrder m) {
+		if (mover == null) {	// Create a mover, if this entity haven't any
+			mover = new Mover(this);
+		}
 		mover.merge(m);
 	}
 	
