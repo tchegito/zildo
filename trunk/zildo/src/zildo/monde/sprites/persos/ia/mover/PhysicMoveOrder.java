@@ -51,6 +51,7 @@ public class PhysicMoveOrder extends MoveOrder {
 		if (Math.abs(placeHolder.vx) <= 0.1 && 
 			Math.abs(placeHolder.vy) <= 0.1 && 
 			Math.abs(placeHolder.vz) <= 0.1) {
+			placeHolder.vx = 0; placeHolder.vy = 0; placeHolder.vz = 0;
 			active = false;
 		}
 		return p;
@@ -62,8 +63,10 @@ public class PhysicMoveOrder extends MoveOrder {
 		Element placeHolder = p_wrapper.getPlaceHolder();
 		placeHolder.x = mobile.x;
 		placeHolder.y = mobile.y;
-		placeHolder.vx += target.x;
-		placeHolder.vy += target.y;
+		float speedX = placeHolder.vx + target.x;
+		float speedY = placeHolder.vy + target.y;
+		placeHolder.vx = Math.min(Math.abs(speedX), 2.5f) * Math.signum(speedX);
+		placeHolder.vy = Math.min(Math.abs(speedY), 2.5f) * Math.signum(speedY);
 		placeHolder.setDesc(mobile.getDesc());
 		// Random friction vector
 		placeHolder.fx = 0.03f;
