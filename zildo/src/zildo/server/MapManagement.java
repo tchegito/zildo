@@ -41,8 +41,8 @@ import zildo.monde.map.TileCollision;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -247,15 +247,15 @@ public class MapManagement {
 		}
 		Angle angleFlying = null;
 		Point size = new Point(8, 4); // Default size
+		if (quelElement.getCollision() != null) {
+			size = quelElement.getCollision().size;
+		}
 		if (quelElement != null && quelElement.flying
 				&& quelElement.getAngle() != null
 				&& EntityType.PERSO != quelElement.getEntityType()) {
 			// Flying object
 			angleFlying = quelElement.getAngle();
 
-			if (quelElement.getCollision() != null) {
-				size = quelElement.getCollision().size;
-			}
 			ty -= quelElement.z;
 			int cx = (tx / 16);
 			int cy = (ty / 16);
@@ -326,7 +326,7 @@ public class MapManagement {
 
 	final static Point[] tabPointRef = new Point[] {
 		new Point(-1, -1), new Point(-1, 1),
-		new Point(-1, 1),  new Point(1, 1)};
+		new Point(1, -1),  new Point(1, 1)};
 		
 
 	private boolean collideTile(int tx, int ty, boolean ghost, Point size, Element quelElement) {
