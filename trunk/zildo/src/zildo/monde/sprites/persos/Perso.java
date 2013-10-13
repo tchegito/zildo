@@ -584,7 +584,7 @@ public abstract class Perso extends Element {
 		inWater = false;
 		inDirt = false;
 		BankSound snd = null;
-		if (onmap>=108 && onmap<=138) {
+		if (!flying && (onmap>=108 && onmap<=138)) {
 			// Water
 			diveAndWound();
 		} else {
