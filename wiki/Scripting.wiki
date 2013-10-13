@@ -116,7 +116,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || respawn || text || - || - || - || Respawn player at his starting location in the current area. ||
 || visible || text || - || - || - || Set a character/element visibility depending on _value_ attribute (true or false) ||
 || zoom || text || - || - || - || Set a character's zoom attribute (0..255) where 255 is full size ||
-|| herospecial || text || - || - || - || Special actions about hero, set accordingly with 'value'. 0=> Hero gains 1 blue drop, and loose 2 moon fragments. ||
+|| herospecial || text || - || - || - || Special actions about hero, set accordingly with 'value'.<ul><li>0 => Hero gains 1 blue drop, and loose 2 moon fragments.</li><li>1 => Blocks everyone except hero.</li><li>2 => Unblocks everyone except hero.</li><li>3 => back up current game</li></ul> ||
 || perso || text || - || - || - || Change some character's attributes : type, info, fx. ||
 || timer || text || - || - || - || Do a repetition of actions on a desired rate. ||
 || lookFor || text || - || - || - || Look for some characters around another, with a desired radius. The first discovered one become the new context for nested action elements. ||
