@@ -90,11 +90,39 @@
 	    </action>
     </quest>
     
+    <!--  *************** All these lines MUST disappear for episode 2 ************ -->
     <!--  Just to set hero on foreground from this location -->
     <quest name="zcave_foreground" repeat="true" locked="false">
     	<trigger><location name="voleursg5" pos="615,485" radius="2"/></trigger>
     	<action><pos who="zildo" foreground="true"/></action>
     </quest>
+    
+        <!--  Just to set hero on background from this location -->
+    <quest name="zcave_foreground2" repeat="true" locked="false">
+    	<trigger><location name="voleursg5" pos="193,238" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="false"/></action>
+    </quest>
+
+    <quest name="zvoleurs1" repeat="true" locked="false">
+    	<trigger><location name="voleurs" pos="436,736" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="true"/></action>
+    </quest>
+    
+    <quest name="zvoleurs2" repeat="true" locked="false">
+    	<trigger><location name="voleurs" pos="375,463" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="false"/></action>
+    </quest>
+    
+    <quest name="zvoleurs3" repeat="true" locked="false">
+    	<trigger><location name="voleurs" pos="726,878" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="false"/></action>
+    </quest>
+
+    <quest name="zvoleurs4" repeat="true" locked="false">
+    	<trigger><location name="voleurs" pos="841,977" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="false"/></action>
+    </quest>
+    <!--  **************************************************************************** -->
     
     <quest name="attaque_voleurs">
         <trigger>
@@ -227,7 +255,7 @@
 	        <filter type="1"/>
 	    </condition>
 	    <condition name="voleurs" exp="!attaque_voleurs">
-	        <pos who="vert" pos="32,0" foreground="true" delta="true"/>
+	        <spawn who="vert" pos="448,759" type="FOX" effect="vert" weapon="BOW" foreground="true"/>
 	    </condition>
    		<condition name="voleurs" exp="!fini_voleur">
 			<filter type="1"/>
@@ -404,15 +432,15 @@
    	</scene>
    	
 	<scene id="move_vg5_plat1">
-	    <moveTo what="platform" pos="-220,0" delta="true" speed="2"/>
+	    <moveTo what="platform" pos="-220,0" delta="true" speed="1"/>
 	    <wait value="30"/>
-	    <moveTo what="platform" pos="220,0" delta="true" speed="2"/>
+	    <moveTo what="platform" pos="220,0" delta="true" speed="1"/>
 	    <wait value="10"/>
 	</scene>
 	<scene id="move_vg5_plat2">
-	    <moveTo what="platform2" pos="0,128" delta="true" speed="2"/>
+	    <moveTo what="platform2" pos="0,128" delta="true" speed="1"/>
 	    <wait value="100"/>
-	    <moveTo what="platform2" pos="0,-128" delta="true" speed="2"/>
+	    <moveTo what="platform2" pos="0,-128" delta="true" speed="1"/>
 	    <wait value="10"/>
 	</scene>
 	
@@ -537,7 +565,7 @@
 		<spawn who="falcor" type="FALCOR" pos="223,607"/>
 		<pos who="zildo" pos="223,590"/>
 		<fadeIn type="2"/>
-		<moveTo who="falcor" pos="0,10" delta="true" open="true"/>
+		<moveTo who="falcor" pos="0,11" delta="true" open="true"/>
 		<moveTo who="falcor" pos="16,0" delta="true"/>
 		<angle who="falcor" value="3"/>
 		<moveTo who="zildo" pos="0,48" delta="true"/>
