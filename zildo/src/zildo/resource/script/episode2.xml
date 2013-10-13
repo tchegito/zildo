@@ -23,7 +23,7 @@
             
             <moveTo what="stars" pos="40,-50" delta="true" speed="0.5"/>
             <moveTo what="stars" pos="-30,-50" delta="true" speed="1"/>
-            <moveTo what="stars" pos="20,-50" delta="true" speed="1.5"/>
+            <moveTo what="stars" pos="20,-80" delta="true" speed="1.5"/>
             
             <wait value="20"/>
             <remove what="stars"/>
@@ -138,6 +138,7 @@
             <location name="voleursg3"/>
         </trigger>
         <action>
+       	    <exec script="backupGame"/>
             <exec script="voleurs_discutent"/>
             <map name="voleursg3"/>
 			<focus who="zildo" />
