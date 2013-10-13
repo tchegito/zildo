@@ -119,14 +119,14 @@ public abstract class Identified {
 	/**
 	 * Remove an object for the register.
 	 * @param <E>
-	 * @param clazz
+	 * @param p_clazz
 	 * @param p_id
 	 */
-	public static <E extends Identified> void remove(Class<E> clazz, int p_id) {
+	public static <E extends Identified> void remove(Class<E> p_clazz, int p_id) {
 		if (p_id != -1) {
-			Key p_key=new Key(p_id, clazz);
+			Key p_key=new Key(p_id, p_clazz);
 			objects.remove(p_key);
-			IdGenerator idGen=idsCounter.get(clazz);
+			IdGenerator idGen=idsCounter.get(p_clazz);
 			if (idGen != null) {	// It should never be null !
 				idGen.remove(p_id);
 			}
