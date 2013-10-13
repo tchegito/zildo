@@ -112,9 +112,10 @@ public class MapManagement {
 		// Adjust map according the quest diary
 		String adjustedMapName = EngineZildo.scriptManagement
 				.getReplacedMapName(p_mapname);
-
-		// Trigger the location
-		if (!EngineZildo.game.editing) {
+		
+		// Trigger the location (only on non-additive mode: additive means that we're preparing a scrolling)
+		// In a scrolling mode, triggering will be effective once map has completely scrolled.
+		if (!EngineZildo.game.editing && !p_additive) {
 			currentMapTrigger = TriggerElement
 					.createLocationTrigger(adjustedMapName, null, null, -1);
 			EngineZildo.scriptManagement.trigger(currentMapTrigger);
@@ -247,7 +248,7 @@ public class MapManagement {
 		}
 		Angle angleFlying = null;
 		Point size = new Point(8, 4); // Default size
-		if (quelElement.getCollision() != null) {
+		if (quelElement != null && quelElement.getCollision() != null) {
 			Point elemSize = quelElement.getCollision().size;
 			if (elemSize != null) {
 				size = elemSize;
@@ -813,6 +814,15 @@ public class MapManagement {
 
 	public void notifiyScrollOver() {
 		previousMap = null;
+		if (!EngineZildo.game.editing) {
+			// Adjust map according the quest diary
+			String name = currentMap.getName();
+			String adjustedMapName = EngineZildo.scriptManagement.getReplacedMapName(name);
+			currentMapTrigger = TriggerElement.createLocationTrigger(adjustedMapName, null, null, -1);
+			EngineZildo.scriptManagement.trigger(currentMapTrigger);
+			EngineZildo.scriptManagement.prepareMapSubTriggers(name);
+		}
+
 	}
 	
 	public Area getPreviousMap() {
