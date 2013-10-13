@@ -685,29 +685,17 @@ public class Element extends SpriteEntity {
 		setForeground(false);
 		setLinkedPerso(thrower); // Declare this element thrown by Zildo
 										// (so it can't collide with him)
+		if (throwingAngle == Angle.NULL) {
+			throwingAngle = thrower.angle;
+		}
 		setAngle(throwingAngle);
 		flying = true;
 		relativeZ = EngineZildo.mapManagement.getCurrentMap().readAltitude((int) x / 16, (int) y / 16);
 
-		switch (getAngle()) {
-		case NORD:
-			vy = -4.0f;
-			fy = 0.04f;
-			break;
-		case EST:
-			vx = 4.0f;
-			fx = 0.04f;
-			break;
-		case SUD:
-			vy = 4.0f;
-			fy = 0.04f;
-			break;
-		case OUEST:
-			vx = -4.0f;
-			fx = 0.04f;
-			break;
-		}
-		
+		vx = 4 * throwingAngle.coordf.x;
+		vy = 4 * throwingAngle.coordf.y;
+		fx = 0.01f * Math.abs(vx);
+		fy = 0.01f * Math.abs(vy);
 	}
 	
 	/**

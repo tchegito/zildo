@@ -285,7 +285,7 @@ public class PersoZildo extends Perso {
 				peeble.x = x;
 				peeble.y = y;
 				EngineZildo.spriteManagement.spawnSprite(peeble);
-				peeble.beingThrown(x, y, angle, this);
+				peeble.beingThrown(x, y, sightAngle, this);
 				peeble.z = 12;
 				
 				setMouvement(MouvementZildo.ATTAQUE_ROCKBAG);

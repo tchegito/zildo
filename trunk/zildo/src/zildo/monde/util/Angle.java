@@ -23,7 +23,7 @@ package zildo.monde.util;
 
 
 public enum Angle {
-
+	
 	NORD(0, new Point(0,-1)),
 	EST(1, new Point(1,0)),
 	SUD(2, new Point(0,1)),
@@ -33,10 +33,12 @@ public enum Angle {
 	SUDOUEST(6, new Point(-1,1)),
 	NORDOUEST(7, new Point(-1,-1)),
 	NULL(8, new Point(0, 0));	// A null angle, but serializable
-	
+
 	public int value;
 	public Point coords;
+	public Pointf coordf;
 
+	final double squareRoot2 = 0.8f;
 	
 	static final Point[] saut_angle={
 		new Point(0,-40), new Point(48,16),new Point(0,56),  new Point(-48,16),
@@ -45,6 +47,11 @@ public enum Angle {
 	private Angle(int value, Point coords) {
 		this.value=value;
 		this.coords=coords;
+		this.coordf=new Pointf(coords.x, coords.y);
+		if (coordf.x != 0 && coordf.y != 0) {
+			coordf.x *= squareRoot2;
+			coordf.y *= squareRoot2;
+		}
 	}
 	
 	public boolean isVertical() {
