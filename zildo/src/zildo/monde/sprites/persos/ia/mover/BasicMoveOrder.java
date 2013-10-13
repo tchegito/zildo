@@ -26,11 +26,11 @@ public class BasicMoveOrder extends MoveOrder {
 	
 	@Override
 	protected Pointf move() {
-		delta.x = Math.signum( ( target.x - mobile.x));
-		delta.y = Math.signum( ( target.y - mobile.y));
+		delta.x = speed * Math.signum( ( target.x - mobile.x));
+		delta.y = speed * Math.signum( ( target.y - mobile.y));
 		
-		mobile.x += speed * delta.x;
-		mobile.y += speed * delta.y;
+		mobile.x += delta.x;
+		mobile.y += delta.y;
 	
 		if ((int) mobile.x == target.x && (int) mobile.y == target.y) {
 			// Mover has accomplished his duty
