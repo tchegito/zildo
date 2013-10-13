@@ -141,7 +141,15 @@ public class PersoCollision {
 			}
 		}
 		if (id != -1 && id != fromId) {
-			return (Perso) Identified.fromId(SpriteEntity.class, id);
+			SpriteEntity entity = Identified.fromId(SpriteEntity.class, id);
+			if (entity == null || !entity.getEntityType().isPerso()) {
+				// This entity is not a Perso, and shouldn't have been here. This could happen in a very rare case (not completely identified)
+				Identified.remove(SpriteEntity.class, id);
+				buffers[foreGround ? 0 : 1].resetId(gridX, gridY, id);
+				return null;
+			} else {
+				return (Perso) Identified.fromId(SpriteEntity.class, id);
+			}
 		} else {
 			return null;
 		}

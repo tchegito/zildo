@@ -65,18 +65,20 @@ public class CollBuffer {
 	}
 	
 	public void updateId(int gridX, int gridY, int id) {
-		int previousLoc = indexPerso.get(id);
-		int loc = (gridY << 6) + gridX;
-		if (previousLoc != loc) {
-			if (previousLoc != -1) {
-				// Remove previous location
-				int ancGridX = previousLoc & 63;
-				int ancGridY = previousLoc >> 6;
-				resetId(ancGridX, ancGridY, id);
+		if (id != -1) {
+			int previousLoc = indexPerso.get(id);
+			int loc = (gridY << 6) + gridX;
+			if (previousLoc != loc) {
+				if (previousLoc != -1) {
+					// Remove previous location
+					int ancGridX = previousLoc & 63;
+					int ancGridY = previousLoc >> 6;
+					resetId(ancGridX, ancGridY, id);
+				}
+				indexPerso.set(id, loc);
 			}
-			setId(gridX, gridY, id);
-			indexPerso.set(id, loc);
 		}
+		setId(gridX, gridY, id);
 	}
 	
 	
@@ -110,7 +112,7 @@ public class CollBuffer {
 		}
 	}
 	
-	private void resetId(int gridX, int gridY, int fromId) {
+	public void resetId(int gridX, int gridY, int fromId) {
 		int id = presences[gridY][gridX][0];
 		if (id != fromId) {
 			presences[gridY][gridX][1] = -1;
