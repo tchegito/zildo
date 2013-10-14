@@ -335,6 +335,9 @@
 		<condition name="voleursm4b" exp="voleursm4_button">
 		    <tile pos="3,11"  back="256*3+212" back2="-1"/>"
 		</condition>
+		<condition name="bucherons" exp="attaque_voleurs">
+		    <remove who="garde"/>
+		</condition>
 	</mapScript>
 
 	<scene id="intro_episode2">
