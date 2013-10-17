@@ -60,7 +60,7 @@ public class Mover {
 			// Handle collision for Perso (but is it really necessary ? Maybe for later !)
 			if (entity.getEntityType().isPerso()) {
 				Perso p = (Perso) entity;
-				Pointf result = p.tryMove(p.x + delta.x, p.y + delta.y);
+				Pointf result = p.tryMove(delta.x, delta.y);
 				p.x = result.x;
 				p.y = result.y;
 			} else {
@@ -101,7 +101,7 @@ public class Mover {
 				public Collision getCollision() {
 					SpriteModel spr = mobile.getSprModel();
 					Point pCenter = new Point(mobile.x, mobile.y); // + spr.getTaille_y() / 2);
-					Point size = new Point(spr.getTaille_x(), spr.getTaille_y()); 
+					Point size = new Point(spr.getTaille_x(), spr.getTaille_y()).multiply(0.7f); 
 					Collision c = new Collision(pCenter, size, null, DamageType.HARMLESS, null);
 					return c;
 				}

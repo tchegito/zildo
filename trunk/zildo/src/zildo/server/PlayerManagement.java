@@ -136,7 +136,7 @@ public class PlayerManagement {
 	public void automaticMove() {
 		Pointf pos=heros.reachDestination(Constantes.ZILDO_SPEED);
 	 	
-		adjustMovement(pos.x, pos.y);
+		adjustMovement(pos.x - heros.x, pos.y - heros.y);
 		//heros.finaliseComportement(EngineZildo.compteur_animation);
 	}
 	
@@ -172,8 +172,8 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	void handleRegularMoving()
 	{
-		float xx=heros.getX();
-		float yy=heros.getY();
+		float deltaX=0;
+		float deltaY=0;
 	
 		boolean needMovementAdjustment=true;
 		
@@ -201,27 +201,27 @@ public class PlayerManagement {
 				// Zildo can move ONLY if he isn't attacking
 				// LEFT/RIGHT key
 				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_LEFT)) {
-					xx-=zildoSpeed;
+					deltaX-=zildoSpeed;
 					heros.setAngle(Angle.OUEST);
 					heros.increaseAcceleration();
 				} else if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_RIGHT)) {
-					xx+=zildoSpeed;
+					deltaX+=zildoSpeed;
 					heros.setAngle(Angle.EST);
 					heros.increaseAcceleration();
 				}
 	
 				// UP/DOWN key
 				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_UP)) {
-					yy-=zildoSpeed;
+					deltaY-=zildoSpeed;
 					heros.setAngle(Angle.NORD);
 					heros.increaseAcceleration();
 				} else if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_DOWN)) {
-					yy+=zildoSpeed;
+					deltaY+=zildoSpeed;
 					heros.setAngle(Angle.SUD);
 					heros.increaseAcceleration();
 				}
 				
-				if (xx == heros.getX() && yy == heros.getY()) {
+				if (deltaX == 0 && deltaY == 0) {
 					heros.decreaseAcceleration();
 				}
 			}
@@ -239,20 +239,19 @@ public class PlayerManagement {
 
 		if (needMovementAdjustment) {
 			// Is there any movement ?
-			if (heros.x == xx &&
-					heros.y == yy) {
-					if (heros.getMouvement().equals(MouvementZildo.POUSSE)) {
-						heros.setMouvement(MouvementZildo.VIDE);
-					}
-					heros.setPos_seqsprite(-1);
-					heros.setNSpr(0);
-					heros.setTouch(0);
-					
-					// Test collision even if Zildo doesn't move.
-					// Useful with boomerang catching goodies.
-					EngineZildo.spriteManagement.collideSprite((int) heros.x, (int) heros.y, heros);
+			if (0 == deltaX && 0 == deltaY) {
+				if (heros.getMouvement().equals(MouvementZildo.POUSSE)) {
+					heros.setMouvement(MouvementZildo.VIDE);
+				}
+				heros.setPos_seqsprite(-1);
+				heros.setNSpr(0);
+				heros.setTouch(0);
+				
+				// Test collision even if Zildo doesn't move.
+				// Useful with boomerang catching goodies.
+				EngineZildo.spriteManagement.collideSprite((int) heros.x, (int) heros.y, heros);
 			} else {
-				adjustMovement(xx, yy);
+				adjustMovement(deltaX, deltaY);
 			}
 		}
 		if (heros.getTouch()==16 && heros.getMouvement()==MouvementZildo.VIDE) {
@@ -266,17 +265,17 @@ public class PlayerManagement {
 	
 	/**
 	 * 
-	 * @param xx
-	 * @param yy
+	 * @param deltaX
+	 * @param deltaY
 	 */
-	private void adjustMovement(float xx, float yy) {
+	private void adjustMovement(float p_deltaX, float p_deltaY) {
 		// Is it a valid movement ?
 		// Adjustment
 		heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512);
 
-        Pointf secureLocation = heros.tryMove(xx, yy);
-        xx = secureLocation.x;
-        yy = secureLocation.y;
+        Pointf secureLocation = heros.tryMove(p_deltaX, p_deltaY);
+        float xx = secureLocation.x;
+        float yy = secureLocation.y;
 
 		if (heros.x == xx && heros.y == yy) {
 			if (heros.getMouvement()==MouvementZildo.VIDE) {
@@ -316,8 +315,10 @@ public class PlayerManagement {
 			{
 				if (ralentit)
 					coeff = 0.4f;
-				else
+				else {
+					System.out.println("movement = ("+diffx+","+diffy+")");
 					coeff = cosPiSur4;
+				}
 			}
 
 			heros.setX(heros.getX()+diffx*coeff);

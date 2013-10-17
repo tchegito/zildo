@@ -521,17 +521,17 @@ public class PersoZildo extends Perso {
 
 		if (px != 0.0f || py != 0.0f) {
 			// Zildo being hurt !
-			xx += px;
-			yy += py;
+			Pointf p = tryMove(px, py);
 			px *= 0.8f;
 			py *= 0.8f;
 			walkTile(false);
 			if (pv > 0 && Math.abs(px) + Math.abs(py) < 0.2f) {
 				stopBeingWounded();
 			}
-			Pointf p = tryMove(xx, yy);
-			x = p.x;
-			y = p.y;
+			//TODO: try to remove (xx=x and yy=y) here and shift the previous declaration just after this
+			//TODO: if block.
+			x = p.x; xx = x;
+			y = p.y; yy = y;
 		} else if (getMouvement() == MouvementZildo.POUSSE && pushedEntity != null) {
 			// Zildo est en train de pousser : obstacle bidon ou bloc ?
 

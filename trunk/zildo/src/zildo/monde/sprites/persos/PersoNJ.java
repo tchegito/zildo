@@ -191,7 +191,7 @@ public class PersoNJ extends Perso {
 	private void blinkIfWounded() {
 		if (px != 0.0f || py != 0.0f) {
 			// Le perso s'est fait toucher !}
-			Pointf location = tryMove(x + px, y + py);
+			Pointf location = tryMove(px, py);
 			x = location.x;
 			y = location.y;
 			px *= 0.9f;
