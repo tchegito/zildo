@@ -201,13 +201,15 @@ public class Element extends SpriteEntity {
 				partOfPerso = perso == null ? false : perso
 						.linkedSpritesContains(this);
 			}
-			manageCollision();
+			if (!desc.isPushable()) {
+				manageCollision();
+			}
 			int subY = getSprModel().getTaille_y() >> 1;
 			if (!partOfPerso && EngineZildo.mapManagement.collide(x, y-subY, this)) {
 				if (desc.isSliping()) {
 					float movedX = x; float movedY = y-subY;
 					x = ancX; y = ancY - subY;
-					Pointf loc = tryMove(movedX, movedY);
+					Pointf loc = tryMove(movedX - x, movedY - y);
 					x = loc.x;
 					y = loc.y + subY;
 				} else {
@@ -537,7 +539,7 @@ public class Element extends SpriteEntity {
 	}
 
 	/**
-	 * Try to move character at the given location, and returns corrected one.
+	 * Try to move character with the given delta, and returns corrected one.
 	 * <p/>
 	 * The correction is based on two methods: <ul>
 	 * <li>transform diagonal movement into lateral</li>
@@ -545,21 +547,19 @@ public class Element extends SpriteEntity {
 	 * </ul>
 	 * If no one succeeds, returns the original location.
 	 * 
-	 * @param p_xx
-	 * @param p_yy
+	 * @param p_deltaX
+	 * @param p_deltaY
 	 * @return corrected location, or same one if character can't move at all.
 	 */
-	public Pointf tryMove(float p_xx, float p_yy) {
+	public Pointf tryMove(float p_deltaX, float p_deltaY) {
 		MapManagement mapManagement = EngineZildo.mapManagement;
-		float xx = p_xx;
-		float yy = p_yy;
+		float xx = x + p_deltaX;
+		float yy = y + p_deltaY;
 
-		if (mapManagement.collide(xx, yy, this)) {
-			float diffx = xx - x;
-			float diffy = yy - y;
+		if (mapManagement.collide(x + 3 * p_deltaX, y + 3 * p_deltaY, this)) {
 			float keepX = xx;
 			float keepY = yy;
-			if (diffx != 0 && diffy != 0) {
+			if (p_deltaX != 0 && p_deltaY != 0) {
 				// Diagonal move impossible => try lateral move
 				if (!mapManagement.collide(xx, y, this)) {
 					yy = y;
@@ -570,15 +570,15 @@ public class Element extends SpriteEntity {
 
 				// Lateral move impossible => try diagonal move
 				float speed;
-				if (diffx == 0) {
-					speed = Math.abs(diffy);
+				if (p_deltaX == 0) {
+					speed = Math.abs(p_deltaY);
 					if (!mapManagement.collide(xx + speed, yy, this)) {
 						xx += speed;
 					} else if (!mapManagement.collide(xx - speed, yy, this)) {
 						xx -= speed;
 					}
-				} else if (diffy == 0) {
-					speed = Math.abs(diffx);
+				} else if (p_deltaY == 0) {
+					speed = Math.abs(p_deltaX);
 					if (!mapManagement.collide(xx, yy + speed, this)) {
 						yy += speed;
 					} else if (!mapManagement.collide(xx, yy - speed, this)) {

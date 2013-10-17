@@ -30,6 +30,7 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Zone;
+import zildo.resource.Constantes;
 
 /**
  * Deals with AI for characters.<p/>
@@ -72,6 +73,7 @@ public class PathFinder {
         float x=mobile.x;
         float y=mobile.y;
         Pointf pos = new Pointf(x, y);
+        Pointf delta = new Pointf(0, 0);
         if (target==null) {
             return pos;
         }
@@ -82,17 +84,17 @@ public class PathFinder {
         Angle a=mobile.getAngle();
         
         if (x < target.x - 0.5f) {
-            pos.x += velocity;
-            if (pos.x > target.x) {
-                pos.x = target.x;
+            delta.x = velocity;
+            if (pos.x + delta.x > target.x) {
+                delta.x = target.x - mobile.x;
             } else {
             	move++;
             }
             a=Angle.EST;
         } else if (x > target.x + 0.5f) {
-            pos.x -= velocity;
-            if (pos.x < target.x) {
-                pos.x = target.x;
+            delta.x = -velocity;
+            if (pos.x + delta.x < target.x) {
+                delta.x = target.x - mobile.x;
             } else {
             	move++;
             }
@@ -101,17 +103,17 @@ public class PathFinder {
             immo++;
         }
         if (y < target.y - 0.5f) {
-            pos.y += velocity;
-            if (pos.y > target.y + 0.5f) {
-                pos.y = target.y;
+            delta.y = velocity;
+            if (pos.y + delta.y > target.y + 0.5f) {
+                delta.y = target.y - mobile.y;
             } else {
             	move++;
             }
             a=Angle.SUD;
         } else if (y > target.y + 0.5f) {
-            pos.y -= velocity;
-            if (pos.y < target.y - 0.5f) {
-                pos.y = target.y;
+            delta.y = -velocity;
+            if (pos.y + delta.y < target.y - 0.5f) {
+                delta.y = target.y - mobile.y;
             } else {
             	move++;
             }
@@ -122,18 +124,16 @@ public class PathFinder {
 
         if (move == 2) {
         	// diagonal move ==> adjust with coeff
-            float diffX = pos.x - mobile.x;
-            float diffY = pos.y - mobile.y;
-            float coeff = 0.7f;
-            pos.x = mobile.x + diffX * coeff;
-            pos.y = mobile.y + diffY * coeff;
+            float coeff = Constantes.cosPiSur4;
+            pos.x = mobile.x + delta.x * coeff;
+            pos.y = mobile.y + delta.y * coeff;
         }
         
         // If there's no movement, stop the target
         if (immo == 2) {
             target=null;
         } else if (mobile.getMouvement() != MouvementZildo.SAUTE && mobile.getQuel_deplacement() != MouvementPerso.VOLESPECTRE) {
-            pos = mobile.tryMove(pos.x, pos.y);
+        	pos = mobile.tryMove(delta.x, delta.y);
         }
 
         if (backward && a!= null) {

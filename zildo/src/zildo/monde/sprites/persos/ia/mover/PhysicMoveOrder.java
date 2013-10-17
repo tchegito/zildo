@@ -45,12 +45,13 @@ public class PhysicMoveOrder extends MoveOrder {
 		placeHolder.animate();
 
 		Pointf p = new Pointf(placeHolder.x - mobile.x, placeHolder.y - mobile.y);
+		boolean stopped = (p.x == 0 && p.y == 0);
 		mobile.x = placeHolder.x;
 		mobile.y = placeHolder.y;
 		
-		if (Math.abs(placeHolder.vx) <= 0.1 && 
+		if (stopped || (Math.abs(placeHolder.vx) <= 0.1 && 
 			Math.abs(placeHolder.vy) <= 0.1 && 
-			Math.abs(placeHolder.vz) <= 0.1) {
+			Math.abs(placeHolder.vz) <= 0.1) ) {
 			placeHolder.vx = 0; placeHolder.vy = 0; placeHolder.vz = 0;
 			active = false;
 		}

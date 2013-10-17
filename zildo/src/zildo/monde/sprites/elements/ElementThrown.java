@@ -24,6 +24,7 @@ import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
 /**
@@ -74,8 +75,9 @@ public abstract class ElementThrown extends Element {
                 break;
         }
         if (p_angle.isDiagonal()) {
-        	vx=0.7f * vx;
-        	vy=0.7f * vy;
+            float coeff = Constantes.cosPiSur4;
+        	vx = coeff * vx;
+        	vy = coeff * vy;
         }
         angle = p_angle;
         setLinkedPerso(p_shooter);
