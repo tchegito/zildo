@@ -561,7 +561,10 @@ public class Element extends SpriteEntity {
 		float xx = x + p_deltaX;
 		float yy = y + p_deltaY;
 
-		if (mapManagement.collide(x + 3 * p_deltaX, y + 3 * p_deltaY, this)) {
+		// Calculate an anticipation factor, to check collision in advance
+		// For better diagonal movement
+		int antFactor = 2 + (int) Point.distance(0, 0, p_deltaX, p_deltaY);
+		if (mapManagement.collide(x + antFactor * p_deltaX, y + antFactor * p_deltaY, this)) {
 			float keepX = xx;
 			float keepY = yy;
 			if (p_deltaX != 0 && p_deltaY != 0) {
