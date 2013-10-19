@@ -29,15 +29,42 @@ public class Vector2f {
 	public float x;
 	public float y;
 	
-    public Vector2f(float x, float y)
+    public Vector2f(float p_x, float p_y)
     {
-        set(x, y);
+        set(p_x, p_y);
     }
     
-    public void set(float x, float y)
+    public void set(float p_x, float p_y)
     {
-        this.x = x;
-        this.y = y;
+        x = p_x;
+        y = p_y;
+    }
+    
+    public Vector2f add(float p_x, float p_y) {
+    	x += x;
+    	y += y;
+    	return this;
+    }
+    
+    public Vector2f add(Vector2f v) {
+    	x += v.x;
+    	y += v.y;
+    	return this;
+    }
+    
+    /**
+     * Normalize the vector, according to a max value.
+     * @param max
+     */
+    public void normalize(float max) {
+    	// Calculate norm
+    	float norme = Point.distance(0, 0, x, y);
+    	float normalized = Math.min(norme, max);
+    	if (normalized < norme) {
+    		float ratio = normalized / norme;
+    		x *= ratio;
+    		y *= ratio;
+    	}
     }
     
     @Override

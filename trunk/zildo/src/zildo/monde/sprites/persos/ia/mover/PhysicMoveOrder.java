@@ -21,6 +21,7 @@ package zildo.monde.sprites.persos.ia.mover;
 
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.util.Pointf;
+import zildo.monde.util.Vector2f;
 
 /**
  * @author Tchegito
@@ -64,10 +65,11 @@ public class PhysicMoveOrder extends MoveOrder {
 		Element placeHolder = p_wrapper.getPlaceHolder();
 		placeHolder.x = mobile.x;
 		placeHolder.y = mobile.y;
-		float speedX = placeHolder.vx + target.x;
-		float speedY = placeHolder.vy + target.y;
-		placeHolder.vx = Math.min(Math.abs(speedX), 2.5f) * Math.signum(speedX);
-		placeHolder.vy = Math.min(Math.abs(speedY), 2.5f) * Math.signum(speedY);
+		Vector2f newSpeed = new Vector2f(placeHolder.vx + target.x, placeHolder.vy + target.y);
+		Vector2f speed = new Vector2f(placeHolder.vx, placeHolder.vy);
+		speed.add(newSpeed).normalize(2.5f);
+		placeHolder.vx = speed.x;
+		placeHolder.vy = speed.y;
 		placeHolder.setDesc(mobile.getDesc());
 		// Random friction vector
 		placeHolder.fx = 0.03f;

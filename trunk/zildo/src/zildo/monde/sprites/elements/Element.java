@@ -210,6 +210,11 @@ public class Element extends SpriteEntity {
 					float movedX = x; float movedY = y-subY;
 					x = ancX; y = ancY - subY;
 					Pointf loc = tryMove(movedX - x, movedY - y);
+					Pointf diff = new Pointf(loc.x - ancX, loc.y - ancY + subY);
+					if (diff.x != vx || diff.y != vy) {
+						vx = diff.x*0.9f;
+						vy = diff.y*0.9f;
+					}
 					x = loc.x;
 					y = loc.y + subY;
 				} else {
