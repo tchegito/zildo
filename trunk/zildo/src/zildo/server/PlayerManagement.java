@@ -316,7 +316,6 @@ public class PlayerManagement {
 				if (ralentit)
 					coeff = 0.4f;
 				else {
-					System.out.println("movement = ("+diffx+","+diffy+")");
 					coeff = cosPiSur4;
 				}
 			}
