@@ -379,9 +379,9 @@ public class PersoNJ extends Perso {
 							pos_seqsprite = 0;
 						}
 
-						if (!quel_deplacement.isFlying() && mouvement!=MouvementZildo.SAUTE) {
+						if (mouvement!=MouvementZildo.SAUTE) {
 							// Collision ?
-							if (hasCollided) {
+							if (!quel_deplacement.isFlying() && hasCollided) {
 								this.setX(sx);
 								this.setY(sy);
 								pathFinder.collide();
@@ -629,6 +629,10 @@ public class PersoNJ extends Perso {
 		case FOX:
 		case FALCOR:
 			add_spr = 0;
+			break;
+		case FLYINGSERPENT:
+			reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
+			add_spr = (getPos_seqsprite() % (6 * Constantes.speed)) / (2 * Constantes.speed);
 			break;
 		default:
 			add_spr = angle.value * 2 + (getPos_seqsprite() % (4 * Constantes.speed)) / (2 * Constantes.speed);

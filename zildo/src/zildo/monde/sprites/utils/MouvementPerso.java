@@ -63,7 +63,7 @@ public enum MouvementPerso {
 	 * @return TRUE = no collision / FALSE = collision with background
 	 */
 	public boolean isFlying() {
-		return this == VOLESPECTRE || this == BIRD;
+		return this == VOLESPECTRE || this == BEE || this == BIRD;
 	}
 	
 	public static String[] getValues() {

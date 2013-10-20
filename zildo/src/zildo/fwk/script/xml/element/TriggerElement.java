@@ -32,6 +32,7 @@ import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.quest.QuestEvent;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -231,7 +232,18 @@ public class TriggerElement extends AnyElement {
 		case LOCATION:
 			Area map = EngineZildo.mapManagement.getCurrentMap();
 			if (map != null && !isLocationSpecific() && name.equals(EngineZildo.mapManagement.getCurrentMap().getName())) {
-				return true;
+				// Mover ?
+				boolean ok = true;
+				if (mover != null) {
+					PersoZildo hero = EngineZildo.persoManagement.getZildo();
+					ok = false;
+					for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
+						if (entity.getMover().isOnIt(hero)) {
+							ok = true;
+						}
+					}
+				}
+				return ok;
 			}
 		default:
 			return done;

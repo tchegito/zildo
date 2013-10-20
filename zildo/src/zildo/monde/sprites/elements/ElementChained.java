@@ -35,6 +35,8 @@ import zildo.server.EngineZildo;
  */
 public abstract class ElementChained extends Element {
 
+	protected boolean endOfChain = false;	// To allow subclasses to stop the chain creation
+	
 	int count = 0;
 	int delay = 0;
 	Point initialLocation;
@@ -53,20 +55,22 @@ public abstract class ElementChained extends Element {
 	@Override
 	public void animate() {
 
-		if (count >= delay) { // After the delay, create another one
-			Element elem = createOne((int) x, (int) y);
-
-			linkeds.add(elem);
-			EngineZildo.spriteManagement.spawnSprite(elem);
-
-			count = 0;
+		if (!endOfChain) {
+			if (count >= delay) { // After the delay, create another one
+				Element elem = createOne((int) x, (int) y);
+	
+				linkeds.add(elem);
+				EngineZildo.spriteManagement.spawnSprite(elem);
+	
+				count = 0;
+			}
+			count++;
 		}
 		
 		if (mover != null && mover.isActive()) {
 			// Moving is delegated to another object
 			mover.reachTarget();
 		}
-		count++;
 	}
 
 	/**

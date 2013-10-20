@@ -94,6 +94,15 @@ public class Mover {
 		linkedEntities.remove(e.getId());
 	}
 	
+	/**
+	 * Returns TRUE if the given entity is on the mover.
+	 * @param e entity
+	 * @return boolean
+	 */
+	public boolean isOnIt(SpriteEntity e) {
+		return linkedEntities.containsKey(e.getId());
+	}
+	
 	Element getPlaceHolder() {
 		if (elemPlaceHolder == null) {
 			elemPlaceHolder = new Element() {
