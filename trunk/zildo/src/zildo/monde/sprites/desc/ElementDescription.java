@@ -110,7 +110,10 @@ public enum ElementDescription implements SpriteDescription {
 	WATER_LILY,
 	BOTTLE_EMPTY, BOTTLE_RED,
 	// 213
-	WATER_LEAF;
+	WATER_LEAF,
+	// 214
+	BROWNSPHERE1, BROWNSPHERE2, BROWNSPHERE3,
+	REDSPHERE1, REDSPHERE2, REDSPHERE3;
 	
 	Boolean damage;
 	
@@ -239,6 +242,8 @@ public enum ElementDescription implements SpriteDescription {
 				case BIG_FIRE_BALL:
 				case PEEBLE:
 				case POISON1: case POISON2:
+				case REDSPHERE1: case REDSPHERE2: case REDSPHERE3:
+				case BROWNSPHERE1: case BROWNSPHERE2: case BROWNSPHERE3:
 					damage = true;
 					break;
 			}
@@ -281,6 +286,8 @@ public enum ElementDescription implements SpriteDescription {
 		case HEART_FRAGMENT: case NOTE: case NOTE2:
 		case PEEBLE: case ZZZ1: case ZZZ2:
 		case CRATE: case WATER_LEAF:
+		case REDSPHERE1: case REDSPHERE2: case REDSPHERE3:
+		case BROWNSPHERE1: case BROWNSPHERE2: case BROWNSPHERE3:
 			return true;
 		default:
 			return false;

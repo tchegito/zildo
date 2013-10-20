@@ -95,6 +95,7 @@ public enum PersoDescription implements SpriteDescription {
 	PAPER_NOTE(255),
 	FALCOR(263, 264, 261, 262, 259, 260, 265), 
 	BRAMBLE(266),
+	FLYINGSERPENT(267, 268, 269),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 

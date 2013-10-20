@@ -167,6 +167,9 @@ public class Element extends SpriteEntity {
 	 * @return boolean
 	 */
 	public boolean isSolid() {
+		if (desc == ElementDescription.REDSPHERE1 || desc == ElementDescription.BROWNSPHERE1) {
+			return false;
+		}
 		if (desc.isDamageable()) {
 			return true;
 		}
@@ -201,7 +204,7 @@ public class Element extends SpriteEntity {
 				partOfPerso = perso == null ? false : perso
 						.linkedSpritesContains(this);
 			}
-			if (!desc.isPushable()) {
+			if (!desc.isPushable()) {	// Sprite being pushed by hero SHALL NOT hurt him !
 				manageCollision();
 			}
 			int subY = getSprModel().getTaille_y() >> 1;

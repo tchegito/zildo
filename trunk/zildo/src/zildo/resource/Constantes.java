@@ -95,7 +95,7 @@ public class Constantes {
 	public static final	int FADE_SPEED = 5;
 
 	public static final	float mathPi = 3.1415926535f;
-
+	public static final float cosPiSur4 = 0.66f; // Nearly
 
 	// Sounds
 	public static final int MAX_SOUNDS = 49;

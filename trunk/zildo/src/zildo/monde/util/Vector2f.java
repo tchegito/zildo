@@ -34,6 +34,11 @@ public class Vector2f {
         set(p_x, p_y);
     }
     
+    public Vector2f(double p_x, double p_y)
+    {
+        set((float) p_x, (float) p_y);
+    }
+    
     public void set(float p_x, float p_y)
     {
         x = p_x;
