@@ -116,6 +116,7 @@
 	</scene>
 	
 	<scene id="death">
+        <herospecial value="1"/> <!-- Block everyone but hero -->
 		<music name="ZildoMort"/>
 		<fadeOut type="5"/>
 		<remove/>
