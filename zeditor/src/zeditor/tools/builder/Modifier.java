@@ -40,6 +40,7 @@ import zeditor.tools.banque.Foret4;
 import zeditor.tools.banque.Grotte;
 import zeditor.tools.banque.Maison;
 import zeditor.tools.banque.Palais1;
+import zeditor.tools.banque.Palais3;
 import zeditor.tools.banque.Village;
 import zeditor.tools.sprites.ElementsPlus;
 import zeditor.tools.sprites.Fontes;
@@ -47,15 +48,16 @@ import zeditor.tools.sprites.Gears;
 import zeditor.tools.sprites.PjZildo;
 import zeditor.tools.sprites.Pnj;
 import zeditor.tools.sprites.Pnj2;
+import zeditor.tools.sprites.Pnj3;
 import zeditor.tools.sprites.SpriteBankEdit;
 import zeditor.tools.sprites.SpriteBanque;
 import zeditor.tools.tiles.Banque;
-import zeditor.tools.tiles.MotifBankEdit;
+import zeditor.tools.tiles.TileBankEdit;
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.gui.GUIDisplay;
-import zildo.fwk.bank.MotifBank;
+import zildo.fwk.bank.TileBank;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
@@ -110,7 +112,7 @@ public class Modifier {
         // Exteria1 is the reference picture for palette
         // ***IMPORTANT ***
         
-        
+        if (true) {
         new Modifier().savePalette();
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
@@ -129,6 +131,7 @@ public class Modifier {
         //new Modifier().saveZildo();
         new Modifier().savePnj();
         new Modifier().savePnj2();
+        new Modifier().savePnj3();
         //new Modifier().modifyAllMaps();
         //new Modifier().adjustSpritePositionOnAllMaps();
         //new Modifier().generateImg();
@@ -136,44 +139,50 @@ public class Modifier {
        //new Modifier().ripDialogFromAllMaps();
         
         //new Modifier().temporaryFixPolakym();
+        }
+        
+        //new AdjustRotations().modifyAllMaps();
     }
      
      public void generateImg() {
-    	 MotifBankEdit bankEdit=new MotifBankEdit(new Grotte());
+    	 TileBankEdit bankEdit=new TileBankEdit(new Grotte());
     	 bankEdit.charge_motifs(bankEdit.getName()+".dec");
     	 bankEdit.generateImg();
      }
      
      public void saveBanque() {
-    	 new MotifBank().charge_motifs("foret1");
+    	 new TileBank().charge_motifs("foret1");
     	 new Foret1().save();
     	 
-    	 new MotifBank().charge_motifs("foret2");
+    	 new TileBank().charge_motifs("foret2");
     	 new Foret2().save();
 
-    	 new MotifBank().charge_motifs("foret3");
+    	 new TileBank().charge_motifs("foret3");
     	 new Foret3().save();
 
-    	 new MotifBank().charge_motifs("foret4");
+    	 new TileBank().charge_motifs("foret4");
     	 new Foret4().save();
 
-    	 new MotifBank().charge_motifs("village");
+    	 new TileBank().charge_motifs("village");
     	 new Village().save();
 
-    	 new MotifBank().charge_motifs("maison");
+    	 new TileBank().charge_motifs("maison");
     	 new Maison().save();
     	 
-    	 new MotifBank().charge_motifs("palais1");
+    	 new TileBank().charge_motifs("palais1");
     	 new Palais1().save();
     	 
-    	 new MotifBank().charge_motifs("grotte");
+    	 new TileBank().charge_motifs("grotte");
     	 new Grotte().save();
+    	 
+    	 new TileBank().charge_motifs("palais3");
+    	 new Palais3().save();
     	 
     	 saveElements();
      }
      
      public void saveNamedTileBank(String tileBankName) {
-    	 new MotifBank().charge_motifs(tileBankName);
+    	 new TileBank().charge_motifs(tileBankName);
     	 getTileBankClass(tileBankName).save();
      }
      
@@ -336,6 +345,13 @@ public class Modifier {
     	 // Add doors
     	 bank.addSpritesFromBank(new Gears());
     	 bank.setName("gear.spr");
+    	 bank.saveBank();
+     }
+     
+     public void savePnj3() {
+         SpriteBankEdit bank=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ3));
+         bank.clear();
+    	 bank.addSpritesFromBank(new Pnj3());
     	 bank.saveBank();
      }
      
@@ -519,7 +535,7 @@ public class Modifier {
 	}
 	
 	public void temporaryFixPolakym() {
-		new AdjustBackTiles().modifyOneMap("polakym");
+		new AdjustBackTiles().modifyOneMap("polakym.map");
 	}
 	
 	public void textureBuilder() {

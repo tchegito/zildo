@@ -29,7 +29,7 @@ import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
 import zeditor.tools.sprites.BankEdit;
-import zildo.fwk.bank.MotifBank;
+import zildo.fwk.bank.TileBank;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.gfx.GFXBasics;
@@ -41,7 +41,7 @@ import zildo.monde.map.TileInfo;
  * @author Tchegito
  *
  */
-public class MotifBankEdit extends MotifBank {
+public class TileBankEdit extends TileBank {
 
 	BankEdit bankEdit;
 	Banque bank;
@@ -53,7 +53,7 @@ public class MotifBankEdit extends MotifBank {
 	 * Constructor designed for building .DEC with class deriving from {@link Banque}.
 	 * @param p_bank
 	 */
-	public MotifBankEdit(Banque p_bank) {
+	public TileBankEdit(Banque p_bank) {
 		super();
 		
 		bankEdit=new BankEdit();
@@ -71,7 +71,7 @@ public class MotifBankEdit extends MotifBank {
 	 * Constructor designed for generating image in ZEditor background panel.
 	 * @param p_bank
 	 */
-	public MotifBankEdit(MotifBank p_motifBank, Banque p_bank) {
+	public TileBankEdit(TileBank p_motifBank, Banque p_bank) {
 		this(p_bank);
 		
 		motifs_map = p_motifBank.getMotifs_map();
@@ -114,7 +114,7 @@ public class MotifBankEdit extends MotifBank {
 	}
     
     public void saveBank() {
-        EasyBuffering buffer=new EasyBuffering(bankEdit.gfxs.size() * MotifBank.motifSize);
+        EasyBuffering buffer=new EasyBuffering(bankEdit.gfxs.size() * TileBank.motifSize);
         for (int i=0;i<nb_motifs;i++) {
         	// Put the image
             for (short s : bankEdit.gfxs.get(i)) {

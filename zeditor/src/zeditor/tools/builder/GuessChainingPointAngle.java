@@ -21,7 +21,7 @@
 package zeditor.tools.builder;
 
 import zildo.Zildo;
-import zildo.fwk.bank.MotifBank;
+import zildo.fwk.bank.TileBank;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.Game;
 import zildo.monde.map.Area;
@@ -54,7 +54,7 @@ public class GuessChainingPointAngle {
 	
 	public void addAngleInAllChainingPoint() {
 		for (String bankName : TileEngine.tileBankNames) {
-			MotifBank motifBank = new MotifBank();
+			TileBank motifBank = new TileBank();
 			motifBank.charge_motifs(bankName.toUpperCase());
 		}
 		new AllMapProcessor() {
