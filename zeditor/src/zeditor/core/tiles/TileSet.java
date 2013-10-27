@@ -17,12 +17,12 @@ import zeditor.core.exceptions.ZeditorException;
 import zeditor.core.selection.CaseSelection;
 import zeditor.tools.CorrespondanceGifDec;
 import zeditor.tools.Transparency;
-import zeditor.tools.tiles.MotifBankEdit;
+import zeditor.tools.tiles.TileBankEdit;
 import zeditor.windows.OptionHelper;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.ZUtils;
-import zildo.fwk.bank.MotifBank;
+import zildo.fwk.bank.TileBank;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
@@ -68,7 +68,7 @@ public class TileSet extends ImageSet {
 				return null;
 			}
 			int nBank = TileEngine.getBankFromName(p_name);
-			MotifBank bank = ClientEngineZildo.tileEngine.getMotifBank(nBank);
+			TileBank bank = ClientEngineZildo.tileEngine.getMotifBank(nBank);
 			tile = bridge.generateImg(bank);
 
 			// tile = Transparency.makeColorTransparent(tile,
@@ -389,14 +389,13 @@ public class TileSet extends ImageSet {
 	protected void handleSelectionRightClick(MouseEvent e) {
 		// We need a selection of a single tile
 		TileSelection sel = (TileSelection) currentSelection;
-		if (sel.height !=1 || sel.width != 1) {
+		/*if (sel.height !=1 || sel.width != 1) {
 			return;
-		}
-		Tile tile = sel.getElement().get(0).getBackTile();
+		}*/
 		Image singleTile = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
 		singleTile.getGraphics().drawImage(currentTile, 0, 0, 16, 16, 
 				startPoint.x, startPoint.y, stopPoint.x, stopPoint.y, null); 
-		TilePopupMenu menu = new TilePopupMenu(manager, tile, singleTile);
+		TilePopupMenu menu = new TilePopupMenu(manager, sel, singleTile);
 		menu.show(e.getComponent(), e.getX(), e.getY());
 	}
 	
@@ -405,8 +404,8 @@ public class TileSet extends ImageSet {
 			MasterFrameManager.display("Can't save collision for tile "+tileName+" !", MasterFrameManager.MESSAGE_ERROR);
 		} else {
 			int nBank = TileEngine.getBankFromName(tileName);
-			MotifBank bank = ClientEngineZildo.tileEngine.getMotifBank(nBank);
-			new MotifBankEdit(bank, null).saveBank();
+			TileBank bank = ClientEngineZildo.tileEngine.getMotifBank(nBank);
+			new TileBankEdit(bank, null).saveBank();
 		}
 	}
 }

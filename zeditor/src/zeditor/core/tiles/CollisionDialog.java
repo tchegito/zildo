@@ -37,6 +37,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import zeditor.windows.managers.MasterFrameManager;
+import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
 import zildo.monde.map.TileInfo;
@@ -60,7 +61,7 @@ public class CollisionDialog extends JDialog {
 			{ -1, 74, 99, 101, 36, 85, 83, 122, -1 },
 			{ -1, -1, -1, -1, 38, -1,- 1, -1, -1}};
 
-	public CollisionDialog(MasterFrameManager p_manager, Tile p_tile, Image p_img) {
+	public CollisionDialog(MasterFrameManager p_manager, TileSelection p_tileSel, Image p_img) {
 		setLayout(new BorderLayout());
 		setTitle("Collision templates");
 
@@ -84,7 +85,7 @@ public class CollisionDialog extends JDialog {
 					CollisionDrawer collisionDrawer = new CollisionDrawer(g);
 					TileInfo info = TileInfo.fromInt(hashTile);
 					collisionDrawer.drawCollisionTile(0, 0, info, true);
-					panel.add(new CollisionTemplateButton(new ImageIcon(duplicata), p_tile, info));
+					panel.add(new CollisionTemplateButton(new ImageIcon(duplicata), p_tileSel, info));
 				}
 				collPanel.add(panel);
 			}
@@ -137,11 +138,16 @@ public class CollisionDialog extends JDialog {
 
 	private class CollisionTemplateButton extends JButton {
 
-		public CollisionTemplateButton(ImageIcon p_img, final Tile p_tile, final TileInfo p_info) {
+		public CollisionTemplateButton(ImageIcon p_img, final TileSelection p_tileSel, final TileInfo p_info) {
 			setAction(new AbstractAction("", p_img) {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					TileCollision.getInstance().updateInfoForOneTile(p_tile.bank, p_tile.index, p_info);
+					for (Case c : p_tileSel.getElement()) {
+						if (c != null) {
+							Tile tile = c.getBackTile();
+							TileCollision.getInstance().updateInfoForOneTile(tile.bank, tile.index, p_info);
+						}
+					}
 					dispose();
 				}
 			});
