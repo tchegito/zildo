@@ -69,7 +69,7 @@ public class PersoFlyingSerpent extends PersoShadowed {
 				Element redSphere = new ElementProjectile(ElementDescription.BROWNSPHERE1, x, y-2, z,
 						speedVect.x, speedVect.y, this);
 				EngineZildo.spriteManagement.spawnSprite(redSphere);
-				EngineZildo.soundManagement.broadcastSound(BankSound.Whip, new Point(x, y));
+				EngineZildo.soundManagement.broadcastSound(BankSound.SerpentSpit, new Point(x, y));
 				count = 200;
 			} else {
 				count = 50;

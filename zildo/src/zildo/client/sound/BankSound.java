@@ -140,7 +140,9 @@ public enum BankSound implements AudioBank {
 	PoisonCloud("poison"),
 	
 	Squeak1("squeak1"),
-	Squeak2("squeak2");
+	Squeak2("squeak2"),
+	
+	SerpentSpit("serpentSpit");
 	
 	String filename;
 	
