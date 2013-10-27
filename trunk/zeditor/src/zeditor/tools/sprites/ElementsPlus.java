@@ -295,7 +295,10 @@ public class ElementsPlus extends SpriteBanque {
 		        // Bottles
 		        new Zone(165, 57, 8, 11), new Zone(174, 57, 6, 11),
 				// Water lily leaf
-		        new Zone(72, 153, 49, 32)
+		        new Zone(72, 153, 49, 32),
+		        // Red projectile (flying serpent)
+		        new Zone(146, 85, 5, 5), new Zone(152, 85, 5, 5), new Zone(158, 85, 5, 5),
+		        new Zone(146, 80, 5, 5), new Zone(152, 80, 5, 5), new Zone(158, 80, 5, 5)
 
 		};
 		
