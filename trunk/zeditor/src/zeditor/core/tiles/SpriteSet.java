@@ -139,6 +139,18 @@ public class SpriteSet extends ImageSet {
 					return false;
 				}
 
+				@Override
+				public boolean isNotFixe() {
+					// TODO Auto-generated method stub
+					return false;
+				}
+
+				@Override
+				public boolean isSliping() {
+					// TODO Auto-generated method stub
+					return false;
+				}
+
 			});
 		}
 		return list;
