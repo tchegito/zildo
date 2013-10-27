@@ -38,7 +38,7 @@ import zildo.monde.map.TileInfo;
  * @author evariste.boussaton
  *
  */
-public class MotifBank {
+public class TileBank {
 
 	protected short[] motifs_map; // Pointeur sur nos graphs
 	private String name;				// Max length should be 12
@@ -63,7 +63,7 @@ public class MotifBank {
 		this.nb_motifs = nb_motifs;
 	}
 
-	public MotifBank() {
+	public TileBank() {
 	}
 	
 	public void charge_motifs(String filename) {

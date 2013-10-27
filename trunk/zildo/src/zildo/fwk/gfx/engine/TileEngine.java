@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.Zildo;
-import zildo.fwk.bank.MotifBank;
+import zildo.fwk.bank.TileBank;
 import zildo.fwk.gfx.primitive.TileGroupPrimitive;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
@@ -96,7 +96,7 @@ public abstract class TileEngine {
 	protected TileGroupPrimitive meshBACK2;
 
 	protected boolean initialized = false;
-	List<MotifBank> motifBanks;
+	List<TileBank> motifBanks;
 	public int texCloudId;
 
 	protected TextureEngine textureEngine;
@@ -128,7 +128,7 @@ public abstract class TileEngine {
 		meshBACK2 = new TileGroupPrimitive(Constantes.NB_MOTIFBANK);
 
 		// Load graphs
-		motifBanks = new ArrayList<MotifBank>();
+		motifBanks = new ArrayList<TileBank>();
 
 		this.loadAllTileBanks();
 
@@ -163,14 +163,14 @@ public abstract class TileEngine {
 	// IN:filename to load as a tile bank
 	// /////////////////////////////////////////////////////////////////////////////////////
 	private void loadTileBank(String filename) {
-		MotifBank motifBank = new MotifBank();
+		TileBank motifBank = new TileBank();
 
 		motifBank.charge_motifs(filename);
 
 		motifBanks.add(motifBank);
 	}
 
-	public MotifBank getMotifBank(int n) {
+	public TileBank getMotifBank(int n) {
 		return motifBanks.get(n);
 	}
 
