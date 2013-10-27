@@ -713,7 +713,7 @@
 	<scene id="enlevementScene" restoreZildo="true">
 	    <music name="Angoisse"/>
 	    <clear/>
-	    <speak who="zildo" text="enlev.p1" />
+	    <speak who="camera" text="enlev.p1" />
 	    <fadeOut type="0"/>
 	    <map name="coucou" />
 	    <pos who="zildo" pos="40,40" />
