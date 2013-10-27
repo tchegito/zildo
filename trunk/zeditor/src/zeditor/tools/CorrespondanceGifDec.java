@@ -19,8 +19,8 @@ import zeditor.tools.banque.Palais3;
 import zeditor.tools.banque.Village;
 import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.GraphChange;
-import zeditor.tools.tiles.MotifBankEdit;
-import zildo.fwk.bank.MotifBank;
+import zeditor.tools.tiles.TileBankEdit;
+import zildo.fwk.bank.TileBank;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.TileCollision;
 import zildo.monde.map.TileInfo;
@@ -75,9 +75,9 @@ public class CorrespondanceGifDec {
 		return bank;
 	}
 	
-	public Image generateImg(MotifBank bank) {
+	public Image generateImg(TileBank bank) {
 		Banque b=getBanque(bank.getName());
-		return new MotifBankEdit(bank, b).generateImg();
+		return new TileBankEdit(bank, b).generateImg();
 	}
 	
 	/**

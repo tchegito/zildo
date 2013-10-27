@@ -74,7 +74,7 @@ public abstract class Banque {
 	 * Save this bank in DEC format.
 	 */
     public void save() {
-    	MotifBankEdit bankEdit=new MotifBankEdit(this);
+    	TileBankEdit bankEdit=new TileBankEdit(this);
     	
     	System.out.println("Processing "+bankEdit.getName()+"...");
     	Iterator<GraphChange> it=getPkmChanges().iterator();
