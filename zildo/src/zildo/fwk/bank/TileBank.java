@@ -79,7 +79,8 @@ public class TileBank {
 		
 		List<Integer> infoCollisions = new ArrayList<Integer>();
 		for (int i=0;i<nb_motifs;i++) {
-			infoCollisions.add((int) motifs_map[motifSize * (i+1) - 1]);
+			int infoColl = motifs_map[motifSize * (i+1) - 1];
+			infoCollisions.add(infoColl);
 		}
 		TileCollision.getInstance().updateInfoCollision(name, infoCollisions);
 	}
