@@ -530,4 +530,15 @@ public class ScriptManagement {
 		}
 		return variables.get(p_varName);
 	}
+	
+	/**
+	 * Returns TRUE if player can save his game.<br/>
+	 * This is forbidden in two cases : when a script is running, and when hero is on a platform.
+	 * @return boolean
+	 */
+	public boolean isAllowedToSave() {
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+		boolean onPlatform = zildo != null && zildo.isOnPlatform();
+		return !isScripting() && !onPlatform;
+	}
 }
