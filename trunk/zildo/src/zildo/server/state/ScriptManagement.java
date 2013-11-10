@@ -151,7 +151,7 @@ public class ScriptManagement {
 			scene.id = MARQUER_SCENE+p_quest.name;
 			scene.locked = p_quest.locked;
 		} else if (p_context != null) {
-			scene.locked = false;	// Unlock when scene is contextual (may be tuned later)
+			scene.locked = false;	// Unlock when scene is contextual (may be tuned later) => that means player can move
 		}
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context);
@@ -401,6 +401,10 @@ public class ScriptManagement {
 			execute(action.actions, true, null, false, context);
 			perso.setAttente(action.duration);
 		}
+	}
+	
+	public void stopPersoAction(Perso perso) {
+		scriptExecutor.stopFromContext(perso);
 	}
 	
 	/**
