@@ -50,7 +50,7 @@ public class InGameMenu extends Menu {
 				@Override
 				public void run() {
 					Menu menu;
-					if (EngineZildo.scriptManagement.isScripting()) {
+					if (!EngineZildo.scriptManagement.isAllowedToSave()) {
 						menu = new InfoMenu("m8.impossible", currentMenu);
 					} else {
 						menu = new SaveGameMenu(false, currentMenu);
