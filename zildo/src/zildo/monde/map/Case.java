@@ -171,6 +171,9 @@ public class Case implements EasySerializable {
 				// FORET3.DEC animation d'eau supplémentaire
 				if (motif>=96 && motif<=104)
 					motif+=(compteur_animation / 20)*3;
+				else if (motif == 211) {
+					motif+=(compteur_animation / 20)%3;
+				}
 				break;
 		}
 	
@@ -306,7 +309,7 @@ public class Case implements EasySerializable {
 	}
 
 	/**
-	 * Get one of the tile from back and back2, which is valued by the given integer.
+	 * Get one of the tile from back,back2 and fore, which is valued by the given integer.
 	 * Returns NULL if none has this value.
 	 * @param val
 	 * @return Tile
@@ -318,6 +321,9 @@ public class Case implements EasySerializable {
 			}
 			if (back2 != null && back2.getValue() == val) {
 				return back2;
+			}
+			if (fore != null && fore.getValue() == val) {
+				return fore;
 			}
 		}
 		return null;
