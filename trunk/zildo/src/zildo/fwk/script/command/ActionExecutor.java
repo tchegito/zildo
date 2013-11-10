@@ -285,7 +285,7 @@ public class ActionExecutor {
                     // If delta, we go smoothly to the target, except if it's explicitly asked to be unblocking
                     achieved = !p_action.delta || p_action.unblock;
                     break;
-                case spawn:	// Spawn a new character
+                case spawn:	// Spawn a new character or element
                 	actionSpawn(p_action, location, false);
                 	achieved = true;
                     break;
