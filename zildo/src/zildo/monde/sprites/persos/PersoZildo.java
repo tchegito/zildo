@@ -389,6 +389,12 @@ public class PersoZildo extends Perso {
 			p_shooter.setAlerte(true);
 		}
 		
+		if (action != null) {
+			action = null;
+			setGhost(false);
+			// If the persoAction is scripted, kill the running scripts
+			EngineZildo.scriptManagement.stopPersoAction(this);
+		}
 		beingWounded(p_shooter, p_damage);
 	}
 

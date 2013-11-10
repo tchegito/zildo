@@ -30,6 +30,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.fwk.script.logic.IEvaluationContext;
+import zildo.fwk.script.logic.SpriteEntityContext;
 import zildo.fwk.script.xml.element.AnyElement;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.SceneElement;
@@ -74,6 +75,10 @@ public class ScriptExecutor {
 	 */
 	public void render() {
 		if (!scripts.isEmpty()) {
+			// 0) Terminate scripts asked by external methods (#stopFromContext for example)
+			for (ScriptProcess process : toTerminate) {
+				terminate(process);
+			}
 			toTerminate.clear();
 			
 			// 1) Render current scripts
@@ -238,5 +243,21 @@ public class ScriptExecutor {
 	
 	public void userEndAction() {
 		userEndedAction=true;
+	}
+	
+	/**
+	 * Stop any scripts whose context is linked to this entity.
+	 * @param entity
+	 */
+	public void stopFromContext(SpriteEntity entity) {
+		for (ScriptProcess sp : scripts) {
+			IEvaluationContext ctx = sp.actionExec.context;
+			if (ctx != null && ctx instanceof SpriteEntityContext) {
+				Perso perso = (Perso) ctx.getActor();
+				if ( perso.getId() == entity.getId()) {
+					toTerminate.add(sp);
+				}
+			}
+		}
 	}
 }
