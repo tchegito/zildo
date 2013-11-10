@@ -40,9 +40,6 @@ import zildo.fwk.ui.PageableMenu;
 import zildo.fwk.ui.UIText;
 import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.Game;
-import zildo.monde.map.Area;
-import zildo.monde.map.Case;
-import zildo.monde.util.Angle;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
