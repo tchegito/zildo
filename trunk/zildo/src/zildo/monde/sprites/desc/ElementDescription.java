@@ -251,8 +251,8 @@ public enum ElementDescription implements SpriteDescription {
 		return damage;
 	}
 
-	public boolean isOutmapAllowed() {
-		return this == HEART_FRAGMENT || this == HEART_FRAGMENT2;
+	public boolean isOutsidemapAllowed() {
+		return this == HEART_FRAGMENT || this == HEART_FRAGMENT2 || isSliping();
 	}
 
 	public String getFoundSentence(String add) {

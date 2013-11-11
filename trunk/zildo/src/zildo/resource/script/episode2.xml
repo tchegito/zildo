@@ -227,7 +227,16 @@
 	        <exec script="moveLeaf"/>
 	    </action>
 	</quest>
-	
+    <quest name="lily2" repeat="true" locked="false">
+		<trigger>
+	    	<location name="igorvillage" mover="leaf"/>
+	    	<use item="sword"/>
+	    </trigger>
+	    <action>
+	        <exec script="moveLeaf"/>
+	    </action>
+	</quest>
+    	
     <quest name="summonLeaf" locked="false">
         <trigger>
             <location name="igorlily"/>

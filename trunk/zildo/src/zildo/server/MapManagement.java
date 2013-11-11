@@ -38,10 +38,12 @@ import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.persos.ia.mover.BasicMoveOrder;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
@@ -244,7 +246,7 @@ public class MapManagement {
 		
 		if (currentMap.isOutside(tx, ty)) {
 			// Detect element out of the map, except for 3 cases : Zildo, ghosts and single pleyer
-			return quelElement != null && !ghost && (!quelElement.isZildo() || EngineZildo.game.multiPlayer);
+			return quelElement != null && !ghost && !quelElement.isOutsidemapAllowed() && (!quelElement.isZildo() || EngineZildo.game.multiPlayer);
 		}
 		Angle angleFlying = null;
 		Point size = new Point(8, 4); // Default size
@@ -349,7 +351,7 @@ public class MapManagement {
 
 			if (currentMap.isOutside(mx, my)) {
 				// Avoid collision on the map's borders
-				return quelElement != null && !quelElement.isZildo() && !ghost;
+				return quelElement != null && !quelElement.isOutsidemapAllowed() && !quelElement.isZildo() && !ghost;
 			}
 
 			// Don't collide if case is bottom less (example: lava tile)
@@ -522,26 +524,39 @@ public class MapManagement {
 			if (chPointTarget == null || isAlongBorder) {
 				// chPointTarget should never be null !
 				// But there is a map (polaky, left border) which fails...
-				Point dest = new Point(zildo.x, zildo.y);
-				zildo.x = (int) zildo.x;
-				zildo.y = (int) zildo.y;
-				if (zildo.getY() > previousDimY * 16 - 16) {
-					zildo.setY(8 - 8);
-					dest.y = (int) zildo.y + 8;
-				} else if (zildo.getY() < 4) {
-					zildo.setY(currentMap.getDim_y() * 16 - 8 + 8);
-					dest.y = (int) zildo.y - 8;
-				} else if (zildo.getX() < 4) {
-					zildo.setX(currentMap.getDim_x() * 16 - 16 + 16);
-					dest.x = (int) zildo.x - 16;
-				} else if (zildo.getX() > previousDimX * 16 - 16) {
-					zildo.setX(8 - 16);
-					dest.x = (int) zildo.x + 16;
+				if (!zildo.isOnPlatform()) {
+					Point dest = new Point(zildo.x, zildo.y);
+					zildo.y = (int) zildo.y;
+					if (zildo.y > previousDimY * 16 - 16) {
+						zildo.setY(8 - 8);
+						dest.y = (int) zildo.y + 8;
+					} else if (zildo.y < 4) {
+						zildo.setY(currentMap.getDim_y() * 16 - 8 + 8);
+						dest.y = (int) zildo.y - 8;
+					} else if (zildo.x < 4) {
+						zildo.setX(currentMap.getDim_x() * 16 - 16 + 16);
+						dest.x = (int) zildo.x - 16;
+					} else if (zildo.x > previousDimX * 16 - 16) {
+						zildo.setX(8 - 16);
+						dest.x = (int) zildo.x + 16;
+					}
+					// Translate everyone but Zildo because we just did it
+					shiftPreviousMap(mapScrollAngle, false);
+					zildo.setTarget(dest);
+				} else {
+					// Translate everybody to the new map reference
+					shiftPreviousMap(mapScrollAngle, true);
+					// Move the platform accordingly
+					Point dest = mapScrollAngle.coords.multiply(16);
+					for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
+						if (entity.getMover().isOnIt(zildo)) {
+							entity.setMover(new BasicMoveOrder((int) (entity.x + dest.x), 
+																(int) (entity.y + dest.y), 1f));
+							entity.setGhost(true);
+						}
+					}
 				}
 				zildo.setGhost(true);
-				zildo.setTarget(dest);
-
-				shiftPreviousMap(mapScrollAngle);
 			} else {
 				zildo.setX(chPointTarget.getPx() * 16 + 16);
 				zildo.setY(chPointTarget.getPy() * 16 + 8);
@@ -612,8 +627,9 @@ public class MapManagement {
 	 * Shift the previous map to the right position, in order to have it
 	 * sticked to the new one. So we calculate the shift coordinates.
 	 * @param p_mapScrollAngle
+	 * @param p_translateZildo TRUE=Zildo will be shifted too
 	 */
-	private void shiftPreviousMap(Angle p_mapScrollAngle) {
+	private void shiftPreviousMap(Angle p_mapScrollAngle, boolean p_translateZildo) {
 		// 
 		Angle angleShift = Angle.rotate(p_mapScrollAngle, 2);
 		Point coords = angleShift.coords;
@@ -629,7 +645,7 @@ public class MapManagement {
 		previousMap.setOffset(offset);
 
 		// And shift all entities (except Zildo) with same offset
-		EngineZildo.spriteManagement.translateEntitiesWithoutZildo(offset);
+		EngineZildo.spriteManagement.translateEntities(offset, p_translateZildo);
 	}
 
 	private int normalizeX(int x) {

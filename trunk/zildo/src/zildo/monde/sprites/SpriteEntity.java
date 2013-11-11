@@ -78,6 +78,8 @@ public class SpriteEntity extends Identified implements Cloneable,
 
 	protected String name;
 	protected Mover mover;	// Allow moving without physics (if NULL => regular movement)
+	protected boolean ghost = false; // TRUE=script control it (here because of Mover things, but
+	// isn't apart the basic structure needed to display on client side
 
 	private EngineFX specialEffect; // Utilisé pour changer la couleur d'un
 									// garde par exemple
@@ -458,9 +460,13 @@ public class SpriteEntity extends Identified implements Cloneable,
 	 * @return boolean
 	 */
 	public boolean isGhost() {
-		return false;
+		return ghost;
 	}
-	
+
+	public void setGhost(boolean p_ghost) {
+		ghost = p_ghost;
+	}
+
 	public Zone getZone() {
 		Zone zone = new Zone(scrX, scrY, sprModel.getTaille_x()*repeatX,
 				sprModel.getTaille_y()*repeatY);
