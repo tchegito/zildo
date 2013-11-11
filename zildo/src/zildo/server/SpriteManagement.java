@@ -808,9 +808,14 @@ public class SpriteManagement extends SpriteStore {
 	    return p_entity.getLinkVertices() != 0 || p_entity.getScrX() + p_entity.getScrY() > 0;
 	}
 	
-	public void translateEntitiesWithoutZildo(Point p_offset) {
+	/**
+	 * Translate every entities with the given offset.
+	 * @param p_offset
+	 * @param p_translateZildo TRUE=Translate Zildo too / FALSE=Don't touch him
+	 */
+	public void translateEntities(Point p_offset, boolean p_translateZildo) {
 	    for (SpriteEntity entity : spriteEntities) {
-	    	if (!entity.clientSpecific && !entity.isZildo()) {
+	    	if (!entity.clientSpecific && (!entity.isZildo() || p_translateZildo)) {
 	    		if (entity.getEntityType().isElement()) {
 	    			Element e=(Element) entity;
 	    			if (e.getLinkedPerso() != null && e.getLinkedPerso().isZildo()) {

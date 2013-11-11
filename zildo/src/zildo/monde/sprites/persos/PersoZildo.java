@@ -392,6 +392,7 @@ public class PersoZildo extends Perso {
 		if (action != null) {
 			action = null;
 			setGhost(false);
+			setAttente(0);
 			// If the persoAction is scripted, kill the running scripts
 			EngineZildo.scriptManagement.stopPersoAction(this);
 		}

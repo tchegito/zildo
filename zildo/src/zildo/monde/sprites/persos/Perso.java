@@ -78,8 +78,8 @@ public abstract class Perso extends Element {
 	protected int cptMouvement; // Un compteur pour les mouvements des PNJ
 	private int coming_map; // 1 si Zildo entre sur une map,sinon 255
 	protected int pv, maxpv; // Points de vie du perso
-	private boolean ghost = false; // TRUE=script control him
-
+	private boolean onPlatform = false;	// TRUE=character is on a platform
+	
 	private int money;
 	protected int countArrow;
 	protected int countBomb;
@@ -529,11 +529,13 @@ public abstract class Perso extends Element {
 					String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
 					TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName(), -1);
 					EngineZildo.scriptManagement.trigger(trigger);
+					onPlatform = true;
 				}
 
 				return true;
-			} else {
+			} else if (onPlatform) {
 				entity.getMover().unlinkEntity(this);
+				onPlatform = false;
 			}
 		}
 		return false;
@@ -548,7 +550,7 @@ public abstract class Perso extends Element {
 	 */
 	public boolean walkTile(boolean p_sound) {
 
-		if (checkPlatformUnder()) {
+		if (isZildo() && checkPlatformUnder()) {	// Only Zildo on platforms, for now
 			// Be careful : 'return' here, means that no trigger could be activated
 			// But it avoid character to die in lava.
 			return false;	// Perso is on a platform
@@ -589,14 +591,14 @@ public abstract class Perso extends Element {
 			diveAndWound();
 		} else {
 			switch (onmap) {
-			case 256 + 22:
+			case 256 + 22: case 256*5 + 214:
 				if (pathFinder.open) {
 					area.writemap(cx, cy, 314);
 					area.writemap(cx + 1, cy, 315);
 					snd = BankSound.OuvrePorte;
 				}
 				break;
-			case 256 + 23:
+			case 256 + 23: case 256*5 + 215:
 				if (pathFinder.open) {
 					area.writemap(cx - 1, cy, 314);
 					area.writemap(cx, cy, 315);
@@ -731,15 +733,6 @@ public abstract class Perso extends Element {
 
 	public void setDialoguingWith(Perso p_dialoguingWith) {
 		this.dialoguingWith = p_dialoguingWith;
-	}
-
-	@Override
-	public boolean isGhost() {
-		return ghost;
-	}
-
-	public void setGhost(boolean ghost) {
-		this.ghost = ghost;
 	}
 
 	public boolean isUnstoppable() {
@@ -991,6 +984,10 @@ public abstract class Perso extends Element {
 	public void setAction(PersoAction p_action) {
 		action = p_action;
 		ghost = true;	// Cancel player movements
+	}
+
+	public boolean isOnPlatform() {
+		return onPlatform;
 	}
 	
 	public boolean isFacing(Perso p_other) {
