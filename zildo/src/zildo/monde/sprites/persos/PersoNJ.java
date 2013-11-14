@@ -486,6 +486,7 @@ public class PersoNJ extends Perso {
 			add_spr = getPos_seqsprite();
 			break;
 		case MOUSTACHU:
+		case FISHER:
 		case HECTOR:
 			reverse = seq2 == 0 ? Reverse.NOTHING : Reverse.HORIZONTAL;
 			switch (angle) {
@@ -629,6 +630,7 @@ public class PersoNJ extends Perso {
 		case FOX:
 		case FALCOR:
 			add_spr = 0;
+		case FISH:
 			break;
 		case FLYINGSERPENT:
 			reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
