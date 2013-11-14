@@ -208,7 +208,9 @@ public class PathFinder {
 				break;
 			default:
 				mobile.setAttente(10 + (int) (Math.random()*20));
-				mobile.tryJump(new Pointf(mobile.x, mobile.y));
+				if (mobile.isGhost()) {
+					mobile.tryJump(new Pointf(mobile.x, mobile.y));
+				}
 				if (nbShock++ >= 3 && !mobile.isGhost()) {
 					target=null;
 					mobile.setAlerte(false);
