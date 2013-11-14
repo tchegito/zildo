@@ -32,6 +32,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoBat;
 import zildo.monde.sprites.persos.PersoFireThing;
+import zildo.monde.sprites.persos.PersoFish;
 import zildo.monde.sprites.persos.PersoFlyingSerpent;
 import zildo.monde.sprites.persos.PersoFox;
 import zildo.monde.sprites.persos.PersoGarde;
@@ -226,6 +227,9 @@ public class PersoManagement {
 				break;
 			case FLYINGSERPENT:
 				perso = new PersoFlyingSerpent();
+				break;
+			case FISH:
+				perso = new PersoFish();
 				break;
 			default:
 				perso = new PersoNJ();

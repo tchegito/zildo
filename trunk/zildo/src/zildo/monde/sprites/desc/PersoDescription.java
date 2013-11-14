@@ -96,6 +96,8 @@ public enum PersoDescription implements SpriteDescription {
 	FALCOR(263, 264, 261, 262, 259, 260, 265), 
 	BRAMBLE(266),
 	FLYINGSERPENT(267, 268, 269),
+	FISHER(270, 271, 272, 273),
+	FISH(274, 275, 276, 277),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
@@ -194,5 +196,9 @@ public enum PersoDescription implements SpriteDescription {
 	@Override
 	public boolean isSliping() {
 		return true;
+	}
+	
+	public boolean isTakable() {
+		return this == CANARD || this == POULE || this == FISH;
 	}
 }
