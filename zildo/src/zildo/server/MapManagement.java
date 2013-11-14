@@ -611,7 +611,9 @@ public class MapManagement {
 			if (zildo.getTarget() != null) {
 				setStartLocation(zildo.getTarget());
 			}
-			EngineZildo.backUpGame();	// Save an automatic backup game to restore if hero dies
+			if (EngineZildo.scriptManagement.isAllowedToSave()) {
+				EngineZildo.backUpGame();	// Save an automatic backup game to restore if hero dies
+			}
 			
 			// Adjust map at Zildo's location
 			if (zildo != null) {
