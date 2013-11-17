@@ -27,10 +27,10 @@ package zeditor.core.prefetch.patch;
  */
 public class CastleLow2 extends AbstractPatch12 {
 
-	byte[] conv_value = 
+	int[] conv_value = 
 	{9, 28, 26, 27, 23, 25, -1, 20, 21, -1, 24, 19, 22, 18, 17, 9}; 
 
-	byte[] value =
+	int[] value =
 	getReverseTab(conv_value, 9);
 
 	public CastleLow2() {
@@ -38,8 +38,7 @@ public class CastleLow2 extends AbstractPatch12 {
 	}
 
 	@Override
-	public
-	int toBinaryValue(int p_val) {
+	public int toBinaryValue(int p_val) {
 		int a = p_val - 256 * 7 - 9;
 		if (a < 0 || a >= value.length) {
 			return 0;

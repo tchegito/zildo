@@ -26,12 +26,12 @@ package zeditor.core.prefetch.patch;
  */
 public class CaveMiddle2 extends AbstractPatch12 {
 
-	byte[] conv_value = 
+	int[] conv_value = 
 	{ 96, 13, 11, 12, 6, 10, -1, 64, 4, -1, 8, 55, 5, 60, 67, 96};
 	/*
 	{ 96, 13, 11, 12, 6, 10, -1, 32, 4, -1, 8, 29, 5, 30, 31, 96};
 	 */
-	byte[] value =
+	int[] value =
 	getReverseTab(conv_value, 4);
 
 	public CaveMiddle2() {

@@ -42,7 +42,9 @@ public enum Prefetch {
 	PalaisHaut(PrefKind.TraceDrop),
 	PalaisBas(PrefKind.TraceDrop),
 	Souterrain(PrefKind.TraceDrop),
-	SouterrainBas(PrefKind.TraceDrop);
+	SouterrainBas(PrefKind.TraceDrop),
+	MaisonIntRouge(PrefKind.TraceDrop),
+	MaisonIntViolet(PrefKind.TraceDrop);
 	
 	PrefKind kind;
 	

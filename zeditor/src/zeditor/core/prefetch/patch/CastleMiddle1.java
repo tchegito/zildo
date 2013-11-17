@@ -3,11 +3,11 @@ package zeditor.core.prefetch.patch;
 
 public class CastleMiddle1 extends AbstractPatch12 {
 
-	final byte[] conv_value =
+	final int[] conv_value =
 	{ 0, 49, 47, 48, 35, 40, 0, 57, 33, 0, 36, 56, 34, 55, 54, 0 };
 
-	final byte[] value =
-	getReverseTab(conv_value, 33);
+	final int[] value =
+		getReverseTab(conv_value, 33);
 
 	public CastleMiddle1() {
 		super(true);

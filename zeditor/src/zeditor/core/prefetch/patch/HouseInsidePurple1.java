@@ -1,7 +1,6 @@
 /**
  * The Land of Alembrum
  * Copyright (C) 2006-2013 Evariste Boussaton
- * 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,22 +23,22 @@ package zeditor.core.prefetch.patch;
  * @author Tchegito
  *
  */
-public class CaveMiddle extends AbstractPatch12 {
+public class HouseInsidePurple1 extends AbstractPatch12 {
 
 	int[] conv_value = 
-	{ 9, 28, 26, 27, 23, 25, -1, 20, 21, -1, 24, 19, 22, 18, 17, 9};
+	{ 34, 29, 31, 30, 27, 28, -1, 245, 25, -1, 32, 246, 26, 247, 248, 34 };
 
 	int[] value =
-	getReverseTab(conv_value, 9);
+		getReverseTab(conv_value, 25);
 
-	public CaveMiddle() {
+	public HouseInsidePurple1() {
 		super(true);
 	}
 
 	@Override
 	public
 	int toBinaryValue(int p_val) {
-		int a = p_val - 256 * 3 - 9;
+		int a = p_val - 256 * 2 - 25;
 		if (a < 0 || a >= value.length) {
 			return 0;
 		}
@@ -49,7 +48,6 @@ public class CaveMiddle extends AbstractPatch12 {
 	@Override
 	public
 	int toGraphicalValue(int p_val) {
-		return conv_value[p_val] + 256 * 3;
+		return conv_value[p_val] + 256 * 2;
 	}
-
 }
