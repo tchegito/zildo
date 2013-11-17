@@ -194,6 +194,9 @@ public class Maison extends Banque {
 				/* Full wall */
 				new Point(80, 192), new Point(80, 208),
 
+				/* Fisherman accessories */
+				new Point(32, 240), new Point(48, 240), new Point(32, 256), new Point(48, 256),
+				/*new Point(48, 224),*/ new Point(64, 224)
 			};
 
 		pkmChanges = Arrays.asList(new GraphChange("interia1", 0, 0));
