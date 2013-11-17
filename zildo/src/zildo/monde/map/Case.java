@@ -236,6 +236,19 @@ public class Case implements EasySerializable {
 		Case mapCase=new Case();
 		int index1 = p_buffer.readUnsignedByte();
 		int bank1 = p_buffer.readUnsignedByte();
+		Tile back = new Tile(bank1&31, index1, mapCase);
+		if ((bank1 & 64) != 0) {
+			int value = p_buffer.readUnsignedByte();
+			if ((value & 3) != 0) {
+				back.reverse = Reverse.values()[value & 3];
+			}
+			if ((value & 15) > 3) {
+				back.rotation = Rotation.values()[(value>>2) & 3];
+			}
+			if (value > 15) {
+				mapCase.setTransition(Angle.fromInt(value >> 4));
+			}
+		}
 		if ((bank1 & 32) != 0) {
 			Tile t = deserializeOneTile(mapCase, p_buffer);
 			mapCase.setBackTile2(t);
@@ -244,19 +257,8 @@ public class Case implements EasySerializable {
 			Tile t = deserializeOneTile(mapCase, p_buffer);
 			mapCase.setForeTile(t);
 		}
-		mapCase.setBackTile(new Tile(bank1&31, index1, mapCase));
-		if ((bank1 & 64) != 0) {
-			int value = p_buffer.readUnsignedByte();
-			if ((value & 3) != 0) {
-				mapCase.getBackTile().reverse = Reverse.values()[value & 3];
-			}
-			if ((value & 15) > 3) {
-				mapCase.getBackTile().rotation = Rotation.values()[(value>>2) & 3];
-			}
-			if (value > 15) {
-				mapCase.setTransition(Angle.fromInt(value >> 4));
-			}
-		}
+		mapCase.setBackTile(back);
+
 
 		return mapCase;
 	}
