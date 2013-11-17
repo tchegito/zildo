@@ -118,26 +118,26 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 	    return bigPatch;
 	}
 	
-	final protected byte[] getReverseTab(byte[] p_tab, int p_startTile) {
-	    MultiMap<Integer, Integer> temp=new MultiMap<Integer, Integer>();
-	    int maxTile=0;
-	    for (int i=0;i<=15;i++) {
-		temp.put((int) p_tab[i], i);
-		maxTile = Math.max(p_tab[i], maxTile);
-	    }
-	    byte[] result = new byte[maxTile - p_startTile + 1];
-	    for (int i=p_startTile;i<=maxTile;i++) {
-		List<Integer> vals = temp.get(i);
-		if (vals != null) {
-        		for (Integer v : vals) {
-        		    result[i-p_startTile] = v.byteValue();
-        		}
-		} else {
-		    result[i-p_startTile] = 0;
+	final protected int[] getReverseTab(int[] p_tab, int p_startTile) {
+		MultiMap<Integer, Integer> temp = new MultiMap<Integer, Integer>();
+		int maxTile = 0;
+		for (int i = 0; i <= 15; i++) {
+			temp.put(p_tab[i], i);
+			maxTile = Math.max(p_tab[i], maxTile);
 		}
-	    }
-	    
-	    return result;
+		int[] result = new int[maxTile - p_startTile + 1];
+		for (int i = p_startTile; i <= maxTile; i++) {
+			List<Integer> vals = temp.get(i);
+			if (vals != null) {
+				for (Integer v : vals) {
+					result[i - p_startTile] = v.byteValue();
+				}
+			} else {
+				result[i - p_startTile] = 0;
+			}
+		}
+
+		return result;
 	}
 	
 	/**

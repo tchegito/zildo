@@ -27,10 +27,10 @@ package zeditor.core.prefetch.patch;
  */
 public class CastleUp extends AbstractPatch12 {
 
-    final byte[] conv_value =
+    final int[] conv_value =
     { 96, 16, 14, 15, 2, 7, -1, 81, 0, -1, 3, 80, 1, 79, 78, -1};
     
-    final byte[] value = // Valeurs en zone des chemins
+    final int[] value = // Valeurs en zone des chemins
 	    getReverseTab(conv_value, 0);
     
 	public CastleUp() {

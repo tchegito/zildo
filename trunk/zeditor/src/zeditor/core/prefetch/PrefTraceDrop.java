@@ -34,6 +34,10 @@ import zeditor.core.prefetch.patch.CaveMiddle2;
 import zeditor.core.prefetch.patch.CaveTop;
 import zeditor.core.prefetch.patch.ForestBorder;
 import zeditor.core.prefetch.patch.HillTop;
+import zeditor.core.prefetch.patch.HouseInsidePurple1;
+import zeditor.core.prefetch.patch.HouseInsidePurple2;
+import zeditor.core.prefetch.patch.HouseInsideRed1;
+import zeditor.core.prefetch.patch.HouseInsideRed2;
 import zeditor.core.prefetch.patch.Road;
 import zeditor.core.prefetch.patch.Water;
 import zildo.monde.util.Point;
@@ -54,7 +58,9 @@ public enum PrefTraceDrop {
 	PalaisBas(new Point(9, 9), new CompositePatch12(new CastleLow(), new CastleMiddle1(), new CastleMiddle2(), new CastleUp())),
 	PalaisHaut(new Point(7, 7), new CompositePatch12(new CastleLow2(), new CastleUp())),
 	Souterrain(new Point(5, 5), new CompositePatch12(new CaveMiddle(), new CaveTop())),
-	SouterrainBas(new Point(9, 9), new CompositePatch12(new CaveFloor(), new CaveLow(), new CaveMiddle2(), new CaveTop()));
+	SouterrainBas(new Point(9, 9), new CompositePatch12(new CaveFloor(), new CaveLow(), new CaveMiddle2(), new CaveTop())),
+	MaisonIntRouge(new Point(5, 5), new CompositePatch12(new HouseInsideRed1(), new HouseInsideRed2())),
+	MaisonIntViolet(new Point(5, 5), new CompositePatch12(new HouseInsidePurple1(), new HouseInsidePurple2()));
 	
 	Point size;
 	TraceDelegateDraw method;
