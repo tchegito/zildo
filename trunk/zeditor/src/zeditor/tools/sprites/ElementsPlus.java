@@ -298,8 +298,10 @@ public class ElementsPlus extends SpriteBanque {
 		        new Zone(72, 153, 49, 32),
 		        // Red projectile (flying serpent)
 		        new Zone(146, 85, 5, 5), new Zone(152, 85, 5, 5), new Zone(158, 85, 5, 5),
-		        new Zone(146, 80, 5, 5), new Zone(152, 80, 5, 5), new Zone(158, 80, 5, 5)
-
+		        new Zone(146, 80, 5, 5), new Zone(152, 80, 5, 5), new Zone(158, 80, 5, 5),
+				// Anchors
+				new Zone(65, 190, 20,22),new Zone(86, 186, 26, 19),
+				new Zone(65, 190, 16, 16) //, new Zone(82, 190, 16, 16),
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 

@@ -251,6 +251,20 @@
         </action>
     </quest>
     
+    <quest name="minsk_fishes">
+        	<trigger>
+        	    <location name="igorv3"/>
+        	    <dialog name="minsk" num="2"/>
+        	</trigger>
+        	<action>
+        	    <actions>
+        	    	<moveTo who="zildo" pos="-16,0" delta="true"/>
+        	    	<moveTo who="minsk" pos="-14,12" delta="true"/>
+        	    </actions>
+        	    <angle who="minsk" value="0"/>
+        	</action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -346,6 +360,10 @@
 		</condition>
 		<condition name="bucherons" exp="attaque_voleurs">
 		    <remove who="garde"/>
+		</condition>
+		<condition name="igorv3" exp="minsk_fishes">
+		    <pos who="minsk" pos="-14,12" delta="true"/>
+		    <angle who="minsk" value="0"/>
 		</condition>
 	</mapScript>
 
