@@ -78,7 +78,7 @@ public class MapDialog {
 		for (int i = 0; i < replique.length; i++) {
 			b.replique[i] = replique[i];
 		}
-		behaviors.put(nomPerso, b);
+		behaviors.put(nomPerso.toLowerCase(), b);
 	}
 
 	public void addBehavior(Behavior p_behav) {

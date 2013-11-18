@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -302,6 +303,14 @@ public class PersoPanel extends JPanel {
 					if (comp == dialogZone) {
 						updatePersoText(txt);
 					} else if (comp == name) {
+						// Update character's behavior (indexed by name ... so if we change name !)
+						MapDialog dialogs = EngineZildo.mapManagement.getCurrentMap().getMapDialog();
+						Map<String, Behavior> behaves = dialogs.getBehaviors();
+						Behavior behave = behaves.get(currentPerso.getName());
+						if (behave != null) {
+							behaves.put(txt, behave);
+							behaves.remove(currentPerso.getName());
+						}
 						currentPerso.setName(txt);
 					} else if (comp == dialogSwitch) {
 						if (!currentPerso.isZildo()) {
