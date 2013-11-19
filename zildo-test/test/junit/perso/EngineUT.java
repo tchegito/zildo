@@ -32,7 +32,7 @@ import org.junit.Before;
 
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
-import zildo.fwk.bank.MotifBank;
+import zildo.fwk.bank.TileBank;
 import zildo.fwk.db.Identified;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.Game;
@@ -140,7 +140,7 @@ public class EngineUT {
 
 		// Tile collision
 		for (String bankName : TileEngine.tileBankNames) {
-			MotifBank motifBank = new MotifBank();
+			TileBank motifBank = new TileBank();
 
 			motifBank.charge_motifs(bankName);
 		}
