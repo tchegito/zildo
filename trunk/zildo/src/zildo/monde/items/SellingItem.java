@@ -1,8 +1,8 @@
 package zildo.monde.items;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
+
+import zildo.fwk.script.model.StringList;
 
 public class SellingItem {
 
@@ -24,11 +24,11 @@ public class SellingItem {
 	/**
 	 * Parse the given string, with removing spaces and end-of-line characters.
 	 * @param entry
-	 * @return List&lt;SellingItem&gt;
+	 * @return StringList&lt;SellingItem&gt;
 	 */
-	public static List<SellingItem> fromString(String entry) {
+	public static StringList<SellingItem> fromString(String entry) {
 		Scanner scan = new Scanner(entry.replace(" ", "").replace("\n", "")).useDelimiter("\\[+|\\]+,*|,");
-		List<SellingItem> items = new ArrayList<SellingItem>();
+		StringList<SellingItem> items = StringList.newOne();
 		
 		while (true) {
 			Item it = Item.fromStrings(scan.next(), scan.next());

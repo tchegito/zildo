@@ -21,6 +21,8 @@ package zildo.fwk.script.command;
 
 import zildo.fwk.script.logic.IEvaluationContext;
 import zildo.fwk.script.xml.element.logic.VarElement;
+import zildo.fwk.script.xml.element.logic.VarElement.ValueType;
+import zildo.monde.items.SellingItem;
 import zildo.server.EngineZildo;
 
 /**
@@ -37,8 +39,13 @@ public class VariableExecutor {
 	public void render(VarElement p_elem) {
 		switch (p_elem.kind) {
 		case var:
-			String result = "" + p_elem.value.evaluate(context);
-			EngineZildo.scriptManagement.getVariables().put(p_elem.name, result);
+			Object objToSave;
+			if (p_elem.typ == ValueType.sellingItems) {
+				objToSave = SellingItem.fromString(p_elem.strValue);
+			} else {
+				objToSave = "" + p_elem.value.evaluate(context);
+			}
+			EngineZildo.scriptManagement.getVariables().put(p_elem.name, objToSave);
 			break;
 		}
 	}
