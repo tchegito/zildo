@@ -34,9 +34,20 @@ public class VarElement extends LanguageElement {
 		var, _if;
 	}
 	
+	public enum ValueType {
+		sellingItems, _float;
+		
+		@Override
+		public String toString() {
+			return this == _float ? "float" : super.toString();
+		}
+	}
+	
 	public VarKind kind;
 	public String name;
 	public FloatExpression value;
+	public String strValue;	// Set only for non-float values
+	public ValueType typ = ValueType._float;
 	
 	@Override
 	public void parse(Element p_elem) {
@@ -44,7 +55,20 @@ public class VarElement extends LanguageElement {
 		
 		kind = VarKind.valueOf(p_elem.getNodeName());
 		name = readAttribute("name");
-		value = new FloatExpression(readAttribute("value"));
+		strValue = readAttribute("value");
+		
+		String typStr = readAttribute("type");
+		if (typStr != null) {
+			typ = ValueType.valueOf(typStr);
+		}
+		switch (typ) {
+		case _float:
+		default:
+			value = new FloatExpression(strValue);
+			break;
+		case sellingItems:
+			break;
+		}
 	}
 
 }

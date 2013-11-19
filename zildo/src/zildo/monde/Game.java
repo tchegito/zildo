@@ -146,9 +146,9 @@ public class Game implements EasySerializable {
         p_buffer.put((byte) a.value);
         
         // 7: variables
-        for (Entry<String, String> entry : EngineZildo.scriptManagement.getVariables().entrySet()) {
+        for (Entry<String, Object> entry : EngineZildo.scriptManagement.getVariables().entrySet()) {
         	p_buffer.put(entry.getKey());
-        	p_buffer.put(entry.getValue());
+        	p_buffer.put(entry.getValue().toString());
         }
         
         // Backup quest state to restore if hero dies

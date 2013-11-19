@@ -1,10 +1,9 @@
 package junit.script;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import zildo.fwk.script.model.StringList;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.items.SellingItem;
@@ -34,7 +33,7 @@ public class CheckSellingItems {
 	public void listeObjetsDeserialize() {
 		String entry = "[[DYNAMITE,8],15,2], [[ROCK_BAG,3],12,7]";
 		
-		List<SellingItem> items = SellingItem.fromString(entry);
+		StringList<SellingItem> items = SellingItem.fromString(entry);
 		
 		Assert.assertSame(2, items.size());
 	}
@@ -48,8 +47,12 @@ public class CheckSellingItems {
 		+"                    [[DYNAMITE, 1], 60, 2]\n"
 		+"                   ";
 		
-		List<SellingItem> items = SellingItem.fromString(entry);
+		StringList<SellingItem> items = SellingItem.fromString(entry);
 		
 		Assert.assertSame(3, items.size());
+		
+		String toStr = items.toString();
+		
+		Assert.assertEquals(toStr, entry.replaceAll(" ", "").replaceAll("\n", ""));
 	}
 }

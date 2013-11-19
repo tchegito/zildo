@@ -70,7 +70,7 @@ public class FloatVariable implements FloatASTNode {
 		} else {
 			// Try global variables
 			if (EngineZildo.scriptManagement != null) {
-				String val = EngineZildo.scriptManagement.getVarValue(variable);
+				String val = EngineZildo.scriptManagement.getStrValue(variable);
 				if (val != null) {
 					return new FloatExpression(val).evaluate(context);
 				}

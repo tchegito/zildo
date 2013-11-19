@@ -43,7 +43,9 @@ public enum ItemKind {
 	SCEPTER(ElementDescription.SCEPTER, 0),
 	MILK(ElementDescription.MILK, 0),
 	NECKLACE(ElementDescription.NECKLACE, 0),
-	ROCK_BAG(ElementDescription.ROCK_BAG, 0);
+	ROCK_BAG(ElementDescription.ROCK_BAG, 0),
+	BAG(ElementDescription.ROCK_BAG, 50),	// TODO: add a real description
+	BLUEDROP(ElementDescription.DROP_FLOOR, 10);
 	
 	public SpriteDescription representation;
 	public int price;
