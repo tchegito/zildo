@@ -38,7 +38,7 @@ public class ElementBomb extends Element {
 		y = p_startY;
 		z = p_startZ;
 		shooter = p_shooter;
-		setSprModel(ElementDescription.BOMB);
+		setSprModel(ElementDescription.DYNAMITE);
 		counter = 120;
 
 		// Add a shadow

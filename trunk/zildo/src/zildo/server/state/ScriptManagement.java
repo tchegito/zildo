@@ -106,7 +106,7 @@ public class ScriptManagement {
         
     	locationTriggerOnMap = new ArrayList<TriggerElement>();
     	
-    	execute("setupPeople", true);
+    	execute("setup", true);
     	
     	planComputeTriggers = false;
     }
@@ -381,7 +381,7 @@ public class ScriptManagement {
 	        switch (p_kind) {
 	        case BOW:
 	        	p_zildo.setCountArrow(p_zildo.getCountArrow() + 5);	// Bow comes with 5 arrows
-	        case BOMB:
+	        case DYNAMITE:
 	        	p_zildo.setCountBomb(p_zildo.getCountBomb() + 5);	// 5 bombs at start
 	        default:
 	        	break;

@@ -1,5 +1,5 @@
 <adventure>
-    <scene id="setupPeople">
+    <scene id="setup">
 	    <nameReplace who="garde,gard1,gard2,gard3,gard4,gard5,gardenord" name="gard"/>
 	    <nameReplace who="vieille,sarah" name="oldLady"/>
 	    <nameReplace who="alcolo,aaaaaaaa,saaaaaaa,zzzsss,zzzzzmzz,bbbbggbg,aaaaaa" name="citizen"/>
@@ -16,5 +16,7 @@
 	    <nameReplace who="falcor" name="???"/>
 	    <nameReplace who="tony" name="bandit"/>
 	    <nameReplace who="emissaire" name="gard"/>
+	    
+	    <var name="BilelIgorVillage" value="[[BAG, 1], 100, 2], [[BLUEDROP, 1], 15, -1], [[DYNAMITE, 1], 60, 2]"/>
     </scene>
 </adventure>

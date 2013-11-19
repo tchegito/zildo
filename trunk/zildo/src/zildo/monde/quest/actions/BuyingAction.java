@@ -61,7 +61,7 @@ public class BuyingAction extends ActionDialog {
 		
 		List<Item> items=new ArrayList<Item>();
 		items.add(new Item(ItemKind.BOOMERANG, 2));
-		items.add(new Item(ItemKind.BOMB, 0));
+		items.add(new Item(ItemKind.DYNAMITE, 0));
 		items.add(new Item(ItemKind.FLASK_RED, 0));
 		items.add(new Item(ItemKind.BOW, 0));
 		items.add(new Item(ItemKind.GLOVE, 0));

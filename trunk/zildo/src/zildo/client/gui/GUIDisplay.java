@@ -834,7 +834,7 @@ public class GUIDisplay {
 		displayNumber(countMoney, 3, 87, GUI_Y);
 
 		// Bombs
-		if (zildo.hasItem(ItemKind.BOMB)) {
+		if (zildo.hasItem(ItemKind.DYNAMITE)) {
 			guiSpritesSequence.addSprite(FontDescription.GUI_BOMB, 136, GUI_Y - 2);
 			displayNumber(zildo.getCountBomb(), 2, 126, GUI_Y);
 		}

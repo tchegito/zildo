@@ -163,7 +163,7 @@ public class ItemCircle {
 				if (describe) {
 					Item item = items.get(itemSelected);
 					ClientState clState = Server.getClientFromZildo(client);
-					EngineZildo.dialogManagement.getQueue().add(new WaitingDialog(item.toString(), CommandDialog.BUYING, false, clState == null ? null : clState.location));
+					EngineZildo.dialogManagement.getQueue().add(new WaitingDialog(item.getName(), CommandDialog.BUYING, false, clState == null ? null : clState.location));
 				}
 			}
 			break;
