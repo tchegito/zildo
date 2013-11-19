@@ -67,7 +67,7 @@ import zildo.server.state.ClientState;
 
 public class SpriteManagement extends SpriteStore {
 
-	EnumSet<ElementDescription> pickableSprites = EnumSet.of(ElementDescription.BOMB);
+	EnumSet<ElementDescription> pickableSprites = EnumSet.of(ElementDescription.DYNAMITE);
 	
 	boolean spriteUpdating;	// TRUE=new sprites are added to SpriteEntitiesToAdd / FALSE=regular list
 

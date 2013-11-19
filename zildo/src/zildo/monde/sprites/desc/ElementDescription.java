@@ -58,7 +58,7 @@ public enum ElementDescription implements SpriteDescription {
 	// 103
 	REDBALL1, REDBALL2, REDBALL3,
 	// 106
-	BOMB, EXPLO1, EXPLO2, EXPLO3, EXPLOSMOKE1, EXPLOSMOKE2, EXPLOSMOKE3,
+	DYNAMITE, EXPLO1, EXPLO2, EXPLO3, EXPLOSMOKE1, EXPLOSMOKE2, EXPLOSMOKE3,
 
 	// 113, 114
 	FLUT, SWORD,
@@ -137,7 +137,7 @@ public enum ElementDescription implements SpriteDescription {
 	}
 
 	public boolean isWeapon() {
-		return this == SWORD || this == ENEMYARC_RIGHT1 || this == BOMB
+		return this == SWORD || this == ENEMYARC_RIGHT1 || this == DYNAMITE
 				|| this == BOOMERANG1 || this == ROCK_BAG;
 	}
 
@@ -153,8 +153,8 @@ public enum ElementDescription implements SpriteDescription {
 			return ItemKind.SWORD;
 		case ENEMYARC_RIGHT1:
 			return ItemKind.BOW;
-		case BOMB:
-			return ItemKind.BOMB;
+		case DYNAMITE:
+			return ItemKind.DYNAMITE;
 		case BOOMERANG1:
 			return ItemKind.BOOMERANG;
 		case NECKLACE:
@@ -239,7 +239,7 @@ public enum ElementDescription implements SpriteDescription {
 				case ARROW_DOWN:
 				case ARROW_RIGHT:
 				case ARROW_LEFT:
-				case BOMB:
+				case DYNAMITE:
 				case STAFF_POUM:
 				case BIG_FIRE_BALL:
 				case PEEBLE:
@@ -283,7 +283,7 @@ public enum ElementDescription implements SpriteDescription {
 		case CUBE_BLUE: case CUBE_ORANGE:
 		case ARROW_UP: case ARROW_RIGHT: case ARROW_DOWN: case ARROW_LEFT:
 		case BOOMERANG1: case BOOMERANG2: case BOOMERANG3: case BOOMERANG4:
-		case BOMB: case BOMBS3:
+		case DYNAMITE: case BOMBS3:
 		case KEY: case STAFF_POUM: case BIG_FIRE_BALL:
 		case HEART_FRAGMENT: case NOTE: case NOTE2:
 		case PEEBLE: case ZZZ1: case ZZZ2:

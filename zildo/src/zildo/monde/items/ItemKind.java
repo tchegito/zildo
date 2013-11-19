@@ -31,7 +31,7 @@ public enum ItemKind {
 	BOOMERANG(ElementDescription.BOOMERANG1, 40), 
 	WHIP(ElementDescription.BAR_HORIZONTAL, 50), 
 	BOW(ElementDescription.ENEMYARC_RIGHT1, 40),
-	BOMB(ElementDescription.BOMB, 10),
+	DYNAMITE(ElementDescription.DYNAMITE, 10),
 	HAMMER(ElementDescription.SPADE, 10),	// TODO: replace by 'HAMMER' description
 	FLUT(ElementDescription.FLUT, 1),
 	GLOVE(ElementDescription.GLOVE, 20),

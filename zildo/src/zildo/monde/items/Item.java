@@ -20,6 +20,8 @@
 
 package zildo.monde.items;
 
+import zildo.fwk.ui.UIText;
+
 public class Item {
 
 	public ItemKind kind;
@@ -49,11 +51,22 @@ public class Item {
 		return kind.price * (level + 1);
 	}
 
+	public String getName() {
+		String s = kind.getName();
+		s += "\n" + getPrice() + " "+UIText.getGameText("money");
+		return s;
+	}
+	
 	@Override
 	public String toString() {
-		String s = kind.getName().toLowerCase();
-		s = s.substring(0, 1).toUpperCase() + s.substring(1);
-		s += "\n" + getPrice() + " rupees";
-		return s;
+		return "["+kind.toString()+","+level+"]";
+	}
+	
+	public static Item fromStrings(String entry1, String entry2) {
+		Item item = new Item(
+				ItemKind.fromString(entry1)
+				,Integer.valueOf(entry2)
+		);
+		return item;
 	}
 }

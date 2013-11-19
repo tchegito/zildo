@@ -242,7 +242,7 @@ public class PersoZildo extends Perso {
 				setAttente(16);
 			}
 			break;
-		case BOMB:
+		case DYNAMITE:
 			if (attente == 0) {
 				if (countBomb > 0) {
 					Element bomb = new ElementBomb((int) x, (int) y, 0, this);

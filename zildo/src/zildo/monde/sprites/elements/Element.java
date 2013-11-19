@@ -517,7 +517,7 @@ public class Element extends SpriteEntity {
 						SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, 0, null, null);
 				EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
 				break;
-			case BOMB:
+			case DYNAMITE:
 				break;
 			case PEEBLE:
 				// Floor or lava ?
