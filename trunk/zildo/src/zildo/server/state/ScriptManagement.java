@@ -72,7 +72,7 @@ public class ScriptManagement {
     
     final Map<String, QuestElement> questsByName;
     
-    final Map<String, Object> variables;
+    final Map<String, String> variables;
     
     // 'LOCATION' trigs for specific location on the current map
     final List<TriggerElement> locationTriggerOnMap;	
@@ -102,7 +102,7 @@ public class ScriptManagement {
         	questsByName.put(quest.name, quest);
         }
         
-        variables = new HashMap<String, Object>();
+        variables = new HashMap<String, String>();
         
     	locationTriggerOnMap = new ArrayList<TriggerElement>();
     	
@@ -524,16 +524,15 @@ public class ScriptManagement {
 		return (zildo != null && zildo.hasItem(ItemKind.NECKLACE));
 	}
 	
-	public Map<String, Object> getVariables() {
+	public Map<String, String> getVariables() {
 		return variables;
 	}
 	
-	public String getStrValue(String p_varName) {
+	public String getVarValue(String p_varName) {
 		if (variables == null || variables.size() == 0) {
 			return null;
 		}
-		Object o = variables.get(p_varName);
-		return o == null ? null : o.toString();
+		return variables.get(p_varName);
 	}
 	
 	/**
