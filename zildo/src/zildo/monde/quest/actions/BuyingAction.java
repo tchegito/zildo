@@ -23,11 +23,14 @@ package zildo.monde.quest.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.fwk.script.model.StringList;
 import zildo.monde.dialog.ActionDialog;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.items.SellingItem;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.server.EngineZildo;
 import zildo.server.state.ClientState;
 
 /**
@@ -39,6 +42,7 @@ public class BuyingAction extends ActionDialog {
 
 	PersoZildo zildo;
 	Perso seller;
+	StringList<SellingItem> sellingItems;
 	
 	/**
 	 * @param p_text
@@ -47,10 +51,12 @@ public class BuyingAction extends ActionDialog {
 		super(p_text);
 	}
 
-	public BuyingAction(PersoZildo p_zildo, Perso p_seller) {
+	public BuyingAction(PersoZildo p_zildo, Perso p_seller, String sellDescription) {
 		super(null);
 		zildo = p_zildo;
 		seller = p_seller;
+		String itemsAsString = EngineZildo.scriptManagement.getVarValue(sellDescription);
+		sellingItems = SellingItem.fromString(itemsAsString); 
 	}
 	
 	@Override
@@ -60,12 +66,10 @@ public class BuyingAction extends ActionDialog {
 		seller.setDialoguingWith(zildo);
 		
 		List<Item> items=new ArrayList<Item>();
-		items.add(new Item(ItemKind.BOOMERANG, 2));
-		items.add(new Item(ItemKind.DYNAMITE, 0));
-		items.add(new Item(ItemKind.FLASK_RED, 0));
-		items.add(new Item(ItemKind.BOW, 0));
-		items.add(new Item(ItemKind.GLOVE, 0));
-		items.add(new Item(ItemKind.GLOVE_IRON, 0));
+		for (int i=0;i<sellingItems.size();i++) {
+			SellingItem sItem = sellingItems.get(i);
+			items.add(sItem.item);
+		}
 		zildo.lookItems(items, 0, seller, true);
 		
 		p_clientState.dialogState.dialoguing=true;

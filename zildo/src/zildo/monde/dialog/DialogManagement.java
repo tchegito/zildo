@@ -127,8 +127,7 @@ public class DialogManagement {
 	 */
 	private WaitingDialog createWaitingDialog(ClientState p_client,
 			Perso persoToTalk) {
-		MapDialog dialogs = EngineZildo.mapManagement.getCurrentMap()
-				.getMapDialog();
+		MapDialog dialogs = EngineZildo.mapManagement.getCurrentMap().getMapDialog();
 		String sentence = null;
 		currentSentenceFullDisplayed = false;
 
@@ -137,8 +136,7 @@ public class DialogManagement {
 			Behavior behav = dialogs.getBehaviors().get(persoToTalk.getName());
 			if (behav == null) {
 				// This perso can't talk, but trigger this although
-				TriggerElement trig = TriggerElement.createDialogTrigger(
-						persoToTalk.getName(), 1);
+				TriggerElement trig = TriggerElement.createDialogTrigger(persoToTalk.getName(), 1);
 				EngineZildo.scriptManagement.trigger(trig);
 				return null;
 			}
@@ -146,8 +144,7 @@ public class DialogManagement {
 
 			// Dialog switch : adjust sentence according to quest elements
 			if (persoToTalk.getDialogSwitch() != null) {
-				ZSSwitch swi = ZSSwitch.parseForDialog(persoToTalk
-						.getDialogSwitch());
+				ZSSwitch swi = ZSSwitch.parseForDialog(persoToTalk.getDialogSwitch());
 				int posSentence = swi.evaluateInt();
 				if (posSentence > compteDial) {
 					compteDial = posSentence;
@@ -159,25 +156,23 @@ public class DialogManagement {
 
 			// Update perso about next sentence he(she) will say
 			int posSharp = sentence.indexOf("#");
-			int posDollar = sentence.indexOf("$");
+			int posDollar = sentence.indexOf("$sell(");
 			if (posSharp != -1) {
 				// La phrase demande explicitement de rediriger vers une autre
-				persoToTalk
-						.setCompte_dialogue(sentence.charAt(posSharp + 1) - 48);
+				persoToTalk.setCompte_dialogue(sentence.charAt(posSharp + 1) - 48);
 				sentence = sentence.substring(0, posSharp);
 			} else if (posDollar != -1) {
 				// This sentence leads to a buying phase
 				sentence = sentence.substring(0, posDollar);
-				p_client.dialogState.actionDialog = new BuyingAction(
-						p_client.zildo, persoToTalk);
+				String sellDescription = sentence.substring(posDollar+5, sentence.indexOf(")"));
+				p_client.dialogState.actionDialog = new BuyingAction(p_client.zildo, persoToTalk, sellDescription);
 			} else if (behav.replique[compteDial + 1] != 0) {
 				// On passe à la suivante, puisqu'elle existe
 				persoToTalk.setCompte_dialogue(compteDial + 1);
 			}
 
 			// Adventure trigger
-			TriggerElement trig = TriggerElement.createDialogTrigger(
-					persoToTalk.getName(), compteDial);
+			TriggerElement trig = TriggerElement.createDialogTrigger(persoToTalk.getName(), compteDial);
 			EngineZildo.scriptManagement.trigger(trig);
 
 			// Set the dialoguing states for each Perso
