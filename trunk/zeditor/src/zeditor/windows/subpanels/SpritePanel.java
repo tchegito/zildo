@@ -337,9 +337,7 @@ public class SpritePanel extends JPanel {
 
 	
 	private void updateText(DocumentEvent e) {
-		if (!updatingUI) {
-			Component comp = KeyboardFocusManager
-					.getCurrentKeyboardFocusManager().getFocusOwner();
+		if (!updatingUI && entity != null) {
 			Document doc = e.getDocument();
 			try {
 				String txt = doc.getText(0, doc.getLength());
