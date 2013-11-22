@@ -636,6 +636,13 @@ public class PersoNJ extends Perso {
 			reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
 			add_spr = (getPos_seqsprite() % (6 * Constantes.speed)) / (2 * Constantes.speed);
 			break;
+		case IGOR:
+			add_spr = (angle.value * 3); reverse = Reverse.NOTHING;
+			if (angle == Angle.OUEST) {
+				add_spr =3; reverse = Reverse.HORIZONTAL;
+			}
+			add_spr += seqp[(pos_seqsprite % (12 * Constantes.speed)) / (3 * Constantes.speed)];  
+			break;
 		default:
 			add_spr = angle.value * 2 + (getPos_seqsprite() % (4 * Constantes.speed)) / (2 * Constantes.speed);
 			break;
