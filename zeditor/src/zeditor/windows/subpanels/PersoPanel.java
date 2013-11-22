@@ -294,7 +294,7 @@ public class PersoPanel extends JPanel {
 		}
 
 		private void updateText(DocumentEvent p_event) {
-			if (!updatingUI) {
+			if (!updatingUI && currentPerso != null) {
 				Component comp = KeyboardFocusManager
 						.getCurrentKeyboardFocusManager().getFocusOwner();
 				Document doc = p_event.getDocument();
