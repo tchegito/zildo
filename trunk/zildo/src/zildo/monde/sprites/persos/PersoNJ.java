@@ -661,6 +661,7 @@ public class PersoNJ extends Perso {
 
 		case SOFIASKY:
 		case FERMIERE:
+		case LOUISE:
 			reverse = Reverse.NOTHING;
 			if (add_spr >= 6) {
 				add_spr -= 4;
