@@ -879,9 +879,8 @@ public class PersoZildo extends Perso {
 	 */
 	public boolean pickGoodies(Element p_element, int p_money) {
 		// Effect on perso
-		int money = this.getMoney();
 		if (p_money != 0) { // Zildo gets some money
-			setMoney(money + p_money);
+			money += p_money;
 			if (p_money > 0) {
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupItem, this);
 			} else {
@@ -895,81 +894,87 @@ public class PersoZildo extends Perso {
 				return false;
 			} else {
 				// Automatic behavior (presentation text, ammos adjustments)
-				BankSound toPlay = null;
-
 				EngineZildo.scriptManagement.automaticBehavior(this, null, d);
-				switch (d) {
-				case GOLDCOIN1:
-					setMoney(money + 1);
-					break;
-				case THREEGOLDCOINS1:
-					setMoney(money + 3);
-					break;
-				case GOLDPURSE1:
-					setMoney(money + 20);
-					break;
-				case DROP_FLOOR:
-				case DROP_SMALL:
-				case DROP_MEDIUM:
-					if (pv < maxpv) {
-						pv = Math.min(pv+2, maxpv);
-						// Blue energy animation 
-						ElementImpact energy = new ElementImpact((int) x, (int) y, ImpactKind.DROP_ENERGY, this);
-						EngineZildo.spriteManagement.spawnSprite(energy);
-						toPlay = BankSound.ZildoRecupCoeur;
-					} else {
-						toPlay = BankSound.ZildoRecupItem;
-					}
-					break;
-				case ARROW_UP:
-					countArrow += 5;
-					break;
-				case QUAD1:
-					quadDuration = MultiplayerManagement.QUAD_TIME_DURATION;
-					EngineZildo.multiplayerManagement.pickUpQuad();
-					break;
-				case BOMBS3:
-					countBomb += 3;
-					break;
-				case KEY:
-					countKey++;
-					break;
-				}
-				// Sound
-				switch (d) {
-				/*
-				case GREENMONEY1:
-				case BLUEMONEY1:
-				case REDMONEY1:
-					toPlay = BankSound.ZildoItem;
-					break;
-					*/
-				case QUAD1:
-					toPlay = BankSound.QuadDamage;
-					break;
-				case KEY:
-					toPlay = BankSound.ZildoKey;
-					break;
-				case HEART_FRAGMENT:
-					toPlay = BankSound.ZildoMoon;
-					moonHalf++;
-					break;
-				case DROP_FLOOR:
-				case DROP_SMALL:
-				case DROP_MEDIUM:
-					break;	// Already done
-				default:
-					toPlay = BankSound.ZildoRecupItem;
-					break;
-				}
-				if (toPlay != null) {	// Isn't it obvious ?
-					EngineZildo.soundManagement.broadcastSound(toPlay, this);
-				}
+
+				useItem(d);
 			}
 		}
 		return true;
 	}
 
+	private void useItem(ElementDescription d) {
+		BankSound toPlay = null;
+		switch (d) {
+		case GOLDCOIN1:
+			money ++;
+			break;
+		case THREEGOLDCOINS1:
+			money += 3;
+			break;
+		case GOLDPURSE1:
+			money += 20;
+			break;
+		case DROP_FLOOR:
+		case DROP_SMALL:
+		case DROP_MEDIUM:
+			if (pv < maxpv) {
+				pv = Math.min(pv+2, maxpv);
+				// Blue energy animation 
+				ElementImpact energy = new ElementImpact((int) x, (int) y, ImpactKind.DROP_ENERGY, this);
+				EngineZildo.spriteManagement.spawnSprite(energy);
+				toPlay = BankSound.ZildoRecupCoeur;
+			} else {
+				toPlay = BankSound.ZildoRecupItem;
+			}
+			break;
+		case ARROW_UP:
+			countArrow += 5;
+			break;
+		case QUAD1:
+			quadDuration = MultiplayerManagement.QUAD_TIME_DURATION;
+			EngineZildo.multiplayerManagement.pickUpQuad();
+			break;
+		case DYNAMITE:
+			countBomb ++;
+			break;
+		case BOMBS3:
+			countBomb += 3;
+			break;
+		case KEY:
+			countKey++;
+			break;
+		}
+		// Sound
+		switch (d) {
+		/*
+		case GREENMONEY1:
+		case BLUEMONEY1:
+		case REDMONEY1:
+			toPlay = BankSound.ZildoItem;
+			break;
+			*/
+		case QUAD1:
+			toPlay = BankSound.QuadDamage;
+			break;
+		case KEY:
+			toPlay = BankSound.ZildoKey;
+			break;
+		case HEART_FRAGMENT:
+			toPlay = BankSound.ZildoMoon;
+			moonHalf++;
+			break;
+		case DROP_FLOOR:
+		case DROP_SMALL:
+		case DROP_MEDIUM:
+			break;	// Already done
+		default:
+			toPlay = BankSound.ZildoRecupItem;
+			break;
+		}
+		if (toPlay != null) {	// Isn't it obvious ?
+			EngineZildo.soundManagement.broadcastSound(toPlay, this);
+		}		
+	}
 	/**
 	 * Zildo picks something up (bushes, hen...) Object can be already on the
 	 * map (hen), or we can spawn it there (bushes, jar).
@@ -1083,7 +1088,7 @@ public class PersoZildo extends Perso {
 	 */
 	public void buyItem() {
 		Item item = guiCircle.getItemSelected();
-		int remains = getMoney() - item.getPrice();
+		int remains = money - item.getPrice();
 		if (remains < 0) {
 			// Not enough money
 			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
@@ -1091,8 +1096,16 @@ public class PersoZildo extends Perso {
 			// Too much items
 			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
 		} else {
-			setMoney(getMoney() - item.getPrice());
-			inventory.add(item);
+			money -= item.getPrice();
+			SpriteDescription d = item.kind.representation;
+			if (item.kind.canBeInInventory()) {
+				inventory.add(item);
+			}
+			// Be sure that description is instance of ElementDescription, but more for runtime reason
+			// In fact, that must never happen.
+			if (d instanceof ElementDescription) {
+				useItem((ElementDescription) d);
+			}
 			EngineZildo.soundManagement.playSound(BankSound.ZildoGagneArgent, this);
 		}
 	}

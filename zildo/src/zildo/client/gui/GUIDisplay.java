@@ -75,14 +75,14 @@ import zildo.server.state.PlayerState;
 public class GUIDisplay {
 
 	public enum DialogMode {
-		CLASSIC, MENU, CREDITS, HALLOFFAME, INFO;
+		CLASSIC, MENU, CREDITS, HALLOFFAME, INFO, BUY;
 		
 		public boolean isScript() {
 			return true; //this == CLASSIC || this == CREDITS;
 		}
 		
 		public boolean isBig() {
-			return this == MENU || this == INFO;
+			return this == MENU || this == INFO || this == BUY;
 		}
 		
 		public boolean isMenu() {
@@ -355,9 +355,10 @@ public class GUIDisplay {
 			break;
 		case MENU:
 		case HALLOFFAME:
+			seq = textMenuSequence;
+		case BUY:
 			visibleFont = true;
 			center = true;
-			seq = textMenuSequence;
 			break;
 		case CREDITS:
 			center = true;

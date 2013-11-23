@@ -80,7 +80,7 @@ public abstract class Perso extends Element {
 	protected int pv, maxpv; // Points de vie du perso
 	private boolean onPlatform = false;	// TRUE=character is on a platform
 	
-	private int money;
+	protected int money;
 	protected int countArrow;
 	protected int countBomb;
 	protected int countKey; // How many keys have perso ? (for PNJ, he gives it
