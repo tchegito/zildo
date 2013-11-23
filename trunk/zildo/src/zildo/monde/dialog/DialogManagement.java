@@ -163,8 +163,8 @@ public class DialogManagement {
 				sentence = sentence.substring(0, posSharp);
 			} else if (posDollar != -1) {
 				// This sentence leads to a buying phase
+				String sellDescription = sentence.substring(posDollar+6, sentence.indexOf(")"));
 				sentence = sentence.substring(0, posDollar);
-				String sellDescription = sentence.substring(posDollar+5, sentence.indexOf(")"));
 				p_client.dialogState.actionDialog = new BuyingAction(p_client.zildo, persoToTalk, sellDescription);
 			} else if (behav.replique[compteDial + 1] != 0) {
 				// On passe à la suivante, puisqu'elle existe

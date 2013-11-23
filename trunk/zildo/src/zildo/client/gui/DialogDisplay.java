@@ -103,7 +103,7 @@ public class DialogDisplay {
 		DialogMode displayMode = DialogMode.CLASSIC;
 		if (p_dialAction == CommandDialog.BUYING) {
 			// Hero is looking items in a store : so display sentence centered and directly
-			displayMode = DialogMode.MENU;
+			displayMode = DialogMode.BUY;
 		}
 
 		context.setSentence(p_sentence.replaceAll("[@|$]", ""));

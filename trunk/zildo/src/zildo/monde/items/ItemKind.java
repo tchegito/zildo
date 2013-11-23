@@ -75,4 +75,9 @@ public enum ItemKind {
     	}
     	return label;
 	}
+	
+	/** Returns TRUE if we should call 'useItem()' when hero buys it **/
+	public boolean canBeInInventory() {
+		return this != BLUEDROP;
+	}
 }
