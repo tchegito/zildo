@@ -300,4 +300,8 @@ public enum ElementDescription implements SpriteDescription {
 	public boolean isSliping() {
 		return this == WATER_LEAF;
 	}
+	
+	static public boolean isPlatform(SpriteDescription desc) {
+		return desc == WATER_LEAF || desc == PLATFORM;
+	}
 }

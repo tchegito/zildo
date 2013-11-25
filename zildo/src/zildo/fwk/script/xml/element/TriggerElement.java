@@ -56,6 +56,8 @@ public class TriggerElement extends AnyElement {
 	int tileValue;
 	ItemKind item;
 	
+	List<String> mapNames = null;
+	
 	
 	enum Gear {	// Type of mechanism (for LOCATION trigger only)
 		BUTTON,	// Button can be pressed
@@ -93,6 +95,12 @@ public class TriggerElement extends AnyElement {
 			numSentence = Integer.valueOf(p_elem.getAttribute("num"));
 		case LOCATION:
 			name = readAttribute("name");
+			if (name.contains("|")) {
+				// Particular case : many maps to fire the trigger
+				mapNames = new ArrayList<String>();
+				mapNames.addAll(Arrays.asList(name.split("\\|")));
+				name = null;
+			}
 			mover = readAttribute("mover");
 			radius = readInt("radius");
 			String gear = readAttribute("gear");
@@ -159,7 +167,7 @@ public class TriggerElement extends AnyElement {
 			}
 			break;
 		case LOCATION:
-			if (p_another.name.equals(name)) {
+			if (mapNameMatch(p_another.name)) {
 				if (p_another.location == null && tileValue == -1 && mover == null && location == null && tileLocation == null) {
 					return true;
 				} else if (tileValue != -1) {
@@ -231,7 +239,7 @@ public class TriggerElement extends AnyElement {
 			return zildo != null && zildo.hasItem(ItemKind.fromString(name)) == !not;
 		case LOCATION:
 			Area map = EngineZildo.mapManagement.getCurrentMap();
-			if (map != null && !isLocationSpecific() && name.equals(EngineZildo.mapManagement.getCurrentMap().getName())) {
+			if (map != null && !isLocationSpecific() && mapNameMatch(EngineZildo.mapManagement.getCurrentMap().getName())) {
 				// Mover ?
 				boolean ok = true;
 				if (mover != null) {
@@ -363,6 +371,14 @@ public class TriggerElement extends AnyElement {
 		return name;
 	}
 
+	public boolean mapNameMatch(String p_name) {
+		if (name != null) {
+			return name.equals(p_name);
+		} else {
+			return mapNames.contains(p_name);
+		}
+	}
+	
 	public void reset() {
 		// Set all fields like it was at the beginning
 		parse(xmlElement);

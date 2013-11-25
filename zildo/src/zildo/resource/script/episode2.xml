@@ -217,26 +217,32 @@
 	        <location name="voleursm4b" tilePos="3,11" gear="BUTTON"/>
 	    </trigger>
 	</quest>
-    
+    <!-- 420,282 -->
     <quest name="lily" repeat="true" locked="false">
 		<trigger>
-	    	<location name="igorlily" mover="leaf"/>
+	    	<location name="igorlily|igorvillage" mover="leaf"/>
 	    	<use item="sword"/>
 	    </trigger>
 	    <action>
 	        <exec script="moveLeaf"/>
 	    </action>
 	</quest>
-    <quest name="lily2" repeat="true" locked="false">
-		<trigger>
-	    	<location name="igorvillage" mover="leaf"/>
-	    	<use item="sword"/>
-	    </trigger>
-	    <action>
-	        <exec script="moveLeaf"/>
-	    </action>
-	</quest>
-    	
+
+    <quest name="summonLeafVillage" locked="false">
+        <trigger>
+            <location name="igorvillage" pos="420,282" radius="5"/>
+            <use item="flut"/>
+        </trigger>
+        <action>
+            <wait value="80"/>
+            <spawn what="leaf" type="WATER_LEAF" pos="170,382"/>
+            <sound name="SlipWater1"/>
+            <moveTo what="leaf" pos="407,386"/>
+            <sound name="SlipWater2"/>
+            <!-- 415,351 -->
+            <moveTo what="leaf" way="physic" pos="10,-18" speed="0.5"/>
+        </action>
+    </quest>	
     <quest name="summonLeaf" locked="false">
         <trigger>
             <location name="igorlily"/>
@@ -252,17 +258,17 @@
     </quest>
     
     <quest name="minsk_fishes">
-        	<trigger>
-        	    <location name="igorv3"/>
-        	    <dialog name="minsk" num="2"/>
-        	</trigger>
-        	<action>
-        	    <actions>
-        	    	<moveTo who="zildo" pos="-16,0" delta="true"/>
-        	    	<moveTo who="minsk" pos="-14,12" delta="true"/>
-        	    </actions>
-        	    <angle who="minsk" value="0"/>
-        	</action>
+       	<trigger>
+       	    <location name="igorv3"/>
+       	    <dialog name="minsk" num="2"/>
+       	</trigger>
+       	<action>
+       	    <actions>
+       	    	<moveTo who="zildo" pos="-16,0" delta="true"/>
+       	    	<moveTo who="minsk" pos="-14,12" delta="true"/>
+       	    </actions>
+       	    <angle who="minsk" value="0"/>
+       	</action>
     </quest>
     
     <mapScript>
@@ -364,6 +370,9 @@
 		<condition name="igorv3" exp="minsk_fishes">
 		    <pos who="minsk" pos="-14,12" delta="true"/>
 		    <angle who="minsk" value="0"/>
+		</condition>
+		<condition name="igorvillage">
+		    <markQuest name="summonLeafVillage" value="0"/>
 		</condition>
 	</mapScript>
 

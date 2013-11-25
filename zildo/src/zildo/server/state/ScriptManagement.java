@@ -116,6 +116,7 @@ public class ScriptManagement {
     	
     	if (planComputeTriggers) {
     		computeTriggers();
+    		planComputeTriggers = false;
     	}
     }
     
@@ -251,7 +252,7 @@ public class ScriptManagement {
     		if (!quest.done) {
     			// For each quest undone yet :
     			for (TriggerElement trig : quest.getTriggers()) {
-    				if (trig.isLocationSpecific() && p_mapName.equals(trig.getName())) {
+    				if (trig.isLocationSpecific() && trig.mapNameMatch(p_mapName)) {
     					locationTriggerOnMap.add(trig);
     				}
     			}
