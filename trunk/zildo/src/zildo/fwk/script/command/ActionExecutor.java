@@ -665,40 +665,51 @@ public class ActionExecutor {
         		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
         		Reverse rev = Reverse.fromInt(p_action.reverse);
         		Rotation rot = Rotation.fromInt(p_action.rotation);
-        		elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0, rev, rot);
-        		elem.setName(p_action.what);
+        		SpriteEntity entity = null;
+        		elem = null;
+        		if (ElementDescription.isPlatform(desc)) {
+        			entity = EngineZildo.spriteManagement.spawnSprite(desc, location.x, location.y, Boolean.TRUE == p_action.foreground, rev, false);
+            		if (entity.getEntityType().isElement()) {
+            			elem = (Element) entity;
+            		}
+        		} else {
+        			elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0, rev, rot);
+        			entity = elem;
+        		}
+        		entity.rotation = rot;
+        		entity.setName(p_action.what);
         		if (p_action.effect != null) {
-        			elem.setSpecialEffect(EngineFX.valueOf(p_action.effect));
-        		}
-        		if (p_action.foreground != null) {
-        			elem.setForeground(p_action.foreground);
-        		}
-        		// Physics attributes
-        		if (p_action.v != null) {	// Speed
-            		elem.vx = convenientFloatEvaluation(p_action.v[0]);
-            		elem.vy = convenientFloatEvaluation(p_action.v[1]);
-            		elem.vz = convenientFloatEvaluation(p_action.v[2]);
-        		}
-        		if (p_action.a != null) {	// Acceleration
-            		elem.ax = convenientFloatEvaluation(p_action.a[0]);
-            		elem.ay = convenientFloatEvaluation(p_action.a[1]);
-            		elem.az = convenientFloatEvaluation(p_action.a[2]);
-        		}
-        		if (p_action.f != null) {	// Friction
-            		elem.fx = convenientFloatEvaluation(p_action.f[0]);
-            		elem.fy = convenientFloatEvaluation(p_action.f[1]);
-            		elem.fz = convenientFloatEvaluation(p_action.f[2]);
+        			entity.setSpecialEffect(EngineFX.valueOf(p_action.effect));
         		}
         		if (p_action.z != null) {
-        			elem.z = p_action.z.evaluate(context);
+        			entity.z = p_action.z.evaluate(context);
         		}
-        		if (p_action.alphaA != null) {
-        			elem.alphaA = p_action.alphaA.evaluate(context);
+        		if (elem != null) {	// Element specific
+	        		// Physics attributes
+	        		if (p_action.v != null) {	// Speed
+	            		elem.vx = convenientFloatEvaluation(p_action.v[0]);
+	            		elem.vy = convenientFloatEvaluation(p_action.v[1]);
+	            		elem.vz = convenientFloatEvaluation(p_action.v[2]);
+	        		}
+	        		if (p_action.a != null) {	// Acceleration
+	            		elem.ax = convenientFloatEvaluation(p_action.a[0]);
+	            		elem.ay = convenientFloatEvaluation(p_action.a[1]);
+	            		elem.az = convenientFloatEvaluation(p_action.a[2]);
+	        		}
+	        		if (p_action.f != null) {	// Friction
+	            		elem.fx = convenientFloatEvaluation(p_action.f[0]);
+	            		elem.fy = convenientFloatEvaluation(p_action.f[1]);
+	            		elem.fz = convenientFloatEvaluation(p_action.f[2]);
+	        		}
+	        		if (p_action.alphaA != null) {
+	        			elem.alphaA = p_action.alphaA.evaluate(context);
+	        		}
+	        		if (p_action.shadow != null) {
+	            		ElementDescription descShadow = (ElementDescription) SpriteDescription.Locator.findNamedSpr(p_action.shadow);
+	        			elem.addShadow(descShadow);
+	        		}
         		}
-        		if (p_action.shadow != null) {
-            		ElementDescription descShadow = (ElementDescription) SpriteDescription.Locator.findNamedSpr(p_action.shadow);
-        			elem.addShadow(descShadow);
-        		}
+
     		}
     	}    	
     	return elem;
