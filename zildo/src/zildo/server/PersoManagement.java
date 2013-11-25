@@ -231,6 +231,12 @@ public class PersoManagement {
 			case FISH:
 				perso = new PersoFish();
 				break;
+			case LOUISE:
+				perso = new PersoShadowed(ElementDescription.SHADOW_SMALL, 2);
+				break;
+			case IGOR:
+				perso = new PersoShadowed();
+				break;
 			default:
 				perso = new PersoNJ();
 				break;
