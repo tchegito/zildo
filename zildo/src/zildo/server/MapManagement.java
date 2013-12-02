@@ -40,6 +40,7 @@ import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.EntityType;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
@@ -248,7 +249,6 @@ public class MapManagement {
 			// Detect element out of the map, except for 3 cases : Zildo, ghosts and single pleyer
 			return quelElement != null && !ghost && !quelElement.isOutsidemapAllowed() && (!quelElement.isZildo() || EngineZildo.game.multiPlayer);
 		}
-		Angle angleFlying = null;
 		Point size = new Point(8, 4); // Default size
 		if (quelElement != null && quelElement.getCollision() != null) {
 			Point elemSize = quelElement.getCollision().size;
@@ -260,7 +260,7 @@ public class MapManagement {
 				&& quelElement.getAngle() != null
 				&& EntityType.PERSO != quelElement.getEntityType()) {
 			// Flying object
-			angleFlying = quelElement.getAngle();
+			Angle angleFlying = quelElement.getAngle();
 
 			ty -= quelElement.z;
 			int cx = (tx / 16);
@@ -753,6 +753,19 @@ public class MapManagement {
 				c = map.get_mapcase(i, j + 4);
 				if (c != null) {
 					c.setZ(currentZ);
+				}
+			}
+		}
+		
+		// Second pass : (the only one which will survive after McFlac implementation)
+		IntSet waterTank = new IntSet().addRange(188, 193).addRange(154, 159);
+		for (j = 0; j < sizeY; j++) {
+			for (i = 0; i < sizeX; i++) {
+				int value = map.readmap(i, j) - 256*2;
+				if (waterTank.contains(value)) {
+					// Found some lowered case (water tank)
+					c = map.get_mapcase(i, j + 4);
+					c.setZ(c.getZ() - 8);
 				}
 			}
 		}
