@@ -80,4 +80,9 @@ public enum ItemKind {
 	public boolean canBeInInventory() {
 		return this != BLUEDROP;
 	}
+	
+	/** Returns TRUE if item can be multiple in the inventory. Typically, dynamites aren't. **/
+	public boolean canBeMultiple() {
+		return this != DYNAMITE;
+	}
 }

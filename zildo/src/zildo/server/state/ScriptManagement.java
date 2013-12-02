@@ -28,6 +28,7 @@ import java.util.Map;
 import zildo.fwk.script.command.ScriptExecutor;
 import zildo.fwk.script.logic.IEvaluationContext;
 import zildo.fwk.script.logic.SpriteEntityContext;
+import zildo.fwk.script.model.StringList;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.AdventureElement;
 import zildo.fwk.script.xml.element.ConditionElement;
@@ -37,7 +38,9 @@ import zildo.fwk.script.xml.element.PersoActionElement;
 import zildo.fwk.script.xml.element.QuestElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.TriggerElement;
+import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.items.StoredItem;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.quest.StringReplacement;
 import zildo.monde.quest.actions.ScriptAction;
@@ -545,5 +548,18 @@ public class ScriptManagement {
 		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		boolean onPlatform = zildo != null && zildo.isOnPlatform();
 		return !isScripting() && !onPlatform;
+	}
+	
+	public void sellItem(String storeName, Item item) {
+		String itemsAsString = getVarValue(storeName);
+		StringList<StoredItem> sellingItems = StoredItem.fromString(itemsAsString);
+		for (int i=0;i<sellingItems.size();i++) {
+			StoredItem sItem = sellingItems.get(i);
+			if (sItem.item.kind == item.kind){
+				sItem.decrements();
+				break;
+			}
+		}
+		getVariables().put(storeName, sellingItems.toString());
 	}
 }

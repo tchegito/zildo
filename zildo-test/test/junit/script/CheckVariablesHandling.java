@@ -41,6 +41,11 @@ public class CheckVariablesHandling extends EngineScriptUT {
 					" </scene>"+
 					"</adventure>";
 	
+	String secondXML="<adventure>"+
+					 " <scene id='test2'>"+
+					 "  <var name='stolenMoney' value='12'/>" +
+					 " </scene>"+
+					 "</adventure>";
 	@Test
 	public void assignation() throws Exception {
 		
@@ -75,6 +80,33 @@ public class CheckVariablesHandling extends EngineScriptUT {
 		
 		Game.deserialize(buffer, false);
 		Assert.assertEquals("48.0", scriptMgmt.getVariables().get("stolenMoney"));
+	}
+	
+	@Test
+	public void overrideGlobal() throws Exception {
+		loadXMLAsString(basicXML);
+		loadXMLAsString(secondXML);
 		
+		scriptMgmt.execute("test1", true);
+		while (scriptMgmt.isScripting()) {
+			scriptMgmt.render();
+		}
+		
+		scriptMgmt.execute("test2", true);
+		while (scriptMgmt.isScripting()) {
+			scriptMgmt.render();
+		}
+		
+		EasyBuffering buffer = new EasyBuffering();
+		EngineZildo.game.heroName="tirou";	// Random
+		EngineZildo.game.getTimeSpent();
+		EngineZildo.game.serialize(buffer);
+		
+		EngineZildo.scriptManagement = new ScriptManagement();
+		scriptMgmt = EngineZildo.scriptManagement;
+		
+		Game.deserialize(buffer, false);
+		// Check that saved game overrides global values
+		Assert.assertEquals("12.0", scriptMgmt.getVariables().get("stolenMoney"));
 	}
 }
