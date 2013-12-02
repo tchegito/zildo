@@ -35,11 +35,6 @@ import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 import zildo.server.state.ClientState;
 
-// DialogManagement.cpp: implementation of the DialogManagement class.
-//
-//////////////////////////////////////////////////////////////////////
-
-
 public class DialogManagement {
 	
 	List<WaitingDialog> dialogQueue;
