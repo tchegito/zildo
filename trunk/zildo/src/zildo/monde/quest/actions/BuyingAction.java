@@ -25,9 +25,8 @@ import java.util.List;
 
 import zildo.fwk.script.model.StringList;
 import zildo.monde.dialog.ActionDialog;
-import zildo.monde.items.Item;
-import zildo.monde.items.ItemKind;
-import zildo.monde.items.SellingItem;
+import zildo.monde.items.Inventory;
+import zildo.monde.items.StoredItem;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
@@ -42,7 +41,8 @@ public class BuyingAction extends ActionDialog {
 
 	PersoZildo zildo;
 	Perso seller;
-	StringList<SellingItem> sellingItems;
+	StringList<StoredItem> sellingItems;
+	String sellDescription;
 	
 	/**
 	 * @param p_text
@@ -51,12 +51,13 @@ public class BuyingAction extends ActionDialog {
 		super(p_text);
 	}
 
-	public BuyingAction(PersoZildo p_zildo, Perso p_seller, String sellDescription) {
+	public BuyingAction(PersoZildo p_zildo, Perso p_seller, String p_sellDescription) {
 		super(null);
 		zildo = p_zildo;
 		seller = p_seller;
-		String itemsAsString = EngineZildo.scriptManagement.getVarValue(sellDescription);
-		sellingItems = SellingItem.fromString(itemsAsString); 
+		String itemsAsString = EngineZildo.scriptManagement.getVarValue(p_sellDescription);
+		sellingItems = StoredItem.fromString(itemsAsString); 
+		sellDescription = p_sellDescription;
 	}
 	
 	@Override
@@ -65,12 +66,14 @@ public class BuyingAction extends ActionDialog {
 		zildo.setDialoguingWith(seller);
 		seller.setDialoguingWith(zildo);
 		
-		List<Item> items=new ArrayList<Item>();
+		List<StoredItem> items=new ArrayList<StoredItem>();
 		for (int i=0;i<sellingItems.size();i++) {
-			SellingItem sItem = sellingItems.get(i);
-			items.add(sItem.item);
+			StoredItem sItem = sellingItems.get(i);
+			if (sItem.quantity != 0) {
+				items.add(sItem);
+			}
 		}
-		zildo.lookItems(items, 0, seller, true);
+		zildo.lookItems(new Inventory(items), 0, seller, sellDescription);
 		
 		p_clientState.dialogState.dialoguing=true;
 	}

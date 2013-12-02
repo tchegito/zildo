@@ -32,6 +32,7 @@ import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
@@ -53,7 +54,7 @@ public class ItemCircle {
 	}
 	
 	private List<SpriteEntity> guiSprites;
-	private List<Item> items;
+	private List<StoredItem> items;
 	private Point center;
 	private CirclePhase phase;	// 0=create 1=fixed 2=remove 3=scroll
 	private int itemSelected;	// From 0 to guiSprites.size()-1
@@ -86,17 +87,17 @@ public class ItemCircle {
 	 * @param p_x
 	 * @param p_y
 	 */
-	public void create(List<Item> p_items, int p_selected, Perso p_heros, boolean p_buying) {
+	public void create(Inventory p_inventory, int p_selected, Perso p_heros, boolean p_buying) {
 		count=0;
 		itemSelected=p_selected;
 		guiSprites.clear();
 		perso=p_heros;
 		describe=p_buying;
-		items=p_items;
+		items=p_inventory.items;
 		
-		center=new Point((int) perso.x-2, (int) perso.y-12);
-		for (Item item : p_items) {
-            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(item.kind.representation, center.x, center.y, true, Reverse.NOTHING, true);
+		center=new Point((int) perso.x+1, (int) perso.y-12);
+		for (StoredItem item : p_inventory.items) {
+            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(item.item.kind.representation, center.x, center.y, true, Reverse.NOTHING, true);
             e.clientSpecific=true;
             e.setSpecialEffect(EngineFX.FOCUSED);
             e.zoom = 0;
@@ -133,6 +134,9 @@ public class ItemCircle {
 		for (SpriteEntity entity : guiSprites) {
 			int itemX=(int) (center.getX() + rayon*Math.sin(alpha));
 			int itemY=(int) (center.getY() - rayon*Math.cos(alpha));
+			SpriteModel model = entity.getSprModel();
+			itemX -= model.getTaille_x() >> 1;
+			itemY -= model.getTaille_y() >> 1;
 			entity.setAjustedX(itemX);
 			entity.setAjustedY(itemY);
 			entity.zoom = Math.min(255, rayon * 8); //16; //255 * (33 / (33-rayon));
@@ -161,9 +165,7 @@ public class ItemCircle {
 				phase=CirclePhase.FIXED;
 				
 				if (describe) {
-					Item item = items.get(itemSelected);
-					ClientState clState = Server.getClientFromZildo(client);
-					EngineZildo.dialogManagement.getQueue().add(new WaitingDialog(item.getName(), CommandDialog.BUYING, false, clState == null ? null : clState.location));
+					displayName();
 				}
 			}
 			break;
@@ -177,6 +179,12 @@ public class ItemCircle {
 			break;
 		}
 		display();
+	}
+	
+	private void displayName() {
+		StoredItem item = items.get(itemSelected);
+		ClientState clState = Server.getClientFromZildo(client);
+		EngineZildo.dialogManagement.getQueue().add(new WaitingDialog(item.getName(), CommandDialog.BUYING, false, clState == null ? null : clState.location));
 	}
 	
 	public void rotate(boolean p_clockWise) {
@@ -207,7 +215,28 @@ public class ItemCircle {
 	}
 	
 	public Item getItemSelected() {
-		return items.get(itemSelected);
+		return items.get(itemSelected).item;
+	}
+	
+	/**
+	 * Decrements quantity of selected item.
+	 */
+	public void decrementSelected() {
+		items.get(itemSelected).decrements();
+		if (items.get(itemSelected).quantity == 0) {
+			// Remove it from the list
+			items.remove(itemSelected);
+			guiSprites.get(itemSelected).dying = true;
+			guiSprites.remove(itemSelected);
+			if (items.size() == 0) {
+				kill();
+			} else if (itemSelected == items.size()) {
+				itemSelected--;
+			}
+		}
+		if (items.size() != 0) {
+			displayName();	// Display name with updated quantity
+		}
 	}
 	
 	/**

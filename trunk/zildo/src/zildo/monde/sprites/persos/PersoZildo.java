@@ -33,6 +33,7 @@ import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.fwk.ui.UIText;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
+import zildo.monde.items.Inventory;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
 import zildo.monde.items.ItemKind;
@@ -76,6 +77,8 @@ public class PersoZildo extends Perso {
 
 	private boolean inventoring = false;
 	private boolean buying = false;
+	private String storeDescription;// Name of the store description (inventory of selling items)
+	
 	public ItemCircle guiCircle;
 	private List<Item> inventory;
 	private ShieldEffect shieldEffect;
@@ -176,7 +179,7 @@ public class PersoZildo extends Perso {
 	 */
 	public void resetForMultiplayer() {
 		weapon = new Item(ItemKind.SWORD);
-		inventory = new ArrayList<Item>();
+		inventory.clear();
 		inventory.add(weapon);
 
 		MultiplayerManagement.setUpZildo(this);
@@ -1068,18 +1071,19 @@ public class PersoZildo extends Perso {
 		if (sel == -1) {
 			sel = 0;
 		}
-		lookItems(inventory, sel, this, false);
+		lookItems(Inventory.fromItems(inventory), sel, this, null);
 	}
 
 	public int getIndexSelection() {
 		return inventory.indexOf(getWeapon());
 	}
 	
-	public void lookItems(List<Item> p_items, int p_sel, Perso p_involved, boolean p_buying) {
+	public void lookItems(Inventory p_items, int p_sel, Perso p_involved, String p_storeName) {
 		inventoring = true;
 		guiCircle = new ItemCircle(this);
-		guiCircle.create(p_items, p_sel, p_involved, p_buying);
-		buying = p_buying;
+		buying = p_storeName != null;
+		guiCircle.create(p_items, p_sel, p_involved, buying);
+		storeDescription = p_storeName;
 	}
 
 	/**
@@ -1099,13 +1103,17 @@ public class PersoZildo extends Perso {
 			money -= item.getPrice();
 			SpriteDescription d = item.kind.representation;
 			if (item.kind.canBeInInventory()) {
-				inventory.add(item);
+				if (item.kind.canBeMultiple() || inventory.indexOf(item) == -1) {
+					inventory.add(item);
+				}
 			}
 			// Be sure that description is instance of ElementDescription, but more for runtime reason
 			// In fact, that must never happen.
 			if (d instanceof ElementDescription) {
 				useItem((ElementDescription) d);
 			}
+			guiCircle.decrementSelected();
+			EngineZildo.scriptManagement.sellItem(storeDescription, item);
 			EngineZildo.soundManagement.playSound(BankSound.ZildoGagneArgent, this);
 		}
 	}

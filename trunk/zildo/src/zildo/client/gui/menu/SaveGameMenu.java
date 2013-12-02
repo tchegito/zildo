@@ -151,6 +151,11 @@ public class SaveGameMenu extends PageableMenu {
 		game.brandNew = false;
 		SinglePlayer singlePlay = new SinglePlayer(game);
 
+		// Compute global variables
+		while (EngineZildo.scriptManagement.isScripting()) {
+			EngineZildo.scriptManagement.render();
+		}
+		
 		game = Game.deserialize(file, p_legacy);
 		if (game == null) {
 			// Problem occured while loading game
@@ -167,7 +172,7 @@ public class SaveGameMenu extends PageableMenu {
 		//EngineZildo.persoManagement.getZildo().x+=50;
 		
 		
-		// Wait for all history script to be finishied
+		// Wait for all history script to be finished
 		// This could be dangerous : if a script can't finish => end of the story
 		// (though it could happen, as soon as a script is broken ...)
 		while (EngineZildo.scriptManagement.isScripting()) {

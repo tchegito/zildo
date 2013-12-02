@@ -6,13 +6,13 @@ import org.junit.Test;
 import zildo.fwk.script.model.StringList;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
-import zildo.monde.items.SellingItem;
+import zildo.monde.items.StoredItem;
 
 public class CheckSellingItems {
 
 	@Test
 	public void objetSimpleSerialize() {
-		SellingItem item = new SellingItem(new Item(ItemKind.BOW, 1), 60, 2);
+		StoredItem item = new StoredItem(new Item(ItemKind.BOW, 1), 60, 2);
 		
 		Assert.assertEquals("[[BOW,1],60,2]", item.toString());
 	}
@@ -21,7 +21,7 @@ public class CheckSellingItems {
 	public void objetSimpleDeserialize() {
 		String entry = "[[SWORD,4],30,8]";
 		
-		SellingItem item = SellingItem.fromString(entry).get(0);
+		StoredItem item = StoredItem.fromString(entry).get(0);
 		
 		Assert.assertSame(item.item.kind, ItemKind.SWORD);
 		Assert.assertSame(item.item.level, 4);
@@ -33,7 +33,7 @@ public class CheckSellingItems {
 	public void listeObjetsDeserialize() {
 		String entry = "[[DYNAMITE,8],15,2], [[ROCK_BAG,3],12,7]";
 		
-		StringList<SellingItem> items = SellingItem.fromString(entry);
+		StringList<StoredItem> items = StoredItem.fromString(entry);
 		
 		Assert.assertSame(2, items.size());
 	}
@@ -47,7 +47,7 @@ public class CheckSellingItems {
 		+"                    [[DYNAMITE, 1], 60, 2]\n"
 		+"                   ";
 		
-		StringList<SellingItem> items = SellingItem.fromString(entry);
+		StringList<StoredItem> items = StoredItem.fromString(entry);
 		
 		Assert.assertSame(3, items.size());
 		

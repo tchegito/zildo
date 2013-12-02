@@ -4,13 +4,13 @@ import java.util.Scanner;
 
 import zildo.fwk.script.model.StringList;
 
-public class SellingItem {
+public class StoredItem {
 
 	public Item item;
 	public int price;
 	public int quantity;
 	
-	public SellingItem(Item item, int price, int quantity) {
+	public StoredItem(Item item, int price, int quantity) {
 		this.item = item;
 		this.price = price;
 		this.quantity = quantity;
@@ -26,13 +26,13 @@ public class SellingItem {
 	 * @param entry
 	 * @return StringList&lt;SellingItem&gt;
 	 */
-	public static StringList<SellingItem> fromString(String entry) {
+	public static StringList<StoredItem> fromString(String entry) {
 		Scanner scan = new Scanner(entry.replace(" ", "").replace("\n", "")).useDelimiter("\\[+|\\]+,*|,");
-		StringList<SellingItem> items = StringList.newOne();
+		StringList<StoredItem> items = StringList.newOne();
 		
 		while (true) {
 			Item it = Item.fromStrings(scan.next(), scan.next());
-			SellingItem item = new SellingItem(it, scan.nextInt(), scan.nextInt());
+			StoredItem item = new StoredItem(it, scan.nextInt(), scan.nextInt());
 			items.add(item);
 			
 			if (!scan.hasNext()) {
@@ -42,5 +42,18 @@ public class SellingItem {
 		}
 			
 		return items;
+	}
+	
+	public void decrements() {
+		if (quantity > 0) {
+			quantity --;
+		}
+	}
+	public String getName() {
+		String str = item.getName();
+		if (quantity != -1) {
+			str += " ("+quantity+")";
+		}
+		return str;
 	}
 }
