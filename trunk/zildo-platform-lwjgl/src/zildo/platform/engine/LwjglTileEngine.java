@@ -23,7 +23,7 @@ package zildo.platform.engine;
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
-import zildo.fwk.bank.MotifBank;
+import zildo.fwk.bank.TileBank;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.effect.CloudGenerator;
 import zildo.fwk.gfx.engine.TextureEngine;
@@ -105,14 +105,14 @@ public class LwjglTileEngine extends TileEngine {
 		// Create a texture based on the current tiles
 		textureEngine.init();
 		for (int i = 0; i < tileBankNames.length; i++) {
-			MotifBank motifBank = getMotifBank(i);
+			TileBank motifBank = getMotifBank(i);
 			//textureEngine.loadTexture("tile"+i);
 			createTextureFromMotifBank(motifBank);
 			//motifBank.freeTempBuffer();
 		}
 	}
 	
-	private void createTextureFromMotifBank(MotifBank mBank) {
+	private void createTextureFromMotifBank(TileBank mBank) {
 
 		GFXBasics surface = textureEngine.prepareSurfaceForTexture(true);
 
