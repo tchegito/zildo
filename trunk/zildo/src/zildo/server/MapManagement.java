@@ -257,44 +257,66 @@ public class MapManagement {
 			}
 		}
 		if (quelElement != null && quelElement.flying
-				&& quelElement.getAngle() != null
-				&& EntityType.PERSO != quelElement.getEntityType()) {
-			// Flying object
-			Angle angleFlying = quelElement.getAngle();
-
-			ty -= quelElement.z;
-			int cx = (tx / 16);
-			int cy = (ty / 16);
-			int caseZ = currentMap.readAltitude(cx, cy);
-			int elemAltitude = quelElement.relativeZ + (int) quelElement.getZ()
-					/ 16;
-
-			modx = tx % 16;
-			mody = ty % 16;
-			if (caseZ < elemAltitude) { // We are too high => no collision
+				&& quelElement.getAngle() != null) {
+			if (EntityType.PERSO != quelElement.getEntityType()) {
+				// Flying object
+				Angle angleFlying = quelElement.getAngle();
+	
+				ty -= quelElement.z;
+				int cx = (tx / 16);
+				int cy = (ty / 16);
+				int caseZ = currentMap.readAltitude(cx, cy);
+				int elemAltitude = quelElement.relativeZ + (int) quelElement.getZ()
+						/ 16;
+	
+				modx = tx % 16;
+				mody = ty % 16;
+				if (caseZ < elemAltitude) { // We are too high => no collision
+					return false;
+				} else if (caseZ == elemAltitude
+						&& getAngleJump(angleFlying, cx, cy) != null) {
+					return false; // Same altitude but under the cliff => no
+									// collision
+				} else if (caseZ > elemAltitude) {
+					return true; // Obstacle
+				}
+	
+				if (currentMap.isCaseBottomLess(cx, cy)) {
+					return false;
+				}
+				Tile tile = currentMap.readmap(cx, cy, false);
+				if (tile == null) {
+					return false;
+				}
+				on_map = tile.getValue();
+				if (tileCollision.collide(modx, mody, on_map, tile.reverse)) {
+					return true;
+				}
+				return EngineZildo.spriteManagement.collideSprite(tx, ty,
+						quelElement);
+			} else {
+				// Flying perso : HEN, DUCK, FISH
+				int cx = (tx / 16);
+				int cy = (ty / 16);
+				modx = tx % 16;
+				mody = ty % 16;
+				Tile tile = currentMap.readmap(cx, cy, false);
+				if (tile == null) {
+					return false;
+				}
+				on_map = tile.getValue();
+				if (tileCollision.collide(modx, mody, on_map, tile.reverse)) {
+					IntSet waterBank = new IntSet(154, 155, 156, 157, 158, 159, 188, 189, 190, 191, 192, 193);
+					if (waterBank.contains(on_map - 256*2)) {
+						// Water bank => is it above ?
+						if (quelElement.z > 12) {
+							return false;
+						}
+					}
+					return true;
+				}
 				return false;
-			} else if (caseZ == elemAltitude
-					&& getAngleJump(angleFlying, cx, cy) != null) {
-				return false; // Same altitude but under the cliff => no
-								// collision
-			} else if (caseZ > elemAltitude) {
-				return true; // Obstacle
 			}
-
-			if (currentMap.isCaseBottomLess(cx, cy)) {
-				return false;
-			}
-			Tile tile = currentMap.readmap(cx, cy, false);
-			if (tile == null) {
-				return false;
-			}
-			on_map = tile.getValue();
-			if (tileCollision.collide(modx, mody, on_map, tile.reverse)) {
-				return true;
-			}
-			return EngineZildo.spriteManagement.collideSprite(tx, ty,
-					quelElement);
-
 		}
 
 		// Check collision on tile level

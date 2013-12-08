@@ -211,6 +211,15 @@ public class Area implements EasySerializable {
 	}
 	
 	/**
+	 * Returns TRUE if case part pointed by PIXEL coordinates is in water.
+	 */
+	public boolean isInWater(int cx, int cy) {
+		// TODO: for now, we only check the global case, but will be more accurate later
+		int val = readmap(cx / 16, cy / 16);
+		return val == 256*2 + 255;
+	}
+	
+	/**
 	 * Returns TRUE if case is bottom less (example: lava or void)
 	 */
 	public boolean isCaseBottomLess(int x, int y) {
@@ -236,7 +245,7 @@ public class Area implements EasySerializable {
 	}
 
 	public int readAltitude(int x, int y) {
-		Case temp = this.get_mapcase(x, (y + 4));
+		Case temp = this.get_mapcase(x, y + 4);
 		if (temp == null) {
 			return 0;
 		}
