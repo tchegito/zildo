@@ -522,14 +522,21 @@ public class Element extends SpriteEntity {
 			case PEEBLE:
 				// Floor or lava ?
 				boolean bottomLess = area.isCaseBottomLess(cx,  cy);
+
 				if (bottomLess) {
 					EngineZildo.soundManagement.broadcastSound(BankSound.LavaDrop, this);
 					EngineZildo.spriteManagement.spawnSpriteGeneric(
 							SpriteAnimation.LAVA_DROP, (int) x, (int) y, 0,	null, null);
 				} else {
-					EngineZildo.soundManagement.broadcastSound(BankSound.PeebleFloor, this);
-					EngineZildo.spriteManagement.spawnSpriteGeneric(
-							SpriteAnimation.DUST, (int) x, (int) y, 0,	null, null);
+					if (area.isInWater((int) x, (int) y)) {
+						EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);
+						EngineZildo.spriteManagement.spawnSpriteGeneric(
+								SpriteAnimation.WATER_SPLASH, (int) x, (int) y, 0,	null, null);
+					} else {
+						EngineZildo.soundManagement.broadcastSound(BankSound.PeebleFloor, this);
+						EngineZildo.spriteManagement.spawnSpriteGeneric(
+								SpriteAnimation.DUST, (int) x, (int) y, 0,	null, null);
+					}
 				}
 				break;
 			}

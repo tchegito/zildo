@@ -19,8 +19,10 @@
 
 package zildo.monde.sprites.persos;
 
+import zildo.client.sound.BankSound;
 import zildo.fwk.collection.IntSet;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.util.Point;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -33,7 +35,7 @@ public class PersoFish extends PersoShadowed {
 
 	double gamma;
 	double moveAngle;
-	int swingSize = 10;
+	boolean underWater = false;
 	
 	public PersoFish() {
 		super(ElementDescription.SHADOW, 2);
@@ -50,10 +52,15 @@ public class PersoFish extends PersoShadowed {
 				}				
 				z = 17;
 			} else {
-				int scale = (int) (swingSize * Math.abs(Math.cos(gamma)));
-				addSpr = Math.min(scale / 3, 3);
-				z = (float) (scale * (0.8 + 0.3 * Math.random()));
-				
+				int swingSize = 10;
+				if (underWater) {
+					swingSize = 0;
+					addSpr = 4;
+				} else {
+					int scale = (int) (swingSize * Math.abs(Math.cos(gamma)));
+					addSpr = Math.min(scale / 3, 3);
+					z = (float) (scale * (0.8 + 0.3 * Math.random()));
+				}
 				pathFinder.speed *= 0.95f;
 				if (z < 1 && pathFinder != null && (pathFinder.getTarget() == null || pathFinder.speed < 0.1)) {
 					double attackSpeed = 0.5f + Math.random() * 0.1f;
@@ -77,9 +84,14 @@ public class PersoFish extends PersoShadowed {
 		// Fish was flying because someone threw it : detect if it's on a water tile
 		int value = EngineZildo.mapManagement.getCurrentMap().readmap((int) x / 16, (int) y / 16);
 		if (waterBank.contains(value - 256 * 2)) { // Water inside bank
-			swingSize = 2;
+			underWater = true;
+			shadow.setVisible(false);
+			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);
+			EngineZildo.spriteManagement.spawnSpriteGeneric(
+					SpriteAnimation.WATER_SPLASH, (int) x, (int) y, 0,	null, null);
 		} else {
-			swingSize = 10;
+			underWater = false;
+			shadow.setVisible(true);
 		}
     }
 }

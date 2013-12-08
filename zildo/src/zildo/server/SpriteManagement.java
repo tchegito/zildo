@@ -403,6 +403,10 @@ public class SpriteManagement extends SpriteStore {
 				element = new ElementPoison(x, y, miscPerso);
 				spawnSprite(element);
 				break;
+			case WATER_SPLASH:
+				element = new ElementImpact(x, y, ImpactKind.WATER_SPLASH, null);
+				spawnSprite(element);
+				break;
 		}
 		return element;
 	}

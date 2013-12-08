@@ -624,13 +624,16 @@ public class PersoNJ extends Perso {
 			}
 			break;
 		
+		case FISH:
+			add_spr = addSpr;
+			addSpr = 0;
+			break;
 		case PANNEAU:
 		case PAPER_NOTE:
 		case STONE_SPIDER:
 		case FOX:
 		case FALCOR:
 			add_spr = 0;
-		case FISH:
 			break;
 		case FLYINGSERPENT:
 			reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;

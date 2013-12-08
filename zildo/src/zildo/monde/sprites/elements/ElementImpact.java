@@ -40,7 +40,8 @@ public class ElementImpact extends Element {
 		STAR_YELLOW(ElementDescription.STAR1, new int[] {0,1,2,1,0}, 8),
 		DROP_ENERGY(ElementDescription.BLUE_ENERGY, 1,1),
 		LAVA_DROP(ElementDescription.LAVADROP1, 4, 2),
-		DUST(ElementDescription.DUST1, 3, 3);
+		DUST(ElementDescription.DUST1, 3, 3),
+		WATER_SPLASH(ElementDescription.WATER_ANIM1, 4, 3);
 		
 		ElementDescription desc;
 		int seqLong;	// Size of the sequence of the sprite's life
@@ -92,6 +93,7 @@ public class ElementImpact extends Element {
 			case FIRESMOKE:
 			case STAR_YELLOW:
 			case LAVA_DROP:
+			case WATER_SPLASH:
 				setSprModel(kind.desc);
 				break;
 			case EXPLOSION:
@@ -128,6 +130,7 @@ public class ElementImpact extends Element {
         	case LAVA_DROP:
         	case SMOKE:
         	case DUST:
+        	case WATER_SPLASH:
 				if (valCounter == kind.seqLong) {
 					dying=true;
 					visible=false;

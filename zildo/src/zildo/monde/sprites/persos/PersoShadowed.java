@@ -53,7 +53,8 @@ public class PersoShadowed extends PersoNJ {
 			ombre.setX(x);
 			ombre.setY(y - 1);
 			ombre.setZ(-7 + addY);
-			ombre.setVisible(z >= 0);
+			// TODO:Check this ! Removed when adding fish behavior (no shadow in the water, naturally)
+			//ombre.setVisible(z >= 0);
 		}
 		super.finaliseComportement(compteur_animation);
 	}
