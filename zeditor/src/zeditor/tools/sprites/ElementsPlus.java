@@ -301,7 +301,10 @@ public class ElementsPlus extends SpriteBanque {
 		        new Zone(146, 80, 5, 5), new Zone(152, 80, 5, 5), new Zone(158, 80, 5, 5),
 				// Anchors
 				new Zone(65, 190, 20,22),new Zone(86, 186, 26, 19),
-				new Zone(65, 190, 16, 16) //, new Zone(82, 190, 16, 16),
+				new Zone(65, 190, 16, 16), //, new Zone(82, 190, 16, 16),
+				// Fall in water animation
+				new Zone(238, 35, 24, 16), new Zone(263, 35, 24, 16),
+				new Zone(288, 35, 24, 16), new Zone(238,52, 24, 16)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
