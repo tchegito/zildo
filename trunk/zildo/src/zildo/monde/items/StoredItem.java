@@ -1,8 +1,8 @@
 package zildo.monde.items;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-
-import zildo.fwk.script.model.StringList;
 
 public class StoredItem {
 
@@ -26,9 +26,9 @@ public class StoredItem {
 	 * @param entry
 	 * @return StringList&lt;SellingItem&gt;
 	 */
-	public static StringList<StoredItem> fromString(String entry) {
+	public static List<StoredItem> fromString(String entry) {
 		Scanner scan = new Scanner(entry.replace(" ", "").replace("\n", "")).useDelimiter("\\[+|\\]+,*|,");
-		StringList<StoredItem> items = StringList.newOne();
+		List<StoredItem> items = new ArrayList<StoredItem>();
 		
 		while (true) {
 			Item it = Item.fromStrings(scan.next(), scan.next());

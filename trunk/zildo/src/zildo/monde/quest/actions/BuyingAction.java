@@ -23,7 +23,6 @@ package zildo.monde.quest.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.fwk.script.model.StringList;
 import zildo.monde.dialog.ActionDialog;
 import zildo.monde.items.Inventory;
 import zildo.monde.items.StoredItem;
@@ -41,7 +40,7 @@ public class BuyingAction extends ActionDialog {
 
 	PersoZildo zildo;
 	Perso seller;
-	StringList<StoredItem> sellingItems;
+	List<StoredItem> sellingItems;
 	String sellDescription;
 	
 	/**
@@ -67,8 +66,7 @@ public class BuyingAction extends ActionDialog {
 		seller.setDialoguingWith(zildo);
 		
 		List<StoredItem> items=new ArrayList<StoredItem>();
-		for (int i=0;i<sellingItems.size();i++) {
-			StoredItem sItem = sellingItems.get(i);
+		for (StoredItem sItem : sellingItems) {
 			if (sItem.quantity != 0) {
 				items.add(sItem);
 			}
