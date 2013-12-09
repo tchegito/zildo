@@ -137,4 +137,16 @@ public class ZUtils {
     public static String capitalize(String s) {
     	return Character.toUpperCase(s.charAt(0)) + s.substring(1);
     }
+    
+    public static <T> String listToString(List<T> elements) {
+		StringBuilder sb = new StringBuilder(16);
+		for (T elem : elements) {
+			sb.append(elem.toString());
+			sb.append(",");
+		}
+		if (sb.length() > 1) {
+			sb.setLength(sb.length()-1);
+		}
+		return sb.toString();
+    }
 }

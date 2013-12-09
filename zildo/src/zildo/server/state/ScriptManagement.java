@@ -25,10 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import zildo.fwk.ZUtils;
 import zildo.fwk.script.command.ScriptExecutor;
 import zildo.fwk.script.logic.IEvaluationContext;
 import zildo.fwk.script.logic.SpriteEntityContext;
-import zildo.fwk.script.model.StringList;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.AdventureElement;
 import zildo.fwk.script.xml.element.ConditionElement;
@@ -552,14 +552,13 @@ public class ScriptManagement {
 	
 	public void sellItem(String storeName, Item item) {
 		String itemsAsString = getVarValue(storeName);
-		StringList<StoredItem> sellingItems = StoredItem.fromString(itemsAsString);
-		for (int i=0;i<sellingItems.size();i++) {
-			StoredItem sItem = sellingItems.get(i);
+		List<StoredItem> sellingItems = StoredItem.fromString(itemsAsString);
+		for (StoredItem sItem : sellingItems) {
 			if (sItem.item.kind == item.kind){
 				sItem.decrements();
 				break;
 			}
 		}
-		getVariables().put(storeName, sellingItems.toString());
+		getVariables().put(storeName, ZUtils.listToString(sellingItems));
 	}
 }
