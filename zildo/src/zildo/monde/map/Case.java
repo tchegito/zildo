@@ -246,7 +246,8 @@ public class Case implements EasySerializable {
 				back.rotation = Rotation.values()[(value>>2) & 3];
 			}
 			if (value > 15) {
-				mapCase.setTransition(Angle.fromInt(value >> 4));
+				// Buggy ! Transition between back and foreground would be done other way
+				//mapCase.setTransition(Angle.fromInt(value >> 4));
 			}
 		}
 		if ((bank1 & 32) != 0) {
