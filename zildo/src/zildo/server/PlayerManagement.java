@@ -388,29 +388,20 @@ public class PlayerManagement {
 					heros.throwSomething();
 				} else if (heros.getMouvement()!=MouvementZildo.BRAS_LEVES && 
 						heros.getMouvement()!=MouvementZildo.SOULEVE) {
-					// On teste s'il y a un personnage à qui parler
-				/*    with_dialogue=0;
-					i=0;
-					repeat
-					 i=i+1;
-					 if tab_perso[i].etat=true then
-					  if check_colli(round(tab_perso[i].x),round(tab_perso[i].y),
-									 round(x),round(y),10,10) then
-					   with_dialogue=i;
-					until (with_dialogue<>0) or (i=MAX_PERSO-1);
-				*/
 					// Get a spot reachable in hero's direction
 					int locX = (int) heros.x + heros.getAngle().coords.x * 8;
 					int locY = (int) heros.y + heros.getAngle().coords.y * 8;
 					
-					Perso persoToTalk=EngineZildo.persoManagement.
-						collidePerso(locX, locY, heros, 4);
-		
+					Perso persoToTalk=EngineZildo.persoManagement.collidePerso(locX, locY, heros, 4);
 					
 					if (persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY && !persoToTalk.isZildo()) {
-					 // On vérifie qu'il ne s'agit pas d'une poule
+					 // Check that this perso can be picked up
 						if (persoToTalk.getDesc().isTakable()) {
-							heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, ElementDescription.HEN, persoToTalk);
+							// Check that any obstacle isn't on the way
+							Point middle = Point.middle((int) heros.x, (int) heros.y, locX, locY);
+							if (!EngineZildo.mapManagement.collideTile(middle.x, middle.y, false, new Point(2, 2), persoToTalk)) {
+								heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, ElementDescription.HEN, persoToTalk);
+							}
 						} else if (persoToTalk.getDialoguingWith() == null) {
 							// On vérifie que Zildo regarde la personne
 							cx=(int) persoToTalk.getX();
