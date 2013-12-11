@@ -36,6 +36,7 @@ public class PersoFish extends PersoShadowed {
 	double gamma;
 	double moveAngle;
 	boolean underWater = false;
+	//int radius;	// 20 on floor, and 4 under water
 	
 	public PersoFish() {
 		super(ElementDescription.SHADOW, 2);
@@ -53,9 +54,11 @@ public class PersoFish extends PersoShadowed {
 				z = 17;
 			} else {
 				int swingSize = 10;
+				int radius = 20;
 				if (underWater) {
 					swingSize = 0;
 					addSpr = 4;
+					radius = 2;
 				} else {
 					int scale = (int) (swingSize * Math.abs(Math.cos(gamma)));
 					addSpr = Math.min(scale / 3, 3);
@@ -65,8 +68,8 @@ public class PersoFish extends PersoShadowed {
 				if (z < 1 && pathFinder != null && (pathFinder.getTarget() == null || pathFinder.speed < 0.1)) {
 					double attackSpeed = 0.5f + Math.random() * 0.1f;
 					moveAngle += Math.PI/4;
-					Point targetPoint = new Point((int) (x + 20 * attackSpeed * Math.cos(moveAngle)),
-						     					  (int) (y + 20 * attackSpeed * Math.sin(moveAngle)) );
+					Point targetPoint = new Point((int) (x + radius * attackSpeed * Math.cos(moveAngle)),
+						     					  (int) (y + radius * attackSpeed * Math.sin(moveAngle)) );
 					pathFinder.setTarget(targetPoint);
 					pathFinder.speed = (float) (0.6 + Math.random() * 0.3);
 				}

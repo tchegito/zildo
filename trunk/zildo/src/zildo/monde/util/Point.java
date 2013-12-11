@@ -86,6 +86,14 @@ public class Point {
     	return "("+x+", "+y+")";
     }
     
+    public static Point middle(Point a, Point b) {
+    	return middle(a.x, a.y, b.x, b.y);
+    }
+    
+    public static Point middle(int x1, int y1, int x2, int y2) {
+    	return new Point((x1 + x2) / 2, (y1 + y2) / 2);
+    }
+    
     /**
      * Returns the distance between the current point and a given one.
      * @param p_other

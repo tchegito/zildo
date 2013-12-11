@@ -358,7 +358,7 @@ public class MapManagement {
 		new Point(1, -1),  new Point(1, 1)};
 		
 
-	private boolean collideTile(int tx, int ty, boolean ghost, Point size, Element quelElement) {
+	public boolean collideTile(int tx, int ty, boolean ghost, Point size, Element quelElement) {
 		int mx, my; // Position map
 		int on_map;
 		int modx, mody;
