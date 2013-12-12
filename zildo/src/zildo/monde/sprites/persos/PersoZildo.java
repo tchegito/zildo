@@ -127,9 +127,10 @@ public class PersoZildo extends Perso {
 		this.setNBank(SpriteBank.BANK_ZILDO);
 		setNSpr(0);
 
-		setX(p_posX); // 805); //601-32;//-500);
-		setY(p_posY); // 973); //684+220;//-110);
-		setAngle(Angle.NORD);
+		x = p_posX; // 805); //601-32;//-500);
+		y = p_posY; // 973); //684+220;//-110);
+		angle = Angle.NORD;
+		sightAngle = angle;
 		setPos_seqsprite(-1);
 		setMouvement(MouvementZildo.VIDE);
 		setInfo(PersoInfo.ZILDO);
@@ -883,7 +884,7 @@ public class PersoZildo extends Perso {
 	public boolean pickGoodies(Element p_element, int p_money) {
 		// Effect on perso
 		if (p_money != 0) { // Zildo gets some money
-			money += p_money;
+			setMoney(money + p_money);
 			if (p_money > 0) {
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupItem, this);
 			} else {

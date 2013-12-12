@@ -684,6 +684,9 @@ public class ActionExecutor {
         		if (p_action.z != null) {
         			entity.z = p_action.z.evaluate(context);
         		}
+        		if (p_action.foreground != null) {
+        			entity.setForeground(p_action.foreground);
+        		}
         		if (elem != null) {	// Element specific
 	        		// Physics attributes
 	        		if (p_action.v != null) {	// Speed
@@ -701,6 +704,7 @@ public class ActionExecutor {
 	            		elem.fy = convenientFloatEvaluation(p_action.f[1]);
 	            		elem.fz = convenientFloatEvaluation(p_action.f[2]);
 	        		}
+
 	        		if (p_action.alphaA != null) {
 	        			elem.alphaA = p_action.alphaA.evaluate(context);
 	        		}

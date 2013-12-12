@@ -415,8 +415,8 @@ public class PersoNJ extends Perso {
 				setSpecialEffect(EngineFX.GUARD_PINK);
 			} else if ("noir".equals(str)) {
 				setSpecialEffect(EngineFX.GUARD_BLACK);
-			} else if ("violet".equals(str)) {
-				setSpecialEffect(EngineFX.ROBBER_PURPLE);
+			} else if ("bleu".equals(str)) {
+				setSpecialEffect(EngineFX.ROBBER_BLUE);
 			} else if ("focused".equals(str)) {
 				setSpecialEffect(EngineFX.FOCUSED);
 			} else {
