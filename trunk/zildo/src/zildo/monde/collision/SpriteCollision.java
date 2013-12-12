@@ -223,7 +223,7 @@ public class SpriteCollision {
 								boolean disappear = zildo.pickGoodies(elem, 0);
 								if (disappear) {
 									elem.fall();
-									elem.dying = true;
+									elem.die();
 								}
 								break;
 							} else {

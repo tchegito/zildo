@@ -41,6 +41,7 @@ import zildo.monde.Hasard;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.items.ItemKind;
+import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
@@ -217,6 +218,34 @@ public class Area implements EasySerializable {
 		// TODO: for now, we only check the global case, but will be more accurate later
 		int val = readmap(cx / 16, cy / 16);
 		return val == 256*2 + 255;
+	}
+	
+	final IntSet waterBank = new IntSet(188, 189, 190, 255);
+	
+	public TileNature getCaseNature(int x, int y) {
+		Case temp = this.get_mapcase(x, y + 4);
+		if (temp == null) {
+			return null;
+		}
+		
+		// 1: bottom less (we have to read the BACK tile
+		int val = temp.getBackTile().getValue();
+		if (val == 256 * 3 + 217) {
+			return TileNature.BOTTOMLESS;
+		}
+		
+		// 2: water (could be on back or back2)
+		Tile tile;
+		if (temp.getBackTile2() != null) {
+			tile = temp.getBackTile2();
+		} else {
+			tile = temp.getBackTile();
+		}
+		val = tile.getValue();
+		if ( waterBank.contains(val - 256*2) ) {
+			return TileNature.WATER;
+		}
+		return TileNature.REGULAR;
 	}
 	
 	/**
