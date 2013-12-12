@@ -19,10 +19,8 @@
 
 package zildo.monde.sprites.persos;
 
-import zildo.client.sound.BankSound;
-import zildo.fwk.collection.IntSet;
+import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.desc.ElementDescription;
-import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.util.Point;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -78,20 +76,16 @@ public class PersoFish extends PersoShadowed {
 		}
 	}
 	
-	IntSet waterBank = new IntSet(188, 189, 190, 255);
-	
     @Override
 	public void fall() {
 		flying = false;
 		linkedPerso = null;
 		// Fish was flying because someone threw it : detect if it's on a water tile
-		int value = EngineZildo.mapManagement.getCurrentMap().readmap((int) x / 16, (int) y / 16);
-		if (waterBank.contains(value - 256 * 2)) { // Water inside bank
+		TileNature nature = EngineZildo.mapManagement.getCurrentMap().getCaseNature((int) x / 16, (int) y / 16);
+		if (nature == TileNature.WATER) {
 			underWater = true;
 			shadow.setVisible(false);
-			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);
-			EngineZildo.spriteManagement.spawnSpriteGeneric(
-					SpriteAnimation.WATER_SPLASH, (int) x, (int) y, 0,	null, null);
+			super.fall();
 		} else {
 			underWater = false;
 			shadow.setVisible(true);

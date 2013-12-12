@@ -26,6 +26,7 @@ import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.map.Area;
+import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -256,7 +257,7 @@ public class Element extends SpriteEntity {
 		
 		if (alpha < 0) {
 			fall();
-			dying = true;
+			die();
 		}
 		if (mover != null && mover.isActive()) {
 			// Moving is delegated to another object
@@ -491,63 +492,64 @@ public class Element extends SpriteEntity {
 	}
 
 	/**
-	 * Appelée lorsque l'objet tombe au sol.
+	 * Called when the object fall on the floor, whatever kind of floor.
+	 * This method handles behavior when element/perso hits the floor, but doesn't remove it. For this, call {@link #die()}.
 	 */
 	@Override
 	public void fall() {
-		if (nBank == SpriteBank.BANK_ELEMENTS) {
-			Area area = EngineZildo.mapManagement.getCurrentMap();
-			int cx = (int) (x / 16);
-			int cy = (int) (y / 16);
-			// TODO: basically, we shouldn't do that because desc should be set
-			ElementDescription d = ElementDescription.fromInt(nSpr);
-			switch (d) {
-			case BUSHES:
-				// Le buisson s'effeuille
-				EngineZildo.spriteManagement
-						.spawnSpriteGeneric(SpriteAnimation.BUSHES, (int) x,
-								(int) y, 0, null, null);
-				EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
-				break;
-			case JAR:
-			case STONE:
-			case STONE_HEAVY:
-			case ROCK_BALL:
-				EngineZildo.spriteManagement.spawnSpriteGeneric(
-						SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, 0, null, null);
-				EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
-				break;
-			case DYNAMITE:
-				break;
-			case PEEBLE:
-				// Floor or lava ?
-				boolean bottomLess = area.isCaseBottomLess(cx,  cy);
-
-				if (bottomLess) {
-					EngineZildo.soundManagement.broadcastSound(BankSound.LavaDrop, this);
+		// 1: get the landing point nature
+		Area area = EngineZildo.mapManagement.getCurrentMap();
+		int cx = (int) (x / 16);
+		int cy = (int) (y / 16);
+		TileNature nature = area.getCaseNature(cx, cy);
+		
+		switch (nature) {
+		case BOTTOMLESS:	// Means LAVA, actually
+			EngineZildo.soundManagement.broadcastSound(BankSound.LavaDrop, this);
+			EngineZildo.spriteManagement.spawnSpriteGeneric(
+					SpriteAnimation.LAVA_DROP, (int) x, (int) y, 0,	null, null);
+			break;
+		case WATER:
+			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);
+			EngineZildo.spriteManagement.spawnSpriteGeneric(
+					SpriteAnimation.WATER_SPLASH, (int) x, (int) y, 0,	null, null);
+			break;
+		case REGULAR:
+			// 2: on the floor, many possibilities
+			if (nBank == SpriteBank.BANK_ELEMENTS) {
+				// TODO: basically, we shouldn't do that because desc should be set
+				ElementDescription d = ElementDescription.fromInt(nSpr);
+				switch (d) {
+				case BUSHES:
+					// Le buisson s'effeuille
+					EngineZildo.spriteManagement
+							.spawnSpriteGeneric(SpriteAnimation.BUSHES, (int) x,
+									(int) y, 0, null, null);
+					EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
+					break;
+				case JAR:
+				case STONE:
+				case STONE_HEAVY:
+				case ROCK_BALL:
 					EngineZildo.spriteManagement.spawnSpriteGeneric(
-							SpriteAnimation.LAVA_DROP, (int) x, (int) y, 0,	null, null);
-				} else {
-					if (area.isInWater((int) x, (int) y)) {
-						EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);
-						EngineZildo.spriteManagement.spawnSpriteGeneric(
-								SpriteAnimation.WATER_SPLASH, (int) x, (int) y, 0,	null, null);
-					} else {
-						EngineZildo.soundManagement.broadcastSound(BankSound.PeebleFloor, this);
-						EngineZildo.spriteManagement.spawnSpriteGeneric(
-								SpriteAnimation.DUST, (int) x, (int) y, 0,	null, null);
-					}
+							SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, 0, null, null);
+					EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
+					break;
+				case DYNAMITE:
+					break;
+				case PEEBLE:
+					EngineZildo.soundManagement.broadcastSound(BankSound.PeebleFloor, this);
+					EngineZildo.spriteManagement.spawnSpriteGeneric(
+							SpriteAnimation.DUST, (int) x, (int) y, 0,	null, null);
+					break;
 				}
-				break;
+				if (questTrigger) {	// Only for bank ELEMENTS now
+					// Activate a quest if we're asked for
+					String questName = EngineZildo.scriptManagement.buildKeyItem(area.getName(), cx, cy, d);
+					EngineZildo.scriptManagement.accomplishQuest(questName, false);
+				}
 			}
-			if (questTrigger) {	// Only for bank ELEMENTS now
-				// Activate a quest if we're asked for
-				String questName = EngineZildo.scriptManagement.buildKeyItem(area.getName(), cx, cy, d);
-				EngineZildo.scriptManagement.accomplishQuest(questName, false);
-			}
-		}
-		if (shadow != null) {
-			shadow.dying = true;
+			break;
 		}
 	}
 
@@ -626,7 +628,11 @@ public class Element extends SpriteEntity {
 	 * Called when element is disappearing (in case of out of bounds, for
 	 * example)
 	 */
-	protected void die() {
+	public void die() {
+		dying = true;
+		if (shadow != null) {
+			shadow.dying = true;
+		}
 	}
 
 	/**

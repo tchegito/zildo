@@ -39,6 +39,12 @@ public class Tile implements Cloneable {
 	public Reverse reverse = Reverse.NOTHING;
 	public Rotation rotation = Rotation.NOTHING;
 	
+	public enum TileNature {
+		BOTTOMLESS,	// Lava
+		WATER,
+		REGULAR;
+	};
+	
 	public Tile(int p_bank, int p_index, Case p_parent) {
 		bank = (byte) (p_bank & 15);
 		index = p_index;
