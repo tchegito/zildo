@@ -308,7 +308,7 @@ public class Element extends SpriteEntity {
 						if (!beingCollided(null)) {
 							// Le sprite doit 'mourir'
 							fall();
-							dying = true;
+							die();
 						}
 					}
 				}

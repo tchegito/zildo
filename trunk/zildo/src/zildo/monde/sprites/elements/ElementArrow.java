@@ -81,12 +81,7 @@ public class ElementArrow extends ElementThrown  {
     		animateFlying();
     	}
     }
-    
-    @Override
-	protected void die() {
-    	shadow.dying=true;
-    }
-    
+     
     private void animateFlying() {
         shadow.x = x;
         shadow.y = y;
