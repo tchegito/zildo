@@ -271,6 +271,20 @@
        	</action>
     </quest>
     
+    <quest name="1fishMinsk" repeat="true" locked="false">
+        <trigger>
+            <location name="igorv3b"/>
+            <fall type="FISH" nature="WATER"/>
+        </trigger>
+        <action>
+            <var name="fishWater" value="fishWater+1"/>
+            <if exp="fishWater=6">
+				<sound name="ZildoAccomplishQuest"/>
+				<markQuest name="allFishMinsk" value="1"/>
+            </if>
+        </action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -373,6 +387,10 @@
 		</condition>
 		<condition name="igorvillage">
 		    <markQuest name="summonLeafVillage" value="0"/>
+		</condition>
+		<condition name="igorv3b" exp="!allFishMinsk">
+		    <!-- If this variable is stored into a game, the following should override it. -->
+		    <var name="fishWater" value="0"/>
 		</condition>
 	</mapScript>
 

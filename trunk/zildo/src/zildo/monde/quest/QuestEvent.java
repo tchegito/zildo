@@ -29,7 +29,8 @@ public enum QuestEvent {
     DEAD, 		// Some enemies have died
     PUSH, 		// Hero has pushed a block or something
     LIFT,		// Hero picks up some jar/bushes
-    USE;		// Hero uses an object (flut for example)
+    USE,		// Hero uses an object (flut for example)
+    FALL;		// An Element/Perso hit the floor (it could be water,lava,...)
     
     public static QuestEvent fromString(String p_name) {
     	for (QuestEvent kind : values()) {

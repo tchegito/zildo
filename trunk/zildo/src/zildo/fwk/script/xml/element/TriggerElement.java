@@ -31,8 +31,10 @@ import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
+import zildo.monde.map.Tile.TileNature;
 import zildo.monde.quest.QuestEvent;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -55,6 +57,9 @@ public class TriggerElement extends AnyElement {
 	Gear gearType;
 	int tileValue;
 	ItemKind item;
+	// For "fall"
+	SpriteDescription desc;
+	TileNature tileNature;
 	
 	List<String> mapNames = null;
 	
@@ -138,6 +143,10 @@ public class TriggerElement extends AnyElement {
 		case USE:
 			item = ItemKind.fromString(readAttribute("item"));
 			break;
+		case FALL:
+			tileNature = TileNature.valueOf(readAttribute("nature"));
+			desc = SpriteDescription.Locator.findNamedSpr(readAttribute("type"));
+			break;
 		}
 
 	}
@@ -217,6 +226,8 @@ public class TriggerElement extends AnyElement {
 			return name.equals(p_another.name) && tileLocation.equals(p_another.tileLocation);
 		case USE:
 			return item == p_another.item;
+		case FALL:
+			return desc == p_another.desc && tileNature == p_another.tileNature;
 		}
 		return false;
 	}
@@ -364,6 +375,18 @@ public class TriggerElement extends AnyElement {
 	public static TriggerElement createUseTrigger(ItemKind p_item, Point p_pos) {
 		TriggerElement elem = new TriggerElement(QuestEvent.USE);
 		elem.item = p_item;
+		return elem;
+	}
+	
+	/**
+	 * Ingame method to check that hero just used an item.
+	 * @param p_item
+	 * @return TriggerElement
+	 */
+	public static TriggerElement createFallTrigger(SpriteDescription desc, TileNature nature) {
+		TriggerElement elem = new TriggerElement(QuestEvent.FALL);
+		elem.desc = desc;
+		elem.tileNature = nature;
 		return elem;
 	}
 	

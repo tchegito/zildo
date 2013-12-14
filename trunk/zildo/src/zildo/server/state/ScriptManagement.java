@@ -231,9 +231,8 @@ public class ScriptManagement {
 	    						}
 	    						break;
     						case DIALOG:
-    							trig.done = false;
-    							break;
     						case USE:
+    						case FALL:
     							trig.done = false;
     							break;
     						}

@@ -46,6 +46,11 @@ public class VariableExecutor {
 			}
 			EngineZildo.scriptManagement.getVariables().put(p_elem.name, objToSave);
 			break;
+		case _if:
+			if ( p_elem.value.evaluate(context) != 0) {
+            	EngineZildo.scriptManagement.execute(p_elem.ifThenClause, false, null, false, context);
+			}
+			break;
 		}
 	}
 }
