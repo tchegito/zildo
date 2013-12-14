@@ -37,6 +37,8 @@ import org.xml.sax.SAXException;
 
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.logic.VarElement;
+import zildo.fwk.script.xml.element.logic.VarElement.VarKind;
 import zildo.fwk.script.xml.element.AnyElement;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.quest.QuestEvent;
@@ -94,17 +96,24 @@ public class ScriptReader {
         AnyElement s = null;
         // Check for ActionElement
         ActionKind kind=ActionKind.fromString(name);
-        QuestEvent event=QuestEvent.fromString(name);
         // Exclude specific actions
         if (kind != null && kind != ActionKind.actions && kind != ActionKind.timer && kind != ActionKind.lookFor) { 
         	s=new ActionElement(kind);
-        } else if (event != null) {
-        	String questName = ((Element)p_element.getParentNode().getParentNode()).getAttribute("name");
-        	s=new TriggerElement(event, questName);
         } else {
-        	// General case
-	        name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length()).toLowerCase();
-            s = AnyElement.newInstanceFromString(name);
+            QuestEvent event=QuestEvent.fromString(name);
+        	if (event != null) {	// Trigger ?
+	        	String questName = ((Element)p_element.getParentNode().getParentNode()).getAttribute("name");
+	        	s=new TriggerElement(event, questName);
+	        } else {
+	            VarKind varKind=VarKind.fromString(name);
+	            if (varKind != null) {	// Var ?
+	            	s = new VarElement(varKind);
+	            } else {
+		        	// General case
+			        name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length()).toLowerCase();
+		            s = AnyElement.newInstanceFromString(name);
+	            }
+            }
         }
         s.parse(p_element);
         return s;

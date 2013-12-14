@@ -19,9 +19,12 @@
 
 package zildo.fwk.script.xml.element.logic;
 
+import java.util.List;
+
 import org.w3c.dom.Element;
 
 import zildo.fwk.script.logic.FloatExpression;
+import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.LanguageElement;
 
 /**
@@ -32,6 +35,20 @@ public class VarElement extends LanguageElement {
 
 	public enum VarKind {
 		var, _if;
+		
+		@Override
+		public String toString() {
+			return this == _if ? "if" : super.toString();
+		}
+		
+		public static VarKind fromString(String p_name) {
+			for (VarKind kind : values()) {
+				if (kind.toString().equalsIgnoreCase(p_name)) {
+					return kind;
+				}
+			}
+			return null;
+		}
 	}
 	
 	public enum ValueType {
@@ -48,12 +65,17 @@ public class VarElement extends LanguageElement {
 	public FloatExpression value;
 	public String strValue;	// Set only for non-float values
 	public ValueType typ = ValueType._float;
+	public List<LanguageElement> ifThenClause;
 	
+	public VarElement(VarKind p_kind) {
+		kind = p_kind;
+	}
+
 	@Override
+	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
 		super.parse(p_elem);
 		
-		kind = VarKind.valueOf(p_elem.getNodeName());
 		name = readAttribute("name");
 		strValue = readAttribute("value");
 		
@@ -61,13 +83,21 @@ public class VarElement extends LanguageElement {
 		if (typStr != null) {
 			typ = ValueType.valueOf(typStr);
 		}
-		switch (typ) {
-		case _float:
+		switch (kind) {
+		case _if:
+			value = new FloatExpression(readAttribute("exp"));
+			ifThenClause = (List<LanguageElement>) ScriptReader.parseNodes(xmlElement); 
+			break;
 		default:
-			value = new FloatExpression(strValue);
-			break;
-		case sellingItems:
-			break;
+		case var:
+			switch (typ) {
+			case _float:
+			default:
+				value = new FloatExpression(strValue);
+				break;
+			case sellingItems:
+				break;
+			}
 		}
 	}
 

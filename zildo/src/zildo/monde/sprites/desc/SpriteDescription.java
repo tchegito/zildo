@@ -62,12 +62,22 @@ public interface SpriteDescription {
 			throw new RuntimeException("Can't find sprite for bank "+nBank+" and sprite "+nSpr);
 		}
 		
+		/**
+		 * Return a SpriteDescription from all enums extending this interface, except Zildo.
+		 * Try to avoid this method in runtime (prefer prerender phase).
+		 * @param val
+		 * @return SpriteDescription
+		 */
 		public static SpriteDescription findNamedSpr(String val) {
 			SpriteDescription desc = null;
 			try {
 				desc = ElementDescription.valueOf(val);
 			} catch (IllegalArgumentException e) {
-				desc = GearDescription.valueOf(val);
+				try {
+					desc = GearDescription.valueOf(val);
+				} catch (IllegalArgumentException e2) {
+					desc = PersoDescription.valueOf(val);
+				}
 			}
 			return desc;
 		}

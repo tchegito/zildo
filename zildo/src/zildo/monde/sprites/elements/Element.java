@@ -551,6 +551,8 @@ public class Element extends SpriteEntity {
 			}
 			break;
 		}
+		TriggerElement trigger = TriggerElement.createFallTrigger(desc, nature);
+		EngineZildo.scriptManagement.trigger(trigger);
 	}
 
 	/**
