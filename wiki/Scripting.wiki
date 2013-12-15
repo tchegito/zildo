@@ -61,6 +61,7 @@ A trigger can be of 6 different kinds : (corresponding to [http://code.google.co
  * *push* : is someone pushing an element ?
  * *lift* : is hero taking some jar/bush ?
  * *use* : does hero use one of his items ?
+ * *fall* : does an element/character falls on the floor ? (water, lava, or any ground)
 
 ==== Particular cases ====
 
@@ -120,6 +121,8 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || perso || text || - || - || - || Change some character's attributes : type, info, fx. ||
 || timer || text || - || - || - || Do a repetition of actions on a desired rate. ||
 || lookFor || text || - || - || - || Look for some characters around another, with a desired radius. The first discovered one become the new context for nested action elements. ||
+|| var || text || - || - || - || Set a variable indicated by 'name' to the given 'value'. ||
+|| if || text || - || - || - || Check the 'exp' expression, and if it's true, then nesting actions will be executed. ||
 
 === Multithread ===
 
