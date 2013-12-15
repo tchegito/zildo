@@ -929,10 +929,10 @@ public abstract class Perso extends Element {
 			if (!platformUnder && onMap>=108 && onMap<=138) {
 				Point zildoAvantSaut=getPosAvantSaut();
 				// Character is fallen in the water !
+				diveAndWound();
 				x = zildoAvantSaut.getX();
 				y = zildoAvantSaut.getY();
 				relocate=true;
-				diveAndWound();
 			} else {
 				setForeground(false);
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
@@ -954,9 +954,11 @@ public abstract class Perso extends Element {
 	}
 	
 	public void diveAndWound() {
+		EngineZildo.spriteManagement.spawnSpriteGeneric(
+				SpriteAnimation.WATER_SPLASH, (int) x, (int) y, 0,	null, null);
 		beingWounded(x, y, null, 2);
 		stopBeingWounded();
-		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);		
+		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);
 	}
 
 	/** Called when a script move this character with a 'pos' action.
