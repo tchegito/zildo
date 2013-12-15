@@ -31,6 +31,7 @@ import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
@@ -217,7 +218,7 @@ public class CollideManagement {
 	        		Perso attacker=p_collider.perso;
 	        		if (attacker != null && p_collider.perso.isZildo()) {
 	        			PersoZildo zildo=(PersoZildo) attacker;
-	        			if (zildo.isQuadDamaging()) {
+	        			if (zildo.isAffectedBy(AffectionKind.QUAD_DAMAGE)) {
 	        				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamaging, zildo);
 	        				dmg*=4;
 	        			}

@@ -53,11 +53,13 @@ import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
+import zildo.monde.sprites.magic.Affection.AffectionKind;
+import zildo.monde.sprites.magic.PersoAffections;
+import zildo.monde.sprites.magic.ShieldEffect;
+import zildo.monde.sprites.magic.ShieldEffect.ShieldType;
 import zildo.monde.sprites.persos.action.HealAction;
 import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.monde.sprites.utils.MouvementZildo;
-import zildo.monde.sprites.utils.ShieldEffect;
-import zildo.monde.sprites.utils.ShieldEffect.ShieldType;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -95,8 +97,8 @@ public class PersoZildo extends Perso {
 	ZildoSprSequence swordSequence = new ZildoSprSequence();
 	
 	private SpriteEntity boomerang;
-	private int quadDuration;
-
+	PersoAffections affections;
+	
 	// Sequence for sprite animation
 	static int seq_1[] = { 0, 1, 2, 1 };
 	static int seq_2[] = { 0, 1, 2, 1, 0, 3, 4, 3 };
@@ -108,7 +110,8 @@ public class PersoZildo extends Perso {
 	public PersoZildo(int p_id) { // Only used to create Zildo on a client
 		super(p_id);
 		inventory = new ArrayList<Item>();
-		
+		affections = new PersoAffections(this);
+
 		super.initFields();
 	}
 
@@ -170,6 +173,7 @@ public class PersoZildo extends Perso {
 
 		// weapon=new Item(ItemKind.SWORD);
 		inventory = new ArrayList<Item>();
+		affections = new PersoAffections(this);
 		// inventory.add(weapon);
 
 		setSpeed(Constantes.ZILDO_SPEED);
@@ -189,7 +193,7 @@ public class PersoZildo extends Perso {
 			shieldEffect.kill();
 			shieldEffect = null;
 		}
-		quadDuration = 0;
+		affections.clear();
 
 		inWater = false;
 		inDirt = false;
@@ -267,6 +271,10 @@ public class PersoZildo extends Perso {
 				removeItem(ItemKind.FLASK_RED);
 				weapon = null;
 			}
+			break;
+		case FLASK_YELLOW:
+			affections.add(AffectionKind.INVINCIBILITY);
+			EngineZildo.soundManagement.broadcastSound(BankSound.Invincible, this);
 			break;
 		case MILK:
 			sentence = UIText.getGameText("milk.action");
@@ -447,6 +455,7 @@ public class PersoZildo extends Perso {
 	 */
 	@Override
 	public void die(boolean p_link, Perso p_shooter) {
+		affections.clear();
 		if (EngineZildo.game.multiPlayer) {
 			super.die(p_link, p_shooter);
 			EngineZildo.multiplayerManagement.kill(this, p_shooter);
@@ -562,7 +571,7 @@ public class PersoZildo extends Perso {
 		shield.setVisible(false);
 		sword.setVisible(false);
 		
-		if (isQuadDamaging()) {
+		if (isAffectedBy(AffectionKind.QUAD_DAMAGE)) {
 			if (shieldEffect == null) {
 				shieldEffect = new ShieldEffect(this, ShieldType.REDBALL);
 			}
@@ -571,6 +580,11 @@ public class PersoZildo extends Perso {
 			setSpecialEffect(EngineFX.NO_EFFECT);
 			shieldEffect.kill();
 			shieldEffect = null;
+		}
+		if (isAffectedBy(AffectionKind.INVINCIBILITY)) {
+			setSpecialEffect(EngineFX.WHITE_HALO);
+		} else {
+			setSpecialEffect(EngineFX.NO_EFFECT);
 		}
 		// Shield effect animation
 		if (shieldEffect != null) {
@@ -757,14 +771,10 @@ public class PersoZildo extends Perso {
 				guiCircle = null;
 			}
 		}
+		
+		// Affections
+		affections.render();
 
-		// Quad damage
-		if (quadDuration > 0) {
-			quadDuration--;
-			if (quadDuration == 160) {
-				EngineZildo.soundManagement.playSound(BankSound.QuadDamageLeaving, this);
-			}
-		}
 		setAjustedX((int) xx);
 		setAjustedY((int) yy);
 		if (!askedVisible) {
@@ -935,7 +945,7 @@ public class PersoZildo extends Perso {
 			countArrow += 5;
 			break;
 		case QUAD1:
-			quadDuration = MultiplayerManagement.QUAD_TIME_DURATION;
+			affections.add(AffectionKind.QUAD_DAMAGE);
 			EngineZildo.multiplayerManagement.pickUpQuad();
 			break;
 		case DYNAMITE:
@@ -1269,8 +1279,8 @@ public class PersoZildo extends Perso {
 		this.sightAngle = sightAngle;
 	}
 
-	public boolean isQuadDamaging() {
-		return quadDuration > 0;
+	public boolean isAffectedBy(AffectionKind kind) {
+		return affections.isAffectedBy(kind);
 	}
 	
 	public int getMoonHalf() {
