@@ -430,11 +430,17 @@ public class PersoNJ extends Perso {
 
 	final int[] seqWakeUp = { 0, 2, 0, 2, 3 };
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// finaliseComportement
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// Manage character's graphic side, depending on the position in the animated sequence.
-	// /////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * finaliseComportement : 
+	 * Manage character's graphic side, depending on the position in the animated sequence.
+	 * 
+	 * NOTE: There's a dirty things here, about "addSpr" field of Perso.
+	 * Here, we calculate 'nSpr' with initial value of 'nSpr' + PersoDesription.nth(addSpr).
+	 * In most of the cases, this is harmless, but if the PersoDescription contains a non-contiguous 
+	 * sequence of sprites (example {@link PersoDescription#FISH}) this will lead to a problem.
+	 * Symptom is when game is paused : 'move' method of Perso isn't called anymore, so if it handle
+	 * the 'addSpr' set, a sprite could be badly rendered, with the wrong graphics ... (arg)
+	 */
 	@Override
 	public void finaliseComportement(int compteur_animation) {
 

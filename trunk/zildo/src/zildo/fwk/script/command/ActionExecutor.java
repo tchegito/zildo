@@ -165,6 +165,7 @@ public class ActionExecutor {
                         if (p_action.foreground != null) {
                         	perso.setForeground(p_action.foreground);
                         }
+                        perso.beingMoved();
                     } else if ("camera".equals(p_action.what)) {
                         ClientEngineZildo.mapDisplay.setCamera(location);
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);

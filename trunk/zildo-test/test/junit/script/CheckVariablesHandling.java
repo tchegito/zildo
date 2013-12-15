@@ -46,6 +46,18 @@ public class CheckVariablesHandling extends EngineScriptUT {
 					 "  <var name='stolenMoney' value='12'/>" +
 					 " </scene>"+
 					 "</adventure>";
+	
+	String thirdXML="<adventure>"+
+					" <scene id='test3'>"+
+					"  <var name='fishWater' value='0'/>"+
+					"  <var name='fishWater' value='fishWater+1'/>"+
+					"  <var name='fishWater' value='fishWater+2'/>"+
+					"  <if exp='fishWater=3'>" +
+					"   <var name='result' value='1'/>"+
+					"  </if>"+
+					" </scene>"+
+					"</adventure>";
+	
 	@Test
 	public void assignation() throws Exception {
 		
@@ -108,5 +120,18 @@ public class CheckVariablesHandling extends EngineScriptUT {
 		Game.deserialize(buffer, false);
 		// Check that saved game overrides global values
 		Assert.assertEquals("12.0", scriptMgmt.getVariables().get("stolenMoney"));
+	}
+	
+	@Test
+	public void testIncrementAndTest() throws Exception {
+		loadXMLAsString(thirdXML);
+		
+		scriptMgmt.execute("test3", true);
+		while (scriptMgmt.isScripting()) {
+			scriptMgmt.render();
+		}
+		
+		Assert.assertEquals("3.0", scriptMgmt.getVariables().get("fishWater"));
+		Assert.assertEquals("1.0", scriptMgmt.getVariables().get("result"));
 	}
 }
