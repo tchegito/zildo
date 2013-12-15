@@ -68,7 +68,7 @@ A trigger can be of 6 different kinds : (corresponding to [http://code.google.co
 To handle some automatic events, like "hero opens a chest", or "hero unlocks a door", we need to remember that players did it. So it's represented as a quest in the savegame.
 
 To name such quest, we use a simple mechanism:
-<code><mapName><location></code>
+<code>questName = "<mapName><location>"</code>
 
 For example, the following is the name of a quest happening on map "voleursm2u" at location (4,3) :
 <code>"voleursm2u(4, 3)"</code>
@@ -150,7 +150,7 @@ But sometimes, we need to execute a script without blocking the player. For exam
      (...)
 </quest>
 }}}
-It means that this quest doesn't lock the player movements. He can move around during this quest is executing its actions, as if no script was going on. Basically, all scripts executed from this quest unherits the locked attribute.
+It means that this quest doesn't lock the player movements. He can move around while this quest is executing its actions, as if no script was going on. Basically, all scripts executed from this quest inherits the locked attribute.
 
 === Misc ===
 
