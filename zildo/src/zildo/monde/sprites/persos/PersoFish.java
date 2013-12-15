@@ -75,20 +75,36 @@ public class PersoFish extends PersoShadowed {
 			}
 		}
 	}
+
+	@Override
+	public void finaliseComportement(int compteur_animation) {
+		if (underWater) {
+			addSpr = 4;
+		}
+		super.finaliseComportement(compteur_animation);
+	}
+	
+	@Override
+	public void beingMoved() {
+		TileNature nature = EngineZildo.mapManagement.getCurrentMap().getCaseNature((int) x / 16, (int) y / 16);
+		if (nature == TileNature.WATER) {
+			underWater = true;
+			shadow.setVisible(false);
+			z = 0;
+		} else {
+			underWater = false;
+			shadow.setVisible(true);
+		}
+	}
 	
     @Override
 	public void fall() {
 		flying = false;
 		linkedPerso = null;
+		beingMoved();
 		// Fish was flying because someone threw it : detect if it's on a water tile
-		TileNature nature = EngineZildo.mapManagement.getCurrentMap().getCaseNature((int) x / 16, (int) y / 16);
-		if (nature == TileNature.WATER) {
-			underWater = true;
-			shadow.setVisible(false);
+		if (underWater) {
 			super.fall();
-		} else {
-			underWater = false;
-			shadow.setVisible(true);
 		}
     }
 }

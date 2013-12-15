@@ -959,6 +959,13 @@ public abstract class Perso extends Element {
 		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);		
 	}
 
+	/** Called when a script move this character with a 'pos' action.
+	 * In order to update script, behavior when he's in a particular floor for example.
+	 */
+	public void beingMoved() {
+		
+	}
+	
 	@Override
 	public void setDesc(SpriteDescription p_desc) {
 		super.setDesc(p_desc);
