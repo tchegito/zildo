@@ -552,13 +552,13 @@ public class Area implements EasySerializable {
 				if (spawnGoodies) {
 					PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 	
-					if (Hasard.lanceDes(Hasard.hazardBushes_Arrow) && (multiPlayer || zildo.hasItem(ItemKind.BOW))) {
+					if ((multiPlayer || zildo.hasItem(ItemKind.BOW) && Hasard.lanceDes(Hasard.hazardBushes_Arrow))) {
 						sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 0, null, null);
 					} else if (Hasard.lanceDes(Hasard.hazardBushes_GoldCoin)) {
 						sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, p.x, p.y + 5, 0, null, null);
 					} else if (Hasard.lanceDes(Hasard.hazardBushes_BlueDrop)) {
 						sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, p.x + 3, p.y + 5, p_destroy ? 0 : 1, null, null);
-					} else if (Hasard.lanceDes(Hasard.hazardBushes_Bombs) && (multiPlayer || zildo.hasItem(ItemKind.DYNAMITE))) {
+					} else if (multiPlayer && Hasard.lanceDes(Hasard.hazardBushes_Bombs)) {
 						sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 0, null,
 								ElementDescription.BOMBS3);
 					}
