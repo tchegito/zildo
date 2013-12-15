@@ -64,6 +64,8 @@ public enum BankSound implements AudioBank {
 	QuadDamageLeaving("damage2"),
 	QuadDamaging("damage3"),
 	
+	Invincible("invincible"),
+	
 	MonstreTouche("touche"),
 	MonstreTouche2("touche2"),
 	MonstreMeurt("meurt"),
