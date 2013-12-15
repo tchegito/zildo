@@ -286,6 +286,15 @@
         </action>
     </quest>
     
+    <quest name="rewardMinsk">
+        <trigger>
+            <location name="igorv3"/>
+            <dialog name="minsk" num="4"/>
+        </trigger>
+        <action>
+            <take item="FLASK_YELLOW"/>
+        </action>
+    </quest>
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        

@@ -18,7 +18,7 @@
  *
  */
 
-package zildo.monde.sprites.utils;
+package zildo.monde.sprites.magic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +27,13 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.utils.CompositeElement;
 import zildo.server.EngineZildo;
 
 public class ShieldEffect {
 
     public enum ShieldType {
-        REDBALL;
+        REDBALL
     }
 
     float alpha = 0.0f;
