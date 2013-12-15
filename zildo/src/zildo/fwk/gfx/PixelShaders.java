@@ -82,27 +82,6 @@ public abstract class PixelShaders {
 			"		gl_FragColor = Color4;",
 			"	else gl_FragColor=texel * curColor;",
 			"}"};
-/*
-			{"!!ARBfp1.0",
-							"dcl t0.xy",
-							"dcl_2d s0",
-							//"def c1, 0.0, 0.0, -1.0, -0.5",	// Couleur qu'on cherche (*-1)
-							//"def c2, 0.6, 0.6, 0.6, 1.0",	// Couleur à mettre à la place
-							//"def c3, 0.0, -1.0, 0.0, -0.5",	// Couleur qu'on cherche (*-1)
-							//"def c4, 0.3, 0.3, 0.3, 1.0",	// Couleur à mettre à la place
-							"texld r0, t0, s0",		// On a le pixel de la texture en r0
-							"mov r2, r0",			// On sauve cette valeur
-							"add r1, r0, c1",		// On prend la différence
-							"dp3 r1, r1, r1",		// On somme RGB sur une seule composante
-							"cmp r0, r1, c2, r2",
-							"cmp r0, -r1, c2, r2",
-							"mov r2, r0",			// On resauve au cas où la 1ère substitution a été faite
-							"add r1, r0, c3",
-							"dp3 r1, r1, r1",
-							"cmp r0, r1, c4, r2",
-							"cmp r0, -r1, c4, r2",
-							"mov oC0, r0"};
-	*/
 			String cPSGuardHurt[] = {
 					"uniform vec4 randomColor;",
 					"uniform sampler2D tex;",
@@ -113,52 +92,25 @@ public abstract class PixelShaders {
 					"		gl_FragColor.w = 1.0;",
 					"	}",
 					"}"};
-			/*
-					"ps_2_0",
-							"dcl t0.xy",
-							"dcl_2d s0",
-							"def c2, 0.1, 0.0, 0.0, 0.0",
-							"texld r0, t0, s0",		// On a le pixel de la texture en r0
-							"add r1, r0, c1",		// C1 doit contenir un random (R,G,B,0)
-							//"sub r2, r2.a, c2.x",
-							"mov r2.rgba, r0.aaaa",
-							"cmp r0, r2, r1, r0",
-							"mov oC0, r0"};
-	
-							
-		/*
-			(a,b,c,1) comparé à (0,0,1,0)
-			x=y si (x>=y && y>=x)
-				   (x-y>=0 && y-x>=0)
-	
-			cmp a,b,c,d ==> a= c si b>=0
-							   d si b<0
-	
-				   Ce qu'on veut :
-					-en entrée on a 'c' = couleur du pixel à afficher
-					-s'il est égal à 'v', on le remplace par c2
-	
-					1) c==v ssi c>=v && c<=v
-					   c!=v ssi c<v || c>v
-					2) on va poser r1=c-v et r0=c
-					3) on va faire 2 comparaisons
-						a/ cmp r0,r1,c1,r0
-							  r0 reste inchangé si r1<0
-												== (c-v)<0
-												== c<v
-						b/ cmp r0,-r1,c1,r0
-							  r0 reste inchangé si -r1<0
-											    == v-c<0
-												== v<c
-	
-			cmp r0,r1,c1,r2
-			cmp r0,-r1,c1,r2
-	*/
+			
+			String cPSInvincibility[] = {
+					"uniform vec4 factor;",
+					"uniform sampler2D tex;",
+					"const float blurSize = 1.0/256.0;",
+					"void main (void) {",
+					"	vec4 texel=texture2D(tex, gl_TexCoord[0].st);",
+					"   float gray = dot(vec3(texel),vec3(0.3, 0.59, 0.11));",
+					"   gray = clamp(gray * (factor.x * 4.0), 0.0, 1.0);",
+					"   gl_FragColor = vec4(gray ,gray, 0, texel.w);",
+					"}"};
 		String shaderCode;
 		shaderCode=getShaderCode(cPSGuard);
 		addPixelShader(shaderCode);
 		
 		shaderCode=getShaderCode(cPSGuardHurt);
+		addPixelShader(shaderCode);
+		
+		shaderCode=getShaderCode(cPSInvincibility);
 		addPixelShader(shaderCode);
 	}
 	

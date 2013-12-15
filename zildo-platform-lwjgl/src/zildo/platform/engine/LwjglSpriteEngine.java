@@ -54,6 +54,8 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		this.textureEngine = texEngine;
 	}
 	
+	float gamma;
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// render
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +112,10 @@ public class LwjglSpriteEngine extends SpriteEngine {
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(1));
 						ClientEngineZildo.pixelShaders.setParameter(1, "randomColor", new Vector4f((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
 						break;
+                	case WHITE_HALO:
+						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(2));
+						ClientEngineZildo.pixelShaders.setParameter(2, "factor", new Vector4f((float) (0.6+0.4*Math.cos(3*gamma)), 0, 0, 1));
+						break;
 					default:
 						if (currentFX.needPixelShader()) {
 							// This is a color replacement, so get the right ones
@@ -133,11 +139,22 @@ public class LwjglSpriteEngine extends SpriteEngine {
 	                    GL11.glColor4f(1, (float) Math.random(), 0, (float) Math.random());
 	                    break;
 	                case QUAD:
-	                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	                    GL11.glColor4f(0.5f + 0.5f * (float) Math.random(), 0.5f * (float) Math.random(), 0, 1);
+	                    //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	                    //GL11.glColor4f(0.5f + 0.5f * (float) Math.random(), 0.5f * (float) Math.random(), 0, 1);
+	                    GL11.glColor4f(0.7f, 0.6f, 0.8f, 1);
 	                    break;
+	                    /*
+	                case WHITE_HALO:
+	                	float r = (float) (0.6 + 0.4 * Math.random());
+	                	GL11.glColor4f(r, 0, 0, 1);
+	                    GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	                	break;
+	                	*/
 	                case FOCUSED:
 	                	GL11.glColor4f(1.0f, 1.0f, 1.0f, alpha / 255.0f);
+	                	break;
+	                case INFO:
+	                	GL11.glColor4f(0.9f, 0.8f, 0.72f, alpha / 255.0f);
 	                	break;
 	                default:
 	                	color[3]=alpha / 255.0f;
@@ -154,6 +171,8 @@ public class LwjglSpriteEngine extends SpriteEngine {
 			ARBShaderObjects.glUseProgramObjectARB(0);
 		}
 		GL11.glDisable(GL11.GL_BLEND);
+		
+		gamma += 0.01f;
 	}
 	
 	
