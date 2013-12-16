@@ -108,7 +108,7 @@ public class Point {
     }
     
     public static float distance(float ax, float ay, float bx, float by) {
-    	return new Point(ax, ay).distance(new Point(bx, by));
+    	return new Pointf(ax, ay).distance(bx, by);
     }
     
     /**

@@ -332,8 +332,8 @@ public class PersoNJ extends Perso {
 						}
 					}
 					attente--;
-					// Stop hen's movements when it's flying (TODO : this isn't very clean)
-				} else if (quel_deplacement != MouvementPerso.HEN || z == 0) {
+					// Stop hen's movements when it's flying (TODO : this isn't very clean, idem for fish !)
+				} else if (quel_deplacement != MouvementPerso.HEN || z == 0 || (desc == PersoDescription.FISH && !flying)) {
 					// On déplace le PNJ
 					if (pathFinder.getTarget() == null && quel_deplacement.isMobile()) {
 						// Pas de destination, donc on en fixe une dans la zone de déplacement

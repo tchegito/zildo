@@ -51,6 +51,10 @@ public class Pointf {
     	return x == 0 && y == 0;
     }
     
+    public static float distance(float ax, float ay, float bx, float by) {
+    	return new Pointf(ax, ay).distance(bx, by);
+    }
+    
     /**
      * Returns the distance between the current point and a given one.
      * @param p_other
