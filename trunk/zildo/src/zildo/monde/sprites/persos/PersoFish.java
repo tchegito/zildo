@@ -19,6 +19,7 @@
 
 package zildo.monde.sprites.persos;
 
+import zildo.monde.Trigo;
 import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.util.Point;
@@ -34,6 +35,8 @@ public class PersoFish extends PersoShadowed {
 	double gamma;
 	double moveAngle;
 	boolean underWater = false;
+
+	boolean sens = true;	// TRUE = PI/2 / FALSE = -PI/2
 	//int radius;	// 20 on floor, and 4 under water
 	
 	public PersoFish() {
@@ -43,6 +46,9 @@ public class PersoFish extends PersoShadowed {
 	
 	@Override
 	public void move() {
+		if (!"f2".equals(name)) {
+			//return;
+		}
 		super.move();
 		if (!flying) {
 			if (linkedPerso != null) {	// In hero's arms
@@ -65,13 +71,30 @@ public class PersoFish extends PersoShadowed {
 				pathFinder.speed *= 0.95f;
 				if (z < 1 && pathFinder != null && (pathFinder.getTarget() == null || pathFinder.speed < 0.1)) {
 					double attackSpeed = 0.5f + Math.random() * 0.1f;
-					moveAngle += Math.PI/4;
+
+					Perso zildo = EngineZildo.persoManagement.lookFor(this, 5, PersoInfo.ZILDO);
+					if (zildo != null) {
+						// Run away from him
+						// cos alpha = (zildo.x - fish.x) / distance(zildo, fish)
+						double angAlpha = Trigo.getAngleRadian(x, y, zildo.x, zildo.y);
+						angAlpha += (sens ? 1 : -1) * Math.PI / 2 * (1 + Math.random());
+						moveAngle = angAlpha;
+						//attackSpeed = 2 + 3.5f * Math.random();
+					} else {					
+						moveAngle += Math.PI/4;
+					}
 					Point targetPoint = new Point((int) (x + radius * attackSpeed * Math.cos(moveAngle)),
 						     					  (int) (y + radius * attackSpeed * Math.sin(moveAngle)) );
 					pathFinder.setTarget(targetPoint);
-					pathFinder.speed = (float) (0.6 + Math.random() * 0.3);
+					pathFinder.speed = (float) (attackSpeed + Math.random() * 0.3);
+					if (zildo != null) {
+						pathFinder.speed *= 3;
+					}
 				}
 				gamma += 0.1d;
+			}
+			if ("f2".equals(name)) {
+				System.out.println(pathFinder.speed);
 			}
 		}
 	}
