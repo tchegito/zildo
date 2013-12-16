@@ -26,6 +26,7 @@ import zildo.server.MultiplayerManagement;
 
 /**
  * An affection is any kind of magic cast on a character : invincibility, poison, quad damage ...
+ * Here, we deals with duration, sound, and the rest.
  * 
  * @author Tchegito
  *
@@ -34,7 +35,7 @@ public class Affection {
 
 	public enum AffectionKind {
 		QUAD_DAMAGE(MultiplayerManagement.QUAD_TIME_DURATION),
-		INVINCIBILITY(140);
+		INVINCIBILITY(500);
 
 		int duration;
 
@@ -54,7 +55,6 @@ public class Affection {
 	}
 	
 	public boolean render() {
-		duration--;
 		
 		// Specific behavior
 		switch (kind) {
@@ -63,7 +63,13 @@ public class Affection {
 				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamageLeaving, perso);
 			}		
 			break;
+		case INVINCIBILITY:
+			if ( (kind.duration - duration) % 100 == 0) {
+				EngineZildo.soundManagement.broadcastSound(BankSound.Invincible, perso);
+			}
 		}
+		duration--;
+
 		return duration <=0;
 	}
 }

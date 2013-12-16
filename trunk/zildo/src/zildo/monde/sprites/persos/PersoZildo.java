@@ -274,7 +274,8 @@ public class PersoZildo extends Perso {
 			break;
 		case FLASK_YELLOW:
 			affections.add(AffectionKind.INVINCIBILITY);
-			EngineZildo.soundManagement.broadcastSound(BankSound.Invincible, this);
+			removeItem(ItemKind.FLASK_YELLOW);
+			weapon = null;
 			break;
 		case MILK:
 			sentence = UIText.getGameText("milk.action");
