@@ -46,9 +46,6 @@ public class PersoFish extends PersoShadowed {
 	
 	@Override
 	public void move() {
-		if (!"f2".equals(name)) {
-			//return;
-		}
 		super.move();
 		if (!flying) {
 			if (linkedPerso != null) {	// In hero's arms
@@ -75,11 +72,9 @@ public class PersoFish extends PersoShadowed {
 					Perso zildo = EngineZildo.persoManagement.lookFor(this, 5, PersoInfo.ZILDO);
 					if (zildo != null) {
 						// Run away from him
-						// cos alpha = (zildo.x - fish.x) / distance(zildo, fish)
 						double angAlpha = Trigo.getAngleRadian(x, y, zildo.x, zildo.y);
 						angAlpha += (sens ? 1 : -1) * Math.PI / 2 * (1 + Math.random());
 						moveAngle = angAlpha;
-						//attackSpeed = 2 + 3.5f * Math.random();
 					} else {					
 						moveAngle += Math.PI/4;
 					}
@@ -92,9 +87,6 @@ public class PersoFish extends PersoShadowed {
 					}
 				}
 				gamma += 0.1d;
-			}
-			if ("f2".equals(name)) {
-				System.out.println(pathFinder.speed);
 			}
 		}
 	}
