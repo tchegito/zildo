@@ -46,7 +46,9 @@ public class Shaders {
 		// Filters
 		pixelateFilter, circleFilter,
 		// Specific for guards, and wounded enemies
-		switchColor, wounded;
+		switchColor, wounded,
+		// Gold (for invincibility)
+		goldFilter;
 		
 		public int id;	// program id
 		// One map for all shaders
@@ -81,6 +83,7 @@ public class Shaders {
 	Vector2f center = new Vector2f(0, 0);
 	Vector4f[] switchedColors = new Vector4f[4];
 	Vector4f woundedColor = new Vector4f(1, 1, 1, 1);
+	float goldFactor;
 	
 	GLShaders current = GLShaders.textured;	// Default is 'textured'
 	
@@ -190,6 +193,9 @@ public class Shaders {
 			case wounded:
 				uniform4f(current.getUniform("randomColor"), woundedColor);
 				break;
+			case goldFilter:
+				uniform4f(current.getUniform("factor"), goldFactor);
+				break;
 			default:
 				uniform4f(current.getUniform("CurColor"), curColor);
 				GLES20.glUniform2f(current.getUniform("vTranslate"), translation.x, translation.y);
@@ -272,5 +278,9 @@ public class Shaders {
 	
 	public void setWoundedColor(Vector4f v) {
 		woundedColor.set(v);
+	}
+	
+	public void setGoldFactor(float f) {
+		goldFactor = f;
 	}
 }
