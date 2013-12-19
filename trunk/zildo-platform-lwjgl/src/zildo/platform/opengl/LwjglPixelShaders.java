@@ -120,4 +120,71 @@ public class LwjglPixelShaders extends PixelShaders {
 	protected void deletePixelShader(int id) {
 		ARBShaderObjects.glDeleteObjectARB(id);
 	}
+	
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// preparePixelShader
+	// /////////////////////////////////////////////////////////////////////////////////////
+	public void preparePixelShader() {
+
+		String cPSGuard[] = {
+				"uniform vec4 Color1;",
+				"uniform vec4 Color2;",
+				"uniform vec4 Color3;",
+				"uniform vec4 Color4;",
+				"uniform vec4 curColor;",
+				"uniform sampler2D tex;",
+				"void main (void) {",
+				"	vec4 texel=texture2D(tex, gl_TexCoord[0].st);",
+				"	if (ceil(texel.w*2.0) == 2.0*Color1.w && texel.xyz==Color1.xyz)", // &&
+																					// ceil(texel.y*2)==2.0f*Color1.y
+																					// &&
+																					// ceil(texel.z*2)==2.0f*Color1.z)", //== Color1.w)",
+				"		gl_FragColor = Color3;",
+				"	else if (ceil(texel.w*2.0) == 2.0*Color2.w && texel.xyz==Color2.xyz)",
+				"		gl_FragColor = Color4;",
+				"	else gl_FragColor=texel * curColor;", "}" };
+		String cPSGuardHurt[] = { "uniform vec4 randomColor;",
+				"uniform sampler2D tex;", "void main (void) {",
+				"	vec4 texel=texture2D(tex, gl_TexCoord[0].st);",
+				"	if (texel.w != 0.0) {",
+				"		gl_FragColor = randomColor- texel / 2.0;",
+				"		gl_FragColor.w = 1.0;", "	}", "}" };
+
+		String cPSInvincibility[] = { "uniform vec4 factor;",
+				"uniform sampler2D tex;", "const float blurSize = 1.0/256.0;",
+				"void main (void) {",
+				"	vec4 texel=texture2D(tex, gl_TexCoord[0].st);",
+				"   float gray = dot(vec3(texel),vec3(0.3, 0.59, 0.11));",
+				"   gray = clamp(gray * (factor.x * 4.0), 0.0, 1.0);",
+				"   gl_FragColor = vec4(gray ,gray, 0, texel.w);", "}" };
+		String shaderCode;
+		shaderCode = getShaderCode(cPSGuard);
+		addPixelShader(shaderCode);
+
+		shaderCode = getShaderCode(cPSGuardHurt);
+		addPixelShader(shaderCode);
+
+		shaderCode = getShaderCode(cPSInvincibility);
+		addPixelShader(shaderCode);
+	}
+
+	private String getShaderCode(String[] lines) {
+		StringBuilder result = new StringBuilder();
+		for (String l : lines) {
+			result.append(l);
+			result.append((char) 13).append((char) 10);
+		}
+		return result.toString();
+	}
+
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// addPixelShader
+	// /////////////////////////////////////////////////////////////////////////////////////
+	private void addPixelShader(String strData) {
+		int programObject = doCreateShader(strData, true);
+		// Uniform values
+
+		tabPixelShaders[n_PixelShaders] = programObject;
+		n_PixelShaders++;
+	}
 }
