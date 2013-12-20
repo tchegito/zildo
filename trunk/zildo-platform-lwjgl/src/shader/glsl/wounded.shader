@@ -6,4 +6,5 @@ void main (void) {
 	if (texel.w != 0.0) {
 		gl_FragColor = randomColor- texel / 2.0;
 		gl_FragColor.w = 1.0;
+	}
 }
