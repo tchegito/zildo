@@ -67,6 +67,11 @@ public class PersoFish extends PersoShadowed {
 				}
 				pathFinder.speed *= 0.95f;
 				if (z < 1 && pathFinder != null && (pathFinder.getTarget() == null || pathFinder.speed < 0.1)) {
+					
+					// Maybe he falls in water ?
+					if (!underWater) {
+						fall();
+					}
 					double attackSpeed = 0.5f + Math.random() * 0.1f;
 
 					Perso zildo = EngineZildo.persoManagement.lookFor(this, 5, PersoInfo.ZILDO);
