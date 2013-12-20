@@ -263,10 +263,9 @@
        	    <dialog name="minsk" num="2"/>
        	</trigger>
        	<action>
-       	    <actions>
-       	    	<moveTo who="zildo" pos="-16,0" delta="true"/>
-       	    	<moveTo who="minsk" pos="-14,12" delta="true"/>
-       	    </actions>
+    	    <moveTo who="zildo" pos="-16,0" speed="0.5" delta="true"/>
+    	    <angle who="zildo" value="1"/>
+    	    <moveTo who="minsk" pos="-14,12" speed="0.5" delta="true"/>
        	    <angle who="minsk" value="0"/>
        	</action>
     </quest>
@@ -393,7 +392,7 @@
 		</condition>
 		<condition name="igorv3" exp="minsk_fishes">
 		    <pos who="minsk" pos="-14,12" delta="true"/>
-		    <angle who="minsk" value="0"/>
+		    <angle who="minsk" value="2"/>
 		</condition>
 		<condition name="igorvillage">
 		    <markQuest name="summonLeafVillage" value="0"/>
