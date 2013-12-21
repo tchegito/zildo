@@ -40,6 +40,7 @@ import zildo.fwk.ui.PageableMenu;
 import zildo.fwk.ui.UIText;
 import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.Game;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -181,6 +182,7 @@ public class SaveGameMenu extends PageableMenu {
 		
 		EngineZildo.mapManagement.loadMap(game.mapName, false);
 
+		
 		//Area area = EngineZildo.mapManagement.getCurrentMap();
 		/*
 		Case c = area.get_mapcase(28, 47+4);
@@ -199,6 +201,12 @@ public class SaveGameMenu extends PageableMenu {
 		c.setTransition(Angle.SUD);
 		*/
 		singlePlay.launchGame();
+		
+		// Clear the way around Zildo (open door for example)
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+		if (zildo != null) {
+			zildo.walkTile(false);
+		}
 		return true;	// success
 	}
 

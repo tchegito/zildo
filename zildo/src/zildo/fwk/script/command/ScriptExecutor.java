@@ -208,8 +208,10 @@ public class ScriptExecutor {
 			return false;
 		}
 		for (ScriptProcess process : scripts) {
-			// Is this script unblocking ?
-			if (process.scene.locked) {
+			// Is this script unblocking and different than any 'mapScript' ?
+			// Because topPriority is set to TRUE only for mapScript. These are the scripts triggered automatically on a new map.
+			// See (<mapScript><condition>... in XML scripts)
+			if (process.scene.locked && !process.topPriority) {
 				return true;
 			}
 		}
