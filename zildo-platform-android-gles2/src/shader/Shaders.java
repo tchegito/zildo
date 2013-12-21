@@ -83,7 +83,7 @@ public class Shaders {
 	Vector2f center = new Vector2f(0, 0);
 	Vector4f[] switchedColors = new Vector4f[4];
 	Vector4f woundedColor = new Vector4f(1, 1, 1, 1);
-	float goldFactor;
+	Vector4f goldFactor;	// Only first component is used
 	
 	GLShaders current = GLShaders.textured;	// Default is 'textured'
 	
@@ -281,6 +281,6 @@ public class Shaders {
 	}
 	
 	public void setGoldFactor(float f) {
-		goldFactor = f;
+		goldFactor = new Vector4f(f, 0, 0, 0);
 	}
 }
