@@ -503,53 +503,55 @@ public class Element extends SpriteEntity {
 		int cy = (int) (y / 16);
 		TileNature nature = area.getCaseNature(cx, cy);
 		
-		switch (nature) {
-		case BOTTOMLESS:	// Means LAVA, actually
-			EngineZildo.soundManagement.broadcastSound(BankSound.LavaDrop, this);
-			EngineZildo.spriteManagement.spawnSpriteGeneric(
-					SpriteAnimation.LAVA_DROP, (int) x, (int) y, 0,	null, null);
-			break;
-		case WATER:
-			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);
-			EngineZildo.spriteManagement.spawnSpriteGeneric(
-					SpriteAnimation.WATER_SPLASH, (int) x, (int) y, 0,	null, null);
-			break;
-		case REGULAR:
-			// 2: on the floor, many possibilities
-			if (nBank == SpriteBank.BANK_ELEMENTS) {
-				// TODO: basically, we shouldn't do that because desc should be set
-				ElementDescription d = ElementDescription.fromInt(nSpr);
-				switch (d) {
-				case BUSHES:
-					// Le buisson s'effeuille
-					EngineZildo.spriteManagement
-							.spawnSpriteGeneric(SpriteAnimation.BUSHES, (int) x,
-									(int) y, 0, null, null);
-					EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
-					break;
-				case JAR:
-				case STONE:
-				case STONE_HEAVY:
-				case ROCK_BALL:
-					EngineZildo.spriteManagement.spawnSpriteGeneric(
-							SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, 0, null, null);
-					EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
-					break;
-				case DYNAMITE:
-					break;
-				case PEEBLE:
-					EngineZildo.soundManagement.broadcastSound(BankSound.PeebleFloor, this);
-					EngineZildo.spriteManagement.spawnSpriteGeneric(
-							SpriteAnimation.DUST, (int) x, (int) y, 0,	null, null);
-					break;
+		if (nature != null) {
+			switch (nature) {
+			case BOTTOMLESS:	// Means LAVA, actually
+				EngineZildo.soundManagement.broadcastSound(BankSound.LavaDrop, this);
+				EngineZildo.spriteManagement.spawnSpriteGeneric(
+						SpriteAnimation.LAVA_DROP, (int) x, (int) y, 0,	null, null);
+				break;
+			case WATER:
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);
+				EngineZildo.spriteManagement.spawnSpriteGeneric(
+						SpriteAnimation.WATER_SPLASH, (int) x, (int) y, 0,	null, null);
+				break;
+			case REGULAR:
+				// 2: on the floor, many possibilities
+				if (nBank == SpriteBank.BANK_ELEMENTS) {
+					// TODO: basically, we shouldn't do that because desc should be set
+					ElementDescription d = ElementDescription.fromInt(nSpr);
+					switch (d) {
+					case BUSHES:
+						// Le buisson s'effeuille
+						EngineZildo.spriteManagement
+								.spawnSpriteGeneric(SpriteAnimation.BUSHES, (int) x,
+										(int) y, 0, null, null);
+						EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
+						break;
+					case JAR:
+					case STONE:
+					case STONE_HEAVY:
+					case ROCK_BALL:
+						EngineZildo.spriteManagement.spawnSpriteGeneric(
+								SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, 0, null, null);
+						EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
+						break;
+					case DYNAMITE:
+						break;
+					case PEEBLE:
+						EngineZildo.soundManagement.broadcastSound(BankSound.PeebleFloor, this);
+						EngineZildo.spriteManagement.spawnSpriteGeneric(
+								SpriteAnimation.DUST, (int) x, (int) y, 0,	null, null);
+						break;
+					}
+					if (questTrigger) {	// Only for bank ELEMENTS now
+						// Activate a quest if we're asked for
+						String questName = EngineZildo.scriptManagement.buildKeyItem(area.getName(), cx, cy, d);
+						EngineZildo.scriptManagement.accomplishQuest(questName, false);
+					}
 				}
-				if (questTrigger) {	// Only for bank ELEMENTS now
-					// Activate a quest if we're asked for
-					String questName = EngineZildo.scriptManagement.buildKeyItem(area.getName(), cx, cy, d);
-					EngineZildo.scriptManagement.accomplishQuest(questName, false);
-				}
+				break;
 			}
-			break;
 		}
 		TriggerElement trigger = TriggerElement.createFallTrigger(desc, nature);
 		EngineZildo.scriptManagement.trigger(trigger);
