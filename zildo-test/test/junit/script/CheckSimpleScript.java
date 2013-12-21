@@ -23,11 +23,16 @@ package junit.script;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import static org.mockito.Mockito.*;
 
 import zildo.fwk.script.logic.FloatVariable;
 import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
+import zildo.server.PersoManagement;
 
 /**
  * Checks the {@link ZSSwitch} and linked classes.
@@ -99,6 +104,39 @@ public class CheckSimpleScript extends SimpleEngineScript {
 		
 		EngineZildo.scriptManagement.accomplishQuest("voleursm3(8,8)", false);
 		Assert.assertTrue(!sw.evaluate().equals(ZSCondition.TRUE));
+		
+	}
+	
+	@Test
+	public void reservedWords() {
+		// 1) Money
+		ZSSwitch simple = new ZSSwitch(0).addCondition("money30", 1).addCondition("money20",3);
+		
+		PersoZildo zildo = new PersoZildo(0);
+		// Mock persomanagement to return our Zildo
+		PersoManagement pm = mock(PersoManagement.class);
+		EngineZildo.persoManagement = pm;
+		when(pm.getZildo()).thenReturn(zildo);
+		
+		zildo.setMoney(0);
+		Assert.assertSame(0, simple.evaluateInt());
+		zildo.setMoney(25);
+		Assert.assertSame(3, simple.evaluateInt());
+		zildo.setMoney(31);
+		Assert.assertSame(1, simple.evaluateInt());
+		
+		// 2) Moon half
+		simple = new ZSSwitch(0).addCondition("moon3", 1).addCondition("itemEMPTY_BAG", 2).addCondition("itemSWORD", 3);
+		Assert.assertSame(0, simple.evaluateInt());
+		zildo.setMoonHalf(4);
+		Assert.assertSame(1, simple.evaluateInt());
+		
+		// 3) Items
+		zildo.setMoonHalf(0);
+		zildo.getInventory().add(new Item(ItemKind.SWORD));
+		Assert.assertSame(3, simple.evaluateInt());
+		zildo.getInventory().add(new Item(ItemKind.EMPTY_BAG));
+		Assert.assertSame(2, simple.evaluateInt());
 		
 	}
 	
