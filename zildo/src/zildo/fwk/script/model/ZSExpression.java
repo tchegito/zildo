@@ -87,6 +87,8 @@ public class ZSExpression {
 			String itemName=questName.substring("item".length());
 			ItemKind kind = ItemKind.fromString(itemName);
 			return EngineZildo.persoManagement.getZildo().hasItem(kind);
+		} else if (questName.equals("init")) {
+			return EngineZildo.persoManagement.getZildo().getDialoguingWith().getCompte_dialogue() == 0;
 		}
 		boolean result = EngineZildo.scriptManagement.isQuestOver(questName);
 		if (!done) {
