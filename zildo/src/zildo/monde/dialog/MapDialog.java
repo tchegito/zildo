@@ -133,7 +133,7 @@ public class MapDialog {
 		if (b != null) {
 			behaviors.remove(p_name);
 			for (int i = 0; i < 10; i++) {
-				int nSentence = b.replique[i];
+				int nSentence = b.replique[9-i];
 				if (nSentence > 0) {
 					dialogs.remove(nSentence - 1);
 					// Update all others referring to sentence after (way too
