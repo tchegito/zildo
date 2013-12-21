@@ -1212,7 +1212,7 @@ public class Area implements EasySerializable {
 		List<Perso> persos = filterExportablePersos(EngineZildo.persoManagement.tab_perso);
 		entities.addAll(persos);
 		for (SpriteEntity entity : entities) {
-			if (isOutside((int) entity.x, (int) entity.y)) {
+			if (isOutside((int) entity.x, entity.getAjustedY())) {
 				found.add(entity);
 			}
 		}
