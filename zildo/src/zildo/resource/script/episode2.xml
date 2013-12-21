@@ -294,16 +294,38 @@
             <take item="FLASK_YELLOW"/>
         </action>
     </quest>
+
+    <quest name="takeSawdust">
+        <trigger>
+            <location name="d5m2" pos="93,115" radius="2"/>
+            <use item="EMPTY_BAG"/>
+        </trigger>
+        <action>
+            <putDown item="EMPTY_BAG"/>
+            <take item="FULL_BAG"/>
+            <speak what="camera" text="d5m2.sawdust"/>
+        </action>
+    </quest>
     
-    <quest name="igorWait">
+    <quest name="giveSawdust" locked="false">
+        <trigger>
+            <location name="igorv4"/>
+            <dialog name="boris" num="6"/>
+        </trigger>
+        <action>
+            <putDown item="FULL_BAG"/>"
+        </action>
+    </quest>
+        
+    <quest name="borisWait">
         <!-- This quest is just a way of simulating wait once hero has given his bag to Boris -->
         <trigger>
-            <questDone name="lamedurSciure"/>
-            <location name="igorvillage" pos="897,257"/>
+            <questDone name="giveSawdust"/>
+            <location name="igorvillage" pos="897,277" radius="2"/>
             <inventory item="!FULL_BAG"/>
         </trigger>
     </quest>
-
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        

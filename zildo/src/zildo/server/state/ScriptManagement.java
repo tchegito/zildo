@@ -219,7 +219,7 @@ public class ScriptManagement {
     					trig.done=false;
     				}
     			} else {
-    				// Reset only the 'location' and 'dialog' trigger to 'undone' 
+    				// Reset only the 'location','dialog', 'use' and 'fall' trigger to 'undone' 
     				// (because they have to be immediate)
     				for (TriggerElement trig : quest.getTriggers()) {
     					if (trig.done && trig.isImmediate()){

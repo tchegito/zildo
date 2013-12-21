@@ -41,7 +41,7 @@ public class ZSExpression {
 	FloatExpression floatExpr = null;
 	
 	public ZSExpression(String p_questName) {
-		questName = p_questName;
+		questName = p_questName.trim();
 		done = true;
 	}
 
