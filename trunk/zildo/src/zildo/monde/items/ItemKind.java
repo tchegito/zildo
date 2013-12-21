@@ -44,9 +44,10 @@ public enum ItemKind {
 	MILK(ElementDescription.MILK, 0),
 	NECKLACE(ElementDescription.NECKLACE, 0),
 	ROCK_BAG(ElementDescription.ROCK_BAG, 0),
-	BAG(ElementDescription.ROCK_BAG, 50),	// TODO: add a real description
 	BLUEDROP(ElementDescription.DROP_FLOOR, 10),
-	FLASK_YELLOW(ElementDescription.FLASK_YELLOW, 100);
+	FLASK_YELLOW(ElementDescription.FLASK_YELLOW, 100),
+	EMPTY_BAG(ElementDescription.EMPTY_BAG, 20),
+	FULL_BAG(ElementDescription.FULL_BAG, 20);
 	
 	public SpriteDescription representation;
 	public int price;
@@ -63,6 +64,15 @@ public enum ItemKind {
 			}
 		}
 		throw new RuntimeException("Item "+p_str+" doesn't exists.");
+	}
+	
+	public static ItemKind fromElemDesc(ElementDescription desc) {
+		for (ItemKind kind : values()) {
+			if (kind.representation == desc) {
+				return kind;
+			}
+		}
+		return null;
 	}
 	
 	public String getName() {

@@ -294,6 +294,16 @@
             <take item="FLASK_YELLOW"/>
         </action>
     </quest>
+    
+    <quest name="igorWait">
+        <!-- This quest is just a way of simulating wait once hero has given his bag to Boris -->
+        <trigger>
+            <questDone name="lamedurSciure"/>
+            <location name="igorvillage" pos="897,257"/>
+            <inventory item="!FULL_BAG"/>
+        </trigger>
+    </quest>
+
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        

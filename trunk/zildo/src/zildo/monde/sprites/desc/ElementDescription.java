@@ -117,7 +117,11 @@ public enum ElementDescription implements SpriteDescription {
 	// 219
 	ANCHOR_BAN, EATEN_FISH, EATEN_FISH2,
 	// 222
-	WATER_ANIM1, WATER_ANIM2, WATER_ANIM3, WATER_ANIM4;
+	WATER_ANIM1, WATER_ANIM2, WATER_ANIM3, WATER_ANIM4,
+	// 226
+	INVENTOR_SIGN,
+	// 227
+	EMPTY_BAG, FULL_BAG;
 	
 	Boolean damage;
 	
@@ -150,22 +154,7 @@ public enum ElementDescription implements SpriteDescription {
 	 * @return ItemKind
 	 */
 	public ItemKind getItem() {
-		switch (this) {
-		case SWORD:
-			return ItemKind.SWORD;
-		case ENEMYARC_RIGHT1:
-			return ItemKind.BOW;
-		case DYNAMITE:
-			return ItemKind.DYNAMITE;
-		case BOOMERANG1:
-			return ItemKind.BOOMERANG;
-		case NECKLACE:
-			return ItemKind.NECKLACE;
-		case ROCK_BAG:
-			return ItemKind.ROCK_BAG;
-		default:
-			return null;
-		}
+		return ItemKind.fromElemDesc(this);
 	}
 
 	@Override
