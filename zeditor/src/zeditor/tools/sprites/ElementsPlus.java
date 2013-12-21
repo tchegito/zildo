@@ -267,7 +267,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(51, 58, 3, 8),
 				// Psychic and sorcerer sign
 				new Zone(32, 197, 32, 19), new Zone(0, 216, 32, 16),
-				// Note 2
+				// Note 2 (192)
 				new Zone(55, 58, 7, 8),
 				// Rock bag
 				new Zone(59, 85, 16, 16), new Zone(75, 85, 4, 4),
@@ -275,7 +275,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(262, 0, 35, 35),
 				// Lava drop animation
 				new Zone(185, 49, 9, 9), new Zone(195, 49, 9, 9), new Zone(205, 49, 9, 9), new Zone(215, 49, 9, 9),
-				// Dust
+				// Dust (200)
 				new Zone(185, 59, 3, 6), new Zone(189, 59, 3, 6), new Zone(193, 59, 3, 6),
   	            // Zzz
 		        new Zone(63, 58, 7, 7), new Zone(63, 66, 7, 6),
@@ -286,7 +286,7 @@ public class ElementsPlus extends SpriteBanque {
 		        // Decors (plate, fork and candle)
 		        new Zone(232, 16, 16, 15), new Zone(250, 16, 4, 12), 
 		        new Zone(88, 81, 7, 14), new Zone(96, 81, 7, 14), new Zone(104, 81, 7, 14),
-		        // Poison
+		        // Poison (213)
 		        new Zone(113, 56, 16, 16), new Zone(129, 72, 16, 16),
 		        // Carpet border
 		        new Zone(146,71, 16, 8),
@@ -299,12 +299,16 @@ public class ElementsPlus extends SpriteBanque {
 		        // Red projectile (flying serpent)
 		        new Zone(146, 85, 5, 5), new Zone(152, 85, 5, 5), new Zone(158, 85, 5, 5),
 		        new Zone(146, 80, 5, 5), new Zone(152, 80, 5, 5), new Zone(158, 80, 5, 5),
-				// Anchors
+				// Anchors (226)
 				new Zone(65, 190, 20,22),new Zone(86, 186, 26, 19),
 				new Zone(65, 190, 16, 16), //, new Zone(82, 190, 16, 16),
 				// Fall in water animation
 				new Zone(238, 35, 24, 16), new Zone(263, 35, 24, 16),
-				new Zone(288, 35, 24, 16), new Zone(238,52, 24, 16)
+				new Zone(288, 35, 24, 16), new Zone(238,52, 24, 16),
+				// Inventor sign (233)
+				new Zone(0, 232, 32, 16),
+				// Bag (empty and full)
+				new Zone(79, 85, 16, 16), new Zone(95, 85, 15, 17)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -314,6 +318,8 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("objets", 181, 0),
 				new GraphChange("elem", 183, 0),
 				new GraphChange("objets", 187, 0),
-				new GraphChange("elem", 189, 0)});
+				new GraphChange("elem", 189, 0),
+				new GraphChange("objets", 228, 0)
+				});
 	}
 }
