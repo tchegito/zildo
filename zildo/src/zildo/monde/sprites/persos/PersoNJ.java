@@ -494,6 +494,7 @@ public class PersoNJ extends Perso {
 		case MOUSTACHU:
 		case FISHER:
 		case MINSK:
+		case INVENTOR:
 		case HECTOR:
 			reverse = seq2 == 0 ? Reverse.NOTHING : Reverse.HORIZONTAL;
 			switch (angle) {

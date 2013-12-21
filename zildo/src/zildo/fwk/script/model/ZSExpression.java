@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.script.logic.FloatExpression;
+import zildo.monde.items.ItemKind;
 import zildo.server.EngineZildo;
 
 /**
@@ -82,6 +83,10 @@ public class ZSExpression {
 			int moonFragment=Integer.valueOf(questName.substring("moon".length()));
 			int currentFragmentNb = EngineZildo.persoManagement.getZildo().getMoonHalf();
 			return currentFragmentNb >= moonFragment;
+		} else if (questName.startsWith("item")) {
+			String itemName=questName.substring("item".length());
+			ItemKind kind = ItemKind.fromString(itemName);
+			return EngineZildo.persoManagement.getZildo().hasItem(kind);
 		}
 		boolean result = EngineZildo.scriptManagement.isQuestOver(questName);
 		if (!done) {
