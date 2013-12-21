@@ -65,6 +65,10 @@ public class DialogManagement {
 	 * @param p_actionDialog
 	 */
 	public void launchDialog(ClientState p_client, Perso persoToTalk, ActionDialog p_actionDialog ) {
+		if (persoToTalk != null) {
+			// Need to be done early because ZSSwitch need to know who is speaking
+			p_client.zildo.setDialoguingWith(persoToTalk);
+		}
 	    WaitingDialog even = createWaitingDialog(p_client, persoToTalk);
 
 	    if (even != null) {
@@ -85,9 +89,7 @@ public class DialogManagement {
 			dialogQueue.add(even);
 			
         	
-			if (persoToTalk != null) {
-		        p_client.zildo.setDialoguingWith(persoToTalk);
-			} else if (p_client.zildo.getDialoguingWith() != null) {
+			if (persoToTalk == null && p_client.zildo.getDialoguingWith() != null) {
 				// Zildo is talking with someone, and an automatic behavior happens (he takes an item).
 				// After this automatic dialog, he should get back to the conversation.
 				p_client.dialogState.continuing = true;

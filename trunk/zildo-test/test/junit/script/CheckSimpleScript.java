@@ -30,6 +30,7 @@ import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 import zildo.server.PersoManagement;
@@ -138,6 +139,13 @@ public class CheckSimpleScript extends SimpleEngineScript {
 		zildo.getInventory().add(new Item(ItemKind.EMPTY_BAG));
 		Assert.assertSame(2, simple.evaluateInt());
 		
+		// 4) Init
+		simple = new ZSSwitch(0).addCondition("init", 2);
+		PersoNJ who = new PersoNJ();
+		zildo.setDialoguingWith(who);
+		Assert.assertSame(2, simple.evaluateInt());
+		who.setCompte_dialogue(1);
+		Assert.assertSame(0, simple.evaluateInt());
 	}
 	
 	@Override
