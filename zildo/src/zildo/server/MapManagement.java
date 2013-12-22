@@ -125,12 +125,11 @@ public class MapManagement {
 			EngineZildo.scriptManagement.prepareMapSubTriggers(p_mapname);
 		}
 
-
-		// Do the map replacements
-		EngineZildo.scriptManagement.doMapReplacements(adjustedMapName);
-		
 		// Load a new one
 		currentMap = loadMapFile(adjustedMapName, p_mapname);
+		// Do the map replacements
+		EngineZildo.scriptManagement.execMapScript(adjustedMapName);
+		
 		EngineZildo.spriteManagement.initForNewMap();
 
 		if (!EngineZildo.game.editing) {

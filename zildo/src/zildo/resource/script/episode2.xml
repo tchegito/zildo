@@ -326,6 +326,31 @@
         </trigger>
     </quest>
     
+    <quest name="backCoucou">
+        <trigger>
+            <location name="coucou"/>
+        </trigger>
+        <action>
+            <exec script="zildoCrossCoucouNight"/>
+        </action>
+    </quest>
+    
+    <quest name="blockPrisonExt" repeat="true">
+        <trigger>
+            <questDone name="backCoucou"/>
+            <location name="prisonext" pos="368,6" radius="2"/>
+        </trigger>
+        <action>
+            <actions>
+                <speak who="zildo" text="pext.z.0"/>
+                <moveTo who="zildo" pos="0,32" delta="true"/>
+            </actions>
+        </action>
+    </quest>
+    
+    <quest name="zildoDream"> <!--  Signifie que la nuit est passée -->
+        
+    </quest>
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -377,7 +402,7 @@
 		    </actions>
    		</condition>
    		<condition name="prisonext" exp="trig_echange">
-   		    <perso who="gardenord" type="GARDE_CANARD" effect="GUARD_BLACK"/>
+   		    <perso who="gardenord" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
    		    <perso who="gard2" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
    		    <perso who="gard3" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
    		    <perso who="gard4" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
@@ -440,6 +465,19 @@
    		    <pos who="f4" pos="150,116"/>
    		    <pos who="f5" pos="125,113"/>
    		    <pos who="f6" pos="145,121"/>
+   		</condition>
+   		<condition name="coucou" exp="attaque_voleurs-!zildoDream">
+   		    <remove who="papy"/>
+   		    <remove who="vieille"/>
+   		    <remove who="petula"/>
+   		    <remove who="c1"/>
+   		    <remove who="c2"/>
+   		    <remove who="p1"/>
+   		    <remove who="p2"/>
+   		    <remove who="p3"/>
+   		    <remove who="p4"/>
+   		    <remove who="p5"/>
+   		    <remove who="garde"/>
    		</condition>
 	</mapScript>
 
@@ -689,6 +727,27 @@
 	    <moveTo what="leaf" pos="-2*zildo.angle.x,-2*zildo.angle.y" way="physic" unblock="true"/>
 	    <wait value="5"/>
 	    <sound name="SlipWater1"/>
+	</scene>
+	
+	<scene id="zildoCrossCoucouNight">
+	    <speak who="zildo" text="coucou.z.0"/>
+	    <moveTo who="zildo" pos="874,500"/>
+		<moveTo who="zildo" pos="874,593"/>
+		<speak who="zildo" text="coucou.z.1" unblock="true"/>
+		<moveTo who="zildo" pos="927,596"/>
+		<moveTo who="zildo" pos="924,726"/>
+		<moveTo who="zildo" pos="808,738"/>
+		<moveTo who="zildo" pos="542,915"/>
+		<moveTo who="zildo" pos="381,961"/>
+	   	<angle who="zildo" value="2"/>
+	   	<wait value="20"/>
+	   	<speak who="zildo" text="coucou.z.2"/>
+	   	<moveTo who="zildo" pos="368,1025"/>
+	   	<!--  switch map to prisonext -->
+	   	<wait value="20"/>
+	   	<moveTo who="zildo" pos="368,64"/>
+	   	<angle who="zildo" value="3"/>
+	   	<speak who="zildo" text="coucou.z.3"/>
 	</scene>
 	
 	<persoAction id="sleeping">
