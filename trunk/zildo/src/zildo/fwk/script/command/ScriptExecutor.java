@@ -204,15 +204,30 @@ public class ScriptExecutor {
 	}
 	
 	public boolean isScripting() {
+		return isScripting(false);
+	}
+	
+	/**
+	 * Returns TRUE if any blocking script is going.
+	 * @param onlyTopPriority TRUE=focus only on topPriority script (=mapScript)
+	 * @return
+	 */
+	public boolean isScripting(boolean onlyTopPriority) {
 		if (scripts.isEmpty()) {
 			return false;
 		}
 		for (ScriptProcess process : scripts) {
-			// Is this script unblocking and different than any 'mapScript' ?
-			// Because topPriority is set to TRUE only for mapScript. These are the scripts triggered automatically on a new map.
-			// See (<mapScript><condition>... in XML scripts)
-			if (process.scene.locked && !process.topPriority) {
-				return true;
+			if (onlyTopPriority) {
+				// Because topPriority is set to TRUE only for mapScript. These are the scripts triggered automatically on a new map.
+				// See (<mapScript><condition>... in XML scripts)
+				if (process.topPriority) {
+					return true;
+				}
+			} else {
+				// Is this script unblocking
+				if (process.scene.locked) {
+					return true;
+				}
 			}
 		}
 		return false;

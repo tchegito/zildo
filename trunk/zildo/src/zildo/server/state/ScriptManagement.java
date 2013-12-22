@@ -127,6 +127,12 @@ public class ScriptManagement {
     	return scriptExecutor.isScripting();
     }
     
+    private void execAllPrioritiesScript() {
+    	while (scriptExecutor.isScripting(true)) {
+    		render();
+    	}
+    }
+    
     public void userEndAction() {
     	scriptExecutor.userEndAction();
     }
@@ -506,7 +512,7 @@ public class ScriptManagement {
 		accomplishQuest(buildKeyItem(p_mapName, p_x, p_y, p_desc), false);
 	}
 
-	public void doMapReplacements(String p_mapName) {
+	public void execMapScript(String p_mapName) {
 		for (MapscriptElement mapScript : adventure.getMapScripts()) {
 			for (ConditionElement condi : mapScript.getConditions()) {
 				if (condi.mapName.equals(p_mapName) && condi.isRight()) {
@@ -515,6 +521,8 @@ public class ScriptManagement {
 				}
 			}
 		}
+		// Wait for all executions over
+		execAllPrioritiesScript();
 	}
 	
 	/**
