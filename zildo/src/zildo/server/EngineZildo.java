@@ -236,7 +236,7 @@ public class EngineZildo {
             	}
                 break;
 			case CHANGINGMAP_WAITSCRIPT:	// Engine is doing 'map script' (see MapscriptElement)
-				if (!scriptManagement.isScripting()) {
+				if (!scriptManagement.isPriorityScripting()) {
 					retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL;
 				}
 				retEvent.chPoint = null;
