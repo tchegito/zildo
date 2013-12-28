@@ -100,6 +100,11 @@ public class MapManagement {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Destroy any data referring to current map, and given one
 	// /////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Destroy any data referring to current map, and load the given one.
+	 * @param p_mapname new map name to load (with or without MAP extension)
+	 * @param p_additive TRUE=load a map without removing the current one (for scrolling)
+	 */
 	public void loadMap(String p_mapname, boolean p_additive) {
 		// Remove previous map
 		if (p_additive) {

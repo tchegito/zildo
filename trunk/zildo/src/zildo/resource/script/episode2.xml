@@ -341,10 +341,8 @@
             <location name="prisonext" pos="368,6" radius="2"/>
         </trigger>
         <action>
-            <actions>
-                <speak who="zildo" text="pext.z.0"/>
-                <moveTo who="zildo" pos="0,32" delta="true"/>
-            </actions>
+            <speak who="zildo" text="pext.z.0"/>
+            <moveTo who="zildo" pos="0,32" delta="true"/>
         </action>
     </quest>
     
@@ -739,7 +737,7 @@
 		<moveTo who="zildo" pos="808,738"/>
 		<moveTo who="zildo" pos="542,915"/>
 		<moveTo who="zildo" pos="381,961"/>
-	   	<angle who="zildo" value="2"/>
+	   	<angle who="zildo" value="3"/>
 	   	<wait value="20"/>
 	   	<speak who="zildo" text="coucou.z.2"/>
 	   	<moveTo who="zildo" pos="368,1025"/>

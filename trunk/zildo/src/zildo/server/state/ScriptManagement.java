@@ -127,6 +127,10 @@ public class ScriptManagement {
     	return scriptExecutor.isScripting();
     }
     
+    public boolean isPriorityScripting() {
+    	return scriptExecutor.isScripting(true);
+    }
+    
     private void execAllPrioritiesScript() {
     	while (scriptExecutor.isScripting(true)) {
     		render();
@@ -250,8 +254,9 @@ public class ScriptManagement {
     }
 
     /**
-     * Method designed for optimization : we have to chek at each character's movement, if he activates
+     * Method designed for optimization : we have to check at each character's movement, if he activates
      * a trigger. So, this must be a fast operation.
+     * Here we isolate all triggers eligible to a specific location on the current map.
      * @param p_mapName
      */
     public void prepareMapSubTriggers(String p_mapName) {
@@ -262,6 +267,7 @@ public class ScriptManagement {
     			for (TriggerElement trig : quest.getTriggers()) {
     				if (trig.isLocationSpecific() && trig.mapNameMatch(p_mapName)) {
     					locationTriggerOnMap.add(trig);
+    					break;
     				}
     			}
     		}
