@@ -118,7 +118,11 @@ public class PjZildo extends SpriteBanque {
 				new Zone(101, 146, 14, 14), new Zone(116, 146, 7, 12),
 				
 				// Zildo playing flut
-				new Zone(4, 165, 15, 23)
+				new Zone(4, 165, 15, 23),
+				
+				// Sleeping
+				new Zone(25, 178, 15, 13), new Zone(25, 165, 15, 13),
+				new Zone(42, 177, 15, 13), new Zone(58, 177, 12, 13)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{

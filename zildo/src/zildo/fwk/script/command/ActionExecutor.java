@@ -518,13 +518,23 @@ public class ActionExecutor {
                 			perso.setAttente(p_action.attente);
                 		}
                 		if (p_action.action != null) {
-                			perso.setAction(new ScriptedPersoAction(perso, p_action.action));
+                			if (p_action.action.length() == 0) {
+                				EngineZildo.scriptManagement.stopPersoAction(perso);
+                			} else {
+                				perso.setAction(new ScriptedPersoAction(perso, p_action.action));
+                			}
                 		}
                     	if (p_action.weapon != null) {
                     		//TODO: not very clever ! setActiveWeapon and setWeapon should merge. So as
                     		//guardWeapon and weapon attributes.
                     		((PersoNJ)perso).setActiveWeapon(GuardWeapon.valueOf(p_action.weapon));
                     	}
+            			if (p_action.alphaA != null) {
+            				perso.alphaA = p_action.alphaA.evaluate(context);
+            			}
+            			if (p_action.alpha != -1) {
+            				perso.setAlpha(p_action.alpha);
+            			}	
                 	}
                 	achieved = true;
                 	break;
@@ -706,9 +716,6 @@ public class ActionExecutor {
 	            		elem.fz = convenientFloatEvaluation(p_action.f[2]);
 	        		}
 
-	        		if (p_action.alphaA != null) {
-	        			elem.alphaA = p_action.alphaA.evaluate(context);
-	        		}
 	        		if (p_action.shadow != null) {
 	            		ElementDescription descShadow = (ElementDescription) SpriteDescription.Locator.findNamedSpr(p_action.shadow);
 	        			elem.addShadow(descShadow);
@@ -716,7 +723,16 @@ public class ActionExecutor {
         		}
 
     		}
-    	}    	
+    	}
+    	// Enable for both element and character
+    	if (elem != null) {
+			if (p_action.alphaA != null) {
+				elem.alphaA = p_action.alphaA.evaluate(context);
+			}
+			if (p_action.alpha != -1) {
+				elem.setAlpha(p_action.alpha);
+			}	
+    	}
     	return elem;
     }
 }

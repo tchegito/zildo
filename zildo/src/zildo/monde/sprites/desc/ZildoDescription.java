@@ -89,7 +89,9 @@ public enum ZildoDescription implements SpriteDescription {
 	
 	SWORD0, SWORD1, SWORD2, SWORD3,	// 97
 	
-	ZILDO_FLUT;
+	ZILDO_FLUT,
+	
+	SLEEPING, WAKINGUP, WAKEUP, TURNRIGHT;
 	
 	
 	public int getBank() {

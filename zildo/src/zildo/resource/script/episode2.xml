@@ -346,6 +346,16 @@
         </action>
     </quest>
     
+    <quest name="retour_trion">
+        <trigger>
+			<location name="chateaucoucou2" pos="439,280" radius="2"/>
+			<questDone name="echange"/>
+        </trigger>
+        <action>
+            <exec script="zildoReportKing"/>
+        </action>
+	</quest>
+    			
     <quest name="zildoDream"> <!--  Signifie que la nuit est passée -->
         
     </quest>
@@ -746,6 +756,82 @@
 	   	<moveTo who="zildo" pos="368,64"/>
 	   	<angle who="zildo" value="3"/>
 	   	<speak who="zildo" text="coucou.z.3"/>
+	</scene>
+	
+	<scene id="zildoReportKing">
+		<moveTo who="zildo" pos="0,-1" delta="true"/>
+		<angle who="zildo" value="0"/>
+		<moveTo what="camera" pos="0,-48" delta="true"/>
+		<speak who="king" text="chc2.king.0"/>
+		<speak who="zildo" text="chc2.zildo.0"/>
+		<speak who="king" text="chc2.king.1"/>
+		<speak who="zildo" text="chc2.zildo.1"/>
+		<filter type="4"/>
+		<wait value="20"/>
+		<filter type="0"/>
+		<speak who="king" text="chc2.king.2"/>
+		<wait value="10"/>
+		<speak who="king" text="chc2.king.3"/>
+		<wait value="20"/>
+		<speak who="king" text="chc2.king.4"/>
+		<fadeOut value="0"/>
+		<wait value="100"/> <!-- Long story -->
+		<fadeIn value="0"/>
+		<speak who="king" text="chc2.king.5"/>
+		<speak who="king" text="chc2.king.6"/>
+		<speak who="zildo" text="chc2.zildo.2"/>
+		<speak who="king" text="chc2.king.7"/>
+		<speak who="king" text="chc2.king.8"/>
+		<speak who="zildo" text="chc2.zildo.3"/>
+		<wait value="20"/>
+		<angle who="zildo" value="1"/>
+		<wait value="10"/>
+		<angle who="zildo" value="2"/>
+		<wait value="10"/>
+		<focus who="zildo" delta="true"/>
+		<focus/>
+		<moveTo who="zildo" pos="440,470" speed="1" unblock="true"/>
+		<wait value="100"/>
+		<fadeOut value="2"/>
+		<wait value="80"/>
+		<map name="d4m12"/>
+		<pos who="zildo" pos="144,170"/>
+		<fadeIn value="2" unblock="true"/>
+		<moveTo who="zildo" pos="0,-32" delta="true" speed="0.8"/>
+		<moveTo who="zildo" pos="104,82" speed="1"/>
+		<angle who="zildo" value="3"/>
+		<speak who="zildo" text="chc2.zildo.4"/>
+		<wait value="50"/>
+		<fadeOut value="1"/>
+		<music name=""/>
+		<wait value="200"/>
+		<exec script="zildoDream"/>
+	</scene>
+	
+	<scene id="zildoDream">
+	    <pos who="zildo" pos="79,79"/>
+	  	<perso who="zildo" action="sleeping"/>
+	  	<script who="zildo" text="SLEEPING"/>
+	    <fadeIn value="1"/>
+	    <wait value="150"/>
+	    <sound name="OuvrePorte"/>
+	    <spawn who="petula" type="RITASKY" pos="144,170" alpha="0" alphaA="2"/>
+	    <perso who="zildo" action=""/>
+	    <script who="zildo" text="WAKEUP"/>
+	    <wait value="150"/>
+	    <speak who="petula" text="zildo.house.a.1"/>
+	    <wait value="30"/>
+	    <speak who="zildo" text="zildo.house.zildo.1"/>
+	    <moveTo who="petula" delta="true" pos="0,-32"/>
+	    <angle who="petula" value="3"/>
+	    <speak who="petula" text="zildo.house.a.2"/>
+	    <speak who="zildo" text="zildo.house.zildo.2"/>
+	    <speak who="petula" text="zildo.house.a.3"/>	    
+	    <speak who="zildo" text="zildo.house.zildo.3"/>
+	    <moveTo who="petula" delta="true" pos="0,32"/>
+	    <perso who="petula" alphaA="-2"/>
+	    <wait value="30"/>
+	    <remove who="petula"/>
 	</scene>
 	
 	<persoAction id="sleeping">

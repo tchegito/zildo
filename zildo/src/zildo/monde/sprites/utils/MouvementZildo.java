@@ -45,6 +45,8 @@ public enum MouvementZildo {
 	FIERTEOBJET,	// hero proudly brandish proudly an object
 	MORT,
 	TOMBE,	// Falling in a pit
-	PLAYING_FLUT;
+	PLAYING_FLUT,
+	SLEEPING,
+	WAKEUP;
 
 }

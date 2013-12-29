@@ -729,6 +729,9 @@ public class PersoZildo extends Perso {
 		case MORT:
 			xx-=2;
 			break;
+		case SLEEPING:
+			
+			break;
 		}
 
 		// On affiche Zildo
@@ -783,6 +786,8 @@ public class PersoZildo extends Perso {
 		}
 	}
 
+	final int[] seqWakeUp = { 0, 1, 0, 1, 2, 2, 3 };
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// finaliseComportementPnj
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -868,13 +873,24 @@ public class PersoZildo extends Perso {
 			setSpr(ZildoDescription.getBowAttacking(angle, getAttente()));
 			break;
 		case MORT:
-			setNSpr(ZildoDescription.LAYDOWN.getNSpr());
+			setNSpr(ZildoDescription.LAYDOWN);
 			break;
 		case TOMBE:
-			setNSpr(ZildoDescription.FALLING.getNSpr());
+			setNSpr(ZildoDescription.FALLING);
 			break;
 		case PLAYING_FLUT:
-			setNSpr(ZildoDescription.ZILDO_FLUT.getNSpr());
+			setNSpr(ZildoDescription.ZILDO_FLUT);
+			break;
+		case SLEEPING:
+			setNSpr(ZildoDescription.SLEEPING);
+			break;
+		case WAKEUP:
+			int seqPos = (getPos_seqsprite() / (6 * seqWakeUp.length)) % seqWakeUp.length;
+			setAddSpr(seqWakeUp[seqPos]);
+			if (seqPos == seqWakeUp.length -1) {
+				setPos_seqsprite(pos_seqsprite - 2);
+			}
+			setNSpr(ZildoDescription.SLEEPING);
 			break;
 		}
 

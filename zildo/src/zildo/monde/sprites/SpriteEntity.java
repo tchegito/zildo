@@ -161,6 +161,10 @@ public class SpriteEntity extends Identified implements Cloneable,
 		nSpr = spr;
 	}
 
+	public void setNSpr(SpriteDescription sprDesc) {
+		nSpr = sprDesc.getNSpr();
+	}
+
 	// Set 3 attributes at 1 time
 	public void setSpr(Sprite p_sprite) {
 		nSpr = p_sprite.nSpr;
