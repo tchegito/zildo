@@ -32,13 +32,9 @@ import zildo.server.EngineZildo;
 public class ActionElement extends LanguageElement {
 
 	public enum ActionKind {
-		actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, 
-		map, focus, spawn, exec, take, 
-		mapReplace, zikReplace, nameReplace,	// History actions
-		music, animation, impact, remove, 
-		markQuest, putDown, attack, activate,
-		tile, filter, end, visible, respawn, zoom, herospecial, perso,
-		timer, lookFor, _throw;
+		actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, map, focus, spawn, exec, take, mapReplace, zikReplace, nameReplace, // History
+																																								// actions
+		music, animation, impact, remove, markQuest, putDown, attack, activate, tile, filter, end, visible, respawn, zoom, herospecial, perso, timer, lookFor, _throw;
 
 		public static ActionKind fromString(String p_name) {
 			for (ActionKind kind : values()) {
@@ -48,7 +44,7 @@ public class ActionElement extends LanguageElement {
 			}
 			return null;
 		}
-		
+
 		@Override
 		public String toString() {
 			return this == _throw ? "throw" : super.toString();
@@ -65,33 +61,34 @@ public class ActionElement extends LanguageElement {
 									// should be added to current location
 	public boolean unstoppable = false; // TRUE=no collision for this movement
 										// (for 'moveTo')
-	public Boolean foreground = false;	// Is sprite/perso on foreground?
+	public Boolean foreground = false; // Is sprite/perso on foreground?
 	public ActionKind kind;
 	public IPoint location;
-	public IPoint target;	// For 'launch' action
+	public IPoint target; // For 'launch' action
 	public String text;
-	public String way;	// For 'launch' action
+	public String way; // For 'launch' action
 	public int val;
 	public int reverse;
 	public int rotation;
 	public int attente;
-	public FloatExpression z;	// Z coordinate for location
-	public PersoInfo info;	// PersoInfo
+	public FloatExpression z; // Z coordinate for location
+	public PersoInfo info; // PersoInfo
 	public float speed;
 	public boolean activate;
-	public String action;	// To run a PersoAction, with "perso" ActionKind
-	public String shadow;	// Only used in "spawn"
-	public String weapon;	// For 'perso' and 'spawn'
-	
+	public String action; // To run a PersoAction, with "perso" ActionKind
+	public String shadow; // Only used in "spawn"
+	public String weapon; // For 'perso' and 'spawn'
+
 	private ZSSwitch switchExpression;
-	
+
 	public FloatExpression[] v;
 	public FloatExpression[] a;
 	public FloatExpression[] f;
 	public FloatExpression alphaA;
-	
-	public int back, back2, fore;	// just for Tile action
-	
+	public int alpha;
+
+	public int back, back2, fore; // just for Tile action
+
 	public ActionElement(ActionKind p_kind) {
 		kind = p_kind;
 	}
@@ -102,7 +99,8 @@ public class ActionElement extends LanguageElement {
 			throw new RuntimeException("Action kind is unknown !");
 		}
 
-		// Store XML element in order to read easier from ZEditor, and use all convenience read methods
+		// Store XML element in order to read easier from ZEditor, and use all
+		// convenience read methods
 		super.parse(p_elem);
 
 		// Read common attributes
@@ -142,8 +140,11 @@ public class ActionElement extends LanguageElement {
 				info = PersoInfo.valueOf(strInfo);
 			}
 			attente = readInt("attente", -1);
-			action = readAttribute("action");
+			action = xmlElement.getAttribute("action"); // Empty string means
+														// "no action"
 			weapon = readAttribute("weapon");
+			alpha = readInt("alpha", -1);
+			alphaA = getFloatExpr("alphaA");
 			break;
 		case speak:
 			text = readAttribute("text");
@@ -183,7 +184,7 @@ public class ActionElement extends LanguageElement {
 			break;
 		case focus:
 			delta = isTrue("delta");
-			if (readAttribute("unblock") == null) { 
+			if (readAttribute("unblock") == null) {
 				unblock = true;
 			}
 			break;
@@ -219,8 +220,9 @@ public class ActionElement extends LanguageElement {
 			text = readAttribute("chaining");
 			break;
 		}
-		
-		// As several variables are used for different usage (which is bad), make specific here
+
+		// As several variables are used for different usage (which is bad),
+		// make specific here
 		if (kind == ActionKind.spawn || kind == ActionKind._throw) {
 			switchExpression = ZSSwitch.parseForDialog(text);
 			// Read V,A and F coordinates
@@ -228,8 +230,9 @@ public class ActionElement extends LanguageElement {
 			a = read3Coordinates("a");
 			f = read3Coordinates("f");
 			alphaA = getFloatExpr("alphaA");
+			alpha = readInt("alpha", -1);
 		}
-		
+
 		// Not needed anymore : free some memory
 		if (!EngineZildo.game.editing) {
 			xmlElement = null;
@@ -238,9 +241,9 @@ public class ActionElement extends LanguageElement {
 
 	private FloatExpression[] read3Coordinates(String prefix) {
 		FloatExpression[] coords = null;
-		FloatExpression coordX = getFloatExpr(prefix+"x");
-		FloatExpression coordY = getFloatExpr(prefix+"y");
-		FloatExpression coordZ = getFloatExpr(prefix+"z");
+		FloatExpression coordX = getFloatExpr(prefix + "x");
+		FloatExpression coordY = getFloatExpr(prefix + "y");
+		FloatExpression coordZ = getFloatExpr(prefix + "z");
 		if (coordX != null || coordY != null || coordZ != null) {
 			coords = new FloatExpression[3];
 			coords[0] = coordX;
@@ -249,7 +252,7 @@ public class ActionElement extends LanguageElement {
 		}
 		return coords;
 	}
-	
+
 	private FloatExpression getFloatExpr(String attName) {
 		String expr = readAttribute(attName);
 		if (expr == null || expr.length() == 0) {
@@ -257,7 +260,7 @@ public class ActionElement extends LanguageElement {
 		}
 		return new FloatExpression(expr);
 	}
-	
+
 	/**
 	 * Update attribute's value. (used only for ZEditor)
 	 * 

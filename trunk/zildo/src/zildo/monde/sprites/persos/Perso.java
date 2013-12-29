@@ -494,6 +494,16 @@ public abstract class Perso extends Element {
 			}
 		}
 		
+		// Alpha channel evolution
+		alphaV += alphaA;
+		alpha += alphaV;
+
+		if (alpha > 255) {	// Stop alpha increase when it reaches the max
+			alpha = 255;
+			alphaV = 0;
+			alphaA = 0;
+		}
+		
 		switch (this.quel_deplacement) {
 		case OBSERVE:
 			// Persos qui regardent en direction de Zildo
