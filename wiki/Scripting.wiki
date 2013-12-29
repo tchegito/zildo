@@ -99,7 +99,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || fadeOut || int || - || - || V || Start a fade out, with given effect ||
 || map || text || - || - || - || Load the given map ||
 || focus || text || V || - || - || Focus on given character (if delta is TRUE, camera moves smoothly) ||
-|| spawn || text || V || V || - || Spawn a new character/sprite. Support : who/what, delta, reverse, rotation, shadow, x, y, z, vx, vy, vz, ax, ay, az, fx, fy, fz, alpha, alphaA, pos, angle, type, info, attente, action, weapon ||
+|| spawn || text || V || V || - || Spawn a new character/sprite. Supports as attributes : who/what, delta, reverse, rotation, shadow, x, y, z, vx, vy, vz, ax, ay, az, fx, fy, fz, alpha, alphaA, pos, angle, type, info, attente, action, weapon ||
 || exec || text || - || - || - || Execute a named script ||
 || take || text || V || V || - || A character (Zildo for example) takes an object or money. Could be negative value, if Zildo buy something. ||
 || mapReplace || text || - || V || - || Replace map indicated by 'what' by the one named by 'name'  ||
