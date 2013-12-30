@@ -69,6 +69,8 @@
 			<moveTo who="charles_bar" pos="32,0" speed="2" delta="true" unstoppable="true"/>
 			<script who="charles_bar" value="0"/>
 			<moveTo who="charles_bar" pos="192,513" speed="1"/>
+			<perso who="charles_bar" alphaA="-2"/>
+			<wait value="20"/>
 			<remove who="charles_bar"/>
 			<sound name="ZildoAccomplishQuest"/>
 		</action>
@@ -849,6 +851,8 @@
 		<speak who="maltus" text="visit1.maltus.7"/>
 		<moveTo who="maltus" pos="80,550"/>
 		<moveTo who="maltus" pos="80,597"/>
+		<perso who="maltus" alphaA="-2"/>
+		<wait value="20"/>
 		<remove who="maltus"/>
 	</scene>
 	
@@ -1218,6 +1222,8 @@
 		<wait value="30"/>
 		<speak who="maltus" text="promenade.maltus.2"/>
 		<moveTo who="maltus" pos="73,39"/>
+		<perso who="maltus" alphaA="-2"/>
+		<wait value="20"/>
 		<remove who="maltus"/>
 	</scene>
 	
