@@ -779,9 +779,11 @@
 		<fadeIn value="0"/>
 		<speak who="king" text="chc2.king.5"/>
 		<speak who="king" text="chc2.king.6"/>
-		<speak who="zildo" text="chc2.zildo.2"/>
 		<speak who="king" text="chc2.king.7"/>
 		<speak who="king" text="chc2.king.8"/>
+		<speak who="zildo" text="chc2.zildo.2"/>
+		<speak who="king" text="chc2.king.9"/>
+		<speak who="king" text="chc2.king.10"/>
 		<speak who="zildo" text="chc2.zildo.3"/>
 		<wait value="20"/>
 		<angle who="zildo" value="1"/>
