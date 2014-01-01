@@ -58,7 +58,7 @@ import zildo.server.EngineZildo;
 public class SpriteSet extends ImageSet {
 
 	public final static int width = 320;
-	public final static int height = 200;
+	public final static int height = 350;
 
 	protected Map<Zone, SpriteDescription> objectsFromZone;
 

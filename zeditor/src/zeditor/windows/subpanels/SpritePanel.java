@@ -23,7 +23,6 @@ package zeditor.windows.subpanels;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -33,6 +32,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
@@ -78,7 +78,8 @@ public class SpritePanel extends JPanel {
 	JSpinner repeatY;
 	JLabel entityType;
 	JTextField elementName;
-
+	JScrollPane scrollPane;
+	
 	boolean updatingUI;
 
 	SpriteSelection<SpriteEntity> sel;
@@ -90,7 +91,12 @@ public class SpritePanel extends JPanel {
 
 	public SpritePanel(MasterFrameManager p_manager) {
 		setLayout(new BorderLayout());
-		add(new SpriteSet(false, p_manager), BorderLayout.CENTER);
+		scrollPane = new JScrollPane();
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane.setViewportView(new SpriteSet(false, p_manager));
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		scrollPane.setVerticalScrollBar(new TweekedScrollbar());
+		add(scrollPane, BorderLayout.CENTER);
 		add(getSouthPanel(), BorderLayout.SOUTH);
 
 		manager = p_manager;
