@@ -61,8 +61,9 @@ public class BackgroundPanel extends JPanel {
 		if (backgroundScroll == null) {
 			backgroundScroll = new JScrollPane();
 			backgroundScroll
-					.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+					.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 			backgroundScroll.setViewportView(getTileSetPanel());
+			backgroundScroll.setVerticalScrollBar(new TweekedScrollbar());
 		}
 		return backgroundScroll;
 	}
