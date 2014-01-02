@@ -410,6 +410,9 @@
 		    </actions>
    		</condition>
    		<condition name="prisonext" exp="trig_echange">
+   		    <remove what="prisondoor"/>
+   		</condition>
+   		<condition name="prisonext" exp="zildoDream">
    		    <perso who="gardenord" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
    		    <perso who="gard2" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
    		    <perso who="gard3" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
