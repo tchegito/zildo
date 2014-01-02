@@ -112,7 +112,6 @@ public class Foret3 extends Banque {
 				new Point(48, 224), new Point(64, 224),
 				/* Fisherman door */
 				new Point(0, 208), new Point(16, 208),
-				new Point(0, 224)	// Broken wall
 				};
 
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("exteria6", 0, 0),
