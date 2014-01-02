@@ -181,11 +181,14 @@ public class Grotte extends Banque {
 				new Point(192, 160), new Point(208, 160), new Point(304, 0), new Point(304, 16),
 				new Point(176, 176), new Point(192, 176),
 				/* Skull and bones */
-				new Point(224, 96), new Point(240, 96)
+				new Point(224, 96), new Point(240, 96),
+				new Point(192, 0), new Point(208, 16)
 		};
 				
 		pkmChanges = Arrays.asList(new GraphChange("interia3", 0, 0),
 				new GraphChange("interia2", 126, 192),
-				new GraphChange("interia3", 212, -192));
+				new GraphChange("interia3", 212, -192),
+				new GraphChange("interia2", 251, 192)
+				);
 	}
 }

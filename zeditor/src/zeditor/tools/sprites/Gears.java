@@ -60,8 +60,10 @@ public class Gears extends SpriteBanque {
 				new Zone(192, 505, 16, 16),
 				
 				/* Big blue door */
-				new Zone(0, 538, 24, 20)
+				new Zone(0, 538, 24, 20),
 				
+				/* Broken walls */
+				new Zone(0, 491, 10, 13), new Zone(11, 491, 10, 13)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{

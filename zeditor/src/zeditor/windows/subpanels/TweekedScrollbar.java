@@ -37,6 +37,8 @@ public class TweekedScrollbar extends JScrollBar {
 	
 	@Override
 	public boolean isVisible() {
+		// With this wrong information (scrollbar is hidden actually), we allow
+		// user to scroll with the wheel.
 		return true;
 	}
 }
