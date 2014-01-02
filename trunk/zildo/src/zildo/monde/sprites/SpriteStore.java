@@ -36,7 +36,7 @@ public class SpriteStore {
 	static protected int n_bankspr;
 	static protected List<SpriteBank> banque_spr = null;
 
-	protected List<SpriteEntity> spriteEntities;
+	protected final List<SpriteEntity> spriteEntities;
 
 	static public final String[] sprBankName={"zildo.spr", 
 											  "elem.spr", 
