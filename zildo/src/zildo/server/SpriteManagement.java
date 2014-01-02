@@ -29,6 +29,7 @@ import java.util.Map;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.collection.ListMerger;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Hasard;
 import zildo.monde.collision.PersoCollision;
@@ -72,17 +73,18 @@ public class SpriteManagement extends SpriteStore {
 	boolean spriteUpdating;	// TRUE=new sprites are added to SpriteEntitiesToAdd / FALSE=regular list
 
 	List<SpriteEntity> clientSpecificEntities;
-	List<SpriteEntity> spriteEntitiesToAdd; // Used for sprites created during
-											// the animation phase
+	final List<SpriteEntity> spriteEntitiesToAdd; // Used for sprites created during the animation phase
+
 	List<SpriteEntity> suspendedEntities;
 	
 	List<SpriteEntity> walkableEntities;	// Platforms
 	
+	ListMerger<SpriteEntity> mergedEntities;	// Just for the 'getNamed*' methods
+
 	/** See {@link #updateSprites()} **/
-	//
-	Map<Integer, SpriteEntity> backupEntities; // To identify entities which
-												// have been modified in the
-												// current frame
+	
+	// Multiplayer: To identify entities which have been modified in the current frame
+	Map<Integer, SpriteEntity> backupEntities; 
 
 	SpriteCollision sprColli;
 	public PersoCollision persoColli;
@@ -100,6 +102,11 @@ public class SpriteManagement extends SpriteStore {
 		sprColli = new SpriteCollision();
 		persoColli = new PersoCollision();
 		walkableEntities = new ArrayList<SpriteEntity>();
+		
+		// Sad but at some times, entities being created are either on the first or the second list
+		// And for the 'getName*' we need to find the entity wherever it is.
+		mergedEntities = new ListMerger<SpriteEntity>(spriteEntities, spriteEntitiesToAdd);
+
 	}
 
 	@Override
@@ -514,7 +521,7 @@ public class SpriteManagement extends SpriteStore {
 		spriteEntitiesToAdd.clear();
 		
 		// Backup current entities, if backup buffer is empty
-		if (backupEntities.size() == 0) {
+		if (EngineZildo.game.multiPlayer && backupEntities.size() == 0) {
 			for (SpriteEntity entity : spriteEntities) {
 				SpriteEntity cloned = entity.clone();
 				backupEntities.put(cloned.getId(), cloned);
@@ -872,13 +879,9 @@ public class SpriteManagement extends SpriteStore {
 	 */
     public Element getNamedElement(String p_name) {
         if (p_name != null && !"".equals(p_name)) {
-            for (SpriteEntity p : spriteEntities) {
-            	if (p.getEntityType() != EntityType.ELEMENT) {
-            		continue;
-            	}
-            	Element e = (Element) p;
-                if (p_name.equalsIgnoreCase(e.getName())) {
-                    return e;
+            for (SpriteEntity p : mergedEntities) {
+            	if (p.getEntityType() == EntityType.ELEMENT && p_name.equalsIgnoreCase(p.getName())) {
+                    return (Element) p;
                 }
             }
         }
@@ -892,7 +895,7 @@ public class SpriteManagement extends SpriteStore {
 	 */
     public SpriteEntity getNamedEntity(String p_name) {
         if (p_name != null && !"".equals(p_name)) {
-            for (SpriteEntity p : spriteEntities) {
+            for (SpriteEntity p : mergedEntities) {
                 if (p_name.equalsIgnoreCase(p.getName())) {
                     return p;
                 }
