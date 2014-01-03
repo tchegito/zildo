@@ -256,6 +256,9 @@ public abstract class Perso extends Element {
 			x = 16 * (int) (x/16) + 8;
 			y = 16 * (int) (y/16) + 8;
 			break;
+		case VIDE:
+			addSpr = 0;
+			break;
 		}
 	}
 

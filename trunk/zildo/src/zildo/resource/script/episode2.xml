@@ -337,7 +337,7 @@
     
     <quest name="blockPrisonExt" repeat="true">
         <trigger>
-            <questDone name="backCoucou"/>
+            <questDone name="backCoucou-!retour_trion"/>
             <location name="prisonext" pos="368,6" radius="2"/>
         </trigger>
         <action>
@@ -770,6 +770,8 @@
 		<speak who="king" text="chc2.king.1"/>
 		<speak who="zildo" text="chc2.zildo.1"/>
 		<filter type="4"/>
+		<script who="gard2" value="3"/>
+		<angle who="gard2" value="2"/>
 		<wait value="20"/>
 		<filter type="0"/>
 		<speak who="king" text="chc2.king.2"/>
@@ -780,6 +782,7 @@
 		<fadeOut value="0"/>
 		<wait value="100"/> <!-- Long story -->
 		<fadeIn value="0"/>
+		<!-- 
 		<speak who="king" text="chc2.king.5"/>
 		<speak who="king" text="chc2.king.6"/>
 		<speak who="king" text="chc2.king.7"/>
@@ -788,6 +791,7 @@
 		<speak who="king" text="chc2.king.9"/>
 		<speak who="king" text="chc2.king.10"/>
 		<speak who="zildo" text="chc2.zildo.3"/>
+		-->
 		<wait value="20"/>
 		<angle who="zildo" value="1"/>
 		<wait value="10"/>
@@ -803,10 +807,11 @@
 		<pos who="zildo" pos="144,170"/>
 		<fadeIn value="2" unblock="true"/>
 		<moveTo who="zildo" pos="0,-32" delta="true" speed="0.8"/>
-		<moveTo who="zildo" pos="104,82" speed="1"/>
 		<angle who="zildo" value="3"/>
 		<speak who="zildo" text="chc2.zildo.4"/>
+		<moveTo who="zildo" pos="104,82" speed="1" unblock="true"/>
 		<wait value="50"/>
+		<angle who="zildo" value="3"/>
 		<fadeOut value="1"/>
 		<music name=""/>
 		<wait value="200"/>
@@ -837,6 +842,9 @@
 	    <perso who="petula" alphaA="-2"/>
 	    <wait value="30"/>
 	    <remove who="petula"/>
+	    <script who="zildo" text="VIDE"/>
+	    <angle who="zildo" value="1"/>
+	    <moveTo who="zildo" pos="48,16" delta="true"/>
 	</scene>
 	
 	<persoAction id="sleeping">
