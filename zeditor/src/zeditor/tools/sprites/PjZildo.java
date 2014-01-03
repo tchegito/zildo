@@ -122,7 +122,7 @@ public class PjZildo extends SpriteBanque {
 				
 				// Sleeping
 				new Zone(25, 178, 15, 13), new Zone(25, 165, 15, 13),
-				new Zone(42, 177, 15, 13), new Zone(58, 177, 12, 13)
+				new Zone(42, 177, 15, 13), new Zone(58, 177, 13, 13)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{

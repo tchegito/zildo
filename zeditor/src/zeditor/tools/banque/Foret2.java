@@ -57,7 +57,7 @@ public class Foret2 extends Banque {
 				new Point(176, 16), new Point(192, 16), new Point(208, 16),
 				new Point(224, 16), new Point(112, 32), new Point(128, 32),
 				new Point(144, 32), new Point(160, 32), new Point(176, 32),
-				new Point(192, 32), new Point(208, 32), new Point(224, 32),
+				new Point(192, 32), new Point(208, 32), new Point(0, 128),	// 0,128 is a floor for castle doorway
 				new Point(112, 48), new Point(128, 48), new Point(144, 48),
 				new Point(160, 48), new Point(176, 48), new Point(192, 48),
 				new Point(208, 48), new Point(224, 48), new Point(112, 64),
