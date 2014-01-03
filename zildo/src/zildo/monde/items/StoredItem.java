@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import zildo.fwk.ui.UIText;
+
 public class StoredItem {
 
 	public Item item;
@@ -50,7 +52,9 @@ public class StoredItem {
 		}
 	}
 	public String getName() {
-		String str = item.getName();
+		String str = item.kind.getName();
+		str += "\n" + price + " "+UIText.getGameText("money");
+
 		if (quantity != -1) {
 			str += " ("+quantity+")";
 		}

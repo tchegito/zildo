@@ -214,8 +214,8 @@ public class ItemCircle {
 		EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_IN, FilterEffect.SEMIFADE));
 	}
 	
-	public Item getItemSelected() {
-		return items.get(itemSelected).item;
+	public StoredItem getItemSelected() {
+		return items.get(itemSelected);
 	}
 	
 	/**

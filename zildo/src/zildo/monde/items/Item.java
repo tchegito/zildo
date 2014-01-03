@@ -20,7 +20,6 @@
 
 package zildo.monde.items;
 
-import zildo.fwk.ui.UIText;
 
 public class Item {
 
@@ -49,12 +48,6 @@ public class Item {
 
 	public int getPrice() {
 		return kind.price * (level + 1);
-	}
-
-	public String getName() {
-		String s = kind.getName();
-		s += "\n" + getPrice() + " "+UIText.getGameText("money");
-		return s;
 	}
 	
 	@Override
