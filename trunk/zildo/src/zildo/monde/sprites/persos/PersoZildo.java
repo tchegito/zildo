@@ -37,6 +37,7 @@ import zildo.monde.items.Inventory;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
 import zildo.monde.items.ItemKind;
+import zildo.monde.items.StoredItem;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
@@ -1119,8 +1120,9 @@ public class PersoZildo extends Perso {
 	 * inventory if he has enough.
 	 */
 	public void buyItem() {
-		Item item = guiCircle.getItemSelected();
-		int remains = money - item.getPrice();
+		StoredItem stItem = guiCircle.getItemSelected();
+		int remains = money - stItem.price;
+		Item item = stItem.item;
 		if (remains < 0) {
 			// Not enough money
 			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
@@ -1128,7 +1130,7 @@ public class PersoZildo extends Perso {
 			// Too much items
 			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
 		} else {
-			money -= item.getPrice();
+			money -= stItem.price;
 			SpriteDescription d = item.kind.representation;
 			if (item.kind.canBeInInventory()) {
 				if (item.kind.canBeMultiple() || inventory.indexOf(item) == -1) {
@@ -1150,7 +1152,7 @@ public class PersoZildo extends Perso {
 		EngineZildo.soundManagement.playSound(BankSound.MenuIn, this);
 		guiCircle.close(); // Ask for the circle to close
 		if (!buying) {
-			weapon = guiCircle.getItemSelected();
+			weapon = guiCircle.getItemSelected().item;
 			Perso perso = getDialoguingWith();
 			if (perso != null) {
 				perso.setDialoguingWith(null);
