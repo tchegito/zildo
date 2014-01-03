@@ -448,6 +448,10 @@ public class MapManagement {
 		case 104:
 			result = Angle.NORDEST;
 			break; // 4
+		case 512+160:
+		case 512+161:
+			result = angle;	// Bed
+		break;
 		default:
 			// Saut latéral}
 			switch (angle) {
