@@ -215,7 +215,7 @@ public class Client {
 			Zildo.pdPlugin.kbHandler.poll();
 
 			// Music
-			if (music) {
+			if (isMusic()) {
 				long currentTime = ZUtils.getTime();
 				ClientEngineZildo.soundEngine.pollMusic((int) (currentTime - time));
 				time = currentTime;
