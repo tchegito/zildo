@@ -25,6 +25,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import zeditor.tools.builder.AllMapProcessor;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.server.EngineZildo;
@@ -35,6 +36,24 @@ import zildo.server.EngineZildo;
  */
 public class CheckConsistentMap {
 
+	class EnemyException {
+		final PersoDescription desc;
+		final String name;
+		final String mapName;
+		
+		public EnemyException(PersoDescription p_desc, String p_name, String p_mapName) {
+			desc = p_desc;
+			name = p_name;
+			mapName = p_mapName;
+		}
+	}
+	
+	// Exceptions to the rules: character usually considered as enemies, but Zildo need to talk with.
+	EnemyException[] exceptions = {
+			new EnemyException(PersoDescription.GARDE_CANARD, "jaune", "prison"),
+			new EnemyException(PersoDescription.FALCOR, "falcor", "voleursm4b")
+	};
+	
 	@Test
 	public void testEnemies() {
 		new AllMapProcessor() {
@@ -66,7 +85,19 @@ public class CheckConsistentMap {
 					case FOX:
 					case STONE_SPIDER:
 					case FLYINGSERPENT:
+					case BRAMBLE:
 						shouldBeEnemy = true;
+
+						break;
+					}
+					// Check if this is a known exception
+					if (realEnemy != shouldBeEnemy) {
+						for (EnemyException e : exceptions) {
+							if (e.desc == p.getDesc() && e.name.equals(p.getName()) && (e.mapName+".map").equals(mapName)) {
+								shouldBeEnemy = !shouldBeEnemy;
+								break;
+							}
+						}
 					}
 					Assert.assertTrue("Aaaaie ! "+p.getName()+" ("+p.getDesc()+") at ("+(int) p.getX()+","+(int) p.getY()+") should be enemy !", realEnemy == shouldBeEnemy);
 				}
