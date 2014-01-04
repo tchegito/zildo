@@ -175,6 +175,12 @@ public class Game implements EasySerializable {
                 }
             }
    
+            //EngineZildo.scriptManagement.accomplishQuest("attaque_voleurs", false);
+            //EngineZildo.scriptManagement.accomplishQuest("start_visit1", false);
+            //EngineZildo.scriptManagement.accomplishQuest("suite_visit1_weapon", false);
+            //EngineZildo.scriptManagement.accomplishQuest("echange", false);
+            
+            
             // 2: Zildo
             EngineZildo.spawnClient(ZildoOutfit.Zildo);
             PersoZildo zildo = EngineZildo.persoManagement.getZildo();

@@ -357,8 +357,107 @@
 	</quest>
     			
     <quest name="zildoDream"> <!--  Signifie que la nuit est passée -->
-        
+	</quest>
+	        
+    <quest name="ask_visitprison" locked="false">
+        <trigger>
+            <location name="prison"/>
+            <dialog name="jaune" num="0"/>
+        </trigger>
     </quest>
+    
+    <quest name="visit_igorprison">
+		<trigger>
+		    <location name="prison" pos="175,80" radius="1"/>
+		    <questDone name="!visit_gpprison"/>	<!-- one at a time -->
+		    <questDone name="ask_visitprison"/>
+		</trigger>
+		<action>
+		    <script who="zildo" text="VIDE"/>	<!-- To reset his movement -->
+   		    <moveTo who="jaune" pos="0,16" delta="true"/>
+		    <angle who="zildo" value="0"/>
+   		    <actions>
+		        <moveTo who="jaune" pos="190,81"/>
+		        <moveTo who="zildo" pos="0,22" delta="true"/>
+		    </actions>
+		    <angle who="zildo" value="0"/>
+		    <actions>
+				<activate what="igordoor1" value="true"/>
+		    	<activate what="igordoor2" value="true"/>
+		    </actions>
+   		    <angle who="gard2" value="3"/>
+		    <moveTo who="jaune" pos="0,-10" delta="true"/>
+		    <angle who="jaune" value="2"/>
+		    <speak who="jaune" text="prison.gard.script"/>
+		    <moveTo who="igor" pos="104,90" unstoppable="true"/>
+		    <moveTo who="igor" pos="104,70"/>
+		    <script who="igor" value="3"/>
+		</action>        
+    </quest>
+
+    <quest name="visit_igorprison_over">
+        <action>
+            <markQuest name="visit_igorprison" value="0"/>
+            <script who="igor" value="0"/>
+        </action>
+    </quest>
+    
+    <quest name="visit_gpprison">
+		<trigger>
+		    <location name="prison" pos="175,206" radius="1"/>
+		    <questDone name="!visit_igorprison"/>	<!-- one at a time -->
+		    <questDone name="ask_visitprison"/>
+		</trigger>
+		<action>
+		    <script who="zildo" text="VIDE"/>
+		    <moveTo who="jaune" pos="0,80" delta="true"/>
+		    <angle who="zildo" value="0"/>
+		    <actions>
+		        <moveTo who="jaune" pos="190,193"/>
+		        <moveTo who="zildo" pos="0,22" delta="true"/>
+		    </actions>
+		    <angle who="zildo" value="0"/>
+		    <actions>
+				<activate what="gpdoor1" value="true"/>
+		    	<activate what="gpdoor2" value="true"/>
+		    </actions>
+		    <angle who="gard2" value="3"/>
+		    <moveTo who="jaune" pos="0,-10" delta="true"/>
+		    <angle who="jaune" value="2"/>
+		    <speak who="jaune" text="prison.gard.script"/>
+		</action>        
+    </quest>
+
+    <quest name="visit_igorprison_over" repeat="true">
+        <trigger>
+            <location name="prison" pos="228,168" radius="3"/>
+            <questDone name="visit_igorprison"/>
+        </trigger>
+        <action>
+			<exec script="closePrisonIgorDoor"/>
+        </action>
+    </quest>
+
+    <quest name="visit_gpprison_over" repeat="true">
+        <trigger>
+            <location name="prison" pos="228,270" radius="1"/>
+            <questDone name="visit_gpprison"/>
+        </trigger>
+        <action>
+            <exec script="closePrisonGpDoor"/>
+        </action>
+    </quest>
+    
+    <quest name="visit_gpprison_over_2" repeat="true">
+        <trigger>
+            <location name="prison" pos="228,138" radius="3"/>
+            <questDone name="visit_gpprison"/>
+        </trigger>
+        <action>
+            <exec script="closePrisonGpDoor"/>
+        </action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -465,6 +564,9 @@
 		<condition name="igorvillage">
 		    <markQuest name="summonLeafVillage" value="0"/>
 		</condition>
+		<condition name="igorv2"> <!-- Igor will come back home later -->
+		    <remove who="igor"/>
+		</condition>
 		<condition name="igorv3b" exp="!allFishMinsk">
 		    <!-- If this variable is stored into a game, the following should override it. -->
 		    <var name="fishWater" value="0"/>
@@ -489,6 +591,9 @@
    		    <remove who="p4"/>
    		    <remove who="p5"/>
    		    <remove who="garde"/>
+   		</condition>
+   		<condition name="prison">
+   		    <perso who="gard2" effect="jaune"/>
    		</condition>
 	</mapScript>
 
@@ -847,6 +952,38 @@
 	    <moveTo who="zildo" pos="48,16" delta="true"/>
 	</scene>
 	
+	<scene id="closePrisonIgorDoor">
+        <markQuest name="visit_igorprison" value="0"/>
+        <markQuest name="visiting_igorprison" value="0"/>
+        <moveTo who="jaune" pos="0,10" delta="true"/> 
+        <angle who="jaune" value="3"/>
+	    <actions>
+			<activate what="igordoor1" value="false"/>
+	    	<activate what="igordoor2" value="false"/>
+	    </actions>
+	    <moveTo who="jaune" pos="223,60"/>	    
+   	    <angle who="jaune" value="2"/>
+	</scene>
+
+	<scene id="closePrisonGpDoor">
+        <markQuest name="visit_gpprison" value="0"/>
+        <markQuest name="visiting_gpprison" value="0"/>
+        <script who="zildo" text="VIDE"/>
+        <moveTo who="jaune" pos="0,10" delta="true"/> 
+        <angle who="jaune" value="3"/>
+	    <actions>
+			<activate what="gpdoor1" value="false"/>
+	    	<activate what="gpdoor2" value="false"/>
+	    </actions>
+	    <moveTo who="jaune" pos="223,142"/>
+	    <exec script="prisonLeaveGard" unblock="true"/>
+  	</scene>
+
+	<scene id="prisonLeaveGard">	<!-- To avoid blocking player when gard returns -->
+   	    <moveTo who="jaune" pos="223,60"/>
+   	    <angle who="jaune" value="2"/>
+	</scene>	
+
 	<persoAction id="sleeping">
 	    <timer each="40+20*random">
 	        <action>

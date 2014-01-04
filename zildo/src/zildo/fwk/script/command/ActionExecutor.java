@@ -343,7 +343,8 @@ public class ActionExecutor {
                 	break;
                 case exec:
                 	// Note : we can sequence scripts in an action tag.
-                	EngineZildo.scriptManagement.execute(text, locked);
+                	// If 'unblock' attribute is set on 'exec' action, given scene won't lock the game
+                	EngineZildo.scriptManagement.execute(text, locked && !p_action.unblock);
                 	break;
                 case music:
                 	if (text == null) { // Stop music ?

@@ -258,6 +258,7 @@ public abstract class Perso extends Element {
 			break;
 		case VIDE:
 			addSpr = 0;
+			pos_seqsprite = 0;
 			break;
 		}
 	}
