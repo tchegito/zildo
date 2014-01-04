@@ -126,6 +126,33 @@ public class ElementGear extends Element {
 					}
 					count++;
 					break;
+				case GREEN_SIMPLEDOOR:
+				case GREEN_SIMPLEDOOR_OPENING:
+					if (state) { // Opening
+						switch (count) {
+						case 10:
+							setDesc(GearDescription.GREEN_SIMPLEDOOR_OPENING);
+							EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlockDouble, this);
+							break;
+						case 20:
+							setVisible(false);
+							acting = false;	// Notify action is over for ActionExecutor
+						}
+					} else { // Closing
+						switch (count) {
+						case 10:
+							setDesc(GearDescription.GREEN_SIMPLEDOOR_OPENING);
+							EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlockDouble, this);
+							setVisible(true);
+							break;
+						case 20:
+							setDesc(GearDescription.GREEN_SIMPLEDOOR);
+							acting = false;
+							break;
+						}
+					}
+					count++;
+					break;
 				case CAVE_SIMPLEDOOR:
 					int pas = activate ? -6 : 6;	// Closing or opening ?
 					if (reverse == Reverse.VERTICAL) {
