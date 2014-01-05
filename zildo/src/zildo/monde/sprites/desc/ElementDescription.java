@@ -172,6 +172,8 @@ public enum ElementDescription implements SpriteDescription {
 		case CRATE:
 		case CRATE2:
 		case SMALL_TABLE:
+		case STONE:
+		case STONE_HEAVY:
 			return true;
 		default:
 			return false;

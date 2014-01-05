@@ -458,6 +458,17 @@
         </action>
     </quest>
     
+    <quest name="prison4_doors">
+        <trigger>
+            <location name="prison4"/>
+            <dead who="s1,s2"/>
+        </trigger>
+        <action>
+            <activate what="doorl" value="true"/>
+            <activate what="doorr" value="true"/>
+        </action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -593,9 +604,16 @@
    		    <remove who="garde"/>
    		</condition>
    		<condition name="prison">
-   		    <perso who="gard2" effect="jaune"/>
+   		    <perso who="gard2" effect="jaune"/>	<!--  workaround because this is not editable yet -->
    		</condition>
-	</mapScript>
+   		<condition name="prison4" exp="prison4_doors">
+			<activate what="doorl" value="true" unblock="true"/>
+			<activate what="doorr" value="true" unblock="true"/>
+   		</condition>
+   		<condition name="prison4">
+   		    <markQuest name="prison4_doors" value="false"/>
+   		</condition>
+   	</mapScript>
 
 	<scene id="intro_episode2">
 	    <speak who="synthe" text="info.episode2"/>
