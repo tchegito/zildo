@@ -469,6 +469,33 @@
         </action>
     </quest>
     
+    <quest name="paid_gard">
+        <trigger>
+            <location name="prison"/>
+            <dialog name="gard2" num="1"/>
+        </trigger>
+        <action>
+            <take value="-10"/>
+            <wait value="10"/>
+            <moveTo who="gard2" pos="0,-10" delta="true" unstoppable="true"/>
+        	<moveTo who="gard2" pos="16,-4" delta="true"/>
+        	<angle who="gard2" value="3"/>
+        </action>
+    </quest>
+    
+    <quest name="prison4_openDoors">
+        <trigger>
+        	<location name="prison4"/>
+        	<questDone name="prison4_doors"/>
+        </trigger>
+        <action>
+            <actions>
+				<activate what="doorl" value="true"/>
+				<activate what="doorr" value="true"/>
+            </actions>
+		</action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -605,13 +632,13 @@
    		</condition>
    		<condition name="prison">
    		    <perso who="gard2" effect="jaune"/>	<!--  workaround because this is not editable yet -->
+   		    <markQuest name="paid_gard" value="false"/>
    		</condition>
-   		<condition name="prison4" exp="prison4_doors">
-			<activate what="doorl" value="true" unblock="true"/>
-			<activate what="doorr" value="true" unblock="true"/>
+   		<condition name="prison3">
+   		    <markQuest name="prison4_doors" value="false"/>
    		</condition>
    		<condition name="prison4">
-   		    <markQuest name="prison4_doors" value="false"/>
+			<markQuest name="prison4_openDoors" value="false"/> <!--  Because door opening is buggy when targeted here -->
    		</condition>
    	</mapScript>
 

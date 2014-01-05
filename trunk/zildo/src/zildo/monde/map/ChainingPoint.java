@@ -138,6 +138,9 @@ public class ChainingPoint implements EasySerializable {
 		case 1024 + 249:
 		case 1024 + 250:
 			return MapLink.STAIRS_STRAIGHT;
+		case 768 + 185:
+		case 768 + 186:
+			return MapLink.STAIRS_CORNER_LEFT;
 		case 1536 + 198:
 			return MapLink.PIT;
 		case 512 + 198:
