@@ -102,6 +102,7 @@ public enum PersoDescription implements SpriteDescription {
 	LOUISE(291, 292, 289, 290, 287, 288),
 	MINSK(295, 294, 296, 297),
 	INVENTOR(298, 299, 300, 301),
+	COOK(302, 303, 304, 305),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
