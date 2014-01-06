@@ -318,7 +318,7 @@ public class PersoNJ extends Perso {
 						quel_deplacement != MouvementPerso.IMMOBILE) {
 					setAlerte(lookForZildo(angle));
 				}
-				if (this.getAttente() != 0) {
+				if (this.getAttente() > 0) {
 					if (desc == PersoDescription.BAS_GARDEVERT) {
 						// Turns his head around to look for Zildo
 						if (attente == 1 && cptMouvement < 3) {

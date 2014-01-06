@@ -866,6 +866,9 @@ public class SpriteManagement extends SpriteStore {
 				if (entity.getEntityType().isElement() && ((Element)entity).isLinkedToZildo()) {
 					continue;
 				}
+				if (entity.getEntityType().isPerso()) {
+					EngineZildo.scriptManagement.stopPersoAction((Perso) entity);
+				}
 				deleteSprite(entity);
 			}
 		}
