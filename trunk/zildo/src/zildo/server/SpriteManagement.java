@@ -79,7 +79,7 @@ public class SpriteManagement extends SpriteStore {
 	
 	List<SpriteEntity> walkableEntities;	// Platforms
 	
-	ListMerger<SpriteEntity> mergedEntities;	// Just for the 'getNamed*' methods
+	ListMerger<SpriteEntity> mergedEntities;	// Just for the 'getNamed*' methods, is a merge of spriteEntities and spriteEntitiesToAdd
 
 	/** See {@link #updateSprites()} **/
 	
