@@ -358,7 +358,37 @@
     			
     <quest name="zildoDream"> <!--  Signifie que la nuit est passée -->
 	</quest>
-	        
+
+    <quest name="hector_call1">
+        <trigger>
+            <location name="prisonext" pos="368,367" radius="4"/>
+        </trigger>
+        <action>
+            <speak what="camera" text="pext.scr.hector.0"/>
+        </action>
+    </quest>
+    
+    <quest name="hector_call2">
+        <trigger>
+            <location name="prisonext" pos="687,346" radius="4"/>
+        </trigger>
+        <action>
+            <wait value="50"/>
+            <moveTo what="camera" delta="true" pos="64,32"/>
+           	<speak what="camera" text="pext.scr.hector.1"/>
+           	<moveTo what="camera" delta="true" pos="-64,-32"/>
+		</action>
+    </quest>
+    
+    <quest name="hector_call3">
+        <trigger>
+            <location name="prisonext" pos="912,468" radius="1"/>
+        </trigger>
+        <action>
+            <exec script="meetHiddenHector"/>
+        </action>
+    </quest>
+    
     <quest name="ask_visitprison" locked="false">
         <trigger>
             <location name="prison"/>
@@ -458,6 +488,15 @@
         </action>
     </quest>
     
+    <quest name="igor_promise_sword">
+        <trigger>
+            <dialog name="igor" num="7"/>
+        </trigger>
+        <action>
+            <sound name="ZildoAccomplishQuest"/>
+        </action>
+    </quest>
+    
     <quest name="prison4_doors">
         <trigger>
             <location name="prison4"/>
@@ -546,10 +585,10 @@
 			    <animation type="BIG_FIREBALL" what="fireb4" angle="1" pos="29,211"/>
 		    </actions>
    		</condition>
-   		<condition name="prisonext" exp="trig_echange">
-   		    <remove what="prisondoor"/>
+   		<condition name="prisonext" exp="retour_trion">
+
    		</condition>
-   		<condition name="prisonext" exp="zildoDream">
+   		<condition name="prisonext" exp="retour_trion">
    		    <perso who="gardenord" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
    		    <perso who="gard2" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
    		    <perso who="gard3" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
@@ -560,6 +599,16 @@
    		    <script who="gard3" value="3"/>
    		    <script who="gard4" value="3"/>
    		    <script who="gard5" value="3"/>
+   		    <!-- Open the prison, and hide Hector -->
+   		  	<remove what="prisondoor"/>
+   		    <pos who="hector" pos="906,525"/>
+   		    <angle who="hector" value="0"/>
+   		    <perso who="hector" action="hiddenHector"/>
+		</condition>
+		<condition name="prisonext" exp="retour_trion-!hector_call3">
+		    <!-- Repeat Pssst if player hasn't seen Hector yet -->
+		    <markQuest name="hector_call1" value="false"/>
+		    <markQuest name="hector_call2" value="false"/>
 		</condition>
 		<condition name="voleursm1">
 		    <perso who="rouge" action="sleeping"/>
@@ -629,6 +678,10 @@
    		    <remove who="p4"/>
    		    <remove who="p5"/>
    		    <remove who="garde"/>
+   		</condition>
+   		<condition name="chateaucoucou2" exp="echange">
+		    <spawn who="hector" type="HECTOR" pos="355,222" angle="1"/>
+	    	<spawn who="maltus" type="BANDIT_CHAPEAU" pos="580,236" angle="1"/>   		    
    		</condition>
    		<condition name="prison">
    		    <perso who="gard2" effect="jaune"/>	<!--  workaround because this is not editable yet -->
@@ -907,16 +960,17 @@
 	   	<!--  switch map to prisonext -->
 	   	<wait value="20"/>
 	   	<moveTo who="zildo" pos="368,64"/>
-	   	<angle who="zildo" value="3"/>
-	   	<speak who="zildo" text="coucou.z.3"/>
 	</scene>
 	
 	<scene id="zildoReportKing">
 		<moveTo who="zildo" pos="0,-1" delta="true"/>
 		<angle who="zildo" value="0"/>
 		<moveTo what="camera" pos="0,-48" delta="true"/>
+		<angle who="maltus" value="3"/>
+		<angle who="hector" value="2"/>
 		<speak who="king" text="chc2.king.0"/>
 		<speak who="zildo" text="chc2.zildo.0"/>
+		<moveTo who="hector" pos="4,24" delta="true" speed="0.5"/>
 		<speak who="king" text="chc2.king.1"/>
 		<speak who="zildo" text="chc2.zildo.1"/>
 		<filter type="4"/>
@@ -924,6 +978,7 @@
 		<angle who="gard2" value="2"/>
 		<wait value="20"/>
 		<filter type="0"/>
+		<moveTo who="maltus" pos="522,250" speed="1.5" unblock="true"/>
 		<speak who="king" text="chc2.king.2"/>
 		<wait value="10"/>
 		<speak who="king" text="chc2.king.3"/>
@@ -931,9 +986,14 @@
 		<speak who="king" text="chc2.king.4"/>
 		<fadeOut value="0"/>
 		<wait value="100"/> <!-- Long story -->
+		<pos who="maltus" pos="439,273"/>
+		<pos who="hector" pos="383,279"/>
+		<angle who="hector" value="1"/>
+		<angle who="maltus" value="2"/>
 		<fadeIn value="0"/>
-		<!-- 
+		 
 		<speak who="king" text="chc2.king.5"/>
+		<angle who="maltus" value="0"/>
 		<speak who="king" text="chc2.king.6"/>
 		<speak who="king" text="chc2.king.7"/>
 		<speak who="king" text="chc2.king.8"/>
@@ -941,7 +1001,7 @@
 		<speak who="king" text="chc2.king.9"/>
 		<speak who="king" text="chc2.king.10"/>
 		<speak who="zildo" text="chc2.zildo.3"/>
-		-->
+		
 		<wait value="20"/>
 		<angle who="zildo" value="1"/>
 		<wait value="10"/>
@@ -997,6 +1057,32 @@
 	    <moveTo who="zildo" pos="48,16" delta="true"/>
 	</scene>
 	
+	<scene id="meetHiddenHector">
+	    <perso who="hector" action=""/>
+	    <moveTo who="zildo" pos="916,475"/>
+	    <moveTo who="hector" pos="913,525" unstoppable="true"/>
+	    <speak who="hector" text="pext.scr.hector.2"/>
+	    <actions>
+	    	<moveTo who="hector" pos="920,525" unstoppable="true"/>
+	    	<moveTo who="zildo" pos="919,485"/>
+	    </actions>
+	    <moveTo who="hector" pos="920,515"/>
+	    <speak who="hector" text="pext.scr.hector.3"/>
+	    <speak who="hector" text="pext.scr.hector.4"/>
+	    <moveTo who="zildo" pos="0,4" unblock="true" delta="true"/>
+	    <speak who="zildo" text="pext.scr.zildo.0"/>
+  	    <speak who="hector" text="pext.scr.hector.5"/>
+	    <speak who="hector" text="pext.scr.hector.6"/>
+	    <speak who="zildo" text="pext.scr.zildo.1"/>
+	    <sound name="ZildoAccomplishQuest"/>
+	    <speak who="hector" text="pext.scr.hector.7"/>	    
+	    <speak who="hector" text="pext.scr.hector.8"/>
+	    <moveTo who="hector" pos="919,525"/>
+	    <moveTo who="hector" pos="904,525" unstoppable="true"/>
+	    <remove who="hector"/>
+	    <tile pos="56,32" back="95+256"/>
+	</scene>
+	
 	<scene id="closePrisonIgorDoor">
         <markQuest name="visit_igorprison" value="0"/>
         <markQuest name="visiting_igorprison" value="0"/>
@@ -1037,6 +1123,20 @@
 		               vx="0.1" vz="0.1"
 		               foreground="true"
 		               alphaA="-0.1"/>
+	        </action>
+	    </timer>
+	</persoAction>
+	
+	<persoAction id="hiddenHector">
+	    <timer each="20+60*random">
+	        <action>
+		        <pos who="hector" pos="2,0" delta="true"/>
+	            <wait value="10"/>
+	            <pos who="hector" pos="-2,0" delta="true"/>
+	            <wait value="30"/>
+		        <pos who="hector" pos="1,0" delta="true"/>
+	            <wait value="5"/>
+	            <pos who="hector" pos="-1,0" delta="true"/>
 	        </action>
 	    </timer>
 	</persoAction>
