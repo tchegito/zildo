@@ -42,7 +42,9 @@ public enum GearDescription implements SpriteDescription {
 	
 	BIG_BLUE_DOOR,
 	
-	CRACK1, CRACK2;	// Broken walls
+	CRACK1, CRACK2,	// Broken walls
+	
+	GRATE;
 	
 	public int getBank() {
 		return SpriteBank.BANK_GEAR;
@@ -72,6 +74,7 @@ public enum GearDescription implements SpriteDescription {
 			case CAVE_MASTERDOOR:
 			case GREEN_SIMPLEDOOR:
 			case GREEN_SIMPLEDOOR_OPENING:
+			case GRATE:
 				return true;
 			default:
 				return false;

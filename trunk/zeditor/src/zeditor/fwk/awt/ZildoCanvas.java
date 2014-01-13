@@ -121,7 +121,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	private void drawBrush(Point p, TileSelection p_sel) {
 		// Apply selected brush to the map
 		Area map = EngineZildo.mapManagement.getCurrentMap();
-		p_sel.draw(map, new zildo.monde.util.Point(p.x / 16, p.y / 16), mask);
+		if (p_sel.getElement() != null) {
+			p_sel.draw(map, new zildo.monde.util.Point(p.x / 16, p.y / 16), mask);
+		}
 	}
 
 	public void endBrush() {

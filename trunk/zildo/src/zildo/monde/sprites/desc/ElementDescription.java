@@ -121,7 +121,9 @@ public enum ElementDescription implements SpriteDescription {
 	// 226
 	INVENTOR_SIGN,
 	// 227
-	EMPTY_BAG, FULL_BAG;
+	EMPTY_BAG, FULL_BAG,
+	// 229
+	SEWER_BARH, SEWER_BARV, SEWER_BARUP;
 	
 	Boolean damage;
 	

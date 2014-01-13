@@ -308,7 +308,9 @@ public class ElementsPlus extends SpriteBanque {
 				// Inventor sign (233)
 				new Zone(0, 232, 32, 16),
 				// Bag (empty and full)
-				new Zone(79, 85, 16, 16), new Zone(95, 85, 15, 17)
+				new Zone(79, 85, 16, 16), new Zone(95, 85, 15, 17),
+				// Sewer borders, 
+				new Zone(297, 19, 8, 8), new Zone(297, 27, 8, 8), new Zone(305, 27, 8, 8)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -319,7 +321,8 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem", 183, 0),
 				new GraphChange("objets", 187, 0),
 				new GraphChange("elem", 189, 0),
-				new GraphChange("objets", 228, 0)
+				new GraphChange("objets", 228, 0),
+				new GraphChange("elem", 230, 0),
 				});
 	}
 }

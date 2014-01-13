@@ -103,6 +103,7 @@ public enum PersoDescription implements SpriteDescription {
 	MINSK(295, 294, 296, 297),
 	INVENTOR(298, 299, 300, 301),
 	COOK(302, 303, 304, 305),
+	BIG_RAT(310, 311, 308, 309, 306, 307, 312),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 

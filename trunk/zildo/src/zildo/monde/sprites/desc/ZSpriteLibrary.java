@@ -85,6 +85,8 @@ public class ZSpriteLibrary {
 			case QUAD2:	case QUAD3: case QUAD4: case QUAD5:
 			case QUAD6:	case QUAD7: case QUAD8:
 			case NOTE: case NOTE2:
+			case WATER_ANIM1: case WATER_ANIM2: case WATER_ANIM3: case WATER_ANIM4:
+			case LAVADROP1: case LAVADROP2: case LAVADROP3: case LAVADROP4:
 			//case LAUNCHER2:
 				break;
 			default:
