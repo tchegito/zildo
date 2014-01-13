@@ -72,7 +72,12 @@ public class Pnj3 extends SpriteBanque {
 		    new Zone(141, 111, 15, 25), new Zone(156, 110, 15, 26),
 		    // Cook
 		    new Zone(113, 326, 16, 25), new Zone(129, 327, 16, 24),
-		    new Zone(145, 326, 13, 25), new Zone(158, 327, 14, 24)
+		    new Zone(145, 326, 13, 25), new Zone(158, 327, 14, 24),
+		    // Big rat
+		    new Zone(0, 351, 15, 17), new Zone(15, 351, 15, 17),
+		    new Zone(30, 353, 25, 15), new Zone(55, 353, 27, 15),
+		    new Zone(82, 351, 15, 17), new Zone(97, 349, 15, 19),
+		    new Zone(112, 352, 25, 16)	// (biting)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("pnj2", 0, 0), 

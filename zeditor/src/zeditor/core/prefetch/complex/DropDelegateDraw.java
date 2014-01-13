@@ -30,6 +30,13 @@ import zildo.monde.map.Tile;
  */
 public class DropDelegateDraw {
 
+	private boolean isTileDifferent(Tile p_tile1, Tile p_tile2) {
+		return p_tile1.index != p_tile2.index ||
+			   p_tile1.bank != p_tile2.bank ||
+			   p_tile1.reverse != p_tile2.reverse ||
+			   p_tile1.rotation != p_tile2.rotation;
+	}
+	
 	/**
 	 * Delegate method to draw a {@link Case} object from a {@link TileSelection} on the map.
 	 * @param p_mapCase
@@ -39,7 +46,7 @@ public class DropDelegateDraw {
 	public void draw(Case p_mapCase, Case p_toDraw, int p_mask) {
 		// Apply modifications
 		Tile tile = p_toDraw.getBackTile();
-		if (tile.index != -1 && p_mask == 0) {	// Smash the previous tile
+		if (tile.index != -1 && p_mask == 0 && isTileDifferent(p_mapCase.getBackTile(), p_toDraw.getBackTile())) {	// Smash the previous tile
 			p_mapCase.setBackTile(p_toDraw.getBackTile().clone());
 		} else {
 			//TODO : Check this
