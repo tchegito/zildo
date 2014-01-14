@@ -329,6 +329,7 @@
     <quest name="backCoucou">
         <trigger>
             <location name="coucou"/>
+            <questDone name="trig_echange"/>
         </trigger>
         <action>
             <exec script="zildoCrossCoucouNight"/>
@@ -362,6 +363,7 @@
     <quest name="hector_call1">
         <trigger>
             <location name="prisonext" pos="368,367" radius="4"/>
+            <questDone name="retour_trion"/>
         </trigger>
         <action>
             <speak what="camera" text="pext.scr.hector.0"/>
@@ -371,6 +373,7 @@
     <quest name="hector_call2">
         <trigger>
             <location name="prisonext" pos="687,346" radius="4"/>
+            <questDone name="retour_trion"/>
         </trigger>
         <action>
             <wait value="50"/>
@@ -383,6 +386,7 @@
     <quest name="hector_call3">
         <trigger>
             <location name="prisonext" pos="912,468" radius="1"/>
+            <questDone name="retour_trion"/>
         </trigger>
         <action>
             <exec script="meetHiddenHector"/>
@@ -605,6 +609,15 @@
    		    <angle who="hector" value="0"/>
    		    <perso who="hector" action="hiddenHector"/>
 		</condition>
+		<condition name="prisonext" exp="retour_trion">
+		    <tile pos="15,41" back2="181"/>
+		    <tile pos="16,41" back2="180"/>
+		    <tile pos="17,41" back2="182"/>
+		    <tile pos="15,42" back2="179" reverse="1"/>
+		    <tile pos="15,43" back2="185" reverse="1"/>
+		    <tile pos="17,42" back2="179"/>
+		    <tile pos="17,43" back2="185"/>
+   		</condition>
 		<condition name="prisonext" exp="retour_trion-!hector_call3">
 		    <!-- Repeat Pssst if player hasn't seen Hector yet -->
 		    <markQuest name="hector_call1" value="false"/>

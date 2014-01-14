@@ -522,7 +522,7 @@ public class ActionExecutor {
                 			if (p_action.action.length() == 0) {
                 				EngineZildo.scriptManagement.stopPersoAction(perso);
                 				perso.setAction(null);
-                				perso.setGhost(false);
+                				//perso.setGhost(false);
                 			} else {
                 				perso.setAction(new ScriptedPersoAction(perso, p_action.action));
                 			}
