@@ -414,10 +414,11 @@
 			<wait value="20"/>
 			<moveTo who="zildo" pos="0,0" delta="true"/>
 			<exec script="echange"/>
-			<!-- 
+			 
 			<exec script="intro_episode2"/>
-			--> 
+			<!-- 
 			<exec script="ep1_closure"/>
+			-->
 		</action>
 	</quest>
 	
