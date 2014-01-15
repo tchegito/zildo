@@ -92,8 +92,11 @@ public abstract class AnyElement {
      * @return String
      */
     public String readAttribute(String p_attrName) {
+    	if (!xmlElement.hasAttribute(p_attrName)) {
+    		return null;
+    	}
     	String value = xmlElement.getAttribute(p_attrName);
-    	return "".equals(value) ? null : value;
+    	return value;
     }
     
     /**

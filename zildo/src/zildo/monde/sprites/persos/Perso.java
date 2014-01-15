@@ -39,6 +39,7 @@ import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.action.PersoAction;
+import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.monde.sprites.persos.ia.PathFinder;
 import zildo.monde.sprites.persos.ia.PathFinderSquirrel;
 import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
@@ -506,6 +507,10 @@ public abstract class Perso extends Element {
 			alpha = 255;
 			alphaV = 0;
 			alphaA = 0;
+		} else if (alpha < 0) {
+			alpha = 0;
+			alphaV = 0;
+			alphaA = 0;
 		}
 		
 		switch (this.quel_deplacement) {
@@ -600,7 +605,7 @@ public abstract class Perso extends Element {
 		inWater = false;
 		inDirt = false;
 		BankSound snd = null;
-		if (!flying && (onmap>=108 && onmap<=138)) {
+		if (!flying && Tile.isWater(onmap)) {
 			// Water
 			diveAndWound();
 		} else {
@@ -928,10 +933,8 @@ public abstract class Perso extends Element {
 	
 	/**
 	 * Character is jumping : move him
-	 * @return TRUE if he has been relocated to his start position (ex: fallen in water)
 	 */
-	public boolean moveJump() {
-		boolean relocate = false;
+	public void moveJump() {
 		if (getAttente() == 32) {
 			setMouvement(MouvementZildo.VIDE); // Fin du saut, on repasse en mouvement normal
 			// Si Zildo atterit dans l'eau, on le remet à son ancienne position avec un coeur de moins
@@ -941,13 +944,9 @@ public abstract class Perso extends Element {
 			
 			boolean platformUnder = checkPlatformUnder();
 			
-			if (!platformUnder && onMap>=108 && onMap<=138) {
-				Point zildoAvantSaut=getPosAvantSaut();
+			if (!platformUnder && Tile.isWater(onMap)) {
 				// Character is fallen in the water !
 				diveAndWound();
-				x = zildoAvantSaut.getX();
-				y = zildoAvantSaut.getY();
-				relocate=true;
 			} else {
 				setForeground(false);
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
@@ -965,15 +964,20 @@ public abstract class Perso extends Element {
 			z =  (int) (8.0f * Math.sin(beta));
 			attente++;
 		}	
-		return relocate;
+	}
+	
+	public void replaceBeforeJump() {
+		Point zildoAvantSaut=getPosAvantSaut();
+		x = zildoAvantSaut.getX();
+		y = zildoAvantSaut.getY();
+		beingWounded(x, y, null, 2);
+		stopBeingWounded();
 	}
 	
 	public void diveAndWound() {
-		EngineZildo.spriteManagement.spawnSpriteGeneric(
-				SpriteAnimation.WATER_SPLASH, (int) x, (int) y, 0,	null, null);
-		beingWounded(x, y, null, 2);
-		stopBeingWounded();
-		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);
+		if (action == null) {
+			setAction(new ScriptedPersoAction(this, "fallInWater"));
+		}
 	}
 
 	/** Called when a script move this character with a 'pos' action.

@@ -271,7 +271,7 @@ public class PersoManagement {
 	 */
 	public Perso lookFor(Perso p_looker, int radius, PersoInfo p_info) {
 		for (Perso p : tab_perso) {
-			if (p != p_looker && (p_info == null || p.getInfo() == p_info)) {
+			if (p != p_looker && (p_info == null || p.getInfo() == p_info) && p.visible && p.getPv()>0) {
 				double distance = Point.distance(p_looker.x,  p_looker.y, p.x, p.y);
 				if (distance < radius * 16) {
 					return p;

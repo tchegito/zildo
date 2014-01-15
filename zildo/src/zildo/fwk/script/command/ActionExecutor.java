@@ -497,6 +497,10 @@ public class ActionExecutor {
                 	case 3:
                 		EngineZildo.backUpGame();
                 		break;
+                	case 4:
+                		// Replace hero the place where he jumped and hurt him (2 pv)
+                		zildo.replaceBeforeJump();
+                		break;
                 	}
                 	achieved = true;
                 	break;
