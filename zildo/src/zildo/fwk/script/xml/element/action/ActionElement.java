@@ -152,7 +152,7 @@ public class ActionElement extends LanguageElement {
 		case map:
 		case music:
 			// String
-			text = readAttribute("name");
+			text = readNonEmptyAttribute("name");
 			break;
 		case moveTo:
 			backward = isTrue("backward");
