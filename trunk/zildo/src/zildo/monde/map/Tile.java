@@ -111,4 +111,9 @@ public class Tile implements Cloneable {
 			return false;
 		}
 	}
+	
+	public static boolean isWater(int value) {
+		return (value>=108 && value<=138) || (value>=208 && value<=222) || 
+		(value>=224 && value<=228) || (value>=230 && value<=245) || (value>=247 && value<=253);
+	}
 }

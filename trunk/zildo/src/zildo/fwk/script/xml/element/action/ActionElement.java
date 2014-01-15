@@ -140,8 +140,7 @@ public class ActionElement extends LanguageElement {
 				info = PersoInfo.valueOf(strInfo);
 			}
 			attente = readInt("attente", -1);
-			action = xmlElement.getAttribute("action"); // Empty string means
-														// "no action"
+			action = readAttribute("action"); // Empty string means "no action"
 			weapon = readAttribute("weapon");
 			alpha = readInt("alpha", -1);
 			alphaA = getFloatExpr("alphaA");

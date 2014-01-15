@@ -605,6 +605,7 @@
    		    <script who="gard5" value="3"/>
    		    <!-- Open the prison, and hide Hector -->
    		  	<remove what="prisondoor"/>
+   		  	<tile pos="56,32" back="512"/>
    		    <pos who="hector" pos="906,525"/>
    		    <angle who="hector" value="0"/>
    		    <perso who="hector" action="hiddenHector"/>

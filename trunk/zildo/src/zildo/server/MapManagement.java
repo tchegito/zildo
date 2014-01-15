@@ -40,12 +40,11 @@ import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.EntityType;
-import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
-import zildo.monde.sprites.persos.ia.mover.BasicMoveOrder;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.ia.mover.BasicMoveOrder;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -641,7 +640,8 @@ public class MapManagement {
 			if (zildo.getTarget() != null) {
 				setStartLocation(zildo.getTarget());
 			}
-			if (EngineZildo.scriptManagement.isAllowedToSave()) {
+			// If hero is along a border, the game will be backed up when scroll will be over
+			if (!isAlongBorder && EngineZildo.scriptManagement.isAllowedToSave()) {
 				EngineZildo.backUpGame();	// Save an automatic backup game to restore if hero dies
 			}
 			
