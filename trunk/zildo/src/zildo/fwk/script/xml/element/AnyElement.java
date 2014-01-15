@@ -87,7 +87,7 @@ public abstract class AnyElement {
     }
     
     /**
-     * Read an attribute's value, and return NULL if it isn't set.
+     * Read an optional attribute's value, and return NULL if it isn't set.
      * @param p_attrName
      * @return String
      */
@@ -97,6 +97,16 @@ public abstract class AnyElement {
     	}
     	String value = xmlElement.getAttribute(p_attrName);
     	return value;
+    }
+    
+    /**
+     * Read an attribute's value, and return NULL if it is set to an empty string.
+     * @param p_attrName
+     * @return String
+     */
+    public String readNonEmptyAttribute(String p_attrName) {
+    	String value = xmlElement.getAttribute(p_attrName);
+    	return "".equals(value) ? null : value;
     }
     
     /**
