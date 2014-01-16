@@ -272,7 +272,13 @@ public class PlayerManagement {
 		// Adjustment
 		heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512);
 
-        Pointf secureLocation = heros.tryMove(p_deltaX, p_deltaY);
+        Pointf secureLocation;
+        if (heros.isGhost()) {
+        	// 'tryMove' has already been called in this case
+        	secureLocation = new Pointf(heros.x + p_deltaX, heros.y + p_deltaY);
+        } else {
+        	secureLocation = heros.tryMove(p_deltaX, p_deltaY);
+        }
         float xx = secureLocation.x;
         float yy = secureLocation.y;
 
