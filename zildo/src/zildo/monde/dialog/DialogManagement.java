@@ -182,13 +182,14 @@ public class DialogManagement {
 	
 	public void continueDialog(ClientState p_client) {
 	    WaitingDialog even = createWaitingDialog(p_client, p_client.zildo.getDialoguingWith());
-	    p_client.dialogState.continuing = even.sentence.indexOf("@") != -1;
-
+	    boolean continuing = false;
 	    if (even != null) {
+		    continuing = even.sentence.indexOf("@") != -1;
 			even.sentence = even.sentence.trim();
 			even.action = CommandDialog.CONTINUE;
 			dialogQueue.add(even);
 	    }
+	    p_client.dialogState.continuing = continuing;
 	}
 	
 	/**
