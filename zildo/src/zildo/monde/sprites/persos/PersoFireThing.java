@@ -111,6 +111,7 @@ public class PersoFireThing extends PersoNJ {
 		}
 		direction+=0.01f;
 		
+		addSpr = 3;
 	}
 	
 	@Override
