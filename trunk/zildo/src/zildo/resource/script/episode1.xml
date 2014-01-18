@@ -215,7 +215,7 @@
 			<exec script="maltus_foret1"/>
 		</action>
 	</quest>
-	
+	<!-- 
 	<quest name="maltus_foret_suite">
 		<trigger>
 			<questDone name="maltus_foret"/>
@@ -225,7 +225,7 @@
 			<exec script="maltus_foret2"/>
 		</action>
 	</quest>
-	
+	-->
 	<quest name="maltus_foret_zildo_defeat">
 		<trigger>
 			<location name="foret"/>
@@ -864,6 +864,7 @@
 		<angle who="maltus" value="2"/>
 		<speak who="maltus" text="foret.maltus.1"/>
 		<speak who="zildo" text="foret.zildo.1"/>
+		<exec script="maltus_foret2"/>
 	</scene>
 	<scene id="maltus_foret2">
 		<angle who="maltus" value="0"/>
