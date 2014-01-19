@@ -112,12 +112,9 @@ public class PersoNJ extends Perso {
 		this.setPv(getPv() - p_damage);
 		this.setSpecialEffect(EngineFX.PERSO_HURT);
 
-		boolean died = (getPv() <= 0);
-		if (died) {
-			die(true, p_shooter);
-		}
-
 		EngineZildo.soundManagement.broadcastSound(BankSound.MonstreTouche, this);
+		
+		super.beingWounded(cx, cy, p_shooter, p_damage);
 	}
 
 	@Override
@@ -140,6 +137,8 @@ public class PersoNJ extends Perso {
 		setY((int) getY());
 		setWounded(false);
 		initPersoFX();
+		
+		super.stopBeingWounded();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -171,7 +170,7 @@ public class PersoNJ extends Perso {
 			return;
 		}
 
-		if (getPv() == 0 || getDialoguingWith() != null) {
+		if ((getPv() == 0 && !isWounded() )|| getDialoguingWith() != null) {
 			return;
 		}
 
@@ -208,6 +207,9 @@ public class PersoNJ extends Perso {
 	 * are handled by {@link #animate(int)} method.
 	 */
 	public void move() {
+		if (pv <=0) {
+			return;
+		}
 		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		float sx = getX(), sy = getY();
 

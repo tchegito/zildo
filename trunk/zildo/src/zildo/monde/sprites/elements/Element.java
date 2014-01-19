@@ -577,40 +577,46 @@ public class Element extends SpriteEntity {
 
 		// Calculate an anticipation factor, to check collision in advance
 		// For better diagonal movement
-		int antFactor = 2 + (int) Point.distance(0, 0, p_deltaX, p_deltaY);
-		if (mapManagement.collide(x + antFactor * p_deltaX, y + antFactor * p_deltaY, this)) {
-			float keepX = xx;
-			float keepY = yy;
-			if (p_deltaX != 0 && p_deltaY != 0) {
-				// Diagonal move impossible => try lateral move
-				if (!mapManagement.collide(xx, y, this)) {
-					yy = y;
-				} else if (!mapManagement.collide(x, yy, this)) {
+		int antFactor = Math.min(4, 2 + (int) Point.distance(0, 0, p_deltaX, p_deltaY));
+		for (int i=0;i<2;i++) {
+			// Try twice : one with anticipation, and one regularly
+			if (mapManagement.collide(x + antFactor * p_deltaX, y + antFactor * p_deltaY, this)) {
+				float keepX = xx;
+				float keepY = yy;
+				if (p_deltaX != 0 && p_deltaY != 0) {
+					// Diagonal move impossible => try lateral move
+					if (!mapManagement.collide(xx, y, this)) {
+						yy = y;
+					} else if (!mapManagement.collide(x, yy, this)) {
+						xx = x;
+					}
+				} else {
+	
+					// Lateral move impossible => try diagonal move
+					float speed;
+					if (p_deltaX == 0) {
+						speed = Math.abs(p_deltaY);
+						if (!mapManagement.collide(xx + speed, yy, this)) {
+							xx += speed;
+						} else if (!mapManagement.collide(xx - speed, yy, this)) {
+							xx -= speed;
+						}
+					} else if (p_deltaY == 0) {
+						speed = Math.abs(p_deltaX);
+						if (!mapManagement.collide(xx, yy + speed, this)) {
+							yy += speed;
+						} else if (!mapManagement.collide(xx, yy - speed, this)) {
+							yy -= speed;
+						}
+					}
+				}
+				if (xx == keepX && yy == keepY) { //mapManagement.collide(xx, yy, this)) {
 					xx = x;
+					yy = y;
 				}
+				break;
 			} else {
-
-				// Lateral move impossible => try diagonal move
-				float speed;
-				if (p_deltaX == 0) {
-					speed = Math.abs(p_deltaY);
-					if (!mapManagement.collide(xx + speed, yy, this)) {
-						xx += speed;
-					} else if (!mapManagement.collide(xx - speed, yy, this)) {
-						xx -= speed;
-					}
-				} else if (p_deltaY == 0) {
-					speed = Math.abs(p_deltaX);
-					if (!mapManagement.collide(xx, yy + speed, this)) {
-						yy += speed;
-					} else if (!mapManagement.collide(xx, yy - speed, this)) {
-						yy -= speed;
-					}
-				}
-			}
-			if (xx == keepX && yy == keepY) { //mapManagement.collide(xx, yy, this)) {
-				xx = x;
-				yy = y;
+				antFactor = 1;
 			}
 		}
 		return new Pointf(xx, yy);

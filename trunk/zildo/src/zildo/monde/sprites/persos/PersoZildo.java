@@ -411,6 +411,7 @@ public class PersoZildo extends Perso {
 			EngineZildo.scriptManagement.stopPersoAction(this);
 		}
 		beingWounded(p_shooter, p_damage);
+		super.beingWounded(cx, cy, p_shooter, p_damage);
 	}
 
 	/**
@@ -446,10 +447,6 @@ public class PersoZildo extends Perso {
 			EngineZildo.dialogManagement.stopDialog(Server.getClientFromZildo(this), true);
 		}
 
-		boolean die = getPv() <= 0;
-		if (die) {
-			die(false, p_shooter);
-		}
 	}
 
 	/**
@@ -481,6 +478,8 @@ public class PersoZildo extends Perso {
 		setPx(0.0f);
 		setPy(0.0f);
 		setSpecialEffect(EngineFX.NO_EFFECT);
+		
+		super.stopBeingWounded();
 	}
 
 
