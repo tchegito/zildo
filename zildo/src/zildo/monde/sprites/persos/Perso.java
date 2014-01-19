@@ -87,6 +87,8 @@ public abstract class Perso extends Element {
 	protected int countKey; // How many keys have perso ? (for PNJ, he gives it
 							// when he dies)
 
+	protected Perso shooter;	// Last perso who shoot this one
+	
 	// Jump
 	private Point posAvantSaut;
 	protected Point posShadowJump;
@@ -461,21 +463,38 @@ public abstract class Perso extends Element {
 
 	public abstract void initPersoFX();
 
-	public abstract void beingWounded(float cx, float cy, Perso p_shooter, int p_damage);
+	/**
+	 * All methods overriding this one should call it (before or after, that doesn't matter).
+	 */
+	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
+		shooter = p_shooter;
+	}
 
 	public void parry(float cx, float cy, Perso p_shooter) {
 	}
 
-	public abstract void stopBeingWounded();
+	public void stopBeingWounded() { 
+		boolean died = (getPv() <= 0);
+		if (died) {
+			die(true, shooter);
+		}			
+	}
 
 	public abstract void attack();
 
+	/**
+	 * All methods overriding this one should call it (before or after, that doesn't matter).
+	 * Basically, called during 'stopBeingWounded' if character hasn't HP anymore.
+	 * @param p_link
+	 * @param p_shooter
+	 */
 	public void die(boolean p_link, Perso p_shooter) {
 		// Death !
 		EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DEATH, (int) x, (int) y, 0, p_link ? this
 				: null, null);
 		TriggerElement trig = TriggerElement.createDeathTrigger(name);
 		EngineZildo.scriptManagement.trigger(trig);
+		setSpecialEffect(EngineFX.PERSO_HURT);
 	}
 
 	public abstract void finaliseComportement(int compteur_animation);
