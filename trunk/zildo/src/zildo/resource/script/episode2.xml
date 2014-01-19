@@ -806,7 +806,7 @@
    	
 	<scene id="move_vg5_plat1">
 	    <moveTo what="platform" pos="-220,0" delta="true" speed="1"/>
-	    <wait value="30"/>
+	    <wait value="60"/>
 	    <moveTo what="platform" pos="220,0" delta="true" speed="1"/>
 	    <wait value="10"/>
 	</scene>
