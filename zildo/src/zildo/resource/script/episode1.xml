@@ -33,7 +33,7 @@
 			<music name="Vitesse"/>
 		</action>
 	</quest>
-	<quest name="enlevebuissons">
+	<quest name="enlevebuissons" locked="false">
 		<trigger>
 			<location who="zildo" name="ferme" pos="618,791"/>
 		</trigger>
@@ -67,7 +67,7 @@
 		<action>
 			<script who="charles_bar" value="11"/>
 			<moveTo who="charles_bar" pos="32,0" speed="2" delta="true" unstoppable="true"/>
-			<script who="charles_bar" value="0"/>
+			<script who="charles_bar" value="3"/>
 			<moveTo who="charles_bar" pos="192,513" speed="1"/>
 			<perso who="charles_bar" alphaA="-2"/>
 			<wait value="20"/>
