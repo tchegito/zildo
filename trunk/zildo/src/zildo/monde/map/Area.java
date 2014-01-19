@@ -220,7 +220,7 @@ public class Area implements EasySerializable {
 		return val == 256*2 + 255;
 	}
 	
-	final IntSet waterBank = new IntSet(188, 189, 190, 255);
+	final IntSet waterBank = new IntSet(154, 156, 188, 189, 190, 255);
 	
 	public TileNature getCaseNature(int x, int y) {
 		Case temp = this.get_mapcase(x, y + 4);
