@@ -675,6 +675,7 @@ public abstract class Perso extends Element {
 				if (!isGhost() && isZildo()) {
 					EngineZildo.scriptManagement.execute("miniStairsUp", true);
 				}
+				slowDown = true;
 				break;
 			case 256*2 + 200: case 256 * 2 + 198:	// Wood stairs going up
 			case 256*2 + 201:	// Wood stairs going down (on the right)
