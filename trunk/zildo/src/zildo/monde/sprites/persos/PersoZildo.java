@@ -455,6 +455,7 @@ public class PersoZildo extends Perso {
 	@Override
 	public void die(boolean p_link, Perso p_shooter) {
 		affections.clear();
+		setMouvement(MouvementZildo.TOUCHE);
 		if (EngineZildo.game.multiPlayer) {
 			super.die(p_link, p_shooter);
 			EngineZildo.multiplayerManagement.kill(this, p_shooter);
@@ -546,7 +547,7 @@ public class PersoZildo extends Perso {
 			px *= 0.8f;
 			py *= 0.8f;
 			walkTile(false);
-			if (pv > 0 && Math.abs(px) + Math.abs(py) < 0.2f) {
+			if (Math.abs(px) + Math.abs(py) < 0.2f) {
 				stopBeingWounded();
 			}
 			//TODO: try to remove (xx=x and yy=y) here and shift the previous declaration just after this
