@@ -50,6 +50,7 @@ public class CheckConsistentMap {
 	
 	// Exceptions to the rules: character usually considered as enemies, but Zildo need to talk with.
 	EnemyException[] exceptions = {
+			new EnemyException(PersoDescription.GARDE_CANARD, "gard2", "prison"),
 			new EnemyException(PersoDescription.GARDE_CANARD, "jaune", "prison"),
 			new EnemyException(PersoDescription.FALCOR, "falcor", "voleursm4b")
 	};
@@ -86,6 +87,7 @@ public class CheckConsistentMap {
 					case STONE_SPIDER:
 					case FLYINGSERPENT:
 					case BRAMBLE:
+					case BIG_RAT:
 						shouldBeEnemy = true;
 
 						break;
