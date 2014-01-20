@@ -1,0 +1,1157 @@
+<adventure>
+
+    <quest name="promenade2_flut1" repeat="true" locked="false">
+        <trigger>
+            <location name="promenade2" pos="422,230" radius="2"/>
+            <use item="flut"/>
+        </trigger>
+        <action>
+            <wait value="80"/>
+            <music name=""/>
+            <sound name="Sort"/>
+            <wait value="5"/>
+            <animation what="stars" type="STAR_TRAIL" pos="388,263"/>
+            <moveTo what="stars" pos="64,-10" delta="true" speed="1"/>
+            <script who="zildo" value="2" effect="stars"/>
+            <speak what="camera" text="promenade2.stars.0" unblock="true"/>
+            <moveTo what="stars" pos="40,-10" delta="true" speed="0.8"/>
+            <moveTo what="stars" pos="-15,40" delta="true" speed="0.6"/>
+            <moveTo what="stars" pos="-60,-40" delta="true" speed="0.5"/>
+            <moveTo what="stars" pos="-30,-30" delta="true" speed="0.4"/>
+
+            <speak what="camera" text="promenade2.stars.1" unblock="true"/>
+            
+            <moveTo what="stars" pos="40,-50" delta="true" speed="0.5"/>
+            <moveTo what="stars" pos="-30,-50" delta="true" speed="1"/>
+            <moveTo what="stars" pos="20,-80" delta="true" speed="1.5"/>
+            
+            <wait value="20"/>
+            <remove what="stars"/>
+            <script who="zildo" value="0"/>
+            <music name="Nuit"/>
+        </action>
+    </quest>
+    
+    <quest name="fuite_tony1">
+        <trigger>
+            <location name="promenade"/>
+            <questDone name="trig_echange"/>
+        </trigger>
+        <action>
+            <speak who="zildo" text="promenade.fuite.zildo"/>
+            <moveTo who="tony" pos="0,-12" delta="true"/>
+            <angle who="tony" value="2"/>
+            <wait value="20"/>
+            <moveTo who="tony" pos="0,-100" delta="true"/>
+            <remove who="tony"/>
+            <script who="bunny" value="8"/>
+        </action>
+    </quest>
+
+    <quest name="vert_seen">
+    	<trigger>
+    	    <location name="voleurs" pos="612,830" radius="2"/>
+    	</trigger>
+    	<action>
+    	    <moveTo who="vert" pos="-30,0" delta="true"/>
+    	    <moveTo who="vert" pos="-2,-60" delta="true" unblock="true"/>
+    	    <!-- Put knives -->
+    	    <tile pos="55,32" back2="1277"/>
+    	    <tile pos="56,32" back2="1277"/>
+    	    <tile pos="57,32" back2="1277"/>
+    	</action>    
+    </quest>
+    
+    <quest name="vg5_but1" repeat="true" locked="false">
+    	<trigger>
+    	    <location name="voleursg5" tilePos="52,26" gear="TIMED_BUTTON"/>
+    	</trigger>
+    	<action>
+    	    <exec script="move_vg5_plat1"/>
+    	</action>
+    </quest>
+
+    <quest name="vg5_but2" repeat="true" locked="false">
+    	<trigger>
+    	    <location name="voleursg5" tilePos="25,26" gear="TIMED_BUTTON"/>
+    	</trigger>
+    	<action>
+    	    <exec script="move_vg5_plat2"/>
+    	</action>
+    </quest>
+    
+    <quest name="vg5_back" repeat="true" locked="false">
+	    <trigger>
+	        <location name="voleursg5" mover="platform2"/>
+	        <questDone name="!move_vg5_plat2"/>
+	    </trigger>
+	    <action>
+	        <exec script="move_vg5_plat2"/>
+	    </action>
+    </quest>
+    
+    <!--  *************** All these lines MUST disappear for episode 2 ************ -->
+    <!--  Just to set hero on foreground from this location -->
+    <quest name="zcave_foreground" repeat="true" locked="false">
+    	<trigger><location name="voleursg5" pos="615,485" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="true"/></action>
+    </quest>
+    
+        <!--  Just to set hero on background from this location -->
+    <quest name="zcave_foreground2" repeat="true" locked="false">
+    	<trigger><location name="voleursg5" pos="193,238" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="false"/></action>
+    </quest>
+
+    <quest name="zvoleurs1" repeat="true" locked="false">
+    	<trigger><location name="voleurs" pos="436,736" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="true"/></action>
+    </quest>
+    
+    <quest name="zvoleurs2" repeat="true" locked="false">
+    	<trigger><location name="voleurs" pos="375,463" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="false"/></action>
+    </quest>
+    
+    <quest name="zvoleurs3" repeat="true" locked="false">
+    	<trigger><location name="voleurs" pos="726,878" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="false"/></action>
+    </quest>
+
+    <quest name="zvoleurs4" repeat="true" locked="false">
+    	<trigger><location name="voleurs" pos="841,977" radius="2"/></trigger>
+    	<action><pos who="zildo" foreground="false"/></action>
+    </quest>
+    <!--  **************************************************************************** -->
+    
+    <quest name="attaque_voleurs">
+        <trigger>
+            <location name="voleurs" pos="877,989" radius="1"/>
+        </trigger>
+        <action>
+            <exec script="attaqueV"/>
+        </action>
+    </quest>
+    
+    <quest name="meanwhile_voleurs">
+        <trigger>
+            <location name="voleursg3"/>
+        </trigger>
+        <action>
+       	    <exec script="backupGame"/>
+            <exec script="voleurs_discutent"/>
+            <map name="voleursg3"/>
+			<focus who="zildo" />
+			<fadeIn type="0"/>
+        </action>
+    </quest>
+    
+    <quest name="squeaky_floor_voleurs" repeat="true" locked="false">
+        <trigger>	<!-- 2*256 + 57 = 569 --> 
+            <location name="voleursm1" tileValue="569"/>
+        </trigger>
+        <action>
+            <exec script="disturbVoleurs"/>
+        </action>
+    </quest>
+    
+    <quest name="squeaky_floor_voleurs2" repeat="true" locked="false">
+        <trigger>
+            <location name="voleursm2" tileValue="569"/>
+        </trigger>
+        <action>
+            <exec script="disturbVoleurs"/>
+        </action>
+    </quest>
+    
+    <quest name="voleursm2u(4, 3)">
+    	<action>
+    	    <speak who="zildo" text="voleurs.m2u.money"/>
+    	</action>
+    </quest>
+    
+    <quest name="voleursm4(13, 3)">
+    	<action>
+    	    <speak who="zildo" text="voleurs.m2u.sword"/>
+    	</action>
+    </quest>
+    
+    <quest name="trig_falcor">
+        <trigger>
+            <questDone name="voleursm4(13, 3)"/>
+            <location name="voleursm4" pos="215,64" radius="2"/>
+        </trigger>
+        <action>
+    	    <exec script="falcor_arrive"/>
+        </action>
+        <history>
+			<nameReplace who="falcor" name="falcor"/>
+        </history>
+    </quest>
+    
+    <quest name="v3_crate">
+        <trigger>
+            <location name="voleursm3"/>
+            <push name="crate" angle="1"/>
+            <questDone name="!voleursm3(8,8)"/>
+        </trigger>
+        <action>
+            <animation pos="136,136" type="CLOUD_FOG" />
+            <sound name="ChestAppears"/>
+            <wait value="2"/>
+            <tile pos="8,8" back2="231+256*2"/>
+        </action>
+    </quest>
+    
+    <quest name="voleursm4_hiddenbutton" locked="false">
+        <trigger>
+            <lift name="voleursm4b" tilePos="3,11"/>
+        </trigger>
+        <action>
+            <sound name="ZildoSecret"/>
+        </action>
+    </quest>
+    
+    <quest name="voleursm4_button" locked="false">
+	    <trigger>
+	        <location name="voleursm4b" tilePos="3,11" gear="BUTTON"/>
+	    </trigger>
+	</quest>
+    <!-- 420,282 -->
+    <quest name="lily" repeat="true" locked="false">
+		<trigger>
+	    	<location name="igorlily|igorvillage" mover="leaf"/>
+	    	<use item="sword"/>
+	    </trigger>
+	    <action>
+	        <exec script="moveLeaf"/>
+	    </action>
+	</quest>
+
+    <quest name="summonLeafVillage" locked="false">
+        <trigger>
+            <location name="igorvillage" pos="420,282" radius="5"/>
+            <use item="flut"/>
+        </trigger>
+        <action>
+            <wait value="80"/>
+            <spawn what="leaf" type="WATER_LEAF" pos="170,382"/>
+            <sound name="SlipWater1"/>
+            <moveTo what="leaf" pos="407,386"/>
+            <sound name="SlipWater2"/>
+            <!-- 415,351 -->
+            <moveTo what="leaf" way="physic" pos="10,-18" speed="0.5"/>
+        </action>
+    </quest>	
+    <quest name="summonLeaf" locked="false">
+        <trigger>
+            <location name="igorlily"/>
+            <use item="flut"/>
+        </trigger>
+        <action>
+            <wait value="80"/>
+      	    <sound name="SlipWater1"/>
+            <moveTo what="leaf" pos="294,154"/>
+      	    <sound name="SlipWater2"/>
+            <moveTo what="leaf" pos="176,169"/>
+        </action>
+    </quest>
+    
+    <quest name="minsk_fishes">
+       	<trigger>
+       	    <location name="igorv3"/>
+       	    <dialog name="minsk" num="2"/>
+       	</trigger>
+       	<action>
+    	    <moveTo who="zildo" pos="-16,0" speed="0.5" delta="true"/>
+    	    <angle who="zildo" value="1"/>
+    	    <moveTo who="minsk" pos="-14,12" speed="0.5" delta="true"/>
+       	    <angle who="minsk" value="0"/>
+       	</action>
+    </quest>
+    
+    <quest name="1fishMinsk" repeat="true" locked="false">
+        <trigger>
+            <location name="igorv3b"/>
+            <fall type="FISH" nature="WATER"/>
+            <questDone name="!allFishMinsk"/>
+        </trigger>
+        <action>
+            <var name="fishWater" value="fishWater+1"/>
+            <if exp="fishWater=6">
+				<sound name="ZildoAccomplishQuest"/>
+				<markQuest name="allFishMinsk" value="true"/>
+            </if>
+        </action>
+    </quest>
+    
+    <quest name="rewardMinsk">
+        <trigger>
+            <location name="igorv3"/>
+            <dialog name="minsk" num="4"/>
+        </trigger>
+        <action>
+            <take item="FLASK_YELLOW"/>
+        </action>
+    </quest>
+
+    <quest name="takeSawdust">
+        <trigger>
+            <location name="d5m2" pos="93,115" radius="2"/>
+            <use item="EMPTY_BAG"/>
+        </trigger>
+        <action>
+            <putDown item="EMPTY_BAG"/>
+            <take item="FULL_BAG"/>
+            <speak what="camera" text="d5m2.sawdust"/>
+        </action>
+    </quest>
+    
+    <quest name="giveSawdust" locked="false">
+        <trigger>
+            <location name="igorv4"/>
+            <dialog name="boris" num="6"/>
+        </trigger>
+        <action>
+            <putDown item="FULL_BAG"/>"
+        </action>
+    </quest>
+        
+    <quest name="borisWait">
+        <!-- This quest is just a way of simulating wait once hero has given his bag to Boris -->
+        <trigger>
+            <questDone name="giveSawdust"/>
+            <location name="igorvillage" pos="897,277" radius="2"/>
+            <inventory item="!FULL_BAG"/>
+        </trigger>
+    </quest>
+    
+    <quest name="backCoucou">
+        <trigger>
+            <location name="coucou"/>
+            <questDone name="trig_echange"/>
+        </trigger>
+        <action>
+            <exec script="zildoCrossCoucouNight"/>
+        </action>
+    </quest>
+    
+    <quest name="blockPrisonExt" repeat="true">
+        <trigger>
+            <questDone name="backCoucou-!retour_trion"/>
+            <location name="prisonext" pos="368,6" radius="2"/>
+        </trigger>
+        <action>
+            <speak who="zildo" text="pext.z.0"/>
+            <moveTo who="zildo" pos="0,32" delta="true"/>
+        </action>
+    </quest>
+    
+    <quest name="retour_trion">
+        <trigger>
+			<location name="chateaucoucou2" pos="439,280" radius="2"/>
+			<questDone name="echange"/>
+        </trigger>
+        <action>
+            <exec script="zildoReportKing"/>
+        </action>
+	</quest>
+    			
+    <quest name="zildoDream"> <!--  Signifie que la nuit est passée -->
+	</quest>
+
+    <quest name="hector_call1">
+        <trigger>
+            <location name="prisonext" pos="368,367" radius="4"/>
+            <questDone name="retour_trion"/>
+        </trigger>
+        <action>
+            <speak what="camera" text="pext.scr.hector.0"/>
+        </action>
+    </quest>
+    
+    <quest name="hector_call2">
+        <trigger>
+            <location name="prisonext" pos="687,346" radius="4"/>
+            <questDone name="retour_trion"/>
+        </trigger>
+        <action>
+            <wait value="50"/>
+            <moveTo what="camera" delta="true" pos="64,32"/>
+           	<speak what="camera" text="pext.scr.hector.1"/>
+           	<moveTo what="camera" delta="true" pos="-64,-32"/>
+		</action>
+    </quest>
+    
+    <quest name="hector_call3">
+        <trigger>
+            <location name="prisonext" pos="912,468" radius="1"/>
+            <questDone name="retour_trion"/>
+        </trigger>
+        <action>
+            <exec script="meetHiddenHector"/>
+        </action>
+    </quest>
+    
+    <quest name="ask_visitprison" locked="false">
+        <trigger>
+            <location name="prison"/>
+            <dialog name="jaune" num="0"/>
+        </trigger>
+    </quest>
+    
+    <quest name="visit_igorprison">
+		<trigger>
+		    <location name="prison" pos="175,80" radius="1"/>
+		    <questDone name="!visit_gpprison"/>	<!-- one at a time -->
+		    <questDone name="ask_visitprison"/>
+		</trigger>
+		<action>
+		    <script who="zildo" text="VIDE"/>	<!-- To reset his movement -->
+   		    <moveTo who="jaune" pos="0,16" delta="true"/>
+		    <angle who="zildo" value="0"/>
+   		    <actions>
+		        <moveTo who="jaune" pos="190,81"/>
+		        <moveTo who="zildo" pos="0,22" delta="true"/>
+		    </actions>
+		    <angle who="zildo" value="0"/>
+		    <actions>
+				<activate what="igordoor1" value="true"/>
+		    	<activate what="igordoor2" value="true"/>
+		    </actions>
+   		    <angle who="gard2" value="3"/>
+		    <moveTo who="jaune" pos="0,-10" delta="true"/>
+		    <angle who="jaune" value="2"/>
+		    <speak who="jaune" text="prison.gard.script"/>
+		    <moveTo who="igor" pos="104,90" unstoppable="true"/>
+		    <moveTo who="igor" pos="104,70"/>
+		    <script who="igor" value="3"/>
+		</action>        
+    </quest>
+
+    <quest name="visit_igorprison_over">
+        <action>
+            <markQuest name="visit_igorprison" value="0"/>
+            <script who="igor" value="0"/>
+        </action>
+    </quest>
+    
+    <quest name="visit_gpprison">
+		<trigger>
+		    <location name="prison" pos="175,206" radius="1"/>
+		    <questDone name="!visit_igorprison"/>	<!-- one at a time -->
+		    <questDone name="ask_visitprison"/>
+		</trigger>
+		<action>
+		    <script who="zildo" text="VIDE"/>
+		    <moveTo who="jaune" pos="0,80" delta="true"/>
+		    <angle who="zildo" value="0"/>
+		    <actions>
+		        <moveTo who="jaune" pos="190,193"/>
+		        <moveTo who="zildo" pos="0,22" delta="true"/>
+		    </actions>
+		    <angle who="zildo" value="0"/>
+		    <actions>
+				<activate what="gpdoor1" value="true"/>
+		    	<activate what="gpdoor2" value="true"/>
+		    </actions>
+		    <angle who="gard2" value="3"/>
+		    <moveTo who="jaune" pos="0,-10" delta="true"/>
+		    <angle who="jaune" value="2"/>
+		    <speak who="jaune" text="prison.gard.script"/>
+		</action>        
+    </quest>
+
+    <quest name="visit_igorprison_over" repeat="true">
+        <trigger>
+            <location name="prison" pos="228,168" radius="3"/>
+            <questDone name="visit_igorprison"/>
+        </trigger>
+        <action>
+			<exec script="closePrisonIgorDoor"/>
+        </action>
+    </quest>
+
+    <quest name="visit_gpprison_over" repeat="true">
+        <trigger>
+            <location name="prison" pos="228,270" radius="1"/>
+            <questDone name="visit_gpprison"/>
+        </trigger>
+        <action>
+            <exec script="closePrisonGpDoor"/>
+        </action>
+    </quest>
+    
+    <quest name="visit_gpprison_over_2" repeat="true">
+        <trigger>
+            <location name="prison" pos="228,138" radius="3"/>
+            <questDone name="visit_gpprison"/>
+        </trigger>
+        <action>
+            <exec script="closePrisonGpDoor"/>
+        </action>
+    </quest>
+    
+    <quest name="igor_promise_sword">
+        <trigger>
+            <dialog name="igor" num="7"/>
+        </trigger>
+        <action>
+            <sound name="ZildoAccomplishQuest"/>
+        </action>
+    </quest>
+    
+    <quest name="prison4_doors">
+        <trigger>
+            <location name="prison4"/>
+            <dead who="s1,s2"/>
+        </trigger>
+        <action>
+            <activate what="doorl" value="true"/>
+            <activate what="doorr" value="true"/>
+        </action>
+    </quest>
+    
+    <quest name="paid_gard">
+        <trigger>
+            <location name="prison"/>
+            <dialog name="gard2" num="1"/>
+        </trigger>
+        <action>
+            <take value="-10"/>
+            <wait value="10"/>
+            <moveTo who="gard2" pos="0,-10" delta="true" unstoppable="true"/>
+        	<moveTo who="gard2" pos="16,-4" delta="true"/>
+        	<angle who="gard2" value="3"/>
+        </action>
+    </quest>
+    
+    <quest name="prison4_openDoors">
+        <trigger>
+        	<location name="prison4"/>
+        	<questDone name="prison4_doors"/>
+        </trigger>
+        <action>
+            <actions>
+				<activate what="doorl" value="true"/>
+				<activate what="doorr" value="true"/>
+            </actions>
+		</action>
+    </quest>
+    
+    <mapScript>
+	    <!--  , means OR  -->
+	    <!--  - means AND -->        
+	    <condition name="promenade" exp="trig_echange-!fuite_tony1">
+			<filter type="1"/>
+	        <spawn type="BANDIT_VERT" speed="1.3" pos="935,369" angle="0" who="tony"/>
+	    	<script who="bunny" value="3"/>
+	    </condition>
+	    <condition name="promenade2" exp="trig_echange">
+	        <spawn who="emissaire" pos="425,255" effect="jaune" type="GARDE_CANARD" angle="3"/>
+	        <script who="emissaire" value="0"/>
+	        <filter type="1"/>
+	    </condition>
+	    <condition name="voleurs" exp="!attaque_voleurs">
+	        <spawn who="vert" pos="448,759" type="FOX" effect="vert" weapon="BOW" foreground="true"/>
+	    </condition>
+   		<condition name="voleurs" exp="!fini_voleur">
+			<filter type="1"/>
+			<!-- Post guard -->
+    	    <spawn type="FOX" who="rouge" effect="rouge" pos="870,878"/>
+    	    <spawn type="FOX" who="bleu" effect="bleu" pos="1039,922"/>			
+		</condition>
+		<condition name="voleursm1" exp="!fini_voleur">
+			<filter type="1"/>
+		</condition>
+		<condition name="voleursm2" exp="!fini_voleur">
+			<filter type="1"/>
+		</condition>
+		<condition name="voleursg3" exp="trig_echange">
+		    <actions>
+		    	<animation type="BIG_FIREBALL" what="fireb1" angle="0" pos="144,302"/>
+		    	<animation type="BIG_FIREBALL" what="fireb2" angle="0" pos="224,302"/>
+		    </actions>
+		    <wait value="20"/>
+		    <actions>
+			   	<animation type="BIG_FIREBALL" what="fireb3" angle="3" pos="320,131"/>
+			    <animation type="BIG_FIREBALL" what="fireb4" angle="3" pos="320,211"/>
+		    </actions>
+   		</condition>
+   		<condition name="voleursg6" exp="trig_echange">
+		    <actions>
+		    	<animation type="BIG_FIREBALL" what="fireb1" angle="0" pos="144,302"/>
+		    	<animation type="BIG_FIREBALL" what="fireb2" angle="0" pos="224,302"/>
+		    </actions>
+		    <wait value="30"/>
+		    <actions>
+			   	<animation type="BIG_FIREBALL" what="fireb3" angle="1" pos="29,131"/>
+			    <animation type="BIG_FIREBALL" what="fireb4" angle="1" pos="29,211"/>
+		    </actions>
+   		</condition>
+   		<condition name="prisonext" exp="retour_trion">
+
+   		</condition>
+   		<condition name="prisonext" exp="retour_trion">
+   		    <perso who="gardenord" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <perso who="gard2" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <perso who="gard3" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <perso who="gard4" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <perso who="gard5" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <script who="gardenord" value="3"/>
+   		    <script who="gard2" value="3"/>
+   		    <script who="gard3" value="3"/>
+   		    <script who="gard4" value="3"/>
+   		    <script who="gard5" value="3"/>
+   		    <!-- Open the prison, and hide Hector -->
+   		  	<remove what="prisondoor"/>
+   		  	<tile pos="56,32" back="512"/>
+   		    <pos who="hector" pos="906,525"/>
+   		    <angle who="hector" value="0"/>
+   		    <perso who="hector" action="hiddenHector"/>
+		</condition>
+		<condition name="prisonext" exp="retour_trion">
+		    <tile pos="15,41" back2="181"/>
+		    <tile pos="16,41" back2="180"/>
+		    <tile pos="17,41" back2="182"/>
+		    <tile pos="15,42" back2="179" reverse="1"/>
+		    <tile pos="15,43" back2="185" reverse="1"/>
+		    <tile pos="17,42" back2="179"/>
+		    <tile pos="17,43" back2="185"/>
+   		</condition>
+		<condition name="prisonext" exp="retour_trion-!hector_call3">
+		    <!-- Repeat Pssst if player hasn't seen Hector yet -->
+		    <markQuest name="hector_call1" value="false"/>
+		    <markQuest name="hector_call2" value="false"/>
+		</condition>
+		<condition name="voleursm1">
+		    <perso who="rouge" action="sleeping"/>
+		    <perso who="violet" action="sleeping"/>
+		</condition>
+		<condition name="voleursm2">
+		    <perso who="vert" action="sleeping"/>
+		</condition>
+		<condition name="voleursm3" exp="!v3_crate-!voleursm3(8,8)">
+		    <tile pos="8,8" back2="-1"/>
+		</condition>
+		<condition name="voleursm4b">
+			<!-- Just to place correctly the candle on the small table -->
+		    <pos what="candle" pos="0,6" delta="true" z="6"/>
+		</condition>
+		<condition name="voleursm4" exp="!voleursm4(13, 3)">
+		    <remove who="falcor"/>
+		</condition>
+		<condition name="voleursm4b" exp="!voleursm4(13, 3)">
+		    <perso who="falcor" action="sleeping"/>
+		</condition>
+		<condition name="voleursm4b" exp="voleursm4(13, 3)">
+		    <remove who="falcor"/>
+		</condition>
+		<condition name="voleursm4" exp="!voleursm4_button">
+		    <tile pos="16,11" back="256*2+33"/>
+			<tile pos="17,11" back="256*2+33"/>
+			<remove chaining="voleurscave"/>
+		</condition>
+		<condition name="voleursm4b" exp="voleursm4_button">
+		    <tile pos="3,11"  back="256*3+212" back2="-1"/>"
+		</condition>
+		<condition name="bucherons" exp="attaque_voleurs">
+		    <remove who="garde"/>
+		</condition>
+		<condition name="igorv3" exp="minsk_fishes">
+		    <pos who="minsk" pos="-14,12" delta="true"/>
+		    <angle who="minsk" value="2"/>
+		</condition>
+		<condition name="igorvillage">
+		    <markQuest name="summonLeafVillage" value="0"/>
+		</condition>
+		<condition name="igorv2"> <!-- Igor will come back home later -->
+		    <remove who="igor"/>
+		</condition>
+		<condition name="igorv3b" exp="!allFishMinsk">
+		    <!-- If this variable is stored into a game, the following should override it. -->
+		    <var name="fishWater" value="0"/>
+		</condition>
+		<condition name="igorv3b" exp="allFishMinsk">
+		    <pos who="f1" pos="170,125"/>
+		    <pos who="f2" pos="160,112"/>
+   		    <pos who="f3" pos="130,126"/>
+   		    <pos who="f4" pos="150,116"/>
+   		    <pos who="f5" pos="125,113"/>
+   		    <pos who="f6" pos="145,121"/>
+   		</condition>
+   		<condition name="coucou" exp="attaque_voleurs-!zildoDream">
+   		    <remove who="papy"/>
+   		    <remove who="vieille"/>
+   		    <remove who="petula"/>
+   		    <remove who="c1"/>
+   		    <remove who="c2"/>
+   		    <remove who="p1"/>
+   		    <remove who="p2"/>
+   		    <remove who="p3"/>
+   		    <remove who="p4"/>
+   		    <remove who="p5"/>
+   		    <remove who="garde"/>
+   		</condition>
+   		<condition name="chateaucoucou2" exp="echange">
+		    <spawn who="hector" type="HECTOR" pos="355,222" angle="1"/>
+	    	<spawn who="maltus" type="BANDIT_CHAPEAU" pos="580,236" angle="1"/>   		    
+   		</condition>
+   		<condition name="prison">
+   		    <perso who="gard2" effect="jaune"/>	<!--  workaround because this is not editable yet -->
+   		    <markQuest name="paid_gard" value="false"/>
+   		</condition>
+   		<condition name="prison3">
+   		    <markQuest name="prison4_doors" value="false"/>
+   		</condition>
+   		<condition name="prison4">
+			<markQuest name="prison4_openDoors" value="false"/> <!--  Because door opening is buggy when targeted here -->
+   		</condition>
+   	</mapScript>
+
+	<scene id="intro_episode2">
+	    <speak who="synthe" text="info.episode2"/>
+	    <!-- Get back to life for the two people -->
+	    <script who="tony" value="3"/>
+	    <script who="emissaire" value="3"/>
+	   	<!--  Real scene -->
+	    <moveTo who="tony" pos="32,2" delta="true" unstoppable="true" speed="2"/>
+	    <actions>
+		    <angle who="emissaire" value="1"/>
+		    <angle who="zildo" value="2"/>
+		    <speak who="emissaire" text="echange.ep2.emissaire1"/>
+		    <moveTo who="tony" pos="96,96" delta="true" unstoppable="true" />
+	    </actions>
+   	    <actions>
+   	    	<moveTo who="tony" pos="60,0" delta="true" unstoppable="true" />
+   	       	<moveTo who="emissaire" pos="4,6" delta="true"/>
+   	    </actions>
+	    <remove who="tony"/>
+	    <moveTo who="zildo" pos="0,8" delta="true"/>
+	    <wait value="10"/>
+	    <moveTo who="emissaire" pos="-8,2" delta="true"/>
+	    <wait value="10"/>
+	    <moveTo who="emissaire" pos="2,0" delta="true"/>
+	    <wait value="20"/>
+	    <speak who="emissaire" text="echange.ep2.emissaire"/>
+	    <actions>
+	        <moveTo who="zildo" pos="-8,4" delta="true"/>
+			<speak who="zildo" text="echange.ep2.zildo"/>
+	    </actions>
+		<speak who="emissaire" text="echange.ep2.emissaire2"/>
+		<actions>
+		    <focus who="zildo" delta="true"/>
+		    <moveTo who="emissaire" pos="-42,2" delta="true" speed="0.5"/>
+		</actions>
+	</scene>
+	
+	<scene id="attaqueV">
+	    <speak who="rouge" text="voleurs.fox1" unblock="true"/>
+	    <actions>
+            <moveTo who="rouge" pos="-32,4" delta="true" unstoppable="true" speed="1.5"/>
+            <moveTo who="bleu" pos="-68,8" delta="true" unstoppable="true" speed="1.5"/>
+            <angle who="zildo" value="1"/>
+	    </actions>
+	    <actions>
+        	<moveTo who="rouge" pos="0,100" delta="true"/>
+			<moveTo who="bleu" pos="913,998"/>
+			<moveTo who="zildo" pos="890,1005" speed="0.5"/>     
+	    </actions>
+	    <pos who="vert" pos="713,764"/>
+	    <angle who="bleu" value="3"/>
+	    <moveTo who="rouge" pos="870,980"/>
+	    <angle who="rouge" value="2"/>
+	    <angle who="zildo" value="0"/>
+	    <speak who="bleu" text="voleurs.fox2"/>
+	    <angle who="zildo" value="2"/>
+	    <moveTo who="rouge" pos="872,982" unblock="true"/>
+	    <speak who="rouge" text="voleurs.fox3"/>
+	    <moveTo who="bleu" pos="910,998" unblock="true"/>
+	    <angle who="zildo" value="1"/>
+	    <perso who="vert" weapon="BOW"/>
+	    <moveTo who="vert" pos="723,893" unblock="true" speed="1"/>
+	    <speak who="bleu" text="voleurs.fox4"/>
+	    
+	    <actions>
+	        <moveTo who="bleu" pos="900,998"/>
+	        <moveTo who="zildo" pos="880,1005" backward="true"/>
+	    </actions>
+   	    <speak who="bleu" text="voleurs.fox5"/>
+   	    <moveTo who="rouge" pos="874,985" unblock="true"/>
+   	    <putDown item="SWORD"/>
+   	    <speak who="bleu" text="voleurs.fox6"/>
+   	    <actions>
+   	    	<moveTo who="bleu" pos="889,1004"/>
+   	    	<moveTo who="zildo" pos="873,1005" backward="true"/>
+   	    </actions>
+   	    <var name="moneyStolen" value="zildo.money"/>
+   	    <take value="-999"/>
+   	    <moveTo who="vert" pos="807,906" unblock="true"/>
+   	    <speak who="bleu" text="voleurs.fox7"/>
+   	    <actions>
+   	    	<moveTo who="bleu" pos="-20,0" delta="true" speed="1.5"/>
+   	    	<moveTo who="zildo" pos="-25,0" delta="true" backward="true" speed="1.5"/>
+	   	    <speak who="bleu" text="voleurs.fox8"/>
+	   	    <moveTo who="vert" pos="839,924"/>
+   	    </actions>
+   	    <angle who="rouge" value="3"/>
+   	    <angle who="vert" value="2"/>
+   	    <attack who="vert"/>
+   	    <wait value="10"/>
+   	    <angle who="zildo" value="0"/>
+   	   	<wait value="5"/>
+   	    <moveTo who="zildo" pos="-32,0" delta="true"/>
+   	    <angle who="zildo" value="1"/>
+   	</scene>
+   	
+	<scene id="move_vg5_plat1">
+	    <moveTo what="platform" pos="-220,0" delta="true" speed="1"/>
+	    <wait value="60"/>
+	    <moveTo what="platform" pos="220,0" delta="true" speed="1"/>
+	    <wait value="10"/>
+	</scene>
+	<scene id="move_vg5_plat2">
+	    <moveTo what="platform2" pos="0,128" delta="true" speed="1"/>
+	    <wait value="100"/>
+	    <moveTo what="platform2" pos="0,-128" delta="true" speed="1"/>
+	    <wait value="10"/>
+	</scene>
+	
+	<scene id="disturbVoleurs">
+		<lookFor who="zildo" radius="8" info="ENEMY">
+            <wait value="4"/>
+            <sound name="ZildoLance"/> 
+            <script who="self" text="BRAS_LEVES"/>
+		    <throw who="self" pos="x+7, y+4" to="zildo.x+random*12-6,zildo.y+random*12-6" speed="1.6"
+       		 	   type="ROCK_BALL" shadow="SHADOW_MINUS" z="16" az="-0.08" way="BELL"/>
+		    <wait value="20"/>
+		    <script who="self" text="VIDE"/>
+		</lookFor>
+		<wait value="50"/>
+	</scene>
+
+	<scene id="voleurs_discutent" restoreZildo="true">
+	    <clear/>
+	    <speak what="camera" text="voleurs.chat.off" />
+	    <fadeOut type="0"/>
+	    <map name="voleurs" />
+	   	<spawn pos="122,664" type="FOX" who="rouge" angle="2" fx="rouge"/>
+	    <spawn pos="81,666" type="FOX" who="bleu" angle="1" fx="bleu"/>
+	   	<spawn pos="139,702" type="FOX" who="vert" weapon="BOW" angle="3" fx="vert"/>
+	    	   	
+	    <pos what="camera" pos="8,570" />
+	    <moveTo who="rouge" pos="40,0" delta="true" unblock="true"/>
+	    <fadeIn type="0"/>
+	    <wait value="120"/>
+	    <moveTo who="rouge" pos="-40,8" delta="true"/>
+	    <wait value="20"/>
+	    <angle who="rouge" value="2"/>
+	    <speak who="rouge" text="voleurs.chat.rouge0"/>
+	    <speak who="rouge" text="voleurs.chat.rouge1"/>
+	    <angle who="rouge" value="3"/>
+	    <speak who="bleu" text="voleurs.chat.violet1"/>
+	    <attack who="vert"/>
+	    <wait value="90"/>
+	    <angle who="rouge" value="2"/>
+	    <angle who="vert" value="0"/>
+		<speak who="vert" text="voleurs.chat.vert1"/>
+	   	<speak who="rouge" text="voleurs.chat.rouge2"/>
+	    <speak who="vert" text="voleurs.chat.vert2"/>
+	   	<speak who="rouge" text="voleurs.chat.rouge3"/>
+	   	<wait value="20"/>
+	   	<moveTo who="rouge" pos="128,-32" delta="true" unblock="true"/>
+		<speak who="rouge" text="voleurs.chat.rouge4" unblock="true"/>
+   	    <wait value="150"/>
+	    <speak who="bleu" text="voleurs.chat.violet2"/>
+	    <angle who="vert" value="0"/>
+	    <angle who="rouge" value="3"/>
+	    <speak who="vert" text="voleurs.chat.vert3"/>
+	    <wait value="20"/>
+	    <moveTo who="bleu" pos="16,-32" delta="true" unblock="true"/>
+	    <moveTo who="vert" pos="0,-32" delta="true" unblock="true"/>
+	    <wait value="10"/>
+	    <moveTo who="rouge" pos="48,0" delta="true" unblock="true"/>
+	    <fadeOut type="0"/>
+	</scene>
+	
+	<scene id="falcor_arrive">
+	    <music name=""/>
+	    <sound name="MenuSelect"/>"
+	    <moveTo who="zildo" pos="215,70"/>
+	    <angle who="zildo" value="1"/>
+	    <wait value="60"/>
+	    <angle who="zildo" value="1"/>
+	    <wait value="30"/>
+	    <spawn who="falcor" type="FALCOR" pos="301,68" speed="1"/>
+	    <moveTo who="falcor" pos="-36,0" delta="true"/>
+	    <filter type="4"/>
+		<wait value="20"/>
+		<filter type="0"/>
+		<filter type="1"/>
+		<music name="Falcor"/>
+		<speak who="falcor" text="voleursm4.falcor1"/>
+	    <speak who="falcor" text="voleursm4.falcor2"/>
+	    <actions>
+		    <speak who="zildo" text="voleursm4.zildo1"/>
+			<moveTo who="zildo" pos="-4,0" delta="true" backward="true"/>	        
+	    </actions>
+	    <angle who="zildo" value="1"/>
+	    <actions>
+		    <speak who="falcor" text="voleursm4.falcor3"/>
+		    <moveTo who="falcor" pos="229,68"/>
+	    </actions>
+		<speak who="zildo" text="voleursm4.zildo2"/>
+		<actions>
+		    <speak who="falcor" text="voleursm4.falcor4"/>
+		    <moveTo who="falcor" pos="-2,0" delta="true"/>
+		</actions>
+	    <speak who="zildo" text="voleursm4.zildo3"/>
+		<speak who="falcor" text="voleursm4.falcor5"/>
+		<wait value="20"/>
+		<moveTo who="falcor" pos="0,16" delta="true"/>
+		<wait value="50"/>
+		<angle who="falcor" value="0"/>
+		<moveTo who="falcor" pos="0,-14" delta="true" speed="0.5"/>
+		<wait value="25"/>
+		<angle who="falcor" value="3"/>
+		<speak who="falcor" text="voleursm4.falcor6"/>
+		<speak who="zildo" text="voleursm4.zildo4"/>
+		<speak who="falcor" text="voleursm4.falcor7"/>
+		<speak who="zildo" text="voleursm4.zildo5"/>
+		<nameReplace who="falcor" name="falcor"/>
+		<speak who="falcor" text="voleursm4.falcor8"/>
+		<speak who="falcor" text="voleursm4.falcor9"/>
+		<moveTo who="falcor" pos="243,149" unblock="true" speed="1"/>
+		<wait value="10"/>
+		<moveTo who="zildo" pos="240,130" speed="1"/>
+		<actions>
+			<moveTo who="falcor" pos="160,186"/>
+		    <moveTo who="zildo" pos="240,186"/>
+		</actions>
+		<actions>
+		    <moveTo who="falcor" pos="160,237"/>
+		    <moveTo who="zildo" pos="160,186"/>
+		</actions>
+		<moveTo who="zildo" pos="160,220"/>
+		<fadeOut type="2"/>
+		<map name="voleurs"/>
+		<spawn who="falcor" type="FALCOR" pos="223,607"/>
+		<pos who="zildo" pos="223,590"/>
+		<fadeIn type="2"/>
+		<moveTo who="falcor" pos="0,11" delta="true" open="true"/>
+		<moveTo who="falcor" pos="16,0" delta="true"/>
+		<angle who="falcor" value="3"/>
+		<moveTo who="zildo" pos="0,48" delta="true"/>
+		<moveTo who="falcor" pos="-14,0" delta="true"/>
+		<angle who="falcor" value="2"/>
+		<angle who="zildo" value="0"/>
+		<speak who="falcor" text="voleursm4.falcor10"/>
+		<speak who="zildo" text="voleursm4.zildo6"/>
+		<speak who="falcor" text="voleursm4.falcor11"/>
+		<music name="Nuit"/>
+	</scene>
+
+	<scene id="moveLeaf">
+	    <moveTo what="leaf" pos="-2*zildo.angle.x,-2*zildo.angle.y" way="physic" unblock="true"/>
+	    <wait value="5"/>
+	    <sound name="SlipWater1"/>
+	</scene>
+	
+	<scene id="zildoCrossCoucouNight">
+	    <speak who="zildo" text="coucou.z.0"/>
+	    <moveTo who="zildo" pos="874,500"/>
+		<moveTo who="zildo" pos="874,593"/>
+		<speak who="zildo" text="coucou.z.1" unblock="true"/>
+		<moveTo who="zildo" pos="927,596"/>
+		<moveTo who="zildo" pos="924,726"/>
+		<moveTo who="zildo" pos="808,738"/>
+		<moveTo who="zildo" pos="542,915"/>
+		<moveTo who="zildo" pos="381,961"/>
+	   	<angle who="zildo" value="3"/>
+	   	<wait value="20"/>
+	   	<speak who="zildo" text="coucou.z.2"/>
+	   	<moveTo who="zildo" pos="368,1025"/>
+	   	<!--  switch map to prisonext -->
+	   	<wait value="20"/>
+	   	<moveTo who="zildo" pos="368,64"/>
+	</scene>
+	
+	<scene id="zildoReportKing">
+		<moveTo who="zildo" pos="0,-1" delta="true"/>
+		<angle who="zildo" value="0"/>
+		<moveTo what="camera" pos="0,-48" delta="true"/>
+		<angle who="maltus" value="3"/>
+		<angle who="hector" value="2"/>
+		<speak who="king" text="chc2.king.0"/>
+		<speak who="zildo" text="chc2.zildo.0"/>
+		<moveTo who="hector" pos="4,24" delta="true" speed="0.5"/>
+		<speak who="king" text="chc2.king.1"/>
+		<speak who="zildo" text="chc2.zildo.1"/>
+		<filter type="4"/>
+		<script who="gard2" value="3"/>
+		<angle who="gard2" value="2"/>
+		<wait value="20"/>
+		<filter type="0"/>
+		<moveTo who="maltus" pos="522,250" speed="1.5" unblock="true"/>
+		<speak who="king" text="chc2.king.2"/>
+		<wait value="10"/>
+		<speak who="king" text="chc2.king.3"/>
+		<wait value="20"/>
+		<speak who="king" text="chc2.king.4"/>
+		<fadeOut value="0"/>
+		<wait value="100"/> <!-- Long story -->
+		<pos who="maltus" pos="439,273"/>
+		<pos who="hector" pos="383,279"/>
+		<angle who="hector" value="1"/>
+		<angle who="maltus" value="2"/>
+		<fadeIn value="0"/>
+		 
+		<speak who="king" text="chc2.king.5"/>
+		<angle who="maltus" value="0"/>
+		<speak who="king" text="chc2.king.6"/>
+		<speak who="king" text="chc2.king.7"/>
+		<speak who="king" text="chc2.king.8"/>
+		<speak who="zildo" text="chc2.zildo.2"/>
+		<speak who="king" text="chc2.king.9"/>
+		<speak who="king" text="chc2.king.10"/>
+		<speak who="zildo" text="chc2.zildo.3"/>
+		
+		<wait value="20"/>
+		<angle who="zildo" value="1"/>
+		<wait value="10"/>
+		<angle who="zildo" value="2"/>
+		<wait value="10"/>
+		<focus who="zildo" delta="true"/>
+		<focus/>
+		<moveTo who="zildo" pos="440,470" speed="1" unblock="true"/>
+		<wait value="100"/>
+		<fadeOut value="2"/>
+		<wait value="80"/>
+		<map name="d4m12"/>
+		<pos who="zildo" pos="144,170"/>
+		<fadeIn value="2" unblock="true"/>
+		<moveTo who="zildo" pos="0,-32" delta="true" speed="0.8"/>
+		<angle who="zildo" value="3"/>
+		<speak who="zildo" text="chc2.zildo.4"/>
+		<moveTo who="zildo" pos="104,82" speed="1" unblock="true"/>
+		<wait value="50"/>
+		<angle who="zildo" value="3"/>
+		<fadeOut value="1"/>
+		<music name=""/>
+		<wait value="200"/>
+		<exec script="zildoDream"/>
+	</scene>
+	
+	<scene id="zildoDream">
+	    <pos who="zildo" pos="79,79"/>
+	  	<perso who="zildo" action="sleeping"/>
+	  	<script who="zildo" text="SLEEPING"/>
+	    <fadeIn value="1"/>
+	    <wait value="150"/>
+	    <sound name="OuvrePorte"/>
+	    <spawn who="petula" type="RITASKY" pos="144,170" alpha="0" alphaA="2"/>
+	    <perso who="zildo" action=""/>
+	    <script who="zildo" text="WAKEUP"/>
+	    <wait value="150"/>
+	    <speak who="petula" text="zildo.house.a.1"/>
+	    <wait value="30"/>
+	    <speak who="zildo" text="zildo.house.zildo.1"/>
+	    <moveTo who="petula" delta="true" pos="0,-32"/>
+	    <angle who="petula" value="3"/>
+	    <speak who="petula" text="zildo.house.a.2"/>
+	    <speak who="zildo" text="zildo.house.zildo.2"/>
+	    <speak who="petula" text="zildo.house.a.3"/>	    
+	    <speak who="zildo" text="zildo.house.zildo.3"/>
+	    <moveTo who="petula" delta="true" pos="0,32"/>
+	    <perso who="petula" alphaA="-2"/>
+	    <wait value="30"/>
+	    <remove who="petula"/>
+	    <script who="zildo" text="VIDE"/>
+	    <angle who="zildo" value="1"/>
+	    <moveTo who="zildo" pos="48,16" delta="true"/>
+	</scene>
+	
+	<scene id="meetHiddenHector">
+	    <perso who="hector" action=""/>
+	    <moveTo who="zildo" pos="916,475"/>
+	    <moveTo who="hector" pos="913,525" unstoppable="true"/>
+	    <speak who="hector" text="pext.scr.hector.2"/>
+	    <actions>
+	    	<moveTo who="hector" pos="920,525" unstoppable="true"/>
+	    	<moveTo who="zildo" pos="919,485"/>
+	    </actions>
+	    <moveTo who="hector" pos="920,515"/>
+	    <speak who="hector" text="pext.scr.hector.3"/>
+	    <speak who="hector" text="pext.scr.hector.4"/>
+	    <moveTo who="zildo" pos="0,4" unblock="true" delta="true"/>
+	    <speak who="zildo" text="pext.scr.zildo.0"/>
+  	    <speak who="hector" text="pext.scr.hector.5"/>
+	    <speak who="hector" text="pext.scr.hector.6"/>
+	    <speak who="zildo" text="pext.scr.zildo.1"/>
+	    <sound name="ZildoAccomplishQuest"/>
+	    <speak who="hector" text="pext.scr.hector.7"/>	    
+	    <speak who="hector" text="pext.scr.hector.8"/>
+	    <moveTo who="hector" pos="919,525"/>
+	    <moveTo who="hector" pos="904,525" unstoppable="true"/>
+	    <remove who="hector"/>
+	    <tile pos="56,32" back="95+256"/>
+	</scene>
+	
+	<scene id="closePrisonIgorDoor">
+        <markQuest name="visit_igorprison" value="0"/>
+        <markQuest name="visiting_igorprison" value="0"/>
+        <moveTo who="jaune" pos="0,10" delta="true"/> 
+        <angle who="jaune" value="3"/>
+	    <actions>
+			<activate what="igordoor1" value="false"/>
+	    	<activate what="igordoor2" value="false"/>
+	    </actions>
+	    <moveTo who="jaune" pos="223,60"/>	    
+   	    <angle who="jaune" value="2"/>
+	</scene>
+
+	<scene id="closePrisonGpDoor">
+        <markQuest name="visit_gpprison" value="0"/>
+        <markQuest name="visiting_gpprison" value="0"/>
+        <script who="zildo" text="VIDE"/>
+        <moveTo who="jaune" pos="0,10" delta="true"/> 
+        <angle who="jaune" value="3"/>
+	    <actions>
+			<activate what="gpdoor1" value="false"/>
+	    	<activate what="gpdoor2" value="false"/>
+	    </actions>
+	    <moveTo who="jaune" pos="223,142"/>
+	    <exec script="prisonLeaveGard" unblock="true"/>
+  	</scene>
+
+	<scene id="prisonLeaveGard">	<!-- To avoid blocking player when gard returns -->
+   	    <moveTo who="jaune" pos="223,60"/>
+   	    <angle who="jaune" value="2"/>
+	</scene>	
+
+	<persoAction id="sleeping">
+	    <timer each="40+20*random">
+	        <action>
+		        <spawn type="dice10>4:ZZZ1,ZZZ2"
+		               pos="x, y" z="4"
+		               vx="0.1" vz="0.1"
+		               foreground="true"
+		               alphaA="-0.1"/>
+	        </action>
+	    </timer>
+	</persoAction>
+	
+	<persoAction id="hiddenHector">
+	    <timer each="20+60*random">
+	        <action>
+		        <pos who="hector" pos="2,0" delta="true"/>
+	            <wait value="10"/>
+	            <pos who="hector" pos="-2,0" delta="true"/>
+	            <wait value="30"/>
+		        <pos who="hector" pos="1,0" delta="true"/>
+	            <wait value="5"/>
+	            <pos who="hector" pos="-1,0" delta="true"/>
+	        </action>
+	    </timer>
+	</persoAction>
+</adventure>
