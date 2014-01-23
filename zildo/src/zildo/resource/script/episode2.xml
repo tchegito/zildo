@@ -350,7 +350,7 @@
     <quest name="retour_trion">
         <trigger>
 			<location name="chateaucoucou2" pos="439,280" radius="2"/>
-			<questDone name="echange"/>
+			<questDone name="trig_echange"/>
         </trigger>
         <action>
             <exec script="zildoReportKing"/>
