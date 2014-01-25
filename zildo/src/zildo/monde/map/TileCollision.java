@@ -43,6 +43,10 @@ public class TileCollision {
     	return instance;
     }
     
+    public boolean collide(int p_posX, int p_posY, Tile p_tile) {
+    	return collide(p_posX, p_posY, p_tile.getValue(), p_tile.reverse);
+    }
+    
     public boolean collide(int p_posX, int p_posY, int p_nTile, Reverse p_reverse) {
     	int px = p_posX;
     	int py = p_posY;
