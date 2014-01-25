@@ -32,8 +32,7 @@ public class Vector4f {
     public float z;
     public float w;
     
-	public Vector4f(float x, float y, float z, float w)
-    {
+	public Vector4f(float x, float y, float z, float w) {
         set(x, y, z, w);
     }
 	
