@@ -379,11 +379,14 @@ public class MapManagement {
 				return quelElement != null && !quelElement.isOutsidemapAllowed() && !quelElement.isZildo() && !ghost;
 			}
 
+			int scaledX = mx / 16;
+			int scaledY = my / 16;
 			// Don't collide if case is bottom less (example: lava tile)
-			if (currentMap.isCaseBottomLess(mx / 16, my / 16)) {
+			if (currentMap.isCaseBottomLess(scaledX, scaledY)) {
 				continue;
 			}
-			Tile tile = currentMap.readmap((mx / 16), (my / 16), foreground);
+			Case mapCase = currentMap.get_mapcase(scaledX, scaledY + 4);
+			Tile tile = foreground ? mapCase.getForeTile() : mapCase.getBackTile();
 			if (tile == null) {
 				continue;
 			}
@@ -392,9 +395,15 @@ public class MapManagement {
 			modx = mx % 16;
 			mody = my % 16;
 
-			if (tileCollision.collide(modx, mody, on_map, tile.reverse)) {
+			if (tileCollision.collide(modx, mody, tile)) {
 				return true;
 			} else {
+				tile = mapCase.getBackTile2();
+				if (tile != null) {
+					if (tileCollision.collide(modx, mody, tile)) {
+						return true;
+					}
+				}
 				// Special case : impassable for NPC, but right for hero
 				if (particularTiles.contains(on_map)) {
 					// Okay => check if given element is a character which is allowed
