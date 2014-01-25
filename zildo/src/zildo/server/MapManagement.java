@@ -386,6 +386,9 @@ public class MapManagement {
 				continue;
 			}
 			Case mapCase = currentMap.get_mapcase(scaledX, scaledY + 4);
+			if (mapCase == null) {
+				continue;
+			}
 			Tile tile = foreground ? mapCase.getForeTile() : mapCase.getBackTile();
 			if (tile == null) {
 				continue;
