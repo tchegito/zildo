@@ -40,6 +40,7 @@ import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
+import zildo.monde.util.Vector2f;
 import zildo.resource.Constantes;
 import zildo.resource.KeysConfiguration;
 import zildo.server.state.ClientState;
@@ -199,6 +200,13 @@ public class PlayerManagement {
 			if (heros.getAttente() == 0 && heros.getMouvement()!=MouvementZildo.ATTAQUE_EPEE && heros.getMouvement()!=MouvementZildo.ATTAQUE_ARC) {
 				// Zildo can move ONLY if he isn't attacking
 				// LEFT/RIGHT key
+				Vector2f direction = instant.getDirection();
+				if (direction != null) {
+					deltaX = zildoSpeed * direction.x;
+					deltaY = zildoSpeed * direction.y;
+					heros.increaseAcceleration();
+					heros.setAngle(Angle.fromDelta(deltaX, deltaY));
+				}/*
 				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_LEFT)) {
 					deltaX-=zildoSpeed;
 					heros.setAngle(Angle.OUEST);
@@ -219,7 +227,7 @@ public class PlayerManagement {
 					heros.setAngle(Angle.SUD);
 					heros.increaseAcceleration();
 				}
-				
+				*/
 				if (deltaX == 0 && deltaY == 0) {
 					heros.decreaseAcceleration();
 				}
@@ -316,7 +324,7 @@ public class PlayerManagement {
 			float coeff=1.0f;
 
 			// On ralentit le mouvement de Zildo s'il est diagonal, ou si Zildo est dans un escalier
-			if (ralentit || (diffx!=0 && diffy!=0 && heros.getMouvement()!=MouvementZildo.TOUCHE))
+			if (ralentit || (diffx!=0 && diffy!=0 && heros.isGhost() && heros.getMouvement()!=MouvementZildo.TOUCHE))
 			{
 				if (ralentit)
 					coeff = 0.4f;
