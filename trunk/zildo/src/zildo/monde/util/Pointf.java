@@ -55,6 +55,12 @@ public class Pointf {
     	return new Pointf(ax, ay).distance(bx, by);
     }
     
+    public static double pythagore(float ax, float ay) {
+        float c = ax * ax;
+        c += ay * ay;
+        return Math.sqrt(c);
+    }
+    
     /**
      * Returns the distance between the current point and a given one.
      * @param p_other
@@ -63,9 +69,7 @@ public class Pointf {
     public float distance(float x2, float y2) {
     	float c = x - x2;
     	float d = y - y2;
-        c = c * c;
-        c += d * d;
-        return (float) Math.sqrt(c);
+    	return (float) pythagore(c, d);
     }
     
     public boolean equals(Pointf p) {

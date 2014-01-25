@@ -145,6 +145,19 @@ public enum Angle {
 		return null;
 	}
 	
+	/**
+	 * Return one of the four basic angle, from a delta.
+	 */
+	public static Angle fromDelta(float dx, float dy) {
+		Angle a = Angle.NORD;
+		if (Math.abs(dx) > Math.abs(dy)) {
+			a = dx > 0 ? Angle.EST : Angle.OUEST;
+		} else {
+			a = dy > 0 ? Angle.SUD : Angle.NORD;
+		}
+		return a;
+	}
+	
 	public static boolean isContained(Angle ref, Angle component) {
 		if (ref == null) {
 			return false;
