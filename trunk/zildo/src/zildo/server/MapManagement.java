@@ -393,19 +393,20 @@ public class MapManagement {
 			if (tile == null) {
 				continue;
 			}
-
+			Tile tileBack2 = mapCase.getBackTile2();
+			
 			on_map = tile.getValue();
 			modx = mx % 16;
 			mody = my % 16;
 
-			if (tileCollision.collide(modx, mody, tile)) {
+			// Sum each layer of collision : Back, then Back2 (except for ladder !)
+			if (tileBack2 != null && tileCollision.collide(modx, mody, tileBack2)) {
 				return true;
 			} else {
-				tile = mapCase.getBackTile2();
-				if (tile != null) {
-					if (tileCollision.collide(modx, mody, tile)) {
-						return true;
-					}
+				int back2val = tileBack2 != null ? tileBack2.getValue() : 0;
+				boolean isLadder = back2val == 206 || back2val == 207;
+				if (!isLadder && tileCollision.collide(modx, mody, tile)) {
+					return true;
 				}
 				// Special case : impassable for NPC, but right for hero
 				if (particularTiles.contains(on_map)) {
