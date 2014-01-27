@@ -155,7 +155,7 @@ public class Area implements EasySerializable {
 	// OUT: Case object at the given coordinates
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public Case get_mapcase(int x, int y) {
-		if (x < 0 || x > dim_x) {
+		if (x < 0 || x >= dim_x) {
 			return null;
 		}
 		if (y < 0 || y > dim_y) {
