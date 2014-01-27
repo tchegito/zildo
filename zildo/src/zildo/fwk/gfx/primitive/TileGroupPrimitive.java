@@ -101,7 +101,7 @@ public class TileGroupPrimitive {
 				tile.reverse, tile.rotation, hasChanged);
 	}
     
-    private void removeTile(int nth, int x, int y) {
+    public void removeTile(int nth, int x, int y) {
     	meshes[nth].removeTile(x, y);
     }
 
