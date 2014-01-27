@@ -23,20 +23,29 @@ package zildo.monde.sprites.persos;
 import zildo.monde.Hasard;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.util.Point;
 import zildo.resource.Constantes;
+import zildo.server.EngineZildo;
 
 /**
+ * Used for both RAT and BIG_RAT.
+ * 
  * @author Tchegito
  *
  */
 public class PersoRat extends PersoNJ {
 
 	int waitingCount;
+	boolean bigRat;
 	
-	public PersoRat() {
+	final int BITE_DISTANCE = 12;
+	
+	public PersoRat(PersoDescription p_desc) {
 		super();
 		pathFinder.speed = 1.5f;
-		pv = 2;
+		bigRat = p_desc == PersoDescription.BIG_RAT;
+
+		pv = bigRat ? 3 : 2;
 	}
 
 	@Override
@@ -54,13 +63,28 @@ public class PersoRat extends PersoNJ {
 		super.finaliseComportement(compteur_animation);
 		
 		if (attente != 0) {
-			int varying = (attente % (4 * Constantes.speed)) / (2 * Constantes.speed);
-			if (angle.isHorizontal()) {
-				nSpr = PersoDescription.RAT.nth(6) + varying;
-			} else {
-				nSpr += 1;
-				if (varying == 1) {
-					reverse = (reverse == Reverse.HORIZONTAL) ? Reverse.NOTHING : Reverse.HORIZONTAL;
+			if (bigRat) { // Big rat crawls randomly, but run on hero if he sees him
+				Perso zildo = EngineZildo.persoManagement.lookFor(this, 5, PersoInfo.ZILDO);
+				if (zildo != null) {
+					float dx = x - zildo.x;
+					float dy = y - zildo.y;
+					if (dy > dx || dx < BITE_DISTANCE) {	// Rat runs quickly on Zildo
+						pathFinder.setTarget(new Point(zildo.x, zildo.y));
+					} else {
+						// Runs just in front of him to bite
+						Point front = new Point(zildo.x + BITE_DISTANCE * Math.signum(dx), zildo.y);
+						pathFinder.setTarget(front);
+					}
+				}
+			} else { // Small rat has a variation sprite, and crawls randomly
+				int varying = (attente % (4 * Constantes.speed)) / (2 * Constantes.speed);
+				if (angle.isHorizontal()) {
+					nSpr = PersoDescription.RAT.nth(6) + varying;
+				} else {
+					nSpr += 1;
+					if (varying == 1) {
+						reverse = (reverse == Reverse.HORIZONTAL) ? Reverse.NOTHING : Reverse.HORIZONTAL;
+					}
 				}
 			}
 		}
