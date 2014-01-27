@@ -1089,8 +1089,13 @@
 	    <speak who="hector" text="pext.scr.hector.6"/>
 	    <speak who="zildo" text="pext.scr.zildo.1"/>
 	    <sound name="ZildoAccomplishQuest"/>
-	    <speak who="hector" text="pext.scr.hector.7"/>	    
+	    <speak who="hector" text="pext.scr.hector.7"/>
+	    <wait value="30"/>
+	    <angle who="hector" value="3"/>
+	    <wait value="20"/>
+	    <angle who="hector" value="0"/>	    
 	    <speak who="hector" text="pext.scr.hector.8"/>
+	    <speak who="hector" text="pext.scr.hector.9"/>
 	    <moveTo who="hector" pos="919,525"/>
 	    <moveTo who="hector" pos="904,525" unstoppable="true"/>
 	    <remove who="hector"/>
