@@ -47,6 +47,7 @@ public class Case implements EasySerializable {
 	private int z;	// Result of analysis
 	
 	private boolean modified;
+	private int back2RemovedBank;	// Set when back2 tile just been removed, to keep previous bank
 	
 	public Case(Case p_original) {
 		this.back = p_original.getBackTile().clone();
@@ -90,6 +91,18 @@ public class Case implements EasySerializable {
 
 	public boolean isModified() {
 		return modified;
+	}
+	
+	public boolean isBack2Removed() {
+		return back2RemovedBank != -1;
+	}
+	
+	public int getBack2Removed() {
+		return back2RemovedBank;
+	}
+	
+	public void clearBack2Removed() {
+		back2RemovedBank = -1;
 	}
 	
 	public void setModified(boolean value) {
@@ -306,6 +319,9 @@ public class Case implements EasySerializable {
 	public void setBackTile2(Tile p_tile) {
 		if (back2 != null && p_tile != null) {
 			p_tile.previousBank = back2.bank;
+		}
+		if (p_tile == null && back2 != null) {
+			back2RemovedBank = back2.bank;
 		}
 		this.back2 = p_tile;
 		modified = true;

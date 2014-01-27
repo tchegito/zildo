@@ -262,6 +262,9 @@ public abstract class TileEngine {
 							if (back2 != null) {
 								meshBACK2.updateTile(back2,
 										x, y, back2.index, changed);
+							} else if (mapCase.isBack2Removed()) {
+								meshBACK2.removeTile(mapCase.getBack2Removed(), x, y);
+								mapCase.clearBack2Removed();
 							}
 							
 							Tile fore = mapCase.getForeTile();
