@@ -43,7 +43,7 @@ public class ReplaceAllMapsTables extends AllMapProcessor {
 		}*/
 		for (int y = 0; y < area.getDim_y(); y++) {
 			for (int x = 0; x < area.getDim_x(); x++) {
-				Case mapCase = area.get_mapcase(x, y + 4);
+				Case mapCase = area.get_mapcase(x, y);
 				int ind = mapCase.getBackTile().getValue() - 256 * 2;
 				if (ind >= 117 && ind <= 119) {
 					int nTile = ind - 10;

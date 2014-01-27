@@ -122,7 +122,7 @@ public class Area implements EasySerializable {
 	}
 
 	public Area() {
-		mapdata = new Case[Constantes.TILEENGINE_HEIGHT + 4][Constantes.TILEENGINE_HEIGHT + 4];
+		mapdata = new Case[Constantes.TILEENGINE_HEIGHT][Constantes.TILEENGINE_HEIGHT];
 		listChainingPoint = new ArrayList<ChainingPoint>();
 
 		changes = new HashSet<Point>();
@@ -158,7 +158,7 @@ public class Area implements EasySerializable {
 		if (x < 0 || x > dim_x) {
 			return null;
 		}
-		if (y < 0 || y > (dim_y + 3)) {
+		if (y < 0 || y > dim_y) {
 			return null;
 		}
 		return mapdata[y][x];
@@ -192,7 +192,7 @@ public class Area implements EasySerializable {
 	 * @return Tile
 	 */
 	public Tile readmap(int x, int y, boolean p_foreground) {
-		Case temp = this.get_mapcase(x, y + 4);
+		Case temp = this.get_mapcase(x, y);
 		if (temp == null) {
 			return null;
 		}
@@ -223,7 +223,7 @@ public class Area implements EasySerializable {
 	final IntSet waterBank = new IntSet(154, 156, 188, 189, 190, 255);
 	
 	public TileNature getCaseNature(int x, int y) {
-		Case temp = this.get_mapcase(x, y + 4);
+		Case temp = this.get_mapcase(x, y);
 		if (temp == null) {
 			return null;
 		}
@@ -252,7 +252,7 @@ public class Area implements EasySerializable {
 	 * Returns TRUE if case is bottom less (example: lava or void)
 	 */
 	public boolean isCaseBottomLess(int x, int y) {
-		Case temp = this.get_mapcase(x, y + 4);
+		Case temp = this.get_mapcase(x, y);
 		if (temp == null) {
 			return false;
 		}
@@ -274,7 +274,7 @@ public class Area implements EasySerializable {
 	}
 
 	public int readAltitude(int x, int y) {
-		Case temp = this.get_mapcase(x, y + 4);
+		Case temp = this.get_mapcase(x, y);
 		if (temp == null) {
 			return 0;
 		}
@@ -287,7 +287,7 @@ public class Area implements EasySerializable {
 	// IN:x,y (coordinates on Area), quoi =motif + bank*256
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public void writemap(int x, int y, int quoi) {
-		Case temp = this.get_mapcase(x, y + 4);
+		Case temp = this.get_mapcase(x, y);
 		if (temp == null) {
 			temp = new Case();
 		} else {
@@ -296,9 +296,9 @@ public class Area implements EasySerializable {
 		Tile back = temp.getBackTile();
 		back.index = quoi & 255;
 		back.bank = (byte) (quoi >> 8);
-		this.set_mapcase(x, y + 4, temp);
+		this.set_mapcase(x, y, temp);
 
-		changes.add(new Point(x, y + 4));
+		changes.add(new Point(x, y));
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -503,7 +503,7 @@ public class Area implements EasySerializable {
 		
 		// Remove tile on back2, if present
 		boolean spawnGoodies = true;
-		Case temp = this.get_mapcase(x, y + 4);
+		Case temp = this.get_mapcase(x, y);
 		if (temp.getBackTile2() != null) {
 			if (anim == SpriteAnimation.FROM_CHEST) {
 				// A chest is open => replace by the right tile
@@ -587,7 +587,7 @@ public class Area implements EasySerializable {
 		SpawningTile spawnTile = new SpawningTile();
 		spawnTile.x = tileLocation.x;
 		spawnTile.y = tileLocation.y;
-		spawnTile.previousCase = new Case(get_mapcase(tileLocation.x, tileLocation.y + 4));
+		spawnTile.previousCase = new Case(get_mapcase(tileLocation.x, tileLocation.y));
 		spawnTile.cnt = time;
 		spawnTile.awaitedQuest = awaitedQuest;
 		spawnTile.fog = fog;
@@ -687,7 +687,7 @@ public class Area implements EasySerializable {
 		// 2) Save the map cases
 		for (int i = 0; i < this.getDim_y(); i++) {
 			for (int j = 0; j < this.getDim_x(); j++) {
-				Case temp = this.get_mapcase(j, i + 4);
+				Case temp = this.get_mapcase(j, i);
 
 				if (temp == null) {
 					temp = new Case();
@@ -798,7 +798,7 @@ public class Area implements EasySerializable {
 			for (int j = 0; j < map.getDim_x(); j++) {
 				Case temp = Case.deserialize(p_buffer);
 
-				map.set_mapcase(j, i + 4, temp);
+				map.set_mapcase(j, i, temp);
 
 				if (p_spawn && !EngineZildo.game.editing) {
 					
@@ -1020,7 +1020,7 @@ public class Area implements EasySerializable {
 	private void correctTrees() {
 		for (int j = 0; j < getDim_y(); j++) {
 			for (int i = 0; i < getDim_x(); i++) {
-				Case c = get_mapcase(i, j + 4);
+				Case c = get_mapcase(i, j);
 				if (c != null) {
 					Tile foreTile = c.getForeTile();
 					if (foreTile != null && treeToBlock.contains(foreTile.index + foreTile.bank * 256)) {
@@ -1107,12 +1107,12 @@ public class Area implements EasySerializable {
 				if (EngineZildo.mapManagement.collideSprite(x, y, radius, null)) {
 					spawnTile.cnt++;
 				} else {
-					set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);
+					set_mapcase(spawnTile.x, spawnTile.y, spawnTile.previousCase);
 					spawnTile.previousCase.setModified(true);
 					if (spawnTile.fog) { 
 						EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
 					}
-					changes.add(new Point(spawnTile.x, spawnTile.y + 4));
+					changes.add(new Point(spawnTile.x, spawnTile.y));
 					it.remove();
 				}
 			} else {

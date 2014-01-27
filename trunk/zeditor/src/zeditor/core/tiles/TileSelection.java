@@ -151,10 +151,10 @@ public class TileSelection extends CaseSelection {
 					if (map.getDim_x() > dx && map.getDim_y() > dy && dy >= 0
 							&& dx >= 0) {
 						// We know that this is a valid location
-						Case c = map.get_mapcase(dx, dy + 4);
+						Case c = map.get_mapcase(dx, dy);
 						if (c == null) {
 							c = new Case();
-							map.set_mapcase(dx, dy + 4, c);
+							map.set_mapcase(dx, dy, c);
 						}
 
 						// Calls the drawer to do the job
@@ -175,7 +175,7 @@ public class TileSelection extends CaseSelection {
 		Reverse ref = null;
 			for (int h = 0; h < height; h++) {
 				for (int w = 0; w < width; w++) {
-					Case item =  map.get_mapcase(p.x/16 + w, p.y/16 + h + 4);
+					Case item =  map.get_mapcase(p.x/16 + w, p.y/16 + h);
 					if (item != null) {
 						Tile tile;
 						switch (p_mask) {
@@ -221,12 +221,12 @@ public class TileSelection extends CaseSelection {
 						case NOTHING:
 							revW = width - w - 1; revH = height - h - 1;break;
 						}
-						keepCase[h * width + w] = map.get_mapcase(p.x/16 + revW, p.y/16 + revH + 4);
+						keepCase[h * width + w] = map.get_mapcase(p.x/16 + revW, p.y/16 + revH);
 					}
 				}
 				for (int h = 0; h < height; h++) {
 					for (int w = 0; w < width; w++) {
-						map.set_mapcase(p.x/16 + w, p.y/16 + h + 4, keepCase[h * width + w]);
+						map.set_mapcase(p.x/16 + w, p.y/16 + h, keepCase[h * width + w]);
 					}
 				}
 			}
@@ -241,7 +241,7 @@ public class TileSelection extends CaseSelection {
 	public void rotate(Area map, Point p, int p_mask) {
 			for (int h = 0; h < height; h++) {
 				for (int w = 0; w < width; w++) {
-					Case item =  map.get_mapcase(p.x/16 + w, p.y/16 + h + 4);
+					Case item =  map.get_mapcase(p.x/16 + w, p.y/16 + h);
 					if (item != null) {
 						Tile tile;
 						switch (p_mask) {
@@ -274,12 +274,12 @@ public class TileSelection extends CaseSelection {
 				for (int h = 0; h < height; h++) {
 					for (int w = 0; w < width; w++) {
 						rotW = h; rotH = width - w - 1;
-						keepCase[h * width + w] = map.get_mapcase(p.x/16 + rotW, p.y/16 + rotH + 4);
+						keepCase[h * width + w] = map.get_mapcase(p.x/16 + rotW, p.y/16 + rotH);
 					}
 				}
 				for (int h = 0; h < height; h++) {
 					for (int w = 0; w < width; w++) {
-						map.set_mapcase(p.x/16 + w, p.y/16 + h + 4, keepCase[h * width + w]);
+						map.set_mapcase(p.x/16 + w, p.y/16 + h, keepCase[h * width + w]);
 					}
 				}
 			}

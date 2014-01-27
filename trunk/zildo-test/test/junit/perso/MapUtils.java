@@ -44,7 +44,7 @@ public class MapUtils {
 		if (fore != -1) {
 			c.setForeTile(new Tile(fore, c));
 		}
-		area.set_mapcase(x, y+4, c);
+		area.set_mapcase(x, y, c);
 	}
 	
 	public void createClosedDoor(int x, int y) {

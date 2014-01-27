@@ -48,7 +48,7 @@ public class AdjustRotations extends AllMapProcessor {
 		isReplacements = false;
 		for (int y = 0 ; y < area.getDim_y() ; y++) {
 			for (int x = 0 ; x < area.getDim_x() ; x++) {
-				Case c = area.get_mapcase(x, y + 4);
+				Case c = area.get_mapcase(x, y);
 				
 				if (c != null) {
 					adjustTile(c.getBackTile());
