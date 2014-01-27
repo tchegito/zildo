@@ -23,6 +23,7 @@ package zildo.monde.sprites.elements;
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.script.xml.element.TriggerElement;
+import zildo.monde.Hasard;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.map.Area;
@@ -703,8 +704,6 @@ public class Element extends SpriteEntity {
 	 * @param thrower optional
 	 */
 	public void beingThrown(float fromX, float fromY, Angle throwingAngle, Element thrower) {
-		// Element shouldn't be null, but it happened !
-		setLinkedPerso(null);
 		x = fromX + 1;
 		y = fromY;
 		z = 21.0f + 1.0f;
@@ -715,8 +714,8 @@ public class Element extends SpriteEntity {
 		ay = 0.0f;
 		az = -0.07f;
 		setForeground(false);
-		setLinkedPerso(thrower); // Declare this element thrown by Zildo
-										// (so it can't collide with him)
+		setLinkedPerso(thrower); // Declare the thrower so it can't collide with him
+		
 		if (throwingAngle == Angle.NULL) {
 			throwingAngle = thrower.angle;
 		}
@@ -737,6 +736,9 @@ public class Element extends SpriteEntity {
 	 */
 	public boolean beingCollided(Perso p_perso) {
 		if (desc == ElementDescription.PEEBLE) {
+			if (p_perso != null) {
+				p_perso.beingWounded(x, y, (Perso) getLinkedPerso(), Hasard.rangeInt(0, 1));
+			}
 			if (z > 4 && p_perso == null) {
 				// Produce impact sound only on wall (not enemies)
 				Element impact = new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null);
