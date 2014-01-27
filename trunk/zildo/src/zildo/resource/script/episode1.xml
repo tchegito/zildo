@@ -476,7 +476,7 @@
 		<condition name="chateaucoucou2" exp="suite_visit1_weapon-!zildo_polaky">
 			<remove who="maltus"/>
 		</condition>
-		<condition name="chateaucoucou2" exp="zildo_polaky">
+		<condition name="chateaucoucou2" exp="zildo_polaky-!trig_echange">
 			<pos who="maltus" pos="438,460"/>
 			<angle who="maltus" angle="3"/>
 		</condition>
