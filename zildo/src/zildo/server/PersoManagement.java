@@ -213,7 +213,8 @@ public class PersoManagement {
 				perso = new PersoBat();
 				break;
 			case RAT:
-				perso = new PersoRat();
+			case BIG_RAT:
+				perso = new PersoRat(p_desc);
 				break;
 			case FOX:
 			case FALCOR:
