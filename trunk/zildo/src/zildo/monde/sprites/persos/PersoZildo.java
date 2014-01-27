@@ -921,7 +921,7 @@ public class PersoZildo extends Perso {
 		} else {
 			int elemNSpr=p_element.getNSpr();
 			ElementDescription d = ElementDescription.fromInt(elemNSpr);
-			if (d.isWeapon() || d == ElementDescription.NECKLACE) {
+			if (d.isWeapon() || d == ElementDescription.FLASK_RED || d == ElementDescription.NECKLACE) {
 				pickItem(d.getItem(), p_element);
 				return false;
 			} else {
