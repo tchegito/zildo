@@ -412,7 +412,7 @@
 		    <angle who="zildo" value="0"/>
    		    <actions>
 		        <moveTo who="jaune" pos="190,81"/>
-		        <moveTo who="zildo" pos="0,22" delta="true"/>
+		        <moveTo who="zildo" pos="0,28" delta="true"/>
 		    </actions>
 		    <angle who="zildo" value="0"/>
 		    <actions>
@@ -448,7 +448,7 @@
 		    <angle who="zildo" value="0"/>
 		    <actions>
 		        <moveTo who="jaune" pos="190,193"/>
-		        <moveTo who="zildo" pos="0,22" delta="true"/>
+		        <moveTo who="zildo" pos="0,28" delta="true"/>
 		    </actions>
 		    <angle who="zildo" value="0"/>
 		    <actions>
@@ -589,8 +589,8 @@
 			    <animation type="BIG_FIREBALL" what="fireb4" angle="1" pos="29,211"/>
 		    </actions>
    		</condition>
-   		<condition name="prisonext" exp="retour_trion">
-
+   		<condition name="prisonext" exp="backCoucou-!retour_trion">
+			<remove who="hector"/>
    		</condition>
    		<condition name="prisonext" exp="retour_trion">
    		    <perso who="gardenord" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
@@ -693,7 +693,8 @@
    		    <remove who="p5"/>
    		    <remove who="garde"/>
    		</condition>
-   		<condition name="chateaucoucou2" exp="echange">
+   		<condition name="chateaucoucou2" exp="trig_echange">
+   		    <remove who="maltus"/>
 		    <spawn who="hector" type="HECTOR" pos="355,222" angle="1"/>
 	    	<spawn who="maltus" type="BANDIT_CHAPEAU" pos="580,236" angle="1"/>   		    
    		</condition>
