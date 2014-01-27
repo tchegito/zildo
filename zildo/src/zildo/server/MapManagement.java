@@ -385,7 +385,7 @@ public class MapManagement {
 			if (currentMap.isCaseBottomLess(scaledX, scaledY)) {
 				continue;
 			}
-			Case mapCase = currentMap.get_mapcase(scaledX, scaledY + 4);
+			Case mapCase = currentMap.get_mapcase(scaledX, scaledY);
 			if (mapCase == null) {
 				continue;
 			}
@@ -394,7 +394,7 @@ public class MapManagement {
 				continue;
 			}
 			Tile tileBack2 = mapCase.getBackTile2();
-			
+
 			on_map = tile.getValue();
 			modx = mx % 16;
 			mody = my % 16;
@@ -763,11 +763,11 @@ public class MapManagement {
 
 		// Read left to right
 		for (j = 0; j < sizeY; j++) {
-			c = map.get_mapcase(0, j + 4);
+			c = map.get_mapcase(0, j);
 			if (c != null) {
 				int currentZ = c.getZ();
 				for (i = 0; i < sizeX; i++) {
-					c = map.get_mapcase(i, j + 4);
+					c = map.get_mapcase(i, j);
 					int onmap = map.readmap(i, j);
 					if (leftIncreaseZ.contains(onmap)) {
 						currentZ++;
@@ -793,7 +793,7 @@ public class MapManagement {
 			for (i = 0; i < sizeX; i++) {
 				int currentZ = tabZ[j][i];
 				currentZ -= min; // correct altitude with threshold
-				c = map.get_mapcase(i, j + 4);
+				c = map.get_mapcase(i, j);
 				if (c != null) {
 					c.setZ(currentZ);
 				}
@@ -807,7 +807,7 @@ public class MapManagement {
 				int value = map.readmap(i, j) - 256*2;
 				if (waterTank.contains(value)) {
 					// Found some lowered case (water tank)
-					c = map.get_mapcase(i, j + 4);
+					c = map.get_mapcase(i, j);
 					c.setZ(c.getZ() - 8);
 				}
 			}

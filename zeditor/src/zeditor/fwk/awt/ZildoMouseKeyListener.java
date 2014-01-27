@@ -191,7 +191,7 @@ public class ZildoMouseKeyListener implements MouseListener,
 				MasterFrameManager.MESSAGE_INFO);
 
 		// Display case info
-		Case c = EngineZildo.mapManagement.getCurrentMap().get_mapcase(p.x/16, p.y/16+4);
+		Case c = EngineZildo.mapManagement.getCurrentMap().get_mapcase(p.x/16, p.y/16);
 		if (c != null) {
 			message.setLength(0);
 			caseToString(message, c);

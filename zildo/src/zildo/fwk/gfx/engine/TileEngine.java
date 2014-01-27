@@ -245,7 +245,7 @@ public abstract class TileEngine {
 						int n_motif = 0, n_animated_motif;
 						// Get corresponding case on the map
 
-						Case mapCase = theMap.get_mapcase((x+dx) % dx, (y+dy) % dy + 4);
+						Case mapCase = theMap.get_mapcase((x+dx) % dx, (y+dy) % dy);
 						if (mapCase != null) {
 							boolean changed = mapCase.isModified();
 							Tile back = mapCase.getBackTile();

@@ -35,7 +35,7 @@ public class ReplaceAllMapsFloor extends AllMapProcessor {
 		Area area = EngineZildo.mapManagement.getCurrentMap();
 		for (int y = 0; y < area.getDim_y(); y++) {
 			for (int x = 0; x < area.getDim_x(); x++) {
-				Case mapCase = area.get_mapcase(x, y + 4);
+				Case mapCase = area.get_mapcase(x, y);
 				int ind = mapCase.getBackTile().getValue() - 256 * 2;
 				if (ind == 33 || ind == 35 || ind == 47) {
 					if ((y % 2) == 1) {

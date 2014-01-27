@@ -399,7 +399,7 @@ public class ClientEngineZildo {
 					int py = y * 16 - camera.y % 16;
 					if (cy < 64 && cx < 64) {
 						Case c = EngineZildo.mapManagement.getCurrentMap()
-								.get_mapcase(cx, cy + 4);
+								.get_mapcase(cx, cy);
 						int onmap = EngineZildo.mapManagement.getCurrentMap()
 								.readmap(cx, cy);
 						ortho.drawText(px, py + 4, "" + c.getZ(), new Vector3f(

@@ -67,7 +67,7 @@ public class ReplaceAllMapsPortraits extends AllMapProcessor {
 		}
 		for (int y = 0; y < area.getDim_y(); y++) {
 			for (int x = 0; x < area.getDim_x(); x++) {
-				Case mapCase = area.get_mapcase(x, y + 4);
+				Case mapCase = area.get_mapcase(x, y);
 				int ind = mapCase.getBackTile().getValue() - 256 * 2;
 				if (ind >= 224 && ind <= 227) {
 					System.out.println("found portrait done with tiles !");

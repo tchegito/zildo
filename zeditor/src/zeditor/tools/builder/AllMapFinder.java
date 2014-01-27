@@ -35,7 +35,7 @@ public class AllMapFinder extends AllMapProcessor {
 		
 		for (int y = 0 ; y < area.getDim_y() ; y++) {
 			for (int x = 0 ; x < area.getDim_x() ; x++) {
-				Case mapCase = area.get_mapcase(x, y+4);
+				Case mapCase = area.get_mapcase(x, y);
 				if (mapCase.getBackTile().getValue() == 256*2 + 131) {
 					System.out.println(area.getName());
 				}

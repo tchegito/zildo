@@ -408,7 +408,7 @@ public class ActionExecutor {
                 case tile:
                 	// Change tile on map
                 	Area area = EngineZildo.mapManagement.getCurrentMap();
-                	Case c = area.get_mapcase(location.x, location.y+4);
+                	Case c = area.get_mapcase(location.x, location.y);
                 	if (p_action.back != -2) {
                 		c.setBackTile(p_action.back == -1 ? null : new Tile(p_action.back, c));
                 	}
@@ -418,7 +418,7 @@ public class ActionExecutor {
                 	if (p_action.fore != -2) {
                 		c.setForeTile(p_action.fore == -1 ? null : new Tile(p_action.fore, c));
                 	}
-                	EngineZildo.mapManagement.getCurrentMap().set_mapcase(location.x, location.y+4, c);
+                	EngineZildo.mapManagement.getCurrentMap().set_mapcase(location.x, location.y, c);
                 	achieved=true;
                 	break;
                 case filter:

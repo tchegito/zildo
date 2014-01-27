@@ -131,7 +131,7 @@ public class AreaChecker {
 				Point toCheck = new Point(ch.getPx() + p.x, ch.getPy() + p.y
 						* factor);
 				if (!area.isOutside(toCheck.x << 4, toCheck.y << 4)) {
-					Case c = area.get_mapcase(toCheck.x, toCheck.y + 4);
+					Case c = area.get_mapcase(toCheck.x, toCheck.y);
 					Tile t = c.getForeTile();
 					if (t == null) {
 						errorCases.add(c);

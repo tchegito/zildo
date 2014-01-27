@@ -50,7 +50,7 @@ public class AdjustChestBackTiles extends AllMapProcessor {
 		emptyTile = 256*2 + 33;
 		for (int y = 0 ; y < area.getDim_y() ; y++) {
 			for (int x = 0 ; x < area.getDim_x() ; x++) {
-				Case mapCase = area.get_mapcase(x, y+4);
+				Case mapCase = area.get_mapcase(x, y);
 				if (mapCase.getBackTile2() == null) {
 					if (chest == mapCase.getBackTile().getValue() ) {
 						System.out.println("(house)Replace tile at "+x+","+y);
