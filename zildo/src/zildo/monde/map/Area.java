@@ -341,8 +341,8 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public ChainingPoint isChangingMap(float x, float y, Angle p_angle) {
 		// On parcourt les points d'enchainements
-		int ax = (int) (x / 16);
-		int ay = (int) (y / 16);
+		int ax = (int) (x / 8);
+		int ay = (int) (y / 8);
 		boolean border;
 		List<ChainingPoint> candidates = new ArrayList<ChainingPoint>();
 		if (listChainingPoint.size() != 0) {

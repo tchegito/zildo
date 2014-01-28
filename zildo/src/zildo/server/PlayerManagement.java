@@ -290,7 +290,7 @@ public class PlayerManagement {
         float xx = secureLocation.x;
         float yy = secureLocation.y;
 
-		if (Math.abs(heros.x - xx)<0.1 && Math.abs(heros.y - yy)<0.1) {
+		if (Math.abs(heros.x - xx) < Math.abs(0.5*p_deltaX) && Math.abs(heros.y - yy) < Math.abs(0.5*p_deltaY)) {
 			if (heros.getMouvement()==MouvementZildo.VIDE) {
 				if (heros.getTouch()>=15) {
 					//On regarde si Zildo peut sauter
