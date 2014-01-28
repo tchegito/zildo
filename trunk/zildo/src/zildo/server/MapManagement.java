@@ -600,8 +600,8 @@ public class MapManagement {
 				}
 				zildo.setGhost(true);
 			} else {
-				zildo.setX(chPointTarget.getPx() * 16 + 16);
-				zildo.setY(chPointTarget.getPy() * 16 + 8);
+				zildo.setX(chPointTarget.getPx() * 8 + 16);
+				zildo.setY(chPointTarget.getPy() * 8 + 8);
 				float zx = zildo.getX();
 				float zy = zildo.getY();
 				if( chPointTarget.isSingle()) {

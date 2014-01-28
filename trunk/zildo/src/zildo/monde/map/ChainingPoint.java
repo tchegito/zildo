@@ -42,6 +42,9 @@ public class ChainingPoint implements EasySerializable {
 		STAIRS_STRAIGHT("stairsUp", "stairsUpEnd"),
 		STAIRS_CORNER_LEFT("stairsUpCornerLeft", "stairsUpCornerLeftEnd"), 
 		STAIRS_CORNER_RIGHT("stairsUpCornerRight", "stairsUpCornerRightEnd"),
+		STAIRS_CORNER_DOWN_LEFT("stairsDownCornerLeft", "stairsDownCornerLeftEnd"), 
+		STAIRS_CORNER_DOWN_RIGHT("stairsDownCornerRight", "stairsUpCornerRightEnd"),
+
 		PIT("fallPit", ""),
 		WOODSTAIRS_CORNER_LEFT("woodStairsUpCornerLeft", "woodStairsDownEnd"),
 		WOODSTAIRS_END("woodStairsDown", "woodStairsUpEnd");
@@ -127,7 +130,7 @@ public class ChainingPoint implements EasySerializable {
 	}
 
 	public MapLink getLinkType() {
-		int infomap = EngineZildo.mapManagement.getCurrentMap().readmap(px, py);
+		int infomap = EngineZildo.mapManagement.getCurrentMap().readmap(px/2, py/2 + (py % 2));
 		switch (infomap) {
 		case 183 + 768:
 		case 184 + 768:
@@ -140,7 +143,7 @@ public class ChainingPoint implements EasySerializable {
 			return MapLink.STAIRS_STRAIGHT;
 		case 768 + 185:
 		case 768 + 186:
-			return MapLink.STAIRS_CORNER_LEFT;
+			return MapLink.STAIRS_CORNER_DOWN_LEFT;
 		case 1536 + 198:
 			return MapLink.PIT;
 		case 512 + 198:
@@ -160,28 +163,28 @@ public class ChainingPoint implements EasySerializable {
 		done = false;
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// isCollide
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// IN : ax,ay (map coordinates in range 0..63,0..63)
-	// /////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Returns TRUE if given coordinates collide with current chaining point.
+	 * NOTE: Chaining points are 8x8 scaled, instead of 16x16 for tiles.
+	 * @param ax,ay : doubled map coordinates in range 0..127,0..127
+	 */
 	public boolean isCollide(int ax, int ay, boolean p_border) {
 		if (single) {
-			return ax == px && ay == py;
+			return (ax == px || ax == px+1) && (ay == py || ay == py+1);
 		}
 		if (!border) {
 			if (vertical) {
-				if (ay >= py && ax == px && ay <= (py + 1)) {
+				if (ay >= py && (ax == px || ax == px+1) && ay <= (py + 3)) {
 					return true;
 				}
 			} else {
-				if (ax >= px && ay == py && ax <= (px + 1)) {
+				if (ax >= px && (ay == py || ay == py+1) && ax <= (px + 3)) {
 					return true;
 				}
 			}
 		} else if (p_border) {
 			// Map's border
-			if (py == ay || px == ax) {
+			if ( (ax == px || ax == px+1) || (ay == py || ay == py+1) ) {
 				return true;
 			}
 		}
@@ -229,24 +232,24 @@ public class ChainingPoint implements EasySerializable {
 	public Zone getZone(Area p_map) {
 		if (zone == null) {
 			Point p1 = new Point(px, py);
-			Point p2 = new Point(2, 1);
+			Point p2 = new Point(4, 2);
 			if (isBorder()) {
 				if (p1.x == 0 || p1.x == p_map.getDim_x() - 1) {
 					p1.y = 0;
-					p2.y = p_map.getDim_y();
-					p2.x = 1;
+					p2.y = p_map.getDim_y() * 2;
+					p2.x = 2;
 				} else {
 					p1.x = 0;
-					p2.x = p_map.getDim_x();
+					p2.x = p_map.getDim_x() * 2;
 				}
 			} else if (isVertical()) {
-				p2.x = 1;
-				p2.y = 2;
+				p2.x = 2;
+				p2.y = 4;
 			} else if (isSingle()) {
-				p2.x = 1;
-				p2.y = 1;
+				p2.x = 2;
+				p2.y = 2;
 			}
-			zone = new Zone(16 * p1.x, 16 * p1.y, 16 * p2.x, 16 * p2.y);
+			zone = new Zone(8 * p1.x, 8 * p1.y, 8 * p2.x, 8 * p2.y);
 		}
 		return zone;
 	}
@@ -262,22 +265,20 @@ public class ChainingPoint implements EasySerializable {
 		pe.px = p_buffer.readUnsignedByte();
 		pe.py = p_buffer.readUnsignedByte();
 		pe.comingAngle = Angle.fromInt(p_buffer.readUnsignedByte());
-		pe.transitionAnim = FilterEffect.values()[p_buffer.readUnsignedByte()];
+		int transitionAnimPlusFlag = p_buffer.readUnsignedByte();
+		pe.transitionAnim = FilterEffect.values()[transitionAnimPlusFlag & 31];
 		String mapName = p_buffer.readString();
 		pe.mapname = mapName;
 
 		// Set the linked properties
-		if ((pe.px & 64) != 0) {
+		if ((transitionAnimPlusFlag & 32) != 0) {
 			pe.single = true;
-			pe.px &= 128 + 63;
 		}
-		if (pe.px > 127) {
+		if ((transitionAnimPlusFlag & 64) != 0) {
 			pe.vertical = true;
-			pe.px &= 127;
 		}
-		if (pe.py > 127) {
+		if ((transitionAnimPlusFlag & 128) != 0) {
 			pe.border = true;
-			pe.py &= 127;
 		}
 		return pe;
 	}
@@ -289,19 +290,20 @@ public class ChainingPoint implements EasySerializable {
 	public void serialize(EasyBuffering p_buffer) {
 		int saveX = px;
 		int saveY = py;
+		int transAnim = transitionAnim.ordinal();
 		if (single) {
-			saveX |= 64;
+			transAnim |= 32;
 		}
 		if (vertical) {
-			saveX |= 128;
+			transAnim |= 64;
 		}
 		if (border) {
-			saveY |= 128;
+			transAnim |= 128;
 		}
 		p_buffer.put((byte) saveX);
 		p_buffer.put((byte) saveY);
 		p_buffer.put((byte) comingAngle.value);
-		p_buffer.put((byte) transitionAnim.ordinal());
+		p_buffer.put((byte) transAnim);
 		p_buffer.put(mapname);
 	}
 

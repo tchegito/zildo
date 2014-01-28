@@ -36,7 +36,6 @@
 		<fadeOut type="2" unblock="true" />
 		<wait value="10" />
 		<angle who="zildo" value="2" />
-        <herospecial value="2"/>
     </scene>
 	
 	<scene id="stairsUpCornerLeft">
@@ -47,18 +46,16 @@
 		<fadeOut type="2" unblock="true" />
 		<wait value="10" />
 		<angle who="zildo" value="0" />
-	    <herospecial value="2"/>
 	</scene>
 	
 	<scene id="stairsDownCornerLeft">
         <herospecial value="1"/>
         <sound name="ZildoDescend" />
 		<moveTo who="zildo" pos="0,-7" delta="true" unstoppable="true" speed="0.2" />
-		<moveTo who="zildo" pos="-7,0" delta="true" unstoppable="true" speed="0.1" />
+		<moveTo who="zildo" pos="-7,0" delta="true" unstoppable="true" speed="0.2" />
 		<fadeOut type="2" unblock="true" />
 		<wait value="10" />
 		<angle who="zildo" value="0" />
-	    <herospecial value="2"/>
 	</scene>
 	
 	<scene id="stairsUpCornerRightEnd">
@@ -67,7 +64,7 @@
 		<sound name="ZildoDescend" />
 		<fadeIn type="2" />
 		<moveTo who="zildo" pos="-2,0" delta="true" unstoppable="true" speed="0.4" />
-		<moveTo who="zildo" pos="0,7" delta="true" unstoppable="true" speed="0.2" />
+		<moveTo who="zildo" pos="0,9" delta="true" unstoppable="true" speed="0.2" />
         <herospecial value="2"/>
     </scene>
 
@@ -78,6 +75,16 @@
 		<fadeIn type="2" />
 		<moveTo who="zildo" pos="2,0" delta="true" unstoppable="true" speed="0.1" />
 		<moveTo who="zildo" pos="0,7" delta="true" unstoppable="true" speed="0.1" />
+        <herospecial value="2"/>		
+	</scene>
+	
+	<scene id="stairsDownCornerLeftEnd">
+        <herospecial value="1"/>
+        <pos who="zildo" pos="-2,-16" delta="true" />
+		<sound name="ZildoDescend" />
+		<fadeIn type="2" />
+		<moveTo who="zildo" pos="2,0" delta="true" unstoppable="true" speed="0.2" />
+		<moveTo who="zildo" pos="0,16" delta="true" unstoppable="true" speed="0.2" />
         <herospecial value="2"/>		
 	</scene>
 	
@@ -96,7 +103,6 @@
 		<moveTo who="zildo" pos="0,-18" delta="true" unstoppable="true" speed="0.8"/>
 		<moveTo who="zildo" pos="-1,0" delta="true" unstoppable="true"/>
 		<wait value="10"/>
-	    <herospecial value="2"/>
 	</scene>
 	
 	<scene id="woodStairsDown">
@@ -105,7 +111,6 @@
 		<moveTo who="zildo" pos="8,0" delta="true" unstoppable="true" speed="0.8"/>
    		<fadeOut type="2" unblock="true" />
 		<moveTo who="zildo" pos="8,2" delta="true" unstoppable="true" speed="0.8"/>
-        <herospecial value="2"/>
 	</scene>
 	
 	<scene id="woodStairsUpEnd">
