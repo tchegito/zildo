@@ -158,7 +158,7 @@ public class Area implements EasySerializable {
 		if (x < 0 || x >= dim_x) {
 			return null;
 		}
-		if (y < 0 || y > dim_y) {
+		if (y < 0 || y >= dim_y) {
 			return null;
 		}
 		return mapdata[y][x];

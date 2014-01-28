@@ -605,10 +605,15 @@
    		    <script who="gard5" value="3"/>
    		    <!-- Open the prison, and hide Hector -->
    		  	<remove what="prisondoor"/>
+   		</condition>
+   		<condition name="prisonext" exp="retour_trion-!hector_call3">
    		  	<tile pos="56,32" back="512"/>
    		    <pos who="hector" pos="906,525"/>
    		    <angle who="hector" value="0"/>
    		    <perso who="hector" action="hiddenHector"/>
+		</condition>
+		<condition name="prisonext" exp="retour_trion-hector_call3">
+		    <remove who="hector"/>
 		</condition>
 		<condition name="prisonext" exp="retour_trion">
 		    <tile pos="15,41" back2="181"/>
