@@ -34,7 +34,7 @@ import zildo.server.EngineZildo;
  * @author Tchegito
  *
  */
-public class PersoRat extends PersoNJ {
+public class PersoRat extends PersoShadowed {
 
 	int waitingCount;
 	boolean bigRat;
