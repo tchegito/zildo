@@ -22,6 +22,7 @@ package zildo.monde.sprites.desc;
 
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.collection.IntSet;
+import zildo.monde.collision.DamageType;
 
 public enum PersoDescription implements SpriteDescription {
 
@@ -179,6 +180,23 @@ public enum PersoDescription implements SpriteDescription {
 		}
 	}
 
+	/**
+	 * Returns TRUE if this character resists to a given type of damage.
+	 */
+	public boolean resistToDamageType(DamageType dmgType) {
+		if (this == BRAMBLE) {
+			switch (dmgType) {
+				case SMASH:
+				case PIERCING:
+				case BLUNT:
+					return true;
+				default:
+					return false;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean isBlocking() {
 		return false;
