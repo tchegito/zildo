@@ -209,12 +209,15 @@ public class CollideManagement {
     	Perso perso=p_collided.perso;
     	Element weapon=p_collided.weapon;
         if (perso != null && !perso.isWounded()) {
+        	boolean persoResisting = perso.getDesc().resistToDamageType(p_collider.damageType);
+        	
         	if (weapon != null) {
         		perso.parry(p_collider.cx, p_collider.cy, perso);
         	} else {
         		// How much damage ?
         		int dmg = p_collider.damageType == null ? 1 : p_collider.damageType.getHP();
-        		if (dmg > 0) {
+        		// Does this character resist to this kind of damage ?
+        		if (!persoResisting && dmg > 0) {
 	        		Perso attacker=p_collider.perso;
 	        		if (attacker != null && p_collider.perso.isZildo()) {
 	        			PersoZildo zildo=(PersoZildo) attacker;
@@ -227,7 +230,7 @@ public class CollideManagement {
         		}
         	}
         	
-            if (p_collider.weapon != null) {
+            if (p_collider.weapon != null && !persoResisting) {
             	p_collider.weapon.beingCollided(perso);
             }
         }
