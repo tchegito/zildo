@@ -234,7 +234,7 @@ public class ChainingPoint implements EasySerializable {
 			Point p1 = new Point(px, py);
 			Point p2 = new Point(4, 2);
 			if (isBorder()) {
-				if (p1.x == 0 || p1.x == p_map.getDim_x() - 1) {
+				if (p1.x == 0 || p1.x == 2*p_map.getDim_x() - 2) {
 					p1.y = 0;
 					p2.y = p_map.getDim_y() * 2;
 					p2.x = 2;
