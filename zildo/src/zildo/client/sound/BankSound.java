@@ -144,7 +144,9 @@ public enum BankSound implements AudioBank {
 	Squeak1("squeak1"),
 	Squeak2("squeak2"),
 	
-	SerpentSpit("serpentSpit");
+	SerpentSpit("serpentSpit"),
+	
+	BigRat("bigrat");
 	
 	String filename;
 	
