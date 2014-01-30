@@ -333,11 +333,11 @@ public class MapManagement {
 		Perso perso = EngineZildo.persoManagement.collidePerso(tx, ty, quelElement);
 		if (perso != null) {
 			if (p != null) {
-				// If zildo crosses an enemy, this is not a collision, but a wound !
-				if (p.isZildo() && perso.getInfo() == PersoInfo.ENEMY) {
+				// If zildo crosses an enemy, this is not a collision, but a wound ! (except if he's blinking)
+				if (p.isZildo() && perso.getInfo() == PersoInfo.ENEMY && p.getCompte_dialogue() == 0) {
 					return false;
 				}
-				if (p.getInfo() == PersoInfo.ENEMY && perso.isZildo()) {
+				if (p.getInfo() == PersoInfo.ENEMY && perso.isZildo() && perso.getCompte_dialogue() == 0) {
 					return false;
 				}
 			}
