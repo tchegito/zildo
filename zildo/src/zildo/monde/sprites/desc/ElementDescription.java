@@ -162,9 +162,9 @@ public enum ElementDescription implements SpriteDescription {
 	@Override
 	public boolean isBlocking() {
 		switch (this) {
-		case BAR_UP:
-		case BAR_HORIZONTAL:
-		case BAR_VERTICAL:
+		case BAR_UP: case SEWER_BARUP:
+		case BAR_HORIZONTAL: case SEWER_BARH:
+		case BAR_VERTICAL: case SEWER_BARV:
 		case BARREL:
 		case WOOD_BAR:
 		case CUBE_BLUE:
