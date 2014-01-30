@@ -134,6 +134,10 @@ public class PathFinder {
             target=null;
         } else if (mobile.getMouvement() != MouvementZildo.SAUTE && mobile.getQuel_deplacement() != MouvementPerso.VOLESPECTRE) {
         	pos = mobile.tryMove(delta.x, delta.y);
+        	// Recalculate angle
+        	delta.x = pos.x - mobile.x;
+        	delta.y = pos.y - mobile.y;
+        	a = Angle.fromDelta(delta.x, delta.y);
         }
 
         if (backward && a!= null) {
