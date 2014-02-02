@@ -546,7 +546,8 @@ public class MapManagement {
 			zildo.setAngle(mapScrollAngle);
 			int orderX = p_changingMapPoint.getOrderX();
 			int orderY = p_changingMapPoint.getOrderY();
-
+			zildo.resetPosAvantSaut();	// Reset location before jump (nonsense on a new map)
+			
 			// 2/3 : load new map
 			String previousMapName = currentMap.getName();
 			String newMapName = p_changingMapPoint.getMapname();

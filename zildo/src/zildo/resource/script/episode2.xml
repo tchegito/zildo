@@ -663,6 +663,9 @@
 		<condition name="bucherons" exp="attaque_voleurs">
 		    <remove who="garde"/>
 		</condition>
+		<condition name="igorlily">
+		    <markQuest name="summonLeaf" value="0"/>
+		</condition>
 		<condition name="igorv3" exp="minsk_fishes">
 		    <pos who="minsk" pos="-14,12" delta="true"/>
 		    <angle who="minsk" value="2"/>

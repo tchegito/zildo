@@ -247,7 +247,7 @@
 		<herospecial value="3"/>	    
 	</scene>
 	
-	<persoAction id="fallInWater" duration="51">
+	<persoAction id="fallInWater" duration="100">
 	    <animation type="WATER_SPLASH" pos="x,y"/>
 	    <sound name="ZildoPlonge"/>
 	    <perso who="self" alphaA="-2"/>
@@ -256,10 +256,12 @@
 	    <wait value="40"/>
 	    <perso who="self" alpha="255"/>
 	    <focus/>
-	    <herospecial value="4"/>
-	    <focus who="zildo" delta="true"/>
-	    <visible who="self" value="true"/>
-	</persoAction>
+	    <actions>
+		    <herospecial value="4"/>
+		    <focus who="zildo" delta="true"/>
+		    <visible who="self" value="true"/>
+	    </actions>
+   	</persoAction>
 	
 	<persoAction id="flut" duration="100">
 		<actions>

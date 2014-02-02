@@ -990,12 +990,17 @@ public abstract class Perso extends Element {
 		}	
 	}
 	
-	public void replaceBeforeJump() {
-		Point zildoAvantSaut=getPosAvantSaut();
-		x = zildoAvantSaut.getX();
-		y = zildoAvantSaut.getY();
-		beingWounded(x, y, null, 2);
-		stopBeingWounded();
+	public boolean replaceBeforeJump() {
+		Point beforeJumpPos=getPosAvantSaut();
+		if (beforeJumpPos == null) {
+			return false;
+		} else {
+			x = beforeJumpPos.getX();
+			y = beforeJumpPos.getY();
+			beingWounded(x, y, null, 2);
+			stopBeingWounded();
+			return true;
+		}
 	}
 	
 	public void diveAndWound() {
@@ -1029,6 +1034,10 @@ public abstract class Perso extends Element {
 		return posAvantSaut;
 	}
 
+	public void resetPosAvantSaut() {
+		posAvantSaut = null;
+	}
+	
 	public Angle getJumpAngle() {
 		return jumpAngle;
 	}
