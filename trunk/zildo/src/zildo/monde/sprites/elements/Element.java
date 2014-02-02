@@ -24,6 +24,7 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.Hasard;
+import zildo.monde.Trigo;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.map.Area;
@@ -39,6 +40,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
+import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 
@@ -578,37 +580,25 @@ public class Element extends SpriteEntity {
 
 		// Calculate an anticipation factor, to check collision in advance
 		// For better diagonal movement
-		int antFactor = Math.min(4, 2 + (int) Point.distance(0, 0, p_deltaX, p_deltaY));
+		double force = Pointf.distance(0, 0, p_deltaX, p_deltaY);
+		int antFactor = Math.min(4, 2 + (int) force);
+
 		for (int i=0;i<2;i++) {
 			// Try twice : one with anticipation, and one regularly
 			if (mapManagement.collide(x + antFactor * p_deltaX, y + antFactor * p_deltaY, this)) {
 				float keepX = xx;
 				float keepY = yy;
-				if (p_deltaX != 0 && p_deltaY != 0) {
-					// Diagonal move impossible => try lateral move
-					if (!mapManagement.collide(xx, y, this)) {
-						yy = y;
-					} else if (!mapManagement.collide(x, yy, this)) {
-						xx = x;
-					}
+				double angleMove = Trigo.getAngleRadian(p_deltaX, p_deltaY);
+				
+				Vector2f move2 = Trigo.vect(angleMove - Trigo.PI_SUR_4, force);
+				if (!mapManagement.collide(x + move2.x, y + move2.y, this)) {
+					xx = x + move2.x;
+					yy = y + move2.y;
 				} else {
-	
-					// Lateral move impossible => try diagonal move
-					float speed;
-					if (p_deltaX == 0) {
-						speed = Math.abs(p_deltaY);
-						if (!mapManagement.collide(xx + speed, yy, this)) {
-							xx += speed;
-						} else if (!mapManagement.collide(xx - speed, yy, this)) {
-							xx -= speed;
-						}
-					} else if (p_deltaY == 0) {
-						speed = Math.abs(p_deltaX);
-						if (!mapManagement.collide(xx, yy + speed, this)) {
-							yy += speed;
-						} else if (!mapManagement.collide(xx, yy - speed, this)) {
-							yy -= speed;
-						}
+					move2 = Trigo.vect(angleMove + Trigo.PI_SUR_4, force);
+					if (!mapManagement.collide(x + move2.x, y + move2.y, this)) {
+						xx = x + move2.x;
+						yy = y + move2.y;
 					}
 				}
 				if (xx == keepX && yy == keepY) { //mapManagement.collide(xx, yy, this)) {
@@ -620,6 +610,7 @@ public class Element extends SpriteEntity {
 				antFactor = 1;
 			}
 		}
+
 		return new Pointf(xx, yy);
 	}
 	

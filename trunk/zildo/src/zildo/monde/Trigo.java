@@ -5,6 +5,12 @@ import zildo.monde.util.Vector2f;
 
 public class Trigo {
 
+	public static final double PI_SUR_4 = Math.PI / 4d;
+	
+	public static double getAngleRadian(float ax, float ay) {
+		return getAngleRadian(1, 0, ax, ay);
+	}
+	
 	public static double getAngleRadian(float ax, float ay, float bx, float by) {
 		double cosAngle = (bx - ax) / Point.distance(ax, ay, bx, by);
 		double result = Math.acos(cosAngle);
