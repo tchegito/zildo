@@ -645,10 +645,12 @@ public abstract class Perso extends Element {
 				break;
 			case 200:
 			case 374:
-				snd = BankSound.ZildoGadou;
-				inDirt = true;
-				repeatSound = true;
-				slowDown = true;
+				if (!flying) {
+					snd = BankSound.ZildoGadou;
+					inDirt = true;
+					repeatSound = true;
+					slowDown = true;
+				}
 				break;
 			case 846:
 				// Water
@@ -705,7 +707,9 @@ public abstract class Perso extends Element {
 				break;
 			case 256*2 + 57:
 				// Squeaky floor
-				snd = footOnSqueak.getSingleSound();
+				if (!flying){ 
+					snd = footOnSqueak.getSingleSound();
+				}
 				break;
 			default:
 				if (isZildo() && bottomLess) {
