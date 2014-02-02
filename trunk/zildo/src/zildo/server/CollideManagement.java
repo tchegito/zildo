@@ -30,6 +30,7 @@ import zildo.client.sound.BankSound;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.collision.Rectangle;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.Perso;
@@ -209,10 +210,13 @@ public class CollideManagement {
     	Perso perso=p_collided.perso;
     	Element weapon=p_collided.weapon;
         if (perso != null && !perso.isWounded()) {
-        	boolean persoResisting = perso.getDesc().resistToDamageType(p_collider.damageType);
+        	boolean persoResisting = perso.getDesc() == null ? false : perso.getDesc().resistToDamageType(p_collider.damageType);
         	
         	if (weapon != null) {
-        		perso.parry(p_collider.cx, p_collider.cy, perso);
+        		// Only parry with another weapon
+        		if ( ((ElementDescription) weapon.getDesc()).isWeapon()) {
+        			perso.parry(p_collider.cx, p_collider.cy, perso);
+        		}
         	} else {
         		// How much damage ?
         		int dmg = p_collider.damageType == null ? 1 : p_collider.damageType.getHP();
