@@ -64,6 +64,10 @@ public class Point {
     	add(p_point.x, p_point.y);
     }
     
+    public void sub(Point p_point) {
+    	add(-p_point.x, -p_point.y);
+    }
+    
     public void add(int p_xPlus, int p_yPlus) {
         this.x += p_xPlus;
         this.y += p_yPlus;
