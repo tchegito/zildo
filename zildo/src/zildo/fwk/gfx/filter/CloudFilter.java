@@ -38,16 +38,25 @@ public abstract class CloudFilter extends ScreenFilter {
 
 	protected float u=0;
 	protected float v=0;
+	
+	protected float offsetU=0;
+	protected float offsetV=0;
 	protected Pointf wind=new Pointf(0.01f, 0);
 	protected Pointf move=new Pointf(0,0);
 	
 	public void setPosition(int x, int y) {
-		u = x;
-		v = -y;
-		
+		u = x + offsetU;
+		v = -y - offsetV;
+
 		// Blow the wind
 		move.add(wind);
 		u+=move.x;
 		v+=move.y;
+	}
+	
+	// To handle properly the map transition
+	public void addOffset(int x, int y) {
+		offsetU += x;
+		offsetV += y;
 	}
 }
