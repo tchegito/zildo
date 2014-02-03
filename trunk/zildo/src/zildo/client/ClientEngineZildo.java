@@ -33,6 +33,7 @@ import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.BilinearFilter;
 import zildo.fwk.gfx.filter.CircleFilter;
+import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.fwk.opengl.SoundEngine;
@@ -299,8 +300,12 @@ public class ClientEngineZildo {
 					break;
 				case CHANGINGMAP_SCROLL_START :
 					if (mapDisplay.getTargetCamera() == null) {
+						// Calculate camera-delta and apply it to the cloud filter
+						Point deltaCam = new Point(mapDisplay.getCamera());
 						mapDisplay.centerCamera();
 						mapDisplay.shiftForMapScroll(p_event.angle);
+						deltaCam.sub( mapDisplay.getCamera());
+						Zildo.pdPlugin.getFilter(CloudFilter.class).addOffset(deltaCam.x, deltaCam.y);
 
 						retEvent.nature = ClientEventNature.CHANGINGMAP_WAITSCRIPT;
 					}
