@@ -55,7 +55,7 @@ public class PathFinderStraightFlying extends PathFinder {
 			target.x = -100;
 			break;
 		default:
-			target.x = 16 * EngineZildo.mapManagement.getCurrentMap()
+			target.x = 16 * EngineZildo.getMapManagement().getCurrentMap()
 					.getDim_x() + 100;
 			break;
 		}

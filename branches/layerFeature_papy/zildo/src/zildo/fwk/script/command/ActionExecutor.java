@@ -74,6 +74,7 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
 import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
 
 /**
  * <p>Class splitted from ScriptExecutor, in order to clarify things.
@@ -131,6 +132,8 @@ public class ActionExecutor {
             if (p_action.location != null) {
             	location = p_action.location.getPoint();
             }
+            MapDisplay mapDisplay = ClientEngineZildo.getMapDisplay();
+            MapManagement mapMngt = EngineZildo.getMapManagement();
             if (p_action.delta && location != null) {
             	Point currentPos = null;
             	if (p_action.kind == ActionKind.spawn) {	// Possiblity to spawn relative to zildo
@@ -139,7 +142,7 @@ public class ActionExecutor {
             		// Given position is a delta with current one (work ONLY with perso, not with camera)
             		currentPos = new Point(perso.x, perso.y);
             	} else if ("camera".equals(p_action.what)) {
-            		currentPos = ClientEngineZildo.mapDisplay.getCamera();
+            		currentPos = mapDisplay.getCamera();
             	} else {
                 	SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
                 	currentPos = new Point(entity.x, entity.y);
@@ -167,8 +170,8 @@ public class ActionExecutor {
                         }
                         perso.beingMoved();
                     } else if ("camera".equals(p_action.what)) {
-                        ClientEngineZildo.mapDisplay.setCamera(location);
-                        ClientEngineZildo.mapDisplay.setFocusedEntity(null);
+                        mapDisplay.setCamera(location);
+                        mapDisplay.setFocusedEntity(null);
                     } else {
                     	SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
                     	if (location != null) {
@@ -195,8 +198,8 @@ public class ActionExecutor {
                         	perso.setForeground(p_action.foreground);
                         }
                     } else if ("camera".equals(p_action.what)) {
-                        ClientEngineZildo.mapDisplay.setTargetCamera(location);
-                        ClientEngineZildo.mapDisplay.setFocusedEntity(null);
+                        mapDisplay.setTargetCamera(location);
+                        mapDisplay.setFocusedEntity(null);
                     } else {
                     	SpriteEntity entity;
                    		entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
@@ -230,7 +233,7 @@ public class ActionExecutor {
 	                    String param = p_action.effect;
 	                    switch (script) {
 	                    case ZONE:
-	        				perso.setZone_deplacement(EngineZildo.mapManagement.range(perso.getX() - 16 * 5, 
+	        				perso.setZone_deplacement(mapMngt.range(perso.getX() - 16 * 5, 
 	        																	perso.getY() - 16 * 5,
 	        																	perso.getX() + 16 * 5, 
 	        																	perso.getY() + 16 * 5));
@@ -266,8 +269,8 @@ public class ActionExecutor {
                 	achieved=true;
                 	break;
                 case map:	// Change current map
-        			EngineZildo.mapManagement.loadMap(p_action.text, false);
-        			ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+        			mapMngt.loadMap(p_action.text, false);
+        			mapDisplay.setCurrentMap(mapMngt.getCurrentMap());
                 	achieved=true;
                 	break;
                 case focus:	// Camera focus on given character
@@ -276,13 +279,13 @@ public class ActionExecutor {
                 		toFocus = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
                 	}
                 	if (toFocus == null) {
-                		ClientEngineZildo.mapDisplay.setFocusedEntity(null);
+                		mapDisplay.setFocusedEntity(null);
                 	}
                 	if (p_action.delta) {
                 		Point cameraLoc = new Point(toFocus.x-MapDisplay.CENTER_X, toFocus.y-MapDisplay.CENTER_Y);
-                		ClientEngineZildo.mapDisplay.setTargetCamera(cameraLoc);
+                		mapDisplay.setTargetCamera(cameraLoc);
                 	}
-                    ClientEngineZildo.mapDisplay.setFocusedEntity(toFocus);
+                    mapDisplay.setFocusedEntity(toFocus);
                     // If delta, we go smoothly to the target, except if it's explicitly asked to be unblocking
                     achieved = !p_action.delta || p_action.unblock;
                     break;
@@ -364,7 +367,7 @@ public class ActionExecutor {
                 	break;
                 case remove:
                 	if (p_action.text != null) { // Remove a chaining point
-                		Area area = EngineZildo.mapManagement.getCurrentMap();
+                		Area area = mapMngt.getCurrentMap();
                 		ChainingPoint ch = area.getNamedChainingPoint(p_action.text);
                 		if (ch != null) {	// Doesn't crash if chaining point can't be found
                 			area.removeChainingPoint(ch);
@@ -407,7 +410,7 @@ public class ActionExecutor {
             		break;
                 case tile:
                 	// Change tile on map
-                	Area area = EngineZildo.mapManagement.getCurrentMap();
+                	Area area = mapMngt.getCurrentMap();
                 	Case c = area.get_mapcase(location.x, location.y+4);
                 	if (p_action.back != -2) {
                 		c.setBackTile(p_action.back == -1 ? null : new Tile(p_action.back, c));
@@ -418,7 +421,7 @@ public class ActionExecutor {
                 	if (p_action.fore != -2) {
                 		c.setForeTile(p_action.fore == -1 ? null : new Tile(p_action.fore, c));
                 	}
-                	EngineZildo.mapManagement.getCurrentMap().set_mapcase(location.x, location.y+4, c);
+                	mapMngt.getCurrentMap().set_mapcase(location.x, location.y+4, c);
                 	achieved=true;
                 	break;
                 case filter:
@@ -435,7 +438,7 @@ public class ActionExecutor {
                 		ClientEngineZildo.ortho.setFilteredColor(Ortho.SEMI_NIGHT_FILTER);
                 		break;
                 	case 3: // RED
-                		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(false, false);
+                		mapDisplay.getForeBackController().setDisplaySpecific(false, false);
                 		ClientEngineZildo.filterCommand.active(CloudFilter.class, false, null);
                 		ClientEngineZildo.filterCommand.active(RedFilter.class, true, null);
                 		break;
@@ -458,7 +461,7 @@ public class ActionExecutor {
                 	}
                 	break;
                 case respawn:	// Replace Zildo at his previous location
-                	EngineZildo.mapManagement.respawn(1);	// 1 HP damage
+                	mapMngt.respawn(1);	// 1 HP damage
                 	achieved = true;
                 	break;
                 case visible:
@@ -593,6 +596,7 @@ public class ActionExecutor {
     private void waitForEndAction(ActionElement p_action) {
         String who = p_action.who;
         Perso perso = EngineZildo.persoManagement.getNamedPerso(who);
+		MapDisplay mapDisplay = ClientEngineZildo.getMapDisplay();
         boolean achieved = false;
         switch (p_action.kind) {
             case moveTo:
@@ -603,14 +607,14 @@ public class ActionExecutor {
 	                	perso.setTarget(null);
 	                }
             	} else if ("camera".equals(p_action.what)) {
-            		achieved=ClientEngineZildo.mapDisplay.getTargetCamera() == null;
+				achieved = mapDisplay.getTargetCamera() == null;
             	} else {
             		SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
             		achieved = (entity != null && entity.getMover() != null && !entity.getMover().isActive());
             	}
                 break;
             case focus:
-        		achieved=ClientEngineZildo.mapDisplay.getTargetCamera() == null;
+			achieved = mapDisplay.getTargetCamera() == null;
             	break;
             case speak:
             case end:
@@ -649,6 +653,8 @@ public class ActionExecutor {
             	int last = lookFor.actions.size() - 1;
             	achieved = lookFor.actions.get(last).done;
             	break;
+		default:
+			break;
         }
         p_action.waiting = !achieved;
         p_action.done = achieved;

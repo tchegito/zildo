@@ -180,9 +180,8 @@ public class SaveGameMenu extends PageableMenu {
 			EngineZildo.scriptManagement.render();
 		}
 		
-		EngineZildo.mapManagement.loadMap(game.mapName, false);
+		EngineZildo.getMapManagement().loadMap(game.mapName, false);
 
-		
 		//Area area = EngineZildo.mapManagement.getCurrentMap();
 		/*
 		Case c = area.get_mapcase(28, 47+4);

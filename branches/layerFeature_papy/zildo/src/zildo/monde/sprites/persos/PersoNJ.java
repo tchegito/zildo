@@ -42,6 +42,7 @@ import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -734,11 +735,12 @@ public class PersoNJ extends Perso {
 			setY(getY() - Constantes.MONSTER_SPEED);
 		}
 		setPos_seqsprite((getPos_seqsprite() + 1) % 512);
-		if (EngineZildo.mapManagement.collide((int) x, (int) y, this)) {
+		MapManagement map = EngineZildo.getMapManagement();
+		if (map.collide((int) x, (int) y, this)) {
 			// Le monstre est gêné par un obstacle
-			if (!EngineZildo.mapManagement.collide((int) sx, (int) y, this)) {
+			if (!map.collide((int) sx, (int) y, this)) {
 				setX(sx);
-			} else if (!EngineZildo.mapManagement.collide((int) x, (int) sy, this)) {
+			} else if (!map.collide((int) x, (int) sy, this)) {
 				setY(sy);
 			} else {
 				setX(sx);
@@ -748,7 +750,7 @@ public class PersoNJ extends Perso {
 				setAlerte(false);
 				setAttente(10);
 				// On replace la zone de déplacement autour de l'ennemi
-				setZone_deplacement(EngineZildo.mapManagement.range(x - 16 * 5, y - 16 * 5, x + 16 * 5, y + 16 * 5));
+				setZone_deplacement(map.range(x - 16 * 5, y - 16 * 5, x + 16 * 5, y + 16 * 5));
 			}
 		}
 		if (!isGhost()) { // Replace angle if character isn't ghost (moved by script)

@@ -163,11 +163,10 @@ public class SoundPlay {
 	}
 
 	public void playSounds(List<WaitingSound> p_sounds) {
-		Point camera = ClientEngineZildo.mapDisplay.getCamera();
+		Point camera = ClientEngineZildo.getMapDisplay().getCamera();
 		Point listeningPoint = new Point(Zildo.viewPortX >> 1, Zildo.viewPortY >> 1);	// / 2 (middle)
 		if (camera != null) {
-			listeningPoint.x = camera.x + listeningPoint.x;
-			listeningPoint.y = camera.y + listeningPoint.y;
+			listeningPoint.add(camera);
 		}
 		for (WaitingSound sound : p_sounds) {
 			if (sound.broadcast || sound.client == null) {

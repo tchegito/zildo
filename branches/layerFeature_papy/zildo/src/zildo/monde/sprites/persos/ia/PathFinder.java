@@ -174,15 +174,15 @@ public class PathFinder {
 	
 			j--; // On diminue le rayon jusqu'à être dans la zone
 	
-			if ((target.x>=zone.x1 && target.y>=zone.y1 &&
-				 target.x<=zone.x2 && target.y<=zone.y2) ||
+			if ((target.x>=zone.getX1() && target.y>=zone.getY1() &&
+				 target.x<=zone.getX2() && target.y<=zone.getY2()) ||
 				(j==-1) )
 				break;
 		}
 	
 	    if (j==-1) {  // En cas de pépin
-			target.x=zone.x1;
-			target.y=zone.y1;
+			target.x=zone.getX1();
+			target.y=zone.getY1();
 	    }
 	}
 

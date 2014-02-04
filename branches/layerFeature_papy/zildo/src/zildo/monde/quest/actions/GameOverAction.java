@@ -53,14 +53,14 @@ public class GameOverAction extends ActionDialog {
 	@Override
 	public void launchAction(ClientState p_clientState) {
 		// Reset map / GUI
-		EngineZildo.mapManagement.deleteCurrentMap();
+		EngineZildo.getMapManagement().deleteCurrentMap();
 		ClientEngineZildo.tileEngine.cleanUp();
 		ClientEngineZildo.guiDisplay.setToDisplay_generalGui(false);
 		ClientEngineZildo.filterCommand.restoreFilters();
 		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
 		ClientEngineZildo.filterCommand.active(LightningFilter.class, false, null);
 		ClientEngineZildo.filterCommand.fadeIn(FilterEffect.SEMIFADE);
-		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(true, true);
+		ClientEngineZildo.getMapDisplay().getForeBackController().setDisplaySpecific(true, true);
 		
 		// Stop this game
 		SinglePlayer.getClientState().gameOver=true;

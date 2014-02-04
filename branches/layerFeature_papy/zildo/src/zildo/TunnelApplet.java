@@ -9,6 +9,10 @@ import zildo.monde.util.Point;
 
 public class TunnelApplet extends JApplet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4712846039893965845L;
 	Tunnel tunnel;
 
 	@Override

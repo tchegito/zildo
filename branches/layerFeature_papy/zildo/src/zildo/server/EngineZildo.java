@@ -25,6 +25,7 @@ import java.util.Collection;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
+import zildo.client.MapDisplay;
 import zildo.client.gui.menu.SaveGameMenu;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Game;
@@ -42,7 +43,7 @@ public class EngineZildo {
 
 	// Server
 	public static SpriteManagement spriteManagement;
-	public static MapManagement mapManagement;
+	private static MapManagement mapManagement;
 	public static CollideManagement collideManagement;
 	public static PlayerManagement playerManagement;
 	public static PersoManagement persoManagement;
@@ -192,14 +193,14 @@ public class EngineZildo {
 	
     public ClientEvent renderEvent(ClientEvent p_event) {
         ClientEvent retEvent = p_event;
-
+		MapDisplay map = ClientEngineZildo.getMapDisplay();
         switch (p_event.nature) {
             case FADEOUT_OVER:
             case CHANGINGMAP_SCROLL_WAIT_MAP:
             	if (p_event.chPoint != null) {
 	                mapManagement.processChangingMap(p_event.chPoint);
-	                ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
-	                ClientEngineZildo.mapDisplay.setPreviousMap(EngineZildo.mapManagement.getPreviousMap());
+				map.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+				map.setPreviousMap(EngineZildo.mapManagement.getPreviousMap());
 	                if (p_event.nature == ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP) {
 	                    retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_START;
 	                    retEvent.angle = mapManagement.getMapScrollAngle();
@@ -245,7 +246,7 @@ public class EngineZildo {
             	persoManagement.getZildo().setGhost(false);
             	spriteManagement.clearSuspendedEntities();
             	mapManagement.notifiyScrollOver();
-                ClientEngineZildo.mapDisplay.setPreviousMap(EngineZildo.mapManagement.getPreviousMap());
+			map.setPreviousMap(EngineZildo.mapManagement.getPreviousMap());
             	retEvent.nature = ClientEventNature.NOEVENT;
             	retEvent.mapChange = false;
             	retEvent.chPoint = null;
@@ -255,6 +256,8 @@ public class EngineZildo {
 	        	dialogManagement.setFullSentenceDisplayed();
 	        	retEvent.nature = ClientEventNature.NOEVENT;
 	        	break;
+		default:
+			break;
         }
 
         retEvent.script=scriptManagement.isScripting();
@@ -285,5 +288,11 @@ public class EngineZildo {
 		EngineZildo.game = p_game;
 	}
 	
+	/**
+	 * @return the mapManagement
+	 */
+	public static MapManagement getMapManagement() {
+		return mapManagement;
+	}
 	
 }

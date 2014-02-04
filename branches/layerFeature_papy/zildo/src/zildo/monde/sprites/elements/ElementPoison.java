@@ -79,17 +79,17 @@ public class ElementPoison extends Element {
 			
 			// Determining collision zone
 			size = cloud.getSprModel().getTaille_x() / 2;	// Assume that width is the same than height
-			zc.x1 = (int) Math.min(zc.x1, cloud.x - size);
-			zc.y1 = (int) Math.min(zc.y1, cloud.y - size);
-			zc.x2 = (int) Math.max(zc.x2, cloud.x + size);
-			zc.y2 = (int) Math.max(zc.y2, cloud.y + size);
+			zc.setX1((int) Math.min(zc.getX1(), cloud.x - size));
+			zc.setY1((int) Math.min(zc.getY1(), cloud.y - size));
+			zc.setX2((int) Math.max(zc.getX2(), cloud.x + size));
+			zc.setY2((int) Math.max(zc.getY2(), cloud.y + size));
 		}
 		duration = CLOUD_DURATION;
 		
-		zc.x2 = zc.x2 - zc.x1;
-		zc.y2 = zc.y2 - zc.y1;
-		zc.y2 -= size / 2;
-		collision = new Collision(zc.getCenter(), new Point(zc.x2, zc.y2), p_shooter, DamageType.POISON, null);
+		zc.setX2(zc.getX2() - zc.getX1());
+		zc.setY2(zc.getY2() - zc.getY1());
+		zc.setY2(zc.getY2() - size / 2);
+		collision = new Collision(zc.getCenter(), new Point(zc.getX2(), zc.getY2()), p_shooter, DamageType.POISON, null);
 	}
 	
 	@Override

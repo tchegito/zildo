@@ -488,6 +488,7 @@ public class MapManagement {
 		// Get zildo's position
 		float x = p_zildo.getX();
 		float y = p_zildo.getY();
+		int l = p_zildo.getL();
 		// Store the changing point to use it when processing map swap
 		if (currentMap != null) {
 			// Determine angle, according to previous location
@@ -495,7 +496,7 @@ public class MapManagement {
 			if (p_zildo.isProjected()) {
 				ang = Angle.rotate(ang, 2);	// Zildo is stepping back, so inverse his angle
 			}
-			changingMapPoint = currentMap.isChangingMap(x, y, ang);
+			changingMapPoint = currentMap.isChangingMap(x, y, l, ang);
 		}
 		return (changingMapPoint != null);
 	}
@@ -554,18 +555,19 @@ public class MapManagement {
 				// chPointTarget should never be null !
 				// But there is a map (polaky, left border) which fails...
 				if (!zildo.isOnPlatform()) {
-					Point dest = new Point(zildo.x, zildo.y);
-					zildo.y = (int) zildo.y;
-					if (zildo.y > previousDimY * 16 - 16) {
+					Point dest = new Point(zildo.getX(), zildo.y);
+					zildo.setX((int) zildo.getX());
+					zildo.setY((int) zildo.getY());
+					if (zildo.getY() > previousDimY * 16 - 16) {
 						zildo.setY(8 - 8);
 						dest.y = (int) zildo.y + 8;
-					} else if (zildo.y < 4) {
+					} else if (zildo.getY() < 4) {
 						zildo.setY(currentMap.getDim_y() * 16 - 8 + 8);
 						dest.y = (int) zildo.y - 8;
-					} else if (zildo.x < 4) {
+					} else if (zildo.getX() < 4) {
 						zildo.setX(currentMap.getDim_x() * 16 - 16 + 16);
 						dest.x = (int) zildo.x - 16;
-					} else if (zildo.x > previousDimX * 16 - 16) {
+					} else if (zildo.getX() > previousDimX * 16 - 16) {
 						zildo.setX(8 - 16);
 						dest.x = (int) zildo.x + 16;
 					}

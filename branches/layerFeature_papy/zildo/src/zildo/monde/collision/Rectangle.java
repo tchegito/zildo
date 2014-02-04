@@ -54,10 +54,10 @@ public class Rectangle {
 
 	public Rectangle(Zone p_zone) {
 		int zx1, zx2, zy1, zy2;
-		zx1 = p_zone.x1;
-		zx2 = p_zone.x2;
-		zy1 = p_zone.y1;
-		zy2 = p_zone.y2;
+		zx1 = p_zone.getX1();
+		zx2 = p_zone.getX2();
+		zy1 = p_zone.getY1();
+		zy2 = p_zone.getY2();
 		coordinates = new Point[4];
 		coordinates[0] = new Point(zx1, zy1);
 		coordinates[1] = new Point(zx2 + zx1, zy1);

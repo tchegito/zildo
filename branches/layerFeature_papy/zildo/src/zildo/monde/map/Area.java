@@ -62,6 +62,7 @@ import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Point3D;
 import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -77,7 +78,7 @@ public class Area implements EasySerializable {
 
 	class SpawningTile {
 		Case previousCase;
-		int x, y;
+		int x, y, l;
 		int cnt;
 		String awaitedQuest;	// Name of the awaited quest to be done
 		boolean fog;	// display a fog during the respawn
@@ -96,9 +97,9 @@ public class Area implements EasySerializable {
 
 	private Point offset; // For scrolling map
 
-	private int dim_x, dim_y;
+	private int dim_x, dim_y, dim_l;
 	private String name;
-	private Case[][] mapdata;
+	private ArrayList<Case[][]> mapdata;
 	private List<ChainingPoint> listChainingPoint;
 	private MapDialog dialogs;
 
@@ -122,7 +123,10 @@ public class Area implements EasySerializable {
 	}
 
 	public Area() {
-		mapdata = new Case[Constantes.TILEENGINE_HEIGHT + 4][Constantes.TILEENGINE_HEIGHT + 4];
+
+		mapdata = new ArrayList<Case[][]>(10);
+		mapdata.add(0, new Case[Constantes.TILEENGINE_HEIGHT + 4][Constantes.TILEENGINE_HEIGHT + 4]);
+
 		listChainingPoint = new ArrayList<ChainingPoint>();
 
 		changes = new HashSet<Point>();
@@ -138,11 +142,13 @@ public class Area implements EasySerializable {
 		this();
 		dim_x = 64;
 		dim_y = 64;
+		dim_l = 1;
 		int empty = p_atmo.getEmptyTile();
 		for (int i = 0; i < dim_x * dim_y; i++) {
 			int x = i % dim_x;
 			int y = i / dim_x;
-			writemap(x, y, empty);
+			//@FIXME FCA
+			writemap(x, y, 0, empty);
 		}
 		atmosphere = p_atmo;
 		dialogs = new MapDialog();
@@ -154,14 +160,26 @@ public class Area implements EasySerializable {
 	// IN : coordinates
 	// OUT: Case object at the given coordinates
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public Case get_mapcase(int x, int y) {
+	public Case get_mapcase(int x, int y, int l) {
 		if (x < 0 || x > dim_x) {
 			return null;
 		}
 		if (y < 0 || y > (dim_y + 3)) {
 			return null;
 		}
-		return mapdata[y][x];
+		if (l < 0 || l > 9) {
+			return null;
+		}
+		Case[][] tempmap = mapdata.get(l);
+		if (tempmap == null) {
+			return null;
+		}
+		return tempmap[y][x];
+	}
+
+	@Deprecated
+	public Case get_mapcase(int x, int y) {
+		return this.get_mapcase(x, y, 0);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -169,8 +187,21 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// IN:coordinates, Case object
 	// /////////////////////////////////////////////////////////////////////////////////////
+	public void set_mapcase(int x, int y, int l, Case c) {
+		Case[][] map = mapdata.get(l);
+		if (map == null) {
+			Case[][] refmap = mapdata.get(0);
+			Case[][] tempmap = new Case[refmap.length][refmap[0].length];
+			tempmap[y][x] = c;
+			mapdata.set(l, tempmap);
+		} else {
+			map[y][x] = c;
+		}
+	}
+
+	@Deprecated
 	public void set_mapcase(int x, int y, Case c) {
-		mapdata[y][x] = c; //.put(y * lineSize + x, c);
+		this.set_mapcase(x, y, 0, c);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -191,8 +222,8 @@ public class Area implements EasySerializable {
 	 * @param p_foreground TRUE=> returns the foreground tile, if it exists.
 	 * @return Tile
 	 */
-	public Tile readmap(int x, int y, boolean p_foreground) {
-		Case temp = this.get_mapcase(x, y + 4);
+	public Tile readmap(int x, int y, int l, boolean p_foreground) {
+		Case temp = this.get_mapcase(x, y + 4, l);
 		if (temp == null) {
 			return null;
 		}
@@ -211,6 +242,11 @@ public class Area implements EasySerializable {
 		}
 	}
 	
+	@Deprecated
+	public Tile readmap(int x, int y, boolean p_foreground) {
+		return readmap(x, y, 0, p_foreground);
+	}
+
 	/**
 	 * Returns TRUE if case part pointed by PIXEL coordinates is in water.
 	 */
@@ -251,8 +287,8 @@ public class Area implements EasySerializable {
 	/**
 	 * Returns TRUE if case is bottom less (example: lava or void)
 	 */
-	public boolean isCaseBottomLess(int x, int y) {
-		Case temp = this.get_mapcase(x, y + 4);
+	public boolean isCaseBottomLess(int x, int y, int l) {
+		Case temp = this.get_mapcase(x, y + 4, l);
 		if (temp == null) {
 			return false;
 		}
@@ -263,9 +299,14 @@ public class Area implements EasySerializable {
 		return false;
 	}
 
+	@Deprecated
+	public boolean isCaseBottomLess(int x, int y) {
+		return isCaseBottomLess(x, y, 0);
+	}
+
 	// Return n_motif + n_banque*256 from a given position on the Area
-	public int readmap(int x, int y) {
-		Tile tile = readmap(x, y, false);
+	public int readmap(int x, int y, int l) {
+		Tile tile = readmap(x, y, l, false);
 		if (tile == null) {
 			return -1;
 		} else {
@@ -273,6 +314,12 @@ public class Area implements EasySerializable {
 		}
 	}
 
+	@Deprecated
+	public int readmap(int x, int y) {
+		return readmap(x, y, 0);
+	}
+
+	@Deprecated
 	public int readAltitude(int x, int y) {
 		Case temp = this.get_mapcase(x, y + 4);
 		if (temp == null) {
@@ -286,8 +333,8 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// IN:x,y (coordinates on Area), quoi =motif + bank*256
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void writemap(int x, int y, int quoi) {
-		Case temp = this.get_mapcase(x, y + 4);
+	public void writemap(int x, int y, int l, int quoi) {
+		Case temp = this.get_mapcase(x, y + 4, l);
 		if (temp == null) {
 			temp = new Case();
 		} else {
@@ -296,9 +343,14 @@ public class Area implements EasySerializable {
 		Tile back = temp.getBackTile();
 		back.index = quoi & 255;
 		back.bank = (byte) (quoi >> 8);
-		this.set_mapcase(x, y + 4, temp);
+		this.set_mapcase(x, y + 4, l, temp);
 
-		changes.add(new Point(x, y + 4));
+		changes.add(new Point3D(x, y + 4, l));
+	}
+
+	@Deprecated
+	public void writemap(int x, int y, int quoi) {
+		writemap(x, y, 0, quoi);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -339,7 +391,8 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Return ChainingPoint if Zildo's crossing one (door, or Area's border)
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public ChainingPoint isChangingMap(float x, float y, Angle p_angle) {
+	public ChainingPoint isChangingMap(float x, float y, int l, Angle p_angle) {
+		// @FIXME FCA use l?
 		// On parcourt les points d'enchainements
 		int ax = (int) (x / 16);
 		int ay = (int) (y / 16);
@@ -428,20 +481,22 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// attackTile
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void attackTile(Point tileLocation) {
+	public void attackTile(Point3D tileLocation) {
 		// Check if Zildo destroy something on a tile
-		int onmap = readmap(tileLocation.x, tileLocation.y);
+		int onmap = readmap(tileLocation.getX(), tileLocation.getY(), tileLocation.getL());
 		switch (onmap) {
 		case 165: // Bushes
-			Point spriteLocation = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
-			EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES, spriteLocation.x, spriteLocation.y,
-					0, null, null);
+			Point spriteLocation = new Point3D(tileLocation.getX() * 16 + 8, tileLocation.getY() * 16 + 8,
+					tileLocation.getL());
+			// @FIXME McFlac
+			EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES, spriteLocation.getX(),
+					spriteLocation.getY(), 0, null, null);
 			EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
 			takeSomethingOnTile(tileLocation, true, null);
 			break;
 		case 374: // Mud
-			writemap(tileLocation.x, tileLocation.y, 375);
+			writemap(tileLocation.getX(), tileLocation.getY(), tileLocation.getL(), 375);
 			break;
 		}
 	}
@@ -450,11 +505,11 @@ public class Area implements EasySerializable {
 	 * A tile being "hammered". Can lower plots.
 	 * @param tileLocation
 	 */
-	public void smashTile(Point tileLocation) {
-		int onmap = readmap(tileLocation.x, tileLocation.y);
+	public void smashTile(Point3D tileLocation) {
+		int onmap = readmap(tileLocation.getX(), tileLocation.getY(), tileLocation.getL());
 		switch (onmap) {
 		case 173:
-			writemap(tileLocation.x, tileLocation.y, 174);
+			writemap(tileLocation.getX(), tileLocation.getY(), tileLocation.getL(), 174);
 			EngineZildo.soundManagement.broadcastSound(BankSound.Hammer, tileLocation.multiply(16f));
 			break;
 		}
@@ -468,10 +523,11 @@ public class Area implements EasySerializable {
 	 * @param p_destroy
 	 *            TRUE if tile is attacked / FALSE for simple action (ex: Zildo picks up a bush)
 	 */
-	public void takeSomethingOnTile(Point tileLocation, boolean p_destroy, Perso p_perso) {
-		int x = tileLocation.getX();
-		int y = tileLocation.getY();
-		int on_Area = readmap(x, y);
+	public void takeSomethingOnTile(Point3D tileLocation, boolean p_destroy, Perso p_perso) {
+		int tx = tileLocation.getX();
+		int ty = tileLocation.getY();
+		int tl = tileLocation.getL();
+		int on_Area = readmap(tx, ty, tl);
 		int resultTile;
 		SpriteAnimation anim = SpriteAnimation.FROMGROUND;
 		if (Tile.isClosedChest(on_Area)) {	// Chest ?
@@ -503,7 +559,7 @@ public class Area implements EasySerializable {
 		
 		// Remove tile on back2, if present
 		boolean spawnGoodies = true;
-		Case temp = this.get_mapcase(x, y + 4);
+		Case temp = this.get_mapcase(tx, ty + 4, tl);
 		if (temp.getBackTile2() != null) {
 			if (anim == SpriteAnimation.FROM_CHEST) {
 				// A chest is open => replace by the right tile
@@ -518,11 +574,15 @@ public class Area implements EasySerializable {
 				}
 			}
 		} else {
-			writemap(tileLocation.getX(), tileLocation.getY(), resultTile);
+			this.writemap(tx, ty, tl, resultTile);
 		}
 		// Is there something planned to appear ?
-		Point p = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
-		CaseItem item = getCaseItem(tileLocation.x, tileLocation.y);
+		Point3D p = new Point3D(tx * 16 + 8, ty * 16 + 8, tl);
+		int px = p.getX();
+		int py = p.getY();
+		int pl = p.getL();
+
+		CaseItem item = getCaseItem(tx, ty, tl);
 		ElementDescription desc = item == null ? null : item.desc;
 		SpriteManagement sprMgt = EngineZildo.spriteManagement;
 
@@ -530,7 +590,8 @@ public class Area implements EasySerializable {
 			if (desc == null) {
 				desc = ElementDescription.THREEGOLDCOINS1;
 			}
-			Element elem = sprMgt.spawnSpriteGeneric(SpriteAnimation.FROM_CHEST, p.x, p.y + 8, 0, p_perso, desc);
+			Element elem = sprMgt.spawnSpriteGeneric(SpriteAnimation.FROM_CHEST, p.getX(), p.getY() + 8, 0, p_perso,
+					desc);
 			if (item != null) {
 				elem.setName(item.name);
 			}
@@ -544,7 +605,7 @@ public class Area implements EasySerializable {
 						questTrigger = true;
 					}
 				}
-				Element elem = sprMgt.spawnSpriteGeneric(anim, p.x, p.y + 5, 0, null, desc);
+				Element elem = sprMgt.spawnSpriteGeneric(anim, p.getX(), p.getY() + 5, 0, null, desc);
 				elem.setName(item.name);
 				elem.setTrigger(questTrigger);
 			} else {
@@ -553,13 +614,14 @@ public class Area implements EasySerializable {
 					PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 	
 					if ((multiPlayer || zildo.hasItem(ItemKind.BOW) && Hasard.lanceDes(Hasard.hazardBushes_Arrow))) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 0, null, null);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, px, py + 5, 0, null, null);
 					} else if (Hasard.lanceDes(Hasard.hazardBushes_GoldCoin)) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, p.x, p.y + 5, 0, null, null);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, px, py + 5, 0, null, null);
 					} else if (Hasard.lanceDes(Hasard.hazardBushes_BlueDrop)) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, p.x + 3, p.y + 5, p_destroy ? 0 : 1, null, null);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, px + 3, py + 5, p_destroy ? 0 : 1, null,
+								null);
 					} else if (multiPlayer && Hasard.lanceDes(Hasard.hazardBushes_Bombs)) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 0, null,
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, px + 3, py + 5, 0, null,
 								ElementDescription.BOMBS3);
 					}
 				}
@@ -583,11 +645,15 @@ public class Area implements EasySerializable {
 		}
 	}
 	
-	public void addSpawningTile(Point tileLocation, String awaitedQuest, int time, boolean fog) {
+	public void addSpawningTile(Point3D tileLocation, String awaitedQuest, int time, boolean fog) {
+		int tx = tileLocation.getX();
+		int ty = tileLocation.getY();
+		int tl = tileLocation.getL();
 		SpawningTile spawnTile = new SpawningTile();
-		spawnTile.x = tileLocation.x;
-		spawnTile.y = tileLocation.y;
-		spawnTile.previousCase = new Case(get_mapcase(tileLocation.x, tileLocation.y + 4));
+		spawnTile.x = tx;
+		spawnTile.y = ty;
+		spawnTile.l = tl;
+		spawnTile.previousCase = new Case(get_mapcase(tx, ty + 4, tl));
 		spawnTile.cnt = time;
 		spawnTile.awaitedQuest = awaitedQuest;
 		spawnTile.fog = fog;
@@ -630,6 +696,14 @@ public class Area implements EasySerializable {
 
 	public void setDim_y(int dim_y) {
 		this.dim_y = dim_y;
+	}
+
+	public int getDim_l() {
+		return dim_l;
+	}
+
+	public void setDim_l(int dim_l) {
+		this.dim_l = dim_l;
 	}
 
 	public String getName() {
@@ -687,7 +761,8 @@ public class Area implements EasySerializable {
 		// 2) Save the map cases
 		for (int i = 0; i < this.getDim_y(); i++) {
 			for (int j = 0; j < this.getDim_x(); j++) {
-				Case temp = this.get_mapcase(j, i + 4);
+				// @FIXME FCA level ? 
+				Case temp = this.get_mapcase(j, i + 4, 0);
 
 				if (temp == null) {
 					temp = new Case();
@@ -715,7 +790,129 @@ public class Area implements EasySerializable {
 				p_file.put((int) entity.x);
 				p_file.put((int) entity.y);
 				int foreground = entity.isForeground() ? SpriteEntity.FOREGROUND : 0;
-				int repeated = (entity.repeatX > 1 || entity.repeatY > 1 || entity.rotation != Rotation.NOTHING) ? SpriteEntity.REPEATED_OR_ROTATED : 0;
+				int repeated = (entity.repeatX > 1 || entity.repeatY > 1 || entity.rotation != Rotation.NOTHING) ? SpriteEntity.REPEATED_OR_ROTATED
+						: 0;
+				int pushable = (elem != null && elem.isPushable()) ? SpriteEntity.PUSHABLE : 0;
+				p_file.put((byte) (entity.getNBank() | entity.reverse.getValue() | foreground | repeated | pushable));
+				p_file.put((byte) entity.getNSpr());
+				if (repeated > 0) {
+					if (entity.rotation != Rotation.NOTHING) {
+						p_file.put((byte) (entity.rotation.value | 128));
+					}
+					p_file.put(entity.repeatX);
+					p_file.put(entity.repeatY);
+				}
+				entityName = entity.getName();
+				p_file.put(entityName);
+			}
+		}
+
+		// 5) Persos (characters)
+		if (n_persos != 0) {
+			for (Perso perso : persos) {
+				p_file.put((int) perso.x);
+				p_file.put((int) perso.y);
+				p_file.put((int) perso.z);
+				PersoDescription desc = perso.getDesc();
+				p_file.put((byte) desc.getBank());
+				p_file.put((byte) desc.first());
+				p_file.put((byte) perso.getInfo().ordinal());
+				p_file.put(perso.getDialogSwitch());
+				// p_file.put((byte) 0); //(byte) perso.getEn_bras());
+				p_file.put((byte) perso.getQuel_deplacement().ordinal());
+				p_file.put((byte) perso.getAngle().ordinal());
+				p_file.put(perso.getName());
+			}
+		}
+
+		// 6) Sentences
+		if (dialogs != null) {
+			List<String> phrases = dialogs.getDialogs();
+			if (phrases.size() > 0) {
+				p_file.put((byte) phrases.size());
+				// On lit les phrases
+				for (String s : phrases) {
+					p_file.put(s);
+				}
+				// On lit le nom
+				Map<String, Behavior> behaviors = dialogs.getBehaviors();
+				for (Entry<String, Behavior> entry : behaviors.entrySet()) {
+					p_file.put(entry.getKey());
+					Behavior behav = entry.getValue();
+					for (int i : behav.replique) {
+						p_file.put((byte) i);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Serialize the map into an EasyWritingFile object.
+	 * 
+	 * @return EasyWritingFile
+	 */
+
+	public void serialize3D(EasyBuffering p_file) {
+
+		// Get the right lists to serialize the right number of each one
+		List<SpriteEntity> entities = filterExportableSprites(EngineZildo.spriteManagement.getSpriteEntities(null));
+		List<Perso> persos = filterExportablePersos(EngineZildo.persoManagement.tab_perso);
+
+		// int n_case = this.getSize();
+		int n_pe = this.listChainingPoint.size();
+		int n_sprites = entities.size();
+		int n_persos = persos.size();
+
+		// 1) Header
+		p_file.put((byte) atmosphere.ordinal());
+		// p_file.put((byte) this.getDim_x());
+		// p_file.put((byte) this.getDim_y());
+		p_file.put((byte) persos.size());
+		p_file.put((byte) n_sprites);
+		p_file.put((byte) n_pe);
+		p_file.put((byte) this.getDim_l());
+		// 2) Save the map cases
+		for (int z = 0; z <= this.getDim_l(); z++) {
+			EasyBuffering tempeb = new EasyBuffering();
+			int nbcase = 0; 
+			for (int i = 0; i < this.getDim_y(); i++) {
+				for (int j = 0; j < this.getDim_x(); j++) {
+					Case temp = this.get_mapcase(j, i + 4, z);
+
+					if (temp != null) {
+						tempeb.put((byte) i);
+						tempeb.put((byte) j);
+						temp.serialize(tempeb);
+						nbcase++;
+					}
+				}
+			}
+			p_file.put(nbcase);
+			p_file.put(tempeb);
+		}
+
+		// 3) Chaining points
+		if (n_pe != 0) {
+			for (ChainingPoint ch : this.getChainingPoints()) {
+				ch.serialize(p_file);
+			}
+		}
+
+		// 4) Sprites
+		if (n_sprites != 0) {
+			Element elem;
+			String entityName;
+			for (SpriteEntity entity : entities) {
+				elem = null;
+				if (entity.getEntityType().isElement()) {
+					elem = (Element) entity;
+				}
+				p_file.put((int) entity.x);
+				p_file.put((int) entity.y);
+				int foreground = entity.isForeground() ? SpriteEntity.FOREGROUND : 0;
+				int repeated = (entity.repeatX > 1 || entity.repeatY > 1 || entity.rotation != Rotation.NOTHING) ? SpriteEntity.REPEATED_OR_ROTATED
+						: 0;
 				int pushable = (elem != null && elem.isPushable()) ? SpriteEntity.PUSHABLE : 0;
 				p_file.put((byte) (entity.getNBank() | entity.reverse.getValue() | foreground | repeated | pushable));
 				p_file.put((byte) entity.getNSpr());
@@ -789,6 +986,254 @@ public class Area implements EasySerializable {
 		map.setAtmosphere(Atmosphere.values()[p_buffer.readUnsignedByte()]);
 		map.setDim_x(p_buffer.readUnsignedByte());
 		map.setDim_y(p_buffer.readUnsignedByte());
+		// map.setDim_l(p_buffer.readUnsignedByte());
+		int n_persos = p_buffer.readUnsignedByte();
+		int n_sprites = p_buffer.readUnsignedByte();
+		int n_pe = p_buffer.readUnsignedByte();
+
+		// La map
+		for (int i = 0; i < map.getDim_y(); i++) {
+			for (int j = 0; j < map.getDim_x(); j++) {
+				Case temp = Case.deserialize(p_buffer);
+
+				map.set_mapcase(j, i + 4, temp);
+
+				if (p_spawn && !EngineZildo.game.editing) {
+
+					if (temp.getOneValued(256 + 99) != null) {
+						// Fumée de cheminée
+						spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, 0, null,
+								null);
+					}
+					Tile tile = temp.getOneValued(512 + 231, 512 + 49, 512 + 59, 512 + 61);
+					// Is this chest already opened ?
+					if (tile != null) {
+						if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
+							tile.index = Tile.getOpenedChest(tile.getValue()) & 255;
+						}
+					}
+				}
+
+			}
+		}
+
+		// Les P.E
+		if (n_pe != 0) {
+			for (int i = 0; i < n_pe; i++) {
+				map.addChainingPoint(ChainingPoint.deserialize(p_buffer));
+			}
+		}
+		// Compute chaining points
+		map.addChainingContextInfos();
+
+		// Les sprites
+		if (n_sprites != 0) {
+			for (int i = 0; i < n_sprites; i++) {
+				int x = p_buffer.readInt();
+				int y = p_buffer.readInt();
+				short nSpr;
+				short multi = p_buffer.readUnsignedByte();
+				// Multi contains many information : 0--15 : bank
+				// 16 : REPEATED or ROTATED
+				// 32 : FOREGROUND
+				// 64 : PUSHABLE
+				int nBank = multi & 15;
+				int reverse = multi & Reverse.ALL.getValue();
+				nSpr = p_buffer.readUnsignedByte();
+				SpriteEntity entity = null;
+
+				Rotation rot = Rotation.NOTHING;
+				byte repX = 0, repY = 0;
+
+				if ((multi & SpriteEntity.REPEATED_OR_ROTATED) != 0) {
+					int temp = p_buffer.readByte();
+					if ((temp & 128) != 0) {
+						rot = Rotation.fromInt(temp & 127);
+						temp = p_buffer.readByte();
+					}
+					repX = (byte) temp;
+					repY = p_buffer.readByte();
+				}
+
+				String entName = p_buffer.readString();
+
+				if (p_spawn) {
+					// If this sprite is on a chest tile, link them
+					int ax = x / 16;
+					int ay = (y - 1) / 16;
+					int tileDesc = map.readmap(ax, ay);
+					switch (tileDesc) {
+					case 512 + 238: // Opened chest (don't spawn the linked
+									// item)
+					case 512 + 48:
+					case 512 + 58:
+					case 512 + 60:
+						break;
+					case 512 + 231: // Chest
+					case 512 + 49:
+					case 512 + 59:
+					case 512 + 61:
+					case 165: // Bushes
+					case 167: // Stone
+					case 169: // Heavy stone
+					case 751: // Jar
+						// @FIXME FCA
+						map.setCaseItem(ax, ay, 0, nSpr, entName);
+						if (!zeditor) { // We have to see the sprites in ZEditor
+							break;
+						}
+					default: // else, show it as a regular element
+						SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
+						if (desc == GearDescription.GREEN_DOOR || desc == GearDescription.CAVE_KEYDOOR) {
+							ChainingPoint ch = map.getCloseChainingPoint(ax, ay);
+							if (ch != null && EngineZildo.scriptManagement.isOpenedDoor(map.getName(), ch)) {
+								break;
+							}
+						}
+						entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse), false);
+						if ((multi & SpriteEntity.FOREGROUND) != 0) {
+							entity.setForeground(true);
+						}
+						if ((multi & SpriteEntity.REPEATED_OR_ROTATED) != 0) {
+							entity.rotation = rot;
+							entity.repeatX = repX;
+							entity.repeatY = repY;
+						}
+						break;
+					}
+					if (entity != null) {
+						entity.setName(entName);
+						entity.setPushable((multi & SpriteEntity.PUSHABLE) != 0);
+					}
+				}
+			}
+		}
+
+		// Les persos
+		if (n_persos != 0) {
+			for (int i = 0; i < n_persos; i++) {
+				Perso perso;
+				int x = p_buffer.readInt();
+				int y = p_buffer.readInt();
+				int z = p_buffer.readInt();
+
+				int sprBank = p_buffer.readUnsignedByte();
+				int sprDesc = p_buffer.readUnsignedByte();
+				SpriteDescription desc = SpriteDescription.Locator.findSpr(sprBank, sprDesc);
+				if (desc.getBank() == SpriteBank.BANK_ZILDO) {
+					desc = PersoDescription.ZILDO;
+				}
+
+				// Read the character informations
+				int info = p_buffer.readUnsignedByte();
+				// int en_bras=p_buffer.readUnsignedByte();
+				// if (en_bras!= 0) {
+				// throw new RuntimeException("enbras="+en_bras);
+				// }
+				String dialogSwitch = p_buffer.readString();
+				int move = p_buffer.readUnsignedByte();
+				int angle = p_buffer.readUnsignedByte();
+				String name = p_buffer.readString();
+
+				if ("zildo".equals(name)) {
+					desc = PersoDescription.ZILDO;
+					map.respawnPoints.add(new Point(x, y));
+					if (!zeditor) { // We have to see persos in ZEditor
+						continue;
+					}
+				}
+
+				// And spawn it if necessary
+				if (!p_spawn) {
+					perso = new PersoNJ();
+				} else {
+					perso = EngineZildo.persoManagement.createPerso((PersoDescription) desc, x, y, z, name, angle);
+
+					perso.setInfo(PersoInfo.values()[info]);
+					perso.setQuel_deplacement(MouvementPerso.fromInt(move), false);
+					if (desc == PersoDescription.PANNEAU && perso.getQuel_deplacement() != MouvementPerso.IMMOBILE) {
+						// Fix a map bug : sign perso should be unmoveable
+						perso.setQuel_deplacement(MouvementPerso.IMMOBILE, true);
+					} else if (desc == PersoDescription.GARDE_CANARD && perso.getInfo() != PersoInfo.ENEMY) {
+						// Another map bug : guards are always hostile
+						perso.setInfo(PersoInfo.ENEMY);
+					}
+
+					Zone zo = new Zone();
+					zo.setX1(map.roundAndRange(perso.getX() - 16 * 5, Area.ROUND_X));
+					zo.setY1(map.roundAndRange(perso.getY() - 16 * 5, Area.ROUND_Y));
+					zo.setX2(map.roundAndRange(perso.getX() + 16 * 5, Area.ROUND_X));
+					zo.setY2(map.roundAndRange(perso.getY() + 16 * 5, Area.ROUND_Y));
+					perso.setZone_deplacement(zo);
+					if (perso.getMaxpv() == 0) {
+						perso.setMaxpv(3);
+						perso.setPv(3);
+					}
+					perso.setTarget(null);
+					perso.setMouvement(MouvementZildo.VIDE);
+					perso.setDialogSwitch(dialogSwitch);
+
+					perso.initPersoFX();
+
+					spriteManagement.spawnPerso(perso);
+				}
+			}
+		}
+
+		// Les Phrases
+		int n_phrases = 0;
+		map.dialogs = new MapDialog();
+		if (!p_buffer.eof()) {
+			n_phrases = p_buffer.readUnsignedByte();
+			if (n_phrases > 0) {
+				// On lit les phrases
+				for (int i = 0; i < n_phrases; i++) {
+					String phrase = p_buffer.readString();
+					map.dialogs.addSentence(phrase);
+				}
+				if (!p_buffer.eof()) {
+					while (!p_buffer.eof()) {
+						// On lit le nom
+						String nomPerso = p_buffer.readString();
+						// On lit le comportement
+						short[] comportement = new short[10];
+						p_buffer.readUnsignedBytes(comportement, 0, 10);
+						map.dialogs.addBehavior(nomPerso, comportement);
+					}
+				}
+			}
+		}
+
+		if (!zeditor) {
+			// Complete outside of map visible in the viewport with empty tile
+			map.arrange();
+		}
+
+		if (p_spawn) {
+			map.correctTrees();
+		}
+		return map;
+	}
+
+	/**
+	 * @param p_buffer
+	 * @param p_name
+	 *            map name
+	 * @return Area
+	 */
+	public static Area deserialize3D(EasyBuffering p_buffer, String p_name, boolean p_spawn) {
+
+		Area map = new Area();
+		map.setName(p_name);
+
+		SpriteManagement spriteManagement = EngineZildo.spriteManagement;
+
+		boolean zeditor = p_spawn && EngineZildo.game.editing;
+
+		map.setAtmosphere(Atmosphere.values()[p_buffer.readUnsignedByte()]);
+		map.setDim_x(p_buffer.readUnsignedByte());
+		map.setDim_y(p_buffer.readUnsignedByte());
+		map.setDim_l(p_buffer.readUnsignedByte());
 		int n_persos = p_buffer.readUnsignedByte();
 		int n_sprites = p_buffer.readUnsignedByte();
 		int n_pe = p_buffer.readUnsignedByte();
@@ -865,16 +1310,22 @@ public class Area implements EasySerializable {
 					int ay = (y-1) / 16;
 					int tileDesc = map.readmap(ax, ay);
 					switch (tileDesc) {
-					case 512 + 238: // Opened chest (don't spawn the linked item)
-					case 512 + 48: case 512 + 58: case 512+60:
+					case 512 + 238: // Opened chest (don't spawn the linked
+									// item)
+					case 512 + 48:
+					case 512 + 58:
+					case 512 + 60:
 						break;
 					case 512 + 231: // Chest
-					case 512 + 49: case 512 + 59: case 512 + 61:
+					case 512 + 49:
+					case 512 + 59:
+					case 512 + 61:
 					case 165: // Bushes
 					case 167: // Stone
 					case 169: // Heavy stone
 					case 751: // Jar
-						map.setCaseItem(ax, ay, nSpr, entName);
+						// @FIXME FCA
+						map.setCaseItem(ax, ay, 0, nSpr, entName);
 						if (!zeditor) { // We have to see the sprites in ZEditor
 							break;
 						}
@@ -956,10 +1407,10 @@ public class Area implements EasySerializable {
 					}
 
 					Zone zo = new Zone();
-					zo.x1 = map.roundAndRange(perso.getX() - 16 * 5, Area.ROUND_X);
-					zo.y1 = map.roundAndRange(perso.getY() - 16 * 5, Area.ROUND_Y);
-					zo.x2 = map.roundAndRange(perso.getX() + 16 * 5, Area.ROUND_X);
-					zo.y2 = map.roundAndRange(perso.getY() + 16 * 5, Area.ROUND_Y);
+					zo.setX1(map.roundAndRange(perso.getX() - 16 * 5, Area.ROUND_X));
+					zo.setY1(map.roundAndRange(perso.getY() - 16 * 5, Area.ROUND_Y));
+					zo.setX2(map.roundAndRange(perso.getX() + 16 * 5, Area.ROUND_X));
+					zo.setY2(map.roundAndRange(perso.getY() + 16 * 5, Area.ROUND_Y));
 					perso.setZone_deplacement(zo);
 					if (perso.getMaxpv() == 0) {
 						perso.setMaxpv(3);
@@ -1093,6 +1544,9 @@ public class Area implements EasySerializable {
 		// Only respawn bushes and chests in multiplayer
 		for (Iterator<SpawningTile> it = toRespawn.iterator(); it.hasNext();) {
 			SpawningTile spawnTile = it.next();
+			int sTx = spawnTile.x;
+			int sTy = spawnTile.y;
+			int sTl = spawnTile.l;
 			if (spawnTile.awaitedQuest != null) {
 				if (EngineZildo.scriptManagement.isQuestProcessing(spawnTile.awaitedQuest)) {
 					// Wait for given quest to be over
@@ -1100,19 +1554,20 @@ public class Area implements EasySerializable {
 				}
 			}
 			if (spawnTile.cnt == 0) {
-				int x = spawnTile.x * 16 + 8;
-				int y = spawnTile.y * 16 + 8;
+				int x = sTx * 16 + 8;
+				int y = sTy * 16 + 8;
+				int l = sTl;
 				// Respawn the tile if nothing bothers at location
 				int radius = 8;
-				if (EngineZildo.mapManagement.collideSprite(x, y, radius, null)) {
+				if (EngineZildo.getMapManagement().collideSprite(x, y, radius, null)) {
 					spawnTile.cnt++;
 				} else {
-					set_mapcase(spawnTile.x, spawnTile.y + 4, spawnTile.previousCase);
+					set_mapcase(sTx, sTy + 4, sTl, spawnTile.previousCase);
 					spawnTile.previousCase.setModified(true);
 					if (spawnTile.fog) { 
 						EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
 					}
-					changes.add(new Point(spawnTile.x, spawnTile.y + 4));
+					changes.add(new Point3D(sTx, sTy + 4, sTl));
 					it.remove();
 				}
 			} else {
@@ -1146,9 +1601,14 @@ public class Area implements EasySerializable {
 	 * @param p_nSpr
 	 * @param p_name TODO
 	 */
-	public void setCaseItem(int p_x, int p_y, int p_nSpr, String p_name) {
+	public void setCaseItem(int p_x, int p_y, int p_l, int p_nSpr, String p_name) {
 		ElementDescription desc = ElementDescription.fromInt(p_nSpr);
-		caseItem.put(lineSize * p_y + p_x, new CaseItem(desc, p_name));
+		caseItem.put(p_l * lineSize ^ 2 + lineSize * p_y + p_x, new CaseItem(desc, p_name));
+	}
+
+	@Deprecated
+	public void setCaseItem(int p_x, int p_y, int p_nSpr, String p_name) {
+		this.setCaseItem(p_x, p_y, 0, p_nSpr, p_name);
 	}
 
 	/**
@@ -1160,8 +1620,8 @@ public class Area implements EasySerializable {
 	 *            map Y coordinate
 	 * @return CaseItem
 	 */
-	public CaseItem getCaseItem(int p_x, int p_y) {
-		return caseItem.get(lineSize * p_y + p_x);
+	public CaseItem getCaseItem(int p_x, int p_y, int p_l) {
+		return caseItem.get(p_l * lineSize ^ 2 + lineSize * p_y + p_x);
 	}
 
 	public Point getOffset() {
@@ -1187,8 +1647,8 @@ public class Area implements EasySerializable {
 			Zone z = ch.getZone(this);
 			for (Angle a : Angle.values()) {
 				if (!a.isDiagonal()) {
-					int px = p_px + a.coords.x;
-					int py = p_py + a.coords.y;
+					int px = p_px + a.coords.getX();
+					int py = p_py + a.coords.getY();
 					if (z.isInto(16 * px, 16 * py)) {
 						return ch;
 					}
@@ -1224,7 +1684,7 @@ public class Area implements EasySerializable {
 	 * @return boolean
 	 */
 	public boolean isOutside(int tx, int ty) {
-		if (EngineZildo.mapManagement.getPreviousMap() != null) {
+		if (EngineZildo.getMapManagement().getPreviousMap() != null) {
 			return false;
 		}
 		return (tx < 0 || ty < 0 ||
@@ -1251,7 +1711,7 @@ public class Area implements EasySerializable {
 		if (alertLocation == null) {
 			return false;
 		}
-		double distance = Point.distance(x, y, alertLocation.x, alertLocation.y);
+		double distance = Point.distance(x, y, alertLocation.getX(), alertLocation.getY());
 		return distance < distanceHeard;
 	}
 	

@@ -67,7 +67,7 @@ public class SpriteCollision {
 	 * Need to be called before any checks.
 	 */
 	public void clear() {
-		Area area = EngineZildo.mapManagement.getCurrentMap();
+		Area area = EngineZildo.getMapManagement().getCurrentMap();
 		for (int i=0;i<area.getDim_y()*16;i++) {
 			for (int j=0;j<area.getDim_x()*16;j++) {
 				presences[i][j] = 0;

@@ -107,7 +107,8 @@ public class SpriteDisplay extends SpriteStore {
 	 * @param cameraYnew
 	 */
 	public void updateSpritesClient(Point cameraNew) {
-		
+		int cx = cameraNew.getX();
+		int cy = cameraNew.getY();
 		// Reset the sort array used for sprites
 		spriteSorter.clearSortArray();
 		
@@ -118,8 +119,8 @@ public class SpriteDisplay extends SpriteStore {
 		for (SpriteEntity entity : entities) {
 			if (entity.getEntityType().isPerso()) {
 				// Camera moves
-				entity.setScrX ( entity.getAjustedX() - cameraNew.x);
-				entity.setScrY ( entity.getAjustedY() - cameraNew.y);
+				entity.setScrX ( entity.getAjustedX() - cx);
+				entity.setScrY ( entity.getAjustedY() - cy);
 			}
 		}
 		
@@ -127,8 +128,8 @@ public class SpriteDisplay extends SpriteStore {
 			if (entity != null) {
 				// Camera moves
 				if (entity.getEntityType().isEntity()) { 
-					entity.setScrX(entity.getAjustedX() - cameraNew.x);
-					entity.setScrY(entity.getAjustedY() - cameraNew.y);
+					entity.setScrX(entity.getAjustedX() - cx);
+					entity.setScrY(entity.getAjustedY() - cy);
 				} else if (entity.getEntityType().isElement()) {
 					// Center sprite
 					SpriteModel spr=entity.getSprModel();
@@ -138,8 +139,8 @@ public class SpriteDisplay extends SpriteStore {
 						tx = spr.getTaille_y();
 						ty = spr.getTaille_x();
 					}
-					entity.setScrX(entity.getAjustedX() - cameraNew.x - (tx >> 1));
-					entity.setScrY(entity.getAjustedY() - cameraNew.y - ty);
+					entity.setScrX(entity.getAjustedX() - cx - (tx >> 1));
+					entity.setScrY(entity.getAjustedY() - cy - ty);
 				}
 			}
 		}

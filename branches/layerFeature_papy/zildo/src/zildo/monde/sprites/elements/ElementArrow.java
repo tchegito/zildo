@@ -96,10 +96,10 @@ public class ElementArrow extends ElementThrown  {
         		shadow.x +=1;
         } 
         // Shadow effect
-		int altitude=EngineZildo.mapManagement.getCurrentMap().readAltitude((int) x/16, (int) y/16);
+		int altitude=EngineZildo.getMapManagement().getCurrentMap().readAltitude((int) x/16, (int) y/16);
 		if (altitude == relativeZ-1) {
 			// The arrow seems to fly under a high place
-			int secondAltitude=EngineZildo.mapManagement.getCurrentMap().readAltitude((int) x/16,1+(int) (y/16));
+			int secondAltitude=EngineZildo.getMapManagement().getCurrentMap().readAltitude((int) x/16,1+(int) (y/16));
 			if (secondAltitude == altitude) {
 				shadow.y+=10;
 				z+=10;

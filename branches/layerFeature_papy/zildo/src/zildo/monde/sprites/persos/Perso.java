@@ -564,7 +564,7 @@ public abstract class Perso extends Element {
 			if (zz.isInto((int) x, (int) y)) {
 				boolean justLinked = entity.getMover().linkEntity(this);
 				if (justLinked) {
-					String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
+					String mapName = EngineZildo.getMapManagement().getCurrentMap().getName();
 					TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName(), -1);
 					EngineZildo.scriptManagement.trigger(trigger);
 					onPlatform = true;
@@ -596,7 +596,7 @@ public abstract class Perso extends Element {
 		
 		int cx = (int) (x / 16);
 		int cy = (int) (y / 16);
-		Area area = EngineZildo.mapManagement.getCurrentMap();
+		Area area = EngineZildo.getMapManagement().getCurrentMap();
 		boolean bottomLess = area.isCaseBottomLess(cx,  cy);
 		Tile tile = area.readmap(cx, cy, false);
 		if (tile == null) {
@@ -931,7 +931,7 @@ public abstract class Perso extends Element {
 	public void tryJump(Pointf loc) {
 		int cx=(int) (loc.x / 16);
 		int cy=(int) (loc.y / 16);
-		Angle angleResult=EngineZildo.mapManagement.getAngleJump(angle, cx, cy);
+		Angle angleResult=EngineZildo.getMapManagement().getAngleJump(angle, cx, cy);
 		SpriteEntity pushed = null;
 		if (isZildo()) {
 			pushed = ((PersoZildo)this).getPushingSprite();
@@ -945,7 +945,7 @@ public abstract class Perso extends Element {
 			}
 			
 			Point landingPoint=angleResult.getLandingPoint().translate((int) x, (int) y);
-			if (!EngineZildo.mapManagement.collide(landingPoint.x, landingPoint.y, this)) {
+			if (!EngineZildo.getMapManagement().collide(landingPoint.x, landingPoint.y, this)) {
 				jump(angleResult);
 			}
 		}
@@ -960,7 +960,7 @@ public abstract class Perso extends Element {
 			// Si Zildo atterit dans l'eau, on le remet à son ancienne position avec un coeur de moins
 			int cx=(int) (x / 16);
 			int cy=(int) (y / 16);
-			int onMap=EngineZildo.mapManagement.getCurrentMap().readmap(cx,cy);
+			int onMap=EngineZildo.getMapManagement().getCurrentMap().readmap(cx,cy);
 			
 			boolean platformUnder = checkPlatformUnder();
 			

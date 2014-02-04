@@ -153,7 +153,7 @@ public class ScriptExecutor {
 			involved.clear();
 			// Focus on Zildo
 			SpriteEntity zildo=EngineZildo.persoManagement.getZildo();
-			ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
+			ClientEngineZildo.getMapDisplay().setFocusedEntity(zildo);
 			// Stop forced music
 			EngineZildo.soundManagement.setForceMusic(false);
 

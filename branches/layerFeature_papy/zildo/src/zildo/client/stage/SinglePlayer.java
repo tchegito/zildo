@@ -99,9 +99,9 @@ public class SinglePlayer implements GameStage {
         ClientEngineZildo.guiDisplay.clearMessages();
         
         // Initialize map
-        Area map=EngineZildo.mapManagement.getCurrentMap();
+        Area map=EngineZildo.getMapManagement().getCurrentMap();
         if (map != null) {
-        	ClientEngineZildo.mapDisplay.setCurrentMap(map);
+        	ClientEngineZildo.getMapDisplay().setCurrentMap(map);
         }
 
 
@@ -128,7 +128,7 @@ public class SinglePlayer implements GameStage {
 
         // Focus on zildo
         SpriteEntity zildo=EngineZildo.persoManagement.getZildo();
-        ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
+        ClientEngineZildo.getMapDisplay().setFocusedEntity(zildo);
         
         client.askStage(this);
     }

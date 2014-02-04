@@ -71,7 +71,7 @@ public class CreditStage implements GameStage {
 	@Override
 	public void launchGame() {
 		guiDisplay = ClientEngineZildo.guiDisplay;
-		mapDisplay = ClientEngineZildo.mapDisplay;
+		mapDisplay = ClientEngineZildo.getMapDisplay();
 		String wholeCredits = UIText.getCreditText("credits");
 		if (endScene) {
 			wholeCredits = UIText.getCreditText("endscene") + wholeCredits;

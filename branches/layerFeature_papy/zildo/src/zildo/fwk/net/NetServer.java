@@ -224,7 +224,7 @@ public class NetServer extends NetSend {
 	 * @param p_client
 	 */
 	private void sendMap(TransferObject p_client) {
-		MapManagement mapManagement=EngineZildo.mapManagement;
+		MapManagement mapManagement=EngineZildo.getMapManagement();
 		GetPacket getPacket=null;
 		Area area=mapManagement.getCurrentMap();
 		EasyBuffering buffer = new EasyBuffering();
@@ -271,7 +271,7 @@ public class NetServer extends NetSend {
     }
     
     private void sendMapChanges() {
-		Area map=EngineZildo.mapManagement.getCurrentMap();
+		Area map=EngineZildo.getMapManagement().getCurrentMap();
 		if (map.isModified()) {
 			// Map has changed, so we must diffuse to clients
 			Collection<Point> changes=map.getChanges();
