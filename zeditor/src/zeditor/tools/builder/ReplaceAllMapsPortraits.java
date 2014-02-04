@@ -61,7 +61,7 @@ public class ReplaceAllMapsPortraits extends AllMapProcessor {
 	@Override
 	public boolean run() {
 		boolean isReplacement = false;
-		Area area = EngineZildo.mapManagement.getCurrentMap();
+		Area area = EngineZildo.getMapManagement().getCurrentMap();
 		if (area.getName().equals("voleursm2.map")) {
 			return false;
 		}

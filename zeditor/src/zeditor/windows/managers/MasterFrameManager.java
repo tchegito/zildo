@@ -33,6 +33,7 @@ import zildo.monde.map.ChainingPoint;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
 
 /**
  * Classe de management de la fenêtre principale de Zeditor (MasterFrame.class)
@@ -158,7 +159,7 @@ public class MasterFrameManager {
 
 	public void updateTitle() {
 		StringBuilder sb = new StringBuilder("ZEditor - ");
-		Area map = EngineZildo.mapManagement.getCurrentMap();
+		Area map = EngineZildo.getMapManagement().getCurrentMap();
 		if (map != null) {
 			sb.append(map.getName());
 			sb.append(" - ");
@@ -210,11 +211,12 @@ public class MasterFrameManager {
 	}
 
 	public ChainingPoint[] getChainingPointsForCombo() {
-		if (EngineZildo.mapManagement == null) {
+		MapManagement map = EngineZildo.getMapManagement();
+		if (map == null) {
 			return new ChainingPoint[] {};
 		}
 		List<ChainingPoint> names = new ArrayList<ChainingPoint>();
-		List<ChainingPoint> points = EngineZildo.mapManagement.getCurrentMap()
+		List<ChainingPoint> points = map.getCurrentMap()
 				.getChainingPoints();
 		for (ChainingPoint chp : points) {
 			names.add(chp);

@@ -31,7 +31,7 @@ public class AllMapFinder extends AllMapProcessor {
 
 	@Override
 	protected boolean run() {
-		Area area = EngineZildo.mapManagement.getCurrentMap();
+		Area area = EngineZildo.getMapManagement().getCurrentMap();
 		
 		for (int y = 0 ; y < area.getDim_y() ; y++) {
 			for (int x = 0 ; x < area.getDim_x() ; x++) {

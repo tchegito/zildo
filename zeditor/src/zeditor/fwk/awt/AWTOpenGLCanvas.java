@@ -25,6 +25,7 @@ import zeditor.windows.subpanels.SelectionKind;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.IRenderable;
+import zildo.client.MapDisplay;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
@@ -40,7 +41,7 @@ import zildo.server.EngineZildo;
  * @version 1.0, 28.12.2005
  */
 public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
-    	
+
 	/**
 	 * 
 	 */
@@ -51,21 +52,21 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	private boolean initialize = false;
 
 	protected ZildoScrollablePanel panel;
-	
+
 	MasterFrameManager manager;
 
 	protected Point cursorLocation;
 	protected Point cursorSize;
-	protected Point startBlock;	// For copy operation
-	boolean zoom=false;	// FALSE=editor view / TRUE=in-game view
+	protected Point startBlock; // For copy operation
+	boolean zoom = false; // FALSE=editor view / TRUE=in-game view
 	protected ZEditMode mode = ZEditMode.NORMAL;
-	
+
 	// Booleans for directional key pressed
 	public boolean up;
 	public boolean down;
 	public boolean left;
 	public boolean right;
-	
+
 	protected final static Point defaultCursorSize = new Point(16, 16);
 
 	private final static Vector4f colChainingPoint = new Vector4f(0.8f, 0.7f, 0.8f, 1);
@@ -73,7 +74,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	private final static Vector4f colCursor = new Vector4f(1, 1, 1, 1);
 	private final static Vector4f colCursorFore = new Vector4f(1, 1, 0, 1);
 	private final static Vector3f colCursorText = new Vector3f(1, 0.2f, 0);
-	
+
 	// We have to communicate orders via boolean to this canvas
 	// because we can use OpenGL outside of the paint process
 	protected boolean changeMap = false;
@@ -81,15 +82,15 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 
 	private int sizeX;
 	private int sizeY;
-	
-	int mask=0;	// 0=back / 1=back2 / 2=fore
-	
+
+	int mask = 0; // 0=back / 1=back2 / 2=fore
+
 	private boolean needToResize = false;
 	private boolean needCapture = false;
 	private boolean blockPaint = false;
-	
+
 	private float alpha;
-	
+
 	public AWTOpenGLCanvas() throws LWJGLException {
 		super();
 	}
@@ -98,13 +99,11 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		super(pixel_format);
 	}
 
-	public AWTOpenGLCanvas(GraphicsDevice device, PixelFormat pixel_format)
-			throws LWJGLException {
+	public AWTOpenGLCanvas(GraphicsDevice device, PixelFormat pixel_format) throws LWJGLException {
 		super(device, pixel_format);
 	}
 
-	public AWTOpenGLCanvas(GraphicsDevice device, PixelFormat pixel_format,
-			Drawable drawable) throws LWJGLException {
+	public AWTOpenGLCanvas(GraphicsDevice device, PixelFormat pixel_format, Drawable drawable) throws LWJGLException {
 		super(device, pixel_format, drawable);
 	}
 
@@ -113,20 +112,17 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		setRenderer(renderable);
 	}
 
-	public AWTOpenGLCanvas(PixelFormat pixelFormat, IRenderable renderable)
-			throws LWJGLException {
+	public AWTOpenGLCanvas(PixelFormat pixelFormat, IRenderable renderable) throws LWJGLException {
 		super(pixelFormat);
 		setRenderer(renderable);
 	}
 
-	public AWTOpenGLCanvas(GraphicsDevice device, PixelFormat pixelFormat,
-			IRenderable renderable) throws LWJGLException {
+	public AWTOpenGLCanvas(GraphicsDevice device, PixelFormat pixelFormat, IRenderable renderable) throws LWJGLException {
 		super(device, pixelFormat);
 		setRenderer(renderable);
 	}
 
-	public AWTOpenGLCanvas(GraphicsDevice device, PixelFormat pixelFormat,
-			Drawable drawable, IRenderable renderable) throws LWJGLException {
+	public AWTOpenGLCanvas(GraphicsDevice device, PixelFormat pixelFormat, Drawable drawable, IRenderable renderable) throws LWJGLException {
 		super(device, pixelFormat, drawable);
 		setRenderer(renderable);
 	}
@@ -136,27 +132,25 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	}
 
 	public void setManager(MasterFrameManager p_manager) {
-		manager=p_manager;
+		manager = p_manager;
 	}
-	
+
 	@Override
 	public void paintGL() {
 		if (blockPaint) {
 			return;
 		}
 		if (changeMap) {
-			Area map = EngineZildo.mapManagement.getCurrentMap();
-			ClientEngineZildo.mapDisplay.setCurrentMap(map);
+			Area map = EngineZildo.getMapManagement().getCurrentMap();
+			ClientEngineZildo.getMapDisplay().setCurrentMap(map);
 			changeMap = false;
-			changeSprites=true;
+			changeSprites = true;
 		}
 		if (changeSprites) {
 			// And the sprites
 			EngineZildo.spriteManagement.updateSprites(true);
-			ClientEngineZildo.spriteDisplay
-					.setEntities(EngineZildo.spriteManagement
-							.getSpriteEntities(null));
-			changeSprites=false;
+			ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null));
+			changeSprites = false;
 		}
 		if (!initialize) {
 			initRenderThread();
@@ -179,7 +173,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 				}
 
 			}
-			
+
 			if (needCapture) {
 				blockPaint = true;
 				captureEntireMap();
@@ -189,84 +183,87 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			} else {
 				renderer.renderScene();
 			}
-			alpha+=0.04f;
-			float sin=(float) Math.sin(alpha);
-			
+			alpha += 0.04f;
+			float sin = (float) Math.sin(alpha);
+
 			// Draw chaining points
-			Point shift=panel.getPosition();
-			Area map=EngineZildo.mapManagement.getCurrentMap();
-			List<ChainingPoint> chaining=map.getChainingPoints();
-			Selection sel=manager.getSelection();
-			ChainingPoint selected=null;
-			if (sel != null && sel.getKind()==SelectionKind.CHAININGPOINT) {
-				selected=((ChainingPointSelection) sel).getElement();
+			Point shift = panel.getPosition();
+			Area map = EngineZildo.getMapManagement().getCurrentMap();
+			List<ChainingPoint> chaining = map.getChainingPoints();
+			Selection sel = manager.getSelection();
+			ChainingPoint selected = null;
+			if (sel != null && sel.getKind() == SelectionKind.CHAININGPOINT) {
+				selected = ((ChainingPointSelection) sel).getElement();
 			}
-			Vector4f col=colChainingPointSelected;
-			col.w=sin;
+			Vector4f col = colChainingPointSelected;
+			col.w = sin;
 			for (ChainingPoint ch : chaining) {
-				Zone p=ch.getZone(map);
-			    ortho.boxv(p.x1 - shift.x, p.y1 - shift.y, 
-			    		   p.x2,                p.y2, 0, colChainingPoint);
-				if (selected != null && selected ==ch) {
+				Zone p = ch.getZone(map);
+				int px1 = p.getX1();
+				int px2 = p.getX2();
+				int py1 = p.getY1();
+				int py2 = p.getY2();
+				ortho.boxv(px1 - shift.x, py1 - shift.y, px2, py2, 0, colChainingPoint);
+				if (selected != null && selected == ch) {
 					ortho.enableBlend();
-				    ortho.box(p.x1 - shift.x+1, p.y1 - shift.y+1, 
-				    		  p.x2-2,                p.y2-2, 0, col);
-				    ortho.disableBlend();
+					ortho.box(px1 - shift.x + 1, py1 - shift.y + 1, px2 - 2, py2 - 2, 0, col);
+					ortho.disableBlend();
 				}
 				// Draw coming angle
-				int centerX = (2*p.x1 + p.x2) / 2;
-				int centerY = (2*p.y1 + p.y2) / 2;
+				int centerX = (2 * px1 + px2) / 2;
+				int centerY = (2 * py1 + py2) / 2;
 				Angle coming = ch.getComingAngle();
 				if (coming != Angle.NULL) {
 					int arrowX = 1 + coming.coords.x * 32;
 					int arrowY = 1 + coming.coords.y * 32;
-					ortho.box(centerX - shift.x - 1, centerY - shift.y -1, arrowX + 1, arrowY + 1, 0, col);
+					ortho.box(centerX - shift.x - 1, centerY - shift.y - 1, arrowX + 1, arrowY + 1, 0, col);
 				} else {
 					// Angle is null => chaining point is a landing position
 					ortho.boxv(centerX - shift.x - 24, centerY - shift.y - 12, 48, 24, 0, col);
 				}
 			}
 
-			
 			// Draw rectangle
 			if (cursorLocation != null) {
-			    Point start = cursorLocation;
-			    Point size = cursorSize;
-			    Point camera = panel.getCameraTranslation();
-			    if (cursorSize == null) {
+				Point start = cursorLocation;
+				Point size = cursorSize;
+				Point camera = panel.getCameraTranslation();
+				if (cursorSize == null) {
 					size = defaultCursorSize;
-			    }
-			    if (mode == ZEditMode.COPY_DRAG) {
-					start=new Point(startBlock);
+				}
+				if (mode == ZEditMode.COPY_DRAG) {
+					start = new Point(startBlock);
 					start.translate(camera.x, camera.y);
-					size=new Point(cursorLocation);
-					size.x-=startBlock.x;
-					size.y-=startBlock.y;
+					size = new Point(cursorLocation);
+					size.x -= startBlock.x;
+					size.y -= startBlock.y;
 					size.translate(-camera.x, -camera.y);
-			    }
-			    ortho.boxv(start.x, start.y, size.x, size.y, 0, colCursor);
-			    if (mask > 0) {
-				    ortho.boxv(start.x + 2, start.y + 2, size.x - 4, size.y - 4, 0, colCursor);
-				    if (mask > 1) {
-					    ortho.boxv(start.x + 4, start.y + 4, size.x - 8, size.y - 8, 0, colCursorFore);
-				    }
-			    }
-			    switch (mode) {
-			    case TILE_REVERSE_EDIT:
-			    	ortho.drawText(start.x + 2, start.y + 6, "Rev", colCursorText);
-			    	break;
-			    case TILE_ROTATE_EDIT:
-			    	ortho.drawText(start.x + 2, start.y + 6, "Rot", colCursorText);
-			    	break;
-			    }
+				}
+				ortho.boxv(start.x, start.y, size.x, size.y, 0, colCursor);
+				if (mask > 0) {
+					ortho.boxv(start.x + 2, start.y + 2, size.x - 4, size.y - 4, 0, colCursor);
+					if (mask > 1) {
+						ortho.boxv(start.x + 4, start.y + 4, size.x - 8, size.y - 8, 0, colCursorFore);
+					}
+				}
+				switch (mode) {
+				case TILE_REVERSE_EDIT:
+					ortho.drawText(start.x + 2, start.y + 6, "Rev", colCursorText);
+					break;
+				case TILE_ROTATE_EDIT:
+					ortho.drawText(start.x + 2, start.y + 6, "Rot", colCursorText);
+					break;
+				default:
+					break;
+				}
 			}
 
 			// Draw map limits
-			int limitX=map.getDim_x()*16 - shift.x;
-			int limitY=map.getDim_y()*16 - shift.y;
+			int limitX = map.getDim_x() * 16 - shift.x;
+			int limitY = map.getDim_y() * 16 - shift.y;
 			ortho.box(limitX, 0, 1, sizeY, 0, colCursor);
 			ortho.box(0, limitY, sizeX, 1, 0, colCursor);
-			
+
 			swapBuffers();
 		} catch (LWJGLException lwjgle) {
 			// should not happen
@@ -320,16 +317,16 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		sizeY = height;
 		needToResize = true;
 	}
-	
+
 	public void setZoom(boolean p_zoom) {
 		if (zoom != p_zoom) {
 			panel.setZoom(p_zoom);
-			
+
 			zoom = p_zoom;
 			needToResize = true;
 		}
 	}
-	
+
 	public boolean isZoom() {
 		return zoom;
 	}
@@ -345,11 +342,9 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	 */
 	protected void initOpenGL() {
 		if (getContext() == null)
-			new LWJGLException(
-					"There is no context available that could be used to render something to it.");
+			new LWJGLException("There is no context available that could be used to render something to it.");
 		if (renderer == null)
-			new NullPointerException(
-					"No IRenderable instance found, can't be null. Need one to render a scene.");
+			new NullPointerException("No IRenderable instance found, can't be null. Need one to render a scene.");
 		renderer.initRenderer();
 	}
 
@@ -372,32 +367,33 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 
 	private void captureEntireMap() throws LWJGLException {
 		Ortho ortho = ClientEngineZildo.ortho;
-		Area area = EngineZildo.mapManagement.getCurrentMap();
+		Area area = EngineZildo.getMapManagement().getCurrentMap();
+		MapDisplay	mapDisplay = ClientEngineZildo.getMapDisplay();
 		int totalWidth = area.getDim_x() * 16;
 		int totalHeight = area.getDim_y() * 16;
 		ortho.setSize(sizeX, sizeY, false);
 		// Save the rendered scene
 		ByteBuffer bigOne = BufferUtils.createByteBuffer(totalWidth * totalHeight * 3);
 		int width = Zildo.screenX;
-		int height= Zildo.screenY;
+		int height = Zildo.screenY;
 		int y = 0;
 		int pas;
 		int addY = 0;
 		if (totalHeight < height) {
 			addY = height - totalHeight;
 		}
-		zildo.monde.util.Point camera = new zildo.monde.util.Point(ClientEngineZildo.mapDisplay.getCamera());
+		zildo.monde.util.Point camera = new zildo.monde.util.Point(mapDisplay.getCamera());
 		while (true) { // y
 			int x = 0;
-			while (true) {	// X
-				ClientEngineZildo.mapDisplay.setCamera(new zildo.monde.util.Point(x, y));
+			while (true) { // X
+				mapDisplay.setCamera(new zildo.monde.util.Point(x, y));
 				makeCurrent();
 				renderer.renderScene();
 				swapBuffers();
 				ByteBuffer temp = ClientEngineZildo.openGLGestion.capture();
 				int copyWidth = Math.min(width, totalWidth);
 				int copyHeight = Math.min(height, totalHeight);
-				GLUtils.copy(temp,  bigOne, copyWidth, copyHeight, totalWidth, x, y, addY, false);
+				GLUtils.copy(temp, bigOne, copyWidth, copyHeight, totalWidth, x, y, addY, false);
 				pas = Math.min(width, totalWidth - x - width);
 				if (pas <= 0) {
 					break;
@@ -411,9 +407,9 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			y += pas;
 		}
 		String name = area.getName().replace(".map", "");
-		GLUtils.saveBufferAsPNG("c:\\kikoo\\"+name, bigOne, totalWidth, totalHeight, false);
+		GLUtils.saveBufferAsPNG("c:\\kikoo\\" + name, bigOne, totalWidth, totalHeight, false);
 		// Reset camera and zoom
-		ClientEngineZildo.mapDisplay.setCamera(camera);
+		mapDisplay.setCamera(camera);
 		ortho.setSize(sizeX, sizeY, zoom);
 	}
 
@@ -421,20 +417,21 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	 * @return the mode
 	 */
 	public ZEditMode getMode() {
-	    return mode;
+		return mode;
 	}
 
 	/**
-	 * @param p_mode the mode to set
+	 * @param p_mode
+	 *            the mode to set
 	 */
 	public void setMode(ZEditMode p_mode) {
-	    mode = p_mode;
+		mode = p_mode;
 	}
-	
+
 	public void setChangeSprites(boolean p_value) {
-		changeSprites=p_value;
+		changeSprites = p_value;
 	}
-	
+
 	public void askCapture() {
 		needCapture = true;
 	}

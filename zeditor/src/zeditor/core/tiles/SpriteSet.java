@@ -65,8 +65,7 @@ public class SpriteSet extends ImageSet {
 	boolean perso;
 
 	final static ZPersoLibrary persoLibrary = new ZPersoLibrary();
-	final static List<SpriteDescription> spriteLibrary = ZSpriteLibrary
-			.getList();
+	final static List<SpriteDescription> spriteLibrary = ZSpriteLibrary.getList();
 
 	/**
 	 * Initialize the object
@@ -85,13 +84,8 @@ public class SpriteSet extends ImageSet {
 	}
 
 	public void initImage(List<SpriteDescription> p_bankDesc) {
-		currentTile = new BufferedImage(width, height,
-				BufferedImage.TYPE_INT_RGB);
+		currentTile = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		currentTile.getGraphics();
-
-		if (false) { // for test, now
-			p_bankDesc = prepareListFromBank(4);
-		}
 
 		displayListSprites(p_bankDesc);
 	}
@@ -133,7 +127,7 @@ public class SpriteSet extends ImageSet {
 				public boolean isDamageable() {
 					return false;
 				}
-				
+
 				@Override
 				public boolean isPushable() {
 					return false;
@@ -163,11 +157,10 @@ public class SpriteSet extends ImageSet {
 		int maxY = 0;
 		for (SpriteDescription sprite : p_list) {
 
-			SpriteBank bank = EngineZildo.spriteManagement.getSpriteBank(sprite
-					.getBank());
+			SpriteBank bank = EngineZildo.spriteManagement.getSpriteBank(sprite.getBank());
 			int nSpr = sprite.getNSpr();
 			if (bank.getName().equals("pnj2.spr")) {
-				//nSpr = nSpr - 128;
+				// nSpr = nSpr - 128;
 			}
 			SpriteModel model = bank.get_sprite(nSpr);
 
@@ -184,8 +177,7 @@ public class SpriteSet extends ImageSet {
 			drawPerso(posX, posY, bank, nSpr, false);
 
 			// Store this zone into the list
-			Zone z = new Zone(posX, posY, model.getTaille_x(),
-					model.getTaille_y());
+			Zone z = new Zone(posX, posY, model.getTaille_x(), model.getTaille_y());
 			selectables.add(z);
 			objectsFromZone.put(z, sprite);
 			posX += sizeX;
@@ -203,8 +195,7 @@ public class SpriteSet extends ImageSet {
 	 * @param nMotif
 	 * @param masque
 	 */
-	private void drawPerso(int i, int j, SpriteBank pnjBank, int nSpr,
-			boolean masque) {
+	private void drawPerso(int i, int j, SpriteBank pnjBank, int nSpr, boolean masque) {
 
 		SpriteModel model = pnjBank.get_sprite(nSpr);
 		short[] data = pnjBank.getSpriteGfx(nSpr);
@@ -217,8 +208,7 @@ public class SpriteSet extends ImageSet {
 				int a = data[offset];
 				if (a != 255) {
 					Vector4f col = GFXBasics.getColor(a);
-					gfx2d.setColor(new Color(col.x / 256, col.y / 256,
-							col.z / 256));
+					gfx2d.setColor(new Color(col.x / 256, col.y / 256, col.z / 256));
 					gfx2d.drawLine(x + i, y + j, x + i, y + j);
 				}
 			}
@@ -236,20 +226,21 @@ public class SpriteSet extends ImageSet {
 				if (perso) {
 					PersoDescription persoDesc = (PersoDescription) desc;
 					// Initialize a virtual character
-					Perso temp = EngineZildo.persoManagement.createPerso(
-							persoDesc, 0, 0, 0, "new", Angle.NORD.value);
+					Perso temp = EngineZildo.persoManagement.createPerso(persoDesc, 0, 0, 0, "new", Angle.NORD.value);
 					temp.setInfo(PersoInfo.NEUTRAL);
 					temp.initPersoFX();
 					switch (persoDesc) {
-						case PANNEAU:
-							temp.setName("pano");
-							break;
-						case PAPER_NOTE:
-							temp.setName("note");
-							break;
-						case GARDE_BOUCLIER:
-							temp.setName("garde");
-							break;
+					case PANNEAU:
+						temp.setName("pano");
+						break;
+					case PAPER_NOTE:
+						temp.setName("note");
+						break;
+					case GARDE_BOUCLIER:
+						temp.setName("garde");
+						break;
+					default:
+						break;
 					}
 					persoLibrary.initialize(temp);
 
@@ -306,9 +297,9 @@ public class SpriteSet extends ImageSet {
 				up2.reverse = Reverse.ALL;
 				return new SpriteSelection(Arrays.asList(p_elem, el, up1, up2));
 			case CARPET:
-				p_elem=(T) new SpriteEntity();
+				p_elem = (T) new SpriteEntity();
 				p_elem.setDesc(desc);
-				p_elem.repeatX=5;
+				p_elem.repeatX = 5;
 			default:
 			}
 		}

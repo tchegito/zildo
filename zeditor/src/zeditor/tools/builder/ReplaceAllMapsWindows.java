@@ -64,7 +64,7 @@ public class ReplaceAllMapsWindows extends AllMapProcessor {
 	@Override
 	public boolean run() {
 		boolean isReplacement = false;
-		Area area = EngineZildo.mapManagement.getCurrentMap();
+		Area area = EngineZildo.getMapManagement().getCurrentMap();
 		for (int y = 0; y < area.getDim_y(); y++) {
 			for (int x = 0; x < area.getDim_x(); x++) {
 				Case mapCase = area.get_mapcase(x, y + 4);

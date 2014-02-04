@@ -160,13 +160,13 @@ public class ZildoScrollablePanel extends JPanel {
 				val=0;
 			}
 			if (val >= 0 && val <= (getMaximum() - getVisibleAmount())) {
-				Point p=ClientEngineZildo.mapDisplay.getCamera();
+				Point p=ClientEngineZildo.getMapDisplay().getCamera();
 				if (orientation == JScrollBar.HORIZONTAL) {
 					p.x=val;
 				} else {
 					p.y=val;
 				}
-				ClientEngineZildo.mapDisplay.setCamera(p);
+				ClientEngineZildo.getMapDisplay().setCamera(p);
 				super.setValue(val);
 			}
 		}
@@ -186,7 +186,7 @@ public class ZildoScrollablePanel extends JPanel {
 	
 	public List<Zone> getChainingPoints() {
 		List<Zone> zones=new ArrayList<Zone>();
-		Area map=EngineZildo.mapManagement.getCurrentMap();
+		Area map=EngineZildo.getMapManagement().getCurrentMap();
 		List<ChainingPoint> chaining=map.getChainingPoints();
 		for (ChainingPoint c : chaining) {
 			Point p1=new Point(c.getPx(), c.getPy());

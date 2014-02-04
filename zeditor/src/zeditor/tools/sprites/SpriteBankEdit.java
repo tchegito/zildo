@@ -171,7 +171,7 @@ public class SpriteBankEdit extends SpriteBank {
     			 current = null;
     		 }
     	 }
-      	addSprFromImage(startSpr + i, z.x1, z.y1, z.x2, z.y2);
+      	addSprFromImage(startSpr + i, z.getX1(), z.getY1(), z.getX2(), z.getY2());
       	i++;
       }		
 	}
@@ -192,9 +192,7 @@ public class SpriteBankEdit extends SpriteBank {
 				width = getWidth(startX, startY, fontHeight);
 			}
 			int offsetFont = i;	// Default i-nth font
-			char c = GUIDisplay.transcoChar.charAt(i);
 			if (chars != null) {
-				c = chars.charAt(i);
 				offsetFont = GUIDisplay.transcoChar.indexOf(chars.charAt(i));
 			}
 			if (width > 1) {

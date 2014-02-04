@@ -193,7 +193,7 @@ public class PersoPanel extends JPanel {
 			dialogSwitch.setText(p_perso.getDialogSwitch());
 			object.setText("0");
 
-			MapDialog mapDialog = EngineZildo.mapManagement.getCurrentMap()
+			MapDialog mapDialog = EngineZildo.getMapManagement().getCurrentMap()
 					.getMapDialog();
 			behavior = mapDialog.getBehaviors().get(p_perso.getName());
 		}
@@ -227,7 +227,7 @@ public class PersoPanel extends JPanel {
 	 * behavior (spinner's position)
 	 */
 	private void updateDialog() {
-		MapDialog mapDialog = EngineZildo.mapManagement.getCurrentMap()
+		MapDialog mapDialog = EngineZildo.getMapManagement().getCurrentMap()
 				.getMapDialog();
 		int val = (Integer) spinner.getValue();
 		String dial = mapDialog.getSentence(behavior, val);
@@ -304,7 +304,7 @@ public class PersoPanel extends JPanel {
 						updatePersoText(txt);
 					} else if (comp == name) {
 						// Update character's behavior (indexed by name ... so if we change name !)
-						MapDialog dialogs = EngineZildo.mapManagement.getCurrentMap().getMapDialog();
+						MapDialog dialogs = EngineZildo.getMapManagement().getCurrentMap().getMapDialog();
 						Map<String, Behavior> behaves = dialogs.getBehaviors();
 						Behavior behave = behaves.get(currentPerso.getName());
 						if (behave != null) {
@@ -325,7 +325,7 @@ public class PersoPanel extends JPanel {
 		}
 
 		private void updatePersoText(String p_text) {
-			Area area = EngineZildo.mapManagement.getCurrentMap();
+			Area area = EngineZildo.getMapManagement().getCurrentMap();
 			MapDialog dialogs = area.getMapDialog();
 			if (behavior == null) {
 				behavior = new Behavior(name.getText());

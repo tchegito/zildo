@@ -97,7 +97,7 @@ public class AreaChecker {
 		new Point(0, 1), new Point(1, 1) };
 	
 	private void checkChainingPointsUncovered() {
-		MapManagement mapManagement = EngineZildo.mapManagement;
+		MapManagement mapManagement = EngineZildo.getMapManagement();
 		// Chaining points
 		String mess="";
 		final List<Case> errorCases = new ArrayList<Case>();
