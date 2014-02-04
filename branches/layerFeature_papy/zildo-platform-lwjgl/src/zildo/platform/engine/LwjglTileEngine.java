@@ -59,7 +59,7 @@ public class LwjglTileEngine extends TileEngine {
 				GL11.glColor3f(ambient.x, ambient.y, ambient.z);
 			}
 			
-			Point p = ClientEngineZildo.mapDisplay.getCamera();
+			Point p = ClientEngineZildo.getMapDisplay().getCamera();
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
 			GL11.glPushMatrix();

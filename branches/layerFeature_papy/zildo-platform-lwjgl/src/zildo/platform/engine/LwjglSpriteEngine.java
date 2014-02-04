@@ -20,9 +20,6 @@
 
 package zildo.platform.engine;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
@@ -32,10 +29,8 @@ import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TextureEngine;
-import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.SpriteModel;	
 import zildo.monde.sprites.SpriteStore;
-import zildo.monde.sprites.desc.Outfit;
-import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
 import zildo.server.SpriteManagement;
@@ -148,7 +143,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
 	                	float r = (float) (0.6 + 0.4 * Math.random());
 	                	GL11.glColor4f(r, 0, 0, 1);
 	                    GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	                	break;
+	                    break;
 	                	*/
 	                case FOCUSED:
 	                	GL11.glColor4f(1.0f, 1.0f, 1.0f, alpha / 255.0f);
@@ -251,63 +246,63 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		textureEngine.generateTexture();
 	}
 
-	/**
-     * Create a new texture from a given one, and replace colors as specified by
-     * the {@link Outfit} class.<br/>
-     * 
-     * @param p_originalTexture
-     * @param p_replacements
-     *            list of replacements : for a point (x,y), color-index <b>x</b>
-     *            become color-index <b>y</b>.
-     */
-	private void createTextureFromAnotherReplacement(int p_originalTexture,
-			Class<? extends Outfit> p_outfitClass) {
-
-		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
-
-		// 1) Store the color indexes once for all
-		textureEngine.getTextureImage(p_originalTexture);
-		Map<Integer, Integer> colorIndexes = new HashMap<Integer, Integer>();
-		int i, j;
-		for (j = 0; j < 256; j++) {
-			for (i = 0; i < 256; i++) {
-				Vector4f color = surfaceGfx.getPixel(i, j);
-				if (color.w != 0) {
-					colorIndexes
-							.put(j * 256 + i, surfaceGfx.getPalIndex(color));
-				}
-			}
-		}
-
-		// 2) Create all textures according to the outfits
-		boolean textureReady = true;
-		Outfit[] outfits = p_outfitClass.getEnumConstants();
-		for (Outfit outfit : outfits) {
-			Point[] replacements = outfit.getTransforms();
-			if (replacements.length == 0) {
-				continue; // No replacements
-			}
-			if (!textureReady) {
-				surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
-			}
-			surfaceGfx.StartRendering();
-			for (j = 0; j < 256; j++) {
-				for (i = 0; i < 256; i++) {
-					Integer palIndex = colorIndexes.get(j * 256 + i);
-					if (palIndex != null) {
-						for (Point p : replacements) {
-							if (palIndex == p.x) {
-								surfaceGfx.pset(i, j, p.y, null);
-							}
-						}
-					}
-				}
-			}
-
-			textureEngine.generateTexture();
-			textureReady = false;
-		}
-	}
+//	/**
+//     * Create a new texture from a given one, and replace colors as specified by
+//     * the {@link Outfit} class.<br/>
+//     * 
+//     * @param p_originalTexture
+//     * @param p_replacements
+//     *            list of replacements : for a point (x,y), color-index <b>x</b>
+//     *            become color-index <b>y</b>.
+//     */
+//	private void createTextureFromAnotherReplacement(int p_originalTexture,
+//			Class<? extends Outfit> p_outfitClass) {
+//
+//		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
+//
+//		// 1) Store the color indexes once for all
+//		textureEngine.getTextureImage(p_originalTexture);
+//		Map<Integer, Integer> colorIndexes = new HashMap<Integer, Integer>();
+//		int i, j;
+//		for (j = 0; j < 256; j++) {
+//			for (i = 0; i < 256; i++) {
+//				Vector4f color = surfaceGfx.getPixel(i, j);
+//				if (color.w != 0) {
+//					colorIndexes
+//							.put(j * 256 + i, surfaceGfx.getPalIndex(color));
+//				}
+//			}
+//		}
+//
+//		// 2) Create all textures according to the outfits
+//		boolean textureReady = true;
+//		Outfit[] outfits = p_outfitClass.getEnumConstants();
+//		for (Outfit outfit : outfits) {
+//			Point[] replacements = outfit.getTransforms();
+//			if (replacements.length == 0) {
+//				continue; // No replacements
+//			}
+//			if (!textureReady) {
+//				surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
+//			}
+//			surfaceGfx.StartRendering();
+//			for (j = 0; j < 256; j++) {
+//				for (i = 0; i < 256; i++) {
+//					Integer palIndex = colorIndexes.get(j * 256 + i);
+//					if (palIndex != null) {
+//						for (Point p : replacements) {
+//							if (palIndex == p.x) {
+//								surfaceGfx.pset(i, j, p.y, null);
+//							}
+//						}
+//					}
+//				}
+//			}
+//
+//			textureEngine.generateTexture();
+//			textureReady = false;
+//		}
+//	}
 	
 	@Override
 	public void saveTextures() {
