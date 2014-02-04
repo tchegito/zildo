@@ -15,13 +15,19 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import zeditor.core.Options;
 import zeditor.core.tiles.TileSet;
@@ -36,8 +42,6 @@ import zeditor.windows.subpanels.SpritePanel;
 import zeditor.windows.subpanels.StatsPanel;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
-
-import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -84,6 +88,8 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JPanel leftPanel;
 	private JPanel contentPanel;
 	private JButton newMapTool;
+	private JSpinner floorLevelTool;
+	private JToggleButton currentFloorTool;
 	private JToggleButton gridTool;
 	private JToggleButton collisionTool;
 	private JToggleButton unmappedTool;
@@ -109,12 +115,14 @@ public class MasterFrame extends javax.swing.JFrame {
 	private AbstractAction actionLoad;
 	private AbstractAction actionNewMapTool;
 	private AbstractAction actionCopyPasteTool;
+	private AbstractAction actionDisplayCurrentFloor;
 	private AbstractAction actionDisplayBackTileTool;
 	private AbstractAction actionDisplayForeTileTool;
 	private AbstractAction actionDisplayBackSpriteTool;
 	private AbstractAction actionDisplayForeSpriteTool;
 	private AbstractAction actionTileMask;
 	private AbstractAction actionSpriteGrid;
+	private ChangeListener listenerLevelDisplay;
 
 	private ZildoScrollablePanel zildoPanel;
 
@@ -130,10 +138,10 @@ public class MasterFrame extends javax.swing.JFrame {
 
 				}
 
-				Zildo.screenX = 640;
-				Zildo.screenY = 480;
-				Zildo.viewPortX=Zildo.screenX;
-				Zildo.viewPortY=Zildo.screenY + 26;
+				Zildo.screenX = 800;
+				Zildo.screenY = 600;
+				Zildo.viewPortX = Zildo.screenX;
+				Zildo.viewPortY = Zildo.screenY + 26;
 				MasterFrame inst = new MasterFrame();
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
@@ -155,8 +163,8 @@ public class MasterFrame extends javax.swing.JFrame {
 			getContentPane().setLayout(thisLayout);
 			this.setTitle("Zeditor");
 			this.setMinimumSize(new java.awt.Dimension(1010, 600));
-			this.setIconImage(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/map.png")).getImage());
+			this.setIconImage(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/map.png"))
+					.getImage());
 			getContentPane().add(getMasterPanel(), BorderLayout.CENTER);
 			getContentPane().add(getSystemPanel(), BorderLayout.SOUTH);
 			{
@@ -225,8 +233,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	public MasterFrameManager getManager() {
 		if (manager == null) {
 			manager = new MasterFrameManager(this);
-			manager.initialize(getSystemLabel(), getCaseInfoLabel(), getMasterPanel(),
-					zildoPanel.getZildoCanvas());
+			manager.initialize(getSystemLabel(), getCaseInfoLabel(), getMasterPanel(), zildoPanel.getZildoCanvas());
 		}
 		return manager;
 	}
@@ -326,13 +333,38 @@ public class MasterFrame extends javax.swing.JFrame {
 		return actionCopyPasteTool;
 	}
 
+	private ChangeListener getListenerLevelDisplay() {
+		if (listenerLevelDisplay == null) {
+			listenerLevelDisplay = new ChangeListener() {
+				
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					ClientEngineZildo.getMapDisplay().getLevelController().setCurrentLevel(((SpinnerNumberModel)((JSpinner)e.getSource()).getModel()).getNumber().intValue());
+					
+				}
+			};
+		}
+		return listenerLevelDisplay;
+	}
+	
+	private AbstractAction getActionCurrentFloor() {
+		if (actionDisplayCurrentFloor == null) {
+			actionDisplayCurrentFloor = new AbstractAction(null) {
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					ClientEngineZildo.getMapDisplay().getLevelController().toggleDisplaySubLevel();
+				}
+			};
+		}
+		return actionDisplayCurrentFloor;
+	}
+
 	private AbstractAction getActionDisplayBackTileTool() {
 		if (actionDisplayBackTileTool == null) {
 			actionDisplayBackTileTool = new AbstractAction(null) {
 				@Override
 				public void actionPerformed(ActionEvent evt) {
-					ClientEngineZildo.mapDisplay.foreBackController
-							.toggleDisplaySpecific(false);
+					ClientEngineZildo.getMapDisplay().getForeBackController().toggleDisplaySpecific(false);
 				}
 			};
 		}
@@ -344,8 +376,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			actionDisplayForeTileTool = new AbstractAction(null) {
 				@Override
 				public void actionPerformed(ActionEvent evt) {
-					ClientEngineZildo.mapDisplay.foreBackController
-							.toggleDisplaySpecific(true);
+					ClientEngineZildo.getMapDisplay().getForeBackController().toggleDisplaySpecific(true);
 				}
 			};
 		}
@@ -357,8 +388,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			actionDisplayBackSpriteTool = new AbstractAction("", null) {
 				@Override
 				public void actionPerformed(ActionEvent evt) {
-					ClientEngineZildo.spriteDisplay.foreBackController
-							.toggleDisplaySpecific(false);
+					ClientEngineZildo.spriteDisplay.foreBackController.toggleDisplaySpecific(false);
 				}
 			};
 		}
@@ -370,8 +400,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			actionDisplayForeSpriteTool = new AbstractAction("", null) {
 				@Override
 				public void actionPerformed(ActionEvent evt) {
-					ClientEngineZildo.spriteDisplay.foreBackController
-							.toggleDisplaySpecific(true);
+					ClientEngineZildo.spriteDisplay.foreBackController.toggleDisplaySpecific(true);
 				}
 			};
 		}
@@ -384,23 +413,25 @@ public class MasterFrame extends javax.swing.JFrame {
 				@Override
 				public void actionPerformed(ActionEvent evt) {
 					zildoPanel.getCanvas().switchTileLayer();
-					String imgName="mask";
+					String imgName = "mask";
 					switch (zildoPanel.getCanvas().getTileLayer()) {
 					case 1:
-						imgName="mask2";
+						imgName = "mask2";
 						break;
 					case 2:
-						imgName="mask3";
+						imgName = "mask3";
 						break;
 					}
-					getToggleTileMaskTool().setIcon(new ImageIcon(getClass().getClassLoader()
-							.getResource("zeditor/images/"+imgName+".png")));
+					getToggleTileMaskTool()
+							.setIcon(
+									new ImageIcon(getClass().getClassLoader().getResource(
+											"zeditor/images/" + imgName + ".png")));
 				}
 			};
 		}
 		return actionTileMask;
 	}
-	
+
 	private AbstractAction getActionSpriteGrid() {
 		if (actionSpriteGrid == null) {
 			actionSpriteGrid = new AbstractAction("", null) {
@@ -412,8 +443,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return actionSpriteGrid;
 	}
-	
-	
+
 	private AbstractAction getActionNewMapTool() {
 		if (actionNewMapTool == null) {
 			actionNewMapTool = new AbstractAction(null) {
@@ -457,8 +487,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JPanel getMasterPanel() {
 		if (masterPanel == null) {
 			masterPanel = new JPanel();
-			BoxLayout masterPanelLayout = new BoxLayout(masterPanel,
-					javax.swing.BoxLayout.Y_AXIS);
+			BoxLayout masterPanelLayout = new BoxLayout(masterPanel, javax.swing.BoxLayout.Y_AXIS);
 			masterPanel.setLayout(masterPanelLayout);
 			masterPanel.add(getToolBarContainer());
 			masterPanel.add(getContentPanel());
@@ -490,6 +519,9 @@ public class MasterFrame extends javax.swing.JFrame {
 			toolBar.add(getToggleTileMaskTool());
 			toolBar.add(getSpriteGridTool());
 			toolBar.add(new JToolBar.Separator());
+			toolBar.add(getFloorLevelDisplayTool());
+			toolBar.add(getToggleCurrentFloorOnlyDisplayTool());
+			toolBar.add(new JToolBar.Separator());
 			toolBar.add(getToggleBackDisplayTool());
 			toolBar.add(getToggleForeDisplayTool());
 			toolBar.add(getToggleBackSpriteDisplayTool());
@@ -504,10 +536,9 @@ public class MasterFrame extends javax.swing.JFrame {
 			unmappedTool = new JToggleButton();
 			unmappedTool.setToolTipText("Afficher les tuiles non mappées.");
 			unmappedTool.setAction(getActionUnmappedTool());
-			unmappedTool.setSelected(Boolean.parseBoolean(getManager()
-					.loadOption(Options.SHOW_TILES_UNMAPPED.getValue())));
-			unmappedTool.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/shading.png")));
+			unmappedTool.setSelected(Boolean.parseBoolean(getManager().loadOption(
+					Options.SHOW_TILES_UNMAPPED.getValue())));
+			unmappedTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/shading.png")));
 		}
 		return unmappedTool;
 	}
@@ -516,8 +547,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		if (gridTool == null) {
 			gridTool = new JToggleButton();
 			gridTool.setAction(getActionGridTool());
-			gridTool.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/text_columns.png")));
+			gridTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/text_columns.png")));
 		}
 		return gridTool;
 	}
@@ -526,8 +556,8 @@ public class MasterFrame extends javax.swing.JFrame {
 		if (collisionTool == null) {
 			collisionTool = new JToggleButton();
 			collisionTool.setAction(getActionCollisionTool());
-			collisionTool.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/footstep.png")));
+			collisionTool
+					.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/footstep.png")));
 		}
 		return collisionTool;
 	}
@@ -537,10 +567,34 @@ public class MasterFrame extends javax.swing.JFrame {
 			copyPasteTool = new JToggleButton();
 			copyPasteTool.setToolTipText("Copier une zone");
 			copyPasteTool.setAction(getActionCopyPasteTool());
-			copyPasteTool.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/copy.PNG")));
+			copyPasteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/copy.PNG")));
 		}
 		return copyPasteTool;
+	}
+
+	public JSpinner getFloorLevelDisplayTool() {
+		if (floorLevelTool == null) {
+			floorLevelTool = new JSpinner();
+			floorLevelTool.setToolTipText("Niveau à afficher");
+			SpinnerModel floorLevelModel = new SpinnerNumberModel(9, // default
+					0, // min
+					9, // max
+					1);// step
+			floorLevelTool.setModel(floorLevelModel);
+			floorLevelTool.addChangeListener(getListenerLevelDisplay());
+		}
+		return floorLevelTool;
+	}
+
+	public JToggleButton getToggleCurrentFloorOnlyDisplayTool() {
+		if (currentFloorTool == null) {
+			currentFloorTool = new JToggleButton();
+			currentFloorTool.setToolTipText("Afficher le niveau courant uniquement");
+			// currentFloorTool.setAction(getActionDisplayBackTileTool());
+			currentFloorTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/floor.PNG")));
+			currentFloorTool.setAction(getActionCurrentFloor());
+		}
+		return currentFloorTool;
 	}
 
 	public JToggleButton getToggleBackDisplayTool() {
@@ -548,8 +602,8 @@ public class MasterFrame extends javax.swing.JFrame {
 			backTileTool = new JToggleButton();
 			backTileTool.setToolTipText("Tiles d'arrière plan");
 			backTileTool.setAction(getActionDisplayBackTileTool());
-			backTileTool.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/backGround.PNG")));
+			backTileTool
+					.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/backGround.PNG")));
 		}
 		return backTileTool;
 	}
@@ -559,8 +613,8 @@ public class MasterFrame extends javax.swing.JFrame {
 			foreTileTool = new JToggleButton();
 			foreTileTool.setToolTipText("Tiles de premier plan");
 			foreTileTool.setAction(getActionDisplayForeTileTool());
-			foreTileTool.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/foreGround.PNG")));
+			foreTileTool
+					.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/foreGround.PNG")));
 		}
 		return foreTileTool;
 	}
@@ -570,8 +624,8 @@ public class MasterFrame extends javax.swing.JFrame {
 			backSpriteTool = new JToggleButton();
 			backSpriteTool.setToolTipText("Sprites d'arrière plan");
 			backSpriteTool.setAction(getActionDisplayBackSpriteTool());
-			backSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/backGroundSprite.PNG")));
+			backSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
+					"zeditor/images/backGroundSprite.PNG")));
 		}
 		return backSpriteTool;
 	}
@@ -581,8 +635,8 @@ public class MasterFrame extends javax.swing.JFrame {
 			foreSpriteTool = new JToggleButton();
 			foreSpriteTool.setToolTipText("Sprites de premier plan plan");
 			foreSpriteTool.setAction(getActionDisplayForeSpriteTool());
-			foreSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/foreGroundSprite.PNG")));
+			foreSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
+					"zeditor/images/foreGroundSprite.PNG")));
 		}
 		return foreSpriteTool;
 	}
@@ -592,8 +646,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			tileMaskTool = new JButton();
 			tileMaskTool.setToolTipText("Edition du masque");
 			tileMaskTool.setAction(getActionTileMask());
-			tileMaskTool.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/mask.png")));
+			tileMaskTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/mask.png")));
 		}
 		return tileMaskTool;
 	}
@@ -603,19 +656,17 @@ public class MasterFrame extends javax.swing.JFrame {
 			spriteGridTool = new JToggleButton();
 			spriteGridTool.setToolTipText("Sprite sur une grille de 8x8");
 			spriteGridTool.setAction(getActionSpriteGrid());
-			spriteGridTool.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/grid.png")));
+			spriteGridTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/grid.png")));
 		}
 		return spriteGridTool;
 	}
-	
+
 	public JButton getNewMapTool() {
 		if (newMapTool == null) {
 			newMapTool = new JButton();
 			newMapTool.setToolTipText("Nouvelle carte");
 			newMapTool.setAction(getActionNewMapTool());
-			newMapTool.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/page.png")));
+			newMapTool.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/page.png")));
 		}
 		return newMapTool;
 	}
@@ -623,8 +674,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JPanel getContentPanel() {
 		if (contentPanel == null) {
 			contentPanel = new JPanel();
-			BoxLayout contentPanelLayout = new BoxLayout(contentPanel,
-					javax.swing.BoxLayout.X_AXIS);
+			BoxLayout contentPanelLayout = new BoxLayout(contentPanel, javax.swing.BoxLayout.X_AXIS);
 			contentPanel.setLayout(contentPanelLayout);
 			contentPanel.add(getLeftPanel());
 			contentPanel.add(getRightPanel());
@@ -635,8 +685,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JPanel getLeftPanel() {
 		if (leftPanel == null) {
 			leftPanel = new JPanel();
-			BoxLayout leftPanelLayout = new BoxLayout(leftPanel,
-					javax.swing.BoxLayout.Y_AXIS);
+			BoxLayout leftPanelLayout = new BoxLayout(leftPanel, javax.swing.BoxLayout.Y_AXIS);
 			leftPanel.setLayout(leftPanelLayout);
 			leftPanel.setPreferredSize(new java.awt.Dimension(344, 487));
 			leftPanel.setSize(344, 539);
@@ -648,14 +697,12 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	public JTabbedPane getTabsPane() {
 		if (tabsPane == null) {
-			tabsPane = new JTabbedPane(JTabbedPane.TOP,
-					JTabbedPane.WRAP_TAB_LAYOUT);
+			tabsPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
 			tabsPane.addTab("Décors", null, getBackgroundPanel(), null);
 			tabsPane.addTab("Prefetch", null, getPrefetchPanel(), null);
 			tabsPane.addTab("Sprites", null, getSpritePanel(), null);
 			tabsPane.addTab("Personnages", null, getPersoPanel(), null);
-			tabsPane.addTab("Enchainements", null, getChainingPointPanel(),
-					null);
+			tabsPane.addTab("Enchainements", null, getChainingPointPanel(), null);
 			tabsPane.addTab("Stats", null, getStatsPanel(), null);
 			tabsPane.addTab("Scripts", null, getScriptPanel(), null);
 		}
@@ -746,14 +793,13 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return caseInfoLabel;
 	}
-	
-	
+
 	private JMenu getFileMenu() {
 		if (fileMenu == null) {
 			fileMenu = new JMenu();
 			fileMenu.setText("Fichier");
-			fileMenu.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/application_osx_terminal.png")));
+			fileMenu.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
+					"zeditor/images/application_osx_terminal.png")));
 			fileMenu.add(getNewItem());
 			fileMenu.add(getLoadItem());
 			fileMenu.add(getSaveItem());
@@ -769,8 +815,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			newItem = new JMenuItem();
 			newItem.setText("Nouveau");
 			newItem.setAction(getActionNew());
-			newItem.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/page_white.png")));
+			newItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/page_white.png")));
 		}
 		return newItem;
 	}
@@ -780,8 +825,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			loadItem = new JMenuItem();
 			loadItem.setText("Ouvrir");
 			loadItem.setAction(getActionLoad());
-			loadItem.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/folder.png")));
+			loadItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/folder.png")));
 		}
 		return loadItem;
 	}
@@ -791,8 +835,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			saveItem = new JMenuItem();
 			saveItem.setText("Enregistrer");
 			saveItem.setAction(getActionSave());
-			saveItem.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/disk.png")));
+			saveItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/disk.png")));
 		}
 		return saveItem;
 	}
@@ -802,8 +845,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			saveAsItem = new JMenuItem();
 			saveAsItem.setText("Enregistrer sous ...");
 			saveAsItem.setAction(getActionSaveAs());
-			saveAsItem.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/disk.png")));
+			saveAsItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/disk.png")));
 		}
 		return saveAsItem;
 	}
@@ -820,8 +862,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			exitItem = new JMenuItem();
 			exitItem.setText("Quitter");
 			exitItem.setAction(getActionExit());
-			exitItem.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/door.png")));
+			exitItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/door.png")));
 		}
 		return exitItem;
 	}
@@ -830,8 +871,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		if (parametersMenu == null) {
 			parametersMenu = new JMenu();
 			parametersMenu.setText("Paramètres");
-			parametersMenu.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/cog.png")));
+			parametersMenu.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/cog.png")));
 			parametersMenu.add(getOptionsItem());
 			parametersMenu.add(getReloadConfigItem());
 		}
@@ -843,8 +883,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			optionsItem = new JMenuItem();
 			optionsItem.setText("Options");
 			optionsItem.setAction(getActionOpenOptionsFrame());
-			optionsItem.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/wrench.png")));
+			optionsItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/wrench.png")));
 			optionsItem.setBounds(-53, 21, 74, 19);
 		}
 		return optionsItem;
@@ -855,8 +894,8 @@ public class MasterFrame extends javax.swing.JFrame {
 			reloadConfigItem = new JMenuItem();
 			reloadConfigItem.setText("Recharger la conf.");
 			reloadConfigItem.setAction(getActionReloadConfig());
-			reloadConfigItem.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/arrow_refresh.png")));
+			reloadConfigItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
+					"zeditor/images/arrow_refresh.png")));
 		}
 		return reloadConfigItem;
 	}
@@ -865,8 +904,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		if (miscMenu == null) {
 			miscMenu = new JMenu();
 			miscMenu.setText("Misc");
-			miscMenu.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/bug.png")));
+			miscMenu.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/bug.png")));
 			miscMenu.add(getSaveCollisionItem());
 			miscMenu.add(getBuilderItem());
 			miscMenu.add(getMapCaptureItem());
@@ -883,8 +921,8 @@ public class MasterFrame extends javax.swing.JFrame {
 					getBackgroundPanel().getTileSetPanel().saveCurrentTileCollision();
 				}
 			});
-			saveCollisionItem.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("zeditor/images/package.png")));
+			saveCollisionItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
+					"zeditor/images/package.png")));
 		}
 		return saveCollisionItem;
 	}
@@ -902,12 +940,11 @@ public class MasterFrame extends javax.swing.JFrame {
 					frame.setVisible(true);
 				}
 			});
-			builderMenuItem.setIcon(new ImageIcon(getClass()
-					.getClassLoader().getResource("zeditor/images/user.png")));
+			builderMenuItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/user.png")));
 		}
 		return builderMenuItem;
 	}
-	
+
 	private JMenuItem getMapCaptureItem() {
 		if (mapCaptureItem == null) {
 			mapCaptureItem = new JMenuItem();
@@ -918,11 +955,9 @@ public class MasterFrame extends javax.swing.JFrame {
 					zildoPanel.getZildoCanvas().askCapture();
 				}
 			});
-			mapCaptureItem.setIcon(new ImageIcon(getClass()
-					.getClassLoader().getResource("zeditor/images/user.png")));
+			mapCaptureItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource("zeditor/images/user.png")));
 		}
 		return mapCaptureItem;
 	}
-	
 
 }

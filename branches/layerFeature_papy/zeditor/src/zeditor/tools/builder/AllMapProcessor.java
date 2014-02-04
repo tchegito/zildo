@@ -73,7 +73,7 @@ public abstract class AllMapProcessor {
 		mapName = p_mapName;
 		
 		System.out.println("Processing "+mapName+"...");
-		MapManagement mapManagement=EngineZildo.mapManagement;
+		MapManagement mapManagement=EngineZildo.getMapManagement();
 
 		mapManagement.loadMap(mapName, false);
 

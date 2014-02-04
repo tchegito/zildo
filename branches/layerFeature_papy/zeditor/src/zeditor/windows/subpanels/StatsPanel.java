@@ -65,7 +65,7 @@ public class StatsPanel extends JPanel {
 	}
 
 	public void updateStats() {
-		Area map = EngineZildo.mapManagement.getCurrentMap();
+		Area map = EngineZildo.getMapManagement().getCurrentMap();
 		int nbPerso = EngineZildo.persoManagement.tab_perso.size();
 		int nbSpr = EngineZildo.spriteManagement.getSpriteEntities(null).size();
 		int nbChPoint = map.getChainingPoints().size();
@@ -100,7 +100,7 @@ public class StatsPanel extends JPanel {
 			Component comp = (Component) changeevent.getSource();
 			if (comp instanceof JSpinner) {
 				int val = (Integer) ((JSpinner) comp).getValue();
-				Area map = EngineZildo.mapManagement.getCurrentMap();
+				Area map = EngineZildo.getMapManagement().getCurrentMap();
 				if (comp == spinLimitX) {
 					map.setDim_x(val);
 				} else if (comp == spinLimitY) {
@@ -112,7 +112,7 @@ public class StatsPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent changeevent) {
 			Component comp = (Component) changeevent.getSource();
-			Area map = EngineZildo.mapManagement.getCurrentMap();
+			Area map = EngineZildo.getMapManagement().getCurrentMap();
 			if (comp == atmosphere) {
 				String val = (String) ((JComboBox) comp).getSelectedItem();
 				Atmosphere a = ZUtils.getField(val, Atmosphere.class);

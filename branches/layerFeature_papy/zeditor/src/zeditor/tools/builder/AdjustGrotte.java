@@ -36,7 +36,7 @@ public class AdjustGrotte extends AllMapProcessor {
 
 	@Override
 	public boolean run() {
-		MapManagement mapManagement = EngineZildo.mapManagement;
+		MapManagement mapManagement = EngineZildo.getMapManagement();
 		Area area = mapManagement.getCurrentMap();
 		boolean isReplacements = false;
 		for (int y = 0 ; y < area.getDim_y() ; y++) {

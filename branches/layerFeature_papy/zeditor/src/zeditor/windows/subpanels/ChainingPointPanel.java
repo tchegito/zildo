@@ -80,7 +80,7 @@ public class ChainingPointPanel extends JPanel {
 						ch.setMapname("nouveau");
 						ch.setComingAngle(Angle.NORD); // Default : north
 						ch.setTransitionAnim(FilterEffect.BLEND);
-						EngineZildo.mapManagement.getCurrentMap()
+						EngineZildo.getMapManagement().getCurrentMap()
 								.addChainingPoint(ch);
 						manager.updateChainingPoints(null);
 					}
@@ -172,7 +172,7 @@ public class ChainingPointPanel extends JPanel {
 					public void actionPerformed(ActionEvent e) {
 						// Remove chaining point and update list
 						ChainingPoint ch = getSelectedPoint();
-						EngineZildo.mapManagement.getCurrentMap()
+						EngineZildo.getMapManagement().getCurrentMap()
 								.removeChainingPoint(ch);
 						manager.updateChainingPoints(null);
 					}
@@ -186,7 +186,7 @@ public class ChainingPointPanel extends JPanel {
 						// Load the map referred from this chaining point
 						ChainingPoint ch = getSelectedPoint();
 						String mapName = ch.getMapname();
-						String currentMapName = EngineZildo.mapManagement
+						String currentMapName = EngineZildo.getMapManagement()
 								.getCurrentMap().getName();
 						int posSlash = currentMapName.indexOf(System
 								.getProperty("file.separator"));

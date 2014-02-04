@@ -42,7 +42,7 @@ public class AdjustRotations extends AllMapProcessor {
 	
 	@Override
 	public boolean run() {
-		MapManagement mapManagement = EngineZildo.mapManagement;
+		MapManagement mapManagement = EngineZildo.getMapManagement();
 		Area area = mapManagement.getCurrentMap();
 
 		isReplacements = false;

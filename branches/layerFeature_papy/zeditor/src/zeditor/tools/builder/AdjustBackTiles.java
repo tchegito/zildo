@@ -71,7 +71,7 @@ public class AdjustBackTiles extends AllMapProcessor {
 	
 	@Override
 	public boolean run() {
-		MapManagement mapManagement = EngineZildo.mapManagement;
+		MapManagement mapManagement = EngineZildo.getMapManagement();
 		Area area = mapManagement.getCurrentMap();
 		int emptyTile = area.getAtmosphere().getEmptyTile();
 		boolean isReplacements = false;

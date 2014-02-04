@@ -64,7 +64,7 @@ public class GuessChainingPointAngle {
 			
 			@Override
 			public boolean run() {
-				Area map = EngineZildo.mapManagement.getCurrentMap();
+				Area map = EngineZildo.getMapManagement().getCurrentMap();
 				dimX = map.getDim_x();
 				dimY = map.getDim_y();
 				for (ChainingPoint ch : map.getChainingPoints()) {
@@ -93,7 +93,7 @@ public class GuessChainingPointAngle {
 				if (!ch.isVertical()) {
 					// Ok we got an horizontal one => find the walkable side
 					int y = (ch.getPy() & 63) + 2;
-					if (!EngineZildo.mapManagement.collide(ch.getPx() * 16 + 8, y * 16 + 8, null)) {
+					if (!EngineZildo.getMapManagement().collide(ch.getPx() * 16 + 8, y * 16 + 8, null)) {
 						return Angle.SUD;
 					} else {
 						return Angle.NORD;
@@ -101,7 +101,7 @@ public class GuessChainingPointAngle {
 				} else {
 					// Vertical one
 					int x = (ch.getPx() & 63) + 2;
-					if (!EngineZildo.mapManagement.collide(x * 16 + 8, ch.getPy() * 16 + 8 , null)) {
+					if (!EngineZildo.getMapManagement().collide(x * 16 + 8, ch.getPy() * 16 + 8 , null)) {
 						return Angle.EST;
 					} else {
 						return Angle.OUEST;

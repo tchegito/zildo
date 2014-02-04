@@ -85,7 +85,7 @@ public class ExplorerFrameManager {
 		}
 
 		String name = fileChooser.getSelectedFile().getName();
-		EngineZildo.mapManagement.getCurrentMap().setName(name);
+		EngineZildo.getMapManagement().getCurrentMap().setName(name);
 		masterFrame.getManager().saveAs(name);
 	}
 }
