@@ -36,6 +36,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.util.Point;
+import zildo.monde.util.Point3D;
 import zildo.server.state.ClientState;
 
 public class CollideManagement {
@@ -107,15 +108,17 @@ public class CollideManagement {
             DamageType dmgType=collider.damageType;
             if (dmgType != null) {
             	if (dmgType.isCutting()) {
-	            	Set<Point> tilesCollided=getTilesCollided(collider);
+	            	//@FIXME FCA
+            		Set<Point3D> tilesCollided=getTilesCollided(collider);
 	    			// And ask 'map' object to react
-	            	for (Point location : tilesCollided) {
-	            		EngineZildo.mapManagement.getCurrentMap().attackTile(location);
+	            	for (Point3D location : tilesCollided) {
+	            		EngineZildo.getMapManagement().getCurrentMap().attackTile(location);
 	            	}
             	} else if (dmgType == DamageType.SMASH) {
-	            	Set<Point> tilesCollided=getTilesCollided(collider);
-            		for (Point location : tilesCollided) {
-            			EngineZildo.mapManagement.getCurrentMap().smashTile(location);
+	            	//@FIXME FCA
+            		Set<Point3D> tilesCollided=getTilesCollided(collider);
+            		for (Point3D location : tilesCollided) {
+            			EngineZildo.getMapManagement().getCurrentMap().smashTile(location);
             		}
             	}
             }
@@ -138,11 +141,12 @@ public class CollideManagement {
      * @param p_colli
      * @return List<Point>
      */
-    private Set<Point> getTilesCollided(Collision p_colli) {
-    	Set<Point> tilesLocation=new HashSet<Point>();
+    private Set<Point3D> getTilesCollided(Collision p_colli) {
+    	Set<Point3D> tilesLocation=new HashSet<Point3D>();
 		Perso perso=p_colli.perso;
     	if (p_colli.damageType==DamageType.CUTTING_FRONT && perso != null) {
-    		Point loc=new Point(perso.x, perso.y);
+    		//@FIXME FCA
+    		Point3D loc=new Point3D(perso.getX(), perso.getY(), perso.getL());
     		loc=loc.multiply(1/16f);
     		loc.add(perso.getAngle().coords);
     		tilesLocation.add(loc);
@@ -158,9 +162,10 @@ public class CollideManagement {
 	    	rect.multiply(1/16f);	// Adapt tile coordinate (one tile is 16x16 sized)
 	    	Point cornerTopLeft=rect.getCornerTopLeft();
 	    	Point cornerBottomRight=cornerTopLeft.translate(rect.getSize());
+	    	//@FIXME FCA point 3D
 	    	for (int j=cornerTopLeft.y;j<=cornerBottomRight.y;j++) {
 	    		for (int i=cornerTopLeft.x;i<=cornerBottomRight.x;i++) {
-	    			tilesLocation.add(new Point(i,j));
+	    			tilesLocation.add(new Point3D(i,j,0));
 	    		}
 	    	}
     	}

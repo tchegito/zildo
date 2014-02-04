@@ -36,7 +36,7 @@ public class PersoBat extends PersoShadowed {
 				if (distance < distanceSight) {
 					alerte = true;
 				} else {
-					Area area = EngineZildo.mapManagement.getCurrentMap();
+					Area area = EngineZildo.getMapManagement().getCurrentMap();
 					if (area.isAnAlertAtLocation(x, y)) {
 						currentSpeed = 1.4f + 0.2f * Math.random();
 						Point p = area.getAlertLocation();

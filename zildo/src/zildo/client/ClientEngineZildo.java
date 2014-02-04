@@ -20,7 +20,6 @@
 
 package zildo.client;
 
-
 import zildo.Zildo;
 import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.ScreenConstant;
@@ -58,9 +57,9 @@ public class ClientEngineZildo {
 	public static FilterCommand filterCommand;
 
 	public static SpriteDisplay spriteDisplay;
-	public static MapDisplay mapDisplay;
+	private static MapDisplay mapDisplay;
 	public static SoundEngine soundEngine;
-	
+
 	public static ScreenConstant screenConstant;
 	public static GUIDisplay guiDisplay;
 
@@ -72,32 +71,32 @@ public class ClientEngineZildo {
 	public static Client client;
 
 	private static ClientEvent askedEvent;
-	
 
-	
 	public static boolean editing;
-	
+
 	// Time left to unblock player's moves
 	private final int waitingScene;
 
-	public static Ambient ambient=new Ambient();
+	public static Ambient ambient = new Ambient();
 
 	/**
 	 * Should be called after {@link #initializeServer}
-	 * @param p_awt TRUE=ZEditor / FALSE=game
+	 * 
+	 * @param p_awt
+	 *            TRUE=ZEditor / FALSE=game
 	 */
 	public void initializeClient(boolean p_awt) {
 
-        editing = p_awt;
-       
-        Zildo.pdPlugin.init(editing);
+		editing = p_awt;
 
-        openGLGestion = Zildo.pdPlugin.openGLGestion;
-        openGLGestion.init();
-       
-        screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
-        
-        filterCommand = new FilterCommand();
+		Zildo.pdPlugin.init(editing);
+
+		openGLGestion = Zildo.pdPlugin.openGLGestion;
+		openGLGestion.init();
+
+		screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
+
+		filterCommand = new FilterCommand();
 		if (!p_awt) { // No sound in ZEditor
 			soundEngine = Zildo.pdPlugin.soundEngine;
 			soundPlay = new SoundPlay(soundEngine);
@@ -125,7 +124,7 @@ public class ClientEngineZildo {
 
 		// GUI
 		guiDisplay.setToDisplay_generalGui(false);
-		
+
 		ortho.setOrthographicProjection(false);
 
 	}
@@ -134,11 +133,12 @@ public class ClientEngineZildo {
 	 * Client intialization, with real network
 	 * 
 	 * @param p_openGLGestion
-	 * @param p_selfInitialization TRUE=initialize at construction / FALSE=will be initialized later
+	 * @param p_selfInitialization
+	 *            TRUE=initialize at construction / FALSE=will be initialized
+	 *            later
 	 * @param p_client
 	 */
-	public ClientEngineZildo(OpenGLGestion p_openGLGestion, boolean p_selfInitialization,
-			Client p_client) {
+	public ClientEngineZildo(OpenGLGestion p_openGLGestion, boolean p_selfInitialization, Client p_client) {
 		// Lien avec DirectX
 		ClientEngineZildo.openGLGestion = p_openGLGestion;
 
@@ -155,8 +155,8 @@ public class ClientEngineZildo {
 			return;
 		}
 
-		//long t1 = ZUtils.getTime();
-		
+		// long t1 = ZUtils.getTime();
+
 		// Focus camera on player
 		if (!p_editor && client.connected) {
 			if (mapDisplay.getCurrentMap() != null) {
@@ -167,54 +167,54 @@ public class ClientEngineZildo {
 			guiDisplay.manageDialog();
 		}
 
-		//long t2 = ZUtils.getTime();
+		// long t2 = ZUtils.getTime();
 
 		// Tile engine
-		Area[] maps=new Area[]{ mapDisplay.getCurrentMap(), mapDisplay.getPreviousMap()};
+		Area[] maps = new Area[] { mapDisplay.getCurrentMap(), mapDisplay.getPreviousMap() };
 		tileEngine.updateTiles(mapDisplay.getCamera(), maps, mapDisplay.getCompteur_animation());
-		
-		//long t3 = ZUtils.getTime();
+
+		// long t3 = ZUtils.getTime();
 
 		spriteDisplay.updateSpritesClient(mapDisplay.getCamera());
 
-		//long t4 = ZUtils.getTime();
+		// long t4 = ZUtils.getTime();
 
 		ClientEngineZildo.openGLGestion.beginScene();
 
 		// // DISPLAY ////
 
 		spriteEngine.initRendering();
-		
+
 		// Display BACKGROUND tiles
-		if (mapDisplay.foreBackController.isDisplayBackground()) {
-		    tileEngine.render(true);
+		if (mapDisplay.getForeBackController().isDisplayBackground()) {
+			tileEngine.render(true);
 		}
 
-		//long t5 = ZUtils.getTime();
+		// long t5 = ZUtils.getTime();
 
 		// Display BACKGROUND sprites
 		if (spriteDisplay.foreBackController.isDisplayBackground()) {
-		    spriteEngine.render(true);
+			spriteEngine.render(true);
 		}
-		
-		//long t6 = ZUtils.getTime();
+
+		// long t6 = ZUtils.getTime();
 
 		// Display FOREGROUND tiles
-		if (mapDisplay.foreBackController.isDisplayForeground()) {
-		    tileEngine.render(false);
+		if (mapDisplay.getForeBackController().isDisplayForeground()) {
+			tileEngine.render(false);
 		}
 
-		//long t7 = ZUtils.getTime();
+		// long t7 = ZUtils.getTime();
 
 		if (!p_editor) {
 			guiDisplay.draw(!client.connected);
 		}
 		// Display FOREGROUND sprites
 		if (spriteDisplay.foreBackController.isDisplayForeground()) {
-		    spriteEngine.render(false);
+			spriteEngine.render(false);
 		}
-		
-		//long t8 = ZUtils.getTime();
+
+		// long t8 = ZUtils.getTime();
 
 		if (Zildo.infoDebug && !p_editor) {
 			this.debug();
@@ -225,18 +225,15 @@ public class ClientEngineZildo {
 			boolean tabPressed = false;
 			KeyboardInstant kbInstant = client.getKbInstant();
 			if (kbInstant != null) {
-				tabPressed = (client.getKbInstant()
-						.isKeyDown(KeysConfiguration.PLAYERKEY_TAB));
+				tabPressed = (client.getKbInstant().isKeyDown(KeysConfiguration.PLAYERKEY_TAB));
 			}
 			guiDisplay.setToDisplay_scores(tabPressed);
 		}
 
+		// long t9 = ZUtils.getTime();
 
-		
-		//long t9 = ZUtils.getTime();
+		// System.out.println("t2 = "+(t2-t1)+"ms t3="+(t3-t2)+"ms t4="+(t4-t3)+"ms t5="+(t5-t4)+"ms t6="+(t6-t5)+"ms t7="+(t7-t6)+"ms t8="+(t8-t7)+"ms "+(t9-t8));
 
-		//System.out.println("t2 = "+(t2-t1)+"ms t3="+(t3-t2)+"ms t4="+(t4-t3)+"ms t5="+(t5-t4)+"ms t6="+(t6-t5)+"ms t7="+(t7-t6)+"ms t8="+(t8-t7)+"ms "+(t9-t8));
-		
 		openGLGestion.endScene();
 	}
 
@@ -250,77 +247,78 @@ public class ClientEngineZildo {
 			p_event.wait--;
 		} else {
 			switch (p_event.nature) {
-				case CHANGINGMAP_ASKED :
-					// Changing map : 1/3 we launch the fade out
-					retEvent.effect = p_event.effect; //FilterEffect.BLEND;
-				case FADE_OUT :
-					retEvent.nature = ClientEventNature.FADING_OUT;
-					guiDisplay.fadeOut(retEvent.effect);
-					break;
-				case FADING_OUT :
-					if (guiDisplay.isFadeOver()) {
-						retEvent.nature = ClientEventNature.FADEOUT_OVER;
-					} else {
-						circleOnZildo();
-					}
-					break;
-				case CLEAR:
-					// Reset fade, hide Zildo and kill the current map
-					filterCommand.fadeEnd();
-            		EngineZildo.mapManagement.deleteCurrentMap();
-            		EngineZildo.persoManagement.getZildo().setX(-100);
-            		ClientEngineZildo.tileEngine.cleanUp();
-					break;
-				case CHANGINGMAP_LOADED :
-					// Changing map : 2/3 we load the new map and launch the
-					// fade in
+			case CHANGINGMAP_ASKED:
+				// Changing map : 1/3 we launch the fade out
+				retEvent.effect = p_event.effect; // FilterEffect.BLEND;
+			case FADE_OUT:
+				retEvent.nature = ClientEventNature.FADING_OUT;
+				guiDisplay.fadeOut(retEvent.effect);
+				break;
+			case FADING_OUT:
+				if (guiDisplay.isFadeOver()) {
+					retEvent.nature = ClientEventNature.FADEOUT_OVER;
+				} else {
+					circleOnZildo();
+				}
+				break;
+			case CLEAR:
+				// Reset fade, hide Zildo and kill the current map
+				filterCommand.fadeEnd();
+				EngineZildo.getMapManagement().deleteCurrentMap();
+				EngineZildo.persoManagement.getZildo().setX(-100);
+				ClientEngineZildo.tileEngine.cleanUp();
+				break;
+			case CHANGINGMAP_LOADED:
+				// Changing map : 2/3 we load the new map and launch the
+				// fade in
 
-				case FADE_IN :
-					retEvent.nature = ClientEventNature.FADING_IN;
-					guiDisplay.fadeIn(retEvent.effect);
+			case FADE_IN:
+				retEvent.nature = ClientEventNature.FADING_IN;
+				guiDisplay.fadeIn(retEvent.effect);
 
+				break;
+			case FADING_IN:
+				if (guiDisplay.isFadeOver()) {
+					// Changing map : 3/3 we unblock the player
+					filterCommand.active(retEvent.effect.getFilterClass()[0], false, null);
+					filterCommand.active(BilinearFilter.class, true, null);
+					retEvent.nature = ClientEventNature.NOEVENT;
+					retEvent.mapChange = false;
+				} else {
+					// Call Circle filter to focus on Zildo
+					circleOnZildo();
+				}
+				break;
+			case CHANGINGMAP_SCROLL_ASKED:
+				retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP;
+				displayGUI = false;
+				break;
+			case CHANGINGMAP_SCROLL_START:
+				if (mapDisplay.getTargetCamera() == null) {
+					mapDisplay.centerCamera();
+					mapDisplay.shiftForMapScroll(p_event.angle);
 
-					break;
-				case FADING_IN :
-					if (guiDisplay.isFadeOver()) {
-						// Changing map : 3/3 we unblock the player
-						filterCommand.active(retEvent.effect.getFilterClass()[0], false, null);
-						filterCommand.active(BilinearFilter.class, true, null);
-						retEvent.nature = ClientEventNature.NOEVENT;
-						retEvent.mapChange = false;
-					} else {
-						// Call Circle filter to focus on Zildo
-						circleOnZildo();
-					}
-					break;
-				case CHANGINGMAP_SCROLL_ASKED :
-					retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP;
-					displayGUI = false;
-					break;
-				case CHANGINGMAP_SCROLL_START :
-					if (mapDisplay.getTargetCamera() == null) {
-						mapDisplay.centerCamera();
-						mapDisplay.shiftForMapScroll(p_event.angle);
-
-						retEvent.nature = ClientEventNature.CHANGINGMAP_WAITSCRIPT;
-					}
-					displayGUI = false;
-					break;
-				case CHANGINGMAP_SCROLL :
-					displayGUI = false;
-					if (!mapDisplay.isScrolling()) {
-						retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLLOVER;
-						// Show GUI sprites back
-						displayGUI = true;
-						//mapDisplay.setPreviousMap(null);
-					}
-					break;
-				case NOEVENT:
-				    if (askedEvent != null) {
+					retEvent.nature = ClientEventNature.CHANGINGMAP_WAITSCRIPT;
+				}
+				displayGUI = false;
+				break;
+			case CHANGINGMAP_SCROLL:
+				displayGUI = false;
+				if (!mapDisplay.isScrolling()) {
+					retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLLOVER;
+					// Show GUI sprites back
+					displayGUI = true;
+					// mapDisplay.setPreviousMap(null);
+				}
+				break;
+			case NOEVENT:
+				if (askedEvent != null) {
 					retEvent.nature = askedEvent.nature;
 					askedEvent = null;
-				    }
-				    break;
+				}
+				break;
+			default:
+				break;
 			}
 		}
 		// Remove GUI when scripting
@@ -334,10 +332,10 @@ public class ClientEngineZildo {
 	 */
 	private void circleOnZildo() {
 		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-		Point zildoPos=zildo.getCenteredScreenPosition();
-		Zildo.pdPlugin.getFilter(CircleFilter.class).setCenter(zildoPos.x, zildoPos.y);		
+		Point zildoPos = zildo.getCenteredScreenPosition();
+		Zildo.pdPlugin.getFilter(CircleFilter.class).setCenter(zildoPos.x, zildoPos.y);
 	}
-	
+
 	public static void cleanUp() {
 		filterCommand.cleanUp();
 		pixelShaders.cleanUp();
@@ -355,8 +353,7 @@ public class ClientEngineZildo {
 		if (zildo == null) {
 			return;
 		}
-		ortho.drawText(1, 80, "zildo: " + zildo.x, new Vector3f(1.0f, 0.0f,
-				1.0f));
+		ortho.drawText(1, 80, "zildo: " + zildo.x, new Vector3f(1.0f, 0.0f, 1.0f));
 		ortho.drawText(43, 86, "" + zildo.y, new Vector3f(1.0f, 0.0f, 1.0f));
 
 		// Debug collision
@@ -372,13 +369,9 @@ public class ClientEngineZildo {
 						color = 20;
 					}
 					if (c.size == null) {
-						ortho
-								.box(c.cx - rayon - camera.x, c.cy - rayon
-										- camera.y, rayon * 2, rayon * 2, 0,
-										alphaColor);
+						ortho.box(c.cx - rayon - camera.x, c.cy - rayon - camera.y, rayon * 2, rayon * 2, 0, alphaColor);
 					} else {
-						Point center = new Point(c.cx - camera.x, c.cy
-								- camera.y);
+						Point center = new Point(c.cx - camera.x, c.cy - camera.y);
 						Rectangle rect = new Rectangle(center, c.size);
 						ortho.box(rect, color, null);
 					}
@@ -398,14 +391,10 @@ public class ClientEngineZildo {
 					int px = x * 16 - camera.x % 16;
 					int py = y * 16 - camera.y % 16;
 					if (cy < 64 && cx < 64) {
-						Case c = EngineZildo.mapManagement.getCurrentMap()
-								.get_mapcase(cx, cy + 4);
-						int onmap = EngineZildo.mapManagement.getCurrentMap()
-								.readmap(cx, cy);
-						ortho.drawText(px, py + 4, "" + c.getZ(), new Vector3f(
-								0, 1, 0));
-						ortho.drawText(px, py, "" + onmap,
-								new Vector3f(1, 0, 0));
+						Case c = EngineZildo.getMapManagement().getCurrentMap().get_mapcase(cx, cy + 4);
+						int onmap = EngineZildo.getMapManagement().getCurrentMap().readmap(cx, cy);
+						ortho.drawText(px, py + 4, "" + c.getZ(), new Vector3f(0, 1, 0));
+						ortho.drawText(px, py, "" + onmap, new Vector3f(1, 0, 0));
 					}
 				}
 			}
@@ -433,9 +422,16 @@ public class ClientEngineZildo {
 	public void setOpenGLGestion(OpenGLGestion p_openGLGestion) {
 		openGLGestion = p_openGLGestion;
 	}
-	
+
 	public static void askEvent(ClientEventNature p_nature) {
-	    askedEvent = new ClientEvent(p_nature);
+		askedEvent = new ClientEvent(p_nature);
+	}
+
+	/**
+	 * @return the mapDisplay
+	 */
+	public static MapDisplay getMapDisplay() {
+		return mapDisplay;
 	}
 
 }

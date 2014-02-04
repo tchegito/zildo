@@ -84,8 +84,8 @@ public class PersoVolant extends PersoNJ {
 				Point grabber = grabPoint.get(getDesc());
 				if (grabber == null) {
 					Zone sprZone = getZone();
-					grabber = new Point((sprZone.x2 + sprZone.x1) / 2,
-							(sprZone.y2 + sprZone.y1) / 2);
+					grabber = new Point((sprZone.getX2() + sprZone.getX1()) / 2,
+							(sprZone.getY2() + sprZone.getY1()) / 2);
 				}
 				e.x = this.x + grabber.x;
 				e.y = this.y + grabber.y;

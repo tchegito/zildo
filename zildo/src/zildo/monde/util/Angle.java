@@ -138,7 +138,7 @@ public enum Angle {
 		int a=Integer.signum(dx);
 		int b=Integer.signum(dy);
 		for (Angle angle : Angle.values()) {
-			if (angle.coords.x == a && angle.coords.y == b) {
+			if (angle.coords.getX() == a && angle.coords.getY() == b) {
 				return angle;
 			}
 		}
@@ -149,7 +149,7 @@ public enum Angle {
 		if (ref == null) {
 			return false;
 		}
-		return ((component.coords.x == ref.coords.x && ref.coords.x != 0) ||
-				(component.coords.y == ref.coords.y && ref.coords.y != 0));
+		return ((component.coords.getX() == ref.coords.getX() && ref.coords.getX() != 0) ||
+				(component.coords.getY() == ref.coords.getY() && ref.coords.getY() != 0));
 	}
 }

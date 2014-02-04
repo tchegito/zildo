@@ -34,14 +34,12 @@ public class Point {
     }
 
     public Point(float x, float y) {
-    	this.x = (int)x;
-    	this.y = (int)y;
+		this((int) x, (int) y);
     }
     
     // Copy constructor
     public Point(Point p) {
-        this.x = p.x;
-        this.y = p.y;
+		this(p.x, p.y);
     }
     
     public int getX() {
@@ -60,31 +58,40 @@ public class Point {
         this.y = y;
     }
 
-    public void add(Point p_point) {
-    	add(p_point.x, p_point.y);
-    }
-    
-    public void add(int p_xPlus, int p_yPlus) {
-        this.x += p_xPlus;
-        this.y += p_yPlus;
-    }
-
-    public Point translate(int addX, int addY) {
-        return new Point(x + addX, y + addY);
-    }
-    
-    public Point translate(Point p_pointAdd) {
-        return translate(p_pointAdd.x, p_pointAdd.y);
-    }
-
-    public Point multiply(float factor) {
-    	return new Point(x*factor, y*factor);
-    }
-    
-    @Override
+	@Override
 	public String toString() {
-    	return "("+x+", "+y+")";
+		return "(" + x + ", " + y + ")";
     }
+    
+	/**
+	 * Returns TRUE if given point have same coordinates as current one.
+	 */
+	@Override
+	public boolean equals(Object p_other) {
+		if (!p_other.getClass().equals(Point.class)) {
+			return false;
+		}
+		Point p = (Point) p_other;
+		return p.x == x && p.y == y;
+    }
+
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash = hash * 31 + x;
+		hash = hash * 31 + y;
+		return hash;
+    }
+    
+	public static Point fromString(String p_text) {
+		String[] coords = p_text.split(",");
+			return new Point(Integer.valueOf(coords[0]),
+					Integer.valueOf(coords[1]));
+    }
+
+    
+	 // @FIXME McFlac Must be move in utility class ?
+	 
     
     public static Point middle(Point a, Point b) {
     	return middle(a.x, a.y, b.x, b.y);
@@ -111,27 +118,24 @@ public class Point {
     	return new Pointf(ax, ay).distance(bx, by);
     }
     
-    /**
-     * Returns TRUE if given point have same coordinates as current one.
-     */
-    @Override
-	public boolean equals(Object p_other) {
-		if (!p_other.getClass().equals(Point.class)) {
-    		return false;
+	public void add(Point p_point) {
+		add(p_point.x, p_point.y);
+	}
+
+	public void add(int p_xPlus, int p_yPlus) {
+		this.x += p_xPlus;
+		this.y += p_yPlus;
     	}
-    	Point p=(Point) p_other;
-    	return p.x == x && p.y == y;
+
+	public Point translate(int addX, int addY) {
+		return new Point(x + addX, y + addY);
     }
     
-    @Override
-    public int hashCode() {
-    	int hash = 17;
-    	hash = hash*31 + x;
-    	hash = hash*31 + y;
-    	return hash;
+	public Point translate(Point p_pointAdd) {
+		return translate(p_pointAdd.x, p_pointAdd.y);
     }
-    public static Point fromString(String p_text) {
-    	String[] coords=p_text.split(",");
-    	return new Point(Integer.valueOf(coords[0]), Integer.valueOf(coords[1]));
+
+	public Point multiply(float factor) {
+		return new Point(x * factor, y * factor);
     }
 }

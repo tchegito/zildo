@@ -70,7 +70,7 @@ public class PersoFireThing extends PersoNJ {
 			float xx=x + (float) (speed * Math.cos(direction));
 			float yy=keepy + (float) (speed * Math.sin(direction));
 			pos = new Pointf(xx, yy);
-			if (EngineZildo.mapManagement.collide((int) xx, (int) yy, this)) {
+			if (EngineZildo.getMapManagement().collide((int) xx, (int) yy, this)) {
 				direction+=Math.PI/2;
 				pos.x = x;
 				pos.y = keepy;

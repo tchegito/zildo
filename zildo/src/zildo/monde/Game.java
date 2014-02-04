@@ -124,7 +124,7 @@ public class Game implements EasySerializable {
 		}
 		
         // 4: map (since 1.096)
-        Area area = EngineZildo.mapManagement.getCurrentMap();
+		Area area = EngineZildo.getMapManagement().getCurrentMap();
         p_buffer.put(area.getName());
         p_buffer.put((int) zildo.getX());
         p_buffer.put((int) zildo.getY());
@@ -133,11 +133,11 @@ public class Game implements EasySerializable {
         p_buffer.put(getTimeSpent());
         
         // 6: map start location
-        Point loc = EngineZildo.mapManagement.getStartLocation();
+		Point loc = EngineZildo.getMapManagement().getStartLocation();
         if (loc == null) {	// When zildo has been placed by script (ex: intro)
         	loc = new Point(zildo.getX(), zildo.getY());
         }
-        Angle a = EngineZildo.mapManagement.getStartAngle();
+		Angle a = EngineZildo.getMapManagement().getStartAngle();
         if (a == null) {
         	a = Angle.SUD;
         }
@@ -237,8 +237,8 @@ public class Game implements EasySerializable {
             	loc = new Point(p_buffer.readInt(), p_buffer.readInt());
             	a = Angle.fromInt(p_buffer.readByte());
             }
-            EngineZildo.mapManagement.setStartLocation(loc);
-            EngineZildo.mapManagement.setStartAngle(a);
+			EngineZildo.getMapManagement().setStartLocation(loc);
+			EngineZildo.getMapManagement().setStartAngle(a);
             
             // 7: variables
             while (!p_buffer.eof()) {

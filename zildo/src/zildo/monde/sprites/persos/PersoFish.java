@@ -106,7 +106,7 @@ public class PersoFish extends PersoShadowed {
 	
 	@Override
 	public void beingMoved() {
-		TileNature nature = EngineZildo.mapManagement.getCurrentMap().getCaseNature((int) x / 16, (int) y / 16);
+		TileNature nature = EngineZildo.getMapManagement().getCurrentMap().getCaseNature((int) x / 16, (int) y / 16);
 		if (nature == TileNature.WATER) {
 			underWater = true;
 			shadow.setVisible(false);

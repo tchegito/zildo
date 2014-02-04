@@ -31,6 +31,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -39,6 +40,7 @@ import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Point3D;
 import zildo.monde.util.Pointf;
 import zildo.resource.Constantes;
 import zildo.resource.KeysConfiguration;
@@ -405,7 +407,7 @@ public class PlayerManagement {
 						if (persoToTalk.getDesc().isTakable()) {
 							// Check that any obstacle isn't on the way
 							Point middle = Point.middle((int) heros.x, (int) heros.y, locX, locY);
-							if (!EngineZildo.mapManagement.collideTile(middle.x, middle.y, false, new Point(2, 2), persoToTalk)) {
+							if (!EngineZildo.getMapManagement().collideTile(middle.x, middle.y, false, new Point(2, 2), persoToTalk)) {
 								heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, ElementDescription.HEN, persoToTalk);
 							}
 						} else if (persoToTalk.getDialoguingWith() == null) {
@@ -414,17 +416,37 @@ public class PlayerManagement {
 							cy=(int) persoToTalk.getY();
 							cestbon=false;
 							switch (heros.getAngle()) {
-								case NORD:if (cy<heros.getY()) cestbon=true;break;
-								case EST:if (cx>heros.getX()) cestbon=true;break;
-								case SUD:if (cy>heros.getY()) cestbon=true;break;
-								case OUEST:if (cx<heros.getX()) cestbon=true;break;
+							case NORD:
+								if (cy < heros.getY())
+									cestbon = true;
+								break;
+							case EST:
+								if (cx > heros.getX())
+									cestbon = true;
+								break;
+							case SUD:
+								if (cy > heros.getY())
+									cestbon = true;
+								break;
+							case OUEST:
+								if (cx < heros.getX())
+									cestbon = true;
+								break;
+							default:
+								break;
 							}
 							if (cestbon) {
 								// On change l'angle du perso
 								if ( Math.abs(cx-heros.getX())>(Math.abs(cy-heros.getY())*0.7f) ) {
-									if (cx>heros.getX()) persoangle=Angle.OUEST; else persoangle=Angle.EST;
+									if (cx > heros.getX())
+										persoangle = Angle.OUEST;
+									else
+										persoangle = Angle.EST;
 								} else {
-									if (cy>heros.getY()) persoangle=Angle.NORD; else persoangle=Angle.SUD;
+									if (cy > heros.getY())
+										persoangle = Angle.NORD;
+									else
+										persoangle = Angle.SUD;
 								}
 								persoToTalk.setAngle(persoangle);
 		
@@ -451,7 +473,7 @@ public class PlayerManagement {
 							final int add_angley[]={-1,0,1,0};
 							int newx=((int)heros.x+6*add_anglex[heros.getAngle().value]) / 16;
 							int newy=((int)heros.y+4*add_angley[heros.getAngle().value]) / 16;
-							Area map=EngineZildo.mapManagement.getCurrentMap();
+							Area map = EngineZildo.getMapManagement().getCurrentMap();
 							int on_map=map.readmap(newx,newy);
 							ElementDescription objDesc=null;
 							if (pickableTiles.contains(on_map)) {
@@ -477,16 +499,18 @@ public class PlayerManagement {
 								}
 	                            if (objDesc != null) {
 	                                heros.takeSomething(newx * 16 + 8, newy * 16 + 14, objDesc, null);
-	                                map.takeSomethingOnTile(new Point(newx, newy), false, heros);
+									// @FIXME FCA
+									map.takeSomethingOnTile(new Point3D(newx, newy, 0), false, heros);
 	                            }
 							} else if (Tile.isClosedChest(on_map) && heros.getAngle()==Angle.NORD) {
 								//Zildo a trouvé un coffre ! C'est pas formidable ?
 								EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
 								heros.setAttente(60);
-                                map.takeSomethingOnTile(new Point(newx, newy), false, heros);
+								// @FIXME FCA
+								map.takeSomethingOnTile(new Point3D(newx, newy, 0), false, heros);
 								// Mark this event : chest opened
 								EngineZildo.scriptManagement.openChest(map.getName(), new Point(newx, newy));
-							} else if (on_map >= 0 && !EngineZildo.mapManagement.isWalkable(on_map)) {
+							} else if (on_map >= 0 && !EngineZildo.getMapManagement().isWalkable(on_map)) {
 								heros.setMouvement(MouvementZildo.TIRE);
 							}
 						}

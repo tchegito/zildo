@@ -38,6 +38,7 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Point3D;
 import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
@@ -48,7 +49,7 @@ public class TriggerElement extends AnyElement {
 	String mover;
 	int numSentence;
 	Point location;
-	Point tileLocation;
+	Point3D tileLocation;
 	int radius; // For location
 	boolean not;	// Use for inversion of inventory posess
 	Zone region; // Unimplemented yet
@@ -113,7 +114,8 @@ public class TriggerElement extends AnyElement {
 				gearType = Gear.valueOf(gear);
 			}
 			location = readPoint("pos");
-			tileLocation = readPoint("tilePos");
+			// @FIXME FCA Point3D
+			tileLocation = readPoint3D("tilePos");
 			tileValue = readInt("tileValue", -1);
 			break;
 		case PUSH:
@@ -137,7 +139,8 @@ public class TriggerElement extends AnyElement {
 			deadPersos.addAll(Arrays.asList(persos.split(",")));
 			break;
 		case LIFT:
-			tileLocation = readPoint("tilePos");
+			// @FIXME FCA Point3D
+			tileLocation = readPoint3D("tilePos");
 			name = readAttribute("name");
 			break;
 		case USE:
@@ -191,10 +194,11 @@ public class TriggerElement extends AnyElement {
 						if (gearType != null) {
 							switch (gearType) {
 							case TIMED_BUTTON:
-								EngineZildo.mapManagement.getCurrentMap().addSpawningTile(tileLocation, questName, 0, false);
+								EngineZildo.getMapManagement().getCurrentMap()
+										.addSpawningTile(tileLocation, questName, 0, false);
 							case BUTTON:
 								EngineZildo.soundManagement.broadcastSound(BankSound.Switch, location);
-								EngineZildo.mapManagement.getCurrentMap().writemap(gridX,  gridY, 256 * 3+212);
+								EngineZildo.getMapManagement().getCurrentMap().writemap(gridX, gridY, 256 * 3 + 212);
 							}
 						}
 						pressed = true;
@@ -249,8 +253,8 @@ public class TriggerElement extends AnyElement {
 			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 			return zildo != null && zildo.hasItem(ItemKind.fromString(name)) == !not;
 		case LOCATION:
-			Area map = EngineZildo.mapManagement.getCurrentMap();
-			if (map != null && !isLocationSpecific() && mapNameMatch(EngineZildo.mapManagement.getCurrentMap().getName())) {
+			Area map = EngineZildo.getMapManagement().getCurrentMap();
+			if (map != null && !isLocationSpecific() && mapNameMatch(map.getName())) {
 				// Mover ?
 				boolean ok = true;
 				if (mover != null) {
@@ -360,7 +364,7 @@ public class TriggerElement extends AnyElement {
 	 * @param p_tilePos
 	 * @return TriggerElement
 	 */
-	public static TriggerElement createLiftTrigger(String p_name, Point p_tilePos) {
+	public static TriggerElement createLiftTrigger(String p_name, Point3D p_tilePos) {
 		TriggerElement elem = new TriggerElement(QuestEvent.LIFT);
 		elem.tileLocation = p_tilePos;
 		elem.name = p_name;

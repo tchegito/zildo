@@ -49,7 +49,7 @@ public class PathFinderSquirrel extends PathFinder {
 	        Point tempTarget = new Point((int) (mobile.x + Math.cos(alpha) * jumpDistance),
 	                    (int) (mobile.y + Math.sin(alpha) * jumpDistance));
 	        nbJump--;
-	        if (EngineZildo.mapManagement.collide(tempTarget.x, tempTarget.y, mobile) ||
+	        if (EngineZildo.getMapManagement().collide(tempTarget.x, tempTarget.y, mobile) ||
 	        		EngineZildo.persoManagement.collidePerso(tempTarget.x, tempTarget.y, mobile, 50) != null) {
 	        	tempTarget = null;
 	        	alpha+= Math.PI/2;

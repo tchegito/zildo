@@ -181,6 +181,8 @@ public class NetClient extends NetSend {
                 case CLIENTINFO:
                 	receiveClientInfos(getPacket);
                 	break;
+				default:
+					break;
                 }
 
                 // Reask every entities if we haven't anyone since a fixed number of frames
@@ -217,12 +219,12 @@ public class NetClient extends NetSend {
 		EasyBuffering buffer=new EasyBuffering(p_packet.getBuffer());
 		Area map=Area.deserialize(buffer, p_packet.name, false);
 		
-		ClientEngineZildo.mapDisplay.setCurrentMap(map);
+		ClientEngineZildo.getMapDisplay().setCurrentMap(map);
 	}
 	
 	private void receiveMapPart(GetPacket p_packet) {
 		EasyBuffering buffer=new EasyBuffering(p_packet.getBuffer());
-		Area map=ClientEngineZildo.mapDisplay.getCurrentMap();
+		Area map=ClientEngineZildo.getMapDisplay().getCurrentMap();
 		while (!buffer.eof()) {
 			int x=buffer.readInt();
 			int y=buffer.readInt();
@@ -242,7 +244,7 @@ public class NetClient extends NetSend {
 
 		// Focus on Zildo
       	SpriteEntity zildo=ClientEngineZildo.spriteDisplay.getZildo();
-   		ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
+   		ClientEngineZildo.getMapDisplay().setFocusedEntity(zildo);
 
         // Re-ask
         sendPacket(new AskPacket(ResourceType.ENTITY, false), server);

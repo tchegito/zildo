@@ -122,9 +122,8 @@ public class DialogManagement {
 	 * @param persoToTalk (can't be null)
 	 * @return WaitingDialog
 	 */
-	private WaitingDialog createWaitingDialog(ClientState p_client,
-			Perso persoToTalk) {
-		MapDialog dialogs = EngineZildo.mapManagement.getCurrentMap().getMapDialog();
+	private WaitingDialog createWaitingDialog(ClientState p_client, Perso persoToTalk) {
+		MapDialog dialogs = EngineZildo.getMapManagement().getCurrentMap().getMapDialog();
 		String sentence = null;
 		currentSentenceFullDisplayed = false;
 

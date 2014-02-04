@@ -449,8 +449,8 @@ public class GUIDisplay {
 		nLigne = 0;
 		SpriteEntity lettre;
 		Zone filledZone = new Zone();
-		filledZone.x1 = offsetX;
-		filledZone.y1 = y + offsetY;
+		filledZone.setX1(offsetX);
+		filledZone.setY1(y + offsetY);
 		for (i = 0; i < nLettre; i++) {
 			int indexSpr = nSpr[i];
 			if (indexSpr == -1) {
@@ -480,10 +480,10 @@ public class GUIDisplay {
 				}
 			}
 		}
-		filledZone.x2 = x + offsetX - filledZone.x1;
-		filledZone.y2 = y + offsetY - filledZone.y1;
+		filledZone.setX2(x + offsetX - filledZone.getX1());
+		filledZone.setY2(y + offsetY - filledZone.getY1());
 		if (spr != null) {
-			filledZone.y2 += spr.getTaille_y();
+			filledZone.setY2( filledZone.getY2() + spr.getTaille_y());
 		}
 
 		// Say that the message is not complete yet at screen
@@ -722,9 +722,9 @@ public class GUIDisplay {
 						sc.TEXTER_COORDINATE_X, posY, unselectable);
 				posY += sc.TEXTER_MENU_SIZEY;
 				if (item instanceof EditableItemMenu) {
-					z.x1 = sc.TEXTER_COORDINATE_X;
-					z.x2 = sc.TEXTER_SIZEX;
-					z.y2 = sc.TEXTER_SIZELINE;
+					z.setX1( sc.TEXTER_COORDINATE_X);
+					z.setX2(sc.TEXTER_SIZEX);
+					z.setY2(sc.TEXTER_SIZELINE);
 				}
 				// Store item location
 				itemsOnScreen.put(item, z);
@@ -898,6 +898,8 @@ public class GUIDisplay {
 			case BUTTON_X:
 			case BUTTON_Y:
 				return Zildo.viewPortX - x - buttonSizeX;
+			default:
+				break;
 			}
 		}
 		return x;

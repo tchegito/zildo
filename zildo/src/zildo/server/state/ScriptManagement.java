@@ -235,7 +235,7 @@ public class ScriptManagement {
     					if (trig.done && trig.isImmediate()){
     						switch (trig.kind) {
     						case LOCATION:
-	    						TriggerElement currentMapTrigger = EngineZildo.mapManagement.getCurrentMapTrigger();
+	    						TriggerElement currentMapTrigger = EngineZildo.getMapManagement().getCurrentMapTrigger();
 	    						if (trig.isLocationSpecific() || !trig.match(currentMapTrigger)) {
 	    							trig.done = false;
 	    						}

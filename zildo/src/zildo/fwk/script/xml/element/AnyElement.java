@@ -28,6 +28,7 @@ import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
 import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.monde.util.Point;
+import zildo.monde.util.Point3D;
 
 public abstract class AnyElement {
 
@@ -148,6 +149,15 @@ public abstract class AnyElement {
 		}
     }
     
+    protected Point3D readPoint3D(String p_attrName) {
+    	String strPos = readAttribute(p_attrName);
+		if (strPos != null) {
+			return Point3D.fromString(strPos);
+		} else {
+			return null;
+		}
+    }
+
     /**
      * Used for expression that we know to be immediate.
      * @param p_attrName

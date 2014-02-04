@@ -154,7 +154,7 @@ public class Client {
         glGestion.setClientEngineZildo(clientEngineZildo);
         clientEngineZildo.setOpenGLGestion(glGestion);
         // Set up the map
-        ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
+        ClientEngineZildo.getMapDisplay().setCurrentMap(EngineZildo.getMapManagement().getCurrentMap());
         // And the sprites
         EngineZildo.spriteManagement.updateSprites(false);
         ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null));
@@ -457,7 +457,7 @@ public class Client {
 		ClientEngineZildo.filterCommand.restoreFilters();
 		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
 		ClientEngineZildo.filterCommand.active(LightningFilter.class, false, null);
-		ClientEngineZildo.mapDisplay.reset();
+		ClientEngineZildo.getMapDisplay().reset();
 
 		connected = false;
 	}

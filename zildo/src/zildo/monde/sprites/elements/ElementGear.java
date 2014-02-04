@@ -67,7 +67,7 @@ public class ElementGear extends Element {
 					// angle)
 					int axx = (int) p_perso.x / 16 + p_perso.angle.coords.x;
 					int ayy = (int) p_perso.y / 16 + p_perso.angle.coords.y;
-					Area map = EngineZildo.mapManagement.getCurrentMap();
+					Area map = EngineZildo.getMapManagement().getCurrentMap();
 					ChainingPoint ch = map.getCloseChainingPoint(axx, ayy);
 					if (ch != null) {
 						acting = true;

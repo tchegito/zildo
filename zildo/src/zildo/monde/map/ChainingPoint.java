@@ -127,7 +127,7 @@ public class ChainingPoint implements EasySerializable {
 	}
 
 	public MapLink getLinkType() {
-		int infomap = EngineZildo.mapManagement.getCurrentMap().readmap(px, py);
+		int infomap = EngineZildo.getMapManagement().getCurrentMap().readmap(px, py);
 		switch (infomap) {
 		case 183 + 768:
 		case 184 + 768:

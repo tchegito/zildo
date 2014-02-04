@@ -46,6 +46,7 @@ import zildo.server.MapManagement;
 public class Element extends SpriteEntity {
 
 	// Class variables
+	private int l;
 	private float ancX, ancY, ancZ;
 	public float ax, ay, az;
 	public float vx, vy, vz;
@@ -95,6 +96,7 @@ public class Element extends SpriteEntity {
 
 		x = 0.0f;
 		y = 0.0f;
+		l = 0;
 		z = 0.0f;
 
 		fx = 0.0f;
@@ -114,6 +116,7 @@ public class Element extends SpriteEntity {
 		this.y = original.y;
 		this.vy = original.vy;
 		this.ay = original.ay;
+		this.l = original.l;
 		this.z = original.z;
 		this.vz = original.vz;
 		this.az = original.az;
@@ -209,7 +212,7 @@ public class Element extends SpriteEntity {
 				manageCollision();
 			}
 			int subY = getSprModel().getTaille_y() >> 1;
-			if (!partOfPerso && EngineZildo.mapManagement.collide(x, y-subY, this)) {
+			if (!partOfPerso && EngineZildo.getMapManagement().collide(x, y - subY, this)) {
 				if (desc.isSliping()) {
 					float movedX = x; float movedY = y-subY;
 					x = ancX; y = ancY - subY;
@@ -233,7 +236,7 @@ public class Element extends SpriteEntity {
 			}
 		}
 		// Out of the map
-		Area map = EngineZildo.mapManagement.getCurrentMap();
+		Area map = EngineZildo.getMapManagement().getCurrentMap();
 		if (map.isOutside((int) x, (int) y)) {
 			return true;
 		}
@@ -415,6 +418,14 @@ public class Element extends SpriteEntity {
 		return y;
 	}
 
+	public void setL(int l) {
+		this.l = l;
+	}
+
+	public int getL() {
+		return l;
+	}
+
 	public void setY(float y) {
 		this.y = y;
 	}
@@ -498,7 +509,7 @@ public class Element extends SpriteEntity {
 	@Override
 	public void fall() {
 		// 1: get the landing point nature
-		Area area = EngineZildo.mapManagement.getCurrentMap();
+		Area area = EngineZildo.getMapManagement().getCurrentMap();
 		int cx = (int) (x / 16);
 		int cy = (int) (y / 16);
 		TileNature nature = area.getCaseNature(cx, cy);
@@ -571,7 +582,7 @@ public class Element extends SpriteEntity {
 	 * @return corrected location, or same one if character can't move at all.
 	 */
 	public Pointf tryMove(float p_deltaX, float p_deltaY) {
-		MapManagement mapManagement = EngineZildo.mapManagement;
+		MapManagement mapManagement = EngineZildo.getMapManagement();
 		float xx = x + p_deltaX;
 		float yy = y + p_deltaY;
 
@@ -682,6 +693,8 @@ public class Element extends SpriteEntity {
 		case OUEST:
 			vx = -0.5f;
 			break;
+		default:
+			break;
 		}
 		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPousse, this);
 		az = 1.0f;
@@ -722,7 +735,7 @@ public class Element extends SpriteEntity {
 		}
 		setAngle(throwingAngle);
 		flying = true;
-		relativeZ = EngineZildo.mapManagement.getCurrentMap().readAltitude((int) x / 16, (int) y / 16);
+		relativeZ = EngineZildo.getMapManagement().getCurrentMap().readAltitude((int) x / 16, (int) y / 16);
 
 		vx = 4 * throwingAngle.coordf.x;
 		vy = 4 * throwingAngle.coordf.y;
@@ -744,7 +757,7 @@ public class Element extends SpriteEntity {
 				EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
 			}
 			// Alert that a sound happened at this location
-			EngineZildo.mapManagement.getCurrentMap().alertAtLocation(new Point(x, y));
+			EngineZildo.getMapManagement().getCurrentMap().alertAtLocation(new Point(x, y));
 		}
 		return false;
 	}
