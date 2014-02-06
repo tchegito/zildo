@@ -39,7 +39,6 @@ import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.action.PersoAction;
-import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.monde.sprites.persos.ia.PathFinder;
 import zildo.monde.sprites.persos.ia.PathFinderSquirrel;
 import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
@@ -976,7 +975,9 @@ public abstract class Perso extends Element {
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
 			}
 			z=0;
-			attente = 0;
+			if (action == null) {
+				attente = 0;
+			}
 		} else {
 			Point landingPoint=getJumpAngle().getLandingPoint();
 			float pasx=landingPoint.x / 32.0f;
@@ -1005,7 +1006,7 @@ public abstract class Perso extends Element {
 	
 	public void diveAndWound() {
 		if (action == null) {
-			setAction(new ScriptedPersoAction(this, "fallInWater"));
+			EngineZildo.scriptManagement.execute("dieInWater", true);
 		}
 	}
 

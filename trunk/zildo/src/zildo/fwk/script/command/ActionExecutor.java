@@ -19,6 +19,7 @@
 
 package zildo.fwk.script.command;
 
+import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
@@ -30,6 +31,8 @@ import zildo.client.stage.SinglePlayer;
 import zildo.client.stage.TitleStage;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.Ortho;
+import zildo.fwk.gfx.filter.BilinearFilter;
+import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.LightningFilter;
@@ -59,8 +62,8 @@ import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementGear;
-import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
+import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
@@ -458,7 +461,7 @@ public class ActionExecutor {
                 	}
                 	break;
                 case respawn:	// Replace Zildo at his previous location
-                	EngineZildo.mapManagement.respawn(1);	// 1 HP damage
+                	EngineZildo.mapManagement.respawn(true, 1);	// 1 HP damage
                 	achieved = true;
                 	break;
                 case visible:
@@ -498,8 +501,15 @@ public class ActionExecutor {
                 		EngineZildo.backUpGame();
                 		break;
                 	case 4:
-                		// Replace hero the place where he jumped and hurt him (2 pv)
-                		zildo.replaceBeforeJump();
+                		// Replace hero at the last backed up game and hurt him (2 pv)
+                		EngineZildo.mapManagement.deleteCurrentMap();
+                		Client client = ClientEngineZildo.getClientForMenu();
+                		client.quitGame();
+               			EngineZildo.restoreBackedUpGame();
+               			// A circlefilter is planned to redisplay properly the scene
+               			ClientEngineZildo.filterCommand.active(BilinearFilter.class, false, null);
+               			ClientEngineZildo.filterCommand.active(CircleFilter.class, true, null);
+                    	EngineZildo.mapManagement.respawn(false, 1);	// 1 HP damage
                 		break;
                 	}
                 	achieved = true;
@@ -617,7 +627,7 @@ public class ActionExecutor {
                 achieved = scriptExec.userEndedAction;
                 break;
             case wait:
-            	achieved = (count-- == 0);
+            	achieved = (count-- <= 0);
             	break;
             case fadeIn:
             case fadeOut:

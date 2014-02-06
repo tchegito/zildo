@@ -249,7 +249,9 @@ public class EngineZildo {
             	retEvent.nature = ClientEventNature.NOEVENT;
             	retEvent.mapChange = false;
             	retEvent.chPoint = null;
-            	EngineZildo.backUpGame();
+            	if (EngineZildo.scriptManagement.isAllowedToSave()) {
+            		EngineZildo.backUpGame();
+            	}
             	break;
             case DIALOG_FULLDISPLAY:
 	        	dialogManagement.setFullSentenceDisplayed();
