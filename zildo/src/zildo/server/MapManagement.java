@@ -469,25 +469,28 @@ public class MapManagement {
 			switch (angle) {
 			case NORD:
 				onMap = area.readmap(cx, cy - 1);
-				if (onMap == 21 || onMap == 3 || onMap == 839)
-					result = Angle.NORD;
+				if (onMap == 21 || onMap == 3 || onMap == 839 || onMap == 19 || onMap == 18 || onMap == 20 || onMap == 0 || onMap == 7)
+					result = angle;
 				break;
 			case EST:
 				onMap = area.readmap(cx + 1, cy);
-				if (onMap == 25 || onMap == 9 || onMap == 842
-						|| onMapCurrent == 9)
-					result = Angle.EST;
+				if (onMap == 25 || onMap == 9 || onMap == 842 || onMap == 134
+						|| onMapCurrent == 9 ||
+						onMap == 22 || onMap == 23 || onMap == 24)
+					result = angle;
 				break;
 			case SUD:
 				onMap = area.readmap(cx, cy + 1);
 				if (onMap == 32 || onMap == 31 || onMap == 3*256 + 76 || onMap == 3*256 + 5)
-					result = Angle.SUD;
+					result = angle;
 				break;
 			case OUEST:
 				onMap = area.readmap(cx - 1, cy);
-				if (onMap == 17 || onMap == 15 || onMap == 841
-						|| onMapCurrent == 15)
-					result = Angle.OUEST;
+				if (onMap == 17 || onMap == 15 || onMap == 841 || onMap == 19 || onMap == 18 || onMap == 20 || onMap == 0 || onMap == 7
+						|| onMapCurrent == 15 ||
+						// Water border
+						onMap == 135)
+					result = angle;
 				break;
 			}
 		}
@@ -818,11 +821,13 @@ public class MapManagement {
 	/**
 	 * Respawn Zildo to his starting location in the current area.
 	 */
-	public void respawn(int damage) {
+	public void respawn(boolean relocate, int damage) {
 		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-		zildo.setX(startLocation.x);
-		zildo.setY(startLocation.y);
-		zildo.setAngle(startAngle);
+		if (relocate) {
+			zildo.setX(startLocation.x);
+			zildo.setY(startLocation.y);
+			zildo.setAngle(startAngle);
+		}
 		zildo.beingWounded(null, damage);
 		zildo.stopBeingWounded();
 		zildo.setForeground(false);

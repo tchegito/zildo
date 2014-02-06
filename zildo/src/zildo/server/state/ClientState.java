@@ -50,7 +50,6 @@ public class ClientState extends PlayerState {
     public int inactivityTime;		// Number of frame where server gets nothing from this client
     public DialogState dialogState;	// Client's dialoguing state
     public ClientEvent event;
-    public boolean gameOver;
     
     public ClientState(TransferObject p_location, int p_zildoId) {
     	super(null, p_zildoId);
@@ -64,6 +63,5 @@ public class ClientState extends PlayerState {
         	playerName=p_location.address.getHostName();
         }
         event=new ClientEvent(ClientEventNature.NOEVENT);
-        gameOver=false;
     }
 }

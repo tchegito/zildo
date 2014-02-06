@@ -23,7 +23,6 @@ package zildo.monde.quest.actions;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.stage.CreditStage;
-import zildo.client.stage.SinglePlayer;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
@@ -62,8 +61,6 @@ public class GameOverAction extends ActionDialog {
 		ClientEngineZildo.filterCommand.fadeIn(FilterEffect.SEMIFADE);
 		ClientEngineZildo.mapDisplay.foreBackController.setDisplaySpecific(true, true);
 		
-		// Stop this game
-		SinglePlayer.getClientState().gameOver=true;
 		// Return on the start menu
 		Client client = ClientEngineZildo.getClientForMenu();
 		client.quitGame();
