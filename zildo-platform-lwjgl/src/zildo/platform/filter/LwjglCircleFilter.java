@@ -97,10 +97,10 @@ public class LwjglCircleFilter extends CircleFilter {
 
 		// 1) Draw the two areas outside the circle
 		if (sizeA > 0) {
-			ClientEngineZildo.ortho.boxOpti(0, 0, Zildo.viewPortX, sizeA, 2, null);
+			ClientEngineZildo.ortho.boxOpti(0, 0, Zildo.viewPortX, sizeA, col, null);
 		}
 		if (sizeB > 0) {
-			ClientEngineZildo.ortho.boxOpti(0, center.y + radius, Zildo.viewPortX, sizeB, 2, null);
+			ClientEngineZildo.ortho.boxOpti(0, center.y + radius, Zildo.viewPortX, sizeB, col, null);
 		}
 		
 		// 2) Draw the circle area
