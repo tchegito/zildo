@@ -34,7 +34,6 @@ public class PersoFish extends PersoShadowed {
 
 	double gamma;
 	double moveAngle;
-	boolean underWater = false;
 
 	boolean sens = true;	// TRUE = PI/2 / FALSE = -PI/2
 	//int radius;	// 20 on floor, and 4 under water

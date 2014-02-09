@@ -171,7 +171,6 @@ public class ActionElement extends LanguageElement {
 		case angle:
 		case wait:
 		case zoom:
-		case herospecial:
 			val = readInt("value");
 			break;
 		case fadeIn:
@@ -217,6 +216,10 @@ public class ActionElement extends LanguageElement {
 			break;
 		case remove:
 			text = readAttribute("chaining");
+			break;
+		case herospecial:			
+			text = readAttribute("arg");
+			val = readInt("value");
 			break;
 		}
 

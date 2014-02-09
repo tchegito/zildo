@@ -385,7 +385,7 @@ public class PersoZildo extends Perso {
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 
 		if (mouvement == MouvementZildo.SAUTE ||
-				mouvement == MouvementZildo.TOMBE || inventoring) {
+				mouvement == MouvementZildo.TOMBE || inventoring || underWater) {
 			return;
 		}
 		// Project Zildo away from the enemy
