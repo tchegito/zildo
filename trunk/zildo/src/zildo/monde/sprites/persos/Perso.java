@@ -96,7 +96,8 @@ public abstract class Perso extends Element {
 	protected PersoAction action; // Perso doing an action
 
 	private int count = 0;
-	protected boolean inWater = false;
+	protected boolean inWater = false;	// Feet in water
+	protected boolean underWater = false;
 	protected boolean inDirt = false;
 
 	protected boolean askedVisible = true;	// FALSE=a script ask this character to be invisible
@@ -1005,8 +1006,9 @@ public abstract class Perso extends Element {
 	}
 	
 	public void diveAndWound() {
-		if (action == null) {
+		if (action == null && !underWater) {
 			EngineZildo.scriptManagement.execute("dieInWater", true);
+			underWater = true;
 		}
 	}
 

@@ -501,7 +501,8 @@ public class ActionExecutor {
                 		EngineZildo.backUpGame();
                 		break;
                 	case 4:
-                		// Replace hero at the last backed up game and hurt him (2 pv)
+                		// Replace hero at the last backed up game and update his HP
+                		int heroPv = zildo.getPv();
                 		EngineZildo.mapManagement.deleteCurrentMap();
                 		Client client = ClientEngineZildo.getClientForMenu();
                 		client.quitGame();
@@ -509,7 +510,15 @@ public class ActionExecutor {
                			// A circlefilter is planned to redisplay properly the scene
                			ClientEngineZildo.filterCommand.active(BilinearFilter.class, false, null);
                			ClientEngineZildo.filterCommand.active(CircleFilter.class, true, null);
-                    	EngineZildo.mapManagement.respawn(false, 1);	// 1 HP damage
+                    	EngineZildo.mapManagement.respawn(false, 0);
+                    	EngineZildo.persoManagement.getZildo().setPv(heroPv);
+                    	EngineZildo.backUpGame();
+                		break;
+                	case 5:
+                		// Damage hero
+                		int damage = p_action.text == null ? 1 : Integer.valueOf(p_action.text);
+                		zildo.beingWounded(null, damage);
+                		zildo.stopBeingWounded();
                 		break;
                 	}
                 	achieved = true;

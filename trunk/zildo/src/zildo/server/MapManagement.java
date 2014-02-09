@@ -827,9 +827,9 @@ public class MapManagement {
 			zildo.setX(startLocation.x);
 			zildo.setY(startLocation.y);
 			zildo.setAngle(startAngle);
+			zildo.beingWounded(null, damage);
+			zildo.stopBeingWounded();
 		}
-		zildo.beingWounded(null, damage);
-		zildo.stopBeingWounded();
 		zildo.setForeground(false);
 		zildo.askVisible(true);	// Set him back to visible
 	}

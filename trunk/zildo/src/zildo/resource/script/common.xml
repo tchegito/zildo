@@ -254,6 +254,7 @@
 	    <wait value="10"/>
 	    <visible who="zildo" value="false"/>
 	    <wait value="40"/>
+	    <herospecial value="5" arg="1"/>	<!--  hero's damage -->
 	    <fadeOut type="5"/>
 	    <perso who="zildo" alpha="255"/>
 	    <focus who="zildo"/>
