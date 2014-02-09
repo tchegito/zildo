@@ -514,7 +514,7 @@ public class Element extends SpriteEntity {
 						SpriteAnimation.LAVA_DROP, (int) x, (int) y, 0,	null, null);
 				break;
 			case WATER:
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPlonge, this);
+				EngineZildo.soundManagement.broadcastSound(BankSound.FallWater, this);
 				EngineZildo.spriteManagement.spawnSpriteGeneric(
 						SpriteAnimation.WATER_SPLASH, (int) x, (int) y, 0,	null, null);
 				break;

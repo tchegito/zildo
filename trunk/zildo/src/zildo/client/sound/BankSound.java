@@ -28,7 +28,7 @@ public enum BankSound implements AudioBank {
 	ZildoAtterit("atterit"),
 	ZildoLance("lance"),
 	ZildoRamasse("ramasse"),
-	ZildoPlonge("eau"),
+	ZildoPlonge("bigsplash"),
 	ZildoNage("eau2"),
 	ZildoPatauge("eau"),
 	ZildoPatauge2("eau2"),
@@ -131,6 +131,7 @@ public enum BankSound implements AudioBank {
 	
 	SlipWater1("slipwater1"),
 	SlipWater2("slipwater2"),
+	FallWater("eau"),
 	
 	ChestAppears("appear"),
 	
