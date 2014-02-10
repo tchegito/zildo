@@ -158,7 +158,7 @@ public class SpriteStore {
 	public void deleteSprite(SpriteEntity entity)
 	{
 		if (entity != null) {
-			spriteEntities.remove(entity);
+			removeEntity(entity);
 			if (entity.getEntityType().isElement()) {
 				Element element=(Element)entity;
 				SpriteEntity linkedEntity=element.getLinkedPerso();
@@ -177,4 +177,9 @@ public class SpriteStore {
 			Identified.remove(SpriteEntity.class, entity.getId());
 		}
 	}
+	
+	protected boolean removeEntity(SpriteEntity entity) {
+		return spriteEntities.remove(entity);
+	}
+	
 }

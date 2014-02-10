@@ -510,6 +510,15 @@ public class SpriteManagement extends SpriteStore {
 		}
 	}
 
+	@Override
+	protected boolean removeEntity(SpriteEntity entity) {
+		boolean res = super.removeEntity(entity);
+		if (!res) {
+			res = spriteEntitiesToAdd.remove(entity);
+		}
+		return res;
+	}
+	
 	/**
 	 * Do sprite's stuff<ul>
 	 * <li>animate sprites & persos<li>

@@ -19,40 +19,28 @@
 
 package junit.fwk;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import static java.lang.Math.abs;
+import static zildo.monde.Trigo.getAngleRadian;
 import junit.framework.Assert;
 
 import org.junit.Test;
-
-import zildo.fwk.collection.ListMerger;
 
 /**
  * @author Tchegito
  *
  */
-public class ListMergerTest {
+public class TrigoTest {
 
 	@Test
-	public void basic() {
-		List<String> l1 = Arrays.asList("a", "b", "c", "d");
-		List<String> l2 = Arrays.asList("e", "f");
-		for (String s : new ListMerger<String>(l1, l2)) {
-			System.out.println(s);
-		}
-	}
-	
-	@Test
-	public void removal() {
-		List<String> l1 = new ArrayList<String>();
-		l1.addAll(Arrays.asList("a", "b", "c", "d"));
-		List<String> l2 = new ArrayList<String>();
-		l2.addAll(Arrays.asList("e", "f"));
-		ListMerger<String> merged = new ListMerger<String>(l1, l2);
-		l1.remove("a");
-		Assert.assertEquals(l1.indexOf("a"), -1);
-		Assert.assertEquals(merged.indexOf("a"), -1);
+	public void angleRadian() {
+		// No dependent of size
+		Assert.assertEquals(getAngleRadian(0, -1), getAngleRadian(0, -8));
+		// PI / 2
+		Assert.assertEquals(abs(getAngleRadian(0f, -1.5f)), Math.PI / 2d, 0.0001d);
+		// 0
+		Assert.assertEquals(abs(getAngleRadian(3, 0)), 0, 0.0001d);
+		// PI / 4
+		Assert.assertEquals(abs(getAngleRadian(1, 1)), abs(getAngleRadian(5, 5)), 0.0001d);
+		Assert.assertEquals(abs(getAngleRadian(1, 1)), Math.PI / 4d, 0.0001d);
 	}
 }
