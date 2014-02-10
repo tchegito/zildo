@@ -583,20 +583,23 @@ public class Element extends SpriteEntity {
 		double force = Pointf.distance(0, 0, p_deltaX, p_deltaY);
 		int antFactor = Math.min(4, 2 + (int) force);
 
-		for (int i=0;i<2;i++) {
+		for (int i=0;i<3;i++) {
 			// Try twice : one with anticipation, and one regularly
 			if (mapManagement.collide(x + antFactor * p_deltaX, y + antFactor * p_deltaY, this)) {
 				float keepX = xx;
 				float keepY = yy;
 				double angleMove = Trigo.getAngleRadian(p_deltaX, p_deltaY);
 				
+				float diagonalForce = (float) (antFactor * Trigo.SQUARE_2);
 				Vector2f move2 = Trigo.vect(angleMove - Trigo.PI_SUR_4, force);
-				if (!mapManagement.collide(x + move2.x, y + move2.y, this)) {
+				if (!mapManagement.collide(x + diagonalForce * move2.x, y + diagonalForce * move2.y, this) &&
+						!mapManagement.collide(x + move2.x, y + move2.y, this)) {
 					xx = x + move2.x;
 					yy = y + move2.y;
 				} else {
 					move2 = Trigo.vect(angleMove + Trigo.PI_SUR_4, force);
-					if (!mapManagement.collide(x + move2.x, y + move2.y, this)) {
+					if (!mapManagement.collide(x + diagonalForce * move2.x, y + diagonalForce * move2.y, this) &&
+						!mapManagement.collide(x + move2.x, y + move2.y, this)) {
 						xx = x + move2.x;
 						yy = y + move2.y;
 					}
@@ -607,7 +610,7 @@ public class Element extends SpriteEntity {
 				}
 				break;
 			} else {
-				antFactor = 1;
+				antFactor /= 3;
 			}
 		}
 
