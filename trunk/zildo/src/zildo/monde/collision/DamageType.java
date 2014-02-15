@@ -20,13 +20,16 @@
 
 package zildo.monde.collision;
 
+import zildo.monde.Hasard;
+
 public enum DamageType {
 
-	// NOTE: All causes a damage of 1, except FIRE, which causes 2.
+	// NOTE: All causes a damage from 0 to 1, except FIRE, which causes 2.
 	// Interesting to have another scale of damage depending on the weapon. We could add or multiply such damages scores.
 	
 	HARMLESS,	// Useful for peebles
 	BLUNT, // Boomerang
+	PEEBLE, // From peeble
 	PIERCING, // Arrow
 	CUTTING, // Sword
 	CUTTING_FRONT, // Sword just in front of character
@@ -45,6 +48,8 @@ public enum DamageType {
 			return 2;
 		case HARMLESS:
 			return 0;
+		case PEEBLE:
+			return Hasard.rangeInt(0, 1);
 		default:
 			return 1;
 		}
