@@ -189,6 +189,7 @@ public enum PersoDescription implements SpriteDescription {
 				case SMASH:
 				case PIERCING:
 				case BLUNT:
+				case PEEBLE:
 					return true;
 				default:
 					return false;

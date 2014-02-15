@@ -23,7 +23,6 @@ package zildo.monde.sprites.elements;
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.script.xml.element.TriggerElement;
-import zildo.monde.Hasard;
 import zildo.monde.Trigo;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
@@ -581,7 +580,7 @@ public class Element extends SpriteEntity {
 		// Calculate an anticipation factor, to check collision in advance
 		// For better diagonal movement
 		double force = Pointf.distance(0, 0, p_deltaX, p_deltaY);
-		int antFactor = Math.min(4, 2 + (int) force);
+		float antFactor = Math.min(4, 2 + (int) force);
 
 		for (int i=0;i<3;i++) {
 			// Try twice : one with anticipation, and one regularly
@@ -607,9 +606,20 @@ public class Element extends SpriteEntity {
 				if (xx == keepX && yy == keepY) { //mapManagement.collide(xx, yy, this)) {
 					xx = x;
 					yy = y;
+					antFactor /= 3;
+				} else {
+					break;
 				}
-				break;
 			} else {
+				boolean collide = mapManagement.collide(x + p_deltaX, y + p_deltaY, this);
+				if (antFactor <= 1f && !collide) {
+					xx = x + p_deltaX;
+					yy = y + p_deltaY;
+					break;
+				} else if (collide) {
+					xx = x;
+					yy = y;
+				}
 				antFactor /= 3;
 			}
 		}
@@ -624,7 +634,7 @@ public class Element extends SpriteEntity {
 	 */
 	public DamageType getDamageType() {
 		if (desc == ElementDescription.PEEBLE) {
-			return DamageType.BLUNT;
+			return DamageType.PEEBLE;
 		}
 		return null;
 	}
@@ -730,9 +740,6 @@ public class Element extends SpriteEntity {
 	 */
 	public boolean beingCollided(Perso p_perso) {
 		if (desc == ElementDescription.PEEBLE) {
-			if (p_perso != null) {
-				p_perso.beingWounded(x, y, (Perso) getLinkedPerso(), Hasard.rangeInt(0, 1));
-			}
 			if (z > 4 && p_perso == null) {
 				// Produce impact sound only on wall (not enemies)
 				Element impact = new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null);
