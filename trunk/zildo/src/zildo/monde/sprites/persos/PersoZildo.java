@@ -49,7 +49,7 @@ import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.desc.ZildoSprSequence;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementArrow;
-import zildo.monde.sprites.elements.ElementBomb;
+import zildo.monde.sprites.elements.ElementDynamite;
 import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementImpact;
@@ -254,7 +254,7 @@ public class PersoZildo extends Perso {
 		case DYNAMITE:
 			if (attente == 0) {
 				if (countBomb > 0) {
-					Element bomb = new ElementBomb((int) x, (int) y, 0, this);
+					Element bomb = new ElementDynamite((int) x, (int) y, 0, this);
 					EngineZildo.spriteManagement.spawnSprite(bomb);
 					countBomb--;
 					setAttente(1);

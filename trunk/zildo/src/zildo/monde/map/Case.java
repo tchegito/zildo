@@ -38,6 +38,10 @@ import zildo.monde.util.Angle;
  */
 public class Case implements EasySerializable {
 
+	enum TileLevel {
+		BACK, BACK2, FORE;
+	}
+	
 	private Tile back;
 	private Tile back2;
 	private Tile fore;
