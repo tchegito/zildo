@@ -41,6 +41,7 @@ import zildo.monde.Hasard;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.items.ItemKind;
+import zildo.monde.map.Case.TileLevel;
 import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
@@ -286,19 +287,50 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// IN:x,y (coordinates on Area), quoi =motif + bank*256
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void writemap(int x, int y, int quoi) {
+	/**
+	 * writemap
+	 * @param x,y: coordinates
+	 * @param quoi: value (bank*256 + index)
+	 * @param back: TRUE means back tile
+	 * @param back2: TRUE means 
+	 */
+	public void writemap(int x, int y, int quoi, TileLevel level) {
 		Case temp = this.get_mapcase(x, y);
 		if (temp == null) {
 			temp = new Case();
 		} else {
 			temp.setModified(true);
 		}
-		Tile back = temp.getBackTile();
-		back.index = quoi & 255;
-		back.bank = (byte) (quoi >> 8);
+		Tile tile;
+		switch (level) {
+		case BACK:
+			default:
+			tile = temp.getBackTile();
+			break;
+		case BACK2:
+			tile = temp.getBackTile2();
+			if (tile == null) {
+				tile = new Tile(0, temp);
+				temp.setBackTile2(tile);
+			}
+			break;
+		case FORE:
+			tile = temp.getForeTile();
+			if (tile == null) {
+				tile = new Tile(0, temp);
+				temp.setForeTile(tile);
+			}
+			break;
+		}
+		tile.index = quoi & 255;
+		tile.bank = (byte) (quoi >> 8);
 		this.set_mapcase(x, y, temp);
 
 		changes.add(new Point(x, y));
+	}
+
+	public void writemap(int x, int y, int quoi) {
+		writemap(x, y, quoi, TileLevel.BACK);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -445,6 +477,45 @@ public class Area implements EasySerializable {
 			break;
 		}
 	}
+	
+	public void explodeTile(Point loc) {
+		// Look for a 'crack'
+		Element crack = EngineZildo.spriteManagement.collideElement(loc.x, loc.y, null, 8, 
+				GearDescription.CRACK1, GearDescription.CRACK2, GearDescription.BOULDER);
+		if (crack != null) {
+			
+			Point tileLoc = new Point(crack.getCenter());
+			tileLoc.x /=16;
+			tileLoc.y /=16;
+			// Remove crack and replace tile with opened wall
+			crack.dying = true;
+			int onmap = readmap(tileLoc.x, tileLoc.y);
+			switch (onmap) {
+			case 12:
+				tileLoc.y--;
+			case 31:	// Hill
+				writemap(tileLoc.x, tileLoc.y, 256*2, TileLevel.BACK);
+				writemap(tileLoc.x+1, tileLoc.y, 256*2, TileLevel.BACK);
+				writemap(tileLoc.x, tileLoc.y, 220 + 256*5, TileLevel.FORE);
+				writemap(tileLoc.x+1, tileLoc.y, 221 + 256*5, TileLevel.FORE);
+				writemap(tileLoc.x, tileLoc.y+1, 222 + 256*5);
+				writemap(tileLoc.x+1, tileLoc.y+1, 223 + 256*5);
+				break;
+			case 144+256*3:
+				tileLoc.y--;
+			case 129+256*3:	 // Grey cave
+				writemap(tileLoc.x, tileLoc.y, 256*2, TileLevel.BACK);
+				writemap(tileLoc.x+1, tileLoc.y, 256*2, TileLevel.BACK);
+				writemap(tileLoc.x, tileLoc.y, 216 + 256*5, TileLevel.FORE);
+				writemap(tileLoc.x+1, tileLoc.y, 217 + 256*5, TileLevel.FORE);
+				writemap(tileLoc.x, tileLoc.y+1, 218 + 256*5);
+				writemap(tileLoc.x+1, tileLoc.y+1, 219 + 256*5);
+				break;
+			}
+		}
+	}
+	
+	
 	
 	/**
 	 * A tile being "hammered". Can lower plots.

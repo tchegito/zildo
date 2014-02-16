@@ -26,14 +26,15 @@ import zildo.monde.collision.Collision;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
-public class ElementBomb extends Element {
+public class ElementDynamite extends Element {
 
 	Perso shooter;
 	int counter;
 
-	public ElementBomb(int p_startX, int p_startY, int p_startZ, Perso p_shooter) {
+	public ElementDynamite(int p_startX, int p_startY, int p_startZ, Perso p_shooter) {
 		x = p_startX;
 		y = p_startY;
 		z = p_startZ;
@@ -57,6 +58,8 @@ public class ElementBomb extends Element {
 			shadow.dying = true;
 			EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x,
 					(int) y, ImpactKind.EXPLOSION, shooter));
+			// Detection of explodable walls
+			EngineZildo.mapManagement.getCurrentMap().explodeTile(new Point(x, y));
 		} else if (counter < 30) {
 			setSpecialEffect(EngineFX.PERSO_HURT);
 		}

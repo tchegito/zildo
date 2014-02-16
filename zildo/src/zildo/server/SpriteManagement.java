@@ -688,7 +688,7 @@ public class SpriteManagement extends SpriteStore {
 	 * @param radius
 	 * @return Element
 	 */
-    public Element collideElement(int x, int y, Element quelElement, int radius) {
+    public Element collideElement(int x, int y, Element quelElement, int radius, SpriteDescription... expectedDesc) {
         Perso perso = null;
         if (quelElement != null && quelElement.getEntityType().isPerso()) {
             perso = (Perso) quelElement;
@@ -701,8 +701,17 @@ public class SpriteManagement extends SpriteStore {
 	                int ty = (int) entity.y;
 	                if (EngineZildo.collideManagement.checkCollisionCircles(x, y, tx, ty, radius, radius)) {
 	                    if (perso != null && perso.isZildo() && perso.linkedSpritesContains(entity)) {
-	                        // Collision entre Zildo et l'objet qu'il porte dans les mains => on laisse
+	                    	// Collision between hero and object he's carrying => let it go
 	                    } else if (quelElement == null || quelElement.getLinkedPerso() != entity) {
+	                    	// Check that found element is one of expected ones
+	                    	if (expectedDesc != null) {
+	                    		for (SpriteDescription sDesc : expectedDesc) {
+	                    			if (sDesc == entity.getDesc()) {
+	                    				return (Element) entity;
+	                    			}
+	                    		}
+	                    		return null;
+	                    	}
 	                        return (Element) entity;
 	                    }
 	                }
