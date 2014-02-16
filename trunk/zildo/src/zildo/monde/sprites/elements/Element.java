@@ -583,7 +583,7 @@ public class Element extends SpriteEntity {
 		float antFactor = Math.min(4, 2 + (int) force);
 
 		for (int i=0;i<3;i++) {
-			// Try twice : one with anticipation, and one regularly
+			// Try three times : one with anticipation, and one smaller and one with reduced movement
 			if (mapManagement.collide(x + antFactor * p_deltaX, y + antFactor * p_deltaY, this)) {
 				float keepX = xx;
 				float keepY = yy;
@@ -611,14 +611,14 @@ public class Element extends SpriteEntity {
 					break;
 				}
 			} else {
-				boolean collide = mapManagement.collide(x + p_deltaX, y + p_deltaY, this);
-				if (antFactor <= 1f && !collide) {
+				if (mapManagement.collide(x + p_deltaX, y + p_deltaY, this)) {
+					// Collision ! So we keep the initial location
+					xx = x;
+					yy = y;
+				} else if (antFactor <= 1f) {	// No collision, and move is not anticipated => so we move
 					xx = x + p_deltaX;
 					yy = y + p_deltaY;
 					break;
-				} else if (collide) {
-					xx = x;
-					yy = y;
 				}
 				antFactor /= 3;
 			}
