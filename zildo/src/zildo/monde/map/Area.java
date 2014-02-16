@@ -512,6 +512,8 @@ public class Area implements EasySerializable {
 				writemap(tileLoc.x+1, tileLoc.y+1, 219 + 256*5);
 				break;
 			}
+			// Play secret sound
+			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoSecret, loc);
 		}
 	}
 	
