@@ -45,7 +45,6 @@ import zildo.monde.map.ChainingPoint;
 import zildo.monde.quest.StringReplacement;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.desc.ElementDescription;
-import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
@@ -72,6 +71,8 @@ public class ScriptManagement {
     StringReplacement areaReplaces;
     StringReplacement zikReplaces;
     StringReplacement nameReplaces;
+    
+    public final KeyQuest keyQuest;
     
     final Map<String, QuestElement> questsByName;
     
@@ -112,6 +113,8 @@ public class ScriptManagement {
     	execute("setup", true);
     	
     	planComputeTriggers = false;
+    	
+    	keyQuest = new KeyQuest();
     }
     
     public void render() {
@@ -460,62 +463,42 @@ public class ScriptManagement {
 	}
 	
 	public boolean isOpenedChest(String p_mapName, Point p_location) {
-		String questName=p_mapName+p_location.toString();
-		return isQuestDone(questName);
+		return isQuestDone(keyQuest.buildChest(p_mapName, p_location));
 	}
 	
 	public void openChest(String p_mapName, Point p_location) {
-		String questName=p_mapName+p_location.toString();
-		accomplishQuest(questName, true);
-	}
-	
-	/**
-	 * Build a quest's keyname about a chaining point between 2 maps.
-	 * @param p_mapName
-	 * @param p_ch
-	 * @return String
-	 */
-	private String buildKeyDoor(String p_mapName, ChainingPoint p_ch) {
-		String map2=p_ch.getMapname();
-		String key=p_mapName.compareTo(map2) < 0 ? p_mapName+map2 : map2+p_mapName;
-		key+=p_ch.getOrderX()+p_ch.getOrderY();
-
-		return key;
+		accomplishQuest(keyQuest.buildChest(p_mapName, p_location), true);
 	}
 	
 	public boolean isOpenedDoor(String p_mapName, ChainingPoint p_ch) {
-		return isQuestDone(buildKeyDoor(p_mapName, p_ch));
+		return isQuestDone(keyQuest.buildKeyDoor(p_mapName, p_ch));
 	}
 	
 	public void openDoor(String p_mapName, ChainingPoint p_ch) {
-		accomplishQuest(buildKeyDoor(p_mapName, p_ch), false);
+		accomplishQuest(keyQuest.buildKeyDoor(p_mapName, p_ch), false);
 	}
 	
 	public boolean isTakenItem(String p_mapName, int p_x, int p_y, ElementDescription p_desc) {
-		return isQuestDone(buildKeyItem(p_mapName, p_x, p_y, p_desc));
+		return isQuestDone(keyQuest.buildKeyItem(p_mapName, p_x, p_y, p_desc));
 	}
-
-	/**
-	 * Build a quest's keyname about a taken item.
-	 * @return String
-	 */
-	public String buildKeyItem(String p_mapName, int p_x, int p_y, ElementDescription p_desc) {
-		String key=p_mapName + p_x + p_y + p_desc.toString();
-
-		return key;
+	
+	public void explodeWall(String p_mapName, Point p_location) {
+		accomplishQuest(keyQuest.buildExplosion(p_mapName,  p_location), false);
+	}
+	
+	public boolean isExplodedWall(String p_mapName, Point p_location) {
+		return isQuestDone(keyQuest.buildExplosion(p_mapName, p_location));
 	}
 	
 	/**
-	 * Take an item : accomplish a corresponding quest name.<br/>
-	 * Note that this method is never called for now, because item accomplishes quest themselves, in
-	 * @link {@link Element#fall()}.
+	 * Take an item : accomplish a corresponding quest name.
 	 * @param p_mapName
 	 * @param p_x
 	 * @param p_y
 	 * @param p_desc
 	 */
 	public void takeItem(String p_mapName, int p_x, int p_y, ElementDescription p_desc) {
-		accomplishQuest(buildKeyItem(p_mapName, p_x, p_y, p_desc), false);
+		accomplishQuest(keyQuest.buildKeyItem(p_mapName, p_x, p_y, p_desc), false);
 	}
 
 	public void execMapScript(String p_mapName) {

@@ -83,6 +83,16 @@ public enum GearDescription implements SpriteDescription {
 
 	}
 	
+	public boolean isExplodable() {
+		switch (this) {
+		case CRACK1:
+		case CRACK2:
+		case BOULDER:
+			return true;
+		default:
+			return false;
+		}
+	}
 
 	@Override
 	public boolean isDamageable() {
