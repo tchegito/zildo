@@ -478,7 +478,7 @@ public class Area implements EasySerializable {
 		}
 	}
 	
-	public void explodeTile(Point loc) {
+	public void explodeTile(Point loc, boolean ingame) {
 		// Look for a 'crack'
 		Element crack = EngineZildo.spriteManagement.collideElement(loc.x, loc.y, null, 8, 
 				GearDescription.CRACK1, GearDescription.CRACK2, GearDescription.BOULDER);
@@ -513,7 +513,10 @@ public class Area implements EasySerializable {
 				break;
 			}
 			// Play secret sound
-			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoSecret, loc);
+			if (ingame) {
+				EngineZildo.scriptManagement.explodeWall(name, loc);
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoSecret, loc);
+			}
 		}
 	}
 	
@@ -953,10 +956,16 @@ public class Area implements EasySerializable {
 						}
 					default: // else, show it as a regular element
 						SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
-						if (desc == GearDescription.GREEN_DOOR ||
+						if (desc == GearDescription.GREEN_DOOR ||	// Opened door ?
 							desc == GearDescription.CAVE_KEYDOOR) {
 							ChainingPoint ch = map.getCloseChainingPoint(ax, ay);
 							if (ch != null && EngineZildo.scriptManagement.isOpenedDoor(map.getName(), ch)) {
+								break;
+							}
+						}
+						if (desc instanceof GearDescription && ((GearDescription)desc).isExplodable()) {	// Exploded wall ?
+							if (EngineZildo.scriptManagement.isExplodedWall(map.getName(), new Point(ax, ay))) {
+								map.explodeTile(new Point(x, y), false);
 								break;
 							}
 						}

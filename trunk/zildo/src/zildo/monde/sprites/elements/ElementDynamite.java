@@ -59,7 +59,7 @@ public class ElementDynamite extends Element {
 			EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x,
 					(int) y, ImpactKind.EXPLOSION, shooter));
 			// Detection of explodable walls
-			EngineZildo.mapManagement.getCurrentMap().explodeTile(new Point(x, y));
+			EngineZildo.mapManagement.getCurrentMap().explodeTile(new Point(x/16, (y-1)/16), true);
 		} else if (counter < 30) {
 			setSpecialEffect(EngineFX.PERSO_HURT);
 		}
