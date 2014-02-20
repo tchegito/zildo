@@ -21,6 +21,7 @@
 package zildo.monde.sprites;
 
 import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 
 /**
  * @author Tchegito
@@ -79,10 +80,33 @@ public enum Rotation {
 			return UPSIDEDOWN;
 		}
 	}
+	
 	public boolean[] getBooleans() {
 		boolean[] res = new boolean[2];
 		res[0] = this == UPSIDEDOWN || this == CLOCKWISE;
 		res[1] = this == COUNTERCLOCKWISE || this == UPSIDEDOWN;
+		return res;
+	}
+	
+	public Point rotate(Point start, int width, int height) {
+		Point res = new Point(start);
+		switch (this) {
+			case NOTHING:
+			default:
+				break;
+			case CLOCKWISE:
+				res.x = height - start.y - 1;
+				res.y = start.x;
+				break;
+			case UPSIDEDOWN:
+				res.x = width - start.x - 1;
+				res.y = height - start.y - 1;
+				break;
+			case COUNTERCLOCKWISE:
+				res.x = start.y;
+				res.y = width - start.x - 1;
+				break;
+		}
 		return res;
 	}
 }
