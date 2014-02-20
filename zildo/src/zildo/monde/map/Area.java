@@ -282,11 +282,10 @@ public class Area implements EasySerializable {
 		return temp.getZ();
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// writeArea
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// IN:x,y (coordinates on Area), quoi =motif + bank*256
-	// /////////////////////////////////////////////////////////////////////////////////////
+	public void writemap(int x, int y, int quoi, TileLevel level) {
+		writemap(x, y, quoi, level, Rotation.NOTHING);
+	}
+	
 	/**
 	 * writemap
 	 * @param x,y: coordinates
@@ -294,7 +293,7 @@ public class Area implements EasySerializable {
 	 * @param back: TRUE means back tile
 	 * @param back2: TRUE means 
 	 */
-	public void writemap(int x, int y, int quoi, TileLevel level) {
+	public void writemap(int x, int y, int quoi, TileLevel level, Rotation rot) {
 		Case temp = this.get_mapcase(x, y);
 		if (temp == null) {
 			temp = new Case();
@@ -324,13 +323,14 @@ public class Area implements EasySerializable {
 		}
 		tile.index = quoi & 255;
 		tile.bank = (byte) (quoi >> 8);
+		tile.rotation = rot;
 		this.set_mapcase(x, y, temp);
 
 		changes.add(new Point(x, y));
 	}
 
 	public void writemap(int x, int y, int quoi) {
-		writemap(x, y, quoi, TileLevel.BACK);
+		writemap(x, y, quoi, TileLevel.BACK, Rotation.NOTHING);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -480,7 +480,7 @@ public class Area implements EasySerializable {
 	
 	public void explodeTile(Point loc, boolean ingame) {
 		// Look for a 'crack'
-		Element crack = EngineZildo.spriteManagement.collideElement(loc.x, loc.y, null, 8, 
+		Element crack = EngineZildo.spriteManagement.collideElement(loc.x, loc.y+8, null, 8, 
 				GearDescription.CRACK1, GearDescription.CRACK2, GearDescription.BOULDER);
 		if (crack != null) {
 			
@@ -489,27 +489,24 @@ public class Area implements EasySerializable {
 			tileLoc.y /=16;
 			// Remove crack and replace tile with opened wall
 			crack.dying = true;
+			Rotation rotated = crack.rotation;
+			if (crack.reverse == Reverse.VERTICAL) {
+				rotated = rotated.succ().succ();
+			}
 			int onmap = readmap(tileLoc.x, tileLoc.y);
 			switch (onmap) {
 			case 12:
 				tileLoc.y--;
 			case 31:	// Hill
-				writemap(tileLoc.x, tileLoc.y, 256*2, TileLevel.BACK);
-				writemap(tileLoc.x+1, tileLoc.y, 256*2, TileLevel.BACK);
-				writemap(tileLoc.x, tileLoc.y, 220 + 256*5, TileLevel.FORE);
-				writemap(tileLoc.x+1, tileLoc.y, 221 + 256*5, TileLevel.FORE);
-				writemap(tileLoc.x, tileLoc.y+1, 222 + 256*5);
-				writemap(tileLoc.x+1, tileLoc.y+1, 223 + 256*5);
+				TilePattern.explodedHill.apply(tileLoc.x, tileLoc.y, this, rotated);
 				break;
 			case 144+256*3:
 				tileLoc.y--;
-			case 129+256*3:	 // Grey cave
-				writemap(tileLoc.x, tileLoc.y, 256*2, TileLevel.BACK);
-				writemap(tileLoc.x+1, tileLoc.y, 256*2, TileLevel.BACK);
-				writemap(tileLoc.x, tileLoc.y, 216 + 256*5, TileLevel.FORE);
-				writemap(tileLoc.x+1, tileLoc.y, 217 + 256*5, TileLevel.FORE);
-				writemap(tileLoc.x, tileLoc.y+1, 218 + 256*5);
-				writemap(tileLoc.x+1, tileLoc.y+1, 219 + 256*5);
+			case 129+256*3:	 // Grey cave (north)
+			case 148+256*3:	// (south)
+			case 150+256*3:	// (west)
+			case 146+256*3:	// (east)
+				TilePattern.explodedCave.apply(tileLoc.x, tileLoc.y, this, rotated);
 				break;
 			}
 			// Play secret sound
