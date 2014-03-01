@@ -26,6 +26,8 @@ import java.util.List;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.TileInfo.Template;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
+import zildo.monde.util.Point;
 
 /**
  * @author tchegito
@@ -44,10 +46,10 @@ public class TileCollision {
     }
     
     public boolean collide(int p_posX, int p_posY, Tile p_tile) {
-    	return collide(p_posX, p_posY, p_tile.getValue(), p_tile.reverse);
+    	return collide(p_posX, p_posY, p_tile.getValue(), p_tile.reverse, p_tile.rotation);
     }
     
-    public boolean collide(int p_posX, int p_posY, int p_nTile, Reverse p_reverse) {
+    public boolean collide(int p_posX, int p_posY, int p_nTile, Reverse p_reverse, Rotation p_rotate) {
     	int px = p_posX;
     	int py = p_posY;
     	//if (true) return false;
@@ -62,6 +64,11 @@ public class TileCollision {
     			py = 16-py;
     			break;
     		}
+    	}
+    	if (p_rotate != Rotation.NOTHING) {
+    		Point dest = p_rotate.rotate(new Point(px, py), 16, 16);
+    		px = dest.x;
+    		py = dest.y;
     	}
 		return tileInfos[p_nTile].collide(px, py);
     }

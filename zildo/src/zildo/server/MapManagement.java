@@ -291,8 +291,7 @@ public class MapManagement {
 				if (tile == null) {
 					return false;
 				}
-				on_map = tile.getValue();
-				if (tileCollision.collide(modx, mody, on_map, tile.reverse)) {
+				if (tileCollision.collide(modx, mody, tile)) {
 					return true;
 				}
 				return EngineZildo.spriteManagement.collideSprite(tx, ty,
@@ -308,7 +307,7 @@ public class MapManagement {
 					return false;
 				}
 				on_map = tile.getValue();
-				if (tileCollision.collide(modx, mody, on_map, tile.reverse)) {
+				if (tileCollision.collide(modx, mody, tile)) {
 					IntSet waterBank = new IntSet(154, 155, 156, 157, 158, 159, 188, 189, 190, 191, 192, 193);
 					if (waterBank.contains(on_map - 256*2)) {
 						// Water bank => is it above ?

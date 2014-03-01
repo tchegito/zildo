@@ -31,6 +31,7 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.EntityType;
@@ -714,7 +715,7 @@ public abstract class Perso extends Element {
 			default:
 				if (isZildo() && bottomLess) {
 					// Make hero fall if he reach the border of the hill
-					if (!tileCollision.collide((int) x % 16, (int) y % 16, onmap, Reverse.NOTHING)) {
+					if (!tileCollision.collide((int) x % 16, (int) y % 16, onmap, Reverse.NOTHING, Rotation.NOTHING)) {
 						fall = true;
 					}
 					break;
