@@ -539,6 +539,47 @@
 		</action>
     </quest>
     
+    <quest name="prison5_cell1kill">
+        <trigger>
+            <location name="prison5"/>
+            <dead who="bigrat1"/>
+        </trigger>
+        <action>
+            <activate what="doorc1a" value="true"/>
+            <activate what="doorc1b" value="true"/>
+        </action>
+    </quest>
+    
+    <quest name="prison5_cell2kill">
+        <trigger>
+            <location name="prison5"/>
+            <dead who="rat1,rat2"/>
+        </trigger>
+        <action>
+            <activate what="doorc2a" value="true"/>
+            <activate what="doorc2b" value="true"/>
+        </action>
+    </quest>
+    
+    <quest name="prison5_button1">
+        <trigger>
+            <location name="prison5" tilePos="42,26" gear="TIMED_BUTTON"/>
+        </trigger>
+        <action>
+            <activate what="door3a"/>
+            <activate what="door3b"/>
+        </action>
+    </quest>
+    
+    <quest name="prison5_button2">
+        <trigger>
+            <location name="prison5" tilePos="56,26" gear="BUTTON"/>
+        </trigger>
+        <action>
+            <activate what="door4" value="true"/>
+        </action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
