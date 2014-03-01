@@ -87,9 +87,10 @@ public class SpriteCollision {
 				if (isGoodies || isBlockable) {
 
 					// Store entity's ID into 1 area with its size
+					//Point center = entity.getCenter();
 					int id = entity.getId();
-					int x = entity.getCenter().x;
-					int y = entity.getCenter().y;
+					int x = (int) entity.x;
+					int y = (int) entity.y;
 					int loc = (y << 10) + x;	// << 10 means *64*16
 					int previousLoc = indexSpr.get(id);
 					if (previousLoc != loc) {
@@ -247,15 +248,15 @@ public class SpriteCollision {
 	 * @param entity
 	 */
 	private void addPatch(SpriteEntity entity) {
-		int x = entity.getCenter().x;
-		int y = entity.getCenter().y;
+		int x = (int) entity.x;
+		int y = (int) entity.y;
 		int id = entity.getId();
 		applyPatch(entity, id, x, y);
 	}
 	
 	private void removePatch(SpriteEntity entity) {
-		int x = entity.getCenter().x;
-		int y = entity.getCenter().y;
+		int x = (int) entity.x;
+		int y = (int) entity.y;
 		applyPatch(entity, 0, x, y);
 	}
 	
@@ -272,6 +273,8 @@ public class SpriteCollision {
 			sx = sy;
 			sy = tempSize;
 		}
+		x = (int) entity.x - sx/2;
+		y = (int) entity.y - sy;
 		for (int a = 0;a < sy;a++) {
 			for (int b = 0;b < sx;b++) {
 				if (!isOutOfBounds(x + b, y + a)) {
