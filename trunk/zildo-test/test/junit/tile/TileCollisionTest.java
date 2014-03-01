@@ -25,6 +25,7 @@ import junit.framework.Assert;
 import junit.perso.EngineUT;
 import zildo.monde.map.TileCollision;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
 
 public class TileCollisionTest extends EngineUT {
 	
@@ -68,7 +69,7 @@ public class TileCollisionTest extends EngineUT {
 					xx = 15-x;
 				}
 				boolean result = '1' == i.charAt(xx);
-				boolean col = tileCollision.collide(x, y, nTile, Reverse.NOTHING);
+				boolean col = tileCollision.collide(x, y, nTile, Reverse.NOTHING, Rotation.NOTHING);
 				Assert.assertTrue("collision should have been "+result+" for ("+x+", "+y+")", result == col);
 			}
 		}
