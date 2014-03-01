@@ -478,10 +478,19 @@ public class Area implements EasySerializable {
 		}
 	}
 	
-	public void explodeTile(Point loc, boolean ingame) {
+	/**
+	 * Explode a wall at a given location, looking for a crack sprite. 
+	 * @param loc
+	 * @param ingame TRUE means that player is doing action. FALSE means that we restore a saved state => no explosion sound
+	 * @param givenCrack element representing the crack in the wall (if provided, don't look for any others, indeed)
+	 */
+	public void explodeTile(Point loc, boolean ingame, Element givenCrack) {
 		// Look for a 'crack'
-		Element crack = EngineZildo.spriteManagement.collideElement(loc.x, loc.y+8, null, 8, 
+		Element crack = givenCrack;
+		if (crack == null) {
+			crack = EngineZildo.spriteManagement.collideElement(loc.x, loc.y+8, null, 8, 
 				GearDescription.CRACK1, GearDescription.CRACK2, GearDescription.BOULDER);
+		}
 		if (crack != null) {
 			
 			Point tileLoc = new Point(crack.getCenter());
@@ -511,7 +520,7 @@ public class Area implements EasySerializable {
 			}
 			// Play secret sound
 			if (ingame) {
-				EngineZildo.scriptManagement.explodeWall(name, loc);
+				EngineZildo.scriptManagement.explodeWall(name, new Point(crack.x / 16, (crack.y-1) / 16));
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoSecret, loc);
 			}
 		}
@@ -960,14 +969,14 @@ public class Area implements EasySerializable {
 								break;
 							}
 						}
+						entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse),
+								false);
 						if (desc instanceof GearDescription && ((GearDescription)desc).isExplodable()) {	// Exploded wall ?
 							if (EngineZildo.scriptManagement.isExplodedWall(map.getName(), new Point(ax, ay))) {
-								map.explodeTile(new Point(x, y), false);
+								map.explodeTile(new Point(x, y), false, (Element) entity);
 								break;
 							}
 						}
-						entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse),
-								false);
 						if ((multi & SpriteEntity.FOREGROUND) != 0) {
 							entity.setForeground(true);
 						}
