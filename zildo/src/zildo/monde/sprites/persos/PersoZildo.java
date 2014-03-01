@@ -569,7 +569,7 @@ public class PersoZildo extends Perso {
 
 		// Default : invisible
 		shadow.setVisible(false);
-		feet.setVisible(inWater || inDirt);
+		feet.setVisible(pv > 0 && (inWater || inDirt));
 		shield.setVisible(false);
 		sword.setVisible(false);
 		
