@@ -665,6 +665,7 @@ public abstract class Perso extends Element {
 			case 858:
 			case 861:
 			case 862:
+			case 7*256+129: case 7*256+130:
 				if (!isGhost() && isZildo()) {
 					EngineZildo.scriptManagement.execute("miniStairsDown", true);
 				}
@@ -674,6 +675,7 @@ public abstract class Perso extends Element {
 			case 860:
 			case 863:
 			case 864:	// Cave stairs
+			case 7*256+131: case 7*256+132:
 			case 768 + 248:	// Rock on back2 for stairs (careful with this !!!)
 				if (!isGhost() && isZildo()) {
 					EngineZildo.scriptManagement.execute("miniStairsUp", true);

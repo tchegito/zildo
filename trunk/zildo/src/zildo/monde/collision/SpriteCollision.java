@@ -264,18 +264,20 @@ public class SpriteCollision {
 		SpriteModel sprModel = entity.getSprModel();
 		int sx = sprModel.getTaille_x();
 		int sy = sprModel.getTaille_y();
-		// Is the sprite repeated ?
-		sx*=entity.repeatX;
-		sy*=entity.repeatY;
+		int repeatX = entity.repeatX;
+		int repeatY = entity.repeatY;
 		// Is the sprite rotated ?
 		if (entity.rotation == Rotation.CLOCKWISE || entity.rotation == Rotation.COUNTERCLOCKWISE) {
-			int tempSize = sx;
-			sx = sy;
-			sy = tempSize;
+			int tempSize = sx; int tempRepeat = repeatX;
+			sx = sy;       repeatX = repeatY; 
+			sy = tempSize; repeatY = tempRepeat;
 		}
 		// Equivalent to 'entity.getCenter()' but with the right width/height
 		x = (int) entity.x - sx/2;
 		y = (int) entity.y - sy;
+		// Is the sprite repeated ?
+		sx*=repeatX;
+		sy*=repeatY;		
 		for (int a = 0;a < sy;a++) {
 			for (int b = 0;b < sx;b++) {
 				if (!isOutOfBounds(x + b, y + a)) {
