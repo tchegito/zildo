@@ -266,7 +266,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
         	    List<Case> cases=new ArrayList<Case>();
         	    for (int y=j;y<h;y++) {
             	    	for (int x=i;x<w;x++) {
-            	    		Case c = map.get_mapcase(x, y + 4 );
+            	    		Case c = map.get_mapcase(x, y);
             	    		if (c != null) {
             	    			cases.add(new Case(c));
             	    		}
@@ -363,8 +363,8 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	 */
 	private void moveChainingPoint(Point p_point, ChainingPointSelection p_sel) {
 		ChainingPoint ch=p_sel.getElement();
-		ch.setPx((short) (p_point.x / 16));
-		ch.setPy((short) (p_point.y / 16));
+		ch.setPx((short) (p_point.x / 8));
+		ch.setPy((short) (p_point.y / 8));
 	}
 	
 	/**
