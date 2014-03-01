@@ -103,8 +103,8 @@ public class AreaChecker {
 		final List<Case> errorCases = new ArrayList<Case>();
 		for (ChainingPoint ch : area.getChainingPoints()) {
 			Point[] mustBeMasked;
-			int x = ch.getPx();
-			int y = ch.getPy();
+			int x = ch.getPx() / 2;
+			int y = ch.getPy() / 2;
 			if (ch.isBorder()) {
 				continue;
 			} else if (ch.isVertical()) {
@@ -128,7 +128,7 @@ public class AreaChecker {
 			// Check all expected tiles
 			
 			for (Point p : vertical_mustBeMasked) {
-				Point toCheck = new Point(ch.getPx() + p.x, ch.getPy() + p.y
+				Point toCheck = new Point(ch.getPx()/2 + p.x, ch.getPy()/2 + p.y
 						* factor);
 				if (!area.isOutside(toCheck.x << 4, toCheck.y << 4)) {
 					Case c = area.get_mapcase(toCheck.x, toCheck.y);
