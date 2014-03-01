@@ -123,10 +123,8 @@ public class SpriteCollision {
 	
 	public SpriteEntity getCollidingSpriteAt(int tx, int ty, SpriteEntity entityRef) {
 		int refId = -1;
-		boolean isZildo = false;
 		if (entityRef != null) {
 			refId = entityRef.getId();
-			isZildo = entityRef.isZildo();
 		}
 		boolean found = false;
 		Element elem = null;
