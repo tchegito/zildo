@@ -183,29 +183,4 @@ public class ZildoScrollablePanel extends JPanel {
 	public ZildoCanvas getCanvas() {
 		return zildoCanvas;
 	}
-	
-	public List<Zone> getChainingPoints() {
-		List<Zone> zones=new ArrayList<Zone>();
-		Area map=EngineZildo.mapManagement.getCurrentMap();
-		List<ChainingPoint> chaining=map.getChainingPoints();
-		for (ChainingPoint c : chaining) {
-			Point p1=new Point(c.getPx(), c.getPy());
-			Point p2=new Point(32, 16); //c.getPx() & 63, c.getPy() & 63);
-			if (c.isBorder()) {
-				if (p1.x == 0 || p1.x == map.getDim_x()-1) {
-					p1.y=0;
-					p2.y=map.getDim_y()*16;
-					p2.x=16;
-				} else {
-					p1.x=0;
-					p2.x=map.getDim_x()*16;
-				}
-			} else if (c.isVertical()) {
-				p2.x=16;
-				p2.y=32;
-			}
-			zones.add(new Zone(p1.x, p1.y, p2.x, p2.y));
-		}
-		return zones;
-	}
 }
