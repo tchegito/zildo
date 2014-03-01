@@ -128,6 +128,7 @@ public class ElementGear extends Element {
 					break;
 				case GREEN_SIMPLEDOOR:
 				case GREEN_SIMPLEDOOR_OPENING:
+				case GRATE:
 					if (state) { // Opening
 						switch (count) {
 						case 10:

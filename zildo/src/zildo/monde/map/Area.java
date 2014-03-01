@@ -243,7 +243,7 @@ public class Area implements EasySerializable {
 			tile = temp.getBackTile();
 		}
 		val = tile.getValue();
-		if ( waterBank.contains(val - 256*2) ) {
+		if ( waterBank.contains(val - 256*2) || val == 78 + 256*3) {
 			return TileNature.WATER;
 		}
 		return TileNature.REGULAR;
@@ -414,11 +414,9 @@ public class Area implements EasySerializable {
 		for (ChainingPoint ch : listChainingPoint) {
 			int orderX = 0;
 			int orderY = 0;
-			// We're gonna get a sort number in each coordinate for all chaining
-			// point
-			// referring to the same Area.
+			// We're gonna get a sort number in each coordinate for all chaining point referring to the same Area.
 			for (ChainingPoint chP : listChainingPoint) {
-				if (chP.getMapname().equals(ch.getMapname())) {
+				if (chP.getMapname().equals(ch.getMapname()) ) { 	// Linking to the same map
 					if (chP.getPx() <= ch.getPx()) {
 						orderX++;
 					}
