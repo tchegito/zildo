@@ -241,6 +241,7 @@ public enum ElementDescription implements SpriteDescription {
 				case POISON1: case POISON2:
 				case REDSPHERE1: case REDSPHERE2: case REDSPHERE3:
 				case BROWNSPHERE1: case BROWNSPHERE2: case BROWNSPHERE3:
+				case EXPLO1: case EXPLO2: case EXPLO3:
 					damage = true;
 					break;
 			}
