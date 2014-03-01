@@ -273,6 +273,7 @@ public class SpriteCollision {
 			sx = sy;
 			sy = tempSize;
 		}
+		// Equivalent to 'entity.getCenter()' but with the right width/height
 		x = (int) entity.x - sx/2;
 		y = (int) entity.y - sy;
 		for (int a = 0;a < sy;a++) {
