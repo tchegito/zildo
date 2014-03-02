@@ -499,6 +499,15 @@ public class Element extends SpriteEntity {
 	 */
 	@Override
 	public void fall() {
+		// 0: some elements just disappear
+		// TODO: basically, we shouldn't do that because desc should be set
+		ElementDescription d = ElementDescription.fromInt(nSpr);
+		switch (d) {
+		case SEWER_SMOKE1: case SEWER_SMOKE2:
+		case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:
+			return;
+		}
+		
 		// 1: get the landing point nature
 		Area area = EngineZildo.mapManagement.getCurrentMap();
 		int cx = (int) (x / 16);
@@ -520,8 +529,6 @@ public class Element extends SpriteEntity {
 			case REGULAR:
 				// 2: on the floor, many possibilities
 				if (nBank == SpriteBank.BANK_ELEMENTS) {
-					// TODO: basically, we shouldn't do that because desc should be set
-					ElementDescription d = ElementDescription.fromInt(nSpr);
 					switch (d) {
 					case BUSHES:
 						// Le buisson s'effeuille

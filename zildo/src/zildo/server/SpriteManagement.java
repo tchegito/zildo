@@ -51,6 +51,7 @@ import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.elements.ElementHearts;
 import zildo.monde.sprites.elements.ElementImpact;
+import zildo.monde.sprites.elements.ElementSewerSmoke;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.elements.ElementLauncher;
 import zildo.monde.sprites.elements.ElementPoison;
@@ -412,6 +413,10 @@ public class SpriteManagement extends SpriteStore {
 				break;
 			case WATER_SPLASH:
 				element = new ElementImpact(x, y, ImpactKind.WATER_SPLASH, null);
+				spawnSprite(element);
+				break;
+			case SEWER_SMOKE:
+				element = new ElementSewerSmoke(x, y, Angle.SUD);
 				spawnSprite(element);
 				break;
 		}

@@ -147,7 +147,9 @@ public enum BankSound implements AudioBank {
 	
 	SerpentSpit("serpentSpit"),
 	
-	BigRat("bigrat");
+	BigRat("bigrat"),
+	
+	Gas("gas");
 	
 	String filename;
 	
