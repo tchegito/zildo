@@ -468,7 +468,8 @@ public class MapManagement {
 			switch (angle) {
 			case NORD:
 				onMap = area.readmap(cx, cy - 1);
-				if (onMap == 21 || onMap == 3 || onMap == 839 || onMap == 19 || onMap == 18 || onMap == 20 || onMap == 0 || onMap == 7)
+				if (onMap == 21 || onMap == 3 || onMap == 839 || onMap == 19 || onMap == 18 || onMap == 20 || onMap == 0 || onMap == 7 ||
+						onMap == 256 * 3 + 135)	// Cave grey wall
 					result = angle;
 				break;
 			case EST:
@@ -480,7 +481,8 @@ public class MapManagement {
 				break;
 			case SUD:
 				onMap = area.readmap(cx, cy + 1);
-				if (onMap == 32 || onMap == 31 || onMap == 3*256 + 76 || onMap == 3*256 + 5)
+				if (onMap == 32 || onMap == 31 || onMap == 3*256 + 76 || onMap == 3*256 + 5 ||
+						onMap == 256 * 3 + 129) // Cave grey wall
 					result = angle;
 				break;
 			case OUEST:

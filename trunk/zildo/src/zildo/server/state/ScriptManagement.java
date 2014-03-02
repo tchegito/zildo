@@ -161,14 +161,23 @@ public class ScriptManagement {
     	}
     }
 
-    public void execute(List<LanguageElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority, IEvaluationContext p_context) {
+    /**
+     * Execute a sequence of actions with given attributes.
+     * @param p_actions
+     * @param p_finalEvent
+     * @param p_quest (optional)
+     * @param p_topPriority
+     * @param p_context (optional)
+     * @param p_locked used if no quest is provided
+     */
+    public void execute(List<LanguageElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority, IEvaluationContext p_context, boolean p_locked) {
     	// Create a SceneElement from the given actions
 		SceneElement scene=SceneElement.createScene(p_actions);
 		if (p_quest != null) {
 			scene.id = MARQUER_SCENE+p_quest.name;
 			scene.locked = p_quest.locked;
-		} else if (p_context != null) {
-			scene.locked = false;	// Unlock when scene is contextual (may be tuned later) => that means player can move
+		} else {
+			scene.locked = p_locked;
 		}
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context);
@@ -315,14 +324,14 @@ public class ScriptManagement {
 	    	TriggerElement trig=TriggerElement.createQuestDoneTrigger(p_quest.name);
 	    	trigger(trig);
 			// Execute the corresponding actions
-			execute(p_quest.getActions(), true, p_quest, false, null);
+			execute(p_quest.getActions(), true, p_quest, false, null, true);
     	}
 
     	// 2) note the history events (mapReplace ...)
     	// It will be executed AFTER the entire script in 'actions' tag
     	List<LanguageElement> history=p_quest.getHistory();
 		if (history != null) {
-			execute(history, true, null, false, null);
+			execute(history, true, null, false, null, true);
 		}
     	
     }
@@ -416,7 +425,7 @@ public class ScriptManagement {
 		PersoActionElement action = adventure.getPersoActionNamed(name);
 		if (action != null) {
 			SpriteEntityContext context = new SpriteEntityContext(perso);
-			execute(action.actions, true, null, false, context);
+			execute(action.actions, true, null, false, context, false);
 			perso.setAttente(action.duration);
 		}
 	}
@@ -506,7 +515,7 @@ public class ScriptManagement {
 			for (ConditionElement condi : mapScript.getConditions()) {
 				if (condi.mapName.equals(p_mapName) && condi.isRight()) {
 					// Execute the 'mapscript' before all, with topPriority=TRUE
-					execute(condi.getActions(), false, null, true, null);
+					execute(condi.getActions(), false, null, true, null, true);
 				}
 			}
 		}

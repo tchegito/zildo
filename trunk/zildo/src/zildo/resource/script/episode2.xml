@@ -580,6 +580,26 @@
         </action>
     </quest>
     
+    <quest name="p5_trigger_smoke" locked="false">
+        <trigger>
+        	<location name="prison5"/>
+        </trigger>
+        <action>
+            <actions>
+	            <timer each="80+random*30">
+	                <action>
+		                <animation pos="392,300" type="SEWER_SMOKE"/>
+		            </action>
+	            </timer>
+	            <timer each="100+random*30">
+	                <action>
+		                <animation pos="263,300" type="SEWER_SMOKE"/>
+		            </action>
+	            </timer>
+		    </actions>
+	    </action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -756,6 +776,9 @@
    		</condition>
    		<condition name="prison4">
 			<markQuest name="prison4_openDoors" value="false"/> <!--  Because door opening is buggy when targeted here -->
+   		</condition>
+   		<condition name="prison5">
+   		    <markQuest name="p5_trigger_smoke" value="false"/>
    		</condition>
    	</mapScript>
 

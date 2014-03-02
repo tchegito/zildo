@@ -46,5 +46,6 @@ public enum SpriteAnimation {
 	LAVA_DROP,
 	DUST,
 	POISONCLOUD,
-	WATER_SPLASH;
+	WATER_SPLASH,
+	SEWER_SMOKE;
 }

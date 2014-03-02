@@ -573,7 +573,7 @@ public class ActionExecutor {
                 	Perso found = EngineZildo.persoManagement.lookFor(perso, lookFor.radius, p_action.info);
                 	if (found != null) {
                 		IEvaluationContext persoContext = new SpriteEntityContext(found);
-                    	EngineZildo.scriptManagement.execute(lookFor.actions, false, null, false, persoContext);
+                    	EngineZildo.scriptManagement.execute(lookFor.actions, false, null, false, persoContext, false);
                 	} else {
                 		achieved = true;
                 	}
@@ -654,11 +654,11 @@ public class ActionExecutor {
             	TimerElement timer = (TimerElement) p_action;
             	if (timer.endCondition != null && timer.endCondition.evaluate(context) == 1) {
             		achieved = true;
-                	EngineZildo.scriptManagement.execute(timer.end, false, null, false, context);
+                	EngineZildo.scriptManagement.execute(timer.end, false, null, false, context, false);
             	} else if (count == nextStep) {
             		count = 0;
             		nextStep = (int) timer.each.evaluate(context);
-                	EngineZildo.scriptManagement.execute(timer.actions, false, null, false, context);
+                	EngineZildo.scriptManagement.execute(timer.actions, false, null, false, context, false);
             	} else {
             		count++;
             	}

@@ -310,7 +310,11 @@ public class ElementsPlus extends SpriteBanque {
 				// Bag (empty and full)
 				new Zone(79, 85, 16, 16), new Zone(95, 85, 15, 17),
 				// Sewer borders, 
-				new Zone(297, 19, 8, 8), new Zone(297, 27, 8, 8), new Zone(305, 27, 8, 8)
+				new Zone(297, 19, 8, 8), new Zone(297, 27, 8, 8), new Zone(305, 27, 8, 8),
+				// Sewer smoke
+				new Zone(263, 52, 7, 7), new Zone(263, 60, 7, 7),
+				new Zone(271, 62, 5, 5), new Zone(274, 52, 6, 5), new Zone(277, 57, 5, 5),
+				new Zone(283, 55, 4, 6)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
