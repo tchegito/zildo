@@ -19,7 +19,7 @@ public class TestDialogs {
 	final static String BUNDLE_MENU = "zildo.resource.bundle.menu";
 
 	// Some sentences are the same in french than in english : we must authorize those exceptions
-	final static List<String> sameSentecesTranslated=Arrays.asList("m7.options", "m12.butOk");
+	final static List<String> sameSentencesTranslated=Arrays.asList("m7.options", "m12.butOk", "m1.credits");
 	
 	@Test
 	public void checkGameComplete() {
@@ -77,7 +77,7 @@ public class TestDialogs {
 			String key = keys.nextElement();
 			try {
 				String translated = bundleTranslated.getString(key);
-				if (translated.equals(bundleRef.getString(key)) && !sameSentecesTranslated.contains(key)) {
+				if (translated.equals(bundleRef.getString(key)) && !sameSentencesTranslated.contains(key)) {
 					untranslated.add(key);
 				}
 			} catch (MissingResourceException e) {
