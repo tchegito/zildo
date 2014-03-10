@@ -44,7 +44,7 @@ public enum GearDescription implements SpriteDescription {
 	
 	CRACK1, CRACK2,	// Broken walls
 	
-	GRATE;
+	GRATE, GRATE_OPENING;
 	
 	public int getBank() {
 		return SpriteBank.BANK_GEAR;
