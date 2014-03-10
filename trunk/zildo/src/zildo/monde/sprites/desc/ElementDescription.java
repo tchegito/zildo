@@ -123,7 +123,9 @@ public enum ElementDescription implements SpriteDescription {
 	// 227
 	EMPTY_BAG, FULL_BAG,
 	// 229
-	SEWER_BARH, SEWER_BARV, SEWER_BARUP;
+	SEWER_BARH, SEWER_BARV, SEWER_BARUP,
+	// 232
+	SEWER_SMOKE1, SEWER_SMOKE2, SEWER_VOLUT1, SEWER_VOLUT2, SEWER_VOLUT3, SEWER_VOLUT4;
 	
 	Boolean damage;
 	
@@ -242,6 +244,8 @@ public enum ElementDescription implements SpriteDescription {
 				case REDSPHERE1: case REDSPHERE2: case REDSPHERE3:
 				case BROWNSPHERE1: case BROWNSPHERE2: case BROWNSPHERE3:
 				case EXPLO1: case EXPLO2: case EXPLO3:
+				case SEWER_SMOKE1: case SEWER_SMOKE2:
+				case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:					
 					damage = true;
 					break;
 			}
@@ -286,6 +290,8 @@ public enum ElementDescription implements SpriteDescription {
 		case CRATE: case WATER_LEAF:
 		case REDSPHERE1: case REDSPHERE2: case REDSPHERE3:
 		case BROWNSPHERE1: case BROWNSPHERE2: case BROWNSPHERE3:
+		case SEWER_SMOKE1: case SEWER_SMOKE2:
+		case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:
 			return true;
 		default:
 			return false;
