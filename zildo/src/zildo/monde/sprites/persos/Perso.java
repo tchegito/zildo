@@ -748,6 +748,9 @@ public abstract class Perso extends Element {
 			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x, y), null, onmap);
 			EngineZildo.scriptManagement.trigger(trig);
 		}
+		if (shadow != null) {
+			shadow.setAlpha(inWater ? 100 : 255);
+		}
 		return slowDown;
 	}
 
