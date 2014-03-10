@@ -123,7 +123,8 @@ public class SpriteSorter {
 			if (!sprite.getEntityType().isEntity()) {
 				// To get the right comparison, delete the adjustment done by updateSprites
 				// just for filling the sort array
-				y+=spr.getTaille_y() - 3 + 2;
+				int height = sprite.rotation.isWidthHeightSwitched() ? spr.getTaille_x() : spr.getTaille_y();
+				y+=height - 3 + 2;
 			} else {
 				// Entity : make its always UNDER Zildo and other characters, at the same level
 				// as the map tiles in fact.
