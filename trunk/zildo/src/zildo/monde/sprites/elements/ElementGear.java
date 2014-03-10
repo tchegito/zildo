@@ -100,13 +100,20 @@ public class ElementGear extends Element {
 	@Override
 	public void animate() {
 		if (acting) {
+			GearDescription closed = null, opened = null;
 			GearDescription gearDesc = (GearDescription) desc;
 			switch (gearDesc) {
 				case GREEN_DOOR:
 				case GREEN_DOOR_OPENING:
+					opened = GearDescription.GREEN_DOOR_OPENING;
+				case CAVE_KEYDOOR:
+				case CAVE_KEYDOOR_OPENING:
+					if (opened == null) {
+						opened = GearDescription.CAVE_KEYDOOR_OPENING;
+					}
 					switch (count) {
 						case 10:
-							setDesc(GearDescription.GREEN_DOOR_OPENING);
+							setDesc(opened);
 							EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlockDouble, this);
 							break;
 						case 20:
@@ -114,25 +121,20 @@ public class ElementGear extends Element {
 					}
 					count++;
 					break;
-				case CAVE_KEYDOOR:
-				case CAVE_KEYDOOR_OPENING:
-					switch (count) {
-					case 10:
-						setDesc(GearDescription.CAVE_KEYDOOR_OPENING);
-						EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlockDouble, this);
-						break;
-					case 20:
-						dying = true;
-					}
-					count++;
-					break;
 				case GREEN_SIMPLEDOOR:
 				case GREEN_SIMPLEDOOR_OPENING:
+					closed = GearDescription.GREEN_DOOR;
+					opened = GearDescription.GREEN_SIMPLEDOOR_OPENING;
 				case GRATE:
+				case GRATE_OPENING:
+					if (closed == null) {
+						closed = GearDescription.GRATE;
+						opened = GearDescription.GRATE_OPENING;
+					}
 					if (state) { // Opening
 						switch (count) {
 						case 10:
-							setDesc(GearDescription.GREEN_SIMPLEDOOR_OPENING);
+							setDesc(opened);
 							EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlockDouble, this);
 							break;
 						case 20:
@@ -142,12 +144,12 @@ public class ElementGear extends Element {
 					} else { // Closing
 						switch (count) {
 						case 10:
-							setDesc(GearDescription.GREEN_SIMPLEDOOR_OPENING);
+							setDesc(opened);
 							EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlockDouble, this);
 							setVisible(true);
 							break;
 						case 20:
-							setDesc(GearDescription.GREEN_SIMPLEDOOR);
+							setDesc(closed);
 							acting = false;
 							break;
 						}
