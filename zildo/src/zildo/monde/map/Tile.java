@@ -52,9 +52,15 @@ public class Tile implements Cloneable {
 	}
 
 	public Tile(int p_value, Case p_parent) {
-		bank = (byte) ((p_value >> 8) & 15);
-		index = p_value & 255;
+		set(p_value, Rotation.NOTHING);
 		parent = p_parent;
+	}
+	
+	public void set(int p_value, Rotation rot) {
+		previousBank = bank;
+		index = p_value & 255;
+		bank = (byte) ((p_value >> 8) & 15);
+		rotation = rot;
 	}
 	
 	@Override
