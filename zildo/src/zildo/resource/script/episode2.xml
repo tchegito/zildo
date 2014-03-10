@@ -526,7 +526,7 @@
         </action>
     </quest>
     
-    <quest name="prison4_openDoors">
+    <quest name="prison4_openDoors" locked="false">
         <trigger>
         	<location name="prison4"/>
         	<questDone name="prison4_doors"/>
@@ -779,6 +779,8 @@
    		</condition>
    		<condition name="prison5">
    		    <markQuest name="p5_trigger_smoke" value="false"/>
+   		    <markQuest name="prison5_cell1kill" value="false"/>
+   		    <markQuest name="prison5_cell2kill" value="false"/>
    		</condition>
    	</mapScript>
 
