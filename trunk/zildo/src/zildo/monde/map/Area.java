@@ -297,6 +297,7 @@ public class Area implements EasySerializable {
 		Case temp = this.get_mapcase(x, y);
 		if (temp == null) {
 			temp = new Case();
+			set_mapcase(x, y, temp);
 		} else {
 			temp.setModified(true);
 		}
@@ -321,10 +322,7 @@ public class Area implements EasySerializable {
 			}
 			break;
 		}
-		tile.index = quoi & 255;
-		tile.bank = (byte) (quoi >> 8);
-		tile.rotation = rot;
-		this.set_mapcase(x, y, temp);
+		tile.set(quoi, rot);
 
 		changes.add(new Point(x, y));
 	}
