@@ -416,7 +416,7 @@ public class SpriteManagement extends SpriteStore {
 				spawnSprite(element);
 				break;
 			case SEWER_SMOKE:
-				element = new ElementSewerSmoke(x, y, Angle.SUD);
+				element = new ElementSewerSmoke(x, y, Angle.fromInt(misc));
 				spawnSprite(element);
 				break;
 		}

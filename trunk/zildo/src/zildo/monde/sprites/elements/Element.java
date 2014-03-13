@@ -139,6 +139,21 @@ public class Element extends SpriteEntity {
 
 	}
 
+	public void setPos(Vector2f v) {
+		x = v.x;
+		y = v.y;
+	}
+	
+	public void setSpeed(Vector2f v) {
+		vx = v.x;
+		vy = v.y;
+	}
+	
+	public void setFriction(Vector2f v) {
+		fx = v.x;
+		fy = v.y;
+	}
+	
 	/**
 	 * Let's do the physical law job.
 	 */

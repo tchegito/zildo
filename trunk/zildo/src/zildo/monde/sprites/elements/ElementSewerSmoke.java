@@ -49,10 +49,11 @@ public class ElementSewerSmoke extends Element {
 		counter = 0;
 		
 		// Default angle: SUD
-		this.y+=8;
+		setPos(new Vector2f(ang.coordf).mul(8));
+		setFriction(new Vector2f(ang.coordf).mul(0.1f));
+		setSpeed(new Vector2f(ang.coordf).mul(1.3f));
+		
 		ay = 0;
-		fy = 0.1f;
-		vy = 1.3f;
 		
 		EngineZildo.soundManagement.broadcastSound(BankSound.Gas, this);
 	}
