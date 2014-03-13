@@ -39,6 +39,10 @@ public class Vector2f {
         set((float) p_x, (float) p_y);
     }
     
+    public Vector2f(Pointf p) {
+    	set(p.x, p.y);
+    }
+    
     public void set(float p_x, float p_y) {
         x = p_x;
         y = p_y;
@@ -53,6 +57,12 @@ public class Vector2f {
     public Vector2f add(Vector2f v) {
     	x += v.x;
     	y += v.y;
+    	return this;
+    }
+    
+    public Vector2f mul(float factor) {
+    	x *= factor;
+    	y *= factor;
     	return this;
     }
     

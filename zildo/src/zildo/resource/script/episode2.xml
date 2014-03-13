@@ -588,12 +588,12 @@
             <actions>
 	            <timer each="80+random*30">
 	                <action>
-		                <animation pos="392,300" type="SEWER_SMOKE"/>
+		                <animation pos="392,300" type="SEWER_SMOKE" angle="2"/>
 		            </action>
 	            </timer>
 	            <timer each="100+random*30">
 	                <action>
-		                <animation pos="263,300" type="SEWER_SMOKE"/>
+		                <animation pos="263,300" type="SEWER_SMOKE" angle="2"/>
 		            </action>
 	            </timer>
 		    </actions>
