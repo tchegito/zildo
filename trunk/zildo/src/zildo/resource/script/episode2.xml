@@ -563,11 +563,19 @@
     
     <quest name="prison5_button1">
         <trigger>
-            <location name="prison5" tilePos="42,26" gear="TIMED_BUTTON"/>
+            <location name="prison5" tilePos="42,26" gear="BUTTON"/>
         </trigger>
         <action>
-            <activate what="door3a"/>
-            <activate what="door3b"/>
+            <wait value="20"/>
+            <sound name="MenuOutOfOrder"/>
+            <spawn type="RAT" who="surpriserat1" pos="707,466"/>
+            <angle who="zildo" value="2"/>
+            <wait vlaue="30"/>
+            <spawn type="RAT" who="surpriserat2" pos="746,443"/>
+            <wait value="20"/>
+            <angle who="zildo" value="1"/>
+            <script who="surpriserat1" value="0"/>
+            <script who="surpriserat2" value="0"/>
         </action>
     </quest>
     
@@ -588,18 +596,53 @@
             <actions>
 	            <timer each="80+random*30">
 	                <action>
-		                <animation pos="392,300" type="SEWER_SMOKE" angle="2"/>
+		                <animation pos="392,302" type="SEWER_SMOKE" angle="2"/>
 		            </action>
 	            </timer>
 	            <timer each="100+random*30">
 	                <action>
-		                <animation pos="263,300" type="SEWER_SMOKE" angle="2"/>
+		                <animation pos="263,302" type="SEWER_SMOKE" angle="2"/>
 		            </action>
 	            </timer>
 		    </actions>
 	    </action>
     </quest>
     
+    <quest name="p6_trigger_smoke" locked="false">
+        <trigger>
+        	<location name="prison6"/>
+        </trigger>
+        <action>
+            <actions>
+	            <timer each="100">
+	                <action>
+		                <animation pos="200,503" type="SEWER_SMOKE" angle="2"/>
+		            </action>
+	            </timer>
+	            <timer each="140">
+	                <action>
+		                <animation pos="21,218" type="SEWER_SMOKE" angle="1"/>
+		                <wait value="70"/>
+		                <animation pos="74,218" type="SEWER_SMOKE" angle="3"/>
+		            </action>
+	            </timer>
+	            <timer each="100">
+	                <action>
+		                <animation pos="181,105" type="SEWER_SMOKE" angle="1"/>
+		                <wait value="30"/>
+		                <animation pos="181,105" type="SEWER_SMOKE" angle="1"/>
+		            </action>
+	            </timer>
+	            <timer each="120">
+	                <action>
+		                <animation pos="166,298" type="SEWER_SMOKE" angle="1"/>
+		                <wait value="30"/>
+		                <animation pos="219,298" type="SEWER_SMOKE" angle="3"/>
+		            </action>
+	            </timer>
+		    </actions>
+	    </action>
+    </quest>
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -781,6 +824,9 @@
    		    <markQuest name="p5_trigger_smoke" value="false"/>
    		    <markQuest name="prison5_cell1kill" value="false"/>
    		    <markQuest name="prison5_cell2kill" value="false"/>
+   		</condition>
+   		<condition name="prison6">
+   		    <markQuest name="p6_trigger_smoke" value="false"/>
    		</condition>
    	</mapScript>
 
