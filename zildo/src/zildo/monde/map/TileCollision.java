@@ -66,7 +66,8 @@ public class TileCollision {
     		}
     	}
     	if (p_rotate != Rotation.NOTHING) {
-    		Point dest = p_rotate.rotate(new Point(px, py), 16, 16);
+    		// Turning the pattern with 'alpha' radians is equivalent to turning the point to '-alpha' radians
+    		Point dest = p_rotate.negate().rotate(new Point(px, py), 16, 16);
     		px = dest.x;
     		py = dest.y;
     	}
