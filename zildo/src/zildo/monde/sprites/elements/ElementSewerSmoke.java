@@ -22,6 +22,7 @@ package zildo.monde.sprites.elements;
 import zildo.client.sound.BankSound;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.util.Angle;
@@ -49,9 +50,11 @@ public class ElementSewerSmoke extends Element {
 		counter = 0;
 		
 		// Default angle: SUD
-		setPos(new Vector2f(ang.coordf).mul(8));
-		setFriction(new Vector2f(ang.coordf).mul(0.1f));
+		y+=8;
+		setFriction(new Vector2f(ang.coordf).mul(0.06f).abs());
 		setSpeed(new Vector2f(ang.coordf).mul(1.3f));
+		
+		rotation = Rotation.fromInt(ang.value % 4);
 		
 		ay = 0;
 		

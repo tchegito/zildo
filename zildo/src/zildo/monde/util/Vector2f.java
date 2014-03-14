@@ -81,6 +81,12 @@ public class Vector2f {
     	}
     }
     
+    public Vector2f abs() {
+    	x = Math.abs(x);
+    	y = Math.abs(y);
+    	return this;
+    }
+    
     @Override
 	public String toString() {
     	return "x:"+x+", y:"+y;

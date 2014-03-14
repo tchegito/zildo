@@ -185,8 +185,15 @@ public class Element extends SpriteEntity {
 	 * @return boolean
 	 */
 	public boolean isSolid() {
-		if (desc == ElementDescription.REDSPHERE1 || desc == ElementDescription.BROWNSPHERE1) {
-			return false;
+		if (desc instanceof ElementDescription) {
+			// Volatile elements (need to be refactored, with a real attribute on Descriptions)
+			switch ((ElementDescription) desc) {
+				case REDSPHERE1:
+				case BROWNSPHERE1:
+				case SEWER_SMOKE1:
+				case SEWER_SMOKE2:
+				return false;
+			}
 		}
 		if (desc.isDamageable()) {
 			return true;
