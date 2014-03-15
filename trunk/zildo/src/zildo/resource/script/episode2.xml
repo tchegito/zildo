@@ -833,6 +833,9 @@
    		    <markQuest name="prison5_cell1kill" value="false"/>
    		    <markQuest name="prison5_cell2kill" value="false"/>
    		</condition>
+   		<condition name="prison5" exp="prison5_button2">
+   		    <remove what="door4"/> 
+   		</condition>
    		<condition name="prison6">
    		    <markQuest name="p6_trigger_smoke" value="false"/>
    		</condition>
