@@ -643,6 +643,14 @@
 		    </actions>
 	    </action>
     </quest>
+    
+    <quest name="prison7(22, 11)">
+        <!-- When the hero explodes the wall, we set the other one, on Igor's side, as exploded too -->
+        <action>
+            <markQuest name="prison(6, 2)" value="true"/>
+        </action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        

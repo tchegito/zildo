@@ -59,6 +59,8 @@ public class KeyQuest {
 	}
 	
 	public String buildExplosion(String p_mapName, Point p_loc) {
-		return p_mapName + p_loc.toString();
+		String s = p_mapName + p_loc.toString();
+		System.out.println(s);
+		return s;
 	}
 }
