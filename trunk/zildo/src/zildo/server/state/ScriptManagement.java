@@ -484,7 +484,7 @@ public class ScriptManagement {
 	}
 	
 	public void openDoor(String p_mapName, ChainingPoint p_ch) {
-		accomplishQuest(keyQuest.buildKeyDoor(p_mapName, p_ch), false);
+		accomplishQuest(keyQuest.buildKeyDoor(p_mapName, p_ch), true);
 	}
 	
 	public boolean isTakenItem(String p_mapName, int p_x, int p_y, ElementDescription p_desc) {
@@ -492,7 +492,7 @@ public class ScriptManagement {
 	}
 	
 	public void explodeWall(String p_mapName, Point p_location) {
-		accomplishQuest(keyQuest.buildExplosion(p_mapName,  p_location), false);
+		accomplishQuest(keyQuest.buildExplosion(p_mapName,  p_location), true);
 	}
 	
 	public boolean isExplodedWall(String p_mapName, Point p_location) {
