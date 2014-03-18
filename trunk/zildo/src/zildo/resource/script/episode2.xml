@@ -644,11 +644,20 @@
 	    </action>
     </quest>
     
-    <quest name="prison7(22, 11)">
+    <quest name="prison7(22, 11)" locked="false">
         <!-- When the hero explodes the wall, we set the other one, on Igor's side, as exploded too -->
         <action>
             <markQuest name="prison(6, 2)" value="true"/>
         </action>
+    </quest>
+    
+    <quest name="zildoAccessIgor">
+        <trigger>
+            <location name="prison" pos="96,33"/>
+        </trigger>
+        <action>
+			<exec script="zildoSavesIgor"/>
+		</action>
     </quest>
     
     <mapScript>
@@ -1267,6 +1276,53 @@
    	    <angle who="jaune" value="2"/>
 	</scene>	
 
+	<scene id="zildoSavesIgor">
+	    <script who="igor" value="3"/>
+	    <angle who="igor" value="0"/>
+	    <angle who="jaune" value="3"/>
+	    <wait value="50"/>
+	    <speak who="jaune" text="freeIgor.jaune.0"/>
+  		<moveTo who="jaune" pos="0,16" speed="1.5" delta="true"/>
+  		<actions>
+  		    <moveTo who="igor" foreground="true" pos="96,41" unstoppable="true"/>
+        	<moveTo who="jaune" pos="190,83"/>
+  		</actions>
+  		<angle who="igor" value="2"/>
+        <actions>
+			<activate what="igordoor1" value="true"/>
+	    	<activate what="igordoor2" value="true"/>
+	    </actions>
+	    <moveTo who="jaune" pos="104,83"/>
+	    <angle who="jaune" value="0"/>
+	    <speak who="jaune" text="freeIgor.jaune.1"/>
+	    <speak who="igor" text="freeIgor.igor.0"/>
+		<speak who="jaune" text="freeIgor.jaune.2"/>
+		<moveTo who="jaune" pos="0,-12" speed="1" delta="true"/>
+	    <speak who="igor" text="freeIgor.igor.1"/>
+	    <wait value="40"/>
+		<speak who="jaune" text="freeIgor.jaune.3"/>
+	    <speak who="igor" text="freeIgor.igor.2"/>
+		<moveTo who="jaune" pos="0,12" delta="true"/>
+		<moveTo who="jaune" pos="190,83"/>
+		<angle who="jaune" value="3"/>
+		<wait value="20"/>
+		<actions>
+			<activate what="igordoor1" value="false"/>
+	    	<activate what="igordoor2" value="false"/>
+	    </actions>
+		<actions>
+			<moveTo who="jaune" pos="223,60"/>
+			<moveTo who="igor" pos="6,12" delta="true"/>
+		</actions>
+		<angle who="igor" value="0"/>
+		<moveTo who="igor" pos="0,6" delta="true" foreground="false"/>
+		<angle who="jaune" value="2"/>
+		<angle who="igor" value="0"/>
+		<moveTo who="zildo" pos="0,10" delta="true"/>
+		<speak who="zildo" text="freeIgor.zildo.0"/>
+		<speak who="igor" text="freeIgor.igor.3"/>
+	</scene>
+	
 	<persoAction id="sleeping">
 	    <timer each="40+20*random">
 	        <action>
