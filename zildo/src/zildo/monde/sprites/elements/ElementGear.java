@@ -123,7 +123,7 @@ public class ElementGear extends Element {
 					break;
 				case GREEN_SIMPLEDOOR:
 				case GREEN_SIMPLEDOOR_OPENING:
-					closed = GearDescription.GREEN_DOOR;
+					closed = GearDescription.GREEN_SIMPLEDOOR;
 					opened = GearDescription.GREEN_SIMPLEDOOR_OPENING;
 				case GRATE:
 				case GRATE_OPENING:
