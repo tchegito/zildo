@@ -32,6 +32,19 @@ A quest has a name and a state during the game, which can be 'done' or 'undone'.
 
 _Note_ : when loading a saved game, every accomplished quest launches the execution of each 'history' part, but not 'action' part.
 
+=== Mapscript ===
+
+This is a set of "condition" happening when player arrives on a new map. So it's about a map name, and a combination of quests being accomplished or not.
+
+*Example* : 
+<code>
+<condition name="prisonext" exp="retour_trion-!hector_call3">
+    <!-- Repeat Pssst if player hasn't seen Hector yet -->
+    <markQuest name="hector_call1" value="false"/>
+	    <markQuest name="hector_call2" value="false"/>
+</condition>
+</code>
+
 ==== Attributes ====
 
  * repeat : 'false' (by default) means only one execution of this quest is possible
