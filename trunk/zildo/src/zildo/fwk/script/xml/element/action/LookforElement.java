@@ -36,6 +36,7 @@ public class LookforElement extends ActionElement {
 
 	public List<LanguageElement> actions;
 	public int radius;
+	public boolean negative;	// TRUE=execute nested actions if 'lookFor' fails
 	
 	public LookforElement() {
     	super(null);
@@ -49,6 +50,7 @@ public class LookforElement extends ActionElement {
 
 		who = readAttribute("who");
 		radius = readInt("radius");
+		negative = Boolean.TRUE == readBoolean("negative");
 		String strInfo = readAttribute("info");
 		if (strInfo != null) {
 			info = PersoInfo.valueOf(strInfo);

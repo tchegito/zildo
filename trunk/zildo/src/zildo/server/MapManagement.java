@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.Ambient.Atmosphere;
+import zildo.client.sound.Ambient.Weather;
 import zildo.client.sound.BankMusic;
 import zildo.fwk.collection.IntSet;
 import zildo.fwk.file.EasyBuffering;
@@ -45,6 +46,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.ia.mover.BasicMoveOrder;
+import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -132,12 +134,13 @@ public class MapManagement {
 		// Load a new one
 		currentMap = loadMapFile(adjustedMapName, p_mapname);
 		// Do the map replacements
-		EngineZildo.scriptManagement.execMapScript(adjustedMapName);
+		Atmosphere atmo = currentMap.getAtmosphere();
+		Weather weather = ClientEngineZildo.ambient.getWeather(currentMap);
+		EngineZildo.scriptManagement.execMapScript(adjustedMapName, atmo);
 		
 		EngineZildo.spriteManagement.initForNewMap();
 
 		if (!EngineZildo.game.editing) {
-			Atmosphere atmo = currentMap.getAtmosphere();
 			if (!EngineZildo.soundManagement.isForceMusic()) {
 				BankMusic mus = BankMusic.forName(EngineZildo.scriptManagement.getReplacedZikName(atmo.music.name()));
 				
@@ -147,7 +150,7 @@ public class MapManagement {
 				// Inside cave, we want full light
 				ClientEngineZildo.ortho.setFilteredColor(new Vector3f(1, 1, 1));
 			}
-			switch (ClientEngineZildo.ambient.getWeather(currentMap)) {
+			switch (weather) {
 				case CLOUD:
 					ClientEngineZildo.filterCommand.active(CloudFilter.class, true, null);
 					break;
@@ -337,6 +340,10 @@ public class MapManagement {
 					return false;
 				}
 				if (p.getInfo() == PersoInfo.ENEMY && perso.isZildo() && perso.getCompte_dialogue() == 0) {
+					return false;
+				}
+				
+				if (perso.getQuel_deplacement() == MouvementPerso.FOLLOW && perso.getFollowing() == quelElement) {
 					return false;
 				}
 			}

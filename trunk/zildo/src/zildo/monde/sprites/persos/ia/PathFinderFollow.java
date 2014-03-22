@@ -17,46 +17,32 @@
  *
  */
 
-package zildo.fwk.script.logic;
+package zildo.monde.sprites.persos.ia;
 
-import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 
 /**
  * @author Tchegito
  *
  */
-public class SpriteEntityContext implements IEvaluationContext {
+public class PathFinderFollow extends PathFinder {
 
-	SpriteEntity entity;
-	Perso perso;
+	Element followed;
 	
-	public SpriteEntityContext(SpriteEntity p_entity) {
-		entity = p_entity;
-		if (entity != null && Perso.class.isAssignableFrom(entity.getClass())){
-			perso = (Perso) entity;
-		}
+	public PathFinderFollow(Perso p_mobile, Element p_followed) {
+		super(p_mobile);
+		followed = p_followed;
 	}
+	
 	@Override
-	public float getValue(String key) {
-		if (key.length() == 1) {	// Filter length to avoid too much comparisons
-			if ("x".equals(key)) {
-				return entity.x;
-			} else if ("y".equals(key)) {
-				return entity.y;
-			} else if ("z".equals(key)) {
-				return entity.z;
-			}
-		} else {
-			if ("attente".equals(key)) {
-				return perso.getAttente();
-			}
+	public void determineDestination() {
+		// Detect if followed element has moved
+		Pointf prev = followed.getPrevious();
+		if ((int) prev.x != (int) followed.x || (int) prev.y != (int) followed.y) {
+			target = new Point(followed.x, followed.y);
 		}
-		// Don't crash ! But result could be weird
-		return 0;
-	}
-	
-	public SpriteEntity getActor() {
-		return perso;
 	}
 }

@@ -660,6 +660,19 @@
 		</action>
     </quest>
     
+    <quest name="waitIgor" repeat="true" locked="false">
+        <trigger>
+            <questDone name="zildoAccessIgor-!freedIgor"/>
+        </trigger>
+        <action>
+            <lookFor who="igor" radius="8" info="ZILDO" negative="true">
+                <speak who="igor" text="followIgor.0"/>
+            </lookFor>
+            <wait value="150"/>
+            <markQuest name="waitIgor" value="false"/>
+            </action>
+    </quest>
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -847,6 +860,10 @@
    		</condition>
    		<condition name="prison6">
    		    <markQuest name="p6_trigger_smoke" value="false"/>
+   		</condition>
+   		<condition exp="zildoAccessIgor-!freedIgor">
+   		    <spawn who="igor" pos="zildo.x,zildo.y" type="IGOR"/>
+   		    <script who="igor" value="16" effect="zildo"/>
    		</condition>
    	</mapScript>
 
@@ -1310,6 +1327,7 @@
 			<activate what="igordoor1" value="false"/>
 	    	<activate what="igordoor2" value="false"/>
 	    </actions>
+	    <wait value="15"/>
 		<actions>
 			<moveTo who="jaune" pos="223,60"/>
 			<moveTo who="igor" pos="6,12" delta="true"/>
@@ -1321,6 +1339,7 @@
 		<moveTo who="zildo" pos="0,10" delta="true"/>
 		<speak who="zildo" text="freeIgor.zildo.0"/>
 		<speak who="igor" text="freeIgor.igor.3"/>
+		<script who="igor" value="16" effect="zildo"/>
 	</scene>
 	
 	<persoAction id="sleeping">

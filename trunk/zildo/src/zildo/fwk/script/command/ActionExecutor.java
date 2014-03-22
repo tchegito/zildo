@@ -229,7 +229,6 @@ public class ActionExecutor {
                         perso.setMouvement(MouvementZildo.valueOf(p_action.text));
                     } else {
 	                	MouvementPerso script = MouvementPerso.fromInt(p_action.val);
-	                    perso.setQuel_deplacement(script, true);
 	                    String param = p_action.effect;
 	                    switch (script) {
 	                    case ZONE:
@@ -239,12 +238,17 @@ public class ActionExecutor {
 	        																	perso.getY() + 16 * 5));
 	        				break;
 	                    case OBSERVE:
+	                    case FOLLOW:
 		                    if (param != null) {
-		                    	Element elemToObserve =  EngineZildo.spriteManagement.getNamedElement(param);
-		                    	perso.setFollowing(elemToObserve);
+		                    	SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(param);
+		                    	if (entity != null && !entity.getEntityType().isEntity()) {
+		                    		Element elemToObserve =  (Element) entity;
+		                    		perso.setFollowing(elemToObserve);
+		                    	}
 		                    }
 	                    	break;
 	                    }
+	                    perso.setQuel_deplacement(script, true);
                     }
                     achieved = true;
                     break;
@@ -571,7 +575,7 @@ public class ActionExecutor {
                 case lookFor: // Look for a character around another inside a given radius
                 	LookforElement lookFor = (LookforElement) p_action;
                 	Perso found = EngineZildo.persoManagement.lookFor(perso, lookFor.radius, p_action.info);
-                	if (found != null) {
+                	if (found != null ^ lookFor.negative) {	// XOR !
                 		IEvaluationContext persoContext = new SpriteEntityContext(found);
                     	EngineZildo.scriptManagement.execute(lookFor.actions, false, null, false, persoContext, false);
                 	} else {

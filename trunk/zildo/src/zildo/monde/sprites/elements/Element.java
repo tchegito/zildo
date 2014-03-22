@@ -76,6 +76,10 @@ public class Element extends SpriteEntity {
 		super(id);
 	}
 	
+	public Pointf getPrevious() {
+		return new Pointf(ancX, ancY);
+	}
+	
 	private void initialize() {
 		entityType = EntityType.ELEMENT;
 
