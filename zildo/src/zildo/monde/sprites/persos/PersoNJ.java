@@ -306,6 +306,9 @@ public class PersoNJ extends Perso {
 				case INVOKE:
 					pos_seqsprite++;
 					break;
+				case FOLLOW:
+					pathFinder.determineDestination();
+					break;
 				default:
 					break;
 				}

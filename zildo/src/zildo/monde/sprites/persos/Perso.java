@@ -41,6 +41,7 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.action.PersoAction;
 import zildo.monde.sprites.persos.ia.PathFinder;
+import zildo.monde.sprites.persos.ia.PathFinderFollow;
 import zildo.monde.sprites.persos.ia.PathFinderSquirrel;
 import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -195,6 +196,10 @@ public abstract class Perso extends Element {
 			case CAT:
 				pathFinder = new PathFinder(this);
 				pathFinder.speed = 0.2f;
+				break;
+			case FOLLOW:
+				// Assume that 'following' has been set before
+				pathFinder = new PathFinderFollow(this, following);
 				break;
 			}
 		}

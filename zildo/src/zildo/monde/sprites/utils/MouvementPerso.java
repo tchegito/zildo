@@ -41,7 +41,8 @@ public enum MouvementPerso {
 	WAKEUP(12),
 	INVOKE(13),	// addSpr = 1
 	CAT(14),
-	SLEEPING(15);
+	SLEEPING(15),
+	FOLLOW(16);
 	
 	public int valeur;
 	

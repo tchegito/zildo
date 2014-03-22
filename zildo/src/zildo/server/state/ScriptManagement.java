@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.ZUtils;
 import zildo.fwk.script.command.ScriptExecutor;
 import zildo.fwk.script.logic.IEvaluationContext;
@@ -510,10 +511,10 @@ public class ScriptManagement {
 		accomplishQuest(keyQuest.buildKeyItem(p_mapName, p_x, p_y, p_desc), false);
 	}
 
-	public void execMapScript(String p_mapName) {
+	public void execMapScript(String p_mapName, Atmosphere atmo) {
 		for (MapscriptElement mapScript : adventure.getMapScripts()) {
 			for (ConditionElement condi : mapScript.getConditions()) {
-				if (condi.mapName.equals(p_mapName) && condi.isRight()) {
+				if ((condi.mapName == null || condi.mapName.equals(p_mapName)) && condi.isRight()) {
 					// Execute the 'mapscript' before all, with topPriority=TRUE
 					execute(condi.getActions(), false, null, true, null, true);
 				}
