@@ -37,13 +37,15 @@ _Note_ : when loading a saved game, every accomplished quest launches the execut
 This is a set of "condition" happening when player arrives on a new map. So it's about a map name, and a combination of quests being accomplished or not.
 
 *Example* : 
-<code>
-<condition name="prisonext" exp="retour_trion-!hector_call3">
-    <!-- Repeat Pssst if player hasn't seen Hector yet -->
-    <markQuest name="hector_call1" value="false"/>
-	    <markQuest name="hector_call2" value="false"/>
-</condition>
-</code>
+{{{
+    <condition name="prisonext" exp="retour_trion-!hector_call3">
+        <!-- Repeat Pssst if player hasn't seen Hector yet -->
+        <markQuest name="hector_call1" value="false"/>
+        <markQuest name="hector_call2" value="false"/>
+    </condition>
+}}}
+
+That means : "When 'retour_trion' is accomplished and 'hector_call3' is not, then mark the following quests as 'not done'"
 
 ==== Attributes ====
 
