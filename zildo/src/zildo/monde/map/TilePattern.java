@@ -38,8 +38,10 @@ public class TilePattern {
 			new TilePart(1, 1, 223 + 256*5, TileLevel.BACK));
 	
 	public static TilePattern explodedCave = new TilePattern(
-			new TilePart(0, 0, 256*2),
-			new TilePart(1, 0, 256*2),
+			new TilePart(0, 0, 187 + 256*3),	// Just for collision
+			new TilePart(0, 0, 256*2, TileLevel.BACK2),	// Black wall
+			new TilePart(1, 0, 188 + 256*3),
+			new TilePart(1, 0, 256*2, TileLevel.BACK2),
 			new TilePart(0, 0, 216 + 256*5, TileLevel.FORE),
 			new TilePart(1, 0, 217 + 256*5, TileLevel.FORE),
 			new TilePart(0, 1, 218 + 256*5, TileLevel.BACK),
