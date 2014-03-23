@@ -573,6 +573,7 @@ public class ActionExecutor {
             		nextStep = (int) ((TimerElement)p_action).each.evaluate(context);
                 	break;
                 case lookFor: // Look for a character around another inside a given radius
+                	System.out.println("lookfor");
                 	LookforElement lookFor = (LookforElement) p_action;
                 	Perso found = EngineZildo.persoManagement.lookFor(perso, lookFor.radius, p_action.info);
                 	if (found != null ^ lookFor.negative) {	// XOR !
@@ -688,18 +689,21 @@ public class ActionExecutor {
     private Element actionSpawn(ActionElement p_action, Point location, boolean p_ignoreWho) {
     	Element elem = null;
     	if (!p_ignoreWho && p_action.who != null) {
-    		PersoDescription desc = PersoDescription.valueOf(p_action.getSpawnType());
-    		elem = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, p_action.who, p_action.val);
-    		Perso perso = (Perso) elem;
-    		perso.setSpeed(p_action.speed);
-    		perso.setEffect(p_action.effect);
-    		perso.initPersoFX();
-        	if (p_action.weapon != null) {
-        		//TODO: not very clever ! setActiveWeapon and setWeapon should merge. So as
-        		//guardWeapon and weapon attributes.
-        		((PersoNJ)perso).setActiveWeapon(GuardWeapon.valueOf(p_action.weapon));
-        	}
-            EngineZildo.spriteManagement.spawnPerso(perso);
+    		if (EngineZildo.persoManagement.getNamedPerso(p_action.who) == null) {
+	    		// Spawn the character only if no one with the same name exists yet
+	    		PersoDescription desc = PersoDescription.valueOf(p_action.getSpawnType());
+	    		elem = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, p_action.who, p_action.val);
+	    		Perso perso = (Perso) elem;
+	    		perso.setSpeed(p_action.speed);
+	    		perso.setEffect(p_action.effect);
+	    		perso.initPersoFX();
+	        	if (p_action.weapon != null) {
+	        		//TODO: not very clever ! setActiveWeapon and setWeapon should merge. So as
+	        		//guardWeapon and weapon attributes.
+	        		((PersoNJ)perso).setActiveWeapon(GuardWeapon.valueOf(p_action.weapon));
+	        	}
+	            EngineZildo.spriteManagement.spawnPerso(perso);
+    		}
     	} else {	// Spawn a new element
     		if (EngineZildo.spriteManagement.getNamedElement(p_action.what) == null) {
     			// Spawn only if doesn't exist yet

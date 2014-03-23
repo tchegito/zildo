@@ -669,17 +669,36 @@ public class MapManagement {
 			if (!isAlongBorder && EngineZildo.scriptManagement.isAllowedToSave()) {
 				EngineZildo.backUpGame();	// Save an automatic backup game to restore if hero dies
 			}
-			
-			// Adjust map at Zildo's location
-			if (zildo != null) {
-				zildo.walkTile(false);
-			}
+
+			postLoadMap();
 			
 			EngineZildo.spriteManagement.notifyLoadingMap(false);
 		}
 		return false;
 	}
 
+	/**
+	 * Do some post-initialization:<ul>
+	 * <li>Clear the way around Zildo (open door for example)</li>
+	 * <li>Init Zildo's followers location and behavior</li></ul>
+	 */
+	public void postLoadMap() {
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+
+		// Someone following Zildo ?
+		Perso follower = EngineZildo.persoManagement.getFollower(zildo);
+		if (follower != null) {
+			follower.setX(zildo.x);
+			follower.setY(zildo.y);
+			follower.askVisible(true);
+			follower.setAngle(zildo.getAngle());
+		}
+		// Adjust map at Zildo's location
+		if (zildo != null) {
+			zildo.walkTile(false);
+		}	
+	}
+	
 	/**
 	 * Shift the previous map to the right position, in order to have it
 	 * sticked to the new one. So we calculate the shift coordinates.
