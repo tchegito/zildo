@@ -182,31 +182,10 @@ public class SaveGameMenu extends PageableMenu {
 		
 		EngineZildo.mapManagement.loadMap(game.mapName, false);
 
-		
-		//Area area = EngineZildo.mapManagement.getCurrentMap();
-		/*
-		Case c = area.get_mapcase(28, 47+4);
-		c.setTransition(Angle.EST);
-		c = area.get_mapcase(43, 47+4);
-		c.setTransition(Angle.OUEST);
-		*//*
-		Case c = area.get_mapcase(29, 25+4);
-		c.setTransition(Angle.NORD);
-		c = area.get_mapcase(30, 25+4);
-		c.setTransition(Angle.NORD);
-
-		c = area.get_mapcase(29, 17+4);
-		c.setTransition(Angle.SUD);
-		c = area.get_mapcase(30, 17+4);
-		c.setTransition(Angle.SUD);
-		*/
 		singlePlay.launchGame();
 		
-		// Clear the way around Zildo (open door for example)
-		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-		if (zildo != null) {
-			zildo.walkTile(false);
-		}
+		EngineZildo.mapManagement.postLoadMap();
+		
 		return true;	// success
 	}
 

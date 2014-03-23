@@ -665,12 +665,13 @@
             <questDone name="zildoAccessIgor-!freedIgor"/>
         </trigger>
         <action>
-            <lookFor who="igor" radius="8" info="ZILDO" negative="true">
+            <lookFor who="igor" radius="6" info="ZILDO" negative="true">
                 <speak who="igor" text="followIgor.0"/>
+                <wait value="150"/>
             </lookFor>
-            <wait value="150"/>
+            <wait value="50"/>
             <markQuest name="waitIgor" value="false"/>
-            </action>
+        </action>
     </quest>
     
     <mapScript>
@@ -863,6 +864,7 @@
    		</condition>
    		<condition exp="zildoAccessIgor-!freedIgor">
    		    <spawn who="igor" pos="zildo.x,zildo.y" type="IGOR"/>
+   		    <visible who="igor" value="false"/>
    		    <script who="igor" value="16" effect="zildo"/>
    		</condition>
    	</mapScript>
