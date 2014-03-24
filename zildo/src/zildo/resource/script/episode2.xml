@@ -651,6 +651,18 @@
         </action>
     </quest>
     
+    <quest name="prison4l(9, 13)" locked="false">
+        <action>
+            <markQuest name="prison5(9, 2)" value="true"/>
+        </action>
+    </quest>
+
+    <quest name="prison5(9, 2)" locked="false">
+        <action>
+            <markQuest name="prison4l(9, 13)" value="true"/>
+        </action>
+    </quest>
+    
     <quest name="zildoAccessIgor">
         <trigger>
             <location name="prison" pos="96,33"/>

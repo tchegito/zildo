@@ -296,7 +296,9 @@ public class ScriptManagement {
     	boolean found=false;
     	QuestElement quest = questsByName.get(p_questName);
     	if (quest != null) {
-   			accomplishQuest(quest, p_trigger);
+    		if (!quest.done) { // Don't accomplish an already done quest !
+    			accomplishQuest(quest, p_trigger);
+    		}
     	} else {
 	    	if (!found) { // Given quest hasn't been found, so create it (useful for automatic behaviors like chest and doors)
 	    		quest=new QuestElement();
