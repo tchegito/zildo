@@ -136,7 +136,7 @@ public class MapManagement {
 		// Do the map replacements
 		Atmosphere atmo = currentMap.getAtmosphere();
 		Weather weather = ClientEngineZildo.ambient.getWeather(currentMap);
-		EngineZildo.scriptManagement.execMapScript(adjustedMapName, atmo);
+		EngineZildo.scriptManagement.execMapScript(adjustedMapName, atmo, p_additive);
 		
 		EngineZildo.spriteManagement.initForNewMap();
 
@@ -670,7 +670,7 @@ public class MapManagement {
 				EngineZildo.backUpGame();	// Save an automatic backup game to restore if hero dies
 			}
 
-			postLoadMap();
+			postLoadMap(isAlongBorder);
 			
 			EngineZildo.spriteManagement.notifyLoadingMap(false);
 		}
@@ -682,14 +682,18 @@ public class MapManagement {
 	 * <li>Clear the way around Zildo (open door for example)</li>
 	 * <li>Init Zildo's followers location and behavior</li></ul>
 	 */
-	public void postLoadMap() {
+	public void postLoadMap(boolean p_scroll) {
 		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 
 		// Someone following Zildo ?
 		Perso follower = EngineZildo.persoManagement.getFollower(zildo);
 		if (follower != null) {
-			follower.setX(zildo.x);
-			follower.setY(zildo.y);
+			if (p_scroll) {	// If map is scrolling, moves smoothly the character
+				follower.setTarget(new Point(zildo.x, zildo.y));
+			} else {
+				follower.setX(zildo.x);
+				follower.setY(zildo.y);
+			}
 			follower.askVisible(true);
 			follower.setAngle(zildo.getAngle());
 		}

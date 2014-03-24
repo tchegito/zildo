@@ -10,9 +10,10 @@ import zildo.fwk.script.xml.ScriptReader;
 
 public class ConditionElement extends AnyElement {
 
-	public String mapName;
+	String mapName;
 	ZSSwitch expression;	// No expression means it's always verified
 	List<LanguageElement> actions;
+	Boolean scroll;
 	
 	@Override
 	@SuppressWarnings("unchecked")
@@ -20,13 +21,23 @@ public class ConditionElement extends AnyElement {
 		xmlElement = p_elem;
 		
 		mapName = readAttribute("name");
+		scroll = readBoolean("scroll");
 		String strExp = readAttribute("exp");
 		expression = strExp == null ? null : ZSSwitch.parseForScript(strExp);	// 1 will be the right value
 		actions = (List<LanguageElement>) ScriptReader.parseNodes(p_elem);
 	}
 
-	public boolean isRight() {
-		return expression == null || expression.evaluate().equals(ZSCondition.TRUE);
+	public boolean match(String p_mapName, boolean p_scroll) {
+		// 1) map
+		if (mapName != null && !mapName.equals(p_mapName))
+			return false;
+		// 2) expression
+		if (expression != null && !expression.evaluate().equals(ZSCondition.TRUE))
+			return false;
+		// 3) scroll
+		if (scroll != null && p_scroll != scroll) 
+			return false;
+		return true;
 	}
 	
 	public List<LanguageElement> getActions() {

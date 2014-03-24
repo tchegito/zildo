@@ -137,7 +137,9 @@ public class PathFinder {
         	// Recalculate angle
         	delta.x = pos.x - mobile.x;
         	delta.y = pos.y - mobile.y;
-        	a = Angle.fromDelta(delta.x, delta.y);
+        	if (delta.x !=0 || delta.y != 0) {
+        		a = Angle.fromDelta(delta.x, delta.y);
+        	}
         }
 
         if (backward && a!= null) {
@@ -236,9 +238,14 @@ public class PathFinder {
 			} else {
 				double cosAngle = (target.x - mobile.x) / hypothenuse;
 				double sinAngle = (target.y - mobile.y) / hypothenuse;
-				p.x+=cosAngle * p_speed;
-				p.y+=sinAngle * p_speed;
+				float dx = (float) (cosAngle * p_speed);
+				float dy = (float) (sinAngle * p_speed);
 				
+	        	p = mobile.tryMove(dx, dy);
+	        	// Recalculate angle
+	        	dx = p.x - mobile.x;
+	        	dy = p.y - mobile.y;
+	        	
 				// Set the angle
 				if (p_twoAngles) {
 					if (cosAngle < 0) {
@@ -246,6 +253,8 @@ public class PathFinder {
 					} else {
 						mobile.setAngle(Angle.EST);
 					}
+				} else if (dx != 0 || dy != 0) {
+					mobile.setAngle(Angle.fromDelta(dx, dy));
 				}
 			}
 		}

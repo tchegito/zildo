@@ -40,9 +40,14 @@ public class PathFinderFollow extends PathFinder {
 	@Override
 	public void determineDestination() {
 		// Detect if followed element has moved
-		Pointf prev = followed.getPrevious();
-		if ((int) prev.x != (int) followed.x || (int) prev.y != (int) followed.y) {
+		Pointf prev = followed.getDelta();
+		if (prev.x != 0 || prev.y != 0) {
 			target = new Point(followed.x, followed.y);
 		}
 	}
+	
+    @Override
+    public Pointf reachDestination(float p_speed) {
+    	return reachLine(p_speed, false);
+    }
 }

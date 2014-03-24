@@ -554,7 +554,7 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : spriteEntities) {
 			if (entity.getEntityType().isPerso()) {
 				Perso perso = (Perso) entity;
-				boolean allowedToMoveAndCollide = !blockNPC || perso.getInfo() == PersoInfo.ZILDO;
+				boolean allowedToMoveAndCollide = !blockNPC || perso.getInfo() == PersoInfo.ZILDO || perso.getFollowing() != null;
 				if (allowedToMoveAndCollide) {
 					// Animate persos
 					perso.animate(compt);
@@ -569,12 +569,9 @@ public class SpriteManagement extends SpriteStore {
 				}
 				
 				if (!perso.isZildo()) {
-					// Non-zildo sprite haven't same way to display
-					// correctly (bad...)
-					perso.setAjustedX(perso.getAjustedX()
-							- (spr.getTaille_x() / 2));
-					perso.setAjustedY(perso.getAjustedY()
-							- (spr.getTaille_y() - 3));
+					// Non-zildo sprite haven't same way to display correctly (bad...)
+					perso.setAjustedX(perso.getAjustedX() - (spr.getTaille_x() / 2));
+					perso.setAjustedY(perso.getAjustedY() - (spr.getTaille_y() - 3));
 				}
 			}
 		}
