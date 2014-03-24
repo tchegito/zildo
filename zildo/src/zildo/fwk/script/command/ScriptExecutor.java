@@ -144,7 +144,7 @@ public class ScriptExecutor {
 		if (!isScripting()) {
 			// Get back to life the involved characters
 			for (Perso p : involved) {
-				p.setGhost(false);
+				p.setGhost(p.getFollowing() != null);	// Cancel 'ghost' except if character is following someone
 				if (p.isZildo()) {
 					p.setOpen(true);
 				}

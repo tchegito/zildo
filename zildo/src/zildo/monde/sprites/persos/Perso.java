@@ -1074,4 +1074,9 @@ public abstract class Perso extends Element {
 		return  (Integer.signum(dx) == angleSignumX || angleSignumX == 0) &&
 				(Integer.signum(dy) == angleSignumY || angleSignumY == 0);
 	}
+	
+	@Override
+	public Pointf getDelta() {
+		return new Pointf(deltaMoveX, deltaMoveY);
+	}
 }

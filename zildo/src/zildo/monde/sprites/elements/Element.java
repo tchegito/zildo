@@ -76,8 +76,8 @@ public class Element extends SpriteEntity {
 		super(id);
 	}
 	
-	public Pointf getPrevious() {
-		return new Pointf(ancX, ancY);
+	public Pointf getDelta() {
+		return new Pointf(x-ancX, y-ancY);
 	}
 	
 	private void initialize() {
@@ -838,6 +838,11 @@ public class Element extends SpriteEntity {
 		return ghost;
 	}
 	
+	/** Returns TRUE if this element is linked in such way to Zildo:<ul>
+	 * <li>it's a part of his sprite set (shield, feet, aura, sword)</li>
+	 * <li>it's a part of a character following Zildo</li>
+	 * @return boolean
+	 */
 	public boolean isLinkedToZildo() {
 		if (linkedPerso == null) {
 			return false;
@@ -845,14 +850,14 @@ public class Element extends SpriteEntity {
 		if (linkedPerso.isZildo()) {
 			return true;
 		}
-		Element linkedLinkedPerso=linkedPerso.getLinkedPerso();
-		if (linkedLinkedPerso == null) {
-			return false;
+		if (linkedPerso.getEntityType().isPerso()) {
+			Element linked = ((Perso) linkedPerso).getFollowing();
+			if (linked != null) {
+				return linked.isZildo();
+			}
 		}
-		if (linkedLinkedPerso.isZildo()) {
-			return true;
-		}
-		return false;
+		// Recursively recalls (totally unlikely that we calls this more than once)
+		return linkedPerso.isLinkedToZildo();
 	}
 
 	public void setTrigger(boolean p_trigger) {

@@ -511,10 +511,10 @@ public class ScriptManagement {
 		accomplishQuest(keyQuest.buildKeyItem(p_mapName, p_x, p_y, p_desc), false);
 	}
 
-	public void execMapScript(String p_mapName, Atmosphere atmo) {
+	public void execMapScript(String p_mapName, Atmosphere p_atmo, boolean p_scroll) {
 		for (MapscriptElement mapScript : adventure.getMapScripts()) {
 			for (ConditionElement condi : mapScript.getConditions()) {
-				if ((condi.mapName == null || condi.mapName.equals(p_mapName)) && condi.isRight()) {
+				if (condi.match(p_mapName, p_scroll)) {
 					// Execute the 'mapscript' before all, with topPriority=TRUE
 					execute(condi.getActions(), false, null, true, null, true);
 				}
