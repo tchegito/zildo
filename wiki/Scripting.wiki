@@ -32,6 +32,11 @@ A quest has a name and a state during the game, which can be 'done' or 'undone'.
 
 _Note_ : when loading a saved game, every accomplished quest launches the execution of each 'history' part, but not 'action' part.
 
+==== Attributes ====
+
+ * repeat : 'false' (by default) means only one execution of this quest is possible
+ * locked : 'true' by default => it means that the triggering of this quest freeze the game
+
 === Mapscript ===
 
 This is a set of "condition" happening when player arrives on a new map. So it's about a map name, and a combination of quests being accomplished or not.
@@ -49,11 +54,11 @@ That means : " *When* `retour_trion` is accomplished and `hector_call3` is not, 
 
 But it can trigger too when no map name is specified at all. It's useful for event happening whatever location player is at, but concerning a particular situation, like night time, or people following hero.
 
-==== Attributes ====
+==== All attributes ====
 
- * repeat : 'false' (by default) means only one execution of this quest is possible
- * locked : 'true' by default => it means that the triggering of this quest freeze the game
-
+ * *name* : map (optional)
+ * *exp* : quests combination
+ * *scroll* : true/false (optional, means whatever transition)
 
 == Trigger & Action ==
 
