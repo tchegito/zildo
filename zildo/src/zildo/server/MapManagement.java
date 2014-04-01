@@ -410,7 +410,10 @@ public class MapManagement {
 				return true;
 			} else {
 				int back2val = tileBack2 != null ? tileBack2.getValue() : 0;
+				// Very bad !!! HARD-CODED tile values ! 
+				// If ladder or bridge, we allow not to check collision on back tile
 				boolean isLadder = back2val == 206 || back2val == 207;
+				isLadder |= back2val == 207+256*5 || back2val == 208+256*5 || back2val == 209+256*5;
 				if (!isLadder && tileCollision.collide(modx, mody, tile)) {
 					return true;
 				}
