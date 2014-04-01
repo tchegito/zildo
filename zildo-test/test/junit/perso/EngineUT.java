@@ -90,14 +90,19 @@ public class EngineUT {
 	 */
 	protected void assertLocation(Perso perso, Point target, boolean isAt) {
 		Assert.assertTrue(perso.getTarget() == null);
+		assertLocation((Element) perso, target, isAt);
+	}
+	
+	protected void assertLocation(Element elem, Point target, boolean isAt) {
+		String entityType = elem.getEntityType().toString();
 		if (isAt) {
-			Assert.assertTrue("Character should have been at "+target, 
-					(int) perso.x == target.x &&
-					(int) perso.y == target.y);		
+			Assert.assertTrue(entityType+" should have been at "+target, 
+					(int) elem.x == target.x &&
+					(int) elem.y == target.y);		
 		} else {
-			Assert.assertTrue("Character shouldn't have been at "+target, 
-					(int) perso.x != target.x || 
-					(int) perso.y != target.y);
+			Assert.assertTrue(entityType+" shouldn't have been at "+target, 
+					(int) elem.x != target.x || 
+					(int) elem.y != target.y);
 		}
 	}
 	
@@ -157,5 +162,6 @@ public class EngineUT {
 			}
 		}
 		Identified.resetCounter(SpriteEntity.class);
+		Identified.clearAll();
 	}
 }

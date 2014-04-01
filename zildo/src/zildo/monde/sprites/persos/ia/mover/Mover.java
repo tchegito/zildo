@@ -103,7 +103,7 @@ public class Mover {
 		return linkedEntities.containsKey(e.getId());
 	}
 	
-	Element getPlaceHolder() {
+	public Element getPlaceHolder() {
 		if (elemPlaceHolder == null) {
 			elemPlaceHolder = new Element() {
 				@Override
