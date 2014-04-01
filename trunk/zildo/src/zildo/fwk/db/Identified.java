@@ -133,6 +133,13 @@ public abstract class Identified {
 		}
 	}
 	
+	/** Method designed for Unit Test. Called between two methods from the same Unit Test class.
+	 * No need to call this during real game.
+	 */
+	public static void clearAll() {
+		objects.clear();
+	}
+	
 	/**
 	 * Retrieve the max ID defined by annotation in given class. There's a default value in case
 	 * when no annotation is found.
