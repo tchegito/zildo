@@ -253,7 +253,9 @@ public class MapManagement {
 		
 		if (currentMap.isOutside(tx, ty)) {
 			// Detect element out of the map, except for 3 cases : Zildo, ghosts and single pleyer
-			return quelElement != null && !ghost && !quelElement.isOutsidemapAllowed() && (!quelElement.isZildo() || EngineZildo.game.multiPlayer);
+			if (quelElement != null && !quelElement.isOutsidemapAllowed()) {
+				return !ghost && (!quelElement.isZildo() || EngineZildo.game.multiPlayer);
+			}
 		}
 		Point size = new Point(8, 4); // Default size
 		if (quelElement != null && quelElement.getCollision() != null) {
@@ -364,8 +366,15 @@ public class MapManagement {
 
 	final static Point[] tabPointRef = new Point[] {
 		new Point(-1, -1), new Point(-1, 1),
-		new Point(1, -1),  new Point(1, 1)};
+		new Point(1, -1),  new Point(1, 1)
+	};
 		
+	// Wider grid to check collision (for large objects)
+	final static Point[] tabGridRef = new Point[] {
+		new Point(-1, -1), new Point(0, -1), new Point(1, -1),
+		new Point(-1, 0), new Point(0, 0), new Point(1, 0),
+		new Point(-1, 1), new Point(0, 1), new Point(1, 1)
+	};
 
 	public boolean collideTile(int tx, int ty, boolean ghost, Point size, Element quelElement) {
 		int mx, my; // Position map
@@ -376,13 +385,22 @@ public class MapManagement {
 		boolean foreground = quelElement != null && quelElement.isForeground();
 
 		// Check 4 corners of a 4x4 sized square
-		for (Point pt : tabPointRef) {
+		Point[] ref = tabPointRef;
+		if (size != null && Math.max(size.x, size.y) > 12) {
+			ref = tabGridRef;
+		}
+		for (Point pt : ref) {
 			mx = (tx + (size.x / 2) * pt.x);
 			my = (ty + (size.y / 2) * pt.y);
 
 			if (currentMap.isOutside(mx, my)) {
 				// Avoid collision on the map's borders
-				return quelElement != null && !quelElement.isOutsidemapAllowed() && !quelElement.isZildo() && !ghost;
+				boolean coll = quelElement != null && !quelElement.isOutsidemapAllowed() && !quelElement.isZildo() && !ghost;
+				if (coll) {
+					return true;
+				} else {
+					continue;
+				}
 			}
 
 			int scaledX = mx / 16;
@@ -610,6 +628,9 @@ public class MapManagement {
 							entity.setMover(new BasicMoveOrder((int) (entity.x + dest.x), 
 																(int) (entity.y + dest.y), 1f));
 							entity.setGhost(true);
+							Element placeHolder = entity.getMover().getPlaceHolder();
+							placeHolder.vx=0;
+							placeHolder.vy=0;
 						}
 					}
 				}

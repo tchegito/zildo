@@ -75,5 +75,9 @@ public class Pointf {
     public boolean equals(Pointf p) {
     	return x == p.x && y == p.y;
     }
+    
+    public boolean isSame(Pointf other) {
+    	return (x-other.x) < 0.001 && (y-other.y) < 0.001; 
+    }
 
 }

@@ -890,6 +890,9 @@ public class SpriteManagement extends SpriteStore {
 					EngineZildo.scriptManagement.stopPersoAction((Perso) entity);
 				}
 				deleteSprite(entity);
+				if (walkableEntities.contains(entity)) {
+					walkableEntities.remove(entity);
+				}
 			}
 		}
 		suspendedEntities.clear();
