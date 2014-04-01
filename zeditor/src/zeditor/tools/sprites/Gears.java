@@ -66,7 +66,7 @@ public class Gears extends SpriteBanque {
 				new Zone(0, 491, 10, 13), new Zone(11, 491, 10, 13),
 				
 				/* Grate */
-				new Zone(24, 537, 13, 28)
+				new Zone(24, 537, 13, 28), new Zone(37, 537, 13, 28)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
