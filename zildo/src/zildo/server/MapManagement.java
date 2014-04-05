@@ -45,7 +45,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoZildo;
-import zildo.monde.sprites.persos.ia.mover.BasicMoveOrder;
+import zildo.monde.sprites.persos.ia.mover.PhysicMoveOrder;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
@@ -625,12 +625,8 @@ public class MapManagement {
 					Point dest = mapScrollAngle.coords.multiply(16);
 					for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
 						if (entity.getMover().isOnIt(zildo)) {
-							entity.setMover(new BasicMoveOrder((int) (entity.x + dest.x), 
-																(int) (entity.y + dest.y), 1f));
+							entity.setMover(new PhysicMoveOrder(dest.x/16, dest.y/16));
 							entity.setGhost(true);
-							Element placeHolder = entity.getMover().getPlaceHolder();
-							placeHolder.vx=0;
-							placeHolder.vy=0;
 						}
 					}
 				}

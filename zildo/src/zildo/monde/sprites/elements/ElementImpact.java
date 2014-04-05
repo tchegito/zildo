@@ -41,7 +41,8 @@ public class ElementImpact extends Element {
 		DROP_ENERGY(ElementDescription.BLUE_ENERGY, 1,1),
 		LAVA_DROP(ElementDescription.LAVADROP1, 4, 2),
 		DUST(ElementDescription.DUST1, 3, 3),
-		WATER_SPLASH(ElementDescription.WATER_ANIM1, 4, 3);
+		WATER_SPLASH(ElementDescription.WATER_ANIM1, 4, 3),
+		WAVE(ElementDescription.WATERWAVE1, new int[] {2,2,2,1,1,1,1,0,0,0,0,0}, 3);
 		
 		ElementDescription desc;
 		int seqLong;	// Size of the sequence of the sprite's life
@@ -94,6 +95,7 @@ public class ElementImpact extends Element {
 			case STAR_YELLOW:
 			case LAVA_DROP:
 			case WATER_SPLASH:
+			case WAVE:
 				setSprModel(kind.desc);
 				break;
 			case EXPLOSION:
@@ -124,6 +126,9 @@ public class ElementImpact extends Element {
 		counter++;
 		int valCounter=counter/kind.speed;
 		switch (kind) {
+			case WAVE:
+				alpha-=2;
+				super.animate();
 			case STAR_YELLOW:
         	case SIMPLEHIT:
         	case FIRESMOKE:
@@ -131,7 +136,7 @@ public class ElementImpact extends Element {
         	case SMOKE:
         	case DUST:
         	case WATER_SPLASH:
-				if (valCounter == kind.seqLong) {
+				if (valCounter >= kind.seqLong) {
 					dying=true;
 					visible=false;
 				} else {
@@ -180,6 +185,7 @@ public class ElementImpact extends Element {
 					}
 				}
 				super.animate();
+				break;
 		}
 	}
 	
