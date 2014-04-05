@@ -160,8 +160,8 @@ public class EngineZildo {
 					state.event.chPoint=ch;
 				}
 				state.event.mapChange=true;
-			} else if (askedEvent != null) {
-				// Use the asked event and reset it
+			} else if (askedEvent != null && !state.event.mapChange) {
+				// Use the asked event and reset it (only if we aren't changing map)
 				state.event.nature=askedEvent.nature;
 				state.event.effect=askedEvent.effect;
 				if (askedEvent.chPoint != null) {

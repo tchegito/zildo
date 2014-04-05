@@ -22,13 +22,10 @@ package zildo.monde.sprites.persos.ia.mover;
 import java.util.HashMap;
 import java.util.Map;
 
-import zildo.monde.collision.Collision;
-import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.SpriteEntity;
-import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementPlaceHolder;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 
 /**
@@ -107,16 +104,7 @@ public class Mover {
 	
 	public Element getPlaceHolder() {
 		if (elemPlaceHolder == null) {
-			elemPlaceHolder = new Element() {
-				@Override
-				public Collision getCollision() {
-					SpriteModel spr = mobile.getSprModel();
-					Point pCenter = new Point(mobile.x, mobile.y); // + spr.getTaille_y() / 2);
-					Point size = new Point(spr.getTaille_x(), spr.getTaille_y()).multiply(0.7f); 
-					Collision c = new Collision(pCenter, size, null, DamageType.HARMLESS, null);
-					return c;
-				}
-			};
+			elemPlaceHolder = new ElementPlaceHolder(mobile);
 		}
 		return elemPlaceHolder;
 	}

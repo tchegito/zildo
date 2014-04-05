@@ -125,7 +125,10 @@ public enum ElementDescription implements SpriteDescription {
 	// 229
 	SEWER_BARH, SEWER_BARV, SEWER_BARUP,
 	// 232
-	SEWER_SMOKE1, SEWER_SMOKE2, SEWER_VOLUT1, SEWER_VOLUT2, SEWER_VOLUT3, SEWER_VOLUT4;
+	SEWER_SMOKE1, SEWER_SMOKE2, SEWER_VOLUT1, SEWER_VOLUT2, SEWER_VOLUT3, SEWER_VOLUT4,
+	// 238
+	WATERWAVE1, WATERWAVE2, WATERWAVE3;
+	;
 	
 	Boolean damage;
 	
@@ -292,6 +295,7 @@ public enum ElementDescription implements SpriteDescription {
 		case BROWNSPHERE1: case BROWNSPHERE2: case BROWNSPHERE3:
 		case SEWER_SMOKE1: case SEWER_SMOKE2:
 		case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:
+		case WATERWAVE1: case WATERWAVE2: case WATERWAVE3:
 			return true;
 		default:
 			return false;
