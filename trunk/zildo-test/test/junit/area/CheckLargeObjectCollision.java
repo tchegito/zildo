@@ -65,6 +65,10 @@ public class CheckLargeObjectCollision extends EngineUT{
 		zildo.walkTile(false);
 	}
 	
+	/**
+	 * Run the whole thing, and check every frame that Zildo's relative location hasn't changed.
+	 * If it happens, so there's definitely a bug, because we don't want platform moves without him.
+	 */
 	private void runAndCheck() {
 		int frame = 0;
 		

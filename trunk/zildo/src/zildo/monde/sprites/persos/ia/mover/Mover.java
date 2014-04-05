@@ -58,7 +58,9 @@ public class Mover {
 		// Move the linked entities
 		for (SpriteEntity entity : linkedEntities.values()) {
 			// Handle collision for Perso (but is it really necessary ? Maybe for later !)
-			if (entity.getEntityType().isPerso()) {
+			// Now we disable this because when Zildo is on the leaf, it should move regardless of
+			// Zildo's location
+			if (false && entity.getEntityType().isPerso()) {
 				Perso p = (Perso) entity;
 				Pointf result = p.tryMove(delta.x, delta.y);
 				p.x = result.x;
