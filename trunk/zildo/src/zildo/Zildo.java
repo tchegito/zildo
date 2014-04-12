@@ -39,6 +39,7 @@ public class Zildo {
 	public static boolean infoDebug=false;
 	public static boolean infoDebugCollision=true;
 	public static boolean infoDebugCase=false;
+	public static boolean infoDebugScript=true;
 	public static boolean log=false;
 	public static boolean logNetwork=true;
 
