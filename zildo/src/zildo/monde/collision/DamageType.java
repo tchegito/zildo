@@ -45,6 +45,7 @@ public enum DamageType {
 	public int getHP() {
 		switch (this) {
 		case FIRE:
+		case EXPLOSION:
 			return 2;
 		case HARMLESS:
 			return 0;
