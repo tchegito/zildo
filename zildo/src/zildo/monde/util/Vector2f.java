@@ -72,7 +72,7 @@ public class Vector2f {
      */
     public void normalize(float max) {
     	// Calculate norm
-    	float norme = Point.distance(0, 0, x, y);
+    	float norme = norm();
     	float normalized = Math.min(norme, max);
     	if (normalized < norme) {
     		float ratio = normalized / norme;
@@ -81,12 +81,25 @@ public class Vector2f {
     	}
     }
     
+    public float norm() {
+    	return Point.distance(0, 0, x, y);
+    }
+    
     public Vector2f abs() {
     	x = Math.abs(x);
     	y = Math.abs(y);
     	return this;
     }
     
+    /** Rotation to get on X axis **/
+	public Vector2f rotX() {
+		return new Vector2f(Math.signum(x) * norm(), 0);
+	}
+
+    /** Rotation to get on Y axis **/
+	public Vector2f rotY() {
+		return new Vector2f(0, Math.signum(y) * norm());
+	}
     @Override
 	public String toString() {
     	return "x:"+x+", y:"+y;

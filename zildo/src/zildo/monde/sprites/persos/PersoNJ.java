@@ -370,11 +370,16 @@ public class PersoNJ extends Perso {
 */
 					if (pathFinder.getTarget() != null) { // Move character if he has a target
 						Pointf loc = pathFinder.reachDestination(vitesse);
+						// Check for infinite movement (A => B => A => B ...)
 						boolean hasCollided = loc.x == x && loc.y == y;
-						x = loc.x;
-						y = loc.y;
-
-						walkTile(true);
+						if ( (deltaMoveX != 0 || deltaMoveY != 0) && loc.isSame(new Pointf(x-deltaMoveX, y-deltaMoveY))) {
+							pathFinder.setTarget(null);
+						} else {
+							x = loc.x;
+							y = loc.y;
+	
+							walkTile(true);
+						}
 
 						// suite_mouvement
 						if (quel_deplacement == MouvementPerso.BEE) {

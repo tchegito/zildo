@@ -77,7 +77,7 @@ public class Pointf {
     }
     
     public boolean isSame(Pointf other) {
-    	return (x-other.x) < 0.001 && (y-other.y) < 0.001; 
+    	return Math.abs((x-other.x)) < 0.001 && Math.abs((y-other.y)) < 0.001; 
     }
 
 }
