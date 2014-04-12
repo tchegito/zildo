@@ -857,6 +857,9 @@
    		    <perso who="gard2" effect="jaune"/>	<!--  workaround because this is not editable yet -->
    		    <markQuest name="paid_gard" value="false"/>
    		</condition>
+   		<condition name="prison" exp="zildoAccessIgor">
+   		    <remove who="igor"/>
+   		</condition>
    		<condition name="prison3">
    		    <markQuest name="prison4_doors" value="false"/>
    		</condition>
@@ -875,7 +878,7 @@
    		    <markQuest name="p6_trigger_smoke" value="false"/>
    		</condition>
    		<condition exp="zildoAccessIgor-!freedIgor" scroll="false">
-   		    <spawn who="igor" pos="zildo.x,zildo.y" type="IGOR"/>
+   		    <spawn who="igor" pos="zildo.x,zildo.y" type="IGOR" speed="0.7"/>
    		    <visible who="igor" value="false"/>
    		    <script who="igor" value="16" effect="zildo"/>
    		</condition>
