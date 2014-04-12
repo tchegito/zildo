@@ -622,17 +622,38 @@ public class Element extends SpriteEntity {
 				double angleMove = Trigo.getAngleRadian(p_deltaX, p_deltaY);
 				
 				float diagonalForce = (float) (antFactor * Trigo.SQUARE_2);
-				Vector2f move2 = Trigo.vect(angleMove - Trigo.PI_SUR_4, force);
-				if (!mapManagement.collide(x + diagonalForce * move2.x, y + diagonalForce * move2.y, this) &&
-						!mapManagement.collide(x + move2.x, y + move2.y, this)) {
-					xx = x + move2.x;
-					yy = y + move2.y;
-				} else {
-					move2 = Trigo.vect(angleMove + Trigo.PI_SUR_4, force);
+				for (int j=0;j<4;j++) {
+					Vector2f move2;
+					switch (j) {
+					case 0:
+						default:
+						move2 = Trigo.vect(angleMove - Trigo.PI_SUR_4, force);
+						break;
+					case 1:
+						move2 = Trigo.vect(angleMove + Trigo.PI_SUR_4, force);
+						break;
+					case 2:
+						diagonalForce = antFactor;	// No more diagonal for these 2 attempts
+						if (Math.abs(p_deltaX) < 0.01) {
+							continue;
+						} else {
+							move2 = new Vector2f(p_deltaX, p_deltaY).rotX();
+						}
+						break;
+					case 3:
+						if (Math.abs(p_deltaY) < 0.01) {
+							continue;
+						} else {
+							move2 = new Vector2f(p_deltaX, p_deltaY).rotY();
+						}
+						break;
+					}
+							
 					if (!mapManagement.collide(x + diagonalForce * move2.x, y + diagonalForce * move2.y, this) &&
-						!mapManagement.collide(x + move2.x, y + move2.y, this)) {
+							!mapManagement.collide(x + move2.x, y + move2.y, this)) {
 						xx = x + move2.x;
 						yy = y + move2.y;
+						break;
 					}
 				}
 				if (xx == keepX && yy == keepY) { //mapManagement.collide(xx, yy, this)) {
