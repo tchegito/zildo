@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import zildo.Zildo;
 import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.ZUtils;
 import zildo.fwk.script.command.ScriptExecutor;
@@ -151,6 +152,9 @@ public class ScriptManagement {
      * @param p_locked TRUE=default:blocking scene / FALSE=non blocking scene
      */
     public void execute(String p_name, boolean p_locked) {
+    	if (Zildo.infoDebugScript) {
+    		System.out.println("Execute scene "+p_name);
+    	}
     	SceneElement scene=adventure.getSceneNamed(p_name);
     	if (scene != null) {
     		 if (!scriptExecutor.isProcessing(p_name)) {
@@ -316,7 +320,9 @@ public class ScriptManagement {
      * @param p_trigger TRUE=we have to launch targeted action / FALSE=just set quest to 'done' state
      */
     private void accomplishQuest(QuestElement p_quest, boolean p_trigger) {
-    	//System.out.println("Accomplish "+p_quest.name);
+    	if (Zildo.infoDebugScript) {
+    		System.out.println("Accomplish "+p_quest.name);
+    	}
    		p_quest.done=true;
     	
 
