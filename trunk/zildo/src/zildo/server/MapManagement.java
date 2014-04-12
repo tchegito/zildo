@@ -585,7 +585,7 @@ public class MapManagement {
 			String newMapName = p_changingMapPoint.getMapname();
 			int previousDimX = currentMap.getDim_x();
 			int previousDimY = currentMap.getDim_y();
-			boolean isAlongBorder = currentMap.isAlongBorder((int) zildo.getX(), (int) zildo.getY());
+			boolean isAlongBorder = p_changingMapPoint.isBorder() && currentMap.isAlongBorder((int) zildo.getX(), (int) zildo.getY());
 
 			EngineZildo.spriteManagement.notifyLoadingMap(true);
 			
