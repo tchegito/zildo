@@ -21,6 +21,7 @@
 package zildo.monde.sprites.persos;
 
 import zildo.client.sound.BankSound;
+import zildo.fwk.gfx.EngineFX;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
@@ -87,7 +88,7 @@ public class PersoGarde extends PersoNJ {
 	 */
 	@Override
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
-		if ("noir".equals(getEffect()) && p_damage == 1) {
+		if (EngineFX.GUARD_BLACK.equals(getSpecialEffect()) && p_damage == 1) {
 			// No strength enough to wound (is it the right place to check this ???)
 			EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
 			EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null));
