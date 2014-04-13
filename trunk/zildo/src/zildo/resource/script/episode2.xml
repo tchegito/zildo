@@ -686,6 +686,18 @@
         </action>
     </quest>
     
+    <quest name="blockZildoIgorPrison" repeat="true">
+        <trigger>
+            <questDone name="zildoAccessIgor-!freedIgor"/>
+            <location name="prison" pos="580,320" radius="3"/>
+        </trigger>
+        <action>
+            <speak who="zildo" text="prison.zildo.block"/>
+            <moveTo who="zildo" delta="true" pos="48,0"/>
+        </action>
+    </quest>
+    
+    
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
