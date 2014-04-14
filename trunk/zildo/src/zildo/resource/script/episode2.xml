@@ -697,6 +697,15 @@
         </action>
     </quest>
     
+    <quest name="meetLib1">
+        <trigger>
+            <location name="d4m2"/>
+            <questDone name="hector_call3"/>
+        </trigger>
+        <action>
+            <exec script="meetingLibrary"/>
+        </action>
+    </quest>
     
     <mapScript>
 	    <!--  , means OR  -->
@@ -893,6 +902,10 @@
    		    <spawn who="igor" pos="zildo.x,zildo.y" type="IGOR" speed="0.7"/>
    		    <visible who="igor" value="false"/>
    		    <script who="igor" value="16" effect="zildo"/>
+   		</condition>
+   		<condition name="d4m2" exp="!hector_call3">
+   		    <remove who="hector"/>
+   		    <remove who="maltus"/>
    		</condition>
    	</mapScript>
 
@@ -1369,6 +1382,18 @@
 		<speak who="zildo" text="freeIgor.zildo.0"/>
 		<speak who="igor" text="freeIgor.igor.3"/>
 		<script who="igor" value="16" effect="zildo"/>
+	</scene>
+	
+	<scene id="meetingLibrary">
+	    <wait value="60"/>
+	    <speak who="hector" text="d4m2.hector.0"/>
+	    <angle who="maltus" value="2"/>
+	    <actions>
+	        <moveTo who="zildo" delta="true" pos="0,-32" speed="1"/>
+		    <speak who="zildo" text="d4m2.zildo.0"/>
+	    </actions>
+	    <speak who="hector" text="d4m2.hector.1"/>
+	    <speak who="hector" text="d4m2.hector.2"/>
 	</scene>
 	
 	<persoAction id="sleeping">
