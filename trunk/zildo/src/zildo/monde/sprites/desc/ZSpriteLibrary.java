@@ -97,6 +97,7 @@ public class ZSpriteLibrary {
 			switch (descGear) {		
 			case GREEN_DOOR_OPENING:
 			case CAVE_KEYDOOR_OPENING:
+			case HIDDENDOOR_OPENING:
 				break;
 			default:
 				list.add(descGear);

@@ -28,15 +28,15 @@ import zildo.fwk.bank.SpriteBank;
  */
 public enum GearDescription implements SpriteDescription {
 	
-	GREEN_DOOR, GREEN_DOOR_OPENING,
-	GREEN_SIMPLEDOOR, GREEN_SIMPLEDOOR_OPENING,
+	GREEN_DOOR(true), GREEN_DOOR_OPENING(false),
+	GREEN_SIMPLEDOOR(true), GREEN_SIMPLEDOOR_OPENING(false),
 	
 	PRISON_GRATE, PRISON_GRATESIDE,
 	
 	BOULDER,
 	
-	CAVE_SIMPLEDOOR, CAVE_MASTERDOOR, CAVE_KEYDOOR,
-	CAVE_KEYDOOR_OPENING,
+	CAVE_SIMPLEDOOR, CAVE_MASTERDOOR, CAVE_KEYDOOR(true),
+	CAVE_KEYDOOR_OPENING(false),
 
 	BOULDER2,
 	
@@ -44,7 +44,34 @@ public enum GearDescription implements SpriteDescription {
 	
 	CRACK1, CRACK2,	// Broken walls
 	
-	GRATE, GRATE_OPENING;
+	GRATE(true), GRATE_OPENING(false),
+	
+	HIDDENDOOR(true), HIDDENDOOR_OPENING(false);
+
+	// Desc used only on doors (initialized with a boolean)
+	private GearDescription openingDoor = null;
+	private GearDescription closedDoor = null;
+	
+	static {
+		// We can call this only when all enum members are initialized (and just once)
+		for (GearDescription d : GearDescription.values()) {
+			if (d.closedDoor != null) {
+				d.openingDoor = GearDescription.values()[d.ordinal() + 1];
+			} else if (d.openingDoor != null) {
+				d.closedDoor = GearDescription.values()[d.ordinal() - 1];
+			}
+		}
+	}
+	
+	private GearDescription() {
+	}
+	private GearDescription(boolean p_door) {
+		if (p_door) {
+			closedDoor = this;
+		} else {
+			openingDoor = this;
+		}
+	}
 	
 	public int getBank() {
 		return SpriteBank.BANK_GEAR;
@@ -76,6 +103,7 @@ public enum GearDescription implements SpriteDescription {
 			case GREEN_SIMPLEDOOR_OPENING:
 			case GRATE:
 			case BIG_BLUE_DOOR:
+			case HIDDENDOOR:
 				return true;
 			default:
 				return false;
@@ -111,5 +139,13 @@ public enum GearDescription implements SpriteDescription {
 	@Override
 	public boolean isSliping() {
 		return false;
+	}
+
+	public GearDescription getOpeningDesc() {
+		return openingDoor;
+	}
+	
+	public GearDescription getClosedDesc() {
+		return closedDoor;
 	}
 }
