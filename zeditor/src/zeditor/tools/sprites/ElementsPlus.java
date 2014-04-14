@@ -314,7 +314,9 @@ public class ElementsPlus extends SpriteBanque {
 				// Sewer smoke
 				new Zone(263, 52, 7, 7), new Zone(263, 60, 7, 7),
 				new Zone(271, 62, 5, 5), new Zone(274, 52, 6, 5), new Zone(277, 57, 5, 5),
-				new Zone(283, 55, 4, 6)
+				new Zone(283, 55, 4, 6),
+				// Water waves
+				new Zone(122, 153, 8, 25), new Zone(132, 153, 8, 25), new Zone(141, 153, 8, 25)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 

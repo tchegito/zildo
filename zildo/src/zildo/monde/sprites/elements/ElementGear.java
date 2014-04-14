@@ -105,12 +105,9 @@ public class ElementGear extends Element {
 			switch (gearDesc) {
 				case GREEN_DOOR:
 				case GREEN_DOOR_OPENING:
-					opened = GearDescription.GREEN_DOOR_OPENING;
 				case CAVE_KEYDOOR:
 				case CAVE_KEYDOOR_OPENING:
-					if (opened == null) {
-						opened = GearDescription.CAVE_KEYDOOR_OPENING;
-					}
+					opened = gearDesc.getOpeningDesc();
 					switch (count) {
 						case 10:
 							setDesc(opened);
@@ -123,14 +120,12 @@ public class ElementGear extends Element {
 					break;
 				case GREEN_SIMPLEDOOR:
 				case GREEN_SIMPLEDOOR_OPENING:
-					closed = GearDescription.GREEN_SIMPLEDOOR;
-					opened = GearDescription.GREEN_SIMPLEDOOR_OPENING;
 				case GRATE:
 				case GRATE_OPENING:
-					if (closed == null) {
-						closed = GearDescription.GRATE;
-						opened = GearDescription.GRATE_OPENING;
-					}
+				case HIDDENDOOR:
+				case HIDDENDOOR_OPENING:
+					closed = gearDesc.getClosedDesc();
+					opened = gearDesc.getOpeningDesc();
 					if (state) { // Opening
 						switch (count) {
 						case 10:
