@@ -144,7 +144,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || timer || text || - || - || - || Do a repetition of actions on a desired rate. ||
 || lookFor || text || - || - || - || Look for some characters around another, with a desired radius. The first discovered one become the new context for nested action elements. ||
 || var || text || - || - || - || Set a variable indicated by 'name' to the given 'value'. ||
-|| if || text || - || - || - || Check the 'exp' expression, and if it's true, then nesting actions will be executed. ||
+|| if || text || - || - || - || Check the 'exp' expression (based on context variables, and if it's true, then nesting actions will be executed. Check for 'expQuest' too, based on accomplished quests.||
 
 === Multithread ===
 
