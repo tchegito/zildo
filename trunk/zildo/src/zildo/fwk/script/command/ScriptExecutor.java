@@ -192,8 +192,10 @@ public class ScriptExecutor {
 	}
 	
 	private void renderVariable(ScriptProcess process, VarElement p_elem) {
-		process.varExec.render(p_elem);
-		process.cursor++;
+		boolean achieved = process.varExec.render(p_elem);
+		if (achieved) {
+			process.cursor++;
+		}
 	}
 	
 	private void renderElement(ScriptProcess process, AnyElement currentNode, boolean moveCursor) {
@@ -273,7 +275,7 @@ public class ScriptExecutor {
 			IEvaluationContext ctx = sp.actionExec.context;
 			if (ctx != null && ctx instanceof SpriteEntityContext) {
 				Perso perso = (Perso) ctx.getActor();
-				if ( perso.getId() == entity.getId()) {
+				if ( perso != null && perso.getId() == entity.getId()) {
 					toTerminate.add(sp);
 				}
 			}

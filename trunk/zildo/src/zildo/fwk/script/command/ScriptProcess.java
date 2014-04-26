@@ -54,7 +54,7 @@ public class ScriptProcess {
 		cursor=0;
 		topPriority = p_topPriority;
 		actionExec=new ActionExecutor(p_scriptExecutor, p_scene.locked, context);
-		varExec = new VariableExecutor(context);
+		varExec = new VariableExecutor(p_scene.locked, context);
 		finalEvent = p_finalEvent;
 		
 		if (scene.restoreZildo) {

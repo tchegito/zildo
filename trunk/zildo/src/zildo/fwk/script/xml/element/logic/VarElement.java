@@ -24,6 +24,7 @@ import java.util.List;
 import org.w3c.dom.Element;
 
 import zildo.fwk.script.logic.FloatExpression;
+import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.LanguageElement;
 
@@ -64,6 +65,7 @@ public class VarElement extends LanguageElement {
 	public String name;
 	public FloatExpression value;
 	public String strValue;	// Set only for non-float values
+	public ZSSwitch expression;
 	public ValueType typ = ValueType._float;
 	public List<LanguageElement> ifThenClause;
 	
@@ -85,7 +87,12 @@ public class VarElement extends LanguageElement {
 		}
 		switch (kind) {
 		case _if:
-			value = new FloatExpression(readAttribute("exp"));
+			strValue = readAttribute("expQuest");
+			expression = strValue == null ? null : ZSSwitch.parseForScript(strValue);
+			strValue = readAttribute("exp");
+			if (strValue != null) {
+				value = new FloatExpression(strValue);
+			}
 			ifThenClause = (List<LanguageElement>) ScriptReader.parseNodes(xmlElement); 
 			break;
 		default:
