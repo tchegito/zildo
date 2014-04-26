@@ -257,6 +257,12 @@
         </action>
     </quest>
     
+    <quest name="beenFishermanVillage">
+        <trigger>
+            <location name="igorvillage"/>
+        </trigger>
+    </quest>
+    
     <quest name="minsk_fishes">
        	<trigger>
        	    <location name="igorv3"/>
@@ -494,6 +500,7 @@
     
     <quest name="igor_promise_sword">
         <trigger>
+            <location name="prison"/>
             <dialog name="igor" num="7"/>
         </trigger>
         <action>
@@ -695,6 +702,16 @@
             <speak who="zildo" text="prison.zildo.block"/>
             <moveTo who="zildo" delta="true" pos="48,0"/>
         </action>
+    </quest>
+    
+    <quest name="freedIgor">
+    	<trigger>
+    	    <questDone name="zildoAccessIgor"/>
+    	    <location name="prisonext"/>
+    	</trigger>
+    	<action>
+    	    <script who="igor" value="3"/>
+    	</action>
     </quest>
     
     <quest name="meetLib1">
@@ -1394,6 +1411,56 @@
 	    </actions>
 	    <speak who="hector" text="d4m2.hector.1"/>
 	    <speak who="hector" text="d4m2.hector.2"/>
+	    
+	    <if expQuest="igor_promise_sword">
+		    <speak who="zildo" text="d4m2.zildo.1"/>
+		    <speak who="hector" text="d4m2.hector.3"/>
+		    <speak who="zildo" text="d4m2.zildo.2"/>
+		    <speak who="hector" text="d4m2.hector.4"/>
+		    <angle who="anselme" value="1"/>
+		    <speak who="anselme" text="d4m2.anselme.0"/>
+
+		   	<if expQuest="freedIgor">
+	  		    <speak who="zildo" text="d4m2.zildo.3"/>
+			    <speak who="hector" text="d4m2.hector.5"/>
+			    <speak who="hector" text="d4m2.hector.6"/>
+			    
+			    <moveTo who="hector" pos="217,60"/>
+			    <angle who="maltus" value="3"/>
+			    <moveTo who="zildo" pos="-64,0" delta="true" speed="0.7"/>
+			    <actions>
+				    <moveTo who="hector" pos="87,60"/>
+				    <moveTo who="zildo" pos="127,81"/>
+			    </actions>
+   			    <moveTo who="hector" pos="0,-4" delta="true"/>
+			    <angle who="zildo" value="3"/>
+			    <wait value="40"/>
+			    <moveTo who="hector" pos="0,4" delta="true" backward="true" unblock="true"/>
+	    		<activate what="hiddendoor" value="true"/>
+	    		<sound name="ZildoSecret"/>
+	    		<wait value="40"/>
+	    		<actions>
+	    			<moveTo who="hector" pos="-10,60"/>
+	    		    <moveTo who="zildo" pos="0,60"/>
+	    		</actions>
+			</if>
+			<if expQuest="!freedIgor">
+	  		    <speak who="zildo" text="d4m2.zildo.4"/>
+	  		    <speak who="hector" text="d4m2.hector.7"/>
+	  		    <speak who="anselme" text="d4m2.anselme.1"/>
+	  		    <if expQuest="!beenFishermanVillage">
+	  		    	<speak who="zildo" text="d4m2.zildo.5"/>
+	  		    	<speak who="anselme" text="d4m2.anselme.2"/>
+	  		    </if>
+  		    	<speak who="zildo" text="d4m2.zildo.6"/>
+   			</if>
+	    </if>
+	    <if expQuest="!igor_promise_sword">
+		    <speak who="zildo" text="d4m2.zildo.7"/>
+			<speak who="hector" text="d4m2.hector.8"/>
+		    <speak who="zildo" text="d4m2.zildo.8"/>
+	    </if>
+	    	    
 	</scene>
 	
 	<persoAction id="sleeping">
