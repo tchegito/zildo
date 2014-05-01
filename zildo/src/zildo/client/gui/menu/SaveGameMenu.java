@@ -40,7 +40,6 @@ import zildo.fwk.ui.PageableMenu;
 import zildo.fwk.ui.UIText;
 import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.Game;
-import zildo.monde.sprites.persos.PersoZildo;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -184,7 +183,7 @@ public class SaveGameMenu extends PageableMenu {
 
 		singlePlay.launchGame();
 		
-		EngineZildo.mapManagement.postLoadMap();
+		EngineZildo.mapManagement.postLoadMap(false);
 		
 		return true;	// success
 	}
