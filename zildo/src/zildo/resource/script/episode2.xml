@@ -550,10 +550,17 @@
         <trigger>
             <location name="prison5"/>
             <dead who="bigrat1"/>
+            <questDone name="!prison5_cell2kill"/>
         </trigger>
         <action>
-            <activate what="doorc1a" value="true"/>
-            <activate what="doorc1b" value="true"/>
+            <actions>
+	            <activate what="doorc2a" value="true"/>
+	            <activate what="doorc2b" value="true"/>
+            </actions>
+            <actions>
+	            <activate what="doorc1a" value="true"/>
+	            <activate what="doorc1b" value="true"/>
+            </actions>
         </action>
     </quest>
     
@@ -561,10 +568,17 @@
         <trigger>
             <location name="prison5"/>
             <dead who="rat1,rat2"/>
+            <questDone name="!prison5_cell1kill"/>
         </trigger>
         <action>
-            <activate what="doorc2a" value="true"/>
-            <activate what="doorc2b" value="true"/>
+            <actions>
+	            <activate what="doorc2a" value="true"/>
+	            <activate what="doorc2b" value="true"/>
+            </actions>
+            <actions>
+	            <activate what="doorc1a" value="true"/>
+	            <activate what="doorc1b" value="true"/>
+            </actions>
         </action>
     </quest>
     
@@ -573,16 +587,8 @@
             <location name="prison5" tilePos="42,26" gear="BUTTON"/>
         </trigger>
         <action>
-            <wait value="20"/>
-            <sound name="MenuOutOfOrder"/>
-            <spawn type="RAT" who="surpriserat1" pos="707,466"/>
-            <angle who="zildo" value="2"/>
-            <wait vlaue="30"/>
-            <spawn type="RAT" who="surpriserat2" pos="746,443"/>
-            <wait value="20"/>
-            <angle who="zildo" value="1"/>
-            <script who="surpriserat1" value="0"/>
-            <script who="surpriserat2" value="0"/>
+			<activate what="door3a" value="true"/>
+            <activate what="door3b" value="true"/>
         </action>
     </quest>
     
@@ -908,6 +914,10 @@
    		    <markQuest name="p5_trigger_smoke" value="false"/>
    		    <markQuest name="prison5_cell1kill" value="false"/>
    		    <markQuest name="prison5_cell2kill" value="false"/>
+   		</condition>
+   		<condition name="prison5" exp="prison5_button1">
+			<activate what="door3a" value="true" unblock="true"/>
+            <activate what="door3b" value="true" unblock="true"/>
    		</condition>
    		<condition name="prison5" exp="prison5_button2">
    		    <remove what="door4"/> 

@@ -299,5 +299,6 @@ public class ActionElement extends LanguageElement {
 	@Override
 	public void reset() {
 		done = false;
+		waiting = false;
 	}
 }
