@@ -109,8 +109,8 @@ public class MapManagement {
 	public void loadMap(String p_mapname, boolean p_additive) {
 		// Remove previous map
 		if (p_additive) {
-			previousMap = currentMap; // Keep previous map for the scrolling
-										// phasis
+			previousMap = currentMap; // Keep previous map for the scrolling phasis
+			EngineZildo.scriptManagement.clearUnlockingScripts();	// Kill any scripts related to the previous map (timers for example)
 		} else {
 			if (currentMap != null) {
 				deleteCurrentMap();
