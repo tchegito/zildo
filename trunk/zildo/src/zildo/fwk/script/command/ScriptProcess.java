@@ -65,6 +65,7 @@ public class ScriptProcess {
 		}
 		
 		// Initialize all actions state
+    	// Because action are reference and usage object too. This isn't clean ...
 		p_scene.reset();
 	}
 	
