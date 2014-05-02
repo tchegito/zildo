@@ -251,13 +251,15 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 					    ortho.boxv(start.x + 4, start.y + 4, size.x - 8, size.y - 8, 0, colCursorFore);
 				    }
 			    }
-			    switch (mode) {
-			    case TILE_REVERSE_EDIT:
-			    	ortho.drawText(start.x + 2, start.y + 6, "Rev", colCursorText);
-			    	break;
-			    case TILE_ROTATE_EDIT:
-			    	ortho.drawText(start.x + 2, start.y + 6, "Rot", colCursorText);
-			    	break;
+			    if (mode != null) {
+				    switch (mode) {
+				    case TILE_REVERSE_EDIT:
+				    	ortho.drawText(start.x + 2, start.y + 6, "Rev", colCursorText);
+				    	break;
+				    case TILE_ROTATE_EDIT:
+				    	ortho.drawText(start.x + 2, start.y + 6, "Rot", colCursorText);
+				    	break;
+				    }
 			    }
 			}
 
