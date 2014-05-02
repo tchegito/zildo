@@ -24,7 +24,6 @@ import java.util.List;
 
 import zildo.fwk.collection.CycleIntBuffer;
 import zildo.monde.map.Area;
-import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.elements.Element;
@@ -206,7 +205,7 @@ public class SpriteCollision {
 								continue;
 							}
 						}
-						if (entity.dying) {	// Bugfix: Zildo could take goodies several items !
+						if (entity.dying) {	// Bugfix: Zildo could take goodies several times !
 							continue;
 						}
 						// Rules not directly related to check (is it bad ?)
@@ -260,24 +259,33 @@ public class SpriteCollision {
 		applyPatch(entity, 0, x, y);
 	}
 	
-	private void applyPatch(SpriteEntity entity, int id, int x, int y) {
+	/**
+	 * Apply a patch sized with entity SpriteModel at given place. Basically, a rectangle filled with
+	 * entity's id will be appended to the presence array.<br/>
+	 * We allow (ex,ey) coordinates, because it's not necessarily the entity's current location.
+	 * @param entity
+	 * @param id
+	 * @param ex
+	 * @param ey
+	 */
+	private void applyPatch(SpriteEntity entity, int id, int ex, int ey) {
 		SpriteModel sprModel = entity.getSprModel();
 		int sx = sprModel.getTaille_x();
 		int sy = sprModel.getTaille_y();
 		int repeatX = entity.repeatX;
 		int repeatY = entity.repeatY;
 		// Is the sprite rotated ?
-		if (entity.rotation == Rotation.CLOCKWISE || entity.rotation == Rotation.COUNTERCLOCKWISE) {
+		if (entity.rotation.isWidthHeightSwitched()) {
 			int tempSize = sx; int tempRepeat = repeatX;
 			sx = sy;       repeatX = repeatY; 
 			sy = tempSize; repeatY = tempRepeat;
 		}
 		// Equivalent to 'entity.getCenter()' but with the right width/height
-		x = (int) entity.x - sx/2;
-		y = (int) entity.y - sy;
+		int x = ex - sx/2;
+		int y = ey - sy;
 		// Is the sprite repeated ?
 		sx*=repeatX;
-		sy*=repeatY;		
+		sy*=repeatY;
 		for (int a = 0;a < sy;a++) {
 			for (int b = 0;b < sx;b++) {
 				if (!isOutOfBounds(x + b, y + a)) {
