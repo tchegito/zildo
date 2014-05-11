@@ -59,6 +59,7 @@ public class ShieldEffect {
 	                ball.x = affected.x;
 	                ball.y = affected.y;
 	                ball.z = affected.z;
+	                ball.setLinkedPerso(affected);
 	                //ball.zoom = 200;
             	}
                 break;

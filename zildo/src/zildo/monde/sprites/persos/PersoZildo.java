@@ -307,7 +307,11 @@ public class PersoZildo extends Perso {
 			}
 			break;
 		case FIRE_RING:
-			affections.toggle(AffectionKind.FIRE_DAMAGE_REDUCED, weapon);
+			if (weapon.level <= 0) {
+				outOfOrder = true;	// Ring hasn't energy anymore
+			} else {
+				affections.toggle(AffectionKind.FIRE_DAMAGE_REDUCED, weapon);
+			}
 			break;
 		}
 		if (outOfOrder) {
