@@ -21,6 +21,8 @@
 package zildo.monde.collision;
 
 import zildo.monde.Hasard;
+import zildo.monde.sprites.magic.Affection.AffectionKind;
+import zildo.monde.sprites.persos.Perso;
 
 public enum DamageType {
 
@@ -42,11 +44,16 @@ public enum DamageType {
 		return CUTTING==this || CUTTING_FRONT==this || EXPLOSION==this; 
 	}
 	
-	public int getHP() {
+	// Calculate the right HP loss, considering character's affections
+	public int getHP(Perso damagedPerso) {
 		switch (this) {
 		case FIRE:
 		case EXPLOSION:
-			return 2;
+			int val = 2;
+			if (damagedPerso.isAffectedBy(AffectionKind.FIRE_DAMAGE_REDUCED)) {
+				val >>= 1;
+			}
+			return val;
 		case HARMLESS:
 			return 0;
 		case PEEBLE:

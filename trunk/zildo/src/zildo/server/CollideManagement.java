@@ -219,7 +219,7 @@ public class CollideManagement {
         		}
         	} else {
         		// How much damage ?
-        		int dmg = p_collider.damageType == null ? 1 : p_collider.damageType.getHP();
+        		int dmg = p_collider.damageType == null ? 1 : p_collider.damageType.getHP(perso);
         		// Does this character resist to this kind of damage ?
         		if (!persoResisting && dmg > 0) {
 	        		Perso attacker=p_collider.perso;

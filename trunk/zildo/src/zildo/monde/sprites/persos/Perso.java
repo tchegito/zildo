@@ -39,6 +39,8 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.magic.PersoAffections;
+import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.action.PersoAction;
 import zildo.monde.sprites.persos.ia.PathFinder;
 import zildo.monde.sprites.persos.ia.PathFinderFollow;
@@ -113,6 +115,8 @@ public abstract class Perso extends Element {
 	private static SoundGetter footOnSqueak = new SoundGetter(BankSound.Squeak1, BankSound.Squeak2, 800, true);
 
 	private static TileCollision tileCollision = TileCollision.getInstance();
+	
+	PersoAffections affections;
 	
 	public Item weapon;
 
@@ -1081,6 +1085,10 @@ public abstract class Perso extends Element {
 		int angleSignumY = Integer.signum(angle.coords.y);
 		return  (Integer.signum(dx) == angleSignumX || angleSignumX == 0) &&
 				(Integer.signum(dy) == angleSignumY || angleSignumY == 0);
+	}
+
+	public boolean isAffectedBy(AffectionKind kind) {
+		return affections.isAffectedBy(kind);
 	}
 	
 	@Override

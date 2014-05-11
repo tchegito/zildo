@@ -98,8 +98,7 @@ public class PersoZildo extends Perso {
 	ZildoSprSequence swordSequence = new ZildoSprSequence();
 	
 	private SpriteEntity boomerang;
-	PersoAffections affections;
-	
+
 	// Sequence for sprite animation
 	static int seq_1[] = { 0, 1, 2, 1 };
 	static int seq_2[] = { 0, 1, 2, 1, 0, 3, 4, 3 };
@@ -1313,10 +1312,6 @@ public class PersoZildo extends Perso {
 
 	public void setSightAngle(Angle sightAngle) {
 		this.sightAngle = sightAngle;
-	}
-
-	public boolean isAffectedBy(AffectionKind kind) {
-		return affections.isAffectedBy(kind);
 	}
 	
 	public int getMoonHalf() {
