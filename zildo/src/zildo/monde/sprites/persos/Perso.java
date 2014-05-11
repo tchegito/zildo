@@ -503,9 +503,17 @@ public abstract class Perso extends Element {
 		setSpecialEffect(EngineFX.PERSO_HURT);
 	}
 
+	/** Method designed for Perso rendering. Called every frame, whatever game state is. So this is the
+	 * right place for ongoing animations, when ingame menu is displayed for example, or whatever causing
+	 * an NPC block.
+	 * @param compteur_animation
+	 */
 	public abstract void finaliseComportement(int compteur_animation);
 
-	// Default function : nothing
+	/** Method for Perso animation. Called every frame, <b>when characters are not blocked</b>.
+	    Here is the default one : launch perso's action if exists, store delta movements,
+	    and manage OBSERVE script.
+	    @param compteur **/
 	public void animate(int compteur) {
 
 		deltaMoveX = x - prevX;

@@ -127,8 +127,9 @@ public enum ElementDescription implements SpriteDescription {
 	// 232
 	SEWER_SMOKE1, SEWER_SMOKE2, SEWER_VOLUT1, SEWER_VOLUT2, SEWER_VOLUT3, SEWER_VOLUT4,
 	// 238
-	WATERWAVE1, WATERWAVE2, WATERWAVE3;
-	;
+	WATERWAVE1, WATERWAVE2, WATERWAVE3,
+	// 241
+	FIRE_RING;
 	
 	Boolean damage;
 	

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import zildo.monde.items.Item;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.Perso;
 
@@ -55,12 +56,26 @@ public class PersoAffections {
 		affections.clear();
 	}
 	
-	public boolean isAffectedBy(AffectionKind kind) {
+	/** Toggles an affection **/
+	public void toggle(AffectionKind kind, Item item) {
+		Affection aff = find(kind);
+		if (aff != null) {
+			affections.remove(aff);
+		} else {
+			affections.add(new Affection(perso, kind, item));
+		}
+	}
+	
+	private Affection find(AffectionKind kind) {
 		for (Affection aff : affections) {
 			if (aff.kind == kind) {
-				return true;
+				return aff;
 			}
 		}
-		return false;
+		return null;
+	}
+	
+	public boolean isAffectedBy(AffectionKind kind) {
+		return find(kind) != null;
 	}
 }
