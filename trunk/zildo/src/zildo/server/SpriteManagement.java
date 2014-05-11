@@ -554,7 +554,7 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : spriteEntities) {
 			if (entity.getEntityType().isPerso()) {
 				Perso perso = (Perso) entity;
-				boolean allowedToMoveAndCollide = !blockNPC || perso.getInfo() == PersoInfo.ZILDO || perso.getFollowing() != null;
+				boolean allowedToMoveAndCollide = !blockNPC || /*perso.getInfo() == PersoInfo.ZILDO ||*/ perso.getFollowing() != null;
 				if (allowedToMoveAndCollide) {
 					// Animate persos
 					perso.animate(compt);

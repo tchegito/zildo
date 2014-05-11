@@ -20,6 +20,7 @@
 package zildo.monde.sprites.magic;
 
 import zildo.client.sound.BankSound;
+import zildo.monde.items.Item;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 import zildo.server.MultiplayerManagement;
@@ -35,7 +36,8 @@ public class Affection {
 
 	public enum AffectionKind {
 		QUAD_DAMAGE(MultiplayerManagement.QUAD_TIME_DURATION),
-		INVINCIBILITY(500);
+		INVINCIBILITY(500),
+		FIRE_DAMAGE_REDUCED(5000);
 
 		int duration;
 
@@ -46,12 +48,23 @@ public class Affection {
 	
 	int duration;
 	final AffectionKind kind;
-	Perso perso;
+	final Perso perso;
+	Item item;
 	
+	/** Create an effection with an absolut duration **/
 	public Affection(Perso p_perso, AffectionKind p_kind) {
 		perso = p_perso;
 		kind = p_kind;
 		duration = p_kind.duration;
+	}
+	
+	/** Create an affection linked to an item (magic effect with limited duration) **/
+	public Affection(Perso p_perso, AffectionKind p_kind, Item p_item) {
+		this(p_perso, p_kind);
+		if (p_item != null) {
+			item = p_item;
+			duration = p_item.level;
+		}
 	}
 	
 	public boolean render() {
@@ -70,6 +83,14 @@ public class Affection {
 		}
 		duration--;
 
+		if (item != null) {	// Synchronize this duration with item's one (mapped on 'level' field)
+			item.level = duration;
+		}
 		return duration <=0;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return ((Affection) obj).kind == kind;
 	}
 }

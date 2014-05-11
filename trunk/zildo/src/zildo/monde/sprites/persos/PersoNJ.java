@@ -28,6 +28,7 @@ import zildo.monde.collision.DamageType;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.ElementGuardWeapon;
@@ -50,6 +51,7 @@ import zildo.server.EngineZildo;
 public class PersoNJ extends Perso {
 
 	ElementGuardWeapon guardWeapon;
+	ElementDescription carriedItem;	// Object that monster will give when he died
 	
 	public PersoNJ() {
 		super();
@@ -857,12 +859,16 @@ public class PersoNJ extends Perso {
 		super.die(p_link, p_shooter);
 
 		if (info == PersoInfo.ENEMY) {
-			// Un monstre vient de mourir
-			// On teste si un bonus va apparaitre
+			// Monster just died. We check, a bonus may appear.
 			int k, m;
 			SpriteAnimation anim = null;
 			k = 1 + (int) (Math.random() * 6);
 			m = 0;
+			
+			ElementDescription itemDesc = carriedItem;
+			if (carriedItem != null) {
+				anim = SpriteAnimation.FROMGROUND;
+			}
 			switch (k) {
 			case 5:
 			case 6:
@@ -878,7 +884,7 @@ public class PersoNJ extends Perso {
 				break;
 			}
 			if (anim != null) {
-				EngineZildo.spriteManagement.spawnSpriteGeneric(anim, (int) x, (int) y, m, null, null);
+				EngineZildo.spriteManagement.spawnSpriteGeneric(anim, (int) x, (int) y, m, null, itemDesc);
 			}
 		}
 	}

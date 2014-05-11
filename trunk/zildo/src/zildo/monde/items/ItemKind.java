@@ -47,7 +47,8 @@ public enum ItemKind {
 	BLUEDROP(ElementDescription.DROP_FLOOR, 10),
 	FLASK_YELLOW(ElementDescription.FLASK_YELLOW, 100),
 	EMPTY_BAG(ElementDescription.EMPTY_BAG, 20),
-	FULL_BAG(ElementDescription.FULL_BAG, 20);
+	FULL_BAG(ElementDescription.FULL_BAG, 20),
+	FIRE_RING(ElementDescription.FIRE_RING, 800);
 	
 	public SpriteDescription representation;
 	public int price;

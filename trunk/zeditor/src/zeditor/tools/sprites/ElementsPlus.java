@@ -190,7 +190,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(102, 35, 17, 23), new Zone(119, 35, 17, 23),
 				
 				// From here :Objets.png (123)
-				new Zone(36, 0, 8, 15),
+				new Zone(32, 0, 15, 7),
 				new Zone(48, 0, 16, 16),
 				new Zone(16, 85, 19, 19),	// FULL_MOON
 				new Zone(35, 85, 9, 16),	 // MOON_FRAGMENT1
@@ -316,7 +316,9 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(271, 62, 5, 5), new Zone(274, 52, 6, 5), new Zone(277, 57, 5, 5),
 				new Zone(283, 55, 4, 6),
 				// Water waves
-				new Zone(122, 153, 8, 25), new Zone(132, 153, 8, 25), new Zone(141, 153, 8, 25)
+				new Zone(122, 153, 8, 25), new Zone(132, 153, 8, 25), new Zone(141, 153, 8, 25),
+				// Fire ring
+				new Zone(110, 85, 12, 10)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -329,6 +331,7 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem", 189, 0),
 				new GraphChange("objets", 228, 0),
 				new GraphChange("elem", 230, 0),
+				new GraphChange("objets", 242, 0),
 				});
 	}
 }

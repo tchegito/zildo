@@ -49,8 +49,8 @@ import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.desc.ZildoSprSequence;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementArrow;
-import zildo.monde.sprites.elements.ElementDynamite;
 import zildo.monde.sprites.elements.ElementBoomerang;
+import zildo.monde.sprites.elements.ElementDynamite;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
@@ -307,6 +307,9 @@ public class PersoZildo extends Perso {
 				setAttente(2 * 6);
 			}
 			break;
+		case FIRE_RING:
+			affections.toggle(AffectionKind.FIRE_DAMAGE_REDUCED, weapon);
+			break;
 		}
 		if (outOfOrder) {
 			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
@@ -510,6 +513,7 @@ public class PersoZildo extends Perso {
 	{
 		super.animate(compteur_animation);
 
+		
 		// If zildo's dead, don't display him
 		if (getPv() <= 0) {
 			if (EngineZildo.game.multiPlayer) {
@@ -524,11 +528,10 @@ public class PersoZildo extends Perso {
 		if (getEn_bras() != null && getEn_bras().dying) {
 			setEn_bras(null);
 		}
-
-		// Get zildo
-		float xx = x;
-		float yy = y;
-
+		
+		// Affections
+		affections.render();
+		
 		if (compte_dialogue != 0) {
 			compte_dialogue--;
 			if (compte_dialogue == 0) {
@@ -550,10 +553,8 @@ public class PersoZildo extends Perso {
 			if (Math.abs(px) + Math.abs(py) < 0.2f) {
 				stopBeingWounded();
 			}
-			//TODO: try to remove (xx=x and yy=y) here and shift the previous declaration just after this
-			//TODO: if block.
-			x = p.x; xx = x;
-			y = p.y; yy = y;
+			x = p.x;
+			y = p.y;
 		} else if (getMouvement() == MouvementZildo.POUSSE && pushedEntity != null) {
 			// Zildo est en train de pousser : obstacle bidon ou bloc ?
 
@@ -567,13 +568,53 @@ public class PersoZildo extends Perso {
 			}
 		}
 
+		switch (mouvement) {
+		case ATTAQUE_ARC:
+			if (attente == 2 * 8) {
+				EngineZildo.soundManagement.broadcastSound(BankSound.FlecheTir, this);
+				Element arrow = new ElementArrow(angle, (int) x, (int) y, 0, this);
+				EngineZildo.spriteManagement.spawnSprite(arrow);
+				countArrow--;
+			}
+			break;
+		case TOMBE:
+			if (z > 0) {
+				z+=vz;
+				vz+=az;
+			} else if (az != 0) {
+				z=0;
+				az=0;
+				mouvement = MouvementZildo.VIDE;
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
+			}
+			break;
+		}
+
+
+	}
+
+	final int[] seqWakeUp = { 0, 1, 0, 1, 2, 2, 3 };
+	
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// finaliseComportementPnj
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// Manage character's graphic side, depending on the position in the
+	// animated sequence.
+	// NOTE: Called even if Zildo is in ghost mode (automatic movement in cinematic).
+	// /////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public void finaliseComportement(int compteur_animation) {
+
+		float xx = x;
+		float yy = y;
+		
 		// Default : invisible
 		shadow.setVisible(false);
 		feet.setVisible(pv > 0 && (inWater || inDirt));
 		shield.setVisible(false);
 		sword.setVisible(false);
 		
-		if (isAffectedBy(AffectionKind.QUAD_DAMAGE)) {
+		if (isAffectedBy(AffectionKind.FIRE_DAMAGE_REDUCED)) {
 			if (shieldEffect == null) {
 				shieldEffect = new ShieldEffect(this, ShieldType.REDBALL);
 			}
@@ -686,12 +727,7 @@ public class PersoZildo extends Perso {
 				yy += decalyBow[angle.value][v];
 			}
 			shield.setVisible(false);
-			if (attente == 2 * 8) {
-				EngineZildo.soundManagement.broadcastSound(BankSound.FlecheTir, this);
-				Element arrow = new ElementArrow(angle, (int) x, (int) y, 0, this);
-				EngineZildo.spriteManagement.spawnSprite(arrow);
-				countArrow--;
-			}			
+		
 			break;
 		case SAUTE:
 			// Zildo est en train de sauter, on affiche l'ombre à son arrivée
@@ -716,15 +752,6 @@ public class PersoZildo extends Perso {
 				shadow.setX(x);
 				shadow.setY(y);
 				shadow.setZ(0);
-			}
-			if (z > 0) {
-				z+=vz;
-				vz+=az;
-			} else if (az != 0) {
-				z=0;
-				az=0;
-				mouvement = MouvementZildo.VIDE;
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
 			}
 			break;
 		case MORT:
@@ -767,38 +794,19 @@ public class PersoZildo extends Perso {
 		sprModel = EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO).get_sprite(nSpr + addSpr);
 		xx -= 7;
 		yy -= sprModel.getTaille_y() - 2; //21;
-		
-		// GUI circle
-		if (guiCircle != null) {
-			guiCircle.animate();
-			if (guiCircle.isReduced()) {
-				inventoring = false;
-				guiCircle = null;
-			}
-		}
-		
-		// Affections
-		affections.render();
+
 
 		setAjustedX((int) xx);
 		setAjustedY((int) yy);
 		if (!askedVisible) {
 			setVisible(false);
 		}
-	}
-
-	final int[] seqWakeUp = { 0, 1, 0, 1, 2, 2, 3 };
-	
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// finaliseComportementPnj
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// Manage character's graphic side, depending on the position in the
-	// animated sequence.
-	// NOTE: Called even if Zildo is in ghost mode (automatic movement in cinematic).
-	// /////////////////////////////////////////////////////////////////////////////////////
-	@Override
-	public void finaliseComportement(int compteur_animation) {
-
+		
+		//////////////////////////////////////////////////
+		// End of the part previously in 'animate' method (this was wrong, because this only concerns
+		// rendering.
+		//////////////////////////////////////////////////
+		
 		reverse = Reverse.NOTHING;
 		switch (getMouvement())
 		{
@@ -823,16 +831,16 @@ public class PersoZildo extends Perso {
 				en_bras.setZ(objZ - variation);
 				
 				// Corrections , décalages du sprite
-				float xx = x;
-				float yy = y;
+				float xxx = x;
+				float yyy = y;
 				if (angle == Angle.EST) {
-					xx -= 2;
+					xxx -= 2;
 				} else if (angle == Angle.OUEST) {
-					xx += 2;
+					xxx += 2;
 				}
 
-				en_bras.setX(xx + 1);
-				en_bras.setY(yy); // + 3);
+				en_bras.setX(xxx + 1);
+				en_bras.setY(yyy); // + 3);
 				en_bras.setZ(17 - 3 - variation);
 			}
 			setSpr(ZildoDescription.getArmraisedMoving(angle, (pos_seqsprite % (8 * Constantes.speed)) / Constantes.speed));
@@ -898,6 +906,15 @@ public class PersoZildo extends Perso {
 		if (outfit != null && nBank == SpriteBank.BANK_ZILDO) {
 			setNBank(outfit.getNBank());
 		}
+		
+		// GUI circle
+		if (guiCircle != null) {
+			guiCircle.animate();
+			if (guiCircle.isReduced()) {
+				inventoring = false;
+				guiCircle = null;
+			}
+		}		
 	}
 
 	/**
