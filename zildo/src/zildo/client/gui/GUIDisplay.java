@@ -882,11 +882,11 @@ public class GUIDisplay {
 				curAlpha>>=2;
 			}
 			int x1 = computeForLeftHanded(10, FontDescription.VIRTUAL_PAD);
-			int x2 = computeForLeftHanded(Zildo.viewPortX - 24, FontDescription.BUTTON_Y);
-			int x3 = computeForLeftHanded(Zildo.viewPortX - 48, FontDescription.BUTTON_X);
+			int x2 = computeForLeftHanded(Zildo.viewPortX - 24 - 16 + 2, FontDescription.BUTTON_Y);
+			int x3 = computeForLeftHanded(Zildo.viewPortX - 48 - 16 - 1, FontDescription.BUTTON_X);
 			guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, x1, Zildo.viewPortY-80, curAlpha);
-			guiSpritesSequence.addSprite(FontDescription.BUTTON_Y, x2, Zildo.viewPortY-70, curAlpha);
-			guiSpritesSequence.addSprite(FontDescription.BUTTON_X, x3, Zildo.viewPortY-40, curAlpha);
+			guiSpritesSequence.addSprite(FontDescription.BUTTON_Y, x2, Zildo.viewPortY-70 - 3, curAlpha);
+			guiSpritesSequence.addSprite(FontDescription.BUTTON_X, x3, Zildo.viewPortY-40 + 8, curAlpha);
 		}
 	}
 
