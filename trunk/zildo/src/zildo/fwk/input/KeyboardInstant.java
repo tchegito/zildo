@@ -25,6 +25,7 @@ import java.util.EnumMap;
 import zildo.Zildo;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
+import zildo.monde.util.Vector2f;
 import zildo.resource.KeysConfiguration;
 
 public class KeyboardInstant implements EasySerializable {
@@ -32,6 +33,7 @@ public class KeyboardInstant implements EasySerializable {
 	KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
 	
 	EnumMap<KeysConfiguration, Boolean> kbdInstant;
+	Vector2f currentDirection;
 	boolean[] bools = new boolean[KEYS_LENGTH];
 
 	static int KEYS_LENGTH = KeysConfiguration.values().length;
@@ -59,6 +61,10 @@ public class KeyboardInstant implements EasySerializable {
 		kbdInstant.put(key, value);
 	}
 
+	public Vector2f getDirection() {
+		return currentDirection;
+	}
+	
 	/**
 	 * Update keyboard state
 	 */
@@ -69,6 +75,7 @@ public class KeyboardInstant implements EasySerializable {
 		for (KeysConfiguration key : KeysConfiguration.values()) {
 			kbdInstant.put(key, kbHandler.isKeyDown(key.code));
 		}
+		currentDirection = kbHandler.getDirection();
 	}
 
 	public EasyBuffering serialize() {

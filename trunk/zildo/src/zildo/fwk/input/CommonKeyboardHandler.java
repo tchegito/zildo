@@ -19,6 +19,8 @@
 
 package zildo.fwk.input;
 
+import zildo.monde.util.Vector2f;
+
 
 /**
  * @author Tchegito
@@ -30,6 +32,10 @@ public abstract class CommonKeyboardHandler implements KeyboardHandler{
 	
 	public boolean isKeyDown(Keys key) {
 		return isKeyDown(getCode(key));
+	}
+	
+	public Vector2f getDirection() {
+		return null;
 	}
 	
 	/**
