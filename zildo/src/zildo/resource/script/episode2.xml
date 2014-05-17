@@ -1450,9 +1450,14 @@
 	    		<sound name="ZildoSecret"/>
 	    		<wait value="40"/>
 	    		<actions>
-	    			<moveTo who="hector" pos="-10,60"/>
-	    		    <moveTo who="zildo" pos="0,60"/>
+	    			<moveTo who="hector" pos="8,60"/>
+	    		    <moveTo who="zildo" pos="32,60"/>
 	    		</actions>
+	    		<actions>
+	    			<moveTo who="hector" pos="-10,0" delta="true" unstoppable="true"/>
+	    		    <moveTo who="zildo" pos="-38,0" delta="true" unstoppable="true"/>
+	    		</actions>
+	    		<exec script="zildoHectorCave"/>
 			</if>
 			<if expQuest="!freedIgor">
 	  		    <speak who="zildo" text="d4m2.zildo.4"/>
@@ -1471,6 +1476,19 @@
 		    <speak who="zildo" text="d4m2.zildo.8"/>
 	    </if>
 	    	    
+	</scene>
+	
+	<scene id="zildoHectorCave">
+	    <moveTo who="hector" pos="-50,8" delta="true" unstoppable="true"/>
+	    <moveTo who="zildo" pos="-10,0" delta="true"/>
+	    <actions>
+	    	<moveTo who="hector" pos="246,80"/>
+	        <moveTo who="zildo" pos="260,60"/>
+	    </actions>
+   	    <actions>
+	        <moveTo who="hector" pos="247,103"/>
+	        <moveTo who="zildo" pos="247,89"/>
+	    </actions>
 	</scene>
 	
 	<persoAction id="sleeping">
