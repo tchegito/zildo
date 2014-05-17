@@ -1,7 +1,6 @@
 /**
  * The Land of Alembrum
  * Copyright (C) 2006-2013 Evariste Boussaton
- * 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,36 +19,35 @@
 
 package zildo.fwk.input;
 
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
 
 /**
  * @author Tchegito
  *
  */
-public interface KeyboardHandler {
-
-	public boolean isKeyDown(int p_code);
-	public boolean isKeyDown(Keys key);
-	public boolean isKeyPressed(Keys key);
+public class DPadMovement {
+	final static float[] forces = {0.2f, 0.6f, 1}; 
 	
-	public void poll();
+	float direction;
 	
-	/**
-	 * @return true if a keyboard event was read, false otherwise
-	 */
-	public boolean next();
-	
-	public boolean getEventKeyState();
-	
-	public int getEventKey();
-	
-	public char getEventCharacter();
-	
-	public Vector2f getDirection();
-	
-	public enum Keys {Q, W, X, E, UP, DOWN, RIGHT, LEFT, TAB, RETURN, BACK, ESCAPE, LSHIFT,
-		// Specific for touch screen
-		DIALOG_FRAME, TOUCH_MENU, TOUCH_BACK};
-	public int getCode(Keys k);
-	
+	public static Vector2f compute(int px, int py) {
+		Vector2f v = new Vector2f(0,0);
+		// 0 <= px <= 80 
+		// 0 <= py <= 80
+		float distance = (float) Pointf.pythagore(px, py);
+		if (distance == 0) {
+			return null;
+		}
+		float ratio = distance / 40;
+		float clamped = 0;
+		for (float force : forces) {
+			clamped = force;
+			if (ratio <= force){
+				break;
+			}
+		}
+		v.set(clamped * (px / distance), clamped * (py / distance));
+		return v; 
+	}
 }
