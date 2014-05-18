@@ -27,15 +27,18 @@ public class StatsPanel extends JPanel {
 	JLabel nPerso;
 	JLabel nChainingPoint;
 	JLabel nDialogs;
+	JLabel nFloors;
 	JSpinner spinLimitX;
 	JSpinner spinLimitY;
 	JComboBox atmosphere;
 
 	public StatsPanel() {
-		setLayout(new GridLayout(8, 2));
+		setLayout(new GridLayout(9, 2));
 
 		add(new JLabel("Dimension"));
 		add(dim = new JLabel(""));
+		add(new JLabel("Floors"));
+		add(nFloors = new JLabel(""));
 		add(new JLabel("Sprites"));
 		add(nSpr = new JLabel(""));
 		add(new JLabel("Personnages"));
@@ -72,6 +75,7 @@ public class StatsPanel extends JPanel {
 		MapDialog dialogs = map.getMapDialog();
 		int nbDial = dialogs == null ? 0 : dialogs.getN_phrases();
 		dim.setText(map.getDim_x() + " x " + map.getDim_y());
+		nFloors.setText("" + (map.getHighestFloor()+1));
 		nPerso.setText(String.valueOf(nbPerso));
 		nSpr.setText(String.valueOf(nbSpr - nbPerso));
 		nChainingPoint.setText(String.valueOf(nbChPoint));

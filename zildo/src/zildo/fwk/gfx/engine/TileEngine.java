@@ -29,6 +29,8 @@ import zildo.fwk.gfx.primitive.TileGroupPrimitive;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
+import zildo.monde.map.accessor.AreaAccessor;
+import zildo.monde.map.accessor.OneFloorAreaAccessor;
 import zildo.monde.util.Point;
 import zildo.resource.Constantes;
 
@@ -95,6 +97,8 @@ public abstract class TileEngine {
 	protected TileGroupPrimitive meshBACK;
 	protected TileGroupPrimitive meshBACK2;
 
+	AreaAccessor areaAccessor;
+	
 	protected boolean initialized = false;
 	List<TileBank> motifBanks;
 	public int texCloudId;
@@ -130,9 +134,11 @@ public abstract class TileEngine {
 		// Load graphs
 		motifBanks = new ArrayList<TileBank>();
 
-		this.loadAllTileBanks();
+		loadAllTileBanks();
 
 		loadTextures();
+		
+		areaAccessor = new OneFloorAreaAccessor();	// Default one : 1 floor
 	}
 	
 	public void cleanUp()
@@ -227,6 +233,9 @@ public abstract class TileEngine {
 				if (offset.y > 0) {
 					dy = offset.y >> 4;
 				}
+
+				areaAccessor.setArea(theMap);
+				
 				for (int ay = 0; ay < sizeY; ay++)
 				{
 					int y = ay + (offset.y >> 4);
@@ -245,7 +254,7 @@ public abstract class TileEngine {
 						int n_motif = 0, n_animated_motif;
 						// Get corresponding case on the map
 
-						Case mapCase = theMap.get_mapcase((x+dx) % dx, (y+dy) % dy);
+						Case mapCase = areaAccessor.get_mapcase((x+dx) % dx, (y+dy) % dy);
 						if (mapCase != null) {
 							boolean changed = mapCase.isModified();
 							Tile back = mapCase.getBackTile();
@@ -317,5 +326,10 @@ public abstract class TileEngine {
 	
 	public void saveTextures() {
 		// Default : do nothing. Only LWJGL version can do that.
+	}
+	
+	public void setAreaAccessor(AreaAccessor aa) {
+		areaAccessor = aa;
+		prepareTiles();
 	}
 }

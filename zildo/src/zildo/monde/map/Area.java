@@ -87,6 +87,8 @@ public class Area implements EasySerializable {
 	final static int TILE_VIEWPORT_X = (Zildo.viewPortX / 16);// + 1;
 	final static int TILE_VIEWPORT_Y = (Zildo.viewPortY / 16);// + 1;
 	
+	public static final byte MIDDLE_FLOOR = 1;	// Default floor
+	
 	final static int DEFAULT_SPAWNING_TIME = 5000;	// Number of frames until the tile respawns
 	
 	// For roundAndRange
@@ -97,9 +99,11 @@ public class Area implements EasySerializable {
 
 	private Point offset; // For scrolling map
 
+	private byte highestFloor = 0;	// Default (but should be read from the map)
+	
 	private int dim_x, dim_y;
 	private String name;
-	private Case[][] mapdata;
+	private Case[][][] mapdata;	// Floor x ordinate x abscissa
 	private List<ChainingPoint> listChainingPoint;
 	private MapDialog dialogs;
 
@@ -123,7 +127,7 @@ public class Area implements EasySerializable {
 	}
 
 	public Area() {
-		mapdata = new Case[Constantes.TILEENGINE_HEIGHT][Constantes.TILEENGINE_HEIGHT];
+		mapdata = new Case[Constantes.TILEENGINE_FLOOR][Constantes.TILEENGINE_HEIGHT][Constantes.TILEENGINE_HEIGHT];
 		listChainingPoint = new ArrayList<ChainingPoint>();
 
 		changes = new HashSet<Point>();
@@ -155,23 +159,48 @@ public class Area implements EasySerializable {
 	// IN : coordinates
 	// OUT: Case object at the given coordinates
 	// /////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Return {@link Case} object at given map coordinates.<br/>
+	 * In this method, floor isn't provided, so we select the highest floor.
+	 */
 	public Case get_mapcase(int x, int y) {
+		// TODO: a method without overflow tests could be used sometimes to enhance performance
 		if (x < 0 || x >= dim_x) {
 			return null;
 		}
 		if (y < 0 || y >= dim_y) {
 			return null;
 		}
-		return mapdata[y][x];
+		byte floor = highestFloor;
+		Case c = null;
+		while (floor>=0) {
+			c = mapdata[floor][y][x];
+			if (c != null) break;
+			floor--;
+		}
+		return c;
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// set_Areacase
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// IN:coordinates, Case object
-	// /////////////////////////////////////////////////////////////////////////////////////
+	public Case get_mapcase(int x, int y, int floor) {
+		if (x < 0 || x >= dim_x) {
+			return null;
+		}
+		if (y < 0 || y >= dim_y) {
+			return null;
+		}
+		return mapdata[floor][y][x];
+	}
+	
+	/** Set a {@link Case} object in the map, without specifying floor. Default is MIDDLE_FLOOR.**/
 	public void set_mapcase(int x, int y, Case c) {
-		mapdata[y][x] = c; //.put(y * lineSize + x, c);
+		mapdata[highestFloor][y][x] = c;
+	}
+	
+	public void set_mapcase(int x, int y, byte floor, Case c) {
+		mapdata[floor][y][x] = c;
+		if (floor > highestFloor) {
+			highestFloor = floor;
+		}
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -1341,6 +1370,10 @@ public class Area implements EasySerializable {
 	
 	public Point getAlertLocation() {
 		return new Point(alertLocation);
+	}
+	
+	public byte getHighestFloor() {
+		return highestFloor;
 	}
 	
 	private void arrange() {

@@ -511,7 +511,8 @@ public class MasterFrame extends javax.swing.JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String sFloor = (String) floorCombo.getSelectedItem();
-				manager.setCurrentFloor(Integer.valueOf(sFloor));
+				manager.setCurrentFloor(Integer.valueOf(sFloor).byteValue());
+				// Increase area highestFloor
 			}
 		});
 		return floorCombo;

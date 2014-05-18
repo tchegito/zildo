@@ -27,9 +27,11 @@ import zeditor.windows.OptionHelper;
 import zeditor.windows.OptionsFrame;
 import zeditor.windows.subpanels.ChainingPointPanel;
 import zeditor.windows.subpanels.SelectionKind;
+import zildo.client.ClientEngineZildo;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.map.accessor.SpecificFloorAreaAccesor;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
@@ -51,7 +53,7 @@ public class MasterFrameManager {
 
 	private String currentMapFile;
 
-	private int currentFloor = Area.MIDDLE_FLOOR;	// Default floor
+	private byte currentFloor = Area.MIDDLE_FLOOR;	// Default floor
 	
 	public final static int MESSAGE_ERROR = 1;
 	public final static int MESSAGE_INFO = 2;
@@ -538,11 +540,12 @@ public class MasterFrameManager {
 		masterFrame.getBackgroundPanel().repaint();
 	}
 	
-	public int getCurrentFloor() {
+	public byte getCurrentFloor() {
 		return currentFloor;
 	}
 	
-	public void setCurrentFloor(int floor) {
+	public void setCurrentFloor(byte floor) {
 		currentFloor = floor;
+		ClientEngineZildo.tileEngine.setAreaAccessor(new SpecificFloorAreaAccesor(currentFloor));
 	}
 }
