@@ -17,53 +17,18 @@
  *
  */
 
-package zeditor.tools;
+package zildo.monde.map.accessor;
 
-import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 
 /**
  * @author Tchegito
  *
  */
-public class AreaWrapper {
+public class OneFloorAreaAccessor extends AreaAccessor {
 
-	public final Area area;
-	public final byte floor;
-	
-	public AreaWrapper(Area p_area, byte p_floor) {
-		area = p_area;
-		floor = p_floor;
-	}
-	
-	public int getDim_x() {
-		return area.getDim_x();
-	}
-	
-	public int getDim_y() {
-		return area.getDim_y();
-	}
-	
-	public void set_mapcase(int x, int y, Case c) {
-		area.set_mapcase(x, y, floor, c);
-	}
-	
+	@Override
 	public Case get_mapcase(int x, int y) {
-		return area.get_mapcase(x, y, floor);
+		return area.get_mapcase(x, y, 0);
 	}
-	
-	//TODO: add floor
-	public int readmap(int x, int y) {
-		return area.readmap(x, y);
-	}
-	
-	//TODO: add floor
-	public void writemap(int x, int y, int quoi) {
-		area.writemap(x, y, quoi);
-	}
-	
-	public boolean isOutside(int x, int y) {
-		return area.isOutside(x, y);
-	}
-	
 }
