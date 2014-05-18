@@ -22,7 +22,7 @@ package zeditor.core.prefetch;
 
 import zeditor.core.prefetch.complex.DropDelegateDraw;
 import zeditor.core.tiles.TileSelection;
-import zildo.monde.map.Area;
+import zeditor.tools.AreaWrapper;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
 import zildo.monde.util.Point;
@@ -80,7 +80,7 @@ public class PrefetchSelection extends TileSelection {
 	}
 	
 	@Override
-	public void draw(Area p_map, Point p_start, int p_mask) {
+	public void draw(AreaWrapper p_map, Point p_start, int p_mask) {
 		switch (kind) {
 		case TraceDrop:
 			traceDrop.method.draw(p_map, p_start);

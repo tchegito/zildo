@@ -20,7 +20,7 @@
 
 package zeditor.core.prefetch.complex;
 
-import zildo.monde.map.Area;
+import zeditor.tools.AreaWrapper;
 import zildo.monde.util.Point;
 
 /**
@@ -62,7 +62,7 @@ public class Hill extends TraceDelegateDraw {
 
 	int[][] mapetage;
 
-	Area map;
+	AreaWrapper map;
 
 	public Hill() {
 		mapetage = new int[64][64];
@@ -72,7 +72,7 @@ public class Hill extends TraceDelegateDraw {
 	}
 
 	@Override
-	public void draw(Area p_map, Point p_start) {
+	public void draw(AreaWrapper p_map, Point p_start) {
 		map = p_map;
 		int xx = p_start.x;
 		int yy = p_start.y;

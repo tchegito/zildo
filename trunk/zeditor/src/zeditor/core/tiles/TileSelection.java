@@ -4,8 +4,8 @@ import java.util.List;
 
 import zeditor.core.prefetch.complex.DropDelegateDraw;
 import zeditor.core.selection.CaseSelection;
+import zeditor.tools.AreaWrapper;
 import zeditor.windows.subpanels.SelectionKind;
-import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
 import zildo.monde.sprites.Reverse;
@@ -140,7 +140,7 @@ public class TileSelection extends CaseSelection {
 	 * @param p_mask
 	 *            TRUE=user is in 'masked edit' mode
 	 */
-	public void draw(Area map, Point p, int p_mask) {
+	public void draw(AreaWrapper map, Point p, int p_mask) {
 		int dx, dy;
 		for (int h = 0; h < height; h++) {
 			for (int w = 0; w < width; w++) {
@@ -171,7 +171,7 @@ public class TileSelection extends CaseSelection {
 	 * @param p
 	 * @param p_mask
 	 */
-	public void reverse(Area map, Point p, int p_mask) {
+	public void reverse(AreaWrapper map, Point p, int p_mask) {
 		Reverse ref = null;
 			for (int h = 0; h < height; h++) {
 				for (int w = 0; w < width; w++) {
@@ -238,7 +238,7 @@ public class TileSelection extends CaseSelection {
 	 * @param p
 	 * @param p_mask
 	 */
-	public void rotate(Area map, Point p, int p_mask) {
+	public void rotate(AreaWrapper map, Point p, int p_mask) {
 			for (int h = 0; h < height; h++) {
 				for (int w = 0; w < width; w++) {
 					Case item =  map.get_mapcase(p.x/16 + w, p.y/16 + h);

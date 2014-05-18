@@ -34,6 +34,7 @@ import zeditor.core.selection.PersoSelection;
 import zeditor.core.selection.Selection;
 import zeditor.core.selection.SpriteSelection;
 import zeditor.core.tiles.TileSelection;
+import zeditor.tools.AreaWrapper;
 import zeditor.tools.checker.AreaChecker;
 import zeditor.tools.checker.ErrorDescription;
 import zeditor.windows.managers.MasterFrameManager;
@@ -120,9 +121,8 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 
 	private void drawBrush(Point p, TileSelection p_sel) {
 		// Apply selected brush to the map
-		Area map = EngineZildo.mapManagement.getCurrentMap();
 		if (p_sel.getElement() != null) {
-			p_sel.draw(map, new zildo.monde.util.Point(p.x / 16, p.y / 16), mask);
+			p_sel.draw(makeAreaWrapper(), new zildo.monde.util.Point(p.x / 16, p.y / 16), mask);
 		}
 	}
 
@@ -142,8 +142,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		SelectionKind kind=sel.getKind();
 		switch (kind) {
 		case TILES:
-			Area map = EngineZildo.mapManagement.getCurrentMap();
-			((TileSelection)sel).reverse(map, new zildo.monde.util.Point(p.x, p.y), mask);
+			((TileSelection)sel).reverse(makeAreaWrapper(), new zildo.monde.util.Point(p.x, p.y), mask);
 			break;
 		}
 	}
@@ -157,8 +156,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		SelectionKind kind=sel.getKind();
 		switch (kind) {
 		case TILES:
-			Area map = EngineZildo.mapManagement.getCurrentMap();
-			((TileSelection)sel).rotate(map, new zildo.monde.util.Point(p.x, p.y), mask);
+			((TileSelection)sel).rotate(makeAreaWrapper(), new zildo.monde.util.Point(p.x, p.y), mask);
 			break;
 		}
 	}
@@ -495,5 +493,10 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	
 	public void toggleGrid() {
 		this.gridSprites = !gridSprites;
+	}
+	
+	
+	private AreaWrapper makeAreaWrapper() {
+		return new AreaWrapper(EngineZildo.mapManagement.getCurrentMap(), manager.getCurrentFloor());
 	}
 }
