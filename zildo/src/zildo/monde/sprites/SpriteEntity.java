@@ -87,14 +87,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	public int zoom = 255;	//0..255 zoom factor : 255=full size
 	
 	public byte repeatX=1, repeatY=1;
-	
-	public int getAlpha() {
-		return alpha;
-	}
 
-	public void setAlpha(int alpha) {
-		this.alpha = alpha;
-	}
 
 	public Reverse reverse = Reverse.NOTHING; // Combination of Reverse.HORIZONTAL/VERTICAL (or 0)
 	public Rotation rotation = Rotation.NOTHING;
@@ -103,7 +96,15 @@ public class SpriteEntity extends Identified implements Cloneable,
 
 	// To identify which type of entity we're dealing with
 	protected EntityType entityType;
+	
+	public int getAlpha() {
+		return alpha;
+	}
 
+	public void setAlpha(int alpha) {
+		this.alpha = alpha;
+	}
+	
 	public int getScrX() {
 		return scrX;
 	}
