@@ -21,7 +21,7 @@
 package zeditor.core.prefetch.complex;
 
 import zeditor.core.prefetch.patch.AbstractPatch12;
-import zildo.monde.map.Area;
+import zeditor.tools.AreaWrapper;
 import zildo.monde.util.Point;
 
 /**
@@ -31,7 +31,7 @@ import zildo.monde.util.Point;
  */
 public abstract class TraceDelegateDraw {
 	
-	public abstract void draw(Area p_map, Point p_start);
+	public abstract void draw(AreaWrapper p_map, Point p_start);
 
 	public Adjustment[] getAdjustments() {
 		return new Adjustment[] {};
@@ -43,7 +43,7 @@ public abstract class TraceDelegateDraw {
 	
 	public void finalizeDraw() {}
 
-	public void drawAdjustments(Area p_map, Point p_start) {
+	public void drawAdjustments(AreaWrapper p_map, Point p_start) {
 		AbstractPatch12 adjDraw = getAdjustmentClass();
 		
 		for (int i=0;i<3;i++) {

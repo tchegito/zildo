@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import zeditor.core.prefetch.patch.AbstractPatch12;
-import zildo.monde.map.Area;
+import zeditor.tools.AreaWrapper;
 import zildo.monde.util.Point;
 
 /**
@@ -56,7 +56,7 @@ public class CompositePatch12 extends TraceDelegateDraw {
 	}
 
 	@Override
-	public void draw(Area p_map, Point p_start) {
+	public void draw(AreaWrapper p_map, Point p_start) {
 		indexCurrentlyDrawn = 1;
 		for (AbstractPatch12 p : patchs) {
 			p.draw(p_map, p_start, this);

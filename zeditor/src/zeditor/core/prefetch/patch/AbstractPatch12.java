@@ -24,8 +24,8 @@ import java.util.List;
 
 import zeditor.core.prefetch.complex.CompositePatch12;
 import zeditor.core.prefetch.complex.TraceDelegateDraw;
+import zeditor.tools.AreaWrapper;
 import zildo.fwk.collection.MultiMap;
-import zildo.monde.map.Area;
 import zildo.monde.util.Point;
 
 /**
@@ -67,11 +67,11 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 	/**
 	 * Draw a patch on the map, and arrange existing drawing.
 	 */
-	public void draw(Area p_map, Point p_start) {
+	public void draw(AreaWrapper p_map, Point p_start) {
 		draw(p_map, p_start, null);
 	}
 	
-	public void draw(Area p_map, Point p_start, CompositePatch12 p_composite) {
+	public void draw(AreaWrapper p_map, Point p_start, CompositePatch12 p_composite) {
 		int size=2;
 		
 		if (big) {
@@ -92,7 +92,7 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 		}
 	}
 	
-	public void arrangeOneTile(Area p_map, int p_patchValue, int p_x, int p_y, CompositePatch12 p_composite) {
+	public void arrangeOneTile(AreaWrapper p_map, int p_patchValue, int p_x, int p_y, CompositePatch12 p_composite) {
 		// Get map value
 		int val=p_map.readmap(p_x, p_y);
 		if (p_composite != null && !p_composite.canDraw(val)) {
@@ -106,7 +106,7 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 		drawOneTile(p_map, p_x, p_y, val);		
 	}
 	
-	public void drawOneTile(Area p_map, int p_x, int p_y, int p_val) {
+	public void drawOneTile(AreaWrapper p_map, int p_x, int p_y, int p_val) {
 		p_map.writemap(p_x, p_y, p_val);
 	}
 

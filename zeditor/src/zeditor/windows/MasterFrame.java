@@ -1,8 +1,8 @@
 package zeditor.windows;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -182,7 +182,6 @@ public class MasterFrame extends javax.swing.JFrame {
 			manager.init();
 
 			pack();
-			Dimension d = zildoPanel.getSize();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -500,13 +499,24 @@ public class MasterFrame extends javax.swing.JFrame {
 			toolBar.add(getToggleBackSpriteDisplayTool());
 			toolBar.add(getToggleForeSpriteDisplayTool());
 			toolBar.add(new JToolBar.Separator());
-			floorCombo = new JComboBox(new String[] {"0", "New +1", "New -1"});
-			toolBar.add(floorCombo);
-
+			toolBar.add(getFloorCombo());
 		}
 		return toolBar;
 	}
 
+	private JComboBox getFloorCombo() {
+		floorCombo = new JComboBox(new String[] {"0", "1", "2"});
+		floorCombo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String sFloor = (String) floorCombo.getSelectedItem();
+				manager.setCurrentFloor(Integer.valueOf(sFloor));
+			}
+		});
+		return floorCombo;
+	}
+	
 	public JToggleButton getUnmappedTool() {
 		if (unmappedTool == null) {
 			unmappedTool = new JToggleButton();

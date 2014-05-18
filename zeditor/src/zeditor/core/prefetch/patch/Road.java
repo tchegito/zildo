@@ -20,8 +20,8 @@
 
 package zeditor.core.prefetch.patch;
 
+import zeditor.tools.AreaWrapper;
 import zildo.monde.Hasard;
-import zildo.monde.map.Area;
 
 /**
  * Render for road (little or big one)
@@ -46,7 +46,7 @@ public class Road extends AbstractPatch12 {
 	}
 
 	@Override
-	public void drawOneTile(Area p_map, int p_x, int p_y, int p_val) {
+	public void drawOneTile(AreaWrapper p_map, int p_x, int p_y, int p_val) {
 		if (p_val > startRoad + 8 + 11 && p_val < startRoad + 8 + 16
 				&& Hasard.lanceDes(5)) {
 			p_val -= 4;

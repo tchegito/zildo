@@ -21,7 +21,7 @@
 package zeditor.core.prefetch.patch;
 
 import zeditor.core.prefetch.complex.Adjustment;
-import zildo.monde.map.Area;
+import zeditor.tools.AreaWrapper;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 
@@ -93,7 +93,7 @@ public class HillTop extends AbstractPatch12 {
 	}
 
 	@Override
-	public void draw(Area p_map, Point p_start) {
+	public void draw(AreaWrapper p_map, Point p_start) {
 		super.draw(p_map, p_start);
 
 		super.drawAdjustments(p_map, p_start);

@@ -51,6 +51,8 @@ public class MasterFrameManager {
 
 	private String currentMapFile;
 
+	private int currentFloor = Area.MIDDLE_FLOOR;	// Default floor
+	
 	public final static int MESSAGE_ERROR = 1;
 	public final static int MESSAGE_INFO = 2;
 
@@ -534,5 +536,13 @@ public class MasterFrameManager {
 
 	public void updateTileSet() {
 		masterFrame.getBackgroundPanel().repaint();
+	}
+	
+	public int getCurrentFloor() {
+		return currentFloor;
+	}
+	
+	public void setCurrentFloor(int floor) {
+		currentFloor = floor;
 	}
 }
