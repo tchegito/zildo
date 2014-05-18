@@ -8,6 +8,7 @@ import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -97,6 +98,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JToolBar toolBar;
 	private JPanel toolBarContainer;
 	private JPanel masterPanel;
+	private JComboBox floorCombo;
 	private AbstractAction actionSaveAs;
 	private AbstractAction actionNew;
 	private AbstractAction actionGridTool;
@@ -157,7 +159,8 @@ public class MasterFrame extends javax.swing.JFrame {
 			this.setMinimumSize(new java.awt.Dimension(1010, 600));
 			this.setIconImage(new ImageIcon(getClass().getClassLoader()
 					.getResource("zeditor/images/map.png")).getImage());
-			getContentPane().add(getMasterPanel(), BorderLayout.CENTER);
+			getContentPane().add(getToolBarContainer(), BorderLayout.NORTH);
+
 			getContentPane().add(getSystemPanel(), BorderLayout.SOUTH);
 			{
 				menuBar = new JMenuBar();
@@ -169,14 +172,17 @@ public class MasterFrame extends javax.swing.JFrame {
 
 			// On ajoute la carte
 
-			getContentPane().add(zildoPanel, BorderLayout.EAST);
+			
+			JPanel panel = new JPanel();
+			panel.add(getMasterPanel(), BorderLayout.WEST);
+			panel.add(zildoPanel, BorderLayout.EAST);
+			getContentPane().add(panel, BorderLayout.CENTER);
 
 			// Initialisation de la fenêtre par le manager
 			manager.init();
 
 			pack();
 			Dimension d = zildoPanel.getSize();
-			this.setSize(640 + 350, d.height);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -460,7 +466,6 @@ public class MasterFrame extends javax.swing.JFrame {
 			BoxLayout masterPanelLayout = new BoxLayout(masterPanel,
 					javax.swing.BoxLayout.Y_AXIS);
 			masterPanel.setLayout(masterPanelLayout);
-			masterPanel.add(getToolBarContainer());
 			masterPanel.add(getContentPanel());
 		}
 		return masterPanel;
@@ -494,6 +499,9 @@ public class MasterFrame extends javax.swing.JFrame {
 			toolBar.add(getToggleForeDisplayTool());
 			toolBar.add(getToggleBackSpriteDisplayTool());
 			toolBar.add(getToggleForeSpriteDisplayTool());
+			toolBar.add(new JToolBar.Separator());
+			floorCombo = new JComboBox(new String[] {"0", "New +1", "New -1"});
+			toolBar.add(floorCombo);
 
 		}
 		return toolBar;
