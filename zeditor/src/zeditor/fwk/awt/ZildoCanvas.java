@@ -496,7 +496,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	}
 	
 	
-	private AreaWrapper makeAreaWrapper() {
+	public AreaWrapper makeAreaWrapper() {
 		return new AreaWrapper(EngineZildo.mapManagement.getCurrentMap(), manager.getCurrentFloor());
 	}
 }

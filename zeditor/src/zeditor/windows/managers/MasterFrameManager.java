@@ -53,7 +53,7 @@ public class MasterFrameManager {
 
 	private String currentMapFile;
 
-	private byte currentFloor = Area.MIDDLE_FLOOR;	// Default floor
+	private byte currentFloor = 0;	// Default floor
 	
 	public final static int MESSAGE_ERROR = 1;
 	public final static int MESSAGE_INFO = 2;
