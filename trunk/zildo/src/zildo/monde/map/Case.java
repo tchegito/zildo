@@ -227,6 +227,12 @@ public class Case implements EasySerializable {
 
 	}
 	
+	/** Serialize null case : (-1,-1) **/
+	public static void serializeNull(EasyBuffering p_buffer) {
+		p_buffer.put((byte)-1);
+		p_buffer.put((byte)-1);
+	}
+	
 	/**
 	 * Serialize just one tile (2 or 3 bytes)
 	 * @param p_tile
@@ -250,9 +256,12 @@ public class Case implements EasySerializable {
 	 * @return SpriteEntity
 	 */
 	public static Case deserialize(EasyBuffering p_buffer) {
-		Case mapCase=new Case();
 		int index1 = p_buffer.readUnsignedByte();
 		int bank1 = p_buffer.readUnsignedByte();
+		if (index1 == 255 && bank1 == 255) {
+			return null;
+		}
+		Case mapCase=new Case();
 		Tile back = new Tile(bank1&31, index1, mapCase);
 		if ((bank1 & 64) != 0) {
 			int value = p_buffer.readUnsignedByte();

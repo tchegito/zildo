@@ -37,6 +37,8 @@ import zeditor.windows.subpanels.SpritePanel;
 import zeditor.windows.subpanels.StatsPanel;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
+import zildo.monde.map.accessor.HighestFloorAccessor;
+import zildo.monde.map.accessor.SpecificFloorAreaAccesor;
 
 import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
 
@@ -93,6 +95,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JToggleButton foreTileTool;
 	private JToggleButton backSpriteTool;
 	private JToggleButton foreSpriteTool;
+	private JToggleButton filterFloorTool;
 	private JButton tileMaskTool;
 	private JToggleButton spriteGridTool;
 	private JToolBar toolBar;
@@ -500,6 +503,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			toolBar.add(getToggleForeSpriteDisplayTool());
 			toolBar.add(new JToolBar.Separator());
 			toolBar.add(getFloorCombo());
+			toolBar.add(getToggleFilterFloorDisplayTool());
 		}
 		return toolBar;
 	}
@@ -606,6 +610,26 @@ public class MasterFrame extends javax.swing.JFrame {
 		return foreSpriteTool;
 	}
 
+	public JToggleButton getToggleFilterFloorDisplayTool() {
+		if (filterFloorTool == null) {
+			filterFloorTool = new JToggleButton();
+			filterFloorTool.setToolTipText("Afficher un étage unique");
+			filterFloorTool.setAction(new AbstractAction("", null) {
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					if (filterFloorTool.isSelected()) {
+						ClientEngineZildo.tileEngine.setAreaAccessor(new HighestFloorAccessor());
+					} else {
+						ClientEngineZildo.tileEngine.setAreaAccessor(new SpecificFloorAreaAccesor(manager.getCurrentFloor()));
+					}
+				}
+			});
+			filterFloorTool.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/foreGroundSprite.PNG")));
+		}
+		return filterFloorTool;
+	}
+	
 	public JButton getToggleTileMaskTool() {
 		if (tileMaskTool == null) {
 			tileMaskTool = new JButton();

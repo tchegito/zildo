@@ -785,21 +785,26 @@ public class Area implements EasySerializable {
 
 		// 1) Header
 		p_file.put((byte) atmosphere.ordinal());
-		p_file.put((byte) this.getDim_x());
-		p_file.put((byte) this.getDim_y());
+		p_file.put((byte) dim_x);
+		p_file.put((byte) dim_y);
+		p_file.put(highestFloor);
 		p_file.put((byte) persos.size());
 		p_file.put((byte) n_sprites);
 		p_file.put((byte) n_pe);
 
+		System.out.println(highestFloor+1);
 		// 2) Save the map cases
-		for (int i = 0; i < this.getDim_y(); i++) {
-			for (int j = 0; j < this.getDim_x(); j++) {
-				Case temp = this.get_mapcase(j, i);
-
-				if (temp == null) {
-					temp = new Case();
+		for (int fl = 0;fl <= highestFloor ;fl++) {
+			for (int i = 0; i < dim_y; i++) {
+				for (int j = 0; j < dim_x; j++) {
+					Case temp = get_mapcase(j, i, fl);
+	
+					if (temp == null) {
+						Case.serializeNull(p_file);
+					} else {
+						temp.serialize(p_file);
+					}
 				}
-				temp.serialize(p_file);
 			}
 		}
 
@@ -896,33 +901,35 @@ public class Area implements EasySerializable {
 		map.setAtmosphere(Atmosphere.values()[p_buffer.readUnsignedByte()]);
 		map.setDim_x(p_buffer.readUnsignedByte());
 		map.setDim_y(p_buffer.readUnsignedByte());
+		map.highestFloor = (byte) p_buffer.readUnsignedByte();
 		int n_persos = p_buffer.readUnsignedByte();
 		int n_sprites = p_buffer.readUnsignedByte();
 		int n_pe = p_buffer.readUnsignedByte();
 
 		// La map
-		for (int i = 0; i < map.getDim_y(); i++) {
-			for (int j = 0; j < map.getDim_x(); j++) {
-				Case temp = Case.deserialize(p_buffer);
-
-				map.set_mapcase(j, i, temp);
-
-				if (p_spawn && !EngineZildo.game.editing) {
-					
-					if (temp.getOneValued(256 + 99) != null) {
-						// Fumée de cheminée
-						spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, 0, null,
-								null);
-					}
-					Tile tile = temp.getOneValued(512 + 231, 512 + 49, 512 + 59, 512 + 61);
-					// Is this chest already opened ?
-					if (tile != null ) {
-						if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
-							tile.index = Tile.getOpenedChest(tile.getValue()) & 255;
+		for (byte fl = 0;fl<=map.highestFloor;fl++) {
+			for (int i = 0; i < map.getDim_y(); i++) {
+				for (int j = 0; j < map.getDim_x(); j++) {
+					Case temp = Case.deserialize(p_buffer);
+	
+					map.set_mapcase(j, i, fl, temp);
+	
+					if (p_spawn && !EngineZildo.game.editing) {
+						
+						if (temp.getOneValued(256 + 99) != null) {
+							// Fumée de cheminée
+							spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, 0, null,
+									null);
+						}
+						Tile tile = temp.getOneValued(512 + 231, 512 + 49, 512 + 59, 512 + 61);
+						// Is this chest already opened ?
+						if (tile != null ) {
+							if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
+								tile.index = Tile.getOpenedChest(tile.getValue()) & 255;
+							}
 						}
 					}
 				}
-
 			}
 		}
 
