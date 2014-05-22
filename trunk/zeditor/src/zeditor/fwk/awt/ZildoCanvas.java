@@ -62,10 +62,10 @@ import zildo.server.MapManagement;
 public class ZildoCanvas extends AWTOpenGLCanvas {
 
 	public enum ZEditMode {
-	    NORMAL, COPY, COPY_DRAG, TILE_REVERSE_EDIT, TILE_ROTATE_EDIT;
+	    NORMAL, COPY, COPY_DRAG, TILE_REVERSE_EDIT, TILE_ROTATE_EDIT, TILE_RAISE_EDIT;
 	    
 	    public boolean isTileAttributeLinked() {
-	    	return this == TILE_REVERSE_EDIT || this == TILE_ROTATE_EDIT;
+	    	return this == TILE_REVERSE_EDIT || this == TILE_ROTATE_EDIT || this == TILE_RAISE_EDIT;
 	    }
 	}
 	
@@ -99,6 +99,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 								break;
 							case TILE_ROTATE_EDIT:
 								rotateTile(p);
+								break;
+							case TILE_RAISE_EDIT:
+								raiseTile(p);
 								break;
 							}
 						break;
@@ -134,30 +137,38 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 	}
 	
 	public void reverseTile(Point p) {
-		Selection sel = manager.getSelection();
-		// Default kind is TILES
-		if (sel == null) {
-			return;
-		}
-		SelectionKind kind=sel.getKind();
-		switch (kind) {
-		case TILES:
-			((TileSelection)sel).reverse(makeAreaWrapper(), new zildo.monde.util.Point(p.x, p.y), mask);
-			break;
+		TileSelection sel = getTileSelection();
+		if (sel != null) {
+			sel.reverse(makeAreaWrapper(), new zildo.monde.util.Point(p.x, p.y), mask);
 		}
 	}
 	
 	public void rotateTile(Point p) {
+		TileSelection sel = getTileSelection();
+		if (sel != null) {
+			sel.rotate(makeAreaWrapper(), new zildo.monde.util.Point(p.x, p.y), mask);
+		}
+	}
+	
+	public void raiseTile(Point p) {
+		TileSelection sel = getTileSelection();
+		if (sel != null) {
+			sel.raise(makeAreaWrapper(), new zildo.monde.util.Point(p.x, p.y));
+		}
+	}
+	
+	private TileSelection getTileSelection() {
 		Selection sel = manager.getSelection();
 		// Default kind is TILES
 		if (sel == null) {
-			return;
+			return null;
 		}
 		SelectionKind kind=sel.getKind();
 		switch (kind) {
 		case TILES:
-			((TileSelection)sel).rotate(makeAreaWrapper(), new zildo.monde.util.Point(p.x, p.y), mask);
-			break;
+			return (TileSelection)sel;
+		default:
+			return null;
 		}
 	}
 	

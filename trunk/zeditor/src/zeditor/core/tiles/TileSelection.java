@@ -285,6 +285,22 @@ public class TileSelection extends CaseSelection {
 			}
 	}
 	
+	public void raise(AreaWrapper map, Point p) {
+		int px = p.x / 16;
+		int py = p.y / 16;
+		Case c = map.get_mapcase(px, py);
+		if (c != null) {
+			Case existingUpperCase = map.area.get_mapcase(px, py, (byte) (map.floor + 1));
+			if (existingUpperCase == null) {
+				map.area.set_mapcase(px, py, (byte) (map.floor + 1), c);
+				Case empty = new Case();
+				int emptyTileValue = map.area.getAtmosphere().getEmptyTile();
+				empty.setBackTile(new Tile(emptyTileValue, empty));
+				map.set_mapcase(px, py, empty);
+			}
+		}
+	}
+	
 	@Override
 	public List<Case> getElement() {
 		return items;
