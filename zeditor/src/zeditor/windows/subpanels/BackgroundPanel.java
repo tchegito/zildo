@@ -32,6 +32,7 @@ public class BackgroundPanel extends JPanel {
 	JRadioButton radioDraw;
 	JRadioButton radioReverse;
 	JRadioButton radioRotate;
+	JRadioButton radioRaise;
 	
 	public BackgroundPanel(MasterFrameManager p_manager) {
 		manager = p_manager;
@@ -104,6 +105,11 @@ public class BackgroundPanel extends JPanel {
 					if (!m.isTileAttributeLinked()) {
 						previous = m;
 					}
+				} else if (radioRaise.isSelected()) {
+					newMode = ZEditMode.TILE_RAISE_EDIT;
+					if (!m.isTileAttributeLinked()) {
+						previous = m;
+					}
 				} else {
 					newMode = previous;
 				}
@@ -113,18 +119,21 @@ public class BackgroundPanel extends JPanel {
 		radioDraw = new JRadioButton("Draw");
 		radioReverse = new JRadioButton("Reverse");
 		radioRotate = new JRadioButton("Rotation");
+		radioRaise =new JRadioButton("Raise");
 		ButtonGroup group = new ButtonGroup();
 		group.add(radioDraw);
 		group.add(radioReverse);
 		group.add(radioRotate);
+		group.add(radioRaise);
 		JPanel line = new JPanel();
 		line.add(radioDraw);
 		line.add(radioReverse);
 		line.add(radioRotate);
+		line.add(radioRaise);
 		radioDraw.addActionListener(radioAction);
 		radioReverse.addActionListener(radioAction);
 		radioRotate.addActionListener(radioAction);
-		
+		radioRaise.addActionListener(radioAction);
 		radioDraw.setSelected(true);
 		
 		panel.add(line);

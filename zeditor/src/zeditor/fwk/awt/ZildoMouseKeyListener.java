@@ -34,7 +34,6 @@ import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
-import zildo.server.EngineZildo;
 
 public class ZildoMouseKeyListener implements MouseListener,
 		MouseMotionListener, KeyListener, MouseWheelListener {
@@ -110,6 +109,7 @@ public class ZildoMouseKeyListener implements MouseListener,
 			canvas.startCopy(p);
 			break;
 		case NORMAL:
+		case TILE_RAISE_EDIT:
 			// Store the cursor location
 			p = getInsidePosition(mouseevent);
 			canvas.cursorLocation = p;
