@@ -285,6 +285,11 @@ public class TileSelection extends CaseSelection {
 			}
 	}
 	
+	/**
+	 * Switch a Case object from one floor to upper one. Case is replaced by an empty tile.
+	 * @param map
+	 * @param p
+	 */
 	public void raise(AreaWrapper map, Point p) {
 		int px = p.x / 16;
 		int py = p.y / 16;
@@ -301,6 +306,23 @@ public class TileSelection extends CaseSelection {
 		}
 	}
 	
+	/**
+	 * Switch a Case object from one floor to lower one. Case is nullified.
+	 * @param map
+	 * @param p
+	 */
+	public void lower(AreaWrapper map, Point p) {
+		int px = p.x / 16;
+		int py = p.y / 16;
+		Case c = map.get_mapcase(px, py);
+		if (c != null) {
+			Case existingLowerCase = map.area.get_mapcase(px, py, (byte) (map.floor - 1));
+			if (existingLowerCase == null) {
+				map.area.set_mapcase(px, py, (byte) (map.floor - 1), c);
+				map.set_mapcase(px, py, null);
+			}
+		}
+	}
 	@Override
 	public List<Case> getElement() {
 		return items;

@@ -110,6 +110,7 @@ public class ZildoMouseKeyListener implements MouseListener,
 			break;
 		case NORMAL:
 		case TILE_RAISE_EDIT:
+		case TILE_LOWER_EDIT:
 			// Store the cursor location
 			p = getInsidePosition(mouseevent);
 			canvas.cursorLocation = p;

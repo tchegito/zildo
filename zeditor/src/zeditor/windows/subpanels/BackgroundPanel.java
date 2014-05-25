@@ -33,6 +33,11 @@ public class BackgroundPanel extends JPanel {
 	JRadioButton radioReverse;
 	JRadioButton radioRotate;
 	JRadioButton radioRaise;
+	JRadioButton radioLower;
+	
+	ButtonGroup group;
+	JPanel line;
+	Action radioAction;
 	
 	public BackgroundPanel(MasterFrameManager p_manager) {
 		manager = p_manager;
@@ -86,7 +91,7 @@ public class BackgroundPanel extends JPanel {
 
 	private JPanel getPanelCheckBox() {
 		JPanel panel = new JPanel();
-		Action radioAction = new AbstractAction() {
+		radioAction = new AbstractAction() {
 			
 			ZEditMode previous;
 
@@ -110,6 +115,11 @@ public class BackgroundPanel extends JPanel {
 					if (!m.isTileAttributeLinked()) {
 						previous = m;
 					}
+				} else if (radioLower.isSelected()) {
+					newMode = ZEditMode.TILE_LOWER_EDIT;
+					if (!m.isTileAttributeLinked()) {
+						previous = m;
+					}
 				} else {
 					newMode = previous;
 				}
@@ -120,24 +130,24 @@ public class BackgroundPanel extends JPanel {
 		radioReverse = new JRadioButton("Reverse");
 		radioRotate = new JRadioButton("Rotation");
 		radioRaise =new JRadioButton("Raise");
-		ButtonGroup group = new ButtonGroup();
-		group.add(radioDraw);
-		group.add(radioReverse);
-		group.add(radioRotate);
-		group.add(radioRaise);
-		JPanel line = new JPanel();
-		line.add(radioDraw);
-		line.add(radioReverse);
-		line.add(radioRotate);
-		line.add(radioRaise);
-		radioDraw.addActionListener(radioAction);
-		radioReverse.addActionListener(radioAction);
-		radioRotate.addActionListener(radioAction);
-		radioRaise.addActionListener(radioAction);
+		radioLower =new JRadioButton("Lower");
+		group = new ButtonGroup();
+		line = new JPanel();
+		addRadio(radioDraw);
+		addRadio(radioReverse);
+		addRadio(radioRotate);
+		addRadio(radioRaise);
+		addRadio(radioLower);
 		radioDraw.setSelected(true);
 		
 		panel.add(line);
 		return panel;
+	}
+	
+	private void addRadio(JRadioButton radio) {
+		group.add(radio);
+		line.add(radio);
+		radio.addActionListener(radioAction);
 	}
 	
 	/**

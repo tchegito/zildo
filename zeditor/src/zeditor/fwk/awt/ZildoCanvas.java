@@ -62,10 +62,11 @@ import zildo.server.MapManagement;
 public class ZildoCanvas extends AWTOpenGLCanvas {
 
 	public enum ZEditMode {
-	    NORMAL, COPY, COPY_DRAG, TILE_REVERSE_EDIT, TILE_ROTATE_EDIT, TILE_RAISE_EDIT;
+	    NORMAL, COPY, COPY_DRAG, TILE_REVERSE_EDIT, TILE_ROTATE_EDIT, TILE_RAISE_EDIT, TILE_LOWER_EDIT;
 	    
 	    public boolean isTileAttributeLinked() {
-	    	return this == TILE_REVERSE_EDIT || this == TILE_ROTATE_EDIT || this == TILE_RAISE_EDIT;
+	    	return this == TILE_REVERSE_EDIT || this == TILE_ROTATE_EDIT || this == TILE_RAISE_EDIT ||
+	    	this == TILE_LOWER_EDIT;
 	    }
 	}
 	
@@ -102,6 +103,9 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 								break;
 							case TILE_RAISE_EDIT:
 								raiseTile(p);
+								break;
+							case TILE_LOWER_EDIT:
+								lowerTile(p);
 								break;
 							}
 						break;
@@ -154,6 +158,13 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		TileSelection sel = getTileSelection();
 		if (sel != null) {
 			sel.raise(makeAreaWrapper(), new zildo.monde.util.Point(p.x, p.y));
+		}
+	}
+	
+	public void lowerTile(Point p) {
+		TileSelection sel = getTileSelection();
+		if (sel != null) {
+			sel.lower(makeAreaWrapper(), new zildo.monde.util.Point(p.x, p.y));
 		}
 	}
 	
