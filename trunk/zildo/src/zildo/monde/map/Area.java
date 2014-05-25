@@ -99,7 +99,8 @@ public class Area implements EasySerializable {
 
 	private Point offset; // For scrolling map
 
-	private byte highestFloor = 0;	// Default (but should be read from the map)
+	private byte lowestFloor = 1;
+	private byte highestFloor = 1;	// Default (but should be read from the map)
 	
 	private int dim_x, dim_y;
 	private String name;
@@ -200,6 +201,8 @@ public class Area implements EasySerializable {
 		mapdata[floor][y][x] = c;
 		if (floor > highestFloor) {
 			highestFloor = floor;
+		} else if (floor < lowestFloor) {
+			lowestFloor = floor;
 		}
 	}
 
@@ -222,7 +225,16 @@ public class Area implements EasySerializable {
 	 * @return Tile
 	 */
 	public Tile readmap(int x, int y, boolean p_foreground) {
-		Case temp = this.get_mapcase(x, y);
+		return readmap(x, y, p_foreground, -1);
+	}
+	
+	public Tile readmap(int x, int y, boolean p_foreground, int floor) {
+		Case temp;
+		if (floor == -1) {	// No floor, so we take the highest
+			temp = get_mapcase(x, y);
+		} else {
+			temp = get_mapcase(x, y, floor);
+		}
 		if (temp == null) {
 			return null;
 		}
@@ -787,14 +799,15 @@ public class Area implements EasySerializable {
 		p_file.put((byte) atmosphere.ordinal());
 		p_file.put((byte) dim_x);
 		p_file.put((byte) dim_y);
-		p_file.put(highestFloor);
+		p_file.put((byte) (highestFloor - lowestFloor + 1));
 		p_file.put((byte) persos.size());
 		p_file.put((byte) n_sprites);
 		p_file.put((byte) n_pe);
 
-		System.out.println(highestFloor+1);
 		// 2) Save the map cases
-		for (int fl = 0;fl <= highestFloor ;fl++) {
+		
+		for (int fl = lowestFloor ;fl <= highestFloor ;fl++) {
+			p_file.put((byte) fl);
 			for (int i = 0; i < dim_y; i++) {
 				for (int j = 0; j < dim_x; j++) {
 					Case temp = get_mapcase(j, i, fl);
@@ -901,31 +914,34 @@ public class Area implements EasySerializable {
 		map.setAtmosphere(Atmosphere.values()[p_buffer.readUnsignedByte()]);
 		map.setDim_x(p_buffer.readUnsignedByte());
 		map.setDim_y(p_buffer.readUnsignedByte());
-		map.highestFloor = (byte) p_buffer.readUnsignedByte();
+		int nbFloors = p_buffer.readUnsignedByte();
 		int n_persos = p_buffer.readUnsignedByte();
 		int n_sprites = p_buffer.readUnsignedByte();
 		int n_pe = p_buffer.readUnsignedByte();
 
 		// La map
-		for (byte fl = 0;fl<=map.highestFloor;fl++) {
+		for (; nbFloors>0; nbFloors--) {
+			byte fl = (byte) p_buffer.readUnsignedByte();
 			for (int i = 0; i < map.getDim_y(); i++) {
 				for (int j = 0; j < map.getDim_x(); j++) {
 					Case temp = Case.deserialize(p_buffer);
 	
-					map.set_mapcase(j, i, fl, temp);
-	
-					if (p_spawn && !EngineZildo.game.editing) {
-						
-						if (temp.getOneValued(256 + 99) != null) {
-							// Fumée de cheminée
-							spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, 0, null,
-									null);
-						}
-						Tile tile = temp.getOneValued(512 + 231, 512 + 49, 512 + 59, 512 + 61);
-						// Is this chest already opened ?
-						if (tile != null ) {
-							if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
-								tile.index = Tile.getOpenedChest(tile.getValue()) & 255;
+					if (temp != null) {
+						map.set_mapcase(j, i, fl, temp);
+		
+						if (p_spawn && !EngineZildo.game.editing) {
+							
+							if (temp.getOneValued(256 + 99) != null) {
+								// Fumée de cheminée
+								spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, 0, null,
+										null);
+							}
+							Tile tile = temp.getOneValued(512 + 231, 512 + 49, 512 + 59, 512 + 61);
+							// Is this chest already opened ?
+							if (tile != null ) {
+								if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
+									tile.index = Tile.getOpenedChest(tile.getValue()) & 255;
+								}
 							}
 						}
 					}

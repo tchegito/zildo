@@ -122,4 +122,10 @@ public class Tile implements Cloneable {
 		return (value>=108 && value<=138) || (value>=208 && value<=222) || 
 		(value>=224 && value<=228) || (value>=230 && value<=245) || (value>=247 && value<=253);
 	}
+	
+	/** Returns TRUE if given tile value could raise/lower hero from one floor to another (ex:ladder)
+	 *  This is only valid tiles walkable out of a cutscene. **/
+	public static boolean isTransitionnable(int value) {
+		return value == 206 || value == 207;
+	}
 }
