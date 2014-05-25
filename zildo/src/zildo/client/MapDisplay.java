@@ -23,6 +23,9 @@ package zildo.client;
 import zildo.Zildo;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.monde.map.Area;
+import zildo.monde.map.accessor.AreaAccessor;
+import zildo.monde.map.accessor.HighestFloorAccessor;
+import zildo.monde.map.accessor.OneFloorAreaAccessor;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -147,6 +150,16 @@ public class MapDisplay {
 	public void setCurrentMap(Area map) {
 		currentMap=map;
 		ClientEngineZildo.tileEngine.prepareTiles();
+		// Initialize the area accessor (to display highest floor, or just one, if map doesn't have much)
+		if (currentMap != null) {
+			AreaAccessor accessor = null;
+			if (currentMap.getHighestFloor() > 0) {
+				accessor = new HighestFloorAccessor();
+			} else {
+				accessor = new OneFloorAreaAccessor();
+			}
+			ClientEngineZildo.tileEngine.setAreaAccessor(accessor);
+		}
 	}
 	
 	public void setTargetCamera(Point p_point) {

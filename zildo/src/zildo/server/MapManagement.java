@@ -245,11 +245,15 @@ public class MapManagement {
 		//if (true) return false;
 		// Is it a ghost ?
 		boolean ghost = false;
+		int floor = 0;
 		Perso p = quelElement != null && quelElement.getEntityType().isPerso() ? (Perso) quelElement : null;
-		if (p != null && p.isUnstoppable()) {
-			return false;
+		if (p != null) {
+			if (p.isUnstoppable()) {
+				return false;
+			}
+			floor = p.getFloor();
+			ghost = p.isGhost();
 		}
-		ghost = p !=null && p.isGhost();
 		
 		if (currentMap.isOutside(tx, ty)) {
 			// Detect element out of the map, except for 3 cases : Zildo, ghosts and single pleyer
@@ -349,7 +353,7 @@ public class MapManagement {
 					return false;
 				}
 			}
-			return true;
+			return false; //true;
 		}
 		
 		// Collision with sprites
@@ -381,6 +385,12 @@ public class MapManagement {
 		int on_map;
 		int modx, mody;
 		
+		int floor = 0;
+		Perso perso = null;
+		if (quelElement != null && quelElement.getEntityType() == EntityType.PERSO) {
+			perso = (Perso) quelElement;
+			floor = perso.getFloor();
+		}
 		// Check on back or fore ground, depending on the character we're checking
 		boolean foreground = quelElement != null && quelElement.isForeground();
 
@@ -409,7 +419,7 @@ public class MapManagement {
 			if (currentMap.isCaseBottomLess(scaledX, scaledY)) {
 				continue;
 			}
-			Case mapCase = currentMap.get_mapcase(scaledX, scaledY);
+			Case mapCase = currentMap.get_mapcase(scaledX, scaledY, floor);
 			if (mapCase == null) {
 				continue;
 			}
@@ -439,11 +449,8 @@ public class MapManagement {
 				if (particularTiles.contains(on_map)) {
 					// Okay => check if given element is a character which is allowed
 					// to pass particular tiles
-					if (quelElement != null && quelElement.getEntityType() == EntityType.PERSO) {
-						Perso perso = (Perso) quelElement;
-						if (!perso.isOpen()) {
-							return true;
-						}
+					if (perso != null && !perso.isOpen()) {
+						return true;
 					}
 				}
 				

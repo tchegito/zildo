@@ -588,7 +588,7 @@ public class PersoZildo extends Perso {
 				z=0;
 				az=0;
 				mouvement = MouvementZildo.VIDE;
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
+				landOnGround();
 			}
 			break;
 		}

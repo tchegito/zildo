@@ -39,8 +39,8 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
-import zildo.monde.sprites.magic.PersoAffections;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
+import zildo.monde.sprites.magic.PersoAffections;
 import zildo.monde.sprites.persos.action.PersoAction;
 import zildo.monde.sprites.persos.ia.PathFinder;
 import zildo.monde.sprites.persos.ia.PathFinderFollow;
@@ -83,6 +83,8 @@ public abstract class Perso extends Element {
 	private int coming_map; // 1 si Zildo entre sur une map,sinon 255
 	protected int pv, maxpv; // Points de vie du perso
 	private boolean onPlatform = false;	// TRUE=character is on a platform
+	
+	private int floor=0;	// Indicates current perso's floor: 0,1,2
 	
 	protected int money;
 	protected int countArrow;
@@ -569,8 +571,7 @@ public abstract class Perso extends Element {
 
 	}
 
-	private Point transitionCrossed;
-	private Angle transitionAngle;
+	private boolean transitionCrossed;
 
 	private boolean checkPlatformUnder() {
 		// Check sprite collision
@@ -608,7 +609,7 @@ public abstract class Perso extends Element {
 
 		if (isZildo() && checkPlatformUnder()) {	// Only Zildo on platforms, for now
 			// Be careful : 'return' here, means that no trigger could be activated
-			// But it avoid character to die in lava.
+			// But it avoid character to die in lava if he's on a platform.
 			return false;	// Perso is on a platform
 		}
 		
@@ -621,20 +622,21 @@ public abstract class Perso extends Element {
 			return false;
 		}
 		int onmap = tile.getValue();
-		if (tile.parent.getTransition() != null) {
-			// Transitional case
-			if (transitionCrossed == null) {
-				setForeground(true);
-				transitionCrossed = new Point(cx, cy);
-				transitionAngle = tile.parent.getTransition();
+		if (Tile.isTransitionnable(onmap)) {
+			transitionCrossed = true;
+		} else if (transitionCrossed) {
+			// Try to change perso's floor
+			if (area.readmap(cx, cy, false, floor+1) != null) {
+				floor++;
+				System.out.println(floor);
+			} else if (floor>0) {
+				if (area.readmap(cx, cy, false, floor) == null) {
+					floor--;
+				}
 			}
-		} else if (transitionCrossed != null) {
-			// Is Perso gone in the right direction ?
-			Angle choosed = Angle.fromDirection(cx - transitionCrossed.x, cy - transitionCrossed.y);
-			if (choosed != transitionAngle) {
-				setForeground(false);
-			}
-			transitionCrossed = null;
+			transitionCrossed = false;
+		} else {
+			transitionCrossed = false;
 		}
 		boolean slowDown = false;
 		boolean repeatSound = false;
@@ -977,6 +979,13 @@ public abstract class Perso extends Element {
 			}
 		}
 	}
+
+	public void landOnGround() {
+		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
+		if (floor > 0) {
+			floor--;
+		}
+	}
 	
 	/**
 	 * Character is jumping : move him
@@ -995,8 +1004,7 @@ public abstract class Perso extends Element {
 				// Character is fallen in the water !
 				diveAndWound();
 			} else {
-				setForeground(false);
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
+				landOnGround();
 			}
 			z=0;
 			if (action == null) {
@@ -1094,5 +1102,9 @@ public abstract class Perso extends Element {
 	@Override
 	public Pointf getDelta() {
 		return new Pointf(deltaMoveX, deltaMoveY);
+	}
+	
+	public int getFloor() {
+		return floor;
 	}
 }
