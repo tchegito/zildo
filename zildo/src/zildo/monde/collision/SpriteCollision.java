@@ -191,7 +191,7 @@ public class SpriteCollision {
 						presences[ty + p.y][tx + p.x] = -1;
 						found = false;
 					} else {
-						if (entity.isForeground() != entityRef.isForeground()) {
+						if (entity.getFloor() != entityRef.getFloor()) {
 							found = false;	// Different layer
 							continue;
 						}
