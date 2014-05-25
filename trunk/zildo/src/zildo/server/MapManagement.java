@@ -330,14 +330,14 @@ public class MapManagement {
 			}
 		}
 
-		// Check collision on tile level
+		// 1) Check collision on tile level
 		boolean collideTile = collideTile(tx, ty, ghost, size, quelElement);
 
 		if (collideTile) {
 			return true;
 		}
 		
-		// Collision with characters
+		// 2) Collision with characters
 		Perso perso = EngineZildo.persoManagement.collidePerso(tx, ty, quelElement);
 		if (perso != null) {
 			if (p != null) {
@@ -356,7 +356,7 @@ public class MapManagement {
 			return false; //true;
 		}
 		
-		// Collision with sprites
+		// 3) Collision with sprites
 		if (EngineZildo.spriteManagement.collideSprite(tx, ty, quelElement))
 			return true;
 

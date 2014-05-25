@@ -794,12 +794,13 @@ public class Area implements EasySerializable {
 		int n_pe = listChainingPoint.size();
 		int n_sprites = entities.size();
 		int n_persos = persos.size();
-
+		int nbFloors = highestFloor - lowestFloor + 1;
+		
 		// 1) Header
 		p_file.put((byte) atmosphere.ordinal());
 		p_file.put((byte) dim_x);
 		p_file.put((byte) dim_y);
-		p_file.put((byte) (highestFloor - lowestFloor + 1));
+		p_file.put((byte) nbFloors);
 		p_file.put((byte) persos.size());
 		p_file.put((byte) n_sprites);
 		p_file.put((byte) n_pe);
@@ -839,6 +840,9 @@ public class Area implements EasySerializable {
 				}
 				p_file.put((int) entity.x);
 				p_file.put((int) entity.y);
+				if (nbFloors > 1) {
+					p_file.put((byte) 1);	// Default floor
+				}
 				int foreground = entity.isForeground() ? SpriteEntity.FOREGROUND : 0;
 				int repeated = (entity.repeatX > 1 || entity.repeatY > 1 || entity.rotation != Rotation.NOTHING) ? SpriteEntity.REPEATED_OR_ROTATED : 0;
 				int pushable = (elem != null && elem.isPushable()) ? SpriteEntity.PUSHABLE : 0;
@@ -862,6 +866,9 @@ public class Area implements EasySerializable {
 				p_file.put((int) perso.x);
 				p_file.put((int) perso.y);
 				p_file.put((int) perso.z);
+				if (nbFloors > 1) {
+					p_file.put((byte) 1);	// Default floor
+				}
 				PersoDescription desc = perso.getDesc();
 				p_file.put((byte) desc.getBank());
 				p_file.put((byte) desc.first());
@@ -920,7 +927,7 @@ public class Area implements EasySerializable {
 		int n_pe = p_buffer.readUnsignedByte();
 
 		// La map
-		for (; nbFloors>0; nbFloors--) {
+		for (int n=nbFloors; n>0; n--) {
 			byte fl = (byte) p_buffer.readUnsignedByte();
 			for (int i = 0; i < map.getDim_y(); i++) {
 				for (int j = 0; j < map.getDim_x(); j++) {
@@ -958,11 +965,16 @@ public class Area implements EasySerializable {
 		// Compute chaining points
 		map.addChainingContextInfos();
 
+		int floor;
 		// Les sprites
 		if (n_sprites != 0) {
 			for (int i = 0; i < n_sprites; i++) {
 				int x = p_buffer.readInt();
 				int y = p_buffer.readInt();
+				floor = 1;
+				if (nbFloors > 1) {
+					floor = p_buffer.readByte();
+				}
 				short nSpr;
 				short multi = p_buffer.readUnsignedByte();
 				// Multi contains many information : 0--15 : bank
@@ -1038,6 +1050,7 @@ public class Area implements EasySerializable {
 					if (entity != null) {
 						entity.setName(entName);
 						entity.setPushable((multi & SpriteEntity.PUSHABLE) != 0);
+						entity.setFloor(floor);
 					}
 				}
 			}
@@ -1050,6 +1063,11 @@ public class Area implements EasySerializable {
 				int x = p_buffer.readInt();
 				int y = p_buffer.readInt();
 				int z = p_buffer.readInt();
+				
+				floor = 1;
+				if (nbFloors > 1) {
+					floor = p_buffer.readByte();
+				}
 
 				int sprBank = p_buffer.readUnsignedByte();
 				int sprDesc = p_buffer.readUnsignedByte();
@@ -1109,6 +1127,7 @@ public class Area implements EasySerializable {
 
 					spriteManagement.spawnPerso(perso);
 				}
+				perso.setFloor(floor);
 			}
 		}
 

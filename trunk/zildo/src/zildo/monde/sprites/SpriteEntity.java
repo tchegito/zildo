@@ -75,7 +75,8 @@ public class SpriteEntity extends Identified implements Cloneable,
 	public boolean dying; // TRUE=we must remove them
 	protected Point center = new Point(); // Defaults : 1) entity : [x/2, y] 2)
 											// element : [x/2, y/2]
-
+	protected int floor=1;	// Indicates sprite's floor: 0,1,2
+	
 	protected String name;
 	protected Mover mover;	// Allow moving without physics (if NULL => regular movement)
 	protected boolean ghost = false; // TRUE=script control it (here because of Mover things, but
@@ -506,5 +507,13 @@ public class SpriteEntity extends Identified implements Cloneable,
 	// Just for inheritance. No meaning for an entity
 	public void setPushable(boolean pushable) {
 		
+	}
+	
+	public int getFloor() {
+		return floor;
+	}
+	
+	public void setFloor(int fl) {
+		floor = fl;
 	}
 }

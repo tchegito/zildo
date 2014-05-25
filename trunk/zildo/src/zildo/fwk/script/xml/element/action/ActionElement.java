@@ -86,7 +86,8 @@ public class ActionElement extends LanguageElement {
 	public FloatExpression[] f;
 	public FloatExpression alphaA;
 	public int alpha;
-
+	public int deltaFloor;	// Only for 'perso' action
+	
 	public int back, back2, fore; // just for Tile action
 
 	public ActionElement(ActionKind p_kind) {
@@ -144,6 +145,7 @@ public class ActionElement extends LanguageElement {
 			weapon = readAttribute("weapon");
 			alpha = readInt("alpha", -1);
 			alphaA = getFloatExpr("alphaA");
+			deltaFloor = readInt("deltaFloor", 0);
 			break;
 		case speak:
 			text = readAttribute("text");

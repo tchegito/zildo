@@ -564,7 +564,8 @@ public class ActionExecutor {
             			}
             			if (p_action.alpha != -1) {
             				perso.setAlpha(p_action.alpha);
-            			}	
+            			}
+            			perso.setFloor(perso.getFloor() + p_action.deltaFloor);
                 	}
                 	achieved = true;
                 	break;

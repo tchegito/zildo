@@ -83,9 +83,7 @@ public abstract class Perso extends Element {
 	private int coming_map; // 1 si Zildo entre sur une map,sinon 255
 	protected int pv, maxpv; // Points de vie du perso
 	private boolean onPlatform = false;	// TRUE=character is on a platform
-	
-	private int floor=0;	// Indicates current perso's floor: 0,1,2
-	
+
 	protected int money;
 	protected int countArrow;
 	protected int countBomb;
@@ -1103,8 +1101,5 @@ public abstract class Perso extends Element {
 	public Pointf getDelta() {
 		return new Pointf(deltaMoveX, deltaMoveY);
 	}
-	
-	public int getFloor() {
-		return floor;
-	}
+
 }
