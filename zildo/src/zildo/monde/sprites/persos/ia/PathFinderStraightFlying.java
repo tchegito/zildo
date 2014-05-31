@@ -26,6 +26,8 @@ import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
 /**
+ * This path finder is always unstoppable.
+ * 
  * @author Tchegito
  * 
  */
@@ -43,6 +45,7 @@ public class PathFinderStraightFlying extends PathFinder {
 		speed = 1.5f;
 		swingAmplitude = p_swingAmplitude;
 		swingBase = p_swingBase;
+		unstoppable=true;
 	}
 
 	@Override
@@ -55,8 +58,7 @@ public class PathFinderStraightFlying extends PathFinder {
 			target.x = -100;
 			break;
 		default:
-			target.x = 16 * EngineZildo.mapManagement.getCurrentMap()
-					.getDim_x() + 100;
+			target.x = 16 * EngineZildo.mapManagement.getCurrentMap().getDim_x() + 100;
 			break;
 		}
 		mobile.z = swingBase; // Up in the sky
@@ -72,4 +74,8 @@ public class PathFinderStraightFlying extends PathFinder {
 		return p;
 	}
 
+	@Override
+	public void setUnstoppable(boolean unstoppable) {
+		// Nothing because this 'PathFinder' is always unstoppable
+	}
 }

@@ -25,6 +25,8 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Pointf;
 
 /**
+ * This path finder is always unstoppable.
+ * 
  * @author Tchegito
  *
  */
@@ -36,6 +38,7 @@ public class PathFinderFlying extends PathFinder {
 	 */
 	public PathFinderFlying(Perso p_mobile) {
 		super(p_mobile);
+		unstoppable=true;
 	}
 
 	/**
@@ -73,4 +76,8 @@ public class PathFinderFlying extends PathFinder {
 		return new Pointf(mobile.x, mobile.y);
     }
     
+	@Override
+	public void setUnstoppable(boolean unstoppable) {
+		// Nothing because this 'PathFinder' is always unstoppable
+	}
 }

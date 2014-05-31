@@ -803,11 +803,11 @@ public abstract class Perso extends Element {
 	}
 
 	public boolean isUnstoppable() {
-		return pathFinder.unstoppable;
+		return pathFinder.isUnstoppable();
 	}
 
 	public void setUnstoppable(boolean p_value) {
-		pathFinder.unstoppable = p_value;
+		pathFinder.setUnstoppable(p_value);
 	}
 
 	@Override
