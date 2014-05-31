@@ -311,7 +311,7 @@ public class MapManagement {
 				int cy = (ty / 16);
 				modx = tx % 16;
 				mody = ty % 16;
-				Tile tile = currentMap.readmap(cx, cy, false);
+				Tile tile = currentMap.readmap(cx, cy, quelElement.isForeground());
 				if (tile == null) {
 					return false;
 				}

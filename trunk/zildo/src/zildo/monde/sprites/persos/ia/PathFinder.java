@@ -52,7 +52,7 @@ public class PathFinder {
 	public float speed;	// Should be used if different of 0
 	public boolean backward;	// Default FALSE. TRUE means character is stepping back
 	public boolean open;	// Default FALSE. TRUE means character can open doors.
-	public boolean unstoppable;	// TRUE = no collision for this character
+	protected boolean unstoppable;	// TRUE = no collision for this character
     protected int nbShock;				// Number of times character hit something going to his target
 
 	public PathFinder(Perso p_mobile) {
@@ -298,4 +298,14 @@ public class PathFinder {
 		}
 		return true;
 	}
+
+	// Here we use accessor, because this property will not be always modifiable
+	public boolean isUnstoppable() {
+		return unstoppable;
+	}
+
+	public void setUnstoppable(boolean unstoppable) {
+		this.unstoppable = unstoppable;
+	}
+	
 }
