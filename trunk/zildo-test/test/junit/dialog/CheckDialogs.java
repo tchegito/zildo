@@ -49,8 +49,10 @@ public class CheckDialogs {
 		Enumeration<String> keys = dialFR.getKeys();
 		while (keys.hasMoreElements()) {
 			String key = keys.nextElement();
-			String valueEN = dialEN.getString(key);
-			Assert.assertTrue("No value for key "+key+" in game.properties", valueEN != null);
+			if (!key.startsWith("people.")) {
+				String valueEN = dialEN.getString(key);
+				Assert.assertTrue("No value for key "+key+" in game.properties", valueEN != null);
+			}
 		}				
 	}
 	

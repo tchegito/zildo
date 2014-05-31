@@ -19,7 +19,9 @@
 
 package junit.perso;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -32,6 +34,8 @@ import org.junit.Before;
 
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
+import zildo.client.MapDisplay;
+import zildo.client.gui.GUIDisplay;
 import zildo.fwk.bank.TileBank;
 import zildo.fwk.db.Identified;
 import zildo.fwk.gfx.engine.TileEngine;
@@ -56,6 +60,8 @@ import zildo.server.state.ClientState;
 public class EngineUT {
 
 	protected EngineZildo engine;
+	protected ClientEngineZildo clientEngine;
+	
 	protected List<ClientState> clients;
 	protected MapUtils mapUtils;	// To easily manipulate the map
 	
@@ -117,11 +123,32 @@ public class EngineUT {
 		Assert.assertTrue("Character is blocked !", false);
 	}
 	
+	protected void updateGame() {
+		ClientState state = clients.get(0);
+		engine.renderEvent(state.event);
+		if (clientEngine == null) {
+			clientEngine = new ClientEngineZildo(null, false, mock(Client.class));
+			clientEngine.guiDisplay = mock(GUIDisplay.class);
+			clientEngine.mapDisplay = spy(new MapDisplay(mapUtils.area));
+			doNothing().when(clientEngine.mapDisplay).centerCamera();
+			clientEngine.tileEngine = mock(TileEngine.class);
+		}
+		state.event = engine.renderEvent(state.event);
+		state.event = clientEngine.renderEvent(state.event);
+		renderFrames(1);
+	}
+
 	protected void renderFrames(int nbFrame) {
+		renderFrames(nbFrame, true);
+	}
+	
+	protected void renderFrames(int nbFrame, boolean debugInfos) {
 		for (int i=0;i<nbFrame;i++) {
 			engine.renderFrame(clients);
-			for (Perso perso : EngineZildo.persoManagement.tab_perso) {
-				System.out.println("Perso: "+perso.getName()+" at "+perso.x+","+perso.y);
+			if (debugInfos) {
+				for (Perso perso : EngineZildo.persoManagement.tab_perso) {
+					System.out.println("Perso: "+perso.getName()+" at "+perso.x+","+perso.y);
+				}
 			}
 		}		
 	}
