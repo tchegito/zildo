@@ -24,7 +24,6 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
-import zildo.monde.util.Angle;
 
 
 /**
@@ -45,8 +44,6 @@ public class Case implements EasySerializable {
 	private Tile back;
 	private Tile back2;
 	private Tile fore;
-	
-	private Angle transition; // Back to fore ground	(n_banque | 64)
 	
 	private int z;	// Result of analysis
 	
@@ -206,16 +203,13 @@ public class Case implements EasySerializable {
 	 */
 	public void serialize(EasyBuffering p_buffer) {
 		int isMasque = fore != null ? 128 : 0;
-		int isSpecial = (transition != null || back.reverse != Reverse.NOTHING || back.rotation != Rotation.NOTHING) ? 64 : 0;
+		int isSpecial = (back.reverse != Reverse.NOTHING || back.rotation != Rotation.NOTHING) ? 64 : 0;
 		int isBack2 = back2 != null ? 32 : 0;
 		p_buffer.put((byte) back.index);
 		p_buffer.put((byte) (back.bank | isMasque | isSpecial | isBack2));
 		if (isSpecial > 0) {
 			int val = back.reverse.ordinal();
 			val |= back.rotation.ordinal() << 2;
-			if (transition != null) {
-				val|=transition.value << 4;
-			}
 			p_buffer.put((byte) val);
 		}
 		if (back2 != null) {
@@ -270,11 +264,8 @@ public class Case implements EasySerializable {
 			}
 			if ((value & 15) > 3) {
 				back.rotation = Rotation.values()[(value>>2) & 3];
-			}
-			if (value > 15) {
-				// Buggy ! Transition between back and foreground would be done other way
-				//mapCase.setTransition(Angle.fromInt(value >> 4));
-			}
+			}// Note: Value >15 are not used (it was designed for 'transitions' before, between back and
+			 //       fore ground. This is done now by floors.
 		}
 		if ((bank1 & 32) != 0) {
 			Tile t = deserializeOneTile(mapCase, p_buffer);
@@ -314,15 +305,6 @@ public class Case implements EasySerializable {
 
 	public void setZ(int z) {
 		this.z = z;
-	}
-
-	public Angle getTransition() {
-		return transition;
-	}
-
-
-	public void setTransition(Angle transition) {
-		this.transition = transition;
 	}
 	
 	public Tile getBackTile2() {
