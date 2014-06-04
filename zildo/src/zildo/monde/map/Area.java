@@ -189,6 +189,11 @@ public class Area implements EasySerializable {
 		if (y < 0 || y >= dim_y) {
 			return null;
 		}
+		return getMapcaseWithoutOverflow(x, y, floor);
+	}
+	
+	/** Method without overflow test, to gain some performance **/
+	public Case getMapcaseWithoutOverflow(int x, int y, int floor) {
 		return mapdata[floor][y][x];
 	}
 	
@@ -497,14 +502,14 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// attackTile
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void attackTile(Point tileLocation) {
+	public void attackTile(int floor, Point tileLocation) {
 		// Check if Zildo destroy something on a tile
 		int onmap = readmap(tileLocation.x, tileLocation.y);
 		switch (onmap) {
 		case 165: // Bushes
 			Point spriteLocation = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
 			EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES, spriteLocation.x, spriteLocation.y,
-					0, null, null);
+					floor, 0, null, null);
 			EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
 			takeSomethingOnTile(tileLocation, true, null);
@@ -649,7 +654,7 @@ public class Area implements EasySerializable {
 			if (desc == null) {
 				desc = ElementDescription.THREEGOLDCOINS1;
 			}
-			Element elem = sprMgt.spawnSpriteGeneric(SpriteAnimation.FROM_CHEST, p.x, p.y + 8, 0, p_perso, desc);
+			Element elem = sprMgt.spawnSpriteGeneric(SpriteAnimation.FROM_CHEST, p.x, p.y + 8, p_perso.floor, 0, p_perso, desc);
 			if (item != null) {
 				elem.setName(item.name);
 			}
@@ -663,7 +668,7 @@ public class Area implements EasySerializable {
 						questTrigger = true;
 					}
 				}
-				Element elem = sprMgt.spawnSpriteGeneric(anim, p.x, p.y + 5, 0, null, desc);
+				Element elem = sprMgt.spawnSpriteGeneric(anim, p.x, p.y + 5, 1, 0, null, desc);
 				elem.setName(item.name);
 				elem.setTrigger(questTrigger);
 			} else {
@@ -672,14 +677,14 @@ public class Area implements EasySerializable {
 					PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 	
 					if ((multiPlayer || zildo.hasItem(ItemKind.BOW) && Hasard.lanceDes(Hasard.hazardBushes_Arrow))) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 0, null, null);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 1, 0, null, null);
 					} else if (Hasard.lanceDes(Hasard.hazardBushes_GoldCoin)) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, p.x, p.y + 5, 0, null, null);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, p.x, p.y + 5, 1, 0, null, null);
 					} else if (Hasard.lanceDes(Hasard.hazardBushes_BlueDrop)) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, p.x + 3, p.y + 5, p_destroy ? 0 : 1, null, null);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, p.x + 3, p.y + 5, 1, p_destroy ? 0 : 1, null, null);
 					} else if (multiPlayer && Hasard.lanceDes(Hasard.hazardBushes_Bombs)) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 0, null,
-								ElementDescription.BOMBS3);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 1, 0,
+								null, ElementDescription.BOMBS3);
 					}
 				}
 			}
@@ -940,8 +945,8 @@ public class Area implements EasySerializable {
 							
 							if (temp.getOneValued(256 + 99) != null) {
 								// Fumée de cheminée
-								spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, 0, null,
-										null);
+								spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, fl, 0,
+										null, null);
 							}
 							Tile tile = temp.getOneValued(512 + 231, 512 + 49, 512 + 59, 512 + 61);
 							// Is this chest already opened ?
@@ -1412,6 +1417,10 @@ public class Area implements EasySerializable {
 	
 	public Point getAlertLocation() {
 		return new Point(alertLocation);
+	}
+	
+	public byte getLowestFloor() {
+		return lowestFloor;
 	}
 	
 	public byte getHighestFloor() {
