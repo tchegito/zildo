@@ -51,7 +51,7 @@ public class LwjglTileEngine extends TileEngine {
 	private TextureBinder texBinder = new TextureBinder();
 	
 	@Override
-	public void render(boolean backGround) {
+	public void render(int floor, boolean backGround) {
 
 		if (initialized) {
 			Vector3f ambient = ClientEngineZildo.ortho.getAmbientColor();
@@ -69,8 +69,8 @@ public class LwjglTileEngine extends TileEngine {
 				// Display BACKGROUND
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				GL11.glEnable(GL11.GL_BLEND);
-				meshBACK.render(texBinder);
-				meshBACK2.render(texBinder);
+				meshBACK.render(floor, texBinder);
+				meshBACK2.render(floor, texBinder);
 				GL11.glDisable(GL11.GL_BLEND);
 			}
 			else {
@@ -78,7 +78,7 @@ public class LwjglTileEngine extends TileEngine {
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				GL11.glEnable(GL11.GL_BLEND);
 
-				meshFORE.render(texBinder);
+				meshFORE.render(floor, texBinder);
 				
 				GL11.glDisable(GL11.GL_BLEND);
 			}

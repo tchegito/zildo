@@ -217,16 +217,8 @@ public class QuadPrimitive {
      * Ask OpenGL to render every quad from this mesh.
      */
     public void render() {
-
         // Indices buffer contains indices for 4096 tiles. We have to limit it to the real number of used tiles.
-        if (bufs.indices != null) {
-        	bufs.indices.limit(nIndices);
-            vbo.draw(bufs);
-        } else {
-        	vbo.draw(bufs, 0, nIndices);
-        }
-
-
+       	vbo.draw(bufs, 0, nIndices);
     }
     
     public boolean isEmpty() {

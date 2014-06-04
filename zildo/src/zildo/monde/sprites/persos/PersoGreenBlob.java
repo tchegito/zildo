@@ -104,7 +104,7 @@ public class PersoGreenBlob extends PersoShadowed {
 				int xx = (int) (x + angle.coords.x * 16);
 				int yy = (int) (y + angle.coords.y * 16);
 				cloudDelay = ElementPoison.CLOUD_DURATION;
-				EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.POISONCLOUD, xx, yy, 0, this, null);
+				EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.POISONCLOUD, xx, yy, floor, 0, this, null);
 				EngineZildo.soundManagement.broadcastSound(BankSound.PoisonCloud, new Point(x,y));
 				approaching = false;
 				correctAngle = 0;

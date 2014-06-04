@@ -24,51 +24,60 @@ import zildo.Zildo;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 import zildo.monde.map.Tile;
 import zildo.monde.util.Point;
+import zildo.resource.Constantes;
 
 /**
- * Groupe of primitive from same layer. They share all the same vertex and textures buffer.<br/>
+ * Groupe of primitive from same layer (=graphic bank). They share all the same vertex and textures buffer.<br/>
  * But we make sure that texture buffer is unique for this group with {@link VBOBuffers#resetTextureBuffer()}
  * @author Tchegito
  *
  */
 public class TileGroupPrimitive {
 
-	protected TilePrimitive[] meshes;
+	protected TilePrimitive[][] meshes;
 	
 	public TileGroupPrimitive(int nbGroup) {
-		meshes = new TilePrimitive[nbGroup];
+		meshes = new TilePrimitive[Constantes.TILEENGINE_FLOOR][nbGroup];
 	}
 	
 	public void startInitialization() {
-		for (int i = 0; i < meshes.length; i++) {
-			if (meshes[i] == null) {
-				int maxScreenPoints = ((Zildo.viewPortX >> 4)+1) * ((Zildo.viewPortY >> 4)+1);
-				maxScreenPoints*=4;	// 4 vertices for a quad
-				maxScreenPoints*=2;	// 2 screens for be quiet
-				meshes[i] = new TilePrimitive(maxScreenPoints);
-			}		
-			meshes[i].startInitialization();
+		for (int floor = 0; floor < Constantes.TILEENGINE_FLOOR; floor++) {
+			for (int i = 0; i < meshes[floor].length; i++) {
+				if (meshes[floor][i] == null) {
+					int maxScreenPoints = ((Zildo.viewPortX >> 4)+1) * ((Zildo.viewPortY >> 4)+1);
+					maxScreenPoints*=4;	// 4 vertices for a quad
+					maxScreenPoints*=2;	// 2 screens for be quiet
+					meshes[floor][i] = new TilePrimitive(maxScreenPoints);
+				}		
+				meshes[floor][i].startInitialization();
+			}
 		}
 	}
 	
 	public void endInitialization() {
-		for (int i = 0; i < meshes.length; i++) {
-			meshes[i].endInitialization();
+		for (int floor = 0; floor < Constantes.TILEENGINE_FLOOR; floor++) {
+			for (int i = 0; i < meshes[floor].length; i++) {
+				meshes[floor][i].endInitialization();
+			}
 		}
 	}
 	
 	public void clearBuffers() {
-		for (int i = 0; i < meshes.length; i++) {
-			if (meshes[i] != null) {
-				meshes[i].clearBuffers();
+		for (int floor = 0; floor < Constantes.TILEENGINE_FLOOR; floor++) {
+			for (int i = 0; i < meshes[floor].length; i++) {
+				if (meshes[floor][i] != null) {
+					meshes[floor][i].clearBuffers();
+				}
 			}
 		}
 	}
 	public void cleanUp()
 	{
-		for (TilePrimitive tp : meshes) {
-			if (tp != null) {
-				tp.cleanUp();
+		for (int floor = 0; floor < Constantes.TILEENGINE_FLOOR; floor++) {
+			for (TilePrimitive tp : meshes[floor]) {
+				if (tp != null) {
+					tp.cleanUp();
+				}
 			}
 		}
 	}
@@ -80,49 +89,48 @@ public class TileGroupPrimitive {
 	 * @param tile
 	 * @param x
 	 * @param y
+	 * @param floor TODO
 	 * @param n_motif
 	 * @param hasChanged
 	 */
-	public void updateTile(Tile tile, int x, int y, int n_motif, boolean hasChanged) {
+	public void updateTile(Tile tile, int x, int y, int floor, int n_motif, boolean hasChanged) {
 		byte bank = tile.bank;
 		if (tile.previousBank > tile.bank) {
 			// Remove tile from previous primitive
-			removeTile(tile.previousBank, x, y);
+			removeTile(tile.previousBank, x, y, floor);
 			tile.previousBank = tile.bank;
 		}
 
 		int xTex = (n_motif % 16) << 4;
 		int yTex = (n_motif >> 4) << 4; // +1;
 
-		meshes[bank].updateTile(x,
+		meshes[floor][bank].updateTile(x,
 				y,
 				xTex,
 				yTex, 
 				tile.reverse, tile.rotation, hasChanged);
 	}
     
-    public void removeTile(int nth, int x, int y) {
-    	meshes[nth].removeTile(x, y);
+    public void removeTile(int nth, int x, int y, int floor) {
+    	meshes[floor][nth].removeTile(x, y);
     }
 
-    public boolean isEmpty(int nth) {
-    	return meshes[nth].isEmpty();
-    }
-    
     public void initFreeBuffer(Point camera) {
-    	for (int i=0;i<meshes.length;i++) {
-    		meshes[i].fillFreeIndex(camera);
-    	}
+		for (int floor = 0; floor < Constantes.TILEENGINE_FLOOR; floor++) {
+	    	for (int i=0;i<meshes[floor].length;i++) {
+	    		meshes[floor][i].fillFreeIndex(camera);
+	    	}
+		}
     }
     /**
      * Render every mesh only if there's some vertices in it.
      * @param action action to be executed before render of each mesh (useful for texture binding)
      */
-    public void render(ActionNthRunner action) {
-    	for (int i=0;i<meshes.length;i++) {
-    		if (meshes[i] != null && !meshes[i].isEmpty()) {
+    public void render(int floor, ActionNthRunner action) {
+    	for (int i=0;i<meshes[floor].length;i++) {
+    		if (meshes[floor][i] != null && !meshes[floor][i].isEmpty()) {
     			action.execute(i);
-    			meshes[i].render();
+    			meshes[floor][i].render();
     		}
     	}
     }

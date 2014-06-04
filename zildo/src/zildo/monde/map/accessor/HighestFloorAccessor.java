@@ -28,8 +28,17 @@ import zildo.monde.map.Case;
 public class HighestFloorAccessor extends AreaAccessor {
 
 	@Override
-	public Case get_mapcase(int x, int y) {
-		return area.get_mapcase(x, y);
+	public AccessedCase get_mapcase(int x, int y) {
+		byte floor = area.getHighestFloor();
+		Case c = null;
+		while (floor>=0) {
+			c = area.getMapcaseWithoutOverflow(x, y, floor);
+			if (c != null) break;
+			floor--;
+		}
+		accCase.c = c;
+		accCase.floor = floor;
+		return accCase;
 	}
 
 }

@@ -40,7 +40,8 @@ import zildo.resource.Constantes;
 public class SpriteSorter {
 	// Sorting by bank and by Y axis
 	// bankOrder works like this { (BanqueN,i) , (BanqueM,j) , (BanqueP,k) ... }
-	private int[][] bankOrder;   // Reference to an int array from SpriteManagement
+	// [floor][0=BACKGROUND/1=FOREGROUND][nSprite]
+	private int[][][] bankOrder;   // Reference to an int array from SpriteManagement
 	
 	// For Y-sorting
 	private SpriteEntity[][] tab_tri;
@@ -67,11 +68,12 @@ public class SpriteSorter {
 		// Initialize structures associated with Y-sort
 		quadOrder=new int[Constantes.NB_SPRITEBANK][Constantes.NB_SPRITE_PER_PRIMITIVE];
 		lastInBank=new int[Constantes.NB_SPRITEBANK];
-		bankOrder=new int[2][4 * Constantes.MAX_SPRITES_ON_SCREEN];
+		bankOrder=new int[Constantes.TILEENGINE_FLOOR][2][4 * Constantes.MAX_SPRITES_ON_SCREEN];
 	
-		bankOrder[0][0]=-1;	// Indicates no bank	
-		bankOrder[1][0]=-1;	// Indicates no bank	
-	
+		for (int fl=0;fl<bankOrder.length;fl++) {
+			bankOrder[fl][0][0]=-1;	// Indicates no bank	
+			bankOrder[fl][1][0]=-1;	// Indicates no bank	
+		}
 		clearEntirelySortArray();
 	}
 	
@@ -172,55 +174,61 @@ public class SpriteSorter {
 		}
 	
 		// Iterate through sort array
-		for (int phase=0;phase<2;phase++) {
-			int bankOrderPosition=0;
-			int currentBank=-1;
-			int nbQuadFromSameBank=0;
-			int currentAlpha=0;
-			EngineFX currentFX=EngineFX.NO_EFFECT;
-			for (int i=0;i<SORTY_REALMAX;i++) {
-				int position=0;
-				while (position < Constantes.SORTY_ROW_PER_LINE) {
-					SpriteEntity entity=tab_tri[i][position];
-					if (entity == null)
-						break;
-					if ((!entity.isForeground() && phase==0) ||
-						( entity.isForeground() && phase==1)) {
-						// We got an entity : store it into return array
-						int linkVertices = entity.getLinkVertices();
-						int nbEntity = entity.repeatX * entity.repeatY;
-						// Repeat entity if its fields are asking to
-						int last=lastInBank[entity.getNBank()]++;
-						quadOrder[entity.getNBank()][last]=linkVertices;
-						
-						// Check if we need a special effect
-						EngineFX persoFX=entity.getSpecialEffect();
-	
-						if ((currentBank != entity.getNBank() || persoFX != currentFX || entity.getAlpha() != currentAlpha) && currentBank != -1) {
-							// We got a break into sprite sequence display on the bank level
-							bankOrder[phase][bankOrderPosition*4]  =currentBank;
-							bankOrder[phase][bankOrderPosition*4+1]=nbQuadFromSameBank;
-							bankOrder[phase][bankOrderPosition*4+2]=currentFX.ordinal();
-							bankOrder[phase][bankOrderPosition*4+3]=currentAlpha;
-							bankOrderPosition++;
-							nbQuadFromSameBank=0;
+		//TODO: optimize this !!! Why do we iterate through each phase X each floor ?
+		// Couldn't we iterate simply in tab_tri, and take what we find ? Whatever floor or phase ?
+		// Answer => entity have to be ordered, that's precisely the goal of THIS method.
+		for (int floor=0;floor<Constantes.TILEENGINE_FLOOR;floor++) {
+			for (int phase=0;phase<2;phase++) {
+				int bankOrderPosition=0;
+				int currentBank=-1;
+				int nbQuadFromSameBank=0;
+				int currentAlpha=0;
+				EngineFX currentFX=EngineFX.NO_EFFECT;
+				for (int i=0;i<SORTY_REALMAX;i++) {
+					int position=0;
+					while (position < Constantes.SORTY_ROW_PER_LINE) {
+						SpriteEntity entity=tab_tri[i][position];
+						if (entity == null)
+							break;
+						if (entity.getFloor() == floor && (
+								(!entity.isForeground() && phase==0) ||
+								( entity.isForeground() && phase==1) ) ) {
+							// We got an entity : store it into return array
+							int linkVertices = entity.getLinkVertices();
+							int nbEntity = entity.repeatX * entity.repeatY;
+							// Repeat entity if its fields are asking to
+							int last=lastInBank[entity.getNBank()]++;
+							quadOrder[entity.getNBank()][last]=linkVertices;
+							
+							// Check if we need a special effect
+							EngineFX persoFX=entity.getSpecialEffect();
+		
+							if ((currentBank != entity.getNBank() || persoFX != currentFX || entity.getAlpha() != currentAlpha) && currentBank != -1) {
+								// We got a break into sprite sequence display on the bank level
+								bankOrder[floor][phase][bankOrderPosition*4]  =currentBank;
+								bankOrder[floor][phase][bankOrderPosition*4+1]=nbQuadFromSameBank;
+								bankOrder[floor][phase][bankOrderPosition*4+2]=currentFX.ordinal();
+								bankOrder[floor][phase][bankOrderPosition*4+3]=currentAlpha;
+								bankOrderPosition++;
+								nbQuadFromSameBank=0;
+							}
+							currentBank = entity.getNBank();
+							currentFX = persoFX;
+							currentAlpha = entity.getAlpha();
+							nbQuadFromSameBank+=nbEntity;
 						}
-						currentBank = entity.getNBank();
-						currentFX = persoFX;
-						currentAlpha = entity.getAlpha();
-						nbQuadFromSameBank+=nbEntity;
+		
+						position++;
 					}
-	
-					position++;
 				}
+				// Save the last build sequence
+				bankOrder[floor][phase][bankOrderPosition*4]  =currentBank;
+				bankOrder[floor][phase][bankOrderPosition*4+1]=nbQuadFromSameBank;
+				bankOrder[floor][phase][bankOrderPosition*4+2]=currentFX.ordinal();
+				bankOrder[floor][phase][bankOrderPosition*4+3]=currentAlpha;
+				// Mark the end of sequences
+				bankOrder[floor][phase][bankOrderPosition*4+4]=-1;
 			}
-			// Save the last build sequence
-			bankOrder[phase][bankOrderPosition*4]  =currentBank;
-			bankOrder[phase][bankOrderPosition*4+1]=nbQuadFromSameBank;
-			bankOrder[phase][bankOrderPosition*4+2]=currentFX.ordinal();
-			bankOrder[phase][bankOrderPosition*4+3]=currentAlpha;
-			// Mark the end of sequences
-			bankOrder[phase][bankOrderPosition*4+4]=-1;
 		}
 		for (int b=0;b<Constantes.NB_SPRITEBANK;b++) {
 			quadOrder[b][lastInBank[b]]=-1;
@@ -228,7 +236,7 @@ public class SpriteSorter {
 	
 	}
 	
-	public int[][] getBankOrder() {
+	public int[][][] getBankOrder() {
 		return bankOrder;
 	}
 	

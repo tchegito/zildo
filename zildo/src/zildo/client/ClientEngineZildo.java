@@ -185,35 +185,45 @@ public class ClientEngineZildo {
 		// // DISPLAY ////
 
 		spriteEngine.initRendering();
-		
-		// Display BACKGROUND tiles
-		if (mapDisplay.foreBackController.isDisplayBackground()) {
-		    tileEngine.render(true);
+		int lowestFloor = 1;
+		int highestFloor = 1;
+		if (maps[0] != null) {
+			lowestFloor = maps[0].getLowestFloor();
+			highestFloor = maps[0].getHighestFloor();
 		}
+		for (int floor = lowestFloor ; floor <= highestFloor; floor++) {
+			boolean lastTurn = floor == highestFloor;
+			
+			// Display BACKGROUND tiles
+			if (mapDisplay.foreBackController.isDisplayBackground()) {
+			    tileEngine.render(floor, true);
+			}
+	
+			//long t5 = ZUtils.getTime();
+	
+			// Display BACKGROUND sprites
+			if (spriteDisplay.foreBackController.isDisplayBackground()) {
+			    spriteEngine.render(floor, true);
+			}
+			
+			//long t6 = ZUtils.getTime();
+	
+			// Display FOREGROUND tiles
+			if (mapDisplay.foreBackController.isDisplayForeground()) {
+			    tileEngine.render(floor, false);
+			}
 
-		//long t5 = ZUtils.getTime();
-
-		// Display BACKGROUND sprites
-		if (spriteDisplay.foreBackController.isDisplayBackground()) {
-		    spriteEngine.render(true);
-		}
-		
-		//long t6 = ZUtils.getTime();
-
-		// Display FOREGROUND tiles
-		if (mapDisplay.foreBackController.isDisplayForeground()) {
-		    tileEngine.render(false);
+			if (!p_editor && lastTurn) {	// Display only once !
+				guiDisplay.draw(!client.connected);
+			}
+			// Display FOREGROUND sprites
+			if (spriteDisplay.foreBackController.isDisplayForeground()) {
+			    spriteEngine.render(floor, false);
+			}
 		}
 
 		//long t7 = ZUtils.getTime();
 
-		if (!p_editor) {
-			guiDisplay.draw(!client.connected);
-		}
-		// Display FOREGROUND sprites
-		if (spriteDisplay.foreBackController.isDisplayForeground()) {
-		    spriteEngine.render(false);
-		}
 		
 		//long t8 = ZUtils.getTime();
 

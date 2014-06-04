@@ -19,7 +19,6 @@
 
 package zildo.monde.map.accessor;
 
-import zildo.monde.map.Case;
 
 /**
  * @author Tchegito
@@ -27,8 +26,14 @@ import zildo.monde.map.Case;
  */
 public class OneFloorAreaAccessor extends AreaAccessor {
 
+	final int DEFAULT_FLOOR = 0;
+	
+	public OneFloorAreaAccessor() {
+		accCase.floor = DEFAULT_FLOOR;
+	}
 	@Override
-	public Case get_mapcase(int x, int y) {
-		return area.get_mapcase(x, y, 0);
+	public AccessedCase get_mapcase(int x, int y) {
+		accCase.c = area.get_mapcase(x, y, DEFAULT_FLOOR);
+		return accCase;
 	}
 }

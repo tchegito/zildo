@@ -31,7 +31,14 @@ import zildo.monde.map.Case;
  */
 public abstract class AreaAccessor {
 
+	public class AccessedCase {
+		public Case c;
+		public int floor;
+	}
+	
 	public Area area;
+	
+	protected final AccessedCase accCase = new AccessedCase();
 	
 	int dim_x;
 	int dim_y;
@@ -42,5 +49,5 @@ public abstract class AreaAccessor {
 		dim_y = area.getDim_y();
 	}
 	
-	public abstract Case get_mapcase(int x, int y);
+	public abstract AccessedCase get_mapcase(int x, int y);
 }

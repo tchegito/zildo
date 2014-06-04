@@ -309,7 +309,7 @@ public class ActionExecutor {
                 		loc.x+=perso.x;
                 		loc.y+=perso.y;
                 	}
-                	Element animElem = EngineZildo.spriteManagement.spawnSpriteGeneric(anim, loc.x, loc.y, p_action.val, null, null);
+                	Element animElem = EngineZildo.spriteManagement.spawnSpriteGeneric(anim, loc.x, loc.y, 1, p_action.val, null, null);
                 	if (p_action.what != null) {
                 	    animElem.setName(p_action.what);
                 	}

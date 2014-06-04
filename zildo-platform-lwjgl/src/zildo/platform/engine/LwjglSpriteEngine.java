@@ -65,7 +65,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
 	//	   false=render FOREground
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public void render(boolean backGround) {
+	public void render(int floor, boolean backGround) {
 	
 		// Display every sprites
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -85,18 +85,18 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		int posBankOrder=0;
 	
 		// Retrieve the sprite's order
-		int[][] bankOrder = ClientEngineZildo.spriteDisplay.getBankOrder();
+		int[][][] bankOrder = ClientEngineZildo.spriteDisplay.getBankOrder();
 		
 		int phase=(backGround)?0:1;
 		while (!endSequence) {
-			int numBank=bankOrder[phase][posBankOrder*4];
+			int numBank=bankOrder[floor][phase][posBankOrder*4];
 			if (numBank == -1) {
 				endSequence=true;
 			} else {
 				// Render the n sprites from this bank
-				int nbQuads=bankOrder[phase][posBankOrder*4 + 1];
-				int iCurrentFX=bankOrder[phase][posBankOrder*4 + 2];
-				int alpha=bankOrder[phase][posBankOrder*4 + 3];
+				int nbQuads=bankOrder[floor][phase][posBankOrder*4 + 1];
+				int iCurrentFX=bankOrder[floor][phase][posBankOrder*4 + 2];
+				int alpha=bankOrder[floor][phase][posBankOrder*4 + 3];
 				EngineFX currentFX=EngineFX.values()[iCurrentFX];
 				int texId=textureEngine.getNthTexture(numBank);
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
