@@ -248,5 +248,5 @@ public abstract class SpriteEngine {
 		// Default : do nothing. Only LWJGL version can do that.
 	}
 	
-	public abstract void render(boolean backGround);
+	public abstract void render(int floor, boolean backGround);
 }
