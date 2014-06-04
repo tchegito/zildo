@@ -37,16 +37,6 @@ public class VBOSoftware implements VBO {
         GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
         GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 	}
-	
-	@Override
-	public void draw(VBOBuffers p_bufs) {
-		preDraw();
-		GL11.glVertexPointer(2, 0, p_bufs.vertices);
-		GL11.glTexCoordPointer(2, 0, p_bufs.textures);
-		
-        GL11.glDrawElements(GL11.GL_TRIANGLES, p_bufs.indices);
-
-	}
 
 	/**
 	 * Render vertices/textures without indices. So one quad is a double triangle represented by 
@@ -65,9 +55,6 @@ public class VBOSoftware implements VBO {
 	public void cleanUp(VBOBuffers p_bufs) {
 		p_bufs.vertices.clear();
 		p_bufs.textures.clear();
-		if (p_bufs.indices != null) {
-			p_bufs.indices.clear();
-		}
 	}
 
 	@Override
@@ -78,9 +65,6 @@ public class VBOSoftware implements VBO {
 		}
 		if (p_bufs.textures.position() != 0) {
 			p_bufs.textures.flip();
-		}
-		if (p_bufs.indices != null && p_bufs.indices.position() != 0) {
-			p_bufs.indices.flip();
 		}
 	}
 }

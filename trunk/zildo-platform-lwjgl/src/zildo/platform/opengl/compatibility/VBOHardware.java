@@ -37,26 +37,8 @@ public class VBOHardware extends VBOSoftware {
 		VBOBuffers bufs=super.create(p_numPoints, p_forTiles);
 		bufs.vertexBufferId = GLUtils.createVBO();
 		bufs.textureBufferId = GLUtils.createVBO();
-		bufs.indiceBufferId = GLUtils.createVBO();
     
         return bufs;
-	}
-	
-	@Override
-	public void draw(VBOBuffers p_bufs) {
-		preDraw();
-		
-        ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, p_bufs.vertexBufferId);
-        GL11.glVertexPointer(2, GL11.GL_FLOAT, 0, 0);
-
-        ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, p_bufs.textureBufferId);
-        GL11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, 0);	
-
-        //ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ELEMENT_ARRAY_BUFFER_ARB, p_bufs.indiceBufferId);
-
-		int count = p_bufs.indices.remaining();
-        //GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, count, count, GL11.GL_UNSIGNED_SHORT, 0);
-        GL11.glDrawElements(GL11.GL_TRIANGLES, p_bufs.indices);
 	}
 
 	@Override
@@ -82,10 +64,6 @@ public class VBOHardware extends VBOSoftware {
         buf.put(p_bufs.textureBufferId);
         buf.flip();
         ARBVertexBufferObject.glDeleteBuffersARB(buf);
-        buf = BufferUtils.createIntBuffer(1);
-        buf.put(p_bufs.indiceBufferId);
-        buf.flip();
-        ARBVertexBufferObject.glDeleteBuffersARB(buf);		
 	}
 	
 	boolean done = false;
@@ -93,9 +71,6 @@ public class VBOHardware extends VBOSoftware {
 	@Override
 	public void endInitialization(VBOBuffers p_bufs) {
 		super.endInitialization(p_bufs);
-		if (p_bufs.indices != null) {
-			GLUtils.bufferData(p_bufs.indiceBufferId, p_bufs.indices, false);
-		}
 		GLUtils.bufferData(p_bufs.textureBufferId, p_bufs.textures, false);
 		GLUtils.bufferData(p_bufs.vertexBufferId, p_bufs.vertices, false);
 	}
