@@ -46,11 +46,12 @@ public class VBOBuffers {
 
     public ShortBuffer vertices;
     public FloatBuffer textures;
-    public ShortBuffer indices;
 
     public VBOBuffers(int p_numPoints, boolean p_forTiles) {
         // Allocate buffers
+    	// 3 coordinates (x,y) x 3 dots in a triangle
         vertices = ZUtils.createShortBuffer(2 * 3 * (p_numPoints / 2));
+        // 2 coordinates (u,v)   x 3 dots in a triangle
         textures = ZUtils.createFloatBuffer(2 * 3 * (p_numPoints / 2));    	
     }
 
@@ -64,12 +65,6 @@ public class VBOBuffers {
 		sb.append("]\nTextures : [");
 		for (int i=0;i<textures.limit();i++) {
 			sb.append(textures.get(i)+", ");
-		}
-		if (indices != null) {
-			sb.append("]\nIndices : [");
-			for (int i=0;i<indices.limit();i++) {
-				sb.append(indices.get(i)+", ");
-			}
 		}
 		sb.append("]");
 		return sb.toString();

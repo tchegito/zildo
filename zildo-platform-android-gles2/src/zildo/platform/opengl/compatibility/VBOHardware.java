@@ -27,7 +27,6 @@ import javax.microedition.khronos.opengles.GL11;
 
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 import zildo.platform.opengl.utils.GLUtils;
-import android.opengl.GLES20;
 
 public class VBOHardware extends VBOSoftware {
 	
@@ -46,21 +45,6 @@ public class VBOHardware extends VBOSoftware {
 		tiles = p_forTiles;
 		
         return bufs;
-	}
-	
-	@Override
-	public void draw(VBOBuffers p_bufs) {
-		preDraw();
-		gl11.glBindBuffer(GL11.GL_ARRAY_BUFFER, p_bufs.vertexBufferId);
-		gl11.glVertexPointer(2, GLES20.GL_FLOAT, 0, 0);
-		
-		gl11.glBindBuffer(GL11.GL_ARRAY_BUFFER, p_bufs.textureBufferId);
-		gl11.glTexCoordPointer(2, GLES20.GL_FLOAT,0, 0);
-        
-		int count = p_bufs.indices.remaining();
-        gl11.glDrawElements(GL11.GL_TRIANGLES, count, GLES20.GL_UNSIGNED_SHORT, p_bufs.indices);
-		
-        gl11.glBindBuffer(GL11.GL_ARRAY_BUFFER, 0);
 	}
 	
 	@Override
@@ -101,9 +85,7 @@ public class VBOHardware extends VBOSoftware {
 	@Override
 	public void endInitialization(VBOBuffers p_bufs) {
 		super.endInitialization(p_bufs);
-		if (p_bufs.indices != null) {
-			GLUtils.bufferData(p_bufs.indiceBufferId, p_bufs.indices, false);
-		}
+
 		GLUtils.bufferData(p_bufs.textureBufferId, p_bufs.textures, false);
 		if (tiles) {
 			if (!done) {

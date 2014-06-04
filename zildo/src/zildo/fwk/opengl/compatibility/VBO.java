@@ -38,8 +38,6 @@ public interface VBO {
 
 	public VBOBuffers create(int p_numPoints, boolean p_forTiles);
 	
-	public void draw(VBOBuffers p_bufs);
-
 	public void draw(VBOBuffers p_bufs, int start, int count);
 	
 	public void cleanUp(VBOBuffers p_bufs);

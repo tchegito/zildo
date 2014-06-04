@@ -44,14 +44,6 @@ public class VBOSoftware implements VBO {
 		}
 		
 	}
-	
-	@Override
-	public void draw(VBOBuffers p_bufs) {
-		preDraw();
-		
-		int count = p_bufs.indices.remaining();
-		shaders.drawIndicedAndTexture(p_bufs.vertices, p_bufs.textures, p_bufs.indices, GLES20.GL_TRIANGLES, count);
-	}		
 
 	@Override
 	public void draw(VBOBuffers p_bufs, int start, int count) {
@@ -74,9 +66,6 @@ public class VBOSoftware implements VBO {
 		}
 		if (p_bufs.textures.position() != 0) {
 			p_bufs.textures.flip();
-		}
-		if (p_bufs.indices != null && p_bufs.indices.position() != 0) {
-			p_bufs.indices.flip();
 		}
 	}
 }
