@@ -115,6 +115,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 					break;
 				case CHAININGPOINT:
 					moveChainingPoint(p, (ChainingPointSelection) sel);
+					manager.updateChainingPoints(null);
 					break;
 				case SPRITES:
 					placeSprite(p, (SpriteSelection<SpriteEntity>) sel);
@@ -385,6 +386,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		ChainingPoint ch=p_sel.getElement();
 		ch.setPx((short) (p_point.x / 8));
 		ch.setPy((short) (p_point.y / 8));
+		ch.setFloor(manager.getCurrentFloor());
 	}
 	
 	/**

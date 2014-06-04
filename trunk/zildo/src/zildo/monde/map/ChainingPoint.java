@@ -59,11 +59,12 @@ public class ChainingPoint implements EasySerializable {
 	
 	private String mapname; // max length=8
 	private short px, py;
+	private short floor;
 
 	private boolean vertical;
 	private boolean border;
 	private boolean single; // TRUE=chaining point is on only one tile
-
+	
 	// Extra infos (deduced from map's context) to locate points referring to
 	// the same map.
 	private int orderX;
@@ -264,6 +265,7 @@ public class ChainingPoint implements EasySerializable {
 		ChainingPoint pe = new ChainingPoint();
 		pe.px = p_buffer.readUnsignedByte();
 		pe.py = p_buffer.readUnsignedByte();
+		pe.floor = p_buffer.readUnsignedByte();
 		pe.comingAngle = Angle.fromInt(p_buffer.readUnsignedByte());
 		int transitionAnimPlusFlag = p_buffer.readUnsignedByte();
 		pe.transitionAnim = FilterEffect.values()[transitionAnimPlusFlag & 31];
@@ -302,6 +304,7 @@ public class ChainingPoint implements EasySerializable {
 		}
 		p_buffer.put((byte) saveX);
 		p_buffer.put((byte) saveY);
+		p_buffer.put((byte) floor);
 		p_buffer.put((byte) comingAngle.value);
 		p_buffer.put((byte) transAnim);
 		p_buffer.put(mapname);
@@ -326,4 +329,14 @@ public class ChainingPoint implements EasySerializable {
 	public void setDone(boolean done) {
 		this.done = done;
 	}
+
+	public short getFloor() {
+		return floor;
+	}
+
+	public void setFloor(short floor) {
+		this.floor = floor;
+	}
+	
+	
 }

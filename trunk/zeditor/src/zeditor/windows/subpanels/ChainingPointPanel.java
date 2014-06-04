@@ -60,9 +60,9 @@ public class ChainingPointPanel extends JPanel {
 
 	JTable pointsList;
 	ChainingPointTableModel model;
-	private final String[] columnNames = new String[] { "Carte", "Vertical",
+	private final String[] columnNames = new String[] { "Floor", "Carte", "Vertical",
 			"Bord", "Single", "Angle", "Anim", "", "" };
-	private final int[] columnSizes = { 70, 30, 30, 30, 50, 60, 40, 45 };
+	private final int[] columnSizes = { 20, 70, 30, 30, 30, 50, 60, 40, 45 };
 	
 	MasterFrameManager manager;
 
@@ -145,7 +145,7 @@ public class ChainingPointPanel extends JPanel {
 		pointsList.setModel(model);
 
 		// Set angle combo
-		TableColumn buttonColumn = pointsList.getColumnModel().getColumn(4);
+		TableColumn buttonColumn = pointsList.getColumnModel().getColumn(5);
 		JComboBox comboAngle = new JComboBox(ZUtils.getValues(Angle.class, new Conditioner<Angle>() {
 			@Override
 			public boolean accept(Angle a) {
@@ -155,7 +155,7 @@ public class ChainingPointPanel extends JPanel {
 		buttonColumn.setCellEditor(new DefaultCellEditor(comboAngle));		
 
 		// Set transition anim combo
-		buttonColumn = pointsList.getColumnModel().getColumn(5);
+		buttonColumn = pointsList.getColumnModel().getColumn(6);
 		JComboBox comboActionsAnim = new JComboBox(ZUtils.getValues(FilterEffect.class, new Conditioner<FilterEffect>() {
 			@Override
 			public boolean accept(FilterEffect a) {
@@ -165,7 +165,7 @@ public class ChainingPointPanel extends JPanel {
 		buttonColumn.setCellEditor(new DefaultCellEditor(comboActionsAnim));	
 		
 		// Set buttons
-		buttonColumn = pointsList.getColumnModel().getColumn(6);
+		buttonColumn = pointsList.getColumnModel().getColumn(7);
 		buttonColumn.setCellRenderer(new ChainingPointCellRenderer(
 				new AbstractAction("X", null) {
 					@Override
@@ -178,7 +178,7 @@ public class ChainingPointPanel extends JPanel {
 					}
 				}));
 
-		buttonColumn = pointsList.getColumnModel().getColumn(7);
+		buttonColumn = pointsList.getColumnModel().getColumn(8);
 		buttonColumn.setCellRenderer(new ChainingPointCellRenderer(
 				new AbstractAction("Go", null) {
 					@Override
@@ -259,7 +259,7 @@ public class ChainingPointPanel extends JPanel {
 		 */
 		@Override
 		public boolean isCellEditable(int i, int j) {
-			if (j > 5) {
+			if (j > 6) {
 				return false;
 			}
 			return super.isCellEditable(i, j);
@@ -280,22 +280,25 @@ public class ChainingPointPanel extends JPanel {
 					ChainingPoint ch = points[row];
 					Object o = getValueAt(row, col);
 					switch (col) {
-					case 0: // mapname
+					case 0: // floor
+						
+						break;
+					case 1: // mapname
 						ch.setMapname((String) o);
 						break;
-					case 1: // vertical
+					case 2: // vertical
 						ch.setVertical((Boolean) o);
 						break;
-					case 2: // bord
+					case 3: // bord
 						ch.setBorder((Boolean) o);
 						break;
-					case 3: // single
+					case 4: // single
 						ch.setSingle((Boolean) o);
 						break;
-					case 4: // angle
+					case 5: // angle
 						ch.setComingAngle(Angle.valueOf((String) o));
 						break;
-					case 5: // anim
+					case 6: // anim
 						ch.setTransitionAnim(FilterEffect.valueOf((String) o));
 						break;
 					}
@@ -313,7 +316,7 @@ public class ChainingPointPanel extends JPanel {
 		}
 
 		private static Object[] getRow(ChainingPoint ch) {
-			Object[] obj = new Object[] { ch.getMapname(), ch.isVertical(),
+			Object[] obj = new Object[] { ch.getFloor(), ch.getMapname(), ch.isVertical(),
 					ch.isBorder(), ch.isSingle(), ch.getComingAngle().toString(), ch.getTransitionAnim().toString(), new JButton("creer"), null };
 			return obj;
 		}
