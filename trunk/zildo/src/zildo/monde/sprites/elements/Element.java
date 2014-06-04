@@ -545,12 +545,12 @@ public class Element extends SpriteEntity {
 			case BOTTOMLESS:	// Means LAVA, actually
 				EngineZildo.soundManagement.broadcastSound(BankSound.LavaDrop, this);
 				EngineZildo.spriteManagement.spawnSpriteGeneric(
-						SpriteAnimation.LAVA_DROP, (int) x, (int) y, 0,	null, null);
+						SpriteAnimation.LAVA_DROP, (int) x, (int) y, floor,	0, null, null);
 				break;
 			case WATER:
 				EngineZildo.soundManagement.broadcastSound(BankSound.FallWater, this);
 				EngineZildo.spriteManagement.spawnSpriteGeneric(
-						SpriteAnimation.WATER_SPLASH, (int) x, (int) y, 0,	null, null);
+						SpriteAnimation.WATER_SPLASH, (int) x, (int) y, floor,	0, null, null);
 				break;
 			case REGULAR:
 				// 2: on the floor, many possibilities
@@ -560,7 +560,7 @@ public class Element extends SpriteEntity {
 						// Le buisson s'effeuille
 						EngineZildo.spriteManagement
 								.spawnSpriteGeneric(SpriteAnimation.BUSHES, (int) x,
-										(int) y, 0, null, null);
+										(int) y, floor, 0, null, null);
 						EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
 						break;
 					case JAR:
@@ -568,7 +568,7 @@ public class Element extends SpriteEntity {
 					case STONE_HEAVY:
 					case ROCK_BALL:
 						EngineZildo.spriteManagement.spawnSpriteGeneric(
-								SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, 0, null, null);
+								SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, floor, 0, null, null);
 						EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
 						break;
 					case DYNAMITE:
@@ -576,7 +576,7 @@ public class Element extends SpriteEntity {
 					case PEEBLE:
 						EngineZildo.soundManagement.broadcastSound(BankSound.PeebleFloor, this);
 						EngineZildo.spriteManagement.spawnSpriteGeneric(
-								SpriteAnimation.DUST, (int) x, (int) y, 0,	null, null);
+								SpriteAnimation.DUST, (int) x, (int) y, floor,	0, null, null);
 						break;
 					}
 					if (questTrigger) {	// Only for bank ELEMENTS now
@@ -689,7 +689,7 @@ public class Element extends SpriteEntity {
 		if (desc == ElementDescription.PEEBLE) {
 			return DamageType.PEEBLE;
 		}
-		return null;
+		return DamageType.BLUNT;	// Default
 	}
 
 	/**
@@ -796,6 +796,7 @@ public class Element extends SpriteEntity {
 			if (z > 4 && p_perso == null) {
 				// Produce impact sound only on wall (not enemies)
 				Element impact = new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null);
+				impact.floor = floor;
 				EngineZildo.spriteManagement.spawnSprite(impact);
 				EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
 			}

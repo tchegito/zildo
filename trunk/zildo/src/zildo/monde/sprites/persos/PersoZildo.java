@@ -254,6 +254,7 @@ public class PersoZildo extends Perso {
 			if (attente == 0) {
 				if (countBomb > 0) {
 					Element bomb = new ElementDynamite((int) x, (int) y, 0, this);
+					bomb.floor = floor;
 					EngineZildo.spriteManagement.spawnSprite(bomb);
 					countBomb--;
 					setAttente(1);
@@ -297,6 +298,7 @@ public class PersoZildo extends Perso {
 				peeble.setDesc(ElementDescription.PEEBLE);
 				peeble.x = x;
 				peeble.y = y;
+				peeble.floor = floor;
 				EngineZildo.spriteManagement.spawnSprite(peeble);
 				peeble.beingThrown(x, y, sightAngle, this);
 				peeble.z = 12;

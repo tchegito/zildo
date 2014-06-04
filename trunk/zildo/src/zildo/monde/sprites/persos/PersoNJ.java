@@ -884,7 +884,7 @@ public class PersoNJ extends Perso {
 				break;
 			}
 			if (anim != null) {
-				EngineZildo.spriteManagement.spawnSpriteGeneric(anim, (int) x, (int) y, m, null, itemDesc);
+				EngineZildo.spriteManagement.spawnSpriteGeneric(anim, (int) x, (int) y, floor, m, null, itemDesc);
 			}
 		}
 	}

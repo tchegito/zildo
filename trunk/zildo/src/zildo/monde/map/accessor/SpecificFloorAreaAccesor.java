@@ -19,7 +19,6 @@
 
 package zildo.monde.map.accessor;
 
-import zildo.monde.map.Case;
 
 /**
  * Class used only by ZEditor, to display a specific floor of the current map.
@@ -29,14 +28,14 @@ import zildo.monde.map.Case;
  */
 public class SpecificFloorAreaAccesor extends AreaAccessor {
 
-	byte floor;
 	
 	public SpecificFloorAreaAccesor(byte floor) {
-		this.floor = floor;
+		accCase.floor = floor;
 	}
 	
 	@Override
-	public Case get_mapcase(int x, int y) {
-		return area.get_mapcase(x, y, floor);
+	public AccessedCase get_mapcase(int x, int y) {
+		accCase.c = area.get_mapcase(x, y, accCase.floor);
+		return accCase;
 	}
 }

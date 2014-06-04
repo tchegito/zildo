@@ -500,8 +500,8 @@ public abstract class Perso extends Element {
 	 */
 	public void die(boolean p_link, Perso p_shooter) {
 		// Death !
-		EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DEATH, (int) x, (int) y, 0, p_link ? this
-				: null, null);
+		EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DEATH, (int) x, (int) y, floor, 0, p_link ? this
+						: null, null);
 		TriggerElement trig = TriggerElement.createDeathTrigger(name);
 		EngineZildo.scriptManagement.trigger(trig);
 		setSpecialEffect(EngineFX.PERSO_HURT);
@@ -624,14 +624,14 @@ public abstract class Perso extends Element {
 			transitionCrossed = true;
 		} else if (transitionCrossed) {
 			// Try to change perso's floor
-			if (area.readmap(cx, cy, false, floor+1) != null) {
+			if (floor < area.getHighestFloor() && area.readmap(cx, cy, false, floor+1) != null) {
 				floor++;
-				System.out.println(floor);
 			} else if (floor>0) {
 				if (area.readmap(cx, cy, false, floor) == null) {
 					floor--;
 				}
 			}
+			//System.out.println(floor);
 			transitionCrossed = false;
 		} else {
 			transitionCrossed = false;

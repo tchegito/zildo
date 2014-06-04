@@ -2,10 +2,10 @@
     <!-- All transition scene MUST handle the fade in/out when map changes -->
     <scene id="miniStairsUp">
         <herospecial value="1"/>
-		<sound name="ZildoDescendPeu"/>
+        <perso who="zildo" deltaFloor="1"/>
+        <sound name="ZildoDescendPeu"/>
 		<moveTo who="zildo" pos="0,-32" speed="1" unstoppable="true" delta="true"/>
         <herospecial value="2"/>
-        <perso who="zildo" deltaFloor="1"/>
 	</scene>
 	
 	<scene id="miniStairsDown">

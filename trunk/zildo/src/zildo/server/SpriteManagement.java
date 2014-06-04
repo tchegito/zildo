@@ -194,14 +194,15 @@ public class SpriteManagement extends SpriteStore {
 	 * @param typeSprite
 	 * @param x
 	 * @param y
+	 * @param floor floor to spark the animation
 	 * @param misc money value (just for GOLDCOIN)
 	 * @param miscPerso perso dying (just for DEATH)
 	 * @param desc
 	 * @return Spawned {@link Element}
 	 * Note: Can return NULL (example: ask for a blue drop, but hero hasn't necklace ==> nothing spawned)
 	 */
-	public Element spawnSpriteGeneric(SpriteAnimation typeSprite, int x, int y, int misc,
-			Perso miscPerso, ElementDescription desc) {
+	public Element spawnSpriteGeneric(SpriteAnimation typeSprite, int x, int y, int floor,
+			int misc, Perso miscPerso, ElementDescription desc) {
 		Element element = null;
 		Element element2 = null;
 		ElementDescription elemDesc = null;
@@ -225,24 +226,22 @@ public class SpriteManagement extends SpriteStore {
 				element.setScrY((int) element.y);
 
 				element.setForeground(true);
-				
-				spawnSprite(element);
 				break;
 
 			case BUSHES :
 				for (j = 0; j < 8; j++) {
-					element = new Element();
-					element.setX((float) (x + Math.random() * 10 - 5));
-					element.setY((float) (y + Math.random() * 6 - 2));
-					element.setZ((float) (7 + Math.random() * 10));
-					element.setVx(0.2f * (j - 1));
-					element.setVz((float) (-0.5f + Math.random() * 3 * 0.1f));
-					element.setAx(-0.05f * element.getVx());
-					element.setNSpr(ElementDescription.LEAF_GREEN.ordinal());
+					Element e = new Element();
+					e.setX((float) (x + Math.random() * 10 - 5));
+					e.setY((float) (y + Math.random() * 6 - 2));
+					e.setZ((float) (7 + Math.random() * 10));
+					e.setVx(0.2f * (j - 1));
+					e.setVz((float) (-0.5f + Math.random() * 3 * 0.1f));
+					e.setAx(-0.05f * e.getVx());
+					e.setNSpr(ElementDescription.LEAF_GREEN.ordinal());
 					if ( (j%2) == 0) {
-						element.reverse = Reverse.HORIZONTAL;
+						e.reverse = Reverse.HORIZONTAL;
 					}
-					spawnSprite(element);
+					spawnSprite(e);
 					// Peut-être qu'un diamant va apparaitre !
 				}
 				break;
@@ -282,9 +281,9 @@ public class SpriteManagement extends SpriteStore {
 				element2.setX(x);
 				element2.setY(y - 2);
 				element2.setSprModel(shadow);
+				element2.floor = floor;
 				spawnSprite(element2);
 				element.setLinkedPerso(element2);
-				spawnSprite(element);
 				break;
 
 			case BLUE_DROP :
@@ -305,7 +304,6 @@ public class SpriteManagement extends SpriteStore {
 						//element.setAx(-0.01f);
 						element.setSprModel(ElementDescription.DROP_SMALL);
 					}
-					spawnSprite(element);
 				}
 				break;
 
@@ -314,26 +312,25 @@ public class SpriteManagement extends SpriteStore {
 				element.setX(x);
 				element.setY(y);
 				element.setZ(8.0f);
-				spawnSprite(element);
 				break;
 
 			case BREAKING_ROCK :
 				Angle temp = Angle.NORDOUEST;
 				for (j = 0; j < 4; j++) {
-					element = new Element();
+					Element e = new Element();
 					Point move = temp.coords;
-					element.setX(x);
-					element.setY(y);
-					element.setZ(4);
-					element.setVx(0.5f * move.x + (float) Math.random() * 0.2f);
-					element.setVy(0.5f * move.y + (float) Math.random() * 0.2f);
-					element.setVz(1f);
-					element.setAz(-0.08f);
-					element.setFx(0.04f);
-					element.setFy(0.04f);
-					element.setNSpr(ElementDescription.TINY_ROCK1.ordinal()
+					e.setX(x);
+					e.setY(y);
+					e.setZ(4);
+					e.setVx(0.5f * move.x + (float) Math.random() * 0.2f);
+					e.setVy(0.5f * move.y + (float) Math.random() * 0.2f);
+					e.setVz(1f);
+					e.setAz(-0.08f);
+					e.setFx(0.04f);
+					e.setFy(0.04f);
+					e.setNSpr(ElementDescription.TINY_ROCK1.ordinal()
 							+ (j % 2));
-					spawnSprite(element);
+					spawnSprite(e);
 
 					temp = Angle.rotate(temp, 1);
 				}
@@ -351,29 +348,23 @@ public class SpriteManagement extends SpriteStore {
 				element.fy = 0.005f;
 				element.fz = 0.02f;
 				element.setDesc(desc);
-				spawnSprite(element);
 				break;
 			case STAR_CIRCLE:
 				element = new ElementStars(StarKind.CIRCLE, x, y);
-				spawnSprite(element);
 				break;
 			case STAR_SHINE:
 				element = new ElementImpact(x, y, ImpactKind.STAR_YELLOW, null);
 				element.setForeground(true);
-				spawnSprite(element);
 				break;
 			case STAR_TRAIL:
 				element = new ElementStars(StarKind.TRAIL, x, y);
-				spawnSprite(element);
 				break;
 			case CLOUD_FOG:
 				element = new ElementClouds(x, y);
-				spawnSprite(element);
 				EngineZildo.soundManagement.broadcastSound(BankSound.CannonBall, element);
 				break;
 			case HEARTS:
 				element = new ElementHearts(x, y);
-				spawnSprite(element);
 				break;
 			case ROCKBALL:
 				element = new ElementThrown(Angle.EST, x, y, 15, 2.9f, null) {
@@ -388,37 +379,34 @@ public class SpriteManagement extends SpriteStore {
 				//element.fx = 0.01f;
 				element.setDesc(ElementDescription.ROCK_BALL);
 				element.setForeground(true);
-				spawnSprite(element);
 				break;
 			case STAFF_POUM:
 			    	element = new ElementStaffs(x, y);
-			    	spawnSprite(element);
 				break;
 			case BIG_FIREBALL:
 				element = new ElementFireballs(x, y, Angle.fromInt(misc));
-				spawnSprite(element);
 				break;
 			case LAVA_DROP:
 				element = new ElementImpact(x, y, ImpactKind.LAVA_DROP, null);
-				spawnSprite(element);
 				break;
 			case DUST:
 				element = new ElementImpact(x, y, ImpactKind.DUST, null);
-				spawnSprite(element);
 				break;
 			case POISONCLOUD:
 				element = new ElementPoison(x, y, miscPerso);
-				spawnSprite(element);
 				break;
 			case WATER_SPLASH:
 				element = new ElementImpact(x, y, ImpactKind.WATER_SPLASH, null);
-				spawnSprite(element);
 				break;
 			case SEWER_SMOKE:
 				element = new ElementSewerSmoke(x, y, Angle.fromInt(misc));
-				spawnSprite(element);
 				break;
 		}
+		if (element != null) {
+			element.floor = floor;
+			spawnSprite(element);
+		}
+		
 		return element;
 	}
 

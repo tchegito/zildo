@@ -52,7 +52,7 @@ public class ElementSmoke extends Element {
 		} else if (z > 48 && nSpr == 5 && !vanishing) {
 			if (isInsideView()) {
 				EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, 
-						startX, startY, 0, null,	null);
+						startX, startY, floor, 0,	null, null);
 				vanishing = true; // Sprite is vanishing (with alpha channel)
 			}
 		} else if (z > 18) {

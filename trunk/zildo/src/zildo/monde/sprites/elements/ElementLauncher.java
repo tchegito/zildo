@@ -79,7 +79,7 @@ public class ElementLauncher extends Element {
 	private void fire() {
 		int xx = (int) x + 4;
 		int yy = (int) y + 12;
-		EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.ROCKBALL, xx, yy, 0, null, null);
+		EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.ROCKBALL, xx, yy, floor, 0, null, null);
 		count = 30;
 	}
 }

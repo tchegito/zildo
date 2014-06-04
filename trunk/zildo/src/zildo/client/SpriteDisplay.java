@@ -186,7 +186,7 @@ public class SpriteDisplay extends SpriteStore {
 		Identified.resetCounter(SpriteEntity.class);
 	}
 	
-	public int[][] getBankOrder() {
+	public int[][][] getBankOrder() {
 		return spriteSorter.getBankOrder();
 	}
 

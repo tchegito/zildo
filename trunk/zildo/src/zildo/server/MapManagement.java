@@ -682,6 +682,9 @@ public class MapManagement {
 					zildo.setMouvement(MouvementZildo.VIDE);
 					zildo.setEn_bras(null); // Loose his object
 				}
+				// Floor
+				zildo.setFloor(chPointTarget.getFloor());
+				
 				zildo.walkTile(false);
 			}
 			zildo.finaliseComportement(EngineZildo.compteur_animation);
