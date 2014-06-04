@@ -31,6 +31,7 @@ import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
 import zildo.monde.map.accessor.AreaAccessor;
 import zildo.monde.map.accessor.OneFloorAreaAccessor;
+import zildo.monde.map.accessor.AreaAccessor.AccessedCase;
 import zildo.monde.util.Point;
 import zildo.resource.Constantes;
 
@@ -180,7 +181,7 @@ public abstract class TileEngine {
 		return motifBanks.get(n);
 	}
 
-	public abstract void render(boolean backGround);
+	public abstract void render(int floor, boolean backGround);
 
 	// Prepare vertices and indices for drawing tiles
 	public void prepareTiles() {
@@ -254,7 +255,10 @@ public abstract class TileEngine {
 						int n_motif = 0, n_animated_motif;
 						// Get corresponding case on the map
 
-						Case mapCase = areaAccessor.get_mapcase((x+dx) % dx, (y+dy) % dy);
+						AccessedCase accCase = areaAccessor.get_mapcase((x+dx) % dx, (y+dy) % dy);
+						Case mapCase = accCase.c;
+						int floor = accCase.floor;
+						
 						if (mapCase != null) {
 							boolean changed = mapCase.isModified();
 							Tile back = mapCase.getBackTile();
@@ -265,21 +269,19 @@ public abstract class TileEngine {
 								n_motif = n_animated_motif;
 								back.renderedIndex = n_motif;
 							}
-							meshBACK.updateTile(back, x, y, n_motif, changed);
+							meshBACK.updateTile(back, x, y, floor, n_motif, changed);
 							
 							Tile back2 = mapCase.getBackTile2();
 							if (back2 != null) {
-								meshBACK2.updateTile(back2,
-										x, y, back2.index, changed);
+								meshBACK2.updateTile(back2, x, y, floor, back2.index, changed);
 							} else if (mapCase.isBack2Removed()) {
-								meshBACK2.removeTile(mapCase.getBack2Removed(), x, y);
+								meshBACK2.removeTile(mapCase.getBack2Removed(), x, y, floor);
 								mapCase.clearBack2Removed();
 							}
 							
 							Tile fore = mapCase.getForeTile();
 							if (fore != null) {
-								meshFORE.updateTile(fore,
-													x, y, fore.index, changed);
+								meshFORE.updateTile(fore, x, y, floor, fore.index, changed);
 
 							}
 							mapCase.setModified(false);

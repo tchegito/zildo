@@ -83,7 +83,7 @@ public class AndroidTileEngine extends TileEngine {
 	private TextureBinder texBinder = new TextureBinder();
 	
 	@Override
-	public void render(boolean backGround) {
+	public void render(int floor, boolean backGround) {
 
 		if (initialized) {
 			Vector3f ambient = ClientEngineZildo.ortho.getAmbientColor();
@@ -98,8 +98,8 @@ public class AndroidTileEngine extends TileEngine {
 				// Display BACKGROUND
 				GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 				GLES20.glEnable(GLES20.GL_BLEND);
-				meshBACK.render(texBinder);
-				meshBACK2.render(texBinder);
+				meshBACK.render(floor, texBinder);
+				meshBACK2.render(floor, texBinder);
 
 				GLES20.glDisable(GLES20.GL_BLEND);
 			}
@@ -108,7 +108,7 @@ public class AndroidTileEngine extends TileEngine {
 				GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 				GLES20.glEnable(GLES20.GL_BLEND);
 
-				meshFORE.render(texBinder);
+				meshFORE.render(floor, texBinder);
 
 				GLES20.glDisable(GLES20.GL_BLEND);
 			}
