@@ -53,6 +53,7 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Zone;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
 public abstract class Perso extends Element {
@@ -625,10 +626,10 @@ public abstract class Perso extends Element {
 		} else if (transitionCrossed) {
 			// Try to change perso's floor
 			if (floor < area.getHighestFloor() && area.readmap(cx, cy, false, floor+1) != null) {
-				floor++;
+				setFloor(floor+1);
 			} else if (floor>0) {
 				if (area.readmap(cx, cy, false, floor) == null) {
-					floor--;
+					setFloor(floor-1);
 				}
 			}
 			//System.out.println(floor);
@@ -980,7 +981,8 @@ public abstract class Perso extends Element {
 
 	public void landOnGround() {
 		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
-		if (floor > 0) {
+		if (floor > 0 &&	// Check if a lower floor exists
+			EngineZildo.mapManagement.getCurrentMap().readmap((int) x / 16, (int) y / 16, false, floor-1) != null ) {
 			floor--;
 		}
 	}
@@ -1101,5 +1103,21 @@ public abstract class Perso extends Element {
 	public Pointf getDelta() {
 		return new Pointf(deltaMoveX, deltaMoveY);
 	}
+	
+	@Override
+	public void setFloor(int p_floor) {
+		super.setFloor(p_floor);
+		// Set every entities linked to this perso at the same floor
+		for (SpriteEntity entity : persoSprites) {
+			entity.setFloor(p_floor);
+		}
+	}
 
+	@Override
+	public int getFloorForSort() {
+		// When a character is on a transition (=ladder) he should be drawn OVER the tiles,
+		// especially to appear ON the tile at (x,y-1). Without that, he appears UNDER the tile.
+		int visibleFloor = floor + (transitionCrossed ? 1 : 0);
+		return Math.min(Constantes.TILEENGINE_FLOOR-1, visibleFloor);
+	}
 }

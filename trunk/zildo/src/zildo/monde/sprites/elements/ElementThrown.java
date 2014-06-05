@@ -52,6 +52,7 @@ public abstract class ElementThrown extends Element {
         
         if (p_shooter != null) {
         	relativeZ=EngineZildo.mapManagement.getCurrentMap().readAltitude((int) p_shooter.x/16, (int) p_shooter.y/16);
+            floor = p_shooter.getFloor();
         } else {
         	relativeZ = p_startZ;
         }

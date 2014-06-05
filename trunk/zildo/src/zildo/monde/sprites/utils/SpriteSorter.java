@@ -190,7 +190,7 @@ public class SpriteSorter {
 						SpriteEntity entity=tab_tri[i][position];
 						if (entity == null)
 							break;
-						if (entity.getFloor() == floor && (
+						if (entity.getFloorForSort() == floor && (
 								(!entity.isForeground() && phase==0) ||
 								( entity.isForeground() && phase==1) ) ) {
 							// We got an entity : store it into return array

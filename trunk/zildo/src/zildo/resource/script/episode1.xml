@@ -514,10 +514,10 @@
 		    <remove who="maltus"/>
 		    <script who="sofiasky" value="0"/>
 		</condition>
-		<condition name="promenade" exp="!fini_voleur">
+		<condition name="promenade" exp="!zildoDream">
 			<filter type="2"/>
 		</condition>
-		<condition name="promenade2" exp="!fini_voleur">
+		<condition name="promenade2" exp="!zildoDream">
 			<filter type="2"/>
 		</condition>
 		<condition name="polakyg" exp="tonneau_polakyg">

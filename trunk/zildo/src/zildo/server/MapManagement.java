@@ -353,7 +353,7 @@ public class MapManagement {
 					return false;
 				}
 			}
-			return false; //true;
+			return true;
 		}
 		
 		// 3) Collision with sprites

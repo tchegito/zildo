@@ -191,7 +191,7 @@ public class ClientEngineZildo {
 			lowestFloor = maps[0].getLowestFloor();
 			highestFloor = maps[0].getHighestFloor();
 		}
-		for (int floor = lowestFloor ; floor <= highestFloor; floor++) {
+		for (int floor = lowestFloor ; floor <= 2+0*highestFloor; floor++) {
 			boolean lastTurn = floor == highestFloor;
 			
 			// Display BACKGROUND tiles

@@ -513,6 +513,11 @@ public class SpriteEntity extends Identified implements Cloneable,
 		return floor;
 	}
 	
+	// Tricky methods, just for sprite sorting purpose (see Perso#getFloorForSort)
+	public int getFloorForSort() {
+		return floor;
+	}
+	
 	public void setFloor(int fl) {
 		floor = fl;
 	}

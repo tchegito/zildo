@@ -212,6 +212,7 @@ public class EngineZildo {
 		                	// Zildo is just falling
 		                	EngineZildo.scriptManagement.execute("endFallPit", true);
 							retEvent.nature=ClientEventNature.SCRIPT;
+							retEvent.mapChange=false;
 	                	} else {
 							MapLink linkType=MapLink.REGULAR;
 							if (ch != null) {
