@@ -54,6 +54,7 @@ public class Constantes {
 	public static String CURRENT_VERSION_DISPLAYED = "1.096";	// Dynamic value, initialized at startup
 	
 	// Tile Engine
+	public static final int TILEENGINE_FLOOR = 3;	// Max number of floors
 	public static final int TILEENGINE_WIDTH = 64;		// Max Number of tiles
 														// on a row
 	public static final int TILEENGINE_HEIGHT = 64;		// Max Number of tiles
