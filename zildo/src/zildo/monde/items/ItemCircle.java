@@ -36,6 +36,7 @@ import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
 import zildo.server.state.ClientState;
@@ -101,6 +102,7 @@ public class ItemCircle {
             e.clientSpecific=true;
             e.setSpecialEffect(EngineFX.FOCUSED);
             e.zoom = 0;
+            e.floor = Constantes.TILEENGINE_FLOOR - 1;
             guiSprites.add(e);
 		}
 		display();

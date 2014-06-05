@@ -34,6 +34,9 @@ public class ElementDynamite extends Element {
 	Perso shooter;
 	int counter;
 
+	/**
+	 * New dynamite. NOTE: p_shooter <b>CAN'T</b> be null.
+	 */
 	public ElementDynamite(int p_startX, int p_startY, int p_startZ, Perso p_shooter) {
 		x = p_startX;
 		y = p_startY;
@@ -45,8 +48,8 @@ public class ElementDynamite extends Element {
 		// Add a shadow
 		addShadow(ElementDescription.SHADOW_SMALL);
 
-		shooter = p_shooter;
-
+		floor = p_shooter.getFloor();
+		
 		EngineZildo.soundManagement.broadcastSound(BankSound.PlanteBombe, this);
 	}
 

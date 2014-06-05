@@ -29,6 +29,7 @@ import zildo.fwk.gfx.EngineFX;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
 public class SpriteStore {
@@ -107,7 +108,8 @@ public class SpriteStore {
 		entity.setNSpr(nSpr);
 		entity.setNBank(nBank);
 		entity.setForeground(true);	// Fonts are in front of the scene
-	
+		entity.setFloor(Constantes.TILEENGINE_FLOOR - 1);
+
 		entity.setEntityType(EntityType.FONT);
 	
 		entity.setVisible(visible);

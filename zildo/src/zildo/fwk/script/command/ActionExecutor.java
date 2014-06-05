@@ -76,6 +76,7 @@ import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
 /**
@@ -565,7 +566,14 @@ public class ActionExecutor {
             			if (p_action.alpha != -1) {
             				perso.setAlpha(p_action.alpha);
             			}
-            			perso.setFloor(perso.getFloor() + p_action.deltaFloor);
+            			if (p_action.deltaFloor != 0) {
+            				int newFloor = perso.getFloor() + p_action.deltaFloor;
+            				// Try to reach higher/lower floor if exists
+            				if (newFloor >= 0 && newFloor < Constantes.TILEENGINE_FLOOR &&
+            					EngineZildo.mapManagement.getCurrentMap().readmap((int) perso.getX() / 16, (int) perso.getY() / 16, false, newFloor) != null ) {
+            					perso.setFloor(newFloor);
+            				}
+            			}
                 	}
                 	achieved = true;
                 	break;
@@ -697,6 +705,7 @@ public class ActionExecutor {
 	    		Perso perso = (Perso) elem;
 	    		perso.setSpeed(p_action.speed);
 	    		perso.setEffect(p_action.effect);
+	    		perso.setFloor(p_action.floor);
 	    		perso.initPersoFX();
 	        	if (p_action.weapon != null) {
 	        		//TODO: not very clever ! setActiveWeapon and setWeapon should merge. So as
@@ -722,6 +731,7 @@ public class ActionExecutor {
         			elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0, rev, rot);
         			entity = elem;
         		}
+        		entity.setFloor(p_action.floor);
         		entity.rotation = rot;
         		entity.setName(p_action.what);
         		if (p_action.effect != null) {

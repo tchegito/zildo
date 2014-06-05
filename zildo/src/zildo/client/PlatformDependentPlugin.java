@@ -67,7 +67,7 @@ public class PlatformDependentPlugin {
     
     private FileUtil fileUtil = new ClassicFileUtil();
     
-    public Map<Class<ScreenFilter>, ScreenFilter> filters;
+    public Map<Class<? extends ScreenFilter>, ScreenFilter> filters;
     
     public enum KnownPlugin { Lwjgl, Android };
    
@@ -76,7 +76,7 @@ public class PlatformDependentPlugin {
     final static String PLATFORM_PACKAGE = "zildo.platform.";
     
 	public PlatformDependentPlugin() {
-        filters = new HashMap<Class<ScreenFilter>, ScreenFilter>();
+        filters = new HashMap<Class<? extends ScreenFilter>, ScreenFilter>();
 
     }
     

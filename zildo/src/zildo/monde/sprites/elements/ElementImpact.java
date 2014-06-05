@@ -116,6 +116,9 @@ public class ElementImpact extends Element {
 		}
 		addSpr=0;
         setLinkedPerso(p_shooter);
+        if (p_shooter != null) {
+        	floor = p_shooter.getFloor();
+        }
 		// Stock the initial location
 		startX=p_startX;
 		startY=p_startY;
