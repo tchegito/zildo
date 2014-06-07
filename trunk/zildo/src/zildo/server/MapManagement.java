@@ -70,6 +70,7 @@ public class MapManagement {
 	// Keep the location/angle Zildo had when entering on this map
 	Angle startAngle;
 	Point startLocation;
+	int startFloor;
 	
 	public MapManagement() {
 		tileCollision = TileCollision.getInstance();
@@ -245,13 +246,11 @@ public class MapManagement {
 		//if (true) return false;
 		// Is it a ghost ?
 		boolean ghost = false;
-		int floor = 0;
 		Perso p = quelElement != null && quelElement.getEntityType().isPerso() ? (Perso) quelElement : null;
 		if (p != null) {
 			if (p.isUnstoppable()) {
 				return false;
 			}
-			floor = p.getFloor();
 			ghost = p.isGhost();
 		}
 		
@@ -691,9 +690,10 @@ public class MapManagement {
 
 			// Save starting location
 			startAngle = zildo.getAngle();
-			setStartLocation(new Point(zildo.x, zildo.y));
+			startLocation = new Point(zildo.x, zildo.y);
+			startFloor = zildo.getFloor();
 			if (zildo.getTarget() != null) {
-				setStartLocation(zildo.getTarget());
+				startLocation = zildo.getTarget();
 			}
 			// If hero is along a border, the game will be backed up when scroll will be over
 			if (!isAlongBorder && EngineZildo.scriptManagement.isAllowedToSave()) {
@@ -887,6 +887,7 @@ public class MapManagement {
 		if (relocate) {
 			zildo.setX(startLocation.x);
 			zildo.setY(startLocation.y);
+			zildo.setFloor(startFloor);
 			zildo.setAngle(startAngle);
 			zildo.beingWounded(null, damage);
 			zildo.stopBeingWounded();
@@ -937,12 +938,10 @@ public class MapManagement {
 		}
 	}
 
-	public void setStartLocation(Point loc) {
+	public void setStartLocation(Point loc, Angle a, int floor) {
 		startLocation = new Point(loc);
-	}
-	
-	public void setStartAngle(Angle a) {
 		startAngle = a;
+		startFloor = floor;
 	}
 	
 	public Point getStartLocation() {
