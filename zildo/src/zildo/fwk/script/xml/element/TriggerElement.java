@@ -233,7 +233,7 @@ public class TriggerElement extends AnyElement {
 	}
 
 	public boolean isLocationSpecific() {
-		return kind == QuestEvent.LOCATION && name != null && (location != null || tileLocation != null || tileValue != -1);
+		return kind == QuestEvent.LOCATION && name != null && (location != null || mover != null || tileLocation != null || tileValue != -1);
 	}
 
 	/**

@@ -589,7 +589,7 @@ public abstract class Perso extends Element {
 				}
 
 				return true;
-			} else if (onPlatform) {
+			} else if (onPlatform && entity.getMover().isOnIt(this)) {
 				entity.getMover().unlinkEntity(this);
 				onPlatform = false;
 			}
