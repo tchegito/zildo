@@ -27,6 +27,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BlendFilter;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.util.Vector3f;
 import zildo.platform.opengl.AndroidOrtho;
 import zildo.platform.opengl.AndroidPixelShaders;
 
@@ -67,7 +68,8 @@ public class AndroidBlendFilter extends BlendFilter {
 
 		graphicStuff.fbo.endRendering();
 		
-		shaders.setColor(1f, 1f, 1f, 1f);
+		Vector3f col = ClientEngineZildo.ortho.getFilteredColor();
+		shaders.setColor(col);
 		
 		// Draw squares
 		// Select right texture

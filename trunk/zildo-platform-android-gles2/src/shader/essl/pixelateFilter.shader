@@ -15,6 +15,7 @@ void main(){
 precision mediump float;
 uniform sampler2D sTexture;
 uniform float squareSize;
+uniform vec4 CurColor;		// Current color
 
 varying mediump vec2 vTexCoord;
 
@@ -23,5 +24,5 @@ void main(){
 	float dy = floor(vTexCoord.y * 256.0 / (squareSize*2.0));
 	float tx = dx * squareSize / 256.0;
 	float ty = (dy * squareSize * 2.0) / 256.0;
-	gl_FragColor = texture2D(sTexture, vec2(tx, ty) );
+	gl_FragColor = texture2D(sTexture, vec2(tx, ty) ) * CurColor;
 }
