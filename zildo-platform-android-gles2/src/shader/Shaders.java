@@ -177,6 +177,7 @@ public class Shaders {
 		switch (current) {
 			case pixelateFilter:
 				GLES20.glUniform1f(current.getUniform("squareSize"), squareSize);
+				uniform4f(current.getUniform("CurColor"), curColor);
 				break;
 			case circleFilter:
 				GLES20.glUniform1i(current.getUniform("radius"), radius);
@@ -240,10 +241,6 @@ public class Shaders {
 	
 	public void setColor(float r, float g, float b, float a) {
 		curColor.set(r, g, b, a);
-	}
-	
-	public Vector4f getColor() {
-		return curColor;
 	}
 
 	public void setTranslation(Vector2f translate) {
