@@ -57,7 +57,7 @@ public enum DamageType {
 		case HARMLESS:
 			return 0;
 		case PEEBLE:
-			return Hasard.rangeInt(0, 1);
+			return Math.max(0, Hasard.rangeInt(-1, 1));
 		default:
 			return 1;
 		}
