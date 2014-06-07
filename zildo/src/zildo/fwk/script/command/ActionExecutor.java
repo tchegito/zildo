@@ -569,9 +569,18 @@ public class ActionExecutor {
             			if (p_action.deltaFloor != 0) {
             				int newFloor = perso.getFloor() + p_action.deltaFloor;
             				// Try to reach higher/lower floor if exists
-            				if (newFloor >= 0 && newFloor < Constantes.TILEENGINE_FLOOR &&
-            					EngineZildo.mapManagement.getCurrentMap().readmap((int) perso.getX() / 16, (int) perso.getY() / 16, false, newFloor) != null ) {
-            					perso.setFloor(newFloor);
+            				if (newFloor >= 0 && newFloor < Constantes.TILEENGINE_FLOOR) {
+            					// Upper : just check if there's an upper floor on the map
+            					boolean itsOk = false;
+            					if (p_action.deltaFloor > 0 && newFloor <= EngineZildo.mapManagement.getCurrentMap().getHighestFloor()) {
+            						itsOk = true;
+            					} else if (p_action.deltaFloor < 0 && EngineZildo.mapManagement.getCurrentMap().readmap((int) perso.getX() / 16, (int) perso.getY() / 16, false, newFloor) != null ) {
+            						// Lower : we check if there's really a tile at lower floor a this place
+            						itsOk = true;
+            					}
+            					if (itsOk) {
+            						perso.setFloor(newFloor);
+            					}
             				}
             			}
                 	}
