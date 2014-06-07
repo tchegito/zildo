@@ -151,6 +151,9 @@ public class Game implements EasySerializable {
         	p_buffer.put(entry.getValue());
         }
         
+        // 8: floor
+        p_buffer.put((byte) zildo.getFloor());
+        
         // Backup quest state to restore if hero dies
         EngineZildo.setBackedUpGame(p_buffer);
 	}
@@ -174,6 +177,9 @@ public class Game implements EasySerializable {
                     EngineZildo.scriptManagement.accomplishQuest(questName, false);
                 }
             }
+            //EngineZildo.scriptManagement.accomplishQuest("igor_promise_sword", false);
+            //EngineZildo.scriptManagement.accomplishQuest("freedIgor", false);
+            //EngineZildo.scriptManagement.resetQuest("meetLib1");
    
             //EngineZildo.scriptManagement.accomplishQuest("attaque_voleurs", false);
             //EngineZildo.scriptManagement.accomplishQuest("start_visit1", false);
@@ -202,6 +208,8 @@ public class Game implements EasySerializable {
                 indexSel = p_buffer.readByte();
             }
            
+            //zildo.setCountBomb(10);
+            
             Game game = new Game(null, heroName);
            
             // 3: Inventory
@@ -217,12 +225,16 @@ public class Game implements EasySerializable {
                     zildo.setWeapon(item);
                 }
             }
+            //items.add(new Item(ItemKind.DYNAMITE));
+            //items.add(new Item(ItemKind.FIRE_RING, 5000));
+           //zildo.setCountBomb(15);
            
             // 4: map (since 1.096)
             game.mapName = p_buffer.readString();
             Point loc = new Point(p_buffer.readInt(), p_buffer.readInt());
             zildo.setX(loc.x);
             zildo.setY(loc.y);
+            zildo.setFloor(1);
             // Backup quest state to restore if hero dies
             EngineZildo.setBackedUpGame(p_buffer);
 			
@@ -237,8 +249,6 @@ public class Game implements EasySerializable {
             	loc = new Point(p_buffer.readInt(), p_buffer.readInt());
             	a = Angle.fromInt(p_buffer.readByte());
             }
-            EngineZildo.mapManagement.setStartLocation(loc);
-            EngineZildo.mapManagement.setStartAngle(a);
             
             // 7: variables
             while (!p_buffer.eof()) {
@@ -246,6 +256,12 @@ public class Game implements EasySerializable {
             	String value = p_buffer.readString();
             	EngineZildo.scriptManagement.getVariables().put(key, value);
             }
+            
+            // 8: floor (added at 2.09)
+            if (!p_buffer.eof()) {
+            	zildo.setFloor(p_buffer.readByte());
+            }
+            EngineZildo.mapManagement.setStartLocation(loc, a, zildo.getFloor());
             return game;
         } catch (Exception e) {
             return null;
