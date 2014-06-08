@@ -226,9 +226,9 @@ public class Game implements EasySerializable {
                     zildo.setWeapon(item);
                 }
             }
-            items.add(new Item(ItemKind.DYNAMITE));
+            //items.add(new Item(ItemKind.DYNAMITE));
             //items.add(new Item(ItemKind.FIRE_RING, 5000));
-           zildo.setCountBomb(15);
+           //zildo.setCountBomb(15);
            
             // 4: map (since 1.096)
             game.mapName = p_buffer.readString();
