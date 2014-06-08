@@ -11,6 +11,7 @@ import zildo.monde.map.Tile;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.util.Point;
+import zildo.resource.Constantes;
 
 /**
  * Cette classe représente une sélection du TileSet. Elle est composée de :
@@ -145,9 +146,9 @@ public class TileSelection extends CaseSelection {
 		for (int h = 0; h < height; h++) {
 			for (int w = 0; w < width; w++) {
 				Case item = items.get(h * width + w);
+				dx = p.x + w;
+				dy = p.y + h;
 				if (item != null) {
-					dx = p.x + w;
-					dy = p.y + h;
 					if (map.getDim_x() > dx && map.getDim_y() > dy && dy >= 0
 							&& dx >= 0) {
 						// We know that this is a valid location
@@ -160,6 +161,8 @@ public class TileSelection extends CaseSelection {
 						// Calls the drawer to do the job
 						drawer.draw(c, item, p_mask);
 					}
+				} else {
+					map.set_mapcase(dx, dy, null);
 				}
 			}
 		}
@@ -294,7 +297,7 @@ public class TileSelection extends CaseSelection {
 		int px = p.x / 16;
 		int py = p.y / 16;
 		Case c = map.get_mapcase(px, py);
-		if (c != null) {
+		if (c != null && (map.floor+1) < Constantes.TILEENGINE_FLOOR) {
 			Case existingUpperCase = map.area.get_mapcase(px, py, (byte) (map.floor + 1));
 			if (existingUpperCase == null) {
 				map.area.set_mapcase(px, py, (byte) (map.floor + 1), c);
