@@ -118,6 +118,10 @@ public class Tile implements Cloneable {
 		}
 	}
 	
+	public static boolean isBottomLess(int value) {
+		return (value == 256 * 3 + 217 || value == 41 + 256 * 9);
+	}
+		
 	public static boolean isWater(int value) {
 		return (value>=108 && value<=138) || (value>=208 && value<=222) || 
 		(value>=224 && value<=228) || (value>=230 && value<=245) || (value>=247 && value<=253);

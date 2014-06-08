@@ -47,6 +47,12 @@ public class TilePattern {
 			new TilePart(0, 1, 218 + 256*5, TileLevel.BACK),
 			new TilePart(1, 1, 219 + 256*5, TileLevel.BACK));
 	
+	public static TilePattern explodedHouseWall = new TilePattern(
+			new TilePart(0, 0, 256*2),
+			new TilePart(1, 0, 256*2),
+			new TilePart(0, 0, 225 + 256*5, TileLevel.BACK2),
+			new TilePart(1, 0, 226 + 256 *5, TileLevel.BACK2));
+	
 	TilePart[] parts;
 	int width, height;
 	

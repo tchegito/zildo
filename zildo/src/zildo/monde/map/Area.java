@@ -277,7 +277,7 @@ public class Area implements EasySerializable {
 		
 		// 1: bottom less (we have to read the BACK tile
 		int val = temp.getBackTile().getValue();
-		if (val == 256 * 3 + 217) {
+		if (Tile.isBottomLess(val)) {
 			return TileNature.BOTTOMLESS;
 		}
 		
@@ -304,7 +304,7 @@ public class Area implements EasySerializable {
 			return false;
 		}
 		int val = temp.getBackTile().getValue();
-		if (val == 256 * 3 + 217) {
+		if (Tile.isBottomLess(val)) {
 			return true;
 		}
 		return false;
@@ -558,6 +558,9 @@ public class Area implements EasySerializable {
 			case 150+256*3:	// (west)
 			case 146+256*3:	// (east)
 				TilePattern.explodedCave.apply(tileLoc.x, tileLoc.y, this, rotated);
+				break;
+			case 285:
+				TilePattern.explodedHouseWall.apply(tileLoc.x, tileLoc.y, this, rotated);
 				break;
 			}
 			// Play secret sound
