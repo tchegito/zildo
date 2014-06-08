@@ -23,6 +23,7 @@ package zildo.monde;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.BufferUnderflowException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
@@ -225,9 +226,9 @@ public class Game implements EasySerializable {
                     zildo.setWeapon(item);
                 }
             }
-            //items.add(new Item(ItemKind.DYNAMITE));
+            items.add(new Item(ItemKind.DYNAMITE));
             //items.add(new Item(ItemKind.FIRE_RING, 5000));
-           //zildo.setCountBomb(15);
+           zildo.setCountBomb(15);
            
             // 4: map (since 1.096)
             game.mapName = p_buffer.readString();
@@ -251,10 +252,19 @@ public class Game implements EasySerializable {
             }
             
             // 7: variables
-            while (!p_buffer.eof()) {
-            	String key = p_buffer.readString();
-            	String value = p_buffer.readString();
-            	EngineZildo.scriptManagement.getVariables().put(key, value);
+            int savePos = 0;
+            try {
+	            while (!p_buffer.eof()) {
+	                savePos = p_buffer.getAll().position();
+	            	String key = p_buffer.readString();
+	            	String value = p_buffer.readString();
+	            	EngineZildo.scriptManagement.getVariables().put(key, value);
+	            }
+            } catch (BufferUnderflowException e) {
+            	// Yeah ! This is ugly, but we got to keep previous savegames, before floor was present
+            	// in the game. So if the 'floor' is misinterpreted as a variable, so we get back and read it
+            	// at what it is : a floor.
+            	p_buffer.getAll().position(savePos);
             }
             
             // 8: floor (added at 2.09)
