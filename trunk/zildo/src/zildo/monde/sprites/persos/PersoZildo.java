@@ -931,11 +931,12 @@ public class PersoZildo extends Perso {
 	 *            >0 ==> Zildo gets some money
 	 * @return boolean : TRUE=element should disappear / FALSE=element stays
 	 */
-	public boolean pickGoodies(Element p_element, int p_money) {
+	public boolean pickGoodies(Element p_element, int p_value) {
 		// Effect on perso
-		if (p_money != 0) { // Zildo gets some money
-			setMoney(money + p_money);
-			if (p_money > 0) {
+		if (p_value != 0 && (p_element == null || p_element.getDesc() == ElementDescription.GOLDPURSE1)) { 
+			// Zildo gets/looses some money
+			setMoney(money + p_value);
+			if (p_value > 0) {
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupItem, this);
 			} else {
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoGagneArgent, this);
@@ -950,13 +951,17 @@ public class PersoZildo extends Perso {
 				// Automatic behavior (presentation text, ammos adjustments)
 				EngineZildo.scriptManagement.automaticBehavior(this, null, d);
 
-				useItem(d);
+				useItem(d, p_value);
 			}
 		}
 		return true;
 	}
 
-	private void useItem(ElementDescription d) {
+	/** Use an item : either use it when player press the right button, or when he picks it up.
+	 * NOTE: p_value can provide some special values, from element's name. Like a precise number of
+	 * dynamite, arrows ... 
+	 */
+	private void useItem(ElementDescription d, int p_value) {
 		BankSound toPlay = null;
 		switch (d) {
 		case GOLDCOIN1:
@@ -992,7 +997,7 @@ public class PersoZildo extends Perso {
 			countBomb ++;
 			break;
 		case BOMBS3:
-			countBomb += 3;
+			countBomb += p_value == 0 ? 3 : p_value;
 			break;
 		case KEY:
 			countKey++;
@@ -1162,7 +1167,7 @@ public class PersoZildo extends Perso {
 			// Be sure that description is instance of ElementDescription, but more for runtime reason
 			// In fact, that must never happen.
 			if (d instanceof ElementDescription) {
-				useItem((ElementDescription) d);
+				useItem((ElementDescription) d, 0);
 			}
 			guiCircle.decrementSelected();
 			EngineZildo.scriptManagement.sellItem(storeDescription, item);

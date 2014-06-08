@@ -386,9 +386,11 @@ public class MapManagement {
 		
 		int floor = 0;
 		Perso perso = null;
+		boolean allowOverBottomLess = false;	// Allow people to go on bottom less case ? (lava, void)
 		if (quelElement != null && quelElement.getEntityType() == EntityType.PERSO) {
 			perso = (Perso) quelElement;
 			floor = perso.getFloor();
+			allowOverBottomLess = quelElement.flying || quelElement.isZildo();
 		}
 		// Check on back or fore ground, depending on the character we're checking
 		boolean foreground = quelElement != null && quelElement.isForeground();
@@ -415,7 +417,7 @@ public class MapManagement {
 			int scaledX = mx / 16;
 			int scaledY = my / 16;
 			// Don't collide if case is bottom less (example: lava tile)
-			if (currentMap.isCaseBottomLess(scaledX, scaledY)) {
+			if (currentMap.isCaseBottomLess(scaledX, scaledY) && allowOverBottomLess) {
 				continue;
 			}
 			Case mapCase = currentMap.get_mapcase(scaledX, scaledY, floor);
