@@ -591,7 +591,6 @@ public class ActionExecutor {
             		nextStep = (int) ((TimerElement)p_action).each.evaluate(context);
                 	break;
                 case lookFor: // Look for a character around another inside a given radius
-                	System.out.println("lookfor");
                 	LookforElement lookFor = (LookforElement) p_action;
                 	Perso found = EngineZildo.persoManagement.lookFor(perso, lookFor.radius, p_action.info);
                 	if (found != null ^ lookFor.negative) {	// XOR !
