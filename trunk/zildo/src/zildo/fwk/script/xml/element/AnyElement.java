@@ -38,7 +38,8 @@ public abstract class AnyElement {
 		quest(QuestElement.class),
 		mapscript(MapscriptElement.class),
 		condition(ConditionElement.class),
-		persoaction(PersoActionElement.class),
+		persoaction(ContextualActionElement.class),
+		tileaction(ContextualActionElement.class),
 		timer(TimerElement.class),
 		lookfor(LookforElement.class),
 		var(VarElement.class);

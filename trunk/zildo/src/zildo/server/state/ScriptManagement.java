@@ -29,14 +29,15 @@ import zildo.Zildo;
 import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.ZUtils;
 import zildo.fwk.script.command.ScriptExecutor;
-import zildo.fwk.script.logic.IEvaluationContext;
-import zildo.fwk.script.logic.SpriteEntityContext;
+import zildo.fwk.script.context.IEvaluationContext;
+import zildo.fwk.script.context.SpriteEntityContext;
+import zildo.fwk.script.context.TileLocationContext;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.AdventureElement;
 import zildo.fwk.script.xml.element.ConditionElement;
+import zildo.fwk.script.xml.element.ContextualActionElement;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.MapscriptElement;
-import zildo.fwk.script.xml.element.PersoActionElement;
 import zildo.fwk.script.xml.element.QuestElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.TriggerElement;
@@ -431,12 +432,18 @@ public class ScriptManagement {
 	}
 	
 	public void runPersoAction(Perso perso, String name) {
-		PersoActionElement action = adventure.getPersoActionNamed(name);
+		ContextualActionElement action = adventure.getPersoActionNamed(name);
 		if (action != null) {
 			SpriteEntityContext context = new SpriteEntityContext(perso);
 			execute(action.actions, true, null, false, context, false);
 			perso.setAttente(action.duration);
 		}
+	}
+	
+	public void runTileAction(Point loc, String name) {
+		ContextualActionElement action = adventure.getTileActionNamed(name);
+		TileLocationContext context = new TileLocationContext(loc);
+		execute(action.actions, true, null, false, context, false);
 	}
 	
 	public void stopPersoAction(Perso perso) {

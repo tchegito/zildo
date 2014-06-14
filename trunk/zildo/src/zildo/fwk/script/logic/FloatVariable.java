@@ -19,6 +19,7 @@
 
 package zildo.fwk.script.logic;
 
+import zildo.fwk.script.context.IEvaluationContext;
 import zildo.monde.Hasard;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;

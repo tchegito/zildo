@@ -37,7 +37,7 @@ import zildo.fwk.script.xml.element.action.ActionElement;
  * @author Tchegito
  *
  */
-public class PersoActionElement extends AnyElement {
+public class ContextualActionElement extends AnyElement {
 
 	public String id;
 	public int intervalle;

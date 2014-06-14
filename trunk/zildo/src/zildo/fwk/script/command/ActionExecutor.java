@@ -37,9 +37,9 @@ import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
+import zildo.fwk.script.context.IEvaluationContext;
+import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.fwk.script.logic.FloatExpression;
-import zildo.fwk.script.logic.IEvaluationContext;
-import zildo.fwk.script.logic.SpriteEntityContext;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
 import zildo.fwk.script.xml.element.action.LookforElement;
@@ -426,6 +426,9 @@ public class ActionExecutor {
                 	if (p_action.fore != -2) {
                 		c.setForeTile(p_action.fore == -1 ? null : new Tile(p_action.fore, c));
                 	}
+                	if (p_action.action != null) {
+                		EngineZildo.scriptManagement.runTileAction(p_action.location.getPoint(), p_action.action);
+                	}
                 	EngineZildo.mapManagement.getCurrentMap().set_mapcase(location.x, location.y, c);
                 	achieved=true;
                 	break;
@@ -726,7 +729,7 @@ public class ActionExecutor {
     		if (EngineZildo.spriteManagement.getNamedElement(p_action.what) == null) {
     			// Spawn only if doesn't exist yet
         		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
-        		Reverse rev = Reverse.fromInt(p_action.reverse);
+        		Reverse rev = Reverse.fromInt(p_action.reverse.evaluateInt());
         		Rotation rot = Rotation.fromInt(p_action.rotation);
         		SpriteEntity entity = null;
         		elem = null;

@@ -17,46 +17,43 @@
  *
  */
 
-package zildo.fwk.script.logic;
+package zildo.fwk.script.context;
 
-import zildo.monde.sprites.SpriteEntity;
-import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Point;
 
 /**
+ * Context around a tile location.<br/>
+ * 
+ * Note that location is in TILE coordinates. So, in order to spawn an entity at the tile location, we HAVE TO multiply by 16
+ * each coordinates.
+ * 
  * @author Tchegito
  *
  */
-public class SpriteEntityContext implements IEvaluationContext {
+public class TileLocationContext implements IEvaluationContext {
 
-	SpriteEntity entity;
-	Perso perso;
+	final Point loc;
 	
-	public SpriteEntityContext(SpriteEntity p_entity) {
-		entity = p_entity;
-		if (entity != null && Perso.class.isAssignableFrom(entity.getClass())){
-			perso = (Perso) entity;
-		}
+	public TileLocationContext(Point p) {
+		loc = new Point(p);
 	}
+	
 	@Override
 	public float getValue(String key) {
 		if (key.length() == 1) {	// Filter length to avoid too much comparisons
 			if ("x".equals(key)) {
-				return entity.x;
+				return loc.x;
 			} else if ("y".equals(key)) {
-				return entity.y;
-			} else if ("z".equals(key)) {
-				return entity.z;
-			}
-		} else {
-			if ("attente".equals(key)) {
-				return perso.getAttente();
+				return loc.y;
 			}
 		}
 		// Don't crash ! But result could be weird
 		return 0;
 	}
-	
-	public SpriteEntity getActor() {
-		return perso;
+
+	@Override
+	public Object getActor() {
+		return null;
 	}
+
 }

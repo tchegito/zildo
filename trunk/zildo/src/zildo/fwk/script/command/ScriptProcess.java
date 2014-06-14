@@ -23,7 +23,7 @@ package zildo.fwk.script.command;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.fwk.script.logic.IEvaluationContext;
+import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.monde.sprites.persos.PersoZildo;

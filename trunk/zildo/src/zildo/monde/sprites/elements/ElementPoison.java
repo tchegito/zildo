@@ -106,7 +106,7 @@ public class ElementPoison extends Element {
 			int alphaF = (int) (200 + 55 * Math.sin(3*beta + add*8));
 			if (bigCloud) {
 				zoomF += 100;
-				alphaF = Math.min(alpha + 50, 255);
+				alphaF = (int) Math.min(alpha + 50, 255);
 			} else {
 				cloud.x += 0.01 * Math.cos(beta + add);
 				cloud.y += 0.02 * Math.sin(beta - add);
