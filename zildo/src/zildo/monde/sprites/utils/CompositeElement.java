@@ -313,7 +313,7 @@ public class CompositeElement {
      * Set the alpha channel for each element.
      * @param p_alpha
      */
-    public void setAlpha(int p_alpha) {
+    public void setAlpha(float p_alpha) {
     	for (Element elmt : composite) {
     		elmt.setAlpha(p_alpha);
     	}

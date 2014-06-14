@@ -19,8 +19,8 @@
 
 package zildo.fwk.script.model.point;
 
-import zildo.fwk.script.logic.IEvaluationContext;
-import zildo.fwk.script.logic.SpriteEntityContext;
+import zildo.fwk.script.context.IEvaluationContext;
+import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.util.Point;
 

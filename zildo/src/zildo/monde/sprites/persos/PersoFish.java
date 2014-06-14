@@ -117,7 +117,7 @@ public class PersoFish extends PersoShadowed {
 	}
 	
     @Override
-	public void fall() {
+	public boolean fall() {
 		flying = false;
 		linkedPerso = null;
 		beingMoved();
@@ -125,5 +125,6 @@ public class PersoFish extends PersoShadowed {
 		if (underWater) {
 			super.fall();
 		}
+		return true;
     }
 }

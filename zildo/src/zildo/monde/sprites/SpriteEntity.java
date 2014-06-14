@@ -84,7 +84,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 
 	private EngineFX specialEffect; // Utilisé pour changer la couleur d'un
 									// garde par exemple
-	protected int alpha = 255; // 0..255 alpha channel
+	protected float alpha = 255; // 0..255 alpha channel (we use float for speed/acceleration calculation)
 	public int zoom = 255;	//0..255 zoom factor : 255=full size
 	
 	public byte repeatX=1, repeatY=1;
@@ -99,10 +99,10 @@ public class SpriteEntity extends Identified implements Cloneable,
 	protected EntityType entityType;
 	
 	public int getAlpha() {
-		return alpha;
+		return (int) alpha;
 	}
 
-	public void setAlpha(int alpha) {
+	public void setAlpha(float alpha) {
 		this.alpha = alpha;
 	}
 	
@@ -275,10 +275,10 @@ public class SpriteEntity extends Identified implements Cloneable,
 	}
 
 	/**
-	 * Appelée lorsqu'on supprime cette entité
+	 * Called when this entity fall on the ground (any: lava, earth, water...)
 	 */
-	public void fall() {
-
+	public boolean fall() {
+		return true;
 	}
 
 	/**

@@ -68,7 +68,7 @@ public class ActionElement extends LanguageElement {
 	public String text;
 	public String way; // For 'launch' action
 	public int val;
-	public int reverse;
+	public ZSSwitch reverse;
 	public int rotation;
 	public int attente;
 	public int floor;
@@ -123,7 +123,12 @@ public class ActionElement extends LanguageElement {
 			way = readAttribute("way");
 		case spawn:
 			delta = isTrue("delta");
-			reverse = readInt("reverse");
+			String strReverse = readAttribute("reverse");
+			if (strReverse == null) {
+				reverse = new ZSSwitch(-1);
+			} else {
+				reverse = ZSSwitch.parseForDialog(readAttribute("reverse"));
+			}
 			rotation = readInt("rotation");
 			String temp = readAttribute("z");
 			if (temp != null) {
@@ -217,6 +222,7 @@ public class ActionElement extends LanguageElement {
 			back = (int) evaluateFloat("back", -2);
 			back2 = (int) evaluateFloat("back2", -2);
 			fore = (int) evaluateFloat("fore", -2);
+			action = readAttribute("action"); // Empty string means "no action"
 			break;
 		case remove:
 			text = readAttribute("chaining");

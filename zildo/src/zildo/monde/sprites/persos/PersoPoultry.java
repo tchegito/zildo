@@ -107,9 +107,10 @@ public class PersoPoultry extends PersoShadowed {
     }
     
     @Override
-    public void fall() {
+    public boolean fall() {
 		flying = false;
 		linkedPerso = null;
+		return true;
     }
 
     @Override

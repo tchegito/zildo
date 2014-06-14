@@ -19,7 +19,7 @@
 
 package zildo.fwk.script.command;
 
-import zildo.fwk.script.logic.IEvaluationContext;
+import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.fwk.script.xml.element.logic.VarElement.ValueType;

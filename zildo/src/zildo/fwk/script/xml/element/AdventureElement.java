@@ -31,7 +31,8 @@ public class AdventureElement extends AnyElement {
 	List<SceneElement> scenes;
 	List<QuestElement> quests;
 	List<MapscriptElement> mapScripts;
-	List<PersoActionElement> persoActions;
+	List<ContextualActionElement> persoActions;
+	List<ContextualActionElement> tileActions;
 	
 	@Override
 	@SuppressWarnings("unchecked")
@@ -39,7 +40,8 @@ public class AdventureElement extends AnyElement {
 		scenes = (List<SceneElement>) ScriptReader.parseNodes(p_elem, "scene");
 		quests = (List<QuestElement>) ScriptReader.parseNodes(p_elem, "quest");
 		mapScripts = (List<MapscriptElement>) ScriptReader.parseNodes(p_elem, "mapScript");
-		persoActions = (List<PersoActionElement>) ScriptReader.parseNodes(p_elem, "persoAction"); 
+		persoActions = (List<ContextualActionElement>) ScriptReader.parseNodes(p_elem, "persoAction"); 
+		tileActions = (List<ContextualActionElement>) ScriptReader.parseNodes(p_elem, "tileAction"); 
 	}
 
 	/**
@@ -68,24 +70,36 @@ public class AdventureElement extends AnyElement {
 	    return mapScripts;
 	}
 	
-	public List<PersoActionElement> getPersoActions() {
+	public List<ContextualActionElement> getPersoActions() {
 	    return persoActions;
 	}
 	
 	/**
 	 * Get the named perso action, if it exists.
 	 * @param p_name
-	 * @return PersoActionElement
+	 * @return ContextualActionElement
 	 */
-	public PersoActionElement getPersoActionNamed(String p_name) {
-		for (PersoActionElement pAction : persoActions) {
+	public ContextualActionElement getPersoActionNamed(String p_name) {
+		return getContextualActionNamed(p_name, persoActions);
+	}
+	
+	/**
+	 * Get the named tile action, if it exists.
+	 * @param p_name
+	 * @return ContextualActionElement
+	 */
+	public ContextualActionElement getTileActionNamed(String p_name) {
+		return getContextualActionNamed(p_name, tileActions);
+	}
+	
+	private ContextualActionElement getContextualActionNamed(String p_name, List<ContextualActionElement> p_list) {
+		for (ContextualActionElement pAction : p_list) {
 			if (pAction.id.equalsIgnoreCase(p_name)) {
 				return pAction;
 			}
 		}
 		return null;
 	}
-	
 	/**
 	 * Manually add a quest to the adventure. (only for automatic behaviors like chest and doors)
 	 * @param p_quest
@@ -103,6 +117,7 @@ public class AdventureElement extends AnyElement {
     		quests.addAll(toMerge.quests);
     		scenes.addAll(toMerge.scenes);
     		persoActions.addAll(toMerge.persoActions);
+    		tileActions.addAll(toMerge.tileActions);
     	}
     }
 }

@@ -84,6 +84,7 @@ public abstract class ElementChained extends Element {
 	protected abstract Element createOne(int p_x, int p_y);
 
 	@Override
-	public void fall() {
+	public boolean fall() {
+		return true;
 	}
 }

@@ -19,7 +19,7 @@
 
 package zildo.fwk.script.logic;
 
-import zildo.fwk.script.logic.IEvaluationContext;
+import zildo.fwk.script.context.IEvaluationContext;
 
 /**
  * @author Tchegito

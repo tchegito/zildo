@@ -274,7 +274,7 @@ public enum ElementDescription implements SpriteDescription {
 	 */
 	public boolean isNotFixe() {
 		switch (this) {
-		case JAR: case BUSHES:
+		case JAR: case BUSHES: case LEAF:
 		case LEAF_GREEN: case DROP_FLOOR: case SMOKE:
 		case SMOKE_SMALL: case TINY_ROCK1: case TINY_ROCK2:
 		case BIG_KEY: case HEART: case STONE_HEAVY: case STONE:

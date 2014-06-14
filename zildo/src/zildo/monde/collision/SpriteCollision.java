@@ -219,8 +219,7 @@ public class SpriteCollision {
 							if (isZildo) {
 								PersoZildo zildo = (PersoZildo) entityRef;
 								boolean disappear = zildo.pickGoodies(elem, 0);
-								if (disappear) {
-									elem.fall();
+								if (disappear && elem.fall()) {
 									elem.die();
 								}
 								break;

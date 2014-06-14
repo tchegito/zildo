@@ -1,4 +1,4 @@
-package zildo.fwk.script.logic;
+package zildo.fwk.script.context;
 
 
 /**

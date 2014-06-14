@@ -283,8 +283,7 @@ public class Element extends SpriteEntity {
 		alphaV += alphaA;
 		alpha += alphaV;
 		
-		if (alpha < 0) {
-			fall();
+		if (alpha < 0 && fall()) {
 			die();
 		}
 		if (mover != null && mover.isActive()) {
@@ -333,9 +332,8 @@ public class Element extends SpriteEntity {
 							}
 						}
 					} else if (!isGoodies() && ((z < 4 && vz != 0.0f) || colli)) {
-						if (!beingCollided(null)) {
-							// Le sprite doit 'mourir'
-							fall();
+						if (!beingCollided(null) && fall()) {
+							// Sprite must 'die'
 							die();
 						}
 					}
@@ -524,14 +522,14 @@ public class Element extends SpriteEntity {
 	 * This method handles behavior when element/perso hits the floor, but doesn't remove it. For this, call {@link #die()}.
 	 */
 	@Override
-	public void fall() {
+	public boolean fall() {
 		// 0: some elements just disappear
 		// TODO: basically, we shouldn't do that because desc should be set
 		ElementDescription d = ElementDescription.fromInt(nSpr);
 		switch (d) {
 		case SEWER_SMOKE1: case SEWER_SMOKE2:
 		case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:
-			return;
+			return true;
 		}
 		
 		// 1: get the landing point nature
@@ -578,6 +576,13 @@ public class Element extends SpriteEntity {
 						EngineZildo.spriteManagement.spawnSpriteGeneric(
 								SpriteAnimation.DUST, (int) x, (int) y, floor,	0, null, null);
 						break;
+					case LEAF:
+						if (alpha > 0)	{// Leaf stay on the floor until it's totally disappeared
+							alphaV = -1;
+							vx=0;
+							ax=0;
+							return false;
+						}
 					}
 					if (questTrigger) {	// Only for bank ELEMENTS now
 						// Activate a quest if we're asked for
@@ -589,6 +594,7 @@ public class Element extends SpriteEntity {
 		}
 		TriggerElement trigger = TriggerElement.createFallTrigger(desc, nature);
 		EngineZildo.scriptManagement.trigger(trigger);
+		return true;
 	}
 
 	/**

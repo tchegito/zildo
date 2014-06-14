@@ -858,9 +858,15 @@
    		    <remove who="p5"/>
    		    <remove who="garde"/>
    		</condition>
-   		<condition name="coucou" exp="attaque_voleurs">
+   		<condition name="coucou"> <!-- exp="attaque_voleurs"> -->
    		    <remove who="mostapha"/>
    		    <remove who="papy"/>
+   		    <tile pos="35,13" action="illTree"/>
+   		    <tile pos="35,0" action="illTree"/>
+   		    <tile pos="27,13" action="illTree"/>
+   		    <tile pos="48,32" action="illTree"/>
+   		    <tile pos="50,53" action="illTree"/>
+   		    <tile pos="12,46" action="illTree"/>
    		</condition>
    		<condition name="ferme" exp="attaque_voleurs"> <!-- Devastated fields -->
    		    <tile pos="38,43" back="474"/> <tile pos="43,43" back="474"/> <tile pos="44,40" back="474"/>
@@ -1508,4 +1514,25 @@
 	        </action>
 	    </timer>
 	</persoAction>
+	
+	<tileAction id="illTree">
+	    <tile pos="x,y" fore="1735"/> <tile pos="x+1,y" fore="1736"/>
+   	    <tile pos="x+2,y" fore="1737"/> <tile pos="x+3,y" fore="1738"/>
+	    <tile pos="x,y+1" fore="1739"/> <tile pos="x+1,y+1" fore="1740"/>
+   	    <tile pos="x+2,y+1" fore="1741"/> <tile pos="x+3,y+1" fore="1742"/>
+	    <tile pos="x,y+2" fore="1743"/> <tile pos="x+1,y+2" fore="1744"/>
+   	    <tile pos="x+2,y+2" fore="1745"/> <tile pos="x+3,y+2"  fore="1746"/>
+	    <tile pos="x,y+3" back="1747"/> <tile pos="x+1,y+3" back="1748"/>
+   	    <tile pos="x+2,y+3" back="1749"/> <tile pos="x+3,y+3" back="1750"/>
+   	    <timer each="30+600*random">
+   	        <action>
+   	            <spawn type="LEAF"
+		               pos="x*16+random*64, y*16+random*16+80" z="48"
+		               vx="-0.4+random*0.8" vz="-0.1" az="-0.001"
+		               reverse="dice10>5:128,0"
+		               fx="0.004"
+		               alphaA="-0.0002"/>
+   	        </action>
+   	    </timer>
+   	</tileAction>
 </adventure>
