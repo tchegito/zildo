@@ -858,6 +858,10 @@
    		    <remove who="p5"/>
    		    <remove who="garde"/>
    		</condition>
+   		<condition name="coucou" exp="attaque_voleurs">
+   		    <remove who="mostapha"/>
+   		    <remove who="papy"/>
+   		</condition>
    		<condition name="ferme" exp="attaque_voleurs"> <!-- Devastated fields -->
    		    <tile pos="38,43" back="474"/> <tile pos="43,43" back="474"/> <tile pos="44,40" back="474"/>
    		    <tile pos="47,43" back="474"/> <tile pos="53,43" back="474"/> <tile pos="55,42" back="474"/>
