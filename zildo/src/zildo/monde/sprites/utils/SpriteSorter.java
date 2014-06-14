@@ -45,6 +45,7 @@ public class SpriteSorter {
 	
 	// For Y-sorting
 	private SpriteEntity[][] tab_tri;
+	private int[] num_spritesByLine;
 	private int quadOrder[][];
 	private int lastInBank[];
 	
@@ -57,6 +58,7 @@ public class SpriteSorter {
 		SORTY_REALMAX = p_sortYRealMax;
 		
 		tab_tri=new SpriteEntity[SORTY_REALMAX][Constantes.SORTY_ROW_PER_LINE];
+		num_spritesByLine=new int[SORTY_REALMAX];
 		
 		// Clear really the sort array
 		for (int i=0;i<SORTY_REALMAX;i++) {
@@ -88,6 +90,7 @@ public class SpriteSorter {
 		clearEntirelySortArray();
 		for (int i=0;i<SORTY_REALMAX;i++) {
 			tab_tri[i][0]=null;
+			num_spritesByLine[i]=0;
 		}
 	}
 	
@@ -154,10 +157,11 @@ public class SpriteSorter {
 				tab_tri[y][position] = sprite;
 				if (position < Constantes.SORTY_ROW_PER_LINE-1)
 					tab_tri[y][position+1]=null;
+				num_spritesByLine[y]++;
 			}
 		}
 	}
-
+	
 	/**
 	 * Fill the quadOrder and bankOrder arrays.<p/>
 	 * 
@@ -186,7 +190,7 @@ public class SpriteSorter {
 				EngineFX currentFX=EngineFX.NO_EFFECT;
 				for (int i=0;i<SORTY_REALMAX;i++) {
 					int position=0;
-					while (position < Constantes.SORTY_ROW_PER_LINE) {
+					while (position < num_spritesByLine[i]) {
 						SpriteEntity entity=tab_tri[i][position];
 						if (entity == null)
 							break;
@@ -235,7 +239,6 @@ public class SpriteSorter {
 		}
 	
 	}
-	
 	public int[][][] getBankOrder() {
 		return bankOrder;
 	}
