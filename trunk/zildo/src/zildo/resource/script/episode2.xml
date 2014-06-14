@@ -717,6 +717,7 @@
    	    </condition>
 	    <condition name="voleurs" exp="!zildoDream">
 			<filter type="1"/>
+			<tile pos="27,21" action="illTree"/> <tile pos="10,16" action="illTree"/>
 		</condition>
 		<condition name="voleursm1" exp="!fini_voleur">
 			<filter type="1"/>
@@ -858,7 +859,7 @@
    		    <remove who="p5"/>
    		    <remove who="garde"/>
    		</condition>
-   		<condition name="coucou"> <!-- exp="attaque_voleurs"> -->
+   		<condition name="coucou" exp="attaque_voleurs">
    		    <remove who="mostapha"/>
    		    <remove who="papy"/>
    		    <tile pos="35,13" action="illTree"/>
@@ -888,6 +889,26 @@
    		    <tile pos="5,51" back="487"/> <tile pos="7,49" back="487"/> <tile pos="13,50" back="487"/>
    		    <tile pos="13,53" back="487"/> <tile pos="17,48" back="487"/> <tile pos="18,51" back="487"/>
    		    <tile pos="16,42" back="487"/> <tile pos="18,44" back="487"/> <tile pos="14,40" back="487"/>
+   		    <tile pos="18,11" action="illTree"/><tile pos="28,16" action="illTree"/>
+   		    <tile pos="35,28" action="illTree"/><tile pos="48,53" action="illTree"/>
+   		</condition>
+   		<condition name="igorlily" exp="attaque_voleurs">
+   		    <tile pos="1,7" action="illTree"/>
+   		</condition>
+   		<condition name="bosquet" exp="attaque_voleurs">
+   		    <tile pos="7,13" action="illTree"/> <tile pos="0,12" action="illTree"/>
+   		</condition>
+   		<condition name="bucherons" exp="attaque_voleurs">
+   		    <tile pos="8,23" action="illTree"/> <tile pos="2,18" action="illTree"/>
+   		    <tile pos="4,3" action="illTree"/>
+   		</condition>
+   		<condition name="buchforet" exp="attaque_voleurs">
+   		    <tile pos="19,4" action="illTree"/> <tile pos="38,17" action="illTree"/>
+   		</condition>
+   		<condition name="polaky" exp="attaque_voleurs">
+   		    <tile pos="13,6" action="illTree"/> <tile pos="8,14" action="illTree"/>
+   		    <tile pos="9,34" action="illTree"/> <tile pos="52,41" action="illTree"/>
+   		    <tile pos="59,8" action="illTree"/>
    		</condition>
    		<condition name="chateaucoucou2" exp="trig_echange">
    		    <remove who="maltus"/>
