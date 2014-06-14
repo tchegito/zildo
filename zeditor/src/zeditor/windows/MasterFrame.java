@@ -510,6 +510,7 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	private JComboBox getFloorCombo() {
 		floorCombo = new JComboBox(new String[] {"0", "1", "2"});
+		floorCombo.setSelectedIndex(manager.getCurrentFloor());
 		floorCombo.addActionListener(new ActionListener() {
 			
 			@Override
