@@ -24,9 +24,9 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import zildo.fwk.script.context.IEvaluationContext;
+import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.fwk.script.logic.FloatExpression;
-import zildo.fwk.script.logic.IEvaluationContext;
-import zildo.fwk.script.logic.SpriteEntityContext;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;

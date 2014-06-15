@@ -90,7 +90,15 @@ public class ZSExpression {
 		} else if (questName.equals("init")) {
 			return EngineZildo.persoManagement.getZildo().getDialoguingWith().getCompte_dialogue() == 0;
 		}
-		boolean result = EngineZildo.scriptManagement.isQuestOver(questName);
+		boolean result = false;
+		if (questName.startsWith("M#")) {
+			// Expression could be a map name, to match current map
+			String mapName = questName.substring(2);
+			result = mapName.equals(EngineZildo.mapManagement.getCurrentMap().getName());
+		} else {
+			// Default case : expression is the quest name
+			result = EngineZildo.scriptManagement.isQuestOver(questName);
+		}
 		if (!done) {
 			result = !result;
 		}

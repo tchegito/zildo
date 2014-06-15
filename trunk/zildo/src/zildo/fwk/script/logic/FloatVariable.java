@@ -57,11 +57,11 @@ public class FloatVariable implements FloatASTNode {
 				throw new NoContextException();
 			}
 			if (FloatExpression.RESERVED_WORD_ZILDOX.equals(variable)) {
-				return p == null ? 0 : p.x;
+				return p.x;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOY.equals(variable)) {
-				return p == null ? 0 : p.y;
+				return p.y;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOMONEY.equals(variable)) {
-				return p == null ? 0f : (float) p.getMoney();
+				return p.getMoney();
 			} else if (FloatExpression.RESERVED_WORD_ZILDOANGLEX.equals(variable)) {
 				return p.getAngle().coords.x;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOANGLEY.equals(variable)) {

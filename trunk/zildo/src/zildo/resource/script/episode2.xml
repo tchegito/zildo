@@ -699,15 +699,19 @@
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
+	    <condition name="!chateaucoucou1-!chateaucoucou2" exp="trig_echange-!zildoDream">
+	        <filter type="1"/>
+	    </condition>
+	    <condition name="chateaucoucou1,chateaucoucou2">
+	        <filter type="0"/>
+	    </condition>
 	    <condition name="promenade" exp="trig_echange-!fuite_tony1">
-			<filter type="1"/>
 	        <spawn type="BANDIT_VERT" speed="1.3" pos="935,369" angle="0" who="tony"/>
 	    	<script who="bunny" value="3"/>
 	    </condition>
 	    <condition name="promenade2" exp="trig_echange">
 	        <spawn who="emissaire" pos="425,255" effect="jaune" type="GARDE_CANARD" angle="3"/>
 	        <script who="emissaire" value="0"/>
-	        <filter type="1"/>
 	    </condition>
 	    <condition name="voleurs" exp="!attaque_voleurs">
 			<!-- Post guards -->
@@ -716,14 +720,7 @@
     	    <spawn type="FOX" who="bleu" effect="bleu" pos="1039,922"/>			
    	    </condition>
 	    <condition name="voleurs" exp="!zildoDream">
-			<filter type="1"/>
 			<tile pos="27,21" action="illTree"/> <tile pos="10,16" action="illTree"/>
-		</condition>
-		<condition name="voleursm1" exp="!fini_voleur">
-			<filter type="1"/>
-		</condition>
-		<condition name="voleursm2" exp="!fini_voleur">
-			<filter type="1"/>
 		</condition>
 		<condition name="voleursg3" exp="trig_echange">
 		    <actions>

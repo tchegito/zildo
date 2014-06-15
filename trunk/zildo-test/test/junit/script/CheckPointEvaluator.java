@@ -23,8 +23,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import zildo.fwk.script.logic.IEvaluationContext;
-import zildo.fwk.script.logic.SpriteEntityContext;
+import zildo.fwk.script.context.IEvaluationContext;
+import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.fwk.script.model.point.IPoint;
 import zildo.fwk.script.model.point.PointEvaluator;
 import zildo.fwk.script.model.point.PointFixed;
