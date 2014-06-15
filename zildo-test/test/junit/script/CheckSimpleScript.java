@@ -30,9 +30,12 @@ import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.map.Area;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
 import zildo.server.PersoManagement;
 
 /**
@@ -114,6 +117,7 @@ public class CheckSimpleScript extends SimpleEngineScript {
 		ZSSwitch simple = new ZSSwitch(0).addCondition("money30", 1).addCondition("money20",3);
 		
 		PersoZildo zildo = new PersoZildo(0);
+		zildo.setAngle(Angle.NORD);
 		// Mock persomanagement to return our Zildo
 		PersoManagement pm = mock(PersoManagement.class);
 		EngineZildo.persoManagement = pm;
@@ -146,6 +150,27 @@ public class CheckSimpleScript extends SimpleEngineScript {
 		Assert.assertSame(2, simple.evaluateInt());
 		who.setCompte_dialogue(1);
 		Assert.assertSame(0, simple.evaluateInt());
+	}
+	
+	@Test
+	public void mapscriptCondition() {
+		// We are going to check map exclusions
+		ZSSwitch sw = ZSSwitch.parseForMapCondition("!chateaucoucou1-!chateaucoucou2");
+		
+		Area fakeMap = new Area();
+		fakeMap.setName("kikoo");
+		MapManagement mm = mock(MapManagement.class);
+		EngineZildo.mapManagement = mm;
+		when(mm.getCurrentMap()).thenReturn(fakeMap);
+		
+		// Check if current map respect conditions (different from chateaucoucou1/2)
+		Assert.assertTrue(sw.evaluateInt() == 1);
+		
+		fakeMap.setName("chateaucoucou1");
+
+		// Now check being on an expected map 
+		Assert.assertTrue(sw.evaluateInt() == 0);
+		
 	}
 	
 	@Override

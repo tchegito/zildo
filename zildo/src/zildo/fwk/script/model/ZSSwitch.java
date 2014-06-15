@@ -101,6 +101,12 @@ public class ZSSwitch {
 		String replacement = p_parseableString.replaceAll("(?<!\\([0-9]{1,3}),", ":1,");
 		return new ZSSwitch(replacement + ":1,0");
 	}
+	
+	public static ZSSwitch parseForMapCondition(String p_parseableString) {
+		// Prefix all map name with a predictable sequence "M#"
+		String str = p_parseableString.replaceAll("([a-z|A-Z|0-9]+)", "M#$1");
+		return parseForScript(str);
+	}
 
 	/**
 	 * Fluent method, designed for fast construction, with built condition.

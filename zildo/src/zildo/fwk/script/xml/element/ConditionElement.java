@@ -1,6 +1,7 @@
 package zildo.fwk.script.xml.element;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.w3c.dom.Element;
 
@@ -11,9 +12,12 @@ import zildo.fwk.script.xml.ScriptReader;
 public class ConditionElement extends AnyElement {
 
 	String mapName;
+	ZSSwitch mapExpression=null;	// Used when mapName is different than a single map name
 	ZSSwitch expression;	// No expression means it's always verified
 	List<LanguageElement> actions;
 	Boolean scroll;
+	
+	static final Pattern specialCharacters = Pattern.compile("\\-|\\!|\\,");
 	
 	@Override
 	@SuppressWarnings("unchecked")
@@ -21,6 +25,11 @@ public class ConditionElement extends AnyElement {
 		xmlElement = p_elem;
 		
 		mapName = readAttribute("name");
+		if (mapName != null && specialCharacters.matcher(mapName).find()) {
+			// Use ZSSwitch only if needed, to save some memory
+			mapExpression = ZSSwitch.parseForMapCondition(mapName);
+			mapName = null;
+		}
 		scroll = readBoolean("scroll");
 		String strExp = readAttribute("exp");
 		expression = strExp == null ? null : ZSSwitch.parseForScript(strExp);	// 1 will be the right value
@@ -30,6 +39,8 @@ public class ConditionElement extends AnyElement {
 	public boolean match(String p_mapName, boolean p_scroll) {
 		// 1) map
 		if (mapName != null && !mapName.equals(p_mapName))
+			return false;
+		if (mapExpression != null && mapExpression.evaluateInt() == 0)
 			return false;
 		// 2) expression
 		if (expression != null && !expression.evaluate().equals(ZSCondition.TRUE))

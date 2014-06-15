@@ -32,6 +32,7 @@ import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 
+import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
@@ -39,6 +40,7 @@ import zildo.client.gui.GUIDisplay;
 import zildo.fwk.bank.TileBank;
 import zildo.fwk.db.Identified;
 import zildo.fwk.gfx.engine.TileEngine;
+import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.monde.Game;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -178,6 +180,20 @@ public class EngineUT {
 		}
 		
 		mapUtils = new MapUtils();
+		
+		Zildo.pdPlugin.filters.put(CloudFilter.class, new CloudFilter(null) {
+			
+			@Override
+			public boolean renderFilter() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			@Override
+			public void addOffset(int x, int y) {
+				offsetU += x;
+				offsetV += y;
+			}
+		});
 	}
 
 	@After
