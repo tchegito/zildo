@@ -133,14 +133,14 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || putDown || text || - || - || - || Remove an item from Zildo's inventory ||
 || attack || text || V || - || - || Make a given character attacking in front of him ||
 || activate || text || - || V || V || Activate a gear (door, button, ...) with boolean 'value' to turn on/off the gear (according to TRUE/FALSE value) ||
-|| tile || text || - || - || - || Change a map tile. Used with attributes 'back', 'back2' and fore. Set to -1 to remove one of these tiles. ||
+|| tile || text || - || - || - || Change a map tile. Used with attributes 'back', 'back2' and fore. Set to -1 to remove one of these tiles. 'action' attribute is available to set a TileAction. ||
 || filter || text || - || - || - || Add a color filter : 0=normal / 1=night / 2=evening / 3=red / 4=lightning ||
 || end || text || - || - || - || For game over, depending on type attribute : 0=player wins / 1=player dies ||
 || respawn || text || - || - || - || Respawn player at his starting location in the current area. ||
 || visible || text || - || - || - || Set a character/element visibility depending on _value_ attribute (true or false) ||
 || zoom || text || - || - || - || Set a character's zoom attribute (0..255) where 255 is full size ||
 || herospecial || text || - || - || - || Special actions about hero, set accordingly with 'value'.<ul><li>0 => Hero gains 1 blue drop, and loose 2 moon fragments.</li><li>1 => Blocks everyone except hero.</li><li>2 => Unblocks everyone except hero.</li><li>3 => back up current game</li><li>4 => reload last backed up game, updated with current hero's HP. </li><li>5 => inflict damage to hero, given by 'arg' attribute. Default is 1.</li></ul> ||
-|| perso || text || - || - || - || Change some character's attributes : type, info, fx. ||
+|| perso || text || - || - || - || Change some character's attributes : type, info, fx. 'action' attribute is available to set a PersoAction. ||
 || timer || text || - || - || - || Do a repetition of actions on a desired rate. ||
 || lookFor || text || - || - || - || Look for some characters around another, with a desired radius. The first discovered one become the new context for nested action elements. ||
 || var || text || - || - || - || Set a variable indicated by 'name' to the given 'value'. ||
