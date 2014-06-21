@@ -674,6 +674,10 @@ public class MapManagement {
 						movedY += 4;
 						break;
 					}
+					if (collide(movedX, movedY, zildo)) {
+						movedX = (int) (movedX + zildo.x) / 2;
+						movedY = (int) (movedY + zildo.y) / 2;
+					}
 					zildo.setX(movedX);
 					zildo.setY(movedY);
 				}
