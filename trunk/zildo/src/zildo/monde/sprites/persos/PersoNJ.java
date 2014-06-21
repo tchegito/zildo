@@ -377,10 +377,15 @@ public class PersoNJ extends Perso {
 						if ( (deltaMoveX != 0 || deltaMoveY != 0) && loc.isSame(new Pointf(x-deltaMoveX, y-deltaMoveY))) {
 							pathFinder.setTarget(null);
 						} else {
-							x = loc.x;
-							y = loc.y;
-	
-							walkTile(true);
+							boolean slowDown = walkTile(true);
+							
+							if (slowDown) {
+								x = (loc.x + x) / 2;
+								y = (loc.y + y) / 2;
+							} else {
+								x = loc.x;
+								y = loc.y;
+							}
 						}
 
 						// suite_mouvement
