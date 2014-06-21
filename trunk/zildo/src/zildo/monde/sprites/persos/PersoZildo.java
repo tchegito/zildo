@@ -60,6 +60,7 @@ import zildo.monde.sprites.magic.ShieldEffect;
 import zildo.monde.sprites.magic.ShieldEffect.ShieldType;
 import zildo.monde.sprites.persos.action.HealAction;
 import zildo.monde.sprites.persos.action.ScriptedPersoAction;
+import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -573,6 +574,10 @@ public class PersoZildo extends Perso {
 			}
 		}
 
+		if (quel_deplacement == MouvementPerso.FOLLOW) {
+			// Not very clean to do such specific thing here
+			pathFinder.determineDestination();
+		}
 		switch (mouvement) {
 		case ATTAQUE_ARC:
 			if (attente == 2 * 8) {

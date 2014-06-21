@@ -125,8 +125,8 @@ public class PathFinder {
         if (move == 2) {
         	// diagonal move ==> adjust with coeff
             float coeff = Constantes.cosPiSur4;
-            pos.x = mobile.x + delta.x * coeff;
-            pos.y = mobile.y + delta.y * coeff;
+            delta.x = delta.x * coeff;
+            delta.y = delta.y * coeff;
         }
         
         // If there's no movement, stop the target
@@ -232,14 +232,15 @@ public class PathFinder {
 	final protected Pointf reachLine(float p_speed, boolean p_twoAngles) {
 		Pointf p =new Pointf(mobile.x, mobile.y);
 		if (target != null) {
+	    	float velocity=speed == 0f ? p_speed : speed;
 			float hypothenuse = target.distance(new Point(Math.round(mobile.x), Math.round(mobile.y)));
 			if (hypothenuse == 0f || hypothenuse < p_speed) {
 				target = null;
 			} else {
 				double cosAngle = (target.x - mobile.x) / hypothenuse;
 				double sinAngle = (target.y - mobile.y) / hypothenuse;
-				float dx = (float) (cosAngle * p_speed);
-				float dy = (float) (sinAngle * p_speed);
+				float dx = (float) (cosAngle * velocity);
+				float dy = (float) (sinAngle * velocity);
 				
 	        	p = mobile.tryMove(dx, dy);
 	        	// Recalculate angle

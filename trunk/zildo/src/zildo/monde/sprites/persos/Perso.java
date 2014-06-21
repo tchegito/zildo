@@ -203,8 +203,10 @@ public abstract class Perso extends Element {
 				pathFinder.speed = 0.2f;
 				break;
 			case FOLLOW:
-				// Assume that 'following' has been set before
+				// Assume that 'following' has been set before (and keep previous speed)
+				float prevSpeed = pathFinder == null ? 0.5f: pathFinder.speed;
 				pathFinder = new PathFinderFollow(this, following);
+				pathFinder.speed = prevSpeed;
 				break;
 			}
 		}

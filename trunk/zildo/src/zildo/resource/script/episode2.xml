@@ -1428,6 +1428,10 @@
 	</scene>
 	
 	<scene id="meetingLibrary">
+	    <!--  A enlever de toute URGENCE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+  	    <!--  A enlever de toute URGENCE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+  	    <!--  A enlever de toute URGENCE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+  	    <exec script="zildoHectorCave"/>
 	    <wait value="60"/>
 	    <speak who="hector" text="d4m2.hector.0"/>
 	    <angle who="maltus" value="2"/>
@@ -1453,10 +1457,11 @@
 			    
 			    <moveTo who="hector" pos="217,60"/>
 			    <angle who="maltus" value="3"/>
+			    <angle who="hector" value="3"/>
 			    <moveTo who="zildo" pos="-64,0" delta="true" speed="0.7"/>
 			    <actions>
 				    <moveTo who="hector" pos="87,60"/>
-				    <moveTo who="zildo" pos="127,81"/>
+				    <moveTo who="zildo" pos="130,81"/>
 			    </actions>
    			    <moveTo who="hector" pos="0,-4" delta="true"/>
 			    <angle who="zildo" value="3"/>
@@ -1466,8 +1471,8 @@
 	    		<sound name="ZildoSecret"/>
 	    		<wait value="40"/>
 	    		<actions>
-	    			<moveTo who="hector" pos="8,60"/>
-	    		    <moveTo who="zildo" pos="32,60"/>
+	    			<moveTo who="hector" pos="8,61"/>
+	    		    <moveTo who="zildo" pos="32,61"/>
 	    		</actions>
 	    		<actions>
 	    			<moveTo who="hector" pos="-10,0" delta="true" unstoppable="true"/>
@@ -1495,8 +1500,11 @@
 	</scene>
 	
 	<scene id="zildoHectorCave">
-	    <moveTo who="hector" pos="-50,8" delta="true" unstoppable="true"/>
+	    <!-- Hero and Hector are in d4m2b -->
+	    <!-- 
+	    <moveTo who="hector" pos="-50,0" delta="true" unstoppable="true"/>
 	    <moveTo who="zildo" pos="-10,0" delta="true"/>
+	    <moveTo who="hector" pos="0,8" delta="true"/>
 	    <actions>
 	    	<moveTo who="hector" pos="246,80"/>
 	        <moveTo who="zildo" pos="260,60"/>
@@ -1505,6 +1513,37 @@
 	        <moveTo who="hector" pos="247,103"/>
 	        <moveTo who="zildo" pos="247,89"/>
 	    </actions>
+	    <actions>
+	        <moveTo who="hector" pos="260,104" unstoppable="true"/>
+	        <moveTo who="zildo" pos="244,101" speed="0.5"/>
+	    </actions>
+	    <moveTo who="hector" pos="267,108" speed="0.3" unblock="true"/>
+	    <sound name="ZildoDescend"/>
+	    <wait value="10"/>
+	    -->
+	    <fadeOut type="2"/>
+	    <map name="lugduniag"/>
+	    <remove chaining="d4m2b"/>
+	    <spawn who="hector" type="HECTOR" pos="152,122" angle="0"/>
+	    <pos who="zildo" pos="151,84"/>
+	    <sound name="ZildoDescend"/>
+	    <fadeIn type="2" unblock="true"/>
+	    <moveTo who="zildo" pos="151,100" speed="0.7"/>
+	    <speak who="hector" text="lugduniag.hector.0"/>
+	    <!-- follow through the cave -->
+	    <moveTo who="hector" pos="170,121"/>
+	    <script who="zildo" value="16" effect="hector"/>
+	    <moveTo who="hector" pos="301,232"/>
+	    <moveTo who="hector" pos="305,326" open="true"/>
+	    <moveTo who="hector" pos="455,366"/>
+	    <moveTo who="hector" pos="577,547"/>
+	    <moveTo who="hector" pos="773,554"/>
+	    <moveTo who="hector" pos="777,754"/>
+	    <moveTo who="hector" pos="928,754"/>
+	    <moveTo who="hector" pos="928,664" open="true" unblock="true"/>
+	    <wait value="220"/>
+	    <script who="zildo" value="3"/>
+	    <angle who="hector" value="2"/>
 	</scene>
 	
 	<persoAction id="sleeping">
