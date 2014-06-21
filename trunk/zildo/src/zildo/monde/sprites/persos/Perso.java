@@ -185,6 +185,7 @@ public abstract class Perso extends Element {
 			case IMMOBILE:
 				setAlerte(false);
 			case ZONE:
+				setFollowing(null);
 				pathFinder = new PathFinder(this);
 				pathFinder.setTarget(null);
 				break;
