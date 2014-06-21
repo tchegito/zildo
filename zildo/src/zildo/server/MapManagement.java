@@ -363,6 +363,7 @@ public class MapManagement {
 		return false;
 	}
 
+	/** Doors and stairs **/
 	private final static IntSet particularTiles = 
 		new IntSet(256 + 22, 256+23)
 		.addRange(256*3 + 89, 256*3 + 96);

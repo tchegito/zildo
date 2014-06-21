@@ -38,4 +38,8 @@ public class PointFixed extends IPoint {
 		return p;
 	}
 
+	@Override
+	public String toString() {
+		return p.toString();
+	}
 }
