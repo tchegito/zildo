@@ -949,6 +949,9 @@
    		    <remove who="hector"/>
    		    <remove who="maltus"/>
    		</condition>
+   		<condition name="lugduniag" exp="broughtIGor">
+   		    <remove who="hector"/>
+   		</condition>
    	</mapScript>
 
 	<scene id="intro_episode2">
@@ -1431,7 +1434,6 @@
 	    <!--  A enlever de toute URGENCE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
   	    <!--  A enlever de toute URGENCE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
   	    <!--  A enlever de toute URGENCE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-  	    <exec script="zildoHectorCave"/>
 	    <wait value="60"/>
 	    <speak who="hector" text="d4m2.hector.0"/>
 	    <angle who="maltus" value="2"/>
@@ -1501,7 +1503,6 @@
 	
 	<scene id="zildoHectorCave">
 	    <!-- Hero and Hector are in d4m2b -->
-	    <!-- 
 	    <moveTo who="hector" pos="-50,0" delta="true" unstoppable="true"/>
 	    <moveTo who="zildo" pos="-10,0" delta="true"/>
 	    <moveTo who="hector" pos="0,8" delta="true"/>
@@ -1520,30 +1521,36 @@
 	    <moveTo who="hector" pos="267,108" speed="0.3" unblock="true"/>
 	    <sound name="ZildoDescend"/>
 	    <wait value="10"/>
-	    -->
 	    <fadeOut type="2"/>
 	    <map name="lugduniag"/>
 	    <remove chaining="d4m2b"/>
-	    <spawn who="hector" type="HECTOR" pos="152,122" angle="0"/>
+	    <pos who="hector" pos="152,122" angle="0"/>
 	    <pos who="zildo" pos="151,84"/>
 	    <sound name="ZildoDescend"/>
 	    <fadeIn type="2" unblock="true"/>
-	    <moveTo who="zildo" pos="151,100" speed="0.7"/>
+	    <moveTo who="zildo" pos="151,100" speed="0.5"/>
 	    <speak who="hector" text="lugduniag.hector.0"/>
 	    <!-- follow through the cave -->
 	    <moveTo who="hector" pos="170,121"/>
 	    <script who="zildo" value="16" effect="hector"/>
+	    <speak who="hector" text="lugduniag.hector.1" unblock="true"/>
 	    <moveTo who="hector" pos="301,232"/>
+	    <speak who="hector" text="lugduniag.hector.2" unblock="true"/>
 	    <moveTo who="hector" pos="305,326" open="true"/>
-	    <moveTo who="hector" pos="455,366"/>
-	    <moveTo who="hector" pos="577,547"/>
+   	    <moveTo who="hector" pos="455,366"/>
+	    <speak who="hector" text="lugduniag.hector.3" unblock="true"/>
+   	    <moveTo who="hector" pos="577,547"/>
 	    <moveTo who="hector" pos="773,554"/>
 	    <moveTo who="hector" pos="777,754"/>
 	    <moveTo who="hector" pos="928,754"/>
+	    <speak who="hector" text="lugduniag.hector.4"/>
 	    <moveTo who="hector" pos="928,664" open="true" unblock="true"/>
-	    <wait value="220"/>
+  	    <speak who="hector" text="lugduniag.hector.5"/>
+  	    <angle who="hector" value="2"/>
+	    <speak who="hector" text="lugduniag.hector.6"/>
 	    <script who="zildo" value="3"/>
-	    <angle who="hector" value="2"/>
+	    <moveTo who="hector" pos="917,664"/>
+	    <angle who="hector" value="1"/>
 	</scene>
 	
 	<persoAction id="sleeping">

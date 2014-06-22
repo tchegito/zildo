@@ -66,6 +66,6 @@ public enum Reverse {
 				return r;
 			}
 		}
-		throw new RuntimeException("Unable to get a valid Reverse value.");
+		throw new RuntimeException("Unable to get a valid Reverse value for "+v+".");
 	}
 }

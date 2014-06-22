@@ -729,7 +729,7 @@ public class ActionExecutor {
     		if (EngineZildo.spriteManagement.getNamedElement(p_action.what) == null) {
     			// Spawn only if doesn't exist yet
         		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
-        		Reverse rev = Reverse.fromInt(p_action.reverse.evaluateInt());
+        		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : Reverse.fromInt(p_action.reverse.evaluateInt());
         		Rotation rot = Rotation.fromInt(p_action.rotation);
         		SpriteEntity entity = null;
         		elem = null;

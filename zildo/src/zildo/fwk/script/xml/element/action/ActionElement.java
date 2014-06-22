@@ -125,9 +125,9 @@ public class ActionElement extends LanguageElement {
 			delta = isTrue("delta");
 			String strReverse = readAttribute("reverse");
 			if (strReverse == null) {
-				reverse = new ZSSwitch(-1);
+				reverse = null;
 			} else {
-				reverse = ZSSwitch.parseForDialog(readAttribute("reverse"));
+				reverse = ZSSwitch.parseForDialog(strReverse);
 			}
 			rotation = readInt("rotation");
 			String temp = readAttribute("z");
