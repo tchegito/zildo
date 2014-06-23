@@ -53,7 +53,7 @@ public class ScriptProcess {
 		scene=p_scene;
 		cursor=0;
 		topPriority = p_topPriority;
-		actionExec=new ActionExecutor(p_scriptExecutor, p_scene.locked, context);
+		actionExec=new ActionExecutor(p_scriptExecutor, p_scene.locked, context, scene.actions.size() == 1);
 		varExec = new VariableExecutor(p_scene.locked, context);
 		finalEvent = p_finalEvent;
 		

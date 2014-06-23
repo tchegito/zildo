@@ -19,6 +19,8 @@
 
 package zildo.fwk.script.command;
 
+import java.util.Collections;
+
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
@@ -40,6 +42,7 @@ import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.fwk.script.logic.FloatExpression;
+import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
 import zildo.fwk.script.xml.element.action.LookforElement;
@@ -96,13 +99,15 @@ public class ActionExecutor {
     ScriptExecutor scriptExec;
     int count, nextStep;
     boolean locked;
-
+    boolean uniqueAction;	// TRUE means unique action is executing (useful for timer)
+    
 	final IEvaluationContext context;
 	
-    public ActionExecutor(ScriptExecutor p_scriptExec, boolean p_locked, IEvaluationContext p_context) {
+    public ActionExecutor(ScriptExecutor p_scriptExec, boolean p_locked, IEvaluationContext p_context, boolean p_uniqueAction) {
         scriptExec = p_scriptExec;
         locked = p_locked;
         context = p_context;
+        uniqueAction = p_uniqueAction;
     }
 
     /**
@@ -430,7 +435,7 @@ public class ActionExecutor {
                 		EngineZildo.scriptManagement.runTileAction(p_action.location.getPoint(), p_action.action);
                 	}
                 	EngineZildo.mapManagement.getCurrentMap().set_mapcase(location.x, location.y, c);
-                	achieved=true;
+                	achieved = true;
                 	break;
                 case filter:
                 	switch (p_action.val) {
@@ -590,8 +595,14 @@ public class ActionExecutor {
                 	achieved = true;
                 	break;
                 case timer:
-                	count = 0;
-            		nextStep = (int) ((TimerElement)p_action).each.evaluate(context);
+                	if (!uniqueAction) {
+                		// If the timer is inside a script, run it as a single one, to avoid locking problems
+                		EngineZildo.scriptManagement.execute(Collections.singletonList((LanguageElement) p_action), false, null, false, context, false);
+                		achieved=true;
+                	} else {
+                		count = 0;
+                		nextStep = (int) ((TimerElement)p_action).each.evaluate(context);
+                	}
                 	break;
                 case lookFor: // Look for a character around another inside a given radius
                 	LookforElement lookFor = (LookforElement) p_action;
