@@ -170,7 +170,7 @@ public class ScriptManagement {
     /**
      * Execute a sequence of actions with given attributes.
      * @param p_actions
-     * @param p_finalEvent
+     * @param p_finalEvent TRUE=get back event nature to NOEVENT
      * @param p_quest (optional)
      * @param p_topPriority
      * @param p_context (optional)
@@ -443,7 +443,7 @@ public class ScriptManagement {
 	public void runTileAction(Point loc, String name) {
 		ContextualActionElement action = adventure.getTileActionNamed(name);
 		TileLocationContext context = new TileLocationContext(loc);
-		execute(action.actions, true, null, false, context, false);
+		execute(action.actions, false, null, true, context, false);
 	}
 	
 	public void stopPersoAction(Perso perso) {
