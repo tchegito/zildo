@@ -17,7 +17,7 @@ public class PersoFireThing extends PersoNJ {
 	
 	final float speed = 1.5f;
 	
-	Element tail;
+	Element tail;	// Monster's components will be Element with a PersoDescription (that's weird !)
 	Element middle;
 	Element eye1;
 	Element eye2;

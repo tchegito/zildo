@@ -30,12 +30,11 @@ import zildo.client.sound.BankSound;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.collision.Rectangle;
-import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 
@@ -214,7 +213,7 @@ public class CollideManagement {
         	
         	if (weapon != null) {
         		// Only parry with another weapon
-        		if ( ((ElementDescription) weapon.getDesc()).isWeapon()) {
+        		if (weapon.getDesc().isWeapon()) {
         			perso.parry(p_collider.cx, p_collider.cy, perso);
         		}
         	} else {

@@ -226,4 +226,9 @@ public enum PersoDescription implements SpriteDescription {
 	public boolean isTakable() {
 		return this == CANARD || this == POULE || this == FISH;
 	}
+
+	@Override
+	public boolean isWeapon() {
+		return false;
+	}
 }
