@@ -329,7 +329,7 @@ public class PlayerManagement {
 				if (ralentit)
 					coeff = 0.4f;
 				else {
-					coeff = cosPiSur4;
+					//coeff = cosPiSur4;
 				}
 			}
 
@@ -401,7 +401,7 @@ public class PlayerManagement {
 				if (heros.getMouvement()==MouvementZildo.BRAS_LEVES) {
 					heros.throwSomething();
 				} else if (heros.getMouvement()!=MouvementZildo.BRAS_LEVES && 
-						heros.getMouvement()!=MouvementZildo.SOULEVE) {
+						heros.getMouvement()!=MouvementZildo.SOULEVE && !heros.isDoingAction()) {
 					// Get a spot reachable in hero's direction
 					int locX = (int) heros.x + heros.getAngle().coords.x * 8;
 					int locY = (int) heros.y + heros.getAngle().coords.y * 8;
