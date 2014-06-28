@@ -114,6 +114,7 @@ public class ActionElement extends LanguageElement {
 		unstoppable = isTrue("unstoppable");
 		foreground = readBoolean("foreground");
 		floor = readInt("floor", 1);
+		String strReverse = readAttribute("reverse");
 		// Read less common ones
 		String strPos = p_elem.getAttribute("pos");
 		String strAngle = p_elem.getAttribute("angle");
@@ -123,7 +124,6 @@ public class ActionElement extends LanguageElement {
 			way = readAttribute("way");
 		case spawn:
 			delta = isTrue("delta");
-			String strReverse = readAttribute("reverse");
 			if (strReverse == null) {
 				reverse = null;
 			} else {
@@ -223,6 +223,9 @@ public class ActionElement extends LanguageElement {
 			back2 = (int) evaluateFloat("back2", -2);
 			fore = (int) evaluateFloat("fore", -2);
 			action = readAttribute("action"); // Empty string means "no action"
+			if (strReverse != null) {
+				reverse = ZSSwitch.parseForDialog(strReverse);
+			}
 			break;
 		case remove:
 			text = readAttribute("chaining");

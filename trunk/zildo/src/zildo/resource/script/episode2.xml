@@ -774,10 +774,10 @@
 		    <tile pos="15,41" back2="181"/>
 		    <tile pos="16,41" back2="180"/>
 		    <tile pos="17,41" back2="182"/>
-		    <tile pos="15,42" back2="179" reverse="1"/>
-		    <tile pos="15,43" back2="185" reverse="1"/>
-		    <tile pos="17,42" back2="179"/>
-		    <tile pos="17,43" back2="185"/>
+		    <tile pos="15,42" back2="179"/>
+		    <tile pos="15,43" back2="185"/>
+		    <tile pos="17,42" back2="179" reverse="128"/>
+		    <tile pos="17,43" back2="185" reverse="128"/>
    		</condition>
 		<condition name="prisonext" exp="retour_trion-!hector_call3">
 		    <!-- Repeat Pssst if player hasn't seen Hector yet -->
