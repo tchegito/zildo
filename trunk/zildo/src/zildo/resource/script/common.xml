@@ -123,7 +123,7 @@
         <sound name="ZildoDescend" />
         <pos who="zildo" pos="-8, -4" delta="true"/>
         <fadeIn type="2" unblock="true"/>
-		<moveTo who="zildo" pos="0,16" delta="true" unstoppable="true" speed="0.5"/>
+		<moveTo who="zildo" pos="0,18" delta="true" unstoppable="true" speed="0.5"/>
         <herospecial value="2"/>
 	</scene>
 	
