@@ -1084,6 +1084,10 @@ public abstract class Perso extends Element {
 		ghost = true;	// Cancel player movements
 	}
 
+	public boolean isDoingAction() {
+		return action != null;
+	}
+	
 	public boolean isOnPlatform() {
 		return onPlatform;
 	}
