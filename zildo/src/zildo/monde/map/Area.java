@@ -20,6 +20,8 @@
 
 package zildo.monde.map;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -1450,5 +1452,23 @@ public class Area implements EasySerializable {
 			dim_y = TILE_VIEWPORT_Y;
 		}
 		
+	}
+	
+	public static String[] findAllAreasName() {
+		File[] areaFiles = Zildo.pdPlugin.listFiles(Constantes.MAP_PATH, new FilenameFilter() {
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".map");
+			}
+		});
+		String[] res = new String[areaFiles.length];
+		int i=0;
+		for (File f : areaFiles) {
+			String name = f.getName();
+			int posPoint = name.indexOf(".");
+			res[i++] = f.getName().substring(0, posPoint);
+		}
+		return res;
 	}
 }

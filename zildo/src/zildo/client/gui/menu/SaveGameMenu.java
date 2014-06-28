@@ -22,11 +22,9 @@ package zildo.client.gui.menu;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import zildo.Zildo;
@@ -40,6 +38,7 @@ import zildo.fwk.ui.PageableMenu;
 import zildo.fwk.ui.UIText;
 import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.Game;
+import zildo.monde.map.Region;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -83,14 +82,12 @@ public class SaveGameMenu extends PageableMenu {
 									previousMenu));
 						} else {
 							if (!loadGame(filename, false)) {
-	                            if (!loadGame(filename, true)) {
-	                            	// Load failed !
-	                                client.handleMenu(new InfoMenu("m8.info.nok", currentMenu));
-	                            } else {
-	                            	// Game has been loaded in legacy (previous version) without name
-	                            	// ==> can't display message for now !
-	                            }
-	                        }
+                            	// Load failed !
+                                client.handleMenu(new InfoMenu("m8.info.nok", currentMenu));
+                            } else {
+                            	// Game has been loaded in legacy (previous version) without name
+                            	// ==> can't display message for now !
+                            }
 						}
 					}
 				});
@@ -196,9 +193,13 @@ public class SaveGameMenu extends PageableMenu {
 	public static List<String> findSavegame() {
 		File[] savegames = Zildo.pdPlugin.listFiles(Constantes.SAVEGAME_DIR, new SaveGameFilter());
 		List<String> filenames = new ArrayList<String>();
+		int i=1;
 		if (savegames != null && savegames.length > 0) { // Is there any savegames ?
 			for (File f : savegames) {
-				filenames.add(getSavegameDisplayTitle(f));
+				String filename = Constantes.SAVEGAME_DIR + f.getName();
+				EasyBuffering buf = Zildo.pdPlugin.openPrivateFile(filename);
+				Game miniGame = Game.deserialize(buf, true);
+				filenames.add(getSavegameDisplayTitle(f, miniGame));
 			}
 		}
 		// Sort filenames by savegame number
@@ -230,11 +231,13 @@ public class SaveGameMenu extends PageableMenu {
 	 * @param p_file
 	 * @return
 	 */
-	public static String getSavegameDisplayTitle(File p_file) {
+	public static String getSavegameDisplayTitle(File p_file, Game p_game) {
 		String name = p_file.getName().replace(Constantes.SAVEGAME_FILE, "");
-		name += " "
-				+ new SimpleDateFormat("dd.MM.yyyy HH-mm").format(new Date(
-						p_file.lastModified()));
+		Region reg = Region.fromMapName(p_game.mapName);
+		String regionName = reg.getName();
+		name += " " + regionName; //+ " (" + Champion.getTimeSpentToString(p_game.getTimeSpent())+ ")";
+//				+ new SimpleDateFormat("dd.MM.yyyy HH-mm").format(new Date(
+//						p_file.lastModified()));
 		return name;
 	}
 

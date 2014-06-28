@@ -163,10 +163,10 @@ public class Game implements EasySerializable {
      * Create a game from a saved file. At this point, we assume that EngineZildo is already instantiated and
      * ScriptManagement is empty.
      * @param p_buffer
-     * @param p_legacy TRUE that we accept older savegame format.
+     * @param p_minimal TRUE=we just want minimal game, to display savegame title (mapname + timeSpent)
      * @return Game
      */
-    public static Game deserialize(EasyBuffering p_buffer, boolean p_legacy) {
+    public static Game deserialize(EasyBuffering p_buffer, boolean p_minimal) {
     	p_buffer.getAll().position(0);
         try {
             // 1: quest diary
@@ -174,13 +174,13 @@ public class Game implements EasySerializable {
             for (int i = 0; i < questNumber; i++) {
                 String questName = p_buffer.readString();
                 boolean questDone = p_buffer.readBoolean();
-                if (questDone) {
+                if (questDone && !p_minimal) {
                     EngineZildo.scriptManagement.accomplishQuest(questName, false);
                 }
             }
-            //EngineZildo.scriptManagement.accomplishQuest("igor_promise_sword", false);
+            //EngineZildo.scriptManagement.accomplishQuest("hector_call3", false);
             //EngineZildo.scriptManagement.accomplishQuest("freedIgor", false);
-            //EngineZildo.scriptManagement.resetQuest("meetLib1");
+            //EngineZildo.scriptManagement.accomplishQuest("igor_promise_sword", false);
    
             //EngineZildo.scriptManagement.accomplishQuest("attaque_voleurs", false);
             //EngineZildo.scriptManagement.accomplishQuest("start_visit1", false);
@@ -189,41 +189,47 @@ public class Game implements EasySerializable {
             
             
             // 2: Zildo
-            EngineZildo.spawnClient(ZildoOutfit.Zildo);
-            PersoZildo zildo = EngineZildo.persoManagement.getZildo();
-            if (!p_legacy) {
-                zildo.setPv(p_buffer.readByte());
-            }
+            int pv = p_buffer.readByte();
             int maxPvHeartQuarter = p_buffer.readInt();
-            zildo.setMaxpv(maxPvHeartQuarter & 255);
-            zildo.setMoonHalf(maxPvHeartQuarter >> 8);
-            zildo.setCountArrow(p_buffer.readInt());
-            zildo.setCountBomb(p_buffer.readInt());
-            zildo.setCountKey(p_buffer.readByte());
-            zildo.setMoney(p_buffer.readInt());
-            String heroName="Zildo";
-            byte indexSel = 0;
-            if (!p_legacy) {
-                heroName = URLDecoder.decode(p_buffer.readString(), "UTF-8");
-                heroName = heroName.replaceAll(System.getProperty("line.separator"), "");
-                indexSel = p_buffer.readByte();
+            int countArrow = p_buffer.readInt();
+            int countBomb = p_buffer.readInt();
+            int countKey = p_buffer.readByte();
+            int money = p_buffer.readInt();
+            PersoZildo zildo = null;
+            List<Item> items = null;
+            
+            if (!p_minimal) {
+                EngineZildo.spawnClient(ZildoOutfit.Zildo);
+                zildo = EngineZildo.persoManagement.getZildo();
+                zildo.setPv(pv);
+	            zildo.setMaxpv(maxPvHeartQuarter & 255);
+	            zildo.setMoonHalf(maxPvHeartQuarter >> 8);
+	            zildo.setCountArrow(countArrow);
+	            zildo.setCountBomb(countBomb);
+	            zildo.setCountKey(countKey);
+	            zildo.setMoney(money);
+	            items = zildo.getInventory();
+	            items.clear();
             }
+            String heroName = URLDecoder.decode(p_buffer.readString(), "UTF-8");
+            heroName = heroName.replaceAll(System.getProperty("line.separator"), "");
+            byte indexSel = p_buffer.readByte();
            
             //zildo.setCountBomb(10);
             
             Game game = new Game(null, heroName);
            
             // 3: Inventory
-            List<Item> items = zildo.getInventory();
-            items.clear();
             int itemNumber = p_buffer.readInt();
             for (int i = 0; i < itemNumber; i++) {
                 String kind = p_buffer.readString();
                 int level = p_buffer.readInt();
-                Item item = new Item(ItemKind.fromString(kind), level);
-                items.add(item);
-                if (indexSel == i) {
-                    zildo.setWeapon(item);
+                if (zildo != null) {
+                	Item item = new Item(ItemKind.fromString(kind), level);
+	                items.add(item);
+	                if (indexSel == i) {
+	                    zildo.setWeapon(item);
+	                }
                 }
             }
             //items.add(new Item(ItemKind.DYNAMITE));
@@ -233,22 +239,27 @@ public class Game implements EasySerializable {
             // 4: map (since 1.096)
             game.mapName = p_buffer.readString();
             Point loc = new Point(p_buffer.readInt(), p_buffer.readInt());
-            zildo.setX(loc.x);
-            zildo.setY(loc.y);
-            zildo.setFloor(1);
-            // Backup quest state to restore if hero dies
-            EngineZildo.setBackedUpGame(p_buffer);
-			
-            if (!p_legacy) {
-                // 5: time spent
-                game.timeSpent = p_buffer.readInt();
+            if (!p_minimal) {
+	            zildo.setX(loc.x);
+	            zildo.setY(loc.y);
+	            zildo.setFloor(1);
+	            // Backup quest state to restore if hero dies
+	            EngineZildo.setBackedUpGame(p_buffer);
             }
+			
+            // 5: time spent
+            game.timeSpent = p_buffer.readInt();
 
             Angle a = Angle.NORD;
             if (!p_buffer.eof()) {
 	            // 6: map start location
             	loc = new Point(p_buffer.readInt(), p_buffer.readInt());
             	a = Angle.fromInt(p_buffer.readByte());
+            }
+            
+            if (p_minimal) {
+            	// We got all we need, so, return from here before the end of file
+            	return game;
             }
             
             // 7: variables
