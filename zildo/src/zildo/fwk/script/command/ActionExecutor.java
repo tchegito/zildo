@@ -422,14 +422,15 @@ public class ActionExecutor {
                 	// Change tile on map
                 	Area area = EngineZildo.mapManagement.getCurrentMap();
                 	Case c = area.get_mapcase(location.x, location.y);
+            		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : Reverse.fromInt(p_action.reverse.evaluateInt());
                 	if (p_action.back != -2) {
-                		c.setBackTile(p_action.back == -1 ? null : new Tile(p_action.back, c));
+                		c.setBackTile(p_action.back == -1 ? null : new Tile(p_action.back, rev, c));
                 	}
                 	if (p_action.back2 != -2) {
-                		c.setBackTile2(p_action.back2 == -1 ? null : new Tile(p_action.back2, c));
+                		c.setBackTile2(p_action.back2 == -1 ? null : new Tile(p_action.back2, rev, c));
                 	}
                 	if (p_action.fore != -2) {
-                		c.setForeTile(p_action.fore == -1 ? null : new Tile(p_action.fore, c));
+                		c.setForeTile(p_action.fore == -1 ? null : new Tile(p_action.fore, rev, c));
                 	}
                 	if (p_action.action != null) {
                 		EngineZildo.scriptManagement.runTileAction(p_action.location.getPoint(), p_action.action);
