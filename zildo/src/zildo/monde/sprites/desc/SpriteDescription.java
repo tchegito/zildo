@@ -93,4 +93,6 @@ public interface SpriteDescription {
 	 * @return
 	 */
 	public boolean isSliping();
+	
+	public boolean isWeapon();
 }

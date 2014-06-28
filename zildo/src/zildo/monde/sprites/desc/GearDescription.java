@@ -148,4 +148,9 @@ public enum GearDescription implements SpriteDescription {
 	public GearDescription getClosedDesc() {
 		return closedDoor;
 	}
+	
+	@Override
+	public boolean isWeapon() {
+		return false;
+	}
 }

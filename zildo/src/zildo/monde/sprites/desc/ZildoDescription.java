@@ -274,4 +274,9 @@ public enum ZildoDescription implements SpriteDescription {
 	public boolean isSliping() {
 		return true;
 	}
+	
+	@Override
+	public boolean isWeapon() {
+		return false;
+	}
 }
