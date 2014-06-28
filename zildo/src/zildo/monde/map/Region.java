@@ -32,15 +32,15 @@ import zildo.fwk.ui.UIText;
 public enum Region {
 
 	Lugdunia("coucou", "d4m*", "ferme*", "bucherons", "d5*"),
-	LugduniaForest("foret*", "bosquet*", "voleurs", "promenade", "buchforet", "igorlily"),
+	LugduniaForest("foret", "bosquet", "voleurs", "promenade", "buchforet", "igorlily"),
 	LugduniaCastle("prisonext", "chateaucoucou1", "chateaucoucou2"),
-	LugduniaCave("lugduniag"),
+	LugduniaCave("foretg", "foretg2", "lugduniag", "bucheronsg"),
 	Fishermen("igorvillage", "igorv*"),
 	LugduniaPrison("prison*"),
 	ClearingOaks("promenade2"),
 	ThievesCamp("voleursm*", "voleurscave"),
 	CaveFlames("voleursg*"),
-	Polaky("polaky", "polaky1", "polaky2", "polaky3"),
+	Polaky("polaky", "polaky1", "polaky2", "polaky3", "bosquetm", "bosquetm2"),
 	PolakyCave("polaky4", "polakyg*");
 	
 	String[] mapNames;
