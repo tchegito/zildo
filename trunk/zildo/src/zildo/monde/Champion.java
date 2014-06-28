@@ -49,7 +49,6 @@ public class Champion {
 	@Override
 	public String toString() {
 		if (ret == null) {
-			int nbMinutes = (int) (timeSpent / 60);
 			String strHq = "" + moonHalf / 4;
 			int half = moonHalf % 4;
 			if (half > 0) {
@@ -57,8 +56,13 @@ public class Champion {
 						"" + 25 * half;
 			}
 			ret = playerName + " - ";
-			ret += nbMinutes+"min"+timeSpent % 60+" - "+strHq+"^ "+money+"¤";
+			ret += getTimeSpentToString((int) timeSpent) + " - "+strHq+"^ "+money+"¤";
 		}
 		return ret;
+	}
+	
+	public static String getTimeSpentToString(int timeSpent) {
+		int nbMinutes = timeSpent / 60;
+		return nbMinutes+"min"+timeSpent % 60;
 	}
 }

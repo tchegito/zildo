@@ -44,7 +44,7 @@ public class EasyReadingFile extends EasyBuffering {
 			stream=new FileInputStream(file);
 		} catch (FileNotFoundException e) {
 
-			throw new RuntimeException("Unable to find "+path);
+			throw new RuntimeException("Unable to find "+path, e);
 		}
 		FileChannel chIn=stream.getChannel();
 		try {
