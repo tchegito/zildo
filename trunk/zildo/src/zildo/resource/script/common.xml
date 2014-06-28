@@ -3,14 +3,14 @@
     <scene id="miniStairsUp">
         <herospecial value="1"/>
         <perso who="zildo" deltaFloor="1"/>
-        <sound name="ZildoDescendPeu"/>
+        <sound name="ZildoDescend"/>
 		<moveTo who="zildo" pos="0,-32" speed="1" unstoppable="true" delta="true"/>
         <herospecial value="2"/>
 	</scene>
 	
 	<scene id="miniStairsDown">
         <herospecial value="1"/>
-	    <sound name="ZildoMontePeu"/>
+	    <sound name="ZildoMonte"/>
 		<moveTo who="zildo" pos="0,34" speed="1" unstoppable="true" delta="true"/>
 		<herospecial value="2"/>
         <perso who="zildo" deltaFloor="-1"/>

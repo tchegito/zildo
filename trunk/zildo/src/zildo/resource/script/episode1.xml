@@ -1087,38 +1087,38 @@
 	    <!-- We could also set them standing, instead of moving. -->
 	    <remove who="green1"/>
 	    <remove who="green2"/>
-	    <spawn who="gard1" type="GARDE_CANARD" angle="0" pos="520,261" effect="noir"/>
+	    <spawn who="gard4" type="GARDE_CANARD" angle="0" pos="520,261" effect="noir"/>
 	    <spawn who="gard2" type="GARDE_CANARD" angle="0" pos="712,261" effect="noir"/>
 	    <angle who="zildo" value="2"/>
 	    <music name="Surprise"/>
 	    <actions>
-	        <moveTo who="gard1" pos="0,-48" delta="true"/>
+	        <moveTo who="gard4" pos="0,-48" delta="true"/>
 	    	<moveTo who="gard2" pos="0,-48" delta="true"/>
 	    </actions>
 	    <moveTo who="zildo" pos="615,109"/>
 	    <spawn who="gard3" type="GARDE_CANARD" angle="0" pos="616,256" effect="noir"/>
 	    <actions>
-		    <moveTo who="gard1" pos="600,111"/>
+		    <moveTo who="gard4" pos="600,111"/>
 		    <moveTo who="gard2" pos="632,111" unstoppable="true"/>
 		    <moveTo who="gard3" pos="0,-48" delta="true" speed="0.25"/>
 	    </actions>
-	    <speak who="gard1" text="polaky.gard.0"/>
-	    <angle who="gard1" value="1"/>
+	    <speak who="gard4" text="polaky.gard.0"/>
+	    <angle who="gard4" value="1"/>
 	    <angle who="gard2" value="3"/>
-	    <speak who="gard1" text="polaky.gard.1"/>
-	    <speak who="gard1" text="polaky.gard.2"/>
+	    <speak who="gard4" text="polaky.gard.1"/>
+	    <speak who="gard4" text="polaky.gard.2"/>
 	    <actions>
 	        <moveTo who="zildo" pos="0,2" delta="true"/>
-	        <moveTo who="gard1" pos="0,1" delta="true"/>
+	        <moveTo who="gard4" pos="0,1" delta="true"/>
 	        <moveTo who="gard2" pos="0,1" delta="true"/>
 	    </actions>
-	    <angle who="gard1" value="1"/>
+	    <angle who="gard4" value="1"/>
 	    <angle who="gard2" value="3"/>
-	    <speak who="gard1" text="polaky.gard.3"/>
+	    <speak who="gard4" text="polaky.gard.3"/>
 	    <wait value="10"/>
 	    <actions>
 		    <moveTo who="zildo" pos="615,172" speed="0.7"/>
-	        <moveTo who="gard1" pos="600,172" speed="0.7"/>
+	        <moveTo who="gard4" pos="600,172" speed="0.7"/>
 	        <moveTo who="gard2" pos="632,172" speed="0.7"/>
 	    </actions>
 	    <actions>

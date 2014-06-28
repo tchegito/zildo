@@ -844,7 +844,6 @@
    		    <pos who="f6" pos="145,121"/>
    		</condition>
    		<condition name="coucou" exp="attaque_voleurs-!zildoDream">
-   		    <remove who="papy"/>
    		    <remove who="vieille"/>
    		    <remove who="petula"/>
    		    <remove who="c1"/>
