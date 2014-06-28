@@ -832,7 +832,7 @@ public class GUIDisplay {
 						.playSoundFX(BankSound.ZildoGagneArgent);
 			}
 		}
-		displayNumber(countMoney, 3, 87, GUI_Y);
+		displayNumber(countMoney, 4, 87, GUI_Y);
 
 		// Bombs
 		if (zildo.hasItem(ItemKind.DYNAMITE)) {
