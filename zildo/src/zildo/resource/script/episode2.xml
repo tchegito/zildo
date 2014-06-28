@@ -1548,6 +1548,8 @@
   	    <angle who="hector" value="2"/>
 	    <speak who="hector" text="lugduniag.hector.6"/>
 	    <script who="zildo" value="3"/>
+	    <moveTo who="zildo" pos="0,4" delta="true"/>
+	    <angle who="zildo" value="0"/>
 	    <moveTo who="hector" pos="917,664"/>
 	    <angle who="hector" value="1"/>
 	</scene>
