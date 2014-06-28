@@ -22,6 +22,7 @@ public class PersoBat extends PersoShadowed {
 	
 	public PersoBat() {
 		pathFinder = new PathFinderStraightFlying(this, 6, 2);
+		pathFinder.speed = 0;	// To allow specific speed
 		pv = 2;
 		setForeground(true);
 	}
