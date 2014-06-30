@@ -219,8 +219,11 @@ public class CollideManagement {
         	} else {
         		// How much damage ?
         		int dmg = p_collider.damageType == null ? 1 : p_collider.damageType.getHP(perso);
+        		
         		// Does this character resist to this kind of damage ?
-        		if (!persoResisting && dmg > 0) {
+        		// And is the collided immaterial ? (ex: poison => we can't hurt poison !)
+        		boolean material = p_collided.damageType == null ? true : !p_collided.damageType.isImmaterial();
+        		if (!persoResisting && material && dmg > 0) {
 	        		Perso attacker=p_collider.perso;
 	        		if (attacker != null && p_collider.perso.isZildo()) {
 	        			PersoZildo zildo=(PersoZildo) attacker;
