@@ -62,4 +62,8 @@ public enum DamageType {
 			return 1;
 		}
 	}
+	
+	public boolean isImmaterial() {
+		return this == POISON || this == EXPLOSION;
+	}
 }
