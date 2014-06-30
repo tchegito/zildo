@@ -193,7 +193,6 @@ public class SaveGameMenu extends PageableMenu {
 	public static List<String> findSavegame() {
 		File[] savegames = Zildo.pdPlugin.listFiles(Constantes.SAVEGAME_DIR, new SaveGameFilter());
 		List<String> filenames = new ArrayList<String>();
-		int i=1;
 		if (savegames != null && savegames.length > 0) { // Is there any savegames ?
 			for (File f : savegames) {
 				String filename = Constantes.SAVEGAME_DIR + f.getName();

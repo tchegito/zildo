@@ -28,7 +28,7 @@ public class Item {
 
 	public Item(ItemKind p_kind) {
 		kind = p_kind;
-		level = 0;
+		level = p_kind.startLevel;
 	}
 
 	public Item(ItemKind p_kind, int p_level) {

@@ -48,14 +48,20 @@ public enum ItemKind {
 	FLASK_YELLOW(ElementDescription.FLASK_YELLOW, 100),
 	EMPTY_BAG(ElementDescription.EMPTY_BAG, 20),
 	FULL_BAG(ElementDescription.FULL_BAG, 20),
-	FIRE_RING(ElementDescription.FIRE_RING, 800);
+	FIRE_RING(ElementDescription.FIRE_RING, 800, 5000);
 	
-	public SpriteDescription representation;
-	public int price;
+	final public SpriteDescription representation;
+	final public int price;
+	final public int startLevel;
 	
 	private ItemKind(SpriteDescription p_itemRepresentation, int p_price) {
+		this(p_itemRepresentation, p_price, 0);
+	}
+	
+	private ItemKind(SpriteDescription p_itemRepresentation, int p_price, int p_startLevel) {
 		representation = p_itemRepresentation;
 		price = p_price;
+		startLevel = p_startLevel;
 	}
 	
 	public static ItemKind fromString(String p_str) {
@@ -95,6 +101,6 @@ public enum ItemKind {
 	
 	/** Returns TRUE if item can be multiple in the inventory. Typically, dynamites aren't. **/
 	public boolean canBeMultiple() {
-		return this != DYNAMITE;
+		return this != DYNAMITE && this != FLASK_RED;
 	}
 }
