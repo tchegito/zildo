@@ -281,6 +281,7 @@ public class ClientEngineZildo {
             		EngineZildo.mapManagement.deleteCurrentMap();
             		EngineZildo.persoManagement.getZildo().setX(-100);
             		ClientEngineZildo.tileEngine.cleanUp();
+            		//retEvent.nature = ClientEventNature.NOEVENT;
 					break;
 				case CHANGINGMAP_LOADED :
 					// Changing map : 2/3 we load the new map and launch the
