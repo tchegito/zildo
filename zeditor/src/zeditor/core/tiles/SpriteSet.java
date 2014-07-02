@@ -141,13 +141,16 @@ public class SpriteSet extends ImageSet {
 
 				@Override
 				public boolean isNotFixe() {
-					// TODO Auto-generated method stub
 					return false;
 				}
 
 				@Override
 				public boolean isSliping() {
-					// TODO Auto-generated method stub
+					return false;
+				}
+
+				@Override
+				public boolean isWeapon() {
 					return false;
 				}
 
