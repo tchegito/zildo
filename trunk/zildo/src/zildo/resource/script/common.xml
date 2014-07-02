@@ -192,6 +192,7 @@
 	</scene>
 	
 	<scene id="endFallPit">
+   	    <script who="zildo" text="TOMBE"/>
 	    <visible who="zildo" value="true"/>
 	    <fadeIn type="5" unblock="true" />
 	    <pos who="zildo" z="30"/>
