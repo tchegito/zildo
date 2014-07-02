@@ -722,6 +722,11 @@
 	    <condition name="voleurs" exp="attaque_voleurs">
 			<tile pos="27,21" action="illTree"/> <tile pos="10,16" action="illTree"/>
 		</condition>
+		<condition name="voleurs" exp="attaque_voleurs-!meanwhile_voleurs">
+		    <spawn type="FOX" who="rouge" pos="874,985" angle="3"/>
+		    <spawn type="FOX" who="bleu" pos="880,998" angle="3"/>
+		    <spawn type="FOX" who="vert" pos="839,924" angle="2" floor="2"/>
+		</condition>
 		<condition name="voleursg3" exp="trig_echange">
 		    <actions>
 		    	<animation type="BIG_FIREBALL" what="fireb1" angle="0" pos="144,302"/>
