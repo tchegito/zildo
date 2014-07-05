@@ -388,13 +388,16 @@ public class MapManagement {
 		int floor = 0;
 		Perso perso = null;
 		boolean allowOverBottomLess = false;	// Allow people to go on bottom less case ? (lava, void)
-		if (quelElement != null && quelElement.getEntityType() == EntityType.PERSO) {
-			perso = (Perso) quelElement;
-			floor = perso.getFloor();
-			allowOverBottomLess = quelElement.flying || quelElement.isZildo();
+		boolean foreground = false;
+		if (quelElement != null) {
+			floor = quelElement.getFloor();
+			// Check on back or fore ground, depending on the character we're checking
+			foreground = quelElement.isForeground();
+			if (quelElement.getEntityType() == EntityType.PERSO) {
+				perso = (Perso) quelElement;
+				allowOverBottomLess = quelElement.flying || quelElement.isZildo();
+			}
 		}
-		// Check on back or fore ground, depending on the character we're checking
-		boolean foreground = quelElement != null && quelElement.isForeground();
 
 		// Check 4 corners of a 4x4 sized square
 		Point[] ref = tabPointRef;
