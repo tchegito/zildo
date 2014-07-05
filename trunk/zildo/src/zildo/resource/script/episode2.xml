@@ -859,11 +859,11 @@
    		    <remove who="p3"/>
    		    <remove who="p4"/>
    		    <remove who="p5"/>
-   		    <remove who="garde"/>
    		</condition>
    		<condition name="coucou" exp="attaque_voleurs">
    		    <remove who="mostapha"/>
    		    <remove who="papy"/>
+   		    <remove who="garde"/>
    		    <tile pos="35,13" action="illTree"/>
    		    <tile pos="35,0" action="illTree"/>
    		    <tile pos="27,13" action="illTree"/>
