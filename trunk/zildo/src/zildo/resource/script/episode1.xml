@@ -49,11 +49,13 @@
 	</quest>
 	<quest name="fermierperdu_ask">
 		<trigger>
+		    <location name="fermem1"/>
 			<dialog name="laura" num="1"/>
 		</trigger>
 	</quest>
 	<quest name="fermierperdu_bar">
 		<trigger>
+		    <location name="coucou"/>
 			<dialog name="mostapha" num="2"/>
 		</trigger>
 		<action>
