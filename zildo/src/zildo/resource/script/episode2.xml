@@ -377,6 +377,7 @@
 		    <location name="prison" pos="175,80" radius="1"/>
 		    <questDone name="!visit_gpprison"/>	<!-- one at a time -->
 		    <questDone name="ask_visitprison"/>
+		    <questDone name="!zildoAccessIgor"/>
 		</trigger>
 		<action>
 		    <script who="zildo" text="VIDE"/>	<!-- To reset his movement -->
@@ -682,7 +683,7 @@
     	    <location name="prisonext"/>
     	</trigger>
     	<action>
-    	    <script who="igor" value="3"/>
+    	    <exec script="liberationIgor"/>
     	</action>
     </quest>
     
@@ -1558,6 +1559,30 @@
 	    <angle who="hector" value="1"/>
 	</scene>
 	
+	<scene id="liberationIgor">
+		<script who="igor" value="3"/>
+	    <moveTo who="igor" unstoppable="true" pos="744,230"/>
+	    <wait value="40"/>
+	    <speak who="zildo" text="prisonext.freeIgor.zildo.0"/>
+	    <angle who="igor" value="0"/>
+	    <speak who="igor" text="prisonext.freeIgor.igor.1"/>
+	    <actions>
+	        <moveTo who="zildo" pos="720,231"/>
+			<speak who="zildo" text="prisonext.freeIgor.zildo.1"/>
+	    </actions>
+	    <angle who="zildo" value="1"/>
+	    <angle who="igor" value="3"/>
+		<speak who="zildo" text="prisonext.freeIgor.zildo.2"/>
+		<speak who="igor" text="prisonext.freeIgor.igor.2"/>
+		<speak who="zildo" text="prisonext.freeIgor.zildo.3"/>
+		<moveTo who="igor" pos="714,240" unstoppable="true"/>
+		<moveTo who="igor" pos="670,228" unstoppable="true"/>
+		<angle who="igor" value="1"/>
+		<angle who="zildo" value="3"/>
+		<speak who="igor" text="prisonext.freeIgor.igor.3"/>
+		<speak who="zildo" text="prisonext.freeIgor.zildo.4"/>	    
+	</scene>
+
 	<persoAction id="sleeping">
 	    <timer each="40+20*random">
 	        <action>
