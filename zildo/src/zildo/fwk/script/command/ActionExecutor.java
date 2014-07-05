@@ -435,7 +435,6 @@ public class ActionExecutor {
                 	if (p_action.action != null) {
                 		EngineZildo.scriptManagement.runTileAction(p_action.location.getPoint(), p_action.action);
                 	}
-                	EngineZildo.mapManagement.getCurrentMap().set_mapcase(location.x, location.y, c);
                 	achieved = true;
                 	break;
                 case filter:
