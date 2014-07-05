@@ -517,6 +517,12 @@ public class Element extends SpriteEntity {
 		this.linkedPerso = linkedPerso;
 	}
 
+	protected TileNature getCurrentTileNature() {
+		Area area = EngineZildo.mapManagement.getCurrentMap();
+		int cx = (int) (x / 16);
+		int cy = (int) (y / 16);
+		return area.getCaseNature(cx, cy);
+	}
 	/**
 	 * Called when the object fall on the floor, whatever kind of floor.
 	 * This method handles behavior when element/perso hits the floor, but doesn't remove it. For this, call {@link #die()}.
@@ -536,7 +542,7 @@ public class Element extends SpriteEntity {
 		Area area = EngineZildo.mapManagement.getCurrentMap();
 		int cx = (int) (x / 16);
 		int cy = (int) (y / 16);
-		TileNature nature = area.getCaseNature(cx, cy);
+		TileNature nature = getCurrentTileNature();
 		
 		if (nature != null) {
 			switch (nature) {

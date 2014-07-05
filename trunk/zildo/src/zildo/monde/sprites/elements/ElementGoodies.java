@@ -21,6 +21,7 @@
 package zildo.monde.sprites.elements;
 
 import zildo.fwk.script.logic.FloatExpression;
+import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
@@ -41,7 +42,7 @@ public class ElementGoodies extends Element {
 	 */
 	public ElementGoodies() {
 		super();
-		spe=540;	// Durée de vie du goodies, en frames (on tourne en général à 60FPS : 540==9sec)
+		spe=540;	// Goodies life duration, in frames (generally about 60FPS : 540==9sec)
 	}
 	
 	/**
@@ -55,6 +56,15 @@ public class ElementGoodies extends Element {
 	
 	@Override
 	public void animate() {
+		
+		TileNature nature = getCurrentTileNature();
+		switch (nature) {
+			case BOTTOMLESS:
+			case WATER:
+				fall();
+				dying = true;
+				break;
+		}
 		
 		super.animate();
 		
