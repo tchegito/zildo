@@ -196,6 +196,7 @@ public class PersoPanel extends JPanel {
 			MapDialog mapDialog = EngineZildo.mapManagement.getCurrentMap()
 					.getMapDialog();
 			behavior = mapDialog.getBehaviors().get(p_perso.getName());
+			spinner.setValue(0);
 		}
 		currentPerso = p_perso;
 		updateDialog();
@@ -209,11 +210,13 @@ public class PersoPanel extends JPanel {
 	private void initSpinner() {
 		int max = 0;
 		if (behavior != null) {
-			for (int i = 0; i < behavior.replique.length; i++) {
+			int i;
+			for (i = 0; i < behavior.replique.length; i++) {
 				if (behavior.replique[i] == 0) {
-					max = i;
+					break;
 				}
 			}
+			max = i-1;
 		}
 		spinner.setModel(new SpinnerNumberModel(0, 0, max, -1)); // -1 to get
 																	// next
