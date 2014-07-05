@@ -1296,6 +1296,7 @@
 	    <pos who="zildo" pos="79,79"/>
 	  	<perso who="zildo" action="sleeping"/>
 	  	<script who="zildo" text="SLEEPING"/>
+	  	<filter type="0"/>
 	    <fadeIn value="1"/>
 	    <wait value="150"/>
 	    <sound name="OuvrePorte"/>
