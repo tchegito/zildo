@@ -51,6 +51,8 @@ public class AndroidSpriteEngine extends SpriteEngine {
 		shaders = AndroidPixelShaders.shaders;
 	}
 	
+	float gamma;
+	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// render
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -115,6 +117,10 @@ public class AndroidSpriteEngine extends SpriteEngine {
 						ClientEngineZildo.pixelShaders.setParameter(1, "randomColor", );
 						*/
 						break;
+	                case WHITE_HALO:
+	                	shaders.setCurrentShader(GLShaders.goldFilter);
+	                	shaders.setGoldFactor((float) (0.6+0.4*Math.cos(3*gamma)));
+	                	break;
 					default:
 						if (currentFX.needPixelShader()) {
 							// This is a color replacement, so get the right ones
@@ -164,6 +170,8 @@ public class AndroidSpriteEngine extends SpriteEngine {
 			shaders.setCurrentShader(GLShaders.textured);
 		}
 		GLES20.glDisable(GLES20.GL_BLEND);
+		
+		gamma += 0.01f;
 	}
 
 	/**
