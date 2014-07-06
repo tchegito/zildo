@@ -99,7 +99,8 @@ public class PlayerManagement {
 		} 
 
 		// Specific for touchscreen : "touch frame" is equivalent to "touch Action key"
-		if (dialogState.dialoguing && PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
+		// Except for BUYING action ! 
+		if (dialogState.dialoguing && gamePhase != GamePhase.BUYING && PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
 			instant.setKey(KeysConfiguration.PLAYERKEY_ACTION,
 					instant.isKeyDown(KeysConfiguration.PLAYERKEY_DIALOG));
 		}
