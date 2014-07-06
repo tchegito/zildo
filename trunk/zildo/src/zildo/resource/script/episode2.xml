@@ -697,6 +697,16 @@
         </action>
     </quest>
     
+    <quest name="getBackIgor">
+        <trigger>
+            <questDone name="waitingForIgor"/>
+            <location name="prisonext" pos="680,239" radius="1"/>
+        </trigger>
+        <action>
+            <exec script="meetIgor"/>
+        </action>
+    </quest>
+
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->        
@@ -788,6 +798,9 @@
 		    <!-- Repeat Pssst if player hasn't seen Hector yet -->
 		    <markQuest name="hector_call1" value="false"/>
 		    <markQuest name="hector_call2" value="false"/>
+		</condition>
+		<condition name="prisonext" exp="freedIgor">
+		    <spawn who="igor" pos="670,228" angle="2" type="IGOR"/>
 		</condition>
 		<condition name="voleursm1">
 		    <perso who="rouge" action="sleeping"/>
@@ -1558,6 +1571,8 @@
 	    <angle who="zildo" value="0"/>
 	    <moveTo who="hector" pos="917,664"/>
 	    <angle who="hector" value="1"/>
+	    <!-- Note that hero must catch Igor -->
+	    <markQuest name="waitingForIgor" value="true"/>
 	</scene>
 	
 	<scene id="liberationIgor">
@@ -1584,6 +1599,44 @@
 		<speak who="zildo" text="prisonext.freeIgor.zildo.4"/>	    
 	</scene>
 
+	<scene id="meetIgor">
+	    <moveTo who="igor" pos="0,4" delta="true"/>
+	    <script who="igor" value="2" effect="zildo"/>
+	    <speak who="igor" text="pext.rescue.igor.0"/>
+		<speak who="zildo" text="pext.rescue.zildo.0"/>
+		<speak who="igor" text="pext.rescue.igor.1"/>
+		<focus/>
+		<script who="igor" value="16" effect="zildo"/>
+		<moveTo who="zildo" pos="913,471" speed="0.8" unblock="true"/>
+		<wait value="150"/>
+		<fadeOut value="0"/>
+		<wait value="50"/>
+		<exec script="ep2_closure"/>
+	</scene>
+	
+	<scene id="ep2_closure">
+	   <speak what="camera" text="ep2.ending.0"/>
+	   <speak what="camera" text="ep2.ending.1"/>
+	   <music name="Chateau"/>
+	   <map name="d4m9"/>
+	   <spawn who="igor" type="IGOR" pos="71,119" angle="0"/>
+	   <fadeIn value="0"/>
+	   <wait value="60"/>
+	   <moveTo who="igor" pos="120,127"/>
+	   <wait value="20"/>
+	   <moveTo who="igor" pos="71,119"/>
+	   <angle who="igor" value="0"/>
+	   <speak what="camera" text="ep2.ending.2"/>
+	   <speak what="camera" text="ep2.ending.3"/>
+	   <fadeOut value="0"/>
+	   <speak what="camera" text="ep2.ending.4"/>
+	   <music/>
+	   <speak what="camera" text="ep2.ending.cut.0"/>
+	   <music name="Voleurs"/>
+	   <speak what="camera" text="ep2.ending.cut.1"/>
+	   <end type="0"/>
+	</scene>
+	
 	<persoAction id="sleeping">
 	    <timer each="40+20*random">
 	        <action>
