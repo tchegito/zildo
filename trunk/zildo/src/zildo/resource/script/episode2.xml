@@ -358,7 +358,7 @@
     <quest name="hector_call3">
         <trigger>
             <location name="prisonext" pos="912,468" radius="1"/>
-            <questDone name="retour_trion"/>
+            <questDone name="retour_trion-hector_call2"/>
         </trigger>
         <action>
             <exec script="meetHiddenHector"/>
@@ -764,7 +764,7 @@
    		    <script who="gard3" value="3"/>
    		    <script who="gard4" value="3"/>
    		    <script who="gard5" value="3"/>
-   		    <!-- Open the prison, and hide Hector -->
+   		    <!-- Open the prison -->
    		  	<remove what="prisondoor"/>
    		</condition>
    		<condition name="prisonext" exp="retour_trion-!hector_call3">
@@ -1222,6 +1222,7 @@
 	   	<moveTo who="zildo" pos="368,1025"/>
 	   	<!--  switch map to prisonext -->
 	   	<wait value="20"/>
+	   	<remove who="hector"/>
 	   	<moveTo who="zildo" pos="368,64"/>
 	</scene>
 	
