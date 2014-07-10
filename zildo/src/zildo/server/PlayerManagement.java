@@ -549,7 +549,7 @@ public class PlayerManagement {
 	// keyPressInventory
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyPressInventory() {
-		if (!keysState.key_inventoryPressed && gamePhase != GamePhase.DIALOG && gamePhase != GamePhase.SCRIPT 
+		if (!keysState.key_inventoryPressed && gamePhase != GamePhase.MAPCHANGE && gamePhase != GamePhase.DIALOG && gamePhase != GamePhase.SCRIPT 
 				&& heros.getMouvement()==MouvementZildo.VIDE && heros.getAttente() == 0) {
 			if (!heros.isInventoring()) {
 				heros.lookInventory();
