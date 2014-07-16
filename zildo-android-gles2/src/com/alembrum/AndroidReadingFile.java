@@ -46,8 +46,9 @@ public class AndroidReadingFile extends EasyBuffering {
 		Log.d("file", "open "+path);
 		int done = 0;
 		boolean finished = false;
+		InputStream stream = null;
 		try {
-			InputStream stream;
+			
 			if (asset) {
 				stream = openAssetFile(path);
 			} else {
@@ -66,6 +67,13 @@ public class AndroidReadingFile extends EasyBuffering {
 		    }
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to read "+path);
+		} finally {
+			if (stream != null)
+				try {
+					stream.close();
+				} catch (IOException e) {
+					throw new RuntimeException("Something went horribly wrong : unable to close stream");
+				}
 		}
 		data.flip();
 	}
