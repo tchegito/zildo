@@ -32,7 +32,9 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.FileUtil;
 import zildo.resource.Constantes;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.net.Uri;
 import android.util.Log;
 
 /**
@@ -62,11 +64,27 @@ public class AndroidFileUtil implements FileUtil {
 	@Override
 	public File[] listFiles(String path, FilenameFilter filter) {
 		List<File> files = new ArrayList<File>();
-		String[] strFiles = AndroidReadingFile.context.fileList();
 
+		String[] strFiles;
+		// Not really clean : we consider that savegames are in Context private files
+		if (Constantes.SAVEGAME_DIR.equals(path)) {
+			strFiles = AndroidReadingFile.context.fileList();
+		} else {
+			// And other one are in assets. That is true, but how be more elegant ?
+			try {
+				String pathWithoutSeparator = path;
+				int posSeparator = path.indexOf("/");
+				if (posSeparator != -1) {
+					pathWithoutSeparator = path.substring(0, posSeparator);
+				}
+				strFiles = AndroidReadingFile.assetManager.list("resources/"+pathWithoutSeparator);
+			} catch (IOException e) {
+				throw new RuntimeException("Unable to list files from asset !");
+			}
+		}
 		for (String s : strFiles) {
 			File saveFile = AndroidReadingFile.context.getFileStreamPath(s);
-			if (saveFile.getName().startsWith(Constantes.SAVEGAME_FILE)) {
+			if (filter.accept(saveFile, saveFile.getName())) {
 				files.add(saveFile);
 			}
 		}
@@ -96,5 +114,11 @@ public class AndroidFileUtil implements FileUtil {
 	private String removePaths(String s) {
 		return s.replaceAll(Constantes.SAVEGAME_DIR, "")
 				.replaceAll(Constantes.INI_DIR, "");
+	}
+	
+	@Override
+	public void openLink(String url) {
+		Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"+url));
+		AndroidReadingFile.context.getApplicationContext().startActivity(browserIntent);		
 	}
 }
