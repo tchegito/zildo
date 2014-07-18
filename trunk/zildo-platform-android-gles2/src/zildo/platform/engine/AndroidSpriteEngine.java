@@ -121,6 +121,10 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	                	shaders.setCurrentShader(GLShaders.goldFilter);
 	                	shaders.setGoldFactor((float) (0.6+0.4*Math.cos(3*gamma)));
 	                	break;
+	                case STAR:
+	                	shaders.setCurrentShader(GLShaders.star);
+	                	shaders.setStarNoise(gamma, (float) Math.random());
+	                	break;
 					default:
 						if (currentFX.needPixelShader()) {
 							// This is a color replacement, so get the right ones

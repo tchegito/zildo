@@ -48,7 +48,9 @@ public class Shaders {
 		// Specific for guards, and wounded enemies
 		switchColor, wounded,
 		// Gold (for invincibility)
-		goldFilter;
+		goldFilter,
+		// Star (aura for black guards)
+		star;
 		
 		public int id;	// program id
 		// One map for all shaders
@@ -62,7 +64,8 @@ public class Shaders {
 		}
 		
 		public int getUniform(String name) {
-			return uniforms.get(""+id+name);	// Beware to NPE !!!
+			Integer i = uniforms.get(""+id+name);
+			return i == null ? -1 : i.intValue();	// NPE is handled this way => return -1
 		}
 	}
 	
@@ -84,6 +87,7 @@ public class Shaders {
 	Vector4f[] switchedColors = new Vector4f[4];
 	Vector4f woundedColor = new Vector4f(1, 1, 1, 1);
 	Vector4f goldFactor;	// Only first component is used
+	Vector2f starNoise;
 	
 	GLShaders current = GLShaders.textured;	// Default is 'textured'
 	
@@ -139,7 +143,9 @@ public class Shaders {
         GLES20.glEnableVertexAttribArray(hTexturedTexPosition);
         
         int hTextureIndex = current.getUniform("sTexture");
-        GLES20.glUniform1i(hTextureIndex, 0); 
+        if (hTextureIndex != -1) {
+        	GLES20.glUniform1i(hTextureIndex, 0);
+        }
         
         int hTexturedOrthoMatrix = current.getUniform("uMVPMatrix");
 		GLES20.glUniformMatrix4fv(hTexturedOrthoMatrix, 1, false, orthoMatrix, 0);
@@ -177,34 +183,39 @@ public class Shaders {
 		switch (current) {
 			case pixelateFilter:
 				GLES20.glUniform1f(current.getUniform("squareSize"), squareSize);
-				uniform4f(current.getUniform("CurColor"), curColor);
+				uniform4f("CurColor", curColor);
 				break;
 			case circleFilter:
 				GLES20.glUniform1i(current.getUniform("radius"), radius);
 				GLES20.glUniform2f(current.getUniform("center"), center.x, center.y);
-				uniform4f(current.getUniform("CurColor"), curColor);
+				uniform4f("CurColor", curColor);
 				break;
 			case switchColor:
-				uniform4f(current.getUniform("Color1"), switchedColors[0]);
-				uniform4f(current.getUniform("Color2"), switchedColors[1]);
-				uniform4f(current.getUniform("Color3"), switchedColors[2]);
-				uniform4f(current.getUniform("Color4"), switchedColors[3]);
-				uniform4f(current.getUniform("CurColor"), curColor);
+				uniform4f("Color1", switchedColors[0]);
+				uniform4f("Color2", switchedColors[1]);
+				uniform4f("Color3", switchedColors[2]);
+				uniform4f("Color4", switchedColors[3]);
+				uniform4f("CurColor", curColor);
 				break;
 			case wounded:
-				uniform4f(current.getUniform("randomColor"), woundedColor);
+				uniform4f("randomColor", woundedColor);
 				break;
 			case goldFilter:
-				uniform4f(current.getUniform("factor"), goldFactor);
+				uniform4f("factor", goldFactor);
+				break;
+			case star:
+				GLES20.glUniform2f(current.getUniform("noise"), starNoise.x, starNoise.y);
 				break;
 			default:
-				uniform4f(current.getUniform("CurColor"), curColor);
+				uniform4f("CurColor", curColor);
 				GLES20.glUniform2f(current.getUniform("vTranslate"), translation.x, translation.y);
 				break;
 		}
 	}
 
-	private void uniform4f(int uniformId, Vector4f v) {
+	/** Convenient method to pass a 4-dimension vector via an uniform. **/
+	private void uniform4f(String uniformName, Vector4f v) {
+		int uniformId = current.getUniform(uniformName);
 		GLES20.glUniform4f(uniformId, v.x, v.y, v.z, v.w);
 	}
 
@@ -275,6 +286,10 @@ public class Shaders {
 	
 	public void setWoundedColor(Vector4f v) {
 		woundedColor.set(v);
+	}
+	
+	public void setStarNoise(float f, float g) {
+		starNoise = new Vector2f(f, g);
 	}
 	
 	public void setGoldFactor(float f) {
