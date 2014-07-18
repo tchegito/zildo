@@ -72,7 +72,7 @@ public class AndroidPixelShaders extends PixelShaders {
         GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compileStatus, 0);
         if (compileStatus[0] == 0) {
             String message = GLES20.glGetShaderInfoLog(shader);
-        	Log.d("shaders", "can't compile, message="+message+" code="+shaderPro);
+        	Log.e("shaders", "can't compile, message="+message+" code="+shaderPro);
         } else {
         	Log.d("shaders", "Compilation ok");
         }
@@ -121,7 +121,7 @@ public class AndroidPixelShaders extends PixelShaders {
         // If the link failed, delete the program.
         if (linkStatus[0] == 0)
         {
-        	Log.d("shaders", "link failed !");
+        	Log.e("shaders", "link failed !");
             GLES20.glDeleteProgram(mProgram);
             mProgram = 0;
         }
