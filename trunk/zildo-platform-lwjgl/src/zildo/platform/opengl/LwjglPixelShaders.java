@@ -45,7 +45,9 @@ public class LwjglPixelShaders extends PixelShaders {
 		// Specific for guards, and wounded enemies
 		switchColor, wounded,
 		// Gold (for invincibility)
-		invincibility;
+		invincibility,
+		// Star
+		star;
 	}
 	
 	@Override
