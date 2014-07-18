@@ -116,6 +116,11 @@ public class LwjglSpriteEngine extends SpriteEngine {
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(2));
 						ClientEngineZildo.pixelShaders.setParameter(2, "factor", new Vector4f((float) (0.6+0.4*Math.cos(3*gamma)), 0, 0, 1));
 						break;
+                	case STAR:
+						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(3));
+						ClientEngineZildo.pixelShaders.setParameter(3, "noise", new Vector4f(gamma, (float) Math.random(), 0, 1));
+						break;
+                		
 					default:
 						if (currentFX.needPixelShader()) {
 							// This is a color replacement, so get the right ones
