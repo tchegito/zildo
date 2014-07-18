@@ -464,7 +464,7 @@ public abstract class Perso extends Element {
 		// Project monster away from the enemy
 		float diffx = getX() - p_cx;
 		float diffy = getY() - p_cy;
-		double norme = Math.sqrt((diffx * diffx) + (diffy * diffy));
+		double norme = Pointf.pythagore(diffx, diffy);
 		if (norme == 0.0f) {
 			norme = 1.0f; // To avoid 'divide by zero'
 		}
