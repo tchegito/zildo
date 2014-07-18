@@ -65,4 +65,9 @@ public class ClassicFileUtil implements FileUtil {
 		// Private file is nonsense for LWJGL platforms => same as openFile
 		return openFile(path);
 	}
+
+	@Override
+	public void openLink(String url) {
+		// Never called on this device
+	}
 }

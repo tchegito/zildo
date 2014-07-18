@@ -39,4 +39,6 @@ public interface FileUtil {
 	// Method used only in Android to get an AssetFileDescriptor
 	Object openFd(String path);
 	
+	// Used to open a link in current device (is FileUtil the best place to do this ?)
+	void openLink(String url);
 }
