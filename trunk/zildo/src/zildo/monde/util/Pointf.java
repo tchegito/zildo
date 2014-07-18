@@ -55,6 +55,7 @@ public class Pointf {
     	return new Pointf(ax, ay).distance(bx, by);
     }
     
+    /** Returns the length of a 2-dimension vector [ax,ay] **/
     public static double pythagore(float ax, float ay) {
         float c = ax * ax;
         c += ay * ay;
