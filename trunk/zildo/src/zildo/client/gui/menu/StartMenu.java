@@ -20,8 +20,10 @@
 
 package zildo.client.gui.menu;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
@@ -56,109 +58,116 @@ public class StartMenu extends Menu {
         // Display version
 		ClientEngineZildo.guiDisplay.displayMessage("v" + Constantes.CURRENT_VERSION_DISPLAYED);
 
-        ItemMenu itemSinglePlayer = new ItemMenu("m1.single") {
+		List<ItemMenu> theItems = new ArrayList<ItemMenu>();
+		theItems.add(new ItemMenu("m1.single") {
             @Override
             public void run() {
     			client.handleMenu(new SinglePlayerMenu(currentMenu));
             }
-        };
+        });
 
-        ItemMenu itemMultiPlayer = new ItemMenu("m1.multi") {
-            Menu multiMenu;
-            boolean lan = true;
-            StringBuilder playerName = new StringBuilder(PlayerNameMenu.loadPlayerName());
-
-            @Override
-            public void run() {
-            	// TODO: Dirty way to check Android platform : need to be cleaned with
-            	// a better injection mechanism.
-            	if (PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
-            		client.handleMenu(new InfoMenu("info.multiandroid", currentMenu));
-            		return;
-            	}
-                ItemMenu itemCreate = new ItemMenu("m2.create", BankSound.MenuSelectGame) {
-                    @Override
-                    public void run() {
-                        new MultiPlayer(new Game("polakym", false), lan);
-                	}
-                };
-                ItemMenu itemJoin=new ItemMenu("m2.join", BankSound.MenuSelectGame) {
-                	@Override
-					public void run() {
-                		if (lan) {
-                			new MultiPlayer();
-                		} else {
-                			// Internet
-                    		List<ServerInfo> serversReady=WorldRegister.getStartedServers();
-                    		if (serversReady.isEmpty()) {
-                    			client.handleMenu(new InfoMenu("mess.noservers", currentMenu));
-                    		} else {
-                    			client.handleMenu(new JoinGameMenu(serversReady, multiMenu));
-                    		}
-                		}
-                	}
-                };
-                final ItemMenu itemPlayerName = new ItemMenu(getPlayerNameString()) {
-                    @Override
-                    public void run() {
-                        client.handleMenu(new PlayerNameMenu(playerName, multiMenu, null));
-                    }
-                };
-                ItemMenu itemToggleNetwork = new ItemMenu(getNetTypeString()) {
-                    @Override
-                    public void run() {
-                        lan = !lan;
-                        this.setText(getNetTypeString());
-                        client.handleMenu(multiMenu);
-                    }
-                };
-                ItemMenu itemBack = new ItemMenu("global.back") {
-                    @Override
-                    public void run() {
-                        client.handleMenu(currentMenu);
-                    }
-                };
-
-                multiMenu = new Menu("m2.title", itemCreate, itemJoin, itemPlayerName, itemToggleNetwork, itemBack) {
-                    @Override
-					public void refresh() {
-                    	itemPlayerName.setText(getPlayerNameString());
-                    }
-                };
-                client.handleMenu(multiMenu);
-        	}
-        	
-        	String getNetTypeString() {
-        		return UIText.getMenuText("m2.currentNet", lan ? "LAN" : "www");
-        	}
-            String getPlayerNameString() {
-                return UIText.getMenuText("m2.playerName", playerName.toString());
-            }
-
-        };
-        
-        ItemMenu itemHof=new ItemMenu("m1.hof") {
+    	// TODO: Dirty way to check Android platform : need to be cleaned with
+    	// a better injection mechanism.
+    	if (PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
+    		theItems.add(new ItemMenu("m1.website") {
+    			@Override
+    			public void run() {
+    				Zildo.pdPlugin.openLink("www.alembrume.fr");
+    				client.handleMenu(currentMenu);
+    			};
+    		});
+    	} else {
+	    	theItems.add(new ItemMenu("m1.multi") {
+	            Menu multiMenu;
+	            boolean lan = true;
+	            StringBuilder playerName = new StringBuilder(PlayerNameMenu.loadPlayerName());
+	
+	            @Override
+	            public void run() {
+	                ItemMenu itemCreate = new ItemMenu("m2.create", BankSound.MenuSelectGame) {
+	                    @Override
+	                    public void run() {
+	                        new MultiPlayer(new Game("polakym", false), lan);
+	                	}
+	                };
+	                ItemMenu itemJoin=new ItemMenu("m2.join", BankSound.MenuSelectGame) {
+	                	@Override
+						public void run() {
+	                		if (lan) {
+	                			new MultiPlayer();
+	                		} else {
+	                			// Internet
+	                    		List<ServerInfo> serversReady=WorldRegister.getStartedServers();
+	                    		if (serversReady.isEmpty()) {
+	                    			client.handleMenu(new InfoMenu("mess.noservers", currentMenu));
+	                    		} else {
+	                    			client.handleMenu(new JoinGameMenu(serversReady, multiMenu));
+	                    		}
+	                		}
+	                	}
+	                };
+	                final ItemMenu itemPlayerName = new ItemMenu(getPlayerNameString()) {
+	                    @Override
+	                    public void run() {
+	                        client.handleMenu(new PlayerNameMenu(playerName, multiMenu, null));
+	                    }
+	                };
+	                ItemMenu itemToggleNetwork = new ItemMenu(getNetTypeString()) {
+	                    @Override
+	                    public void run() {
+	                        lan = !lan;
+	                        this.setText(getNetTypeString());
+	                        client.handleMenu(multiMenu);
+	                    }
+	                };
+	                ItemMenu itemBack = new ItemMenu("global.back") {
+	                    @Override
+	                    public void run() {
+	                        client.handleMenu(currentMenu);
+	                    }
+	                };
+	
+	                multiMenu = new Menu("m2.title", itemCreate, itemJoin, itemPlayerName, itemToggleNetwork, itemBack) {
+	                    @Override
+						public void refresh() {
+	                    	itemPlayerName.setText(getPlayerNameString());
+	                    }
+	                };
+	                client.handleMenu(multiMenu);
+	        	}
+	        	
+	        	String getNetTypeString() {
+	        		return UIText.getMenuText("m2.currentNet", lan ? "LAN" : "www");
+	        	}
+	            String getPlayerNameString() {
+	                return UIText.getMenuText("m2.playerName", playerName.toString());
+	            }
+	
+	        });
+    	}
+    	
+    	theItems.add(new ItemMenu("m1.hof") {
         	@Override
 			public void run() {
         		client.handleMenu(new HallOfFameMenu(currentMenu));
         	}
-        };
+        });
         
-        ItemMenu itemCredits=new ItemMenu("m1.credits") {
+    	theItems.add(new ItemMenu("m1.credits") {
         	@Override
 			public void run() {
         		client.askStage(new CreditStage(false));
         	}
-        };
+        });
         
-        ItemMenu itemQuit=new ItemMenu("m1.quit", BankSound.MenuSelectGame) {
+    	theItems.add(new ItemMenu("m1.quit", BankSound.MenuSelectGame) {
         	@Override
 			public void run() {
         		client.stop();
         	}
-        };
+        });
         
-        setMenu(itemSinglePlayer, itemMultiPlayer, itemHof, itemCredits, itemQuit);
+        setMenu(theItems);
         setTitle("m1.title");
 	}
 }
