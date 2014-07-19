@@ -24,6 +24,7 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.EngineFX;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
@@ -48,10 +49,17 @@ public class PersoGarde extends PersoNJ {
 			{ 5, 6, 7, 6, 5, 6, 7, 6 }, { 8, 9, 10, 11, 8, 9, 10, 11 },
 			{ 12, 13, 14, 13, 12, 13, 14, 13 } };
 
+	// TODO: one day, this could be added for everyone, in a more generic way.
+	Element starAura;
+	
 	public PersoGarde() {
 		super();
 		initWeapon();
 		pv = 2;
+		
+		starAura = new Element();
+		starAura.setVisible(false);
+		addPersoSprites(starAura);
 	}
 
 	@Override
@@ -96,5 +104,27 @@ public class PersoGarde extends PersoNJ {
 		} else {
 			super.beingWounded(cx, cy, p_shooter, p_damage);
 		}
+	}
+	
+	@Override
+	public void setSpecialEffect(EngineFX specialEffect) {
+		super.setSpecialEffect(specialEffect);
+		if (specialEffect == EngineFX.GUARD_BLACK) {
+			addStarAura();
+		}
+	}
+	
+	@Override
+	public void animate(int compteur_animation) {
+		super.animate();
+		if (starAura != null) {
+			starAura.x = x;
+			starAura.y = y;
+		}
+	}
+	private void addStarAura() {
+		starAura.setSpecialEffect(EngineFX.STAR);
+		starAura.zoom = 800;
+		starAura.setVisible(true);
 	}
 }
