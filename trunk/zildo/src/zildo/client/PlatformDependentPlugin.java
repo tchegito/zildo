@@ -114,7 +114,6 @@ public class PlatformDependentPlugin {
     /**
      * Create instances of all filters declared in {@link FilterEffect}.
      */
-    @SuppressWarnings("unchecked")
     public void initFilters() {
     	filters.clear();
         // Filters
@@ -124,7 +123,7 @@ public class PlatformDependentPlugin {
         		if (filters.get(cl) == null) {
         	        GraphicStuff gfxStuffFilter = createSingleton("opengl.GraphicStuff");
         			ScreenFilter filter = createSingleton("filter."+cl.getSimpleName(), gfxStuffFilter);
-        			filters.put((Class<ScreenFilter>) cl, filter);
+        			filters.put(cl, filter);
         		}
         	}
         }
@@ -142,6 +141,12 @@ public class PlatformDependentPlugin {
 	public OutputStream prepareSaveFile(String path) {
 		return fileUtil.prepareSaveFile(path);
 	}
+	
+	/** Opens an URL (only used in Android version, now) **/
+	public void openLink(String url) {
+		fileUtil.openLink(url);
+	}
+	
 	/**
 	 * For savegames (distinction with {@link #openFile(String)} exists only with Android)
 	 * @param path
@@ -166,7 +171,7 @@ public class PlatformDependentPlugin {
     
     @SuppressWarnings("unchecked")
     private <T> T createSingleton(String p_className, Object...p_param) {
-        // Format the class name with the knonw plugin
+        // Format the class name with the known plugin
         int posPoint = p_className.lastIndexOf(".");
         String formattedClassName = p_className.substring(0, posPoint+1)+
                                     currentPlugin.name()+
