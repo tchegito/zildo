@@ -737,6 +737,7 @@
 		    <spawn type="FOX" who="rouge" pos="874,985" angle="3"/>
 		    <spawn type="FOX" who="bleu" pos="880,998" angle="3"/>
 		    <spawn type="FOX" who="vert" pos="839,924" angle="2" floor="2"/>
+		    <music name="Attaque"/>
 		</condition>
 		<condition name="voleursg3" exp="trig_echange">
 		    <actions>
@@ -1008,6 +1009,7 @@
 	</scene>
 	
 	<scene id="attaqueV">
+	    <music name="Attaque"/>
 	    <speak who="rouge" text="voleurs.fox1" unblock="true"/>
 	    <actions>
             <moveTo who="rouge" pos="-32,4" delta="true" unstoppable="true" speed="1.5"/>
