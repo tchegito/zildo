@@ -124,41 +124,50 @@ public class QuadPrimitive {
 		int revY = reverse.isVertical() ? -1 : 1;
 		
         // Move tile
-        addSprite(x, y, u, v, sizeX * revX, sizeY * revY, Rotation.NOTHING, 255);
+        addSprite(x, y, u, v, sizeX * revX, sizeY * revY, Rotation.NOTHING, 255, false);
 
     }
     
     float[][] texCoords = new float[4][2];
 
-    protected void putTexture(float xTex, float yTex, float sizeX, float sizeY) {
+    static final float[][] normalizedTex = { {0,0}, {1,0}, {0,1}, {1,1} };
+    
+    private void putTexture(float xTex, float yTex, float sizeX, float sizeY, boolean normalizeTex) {
         float texStartX=xTex;
         float texStartY=yTex;
-        if (sizeX < 0) {
-        	texStartX-=sizeX;
+        float[][] pTexCoords = texCoords;
+        
+        if (normalizeTex) {
+        	xTex = 0; yTex = 0;
+        	pTexCoords = normalizedTex;
+        } else {
+	        if (sizeX < 0) {
+	        	texStartX-=sizeX;
+	        }
+	        if (sizeY < 0) {
+	        	texStartY-=sizeY;
+	        }
+	        for (int i = 0; i < 4; i++) {
+	            // Get right tile-texture
+	            float texPosX = texStartX + sizeX * (i % 2);
+	            float texPosY = texStartY + sizeY * (i / 2);
+	
+	            pTexCoords[i][0] = texPosX / textureSizeX;
+	            pTexCoords[i][1] = texPosY / textureSizeY;
+	        }
         }
-        if (sizeY < 0) {
-        	texStartY-=sizeY;
-        }
-        for (int i = 0; i < 4; i++) {
-            // Get right tile-texture
-            float texPosX = texStartX + sizeX * (i % 2);
-            float texPosY = texStartY + sizeY * (i / 2);
-
-            texCoords[i][0] = texPosX / textureSizeX;
-            texCoords[i][1] = texPosY / textureSizeY;
-        }
-        bufs.textures.put(texCoords[0][0]).put(texCoords[0][1]);
-        bufs.textures.put(texCoords[1][0]).put(texCoords[1][1]);
-        bufs.textures.put(texCoords[2][0]).put(texCoords[2][1]);
-        bufs.textures.put(texCoords[1][0]).put(texCoords[1][1]);
-        bufs.textures.put(texCoords[3][0]).put(texCoords[3][1]);
-        bufs.textures.put(texCoords[2][0]).put(texCoords[2][1]);
+        bufs.textures.put(pTexCoords[0][0]).put(pTexCoords[0][1]);
+        bufs.textures.put(pTexCoords[1][0]).put(pTexCoords[1][1]);
+        bufs.textures.put(pTexCoords[2][0]).put(pTexCoords[2][1]);
+        bufs.textures.put(pTexCoords[1][0]).put(pTexCoords[1][1]);
+        bufs.textures.put(pTexCoords[3][0]).put(pTexCoords[3][1]);
+        bufs.textures.put(pTexCoords[2][0]).put(pTexCoords[2][1]);
     }
 
     // Return the quad position in Vertex Buffer
     protected int addQuadSized(int x, int y, float xTex, float yTex, int sizeX, int sizeY) {
         //putQuadSized(x, y, sizeX, sizeY, xTex, yTex);
-        addSprite(x, y, xTex, yTex, sizeX, sizeY, Rotation.NOTHING, 255);
+        addSprite(x, y, xTex, yTex, sizeX, sizeY, Rotation.NOTHING, 255, false);
         
         return nPoints - 4;
     }
@@ -166,7 +175,7 @@ public class QuadPrimitive {
     short[][] vertices = new short[4][2];
     byte[][] orders = {{0, 1, 2, 3}, {2, 0, 3, 1}, {3, 2, 1, 0}, {1, 3, 0, 2} };
     
-    protected void addSprite(float x, float y, float xTex, float yTex, float sizeX, float sizeY, Rotation rotation, int zoom ) {
+    protected void addSprite(float x, float y, float xTex, float yTex, float sizeX, float sizeY, Rotation rotation, int zoom, boolean normalizeTex ) {
     	
         // 4 bufs.vertices
         if (bufs.vertices.position() == bufs.vertices.limit()) {
@@ -207,7 +216,7 @@ public class QuadPrimitive {
         bufs.vertices.put(vertices[3][0]).put(vertices[3][1]);
         bufs.vertices.put(vertices[2][0]).put(vertices[2][1]);
 
-        putTexture(xTex, yTex, sizeX, sizeY);
+        putTexture(xTex, yTex, sizeX, sizeY, normalizeTex);
         
         nPoints += 4;
         nIndices += 6;

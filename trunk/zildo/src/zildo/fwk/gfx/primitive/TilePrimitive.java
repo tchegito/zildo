@@ -105,7 +105,7 @@ public class TilePrimitive extends QuadPrimitive {
      */
     private void addTile(int x, int y, float xTex, float yTex, int sizeX, int sizeY, Rotation rotation) {
 
-    	addSprite(x, y, xTex, yTex, sizeX, sizeY, rotation, 255);
+    	addSprite(x, y, xTex, yTex, sizeX, sizeY, rotation, 255, false);
     	
         // Get the highest indices
         if (nIndices-6 < startCamera || startCamera == -1) {
@@ -149,7 +149,7 @@ public class TilePrimitive extends QuadPrimitive {
     	int n = nIndices;
 		reuseIndex(gridX, gridY);
 		nIndices = n;
-		addSprite(0, -32, 0, 0, 16, 16, Rotation.NOTHING, 255);
+		addSprite(0, -32, 0, 0, 16, 16, Rotation.NOTHING, 255, false);
     }
     
     /**

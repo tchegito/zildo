@@ -37,7 +37,8 @@ public enum EngineFX {
 	SHINY, QUAD,
 	INFO,
 	FOCUSED,	// FOCUSED is used when we wants to highlight some entity (inventory, or buying something)
-	WHITE_HALO;
+	WHITE_HALO,
+	STAR;
 	
 	public final Vector4f darkColor;
 	public final Vector4f brightColor;
