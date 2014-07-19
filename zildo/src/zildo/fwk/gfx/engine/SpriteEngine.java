@@ -26,6 +26,7 @@ import java.util.List;
 
 import zildo.Zildo;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.primitive.SpritePrimitive;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
@@ -131,6 +132,8 @@ public abstract class SpriteEngine {
 		
 		SpriteModel spr=entity.getSprModel();
 	
+		boolean normalizeTex = entity.getSpecialEffect() == EngineFX.STAR;
+		
 		meshSprites[entity.getNBank()].synchronizeSprite(entity.getScrX(),
 				  									entity.getScrY() - z,
 				  									spr.getTexPos_x(),
@@ -139,7 +142,8 @@ public abstract class SpriteEngine {
 				  									revY * spr.getTaille_y(), 
 				  									entity.repeatX,
 				  									entity.repeatY, 
-													entity.rotation, entity.zoom);
+													entity.rotation, entity.zoom,
+													normalizeTex);
 		
 	}
 	
