@@ -58,6 +58,10 @@ public class ElementGoodies extends Element {
 	public void animate() {
 		
 		TileNature nature = getCurrentTileNature();
+		if (nature == null) {
+			// If nature is null (probably out of the map), consider it's bottomless, to make the goodies disappear
+			nature = TileNature.BOTTOMLESS;
+		}
 		switch (nature) {
 			case BOTTOMLESS:
 			case WATER:
@@ -65,7 +69,6 @@ public class ElementGoodies extends Element {
 				dying = true;
 				break;
 		}
-		
 		super.animate();
 		
 		if (volatil) {
