@@ -586,7 +586,7 @@ public abstract class Perso extends Element {
 				boolean justLinked = entity.getMover().linkEntity(this);
 				if (justLinked) {
 					String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
-					TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName(), -1);
+					TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName(), -1, floor);
 					EngineZildo.scriptManagement.trigger(trigger);
 					onPlatform = true;
 				}
@@ -766,7 +766,7 @@ public abstract class Perso extends Element {
 		// Trigger "LOCATION" only in single player
 		if (!EngineZildo.game.multiPlayer && isZildo()) {
 			String mapName = area.getName();
-			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x, y), null, onmap);
+			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x, y), null, onmap, floor);
 			EngineZildo.scriptManagement.trigger(trig);
 		}
 		if (shadow != null) {

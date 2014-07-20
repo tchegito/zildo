@@ -60,6 +60,7 @@ public class TriggerElement extends AnyElement {
 	// For "fall"
 	SpriteDescription desc;
 	TileNature tileNature;
+	int floor;
 	
 	List<String> mapNames = null;
 	
@@ -191,7 +192,7 @@ public class TriggerElement extends AnyElement {
 						if (gearType != null) {
 							switch (gearType) {
 							case TIMED_BUTTON:
-								EngineZildo.mapManagement.getCurrentMap().addSpawningTile(tileLocation, questName, 0, false);
+								EngineZildo.mapManagement.getCurrentMap().addSpawningTile(tileLocation, questName, 0, false, floor);
 							case BUTTON:
 								EngineZildo.soundManagement.broadcastSound(BankSound.Switch, location);
 								EngineZildo.mapManagement.getCurrentMap().writemap(gridX,  gridY, 256 * 3+212);
@@ -318,6 +319,13 @@ public class TriggerElement extends AnyElement {
 		return elem;
 	}
 
+	public static TriggerElement createLocationTrigger(String p_mapName,
+			Point p_location, String p_mover, int p_tileValue, int p_floor) {
+		TriggerElement elem = createLocationTrigger(p_mapName, p_location, p_mover, p_tileValue);
+		elem.floor = p_floor;
+		return elem;
+	}
+	
 	/**
 	 * Ingame method to check a 'quest done' trigger.
 	 * 
