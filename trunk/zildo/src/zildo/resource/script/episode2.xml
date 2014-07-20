@@ -1232,7 +1232,7 @@
 	
 	<scene id="zildoCrossCoucouNight">
 	    <speak who="zildo" text="coucou.z.0"/>
-	    <moveTo who="zildo" pos="874,500"/>
+	    <moveTo who="zildo" speed="1.5" pos="874,500"/>
 		<moveTo who="zildo" pos="874,593"/>
 		<speak who="zildo" text="coucou.z.1" unblock="true"/>
 		<moveTo who="zildo" pos="927,596"/>
@@ -1323,6 +1323,12 @@
 	  	<filter type="0"/>
 	    <fadeIn value="1"/>
 	    <wait value="150"/>
+	    <sound name="MenuMove"/>
+	    <wait value="10"/>
+	    <sound name="MenuMove"/>
+	    <wait value="10"/>
+	    <sound name="MenuMove"/>
+	    <wait value="100"/>
 	    <sound name="OuvrePorte"/>
 	    <spawn who="petula" type="RITASKY" pos="144,170" alpha="0" alphaA="2"/>
 	    <perso who="zildo" action=""/>
