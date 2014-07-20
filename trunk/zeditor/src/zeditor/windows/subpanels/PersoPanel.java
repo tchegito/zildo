@@ -216,7 +216,7 @@ public class PersoPanel extends JPanel {
 					break;
 				}
 			}
-			max = i-1;
+			max = 9;
 		}
 		spinner.setModel(new SpinnerNumberModel(0, 0, max, -1)); // -1 to get
 																	// next
