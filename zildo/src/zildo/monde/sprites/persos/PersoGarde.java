@@ -116,7 +116,7 @@ public class PersoGarde extends PersoNJ {
 	
 	@Override
 	public void animate(int compteur_animation) {
-		super.animate();
+		super.animate(compteur_animation);
 		if (starAura != null) {
 			starAura.x = x;
 			starAura.y = y;
