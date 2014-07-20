@@ -337,17 +337,6 @@
 		</trigger>
 	</quest>
 	
-	<!-- Only for episode 1 ==> need to be removed after -->
-	<quest name="temp_episode1_desert" repeat="true">
-		<trigger>
-			<location name="ferme" pos="232,22" radius="2"></location>
-		</trigger>
-		<action>
-			<speak who="zildo" text="ferme.tempEpisode1"/>
-			<moveTo who="zildo" pos="0,32" delta="true"/>
-		</action>
-	</quest>
-	
 	<quest name="zildo_polaky_killguards">
 	    <trigger>
 	        <location name="polaky"/>

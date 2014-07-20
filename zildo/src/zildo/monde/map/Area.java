@@ -84,6 +84,7 @@ public class Area implements EasySerializable {
 		int cnt;
 		String awaitedQuest;	// Name of the awaited quest to be done
 		boolean fog;	// display a fog during the respawn
+		int floor;
 	}
 
 	final static int TILE_VIEWPORT_X = (Zildo.viewPortX / 16);// + 1;
@@ -623,7 +624,7 @@ public class Area implements EasySerializable {
 		}
 		// Notify that this case should reappear after a given time (only in multiplayer mode)
 		if (EngineZildo.game.multiPlayer) {
-			addSpawningTile(tileLocation, null, DEFAULT_SPAWNING_TIME, true);
+			addSpawningTile(tileLocation, null, DEFAULT_SPAWNING_TIME, true, p_perso != null ? p_perso.floor : highestFloor);
 		}
 
 		// Trigger
@@ -712,7 +713,7 @@ public class Area implements EasySerializable {
 		}
 	}
 	
-	public void addSpawningTile(Point tileLocation, String awaitedQuest, int time, boolean fog) {
+	public void addSpawningTile(Point tileLocation, String awaitedQuest, int time, boolean fog, int floor) {
 		SpawningTile spawnTile = new SpawningTile();
 		spawnTile.x = tileLocation.x;
 		spawnTile.y = tileLocation.y;
@@ -720,6 +721,7 @@ public class Area implements EasySerializable {
 		spawnTile.cnt = time;
 		spawnTile.awaitedQuest = awaitedQuest;
 		spawnTile.fog = fog;
+		spawnTile.floor = floor;
 		toRespawn.add(spawnTile);
 	}
 
@@ -1272,7 +1274,7 @@ public class Area implements EasySerializable {
 				if (EngineZildo.mapManagement.collideSprite(x, y, radius, null)) {
 					spawnTile.cnt++;
 				} else {
-					set_mapcase(spawnTile.x, spawnTile.y, spawnTile.previousCase);
+					set_mapcase(spawnTile.x, spawnTile.y, (byte) spawnTile.floor, spawnTile.previousCase);
 					spawnTile.previousCase.setModified(true);
 					if (spawnTile.fog) { 
 						EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
