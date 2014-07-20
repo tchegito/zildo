@@ -225,7 +225,10 @@ public class Village extends Banque {
 				/* Red house second floor */
 				new Point(0, 192), new Point(16, 192),
 				/* Squeaky floor */
-				new Point(16, 112)
+				//new Point(16, 112),
+				
+				/* Pack of straw */
+				new Point(0,144), new Point(0,160), new Point(16,144), new Point(16, 160)
 				};
 
 		pkmChanges = Arrays.asList(new GraphChange("exteria3", 0, 0), 
