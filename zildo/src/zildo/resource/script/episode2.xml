@@ -292,6 +292,7 @@
         </trigger>
         <action>
             <putDown item="FULL_BAG"/>"
+			<sound name="ZildoAccomplishQuest"/>
         </action>
     </quest>
         
@@ -848,6 +849,7 @@
 		</condition>
 		<condition name="igorlily">
 		    <markQuest name="summonLeaf" value="0"/>
+		    <zikReplace what="Village" name="Nuit"/> <!--  Returns to alarming music -->
 		</condition>
 		<condition name="igorv3" exp="minsk_fishes">
 		    <pos who="minsk" pos="-14,12" delta="true"/>
@@ -855,6 +857,7 @@
 		</condition>
 		<condition name="igorvillage">
 		    <markQuest name="summonLeafVillage" value="0"/>
+		    <zikReplace what="Village" name="Village"/>	<!--  plays Village music in this peaceful island -->
 		</condition>
 		<condition name="igorv2"> <!-- Igor will come back home later -->
 		    <remove who="igor"/>
@@ -1461,6 +1464,7 @@
 		<angle who="igor" value="0"/>
 		<moveTo who="zildo" pos="0,10" delta="true"/>
 		<speak who="zildo" text="freeIgor.zildo.0"/>
+		<sound name="ZildoAccomplishQuest"/>
 		<speak who="igor" text="freeIgor.igor.3"/>
 		<script who="igor" value="16" effect="zildo"/>
 	</scene>

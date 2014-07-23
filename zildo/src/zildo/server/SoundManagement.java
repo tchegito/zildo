@@ -98,6 +98,7 @@ public class SoundManagement {
 		return forceMusic;
 	}
 
+	/** Called with FALSE at each script's termination. **/
 	public void setForceMusic(boolean forceMusic) {
 		this.forceMusic = forceMusic;
 	}
