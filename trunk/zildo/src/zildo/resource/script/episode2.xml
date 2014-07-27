@@ -1597,6 +1597,7 @@
 	</scene>
 	
 	<scene id="liberationIgor">
+	    <music name=""/>
 		<script who="igor" value="3"/>
 	    <moveTo who="igor" unstoppable="true" pos="744,230"/>
 	    <wait value="40"/>
@@ -1617,7 +1618,8 @@
 		<angle who="igor" value="1"/>
 		<angle who="zildo" value="3"/>
 		<speak who="igor" text="prisonext.freeIgor.igor.3"/>
-		<speak who="zildo" text="prisonext.freeIgor.zildo.4"/>	    
+		<speak who="zildo" text="prisonext.freeIgor.zildo.4"/>
+		<music name="Chateau"/>
 	</scene>
 
 	<scene id="meetIgor">
