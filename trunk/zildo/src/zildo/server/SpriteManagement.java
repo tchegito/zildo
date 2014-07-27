@@ -251,7 +251,7 @@ public class SpriteManagement extends SpriteStore {
 			case FROMGROUND :
 				// Diamond, arrows, everything coming from ground
 				// First of all : check if this is a right place (no collision, and no lava)
-				if (EngineZildo.mapManagement.collide(x, y, null)) {
+				if (EngineZildo.mapManagement.collide(x, y, miscPerso)) {
 					break;
 				}
 				element = new ElementGoodies();
