@@ -307,7 +307,8 @@ public class Area implements EasySerializable {
 			return false;
 		}
 		int val = temp.getBackTile().getValue();
-		if (Tile.isBottomLess(val)) {
+		// As a temporary feature : 108 means water coast, to allow smarter 'ponton' collision
+		if (Tile.isBottomLess(val) || val == 108) {
 			return true;
 		}
 		return false;
@@ -683,14 +684,14 @@ public class Area implements EasySerializable {
 					PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 	
 					if ((multiPlayer || zildo.hasItem(ItemKind.BOW) && Hasard.lanceDes(Hasard.hazardBushes_Arrow))) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 1, 0, null, null);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 1, 0, zildo, null);
 					} else if (Hasard.lanceDes(Hasard.hazardBushes_GoldCoin)) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, p.x, p.y + 5, 1, 0, null, null);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, p.x, p.y + 5, 1, 0, zildo, null);
 					} else if (Hasard.lanceDes(Hasard.hazardBushes_BlueDrop)) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, p.x + 3, p.y + 5, 1, p_destroy ? 0 : 1, null, null);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, p.x + 3, p.y + 5, 1, p_destroy ? 0 : 1, zildo, null);
 					} else if (multiPlayer && Hasard.lanceDes(Hasard.hazardBushes_Bombs)) {
 						sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 1, 0,
-								null, ElementDescription.BOMBS3);
+								zildo, ElementDescription.BOMBS3);
 					}
 				}
 			}
