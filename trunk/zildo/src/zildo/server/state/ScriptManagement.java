@@ -83,7 +83,9 @@ public class ScriptManagement {
     
     // 'LOCATION' trigs for specific location on the current map
     final List<TriggerElement> locationTriggerOnMap;	
-    
+    // Triggers used to accept/reject a chaining point
+    final List<QuestElement> chainingTriggerQuestOnMap;	
+
     boolean planComputeTriggers;
     
     // Marker to identify that a scene is created from an 'action' quest's tag
@@ -112,6 +114,7 @@ public class ScriptManagement {
         variables = new HashMap<String, String>();
         
     	locationTriggerOnMap = new ArrayList<TriggerElement>();
+    	chainingTriggerQuestOnMap = new ArrayList<QuestElement>();
     	
     	execute("setup", true);
     	
@@ -279,17 +282,42 @@ public class ScriptManagement {
      */
     public void prepareMapSubTriggers(String p_mapName) {
     	locationTriggerOnMap.clear();
+    	chainingTriggerQuestOnMap.clear();
     	for (QuestElement quest : adventure.getQuests()) {
+			// For each quest undone yet :
+    		if (quest.getTriggers() != null) {
+				for (TriggerElement trig : quest.getTriggers()) {
+					if (!quest.done && trig.isLocationSpecific() && trig.mapNameMatch(p_mapName)) {
+						locationTriggerOnMap.add(trig);
+						break;
+					}
+					if (trig.isChainingPointAcceptance()) {
+						quest.done = false;
+						chainingTriggerQuestOnMap.add(quest);
+					}
+				}
+    		}
+    	}
+    }
+
+    /** Returns TRUE if the chaining point is accepted, or rejected.
+     * That means that we can cancel player changing map according to quest's triggers. **/
+    public boolean acceptChainingPoint() {
+    	for (QuestElement quest : chainingTriggerQuestOnMap) {
     		if (!quest.done) {
-    			// For each quest undone yet :
+    			boolean match = true;
     			for (TriggerElement trig : quest.getTriggers()) {
-    				if (trig.isLocationSpecific() && trig.mapNameMatch(p_mapName)) {
-    					locationTriggerOnMap.add(trig);
-    					break;
-    				}
+    				match &= trig.isDone() || trig.isChainingPointAcceptance();
+    			}
+    			if (match) {
+    				// Execute quest
+    				quest.done = true;
+    				execute(quest.getActions(), false, quest, false, null, quest.locked);
+        			return false;
     			}
     		}
     	}
+    	return true;
     }
 
     /**

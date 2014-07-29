@@ -436,4 +436,8 @@ public class TriggerElement extends AnyElement {
 	public boolean isImmediate() {
 		return immediate;
 	}
+	
+	public boolean isChainingPointAcceptance() {
+		return kind == QuestEvent.CHAININGPOINT;
+	}
 }
