@@ -546,6 +546,7 @@ public class MapManagement {
 		float x = p_zildo.getX();
 		float y = p_zildo.getY();
 		// Store the changing point to use it when processing map swap
+		boolean alreadyChanging = changingMapPoint != null;
 		if (currentMap != null) {
 			// Determine angle, according to previous location
 			Angle ang = p_zildo.getAngle();
@@ -553,6 +554,13 @@ public class MapManagement {
 				ang = Angle.rotate(ang, 2);	// Zildo is stepping back, so inverse his angle
 			}
 			changingMapPoint = currentMap.isChangingMap(x, y, ang);
+			if (changingMapPoint != null) {
+				if (!alreadyChanging && !EngineZildo.scriptManagement.acceptChainingPoint()) {
+					// Ensure that hero hasn't to wait for someone following him
+					p_zildo.cancelMove();
+					changingMapPoint = null;
+				}
+			}
 		}
 		return (changingMapPoint != null);
 	}

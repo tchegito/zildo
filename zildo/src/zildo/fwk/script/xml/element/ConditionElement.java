@@ -11,7 +11,7 @@ import zildo.fwk.script.xml.ScriptReader;
 
 public class ConditionElement extends AnyElement {
 
-	String mapName;
+	String mapName;				// Mapname can contain multiple names with '-' (and), ',' (or) and '!' (not) signs
 	ZSSwitch mapExpression=null;	// Used when mapName is different than a single map name
 	ZSSwitch expression;	// No expression means it's always verified
 	List<LanguageElement> actions;

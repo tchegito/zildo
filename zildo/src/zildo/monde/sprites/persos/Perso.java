@@ -518,6 +518,10 @@ public abstract class Perso extends Element {
 	 */
 	public abstract void finaliseComportement(int compteur_animation);
 
+	public void cancelMove() {
+		x = prevX;
+		y = prevY;
+	}
 	/** Method for Perso animation. Called every frame, <b>when characters are not blocked</b>.
 	    Here is the default one : launch perso's action if exists, store delta movements,
 	    and manage OBSERVE script.
@@ -1103,7 +1107,7 @@ public abstract class Perso extends Element {
 	}
 
 	public boolean isAffectedBy(AffectionKind kind) {
-		return affections.isAffectedBy(kind);
+		return affections != null && affections.isAffectedBy(kind);
 	}
 	
 	@Override
