@@ -174,8 +174,8 @@ public class AndroidSpriteEngine extends SpriteEngine {
 			shaders.setCurrentShader(GLShaders.textured);
 		}
 		GLES20.glDisable(GLES20.GL_BLEND);
-		
-		gamma += 0.01f;
+
+		gamma = (float) ((gamma + 0.01f) % (Math.PI * 2));
 	}
 
 	/**
