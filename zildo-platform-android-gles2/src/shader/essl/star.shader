@@ -13,7 +13,7 @@ void main(){
 }
 
 [FRAGMENT]
-precision mediump float;
+precision highp float;
 uniform vec2 noise;
 varying mediump vec2 vTexCoord;
 void main (void) {
