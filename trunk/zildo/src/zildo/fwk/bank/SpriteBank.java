@@ -45,8 +45,7 @@ public class SpriteBank {
 	public static final int BANK_PNJ2 = 4;
 	public static final int BANK_GEAR = 5;
 	public static final int BANK_PNJ3 = 6;	// Just one sprite : screen sized
-	public static final int BANK_FONTES2 = 7;
-	public static final int BANK_ZILDOOUTFIT = 8;
+	public static final int BANK_ZILDOOUTFIT = 7;
 	
 		// Class variables
 	protected List<SpriteModel> models;
@@ -93,14 +92,17 @@ public class SpriteBank {
 	
 		k=0;
 	
-		// Pour les MFC, on fait plutôt du new
-		sprites_buf=new short[64000];
+		// Theoretically, max size will be 256x256 = 65535
+		sprites_buf=new short[65535];
 		name=filename;
 	
 		while (!file.eof()) {
 			a=file.readUnsignedByte();
 			b=file.readUnsignedByte();
 	
+			// Still theory : 256 won't fit in a byte, so 0 means probably 256
+			if (a == 0) a = 256;
+			if (b == 0) b = 256;
 			// Build a temporary sprite and add it to the list
 			SpriteModel spr=new SpriteModel(a, b, k);
 			models.add(spr);
