@@ -25,6 +25,7 @@ import java.util.EnumMap;
 import org.lwjgl.input.Keyboard;
 
 import zildo.fwk.input.CommonKeyboardHandler;
+import zildo.monde.util.Vector2f;
 
 /**
  * @author Tchegito
@@ -49,6 +50,8 @@ public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 	private static final int KEY_DOWN            = 0xD0; /* DownArrow on arrow keypad */
 	private static final int KEY_R               = 0x13;
 	private static final int KEY_T               = 0x14;
+	
+	Vector2f v = new Vector2f(0, 0);	// Just to avoid declaring a new one at each time
 	
 	static {
 		platformKeys.put(Keys.BACK, KEY_BACK);
@@ -75,6 +78,30 @@ public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 	
 	public void poll() {
 		Keyboard.poll();
+	}
+	
+	@Override
+	public Vector2f getDirection() {
+		float deltaX=0, deltaY=0;
+		if (isKeyDown(Keys.LEFT)) {
+			deltaX-=1;
+		} else if (isKeyDown(Keys.RIGHT)) {
+			deltaX+=1;
+		}
+
+		// UP/DOWN key
+		if (isKeyDown(Keys.UP)) {
+			deltaY-=1;
+		} else if (isKeyDown(Keys.DOWN)) {
+			deltaY+=1;
+		}
+		
+		if (deltaX ==0 && deltaY == 0) {
+			return null;
+		}
+		v.set(deltaX, deltaY);
+		v.normalize(1);
+		return v;	
 	}
 	
 	/**
