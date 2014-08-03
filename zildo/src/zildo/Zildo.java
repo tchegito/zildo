@@ -34,8 +34,8 @@ public class Zildo {
 	public static int viewPortX=320;
 	public static int viewPortY=240;
 	// Define the platform resolution (viewport will be adapted to fit)
-	public static int screenX=800; //640;
-	public static int screenY=600; //480;
+	public static int screenX=800;
+	public static int screenY=600;
 	public static boolean infoDebug=false;
 	public static boolean infoDebugCollision=true;
 	public static boolean infoDebugCase=false;
@@ -47,7 +47,7 @@ public class Zildo {
 	
 	public static void main(String[] args) {
 	
-		Locale.setDefault(Locale.US);
+		//Locale.setDefault(Locale.US);
 		
 		for (String arg : args) {
 			if ("fullscreen".equals(arg)) {
