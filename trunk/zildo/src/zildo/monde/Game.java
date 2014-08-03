@@ -178,15 +178,6 @@ public class Game implements EasySerializable {
                     EngineZildo.scriptManagement.accomplishQuest(questName, false);
                 }
             }
-            //EngineZildo.scriptManagement.accomplishQuest("hector_call3", false);
-            //EngineZildo.scriptManagement.accomplishQuest("freedIgor", false);
-            //EngineZildo.scriptManagement.accomplishQuest("igor_promise_sword", false);
-   
-            //EngineZildo.scriptManagement.accomplishQuest("attaque_voleurs", false);
-            //EngineZildo.scriptManagement.accomplishQuest("start_visit1", false);
-            //EngineZildo.scriptManagement.accomplishQuest("suite_visit1_weapon", false);
-            //EngineZildo.scriptManagement.accomplishQuest("echange", false);
-            
             
             // 2: Zildo
             int pv = p_buffer.readByte();
@@ -232,10 +223,7 @@ public class Game implements EasySerializable {
 	                }
                 }
             }
-            //items.add(new Item(ItemKind.DYNAMITE));
-            //items.add(new Item(ItemKind.FIRE_RING, 5000));
-           //zildo.setCountBomb(15);
-           
+
             // 4: map (since 1.096)
             game.mapName = p_buffer.readString();
             Point loc = new Point(p_buffer.readInt(), p_buffer.readInt());
@@ -285,7 +273,7 @@ public class Game implements EasySerializable {
             EngineZildo.mapManagement.setStartLocation(loc, a, zildo.getFloor());
             return game;
         } catch (Exception e) {
-            return null;
+        	throw new RuntimeException("Unable to deserialize the game !");
         }
     }
     
