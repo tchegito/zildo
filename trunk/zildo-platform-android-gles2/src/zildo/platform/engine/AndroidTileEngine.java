@@ -131,5 +131,6 @@ public class AndroidTileEngine extends TileEngine {
 		    ((AndroidTextureEngine)textureEngine).loadTexture("tile"+i);
 	    }
 	    texCloudId = textureEngine.loadTexture("tile10");
+		texBackMenuId = textureEngine.loadTexture("tile11");
 	}
 }

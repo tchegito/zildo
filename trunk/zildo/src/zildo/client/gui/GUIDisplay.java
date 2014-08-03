@@ -283,7 +283,7 @@ public class GUIDisplay {
 		int y = 230;
 		List<GameMessage> toRemove = new ArrayList<GameMessage>();
 		for (GameMessage mess : messageQueue) {
-			ClientEngineZildo.ortho.drawText(0, y, mess.text, new Vector3f(
+			ClientEngineZildo.ortho.drawText(23, y, mess.text, new Vector3f(
 					1.0f, 1.0f, 1.0f));
 			if (mess.duration-- == 0) {
 				toRemove.add(mess);
