@@ -101,6 +101,6 @@ public enum ItemKind {
 	
 	/** Returns TRUE if item can be multiple in the inventory. Typically, dynamites aren't. **/
 	public boolean canBeMultiple() {
-		return this != DYNAMITE && this != FLASK_RED;
+		return this != DYNAMITE; // && this != FLASK_RED;
 	}
 }
