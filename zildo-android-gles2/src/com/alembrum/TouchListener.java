@@ -92,16 +92,14 @@ public class TouchListener implements OnTouchListener {
 					break;
 				}
 			}
-		} else {
-			// No menu ==> player is in game
-			// Deal with all points
-			for (int p = 0; p < pointerCount; p++) {
-	             float xx = event.getX(p); // * event.getXPrecision();
-	             float yy = event.getY(p); // * event.getYPrecision();
-	             interpretEvent(event.getActionMasked(), p, xx, yy);
-		     }
-
 		}
+		// Menu or player is in game ==> whatever
+		// Deal with all points
+		for (int p = 0; p < pointerCount; p++) {
+             float xx = event.getX(p); // * event.getXPrecision();
+             float yy = event.getY(p); // * event.getYPrecision();
+             interpretEvent(event.getActionMasked(), p, xx, yy);
+	    }
 		return true;
 	}
 	
