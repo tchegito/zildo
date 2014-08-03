@@ -25,8 +25,10 @@ import java.util.EnumMap;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.input.CommonKeyboardHandler;
+import zildo.fwk.input.DPadMovement;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Vector2f;
 import zildo.monde.util.Zone;
 
 /**
@@ -48,9 +50,11 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 		VP_DOWN_RIGHT(51, 52, 39, 38, true, KEY_DOWN, KEY_RIGHT),
 		// inventory
 		VP_INVENTORY(0, 0, 40, 31, false, KEY_X),
-		VP_BUTTON_X(274, 200, 25, 24, false, KEY_Q),
-		VP_BUTTON_Y(294, 170, 25, 24, false, KEY_W),
-		VP_FRAME(0, 180, 320, 240, false, KEY_DIALOG_FRAME);
+		VP_BUTTON_X(274-16-8, 200, 24+16, 24+16, false, KEY_Q),
+		VP_BUTTON_Y(296-16-8, 170-8-3, 24+16, 24+16, false, KEY_W),
+		VP_FRAME(0, 180, 320, 240, false, KEY_DIALOG_FRAME),
+		
+		VP_DPAD(0, 0, 80, 80, true, KEY_DIALOG_FRAME);	// KEy has no meaning here
 		/*
 		VP_BUTTON_A(4, 33, 26, 26, false, KEY_Q),
 		VP_BUTTON_B(36, 58, 26, 26, false, KEY_W),
@@ -61,6 +65,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 		public final Zone zLeftHanded;
 		public final int keyCode;
 		public final int keyCode2;
+		public boolean direction;
 		
 		private KeyLocation(int x, int y, int wx, int wy, boolean isDirection, int... keys) {
 			int addX = 0;
@@ -86,6 +91,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 				}
 				zLeftHanded = new Zone(symetricX, y + addY, wx, wy);
 			}
+			direction = isDirection;
 		}
 		
 		protected boolean isInto(Point p, boolean leftHanded) {
@@ -142,7 +148,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 	
 	public AndroidKeyboardHandler() {
 		polledTouchedPoints = new TouchPoints();
-		infos = new AndroidInputInfos();
+		//infos = new AndroidInputInfos();
 	}
 	
 	public void setAndroidInputInfos(AndroidInputInfos infos) {
@@ -164,14 +170,17 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 	}
 	
 	Angle previous;
+	Vector2f direction;
 	
 	public void poll() {
 		// Clear all keys state
+		System.out.println("Reset keystates");
 		for (int i : platformKeys.values()) {
 			keyStates[i] = false;
 		}
 		
 		polledTouchedPoints.clear();
+		direction = null;
 		if (infos.liveTouchedPoints.size() != 0) {
 			polledTouchedPoints.clear();
 			synchronized (infos.liveTouchedPoints) {
@@ -183,14 +192,24 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 			for (Point p : polledTouchedPoints.getAll()) {
 				for (KeyLocation kLoc : KeyLocation.values()) {
 					if (kLoc.isInto(p, leftHanded)) {
-						keyStates[kLoc.keyCode] = true;
-						if (kLoc.keyCode2 != -1) {
-							keyStates[kLoc.keyCode2] = true;
+						if (kLoc == KeyLocation.VP_DPAD) {	// Special : d-pad zone
+							direction = DPadMovement.compute(p.x - 50, p.y - 200);
+						} else {
+							keyStates[kLoc.keyCode] = true;
+							if (kLoc.keyCode2 != -1) {
+								keyStates[kLoc.keyCode2] = true;
+							}
 						}
 					}
 				}
 			}
+			
 		}
+	}
+	
+	@Override
+	public Vector2f getDirection() {
+		return direction;
 	}
 	
 	/**
