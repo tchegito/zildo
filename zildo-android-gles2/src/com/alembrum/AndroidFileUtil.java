@@ -118,7 +118,8 @@ public class AndroidFileUtil implements FileUtil {
 	
 	@Override
 	public void openLink(String url) {
-		Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"+url));
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+url));
+		browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		AndroidReadingFile.context.getApplicationContext().startActivity(browserIntent);		
 	}
 }
