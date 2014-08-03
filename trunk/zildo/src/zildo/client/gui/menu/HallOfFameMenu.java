@@ -49,9 +49,11 @@ public class HallOfFameMenu extends PageableMenu {
 		
 		// Ask internet server about the champions
 		String messageError = null;
-		List<Champion> champions = null;
+		List<Champion> champions = new ArrayList<Champion>();
 		try {
-			champions = WorldRegister.getChampions(Constantes.currentEpisode);
+			for (String ep : Constantes.allEpisodes) {
+				champions.addAll(WorldRegister.getChampions(ep));
+			}
 		} catch (GoogleQuotaException e) {
 			messageError = "m10.internet.quota";
 		} catch (UnknownHostException e) {
