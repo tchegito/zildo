@@ -31,6 +31,8 @@ import zildo.client.gui.menu.InGameMenu;
 import zildo.client.stage.GameStage;
 import zildo.client.stage.MenuStage;
 import zildo.fwk.ZUtils;
+import zildo.fwk.gfx.filter.CloudFilter;
+import zildo.fwk.gfx.filter.FitToScreenFilter;
 import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.input.KeyboardHandler;
@@ -182,6 +184,19 @@ public class Client {
 			}
 			ongoingStages.clear();
 		}
+		// Is there still  menu stage ?
+		boolean stillMenu = false;
+		for (GameStage stage : stages) {
+			if (stage instanceof MenuStage) {
+				stillMenu = true;
+				break;
+			}
+		}
+		ClientEngineZildo.filterCommand.active(FitToScreenFilter.class, stillMenu, null);
+		if (!stillMenu) {
+			setCurrentMenu(null);
+		}
+		
 		// Is there some deletion asked ?
 		if (!toRemove.isEmpty()) {
 			for (GameStage stage : toRemove) {
@@ -319,7 +334,7 @@ public class Client {
 	}
 
 	public void handleMenu(Menu p_menu) {
-		currentMenu = p_menu;
+		setCurrentMenu(p_menu);
 		if (p_menu == null) {
 			connected = true;
 		} else {
@@ -457,6 +472,7 @@ public class Client {
 		ClientEngineZildo.filterCommand.restoreFilters();
 		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
 		ClientEngineZildo.filterCommand.active(LightningFilter.class, false, null);
+		ClientEngineZildo.filterCommand.active(CloudFilter.class, false, null);
 		ClientEngineZildo.mapDisplay.reset();
 
 		connected = false;

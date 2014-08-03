@@ -32,6 +32,7 @@ import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FadeFilter;
 import zildo.fwk.gfx.filter.FadeScreenFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.gfx.filter.FitToScreenFilter;
 import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
@@ -262,6 +263,7 @@ public class FilterCommand {
 	public void addDefaultFilters() {
 		removeAll();
 		// Order is very important : as BilinearFilter should be rendered after all others
+		addFilter(Zildo.pdPlugin.getFilter(FitToScreenFilter.class));
 		addFilter(Zildo.pdPlugin.getFilter(CloudFilter.class));
 		addFilter(Zildo.pdPlugin.getFilter(BlurFilter.class));
 		addFilter(Zildo.pdPlugin.getFilter(BlendFilter.class));
