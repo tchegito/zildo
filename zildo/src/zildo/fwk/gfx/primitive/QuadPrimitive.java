@@ -41,8 +41,8 @@ public class QuadPrimitive {
     protected VBOBuffers bufs;
     protected VBO vbo;
     
-    private int textureSizeX = 256;
-    private int textureSizeY = 256;
+    protected int textureSizeX = 256;
+    protected int textureSizeY = 256;
 
     public QuadPrimitive(int numPoints) {
     	initialize(numPoints);
@@ -126,6 +126,12 @@ public class QuadPrimitive {
         // Move tile
         addSprite(x, y, u, v, sizeX * revX, sizeY * revY, Rotation.NOTHING, 255, false);
 
+    }
+    
+    public void updateTextureCoordinates(float u1, float v1, float u2, float v2, boolean normalizeTex) {
+        putTexture(u1, v1, u2, v2, normalizeTex);
+        nPoints += 4;
+        nIndices += 6;
     }
     
     float[][] texCoords = new float[4][2];

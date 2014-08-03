@@ -99,6 +99,7 @@ public class LwjglTileEngine extends TileEngine {
 		loadTiles();
 
 		createCloudTexture();
+		createBackMenuTexture();
 	}
 
 	private void loadTiles() {
@@ -149,6 +150,13 @@ public class LwjglTileEngine extends TileEngine {
 		cGen.generate();
 
 		texCloudId = textureEngine.generateTexture();
+	}
+	
+	private void createBackMenuTexture() {
+		//textureEngine.prepareSurfaceForTexture(false);
+		
+		texBackMenuId = textureEngine.loadTexture("menuBack256");
+		//texBackMenuId = textureEngine.generateTexture();
 	}
 	
 	@Override

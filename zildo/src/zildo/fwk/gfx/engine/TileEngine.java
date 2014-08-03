@@ -103,7 +103,8 @@ public abstract class TileEngine {
 	protected boolean initialized = false;
 	List<TileBank> motifBanks;
 	public int texCloudId;
-
+	public int texBackMenuId;
+	
 	protected TextureEngine textureEngine;
 	
 	static public String[] tileBankNames = { "foret1",

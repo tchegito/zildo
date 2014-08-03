@@ -60,7 +60,6 @@ public class MenuStage implements GameStage {
 			// Terminates menu and schedule selected action to execute
 			guiDisplay.endMenu();
 			menu.displayed = false;
-			client.setCurrentMenu(null);
 			client.setAction(item);
 			
 			done = true;
