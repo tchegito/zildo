@@ -947,10 +947,10 @@
 	        <moveTo who="maltus" pos="0,-20" delta="true" speed="1"/>
 	        <speak who="maltus" text="foret.maltus.4"/>
      	</actions>
-	    <speak who="maltus" text="foret.zildo.3"/>
+	    <speak who="zildo" text="foret.zildo.3"/>
 		<speak who="maltus" text="foret.maltus.5"/>
-        <speak who="maltus" text="foret.zildo.4"/>
-		<speak who="maltus" text="foret.maltus.6"/>
+        <speak who="zildo" text="foret.zildo.4"/>
+		<speak who="zildo" text="foret.maltus.6"/>
 		<angle who="maltus" angle="1"/>
         <speak who="maltus" text="foret.maltus.7"/>
         <actions>
