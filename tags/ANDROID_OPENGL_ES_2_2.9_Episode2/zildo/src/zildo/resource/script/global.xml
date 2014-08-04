@@ -1,0 +1,22 @@
+<adventure>
+    <scene id="setup">
+	    <nameReplace who="jaune,garde,gard1,gard2,gard3,gard4,gard5,gardenord" name="gard"/>
+	    <nameReplace who="vieille,sarah" name="oldLady"/>
+	    <nameReplace who="alcolo,aaaaaaaa,saaaaaaa,zzzsss,zzzzzmzz,bbbbggbg,aaaaaa" name="citizen"/>
+	    <nameReplace who="fffff,qqqqqq" name="citizen"/>
+	    <nameReplace who="charles_bar" name="charles"/>
+	    <nameReplace who="roby,super" name="???"/>
+	    <nameReplace who="vi" name="oldLady"/>
+	    <nameReplace who="vk" name="oldMan"/>
+	    <nameReplace who="vipere" name="viper"/>
+	    <nameReplace who="pano,note" name=""/>
+	    <nameReplace who="grandmere" name="oldLady"/>
+	    <nameReplace who="barmasky" name="barman"/>
+	    <nameReplace who="falcor" name="???"/>
+	    <nameReplace who="tony" name="bandit"/>
+	    <nameReplace who="emissaire" name="gard"/>
+	    
+	    <var name="BilelIgorVillage" type="sellingItems" value="[[EMPTY_BAG, 1], 100, 2], [[BLUEDROP, 1], 15, -1], [[DYNAMITE, 1], 100, 2]"/>
+	    <var name="Dizzie" type="sellingItems" value="[[DYNAMITE, 1], 15, 20]"/>
+    </scene>
+</adventure>

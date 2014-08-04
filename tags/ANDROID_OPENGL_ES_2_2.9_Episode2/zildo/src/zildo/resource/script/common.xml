@@ -1,0 +1,286 @@
+<adventure>
+    <!-- All transition scene MUST handle the fade in/out when map changes -->
+    <scene id="miniStairsUp">
+        <herospecial value="1"/>
+        <perso who="zildo" deltaFloor="1"/>
+        <sound name="ZildoDescend"/>
+		<moveTo who="zildo" pos="0,-32" speed="1" unstoppable="true" delta="true"/>
+        <herospecial value="2"/>
+	</scene>
+	
+	<scene id="miniStairsDown">
+        <herospecial value="1"/>
+	    <sound name="ZildoMonte"/>
+		<moveTo who="zildo" pos="0,34" speed="1" unstoppable="true" delta="true"/>
+		<herospecial value="2"/>
+        <perso who="zildo" deltaFloor="-1"/>
+	</scene>
+	
+	<scene id="stairsUp">
+        <herospecial value="1"/>
+        <sound name="ZildoMonte" />
+		<moveTo who="zildo" pos="0,-9" delta="true" unstoppable="true" speed="0.1" />
+		<fadeOut type="2"/>
+        <herospecial value="2"/>
+    </scene>
+	
+	<scene id="stairsUpCornerRight">
+        <herospecial value="1"/>
+        <sound name="ZildoMonte" />
+		<moveTo who="zildo" pos="0,-7" delta="true" unstoppable="true" speed="0.2" />
+		<moveTo who="zildo" pos="7,0" delta="true" unstoppable="true" speed="0.2" />
+		<fadeOut type="2" unblock="true" />
+		<wait value="10" />
+		<angle who="zildo" value="2" />
+    </scene>
+	
+	<scene id="stairsUpCornerLeft">
+        <herospecial value="1"/>
+        <sound name="ZildoMonte" />
+		<moveTo who="zildo" pos="0,-7" delta="true" unstoppable="true" speed="0.2" />
+		<moveTo who="zildo" pos="-7,0" delta="true" unstoppable="true" speed="0.1" />
+		<fadeOut type="2" unblock="true" />
+		<wait value="10" />
+		<angle who="zildo" value="0" />
+	</scene>
+	
+	<scene id="stairsDownCornerLeft">
+        <herospecial value="1"/>
+        <sound name="ZildoDescend" />
+		<moveTo who="zildo" pos="0,-7" delta="true" unstoppable="true" speed="0.2" />
+		<moveTo who="zildo" pos="-7,0" delta="true" unstoppable="true" speed="0.2" />
+		<fadeOut type="2" unblock="true" />
+		<wait value="10" />
+		<angle who="zildo" value="0" />
+	</scene>
+	
+	<scene id="stairsUpCornerRightEnd">
+        <herospecial value="1"/>
+        <pos who="zildo" pos="2,-7" delta="true" />
+		<sound name="ZildoDescend" />
+		<fadeIn type="2" />
+		<moveTo who="zildo" pos="-2,0" delta="true" unstoppable="true" speed="0.4" />
+		<moveTo who="zildo" pos="0,9" delta="true" unstoppable="true" speed="0.2" />
+        <herospecial value="2"/>
+    </scene>
+
+	<scene id="stairsUpCornerLeftEnd">
+        <herospecial value="1"/>
+        <pos who="zildo" pos="-2,-7" delta="true" />
+		<sound name="ZildoDescend" />
+		<fadeIn type="2" />
+		<moveTo who="zildo" pos="2,0" delta="true" unstoppable="true" speed="0.1" />
+		<moveTo who="zildo" pos="0,7" delta="true" unstoppable="true" speed="0.1" />
+        <herospecial value="2"/>		
+	</scene>
+	
+	<scene id="stairsDownCornerLeftEnd">
+        <herospecial value="1"/>
+        <pos who="zildo" pos="-2,-16" delta="true" />
+		<sound name="ZildoDescend" />
+		<fadeIn type="2" />
+		<moveTo who="zildo" pos="2,0" delta="true" unstoppable="true" speed="0.2" />
+		<moveTo who="zildo" pos="0,16" delta="true" unstoppable="true" speed="0.2" />
+        <herospecial value="2"/>		
+	</scene>
+	
+	<scene id="stairsUpEnd">
+		<pos who="zildo" pos="0,-9" delta="true" />
+		<sound name="ZildoDescend" />
+		<fadeIn type="2" unblock="true" />
+		<moveTo who="zildo" pos="0,16" delta="true" speed="0.2" />
+	</scene>
+	
+	<scene id="woodStairsUpCornerLeft">
+        <herospecial value="1"/>
+        <sound name="ZildoMonte" />
+		<moveTo who="zildo" pos="0,-10" delta="true" unstoppable="true" speed="1"/>
+        <fadeOut type="2" unblock="true" />
+		<moveTo who="zildo" pos="0,-18" delta="true" unstoppable="true" speed="0.8"/>
+		<moveTo who="zildo" pos="-1,0" delta="true" unstoppable="true"/>
+		<wait value="10"/>
+	</scene>
+	
+	<scene id="woodStairsDown">
+	    <herospecial value="1"/>
+        <sound name="ZildoMonte" />
+		<moveTo who="zildo" pos="8,0" delta="true" unstoppable="true" speed="0.8"/>
+   		<fadeOut type="2" unblock="true" />
+		<moveTo who="zildo" pos="8,2" delta="true" unstoppable="true" speed="0.8"/>
+	</scene>
+	
+	<scene id="woodStairsUpEnd">
+	    <herospecial value="1"/>
+        <sound name="ZildoDescend" />
+        <pos who="zildo" pos="36,0" delta="true"/>
+        <fadeIn type="2" unblock="true"/>
+		<moveTo who="zildo" pos="-24,-2" delta="true" unstoppable="true" speed="0.5"/>
+        <herospecial value="2"/>
+	</scene>
+	
+	<scene id="woodStairsDownEnd">
+	    <herospecial value="1"/>
+        <sound name="ZildoDescend" />
+        <pos who="zildo" pos="-8, -4" delta="true"/>
+        <fadeIn type="2" unblock="true"/>
+		<moveTo who="zildo" pos="0,18" delta="true" unstoppable="true" speed="0.5"/>
+        <herospecial value="2"/>
+	</scene>
+	
+	<scene id="death">
+        <herospecial value="1"/> <!-- Block everyone but hero -->
+		<music name="ZildoMort"/>
+		<fadeOut type="5"/>
+		<remove/>
+		<filter type="3"/>
+		<fadeIn type="0" unblock="true"/>
+		<sound name="ZildoDying"/>
+		<script who="zildo" text="VIDE"/>
+		<angle who="zildo" value="0"/>
+		<wait value="5"/>
+		<angle who="zildo" value="1"/>
+		<wait value="5"/>
+		<angle who="zildo" value="2"/>
+		<wait value="5"/>
+		<angle who="zildo" value="3"/>
+		<wait value="5"/>
+		<angle who="zildo" value="0"/>
+		<wait value="5"/>
+		<angle who="zildo" value="1"/>
+		<wait value="5"/>
+		<angle who="zildo" value="2"/>
+		<wait value="5"/>
+		<angle who="zildo" value="3"/>
+		<wait value="5"/>
+		<angle who="zildo" value="0"/>
+		<wait value="3"/>
+		<angle who="zildo" value="1"/>
+		<wait value="4"/>
+		<angle who="zildo" value="2"/>
+		<script who="zildo" text="MORT"/>
+		<wait value="59"/>
+		<fadeOut type="0"/>
+		<end type="1"/>
+	</scene>
+	
+	<scene id="fallPit">
+	    <sound name="ZildoFall"/>
+	    <script who="zildo" text="TOMBE"/>
+	    <wait value="30"/>
+	    <zoom who="zildo" value="200"/>
+	    <wait value="20"/>
+	    <zoom who="zildo" value="170"/>
+	    <wait value="10"/>
+	    <zoom who="zildo" value="140"/>
+	    <wait value="10"/>
+	    <zoom who="zildo" value="100"/>
+	    <wait value="10"/>
+	   	<visible who="zildo" value="false"/>
+	    <animation who="zildo" pos="-3,2" type="STAR_SHINE" />
+	    <!-- 
+	   	<animation who="zildo" pos="0,5" type="STAR_SHINE" />
+	   	-->
+	    <wait value="30"/>
+    	<fadeOut type="5"/>
+	    <zoom who="zildo" value="255"/>
+    </scene>
+	
+	<scene id="dieInPit">
+		<exec script="fallPit"/>
+		<respawn/>
+		<fadeIn type="5"/>    
+	</scene>
+	
+	<scene id="endFallPit">
+   	    <script who="zildo" text="TOMBE"/>
+	    <visible who="zildo" value="true"/>
+	    <fadeIn type="5" unblock="true" />
+	    <pos who="zildo" z="30"/>
+	    <wait value="15"/>
+	</scene>
+	   	
+	<!-- Moon fusion : need the caller to reenable music after that -->
+	<scene id="moonfusion">
+	    <music name=""/>
+	    <wait value="20"/>
+	    <fadeOut type="1"/>
+	    <script who="sorciere" value="13"/>
+	    <spawn what="moon1" type="HEART_FRAGMENT" pos="8,-160" foreground="true" effect="FOCUSED" delta="true"/>
+	    <spawn what="moon2" type="HEART_FRAGMENT2" pos="-152,0" foreground="true" effect="FOCUSED" delta="true"/>
+	    <moveTo what="moon1" pos="-7,-3" delta="true"/>
+	    
+	    <moveTo what="moon1" pos="2,0" delta="true"/>
+	   	<moveTo what="moon2" pos="2,0" delta="true"/>
+	    	    	    
+	    <actions>
+	        <moveTo what="moon1" pos="0,160" delta="true"/>
+	        <moveTo what="moon2" pos="160,0" delta="true"/>
+	    </actions>
+	    <wait value="20"/>
+	    <animation who="zildo" pos="6,-20" type="STAR_SHINE" />
+	    <filter type="4"/>
+   		<sound name="MoonFusion"/>
+	    <actions>
+	    	<remove what="moon1"/>
+	    	<remove what="moon2"/>
+	        <spawn what="moon3" type="BIG_HEART" pos="8,0" effect="FOCUSED" foreground="true" delta="true"/>	        
+	    </actions>
+	    <wait value="6"/>
+	    <filter type="0"/>
+	    <moveTo what="moon3" pos="3,4" speed="0.5" delta="true"/>
+	   	<script who="zildo" text="FIERTEOBJET"/>
+	    <animation who="zildo" pos="2,-26" type="STAR_SHINE" />
+	    <wait value="50"/>
+	    <sound name="ZildoOneUp"/>
+	    <herospecial value="0"/>	<!-- Gain 1 HP with paying 50 gold -->
+	    <speak who="camera" text="fullmoon.action"/>
+	    <script who="sorciere" value="3"/>
+	    <script who="zildo" text="VIDE"/>	    
+	    <remove what="moon3"/>
+	    <fadeIn type="1"/>
+	</scene>
+	
+	<scene id="backupGame">
+		<herospecial value="3"/>	    
+	</scene>
+	
+	<scene id="dieInWater">
+	    <animation type="WATER_SPLASH" pos="zildo.x,zildo.y"/>
+	    <sound name="ZildoPlonge"/>
+	    <perso who="zildo" alphaA="-2"/>
+	    <wait value="10"/>
+	    <visible who="zildo" value="false"/>
+	    <wait value="40"/>
+	    <herospecial value="5" arg="1"/>	<!--  hero's damage -->
+	    <fadeOut type="5"/>
+	    <perso who="zildo" alpha="255"/>
+	    <focus who="zildo"/>
+	    <actions>
+		    <herospecial value="4"/>
+		    <fadeIn type="5"/>
+	    </actions>
+	</scene>
+	
+	<persoAction id="flut" duration="100">
+		<actions>
+		    <angle who="self" value="2"/>
+			<script who="self" text="PLAYING_FLUT"/>
+			<sound name="Flut"/>
+		</actions>
+		<timer each="40">
+			<action>
+				<spawn  type="dice10 > 5:NOTE2,NOTE"
+						foreground="true"
+						pos="x-6,y" z="4" 
+						vx="0.2+0.1*random" vz="0.1" 
+						ax="-0.01" az="0.011"
+						fx="0.04 * random"
+						alphaA="-0.06"/>
+			</action>
+			<end when="attente=2">
+				<script who="self" text="VIDE"/> 
+			</end>
+		</timer>
+	</persoAction>
+	
+</adventure>
