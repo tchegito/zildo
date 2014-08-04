@@ -36,11 +36,13 @@ public class CheckAreaRegions {
 		Assert.assertSame(Region.Lugdunia, Region.fromMapName("coucou"));
 		Assert.assertSame(Region.Lugdunia, Region.fromMapName("d4m8"));
 		Assert.assertSame(Region.LugduniaCastle, Region.fromMapName("prisonext"));
+		Assert.assertSame(Region.LugduniaForest, Region.fromMapName("bosquet"));
 		Assert.assertSame(Region.LugduniaPrison, Region.fromMapName("prison4"));
 		Assert.assertSame(Region.ThievesCamp, Region.fromMapName("voleursm2"));
 		Assert.assertSame(Region.LugduniaForest, Region.fromMapName("igorlily"));
 		Assert.assertSame(Region.ClearingOaks, Region.fromMapName("promenade2"));
 		Assert.assertSame(Region.CaveFlames, Region.fromMapName("voleursg5"));
 		Assert.assertSame(Region.Fishermen, Region.fromMapName("igorv3b"));
+		Assert.assertSame(Region.CaveFlames, Region.fromMapName("voleursg1"));
 	}
 }
