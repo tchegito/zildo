@@ -425,7 +425,7 @@
 	
 	<quest name="sorciere_coucou_moon" repeat="true">
 		<trigger>
-		    <dialog name="sorciere" num="3"/>
+		    <dialog name="hezia" num="3"/>
 		    <location name="d4m3"/>
 		</trigger>	    
 		<action>
