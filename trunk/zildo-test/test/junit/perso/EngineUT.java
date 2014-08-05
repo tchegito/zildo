@@ -180,8 +180,10 @@ public class EngineUT {
 		}
 		
 		mapUtils = new MapUtils();
-		
-		Zildo.pdPlugin.filters.put(CloudFilter.class, new CloudFilter(null) {
+		CloudFilter cloudFilter = mock(CloudFilter.class);
+		Zildo.pdPlugin.filters.put(CloudFilter.class, cloudFilter);
+		/*
+		new CloudFilter(null) {
 			
 			@Override
 			public boolean renderFilter() {
@@ -194,6 +196,7 @@ public class EngineUT {
 				offsetV += y;
 			}
 		});
+		*/
 	}
 
 	@After
