@@ -941,13 +941,32 @@ public class MapManagement {
 		//p=new Point(900, 340);
 		return p;
 	}
+	
+	static final int MAX_SHIFT = 40;
+	
+	public void arrangeLocation(Perso p) {
+		Angle a = Angle.NORD;
+		float testX = p.x;
+		float testY = p.y;
+		int shift = 8;
+		while (collide(testX, testY, p) && shift < MAX_SHIFT) {
+			testX = p.x + a.coords.x * shift;
+			testY = p.y + a.coords.y * shift;
+			a = Angle.rotate(a, 1);
+			if (a == Angle.NORD) {
+				shift += 8;
+			}
+		}
+		if (shift == MAX_SHIFT) { // Unable to replace character
+			throw new RuntimeException("Impossible to replace " +(p==null?"character":p.getName()) + " !");
+		} else {
+			p.x = testX;
+			p.y = testY;
+		}
+	}
 
 	public Area getCurrentMap() {
 		return currentMap;
-	}
-
-	public void setCurrentMap(Area currentMap) {
-		this.currentMap = currentMap;
 	}
 
 	public void updateMap() {
