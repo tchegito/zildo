@@ -39,8 +39,10 @@ import zildo.fwk.ui.UIText;
 import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.Game;
 import zildo.monde.map.Region;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
 
 /**
  * @author Tchegito
@@ -160,15 +162,7 @@ public class SaveGameMenu extends PageableMenu {
 		}
 		UIText.setCharacterName(game.heroName);
 		EngineZildo.setGame(game);
-		if (game.mapName == null) {	// For backward compatibility
-			game.mapName = "foretg2";
-		}
-		
-		
-		//game.mapName = "voleurs";
-		//EngineZildo.persoManagement.getZildo().x+=50;
-		
-		
+
 		// Wait for all history script to be finished
 		// This could be dangerous : if a script can't finish => end of the story
 		// (though it could happen, as soon as a script is broken ...)
@@ -176,11 +170,14 @@ public class SaveGameMenu extends PageableMenu {
 			EngineZildo.scriptManagement.render();
 		}
 		
-		EngineZildo.mapManagement.loadMap(game.mapName, false);
-
+		MapManagement mapMgmt = EngineZildo.mapManagement;
+		mapMgmt.loadMap(game.mapName, false);
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+		mapMgmt.arrangeLocation(zildo);
+		
 		singlePlay.launchGame();
 		
-		EngineZildo.mapManagement.postLoadMap(false);
+		mapMgmt.postLoadMap(false);
 		
 		return true;	// success
 	}
