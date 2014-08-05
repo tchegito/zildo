@@ -18,7 +18,6 @@
  *
  */
 package zildo;
-import java.util.Locale;
 import java.util.logging.LogManager;
 
 import zildo.client.Client;
@@ -39,7 +38,7 @@ public class Zildo {
 	public static boolean infoDebug=false;
 	public static boolean infoDebugCollision=true;
 	public static boolean infoDebugCase=false;
-	public static boolean infoDebugScript=true;
+	public static boolean infoDebugScript=false;
 	public static boolean log=false;
 	public static boolean logNetwork=true;
 
