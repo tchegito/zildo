@@ -79,7 +79,7 @@ public class AndroidFileUtil implements FileUtil {
 				}
 				strFiles = AndroidReadingFile.assetManager.list("resources/"+pathWithoutSeparator);
 			} catch (IOException e) {
-				throw new RuntimeException("Unable to list files from asset !");
+				throw new RuntimeException("Unable to list files from asset !", e);
 			}
 		}
 		for (String s : strFiles) {
@@ -106,7 +106,7 @@ public class AndroidFileUtil implements FileUtil {
 		try {
 			return AndroidReadingFile.context.openFileOutput(removePaths(path), Context.MODE_PRIVATE);
 		} catch (FileNotFoundException e) {
-			throw new RuntimeException("Unable to write " + path + " !");
+			throw new RuntimeException("Unable to write " + path + " !", e);
 		}
 	}
 	
