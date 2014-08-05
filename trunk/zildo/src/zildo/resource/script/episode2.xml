@@ -212,7 +212,7 @@
             <moveTo what="leaf" pos="407,386"/>
             <sound name="SlipWater2"/>
             <!-- 415,351 -->
-            <moveTo what="leaf" way="physic" pos="10,-18" speed="0.5"/>
+            <moveTo what="leaf" way="physic" pos="1,-1" speed="0.0"/>
         </action>
     </quest>	
     <quest name="summonLeaf" locked="false">
