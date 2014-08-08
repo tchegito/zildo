@@ -12,7 +12,7 @@ So this is the steps you should follow:
    https://zildo.googlecode.com/svn/trunk
   # Create a run configuration on 'zildo.Zildo' class.
     Put these lines in the VM arguments (Arguments tab):<br/>
-    `-Djava.library.path="c:\Code\Projets java\lwjgl-2.0.1\native\win32" -Xmx80M -Dsun.java2d.noddraw=false`<br/><br/>
+    `-Djava.library.path="c:\Code\Projets java\lwjgl-2.8.2\native\windows" -Xmx80M -Dsun.java2d.noddraw=false`<br/><br/>
     Where you should replace the path with yours, indeed. 
   # Edit the `Constantes.java` class at line 34 :<br/>
     `public static String DATA_PATH = "C:\\Data\\";`<br/>
