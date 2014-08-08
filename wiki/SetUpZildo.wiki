@@ -27,4 +27,4 @@ Note: it's not mandatory to check out all projects. But the less you need is :
 
 And after that, the other ones are optional :
   * *zeditor* : the map editor
-  * *zildo-platform-android* : specifically for phones using Android
+  * *zildo-platform-android-gles2* : specifically for phones using Android
