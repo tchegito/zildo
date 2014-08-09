@@ -691,7 +691,7 @@
 	    <focus who="zildo" delta="true"/>
 	    <!--  End of episode 1 -->
 	    <wait value="200"/>
-	    <speak who="camera" text="game.endEpisode1"/>
+	    <speak what="camera" text="game.endEpisode1"/>
 	    <fadeOut type="0"/>
 	    <map name="preintro"/>
 	    <pos what="camera" pos="0,0"/>
@@ -699,7 +699,7 @@
 	    <music name="ZildoMort"/>
 	    <wait value="50"/>
 	    <fadeIn type="0"/>
-	    <speak who="camera" text="game.endEpisode1.end"/>
+	    <speak what="camera" text="game.endEpisode1.end"/>
 	    <end type="0"/>	
 	</scene>
 	    	
