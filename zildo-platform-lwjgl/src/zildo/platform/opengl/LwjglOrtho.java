@@ -32,7 +32,7 @@ import zildo.monde.util.Vector4f;
  * context.
  * 
  * It means that there's any projection. The z-coordinate is just used to know
- * if an obect is behind or before another, but it doesn't lead to perspective
+ * if an object is behind or before another, but it doesn't lead to perspective
  * anymore.
  * 
  * 
