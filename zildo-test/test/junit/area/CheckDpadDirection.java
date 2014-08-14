@@ -24,7 +24,7 @@ public class CheckDpadDirection extends EngineUT {
 
 	Perso zildo;
 	ClientState state;
-	KeyboardInstant instant = new KeyboardInstant();
+	KeyboardInstant instant;
 	KeyboardHandler fakedKbHandler;
 	
 	Vector2f CONSTANT_DIRECTION = new Vector2f(0, -Constantes.ZILDO_SPEED);
@@ -49,6 +49,8 @@ public class CheckDpadDirection extends EngineUT {
 		Zildo.pdPlugin.kbHandler = fakedKbHandler;
 
 		when(fakedKbHandler.getDirection()).thenReturn(holdDirection);
+		
+		instant = new KeyboardInstant();
 	}
 	
 	@Test
@@ -72,6 +74,7 @@ public class CheckDpadDirection extends EngineUT {
 	
 	@Test
 	public void testRealisticMovement() {
+		System.out.println("Realistic");
 		// Simulation a realistic direction => UP with a little value on X axis, as it is with a real touch screen
 		init(152, 101, Trigo.vect((Math.PI / 2) - 0.01, -Constantes.ZILDO_SPEED));
 		

@@ -124,21 +124,6 @@ public class EngineUT {
 		}
 		Assert.assertTrue("Character is blocked !", false);
 	}
-	
-	protected void updateGame() {
-		ClientState state = clients.get(0);
-		engine.renderEvent(state.event);
-		if (clientEngine == null) {
-			clientEngine = new ClientEngineZildo(null, false, mock(Client.class));
-			clientEngine.guiDisplay = mock(GUIDisplay.class);
-			clientEngine.mapDisplay = spy(new MapDisplay(mapUtils.area));
-			doNothing().when(clientEngine.mapDisplay).centerCamera();
-			clientEngine.tileEngine = mock(TileEngine.class);
-		}
-		state.event = engine.renderEvent(state.event);
-		state.event = clientEngine.renderEvent(state.event);
-		renderFrames(1);
-	}
 
 	protected void renderFrames(int nbFrame) {
 		renderFrames(nbFrame, true);
@@ -171,7 +156,7 @@ public class EngineUT {
 		// Fake a client state list
 		ClientState clState = new ClientState(null, 1);
 		clients = Arrays.asList(clState);
-
+		
 		// Tile collision
 		for (String bankName : TileEngine.tileBankNames) {
 			TileBank motifBank = new TileBank();
@@ -182,6 +167,15 @@ public class EngineUT {
 		mapUtils = new MapUtils();
 		CloudFilter cloudFilter = mock(CloudFilter.class);
 		Zildo.pdPlugin.filters.put(CloudFilter.class, cloudFilter);
+		
+		// Fake client display
+		if (clientEngine == null) {
+			clientEngine = new ClientEngineZildo(null, false, mock(Client.class));
+			ClientEngineZildo.guiDisplay = mock(GUIDisplay.class);
+			ClientEngineZildo.mapDisplay = spy(new MapDisplay(mapUtils.area));
+			doNothing().when(ClientEngineZildo.mapDisplay).centerCamera();
+			ClientEngineZildo.tileEngine = mock(TileEngine.class);
+		}
 		/*
 		new CloudFilter(null) {
 			
