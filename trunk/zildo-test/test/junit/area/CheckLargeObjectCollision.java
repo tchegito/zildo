@@ -47,22 +47,24 @@ public class CheckLargeObjectCollision extends EngineUT{
 		mapUtils.loadMap("igorvillage");
 		EngineZildo.persoManagement.clearPersos(true);
 
-		// Wait end of scripts
-		while (EngineZildo.scriptManagement.isScripting()) {
-			renderFrames(1);
-		}
+		
 
 		// Spawn water lily
 		waterLily = EngineZildo.spriteManagement.spawnSprite(
 				ElementDescription.WATER_LEAF,
 				x, y,
 				false, Reverse.NOTHING, false); // 113,259
-		
-		
+
 		zildo = spawnZildo(x, y);
 		clients.get(0).zildoId = zildo.getId();
 		clients.get(0).zildo = (PersoZildo) zildo;
 		zildo.walkTile(false);
+		
+		// Wait end of scripts
+		while (EngineZildo.scriptManagement.isScripting()) {
+			renderFrames(1);
+		}
+
 	}
 	
 	/**
