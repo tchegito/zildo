@@ -108,5 +108,14 @@ public class GUISpriteSequence extends ArrayList<SpriteEntity> {
 
 		sequenceDrawn = false;
 	}
+	
+	@Override
+	public SpriteEntity remove(int n) {
+		// Remove a specific entity inside the sequence
+		SpriteEntity entity = get(n);
+		ClientEngineZildo.spriteDisplay.deleteSprite(entity);
+		super.remove(n);
+		return entity;
+	}
 
 }
