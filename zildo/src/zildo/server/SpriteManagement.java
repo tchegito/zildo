@@ -776,12 +776,8 @@ public class SpriteManagement extends SpriteStore {
 		// Filter the entities to keep only the common and those from given
 		// client
 		List<SpriteEntity> entities = new ArrayList<SpriteEntity>();
-		List<SpriteEntity> clSprites = new ArrayList<SpriteEntity>();
-		if (p_cl != null && p_cl.zildo.guiCircle != null) {
-			clSprites = p_cl.zildo.guiCircle.getSprites();
-		}
 		for (SpriteEntity entity : spriteEntities) {
-			if (!entity.clientSpecific || clSprites.contains(entity)) {
+			if (!entity.clientSpecific) {
 				entities.add(entity);
 			}
 		}

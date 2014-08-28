@@ -103,4 +103,8 @@ public enum ItemKind {
 	public boolean canBeMultiple() {
 		return this != DYNAMITE; // && this != FLASK_RED;
 	}
+	
+	public boolean isStackable() {
+		return this == FLASK_RED || this == FLASK_YELLOW || this == EMPTY_BAG || this == FULL_BAG;
+	}
 }

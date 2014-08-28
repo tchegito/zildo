@@ -21,22 +21,24 @@
 package zildo.monde.items;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
+import zildo.client.gui.GUISpriteSequence;
 import zildo.client.sound.BankSound;
+import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
-import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.FontDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
-import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
 import zildo.server.state.ClientState;
@@ -54,6 +56,7 @@ public class ItemCircle {
 		}
 	}
 	
+	private GUISpriteSequence seq;
 	private List<SpriteEntity> guiSprites;
 	private List<StoredItem> items;
 	private Point center;
@@ -74,6 +77,7 @@ public class ItemCircle {
 		itemSelected=0;
 		phase=CirclePhase.EXPANSION;
 		client=p_zildoClient;
+		seq = new GUISpriteSequence();
 	}
 	
 	public List<SpriteEntity> getSprites() {
@@ -96,14 +100,19 @@ public class ItemCircle {
 		describe=p_buying;
 		items=p_inventory.items;
 		
-		center=new Point((int) perso.x+1, (int) perso.y-12);
+		center = new Point(perso.getScrX(), perso.getScrY()+4);
+		
 		for (StoredItem item : p_inventory.items) {
-            SpriteEntity e = EngineZildo.spriteManagement.spawnSprite(item.item.kind.representation, center.x, center.y, true, Reverse.NOTHING, true);
-            e.clientSpecific=true;
+            SpriteEntity e = seq.addSprite(item.item.kind.representation, 
+            		center.x, center.y);
             e.setSpecialEffect(EngineFX.FOCUSED);
             e.zoom = 0;
-            e.floor = Constantes.TILEENGINE_FLOOR - 1;
             guiSprites.add(e);
+
+            e = seq.addSprite(SpriteBank.BANK_FONTES, FontDescription.N_0.getNSpr() + (item.quantity % 10),
+            		center.x, center.y, true, 255);
+            e.setSpecialEffect(EngineFX.FOCUSED);
+
 		}
 		display();
 		
@@ -133,17 +142,35 @@ public class ItemCircle {
 		}
 		alpha-=pas*itemSelected;
 		// Create the inventory sprites
-		for (SpriteEntity entity : guiSprites) {
-			int itemX=(int) (center.getX() + rayon*Math.sin(alpha));
-			int itemY=(int) (center.getY() - rayon*Math.cos(alpha));
-			SpriteModel model = entity.getSprModel();
-			itemX -= model.getTaille_x() >> 1;
-			itemY -= model.getTaille_y() >> 1;
-			entity.setAjustedX(itemX);
-			entity.setAjustedY(itemY);
-			entity.zoom = Math.min(255, rayon * 8); //16; //255 * (33 / (33-rayon));
-			alpha+=pas;
-		}		
+		Iterator<SpriteEntity> itSeq = seq.iterator();
+		
+		if (itSeq.hasNext()) {
+			for (StoredItem item : items) {
+	            SpriteEntity entity = itSeq.next();
+				int itemX=(int) (rayon*Math.sin(alpha));
+				int itemY=(int) (-rayon*Math.cos(alpha));
+				SpriteModel model = entity.getSprModel();
+				entity.setScrX(center.x + itemX);
+				entity.setScrY(center.y + itemY);
+				entity.zoom = Math.min(255, rayon * 8); //16; //255 * (33 / (33-rayon));
+	
+				if (Math.abs(alpha % 2*Math.PI) < 0.01) {	// Highlight the upper item
+					entity.setSpecialEffect(EngineFX.WHITE_HALO);
+				} else {
+					entity.setSpecialEffect(EngineFX.NO_EFFECT);
+				}
+                SpriteEntity amount = itSeq.next();
+	            if (item.quantity > 1) {
+	            	// Display the amount number just on the right of the item
+	                amount.setScrX(center.x + itemX + model.getTaille_x());
+	                amount.setScrY(center.y + itemY);
+	                amount.zoom = entity.zoom;
+	            } else {
+	            	amount.visible = false;
+	            }
+				alpha+=pas;
+			}
+		}
 	}
 	
 	/**
@@ -228,8 +255,9 @@ public class ItemCircle {
 		if (items.get(itemSelected).quantity == 0) {
 			// Remove it from the list
 			items.remove(itemSelected);
-			guiSprites.get(itemSelected).dying = true;
 			guiSprites.remove(itemSelected);
+			seq.remove(itemSelected*2);
+			seq.remove(itemSelected*2);
 			if (items.size() == 0) {
 				kill();
 			} else if (itemSelected == items.size()) {
@@ -249,7 +277,8 @@ public class ItemCircle {
 			e.dying=true;
 		}
 		guiSprites.clear();
-		
+		seq.clear();
+
 		// Unfocus involved persos
 		client.initPersoFX();
 		perso.initPersoFX();

@@ -65,4 +65,8 @@ public class Inventory {
 			items.get(index).quantity--;
 		}
 	}
+	
+	public int indexOf(Item it) {
+		return items.indexOf(new StoredItem(it, 1,1));
+	}
 }
