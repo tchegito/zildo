@@ -398,7 +398,7 @@ public class PlayerManagement {
 				heros.buyItem();
 			} else if (gamePhase == GamePhase.DIALOG || gamePhase == GamePhase.SCRIPT) {
 			    EngineZildo.dialogManagement.goOnDialog(client);
-			} else if (gamePhase == GamePhase.INGAME && !heros.isInventoring()) { //
+			} else if (gamePhase == GamePhase.INGAME && !heros.isInventoring() && heros.getAttente() == 0) { //
 				if (heros.getMouvement()==MouvementZildo.BRAS_LEVES) {
 					heros.throwSomething();
 				} else if (heros.getMouvement()!=MouvementZildo.BRAS_LEVES && 
@@ -489,9 +489,8 @@ public class PlayerManagement {
 	                                map.takeSomethingOnTile(new Point(newx, newy), false, heros);
 	                            }
 							} else if (Tile.isClosedChest(on_map) && heros.getAngle()==Angle.NORD) {
-								//Zildo a trouvé un coffre ! C'est pas formidable ?
+								// Hero found a chest ! Great, isn't it ?
 								EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
-								heros.setAttente(60);
                                 map.takeSomethingOnTile(new Point(newx, newy), false, heros);
 								// Mark this event : chest opened
 								EngineZildo.scriptManagement.openChest(map.getName(), new Point(newx, newy));

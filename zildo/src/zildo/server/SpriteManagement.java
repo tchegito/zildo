@@ -347,10 +347,10 @@ public class SpriteManagement extends SpriteStore {
 				element.z = 16;
 				element.vx = 0;
 				element.vy = 0.0f;
-				element.vz = 0.2f;
+				element.vz = 0.18f;
 				element.ax = 0;
 				element.fy = 0.005f;
-				element.fz = 0.02f;
+				element.fz = 0.03f;
 				element.setDesc(desc);
 				break;
 			case STAR_CIRCLE:

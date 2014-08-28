@@ -53,7 +53,7 @@ public class Element extends SpriteEntity {
 	public float vx, vy, vz;
 	public float fx, fy, fz; // Frottements
 	public float alphaV, alphaA;	// Speed and acceleration for alpha
-	protected char spe; // Spe est utilisé selon l'usage
+	protected int spe; // Spe est utilisé selon l'usage
 	protected Angle angle;
 	public boolean flying;
 
@@ -660,12 +660,24 @@ public class Element extends SpriteEntity {
 						}
 						break;
 					}
+					
+					if (j == 2 || j == 3) {
+						// Allow diagonal movement to become lateral, only if it leads to a real position
+						// (it fixes the bug where jump was quite impossible to make because of lateral movement)
+						if (!mapManagement.collide(x + diagonalForce * p_deltaX, y + diagonalForce * p_deltaY, this) &&
+								!mapManagement.collide(x + move2.x, y + move2.y, this)) {
+							xx = x + move2.x;
+							yy = y + move2.y;
+							break;
+						}
+					} else {
 							
-					if (!mapManagement.collide(x + diagonalForce * move2.x, y + diagonalForce * move2.y, this) &&
-							!mapManagement.collide(x + move2.x, y + move2.y, this)) {
-						xx = x + move2.x;
-						yy = y + move2.y;
-						break;
+						if (!mapManagement.collide(x + diagonalForce * move2.x, y + diagonalForce * move2.y, this) &&
+								!mapManagement.collide(x + move2.x, y + move2.y, this)) {
+							xx = x + move2.x;
+							yy = y + move2.y;
+							break;
+						}
 					}
 				}
 				if (xx == keepX && yy == keepY) { //mapManagement.collide(xx, yy, this)) {

@@ -52,6 +52,10 @@ public class ElementGoodies extends Element {
 	public ElementGoodies(Perso p_zildo) {
 		linkedPerso=p_zildo;
 		timeToAcquire=60;
+		spe = 120;
+		volatil = false;
+		// Block hero during the item rising
+		p_zildo.setAttente(timeToAcquire);
 	}
 	
 	@Override
