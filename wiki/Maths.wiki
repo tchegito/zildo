@@ -43,7 +43,7 @@ Let's simplify with `Dx = Zx - Mx` and `Dy = Zy - My`. Rewrite it :
 
 <=>
 
-Dx² + 2 * Dx * n *deltaX + n² * deltaX² + Dy² + 2 * Dy * n * deltaY + n² * deltaY² = speed² * n²
+Dx² + 2 * Dx * n * deltaX + n² * deltaX² + Dy² + 2 * Dy * n * deltaY + n² * deltaY² = speed² * n²
 
 <=>
 
