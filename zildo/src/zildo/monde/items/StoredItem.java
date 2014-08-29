@@ -55,16 +55,9 @@ public class StoredItem {
 		String str = item.kind.getName();
 		str += "\n" + price + " "+UIText.getGameText("money");
 
+		if (quantity != -1) {
+			str += " ("+quantity+")";
+		}
 		return str;
-	}
-	
-	@Override
-	public int hashCode() {
-		return item.hashCode();
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return hashCode() == obj.hashCode();
 	}
 }

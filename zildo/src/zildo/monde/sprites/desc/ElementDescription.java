@@ -297,7 +297,6 @@ public enum ElementDescription implements SpriteDescription {
 		case SEWER_SMOKE1: case SEWER_SMOKE2:
 		case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:
 		case WATERWAVE1: case WATERWAVE2: case WATERWAVE3:
-		case SWORD: case FIRE_RING:
 			return true;
 		default:
 			return false;

@@ -270,12 +270,14 @@ public class PersoZildo extends Perso {
 				outOfOrder = true;
 			} else {
 				action = new HealAction(this, 6); // Give back 6 half-hearts
-				decrementItem(ItemKind.FLASK_RED);
+				removeItem(ItemKind.FLASK_RED);
+				weapon = null;
 			}
 			break;
 		case FLASK_YELLOW:
 			affections.add(AffectionKind.INVINCIBILITY);
-			decrementItem(ItemKind.FLASK_YELLOW);
+			removeItem(ItemKind.FLASK_YELLOW);
+			weapon = null;
 			break;
 		case MILK:
 			sentence = UIText.getGameText("milk.action");
@@ -1128,12 +1130,11 @@ public class PersoZildo extends Perso {
 			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
 			return;
 		}
-		Inventory inv = Inventory.fromItems(inventory);
-		int sel = inv.indexOf(weapon);
+		int sel = inventory.indexOf(weapon);
 		if (sel == -1) {
 			sel = 0;
 		}
-		lookItems(inv, sel, this, null);
+		lookItems(Inventory.fromItems(inventory), sel, this, null);
 	}
 
 	public int getIndexSelection() {
@@ -1159,10 +1160,10 @@ public class PersoZildo extends Perso {
 		if (remains < 0) {
 			// Not enough money
 			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
-		}/* else if (inventory.size() == 8) {
+		} else if (inventory.size() == 8) {
 			// Too much items
 			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
-		}*/ else {
+		} else {
 			money -= stItem.price;
 			SpriteDescription d = item.kind.representation;
 			if (item.kind.canBeInInventory()) {
@@ -1266,19 +1267,6 @@ public class PersoZildo extends Perso {
 		}
 	}
 
-	/**
-	 * Reduce item's quantity and focus on another one if necessary.
-	 */
-	public void decrementItem(ItemKind p_kind) {
-		removeItem(p_kind);
-		setWeapon(null);
-		for (Item i : inventory) {
-			if (i.kind == p_kind) {
-				setWeapon(i);
-			}
-		}
-	}
-	
 	/**
 	 * Return TRUE if Zildo has an item from given kind.
 	 * 

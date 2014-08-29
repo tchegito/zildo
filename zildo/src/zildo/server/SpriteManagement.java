@@ -347,10 +347,10 @@ public class SpriteManagement extends SpriteStore {
 				element.z = 16;
 				element.vx = 0;
 				element.vy = 0.0f;
-				element.vz = 0.18f;
+				element.vz = 0.2f;
 				element.ax = 0;
 				element.fy = 0.005f;
-				element.fz = 0.03f;
+				element.fz = 0.02f;
 				element.setDesc(desc);
 				break;
 			case STAR_CIRCLE:
@@ -776,8 +776,12 @@ public class SpriteManagement extends SpriteStore {
 		// Filter the entities to keep only the common and those from given
 		// client
 		List<SpriteEntity> entities = new ArrayList<SpriteEntity>();
+		List<SpriteEntity> clSprites = new ArrayList<SpriteEntity>();
+		if (p_cl != null && p_cl.zildo.guiCircle != null) {
+			clSprites = p_cl.zildo.guiCircle.getSprites();
+		}
 		for (SpriteEntity entity : spriteEntities) {
-			if (!entity.clientSpecific) {
+			if (!entity.clientSpecific || clSprites.contains(entity)) {
 				entities.add(entity);
 			}
 		}

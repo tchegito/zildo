@@ -161,7 +161,7 @@
         </history>
     </quest>
     
-    <quest name="v3_crate" locked="false">
+    <quest name="v3_crate">
         <trigger>
             <location name="voleursm3"/>
             <push name="crate" angle="1"/>

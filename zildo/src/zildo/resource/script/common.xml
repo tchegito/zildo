@@ -233,7 +233,7 @@
 	    <wait value="50"/>
 	    <sound name="ZildoOneUp"/>
 	    <herospecial value="0"/>	<!-- Gain 1 HP with paying 50 gold -->
-	    <speak what="camera" text="fullmoon.action"/>
+	    <speak who="camera" text="fullmoon.action"/>
 	    <script who="hezia" value="3"/>
 	    <script who="zildo" text="VIDE"/>	    
 	    <remove what="moon3"/>

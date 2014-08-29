@@ -61,17 +61,15 @@ public class PersoBat extends PersoShadowed {
 				} else {
 					// Set a target by guessing future Zildo's location
 					Point t = anticiper.anticipeTarget(this, zildo);
-					if (t.x != 0 || t.y != 0) {	// If returned point is (0,0) => do nothing
-						pathFinder.setTarget(t);
-						currentSpeed = 1.4f + 0.2f * Math.random();
-						quel_deplacement = MouvementPerso.VOLESPECTRE;
-						
-						if (countSound <= 0) {
-							EngineZildo.soundManagement.broadcastSound(BankSound.Bat, this);
-							countSound = 24;
-						}
-						speedAlpha = 0;
+					pathFinder.setTarget(t);
+					currentSpeed = 1.4f + 0.2f * Math.random();
+					quel_deplacement = MouvementPerso.VOLESPECTRE;
+					
+					if (countSound <= 0) {
+						EngineZildo.soundManagement.broadcastSound(BankSound.Bat, this);
+						countSound = 24;
 					}
+					speedAlpha = 0;
 				}
 			} else {
 				if (speedAlpha < Math.PI / 2) {
