@@ -100,7 +100,7 @@ public class ItemCircle {
 		describe=p_buying;
 		items=p_inventory.items;
 		
-		center = new Point(perso.getScrX(), perso.getScrY()+4);
+		center = new Point(perso.getScrX()+1, perso.getScrY()+4);
 		
 		for (StoredItem item : p_inventory.items) {
             SpriteEntity e = seq.addSprite(item.item.kind.representation, 
