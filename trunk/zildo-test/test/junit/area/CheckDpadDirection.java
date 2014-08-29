@@ -75,7 +75,7 @@ public class CheckDpadDirection extends EngineUT {
 	@Test
 	public void testRealisticMovement() {
 		System.out.println("Realistic");
-		// Simulation a realistic direction => UP with a little value on X axis, as it is with a real touch screen
+		// Simulation of a realistic direction => UP with a little value on X axis, as it is with a real touch screen
 		init(152, 101, Trigo.vect((Math.PI / 2) - 0.01, -Constantes.ZILDO_SPEED));
 		
 		int step = 50;
