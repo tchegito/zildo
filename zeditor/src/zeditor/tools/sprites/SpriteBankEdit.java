@@ -30,6 +30,7 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.db.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
+import zildo.fwk.gfx.GFXBasics;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.util.Zone;
 
@@ -167,13 +168,17 @@ public class SpriteBankEdit extends SpriteBank {
     	 }
     	 if (current != null) {
     		 if (current.nTile == i) {
+    			 if (current.decrodedPalette) {
+    				 GFXBasics.switchPalette(2);
+    			 }
     			 loadImage(current.imageName, Modifier.COLOR_BLUE);
     			 current = null;
     		 }
     	 }
       	addSprFromImage(startSpr + i, z.x1, z.y1, z.x2, z.y2);
       	i++;
-      }		
+      }
+	 GFXBasics.switchPalette(1);
 	}
 	
 	public void captureFonts(int posY, int fontHeight, String chars, int constantWidth, int heightSpace) {

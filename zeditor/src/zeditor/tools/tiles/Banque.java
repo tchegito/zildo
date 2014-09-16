@@ -26,6 +26,7 @@ public abstract class Banque {
 	Map<Integer, Point> pointParMotif;
 	
 	public static final String PKM_PATH = "F:\\Code\\Projets Pascal\\Zildo\\Developpement\\Graph\\";
+	public static final String PNG_PATH = PKM_PATH + "../FreeGraph/";
 	
 	// Ensemble des points correspondant à la position haute-gauche de chaque
 	// tile

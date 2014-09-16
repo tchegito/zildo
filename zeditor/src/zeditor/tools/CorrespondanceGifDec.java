@@ -12,6 +12,7 @@ import zeditor.tools.banque.Foret2;
 import zeditor.tools.banque.Foret3;
 import zeditor.tools.banque.Foret4;
 import zeditor.tools.banque.Grotte;
+import zeditor.tools.banque.LavaCave;
 import zeditor.tools.banque.Maison;
 import zeditor.tools.banque.Palais1;
 import zeditor.tools.banque.Palais2;
@@ -126,5 +127,6 @@ public class CorrespondanceGifDec {
 		banks.put("PALAIS1", doTheJob(new Palais1()));
 		banks.put("PALAIS2", doTheJob(new Palais2()));
 		banks.put("PALAIS3", doTheJob(new Palais3()));
+		banks.put("LAVACAVE", doTheJob(new LavaCave()));
 	}
 }
