@@ -20,28 +20,25 @@
 
 package zeditor.tools.builder;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.IndexColorModel;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.LogManager;
 
-import javax.imageio.ImageIO;
-
 import zeditor.tools.banque.Foret1;
 import zeditor.tools.banque.Foret2;
 import zeditor.tools.banque.Foret3;
 import zeditor.tools.banque.Foret4;
 import zeditor.tools.banque.Grotte;
+import zeditor.tools.banque.LavaCave;
 import zeditor.tools.banque.Maison;
 import zeditor.tools.banque.Palais1;
 import zeditor.tools.banque.Palais3;
 import zeditor.tools.banque.Village;
+import zeditor.tools.palette.PaletteExtractor;
 import zeditor.tools.sprites.ElementsPlus;
 import zeditor.tools.sprites.Fontes;
 import zeditor.tools.sprites.Gears;
@@ -57,10 +54,8 @@ import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.gui.GUIDisplay;
-import zildo.fwk.bank.TileBank;
 import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.file.EasyBuffering;
-import zildo.fwk.file.EasyWritingFile;
+import zildo.fwk.bank.TileBank;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.Game;
@@ -73,7 +68,6 @@ import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
-import zildo.monde.util.Vector3f;
 import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -102,7 +96,7 @@ public class Modifier {
      public static void main(String[] args) {
          // Intialize game engine
     	 Zildo.soundEnabled = false;
-    	 //new Modifier().textureBuilder();
+    	 new Modifier().textureBuilder();
     	 //if (true) System.exit(0);
         Game g=new Game(null, true);
         new EngineZildo(g);
@@ -132,6 +126,7 @@ public class Modifier {
         new Modifier().savePnj();
         new Modifier().savePnj2();
         new Modifier().savePnj3();
+        new Modifier().saveLavaCave();
         //new Modifier().modifyAllMaps();
         //new Modifier().adjustSpritePositionOnAllMaps();
         //new Modifier().generateImg();
@@ -314,7 +309,7 @@ public class Modifier {
     	 }*/
     	 bankZildo.saveBank();
      }
-     
+      
 	public void saveFontes2() {
 		SpriteBankEdit bankFont = new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_FONTES));
 		bankFont.clear();
@@ -348,6 +343,10 @@ public class Modifier {
     	 bank.saveBank();
      }
      
+     public void saveLavaCave() {
+    	 new LavaCave().save();
+     }
+     
      public void savePnj3() {
          SpriteBankEdit bank=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ3));
          bank.clear();
@@ -370,39 +369,8 @@ public class Modifier {
      }
     
      public void savePalette() {
-    	 Vector3f[] palette = loadPalette("../FreeGraph/exteria1.png");
-    	 EasyBuffering buf = new EasyBuffering(768);
-    	 for (int i = 0;i<256;i++) {
-    		 buf.put((byte) palette[i].x);
-    		 buf.put((byte) palette[i].y);
-    		 buf.put((byte) palette[i].z);
-    	 }
-    	 
-    	 new EasyWritingFile(buf).saveFile("game1.pal");
-     }
-     
-     
-     private Vector3f[] loadPalette(String p_filename) {
- 		BufferedImage img = null;
- 		String fileName=p_filename;
- 		fileName=Banque.PKM_PATH + p_filename;
- 		try {
- 			img = ImageIO.read(new File(fileName));
- 		} catch (IOException e) {
- 		}
- 		IndexColorModel colors = (IndexColorModel) img.getColorModel();
- 		Vector3f[] ret = new Vector3f[256];
- 		for (int i=0;i<256;i++) {
- 			Vector3f col = new Vector3f(colors.getRed(i), colors.getGreen(i), colors.getBlue(i));
- 			/*
- 			System.out.println("col "+i+
- 					" R" + col.x+
- 					" G"+col.y+
- 					" B"+col.z);
- 					*/
- 			ret[i] = col;
- 		}
- 		return ret;
+    	 new PaletteExtractor("exteria1.png").save("game1.pal");
+    	 new PaletteExtractor("dragonpal.png").save("game2.pal");
      }
      
      public void saveFontes() {

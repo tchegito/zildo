@@ -26,13 +26,19 @@ package zeditor.tools.tiles;
  */
 public class GraphChange {
 
-	public String imageName;
-	public int nTile;
-	public int shiftY;
+	public final String imageName;
+	public final int nTile;
+	public final int shiftY;
+	public final boolean decrodedPalette;
 	
 	public GraphChange(String p_imageName, int p_nTile, int p_shiftY) {
+		this(p_imageName, p_nTile, p_shiftY, false);
+	}
+	
+	public GraphChange(String p_imageName, int p_nTile, int p_shiftY, boolean p_decrodedPalette) {
 		imageName=p_imageName;
 		nTile=p_nTile;
 		shiftY=p_shiftY;
+		decrodedPalette = p_decrodedPalette;
 	}
 }
