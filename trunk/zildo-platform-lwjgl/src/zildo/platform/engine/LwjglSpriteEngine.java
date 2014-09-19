@@ -224,6 +224,10 @@ public class LwjglSpriteEngine extends SpriteEngine {
 
 		surfaceGfx.StartRendering();
 
+		// Default place on classic palette
+		GFXBasics.switchPalette(1);
+
+		int palNum = 1;
 		for (int n=0;n<sBank.getNSprite();n++)
 		{
 			SpriteModel spr=sBank.get_sprite(n);
@@ -246,6 +250,11 @@ public class LwjglSpriteEngine extends SpriteEngine {
 						if (pixelShaderSupported) {
 							modifiedColor=sBank.modifyPixel(n,a);
 						}
+						int newPalNum = sBank.whichPalette(n);
+						if (newPalNum != palNum) {
+							GFXBasics.switchPalette(newPalNum);
+							palNum = newPalNum;
+						}
 						replacedColor=modifiedColor==-1?null:textureEngine.graphicStuff.createColor(modifiedColor);
 						surfaceGfx.pset(i+x, j+y, a, replacedColor);
 					}
@@ -253,6 +262,8 @@ public class LwjglSpriteEngine extends SpriteEngine {
 			}
 		}
 		//sBank.freeTempBuffer();
+		GFXBasics.switchPalette(1);
+
 		textureEngine.generateTexture();
 	}
 

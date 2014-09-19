@@ -116,7 +116,8 @@ public abstract class TileEngine {
 			"foret4",
 			"palais1",
 			"palais2",
-			"palais3"};
+			"palais3",
+			"lavacave"};
 
 	// ////////////////////////////////////////////////////////////////////
 	// Construction/Destruction

@@ -43,10 +43,11 @@ public class GFXBasics {
 
 	// Variables
 	private ByteBuffer pBackBuffer;
-	private static final Vector4f[] palette = new Vector4f[256]; // Palette from
-																	// zildo
-	// private D3DLOCKED_RECT rectLock;
-	// DWORD* pEcran;
+	
+	private static Vector4f[] palette;
+	private static final Vector4f[] paletteClassic; // Palette from Zildo
+	private static final Vector4f[] paletteDecroded;	// Palette from Decroded's GFX
+	
 	private int pitch;
 	private int width;
 	private int height;
@@ -61,8 +62,11 @@ public class GFXBasics {
 	// private static java.awt.Font[] fonts;
 
 	static {
-		// Default palette
-		loadPalette("game1.pal");
+		// Default palette	(Is it really useful on Android to load palettes ???)
+		paletteClassic = loadPalette("game1.pal");
+		paletteDecroded = loadPalette("game2.pal");
+		
+		palette = paletteClassic;
 	}
 
 	public GFXBasics(boolean alpha) {
@@ -81,17 +85,20 @@ public class GFXBasics {
 		this.alpha = alpha;
 	}
 
-	static void loadPalette(String fileName) {
+	static Vector4f[] loadPalette(String fileName) {
 		// Load the palette
 		EasyBuffering file = Zildo.pdPlugin.openFile(fileName);
 		
+		Vector4f[] pal = new Vector4f[256];
 		int a, b, c;
 		for (int i = 0; i < 256; i++) {
 			a = file.readUnsignedByte();
 			b = file.readUnsignedByte();
 			c = file.readUnsignedByte();
-			palette[i] = new Vector4f(a, b, c, 1);
+			pal[i] = new Vector4f(a, b, c, 1);
 		}
+		
+		return pal;
 	}
 
 	// All these functions assumed that BeginScene has been called
@@ -380,6 +387,17 @@ public class GFXBasics {
 		return (int) min.y;
 	}
 	
+	public static void switchPalette(int num) {
+		switch (num) {
+		case 1:
+			palette = paletteClassic;
+			break;
+		case 2:
+			palette = paletteDecroded;
+			break;
+		}
+		palIndexes.clear();
+	}
 
     public static Vector4f createColor256(float r, float g, float b) {
         return new Vector4f(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);

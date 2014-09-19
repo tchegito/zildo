@@ -47,6 +47,7 @@ import zildo.monde.sprites.persos.PersoSpider;
 import zildo.monde.sprites.persos.PersoSquirrel;
 import zildo.monde.sprites.persos.PersoVolant;
 import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.boss.PersoDragon;
 import zildo.monde.sprites.persos.ia.PathFinderBee;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
@@ -245,6 +246,10 @@ public class PersoManagement {
 				break;
 			case IGOR:
 				perso = new PersoShadowed();
+				break;
+			case DRAGON:
+				y+=10;
+				perso = new PersoDragon(x, y);
 				break;
 			default:
 				perso = new PersoNJ();
