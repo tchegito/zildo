@@ -131,6 +131,7 @@ public class Element extends SpriteEntity {
 		this.linkedPerso = original.linkedPerso;
 		this.nBank = original.nBank;
 		this.foreground = original.foreground;
+		this.setDesc(original.desc);
 		
 		this.entityType = EntityType.ELEMENT;
 		// logger.log(Level.INFO, "Copying Element");

@@ -40,6 +40,7 @@ public enum Region {
 	ClearingOaks("promenade2"),
 	ThievesCamp("voleursm*", "voleurscave"),
 	CaveFlames("voleursg*"),
+	CaveFlamesDragon("dragon"),
 	Polaky("polaky", "polaky1", "polaky2", "polaky3", "polakym", "bosquetm", "bosquetm2"),
 	PolakyCave("polaky4", "polaky5", "polakyg*"),
 	Special("preintro");

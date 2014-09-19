@@ -50,10 +50,10 @@ import zildo.server.EngineZildo;
 public class CompositeElement {
 
     enum Shape {
-        SQUARE, DISPERSED, FOLLOWING;
+        SQUARE, DISPERSED, FOLLOWING, LINE;
     }
 	
-	List<Element> composite;
+	public List<Element> elems;
 
 	Shape shape;
 	
@@ -62,8 +62,8 @@ public class CompositeElement {
 	float startX, startY;
 	
 	public CompositeElement(Element p_refElement) {
-		composite=new ArrayList<Element>();
-		composite.add(p_refElement);
+		elems=new ArrayList<Element>();
+		elems.add(p_refElement);
 		shape=null;
 		zoom = p_refElement.zoom;
 		// Save initial location to keep moving
@@ -81,11 +81,11 @@ public class CompositeElement {
 		if (shape == Shape.SQUARE) {
 			return;	// Already square shaped
 		}
-		if (composite.size() != 1) {
+		if (elems.size() != 1) {
 			throw new RuntimeException("Impossible to transform to square : we need just one element at this time.");
 		}
 		
-		Element refElement=composite.get(0);
+		Element refElement=elems.get(0);
 		SpriteModel model=refElement.getSprModel();
 		int mx = (int) (model.getTaille_x() * (zoom / 255f));
 		int my = (int) (model.getTaille_y() * (zoom / 255f));
@@ -112,19 +112,20 @@ public class CompositeElement {
 		EngineZildo.spriteManagement.spawnSprite(copyBottomLeft);
 		
 		// Update object
-		composite.add(copyRight);
-		composite.add(copyBottomRight);
-		composite.add(copyBottomLeft);
+		elems.add(copyRight);
+		elems.add(copyBottomRight);
+		elems.add(copyBottomLeft);
 		shape=Shape.SQUARE;
 		gapX=p_gapX;
 		gapY=p_gapY;
 	}
 	
+	//TODO: allow more than 1 following element => make a signature with 'int n' number of elements
     public void followShape() {
         if (shape == Shape.FOLLOWING) {
             return; // Already following shaped
         }
-        Element refElement = composite.get(0);
+        Element refElement = elems.get(0);
         Element copy1 = new Element(refElement);
         Element copy2 = new Element(refElement);
         copy1.setAddSpr(-1);
@@ -134,21 +135,35 @@ public class CompositeElement {
         EngineZildo.spriteManagement.spawnSprite(copy1);
         EngineZildo.spriteManagement.spawnSprite(copy2);
 
-        composite.add(copy1);
-        composite.add(copy2);
+        elems.add(copy1);
+        elems.add(copy2);
 
         shape = Shape.FOLLOWING;
     }
     
+    public void lineShape(int number) {
+        if (shape == Shape.LINE) {
+            return; // Already following shaped
+        }
+		Element refElement = elems.get(0);
+    	for (int i=0;i<number;i++) {
+    		Element copy = new Element(refElement);
+    		EngineZildo.spriteManagement.spawnSprite(copy);
+    		elems.add(copy);
+    	}
+    	
+    	shape = Shape.LINE;
+    }
+    
     public void animate() {
-        if (composite.size() <= 1) {
+        if (elems.size() <= 1) {
             return;
         }
         switch (shape) {
             case FOLLOWING:
-                Element refElement = composite.get(0);
-                Element elem1 = composite.get(1);
-                Element elem2 = composite.get(2);
+                Element refElement = elems.get(0);
+                Element elem1 = elems.get(1);
+                Element elem2 = elems.get(2);
                 elem1.visible = refElement.visible;
                 elem2.visible = refElement.visible;
                 if (refElement.visible) {
@@ -176,7 +191,7 @@ public class CompositeElement {
 	 * @param p_addSpr
 	 */
 	public void setSprModel(ElementDescription p_desc, int p_addSpr) {
-		Element refElement=composite.get(0);
+		Element refElement=elems.get(0);
 		SpriteModel modelBefore=refElement.getSprModel();
 
 		refElement.setSprModel(p_desc, p_addSpr);
@@ -186,7 +201,7 @@ public class CompositeElement {
 		int shiftY=modelAfter.getTaille_y() - modelBefore.getTaille_y();
 		
 		int n=0;
-		for (Element elmt : composite) {
+		for (Element elmt : elems) {
 			elmt.setSprModel(p_desc, p_addSpr);
 			elmt.x+=shiftX * squareShiftX[n];
 			elmt.y+=shiftY * squareShiftY[n];
@@ -201,8 +216,8 @@ public class CompositeElement {
 	 * @param p_keepRef TRUE=keep the referenced element, and put it at his initial location.
 	 */
 	public void die(boolean p_keepRef) {
-		for (int i=0;i<composite.size();i++) {
-			Element elmt=composite.get(i);
+		for (int i=0;i<elems.size();i++) {
+			Element elmt=elems.get(i);
 			if (i!=0 || !p_keepRef) {
 				elmt.dying=true;
 				elmt.visible=false;
@@ -210,30 +225,30 @@ public class CompositeElement {
 		}
 		if (p_keepRef) {
 			// Kill every element, except the referenced one
-			Element refElement=composite.get(0);
+			Element refElement=elems.get(0);
 			SpriteModel model=refElement.getSprModel();
 			refElement.x+=gapX + model.getTaille_x() / 2;
 			refElement.y+=gapY + model.getTaille_y() / 2;
 
-			composite.clear();
-			composite.add(refElement);
+			elems.clear();
+			elems.add(refElement);
 		} else {
-			composite.clear();
+			elems.clear();
 		}
 		shape=null;
 	}
 	
     public Collision getCollision() {
-    	if (composite.size() == 0) {
+    	if (elems.size() == 0) {
     		return null;
     	}
-        Element refElement = composite.get(0);
+        Element refElement = elems.get(0);
         // Determine the bottom right corner of composite
         Point topLeft = new Point((int) refElement.x, (int) refElement.y);
         SpriteModel model = refElement.getSprModel();
         
         Point bottomRight = new Point(topLeft);
-        for (Element elmt : composite) {
+        for (Element elmt : elems) {
             int right = (int) elmt.x;
             int bottom = (int) elmt.y;
             if (right > bottomRight.x) {
@@ -258,7 +273,7 @@ public class CompositeElement {
      * @return Element
      */
     public Element getRefElement() {
-    	return composite.get(0);
+    	return elems.get(0);
     }
     
     /**
@@ -266,11 +281,11 @@ public class CompositeElement {
      * @param p_zoomFactor 0..255 : 255=full size
      */
     public void setZoom(int p_zoomFactor) {
-    	for (Element elmt : composite) {
+    	for (Element elmt : elems) {
     		elmt.zoom = p_zoomFactor;
     	}
     	
-		Element refElement=composite.get(0);
+		Element refElement=elems.get(0);
 		SpriteModel model=refElement.getSprModel();
 		int m1x = (int) (model.getTaille_x() * (zoom / 255f));
 		int m1y = (int) (model.getTaille_y() * (zoom / 255f));
@@ -281,7 +296,7 @@ public class CompositeElement {
 		int shiftY=m2y - m1y;
 		
 		int n=0;
-		for (Element elmt : composite) {
+		for (Element elmt : elems) {
 			elmt.x+=shiftX * (squareShiftX[n] + 0.5f);	// +0.5f to keep junction centered
 			elmt.y+=shiftY * (squareShiftY[n] + 0.5f);
 			elmt.setAjustedX((int) elmt.x);
@@ -299,7 +314,7 @@ public class CompositeElement {
     public void focus(Element p_focused) {
     	float diffX = p_focused.x - startX;
     	float diffY = p_focused.y - startY;
-    	for (Element e : composite) {
+    	for (Element e : elems) {
     		e.x += diffX;
     		e.y += diffY;
 			e.setAjustedX((int) e.x);
@@ -314,7 +329,7 @@ public class CompositeElement {
      * @param p_alpha
      */
     public void setAlpha(float p_alpha) {
-    	for (Element elmt : composite) {
+    	for (Element elmt : elems) {
     		elmt.setAlpha(p_alpha);
     	}
     }

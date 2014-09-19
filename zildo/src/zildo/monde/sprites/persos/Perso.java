@@ -1056,21 +1056,7 @@ public abstract class Perso extends Element {
 	public void beingMoved() {
 		
 	}
-	
-	@Override
-	public void setDesc(SpriteDescription p_desc) {
-		super.setDesc(p_desc);
-		switch ((PersoDescription) desc) {
-			case ABEILLE:
-			case CORBEAU:
-			case VAUTOUR:
-			case CHAUVESOURIS:
-			case SPECTRE:
-			case OISEAU_VERT:
-				flying = true;
-		}
 
-	}
 	public Point getPosAvantSaut() {
 		return posAvantSaut;
 	}

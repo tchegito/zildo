@@ -94,6 +94,7 @@ public enum PersoDescription implements SpriteDescription {
 	VIEUX_SAGE3(252),
 	STONE_SPIDER(253, 254),
 	PAPER_NOTE(255),
+	// Pnj3
 	FALCOR(263, 264, 261, 262, 259, 260, 265), 
 	BRAMBLE(266),
 	FLYINGSERPENT(267, 268, 269),
@@ -105,6 +106,7 @@ public enum PersoDescription implements SpriteDescription {
 	INVENTOR(298, 299, 300, 301),
 	COOK(302, 303, 304, 305),
 	BIG_RAT(310, 311, 308, 309, 306, 307, 312),
+	DRAGON(313, 314, 315, 316, 317),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 

@@ -31,6 +31,7 @@ import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.ElementGuardWeapon;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
@@ -921,4 +922,17 @@ public class PersoNJ extends Perso {
 		}
 	}
 
+	@Override
+	public void setDesc(SpriteDescription p_desc) {
+		super.setDesc(p_desc);
+		switch ((PersoDescription) desc) {
+			case ABEILLE:
+			case CORBEAU:
+			case VAUTOUR:
+			case CHAUVESOURIS:
+			case SPECTRE:
+			case OISEAU_VERT:
+				flying = true;
+		}
+	}
 }

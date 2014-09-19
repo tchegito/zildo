@@ -148,6 +148,14 @@ public class SpriteBank {
 		return toaff;
 	}
 	
+	public int whichPalette(int nSpr) {
+		if (name.equals("pnj3.spr") && nSpr >= 54 ) {	// Dragon => Decroded palette
+			return 2;
+		} else {
+			return 1;
+		}
+	}
+	
 	/**
 	 * Return a short[] representing the sprite bitmap
 	 * @param nSpr nth sprite in the bank

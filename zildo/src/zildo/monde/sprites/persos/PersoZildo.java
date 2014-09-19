@@ -128,8 +128,7 @@ public class PersoZildo extends Perso {
 
 		// We could maybe put that somewhere else
 		outfit = p_outfit;
-		this.setNBank(SpriteBank.BANK_ZILDO);
-		setNSpr(0);
+		setDesc(ZildoDescription.UP_FIXED);
 
 		x = p_posX; // 805); //601-32;//-500);
 		y = p_posY; // 973); //684+220;//-110);
