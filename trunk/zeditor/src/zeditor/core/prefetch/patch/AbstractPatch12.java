@@ -40,8 +40,10 @@ import zildo.monde.util.Point;
  */
 public abstract class AbstractPatch12 extends TraceDelegateDraw {
 
-	int[] smallPatch = new int[] { 8, 4, 2, 1};
-	int[] bigPatch = new int[] {8, 12, 4, 10, 15, 5, 2, 3, 1};
+	int[] smallPatch = new int[] { 8, 4, 2, 1};	// 2x2 patch
+	int[] bigPatch = new int[] {8, 12, 4, // 3x3 patch
+								10, 15, 5, 
+								2, 3, 1};
 
 	boolean big;
 	
@@ -92,7 +94,7 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 		}
 	}
 	
-	public void arrangeOneTile(AreaWrapper p_map, int p_patchValue, int p_x, int p_y, CompositePatch12 p_composite) {
+	protected void arrangeOneTile(AreaWrapper p_map, int p_patchValue, int p_x, int p_y, CompositePatch12 p_composite) {
 		// Get map value
 		int val=p_map.readmap(p_x, p_y);
 		if (p_composite != null && !p_composite.canDraw(val)) {
@@ -106,7 +108,7 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 		drawOneTile(p_map, p_x, p_y, val);		
 	}
 	
-	public void drawOneTile(AreaWrapper p_map, int p_x, int p_y, int p_val) {
+	protected void drawOneTile(AreaWrapper p_map, int p_x, int p_y, int p_val) {
 		p_map.writemap(p_x, p_y, p_val);
 	}
 
@@ -140,6 +142,14 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 		return result;
 	}
 	
+	public void doTheJob(AreaWrapper p_map, Point p, int tile) {
+		int binaryValue=toBinaryValue(tile);
+		if (binaryValue == 0) {
+			p_map.writemap(p.x, p.y, tile);
+		} else {
+			arrangeOneTile(p_map, binaryValue, p.x, p.y, null);
+		}
+	}
 	/**
 	 * Returns TRUE if the given value is apart of this patch.
 	 * @param p_val
