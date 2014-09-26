@@ -24,6 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Note: How add a new prefetch ?
+ *  1) add a reference here, as an enum element, to get it shown in the "Prefetch" tab
+ *  2) add an enum element in corresponding class (ex: PrefTraceDrop, PrefDrop...)
+ *  
  * @author Tchegito
  *
  */
@@ -45,7 +49,8 @@ public enum Prefetch {
 	Souterrain(PrefKind.TraceDrop),
 	SouterrainBas(PrefKind.TraceDrop),
 	MaisonIntRouge(PrefKind.TraceDrop),
-	MaisonIntViolet(PrefKind.TraceDrop);
+	MaisonIntViolet(PrefKind.TraceDrop),
+	PalaceNature(PrefKind.TraceDrop);
 	
 	PrefKind kind;
 	

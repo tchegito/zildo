@@ -56,12 +56,7 @@ public abstract class TraceDelegateDraw {
 							p = p.translate(adj.a.coords);
 							if (!p_map.isOutside(p.x, p.y)) {
 								if (adjDraw != null) {
-									int binaryValue=adjDraw.toBinaryValue(tile);
-									if (binaryValue == 0) {
-										p_map.writemap(p.x, p.y, tile);
-									} else {
-										adjDraw.arrangeOneTile(p_map, binaryValue, p.x, p.y, null);
-									}
+									adjDraw.doTheJob(p_map, p, tile);
 								} else {
 									p_map.writemap(p.x, p.y, tile);
 								}
