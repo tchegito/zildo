@@ -89,8 +89,10 @@ public class PjZildo extends SpriteBanque {
 				new Zone(50, 70, 16, 8), new Zone(50, 79, 16, 8), new Zone(50, 88, 16, 8),
 
 				// SHIELD (LEFT has to be removed)
-				new Zone(34, 101, 6, 8), new Zone(42, 100, 4, 10),
-				new Zone(33, 91, 8, 10), new Zone(47, 100, 4, 10),
+				new Zone(9, 68, 7, 8), new Zone(17, 68, 4, 8),new Zone(0, 68, 8, 8),
+				//new Zone(34, 101, 6, 8), new Zone(42, 100, 4, 10),
+				// Following sprite isn't used !
+				new Zone(33, 91, 8, 10), //new Zone(47, 100, 4, 10),
 				
 				// ARMSRAISED (87)
 				new Zone(126, 96, 16, 23),
@@ -122,7 +124,11 @@ public class PjZildo extends SpriteBanque {
 				
 				// Sleeping
 				new Zone(25, 178, 15, 13), new Zone(25, 165, 15, 13),
-				new Zone(42, 177, 15, 13), new Zone(58, 177, 13, 13)
+				new Zone(42, 177, 15, 13), new Zone(58, 177, 13, 13),
+				
+				// Sword 2
+				new Zone(69, 161, 15, 6), new Zone(85, 161, 13, 15),
+				new Zone(99, 161, 15, 14), new Zone(115, 161, 8, 13)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
