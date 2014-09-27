@@ -26,6 +26,7 @@ import zeditor.core.prefetch.complex.CompositePatch12;
 import zeditor.core.prefetch.complex.TraceDelegateDraw;
 import zeditor.tools.AreaWrapper;
 import zildo.fwk.collection.MultiMap;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.util.Point;
 
 /**
@@ -92,6 +93,9 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 				}
 			}
 		}
+		if (getAdjustments() != null) {
+			drawAdjustments(p_map, p_start, size);
+		}
 	}
 	
 	protected void arrangeOneTile(AreaWrapper p_map, int p_patchValue, int p_x, int p_y, CompositePatch12 p_composite) {
@@ -142,10 +146,10 @@ public abstract class AbstractPatch12 extends TraceDelegateDraw {
 		return result;
 	}
 	
-	public void doTheJob(AreaWrapper p_map, Point p, int tile) {
+	public void doTheJob(AreaWrapper p_map, Point p, int tile, Rotation rot) {
 		int binaryValue=toBinaryValue(tile);
 		if (binaryValue == 0) {
-			p_map.writemap(p.x, p.y, tile);
+			p_map.writemap(p.x, p.y, tile, rot);
 		} else {
 			arrangeOneTile(p_map, binaryValue, p.x, p.y, null);
 		}

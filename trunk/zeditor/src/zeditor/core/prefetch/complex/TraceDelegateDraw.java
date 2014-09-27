@@ -22,6 +22,8 @@ package zeditor.core.prefetch.complex;
 
 import zeditor.core.prefetch.patch.AbstractPatch12;
 import zeditor.tools.AreaWrapper;
+import zildo.monde.map.Case;
+import zildo.monde.map.Tile;
 import zildo.monde.util.Point;
 
 /**
@@ -43,22 +45,31 @@ public abstract class TraceDelegateDraw {
 	
 	public void finalizeDraw() {}
 
-	public void drawAdjustments(AreaWrapper p_map, Point p_start) {
+	// Drawback: only on BACK tile
+	public void drawAdjustments(AreaWrapper p_map, Point p_start, int... p_size) {
 		AbstractPatch12 adjDraw = getAdjustmentClass();
 		
-		for (int i=0;i<3;i++) {
-			for (int j=0;j<3;j++) {
-				int val=p_map.readmap(p_start.x+j, p_start.y+i);
-				for (Adjustment adj : getAdjustments()) {
-					if (adj.matchTile == val) {
-						Point p=new Point(p_start).translate(j, i);
-						for (int tile : adj.addedTiles) {
-							p = p.translate(adj.a.coords);
-							if (!p_map.isOutside(p.x, p.y)) {
-								if (adjDraw != null) {
-									adjDraw.doTheJob(p_map, p, tile);
-								} else {
-									p_map.writemap(p.x, p.y, tile);
+		int size = 3;
+		if (p_size != null) {
+			size = p_size[0];
+		}
+		for (int i=-1;i<size+1;i++) {
+			for (int j=-1;j<size+1;j++) {
+				Case c = p_map.get_mapcase(p_start.x+j, p_start.y+i);
+				if (c != null) {
+					Tile t = c.getBackTile();
+					for (Adjustment adj : getAdjustments()) {
+						// Check for same tile and same rotation
+						if (adj.matchTile == t.getValue() && adj.rot == t.rotation ) {
+							Point p=new Point(p_start).translate(j, i);
+							for (int tile : adj.addedTiles) {
+								p = p.translate(adj.a.coords);
+								if (!p_map.isOutside(p.x, p.y)) {
+									if (adjDraw != null) {
+										adjDraw.doTheJob(p_map, p, tile, adj.rot);
+									} else {
+										p_map.writemap(p.x, p.y, tile);
+									}
 								}
 							}
 						}
