@@ -21,6 +21,8 @@ package zeditor.tools;
 
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
+import zildo.monde.map.Case.TileLevel;
+import zildo.monde.sprites.Rotation;
 
 /**
  * @author Tchegito
@@ -60,6 +62,10 @@ public class AreaWrapper {
 	//TODO: add floor
 	public void writemap(int x, int y, int quoi) {
 		area.writemap(x, y, quoi);
+	}
+	
+	public void writemap(int x, int y, int quoi, Rotation rot) {
+		area.writemap(x, y, quoi, TileLevel.BACK, rot);
 	}
 	
 	public boolean isOutside(int x, int y) {

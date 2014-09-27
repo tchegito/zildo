@@ -20,6 +20,7 @@
 
 package zeditor.core.prefetch.complex;
 
+import zildo.monde.sprites.Rotation;
 import zildo.monde.util.Angle;
 
 /**
@@ -27,13 +28,19 @@ import zildo.monde.util.Angle;
  *
  */
 public class Adjustment {
-	Angle a;
-	int matchTile;
-	int[] addedTiles;
+	final Angle a;
+	final int matchTile;
+	final int[] addedTiles;
+	final Rotation rot;	// optional
 	
 	public Adjustment(int p_matchTile, Angle p_angle, int... p_addedTiles) {
+		this(p_matchTile, Rotation.NOTHING, p_angle, p_addedTiles);
+	}
+	
+	public Adjustment(int p_matchTile, Rotation p_rot, Angle p_angle, int... p_addedTiles) {
 		a = p_angle;
 		matchTile = p_matchTile;
 		addedTiles = p_addedTiles;
+		rot = p_rot;
 	}
 }

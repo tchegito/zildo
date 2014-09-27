@@ -104,11 +104,11 @@ public abstract class AbstractXPatch12 extends AbstractPatch12 {
 	}
 	
 	@Override
-	public void doTheJob(AreaWrapper p_map, Point p, int tile) {
+	public void doTheJob(AreaWrapper p_map, Point p, int tile, Rotation rot) {
+		p_map.writemap(p.x, p.y, tile, rot);
 		/*
 		XTile binaryValue=toBinaryValue(tile);
 		if (binaryValue == 0) {
-			p_map.writemap(p.x, p.y, tile);
 		} else {
 			arrangeOneTile(p_map, binaryValue, p.x, p.y, null);
 		}*/
