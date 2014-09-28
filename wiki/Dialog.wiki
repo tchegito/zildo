@@ -27,6 +27,7 @@ Each characters in the game (called Perso in the code) have a set of parametered
 
 A sentence is represented by a key whose value is in properties file. (game*.properties)
 
+=== Script expression ===
 The script expression indicates what the character will say, according to the adventure state, or other elements, like money in the Zildo's pocket ...
 
 Example of script expressions:
@@ -35,6 +36,12 @@ chateau_ask:7,enlevement:4,roxy:8,0
 </pre>
 
 It means that this character will say the 7th sentence if the quest "chateau_ask" is one. Otherwise, the 4th if quest "enlevement" is done. Or 8th if "roxy" is done, or 0 in any other case.
+
+There's some extra possibilities to trigger some sentences, depending on various parameters:
+ * *money* : followed by a money amount. Triggered if hero has more.
+ * *moon* : same with moonstone pieces carried by hero
+ * *item* : followed by an item name, in hero's possession to trigger
+ * *init* : triggered first time hero meet character since he entered the room
 
 == Sentence ==
 
