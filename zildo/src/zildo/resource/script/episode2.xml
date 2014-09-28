@@ -817,6 +817,11 @@
 		    <tile pos="15,43" back2="185"/>
 		    <tile pos="17,42" back2="179" reverse="128"/>
 		    <tile pos="17,43" back2="185" reverse="128"/>
+		    <!-- Block path down the lake (Issue 63 point 6 and 7 )-->
+		    <tile pos="25,43" back2="181"/>
+		    <tile pos="26,43" back2="180"/>
+   		    <tile pos="27,43" back2="182"/>
+   		    <tile pos="25,44" back2="34+256"/>
    		</condition>
 		<condition name="prisonext" exp="retour_trion-!hector_call3">
 		    <!-- Repeat Pssst if player hasn't seen Hector yet -->
