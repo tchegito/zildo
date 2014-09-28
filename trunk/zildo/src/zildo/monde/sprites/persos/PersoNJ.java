@@ -497,10 +497,10 @@ public class PersoNJ extends Perso {
 				add_spr = 1;
 			}
 			reverse = Reverse.NOTHING;
-			if (pathFinder.getTarget() != null && (pathFinder.getTarget().x > getX() && !isAlerte())) {
+			if (deltaMoveX > 0) {
 				reverse = Reverse.HORIZONTAL;
 			}
-			if (quel_deplacement == MouvementPerso.CAT && pathFinder.getTarget() == null) {
+			if (quel_deplacement == MouvementPerso.CAT && !alerte && deltaMoveX == 0 && deltaMoveY == 0) {
 				add_spr = 2;
 			}
 			break;
