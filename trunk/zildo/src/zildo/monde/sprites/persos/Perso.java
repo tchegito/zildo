@@ -546,7 +546,7 @@ public abstract class Perso extends Element {
 		
 		// Alpha channel evolution
 		alphaV += alphaA;
-		alpha += alphaV;
+		setAlpha(alpha + alphaV);
 
 		if (alpha > 255) {	// Stop alpha increase when it reaches the max
 			alpha = 255;
@@ -1110,6 +1110,15 @@ public abstract class Perso extends Element {
 		}
 	}
 
+	@Override
+	public void setAlpha(float p_alpha) {
+		alpha = p_alpha;
+		// Affect all linked elements (ex: hero and his shield, when he falls into water)
+		for (Element e : persoSprites) {
+			e.setAlpha(p_alpha);
+		}
+	}
+	
 	@Override
 	public int getFloorForSort() {
 		// When a character is on a transition (=ladder) he should be drawn OVER the tiles,
