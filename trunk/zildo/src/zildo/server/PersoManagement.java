@@ -194,6 +194,7 @@ public class PersoManagement {
 				perso = new PersoVolant(p_desc);
 				break;
 			case LAPIN:
+				z=0;
 			case PRINCESS_BUNNY:
 				perso = new PersoSquirrel(p_desc);
 				break;
