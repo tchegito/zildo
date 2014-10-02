@@ -28,6 +28,7 @@ import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.client.gui.GUISpriteSequence;
 import zildo.client.sound.BankSound;
+import zildo.fwk.ZUtils;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.filter.FilterEffect;
@@ -109,9 +110,19 @@ public class ItemCircle {
             e.zoom = 0;
             guiSprites.add(e);
 
-            e = seq.addSprite(SpriteBank.BANK_FONTES, FontDescription.N_0.getNSpr() + (item.quantity % 10),
-            		center.x, center.y, true, 255);
-            e.setSpecialEffect(EngineFX.FOCUSED);
+            if (item.quantity > 0) {
+	            int xx = 0;
+                byte[] quantityBase10 = ZUtils.decomposeBase10(item.quantity);
+                for (int i=0;i<2;i++) {
+	            	if (quantityBase10.length > i) {
+	            		int digit = quantityBase10[i];
+			            e = seq.addSprite(SpriteBank.BANK_FONTES, FontDescription.N_0.getNSpr() + digit,
+			            		center.x + xx, center.y, true, 255);
+			            e.setSpecialEffect(EngineFX.FOCUSED);
+			            xx+=8;
+		            }
+                }
+            }
 
 		}
 		display();
@@ -159,15 +170,24 @@ public class ItemCircle {
 				} else {
 					entity.setSpecialEffect(EngineFX.NO_EFFECT);
 				}
-                SpriteEntity amount = itSeq.next();
-	            if (item.quantity > 1) {
-	            	// Display the amount number just on the right of the item
-	                amount.setScrX(center.x + itemX + model.getTaille_x());
-	                amount.setScrY(center.y + itemY);
-	                amount.zoom = entity.zoom;
-	            } else {
-	            	amount.visible = false;
-	            }
+                byte[] quantityBase10 = ZUtils.decomposeBase10(item.quantity);
+                
+                int xx= 0;
+                for (int i=0;i<2;i++) {
+                    SpriteEntity amount = itSeq.next();
+                	if (quantityBase10.length > i) {
+		            	// Display the amount number just on the right of the item
+                		int digit = quantityBase10[i];
+                		amount.setNSpr(FontDescription.N_0.getNSpr() + digit);
+                		EngineZildo.spriteManagement.updateSprModel(amount);
+		                amount.setScrX(center.x + xx + itemX + model.getTaille_x());
+		                amount.setScrY(center.y + itemY);
+		                amount.zoom = entity.zoom;
+		                xx += 8;
+		            } else {
+		            	amount.visible = false;
+		            }
+                }
 				alpha+=pas;
 			}
 		}
@@ -263,9 +283,6 @@ public class ItemCircle {
 			} else if (itemSelected == items.size()) {
 				itemSelected--;
 			}
-		}
-		if (items.size() != 0) {
-			displayName();	// Display name with updated quantity
 		}
 	}
 	

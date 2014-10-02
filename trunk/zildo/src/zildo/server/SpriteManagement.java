@@ -551,10 +551,8 @@ public class SpriteManagement extends SpriteStore {
 					perso.animate(compt);
 				}
 				perso.finaliseComportement(compt);
-				// Get sprite model
-				SpriteModel spr = getSpriteBank(entity.getNBank())
-						.get_sprite(perso.getNSpr() + perso.getAddSpr());
-				perso.setSprModel(spr);
+				updateSprModel(perso);
+				SpriteModel spr = perso.getSprModel();
 				if (allowedToMoveAndCollide) {
 					perso.manageCollision();
 				}
@@ -593,10 +591,7 @@ public class SpriteManagement extends SpriteStore {
 						toDelete.add(element);
 					} else {
 						if (element.isVisible()) {
-							SpriteModel spr = getSpriteBank(entity.getNBank())
-									.get_sprite(
-											entity.getNSpr() + element.getAddSpr());
-							entity.setSprModel(spr);
+							updateSprModel(element);
 						}
 					}
 				}
@@ -617,6 +612,19 @@ public class SpriteManagement extends SpriteStore {
 		spriteEntities.addAll(spriteEntitiesToAdd);
 	}
 
+	/** Update SpriteModel, which used to display the correct texture part, according to nBank, nSpr and addSpr **/
+	private void updateSprModel(Element element) {
+		SpriteModel spr = getSpriteBank(element.getNBank())
+			.get_sprite(element.getNSpr() + element.getAddSpr());
+		element.setSprModel(spr);		
+	}
+	
+	public void updateSprModel(SpriteEntity element) {
+		SpriteModel spr = getSpriteBank(element.getNBank())
+			.get_sprite(element.getNSpr());
+		element.setSprModel(spr);		
+	}
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// clearSpritesWithoutZildo
 	// /////////////////////////////////////////////////////////////////////////////////////

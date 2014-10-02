@@ -167,7 +167,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 		nSpr = sprDesc.getNSpr();
 	}
 
-	// Set 3 attributes at 1 time
+	// Set 4 attributes at 1 time
 	public void setSpr(Sprite p_sprite) {
 		nSpr = p_sprite.nSpr;
 		nBank = p_sprite.spr.getBank();
@@ -295,10 +295,12 @@ public class SpriteEntity extends Identified implements Cloneable,
 
 	public void setDesc(SpriteDescription p_desc) {
 		desc = p_desc;
-		nSpr = p_desc.getNSpr();
-		nBank = p_desc.getBank();
-		setSprModel(EngineZildo.spriteManagement.getSpriteBank(nBank)
-				.get_sprite(nSpr));
+		if (p_desc != null) {
+			nSpr = p_desc.getNSpr();
+			nBank = p_desc.getBank();
+			setSprModel(EngineZildo.spriteManagement.getSpriteBank(nBank)
+					.get_sprite(nSpr));
+		}
 	}
 
 	/**
