@@ -7,6 +7,7 @@ public class Trigo {
 
 	public static final double PI_SUR_4 = Math.PI / 4d;
 	public static final double SQUARE_2 = Math.sqrt(2);
+	public static final double cosPISur4 = Math.cos(Math.PI / 4);	// Remember this result
 	
 	public static double getAngleRadian(float ax, float ay) {
 		return getAngleRadian(0, 0, ax, ay);

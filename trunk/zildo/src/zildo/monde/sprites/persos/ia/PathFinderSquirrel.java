@@ -20,6 +20,7 @@
 
 package zildo.monde.sprites.persos.ia;
 
+import zildo.monde.Trigo;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -30,8 +31,6 @@ public class PathFinderSquirrel extends PathFinder {
     final static int jumpDistance = 20;
     float alpha;
     int nbJump = 0;
-    
-    private final double cosPISur4 = Math.cos(Math.PI / 4);	// Remember this result
     
     public PathFinderSquirrel(Perso p_mobile) {
     	super(p_mobile);
@@ -74,8 +73,8 @@ public class PathFinderSquirrel extends PathFinder {
      * Adjust the moving angle, in order to avoid angles too much vertical.
      */
     private void correctAlpha() {
-    	while (Math.abs(Math.cos(alpha)) < cosPISur4) {
-    		alpha+=Math.PI / 4;
+    	while (Math.abs(Math.cos(alpha)) < Trigo.cosPISur4) {
+    		alpha+=Trigo.PI_SUR_4;
     	}
     }
     
