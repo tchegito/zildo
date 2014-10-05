@@ -110,18 +110,18 @@ public class ItemCircle {
             e.zoom = 0;
             guiSprites.add(e);
 
-            if (item.quantity > 0) {
-	            int xx = 0;
-                byte[] quantityBase10 = ZUtils.decomposeBase10(item.quantity);
-                for (int i=0;i<2;i++) {
-	            	if (quantityBase10.length > i) {
-	            		int digit = quantityBase10[i];
-			            e = seq.addSprite(SpriteBank.BANK_FONTES, FontDescription.N_0.getNSpr() + digit,
-			            		center.x + xx, center.y, true, 255);
-			            e.setSpecialEffect(EngineFX.FOCUSED);
-			            xx+=8;
-		            }
-                }
+            int xx = 0;
+            byte[] quantityBase10 = ZUtils.decomposeBase10(item.quantity);
+            for (int i=0;i<2;i++) {
+            	int digit = 0;
+            	if (quantityBase10.length > i) {
+            		digit = quantityBase10[i];
+            	}
+	            e = seq.addSprite(SpriteBank.BANK_FONTES, FontDescription.N_0.getNSpr() + digit,
+	            		center.x + xx, center.y, true, 255);
+	            e.setSpecialEffect(EngineFX.FOCUSED);
+	            e.setVisible(item.quantity > 1);
+	            xx+=8;
             }
 
 		}
