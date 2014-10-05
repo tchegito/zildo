@@ -37,7 +37,7 @@ import zildo.monde.sprites.Rotation;
  */
 public class Case implements EasySerializable {
 
-	enum TileLevel {
+	public enum TileLevel {
 		BACK, BACK2, FORE;
 	}
 	

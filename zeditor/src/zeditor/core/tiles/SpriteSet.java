@@ -154,6 +154,12 @@ public class SpriteSet extends ImageSet {
 					return false;
 				}
 
+				@Override
+				public int getRadius() {
+					// TODO Auto-generated method stub
+					return 0;
+				}
+
 			});
 		}
 		return list;
