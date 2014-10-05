@@ -38,7 +38,8 @@ public enum EngineFX {
 	INFO,
 	FOCUSED,	// FOCUSED is used when we wants to highlight some entity (inventory, or buying something)
 	WHITE_HALO,
-	STAR;
+	STAR,
+	FIRE;
 	
 	public final Vector4f darkColor;
 	public final Vector4f brightColor;
@@ -58,5 +59,11 @@ public enum EngineFX {
 	private EngineFX(int[] dark, int[] bright) {
 		darkColor = GFXBasics.createColor256(dark[0], dark[1], dark[2]);
 		brightColor = GFXBasics.createColor256(bright[0], bright[1], bright[2]);
+	}
+	
+	/** Normalized texture means that we need coordinates inside the displayed sprite,
+	 * from (0,0) upper left corner to (1,1) bottom right corner. **/
+	public boolean isNormalizedTex() {
+		return this == STAR || this == FIRE;
 	}
 }
