@@ -47,7 +47,8 @@ public class LwjglPixelShaders extends PixelShaders {
 		// Gold (for invincibility)
 		invincibility,
 		// Star
-		star;
+		star,
+		fire;
 	}
 	
 	@Override
