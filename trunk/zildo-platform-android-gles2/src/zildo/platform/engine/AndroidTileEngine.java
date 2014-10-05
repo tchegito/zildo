@@ -130,7 +130,7 @@ public class AndroidTileEngine extends TileEngine {
 	    for (int i=0;i<tileBankNames.length + 1;i++) {
 		    ((AndroidTextureEngine)textureEngine).loadTexture("tile"+i);
 	    }
-	    texCloudId = textureEngine.loadTexture("tile10");
-		texBackMenuId = textureEngine.loadTexture("tile11");
+	    texCloudId = textureEngine.loadTexture("tile11");
+		texBackMenuId = textureEngine.loadTexture("tile12");
 	}
 }
