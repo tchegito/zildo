@@ -26,6 +26,8 @@ import zildo.fwk.gfx.EngineFX;
 import zildo.monde.sprites.SpriteEntity;
 
 /**
+ * Simple stage making a title, on two lines appearing slowly on the middle of the screen.
+ * 
  * @author Tchegito
  *
  */
