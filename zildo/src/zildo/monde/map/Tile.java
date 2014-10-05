@@ -137,4 +137,16 @@ public class Tile implements Cloneable {
 	public static boolean isTransitionnable(int value) {
 		return value == 206 || value == 207;
 	}
+	
+	public static boolean isPickableTiles(int value) {
+		switch (value) {
+		case 165:
+		case 167:
+		case 169:
+		case 751:
+			return true;
+		default:
+			return false;
+		}
+	}
 }

@@ -516,7 +516,7 @@ public class Area implements EasySerializable {
 					floor, 0, null, null);
 			EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
-			takeSomethingOnTile(tileLocation, true, null);
+			takeSomethingOnTile(tileLocation, true, null, true);
 			break;
 		case 374: // Mud
 			writemap(tileLocation.x, tileLocation.y, 375);
@@ -598,8 +598,9 @@ public class Area implements EasySerializable {
 	 *            location
 	 * @param p_destroy
 	 *            TRUE if tile is attacked / FALSE for simple action (ex: Zildo picks up a bush)
+	 * @param p_spawnGoodies TODO
 	 */
-	public void takeSomethingOnTile(Point tileLocation, boolean p_destroy, Perso p_perso) {
+	public void takeSomethingOnTile(Point tileLocation, boolean p_destroy, Perso p_perso, boolean p_spawnGoodies) {
 		int x = tileLocation.getX();
 		int y = tileLocation.getY();
 		int on_Area = readmap(x, y);
@@ -1294,6 +1295,7 @@ public class Area implements EasySerializable {
 		}
 	}
 
+	/** Represents an item with information in a string, usually for an item coming out of a map case. **/
 	static class CaseItem {
 		ElementDescription desc;
 		String name;			// Name is used for example to store the quantity of gold in a purse

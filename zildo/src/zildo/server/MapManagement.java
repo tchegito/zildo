@@ -945,11 +945,19 @@ public class MapManagement {
 	static final int MAX_SHIFT = 40;
 	
 	public void arrangeLocation(Perso p) {
+		// First try: if the tile has a jar/bush on it => remove it
+		int xx = (int) (p.x / 16);
+		int yy = (int) (p.y / 16);
+		int on_map=currentMap.readmap(xx, yy);
+		if (Tile.isPickableTiles(on_map)) {
+			currentMap.takeSomethingOnTile(new Point(xx, yy), false, null, false);
+		}
 		Angle a = Angle.NORD;
 		float testX = p.x;
 		float testY = p.y;
 		int shift = 8;
 		while (collide(testX, testY, p) && shift < MAX_SHIFT) {
+			// Second try: check increasing radius around hero for better location
 			testX = p.x + a.coords.x * shift;
 			testY = p.y + a.coords.y * shift;
 			a = Angle.rotate(a, 1);
@@ -958,7 +966,8 @@ public class MapManagement {
 			}
 		}
 		if (shift == MAX_SHIFT) { // Unable to replace character
-			throw new RuntimeException("Impossible to replace " +(p==null?"character":p.getName()) + " !");
+			throw new RuntimeException("Impossible to replace " +(p==null?"character":p.getName()) + " !"
+					+"Was on "+currentMap.getName()+" original position: ("+p.x+", "+p.y+")");
 		} else {
 			p.x = testX;
 			p.y = testY;

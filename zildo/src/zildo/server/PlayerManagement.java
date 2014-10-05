@@ -23,7 +23,6 @@ package zildo.server;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.sound.BankSound;
-import zildo.fwk.collection.IntSet;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.input.KeyboardState;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
@@ -380,9 +379,7 @@ public class PlayerManagement {
 			keysState.key_downPressed=false;
 		}
 	}
-	
-	IntSet pickableTiles = new IntSet(165,167,169,751);
-	
+
 	///////////////////////////////////////////////////////////////////////////////////////
 	// keyPressAction
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -463,7 +460,7 @@ public class PlayerManagement {
 							Area map=EngineZildo.mapManagement.getCurrentMap();
 							int on_map=map.readmap(newx,newy);
 							ElementDescription objDesc=null;
-							if (pickableTiles.contains(on_map)) {
+							if (Tile.isPickableTiles(on_map)) {
 								//On ramasse l'objet
 								switch (on_map) {
 								case 165:
@@ -486,12 +483,12 @@ public class PlayerManagement {
 								}
 	                            if (objDesc != null) {
 	                                heros.takeSomething(newx * 16 + 8, newy * 16 + 14, objDesc, null);
-	                                map.takeSomethingOnTile(new Point(newx, newy), false, heros);
+	                                map.takeSomethingOnTile(new Point(newx, newy), false, heros, true);
 	                            }
 							} else if (Tile.isClosedChest(on_map) && heros.getAngle()==Angle.NORD) {
 								// Hero found a chest ! Great, isn't it ?
 								EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
-                                map.takeSomethingOnTile(new Point(newx, newy), false, heros);
+                                map.takeSomethingOnTile(new Point(newx, newy), false, heros, true);
 								// Mark this event : chest opened
 								EngineZildo.scriptManagement.openChest(map.getName(), new Point(newx, newy));
 							} else if (on_map >= 0 && !EngineZildo.mapManagement.isWalkable(on_map)) {
