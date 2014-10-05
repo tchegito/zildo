@@ -291,7 +291,7 @@
             <dialog name="boris" num="6"/>
         </trigger>
         <action>
-            <putDown item="FULL_BAG"/>"
+            <putDown item="FULL_BAG"/>
 			<sound name="ZildoAccomplishQuest"/>
         </action>
     </quest>
@@ -301,7 +301,6 @@
         <trigger>
             <questDone name="giveSawdust"/>
             <location name="igorvillage" pos="897,277" radius="2"/>
-            <inventory item="!FULL_BAG"/>
         </trigger>
     </quest>
     
@@ -867,6 +866,7 @@
 		</condition>
 		<condition name="igorlily">
 		    <markQuest name="summonLeaf" value="0"/>
+		    <markQuest name="lily" value="0"/>	<!-- To fix Amanda's bug -->
 		    <zikReplace what="Village" name="Nuit"/> <!--  Returns to alarming music -->
 		</condition>
 		<condition name="igorv3" exp="minsk_fishes">
@@ -875,6 +875,7 @@
 		</condition>
 		<condition name="igorvillage">
 		    <markQuest name="summonLeafVillage" value="0"/>
+		   	<markQuest name="lily" value="0"/>
 		    <zikReplace what="Village" name="Village"/>	<!--  plays Village music in this peaceful island -->
 		</condition>
 		<condition name="igorv2"> <!-- Igor will come back home later -->
@@ -1485,9 +1486,23 @@
 		<angle who="jaune" value="2"/>
 		<angle who="igor" value="0"/>
 		<moveTo who="zildo" pos="0,10" delta="true"/>
-		<speak who="zildo" text="freeIgor.zildo.0"/>
-		<sound name="ZildoAccomplishQuest"/>
-		<speak who="igor" text="freeIgor.igor.3"/>
+		<if expQuest="igor_promise_sword">
+			<speak who="zildo" text="freeIgor.zildo.0"/>
+			<sound name="ZildoAccomplishQuest"/>
+			<speak who="igor" text="freeIgor.igor.3"/>
+		</if>		
+		<if expQuest="!igor_promise_sword">
+		    <!-- First time hero meets Igor, so let them introduce themselves, and talk about sword enhancement -->
+			<speak who="zildo" text="freeIgor.zildo.firstMeet.0"/>
+			<speak who="igor" text="freeIgor.igor.firstMeet.0"/>
+			<actions>
+				<speak who="igor" text="freeIgor.igor.firstMeet.1"/>
+				<sound name="ZildoAccomplishQuest"/>
+			</actions>
+			<speak who="zildo" text="freeIgor.zildo.firstMeet.1"/>
+			<speak who="igor" text="freeIgor.igor.firstMeet.2"/>
+			<markQuest name="igor_promise_sword" value="true"/>
+		</if>
 		<script who="igor" value="16" effect="zildo"/>
 	</scene>
 	
