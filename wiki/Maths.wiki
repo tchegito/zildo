@@ -67,3 +67,19 @@ Negatives can occur, so we have to get the absolute value for `n`.
 And once we have the number of frames, we just have to use Zildo's movement equation to determine the collision location.
 
 Problem solved !
+
+= 2) Bezier curves (3 points) =
+
+Sometimes, to get a smoother movement, a Bezier's curve is a great tool. We only have to use De Casteljau resolution algorithm to get it through.
+
+First use was the dragon's neck. We fix 2 points and calculates the third one, which is between the two others.
+
+As a reminder, here's the general formula, to calculate interpolation between point b,,i,, and b,,i+1,,:
+
+b,,i,,^r^ (t) = (1-t) b,,i,,^r-1^ (t) + t.b,,i+1,,^r-1^ (t)
+
+When we replace each variables and apply for 3 points, we get this:
+
+b,,0,,^2^ (t) = (1-t)² b,,0,, (t) + (t(1-t))².b,,1,, (t) + t².b,,2,, (t)
+
+We just replace each b by x,y coordinates and it's ok.
