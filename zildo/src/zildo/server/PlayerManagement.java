@@ -103,6 +103,13 @@ public class PlayerManagement {
 			instant.setKey(KeysConfiguration.PLAYERKEY_ACTION,
 					instant.isKeyDown(KeysConfiguration.PLAYERKEY_DIALOG));
 		}
+		if (heros.isInventoring()) {
+			instant.setKey(KeysConfiguration.PLAYERKEY_INVENTORY,
+					instant.isKeyDown(KeysConfiguration.PLAYERKEY_UP) || 
+					instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY) || 
+					instant.isKeyDown(KeysConfiguration.PLAYERKEY_DOWN));			
+		}
+		
 		
 		if (ghost) {
 			// Scripting move
