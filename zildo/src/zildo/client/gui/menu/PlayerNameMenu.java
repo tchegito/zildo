@@ -26,6 +26,7 @@ import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.resource.Constantes;
 
 /**
@@ -59,7 +60,14 @@ public class PlayerNameMenu extends Menu {
             }
         };
 
-        setMenu(itemName);
+        ItemMenu spacer = new UnselectableItemMenu("") {};
+        ItemMenu back = new ItemMenu("global.back") {
+			@Override
+			public void run() {
+				client.handleMenu(previousMenu);
+			}
+		};
+        setMenu(itemName, spacer, back);
     }
     
     /**
