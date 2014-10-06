@@ -25,7 +25,7 @@ import java.util.List;
 import zildo.fwk.db.Identified;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
-import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
@@ -175,7 +175,7 @@ public class PersoCollision {
     	}
         int tx = (int) quelPerso.getX();
         int ty = (int) quelPerso.getY();
-        PersoDescription descToCompare = quelPerso.getDesc();
+        SpriteDescription descToCompare = quelPerso.getDesc();
         int rayonPersoToCompare = rayon;
         if (descToCompare != null) {
         	rayonPersoToCompare = descToCompare.getRadius();

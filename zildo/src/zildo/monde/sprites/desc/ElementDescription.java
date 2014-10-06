@@ -312,4 +312,8 @@ public enum ElementDescription implements SpriteDescription {
 	static public boolean isPlatform(SpriteDescription desc) {
 		return desc == WATER_LEAF || desc == PLATFORM;
 	}
+	
+	public int getRadius() {
+		return 7;
+	}
 }

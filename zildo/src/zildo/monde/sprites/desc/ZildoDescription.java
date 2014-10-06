@@ -122,14 +122,13 @@ public enum ZildoDescription implements SpriteDescription {
 			desc=RIGHT_FIXED;	// Right is left with reverse attribute
 			reverse = Reverse.HORIZONTAL;
 			break;
+		case NORD:
+			reverse = reverse.flipHorizontal();
 		}
 		// 2) Moving
 		int n=0;
-		if (p_seq != 0) {
+		if (p_seq != -1) {
 			n=seq_zildoDeplacement[p_angle.value][p_seq];
-			if (n<0) {
-				reverse = reverse.flipHorizontal();
-			}
 		}
 		return fillSprite(desc, Math.abs(n), reverse);
 	}
@@ -243,6 +242,10 @@ public enum ZildoDescription implements SpriteDescription {
 		sprReturned.nSpr = desc.getNSpr() + add;
 		sprReturned.spr = desc;
 		return sprReturned;
+	}
+	
+	public int getRadius() {
+		return 7;
 	}
 	
 	public static ZildoDescription fromInt(int p_value) {
