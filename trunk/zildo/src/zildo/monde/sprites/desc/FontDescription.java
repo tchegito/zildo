@@ -85,4 +85,8 @@ public enum FontDescription implements SpriteDescription {
 	public boolean isWeapon() {
 		return false;
 	}
+	
+	public int getRadius() {
+		return 0;
+	}
 }

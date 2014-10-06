@@ -153,4 +153,8 @@ public enum GearDescription implements SpriteDescription {
 	public boolean isWeapon() {
 		return false;
 	}
+	
+	public int getRadius() {
+		return 7;
+	}
 }

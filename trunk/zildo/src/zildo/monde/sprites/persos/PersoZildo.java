@@ -128,7 +128,7 @@ public class PersoZildo extends Perso {
 
 		// We could maybe put that somewhere else
 		outfit = p_outfit;
-		setDesc(ZildoDescription.UP_FIXED);
+		//setDesc(ZildoDescription.UP_FIXED);
 
 		x = p_posX; // 805); //601-32;//-500);
 		y = p_posY; // 973); //684+220;//-110);
@@ -501,9 +501,9 @@ public class PersoZildo extends Perso {
 	final int decalyBow[][] = {
 			{ 2, 3, 2 }, { 1, 2, 1 }, { 3, 2, 2 }, { 1, 2, 1 }
 	};
-	final int decalboucliery[] = { 0, 0, 0, -1, -2, -1 };
-	final int decalbouclier2y[] = { 0, -1, -1, 0, -1, -1, 0, 0 };
-	final int decalbouclier3y[] = { 0, 0, -1, -2, 0, -1, 0, 0 };
+	final int decalboucliery[] = { 0, 2, 2, 1, 1, 1 , 0, 1};
+	final int decalbouclier2y[] = { 0, 0, 0, 0, -1, -1, 0, 0 };
+	final int decalbouclier3y[] = { 0, 0, -1, -1, 0, -1, 0, 0 };
 
 	
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -516,7 +516,6 @@ public class PersoZildo extends Perso {
 	public void animate(int compteur_animation)
 	{
 		super.animate(compteur_animation);
-
 		
 		// If zildo's dead, don't display him
 		if (getPv() <= 0) {
@@ -652,44 +651,7 @@ public class PersoZildo extends Perso {
 		int v;
 
 		switch (mouvement) {
-		// Bouclier
-		case VIDE:
-			if (hasItem(ItemKind.SHIELD)) {
-				shield.setForeground(false);
-				switch (angle) {
-				case NORD:
-					shield.setX(xx + 8);
-					shield.setY(yy + 2);
-					shield.setZ(5 - 1 - decalbouclier3y[nSpr % 8]);
-					shield.setNSpr(103);
-					shield.setNBank(SpriteBank.BANK_ZILDO);
-					break;
-				case EST:
-					shield.setX(xx + 9); // PASCAL : +10
-					shield.setY(yy - 2 + decalbouclier2y[(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8]);
-					shield.setZ(0.0f);
-					shield.setNSpr(104);
-					shield.setNBank(SpriteBank.BANK_ZILDO);
-					break;
-				case SUD:
-					shield.setX(xx - 4); // PASCAL : -3)
-					shield.setY(yy + 4);
-					shield.setZ(1 + 1 - decalboucliery[(nSpr - ZildoDescription.DOWN_FIXED.ordinal()) % 6]);
-					shield.setNSpr(105);
-					shield.setNBank(SpriteBank.BANK_ZILDO);
-					break;
-				case OUEST:
-					shield.setX(xx - 8);
-					shield.setY(yy - 2 + decalbouclier2y[(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8]);
-					shield.setZ(0.0f);
-					shield.setNSpr(106);
-					shield.setNBank(SpriteBank.BANK_ZILDO);
-					break;
-				}
-				shield.setVisible(true);
-			}
-			break;
-
+		
 		case SOULEVE:
 			 if (angle == Angle.OUEST){
 					xx-=1;
@@ -819,7 +781,47 @@ public class PersoZildo extends Perso {
 		switch (getMouvement())
 		{
 		case VIDE:
-			setSpr(ZildoDescription.getMoving(angle, ((pos_seqsprite + 1) % (8 * Constantes.speed)) / Constantes.speed));
+			setSpr(ZildoDescription.getMoving(angle, computePosSeqSprite(8)));
+			// Shield
+			if (hasItem(ItemKind.SHIELD)) {
+				shield.setForeground(false);
+				shield.reverse = Reverse.NOTHING;
+				switch (angle) {
+				case NORD:
+					shield.setX(xx + 2);
+					shield.setY(yy + 20);
+					shield.setZ(5 - 1 - decalbouclier3y[nSpr % 8]);
+					shield.setNSpr(83);
+					shield.setNBank(SpriteBank.BANK_ZILDO);
+					break;
+				case EST:
+					shield.setX(xx + 14); // PASCAL : +10
+					shield.setY(yy + 17 + decalbouclier2y[(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8]);
+					shield.setZ(0.0f);
+					shield.setNSpr(84);
+					shield.setNBank(SpriteBank.BANK_ZILDO);
+					break;
+				case SUD:
+					shield.setX(xx + 13); // PASCAL : -3)
+					shield.setY(yy + 23+1+ decalboucliery[(nSpr - ZildoDescription.DOWN_FIXED.ordinal()) % 8]);
+					//System.out.println(yy + " ==> "+(nSpr - ZildoDescription.DOWN_FIXED.ordinal()) % 8+ " = "+decalboucliery[(nSpr - ZildoDescription.DOWN_FIXED.ordinal()) % 6]+" ==> "+shield.y);
+					shield.setZ(1 + 4);
+					shield.setNSpr(85);
+					shield.setNBank(SpriteBank.BANK_ZILDO);
+					break;
+				case OUEST:
+					shield.setX(xx + 3);
+					shield.setY(yy + 18 - decalbouclier2y[(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8]);
+					//System.out.println(yy + " ==> "+(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8+ " = "+decalbouclier2y[(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8]+" ==> "+shield.y);
+					shield.setZ(0.0f);
+					shield.setNSpr(84);
+					shield.setForeground(true);
+					shield.reverse = Reverse.HORIZONTAL;
+					shield.setNBank(SpriteBank.BANK_ZILDO);
+					break;
+				}
+				shield.setVisible(true);
+			}
 			break;
 		case SAUTE:
 			setNSpr(angle.value + ZildoDescription.JUMP_UP.getNSpr());
@@ -876,7 +878,7 @@ public class PersoZildo extends Perso {
 			setNSpr(ZildoDescription.WOUND_UP.getNSpr() + angle.value);
 			break;
 		case POUSSE:
-			setSpr(ZildoDescription.getPushing(angle, pos_seqsprite));
+			setSpr(ZildoDescription.getPushing(angle, pos_seqsprite/2));
 			break;
 		case ATTAQUE_EPEE:
 			pos_seqsprite = (((6 * 2 - getAttente() - 1) % (6 * 2)) / 2);
@@ -1376,4 +1378,8 @@ public class PersoZildo extends Perso {
 		pv = maxpv;
 	}
 	
+	private int computePosSeqSprite(int speedFactor) {
+		 return pos_seqsprite == -1 ? -1 :
+			 (pos_seqsprite % (speedFactor * Constantes.speed)) / Constantes.speed;		
+	}
 }
