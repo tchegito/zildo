@@ -856,6 +856,9 @@
 		<condition name="voleursm4" exp="!voleursm4_button">
 		    <tile pos="16,11" back="256*2+33"/>
 			<tile pos="17,11" back="256*2+33"/>
+			<tile pos="17,10" back2="-1"/>
+			<tile pos="18,10" back2="-1"/>
+			<tile pos="18,11" back2="-1"/>
 			<remove chaining="voleurscave"/>
 		</condition>
 		<condition name="voleursm4b" exp="voleursm4_button">
