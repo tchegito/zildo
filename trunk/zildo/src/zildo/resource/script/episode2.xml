@@ -994,9 +994,14 @@
    		    <visible who="igor" value="false"/>
    		    <script who="igor" value="16" effect="zildo"/>
    		</condition>
-   		<condition name="d4m2">
+   		<condition name="coucou" exp="!secretDoorRevealed">
    		    <!-- Reactive quest when hero talk with his friends (maybe one day, think about different dialog for the second time) -->
+   		    <!-- We have to be careful, because this quest SHOULDN'T be reset inside the house, but outside (see Issue 63 point 9) -->
    		    <markQuest name="meetLib1" value="false"/>
+   		</condition>
+   		<condition name="d4m2" exp="secretDoorRevealed">
+	    	<activate what="hiddendoor" value="true" unblock="true"/>
+	    	<sound name="ZildoSecret"/>
    		</condition>
    		<condition name="d4m2" exp="!hector_call3">
    		    <remove who="hector"/>
@@ -1004,6 +1009,9 @@
    		</condition>
    		<condition name="lugduniag" exp="broughtIGor">
    		    <remove who="hector"/>
+   		</condition>
+   		<condition name="d4m2b,lugduniag">	<!--  Backward compatibility ! Because it didn't exist in 2.11 -->
+   		    <markQuest name="secretDoorRevealed" value="true"/>
    		</condition>
    	</mapScript>
 
