@@ -62,6 +62,8 @@ public class Element extends SpriteEntity {
 	protected Element linkedPerso; // When this element dies, any non-perso
 									// linked entity die too.
 
+	protected Element burningFire;
+	
 	private boolean questTrigger;	// TRUE=taking this element leads to a quest accomplishment
 	
 	protected Element shadow;
@@ -366,6 +368,10 @@ public class Element extends SpriteEntity {
 				shadow.x = x;
 				shadow.y = y - 1;
 			}
+			if (burningFire != null) {
+				burningFire.x = x;
+				burningFire.y = y;
+			}
 		}
 		
 		// Animated sprites
@@ -389,9 +395,9 @@ public class Element extends SpriteEntity {
 	public void manageCollision() {
 		Collision collision = getCollision();
 		// Default, collision from element is related to the linked Perso
-		SpriteEntity linked = linkedPerso;
+		Element linked = linkedPerso;
 		Element weapon = this;
-		if (this.getEntityType().isPerso()) {
+		if (getEntityType().isPerso()) {
 			// If Element we're handling is a Perso, adjust infos
 			linked = this;
 			weapon = null;
@@ -726,6 +732,9 @@ public class Element extends SpriteEntity {
 		if (shadow != null) {
 			shadow.dying = true;
 		}
+		if (burningFire != null) {
+			burningFire.dying = true;
+		}
 	}
 
 	/**
@@ -911,6 +920,15 @@ public class Element extends SpriteEntity {
 		questTrigger = p_trigger;
 	}
 	
+	public void addFire() {
+		if (burningFire == null) {
+			burningFire = new ElementFire((int) x, (int) y);
+			EngineZildo.spriteManagement.spawnSprite(burningFire);
+		}
+		burningFire.x = x;
+		burningFire.y = y;
+	}
+
 	public boolean isOutsidemapAllowed() {
 		boolean allowed = false;
 		if (desc instanceof ElementDescription) {
@@ -918,7 +936,7 @@ public class Element extends SpriteEntity {
 		}
 		return allowed;
 	}
-	
+
 	@Override
 	public String toString() {
 		String s = x + ", " + y;
