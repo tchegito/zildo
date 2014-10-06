@@ -61,15 +61,33 @@ public abstract class ElementChained extends Element {
 	
 				linkeds.add(elem);
 				EngineZildo.spriteManagement.spawnSprite(elem);
-	
+				
 				count = 0;
 			}
 			count++;
+		} else {
+			// Detect if chained element are over
+			if (linkeds.get(0).dying) {
+				linkeds.remove(0);
+			}
+			if (linkeds.isEmpty()) {
+				dying = true;
+			}
 		}
 		
 		if (mover != null && mover.isActive()) {
 			// Moving is delegated to another object
 			mover.reachTarget();
+		}
+			
+		// Move the burning fire sprite along with this one
+		if (burningFire != null) {
+			if (dying) {
+				burningFire.dying = true;
+			} else {
+				burningFire.x = linkeds.get(0).x;
+				burningFire.y = linkeds.get(0).y;
+			}
 		}
 	}
 

@@ -86,6 +86,7 @@ public class ElementSewerSmoke extends Element {
 				volutes[i].alphaA = -0.2f;
 				volutes[i].setDesc(ElementDescription.SEWER_VOLUT1);
 				volutes[i].setAddSpr(i);
+				volutes[i].z = z;
 				EngineZildo.spriteManagement.spawnSprite(volutes[i]);
 			}
 			// Reduce alpha
