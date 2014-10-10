@@ -120,10 +120,14 @@ public class Foret4 extends Banque {
 				new Point(0, 320), new Point(16, 320), new Point(32, 320), new Point(48, 320),
 				new Point(0, 336), new Point(16, 336), new Point(32, 336), new Point(48, 336),
 				new Point(0, 352), new Point(16, 352), new Point(32, 352), new Point(48, 352),
-				
+				// Flowers
+				new Point(208, 112), new Point(224, 112), new Point(240, 112),	// Blue
+				new Point(208, 128), new Point(224, 128), new Point(240, 128),	// Blue
+				new Point(176, 128)	// Red
 		
 		};
 
-		pkmChanges = Arrays.asList(new GraphChange[] {new GraphChange("exteria8", 0, 0)});
+		pkmChanges = Arrays.asList(new GraphChange[] {new GraphChange("exteria8", 0, 0),
+				new GraphChange("exteria1", 214, 80)});
 	}
 }
