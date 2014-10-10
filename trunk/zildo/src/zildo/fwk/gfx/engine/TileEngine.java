@@ -29,6 +29,7 @@ import zildo.fwk.gfx.primitive.TileGroupPrimitive;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
+import zildo.monde.map.Case.TileLevel;
 import zildo.monde.map.accessor.AreaAccessor;
 import zildo.monde.map.accessor.OneFloorAreaAccessor;
 import zildo.monde.map.accessor.AreaAccessor.AccessedCase;
@@ -193,8 +194,7 @@ public abstract class TileEngine {
 		meshFORE.clearBuffers();
 	}
 	
-	// Redraw all tiles with updating VertexBuffers.
-	// No need to access particular tile, because we draw every one.
+	// Redraw tiles with updating VertexBuffers, only in the visible area.
 	// **BUT THIS COULD BE DANGEROUS WHEN A TILE SWITCHES FROM ONE BANK TO
 	// ANOTHER**
 	public void updateTiles(Point cameraNew, Area[] p_areas, int compteur_animation) {
@@ -254,7 +254,7 @@ public abstract class TileEngine {
 						if (xOut) {
 							continue;
 						}
-						int n_motif = 0, n_animated_motif;
+						int n_motif = 0;
 						// Get corresponding case on the map
 
 						AccessedCase accCase = areaAccessor.get_mapcase((x+dx) % dx, (y+dy) % dy);
@@ -264,18 +264,21 @@ public abstract class TileEngine {
 						if (mapCase != null) {
 							boolean changed = mapCase.isModified();
 							Tile back = mapCase.getBackTile();
-							n_motif = back.index;
-							n_animated_motif = mapCase.getAnimatedMotif(compteur_animation);
-							if (n_animated_motif != back.renderedIndex) {
+							n_motif = Case.getAnimatedMotif(TileLevel.BACK, back, compteur_animation);
+							if (n_motif != back.renderedIndex) {
 								changed = true;
-								n_motif = n_animated_motif;
 								back.renderedIndex = n_motif;
 							}
 							meshBACK.updateTile(back, x, y, floor, n_motif, changed);
 							
 							Tile back2 = mapCase.getBackTile2();
 							if (back2 != null) {
-								meshBACK2.updateTile(back2, x, y, floor, back2.index, changed);
+								n_motif =  Case.getAnimatedMotif(TileLevel.BACK2, back2, compteur_animation);
+								if (n_motif != back2.renderedIndex) {
+									changed = true;
+									back2.renderedIndex = n_motif;
+								}
+								meshBACK2.updateTile(back2, x, y, floor, n_motif, changed);
 							} else if (mapCase.isBack2Removed()) {
 								meshBACK2.removeTile(mapCase.getBack2Removed(), x, y, floor);
 								mapCase.clearBack2Removed();
@@ -298,7 +301,6 @@ public abstract class TileEngine {
 
 		cameraX = cameraNew.x;
 		cameraY = cameraNew.y;
-
 	}
 
 	/**

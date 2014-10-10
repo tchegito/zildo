@@ -110,87 +110,100 @@ public class Case implements EasySerializable {
 		modified = value;
 	}
 	
-	public int getAnimatedMotif(int compteur_animation)
-	{
-		int motif=back.index;
-		switch (back.bank)
-		{
-		// Animated tiles
-			case 0:
-			// Water
-				if (motif>=108 && motif<=130 && motif !=129) {
-					if (compteur_animation > 40)
-						motif+=100;
-					else if (compteur_animation > 20)
-						motif+=100+23;
-				} else if (motif==52 || motif==53) {
-					// Flowers
-					if (compteur_animation > 40)
-						motif+=3;
-					else if (compteur_animation > 20)
-						motif+=111;
-				}
-				break;
-	
-	
-			case 1:
-				if (motif>=235 && motif<=237)
-					motif+=(compteur_animation / 20)*3;
-				break;
-	
-			case 2:
-				switch (motif) 
-				{
-					case 174:    
-						if (compteur_animation>=20)
-							motif=175+(compteur_animation / 20);
-						break;
-					case 142:
-						if (compteur_animation>=40)
-							motif=178;
-						else if (compteur_animation>=20)
-							motif=194;
-						break;
-					case 144:
-						if (compteur_animation>=40)
-							motif=179;
-						else if (compteur_animation>=20)
-							motif=195;
-						break;
-				    case 235:
-						motif=235+(compteur_animation / 20);
-				}
-				break;
-			case 3:
-			// L'eau dans les grottes/palais
-				if (motif==78)
-					motif=78+(compteur_animation / 20);
-				else if (motif == 217) {	// Lava
-					if (compteur_animation >=40) {
-						motif = 219;
-					} else if (compteur_animation >=20) {
-						motif = 218;
+	public static int getAnimatedMotif(TileLevel level, Tile t, int compteur_animation) {
+		int motif = t.index;
+		int bank = t.bank;
+		switch (level) {	// Some animation works only on back2 (because of mask color, indeed)
+			case BACK:
+			switch (bank) {
+			// Animated tiles
+				case 0:
+				// Water
+					if (motif>=108 && motif<=130 && motif !=129) {
+						if (compteur_animation > 40)
+							motif+=100;
+						else if (compteur_animation > 20)
+							motif+=100+23;
+					} else if (motif==52 || motif==53) {
+						// Flowers
+						if (compteur_animation > 40)
+							motif+=3;
+						else if (compteur_animation > 20)
+							motif+=111;
 					}
-				} else if( motif == 230) {
-					if (compteur_animation >=40) {
-						motif = 232;
-					} else if (compteur_animation >=20) {
-						motif = 231;
+					break;
+		
+		
+				case 1:
+					if (motif>=235 && motif<=237)
+						motif+=(compteur_animation / 20)*3;
+					break;
+		
+				case 2:
+					switch (motif) 
+					{
+						case 174:    
+							if (compteur_animation>=20)
+								motif=175+(compteur_animation / 20);
+							break;
+						case 142:
+							if (compteur_animation>=40)
+								motif=178;
+							else if (compteur_animation>=20)
+								motif=194;
+							break;
+						case 144:
+							if (compteur_animation>=40)
+								motif=179;
+							else if (compteur_animation>=20)
+								motif=195;
+							break;
+					    case 235:
+							motif=235+(compteur_animation / 20);
 					}
+					break;
+				case 3:
+				// L'eau dans les grottes/palais
+					if (motif==78)
+						motif=78+(compteur_animation / 20);
+					else if (motif == 217) {	// Lava
+						if (compteur_animation >=40) {
+							motif = 219;
+						} else if (compteur_animation >=20) {
+							motif = 218;
+						}
+					} else if( motif == 230) {
+						if (compteur_animation >=40) {
+							motif = 232;
+						} else if (compteur_animation >=20) {
+							motif = 231;
+						}
+					}
+					break;
+					
+		
+				case 5:
+					// FORET3.DEC animation d'eau supplémentaire
+					if (motif>=96 && motif<=104)
+						motif+=(compteur_animation / 20)*3;
+					else if (motif == 211) {
+						motif+=(compteur_animation / 20)%3;
+					}
+					break;
+			}
+			break;
+			case BACK2:
+				switch (bank) {
+					case 6:
+						if (motif == 215 || motif == 218) {
+							if (compteur_animation > 40)
+								motif+=1;
+							else if (compteur_animation > 20)
+								motif+=2;
+						}
+						break;
 				}
-				break;
-				
-	
-			case 5:
-				// FORET3.DEC animation d'eau supplémentaire
-				if (motif>=96 && motif<=104)
-					motif+=(compteur_animation / 20)*3;
-				else if (motif == 211) {
-					motif+=(compteur_animation / 20)%3;
-				}
-				break;
 		}
-	
 		// Return computed motif
 		return motif;
 	}
@@ -341,6 +354,18 @@ public class Case implements EasySerializable {
 			}
 		}
 		return null;
+	}
+	
+	public Tile getLevel(TileLevel level) {
+		switch (level) {
+		case BACK:
+			default:
+			return back;
+		case BACK2:
+			return back2;
+		case FORE:
+			return fore;
+		}
 	}
 	
 }
