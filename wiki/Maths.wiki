@@ -74,6 +74,8 @@ Sometimes, to get a smoother movement, a Bezier's curve is a great tool. We only
 
 First use was the dragon's neck. We fix 2 points and calculates the third one, which is between the two others.
 
+[https://lh5.googleusercontent.com/-Cshn2X5xhaE/VDr291y5opI/AAAAAAAAB3k/7hPGL57ynIo/w257-h124-no/bezier3.png]
+
 As a reminder, here's the general formula, to calculate interpolation between point b,,i,, and b,,i+1,,:
 
 b,,i,,^r^ (t) = (1-t) b,,i,,^r-1^ (t) + t.b,,i+1,,^r-1^ (t)
