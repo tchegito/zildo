@@ -705,15 +705,20 @@ public class SpriteManagement extends SpriteStore {
 	                    	// Collision between hero and object he's carrying => let it go
 	                    } else if (quelElement == null || quelElement.getLinkedPerso() != entity) {
 	                    	// Check that found element is one of expected ones
-	                    	if (expectedDesc != null) {
+	                    	if (expectedDesc != null && expectedDesc.length > 0) {
 	                    		for (SpriteDescription sDesc : expectedDesc) {
 	                    			if (sDesc == entity.getDesc()) {
 	                    				return (Element) entity;
 	                    			}
 	                    		}
-	                    		return null;
+	                    		continue;	// Check next one
 	                    	}
-	                        return (Element) entity;
+	                    	Element elem = (Element) entity;
+	                    	// Found an element, but is it really the most pertinent ? (ex:shadow)
+	                    	if (elem.getLinkedPerso() != null) {
+	                    		return elem.getLinkedPerso();
+	                    	}
+	                        return elem;
 	                    }
 	                }
 	            }
