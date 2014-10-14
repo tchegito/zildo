@@ -555,6 +555,19 @@
         </action>
     </quest>
     
+    <quest name="prison5_bigrat2kill"> <!-- Optional quest to solve a deadlock, shown by Travis -->
+        <trigger>
+            <location name="prison5"/>
+            <dead who="bigrat2"/>
+        </trigger>
+        <action>
+            <actions>
+	            <activate what="doorc1a" value="true"/>
+	            <activate what="doorc1b" value="true"/>
+            </actions>
+        </action>
+    </quest>
+    
     <quest name="prison5_button1">
         <trigger>
             <location name="prison5" tilePos="42,26" gear="BUTTON"/>
@@ -1009,9 +1022,6 @@
    		<condition name="d4m2" exp="!hector_call3">
    		    <remove who="hector"/>
    		    <remove who="maltus"/>
-   		</condition>
-   		<condition name="lugduniag" exp="broughtIGor">
-   		    <remove who="hector"/>
    		</condition>
    		<condition name="d4m2b,lugduniag">	<!--  Backward compatibility ! Because it didn't exist in 2.11 -->
    		    <markQuest name="secretDoorRevealed" value="true"/>
