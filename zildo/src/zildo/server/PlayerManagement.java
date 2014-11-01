@@ -166,10 +166,12 @@ public class PlayerManagement {
 				keyReleaseAttack();
 			}
 			
-			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
-				keyPressInventory();
-			} else {
-				keyReleaseInventory();
+			if (heros.who.canInventory) {	// Does controlled character have an inventory ? 
+				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
+					keyPressInventory();
+				} else {
+					keyReleaseInventory();
+				}
 			}
 		}
 	}
