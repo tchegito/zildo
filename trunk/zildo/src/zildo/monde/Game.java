@@ -36,7 +36,7 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.desc.ZildoOutfit;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
@@ -99,7 +99,7 @@ public class Game implements EasySerializable {
 		}
 		
 		// 2: zildo's information
-		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
+		PersoPlayer zildo=EngineZildo.persoManagement.getZildo();
 		p_buffer.put((byte) zildo.getPv());
 		p_buffer.put(zildo.getMaxpv() | (zildo.getMoonHalf() << 8));
 		p_buffer.put(zildo.getCountArrow());
@@ -186,7 +186,7 @@ public class Game implements EasySerializable {
             int countBomb = p_buffer.readInt();
             int countKey = p_buffer.readByte();
             int money = p_buffer.readInt();
-            PersoZildo zildo = null;
+            PersoPlayer zildo = null;
             List<Item> items = null;
             
             if (!p_minimal) {

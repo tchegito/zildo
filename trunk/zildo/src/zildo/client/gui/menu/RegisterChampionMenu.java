@@ -30,7 +30,7 @@ import zildo.fwk.ui.UIText;
 import zildo.fwk.ui.UnselectableItemMenu;
 import zildo.monde.Champion;
 import zildo.monde.quest.actions.GameOverAction;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -82,7 +82,7 @@ public class RegisterChampionMenu extends Menu {
 	 * @return boolean
 	 */
 	private boolean tryRegister() {
-		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
 		int timeSpent = EngineZildo.game.getTimeSpent();
 		int moonHalf = zildo.getMaxpv() * 2; // + zildo.getMoonHalf();
 		Champion ch = new Champion(UIText.getCharacterName(), moonHalf, Constantes.currentEpisode, new Date(), zildo.getMoney(), timeSpent);

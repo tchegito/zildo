@@ -11,7 +11,7 @@ import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Trigo;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Vector2f;
 import zildo.resource.Constantes;
 import zildo.resource.KeysConfiguration;
@@ -36,7 +36,7 @@ public class CheckDpadDirection extends EngineUT {
 		zildo = spawnZildo(x, y);
 		state = clients.get(0);
 		state.zildoId = zildo.getId();
-		state.zildo = (PersoZildo) zildo;
+		state.zildo = (PersoPlayer) zildo;
 		zildo.walkTile(false);
 
 		

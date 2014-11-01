@@ -29,7 +29,7 @@ import zildo.fwk.net.NetServer;
 import zildo.fwk.net.TransferObject;
 import zildo.monde.WaitingSound;
 import zildo.monde.sprites.SpriteEntity;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 
@@ -82,7 +82,7 @@ public class SoundManagement {
 	 * @param p_soundName
 	 * @param p_zildo
 	 */
-	public void playSound(AudioBank p_soundName, PersoZildo p_zildo) {
+	public void playSound(AudioBank p_soundName, PersoPlayer p_zildo) {
 		TransferObject obj=null;
 		int x=0, y=0;
 		if (p_zildo != null) {

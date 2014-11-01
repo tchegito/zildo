@@ -19,13 +19,15 @@
 
 package junit.perso;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyFloat;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import junit.framework.Assert;
+import junit.framework.TestCase;
 
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-
-import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -61,8 +63,8 @@ public class TestMoveWithFloat extends TestCase {
 		
 		// Loop
 		while (heros.getX() < 64*16 && heros.getY() < 64*16) {
-			float xx = heros.getX() + 1.5f;
-			float yy = heros.getY(); // + 1.5f;
+			float xx = 1.5f;
+			float yy = 0; // + 1.5f;
 	        Pointf secureLocation = heros.tryMove(xx, yy);
 	        xx = secureLocation.x;
 	        yy = secureLocation.y;

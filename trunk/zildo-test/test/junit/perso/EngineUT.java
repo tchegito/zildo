@@ -48,7 +48,7 @@ import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -79,7 +79,7 @@ public class EngineUT {
 	}
 	
 	protected Perso spawnZildo(int x, int y) {
-		Perso perso = new PersoZildo(x, y, ZildoOutfit.Zildo);
+		Perso perso = new PersoPlayer(x, y, ZildoOutfit.Zildo);
 		perso.x = x;
 		perso.y = y;
 		perso.setDesc(PersoDescription.BANDIT_CHAPEAU);

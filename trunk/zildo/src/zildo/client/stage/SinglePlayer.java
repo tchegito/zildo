@@ -33,7 +33,7 @@ import zildo.monde.Game;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ZildoOutfit;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
 import zildo.server.state.ClientState;
@@ -114,7 +114,7 @@ public class SinglePlayer implements GameStage {
         	state=server.getClientStates().iterator().next();
     		ClientEngineZildo.guiDisplay.displayMessage("server started");
         } else {
-        	PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+        	PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
         	if (zildo == null) {
         	    zildoId = EngineZildo.spawnClient(ZildoOutfit.Zildo);
         	} else {

@@ -26,7 +26,7 @@ import java.util.List;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.SceneElement;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.EngineZildo;
 
 /**
@@ -43,7 +43,7 @@ public class ScriptProcess {
 	public boolean finalEvent;	// TRUE=send NOEVENT at the end of the script execution / FALSE=nothing
 	boolean topPriority;
 	
-	PersoZildo duplicateZildo;
+	PersoPlayer duplicateZildo;
 	
 	List<LanguageElement> currentActions=new ArrayList<LanguageElement>();
 
@@ -58,9 +58,9 @@ public class ScriptProcess {
 		finalEvent = p_finalEvent;
 		
 		if (scene.restoreZildo) {
-			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+			PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
 			if (zildo != null) {
-				duplicateZildo=(PersoZildo) EngineZildo.persoManagement.getZildo().clone();
+				duplicateZildo=(PersoPlayer) EngineZildo.persoManagement.getZildo().clone();
 			}
 		}
 		
@@ -83,7 +83,7 @@ public class ScriptProcess {
 	
 	public void terminate() {
 		if (scene.restoreZildo) {
-			PersoZildo zildo=EngineZildo.persoManagement.getZildo();
+			PersoPlayer zildo=EngineZildo.persoManagement.getZildo();
 			// Reset current zildo
 			zildo.x=duplicateZildo.x;
 			zildo.y=duplicateZildo.y;
