@@ -140,6 +140,14 @@ public class EngineUT {
 		}		
 	}
 	
+	protected void updateGame() {
+		ClientState state = clients.get(0);
+		engine.renderEvent(state.event);
+		state.event = engine.renderEvent(state.event);
+		state.event = clientEngine.renderEvent(state.event);
+		renderFrames(1);
+	}
+	
 	@Before
 	public void setUp() {
 		Game game = new Game(null, "hero");
