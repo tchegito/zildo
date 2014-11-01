@@ -52,7 +52,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.FontDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
 import zildo.monde.util.Zone;
@@ -773,7 +773,7 @@ public class GUIDisplay {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	void drawGeneralGUI() {
 		SpriteDisplay spriteDisplay = ClientEngineZildo.spriteDisplay;
-		PersoZildo zildo = (PersoZildo) spriteDisplay.getZildo();
+		PersoPlayer zildo = (PersoPlayer) spriteDisplay.getZildo();
 		if (zildo == null) {
 			return;
 		}
@@ -930,7 +930,7 @@ public class GUIDisplay {
 		messageQueue.clear();
 	}
 
-	public void setupHero(PersoZildo zildo) {
+	public void setupHero(PersoPlayer zildo) {
 		if (zildo != null) {
 			countMoney = zildo.getMoney();
 		}

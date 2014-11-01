@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
@@ -158,7 +158,7 @@ public class TestCollision extends EngineUT {
 		
 		// Spawn a character A
 		Point targetB = new Point(160 + 16, 30);
-		Perso persoB = new PersoZildo(200, 80, ZildoOutfit.Zildo);
+		Perso persoB = new PersoPlayer(200, 80, ZildoOutfit.Zildo);
 		clients.get(0).zildoId = persoB.getId();
 		
 		// Let's rock !

@@ -32,7 +32,7 @@ import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.ChainingPoint.MapLink;
 import zildo.monde.sprites.desc.ZildoOutfit;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
@@ -85,7 +85,7 @@ public class EngineZildo {
 	static public int spawnClient(ZildoOutfit p_outfit) {
 
         Point respawnLocation = mapManagement.getRespawnPosition();
-        PersoZildo zildo = new PersoZildo(respawnLocation.getX(), respawnLocation.getY(), p_outfit);
+        PersoPlayer zildo = new PersoPlayer(respawnLocation.getX(), respawnLocation.getY(), p_outfit);
         spriteManagement.spawnPerso(zildo);
 
         if (game.multiPlayer) {
@@ -98,7 +98,7 @@ public class EngineZildo {
      * Zildo comes to death, so respawn him another place.
      * @param p_zildo
      */
-    static public void respawnClient(PersoZildo p_zildo) {
+    static public void respawnClient(PersoPlayer p_zildo) {
         Point respawnLocation = mapManagement.getRespawnPosition();
         
         p_zildo.resetForMultiplayer();
@@ -121,7 +121,7 @@ public class EngineZildo {
 		// 1) Players
 		boolean block=false;
 		boolean blockKeyboard=false;
-		PersoZildo zildo = persoManagement.getZildo();
+		PersoPlayer zildo = persoManagement.getZildo();
 		for (ClientState 
 				state : p_clientStates) {
 			

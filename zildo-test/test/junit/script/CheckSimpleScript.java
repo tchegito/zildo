@@ -32,7 +32,7 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.persos.PersoNJ;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
@@ -116,7 +116,7 @@ public class CheckSimpleScript extends SimpleEngineScript {
 		// 1) Money
 		ZSSwitch simple = new ZSSwitch(0).addCondition("money30", 1).addCondition("money20",3);
 		
-		PersoZildo zildo = new PersoZildo(0);
+		PersoPlayer zildo = new PersoPlayer(0);
 		zildo.setAngle(Angle.NORD);
 		// Mock persomanagement to return our Zildo
 		PersoManagement pm = mock(PersoManagement.class);

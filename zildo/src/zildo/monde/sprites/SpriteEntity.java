@@ -28,7 +28,7 @@ import zildo.fwk.gfx.EngineFX;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.persos.ia.mover.MoveOrder;
 import zildo.monde.sprites.persos.ia.mover.Mover;
 import zildo.monde.sprites.utils.Sprite;
@@ -335,7 +335,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 		p_buffer.put(this.getId());
 		if (isZildo) {
 			// Zildo needs extra info
-			PersoZildo zildo = (PersoZildo) this;
+			PersoPlayer zildo = (PersoPlayer) this;
 			p_buffer.put((byte) zildo.getMaxpv());
 			p_buffer.put((byte) zildo.getPv());
 			p_buffer.put(zildo.getMoney());
@@ -365,9 +365,9 @@ public class SpriteEntity extends Identified implements Cloneable,
 		int id = p_buffer.readInt();
 		SpriteEntity entity;
 		if (isZildo) {
-			entity = new PersoZildo(id);
+			entity = new PersoPlayer(id);
 			// Zildo needs extra info
-			PersoZildo zildo = (PersoZildo) entity;
+			PersoPlayer zildo = (PersoPlayer) entity;
 			zildo.setMaxpv(p_buffer.readUnsignedByte());
 			zildo.setPv(p_buffer.readUnsignedByte());
 			zildo.setMoney(p_buffer.readInt());

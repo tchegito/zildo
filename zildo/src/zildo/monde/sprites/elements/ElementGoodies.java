@@ -25,7 +25,7 @@ import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.EngineZildo;
 
 
@@ -124,7 +124,7 @@ public class ElementGoodies extends Element {
 				if (name != null && name.length() != 0) {
 					value = (int) new FloatExpression(name).evaluate(null);
 				}
-				if (((PersoZildo)linkedPerso).pickGoodies(this, value)) {
+				if (((PersoPlayer)linkedPerso).pickGoodies(this, value)) {
 					dying=true;
 				}
 			}

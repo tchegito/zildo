@@ -70,7 +70,13 @@ import zildo.server.EngineZildo;
 import zildo.server.MultiplayerManagement;
 import zildo.server.Server;
 
-public class PersoZildo extends Perso {
+/**
+ * A character controlled by player.
+ * 
+ * @author Tchegito
+ *
+ */
+public class PersoPlayer extends Perso {
 
 	private SpriteEntity pushingSprite;
 	private int acceleration; // from 0 to 10
@@ -108,7 +114,7 @@ public class PersoZildo extends Perso {
 	// Construction/Destruction
 	// ////////////////////////////////////////////////////////////////////
 
-	public PersoZildo(int p_id) { // Only used to create Zildo on a client
+	public PersoPlayer(int p_id) { // Only used to create Zildo on a client
 		super(p_id);
 		inventory = new ArrayList<Item>();
 		affections = new PersoAffections(this);
@@ -122,7 +128,7 @@ public class PersoZildo extends Perso {
 	// Return a perso named Zildo : this game's hero !
 	// with a given location.
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public PersoZildo(int p_posX, int p_posY, ZildoOutfit p_outfit) {
+	public PersoPlayer(int p_posX, int p_posY, ZildoOutfit p_outfit) {
 		super();
 		this.setName("Zildo");
 

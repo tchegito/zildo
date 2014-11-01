@@ -24,7 +24,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.ZoomFilter;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 import android.opengl.GLES20;
@@ -48,7 +48,7 @@ public class AndroidZoomFilter extends ZoomFilter {
 	@Override
 	protected void focusOnZildo() {
 		// Focus camera on Zildo, and zoom according to the 'fadeLevel'
-		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
+		PersoPlayer zildo=EngineZildo.persoManagement.getZildo();
 		Point zildoPos=zildo.getCenteredScreenPosition();
 		ClientEngineZildo.openGLGestion.setZoomPosition(zildoPos);
 		float z=2.0f * (float) Math.sin(getFadeLevel() * (0.25f*Math.PI / 256.0f));

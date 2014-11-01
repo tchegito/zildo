@@ -24,7 +24,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import zildo.monde.sprites.persos.PersoBat;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Anticiper;
 import zildo.monde.util.Point;
 
@@ -40,7 +40,7 @@ public class TestCrazyBat extends EngineUT {
 		PersoBat bat = new PersoBat();
 		bat.setX(671f);
 		bat.setY(385f);
-		PersoZildo zildo = new PersoZildo(0);
+		PersoPlayer zildo = new PersoPlayer(0);
 		zildo.setX(660.0062f);
 		zildo.setY(341.06696f);
 		zildo.deltaMoveX = -2.121338f;

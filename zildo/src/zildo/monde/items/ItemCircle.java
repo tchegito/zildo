@@ -38,7 +38,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.FontDescription;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
@@ -65,14 +65,14 @@ public class ItemCircle {
 	private int itemSelected;	// From 0 to guiSprites.size()-1
 	private int count;
 	private Perso perso;	// The one at the center of the circle
-	private PersoZildo client;	// Define the Zildo acting
+	private PersoPlayer client;	// Define the Zildo acting
 	private boolean describe;	// TRUE=Describe selected item in dialog area
 	
 	/**
 	 * Create an ItemCircle object, related to a given client, identified by the PersoZildo object.
 	 * @param p_zildoClient
 	 */
-	public ItemCircle(PersoZildo p_zildoClient) {
+	public ItemCircle(PersoPlayer p_zildoClient) {
 		guiSprites=new ArrayList<SpriteEntity>();
 		count=0;
 		itemSelected=0;

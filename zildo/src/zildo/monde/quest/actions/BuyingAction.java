@@ -27,7 +27,7 @@ import zildo.monde.dialog.ActionDialog;
 import zildo.monde.items.Inventory;
 import zildo.monde.items.StoredItem;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.EngineZildo;
 import zildo.server.state.ClientState;
 
@@ -38,7 +38,7 @@ import zildo.server.state.ClientState;
  */
 public class BuyingAction extends ActionDialog {
 
-	PersoZildo zildo;
+	PersoPlayer zildo;
 	Perso seller;
 	List<StoredItem> sellingItems;
 	String sellDescription;
@@ -50,7 +50,7 @@ public class BuyingAction extends ActionDialog {
 		super(p_text);
 	}
 
-	public BuyingAction(PersoZildo p_zildo, Perso p_seller, String p_sellDescription) {
+	public BuyingAction(PersoPlayer p_zildo, Perso p_seller, String p_sellDescription) {
 		super(null);
 		zildo = p_zildo;
 		seller = p_seller;

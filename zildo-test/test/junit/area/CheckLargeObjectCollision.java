@@ -28,7 +28,7 @@ import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.persos.ia.mover.PhysicMoveOrder;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -57,7 +57,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 
 		zildo = spawnZildo(x, y);
 		clients.get(0).zildoId = zildo.getId();
-		clients.get(0).zildo = (PersoZildo) zildo;
+		clients.get(0).zildo = (PersoPlayer) zildo;
 		zildo.walkTile(false);
 		
 		// Wait end of scripts

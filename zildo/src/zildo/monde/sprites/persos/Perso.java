@@ -969,7 +969,7 @@ public abstract class Perso extends Element {
 		Angle angleResult=EngineZildo.mapManagement.getAngleJump(angle, cx, cy);
 		SpriteEntity pushed = null;
 		if (isZildo()) {
-			pushed = ((PersoZildo)this).getPushingSprite();
+			pushed = ((PersoPlayer)this).getPushingSprite();
 		}
 		if (angleResult!=null && pushed == null) {
 			// Is there a sprite colliding on the jump ? (example: bar blocking jump, in polaky4)

@@ -34,7 +34,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 
@@ -95,7 +95,7 @@ public class CollideManagement {
                             if (infoDamaged == PersoInfo.ENEMY || infoDamaged == PersoInfo.SHOOTABLE_NEUTRAL) { // Zildo hit an enemy
                                 checkEnemyWound(collider, collided);
                             } else if (infoDamaged == PersoInfo.ZILDO) {
-                                checkZildoWound((PersoZildo) damaged, collider);
+                                checkZildoWound((PersoPlayer) damaged, collider);
                             }
                         }
                     }
@@ -124,7 +124,7 @@ public class CollideManagement {
 
     private void checkAllZildoWound(Collection<ClientState> p_states, Collision p_colli) {
         for (ClientState state : p_states) {
-            PersoZildo zildo = state.zildo;
+            PersoPlayer zildo = state.zildo;
             Perso damager = p_colli.perso;
             // Zildo can't damage himself, excepted with explosion
             if (zildo != null && (damager == null || !damager.equals(zildo) || p_colli.damageType == DamageType.EXPLOSION)) {
@@ -172,7 +172,7 @@ public class CollideManagement {
      * @param p_zildo
      * @param p_colli
      */
-    public void checkZildoWound(PersoZildo p_zildo, Collision p_colli) {
+    public void checkZildoWound(PersoPlayer p_zildo, Collision p_colli) {
         float zildoX = p_zildo.getX(); // - 4;
         float zildoY = p_zildo.getY() - 10;
         // If he's already wounded, don't check
@@ -226,7 +226,7 @@ public class CollideManagement {
         		if (!persoResisting && material && dmg > 0) {
 	        		Perso attacker=p_collider.perso;
 	        		if (attacker != null && p_collider.perso.isZildo()) {
-	        			PersoZildo zildo=(PersoZildo) attacker;
+	        			PersoPlayer zildo=(PersoPlayer) attacker;
 	        			if (zildo.isAffectedBy(AffectionKind.QUAD_DAMAGE)) {
 	        				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamaging, zildo);
 	        				dmg*=4;

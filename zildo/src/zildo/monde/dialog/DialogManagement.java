@@ -31,7 +31,7 @@ import zildo.fwk.ui.UIText;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
 import zildo.monde.quest.actions.BuyingAction;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.EngineZildo;
 import zildo.server.state.ClientState;
 
@@ -199,7 +199,7 @@ public class DialogManagement {
 	 */
 	public void stopDialog(ClientState p_client, boolean p_brutal) {
 		p_client.dialogState.dialoguing=false;
-		PersoZildo zildo=p_client.zildo;
+		PersoPlayer zildo=p_client.zildo;
 		Perso perso=p_client.zildo.getDialoguingWith();
 		zildo.setDialoguingWith(null);
 		if (perso != null) {

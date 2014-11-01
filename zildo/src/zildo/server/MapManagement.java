@@ -44,7 +44,7 @@ import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.persos.ia.mover.PhysicMoveOrder;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
@@ -541,7 +541,7 @@ public class MapManagement {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// isChangingMap
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public boolean isChangingMap(PersoZildo p_zildo) {
+	public boolean isChangingMap(PersoPlayer p_zildo) {
 		// Get zildo's position
 		float x = p_zildo.getX();
 		float y = p_zildo.getY();
@@ -591,7 +591,7 @@ public class MapManagement {
 			// 1) turn him on the right angle
 			// 2) load new map
 			// 3) place zildo at the right location
-			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+			PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
 
 			// 1/3 : angle
 			mapScrollAngle = p_changingMapPoint.getComingAngle().opposite();
@@ -731,7 +731,7 @@ public class MapManagement {
 	 * <li>Init Zildo's followers location and behavior</li></ul>
 	 */
 	public void postLoadMap(boolean p_scroll) {
-		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
 
 		// Someone following Zildo ?
 		Perso follower = EngineZildo.persoManagement.getFollower(zildo);
@@ -901,7 +901,7 @@ public class MapManagement {
 	 * Respawn Zildo to his starting location in the current area.
 	 */
 	public void respawn(boolean relocate, int damage) {
-		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
+		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
 		if (relocate) {
 			zildo.setX(startLocation.x);
 			zildo.setY(startLocation.y);

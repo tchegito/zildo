@@ -35,7 +35,7 @@ import zildo.fwk.net.NetServer;
 import zildo.fwk.net.TransferObject;
 import zildo.monde.Game;
 import zildo.monde.sprites.desc.ZildoOutfit;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.state.ClientState;
 
 /**
@@ -216,7 +216,7 @@ public class Server extends Thread {
         return clients.get(p_object);
     }
 
-    static public ClientState getClientFromZildo(PersoZildo p_zildo) {
+    static public ClientState getClientFromZildo(PersoPlayer p_zildo) {
     	if (!EngineZildo.game.multiPlayer) {
     		return SinglePlayer.getClientState();
     	}

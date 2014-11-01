@@ -34,7 +34,7 @@ import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -49,7 +49,7 @@ import zildo.server.state.GamePhase;
 
 public class PlayerManagement {
 
-	private PersoZildo heros;
+	private PersoPlayer heros;
 	private KeyboardInstant instant;
 	private KeyboardState keysState;
 	private DialogState dialogState;

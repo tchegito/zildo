@@ -20,7 +20,7 @@
 
 package zildo.platform.input;
 
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
@@ -32,7 +32,7 @@ public class AndroidInputInfos {
 	public TouchPoints liveTouchedPoints;
 	public boolean backPressed;
 	public boolean menuPressed;
-	PersoZildo zildo;
+	PersoPlayer zildo;
 	Point zildoPos;
 
 	public AndroidInputInfos() {

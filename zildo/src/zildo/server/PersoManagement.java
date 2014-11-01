@@ -46,7 +46,7 @@ import zildo.monde.sprites.persos.PersoShadowed;
 import zildo.monde.sprites.persos.PersoSpider;
 import zildo.monde.sprites.persos.PersoSquirrel;
 import zildo.monde.sprites.persos.PersoVolant;
-import zildo.monde.sprites.persos.PersoZildo;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.persos.boss.PersoDragon;
 import zildo.monde.sprites.persos.ia.PathFinderBee;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -74,11 +74,11 @@ public class PersoManagement {
 		persoColli = EngineZildo.spriteManagement.persoColli;
 	}
 	
-	public PersoZildo getZildo()
+	public PersoPlayer getZildo()
 	{
 		for (Perso p : tab_perso) {
 			if (p.isZildo()) {
-				return (PersoZildo) p;
+				return (PersoPlayer) p;
 			}
 		}
 		return null;
@@ -231,7 +231,7 @@ public class PersoManagement {
 				perso = new PersoFox();
 				break;
 			case ZILDO:
-				perso = new PersoZildo(x, y, null);
+				perso = new PersoPlayer(x, y, null);
 				break;
 			case STONE_SPIDER:
 				perso = new PersoSpider(x, y);
@@ -253,8 +253,9 @@ public class PersoManagement {
 				perso = new PersoDragon(x, y);
 				break;
 			default:
-				perso = new PersoNJ();
-				break;
+				throw new RuntimeException("Desc should be defined for any character !");
+				//perso = new PersoNJ();
+				//break;
 		}
 		
 		switch (p_desc) {
