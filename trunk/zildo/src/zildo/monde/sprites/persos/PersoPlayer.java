@@ -77,7 +77,7 @@ import zildo.server.Server;
  *
  */
 public class PersoPlayer extends Perso {
-
+	
 	private SpriteEntity pushingSprite;
 	private int acceleration; // from 0 to 10
 
@@ -103,6 +103,8 @@ public class PersoPlayer extends Perso {
 	Element sword;
 
 	ZildoSprSequence swordSequence = new ZildoSprSequence();
+	
+	public ControllablePerso who;
 	
 	private SpriteEntity boomerang;
 
@@ -130,8 +132,10 @@ public class PersoPlayer extends Perso {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public PersoPlayer(int p_posX, int p_posY, ZildoOutfit p_outfit) {
 		super();
-		this.setName("Zildo");
+		setName("Zildo");
 
+		who = ControllablePerso.ZILDO;
+		
 		// We could maybe put that somewhere else
 		outfit = p_outfit;
 		//setDesc(ZildoDescription.UP_FIXED);

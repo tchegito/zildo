@@ -32,12 +32,12 @@ public enum FontDescription implements SpriteDescription {
 	// Frame
 	FRAME_CORNER_LEFT, FRAME_CORNER_RIGHT,
 	// GUI icons
-	GUI_HEART, GUI_HEARTEMPTY, GUI_RUPEE,
+	GUI_BLUEDROP, GUI_EMPTYBLUEDROP, GUI_RUPEE,
 	GUI_BOMB, GUI_ARROW, GUI_KEY,
 	// Number
 	N_0, N_1, N_2, N_3, N_4, N_5, N_6, N_7, N_8, N_9, 
 	// Life
-	GUI_HEARTHALF,
+	GUI_HALFBLUEDROP,
 	
 	// Others
 	GUI_GAUGE, GUI_AMOUNT, GUI_WEAPONFRAME,
