@@ -78,13 +78,21 @@ public class Pnj3 extends SpriteBanque {
 		    new Zone(30, 353, 25, 15), new Zone(55, 353, 27, 15),
 		    new Zone(82, 351, 15, 17), new Zone(97, 349, 15, 19),
 		    new Zone(112, 352, 25, 16),	// (biting)
+		    // Squirrel (princess)
+		    new Zone(1, 0, 11, 12), // South static
+		    new Zone(15, 0, 13, 13), new Zone(30, 0, 13, 13), new Zone(46, 0, 13, 13),	// South
+		    new Zone(2, 15, 12, 12),	// East static 
+		    new Zone(15, 15, 14, 12), new Zone(31, 15, 13, 12), new Zone(46, 15, 13, 12),
+		    new Zone(1, 28, 11, 12), // North static
+		    new Zone(15, 28, 13, 13), new Zone(30, 28, 13, 13), new Zone(46, 28, 13, 13),	// South
 		    // Dragon
 		    new Zone(0, 0, 49, 87), new Zone(49, 0, 45, 44), new Zone(94, 0, 51, 32),
 		    new Zone(145, 0, 45, 33), new Zone(190,0, 62, 173)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("pnj2", 0, 0), 
-				new GraphChange("dragonpal", 54,0, true)
+				new GraphChange("squirrel", 54, 0),
+				new GraphChange("dragonpal", 66,0, true)
 				});
 	}
 }

@@ -43,6 +43,7 @@ import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.desc.ZildoDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
@@ -163,8 +164,7 @@ public class PersoPlayer extends Perso {
 								// returning TRUE)
 
 		shadow = new Element(this);
-		shadow.setNBank(SpriteBank.BANK_ELEMENTS);
-		shadow.setNSpr(2);
+		shadow.setDesc(ElementDescription.SHADOW);
 		
 		feet = new Element(this);
 		feet.setNBank(SpriteBank.BANK_ZILDO);
@@ -187,6 +187,8 @@ public class PersoPlayer extends Perso {
 		// inventory.add(weapon);
 
 		setSpeed(Constantes.ZILDO_SPEED);
+		
+		setAppearance(ControllablePerso.PRINCESS_BUNNY);
 	}
 
 	/**
@@ -631,310 +633,351 @@ public class PersoPlayer extends Perso {
 		shield.setVisible(false);
 		sword.setVisible(false);
 		
-		if (isAffectedBy(AffectionKind.FIRE_DAMAGE_REDUCED)) {
-			if (shieldEffect == null) {
-				shieldEffect = new ShieldEffect(this, ShieldType.REDBALL);
-			}
-			setSpecialEffect(EngineFX.QUAD);
-		} else if (shieldEffect != null) {
-			setSpecialEffect(EngineFX.NO_EFFECT);
-			shieldEffect.kill();
-			shieldEffect = null;
-		}
-		if (isAffectedBy(AffectionKind.INVINCIBILITY)) {
-			setSpecialEffect(EngineFX.WHITE_HALO);
-		} else {
-			setSpecialEffect(EngineFX.NO_EFFECT);
-		}
-		// Shield effect animation
-		if (shieldEffect != null) {
-			shieldEffect.animate();
-		}
-
-		// Corrections , décalages du sprite
-		if (angle == Angle.EST) {
-			xx -= 2;
-		} else if (angle == Angle.OUEST) {
-			xx += 2;
-		}
-		
-		int v;
-
-		switch (mouvement) {
-		
-		case SOULEVE:
-			 if (angle == Angle.OUEST){
-					xx-=1;
-				}
-			break;
-		case TIRE:
-			if (nSpr == 36) {
-				if (angle == Angle.OUEST){
-					xx += 1;
-				} else if (angle == Angle.EST){
-					xx -= 2;
-				}
-			}
-			break;
-
-
-		case ATTAQUE_EPEE:
-			shield.setVisible(false);
-			sword.setVisible(true);
-			v = pos_seqsprite;
-			if (v>=0 && v<6) {
-				xx += decalxSword[angle.value][v];
-				sword.setSpr(swordSequence.getSpr(angle, v));
-				Point p = swordSequence.getOffset(angle, v);
-				sword.setX(xx - 4 + p.x);
-				sword.setY(yy + 1 - p.y);
-			}
-			switch (angle) {
-			case SUD:
-				// Sword must be over Zildo
-				sword.setZ(15);
-				sword.setY(sword.getY() + 15);
-				break;
-			default:
-				sword.setZ(0);
-			}
-			break;
-
-		case ATTAQUE_ARC:
-			v = nSpr - (108 + 3 * angle.value);
-			if (v>=0 && v<6) {
-				xx += decalxBow[angle.value][v];
-				yy += decalyBow[angle.value][v];
-			}
-			shield.setVisible(false);
-		
-			break;
-		case SAUTE:
-			// Zildo est en train de sauter, on affiche l'ombre à son arrivée
-
-			shadow.setX(posShadowJump.x); // (float) (xx-ax)); //-6;)
-			shadow.setY(posShadowJump.y); // (float) (yy-ay)-3);
-			shadow.setZ(0);
+		if (who == ControllablePerso.PRINCESS_BUNNY) {
+			// Player is controlling princess, so display her
+			setNSpr(PersoDescription.PRINCESS_BUNNY.nth(0));
 			shadow.setVisible(true);
-			shield.setVisible(false);
-
-			break;
-
-		case FIERTEOBJET:
-			nSpr = ZildoDescription.ARMSRAISED.ordinal();
-			yy++;
-			break;
-		case TOMBE:
-			xx=x-6;	// Calculate from x, because xx has already been modified
-			yy=y+8;
-			if (z != 0) {
-				shadow.setVisible(true);
-				shadow.setX(x);
-				shadow.setY(y);
-				shadow.setZ(0);
-			}
-			break;
-		case MORT:
-			xx-=2;
-			break;
-		case SLEEPING:
-			
-			break;
-		}
-
-		// On affiche Zildo
-		feet.setX(x + (angle.isVertical() || angle == Angle.OUEST ? 1 : 0));
-		feet.setY(y + 9 + 1);
-		feet.setZ(3);
-		feet.setAddSpr((compteur_animation / 6) % 3);
-		if (inWater) {
-			feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
-		} else if (inDirt) {
-			feet.setNSpr(ZildoDescription.DIRT1.getNSpr());
-			feet.setY(feet.getY() - 3);
-		}
-		feet.setForeground(false);
-
-		if (pv > 0) {
-			boolean touche = (mouvement == MouvementZildo.TOUCHE || getCompte_dialogue() != 0);
-			// Zildo blink
-			touche = (touche && ((compteur_animation >> 1) % 2) == 0);
-			visible = !touche;
-			for (Element elem : persoSprites) { // Blink linked elements too
-				if (elem.isVisible()) {
-					elem.setVisible(visible);
-				}
-			}
-		} else {
-			// Zildo should stay focused at die scene
-			setSpecialEffect(EngineFX.FOCUSED);
-		}
-
-		// Ajustemenent
-		sprModel = EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO).get_sprite(nSpr + addSpr);
-		xx -= 7;
-		yy -= sprModel.getTaille_y() - 2; //21;
-
-
-		setAjustedX((int) xx);
-		setAjustedY((int) yy);
-		if (!askedVisible) {
-			setVisible(false);
-		}
-		
-		//////////////////////////////////////////////////
-		// End of the part previously in 'animate' method (this was wrong, because this only concerns
-		// rendering.
-		//////////////////////////////////////////////////
-		
-		reverse = Reverse.NOTHING;
-		switch (getMouvement())
-		{
-		case VIDE:
-			setSpr(ZildoDescription.getMoving(angle, computePosSeqSprite(8)));
-			// Shield
-			if (hasItem(ItemKind.SHIELD)) {
-				shield.setForeground(false);
-				shield.reverse = Reverse.NOTHING;
-				switch (angle) {
-				case NORD:
-					shield.setX(xx + 2);
-					shield.setY(yy + 20);
-					shield.setZ(5 - 1 - decalbouclier3y[nSpr % 8]);
-					shield.setNSpr(83);
-					shield.setNBank(SpriteBank.BANK_ZILDO);
-					break;
-				case EST:
-					shield.setX(xx + 14); // PASCAL : +10
-					shield.setY(yy + 17 + decalbouclier2y[(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8]);
-					shield.setZ(0.0f);
-					shield.setNSpr(84);
-					shield.setNBank(SpriteBank.BANK_ZILDO);
-					break;
-				case SUD:
-					shield.setX(xx + 13); // PASCAL : -3)
-					shield.setY(yy + 23+1+ decalboucliery[(nSpr - ZildoDescription.DOWN_FIXED.ordinal()) % 8]);
-					//System.out.println(yy + " ==> "+(nSpr - ZildoDescription.DOWN_FIXED.ordinal()) % 8+ " = "+decalboucliery[(nSpr - ZildoDescription.DOWN_FIXED.ordinal()) % 6]+" ==> "+shield.y);
-					shield.setZ(1 + 4);
-					shield.setNSpr(85);
-					shield.setNBank(SpriteBank.BANK_ZILDO);
-					break;
-				case OUEST:
-					shield.setX(xx + 3);
-					shield.setY(yy + 18 - decalbouclier2y[(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8]);
-					//System.out.println(yy + " ==> "+(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8+ " = "+decalbouclier2y[(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8]+" ==> "+shield.y);
-					shield.setZ(0.0f);
-					shield.setNSpr(84);
-					shield.setForeground(true);
-					shield.reverse = Reverse.HORIZONTAL;
-					shield.setNBank(SpriteBank.BANK_ZILDO);
-					break;
-				}
-				shield.setVisible(true);
-			}
-			break;
-		case SAUTE:
-			setNSpr(angle.value + ZildoDescription.JUMP_UP.getNSpr());
-			break;
-		case BRAS_LEVES:
-
-			// On affiche ce que Zildo a dans les mains
-			Element en_bras = getEn_bras();
-			// Corrections...
-			if (en_bras != null) {
-				int objZ = (int) en_bras.getZ();
-
-				int variation = seq_1[((getPos_seqsprite() % (4 * Constantes.speed)) / Constantes.speed)];
-
-				//en_bras.setX(objX);
-				//en_bras.setY(objY);
-				en_bras.setZ(objZ - variation);
-				
-				// Corrections , décalages du sprite
-				float xxx = x;
-				float yyy = y;
-				if (angle == Angle.EST) {
-					xxx -= 2;
-				} else if (angle == Angle.OUEST) {
-					xxx += 2;
-				}
-
-				en_bras.setX(xxx + 1);
-				en_bras.setY(yyy); // + 3);
-				en_bras.setZ(17 - 3 - variation);
-			}
-			setSpr(ZildoDescription.getArmraisedMoving(angle, (pos_seqsprite % (8 * Constantes.speed)) / Constantes.speed));
-			break;
-		case SOULEVE:
+			shadow.setX(x);
+			shadow.setY(y);
+			shadow.setZ(0);
+			Constantes.ZILDO_SPEED = 1f;
+			int seqPos = 0;
 			switch (angle) {
 			case NORD:
-				setNSpr(ZildoDescription.PULL_UP1.ordinal());
-				break;
-			case EST:
-				setNSpr(ZildoDescription.LIFT_RIGHT.ordinal());
+				seqPos = computePosSeqSprite(6);
+				setNSpr(PersoDescription.PRINCESS_BUNNY.nth(11 + seqPos % 3));
+				setNBank(SpriteBank.BANK_PNJ3);
+				reverse = seqPos > 2 ? Reverse.HORIZONTAL : Reverse.NOTHING;
+				shadow.setX(x-1);	// adjust shadow
+				setVisible(true);
 				break;
 			case SUD:
-				setNSpr(ZildoDescription.PULL_DOWN1.ordinal());
+				seqPos = computePosSeqSprite(6);
+				setNSpr(PersoDescription.PRINCESS_BUNNY.nth(3 + seqPos % 3));
+				setNBank(SpriteBank.BANK_PNJ3);
+				reverse = seqPos > 2 ? Reverse.HORIZONTAL : Reverse.NOTHING;
+				shadow.setX(x-1);	// adjust shadow
+				setVisible(true);
 				break;
+			case EST:
 			case OUEST:
-				setNSpr(ZildoDescription.LIFT_LEFT.ordinal());
+				reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
+				setNSpr(PersoDescription.PRINCESS_BUNNY.nth(7 + computePosSeqSprite(3)));
+				setNBank(SpriteBank.BANK_PNJ3);
 				break;
 			}
-			break;
-		case TIRE:
-			setSpr(ZildoDescription.getPulling(angle,  pos_seqsprite));
-			break;
-		case TOUCHE:
-			setNSpr(ZildoDescription.WOUND_UP.getNSpr() + angle.value);
-			break;
-		case POUSSE:
-			setSpr(ZildoDescription.getPushing(angle, pos_seqsprite/2));
-			break;
-		case ATTAQUE_EPEE:
-			pos_seqsprite = (((6 * 2 - getAttente() - 1) % (6 * 2)) / 2);
-			setSpr(ZildoDescription.getSwordAttacking(angle, pos_seqsprite));
-			break;
-		case ATTAQUE_ROCKBAG:
-			pos_seqsprite = (((2 * 6 - getAttente() - 1) % (2 * 6)) / 6);
-			setSpr(ZildoDescription.getSwordAttacking(angle, pos_seqsprite));
-			break;
-		case ATTAQUE_ARC:
-			setSpr(ZildoDescription.getBowAttacking(angle, getAttente()));
-			break;
-		case MORT:
-			setNSpr(ZildoDescription.LAYDOWN);
-			break;
-		case TOMBE:
-			setNSpr(ZildoDescription.FALLING);
-			break;
-		case PLAYING_FLUT:
-			setNSpr(ZildoDescription.ZILDO_FLUT);
-			break;
-		case SLEEPING:
-			setNSpr(ZildoDescription.SLEEPING);
-			break;
-		case WAKEUP:
-			int seqPos = (getPos_seqsprite() / (6 * seqWakeUp.length)) % seqWakeUp.length;
-			setAddSpr(seqWakeUp[seqPos]);
-			if (seqPos == seqWakeUp.length -1) {
-				setPos_seqsprite(pos_seqsprite - 2);
+			xx -= 7;
+			yy -= sprModel.getTaille_y()-1; //21;
+			z=1;
+			setAjustedX((int) xx);
+			setAjustedY((int) yy);
+			
+		} else {
+			if (isAffectedBy(AffectionKind.FIRE_DAMAGE_REDUCED)) {
+				if (shieldEffect == null) {
+					shieldEffect = new ShieldEffect(this, ShieldType.REDBALL);
+				}
+				setSpecialEffect(EngineFX.QUAD);
+			} else if (shieldEffect != null) {
+				setSpecialEffect(EngineFX.NO_EFFECT);
+				shieldEffect.kill();
+				shieldEffect = null;
 			}
-			setNSpr(ZildoDescription.SLEEPING);
-			break;
-		}
-
-		if (outfit != null && nBank == SpriteBank.BANK_ZILDO) {
-			setNBank(outfit.getNBank());
-		}
-		
-		// GUI circle
-		if (guiCircle != null) {
-			guiCircle.animate();
-			if (guiCircle.isReduced()) {
-				inventoring = false;
-				guiCircle = null;
+			if (isAffectedBy(AffectionKind.INVINCIBILITY)) {
+				setSpecialEffect(EngineFX.WHITE_HALO);
+			} else {
+				setSpecialEffect(EngineFX.NO_EFFECT);
 			}
-		}		
+			// Shield effect animation
+			if (shieldEffect != null) {
+				shieldEffect.animate();
+			}
+	
+			// Corrections , décalages du sprite
+			if (angle == Angle.EST) {
+				xx -= 2;
+			} else if (angle == Angle.OUEST) {
+				xx += 2;
+			}
+			
+			int v;
+	
+			switch (mouvement) {
+			
+			case SOULEVE:
+				 if (angle == Angle.OUEST){
+						xx-=1;
+					}
+				break;
+			case TIRE:
+				if (nSpr == 36) {
+					if (angle == Angle.OUEST){
+						xx += 1;
+					} else if (angle == Angle.EST){
+						xx -= 2;
+					}
+				}
+				break;
+	
+	
+			case ATTAQUE_EPEE:
+				shield.setVisible(false);
+				sword.setVisible(true);
+				v = pos_seqsprite;
+				if (v>=0 && v<6) {
+					xx += decalxSword[angle.value][v];
+					sword.setSpr(swordSequence.getSpr(angle, v));
+					Point p = swordSequence.getOffset(angle, v);
+					sword.setX(xx - 4 + p.x);
+					sword.setY(yy + 1 - p.y);
+				}
+				switch (angle) {
+				case SUD:
+					// Sword must be over Zildo
+					sword.setZ(15);
+					sword.setY(sword.getY() + 15);
+					break;
+				default:
+					sword.setZ(0);
+				}
+				break;
+	
+			case ATTAQUE_ARC:
+				v = nSpr - (108 + 3 * angle.value);
+				if (v>=0 && v<6) {
+					xx += decalxBow[angle.value][v];
+					yy += decalyBow[angle.value][v];
+				}
+				shield.setVisible(false);
+			
+				break;
+			case SAUTE:
+				// Zildo est en train de sauter, on affiche l'ombre à son arrivée
+	
+				shadow.setX(posShadowJump.x); // (float) (xx-ax)); //-6;)
+				shadow.setY(posShadowJump.y); // (float) (yy-ay)-3);
+				shadow.setZ(0);
+				shadow.setVisible(true);
+				shield.setVisible(false);
+	
+				break;
+	
+			case FIERTEOBJET:
+				nSpr = ZildoDescription.ARMSRAISED.ordinal();
+				yy++;
+				break;
+			case TOMBE:
+				xx=x-6;	// Calculate from x, because xx has already been modified
+				yy=y+8;
+				if (z != 0) {
+					shadow.setVisible(true);
+					shadow.setX(x);
+					shadow.setY(y);
+					shadow.setZ(0);
+				}
+				break;
+			case MORT:
+				xx-=2;
+				break;
+			case SLEEPING:
+				
+				break;
+			}
+	
+			// On affiche Zildo
+			feet.setX(x + (angle.isVertical() || angle == Angle.OUEST ? 1 : 0));
+			feet.setY(y + 9 + 1);
+			feet.setZ(3);
+			feet.setAddSpr((compteur_animation / 6) % 3);
+			if (inWater) {
+				feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
+			} else if (inDirt) {
+				feet.setNSpr(ZildoDescription.DIRT1.getNSpr());
+				feet.setY(feet.getY() - 3);
+			}
+			feet.setForeground(false);
+	
+			if (pv > 0) {
+				boolean touche = (mouvement == MouvementZildo.TOUCHE || getCompte_dialogue() != 0);
+				// Zildo blink
+				touche = (touche && ((compteur_animation >> 1) % 2) == 0);
+				visible = !touche;
+				for (Element elem : persoSprites) { // Blink linked elements too
+					if (elem.isVisible()) {
+						elem.setVisible(visible);
+					}
+				}
+			} else {
+				// Zildo should stay focused at die scene
+				setSpecialEffect(EngineFX.FOCUSED);
+			}
+	
+			// Ajustemenent
+			sprModel = EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO).get_sprite(nSpr + addSpr);
+			xx -= 7;
+			yy -= sprModel.getTaille_y() - 2; //21;
+	
+	
+			setAjustedX((int) xx);
+			setAjustedY((int) yy);
+			if (!askedVisible) {
+				setVisible(false);
+			}
+			
+			//////////////////////////////////////////////////
+			// End of the part previously in 'animate' method (this was wrong, because this only concerns
+			// rendering.
+			//////////////////////////////////////////////////
+			
+			reverse = Reverse.NOTHING;
+			switch (getMouvement())
+			{
+			case VIDE:
+				setSpr(ZildoDescription.getMoving(angle, computePosSeqSprite(8)));
+				// Shield
+				if (hasItem(ItemKind.SHIELD)) {
+					shield.setForeground(false);
+					shield.reverse = Reverse.NOTHING;
+					switch (angle) {
+					case NORD:
+						shield.setX(xx + 2);
+						shield.setY(yy + 20);
+						shield.setZ(5 - 1 - decalbouclier3y[nSpr % 8]);
+						shield.setNSpr(83);
+						shield.setNBank(SpriteBank.BANK_ZILDO);
+						break;
+					case EST:
+						shield.setX(xx + 14); // PASCAL : +10
+						shield.setY(yy + 17 + decalbouclier2y[(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8]);
+						shield.setZ(0.0f);
+						shield.setNSpr(84);
+						shield.setNBank(SpriteBank.BANK_ZILDO);
+						break;
+					case SUD:
+						shield.setX(xx + 13); // PASCAL : -3)
+						shield.setY(yy + 23+1+ decalboucliery[(nSpr - ZildoDescription.DOWN_FIXED.ordinal()) % 8]);
+						//System.out.println(yy + " ==> "+(nSpr - ZildoDescription.DOWN_FIXED.ordinal()) % 8+ " = "+decalboucliery[(nSpr - ZildoDescription.DOWN_FIXED.ordinal()) % 6]+" ==> "+shield.y);
+						shield.setZ(1 + 4);
+						shield.setNSpr(85);
+						shield.setNBank(SpriteBank.BANK_ZILDO);
+						break;
+					case OUEST:
+						shield.setX(xx + 3);
+						shield.setY(yy + 18 - decalbouclier2y[(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8]);
+						//System.out.println(yy + " ==> "+(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8+ " = "+decalbouclier2y[(nSpr - ZildoDescription.RIGHT_FIXED.ordinal()) % 8]+" ==> "+shield.y);
+						shield.setZ(0.0f);
+						shield.setNSpr(84);
+						shield.setForeground(true);
+						shield.reverse = Reverse.HORIZONTAL;
+						shield.setNBank(SpriteBank.BANK_ZILDO);
+						break;
+					}
+					shield.setVisible(true);
+				}
+				break;
+			case SAUTE:
+				setNSpr(angle.value + ZildoDescription.JUMP_UP.getNSpr());
+				break;
+			case BRAS_LEVES:
+	
+				// On affiche ce que Zildo a dans les mains
+				Element en_bras = getEn_bras();
+				// Corrections...
+				if (en_bras != null) {
+					int objZ = (int) en_bras.getZ();
+	
+					int variation = seq_1[((getPos_seqsprite() % (4 * Constantes.speed)) / Constantes.speed)];
+	
+					//en_bras.setX(objX);
+					//en_bras.setY(objY);
+					en_bras.setZ(objZ - variation);
+					
+					// Corrections , décalages du sprite
+					float xxx = x;
+					float yyy = y;
+					if (angle == Angle.EST) {
+						xxx -= 2;
+					} else if (angle == Angle.OUEST) {
+						xxx += 2;
+					}
+	
+					en_bras.setX(xxx + 1);
+					en_bras.setY(yyy); // + 3);
+					en_bras.setZ(17 - 3 - variation);
+				}
+				setSpr(ZildoDescription.getArmraisedMoving(angle, (pos_seqsprite % (8 * Constantes.speed)) / Constantes.speed));
+				break;
+			case SOULEVE:
+				switch (angle) {
+				case NORD:
+					setNSpr(ZildoDescription.PULL_UP1.ordinal());
+					break;
+				case EST:
+					setNSpr(ZildoDescription.LIFT_RIGHT.ordinal());
+					break;
+				case SUD:
+					setNSpr(ZildoDescription.PULL_DOWN1.ordinal());
+					break;
+				case OUEST:
+					setNSpr(ZildoDescription.LIFT_LEFT.ordinal());
+					break;
+				}
+				break;
+			case TIRE:
+				setSpr(ZildoDescription.getPulling(angle,  pos_seqsprite));
+				break;
+			case TOUCHE:
+				setNSpr(ZildoDescription.WOUND_UP.getNSpr() + angle.value);
+				break;
+			case POUSSE:
+				setSpr(ZildoDescription.getPushing(angle, pos_seqsprite/2));
+				break;
+			case ATTAQUE_EPEE:
+				pos_seqsprite = (((6 * 2 - getAttente() - 1) % (6 * 2)) / 2);
+				setSpr(ZildoDescription.getSwordAttacking(angle, pos_seqsprite));
+				break;
+			case ATTAQUE_ROCKBAG:
+				pos_seqsprite = (((2 * 6 - getAttente() - 1) % (2 * 6)) / 6);
+				setSpr(ZildoDescription.getSwordAttacking(angle, pos_seqsprite));
+				break;
+			case ATTAQUE_ARC:
+				setSpr(ZildoDescription.getBowAttacking(angle, getAttente()));
+				break;
+			case MORT:
+				setNSpr(ZildoDescription.LAYDOWN);
+				break;
+			case TOMBE:
+				setNSpr(ZildoDescription.FALLING);
+				break;
+			case PLAYING_FLUT:
+				setNSpr(ZildoDescription.ZILDO_FLUT);
+				break;
+			case SLEEPING:
+				setNSpr(ZildoDescription.SLEEPING);
+				break;
+			case WAKEUP:
+				int seqPos = (getPos_seqsprite() / (6 * seqWakeUp.length)) % seqWakeUp.length;
+				setAddSpr(seqWakeUp[seqPos]);
+				if (seqPos == seqWakeUp.length -1) {
+					setPos_seqsprite(pos_seqsprite - 2);
+				}
+				setNSpr(ZildoDescription.SLEEPING);
+				break;
+			}
+	
+			if (outfit != null && nBank == SpriteBank.BANK_ZILDO) {
+				setNBank(outfit.getNBank());
+			}
+			
+			// GUI circle
+			if (guiCircle != null) {
+				guiCircle.animate();
+				if (guiCircle.isReduced()) {
+					inventoring = false;
+					guiCircle = null;
+				}
+			}
+		}
 	}
 
 	/**
@@ -1390,6 +1433,18 @@ public class PersoPlayer extends Perso {
 	
 	private int computePosSeqSprite(int speedFactor) {
 		 return pos_seqsprite == -1 ? -1 :
-			 (pos_seqsprite % (speedFactor * Constantes.speed)) / Constantes.speed;		
+			 ((pos_seqsprite/2) % (speedFactor * Constantes.speed)) / Constantes.speed;		
+	}
+	
+	public void setAppearance(ControllablePerso who) {
+		this.who = who;
+		switch (who) {
+		case ZILDO:
+			shadow.setDesc(ElementDescription.SHADOW);
+			break;
+		case PRINCESS_BUNNY:
+			shadow.setDesc(ElementDescription.SHADOW_SMALL);
+			break;
+		}
 	}
 }

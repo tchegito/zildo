@@ -76,7 +76,10 @@ public enum PersoDescription implements SpriteDescription {
 	PRINCESSE_COUCHEE(188, 189, 190, 191),
 	ARBUSTE_VIVANT(192, 193),
 	CHAUVESOURIS(201, 202),
-	PRINCESS_BUNNY(203, 204),
+	PRINCESS_BUNNY(203, 204, 
+			313, 314, 315, 316, 
+			317, 318, 319, 320, 
+			321, 322, 323, 324),
 	GARCON_BLEU(205, 206),
 	GARCON_JAUNE(207, 208),
 	FERMIERE(209, 210, 211, 212, 213, 214),
@@ -106,7 +109,7 @@ public enum PersoDescription implements SpriteDescription {
 	INVENTOR(298, 299, 300, 301),
 	COOK(302, 303, 304, 305),
 	BIG_RAT(310, 311, 308, 309, 306, 307, 312),
-	DRAGON(313, 314, 315, 316, 317),
+	DRAGON(325, 326, 327, 328),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
