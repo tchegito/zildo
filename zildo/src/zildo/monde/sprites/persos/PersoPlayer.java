@@ -587,6 +587,7 @@ public class PersoPlayer extends Perso {
 			// Not very clean to do such specific thing here
 			pathFinder.determineDestination();
 		}
+		
 		switch (mouvement) {
 		case ATTAQUE_ARC:
 			if (attente == 2 * 8) {
@@ -597,8 +598,9 @@ public class PersoPlayer extends Perso {
 			}
 			break;
 		case TOMBE:
+			System.out.println(z);
+			z+=vz;
 			if (z > 0) {
-				z+=vz;
 				vz+=az;
 			} else if (az != 0) {
 				z=0;
@@ -613,6 +615,14 @@ public class PersoPlayer extends Perso {
 	}
 
 	final int[] seqWakeUp = { 0, 1, 0, 1, 2, 2, 3 };
+	
+	/** Only allowed when player is a squirrel (see {@link ControllablePerso#PRINCESS_BUNNY}) **/
+	public void jump() {
+		//TODO: make it homogeneous with PathFinderSquirrel#setTarget
+		az = -0.1f;
+		vz = 1.2f;
+		mouvement = MouvementZildo.TOMBE;
+	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// finaliseComportementPnj
@@ -668,7 +678,7 @@ public class PersoPlayer extends Perso {
 			}
 			xx -= 7;
 			yy -= sprModel.getTaille_y()-1; //21;
-			z=1;
+			shadow.setZ(-1);	// Display shadow under character => else, this would be weird ;)
 			setAjustedX((int) xx);
 			setAjustedY((int) yy);
 			
