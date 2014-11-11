@@ -253,9 +253,10 @@ public class PersoManagement {
 				perso = new PersoDragon(x, y);
 				break;
 			default:
-				throw new RuntimeException("Desc should be defined for any character !");
-				//perso = new PersoNJ();
-				//break;
+				//throw new RuntimeException("Desc should be defined for any character !");
+				// This is allowed for some special characters who doesn't need any special behavior, like Bramble
+				perso = new PersoNJ();
+				break;
 		}
 		
 		switch (p_desc) {

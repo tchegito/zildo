@@ -528,11 +528,17 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyPressAttack() {
 		if (!keysState.key_attackPressed) {
-			if (gamePhase == GamePhase.DIALOG || gamePhase == GamePhase.SCRIPT) {
-				EngineZildo.dialogManagement.goOnDialog(client);
-			} else if (gamePhase.moves && heros.getEn_bras() == null && !client.dialogState.dialoguing && !heros.isInventoring()) {
-				// Set Zildo in attack stance
-				heros.attack();
+			if (heros.who.canFreeJump) {
+				// Controlled character can jump with Y KEY
+				heros.jump();
+			} else {
+				// Y KEY is used to attack (use selected item from inventory)
+				if (gamePhase == GamePhase.DIALOG || gamePhase == GamePhase.SCRIPT) {
+					EngineZildo.dialogManagement.goOnDialog(client);
+				} else if (gamePhase.moves && heros.getEn_bras() == null && !client.dialogState.dialoguing && !heros.isInventoring()) {
+					// Set Zildo in attack stance
+					heros.attack();
+				}
 			}
 		}
 		keysState.key_attackPressed=true;
