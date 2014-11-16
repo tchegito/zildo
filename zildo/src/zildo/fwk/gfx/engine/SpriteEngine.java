@@ -26,11 +26,14 @@ import java.util.List;
 
 import zildo.Zildo;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.gfx.Occluder;
 import zildo.fwk.gfx.primitive.SpritePrimitive;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.
@@ -227,6 +230,8 @@ public abstract class SpriteEngine {
 			}
 		});
 		
+		Occluder occ = new Occluder(256, 256);
+		boolean withOccluder = false;
 		for (SpriteModel spr : modelSorted) {
 			int longX=spr.getTaille_x();
 			int longY=spr.getTaille_y();
@@ -236,14 +241,24 @@ public abstract class SpriteEngine {
 				y+=highestLine;
 				highestLine=0;
 			}
+
+			if (withOccluder || (y + longY) > 256) {
+				// Needs occlusion to find some space inside the texture !
+				Point p = occ.allocate(longX, longY);
+				x = p.x ; y = p.y;
+				withOccluder = true;
+			}
+			occ.remove(new Zone(x, y, longX, longY));
 			// Store sprite location on texture
 			spr.setTexPos_x(x);
 			spr.setTexPos_y(y); //+1);
 
 			// Next position
-			x+=longX;
-			if (longY > highestLine)	// Mark the highest sprite on the row
-				highestLine = longY;
+			if (!withOccluder) {
+				x+=longX;
+				if (longY > highestLine)	// Mark the highest sprite on the row
+					highestLine = longY;
+			}
 		}
 	}
 	
