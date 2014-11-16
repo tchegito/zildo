@@ -70,6 +70,10 @@ public class Zone {
 		return new Rectangle(this).isCrossing(new Rectangle(p_zone));
 	}
 	
+	public boolean isStrictCrossing(Zone p_zone) {
+		return new Rectangle(this).isStrictCrossing(new Rectangle(p_zone));
+	}
+	
 	public Point getCenter() {
 		return new Point(x1 + x2 / 2, y1 + y2 / 2);
 	}
