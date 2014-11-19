@@ -24,6 +24,7 @@ import zildo.monde.Trigo;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementProjectile;
+import zildo.monde.sprites.elements.ElementProjectile.ProjectileKind;
 import zildo.monde.sprites.persos.ia.PathFinderBee;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
@@ -66,7 +67,8 @@ public class PersoFlyingSerpent extends PersoShadowed {
 			if (zildo != null) {
 				double zDirection = Trigo.getAngleRadian(x, y-2, zildo.x, zildo.y);
 				Vector2f speedVect = Trigo.vect(zDirection, 1.8f);
-				Element redSphere = new ElementProjectile(ElementDescription.BROWNSPHERE1, x, y-2, z,
+				Element redSphere = new ElementProjectile(ElementDescription.BROWNSPHERE1, 
+						ProjectileKind.THREE_TRAIL, x, y-2, z,
 						speedVect.x, speedVect.y, this);
 				EngineZildo.spriteManagement.spawnSprite(redSphere);
 				EngineZildo.soundManagement.broadcastSound(BankSound.SerpentSpit, new Point(x, y));
