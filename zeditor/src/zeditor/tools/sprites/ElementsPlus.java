@@ -318,7 +318,10 @@ public class ElementsPlus extends SpriteBanque {
 				// Water waves
 				new Zone(122, 153, 8, 25), new Zone(132, 153, 8, 25), new Zone(141, 153, 8, 25),
 				// Fire ring
-				new Zone(110, 85, 12, 10)
+				new Zone(110, 85, 12, 10),
+				// Fire ball (for dragon) (243)
+			    new Zone(256,0, 41, 42)
+
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -332,6 +335,7 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("objets", 228, 0),
 				new GraphChange("elem", 230, 0),
 				new GraphChange("objets", 242, 0),
+				new GraphChange("dragonpal", 243, 0, true)
 				});
 	}
 }

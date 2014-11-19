@@ -35,7 +35,23 @@ public class ElementProjectile extends ElementChained {
 	
 	int seq;	// Position in the sprite sequence (from 0 to 2, because we want 3 sprites)
 	
-	public ElementProjectile(ElementDescription desc, float x, float y, float z, float vx, float vy, Perso shooter) {
+	public enum ProjectileKind {
+		THREE_TRAIL(3, true, 2),	// Three reducing and close sprites as a trail
+		FIREBALLS(5, false, 8);
+		
+		final int numberOfElements, delay;
+		boolean increaseSpriteModel;
+		
+		private ProjectileKind(int numberOfElements, boolean increaseSpriteModel, int delay) {
+			this.numberOfElements = numberOfElements;
+			this.delay = delay;
+			this.increaseSpriteModel = increaseSpriteModel;
+		}
+	};
+	
+	final ProjectileKind kind;
+	
+	public ElementProjectile(ElementDescription desc, ProjectileKind kind, float x, float y, float z, float vx, float vy, Perso shooter) {
 		super((int) x, (int) (y - z));
 		
 		this.desc = desc;
@@ -43,6 +59,7 @@ public class ElementProjectile extends ElementChained {
 		this.vy = vy;
 		this.seq = 0;
 		
+		this.kind = kind;
 		this.linkedPerso = shooter;
 	}
 	
@@ -54,15 +71,16 @@ public class ElementProjectile extends ElementChained {
 		e.vy = vy;
 		e.x = x;
 		e.y = y;
-		e.addSpr = seq;
+		e.addSpr = kind.increaseSpriteModel ? seq : 0;
 		e.linkedPerso = linkedPerso;
-		//e.setForeground(true);
+		e.setForeground(true);
 		e.flying = true;
 		e.angle = Angle.NORD;	// Nonsense here
-		delay = 2;
+		e.reverse = reverse;
+		delay = kind.delay;
 		
 		seq++;
-		if (seq == 3) {
+		if (seq == kind.numberOfElements) {
 			endOfChain = true;
 		}
 		return e;

@@ -196,6 +196,7 @@ public class Element extends SpriteEntity {
 			// Volatile elements (need to be refactored, with a real attribute on Descriptions)
 			switch ((ElementDescription) desc) {
 				case REDSPHERE1:
+				case FIRE_BALL:
 				case BROWNSPHERE1:
 				case SEWER_SMOKE1:
 				case SEWER_SMOKE2:

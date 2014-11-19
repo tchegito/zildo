@@ -88,7 +88,7 @@ public class Pnj3 extends SpriteBanque {
 		    // Dragon
 		    new Zone(0, 0, 51, 93), new Zone(51, 0, 45, 44), new Zone(96, 0, 51, 32),
 		    new Zone(147, 0, 45, 33), new Zone(192,0, 62, 80), new Zone(192, 80, 62, 93),
-		    new Zone(0,93, 63, 95), new Zone(71, 80, 50, 96), new Zone(262, 107, 50, 88)
+		    new Zone(0,93, 63, 95), new Zone(71, 80, 50, 96), new Zone(262, 107, 50, 88),
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("pnj2", 0, 0), 
