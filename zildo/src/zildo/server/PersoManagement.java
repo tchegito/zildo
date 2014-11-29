@@ -249,7 +249,6 @@ public class PersoManagement {
 				perso = new PersoShadowed();
 				break;
 			case DRAGON:
-				y+=10;
 				perso = new PersoDragon(x, y);
 				break;
 			default:
