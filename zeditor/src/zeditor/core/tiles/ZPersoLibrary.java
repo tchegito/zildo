@@ -1,7 +1,9 @@
-package zildo.monde.sprites.desc;
+package zeditor.core.tiles;
 
 import java.util.ArrayList;
 
+import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 
@@ -44,6 +46,8 @@ public class ZPersoLibrary extends ArrayList<SpriteDescription> {
 		case SQUELETTE:
 		case VAUTOUR:
 		case ECTOPLASME:
+		case DRAGON:
+		case FLYINGSERPENT:
 			info=PersoInfo.ENEMY;
 			break;
 		}

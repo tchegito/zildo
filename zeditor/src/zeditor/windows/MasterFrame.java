@@ -35,6 +35,7 @@ import zeditor.windows.subpanels.PrefetchPanel;
 import zeditor.windows.subpanels.ScriptPanel;
 import zeditor.windows.subpanels.SpritePanel;
 import zeditor.windows.subpanels.StatsPanel;
+import zeditor.windows.subpanels.ViewSpritesDialog;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.monde.map.accessor.HighestFloorAccessor;
@@ -52,7 +53,7 @@ import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
  * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial", "deprecation" })
 public class MasterFrame extends javax.swing.JFrame {
 
 	private JMenuBar menuBar;
@@ -60,6 +61,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JMenuItem mapCaptureItem;
 	private JMenuItem builderMenuItem;
 	private JMenuItem saveCollisionItem;
+	private JMenuItem viewSpritesItem;
 	private JMenu miscMenu;
 	private JMenuItem reloadConfigItem;
 	private JMenuItem optionsItem;
@@ -101,7 +103,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JToolBar toolBar;
 	private JPanel toolBarContainer;
 	private JPanel masterPanel;
-	private JComboBox floorCombo;
+	private JComboBox<String> floorCombo;
 	private AbstractAction actionSaveAs;
 	private AbstractAction actionNew;
 	private AbstractAction actionGridTool;
@@ -508,8 +510,8 @@ public class MasterFrame extends javax.swing.JFrame {
 		return toolBar;
 	}
 
-	private JComboBox getFloorCombo() {
-		floorCombo = new JComboBox(new String[] {"0", "1", "2"});
+	private JComboBox<String> getFloorCombo() {
+		floorCombo = new JComboBox<String>(new String[] {"0", "1", "2"});
 		floorCombo.setSelectedIndex(manager.getCurrentFloor());
 		floorCombo.addActionListener(new ActionListener() {
 			
@@ -914,10 +916,30 @@ public class MasterFrame extends javax.swing.JFrame {
 			miscMenu.add(getSaveCollisionItem());
 			miscMenu.add(getBuilderItem());
 			miscMenu.add(getMapCaptureItem());
+			miscMenu.add(getViewSpritesItem());
 		}
 		return miscMenu;
 	}
 
+	private JMenuItem getViewSpritesItem() {
+		if (viewSpritesItem == null) {
+			viewSpritesItem = new JMenuItem();
+			viewSpritesItem.setAction(new AbstractAction("View sprites", null) {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JDialog dialog = new ViewSpritesDialog();
+					JMenuItem item = (JMenuItem) e.getSource();
+					dialog.setLocationRelativeTo(item.getParent().getParent());
+					dialog.setModal(true);
+					dialog.setVisible(true);
+				}
+			});
+			viewSpritesItem.setIcon(new ImageIcon(getClass().getClassLoader()
+					.getResource("zeditor/images/package.png")));
+		}
+		return viewSpritesItem;
+	}
+	
 	private JMenuItem getSaveCollisionItem() {
 		if (saveCollisionItem == null) {
 			saveCollisionItem = new JMenuItem();

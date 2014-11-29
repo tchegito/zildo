@@ -23,7 +23,6 @@ package zeditor.core.tiles;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +39,6 @@ import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
-import zildo.monde.sprites.desc.ZPersoLibrary;
 import zildo.monde.sprites.desc.ZSpriteLibrary;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -89,80 +87,7 @@ public class SpriteSet extends ImageSet {
 				BufferedImage.TYPE_INT_RGB);
 		currentTile.getGraphics();
 
-		if (false) { // for test, now
-			p_bankDesc = prepareListFromBank(4);
-		}
-
 		displayListSprites(p_bankDesc);
-	}
-
-	/**
-	 * Return a virtual list for displaying an entire bank
-	 * 
-	 * @param p_numBank
-	 * @return List<SpriteDescription>
-	 */
-	private List<SpriteDescription> prepareListFromBank(final int p_numBank) {
-		// Display an entire bank
-		List<SpriteDescription> list = new ArrayList<SpriteDescription>();
-		SpriteBank bank = EngineZildo.spriteManagement.getSpriteBank(p_numBank);
-		for (int i = 0; i < bank.getNSprite(); i++) {
-			final int n = i;
-			list.add(new SpriteDescription() {
-				@Override
-				public int getBank() {
-					return p_numBank;
-				}
-
-				@Override
-				public int getNSpr() {
-					return n;
-				}
-
-				@Override
-				public boolean isBlocking() {
-					return false;
-				}
-
-				@Override
-				public int ordinal() {
-					return n;
-				}
-
-				@Override
-				public boolean isDamageable() {
-					return false;
-				}
-				
-				@Override
-				public boolean isPushable() {
-					return false;
-				}
-
-				@Override
-				public boolean isNotFixe() {
-					return false;
-				}
-
-				@Override
-				public boolean isSliping() {
-					return false;
-				}
-
-				@Override
-				public boolean isWeapon() {
-					return false;
-				}
-
-				@Override
-				public int getRadius() {
-					// TODO Auto-generated method stub
-					return 0;
-				}
-
-			});
-		}
-		return list;
 	}
 
 	private void displayListSprites(List<SpriteDescription> p_list) {
@@ -190,7 +115,7 @@ public class SpriteSet extends ImageSet {
 				maxY = model.getTaille_y();
 			}
 
-			drawPerso(posX, posY, bank, nSpr, false);
+			drawPerso(posX, posY, bank, nSpr);
 
 			// Store this zone into the list
 			Zone z = new Zone(posX, posY, model.getTaille_x(),
@@ -201,10 +126,8 @@ public class SpriteSet extends ImageSet {
 		}
 	}
 
-	final Vector4f colMasque = new Vector4f(192, 128, 240, 1);
-
 	/**
-	 * Display sprite, with or without mask
+	 * Display sprite at (i,j) coordinates.
 	 * 
 	 * @param i
 	 * @param j
@@ -212,13 +135,15 @@ public class SpriteSet extends ImageSet {
 	 * @param nMotif
 	 * @param masque
 	 */
-	private void drawPerso(int i, int j, SpriteBank pnjBank, int nSpr,
-			boolean masque) {
-
-		SpriteModel model = pnjBank.get_sprite(nSpr);
-		short[] data = pnjBank.getSpriteGfx(nSpr);
+	private void drawPerso(int i, int j, SpriteBank pnjBank, int nSpr) {
 
 		Graphics2D gfx2d = (Graphics2D) currentTile.getGraphics();
+		drawSprite(i, j, pnjBank, nSpr, gfx2d);
+	}
+
+	public static void drawSprite(int i, int j, SpriteBank pnjBank, int nSpr, Graphics2D gfx2d) {
+		SpriteModel model = pnjBank.get_sprite(nSpr);
+		short[] data = pnjBank.getSpriteGfx(nSpr);
 
 		for (int y = 0; y < model.getTaille_y(); y++) {
 			for (int x = 0; x < model.getTaille_x(); x++) {
@@ -232,7 +157,6 @@ public class SpriteSet extends ImageSet {
 				}
 			}
 		}
-
 	}
 
 	@SuppressWarnings("unchecked")
