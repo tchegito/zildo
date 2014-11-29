@@ -19,12 +19,17 @@
 
 package zildo.monde.sprites.elements;
 
+import zildo.monde.Trigo;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
+import zildo.monde.util.Vector2f;
 
 /**
- * Projectile launched in a direction determined by (vx,vy).
+ * Projectile launched in a direction determined either by:<ul>
+ * <li>provided speed (vx,vy)</li>
+ * <li>provided target {@link Element} from a given source {@link Element}. Note it may move during the launch</li>
+ * </ul>
  * 
  * Consists of one colliding sprite, and 2 others as a trail.
  * 
@@ -50,6 +55,8 @@ public class ElementProjectile extends ElementChained {
 	};
 	
 	final ProjectileKind kind;
+	Element shootingSpot;
+	Element shootedSpot;
 	
 	public ElementProjectile(ElementDescription desc, ProjectileKind kind, float x, float y, float z, float vx, float vy, Perso shooter) {
 		super((int) x, (int) (y - z));
@@ -63,8 +70,25 @@ public class ElementProjectile extends ElementChained {
 		this.linkedPerso = shooter;
 	}
 	
+	public ElementProjectile(ElementDescription desc, ProjectileKind kind, Element shootingOne, Element shootedOne, Perso shooter) {
+		this(desc, kind, shootingOne.x, shootingOne.y, shootingOne.z, 0, 0, shooter);
+		
+		shootingSpot = shootingOne;
+		shootedSpot = shootedOne;
+	}
+	
 	@Override
 	protected Element createOne(int p_x, int p_y) {
+		
+		if (shootedSpot != null && shootingSpot != null) {
+			double zDirection = Trigo.getAngleRadian(shootingSpot.x, shootingSpot.y-70, shootedSpot.x, shootedSpot.y);
+			Vector2f speedVect = Trigo.vect(zDirection, 1.8f);
+			vx = speedVect.x;
+			vy = speedVect.y;
+			x = shootingSpot.x;
+			y = shootingSpot.y-70;
+			z = shootingSpot.z;
+		}
 		Element e = new Element();
 		e.setDesc(desc);
 		e.vx = vx;
@@ -77,6 +101,7 @@ public class ElementProjectile extends ElementChained {
 		e.flying = true;
 		e.angle = Angle.NORD;	// Nonsense here
 		e.reverse = reverse;
+		e.zoom = zoom;
 		delay = kind.delay;
 		
 		seq++;
