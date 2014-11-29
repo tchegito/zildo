@@ -54,7 +54,7 @@ public class CheckMapSave extends TestCase {
 	 * Constructor for one TestCase
 	 */
 	public CheckMapSave() {
-		MAP_ORIGINAL="polaky2.map";
+		MAP_ORIGINAL="dragon.map";
 	}
 	
 	/**
@@ -144,6 +144,9 @@ public class CheckMapSave extends TestCase {
 		for (int i=0;i<originalEntities.size();i++) {
 			SpriteEntity e1=originalEntities.get(i);
 			SpriteEntity e2=copiedEntities.get(i);
+			if (!compareEntity(e1, e2)) {
+				System.out.println(e1);
+			}
 			assertTrue(msg("entity n°"+i+" is different."), compareEntity(e1, e2));
 		}
 		

@@ -805,10 +805,21 @@ public class Area implements EasySerializable {
 		List<Perso> persos = filterExportablePersos(EngineZildo.persoManagement.tab_perso);
 
 		int n_pe = listChainingPoint.size();
-		int n_sprites = entities.size();
 		int n_persos = persos.size();
 		int nbFloors = highestFloor - lowestFloor + 1;
 		
+		// 0) Exclude "built from perso" sprites
+		for (Iterator<SpriteEntity> it=entities.iterator(); it.hasNext();) {
+			SpriteEntity entity = it.next();
+			if (entity.getEntityType().isElement()) {
+				Element elem = (Element) entity;
+				if (elem.getLinkedPerso() != null || elem.getDesc() instanceof PersoDescription) {
+					it.remove();
+				}
+			}
+		}
+		int n_sprites = entities.size();
+
 		// 1) Header
 		p_file.put((byte) atmosphere.ordinal());
 		p_file.put((byte) dim_x);
