@@ -21,7 +21,6 @@ package zildo.monde.sprites.persos.boss;
 
 import zildo.client.sound.BankSound;
 import zildo.monde.Bezier3;
-import zildo.monde.Trigo;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -35,7 +34,6 @@ import zildo.monde.sprites.utils.CompositeElement;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
-import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
 /**
@@ -52,7 +50,7 @@ public class PersoDragon extends PersoNJ {
 	
 	int[] seq = {3, 3, 2, 2, 1, 0, 4, 5, 4, 5};
 	
-	Element fireBalls;
+	ElementProjectile fireBalls;
 	
 	boolean spittingFire = true;
 	
@@ -167,12 +165,10 @@ public class PersoDragon extends PersoNJ {
 			// Spits fire !
 			// Target hero
 			if (zildo != null) {
-				double zDirection = Trigo.getAngleRadian(headPoint.x, headPoint.y-2, zildo.x, zildo.y);
-				Vector2f speedVect = Trigo.vect(zDirection, 1.8f);
+				
 				fireBalls = new ElementProjectile(ElementDescription.FIRE_BALL,
-						ProjectileKind.FIREBALLS,
-						headPoint.x, headPoint.y-2+30+40, z,
-						speedVect.x, speedVect.y, this);
+						ProjectileKind.FIREBALLS, neck.elems.get(6), zildo, this);
+						
 				EngineZildo.spriteManagement.spawnSprite(fireBalls);
 				EngineZildo.soundManagement.broadcastSound(BankSound.SerpentSpit, new Point(x, y));
 				
@@ -180,6 +176,7 @@ public class PersoDragon extends PersoNJ {
 				if (headAngle == Angle.OUEST) {
 					fireBalls.reverse = Reverse.HORIZONTAL;
 				}
+				fireBalls.zoom = 127;
 				//redSphere.addFire();
 				//count = 200;
 			} else {
