@@ -33,6 +33,10 @@ public class Pointf {
 		x = source.x;
 		y = source.y;
 	}
+	public void add(Vector2f v) {
+		add(v.x, v.y);
+	}
+	
     public void add(Pointf p_point) {
     	add(p_point.x, p_point.y);
     }

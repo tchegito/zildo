@@ -34,6 +34,7 @@ import zildo.monde.sprites.utils.CompositeElement;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
+import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
 /**
@@ -49,6 +50,11 @@ public class PersoDragon extends PersoNJ {
 	int cnt = 0;
 	
 	int[] seq = {3, 3, 2, 2, 1, 0, 4, 5, 4, 5};
+	
+	// Interval during dragon wait to look for Zildo again
+	final static int FOCUS_TIME = 1;
+	// Circle radius around dragon's head can move
+	final static int HEAD_ELONGATION = 30;
 	
 	ElementProjectile fireBalls;
 	
@@ -77,9 +83,21 @@ public class PersoDragon extends PersoNJ {
 		
 		Pointf neckPoint = new Pointf((float) (x + 10*Math.cos(gamma/5)), 
 										(float) ( 60 + 4*Math.sin(gamma*2)) );
-		Pointf headPoint = new Pointf((float) (neckPoint.x + 10*Math.sin(gamma)),
-									(float) (neckPoint.y + 5 + 5*Math.cos(gamma)) );
-									
+		Pointf headPoint = new Pointf((float) (x + 0*10*Math.sin(gamma)),
+									(float) (neckPoint.y + 5*0 + 0*5*Math.cos(gamma)) );
+		
+		// 1) Detect Zildo every FOCUS_TIME
+		Perso zildo = null;
+		if (cnt % FOCUS_TIME == 90909090) {
+			zildo = EngineZildo.persoManagement.lookFor(this, 10, PersoInfo.ZILDO);
+			if (zildo != null) {
+				Vector2f dist = new Vector2f(headPoint, new Pointf(zildo.x, zildo.y));
+				float norme = dist.norm();
+				float ratio = HEAD_ELONGATION / norme;
+				headPoint.add(dist.mul(ratio));
+			}
+		}
+		
 		Bezier3 bz = new Bezier3(new Pointf(x, 0), neckPoint, headPoint);
 		
 		Angle headAngle = null;
@@ -159,7 +177,7 @@ public class PersoDragon extends PersoNJ {
 			//elem.floor = 2;
 			elem.setForeground(true);
 			
-			Perso zildo = EngineZildo.persoManagement.lookFor(this, 10, PersoInfo.ZILDO);
+			
 
 			
 			// Spits fire !
@@ -185,7 +203,11 @@ public class PersoDragon extends PersoNJ {
 		}
 		//visible = true;
 		gamma += 0.08;
-
-		
+	}
+	
+	@Override
+	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
+		// For now, no collision can hit the dragon
+		// super.beingWounded(cx, cy, p_shooter, p_damage);
 	}
 }
