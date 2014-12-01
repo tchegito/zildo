@@ -600,10 +600,11 @@ public class PersoPlayer extends Perso {
 		case TOMBE:
 			System.out.println(z);
 			z+=vz;
-			if (z > 0) {
+			int tileBottomZ = getBottomZ();
+			if (z > tileBottomZ) {
 				vz+=az;
 			} else if (az != 0) {
-				z=0;
+				z=tileBottomZ;
 				az=0;
 				mouvement = MouvementZildo.VIDE;
 				landOnGround();
@@ -646,10 +647,15 @@ public class PersoPlayer extends Perso {
 		if (who == ControllablePerso.PRINCESS_BUNNY) {
 			// Player is controlling princess, so display her
 			setNSpr(PersoDescription.PRINCESS_BUNNY.nth(0));
+			int tileBottomZ = getBottomZ();
+			if (tileBottomZ != z) {
+				mouvement = MouvementZildo.TOMBE;
+				az = -0.1f;
+			}
 			shadow.setVisible(true);
 			shadow.setX(x);
 			shadow.setY(y);
-			shadow.setZ(0);
+			shadow.setZ(tileBottomZ);
 			Constantes.ZILDO_SPEED = 1f;
 			int seqPos = 0;
 			switch (angle) {
@@ -678,7 +684,7 @@ public class PersoPlayer extends Perso {
 			}
 			xx -= 7;
 			yy -= sprModel.getTaille_y()-1; //21;
-			shadow.setZ(-1);	// Display shadow under character => else, this would be weird ;)
+			shadow.setZ(shadow.z - 1);	// Display shadow under character => else, this would be weird ;)
 			setAjustedX((int) xx);
 			setAjustedY((int) yy);
 			

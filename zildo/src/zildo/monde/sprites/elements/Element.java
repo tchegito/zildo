@@ -946,4 +946,15 @@ public class Element extends SpriteEntity {
 		}
 		return s + " (" + nSpr + " - bank " + nBank + ")";
 	}
+	
+	public static Point getElementSize(Element e) {
+		Point size = new Point(8, 4); // Default size
+		if (e != null && e.getCollision() != null) {
+			Point elemSize = e.getCollision().size;
+			if (elemSize != null) {
+				size = elemSize;
+			}
+		}
+		return size;
+	}
 }
