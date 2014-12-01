@@ -1119,6 +1119,10 @@ public abstract class Perso extends Element {
 		}
 	}
 	
+	public int getBottomZ() {
+		return EngineZildo.mapManagement.getPersoBottomZ(this);
+	}
+	
 	@Override
 	public int getFloorForSort() {
 		// When a character is on a transition (=ladder) he should be drawn OVER the tiles,
