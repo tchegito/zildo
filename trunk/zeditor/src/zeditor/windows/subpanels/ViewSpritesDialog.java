@@ -103,8 +103,10 @@ public class ViewSpritesDialog extends JDialog {
 		int nSpr = (Integer) spriteSpinner.getValue();
 		SpriteBank bank = EngineZildo.spriteManagement.getSpriteBank(nBank);
 		SpriteModel model = bank.getModels().get(nSpr);
-		Image img = new BufferedImage(model.getTaille_x(), model.getTaille_y(), BufferedImage.TYPE_INT_RGB);
+		Image img = new BufferedImage(model.getTaille_x()*2, model.getTaille_y()*2, BufferedImage.TYPE_INT_RGB);
 		Graphics2D gfx2d = (Graphics2D) img.getGraphics();
+		// Double size
+		gfx2d.scale(2, 2);
 		SpriteSet.drawSprite(0, 0, bank, nSpr, gfx2d);
 		ImageIcon icon = new ImageIcon(img);
 		spriteImgLabel.setIcon(icon);

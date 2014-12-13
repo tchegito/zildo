@@ -26,6 +26,9 @@ import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
 
 /**
+ * Object that takes a 2-dimensional space, cuts it on demand and return free space.
+ * Useful for storing sprites on a fixed size texture.
+ * 
  * @author Tchegito
  *
  */
