@@ -54,6 +54,7 @@ public class ViewSpritesDialog extends JDialog {
 	JComboBox<String> comboBank;
 	int[] numSpritesInBank;
 	JLabel spriteImgLabel;
+	JLabel sizeLabel;
 	JSpinner spriteSpinner;
 	
 	
@@ -79,6 +80,9 @@ public class ViewSpritesDialog extends JDialog {
 		spriteSpinner.addChangeListener(listener);
 		selPanel.addComp(new JLabel("Number:"), spriteSpinner);
 		add(selPanel, BorderLayout.NORTH);
+		
+		sizeLabel = new JLabel();
+		add(sizeLabel);
 		
 		JPanel visuPanel = new JPanel();
 		visuPanel.setPreferredSize(new Dimension(200, 200));
@@ -110,6 +114,8 @@ public class ViewSpritesDialog extends JDialog {
 		SpriteSet.drawSprite(0, 0, bank, nSpr, gfx2d);
 		ImageIcon icon = new ImageIcon(img);
 		spriteImgLabel.setIcon(icon);
+		// Display width/height
+		sizeLabel.setText(model.getTaille_x()+" x "+model.getTaille_y());
 	}
 	
 	class ViewSpritesListener implements ActionListener, ChangeListener {
