@@ -36,7 +36,7 @@ import zildo.server.EngineZildo;
  */
 public class PersoFlyingSerpent extends PersoShadowed {
 
-	float alpha;
+	float iota;
 	float swingAmplitude;
 	float swingBase;
 
@@ -57,8 +57,8 @@ public class PersoFlyingSerpent extends PersoShadowed {
 		super.move();
 		
 		// Swing the bird !
-		alpha += 0.07f;
-		z = swingBase + (float) (swingAmplitude * Math.cos(alpha));
+		iota += 0.07f;
+		z = swingBase + (float) (swingAmplitude * Math.cos(iota));
 		
 		// Shoot
 		if (count <= 0) {
