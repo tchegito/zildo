@@ -32,9 +32,10 @@ public class AndroidInputInfos {
 	public TouchPoints liveTouchedPoints;
 	public boolean backPressed;
 	public boolean menuPressed;
+	public Point movingCrossCenter;
 	PersoPlayer zildo;
 	Point zildoPos;
-
+	
 	public AndroidInputInfos() {
 		liveTouchedPoints = new TouchPoints();
 		backPressed = false;

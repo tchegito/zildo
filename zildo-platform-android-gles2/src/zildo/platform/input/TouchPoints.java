@@ -20,56 +20,50 @@
 
 package zildo.platform.input;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 
+import android.util.Log;
 import zildo.monde.util.Point;
 
 /**
+ * Simple ArrayList to store current points pressed by player.
  * @author Tchegito
  *
  */
 public class TouchPoints {
 
-	Map<Integer, Point> points;
+	List<Point> points;
 	
 	public TouchPoints() {
-		points = new ConcurrentHashMap<Integer, Point>();
+		points = new ArrayList<Point>();
 	}
 	
 	public Collection<Point> getAll() {
-		return points.values();
-	}
-	
-	public Point getFirst() {
-		return points.get(0);
-	}
-	
-	public Point getSecond() {
-		return points.get(1);
-	}
-
-	private void put(Integer i, Point p) {
-		if (p == null) {
-			points.remove(i);
-		} else {
-			points.put(i, p);
-		}
+		return points;
 	}
 	
 	public void set(int i, Point p) {
-		if (i >=0 && i <= 1) {
-			put(i, p);
+		if (p == null) {
+			points.remove(i);
+		} else if (i < points.size()){
+			points.set(i, p);
+		} else {
+			Log.d("TOUCH", "Unable to set "+i+"-nth point "+p+" into the list");
 		}
+	}
+
+	public void add(int i, Point p) {
+		points.add(i, p);
 	}
 
 	public void clear() {
 		points.clear();
 	}
 	
-	public void putAll(TouchPoints tp) {
-		points.putAll(tp.points);
+	public void addAll(TouchPoints tp) {
+		points.addAll(tp.points);
 	}
 	
 	public int size() {
