@@ -70,7 +70,6 @@ public class TouchListener implements OnTouchListener {
 	
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		int pointerCount = event.getPointerCount();
 		int index = event.getActionIndex();
 
 		// Deal with current point for menu
@@ -83,27 +82,37 @@ public class TouchListener implements OnTouchListener {
 			if (tempItem != null) {
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_POINTER_UP:
 					item = tempItem;
 					menu.activateItem(tempItem);
 					break;
 				case MotionEvent.ACTION_DOWN:
+				case MotionEvent.ACTION_POINTER_DOWN:
 				case MotionEvent.ACTION_MOVE:
 					menu.selectItem(tempItem);
 					break;
 				}
 			}
 		}
-		// Menu or player is in game ==> whatever
-		// Deal with all points
-		for (int p = 0; p < pointerCount; p++) {
-             float xx = event.getX(p); // * event.getXPrecision();
-             float yy = event.getY(p); // * event.getYPrecision();
-             interpretEvent(event.getActionMasked(), p, xx, yy);
-	    }
+        interpretEvent(event);
 		return true;
 	}
 	
-	private void interpretEvent(int actionMasked, int index, float xx, float yy) {
+	final static int INACTIVE_POINTER = -1;
+	int activePointerId;
+	
+	private void interpretEvent(MotionEvent event) {
+		int actionMasked = event.getActionMasked();
+		
+		int index;
+		if (actionMasked == MotionEvent.ACTION_MOVE && activePointerId != INACTIVE_POINTER) {
+			index = event.findPointerIndex(activePointerId);
+		} else {
+			index = event.getActionIndex();
+		}
+		float xx = event.getX(index);
+		float yy = event.getY(index);
+		int pointerId = event.getPointerId(index);
 		int x = (int) (xx * ratioX);
 		int y = (int) (yy * ratioY);
 
@@ -111,17 +120,33 @@ public class TouchListener implements OnTouchListener {
 		switch (actionMasked) {
 		case MotionEvent.ACTION_DOWN:
 		case MotionEvent.ACTION_POINTER_DOWN:
-			touchedPoints.set(index, p);
+			//Log.d("TOUCH", "down ("+actionMasked+") at index "+index+" id="+pointerId+" pos="+x+","+y);
+			touchedPoints.add(index, p);
+			activePointerId = event.getPointerId(index);
 			break;
 		case MotionEvent.ACTION_MOVE:
+			//Log.d("TOUCH", "move ("+actionMasked+") at index "+index+" id="+pointerId+" pos="+x+","+y);
 			touchedPoints.set(index, p);
 			break;
 		case MotionEvent.ACTION_UP:
+			activePointerId = INACTIVE_POINTER;
 		case MotionEvent.ACTION_POINTER_UP:
+	        if (pointerId == activePointerId) {
+	            // This was our active pointer going up. Choose a new
+	            // active pointer and adjust accordingly.
+	            final int newIndex = index == 0 ? 1 : 0;
+	            activePointerId = event.getPointerId(newIndex);
+	        }
+			//Log.d("TOUCH", "up ("+actionMasked+") at index "+index+" id="+pointerId+" pos="+x+","+y);
 			touchedPoints.set(index, null);
+
+			break;
+		case MotionEvent.ACTION_CANCEL:
+			activePointerId = INACTIVE_POINTER;
+			//Log.d("TOUCH", "ends up gesture");
 			break;
 		default:
-			System.out.println("undetected action "+actionMasked);
+			//Log.d("TOUCH", "undetected action "+actionMasked);
 		}
 	}
 	

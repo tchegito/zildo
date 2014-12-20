@@ -37,6 +37,8 @@ import zildo.monde.util.Zone;
  */
 public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 
+	Point repereCrossCenter = new Point(10 + (80/2), Zildo.viewPortY - (80/2));
+	
 	// Relations between given key and its location on screen, inside virtual pad
 	enum KeyLocation {
 		VP_UP(29, -10, 22, 39, true, KEY_UP),	// Real zone : 29, 11, 23, 19
@@ -94,12 +96,19 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 			direction = isDirection;
 		}
 		
+		/** Returns TRUE if given point is inside this key zone, considering leftHanded parameter.
+		 */
 		protected boolean isInto(Point p, boolean leftHanded) {
 			if (!leftHanded) {
 				return z.isInto(p.x, p.y);
 			} else {
 				return zLeftHanded.isInto(p.x, p.y);
 			}
+		}
+		
+		static boolean isInCrossArea(Point p) {
+			return p.x < (Zildo.viewPortX / 2) && 
+				   p.y > (Zildo.viewPortY / 3);
 		}
 	}
 	
@@ -174,26 +183,43 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 	
 	public void poll() {
 		// Clear all keys state
-		System.out.println("Reset keystates");
 		for (int i : platformKeys.values()) {
 			keyStates[i] = false;
 		}
 		
 		polledTouchedPoints.clear();
 		direction = null;
+		boolean atLeastOneInDpadArea = false;
+
 		if (infos.liveTouchedPoints.size() != 0) {
 			polledTouchedPoints.clear();
 			synchronized (infos.liveTouchedPoints) {
-				polledTouchedPoints.putAll(infos.liveTouchedPoints);
+				polledTouchedPoints.addAll(infos.liveTouchedPoints);
 			}
 
 			// Update all keys state
+			
 			boolean leftHanded = ClientEngineZildo.client.isLeftHanded();
 			for (Point p : polledTouchedPoints.getAll()) {
+				// 1) fix moving cross center, on first touch
+				Point translated = new Point(p);
+				if (KeyLocation.isInCrossArea(p)) {
+					atLeastOneInDpadArea = true;
+					if (infos.movingCrossCenter == null) {
+						infos.movingCrossCenter = p;
+						ClientEngineZildo.client.setCrossCenter(p);
+						//Log.d("TOUCH", "Place cross center at "+p);
+					}
+					Point shift = new Point(infos.movingCrossCenter)
+						.translate(-repereCrossCenter.x, -repereCrossCenter.y);
+					translated.add(-shift.x, -shift.y);
+					//Log.d("TOUCH", "apply shift of "+shift+" which means p="+translated);
+				}
+				
 				for (KeyLocation kLoc : KeyLocation.values()) {
-					if (kLoc.isInto(p, leftHanded)) {
+					if (kLoc.isInto(translated, leftHanded)) {
 						if (kLoc == KeyLocation.VP_DPAD) {	// Special : d-pad zone
-							direction = DPadMovement.compute(p.x - 50, p.y - 200);
+							direction = DPadMovement.compute(translated.x - 50, translated.y - 200);
 						} else {
 							keyStates[kLoc.keyCode] = true;
 							if (kLoc.keyCode2 != -1) {
@@ -204,6 +230,11 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 				}
 			}
 			
+		}
+		if (!atLeastOneInDpadArea && infos.movingCrossCenter != null) {
+			//Log.d("TOUCH", "Remove cross center");
+			infos.movingCrossCenter = null;
+			ClientEngineZildo.client.setCrossCenter(null);
 		}
 	}
 	

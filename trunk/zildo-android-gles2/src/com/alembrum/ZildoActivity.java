@@ -38,6 +38,9 @@ public class ZildoActivity extends Activity {
 	final static int RESET_SPLASHSCREEN = 99;
 	final static int PLAYERNAME_DIALOG = 98;
 
+	final static String PARAM_LEFTHANDE = "leftHanded";
+	final static String PARAM_MOVINGCROSS = "movingCross";
+	
 	static class SplashHandler extends Handler {
 			OpenGLES20SurfaceView view;
 			ZildoDialogs zds;
@@ -117,6 +120,7 @@ public class ZildoActivity extends Activity {
         Zildo.screenY = metrics.heightPixels;
         
         client.setLeftHanded(getPreferences(MODE_PRIVATE).getBoolean("leftHanded", false));
+        client.setMovingCross(getPreferences(MODE_PRIVATE).getBoolean("PARAM_MOVINGCROSS", true));
         
         if (renderer == null) {
         	renderer = new OpenGLRenderer(client, touchListener);
