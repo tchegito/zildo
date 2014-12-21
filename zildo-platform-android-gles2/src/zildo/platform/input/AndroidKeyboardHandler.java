@@ -200,10 +200,11 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 			// Update all keys state
 			
 			boolean leftHanded = ClientEngineZildo.client.isLeftHanded();
+			boolean movingCross = ClientEngineZildo.client.isMovingCross();
 			for (Point p : polledTouchedPoints.getAll()) {
 				// 1) fix moving cross center, on first touch
 				Point translated = new Point(p);
-				if (KeyLocation.isInCrossArea(p)) {
+				if (movingCross && KeyLocation.isInCrossArea(p)) {
 					atLeastOneInDpadArea = true;
 					if (infos.movingCrossCenter == null) {
 						infos.movingCrossCenter = p;

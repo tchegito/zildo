@@ -39,7 +39,8 @@ public class OptionsMenu extends Menu {
 	boolean music = client.isMusic();
 	boolean fullScreen = Zildo.fullScreen;
 	boolean leftHanded = client.isLeftHanded();
-
+	boolean movingCross = client.isMovingCross();
+	
 	public OptionsMenu(final Menu p_previous) {
 
 		items = new ArrayList<ItemMenu>();
@@ -80,6 +81,16 @@ public class OptionsMenu extends Menu {
 					client.handleMenu(currentMenu);
     			}
     		});
+    		items.add(new ItemMenu(getMovingCrossString()) {
+    			@Override
+    			public void run() {
+    				movingCross = !movingCross;
+    				setText(getMovingCrossString());
+    				client.setMovingCross(movingCross);
+					client.handleMenu(currentMenu);
+    			}
+    		});
+    		
     	}
 		
 		items.add(new ItemMenu("global.back") {
@@ -102,5 +113,9 @@ public class OptionsMenu extends Menu {
 	
 	String getLeftHandedString() {
 		return UIText.getMenuText("m9.leftHanded", leftHanded ? "On" : "Off");
+	}
+	
+	String getMovingCrossString() {
+		return UIText.getMenuText(movingCross ? "m9.movingCross.mobile" : "m9.movingCross.locked");
 	}
 }
