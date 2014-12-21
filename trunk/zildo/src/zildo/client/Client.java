@@ -46,6 +46,7 @@ import zildo.fwk.ui.DefaultMenuListener;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.MenuListener;
+import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
 import zildo.server.EngineZildo;
 import zildo.server.state.PlayerState;
@@ -75,7 +76,10 @@ public class Client {
 	NetClient netClient;
 	boolean multiplayer;
 	boolean music = Zildo.soundEnabled;
+	// touchpad parameters
 	boolean leftHanded;	// For touch screen
+	boolean movingCross; // For touch screen
+	Point crossCenter;	// When player first touch the right zone
 	
 	ItemMenu action = null;
 
@@ -425,6 +429,22 @@ public class Client {
 		return leftHanded;
 	}
 	
+	public boolean isMovingCross() {
+		return movingCross;
+	}
+
+	public void setMovingCross(boolean movingCross) {
+		this.movingCross = movingCross;
+	}
+	
+	public Point getCrossCenter() {
+		return crossCenter;
+	}
+
+	public void setCrossCenter(Point crossCenter) {
+		this.crossCenter = crossCenter;
+	}
+
 	public void setOpenGLGestion(OpenGLGestion glGestion) {
 		this.glGestion = glGestion;
 	}

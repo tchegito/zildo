@@ -1,7 +1,6 @@
 package com.alembrum;
 
 import java.util.Locale;
-
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.PlatformDependentPlugin;
@@ -11,6 +10,7 @@ import zildo.fwk.ZUtils;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.platform.opengl.AndroidSoundEngine;
 import zildo.resource.Constantes;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -25,6 +25,7 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
+@SuppressLint("ClickableViewAccessibility")
 public class ZildoActivity extends Activity {
 	
 	static TouchListener touchListener = null;
@@ -38,7 +39,7 @@ public class ZildoActivity extends Activity {
 	final static int RESET_SPLASHSCREEN = 99;
 	final static int PLAYERNAME_DIALOG = 98;
 
-	final static String PARAM_LEFTHANDE = "leftHanded";
+	final static String PARAM_LEFTHANDED = "leftHanded";
 	final static String PARAM_MOVINGCROSS = "movingCross";
 	
 	static class SplashHandler extends Handler {
@@ -119,8 +120,8 @@ public class ZildoActivity extends Activity {
         Zildo.screenX = metrics.widthPixels;
         Zildo.screenY = metrics.heightPixels;
         
-        client.setLeftHanded(getPreferences(MODE_PRIVATE).getBoolean("leftHanded", false));
-        client.setMovingCross(getPreferences(MODE_PRIVATE).getBoolean("PARAM_MOVINGCROSS", true));
+        client.setLeftHanded(getPreferences(MODE_PRIVATE).getBoolean(PARAM_LEFTHANDED, false));
+        client.setMovingCross(getPreferences(MODE_PRIVATE).getBoolean(PARAM_MOVINGCROSS, true));
         
         if (renderer == null) {
         	renderer = new OpenGLRenderer(client, touchListener);
@@ -248,7 +249,8 @@ public class ZildoActivity extends Activity {
             }
             
             // End of the application : save preferences
-            getPreferences(MODE_PRIVATE).edit().putBoolean("leftHanded", client.isLeftHanded()).commit();
+            getPreferences(MODE_PRIVATE).edit().putBoolean(PARAM_LEFTHANDED, client.isLeftHanded()).commit();
+            getPreferences(MODE_PRIVATE).edit().putBoolean(PARAM_MOVINGCROSS, client.isMovingCross()).commit();
             // And quit
             finish();
             android.os.Process.killProcess(android.os.Process.myPid());
