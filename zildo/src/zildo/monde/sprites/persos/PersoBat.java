@@ -29,7 +29,7 @@ public class PersoBat extends PersoShadowed {
 	
 	@Override
 	public void move() {
-		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		if (!alerte) {
 			// Detects Zildo
 			if (zildo != null) {

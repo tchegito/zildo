@@ -44,7 +44,7 @@ import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
-import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.ia.mover.PhysicMoveOrder;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
@@ -260,8 +260,13 @@ public class MapManagement {
 				return !ghost && (!quelElement.isZildo() || EngineZildo.game.multiPlayer);
 			}
 		}
-		Point size = Element.getElementSize(quelElement);
-		
+		Point size = new Point(8, 4); // Default size
+		if (quelElement != null && quelElement.getCollision() != null) {
+			Point elemSize = quelElement.getCollision().size;
+			if (elemSize != null) {
+				size = elemSize;
+			}
+		}
 		if (quelElement != null && quelElement.flying
 				&& quelElement.getAngle() != null) {
 			if (EntityType.PERSO != quelElement.getEntityType()) {
@@ -294,7 +299,7 @@ public class MapManagement {
 				if (tile == null) {
 					return false;
 				}
-				if (tileCollision.collide(modx, mody, tile, (int) quelElement.z)) {
+				if (tileCollision.collide(modx, mody, tile)) {
 					return true;
 				}
 				return EngineZildo.spriteManagement.collideSprite(tx, ty,
@@ -310,7 +315,7 @@ public class MapManagement {
 					return false;
 				}
 				on_map = tile.getValue();
-				if (tileCollision.collide(modx, mody, tile, (int) quelElement.z)) {
+				if (tileCollision.collide(modx, mody, tile)) {
 					IntSet waterBank = new IntSet(154, 155, 156, 157, 158, 159, 188, 189, 190, 191, 192, 193);
 					if (waterBank.contains(on_map - 256*2)) {
 						// Water bank => is it above ?
@@ -375,25 +380,6 @@ public class MapManagement {
 		new Point(-1, 1), new Point(0, 1), new Point(1, 1)
 	};
 
-	/** Return character's z under his feet, depending on z
-	 * in each corner of his bounding box. **/
-	public int getPersoBottomZ(Perso p) {
-		// Get bottom z at four point of our hero
-		Point size = Element.getElementSize(p);
-		int cx = (int) (p.x);
-		int cy = (int) (p.y);
-		int bottomZ = 0;
-		if (currentMap != null) {
-			for (Point pt : tabPointRef) {
-				int mx = (cx + (size.x / 2) * pt.x);
-				int my = (cy + (size.y / 2) * pt.y);
-				Tile tile = currentMap.readmap(mx/16, my/16, false);
-				bottomZ = Math.max(bottomZ, tileCollision.getBottomZ(tile, false));				
-			}
-		}
-		return bottomZ;
-	}
-	
 	public boolean collideTile(int tx, int ty, boolean ghost, Point size, Element quelElement) {
 		int mx, my; // Position map
 		int on_map;
@@ -403,10 +389,8 @@ public class MapManagement {
 		Perso perso = null;
 		boolean allowOverBottomLess = false;	// Allow people to go on bottom less case ? (lava, void)
 		boolean foreground = false;
-		int z = 0;
 		if (quelElement != null) {
 			floor = quelElement.getFloor();
-			z = (int) quelElement.z;
 			// Check on back or fore ground, depending on the character we're checking
 			foreground = quelElement.isForeground();
 			if (quelElement.getEntityType() == EntityType.PERSO) {
@@ -455,7 +439,7 @@ public class MapManagement {
 			mody = my % 16;
 
 			// Sum each layer of collision : Back, then Back2 (except for ladder !)
-			if (tileBack2 != null && tileCollision.collide(modx, mody, tileBack2, z)) {
+			if (tileBack2 != null && tileCollision.collide(modx, mody, tileBack2)) {
 				return true;
 			} else {
 				int back2val = tileBack2 != null ? tileBack2.getValue() : 0;
@@ -463,7 +447,7 @@ public class MapManagement {
 				// If ladder or bridge, we allow not to check collision on back tile
 				boolean isLadder = back2val == 206 || back2val == 207;
 				isLadder |= back2val == 207+256*5 || back2val == 208+256*5 || back2val == 209+256*5;
-				if (!isLadder && tileCollision.collide(modx, mody, tile, z)) {
+				if (!isLadder && tileCollision.collide(modx, mody, tile)) {
 					return true;
 				}
 				// Special case : impassable for NPC, but right for hero
@@ -557,7 +541,7 @@ public class MapManagement {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// isChangingMap
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public boolean isChangingMap(PersoPlayer p_zildo) {
+	public boolean isChangingMap(PersoZildo p_zildo) {
 		// Get zildo's position
 		float x = p_zildo.getX();
 		float y = p_zildo.getY();
@@ -607,7 +591,7 @@ public class MapManagement {
 			// 1) turn him on the right angle
 			// 2) load new map
 			// 3) place zildo at the right location
-			PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 
 			// 1/3 : angle
 			mapScrollAngle = p_changingMapPoint.getComingAngle().opposite();
@@ -747,7 +731,7 @@ public class MapManagement {
 	 * <li>Init Zildo's followers location and behavior</li></ul>
 	 */
 	public void postLoadMap(boolean p_scroll) {
-		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 
 		// Someone following Zildo ?
 		Perso follower = EngineZildo.persoManagement.getFollower(zildo);
@@ -917,7 +901,7 @@ public class MapManagement {
 	 * Respawn Zildo to his starting location in the current area.
 	 */
 	public void respawn(boolean relocate, int damage) {
-		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		if (relocate) {
 			zildo.setX(startLocation.x);
 			zildo.setY(startLocation.y);

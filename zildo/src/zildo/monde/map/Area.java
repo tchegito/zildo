@@ -59,7 +59,8 @@ import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
-import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.PersoNJ;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
@@ -681,7 +682,7 @@ public class Area implements EasySerializable {
 			} else {
 				boolean multiPlayer = EngineZildo.game.multiPlayer;
 				if (spawnGoodies) {
-					PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+					PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 	
 					if ((multiPlayer || zildo.hasItem(ItemKind.BOW) && Hasard.lanceDes(Hasard.hazardBushes_Arrow))) {
 						sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 1, 0, zildo, null);
@@ -805,21 +806,10 @@ public class Area implements EasySerializable {
 		List<Perso> persos = filterExportablePersos(EngineZildo.persoManagement.tab_perso);
 
 		int n_pe = listChainingPoint.size();
+		int n_sprites = entities.size();
 		int n_persos = persos.size();
 		int nbFloors = highestFloor - lowestFloor + 1;
 		
-		// 0) Exclude "built from perso" sprites
-		for (Iterator<SpriteEntity> it=entities.iterator(); it.hasNext();) {
-			SpriteEntity entity = it.next();
-			if (entity.getEntityType().isElement()) {
-				Element elem = (Element) entity;
-				if (elem.getLinkedPerso() != null || elem.getDesc() instanceof PersoDescription) {
-					it.remove();
-				}
-			}
-		}
-		int n_sprites = entities.size();
-
 		// 1) Header
 		p_file.put((byte) atmosphere.ordinal());
 		p_file.put((byte) dim_x);
@@ -1083,6 +1073,7 @@ public class Area implements EasySerializable {
 		// Les persos
 		if (n_persos != 0) {
 			for (int i = 0; i < n_persos; i++) {
+				Perso perso;
 				int x = p_buffer.readInt();
 				int y = p_buffer.readInt();
 				int z = p_buffer.readInt();
@@ -1119,8 +1110,10 @@ public class Area implements EasySerializable {
 				}
 
 				// And spawn it if necessary
-				if (p_spawn) {
-					Perso perso = EngineZildo.persoManagement.createPerso((PersoDescription) desc, x, y, z, name,
+				if (!p_spawn) {
+					perso = new PersoNJ();
+				} else {
+					perso = EngineZildo.persoManagement.createPerso((PersoDescription) desc, x, y, z, name,
 							angle);
 
 					perso.setInfo(PersoInfo.values()[info]);
@@ -1147,8 +1140,8 @@ public class Area implements EasySerializable {
 					perso.initPersoFX();
 
 					spriteManagement.spawnPerso(perso);
-					perso.setFloor(floor);
 				}
+				perso.setFloor(floor);
 			}
 		}
 

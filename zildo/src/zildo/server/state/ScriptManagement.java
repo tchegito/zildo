@@ -49,7 +49,7 @@ import zildo.monde.quest.StringReplacement;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 import zildo.server.Server;
@@ -424,7 +424,7 @@ public class ScriptManagement {
 	 * @param p_zildo
 	 * @param p_kind
 	 */
-	public void automaticBehavior(PersoPlayer p_zildo, ItemKind p_kind, ElementDescription p_desc) {
+	public void automaticBehavior(PersoZildo p_zildo, ItemKind p_kind, ElementDescription p_desc) {
 		if (isScripting()) {
 			return;	// Go away, because a script has already taken the lead
 		}
@@ -573,7 +573,7 @@ public class ScriptManagement {
 	 * @return boolean
 	 */
 	public boolean isBlueDropDisplayable() {
-		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		return (zildo != null && zildo.hasItem(ItemKind.NECKLACE));
 	}
 	
@@ -594,7 +594,7 @@ public class ScriptManagement {
 	 * @return boolean
 	 */
 	public boolean isAllowedToSave() {
-		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		boolean onPlatform = zildo != null && zildo.isOnPlatform();
 		return !isScripting() && !onPlatform;
 	}

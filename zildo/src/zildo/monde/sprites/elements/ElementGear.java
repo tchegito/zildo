@@ -26,7 +26,7 @@ import zildo.monde.map.ChainingPoint;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
@@ -54,7 +54,7 @@ public class ElementGear extends Element {
 	 *            Character pushing this gear. (useful for doors, we need to
 	 *            know if character has keys to do so)
 	 */
-	public void push(PersoPlayer p_perso) {
+	public void push(PersoZildo p_perso) {
 		if (!acting) {
 			GearDescription gearDesc = (GearDescription) desc;
 			switch (gearDesc) {

@@ -123,16 +123,6 @@ public class Rectangle {
 	}
 
 	/**
-	 * Check if the two rectangles are colliding.
-	 * 
-	 * @param p_other
-	 * @return boolean
-	 */
-	public boolean isStrictCrossing(Rectangle p_other) {
-		return p_other.coordinates[0].x < coordinates[3].x && coordinates[0].x < p_other.coordinates[3].x
-				&& p_other.coordinates[0].y < coordinates[3].y && coordinates[0].y < p_other.coordinates[3].y;
-	}
-	/**
 	 * Check if the given circle is colliding with our rectangle.
 	 * 
 	 * @param p_center

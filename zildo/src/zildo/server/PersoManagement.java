@@ -46,7 +46,7 @@ import zildo.monde.sprites.persos.PersoShadowed;
 import zildo.monde.sprites.persos.PersoSpider;
 import zildo.monde.sprites.persos.PersoSquirrel;
 import zildo.monde.sprites.persos.PersoVolant;
-import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.boss.PersoDragon;
 import zildo.monde.sprites.persos.ia.PathFinderBee;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -74,11 +74,11 @@ public class PersoManagement {
 		persoColli = EngineZildo.spriteManagement.persoColli;
 	}
 	
-	public PersoPlayer getZildo()
+	public PersoZildo getZildo()
 	{
 		for (Perso p : tab_perso) {
 			if (p.isZildo()) {
-				return (PersoPlayer) p;
+				return (PersoZildo) p;
 			}
 		}
 		return null;
@@ -231,7 +231,7 @@ public class PersoManagement {
 				perso = new PersoFox();
 				break;
 			case ZILDO:
-				perso = new PersoPlayer(x, y, null);
+				perso = new PersoZildo(x, y, null);
 				break;
 			case STONE_SPIDER:
 				perso = new PersoSpider(x, y);
@@ -249,11 +249,10 @@ public class PersoManagement {
 				perso = new PersoShadowed();
 				break;
 			case DRAGON:
+				y+=10;
 				perso = new PersoDragon(x, y);
 				break;
 			default:
-				//throw new RuntimeException("Desc should be defined for any character !");
-				// This is allowed for some special characters who doesn't need any special behavior, like Bramble
 				perso = new PersoNJ();
 				break;
 		}

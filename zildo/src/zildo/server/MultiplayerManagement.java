@@ -27,7 +27,7 @@ import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.elements.ElementQuadDamage;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 import zildo.server.state.PlayerState;
@@ -88,11 +88,11 @@ public class MultiplayerManagement {
      * @param p_zildo
      * @param p_shooter
      */
-    public void kill(PersoPlayer p_zildo, Perso p_shooter) {
+    public void kill(PersoZildo p_zildo, Perso p_shooter) {
     	ClientState clKilled=Server.getClientFromZildo(p_zildo);
     	ClientState clShooter=null;
         if (p_shooter != null && p_shooter.isZildo()) {
-        	clShooter = Server.getClientFromZildo((PersoPlayer) p_shooter);
+        	clShooter = Server.getClientFromZildo((PersoZildo) p_shooter);
         }
     	displayDeathMessage(clKilled, clShooter);
     	// Update scores
@@ -147,7 +147,7 @@ public class MultiplayerManagement {
      * Initialize Zildo inventory and so on, with start values.
      * @param p_zildo
      */
-    public static void setUpZildo(PersoPlayer p_zildo) {
+    public static void setUpZildo(PersoZildo p_zildo) {
 		//p_zildo.addInventory(new Item(ItemKind.BOW));
 		//p_zildo.addInventory(new Item(ItemKind.BOOMERANG));
 		//p_zildo.addInventory(new Item(ItemKind.BOMB));

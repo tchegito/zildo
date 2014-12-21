@@ -44,7 +44,7 @@ import zildo.monde.map.Case;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
-import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
@@ -349,7 +349,7 @@ public class ClientEngineZildo {
 	 * Call Circle filter to focus on Zildo.
 	 */
 	private void circleOnZildo() {
-		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		Point zildoPos=zildo.getCenteredScreenPosition();
 		Zildo.pdPlugin.getFilter(CircleFilter.class).setCenter(zildoPos.x, zildoPos.y);		
 	}

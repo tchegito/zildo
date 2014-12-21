@@ -34,7 +34,7 @@ import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
-import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -49,7 +49,7 @@ import zildo.server.state.GamePhase;
 
 public class PlayerManagement {
 
-	private PersoPlayer heros;
+	private PersoZildo heros;
 	private KeyboardInstant instant;
 	private KeyboardState keysState;
 	private DialogState dialogState;
@@ -166,12 +166,10 @@ public class PlayerManagement {
 				keyReleaseAttack();
 			}
 			
-			if (heros.who.canInventory) {	// Does controlled character have an inventory ? 
-				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
-					keyPressInventory();
-				} else {
-					keyReleaseInventory();
-				}
+			if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
+				keyPressInventory();
+			} else {
+				keyReleaseInventory();
 			}
 		}
 	}
@@ -528,17 +526,11 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyPressAttack() {
 		if (!keysState.key_attackPressed) {
-			if (heros.who.canFreeJump) {
-				// Controlled character can jump with Y KEY
-				heros.jump();
-			} else {
-				// Y KEY is used to attack (use selected item from inventory)
-				if (gamePhase == GamePhase.DIALOG || gamePhase == GamePhase.SCRIPT) {
-					EngineZildo.dialogManagement.goOnDialog(client);
-				} else if (gamePhase.moves && heros.getEn_bras() == null && !client.dialogState.dialoguing && !heros.isInventoring()) {
-					// Set Zildo in attack stance
-					heros.attack();
-				}
+			if (gamePhase == GamePhase.DIALOG || gamePhase == GamePhase.SCRIPT) {
+				EngineZildo.dialogManagement.goOnDialog(client);
+			} else if (gamePhase.moves && heros.getEn_bras() == null && !client.dialogState.dialoguing && !heros.isInventoring()) {
+				// Set Zildo in attack stance
+				heros.attack();
 			}
 		}
 		keysState.key_attackPressed=true;

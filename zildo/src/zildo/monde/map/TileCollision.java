@@ -44,30 +44,9 @@ public class TileCollision {
     public static TileCollision getInstance() {
     	return instance;
     }
-    /*
-    public int getBottomZ(int p_posX, int p_posY, Tile p_tile) {
-    	return collide(p_posX, p_posY, p_tile)
-    }
-    */
-    public int getBottomZ(Tile p_tile, boolean blocked) {
-    	int z = blocked ? 16 : 0;
-    	if (p_tile != null && p_tile.bank == 0) {
-    		switch (p_tile.index) {
-    		case 159: case 160: case 161: case 162:
-    			z = 5;
-    		}
-    	}
-    	return z;
-    }
     
-    public boolean collide(int p_posX, int p_posY, Tile p_tile, int z) {
-    	boolean result =  collide(p_posX, p_posY, p_tile.getValue(), p_tile.reverse, p_tile.rotation);
-    	
-    	// Check altitude depending on tiles
-    	if (result) {
-    		result = z < getBottomZ(p_tile, true);
-    	}
-    	return result;
+    public boolean collide(int p_posX, int p_posY, Tile p_tile) {
+    	return collide(p_posX, p_posY, p_tile.getValue(), p_tile.reverse, p_tile.rotation);
     }
     
     public boolean collide(int p_posX, int p_posY, int p_nTile, Reverse p_reverse, Rotation p_rotate) {

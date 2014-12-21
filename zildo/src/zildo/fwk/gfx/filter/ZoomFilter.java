@@ -22,7 +22,7 @@ package zildo.fwk.gfx.filter;
 
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
-import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
@@ -38,7 +38,7 @@ public abstract class ZoomFilter extends FadeScreenFilter {
 
 	protected void focusOnZildo() {
 		// Focus camera on Zildo, and zoom according to the 'fadeLevel'
-		PersoPlayer zildo=EngineZildo.persoManagement.getZildo();
+		PersoZildo zildo=EngineZildo.persoManagement.getZildo();
 		Point zildoPos=zildo.getCenteredScreenPosition();
 		ClientEngineZildo.openGLGestion.setZoomPosition(zildoPos);
 		float z=2.0f * (float) Math.sin(getFadeLevel() * (0.25f*Math.PI / 256.0f));

@@ -35,7 +35,7 @@ import zildo.monde.map.Tile.TileNature;
 import zildo.monde.quest.QuestEvent;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.SpriteDescription;
-import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
@@ -247,7 +247,7 @@ public class TriggerElement extends AnyElement {
 		case QUESTDONE:
 			return questSwitch.evaluate().equals( ZSCondition.TRUE );
 		case INVENTORY:
-			PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 			return zildo != null && zildo.hasItem(ItemKind.fromString(name)) == !not;
 		case LOCATION:
 			Area map = EngineZildo.mapManagement.getCurrentMap();
@@ -255,7 +255,7 @@ public class TriggerElement extends AnyElement {
 				// Mover ?
 				boolean ok = true;
 				if (mover != null) {
-					PersoPlayer hero = EngineZildo.persoManagement.getZildo();
+					PersoZildo hero = EngineZildo.persoManagement.getZildo();
 					ok = false;
 					for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
 						if (entity.getMover().isOnIt(hero)) {

@@ -43,10 +43,6 @@ public class Vector2f {
     	set(p.x, p.y);
     }
     
-    public Vector2f(Pointf a, Pointf b) {
-    	set(b.x - a.x, b.y - a.y);
-    }
-    
     public void set(float p_x, float p_y) {
         x = p_x;
         y = p_y;

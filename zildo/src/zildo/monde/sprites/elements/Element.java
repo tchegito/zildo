@@ -196,7 +196,6 @@ public class Element extends SpriteEntity {
 			// Volatile elements (need to be refactored, with a real attribute on Descriptions)
 			switch ((ElementDescription) desc) {
 				case REDSPHERE1:
-				case FIRE_BALL:
 				case BROWNSPHERE1:
 				case SEWER_SMOKE1:
 				case SEWER_SMOKE2:
@@ -945,16 +944,5 @@ public class Element extends SpriteEntity {
 			return s + " (" + ElementDescription.fromInt(nSpr) + ")";
 		}
 		return s + " (" + nSpr + " - bank " + nBank + ")";
-	}
-	
-	public static Point getElementSize(Element e) {
-		Point size = new Point(8, 4); // Default size
-		if (e != null && e.getCollision() != null) {
-			Point elemSize = e.getCollision().size;
-			if (elemSize != null) {
-				size = elemSize;
-			}
-		}
-		return size;
 	}
 }

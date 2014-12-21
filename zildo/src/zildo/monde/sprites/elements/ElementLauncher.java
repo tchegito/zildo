@@ -21,7 +21,7 @@
 package zildo.monde.sprites.elements;
 
 import zildo.monde.sprites.desc.SpriteAnimation;
-import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.server.EngineZildo;
 
 /**
@@ -47,7 +47,7 @@ public class ElementLauncher extends Element {
 			prepareFire();
 		} else if (count == 0) {
 			// Look for Zildo
-			PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+			PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 			if (zildo != null) {
 				if (zildo.x > x && zildo.x <= x+RANGEX &&
 					zildo.y >= (y-RANGEY / 2) && zildo.y <= (y+RANGEY)) {

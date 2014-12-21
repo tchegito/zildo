@@ -215,7 +215,7 @@ public class PersoNJ extends Perso {
 		if (pv <=0) {
 			return;
 		}
-		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		float sx = getX(), sy = getY();
 
 		if (isAlerte() && MouvementPerso.VOLESPECTRE != quel_deplacement
@@ -821,7 +821,7 @@ public class PersoNJ extends Perso {
 		if (!quel_deplacement.isAlertable()) {
 			return false;
 		}
-		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+		PersoZildo zildo = EngineZildo.persoManagement.getZildo();
 		if (zildo == null || !zildo.isAlive()) {	// Maybe he's dead ?
 			return false;
 		}

@@ -70,7 +70,7 @@ import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
-import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.PersoZildo;
 import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.monde.sprites.persos.ia.mover.BasicMoveOrder;
 import zildo.monde.sprites.persos.ia.mover.PhysicMoveOrder;
@@ -121,7 +121,7 @@ public class ActionExecutor {
             waitForEndAction(p_action);
             achieved = p_action.done;
         } else {
-        	PersoPlayer zildo;
+        	PersoZildo zildo;
         	Perso perso;
         	if (context != null && "self".equals(p_action.who)) {
         		// Reserved word : perso himself, in case of a contextual script
