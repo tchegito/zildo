@@ -383,11 +383,13 @@ public class MapManagement {
 		int cx = (int) (p.x);
 		int cy = (int) (p.y);
 		int bottomZ = 0;
-		for (Point pt : tabPointRef) {
-			int mx = (cx + (size.x / 2) * pt.x);
-			int my = (cy + (size.y / 2) * pt.y);
-			Tile tile = currentMap.readmap(mx/16, my/16, false);
-			bottomZ = Math.max(bottomZ, tileCollision.getBottomZ(tile, false));				
+		if (currentMap != null) {
+			for (Point pt : tabPointRef) {
+				int mx = (cx + (size.x / 2) * pt.x);
+				int my = (cy + (size.y / 2) * pt.y);
+				Tile tile = currentMap.readmap(mx/16, my/16, false);
+				bottomZ = Math.max(bottomZ, tileCollision.getBottomZ(tile, false));				
+			}
 		}
 		return bottomZ;
 	}
