@@ -202,29 +202,31 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 			boolean leftHanded = ClientEngineZildo.client.isLeftHanded();
 			boolean movingCross = ClientEngineZildo.client.isMovingCross();
 			for (Point p : polledTouchedPoints.getAll()) {
-				// 1) fix moving cross center, on first touch
-				Point translated = new Point(p);
-				if (movingCross && KeyLocation.isInCrossArea(p)) {
-					atLeastOneInDpadArea = true;
-					if (infos.movingCrossCenter == null) {
-						infos.movingCrossCenter = p;
-						ClientEngineZildo.client.setCrossCenter(p);
-						//Log.d("TOUCH", "Place cross center at "+p);
+				if (p != null) {	// Don't know why, but it can be NULL
+					// 1) fix moving cross center, on first touch
+					Point translated = new Point(p);
+					if (movingCross && KeyLocation.isInCrossArea(p)) {
+						atLeastOneInDpadArea = true;
+						if (infos.movingCrossCenter == null) {
+							infos.movingCrossCenter = p;
+							ClientEngineZildo.client.setCrossCenter(p);
+							//Log.d("TOUCH", "Place cross center at "+p);
+						}
+						Point shift = new Point(infos.movingCrossCenter)
+							.translate(-repereCrossCenter.x, -repereCrossCenter.y);
+						translated.add(-shift.x, -shift.y);
+						//Log.d("TOUCH", "apply shift of "+shift+" which means p="+translated);
 					}
-					Point shift = new Point(infos.movingCrossCenter)
-						.translate(-repereCrossCenter.x, -repereCrossCenter.y);
-					translated.add(-shift.x, -shift.y);
-					//Log.d("TOUCH", "apply shift of "+shift+" which means p="+translated);
-				}
-				
-				for (KeyLocation kLoc : KeyLocation.values()) {
-					if (kLoc.isInto(translated, leftHanded)) {
-						if (kLoc == KeyLocation.VP_DPAD) {	// Special : d-pad zone
-							direction = DPadMovement.compute(translated.x - 50, translated.y - 200);
-						} else {
-							keyStates[kLoc.keyCode] = true;
-							if (kLoc.keyCode2 != -1) {
-								keyStates[kLoc.keyCode2] = true;
+					
+					for (KeyLocation kLoc : KeyLocation.values()) {
+						if (kLoc.isInto(translated, leftHanded)) {
+							if (kLoc == KeyLocation.VP_DPAD) {	// Special : d-pad zone
+								direction = DPadMovement.compute(translated.x - 50, translated.y - 200);
+							} else {
+								keyStates[kLoc.keyCode] = true;
+								if (kLoc.keyCode2 != -1) {
+									keyStates[kLoc.keyCode2] = true;
+								}
 							}
 						}
 					}
