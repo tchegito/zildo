@@ -18,7 +18,7 @@
  *
  */
 
-package zeditor.windows;
+package zeditor.windows.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;

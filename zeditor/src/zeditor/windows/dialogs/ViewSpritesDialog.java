@@ -17,7 +17,7 @@
  *
  */
 
-package zeditor.windows.subpanels;
+package zeditor.windows.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

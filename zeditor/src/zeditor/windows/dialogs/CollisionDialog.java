@@ -18,7 +18,7 @@
  *
  */
 
-package zeditor.core.tiles;
+package zeditor.windows.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
@@ -36,6 +36,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import zeditor.core.tiles.CollisionDrawer;
+import zeditor.core.tiles.TileSelection;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
