@@ -1483,4 +1483,53 @@ public class Area implements EasySerializable {
 		}
 		return res;
 	}
+
+	/** Reinitialize map tiles **/
+	public void clearTiles() {
+		mapdata = new Case[Constantes.TILEENGINE_FLOOR][Constantes.TILEENGINE_HEIGHT][Constantes.TILEENGINE_HEIGHT];
+		int empty = atmosphere.getEmptyTile();
+		for (int i = 0; i < dim_x * dim_y; i++) {
+			int x = i % dim_x;
+			int y = i / dim_x;
+			writemap(x, y, empty);
+		}
+	}
+
+	/** Shift everything (tiles/chaining points/sprites) with given vector **/
+	public void shift(int shiftX, int shiftY) {
+		// 0) Tiles
+		// Clone tiles in an array that we'll release when this method will be over
+		Case[][][] mapdataCloned = mapdata.clone();
+		// 1) Change dimension
+		int movedX = dim_x;
+		int movedY = dim_y;
+		dim_x = Math.min(64, dim_x + shiftX);
+		dim_y = Math.min(64, dim_y + shiftY);
+		clearTiles();
+		for (int f=lowestFloor;f<=highestFloor;f++) {
+			for (int y=0;y<movedY;y++) {
+				int yy = y+shiftY;
+				if (yy >= 0 && yy < dim_y) {
+					for (int x=0;x<movedX;x++) {
+						int xx = x+shiftX;
+						if (xx >=0 && xx < dim_x) {
+							Case c = mapdataCloned[f][y][x];
+							if (c != null) {
+								mapdata[f][yy][xx] = c;
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+		// 2) Chaining points
+		for (ChainingPoint chp : listChainingPoint) {
+			chp.setPx((short) (chp.getPx() + shiftX*2));
+			chp.setPy((short) (chp.getPy() + shiftY*2));
+		}
+		// 3) Sprites
+		EngineZildo.spriteManagement.shiftAllEntities(shiftX*16, shiftY*16);
+	}
 }
