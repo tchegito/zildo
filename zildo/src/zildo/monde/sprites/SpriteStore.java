@@ -180,6 +180,15 @@ public class SpriteStore {
 		}
 	}
 	
+	public void shiftAllEntities(int shiftX, int shiftY) {
+		for (SpriteEntity entity : spriteEntities) {
+			entity.x += shiftX;
+			entity.y += shiftY;
+			entity.setAjustedX(entity.getAjustedX() + shiftX);
+			entity.setAjustedY(entity.getAjustedY() + shiftY);
+		}
+	}
+	
 	protected boolean removeEntity(SpriteEntity entity) {
 		return spriteEntities.remove(entity);
 	}
