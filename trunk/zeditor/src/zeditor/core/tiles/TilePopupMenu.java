@@ -28,6 +28,7 @@ import javax.swing.JDialog;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import zeditor.windows.dialogs.CollisionDialog;
 import zeditor.windows.managers.MasterFrameManager;
 
 /**

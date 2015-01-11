@@ -5,7 +5,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -13,6 +16,9 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import zeditor.windows.MasterFrame;
+import zeditor.windows.dialogs.ChangeOriginDialog;
+import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.ZUtils;
 import zildo.monde.dialog.MapDialog;
@@ -33,7 +39,7 @@ public class StatsPanel extends JPanel {
 	JComboBox atmosphere;
 
 	public StatsPanel() {
-		setLayout(new GridLayout(9, 2));
+		setLayout(new GridLayout(10, 2));
 
 		add(new JLabel("Dimension"));
 		add(dim = new JLabel(""));
@@ -61,6 +67,15 @@ public class StatsPanel extends JPanel {
 		add(new JLabel("Taille Y"));
 		add(spinLimitY);
 
+		add(new JLabel(""));
+		add(new JButton(new AbstractAction("Change origin") {
+			public void actionPerformed(ActionEvent e) {
+				JDialog dialog = new ChangeOriginDialog();
+				dialog.setLocationRelativeTo(null);
+				dialog.setModal(true);
+				dialog.setVisible(true);
+			}
+		}));
 		ChangeListener listener = new StatsFieldsListener();
 		spinLimitX.addChangeListener(listener);
 		spinLimitY.addChangeListener(listener);
