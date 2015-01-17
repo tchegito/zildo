@@ -29,6 +29,9 @@ import zildo.server.EngineZildo;
 import zildo.server.SpriteManagement;
 
 /**
+ * Test the 'shift' functionality. It consists of moving the current map origin, shifting everything: tiles, sprites
+ * and chaining points.
+ * 
  * @author Tchegito
  *
  */

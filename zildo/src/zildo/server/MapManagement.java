@@ -774,24 +774,13 @@ public class MapManagement {
 	 * @param p_translateZildo TRUE=Zildo will be shifted too
 	 */
 	private void shiftPreviousMap(Angle p_mapScrollAngle, boolean p_translateZildo) {
-		// 
-		Angle angleShift = Angle.rotate(p_mapScrollAngle, 2);
-		Point coords = angleShift.coords;
-		Area mapReference = currentMap;
-		switch (angleShift) {
-		case OUEST:
-		case NORD:
-			mapReference = previousMap;
-		default:
-		}
-		Point offset = new Point(coords.x * 16 * mapReference.getDim_x(),
-				coords.y * 16 * mapReference.getDim_y());
+		Point offset = previousMap.getNextMapOffset(currentMap, p_mapScrollAngle);
 		previousMap.setOffset(offset);
 
 		// And shift all entities (except Zildo) with same offset
 		EngineZildo.spriteManagement.translateEntities(offset, p_translateZildo);
 	}
-
+	
 	private int normalizeX(int x) {
 		if (x < 0) {
 			return 0;
