@@ -1532,4 +1532,18 @@ public class Area implements EasySerializable {
 		// 3) Sprites
 		EngineZildo.spriteManagement.shiftAllEntities(shiftX*16, shiftY*16);
 	}
+
+	public Point getNextMapOffset(Area nextMap, Angle p_mapScrollAngle) {
+		Angle angleShift = p_mapScrollAngle.opposite();
+		Point coords = angleShift.coords;
+		Area mapReference = nextMap;
+		switch (angleShift) {
+		case OUEST:
+		case NORD:
+			mapReference = this;
+		default:
+		}
+		return new Point(coords.x * 16 * mapReference.getDim_x(),
+						 coords.y * 16 * mapReference.getDim_y());
+	}
 }

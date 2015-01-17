@@ -27,6 +27,7 @@ import javax.swing.WindowConstants;
 import zeditor.core.Options;
 import zeditor.core.tiles.TileSet;
 import zeditor.fwk.awt.ZildoScrollablePanel;
+import zeditor.tools.builder.WorldmapBuilder;
 import zeditor.windows.dialogs.BuilderDialog;
 import zeditor.windows.dialogs.ViewSpritesDialog;
 import zeditor.windows.managers.MasterFrameManager;
@@ -41,6 +42,7 @@ import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.monde.map.accessor.HighestFloorAccessor;
 import zildo.monde.map.accessor.SpecificFloorAreaAccesor;
+import zildo.server.EngineZildo;
 
 import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
 
@@ -63,6 +65,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JMenuItem builderMenuItem;
 	private JMenuItem saveCollisionItem;
 	private JMenuItem viewSpritesItem;
+	private JMenuItem buildWorldMapItem;
 	private JMenu miscMenu;
 	private JMenuItem reloadConfigItem;
 	private JMenuItem optionsItem;
@@ -805,7 +808,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			fileMenu.add(getLoadItem());
 			fileMenu.add(getSaveItem());
 			fileMenu.add(getSaveAsItem());
-			fileMenu.add(getFileSeparator1());
+			fileMenu.add(new JSeparator());
 			fileMenu.add(getExitItem());
 		}
 		return fileMenu;
@@ -853,13 +856,6 @@ public class MasterFrame extends javax.swing.JFrame {
 					.getResource("zeditor/images/disk.png")));
 		}
 		return saveAsItem;
-	}
-
-	private JSeparator getFileSeparator1() {
-		if (fileSeparator1 == null) {
-			fileSeparator1 = new JSeparator();
-		}
-		return fileSeparator1;
 	}
 
 	private JMenuItem getExitItem() {
@@ -915,9 +911,11 @@ public class MasterFrame extends javax.swing.JFrame {
 			miscMenu.setIcon(new ImageIcon(getClass().getClassLoader()
 					.getResource("zeditor/images/bug.png")));
 			miscMenu.add(getSaveCollisionItem());
-			miscMenu.add(getBuilderItem());
 			miscMenu.add(getMapCaptureItem());
+			miscMenu.add(new JSeparator());
+			miscMenu.add(getBuilderItem());
 			miscMenu.add(getViewSpritesItem());
+			miscMenu.add(getBuildWorldMap());
 		}
 		return miscMenu;
 	}
@@ -939,6 +937,18 @@ public class MasterFrame extends javax.swing.JFrame {
 					.getResource("zeditor/images/package.png")));
 		}
 		return viewSpritesItem;
+	}
+	
+	private JMenuItem getBuildWorldMap() {
+		if (buildWorldMapItem == null) {
+			buildWorldMapItem = new JMenuItem();
+			buildWorldMapItem.setAction(new AbstractAction("Build world map", null) {
+				public void actionPerformed(ActionEvent e) {
+					new WorldmapBuilder(EngineZildo.mapManagement.getCurrentMap().getName());
+				}
+			});
+		}
+		return buildWorldMapItem;
 	}
 	
 	private JMenuItem getSaveCollisionItem() {
