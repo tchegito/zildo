@@ -24,6 +24,7 @@ import java.util.Map;
 
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
@@ -44,17 +45,31 @@ public class WorldmapBuilder {
 	}
 	
 	Map<String, WorldMap> worldMaps;
-	int minX = 0;
-	int minY = 0;
 	
-	public WorldmapBuilder(String mapName) {
+	public WorldmapBuilder(String firstMapName) {
 		Point starting = new Point(0, 0);
 		worldMaps = new HashMap<String, WorldMap>();
 
-		processMap(mapName, starting);
+		// Process all maps
+		processMap(firstMapName, starting, null);
+		
+		// Adjust map positions
+		int minX = 0;
+		int minY = 0;
+		for (WorldMap wm : worldMaps.values()) {
+			minX = Math.min(minX, wm.location.x);
+			minY = Math.min(minY, wm.location.y);
+		}
+		Point shift = new Point(-minX, -minY);
+		for (WorldMap wm : worldMaps.values()) {
+			wm.location.add(shift);
+			System.out.println(wm.theMap.getName() + " at "+wm.location);
+		}
+		System.out.println("Min="+minX+" , "+minY);
 	}
 	
-	private void processMap(String mapName, Point loc) {
+	/** Process a map from its name and iterate over each of its border chaining points. **/
+	private void processMap(String mapName, Point loc, Angle angle) {
 		// If this map is already in the world, leave it
 		if (worldMaps.get(mapName) == null) {
 			
@@ -63,15 +78,19 @@ public class WorldmapBuilder {
 			EngineZildo.mapManagement.loadMap(mapName, true);
 			Area nextMap = EngineZildo.mapManagement.getCurrentMap();
 			
-			worldMaps.put(mapName, new WorldMap(nextMap, loc));
+			// Shift map if we have an angle
+			Point mapLoc = new Point(loc);
+			if (angle != null) {
+				Point shifted = area.getNextMapOffset(nextMap, angle);
+				mapLoc.sub(shifted);
+			}
+			
+			worldMaps.put(mapName, new WorldMap(nextMap, mapLoc));
 			
 			for (ChainingPoint ch : nextMap.getChainingPoints()) {
-				if (ch.isBorder()) {
-					Point shifted = area.getNextMapOffset(nextMap, ch.getComingAngle().opposite());
-					Point mapLoc = new Point(loc);
-					mapLoc.add(shifted);
+				if (ch.isBorder() || (ch.getPy()/2 >= (nextMap.getDim_y()-1))) {
 					// Recursively add new map
-					processMap(ch.getMapname(), shifted);
+					processMap(ch.getMapname(), mapLoc, ch.getComingAngle().opposite());
 				}
 			}
 		}
