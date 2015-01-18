@@ -1,6 +1,7 @@
 package zeditor.windows;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
@@ -65,7 +67,9 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JMenuItem builderMenuItem;
 	private JMenuItem saveCollisionItem;
 	private JMenuItem viewSpritesItem;
-	private JMenuItem buildWorldMapItem;
+	private JMenu buildWorldMapSubMenu;
+	private JMenuItem buildWorldMapAll;	// Build world map with capturing all connected areas
+	private JMenuItem buildWorldMapCurrent;	// Build world considering only the current one has changed
 	private JMenu miscMenu;
 	private JMenuItem reloadConfigItem;
 	private JMenuItem optionsItem;
@@ -939,16 +943,56 @@ public class MasterFrame extends javax.swing.JFrame {
 		return viewSpritesItem;
 	}
 	
+	private String getMapname() {
+		String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
+		int posPoint = mapName.indexOf(".");
+		if (posPoint == -1) {
+			return mapName;
+		} else {
+			return mapName.substring(0, posPoint);
+		}
+	}
+	
 	private JMenuItem getBuildWorldMap() {
-		if (buildWorldMapItem == null) {
-			buildWorldMapItem = new JMenuItem();
-			buildWorldMapItem.setAction(new AbstractAction("Build world map", null) {
+		if (buildWorldMapSubMenu == null) {
+			buildWorldMapSubMenu = new JMenu("Build world map");
+			
+			buildWorldMapAll = new JMenuItem();
+			buildWorldMapAll.setAction(new AbstractAction("Rebuild all", null) {
 				public void actionPerformed(ActionEvent e) {
-					new WorldmapBuilder(EngineZildo.mapManagement.getCurrentMap().getName());
+					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					// Very important : we need a new thread here, because we'll wait for ZildoCanvas to finish saving each map's capture
+					new Thread() {
+						@Override
+						public void run() {
+							String startingMap = getMapname();
+							WorldmapBuilder wmb = new WorldmapBuilder(getMapname(), zildoPanel.getZildoCanvas());
+							wmb.savePng();
+							
+							// Reload first map
+							manager.loadMap(startingMap, null);
+							setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+							JOptionPane.showMessageDialog(null, "Job done", "ZEditor : world map", JOptionPane.INFORMATION_MESSAGE);
+						}
+					}.start();
 				}
 			});
+
+			buildWorldMapCurrent = new JMenuItem();
+			buildWorldMapCurrent.setAction(new AbstractAction("Integrate current", null) {
+				public void actionPerformed(ActionEvent e) {
+					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					WorldmapBuilder wmb = new WorldmapBuilder(getMapname(), null);
+					wmb.savePng();
+					setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					JOptionPane.showMessageDialog(null, "Job done", "ZEditor : world map", JOptionPane.INFORMATION_MESSAGE);
+				}
+			});
+			buildWorldMapSubMenu.add(buildWorldMapAll);
+			buildWorldMapSubMenu.add(buildWorldMapCurrent);
+
 		}
-		return buildWorldMapItem;
+		return buildWorldMapSubMenu;
 	}
 	
 	private JMenuItem getSaveCollisionItem() {

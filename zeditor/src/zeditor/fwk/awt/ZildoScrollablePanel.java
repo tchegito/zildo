@@ -25,9 +25,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
-import java.util.ArrayList;
 import java.util.EventListener;
-import java.util.List;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.DefaultBoundedRangeModel;
@@ -39,11 +37,7 @@ import org.lwjgl.LWJGLException;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
-import zildo.monde.map.Area;
-import zildo.monde.map.ChainingPoint;
 import zildo.monde.util.Point;
-import zildo.monde.util.Zone;
-import zildo.server.EngineZildo;
 
 /**
  * Panel handling map display.<p/>
