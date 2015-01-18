@@ -20,15 +20,10 @@
 
 package zildo.platform.engine;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
-
-import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;

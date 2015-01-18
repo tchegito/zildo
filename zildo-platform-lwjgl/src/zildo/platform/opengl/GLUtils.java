@@ -97,7 +97,7 @@ public class GLUtils {
     }
     
     /**
-     * 
+     * Save a ByteBuffer as a PNG file, with given parameters.
      * @param filename file name with full path, without ".png"
      * @param scratch byte buffer containing data to save
      * @param width
