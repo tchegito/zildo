@@ -8,6 +8,7 @@ package zeditor.fwk.awt;
 
 import java.awt.GraphicsDevice;
 import java.awt.Point;
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.lwjgl.opengl.AWTGLCanvas;
 import org.lwjgl.opengl.Drawable;
 import org.lwjgl.opengl.PixelFormat;
 
+import zeditor.core.Constantes;
 import zeditor.core.selection.ChainingPointSelection;
 import zeditor.core.selection.Selection;
 import zeditor.fwk.awt.ZildoCanvas.ZEditMode;
@@ -86,6 +88,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	
 	private boolean needToResize = false;
 	private boolean needCapture = false;
+	private boolean captureDone = false;
 	private boolean blockPaint = false;
 	
 	private float alpha;
@@ -185,7 +188,6 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 				captureEntireMap();
 				MasterFrameManager.display("PNG file saved.", MasterFrameManager.MESSAGE_INFO);
 				blockPaint = false;
-				needCapture = false;
 			} else {
 				renderer.renderScene();
 			}
@@ -373,6 +375,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	}
 
 	private void captureEntireMap() throws LWJGLException {
+		System.out.println("Starting capture...");
 		Ortho ortho = ClientEngineZildo.ortho;
 		Area area = EngineZildo.mapManagement.getCurrentMap();
 		int totalWidth = area.getDim_x() * 16;
@@ -413,12 +416,22 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			y += pas;
 		}
 		String name = area.getName().replace(".map", "");
-		GLUtils.saveBufferAsPNG("c:\\kikoo\\"+name, bigOne, totalWidth, totalHeight, false);
+		File path = new File(Constantes.PATH_CAPTUREDMAPS);
+		path.mkdirs();
+		GLUtils.saveBufferAsPNG(path+"\\"+name, bigOne, totalWidth, totalHeight, false);
+		System.out.println("Capture finished");
 		// Reset camera and zoom
 		ClientEngineZildo.mapDisplay.setCamera(camera);
 		ortho.setSize(sizeX, sizeY, zoom);
+		// Declare job done
+		needCapture = false;
+		captureDone = true;
 	}
 
+	public boolean isCaptureDone() {
+		return captureDone;
+	}
+	
 	/**
 	 * @return the mode
 	 */
@@ -439,5 +452,6 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	
 	public void askCapture() {
 		needCapture = true;
+		captureDone = false;
 	}
 }

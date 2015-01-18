@@ -17,30 +17,14 @@
  *
  */
 
-package junit.area;
-
-import junit.perso.EngineUT;
-
-import org.junit.Test;
-
-import zeditor.tools.builder.WorldmapBuilder;
+package zeditor.core;
 
 /**
  * @author Tchegito
  *
  */
-public class CheckWorldmapBuilder extends EngineUT {
+public class Constantes {
 
-	@Test
-	public void basic() {
-		String firstMap = "coucou";
-		new WorldmapBuilder(firstMap, null);
-	}
-	
-	@Test
-	public void assembleImages() {
-		String firstMap = "coucou";
-		WorldmapBuilder wmb = new WorldmapBuilder(firstMap, null);
-		wmb.savePng();
-	}
+	final static public String PATH_CAPTUREDMAPS = "c:\\kikoo\\captureMaps";
+	final static public String PATH_WORLDMAP = "c:\\kikoo\\worldMap";
 }

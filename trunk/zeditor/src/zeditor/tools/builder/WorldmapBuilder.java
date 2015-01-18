@@ -19,13 +19,22 @@
 
 package zeditor.tools.builder;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
+import zeditor.core.Constantes;
+import zeditor.fwk.awt.ZildoCanvas;
+import zildo.fwk.ZUtils;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.platform.opengl.GLUtils;
 import zildo.server.EngineZildo;
 
 /**
@@ -44,40 +53,83 @@ public class WorldmapBuilder {
 		}
 	}
 	
-	Map<String, WorldMap> worldMaps;
+	final Map<String, WorldMap> worldMaps;
+	Point size;	// Size of the full image, containing all connected maps
+	ZildoCanvas canvas;	// Not null means we really want to capture images / NULL=unit test (dry run)
+	String firstMap;
 	
-	public WorldmapBuilder(String firstMapName) {
-		Point starting = new Point(0, 0);
+	public WorldmapBuilder(String firstMapName, ZildoCanvas canvas) {
 		worldMaps = new HashMap<String, WorldMap>();
-
+		this.canvas = canvas;
+		this.firstMap = firstMapName;
+		
 		// Process all maps
-		processMap(firstMapName, starting, null);
+		processMap(firstMapName, null, new Point(0, 0), null);
 		
 		// Adjust map positions
 		int minX = 0;
 		int minY = 0;
+		int maxX = 0;
+		int maxY = 0;
 		for (WorldMap wm : worldMaps.values()) {
 			minX = Math.min(minX, wm.location.x);
 			minY = Math.min(minY, wm.location.y);
+			maxX = Math.max(maxX, wm.location.x + wm.theMap.getDim_x()*16);
+			maxY = Math.max(maxY, wm.location.y + wm.theMap.getDim_y()*16);
 		}
 		Point shift = new Point(-minX, -minY);
+		size = new Point(maxX, maxY);
+		size.add(shift);
 		for (WorldMap wm : worldMaps.values()) {
 			wm.location.add(shift);
-			System.out.println(wm.theMap.getName() + " at "+wm.location);
 		}
-		System.out.println("Min="+minX+" , "+minY);
+	}
+	
+	public boolean savePng() {
+		// 0) Create big bufferedImage for final image
+		System.out.println("Creating image with size=("+size.x+","+size.y+")");
+		BufferedImage joinedImg = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
+		// 1) Consider we already have all images ready for patchwork
+		try {
+			for (WorldMap wm : worldMaps.values()) {
+				// Load image
+				String filename = Constantes.PATH_CAPTUREDMAPS+"\\"+wm.theMap.getName()+".png";
+				System.out.println("Loading "+filename+"... to "+wm.location.x+","+wm.location.y);
+				BufferedImage img1 = ImageIO.read(new File(filename));
+				GLUtils.joinBufferedImage(img1, wm.location.x, wm.location.y, joinedImg);
+			}
+			
+			String finalPNGName = Constantes.PATH_WORLDMAP+"\\joined_from"+firstMap+".png";
+			new File(Constantes.PATH_WORLDMAP).mkdirs();
+			return ImageIO.write(joinedImg, "png", new File(finalPNGName));
+		} catch (IOException e) {
+			throw new RuntimeException("Unable to assemble all images into one !", e);
+		}
+		
 	}
 	
 	/** Process a map from its name and iterate over each of its border chaining points. **/
-	private void processMap(String mapName, Point loc, Angle angle) {
+	private void processMap(String mapName, Area currentMap, Point loc, Angle angle) {
 		// If this map is already in the world, leave it
 		if (worldMaps.get(mapName) == null) {
 			
 			// Load asked map
-			Area area = EngineZildo.mapManagement.getCurrentMap();
-			EngineZildo.mapManagement.loadMap(mapName, true);
+			Area area = currentMap;
+			if (area == null) {
+				area = EngineZildo.mapManagement.getCurrentMap();
+			}
+			if (canvas == null) {
+				EngineZildo.mapManagement.loadMap(mapName, true);
+			} else {
+				canvas.loadMap(mapName, null);
+				canvas.askCapture();
+				while (!canvas.isCaptureDone()) {
+					ZUtils.sleep(200);
+				}
+			}
+
 			Area nextMap = EngineZildo.mapManagement.getCurrentMap();
-			
+
 			// Shift map if we have an angle
 			Point mapLoc = new Point(loc);
 			if (angle != null) {
@@ -90,7 +142,7 @@ public class WorldmapBuilder {
 			for (ChainingPoint ch : nextMap.getChainingPoints()) {
 				if (ch.isBorder() || (ch.getPy()/2 >= (nextMap.getDim_y()-1))) {
 					// Recursively add new map
-					processMap(ch.getMapname(), mapLoc, ch.getComingAngle().opposite());
+					processMap(ch.getMapname(), nextMap, mapLoc, ch.getComingAngle().opposite());
 				}
 			}
 		}
