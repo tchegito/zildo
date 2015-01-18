@@ -29,12 +29,12 @@ import javax.imageio.ImageIO;
 
 import zeditor.core.Constantes;
 import zeditor.fwk.awt.ZildoCanvas;
+import zeditor.tools.ImageUtils;
 import zildo.fwk.ZUtils;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
-import zildo.platform.opengl.GLUtils;
 import zildo.server.EngineZildo;
 
 /**
@@ -96,7 +96,7 @@ public class WorldmapBuilder {
 				String filename = Constantes.PATH_CAPTUREDMAPS+"\\"+wm.theMap.getName()+".png";
 				System.out.println("Loading "+filename+"... to "+wm.location.x+","+wm.location.y);
 				BufferedImage img1 = ImageIO.read(new File(filename));
-				GLUtils.joinBufferedImage(img1, wm.location.x, wm.location.y, joinedImg);
+				ImageUtils.joinBufferedImage(img1, wm.location.x, wm.location.y, joinedImg);
 			}
 			
 			String finalPNGName = Constantes.PATH_WORLDMAP+"\\joined_from"+firstMap+".png";
