@@ -593,25 +593,25 @@ public class GUIDisplay {
 			if (a != ' ' && it.hasNext()) { // || i == dialogContext.sentence.length()) {
 				entity = it.next();
 			}
-				if (entity.getScrY() < sc.TEXTER_COORDINATE_Y) {
-					entity.setVisible(false);
-				} else if (entity.getScrY() < (sc.TEXTER_BOTTOM_Y)) {
-					entity.setVisible(true);
-					if (i == dialogContext.sentence.length() && !dialogContext.entireMessageDisplay) {
-						dialogContext.entireMessageDisplay = true;
-						dialogDisplay.displayArrow(1);
-						//ClientEngineZildo.soundPlay
-						//		.playSoundFX(BankSound.AfficheTexteFin);
-					}
-				} else if (!dialogContext.visibleMessageDisplay) {
-					dialogContext.visibleMessageDisplay = true;
-					dialogDisplay.displayArrow(2);
-					// If the text has another line to scroll, don't play sound
-					if (!scrolling) {
-						//ClientEngineZildo.soundPlay
-						//		.playSoundFX(BankSound.AfficheTexteFin);
-					}
+			if (entity != null && entity.getScrY() < sc.TEXTER_COORDINATE_Y) {
+				entity.setVisible(false);
+			} else if (entity != null && entity.getScrY() < (sc.TEXTER_BOTTOM_Y)) {
+				entity.setVisible(true);
+				if (i == dialogContext.sentence.length() && !dialogContext.entireMessageDisplay) {
+					dialogContext.entireMessageDisplay = true;
+					dialogDisplay.displayArrow(1);
+					//ClientEngineZildo.soundPlay
+					//		.playSoundFX(BankSound.AfficheTexteFin);
 				}
+			} else if (!dialogContext.visibleMessageDisplay) {
+				dialogContext.visibleMessageDisplay = true;
+				dialogDisplay.displayArrow(2);
+				// If the text has another line to scroll, don't play sound
+				if (!scrolling) {
+					//ClientEngineZildo.soundPlay
+					//		.playSoundFX(BankSound.AfficheTexteFin);
+				}
+			}
 		}
 	}
 
