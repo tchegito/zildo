@@ -201,7 +201,7 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
         			if (elem.getEntityType().isElement()) {
         				elem.animate();
         			} else {
-        				SpriteEntity entity = (SpriteEntity) elem;
+        				SpriteEntity entity = elem;
         				SpriteModel sprModel = entity.getSprModel();
         				entity.setAjustedX( (int) entity.x - (sprModel.getTaille_x() >> 1) );
         				entity.setAjustedY( (int) entity.y - (sprModel.getTaille_y() >> 1) );
