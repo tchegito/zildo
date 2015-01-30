@@ -61,7 +61,9 @@ public class AreaWrapper {
 	
 	//TODO: add floor
 	public void writemap(int x, int y, int quoi) {
-		area.writemap(x, y, quoi);
+		if (!area.isOutside(x, y)) {
+			area.writemap(x, y, quoi);
+		}
 	}
 	
 	public void writemap(int x, int y, int quoi, Rotation rot) {
