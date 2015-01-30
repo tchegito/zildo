@@ -34,9 +34,6 @@ public class ZPersoLibrary extends ArrayList<SpriteDescription> {
 			info=PersoInfo.ZILDO;
 			p_perso.setName("zildo");
 			break;
-		case GARDE_BOUCLIER:
-			info=PersoInfo.NEUTRAL;
-			break;
 		case BAS_GARDEVERT:
 		case GARDE_CANARD:
 		case CORBEAU:
@@ -48,7 +45,12 @@ public class ZPersoLibrary extends ArrayList<SpriteDescription> {
 		case ECTOPLASME:
 		case DRAGON:
 		case FLYINGSERPENT:
+		case BRAMBLE:
 			info=PersoInfo.ENEMY;
+			break;
+		default:
+		case GARDE_BOUCLIER:
+			info=PersoInfo.NEUTRAL;
 			break;
 		}
 		
