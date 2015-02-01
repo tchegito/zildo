@@ -49,12 +49,17 @@ public class TileCollision {
     	return collide(p_posX, p_posY, p_tile)
     }
     */
+    final static int HSTUMP = 225 + 256*6;	// Higher stump's first tile
+    
     public int getBottomZ(Tile p_tile, boolean blocked) {
     	int z = blocked ? 16 : 0;
-    	if (p_tile != null && p_tile.bank == 0) {
-    		switch (p_tile.index) {
+    	if (p_tile != null && (p_tile.bank == 0 || p_tile.bank == 6)) {
+    		switch (p_tile.getValue()) {
     		case 159: case 160: case 161: case 162:
     			z = 5;
+    			break;
+    		case HSTUMP: case HSTUMP+1: case HSTUMP+2: case HSTUMP+3:
+    			z = 10;
     		}
     	}
     	return z;
