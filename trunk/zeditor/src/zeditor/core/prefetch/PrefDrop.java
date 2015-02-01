@@ -32,6 +32,8 @@ import zildo.monde.util.Point;
  */
 public enum PrefDrop {
 
+	// Note: 1) negative values means BACK2 tile. Otherwiwe BACK tile.
+	//       2) 0x1000 means 'reverse horizontally'
 	CollineGauche(new Point(2,4),new int[] {27,40, 37,41, 38,54, 39,54}), 
 	CollineDroite(new Point(2,4), new int[] {42, 35, 43, 44, 54, 45, 54, 46}), 
 	PetitChemin(new Point(2, 2)), 
@@ -40,10 +42,10 @@ public enum PrefDrop {
 		-147, -148, -149, -150, 151, 152, 153, 154, 155, 156, 157, 158}, new DropTreeDrawer()),
 		//1735 = 199 + 256*6
 	ArbreMalade(new Point(4, 5), new int[] {-1735, -1736, -1737, -1738, -1739, -1740, -1741, -1742, 
-		-1743, -1744, -1745, -1746, 1747, 1748, 1749, 1750, 155, 156, 157, 158}),
+		-1743, -1744, -1745, -1746, 1747, 1748, 1749, 1747 + 0x1000, 155, 156, 157, 158}),
 	Souche(new Point(2, 2), new int[] {159, 160, 161, 162}),
 	Statue(new Point(2, 3), new int[] {-186, -187, 188, 189, 190, 191}), 
-	ArcheVillage(new Point(5, 3), new int[] {-376, -377, -378, -379, -380, 381, -382, -383, -384, 381, 385, 386, 386, 386, 385}),
+	ArcheVillage(new Point(5, 3), new int[] {-376, -377, -378, -379, -380, 381, -382, -383, -384, 381 + 0x1000, 385, 386, 386, 386, 385 + 0x1000}),
 	GrossePierre(new Point(2, 2), new int[] {196, 197, 198, 199}),
 	ArbreRouge(new Point(4, 5), new int[] {-1042, -1043, -1044, -1045, -1046, -1047, -1048, -1049,
 		-1050, -1051, -1052, -1053, 1054, 1055, 1056, 1057, 155, 156, 157, 158}),
