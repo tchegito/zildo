@@ -528,7 +528,7 @@ public class PlayerManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	void keyPressAttack() {
 		if (!keysState.key_attackPressed) {
-			if (heros.who.canFreeJump) {
+			if (heros.who.canFreeJump && heros.getMouvement() != MouvementZildo.TOMBE) {
 				// Controlled character can jump with Y KEY
 				heros.jump();
 			} else {
