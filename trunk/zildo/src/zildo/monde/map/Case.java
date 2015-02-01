@@ -195,7 +195,7 @@ public class Case implements EasySerializable {
 			case BACK2:
 				switch (bank) {
 					case 6:
-						if (motif == 215 || motif == 218) {
+						if (motif == 215 || motif == 218 || motif == 221) {
 							if (compteur_animation > 40)
 								motif+=1;
 							else if (compteur_animation > 20)

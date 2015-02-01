@@ -11,6 +11,8 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
+import zildo.monde.map.Case.TileLevel;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Point;
@@ -173,7 +175,8 @@ public class AreaChecker {
 						for (int i : at.others) {
 							if (v == ( i + addBank + rep)) {
 								found = true;
-								area.writemap(x, y, at.reference + rep + addBank);
+								TileLevel level = at.isBack2() ? TileLevel.BACK2 : TileLevel.BACK;
+								area.writemap(x, y, at.reference + rep + addBank, level, Rotation.NOTHING);
 							}
 						}
 					}
