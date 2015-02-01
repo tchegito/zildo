@@ -6,6 +6,9 @@ public enum AnimatedTiles {
 
 	FLOWERS1(TileGFXBank.Foret1, 52, 55, 163), 
 	FLOWERS2(TileGFXBank.Foret1, 53, 56, 164),
+	FLOWERSBLUE(TileGFXBank.Foret4, 215, 216, 217),
+	FLOWERSBLUE_PACK(TileGFXBank.Foret4, 218, 219, 220),
+	FLOWERSRED(TileGFXBank.Foret4, 221, 222, 223),
 	WATER(TileGFXBank.Foret1, 108, new Repeat(128), 208, 231),
 	WATER_BIS(TileGFXBank.Foret1, 130, 230, 253),
 	// Blacksmith hoven
@@ -18,6 +21,16 @@ public enum AnimatedTiles {
 	LAVA(TileGFXBank.Grotte, 217, 218, 219),
 	TORCH(TileGFXBank.Grotte, 230, 231, 232);
 	
+	public boolean isBack2() {
+		switch (this) {
+			case FLOWERSBLUE:
+			case FLOWERSBLUE_PACK:
+			case FLOWERSRED:
+				return true;
+			default:
+				return false;
+		}
+	}
 	
 	public final TileGFXBank bank;
 	public final int reference;
