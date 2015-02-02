@@ -70,7 +70,8 @@ public class TileCollision {
     	
     	// Check altitude depending on tiles
     	if (result) {
-    		result = z < getBottomZ(p_tile, true);
+    		int bottomZ = getBottomZ(p_tile, true);
+    		result = z < bottomZ;
     	}
     	return result;
     }
