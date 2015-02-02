@@ -380,15 +380,20 @@ public class MapManagement {
 	public int getPersoBottomZ(Perso p) {
 		// Get bottom z at four point of our hero
 		Point size = Element.getElementSize(p);
-		int cx = (int) (p.x);
-		int cy = (int) (p.y);
+		// Reproduce the calculus from #collideTile (square of 4 points around character's center)
+		int cx = Math.round(p.x);
+		int cy = Math.round(p.y);
 		int bottomZ = 0;
 		if (currentMap != null) {
 			for (Point pt : tabPointRef) {
 				int mx = (cx + (size.x / 2) * pt.x);
 				int my = (cy + (size.y / 2) * pt.y);
 				Tile tile = currentMap.readmap(mx/16, my/16, false);
-				bottomZ = Math.max(bottomZ, tileCollision.getBottomZ(tile, false));				
+				int tileBottomZ = tileCollision.getBottomZ(tile, false);
+				bottomZ = Math.max(bottomZ, tileBottomZ);
+			}
+			if (bottomZ > p.z) {
+				bottomZ = (int) Math.max(bottomZ, p.z);
 			}
 		}
 		return bottomZ;

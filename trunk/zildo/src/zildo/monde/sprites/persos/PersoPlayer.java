@@ -604,8 +604,10 @@ public class PersoPlayer extends Perso {
 			if (z > tileBottomZ) {
 				vz+=az;
 			} else if (az != 0) {
+				// Fix character on the ground, and cancel movement
 				z=tileBottomZ;
 				az=0;
+				vz=0;
 				mouvement = MouvementZildo.VIDE;
 				landOnGround();
 			}
@@ -648,7 +650,7 @@ public class PersoPlayer extends Perso {
 			// Player is controlling princess, so display her
 			setNSpr(PersoDescription.PRINCESS_BUNNY.nth(0));
 			int tileBottomZ = getBottomZ();
-			if (tileBottomZ != z) {
+			if (tileBottomZ < z) {
 				mouvement = MouvementZildo.TOMBE;
 				az = -0.1f;
 			}
