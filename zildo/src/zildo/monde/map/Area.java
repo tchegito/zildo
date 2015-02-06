@@ -270,7 +270,9 @@ public class Area implements EasySerializable {
 	}
 	
 	final IntSet waterBank = new IntSet(154, 156, 188, 189, 190, 255);
-	
+	final IntSet waterDeep = new IntSet(256*6 + 224).addRange(108, 138).addRange(208, 222)
+			.addRange(224, 228).addRange(230, 245).addRange(247, 253);
+
 	public TileNature getCaseNature(int x, int y) {
 		Case temp = this.get_mapcase(x, y);
 		if (temp == null) {
@@ -283,6 +285,10 @@ public class Area implements EasySerializable {
 			return TileNature.BOTTOMLESS;
 		}
 		
+		if (val == 256*6 + 224 || val == 78 + 256*3) {
+			return TileNature.WATER_MUD;
+		}
+		
 		// 2: water (could be on back or back2)
 		Tile tile;
 		if (temp.getBackTile2() != null) {
@@ -291,7 +297,8 @@ public class Area implements EasySerializable {
 			tile = temp.getBackTile();
 		}
 		val = tile.getValue();
-		if ( waterBank.contains(val - 256*2) || val == 78 + 256*3) {
+		
+		if ( waterBank.contains(val - 256*2) || waterDeep.contains(val)) {
 			return TileNature.WATER;
 		}
 		return TileNature.REGULAR;

@@ -29,6 +29,7 @@ import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.items.Item;
 import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
+import zildo.monde.map.Tile.TileNature;
 import zildo.monde.map.TileCollision;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
@@ -118,6 +119,10 @@ public abstract class Perso extends Element {
 	private static TileCollision tileCollision = TileCollision.getInstance();
 	
 	PersoAffections affections;
+
+	// Convenient variable, for optimization
+	int bottomZ;	// 'z' coordinate under the current character's location
+	TileNature nature;
 	
 	public Item weapon;
 
@@ -546,7 +551,9 @@ public abstract class Perso extends Element {
 		
 		// Alpha channel evolution
 		alphaV += alphaA;
-		setAlpha(alpha + alphaV);
+		if (alphaV != 0) {
+			setAlpha(alpha + alphaV);
+		}
 
 		if (alpha > 255) {	// Stop alpha increase when it reaches the max
 			alpha = 255;
@@ -650,7 +657,9 @@ public abstract class Perso extends Element {
 		inWater = false;
 		inDirt = false;
 		BankSound snd = null;
-		if (!flying && Tile.isWater(onmap)) {
+		nature = area.getCaseNature(cx, cy);
+		
+		if (!flying && nature == TileNature.WATER) {
 			// Water
 			diveAndWound();
 		} else {
@@ -679,8 +688,9 @@ public abstract class Perso extends Element {
 				}
 				break;
 			case 846:
+			case 256 * 6 + 224:
 				// Water
-				if (!flying) {
+				if (!flying && mouvement != MouvementZildo.TOMBE) {
 					inWater = true;
 					snd = footWater.getSound();
 					repeatSound = true;
@@ -987,10 +997,27 @@ public abstract class Perso extends Element {
 	}
 
 	public void landOnGround() {
-		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
+		fall();
 		if (floor > 0 &&	// Check if a lower floor exists
 			EngineZildo.mapManagement.getCurrentMap().readmap((int) x / 16, (int) y / 16, false, floor-1) != null ) {
 			floor--;
+		}
+	}
+	
+	protected void land() {
+		z=bottomZ;
+		az=0;
+		vz=0;
+		setMouvement(MouvementZildo.VIDE); // Jump is over, get back to regular movement
+		
+		boolean platformUnder = checkPlatformUnder();
+		// Si Zildo atterit dans l'eau, on le remet à son ancienne position avec un coeur de moins
+
+		if (!platformUnder && nature == TileNature.WATER) {
+			// Character is fallen in the water !
+			diveAndWound();
+		} else {
+			landOnGround();
 		}
 	}
 	
@@ -999,21 +1026,7 @@ public abstract class Perso extends Element {
 	 */
 	public void moveJump() {
 		if (getAttente() == 32) {
-			setMouvement(MouvementZildo.VIDE); // Fin du saut, on repasse en mouvement normal
-			// Si Zildo atterit dans l'eau, on le remet Ã  son ancienne position avec un coeur de moins
-			int cx=(int) (x / 16);
-			int cy=(int) (y / 16);
-			int onMap=EngineZildo.mapManagement.getCurrentMap().readmap(cx,cy);
-			
-			boolean platformUnder = checkPlatformUnder();
-			
-			if (!platformUnder && Tile.isWater(onMap)) {
-				// Character is fallen in the water !
-				diveAndWound();
-			} else {
-				landOnGround();
-			}
-			z=0;
+			land();
 			if (action == null) {
 				attente = 0;
 			}
@@ -1119,6 +1132,7 @@ public abstract class Perso extends Element {
 		}
 	}
 	
+	// Returns the 'z' coordinates of the tile under the character's feet
 	public int getBottomZ() {
 		return EngineZildo.mapManagement.getPersoBottomZ(this);
 	}

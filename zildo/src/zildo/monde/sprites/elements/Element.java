@@ -560,6 +560,7 @@ public class Element extends SpriteEntity {
 						SpriteAnimation.LAVA_DROP, (int) x, (int) y, floor,	0, null, null);
 				break;
 			case WATER:
+			case WATER_MUD:
 				EngineZildo.soundManagement.broadcastSound(BankSound.FallWater, this);
 				EngineZildo.spriteManagement.spawnSpriteGeneric(
 						SpriteAnimation.WATER_SPLASH, (int) x, (int) y, floor,	0, null, null);
@@ -602,6 +603,8 @@ public class Element extends SpriteEntity {
 						// Activate a quest if we're asked for
 						EngineZildo.scriptManagement.takeItem(area.getName(), cx, cy, d);
 					}
+				} else if (entityType.isPerso()) {
+					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
 				}
 				break;
 			}

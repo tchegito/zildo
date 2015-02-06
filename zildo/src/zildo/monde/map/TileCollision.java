@@ -44,12 +44,9 @@ public class TileCollision {
     public static TileCollision getInstance() {
     	return instance;
     }
-    /*
-    public int getBottomZ(int p_posX, int p_posY, Tile p_tile) {
-    	return collide(p_posX, p_posY, p_tile)
-    }
-    */
+
     final static int HSTUMP = 225 + 256*6;	// Higher stump's first tile
+    final static int WATER_MUD = 224 + 256*6;
     
     public int getBottomZ(Tile p_tile, boolean blocked) {
     	int z = blocked ? 16 : 0;
@@ -60,6 +57,10 @@ public class TileCollision {
     			break;
     		case HSTUMP: case HSTUMP+1: case HSTUMP+2: case HSTUMP+3:
     			z = 10;
+    			break;
+    		case WATER_MUD:
+    			z=-2;
+    			break;
     		}
     	}
     	return z;
@@ -69,7 +70,7 @@ public class TileCollision {
     	boolean result =  collide(p_posX, p_posY, p_tile.getValue(), p_tile.reverse, p_tile.rotation);
     	
     	// Check altitude depending on tiles
-    	if (result) {
+    	if (result || z < 0) {
     		int bottomZ = getBottomZ(p_tile, true);
     		result = z < bottomZ;
     	}

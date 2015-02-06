@@ -383,7 +383,7 @@ public class MapManagement {
 		// Reproduce the calculus from #collideTile (square of 4 points around character's center)
 		int cx = Math.round(p.x);
 		int cy = Math.round(p.y);
-		int bottomZ = 0;
+		int bottomZ = -2;
 		if (currentMap != null) {
 			for (Point pt : tabPointRef) {
 				int mx = (cx + (size.x / 2) * pt.x);
