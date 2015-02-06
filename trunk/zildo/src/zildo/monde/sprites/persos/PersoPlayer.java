@@ -188,7 +188,7 @@ public class PersoPlayer extends Perso {
 
 		setSpeed(Constantes.ZILDO_SPEED);
 		
-		setAppearance(ControllablePerso.PRINCESS_BUNNY);
+		//setAppearance(ControllablePerso.PRINCESS_BUNNY);
 	}
 
 	/**
@@ -231,7 +231,7 @@ public class PersoPlayer extends Perso {
 	@Override
 	public void attack() {
 		boolean outOfOrder = false;
-		if (weapon == null) {
+		if (weapon == null || !who.canAttack) {
 			return; // No weapon ? No attack
 		}
 		String sentence;
@@ -529,6 +529,10 @@ public class PersoPlayer extends Perso {
 	{
 		super.animate(compteur_animation);
 		
+		// Initialization of convenient variables
+		bottomZ = getBottomZ();
+		nature = getCurrentTileNature();
+		
 		// If zildo's dead, don't display him
 		if (getPv() <= 0) {
 			if (EngineZildo.game.multiPlayer) {
@@ -600,16 +604,11 @@ public class PersoPlayer extends Perso {
 		case TOMBE:
 			System.out.println(z);
 			z+=vz;
-			int tileBottomZ = getBottomZ();
-			if (z > tileBottomZ) {
+			if (z > bottomZ) {
 				vz+=az;
 			} else if (az != 0) {
 				// Fix character on the ground, and cancel movement
-				z=tileBottomZ;
-				az=0;
-				vz=0;
-				mouvement = MouvementZildo.VIDE;
-				landOnGround();
+				land();
 			}
 			break;
 		}
@@ -639,13 +638,12 @@ public class PersoPlayer extends Perso {
 
 		float xx = x;
 		float yy = y;
-		
+
 		// Default : invisible
 		shadow.setVisible(false);
-		feet.setVisible(pv > 0 && (inWater || inDirt));
 		shield.setVisible(false);
 		sword.setVisible(false);
-		
+
 		if (who == ControllablePerso.PRINCESS_BUNNY) {
 			// Player is controlling princess, so display her
 			setNSpr(PersoDescription.PRINCESS_BUNNY.nth(0));
@@ -691,6 +689,7 @@ public class PersoPlayer extends Perso {
 			setAjustedY((int) yy);
 			
 		} else {
+			// Appearance : Hero
 			if (isAffectedBy(AffectionKind.FIRE_DAMAGE_REDUCED)) {
 				if (shieldEffect == null) {
 					shieldEffect = new ShieldEffect(this, ShieldType.REDBALL);
@@ -803,18 +802,7 @@ public class PersoPlayer extends Perso {
 			}
 	
 			// On affiche Zildo
-			feet.setX(x + (angle.isVertical() || angle == Angle.OUEST ? 1 : 0));
-			feet.setY(y + 9 + 1);
-			feet.setZ(3);
-			feet.setAddSpr((compteur_animation / 6) % 3);
-			if (inWater) {
-				feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
-			} else if (inDirt) {
-				feet.setNSpr(ZildoDescription.DIRT1.getNSpr());
-				feet.setY(feet.getY() - 3);
-			}
-			feet.setForeground(false);
-	
+
 			if (pv > 0) {
 				boolean touche = (mouvement == MouvementZildo.TOUCHE || getCompte_dialogue() != 0);
 				// Zildo blink
@@ -996,6 +984,22 @@ public class PersoPlayer extends Perso {
 				}
 			}
 		}
+
+		// End of specific rendering, depending on appearance (hero, or bunny)
+		// Now, common rendering
+		
+		feet.setVisible(pv > 0 && (inWater || inDirt));
+		feet.setX(x + (angle.isVertical() || angle == Angle.OUEST ? 1 : 0));
+		feet.setY(y + 9 + 1);
+		feet.setZ(3);
+		feet.setAddSpr((compteur_animation / 6) % 3);
+		if (inWater) {
+			feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
+		} else if (inDirt) {
+			feet.setNSpr(ZildoDescription.DIRT1.getNSpr());
+			feet.setY(feet.getY() - 3);
+		}
+		feet.setForeground(false);
 	}
 
 	/**
@@ -1459,9 +1463,11 @@ public class PersoPlayer extends Perso {
 		switch (who) {
 		case ZILDO:
 			shadow.setDesc(ElementDescription.SHADOW);
+			feet.zoom=255;
 			break;
 		case PRINCESS_BUNNY:
 			shadow.setDesc(ElementDescription.SHADOW_SMALL);
+			feet.zoom=100;
 			break;
 		}
 	}
