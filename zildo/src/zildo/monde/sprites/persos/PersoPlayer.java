@@ -644,6 +644,8 @@ public class PersoPlayer extends Perso {
 		shield.setVisible(false);
 		sword.setVisible(false);
 
+		// Wet feet are displayed differently for each appearance
+		int shiftWetFeet = 1;
 		if (who == ControllablePerso.PRINCESS_BUNNY) {
 			// Player is controlling princess, so display her
 			setNSpr(PersoDescription.PRINCESS_BUNNY.nth(0));
@@ -687,7 +689,8 @@ public class PersoPlayer extends Perso {
 			shadow.setZ(shadow.z - 1);	// Display shadow under character => else, this would be weird ;)
 			setAjustedX((int) xx);
 			setAjustedY((int) yy);
-			
+		
+			shiftWetFeet = -1;
 		} else {
 			// Appearance : Hero
 			if (isAffectedBy(AffectionKind.FIRE_DAMAGE_REDUCED)) {
@@ -989,7 +992,7 @@ public class PersoPlayer extends Perso {
 		// Now, common rendering
 		
 		feet.setVisible(pv > 0 && (inWater || inDirt));
-		feet.setX(x + (angle.isVertical() || angle == Angle.OUEST ? 1 : 0));
+		feet.setX(x + (angle.isVertical() || angle == Angle.OUEST ? shiftWetFeet : 0));
 		feet.setY(y + 9 + 1);
 		feet.setZ(3);
 		feet.setAddSpr((compteur_animation / 6) % 3);
