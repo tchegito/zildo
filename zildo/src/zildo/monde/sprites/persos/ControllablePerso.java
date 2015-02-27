@@ -25,16 +25,18 @@ package zildo.monde.sprites.persos;
  */
 
 public enum ControllablePerso {
-	ZILDO(true, false, true),
-	PRINCESS_BUNNY(false, true, false);
+	ZILDO(true, false, true, true),
+	PRINCESS_BUNNY(false, true, false, false);
 
 	public boolean canInventory;	// TRUE=character has an inventory
 	public boolean canFreeJump;	// TRUE=character can jump, if player press a button
 	public boolean canAttack;
+	public boolean canPickup;
 	
-	private ControllablePerso(boolean inventory, boolean freeJump, boolean attack) {
+	private ControllablePerso(boolean inventory, boolean freeJump, boolean attack, boolean canPickup) {
 		this.canInventory = inventory;
 		this.canFreeJump = freeJump;
 		this.canAttack = attack;
+		this.canPickup = canPickup;
 	}
 }
