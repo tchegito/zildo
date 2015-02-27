@@ -407,7 +407,7 @@ public class PlayerManagement {
 			} else if (gamePhase == GamePhase.INGAME && !heros.isInventoring() && heros.getAttente() == 0) { //
 				if (heros.getMouvement()==MouvementZildo.BRAS_LEVES) {
 					heros.throwSomething();
-				} else if (heros.getMouvement()!=MouvementZildo.BRAS_LEVES && 
+				} else if (heros.who.canPickup && heros.getMouvement()!=MouvementZildo.BRAS_LEVES && 
 						heros.getMouvement()!=MouvementZildo.SOULEVE && !heros.isDoingAction()) {
 					// Get a spot reachable in hero's direction
 					int locX = (int) heros.x + heros.getAngle().coords.x * 8;
