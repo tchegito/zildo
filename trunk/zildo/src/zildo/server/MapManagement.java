@@ -389,8 +389,10 @@ public class MapManagement {
 				int mx = (cx + (size.x / 2) * pt.x);
 				int my = (cy + (size.y / 2) * pt.y);
 				Tile tile = currentMap.readmap(mx/16, my/16, false);
-				int tileBottomZ = tileCollision.getBottomZ(tile, false);
-				bottomZ = Math.max(bottomZ, tileBottomZ);
+				if (tile != null) {
+					int tileBottomZ = tileCollision.getBottomZ(mx % 16, my % 16, tile.getValue(), false);
+					bottomZ = Math.max(bottomZ, tileBottomZ);
+				}
 			}
 			if (bottomZ > p.z) {
 				bottomZ = (int) Math.max(bottomZ, p.z);
