@@ -21,58 +21,74 @@ package zildo.monde.sprites.persos.ia.mover;
 
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.util.Pointf;
-import zildo.monde.util.Vector2f;
 
 /**
+ * Movement which goes from initial location to given one.
+ * 
+ * To do so, we determine an angle between PI/4 and PI/2
  * @author Tchegito
  *
  */
-public class PhysicMoveOrder extends MoveOrder {
+public class CircularMoveOrder extends MoveOrder {
 
+	Pointf center;
+	Pointf radius;
+	double factor;
+	double iota;
+	int pasX, pasY;
+	
+	Element mobileElement;
+	
+	final int nbFrames = 100;
+	
 	/**
-	 * Build a physic mover with (x,y) as speed vector coordinates.
+	 * Build a circular mover with (x,y) as target coordinate.
 	 * @param mobile
 	 * @param x
 	 * @param y
 	 */
-	public PhysicMoveOrder(int x, int y) {
+	public CircularMoveOrder(int x, int y) {
 		super(x, y);
 	}
 
 	@Override
 	protected Pointf move() {
-		Element placeHolder = wrapper.elemPlaceHolder;
-		placeHolder.animate();
+		double angle = factor * iota;
+		mobileElement.vx = (float) ( radius.x * Math.cos(angle) * pasX * factor);
+		mobileElement.vy = (float) (-radius.y * Math.sin(angle) * pasY * factor);
+		mobileElement.physicMoveWithCollision();
+		//mobile.animate();
 
+		/*
 		Pointf p = new Pointf(placeHolder.x - mobile.x, placeHolder.y - mobile.y);
-		boolean stopped = (p.x == 0 && p.y == 0);
 		mobile.x = placeHolder.x;
 		mobile.y = placeHolder.y;
-		
-		if (stopped || (Math.abs(placeHolder.vx) <= 0.1 && 
-			Math.abs(placeHolder.vy) <= 0.1 && 
-			Math.abs(placeHolder.vz) <= 0.1) ) {
-			placeHolder.vx = 0; placeHolder.vy = 0; placeHolder.vz = 0;
+*/
+		if (iota == nbFrames) {
+			target = null;
 			active = false;
+			mobileElement.vx = 0;
+			mobileElement.vy = 0;
+		} else {
+			iota++;
 		}
-		return p;
+
+		return new Pointf(mobile.x, mobile.y);
 	}
 	
 	@Override
 	void init(Mover p_wrapper) {
 		super.init(p_wrapper);
-		Element placeHolder = p_wrapper.getPlaceHolder();
-		placeHolder.x = mobile.x;
-		placeHolder.y = mobile.y;
-		Vector2f newSpeed = new Vector2f(placeHolder.vx + target.x, placeHolder.vy + target.y);
-		Vector2f speed = new Vector2f(placeHolder.vx, placeHolder.vy);
-		speed.add(newSpeed).normalize(2.5f);
-		placeHolder.vx = speed.x;
-		placeHolder.vy = speed.y;
-		placeHolder.setDesc(mobile.getDesc());
-		// Random friction vector
-		placeHolder.fx = 0.03f;
-		placeHolder.fy = 0.03f;
+		
+		if (mobile.getEntityType().isElement()) {
+			mobileElement = (Element) mobile;
+		}
+		center = new Pointf(target.x, mobile.y);
+		radius = new Pointf(Math.abs(target.x - mobile.x), 
+							Math.abs(target.y - mobile.y));
+		pasX = target.x > mobile.x ? 1 : -1;
+		pasY = target.y > mobile.y ? -1 : 1;
+		factor = Math.PI/2 / nbFrames;
+		iota = 0;
 	}
-	
 }

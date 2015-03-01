@@ -98,7 +98,7 @@ public class ScriptManagement {
      */
     public ScriptManagement() {
         // Load adventure
-        adventure=(AdventureElement) ScriptReader.loadScript("common", "global", "episode1", "episode2");
+        adventure=(AdventureElement) ScriptReader.loadScript("common", "global", "episode1", "episode2", "episode3");
 
         scriptExecutor=new ScriptExecutor();
         

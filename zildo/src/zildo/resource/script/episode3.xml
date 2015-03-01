@@ -1,0 +1,27 @@
+<adventure>
+    
+    <quest name="fireflies_sousbois">
+        <trigger>
+            <location name="sousbois1"/>
+        </trigger>
+        <action>
+	        <spawn what="firefly1" type="dice10>4:PURPLE_FIREFLY,BLUE_FIREFLY"
+	               pos="538, 138" z="4"
+	               foreground="true" />
+	        <spawn what="firefly2" type="dice10>4:PURPLE_FIREFLY,BLUE_FIREFLY"
+	               pos="568, 118" z="4"
+	               foreground="true" />
+
+
+	        <moveTo what="firefly2" pos="510,220" way="circular" unblock="true"/>
+	        
+	           	        
+	        <moveTo what="firefly1" pos="600,170" way="circular"/>
+	        <moveTo what="firefly1" pos="540,210" way="circular"/>
+        </action>
+    </quest>
+	
+    <!-- 
+   	<moveTo what="leaf" pos="-2*zildo.angle.x,-2*zildo.angle.y" way="circular" unblock="true"/>
+    -->
+</adventure>
