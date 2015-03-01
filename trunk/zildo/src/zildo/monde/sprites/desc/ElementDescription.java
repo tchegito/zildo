@@ -129,7 +129,11 @@ public enum ElementDescription implements SpriteDescription {
 	// 238
 	WATERWAVE1, WATERWAVE2, WATERWAVE3,
 	// 241
-	FIRE_RING, FIRE_BALL;	// Fireball for dragon
+	FIRE_RING, 
+	// 242
+	PURPLE_FIREFLY, BLUE_FIREFLY,
+	// 244
+	FIRE_BALL;	// Fireball for dragon
 	
 	Boolean damage;
 	
@@ -300,6 +304,7 @@ public enum ElementDescription implements SpriteDescription {
 		case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:
 		case WATERWAVE1: case WATERWAVE2: case WATERWAVE3:
 		case SWORD: case FIRE_RING:
+		case BLUE_FIREFLY: case PURPLE_FIREFLY:
 			return true;
 		default:
 			return false;
