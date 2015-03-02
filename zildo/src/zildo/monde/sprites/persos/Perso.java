@@ -657,9 +657,9 @@ public abstract class Perso extends Element {
 		inWater = false;
 		inDirt = false;
 		BankSound snd = null;
-		nature = area.getCaseNature(cx, cy);
+		nature = area.getCaseNature((int) x, (int) y);
 		
-		if (!flying && nature == TileNature.WATER) {
+		if (!flying && isZildo() && nature == TileNature.WATER) {
 			// Water
 			diveAndWound();
 		} else {
@@ -687,8 +687,11 @@ public abstract class Perso extends Element {
 					slowDown = true;
 				}
 				break;
+			case Tile.T_WATER_MUD:
+				if (nature != TileNature.WATER_MUD) {
+					break;
+				}
 			case 846:
-			case 256 * 6 + 224:
 				// Water
 				if (!flying && mouvement != MouvementZildo.TOMBE) {
 					inWater = true;
@@ -752,7 +755,7 @@ public abstract class Perso extends Element {
 			default:
 				if (isZildo() && bottomLess) {
 					// Make hero fall if he reach the border of the hill
-					if (!tileCollision.collide((int) x % 16, (int) y % 16, onmap, Reverse.NOTHING, Rotation.NOTHING)) {
+					if (!tileCollision.collide((int) x % 16, (int) y % 16, onmap, Reverse.NOTHING, Rotation.NOTHING, 0)) {
 						fall = true;
 					}
 					break;
@@ -1011,12 +1014,14 @@ public abstract class Perso extends Element {
 		setMouvement(MouvementZildo.VIDE); // Jump is over, get back to regular movement
 		
 		boolean platformUnder = checkPlatformUnder();
-		// Si Zildo atterit dans l'eau, on le remet à son ancienne position avec un coeur de moins
 
 		if (!platformUnder && nature == TileNature.WATER) {
 			// Character is fallen in the water !
 			diveAndWound();
 		} else {
+			if (nature == TileNature.WATER_MUD) {
+				inWater = true;
+			}
 			landOnGround();
 		}
 	}
@@ -1058,6 +1063,7 @@ public abstract class Perso extends Element {
 	
 	public void diveAndWound() {
 		if (action == null && !underWater) {
+			// If hero lands in water, put back in his ancient location and removes a moon piece
 			EngineZildo.scriptManagement.execute("dieInWater", true);
 			underWater = true;
 		}

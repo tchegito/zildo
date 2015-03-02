@@ -69,6 +69,8 @@ public class Element extends SpriteEntity {
 	protected Element shadow;
 	protected boolean pushable;
 	
+	public Point defaultSize = new Point(8, 4);
+	
 	public Element() {
 		super();
 		this.initialize();
@@ -224,7 +226,7 @@ public class Element extends SpriteEntity {
 	 * 
 	 * @return boolean
 	 */
-	protected boolean physicMoveWithCollision() {
+	public boolean physicMoveWithCollision() {
 		if (ax == 0f && ay == 0f && az == 0f && vx == 0f && vy == 0f && vz == 0f) {
 			return false;
 		}
@@ -527,9 +529,7 @@ public class Element extends SpriteEntity {
 
 	protected TileNature getCurrentTileNature() {
 		Area area = EngineZildo.mapManagement.getCurrentMap();
-		int cx = (int) (x / 16);
-		int cy = (int) (y / 16);
-		return area.getCaseNature(cx, cy);
+		return area.getCaseNature((int) x, (int) y);
 	}
 	/**
 	 * Called when the object fall on the floor, whatever kind of floor.
@@ -950,8 +950,12 @@ public class Element extends SpriteEntity {
 		return s + " (" + nSpr + " - bank " + nBank + ")";
 	}
 	
+	public Point getDefaultSize() {
+		return defaultSize;
+	}
+	
 	public static Point getElementSize(Element e) {
-		Point size = new Point(8, 4); // Default size
+		Point size = e.getDefaultSize(); // Default size
 		if (e != null && e.getCollision() != null) {
 			Point elemSize = e.getCollision().size;
 			if (elemSize != null) {

@@ -188,7 +188,7 @@ public class PersoPlayer extends Perso {
 
 		setSpeed(Constantes.ZILDO_SPEED);
 		
-		//setAppearance(ControllablePerso.PRINCESS_BUNNY);
+		setAppearance(ControllablePerso.PRINCESS_BUNNY);
 	}
 
 	/**
@@ -602,7 +602,6 @@ public class PersoPlayer extends Perso {
 			}
 			break;
 		case TOMBE:
-			System.out.println(z);
 			z+=vz;
 			if (z > bottomZ) {
 				vz+=az;
@@ -612,6 +611,7 @@ public class PersoPlayer extends Perso {
 			}
 			break;
 		}
+		//System.out.println(z);
 
 
 	}
@@ -1467,10 +1467,12 @@ public class PersoPlayer extends Perso {
 		case ZILDO:
 			shadow.setDesc(ElementDescription.SHADOW);
 			feet.zoom=255;
+			defaultSize = new Point(8, 4);
 			break;
 		case PRINCESS_BUNNY:
 			shadow.setDesc(ElementDescription.SHADOW_SMALL);
 			feet.zoom=100;
+			defaultSize = new Point(2, 2);
 			break;
 		}
 	}
