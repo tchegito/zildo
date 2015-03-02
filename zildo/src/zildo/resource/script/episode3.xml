@@ -5,23 +5,26 @@
             <location name="sousbois1"/>
         </trigger>
         <action>
-	        <spawn what="firefly1" type="dice10>4:PURPLE_FIREFLY,BLUE_FIREFLY"
-	               pos="538, 138" z="4"
-	               foreground="true" />
-	        <spawn what="firefly2" type="dice10>4:PURPLE_FIREFLY,BLUE_FIREFLY"
-	               pos="568, 118" z="4"
-	               foreground="true" />
-
-
-	        <moveTo what="firefly2" pos="510,220" way="circular" unblock="true"/>
-	        
-	           	        
-	        <moveTo what="firefly1" pos="600,170" way="circular"/>
-	        <moveTo what="firefly1" pos="540,210" way="circular"/>
+	        <tile pos="34,4" action="fireflies" />
         </action>
     </quest>
-	
-    <!-- 
-   	<moveTo what="leaf" pos="-2*zildo.angle.x,-2*zildo.angle.y" way="circular" unblock="true"/>
-    -->
+
+    <tileAction id="fireflies">
+        <spawn what="firefly1" type="BLUE_FIREFLY"
+	               pos="x*16, y*16" z="4" alpha="180"
+	               foreground="true" />
+        <spawn what="firefly2" type="PURPLE_FIREFLY"
+               pos="x*16+8, y*16+3" z="4" alpha="210"
+               foreground="true" />
+       	<timer each="80+random*15">
+            <action>
+		        <moveTo what="firefly2" pos="x*16+random*60,y*16+random*30" way="circular" zoom="128+bell*256"/>
+            </action>
+        </timer>
+        <timer each="80+random*15">
+            <action>
+		        <moveTo what="firefly1" pos="x*16+random*60,y*16+random*30" way="circular" zoom="128+bell*256"/>
+            </action>
+        </timer>
+    </tileAction>
 </adventure>
