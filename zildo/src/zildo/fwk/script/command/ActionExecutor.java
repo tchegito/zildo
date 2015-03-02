@@ -214,7 +214,7 @@ public class ActionExecutor {
                     		if ("physic".equals(p_action.text)) {	// Only works with element
 	                    		entity.setMover(new PhysicMoveOrder(location.x, location.y));
                     		} else if ("circular".equals(p_action.text)) {
-                    			entity.setMover(new CircularMoveOrder(location.x, location.y));
+                    			entity.setMover(new CircularMoveOrder(location.x, location.y, p_action.zoom));
                     		} else {
                     			entity.setMover(new BasicMoveOrder(location.x, location.y, p_action.speed));
                     		}
