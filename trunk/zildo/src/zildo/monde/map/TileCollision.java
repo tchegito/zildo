@@ -44,22 +44,24 @@ public class TileCollision {
     public static TileCollision getInstance() {
     	return instance;
     }
-
-    final static int HSTUMP = 225 + 256*6;	// Higher stump's first tile
-    final static int WATER_MUD = 224 + 256*6;
     
-    public int getBottomZ(Tile p_tile, boolean blocked) {
+    public int getBottomZ(int p_posX, int p_posY, int p_nTile, boolean blocked) {
     	int z = blocked ? 16 : 0;
-    	if (p_tile != null && (p_tile.bank == 0 || p_tile.bank == 6)) {
-    		switch (p_tile.getValue()) {
+    	int bank = p_nTile >> 8;
+    	if (bank == 0 || bank == 6) {
+    		switch (p_nTile) {
     		case 159: case 160: case 161: case 162:
     			z = 5;
     			break;
-    		case HSTUMP: case HSTUMP+1: case HSTUMP+2: case HSTUMP+3:
+    		case Tile.T_HSTUMP: case Tile.T_HSTUMP+1: case Tile.T_HSTUMP+2: case Tile.T_HSTUMP+3:
     			z = 10;
     			break;
-    		case WATER_MUD:
-    			z=-2;
+    		case Tile.T_WATER_MUD:
+    			if (tileInfos[p_nTile].collide(p_posX, p_posY)) {
+    				z=0;
+    			} else {
+    				z=-2;
+    			}
     			break;
     		}
     	}
@@ -67,17 +69,12 @@ public class TileCollision {
     }
     
     public boolean collide(int p_posX, int p_posY, Tile p_tile, int z) {
-    	boolean result =  collide(p_posX, p_posY, p_tile.getValue(), p_tile.reverse, p_tile.rotation);
-    	
-    	// Check altitude depending on tiles
-    	if (result || z < 0) {
-    		int bottomZ = getBottomZ(p_tile, true);
-    		result = z < bottomZ;
-    	}
+    	boolean result =  collide(p_posX, p_posY, p_tile.getValue(), p_tile.reverse, p_tile.rotation, z);
+
     	return result;
     }
     
-    public boolean collide(int p_posX, int p_posY, int p_nTile, Reverse p_reverse, Rotation p_rotate) {
+    public boolean collide(int p_posX, int p_posY, int p_nTile, Reverse p_reverse, Rotation p_rotate, int p_z) {
     	int px = p_posX;
     	int py = p_posY;
     	//if (true) return false;
@@ -99,7 +96,14 @@ public class TileCollision {
     		px = dest.x;
     		py = dest.y;
     	}
-		return tileInfos[p_nTile].collide(px, py);
+		boolean result = tileInfos[p_nTile].collide(px, py);
+    	
+    	// Check altitude depending on tiles
+    	if (result || p_z < 0) {
+    		int bottomZ = getBottomZ(p_posX, p_posY, p_nTile, true);
+    		result = p_z < bottomZ;
+    	}
+    	return result;
     }
 
     /**

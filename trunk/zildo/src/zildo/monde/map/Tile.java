@@ -45,7 +45,10 @@ public class Tile implements Cloneable {
 		WATER_MUD,	// Little mud, where character can walk
 		REGULAR;
 	};
-	
+
+    public final static int T_HSTUMP = 225 + 256*6;	// Higher stump's first tile
+    public final static int T_WATER_MUD = 224 + 256*6;
+    
 	public Tile(int p_bank, int p_index, Case p_parent) {
 		bank = (byte) (p_bank & 15);
 		index = p_index;

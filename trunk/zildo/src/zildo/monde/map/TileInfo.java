@@ -42,6 +42,7 @@ public class TileInfo {
 		HALF, // One half of the tile is walkable.
 		HALF_CORNER, // One half-quarter is walkable (diagonally)
 		QUARTER,	// 4 pixel-sized bar
+		CUSTOM;
 	}
 
 	public Template template;
@@ -117,6 +118,9 @@ public class TileInfo {
 
 		case QUARTER:
 			return collideQuarter(blockAngle, p_posX, p_posY);
+			
+		case CUSTOM:
+			return collideCustom(blockAngle, p_posX, p_posY);
 			
 		case FULL:
 		default:
@@ -202,6 +206,14 @@ public class TileInfo {
 		}
 	}
 	
+	private boolean collideCustom(Angle p_angle, int p_posX, int p_posY) {
+		//switch (p_angle) {
+		
+		//}
+		// Mud water
+		return p_posX < 3 || p_posY < 4 || p_posX > 13 || p_posY > 12;
+	}
+	
 	/**
 	 * Returns TRUE if given TileInfo is equals to the current one.
 	 */
@@ -236,9 +248,9 @@ public class TileInfo {
 				if (p_value > ((7 << 4) + 15)) {
 					return null;
 				}
-				if ((p_value & 7) > 6 && (p_value & 7) <= 7) {
+				/*if ((p_value & 7) > 6 && (p_value & 7) <= 7) {
 					return null;
-				}
+				}*/
 				if ((p_value & 7) == 0 && p_value > 0) {
 					return null;
 				}
