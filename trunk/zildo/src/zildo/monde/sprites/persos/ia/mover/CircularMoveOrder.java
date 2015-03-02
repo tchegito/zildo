@@ -19,13 +19,19 @@
 
 package zildo.monde.sprites.persos.ia.mover;
 
+import zildo.fwk.script.context.IEvaluationContext;
+import zildo.fwk.script.context.SpriteEntityContext;
+import zildo.fwk.script.logic.FloatExpression;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.util.Pointf;
 
 /**
  * Movement which goes from initial location to given one.
  * 
- * To do so, we determine an angle between PI/4 and PI/2
+ * To do so, we describe a circle arc of PI/4 angle.
+ * 
+ * Note that contrary to PhysicMover, we haven't any placeholder here. We move the linked element directly.
+ * 
  * @author Tchegito
  *
  */
@@ -38,6 +44,8 @@ public class CircularMoveOrder extends MoveOrder {
 	int pasX, pasY;
 	
 	Element mobileElement;
+	FloatExpression zoomExpr;
+	IEvaluationContext ctx;
 	
 	final int nbFrames = 100;
 	
@@ -47,8 +55,13 @@ public class CircularMoveOrder extends MoveOrder {
 	 * @param x
 	 * @param y
 	 */
-	public CircularMoveOrder(int x, int y) {
+	public CircularMoveOrder(int x, int y, FloatExpression zoomExpr) {
 		super(x, y);
+		this.zoomExpr = zoomExpr;
+	}
+	
+	public CircularMoveOrder(int x, int y) {
+		this(x, y, null);
 	}
 
 	@Override
@@ -57,13 +70,12 @@ public class CircularMoveOrder extends MoveOrder {
 		mobileElement.vx = (float) ( radius.x * Math.cos(angle) * pasX * factor);
 		mobileElement.vy = (float) (-radius.y * Math.sin(angle) * pasY * factor);
 		mobileElement.physicMoveWithCollision();
-		//mobile.animate();
+		
+		if (zoomExpr != null) {
+			mobileElement.zoom = (int) zoomExpr.evaluate(ctx);
+			//mobileElement.zoom = 128 + Math.abs((int) (256 * Math.cos(Math.PI / nbFrames * iota)));
+		}
 
-		/*
-		Pointf p = new Pointf(placeHolder.x - mobile.x, placeHolder.y - mobile.y);
-		mobile.x = placeHolder.x;
-		mobile.y = placeHolder.y;
-*/
 		if (iota == nbFrames) {
 			target = null;
 			active = false;
@@ -90,5 +102,20 @@ public class CircularMoveOrder extends MoveOrder {
 		pasY = target.y > mobile.y ? -1 : 1;
 		factor = Math.PI/2 / nbFrames;
 		iota = 0;
+		
+		// Context
+		if (zoomExpr != null) {
+			ctx = new SpriteEntityContext(mobileElement) {
+				
+				@Override
+				public float getValue(String key) {
+					if ("bell".equals(key)) {
+						return (float) Math.abs(Math.cos(Math.PI / nbFrames * iota));
+					}
+					return super.getValue(key);
+				}
+
+			};
+		}
 	}
 }
