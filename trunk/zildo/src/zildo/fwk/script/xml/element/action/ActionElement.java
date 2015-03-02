@@ -86,6 +86,7 @@ public class ActionElement extends LanguageElement {
 	public FloatExpression[] a;
 	public FloatExpression[] f;
 	public FloatExpression alphaA;
+	public FloatExpression zoom;	// Used in 'moveTo'
 	public int alpha;
 	public int deltaFloor;	// Only for 'perso' action
 	
@@ -167,6 +168,7 @@ public class ActionElement extends LanguageElement {
 			backward = isTrue("backward");
 			open = isTrue("open");
 			text = readAttribute("way");
+			zoom = getFloatExpr("zoom");
 		case pos:
 			// Position
 			if (!strPos.isEmpty()) {

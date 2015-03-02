@@ -20,6 +20,7 @@ public class FloatExpression {
 	// Flag to ask optimization or not. It exists just for testing purpose.
 	public static boolean OPTIMIZE = true;
 	
+	protected static final String RESERVED_WORD_BELL = "bell";
 	protected static final String RESERVED_WORD_RANDOM = "random";
 	protected static final String RESERVED_WORD_DICE10 = "dice10";
 	protected static final String RESERVED_WORD_ZILDO = "zildo";
@@ -49,7 +50,8 @@ public class FloatExpression {
 				value = entireExp.evaluate(null);
 				// Look for any reserved word
 				if (p_expression.indexOf(RESERVED_WORD_DICE10) == -1 &&
-						p_expression.indexOf(RESERVED_WORD_RANDOM) == -1) {
+						p_expression.indexOf(RESERVED_WORD_RANDOM) == -1 &&
+						p_expression.indexOf(RESERVED_WORD_BELL) == -1) {
 					entireExp = null;
 				}
 			} catch (NoContextException e) {
