@@ -805,21 +805,6 @@ public class PersoPlayer extends Perso {
 			}
 	
 			// On affiche Zildo
-
-			if (pv > 0) {
-				boolean touche = (mouvement == MouvementZildo.TOUCHE || getCompte_dialogue() != 0);
-				// Zildo blink
-				touche = (touche && ((compteur_animation >> 1) % 2) == 0);
-				visible = !touche;
-				for (Element elem : persoSprites) { // Blink linked elements too
-					if (elem.isVisible()) {
-						elem.setVisible(visible);
-					}
-				}
-			} else {
-				// Zildo should stay focused at die scene
-				setSpecialEffect(EngineFX.FOCUSED);
-			}
 	
 			// Ajustemenent
 			sprModel = EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO).get_sprite(nSpr + addSpr);
@@ -990,6 +975,22 @@ public class PersoPlayer extends Perso {
 
 		// End of specific rendering, depending on appearance (hero, or bunny)
 		// Now, common rendering
+		
+
+		if (pv > 0) {
+			boolean touche = (mouvement == MouvementZildo.TOUCHE || getCompte_dialogue() != 0);
+			// Zildo blink
+			touche = (touche && ((compteur_animation >> 1) % 2) == 0);
+			visible = !touche;
+			for (Element elem : persoSprites) { // Blink linked elements too
+				if (elem.isVisible()) {
+					elem.setVisible(visible);
+				}
+			}
+		} else {
+			// Zildo should stay focused at die scene
+			setSpecialEffect(EngineFX.FOCUSED);
+		}
 		
 		feet.setVisible(pv > 0 && (inWater || inDirt));
 		feet.setX(x + (angle.isVertical() || angle == Angle.OUEST ? shiftWetFeet : 0));

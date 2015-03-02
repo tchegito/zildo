@@ -955,7 +955,7 @@ public class Element extends SpriteEntity {
 	}
 	
 	public static Point getElementSize(Element e) {
-		Point size = e.getDefaultSize(); // Default size
+		Point size = e == null ? new Point(8, 4) : e.getDefaultSize(); // Default size
 		if (e != null && e.getCollision() != null) {
 			Point elemSize = e.getCollision().size;
 			if (elemSize != null) {

@@ -46,6 +46,7 @@ public class Tile implements Cloneable {
 		REGULAR;
 	};
 
+	public final static int T_WATER_FEW = 78 + 256*3;
     public final static int T_HSTUMP = 225 + 256*6;	// Higher stump's first tile
     public final static int T_WATER_MUD = 224 + 256*6;
     
