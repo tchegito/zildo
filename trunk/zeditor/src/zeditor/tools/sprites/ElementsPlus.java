@@ -320,7 +320,7 @@ public class ElementsPlus extends SpriteBanque {
 				// Fire ring
 				new Zone(110, 85, 12, 10),
 			    // Purple/Blue firefly
-			    new Zone(197, 59, 6, 6), new Zone(204, 59, 6, 6),
+			    new Zone(197, 59, 6, 6), new Zone(211, 59, 6, 6),
 				// Fire ball (for dragon) (243)
 			    new Zone(256,0, 41, 42),
 
