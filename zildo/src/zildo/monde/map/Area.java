@@ -270,10 +270,12 @@ public class Area implements EasySerializable {
 	}
 	
 	final IntSet waterBank = new IntSet(154, 156, 188, 189, 190, 255);
-	final IntSet waterDeep = new IntSet(256*6 + 224).addRange(108, 138).addRange(208, 222)
+	final IntSet waterDeep = new IntSet().addRange(108, 138).addRange(208, 222)
 			.addRange(224, 228).addRange(230, 245).addRange(247, 253);
 
-	public TileNature getCaseNature(int x, int y) {
+	public TileNature getCaseNature(int xx, int yy) {
+		int x = xx / 16;
+		int y = yy / 16;
 		Case temp = this.get_mapcase(x, y);
 		if (temp == null) {
 			return null;
@@ -285,19 +287,28 @@ public class Area implements EasySerializable {
 			return TileNature.BOTTOMLESS;
 		}
 		
-		if (val == 256*6 + 224 || val == 78 + 256*3) {
-			return TileNature.WATER_MUD;
-		}
-		
-		// 2: water (could be on back or back2)
-		Tile tile;
-		if (temp.getBackTile2() != null) {
-			tile = temp.getBackTile2();
+		if (val == 78 + 256*3) {
+			return TileNature.WATER;
+		} else if (val == Tile.T_WATER_MUD) {
+			// Make double check with following 'if' clause
 		} else {
-			tile = temp.getBackTile();
+			// 2: water (could be on back or back2)
+			Tile tile;
+			if (temp.getBackTile2() != null) {
+				tile = temp.getBackTile2();
+			} else {
+				tile = temp.getBackTile();
+			}
+			val = tile.getValue();
 		}
-		val = tile.getValue();
 		
+		if (val == Tile.T_WATER_MUD) {
+			// Double check for water mud : it doesn't cover the whole tile
+			int mx = xx % 16;
+			int my = yy % 16;
+			if (TileCollision.getInstance().getBottomZ(mx, my, Tile.T_WATER_MUD, false) <0)
+				return TileNature.WATER_MUD;
+		}
 		if ( waterBank.contains(val - 256*2) || waterDeep.contains(val)) {
 			return TileNature.WATER;
 		}

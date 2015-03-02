@@ -385,7 +385,7 @@ public class MapManagement {
 		int cy = Math.round(p.y);
 		int bottomZ = -2;
 		if (currentMap != null) {
-			for (Point pt : tabPointRef) {
+			for (Point pt : new Point[] {new Point(0, 0)}) { //tabPointRef) {
 				int mx = (cx + (size.x / 2) * pt.x);
 				int my = (cy + (size.y / 2) * pt.y);
 				Tile tile = currentMap.readmap(mx/16, my/16, false);
