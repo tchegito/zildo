@@ -15,4 +15,9 @@ public interface IEvaluationContext {
 	public float getValue(String key);
 	
 	public Object getActor();
+	
+	// For local variables
+	public String registerVariable(String name);
+	
+	public String getString(String key);
 }

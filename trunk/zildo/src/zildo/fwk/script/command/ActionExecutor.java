@@ -128,7 +128,7 @@ public class ActionExecutor {
         		// Reserved word : perso himself, in case of a contextual script
         		perso = (Perso) context.getActor();
         	} else {
-        		perso = EngineZildo.persoManagement.getNamedPerso(p_action.who);
+        		perso = getNamedPerso(p_action.who);
         	}
         	// Set context for runtime evaluation
         	if (p_action.location != null) {
@@ -151,7 +151,7 @@ public class ActionExecutor {
             	} else if ("camera".equals(p_action.what)) {
             		currentPos = ClientEngineZildo.mapDisplay.getCamera();
             	} else {
-                	SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
+                	SpriteEntity entity = getNamedEntity(p_action.what);
                 	currentPos = new Point(entity.x, entity.y);
             	}
             	if (currentPos == null) {
@@ -180,7 +180,7 @@ public class ActionExecutor {
                         ClientEngineZildo.mapDisplay.setCamera(location);
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
                     } else {
-                    	SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
+                    	SpriteEntity entity = getNamedEntity(p_action.what);
                     	if (location != null) {
                     		entity.x = location.x;
                     		entity.y = location.y;
@@ -209,7 +209,7 @@ public class ActionExecutor {
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
                     } else {
                     	SpriteEntity entity;
-                   		entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
+                   		entity = getNamedEntity(p_action.what);
                     	if (entity != null) {
                     		if ("physic".equals(p_action.text)) {	// Only works with element
 	                    		entity.setMover(new PhysicMoveOrder(location.x, location.y));
@@ -249,7 +249,7 @@ public class ActionExecutor {
 	                    case OBSERVE:
 	                    case FOLLOW:
 		                    if (param != null) {
-		                    	SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(param);
+		                    	SpriteEntity entity = getNamedEntity(param);
 		                    	if (entity != null && !entity.getEntityType().isEntity()) {
 		                    		Element elemToObserve =  (Element) entity;
 		                    		perso.setFollowing(elemToObserve);
@@ -289,7 +289,7 @@ public class ActionExecutor {
                 case focus:	// Camera focus on given character
                 	SpriteEntity toFocus = perso;
                 	if (p_action.what != null) {
-                		toFocus = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
+                		toFocus = getNamedEntity(p_action.what);
                 	}
                 	if (toFocus == null) {
                 		ClientEngineZildo.mapDisplay.setFocusedEntity(null);
@@ -335,7 +335,7 @@ public class ActionExecutor {
                 		}
                 	} else if (perso != null) {
                 		// This is somebody else
-                		Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+                		Element elem = getNamedElement(p_action.what);
                 		perso.addPersoSprites(elem);
                 	}
                 	achieved=true;
@@ -391,7 +391,7 @@ public class ActionExecutor {
                 	} else {
 	                	Element toRemove;
 	                	if (p_action.what != null) {
-	                		toRemove = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+	                		toRemove = getNamedElement(p_action.what);
 	                	} else {
 	                		toRemove = perso;
 	                    	EngineZildo.persoManagement.removePerso((Perso) toRemove);
@@ -417,7 +417,7 @@ public class ActionExecutor {
             		achieved=true;
                 	break;
                 case activate:
-            		Element toActivate = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+            		Element toActivate = getNamedElement(p_action.what);
             		ElementGear gearToActivate = (ElementGear) toActivate;
             		gearToActivate.activate(p_action.activate);
             		break;
@@ -486,7 +486,7 @@ public class ActionExecutor {
                 		// So we can't just set them invisible, because it would be unefficient.
                 		perso.askVisible(p_action.activate);
                 	} else if (p_action.what != null) {
-                    	Element elem = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+                    	Element elem = getNamedElement(p_action.what);
                 		if (elem != null) {
                 			elem.setVisible(p_action.activate);
                 		}
@@ -650,7 +650,7 @@ public class ActionExecutor {
      */
     private void waitForEndAction(ActionElement p_action) {
         String who = p_action.who;
-        Perso perso = EngineZildo.persoManagement.getNamedPerso(who);
+        Perso perso = getNamedPerso(who);
         boolean achieved = false;
         switch (p_action.kind) {
             case moveTo:
@@ -663,7 +663,7 @@ public class ActionExecutor {
             	} else if ("camera".equals(p_action.what)) {
             		achieved=ClientEngineZildo.mapDisplay.getTargetCamera() == null;
             	} else {
-            		SpriteEntity entity = EngineZildo.spriteManagement.getNamedEntity(p_action.what);
+            		SpriteEntity entity = getNamedEntity(p_action.what);
             		achieved = (entity != null && entity.getMover() != null && !entity.getMover().isActive());
             	}
                 break;
@@ -682,7 +682,7 @@ public class ActionExecutor {
            		achieved=ClientEngineZildo.guiDisplay.isFadeOver();
             	break;
             case activate:
-        		Element toActivate = EngineZildo.spriteManagement.getNamedElement(p_action.what);
+        		Element toActivate = getNamedElement(p_action.what);
         		ElementGear gearToActivate = (ElementGear) toActivate;
         		achieved=!gearToActivate.isActing();
             	break;
@@ -720,13 +720,44 @@ public class ActionExecutor {
     	}
     }
 
+    private String handleLocalVariable(String name) {
+    	String result = name;
+    	if (name.startsWith("loc:")) {
+    		result = context.registerVariable(name);
+    	}
+    	return result;
+    }
+    
+    /** All getter with naming entity/element/perso goes here, to handle local variable **/
+    private SpriteEntity getNamedEntity(String name) {
+    	return EngineZildo.spriteManagement.getNamedEntity(getVariableName(name));
+    }
+    
+    private Element getNamedElement(String name) {
+    	return EngineZildo.spriteManagement.getNamedElement(getVariableName(name));
+    }
+
+    private Perso getNamedPerso(String name) {
+    	return EngineZildo.persoManagement.getNamedPerso(getVariableName(name));
+    }
+    
+    private String getVariableName(String name) {
+    	String searchName = name;
+    	if (context != null && name != null && name.startsWith("loc:")) {
+    		searchName = context.getString(name);
+    	}
+    	return searchName;
+    }
+    
     private Element actionSpawn(ActionElement p_action, Point location, boolean p_ignoreWho) {
     	Element elem = null;
+    	String name = null;
     	if (!p_ignoreWho && p_action.who != null) {
-    		if (EngineZildo.persoManagement.getNamedPerso(p_action.who) == null) {
+    		name = handleLocalVariable(p_action.who);
+    		if (getNamedPerso(p_action.who) == null) {
 	    		// Spawn the character only if no one with the same name exists yet
 	    		PersoDescription desc = PersoDescription.valueOf(p_action.getSpawnType());
-	    		elem = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, p_action.who, p_action.val);
+	    		elem = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, name, p_action.val);
 	    		Perso perso = (Perso) elem;
 	    		perso.setSpeed(p_action.speed);
 	    		perso.setEffect(p_action.effect);
@@ -740,7 +771,8 @@ public class ActionExecutor {
 	            EngineZildo.spriteManagement.spawnPerso(perso);
     		}
     	} else {	// Spawn a new element
-    		if (EngineZildo.spriteManagement.getNamedElement(p_action.what) == null) {
+    		name = handleLocalVariable(p_action.what);
+    		if (getNamedElement(name) == null) {
     			// Spawn only if doesn't exist yet
         		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
         		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : Reverse.fromInt(p_action.reverse.evaluateInt());
@@ -758,7 +790,7 @@ public class ActionExecutor {
         		}
         		entity.setFloor(p_action.floor);
         		entity.rotation = rot;
-        		entity.setName(p_action.what);
+        		entity.setName(name);
         		if (p_action.effect != null) {
         			entity.setSpecialEffect(EngineFX.valueOf(p_action.effect));
         		}

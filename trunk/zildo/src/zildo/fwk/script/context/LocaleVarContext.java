@@ -19,41 +19,30 @@
 
 package zildo.fwk.script.context;
 
-import zildo.monde.util.Point;
+import java.util.HashMap;
+import java.util.Map;
+
+import zildo.fwk.collection.IdGenerator;
 
 /**
- * Context around a tile location.<br/>
- * 
- * Note that location is in TILE coordinates. So, in order to spawn an entity at the tile location, we HAVE TO multiply by 16
- * each coordinates.
- * 
  * @author Tchegito
  *
  */
-public class TileLocationContext extends LocaleVarContext implements IEvaluationContext {
+public abstract class LocaleVarContext implements IEvaluationContext {
 
-	final Point loc;
+	static private IdGenerator localVariableNaming = new IdGenerator(256);
+
+	Map<String, String> locales = new HashMap<String, String>();
 	
-	public TileLocationContext(Point p) {
-		loc = new Point(p);
+	public String registerVariable(String name) {
+		int id = localVariableNaming.pop();
+		String varName = "var:"+id;
+		locales.put(name, varName);
+		return varName;
 	}
 	
-	@Override
-	public float getValue(String key) {
-		if (key.length() == 1) {	// Filter length to avoid too much comparisons
-			if ("x".equals(key)) {
-				return loc.x;
-			} else if ("y".equals(key)) {
-				return loc.y;
-			}
-		}
-		// Don't crash ! But result could be weird
-		return 0;
-	}
-
-	@Override
-	public Object getActor() {
-		return null;
+	public String getString(String key) {
+		return locales.get(key);
 	}
 
 }

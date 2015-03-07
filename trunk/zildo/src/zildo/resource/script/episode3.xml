@@ -6,24 +6,20 @@
         </trigger>
         <action>
 	        <tile pos="34,4" action="fireflies" />
-        </action>
+            <tile pos="34,4" action="fireflies" />
+            <tile pos="34,4" action="fireflies" />
+            </action>
     </quest>
 
     <tileAction id="fireflies">
-        <spawn what="firefly1" type="PURPLE_FIREFLY"
+        <spawn what="loc:firefly" type="PURPLE_FIREFLY"
 	               pos="x*16, y*16" z="4" alpha="180"
 	               foreground="true" />
-        <spawn what="firefly2" type="PURPLE_FIREFLY"
-               pos="x*16+8, y*16+3" z="4" alpha="210"
-               foreground="true" />
        	<timer each="80+random*15">
             <action>
-		        <moveTo what="firefly2" pos="x*16+random*40,y*16+random*30" way="circular" zoom="128+bell*128"/>
-            </action>
-        </timer>
-        <timer each="80+random*15">
-            <action>
-		        <moveTo what="firefly1" pos="x*16+random*40,y*16+random*30" way="circular" zoom="128+bell*128"/>
+                <!-- 'unblock' is REALLY important here ! Because without it, scripts keep on increasing, because 'moveTo' is never declared 'achieved'
+                     because the following one at the next timer triggering will set a new destination, meaning previous one will never be reached. -->
+		        <moveTo what="loc:firefly" pos="x*16+random*40,y*16+random*30" way="circular" zoom="128+bell*128" unblock="true"/>
             </action>
         </timer>
     </tileAction>
