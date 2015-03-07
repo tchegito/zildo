@@ -10,7 +10,7 @@
     </quest>
 
     <tileAction id="fireflies">
-        <spawn what="firefly1" type="BLUE_FIREFLY"
+        <spawn what="firefly1" type="PURPLE_FIREFLY"
 	               pos="x*16, y*16" z="4" alpha="180"
 	               foreground="true" />
         <spawn what="firefly2" type="PURPLE_FIREFLY"
@@ -18,12 +18,12 @@
                foreground="true" />
        	<timer each="80+random*15">
             <action>
-		        <moveTo what="firefly2" pos="x*16+random*60,y*16+random*30" way="circular" zoom="128+bell*256"/>
+		        <moveTo what="firefly2" pos="x*16+random*40,y*16+random*30" way="circular" zoom="128+bell*128"/>
             </action>
         </timer>
         <timer each="80+random*15">
             <action>
-		        <moveTo what="firefly1" pos="x*16+random*60,y*16+random*30" way="circular" zoom="128+bell*256"/>
+		        <moveTo what="firefly1" pos="x*16+random*40,y*16+random*30" way="circular" zoom="128+bell*128"/>
             </action>
         </timer>
     </tileAction>
