@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
@@ -76,6 +77,9 @@ public class ScriptExecutor {
 	 */
 	public void render() {
 		if (!scripts.isEmpty()) {
+			if (Zildo.infoDebugScript) {
+				System.out.println(scripts.size() + " scripts running");
+			}
 			// 0) Terminate scripts asked by external methods (#stopFromContext for example)
 			for (ScriptProcess process : toTerminate) {
 				terminate(process);

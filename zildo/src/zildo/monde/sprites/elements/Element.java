@@ -943,7 +943,7 @@ public class Element extends SpriteEntity {
 
 	@Override
 	public String toString() {
-		String s = x + ", " + y;
+		String s = (name != null ? (name+"\n") : "") + x + ", " + y;
 		if (nBank == SpriteBank.BANK_ELEMENTS) {
 			return s + " (" + ElementDescription.fromInt(nSpr) + ")";
 		}

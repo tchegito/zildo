@@ -26,7 +26,7 @@ import zildo.monde.sprites.persos.Perso;
  * @author Tchegito
  *
  */
-public class SpriteEntityContext implements IEvaluationContext {
+public class SpriteEntityContext extends LocaleVarContext implements IEvaluationContext {
 
 	SpriteEntity entity;
 	Perso perso;
