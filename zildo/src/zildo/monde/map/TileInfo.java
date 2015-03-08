@@ -210,8 +210,8 @@ public class TileInfo {
 		//switch (p_angle) {
 		
 		//}
-		// Mud water
-		return p_posX < 3 || p_posY < 4 || p_posX > 13 || p_posY > 12;
+		// Mud water : returns TRUE if hero is on 'z=0' part
+		return false; //p_posX < 3 || p_posY < 4 || p_posX > 13 || p_posY > 12;
 	}
 	
 	/**

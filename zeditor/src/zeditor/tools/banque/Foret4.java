@@ -124,11 +124,12 @@ public class Foret4 extends Banque {
 				new Point(208, 112), new Point(224, 112), new Point(240, 112),	// Blue
 				new Point(208, 128), new Point(224, 128), new Point(240, 128),	// Blue pack
 				new Point(176, 128), new Point(192, 144), new Point(208, 144),	// Red flower
-				// Water hole
+				// Water mud
 				new Point(224, 144),
 				// Higher stump
 				new Point(144, 176), new Point(160, 176), new Point(144, 192), new Point(160, 192),
-		
+				// Water mud border
+				new Point(176, 160), new Point(192, 160)
 		
 		};
 

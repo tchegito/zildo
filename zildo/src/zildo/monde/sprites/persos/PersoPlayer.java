@@ -622,7 +622,7 @@ public class PersoPlayer extends Perso {
 	public void jump() {
 		//TODO: make it homogeneous with PathFinderSquirrel#setTarget
 		az = -0.1f;
-		vz = 1.2f;
+		vz = 1.1f;	// Adjust speed so as hero can jump to a log from a water mud
 		mouvement = MouvementZildo.TOMBE;
 	}
 	
@@ -645,7 +645,7 @@ public class PersoPlayer extends Perso {
 		sword.setVisible(false);
 
 		// Wet feet are displayed differently for each appearance
-		int shiftWetFeet = 1;
+		int shiftWetFeet = angle.isVertical() || angle == Angle.OUEST ? 1 : 0;
 		if (who == ControllablePerso.PRINCESS_BUNNY) {
 			// Player is controlling princess, so display her
 			setNSpr(PersoDescription.PRINCESS_BUNNY.nth(0));
@@ -660,6 +660,9 @@ public class PersoPlayer extends Perso {
 			shadow.setZ(tileBottomZ);
 			Constantes.ZILDO_SPEED = 1f;
 			int seqPos = 0;
+			
+			shiftWetFeet = -1 + 3;
+
 			switch (angle) {
 			case NORD:
 				seqPos = computePosSeqSprite(6);
@@ -678,19 +681,19 @@ public class PersoPlayer extends Perso {
 				setVisible(true);
 				break;
 			case EST:
+				xx -= 2;
+				//shiftWetFeet += 2;
 			case OUEST:
 				reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
 				setNSpr(PersoDescription.PRINCESS_BUNNY.nth(7 + computePosSeqSprite(3)));
 				setNBank(SpriteBank.BANK_PNJ3);
 				break;
 			}
-			xx -= 7;
+			xx -= 7 -3;
 			yy -= sprModel.getTaille_y()-1; //21;
 			shadow.setZ(shadow.z - 1);	// Display shadow under character => else, this would be weird ;)
 			setAjustedX((int) xx);
 			setAjustedY((int) yy);
-		
-			shiftWetFeet = -1;
 		} else {
 			// Appearance : Hero
 			if (isAffectedBy(AffectionKind.FIRE_DAMAGE_REDUCED)) {
@@ -993,7 +996,7 @@ public class PersoPlayer extends Perso {
 		}
 		
 		feet.setVisible(pv > 0 && (inWater || inDirt));
-		feet.setX(x + (angle.isVertical() || angle == Angle.OUEST ? shiftWetFeet : 0));
+		feet.setX(x + shiftWetFeet);
 		feet.setY(y + 9 + 1);
 		feet.setZ(3);
 		feet.setAddSpr((compteur_animation / 6) % 3);
