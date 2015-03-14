@@ -71,7 +71,7 @@ A trigger can be of 6 different kinds : (corresponding to [http://code.google.co
  * *location* : when a character reach a given location
    * name: map name
    * pos: location, in pixel coordinates
-   * radius: radius around the point indicated by 'pos'
+   * radius: radius around the point indicated by 'pos' (in tile coordinates)
    * tilePos: location, in tile coordinates
    * gear: mechanism type (BUTTON, TIMED_BUTTON)
    * mover: name of a moving platform
