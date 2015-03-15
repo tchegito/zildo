@@ -42,7 +42,7 @@
 		<wait value="50"/>
 		<moveTo who="isidore" pos="432,619"/> <!-- he stops his dance -->
 		<angle who="isidore" value="3"/>
-		<speak text="sousbois.isidore.3" who="zildo"/>
+		<speak text="sousbois.isidore.3" who="isidore"/>
 		<speak text="sousbois.roxy.1" who="zildo"/>
 		<speak text="sousbois.isidore.4" who="isidore"/>
 		<speak text="sousbois.roxy.2" who="zildo"/>
@@ -53,6 +53,8 @@
 		<wait value="50"/>
 		<angle who="zildo" value="2"/>
 		<wait value="50"/>
+		<moveTo who="isidore" pos="-1,0" delta="true"/>
+		<sound name="MoonFusion"/>
 		<speak text="sousbois.isidore.7" who="isidore"/>
 		<angle who="zildo" value="1"/>
 		<speak text="sousbois.roxy.4" who="zildo"/>
@@ -67,6 +69,7 @@
 		<focus who="zildo" delta="true"/>
 		<moveTo who="zildo" pos="491,643" unblocked="true"/>
 		<moveTo who="isidore" pos="452,580"/>
+		<wait value="20"/>
 		<angle who="zildo" value="2"/>
 		<speak text="sousbois.roxy.8" who="zildo"/>				
 	</scene>
