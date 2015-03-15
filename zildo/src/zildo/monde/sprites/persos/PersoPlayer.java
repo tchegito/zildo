@@ -669,7 +669,7 @@ public class PersoPlayer extends Perso {
 				setNSpr(PersoDescription.PRINCESS_BUNNY.nth(11 + seqPos % 3));
 				setNBank(SpriteBank.BANK_PNJ3);
 				reverse = seqPos > 2 ? Reverse.HORIZONTAL : Reverse.NOTHING;
-				shadow.setX(x-1);	// adjust shadow
+				shadow.setX(x+2);	// adjust shadow
 				setVisible(true);
 				break;
 			case SUD:
@@ -677,7 +677,7 @@ public class PersoPlayer extends Perso {
 				setNSpr(PersoDescription.PRINCESS_BUNNY.nth(3 + seqPos % 3));
 				setNBank(SpriteBank.BANK_PNJ3);
 				reverse = seqPos > 2 ? Reverse.HORIZONTAL : Reverse.NOTHING;
-				shadow.setX(x-1);	// adjust shadow
+				shadow.setX(x+2);	// adjust shadow
 				setVisible(true);
 				break;
 			case EST:
@@ -687,6 +687,7 @@ public class PersoPlayer extends Perso {
 				reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
 				setNSpr(PersoDescription.PRINCESS_BUNNY.nth(7 + computePosSeqSprite(3)));
 				setNBank(SpriteBank.BANK_PNJ3);
+				shadow.setX(x+1);	// adjust shadow
 				break;
 			}
 			xx -= 7 -3;

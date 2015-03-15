@@ -5,20 +5,85 @@
             <location name="sousbois1"/>
         </trigger>
         <action>
+            <music name="Squirrel"/>
 	        <tile pos="34,4" action="fireflies" />
             <tile pos="34,4" action="fireflies" />
             <tile pos="34,4" action="fireflies" />
-            </action>
+        </action>
     </quest>
-
+    <quest name="roxyMeetIsidore">
+        <trigger>
+	        <location name="sousbois1" pos="423,632" radius="2"/> <!--  tile:25,39 -->
+        </trigger>
+        <action>
+            <exec script="meetIsidore"/>
+        </action>
+    </quest>
+    
+    <scene id="meetIsidore">
+        <!--  Remember that Roxy's character when she's a squirrel, is 'zildo' ( ... ) -->
+        <angle who="zildo" value="1"/>
+        <focus who="isidore" delta="true"/>
+        <wait value="60"/>
+        <angle who="isidore" value="3"/>
+		<speak text="sousbois.isidore.0" who="isidore"/>
+        <moveTo who="isidore" pos="432,619"/>
+        <moveTo who="zildo" pos="409,632"/>
+		<speak text="sousbois.isidore.1" who="isidore"/>
+		<speak text="sousbois.roxy.0" who="zildo"/>
+		<speak text="sousbois.isidore.2" who="isidore"/>
+		<wait value="20"/> <!--  Isidore turns around Roxy and wait 2 times -->
+		<moveTo who="isidore" pos="401,614"/>
+		<angle who="isidore" value="2"/>
+		<wait value="30"/>
+		<moveTo who="isidore" pos="426,620"/>
+		<moveTo who="isidore" pos="426,640"/>
+		<angle who="isidore" value="3"/>
+		<wait value="50"/>
+		<moveTo who="isidore" pos="432,619"/> <!-- he stops his dance -->
+		<angle who="isidore" value="3"/>
+		<speak text="sousbois.isidore.3" who="zildo"/>
+		<speak text="sousbois.roxy.1" who="zildo"/>
+		<speak text="sousbois.isidore.4" who="isidore"/>
+		<speak text="sousbois.roxy.2" who="zildo"/>
+		<speak text="sousbois.isidore.5" who="isidore"/>
+		<speak text="sousbois.roxy.3" who="zildo"/>
+		
+		<speak text="sousbois.isidore.6" who="isidore"/>
+		<wait value="50"/>
+		<angle who="zildo" value="2"/>
+		<wait value="50"/>
+		<speak text="sousbois.isidore.7" who="isidore"/>
+		<angle who="zildo" value="1"/>
+		<speak text="sousbois.roxy.4" who="zildo"/>
+		<speak text="sousbois.isidore.8" who="isidore"/>
+		<speak text="sousbois.roxy.5" who="zildo"/>
+		<speak text="sousbois.isidore.9" who="isidore"/>
+		<speak text="sousbois.isidore.10" who="isidore"/>
+		<speak text="sousbois.roxy.6" who="zildo"/>
+		<speak text="sousbois.isidore.11" who="isidore"/>
+		<speak text="sousbois.roxy.7" who="zildo"/>
+		<speak text="sousbois.isidore.12" who="isidore"/>
+		<focus who="zildo" delta="true"/>
+		<moveTo who="zildo" pos="491,643" unblocked="true"/>
+		<moveTo who="isidore" pos="452,580"/>
+		<angle who="zildo" value="2"/>
+		<speak text="sousbois.roxy.8" who="zildo"/>				
+	</scene>
+    
     <tileAction id="fireflies">
         <spawn what="loc:firefly" type="PURPLE_FIREFLY"
 	               pos="x*16, y*16" z="4" alpha="180"
 	               foreground="true" />
        	<timer each="80+random*15">
             <action>
-                <!-- 'unblock' is REALLY important here ! Because without it, scripts keep on increasing, because 'moveTo' is never declared 'achieved'
-                     because the following one at the next timer triggering will set a new destination, meaning previous one will never be reached. -->
+                <!-- 'unblock' is REALLY important here ! Because without it, number of scripts keeps on increasing, because 
+                	 'moveTo' is never declared 'achieved' because the following one at the next timer triggering will set a 
+                	 new destination, meaning previous one will never be reached. 
+                	 Today, I see 2 options : 
+                	 1) add 'unblock' on such moveTo in timers, like here (manually or automatically)
+                	 2) ignore timer trigger if previous actions weren't all achieved 
+               	-->
 		        <moveTo what="loc:firefly" pos="x*16+random*40,y*16+random*30" way="circular" zoom="128+bell*128" unblock="true"/>
             </action>
         </timer>
