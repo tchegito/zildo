@@ -47,8 +47,8 @@ public class CheckRotate extends EngineUT {
 		int nTile = 256*3 + 252;
 		Point start = new Point(7, 9);
 		Point dest = Rotation.CLOCKWISE.rotate(start, 16, 16);
-		boolean a = TileCollision.getInstance().collide(start.x, start.y, nTile, Reverse.NOTHING, Rotation.NOTHING);
-		boolean b = TileCollision.getInstance().collide(dest.x,  dest.y,  nTile, Reverse.NOTHING, Rotation.CLOCKWISE);
+		boolean a = TileCollision.getInstance().collide(start.x, start.y, nTile, Reverse.NOTHING, Rotation.NOTHING, 0);
+		boolean b = TileCollision.getInstance().collide(dest.x,  dest.y,  nTile, Reverse.NOTHING, Rotation.CLOCKWISE, 0);
 		Assert.assertEquals(a, b);
 		Assert.assertEquals(false, a);
 	}
