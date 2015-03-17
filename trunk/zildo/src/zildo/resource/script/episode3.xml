@@ -9,6 +9,8 @@
 	        <tile pos="34,4" action="fireflies" />
             <tile pos="34,4" action="fireflies" />
             <tile pos="34,4" action="fireflies" />
+            
+            <tile pos="35,12" action="blueRain" />
         </action>
     </quest>
     <quest name="roxyMeetIsidore">
@@ -91,4 +93,16 @@
             </action>
         </timer>
     </tileAction>
+    
+    <tileAction id="blueRain">
+        <timer each="10+random*30">
+            <action>
+	         <spawn what="loc:drop" type="DROP_SMALL" pos="x*16+random*16,y*16+random*8" z="60"
+	             az="-0.01" vx="-0.1-random*0.1" alpha="100" alphaA="0.1" vy="0.1"/>
+	         <wait value="5000"/>
+	         <wait value="5000"/>
+	         <sprite what="loc:drop" type="DROP_MEDIUM"/>
+            </action>
+         </timer>
+	</tileAction>
 </adventure>
