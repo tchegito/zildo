@@ -30,15 +30,25 @@ import zildo.fwk.collection.IdGenerator;
  */
 public abstract class LocaleVarContext implements IEvaluationContext {
 
+	public final static String VAR_IDENTIFIER = "loc:";
+	
 	static private IdGenerator localVariableNaming = new IdGenerator(256);
 
 	Map<String, String> locales = new HashMap<String, String>();
 	
 	public String registerVariable(String name) {
 		int id = localVariableNaming.pop();
-		String varName = "var:"+id;
+		String varName = VAR_IDENTIFIER + id;
 		locales.put(name, varName);
 		return varName;
+	}
+	
+	public static void unregisterVariable(String name) {
+		if (name.startsWith(VAR_IDENTIFIER)) {
+			int id = Integer.valueOf(name.substring(VAR_IDENTIFIER.length()));
+			localVariableNaming.remove(id);
+			//locales.remove(name);
+		}
 	}
 	
 	public String getString(String key) {

@@ -22,6 +22,7 @@ package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.script.context.LocaleVarContext;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.Trigo;
 import zildo.monde.collision.Collision;
@@ -611,6 +612,9 @@ public class Element extends SpriteEntity {
 		}
 		TriggerElement trigger = TriggerElement.createFallTrigger(desc, nature);
 		EngineZildo.scriptManagement.trigger(trigger);
+		
+		// Unregister this element locale variable name, if any
+		LocaleVarContext.unregisterVariable(name);
 		return true;
 	}
 
