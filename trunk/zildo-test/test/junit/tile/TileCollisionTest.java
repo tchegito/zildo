@@ -69,7 +69,7 @@ public class TileCollisionTest extends EngineUT {
 					xx = 15-x;
 				}
 				boolean result = '1' == i.charAt(xx);
-				boolean col = tileCollision.collide(x, y, nTile, Reverse.NOTHING, Rotation.NOTHING);
+				boolean col = tileCollision.collide(x, y, nTile, Reverse.NOTHING, Rotation.NOTHING, 0);
 				Assert.assertTrue("collision should have been "+result+" for ("+x+", "+y+")", result == col);
 			}
 		}
