@@ -175,8 +175,12 @@ public class SpriteBankEdit extends SpriteBank {
     			 current = null;
     		 }
     	 }
-      	addSprFromImage(startSpr + i, z.x1, z.y1, z.x2, z.y2);
-      	i++;
+    	 try {
+    		 addSprFromImage(startSpr + i, z.x1, z.y1, z.x2, z.y2);
+    	 } catch (Exception e) {
+    		 throw new RuntimeException("Unable to insert sprite "+i+"/"+elements.length+" on bank "+p_bank, e);
+    	 }
+    		 i++;
       }
 	 GFXBasics.switchPalette(1);
 	}

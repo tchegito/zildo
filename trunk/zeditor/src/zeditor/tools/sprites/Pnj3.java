@@ -87,18 +87,25 @@ public class Pnj3 extends SpriteBanque {
 		    new Zone(15, 28, 13, 13), new Zone(30, 28, 13, 13), new Zone(46, 28, 13, 13),	// South
 		    // Dragon (66)
 		    new Zone(0, 0, 51, 93), new Zone(51, 0, 45, 44), new Zone(96, 0, 51, 32),
-		    new Zone(147, 0, 45, 33), new Zone(192,0, 62, 80), new Zone(192, 80, 62, 93),
+		    new Zone(147, 0, 45, 33), new Zone(227,0, 11, 30), new Zone(192, 30, 62, 30), new Zone(192, 80, 62, 93),
 		    new Zone(0,93, 63, 95), new Zone(71, 80, 50, 96), new Zone(262, 107, 50, 88),
-		    // Bitey (75)
+		    // Bitey (76)
 		    new Zone(0, 0, 21, 27), new Zone(25, 0, 21, 27), new Zone(50, 0, 21, 27),
 		    new Zone(75, 0, 21, 27), new Zone(100, 0, 21, 27), new Zone(125, 0, 21, 27),
-		    new Zone(150, 0, 21, 27)
+		    new Zone(150, 0, 21, 27),
+		    // Turtle (83)
+		    new Zone(1, 197, 22, 13), new Zone(28, 197, 22, 13),	// Rising
+		    new Zone(55, 196, 22, 14), new Zone(82, 195, 22, 15),
+		    new Zone(0, 214, 27, 15), new Zone(27, 214, 27, 15),	// Forward
+		    new Zone(54, 215, 27, 14), new Zone(81, 214, 27, 15),
+		    new Zone(105, 193, 5, 5), new Zone(105, 199, 5, 5), new Zone(105, 205, 5, 5)	// Head popping out
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("pnj2", 0, 0), 
 				new GraphChange("squirrel", 54, 0),
 				new GraphChange("dragonpal", 66,0, true),
-				new GraphChange("bitey", 75, 0)
+				new GraphChange("bitey", 76, 0),
+				new GraphChange("squirrel", 83, 0)
 				});
 	}
 }
