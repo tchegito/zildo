@@ -84,6 +84,7 @@ A trigger can be of 6 different kinds : (corresponding to [http://code.google.co
  * *lift* : is hero taking some jar/bush ?
  * *use* : does hero use one of his items ?
  * *fall* : does an element/character falls on the floor ? (water, lava, or any ground)
+ * *chainingPoint* : means that this quest is a chaining point acceptance (can accept/reject current point)
 
 ==== Particular cases ====
 
@@ -142,7 +143,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 || herospecial || text || - || - || - || Special actions about hero, set accordingly with 'value'.<ul><li>0 => Hero gains 1 blue drop, and loose 2 moon fragments.</li><li>1 => Blocks everyone except hero.</li><li>2 => Unblocks everyone except hero.</li><li>3 => back up current game</li><li>4 => reload last backed up game, updated with current hero's HP. </li><li>5 => inflict damage to hero, given by 'arg' attribute. Default is 1.</li></ul> ||
 || perso || text || - || - || - || Change some character's attributes : type, info, fx. 'action' attribute is available to set a PersoAction. ||
 || timer || text || - || - || - || Do a repetition of actions on a desired rate. ||
-|| lookFor || text || - || - || - || Look for some characters around another, with a desired radius. The first discovered one become the new context for nested action elements. ||
+|| lookFor || text || - || - || - || Look for some characters around another, with a desired radius. The first discovered one become the new context for nested action elements. Field 'info' precise a PersoInfo enum, and 'negative' could be used to detect the opposite: character away from another. ||
 || var || text || - || - || - || Set a variable indicated by 'name' to the given 'value'. ||
 || if || text || - || - || - || Check the 'exp' expression (based on context variables), and if it's true, then nesting actions will be executed. Check for 'expQuest' too, based on accomplished quests.||
 
