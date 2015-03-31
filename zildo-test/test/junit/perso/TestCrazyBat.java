@@ -19,7 +19,7 @@
 
 package junit.perso;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 

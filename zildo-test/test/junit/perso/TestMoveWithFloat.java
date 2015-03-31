@@ -23,9 +23,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyFloat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
+import org.junit.Assert;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 

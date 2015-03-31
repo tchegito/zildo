@@ -19,8 +19,7 @@
 
 package junit.perso;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import zildo.monde.sprites.desc.ZildoOutfit;
@@ -149,6 +148,7 @@ public class TestCollision extends EngineUT {
 
 	}
 	
+	// This one is not working yet, because character avoid isn't implemented now. This is for the future.
 	@Test
 	public void crossingZildo() {
 		// Spawn a character A
