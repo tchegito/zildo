@@ -19,10 +19,11 @@
 
 package junit.area;
 
+import junit.perso.EngineUT;
+
+import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.Assert;
-import junit.perso.EngineUT;
 import zildo.monde.map.TileCollision;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;

@@ -20,12 +20,18 @@
 package junit.tile;
 
 import org.junit.Test;
+import org.junit.Assert;
 
-import junit.framework.Assert;
 import junit.perso.EngineUT;
+import zildo.monde.map.Area;
+import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
+import zildo.monde.map.Case.TileLevel;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
+import zildo.monde.sprites.persos.ControllablePerso;
+import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.server.EngineZildo;
 
 public class TileCollisionTest extends EngineUT {
 	
@@ -55,8 +61,6 @@ public class TileCollisionTest extends EngineUT {
 		
 		checkValues(256 + 37, halfCorner, Reverse.NOTHING);
 		checkValues(256 + 36, halfCorner, Reverse.HORIZONTAL);
-		
-		
 	}
 
 	private void checkValues(int nTile, String[] value, Reverse rev) {
@@ -73,5 +77,31 @@ public class TileCollisionTest extends EngineUT {
 				Assert.assertTrue("collision should have been "+result+" for ("+x+", "+y+")", result == col);
 			}
 		}
+	}
+	
+	@Test
+	public void checkMudWater() {
+		tileCollision = TileCollision.getInstance();
+		
+		int mudWaterTile = Tile.T_WATER_MUD;
+		
+		// Check different Z level on same tile
+		Assert.assertEquals(-2, tileCollision.getBottomZ(8, 8, mudWaterTile, false));
+		Assert.assertEquals(0, tileCollision.getBottomZ(0, 0, mudWaterTile, false));
+		
+		Assert.assertEquals(-2, tileCollision.getBottomZ(11, 9, mudWaterTile, false));
+		Assert.assertEquals(0, tileCollision.getBottomZ(10, 1, mudWaterTile, false));
+		
+		// Check perso bottom z
+		PersoPlayer hero = (PersoPlayer) spawnZildo(619, 249);
+		hero.setAppearance(ControllablePerso.PRINCESS_BUNNY);
+		
+		Area area = EngineZildo.mapManagement.getCurrentMap();
+		area.writemap(38, 15, 54);
+		area.writemap(37, 15, 54);
+		area.writemap(39, 15, 54);
+		area.writemap(38, 15, Tile.T_WATER_MUD, TileLevel.BACK2);
+		int heroZ = EngineZildo.mapManagement.getPersoBottomZ(hero);
+		Assert.assertEquals(-2, heroZ);
 	}
 }
