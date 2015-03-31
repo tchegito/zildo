@@ -47,6 +47,7 @@ import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
 import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
+import zildo.fwk.script.xml.element.action.runtime.RuntimeAction;
 import zildo.fwk.ui.UIText;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -95,14 +96,12 @@ import zildo.server.EngineZildo;
  * @author tchegito
  */
 
-public class ActionExecutor {
+public class ActionExecutor extends RuntimeExecutor {
 
     ScriptExecutor scriptExec;
     int count, nextStep;
     boolean locked;
     boolean uniqueAction;	// TRUE means unique action is executing (useful for timer)
-    
-	final IEvaluationContext context;
 	
     public ActionExecutor(ScriptExecutor p_scriptExec, boolean p_locked, IEvaluationContext p_context, boolean p_uniqueAction) {
         scriptExec = p_scriptExec;
@@ -116,11 +115,12 @@ public class ActionExecutor {
      * @return boolean
      */
     //TODO: refactor the 'pos' and 'moveTo' which have a lot in common
-    public boolean render(ActionElement p_action) {
+    public boolean render(RuntimeAction p_runtimeAction) {
         boolean achieved = false;
-        if (p_action.waiting) {
-            waitForEndAction(p_action);
-            achieved = p_action.done;
+        ActionElement p_action = (ActionElement) p_runtimeAction.action;
+        if (p_runtimeAction.waiting) {
+            waitForEndAction(p_runtimeAction);
+            achieved = p_runtimeAction.done;
         } else {
         	PersoPlayer zildo;
         	Perso perso;
@@ -255,6 +255,7 @@ public class ActionExecutor {
 		                    		perso.setFollowing(elemToObserve);
 		                    	}
 		                    }
+		                default:
 	                    	break;
 	                    }
 	                    perso.setQuel_deplacement(script, true);
@@ -539,6 +540,15 @@ public class ActionExecutor {
                 	}
                 	achieved = true;
                 	break;
+                case sprite: // Change element attribute
+                	SpriteEntity entity = getNamedEntity(p_action.what);
+                	if (entity != null) {
+                		if (p_action.text != null) {
+                			entity.setDesc(SpriteDescription.Locator.findNamedSpr(p_action.text));
+                		}
+                	}
+                	achieved=true;
+                	break;
                 case perso:	// Change character attribute (type)
                 	if (perso != null) {
                 		if (p_action.text != null) {
@@ -594,6 +604,9 @@ public class ActionExecutor {
             					}
             				}
             			}
+            			if (p_action.addSpr != -1) {
+            				perso.setAddSpr(p_action.addSpr);
+            			}
                 	}
                 	achieved = true;
                 	break;
@@ -611,8 +624,10 @@ public class ActionExecutor {
                 	LookforElement lookFor = (LookforElement) p_action;
                 	Perso found = EngineZildo.persoManagement.lookFor(perso, lookFor.radius, p_action.info);
                 	if (found != null ^ lookFor.negative) {	// XOR !
-                		IEvaluationContext persoContext = new SpriteEntityContext(found);
-                    	EngineZildo.scriptManagement.execute(lookFor.actions, false, null, false, persoContext, false);
+                		IEvaluationContext persoContext = new SpriteEntityContext(found, context);
+                		// Problem is here : we have to link this 'lookFor' action with his RuntimeScene just created. Maybe reuse
+                		// RuntimeAction in lookFor.actions, without creating a new runtimeScene ?
+                    	EngineZildo.scriptManagement.execute(p_runtimeAction.actions, false, false, persoContext, false);
                 	} else {
                 		achieved = true;
                 	}
@@ -635,11 +650,12 @@ public class ActionExecutor {
                 	elem.flying = true;
                 	elem.setAngle(Angle.EST);
         			achieved = true;
+        		default:
                 	break;
             }
 
-            p_action.done = achieved;
-            p_action.waiting = !achieved;
+            p_runtimeAction.done = achieved;
+            p_runtimeAction.waiting = !achieved;
         }
         return achieved;
     }
@@ -648,7 +664,8 @@ public class ActionExecutor {
      * An action has started. Here we're waiting for it to finish.
      * @param p_action
      */
-    private void waitForEndAction(ActionElement p_action) {
+    private void waitForEndAction(RuntimeAction p_runtimeAction) {
+    	ActionElement p_action = (ActionElement) p_runtimeAction.action;
         String who = p_action.who;
         Perso perso = getNamedPerso(who);
         boolean achieved = false;
@@ -703,13 +720,14 @@ public class ActionExecutor {
             	}
             	break;
             case lookFor:
-            	LookforElement lookFor = (LookforElement) p_action;
-            	int last = lookFor.actions.size() - 1;
-            	achieved = lookFor.actions.get(last).done;
+            	//LookforElement lookFor = (LookforElement) p_action;
+            	int last = p_runtimeAction.actions.size() - 1;
+            	achieved = p_runtimeAction.actions.get(last).done;
+            default:
             	break;
         }
-        p_action.waiting = !achieved;
-        p_action.done = achieved;
+        p_runtimeAction.waiting = !achieved;
+        p_runtimeAction.done = achieved;
     }
     
     private float convenientFloatEvaluation(FloatExpression expr) {
@@ -718,14 +736,6 @@ public class ActionExecutor {
     	} else {
     		return expr.evaluate(context);
     	}
-    }
-
-    private String handleLocalVariable(String name) {
-    	String result = name;
-    	if (name.startsWith("loc:")) {
-    		result = context.registerVariable(name);
-    	}
-    	return result;
     }
     
     /** All getter with naming entity/element/perso goes here, to handle local variable **/
@@ -739,14 +749,6 @@ public class ActionExecutor {
 
     private Perso getNamedPerso(String name) {
     	return EngineZildo.persoManagement.getNamedPerso(getVariableName(name));
-    }
-    
-    private String getVariableName(String name) {
-    	String searchName = name;
-    	if (context != null && name != null && name.startsWith("loc:")) {
-    		searchName = context.getString(name);
-    	}
-    	return searchName;
     }
     
     private Element actionSpawn(ActionElement p_action, Point location, boolean p_ignoreWho) {
@@ -836,5 +838,15 @@ public class ActionExecutor {
 			}	
     	}
     	return elem;
+    }
+    
+    public void terminate() {
+    	// We don't have to terminate, if this script has called a new one (loofFor, timer, actions...) : context should be preserved !+
+    	if (!uniqueAction && context != null && involvedVariables != null) {
+    		// Unregister each variable name, because it only existed in this executor scope => wipe out
+    		for (String varName : involvedVariables) {
+	    		context.unregisterVariable(varName);
+	    	}
+    	}
     }
 }

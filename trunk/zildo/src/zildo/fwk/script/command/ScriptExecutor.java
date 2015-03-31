@@ -32,17 +32,12 @@ import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.SpriteEntityContext;
-import zildo.fwk.script.xml.element.AnyElement;
-import zildo.fwk.script.xml.element.LanguageElement;
-import zildo.fwk.script.xml.element.SceneElement;
-import zildo.fwk.script.xml.element.action.ActionElement;
-import zildo.fwk.script.xml.element.action.ActionsElement;
-import zildo.fwk.script.xml.element.logic.VarElement;
+import zildo.fwk.script.xml.element.action.runtime.RuntimeAction;
+import zildo.fwk.script.xml.element.action.runtime.RuntimeScene;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
-import zildo.server.state.ScriptManagement;
 
 public class ScriptExecutor {
 
@@ -62,8 +57,13 @@ public class ScriptExecutor {
 	 * @param p_topPriority TRUE=this script will be executed before all others
 	 * @param p_context context (optional)
 	 */
-	public void execute(SceneElement p_script, boolean p_finalEvent, boolean p_topPriority, IEvaluationContext p_context) {
-		ScriptProcess sp = new ScriptProcess(p_script, this, p_finalEvent, p_topPriority, p_context);
+	public void execute(RuntimeScene p_script, boolean p_finalEvent, boolean p_topPriority, IEvaluationContext p_context) {
+		// TODO: attempt to duplicate context, need to refactor cleanly
+		IEvaluationContext ctx = p_context;
+		if (p_context != null) {
+			ctx = ctx.clone();
+		}
+		ScriptProcess sp = new ScriptProcess(p_script, this, p_finalEvent, p_topPriority, ctx);
 		if (scripts.size() == 0) {
 			scripts.add(sp);
 		} else {
@@ -89,7 +89,7 @@ public class ScriptExecutor {
 			// 1) Render current scripts
 			for (ScriptProcess process : scripts) {
 				
-				AnyElement currentNode=process.getCurrentNode();
+				RuntimeAction currentNode=process.getCurrentNode();
 				if (currentNode == null) {
 					// We reach the end of the script
 					toTerminate.add(process);
@@ -97,8 +97,8 @@ public class ScriptExecutor {
 					renderElement(process, currentNode, true);
 					
 					// Render current actions too
-					for (Iterator<LanguageElement> it=process.currentActions.iterator();it.hasNext();) {
-						LanguageElement action=it.next();
+					for (Iterator<RuntimeAction> it=process.currentActions.iterator();it.hasNext();) {
+						RuntimeAction action=it.next();
 						if (action.done) {	// It's done, so remove the action
 							it.remove();
 						} else {
@@ -171,15 +171,14 @@ public class ScriptExecutor {
 		}
 	}
 	
-	private void renderAction(ScriptProcess p_process, ActionElement p_action, boolean p_moveCursor) {
+	private void renderAction(ScriptProcess p_process, RuntimeAction p_action, boolean p_moveCursor) {
 		boolean achieved=false;
-		if (p_action.getClass() == ActionsElement.class) {
+		if (p_action.isMultiple()) {
 			// Actions list
-			ActionsElement actions=(ActionsElement) p_action;
 			achieved=true;
-			for (ActionElement action : actions.actions) {
+			for (RuntimeAction action : p_action.actions) {
 				if (!action.done) {
-					renderAction(p_process, action, false);
+					renderElement(p_process, action, false);
 					achieved=achieved & action.done;
 				}
 			}
@@ -197,19 +196,20 @@ public class ScriptExecutor {
 		}
 	}
 	
-	private void renderVariable(ScriptProcess process, VarElement p_elem) {
+	private void renderVariable(ScriptProcess process, RuntimeAction p_elem) {
 		boolean achieved = process.varExec.render(p_elem);
 		if (achieved) {
 			process.cursor++;
 		}
 	}
 	
-	private void renderElement(ScriptProcess process, AnyElement currentNode, boolean moveCursor) {
-		Class<? extends AnyElement> clazz=currentNode.getClass();
-		if (ActionElement.class.isAssignableFrom(clazz)) {
-			renderAction(process, (ActionElement) currentNode, moveCursor);
-		} else if (VarElement.class.isAssignableFrom(clazz)) {
-			renderVariable(process, (VarElement) currentNode);
+	private void renderElement(ScriptProcess process, RuntimeAction currentNode, boolean moveCursor) {
+		// TODO: We can differentiate Action and Var in RuntimeAction with 2 fields
+		// So as we don't need to check class, and cast
+		if (!currentNode.var) {
+			renderAction(process, currentNode, moveCursor);
+		} else {
+			renderVariable(process, currentNode);
 		}		
 	}
 	
@@ -252,7 +252,7 @@ public class ScriptExecutor {
 		for (ScriptProcess process : scripts) {
 			if (p_name.equals(process.scene.id)) {
 				return true;
-			} else if ((ScriptManagement.MARQUER_SCENE + p_name).equals(process.scene.id)) {
+			} else if ((RuntimeScene.MARQUER_SCENE + p_name).equals(process.scene.id)) {
 				return true;
 			}
 		}

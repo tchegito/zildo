@@ -34,6 +34,7 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 	
 	static private IdGenerator localVariableNaming = new IdGenerator(256);
 
+	// Map <"Asked Variable name", "Assigned variable name">
 	Map<String, String> locales = new HashMap<String, String>();
 	
 	public String registerVariable(String name) {
@@ -43,16 +44,43 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 		return varName;
 	}
 	
-	public static void unregisterVariable(String name) {
-		if (name.startsWith(VAR_IDENTIFIER)) {
+	/** Called by an Element when it dies ==> ID becomes useless **/
+	public static void unregisterId(String name) {
+		if (name != null && name.startsWith(VAR_IDENTIFIER)) {
 			int id = Integer.valueOf(name.substring(VAR_IDENTIFIER.length()));
 			localVariableNaming.remove(id);
-			//locales.remove(name);
 		}
 	}
 	
+	/** Called when an executor comes to an end => local would never be use **/
+	public void unregisterVariable(String name) {
+		locales.remove(name);
+	}
+	
+	public static void clean() {
+		localVariableNaming.reset();
+	}
+
 	public String getString(String key) {
 		return locales.get(key);
 	}
 
+	protected void cloneLocales(LocaleVarContext original) {
+		locales = new HashMap<String, String>(original.locales);
+	}
+	
+	@Override
+	public LocaleVarContext clone() {
+		try {
+			if (locales.size() > 0) {
+				LocaleVarContext cloned = (LocaleVarContext) super.clone();
+				cloned.cloneLocales(this);
+				return cloned;
+			} else {
+				return this;
+			}
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException("Unable to clone this context !");
+		}
+	};
 }

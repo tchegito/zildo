@@ -30,6 +30,7 @@ import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.ZUtils;
 import zildo.fwk.script.command.ScriptExecutor;
 import zildo.fwk.script.context.IEvaluationContext;
+import zildo.fwk.script.context.LocaleVarContext;
 import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.fwk.script.context.TileLocationContext;
 import zildo.fwk.script.xml.ScriptReader;
@@ -41,6 +42,8 @@ import zildo.fwk.script.xml.element.MapscriptElement;
 import zildo.fwk.script.xml.element.QuestElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.TriggerElement;
+import zildo.fwk.script.xml.element.action.runtime.RuntimeAction;
+import zildo.fwk.script.xml.element.action.runtime.RuntimeScene;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.items.StoredItem;
@@ -87,9 +90,6 @@ public class ScriptManagement {
     final List<QuestElement> chainingTriggerQuestOnMap;	
 
     boolean planComputeTriggers;
-    
-    // Marker to identify that a scene is created from an 'action' quest's tag
-    public final static String MARQUER_SCENE = "@scene@";
 
     /**
      * Build a script management object.<br/>
@@ -162,8 +162,7 @@ public class ScriptManagement {
     	SceneElement scene=adventure.getSceneNamed(p_name);
     	if (scene != null) {
     		 if (!scriptExecutor.isProcessing(p_name)) {
-    			 scene.locked = p_locked;
-    			 scriptExecutor.execute(scene, true, false, null);
+    			 scriptExecutor.execute(new RuntimeScene(scene, p_locked), true, false, null);
     		 }
     	} else {
     		throw new RuntimeException("Scene "+p_name+" doesn't exist !");
@@ -180,14 +179,15 @@ public class ScriptManagement {
      * @param p_locked used if no quest is provided
      */
     public void execute(List<LanguageElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority, IEvaluationContext p_context, boolean p_locked) {
-    	// Create a SceneElement from the given actions
-		SceneElement scene=SceneElement.createScene(p_actions);
-		if (p_quest != null) {
-			scene.id = MARQUER_SCENE+p_quest.name;
-			scene.locked = p_quest.locked;
-		} else {
-			scene.locked = p_locked;
-		}
+    	// Create a RuntimeScene from the given actions
+		RuntimeScene scene=new RuntimeScene(p_actions, p_quest, p_locked);
+		// And execute this list
+		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context);
+    }
+    
+    public void execute(List<RuntimeAction> p_actions, boolean p_finalEvent, boolean p_topPriority, IEvaluationContext p_context, boolean p_locked) {
+    	// Create a RuntimeScene from the given actions
+		RuntimeScene scene=new RuntimeScene(p_actions, p_locked);
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context);
     }
@@ -265,6 +265,7 @@ public class ScriptManagement {
     						case USE:
     						case FALL:
     							trig.done = false;
+    						default:
     							break;
     						}
     					}
@@ -609,5 +610,10 @@ public class ScriptManagement {
 			}
 		}
 		getVariables().put(storeName, ZUtils.listToString(sellingItems));
+	}
+	
+	public void initForNewMap() {
+		// Reinit counters
+		LocaleVarContext.clean();
 	}
 }

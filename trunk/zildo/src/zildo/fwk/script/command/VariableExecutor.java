@@ -21,6 +21,7 @@ package zildo.fwk.script.command;
 
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.model.ZSCondition;
+import zildo.fwk.script.xml.element.action.runtime.RuntimeAction;
 import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.fwk.script.xml.element.logic.VarElement.ValueType;
 import zildo.server.EngineZildo;
@@ -29,9 +30,8 @@ import zildo.server.EngineZildo;
  * @author Tchegito
  *
  */
-public class VariableExecutor {
+public class VariableExecutor extends RuntimeExecutor {
 
-	IEvaluationContext context;
 	boolean locked;
 	
 	public VariableExecutor(boolean p_locked, IEvaluationContext p_context) {
@@ -39,11 +39,12 @@ public class VariableExecutor {
 		context = p_context;
 	}
 	
-	public boolean render(VarElement p_elem) {
+	public boolean render(RuntimeAction p_runtimeAction) {
         boolean achieved = false;
-        if (p_elem.waiting) {
-            waitForEndAction(p_elem);
-            achieved = p_elem.done;
+        VarElement p_elem = (VarElement) p_runtimeAction.action;
+        if (p_runtimeAction.waiting) {
+            waitForEndAction(p_runtimeAction);
+            achieved = p_runtimeAction.done;
         } else {
 			switch (p_elem.kind) {
 			case var:
@@ -53,7 +54,14 @@ public class VariableExecutor {
 				} else {
 					objToSave = "" + p_elem.value.evaluate(context);
 				}
-				EngineZildo.scriptManagement.getVariables().put(p_elem.name, objToSave);
+				String name = p_elem.name;
+				if (isLocal(name)) {	// This variable could be local "loc:...", defined on undefined yet
+					name = getVariableName(name);
+					if (name == null || name.equals(p_elem.name)) {
+						name = handleLocalVariable(p_elem.name);	// We define it
+					}
+				}
+				EngineZildo.scriptManagement.getVariables().put(name, objToSave);
 				achieved = true;
 				break;
 			case _if:
@@ -67,19 +75,22 @@ public class VariableExecutor {
 				}
 				break;
 			}
-			p_elem.done = achieved;
-			p_elem.waiting = !achieved;
+			p_runtimeAction.done = achieved;
+			p_runtimeAction.waiting = !achieved;
         }
         return achieved;
 	}
         
-    private void waitForEndAction(VarElement p_elem) {
+    private void waitForEndAction(RuntimeAction p_runtimeAction) {
+    	VarElement p_elem = (VarElement) p_runtimeAction.action;
     	boolean achieved = false;
         switch (p_elem.kind) {
         case _if:
         	achieved = true;
+       	default:
+       		break;
         }
-        p_elem.waiting = !achieved;
-        p_elem.done = achieved;
+        p_runtimeAction.waiting = !achieved;
+        p_runtimeAction.done = achieved;
     }
 }

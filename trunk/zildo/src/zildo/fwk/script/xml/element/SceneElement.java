@@ -30,7 +30,7 @@ public class SceneElement extends AnyElement {
 
     public String id;
     public boolean restoreZildo;	// TRUE=at the end of the scene, we should restore the previous zildo's state
-    public boolean locked = true;	// FALSE=game isn't blocked during scene / TRUE=default behavior (blocked)
+    //public boolean locked = true;	// FALSE=game isn't blocked during scene / TRUE=default behavior (blocked)
     public List<LanguageElement> actions;
 
     @Override
@@ -41,19 +41,6 @@ public class SceneElement extends AnyElement {
         id = readAttribute("id");
         restoreZildo = isTrue("restoreZildo");
         actions = (List<LanguageElement>) ScriptReader.parseNodes(p_elem);
-    }
-
-    public static SceneElement createScene(List<LanguageElement> p_actions) {
-    	SceneElement scene=new SceneElement();
-    	scene.id="fromActions";
-    	scene.actions=p_actions;
-    	return scene;
-    }
-    
-    public void reset() {
-		for (LanguageElement action : actions) {
-			action.reset();
-		}    	
     }
     
     @Override

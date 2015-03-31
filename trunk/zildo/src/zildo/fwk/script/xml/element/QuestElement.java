@@ -39,9 +39,10 @@ public class QuestElement extends AnyElement {
 					// launch the actions
 	boolean repeat; // TRUE=can be accomplished unlimited time
 	public boolean locked;	// TRUE=block the game (default) / FALSE=player can move during script
-	
-	// 'done' is TRUE when zildo has accomplished that
 
+	// 'done' is TRUE when zildo has accomplished that
+	public boolean done = false;	// Only runtime modifiable field
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
@@ -49,18 +50,13 @@ public class QuestElement extends AnyElement {
 		
 		name = p_elem.getAttribute("name");
 
-		Element triggerContainer = ScriptReader
-				.getChildNamed(p_elem, "trigger");
+		Element triggerContainer = ScriptReader.getChildNamed(p_elem, "trigger");
 		Element actionContainer = ScriptReader.getChildNamed(p_elem, "action");
-		Element historyContainer = ScriptReader
-				.getChildNamed(p_elem, "history");
-		triggers = (List<TriggerElement>) ScriptReader
-				.parseNodes(triggerContainer);
-		actions = (List<LanguageElement>) ScriptReader
-				.parseNodes(actionContainer);
+		Element historyContainer = ScriptReader.getChildNamed(p_elem, "history");
+		triggers = (List<TriggerElement>) ScriptReader.parseNodes(triggerContainer);
+		actions = (List<LanguageElement>) ScriptReader.parseNodes(actionContainer);
 		if (historyContainer != null) {
-			history = (List<LanguageElement>) ScriptReader
-					.parseNodes(historyContainer);
+			history = (List<LanguageElement>) ScriptReader.parseNodes(historyContainer);
 		}
 
 		both = isTrue("both");
@@ -69,8 +65,7 @@ public class QuestElement extends AnyElement {
 		
 		if (repeat) {
 			// Add a final action to reset this quest (it must be "repeatable")
-			ActionElement actionResetQuest = new ActionElement(
-					ActionKind.markQuest);
+			ActionElement actionResetQuest = new ActionElement(ActionKind.markQuest);
 			actionResetQuest.text = name;
 			actionResetQuest.val = 0;
 			actions.add(actionResetQuest);

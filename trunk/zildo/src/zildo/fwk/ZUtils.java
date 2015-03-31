@@ -166,4 +166,8 @@ public class ZUtils {
     	}
     	return result;
     }
+    
+    public static <T> List<T> arrayList() {
+    	return new ArrayList<T>();
+    }
 }

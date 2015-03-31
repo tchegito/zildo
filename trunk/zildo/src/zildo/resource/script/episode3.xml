@@ -11,8 +11,10 @@
             <tile pos="34,4" action="fireflies" />
             
             <tile pos="35,12" action="blueRain" />
+            <perso who="sacher" action="sacherTortue"/>
         </action>
     </quest>
+    
     <quest name="roxyMeetIsidore">
         <trigger>
 	        <location name="sousbois1" pos="423,632" radius="2"/> <!--  tile:25,39 -->
@@ -98,11 +100,35 @@
         <timer each="10+random*30">
             <action>
 	         <spawn what="loc:drop" type="DROP_SMALL" pos="x*16+random*16,y*16+random*8" z="60"
-	             az="-0.01" vx="-0.1-random*0.1" alpha="100" alphaA="0.1" vy="0.1"/>
-	         <wait value="5000"/>
-	         <wait value="5000"/>
+	             az="-0.01" vx="-0.1-random*0.1" alpha="200" alphaA="0.1" vy="0.1"/>
+	         <wait value="50"/>
 	         <sprite what="loc:drop" type="DROP_MEDIUM"/>
             </action>
          </timer>
 	</tileAction>
+	
+    <persoAction id="sacherTortue">
+        <var name="loc:position" value="0"/>
+        <timer each="40">
+            <action>
+                <var name="loc:found" value="0"/>
+				<lookFor who="self" info="ZILDO" radius="3">
+				    <var name="loc:found" value="1"/>
+				</lookFor>
+				<if exp="loc:found=1">
+					<perso who="self" addSpr="1"/>
+					<wait value="6"/>
+					<perso who="self" addSpr="2"/>
+					<wait value="6"/>
+					<perso who="self" addSpr="3"/>
+					<wait value="6"/>
+					<perso who="self" addSpr="4"/>
+					<wait value="6"/>
+					<var name="loc:position" value="1"/>
+				</if>
+            </action>
+            <end when="loc:position=1"/>
+		</timer>
+		
+   	</persoAction>
 </adventure>

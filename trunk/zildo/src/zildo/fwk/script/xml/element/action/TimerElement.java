@@ -65,5 +65,9 @@ public class TimerElement extends ActionElement {
 		if (endContainer != null) {
 			endCondition = new FloatExpression(endContainer.getAttribute("when"));
 		}
+		
+		if (actions.isEmpty()) {
+			throw new RuntimeException("Timer is empty !");
+		}
 	}
 }

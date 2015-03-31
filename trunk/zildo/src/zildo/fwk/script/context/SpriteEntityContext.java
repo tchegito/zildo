@@ -37,6 +37,15 @@ public class SpriteEntityContext extends LocaleVarContext implements IEvaluation
 			perso = (Perso) entity;
 		}
 	}
+	
+	// TODO: refactor this more smoothly
+	public SpriteEntityContext(SpriteEntity p_entity, IEvaluationContext ctx) {
+		this(p_entity);
+		if (LocaleVarContext.class.isAssignableFrom(ctx.getClass())) {
+			cloneLocales((LocaleVarContext) ctx);
+		}
+	}
+	
 	@Override
 	public float getValue(String key) {
 		if (key.length() == 1) {	// Filter length to avoid too much comparisons
