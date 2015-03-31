@@ -120,14 +120,12 @@ public class MapManagement {
 		}
 
 		// Adjust map according the quest diary
-		String adjustedMapName = EngineZildo.scriptManagement
-				.getReplacedMapName(p_mapname);
+		String adjustedMapName = EngineZildo.scriptManagement.getReplacedMapName(p_mapname);
 		
 		// Trigger the location (only on non-additive mode: additive means that we're preparing a scrolling)
 		// In a scrolling mode, triggering will be effective once map has completely scrolled.
 		if (!EngineZildo.game.editing && !p_additive) {
-			currentMapTrigger = TriggerElement
-					.createLocationTrigger(adjustedMapName, null, null, -1);
+			currentMapTrigger = TriggerElement.createLocationTrigger(adjustedMapName, null, null, -1);
 			EngineZildo.scriptManagement.trigger(currentMapTrigger);
 			EngineZildo.scriptManagement.prepareMapSubTriggers(p_mapname);
 		}
@@ -138,6 +136,7 @@ public class MapManagement {
 		Atmosphere atmo = currentMap.getAtmosphere();
 		Weather weather = ClientEngineZildo.ambient.getWeather(currentMap);
 		EngineZildo.scriptManagement.execMapScript(adjustedMapName, atmo, p_additive);
+		EngineZildo.scriptManagement.initForNewMap();
 		
 		EngineZildo.spriteManagement.initForNewMap();
 
@@ -383,8 +382,9 @@ public class MapManagement {
 		// Reproduce the calculus from #collideTile (square of 4 points around character's center)
 		int cx = Math.round(p.x);
 		int cy = Math.round(p.y);
-		int bottomZ = -2;
+		int bottomZ = 0;
 		if (currentMap != null) {
+			bottomZ = -2;
 			for (Point pt : new Point[] {new Point(0, 0)}) { //tabPointRef) {
 				int mx = (cx + (size.x / 2) * pt.x);
 				int my = (cy + (size.y / 2) * pt.y);
@@ -392,6 +392,8 @@ public class MapManagement {
 				if (tile != null) {
 					int tileBottomZ = tileCollision.getBottomZ(mx % 16, my % 16, tile.getValue(), false);
 					bottomZ = Math.max(bottomZ, tileBottomZ);
+				} else {
+					bottomZ = 0;
 				}
 			}
 			if (bottomZ > p.z) {
