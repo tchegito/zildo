@@ -32,12 +32,11 @@ public class IdGenerator {
 	boolean[] buffer;
 	int cursor;
 	
+	final int maxId;
+	
 	public IdGenerator(int maxId) {
-		buffer = new boolean[maxId];
-		for (int i=0;i<maxId;i++) {
-			buffer[i] = false;
-		}
-		cursor = 0;
+		this.maxId = maxId;
+		reset();
 	}
 	
 	public int pop() {
@@ -59,5 +58,13 @@ public class IdGenerator {
 	
 	public void remove(int id) {
 		buffer[id] = false;
+	}
+	
+	public void reset() {
+		buffer = new boolean[maxId];
+		for (int i=0;i<maxId;i++) {
+			buffer[i] = false;
+		}
+		cursor = 0;
 	}
 }

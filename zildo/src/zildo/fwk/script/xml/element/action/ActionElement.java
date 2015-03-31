@@ -27,14 +27,13 @@ import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.model.point.IPoint;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
-import zildo.server.EngineZildo;
 
 public class ActionElement extends LanguageElement {
 
 	public enum ActionKind {
 		actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, map, focus, spawn, exec, take, mapReplace, zikReplace, nameReplace, // History
 																																								// actions
-		music, animation, impact, remove, markQuest, putDown, attack, activate, tile, filter, end, visible, respawn, zoom, herospecial, perso, timer, lookFor, _throw;
+		music, animation, impact, remove, markQuest, putDown, attack, activate, tile, filter, end, visible, respawn, zoom, herospecial, perso, sprite, timer, lookFor, _throw;
 
 		public static ActionKind fromString(String p_name) {
 			for (ActionKind kind : values()) {
@@ -54,7 +53,6 @@ public class ActionElement extends LanguageElement {
 	public String who; // Characters
 	public String what; // Camera, elements
 	public String effect;
-	public boolean unblock;
 	public boolean backward = false; // Character moves back
 	public boolean open = false; // Can open doors
 	public boolean delta = false; // for 'moveTo' and 'pos' : means that 'pos'
@@ -79,7 +77,8 @@ public class ActionElement extends LanguageElement {
 	public String action; // To run a PersoAction, with "perso" ActionKind
 	public String shadow; // Only used in "spawn"
 	public String weapon; // For 'perso' and 'spawn'
-
+	public int addSpr;	// For 'perso'
+	
 	private ZSSwitch switchExpression;
 
 	public FloatExpression[] v;
@@ -120,6 +119,9 @@ public class ActionElement extends LanguageElement {
 		String strPos = p_elem.getAttribute("pos");
 		String strAngle = p_elem.getAttribute("angle");
 		switch (kind) {
+		case sprite:
+			text = readAttribute("type");
+			break;
 		case _throw:
 			target = IPoint.fromString(readAttribute("to"));
 			way = readAttribute("way");
@@ -154,6 +156,7 @@ public class ActionElement extends LanguageElement {
 			alpha = readInt("alpha", -1);
 			alphaA = getFloatExpr("alphaA");
 			deltaFloor = readInt("deltaFloor", 0);
+			addSpr = readInt("addSpr", -1);
 			break;
 		case speak:
 			text = readAttribute("text");
@@ -235,6 +238,7 @@ public class ActionElement extends LanguageElement {
 		case herospecial:			
 			text = readAttribute("arg");
 			val = readInt("value");
+		default:
 			break;
 		}
 
@@ -248,11 +252,6 @@ public class ActionElement extends LanguageElement {
 			f = read3Coordinates("f");
 			alphaA = getFloatExpr("alphaA");
 			alpha = readInt("alpha", -1);
-		}
-
-		// Not needed anymore : free some memory
-		if (!EngineZildo.game.editing) {
-			xmlElement = null;
 		}
 	}
 
@@ -309,11 +308,5 @@ public class ActionElement extends LanguageElement {
 
 	public String getSpawnType() {
 		return switchExpression.evaluate();
-	}
-
-	@Override
-	public void reset() {
-		done = false;
-		waiting = false;
 	}
 }

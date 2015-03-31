@@ -42,11 +42,4 @@ public class ActionsElement extends ActionElement {
     public void parse(Element p_elem) {
         actions = (List<ActionElement>) ScriptReader.parseNodes(p_elem);
     }
-    
-	@Override
-	public void reset() {
-		for (ActionElement oneAction : actions) {
-			oneAction.reset();
-		}
-	}
 }

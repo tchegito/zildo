@@ -43,6 +43,8 @@ import zildo.server.EngineZildo;
 
 public class TriggerElement extends AnyElement {
 
+	public boolean done = false;	// Only runtime modifiable field
+	
 	public final QuestEvent kind;
 	String name; // dialog, map, item and questDone
 	String mover;
@@ -147,6 +149,7 @@ public class TriggerElement extends AnyElement {
 		case FALL:
 			tileNature = TileNature.valueOf(readAttribute("nature"));
 			desc = SpriteDescription.Locator.findNamedSpr(readAttribute("type"));
+		default:
 			break;
 		}
 
@@ -229,6 +232,7 @@ public class TriggerElement extends AnyElement {
 			return item == p_another.item;
 		case FALL:
 			return desc == p_another.desc && tileNature == p_another.tileNature;
+		default:
 		}
 		return false;
 	}
@@ -387,7 +391,7 @@ public class TriggerElement extends AnyElement {
 	}
 	
 	/**
-	 * Ingame method to check that hero just used an item.
+	 * Ingame method to check that element just died
 	 * @param p_item
 	 * @return TriggerElement
 	 */

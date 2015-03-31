@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.script.context.IEvaluationContext;
-import zildo.fwk.script.xml.element.LanguageElement;
-import zildo.fwk.script.xml.element.SceneElement;
+import zildo.fwk.script.xml.element.action.runtime.RuntimeAction;
+import zildo.fwk.script.xml.element.action.runtime.RuntimeScene;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.EngineZildo;
 
@@ -39,15 +39,15 @@ public class ScriptProcess {
 	public int cursor;
 	public ActionExecutor actionExec;	// Delegate object designed for rendering actions
 	public VariableExecutor varExec;	// Delegate object designed for rendering variables operations
-	public SceneElement scene;
+	public RuntimeScene scene;
 	public boolean finalEvent;	// TRUE=send NOEVENT at the end of the script execution / FALSE=nothing
 	boolean topPriority;
 	
 	PersoPlayer duplicateZildo;
 	
-	List<LanguageElement> currentActions=new ArrayList<LanguageElement>();
+	List<RuntimeAction> currentActions=new ArrayList<RuntimeAction>();
 
-	public ScriptProcess(SceneElement p_scene, ScriptExecutor p_scriptExecutor, 
+	public ScriptProcess(RuntimeScene p_scene, ScriptExecutor p_scriptExecutor, 
 			boolean p_finalEvent, boolean p_topPriority,
 			IEvaluationContext context) {
 		scene=p_scene;
@@ -63,17 +63,13 @@ public class ScriptProcess {
 				duplicateZildo=(PersoPlayer) EngineZildo.persoManagement.getZildo().clone();
 			}
 		}
-		
-		// Initialize all actions state
-    	// Because action are reference and usage object too. This isn't clean ...
-		p_scene.reset();
 	}
 	
 	/**
 	 * Return the current node, based on the cursor value.
 	 * @return AnyElement
 	 */
-	public LanguageElement getCurrentNode() {
+	public RuntimeAction getCurrentNode() {
 		if (cursor >= scene.actions.size()) {	// End of the list
 			return null;
 		} else {
@@ -89,6 +85,7 @@ public class ScriptProcess {
 			zildo.y=duplicateZildo.y;
 			zildo.z=duplicateZildo.z;
 		}
+		actionExec.terminate();
 	}
 	
 	@Override

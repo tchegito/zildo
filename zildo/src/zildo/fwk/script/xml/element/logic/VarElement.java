@@ -108,4 +108,8 @@ public class VarElement extends LanguageElement {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return kind.toString();
+	}
 }

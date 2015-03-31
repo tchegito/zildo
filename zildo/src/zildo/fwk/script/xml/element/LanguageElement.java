@@ -27,11 +27,10 @@ import org.w3c.dom.Element;
  */
 public abstract class LanguageElement extends AnyElement {
 
+	public boolean unblock;
+
 	@Override
 	public void parse(Element p_elem) {
 		xmlElement = p_elem;
-	}
-
-	public void reset() {
 	}
 }

@@ -530,7 +530,11 @@ public class Element extends SpriteEntity {
 
 	protected TileNature getCurrentTileNature() {
 		Area area = EngineZildo.mapManagement.getCurrentMap();
-		return area.getCaseNature((int) x, (int) y);
+		if (area != null) {
+			return area.getCaseNature((int) x, (int) y);
+		} else {
+			return null;
+		}
 	}
 	/**
 	 * Called when the object fall on the floor, whatever kind of floor.
@@ -614,7 +618,7 @@ public class Element extends SpriteEntity {
 		EngineZildo.scriptManagement.trigger(trigger);
 		
 		// Unregister this element locale variable name, if any
-		LocaleVarContext.unregisterVariable(name);
+		LocaleVarContext.unregisterId(name);
 		return true;
 	}
 

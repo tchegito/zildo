@@ -10,7 +10,7 @@ package zildo.fwk.script.context;
  * @author evariste.boussaton
  *
  */
-public interface IEvaluationContext {
+public interface IEvaluationContext extends Cloneable {
 
 	public float getValue(String key);
 	
@@ -18,6 +18,9 @@ public interface IEvaluationContext {
 	
 	// For local variables
 	public String registerVariable(String name);
+	public void unregisterVariable(String name);
 	
 	public String getString(String key);
+	
+	public IEvaluationContext clone();
 }

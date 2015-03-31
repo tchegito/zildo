@@ -28,6 +28,7 @@ import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
 import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.monde.util.Point;
+import zildo.server.EngineZildo;
 
 public abstract class AnyElement {
 
@@ -61,15 +62,20 @@ public abstract class AnyElement {
 	}
 	
 	protected Element xmlElement;
-	
-    public boolean waiting = false;
-    public boolean done = false;
 
     /**
      * This method should set the "xmlElement" member variable, in order to have readAttribute, isTrue... get working.
      * @param p_elem
      */
-    public abstract void parse(Element p_elem);
+    protected abstract void parse(Element p_elem);
+    
+    public void parseAndClean(Element p_elem) {
+    	parse(p_elem);
+    	// Parsing is over so we won't need any DOM element now : free some memory
+		if (!EngineZildo.game.editing) {
+			xmlElement = null;
+		}
+    }
     
     // Useful operations
     public boolean isTrue(String p_attrName) {

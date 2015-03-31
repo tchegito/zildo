@@ -20,6 +20,7 @@
 package zildo.fwk.script.logic;
 
 import zildo.fwk.script.context.IEvaluationContext;
+import zildo.fwk.script.context.LocaleVarContext;
 import zildo.monde.Hasard;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
@@ -68,6 +69,14 @@ public class FloatVariable implements FloatASTNode {
 				return p.getAngle().coords.y;
 			}
 			return 0;	// Not understood variable
+		} else if (context != null && variable.startsWith(LocaleVarContext.VAR_IDENTIFIER)) {
+			// Local variables
+			String realName = context.getString(variable);
+			if (realName != null) {
+				String val = EngineZildo.scriptManagement.getVarValue(context.getString(variable));
+				return Float.parseFloat(val);
+			}
+			return 0;
 		} else {
 			// Try global variables
 			if (EngineZildo.scriptManagement != null) {

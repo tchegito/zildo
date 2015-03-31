@@ -73,6 +73,7 @@ public class ScriptReader {
 	            throw new RuntimeException("Unable to parse " + scriptName, e);
 	        }
     	}
+    	System.gc();
     	return ret;
     }
 
@@ -115,7 +116,7 @@ public class ScriptReader {
 	            }
             }
         }
-        s.parse(p_element);
+        s.parseAndClean(p_element);
         return s;
     }
 
