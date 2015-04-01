@@ -168,9 +168,7 @@ public class SpriteBankEdit extends SpriteBank {
     	 }
     	 if (current != null) {
     		 if (current.nTile == i) {
-    			 if (current.decrodedPalette) {
-    				 GFXBasics.switchPalette(2);
-    			 }
+   				 GFXBasics.switchPalette(current.decrodedPalette ? 2 : 1);
     			 loadImage(current.imageName, Modifier.COLOR_BLUE);
     			 current = null;
     		 }
