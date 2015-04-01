@@ -49,10 +49,10 @@ public class PersoDragon extends PersoNJ {
 	
 	int cnt = 0;
 	
-	int[] seq = {3, 3, 2, 2, 1, 0, 4, 5, 4, 5};
+	int[] seq = {3, 3, 2, 2, 1, 0, 4, 5, 6, 4, 5, 6};
 	
 	// Interval during dragon wait to look for Zildo again
-	final static int FOCUS_TIME = 1;
+	final static int FOCUS_TIME = 15;
 	// Circle radius around dragon's head can move
 	final static int HEAD_ELONGATION = 30;
 	
@@ -88,13 +88,14 @@ public class PersoDragon extends PersoNJ {
 		
 		// 1) Detect Zildo every FOCUS_TIME
 		Perso zildo = null;
-		if (cnt % FOCUS_TIME == 90909090) {
+		if (cnt % FOCUS_TIME == 0) {
 			zildo = EngineZildo.persoManagement.lookFor(this, 10, PersoInfo.ZILDO);
 			if (zildo != null) {
 				Vector2f dist = new Vector2f(headPoint, new Pointf(zildo.x, zildo.y));
 				float norme = dist.norm();
 				float ratio = HEAD_ELONGATION / norme;
-				headPoint.add(dist.mul(ratio));
+				headPoint.add(new Vector2f(2, 0)); //dist.mul(ratio));
+				System.out.println(headPoint);
 			}
 		}
 		
@@ -107,14 +108,19 @@ public class PersoDragon extends PersoNJ {
 			e.setAddSpr(seq[i]);
 			if (i >= 6) {	// Wings
 				e.x = neck.elems.get(3).x - 40;
-				e.y = neck.elems.get(3).y+90-80;// + 100;
+				e.y = neck.elems.get(3).y+90-120;// + 100;
 				e.z = neck.elems.get(3).z + 60;// + 100; // - 40;
-				if (i == 8 || i == 9) {	// Reversed wings
-					e.x = e.x +80;
+				if (i == 9 || i == 10 || i == 11) {	// Reversed wings
+					e.x = e.x + 80;
 					e.reverse = Reverse.HORIZONTAL;
 				}
-				if (i==7 || i == 9) {
-					e.y += 93;
+				if (i == 6 || i == 9) {
+					e.x += 9;
+					if (i == 9) e.x -= 19;
+				} else if (i==7 || i == 10) {
+					e.y += 50;
+				} else if (i == 8 || i == 11) {
+					e.y += 50+93;
 				}
 			} else {
 				Pointf interpolated = bz.interpol(i / 5f);
