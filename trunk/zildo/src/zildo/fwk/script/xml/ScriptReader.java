@@ -36,7 +36,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import zildo.fwk.script.xml.element.action.ActionElement;
-import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.action.ActionKind;
 import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.fwk.script.xml.element.logic.VarElement.VarKind;
 import zildo.fwk.script.xml.element.AnyElement;

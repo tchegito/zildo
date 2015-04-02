@@ -30,26 +30,6 @@ import zildo.monde.sprites.persos.Perso.PersoInfo;
 
 public class ActionElement extends LanguageElement {
 
-	public enum ActionKind {
-		actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, map, focus, spawn, exec, take, mapReplace, zikReplace, nameReplace, // History
-																																								// actions
-		music, animation, impact, remove, markQuest, putDown, attack, activate, tile, filter, end, visible, respawn, zoom, herospecial, perso, sprite, timer, lookFor, _throw;
-
-		public static ActionKind fromString(String p_name) {
-			for (ActionKind kind : values()) {
-				if (kind.toString().equalsIgnoreCase(p_name)) {
-					return kind;
-				}
-			}
-			return null;
-		}
-
-		@Override
-		public String toString() {
-			return this == _throw ? "throw" : super.toString();
-		}
-	}
-
 	public String who; // Characters
 	public String what; // Camera, elements
 	public String effect;
@@ -77,7 +57,7 @@ public class ActionElement extends LanguageElement {
 	public String action; // To run a PersoAction, with "perso" ActionKind
 	public String shadow; // Only used in "spawn"
 	public String weapon; // For 'perso' and 'spawn'
-	public int addSpr;	// For 'perso'
+	public int addSpr;	// For 'perso' and 'spawn'
 	
 	private ZSSwitch switchExpression;
 
@@ -138,6 +118,7 @@ public class ActionElement extends LanguageElement {
 				z = new FloatExpression(temp);
 			}
 			shadow = readAttribute("shadow");
+			addSpr = readInt("addSpr", 0);
 		case animation:
 		case impact:
 			location = IPoint.fromString(strPos);

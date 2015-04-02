@@ -30,7 +30,7 @@ import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
 import zildo.fwk.script.xml.ScriptWriter;
 import zildo.fwk.script.xml.element.action.ActionElement;
-import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.action.ActionKind;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;

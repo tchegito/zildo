@@ -18,7 +18,7 @@ import org.w3c.dom.Element;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
-import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.action.ActionKind;
 
 public class ScriptWriter {
 
