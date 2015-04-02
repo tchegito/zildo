@@ -116,15 +116,25 @@
 				    <var name="loc:found" value="1"/>
 				</lookFor>
 				<if exp="loc:found=1">
-					<perso who="self" addSpr="1"/>
+					<var name="loc:position" value="1"/> <!--  will stop the timer -->
+				    <perso who="self" addSpr="1"/>
 					<wait value="6"/>
 					<perso who="self" addSpr="2"/>
 					<wait value="6"/>
 					<perso who="self" addSpr="3"/>
+					<wait value="20"/>
+					<spawn who="loc:head" type="TURTLE" pos="x+12,y-5" addSpr="8"/>
+					<wait value="2"/>
+					<perso who="loc:head" addSpr="9"/>
+					<wait value="2"/>
+					<perso who="loc:head" addSpr="10"/>
+					<wait value="2"/>
+					<actions>
+						<perso who="self" addSpr="4"/>
+						<pos who="self" pos="x+1,y"/>
+						<remove who="loc:head"/>
+					</actions>
 					<wait value="6"/>
-					<perso who="self" addSpr="4"/>
-					<wait value="6"/>
-					<var name="loc:position" value="1"/>
 				</if>
             </action>
             <end when="loc:position=1"/>

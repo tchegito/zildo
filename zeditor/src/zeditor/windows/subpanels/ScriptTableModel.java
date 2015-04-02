@@ -14,7 +14,7 @@ import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.script.xml.ScriptWriter;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
-import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.action.ActionKind;
 import zildo.fwk.script.xml.element.action.ActionsElement;
 import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.monde.sprites.desc.ElementDescription;

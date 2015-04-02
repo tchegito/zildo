@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.action.ActionElement;
-import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.action.ActionKind;
 
 public class QuestElement extends AnyElement {
 

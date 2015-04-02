@@ -44,7 +44,7 @@ import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
-import zildo.fwk.script.xml.element.action.ActionElement.ActionKind;
+import zildo.fwk.script.xml.element.action.ActionKind;
 import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
 import zildo.fwk.script.xml.element.action.runtime.RuntimeAction;
@@ -764,6 +764,7 @@ public class ActionExecutor extends RuntimeExecutor {
 	    		perso.setSpeed(p_action.speed);
 	    		perso.setEffect(p_action.effect);
 	    		perso.setFloor(p_action.floor);
+	    		perso.setAddSpr(p_action.addSpr);
 	    		perso.initPersoFX();
 	        	if (p_action.weapon != null) {
 	        		//TODO: not very clever ! setActiveWeapon and setWeapon should merge. So as
