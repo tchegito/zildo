@@ -29,7 +29,6 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Point;
-import zildo.resource.Constantes;
 
 public class ElementGuardWeapon extends Element {
 
@@ -67,7 +66,7 @@ public class ElementGuardWeapon extends Element {
 			Perso guard=(Perso) linked;
 			angle=guard.angle;
 
-			int j = (guard.getPos_seqsprite() / (2 * Constantes.speed)) % 2;
+			int j = guard.computeSeq(2) % 2;
 			int yy = (int) guard.y;
 			int xx = (int) guard.x;
 			int zz = 0;

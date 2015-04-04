@@ -1143,6 +1143,12 @@ public abstract class Perso extends Element {
 		return EngineZildo.mapManagement.getPersoBottomZ(this);
 	}
 	
+	// Returns current sequence position divided by factor*current speed
+	public int computeSeq(int factor) {
+		 return pos_seqsprite == -1 ? -1 :
+		 	(pos_seqsprite / (factor * Constantes.speed));
+	}
+
 	@Override
 	public int getFloorForSort() {
 		// When a character is on a transition (=ladder) he should be drawn OVER the tiles,

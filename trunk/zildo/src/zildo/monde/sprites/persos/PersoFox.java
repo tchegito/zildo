@@ -6,7 +6,6 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
-import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
 public class PersoFox extends PersoShadowed {
@@ -61,9 +60,9 @@ public class PersoFox extends PersoShadowed {
 			if (pos_seqsprite != 0) {
 				int vr;
 				if (angle.isHorizontal()) {
-					vr = (pos_seqsprite % (4 * Constantes.speed)) / (2 * Constantes.speed);
+					vr = computeSeq(2) % 2;
 				} else {
-					vr = (pos_seqsprite % (8 * Constantes.speed)) / (2 * Constantes.speed);
+					vr = computeSeq(2) % 4;
 					reverse = Reverse.NOTHING;
 					if (vr >= 2) {
 						vr-=2;

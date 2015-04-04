@@ -33,8 +33,8 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.ElementGuardWeapon;
-import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
+import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.action.ShotArrowAction;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -473,7 +473,7 @@ public class PersoNJ extends Perso {
 		int add_spr = 0;
 		PersoDescription quelSpriteWithBank = (PersoDescription) desc;
 
-		int seq2 = (getPos_seqsprite() % (6 * Constantes.speed)) / (3 * Constantes.speed);
+		int seq2 = computeSeq(3) % 2;
 
 		// Animated sequence adjustment
 
@@ -489,7 +489,7 @@ public class PersoNJ extends Perso {
 			if (linkedPerso != null) {
 				pos_seqsprite++;
 			}
-			add_spr = (getPos_seqsprite() % (8 * Constantes.speed)) / (2 * Constantes.speed);
+			add_spr = computeSeq(2) % 4;
 			if (add_spr > 1) {
 				if (quel_deplacement == MouvementPerso.HEN) {
 					setAjustedY(getAjustedY() - (add_spr - 1));
@@ -608,7 +608,7 @@ public class PersoNJ extends Perso {
 		case CORBEAU:
 		case CRABE:
 			// Persos à 3 sprites par angle
-			add_spr = angle.value * 3 + (getPos_seqsprite() % (12 * Constantes.speed)) / (4 * Constantes.speed);
+			add_spr = angle.value * 3 + computeSeq(4) % 3;
 			break;
 		case ABEILLE:
 			add_spr = (angle.value & 2) + (compteur_animation / 30) % 2;
@@ -645,7 +645,7 @@ public class PersoNJ extends Perso {
 					add_spr = 2;
 				}
 			}
-			int varying = (getPos_seqsprite() % (4 * Constantes.speed)) / (2 * Constantes.speed);
+			int varying = computeSeq(2) % 2;
 			if (angle.isHorizontal()) {
 				add_spr += varying;
 			} else if (varying == 1) {
@@ -662,7 +662,7 @@ public class PersoNJ extends Perso {
 					add_spr = 2;
 				}
 			}
-			int vary = (getPos_seqsprite() % (4 * Constantes.speed)) / (2 * Constantes.speed);
+			int vary = computeSeq(2) % 2;
 			add_spr+=vary;
 			break;
 		case FISH:
@@ -685,10 +685,14 @@ public class PersoNJ extends Perso {
 			if (angle == Angle.OUEST) {
 				add_spr =3; reverse = Reverse.HORIZONTAL;
 			}
-			add_spr += seqp[(pos_seqsprite % (12 * Constantes.speed)) / (3 * Constantes.speed)];  
+			add_spr += seqp[computeSeq(3) % 4];
+			break;
+		case TURTLE:
+			reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
+			add_spr = computeSeq(2) % 3;
 			break;
 		default:
-			add_spr = angle.value * 2 + (getPos_seqsprite() % (4 * Constantes.speed)) / (2 * Constantes.speed);
+			add_spr = angle.value * 2 + computeSeq(2) % 2;
 			break;
 		}
 
