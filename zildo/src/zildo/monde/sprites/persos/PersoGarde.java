@@ -29,7 +29,6 @@ import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.utils.MouvementPerso;
-import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
 /**
@@ -81,8 +80,7 @@ public class PersoGarde extends PersoNJ {
 
 		// Garde bleu
 		setNSpr(getDesc().first());
-		setAddSpr(seq_gbleu[angle.value][(getPos_seqsprite() % (16 * Constantes.speed))
-				/ (2 * Constantes.speed)]);
+		setAddSpr(seq_gbleu[angle.value][computeSeq(2) % 8]);
 	}
 
 	@Override

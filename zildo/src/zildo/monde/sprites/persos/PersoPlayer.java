@@ -665,7 +665,7 @@ public class PersoPlayer extends Perso {
 
 			switch (angle) {
 			case NORD:
-				seqPos = computePosSeqSprite(6);
+				seqPos = computeSeq(6);
 				setNSpr(PersoDescription.PRINCESS_BUNNY.nth(11 + seqPos % 3));
 				setNBank(SpriteBank.BANK_PNJ3);
 				reverse = seqPos > 2 ? Reverse.HORIZONTAL : Reverse.NOTHING;
@@ -673,7 +673,7 @@ public class PersoPlayer extends Perso {
 				setVisible(true);
 				break;
 			case SUD:
-				seqPos = computePosSeqSprite(6);
+				seqPos = computeSeq(6);
 				setNSpr(PersoDescription.PRINCESS_BUNNY.nth(3 + seqPos % 3));
 				setNBank(SpriteBank.BANK_PNJ3);
 				reverse = seqPos > 2 ? Reverse.HORIZONTAL : Reverse.NOTHING;
@@ -685,7 +685,7 @@ public class PersoPlayer extends Perso {
 				//shiftWetFeet += 2;
 			case OUEST:
 				reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
-				setNSpr(PersoDescription.PRINCESS_BUNNY.nth(7 + computePosSeqSprite(3)));
+				setNSpr(PersoDescription.PRINCESS_BUNNY.nth(7 + computeSeq(3)));
 				setNBank(SpriteBank.BANK_PNJ3);
 				shadow.setX(x+1);	// adjust shadow
 				break;
@@ -831,7 +831,7 @@ public class PersoPlayer extends Perso {
 			switch (getMouvement())
 			{
 			case VIDE:
-				setSpr(ZildoDescription.getMoving(angle, computePosSeqSprite(8)));
+				setSpr(ZildoDescription.getMoving(angle, computeSeq(8)));
 				// Shield
 				if (hasItem(ItemKind.SHIELD)) {
 					shield.setForeground(false);
@@ -1459,11 +1459,6 @@ public class PersoPlayer extends Perso {
 		moonHalf -= 2;
 		maxpv+=2;
 		pv = maxpv;
-	}
-	
-	private int computePosSeqSprite(int speedFactor) {
-		 return pos_seqsprite == -1 ? -1 :
-			 ((pos_seqsprite/2) % (speedFactor * Constantes.speed)) / Constantes.speed;		
 	}
 	
 	public void setAppearance(ControllablePerso who) {
