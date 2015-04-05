@@ -1,1 +1,21 @@
+#summary Advanced scripting
+
+<wiki:toc max_depth="4" />
+
 = Advanced Scripting =
+
+== Contextual actions ==
+
+There is two kinds of context which can be assigned to an execution script:
+ * sprite : referring to an actor (character) or a simple entity
+ * tile : referring to a tile position
+
+In both context, special variables are allowed:
+ * *x* and *y* : coordinates of the sprite/tile, each one on his referential
+ * *self* : name of the character
+ * *zildo.x* and *zildo.y* : hero's coordinates
+ * *zildo.money* : hero's gold pieces amount
+ * *zildo.angle.x* and *zildo.angle.y* : hero's angle coordinate (example: [0,-1] for north, [0,1] for east)
+
+
+== Local variables ==
