@@ -42,6 +42,9 @@ Here, variable {{{loc:firefly}}} is visible everywhere inside this {{{tileAction
 
 <p>There is several useful built-in functions which an be used in any scripts:</p>
 
-* *dice10* : returns a integer x as followed: 0 <= x < 10
-* *random* : returns a float f as followed: 0 <= f < 1
-* *bell* 
+ * *dice10* : returns a integer x as followed: 0 <= x < 10
+ * *random* : returns a float f as followed: 0 <= f < 1
+
+=== Special functions ===
+
+In a circular {{{moveTo}}}action (see tileAction 'fireflies' just above) we can use *bell* keyword. It provides a smooth function for going from one value to another one, describing a kind of bell, with a simple sinus function.
