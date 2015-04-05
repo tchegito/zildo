@@ -20,5 +20,17 @@ In both context, special variables are allowed:
 
 == Local variables ==
 
-We can use local variables in scripts, defined with a name starting with "loc:".
-A local variable is visible in its own scope, and sub sets, as in any classic language.
+<p>We can use local variables in scripts, defined with a name starting with "loc:".</p>
+A local variable is visible in its own scope, and sub sets, as in any classic language. For example:
+<code>{{{
+    <tileAction id="fireflies">
+        <spawn what="loc:firefly" type="PURPLE_FIREFLY"
+	               pos="x*16, y*16" z="4" alpha="180"
+	               foreground="true" />
+       	<timer each="80+random*15">
+            <action>
+		        <moveTo what="loc:firefly" pos="x*16+random*40,y*16+random*30" way="circular" zoom="128+bell*128" unblock="true"/>
+            </action>
+        </timer>
+    </tileAction>
+}}}</code>
