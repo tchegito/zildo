@@ -15,7 +15,10 @@ In both context, special variables are allowed:
  * *self* : name of the character
  * *zildo.x* and *zildo.y* : hero's coordinates
  * *zildo.money* : hero's gold pieces amount
- * *zildo.angle.x* and *zildo.angle.y* : hero's angle coordinate (example: [0,-1] for north, [0,1] for east)
+ * *zildo.angle.x* and *zildo.angle.y* : hero's angle coordinate (example: [0, -1] for north, [1, 0] for east)
 
 
 == Local variables ==
+
+We can use local variables in scripts, defined with a name starting with "loc:".
+A local variable is visible in its own scope, and sub sets, as in any classic language.
