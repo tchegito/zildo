@@ -11,7 +11,7 @@ There is two kinds of context which can be assigned to an execution script:
  * tile : referring to a tile position
 
 In both context, special variables are allowed:
- * *x* and *y* : coordinates of the sprite/tile, each one on his referential
+ * *x* and *y* : coordinates of the sprite/tile, each one on its referential
  * *z* : z-coordinate (only for sprite context)
  * *attente* : value of character's 'attente' field (only for character context)
  * *self* : name of the character
@@ -30,7 +30,7 @@ A local variable is visible in its own scope, and sub sets, as in any classic la
                z="4" alpha="180" foreground="true" />
        	<timer each="80+random*15">
             <action>
-		        <moveTo what="loc:firefly" pos="x*16+random*40,y*16+random*30" way="circular"
+		<moveTo what="loc:firefly" pos="x*16+random*40,y*16+random*30" way="circular"
                         zoom="128+bell*128" unblock="true"/>
             </action>
         </timer>
@@ -47,4 +47,4 @@ Here, variable {{{loc:firefly}}} is visible everywhere inside this {{{tileAction
 
 === Special functions ===
 
-In a circular {{{moveTo}}}action (see tileAction 'fireflies' just above) we can use *bell* keyword. It provides a smooth function for going from one value to another one, describing a kind of bell, with a simple sinus function.
+In a circular {{{moveTo}}} action (see tileAction 'fireflies' just above) we can use *bell* keyword. It provides a smooth function for going from one value to another one, describing a kind of bell, with a simple sinus function.
