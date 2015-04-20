@@ -47,6 +47,7 @@ import zildo.monde.sprites.persos.ia.PathFinder;
 import zildo.monde.sprites.persos.ia.PathFinderFollow;
 import zildo.monde.sprites.persos.ia.PathFinderSquirrel;
 import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
+import zildo.monde.sprites.persos.ia.mover.Mover;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.sprites.utils.SoundGetter;
@@ -593,8 +594,9 @@ public abstract class Perso extends Element {
 			Point middle = entity.getCenter();
 			SpriteModel model = entity.getSprModel();
 			Zone zz = new Zone(middle.x, middle.y, model.getTaille_x(), model.getTaille_y());
-			if (zz.isInto((int) x, (int) y)) {
-				boolean justLinked = entity.getMover().linkEntity(this);
+			Mover vehicle = entity.getMover();
+			if (zz.isInto((int) x, (int) y) && (int)z == vehicle.getFlatZ() ) {
+				boolean justLinked = vehicle.linkEntity(this);
 				if (justLinked) {
 					String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
 					TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName(), -1, floor);
@@ -603,8 +605,8 @@ public abstract class Perso extends Element {
 				}
 
 				return true;
-			} else if (onPlatform && entity.getMover().isOnIt(this)) {
-				entity.getMover().unlinkEntity(this);
+			} else if (onPlatform && vehicle.isOnIt(this)) {
+				vehicle.unlinkEntity(this);
 				onPlatform = false;
 			}
 		}
@@ -1146,7 +1148,7 @@ public abstract class Perso extends Element {
 	// Returns current sequence position divided by factor*current speed
 	public int computeSeq(int factor) {
 		 return pos_seqsprite == -1 ? -1 :
-		 	(pos_seqsprite / (factor * Constantes.speed));
+		 	(pos_seqsprite/2 / (factor * Constantes.speed));
 	}
 
 	@Override
@@ -1155,5 +1157,12 @@ public abstract class Perso extends Element {
 		// especially to appear ON the tile at (x,y-1). Without that, he appears UNDER the tile.
 		int visibleFloor = floor + (transitionCrossed ? 1 : 0);
 		return Math.min(Constantes.TILEENGINE_FLOOR-1, visibleFloor);
+	}
+	
+	// Tells this character that it could move by a Mover and carry people on him
+	@Override
+	public void initMover() {
+		// Other people could climb on him at a z-coordinate of 5
+		mover = new Mover(this, 5);
 	}
 }

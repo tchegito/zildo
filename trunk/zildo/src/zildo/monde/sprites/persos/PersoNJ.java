@@ -324,8 +324,7 @@ public class PersoNJ extends Perso {
 					pathFinder.setTarget(null);
 					destinationReached();
 				}
-				if (!isGhost() && info == PersoInfo.ENEMY && !isAlerte() &&
-						quel_deplacement != MouvementPerso.IMMOBILE) {
+				if (!isGhost() && info == PersoInfo.ENEMY && !isAlerte() && quel_deplacement != MouvementPerso.IMMOBILE) {
 					setAlerte(lookForZildo(angle));
 				}
 				if (this.getAttente() > 0) {
@@ -389,6 +388,11 @@ public class PersoNJ extends Perso {
 							}
 						}
 
+						if (mover != null) {	// Move people on the character
+							Pointf delta = new Pointf(x-prevX, y-prevY);
+							mover.takePeople(delta);
+						}
+						
 						// suite_mouvement
 						if (quel_deplacement == MouvementPerso.BEE) {
 							angle = Angle.fromInt(angle.value & 2);

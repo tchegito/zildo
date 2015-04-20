@@ -39,6 +39,7 @@ public class Mover {
 	Map<Integer, SpriteEntity> linkedEntities;	// All entities carried by the mover
 	SpriteEntity mobile;
 	Element elemPlaceHolder;	// For physic mover
+	int flatZ = 0;	// z-coordinate at which people can meet this mover (useful for character's able to take someone on his back)
 	
 	/**
 	 * @param mobile
@@ -50,8 +51,18 @@ public class Mover {
 		this.linkedEntities = new HashMap<Integer, SpriteEntity>();
 	}
 
+	public Mover(SpriteEntity mobile, int z) {
+		this(mobile);
+		flatZ = z;
+	}
+	
 	public void reachTarget() {
 		Pointf delta = order.move();
+		takePeople(delta);
+	}
+	
+	/** Take people with moving entity (platform, turtle ...) **/
+	public void takePeople(Pointf delta) {
 		// Move the linked entities
 		for (SpriteEntity entity : linkedEntities.values()) {
 			// Handle collision for Perso (but is it really necessary ? Maybe for later !)
@@ -114,4 +125,7 @@ public class Mover {
 		order.init(this);
 	}
 	
+	public int getFlatZ() {
+		return flatZ;
+	}
 }
