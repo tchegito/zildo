@@ -346,6 +346,13 @@ public class MapManagement {
 					return false;
 				}
 			}
+			// Character able to carry someone else (turtle)
+			if (perso.getMover() != null && quelElement.z >= perso.getMover().getFlatZ()) {
+				return false;	// Ok => character is above the "vehicle"
+			}
+			if (perso.isOnPlatform() && p.getMover() != null && p.getMover().isOnIt(perso)) {
+				return false;	// Ok => character is above the "vehicle"
+			}
 			return true;
 		}
 		
@@ -398,6 +405,14 @@ public class MapManagement {
 			}
 			if (bottomZ > p.z) {
 				bottomZ = (int) Math.max(bottomZ, p.z);
+			}
+		}
+		// If character is on a platform, returns the height of the platform
+		if (p.isOnPlatform()) {
+			for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
+				if (entity.getMover().isOnIt(p)) {
+					bottomZ = Math.max(bottomZ, entity.getMover().getFlatZ());
+				}
 			}
 		}
 		return bottomZ;

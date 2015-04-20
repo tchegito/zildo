@@ -186,6 +186,12 @@ public class SpriteManagement extends SpriteStore {
 			}
 		}
 
+		// Store walkable entities
+		if (ElementDescription.isPlatform(perso.getDesc())) {
+			entity.initMover();
+			walkableEntities.add(entity);
+		}
+		
 		EngineZildo.persoManagement.addPerso(perso);
 	}
 
