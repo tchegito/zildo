@@ -59,6 +59,9 @@ public class ScriptReader {
 	            InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
 	            if (stream == null) {
 	            	stream = ScriptReader.class.getClassLoader().getResourceAsStream(filename);
+	            	if (stream == null) { // Ultimate check: used for Unit Test
+	            		stream = ScriptReader.class.getClassLoader().getResourceAsStream(scriptName+".xml");
+	            	}
 	            }
 	            
 	            AnyElement root = loadStream(stream);
@@ -98,7 +101,7 @@ public class ScriptReader {
         // Check for ActionElement
         ActionKind kind=ActionKind.fromString(name);
         // Exclude specific actions
-        if (kind != null && kind != ActionKind.actions && kind != ActionKind.timer && kind != ActionKind.lookFor) { 
+        if (kind != null && kind != ActionKind.actions && kind != ActionKind.timer && kind != ActionKind.loop && kind != ActionKind.lookFor) { 
         	s=new ActionElement(kind);
         } else {
             QuestEvent event=QuestEvent.fromString(name);
