@@ -17,20 +17,44 @@
  *
  */
 
-package zildo.fwk.script.xml.element;
+package zildo.fwk.script.xml.element.action;
+
+import java.util.List;
 
 import org.w3c.dom.Element;
+
+import zildo.fwk.ZUtils;
+import zildo.fwk.script.logic.FloatExpression;
+import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.script.xml.element.LanguageElement;
 
 /**
  * @author Tchegito
  *
  */
-public abstract class LanguageElement extends AnyElement {
+public class LoopElement extends ActionElement {
 
-	public boolean unblock; // Default: FALSE meaning action is waiting to be over before next one
+	public FloatExpression endCondition;	// default: infinite loop
 
+	public List<LanguageElement> actions;
+
+	public LoopElement() {
+    	super(null);
+    	kind = ActionKind.loop;
+    }
+	
 	@Override
+	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
 		xmlElement = p_elem;
+
+		actions = (List<LanguageElement>) ScriptReader.parseNodes(xmlElement);
+		
+		String whenValue = xmlElement.getAttribute("when");
+		endCondition = ZUtils.isEmpty(whenValue) ? new FloatExpression(1) : new FloatExpression(whenValue);
+		
+		if (actions.isEmpty()) {
+			throw new RuntimeException("Loop is empty !");
+		}
 	}
 }

@@ -5,16 +5,23 @@
             <location name="sousbois1"/>
         </trigger>
         <action>
-            <music name="Squirrel"/>
 	        <tile pos="34,4" action="fireflies" />
             <tile pos="34,4" action="fireflies" />
             <tile pos="34,4" action="fireflies" />
             
             <tile pos="35,12" action="blueRain" />
-            <perso who="sacher" action="sacherTortue"/>
         </action>
     </quest>
     
+    <quest name="sousbois_tortue">
+        <trigger>
+            <location name="sousbois3"/>
+        </trigger>
+        <action>
+           <perso who="sacher" action="sacherTortue"/>
+        </action>
+    </quest>
+            
     <quest name="roxyMeetIsidore">
         <trigger>
 	        <location name="sousbois1" pos="423,632" radius="2"/> <!--  tile:25,39 -->
@@ -24,6 +31,12 @@
         </action>
     </quest>
     
+    <mapScript>
+	    <condition name="sousbois1,sousbois2,sousbois3">
+	        <music name="Squirrel"/>
+	    </condition>
+	</mapScript>
+	    
     <scene id="meetIsidore">
         <!--  Remember that Roxy's character when she's a squirrel, is 'zildo' ( ... ) -->
         <angle who="zildo" value="1"/>
@@ -33,6 +46,7 @@
 		<speak text="sousbois.isidore.0" who="isidore"/>
         <moveTo who="isidore" pos="432,619"/>
         <moveTo who="zildo" pos="409,632"/>
+        <nameReplace who="isidore" name="isidore"/>
 		<speak text="sousbois.isidore.1" who="isidore"/>
 		<speak text="sousbois.roxy.0" who="zildo"/>
 		<speak text="sousbois.isidore.2" who="isidore"/>
@@ -108,37 +122,72 @@
 	</tileAction>
 	
     <persoAction id="sacherTortue">
-        <var name="loc:position" value="0"/>
-        <timer each="40">
-            <action>
-                <var name="loc:found" value="0"/>
-				<lookFor who="self" info="ZILDO" radius="3">
-				    <var name="loc:found" value="1"/>
-				</lookFor>
-				<if exp="loc:found=1">
-					<var name="loc:position" value="1"/> <!--  will stop the timer -->
-				    <perso who="self" addSpr="1"/>
-					<wait value="6"/>
-					<perso who="self" addSpr="2"/>
-					<wait value="6"/>
-					<perso who="self" addSpr="3"/>
-					<wait value="20"/>
-					<spawn who="loc:head" type="TURTLE" pos="x+12,y-5" addSpr="8"/>
-					<wait value="2"/>
-					<perso who="loc:head" addSpr="9"/>
-					<wait value="2"/>
-					<perso who="loc:head" addSpr="10"/>
-					<wait value="2"/>
-					<actions>
-						<perso who="self" addSpr="4"/>
-						<pos who="self" pos="x+1,y"/>
-						<remove who="loc:head"/>
-					</actions>
-					<wait value="6"/>
-				</if>
-            </action>
-            <end when="loc:position=1"/>
-		</timer>
-		
+        <loop>
+        	<var name="loc:found" value="0"/>
+            <lookFor who="self" info="ZILDO" radius="3">
+			    <var name="loc:found" value="1"/>
+			</lookFor>
+			<if exp="loc:found=1">
+				<var name="loc:position" value="1"/> <!--  will stop the timer -->
+				<exec script="turtleAwake"/>
+				<var name="loc:nobody" value="0"/>
+				<loop when="loc:nobody=0">
+					<exec script="tortueSousbois3"/>
+					<lookFor who="self" info="ZILDO" radius="3" negative="true">
+					    <var name="loc:nobody" value="1"/>
+					</lookFor>
+				</loop>
+				<exec script="turtleSleep"/>
+			</if>
+			<wait value="40"/>
+		</loop>
    	</persoAction>
+   	
+    <scene id="turtleAwake">
+	    <perso who="self" addSpr="1"/>
+		<wait value="6"/>
+		<perso who="self" addSpr="2"/>
+		<wait value="6"/>
+		<perso who="self" addSpr="3"/>
+		<wait value="20"/>
+		<spawn who="loc:head" type="TURTLE" pos="x+12,y-5" addSpr="8"/>
+		<wait value="2"/>
+		<perso who="loc:head" addSpr="9"/>
+		<wait value="2"/>
+		<perso who="loc:head" addSpr="10"/>
+		<wait value="2"/>
+		<actions>
+			<perso who="self" addSpr="4"/>
+			<pos who="self" pos="x+1,y"/>
+			<remove who="loc:head"/>
+		</actions>
+		<wait value="20"/>
+    </scene>
+    
+    <scene id="turtleSleep">
+        <actions>
+			<perso who="self" addSpr="3"/>
+			<pos who="self" pos="x-1,y"/>
+			<spawn who="loc:head" type="TURTLE" pos="x+12,y-5" addSpr="10"/>
+		</actions>
+		<wait value="2"/>
+		<perso who="loc:head" addSpr="9"/>
+		<wait value="2"/>
+		<perso who="loc:head" addSpr="8"/>
+		<wait value="2"/>
+		<remove who="loc:head"/>
+	    <perso who="self" addSpr="2"/>
+		<wait value="6"/>
+		<perso who="self" addSpr="1"/>
+		<wait value="6"/>
+		<perso who="self" addSpr="0"/>
+		<wait value="20"/>
+    </scene>
+    
+    <scene id="tortueSousbois3">
+		<moveTo who="sacher" pos="-30,0" delta="true"/>
+		<wait value="100"/>
+		<moveTo who="sacher" pos="30,0" delta="true"/>
+		<wait value="100"/>
+    </scene>
 </adventure>

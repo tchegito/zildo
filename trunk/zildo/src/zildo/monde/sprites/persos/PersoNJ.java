@@ -170,6 +170,7 @@ public class PersoNJ extends Perso {
 		// If character has a delegate action, then do nothing else
 		if (action != null) {
 			blinkIfWounded();
+			move();
 			return;
 		}
 

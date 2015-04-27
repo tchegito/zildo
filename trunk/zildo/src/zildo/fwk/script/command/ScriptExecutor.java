@@ -47,6 +47,7 @@ public class ScriptExecutor {
 	Set<Perso> involved=new HashSet<Perso>();	// All characters involved in script
 	public boolean userEndedAction;				// TRUE if user has ended last action with ACTION keypressed
 	
+	List<ScriptProcess> subScriptsEnded = new ArrayList<ScriptProcess>();
 	List<ScriptProcess> toTerminate = new ArrayList<ScriptProcess>();
 	List<ScriptProcess> toExecute = new ArrayList<ScriptProcess>();
 	
@@ -56,19 +57,24 @@ public class ScriptExecutor {
 	 * @param p_finalEvent
 	 * @param p_topPriority TRUE=this script will be executed before all others
 	 * @param p_context context (optional)
+	 * @param p_caller process calling a new one
 	 */
-	public void execute(RuntimeScene p_script, boolean p_finalEvent, boolean p_topPriority, IEvaluationContext p_context) {
+	public void execute(RuntimeScene p_script, boolean p_finalEvent, boolean p_topPriority, IEvaluationContext p_context, ScriptProcess p_caller) {
 		// TODO: attempt to duplicate context, need to refactor cleanly
 		IEvaluationContext ctx = p_context;
 		if (p_context != null) {
 			ctx = ctx.clone();
 		}
-		ScriptProcess sp = new ScriptProcess(p_script, this, p_finalEvent, p_topPriority, ctx);
-		if (scripts.size() == 0) {
-			scripts.add(sp);
+		ScriptProcess sp = new ScriptProcess(p_script, this, p_finalEvent, p_topPriority, ctx, p_caller);
+		if (p_caller != null) {
+			p_caller.setSubProcess(sp);
 		} else {
-			// Scripts are actually processing, so keep it ready to be added during the #render method.
-			toExecute.add(sp);
+			if (scripts.size() == 0) {
+				scripts.add(sp);
+			} else {
+				// Scripts are actually processing, so keep it ready to be added during the #render method.
+				toExecute.add(sp);
+			}
 		}
 	}
 	
@@ -88,6 +94,17 @@ public class ScriptExecutor {
 			
 			// 1) Render current scripts
 			for (ScriptProcess process : scripts) {
+				
+				// Does this process have a sub process ? Check recursively
+				while (process.subProcess != null) {
+					if (subScriptsEnded.contains(process.subProcess)) {
+						// This sub process has recently ended, so we cut the link from the parent
+						process.subProcess = null;
+						subScriptsEnded.remove(process.subProcess);
+						break;
+					}
+					process = process.subProcess;
+				}
 				
 				RuntimeAction currentNode=process.getCurrentNode();
 				if (currentNode == null) {
@@ -144,7 +161,11 @@ public class ScriptExecutor {
 	 * @param process
 	 */
 	private void terminate(ScriptProcess process) {
-		scripts.remove(process);
+		boolean rootScript = scripts.remove(process);
+		if (!rootScript) {
+			// This script isn't in the global list, that means it's a subscript launched by another one
+			subScriptsEnded.add(process);
+		}
 		process.terminate();
 		if (!isScripting()) {
 			// Get back to life the involved characters
@@ -234,7 +255,7 @@ public class ScriptExecutor {
 					return true;
 				}
 			} else {
-				// Is this script unblocking
+				// Is this script unblocking ?
 				if (process.scene.locked) {
 					return true;
 				}

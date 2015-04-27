@@ -20,10 +20,13 @@
 package zildo.fwk.script.command;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.LocaleVarContext;
+import zildo.fwk.script.xml.element.LanguageElement;
+import zildo.server.EngineZildo;
 
 /**
  * Abstract classes both implemented by {@link ActionExecutor} and {@link VariableExecutor}.
@@ -39,6 +42,12 @@ public abstract class RuntimeExecutor {
     
 	IEvaluationContext context;
     
+	ScriptProcess caller;	// Script owning this executor
+	
+	public RuntimeExecutor(ScriptProcess caller) {
+		this.caller = caller;
+	}
+	
 	/** Returned a previously assigned variable's ID, or same if it isn't one local. **/
     protected String getVariableName(String name) {
     	String searchName = name;
@@ -63,5 +72,18 @@ public abstract class RuntimeExecutor {
     
     protected boolean isLocal(String name) {
     	return context != null && name != null && name.startsWith(LocaleVarContext.VAR_IDENTIFIER);
+    }
+    
+    /** Executes a script and wait for its end **/
+    public void executeSubProcess(List<LanguageElement> actions) {
+    	EngineZildo.scriptManagement.execute(actions, false, null, false, context, false, caller);  
+    }
+    public void executeSubProcess(List<LanguageElement> actions, IEvaluationContext ctx) {
+    	EngineZildo.scriptManagement.execute(actions, false, null, false, ctx, false, caller);  
+    }
+    
+    /** Executes a script without waiting for its end **/
+    public void executeSubProcessInParallel(List<LanguageElement> actions) {
+    	EngineZildo.scriptManagement.execute(actions, false, null, false, context, false, null);    	
     }
 }

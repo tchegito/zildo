@@ -46,6 +46,7 @@ import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionKind;
 import zildo.fwk.script.xml.element.action.LookforElement;
+import zildo.fwk.script.xml.element.action.LoopElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
 import zildo.fwk.script.xml.element.action.runtime.RuntimeAction;
 import zildo.fwk.ui.UIText;
@@ -103,8 +104,9 @@ public class ActionExecutor extends RuntimeExecutor {
     boolean locked;
     boolean uniqueAction;	// TRUE means unique action is executing (useful for timer)
 	
-    public ActionExecutor(ScriptExecutor p_scriptExec, boolean p_locked, IEvaluationContext p_context, boolean p_uniqueAction) {
-        scriptExec = p_scriptExec;
+    public ActionExecutor(ScriptExecutor p_scriptExec, boolean p_locked, IEvaluationContext p_context, boolean p_uniqueAction, ScriptProcess p_caller) {
+		super(p_caller);
+		scriptExec = p_scriptExec;
         locked = p_locked;
         context = p_context;
         uniqueAction = p_uniqueAction;
@@ -361,15 +363,14 @@ public class ActionExecutor extends RuntimeExecutor {
                 case exec:
                 	// Note : we can sequence scripts in an action tag.
                 	// If 'unblock' attribute is set on 'exec' action, given scene won't lock the game
-                	EngineZildo.scriptManagement.execute(text, locked && !p_action.unblock);
+                	EngineZildo.scriptManagement.execute(text, locked && !p_action.unblock, context, caller);
                 	break;
                 case music:
-                	if (text == null) { // Stop music ?
-	                	EngineZildo.soundManagement.broadcastSound((BankMusic) null, (Point) null);
-                	} else {
-	                	BankMusic musicSnd=BankMusic.valueOf(text);
-	                	EngineZildo.soundManagement.broadcastSound(musicSnd, (Point) null);
+                	BankMusic musicSnd = null;
+                	if (text != null) { // Stop music ?
+	                	musicSnd = BankMusic.valueOf(text);
                 	}
+                	EngineZildo.soundManagement.broadcastSound(musicSnd, (Point) null);
         			EngineZildo.soundManagement.setForceMusic(true);
                 	achieved=true;
                 	break;
@@ -613,21 +614,23 @@ public class ActionExecutor extends RuntimeExecutor {
                 case timer:
                 	if (!uniqueAction) {
                 		// If the timer is inside a script, run it as a single one, to avoid locking problems
-                		EngineZildo.scriptManagement.execute(Collections.singletonList((LanguageElement) p_action), false, null, false, context, false);
+                		executeSubProcessInParallel(Collections.singletonList((LanguageElement) p_action));
                 		achieved=true;
                 	} else {
                 		count = 0;
                 		nextStep = (int) ((TimerElement)p_action).each.evaluate(context);
                 	}
                 	break;
+                case loop:	// 'end' condition is checked at the end of a loop execution
+                	executeSubProcess( ((LoopElement)p_action).actions);
+                	break;
                 case lookFor: // Look for a character around another inside a given radius
                 	LookforElement lookFor = (LookforElement) p_action;
                 	Perso found = EngineZildo.persoManagement.lookFor(perso, lookFor.radius, p_action.info);
                 	if (found != null ^ lookFor.negative) {	// XOR !
                 		IEvaluationContext persoContext = new SpriteEntityContext(found, context);
-                		// Problem is here : we have to link this 'lookFor' action with his RuntimeScene just created. Maybe reuse
-                		// RuntimeAction in lookFor.actions, without creating a new runtimeScene ?
-                    	EngineZildo.scriptManagement.execute(p_runtimeAction.actions, false, false, persoContext, false);
+                		// Specificity here: we create a subprocess with a different context: upon found character
+                		executeSubProcess(lookFor.actions, persoContext);
                 	} else {
                 		achieved = true;
                 	}
@@ -704,25 +707,34 @@ public class ActionExecutor extends RuntimeExecutor {
         		achieved=!gearToActivate.isActing();
             	break;
             case exec:
-            	achieved=true;
+            	// Wait for subscript to be over (in theory, this check is useful ONLY WHEN an unlocking scene (for example, persoAction) is calling
+            	// a subscript, and we want to wait for its end before going forward.
+            	achieved=true; //p_action.unblock; // || !scriptExec.isProcessing(p_action.text);
             	break;
             case timer:
             	TimerElement timer = (TimerElement) p_action;
             	if (timer.endCondition != null && timer.endCondition.evaluate(context) == 1) {
             		achieved = true;
-                	EngineZildo.scriptManagement.execute(timer.end, false, null, false, context, false);
+            		executeSubProcessInParallel(timer.end);
             	} else if (count == nextStep) {
             		count = 0;
             		nextStep = (int) timer.each.evaluate(context);
-                	EngineZildo.scriptManagement.execute(timer.actions, false, null, false, context, false);
+            		executeSubProcessInParallel(timer.actions);
             	} else {
             		count++;
             	}
             	break;
+            case loop:
+            	LoopElement loop = (LoopElement) p_action;
+        		if (loop.endCondition.evaluate(context) == 1) {
+        			// Restart
+        			executeSubProcess(loop.actions);
+        		} else {
+        			achieved = true;
+        		}
+            	break;
             case lookFor:
-            	//LookforElement lookFor = (LookforElement) p_action;
-            	int last = p_runtimeAction.actions.size() - 1;
-            	achieved = p_runtimeAction.actions.get(last).done;
+            	achieved = true;
             default:
             	break;
         }
@@ -840,6 +852,7 @@ public class ActionExecutor extends RuntimeExecutor {
     	}
     	return elem;
     }
+
     
     public void terminate() {
     	// We don't have to terminate, if this script has called a new one (lookFor, timer, actions...) : context should be preserved !

@@ -34,7 +34,8 @@ public class VariableExecutor extends RuntimeExecutor {
 
 	boolean locked;
 	
-	public VariableExecutor(boolean p_locked, IEvaluationContext p_context) {
+	public VariableExecutor(boolean p_locked, IEvaluationContext p_context, ScriptProcess p_caller) {
+		super(p_caller);
 		locked = p_locked;
 		context = p_context;
 	}
@@ -69,7 +70,7 @@ public class VariableExecutor extends RuntimeExecutor {
 				success = p_elem.expression != null && ZSCondition.TRUE.equals(p_elem.expression.evaluate());
 				success |= p_elem.value != null && p_elem.value.evaluate(context) == 1f;
 				if (success) {
-	            	EngineZildo.scriptManagement.execute(p_elem.ifThenClause, false, null, false, context, locked);
+					executeSubProcess(p_elem.ifThenClause);
 				} else {
 					achieved = true;
 				}
