@@ -170,4 +170,8 @@ public class ZUtils {
     public static <T> List<T> arrayList() {
     	return new ArrayList<T>();
     }
+    
+    public static boolean isEmpty(String s) {
+    	return s == null || "".equals(s);
+    }
 }
