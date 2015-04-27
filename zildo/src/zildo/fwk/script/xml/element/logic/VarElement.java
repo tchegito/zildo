@@ -110,6 +110,6 @@ public class VarElement extends LanguageElement {
 
 	@Override
 	public String toString() {
-		return kind.toString();
+		return kind.toString()+ " "+(name == null ? "" : (name+"="))+value;
 	}
 }

@@ -25,6 +25,7 @@ import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionsElement;
 import zildo.fwk.script.xml.element.action.LookforElement;
+import zildo.fwk.script.xml.element.action.LoopElement;
 import zildo.fwk.script.xml.element.logic.VarElement;
 
 /**
@@ -51,6 +52,11 @@ public class RuntimeAction extends RuntimeModifiableElement {
 		// Note: actions from TimerElement will be created when timer will really be executed
 		if (action.getClass() == ActionsElement.class) {
 			actions = createActions(((ActionsElement)action).actions);
+			unblock = false;
+			var = false;
+		} else if (action.getClass() == LoopElement.class) {
+			actions = createActions(((LoopElement)action).actions);
+			this.action = action;
 			unblock = false;
 			var = false;
 		} else if (action.getClass() == LookforElement.class) {

@@ -29,6 +29,7 @@ import zildo.Zildo;
 import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.ZUtils;
 import zildo.fwk.script.command.ScriptExecutor;
+import zildo.fwk.script.command.ScriptProcess;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.LocaleVarContext;
 import zildo.fwk.script.context.SpriteEntityContext;
@@ -156,13 +157,17 @@ public class ScriptManagement {
      * @param p_locked TRUE=default:blocking scene / FALSE=non blocking scene
      */
     public void execute(String p_name, boolean p_locked) {
+    	execute(p_name, p_locked, null, null);
+    }
+    
+    public void execute(String p_name, boolean p_locked, IEvaluationContext p_context, ScriptProcess p_caller) {
     	if (Zildo.infoDebugScript) {
     		System.out.println("Execute scene "+p_name);
     	}
     	SceneElement scene=adventure.getSceneNamed(p_name);
     	if (scene != null) {
     		 if (!scriptExecutor.isProcessing(p_name)) {
-    			 scriptExecutor.execute(new RuntimeScene(scene, p_locked), true, false, null);
+    			 scriptExecutor.execute(new RuntimeScene(scene, p_locked), true, false, p_context, p_caller);
     		 }
     	} else {
     		throw new RuntimeException("Scene "+p_name+" doesn't exist !");
@@ -178,18 +183,24 @@ public class ScriptManagement {
      * @param p_context (optional)
      * @param p_locked used if no quest is provided
      */
-    public void execute(List<LanguageElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority, IEvaluationContext p_context, boolean p_locked) {
+    public void execute(List<LanguageElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority, 
+    		IEvaluationContext p_context, boolean p_locked) {
+    	execute(p_actions, p_finalEvent, p_quest, p_topPriority, p_context, p_locked, null);
+    }
+   
+    public void execute(List<LanguageElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority, 
+    		IEvaluationContext p_context, boolean p_locked, ScriptProcess p_caller) {
     	// Create a RuntimeScene from the given actions
 		RuntimeScene scene=new RuntimeScene(p_actions, p_quest, p_locked);
 		// And execute this list
-		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context);
+		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context, p_caller);
     }
     
     public void execute(List<RuntimeAction> p_actions, boolean p_finalEvent, boolean p_topPriority, IEvaluationContext p_context, boolean p_locked) {
     	// Create a RuntimeScene from the given actions
 		RuntimeScene scene=new RuntimeScene(p_actions, p_locked);
 		// And execute this list
-		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context);
+		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context, null);
     }
     
     /**

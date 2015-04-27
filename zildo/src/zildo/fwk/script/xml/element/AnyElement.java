@@ -25,6 +25,7 @@ import org.w3c.dom.Element;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.element.action.ActionsElement;
 import zildo.fwk.script.xml.element.action.LookforElement;
+import zildo.fwk.script.xml.element.action.LoopElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
 import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.monde.util.Point;
@@ -42,6 +43,7 @@ public abstract class AnyElement {
 		persoaction(ContextualActionElement.class),
 		tileaction(ContextualActionElement.class),
 		timer(TimerElement.class),
+		loop(LoopElement.class),
 		lookfor(LookforElement.class),
 		var(VarElement.class);
 		

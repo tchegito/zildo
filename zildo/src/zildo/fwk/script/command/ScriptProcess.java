@@ -43,18 +43,19 @@ public class ScriptProcess {
 	public boolean finalEvent;	// TRUE=send NOEVENT at the end of the script execution / FALSE=nothing
 	boolean topPriority;
 	
+	ScriptProcess subProcess;	// When this script executes another one
+	
 	PersoPlayer duplicateZildo;
 	
 	List<RuntimeAction> currentActions=new ArrayList<RuntimeAction>();
 
 	public ScriptProcess(RuntimeScene p_scene, ScriptExecutor p_scriptExecutor, 
-			boolean p_finalEvent, boolean p_topPriority,
-			IEvaluationContext context) {
+			boolean p_finalEvent, boolean p_topPriority, IEvaluationContext p_context, ScriptProcess p_caller) {
 		scene=p_scene;
 		cursor=0;
 		topPriority = p_topPriority;
-		actionExec=new ActionExecutor(p_scriptExecutor, p_scene.locked, context, scene.actions.size() == 1);
-		varExec = new VariableExecutor(p_scene.locked, context);
+		actionExec=new ActionExecutor(p_scriptExecutor, p_scene.locked, p_context, scene.actions.size() == 1, this);
+		varExec = new VariableExecutor(p_scene.locked, p_context, p_caller);
 		finalEvent = p_finalEvent;
 		
 		if (scene.restoreZildo) {
@@ -65,6 +66,9 @@ public class ScriptProcess {
 		}
 	}
 	
+	public void setSubProcess(ScriptProcess subProcess) {
+		this.subProcess = subProcess;
+	}
 	/**
 	 * Return the current node, based on the cursor value.
 	 * @return AnyElement
