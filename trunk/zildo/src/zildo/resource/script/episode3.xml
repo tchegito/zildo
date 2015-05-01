@@ -12,16 +12,7 @@
             <tile pos="35,12" action="blueRain" />
         </action>
     </quest>
-    
-    <quest name="sousbois_tortue">
-        <trigger>
-            <location name="sousbois3"/>
-        </trigger>
-        <action>
-           <perso who="sacher" action="sacherTortue"/>
-        </action>
-    </quest>
-            
+
     <quest name="roxyMeetIsidore">
         <trigger>
 	        <location name="sousbois1" pos="423,632" radius="2"/> <!--  tile:25,39 -->
@@ -34,6 +25,9 @@
     <mapScript>
 	    <condition name="sousbois1,sousbois2,sousbois3">
 	        <music name="Squirrel"/>
+	    </condition>
+	    <condition name="sousbois3">
+	        <perso who="sacher" action="sacherTortue"/>
 	    </condition>
 	</mapScript>
 	    
@@ -185,9 +179,9 @@
     </scene>
     
     <scene id="tortueSousbois3">
-		<moveTo who="sacher" pos="-30,0" delta="true"/>
+		<moveTo who="sacher" pos="-40,0" delta="true"/>
 		<wait value="100"/>
-		<moveTo who="sacher" pos="30,0" delta="true"/>
+		<moveTo who="sacher" pos="40,0" delta="true"/>
 		<wait value="100"/>
     </scene>
 </adventure>
