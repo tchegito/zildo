@@ -9,7 +9,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 
@@ -19,7 +19,18 @@ public class TestDialogs {
 	final static String BUNDLE_MENU = "zildo.resource.bundle.menu";
 
 	// Some sentences are the same in french than in english : we must authorize those exceptions
-	final static List<String> sameSentencesTranslated=Arrays.asList("m7.options", "m12.butOk", "m1.credits");
+	final static List<String> sameSentencesTranslated=Arrays.asList(
+			// menu
+			"m7.options", "m12.butOk", "m1.credits", "m9.movingCross.mobile",
+			// game
+			"promenade2.stars.0", "item.DYNAMITE", "d5.robert.5", "people.zildo", "item.BOOMERANG",
+			"Lwjgl.key.weapon", "Lwjgl.key.action", "Lwjgl.key.dialog", "Lwjgl.key.inventory", 
+			"enlev.p4", "people.rouge", "Android.key.menu", "foret.zildo.2", "polaky.sofiasky.4",
+			"voleursm4.falcor1", "pext.scr.hector.0", "pext.scr.hector.1", "visit1.king.4",
+			"REGION_Polaky", "REGION_Lugdunia"
+			);
+	
+	final static List<String> noNeedToTranslate=Arrays.asList("people.jack", "people.citizen");
 	
 	@Test
 	public void checkGameComplete() {
@@ -81,7 +92,9 @@ public class TestDialogs {
 					untranslated.add(key);
 				}
 			} catch (MissingResourceException e) {
-				emptyKey.add(key);
+				if (!noNeedToTranslate.contains(key)) {
+					emptyKey.add(key);
+				}
 			}
 		}
 		System.out.println("bundle: " + bundleName);
