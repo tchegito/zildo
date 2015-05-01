@@ -20,8 +20,7 @@
 
 package junit.area;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import zeditor.tools.builder.AllMapProcessor;
@@ -88,8 +87,9 @@ public class CheckConsistentMap {
 					case FLYINGSERPENT:
 					case BRAMBLE:
 					case BIG_RAT:
+					case DRAGON:
 						shouldBeEnemy = true;
-
+					default:
 						break;
 					}
 					// Check if this is a known exception
