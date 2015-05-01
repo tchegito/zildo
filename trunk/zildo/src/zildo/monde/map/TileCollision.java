@@ -63,6 +63,9 @@ public class TileCollision {
     				z=-2;
     			}
     			break;
+    		case Tile.T_BUSH:
+    			z = 10;
+    			break;
     		}
     	}
     	return z;

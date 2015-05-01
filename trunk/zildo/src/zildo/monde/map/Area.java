@@ -287,7 +287,9 @@ public class Area implements EasySerializable {
 			return TileNature.BOTTOMLESS;
 		}
 		
-		if (val == Tile.T_WATER_FEW) {
+		if (val == Tile.T_BUSH) {
+			return TileNature.BUSH;
+		} else if (val == Tile.T_WATER_FEW) {
 			return TileNature.WATER_MUD;
 		} else if (val == Tile.T_WATER_MUD) {
 			// Make double check with following 'if' clause

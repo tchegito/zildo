@@ -570,14 +570,17 @@ public class Element extends SpriteEntity {
 				EngineZildo.spriteManagement.spawnSpriteGeneric(
 						SpriteAnimation.WATER_SPLASH, (int) x, (int) y, floor,	0, null, null);
 				break;
+			case BUSH:
+				// Bushes blow up
+				EngineZildo.mapManagement.getCurrentMap().attackTile(floor, new Point(cx, cy));
+				break;
 			case REGULAR:
 				// 2: on the floor, many possibilities
 				if (nBank == SpriteBank.BANK_ELEMENTS) {
 					switch (d) {
 					case BUSHES:
-						// Le buisson s'effeuille
-						EngineZildo.spriteManagement
-								.spawnSpriteGeneric(SpriteAnimation.BUSHES, (int) x,
+						// Bushes blow up
+						EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES, (int) x,
 										(int) y, floor, 0, null, null);
 						EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
 						break;
