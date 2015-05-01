@@ -341,7 +341,7 @@ public class MapManagement {
 				if (p.getInfo() == PersoInfo.ENEMY && perso.isZildo() && perso.getCompte_dialogue() == 0) {
 					return false;
 				}
-				
+				// Allow following character to be on same position than his leader
 				if (perso.getQuel_deplacement() == MouvementPerso.FOLLOW && perso.getFollowing() == quelElement) {
 					return false;
 				}
