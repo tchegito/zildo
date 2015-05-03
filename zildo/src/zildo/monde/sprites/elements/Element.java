@@ -35,8 +35,11 @@ import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
+import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -551,6 +554,7 @@ public class Element extends SpriteEntity {
 			return true;
 		}
 		
+		
 		// 1: get the landing point nature
 		Area area = EngineZildo.mapManagement.getCurrentMap();
 		int cx = (int) (x / 16);
@@ -617,7 +621,12 @@ public class Element extends SpriteEntity {
 				break;
 			}
 		}
-		TriggerElement trigger = TriggerElement.createFallTrigger(desc, nature);
+		// Hack because hero hasn't a proper desc defined (that sucks !)
+		SpriteDescription currentDesc = desc;
+		if (desc == null && isZildo()) {
+			currentDesc = ((PersoPlayer) this).who == ControllablePerso.PRINCESS_BUNNY ? PersoDescription.PRINCESS_BUNNY : PersoDescription.ZILDO;
+		}
+		TriggerElement trigger = TriggerElement.createFallTrigger(currentDesc, nature);
 		EngineZildo.scriptManagement.trigger(trigger);
 		
 		// Unregister this element locale variable name, if any
