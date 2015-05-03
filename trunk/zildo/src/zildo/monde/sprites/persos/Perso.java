@@ -591,10 +591,8 @@ public abstract class Perso extends Element {
 		// Check sprite collision
 		for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
 			// found a platform. Is perso on it ?
-			Point middle = entity.getCenter();
-			SpriteModel model = entity.getSprModel();
-			Zone zz = new Zone(middle.x, middle.y, model.getTaille_x(), model.getTaille_y());
 			Mover vehicle = entity.getMover();
+			Zone zz = vehicle.getZone();
 			if (zz.isInto((int) x, (int) y) && (int)z == vehicle.getFlatZ() ) {
 				boolean justLinked = vehicle.linkEntity(this);
 				if (justLinked) {
