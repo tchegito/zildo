@@ -23,10 +23,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementPlaceHolder;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
+import zildo.monde.util.Zone;
 
 /**
  * @author Tchegito
@@ -127,5 +131,17 @@ public class Mover {
 	
 	public int getFlatZ() {
 		return flatZ;
+	}
+	
+	public Zone getZone() {
+		Point middle = mobile.getCenter();
+		SpriteModel model = mobile.getSprModel();
+		Zone zz = new Zone(middle.x, middle.y + getFlatZ(), model.getTaille_x(), model.getTaille_y());
+		if (mobile.getDesc() == PersoDescription.TURTLE) {
+			// Particular case: turtle => only the shell is walkable
+			zz.y1 += 2;
+			zz.y2 -= 5;
+		}
+		return zz;
 	}
 }
