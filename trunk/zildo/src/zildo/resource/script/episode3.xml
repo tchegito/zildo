@@ -22,6 +22,21 @@
         </action>
     </quest>
     
+    <quest name="removeNailForMoonStone">
+        <trigger>
+            <location name="sousbois3" tilePos="12,32" immediate="false"/>
+            <fall type="PRINCESS_BUNNY" nature="REGULAR"/>
+        </trigger>
+        <action>
+            <tile pos="12,32" back="174"/>
+            <wait value="20"/>
+            <tile pos="11,28" back2="-1"/>
+            <tile pos="12,28" back2="-1"/>
+			<animation pos="12*16,29*16" type="CLOUD_FOG" />
+            <sound name="ZildoAccomplishQuest"/>
+        </action>
+    </quest>
+    
     <mapScript>
 	    <condition name="sousbois1,sousbois2,sousbois3">
 	        <music name="Squirrel"/>
