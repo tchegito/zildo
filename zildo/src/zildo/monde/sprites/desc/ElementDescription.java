@@ -30,7 +30,7 @@ public enum ElementDescription implements SpriteDescription {
 
 	// Elem.spr
 	// 0
-	JAR, BUSHES, SHADOW, LEAF_GREEN, DROP_FLOOR, SMOKE, SMOKE_SMALL, TINY_ROCK1, TINY_ROCK2, BIG_KEY, HEART, STONE_HEAVY, STONE,
+	JAR, BUSHES, SHADOW, LEAF_GREEN, DROP_FLOOR, SMOKE, SMOKE_SMALL, TINY_ROCK, NETTLE_LEAF, BIG_KEY, HEART, STONE_HEAVY, STONE,
 	// 13
 	BLUE1, BLUE2, BLUE3, BLUE4, BLUE5, BLUE6, BLUE7, BLUE8, ANGLE1, ANGLE2, ANGLE3, ANGLE4,
 	// 25
@@ -281,7 +281,7 @@ public enum ElementDescription implements SpriteDescription {
 		switch (this) {
 		case JAR: case BUSHES: case LEAF:
 		case LEAF_GREEN: case DROP_FLOOR: case SMOKE:
-		case SMOKE_SMALL: case TINY_ROCK1: case TINY_ROCK2:
+		case SMOKE_SMALL: case TINY_ROCK: case NETTLE_LEAF:
 		case BIG_KEY: case HEART: case STONE_HEAVY: case STONE:
 		case BARREL:
 		case DROP_SMALL: case DROP_MEDIUM: case ROCK_BALL:
