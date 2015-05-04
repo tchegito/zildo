@@ -20,7 +20,7 @@ public class ZSpriteLibrary {
 			case SHADOW_MINUS:
 			case SHADOW_SMALL:
 			case SMOKE_SMALL:
-			case TINY_ROCK2:
+			case NETTLE_LEAF:
 			case DEATH_ANIM1:
 			case DEATH_ANIM2:
 			case DEATH_ANIM3:
