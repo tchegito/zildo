@@ -528,11 +528,14 @@ public class Area implements EasySerializable {
 	public void attackTile(int floor, Point tileLocation) {
 		// Check if Zildo destroy something on a tile
 		int onmap = readmap(tileLocation.x, tileLocation.y);
+		int spe = 0;
 		switch (onmap) {
-		case 165: // Bushes
+		case Tile.T_NETTLE:
+			spe = 1;	// Will blow the nettle with different leaf sprite
+		case Tile.T_BUSH: // Bushes
 			Point spriteLocation = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
 			EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES, spriteLocation.x, spriteLocation.y,
-					floor, 0, null, null);
+					floor, spe, null, null);
 			EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
 			takeSomethingOnTile(tileLocation, true, null, true);
@@ -630,9 +633,12 @@ public class Area implements EasySerializable {
 			anim = SpriteAnimation.FROM_CHEST;
 		} else {
 			switch (on_Area) {
-			case 165: // Bush
+			case Tile.T_BUSH: // Bush
 			default:
-				resultTile = 166;
+				resultTile = Tile.T_BUSH_CUT;
+				break;
+			case Tile.T_NETTLE:
+				resultTile = Tile.T_NETTLE_CUT;
 				break;
 			case 167: // Rock
 			case 169: // Heavy rock
@@ -656,9 +662,9 @@ public class Area implements EasySerializable {
 		boolean spawnGoodies = true;
 		Case temp = this.get_mapcase(x, y);
 		if (temp.getBackTile2() != null) {
-			if (anim == SpriteAnimation.FROM_CHEST) {
+			if (anim == SpriteAnimation.FROM_CHEST || resultTile == Tile.T_NETTLE_CUT) {	// Nettle cut are on back2 (...)
 				// A chest is open => replace by the right tile
-				temp.getBackTile2().index = resultTile;
+				temp.getBackTile2().index = resultTile % 256;
 				temp.setModified(true);
 			} else {
 				// Remove back2 (bush/jar/whatever is taken => remove it)
