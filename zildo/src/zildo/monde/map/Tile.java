@@ -51,6 +51,9 @@ public class Tile implements Cloneable {
     public final static int T_HSTUMP = 225 + 256*6;	// Higher stump's first tile
     public final static int T_WATER_MUD = 224 + 256*6;
     public final static int T_BUSH = 165;
+    public final static int T_BUSH_CUT = 166;
+    public final static int T_NETTLE = 6*256 + 231;
+    public final static int T_NETTLE_CUT = 6*256 + 232;
     
 	public Tile(int p_bank, int p_index, Case p_parent) {
 		bank = (byte) (p_bank & 15);

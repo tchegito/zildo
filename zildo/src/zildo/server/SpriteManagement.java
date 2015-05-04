@@ -243,7 +243,11 @@ public class SpriteManagement extends SpriteStore {
 					e.setVx(0.2f * (j - 1));
 					e.setVz((float) (-0.5f + Math.random() * 3 * 0.1f));
 					e.setAx(-0.05f * e.getVx());
-					e.setNSpr(ElementDescription.LEAF_GREEN.ordinal());
+					if (misc == 1) {
+						e.setNSpr(ElementDescription.NETTLE_LEAF.ordinal());
+					} else {
+						e.setNSpr(ElementDescription.LEAF_GREEN.ordinal());
+					}
 					if ( (j%2) == 0) {
 						e.reverse = Reverse.HORIZONTAL;
 					}
