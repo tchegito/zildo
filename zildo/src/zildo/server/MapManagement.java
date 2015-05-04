@@ -271,8 +271,7 @@ public class MapManagement {
 				int cx = (tx / 16);
 				int cy = (ty / 16);
 				int caseZ = currentMap.readAltitude(cx, cy);
-				int elemAltitude = quelElement.relativeZ + (int) quelElement.getZ()
-						/ 16;
+				int elemAltitude = quelElement.relativeZ + (int) quelElement.getZ() / 16;
 	
 				modx = tx % 16;
 				mody = ty % 16;
@@ -296,8 +295,7 @@ public class MapManagement {
 				if (tileCollision.collide(modx, mody, tile, (int) quelElement.z)) {
 					return true;
 				}
-				return EngineZildo.spriteManagement.collideSprite(tx, ty,
-						quelElement);
+				return EngineZildo.spriteManagement.collideSprite(tx, ty, quelElement);
 			} else {
 				// Flying perso : HEN, DUCK, FISH
 				int cx = (tx / 16);
