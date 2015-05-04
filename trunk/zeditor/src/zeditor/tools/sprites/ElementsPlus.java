@@ -50,7 +50,8 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(14, 34, 12, 12),
 				// Brique cassée
 				new Zone(0, 48, 8, 8),
-				new Zone(8, 48, 8, 8),
+				// Feuille d'ortie
+				new Zone(16, 21, 8, 8),
 				// Master Key
 				new Zone(0, 56, 14, 16),
 				// Coeur

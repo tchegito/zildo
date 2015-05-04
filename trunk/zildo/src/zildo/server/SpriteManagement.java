@@ -338,8 +338,10 @@ public class SpriteManagement extends SpriteStore {
 					e.setAz(-0.08f);
 					e.setFx(0.04f);
 					e.setFy(0.04f);
-					e.setNSpr(ElementDescription.TINY_ROCK1.ordinal()
-							+ (j % 2));
+					e.setNSpr(ElementDescription.TINY_ROCK.ordinal());
+					if (j % 2 == 1) {
+						e.rotation = Rotation.UPSIDEDOWN;
+					}
 					spawnSprite(e);
 
 					temp = Angle.rotate(temp, 1);
