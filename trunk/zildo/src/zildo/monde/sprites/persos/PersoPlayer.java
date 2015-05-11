@@ -670,7 +670,7 @@ public class PersoPlayer extends Perso {
 				setNBank(SpriteBank.BANK_PNJ3);
 				reverse = seqPos > 2 ? Reverse.HORIZONTAL : Reverse.NOTHING;
 				shadow.setX(x+2);	// adjust shadow
-				setVisible(true);
+				shadow.setVisible(true);
 				break;
 			case SUD:
 				seqPos = computeSeq(1) % 6;
@@ -678,7 +678,7 @@ public class PersoPlayer extends Perso {
 				setNBank(SpriteBank.BANK_PNJ3);
 				reverse = seqPos > 2 ? Reverse.HORIZONTAL : Reverse.NOTHING;
 				shadow.setX(x+2);	// adjust shadow
-				setVisible(true);
+				shadow.setVisible(true);
 				break;
 			case EST:
 				xx -= 2;
