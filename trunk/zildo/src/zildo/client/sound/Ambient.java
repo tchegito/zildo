@@ -47,7 +47,8 @@ public class Ambient {
 		DESERT(false, BankMusic.Village), // 4
 		CASTLE(false, BankMusic.Chateau),
 		CASTLEINSIDE(false, BankMusic.Chateau),
-		DANGERINSIDE(false, BankMusic.Surprise);
+		DANGERINSIDE(false, BankMusic.Surprise),
+		UNDERGROWTH(true, BankMusic.Squirrel);
 		
 		public boolean outside;
 		public BankMusic music;
