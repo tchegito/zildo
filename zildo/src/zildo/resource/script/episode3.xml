@@ -38,9 +38,6 @@
     </quest>
     
     <mapScript>
-	    <condition name="sousbois1,sousbois2,sousbois3">
-	        <music name="Squirrel"/>
-	    </condition>
 	    <condition name="sousbois3">
 	        <perso who="sacher" action="sacherTortue"/>
 	    </condition>

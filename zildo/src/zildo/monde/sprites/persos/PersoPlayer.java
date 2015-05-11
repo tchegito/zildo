@@ -1461,6 +1461,17 @@ public class PersoPlayer extends Perso {
 		pv = maxpv;
 	}
 	
+	@Override
+	public Collision getCollision() {
+        int size = 7;
+        int zildoY = (int) y-10;
+        if (who == ControllablePerso.PRINCESS_BUNNY) {
+        	size = 3;	// Squirrel is tinier
+        	zildoY += 4;
+        }
+        return new Collision((int) x, zildoY, size, null, this, null, null);		
+	}
+	
 	public void setAppearance(ControllablePerso who) {
 		this.who = who;
 		switch (who) {
