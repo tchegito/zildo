@@ -261,8 +261,7 @@ public class MapManagement {
 		}
 		Point size = Element.getElementSize(quelElement);
 		
-		if (quelElement != null && quelElement.flying
-				&& quelElement.getAngle() != null) {
+		if (quelElement != null && quelElement.flying && quelElement.getAngle() != null) {
 			if (EntityType.PERSO != quelElement.getEntityType()) {
 				// Flying object
 				Angle angleFlying = quelElement.getAngle();
@@ -466,7 +465,9 @@ public class MapManagement {
 			if (mapCase == null) {
 				continue;
 			}
-			Tile tile = foreground ? mapCase.getForeTile() : mapCase.getBackTile();
+			// HACK: add nonZildo condition because Squirrel falls on the hill from a higher stump. Indeed, we chose to get squirrel FOREGROUND when he's
+			// on a top of a high stump. But we even need to check collision on BACK tiles around him.
+			Tile tile = foreground && !quelElement.isZildo() ? mapCase.getForeTile() : mapCase.getBackTile();
 			if (tile == null) {
 				continue;
 			}

@@ -43,7 +43,7 @@ public enum Region {
 	CaveFlamesDragon("dragon"),
 	Polaky("polaky", "polaky1", "polaky2", "polaky3", "polakym", "bosquetm", "bosquetm2"),
 	PolakyCave("polaky4", "polaky5", "polakyg*"),
-	Sousbois("sousbois1", "sousbois2", "sousbois3", "sousbois4", "sousbois5"),
+	Sousbois("sousbois*"),
 	Special("preintro");
 	
 	String[] mapNames;
