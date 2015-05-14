@@ -38,6 +38,7 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
 import zildo.monde.items.ItemKind;
 import zildo.monde.items.StoredItem;
+import zildo.monde.map.Tile.TileNature;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
@@ -622,7 +623,10 @@ public class PersoPlayer extends Perso {
 	public void jump() {
 		//TODO: make it homogeneous with PathFinderSquirrel#setTarget
 		az = -0.1f;
-		vz = 1.1f;	// Adjust speed so as hero can jump to a log from a water mud
+		vz = 2.12f;	// Adjust speed so as hero can't jump to a log from a water mud
+		if (nature == TileNature.SWAMP) {
+			vz -= 0.2f;
+		}
 		mouvement = MouvementZildo.TOMBE;
 	}
 	
@@ -650,7 +654,7 @@ public class PersoPlayer extends Perso {
 			// Player is controlling princess, so display her
 			setNSpr(PersoDescription.PRINCESS_BUNNY.nth(0));
 			int tileBottomZ = getBottomZ();
-			if (tileBottomZ < z) {
+			if (tileBottomZ < z && mouvement != MouvementZildo.SAUTE) {
 				mouvement = MouvementZildo.TOMBE;
 				az = -0.1f;
 			}
@@ -662,6 +666,9 @@ public class PersoPlayer extends Perso {
 			int seqPos = 0;
 			
 			shiftWetFeet = -1 + 3;
+
+			// When squirrel is on a top of a high stump, he have to be foregound
+			setForeground(z > 7);
 
 			switch (angle) {
 			case NORD:

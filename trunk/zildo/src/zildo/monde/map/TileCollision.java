@@ -50,11 +50,16 @@ public class TileCollision {
     	int bank = p_nTile >> 8;
     	if (bank == 0 || bank == 6) {
     		switch (p_nTile) {
-    		case 159: case 160: case 161: case 162:
+    		// On the 4 tiles of regular stump, we consider upper region is at z=1 (to get the fall smoother)
+    		case Tile.T_STUMP: case Tile.T_STUMP+1:
+    			z = p_posY > 2 ? 5 : 1;
+    			break;
+    		case Tile.T_STUMP+2: case Tile.T_STUMP+3:
     			z = 5;
     			break;
-    		case Tile.T_HSTUMP: case Tile.T_HSTUMP+1: case Tile.T_HSTUMP+2: case Tile.T_HSTUMP+3:
-    			z = 10;
+    		case Tile.T_HSTUMP: case Tile.T_HSTUMP+1:
+    		case Tile.T_HSTUMP+2: case Tile.T_HSTUMP+3:
+    			z = 8;
     			break;
     		case Tile.T_WATER_MUD:
     			if (tileInfos[p_nTile].collide(p_posX, p_posY)) {

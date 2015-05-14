@@ -680,7 +680,7 @@ public abstract class Perso extends Element {
 				break;
 			case 200:
 			case 374:
-				if (!flying) {
+				if (!flying && z == 0) {	// Don't slow down character if he's in the air
 					snd = BankSound.ZildoGadou;
 					inDirt = true;
 					repeatSound = true;
@@ -993,7 +993,7 @@ public abstract class Perso extends Element {
 			}
 			
 			Point landingPoint=angleResult.getLandingPoint().translate((int) x, (int) y);
-			if (!EngineZildo.mapManagement.collide(landingPoint.x, landingPoint.y, this)) {
+			if (true || !EngineZildo.mapManagement.collide(landingPoint.x, landingPoint.y, this)) {
 				jump(angleResult);
 			}
 		}
@@ -1030,20 +1030,21 @@ public abstract class Perso extends Element {
 	 * Character is jumping : move him
 	 */
 	public void moveJump() {
-		if (getAttente() == 32) {
+		int nbStep = angle == Angle.SUD ? 40 : 32;
+		if (getAttente() == nbStep) {
 			land();
 			if (action == null) {
 				attente = 0;
 			}
 		} else {
 			Point landingPoint=getJumpAngle().getLandingPoint();
-			float pasx=landingPoint.x / 32.0f;
-			float pasy=landingPoint.y / 32.0f;
+			float pasx=landingPoint.x / (float) nbStep;
+			float pasy=landingPoint.y / (float) nbStep;
 			x+=pasx;
 			y+=pasy;
 			// Trajectoire en cloche
-			double beta = (Math.PI * attente) / 32.0f;
-			z =  (int) (8.0f * Math.sin(beta));
+			double beta = (Math.PI * attente) / (float) nbStep;
+			z =  (int) (14.0f * Math.sin(beta));
 			attente++;
 		}	
 	}
