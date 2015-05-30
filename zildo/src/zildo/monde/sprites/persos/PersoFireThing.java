@@ -57,10 +57,6 @@ public class PersoFireThing extends PersoNJ {
 	float keepy = -999;
 	@Override
 	public void move() {
-		if (pv == 0) {	//TODO: should be integrated in common part
-			return;
-		}
-		
 		if (keepy == -999) {
 			keepy = y;
 		}

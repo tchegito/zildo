@@ -52,6 +52,10 @@ public class Vector2f {
         y = p_y;
     }
     
+    public void set(double p_x, double p_y) {
+        x = (float) p_x;
+        y = (float) p_y;
+    }
     public Vector2f add(float p_x, float p_y) {
     	x += x;
     	y += y;
