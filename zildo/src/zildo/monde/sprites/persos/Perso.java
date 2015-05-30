@@ -34,7 +34,6 @@ import zildo.monde.map.TileCollision;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
-import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
@@ -1147,7 +1146,7 @@ public abstract class Perso extends Element {
 	// Returns current sequence position divided by factor*current speed
 	public int computeSeq(int factor) {
 		 return pos_seqsprite == -1 ? -1 :
-		 	(pos_seqsprite * factor / (factor * Constantes.speed));
+		 	(pos_seqsprite / (factor * Constantes.speed));
 	}
 
 	@Override

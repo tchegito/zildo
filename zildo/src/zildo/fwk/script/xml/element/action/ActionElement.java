@@ -137,7 +137,7 @@ public class ActionElement extends LanguageElement {
 			alpha = readInt("alpha", -1);
 			alphaA = getFloatExpr("alphaA");
 			deltaFloor = readInt("deltaFloor", 0);
-			addSpr = readInt("addSpr", -1);
+			addSpr = readInt("addSpr", 0);
 			break;
 		case speak:
 			text = readAttribute("text");
