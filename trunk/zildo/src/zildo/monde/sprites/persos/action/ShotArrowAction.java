@@ -42,7 +42,7 @@ public class ShotArrowAction implements PersoAction {
 	
 	@Override
 	public boolean launchAction() {
-		if (perso.getAttente() == 2*8) {
+		if (perso.getAttente() <= 2*8) {	// Sometimes 'attente' field is decremented by 2 instead of 1, so we never reach 2*8
 			Element weapon=perso.getEn_bras();	// Should NOT be nul !
 			int xx, yy;
 			if (weapon != null) {
@@ -55,8 +55,7 @@ public class ShotArrowAction implements PersoAction {
 			EngineZildo.soundManagement.broadcastSound(BankSound.FlecheTir, perso);
 			Element arrow=new ElementArrow(perso.getAngle(), xx, yy, 0, perso);
 			EngineZildo.spriteManagement.spawnSprite(arrow);
-		} else if (perso.getAttente() == 0) {
-			return true;
+			return true;	// End action
 		}
 		return false;
 	}
