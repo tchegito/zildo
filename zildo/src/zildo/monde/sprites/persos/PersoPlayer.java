@@ -189,7 +189,7 @@ public class PersoPlayer extends Perso {
 
 		setSpeed(Constantes.ZILDO_SPEED);
 		
-		setAppearance(ControllablePerso.PRINCESS_BUNNY);
+		//setAppearance(ControllablePerso.PRINCESS_BUNNY);
 	}
 
 	/**
@@ -838,7 +838,7 @@ public class PersoPlayer extends Perso {
 			switch (getMouvement())
 			{
 			case VIDE:
-				setSpr(ZildoDescription.getMoving(angle, computeSeq(8)));
+				setSpr(ZildoDescription.getMoving(angle, computeSeq(8) % 8));
 				// Shield
 				if (hasItem(ItemKind.SHIELD)) {
 					shield.setForeground(false);

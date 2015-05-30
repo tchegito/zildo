@@ -1147,7 +1147,7 @@ public abstract class Perso extends Element {
 	// Returns current sequence position divided by factor*current speed
 	public int computeSeq(int factor) {
 		 return pos_seqsprite == -1 ? -1 :
-		 	(pos_seqsprite/2 / (factor * Constantes.speed));
+		 	(pos_seqsprite * factor / (factor * Constantes.speed));
 	}
 
 	@Override
