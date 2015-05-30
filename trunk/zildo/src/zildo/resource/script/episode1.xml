@@ -478,7 +478,7 @@
 		    <markQuest name="start_defi1" value="0"/>
 		</condition>
 		<condition name="foretg" exp="foretg_button_trig">
-		    <exec script="foretg_button"/>
+		    <exec script="foretg_button" unblock="true"/>
 		</condition>
 		<condition name="bosquet" exp="!bosquet_free_way-foretg_apres_grotte">
 		    <spawn who="maltus" pos="97,382" type="BANDIT_CHAPEAU"/>

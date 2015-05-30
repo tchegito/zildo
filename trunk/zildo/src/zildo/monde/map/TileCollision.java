@@ -46,7 +46,7 @@ public class TileCollision {
     }
     
     public int getBottomZ(int p_posX, int p_posY, int p_nTile, boolean blocked) {
-    	int z = blocked ? 16 : 0;
+    	int z = blocked ? 160 : 0;
     	int bank = p_nTile >> 8;
     	if (bank == 0 || bank == 6) {
     		switch (p_nTile) {
