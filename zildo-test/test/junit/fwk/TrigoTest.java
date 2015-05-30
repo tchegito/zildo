@@ -21,8 +21,8 @@ package junit.fwk;
 
 import static java.lang.Math.abs;
 import static zildo.monde.Trigo.getAngleRadian;
-import junit.framework.Assert;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -34,13 +34,14 @@ public class TrigoTest {
 	@Test
 	public void angleRadian() {
 		// No dependent of size
-		Assert.assertEquals(getAngleRadian(0, -1), getAngleRadian(0, -8));
+		Assert.assertEquals(getAngleRadian(0, -1), getAngleRadian(0, -8), 0);
 		// PI / 2
-		Assert.assertEquals(abs(getAngleRadian(0f, -1.5f)), Math.PI / 2d, 0.0001d);
+		Assert.assertEquals(Math.PI / 2d, abs(getAngleRadian(0f, -1.5f)), 0.0001d);
 		// 0
-		Assert.assertEquals(abs(getAngleRadian(3, 0)), 0, 0.0001d);
+		Assert.assertEquals(0, abs(getAngleRadian(3, 0)), 0.0001d);
 		// PI / 4
-		Assert.assertEquals(abs(getAngleRadian(1, 1)), abs(getAngleRadian(5, 5)), 0.0001d);
-		Assert.assertEquals(abs(getAngleRadian(1, 1)), Math.PI / 4d, 0.0001d);
+		Assert.assertEquals(abs(getAngleRadian(5, 5)), abs(getAngleRadian(1, 1)), 0.0001d);
+		Assert.assertEquals(Math.PI / 4d, abs(getAngleRadian(1, 1)), 0.0001d);
+		Assert.assertEquals(Math.PI, getAngleRadian(-38, 1), 0.1d);
 	}
 }
