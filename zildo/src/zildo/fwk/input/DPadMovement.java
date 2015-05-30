@@ -19,6 +19,7 @@
 
 package zildo.fwk.input;
 
+import zildo.monde.Trigo;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
 
@@ -35,11 +36,18 @@ public class DPadMovement {
 		Vector2f v = new Vector2f(0,0);
 		// 0 <= px <= 80 
 		// 0 <= py <= 80
-		float distance = (float) Pointf.pythagore(px, py);
+		double distance = Pointf.pythagore(px, py);
 		if (distance == 0) {
 			return null;
 		}
-		float ratio = distance / 40;
+		
+		// Get angle and round it
+		double angle = Trigo.getAngleRadianWithDistance(0, 0, px, py, distance);
+		double rounded = Math.round(angle / Trigo.PI_SUR_4) * Trigo.PI_SUR_4;
+		
+		int ppx = (int) (distance * Math.cos(rounded));
+		int ppy = (int) (distance * Math.sin(rounded));
+		float ratio = (float) distance / 40;
 		float clamped = 0;
 		for (float force : forces) {
 			clamped = force;
@@ -47,7 +55,7 @@ public class DPadMovement {
 				break;
 			}
 		}
-		v.set(clamped * (px / distance), clamped * (py / distance));
+		v.set(clamped * (ppx / distance), clamped * (ppy / distance));
 		return v; 
 	}
 }

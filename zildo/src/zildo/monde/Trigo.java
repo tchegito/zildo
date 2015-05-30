@@ -5,6 +5,7 @@ import zildo.monde.util.Vector2f;
 
 public class Trigo {
 
+	public static final double PI_SUR_2 = Math.PI / 2d;
 	public static final double PI_SUR_4 = Math.PI / 4d;
 	public static final double SQUARE_2 = Math.sqrt(2);
 	public static final double cosPISur4 = Math.cos(Math.PI / 4);	// Remember this result
@@ -18,6 +19,11 @@ public class Trigo {
 		if (distance == 0) {
 			return 0;
 		}
+		return getAngleRadianWithDistance(ax, ay, bx, by, distance);
+	}
+	
+	/** Small optimization for case where we already have calculated distance **/
+	public static double getAngleRadianWithDistance(float ax, float ay, float bx, float by, double distance) {
 		double cosAngle = (bx - ax) / distance;
 		double result = Math.acos(cosAngle);
 		if (by < ay) {
