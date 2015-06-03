@@ -1370,12 +1370,15 @@
 	  	<filter type="0"/>
 	    <fadeIn value="1"/>
 	    <wait value="150"/>
-	    <sound name="MenuMove"/>
-	    <wait value="10"/>
-	    <sound name="MenuMove"/>
-	    <wait value="10"/>
-	    <sound name="MenuMove"/>
-	    <wait value="100"/>
+    	<sound name="MenuMove"/><wait value="10"/>
+       	<sound name="MenuMove"/><wait value="10"/>
+    	<sound name="MenuMove"/><wait value="10"/>
+    	<wait value="100"/>
+       	<sound name="MenuMove"/><wait value="10"/>
+    	<sound name="MenuMove"/><wait value="10"/>
+       	<sound name="MenuMove"/><wait value="10"/>
+    	<sound name="MenuMove"/><wait value="10"/>
+    	<wait value="50"/>
 	    <sound name="OuvrePorte"/>
 	    <spawn who="petula" type="RITASKY" pos="144,170" alpha="0" alphaA="2"/>
 	    <perso who="zildo" action=""/>

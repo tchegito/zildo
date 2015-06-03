@@ -992,7 +992,8 @@ public abstract class Perso extends Element {
 			}
 			
 			Point landingPoint=angleResult.getLandingPoint().translate((int) x, (int) y);
-			if (true || !EngineZildo.mapManagement.collide(landingPoint.x, landingPoint.y, this)) {
+			// TODO: make this evoluate in order to squirrel can jump on the log
+			if (!EngineZildo.mapManagement.collide(landingPoint.x, landingPoint.y, this)) {
 				jump(angleResult);
 			}
 		}
@@ -1030,7 +1031,7 @@ public abstract class Perso extends Element {
 	 */
 	public void moveJump() {
 		int nbStep = angle == Angle.SUD ? 40 : 32;
-		if (getAttente() == nbStep) {
+		if (getAttente() >= nbStep) {
 			land();
 			if (action == null) {
 				attente = 0;
