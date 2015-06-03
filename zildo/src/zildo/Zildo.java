@@ -36,7 +36,7 @@ public class Zildo {
 	public static int screenX=800;
 	public static int screenY=600;
 	public static boolean infoDebug=false;
-	public static boolean infoDebugCollision=true;
+	public static boolean infoDebugCollision=false;	// infoDebug should be activated
 	public static boolean infoDebugCase=false;
 	public static boolean infoDebugScript=false;
 	public static boolean log=false;
