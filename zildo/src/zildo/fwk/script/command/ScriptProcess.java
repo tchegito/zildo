@@ -92,6 +92,18 @@ public class ScriptProcess {
 		actionExec.terminate();
 	}
 	
+	/** Returns TRUE if the given name match this process, or its subprocess **/
+	public boolean isNameProcessing(String p_name) {
+		if (p_name.equals(scene.id)) {
+			return true;
+		} else if ((RuntimeScene.MARQUER_SCENE + p_name).equals(scene.id)) {
+			return true;
+		}
+		if (subProcess != null) {
+			return subProcess.isNameProcessing(p_name);
+		}
+		return false;
+	}
 	@Override
 	public String toString() {
 		return "["+cursor+" on "+scene.toString()+"]";
