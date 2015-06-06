@@ -271,9 +271,7 @@ public class ScriptExecutor {
 	 */
 	public boolean isProcessing(String p_name) {
 		for (ScriptProcess process : scripts) {
-			if (p_name.equals(process.scene.id)) {
-				return true;
-			} else if ((RuntimeScene.MARQUER_SCENE + p_name).equals(process.scene.id)) {
+			if (process.isNameProcessing(p_name)) {
 				return true;
 			}
 		}
