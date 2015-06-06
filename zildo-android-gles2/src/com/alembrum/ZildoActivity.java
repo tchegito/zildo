@@ -121,7 +121,7 @@ public class ZildoActivity extends Activity {
         Zildo.screenY = metrics.heightPixels;
         
         client.setLeftHanded(getPreferences(MODE_PRIVATE).getBoolean(PARAM_LEFTHANDED, false));
-        client.setMovingCross(getPreferences(MODE_PRIVATE).getBoolean(PARAM_MOVINGCROSS, true));
+        client.setMovingCross(getPreferences(MODE_PRIVATE).getBoolean(PARAM_MOVINGCROSS, false));
         
         if (renderer == null) {
         	renderer = new OpenGLRenderer(client, touchListener);
