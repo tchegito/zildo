@@ -54,6 +54,7 @@ import zildo.monde.sprites.elements.ElementArrow;
 import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementDynamite;
 import zildo.monde.sprites.elements.ElementGear;
+import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
@@ -1026,7 +1027,7 @@ public class PersoPlayer extends Perso {
 	 *            >0 ==> Zildo gets some money
 	 * @return boolean : TRUE=element should disappear / FALSE=element stays
 	 */
-	public boolean pickGoodies(Element p_element, int p_value) {
+	public boolean pickGoodies(ElementGoodies p_element, int p_value) {
 		// Effect on perso
 		if (p_value != 0 && (p_element == null || p_element.getDesc() == ElementDescription.GOLDPURSE1)) { 
 			// Zildo gets/looses some money
@@ -1049,6 +1050,9 @@ public class PersoPlayer extends Perso {
 
 				useItem(d, p_value);
 			}
+		}
+		if (p_element != null) {
+			p_element.markTaken();
 		}
 		return true;
 	}
