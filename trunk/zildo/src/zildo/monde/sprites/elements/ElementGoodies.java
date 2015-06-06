@@ -36,7 +36,7 @@ public class ElementGoodies extends Element {
 	
 	private int timeToAcquire;	// Untakeable. Zildo has just to wait to have it (for chest)
 	protected boolean volatil=true;	// TRUE=goodies disappear after a delay
-	
+	protected boolean taken = false;
 	/**
 	 * Common goodies : volatil
 	 */
@@ -125,7 +125,7 @@ public class ElementGoodies extends Element {
 					value = (int) new FloatExpression(name).evaluate(null);
 				}
 				if (((PersoPlayer)linkedPerso).pickGoodies(this, value)) {
-					dying=true;
+					//dying=true;
 				}
 			}
 		}
@@ -145,7 +145,7 @@ public class ElementGoodies extends Element {
 	
 	@Override
 	public boolean isGoodies() {
-		return true;
+		return !taken; // As long as it's not taken, it's a goodies (allows a smooth disappearing phase)
 	}
 	
 	@Override
@@ -153,4 +153,9 @@ public class ElementGoodies extends Element {
 		return true;
 	}
 
+	public void markTaken() {
+		taken = true;
+		alphaA = -1;	// Make it disappear smoothly
+		alphaV = -2;
+	}
 }

@@ -28,6 +28,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementBoomerang;
+import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
@@ -218,9 +219,9 @@ public class SpriteCollision {
 						if (isGoodies) {
 							if (isZildo) {
 								PersoPlayer zildo = (PersoPlayer) entityRef;
-								boolean disappear = zildo.pickGoodies(elem, 0);
+								boolean disappear = zildo.pickGoodies((ElementGoodies) elem, 0);
 								if (disappear && elem.fall()) {
-									elem.die();
+									//elem.die();
 								}
 								break;
 							} else {

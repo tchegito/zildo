@@ -346,6 +346,7 @@ public class SpriteManagement extends SpriteStore {
 					if (j % 2 == 1) {
 						e.rotation = Rotation.UPSIDEDOWN;
 					}
+					e.alphaV = -10;
 					spawnSprite(e);
 
 					temp = Angle.rotate(temp, 1);
