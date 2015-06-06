@@ -41,7 +41,7 @@ public class SpriteEntityContext extends LocaleVarContext implements IEvaluation
 	// TODO: refactor this more smoothly
 	public SpriteEntityContext(SpriteEntity p_entity, IEvaluationContext ctx) {
 		this(p_entity);
-		if (LocaleVarContext.class.isAssignableFrom(ctx.getClass())) {
+		if (ctx != null && LocaleVarContext.class.isAssignableFrom(ctx.getClass())) {
 			cloneLocales((LocaleVarContext) ctx);
 		}
 	}

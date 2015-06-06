@@ -347,7 +347,7 @@ public class MapManagement {
 			if (perso.getMover() != null && quelElement.z >= perso.getMover().getFlatZ()) {
 				return false;	// Ok => character is above the "vehicle"
 			}
-			if (perso.isOnPlatform() && p.getMover() != null && p.getMover().isOnIt(perso)) {
+			if (perso.isOnPlatform() && p != null && p.getMover() != null && p.getMover().isOnIt(perso)) {
 				return false;	// Ok => character is above the "vehicle"
 			}
 			return true;
