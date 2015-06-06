@@ -575,8 +575,10 @@ public class Element extends SpriteEntity {
 						SpriteAnimation.WATER_SPLASH, (int) x, (int) y, floor,	0, null, null);
 				break;
 			case BUSH:
-				// Bushes blow up
-				EngineZildo.mapManagement.getCurrentMap().attackTile(floor, new Point(cx, cy));
+				if (isZildo()) {
+					// Bushes blow up when hero falls on it
+					EngineZildo.mapManagement.getCurrentMap().attackTile(floor, new Point(cx, cy));
+				}
 				break;
 			case REGULAR:
 				// 2: on the floor, many possibilities
