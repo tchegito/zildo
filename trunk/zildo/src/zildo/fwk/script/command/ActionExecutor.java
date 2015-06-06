@@ -154,10 +154,12 @@ public class ActionExecutor extends RuntimeExecutor {
             		currentPos = ClientEngineZildo.mapDisplay.getCamera();
             	} else {
                 	SpriteEntity entity = getNamedEntity(p_action.what);
-                	currentPos = new Point(entity.x, entity.y);
+                	if (entity != null) {	// Add for Issue 74, to understand how 'what' can't be found
+                		currentPos = new Point(entity.x, entity.y);
+                	}
             	}
             	if (currentPos == null) {
-            		throw new RuntimeException("We need valid 'who' or 'what' attribute");
+            		throw new RuntimeException("We need valid 'who' or 'what' attribute in action "+p_action);
             	}
         		location=location.translate(currentPos.x, currentPos.y);
             }
