@@ -80,7 +80,7 @@ public class Constantes {
 	// Perso
 	public static final	int speed = 3;
 	public static final	int MAX_PERSO = 80;
-	public static final	float ZILDO_SPEED = 1.5f;
+	public static float ZILDO_SPEED = 1.5f;
 	public static final	float MONSTER_SPEED = 0.85f; // Vitesse du monstre en alerte
 	public static final	int MAX_DIALOG = 256;
 
