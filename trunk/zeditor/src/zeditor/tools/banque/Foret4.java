@@ -131,7 +131,9 @@ public class Foret4 extends Banque {
 				// Water mud border
 				new Point(176, 160), new Point(192, 160),
 				// Nettle
-				new Point(160, 48), new Point(176, 48)
+				new Point(160, 48), new Point(176, 48),
+				// Higher stump top
+				new Point(144, 208), new Point(160, 208)
 		
 		};
 
