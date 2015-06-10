@@ -56,7 +56,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 		VP_BUTTON_Y(296-16-8, 170-8-3, 24+16, 24+16, false, KEY_W),
 		VP_FRAME(0, 180, 320, 240, false, KEY_DIALOG_FRAME),
 		
-		VP_DPAD(0, 0, 80, 80, true, KEY_DIALOG_FRAME);	// KEy has no meaning here
+		VP_DPAD(0-30, 0-30, 80+60, 80+60, true, KEY_DIALOG_FRAME);	// KEy has no meaning here
 		/*
 		VP_BUTTON_A(4, 33, 26, 26, false, KEY_Q),
 		VP_BUTTON_B(36, 58, 26, 26, false, KEY_W),
