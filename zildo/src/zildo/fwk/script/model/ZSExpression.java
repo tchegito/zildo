@@ -72,26 +72,25 @@ public class ZSExpression {
 	}
 
 	public boolean isTrue() {
+		boolean result = false;
+
 		if (floatExpr != null) {
-			return floatExpr.evaluate(null) == 1;
-		}
-		if (questName.startsWith("money")) {
+			result = floatExpr.evaluate(null) == 1;
+		} else if (questName.startsWith("money")) {
 			int price=Integer.valueOf(questName.substring("money".length()));
 			int zildoMoney = EngineZildo.persoManagement.getZildo().getMoney();
-			return price<=zildoMoney;
+			result = price<=zildoMoney;
 		} else if (questName.startsWith("moon")) {
 			int moonFragment=Integer.valueOf(questName.substring("moon".length()));
 			int currentFragmentNb = EngineZildo.persoManagement.getZildo().getMoonHalf();
-			return currentFragmentNb >= moonFragment;
+			result = currentFragmentNb >= moonFragment;
 		} else if (questName.startsWith("item")) {
 			String itemName=questName.substring("item".length());
 			ItemKind kind = ItemKind.fromString(itemName);
-			return EngineZildo.persoManagement.getZildo().hasItem(kind);
+			result = EngineZildo.persoManagement.getZildo().hasItem(kind);
 		} else if (questName.equals("init")) {
-			return EngineZildo.persoManagement.getZildo().getDialoguingWith().getCompte_dialogue() == 0;
-		}
-		boolean result = false;
-		if (questName.startsWith("M#")) {
+			result = EngineZildo.persoManagement.getZildo().getDialoguingWith().getCompte_dialogue() == 0;
+		} else if (questName.startsWith("M#")) {
 			// Expression could be a map name, to match current map
 			String mapName = questName.substring(2);
 			result = mapName.equals(EngineZildo.mapManagement.getCurrentMap().getName());
