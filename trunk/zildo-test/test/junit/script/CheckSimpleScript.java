@@ -20,11 +20,13 @@
 
 package junit.script;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
 
+import static org.mockito.Mockito.*;
 import zildo.fwk.script.logic.FloatVariable;
 import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
@@ -153,6 +155,29 @@ public class CheckSimpleScript extends SimpleEngineScript {
 	}
 	
 	@Test
+	public void bugfixTwoBags() {
+		// Issue 75: Louis and Chris can't get dynamite because
+		// they have 2 bags, and Boris couldn't see the full one
+		ZSSwitch borisDialog = ZSSwitch.parseForDialog(
+				"itemEMPTY_BAG&!itemFULL_BAG&!giveSawdust:5,"+
+				"itemFULL_BAG&!giveSawdust:6,"+
+				"giveSawdust&!borisWait:7,"+
+				"borisWait:8,"
+				+"igorAsk:3,0");
+		PersoPlayer zildo = new PersoPlayer(0);
+		// Mock persomanagement to return our Zildo
+		PersoManagement pm = mock(PersoManagement.class);
+		EngineZildo.persoManagement = pm;
+		when(pm.getZildo()).thenReturn(zildo);
+		
+		// Add 2 bags to Zildo: empty one and full one
+		List<Item> items = zildo.getInventory();
+    	items.add(new Item(ItemKind.EMPTY_BAG));
+    	items.add(new Item(ItemKind.FULL_BAG));
+    	Assert.assertSame(6, borisDialog.evaluateInt());
+	}
+	
+	@Test
 	public void mapscriptCondition() {
 		// We are going to check map exclusions
 		ZSSwitch sw = ZSSwitch.parseForMapCondition("!chateaucoucou1-!chateaucoucou2");
@@ -176,6 +201,7 @@ public class CheckSimpleScript extends SimpleEngineScript {
 	@Override
 	@After
 	public void tearDown() {
+		EngineZildo.persoManagement = null;
 		EngineZildo.scriptManagement = null;
 	}
 }
