@@ -159,6 +159,10 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	                	// FIXME: previously color3f
 	                	shaders.setColor(1.0f, 1.0f, 1.0f, alpha / 255.0f);
 	                	break;
+	                case FONT_PEOPLENAME:
+	            		GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+	            		shaders.setColor(0.9f, 0.5f, 0.2f, alpha / 255.0f);
+	                	break;
 	                default:
 	                	color[3]=alpha / 255.0f;
 	                	shaders.setColor(color[0], color[1], color[2], color[3]);
