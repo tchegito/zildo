@@ -33,14 +33,16 @@ public class WaitingDialog implements EasySerializable {
 		CONTINUE; // continue to next sentence
 	}
 
+	public String who;
 	public String sentence;
 	public CommandDialog action;
 	public boolean console; // TRUE=message should be displayed in the console
 	public TransferObject client; // Only used for sending dialog to the right
 									// client. Unused by client side.
 
-	public WaitingDialog(String p_sentence, CommandDialog p_action,
-			boolean p_console, TransferObject p_client) {
+	public WaitingDialog(String p_who, String p_sentence,
+			CommandDialog p_action, boolean p_console, TransferObject p_client) {
+		who = p_who;
 		sentence = p_sentence;
 		action = p_action;
 		console = p_console;
@@ -49,17 +51,19 @@ public class WaitingDialog implements EasySerializable {
 
 	@Override
 	public void serialize(EasyBuffering p_buffer) {
+		p_buffer.put(who);
 		p_buffer.put(sentence);
 		p_buffer.put((byte) (action == null ? -1 : action.ordinal()));
 		p_buffer.put(console);
 	}
 
 	public static WaitingDialog deserialize(EasyBuffering p_buffer) {
+		String whosTalking = p_buffer.readString();
 		String s = p_buffer.readString();
 		int act = p_buffer.readByte();
 		boolean console = p_buffer.readBoolean();
 		CommandDialog actDialog = (act == -1 ? null
 				: CommandDialog.values()[act]);
-		return new WaitingDialog(s, actDialog, console, null);
+		return new WaitingDialog(whosTalking, s, actDialog, console, null);
 	}
 }

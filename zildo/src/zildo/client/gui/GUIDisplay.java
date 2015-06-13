@@ -311,7 +311,8 @@ public class GUIDisplay {
 	 * Build a sequence of characters corresponding to text format inside the
 	 * text frame.<ul>
 	 * <li>Use '-1' as 'SPACE'</li>
-	 * <li>'-2' as 'ENDOFLINE'</li></ul>
+	 * <li>'-2' as 'ENDOFLINE'</li>
+	 * <li>'-3' as 'END of people name'</li></ul>
 	 * @param texte text to display
 	 * @param p_posX start X position
 	 * @param p_posY start Y postiion
@@ -353,6 +354,9 @@ public class GUIDisplay {
 		default:
 			visibleFont = false;
 			center = false;
+			if (texte.indexOf((char)-3) != -1) {
+				fx = EngineFX.FONT_PEOPLENAME;
+			}
 			break;
 		case MENU:
 		case HALLOFFAME:
@@ -419,6 +423,9 @@ public class GUIDisplay {
 					sizeCurrentLine += sizeCurrentWord;
 					sizeCurrentWord = 0;
 				}
+			} else if (a == (char)-3) {
+				nSpr[nLettre] = -3;
+				System.out.println(-3);
 			} else { // Regular character
 				// Store sprite's index to display for this letter
 				nSpr[nLettre] = getIndexCharacter(a);
@@ -464,6 +471,9 @@ public class GUIDisplay {
 				if (center) {
 					offsetX = (sc.TEXTER_SIZEX - sizesLine[nLigne]) / 2;
 				}
+			} else if (indexSpr == -3) {
+				// End of people's name
+				fx = EngineFX.NO_EFFECT;
 			} else {
 				// Store font's pointer to easily remove it later and scroll
 				// into the frame

@@ -32,12 +32,11 @@ public enum EngineFX {
 	GUARD_PINK(new int[]{232, 96, 176}, new int[]{248, 128, 176}),
 	ROBBER_BLUE(new int[]{81, 105, 170}, new int[]{146, 170, 235}),
 	PERSO_HURT, 
-	FONT_NORMAL(new int[]{0, 0, 112}, new int[]{248, 248, 248}),
-	FONT_HIGHLIGHT(new int[]{32, 64, 112}, new int[]{240, 216, 64}), 
+	FONT_PEOPLENAME,
 	SHINY, QUAD,
 	INFO,
 	FOCUSED,	// FOCUSED is used when we wants to highlight some entity (inventory, or buying something)
-	WHITE_HALO,
+	YELLOW_HALO,	// When hero is invulnerable, and for selected items in inventory
 	STAR,
 	FIRE;
 	
@@ -45,7 +44,7 @@ public enum EngineFX {
 	public final Vector4f brightColor;
 	
 	public boolean needPixelShader() {
-		return !(this==NO_EFFECT || this==SHINY || this==QUAD || this==FOCUSED || this==INFO);
+		return !(this==NO_EFFECT || this==SHINY || this==QUAD || this==FOCUSED || this==INFO || this==FONT_PEOPLENAME);
 	}
 	
 	public EngineFX fromInt(int i) {

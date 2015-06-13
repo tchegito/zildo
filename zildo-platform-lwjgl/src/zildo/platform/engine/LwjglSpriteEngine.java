@@ -112,7 +112,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(1));
 						ClientEngineZildo.pixelShaders.setParameter(1, "randomColor", new Vector4f((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
 						break;
-                	case WHITE_HALO:
+                	case YELLOW_HALO:
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(2));
 						ClientEngineZildo.pixelShaders.setParameter(2, "factor", new Vector4f((float) (0.6+0.4*Math.cos(3*gamma)), 0, 0, 1));
 						break;
@@ -120,7 +120,11 @@ public class LwjglSpriteEngine extends SpriteEngine {
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(3));
 						ClientEngineZildo.pixelShaders.setParameter(3, "noise", new Vector4f(gamma, (float) Math.random(), 0, 1));
 						break;
-                		
+                	case FIRE:
+						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(4));
+						//ClientEngineZildo.pixelShaders.setParameter(4, "iResolution", new Vector4f(Zildo.viewPortX, Zildo.viewPortY, 0, 0));
+						ClientEngineZildo.pixelShaders.setParameter(4, "iGlobalTime", new Vector4f(gamma, 0, 0, 0));
+                		break;
 					default:
 						if (currentFX.needPixelShader()) {
 							// This is a color replacement, so get the right ones
@@ -157,6 +161,9 @@ public class LwjglSpriteEngine extends SpriteEngine {
 	                	*/
 	                case FOCUSED:
 	                	GL11.glColor4f(1.0f, 1.0f, 1.0f, alpha / 255.0f);
+	                	break;
+	                case FONT_PEOPLENAME:
+	                	GL11.glColor4f(0.9f, 0.5f, 0.2f, alpha / 255.0f);
 	                	break;
 	                case INFO:
 	                	GL11.glColor4f(0.9f, 0.8f, 0.72f, alpha / 255.0f);

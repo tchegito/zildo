@@ -34,6 +34,7 @@ public class DialogContext {
 	// display yet at screen.
 	public boolean fullSentenceDisplayed;
 
+	public String who;
 	public String sentence;
 	public int pos;	// position in sentence
 	public int numToScroll;
