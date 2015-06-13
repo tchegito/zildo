@@ -166,7 +166,7 @@ public class ItemCircle {
 				entity.zoom = Math.min(255, rayon * 8); //16; //255 * (33 / (33-rayon));
 	
 				if (Math.abs(alpha % 2*Math.PI) < 0.01) {	// Highlight the upper item
-					entity.setSpecialEffect(EngineFX.WHITE_HALO);
+					entity.setSpecialEffect(EngineFX.YELLOW_HALO);
 				} else {
 					entity.setSpecialEffect(EngineFX.NO_EFFECT);
 				}
@@ -233,7 +233,7 @@ public class ItemCircle {
 	private void displayName() {
 		StoredItem item = items.get(itemSelected);
 		ClientState clState = Server.getClientFromZildo(client);
-		EngineZildo.dialogManagement.getQueue().add(new WaitingDialog(item.getName(), CommandDialog.BUYING, false, clState == null ? null : clState.location));
+		EngineZildo.dialogManagement.getQueue().add(new WaitingDialog(null, item.getName(), CommandDialog.BUYING, false, clState == null ? null : clState.location));
 	}
 	
 	public void rotate(boolean p_clockWise) {

@@ -26,6 +26,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEventNature;
 import zildo.client.gui.GUIDisplay.DialogMode;
 import zildo.client.sound.BankSound;
+import zildo.fwk.ZUtils;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.dialog.WaitingDialog.CommandDialog;
 import zildo.monde.sprites.Rotation;
@@ -84,7 +85,7 @@ public class DialogDisplay {
             		if (dial.console) {
             			ClientEngineZildo.guiDisplay.displayMessage(dial.sentence);
             		} else {
-            			launchDialog(dial.sentence, dial.action);
+            			launchDialog(dial.who, dial.sentence, dial.action);
             		}
             	} else {
             		result=actOnDialog(dial.sentence, dial.action);
@@ -96,17 +97,24 @@ public class DialogDisplay {
 	
 	/**
 	 * Ask GUI to display the current sentence.
+	 * @param p_who TODO
 	 * @param p_sentence
 	 * @param p_dialAction optional
 	 */
-	public void launchDialog(String p_sentence, CommandDialog p_dialAction) {
+	public void launchDialog(String p_who, String p_sentence, CommandDialog p_dialAction) {
 		DialogMode displayMode = DialogMode.CLASSIC;
 		if (p_dialAction == CommandDialog.BUYING) {
 			// Hero is looking items in a store : so display sentence centered and directly
 			displayMode = DialogMode.BUY;
 		}
 
-		context.setSentence(p_sentence.replaceAll("[@|$]", ""));
+		String txt = "";
+		if (!ZUtils.isEmpty(p_who)) {
+			txt += p_who+":" + (char) -3;
+		}
+		txt += p_sentence.replaceAll("[@|$]", "");
+		context.who = p_who;
+		context.setSentence(txt);
 		ClientEngineZildo.guiDisplay.setText(context.sentence, displayMode);
 		ClientEngineZildo.guiDisplay.setToDisplay_dialoguing(true);
 		dialoguing=true;
@@ -180,7 +188,7 @@ public class DialogDisplay {
 						} else {
 							ClientEngineZildo.soundPlay.playSoundFX(BankSound.AfficheTexteSuivant);
 						    if (actionDialog == CommandDialog.CONTINUE) {
-								launchDialog(p_sentence, actionDialog);
+								launchDialog(context.who, p_sentence, actionDialog);
 								return false;
 						    } else {
 								// Quit dialog

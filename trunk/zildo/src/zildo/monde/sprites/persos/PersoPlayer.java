@@ -716,7 +716,7 @@ public class PersoPlayer extends Perso {
 				shieldEffect = null;
 			}
 			if (isAffectedBy(AffectionKind.INVINCIBILITY)) {
-				setSpecialEffect(EngineFX.WHITE_HALO);
+				setSpecialEffect(EngineFX.YELLOW_HALO);
 			} else {
 				setSpecialEffect(EngineFX.NO_EFFECT);
 			}

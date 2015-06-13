@@ -117,7 +117,7 @@ public class AndroidSpriteEngine extends SpriteEngine {
 						ClientEngineZildo.pixelShaders.setParameter(1, "randomColor", );
 						*/
 						break;
-	                case WHITE_HALO:
+	                case YELLOW_HALO:
 	                	shaders.setCurrentShader(GLShaders.goldFilter);
 	                	shaders.setGoldFactor((float) (0.6+0.4*Math.cos(3*gamma)));
 	                	break;

@@ -69,22 +69,12 @@ public class DialogManagement {
 			// Need to be done early because ZSSwitch need to know who is speaking
 			p_client.zildo.setDialoguingWith(persoToTalk);
 		}
-	    WaitingDialog even = createWaitingDialog(p_client, persoToTalk);
+	    WaitingDialog even = createWaitingDialog(p_client, persoToTalk, p_actionDialog);
 
 	    if (even != null) {
-	    	String whoSpeaking ="";
-			if (persoToTalk == null) {
-			    // Ingame event
-			    even.sentence = p_actionDialog.text;
-			    whoSpeaking = p_actionDialog.who;
-			    p_client.dialogState.actionDialog = p_actionDialog;
-			} else {
-				whoSpeaking = persoToTalk.getName();
-			}
-			whoSpeaking = getPeopleName(whoSpeaking);
 			p_client.dialogState.continuing = even.sentence.indexOf("@") != -1;
 			even.sentence = even.sentence.trim().replaceAll("@", "");
-			even.sentence = whoSpeaking + even.sentence;
+			even.sentence = even.sentence;
 			
 			dialogQueue.add(even);
 			
@@ -101,7 +91,7 @@ public class DialogManagement {
 
 
 	private String getPeopleName(String p_name) {
-		String result = "";
+		String result = null;
 		if (p_name != null) {
 			// 1) Look for mapping
 			String name = EngineZildo.scriptManagement.getReplacedPersoName(p_name);
@@ -110,12 +100,11 @@ public class DialogManagement {
 			if (result.startsWith("people.")) {
 				result = name;	// Nothing found in translation
 			}
-			if (result.length() > 0) {
-				result = ZUtils.capitalize(result) + ": ";
-			}
+			result = ZUtils.capitalize(result);
 		}
 		return result;
 	}
+	
 	/**
 	 * Returns a WaitingDialog object, ready to be added to the dialog queue.
 	 * @param p_client
@@ -123,11 +112,12 @@ public class DialogManagement {
 	 * @return WaitingDialog
 	 */
 	private WaitingDialog createWaitingDialog(ClientState p_client,
-			Perso persoToTalk) {
+			Perso persoToTalk, ActionDialog actionDialog) {
 		MapDialog dialogs = EngineZildo.mapManagement.getCurrentMap().getMapDialog();
 		String sentence = null;
 		currentSentenceFullDisplayed = false;
 
+    	String whoSpeaking = null;
 		if (persoToTalk != null) {
 			// Dialog with character
 			Behavior behav = dialogs.getBehaviors().get(persoToTalk.getName());
@@ -174,14 +164,23 @@ public class DialogManagement {
 
 			// Set the dialoguing states for each Perso
 			persoToTalk.setDialoguingWith(p_client.zildo);
-		}
 
-		return new WaitingDialog(sentence, null, false, p_client == null ? null
+			whoSpeaking = persoToTalk.getName();
+		} else if (actionDialog != null) {
+			// persoToTalk == null
+		    // Ingame event
+		    sentence = actionDialog.text;
+		    whoSpeaking = actionDialog.who;
+		    p_client.dialogState.actionDialog = actionDialog;
+		}
+		whoSpeaking = getPeopleName(whoSpeaking);
+
+		return new WaitingDialog(whoSpeaking, sentence, null, false, p_client == null ? null
 				: p_client.location);
 	}
 	
 	public void continueDialog(ClientState p_client) {
-	    WaitingDialog even = createWaitingDialog(p_client, p_client.zildo.getDialoguingWith());
+	    WaitingDialog even = createWaitingDialog(p_client, p_client.zildo.getDialoguingWith(), null);
 	    boolean continuing = false;
 	    if (even != null) {
 		    continuing = even.sentence.indexOf("@") != -1;
@@ -223,11 +222,11 @@ public class DialogManagement {
 	}
 	
 	public void actOnDialog(TransferObject p_location, CommandDialog p_actionDialog) {
-		dialogQueue.add(new WaitingDialog(null, p_actionDialog, false, p_location));
+		dialogQueue.add(new WaitingDialog(null, null, p_actionDialog, false, p_location));
 	}
 	
 	public void writeConsole(String p_sentence) {
-		dialogQueue.add(new WaitingDialog(p_sentence, null, true, null));
+		dialogQueue.add(new WaitingDialog(null, p_sentence, null, true, null));
 	}
 	
 	public List<WaitingDialog> getQueue() {
