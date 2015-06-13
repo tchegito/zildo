@@ -65,6 +65,9 @@ public class PersoGarde extends PersoNJ {
 	public void setQuel_deplacement(MouvementPerso p_script, boolean p_updatePathFinder) {
 		super.setQuel_deplacement(p_script, p_updatePathFinder);
 		switch (p_script) {
+		case ZONE:
+			setActiveWeapon(GuardWeapon.SWORD);
+			break;
 		case ZONELANCE:
 			setActiveWeapon(GuardWeapon.SPEAR);
 			break;

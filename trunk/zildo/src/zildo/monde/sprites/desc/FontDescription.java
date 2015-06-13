@@ -81,11 +81,6 @@ public enum FontDescription implements SpriteDescription {
 		return true;
 	}
 	
-	@Override
-	public boolean isWeapon() {
-		return false;
-	}
-	
 	public int getRadius() {
 		return 0;
 	}

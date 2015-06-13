@@ -154,11 +154,6 @@ public enum ElementDescription implements SpriteDescription {
 		return (i >= GOLDCOIN1.ordinal() && i <= GOLDPURSE3.ordinal());
 	}
 
-	public boolean isWeapon() {
-		return this == SWORD || this == ENEMYARC_RIGHT1 || this == DYNAMITE
-				|| this == BOOMERANG1 || this == ROCK_BAG;
-	}
-
 	/**
 	 * Get the ItemKind associated with this description. Can return NULL if no
 	 * one is associated.
@@ -166,7 +161,7 @@ public enum ElementDescription implements SpriteDescription {
 	 * @return ItemKind
 	 */
 	public ItemKind getItem() {
-		return ItemKind.fromElemDesc(this);
+		return ItemKind.fromDesc(this);
 	}
 
 	@Override
@@ -211,8 +206,9 @@ public enum ElementDescription implements SpriteDescription {
 		case SHADOW_MINUS:
 		case SHADOW_SMALL:
 			return true;
+		default:
+				return false;
 		}
-		return false;
 	}
 
 	public boolean isPushable() {
@@ -224,8 +220,9 @@ public enum ElementDescription implements SpriteDescription {
 		case STATUE:
 		case CANDLE1:
 			return true;
+		default:
+			return false;
 		}
-		return false;
 	}
 	
 	// Elements that Zildo can throw on enemies
@@ -256,6 +253,7 @@ public enum ElementDescription implements SpriteDescription {
 				case SEWER_SMOKE1: case SEWER_SMOKE2:
 				case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:					
 					damage = true;
+				default:
 					break;
 			}
 		}

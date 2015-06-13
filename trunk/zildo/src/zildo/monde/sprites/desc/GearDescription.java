@@ -149,11 +149,6 @@ public enum GearDescription implements SpriteDescription {
 		return closedDoor;
 	}
 	
-	@Override
-	public boolean isWeapon() {
-		return false;
-	}
-	
 	public int getRadius() {
 		return 7;
 	}

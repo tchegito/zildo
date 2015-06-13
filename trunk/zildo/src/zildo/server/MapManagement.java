@@ -332,10 +332,10 @@ public class MapManagement {
 		if (perso != null) {
 			if (p != null) {
 				// If zildo crosses an enemy, this is not a collision, but a wound ! (except if he's blinking)
-				if (p.isZildo() && perso.getInfo() == PersoInfo.ENEMY && p.getCompte_dialogue() == 0) {
+				if (p.isZildo() && perso.getInfo() == PersoInfo.ENEMY && !p.isBlinking()) {
 					return false;
 				}
-				if (p.getInfo() == PersoInfo.ENEMY && perso.isZildo() && perso.getCompte_dialogue() == 0) {
+				if (p.getInfo() == PersoInfo.ENEMY && perso.isZildo() && !perso.isBlinking()) {
 					return false;
 				}
 				// Allow following character to be on same position than his leader

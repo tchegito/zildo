@@ -34,6 +34,7 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Hasard;
 import zildo.monde.collision.PersoCollision;
 import zildo.monde.collision.SpriteCollision;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
@@ -464,7 +465,12 @@ public class SpriteManagement extends SpriteStore {
 		if (desc instanceof ElementDescription) {
 			elemDesc=(ElementDescription) desc;
 		}
-		if (!p_foreground && elemDesc != null && elemDesc.isWeapon()) {
+		boolean weapon = false;
+		if (elemDesc != null) {
+			ItemKind kind = ItemKind.fromDesc(elemDesc);
+			weapon = kind != null && kind.isWeapon();
+		}
+		if (!p_foreground && weapon) {
 			entity = new ElementWeapon(x, y);
 		} else if (desc == ElementDescription.LAUNCHER1) {
 			entity = new ElementLauncher(x, y);

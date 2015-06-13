@@ -210,9 +210,7 @@ public class CollideManagement {
         	
         	if (weapon != null) {
         		// Only parry with another weapon
-        		if (weapon.getDesc().isWeapon()) {
-        			perso.parry(p_collider.cx, p_collider.cy, perso);
-        		}
+       			perso.parry(p_collider.cx, p_collider.cy, perso);
         	} else {
         		// How much damage ?
         		int dmg = p_collider.damageType == null ? 1 : p_collider.damageType.getHP(perso);

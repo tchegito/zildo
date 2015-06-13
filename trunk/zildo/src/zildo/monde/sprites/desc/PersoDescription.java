@@ -212,7 +212,7 @@ public enum PersoDescription implements SpriteDescription {
 
 	@Override
 	public boolean isDamageable() {
-		return false;
+		return this == ARME_EPEE;
 	}
 	
 	@Override
@@ -232,10 +232,5 @@ public enum PersoDescription implements SpriteDescription {
 	
 	public boolean isTakable() {
 		return this == CANARD || this == POULE || this == FISH;
-	}
-
-	@Override
-	public boolean isWeapon() {
-		return false;
 	}
 }

@@ -94,7 +94,5 @@ public interface SpriteDescription {
 	 */
 	public boolean isSliping();
 	
-	public boolean isWeapon();
-	
 	public int getRadius();
 }
