@@ -501,7 +501,8 @@
             <take value="-10"/>
             <wait value="10"/>
             <moveTo who="gard2" pos="0,-10" delta="true" unstoppable="true"/>
-        	<moveTo who="gard2" pos="16,-4" delta="true"/>
+            <!-- Unstoppable for the case where player reloads a game where hero is already near the cells -->
+        	<moveTo who="gard2" pos="16,-4" delta="true" unstoppable="true"/>
         	<angle who="gard2" value="3"/>
         </action>
     </quest>
