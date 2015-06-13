@@ -27,6 +27,7 @@ import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.Trigo;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
+import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.SpriteEntity;
@@ -408,6 +409,14 @@ public class Element extends SpriteEntity {
 			// If Element we're handling is a Perso, adjust infos
 			linked = this;
 			weapon = null;
+		} else {
+			// Check if this is a real weapon
+    		ItemKind kind = ItemKind.fromDesc(desc);
+    		if (kind == null || !kind.isWeapon()) {
+    			weapon = null;
+    		} else {
+    			System.out.println("yes !");
+    		}
 		}
 		SpriteModel model = getSprModel();
 		if (collision == null) {

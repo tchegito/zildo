@@ -356,6 +356,10 @@ public abstract class Perso extends Element {
 		initFields();
 	}
 	
+	public boolean isBlinking() {
+		return compte_dialogue != 0 || mouvement == MouvementZildo.TOUCHE;
+	}
+	
 	protected void initFields() {
 		entityType = EntityType.PERSO;
 

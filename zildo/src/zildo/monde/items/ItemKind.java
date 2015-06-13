@@ -27,41 +27,43 @@ import zildo.monde.sprites.desc.ZildoDescription;
 
 public enum ItemKind {
 
-	SWORD(ElementDescription.SWORD, 20), 
-	BOOMERANG(ElementDescription.BOOMERANG1, 40), 
-	WHIP(ElementDescription.BAR_HORIZONTAL, 50), 
-	BOW(ElementDescription.ENEMYARC_RIGHT1, 40),
-	DYNAMITE(ElementDescription.DYNAMITE, 10),
-	HAMMER(ElementDescription.SPADE, 10),	// TODO: replace by 'HAMMER' description
-	FLUT(ElementDescription.FLUT, 1),
-	GLOVE(ElementDescription.GLOVE, 20),
-	GLOVE_IRON(ElementDescription.SUPER_GLOVE, 40),
-	SHIELD(ZildoDescription.SHIELD_DOWN, 60),
-	SHIELD_MEDIUM(ElementDescription.SHIELD_RED, 60),
-	SHIELD_LARGE(ElementDescription.SHIELD_YELLOW, 60),
-	FLASK_RED(ElementDescription.FLASK_RED, 10),
-	SCEPTER(ElementDescription.SCEPTER, 0),
-	MILK(ElementDescription.MILK, 0),
-	NECKLACE(ElementDescription.NECKLACE, 0),
-	ROCK_BAG(ElementDescription.ROCK_BAG, 0),
-	BLUEDROP(ElementDescription.DROP_FLOOR, 10),
-	FLASK_YELLOW(ElementDescription.FLASK_YELLOW, 100),
-	EMPTY_BAG(ElementDescription.EMPTY_BAG, 20),
-	FULL_BAG(ElementDescription.FULL_BAG, 20),
-	FIRE_RING(ElementDescription.FIRE_RING, 800, 5000);
+	SWORD(true, ElementDescription.SWORD, 20), 
+	BOOMERANG(true, ElementDescription.BOOMERANG1, 40), 
+	WHIP(true, ElementDescription.BAR_HORIZONTAL, 50), 
+	BOW(true, ElementDescription.ENEMYARC_RIGHT1, 40),
+	DYNAMITE(true, ElementDescription.DYNAMITE, 10),
+	HAMMER(true, ElementDescription.SPADE, 10),	// TODO: replace by 'HAMMER' description
+	FLUT(false, ElementDescription.FLUT, 1),
+	GLOVE(false, ElementDescription.GLOVE, 20),
+	GLOVE_IRON(false, ElementDescription.SUPER_GLOVE, 40),
+	SHIELD(true, ZildoDescription.SHIELD_DOWN, 60),
+	SHIELD_MEDIUM(true, ElementDescription.SHIELD_RED, 60),
+	SHIELD_LARGE(true, ElementDescription.SHIELD_YELLOW, 60),
+	FLASK_RED(false, ElementDescription.FLASK_RED, 10),
+	SCEPTER(false, ElementDescription.SCEPTER, 0),
+	MILK(false, ElementDescription.MILK, 0),
+	NECKLACE(false, ElementDescription.NECKLACE, 0),
+	ROCK_BAG(true, ElementDescription.ROCK_BAG, 0),
+	BLUEDROP(false, ElementDescription.DROP_FLOOR, 10),
+	FLASK_YELLOW(false, ElementDescription.FLASK_YELLOW, 100),
+	EMPTY_BAG(false, ElementDescription.EMPTY_BAG, 20),
+	FULL_BAG(false, ElementDescription.FULL_BAG, 20),
+	FIRE_RING(false, ElementDescription.FIRE_RING, 800, 5000);
 	
 	final public SpriteDescription representation;
 	final public int price;
 	final public int startLevel;
+	final public boolean isWeapon;
 	
-	private ItemKind(SpriteDescription p_itemRepresentation, int p_price) {
-		this(p_itemRepresentation, p_price, 0);
+	private ItemKind(boolean p_isWeapon, SpriteDescription p_itemRepresentation, int p_price) {
+		this(p_isWeapon, p_itemRepresentation, p_price, 0);
 	}
 	
-	private ItemKind(SpriteDescription p_itemRepresentation, int p_price, int p_startLevel) {
+	private ItemKind(boolean p_isWeapon, SpriteDescription p_itemRepresentation, int p_price, int p_startLevel) {
 		representation = p_itemRepresentation;
 		price = p_price;
 		startLevel = p_startLevel;
+		isWeapon = p_isWeapon;
 	}
 	
 	public static ItemKind fromString(String p_str) {
@@ -73,10 +75,12 @@ public enum ItemKind {
 		throw new RuntimeException("Item "+p_str+" doesn't exists.");
 	}
 	
-	public static ItemKind fromElemDesc(ElementDescription desc) {
-		for (ItemKind kind : values()) {
-			if (kind.representation == desc) {
-				return kind;
+	public static ItemKind fromDesc(SpriteDescription desc) {
+		if (desc != null) {
+			for (ItemKind kind : values()) {
+				if (kind.representation == desc) {
+					return kind;
+				}
 			}
 		}
 		return null;
@@ -106,5 +110,9 @@ public enum ItemKind {
 	
 	public boolean isStackable() {
 		return this == FLASK_RED || this == FLASK_YELLOW || this == EMPTY_BAG || this == FULL_BAG;
+	}
+
+	public boolean isWeapon() {
+		return isWeapon;
 	}
 }

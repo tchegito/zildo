@@ -63,8 +63,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	private int ajustedX, ajustedY;
 	private int scrX, scrY; // Screen position (so with camera adjustment)
 	protected SpriteModel sprModel; // Reference to the sprite being rendered
-	public int nSpr; // Pour les perso devient une interprétation de 'angle' et
-						// 'pos_seqsprite'
+	public int nSpr; // Pour les perso devient une interprétation de 'angle' et 'pos_seqsprite'
 	public int nBank;
 	protected SpriteDescription desc; // Interpretation of nSpr and nBank
 	private int linkVertices; // Index on VertexBuffer's position about quad
