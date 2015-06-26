@@ -471,10 +471,19 @@ public class ScriptManagement {
     	}
 	}
 	
-	public void runPersoAction(Perso perso, String name) {
+	public void runPersoAction(Perso perso, String name, String[] args) {
 		ContextualActionElement action = adventure.getPersoActionNamed(name);
 		if (action != null) {
 			SpriteEntityContext context = new SpriteEntityContext(perso);
+			// Register action argument(s)
+			if (args != null) {
+				int nVar = 0;
+				for (String arg : args) {
+					String varName = context.registerVariable(LocaleVarContext.VAR_IDENTIFIER + "arg"+nVar);
+					EngineZildo.scriptManagement.getVariables().put(varName, arg);
+					nVar++;
+				}
+			}
 			execute(action.actions, true, null, false, context, false);
 			perso.setAttente(action.duration);
 		}

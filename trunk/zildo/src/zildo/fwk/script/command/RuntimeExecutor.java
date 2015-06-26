@@ -48,13 +48,23 @@ public abstract class RuntimeExecutor {
 		this.caller = caller;
 	}
 	
-	/** Returned a previously assigned variable's ID, or same if it isn't one local. **/
+	/** Returns a previously assigned variable's ID, or same if it isn't one local. **/
     protected String getVariableName(String name) {
     	String searchName = name;
     	if (isLocal(name)) {
     		searchName = context.getString(name);
     	}
     	return searchName;
+    }
+    
+    /** Returns local variable value, of given name if it doesn't exist. **/
+    protected String getVariableValue(String name) {
+    	String varName = getVariableName(name);
+    	
+    	if (!varName.equals(name)) {
+    		return EngineZildo.scriptManagement.getVarValue(varName);
+    	}
+    	return name;
     }
     
     /** Assigns and return variable ID **/

@@ -33,8 +33,17 @@ public class ScriptedPersoAction implements PersoAction {
 	
 	public ScriptedPersoAction(Perso p_perso, String p_actionName) {
 		perso = p_perso;
-		actionName = p_actionName;
-		EngineZildo.scriptManagement.runPersoAction(perso, actionName);
+		// Parse action name for arguments
+		int posParenthese = p_actionName.indexOf('(');
+		String[] argVals = null;
+		if (posParenthese != -1) {
+			actionName = p_actionName.substring(0, posParenthese);
+			String argStr= p_actionName.substring(posParenthese+1, p_actionName.indexOf(')'));
+			argVals = argStr.split(",");
+		} else {
+			actionName = p_actionName;
+		}
+		EngineZildo.scriptManagement.runPersoAction(perso, actionName, argVals);
 	}
 	
 	@Override

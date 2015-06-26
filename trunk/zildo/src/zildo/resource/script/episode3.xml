@@ -39,7 +39,10 @@
     
     <mapScript>
 	    <condition name="sousbois3">
-	        <perso who="sacher" action="sacherTortue"/>
+	        <perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
+	    </condition>
+	   	<condition name="sousbois7">
+	        <perso who="sacher2" action="sacherTortue(tortueSousbois7)"/>
 	    </condition>
 	</mapScript>
 	    
@@ -127,22 +130,24 @@
          </timer>
 	</tileAction>
 	
-    <persoAction id="sacherTortue">
+    <persoAction id="sacherTortue"> <!-- argument: scene name for turtle movements -->
         <loop>
         	<var name="loc:found" value="0"/>
             <lookFor who="self" info="ZILDO" radius="3">
 			    <var name="loc:found" value="1"/>
 			</lookFor>
 			<if exp="loc:found=1">
-				<var name="loc:position" value="1"/> <!--  will stop the timer -->
+			    <!-- Turtles arise if hero's is around -->
 				<exec script="turtleAwake"/>
 				<var name="loc:nobody" value="0"/>
 				<loop when="loc:nobody=0">
-					<exec script="tortueSousbois3"/>
+				    <!-- Expect argument is gived to this persoAction -->
+					<exec script="loc:arg0"/>
 					<lookFor who="self" info="ZILDO" radius="3" negative="true">
 					    <var name="loc:nobody" value="1"/>
 					</lookFor>
 				</loop>
+				<!-- If hero's gone, back to sleep -->
 				<exec script="turtleSleep"/>
 			</if>
 			<wait value="40"/>
@@ -195,5 +200,9 @@
 		<wait value="100"/>
 		<moveTo who="sacher" pos="40,0" delta="true"/>
 		<wait value="100"/>
+    </scene>
+    
+    <scene id="tortueSousbois7">
+        
     </scene>
 </adventure>
