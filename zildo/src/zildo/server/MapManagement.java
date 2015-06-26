@@ -135,8 +135,8 @@ public class MapManagement {
 		// Do the map replacements
 		Atmosphere atmo = currentMap.getAtmosphere();
 		Weather weather = ClientEngineZildo.ambient.getWeather(currentMap);
-		EngineZildo.scriptManagement.execMapScript(adjustedMapName, atmo, p_additive);
 		EngineZildo.scriptManagement.initForNewMap();
+		EngineZildo.scriptManagement.execMapScript(adjustedMapName, atmo, p_additive);
 		
 		EngineZildo.spriteManagement.initForNewMap();
 

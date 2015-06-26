@@ -365,7 +365,8 @@ public class ActionExecutor extends RuntimeExecutor {
                 case exec:
                 	// Note : we can sequence scripts in an action tag.
                 	// If 'unblock' attribute is set on 'exec' action, given scene won't lock the game
-                	EngineZildo.scriptManagement.execute(text, locked && !p_action.unblock, context, caller);
+            		String sceneName = getVariableValue(text);	// Check for 'loc:...' as scene name
+                	EngineZildo.scriptManagement.execute(sceneName, locked && !p_action.unblock, context, caller);
                 	break;
                 case music:
                 	BankMusic musicSnd = null;
