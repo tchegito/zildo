@@ -24,6 +24,7 @@ import junit.perso.EngineUT;
 import org.junit.Test;
 
 import zeditor.tools.builder.WorldmapBuilder;
+import zeditor.tools.builder.WorldmapBuilder.WorldMap;
 
 /**
  * @author Tchegito
@@ -35,6 +36,16 @@ public class CheckWorldmapBuilder extends EngineUT {
 	public void basic() {
 		String firstMap = "coucou";
 		new WorldmapBuilder(firstMap, null);
+	}
+
+	@Test
+	public void advanced() {
+		String firstMap = "sousbois4";
+		WorldmapBuilder wmb = new WorldmapBuilder(firstMap, null);
+		
+		for (WorldMap wm : wmb.getWorldMap().values()) {
+			System.out.println(wm + " ("+16*wm.theMap.getDim_x()+" x "+16*wm.theMap.getDim_y()+")");
+		}
 	}
 	
 	@Test

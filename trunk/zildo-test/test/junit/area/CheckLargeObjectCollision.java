@@ -19,7 +19,7 @@
 
 package junit.area;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.perso.EngineUT;
 
 import org.junit.Test;
@@ -28,7 +28,6 @@ import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.persos.ia.mover.PhysicMoveOrder;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -56,8 +55,6 @@ public class CheckLargeObjectCollision extends EngineUT{
 				false, Reverse.NOTHING, false); // 113,259
 
 		zildo = spawnZildo(x, y);
-		clients.get(0).zildoId = zildo.getId();
-		clients.get(0).zildo = (PersoPlayer) zildo;
 		zildo.walkTile(false);
 		
 		// Wait end of scripts

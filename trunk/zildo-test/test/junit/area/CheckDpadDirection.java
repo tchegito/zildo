@@ -1,8 +1,9 @@
 package junit.area;
 
-import junit.framework.Assert;
+import static org.mockito.Mockito.when;
 import junit.perso.EngineUT;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import zildo.Zildo;
@@ -11,14 +12,11 @@ import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Trigo;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Vector2f;
 import zildo.resource.Constantes;
 import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 import zildo.server.state.ClientState;
-
-import static org.mockito.Mockito.*;
 
 public class CheckDpadDirection extends EngineUT {
 
@@ -35,8 +33,6 @@ public class CheckDpadDirection extends EngineUT {
 
 		zildo = spawnZildo(x, y);
 		state = clients.get(0);
-		state.zildoId = zildo.getId();
-		state.zildo = (PersoPlayer) zildo;
 		zildo.walkTile(false);
 
 		

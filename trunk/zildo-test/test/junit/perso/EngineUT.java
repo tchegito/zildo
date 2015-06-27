@@ -68,10 +68,14 @@ public class EngineUT {
 	protected MapUtils mapUtils;	// To easily manipulate the map
 	
 	protected Perso spawnTypicalPerso(String name, int x, int y) {
+		return spawnPerso(PersoDescription.BANDIT_CHAPEAU, name, x, y);
+	}
+	
+	protected Perso spawnPerso(PersoDescription desc, String name, int x, int y) {
 		Perso perso = new PersoNJ();
 		perso.x = x;
 		perso.y = y;
-		perso.setDesc(PersoDescription.BANDIT_CHAPEAU);
+		perso.setDesc(desc);
 		perso.setAngle(Angle.NORD);
 		perso.setName(name);
 		EngineZildo.spriteManagement.spawnPerso(perso);
@@ -79,13 +83,17 @@ public class EngineUT {
 	}
 	
 	protected Perso spawnZildo(int x, int y) {
-		Perso perso = new PersoPlayer(x, y, ZildoOutfit.Zildo);
+		PersoPlayer perso = new PersoPlayer(x, y, ZildoOutfit.Zildo);
 		perso.x = x;
 		perso.y = y;
-		perso.setDesc(PersoDescription.BANDIT_CHAPEAU);
+		perso.setDesc(PersoDescription.ZILDO);
 		perso.setAngle(Angle.NORD);
 		perso.setName("zildo");
 		EngineZildo.spriteManagement.spawnPerso(perso);
+		
+		clients.get(0).zildoId = perso.getId();
+		clients.get(0).zildo = perso;
+		
 		return perso;
 	}
 	
@@ -104,7 +112,7 @@ public class EngineUT {
 	protected void assertLocation(Element elem, Point target, boolean isAt) {
 		String entityType = elem.getEntityType().toString();
 		if (isAt) {
-			Assert.assertTrue(entityType+" should have been at "+target, 
+			Assert.assertTrue(entityType+" should have been at "+target+" but is at ("+elem.x+","+elem.y+")", 
 					(int) elem.x == target.x &&
 					(int) elem.y == target.y);		
 		} else {
