@@ -19,6 +19,7 @@ public interface IEvaluationContext extends Cloneable {
 	// For local variables
 	public String registerVariable(String name);
 	public void unregisterVariable(String name);
+	public void terminate();
 	
 	public String getString(String key);
 	

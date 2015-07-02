@@ -19,9 +19,7 @@
 
 package zildo.fwk.script.command;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.LocaleVarContext;
@@ -37,8 +35,6 @@ import zildo.server.EngineZildo;
  *
  */
 public abstract class RuntimeExecutor {
-    
-    Set<String> involvedVariables;
     
 	IEvaluationContext context;
     
@@ -72,10 +68,6 @@ public abstract class RuntimeExecutor {
     	String result = name;
     	if (isLocal(name)) {
     		result = context.registerVariable(name);
-    		if (involvedVariables == null) {
-    			involvedVariables = new HashSet<String>();
-    		}
-			involvedVariables.add(name);
     	}
     	return result;
     }
