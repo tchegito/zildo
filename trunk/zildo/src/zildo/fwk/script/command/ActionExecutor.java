@@ -859,11 +859,9 @@ public class ActionExecutor extends RuntimeExecutor {
     
     public void terminate() {
     	// We don't have to terminate, if this script has called a new one (lookFor, timer, actions...) : context should be preserved !
-    	if (!uniqueAction && context != null && involvedVariables != null) {
+    	if (!uniqueAction && context != null) {
     		// Unregister each variable name, because it only existed in this executor scope => wipe out
-    		for (String varName : involvedVariables) {
-	    		context.unregisterVariable(varName);
-	    	}
+    		context.terminate();
     	}
     }
 }

@@ -20,7 +20,9 @@
 package zildo.fwk.script.context;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import zildo.fwk.collection.IdGenerator;
 
@@ -32,12 +34,17 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 
 	public final static String VAR_IDENTIFIER = "loc:";
 	
+	// Global container for all local variables mapping
 	static private IdGenerator localVariableNaming = new IdGenerator(256);
 
+	// Local variables declared in this context only
+    public final Set<String> involvedVariables = new HashSet<String>();
+    
 	// Map <"Asked Variable name", "Assigned variable name">
 	Map<String, String> locales = new HashMap<String, String>();
 	
 	public String registerVariable(String name) {
+		involvedVariables.add(name);
 		int id = localVariableNaming.pop();
 		String varName = VAR_IDENTIFIER + id;
 		locales.put(name, varName);
@@ -52,6 +59,11 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 		}
 	}
 	
+	public void terminate() {
+		for (String varName : involvedVariables) {
+    		unregisterVariable(varName);
+    	}
+	}
 	/** Called when an executor comes to an end => local would never be use **/
 	public void unregisterVariable(String name) {
 		locales.remove(name);

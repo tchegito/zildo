@@ -99,8 +99,8 @@ public class ScriptExecutor {
 				while (process.subProcess != null) {
 					if (subScriptsEnded.contains(process.subProcess)) {
 						// This sub process has recently ended, so we cut the link from the parent
-						process.subProcess = null;
 						subScriptsEnded.remove(process.subProcess);
+						process.subProcess = null;
 						break;
 					}
 					process = process.subProcess;
