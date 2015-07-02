@@ -22,7 +22,6 @@ public class CheckDpadDirection extends EngineUT {
 
 	Perso zildo;
 	ClientState state;
-	KeyboardInstant instant;
 	KeyboardHandler fakedKbHandler;
 	
 	Vector2f CONSTANT_DIRECTION = new Vector2f(0, -Constantes.ZILDO_SPEED);
