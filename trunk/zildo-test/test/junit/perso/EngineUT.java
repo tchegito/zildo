@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 
@@ -41,6 +40,7 @@ import zildo.fwk.bank.TileBank;
 import zildo.fwk.db.Identified;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.CloudFilter;
+import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -66,6 +66,8 @@ public class EngineUT {
 	
 	protected List<ClientState> clients;
 	protected MapUtils mapUtils;	// To easily manipulate the map
+	
+	protected KeyboardInstant instant = new KeyboardInstant();
 	
 	protected Perso spawnTypicalPerso(String name, int x, int y) {
 		return spawnPerso(PersoDescription.BANDIT_CHAPEAU, name, x, y);
@@ -111,14 +113,16 @@ public class EngineUT {
 	
 	protected void assertLocation(Element elem, Point target, boolean isAt) {
 		String entityType = elem.getEntityType().toString();
+		String name = entityType + (elem.getName() != null ? (" " + elem.getName()) : "");
+		String message;
 		if (isAt) {
-			Assert.assertTrue(entityType+" should have been at "+target+" but is at ("+elem.x+","+elem.y+")", 
-					(int) elem.x == target.x &&
-					(int) elem.y == target.y);		
+			message = name+" should have been at "+target+" but is at ("+elem.x+","+elem.y+")";
+			Assert.assertTrue(message, 
+					Math.abs(elem.x - target.x) < 0.5f && Math.abs(elem.y - target.y) < 0.5f);
 		} else {
-			Assert.assertTrue(entityType+" shouldn't have been at "+target, 
-					(int) elem.x != target.x || 
-					(int) elem.y != target.y);
+			message = name+" shouldn't have been at "+target+"but is at ("+elem.x+","+elem.y+")";
+			Assert.assertTrue(message, 
+					Math.abs(elem.x - target.x) > 0.5f || Math.abs(elem.y - target.y) > 0.5f);
 		}
 	}
 	
@@ -138,7 +142,11 @@ public class EngineUT {
 	}
 	
 	protected void renderFrames(int nbFrame, boolean debugInfos) {
+		ClientState state = clients.get(0);
 		for (int i=0;i<nbFrame;i++) {
+			if (state.zildo != null) {	// Simulate keypressed if we have a hero
+				state.keys = instant;
+			}
 			engine.renderFrame(clients);
 			if (debugInfos) {
 				for (Perso perso : EngineZildo.persoManagement.tab_perso) {

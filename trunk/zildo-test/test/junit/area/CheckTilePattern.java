@@ -25,7 +25,7 @@ import zildo.monde.map.Area;
 import zildo.monde.map.TilePattern;
 import zildo.monde.sprites.Rotation;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.perso.EngineUT;
 
 /**

@@ -19,7 +19,7 @@
 
 package junit.area;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.perso.EngineUT;
 
 import org.junit.Test;
