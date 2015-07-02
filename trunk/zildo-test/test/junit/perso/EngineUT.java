@@ -111,16 +111,18 @@ public class EngineUT {
 		assertLocation((Element) perso, target, isAt);
 	}
 	
+	/** Check an element location if it is/isn't at a given location, with 0.5 tolerance **/
 	protected void assertLocation(Element elem, Point target, boolean isAt) {
 		String entityType = elem.getEntityType().toString();
 		String name = entityType + (elem.getName() != null ? (" " + elem.getName()) : "");
+		String endMessage = target+" but is at ("+elem.x+","+elem.y+")";
 		String message;
 		if (isAt) {
-			message = name+" should have been at "+target+" but is at ("+elem.x+","+elem.y+")";
+			message = name+" should have been at " + endMessage;
 			Assert.assertTrue(message, 
-					Math.abs(elem.x - target.x) < 0.5f && Math.abs(elem.y - target.y) < 0.5f);
+					Math.abs(elem.x - target.x) <= 0.5f && Math.abs(elem.y - target.y) <= 0.5f);
 		} else {
-			message = name+" shouldn't have been at "+target+"but is at ("+elem.x+","+elem.y+")";
+			message = name+" shouldn't have been at " + endMessage;
 			Assert.assertTrue(message, 
 					Math.abs(elem.x - target.x) > 0.5f || Math.abs(elem.y - target.y) > 0.5f);
 		}

@@ -228,13 +228,14 @@ public class MapManagement {
 		return collide(Math.round(tx), Math.round(ty), quelElement);
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// collide
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// IN:map coordinates and a character to deal with
-	// OUT:TRUE if the given character collides with something or somebody
-	// /////////////////////////////////////////////////////////////////////////////////////
 	public boolean collide(int tx, int ty, Element quelElement) {
+		return collide(tx, ty, quelElement, false);
+	}
+	/** Returns TRUE if there's a collision at given map coordinates, except for the given element. 
+	 * We suppose it is the moving element.
+	 * Note:'loopingCheck' at TRUE means we are calling recursively this method for a character asking
+	 * another to move.**/
+	public boolean collide(int tx, int ty, Element quelElement, boolean loopingCheck) {
 		int modx, mody;
 		int on_map; // La case où se déplace le joueur
 
@@ -349,6 +350,24 @@ public class MapManagement {
 			}
 			if (perso.isOnPlatform() && p != null && p.getMover() != null && p.getMover().isOnIt(perso)) {
 				return false;	// Ok => character is above the "vehicle"
+			}
+			// If moving character is able to ask colliding one to leave => ask him !
+			if (!loopingCheck && !perso.isZildo()) {
+				// Determine free location for other character
+				Angle a = p.getAngle();
+				// First : lateral
+				Point nonBlockingPos = new Point();
+				Angle[] angles = new Angle[] {Angle.rotate(a, 1), Angle.rotate(a,-1), a};
+				for (Angle chkAngle : angles) {
+					nonBlockingPos.x = (int) (perso.x + chkAngle.coordf.x * 12);
+					nonBlockingPos.y = (int) (perso.y + chkAngle.coordf.y * 12);
+					
+					if (!collide(nonBlockingPos.x, nonBlockingPos.y, perso, true)) {
+						break;
+					}
+				}
+				perso.setTarget(nonBlockingPos);
+				perso.setGhost(true);
 			}
 			return true;
 		}
