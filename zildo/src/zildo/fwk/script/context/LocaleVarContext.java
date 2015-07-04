@@ -41,6 +41,7 @@ public abstract class LocaleVarContext implements IEvaluationContext {
     public final Set<String> involvedVariables = new HashSet<String>();
     
 	// Map <"Asked Variable name", "Assigned variable name">
+    // TODO: there's chance that this map and prior set could merge into one single variable
 	Map<String, String> locales = new HashMap<String, String>();
 	
 	public String registerVariable(String name) {
@@ -66,6 +67,7 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 	}
 	/** Called when an executor comes to an end => local would never be use **/
 	public void unregisterVariable(String name) {
+		unregisterId(locales.get(name));
 		locales.remove(name);
 	}
 	
