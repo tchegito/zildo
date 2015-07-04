@@ -89,7 +89,7 @@ public class Mover {
 	}
 	
 	/**
-	 * Link an entity to this mover.
+	 * Link an entity to this mover, when entity just gets above this mover.
 	 * @param e
 	 * @return TRUE if entity is just newly associated (=it wasn't before)
 	 */
