@@ -214,6 +214,9 @@ public abstract class Perso extends Element {
 				pathFinder = new PathFinderFollow(this, following);
 				pathFinder.speed = prevSpeed;
 				break;
+			case MOBILE_WAIT:
+				pathFinder.alwaysReach = true;
+				break;
 			}
 		}
 	}
@@ -851,7 +854,7 @@ public abstract class Perso extends Element {
 	}
 
 	public void setTarget(Point target) {
-		this.pathFinder.setTarget(target);
+		pathFinder.setTarget(target);
 	}
 
 	public boolean hasReachedTarget() {

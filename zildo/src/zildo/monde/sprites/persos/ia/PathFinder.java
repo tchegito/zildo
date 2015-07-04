@@ -53,6 +53,7 @@ public class PathFinder {
 	public boolean backward;	// Default FALSE. TRUE means character is stepping back
 	public boolean open;	// Default FALSE. TRUE means character can open doors.
 	protected boolean unstoppable;	// TRUE = no collision for this character
+	public boolean alwaysReach;	// TRUE = character will wait forever if something is on his way (example:turtle)
     protected int nbShock;				// Number of times character hit something going to his target
 
 	public PathFinder(Perso p_mobile) {
@@ -60,7 +61,8 @@ public class PathFinder {
 		backward=false;
 		open=p_mobile.isZildo();
 		speed = 0.5f;
-		unstoppable=false;
+		unstoppable = false;
+		alwaysReach = false;
 	}
 	
     /**
@@ -99,6 +101,8 @@ public class PathFinder {
             	move++;
             }
             a=Angle.OUEST;
+        } else if (x != target.x) {
+        	delta.x = target.x - x;
         } else {
             immo++;
         }
@@ -118,6 +122,8 @@ public class PathFinder {
             	move++;
             }
             a=Angle.NORD;
+        } else if (y != target.y) {
+        	delta.y = target.y - y;
         } else {
             immo++;
         }
@@ -131,7 +137,7 @@ public class PathFinder {
         
         // If there's no movement, stop the target
         if (immo == 2) {
-            target=null;
+       		target=null;
         } else if (mobile.getMouvement() != MouvementZildo.SAUTE && mobile.getQuel_deplacement() != MouvementPerso.VOLESPECTRE) {
         	pos = mobile.tryMove(delta.x, delta.y);
         	// Recalculate angle
@@ -217,7 +223,7 @@ public class PathFinder {
 				if (mobile.isGhost()) {
 					mobile.tryJump(new Pointf(mobile.x, mobile.y));
 				}
-				if (nbShock++ >= 3 && !mobile.isGhost()) {
+				if (!alwaysReach && nbShock++ >= 3 && !mobile.isGhost()) {
 					target=null;
 					mobile.setAlerte(false);
 					nbShock=0;

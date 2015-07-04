@@ -42,7 +42,8 @@ public enum MouvementPerso {
 	INVOKE(13),	// addSpr = 1
 	CAT(14),
 	SLEEPING(15),
-	FOLLOW(16);
+	FOLLOW(16),
+	MOBILE_WAIT(17);	// Character will wait if something is on his way (contrary to default mode, where target becomes NULL when he's blocked)
 	
 	public int valeur;
 	
@@ -98,14 +99,15 @@ public enum MouvementPerso {
 	}
 	
 	/**
-	 * Does this script make the character move ?
+	 * Does this script make the character move inside a zone?
 	 * @return TRUE = he can move / FALSE = immobile
 	 */
-	public boolean isMobile() {
+	public boolean isMobileZone() {
 		return this != IMMOBILE &&
 		this != OBSERVE &&
 		this != WAKEUP &&
-		this != INVOKE;
+		this != INVOKE &&
+		this != MOBILE_WAIT;
 	}
 	
 	/**

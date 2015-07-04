@@ -23,7 +23,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Point;
 
 /**
@@ -38,6 +40,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 		// Spawn a character A
 		Point targetA = new Point(100, 190);
 		Perso persoA = spawnPerso(PersoDescription.TURTLE, "Turtle", 100, 80);
+		persoA.setQuel_deplacement(MouvementPerso.MOBILE_WAIT, true);
 		persoA.setTarget(targetA);
 		
 		// Spawn character (non-hero)
@@ -47,25 +50,42 @@ public class TestPersoMoveAndPush extends EngineUT {
 		renderFrames(500);
 		
 		Assert.assertNull("Character A shouldn't have a target !", persoA.getTarget());
+		// Check that persoB has moved, to let turtle pass
+		assertLocation(persoB, new Point(100, 150), false);
+		// Check that turtle is arrived
 		assertLocation(persoA, targetA, true);
 	}
 	
 	/** Proves that turtle can't push hero. Instead, it has to wait him to move by himself. **/
 	@Test
-	public void turtlePushHero() {
+	public void turtleCantPushHero() {
 		// Spawn a character A
-		Point targetA = new Point(100, 190);
+		Point targetA = new Point(200, 80);
 		Perso persoA = spawnPerso(PersoDescription.TURTLE, "Turtle", 100, 80);
+		persoA.setQuel_deplacement(MouvementPerso.MOBILE_WAIT, true);
 		persoA.setTarget(targetA);
 		
 		// Spawn hero
-		Perso persoB = spawnZildo(100, 150);
+		Perso hero = spawnZildo(150, 90);
 
 		
 		// Let's rock !
-		renderFrames(500);
+		renderFrames(400);
+
+		// Check that turtle hasn't loosed its target
+		Assert.assertTrue(persoA.getTarget() != null);
+		assertLocation((Element) persoA, targetA, false);
+
+		Assert.assertTrue("Character A should still have a target !", persoA.getTarget() != null);
 		
-		Assert.assertNull("Character A shouldn't have a target !", persoA.getTarget());
+		// Now we move hero
+		hero.setTarget(new Point(150,120));
+		hero.setGhost(true);
+		
+		renderFrames(400);
+		
+		// And now, check that turtle is arrived
+		Assert.assertTrue(persoA.getTarget() == null);
 		assertLocation(persoA, targetA, true);
 	}
 }

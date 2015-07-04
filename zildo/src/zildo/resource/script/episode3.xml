@@ -131,6 +131,7 @@
 	</tileAction>
 	
     <persoAction id="sacherTortue"> <!-- argument: scene name for turtle movements -->
+        <script who="self" value="17"/> <!-- MOBILE_WAIT: sure to reach its target -->
         <loop>
         	<var name="loc:found" value="0"/>
             <lookFor who="self" info="ZILDO" radius="3">

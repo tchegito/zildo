@@ -351,7 +351,7 @@ public class MapManagement {
 			if (perso.isOnPlatform() && p != null && p.getMover() != null && p.getMover().isOnIt(perso)) {
 				return false;	// Ok => character is above the "vehicle"
 			}
-			// If moving character is able to ask colliding one to leave => ask him !
+			// If moving character is able to ask colliding one to leave (and hero's not the one blocking) => ask him !
 			if (!loopingCheck && !perso.isZildo()) {
 				// Determine free location for other character
 				Angle a = p.getAngle();
