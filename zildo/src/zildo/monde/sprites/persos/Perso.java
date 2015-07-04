@@ -599,7 +599,8 @@ public abstract class Perso extends Element {
 			// found a platform. Is perso on it ?
 			Mover vehicle = entity.getMover();
 			Zone zz = vehicle.getZone();
-			if (zz.isInto((int) x, (int) y) && (int)z == vehicle.getFlatZ() ) {
+			if (zz.isInto((int) x, (int) y) && (int)z <= vehicle.getFlatZ() ) {
+				z = vehicle.getFlatZ(); //normalize Z, in case we were under mover
 				boolean justLinked = vehicle.linkEntity(this);
 				if (justLinked) {
 					String mapName = EngineZildo.mapManagement.getCurrentMap().getName();

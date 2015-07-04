@@ -44,6 +44,7 @@ public enum MouvementPerso {
 	SLEEPING(15),
 	FOLLOW(16),
 	MOBILE_WAIT(17);	// Character will wait if something is on his way (contrary to default mode, where target becomes NULL when he's blocked)
+						// Plus: he ask blocking people to leave, except if it's the hero
 	
 	public int valeur;
 	

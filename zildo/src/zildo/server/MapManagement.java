@@ -352,7 +352,7 @@ public class MapManagement {
 				return false;	// Ok => character is above the "vehicle"
 			}
 			// If moving character is able to ask colliding one to leave (and hero's not the one blocking) => ask him !
-			if (!loopingCheck && !perso.isZildo()) {
+			if (!loopingCheck && p.getQuel_deplacement() == MouvementPerso.MOBILE_WAIT &&!perso.isZildo()) {
 				// Determine free location for other character
 				Angle a = p.getAngle();
 				// First : lateral
