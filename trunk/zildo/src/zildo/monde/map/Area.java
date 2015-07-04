@@ -1008,7 +1008,7 @@ public class Area implements EasySerializable {
 			}
 		}
 
-		// Les P.E
+		// Chaining points
 		if (n_pe != 0) {
 			for (int i = 0; i < n_pe; i++) {
 				map.addChainingPoint(ChainingPoint.deserialize(p_buffer));
@@ -1108,7 +1108,7 @@ public class Area implements EasySerializable {
 			}
 		}
 
-		// Les persos
+		// Characters (Persos)
 		if (n_persos != 0) {
 			for (int i = 0; i < n_persos; i++) {
 				int x = p_buffer.readInt();

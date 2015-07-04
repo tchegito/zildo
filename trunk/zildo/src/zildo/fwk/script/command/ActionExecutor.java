@@ -680,6 +680,9 @@ public class ActionExecutor extends RuntimeExecutor {
             	if (perso != null) {
 	                achieved=perso.hasReachedTarget();
 	                if (achieved) {
+	                	// Make sure character is EXACTLY on desired target
+	                	perso.x = perso.getTarget().x;
+	                	perso.y = perso.getTarget().y;
 	                	perso.setPos_seqsprite(0);
 	                	perso.setTarget(null);
 	                }
