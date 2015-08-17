@@ -586,7 +586,7 @@ public class Element extends SpriteEntity {
 			case BUSH:
 				if (isZildo()) {
 					// Bushes blow up when hero falls on it
-					EngineZildo.mapManagement.getCurrentMap().attackTile(floor, new Point(cx, cy));
+					EngineZildo.mapManagement.getCurrentMap().attackTile(floor, new Point(cx, cy), (PersoPlayer) this );
 				}
 				break;
 			case REGULAR:

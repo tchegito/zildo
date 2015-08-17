@@ -42,7 +42,8 @@
 	        <perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
 	    </condition>
 	   	<condition name="sousbois7">
-	        <perso who="sacher2" action="sacherTortue(tortueSousbois7)"/>
+	        <perso who="sacher" action="sacherTortue(tortueSousbois7)"/>
+	   		<perso who="sacher2" action="sacherTortue(tortueSousbois7_2)"/>
 	    </condition>
 	</mapScript>
 	    
@@ -204,6 +205,25 @@
     </scene>
     
     <scene id="tortueSousbois7">
-        
+        <moveTo who="sacher" pos="0,-30" delta="true"/>
+        <wait value="50"/>
+        <moveTo who="sacher" pos="200,0" delta="true"/>
+		<wait value="50"/>
+        <moveTo who="sacher" pos="-200,0" delta="true"/>
+        <wait value="50"/>
+        <moveTo who="sacher" pos="0,30" delta="true"/>
+		<wait value="50"/>
     </scene>
+    
+    <scene id="tortueSousbois7_2">
+        <moveTo who="sacher2" pos="0,210" delta="true"/>
+        <wait value="50"/>"
+        <moveTo who="sacher2" pos="60,0" delta="true"/>
+        <wait value="50"/>
+        <moveTo who="sacher2" pos="-60,0" delta="true"/>
+        <wait value="50"/>"
+        <moveTo who="sacher2" pos="0,-110" delta="true"/>
+        <wait value="50"/>
+    </scene>
+    
 </adventure>

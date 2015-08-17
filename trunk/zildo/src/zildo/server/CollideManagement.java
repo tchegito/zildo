@@ -110,7 +110,7 @@ public class CollideManagement {
 	            	Set<Point> tilesCollided=getTilesCollided(collider);
 	    			// And ask 'map' object to react
 	            	for (Point location : tilesCollided) {
-	            		EngineZildo.mapManagement.getCurrentMap().attackTile(collider.perso.floor, location);
+	            		EngineZildo.mapManagement.getCurrentMap().attackTile(collider.perso.floor, location, null);
 	            	}
             	} else if (dmgType == DamageType.SMASH) {
 	            	Set<Point> tilesCollided=getTilesCollided(collider);
