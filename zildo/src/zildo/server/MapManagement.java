@@ -352,7 +352,7 @@ public class MapManagement {
 				return false;	// Ok => character is above the "vehicle"
 			}
 			// If moving character is able to ask colliding one to leave (and hero's not the one blocking) => ask him !
-			if (!loopingCheck && p.getQuel_deplacement() == MouvementPerso.MOBILE_WAIT &&!perso.isZildo()) {
+			if (!loopingCheck && p != null && p.getQuel_deplacement() == MouvementPerso.MOBILE_WAIT &&!perso.isZildo()) {
 				// Determine free location for other character
 				Angle a = p.getAngle();
 				// First : lateral
@@ -991,6 +991,7 @@ public class MapManagement {
 	
 	static final int MAX_SHIFT = 40;
 	
+	/** Try to replace character without colliding something. Moves him for his initial location, if neede. **/
 	public void arrangeLocation(Perso p) {
 		// First try: if the tile has a jar/bush on it => remove it
 		int xx = (int) (p.x / 16);

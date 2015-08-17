@@ -527,7 +527,7 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// attackTile
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void attackTile(int floor, Point tileLocation) {
+	public void attackTile(int floor, Point tileLocation, Perso perso) {
 		// Check if Zildo destroy something on a tile
 		int onmap = readmap(tileLocation.x, tileLocation.y);
 		int spe = 0;
@@ -540,7 +540,7 @@ public class Area implements EasySerializable {
 					floor, spe, null, null);
 			EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, spriteLocation);
 
-			takeSomethingOnTile(tileLocation, true, null, true);
+			takeSomethingOnTile(tileLocation, true, perso, true);
 			break;
 		case 374: // Mud
 			writemap(tileLocation.x, tileLocation.y, 375);
@@ -703,7 +703,7 @@ public class Area implements EasySerializable {
 						questTrigger = true;
 					}
 				}
-				Element elem = sprMgt.spawnSpriteGeneric(anim, p.x, p.y + 5, 1, 0, null, desc);
+				Element elem = sprMgt.spawnSpriteGeneric(anim, p.x, p.y + 5, 1, 0, p_perso, desc);
 				elem.setName(item.name);
 				elem.setTrigger(questTrigger);
 			} else {
