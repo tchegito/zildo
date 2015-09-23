@@ -1,0 +1,1 @@
+Feel free to let here your feelings about Zildo. Multiplayer or Single player, positive or negative, anything you like.
