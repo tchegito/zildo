@@ -218,11 +218,11 @@
     <scene id="tortueSousbois7_2">
         <moveTo who="sacher2" pos="0,210" delta="true"/>
         <wait value="50"/>"
-        <moveTo who="sacher2" pos="60,0" delta="true"/>
+        <moveTo who="sacher2" pos="150,0" delta="true"/>
         <wait value="50"/>
-        <moveTo who="sacher2" pos="-60,0" delta="true"/>
+        <moveTo who="sacher2" pos="-150,0" delta="true"/>
         <wait value="50"/>"
-        <moveTo who="sacher2" pos="0,-110" delta="true"/>
+        <moveTo who="sacher2" pos="0,-210" delta="true"/>
         <wait value="50"/>
     </scene>
     
