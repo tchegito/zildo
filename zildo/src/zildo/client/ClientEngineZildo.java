@@ -34,7 +34,9 @@ import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.BilinearFilter;
 import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
+import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardInstant;
+import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.fwk.opengl.SoundEngine;
 import zildo.monde.collision.Collision;
@@ -231,17 +233,22 @@ public class ClientEngineZildo {
 			this.debug();
 		}
 
+		KeyboardInstant kbInstant = client.getKbInstant();
 		if (client.isMultiplayer()) {
 			// Does player want to see the scores ? (tab key pressed)
 			boolean tabPressed = false;
-			KeyboardInstant kbInstant = client.getKbInstant();
 			if (kbInstant != null) {
-				tabPressed = (client.getKbInstant()
-						.isKeyDown(KeysConfiguration.PLAYERKEY_TAB));
+				tabPressed = kbInstant.isKeyDown(KeysConfiguration.PLAYERKEY_TAB);
 			}
 			guiDisplay.setToDisplay_scores(tabPressed);
 		}
-
+		KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
+		if (kbInstant != null) {
+			boolean touchPressed = kbHandler.isKeyPressed(Keys.COMPASS);
+			if (touchPressed) {
+				guiDisplay.toggleToDisplay_adventureMenu();
+			}
+		}
 
 		
 		//long t9 = ZUtils.getTime();

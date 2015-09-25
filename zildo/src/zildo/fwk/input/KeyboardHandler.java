@@ -49,7 +49,7 @@ public interface KeyboardHandler {
 	
 	public enum Keys {Q, W, X, E, UP, DOWN, RIGHT, LEFT, TAB, RETURN, BACK, ESCAPE, LSHIFT,
 		// Specific for touch screen
-		DIALOG_FRAME, TOUCH_MENU, TOUCH_BACK};
+		DIALOG_FRAME, TOUCH_MENU, TOUCH_BACK, COMPASS};
 	public int getCode(Keys k);
 	
 }

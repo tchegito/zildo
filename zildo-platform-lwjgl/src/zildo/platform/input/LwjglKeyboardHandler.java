@@ -50,6 +50,7 @@ public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 	private static final int KEY_DOWN            = 0xD0; /* DownArrow on arrow keypad */
 	private static final int KEY_R               = 0x13;
 	private static final int KEY_T               = 0x14;
+	private static final int KEY_2				= 40; //253;
 	
 	Vector2f v = new Vector2f(0, 0);	// Just to avoid declaring a new one at each time
 	
@@ -70,6 +71,7 @@ public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 		platformKeys.put(Keys.DIALOG_FRAME, KEY_E);	// Nonsense without touch screen
 		platformKeys.put(Keys.TOUCH_MENU, KEY_R);	// Nonsense without touch screen
 		platformKeys.put(Keys.TOUCH_BACK, KEY_T);	// Nonsense without touch screen
+		platformKeys.put(Keys.COMPASS, KEY_2);
 	}
 
 	public boolean isKeyDown(int p_code) {

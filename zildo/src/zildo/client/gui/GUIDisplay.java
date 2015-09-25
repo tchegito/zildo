@@ -38,6 +38,7 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
+import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.ItemMenu;
@@ -76,7 +77,7 @@ import zildo.server.state.PlayerState;
 public class GUIDisplay {
 
 	public enum DialogMode {
-		CLASSIC, MENU, CREDITS, HALLOFFAME, INFO, BUY;
+		CLASSIC, MENU, CREDITS, HALLOFFAME, INFO, BUY, ADVENTURE_MENU;
 		
 		public boolean isScript() {
 			return true; //this == CLASSIC || this == CREDITS;
@@ -87,7 +88,7 @@ public class GUIDisplay {
 		}
 		
 		public boolean isMenu() {
-			return this == MENU || this == HALLOFFAME;
+			return this == MENU || this == HALLOFFAME || this == ADVENTURE_MENU;
 		}
 	}
 	
@@ -99,6 +100,7 @@ public class GUIDisplay {
 	private boolean toRemove_dialoguing;
 	private boolean toDisplay_generalGui;
 	private boolean toDisplay_scores;
+	private boolean toDisplay_adventureMenu;
 
 	private DialogMode toDisplay_dialogMode;
 
@@ -116,6 +118,7 @@ public class GUIDisplay {
 	private GUISpriteSequence menuSequence; // Cursors for menu
 	private GUISpriteSequence creditSequence; // Credits
 	private GUISpriteSequence infoSequence; // For displaying infos
+	private GUISpriteSequence adventureSequence; // For displaying adventure menu
 
 	private ScreenConstant sc;
 	
@@ -150,6 +153,7 @@ public class GUIDisplay {
 		menuSequence = new GUISpriteSequence();
 		creditSequence = new GUISpriteSequence();
 		infoSequence = new GUISpriteSequence();
+		adventureSequence = new GUISpriteSequence();
 		
 		countMoney = 0;
 
@@ -276,6 +280,9 @@ public class GUIDisplay {
 		if (toDisplay_scores) {
 			drawScores();
 		}
+		if (toDisplay_adventureMenu) {
+			displayAdventureMenu();
+		}
 
 		drawConsoleMessages();
 	}
@@ -357,6 +364,11 @@ public class GUIDisplay {
 			if (texte.indexOf((char)-3) != -1) {
 				fx = EngineFX.FONT_PEOPLENAME;
 			}
+			break;
+		case ADVENTURE_MENU:
+			seq = adventureSequence;
+			visibleFont = true;
+			center = true;
 			break;
 		case MENU:
 		case HALLOFFAME:
@@ -567,23 +579,28 @@ public class GUIDisplay {
 		}
 
 		// Draw frame's bars
-		ClientEngineZildo.ortho.initDrawBox(false);
-		for (int i = 0; i < 5; i++) {
-			ClientEngineZildo.ortho.boxOpti(posX1+7, posY1 + i, sizeX+4, 1,
-					couleur_cadre[i], null);
-			ClientEngineZildo.ortho.boxOpti(posX1+6, posY2+6 - i, sizeX+4, 1,
-					couleur_cadre[i], null);
-			ClientEngineZildo.ortho.boxOpti(posX1 + i, posY1+7, 1, sizeY+3,
-					couleur_cadre[i], null);
-			ClientEngineZildo.ortho.boxOpti(posX2+6 - i, posY1+7, 1, sizeY+3,
-					couleur_cadre[i], null);
-		}
-		ClientEngineZildo.ortho.endDraw();
-		ClientEngineZildo.ortho.enableBlend();
-		ClientEngineZildo.ortho.box(posX1+5, posY1+5, sizeX+7, sizeY+7, 0, new Vector4f(0.4f, 0.2f, 0.1f, 0.7f));
-		ClientEngineZildo.ortho.disableBlend();
+		drawBox(posX1, posY1, sizeX, sizeY);
 	}
 
+	/** Draw a frame with transparent blue box inside **/
+	private void drawBox(int x, int y, int width, int height) {
+		int x2 = x + width + 10;
+		int y2 = y + height + 10;
+		Ortho ortho = ClientEngineZildo.ortho;
+		ortho.initDrawBox(false);
+		for (int i = 0; i < 5; i++) {
+			int col = couleur_cadre[i];
+			ortho.boxOpti(x+7, y + i, width+4, 1, col, null);
+			ortho.boxOpti(x+6, y2+6 - i, width+4, 1, col, null);
+			ortho.boxOpti(x + i, y+7, 1, height+3, col, null);
+			ortho.boxOpti(x2+6 - i, y+7, 1, height+3, col, null);
+		}
+		ortho.endDraw();
+		ortho.enableBlend();
+		ortho.box(x+5, y+5, width+7, height+7, 0, new Vector4f(0.4f, 0.2f, 0.1f, 0.7f));
+		ortho.disableBlend();
+	}
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// displayTextParts
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -891,6 +908,7 @@ public class GUIDisplay {
 			guiSpritesSequence.addSprite(FontDescription.BUTTON_Y, x2, Zildo.viewPortY-70 - 3, curAlpha);
 			guiSpritesSequence.addSprite(FontDescription.BUTTON_X, x3, Zildo.viewPortY-40 + 8, curAlpha);
 		}
+		guiSpritesSequence.addSprite(FontDescription.COMPASS, 48, 0);
 	}
 
 	private int computeForLeftHanded(int x, FontDescription desc) {
@@ -933,6 +951,18 @@ public class GUIDisplay {
 		messageQueue.clear();
 	}
 
+	private void displayAdventureMenu() {
+		drawBox(50, (Zildo.viewPortY - 16 *4) / 2, 200, 16 * 3);
+		//guiSpritesSequence
+		if (toDisplay_dialogMode != DialogMode.ADVENTURE_MENU) {
+			setToDisplay_dialogMode(DialogMode.ADVENTURE_MENU);
+			adventureSequence.clear();
+			int sizeY = -16; //3 * sc.TEXTER_MENU_SIZEY;
+			int y = (Zildo.viewPortY - sizeY) / 2;
+			prepareTextInFrame("Carte d'Alembrume\nDialogues\nGuide", sc.TEXTER_COORDINATE_X, y, true);
+		}
+	}
+
 	public void setupHero(PersoPlayer zildo) {
 		if (zildo != null) {
 			countMoney = zildo.getMoney();
@@ -960,38 +990,44 @@ public class GUIDisplay {
 		return toDisplay_dialoguing;
 	}
 
-	public void setToDisplay_dialoguing(boolean toDisplay_dialoguing) {
-		this.toDisplay_dialoguing = toDisplay_dialoguing;
+	public void setToDisplay_dialoguing(boolean p_active) {
+		toDisplay_dialoguing = p_active;
 	}
 
 	public boolean isToRemove_dialoguing() {
 		return toRemove_dialoguing;
 	}
 
-	public void setToRemove_dialoguing(boolean toRemove_dialoguing) {
-		this.toRemove_dialoguing = toRemove_dialoguing;
+	public void setToRemove_dialoguing(boolean p_active) {
+		toRemove_dialoguing = p_active;
 	}
 
 	public boolean isToDisplay_generalGui() {
 		return toDisplay_generalGui;
 	}
 
-	public void setToDisplay_generalGui(boolean toDisplay_generalGui) {
-		this.toDisplay_generalGui = toDisplay_generalGui;
+	public void setToDisplay_generalGui(boolean p_active) {
+		toDisplay_generalGui = p_active;
 	}
 
 	public DialogMode getToDisplay_dialogMode() {
 		return toDisplay_dialogMode;
 	}
 
-	public void setToDisplay_dialogMode(DialogMode toDisplay_dialogMode) {
-		this.toDisplay_dialogMode = toDisplay_dialogMode;
+	public void setToDisplay_dialogMode(DialogMode p_active) {
+		toDisplay_dialogMode = p_active;
 	}
 
 	public void setToDisplay_scores(boolean p_active) {
-		this.toDisplay_scores = p_active;
+		toDisplay_scores = p_active;
 	}
-
+	public void setToDisplay_adventureMenu(boolean p_active) {
+		toDisplay_adventureMenu = p_active;
+	}
+	public void toggleToDisplay_adventureMenu() {
+		toDisplay_adventureMenu = !toDisplay_adventureMenu;
+	}
+	
 	/**
 	 * Returns item on given location, if there's any. NULL otherwise.
 	 * @param x

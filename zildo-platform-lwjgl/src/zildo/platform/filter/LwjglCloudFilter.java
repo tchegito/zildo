@@ -25,42 +25,56 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.util.Pointf;
 
 /**
  * @author Tchegito
- *
+ * 
  */
 public class LwjglCloudFilter extends CloudFilter {
 
 	public LwjglCloudFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
 	}
+
+	double alpha = 0;
 	
 	@Override
 	public boolean renderFilter() {
+
+		alpha+=0.01f;
+		wind=new Pointf(0.25f + (float) (0.3f * Math.sin(alpha) * Math.cos(alpha*3)), 
+						0.25f + (float) (0.1f * Math.cos(alpha) * Math.sin(alpha*2)));
 		
 		super.startInitialization();
 		updateQuad(0, 0, u, v, Reverse.NOTHING);
 		this.endInitialization();
-		
+
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    	GL11.glLoadIdentity();
+		GL11.glLoadIdentity();
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glPushMatrix();
-		GL11.glTranslatef(0,-sizeY,1);
+		GL11.glTranslatef(0, -sizeY, 1);
 
+		/*
+		float colorFactor = 0.4f;
+		float transparency = 0.4f + (float) (0.2f * Math.cos(alpha));
+		GL11.glColor4f(transparency, transparency, transparency, 0.4f);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_ONE_MINUS_SRC_COLOR, GL11.GL_SRC_ALPHA); // ONE_MINUS_SRC_COLOR);
+*/
 		float colorFactor=0.2f;
 		GL11.glColor4f(colorFactor, colorFactor, colorFactor, 0.1f);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE_MINUS_SRC_COLOR);
 
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientEngineZildo.tileEngine.texCloudId);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientEngineZildo.tileEngine.texCloudId);
 		super.render();
 
 		GL11.glDisable(GL11.GL_BLEND);
-		
+
 		GL11.glPopMatrix();
-		
+
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		return true;
 	}

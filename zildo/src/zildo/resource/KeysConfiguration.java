@@ -36,6 +36,7 @@ public enum KeysConfiguration {
 	PLAYERKEY_LEFT(Keys.LEFT),
 	PLAYERKEY_TOPIC(Keys.E),
 	PLAYERKEY_TAB(Keys.TAB),
+	PLAYERKEY_ADVENTUREMENU(Keys.COMPASS),
 	PLAYERKEY_DIALOG(Keys.DIALOG_FRAME);
 	
 	public Keys code;
