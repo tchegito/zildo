@@ -23,6 +23,7 @@ import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.gui.EntityTransformer;
 import zildo.fwk.gfx.EngineFX;
+import zildo.fwk.ui.UIText;
 import zildo.monde.sprites.SpriteEntity;
 
 /**
@@ -47,7 +48,7 @@ public class TitleStage implements GameStage {
 	public TitleStage(String p_text) {
 		counter = 0;
 		done = false;
-		wholeInfos = p_text;
+		wholeInfos = UIText.getGameText(p_text);
 		launchGame();
 	}
 	

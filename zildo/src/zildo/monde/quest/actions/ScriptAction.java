@@ -26,12 +26,12 @@ import zildo.server.state.ClientState;
 
 public class ScriptAction extends ActionDialog {
 
-	public ScriptAction(String p_text) {
-		super(p_text);
+	public ScriptAction(String p_key) {
+		super(p_key);
 	}
 	
-	public ScriptAction(String p_text, String p_who) {
-		super(p_text, p_who);
+	public ScriptAction(String p_key, String p_who) {
+		super(p_key, p_who);
 	}
 	
 	@Override

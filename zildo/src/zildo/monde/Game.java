@@ -24,6 +24,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.BufferUnderflowException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
@@ -32,6 +34,7 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.script.xml.element.AdventureElement;
 import zildo.fwk.script.xml.element.QuestElement;
+import zildo.monde.dialog.HistoryRecord;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
@@ -39,6 +42,7 @@ import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
 /**
@@ -61,11 +65,14 @@ public class Game implements EasySerializable {
     
     private Date startPlay;
     
+    private List<HistoryRecord> lastDialog;
+    
     public Game(String p_mapName, boolean p_editing) {
         mapName = p_mapName;
         editing = p_editing;
         multiPlayer = false;
         brandNew = true;
+        lastDialog = new ArrayList<HistoryRecord>(Constantes.NB_MAX_DIALOGS_HISTORY +1);
     }
 
     public Game(String p_mapName, String p_playerName) {
@@ -154,6 +161,12 @@ public class Game implements EasySerializable {
         
         // 8: floor
         p_buffer.put((byte) zildo.getFloor());
+        
+        // 9: dialog history
+        p_buffer.put((byte) lastDialog.size());
+        for (HistoryRecord record : lastDialog) {
+        	record.serialize(p_buffer);
+        }
         
         // Backup quest state to restore if hero dies
         EngineZildo.setBackedUpGame(p_buffer);
@@ -270,6 +283,14 @@ public class Game implements EasySerializable {
             if (!p_buffer.eof()) {
             	zildo.setFloor(p_buffer.readByte());
             }
+            
+            // 9: dialog history
+            game.lastDialog.clear();
+        	if (!p_buffer.eof()) {
+        		HistoryRecord record = HistoryRecord.deserialize(p_buffer);
+        		game.lastDialog.add(record);
+        	}
+        	
             EngineZildo.mapManagement.setStartLocation(loc, a, zildo.getFloor());
             return game;
         } catch (Exception e) {
@@ -286,4 +307,16 @@ public class Game implements EasySerializable {
         // Return it
     	return timeSpent;
     }
+    
+    /** Record given dialog inside history, limited by size **/
+	public void recordDialog(String key, String who, String mapName) {
+    	lastDialog.add(new HistoryRecord(key, who, mapName));
+		while (lastDialog.size() > Constantes.NB_MAX_DIALOGS_HISTORY) {
+    		lastDialog.remove(0);
+		}
+	}
+
+	public List<HistoryRecord> getLastDialog() {
+    	return Collections.unmodifiableList(lastDialog);
+	}
 }

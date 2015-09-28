@@ -101,4 +101,6 @@ public class Constantes {
 
 	// Sounds
 	public static final int MAX_SOUNDS = 49;
+	
+	public static final int NB_MAX_DIALOGS_HISTORY = 20;
 }

@@ -43,13 +43,18 @@ import zildo.server.EngineZildo;
  */
 public class WorldmapBuilder {
 
-	class WorldMap {
-		Area theMap;
-		Point location;
+	public class WorldMap {
+		public Area theMap;
+		public Point location;
 		
 		public WorldMap(Area map, Point loc) {
 			theMap = map;
 			location = loc;
+		}
+		
+		@Override
+		public String toString() {
+			return theMap.getName()+" at "+location;
 		}
 	}
 	
@@ -113,6 +118,9 @@ public class WorldmapBuilder {
 		// If this map is already in the world, leave it
 		if (worldMaps.get(mapName) == null) {
 			
+			if ("promenade".equals(mapName)) {
+				System.out.println(mapName);
+			}
 			// Load asked map
 			Area area = currentMap;
 			if (area == null) {
@@ -146,5 +154,9 @@ public class WorldmapBuilder {
 				}
 			}
 		}
+	}
+	
+	public Map<String, WorldMap> getWorldMap() {
+		return worldMaps;
 	}
 }

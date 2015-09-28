@@ -53,6 +53,7 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
 import zildo.server.state.ClientState;
 
 /**
@@ -173,6 +174,8 @@ public class EngineUT {
 		engine = new EngineZildo(game);
 		// Create standard map
 		//EngineZildo.soundManagement.setForceMusic(true);
+		// Prepare mock for later
+		EngineZildo.mapManagement = spy(new MapManagement());
 		EngineZildo.mapManagement.loadMap("preintro", false);
 		
 		// Cheat to have a client

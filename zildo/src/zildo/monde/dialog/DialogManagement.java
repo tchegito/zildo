@@ -115,6 +115,7 @@ public class DialogManagement {
 			Perso persoToTalk, ActionDialog actionDialog) {
 		MapDialog dialogs = EngineZildo.mapManagement.getCurrentMap().getMapDialog();
 		String sentence = null;
+		String keySentence = null;
 		currentSentenceFullDisplayed = false;
 
     	String whoSpeaking = null;
@@ -137,9 +138,9 @@ public class DialogManagement {
 					compteDial = posSentence;
 				}
 			}
-			sentence = dialogs.getSentence(behav, compteDial);
+			keySentence = dialogs.getSentence(behav, compteDial);
 
-			sentence = UIText.getGameText(sentence);
+			sentence = UIText.getGameText(keySentence);
 
 			// Update perso about next sentence he(she) will say
 			int posSharp = sentence.indexOf("#");
@@ -169,11 +170,16 @@ public class DialogManagement {
 		} else if (actionDialog != null) {
 			// persoToTalk == null
 		    // Ingame event
-		    sentence = actionDialog.text;
+		    keySentence = actionDialog.key;
+		    sentence = UIText.getGameText(keySentence);
 		    whoSpeaking = actionDialog.who;
 		    p_client.dialogState.actionDialog = actionDialog;
 		}
 		whoSpeaking = getPeopleName(whoSpeaking);
+
+		// Dialog history
+		String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
+		EngineZildo.game.recordDialog(keySentence, whoSpeaking, mapName);
 
 		return new WaitingDialog(whoSpeaking, sentence, null, false, p_client == null ? null
 				: p_client.location);

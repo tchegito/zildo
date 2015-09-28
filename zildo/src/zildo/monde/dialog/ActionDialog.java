@@ -24,15 +24,15 @@ import zildo.server.state.ClientState;
 
 public abstract class ActionDialog {
 
-	String text;
+	String key;
 	String who;
 	
 	public ActionDialog(String p_text) {
-		text=p_text;
+		key = p_text;
 	}
 	
-	public ActionDialog(String p_text, String p_who) {
-		this(p_text);
+	public ActionDialog(String p_key, String p_who) {
+		this(p_key);
 		who = p_who == null ? "" : p_who;
 	}
 	

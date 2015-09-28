@@ -49,7 +49,6 @@ import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.LoopElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
 import zildo.fwk.script.xml.element.action.runtime.RuntimeAction;
-import zildo.fwk.ui.UIText;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
@@ -227,13 +226,12 @@ public class ActionExecutor extends RuntimeExecutor {
                     }
                     break;
                 case speak:
-                	String sentence = UIText.getGameText(text);
                 	if ("synthe".equals(p_action.who)) {
                 		// Particular case : incrust some texts on the middle of the screen
-                		ClientEngineZildo.client.askStage(new TitleStage(sentence));
+                		ClientEngineZildo.client.askStage(new TitleStage(text));
                 		achieved = true;	// Titlestage is stand-alone
                 	} else {
-	                    EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence, p_action.who));
+	                    EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(text, p_action.who));
 	                    scriptExec.userEndedAction = false;
                 	}
                     break;
