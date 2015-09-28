@@ -33,6 +33,7 @@ import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.SpriteDisplay;
+import zildo.client.gui.menu.CompassMenu;
 import zildo.client.gui.menu.HallOfFameMenu;
 import zildo.client.sound.BankSound;
 import zildo.fwk.FilterCommand;
@@ -281,7 +282,11 @@ public class GUIDisplay {
 			drawScores();
 		}
 		if (toDisplay_adventureMenu) {
+			// In this mode, we have to remove any dialogs => best is to forbid compass during conversations
 			displayAdventureMenu();
+		} else if (adventureSequence.isDrawn()) {
+			adventureSequence.clear();
+			frameDialogSequence.clear();
 		}
 
 		drawConsoleMessages();
@@ -366,7 +371,7 @@ public class GUIDisplay {
 			}
 			break;
 		case ADVENTURE_MENU:
-			seq = adventureSequence;
+			seq = textMenuSequence;
 			visibleFont = true;
 			center = true;
 			break;
@@ -437,7 +442,6 @@ public class GUIDisplay {
 				}
 			} else if (a == (char)-3) {
 				nSpr[nLettre] = -3;
-				System.out.println(-3);
 			} else { // Regular character
 				// Store sprite's index to display for this letter
 				nSpr[nLettre] = getIndexCharacter(a);
@@ -557,33 +561,21 @@ public class GUIDisplay {
 		int sizeX = sc.TEXTER_SIZEX;
 		int sizeY = sc.TEXTER_SIZELINE_SCRIPT * sc.TEXTER_NUMLINE + 2;
 		int posX1 = sc.TEXTER_COORDINATE_X - 10;
-		int posX2 = sc.TEXTER_COORDINATE_X + sizeX;
 		int posY1 = sc.TEXTER_COORDINATE_Y - 10;
-		int posY2 = sc.TEXTER_COORDINATE_Y + sizeY;
+
+		// Draw frame's bars
+		drawBox(posX1, posY1, sizeX, sizeY, true);
 		
 		// Draw corner frame
-		if (!frameDialogSequence.isDrawn()) {
-			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_LEFT, posX1 - 3, posY1 - 3);
-			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_RIGHT, posX2, posY1 - 3);
-			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_RIGHT, posX1 - 3, posY2 - 4, Reverse.ALL);
-			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_LEFT, posX2 + 0, posY2 - 4, Reverse.ALL); 
-			
-			
-			frameDialogSequence.addSprite(SpriteBank.BANK_FONTES, arrowSprite, 
-					0,300,	// No matters coordinates, they will be update by dialogDisplay#animateArrow 
-					false, 255);
-		} else {
+		if (frameDialogSequence.isDrawn()) {
 			// Animate arrow indicating next dialog, if necessary
 			SpriteEntity entity = frameDialogSequence.get(4);
 			dialogDisplay.animateArrow(entity);
 		}
-
-		// Draw frame's bars
-		drawBox(posX1, posY1, sizeX, sizeY);
 	}
 
 	/** Draw a frame with transparent blue box inside **/
-	private void drawBox(int x, int y, int width, int height) {
+	private void drawBox(int x, int y, int width, int height, boolean arrow) {
 		int x2 = x + width + 10;
 		int y2 = y + height + 10;
 		Ortho ortho = ClientEngineZildo.ortho;
@@ -599,6 +591,20 @@ public class GUIDisplay {
 		ortho.enableBlend();
 		ortho.box(x+5, y+5, width+7, height+7, 0, new Vector4f(0.4f, 0.2f, 0.1f, 0.7f));
 		ortho.disableBlend();
+		
+		// Draw corner frame
+		if (!frameDialogSequence.isDrawn()) {
+			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_LEFT, x - 3, y - 3);
+			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_RIGHT, x2, y - 3);
+			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_RIGHT, x - 3, y2 - 4, Reverse.ALL);
+			frameDialogSequence.addSprite(FontDescription.FRAME_CORNER_LEFT, x2 + 0, y2 - 4, Reverse.ALL);
+			
+			if (arrow) {
+				frameDialogSequence.addSprite(SpriteBank.BANK_FONTES, arrowSprite, 
+						0,300,	// No matters coordinates, they will be update by dialogDisplay#animateArrow 
+						false, 255);
+			}
+		}
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -726,20 +732,25 @@ public class GUIDisplay {
 	 *            (can't be null)
 	 */
 	public void displayMenu(Menu p_menu) {
-		int sizeY = (p_menu.items.size() + 2) * sc.TEXTER_MENU_SIZEY;
+		int titleSize = p_menu.title == null ? 4 : 2;
+		int sizeY = (p_menu.items.size() + titleSize) * sc.TEXTER_MENU_SIZEY;
 		int startY = (Zildo.viewPortY - sizeY) / 2;
 		if (!p_menu.displayed) {
 			// Display menu's text
 			if (p_menu instanceof HallOfFameMenu) {
 				setToDisplay_dialogMode(DialogMode.HALLOFFAME);
+			} else if (p_menu instanceof CompassMenu) {
+				setToDisplay_dialogMode(DialogMode.ADVENTURE_MENU);
 			} else {
 				setToDisplay_dialogMode(DialogMode.MENU);
 			}
 			int posY = startY;
 			removePreviousTextInFrame();
 			// Title
-			prepareTextInFrame(p_menu.title, sc.TEXTER_COORDINATE_X,
-					posY, false);
+			if( p_menu.title != null) {
+				prepareTextInFrame(p_menu.title, sc.TEXTER_COORDINATE_X,
+						posY, false);
+			}
 			posY += 2 * sc.TEXTER_MENU_SIZEY;
 			
 			// Items
@@ -766,6 +777,10 @@ public class GUIDisplay {
 		menuSequence.addSprite(FontDescription.GUI_BLUEDROP, 40 + wave, y + 5);
 		menuSequence.addSprite(FontDescription.GUI_BLUEDROP, Zildo.viewPortX
 				- 40 - wave, y + 5, Reverse.HORIZONTAL);
+		
+		if (p_menu instanceof CompassMenu) {
+			setToDisplay_adventureMenu(true);
+		}
 	}
 
 	public void endMenu() {
@@ -773,6 +788,8 @@ public class GUIDisplay {
 		removePreviousTextInFrame();
 		// Put back in default mode
 		toDisplay_dialogMode = DialogMode.CLASSIC;
+		toDisplay_adventureMenu = false;
+		removeFrame();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -952,14 +969,17 @@ public class GUIDisplay {
 	}
 
 	private void displayAdventureMenu() {
-		drawBox(50, (Zildo.viewPortY - 16 *4) / 2, 200, 16 * 3);
+		drawBox(50, (Zildo.viewPortY - 16 *4) / 2, 200, 16 * 3, false);
 		//guiSpritesSequence
 		if (toDisplay_dialogMode != DialogMode.ADVENTURE_MENU) {
 			setToDisplay_dialogMode(DialogMode.ADVENTURE_MENU);
 			adventureSequence.clear();
+			/*
 			int sizeY = -16; //3 * sc.TEXTER_MENU_SIZEY;
 			int y = (Zildo.viewPortY - sizeY) / 2;
 			prepareTextInFrame("Carte d'Alembrume\nDialogues\nGuide", sc.TEXTER_COORDINATE_X, y, true);
+			*/
+			ClientEngineZildo.client.handleMenu(new CompassMenu());
 		}
 	}
 

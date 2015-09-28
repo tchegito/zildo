@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import zildo.Zildo;
+import zildo.client.gui.menu.CompassMenu;
 import zildo.client.gui.menu.InGameMenu;
 import zildo.client.stage.GameStage;
 import zildo.client.stage.MenuStage;
@@ -100,7 +101,14 @@ public class Client {
 	public enum ClientType {
 		SERVER_AND_CLIENT, CLIENT, ZEDITOR;
 	}
-
+	
+	ItemMenu END_MENU_ITEM = new ItemMenu() {
+		@Override
+		public void run() {
+			handleMenu(null);
+		}
+	};	
+	
 	/**
 	 * Create client with given parameter.
 	 * @param p_delegateInitialization TRUE=initialization will be done later / FALSE=complete initialization now
@@ -257,6 +265,8 @@ public class Client {
 			// Escape is pressed and no fade is running
 			if (connected) {
 				handleMenu(ingameMenu);
+			} else if (currentMenu instanceof CompassMenu) {
+				askForItemMenu(END_MENU_ITEM);
 			} else if (currentMenu != ingameMenu) {
 				done = true;
 			} else {
@@ -288,6 +298,13 @@ public class Client {
 				askForItemMenu(ingameMenu, "m7.quit");
 			}
 		}
+		if (kbHandler.isKeyPressed(Keys.COMPASS)) {
+			if (currentMenu instanceof CompassMenu) {
+				askForItemMenu(END_MENU_ITEM);
+			} else {
+				handleMenu(new CompassMenu());
+			}
+		}
 	}
 
 	/**
@@ -296,9 +313,12 @@ public class Client {
 	 */
 	private void askForItemMenu(Menu menu, String itemKey) {
 		ItemMenu item = menu.getItemNamed(itemKey);
+		askForItemMenu(item);
+	}
+	private void askForItemMenu(ItemMenu anonymItem) {
 		for (GameStage stage : stages) {
 			if (stage instanceof MenuStage) {
-				((MenuStage)stage).askForItemMenu(item);
+				((MenuStage)stage).askForItemMenu(anonymItem);
 			}
 		}
 	}

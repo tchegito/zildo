@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import zildo.fwk.file.EasyBuffering;
@@ -97,7 +98,7 @@ public class Game implements EasySerializable {
 				nbQuest++;
 			}
 		}
-		p_buffer.put(nbQuest);
+		p_buffer.put(nbQuest | 0x800);
 		for (QuestElement quest : quests) {
 			if (quest.done) {
 				p_buffer.put(quest.name);
@@ -154,7 +155,9 @@ public class Game implements EasySerializable {
         p_buffer.put((byte) a.value);
         
         // 7: variables
-        for (Entry<String, String> entry : EngineZildo.scriptManagement.getVariables().entrySet()) {
+        Map<String, String> vars = EngineZildo.scriptManagement.getVariables();
+        p_buffer.put(vars.size());
+        for (Entry<String, String> entry : vars.entrySet()) {
         	p_buffer.put(entry.getKey());
         	p_buffer.put(entry.getValue());
         }
@@ -184,6 +187,8 @@ public class Game implements EasySerializable {
         try {
             // 1: quest diary
             int questNumber = p_buffer.readInt();
+            boolean version2x19 = (questNumber & 0x800) != 0;	// Flag indicating version post 2.18
+            questNumber = questNumber & 0x7ff;
             for (int i = 0; i < questNumber; i++) {
                 String questName = p_buffer.readString();
                 boolean questDone = p_buffer.readBoolean();
@@ -265,12 +270,17 @@ public class Game implements EasySerializable {
             
             // 7: variables
             int savePos = 0;
+            int nbVariables = 1000000;
+            if (version2x19) {
+            	nbVariables = p_buffer.readInt();
+            }
             try {
-	            while (!p_buffer.eof()) {
+	            while (nbVariables > 0 && !p_buffer.eof()) {
 	                savePos = p_buffer.getAll().position();
 	            	String key = p_buffer.readString();
 	            	String value = p_buffer.readString();
 	            	EngineZildo.scriptManagement.getVariables().put(key, value);
+	            	nbVariables--;
 	            }
             } catch (BufferUnderflowException e) {
             	// Yeah ! This is ugly, but we got to keep previous savegames, before floor was present
@@ -286,9 +296,12 @@ public class Game implements EasySerializable {
             
             // 9: dialog history
             game.lastDialog.clear();
-        	if (!p_buffer.eof()) {
-        		HistoryRecord record = HistoryRecord.deserialize(p_buffer);
-        		game.lastDialog.add(record);
+        	if (version2x19) {
+        		int nbDialogs = p_buffer.readByte();
+        		for (int i=0;i<nbDialogs;i++) {
+            		HistoryRecord record = HistoryRecord.deserialize(p_buffer);
+            		game.lastDialog.add(record);
+        		}
         	}
         	
             EngineZildo.mapManagement.setStartLocation(loc, a, zildo.getFloor());

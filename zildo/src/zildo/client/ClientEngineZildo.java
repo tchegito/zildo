@@ -242,14 +242,6 @@ public class ClientEngineZildo {
 			}
 			guiDisplay.setToDisplay_scores(tabPressed);
 		}
-		KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
-		if (kbInstant != null) {
-			boolean touchPressed = kbHandler.isKeyPressed(Keys.COMPASS);
-			if (touchPressed) {
-				guiDisplay.toggleToDisplay_adventureMenu();
-			}
-		}
-
 		
 		//long t9 = ZUtils.getTime();
 
