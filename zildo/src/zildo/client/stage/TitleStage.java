@@ -22,6 +22,7 @@ package zildo.client.stage;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.gui.EntityTransformer;
+import zildo.client.gui.GUISequence;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.ui.UIText;
 import zildo.monde.sprites.SpriteEntity;
@@ -118,7 +119,7 @@ public class TitleStage implements GameStage {
 
 	@Override
 	public void endGame() {
-		ClientEngineZildo.guiDisplay.clearSequences(64);
+		ClientEngineZildo.guiDisplay.clearSequences(GUISequence.INFO);
 		done = true;
 	}
 

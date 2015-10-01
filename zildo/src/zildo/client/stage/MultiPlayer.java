@@ -22,8 +22,8 @@
 package zildo.client.stage;
 
 import zildo.client.Client;
-import zildo.client.ClientEngineZildo;
 import zildo.client.Client.ClientType;
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.net.ServerInfo;
 import zildo.monde.Game;
 import zildo.server.Server;

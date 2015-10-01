@@ -3,6 +3,7 @@ package zildo.client.stage;
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
 import zildo.client.gui.GUIDisplay;
+import zildo.client.gui.GUISequence;
 import zildo.client.gui.menu.StartMenu;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.input.KeyboardInstant;
@@ -85,7 +86,7 @@ public class CreditStage implements GameStage {
 
 	@Override
 	public void endGame() {
-		ClientEngineZildo.guiDisplay.clearSequences(32);
+		ClientEngineZildo.guiDisplay.clearSequences(GUISequence.CREDIT);
 	}
 
 	@Override

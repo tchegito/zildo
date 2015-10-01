@@ -1003,7 +1003,7 @@ public class GUIDisplay {
 		setToDisplay_generalGui(false);
 		setToDisplay_dialoguing(false);
 		countMoney = 0;
-		clearSequences(127);
+		clearSequences(GUISequence.all());
 	}
 	
 	public boolean isToDisplay_dialoguing() {
@@ -1114,28 +1114,32 @@ public class GUIDisplay {
 		return dialogDisplay.launchDialog(p_queue);
 	}
 	
-	public void clearSequences(int p_which) {
-		if ((p_which & 1) != 0) {
-			textDialogSequence.clear();
-			dialogDisplay.actOnDialog(null, CommandDialog.STOP);
-		}
-		if ((p_which & 2) != 0) {
-			textMenuSequence.clear();
-		}
-		if ((p_which & 4) != 0) {
-			frameDialogSequence.clear();
-		}
-		if ((p_which & 8) != 0) {
-			guiSpritesSequence.clear();
-		}
-		if ((p_which & 16) != 0) {
-			menuSequence.clear();
-		}
-		if ((p_which & 32) != 0) {
-			creditSequence.clear();
-		}
-		if ((p_which & 64) != 0) {
-			infoSequence.clear();
+	public void clearSequences(GUISequence... seqKinds) {
+		for (GUISequence kind : seqKinds) {
+			switch (kind) {
+			case DIALOG:
+				textDialogSequence.clear();
+				dialogDisplay.actOnDialog(null, CommandDialog.STOP);
+				break;
+			case TEXT_MENU:
+				textMenuSequence.clear();
+				break;
+			case FRAME_DIALOG:
+				frameDialogSequence.clear();
+				break;
+			case GUI:
+				guiSpritesSequence.clear();
+				break;
+			case MENU:
+				menuSequence.clear();
+				break;
+			case CREDIT:
+				creditSequence.clear();
+				break;
+			case INFO:
+				infoSequence.clear();
+				break;
+			}
 		}
 	}
 }

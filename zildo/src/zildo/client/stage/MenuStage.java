@@ -23,6 +23,7 @@ package zildo.client.stage;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.gui.GUIDisplay;
+import zildo.client.gui.GUISequence;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.MenuListener;
@@ -78,7 +79,7 @@ public class MenuStage implements GameStage {
 
 	@Override
 	public void endGame() {
-		guiDisplay.clearSequences(2);
+		guiDisplay.clearSequences(GUISequence.TEXT_MENU);
 	}
 	
 	@Override
