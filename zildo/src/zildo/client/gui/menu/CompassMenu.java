@@ -1,9 +1,11 @@
 package zildo.client.gui.menu;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
+import zildo.monde.dialog.HistoryRecord;
 import zildo.server.EngineZildo;
 
 public class CompassMenu extends Menu {
@@ -19,7 +21,10 @@ public class CompassMenu extends Menu {
 			
 			@Override
 			public void run() {
-				System.out.println(EngineZildo.game.getLastDialog());
+				List<HistoryRecord> records = EngineZildo.game.getLastDialog();
+				System.out.println(HistoryRecord.getDisplayString(records));
+				
+				client.handleMenu(null);
 			}
 		});
 		items.add(new ItemMenu("m13.guide") {
