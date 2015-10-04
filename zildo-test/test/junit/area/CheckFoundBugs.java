@@ -20,11 +20,14 @@
 package junit.area;
 
 import org.junit.Assert;
+
 import junit.perso.EngineUT;
 
 import org.junit.Test;
 
+import zildo.monde.items.ItemKind;
 import zildo.monde.map.Case;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.server.EngineZildo;
 
 /**
@@ -48,5 +51,15 @@ public class CheckFoundBugs extends EngineUT {
 		
 		c = mapUtils.area.get_mapcase(46, 54 + 4);
 		Assert.assertTrue(c.getForeTile() == null);
+	}
+	
+	/** Awful bug that made 'HORIZONTAL_BAR' considered as a weapon. Consequences was in cave of the flames,
+	 * for example, wher one bar disappearead, and another one was 'takeable' as an item ...
+	 */
+	@Test
+	public void wrongWeapon() {
+		ElementDescription elemDesc = ElementDescription.BAR_HORIZONTAL;
+		ItemKind kind = ItemKind.fromDesc(elemDesc);
+		Assert.assertEquals(null, kind);
 	}
 }
