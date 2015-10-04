@@ -21,7 +21,7 @@ public class TestDialogs {
 	// Some sentences are the same in french than in english : we must authorize those exceptions
 	final static List<String> sameSentencesTranslated=Arrays.asList(
 			// menu
-			"m7.options", "m12.butOk", "m1.credits", "m9.movingCross.mobile",
+			"m7.options", "m12.butOk", "m1.credits", "m9.movingCross.mobile", "m13.guide",
 			// game
 			"promenade2.stars.0", "item.DYNAMITE", "d5.robert.5", "people.zildo", "item.BOOMERANG",
 			"Lwjgl.key.weapon", "Lwjgl.key.action", "Lwjgl.key.dialog", "Lwjgl.key.inventory", 

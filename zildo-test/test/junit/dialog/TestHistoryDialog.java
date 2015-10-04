@@ -16,7 +16,6 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
-import zildo.server.state.ClientState;
 
 /**
  * Class which tests the History Dialog functionality. It means archiving a
@@ -30,10 +29,8 @@ public class TestHistoryDialog extends EngineUT {
 
 	// Tester les phrases qui redirigent vers les autres
 
-	ClientState clientState;
 
 	private void prepare() {
-		clientState = clients.get(0); // Initialized from superclass
 		spawnZildo(160, 100);
 	}
 

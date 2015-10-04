@@ -540,7 +540,7 @@ public class Element extends SpriteEntity {
 		this.linkedPerso = linkedPerso;
 	}
 
-	protected TileNature getCurrentTileNature() {
+	public TileNature getCurrentTileNature() {
 		Area area = EngineZildo.mapManagement.getCurrentMap();
 		if (area != null) {
 			return area.getCaseNature((int) x, (int) y);

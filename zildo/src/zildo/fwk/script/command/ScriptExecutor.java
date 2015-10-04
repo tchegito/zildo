@@ -84,7 +84,11 @@ public class ScriptExecutor {
 	public void render() {
 		if (!scripts.isEmpty()) {
 			if (Zildo.infoDebugScript) {
-				System.out.println(scripts.size() + " scripts running");
+				System.out.print(scripts.size() + " scripts running {[");
+				for (ScriptProcess s : scripts) {
+					System.out.print(s.scene.id+":"+s.scene+",");
+				}
+				System.out.println("}");
 			}
 			// 0) Terminate scripts asked by external methods (#stopFromContext for example)
 			for (ScriptProcess process : toTerminate) {

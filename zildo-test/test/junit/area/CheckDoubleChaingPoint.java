@@ -72,14 +72,10 @@ public class CheckDoubleChaingPoint extends EngineUT {
 
 		int frame = 0;
 
-		for (int i=0;i<4;i++) {
-			updateGame();
-		}
+		renderFrames(4);
 		System.out.println("Suite");
 		zildo.attack();
 
-		while (frame++<1000) {
-			updateGame();
-		}
+		renderFrames(1000);
 	}
 }

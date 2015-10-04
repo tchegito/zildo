@@ -36,11 +36,9 @@ import zildo.client.SpriteDisplay;
 import zildo.client.gui.menu.CompassMenu;
 import zildo.client.gui.menu.HallOfFameMenu;
 import zildo.client.sound.BankSound;
-import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.Ortho;
-import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
@@ -126,7 +124,6 @@ public class GUIDisplay {
 	// Menu items location (for Android)
 	private Map<ItemMenu, Zone> itemsOnScreen = new HashMap<ItemMenu, Zone>();
 	
-	private FilterCommand filterCommand;
 	private int arrowSprite;
 	private float alpha;
 	
@@ -144,9 +141,7 @@ public class GUIDisplay {
 		toDisplay_generalGui = false;
 		toRemove_dialoguing = false;
 
-		// Initialize screen filter
-		filterCommand = ClientEngineZildo.filterCommand;
-
+		// Initialize every sequence
 		textDialogSequence = new GUISpriteSequence();
 		textMenuSequence = new GUISpriteSequence();
 		frameDialogSequence = new GUISpriteSequence();
@@ -648,7 +643,8 @@ public class GUIDisplay {
 		}
 	}
 
-	public void skipDialog(String sentence) {
+	/** Display every letters in the dialog frame, and return TRUE if message is complete. **/
+	public boolean skipDialog() {
 		boolean entire = true;
 		for (SpriteEntity entity : textDialogSequence) {
 			int y = entity.getScrY();
@@ -660,14 +656,7 @@ public class GUIDisplay {
 				entire = false;	// There's still some text to display
 			}
 		}
-		if (!entire) {
-			dialogContext.setLine(sc.TEXTER_NUMLINE);
-			dialogDisplay.displayArrow(2);
-		} else {
-			dialogDisplay.displayArrow(1);
-		}
-		dialogContext.visibleMessageDisplay = true;
-		dialogContext.entireMessageDisplay = entire;
+		return entire;
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -793,27 +782,6 @@ public class GUIDisplay {
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
-	// fadeIn
-	// /////////////////////////////////////////////////////////////////////////////////////
-	public void fadeIn(FilterEffect... p_effects) {
-		filterCommand.fadeIn(p_effects);
-	}
-
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// fadeOut
-	// /////////////////////////////////////////////////////////////////////////////////////
-	public void fadeOut(FilterEffect... p_effects) {
-		filterCommand.fadeOut(p_effects);
-	}
-
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// isFadeOver
-	// /////////////////////////////////////////////////////////////////////////////////////
-	public boolean isFadeOver() {
-		return filterCommand.isFadeOver();
-	}
-
-	// /////////////////////////////////////////////////////////////////////////////////////
 	// drawGeneralGUI
 	// /////////////////////////////////////////////////////////////////////////////////////
 	void drawGeneralGUI() {
@@ -936,6 +904,8 @@ public class GUIDisplay {
 			case BUTTON_X:
 			case BUTTON_Y:
 				return Zildo.viewPortX - x - buttonSizeX;
+			default:
+				break;
 			}
 		}
 		return x;

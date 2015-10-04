@@ -55,6 +55,8 @@ public class EngineZildo {
     public static EasyBuffering backedUpGame;	// When hero dies, we restore this game
     public static int compteur_animation;
 	
+    public static ClientState spClientState;	// Single player client state
+    
     private static ClientEvent askedEvent;
     
 	// For debug
@@ -260,6 +262,7 @@ public class EngineZildo {
             case DIALOG_FULLDISPLAY:
 	        	dialogManagement.setFullSentenceDisplayed();
 	        	retEvent.nature = ClientEventNature.NOEVENT;
+	        default:
 	        	break;
         }
 
@@ -287,6 +290,14 @@ public class EngineZildo {
 		askedEvent=p_event;
 	}
 
+	// This is the client state for single player
+	public static void setClientState(ClientState state ) {
+		spClientState = state;
+	}
+	public static ClientState getClientState() {
+		return spClientState;
+	}
+	
 	public static void setGame(Game p_game) {
 		EngineZildo.game = p_game;
 	}

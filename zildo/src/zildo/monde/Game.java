@@ -87,6 +87,7 @@ public class Game implements EasySerializable {
     	this(null, p_editing);
     }
     
+    /** Serialize a Game object and store it with {@link EngineZildo#setBackedUpGame(EasyBuffering)} **/
 	public void serialize(EasyBuffering p_buffer) {
 		p_buffer.getAll().position(0);
 		// 1: quest diary
@@ -307,7 +308,7 @@ public class Game implements EasySerializable {
             EngineZildo.mapManagement.setStartLocation(loc, a, zildo.getFloor());
             return game;
         } catch (Exception e) {
-        	throw new RuntimeException("Unable to deserialize the game !");
+        	throw new RuntimeException("Unable to deserialize the game !", e);
         }
     }
     

@@ -34,9 +34,7 @@ import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.BilinearFilter;
 import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
-import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardInstant;
-import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.fwk.opengl.SoundEngine;
 import zildo.monde.collision.Collision;
@@ -265,10 +263,10 @@ public class ClientEngineZildo {
 					retEvent.effect = p_event.effect; //FilterEffect.BLEND;
 				case FADE_OUT :
 					retEvent.nature = ClientEventNature.FADING_OUT;
-					guiDisplay.fadeOut(retEvent.effect);
+					filterCommand.fadeOut(retEvent.effect);
 					break;
 				case FADING_OUT :
-					if (guiDisplay.isFadeOver()) {
+					if (filterCommand.isFadeOver()) {
 						retEvent.nature = ClientEventNature.FADEOUT_OVER;
 					} else {
 						circleOnZildo();
@@ -288,12 +286,11 @@ public class ClientEngineZildo {
 
 				case FADE_IN :
 					retEvent.nature = ClientEventNature.FADING_IN;
-					guiDisplay.fadeIn(retEvent.effect);
-
+					filterCommand.fadeIn(retEvent.effect);
 
 					break;
 				case FADING_IN :
-					if (guiDisplay.isFadeOver()) {
+					if (filterCommand.isFadeOver()) {
 						// Changing map : 3/3 we unblock the player
 						filterCommand.active(retEvent.effect.getFilterClass()[0], false, null);
 						filterCommand.active(BilinearFilter.class, true, null);
@@ -335,6 +332,7 @@ public class ClientEngineZildo {
 					retEvent.nature = askedEvent.nature;
 					askedEvent = null;
 				    }
+				default:
 				    break;
 			}
 		}

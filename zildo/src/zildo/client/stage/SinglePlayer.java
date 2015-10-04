@@ -124,6 +124,7 @@ public class SinglePlayer implements GameStage {
 
         	state = new ClientState(null, zildoId);
         }
+        EngineZildo.setClientState(state);
         ClientEngineZildo.spriteDisplay.setZildoId(zildoId);
 
         // Focus on zildo
@@ -192,11 +193,7 @@ public class SinglePlayer implements GameStage {
         engineZildo.cleanUp();
         done = true;
     }
-    
-    public static ClientState getClientState() {
-    	return state;
-    }
-    
+
     public boolean isDone() {
     	return done;
     }

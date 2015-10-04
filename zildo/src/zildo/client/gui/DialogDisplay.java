@@ -37,6 +37,7 @@ public class DialogDisplay {
 	
 	public boolean dialoguing;
 	public DialogContext context;
+	ScreenConstant sc;
 	private int beta;
 	private int arrowDisplay;	// 0=no arrow / 1=horizontal / 2=vertical
 	
@@ -51,7 +52,7 @@ public class DialogDisplay {
 		context = dialogContext;
 		
 		// Screen constants
-		ScreenConstant sc = ClientEngineZildo.screenConstant;
+		sc = ClientEngineZildo.screenConstant;
 		arrowX = sc.TEXTER_COORDINATE_X + sc.TEXTER_SIZEX - 12;
 		arrowY = sc.TEXTER_COORDINATE_Y + sc.TEXTER_SIZELINE * 3 + 8 - 16;
 		arrowSprite = sprite;
@@ -97,7 +98,7 @@ public class DialogDisplay {
 	
 	/**
 	 * Ask GUI to display the current sentence.
-	 * @param p_who TODO
+	 * @param p_who name of people talking
 	 * @param p_sentence
 	 * @param p_dialAction optional
 	 */
@@ -177,7 +178,7 @@ public class DialogDisplay {
 			switch (actionDialog) {
 				case ACTION:
 					if (!context.visibleMessageDisplay && !context.entireMessageDisplay) {
-						guiDisplay.skipDialog(p_sentence);
+						skipDialog();
 						break;
 					}
 				case CONTINUE:
@@ -202,6 +203,7 @@ public class DialogDisplay {
 				case STOP:
 					guiDisplay.setToRemove_dialoguing(true);
 					dialoguing=false;
+				default:
 					break;
 			}
 		} else {
@@ -212,6 +214,18 @@ public class DialogDisplay {
 		return result;
 	}
 
+	public void skipDialog() {
+		boolean entire = ClientEngineZildo.guiDisplay.skipDialog();
+		if (!entire) {
+			context.setLine(sc.TEXTER_NUMLINE);
+			displayArrow(2);
+		} else {
+			displayArrow(1);
+		}
+		context.visibleMessageDisplay = true;
+		context.entireMessageDisplay = entire;
+	}
+	
 	public void displayArrow(int arr) {
 		arrowDisplay = arr;
 	}

@@ -292,7 +292,7 @@ public class PersoPlayer extends Perso {
 			break;
 		case MILK:
 			sentence = UIText.getGameText("milk.action");
-			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence));
+			EngineZildo.dialogManagement.launchDialog(EngineZildo.getClientState(), null, new ScriptAction(sentence));
 			break;
 		case FLUT:
 			if (attente == 0 && mouvement == MouvementZildo.VIDE) {
@@ -302,7 +302,7 @@ public class PersoPlayer extends Perso {
 		case NECKLACE:
 			String hq = moonHalf > 0 ? ""+Math.min(moonHalf, 2) : "";
 			sentence = UIText.getGameText("necklace.action"+hq);
-			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(sentence));
+			EngineZildo.dialogManagement.launchDialog(EngineZildo.getClientState(), null, new ScriptAction(sentence));
 			break;
 		case ROCK_BAG:
 			if (attente == 0) {

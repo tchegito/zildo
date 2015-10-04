@@ -432,7 +432,8 @@ public class PlayerManagement {
 								case NORD:if (cy<heros.getY()) cestbon=true;break;
 								case EST:if (cx>heros.getX()) cestbon=true;break;
 								case SUD:if (cy>heros.getY()) cestbon=true;break;
-								case OUEST:if (cx<heros.getX()) cestbon=true;break;
+								case OUEST:if (cx<heros.getX()) cestbon=true;
+								default:break;
 							}
 							if (cestbon) {
 								// On change l'angle du perso

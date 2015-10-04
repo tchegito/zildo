@@ -19,29 +19,44 @@
 
 package junit.perso;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
+import zildo.client.gui.DialogContext;
+import zildo.client.gui.DialogDisplay;
 import zildo.client.gui.GUIDisplay;
+import zildo.client.gui.ScreenConstant;
+import zildo.client.sound.SoundPlay;
+import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.TileBank;
 import zildo.fwk.db.Identified;
+import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.engine.TileEngine;
+import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
+import zildo.fwk.gfx.filter.ScreenFilter;
+import zildo.fwk.input.CommonKeyboardHandler;
+import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
+import zildo.monde.dialog.WaitingDialog;
+import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
@@ -52,6 +67,7 @@ import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
+import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.state.ClientState;
@@ -65,10 +81,12 @@ public class EngineUT {
 	protected EngineZildo engine;
 	protected ClientEngineZildo clientEngine;
 	
-	protected List<ClientState> clients;
+	protected ClientState clientState;
 	protected MapUtils mapUtils;	// To easily manipulate the map
 	
 	protected KeyboardInstant instant = new KeyboardInstant();
+	
+	int nFrame = 0;
 	
 	protected Perso spawnTypicalPerso(String name, int x, int y) {
 		return spawnPerso(PersoDescription.BANDIT_CHAPEAU, name, x, y);
@@ -85,8 +103,8 @@ public class EngineUT {
 		return perso;
 	}
 	
-	protected Perso spawnZildo(int x, int y) {
-		PersoPlayer perso = new PersoPlayer(x, y, ZildoOutfit.Zildo);
+	protected PersoPlayer spawnZildo(int x, int y) {
+		PersoPlayer perso = spy(new PersoPlayer(x, y, ZildoOutfit.Zildo));
 		perso.x = x;
 		perso.y = y;
 		perso.setDesc(PersoDescription.ZILDO);
@@ -94,8 +112,9 @@ public class EngineUT {
 		perso.setName("zildo");
 		EngineZildo.spriteManagement.spawnPerso(perso);
 		
-		clients.get(0).zildoId = perso.getId();
-		clients.get(0).zildo = perso;
+		clientState.zildoId = perso.getId();
+		clientState.zildo = perso;
+		clientState.keys = instant;	// Simulate keypressed if we have a hero
 		
 		return perso;
 	}
@@ -145,26 +164,33 @@ public class EngineUT {
 	}
 	
 	protected void renderFrames(int nbFrame, boolean debugInfos) {
-		ClientState state = clients.get(0);
 		for (int i=0;i<nbFrame;i++) {
-			if (state.zildo != null) {	// Simulate keypressed if we have a hero
-				state.keys = instant;
+			if (clientState.zildo != null) {	// Simulate keypressed if we have a hero
+				clientState.keys = instant;
 			}
-			engine.renderFrame(clients);
+			updateGame();
+			engine.renderFrame(Collections.singleton(clientState));
+			
+	        // Dialogs
+	        if (ClientEngineZildo.guiDisplay.launchDialog(EngineZildo.dialogManagement.getQueue())) {
+	        	EngineZildo.dialogManagement.stopDialog(clientState, false);
+	        }
+	        
+			ClientEngineZildo.filterCommand.doFilter();
 			if (debugInfos) {
 				for (Perso perso : EngineZildo.persoManagement.tab_perso) {
-					System.out.println("Perso: "+perso.getName()+" at "+perso.x+","+perso.y);
+					System.out.println(nFrame+": Perso: "+perso.getName()+" at "+perso.x+","+perso.y);
 				}
 			}
+			nFrame++;
 		}		
 	}
 	
-	protected void updateGame() {
-		ClientState state = clients.get(0);
-		engine.renderEvent(state.event);
-		state.event = engine.renderEvent(state.event);
-		state.event = clientEngine.renderEvent(state.event);
-		renderFrames(1);
+	private void updateGame() {
+		engine.renderEvent(clientState.event);
+		clientState.event = engine.renderEvent(clientState.event);
+		clientState.event = clientEngine.renderEvent(clientState.event);
+    	EngineZildo.dialogManagement.resetQueue();
 	}
 	
 	@Before
@@ -183,9 +209,9 @@ public class EngineUT {
 		when(client.isIngameMenu()).thenReturn(false);
 		ClientEngineZildo.client = client; 
 		// Fake a client state list
-		ClientState clState = new ClientState(null, 1);
-		clients = Arrays.asList(clState);
+		clientState = new ClientState(null, 1);
 		
+		EngineZildo.setClientState(clientState);
 		// Tile collision
 		for (String bankName : TileEngine.tileBankNames) {
 			TileBank motifBank = new TileBank();
@@ -194,16 +220,40 @@ public class EngineUT {
 		}
 		
 		mapUtils = new MapUtils();
-		CloudFilter cloudFilter = mock(CloudFilter.class);
-		Zildo.pdPlugin.filters.put(CloudFilter.class, cloudFilter);
 		
+		// Mock certain screen filters
+		@SuppressWarnings("unchecked")
+		Class<ScreenFilter>[] filterClasses = new Class[] { CloudFilter.class, CircleFilter.class};
+		for (Class<ScreenFilter> clazz : filterClasses) {
+			ScreenFilter cloudFilter = (ScreenFilter) mock(clazz);
+			Zildo.pdPlugin.filters.put(clazz, cloudFilter);
+		}
+
 		// Fake client display
 		if (clientEngine == null) {
 			clientEngine = new ClientEngineZildo(null, false, mock(Client.class));
+			//ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
+			//ClientEngineZildo.spriteDisplay = new SpriteDisplay();
+			ClientEngineZildo.soundPlay = mock(SoundPlay.class);
+			ClientEngineZildo.filterCommand = new FilterCommand();
 			ClientEngineZildo.guiDisplay = mock(GUIDisplay.class);
+			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.screenX, Zildo.screenY);
+			DialogDisplay dialogDisplay = new DialogDisplay(new DialogContext(), 0);
+			when(ClientEngineZildo.guiDisplay.launchDialog(any())).then(new Answer<Boolean>() {
+				@SuppressWarnings("unchecked")
+				@Override
+				public Boolean answer(InvocationOnMock invocation) throws Throwable {
+					List<WaitingDialog> dials = (List<WaitingDialog>) invocation.getArguments()[0];
+					return dialogDisplay.launchDialog(dials);
+				}
+			});
+			when(ClientEngineZildo.guiDisplay.skipDialog()).thenReturn(true);
+			
 			ClientEngineZildo.mapDisplay = spy(new MapDisplay(mapUtils.area));
 			doNothing().when(ClientEngineZildo.mapDisplay).centerCamera();
 			ClientEngineZildo.tileEngine = mock(TileEngine.class);
+			ClientEngineZildo.ortho = mock(Ortho.class);
+			
 		}
 		/*
 		new CloudFilter(null) {
@@ -220,6 +270,28 @@ public class EngineUT {
 			}
 		});
 		*/
+	}
+	public void waitEndOfScripting() {
+		waitEndOfScripting(null);
+	}
+	/** Wait until initialization scripts are over. **/
+	public void waitEndOfScripting(ScriptAction action) {
+		// Wait end of scripts
+		while (EngineZildo.scriptManagement.isScripting()) {
+			renderFrames(1);
+			if (action != null) {
+				action.launchAction(clientState);
+			}
+		}
+	}
+
+	/** Simulates player holding a direction with the d-pad **/
+	public void simulateDirection(Vector2f dir) {
+		KeyboardHandler fakedKbHandler = org.mockito.Mockito.mock(CommonKeyboardHandler.class);
+		Zildo.pdPlugin.kbHandler = fakedKbHandler;
+		when(fakedKbHandler.getDirection()).thenReturn(dir);
+
+		instant.update();
 	}
 
 	@After

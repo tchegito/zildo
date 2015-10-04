@@ -159,7 +159,7 @@ public class TestCollision extends EngineUT {
 		// Spawn a character A
 		Point targetB = new Point(160 + 16, 30);
 		Perso persoB = new PersoPlayer(200, 80, ZildoOutfit.Zildo);
-		clients.get(0).zildoId = persoB.getId();
+		clientState.zildoId = persoB.getId();
 		
 		// Let's rock !
 		renderFrames(500);

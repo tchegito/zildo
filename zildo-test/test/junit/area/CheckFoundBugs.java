@@ -54,7 +54,7 @@ public class CheckFoundBugs extends EngineUT {
 	}
 	
 	/** Awful bug that made 'HORIZONTAL_BAR' considered as a weapon. Consequences was in cave of the flames,
-	 * for example, wher one bar disappearead, and another one was 'takeable' as an item ...
+	 * for example, when one bar disappearead, and another one was 'takeable' as an item ...
 	 */
 	@Test
 	public void wrongWeapon() {

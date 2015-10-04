@@ -1,13 +1,10 @@
 package junit.area;
 
-import static org.mockito.Mockito.when;
 import junit.perso.EngineUT;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import zildo.Zildo;
-import zildo.fwk.input.CommonKeyboardHandler;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Trigo;
@@ -16,12 +13,10 @@ import zildo.monde.util.Vector2f;
 import zildo.resource.Constantes;
 import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
-import zildo.server.state.ClientState;
 
 public class CheckDpadDirection extends EngineUT {
 
 	Perso zildo;
-	ClientState state;
 	KeyboardHandler fakedKbHandler;
 	
 	Vector2f CONSTANT_DIRECTION = new Vector2f(0, -Constantes.ZILDO_SPEED);
@@ -31,20 +26,12 @@ public class CheckDpadDirection extends EngineUT {
 		EngineZildo.persoManagement.clearPersos(true);
 
 		zildo = spawnZildo(x, y);
-		state = clients.get(0);
 		zildo.walkTile(false);
 
+		waitEndOfScripting();
 		
-		// Wait end of scripts
-		while (EngineZildo.scriptManagement.isScripting()) {
-			renderFrames(1);
-		}
-		
-		fakedKbHandler = org.mockito.Mockito.mock(CommonKeyboardHandler.class);
-		Zildo.pdPlugin.kbHandler = fakedKbHandler;
-
-		when(fakedKbHandler.getDirection()).thenReturn(holdDirection);
-		
+		simulateDirection(CONSTANT_DIRECTION);
+	
 		instant = new KeyboardInstant();
 	}
 	
@@ -56,7 +43,7 @@ public class CheckDpadDirection extends EngineUT {
 		int step = 50;
 		while (step-- >= 0) {
 			// Make Zildo go forward
-			state.keys = instant;
+			clientState.keys = instant;
 			instant.setKey(KeysConfiguration.PLAYERKEY_UP, true);
 			instant.update();
 
@@ -76,7 +63,7 @@ public class CheckDpadDirection extends EngineUT {
 		int step = 50;
 		while (step-- >= 0) {
 			// Make Zildo go forward
-			state.keys = instant;
+			clientState.keys = instant;
 			instant.setKey(KeysConfiguration.PLAYERKEY_UP, true);
 			instant.update();
 

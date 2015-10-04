@@ -511,7 +511,7 @@ public abstract class Perso extends Element {
 	/**
 	 * All methods overriding this one should call it (before or after, that doesn't matter).
 	 * Basically, called during 'stopBeingWounded' if character hasn't HP anymore.
-	 * @param p_link
+	 * @param p_link TRUE=death animation will be linked to character's sprite
 	 * @param p_shooter
 	 */
 	public void die(boolean p_link, Perso p_shooter) {

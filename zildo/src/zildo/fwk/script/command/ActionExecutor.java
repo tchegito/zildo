@@ -29,7 +29,6 @@ import zildo.client.MapDisplay;
 import zildo.client.gui.menu.RegisterChampionMenu;
 import zildo.client.sound.BankMusic;
 import zildo.client.sound.BankSound;
-import zildo.client.stage.SinglePlayer;
 import zildo.client.stage.TitleStage;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.Ortho;
@@ -231,7 +230,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 		ClientEngineZildo.client.askStage(new TitleStage(text));
                 		achieved = true;	// Titlestage is stand-alone
                 	} else {
-	                    EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new ScriptAction(text, p_action.who));
+	                    EngineZildo.dialogManagement.launchDialog(EngineZildo.getClientState(), null, new ScriptAction(text, p_action.who));
 	                    scriptExec.userEndedAction = false;
                 	}
                     break;
@@ -475,7 +474,7 @@ public class ActionExecutor extends RuntimeExecutor {
                			ClientEngineZildo.client.handleMenu(new RegisterChampionMenu());
                 	} else if (p_action.val == 1) {
                 		// Game over : player died !
-            			EngineZildo.dialogManagement.launchDialog(SinglePlayer.getClientState(), null, new GameOverAction());
+            			EngineZildo.dialogManagement.launchDialog(EngineZildo.getClientState(), null, new GameOverAction());
                         scriptExec.userEndedAction = false;
                 	}
                 	break;
@@ -703,7 +702,7 @@ public class ActionExecutor extends RuntimeExecutor {
             	break;
             case fadeIn:
             case fadeOut:
-           		achieved=ClientEngineZildo.guiDisplay.isFadeOver();
+           		achieved=ClientEngineZildo.filterCommand.isFadeOver();
             	break;
             case activate:
         		Element toActivate = getNamedElement(p_action.what);
