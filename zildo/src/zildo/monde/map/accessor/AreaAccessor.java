@@ -43,10 +43,11 @@ public abstract class AreaAccessor {
 	int dim_x;
 	int dim_y;
 	
-	public void setArea(Area area) {
+	public AreaAccessor setArea(Area area) {
 		this.area = area;
 		dim_x = area.getDim_x();
 		dim_y = area.getDim_y();
+		return this;
 	}
 	
 	public abstract AccessedCase get_mapcase(int x, int y);

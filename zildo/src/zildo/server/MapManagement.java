@@ -39,6 +39,7 @@ import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
+import zildo.monde.map.accessor.HighestFloorAccessor;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
@@ -952,6 +953,11 @@ public class MapManagement {
 		if (relocate) {
 			zildo.setX(startLocation.x);
 			zildo.setY(startLocation.y);
+			if (startFloor == -1) {
+				// Before 2.19, startFloor wasn't saved, so we determine here, taking the highest at location
+				startFloor = new HighestFloorAccessor().setArea(currentMap)
+						.get_mapcase(startLocation.x >> 4, startLocation.y >> 4).floor;
+			}
 			zildo.setFloor(startFloor);
 			zildo.setAngle(startAngle);
 			zildo.beingWounded(null, damage);
@@ -1046,6 +1052,10 @@ public class MapManagement {
 		return startAngle;
 	}
 
+	public int getStartFloor() {
+		return startFloor;
+	}
+	
 	public void notifiyScrollOver() {
 		previousMap = null;
 		if (!EngineZildo.game.editing) {

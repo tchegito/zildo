@@ -269,4 +269,15 @@ public class EasyBuffering {
 	public int getSize() {
 		return data.capacity();
 	}
+	
+	/** Return a usable String in Java class. Only for purpose debug.**/ 
+	public String getStringRepresentation() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		for (byte b : data.array()) {
+			sb.append(b).append(", ");
+		}
+		sb.append("}");
+		return sb.toString();
+	}
 }

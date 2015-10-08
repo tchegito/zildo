@@ -154,6 +154,7 @@ public class Game implements EasySerializable {
         p_buffer.put(loc.x);
         p_buffer.put(loc.y);
         p_buffer.put((byte) a.value);
+        p_buffer.put((byte) EngineZildo.mapManagement.getStartFloor());
         
         // 7: variables
         Map<String, String> vars = EngineZildo.scriptManagement.getVariables();
@@ -258,10 +259,14 @@ public class Game implements EasySerializable {
             game.timeSpent = p_buffer.readInt();
 
             Angle a = Angle.NORD;
+            byte startFloor = -1;
             if (!p_buffer.eof()) {
 	            // 6: map start location
             	loc = new Point(p_buffer.readInt(), p_buffer.readInt());
             	a = Angle.fromInt(p_buffer.readByte());
+            	if (version2x19) {
+            		startFloor = p_buffer.readByte();
+            	}
             }
             
             if (p_minimal) {
@@ -305,7 +310,7 @@ public class Game implements EasySerializable {
         		}
         	}
         	
-            EngineZildo.mapManagement.setStartLocation(loc, a, zildo.getFloor());
+            EngineZildo.mapManagement.setStartLocation(loc, a, startFloor);
             return game;
         } catch (Exception e) {
         	throw new RuntimeException("Unable to deserialize the game !", e);
