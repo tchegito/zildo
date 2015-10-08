@@ -68,6 +68,7 @@ public class FreezeTest extends EngineUT {
 		
 		EngineZildo.restoreBackedUpGame();
 		
+		zildo = EngineZildo.persoManagement.getZildo();
 		Assert.assertEquals(savedFloor, zildo.getFloor());
 	}
 	
@@ -87,6 +88,7 @@ public class FreezeTest extends EngineUT {
 				renderFrames(1);
 				toggle = !toggle;
 			}
+			zildo = EngineZildo.persoManagement.getZildo();
 			Assert.assertFalse(clientState.dialogState.dialoguing);
 		}
 	}

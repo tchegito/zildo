@@ -38,6 +38,7 @@ import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
+import zildo.client.SpriteDisplay;
 import zildo.client.gui.DialogContext;
 import zildo.client.gui.DialogDisplay;
 import zildo.client.gui.GUIDisplay;
@@ -64,6 +65,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.ia.PathFinder;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -105,6 +107,9 @@ public class EngineUT {
 	
 	protected PersoPlayer spawnZildo(int x, int y) {
 		PersoPlayer perso = spy(new PersoPlayer(x, y, ZildoOutfit.Zildo));
+		// As we spy the object with Mockito, pathFinder's reference becomes wrong. So, we recreate it
+		perso.setPathFinder(new PathFinder(perso));
+		
 		perso.x = x;
 		perso.y = y;
 		perso.setDesc(PersoDescription.ZILDO);
@@ -193,11 +198,16 @@ public class EngineUT {
     	EngineZildo.dialogManagement.resetQueue();
 	}
 	
+	public void initServer(Game game) {
+		game.editing = true;
+		engine = new EngineZildo(game);
+	}
+	
 	@Before
 	public void setUp() {
 		Game game = new Game(null, "hero");
-		game.editing = true;
-		engine = new EngineZildo(game);
+		initServer(game);
+		
 		// Create standard map
 		//EngineZildo.soundManagement.setForceMusic(true);
 		// Prepare mock for later
@@ -237,6 +247,7 @@ public class EngineUT {
 			ClientEngineZildo.soundPlay = mock(SoundPlay.class);
 			ClientEngineZildo.filterCommand = new FilterCommand();
 			ClientEngineZildo.guiDisplay = mock(GUIDisplay.class);
+			ClientEngineZildo.spriteDisplay = mock(SpriteDisplay.class);
 			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.screenX, Zildo.screenY);
 			DialogDisplay dialogDisplay = new DialogDisplay(new DialogContext(), 0);
 			when(ClientEngineZildo.guiDisplay.launchDialog(any())).then(new Answer<Boolean>() {

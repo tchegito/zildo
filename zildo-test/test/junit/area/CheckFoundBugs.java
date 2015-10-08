@@ -28,6 +28,8 @@ import org.junit.Test;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Case;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
 /**
@@ -61,5 +63,27 @@ public class CheckFoundBugs extends EngineUT {
 		ElementDescription elemDesc = ElementDescription.BAR_HORIZONTAL;
 		ItemKind kind = ItemKind.fromDesc(elemDesc);
 		Assert.assertEquals(null, kind);
+	}
+	
+	/** At a moment, we had a NPE when hero goes upstairs **/
+	@Test
+	public void freezeChainingPoint() {
+		mapUtils.loadMap("voleursm2");
+		PersoPlayer zildo = spawnZildo(263, 88);
+		
+		Assert.assertEquals(zildo, EngineZildo.persoManagement.getZildo());
+		
+		waitEndOfScripting();
+		
+		simulateDirection(new Vector2f(0, -1));
+		
+		renderFrames(50);
+
+		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
+		while (EngineZildo.scriptManagement.isScripting()) {
+			renderFrames(1);
+		}
+		Assert.assertEquals("voleursm2u", EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertFalse(zildo.isGhost());
 	}
 }
