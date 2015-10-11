@@ -29,6 +29,7 @@ import zildo.fwk.input.KeyboardState;
 import zildo.fwk.net.TransferObject;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.server.EngineZildo;
 
 /**
  * An object used by server to represent a client state. It consists of :<br/>

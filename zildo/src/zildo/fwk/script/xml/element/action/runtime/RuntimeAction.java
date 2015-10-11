@@ -29,7 +29,7 @@ import zildo.fwk.script.xml.element.action.LoopElement;
 import zildo.fwk.script.xml.element.logic.VarElement;
 
 /**
- * Represents an action runtime context. Because we don't want {@link ActionElement} modified anymore.
+ * Represents an action runtime context. Because we don't want to modify {@link ActionElement} anymore.
  * That would lead to much problems.
  * 
  * @author Tchegito

@@ -86,7 +86,7 @@ public class ScriptExecutor {
 			if (Zildo.infoDebugScript) {
 				System.out.print(scripts.size() + " scripts running {[");
 				for (ScriptProcess s : scripts) {
-					System.out.print(s.scene.id+":"+s.scene+",");
+					System.out.print(s.scene.id+":"+s+",");
 				}
 				System.out.println("}");
 			}
@@ -112,25 +112,26 @@ public class ScriptExecutor {
 				
 				RuntimeAction currentNode=process.getCurrentNode();
 				if (currentNode == null) {
-					// We reach the end of the script
-					toTerminate.add(process);
-				} else {
-					renderElement(process, currentNode, true);
-					
-					// Render current actions too
-					for (Iterator<RuntimeAction> it=process.currentActions.iterator();it.hasNext();) {
-						RuntimeAction action=it.next();
-						if (action.done) {	// It's done, so remove the action
-							it.remove();
-						} else {
-							renderElement(process, action, false);
-						}
-					}
-					
-					// Did the last action finished ? So we'll avoid GUI blinking with 1-frame long script. (issue 28)
-					if (process.getCurrentNode() == null) {
+					if (process.currentActions.isEmpty()) { // Is there some actions waiting (those with attribute 'unblocked' at TRUE)
+						// We reach the end of the script
 						toTerminate.add(process);
 					}
+				} else {
+					renderElement(process, currentNode, true);
+				}
+				// Render current actions too
+				for (Iterator<RuntimeAction> it=process.currentActions.iterator();it.hasNext();) {
+					RuntimeAction action=it.next();
+					if (action.done) {	// It's done, so remove the action
+						it.remove();
+					} else {
+						renderElement(process, action, false);
+					}
+				}
+				
+				// Did the last action finished ? So we'll avoid GUI blinking with 1-frame long script. (issue 28)
+				if (process.getCurrentNode() == null && process.currentActions.isEmpty()) {
+					toTerminate.add(process);
 				}
 				
 				// end condition

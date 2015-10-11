@@ -79,7 +79,6 @@ public class FreezeTest extends EngineUT {
 	
 	@Test
 	public void wrongFloorWithSavegame() {
-		// Savegame at the cave of the flames where hero is at the lowest floor, but its start location is at middle
 		byte[] savegame = {0, 44, 8, 102, 108, 117, 116, 95, 97, 115, 107, 1, 4, 102, 108, 117, 116, 1, 11, 99, 104, 
 				97, 116, 101, 97, 117, 95, 97, 115, 107, 1, 14, 101, 110, 108, 101, 118, 101, 98, 117, 105, 115, 115, 
 				111, 110, 115, 1, 18, 101, 110, 108, 101, 118, 101, 98, 117, 105, 115, 115, 111, 110, 115, 95, 119, 105, 

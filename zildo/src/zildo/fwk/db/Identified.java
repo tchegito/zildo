@@ -67,6 +67,12 @@ public abstract class Identified {
 			}
 			return this.hashCode() == o.hashCode();
 		}
+		
+		
+		@Override
+		public String toString() {
+			return clazz.getSimpleName()+"#"+id;
+		}
 	}
 	
 	// Database

@@ -19,10 +19,9 @@
 
 package junit.area;
 
-import org.junit.Assert;
-
 import junit.perso.EngineUT;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import zildo.monde.items.ItemKind;
@@ -85,5 +84,29 @@ public class CheckFoundBugs extends EngineUT {
 		}
 		Assert.assertEquals("voleursm2u", EngineZildo.mapManagement.getCurrentMap().getName());
 		Assert.assertFalse(zildo.isGhost());
+	}
+	
+	/** At a moment, we had a game freeze (opposition direction than previous one) **/
+	@Test
+	public void freezeChainingPoint2() {
+		mapUtils.loadMap("voleursm2u");
+		PersoPlayer zildo = spawnZildo(212, 55);
+		
+		Assert.assertEquals(zildo, EngineZildo.persoManagement.getZildo());
+		
+		waitEndOfScripting();
+		
+		simulateDirection(new Vector2f(1, 0));
+		
+		renderFrames(50);
+
+		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
+		Assert.assertNotNull(EngineZildo.mapManagement.getChainingPoint());
+		while (EngineZildo.scriptManagement.isScripting()) {
+			renderFrames(1);
+		}
+		Assert.assertFalse(zildo.isGhost());
+		renderFrames(10);
+		Assert.assertEquals("voleursm2", EngineZildo.mapManagement.getCurrentMap().getName());
 	}
 }

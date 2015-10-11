@@ -104,6 +104,7 @@ public class ScriptProcess {
 		}
 		return false;
 	}
+	
 	@Override
 	public String toString() {
 		return "["+cursor+" on "+scene.toString()+"]";

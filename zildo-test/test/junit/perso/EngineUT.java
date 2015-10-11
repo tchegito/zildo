@@ -20,7 +20,6 @@
 package junit.perso;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -48,6 +47,7 @@ import zildo.fwk.FilterCommand;
 import zildo.fwk.bank.TileBank;
 import zildo.fwk.db.Identified;
 import zildo.fwk.gfx.Ortho;
+import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
@@ -55,6 +55,7 @@ import zildo.fwk.gfx.filter.ScreenFilter;
 import zildo.fwk.input.CommonKeyboardHandler;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardInstant;
+import zildo.fwk.opengl.OpenGLGestion;
 import zildo.monde.Game;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.quest.actions.ScriptAction;
@@ -86,7 +87,8 @@ public class EngineUT {
 	protected ClientState clientState;
 	protected MapUtils mapUtils;	// To easily manipulate the map
 	
-	protected KeyboardInstant instant = new KeyboardInstant();
+	protected KeyboardInstant instant;
+	static KeyboardHandler fakedKbHandler;	// Will be reused all along
 	
 	int nFrame = 0;
 	
@@ -181,6 +183,7 @@ public class EngineUT {
 	        	EngineZildo.dialogManagement.stopDialog(clientState, false);
 	        }
 	        
+	        clientEngine.renderFrame(false);
 			ClientEngineZildo.filterCommand.doFilter();
 			if (debugInfos) {
 				for (Perso perso : EngineZildo.persoManagement.tab_perso) {
@@ -199,7 +202,7 @@ public class EngineUT {
 	}
 	
 	public void initServer(Game game) {
-		game.editing = true;
+		//game.editing = true;
 		engine = new EngineZildo(game);
 	}
 	
@@ -212,13 +215,14 @@ public class EngineUT {
 		//EngineZildo.soundManagement.setForceMusic(true);
 		// Prepare mock for later
 		EngineZildo.mapManagement = spy(new MapManagement());
-		EngineZildo.mapManagement.loadMap("preintro", false);
 		
+		initCounters();
+
 		// Cheat to have a client
-		Client client =mock(Client.class);
-		when(client.isIngameMenu()).thenReturn(false);
-		ClientEngineZildo.client = client; 
+		Client fakeClient = spy(new Client(true));
+		ClientEngineZildo.client = fakeClient; 
 		// Fake a client state list
+        Assert.assertEquals(0, EngineZildo.persoManagement.tab_perso.size());
 		clientState = new ClientState(null, 1);
 		
 		EngineZildo.setClientState(clientState);
@@ -228,8 +232,6 @@ public class EngineUT {
 
 			motifBank.charge_motifs(bankName);
 		}
-		
-		mapUtils = new MapUtils();
 		
 		// Mock certain screen filters
 		@SuppressWarnings("unchecked")
@@ -241,14 +243,16 @@ public class EngineUT {
 
 		// Fake client display
 		if (clientEngine == null) {
-			clientEngine = new ClientEngineZildo(null, false, mock(Client.class));
+			clientEngine = new ClientEngineZildo(null, false, fakeClient);
 			//ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
 			//ClientEngineZildo.spriteDisplay = new SpriteDisplay();
 			ClientEngineZildo.soundPlay = mock(SoundPlay.class);
 			ClientEngineZildo.filterCommand = new FilterCommand();
 			ClientEngineZildo.guiDisplay = mock(GUIDisplay.class);
-			ClientEngineZildo.spriteDisplay = mock(SpriteDisplay.class);
 			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.screenX, Zildo.screenY);
+			ClientEngineZildo.openGLGestion = mock(OpenGLGestion.class);
+			ClientEngineZildo.spriteEngine = mock(SpriteEngine.class);
+			ClientEngineZildo.spriteDisplay = spy(new SpriteDisplay(ClientEngineZildo.spriteEngine));
 			DialogDisplay dialogDisplay = new DialogDisplay(new DialogContext(), 0);
 			when(ClientEngineZildo.guiDisplay.launchDialog(any())).then(new Answer<Boolean>() {
 				@SuppressWarnings("unchecked")
@@ -259,13 +263,20 @@ public class EngineUT {
 				}
 			});
 			when(ClientEngineZildo.guiDisplay.skipDialog()).thenReturn(true);
-			
+
+			// Load default map and initialize map utils
+			EngineZildo.mapManagement.loadMap("preintro", false);
+			mapUtils = new MapUtils();
+
 			ClientEngineZildo.mapDisplay = spy(new MapDisplay(mapUtils.area));
-			doNothing().when(ClientEngineZildo.mapDisplay).centerCamera();
+			//doNothing().when(ClientEngineZildo.mapDisplay).centerCamera();
 			ClientEngineZildo.tileEngine = mock(TileEngine.class);
 			ClientEngineZildo.ortho = mock(Ortho.class);
 			
 		}
+
+		// Tells client that we're done with menu and inside the game
+		fakeClient.handleMenu(null);
 		/*
 		new CloudFilter(null) {
 			
@@ -281,7 +292,15 @@ public class EngineUT {
 			}
 		});
 		*/
+		
+		// Initialize keyboard to simulate input
+		instant = new KeyboardInstant();
+		if (fakedKbHandler == null) {
+			fakedKbHandler = org.mockito.Mockito.mock(CommonKeyboardHandler.class);
+		}
+		Zildo.pdPlugin.kbHandler = fakedKbHandler;
 	}
+	
 	public void waitEndOfScripting() {
 		waitEndOfScripting(null);
 	}
@@ -298,8 +317,6 @@ public class EngineUT {
 
 	/** Simulates player holding a direction with the d-pad **/
 	public void simulateDirection(Vector2f dir) {
-		KeyboardHandler fakedKbHandler = org.mockito.Mockito.mock(CommonKeyboardHandler.class);
-		Zildo.pdPlugin.kbHandler = fakedKbHandler;
 		when(fakedKbHandler.getDirection()).thenReturn(dir);
 
 		instant.update();
@@ -307,6 +324,11 @@ public class EngineUT {
 
 	@After
 	public void tearDown() {
+		// Reset input
+		simulateDirection(new Vector2f(0, 0));
+	}
+	
+	private void initCounters() {
 		for (Perso perso : EngineZildo.persoManagement.tab_perso) {
 			Identified.remove(SpriteEntity.class, perso.getId());
 			for (Element elem : perso.getPersoSprites()) {

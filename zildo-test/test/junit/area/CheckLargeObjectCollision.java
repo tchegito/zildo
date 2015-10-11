@@ -58,10 +58,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 		zildo.walkTile(false);
 		
 		// Wait end of scripts
-		while (EngineZildo.scriptManagement.isScripting()) {
-			renderFrames(1);
-		}
-
+		waitEndOfScripting();
 	}
 	
 	/**
@@ -99,6 +96,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 		runAndCheck();
 	}
 	
+	// This test leads to map switch
 	@Test
 	public void testMoveOnBorderOutside() {
 		init(-2, 242);
