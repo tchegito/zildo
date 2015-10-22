@@ -149,6 +149,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 		platformKeys.put(Keys.DIALOG_FRAME, KEY_DIALOG_FRAME);
 		platformKeys.put(Keys.TOUCH_MENU, KEY_TOUCH_MENU);
 		platformKeys.put(Keys.TOUCH_BACK, KEY_TOUCH_BACK);
+		platformKeys.put(Keys.COMPASS, KEY_LSHIFT);	// Nonsense on Android
 	}
 	
 	TouchPoints polledTouchedPoints;

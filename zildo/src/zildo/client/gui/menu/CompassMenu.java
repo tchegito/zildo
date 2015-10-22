@@ -1,12 +1,10 @@
 package zildo.client.gui.menu;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import zildo.client.stage.TexterStage;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
-import zildo.monde.dialog.HistoryRecord;
-import zildo.server.EngineZildo;
 
 public class CompassMenu extends Menu {
 
@@ -21,9 +19,8 @@ public class CompassMenu extends Menu {
 			
 			@Override
 			public void run() {
-				List<HistoryRecord> records = EngineZildo.game.getLastDialog();
-				System.out.println(HistoryRecord.getDisplayString(records));
-				
+				// Game should be blocked, until texter stage is over
+				client.askStage(new TexterStage());
 				client.handleMenu(null);
 			}
 		});

@@ -29,24 +29,28 @@ import zildo.client.Client;
  * @author Tchegito
  *
  */
-public interface GameStage {
+public abstract class GameStage {
 
+	protected boolean done = false;
+	
 	/**
 	 * Called each frame, for updating state.
 	 */
-	public void updateGame();
+	public abstract void updateGame();
 	
 	/**
 	 * Called each frame, to render.
 	 */
-	public void renderGame();
+	public abstract void renderGame();
 	
 	/**
 	 * Called once for starting the stage.
 	 */
-	public void launchGame();
+	public abstract void launchGame();
 
-	public void endGame();
+	public abstract void endGame();
 	
-	public boolean isDone();
+	public boolean isDone() {
+		return done;
+	}
 }

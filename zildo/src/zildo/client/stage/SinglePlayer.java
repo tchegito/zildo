@@ -49,7 +49,7 @@ import zildo.server.state.ClientState;
  * </ul>
  * @author tchegito
  */
-public class SinglePlayer implements GameStage {
+public class SinglePlayer extends GameStage {
 
     EngineZildo engineZildo;
     ClientEngineZildo clientEngineZildo;
@@ -59,7 +59,6 @@ public class SinglePlayer implements GameStage {
     
     Set<ClientState> states=new HashSet<ClientState>();
     KeyboardInstant instant=new KeyboardInstant();
-    boolean done = false;
 
     /**
      * Multiplayer, where current player is the server.
@@ -192,9 +191,5 @@ public class SinglePlayer implements GameStage {
         EngineZildo.spriteManagement.clearSprites(true);
         engineZildo.cleanUp();
         done = true;
-    }
-
-    public boolean isDone() {
-    	return done;
     }
 }

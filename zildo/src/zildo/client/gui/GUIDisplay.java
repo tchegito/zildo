@@ -36,6 +36,9 @@ import zildo.client.SpriteDisplay;
 import zildo.client.gui.menu.CompassMenu;
 import zildo.client.gui.menu.HallOfFameMenu;
 import zildo.client.sound.BankSound;
+import zildo.client.stage.CreditStage;
+import zildo.client.stage.MenuStage;
+import zildo.client.stage.TitleStage;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.Ortho;
@@ -57,7 +60,6 @@ import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
 import zildo.monde.util.Zone;
-import zildo.resource.Constantes;
 import zildo.server.MultiplayerManagement;
 import zildo.server.state.PlayerState;
 
@@ -76,7 +78,7 @@ import zildo.server.state.PlayerState;
 public class GUIDisplay {
 
 	public enum DialogMode {
-		CLASSIC, MENU, CREDITS, HALLOFFAME, INFO, BUY, ADVENTURE_MENU;
+		CLASSIC, MENU, CREDITS, HALLOFFAME, INFO, BUY, ADVENTURE_MENU, TEXTER;
 		
 		public boolean isScript() {
 			return true; //this == CLASSIC || this == CREDITS;
@@ -93,6 +95,9 @@ public class GUIDisplay {
 	
 	// Alpha channel for virtual pad (specific Android) : range is 0..255
 	final static int alphaPad = 128;
+	
+	final static char TXT_END_OF_LINE = (char)-2;
+	final static char TXT_CHANGE_COLOR = (char)-3;
 	
 	// External variables for interacting with GUI
 	private boolean toDisplay_dialoguing;
@@ -116,7 +121,7 @@ public class GUIDisplay {
 	private GUISpriteSequence guiSpritesSequence; // All sprites designing the GUI
 	private GUISpriteSequence menuSequence; // Cursors for menu
 	private GUISpriteSequence creditSequence; // Credits
-	private GUISpriteSequence infoSequence; // For displaying infos
+	private GUISpriteSequence infoSequence; // For displaying infos	(see TitleStage)
 	private GUISpriteSequence adventureSequence; // For displaying adventure menu
 
 	private ScreenConstant sc;
@@ -284,6 +289,12 @@ public class GUIDisplay {
 			frameDialogSequence.clear();
 		}
 
+		if (toDisplay_dialogMode == DialogMode.TEXTER) {
+			// Frame under texter
+			drawBox(sc.BIGTEXTER_X-10, sc.BIGTEXTER_Y-10, 
+					sc.BIGTEXTER_WIDTH + 20, Zildo.viewPortY - 38, false);
+		}
+		
 		drawConsoleMessages();
 	}
 
@@ -291,8 +302,7 @@ public class GUIDisplay {
 		int y = 230;
 		List<GameMessage> toRemove = new ArrayList<GameMessage>();
 		for (GameMessage mess : messageQueue) {
-			ClientEngineZildo.ortho.drawText(23, y, mess.text, new Vector3f(
-					1.0f, 1.0f, 1.0f));
+			ClientEngineZildo.ortho.drawText(23, y, mess.text, new Vector3f(1.0f, 1.0f, 1.0f));
 			if (mess.duration-- == 0) {
 				toRemove.add(mess);
 			}
@@ -310,8 +320,7 @@ public class GUIDisplay {
 	public void setText(String texte, DialogMode dialogMode) {
 		toDisplay_dialogMode = dialogMode;
 		removePreviousTextInFrame();
-		prepareTextInFrame(texte, sc.TEXTER_COORDINATE_X,
-				sc.TEXTER_COORDINATE_Y, false);
+		prepareTextInFrame(texte, sc.TEXTER_COORDINATE_X, sc.TEXTER_COORDINATE_Y, false);
 	}
 
 	/**
@@ -335,14 +344,16 @@ public class GUIDisplay {
 		int sizeCurrentWord = 0;
 		int sizeCurrentLine = 0;
 		int lastSpacePosition = -1;
-		int[] sizesLine = new int[Constantes.TEXTER_NUMLINE * 3];	// Total rows (with scroll)
+		// BEWARE! More than 256 lines will cause it to crash !!! 
+		//TODO: See how we can do better (maybe this array isn't really useful ?)
+		int[] sizesLine = new int[256]; //Constantes.TEXTER_NUMLINE * 3];	// Total rows (with scroll)
 
 		// Interpret dialog Mode
 		int nBank;
 		int sizeLine;
 		// int nMaxLigne;
 		boolean visibleFont;
-		boolean center;
+		boolean center = false;
 		int i;
 		GUISpriteSequence seq = textDialogSequence; // Default sequence to add fonts
 
@@ -355,18 +366,19 @@ public class GUIDisplay {
 			sizeLine = sc.TEXTER_SIZELINE_SCRIPT;
 		}
 		EngineFX fx = EngineFX.FOCUSED;
+
 		
 		switch (toDisplay_dialogMode) {
 		case CLASSIC:
 		default:
 			visibleFont = false;
 			center = false;
-			if (texte.indexOf((char)-3) != -1) {
+			if (texte.indexOf(TXT_CHANGE_COLOR) != -1) {
 				fx = EngineFX.FONT_PEOPLENAME;
 			}
 			break;
 		case ADVENTURE_MENU:
-			seq = textMenuSequence;
+			seq = adventureSequence;
 			visibleFont = true;
 			center = true;
 			break;
@@ -379,9 +391,11 @@ public class GUIDisplay {
 			break;
 		case CREDITS:
 			center = true;
+		case TEXTER:
 			visibleFont = true;
 			seq = creditSequence;
 			fx = EngineFX.NO_EFFECT;
+			width = sc.BIGTEXTER_WIDTH;
 			break;
 		case INFO:
 			center = true;
@@ -409,13 +423,13 @@ public class GUIDisplay {
 					if (a == '\n') {
 						sizesLine[nLigne] = sizeCurrentLine + sizeCurrentWord;
 						sizeCurrentWord = 0;
-						nSpr[nLettre] = -2;
+						nSpr[nLettre] = TXT_END_OF_LINE;
 					} else {
 						sizesLine[nLigne] = sizeCurrentLine;
 						if (lastSpacePosition != -1) { // Put 'ENDOFLINE' at the last space
-							nSpr[lastSpacePosition] = -2;
+							nSpr[lastSpacePosition] = TXT_END_OF_LINE;
 						} else { // No space from the beginning of the message
-							nSpr[nLettre] = -2;
+							nSpr[nLettre] = TXT_END_OF_LINE;
 						}
 					}
 					dialogContext.add(i);
@@ -435,8 +449,8 @@ public class GUIDisplay {
 					sizeCurrentLine += sizeCurrentWord;
 					sizeCurrentWord = 0;
 				}
-			} else if (a == (char)-3) {
-				nSpr[nLettre] = -3;
+			} else if (a == TXT_CHANGE_COLOR) {
+				nSpr[nLettre] = TXT_CHANGE_COLOR;
 			} else { // Regular character
 				// Store sprite's index to display for this letter
 				nSpr[nLettre] = getIndexCharacter(a);
@@ -475,16 +489,20 @@ public class GUIDisplay {
 			if (indexSpr == -1) {
 				// Space
 				offsetX += sc.TEXTER_SIZESPACE;
-			} else if (indexSpr == -2) {
+			} else if (indexSpr == TXT_END_OF_LINE) {
 				offsetX = 0;
 				offsetY += sizeLine;
 				nLigne++;
 				if (center) {
 					offsetX = (sc.TEXTER_SIZEX - sizesLine[nLigne]) / 2;
 				}
-			} else if (indexSpr == -3) {
-				// End of people's name
-				fx = EngineFX.NO_EFFECT;
+			} else if (indexSpr == TXT_CHANGE_COLOR) {
+				// Toggle color: people's name
+				if (fx == EngineFX.NO_EFFECT) {
+					fx = EngineFX.FONT_PEOPLENAME;
+				} else {
+					fx = EngineFX.NO_EFFECT;
+				}
 			} else {
 				// Store font's pointer to easily remove it later and scroll
 				// into the frame
@@ -675,7 +693,7 @@ public class GUIDisplay {
 	}
 
 	/**
-	 * Display scrolling credits
+	 * Display scrolling credits (only used by {@link CreditStage})
 	 * @param counter position in the sequence of lines
 	 * @param nextSentence incoming sentence
 	 */
@@ -704,6 +722,14 @@ public class GUIDisplay {
 		
 	}
 	
+	public void displayTexter(String text) {
+		setToDisplay_dialogMode(DialogMode.TEXTER);
+		if (creditSequence.isEmpty()) {
+			prepareTextInFrame(text, sc.BIGTEXTER_X, sc.BIGTEXTER_Y, false);
+		}
+	}
+	
+	/** Used only by {@link TitleStage} **/
 	public void displayInfo(int y, String nextSentence, EntityTransformer action) {
 		setToDisplay_dialogMode(DialogMode.INFO);	
 		
@@ -715,7 +741,7 @@ public class GUIDisplay {
 		}
 	}
 	/**
-	 * Display a menu
+	 * Display a menu (only used by {@link MenuStage})
 	 * 
 	 * @param p_menu
 	 *            (can't be null)
@@ -911,6 +937,7 @@ public class GUIDisplay {
 		return x;
 	}
 
+	/** Display numeric representation as digit sprites **/
 	private void displayNumber(int p_number, int p_numDigit, int p_x, int p_y) {
 		int lastPos = p_x + 2;
 		for (int i = 0; i < p_numDigit; i++) {
@@ -923,8 +950,7 @@ public class GUIDisplay {
 				break;
 			}
 			j = j % 10;
-			FontDescription desc = FontDescription.values()[FontDescription.N_0
-					.ordinal() + j];
+			FontDescription desc = FontDescription.values()[FontDescription.N_0.ordinal() + j];
 
 			guiSpritesSequence.addSprite(desc, lastPos - i * 7, p_y);
 		}
@@ -940,15 +966,9 @@ public class GUIDisplay {
 
 	private void displayAdventureMenu() {
 		drawBox(50, (Zildo.viewPortY - 16 *4) / 2, 200, 16 * 3, false);
-		//guiSpritesSequence
 		if (toDisplay_dialogMode != DialogMode.ADVENTURE_MENU) {
 			setToDisplay_dialogMode(DialogMode.ADVENTURE_MENU);
 			adventureSequence.clear();
-			/*
-			int sizeY = -16; //3 * sc.TEXTER_MENU_SIZEY;
-			int y = (Zildo.viewPortY - sizeY) / 2;
-			prepareTextInFrame("Carte d'Alembrume\nDialogues\nGuide", sc.TEXTER_COORDINATE_X, y, true);
-			*/
 			ClientEngineZildo.client.handleMenu(new CompassMenu());
 		}
 	}
@@ -1045,8 +1065,7 @@ public class GUIDisplay {
 		int posY = (Zildo.viewPortY - sizeY) / 2;
 		int y = posY + 14;
 		// Title
-		ClientEngineZildo.ortho.drawText(-1, posY + 3, "scores", new Vector3f(
-				1.0f, 1.0f, 1.0f));
+		ClientEngineZildo.ortho.drawText(-1, posY + 3, "scores", new Vector3f(1.0f, 1.0f, 1.0f));
 		// Scores
 		for (PlayerState state : states) {
 			StringBuilder sb = new StringBuilder();
@@ -1064,13 +1083,10 @@ public class GUIDisplay {
 		}
 		// Draw a transparent box
 		ClientEngineZildo.ortho.enableBlend();
-		ClientEngineZildo.ortho.box(posX, posY, sizeX, sizeY, 0, new Vector4f(
-				0.3f, 0.2f, 0.4f, 0.2f));
+		ClientEngineZildo.ortho.box(posX, posY, sizeX, sizeY, 0, new Vector4f(0.3f, 0.2f, 0.4f, 0.2f));
 		ClientEngineZildo.ortho.disableBlend();
-		ClientEngineZildo.ortho.boxv(posX, posY, sizeX, sizeY, 4, new Vector4f(
-				0.9f, 0.7f, 0.4f, 0.4f));
-		ClientEngineZildo.ortho.boxv(posX - 1, posY - 1, sizeX + 2, sizeY + 2,
-				4, new Vector4f(0.8f, 0.6f, 0.4f, 0.4f));
+		ClientEngineZildo.ortho.boxv(posX, posY, sizeX, sizeY, 4, new Vector4f(0.9f, 0.7f, 0.4f, 0.4f));
+		ClientEngineZildo.ortho.boxv(posX - 1, posY - 1, sizeX + 2, sizeY + 2, 4, new Vector4f(0.8f, 0.6f, 0.4f, 0.4f));
 
 	}
 	

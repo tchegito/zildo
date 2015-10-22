@@ -33,9 +33,8 @@ import zildo.monde.sprites.SpriteEntity;
  * @author Tchegito
  *
  */
-public class TitleStage implements GameStage {
+public class TitleStage extends GameStage {
 
-	boolean done;
 	int counter;
 	int currentLine;
 	int centerY;
@@ -48,7 +47,6 @@ public class TitleStage implements GameStage {
 	
 	public TitleStage(String p_text) {
 		counter = 0;
-		done = false;
 		wholeInfos = UIText.getGameText(p_text);
 		launchGame();
 	}
@@ -121,11 +119,6 @@ public class TitleStage implements GameStage {
 	public void endGame() {
 		ClientEngineZildo.guiDisplay.clearSequences(GUISequence.INFO);
 		done = true;
-	}
-
-	@Override
-	public boolean isDone() {
-		return done;
 	}
 
 }

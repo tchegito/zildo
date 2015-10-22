@@ -89,6 +89,9 @@ public class Constantes {
 	public static final int TEXTER_SIZESPACE = 4;
 	public static final int TEXTER_SIZELINE = 16;
 	public static final int TEXTER_NUMLINE = 3;
+	public static final int BIGTEXTER_X = 20;
+	public static final int BIGTEXTER_Y = 20;
+	public static final int BIGTEXTER_WIDTH = 265;
 	public static final int TEXTER_COORDINATE_X = 50;
 	public static final int TEXTER_COORDINATE_Y = 180;
 	public static final int TEXTER_MENU_SIZEY = 16;

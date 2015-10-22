@@ -32,14 +32,13 @@ import zildo.fwk.ui.MenuListener;
  * @author Tchegito
  *
  */
-public class MenuStage implements GameStage {
+public class MenuStage extends GameStage {
 
 	ItemMenu item;
 	MenuListener menuListener;
 	GUIDisplay guiDisplay;
 	Client client;
 	Menu menu;
-	boolean done = false;
 	
 	public MenuStage(Menu menu, MenuListener menuListener) {
 		this.menu = menu;
@@ -80,11 +79,6 @@ public class MenuStage implements GameStage {
 	@Override
 	public void endGame() {
 		guiDisplay.clearSequences(GUISequence.TEXT_MENU);
-	}
-	
-	@Override
-	public boolean isDone() {
-		return done;
 	}
 
 	public void askForItemMenu(ItemMenu it) {

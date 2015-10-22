@@ -25,6 +25,7 @@ import java.util.Collection;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
+import zildo.client.gui.GUIDisplay.DialogMode;
 import zildo.client.gui.menu.SaveGameMenu;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Game;
@@ -127,7 +128,8 @@ public class EngineZildo {
 		for (ClientState 
 				state : p_clientStates) {
 			
-			blockKeyboard=ClientEngineZildo.client.isIngameMenu();
+			blockKeyboard = ClientEngineZildo.client.isIngameMenu();
+			blockKeyboard |=ClientEngineZildo.guiDisplay.getToDisplay_dialogMode() == DialogMode.TEXTER;
 			if (game.multiPlayer) {
 				multiplayerManagement.render();
 			} else {	// Block everything in single player

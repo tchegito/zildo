@@ -12,6 +12,9 @@ public class ScreenConstant {
 
 	final int SORTY_MAX;
 	final int SORTY_REALMAX;
+	final int BIGTEXTER_X;
+	final int BIGTEXTER_Y;
+	final int BIGTEXTER_WIDTH;
 	final int TEXTER_COORDINATE_X;
 	final int TEXTER_COORDINATE_Y;
 	final int TEXTER_SIZEX;
@@ -32,6 +35,9 @@ public class ScreenConstant {
 		float ratioY = screenY / 240f;
 		
 		// Texter
+		BIGTEXTER_X= (int) (Constantes.BIGTEXTER_X * ratioX); 
+		BIGTEXTER_Y= (int) (Constantes.BIGTEXTER_Y * ratioY); 
+		BIGTEXTER_WIDTH = (int) (Constantes.BIGTEXTER_WIDTH * ratioX);
 		TEXTER_COORDINATE_X= (int) (Constantes.TEXTER_COORDINATE_X * ratioX); 
 		TEXTER_COORDINATE_Y= (int) (Constantes.TEXTER_COORDINATE_Y * ratioY); 
 		TEXTER_SIZEX= (int) (Constantes.TEXTER_SIZEX * ratioX); 

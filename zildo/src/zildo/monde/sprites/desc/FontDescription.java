@@ -45,7 +45,7 @@ public enum FontDescription implements SpriteDescription {
 	// Android
 	VIRTUAL_PAD, BUTTON_X, BUTTON_Y,
 	// Compass
-	COMPASS;
+	COMPASS, TOUCH_AURA;
 	
 	@Override
 	public int getBank() {

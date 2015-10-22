@@ -2,6 +2,7 @@ package zildo.monde.dialog;
 
 import java.util.List;
 
+import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.ui.UIText;
@@ -36,13 +37,15 @@ public class HistoryRecord implements EasySerializable {
 	public static String getDisplayString(List<HistoryRecord> records) {
 		StringBuilder sb = new StringBuilder();
 		Region currentRegion = null;
-		for (HistoryRecord record : records) {
+		for (HistoryRecord record : ZUtils.Reversed.reversed(records)) {
 			Region region = Region.fromMapName(record.mapName);
 			if (currentRegion != region) {
 				currentRegion = region;
-				sb.append(region.getName()).append("\n");
+				sb.append(region.getName()).append("\n\n");
 			}
-			sb.append((char)-4).append(record.who).append((char)-3).append(": ");
+			if (!ZUtils.isEmpty(record.who)) {	// Eliminate name for text without speaker (sign, scenario)
+				sb.append((char)-3).append(record.who).append((char)-3).append(": ");
+			}
 			sb.append(UIText.getGameText(record.key));
 			sb.append("\n\n");
 		}

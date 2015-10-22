@@ -63,9 +63,11 @@ public class Fontes extends SpriteBanque {
 				// Buttons (X and Y)
 				new Zone(0, 577, 24, 24), new Zone(24, 577, 24, 24),
 				// Compass
-				new Zone(374, 0, 25, 23)
+				new Zone(374, 0, 25, 23),
 				//new Zone(0, 524, 24, 25), new Zone(26, 524, 24, 25),
 				//new Zone(0, 551, 24, 25), new Zone(26, 551, 24, 25)
+				//Touch aura
+				new Zone(308, 33, 31, 31)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{

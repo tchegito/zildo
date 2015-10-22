@@ -10,7 +10,7 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.ui.UIText;
 import zildo.resource.KeysConfiguration;
 
-public class CreditStage implements GameStage {
+public class CreditStage extends GameStage {
 
 	GUIDisplay guiDisplay;
 	MapDisplay mapDisplay;
@@ -20,7 +20,6 @@ public class CreditStage implements GameStage {
 	KeyboardInstant instant;
 	boolean askQuit = false;
 	int endCounter=0;
-	boolean done = false;
 	boolean endScene;
 	
 	/**
@@ -87,11 +86,6 @@ public class CreditStage implements GameStage {
 	@Override
 	public void endGame() {
 		ClientEngineZildo.guiDisplay.clearSequences(GUISequence.CREDIT);
-	}
-
-	@Override
-	public boolean isDone() {
-		return done;
 	}
 
 }

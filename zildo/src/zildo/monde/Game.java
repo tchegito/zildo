@@ -99,7 +99,7 @@ public class Game implements EasySerializable {
 				nbQuest++;
 			}
 		}
-		p_buffer.put(nbQuest | 0x800);
+		p_buffer.put(nbQuest | 0x800);	// Signal version 2.19 minimum
 		for (QuestElement quest : quests) {
 			if (quest.done) {
 				p_buffer.put(quest.name);
@@ -154,6 +154,7 @@ public class Game implements EasySerializable {
         p_buffer.put(loc.x);
         p_buffer.put(loc.y);
         p_buffer.put((byte) a.value);
+        // Since 2.19
         p_buffer.put((byte) EngineZildo.mapManagement.getStartFloor());
         
         // 7: variables
