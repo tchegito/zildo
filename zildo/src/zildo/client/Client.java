@@ -284,6 +284,8 @@ public class Client {
 			if (!connected) {
 				if (currentMenu == ingameMenu) {
 					askForItemMenu(ingameMenu, "m7.quit");
+				} else if (currentMenu instanceof CompassMenu) {
+					askForItemMenu(END_MENU_ITEM);
 				} else if (currentMenu != null) {
 					if ("m7.quitConfirm".equals(currentMenu.getKey())) {
 						askForItemMenu(currentMenu, "global.yes");
