@@ -137,6 +137,8 @@ public class GUIDisplay {
 	final int padSizeX;
 	final int buttonSizeX;
 	
+	int texterHeight;	// Max Y coordinates in texter frame
+	
 	// ////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	// ////////////////////////////////////////////////////////////////////
@@ -328,7 +330,7 @@ public class GUIDisplay {
 	 * text frame.<ul>
 	 * <li>Use '-1' as 'SPACE'</li>
 	 * <li>'-2' as 'ENDOFLINE'</li>
-	 * <li>'-3' as 'END of people name'</li></ul>
+	 * <li>'-3' as 'START/END of people name'</li></ul>
 	 * @param texte text to display
 	 * @param p_posX start X position
 	 * @param p_posY start Y postiion
@@ -722,11 +724,28 @@ public class GUIDisplay {
 		
 	}
 	
-	public void displayTexter(String text) {
+	public void displayTexter(String text, int pos) {
 		setToDisplay_dialogMode(DialogMode.TEXTER);
 		if (creditSequence.isEmpty()) {
 			prepareTextInFrame(text, sc.BIGTEXTER_X, sc.BIGTEXTER_Y, false);
+			// Determine max height
+			int maxY = 0;
+			for (SpriteEntity entity : creditSequence) {
+				maxY = Math.max(maxY, entity.getScrY());
+			}
+			texterHeight = Math.max(maxY - sc.BIGTEXTER_HEIGHT, 0);
 		}
+		for (SpriteEntity entity : creditSequence) {
+			// In texter mode, we display only fonts inside the texter frame
+			entity.setScrY((int) entity.y - pos);
+			int y = (int) entity.getScrY();
+			boolean vis = y > 16 && y < (sc.BIGTEXTER_HEIGHT + sc.BIGTEXTER_Y);
+			entity.setVisible(vis);
+		}
+	}
+	
+	public int getTexterHeight() {
+		return texterHeight;
 	}
 	
 	/** Used only by {@link TitleStage} **/
@@ -740,6 +759,7 @@ public class GUIDisplay {
 			action.transform(ent);
 		}
 	}
+	
 	/**
 	 * Display a menu (only used by {@link MenuStage})
 	 * 

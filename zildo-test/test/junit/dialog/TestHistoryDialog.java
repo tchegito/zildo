@@ -27,8 +27,8 @@ import zildo.server.EngineZildo;
  */
 public class TestHistoryDialog extends EngineUT {
 
-	// Tester les phrases qui redirigent vers les autres
-
+	// TODO: Tester les phrases qui redirigent vers les autres
+	// TODO: Check if we need to remove repeated sentences
 
 	private void prepare() {
 		spawnZildo(160, 100);
@@ -78,7 +78,7 @@ public class TestHistoryDialog extends EngineUT {
 		// Check that history hasn't overflowed
 		assertDialog(Constantes.NB_MAX_DIALOGS_HISTORY, null, null);
 	}
-
+	
 	/**
 	 * Asserts that dialog history's size is as expected, and performs checks on
 	 * most recent record

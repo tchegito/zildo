@@ -19,27 +19,21 @@
 
 package junit.perso;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
 import zildo.client.SpriteDisplay;
-import zildo.client.gui.DialogContext;
-import zildo.client.gui.DialogDisplay;
 import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.ScreenConstant;
 import zildo.client.sound.SoundPlay;
@@ -57,7 +51,6 @@ import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.monde.Game;
-import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -248,20 +241,12 @@ public class EngineUT {
 			//ClientEngineZildo.spriteDisplay = new SpriteDisplay();
 			ClientEngineZildo.soundPlay = mock(SoundPlay.class);
 			ClientEngineZildo.filterCommand = new FilterCommand();
-			ClientEngineZildo.guiDisplay = mock(GUIDisplay.class);
-			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.screenX, Zildo.screenY);
+			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
 			ClientEngineZildo.openGLGestion = mock(OpenGLGestion.class);
 			ClientEngineZildo.spriteEngine = mock(SpriteEngine.class);
 			ClientEngineZildo.spriteDisplay = spy(new SpriteDisplay(ClientEngineZildo.spriteEngine));
-			DialogDisplay dialogDisplay = new DialogDisplay(new DialogContext(), 0);
-			when(ClientEngineZildo.guiDisplay.launchDialog(any())).then(new Answer<Boolean>() {
-				@SuppressWarnings("unchecked")
-				@Override
-				public Boolean answer(InvocationOnMock invocation) throws Throwable {
-					List<WaitingDialog> dials = (List<WaitingDialog>) invocation.getArguments()[0];
-					return dialogDisplay.launchDialog(dials);
-				}
-			});
+			ClientEngineZildo.guiDisplay = spy(new GUIDisplay());
+			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.screenX, Zildo.screenY);
 			when(ClientEngineZildo.guiDisplay.skipDialog()).thenReturn(true);
 
 			// Load default map and initialize map utils
