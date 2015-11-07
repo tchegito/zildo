@@ -52,6 +52,37 @@ public class TestTexter extends EngineUT {
 		
 	}
 	
+	// Test special characters sequence like "#n" and "$sell" for merchant
+	@Test
+	public void marginal() {
+		String[] sharpKeys = {"d4m8.vipere.0", "d4m8.vipere.1", "d5m1.gerard.0", "igorv.bilel.2", "igorv4.boris.8"};
+		String character = "noone";
+		for (String s : sharpKeys) {
+			EngineZildo.game.recordDialog(s, character, "coucou");
+		}
+		String text = HistoryRecord.getDisplayString(EngineZildo.game.getLastDialog());
+
+		GUIDisplay guiDisplay = ClientEngineZildo.guiDisplay;
+
+		guiDisplay.displayTexter(text, 0);
+		GUISpriteSequence seq = getPrivateMember(guiDisplay, "creditSequence");
+
+		int countCharacters = 0;
+		for (int i=0;i<text.length();i++) {
+			char a = text.charAt(i);
+			if (a != ' ') {
+				countCharacters++;
+			}
+		}
+		int nbVisible = countVisible(seq);
+		int rapport = countCharacters / nbVisible;
+		System.out.println(text);
+		Assert.assertTrue(text.indexOf("#") == -1);
+		Assert.assertTrue(text.indexOf("$") == -1);
+		System.out.println(nbVisible + "/" +countCharacters + " ==> " + rapport);
+		Assert.assertTrue(rapport < 2);
+	}
+
 	private int countVisible(GUISpriteSequence seq) {
 		int nbVisible = 0;
 		for (SpriteEntity entity : seq) {
