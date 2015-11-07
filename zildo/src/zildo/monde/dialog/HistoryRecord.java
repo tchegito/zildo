@@ -46,7 +46,10 @@ public class HistoryRecord implements EasySerializable {
 			if (!ZUtils.isEmpty(record.who)) {	// Eliminate name for text without speaker (sign, scenario)
 				sb.append((char)-3).append(record.who).append((char)-3).append(": ");
 			}
-			sb.append(UIText.getGameText(record.key));
+			String sentence = UIText.getGameText(record.key);
+			sentence = sentence.replaceAll("(.*)\\#[0-9]", "$1");
+			sentence = sentence.replaceAll("(.*)\\$sell.*", "$1");
+			sb.append(sentence);
 			sb.append("\n\n");
 		}
 		return sb.toString();
