@@ -52,10 +52,11 @@ public class TestTexter extends EngineUT {
 		
 	}
 	
-	// Test special characters sequence like "#n" and "$sell" for merchant
+	// Test special characters sequence like "#n", "@" and "$sell" for merchant
 	@Test
 	public void marginal() {
-		String[] sharpKeys = {"d4m8.vipere.0", "d4m8.vipere.1", "d5m1.gerard.0", "igorv.bilel.2", "igorv4.boris.8"};
+		String[] sharpKeys = {"d4m8.vipere.0", "d4m8.vipere.1", "d5m1.gerard.0", "igorv.bilel.2", "igorv4.boris.8",
+				"d4m6.ritou.1"};
 		String character = "noone";
 		for (String s : sharpKeys) {
 			EngineZildo.game.recordDialog(s, character, "coucou");
@@ -79,6 +80,7 @@ public class TestTexter extends EngineUT {
 		System.out.println(text);
 		Assert.assertTrue(text.indexOf("#") == -1);
 		Assert.assertTrue(text.indexOf("$") == -1);
+		Assert.assertTrue(text.indexOf("@") == -1);
 		System.out.println(nbVisible + "/" +countCharacters + " ==> " + rapport);
 		Assert.assertTrue(rapport < 2);
 	}

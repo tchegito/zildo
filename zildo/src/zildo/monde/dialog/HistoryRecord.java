@@ -25,6 +25,7 @@ public class HistoryRecord implements EasySerializable {
 	public void serialize(EasyBuffering p_buffer) {
 		p_buffer.put(key);
 		p_buffer.put(who);
+		
 		p_buffer.put(mapName);
 	}
 
@@ -49,6 +50,7 @@ public class HistoryRecord implements EasySerializable {
 			String sentence = UIText.getGameText(record.key);
 			sentence = sentence.replaceAll("(.*)\\#[0-9]", "$1");
 			sentence = sentence.replaceAll("(.*)\\$sell.*", "$1");
+			sentence = sentence.replaceAll("(.*)\\@.*", "$1");
 			sb.append(sentence);
 			sb.append("\n\n");
 		}
