@@ -75,7 +75,6 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JMenuItem optionsItem;
 	private JMenu parametersMenu;
 	private JMenuItem exitItem;
-	private JSeparator fileSeparator1;
 	private JMenuItem saveAsItem;
 	private JMenuItem saveItem;
 	private JMenuItem loadItem;
