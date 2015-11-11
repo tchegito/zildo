@@ -19,6 +19,15 @@ precision mediump float;
 uniform sampler2D sTexture;
 uniform lowp vec4 CurColor;		// Current color
 varying mediump vec2 vTexCoord;
+uniform int clip;
+
+float clipFunction(in float y) { 
+	return clamp( (208.0 - abs(y*2.0-240.0)) / 24.0, 0.0, 1.0);
+}
+
 void main(){
-	gl_FragColor = texture2D(sTexture, vTexCoord) * CurColor;
+	vec4 pix = texture2D(sTexture, vTexCoord) * CurColor;
+	if (clip == 1)
+		pix = pix * clipFunction(gl_FragCoord.y);
+	gl_FragColor = pix;
 }

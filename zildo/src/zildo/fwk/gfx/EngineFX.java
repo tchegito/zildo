@@ -38,6 +38,7 @@ public enum EngineFX {
 	FOCUSED,	// FOCUSED is used when we wants to highlight some entity (inventory, or buying something)
 	YELLOW_HALO,	// When hero is invulnerable, and for selected items in inventory
 	STAR,
+	CLIP,
 	FIRE;
 	
 	public final Vector4f darkColor;

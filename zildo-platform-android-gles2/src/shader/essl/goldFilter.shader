@@ -17,11 +17,11 @@ void main(){
 [FRAGMENT]
 precision mediump float;
 uniform sampler2D sTexture;
-uniform lowp vec4 factor;		// Gold factor
+uniform float factor;		// Gold factor
 varying mediump vec2 vTexCoord;
 void main(){
 	vec4 texel = texture2D(sTexture, vTexCoord);
 	float gray = dot(vec3(texel),vec3(0.3, 0.59, 0.11));
-	gray = clamp(gray * (factor.x * 4.0), 0.0, 1.0);
+	gray = clamp(gray * (factor * 4.0), 0.0, 1.0);
 	gl_FragColor = vec4(gray, gray, 0, texel.w);
 }

@@ -101,8 +101,10 @@ public class AndroidSpriteEngine extends SpriteEngine {
 				GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 				GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texId);
 
+				// Rest clipping
+            	shaders.setClip(false);
+            	
 				// Select the right pixel shader (if needed)
-				
                 if (pixelShaderSupported) {
                 	switch (currentFX) {
                 	case NO_EFFECT:
@@ -120,6 +122,11 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	                case YELLOW_HALO:
 	                	shaders.setCurrentShader(GLShaders.goldFilter);
 	                	shaders.setGoldFactor((float) (0.6+0.4*Math.cos(3*gamma)));
+	                	break;
+	                case CLIP:
+	                case FONT_PEOPLENAME:
+						shaders.setCurrentShader(GLShaders.textured);
+	                	shaders.setClip(true);	// Always clip with "font_peoplename"
 	                	break;
 	                case STAR:
 	                	shaders.setCurrentShader(GLShaders.star);
@@ -156,26 +163,27 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	                    break;
 	                case FOCUSED:
 	            		GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-	                	// FIXME: previously color3f
 	                	shaders.setColor(1.0f, 1.0f, 1.0f, alpha / 255.0f);
 	                	break;
 	                case FONT_PEOPLENAME:
 	            		GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-	            		shaders.setColor(0.9f, 0.5f, 0.2f, alpha / 255.0f);
+	            		shaders.setColor(new Vector4f(peopleNameColor, alpha / 255.0f));
 	                	break;
 	                default:
 	                	color[3]=alpha / 255.0f;
 	                	shaders.setColor(color[0], color[1], color[2], color[3]);
 	                	GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
                 }
+
 				meshSprites[numBank].render(nbQuads);
 				posBankOrder++;
 			}
 		}
 
-		// Deactivate pixel shader
+		// Leave the room clean: deactivate pixel shader and clip
 		if (pixelShaderSupported) {
 			shaders.setCurrentShader(GLShaders.textured);
+        	shaders.setClip(false);
 		}
 		GLES20.glDisable(GLES20.GL_BLEND);
 

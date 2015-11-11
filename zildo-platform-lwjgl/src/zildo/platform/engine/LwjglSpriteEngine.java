@@ -120,6 +120,11 @@ public class LwjglSpriteEngine extends SpriteEngine {
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(3));
 						ClientEngineZildo.pixelShaders.setParameter(3, "noise", new Vector4f(gamma, (float) Math.random(), 0, 1));
 						break;
+                	case CLIP:
+	                case FONT_PEOPLENAME:
+						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(5));
+						ClientEngineZildo.pixelShaders.setParameter(5, "curColor", new Vector4f(1f, 1f, 1f, 1f));
+						break;
                 	case FIRE:
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(4));
 						//ClientEngineZildo.pixelShaders.setParameter(4, "iResolution", new Vector4f(Zildo.viewPortX, Zildo.viewPortY, 0, 0));
@@ -163,7 +168,8 @@ public class LwjglSpriteEngine extends SpriteEngine {
 	                	GL11.glColor4f(1.0f, 1.0f, 1.0f, alpha / 255.0f);
 	                	break;
 	                case FONT_PEOPLENAME:
-	                	GL11.glColor4f(0.9f, 0.5f, 0.2f, alpha / 255.0f);
+	                	Vector4f v = new Vector4f(peopleNameColor, alpha / 255.0f);
+						ClientEngineZildo.pixelShaders.setParameter(5, "curColor", v);
 	                	break;
 	                case INFO:
 	                	GL11.glColor4f(0.9f, 0.8f, 0.72f, alpha / 255.0f);

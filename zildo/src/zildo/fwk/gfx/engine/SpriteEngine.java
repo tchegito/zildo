@@ -33,13 +33,13 @@ import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.util.Point;
+import zildo.monde.util.Vector3f;
 import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.
 //
 //////////////////////////////////////////////////////////////////////
-
 
 
 
@@ -52,7 +52,9 @@ public abstract class SpriteEngine {
     protected boolean pixelShaderSupported;
     
 	protected TextureEngine textureEngine;
-	
+
+	protected final Vector3f peopleNameColor = new Vector3f(0.9f, 0.5f, 0.2f);
+
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////

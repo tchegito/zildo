@@ -40,6 +40,10 @@ public class Vector4f {
 		set(v);
 	}
 	
+	public Vector4f(Vector3f v, float w) {
+		set(v.x, v.y, v.z, w);
+	}
+	
     public void set(float x, float y, float z, float w)
     {
         this.x = x;

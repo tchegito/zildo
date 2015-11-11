@@ -56,10 +56,8 @@ public class Constantes {
 	
 	// Tile Engine
 	public static final int TILEENGINE_FLOOR = 3;	// Max number of floors
-	public static final int TILEENGINE_WIDTH = 64;		// Max Number of tiles
-														// on a row
-	public static final int TILEENGINE_HEIGHT = 64;		// Max Number of tiles
-														// on a column
+	public static final int TILEENGINE_WIDTH = 64;		// Max Number of tiles on a row
+	public static final int TILEENGINE_HEIGHT = 64;		// Max Number of tiles on a column
 	// Total vertices on the tile map (4 vertices per tile, double it for two map at a same time)
 	public static final int TILEENGINE_MAXPOINTS = 2 * 4 * (TILEENGINE_WIDTH * TILEENGINE_HEIGHT);	
 
@@ -68,7 +66,7 @@ public class Constantes {
 
 	// Sprite Banks
 	public static final	int NB_SPRITEBANK = 8 + ZildoOutfit.values().length;
-	public static final int NB_SPRITE_PER_PRIMITIVE = 400;
+	public static final int NB_SPRITE_PER_PRIMITIVE = 500;	// Increased from 400 to 500 when dialogs history appeared (fixed ArrayIndexOutOfBounds in SpriteOrder)
 
 	public static final int SORTY_MAX = Zildo.viewPortY+40;
 	public static final int SORTY_REALMAX = Zildo.viewPortY+40+80;

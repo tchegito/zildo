@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import zildo.Zildo;
+import zildo.client.gui.GUIDisplay.DialogMode;
 import zildo.client.gui.menu.CompassMenu;
 import zildo.client.gui.menu.InGameMenu;
 import zildo.client.stage.GameStage;
@@ -261,11 +262,12 @@ public class Client {
 	 * Handle system keys : ESCAPE for computer, BACK/MENU for touchscreen devices
 	 */
 	private void handleKeys() {
+		boolean compassMenu = currentMenu instanceof CompassMenu;
 		if (kbHandler.isKeyPressed(Keys.ESCAPE)) {
 			// Escape is pressed and no fade is running
 			if (connected) {
 				handleMenu(ingameMenu);
-			} else if (currentMenu instanceof CompassMenu) {
+			} else if (compassMenu) {
 				askForItemMenu(END_MENU_ITEM);
 			} else if (currentMenu != ingameMenu) {
 				done = true;
@@ -275,7 +277,8 @@ public class Client {
 		}
 		
 		if (kbHandler.isKeyPressed(Keys.TOUCH_MENU)) {
-			if (connected && !isIngameMenu()) {
+			// Don't allow in game menu when player is in texter (it would make too much overlapping text on screen)
+			if (connected && !isIngameMenu() && ClientEngineZildo.guiDisplay.getToDisplay_dialogMode() != DialogMode.TEXTER) {
 				handleMenu(ingameMenu);
 			}
 		}
@@ -284,7 +287,7 @@ public class Client {
 			if (!connected) {
 				if (currentMenu == ingameMenu) {
 					askForItemMenu(ingameMenu, "m7.quit");
-				} else if (currentMenu instanceof CompassMenu) {
+				} else if (compassMenu) {
 					askForItemMenu(END_MENU_ITEM);
 				} else if (currentMenu != null) {
 					if ("m7.quitConfirm".equals(currentMenu.getKey())) {

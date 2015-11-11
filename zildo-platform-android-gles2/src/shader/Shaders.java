@@ -35,13 +35,13 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 /**
- * @author Tchegito
- *
+ * @author Tchegito e
+ * 
  */
 public class Shaders {
 	
 	public enum GLShaders {
-		// Basic one (flat and textured)
+		// Basic one (flat and textured. 'Textured' can be clipped)
 		uniColor, textured,
 		// Filters
 		pixelateFilter, circleFilter,
@@ -83,10 +83,11 @@ public class Shaders {
 	Vector2f translation = new Vector2f(0, 0);
 	int squareSize;
 	int radius;
+	boolean clip;
 	Vector2f center = new Vector2f(0, 0);
 	Vector4f[] switchedColors = new Vector4f[4];
 	Vector4f woundedColor = new Vector4f(1, 1, 1, 1);
-	Vector4f goldFactor;	// Only first component is used
+	float goldFactor;
 	Vector2f starNoise;
 	
 	GLShaders current = GLShaders.textured;	// Default is 'textured'
@@ -182,12 +183,12 @@ public class Shaders {
 	private void specificShaders() {
 		switch (current) {
 			case pixelateFilter:
-				GLES20.glUniform1f(current.getUniform("squareSize"), squareSize);
+				uniform1f("squareSize", squareSize);
 				uniform4f("CurColor", curColor);
 				break;
 			case circleFilter:
 				GLES20.glUniform1i(current.getUniform("radius"), radius);
-				GLES20.glUniform2f(current.getUniform("center"), center.x, center.y);
+				uniform2f("center", center);
 				uniform4f("CurColor", curColor);
 				break;
 			case switchColor:
@@ -201,24 +202,42 @@ public class Shaders {
 				uniform4f("randomColor", woundedColor);
 				break;
 			case goldFilter:
-				uniform4f("factor", goldFactor);
+				uniform1f("factor", goldFactor);
 				break;
 			case star:
-				GLES20.glUniform2f(current.getUniform("noise"), starNoise.x, starNoise.y);
+				uniform2f("noise", starNoise);
 				break;
 			default:
 				uniform4f("CurColor", curColor);
-				GLES20.glUniform2f(current.getUniform("vTranslate"), translation.x, translation.y);
+				uniform2f("vTranslate", translation);
+				uniform1i("clip", clip ? 1 : 0);
 				break;
 		}
 	}
 
+	private int uniformId(String uniformName) {
+		return current.getUniform(uniformName);
+	}
+	
 	/** Convenient method to pass a 4-dimension vector via an uniform. **/
 	private void uniform4f(String uniformName, Vector4f v) {
-		int uniformId = current.getUniform(uniformName);
-		GLES20.glUniform4f(uniformId, v.x, v.y, v.z, v.w);
+		GLES20.glUniform4f(uniformId(uniformName), v.x, v.y, v.z, v.w);
+	}
+	
+	/** Convenient method to pass a 2-dimension vector via an uniform. **/
+	private void uniform2f(String uniformName, Vector2f v) {
+		GLES20.glUniform2f(uniformId(uniformName), v.x, v.y);
 	}
 
+	/** Convenient method to pass a float via an uniform. **/
+	private void uniform1f(String uniformName, float f) {
+		GLES20.glUniform1f(uniformId(uniformName), f);
+	}
+	
+	private void uniform1i(String uniformName, int i) {
+		GLES20.glUniform1i(uniformId(uniformName), i);
+	}
+	
 	/**
 	 * Draw untextured elements in orthographic mode.
 	 * @param verticesBuffer
@@ -248,6 +267,10 @@ public class Shaders {
 	
 	public void setColor(Vector4f col) {
 		curColor.set(col.x, col.y, col.z, col.w);
+	}
+	
+	public void setColor(Vector4f v, float a) {
+		curColor.set(v.x, v.y, v.z, a);
 	}
 	
 	public void setColor(float r, float g, float b, float a) {
@@ -293,6 +316,10 @@ public class Shaders {
 	}
 	
 	public void setGoldFactor(float f) {
-		goldFactor = new Vector4f(f, 0, 0, 0);
+		goldFactor = f;
+	}
+	
+	public void setClip(boolean v) {
+		clip = v;
 	}
 }

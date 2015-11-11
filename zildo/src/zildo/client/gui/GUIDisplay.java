@@ -256,12 +256,11 @@ public class GUIDisplay {
 	// Should handle all events happening here.
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public void draw(boolean isMenu) {
-		if (!isMenu) {
+		if (!isMenu && toDisplay_dialogMode != DialogMode.TEXTER) {
 			// Re-initialize the gui's sprites sequence.
 			// Each frame, we re-add the sprites to avoid doing test about what
-			// exactly changes
-			// from last frame.
-			clean();
+			// exactly changes from last frame.
+			clearSequences(GUISequence.GUI);
 	
 			if (toDisplay_generalGui) {
 				// Draw the general GUI (life, money...)
@@ -368,7 +367,7 @@ public class GUIDisplay {
 			sizeLine = sc.TEXTER_SIZELINE_SCRIPT;
 		}
 		EngineFX fx = EngineFX.FOCUSED;
-
+		EngineFX regular = EngineFX.NO_EFFECT;
 		
 		switch (toDisplay_dialogMode) {
 		case CLASSIC:
@@ -396,7 +395,8 @@ public class GUIDisplay {
 		case TEXTER:
 			visibleFont = true;
 			seq = creditSequence;
-			fx = EngineFX.NO_EFFECT;
+			regular = EngineFX.CLIP;
+			fx = regular;	// To get the first line clipped
 			width = sc.BIGTEXTER_WIDTH;
 			break;
 		case INFO:
@@ -500,10 +500,10 @@ public class GUIDisplay {
 				}
 			} else if (indexSpr == TXT_CHANGE_COLOR) {
 				// Toggle color: people's name
-				if (fx == EngineFX.NO_EFFECT) {
+				if (fx != EngineFX.FONT_PEOPLENAME) {
 					fx = EngineFX.FONT_PEOPLENAME;
 				} else {
-					fx = EngineFX.NO_EFFECT;
+					fx = regular;
 				}
 			} else {
 				// Store font's pointer to easily remove it later and scroll
@@ -725,6 +725,8 @@ public class GUIDisplay {
 	}
 	
 	public void displayTexter(String text, int pos) {
+		clearSequences(GUISequence.GUI);
+
 		setToDisplay_dialogMode(DialogMode.TEXTER);
 		if (creditSequence.isEmpty()) {
 			prepareTextInFrame(text, sc.BIGTEXTER_X, sc.BIGTEXTER_Y, false);
@@ -739,7 +741,7 @@ public class GUIDisplay {
 			// In texter mode, we display only fonts inside the texter frame
 			entity.setScrY((int) entity.y - pos);
 			int y = (int) entity.getScrY();
-			boolean vis = y > 16 && y < (sc.BIGTEXTER_HEIGHT + sc.BIGTEXTER_Y);
+			boolean vis = y > 8 && y < (sc.BIGTEXTER_HEIGHT + sc.BIGTEXTER_Y);
 			entity.setVisible(vis);
 		}
 	}
@@ -997,13 +999,6 @@ public class GUIDisplay {
 		if (zildo != null) {
 			countMoney = zildo.getMoney();
 		}
-	}
-	
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// clean
-	// /////////////////////////////////////////////////////////////////////////////////////
-	private void clean() {
-		guiSpritesSequence.clear();
 	}
 
 	/**

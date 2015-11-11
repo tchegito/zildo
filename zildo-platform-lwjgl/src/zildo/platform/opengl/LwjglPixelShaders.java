@@ -48,7 +48,9 @@ public class LwjglPixelShaders extends PixelShaders {
 		invincibility,
 		// Star
 		star,
-		fire;
+		fire,
+		// Clipping shader
+		clip;
 	}
 	
 	@Override
