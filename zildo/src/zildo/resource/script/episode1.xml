@@ -517,7 +517,7 @@
 	</mapScript>
 	
 	<scene id="preintro">
-		<music name=""/>
+		<music name="Story"/>
 		<fadeOut type="0"/>
 		<map name="preintro"/>
  	    <fadeIn type="0"/>

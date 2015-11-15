@@ -293,7 +293,7 @@ public class GUIDisplay {
 		if (toDisplay_dialogMode == DialogMode.TEXTER) {
 			// Frame under texter
 			drawBox(sc.BIGTEXTER_X-10, sc.BIGTEXTER_Y-10, 
-					sc.BIGTEXTER_WIDTH + 20, Zildo.viewPortY - 38, false);
+					sc.BIGTEXTER_WIDTH, Zildo.viewPortY - 38, false);
 		}
 		
 		drawConsoleMessages();
@@ -409,6 +409,7 @@ public class GUIDisplay {
 		for (i = 0; i <= texte.length(); i++) {
 			char a;
 			boolean signAlone = false; // Detect if a punctuation sign is alone (? or !)
+			boolean increase = true;
 			if (i == texte.length()) {
 				a = 0;
 			} else {
@@ -422,7 +423,7 @@ public class GUIDisplay {
 				if (sizeCurrentLine + sizeCurrentWord > width
 						|| a == '\n') {
 					// We must cut the line before the current word
-					if (a == '\n') {
+					if (a == '\n' && sizeCurrentLine + sizeCurrentWord <= width) {
 						sizesLine[nLigne] = sizeCurrentLine + sizeCurrentWord;
 						sizeCurrentWord = 0;
 						nSpr[nLettre] = TXT_END_OF_LINE;
@@ -430,6 +431,7 @@ public class GUIDisplay {
 						sizesLine[nLigne] = sizeCurrentLine;
 						if (lastSpacePosition != -1) { // Put 'ENDOFLINE' at the last space
 							nSpr[lastSpacePosition] = TXT_END_OF_LINE;
+							if (a == '\n') increase=false;
 						} else { // No space from the beginning of the message
 							nSpr[nLettre] = TXT_END_OF_LINE;
 						}
@@ -457,8 +459,7 @@ public class GUIDisplay {
 				// Store sprite's index to display for this letter
 				nSpr[nLettre] = getIndexCharacter(a);
 				// Get sprite model to obtain horizontal size
-				spr = ClientEngineZildo.spriteDisplay.getSpriteBank(nBank)
-						.get_sprite(nSpr[nLettre] + offsetNSpr);
+				spr = ClientEngineZildo.spriteDisplay.getSpriteBank(nBank).get_sprite(nSpr[nLettre] + offsetNSpr);
 				sizeCurrentWord += (spr.getTaille_x() + 1);
 				
 				if (toDisplay_dialogMode.isScript()) { // && i < nLettre && texte.charAt(i+1) != ' ') {
@@ -466,7 +467,7 @@ public class GUIDisplay {
 					sizeCurrentWord-= getLegibility(nSpr[nLettre]);
 				}
 			}
-			nLettre++;
+			if (increase) nLettre++;
 		}
 		sizesLine[nLigne] = sizeCurrentLine + sizeCurrentWord;
 

@@ -9,6 +9,7 @@ import zildo.client.gui.GUIDisplay.DialogMode;
 import zildo.client.gui.GUISequence;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardHandler.Keys;
+import zildo.fwk.ui.UIText;
 import zildo.monde.dialog.HistoryRecord;
 import zildo.server.EngineZildo;
 
@@ -19,9 +20,21 @@ public class TexterStage extends GameStage {
 	int position;
 	int texterHeight;	// Denormalisation of GUIDisplay.getTexterHeight()
 	
-	public TexterStage() {
-		List<HistoryRecord> records = EngineZildo.game.getLastDialog();
-		wholeText = HistoryRecord.getDisplayString(records);
+	public enum TexterKind {
+		LAST_DIALOGS,
+		GUIDE
+	}
+	
+	public TexterStage(TexterKind kind) {
+		switch (kind) {
+		case LAST_DIALOGS:
+			List<HistoryRecord> records = EngineZildo.game.getLastDialog();
+			wholeText = HistoryRecord.getDisplayString(records);
+			break;
+		case GUIDE:
+			wholeText = UIText.getMenuText("guide.txt", UIText.getCharacterName());
+			break;
+		}
 		kbHandler = Zildo.pdPlugin.kbHandler;
 		position = 0;
 	}

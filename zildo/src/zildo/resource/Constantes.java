@@ -89,7 +89,7 @@ public class Constantes {
 	public static final int TEXTER_NUMLINE = 3;
 	public static final int BIGTEXTER_X = 20;
 	public static final int BIGTEXTER_Y = 20;
-	public static final int BIGTEXTER_WIDTH = 265;
+	public static final int BIGTEXTER_WIDTH = 285;
 	public static final int BIGTEXTER_HEIGHT = Zildo.viewPortY - 38;
 	public static final int TEXTER_COORDINATE_X = 50;
 	public static final int TEXTER_COORDINATE_Y = 180;

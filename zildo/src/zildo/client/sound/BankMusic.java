@@ -34,7 +34,8 @@ public enum BankMusic implements AudioBank {
 	 Falcor("Falcor"),
 	 Voleurs("Voleurs"),
 	 Attaque("Attaque"),
-	 Squirrel("Roxyforest");
+	 Squirrel("Roxyforest"),
+	 Story("Story");
 	 
 	 private String filename;
 	 
