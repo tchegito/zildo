@@ -330,7 +330,15 @@ public class Game implements EasySerializable {
     
     /** Record given dialog inside history, limited by size **/
 	public void recordDialog(String key, String who, String mapName) {
-    	lastDialog.add(new HistoryRecord(key, who, mapName));
+		HistoryRecord newOne = new HistoryRecord(key, who, mapName);
+		// Check if last one isn't the same
+		if (lastDialog.size() > 0) {
+			HistoryRecord record = lastDialog.get(lastDialog.size() - 1);
+			if (record.equals(newOne)) {
+				return;	// Don't record
+			}
+		}
+    	lastDialog.add(newOne);
 		while (lastDialog.size() > Constantes.NB_MAX_DIALOGS_HISTORY) {
     		lastDialog.remove(0);
 		}

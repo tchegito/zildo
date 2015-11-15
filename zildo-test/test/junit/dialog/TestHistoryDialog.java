@@ -71,12 +71,23 @@ public class TestHistoryDialog extends EngineUT {
 		prepare();
 		
 		// Simulate a lot of talk (exceeds the limit)
-		String sentence = "key.0";
+		String sentence = "key.";
 		for (int i=0;i<Constantes.NB_MAX_DIALOGS_HISTORY*2;i++) {
-	        EngineZildo.dialogManagement.launchDialog(clientState, null, new ScriptAction(sentence, "roger"));
+	        EngineZildo.dialogManagement.launchDialog(clientState, null, new ScriptAction(sentence + i, "roger"));
 		}
 		// Check that history hasn't overflowed
 		assertDialog(Constantes.NB_MAX_DIALOGS_HISTORY, null, null);
+	}
+	
+	@Test
+	public void repeat() {
+		prepare();
+		String sentence = "key.0";
+		for (int i=0;i<2;i++) {
+			EngineZildo.dialogManagement.launchDialog(clientState, null, new ScriptAction(sentence, "roger"));
+		}
+		// Check that same sentence isn't recorded twice in succession
+		assertDialog(1, null, null);
 	}
 	
 	/**

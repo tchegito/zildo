@@ -56,4 +56,14 @@ public class HistoryRecord implements EasySerializable {
 		}
 		return sb.toString();
 	}
+	
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof HistoryRecord)) {
+			return false;
+		}
+		HistoryRecord r = (HistoryRecord) o;
+		return r.key.equals(key) &&
+			   r.who.equals(who) &&
+			   r.mapName.equals(mapName);
+	}
 }
