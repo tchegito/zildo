@@ -97,7 +97,7 @@ public class GUIDisplay {
 	final static int alphaPad = 128;
 	
 	final static char TXT_END_OF_LINE = (char)-2;
-	final static char TXT_CHANGE_COLOR = (char)-3;
+	public final static char TXT_CHANGE_COLOR = (char)-3;
 	
 	// External variables for interacting with GUI
 	private boolean toDisplay_dialoguing;

@@ -303,7 +303,9 @@ public class Client {
 				askForItemMenu(ingameMenu, "m7.quit");
 			}
 		}
-		if (kbHandler.isKeyPressed(Keys.COMPASS)) {
+		if (kbHandler.isKeyPressed(Keys.COMPASS) && 
+				ClientEngineZildo.guiDisplay.isToDisplay_generalGui() && 
+				ClientEngineZildo.guiDisplay.getToDisplay_dialogMode() != DialogMode.TEXTER) {
 			if (currentMenu instanceof CompassMenu) {
 				askForItemMenu(END_MENU_ITEM);
 			} else {

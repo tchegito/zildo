@@ -113,5 +113,8 @@ public class UIText {
 		return getText(gameBundle, p_key, characterName);
 	}
 	
+	public static String getGameText(String p_key, Object param) {
+		return getText(gameBundle, p_key, param);
+	}
 	
 }

@@ -7,6 +7,9 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.ui.UIText;
 import zildo.monde.map.Region;
+import zildo.server.EngineZildo;
+
+import static zildo.client.gui.GUIDisplay.TXT_CHANGE_COLOR;
 
 public class HistoryRecord implements EasySerializable {
 
@@ -38,6 +41,10 @@ public class HistoryRecord implements EasySerializable {
 	public static String getDisplayString(List<HistoryRecord> records) {
 		StringBuilder sb = new StringBuilder();
 		Region currentRegion = null;
+		if (records.isEmpty()) {
+			return UIText.getMenuText("dialogRecords.empty");
+		}
+		
 		for (HistoryRecord record : ZUtils.Reversed.reversed(records)) {
 			Region region = Region.fromMapName(record.mapName);
 			if (currentRegion != region) {
@@ -45,7 +52,7 @@ public class HistoryRecord implements EasySerializable {
 				sb.append(region.getName()).append("\n\n");
 			}
 			if (!ZUtils.isEmpty(record.who)) {	// Eliminate name for text without speaker (sign, scenario)
-				sb.append((char)-3).append(record.who).append((char)-3).append(": ");
+				sb.append(TXT_CHANGE_COLOR).append(record.who).append(TXT_CHANGE_COLOR).append(": ");
 			}
 			String sentence = UIText.getGameText(record.key);
 			sentence = sentence.replaceAll("(.*)\\#[0-9]", "$1");

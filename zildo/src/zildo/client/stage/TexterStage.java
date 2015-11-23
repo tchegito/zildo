@@ -1,6 +1,7 @@
 package zildo.client.stage;
 
 import static zildo.client.ClientEngineZildo.guiDisplay;
+import static zildo.client.gui.GUIDisplay.TXT_CHANGE_COLOR;
 
 import java.util.List;
 
@@ -32,7 +33,10 @@ public class TexterStage extends GameStage {
 			wholeText = HistoryRecord.getDisplayString(records);
 			break;
 		case GUIDE:
-			wholeText = UIText.getMenuText("guide.txt", UIText.getCharacterName());
+			// Surround hero name with symbols asking color change
+			String heroName = UIText.getCharacterName();
+			heroName = TXT_CHANGE_COLOR + heroName + TXT_CHANGE_COLOR;
+			wholeText = UIText.getMenuText("guide.txt", heroName);
 			break;
 		}
 		kbHandler = Zildo.pdPlugin.kbHandler;
