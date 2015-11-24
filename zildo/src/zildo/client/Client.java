@@ -82,6 +82,7 @@ public class Client {
 	boolean leftHanded;	// For touch screen
 	boolean movingCross; // For touch screen
 	Point crossCenter;	// When player first touch the right zone
+	Point draggingTouch;	// Player's dragging touch
 	
 	ItemMenu action = null;
 
@@ -472,6 +473,14 @@ public class Client {
 		this.crossCenter = crossCenter;
 	}
 
+	public Point getDraggingTouch() {
+		return draggingTouch;
+	}
+
+	public void setDraggingTouch(Point draggingTouch) {
+		this.draggingTouch = draggingTouch;
+	}
+	
 	public void setOpenGLGestion(OpenGLGestion glGestion) {
 		this.glGestion = glGestion;
 	}

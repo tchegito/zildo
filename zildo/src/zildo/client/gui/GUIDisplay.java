@@ -217,6 +217,8 @@ public class GUIDisplay {
 			scriptBigLegibility[i] = scriptLegibility[i] * 2;
 		}
 		scriptBigLegibility[transcoChar.indexOf("Q")]--;
+		scriptBigLegibility[transcoChar.indexOf("F")] = 3;
+		scriptBigLegibility[transcoChar.indexOf("C")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("T")] = 5;
 		scriptBigLegibility[transcoChar.indexOf("A")] = 4;
 		scriptBigLegibility[transcoChar.indexOf("H")] = 1;
@@ -228,7 +230,7 @@ public class GUIDisplay {
 		scriptBigLegibility[transcoChar.indexOf("o")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("s")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("i")] = 1;
-		scriptBigLegibility[transcoChar.indexOf("u")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("u")] = 2;
 		scriptBigLegibility[transcoChar.indexOf("r")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("b")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("e")] = 1;
@@ -237,6 +239,8 @@ public class GUIDisplay {
 		scriptBigLegibility[transcoChar.indexOf("f")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("h")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("x")] = 1;
+		scriptBigLegibility[transcoChar.indexOf("a")] = 2;
+		scriptBigLegibility[transcoChar.indexOf("v")] = 1;
 		
 		arrowSprite = transcoChar.length() + mapTranscoChar.get('~');
 	}
@@ -930,6 +934,10 @@ public class GUIDisplay {
 			boolean movingCross = ClientEngineZildo.client.isMovingCross();
 			if (movingCross) {
 				crossCenter = ClientEngineZildo.client.getCrossCenter();
+				Point drag = ClientEngineZildo.client.getDraggingTouch();
+				if (drag != null) {
+					guiSpritesSequence.addSprite(FontDescription.TOUCH_AURA, drag.x-16, drag.y-16);
+				}
 			} else {
 				crossCenter = new Point(10 + (80/2), Zildo.viewPortY - (80/2));
 			}

@@ -208,7 +208,9 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 				if (p != null) {	// Don't know why, but it can be NULL
 					// 1) fix moving cross center, on first touch
 					Point translated = new Point(p);
-					if (movingCross && KeyLocation.isInCrossArea(p)) {
+					if (movingCross &&
+							// Allow first touch only half of the screen, but drag everywhere
+							(infos.movingCrossCenter != null || KeyLocation.isInCrossArea(p))) {
 						atLeastOneInDpadArea = true;
 						if (infos.movingCrossCenter == null) {
 							infos.movingCrossCenter = p;
@@ -218,11 +220,12 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 						Point shift = new Point(infos.movingCrossCenter)
 							.translate(-repereCrossCenter.x, -repereCrossCenter.y);
 						translated.add(-shift.x, -shift.y);
+						ClientEngineZildo.client.setDraggingTouch(p);
 						//Log.d("TOUCH", "apply shift of "+shift+" which means p="+translated);
 					}
 					
 					for (KeyLocation kLoc : KeyLocation.values()) {
-						if (kLoc.isInto(translated, leftHanded)) {
+						if (kLoc.isInto(translated, leftHanded) || (kLoc == KeyLocation.VP_DPAD && movingCross && infos.movingCrossCenter != null)) {
 							if (kLoc == KeyLocation.VP_DPAD) {	// Special : d-pad zone
 								direction = DPadMovement.compute(translated.x - 50, translated.y - 200);
 							} else {
@@ -241,6 +244,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 			//Log.d("TOUCH", "Remove cross center");
 			infos.movingCrossCenter = null;
 			ClientEngineZildo.client.setCrossCenter(null);
+			ClientEngineZildo.client.setDraggingTouch(null);
 		}
 	}
 	
