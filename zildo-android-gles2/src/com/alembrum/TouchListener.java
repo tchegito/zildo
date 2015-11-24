@@ -29,6 +29,8 @@ import zildo.monde.util.Point;
 import zildo.platform.input.AndroidInputInfos;
 import zildo.platform.input.AndroidKeyboardHandler;
 import zildo.platform.input.TouchPoints;
+import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -68,6 +70,7 @@ public class TouchListener implements OnTouchListener {
 	
 	final TouchPoints touchedPoints;
 	
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		int index = event.getActionIndex();
@@ -142,6 +145,8 @@ public class TouchListener implements OnTouchListener {
 
 			break;
 		case MotionEvent.ACTION_CANCEL:
+			Log.d("touch", "on clear => CANCEL");
+			touchedPoints.clear();	// VERY important ! Otherwise, moves would have continue
 			activePointerId = INACTIVE_POINTER;
 			//Log.d("TOUCH", "ends up gesture");
 			break;
