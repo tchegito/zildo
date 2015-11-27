@@ -20,6 +20,7 @@
 package zildo.fwk.input;
 
 import zildo.monde.Trigo;
+import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
 
@@ -28,7 +29,10 @@ import zildo.monde.util.Vector2f;
  *
  */
 public class DPadMovement {
-	final static float[] forces = {0.2f, 0.6f, 1}; 
+	// Variables being public just for usage in UT
+	public static float[] forces = {0.2f, 0.6f, 1}; 
+	
+	public final static int DISTANCE_MAX = 80;
 	
 	float direction;
 	
@@ -57,5 +61,19 @@ public class DPadMovement {
 		}
 		v.set(clamped * (ppx / distance), clamped * (ppy / distance));
 		return v; 
+	}
+	
+	/** Check distance between cross and touch, and move cross if it's too far **/
+	public static Point moveCenter(Point center, Point touch) {
+		// Check if movement is too far from the cross
+		double distance = Pointf.pythagore(touch.x - center.x, touch.y - center.y);
+		if (distance < DISTANCE_MAX) {
+			return center;
+		}
+		// Move along cross center in direction of 'touch' point
+		double alpha = Trigo.getAngleRadianWithDistance(touch.x, touch.y, center.x, center.y, distance);
+		Vector2f v = Trigo.vect(alpha, DISTANCE_MAX).add(touch);
+		
+		return new Point(v.x, v.y);
 	}
 }

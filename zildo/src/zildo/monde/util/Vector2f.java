@@ -68,10 +68,18 @@ public class Vector2f {
     	return this;
     }
     
-    public Vector2f mul(float factor) {
-    	x *= factor;
-    	y *= factor;
+    public Vector2f add(Point p) {
+    	x += p.x;
+    	y += p.y;
     	return this;
+    }
+    
+    /** Do not modify current vector **/
+    public Vector2f mul(float factor) {
+    	Vector2f ret = new Vector2f(x, y);
+    	ret.x *= factor;
+    	ret.y *= factor;
+    	return ret;
     }
     
     /**
@@ -108,6 +116,23 @@ public class Vector2f {
 	public Vector2f rotY() {
 		return new Vector2f(0, Math.signum(y) * norm());
 	}
+
+    @Override
+    public boolean equals(Object o) {
+    	if (o == null || !(o instanceof Vector2f)) {
+    		return false;
+    	}
+    	return equals( (Vector2f) o);
+    }
+    
+	public boolean equals(Vector2f v) {
+		return x == v.x && y == v.y;
+	}
+	
+	public float distance(Vector2f v) {
+		return Pointf.distance(x, y, v.x, v.y);
+	}
+	
     @Override
 	public String toString() {
     	return "x:"+x+", y:"+y;

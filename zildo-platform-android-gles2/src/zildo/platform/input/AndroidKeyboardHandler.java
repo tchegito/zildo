@@ -221,6 +221,13 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 							.translate(-repereCrossCenter.x, -repereCrossCenter.y);
 						translated.add(-shift.x, -shift.y);
 						ClientEngineZildo.client.setDraggingTouch(p);
+						
+						// Moving center feature: when touch is too far of the cross, cross follow
+						Point newCenter = DPadMovement.moveCenter(infos.movingCrossCenter, p);
+						if (!newCenter.equals(infos.movingCrossCenter)) {
+							infos.movingCrossCenter = newCenter;
+							ClientEngineZildo.client.setCrossCenter(newCenter);
+						}
 						//Log.d("TOUCH", "apply shift of "+shift+" which means p="+translated);
 					}
 					
