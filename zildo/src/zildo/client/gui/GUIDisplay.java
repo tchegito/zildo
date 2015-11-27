@@ -942,7 +942,10 @@ public class GUIDisplay {
 				crossCenter = new Point(10 + (80/2), Zildo.viewPortY - (80/2));
 			}
 			if (crossCenter != null) {
-				int x1 = computeForLeftHanded(crossCenter.x - (80/2), FontDescription.VIRTUAL_PAD);
+				int x1 = crossCenter.x - (80/2);
+				if (!movingCross) {
+					x1 = computeForLeftHanded(x1, FontDescription.VIRTUAL_PAD);
+				}
 				guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, x1, crossCenter.y -(80/2), curAlpha);
 			}
 			int x2 = computeForLeftHanded(Zildo.viewPortX - 24 - 16 + 2, FontDescription.BUTTON_Y);

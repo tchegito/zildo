@@ -22,6 +22,7 @@ package zildo.platform.input;
 
 import java.util.EnumMap;
 
+import android.util.Log;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.input.CommonKeyboardHandler;
@@ -202,8 +203,8 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 
 			// Update all keys state
 			
-			boolean leftHanded = ClientEngineZildo.client.isLeftHanded();
 			boolean movingCross = ClientEngineZildo.client.isMovingCross();
+			boolean leftHanded = !movingCross && ClientEngineZildo.client.isLeftHanded();
 			for (Point p : polledTouchedPoints.getAll()) {
 				if (p != null) {	// Don't know why, but it can be NULL
 					// 1) fix moving cross center, on first touch
@@ -232,9 +233,12 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 					}
 					
 					for (KeyLocation kLoc : KeyLocation.values()) {
-						if (kLoc.isInto(translated, leftHanded) || (kLoc == KeyLocation.VP_DPAD && movingCross && infos.movingCrossCenter != null)) {
+						if (kLoc.isInto(translated, leftHanded) || 
+								// For DPAD on moving mode, allow full screen
+								(kLoc == KeyLocation.VP_DPAD && movingCross && infos.movingCrossCenter != null)) {
 							if (kLoc == KeyLocation.VP_DPAD) {	// Special : d-pad zone
-								direction = DPadMovement.compute(translated.x - 50, translated.y - 200);
+								int shiftX = leftHanded ? kLoc.zLeftHanded.x1 : 0;	// For left handed, pad is on the right
+								direction = DPadMovement.compute(translated.x - 50 - shiftX, translated.y - 200);
 							} else {
 								keyStates[kLoc.keyCode] = true;
 								if (kLoc.keyCode2 != -1) {
