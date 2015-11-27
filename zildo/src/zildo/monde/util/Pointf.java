@@ -81,6 +81,14 @@ public class Pointf {
     	return x == p.x && y == p.y;
     }
     
+    @Override
+    public boolean equals(Object o) {
+    	if (o == null || !(o instanceof Pointf)) {
+    		return false;
+    	}
+    	return equals( (Pointf) o);
+    }
+    
     public boolean isSame(Pointf other) {
     	return Math.abs((x-other.x)) < 0.001 && Math.abs((y-other.y)) < 0.001; 
     }
