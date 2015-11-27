@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import zildo.client.stage.TexterStage;
 import zildo.client.stage.TexterStage.TexterKind;
+import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 
@@ -14,6 +15,7 @@ public class CompassMenu extends Menu {
 		items.add(new ItemMenu("m13.map") {
 			@Override
 			public void run() {
+				client.handleMenu(new InfoMenu("m13.map.unavailable", null));
 			}
 		});
 		items.add(new ItemMenu("m13.dial") {
