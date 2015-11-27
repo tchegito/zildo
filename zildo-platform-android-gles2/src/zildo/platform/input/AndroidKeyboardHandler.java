@@ -22,7 +22,6 @@ package zildo.platform.input;
 
 import java.util.EnumMap;
 
-import android.util.Log;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.input.CommonKeyboardHandler;
