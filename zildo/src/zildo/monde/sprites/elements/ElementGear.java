@@ -203,6 +203,10 @@ public class ElementGear extends Element {
 		return acting;
 	}
 	
+	public boolean isOpen() {
+		return !(state == null) && state;
+	}
+	
 	@Override
 	public boolean isSolid() {
 		if (Boolean.TRUE == state) {

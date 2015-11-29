@@ -709,7 +709,8 @@ public class ActionExecutor extends RuntimeExecutor {
             case activate:
         		Element toActivate = getNamedElement(p_action.what);
         		ElementGear gearToActivate = (ElementGear) toActivate;
-        		achieved=!gearToActivate.isActing();
+        		// Important: unblock is managed HERE, to avoid blocking mapscript conditions
+        		achieved=!gearToActivate.isActing() || p_action.unblock;
             	break;
             case exec:
             	// Wait for subscript to be over (in theory, this check is useful ONLY WHEN an unlocking scene (for example, persoAction) is calling

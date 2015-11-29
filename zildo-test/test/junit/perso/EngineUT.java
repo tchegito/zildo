@@ -22,12 +22,16 @@ package junit.perso;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 
 import java.util.Collections;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Any;
 
 import zildo.Zildo;
 import zildo.client.Client;
@@ -48,6 +52,7 @@ import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
 import zildo.fwk.input.CommonKeyboardHandler;
 import zildo.fwk.input.KeyboardHandler;
+import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.monde.Game;
@@ -303,10 +308,28 @@ public class EngineUT {
 	/** Simulates player holding a direction with the d-pad **/
 	public void simulateDirection(Vector2f dir) {
 		when(fakedKbHandler.getDirection()).thenReturn(dir);
-
 		instant.update();
 	}
 
+	public void simulateKeyPressed(Keys key) {
+		reset(fakedKbHandler);
+		if (key == null) {
+			doReturn(false).when(fakedKbHandler).isKeyDown(anyInt());
+		} else {
+			doReturn(true).when(fakedKbHandler).isKeyDown(key);
+		}
+		//when(fakedKbHandler.isKeyPressed(key)).thenReturn(true);
+		instant.update();
+	}
+	
+	/** Press a key, wait, then hold it, and wait again given time (by frame number) **/
+	public void simulatePressButton(Keys key, int time) {
+		simulateKeyPressed(key);
+		renderFrames(1);
+		simulateKeyPressed(null);
+		renderFrames(time);		
+	}
+	
 	@After
 	public void tearDown() {
 		// Reset input

@@ -985,6 +985,14 @@
    		<condition name="prison" exp="zildoAccessIgor">
    		    <remove who="igor"/>
    		</condition>
+   		<condition name="prison" exp="visit_igorprison">
+			<activate what="igordoor1" value="true" unblock="true"/>
+	    	<activate what="igordoor2" value="true" unblock="true"/>
+   		</condition>
+   		<condition name="prison" exp="visit_gpprison">
+			<activate what="gpdoor1" value="true" unblock="true"/>
+	    	<activate what="gpdoor2" value="true" unblock="true"/>
+   		</condition>
    		<condition name="prison3">
    		    <markQuest name="prison4_doors" value="false"/>
    		</condition>
@@ -1007,8 +1015,9 @@
    		    <markQuest name="p6_trigger_smoke" value="false"/>
    		</condition>
    		<condition exp="zildoAccessIgor-!freedIgor" scroll="false">
+   		    <!-- Igor is following hero until they get out of the prison -->
    		    <spawn who="igor" pos="zildo.x,zildo.y" type="IGOR" speed="0.7"/>
-   		    <visible who="igor" value="false"/>
+   		    <!-- <visible who="igor" value="false"/> -->
    		    <script who="igor" value="16" effect="zildo"/>
    		</condition>
    		<condition name="coucou" exp="!secretDoorRevealed">
