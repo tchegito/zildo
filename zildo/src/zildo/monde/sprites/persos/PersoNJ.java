@@ -72,6 +72,7 @@ public class PersoNJ extends Perso {
 					break;
 				case BOW:
 					action = new ShotArrowAction(this);
+				default:
 					break;
 			}
 		}
@@ -537,6 +538,7 @@ public class PersoNJ extends Perso {
 			case OUEST:
 				add_spr = 2 + seq2;
 				reverse = Reverse.NOTHING;
+			default:
 				break;
 			}
 			break;
@@ -725,6 +727,7 @@ public class PersoNJ extends Perso {
 			if (quel_deplacement != MouvementPerso.IMMOBILE) {
 				setDesc(PersoDescription.MOUSTACHU);
 			}
+		default:
 			break;
 		}
 
@@ -818,6 +821,7 @@ public class PersoNJ extends Perso {
 				break;
 			case HEN:
 				setAttente(10 + Hasard.rand(20));
+			default:
 				break;
 			}
 		}
@@ -864,6 +868,7 @@ public class PersoNJ extends Perso {
 				if (dix < 0 && dix > -DISTANCEMAX) {
 					r = true;
 				}
+			default:
 				break;
 			}
 		}
@@ -943,6 +948,8 @@ public class PersoNJ extends Perso {
 			case SPECTRE:
 			case OISEAU_VERT:
 				flying = true;
+			default:
+			
 		}
 	}
 }
