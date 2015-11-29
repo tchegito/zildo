@@ -31,6 +31,8 @@ public class TestHistoryDialog extends EngineUT {
 	// TODO: Check if we need to remove repeated sentences
 
 	private void prepare() {
+		// Load any map but 'preintro', because we filter dialog on this one
+		mapUtils.loadMap("coucou");
 		spawnZildo(160, 100);
 	}
 
@@ -45,6 +47,7 @@ public class TestHistoryDialog extends EngineUT {
 		Perso perso = new PersoNJ();
 
 		MapDialog mapDialog = EngineZildo.mapManagement.getCurrentMap().getMapDialog();
+		mapDialog.getDialogs().clear();
 		mapDialog.addBehavior(who2, new short[] { 1, 2, 3 });
 		mapDialog.addSentence("preintro.0");
 

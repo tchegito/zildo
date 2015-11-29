@@ -331,7 +331,7 @@ public class Game implements EasySerializable {
     /** Record given dialog inside history, limited by size **/
 	public void recordDialog(String key, String who, String mapName) {
 		// Exclude some dialogs
-		if (mapName.equals("preintro")) {
+		if (mapName.equals("preintro") || who == null) {
 			return;
 		}
 		HistoryRecord newOne = new HistoryRecord(key, who, mapName);

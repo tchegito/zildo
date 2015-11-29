@@ -85,12 +85,12 @@ public class TileCollisionTest extends EngineUT {
 		
 		int mudWaterTile = Tile.T_WATER_MUD;
 		
-		// Check different Z level on same tile
+		// Check same Z level on same tile
 		Assert.assertEquals(-2, tileCollision.getBottomZ(8, 8, mudWaterTile, false));
-		Assert.assertEquals(0, tileCollision.getBottomZ(0, 0, mudWaterTile, false));
+		Assert.assertEquals(-2, tileCollision.getBottomZ(0, 0, mudWaterTile, false));
 		
 		Assert.assertEquals(-2, tileCollision.getBottomZ(11, 9, mudWaterTile, false));
-		Assert.assertEquals(0, tileCollision.getBottomZ(10, 1, mudWaterTile, false));
+		Assert.assertEquals(-2, tileCollision.getBottomZ(10, 1, mudWaterTile, false));
 		
 		// Check perso bottom z
 		PersoPlayer hero = (PersoPlayer) spawnZildo(619, 249);
