@@ -25,7 +25,6 @@ import java.util.List;
 
 import zildo.Zildo;
 import zildo.client.sound.BankSound;
-import zildo.client.stage.SinglePlayer;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.filter.CircleFilter;
@@ -102,7 +101,6 @@ public class PersoPlayer extends Perso {
 
 	// Linked elements
 	Element shield;
-	Element feet;
 	Element sword;
 
 	ZildoSprSequence swordSequence = new ZildoSprSequence();
@@ -167,10 +165,6 @@ public class PersoPlayer extends Perso {
 
 		shadow = new Element(this);
 		shadow.setDesc(ElementDescription.SHADOW);
-		
-		feet = new Element(this);
-		feet.setNBank(SpriteBank.BANK_ZILDO);
-		feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
 
 		sword = new Element(this);
 		sword.setNBank(SpriteBank.BANK_ZILDO);
@@ -180,7 +174,6 @@ public class PersoPlayer extends Perso {
 
 		addPersoSprites(shield);
 		addPersoSprites(shadow);
-		addPersoSprites(feet);
 		addPersoSprites(sword);
 
 		// weapon=new Item(ItemKind.SWORD);
@@ -1004,18 +997,9 @@ public class PersoPlayer extends Perso {
 			setSpecialEffect(EngineFX.FOCUSED);
 		}
 		
-		feet.setVisible(pv > 0 && (inWater || inDirt));
+		super.finaliseComportement(compteur_animation);
 		feet.setX(x + shiftWetFeet);
 		feet.setY(y + 9 + 1);
-		feet.setZ(3);
-		feet.setAddSpr((compteur_animation / 6) % 3);
-		if (inWater) {
-			feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
-		} else if (inDirt) {
-			feet.setNSpr(ZildoDescription.DIRT1.getNSpr());
-			feet.setY(feet.getY() - 3);
-		}
-		feet.setForeground(false);
 	}
 
 	/**

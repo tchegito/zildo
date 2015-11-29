@@ -25,6 +25,7 @@ import java.util.Map;
 
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.ia.PathFinderFlying;
 import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
@@ -79,8 +80,8 @@ public class PersoVolant extends PersoNJ {
 	@Override
 	public void animate(int compteur_animation) {
 		for (Element e : persoSprites) {
-			ElementDescription d = (ElementDescription) e.getDesc();
-			if (!d.isShadow()) {
+			SpriteDescription d = e.getDesc();
+			if (!(d instanceof ElementDescription) || !((ElementDescription)d).isShadow()) {
 				Point grabber = grabPoint.get(getDesc());
 				if (grabber == null) {
 					Zone sprZone = getZone();

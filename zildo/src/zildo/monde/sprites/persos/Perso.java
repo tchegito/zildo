@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.client.sound.BankSound;
+import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.items.Item;
@@ -38,6 +39,7 @@ import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
+import zildo.monde.sprites.desc.ZildoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.magic.PersoAffections;
@@ -79,6 +81,8 @@ public abstract class Perso extends Element {
 	protected int pos_seqsprite;
 	private Element en_bras; // If this is Zildo, what he holds. If any perso,
 								// his weapon
+	Element feet;
+
 	protected MouvementZildo mouvement; // Situation du
 										// perso:debout,couché,attaque...
 	protected int cptMouvement; // Un compteur pour les mouvements des PNJ
@@ -357,6 +361,12 @@ public abstract class Perso extends Element {
 		super();
 		
 		initFields();
+		
+		feet = new Element(this);
+		feet.setNBank(SpriteBank.BANK_ZILDO);
+		feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
+		addPersoSprites(feet);
+
 	}
 	
 	public boolean isBlinking() {
@@ -528,7 +538,22 @@ public abstract class Perso extends Element {
 	 * an NPC block.
 	 * @param compteur_animation
 	 */
-	public abstract void finaliseComportement(int compteur_animation);
+	public  void finaliseComportement(int compteur_animation) {
+		feet.setVisible(pv > 0 && (inWater || inDirt));
+		if (inWater || inDirt) {
+			feet.setX(x);
+			feet.setY(y + 9 + 1);
+			feet.setZ(3);
+			feet.setAddSpr((compteur_animation / 6) % 3);
+			if (inWater) {
+				feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
+			} else if (inDirt) {
+				feet.setNSpr(ZildoDescription.DIRT1.getNSpr());
+				feet.setY(feet.getY() - 3);
+			}
+			feet.setForeground(false);
+		}
+	}
 
 	public void cancelMove() {
 		x = prevX;

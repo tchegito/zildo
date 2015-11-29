@@ -20,8 +20,6 @@
 
 package zildo.monde.sprites.persos;
 
-import java.util.Iterator;
-
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
@@ -41,10 +39,12 @@ public class PersoGardeVert extends PersoNJ {
 
 	public static final int[] mouvetete={0,3,1,0};
 
+	Element teteGarde;
+	
 	public PersoGardeVert() {
 		super();
 		// On crée la tête du garde
-		Element teteGarde=new Element();
+		teteGarde=new Element();
 		teteGarde.setX(getX());
 		teteGarde.setY(getY()-12);
 		teteGarde.setNBank(SpriteBank.BANK_PNJ);
@@ -58,10 +58,7 @@ public class PersoGardeVert extends PersoNJ {
 	public void finaliseComportement(int compteur_animation) {
 		super.finaliseComportement(compteur_animation);
 		
-		// On affiche la tête du garde vert
-		Iterator<Element> it=this.persoSprites.iterator();
-		Element teteGarde=it.next();
-
+		// Display green guard's head
 		teteGarde.setNSpr(PersoDescription.HAUT_GARDEVERT.first() + (angle.value + mouvetete[cptMouvement])  % 4);
 		teteGarde.setX(x);
 		teteGarde.setY(y);

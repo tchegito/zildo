@@ -729,6 +729,7 @@ public class PersoNJ extends Perso {
 		}
 
 		this.setNSpr(d.nth(add_spr));
+		super.finaliseComportement(compteur_animation);
 	}
 
 	/**
