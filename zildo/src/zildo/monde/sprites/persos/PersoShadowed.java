@@ -48,11 +48,10 @@ public class PersoShadowed extends PersoNJ {
 	@Override
 	public void finaliseComportement(int compteur_animation) {
 		// Move character's shadow
-		if (persoSprites.size() > 0) {
-			Element ombre = persoSprites.get(0);
-			ombre.setX(x);
-			ombre.setY(y - 1);
-			ombre.setZ(-7 + addY);
+		if (shadow != null) {
+			shadow.setX(x);
+			shadow.setY(y - 1);
+			shadow.setZ(-7 + addY);
 			// TODO:Check this ! Removed when adding fish behavior (no shadow in the water, naturally)
 			//ombre.setVisible(z >= 0);
 		}
