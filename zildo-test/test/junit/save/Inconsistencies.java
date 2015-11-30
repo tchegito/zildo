@@ -8,14 +8,11 @@ import org.junit.Test;
 import zildo.client.gui.menu.SaveGameMenu;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.input.KeyboardHandler.Keys;
-import zildo.monde.Game;
-import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
-import zildo.server.state.ClientState;
 
 public class Inconsistencies extends EngineUT {
 
@@ -84,5 +81,18 @@ public class Inconsistencies extends EngineUT {
 		waitEndOfScripting();
 		renderFrames(30);
 		Assert.assertTrue(igorDoor.isOpen());
+	}
+	
+	@Test
+	public void freezeInLugduniaCave() {
+		mapUtils.loadMap("foret");
+		PersoPlayer zildo = spawnZildo(672,237);
+		EngineZildo.scriptManagement.accomplishQuest("foretg_button_trig", false);
+		simulateDirection(new Vector2f(0, -1f));
+		renderFrames(100);
+		
+		waitEndOfScripting();
+		Assert.assertEquals("foretg", EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertFalse(zildo.isGhost());
 	}
 }

@@ -19,19 +19,18 @@
 
 package junit.perso;
 
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.*;
 
 import java.util.Collections;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Any;
 
 import zildo.Zildo;
 import zildo.client.Client;
@@ -42,6 +41,7 @@ import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.ScreenConstant;
 import zildo.client.sound.SoundPlay;
 import zildo.fwk.FilterCommand;
+import zildo.fwk.ZUtils;
 import zildo.fwk.bank.TileBank;
 import zildo.fwk.db.Identified;
 import zildo.fwk.gfx.Ortho;
@@ -88,6 +88,8 @@ public class EngineUT {
 	protected KeyboardInstant instant;
 	static KeyboardHandler fakedKbHandler;	// Will be reused all along
 	
+	Thread freezeMonitor;
+
 	int nFrame = 0;
 	
 	protected Perso spawnTypicalPerso(String name, int x, int y) {
@@ -289,6 +291,31 @@ public class EngineUT {
 			fakedKbHandler = org.mockito.Mockito.mock(CommonKeyboardHandler.class);
 		}
 		Zildo.pdPlugin.kbHandler = fakedKbHandler;
+		
+		// Create a thread wich monitors any freeze
+		freezeMonitor = new Thread() {
+			boolean done= false;
+			int lastOne;
+			int cnt=0;
+			@Override
+			public void run() {
+				while (!done) {
+					if (lastOne == nFrame) {
+						// Still on the same frame ?
+						if (++cnt == 5) {
+							System.out.println("We got a freeze !");
+							// Rude, but no bugs are tolerated in Alembrume !
+							System.exit(1);
+						}
+					} else {
+						lastOne = nFrame;
+						cnt = 0;
+					}
+					ZUtils.sleep(500);
+				}
+			};
+		};
+		freezeMonitor.start();
 	}
 	
 	public void waitEndOfScripting() {
@@ -330,10 +357,13 @@ public class EngineUT {
 		renderFrames(time);		
 	}
 	
+	@SuppressWarnings("deprecation")
 	@After
 	public void tearDown() {
 		// Reset input
 		simulateDirection(new Vector2f(0, 0));
+		// Deprecated, but we're not concerned by limitations here
+		freezeMonitor.stop();
 	}
 	
 	private void initCounters() {
