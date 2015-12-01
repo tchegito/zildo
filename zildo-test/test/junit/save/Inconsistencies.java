@@ -116,27 +116,28 @@ public class Inconsistencies extends EngineUT {
 		// If we must found, ensure that with at least one value (6) it works
 		// But if we must not found, ensure that for EACH value, we found nothing
 		for (int i=start;i<6;i++) {
-			ElementGoodies goodies= enemyDieAndDropWithFakeHasard(batX, batY, i);
+			mapUtils.loadMap("voleursg5");
+			ElementGoodies goodies= enemyDieAndDropWithFakeHasard("new", batX, batY, i);
 
 			Assert.assertEquals(mustFound, goodies != null);
 		}
 	}
 	
-	private ElementGoodies enemyDieAndDropWithFakeHasard(int batX, int batY, final int val) {
+	private ElementGoodies enemyDieAndDropWithFakeHasard(String persoName, int batX, int batY, final int val) {
 		EngineZildo.hasard = new Hasard() {
 			@Override
 			public int de6() {
 				return val;
 			}
 		};
-		mapUtils.loadMap("voleursg5");
 		// Spawn Zildo at a random place, just to give him a necklace (otherwise, blue drop will never be dropped)
 		PersoPlayer zildo = spawnZildo(101, 224);
 		zildo.getInventory().add(new Item(ItemKind.NECKLACE));
-		Perso bat = EngineZildo.persoManagement.getNamedPerso("new");
+		Perso bat = EngineZildo.persoManagement.getNamedPerso(persoName);
 		// Place bat in a wall=blocked position
 		bat.placeAt(batX, batY);
-		bat.beingWounded(bat.x-5, bat.y, null, 2);
+		// Hurt perso with his max HP
+		bat.beingWounded(bat.x-5, bat.y, null, bat.getPv());
 		renderFrames(50);
 		// Ensure bat is dead
 		Assert.assertTrue(bat.getPv() == 0);
@@ -154,8 +155,15 @@ public class Inconsistencies extends EngineUT {
 	public void enemyDropItemWrongFloor() {
 		// Check that a bat at floor 1 dying on a case where floor is at 0, drop an item on floor 0
 		// So player can reach it
-		ElementGoodies goodies = enemyDieAndDropWithFakeHasard(503, 358, 6);
+		mapUtils.loadMap("voleursg5");
+		ElementGoodies goodies = enemyDieAndDropWithFakeHasard("new", 503, 358, 6);
 		Assert.assertNotNull(goodies);
 		Assert.assertEquals(0, goodies.getFloor());
+		
+		mapUtils.loadMap("prison5");
+		goodies = enemyDieAndDropWithFakeHasard("bigrat2", 655, 272, 6);
+		Assert.assertNotNull(goodies);
+		Assert.assertEquals(1, goodies.getFloor());
+		
 	}
 }

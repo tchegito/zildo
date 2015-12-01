@@ -430,10 +430,11 @@ public class SpriteManagement extends SpriteStore {
 			int f = floor;
 			// Find the highest existent floor (for bat dropping their item on an inaccessible floor for player)
 			while (f > 0) {
-				if (EngineZildo.mapManagement.getCurrentMap().get_mapcase(x, y, f) != null) break;
+				if (EngineZildo.mapManagement.getCurrentMap().get_mapcase(x >> 4, y >> 4, f) != null) break;
 				f--;
 			}
 			element.floor = f;
+			if (element2 != null) element2.floor = f;
 			spawnSprite(element);
 		}
 		
