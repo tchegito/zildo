@@ -19,7 +19,6 @@
 
 package zildo.monde.sprites.persos;
 
-import zildo.monde.Hasard;
 import zildo.monde.Trigo;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -60,7 +59,7 @@ public class PersoSpider extends PersoShadowed {
 				Perso zildo = EngineZildo.persoManagement.lookFor(this, 5, PersoInfo.ZILDO);
 				if (zildo != null) {
 					attackAngle = Trigo.getAngleRadian(x, y, zildo.x, zildo.y);
-					attackAngle += Hasard.intervalle((float) (Math.PI / 4f));
+					attackAngle += EngineZildo.hasard.intervalle((float) (Math.PI / 4f));
 					attackSpeed += Math.random() * 1.2f;
 				} else {
 					attackAngle = Math.random() * 2 * Math.PI;

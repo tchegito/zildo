@@ -20,7 +20,7 @@
 
 package zildo.monde.collision;
 
-import zildo.monde.Hasard;
+import static zildo.server.EngineZildo.hasard;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.Perso;
 
@@ -57,7 +57,7 @@ public enum DamageType {
 		case HARMLESS:
 			return 0;
 		case PEEBLE:
-			return Math.max(0, Hasard.rangeInt(-1, 1));
+			return Math.max(0, hasard.rangeInt(-1, 1));
 		default:
 			return 1;
 		}

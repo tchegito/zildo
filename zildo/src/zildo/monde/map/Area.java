@@ -39,7 +39,7 @@ import zildo.fwk.collection.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.script.xml.element.TriggerElement;
-import zildo.monde.Hasard;
+import static zildo.server.EngineZildo.hasard;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.items.ItemKind;
@@ -711,13 +711,13 @@ public class Area implements EasySerializable {
 				if (spawnGoodies) {
 					PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
 	
-					if ((multiPlayer || zildo.hasItem(ItemKind.BOW) && Hasard.lanceDes(Hasard.hazardBushes_Arrow))) {
+					if ((multiPlayer || zildo.hasItem(ItemKind.BOW) && hasard.lanceDes(hasard.hazardBushes_Arrow))) {
 						sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 1, 0, zildo, null);
-					} else if (Hasard.lanceDes(Hasard.hazardBushes_GoldCoin)) {
+					} else if (hasard.lanceDes(hasard.hazardBushes_GoldCoin)) {
 						sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, p.x, p.y + 5, 1, 0, zildo, null);
-					} else if (Hasard.lanceDes(Hasard.hazardBushes_BlueDrop)) {
+					} else if (hasard.lanceDes(hasard.hazardBushes_BlueDrop)) {
 						sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, p.x + 3, p.y + 5, 1, p_destroy ? 0 : 1, zildo, null);
-					} else if (multiPlayer && Hasard.lanceDes(Hasard.hazardBushes_Bombs)) {
+					} else if (multiPlayer && hasard.lanceDes(hasard.hazardBushes_Bombs)) {
 						sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 1, 0,
 								zildo, ElementDescription.BOMBS3);
 					}

@@ -22,7 +22,7 @@ package zildo.monde.sprites.persos;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.EngineFX;
-import zildo.monde.Hasard;
+import static zildo.server.EngineZildo.hasard;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.items.Item;
@@ -805,22 +805,22 @@ public class PersoNJ extends Perso {
 
 	public void destinationReached() {
 		if (!isGhost() && quel_deplacement != MouvementPerso.BEE
-				&& (quel_deplacement != MouvementPerso.RAT || Hasard.lanceDes(8))) {
+				&& (quel_deplacement != MouvementPerso.RAT || hasard.lanceDes(8))) {
 			switch (quel_deplacement) {
 			case BEE:
 				break;	// No wait
 			case CAT:
-				setAttente(60 + Hasard.rand(40));
+				setAttente(60 + hasard.rand(40));
 				break;
 			case RAT:
-				if (Hasard.lanceDes(8)) {
+				if (hasard.lanceDes(8)) {
 					break;
 				}
 			case SQUIRREL:
-				setAttente(5 + Hasard.rand(15));
+				setAttente(5 + hasard.rand(15));
 				break;
 			case HEN:
-				setAttente(10 + Hasard.rand(20));
+				setAttente(10 + hasard.rand(20));
 			default:
 				break;
 			}
@@ -883,7 +883,7 @@ public class PersoNJ extends Perso {
 			// Monster just died. We check, a bonus may appear.
 			int k, m;
 			SpriteAnimation anim = null;
-			k = 1 + (int) (Math.random() * 6);
+			k = hasard.de6();
 			m = 0;
 			
 			ElementDescription itemDesc = carriedItem;

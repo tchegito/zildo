@@ -22,7 +22,7 @@ package zildo.monde.sprites.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import zildo.monde.Hasard;
+import static zildo.server.EngineZildo.hasard;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.Reverse;
@@ -69,7 +69,7 @@ public class ElementPoison extends Element {
 			} else if (des12 == 1) {
 				cloud.reverse = Reverse.ALL;
 			}
-			if (Hasard.lanceDes(5)) {
+			if (hasard.lanceDes(5)) {
 				cloudDesc = ElementDescription.POISON2;
 			}
 			cloud.setDesc(cloudDesc);

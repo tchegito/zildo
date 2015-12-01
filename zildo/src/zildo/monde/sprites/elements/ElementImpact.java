@@ -20,8 +20,8 @@
 
 package zildo.monde.sprites.elements;
 
+import static zildo.server.EngineZildo.hasard;
 import zildo.client.sound.BankSound;
-import zildo.monde.Hasard;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.Reverse;
@@ -88,7 +88,7 @@ public class ElementImpact extends Element {
 		kind=p_kind;
 		switch (p_kind) {
 			case DUST:
-				if (Hasard.lanceDes(5)) 
+				if (hasard.lanceDes(5)) 
 					reverse = Reverse.HORIZONTAL;
 			case SIMPLEHIT:
 			case FIRESMOKE:
@@ -112,6 +112,7 @@ public class ElementImpact extends Element {
 				composite=new CompositeElement(this);
 				composite.squareShape(0,0);
 				alpha = 255;
+			default:
 				break;
 		}
 		addSpr=0;

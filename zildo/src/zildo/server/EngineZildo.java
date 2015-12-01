@@ -29,6 +29,7 @@ import zildo.client.gui.GUIDisplay.DialogMode;
 import zildo.client.gui.menu.SaveGameMenu;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Game;
+import zildo.monde.Hasard;
 import zildo.monde.dialog.DialogManagement;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.ChainingPoint.MapLink;
@@ -53,6 +54,7 @@ public class EngineZildo {
     public static ScriptManagement scriptManagement;
     
     public static Game game;
+    public static Hasard hasard = new Hasard();	// Could be overwrited for UT
     public static EasyBuffering backedUpGame;	// When hero dies, we restore this game
     public static int compteur_animation;
 	
@@ -77,7 +79,7 @@ public class EngineZildo {
         multiplayerManagement = new MultiplayerManagement();
         scriptManagement = null;	// Mandatory, because next script read could use previous context values
         scriptManagement = new ScriptManagement();  
-
+        
 		// Charge une map
 		String mapName=p_game.mapName;
 		if (mapName != null) {

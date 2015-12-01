@@ -21,7 +21,7 @@
 package zildo.monde.sprites.persos;
 
 import zildo.client.sound.BankSound;
-import zildo.monde.Hasard;
+import static zildo.server.EngineZildo.hasard;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.util.Point;
@@ -53,7 +53,7 @@ public class PersoRat extends PersoShadowed {
 
 	@Override
 	public void destinationReached() {
-		attente = 10+Hasard.rand(15);
+		attente = 10+hasard.rand(15);
 	}
 	
 	@Override

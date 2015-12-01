@@ -28,6 +28,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 
+import junit.FreezeMonitor;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -41,7 +43,6 @@ import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.ScreenConstant;
 import zildo.client.sound.SoundPlay;
 import zildo.fwk.FilterCommand;
-import zildo.fwk.ZUtils;
 import zildo.fwk.bank.TileBank;
 import zildo.fwk.db.Identified;
 import zildo.fwk.gfx.Ortho;
@@ -88,9 +89,9 @@ public class EngineUT {
 	protected KeyboardInstant instant;
 	static KeyboardHandler fakedKbHandler;	// Will be reused all along
 	
-	Thread freezeMonitor;
+	FreezeMonitor freezeMonitor;
 
-	int nFrame = 0;
+	public volatile int nFrame = 0;
 	
 	protected Perso spawnTypicalPerso(String name, int x, int y) {
 		return spawnPerso(PersoDescription.BANDIT_CHAPEAU, name, x, y);
@@ -206,6 +207,10 @@ public class EngineUT {
 		engine = new EngineZildo(game);
 	}
 	
+	protected boolean doesSpyMapManagement() {
+		return false;
+	}
+	
 	@Before
 	public void setUp() {
 		Game game = new Game(null, "hero");
@@ -214,7 +219,11 @@ public class EngineUT {
 		// Create standard map
 		//EngineZildo.soundManagement.setForceMusic(true);
 		// Prepare mock for later
-		EngineZildo.mapManagement = spy(new MapManagement());
+		MapManagement mm = new MapManagement();
+		if (doesSpyMapManagement()) {
+			mm = spy(mm);
+		}
+		EngineZildo.mapManagement = mm;
 		
 		initCounters();
 
@@ -293,29 +302,9 @@ public class EngineUT {
 		Zildo.pdPlugin.kbHandler = fakedKbHandler;
 		
 		// Create a thread wich monitors any freeze
-		freezeMonitor = new Thread() {
-			boolean done= false;
-			int lastOne;
-			int cnt=0;
-			@Override
-			public void run() {
-				while (!done) {
-					if (lastOne == nFrame) {
-						// Still on the same frame ?
-						if (++cnt == 5) {
-							System.out.println("We got a freeze !");
-							// Rude, but no bugs are tolerated in Alembrume !
-							System.exit(1);
-						}
-					} else {
-						lastOne = nFrame;
-						cnt = 0;
-					}
-					ZUtils.sleep(500);
-				}
-			};
-		};
+		freezeMonitor = new FreezeMonitor(this);
 		freezeMonitor.start();
+
 	}
 	
 	public void waitEndOfScripting() {
@@ -363,6 +352,13 @@ public class EngineUT {
 		// Reset input
 		simulateDirection(new Vector2f(0, 0));
 		// Deprecated, but we're not concerned by limitations here
+		freezeMonitor.cutItOut();
+		try {
+			freezeMonitor.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		freezeMonitor.stop();
 	}
 	

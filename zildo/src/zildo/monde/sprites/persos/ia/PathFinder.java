@@ -20,7 +20,7 @@
 
 package zildo.monde.sprites.persos.ia;
 
-import zildo.monde.Hasard;
+import static zildo.server.EngineZildo.hasard;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
@@ -162,7 +162,7 @@ public class PathFinder {
      * character's script.
      */
     public void determineDestination() {
-		int j=6+Hasard.rand(6);
+		int j=6+hasard.rand(6);
         float x=mobile.x;
         float y=mobile.y;
         

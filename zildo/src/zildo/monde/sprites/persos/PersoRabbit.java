@@ -1,6 +1,6 @@
 package zildo.monde.sprites.persos;
 
-import zildo.monde.Hasard;
+import static zildo.server.EngineZildo.hasard;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 
@@ -49,11 +49,11 @@ public class PersoRabbit extends PersoShadowed {
 		// Look minor variation
 		if (!jumping) {
 			if (idleTime == 0) {
-				idleTime = 4 + Hasard.rand(5);
+				idleTime = 4 + hasard.rand(5);
 				if (!alerte) {
-					idleTime+= 4 + Hasard.rand(10); 
+					idleTime+= 4 + hasard.rand(10); 
 				}
-				addSpr = Hasard.rand(2);
+				addSpr = hasard.rand(2);
 			} else {
 				idleTime--;
 			}

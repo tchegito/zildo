@@ -31,6 +31,11 @@ public class FreezeTest extends EngineUT {
 	
 	int savedFloor;
 	
+	// Indicate that we want to {@link org.mockito.Mockito.spy} mapManagement object from EngineZildo 
+	protected boolean doesSpyMapManagement() {
+		return true;
+	}
+	
 	@Before
 	public void commonInit() {
 		// Load map and place hero at specific location with right floor

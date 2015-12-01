@@ -244,7 +244,6 @@ public class MapManagement {
 			return false;
 		}
 
-		//if (true) return false;
 		// Is it a ghost ?
 		boolean ghost = false;
 		Perso p = quelElement != null && quelElement.getEntityType().isPerso() ? (Perso) quelElement : null;
@@ -440,7 +439,7 @@ public class MapManagement {
 		int on_map;
 		int modx, mody;
 		
-		int floor = 0;
+		int floor = currentMap.getHighestFloor();
 		Perso perso = null;
 		boolean allowOverBottomLess = false;	// Allow people to go on bottom less case ? (lava, void)
 		boolean foreground = false;
@@ -485,6 +484,7 @@ public class MapManagement {
 			if (mapCase == null) {
 				continue;
 			}
+			
 			// HACK: add nonZildo condition because Squirrel falls on the hill from a higher stump. Indeed, we chose to get squirrel FOREGROUND when he's
 			// on a top of a high stump. But we even need to check collision on BACK tiles around him.
 			Tile tile = foreground && !quelElement.isZildo() ? mapCase.getForeTile() : mapCase.getBackTile();

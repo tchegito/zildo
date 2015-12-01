@@ -56,6 +56,7 @@ public class ElementArrow extends ElementThrown  {
                 break;
             case OUEST:
                 nSpr = ElementDescription.ARROW_LEFT.ordinal();
+            default:
                 break;
         }
 
@@ -141,6 +142,7 @@ public class ElementArrow extends ElementThrown  {
     		break;
     	case OUEST:
         	setSprModel(ElementDescription.ARROW_LAND_LEFT1);
+        default:
     		break;
     	}
     	int seq=seqLand[(int) vz % 5];

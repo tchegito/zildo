@@ -20,7 +20,7 @@
 
 package zildo.monde.sprites.persos.ia;
 
-import zildo.monde.Hasard;
+import static zildo.server.EngineZildo.hasard;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -63,7 +63,7 @@ public class PathFinderBee extends PathFinder {
 
 		pos.add((float) dx, (float) dy);
 
-		mobile.z = 10 + Hasard.intervalle(2);
+		mobile.z = 10 + hasard.intervalle(2);
 
 		return pos;
 	}

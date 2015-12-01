@@ -207,7 +207,8 @@ public class Element extends SpriteEntity {
 				case BROWNSPHERE1:
 				case SEWER_SMOKE1:
 				case SEWER_SMOKE2:
-				return false;
+					return false;
+				default:
 			}
 		}
 		if (desc.isDamageable()) {

@@ -27,17 +27,17 @@ public class Hasard {
 	// the weapon first, and after take some ammos.
 
 	// Hazard
-	public static final int hazardBushes_GoldCoin = 7;
-	public static final int hazardBushes_BlueDrop = 9;
-	public static final int hazardBushes_Arrow = 9;
-	public static final int hazardBushes_Bombs = 9;
+	public final int hazardBushes_GoldCoin = 7;
+	public final int hazardBushes_BlueDrop = 9;
+	public final int hazardBushes_Arrow = 9;
+	public final int hazardBushes_Bombs = 9;
 
 	/**
 	 * Renvoie VRAI si un lancer de dé à 10 faces fait plus de 'p_number'
 	 * 
 	 * @param p_number
 	 */
-	static public boolean lanceDes(int p_number) {
+	public boolean lanceDes(int p_number) {
 		return Math.random() * 10 > p_number;
 	}
 
@@ -47,7 +47,7 @@ public class Hasard {
 	 * @param p_range
 	 * @return int
 	 */
-	static public int intervalle(int p_range) {
+	public int intervalle(int p_range) {
 		return (int) (Math.random() * p_range) - (p_range / 2);
 	}
 
@@ -57,7 +57,7 @@ public class Hasard {
 	 * @param p_range
 	 * @return int
 	 */
-	static public float intervalle(float p_range) {
+	public float intervalle(float p_range) {
 		return (float) (Math.random() * p_range) - (p_range / 2.0f);
 	}
 	/**
@@ -66,7 +66,7 @@ public class Hasard {
 	 * @param max
 	 * @return int
 	 */
-	static public int rand(int max) {
+	public int rand(int max) {
 		return (int) (Math.random() * max);
 	}
 	
@@ -76,7 +76,11 @@ public class Hasard {
 	 * @param end
 	 * @return int
 	 */
-	static public int rangeInt(int start, int end) {
+	public int rangeInt(int start, int end) {
 		return rand(end - start + 1) + start;
+	}
+	
+	public int de6() {
+		return  1 + (int) (Math.random() * 6);
 	}
 }

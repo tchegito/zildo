@@ -22,7 +22,7 @@ package zildo.monde.sprites.persos;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.EngineFX;
-import zildo.monde.Hasard;
+import static zildo.server.EngineZildo.hasard;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
@@ -68,7 +68,7 @@ public class PersoPoultry extends PersoShadowed {
     		specSound = catSound;
     	}
     	// To avoid all sounds starting together
-    	countSound = Hasard.rand(specSound.getDuration());
+    	countSound = hasard.rand(specSound.getDuration());
     }
 
     @Override
@@ -93,9 +93,9 @@ public class PersoPoultry extends PersoShadowed {
             info = PersoInfo.SHOOTABLE_NEUTRAL;
             shadow.y+=2;
             
-            if (countSound == 0 && Hasard.lanceDes(8)) {
+            if (countSound == 0 && hasard.lanceDes(8)) {
             	BankSound snd = specSound.getSound();
-                countSound = specSound.getDuration() + Hasard.rand(100);
+                countSound = specSound.getDuration() + hasard.rand(100);
                 EngineZildo.soundManagement.broadcastSound(snd, this);
             }
         }

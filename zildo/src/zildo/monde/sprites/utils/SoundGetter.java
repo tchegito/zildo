@@ -21,7 +21,7 @@ package zildo.monde.sprites.utils;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.ZUtils;
-import zildo.monde.Hasard;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -63,7 +63,7 @@ public class SoundGetter {
     		int chosen = currentSnd.ordinal();
     		int previous = chosen;
     		while (chosen == previous) {
-    			chosen = Hasard.rangeInt(start.ordinal(), end);
+    			chosen = EngineZildo.hasard.rangeInt(start.ordinal(), end);
     		}
     		next = BankSound.values()[chosen];
     	} else {

@@ -80,6 +80,7 @@ public class ElementGear extends Element {
 						EngineZildo.scriptManagement.openDoor(mapName, ch);
 					}
 				}
+			default:
 				break;
 
 			}
@@ -166,6 +167,7 @@ public class ElementGear extends Element {
 					case COUNTERCLOCKWISE:
 						pasX = pasY;
 						pasY = 0;
+					default:
 						break;
 					}
 					switch (count) {
@@ -187,6 +189,7 @@ public class ElementGear extends Element {
 					setAjustedX((int)x);
 					setAjustedY((int)y);
 					count++;
+				default:
 					break;
 			}
 		}

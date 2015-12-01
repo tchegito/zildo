@@ -22,7 +22,7 @@ package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
-import zildo.monde.Hasard;
+import static zildo.server.EngineZildo.hasard;
 import zildo.monde.quest.script.DispatchRoundTrip;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -60,7 +60,7 @@ public class ElementStaffs extends ElementChained {
 
 	    Angle a = side == -1 ? Angle.EST : Angle.OUEST;
 	    
-	    delay = 30+Hasard.intervalle(10);
+	    delay = 30+hasard.intervalle(10);
 	    
 	    Element staff = new ElementStaff(a, p.x, p.y, 15, 2, null);
 	    EngineZildo.soundManagement.broadcastSound(BankSound.FlecheTir, staff);

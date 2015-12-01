@@ -20,7 +20,7 @@
 package zildo.monde.sprites.persos;
 
 import zildo.client.sound.BankSound;
-import zildo.monde.Hasard;
+import static zildo.server.EngineZildo.hasard;
 import zildo.monde.Trigo;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -94,7 +94,7 @@ public class PersoGreenBlob extends PersoShadowed {
 			if (enemyFound) {
 				// Makes him getting closer to Zildo
 				double gamma = Trigo.getAngleRadian(x, y, enemy.x, enemy.y);
-				gamma += Hasard.intervalle((float) (Math.PI / 4f));
+				gamma += hasard.intervalle((float) (Math.PI / 4f));
 				gamma += correctAngle;
 				Point p = new Point((int) (x + 12 * Math.cos(gamma)),
 					     			(int) (y + 12 * Math.sin(gamma)) );

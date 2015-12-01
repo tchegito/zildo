@@ -21,7 +21,7 @@ package zildo.fwk.script.logic;
 
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.LocaleVarContext;
-import zildo.monde.Hasard;
+import static zildo.server.EngineZildo.hasard;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 
@@ -48,7 +48,7 @@ public class FloatVariable implements FloatASTNode {
 		if (FloatExpression.RESERVED_WORD_RANDOM.equals(variable)) {
 			return (float) Math.random();
 		} else if (FloatExpression.RESERVED_WORD_DICE10.equals(variable)) {
-			return Hasard.rand(10);
+			return hasard.rand(10);
 		} else if (variable.startsWith(FloatExpression.RESERVED_WORD_ZILDO)) {
 			if (EngineZildo.persoManagement == null) {
 				throw new NoContextException();

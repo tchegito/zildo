@@ -31,7 +31,6 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.collection.ListMerger;
 import zildo.fwk.file.EasyBuffering;
-import zildo.monde.Hasard;
 import zildo.monde.collision.PersoCollision;
 import zildo.monde.collision.SpriteCollision;
 import zildo.monde.items.ItemKind;
@@ -215,6 +214,17 @@ public class SpriteManagement extends SpriteStore {
 		ElementDescription elemDesc = null;
 		int j;
 
+		// First of all : check if this is a right place (no collision, and no lava)
+		switch (typeSprite) {
+			case GOLDCOIN :
+			case ARROW :
+			case FROMGROUND:
+			case BLUE_DROP:
+				if (EngineZildo.mapManagement.collide(x, y, miscPerso)) {
+					return null;
+				}
+			default:
+		}
 		switch (typeSprite) {
 			case CHIMNEY_SMOKE :
 				elemDesc = ElementDescription.SMOKE_SMALL;
@@ -261,10 +271,6 @@ public class SpriteManagement extends SpriteStore {
 			case ARROW :
 			case FROMGROUND :
 				// Diamond, arrows, everything coming from ground
-				// First of all : check if this is a right place (no collision, and no lava)
-				if (EngineZildo.mapManagement.collide(x, y, miscPerso)) {
-					break;
-				}
 				element = new ElementGoodies();
 				element.setX(x);
 				element.setY(y);
@@ -391,7 +397,7 @@ public class SpriteManagement extends SpriteStore {
 				        super.animate();
 				    }					
 				};
-				element.vy = Hasard.intervalle(0.2f);
+				element.vy = EngineZildo.hasard.intervalle(0.2f);
 				element.vz = 1.2f;
 				element.az = -0.1f;
 				//element.fx = 0.01f;
@@ -421,7 +427,13 @@ public class SpriteManagement extends SpriteStore {
 				break;
 		}
 		if (element != null) {
-			element.floor = floor;
+			int f = floor;
+			// Find the highest existent floor (for bat dropping their item on an inaccessible floor for player)
+			while (f > 0) {
+				if (EngineZildo.mapManagement.getCurrentMap().get_mapcase(x, y, f) != null) break;
+				f--;
+			}
+			element.floor = f;
 			spawnSprite(element);
 		}
 		

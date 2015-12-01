@@ -19,7 +19,6 @@
 
 package zildo.monde.sprites.elements;
 
-import zildo.monde.Hasard;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.Reverse;
@@ -68,6 +67,7 @@ public class ElementPlaceHolder extends Element {
 			} else {
 				ancSpeed = 0f;
 			}
+			default:
 			break;
 		}
 	}
