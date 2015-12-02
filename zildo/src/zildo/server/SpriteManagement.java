@@ -34,6 +34,7 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.monde.collision.PersoCollision;
 import zildo.monde.collision.SpriteCollision;
 import zildo.monde.items.ItemKind;
+import zildo.monde.map.Area;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
@@ -429,9 +430,13 @@ public class SpriteManagement extends SpriteStore {
 		if (element != null) {
 			int f = floor;
 			// Find the highest existent floor (for bat dropping their item on an inaccessible floor for player)
-			while (f > 0) {
-				if (EngineZildo.mapManagement.getCurrentMap().get_mapcase(x >> 4, y >> 4, f) != null) break;
-				f--;
+			Area area = EngineZildo.mapManagement.getCurrentMap();
+			if (area != null && !element.isForeground()) {	// Don't modify floor for 'foreground' element, like smoke
+				// Be careful about the 'currentMap'. If we come from Area.deserialize, currentMap is not updated yet
+				while (f > 0) {
+					if (EngineZildo.mapManagement.getCurrentMap().get_mapcase(x >> 4, y >> 4, f) != null) break;
+					f--;
+				}
 			}
 			element.floor = f;
 			if (element2 != null) element2.floor = f;
