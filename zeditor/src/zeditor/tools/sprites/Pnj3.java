@@ -96,8 +96,10 @@ public class Pnj3 extends SpriteBanque {
 		    // Turtle (83)
 		    new Zone(1, 197, 22, 13), new Zone(28, 197, 22, 13),	// Rising
 		    new Zone(55, 196, 22, 14), new Zone(82, 195, 22, 15),
-		    new Zone(0, 214, 27, 15), new Zone(27, 214, 27, 15),	// Forward
-		    new Zone(54, 215, 27, 14), new Zone(81, 214, 27, 15),
+		    //new Zone(0, 214, 27, 15), new Zone(27, 214, 27, 15),	// Forward
+		    //new Zone(54, 215, 27, 14), new Zone(81, 214, 27, 15),
+		    new Zone(1, 212, 27, 16), new Zone(30, 212, 26, 16),
+		    new Zone(57, 211, 27, 17), new Zone(86, 212, 28, 16),
 		    new Zone(105, 193, 5, 5), new Zone(105, 199, 5, 5), new Zone(105, 205, 5, 5)	// Head popping out
 		};
 		
@@ -105,7 +107,8 @@ public class Pnj3 extends SpriteBanque {
 				new GraphChange("squirrel", 54, 0),
 				new GraphChange("dragonpal", 66,0, true),
 				new GraphChange("bitey", 76, 0, true),
-				new GraphChange("squirrel", 83, 0)
+				new GraphChange("squirrel", 83, 0),
+				new GraphChange("dragonpal", 87, 0, true)
 				});
 	}
 }

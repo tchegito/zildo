@@ -80,7 +80,8 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	// because we can use OpenGL outside of the paint process
 	protected boolean changeMap = false;
 	protected boolean changeSprites = false;
-
+	protected boolean buildTexture = false;
+	
 	private int sizeX;
 	private int sizeY;
 	
@@ -147,6 +148,11 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		if (blockPaint) {
 			return;
 		}
+		if (buildTexture) {
+			ClientEngineZildo.tileEngine.saveTextures();
+			ClientEngineZildo.spriteEngine.saveTextures();
+			buildTexture=false;
+		}
 		if (changeMap) {
 			Area map = EngineZildo.mapManagement.getCurrentMap();
 			ClientEngineZildo.mapDisplay.setCurrentMap(map);
@@ -157,8 +163,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			// And the sprites
 			EngineZildo.spriteManagement.updateSprites(true);
 			ClientEngineZildo.spriteDisplay
-					.setEntities(EngineZildo.spriteManagement
-							.getSpriteEntities(null));
+					.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null));
 			changeSprites=false;
 		}
 		if (!initialize) {
@@ -453,5 +458,9 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	public void askCapture() {
 		needCapture = true;
 		captureDone = false;
+	}
+	
+	public void askBuildTexture() {
+		buildTexture = true;
 	}
 }

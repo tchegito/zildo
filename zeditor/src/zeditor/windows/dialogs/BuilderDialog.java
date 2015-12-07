@@ -35,6 +35,7 @@ import javax.swing.SwingUtilities;
 
 import zeditor.tools.builder.Modifier;
 import zeditor.tools.ui.SizedGridPanel;
+import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.sprites.SpriteStore;
 
@@ -44,8 +45,11 @@ public class BuilderDialog extends JDialog {
 	JComboBox comboTileBank;
 	JComboBox comboSpriteBank;
 	
-	public BuilderDialog() {
-		SizedGridPanel panel = new SizedGridPanel(3, 5);
+	final MasterFrameManager manager;
+	
+	public BuilderDialog(MasterFrameManager pManager) {
+		manager = pManager;
+		SizedGridPanel panel = new SizedGridPanel(4, 5);
 
 		// Tile bank combo
 		List<String> listTileBanks = new ArrayList<String>();
@@ -59,7 +63,7 @@ public class BuilderDialog extends JDialog {
 				String bankName = (String) comboTileBank.getSelectedItem();
 
 				new Modifier().saveNamedTileBank(bankName);
-				JOptionPane.showMessageDialog(getParent(), "Tile bank "+bankName+" has been builded !", "Builder", JOptionPane.INFORMATION_MESSAGE);
+				info("Tile bank "+bankName+" has been builded !");
 			}
 		});
 		panel.addComp(comboTileBank, buttonBuildTileBank);
@@ -70,10 +74,9 @@ public class BuilderDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					new Modifier().saveAllMotifBank();
-					JOptionPane.showMessageDialog(getParent(), "All tile banks builded successfully !", "Builder", JOptionPane.INFORMATION_MESSAGE);
+					info("All tile banks builded successfully !");
 				} catch (RuntimeException ex) {
-					JOptionPane.showMessageDialog(getParent(), "Error building all tile banks !\n\nCause : "+ex.getMessage(), "Builder", JOptionPane.ERROR_MESSAGE);
-					ex.printStackTrace();
+					error("Error building all tile banks !", ex);
 				}
 			}
 		});
@@ -92,16 +95,28 @@ public class BuilderDialog extends JDialog {
 
 				try {
 					new Modifier().saveNamedSpriteBank(bankName);
-					JOptionPane.showMessageDialog(getParent(), "Sprite bank "+bankName+" has been builded !", "Builder", JOptionPane.INFORMATION_MESSAGE);
+					info("Sprite bank "+bankName+" has been builded !");
 				} catch (RuntimeException ex) {
-					JOptionPane.showMessageDialog(getParent(), "Error building bank "+bankName+"\n\nCause : "+ex.getMessage(), "Builder", JOptionPane.ERROR_MESSAGE);
-					ex.printStackTrace();
+					error("Error building bank "+bankName, ex);
 				}
 			}
 		});
 		panel.addComp(comboSpriteBank, buttonBuildSpriteBank);
 
-		
+		panel.add(new JButton(new AbstractAction("Build textures") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					// Save all textures
+					manager.getZildoCanvas().askBuildTexture();
+
+					info("Texture have been builded !");
+				} catch (Exception ex) {
+					error("Error building textures !\n\nCause : ", ex);
+				}
+			}
+		}));
+	
 		setTitle("ZEditor builder");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLayout(new BorderLayout());
@@ -117,6 +132,15 @@ public class BuilderDialog extends JDialog {
 		pack();
 	}
 	
+	private void info(String message) {
+		JOptionPane.showMessageDialog(getParent(), message, "Builder", JOptionPane.INFORMATION_MESSAGE);		
+	}
+	
+	private void error(String message, Exception ex) {
+		JOptionPane.showMessageDialog(getParent(), message + ex.getMessage(), "Builder", JOptionPane.ERROR_MESSAGE);
+		ex.printStackTrace();
+	}
+	
 	/**
 	 * Auto-generated main method to display this JFrame
 	 */
@@ -124,7 +148,7 @@ public class BuilderDialog extends JDialog {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				BuilderDialog inst = new BuilderDialog();
+				BuilderDialog inst = new BuilderDialog(null);
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}

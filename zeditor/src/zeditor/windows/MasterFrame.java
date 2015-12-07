@@ -1016,7 +1016,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			builderMenuItem.setAction(new AbstractAction("Builder") {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JDialog frame = new BuilderDialog();
+					JDialog frame = new BuilderDialog(manager);
 					frame.setLocationRelativeTo(builderMenuItem.getParent().getParent());
 					frame.setModal(true);
 					frame.setVisible(true);
