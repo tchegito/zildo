@@ -34,9 +34,13 @@ import zildo.monde.util.Zone;
  */
 public class Occluder {
 
-	List<Zone> available;
+	protected List<Zone> available;
+	
+	int width, height;
 	
 	public Occluder(int width, int height) {
+		this.width = width;
+		this.height = height;
 		available = new ArrayList<Zone>();
 		available.add(new Zone(0, 0, width, height));
 	}
@@ -81,7 +85,7 @@ public class Occluder {
 	}
 
 	/** Allocates a location with given width x height values. **/
-	public Point allocate(int width, int height) {
+	Point allocateZone(int width, int height) {
 		for (Zone z : available) {
 			if (z.x2 >= width && z.y2 >= height) {
 				remove(new Zone(z.x1, z.y1, width, height));
@@ -89,5 +93,19 @@ public class Occluder {
 			}
 		}
 		return null;
+	}
+	
+	public Point allocate(int width, int height) {
+		Point p = allocateZone(width, height);
+		if (p == null) {
+			// Fails, so we try to recut and reallocate
+			recut();
+			p = allocateZone(width, height);
+		}
+		return p;
+	}
+	
+	private void recut() {
+		available = new OccluderArranger(this).recut();
 	}
 }

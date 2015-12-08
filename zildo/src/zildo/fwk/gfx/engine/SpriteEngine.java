@@ -248,8 +248,8 @@ public abstract class SpriteEngine {
 				// Needs occlusion to find some space inside the texture !
 				Point p = occ.allocate(longX, longY);
 				if (p == null) {
-					return;
-					//throw new RuntimeException("Unable to allocate "+longX+" x "+longY+" for "+sBank.getName()+" !");
+					//return;
+					throw new RuntimeException("Unable to allocate "+longX+" x "+longY+" for "+sBank.getName()+" !");
 				}
 				x = p.x ; y = p.y;
 				withOccluder = true;
