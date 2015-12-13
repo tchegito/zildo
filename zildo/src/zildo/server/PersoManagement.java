@@ -199,6 +199,7 @@ public class PersoManagement {
 				perso = new PersoSquirrel(p_desc);
 				break;
 			case BUCHERON_DEBOUT:
+			case TURTLE:
 				perso = new PersoShadowed(ElementDescription.SHADOW, 0);
 				break;
 			case PRINCESSE:

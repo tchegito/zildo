@@ -87,28 +87,32 @@ public class Pnj3 extends SpriteBanque {
 		    new Zone(15, 28, 13, 13), new Zone(30, 28, 13, 13), new Zone(46, 28, 13, 13),	// South
 		    // Dragon (66)
 		    new Zone(0, 0, 51, 93), new Zone(51, 0, 45, 44), new Zone(96, 0, 51, 32),
-		    new Zone(147, 0, 45, 33), new Zone(227,0, 11, 30), new Zone(192, 30, 62, 50), new Zone(192, 80, 62, 93),
-		    new Zone(0,93, 63, 95), new Zone(71, 80, 50, 96), new Zone(262, 107, 50, 88),
+		    new Zone(147, 0, 45, 33), new Zone(227,0, 11, 30), new Zone(196, 30, 41, 50), new Zone(192, 80, 35, 29), // 35,29 au lieu de 62,93
+		    new Zone(192, 109, 62, 64), new Zone(0,93, 63, 95), new Zone(71, 80, 50, 96), new Zone(262, 107, 50, 88),
 		    // Bitey (76)
-		    new Zone(0, 0, 21, 27), new Zone(25, 0, 21, 27), new Zone(50, 0, 21, 27),
-		    new Zone(75, 0, 21, 27), new Zone(100, 0, 21, 27), new Zone(125, 0, 21, 27),
+		    new Zone(0, 3, 21, 24), new Zone(25, 5, 21, 22), new Zone(50, 5, 21, 22),
+		    new Zone(75, 3, 21, 24), new Zone(100, 2, 21, 25), new Zone(125, 1, 21, 26),
 		    new Zone(150, 0, 21, 27),
 		    // Turtle (83)
-		    new Zone(1, 197, 22, 13), new Zone(28, 197, 22, 13),	// Rising
-		    new Zone(55, 196, 22, 14), new Zone(82, 195, 22, 15),
+		    new Zone(0, 289, 19, 13), new Zone(21, 288, 19, 14),	// Rising
+		    new Zone(42, 287, 19, 15), new Zone(63, 286, 20, 16),
 		    //new Zone(0, 214, 27, 15), new Zone(27, 214, 27, 15),	// Forward
 		    //new Zone(54, 215, 27, 14), new Zone(81, 214, 27, 15),
 		    new Zone(1, 212, 27, 16), new Zone(30, 212, 26, 16),
 		    new Zone(57, 211, 27, 17), new Zone(86, 212, 28, 16),
-		    new Zone(105, 193, 5, 5), new Zone(105, 199, 5, 5), new Zone(105, 205, 5, 5)	// Head popping out
+		    new Zone(4, 308, 4, 6), new Zone(10, 308, 6, 8), new Zone(18, 308, 7, 9),	// Head popping out
+		    new Zone(1, 232, 18, 20), new Zone(22, 231, 18, 21),	// Down 
+		    new Zone(42, 230, 18, 22), new Zone(62, 231, 18, 21),
+		    new Zone(1, 258, 18, 23), new Zone(22,257, 18, 24),	// Up
+		    new Zone(42, 257, 18, 24), new Zone(62, 258, 18, 23)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("pnj2", 0, 0), 
 				new GraphChange("squirrel", 54, 0),
 				new GraphChange("dragonpal", 66,0, true),
-				new GraphChange("bitey", 76, 0, true),
-				new GraphChange("squirrel", 83, 0),
-				new GraphChange("dragonpal", 87, 0, true)
+				new GraphChange("bitey", 77, 0, true),
+				//new GraphChange("squirrel", 83, 0),
+				new GraphChange("dragonpal", 84, 0, true)
 				});
 	}
 }

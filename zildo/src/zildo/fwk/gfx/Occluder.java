@@ -86,11 +86,20 @@ public class Occluder {
 
 	/** Allocates a location with given width x height values. **/
 	Point allocateZone(int width, int height) {
+		int minAire = 256 *256;
+		Zone bestZone=null;
 		for (Zone z : available) {
-			if (z.x2 >= width && z.y2 >= height) {
-				remove(new Zone(z.x1, z.y1, width, height));
-				return new Point(z.x1, z.y1);
+			if (z.x2 >= width && z.y2 >= height) {	// Enough room
+				int aire = z.x2*z.y2;
+				if (aire < minAire) {
+					minAire = aire;
+					bestZone = z;
+				}					
 			}
+		}
+		if (bestZone != null) {
+			remove(new Zone(bestZone.x1, bestZone.y1, width, height));
+			return new Point(bestZone.x1, bestZone.y1);
 		}
 		return null;
 	}
@@ -101,11 +110,23 @@ public class Occluder {
 			// Fails, so we try to recut and reallocate
 			recut();
 			p = allocateZone(width, height);
+			if (p == null) {
+				recut(width, height);
+				p = allocateZone(width, height);
+			}
 		}
 		return p;
 	}
 	
 	private void recut() {
 		available = new OccluderArranger(this).recut();
+	}
+	
+	private void recut(int width, int height) {
+		OccluderArranger arranger = new OccluderArranger(this);
+		Zone z = arranger.cutSpecificArea(width, height);
+		if (z != null) {
+			available = arranger.recut(z);
+		}
 	}
 }

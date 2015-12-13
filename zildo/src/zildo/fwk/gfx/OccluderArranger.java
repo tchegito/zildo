@@ -1,6 +1,7 @@
 package zildo.fwk.gfx;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import zildo.monde.util.Point;
@@ -17,6 +18,7 @@ public class OccluderArranger {
 	int[][] surface;
 	Occluder occ;
 	
+	// Fills a 2-dimension array with all occupied areas
 	public OccluderArranger(Occluder occluder) {
 		this.occ = occluder;
 		width = occ.width;
@@ -37,9 +39,9 @@ public class OccluderArranger {
 			if (size > (max.x2 * max.y2)) {
 				max = z;
 			}
+			//System.out.println(z);
 		}
 	
-		//stats();
 	}
 	
 	private void fillZone(Zone z, int id) {
@@ -49,28 +51,91 @@ public class OccluderArranger {
 			}
 		}
 	}
-
-	public List<Zone> recut() {
-		List<Zone> zones = new ArrayList<>();
+	
+	// Clean that part :
+	// IF wishedWidth/height are provided, this is what we should do:
+	// Special process, where we request for specific width/height area.
+	// Once we found it, go to the regular process, where wishes are nonsense
+	
+	// Try to do a better cut to obtain larger area
+	public List<Zone> recut(Zone... zs) {
+		List<Zone> zones = new ArrayList<Zone>();
+		if (zs != null) {
+			zones.addAll(Arrays.asList(zs));
+		}
 		// Find a filled pixel
 		while (true) {
+			//System.out.println("On cherche depuis "+left);
 			FindResult left = find(0, 0, true);
 			if (left != null) {
+				if (/*left.p.x == 222 &&*/ left.p.y == 128) {
+					System.out.println("yes");
+				}
+				// 222,128
 				// Find the rightest point
 				FindResult right = find(left.p.x, left.p.y, false, true);
 				// Find the biggest zone with given width
 				int zoneWidth = right.p.x - left.p.x;
 				int zoneHeight = findHeight(left.p.x, left.p.y+1, zoneWidth) + 1;
-				System.out.println("On a trouvé une zone en "+left.p+" de taille "+zoneWidth+"x"+zoneHeight);
+				//System.out.println("On a trouvé une zone en "+left.p+" de taille "+zoneWidth+"x"+zoneHeight);
 				// Empty zone and continue
 				Zone z = new Zone(left.p.x, left.p.y, zoneWidth, zoneHeight);
 				zones.add(z);
 				fillZone(z, 0);
+
 			} else {
+				System.out.println("non");
 				break;
 			}
 		}
+		stats(zones);
+
 		return zones;
+	}
+	
+	public Zone cutSpecificArea(int wishedWidth, int wishedHeight) {
+		FindResult left = new FindResult(new Point(0, 0), 0);
+		// Find a filled pixel
+		while (true) {
+			boolean wishFulfill = true;
+			//System.out.println("On cherche depuis "+left);
+			left = find(left.p.x, left.p.y, true);
+			if (left != null) {
+				// Find the rightest point
+				int maxX = left.p.x + wishedWidth - 1;
+				FindResult right = find(left.p.x, left.p.y, false, true, maxX);
+				// Find the biggest zone with given width
+				int zoneWidth = right.p.x - left.p.x;
+				if (zoneWidth == wishedWidth) {
+					int zoneHeight = findHeight(left.p.x, left.p.y+1, zoneWidth) + 1;
+					if (zoneHeight < wishedHeight) {
+						wishFulfill = false;
+					} else {
+						System.out.println("found it");
+						zoneHeight = wishedHeight;
+						wishedWidth = -1;
+						wishedHeight = -1;
+						//System.out.println("On a trouvé une zone en "+left.p+" de taille "+zoneWidth+"x"+zoneHeight);
+						// Empty zone and continue
+						return new Zone(left.p.x, left.p.y, zoneWidth, zoneHeight);
+					}
+				} else {
+					wishFulfill = false;
+				}
+				if (!wishFulfill) {
+					left.p.x++; //=zoneWidth;
+					if (left.p.x == 256) {	// Carriage return
+						left.p.x = 0;
+						left.p.y++;
+					}
+				}
+
+			} else {
+				System.out.println("non");
+				break;
+			}
+		}
+		return null;
 	}
 
 	class FindResult {
@@ -81,12 +146,19 @@ public class OccluderArranger {
 			this.p = p;
 			this.idZone = idZone;
 		}
+		@Override
+		public String toString() {
+			return p+", idZone="+idZone;
+		}
 	}
 	
 	private FindResult find(int posX, int posY, boolean filled) {
 		return find(posX, posY, filled, false);
 	}
 	
+	private FindResult find(int posX, int posY, boolean filled, boolean oneLine) {
+		return find(posX, posY, filled, oneLine, 999);
+	}
 	/** Returns the next point fill/empty from the given position.
 	 * 
 	 * @param posX
@@ -95,7 +167,7 @@ public class OccluderArranger {
 	 * @param oneLine TRUE=search only on the current line
 	 * @return
 	 */
-	private FindResult find(int posX, int posY, boolean filled, boolean oneLine) {
+	private FindResult find(int posX, int posY, boolean filled, boolean oneLine, int maxX) {
 		
 		int startX = posX;
 		int startY = posY;
@@ -104,7 +176,7 @@ public class OccluderArranger {
 		for (int j=startY;j<height;j++) {
 			for (int i=startX;i<width;i++) {
 				idZone = surface[i][j];
-				if ((filled && idZone != 0) || (!filled && idZone == 0)) {
+				if ((filled && idZone != 0) || (!filled && idZone == 0) || i>maxX) {
 					return new FindResult(new Point(i, j), idZone);
 				}
 			}
@@ -129,9 +201,9 @@ public class OccluderArranger {
 		return h;
 	}
 	
-	public void stats() {
+	public void stats(List<Zone> zones) {
 		Zone max = new Zone();
-		for (Zone z : occ.available) {
+		for (Zone z : zones) {
 			int size = z.x2 * z.y2;
 			if (size > (max.x2 * max.y2)) {
 				max = z;
