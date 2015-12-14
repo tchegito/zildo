@@ -65,13 +65,14 @@ public class ViewSpritesDialog extends JDialog {
 		SizedGridPanel selPanel = new SizedGridPanel(2, 0);
 		
 		String[] bankNames = SpriteStore.sprBankName;
+		String[] comboNames = new String[bankNames.length];
 		numSpritesInBank = new int[bankNames.length];
 		for (int i=0;i<bankNames.length;i++) {
 			SpriteBank bank = EngineZildo.spriteManagement.getSpriteBank(i);
 			numSpritesInBank[i] = bank.getModels().size();
-			bankNames[i] = i+" - " + bankNames[i] + " ("+numSpritesInBank[i]+" sprites)";
+			comboNames[i] = i+" - " + bankNames[i] + " ("+numSpritesInBank[i]+" sprites)";
 		}
-		comboBank = new JComboBox<String>(bankNames);
+		comboBank = new JComboBox<String>(comboNames);
 		
 		ViewSpritesListener listener = new ViewSpritesListener();
 		comboBank.addActionListener(listener);

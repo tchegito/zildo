@@ -1,7 +1,6 @@
 package zildo.fwk.gfx;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import zildo.monde.util.Point;
@@ -18,7 +17,7 @@ public class OccluderArranger {
 	int[][] surface;
 	Occluder occ;
 	
-	// Fills a 2-dimension array with all occupied areas
+	// Fills a 2-dimension array with all free areas
 	public OccluderArranger(Occluder occluder) {
 		this.occ = occluder;
 		width = occ.width;
@@ -39,11 +38,10 @@ public class OccluderArranger {
 			if (size > (max.x2 * max.y2)) {
 				max = z;
 			}
-			//System.out.println(z);
 		}
 	
 	}
-	
+	/** Fill an area in the 2-dimension array. Note that 0 means occupied, and 1..n means the ID of free area **/
 	private void fillZone(Zone z, int id) {
 		for (int x=0;x<z.x2;x++) {
 			for (int y=0;y<z.y2;y++) {
@@ -61,44 +59,41 @@ public class OccluderArranger {
 	public List<Zone> recut(Zone... zs) {
 		List<Zone> zones = new ArrayList<Zone>();
 		if (zs != null) {
-			zones.addAll(Arrays.asList(zs));
+			for (Zone z : zs) {
+				zones.add(z);
+				// Declare that zone occupied
+				fillZone(z, 0);
+			}
 		}
 		// Find a filled pixel
 		while (true) {
-			//System.out.println("On cherche depuis "+left);
 			FindResult left = find(0, 0, true);
 			if (left != null) {
-				if (/*left.p.x == 222 &&*/ left.p.y == 128) {
-					System.out.println("yes");
-				}
-				// 222,128
 				// Find the rightest point
 				FindResult right = find(left.p.x, left.p.y, false, true);
 				// Find the biggest zone with given width
 				int zoneWidth = right.p.x - left.p.x;
 				int zoneHeight = findHeight(left.p.x, left.p.y+1, zoneWidth) + 1;
-				//System.out.println("On a trouvé une zone en "+left.p+" de taille "+zoneWidth+"x"+zoneHeight);
 				// Empty zone and continue
 				Zone z = new Zone(left.p.x, left.p.y, zoneWidth, zoneHeight);
 				zones.add(z);
 				fillZone(z, 0);
 
 			} else {
-				System.out.println("non");
 				break;
 			}
 		}
-		stats(zones);
+		//stats(zones);
 
 		return zones;
 	}
 	
+	/** Find an available area with desired size, based on the 2-dimension array, not the array of Zone **/
 	public Zone cutSpecificArea(int wishedWidth, int wishedHeight) {
 		FindResult left = new FindResult(new Point(0, 0), 0);
 		// Find a filled pixel
 		while (true) {
 			boolean wishFulfill = true;
-			//System.out.println("On cherche depuis "+left);
 			left = find(left.p.x, left.p.y, true);
 			if (left != null) {
 				// Find the rightest point
@@ -111,11 +106,9 @@ public class OccluderArranger {
 					if (zoneHeight < wishedHeight) {
 						wishFulfill = false;
 					} else {
-						System.out.println("found it");
 						zoneHeight = wishedHeight;
 						wishedWidth = -1;
 						wishedHeight = -1;
-						//System.out.println("On a trouvé une zone en "+left.p+" de taille "+zoneWidth+"x"+zoneHeight);
 						// Empty zone and continue
 						return new Zone(left.p.x, left.p.y, zoneWidth, zoneHeight);
 					}
@@ -131,7 +124,6 @@ public class OccluderArranger {
 				}
 
 			} else {
-				System.out.println("non");
 				break;
 			}
 		}
@@ -159,7 +151,7 @@ public class OccluderArranger {
 	private FindResult find(int posX, int posY, boolean filled, boolean oneLine) {
 		return find(posX, posY, filled, oneLine, 999);
 	}
-	/** Returns the next point fill/empty from the given position.
+	/** Returns the next point filled/empty from the given position.
 	 * 
 	 * @param posX
 	 * @param posY

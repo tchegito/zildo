@@ -111,7 +111,11 @@ public enum PersoDescription implements SpriteDescription {
 	BIG_RAT(310, 311, 308, 309, 306, 307, 312),
 	DRAGON(325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335),
 	BITEY( 336, 337, 338, 339, 340, 341, 342),
-	TURTLE(343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353),
+	TURTLE(343, 344, 345, 346, 
+			347, 348, 349, 350, 
+			351, 352, 353,
+			354, 355, 356, 357,
+			358, 359, 360, 361),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 

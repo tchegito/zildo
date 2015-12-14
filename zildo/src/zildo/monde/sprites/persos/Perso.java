@@ -1177,7 +1177,7 @@ public abstract class Perso extends Element {
 		return EngineZildo.mapManagement.getPersoBottomZ(this);
 	}
 	
-	// Returns current sequence position divided by factor*current speed
+	/** Returns current sequence position divided by factor*current speed **/
 	public int computeSeq(int factor) {
 		 return pos_seqsprite == -1 ? -1 :
 		 	(pos_seqsprite / (factor * Constantes.speed));

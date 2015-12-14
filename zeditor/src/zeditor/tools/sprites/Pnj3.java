@@ -89,11 +89,11 @@ public class Pnj3 extends SpriteBanque {
 		    new Zone(0, 0, 51, 93), new Zone(51, 0, 45, 44), new Zone(96, 0, 51, 32),
 		    new Zone(147, 0, 45, 33), new Zone(227,0, 11, 30), new Zone(196, 30, 41, 50), new Zone(192, 80, 35, 29), // 35,29 au lieu de 62,93
 		    new Zone(192, 109, 62, 64), new Zone(0,93, 63, 95), new Zone(71, 80, 50, 96), new Zone(262, 107, 50, 88),
-		    // Bitey (76)
+		    // Bitey (77)
 		    new Zone(0, 3, 21, 24), new Zone(25, 5, 21, 22), new Zone(50, 5, 21, 22),
 		    new Zone(75, 3, 21, 24), new Zone(100, 2, 21, 25), new Zone(125, 1, 21, 26),
 		    new Zone(150, 0, 21, 27),
-		    // Turtle (83)
+		    // Turtle (84)
 		    new Zone(0, 289, 19, 13), new Zone(21, 288, 19, 14),	// Rising
 		    new Zone(42, 287, 19, 15), new Zone(63, 286, 20, 16),
 		    //new Zone(0, 214, 27, 15), new Zone(27, 214, 27, 15),	// Forward

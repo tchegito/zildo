@@ -22,8 +22,6 @@ package junit.fwk;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JApplet;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -112,12 +110,6 @@ public class OccluderTest {
 				{136, 144, 25, 2}, {235, 166, 5, 18}, {210, 167, 12, 17}, {168, 168, 2, 16}, {133, 169, 3, 15}, {75, 170, 7, 14},{240, 178, 14, 6}, {222, 179, 13, 5}, {197, 180, 13, 4},
 				{120, 181, 13, 3}, {155, 181, 13, 3}, {63, 182, 12, 2}, {101, 182, 19, 2}, {170, 182, 27, 2}, {50, 183, 13, 1},{82, 183, 19, 1}, {136, 183, 19, 1}, {249, 184, 5, 28},
 				{26, 211, 223, 1}, {253, 212, 1, 26}, {150, 236, 103, 2}, {47, 237, 103, 1}, {228, 253, 28, 3}, {86, 254, 142, 2}, {14, 255, 72, 1}};
-
-		new JApplet() {
-			public void paint(java.awt.Graphics g) {
-			  
-			}
-		}.start();
 		
 		availableZones = deserializeZones(toStringAvailable);
 		// Create an occluder in this use case, and try to allocate a zone
