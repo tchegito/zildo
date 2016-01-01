@@ -66,6 +66,10 @@ public enum Angle {
         return value > 3 && this != NULL;
     }
     
+    public Angle rotate(int quart) {
+    	return rotate(this, quart);
+    }
+    
 	public static Angle rotate(Angle a, int quart) {
 		int val=(a.value + quart + 4) % 4;
 		if (!a.isDiagonal()) {
@@ -76,7 +80,7 @@ public enum Angle {
 	}
 	
 	public Angle opposite() {
-		return Angle.rotate(this, 2);
+		return rotate(2);
 	}
 	
 	static public Angle fromInt(int val) {

@@ -357,7 +357,7 @@ public class MapManagement {
 				Angle a = p.getAngle();
 				// First : lateral
 				Point nonBlockingPos = new Point();
-				Angle[] angles = new Angle[] {Angle.rotate(a, 1), Angle.rotate(a,-1), a};
+				Angle[] angles = new Angle[] {a.rotate(1), Angle.rotate(a,-1), a};
 				for (Angle chkAngle : angles) {
 					nonBlockingPos.x = (int) (perso.x + chkAngle.coordf.x * 12);
 					nonBlockingPos.y = (int) (perso.y + chkAngle.coordf.y * 12);
@@ -610,7 +610,7 @@ public class MapManagement {
 			// Determine angle, according to previous location
 			Angle ang = p_zildo.getAngle();
 			if (p_zildo.isProjected()) {
-				ang = Angle.rotate(ang, 2);	// Zildo is stepping back, so inverse his angle
+				ang = ang.rotate(2);	// Zildo is stepping back, so inverse his angle
 			}
 			changingMapPoint = currentMap.isChangingMap(x, y, ang);
 			if (changingMapPoint != null) {
@@ -1014,7 +1014,7 @@ public class MapManagement {
 			// Second try: check increasing radius around hero for better location
 			testX = p.x + a.coords.x * shift;
 			testY = p.y + a.coords.y * shift;
-			a = Angle.rotate(a, 1);
+			a = a.rotate(1);
 			if (a == Angle.NORD) {
 				shift += 8;
 			}

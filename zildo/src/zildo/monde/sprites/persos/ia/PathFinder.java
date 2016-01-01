@@ -145,7 +145,7 @@ public class PathFinder {
         }
 
         if (backward && a!= null) {
-        	a=Angle.rotate(a, 2);
+        	a = a.rotate(2);
         }
         mobile.setAngle(a);
         

@@ -243,7 +243,7 @@ public class PlayerManagement {
 			}
 	
 			if (heros.getMouvement()==MouvementZildo.TIRE) {
-				if (heros.getAngle()!=sauvangle && Angle.rotate(heros.getAngle(),sauvangle.value).isVertical()) {	 // A Vérifier !
+				if (heros.getAngle()!=sauvangle && heros.getAngle().rotate(sauvangle.value).isVertical()) {	 // A Vérifier !
 					heros.setPos_seqsprite(1);	// Zildo recule sa tête pour tirer
 				} else {
 					heros.setPos_seqsprite(0);

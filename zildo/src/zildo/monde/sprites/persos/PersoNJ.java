@@ -334,7 +334,7 @@ public class PersoNJ extends Perso {
 						// Turns his head around to look for Zildo
 						if (attente == 1 && cptMouvement < 3) {
 							if (!alerte
-									&& lookForZildo(Angle.rotate(angle, PersoGardeVert.mouvetete[cptMouvement]))) {
+									&& lookForZildo(angle.rotate(PersoGardeVert.mouvetete[cptMouvement]))) {
 								alerte = true;
 								EngineZildo.soundManagement.broadcastSound(BankSound.MonstreTrouve, this);
 							}
@@ -827,7 +827,7 @@ public class PersoNJ extends Perso {
 				angle = Angle.NORD;
 			}
 			if (p_fear) {
-				angle = Angle.rotate(angle, 2);
+				angle = angle.rotate(2);
 			}
 		}
 		if (sx != x && sy != y) { // Diagonal moves

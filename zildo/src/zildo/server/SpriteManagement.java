@@ -357,7 +357,7 @@ public class SpriteManagement extends SpriteStore {
 					e.alphaV = -10;
 					spawnSprite(e);
 
-					temp = Angle.rotate(temp, 1);
+					temp = temp.rotate(1);
 				}
 				break;
 
