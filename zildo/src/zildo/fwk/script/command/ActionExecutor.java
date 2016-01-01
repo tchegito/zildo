@@ -396,7 +396,6 @@ public class ActionExecutor extends RuntimeExecutor {
 	                		toRemove = getNamedElement(p_action.what);
 	                	} else {
 	                		toRemove = perso;
-	                    	EngineZildo.persoManagement.removePerso((Perso) toRemove);
 	                	}
 	                	EngineZildo.spriteManagement.deleteSprite(toRemove);
                 	}
