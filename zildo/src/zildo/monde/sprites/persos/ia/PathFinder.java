@@ -87,18 +87,16 @@ public class PathFinder {
         
         if (x < target.x - 0.5f) {
             delta.x = velocity;
-            if (pos.x + delta.x > target.x) {
+        	move++;
+            if (pos.x + delta.x > target.x + 0.5f) {
                 delta.x = target.x - mobile.x;
-            } else {
-            	move++;
             }
             a=Angle.EST;
         } else if (x > target.x + 0.5f) {
             delta.x = -velocity;
-            if (pos.x + delta.x < target.x) {
+            move++;
+            if (pos.x + delta.x < target.x - 0.5f) {
                 delta.x = target.x - mobile.x;
-            } else {
-            	move++;
             }
             a=Angle.OUEST;
         } else if (x != target.x) {
@@ -108,18 +106,16 @@ public class PathFinder {
         }
         if (y < target.y - 0.5f) {
             delta.y = velocity;
+            move++;
             if (pos.y + delta.y > target.y + 0.5f) {
                 delta.y = target.y - mobile.y;
-            } else {
-            	move++;
             }
             a=Angle.SUD;
         } else if (y > target.y + 0.5f) {
             delta.y = -velocity;
+            move++;
             if (pos.y + delta.y < target.y - 0.5f) {
                 delta.y = target.y - mobile.y;
-            } else {
-            	move++;
             }
             a=Angle.NORD;
         } else if (y != target.y) {
