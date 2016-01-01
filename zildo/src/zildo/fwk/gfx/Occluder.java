@@ -114,7 +114,6 @@ public class Occluder {
 				Zone z = recut(width, height);
 				remove(z);
 				return new Point(z.x1, z.y1);
-				//p = allocateZone(width, height);
 			}
 		}
 		return p;
@@ -127,6 +126,7 @@ public class Occluder {
 	private Zone recut(int width, int height) {
 		OccluderArranger arranger = new OccluderArranger(this);
 		Zone z = arranger.cutSpecificArea(width, height);
+		if (z == null) throw new RuntimeException("Unable to allocate zone "+width+"x"+height);
 		available = arranger.recut(z);
 		return z;
 	}
