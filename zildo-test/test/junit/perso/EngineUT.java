@@ -63,7 +63,6 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.persos.ia.PathFinder;
 import zildo.monde.util.Angle;
@@ -98,12 +97,7 @@ public class EngineUT {
 	}
 	
 	protected Perso spawnPerso(PersoDescription desc, String name, int x, int y) {
-		Perso perso = new PersoNJ();
-		perso.x = x;
-		perso.y = y;
-		perso.setDesc(desc);
-		perso.setAngle(Angle.NORD);
-		perso.setName(name);
+		Perso perso = EngineZildo.persoManagement.createPerso(desc, x, y, 0, name, Angle.NORD.value);
 		EngineZildo.spriteManagement.spawnPerso(perso);
 		return perso;
 	}
@@ -159,7 +153,7 @@ public class EngineUT {
 	protected void assertNotBlocked(Perso perso) {
 		for (Angle a : Angle.values()) {
 			Point coord = a.coords;
-			Pointf loc = perso.tryMove(perso.x + coord.x, perso.y + coord.y);
+			Pointf loc = perso.tryMove(coord.x, coord.y);
 			if (loc.x != perso.x || loc.y != perso.y) {
 				return;
 			}
