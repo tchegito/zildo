@@ -552,6 +552,16 @@ public class SpriteManagement extends SpriteStore {
 		return res;
 	}
 	
+	/** Delete entity. Update {@link PersoManagement#tab_perso} if needed, and {@link SpriteManagement#walkableEntities} if needed. **/
+	public void deleteSprite(SpriteEntity entity) {
+		// Update walkable entities
+		if (walkableEntities.contains(entity)) {
+			walkableEntities.remove(entity);
+		}
+
+		super.deleteSprite(entity);
+	}
+	
 	/**
 	 * Do sprite's stuff<ul>
 	 * <li>animate sprites & persos<li>
