@@ -618,23 +618,28 @@ public abstract class Perso extends Element {
 
 	private boolean transitionCrossed;
 
-	private boolean checkPlatformUnder() {
+	/** Fills the {@link onPlatform} variable, checking every walking platform under current character. **/
+	protected boolean checkPlatformUnder() {
 		// Check sprite collision
 		for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
 			// found a platform. Is perso on it ?
 			Mover vehicle = entity.getMover();
 			Zone zz = vehicle.getZone();
-			if (zz.isInto((int) x, (int) y) && (int)z <= vehicle.getFlatZ() ) {
-				z = vehicle.getFlatZ(); //normalize Z, in case we were under mover
-				boolean justLinked = vehicle.linkEntity(this);
-				if (justLinked) {
-					String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
-					TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName(), -1, floor);
-					EngineZildo.scriptManagement.trigger(trigger);
-					onPlatform = true;
+			float diffZ = z - vehicle.getFlatZ();
+			if (zz.isInto((int) x, (int) y)) {
+				// Declare entity is on the mover only if Z matches
+				if (0 <= diffZ && diffZ < 0.5) {			// 0 <= DiffZ < 0.5
+					bottomZ = vehicle.getFlatZ();
+					boolean justLinked = vehicle.linkEntity(this);
+					if (justLinked) {
+						String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
+						TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName(), -1, floor);
+						EngineZildo.scriptManagement.trigger(trigger);
+						onPlatform = true;
+					}
+	
+					return true;
 				}
-
-				return true;
 			} else if (onPlatform && vehicle.isOnIt(this)) {
 				vehicle.unlinkEntity(this);
 				onPlatform = false;
