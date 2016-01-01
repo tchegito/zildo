@@ -39,6 +39,7 @@ import zildo.monde.sprites.persos.PersoGarde;
 import zildo.monde.sprites.persos.PersoGardeVert;
 import zildo.monde.sprites.persos.PersoGreenBlob;
 import zildo.monde.sprites.persos.PersoNJ;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.persos.PersoPoultry;
 import zildo.monde.sprites.persos.PersoRabbit;
 import zildo.monde.sprites.persos.PersoRat;
@@ -46,7 +47,6 @@ import zildo.monde.sprites.persos.PersoShadowed;
 import zildo.monde.sprites.persos.PersoSpider;
 import zildo.monde.sprites.persos.PersoSquirrel;
 import zildo.monde.sprites.persos.PersoVolant;
-import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.persos.boss.PersoDragon;
 import zildo.monde.sprites.persos.ia.PathFinderBee;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -266,6 +266,9 @@ public class PersoManagement {
 			case CREATURE:
 				perso.setPv(2);
 				perso.setSpeed(1.5f);
+			case TURTLE:
+				perso.setSpeed(0.25f);
+			default:
 				break;
 		}
 

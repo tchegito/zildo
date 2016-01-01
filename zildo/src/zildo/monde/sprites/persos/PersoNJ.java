@@ -696,7 +696,41 @@ public class PersoNJ extends Perso {
 			break;
 		case TURTLE:
 			reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
-			add_spr = computeSeq(2) % 3;
+			if (getAddSpr() < 8) {
+				add_spr = computeSeq(2) % 3;
+				boolean smallShadow = false;
+				switch (angle) {
+				case EST:
+				case OUEST:
+					// Shadow adjustment
+					shadow.setX(x + (angle == Angle.OUEST ? 3 : -3));
+					shadow.setY(y-2);
+					if (getAddSpr() < 3) {	// Turtle in its shelf
+						smallShadow = true;
+						shadow.setX(x);
+						shadow.setY(y-3);
+						if (getAddSpr() == 2) shadow.setY(y-2);
+					} else {
+						if (getAddSpr() == 3) shadow.setX(x);
+					}
+					break;
+					//0 1 2 3 1 2 3
+					case SUD:
+						add_spr = 7 + computeSeq(2) % 7;
+						smallShadow = true;
+						shadow.setY(y-2);
+						break;
+					case NORD:
+						add_spr = 14 + computeSeq(2) % 7;
+						smallShadow = true;
+						shadow.setY(y-2);
+					default:
+						break;
+				}
+				shadow.setDesc(smallShadow ? ElementDescription.SHADOW : ElementDescription.SHADOW_LARGE);
+			} else {	// Turtle head => no shadow
+				shadow.setVisible(false);
+			}
 			break;
 		default:
 			add_spr = angle.value * 2 + computeSeq(2) % 2;

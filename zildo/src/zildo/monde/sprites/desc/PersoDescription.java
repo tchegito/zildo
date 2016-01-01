@@ -114,8 +114,8 @@ public enum PersoDescription implements SpriteDescription {
 	TURTLE(343, 344, 345, 346, 
 			347, 348, 349, 350, 
 			351, 352, 353,
-			354, 355, 356, 357,
-			358, 359, 360, 361),
+			354, 355, 356, 357,	358, 359, 360, 
+			361, 362, 363, 364, 365, 366, 367),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
