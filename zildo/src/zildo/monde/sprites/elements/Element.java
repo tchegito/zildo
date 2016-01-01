@@ -677,7 +677,7 @@ public class Element extends SpriteEntity {
 				double angleMove = Trigo.getAngleRadian(p_deltaX, p_deltaY);
 				
 				float diagonalForce = (float) (antFactor * Trigo.SQUARE_2);
-				for (int j=0;j<4;j++) {
+				for (int j=0;j<6;j++) {
 					Vector2f move2;
 					switch (j) {
 					case 0:
@@ -700,6 +700,17 @@ public class Element extends SpriteEntity {
 							continue;
 						} else {
 							move2 = new Vector2f(p_deltaX, p_deltaY).rotY();
+						}
+						break;
+					// These extra-case have been added during a testcase: TestCollision#doorBorder
+					case 4: // Lock angle on quarters (NORTH, WEST, SOUTH, EAST), and try to turn (like 1 and 2)
+					case 5:
+						Point ac = Angle.fromDelta(p_deltaX, p_deltaY).coords;
+						double gridedAngle = Trigo.getAngleRadian(ac.x, ac.y);
+						if (j==4) {
+							move2 = Trigo.vect(gridedAngle - Trigo.PI_SUR_4, force);
+						} else {
+							move2 = Trigo.vect(gridedAngle + Trigo.PI_SUR_4, force);
 						}
 						break;
 					}
