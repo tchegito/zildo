@@ -599,6 +599,9 @@ public class PersoPlayer extends Perso {
 		case TOMBE:
 			z+=vz;
 			if (z > bottomZ) {
+				if (checkPlatformUnder()) {	// Maybe character hit someone under him
+					land();
+				}
 				vz+=az;
 			} else if (az != 0) {
 				// Fix character on the ground, and cancel movement
@@ -662,7 +665,8 @@ public class PersoPlayer extends Perso {
 			shiftWetFeet = -1 + 3;
 
 			// When squirrel is on a top of a high stump, he have to be foregound
-			setForeground(z > 7);
+			// Idem when it's on the turtle
+			setForeground(z > 7 || isOnPlatform());
 
 			switch (angle) {
 			case NORD:
