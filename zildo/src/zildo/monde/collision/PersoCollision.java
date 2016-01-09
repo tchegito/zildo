@@ -30,6 +30,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
 /**
@@ -185,7 +186,23 @@ public class PersoCollision {
         if (quelElement != null && quelElement.getEntityType().isPerso()) {
             perso = (Perso) quelElement;
         }
-        if (EngineZildo.collideManagement.checkCollisionCircles(x, y, tx, ty, rayon, rayonPersoToCompare)) {
+        Zone size = null; Zone size2 = null;
+        if (quelPerso.getMover() != null) {
+        	size = quelPerso.getMover().getZone();
+        }
+        if (quelElement.getMover() != null) {
+        	size2 = quelElement.getMover().getZone();
+        }
+        // TODO: maybe merge this behavior with CollideManagement#checkColli
+        boolean colli = false;
+        if (size != null) {
+        	colli = new Rectangle(size).isCrossingCircle(new Point(x, y), rayon);
+        } else if (size2 != null) {
+        	colli = new Rectangle(size2).isCrossingCircle(new Point(tx, ty), rayonPersoToCompare);
+        } else {
+        	colli = EngineZildo.collideManagement.checkCollisionCircles(x, y, tx, ty, rayon, rayonPersoToCompare);
+        }
+        if (colli) {
             if (perso != null && perso.isZildo() && perso.linkedSpritesContains(quelPerso)) {
                 // Collision entre Zildo et l'objet qu'il porte dans les mains => on laisse
             } else if (quelElement == null || quelElement.getLinkedPerso() != quelPerso) {

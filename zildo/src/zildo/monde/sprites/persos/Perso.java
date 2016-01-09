@@ -466,7 +466,7 @@ public abstract class Perso extends Element {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("Perso=" + name + "\nCoords:(" + x + "," + y + ")");
+		sb.append("Perso=" + name + "\nCoords:(" + x + ", " + y + " " + z+")");
 		if (pathFinder != null && pathFinder.getTarget() != null) {
 			Point p = pathFinder.getTarget();
 			sb.append(" ==> ("+p.x+","+p.y+")");
@@ -491,8 +491,8 @@ public abstract class Perso extends Element {
 			norme = 1.0f; // To avoid 'divide by zero'
 		}
 		// Then throw it !
-		this.setPx((float) (p_speed * (diffx / norme)));
-		this.setPy((float) (p_speed * (diffy / norme)));
+		setPx((float) (p_speed * (diffx / norme)));
+		setPy((float) (p_speed * (diffy / norme)));
 		// Stop current potential attack
 		setMouvement(MouvementZildo.VIDE);
 	}
@@ -1046,6 +1046,14 @@ public abstract class Perso extends Element {
 	}
 	
 	protected void land() {
+		if (!isOnPlatform()) {
+			Perso blocker = EngineZildo.persoManagement.collidePerso((int) x, (int) y, this);
+			if (blocker != null) {
+				// Character has fallen but collides with someone => try to project him (example: turtle)
+				project(blocker.x, blocker.y, 1);
+				pathFinder.setUnstoppable(true);
+			}
+		}
 		z=bottomZ;
 		az=0;
 		vz=0;

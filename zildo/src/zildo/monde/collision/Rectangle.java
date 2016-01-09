@@ -63,8 +63,8 @@ public class Rectangle {
 		coordinates[1] = new Point(zx2 + zx1, zy1);
 		coordinates[2] = new Point(zx1, zy2 + zy1);
 		coordinates[3] = new Point(zx2 + zx1, zy2 + zy1);
-		center = new Point((zx1 + zx2) / 2, (zy1 + zy2) / 2);
-		size = new Point(zx2 - zx1, zy2 - zy1);
+		center = new Point(zx1 + zx2 / 2, zy1 + zy2 / 2);
+		size = new Point(zx2, zy2);
 	}
 
 	public void translate(int p_shiftX, int p_shiftY) {

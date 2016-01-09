@@ -22,11 +22,15 @@ package junit.perso;
 import org.junit.Assert;
 import org.junit.Test;
 
+import zildo.monde.collision.Rectangle;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Vector2f;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -87,5 +91,23 @@ public class TestPersoMoveAndPush extends EngineUT {
 		// And now, check that turtle is arrived
 		Assert.assertTrue(persoA.getTarget() == null);
 		assertLocation(persoA, targetA, true);
+	}
+	
+	@Test
+	public void testTurtleZone() {
+		mapUtils.loadMap("sousbois3");
+		Perso turtle = EngineZildo.persoManagement.getNamedPerso("sacher");
+		turtle.setPos(new Vector2f(470, 584));
+		turtle.setAngle(Angle.EST);
+		Perso hero = spawnZildo(470,  595);
+		
+		renderFrames(1);
+		
+		// Check with circles (both radius = 7)
+		Assert.assertTrue( EngineZildo.collideManagement.checkCollisionCircles((int) turtle.x, (int) turtle.y, (int) hero.x, (int) hero.y, 7, 7));
+		// Check with circle and zone
+		Assert.assertFalse( new Rectangle(turtle.getMover().getZone()).isCrossingCircle(new Point(hero.x, hero.y), 7) );
+		
+		Assert.assertFalse(EngineZildo.mapManagement.collide(hero.x, hero.y, hero));
 	}
 }

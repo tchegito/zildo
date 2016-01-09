@@ -403,15 +403,7 @@ public class PersoPlayer extends Perso {
 			return;
 		}
 		// Project Zildo away from the enemy
-		float diffx = getX() - cx;
-		float diffy = getY() - cy;
-		float norme = (float) Math.sqrt((diffx * diffx) + (diffy * diffy));
-		if (norme == 0.0f) {
-			norme = 1.0f; // Pour éviter le 'divide by zero'
-		}
-		// Et on l'envoie !
-		setPx(8 * (diffx / norme));
-		setPy(8 * (diffy / norme));
+		project(cx, cy, 8);
 
 		if (p_shooter != null && p_shooter.getQuel_deplacement().isAlertable()) {
 			p_shooter.setAlerte(true);
@@ -494,6 +486,7 @@ public class PersoPlayer extends Perso {
 		setPy(0.0f);
 		setSpecialEffect(EngineFX.NO_EFFECT);
 		
+		pathFinder.setUnstoppable(false);	// Used with turtle, for collision problems (see Perso#land)
 		super.stopBeingWounded();
 	}
 
@@ -596,7 +589,7 @@ public class PersoPlayer extends Perso {
 				countArrow--;
 			}
 			break;
-		case TOMBE:
+		case TOMBE:	// Character is falling
 			z+=vz;
 			if (z > bottomZ) {
 				if (checkPlatformUnder()) {	// Maybe character hit someone under him

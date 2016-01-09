@@ -47,6 +47,7 @@ public class Zone {
 		y2 += a;
 	}
 
+	/** Build a zone with (x,y) (width, height) **/
 	public Zone(int x1, int y1, int x2, int y2) {
 		this.x1 = x1;
 		this.x2 = x2;
