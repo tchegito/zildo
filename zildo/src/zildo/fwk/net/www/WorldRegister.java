@@ -48,7 +48,8 @@ import zildo.resource.Constantes;
  */
 public class WorldRegister extends Thread {
 
-	public static String url = "http://legendofzildo.acemod.fr/index.php";
+	//public static String url = "http://legendofzildo.acemod.fr/index.php";
+	public static String url = "http://alembrume.fr/php/www/index.php";
 	private final static String displayServerServlet = "displayServers";
 	private final static String displayChampionServlet = "command=LIST_CH";
 	private final static String charset = "UTF-8";

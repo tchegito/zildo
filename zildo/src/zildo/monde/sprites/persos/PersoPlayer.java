@@ -182,8 +182,6 @@ public class PersoPlayer extends Perso {
 		// inventory.add(weapon);
 
 		setSpeed(Constantes.ZILDO_SPEED);
-		
-		//setAppearance(ControllablePerso.PRINCESS_BUNNY);
 	}
 
 	/**

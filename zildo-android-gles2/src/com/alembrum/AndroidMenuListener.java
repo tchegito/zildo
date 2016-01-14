@@ -51,6 +51,9 @@ public class AndroidMenuListener extends DefaultMenuListener {
 				return temp;
 			}
 		}
+		if (!touchListener.infos.gamePadDirection.isEmpty()) {
+			menu.act();
+		}
 		ItemMenu item = touchListener.popItem();
 		if (item != null && item instanceof EditableItemMenu) {
 			// For now, only editable item is "player name", so it's ugly, but works

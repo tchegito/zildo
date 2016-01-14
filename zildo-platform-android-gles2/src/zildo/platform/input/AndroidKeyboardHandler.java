@@ -40,7 +40,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 	Point repereCrossCenter = new Point(10 + (80/2), Zildo.viewPortY - (80/2));
 	
 	// Relations between given key and its location on screen, inside virtual pad
-	enum KeyLocation {
+	public enum KeyLocation {
 		VP_UP(29, -10, 22, 39, true, KEY_UP),	// Real zone : 29, 11, 23, 19
 		VP_LEFT(-10, 29, 39, 23, true, KEY_LEFT),	// Real zone : 11, 29, 19, 23
 		VP_RIGHT(51, 29, 39, 23, true, KEY_RIGHT),	// Real zone : 51, 29, 19, 23
@@ -183,12 +183,15 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 	
 	Angle previous;
 	Vector2f direction;
+	int simulatedKeyCode;
+	int previousSimulatedKeyCode;
 	
 	public void poll() {
 		// Clear all keys state
 		for (int i : platformKeys.values()) {
 			keyStates[i] = false;
 		}
+		simulatedKeyCode = -1;
 		
 		polledTouchedPoints.clear();
 		direction = null;
@@ -250,6 +253,52 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 			}
 			
 		}
+		// Interpret gamepad events: direction + buttons
+		if (!infos.gamePadDirection.isEmpty()) {
+			direction = new Vector2f(infos.gamePadDirection);
+			direction.normalize(1);
+
+			Angle angleDirection = Angle.fromDelta(direction.x, direction.y);
+			switch (angleDirection) {
+			case NORD:
+				if (previousSimulatedKeyCode != KEY_UP) {
+					keyStates[KEY_UP] = true;
+					simulatedKeyCode = KEY_UP;
+				}
+				break;
+			case SUD:
+				if (previousSimulatedKeyCode != KEY_DOWN) {
+					keyStates[KEY_DOWN] = true;
+					simulatedKeyCode = KEY_DOWN;
+				}
+				break;
+			case OUEST:
+				if (previousSimulatedKeyCode != KEY_LEFT) {
+					keyStates[KEY_LEFT] = true;
+					simulatedKeyCode = KEY_LEFT;
+				}
+				break;
+			case EST:
+				if (previousSimulatedKeyCode != KEY_RIGHT) {
+					keyStates[KEY_RIGHT] = true;
+					simulatedKeyCode = KEY_RIGHT;
+				}
+				break;
+			}
+
+			if (simulatedKeyCode != -1) {
+				previousSimulatedKeyCode = simulatedKeyCode;
+			}
+		} else {
+			previousSimulatedKeyCode = -1;
+		}
+		
+		for (KeyLocation k : KeyLocation.values()) {
+			if (infos.gamePadButtons[k.ordinal()]) {
+				keyStates[k.keyCode] = true;
+			}
+		}
+		
 		if (!atLeastOneInDpadArea && infos.movingCrossCenter != null) {
 			//Log.d("TOUCH", "Remove cross center");
 			infos.movingCrossCenter = null;
@@ -267,15 +316,19 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 	 * @return true if a keyboard event was read, false otherwise
 	 */
 	public boolean next() {
-		return false; //Keyboard.next();
+		return simulatedKeyCode != -1; //Keyboard.next();
 	}
 	
 	public boolean getEventKeyState() {
-		return false; //Keyboard.getEventKeyState();
+		return true; //Keyboard.getEventKeyState();
 	}
 	
 	public int getEventKey() {
-		return 0; //Keyboard.getEventKey();
+		try {
+			return simulatedKeyCode; //Keyboard.getEventKey();
+		} finally {
+			simulatedKeyCode = -1;
+		}
 	}
 	
 	public char getEventCharacter() {

@@ -28,6 +28,8 @@ public enum ControllablePerso {
 	ZILDO(true, false, true, true),
 	PRINCESS_BUNNY(false, true, false, false);
 
+	public static String QUEST_DETERMINING_APPEARANCE = "hero_princess";
+	
 	public boolean canInventory;	// TRUE=character has an inventory
 	public boolean canFreeJump;	// TRUE=character can jump, if player press a button
 	public boolean canAttack;

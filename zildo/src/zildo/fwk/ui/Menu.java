@@ -34,7 +34,7 @@ public class Menu {
 
 	public String title;
 	public List<ItemMenu> items;
-	public int selected;
+	protected int selected;
 	public boolean displayed;
 	public Menu previousMenu;
 	
@@ -193,5 +193,9 @@ public class Menu {
     
     public String getKey() {
     	return keyText;
+    }
+    
+    public int getSelected() {
+    	return selected;
     }
 }

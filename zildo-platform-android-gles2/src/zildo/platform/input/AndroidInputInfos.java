@@ -22,6 +22,8 @@ package zildo.platform.input;
 
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
+import zildo.platform.input.AndroidKeyboardHandler.KeyLocation;
 import zildo.server.EngineZildo;
 
 /**
@@ -30,11 +32,16 @@ import zildo.server.EngineZildo;
  */
 public class AndroidInputInfos {
 	public TouchPoints liveTouchedPoints;
+	public Pointf gamePadDirection;
+	boolean[] gamePadButtons;
 	public boolean backPressed;
 	public boolean menuPressed;
 	public Point movingCrossCenter;
 	PersoPlayer zildo;
 	Point zildoPos;
+	int nGamePadButtonsPressed;
+	
+	static final int MAX_BUTTONS_PRESSED = KeyLocation.values().length;
 	
 	public AndroidInputInfos() {
 		liveTouchedPoints = new TouchPoints();
@@ -42,6 +49,11 @@ public class AndroidInputInfos {
 		menuPressed = false;
 		zildo = null;
 		zildoPos = new Point(0,0);
+		gamePadDirection = new Pointf(0f, 0f);
+		gamePadButtons = new boolean[MAX_BUTTONS_PRESSED];
+		for (int i=0;i<MAX_BUTTONS_PRESSED;i++) {
+			gamePadButtons[i] = false;
+		}
 	}
 	
 	public Point getZildoPos() {
@@ -57,5 +69,13 @@ public class AndroidInputInfos {
 			return zildoPos;
 		}
 		return null;
+	}
+	
+	public void pressButton(KeyLocation k) {
+		gamePadButtons[k.ordinal()] = true;
+	}
+	
+	public void releaseButton(KeyLocation k) {
+		gamePadButtons[k.ordinal()] = false;
 	}
 }

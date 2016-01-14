@@ -305,6 +305,7 @@ public class Client {
 			}
 		}
 		if (kbHandler.isKeyPressed(Keys.COMPASS) && 
+				connected &&	// Inside the game, not in main menu
 				ClientEngineZildo.guiDisplay.isToDisplay_generalGui() && 
 				ClientEngineZildo.guiDisplay.getToDisplay_dialogMode() != DialogMode.TEXTER) {
 			if (currentMenu instanceof CompassMenu) {

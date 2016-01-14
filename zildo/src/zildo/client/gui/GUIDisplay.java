@@ -813,7 +813,7 @@ public class GUIDisplay {
 			p_menu.displayed = true;
 		}
 		menuSequence.clear();
-		int y = startY + (p_menu.selected + 2) * sc.TEXTER_MENU_SIZEY;
+		int y = startY + (p_menu.getSelected() + 2) * sc.TEXTER_MENU_SIZEY;
 		alpha += 0.1f;
 		int wave = (int) (10.0f * Math.sin(alpha));
 		menuSequence.addSprite(FontDescription.GUI_BLUEDROP, 40 + wave, y + 5);
