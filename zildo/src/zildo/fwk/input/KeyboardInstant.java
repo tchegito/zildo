@@ -61,6 +61,15 @@ public class KeyboardInstant implements EasySerializable {
 		kbdInstant.put(key, value);
 	}
 
+	/** Set a key from a combination of several other one **/
+	public void setKeyMerged(KeysConfiguration key, KeysConfiguration... toMerge) {
+		boolean result = false;
+		for (KeysConfiguration kc : toMerge) {
+			result |= isKeyDown(kc);
+		}
+		setKey(key, result);
+	}
+	
 	public Vector2f getDirection() {
 		return currentDirection;
 	}

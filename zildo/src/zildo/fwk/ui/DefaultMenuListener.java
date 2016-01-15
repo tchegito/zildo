@@ -31,7 +31,6 @@ public class DefaultMenuListener implements MenuListener {
 	@Override
 	public final ItemMenu act(Menu menu) {
 		if (asked != null) {
-			menu.activateItem(asked);
 			ItemMenu dobble = asked;
 			asked = null;
 			return dobble;

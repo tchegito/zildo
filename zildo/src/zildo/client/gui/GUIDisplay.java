@@ -925,7 +925,8 @@ public class GUIDisplay {
 			}
 		}
 		// virtual pad
-		if (PlatformDependentPlugin.currentPlugin == PlatformDependentPlugin.KnownPlugin.Android) {
+		if (PlatformDependentPlugin.currentPlugin == PlatformDependentPlugin.KnownPlugin.Android 
+				&& ClientEngineZildo.client.isDisplayedAndroidUI()) {
 			int curAlpha = alphaPad;
 			if (dialogDisplay.isDialoguing()) {
 				curAlpha>>=2;

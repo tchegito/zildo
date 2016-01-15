@@ -20,6 +20,7 @@
 
 package zildo.fwk.ui;
 
+import zildo.client.ClientEngineZildo;
 import zildo.client.sound.BankSound;
 
 public abstract class ItemMenu {
@@ -57,6 +58,11 @@ public abstract class ItemMenu {
 	
 	public abstract void run();
 
+	public void activate() {
+        ClientEngineZildo.soundPlay.playSoundFX(sound);
+        setLaunched(false);
+	}
+	
 	public boolean isLaunched() {
 		return launched;
 	}

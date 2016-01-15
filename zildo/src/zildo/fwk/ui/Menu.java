@@ -45,8 +45,6 @@ public class Menu {
 	protected final Menu currentMenu = this;
 	protected String keyText;
 	
-	protected KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
-	
 	public Menu() {
 
 	}
@@ -109,6 +107,7 @@ public class Menu {
         char charKey=' ';
         char upperKey=' ';
         ItemMenu item;
+        KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
         while (kbHandler.next()) {
         	if (kbHandler.getEventKeyState()) {
 	            key = kbHandler.getEventKey(); //Keyboard.getEventCharacter();
@@ -125,7 +124,6 @@ public class Menu {
         	} else if (key == kbHandler.getCode(Keys.DOWN)) {
                 move(true);
         	} else if (key == kbHandler.getCode(Keys.RETURN)) {
-                activateItem(item);
                 return item;
         	} else {
             	// Does this item is editable ?
@@ -149,11 +147,6 @@ public class Menu {
         return null;
     }
     
-    public void activateItem(ItemMenu item) {
-        ClientEngineZildo.soundPlay.playSoundFX(item.sound);
-        item.setLaunched(false);
-    }
-
     /**
      * Used with touchscreen platform.
      * @param item

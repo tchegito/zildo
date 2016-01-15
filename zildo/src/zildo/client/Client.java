@@ -81,6 +81,7 @@ public class Client {
 	// touchpad parameters
 	boolean leftHanded;	// For touch screen
 	boolean movingCross; // For touch screen
+	boolean androidUI = true;	// For touch screen (hide UI after a long time idle)
 	Point crossCenter;	// When player first touch the right zone
 	Point draggingTouch;	// Player's dragging touch
 	
@@ -225,10 +226,14 @@ public class Client {
 		//long t3 = ZUtils.getTime();
 		
 		//System.out.println("time update : "+(t2-t1)+"ms / time render : "+(t3-t2)+"ms / number of stage : "+stages.size());
-		if (action != null && !action.isLaunched()) {
-			action.setLaunched(true);
-			action.run();
-			action = null;
+		if (action != null) {
+			action.activate();
+			if (action != null && !action.isLaunched()) {
+				action.setLaunched(true);
+				action.run();
+				
+				action = null;
+			}
 		}
 		
 		return done;
@@ -462,6 +467,14 @@ public class Client {
 		return movingCross;
 	}
 
+	public void showAndroidUI(boolean show) {
+		androidUI = show;
+	}
+	
+	public boolean isDisplayedAndroidUI() {
+		return androidUI;
+	}
+	
 	public void setMovingCross(boolean movingCross) {
 		this.movingCross = movingCross;
 	}

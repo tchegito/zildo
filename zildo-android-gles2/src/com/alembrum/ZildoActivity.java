@@ -1,6 +1,7 @@
 package com.alembrum;
 
 import java.util.Locale;
+
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.PlatformDependentPlugin;
@@ -8,20 +9,25 @@ import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.menu.StartMenu;
 import zildo.fwk.ZUtils;
 import zildo.fwk.ui.EditableItemMenu;
+import zildo.platform.input.AndroidKeyboardHandler.KeyLocation;
 import zildo.platform.opengl.AndroidSoundEngine;
 import zildo.resource.Constantes;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.InputDevice;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -29,6 +35,7 @@ import android.view.WindowManager;
 public class ZildoActivity extends Activity {
 	
 	static TouchListener touchListener = null;
+	GamePadListener gamePadListener;
 	static Handler handler = null;
 	OpenGLES20SurfaceView view;
 	static ClientThread clientThread;
@@ -129,7 +136,9 @@ public class ZildoActivity extends Activity {
         
    		view.setViewRenderer(renderer);
    		view.setOnTouchListener(touchListener);
-   		
+   		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+   	    	gamePadListener = new GamePadListener(touchListener);
+   		}
 
    		if (!clientThread.isAlive()) {
    			clientThread.start();
@@ -191,30 +200,69 @@ public class ZildoActivity extends Activity {
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) { 
-    	switch (keyCode) {
-    	case KeyEvent.KEYCODE_MENU:
-            //do your work
-        	touchListener.pressMenuButton(true);
-            return true;
-    	case KeyEvent.KEYCODE_BACK:
-    		touchListener.pressBackButton(true);
+    	if (handleKeys(keyCode, event, true)) {
     		return true;
-        }
-        return super.onKeyDown(keyCode, event); 
+    	}
+   		return super.onKeyDown(keyCode, event);
     }
     
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+    	if (handleKeys(keyCode, event, false)) {
+    		return true;
+    	}
+   		return super.onKeyUp(keyCode, event);
+    }
+    
+    private boolean handleKeys(int keyCode, KeyEvent event, boolean press) {
+    	if ((event.getSource() & InputDevice.SOURCE_GAMEPAD)
+                == InputDevice.SOURCE_GAMEPAD) {
+    		// If user press A or B, we ALWAYS got to return TRUE. Else, Android considers it's back button and handles it not the Zildo's way
+            if (event.getRepeatCount() == 0) {
+            	switch (keyCode) {
+            		case KeyEvent.KEYCODE_BUTTON_X:
+            			touchListener.pressGameButton(KeyLocation.VP_BUTTON_X, press);
+            			return true;
+            		case KeyEvent.KEYCODE_BUTTON_Y:
+            			touchListener.pressGameButton(KeyLocation.VP_BUTTON_Y, press);
+            			return true;
+            		case KeyEvent.KEYCODE_BUTTON_A:
+            			touchListener.pressGameButton(KeyLocation.VP_INVENTORY, press);
+            			return true;
+            		case KeyEvent.KEYCODE_BUTTON_B:
+            			touchListener.pressBackButton(press);
+            			return true;
+            		case KeyEvent.KEYCODE_BUTTON_SELECT:
+            			touchListener.pressGameButton(KeyLocation.VP_COMPASS, press);
+            			return true;
+            		case KeyEvent.KEYCODE_BUTTON_START:
+            			touchListener.pressMenuButton(press);
+            			return true;
+            	}
+            }
+            return true;
+    	}
     	switch (keyCode) {
     	case KeyEvent.KEYCODE_MENU:
             //do your work
-        	touchListener.pressMenuButton(false);
+        	touchListener.pressMenuButton(press);
             return true;
     	case KeyEvent.KEYCODE_BACK:
-    		touchListener.pressBackButton(false);
+    		touchListener.pressBackButton(press);
     		return true;
         }
-        return super.onKeyUp(keyCode, event); 
+    	return true;
+    }
+    
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
+	@Override
+    public boolean dispatchGenericMotionEvent(MotionEvent event) {
+    	if (gamePadListener != null && (event.getSource() & InputDevice.SOURCE_JOYSTICK) ==
+                InputDevice.SOURCE_JOYSTICK &&
+                event.getAction() == MotionEvent.ACTION_MOVE) {
+    		return gamePadListener.handleMotionEvent(event);
+    	}
+    	return super.dispatchGenericMotionEvent(event);
     }
     
 	static Client client;
@@ -254,7 +302,6 @@ public class ZildoActivity extends Activity {
             // And quit
             finish();
             android.os.Process.killProcess(android.os.Process.myPid());
-
     	}
     	
     	public Client getClient() {

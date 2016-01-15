@@ -100,14 +100,18 @@ public class PlayerManagement {
 		// Specific for touchscreen : "touch frame" is equivalent to "touch Action key"
 		// Except for BUYING action ! 
 		if (dialogState.dialoguing && gamePhase != GamePhase.BUYING && PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
-			instant.setKey(KeysConfiguration.PLAYERKEY_ACTION,
-					instant.isKeyDown(KeysConfiguration.PLAYERKEY_DIALOG));
+			instant.setKeyMerged(KeysConfiguration.PLAYERKEY_ACTION, 
+					KeysConfiguration.PLAYERKEY_DIALOG, 
+					KeysConfiguration.PLAYERKEY_ATTACK,
+					KeysConfiguration.PLAYERKEY_ACTION);
 		}
 		if (heros.isInventoring()) {
-			instant.setKey(KeysConfiguration.PLAYERKEY_INVENTORY,
-					instant.isKeyDown(KeysConfiguration.PLAYERKEY_UP) || 
-					instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY) || 
-					instant.isKeyDown(KeysConfiguration.PLAYERKEY_DOWN));			
+			instant.setKeyMerged(KeysConfiguration.PLAYERKEY_INVENTORY,
+					KeysConfiguration.PLAYERKEY_UP, 
+					KeysConfiguration.PLAYERKEY_INVENTORY,
+					KeysConfiguration.PLAYERKEY_DOWN,
+					KeysConfiguration.PLAYERKEY_ACTION,
+					KeysConfiguration.PLAYERKEY_ATTACK);			
 		}
 		
 		

@@ -185,6 +185,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 	Vector2f direction;
 	int simulatedKeyCode;
 	int previousSimulatedKeyCode;
+	int countInactivity;
 	
 	public void poll() {
 		// Clear all keys state
@@ -202,7 +203,10 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 			synchronized (infos.liveTouchedPoints) {
 				polledTouchedPoints.addAll(infos.liveTouchedPoints);
 			}
+			countInactivity = 0;
+			ClientEngineZildo.client.showAndroidUI(true);
 
+			
 			// Update all keys state
 			
 			boolean movingCross = ClientEngineZildo.client.isMovingCross();
@@ -252,6 +256,11 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 				}
 			}
 			
+		} else {
+			countInactivity++;
+			if (countInactivity == 100) {
+				ClientEngineZildo.client.showAndroidUI(false);
+			}
 		}
 		// Interpret gamepad events: direction + buttons
 		if (!infos.gamePadDirection.isEmpty()) {

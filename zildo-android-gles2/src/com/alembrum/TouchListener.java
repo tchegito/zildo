@@ -28,6 +28,7 @@ import zildo.fwk.ui.Menu;
 import zildo.monde.util.Point;
 import zildo.platform.input.AndroidInputInfos;
 import zildo.platform.input.AndroidKeyboardHandler;
+import zildo.platform.input.AndroidKeyboardHandler.KeyLocation;
 import zildo.platform.input.TouchPoints;
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -87,7 +88,6 @@ public class TouchListener implements OnTouchListener {
 				case MotionEvent.ACTION_UP:
 				case MotionEvent.ACTION_POINTER_UP:
 					item = tempItem;
-					menu.activateItem(tempItem);
 					break;
 				case MotionEvent.ACTION_DOWN:
 				case MotionEvent.ACTION_POINTER_DOWN:
@@ -165,6 +165,24 @@ public class TouchListener implements OnTouchListener {
 		if (infos != null) {
 			infos.menuPressed = pressed;
 		}
+	}
+	
+	public void pressGameButton(KeyLocation k, boolean press) {
+		if (press) {
+			infos.pressButton(k);
+			Menu menu = client.getCurrentMenu();
+			if (menu != null) {
+				// Inside a menu, activate current item
+				item = menu.items.get(menu.getSelected());
+			}
+		} else {
+			infos.releaseButton(k);
+		}
+	}
+	
+	public void setGamePadDirection(float x, float y) {
+		infos.gamePadDirection.x = x;
+		infos.gamePadDirection.y = y;
 	}
 	
 	public ItemMenu popItem() {
