@@ -2,7 +2,6 @@ package com.alembrum;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-import android.util.Log;
 import android.view.InputDevice;
 import android.view.MotionEvent;
 

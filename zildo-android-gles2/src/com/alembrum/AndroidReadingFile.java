@@ -44,7 +44,6 @@ public class AndroidReadingFile extends EasyBuffering {
 	private AndroidReadingFile(String path, boolean asset) {
 		super(null);	// Cancel first allocation
 		Log.d("file", "open "+path);
-		int done = 0;
 		boolean finished = false;
 		InputStream stream = null;
 		try {
@@ -61,7 +60,6 @@ public class AndroidReadingFile extends EasyBuffering {
 		        if (read == -1) {
 		            throw new RuntimeException("Something went horribly wrong");
 		        }
-		        done += read;
 		        finished = (read < buf.length);
 
 		    }
