@@ -190,7 +190,7 @@ public class PersoCollision {
         if (quelPerso.getMover() != null) {
         	size = quelPerso.getMover().getZone();
         }
-        if (quelElement.getMover() != null) {
+        if (quelElement != null && quelElement.getMover() != null) {
         	size2 = quelElement.getMover().getZone();
         }
         // TODO: maybe merge this behavior with CollideManagement#checkColli
