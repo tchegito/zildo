@@ -251,7 +251,7 @@ public class ZildoActivity extends Activity {
     		touchListener.pressBackButton(press);
     		return true;
         }
-    	return true;
+    	return false;
     }
     
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
