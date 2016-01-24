@@ -54,6 +54,7 @@ public class Tile implements Cloneable {
     public final static int T_WATER_MUD = 224 + 256*6;
     public final static int T_BUSH = 165;
     public final static int T_BUSH_CUT = 166;
+    public final static int T_PLOT = 173;
     public final static int T_SWAMP = 118 + 256;
     public final static int T_NETTLE = 6*256 + 231;
     public final static int T_NETTLE_CUT = 6*256 + 232;

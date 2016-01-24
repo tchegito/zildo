@@ -59,6 +59,7 @@ public class TileCollision {
     			break;
     		case Tile.T_HSTUMP: case Tile.T_HSTUMP+1:
     		case Tile.T_HSTUMP+2: case Tile.T_HSTUMP+3:
+    		case Tile.T_PLOT:
     			z = 8;
     			break;
     		case Tile.T_WATER_MUD:
