@@ -52,4 +52,19 @@ public class TestSquirrelMove extends EngineUT {
 		renderFrames(20);
 		Assert.assertEquals(0, squirrel.z,  0.1f);
 	}
+	
+	@Test
+	public void jumpFromStumpUnderMud() {
+		init(207, 428);
+		squirrel.z = 5;
+		
+		squirrel.jump();
+		int maxZ = 0;
+		for (int i=0;i<100;i++) {
+			renderFrames(1);
+			maxZ = Math.max((int) squirrel.z, maxZ);
+		}
+		Assert.assertTrue("Squirrel should have reach z=10, but measured max was "+maxZ, maxZ > 10);
+		
+	}
 }

@@ -614,7 +614,7 @@ public class PersoPlayer extends Perso {
 		//TODO: make it homogeneous with PathFinderSquirrel#setTarget
 		az = -0.1f;
 		vz = 1.1f; //2.12f;	// Adjust speed so as hero can't jump to a log from a water mud
-		if (nature == TileNature.SWAMP) {
+		if (nature == TileNature.SWAMP && z < 1) {	// Allow if hero is on a stump UNDER mud (z > 1)
 			vz = 0.3f;
 		}
 		pos_seqsprite = 12;
