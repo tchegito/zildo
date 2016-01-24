@@ -649,7 +649,7 @@ public abstract class Perso extends Element {
 	}
 	
 	/**
-	 * Perso walk on a tile, so he reacts (water), or tile change (door).
+	 * Perso walk on a tile, so he reacts (water/mud), or tile change (door).
 	 * 
 	 * @param p_sound
 	 *            TRUE=play sound when modifying map.
@@ -683,7 +683,6 @@ public abstract class Perso extends Element {
 					setFloor(floor-1);
 				}
 			}
-			//System.out.println(floor);
 			transitionCrossed = false;
 		} else {
 			transitionCrossed = false;

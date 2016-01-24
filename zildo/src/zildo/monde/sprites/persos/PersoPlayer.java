@@ -588,7 +588,9 @@ public class PersoPlayer extends Perso {
 			}
 			break;
 		case TOMBE:	// Character is falling
-			z+=vz;
+			z+=vz; 
+			// Animate character when he jumps
+			if (pos_seqsprite == -1) pos_seqsprite = 1;
 			if (z > bottomZ) {
 				if (checkPlatformUnder()) {	// Maybe character hit someone under him
 					land();
@@ -613,8 +615,9 @@ public class PersoPlayer extends Perso {
 		az = -0.1f;
 		vz = 1.1f; //2.12f;	// Adjust speed so as hero can't jump to a log from a water mud
 		if (nature == TileNature.SWAMP) {
-			vz -= 0.2f;
+			vz = 0.3f;
 		}
+		pos_seqsprite = 12;
 		mouvement = MouvementZildo.TOMBE;
 	}
 	
