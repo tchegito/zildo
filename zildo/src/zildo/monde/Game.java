@@ -39,6 +39,7 @@ import zildo.monde.dialog.HistoryRecord;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -244,7 +245,8 @@ public class Game implements EasySerializable {
             for (int i = 0; i < itemNumber; i++) {
                 String kind = p_buffer.readString();
                 int level = p_buffer.readInt();
-                if (zildo != null) {
+                ItemKind itemKind = ItemKind.fromString(kind);
+                if (zildo != null && itemKind.representation != ElementDescription.SPADE) {
                 	Item item = new Item(ItemKind.fromString(kind), level);
 	                items.add(item);
 	                if (indexSel == i) {

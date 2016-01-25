@@ -41,6 +41,7 @@ import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -674,8 +675,11 @@ public class Element extends SpriteEntity {
 			if (mapManagement.collide(x + antFactor * p_deltaX, y + antFactor * p_deltaY, this)) {
 				float keepX = xx;
 				float keepY = yy;
+				// We need different behavior from follower than rest of people. See TestFollowPerso#notBlocked and TestFollowPerso#jumpHill
+				boolean follower = (getEntityType().isPerso() && ((Perso)this).getQuel_deplacement() == MouvementPerso.FOLLOW);
 				double angleMove = Trigo.getAngleRadian(p_deltaX, p_deltaY);
 				
+				// We're gonna check 5 transformations (add/remove PI/4, Projection on X/Y axis
 				float diagonalForce = (float) (antFactor * Trigo.SQUARE_2);
 				for (int j=0;j<6;j++) {
 					Vector2f move2;
@@ -689,14 +693,14 @@ public class Element extends SpriteEntity {
 						break;
 					case 2:
 						diagonalForce = antFactor;	// No more diagonal for these 2 attempts
-						if (Math.abs(p_deltaX) < 0.01) {
+						if (Math.abs(p_deltaX) < 0.01 || p_deltaY == 0) {
 							continue;
 						} else {
 							move2 = new Vector2f(p_deltaX, p_deltaY).rotX();
 						}
 						break;
 					case 3:
-						if (Math.abs(p_deltaY) < 0.01) {
+						if (Math.abs(p_deltaY) < 0.01 || p_deltaX == 0) {
 							continue;
 						} else {
 							move2 = new Vector2f(p_deltaX, p_deltaY).rotY();
@@ -715,10 +719,10 @@ public class Element extends SpriteEntity {
 						break;
 					}
 					
-					if (j == 2 || j == 3) {
+					if ((j == 2 || j == 3)) {
 						// Allow diagonal movement to become lateral, only if it leads to a real position
 						// (it fixes the bug where jump was quite impossible to make because of lateral movement)
-						if ( /*!mapManagement.collide(x + diagonalForce * p_deltaX, y + diagonalForce * p_deltaY, this) && */
+						if ( (follower || !mapManagement.collide(x + diagonalForce * p_deltaX, y + diagonalForce * p_deltaY, this)) && 
 								!mapManagement.collide(x + move2.x, y + move2.y, this)) {
 							xx = x + move2.x;
 							yy = y + move2.y;

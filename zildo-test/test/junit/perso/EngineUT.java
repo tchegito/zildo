@@ -129,7 +129,7 @@ public class EngineUT {
 	 * @param isAt TRUE=he should be at / FALSE=he shouldn't be at
 	 */
 	protected void assertLocation(Perso perso, Point target, boolean isAt) {
-		Assert.assertTrue(perso.getTarget() == null);
+		Assert.assertTrue("Perso's target should have been null !", perso.getTarget() == null);
 		assertLocation((Element) perso, target, isAt);
 	}
 	
