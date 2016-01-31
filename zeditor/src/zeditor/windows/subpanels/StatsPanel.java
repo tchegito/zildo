@@ -23,6 +23,7 @@ import zildo.client.sound.Ambient.Atmosphere;
 import zildo.fwk.ZUtils;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.map.Area;
+import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 
 @SuppressWarnings("serial")
@@ -92,6 +93,7 @@ public class StatsPanel extends JPanel {
 		dim.setText(map.getDim_x() + " x " + map.getDim_y());
 		nFloors.setText("" + (map.getHighestFloor()+1));
 		nPerso.setText(String.valueOf(nbPerso));
+		nPerso.setToolTipText( "<html>" + getPersoNames() + "</html>");
 		nSpr.setText(String.valueOf(nbSpr - nbPerso));
 		nChainingPoint.setText(String.valueOf(nbChPoint));
 		nDialogs.setText(String.valueOf(nbDial));
@@ -101,6 +103,17 @@ public class StatsPanel extends JPanel {
 		spinLimitY.setValue(map.getDim_y());
 	}
 
+	private String getPersoNames() {
+		StringBuilder sb = new StringBuilder();
+		for (Perso p : EngineZildo.persoManagement.tab_perso) {
+			sb.append(p.getDesc());
+			sb.append(" (").append(p.getName()).append("-").append(p.getX()).append(",").append(p.getY()).append("),<br/>");
+		}
+		if (sb.length() > 0) {
+			sb.setLength(sb.length() - 2);
+		}
+		return sb.toString();
+	}
 	@Override
 	public void setVisible(boolean p_flag) {
 		if (p_flag) {
