@@ -315,6 +315,10 @@ public class EngineUT {
 		}
 	}
 
+	public void simulateDirection(int x, int y) {
+		simulateDirection(new Vector2f(x, y));
+	}
+	
 	/** Simulates player holding a direction with the d-pad **/
 	public void simulateDirection(Vector2f dir) {
 		when(fakedKbHandler.getDirection()).thenReturn(dir);
@@ -354,6 +358,10 @@ public class EngineUT {
 			e.printStackTrace();
 		}
 		freezeMonitor.stop();
+	}
+	
+	public void disableFreezeMonitor() {
+		freezeMonitor.cutItOut();
 	}
 	
 	private void initCounters() {

@@ -182,6 +182,7 @@ public enum PersoDescription implements SpriteDescription {
 		switch (this) {
 		case GARDE_BOUCLIER:
 		case BUCHERON_ASSIS:
+		case BRAMBLE:
 			return 8;
 		case POULE:
 		case CRABE:
@@ -236,5 +237,15 @@ public enum PersoDescription implements SpriteDescription {
 	
 	public boolean isTakable() {
 		return this == CANARD || this == POULE || this == FISH;
+	}
+	
+	// Height of the character, to allow jump
+	public int getSizeZ() {
+		switch (this) {
+		case BRAMBLE:
+			return 12;
+		default:
+			return 16;	// Too high to get above it
+		}
 	}
 }

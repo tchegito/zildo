@@ -30,7 +30,7 @@ public class CheckDpadDirection extends EngineUT {
 
 		waitEndOfScripting();
 		
-		simulateDirection(CONSTANT_DIRECTION);
+		simulateDirection(holdDirection);
 	
 		instant = new KeyboardInstant();
 	}
@@ -44,7 +44,6 @@ public class CheckDpadDirection extends EngineUT {
 		while (step-- >= 0) {
 			// Make Zildo go forward
 			clientState.keys = instant;
-			instant.setKey(KeysConfiguration.PLAYERKEY_UP, true);
 			instant.update();
 
 			renderFrames(1);
@@ -64,13 +63,13 @@ public class CheckDpadDirection extends EngineUT {
 		while (step-- >= 0) {
 			// Make Zildo go forward
 			clientState.keys = instant;
-			instant.setKey(KeysConfiguration.PLAYERKEY_UP, true);
 			instant.update();
 
 			renderFrames(1);
 			
 			// Hero shouldn't derive more than small decimal on the left on X axis
-			Assert.assertTrue(Math.abs(zildo.getDelta().x) < 1);
+			float deriveX = Math.abs(zildo.getDelta().x);
+			Assert.assertTrue("deriveX should have been < 1 but was "+deriveX, deriveX < 1);
 		}
 		
 		Assert.assertTrue(zildo.y < 90);

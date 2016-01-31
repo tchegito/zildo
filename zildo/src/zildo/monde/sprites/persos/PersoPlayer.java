@@ -99,6 +99,8 @@ public class PersoPlayer extends Perso {
 
 	private int moonHalf;
 
+	ControllablePerso appearance;
+	
 	// Linked elements
 	Element shield;
 	Element sword;
@@ -395,10 +397,22 @@ public class PersoPlayer extends Perso {
 	@Override
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 
-		if (mouvement == MouvementZildo.SAUTE ||
-				mouvement == MouvementZildo.TOMBE || inventoring || underWater ||
-				isAffectedBy(AffectionKind.INVINCIBILITY)) {
-			return;
+		// Do we have to cancel the wound ?
+		switch (mouvement) {
+			case TOMBE: // Used when hero jumps from hill, and when squirrel make regular jump
+				if (appearance == ControllablePerso.PRINCESS_BUNNY && p_shooter != null && p_shooter.getDesc() == PersoDescription.BRAMBLE) {
+					if (z > p_shooter.getDesc().getSizeZ()) {
+						// Squirrel is above the shooter ==> no damage
+						return;
+					}
+					break;	// Take the damage !
+				}
+			case SAUTE:
+				return;
+			default:
+				if (inventoring || underWater || isAffectedBy(AffectionKind.INVINCIBILITY)) {
+					return;
+				}
 		}
 		// Project Zildo away from the enemy
 		project(cx, cy, 8);
@@ -552,8 +566,10 @@ public class PersoPlayer extends Perso {
 		if (px != 0.0f || py != 0.0f) {
 			// Zildo being hurt !
 			Pointf p = tryMove(px, py);
-			px *= 0.8f;
-			py *= 0.8f;
+			Pointf delta = new Pointf(p.x - x, p.y - y);
+			// Fix projection and reduce movement
+			px = delta.x * 0.8f;
+			py = delta.y * 0.8f;
 			walkTile(false);
 			if (Math.abs(px) + Math.abs(py) < 0.2f) {
 				stopBeingWounded();
@@ -611,14 +627,16 @@ public class PersoPlayer extends Perso {
 	
 	/** Only allowed when player is a squirrel (see {@link ControllablePerso#PRINCESS_BUNNY}) **/
 	public void jump() {
-		//TODO: make it homogeneous with PathFinderSquirrel#setTarget
-		az = -0.1f;
-		vz = 1.1f; //2.12f;	// Adjust speed so as hero can't jump to a log from a water mud
-		if (nature == TileNature.SWAMP && z < 1) {	// Allow if hero is on a stump UNDER mud (z > 1)
-			vz = 0.3f;
+		if (!isBlinking()) {	// Don't allow jump when hero is wounded
+			//TODO: make it homogeneous with PathFinderSquirrel#setTarget
+			az = -0.1f;
+			vz = 1.1f; //2.12f;	// Adjust speed so as hero can't jump to a log from a water mud
+			if (nature == TileNature.SWAMP && z < 1) {	// Allow if hero is on a stump UNDER mud (z > 1)
+				vz = 0.3f;
+			}
+			pos_seqsprite = 12;
+			mouvement = MouvementZildo.TOMBE;
 		}
-		pos_seqsprite = 12;
-		mouvement = MouvementZildo.TOMBE;
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -1479,5 +1497,6 @@ public class PersoPlayer extends Perso {
 			defaultSize = new Point(2, 2);
 			break;
 		}
+		appearance = who;
 	}
 }

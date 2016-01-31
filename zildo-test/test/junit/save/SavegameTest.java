@@ -1,6 +1,8 @@
 package junit.save;
 
 import org.junit.Assert;
+import org.junit.Before;
+
 import junit.perso.EngineUT;
 
 import org.junit.Test;
@@ -12,6 +14,12 @@ import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.server.EngineZildo;
 
 public class SavegameTest extends EngineUT {
+
+	@Before
+	public void init() {
+		// Disable freeze monitor, cause we're gonna sleep 4 seconds in each script
+		disableFreezeMonitor();
+	}
 
 	@Test
 	public void timeAfterReloadAndSave() {

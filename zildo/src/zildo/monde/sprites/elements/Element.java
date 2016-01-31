@@ -709,6 +709,7 @@ public class Element extends SpriteEntity {
 					// These extra-case have been added during a testcase: TestCollision#doorBorder
 					case 4: // Lock angle on quarters (NORTH, WEST, SOUTH, EAST), and try to turn (like 1 and 2)
 					case 5:
+						if (i == 0) continue;	// Not with full anticipation
 						Point ac = Angle.fromDelta(p_deltaX, p_deltaY).coords;
 						double gridedAngle = Trigo.getAngleRadian(ac.x, ac.y);
 						if (j==4) {
@@ -716,7 +717,6 @@ public class Element extends SpriteEntity {
 						} else {
 							move2 = Trigo.vect(gridedAngle + Trigo.PI_SUR_4, force);
 						}
-						break;
 					}
 					
 					if ((j == 2 || j == 3)) {
@@ -1002,9 +1002,14 @@ public class Element extends SpriteEntity {
 	}
 	
 	public static Point getElementSize(Element e) {
-		Point size = e == null ? new Point(8, 4) : e.getDefaultSize(); // Default size
-		if (e != null && e.getCollision() != null) {
-			Point elemSize = e.getCollision().size;
+		Point size = new Point(8, 4);
+		Collision colli = null;
+		if (e != null) {
+			size = e.getDefaultSize(); // Default size
+			colli = e.getCollision();
+		}
+		if (e != null && colli != null) {
+			Point elemSize = colli.size;
 			if (elemSize != null) {
 				size = elemSize;
 			}

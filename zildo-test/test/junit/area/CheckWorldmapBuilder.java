@@ -50,6 +50,8 @@ public class CheckWorldmapBuilder extends EngineUT {
 	
 	@Test
 	public void assembleImages() {
+		// Disable freeze monitor, cause this can take a while (6 seconds ?)
+		disableFreezeMonitor();
 		String firstMap = "coucou";
 		WorldmapBuilder wmb = new WorldmapBuilder(firstMap, null);
 		wmb.savePng();

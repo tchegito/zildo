@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import zildo.monde.collision.Collision;
 import zildo.monde.collision.PersoCollision;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -119,7 +120,12 @@ public class PersoManagement {
     }
 
     public Perso collidePerso(int x, int y, Element quelPerso) {
-        return collidePerso(x, y, quelPerso, 7);
+    	int rayon = 7;
+    	if (quelPerso != null) {
+    		Collision colli = quelPerso.getCollision();
+    		if (colli != null) rayon = colli.cr;
+    	}
+        return collidePerso(x, y, quelPerso, rayon);
     }
 	
     public Perso getNamedPerso(String p_name) {

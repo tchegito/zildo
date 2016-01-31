@@ -329,45 +329,45 @@ public class MapManagement {
 		}
 		
 		// 2) Collision with characters
-		Perso perso = EngineZildo.persoManagement.collidePerso(tx, ty, quelElement);
-		if (perso != null) {
+		Perso collidingPerso = EngineZildo.persoManagement.collidePerso(tx, ty, quelElement);
+		if (collidingPerso != null) {
 			if (p != null) {
 				// If zildo crosses an enemy, this is not a collision, but a wound ! (except if he's blinking)
-				if (p.isZildo() && perso.getInfo() == PersoInfo.ENEMY && !p.isBlinking()) {
-					return false;
+				if (p.isZildo() && collidingPerso.getInfo() == PersoInfo.ENEMY) {
+					return p.isBlinking();
 				}
-				if (p.getInfo() == PersoInfo.ENEMY && perso.isZildo() && !perso.isBlinking()) {
+				if (p.getInfo() == PersoInfo.ENEMY && collidingPerso.isZildo() && !collidingPerso.isBlinking()) {
 					return false;
 				}
 				// Allow following character to be on same position than his leader
-				if (perso.getQuel_deplacement() == MouvementPerso.FOLLOW && perso.getFollowing() == quelElement) {
+				if (collidingPerso.getQuel_deplacement() == MouvementPerso.FOLLOW && collidingPerso.getFollowing() == quelElement) {
 					return false;
 				}
 			}
 			// Character able to carry someone else (turtle)
-			if (perso.getMover() != null && quelElement.z >= perso.getMover().getFlatZ()) {
+			if (collidingPerso.getMover() != null && quelElement.z >= collidingPerso.getMover().getFlatZ()) {
 				return false;	// Ok => character is above the "vehicle"
 			}
-			if (perso.isOnPlatform() && p != null && p.getMover() != null && p.getMover().isOnIt(perso)) {
+			if (collidingPerso.isOnPlatform() && p != null && p.getMover() != null && p.getMover().isOnIt(collidingPerso)) {
 				return false;	// Ok => character is above the "vehicle"
 			}
 			// If moving character is able to ask colliding one to leave (and hero's not the one blocking) => ask him !
-			if (!loopingCheck && p != null && p.getQuel_deplacement() == MouvementPerso.MOBILE_WAIT &&!perso.isZildo()) {
+			if (!loopingCheck && p != null && p.getQuel_deplacement() == MouvementPerso.MOBILE_WAIT &&!collidingPerso.isZildo()) {
 				// Determine free location for other character
 				Angle a = p.getAngle();
 				// First : lateral
 				Point nonBlockingPos = new Point();
 				Angle[] angles = new Angle[] {a.rotate(1), Angle.rotate(a,-1), a};
 				for (Angle chkAngle : angles) {
-					nonBlockingPos.x = (int) (perso.x + chkAngle.coordf.x * 12);
-					nonBlockingPos.y = (int) (perso.y + chkAngle.coordf.y * 12);
+					nonBlockingPos.x = (int) (collidingPerso.x + chkAngle.coordf.x * 12);
+					nonBlockingPos.y = (int) (collidingPerso.y + chkAngle.coordf.y * 12);
 					
-					if (!collide(nonBlockingPos.x, nonBlockingPos.y, perso, true)) {
+					if (!collide(nonBlockingPos.x, nonBlockingPos.y, collidingPerso, true)) {
 						break;
 					}
 				}
-				perso.setTarget(nonBlockingPos);
-				perso.setGhost(true);
+				collidingPerso.setTarget(nonBlockingPos);
+				collidingPerso.setGhost(true);
 			}
 			return true;
 		}
