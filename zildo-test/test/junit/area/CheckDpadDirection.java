@@ -11,7 +11,6 @@ import zildo.monde.Trigo;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Vector2f;
 import zildo.resource.Constantes;
-import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 
 public class CheckDpadDirection extends EngineUT {

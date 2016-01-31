@@ -334,7 +334,7 @@ public class MapManagement {
 			if (p != null) {
 				// If zildo crosses an enemy, this is not a collision, but a wound ! (except if he's blinking)
 				if (p.isZildo() && collidingPerso.getInfo() == PersoInfo.ENEMY) {
-					return p.isBlinking();
+					return p.isBlinking() || p.isWounded();
 				}
 				if (p.getInfo() == PersoInfo.ENEMY && collidingPerso.isZildo() && !collidingPerso.isBlinking()) {
 					return false;

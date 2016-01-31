@@ -231,44 +231,21 @@ public class TestCollision extends EngineUT {
 		renderFrames(60);
 		Assert.assertEquals(true, zildo.isBlinking());
 		Assert.assertTrue("Hero shouldn't have passed through brambles !", zildo.getY() < 363);
-		/*		
-Perso: x=318.08127, y=370.73297 cx=326.0, cy=357.0
--3.9962134
-6.930388
-Perso: x=300.5134, y=369.1689 cx=309.0, cy=357.0
--4.576242
-6.56186
-Perso: x=318.14322, y=356.05673 cx=326.0, cy=357.0
--7.9429603
--0.9536143
-
-
-Perso: x=321.9082, y=354.69293 cx=326.0, cy=357.0, z=5.6
--6.9686475
--3.9291155
-Perso: x=302.60788, y=368.62717 cx=309.0, cy=365.0, z=-1.5497208E-6
--0.86973226
-0.49352387
-				*/
-		//321.9082, 342
 	}
 	
+	// Hero tries to jump over brambles (but he can't because he jumps at 8 and brambles are at 12). So he should never managed to pass through.
 	@Test
 	public void projection3() {
 		mapUtils.loadMap("sousbois7");
 		waitEndOfScripting();
 		
-		/*
-		Perso: x=318.06998, y=356.6673 cx=326.0, cy=357.0, z=6.5999994
-				-7.9929686
-				-0.33534348
-				*/
 		PersoPlayer zildo = spawnZildo(318,  342);
 		zildo.setAppearance(ControllablePerso.PRINCESS_BUNNY);
 		zildo.setX(318.06998f);
-		//zildo.setZ(5.6f);
+		//zildo.setX(321.89157f);
 		simulateDirection(new Vector2f(0, 1f));
-		renderFrames(30);
+		zildo.jump();
+		renderFrames(40);
 
 		Assert.assertEquals("Hero should have been hit and loose HP !", 5, zildo.getPv());
 		Assert.assertEquals(true, zildo.isBlinking());
