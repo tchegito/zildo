@@ -45,6 +45,13 @@
 	        <perso who="sacher" action="sacherTortue(tortueSousbois7)"/>
 	   		<perso who="sacher2" action="sacherTortue(tortueSousbois7_2)"/>
 	    </condition>
+	    <condition name="sousbois4">
+	        <tile pos="26,11" action="fireflies"/>
+	        <tile pos="52,7" action="fireflies"/>
+	        <tile pos="34,26" action="fireflies"/>
+	        <tile pos="42,26" action="fireflies"/>
+	        <tile pos="41,4" action="fireflies"/>
+	   	</condition>
 	</mapScript>
 	    
     <scene id="meetIsidore">
@@ -133,6 +140,7 @@
 	
     <persoAction id="sacherTortue"> <!-- argument: scene name for turtle movements -->
         <script who="self" value="17"/> <!-- MOBILE_WAIT: sure to reach its target -->
+        <angle who="self" value="1"/>
         <loop>
         	<var name="loc:found" value="0"/>
             <lookFor who="self" info="ZILDO" radius="3">
@@ -163,7 +171,7 @@
 		<wait value="6"/>
 		<perso who="self" addSpr="3"/>
 		<wait value="20"/>
-		<spawn who="loc:head" type="TURTLE" pos="x+12,y-5" addSpr="8"/>
+		<spawn who="loc:head" type="TURTLE" angle="1" pos="x+11,y-5" addSpr="8"/>
 		<wait value="2"/>
 		<perso who="loc:head" addSpr="9"/>
 		<wait value="2"/>
@@ -171,17 +179,18 @@
 		<wait value="2"/>
 		<actions>
 			<perso who="self" addSpr="4"/>
-			<pos who="self" pos="x+1,y"/>
+			<pos who="self" pos="x+3,y"/>
 			<remove who="loc:head"/>
 		</actions>
 		<wait value="20"/>
     </scene>
     
     <scene id="turtleSleep">
+        <angle who="self" value="1"/>
         <actions>
 			<perso who="self" addSpr="3"/>
-			<pos who="self" pos="x-1,y"/>
-			<spawn who="loc:head" type="TURTLE" pos="x+12,y-5" addSpr="10"/>
+			<pos who="self" pos="x-3,y"/>
+			<spawn who="loc:head" type="TURTLE" angle="1" pos="x+11,y-5" addSpr="10"/>
 		</actions>
 		<wait value="2"/>
 		<perso who="loc:head" addSpr="9"/>
@@ -198,8 +207,16 @@
     </scene>
     
     <scene id="tortueSousbois3">
-		<moveTo who="sacher" pos="-40,0" delta="true"/>
+        <moveTo who="sacher" pos="0,39" delta="true"/>
+        <wait value="100"/>
+        <moveTo who="sacher" pos="1,0" delta="true"/>
+        <wait value="4"/>
+		<moveTo who="sacher" pos="0,-40" delta="true"/>
 		<wait value="100"/>
+        <moveTo who="sacher" pos="-41,0" delta="true"/>
+		<wait value="100"/>
+		<moveTo who="sacher" pos="0,1" delta="true"/>
+		<wait value="4"/>
 		<moveTo who="sacher" pos="40,0" delta="true"/>
 		<wait value="100"/>
     </scene>
