@@ -185,7 +185,7 @@ public class ClientEngineZildo {
 		// // DISPLAY ////
 
 		spriteEngine.initRendering();
-		// Determine min and max floors for single or double map displaying (in case of map scroll, we have 2 maps)
+		// Determine min floor for single or double map displaying (in case of map scroll, we have 2 maps)
 		int lowestFloor = 1;
 		int highestFloor = 1;
 		for (Area area : maps) {
@@ -194,7 +194,7 @@ public class ClientEngineZildo {
 				highestFloor = Math.max(highestFloor, area.getHighestFloor());
 			}
 		}
-		for (int floor = lowestFloor ; floor <= highestFloor; floor++) {
+		for (int floor = lowestFloor ; floor <= 2; floor++) {
 			boolean lastTurn = floor == highestFloor;
 			
 			// Display BACKGROUND tiles
