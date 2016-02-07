@@ -995,7 +995,7 @@ public abstract class Perso extends Element {
 	 * @param p_angle
 	 *            should not be null
 	 */
-	private void jump(Angle p_angle) {
+	protected void jump(Angle p_angle) {
 		// On sauve la position de Zildo avant son saut
 		Point zildoAvantSaut = new Point(x, y);
 		mouvement = MouvementZildo.SAUTE;
@@ -1009,31 +1009,31 @@ public abstract class Perso extends Element {
 
 	/**
 	 * Check if character is about to jump : near a cliff with room for landing point.<br/>
-	 * If he can, start jumping.
+	 * If he can, start jumping calling {@link #jump(Angle)} method. Else, if he can't because of something blocking on landing, return landing point.
 	 * @param loc
+	 * @returns landing point (only if something blocks on landing)
 	 */
-	public void tryJump(Pointf loc) {
+	public Angle tryJump(Pointf loc) {
 		int cx=(int) (loc.x / 16);
 		int cy=(int) (loc.y / 16);
 		Angle angleResult=EngineZildo.mapManagement.getAngleJump(angle, cx, cy);
-		SpriteEntity pushed = null;
-		if (isZildo()) {
-			pushed = ((PersoPlayer)this).getPushingSprite();
-		}
-		if (angleResult!=null && pushed == null) {
+
+		if (angleResult!=null) {
 			// Is there a sprite colliding on the jump ? (example: bar blocking jump, in polaky4)
 			int xx = (int) (loc.x + angleResult.coords.x * 4);
 			int yy = (int) (loc.y + angleResult.coords.y * 4);
 			if (EngineZildo.spriteManagement.collideSprite(xx, yy, this)) {
-				return;
+				return null;
 			}
 			
-			Point landingPoint=angleResult.getLandingPoint().translate((int) x, (int) y);
-			// TODO: make this evoluate in order to squirrel can jump on the log
+			Point landingPoint = angleResult.getLandingPoint().translate((int) x, (int) y);
 			if (!EngineZildo.mapManagement.collide(landingPoint.x, landingPoint.y, this)) {
 				jump(angleResult);
+			} else {	// Returns angle so caller can handle particular cases
+				return angleResult;
 			}
 		}
+		return null;
 	}
 
 	public void landOnGround() {

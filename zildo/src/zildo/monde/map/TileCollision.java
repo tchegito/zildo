@@ -45,6 +45,10 @@ public class TileCollision {
     	return instance;
     }
     
+    /** Return Z of this tile. For example grass is 0, but stump is 5, so squirrel can jump on it.
+     * When "blocked" is TRUE, consider any unwalkable tile has z=160. Otherwise, consider a return value different than 0 means
+     * tile accepts squirrel jump on it.
+     */
     public int getBottomZ(int p_posX, int p_posY, int p_nTile, boolean blocked) {
     	int z = blocked ? 160 : 0;
     	int bank = p_nTile >> 8;

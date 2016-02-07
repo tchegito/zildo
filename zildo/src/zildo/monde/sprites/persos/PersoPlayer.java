@@ -1499,4 +1499,22 @@ public class PersoPlayer extends Perso {
 		}
 		appearance = who;
 	}
+	
+	@Override
+	public Angle tryJump(Pointf loc) {
+		if (getPushingSprite() == null) {	// Don't allow jump with hero is pushing something
+			Angle angleJump = super.tryJump(loc);
+			if (angleJump != null) {
+				Point landingPoint = angleJump.getLandingPoint().translate((int) x, (int) y);
+				if (appearance == ControllablePerso.PRINCESS_BUNNY) {
+					// Check if squirrel can go on this tile
+					int z = EngineZildo.mapManagement.getTileBottomZ(landingPoint.x, landingPoint.y);
+					if (z != 0) {
+						jump(angleJump);
+					}
+				}
+			}
+		}
+		return null;
+	}
 }
