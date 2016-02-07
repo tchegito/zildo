@@ -101,7 +101,7 @@ public class TilePrimitive extends QuadPrimitive {
      * @param yTex
      * @param sizeX (16 or -16)
      * @param sizeY (16 or -16)
-     * @param rotation TODO
+     * @param rotation rotation state of the tile
      */
     private void addTile(int x, int y, float xTex, float yTex, int sizeX, int sizeY, Rotation rotation) {
 
@@ -125,7 +125,7 @@ public class TilePrimitive extends QuadPrimitive {
      * @param u
      * @param v
      * @param reverse reverse attribute (horizontal and/or vertical)
-     * @param rotation TODO
+     * @param rotation rotation state of the tile
      */
     public void updateTile(int gridX, int gridY, float u, float v, Reverse reverse, Rotation rotation, boolean changed) {
         int sizeX = 16;

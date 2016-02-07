@@ -243,7 +243,7 @@ public abstract class TileEngine {
 				{
 					int y = ay + (offset.y >> 4);
 					yOut = (y < tileStartY || y > tileEndY+1);
-					if (yOut) {
+					if (yOut) {	// Row out of the view
 						continue;
 					}
 
@@ -251,7 +251,7 @@ public abstract class TileEngine {
 					{
 						int x = ax + (offset.x >> 4);
 						xOut = x < tileStartX || x > tileEndX;
-						if (xOut) {
+						if (xOut) { // Column out of the view
 							continue;
 						}
 						int n_motif = 0;

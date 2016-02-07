@@ -1574,4 +1574,9 @@ public class Area implements EasySerializable {
 		return new Point(coords.x * 16 * mapReference.getDim_x(),
 						 coords.y * 16 * mapReference.getDim_y());
 	}
+	
+	@Override
+	public String toString() {
+		return name+" ("+dim_x+"x"+dim_y+")";
+	}
 }
