@@ -277,10 +277,8 @@ public class MapManagement {
 				mody = ty % 16;
 				if (caseZ < elemAltitude) { // We are too high => no collision
 					return false;
-				} else if (caseZ == elemAltitude
-						&& getAngleJump(angleFlying, cx, cy) != null) {
-					return false; // Same altitude but under the cliff => no
-									// collision
+				} else if (caseZ == elemAltitude && getAngleJump(angleFlying, cx, cy) != null) {
+					return false; // Same altitude but under the cliff => no collision
 				} else if (caseZ > elemAltitude) {
 					return true; // Obstacle
 				}
@@ -397,28 +395,31 @@ public class MapManagement {
 		new Point(-1, 1), new Point(0, 1), new Point(1, 1)
 	};
 
+	public int getTileBottomZ(int cx, int cy) {
+		int bottomZ = -2;
+
+		Tile tile = currentMap.readmap(cx/16, cy/16, false);
+		if (tile != null) {
+			int tileBottomZ = tileCollision.getBottomZ(cx % 16, cy % 16, tile.getValue(), false);
+			bottomZ = Math.max(bottomZ, tileBottomZ);
+		} else {
+			bottomZ = 0;
+		}
+
+		return bottomZ;
+	}
+	
 	/** Return character's z under his feet, depending on z
 	 * in each corner of his bounding box. **/
 	public int getPersoBottomZ(Perso p) {
 		// Get bottom z at four point of our hero
-		Point size = Element.getElementSize(p);
+		//Point size = Element.getElementSize(p);
 		// Reproduce the calculus from #collideTile (square of 4 points around character's center)
 		int cx = Math.round(p.x);
 		int cy = Math.round(p.y);
 		int bottomZ = 0;
 		if (currentMap != null) {
-			bottomZ = -2;
-			for (Point pt : new Point[] {new Point(0, 0)}) { //tabPointRef) {
-				int mx = (cx + (size.x / 2) * pt.x);
-				int my = (cy + (size.y / 2) * pt.y);
-				Tile tile = currentMap.readmap(mx/16, my/16, false);
-				if (tile != null) {
-					int tileBottomZ = tileCollision.getBottomZ(mx % 16, my % 16, tile.getValue(), false);
-					bottomZ = Math.max(bottomZ, tileBottomZ);
-				} else {
-					bottomZ = 0;
-				}
-			}
+			bottomZ = getTileBottomZ(cx, cy);
 			if (bottomZ > p.z) {
 				bottomZ = (int) Math.max(bottomZ, p.z);
 			}
