@@ -437,7 +437,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 		c.setForeTile(p_action.fore == -1 ? null : new Tile(p_action.fore, rev, c));
                 	}
                 	if (p_action.action != null) {
-                		EngineZildo.scriptManagement.runTileAction(p_action.location.getPoint(), p_action.action);
+                		EngineZildo.scriptManagement.runTileAction(p_action.location.getPoint(), p_action.action, !p_action.unblock);
                 	}
                 	achieved = true;
                 	break;
@@ -621,7 +621,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 	}
                 	break;
                 case loop:	// 'end' condition is checked at the end of a loop execution
-                	executeSubProcess( ((LoopElement)p_action).actions);
+               		executeSubProcess( ((LoopElement)p_action).actions);
                 	break;
                 case lookFor: // Look for a character around another inside a given radius
                 	LookforElement lookFor = (LookforElement) p_action;

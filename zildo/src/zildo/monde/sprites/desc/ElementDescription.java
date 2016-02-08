@@ -133,7 +133,9 @@ public enum ElementDescription implements SpriteDescription {
 	// 243
 	PURPLE_FIREFLY, BLUE_FIREFLY,
 	// 245
-	FIRE_BALL;	// Fireball for dragon
+	FIRE_BALL,	// Fireball for dragon
+	// 246
+	WILL_O_WIST;
 	
 	Boolean damage;
 	

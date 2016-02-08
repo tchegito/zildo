@@ -324,7 +324,8 @@ public class ElementsPlus extends SpriteBanque {
 			    new Zone(197, 59, 6, 6), new Zone(211, 59, 6, 6),
 				// Fire ball (for dragon) (243)
 			    new Zone(256,0, 41, 42),
-
+			    // feu follet (Will_o_wist)
+			    new Zone(298,3, 11, 12)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 

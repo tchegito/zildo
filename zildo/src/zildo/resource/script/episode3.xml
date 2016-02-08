@@ -52,6 +52,9 @@
 	        <tile pos="42,26" action="fireflies"/>
 	        <tile pos="41,4" action="fireflies"/>
 	   	</condition>
+	   	<condition name="sousbois6">
+	   	    <tile pos="51,11" action="willOWist" unblock="true"/>
+	   	</condition>
 	</mapScript>
 	    
     <scene id="meetIsidore">
@@ -125,6 +128,14 @@
 		        <moveTo what="loc:firefly" pos="x*16+random*40,y*16+random*30" way="circular" zoom="128+bell*128" unblock="true"/>
             </action>
         </timer>
+    </tileAction>
+    
+    <tileAction id="willOWist">
+        <spawn what="wow" type="WILL_O_WIST" pos="x*16,y*16" effect="FIRE"/>
+        <loop>
+        	<moveTo what="wow" pos="x*16+60,y*16+50" way="circular"/>
+           	<moveTo what="wow" pos="x*16-60,y*16-50" way="circular"/>
+	    </loop>
     </tileAction>
     
     <tileAction id="blueRain">

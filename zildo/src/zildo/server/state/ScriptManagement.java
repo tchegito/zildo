@@ -489,10 +489,11 @@ public class ScriptManagement {
 		}
 	}
 	
-	public void runTileAction(Point loc, String name) {
+	public void runTileAction(Point loc, String name, boolean locked) {
 		ContextualActionElement action = adventure.getTileActionNamed(name);
 		TileLocationContext context = new TileLocationContext(loc);
-		execute(action.actions, false, null, true, context, false);
+		// Tile action are default topPriority. But this can be canceled by "unblocked" attribute
+		execute(action.actions, false, null, locked, context, false);
 	}
 	
 	public void stopPersoAction(Perso perso) {
