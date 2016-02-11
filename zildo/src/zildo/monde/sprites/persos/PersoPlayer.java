@@ -665,7 +665,7 @@ public class PersoPlayer extends Perso {
 			int tileBottomZ = getBottomZ();
 			if (tileBottomZ < z && mouvement != MouvementZildo.SAUTE) {
 				mouvement = MouvementZildo.TOMBE;
-				az = -0.1f;
+				if (az == 0) az = -0.1f;
 			}
 			shadow.setVisible(true);
 			shadow.setX(x);

@@ -37,6 +37,56 @@
         </action>
     </quest>
     
+    <quest name="jump_stumpNature">
+        <trigger>
+            <location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
+            <fall type="PRINCESS_BUNNY" nature="REGULAR"/>
+        </trigger>
+        <action>
+            <animation pos="834,188" type="CLOUD_FOG" />
+            <animation type="BUSHES" pos="834, 188"/>
+            <perso who="zildo" az="-0.1" vz="2.6"/>
+            <moveTo who="zildo" pos="831, 195"  unblock="true"/>
+            <script who="zildo" text="TOMBE" />
+            <actions>
+            	<remove what="leaves"/>
+            	<spawn what="holeStump" type="HOLE_STUMP" pos="832, 192"/>
+            </actions>
+            <wait value="4"/>
+            <angle who="zildo" value="0"/>
+            <wait value="4"/>
+            <angle who="zildo" value="1"/>
+            <wait value="4"/>
+            <angle who="zildo" value="2"/>
+            <wait value="4"/>
+            <angle who="zildo" value="3"/>
+            <wait value="4"/>
+            <angle who="zildo" value="0"/>
+            <wait value="4"/>
+            <angle who="zildo" value="1"/>   
+                     
+            <perso who="zildo" vz="2.1"/>
+            <wait value="9"/>
+            <perso who="zildo" vz="2.1"/>
+            <wait value="9"/>
+            <perso who="zildo" vz="2.1"/>
+            <angle who="zildo" value="2"/>
+            
+            <wait value="53"/>
+	   		<visible who="zildo" value="false"/>
+	   		<perso who="zildo" vz="0.1" az="0.1"/>
+	   		<zoom who="zildo" value="0"/>
+	    	<animation who="zildo" pos="1,-1" type="STAR_SHINE" />
+	    	<sound name="ZildoFall"/>
+	    	<wait value="50"/>
+	        <sound name="ZildoSecret"/>
+	        <wait value="50"/>
+	        <fadeOut type="5"/>
+	        <wait value="200"/>
+	        <fadeIn type="5"/>
+        </action>
+    </quest>
+    
     <mapScript>
 	    <condition name="sousbois3">
 	        <perso who="sacher" action="sacherTortue(tortueSousbois3)"/>

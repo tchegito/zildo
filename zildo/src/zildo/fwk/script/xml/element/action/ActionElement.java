@@ -240,8 +240,10 @@ public class ActionElement extends LanguageElement {
 
 		// As several variables are used for different usage (which is bad),
 		// make specific here
-		if (kind == ActionKind.spawn || kind == ActionKind._throw) {
-			switchExpression = ZSSwitch.parseForDialog(text);
+		if (kind == ActionKind.spawn || kind == ActionKind._throw || kind == ActionKind.perso) {
+			if (text != null) {
+				switchExpression = ZSSwitch.parseForDialog(text);
+			}
 			// Read V,A and F coordinates
 			v = read3Coordinates("v");
 			a = read3Coordinates("a");

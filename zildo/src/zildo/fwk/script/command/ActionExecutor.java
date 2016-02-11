@@ -394,9 +394,10 @@ public class ActionExecutor extends RuntimeExecutor {
                 		EngineZildo.persoManagement.clearPersos(false);
                 		EngineZildo.spriteManagement.clearSprites(false);
                 	} else {
-	                	Element toRemove;
+	                	SpriteEntity toRemove;
 	                	if (p_action.what != null) {
-	                		toRemove = getNamedElement(p_action.what);
+	                		// It was "getNamedElement" before I need it to remove bunch of leaves
+	                		toRemove = getNamedEntity(p_action.what);
 	                	} else {
 	                		toRemove = perso;
 	                	}
@@ -613,6 +614,7 @@ public class ActionExecutor extends RuntimeExecutor {
             			if (p_action.addSpr != -1) {
             				perso.setAddSpr(p_action.addSpr);
             			}
+            			applyPhysicAttributes((Element) perso, p_action);
                 	}
                 	achieved = true;
                 	break;
@@ -847,22 +849,7 @@ public class ActionExecutor extends RuntimeExecutor {
         			entity.setForeground(p_action.foreground);
         		}
         		if (elem != null) {	// Element specific
-	        		// Physics attributes
-	        		if (p_action.v != null) {	// Speed
-	            		elem.vx = convenientFloatEvaluation(p_action.v[0]);
-	            		elem.vy = convenientFloatEvaluation(p_action.v[1]);
-	            		elem.vz = convenientFloatEvaluation(p_action.v[2]);
-	        		}
-	        		if (p_action.a != null) {	// Acceleration
-	            		elem.ax = convenientFloatEvaluation(p_action.a[0]);
-	            		elem.ay = convenientFloatEvaluation(p_action.a[1]);
-	            		elem.az = convenientFloatEvaluation(p_action.a[2]);
-	        		}
-	        		if (p_action.f != null) {	// Friction
-	            		elem.fx = convenientFloatEvaluation(p_action.f[0]);
-	            		elem.fy = convenientFloatEvaluation(p_action.f[1]);
-	            		elem.fz = convenientFloatEvaluation(p_action.f[2]);
-	        		}
+        			applyPhysicAttributes(elem, p_action);
 
 	        		if (p_action.shadow != null) {
 	            		ElementDescription descShadow = (ElementDescription) SpriteDescription.Locator.findNamedSpr(p_action.shadow);
@@ -887,6 +874,26 @@ public class ActionExecutor extends RuntimeExecutor {
     	return elem;
     }
 
+    /** Apply v(x,y,z), a(x,y,z), and f(x,y,z) on given element, assumed as not null. **/
+    private void applyPhysicAttributes(Element elem, ActionElement p_action) {
+		// Physics attributes
+		if (p_action.v != null) {	// Speed
+    		elem.vx = convenientFloatEvaluation(p_action.v[0]);
+    		elem.vy = convenientFloatEvaluation(p_action.v[1]);
+    		elem.vz = convenientFloatEvaluation(p_action.v[2]);
+		}
+		if (p_action.a != null) {	// Acceleration
+    		elem.ax = convenientFloatEvaluation(p_action.a[0]);
+    		elem.ay = convenientFloatEvaluation(p_action.a[1]);
+    		elem.az = convenientFloatEvaluation(p_action.a[2]);
+		}
+		if (p_action.f != null) {	// Friction
+    		elem.fx = convenientFloatEvaluation(p_action.f[0]);
+    		elem.fy = convenientFloatEvaluation(p_action.f[1]);
+    		elem.fz = convenientFloatEvaluation(p_action.f[2]);
+		}
+    	
+    }
     
     public void terminate() {
     	// We don't have to terminate, if this script has called a new one (lookFor, timer, actions...) : context should be preserved !
