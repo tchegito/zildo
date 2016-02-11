@@ -123,7 +123,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 | fadeOut     | int      | -       | -        | V           | Start a fade out, with given effect |
 | map         | text     | -       | -        | -           | Load the given map |
 | focus       | text     | V       | -        | -           | Focus on given character (if delta is TRUE, camera moves smoothly) |
-| spawn       | text     | V       | V        | -           | Spawn a new character/sprite. Supports as attributes : who/what, delta, reverse, rotation, shadow, x, y, z, vx, vy, vz, ax, ay, az, fx, fy, fz, alpha, alphaA, pos, angle, type, info, attente, action, weapon |
+| spawn       | text     | V       | V        | -           | Spawn a new character/sprite. Supports as attributes : who/what, delta, reverse, rotation, shadow, x, y, z, vx, vy, vz, ax, ay, az, fx, fy, fz, alpha, alphaA, pos, angle, type, info, attente, action, weapon. Can spawn a chained element with "chained" attribute expecting "n, delay" where 'n' is the number of trailing sprites, and 'delay' the number of frames between each one. |
 | exec        | text     | -       | -        | -           | Execute a named script |
 | take        | text     | V       | V        | -           | A character (Zildo for example) takes an object or money. Could be negative value, if Zildo buy something. |
 | mapReplace  | text     | -       | V        | -           | Replace map indicated by 'what' by the one named by 'name'  |
@@ -147,7 +147,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 | lookFor     | text     | -       | -        | -           | Look for some characters around another, with a desired radius. The first discovered one become the new context for nested action elements. Field 'info' precise a PersoInfo enum, and 'negative' could be used to detect the opposite: character away from another. |
 | var         | text     | -       | -        | -           | Set a variable indicated by 'name' to the given 'value'. |
 | if          | text     | -       | -        | -           | Check the 'exp' expression (based on context variables), and if it's true, then nesting actions will be executed. Check for 'expQuest' too, based on accomplished quests.|
-| sprite      | text     | -       | -        | -           | Change a sprite's ("what") attribute ("type"). |
+| sprite      | text     | -       | -        | -           | Change a sprite's ("what") attribute ("type" or "reverse"). |
 
 ### Multithread ###
 
