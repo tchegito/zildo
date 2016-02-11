@@ -49,8 +49,8 @@ public class ElementProjectile extends ElementChained {
 		
 		private ProjectileKind(int numberOfElements, boolean increaseSpriteModel, int delay) {
 			this.numberOfElements = numberOfElements;
-			this.delay = delay;
 			this.increaseSpriteModel = increaseSpriteModel;
+			this.delay = delay;
 		}
 	};
 	

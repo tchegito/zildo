@@ -142,6 +142,7 @@ public class Element extends SpriteEntity {
 		this.nBank = original.nBank;
 		this.foreground = original.foreground;
 		this.setDesc(original.desc);
+		this.alpha = original.alpha;
 		
 		this.entityType = EntityType.ELEMENT;
 		// logger.log(Level.INFO, "Copying Element");
@@ -208,6 +209,7 @@ public class Element extends SpriteEntity {
 				case BROWNSPHERE1:
 				case SEWER_SMOKE1:
 				case SEWER_SMOKE2:
+				case WILL_O_WIST:
 					return false;
 				default:
 			}

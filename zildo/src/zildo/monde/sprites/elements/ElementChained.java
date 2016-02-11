@@ -37,10 +37,12 @@ public abstract class ElementChained extends Element {
 
 	protected boolean endOfChain = false;	// To allow subclasses to stop the chain creation
 	
-	int count = 0;
-	int delay = 0;
+	private int count = 0;
+	protected int delay = 0;
+	protected boolean follow = false;	// True means the whole chain follow the leader (first one created)
 	Point initialLocation;
-
+	
+	List<Point> leadLocations;	// For following (trail effect)
 	List<Element> linkeds;
 
 	public ElementChained(int p_x, int p_y) {
@@ -54,7 +56,6 @@ public abstract class ElementChained extends Element {
 
 	@Override
 	public void animate() {
-
 		if (!endOfChain) {
 			if (count >= delay) { // After the delay, create another one
 				Element elem = createOne((int) x, (int) y);
@@ -65,7 +66,7 @@ public abstract class ElementChained extends Element {
 				count = 0;
 			}
 			count++;
-		} else {
+		} else if (!follow) {
 			// Detect if chained element are over
 			if (linkeds.get(0).dying) {
 				linkeds.remove(0);
@@ -87,6 +88,32 @@ public abstract class ElementChained extends Element {
 			} else {
 				burningFire.x = linkeds.get(0).x;
 				burningFire.y = linkeds.get(0).y;
+			}
+		}
+		
+		if (follow && linkeds.size() > 0) {
+			if (leadLocations == null) leadLocations = new ArrayList<Point>();
+			leadLocations.add(new Point(x, y));
+			int index = leadLocations.size() - delay;
+			if (index >= 0) {
+				for (Element e : linkeds) {
+					if (leadLocations.size() <= index || index < 0) {
+						break;
+					}
+					Point ref = leadLocations.get(index);
+					e.x = ref.x;
+					e.y = ref.y;
+					e.zoom = zoom;
+					e.reverse = reverse;
+					index -= delay;
+				}
+			}
+			if (endOfChain) {
+				// Limit locations list
+				int max = delay * linkeds.size();
+				if (leadLocations.size() > max) {
+					leadLocations.remove(0);
+				}
 			}
 		}
 	}

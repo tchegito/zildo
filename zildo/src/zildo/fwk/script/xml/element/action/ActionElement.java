@@ -59,6 +59,10 @@ public class ActionElement extends LanguageElement {
 	public String weapon; // For 'perso' and 'spawn'
 	public int addSpr;	// For 'perso' and 'spawn'
 	
+	// Only used for 'spawn' on 'chained' attribute
+	public int chainCount = -1;
+	public FloatExpression chainDelay;
+	
 	private ZSSwitch switchExpression;
 
 	public FloatExpression[] v;
@@ -101,6 +105,9 @@ public class ActionElement extends LanguageElement {
 		switch (kind) {
 		case sprite:
 			text = readAttribute("type");
+			if (strReverse != null) {
+				reverse = ZSSwitch.parseForDialog(strReverse);
+			}
 			break;
 		case _throw:
 			target = IPoint.fromString(readAttribute("to"));
@@ -119,6 +126,14 @@ public class ActionElement extends LanguageElement {
 			}
 			shadow = readAttribute("shadow");
 			addSpr = readInt("addSpr", 0);
+			// Chained
+			temp = readAttribute("chained");
+			if (temp != null) {	// Expect well-formed content
+				int virgulePos = temp.indexOf(",");
+				chainCount = Integer.parseInt(temp.substring(0,  virgulePos));
+				chainDelay = new FloatExpression(temp.substring(virgulePos+1));
+			}
+			zoom = getFloatExpr("zoom");
 		case animation:
 		case impact:
 			location = IPoint.fromString(strPos);

@@ -63,6 +63,7 @@ import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
+import zildo.monde.sprites.elements.CustomizableElementChained;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
@@ -215,8 +216,10 @@ public class ActionExecutor extends RuntimeExecutor {
                     	if (entity != null) {
                     		if ("physic".equals(p_action.text)) {	// Only works with element
 	                    		entity.setMover(new PhysicMoveOrder(location.x, location.y));
+                    		} else if ("arc".equals(p_action.text)) {
+                    			entity.setMover(new CircularMoveOrder(location.x, location.y, p_action.zoom, false));
                     		} else if ("circular".equals(p_action.text)) {
-                    			entity.setMover(new CircularMoveOrder(location.x, location.y, p_action.zoom));
+                    			entity.setMover(new CircularMoveOrder(location.x, location.y, p_action.zoom, true));
                     		} else {
                     			entity.setMover(new BasicMoveOrder(location.x, location.y, p_action.speed));
                     		}
@@ -546,6 +549,9 @@ public class ActionExecutor extends RuntimeExecutor {
                 		if (p_action.text != null) {
                 			entity.setDesc(SpriteDescription.Locator.findNamedSpr(p_action.text));
                 		}
+                		if (p_action.reverse != null) {
+                			entity.reverse = Reverse.fromInt(p_action.reverse.evaluateInt());
+                		}
                 	}
                 	achieved=true;
                 	break;
@@ -768,6 +774,10 @@ public class ActionExecutor extends RuntimeExecutor {
     	return EngineZildo.persoManagement.getNamedPerso(getVariableName(name));
     }
     
+    /** Spawn an element with given parameters in action.
+     * Paramater "ignoreWho" is when we're spawning an element to be thrown by "action.who". So "who" becomes irrelevant.
+     * @return spawned element
+     */
     private Element actionSpawn(ActionElement p_action, Point location, boolean p_ignoreWho) {
     	Element elem = null;
     	String name = null;
@@ -799,15 +809,31 @@ public class ActionExecutor extends RuntimeExecutor {
         		Rotation rot = Rotation.fromInt(p_action.rotation);
         		SpriteEntity entity = null;
         		elem = null;
+        		// Chained
         		if (ElementDescription.isPlatform(desc)) {
         			entity = EngineZildo.spriteManagement.spawnSprite(desc, location.x, location.y, Boolean.TRUE == p_action.foreground, rev, false);
             		if (entity.getEntityType().isElement()) {
             			elem = (Element) entity;
             		}
         		} else {
-        			elem = EngineZildo.spriteManagement.spawnElement(desc, location.x, location.y, 0, rev, rot);
+        			elem = EngineZildo.spriteManagement.createElement(desc, location.x, location.y, 0, rev, rot);
         			entity = elem;
         		}
+        		if (p_action.chainCount > 0) {
+        			// With chained elements, we must not spawn the "matrix" element. It will be spawned by
+        			// ChainedElement#animate()
+        			if (elem == null) {
+        				throw new RuntimeException("Unable to spawn a chain of non element !");
+        			}
+        			Element chain = new CustomizableElementChained(elem, p_action.chainCount, (int) p_action.chainDelay.evaluate(context));
+        			EngineZildo.spriteManagement.spawnSprite(chain);
+        			entity = chain;
+        			elem = chain;
+        		} else {
+        			// Really spawn it
+        			EngineZildo.spriteManagement.spawnSprite(entity);
+        		}
+        		
         		entity.setFloor(p_action.floor);
         		entity.rotation = rot;
         		entity.setName(name);
@@ -853,7 +879,10 @@ public class ActionExecutor extends RuntimeExecutor {
 			}
 			if (p_action.alpha != -1) {
 				elem.setAlpha(p_action.alpha);
-			}	
+			}
+			if (p_action.zoom != null) {
+				elem.zoom = (int) p_action.zoom.evaluate(context);
+			}
     	}
     	return elem;
     }

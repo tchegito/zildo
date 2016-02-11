@@ -28,7 +28,7 @@ import zildo.monde.util.Pointf;
 /**
  * Movement which goes from initial location to given one.
  * 
- * To do so, we describe a circle arc of PI/4 angle.
+ * To do so, we describe a circle arc of PI/2 angle.
  * 
  * Note that contrary to PhysicMover, we haven't any placeholder here. We move the linked element directly.
  * 
@@ -47,6 +47,8 @@ public class CircularMoveOrder extends MoveOrder {
 	FloatExpression zoomExpr;
 	IEvaluationContext ctx;
 	
+	final int nbArcs;
+	
 	final int nbFrames = 100;
 	
 	/**
@@ -54,14 +56,16 @@ public class CircularMoveOrder extends MoveOrder {
 	 * @param mobile
 	 * @param x
 	 * @param y
+	 * @complete TRUE=complete circle FALSE=arc of circle (PI/2)
 	 */
-	public CircularMoveOrder(int x, int y, FloatExpression zoomExpr) {
+	public CircularMoveOrder(int x, int y, FloatExpression zoomExpr, boolean complete) {
 		super(x, y);
 		this.zoomExpr = zoomExpr;
+		this.nbArcs = complete ? 4 : 1;
 	}
 	
 	public CircularMoveOrder(int x, int y) {
-		this(x, y, null);
+		this(x, y, null, false);
 	}
 
 	@Override
@@ -76,7 +80,7 @@ public class CircularMoveOrder extends MoveOrder {
 			//mobileElement.zoom = 128 + Math.abs((int) (256 * Math.cos(Math.PI / nbFrames * iota)));
 		}
 
-		if (iota == nbFrames) {
+		if (iota == nbFrames * nbArcs) {
 			target = null;
 			active = false;
 			mobileElement.vx = 0;

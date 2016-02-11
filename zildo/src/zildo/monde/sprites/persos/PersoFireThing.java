@@ -101,7 +101,7 @@ public class PersoFireThing extends PersoNJ {
 		keepy = y;
 		orderElements(tail, middle, this, eye1, eye2);
 		
-		// Max 10 elements
+		// Max 12 elements
 		if (positions.size() > 12) {
 			positions.remove(12);
 		}

@@ -123,16 +123,7 @@ public class SpriteManagement extends SpriteStore {
 		// delete quadOrder;
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// spawnElement
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// IN:nBank, nSpr, x, y
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// Spawn an element with minimal requirements
-	// -build an element with given parameters
-	// -add it to the sprite engine
-	public Element spawnElement(int nBank, int nSpr, int x, int y, int z, Reverse reverse, Rotation rotation) {
-
+	public Element createElement(int nBank, int nSpr, int x, int y, int z, Reverse reverse, Rotation rotation) {
 		// SpriteEntity informations
 		Element element;
 		if (nBank == SpriteBank.BANK_GEAR) {
@@ -150,9 +141,24 @@ public class SpriteManagement extends SpriteStore {
 		element.reverse = reverse;
 		element.rotation = rotation;
 		
-		spawnSprite(element);
-
 		return element;
+	}
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// spawnElement
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// IN:nBank, nSpr, x, y
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// Spawn an element with minimal requirements
+	// -build an element with given parameters
+	// -add it to the sprite engine
+	public Element spawnElement(int nBank, int nSpr, int x, int y, int z, Reverse reverse, Rotation rotation) {
+		Element element = createElement(nBank, nSpr, x, y, z, reverse, rotation);
+		spawnSprite(element);
+		return element;
+	}
+	
+	public Element createElement(SpriteDescription desc, int x, int y, int z, Reverse reverse, Rotation rotation) {
+		return createElement(desc.getBank(), desc.getNSpr(), x, y, z, reverse, rotation);
 	}
 	
 	/**

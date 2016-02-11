@@ -125,17 +125,22 @@
                 	 1) add 'unblock' on such moveTo in timers, like here (manually or automatically)
                 	 2) ignore timer trigger if previous actions weren't all achieved 
                	-->
-		        <moveTo what="loc:firefly" pos="x*16+random*40,y*16+random*30" way="circular" zoom="128+bell*128" unblock="true"/>
+		        <moveTo what="loc:firefly" pos="x*16+random*40,y*16+random*30" way="arc" zoom="128+bell*128" unblock="true"/>
             </action>
         </timer>
     </tileAction>
     
     <tileAction id="willOWist">
-        <spawn what="wow" type="WILL_O_WIST" pos="x*16,y*16" effect="FIRE"/>
+        <!-- Le feu follet pourra émettre un petit scintillement lorsque l'écureuil le suivra comme il faut des yeux, ça aidera le joueur à savoir s'il
+        	est sur la bonne voie -->
+        <spawn what="wow" type="WILL_O_WIST" pos="x*16+8,y*16-20" chained="3, 4" />
+        <spawn what="wowReflect" type="WILL_O_REFLECT" pos="x*16+8,y*16-20+16" zoom="128" alpha="64"/>
         <loop>
-        	<moveTo what="wow" pos="x*16+60,y*16+50" way="circular"/>
-           	<moveTo what="wow" pos="x*16-60,y*16-50" way="circular"/>
-	    </loop>
+            <actions>
+	            <moveTo what="wow" pos="50,40" delta="true" way="circular" zoom="128+bell*32"/>
+            	<moveTo what="wowReflect" pos="50,40" delta="true" way="circular" zoom="128+bell*64"/>
+            </actions>
+   	    </loop>
     </tileAction>
     
     <tileAction id="blueRain">
