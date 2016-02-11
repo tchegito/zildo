@@ -112,7 +112,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 | **Command** | **Type** | **Who** | **What** | **Unblock** | **Meaning** |
 |:------------|:---------|:--------|:---------|:------------|:------------|
 | pos         | position | V       | V        | -           | Set character or camera's location |
-| moveTo      | position | V       | V        | V           | Move character or camera's location, progressively |
+| moveTo      | position | V       | V        | V           | Move character or camera's location, progressively. Can indicate a way of moving among "physic", "arc", and "circular". Default is rectilinear movement. |
 | speak       | text     | V       | V        | V           | Launch a dialog |
 | script      | int      | V       | -        | -           | Set character's script. _value_ attribute points to an index in [MouvementPerso](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/utils/MouvementPerso.java). _text_ attribute points to an item name in [MouvementZildo](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/utils/MouvementZildo.java). |
 | angle       | int      | V       | -        | -           | Set character's angle |
@@ -123,7 +123,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 | fadeOut     | int      | -       | -        | V           | Start a fade out, with given effect |
 | map         | text     | -       | -        | -           | Load the given map |
 | focus       | text     | V       | -        | -           | Focus on given character (if delta is TRUE, camera moves smoothly) |
-| spawn       | text     | V       | V        | -           | Spawn a new character/sprite. Supports as attributes : who/what, delta, reverse, rotation, shadow, x, y, z, vx, vy, vz, ax, ay, az, fx, fy, fz, alpha, alphaA, pos, angle, type, info, attente, action, weapon. Can spawn a chained element with "chained" attribute expecting "n, delay" where 'n' is the number of trailing sprites, and 'delay' the number of frames between each one. |
+| spawn       | text     | V       | V        | -           | Spawn a new character/sprite. Supports as attributes : who/what, delta, reverse, rotation, shadow, x, y, z, vx, vy, vz, ax, ay, az, fx, fy, fz, alpha, alphaA, pos, angle, type, info, attente, action, weapon, zoom. Can spawn a chained element with "chained" attribute expecting "n, delay" where 'n' is the number of trailing sprites, and 'delay' the number of frames between each one. |
 | exec        | text     | -       | -        | -           | Execute a named script |
 | take        | text     | V       | V        | -           | A character (Zildo for example) takes an object or money. Could be negative value, if Zildo buy something. |
 | mapReplace  | text     | -       | V        | -           | Replace map indicated by 'what' by the one named by 'name'  |
