@@ -54,6 +54,8 @@ public class FloatOperator implements FloatASTNode{
 			// Comparison
 			case EQUALS:
 				return f1 == f2 ? 1 : 0;
+			case NOT_EQUALS:
+				return f1 != f2 ? 1 : 0;
 			case LESSER:
 				return f1 < f2 ? 1 : 0;
 			case GREATER:

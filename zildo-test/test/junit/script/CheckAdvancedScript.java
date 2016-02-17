@@ -43,6 +43,7 @@ import zildo.monde.sprites.persos.PersoNJ;
  */
 public class CheckAdvancedScript {
 	
+	IEvaluationContext context = null;
 	
 	@Test
 	public void simpleWithSpaces() {
@@ -63,43 +64,58 @@ public class CheckAdvancedScript {
 	
 	@Test
 	public void distributivity() {
-		FloatExpression expr;
-		float ret;
+		assertExpr("0+3.5*2+1", 8f);
 		
-		expr = new FloatExpression("0+3.5*2+1");
-		ret = expr.evaluate(null);
-		Assert.assertTrue("Value should have been 8f instead of "+ret, ret == 8f);
+		assertExpr("0+3.5*2-1", 6f);
 		
-		expr = new FloatExpression("0+3.5*2-1");
-		ret = expr.evaluate(null);
-		Assert.assertTrue("Value should have been 6f instead of "+ret, ret == 6f);
-		
-		expr = new FloatExpression("1-(2+3+4)+12");
-		ret = expr.evaluate(null);
-		Assert.assertTrue("Value should have been 4f instead of "+ret, ret == 4f);
+		assertExpr("1-(2+3+4)+12", 4f);
 	}
 	
 	@Test
 	public void negativeValue() {
-		FloatExpression expr;
+		assertExpr("-3.5*2+1", -6f);
 
-		expr = new FloatExpression("-3.5*2+1");
-		float ret = expr.evaluate(null);
-		Assert.assertTrue("Value should have been -6f instead of "+ret, ret == -6f);
+		assertExpr("0+-3.5*2+1", -6f);
 
-		expr = new FloatExpression("0+-3.5*2+1");
-		ret = expr.evaluate(null);
-		Assert.assertTrue("Value should have been -6f instead of "+ret, ret == -6f);
-
-		expr = new FloatExpression("0-3.5*2+1");
-		ret = expr.evaluate(null);
-		Assert.assertTrue("Value should have been -6f instead of "+ret, ret == -6f);
+		assertExpr("0-3.5*2+1", -6f);
 		
-		expr = new FloatExpression("1-(-2*3)-(5-3)+(-1+2)");
-		ret = expr.evaluate(null);
-		Assert.assertTrue("Value should have been 6f instead of "+ret, ret == 6f);
+		assertExpr("1-(-2*3)-(5-3)+(-1+2)", 6f);
+		
 	}
 
+	@Test
+	public void negate() {
+		// We'll check the NOT_EQUALS operator. Note that it does make sense only with EQUALS operator.
+		// Conceptually, it should have been NOT operator and be usable in any kind of expression as a 1 operand combination.
+		// But in this simplified engine, we only consider 2 operand combinations.
+		assertExpr("1!=0", 1f);
+		
+		assertExpr("1=0", 0f);
+		
+		assertExpr("8!=0", 1f);
+		assertExpr("8!=8", 0f);
+		
+		boolean error = false;
+		try {
+			new FloatExpression("!1=0");
+		} catch (RuntimeException e) {
+			error = true;
+		}
+		Assert.assertTrue("Error should have been detected in expression instead of ", error);
+	}
+	
+	private void assertExpr(String stringExpression, float expected) {
+		assertExpr(stringExpression, "Value should have been "+expected+" !", expected);
+	}
+	
+	/** Assert that expression evaluates to expected value, given the class member {@link #context} **/
+	private void assertExpr(String stringExpression, String errorMessage, float expected) {
+		FloatExpression expr = new FloatExpression(stringExpression);
+		float ret = expr.evaluate(context);
+		
+		Assert.assertTrue(errorMessage+" " + ret+" [expr: "+stringExpression+"] [AST: "+expr+"]", ret == expected);
+	}
+	
 	@Test
 	public void simpleWithoutSpaces() {
 		FloatExpression expr;
@@ -122,28 +138,19 @@ public class CheckAdvancedScript {
 	@Test
 	public void relativeValues() {
 		SpriteEntity entity = new SpriteEntity(160, 100, false);
-		IEvaluationContext context = new SpriteEntityContext(entity);
-		FloatExpression expr;
+		context = new SpriteEntityContext(entity);
 		
-		expr = new FloatExpression("x+8");
-		float ret = expr.evaluate(context);
-		Assert.assertTrue(ret == 168f);
+		assertExpr("x+8", 168f);
 
-		expr = new FloatExpression("y-4");
-		ret = expr.evaluate(context);
-		Assert.assertTrue(ret == 96f);
+		assertExpr("y-4", 96f);
 
-		expr = new FloatExpression("2*(x+y)-40/2");
-		ret = expr.evaluate(context);
-		Assert.assertTrue("Value should have been 500 instead of "+ret, ret == 500f);
+		assertExpr("2*(x+y)-40/2", 500f);
 
 		long t1 = System.nanoTime();
-		expr = new FloatExpression("158+y/3-(x+4)*(y+3)");
-		ret = expr.evaluate(context);
-		Assert.assertTrue("Value should have been -16700.666f instead of "+ret, ret == -16700.666f);
+		assertExpr("158+y/3-(x+4)*(y+3)", -16700.666f);
 		long t2 = System.nanoTime();
 		
-		System.out.println("time = " + (t2-t1) / 1000 + " microsecond for evaluating "+expr);
+		System.out.println("time = " + (t2-t1) / 1000 + " microsecond for evaluating expression");
 	}
 	
 	@Test
@@ -190,29 +197,18 @@ public class CheckAdvancedScript {
 	public void comparison() {
 		Perso perso = new PersoNJ();
 		perso.setAttente(100);
-		IEvaluationContext context = new SpriteEntityContext(perso);
-		FloatExpression expr;
-		float ret;
+		context = new SpriteEntityContext(perso);
 		
-		expr = new FloatExpression("attente=2");
-		ret = expr.evaluate(context);
-		Assert.assertTrue(ret == 0);
+		assertExpr("attente=2", 0f);
 		
 		perso.setAttente(2);
-		ret = expr.evaluate(context);
-		Assert.assertTrue(ret == 1);
+		assertExpr("attente=2", 1f);
 		
-		expr = new FloatExpression("attente<8");
-		ret = expr.evaluate(context);
-		Assert.assertTrue(ret == 1);
+		assertExpr("attente<8", 1f);
 
-		expr = new FloatExpression("attente>15");
-		ret = expr.evaluate(context);
-		Assert.assertTrue(ret == 0);
+		assertExpr("attente>15", 0f);
 
-		expr = new FloatExpression("attente>0");
-		ret = expr.evaluate(context);
-		Assert.assertTrue(ret == 1);
+		assertExpr("attente>0", 1f);
 	}
 	
 	@Test

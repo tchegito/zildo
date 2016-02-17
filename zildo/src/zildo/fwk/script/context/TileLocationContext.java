@@ -30,7 +30,7 @@ import zildo.monde.util.Point;
  * @author Tchegito
  *
  */
-public class TileLocationContext extends LocaleVarContext implements IEvaluationContext {
+public class TileLocationContext extends LocaleVarContext {
 
 	final Point loc;
 	

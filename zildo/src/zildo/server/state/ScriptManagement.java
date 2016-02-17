@@ -32,6 +32,7 @@ import zildo.fwk.script.command.ScriptExecutor;
 import zildo.fwk.script.command.ScriptProcess;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.LocaleVarContext;
+import zildo.fwk.script.context.SceneContext;
 import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.fwk.script.context.TileLocationContext;
 import zildo.fwk.script.xml.ScriptReader;
@@ -374,7 +375,7 @@ public class ScriptManagement {
 	    	TriggerElement trig=TriggerElement.createQuestDoneTrigger(p_quest.name);
 	    	trigger(trig);
 			// Execute the corresponding actions
-			execute(p_quest.getActions(), true, p_quest, false, null, true);
+			execute(p_quest.getActions(), true, p_quest, false, new SceneContext(), true);
     	}
 
     	// 2) note the history events (mapReplace ...)

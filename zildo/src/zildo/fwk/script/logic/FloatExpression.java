@@ -80,6 +80,8 @@ public class FloatExpression {
 					if (op == Operator.MINUS) {
 						negative = !negative;
 						continue;
+					} else if (previous == Operator.NOT_EQUALS) {
+						return parse(scan, previous, false, negative);
 					} else {
 						throw new RuntimeException("MISSING_LEFT_OP "+ op.toString()+" at "+ startPos);
 					}

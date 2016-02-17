@@ -20,7 +20,8 @@
 package zildo.fwk.script.logic;
 
 enum Operator { 
-	PLUS('+'), MINUS('-'), MULTIPLY('*'), DIVIDE('/'), EQUALS('='), LESSER('<'), GREATER('>');
+	// NOT_EQUALS works only when preceding EQUALS
+	PLUS('+'), MINUS('-'), MULTIPLY('*'), DIVIDE('/'), EQUALS('='), NOT_EQUALS('!'), LESSER('<'), GREATER('>');
 	
 	char symbol;
 	

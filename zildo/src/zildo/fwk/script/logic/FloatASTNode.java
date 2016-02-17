@@ -22,6 +22,8 @@ package zildo.fwk.script.logic;
 import zildo.fwk.script.context.IEvaluationContext;
 
 /**
+ * Interface of any Abstract Syntax Tree
+ * 
  * @author Tchegito
  *
  */

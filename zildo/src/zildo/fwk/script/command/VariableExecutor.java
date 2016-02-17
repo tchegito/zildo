@@ -56,7 +56,7 @@ public class VariableExecutor extends RuntimeExecutor {
 					objToSave = "" + p_elem.value.evaluate(context);
 				}
 				String name = p_elem.name;
-				if (isLocal(name)) {	// This variable could be local "loc:...", defined on undefined yet
+				if (isLocal(name)) {	// This variable could be local "loc:...", defined or undefined yet
 					name = getVariableName(name);
 					if (name == null || name.equals(p_elem.name)) {
 						name = handleLocalVariable(p_elem.name);	// We define it
