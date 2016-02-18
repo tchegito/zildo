@@ -62,7 +62,7 @@ But it can trigger too when no map name is specified at all. It's useful for eve
 
 ### Trigger ###
 
-A trigger can be of 6 different kinds : (corresponding to [QuestEvent](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/quest/QuestEvent.java) )
+A trigger can be of 10 different kinds : (corresponding to [QuestEvent](https://github.com/tchegito/zildo/blob/master/zildo/src/zildo/monde/quest/QuestEvent.java) )
 
 #### Types ####
 
@@ -111,43 +111,44 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 
 | **Command** | **Type** | **Who** | **What** | **Unblock** | **Meaning** |
 |:------------|:---------|:--------|:---------|:------------|:------------|
-| pos         | position | V       | V        | -           | Set character or camera's location |
-| moveTo      | position | V       | V        | V           | Move character or camera's location, progressively. Can indicate a way of moving among "physic", "arc", and "circular". Default is rectilinear movement. |
-| speak       | text     | V       | V        | V           | Launch a dialog |
-| script      | int      | V       | -        | -           | Set character's script. _value_ attribute points to an index in [MouvementPerso](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/utils/MouvementPerso.java). _text_ attribute points to an item name in [MouvementZildo](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/utils/MouvementZildo.java). |
+| activate    | text     | -       | V        | V           | Activate a gear (door, button, ...) with boolean 'value' to turn on/off the gear (according to TRUE/FALSE value) |
 | angle       | int      | V       | -        | -           | Set character's angle |
-| wait        | int      | -       | -        | V           | Wait for a given number of frame |
-| sound       | text     | V       | V        | V           | Play a given sound (default location is hero's one.) |
-| music       | text     | V       | V        | V           | Play a given music|
+| animation   | text     | -       | -        | -           | Spawn an animation from the enum [SpriteAnimation](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/desc/SpriteAnimation.java). _what_ attribute permits to name the future animation element. _who_ attribute allow to localize animation on a specific character. |
+| attack      | text     | V       | -        | -           | Make a given character attacking in front of him |
+| end         | text     | -       | -        | -           | For game over, depending on type attribute : 0=player wins / 1=player dies |
+| exec        | text     | -       | -        | -           | Execute a named script |
 | fadeIn      | int      | -       | -        | V           | Start a fade in, with given effect |
 | fadeOut     | int      | -       | -        | V           | Start a fade out, with given effect |
-| map         | text     | -       | -        | -           | Load the given map |
-| focus       | text     | V       | -        | -           | Focus on given character (if delta is TRUE, camera moves smoothly) |
-| spawn       | text     | V       | V        | -           | Spawn a new character/sprite. Supports as attributes : who/what, delta, reverse, rotation, shadow, x, y, z, vx, vy, vz, ax, ay, az, fx, fy, fz, alpha, alphaA, pos, angle, type, info, attente, action, weapon, zoom. Can spawn a chained element with "chained" attribute expecting "n, delay" where 'n' is the number of trailing sprites, and 'delay' the number of frames between each one. |
-| exec        | text     | -       | -        | -           | Execute a named script |
-| take        | text     | V       | V        | -           | A character (Zildo for example) takes an object or money. Could be negative value, if Zildo buy something. |
-| mapReplace  | text     | -       | V        | -           | Replace map indicated by 'what' by the one named by 'name'  |
-| zikReplace  | text     | -       | V        | -           | Replace music indicated by 'what' by the one named by 'name'  |
-| animation   | text     | -       | -        | -           | Spawn an animation from the enum [SpriteAnimation](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/desc/SpriteAnimation.java). _what_ attribute permits to name the future animation element. _who_ attribute allow to localize animation on a specific character. |
-| impact      | text     | -       | -        | -           | Spawn an animation from the enum [ImpactKind](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/elements/ElementImpact.java) |
-| remove      | text     | V       | V        | -           | Remove an element (what), a character (who) or a chaining point (chaining) from the current map. Without parameters, this command removes all sprites except Zildo. |
-| markQuest   | text     | -       | -        | -           | Accomplish/reset a quest identified by 'name' attribute, according to the 'value' attribute (0=cancel / 1=accomplish) |
-| putDown     | text     | -       | -        | -           | Remove an item from Zildo's inventory |
-| attack      | text     | V       | -        | -           | Make a given character attacking in front of him |
-| activate    | text     | -       | V        | V           | Activate a gear (door, button, ...) with boolean 'value' to turn on/off the gear (according to TRUE/FALSE value) |
-| tile        | text     | -       | -        | -           | Change a map tile. Used with attributes 'back', 'back2' and fore. Set to -1 to remove one of these tiles. 'action' attribute is available to set a TileAction. |
 | filter      | text     | -       | -        | -           | Add a color filter : 0=normal / 1=night / 2=evening / 3=red / 4=lightning |
-| end         | text     | -       | -        | -           | For game over, depending on type attribute : 0=player wins / 1=player dies |
-| respawn     | text     | -       | -        | -           | Respawn player at his starting location in the current area. |
-| visible     | text     | -       | -        | -           | Set a character/element visibility depending on _value_ attribute (true or false) |
-| zoom        | text     | -       | -        | -           | Set a character's zoom attribute (0..255) where 255 is full size |
+| focus       | text     | V       | -        | -           | Focus on given character (if delta is TRUE, camera moves smoothly) |
 | herospecial | text     | -       | -        | -           | Special actions about hero, set accordingly with 'value'.<ul><li>0 => Hero gains 1 blue drop, and loose 2 moon fragments.</li><li>1 => Blocks everyone except hero.</li><li>2 => Unblocks everyone except hero.</li><li>3 => back up current game</li><li>4 => reload last backed up game, updated with current hero's HP. </li><li>5 => inflict damage to hero, given by 'arg' attribute. Default is 1.</li></ul> |
-| perso       | text     | -       | -        | -           | Change some character's attributes : type, info, fx. 'action' attribute is available to set a PersoAction. |
-| timer       | text     | -       | -        | -           | Do a repetition of actions on a desired rate. |
-| lookFor     | text     | -       | -        | -           | Look for some characters around another, with a desired radius. The first discovered one become the new context for nested action elements. Field 'info' precise a PersoInfo enum, and 'negative' could be used to detect the opposite: character away from another. |
-| var         | text     | -       | -        | -           | Set a variable indicated by 'name' to the given 'value'. |
 | if          | text     | -       | -        | -           | Check the 'exp' expression (based on context variables), and if it's true, then nesting actions will be executed. Check for 'expQuest' too, based on accomplished quests.|
+| impact      | text     | -       | -        | -           | Spawn an animation from the enum [ImpactKind](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/elements/ElementImpact.java) |
+| lookFor     | text     | -       | -        | -           | Look for some characters around another, with a desired radius. The first discovered one become the new context for nested action elements. Field 'info' precise a PersoInfo enum, and 'negative' could be used to detect the opposite: character away from another. |
+| map         | text     | -       | -        | -           | Load the given map |
+| mapReplace  | text     | -       | V        | -           | Replace map indicated by 'what' by the one named by 'name'  |
+| markQuest   | text     | -       | -        | -           | Accomplish/reset a quest identified by 'name' attribute, according to the 'value' attribute (0=cancel / 1=accomplish) |
+| moveTo      | position | V       | V        | V           | Move character or camera's location, progressively. Can indicate a way of moving among "physic", "arc", and "circular". Default is rectilinear movement. |
+| music       | text     | V       | V        | V           | Play a given music|
+| pos         | position | V       | V        | -           | Set character or camera's location |
+| perso       | text     | -       | -        | -           | Change some character's attributes : type, info, fx. 'action' attribute is available to set a PersoAction. |
+| putDown     | text     | -       | -        | -           | Remove an item from Zildo's inventory |
+| remove      | text     | V       | V        | -           | Remove an element (what), a character (who) or a chaining point (chaining) from the current map. Without parameters, this command removes all sprites except Zildo. |
+| respawn     | text     | -       | -        | -           | Respawn player at his starting location in the current area. |
+attribute (true or false) |
+| script      | int      | V       | -        | -           | Set character's script. _value_ attribute points to an index in [MouvementPerso](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/utils/MouvementPerso.java). _text_ attribute points to an item name in [MouvementZildo](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/utils/MouvementZildo.java). |
+| sound       | text     | V       | V        | V           | Play a given sound (default location is hero's one.) |
+| spawn       | text     | V       | V        | -           | Spawn a new character/sprite. Supports as attributes : who/what, delta, reverse, rotation, shadow, x, y, z, vx, vy, vz, ax, ay, az, fx, fy, fz, alpha, alphaA, pos, angle, type, info, attente, action, weapon, zoom. Can spawn a chained element with "chained" attribute expecting "n, delay" where 'n' is the number of trailing sprites, and 'delay' the number of frames between each one. |
+| speak       | text     | V       | V        | V           | Launch a dialog |
 | sprite      | text     | -       | -        | -           | Change a sprite's ("what") attribute ("type" or "reverse"). |
+| take        | text     | V       | V        | -           | A character (Zildo for example) takes an object or money. Could be negative value, if Zildo buy something. |
+| tile        | text     | -       | -        | -           | Change a map tile. Used with attributes 'back', 'back2' and fore. Set to -1 to remove one of these tiles. 'action' attribute is available to set a TileAction. |
+| timer       | text     | -       | -        | -           | Do a repetition of actions on a desired rate. |
+| var         | text     | -       | -        | -           | Set a variable indicated by 'name' to the given 'value'. |
+| visible     | text     | -       | -        | -           | Set a character/element visibility depending on _value_ 
+| wait        | int      | -       | -        | V           | Wait for a given number of frame |
+| zikReplace  | text     | -       | V        | -           | Replace music indicated by 'what' by the one named by 'name'  |
+| zoom        | text     | -       | -        | -           | Set a character's zoom attribute (0..255) where 255 is full size |
 
 ### Multithread ###
 
