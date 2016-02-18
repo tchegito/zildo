@@ -209,7 +209,7 @@ There's an exception to this priority rules, driven by the "mapscripts". They ne
 
 Here is a class model representation :
 
-http://lh6.googleusercontent.com/-_0tQGqmH-aA/T2iAgkvDvmI/AAAAAAAABpI/qd8MEWq5p5I/w1420-h284-k/scriptclasses.PNG
+![](http://lh6.googleusercontent.com/-_0tQGqmH-aA/T2iAgkvDvmI/AAAAAAAABpI/qd8MEWq5p5I/w1420-h284-k/scriptclasses.PNG)
 
 We can see that [ScriptManagement](https://github.com/tchegito/zildo/tree/master/zildo/src/zildo/server/state/ScriptManagement.java) handle all the stuff related to script (as [PersoManagement](https://github.com/tchegito/zildo/tree/master/zildo/src/zildo/server/PersoManagement.java), [MapManagement](https://github.com/tchegito/zildo/tree/master/zildo/src/zildo/server/MapManagement.java) in its respective fields). It has two main linked objects :
 
