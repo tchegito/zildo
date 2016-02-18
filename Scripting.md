@@ -130,12 +130,11 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 | markQuest   | text     | -       | -        | -           | Accomplish/reset a quest identified by 'name' attribute, according to the 'value' attribute (0=cancel / 1=accomplish) |
 | moveTo      | position | V       | V        | V           | Move character or camera's location, progressively. Can indicate a way of moving among "physic", "arc", and "circular". Default is rectilinear movement. |
 | music       | text     | V       | V        | V           | Play a given music|
-| pos         | position | V       | V        | -           | Set character or camera's location |
 | perso       | text     | -       | -        | -           | Change some character's attributes : type, info, fx. 'action' attribute is available to set a PersoAction. |
+| pos         | position | V       | V        | -           | Set character or camera's location |
 | putDown     | text     | -       | -        | -           | Remove an item from Zildo's inventory |
 | remove      | text     | V       | V        | -           | Remove an element (what), a character (who) or a chaining point (chaining) from the current map. Without parameters, this command removes all sprites except Zildo. |
 | respawn     | text     | -       | -        | -           | Respawn player at his starting location in the current area. |
-attribute (true or false) |
 | script      | int      | V       | -        | -           | Set character's script. _value_ attribute points to an index in [MouvementPerso](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/utils/MouvementPerso.java). _text_ attribute points to an item name in [MouvementZildo](http://code.google.com/p/zildo/source/browse/trunk/zildo/src/zildo/monde/sprites/utils/MouvementZildo.java). |
 | sound       | text     | V       | V        | V           | Play a given sound (default location is hero's one.) |
 | spawn       | text     | V       | V        | -           | Spawn a new character/sprite. Supports as attributes : who/what, delta, reverse, rotation, shadow, x, y, z, vx, vy, vz, ax, ay, az, fx, fy, fz, alpha, alphaA, pos, angle, type, info, attente, action, weapon, zoom. Can spawn a chained element with "chained" attribute expecting "n, delay" where 'n' is the number of trailing sprites, and 'delay' the number of frames between each one. |
@@ -146,6 +145,7 @@ attribute (true or false) |
 | timer       | text     | -       | -        | -           | Do a repetition of actions on a desired rate. |
 | var         | text     | -       | -        | -           | Set a variable indicated by 'name' to the given 'value'. |
 | visible     | text     | -       | -        | -           | Set a character/element visibility depending on _value_ 
+attribute (true or false) |
 | wait        | int      | -       | -        | V           | Wait for a given number of frame |
 | zikReplace  | text     | -       | V        | -           | Replace music indicated by 'what' by the one named by 'name'  |
 | zoom        | text     | -       | -        | -           | Set a character's zoom attribute (0..255) where 255 is full size |
