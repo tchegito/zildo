@@ -83,7 +83,7 @@ public class ScriptExecutor {
 	 */
 	public void render() {
 		if (!scripts.isEmpty()) {
-			if (Zildo.infoDebugScript) {
+			if (Zildo.infoDebugScriptVerbose) {
 				System.out.print(scripts.size() + " scripts running {[");
 				for (ScriptProcess s : scripts) {
 					System.out.print(s.scene.id+":"+s+",");

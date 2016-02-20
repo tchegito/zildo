@@ -411,7 +411,7 @@ public class PlayerManagement {
 			} else if (gamePhase == GamePhase.INGAME && !heros.isInventoring() && heros.getAttente() == 0) { //
 				if (heros.getMouvement()==MouvementZildo.BRAS_LEVES) {
 					heros.throwSomething();
-				} else if (heros.who.canPickup && heros.getMouvement()!=MouvementZildo.BRAS_LEVES && 
+				} else if (heros.getMouvement()!=MouvementZildo.BRAS_LEVES && 
 						heros.getMouvement()!=MouvementZildo.SOULEVE && !heros.isDoingAction()) {
 					// Get a spot reachable in hero's direction
 					int locX = (int) heros.x + heros.getAngle().coords.x * 8;
@@ -419,7 +419,7 @@ public class PlayerManagement {
 					
 					Perso persoToTalk=EngineZildo.persoManagement.collidePerso(locX, locY, heros, 4);
 					
-					if (persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY && !persoToTalk.isZildo()) {
+					if (heros.who.canTalk &&  persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY && !persoToTalk.isZildo()) {
 					 // Check that this perso can be picked up
 						if (persoToTalk.getDesc().isTakable()) {
 							// Check that any obstacle isn't on the way
@@ -453,7 +453,7 @@ public class PlayerManagement {
 								gamePhase= GamePhase.DIALOG;
 							}
 						}
-					} else {
+					} else if (heros.who.canPickup) {
 						// Check for Sprite
 						Element elem = EngineZildo.spriteManagement.collideElement(locX, locY, heros, 4);
 						if (elem != null) {

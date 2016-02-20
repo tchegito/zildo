@@ -37,6 +37,35 @@
         </action>
     </quest>
     
+    <!-- Will'o'wist quests -->
+    <quest name="wow_1" locked="false">
+		<trigger>
+		    <location name="sousbois4"/>
+		    <dialog name="neptune" num="1"/>
+		</trigger>
+    </quest>
+    
+    <quest name="wow_2" locked="false">
+        <trigger>
+            <location name="sousbois4"/>
+            <dialog name="arsinoe" num="1"/>
+        </trigger>
+    </quest>
+    
+    <quest name="wow_3" locked="false">
+        <trigger>
+            <location name="sousbois4"/>
+            <dialog name="porphyre" num="2"/>
+        </trigger>
+    </quest>
+    
+    <quest name="wow_4" locked="false">
+        <trigger>
+            <location name="sousbois4"/>
+            <dialog name="archibald" num="2"/>
+        </trigger>
+    </quest>
+    
     <quest name="jump_stumpNature">
         <trigger>
             <location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
