@@ -45,6 +45,9 @@ public class AndroidCloudFilter extends CloudFilter {
 	
 	@Override
 	public boolean renderFilter() {
+		// Make the wind blow
+		super.renderFilter();
+
 		super.startInitialization();
 		updateQuad(0, 0, u, -v, Reverse.NOTHING);
 		this.endInitialization();

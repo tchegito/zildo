@@ -22,7 +22,9 @@ package junit.script;
 import org.junit.Assert;
 import org.junit.Test;
 
+import zildo.fwk.script.context.SceneContext;
 import zildo.fwk.script.xml.ScriptReader;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -35,15 +37,40 @@ public class CheckSubscript extends EngineScriptUT {
 	public void oneSubCall() {
 		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/subscript"));
 
-		while (scriptMgmt.isScripting()) {
-			scriptMgmt.render();
-		}
-		
+		waitEndOfScripting();
 		scriptMgmt.execute("caller", true);
-		while (scriptMgmt.isScripting()) {
-			scriptMgmt.render();
-		}
+		waitEndOfScripting();
 		
 		Assert.assertEquals("3.0", scriptMgmt.getVariables().get("state"));
+	}
+	
+	@Test
+	public void loop() {
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/loops"));
+		
+		waitEndOfScripting();
+		int nbSprites = countSprites();
+		scriptMgmt.execute("handMadeFor", true);
+		waitEndOfScripting();
+
+		// Check that "spawn" has been called 16 times
+		Assert.assertEquals(16,  countSprites() - nbSprites);
+	}
+
+	@Test
+	public void checkFor() {
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/loops"));
+		
+		waitEndOfScripting();
+		int nbSprites = countSprites();
+		scriptMgmt.execute("builtInFor", true, new SceneContext(), null);
+		waitEndOfScripting();
+
+		// Check that "spawn" has been called 16 times
+		Assert.assertEquals(16,  countSprites() - nbSprites);
+	}
+
+	private int countSprites() {
+		return EngineZildo.spriteManagement.getSpriteEntities(null).size();
 	}
 }
