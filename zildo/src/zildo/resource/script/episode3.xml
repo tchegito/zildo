@@ -325,8 +325,8 @@
                 <var name="loc:looking" value="1"/>
                 <var name="loc:duration" value="loc:duration+1"/>
 	            <if exp="loc:duration=2-loc:duration=10">
-	                <animation what="stars" type="STAR_CIRCLE" pos="x,y"/>
-	                <sprite what="stars" vz="1" alphaA="-0.1"/>
+	                <!-- Sprite context is propagated to the scene -->
+	                <exec script="starSparkle"/>
 	            </if> 
             </lookFor>
             <wait value="60"/>
@@ -334,6 +334,14 @@
                 <var name="loc:duration" value="0"/>
             </if>
         </loop>
+    </scene>
+    
+    <scene id="starSparkle">
+        <spawn impact="STAR_YELLOW" pos="x,y" vy="-1" vx="-1+rand*2" alphaA="-1"/>
+        <wait value="3"/>
+        <spawn impact="STAR_YELLOW" pos="x,y" vy="-1" vx="-1+rand*2" alphaA="-1"/>
+        <wait value="3"/>
+        <spawn impact="STAR_YELLOW" pos="x,y" vy="-1" vx="-1+rand*2" alphaA="-1"/>
     </scene>
     
     <scene id="openNatureRoxy">

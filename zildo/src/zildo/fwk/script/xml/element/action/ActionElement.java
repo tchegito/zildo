@@ -57,6 +57,7 @@ public class ActionElement extends LanguageElement {
 	public String action; // To run a PersoAction, with "perso" ActionKind
 	public String shadow; // Only used in "spawn"
 	public String weapon; // For 'perso' and 'spawn'
+	public String impact;	// For 'spawn' => describe a ImpactKind element
 	public int addSpr;	// For 'perso' and 'spawn'
 	
 	// Only used for 'spawn' on 'chained' attribute
@@ -134,12 +135,9 @@ public class ActionElement extends LanguageElement {
 				chainDelay = new FloatExpression(temp.substring(virgulePos+1));
 			}
 			zoom = getFloatExpr("zoom");
+			impact = readAttribute("impact");
 		case animation:
-		case impact:
 			location = IPoint.fromString(strPos);
-			if (!"".equals(strAngle)) {
-				val = Integer.valueOf(strAngle);
-			}
 		case perso:
 			text = readAttribute("type");
 			String strInfo = readAttribute("info");

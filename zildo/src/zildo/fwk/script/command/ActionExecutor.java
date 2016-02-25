@@ -311,11 +311,6 @@ public class ActionExecutor extends RuntimeExecutor {
                 	actionSpawn(p_action, location, false);
                 	achieved = true;
                     break;
-                case impact:
-                	ImpactKind impactKind = ImpactKind.valueOf(p_action.text);
-                	EngineZildo.spriteManagement.spawnSprite(new ElementImpact(location.x, location.y, impactKind, null));
-                	achieved = true;
-                	break;
                 case animation:
                 	SpriteAnimation anim = SpriteAnimation.valueOf(p_action.text);
                 	Point loc = new Point(location);
@@ -811,21 +806,27 @@ public class ActionExecutor extends RuntimeExecutor {
     		name = handleLocalVariable(p_action.what);
     		if (getNamedElement(name) == null) {
     			// Spawn only if doesn't exist yet
-        		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
-        		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : Reverse.fromInt(p_action.reverse.evaluateInt());
-        		Rotation rot = Rotation.fromInt(p_action.rotation);
         		SpriteEntity entity = null;
-        		elem = null;
-        		// Chained
-        		if (ElementDescription.isPlatform(desc)) {
-        			entity = EngineZildo.spriteManagement.spawnSprite(desc, location.x, location.y, Boolean.TRUE == p_action.foreground, rev, false);
-            		if (entity.getEntityType().isElement()) {
-            			elem = (Element) entity;
-            		}
-        		} else {
-        			elem = EngineZildo.spriteManagement.createElement(desc, location.x, location.y, 0, rev, rot);
-        			entity = elem;
-        		}
+        		Rotation rot = Rotation.fromInt(p_action.rotation);
+    			if (p_action.impact != null) {
+    				ImpactKind impactKind = ImpactKind.valueOf(p_action.impact);
+    				elem = new ElementImpact(location.x, location.y, impactKind, null);
+    				entity = elem;
+    			} else {
+	        		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
+	        		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : Reverse.fromInt(p_action.reverse.evaluateInt());
+	        		elem = null;
+	        		// Chained
+	        		if (ElementDescription.isPlatform(desc)) {
+	        			entity = EngineZildo.spriteManagement.spawnSprite(desc, location.x, location.y, Boolean.TRUE == p_action.foreground, rev, false);
+	            		if (entity.getEntityType().isElement()) {
+	            			elem = (Element) entity;
+	            		}
+	        		} else {
+	        			elem = EngineZildo.spriteManagement.createElement(desc, location.x, location.y, 0, rev, rot);
+	        			entity = elem;
+	        		}
+    			}
         		if (p_action.chainCount > 0) {
         			// With chained elements, we must not spawn the "matrix" element. It will be spawned by
         			// ChainedElement#animate()
