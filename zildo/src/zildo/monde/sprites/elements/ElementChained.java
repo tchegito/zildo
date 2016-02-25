@@ -40,7 +40,6 @@ public abstract class ElementChained extends Element {
 	private int count = 0;
 	protected int delay = 0;
 	protected boolean follow = false;	// True means the whole chain follow the leader (first one created)
-	Point initialLocation;
 	
 	List<Point> leadLocations;	// For following (trail effect)
 	List<Element> linkeds;
@@ -48,7 +47,6 @@ public abstract class ElementChained extends Element {
 	public ElementChained(int p_x, int p_y) {
 		x = p_x;
 		y = p_y;
-		initialLocation = new Point(p_x, p_y);
 
 		linkeds = new ArrayList<Element>();
 		visible = false;

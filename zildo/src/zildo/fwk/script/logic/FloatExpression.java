@@ -26,6 +26,7 @@ public class FloatExpression {
 	protected static final String RESERVED_WORD_ZILDO = "zildo";
 	protected static final String RESERVED_WORD_ZILDOX = "zildo.x";
 	protected static final String RESERVED_WORD_ZILDOY = "zildo.y";
+	protected static final String RESERVED_WORD_ZILDOZ = "zildo.z";
 	protected static final String RESERVED_WORD_ZILDOANGLEX = "zildo.angle.x";
 	protected static final String RESERVED_WORD_ZILDOANGLEY = "zildo.angle.y";
 	protected static final String RESERVED_WORD_ZILDOMONEY = "zildo.money";

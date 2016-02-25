@@ -62,7 +62,7 @@ public class PersoFlyingSerpent extends PersoShadowed {
 		
 		// Shoot
 		if (count <= 0) {
-			Perso zildo = EngineZildo.persoManagement.lookFor(this, 10, PersoInfo.ZILDO);
+			Perso zildo = EngineZildo.persoManagement.lookFor(this, 10, PersoInfo.ZILDO, false);
 			// Target hero
 			if (zildo != null) {
 				double zDirection = Trigo.getAngleRadian(x, y-2, zildo.x, zildo.y);

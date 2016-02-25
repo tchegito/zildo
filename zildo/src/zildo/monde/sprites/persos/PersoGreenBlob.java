@@ -111,12 +111,10 @@ public class PersoGreenBlob extends PersoShadowed {
 			}
 			enemyFound = false;
 		}
-		if (!approaching && !enemyFound) {
-			Perso zildo = EngineZildo.persoManagement.lookFor(this, 5, PersoInfo.ZILDO);
-			if (zildo != null && isFacing(zildo) && cloudDelay == 0) {
-				enemyFound = true;
-				enemy = zildo;
-			}
+		if (!approaching && !enemyFound && cloudDelay == 0) {
+			Perso zildo = EngineZildo.persoManagement.lookFor(this, 5, PersoInfo.ZILDO, true);
+			enemyFound = true;
+			enemy = zildo;
 		}
 		if (cloudDelay > 0) {
 			cloudDelay--;

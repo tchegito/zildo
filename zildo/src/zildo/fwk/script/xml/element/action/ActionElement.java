@@ -240,7 +240,7 @@ public class ActionElement extends LanguageElement {
 
 		// As several variables are used for different usage (which is bad),
 		// make specific here
-		if (kind == ActionKind.spawn || kind == ActionKind._throw || kind == ActionKind.perso) {
+		if (kind == ActionKind.spawn || kind == ActionKind._throw || kind == ActionKind.perso || kind == ActionKind.sprite) {
 			if (text != null) {
 				switchExpression = ZSSwitch.parseForDialog(text);
 			}

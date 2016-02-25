@@ -295,12 +295,14 @@ public class PersoManagement {
 	 * @param radius radius of the circular zone
 	 * @return Perso
 	 */
-	public Perso lookFor(Perso p_looker, int radius, PersoInfo p_info) {
+	public Perso lookFor(Perso p_looker, int radius, PersoInfo p_info, boolean sight) {
 		if (p_looker != null) {
 			for (Perso p : tab_perso) {
 				if (p != p_looker && (p_info == null || p.getInfo() == p_info) && p.visible && p.getPv()>0) {
 					double distance = Point.distance(p_looker.x,  p_looker.y, p.x, p.y);
 					if (distance < radius * 16) {
+						// Check sight (if needed)
+						if (sight && !p_looker.isFacing(p)) continue;
 						return p;
 					}
 				}

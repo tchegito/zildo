@@ -1147,14 +1147,18 @@ public abstract class Perso extends Element {
 		return onPlatform;
 	}
 	
-	public boolean isFacing(Perso p_other) {
+	public boolean isFacing(SpriteEntity p_other) {
 		int dx = (int) (p_other.x - x);
 		int dy = (int) (p_other.y - y);
 		
+		Angle a = Angle.fromDelta(dx, dy);
+		return a == angle;
+		/*
 		int angleSignumX = Integer.signum(angle.coords.x);
 		int angleSignumY = Integer.signum(angle.coords.y);
 		return  (Integer.signum(dx) == angleSignumX || angleSignumX == 0) &&
 				(Integer.signum(dy) == angleSignumY || angleSignumY == 0);
+				*/
 	}
 
 	public boolean isAffectedBy(AffectionKind kind) {

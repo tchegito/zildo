@@ -69,7 +69,7 @@ public class PersoRat extends PersoShadowed {
 					attente = 40;
 					goBiting = false;
 				} else {
-					Perso zildo = EngineZildo.persoManagement.lookFor(this, 5, PersoInfo.ZILDO);
+					Perso zildo = EngineZildo.persoManagement.lookFor(this, 5, PersoInfo.ZILDO, false);
 					if (zildo != null) {
 						float dx = x - zildo.x;
 						float dy = y - zildo.y;

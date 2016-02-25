@@ -116,6 +116,7 @@ public enum PersoDescription implements SpriteDescription {
 			351, 352, 353,
 			354, 355, 356, 357,	358, 359, 360, 
 			361, 362, 363, 364, 365, 366, 367),
+	FIREFLY(255),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 

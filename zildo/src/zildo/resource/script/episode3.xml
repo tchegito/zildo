@@ -66,6 +66,16 @@
         </trigger>
     </quest>
     
+    <quest name="goOnStump" locked="false" repeat="true">
+		<trigger>
+		    <location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
+            <fall type="PRINCESS_BUNNY" nature="REGULAR"/>
+		</trigger>
+		<action>
+		    <exec script="checkWillOWist"/>
+		</action>
+    </quest>
+<!-- 
     <quest name="jump_stumpNature">
         <trigger>
             <location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
@@ -75,7 +85,7 @@
             <exec script="openNatureRoxy"/>
         </action>
     </quest>
-    
+    -->
     <mapScript>
 	    <condition name="sousbois3">
 	        <perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -90,7 +100,13 @@
 	        <tile pos="34,26" action="fireflies"/>
 	        <tile pos="42,26" action="fireflies"/>
 	        <tile pos="41,4" action="fireflies"/>
-	   	</condition>
+	        <!-- Hide notes, so player will only see fireflies -->
+	        <visible who="arsinoe" value="false"/>
+   	        <visible who="archibald" value="false"/>
+   	        <visible who="crystallion" value="false"/>
+   	        <visible who="porphyre" value="false"/>
+   	        <visible who="neptune" value="false"/>
+   	   	</condition>
 	   	<condition name="sousbois6">
 	   	    <tile pos="51,11" action="willOWist" unblock="true"/>
 	   	</condition>
@@ -296,6 +312,28 @@
         <wait value="50"/>"
         <moveTo who="sacher2" pos="0,-210" delta="true"/>
         <wait value="50"/>
+    </scene>
+    
+    <!-- IDEE: créer une action 'varInc' qui incrémente une variable, en utilisant le syntaxic sugar -->
+    <scene id="checkWillOWist">
+        <var name="loc:duration" value="0"/>
+        <var name="loc:looking" value="0"/>	<!-- define outside of the 'loop' context: important -->
+        <loop when="zildo.z!=0">
+        	<var name="loc:looking" value="0"/>
+            <lookFor who="zildo" radius="6" sight="true" type="WILL_O_WIST">
+                <!-- hero is watching will'o'wist -->
+                <var name="loc:looking" value="1"/>
+                <var name="loc:duration" value="loc:duration+1"/>
+	            <if exp="loc:duration=2-loc:duration=10">
+	                <animation what="stars" type="STAR_CIRCLE" pos="x,y"/>
+	                <sprite what="stars" vz="1" alphaA="-0.1"/>
+	            </if> 
+            </lookFor>
+            <wait value="60"/>
+            <if exp="loc:looking=0">
+                <var name="loc:duration" value="0"/>
+            </if>
+        </loop>
     </scene>
     
     <scene id="openNatureRoxy">
