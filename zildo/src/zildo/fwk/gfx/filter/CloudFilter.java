@@ -43,6 +43,17 @@ public abstract class CloudFilter extends ScreenFilter {
 	protected float offsetV=0;
 	protected Pointf wind=new Pointf(0.01f, 0);
 	protected Pointf move=new Pointf(0,0);
+
+	double alpha = 0;
+
+	@Override
+	public boolean renderFilter() {
+		alpha+=0.01f;
+		wind=new Pointf(0.25f + (float) (0.3f * Math.sin(alpha) * Math.cos(alpha*3)), 
+						0.25f + (float) (0.1f * Math.cos(alpha) * Math.sin(alpha*2)));
+		
+		return true;
+	}
 	
 	public void setPosition(int x, int y) {
 		u = x + offsetU;

@@ -1,0 +1,15 @@
+<adventure>
+	<scene id='handMadeFor'>
+		<var name="loc:i" value="0"/>
+        <loop when="loc:i!=16">
+        	<spawn type="JAR" pos="100,100"/>
+        	<var name="loc:i" value="loc:i+1"/>
+        </loop>
+	</scene>
+
+	<scene id='builtInFor'>
+		<for var="loc:i" value="16">
+        	<spawn what="loc:coucou" type="BUSHES" pos="100,100+16*loc:i"/>
+		</for>
+	</scene>
+</adventure>

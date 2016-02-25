@@ -25,7 +25,6 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.monde.sprites.Reverse;
-import zildo.monde.util.Pointf;
 
 /**
  * @author Tchegito
@@ -36,15 +35,11 @@ public class LwjglCloudFilter extends CloudFilter {
 	public LwjglCloudFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
 	}
-
-	double alpha = 0;
 	
 	@Override
 	public boolean renderFilter() {
-
-		alpha+=0.01f;
-		wind=new Pointf(0.25f + (float) (0.3f * Math.sin(alpha) * Math.cos(alpha*3)), 
-						0.25f + (float) (0.1f * Math.cos(alpha) * Math.sin(alpha*2)));
+		// Make the wind blow
+		super.renderFilter();
 		
 		super.startInitialization();
 		updateQuad(0, 0, u, v, Reverse.NOTHING);
