@@ -324,7 +324,7 @@
                 <!-- hero is watching will'o'wist -->
                 <var name="loc:looking" value="1"/>
                 <var name="loc:duration" value="loc:duration+1"/>
-	            <if exp="loc:duration=2-loc:duration=10">
+	            <if exp="loc:duration=7 | loc:duration=14">
 	                <!-- Sprite context is propagated to the scene -->
 	                <exec script="starSparkle"/>
 	            </if> 
@@ -336,12 +336,13 @@
         </loop>
     </scene>
     
+    <!-- Spawn some stars vanishing quickly -->
     <scene id="starSparkle">
-        <spawn impact="STAR_YELLOW" pos="x,y" vy="-1" vx="-1+rand*2" alphaA="-1"/>
+        <spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
         <wait value="3"/>
-        <spawn impact="STAR_YELLOW" pos="x,y" vy="-1" vx="-1+rand*2" alphaA="-1"/>
+        <spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
         <wait value="3"/>
-        <spawn impact="STAR_YELLOW" pos="x,y" vy="-1" vx="-1+rand*2" alphaA="-1"/>
+        <spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
     </scene>
     
     <scene id="openNatureRoxy">
