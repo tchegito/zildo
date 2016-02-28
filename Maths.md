@@ -2,10 +2,10 @@
 
 # Introduction #
 
-This page is only a reminder about encountered maths problematic during Zildo development. Some things aren't easy to describe in Javadoc !
+These pages are only a reminder about encountered maths problematic during Zildo development. Some things aren't easy to describe in Javadoc !
 
 
-# 1) Anticipate a target movement #
+# Anticipate a target movement #
 
 It's a common need in video game in order to enhance the IA behavior. For example, in Quake, when a bot is shooting a rocket on a player, he has to target the future location of the player, not his current one.
 
@@ -69,21 +69,3 @@ Negatives can occur, so we have to get the absolute value for `n`.
 And once we have the number of frames, we just have to use Zildo's movement equation to determine the collision location.
 
 Problem solved !
-
-# 2) Bezier curves (3 points) #
-
-Sometimes, to get a smoother movement, a Bezier's curve is a great tool. We only have to use De Casteljau resolution algorithm to get it through.
-
-First use was the dragon's neck. We fix 2 points and calculates the third one, which is between the two others.
-
-![https://lh5.googleusercontent.com/-Cshn2X5xhaE/VDr291y5opI/AAAAAAAAB3k/7hPGL57ynIo/w257-h124-no/bezier3.png](https://lh5.googleusercontent.com/-Cshn2X5xhaE/VDr291y5opI/AAAAAAAAB3k/7hPGL57ynIo/w257-h124-no/bezier3.png)
-
-As a reminder, here's the general formula, to calculate interpolation between point b<sub>i</sub> and b<sub>i+1</sub>:
-
-b<sub>i</sub><sup>r</sup> (t) = (1-t) b<sub>i</sub><sup>r-1</sup> (t) + t.b<sub>i+1</sub><sup>r-1</sup> (t)
-
-When we replace each variables and apply for 3 points, we get this:
-
-b<sub>0</sub><sup>2</sup> (t) = (1-t)² b<sub>0</sub> (t) + (t(1-t))².b<sub>1</sub> (t) + t².b<sub>2</sub> (t)
-
-We just replace each b by x,y coordinates and it's ok.
