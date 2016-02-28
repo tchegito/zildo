@@ -65,6 +65,33 @@
             <dialog name="archibald" num="2"/>
         </trigger>
     </quest>
+
+   <!-- Detects 3 jumps on the stump. Quests need to be declared in reverse order, to avoid a chain triggering in the same frame. -->
+    <quest name="jump_stumpNature3">
+        <trigger>
+            <location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
+            <questDone name="jump_stumpNature2"/>
+            <fall type="PRINCESS_BUNNY" nature="REGULAR"/>
+        </trigger>
+        <action>
+            <exec script="openNatureRoxy"/>
+        </action>
+    </quest>
+    <quest name="jump_stumpNature2" locked="false">
+        <trigger>
+            <location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
+            <questDone name="jump_stumpNature1"/>
+            <fall type="PRINCESS_BUNNY" nature="REGULAR"/>
+        </trigger>
+    </quest>
+    <quest name="jump_stumpNature1" locked="false" >
+        <trigger>
+            <location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
+            <questDone name="jump_stumpNatureReady"/>
+            <fall type="PRINCESS_BUNNY" nature="REGULAR"/>
+        </trigger>
+    </quest>
+    
     
     <quest name="goOnStump" locked="false" repeat="true">
 		<trigger>
@@ -75,17 +102,7 @@
 		    <exec script="checkWillOWist"/>
 		</action>
     </quest>
-<!-- 
-    <quest name="jump_stumpNature">
-        <trigger>
-            <location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
-            <fall type="PRINCESS_BUNNY" nature="REGULAR"/>
-        </trigger>
-        <action>
-            <exec script="openNatureRoxy"/>
-        </action>
-    </quest>
-    -->
+
     <mapScript>
 	    <condition name="sousbois3">
 	        <perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -327,13 +344,19 @@
 	            <if exp="loc:duration=7 | loc:duration=14">
 	                <!-- Sprite context is propagated to the scene -->
 	                <exec script="starSparkle"/>
+	                <if exp="loc:duration=14">
+	                	<markQuest name="jump_stumpNatureReady" value="true"/>
+	                </if>
 	            </if> 
-            </lookFor>
-            <wait value="60"/>
+            	<wait value="60"/>
+	        </lookFor>
             <if exp="loc:looking=0">
                 <var name="loc:duration" value="0"/>
+                <wait value="5"/>
             </if>
         </loop>
+        <markQuest name="jump_stumpNature1" value="false"/>
+        <markQuest name="jump_stumpNature2" value="false"/>
     </scene>
     
     <!-- Spawn some stars vanishing quickly -->

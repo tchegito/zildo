@@ -21,8 +21,12 @@ package zildo.fwk.script.logic;
 
 enum Operator { 
 	// NOT_EQUALS works only when preceding EQUALS
+	// We can combine test operation like this
+	// a=4 + a=5 : means "a==4 || a==5"
+	// a=3 * b=1 : means "a==3 && b==1"
 	PLUS('+'), MINUS('-'), MULTIPLY('*'), DIVIDE('/'), OR('|'), AND('&'), EQUALS('='), NOT_EQUALS('!'), 
 	LESSER('<'), GREATER('>');
+	
 	
 	char symbol;
 	

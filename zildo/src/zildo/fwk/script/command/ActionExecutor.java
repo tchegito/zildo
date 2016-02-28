@@ -630,7 +630,6 @@ public class ActionExecutor extends RuntimeExecutor {
                 	if (lookFor.desc != null) {
                 		ElementDescription desc = ElementDescription.valueOf(lookFor.desc);
                 		found = EngineZildo.spriteManagement.lookFor(perso, lookFor.radius, desc, lookFor.sight);
-                		System.out.println("found:"+found);
                 	} else {
                 		found = EngineZildo.persoManagement.lookFor(perso, lookFor.radius, p_action.info, lookFor.sight);
                 	}
