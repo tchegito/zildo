@@ -24,13 +24,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
-import java.util.Map;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
-import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.logic.FloatVariable;
 import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
@@ -199,40 +197,6 @@ public class CheckSimpleScript extends SimpleEngineScript {
 
 		// Now check being on an expected map 
 		Assert.assertTrue(sw.evaluateInt() == 0);
-		
-	}
-	
-	/** Check combnation test operator "+" and "*" respectively "OR" and "AND" operators. **/ 
-	@Test
-	public void conditionalIf() {
-		FloatExpression.OPTIMIZE = false;
-		
-		FloatExpression expr = new FloatExpression("a=7 + a=14");
-		Map<String, String> globalVariables = EngineZildo.scriptManagement.getVariables();
-
-		// 1.1: a=0
-		globalVariables.put("a", "0");
-		Assert.assertEquals(0, (int) expr.evaluate(null));
-		// 1.2: a=7
-		globalVariables.put("a", "7");
-		Assert.assertEquals(1, (int) expr.evaluate(null));
-		// 1.3: a=14
-		globalVariables.put("a", "14");
-		Assert.assertEquals(1, (int) expr.evaluate(null));
-		// 1.4: a=15
-		globalVariables.put("a", "15");
-		Assert.assertEquals(0, (int) expr.evaluate(null));
-		
-		// 2.1: a=15, b=4
-		globalVariables.put("b", "4");
-		expr = new FloatExpression("a=15 * b=3");
-		Assert.assertEquals(0, (int) expr.evaluate(null));
-		// 2.2: a=15, b=3
-		globalVariables.put("b", "3");
-		Assert.assertEquals(1, (int) expr.evaluate(null));
-		// 2.3: a=9, b=3
-		globalVariables.put("a", "9");
-		Assert.assertEquals(0, (int) expr.evaluate(null));
 		
 	}
 	
