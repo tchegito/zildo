@@ -315,6 +315,16 @@ public class EngineUT {
 		}
 	}
 
+	/** Useful to pass a cutscene **/
+	public void waitEndOfScriptingPassingDialog() {
+		waitEndOfScripting(new ScriptAction(null) {
+			@Override
+			public void launchAction(ClientState p_clientState) {
+				EngineZildo.scriptManagement.userEndAction();
+			}
+		});
+	}
+
 	public void simulateDirection(int x, int y) {
 		simulateDirection(new Vector2f(x, y));
 	}
