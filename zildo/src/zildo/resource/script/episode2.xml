@@ -366,6 +366,16 @@
             <exec script="meetHiddenHector"/>
         </action>
     </quest>
+        
+    <quest name="forbid_dynamiteCell">
+    	<trigger>
+    		<location name="prison"/>
+    		<use item="dynamite"/>
+    	</trigger>
+    	<action>
+    		<speak who="zildo" text="prison.gard.script"/>
+    	</action>
+    </quest>
     
     <quest name="ask_visitprison" locked="false">
         <trigger>

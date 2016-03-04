@@ -87,8 +87,9 @@ public class TestBugCutscenes extends EngineUT {
 		Assert.assertEquals(Angle.SUD,  zildo.getAngle());
 	}
 	
+	// Issue 83
 	@Test
-	public void checkForbidenDynamitePlantInIgorCell() {
+	public void checkForbiddenDynamitePlantInIgorCell() {
 		waitEndOfScripting();
 		mapUtils.loadMap("prison");
 		PersoPlayer zildo = spawnZildo(104, 45);
@@ -96,13 +97,23 @@ public class TestBugCutscenes extends EngineUT {
 		zildo.setCountBomb(4);
 		zildo.attack();
 		Assert.assertEquals("Player shouldn't be allowed to plant dynamite here !", 4,  zildo.getCountBomb());	// Be sure dynamite is planted
-		
+		renderFrames(2);
+		Assert.assertEquals("Player should have been warned by a dialog !", 1, EngineZildo.game.getLastDialog().size());
+		waitEndOfScriptingPassingDialog();
+	}
+	
+	@Test
+	public void checkAllowedDynamitePlanting() {
 		// Check somewhere else
+		waitEndOfScripting();
 		mapUtils.loadMap("prison7");
-		zildo =spawnZildo(367+10, 163);
+		PersoPlayer zildo =spawnZildo(367+10, 163);
 		zildo.setWeapon(new Item(ItemKind.DYNAMITE));
 		zildo.setCountBomb(4);
 		zildo.attack();
 		Assert.assertEquals("Player should have been allowed to plant dynamite here !", 3,  zildo.getCountBomb());	// Be sure dynamite is planted
+		renderFrames(2);
+		Assert.assertEquals("No dialog should have popped !", 0, EngineZildo.game.getLastDialog().size());
+		waitEndOfScriptingPassingDialog();
 	}
 }
