@@ -34,7 +34,7 @@ import zildo.fwk.script.xml.element.LanguageElement;
  */
 public class LoopElement extends ActionElement {
 
-	public FloatExpression endCondition;	// default: infinite loop
+	public FloatExpression whileCondition;	// default: infinite loop
 
 	public List<LanguageElement> actions;
 
@@ -51,7 +51,7 @@ public class LoopElement extends ActionElement {
 		actions = (List<LanguageElement>) ScriptReader.parseNodes(xmlElement);
 		
 		String whenValue = xmlElement.getAttribute("when");
-		endCondition = ZUtils.isEmpty(whenValue) ? new FloatExpression(1) : new FloatExpression(whenValue);
+		whileCondition = ZUtils.isEmpty(whenValue) ? new FloatExpression(1) : new FloatExpression(whenValue);
 		
 		if (actions.isEmpty()) {
 			throw new RuntimeException("Loop is empty !");

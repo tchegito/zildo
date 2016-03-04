@@ -985,7 +985,7 @@
 	    	<spawn who="maltus" type="BANDIT_CHAPEAU" pos="580,236" angle="1"/>   		    
    		</condition>
    		<condition name="prison">
-   		    <perso who="gard2" effect="jaune"/>	<!--  workaround because this is not editable yet -->
+   		    <perso who="gard2" effect="jaune"/>	<!--  workaround because effect is not editable yet in ZEditor-->
    		    <markQuest name="paid_gard" value="false"/>
    		</condition>
    		<condition name="prison" exp="zildoAccessIgor">

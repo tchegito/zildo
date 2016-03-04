@@ -311,11 +311,6 @@ public class ActionExecutor extends RuntimeExecutor {
                 	actionSpawn(p_action, location, false);
                 	achieved = true;
                     break;
-                case impact:
-                	ImpactKind impactKind = ImpactKind.valueOf(p_action.text);
-                	EngineZildo.spriteManagement.spawnSprite(new ElementImpact(location.x, location.y, impactKind, null));
-                	achieved = true;
-                	break;
                 case animation:
                 	SpriteAnimation anim = SpriteAnimation.valueOf(p_action.text);
                 	Point loc = new Point(location);
@@ -554,6 +549,10 @@ public class ActionExecutor extends RuntimeExecutor {
                 			entity.reverse = Reverse.fromInt(p_action.reverse.evaluateInt());
                 		}
                 	}
+                	if (entity.getEntityType().isElement()) {
+                		applyCommonAndPhysicAttributes((Element) entity, p_action);
+                	}
+
                 	achieved=true;
                 	break;
                 case perso:	// Change character attribute (type)
@@ -588,12 +587,6 @@ public class ActionExecutor extends RuntimeExecutor {
                     		//guardWeapon and weapon attributes.
                     		((PersoNJ)perso).setActiveWeapon(GuardWeapon.valueOf(p_action.weapon));
                     	}
-            			if (p_action.alphaA != null) {
-            				perso.alphaA = p_action.alphaA.evaluate(context);
-            			}
-            			if (p_action.alpha != -1) {
-            				perso.setAlpha(p_action.alpha);
-            			}
             			if (p_action.deltaFloor != 0) {
             				int newFloor = perso.getFloor() + p_action.deltaFloor;
             				// Try to reach higher/lower floor if exists
@@ -614,7 +607,7 @@ public class ActionExecutor extends RuntimeExecutor {
             			if (p_action.addSpr != -1) {
             				perso.setAddSpr(p_action.addSpr);
             			}
-            			applyPhysicAttributes((Element) perso, p_action);
+            			applyCommonAndPhysicAttributes((Element) perso, p_action);
                 	}
                 	achieved = true;
                 	break;
@@ -631,9 +624,16 @@ public class ActionExecutor extends RuntimeExecutor {
                 case loop:	// 'end' condition is checked at the end of a loop execution
                		executeSubProcess( ((LoopElement)p_action).actions);
                 	break;
-                case lookFor: // Look for a character around another inside a given radius
+                case lookFor: // Look for a character/element around another inside a given radius
                 	LookforElement lookFor = (LookforElement) p_action;
-                	Perso found = EngineZildo.persoManagement.lookFor(perso, lookFor.radius, p_action.info);
+                	SpriteEntity found;
+                	if (lookFor.desc != null) {
+                		ElementDescription desc = ElementDescription.valueOf(lookFor.desc);
+                		found = EngineZildo.spriteManagement.lookFor(perso, lookFor.radius, desc, lookFor.sight);
+                		System.out.println("found:"+found);
+                	} else {
+                		found = EngineZildo.persoManagement.lookFor(perso, lookFor.radius, p_action.info, lookFor.sight);
+                	}
                 	if (found != null ^ lookFor.negative) {	// XOR !
                 		IEvaluationContext persoContext = new SpriteEntityContext(found, context);
                 		// Specificity here: we create a subprocess with a different context: upon found character
@@ -739,7 +739,7 @@ public class ActionExecutor extends RuntimeExecutor {
             	break;
             case loop:
             	LoopElement loop = (LoopElement) p_action;
-        		if (loop.endCondition.evaluate(context) == 1) {
+        		if (loop.whileCondition.evaluate(context) == 1) {
         			// Restart
         			executeSubProcess(loop.actions);
         		} else {
@@ -806,21 +806,27 @@ public class ActionExecutor extends RuntimeExecutor {
     		name = handleLocalVariable(p_action.what);
     		if (getNamedElement(name) == null) {
     			// Spawn only if doesn't exist yet
-        		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
-        		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : Reverse.fromInt(p_action.reverse.evaluateInt());
-        		Rotation rot = Rotation.fromInt(p_action.rotation);
         		SpriteEntity entity = null;
-        		elem = null;
-        		// Chained
-        		if (ElementDescription.isPlatform(desc)) {
-        			entity = EngineZildo.spriteManagement.spawnSprite(desc, location.x, location.y, Boolean.TRUE == p_action.foreground, rev, false);
-            		if (entity.getEntityType().isElement()) {
-            			elem = (Element) entity;
-            		}
-        		} else {
-        			elem = EngineZildo.spriteManagement.createElement(desc, location.x, location.y, 0, rev, rot);
-        			entity = elem;
-        		}
+        		Rotation rot = Rotation.fromInt(p_action.rotation);
+    			if (p_action.impact != null) {
+    				ImpactKind impactKind = ImpactKind.valueOf(p_action.impact);
+    				elem = new ElementImpact(location.x, location.y, impactKind, null);
+    				entity = elem;
+    			} else {
+	        		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
+	        		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : Reverse.fromInt(p_action.reverse.evaluateInt());
+	        		elem = null;
+	        		// Chained
+	        		if (ElementDescription.isPlatform(desc)) {
+	        			entity = EngineZildo.spriteManagement.spawnSprite(desc, location.x, location.y, Boolean.TRUE == p_action.foreground, rev, false);
+	            		if (entity.getEntityType().isElement()) {
+	            			elem = (Element) entity;
+	            		}
+	        		} else {
+	        			elem = EngineZildo.spriteManagement.createElement(desc, location.x, location.y, 0, rev, rot);
+	        			entity = elem;
+	        		}
+    			}
         		if (p_action.chainCount > 0) {
         			// With chained elements, we must not spawn the "matrix" element. It will be spawned by
         			// ChainedElement#animate()
@@ -849,8 +855,6 @@ public class ActionExecutor extends RuntimeExecutor {
         			entity.setForeground(p_action.foreground);
         		}
         		if (elem != null) {	// Element specific
-        			applyPhysicAttributes(elem, p_action);
-
 	        		if (p_action.shadow != null) {
 	            		ElementDescription descShadow = (ElementDescription) SpriteDescription.Locator.findNamedSpr(p_action.shadow);
 	        			elem.addShadow(descShadow);
@@ -861,21 +865,13 @@ public class ActionExecutor extends RuntimeExecutor {
     	}
     	// Enable for both element and character
     	if (elem != null) {
-			if (p_action.alphaA != null) {
-				elem.alphaA = p_action.alphaA.evaluate(context);
-			}
-			if (p_action.alpha != -1) {
-				elem.setAlpha(p_action.alpha);
-			}
-			if (p_action.zoom != null) {
-				elem.zoom = (int) p_action.zoom.evaluate(context);
-			}
+			applyCommonAndPhysicAttributes(elem, p_action);
     	}
     	return elem;
     }
 
     /** Apply v(x,y,z), a(x,y,z), and f(x,y,z) on given element, assumed as not null. **/
-    private void applyPhysicAttributes(Element elem, ActionElement p_action) {
+    private void applyCommonAndPhysicAttributes(Element elem, ActionElement p_action) {
 		// Physics attributes
 		if (p_action.v != null) {	// Speed
     		elem.vx = convenientFloatEvaluation(p_action.v[0]);
@@ -892,7 +888,15 @@ public class ActionExecutor extends RuntimeExecutor {
     		elem.fy = convenientFloatEvaluation(p_action.f[1]);
     		elem.fz = convenientFloatEvaluation(p_action.f[2]);
 		}
-    	
+		if (p_action.alphaA != null) {
+			elem.alphaA = p_action.alphaA.evaluate(context);
+		}
+		if (p_action.alpha != -1) {
+			elem.setAlpha(p_action.alpha);
+		}
+		if (p_action.zoom != null) {
+			elem.zoom = (int) p_action.zoom.evaluate(context);
+		}
     }
     
     public void terminate() {

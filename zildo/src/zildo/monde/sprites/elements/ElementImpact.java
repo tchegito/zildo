@@ -132,8 +132,8 @@ public class ElementImpact extends Element {
 		switch (kind) {
 			case WAVE:
 				alpha-=2;
-				super.animate();
 			case STAR_YELLOW:
+				super.animate();
         	case SIMPLEHIT:
         	case FIRESMOKE:
         	case LAVA_DROP:

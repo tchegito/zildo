@@ -20,13 +20,15 @@
 
 package junit.script;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
 import zildo.fwk.script.logic.FloatVariable;
 import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;

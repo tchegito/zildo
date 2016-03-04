@@ -60,6 +60,10 @@ public class FloatOperator implements FloatASTNode{
 				return f1 < f2 ? 1 : 0;
 			case GREATER:
 				return f1 > f2 ?1 : 0;
+			case OR:
+				return (int)f1 == 1 || (int)f2 == 1 ? 1 : 0;
+			case AND:
+				return f1 == 1 && f2 == 1 ? 1 : 0;
 		}
 	}
 

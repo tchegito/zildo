@@ -61,6 +61,8 @@ public class FloatVariable implements FloatASTNode {
 				return p.x;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOY.equals(variable)) {
 				return p.y;
+			} else if (FloatExpression.RESERVED_WORD_ZILDOZ.equals(variable)) {
+				return p.z;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOMONEY.equals(variable)) {
 				return p.getMoney();
 			} else if (FloatExpression.RESERVED_WORD_ZILDOANGLEX.equals(variable)) {

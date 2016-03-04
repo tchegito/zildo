@@ -22,6 +22,7 @@ package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 /**
@@ -57,7 +58,8 @@ public class ElementStars extends ElementChained {
 
 	double iota = 0;
 	StarKind kind;
-
+	Point initialLocation;
+	
 	public ElementStars(StarKind p_kind, int p_x, int p_y) {
 		super(p_x, p_y);
 
@@ -67,6 +69,8 @@ public class ElementStars extends ElementChained {
 		if (kind == StarKind.CIRCLE) {
 			EngineZildo.soundManagement.broadcastSound(BankSound.Sort, this);
 		}
+		
+		initialLocation = new Point(p_x, p_y);
 	}
 
 	@Override

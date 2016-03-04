@@ -36,14 +36,25 @@ public class TestBasicPerso extends EngineUT {
 	public void facing() {
 		Perso a = spawnTypicalPerso("a", 160, 100);
 		a.setAngle(Angle.EST);
-		Perso b = spawnTypicalPerso("b", 250, 300);
-		a.setAngle(Angle.EST);
+		Perso b = spawnTypicalPerso("b", 250, 130);
+		b.setAngle(Angle.OUEST);
 		Assert.assertTrue(a.isFacing(b));
 		Assert.assertTrue(b.isFacing(a));
 		
 		a.setAngle(Angle.NORD);
-		b.setAngle(Angle.NORD);
 		Assert.assertTrue(!a.isFacing(b));
 		Assert.assertTrue(b.isFacing(a));
+	}
+	
+	@Test
+	public void facingMarginal() {
+		Perso hero = spawnTypicalPerso("hero", 835, 187);
+		hero.setAngle(Angle.OUEST);
+		Perso willOWist = spawnTypicalPerso("wow", 834, 235);
+		
+		Assert.assertFalse(hero.isFacing(willOWist));
+		hero.setAngle(Angle.SUD);
+		Assert.assertTrue(hero.isFacing(willOWist));
+		
 	}
 }

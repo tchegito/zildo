@@ -983,6 +983,27 @@ public class SpriteManagement extends SpriteStore {
         return null;
     }
     
+	/**
+	 * Return the first discoverd character inside a circular zone around a given character.
+	 * @param p_looker Looking character
+	 * @param radius radius of the circular zone
+	 * @return Perso
+	 */
+	public SpriteEntity lookFor(Perso p_looker, int radius, ElementDescription desc, boolean sight) {
+		if (p_looker != null) {
+			for (SpriteEntity s : spriteEntities) {
+				if (s != p_looker && s.getDesc() == desc && s.visible) {
+					double distance = Point.distance(p_looker.x,  p_looker.y, s.x, s.y);
+					if (distance < radius * 16) {
+						// Check sight (if needed)
+						if (sight && !p_looker.isFacing(s)) continue;
+						return s;
+					}
+				}
+			}
+		}
+		return null;
+	}
     public List<SpriteEntity> getWalkableEntities() {
     	return walkableEntities;
     }
