@@ -89,11 +89,20 @@ public class TestBugCutscenes extends EngineUT {
 	
 	@Test
 	public void checkForbidenDynamitePlantInIgorCell() {
+		waitEndOfScripting();
 		mapUtils.loadMap("prison");
 		PersoPlayer zildo = spawnZildo(104, 45);
 		zildo.setWeapon(new Item(ItemKind.DYNAMITE));
 		zildo.setCountBomb(4);
 		zildo.attack();
 		Assert.assertEquals("Player shouldn't be allowed to plant dynamite here !", 4,  zildo.getCountBomb());	// Be sure dynamite is planted
+		
+		// Check somewhere else
+		mapUtils.loadMap("prison7");
+		zildo =spawnZildo(367+10, 163);
+		zildo.setWeapon(new Item(ItemKind.DYNAMITE));
+		zildo.setCountBomb(4);
+		zildo.attack();
+		Assert.assertEquals("Player should have been allowed to plant dynamite here !", 3,  zildo.getCountBomb());	// Be sure dynamite is planted
 	}
 }

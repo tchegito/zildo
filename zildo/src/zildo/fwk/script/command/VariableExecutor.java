@@ -53,7 +53,11 @@ public class VariableExecutor extends RuntimeExecutor {
 				if (p_elem.typ == ValueType.sellingItems) {
 					objToSave = p_elem.strValue;
 				} else {
-					objToSave = "" + p_elem.value.evaluate(context);
+					if (context == null) {	// In mapscript, we have no context, but variable assignment is allowed though
+						objToSave = p_elem.value.toString();
+					} else {
+						objToSave = "" + p_elem.value.evaluate(context);
+					}
 				}
 				String name = p_elem.name;
 				if (isLocal(name)) {	// This variable could be local "loc:...", defined or undefined yet

@@ -259,7 +259,7 @@ public class PersoPlayer extends Perso {
 			break;
 		case DYNAMITE:
 			if (attente == 0) {
-				if (countBomb > 0) {
+				if (countBomb > 0 && "yes".equals(EngineZildo.scriptManagement.getVarValue("allowedDynamite"))) {
 					Element bomb = new ElementDynamite((int) x, (int) y, 0, this);
 					bomb.floor = floor;
 					EngineZildo.spriteManagement.spawnSprite(bomb);
