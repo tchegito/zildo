@@ -1,168 +1,155 @@
 <adventure>
-    
-    <quest name="fireflies_sousbois">
-        <trigger>
-            <location name="sousbois1"/>
-        </trigger>
-        <action>
-	        <tile pos="34,4" action="fireflies" />
-            <tile pos="34,4" action="fireflies" />
-            <tile pos="34,4" action="fireflies" />
-            
-            <tile pos="35,12" action="blueRain" />
-        </action>
-    </quest>
 
-    <quest name="roxyMeetIsidore">
-        <trigger>
-	        <location name="sousbois1" pos="423,632" radius="2"/> <!--  tile:25,39 -->
-        </trigger>
-        <action>
-            <exec script="meetIsidore"/>
-        </action>
-    </quest>
-    
-    <quest name="hero_princess">
-        <history>
-            <herospecial value="6"/>
-        </history>
-    </quest>
-    
-    <quest name="removeNailForMoonStone">
-        <trigger>
-            <location name="sousbois3" tilePos="12,32" immediate="false"/>
-            <fall type="PRINCESS_BUNNY" nature="REGULAR"/>
-        </trigger>
-        <action>
-            <tile pos="12,32" back="174"/>
-            <wait value="20"/>
-            <tile pos="11,28" back2="-1"/>
-            <tile pos="12,28" back2="-1"/>
-			<animation pos="12*16,29*16" type="CLOUD_FOG" />
-            <sound name="ZildoAccomplishQuest"/>
-        </action>
-    </quest>
-    
-    <!-- Will'o'wist quests -->
-    <quest name="wow_1" locked="false">
+	<quest name="roxyMeetIsidore">
 		<trigger>
-		    <location name="sousbois4"/>
-		    <dialog name="neptune" num="1"/>
-		</trigger>
-    </quest>
-    
-    <quest name="wow_2" locked="false">
-        <trigger>
-            <location name="sousbois4"/>
-            <dialog name="arsinoe" num="1"/>
-        </trigger>
-    </quest>
-    
-    <quest name="wow_3" locked="false">
-        <trigger>
-            <location name="sousbois4"/>
-            <dialog name="porphyre" num="2"/>
-        </trigger>
-    </quest>
-    
-    <quest name="wow_4" locked="false">
-        <trigger>
-            <location name="sousbois4"/>
-            <dialog name="archibald" num="2"/>
-        </trigger>
-    </quest>
-
-   <!-- Detects 3 jumps on the stump. Quests need to be declared in reverse order, to avoid a chain triggering in the same frame. -->
-    <quest name="jump_stumpNature3">
-        <trigger>
-            <location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
-            <questDone name="jump_stumpNature2"/>
-            <fall type="PRINCESS_BUNNY" nature="REGULAR"/>
-        </trigger>
-        <action>
-            <exec script="openNatureRoxy"/>
-        </action>
-    </quest>
-    <quest name="jump_stumpNature2" locked="false">
-        <trigger>
-            <location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
-            <questDone name="jump_stumpNature1"/>
-            <fall type="PRINCESS_BUNNY" nature="REGULAR"/>
-        </trigger>
-    </quest>
-    <quest name="jump_stumpNature1" locked="false" >
-        <trigger>
-            <location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
-            <questDone name="jump_stumpNatureReady"/>
-            <fall type="PRINCESS_BUNNY" nature="REGULAR"/>
-        </trigger>
-    </quest>
-    
-    
-    <quest name="goOnStump" locked="false" repeat="true">
-		<trigger>
-		    <location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
-            <fall type="PRINCESS_BUNNY" nature="REGULAR"/>
+			<location name="sousbois1" pos="423,632" radius="2"/> <!--  tile:25,39 -->
 		</trigger>
 		<action>
-		    <exec script="checkWillOWist"/>
+			<exec script="meetIsidore"/>
 		</action>
-    </quest>
+	</quest>
+	
+	<quest name="hero_princess">
+		<history>
+			<herospecial value="6"/>
+		</history>
+	</quest>
+	
+	<quest name="removeNailForMoonStone">
+		<trigger>
+			<location name="sousbois3" tilePos="12,32" immediate="false"/>
+			<fall type="PRINCESS_BUNNY" nature="REGULAR"/>
+		</trigger>
+		<action>
+			<tile pos="12,32" back="174"/>
+			<wait value="20"/>
+			<tile pos="11,28" back2="-1"/>
+			<tile pos="12,28" back2="-1"/>
+			<animation pos="12*16,29*16" type="CLOUD_FOG" />
+			<sound name="ZildoAccomplishQuest"/>
+		</action>
+	</quest>
+	
+	<!-- Will'o'wist quests -->
+	<quest name="wow_1" locked="false">
+		<trigger>
+			<location name="sousbois4"/>
+			<dialog name="neptune" num="1"/>
+		</trigger>
+	</quest>
+	
+	<quest name="wow_2" locked="false">
+		<trigger>
+			<location name="sousbois4"/>
+			<dialog name="arsinoe" num="1"/>
+		</trigger>
+	</quest>
+	
+	<quest name="wow_3" locked="false">
+		<trigger>
+			<location name="sousbois4"/>
+			<dialog name="porphyre" num="2"/>
+		</trigger>
+	</quest>
+	
+	<quest name="wow_4" locked="false">
+		<trigger>
+			<location name="sousbois4"/>
+			<dialog name="archibald" num="2"/>
+		</trigger>
+	</quest>
 
-    <mapScript>
-	    <condition name="sousbois3">
-	        <perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
-	    </condition>
+   <!-- Detects 3 jumps on the stump. Quests need to be declared in reverse order, to avoid a chain triggering in the same frame. -->
+	<quest name="jump_stumpNature3">
+		<trigger>
+			<location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
+			<questDone name="jump_stumpNature2"/>
+			<fall type="PRINCESS_BUNNY" nature="REGULAR"/>
+		</trigger>
+		<action>
+			<exec script="openNatureRoxy"/>
+		</action>
+	</quest>
+	<quest name="jump_stumpNature2" locked="false">
+		<trigger>
+			<location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
+			<questDone name="jump_stumpNature1"/>
+			<fall type="PRINCESS_BUNNY" nature="REGULAR"/>
+		</trigger>
+	</quest>
+	<quest name="jump_stumpNature1" locked="false" >
+		<trigger>
+			<location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
+			<questDone name="jump_stumpNatureReady"/>
+			<fall type="PRINCESS_BUNNY" nature="REGULAR"/>
+		</trigger>
+	</quest>
+	
+	
+	<quest name="goOnStump" locked="false" repeat="true">
+		<trigger>
+			<location name="sousbois6" pos="831,187" radius="1" immediate="false"/>
+			<fall type="PRINCESS_BUNNY" nature="REGULAR"/>
+		</trigger>
+		<action>
+			<exec script="checkWillOWist"/>
+		</action>
+	</quest>
+
+	<mapScript>
+		<condition name="sousbois3">
+			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
+		</condition>
 	   	<condition name="sousbois7">
-	        <perso who="sacher" action="sacherTortue(tortueSousbois7)"/>
+			<perso who="sacher" action="sacherTortue(tortueSousbois7)"/>
 	   		<perso who="sacher2" action="sacherTortue(tortueSousbois7_2)"/>
-	    </condition>
-	    <condition name="sousbois4">
-	        <tile pos="26,11" action="fireflies"/>
-	        <tile pos="52,7" action="fireflies"/>
-	        <tile pos="34,26" action="fireflies"/>
-	        <tile pos="42,26" action="fireflies"/>
-	        <tile pos="41,4" action="fireflies"/>
-	        <!-- Hide notes, so player will only see fireflies -->
-	        <visible who="arsinoe" value="false"/>
-   	        <visible who="archibald" value="false"/>
-   	        <visible who="crystallion" value="false"/>
-   	        <visible who="porphyre" value="false"/>
-   	        <visible who="neptune" value="false"/>
+		</condition>
+		<condition name="sousbois4">
+			<tile pos="26,11" action="fireflies"/>
+			<tile pos="52,7" action="fireflies"/>
+			<tile pos="34,26" action="fireflies"/>
+			<tile pos="42,26" action="fireflies"/>
+			<tile pos="41,4" action="fireflies"/>
+			<!-- Hide notes, so player will only see fireflies -->
+			<visible who="arsinoe" value="false"/>
+   			<visible who="archibald" value="false"/>
+   			<visible who="crystallion" value="false"/>
+   			<visible who="porphyre" value="false"/>
+   			<visible who="neptune" value="false"/>
    	   	</condition>
 	   	<condition name="sousbois6">
-	   	    <tile pos="51,11" action="willOWist" unblock="true"/>
+	   		<tile pos="51,11" action="willOWist" unblock="true"/>
 	   	</condition>
 	</mapScript>
-	    
-    <scene id="intro_episode3">
-    	<speak what="camera" text="ep3.beginning.0"/>    
-    	<speak what="camera" text="ep3.beginning.1"/>
-    	<music name="Squirrel"/>    
-    	<speak what="camera" text="ep3.beginning.2"/>
-    	<markQuest name="hero_princess" value="true"/>
-    	<map name="sousbois1"/>
-    	<pos what="camera" pos="240,81" />
-   		<fadeIn value="0"/>
-   		<wait value="50"/>
-   		<moveTo what="camera" pos="330,0" />
-    	<focus who="zildo"/>
-   		<pos who="zildo" pos="655,89"/>
-    	<moveTo who="zildo" pos="571,145" unstoppable="true"/>
-    	<speak who="synthe" text="info.episode3"/>
-    	<herospecial value="3"/>	<!-- Save game -->
-    </scene>
-    
-    <scene id="meetIsidore">
-        <!--  Remember that Roxy's character when she's a squirrel, is 'zildo' ( ... ) -->
-        <angle who="zildo" value="1"/>
-        <focus who="isidore" delta="true"/>
-        <wait value="60"/>
-        <angle who="isidore" value="3"/>
+		
+	<scene id="intro_episode3">
+		<speak what="camera" text="ep3.beginning.0"/>	
+		<speak what="camera" text="ep3.beginning.1"/>
+		<music name="Squirrel"/>	
+		<speak what="camera" text="ep3.beginning.2"/>
+		<markQuest name="hero_princess" value="true"/>
+		<map name="sousbois1"/>
+		<pos what="camera" pos="240,81" />
+		<fadeIn value="0"/>
+		<wait value="50"/>
+		<moveTo what="camera" pos="330,0" />
+		<focus who="zildo"/>
+		<pos who="zildo" pos="655,89"/>
+		<moveTo who="zildo" pos="571,145" unstoppable="true"/>
+		<speak who="synthe" text="info.episode3"/>
+		<herospecial value="3"/>	<!-- Save game -->
+	</scene>
+	
+	<scene id="meetIsidore">
+		<!--  Remember that Roxy's character when she's a squirrel, is 'zildo' ( ... ) -->
+		<angle who="zildo" value="1"/>
+		<focus who="isidore" delta="true"/>
+		<wait value="60"/>
+		<angle who="isidore" value="3"/>
 		<speak text="sousbois.isidore.0" who="isidore"/>
-        <moveTo who="isidore" pos="432,619"/>
-        <moveTo who="zildo" pos="409,632"/>
-        <nameReplace who="isidore" name="isidore"/>
+		<moveTo who="isidore" pos="432,619"/>
+		<moveTo who="zildo" pos="409,632"/>
+		<nameReplace who="isidore" name="isidore"/>
 		<speak text="sousbois.isidore.1" who="isidore"/>
 		<speak text="sousbois.roxy.0" who="zildo"/>
 		<speak text="sousbois.isidore.2" who="isidore"/>
@@ -207,66 +194,66 @@
 		<angle who="zildo" value="2"/>
 		<speak text="sousbois.roxy.8" who="zildo"/>				
 	</scene>
-    
-    <tileAction id="fireflies">
-        <spawn what="loc:firefly" type="PURPLE_FIREFLY"
-	               pos="x*16, y*16" z="4" alpha="180"
-	               foreground="true" />
-       	<timer each="80+random*15">
-            <action>
-                <!-- 'unblock' is REALLY important here ! Because without it, number of scripts keeps on increasing, because 
-                	 'moveTo' is never declared 'achieved' because the following one at the next timer triggering will set a 
-                	 new destination, meaning previous one will never be reached. 
-                	 Today, I see 2 options : 
-                	 1) add 'unblock' on such moveTo in timers, like here (manually or automatically)
-                	 2) ignore timer trigger if previous actions weren't all achieved 
-               	-->
-		        <moveTo what="loc:firefly" pos="x*16+random*40,y*16+random*30" way="arc" zoom="128+bell*128" unblock="true"/>
-            </action>
-        </timer>
-    </tileAction>
-    
-    <tileAction id="willOWist">
-        <!-- Le feu follet pourra émettre un petit scintillement lorsque l'écureuil le suivra comme il faut des yeux, ça aidera le joueur à savoir s'il
-        	est sur la bonne voie -->
-        <spawn what="wow" type="WILL_O_WIST" pos="x*16+8,y*16-20" chained="3, 4" />
-        <spawn what="wowReflect" type="WILL_O_REFLECT" pos="x*16+8,y*16-20+16" zoom="128" alpha="64"/>
-        <loop>
-            <actions>
-	            <moveTo what="wow" pos="50,40" delta="true" way="circular" zoom="128+bell*32"/>
-            	<moveTo what="wowReflect" pos="50,40" delta="true" way="circular" zoom="128+bell*64"/>
-            </actions>
-   	    </loop>
-    </tileAction>
-    
-    <tileAction id="blueRain">
-        <timer each="10+random*30">
-            <action>
-	         <spawn what="loc:drop" type="DROP_SMALL" pos="x*16+random*16,y*16+random*8" z="60"
-	             az="-0.01" vx="-0.1-random*0.1" alpha="200" alphaA="0.1" vy="0.1"/>
-	         <wait value="50"/>
-	         <sprite what="loc:drop" type="DROP_MEDIUM"/>
-            </action>
-         </timer>
+	
+	<tileAction id="fireflies">
+		<spawn what="loc:firefly" type="PURPLE_FIREFLY"
+				   pos="x*16, y*16" z="4" alpha="180"
+				   foreground="true" />
+	   	<timer each="80+random*15">
+			<action>
+				<!-- 'unblock' is REALLY important here ! Because without it, number of scripts keeps on increasing, because 
+					 'moveTo' is never declared 'achieved' because the following one at the next timer triggering will set a 
+					 new destination, meaning previous one will never be reached. 
+					 Today, I see 2 options : 
+					 1) add 'unblock' on such moveTo in timers, like here (manually or automatically)
+					 2) ignore timer trigger if previous actions weren't all achieved 
+			   	-->
+				<moveTo what="loc:firefly" pos="x*16+random*40,y*16+random*30" way="arc" zoom="128+bell*128" unblock="true"/>
+			</action>
+		</timer>
 	</tileAction>
 	
-    <persoAction id="sacherTortue"> <!-- argument: scene name for turtle movements -->
-        <script who="self" value="17"/> <!-- MOBILE_WAIT: sure to reach its target -->
-        <angle who="self" value="1"/>
-        <loop>
-        	<var name="loc:found" value="0"/>
-            <lookFor who="self" info="ZILDO" radius="3">
-			    <var name="loc:found" value="1"/>
+	<tileAction id="willOWist">
+		<!-- Le feu follet pourra émettre un petit scintillement lorsque l'écureuil le suivra comme il faut des yeux, ça aidera le joueur à savoir s'il
+			est sur la bonne voie -->
+		<spawn what="wow" type="WILL_O_WIST" pos="x*16+8,y*16-20" chained="3, 4" />
+		<spawn what="wowReflect" type="WILL_O_REFLECT" pos="x*16+8,y*16-20+16" zoom="128" alpha="64"/>
+		<loop>
+			<actions>
+				<moveTo what="wow" pos="50,40" delta="true" way="circular" zoom="128+bell*32"/>
+				<moveTo what="wowReflect" pos="50,40" delta="true" way="circular" zoom="128+bell*64"/>
+			</actions>
+   		</loop>
+	</tileAction>
+	
+	<tileAction id="blueRain">
+		<timer each="10+random*30">
+			<action>
+			 <spawn what="loc:drop" type="DROP_SMALL" pos="x*16+random*16,y*16+random*8" z="60"
+				 az="-0.01" vx="-0.1-random*0.1" alpha="200" alphaA="0.1" vy="0.1"/>
+			 <wait value="50"/>
+			 <sprite what="loc:drop" type="DROP_MEDIUM"/>
+			</action>
+		 </timer>
+	</tileAction>
+	
+	<persoAction id="sacherTortue"> <!-- argument: scene name for turtle movements -->
+		<script who="self" value="17"/> <!-- MOBILE_WAIT: sure to reach its target -->
+		<angle who="self" value="1"/>
+		<loop>
+			<var name="loc:found" value="0"/>
+			<lookFor who="self" info="ZILDO" radius="3">
+				<var name="loc:found" value="1"/>
 			</lookFor>
 			<if exp="loc:found=1">
-			    <!-- Turtles arise if hero's is around -->
+				<!-- Turtles arise if hero's is around -->
 				<exec script="turtleAwake"/>
 				<var name="loc:nobody" value="0"/>
 				<loop when="loc:nobody=0">
-				    <!-- Expect argument is gived to this persoAction -->
+					<!-- Expect argument is gived to this persoAction -->
 					<exec script="loc:arg0"/>
 					<lookFor who="self" info="ZILDO" radius="3" negative="true">
-					    <var name="loc:nobody" value="1"/>
+						<var name="loc:nobody" value="1"/>
 					</lookFor>
 				</loop>
 				<!-- If hero's gone, back to sleep -->
@@ -276,8 +263,8 @@
 		</loop>
    	</persoAction>
    	
-    <scene id="turtleAwake">
-	    <perso who="self" addSpr="1"/>
+	<scene id="turtleAwake">
+		<perso who="self" addSpr="1"/>
 		<wait value="6"/>
 		<perso who="self" addSpr="2"/>
 		<wait value="6"/>
@@ -295,11 +282,11 @@
 			<remove who="loc:head"/>
 		</actions>
 		<wait value="20"/>
-    </scene>
-    
-    <scene id="turtleSleep">
-        <angle who="self" value="1"/>
-        <actions>
+	</scene>
+	
+	<scene id="turtleSleep">
+		<angle who="self" value="1"/>
+		<actions>
 			<perso who="self" addSpr="3"/>
 			<pos who="self" pos="x-3,y"/>
 			<spawn who="loc:head" type="TURTLE" angle="1" pos="x+11,y-5" addSpr="10"/>
@@ -310,135 +297,135 @@
 		<perso who="loc:head" addSpr="8"/>
 		<wait value="2"/>
 		<remove who="loc:head"/>
-	    <perso who="self" addSpr="2"/>
+		<perso who="self" addSpr="2"/>
 		<wait value="6"/>
 		<perso who="self" addSpr="1"/>
 		<wait value="6"/>
 		<perso who="self" addSpr="0"/>
 		<wait value="20"/>
-    </scene>
-    
-    <scene id="tortueSousbois3">
-        <moveTo who="sacher" pos="0,39" delta="true"/>
-        <wait value="100"/>
-        <moveTo who="sacher" pos="1,0" delta="true"/>
-        <wait value="4"/>
+	</scene>
+	
+	<scene id="tortueSousbois3">
+		<moveTo who="sacher" pos="0,39" delta="true"/>
+		<wait value="100"/>
+		<moveTo who="sacher" pos="1,0" delta="true"/>
+		<wait value="4"/>
 		<moveTo who="sacher" pos="0,-40" delta="true"/>
 		<wait value="100"/>
-        <moveTo who="sacher" pos="-41,0" delta="true"/>
+		<moveTo who="sacher" pos="-41,0" delta="true"/>
 		<wait value="100"/>
 		<moveTo who="sacher" pos="0,1" delta="true"/>
 		<wait value="4"/>
 		<moveTo who="sacher" pos="40,0" delta="true"/>
 		<wait value="100"/>
-    </scene>
-    
-    <scene id="tortueSousbois7">
-        <moveTo who="sacher" pos="0,-30" delta="true"/>
-        <wait value="50"/>
-        <moveTo who="sacher" pos="200,0" delta="true"/>
+	</scene>
+	
+	<scene id="tortueSousbois7">
+		<moveTo who="sacher" pos="0,-30" delta="true"/>
 		<wait value="50"/>
-        <moveTo who="sacher" pos="-200,0" delta="true"/>
-        <wait value="50"/>
-        <moveTo who="sacher" pos="0,30" delta="true"/>
+		<moveTo who="sacher" pos="200,0" delta="true"/>
 		<wait value="50"/>
-    </scene>
-    
-    <scene id="tortueSousbois7_2">
-        <moveTo who="sacher2" pos="0,210" delta="true"/>
-        <wait value="50"/>"
-        <moveTo who="sacher2" pos="150,0" delta="true"/>
-        <wait value="50"/>
-        <moveTo who="sacher2" pos="-150,0" delta="true"/>
-        <wait value="50"/>"
-        <moveTo who="sacher2" pos="0,-210" delta="true"/>
-        <wait value="50"/>
-    </scene>
-    
-    <!-- IDEE: créer une action 'varInc' qui incrémente une variable, en utilisant le syntaxic sugar -->
-    <scene id="checkWillOWist">
-        <var name="loc:duration" value="0"/>
-        <var name="loc:looking" value="0"/>	<!-- define outside of the 'loop' context: important -->
-        <loop when="zildo.z!=0">
-        	<var name="loc:looking" value="0"/>
-            <lookFor who="zildo" radius="6" sight="true" type="WILL_O_WIST">
-                <!-- hero is watching will'o'wist -->
-                <var name="loc:looking" value="1"/>
-                <var name="loc:duration" value="loc:duration+1"/>
-	            <if exp="loc:duration=7 | loc:duration=14">
-	                <!-- Sprite context is propagated to the scene -->
-	                <exec script="starSparkle"/>
-	                <if exp="loc:duration=14">
-	                	<markQuest name="jump_stumpNatureReady" value="true"/>
-	                </if>
-	            </if> 
-            	<wait value="60"/>
-	        </lookFor>
-            <if exp="loc:looking=0">
-                <var name="loc:duration" value="0"/>
-                <wait value="5"/>
-            </if>
-        </loop>
-        <markQuest name="jump_stumpNature1" value="false"/>
-        <markQuest name="jump_stumpNature2" value="false"/>
-    </scene>
-    
-    <!-- Spawn some stars vanishing quickly -->
-    <scene id="starSparkle">
-        <sound name="Sort"/>
-        <spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
-        <wait value="3"/>
-        <spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
-        <wait value="3"/>
-        <spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
-    </scene>
-    
-    <scene id="openNatureRoxy">
-        <music name=""/>
-        <actions>
-		    <animation pos="834,188" type="CLOUD_FOG" />
-	        <animation type="BUSHES" pos="834, 188"/>
-	       	<perso who="zildo" az="-0.1" vz="3.4"/>
-	        <script who="zildo" text="TOMBE" />
-        </actions>
-        <var name="loc:i" value="0"/>
-        <actions>
-        	<remove what="leaves"/>
-            <spawn what="holeStump" type="HOLE_STUMP" pos="832, 192"/>
-        </actions>
-        <actions>
-       		<moveTo who="zildo" pos="831, 195"  unblock="true"/>
-        	<sound name="Gas"/>
-       		<loop when="loc:i!=16">
-   		    	<spawn what="loc:leaf" pos="830+random*10,185+random*8" type="LEAF_GREEN" reverse="dice10>4:128,0" 
-            	    vz="3.2+random*2" vx="random*2-1" az="-0.1" alphaA="-0.05"/>
-            	<var name="loc:i" value="loc:i+1"/>
-            </loop>
-        </actions>
-        <sound name="Gas"/>
-        <perso who="zildo" az="-0.1" vz="1.4"/>
-        <angle who="zildo" value="0"/>
-        <wait value="4"/>
-        <angle who="zildo" value="1"/>
-        <wait value="3"/>
-        <sound name="Gas"/>
-        <angle who="zildo" value="2"/>
-        <wait value="4"/>
-        <angle who="zildo" value="3"/>
-        <wait value="4"/>
-        <angle who="zildo" value="0"/>
-        <wait value="3"/>
-        <angle who="zildo" value="1"/>   
-                 
-        <sound name="Gas"/>
-        <perso who="zildo" vz="2.1"/>
-        <wait value="9"/>
-        <perso who="zildo" vz="2.1"/>
-        <wait value="9"/>
-        <perso who="zildo" vz="2.1"/>
-        <angle who="zildo" value="2"/>
-        
-        <wait value="57"/>
+		<moveTo who="sacher" pos="-200,0" delta="true"/>
+		<wait value="50"/>
+		<moveTo who="sacher" pos="0,30" delta="true"/>
+		<wait value="50"/>
+	</scene>
+	
+	<scene id="tortueSousbois7_2">
+		<moveTo who="sacher2" pos="0,210" delta="true"/>
+		<wait value="50"/>"
+		<moveTo who="sacher2" pos="150,0" delta="true"/>
+		<wait value="50"/>
+		<moveTo who="sacher2" pos="-150,0" delta="true"/>
+		<wait value="50"/>"
+		<moveTo who="sacher2" pos="0,-210" delta="true"/>
+		<wait value="50"/>
+	</scene>
+	
+	<!-- IDEE: créer une action 'varInc' qui incrémente une variable, en utilisant le syntaxic sugar -->
+	<scene id="checkWillOWist">
+		<var name="loc:duration" value="0"/>
+		<var name="loc:looking" value="0"/>	<!-- define outside of the 'loop' context: important -->
+		<loop when="zildo.z!=0">
+			<var name="loc:looking" value="0"/>
+			<lookFor who="zildo" radius="6" sight="true" type="WILL_O_WIST">
+				<!-- hero is watching will'o'wist -->
+				<var name="loc:looking" value="1"/>
+				<var name="loc:duration" value="loc:duration+1"/>
+				<if exp="loc:duration=7 | loc:duration=14">
+					<!-- Sprite context is propagated to the scene -->
+					<exec script="starSparkle"/>
+					<if exp="loc:duration=14">
+						<markQuest name="jump_stumpNatureReady" value="true"/>
+					</if>
+				</if> 
+				<wait value="60"/>
+			</lookFor>
+			<if exp="loc:looking=0">
+				<var name="loc:duration" value="0"/>
+				<wait value="5"/>
+			</if>
+		</loop>
+		<markQuest name="jump_stumpNature1" value="false"/>
+		<markQuest name="jump_stumpNature2" value="false"/>
+	</scene>
+	
+	<!-- Spawn some stars vanishing quickly -->
+	<scene id="starSparkle">
+		<sound name="Sort"/>
+		<spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
+		<wait value="3"/>
+		<spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
+		<wait value="3"/>
+		<spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
+	</scene>
+	
+	<scene id="openNatureRoxy">
+		<music name=""/>
+		<actions>
+			<animation pos="834,188" type="CLOUD_FOG" />
+			<animation type="BUSHES" pos="834, 188"/>
+		   	<perso who="zildo" az="-0.1" vz="3.4"/>
+			<script who="zildo" text="TOMBE" />
+		</actions>
+		<var name="loc:i" value="0"/>
+		<actions>
+			<remove what="leaves"/>
+			<spawn what="holeStump" type="HOLE_STUMP" pos="832, 192"/>
+		</actions>
+		<actions>
+	   		<moveTo who="zildo" pos="831, 195"  unblock="true"/>
+			<sound name="Gas"/>
+	   		<loop when="loc:i!=16">
+   				<spawn what="loc:leaf" pos="830+random*10,185+random*8" type="LEAF_GREEN" reverse="dice10>4:128,0" 
+					vz="3.2+random*2" vx="random*2-1" az="-0.1" alphaA="-0.05"/>
+				<var name="loc:i" value="loc:i+1"/>
+			</loop>
+		</actions>
+		<sound name="Gas"/>
+		<perso who="zildo" az="-0.1" vz="1.4"/>
+		<angle who="zildo" value="0"/>
+		<wait value="4"/>
+		<angle who="zildo" value="1"/>
+		<wait value="3"/>
+		<sound name="Gas"/>
+		<angle who="zildo" value="2"/>
+		<wait value="4"/>
+		<angle who="zildo" value="3"/>
+		<wait value="4"/>
+		<angle who="zildo" value="0"/>
+		<wait value="3"/>
+		<angle who="zildo" value="1"/>   
+				 
+		<sound name="Gas"/>
+		<perso who="zildo" vz="2.1"/>
+		<wait value="9"/>
+		<perso who="zildo" vz="2.1"/>
+		<wait value="9"/>
+		<perso who="zildo" vz="2.1"/>
+		<angle who="zildo" value="2"/>
+		
+		<wait value="57"/>
 		<visible who="zildo" value="false"/>
 		<perso who="zildo" vz="0.1" az="0.1"/>
 		<zoom who="zildo" value="0"/>
