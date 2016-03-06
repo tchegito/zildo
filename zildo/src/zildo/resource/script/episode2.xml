@@ -366,6 +366,16 @@
             <exec script="meetHiddenHector"/>
         </action>
     </quest>
+        
+    <quest name="forbid_dynamiteCell">
+    	<trigger>
+    		<location name="prison"/>
+    		<use item="dynamite"/>
+    	</trigger>
+    	<action>
+    		<speak who="zildo" text="prison.gard.script"/>
+    	</action>
+    </quest>
     
     <quest name="ask_visitprison" locked="false">
         <trigger>
@@ -738,7 +748,13 @@
 
     <mapScript>
 	    <!--  , means OR  -->
-	    <!--  - means AND -->        
+	    <!--  - means AND -->
+	    <condition>
+	    	<var name="allowedDynamite" value="yes"/>
+	    </condition>
+	    <condition name="prison">
+	    	<var name="allowedDynamite" value="no"/>
+	    </condition>
 	    <condition name="!chateaucoucou1-!chateaucoucou2" exp="trig_echange-!zildoDream">
 	        <filter type="1"/>
 	    </condition>
