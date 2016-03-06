@@ -144,8 +144,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 | tile        | text     | -       | -        | -           | Change a map tile. Used with attributes 'back', 'back2' and fore. Set to -1 to remove one of these tiles. 'action' attribute is available to set a TileAction. |
 | timer       | text     | -       | -        | -           | Do a repetition of actions on a desired rate. |
 | var         | text     | -       | -        | -           | Set a variable indicated by 'name' to the given 'value'. |
-| visible     | text     | -       | -        | -           | Set a character/element visibility depending on _value_ 
-attribute (true or false) |
+| visible     | text     | -       | -        | -           | Set a character/element visibility depending on _value_ attribute (true or false) |
 | wait        | int      | -       | -        | V           | Wait for a given number of frame |
 | zikReplace  | text     | -       | V        | -           | Replace music indicated by 'what' by the one named by 'name'  |
 | zoom        | text     | -       | -        | -           | Set a character's zoom attribute (0..255) where 255 is full size |
