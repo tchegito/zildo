@@ -41,7 +41,6 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
-import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -226,11 +225,6 @@ public class Game implements EasySerializable {
 	            zildo.setMoney(money);
 	            items = zildo.getInventory();
 	            items.clear();
-	            // Appearance: young guy, or princess as a squirrel
-	            if (EngineZildo.scriptManagement.isQuestDone(ControllablePerso.QUEST_DETERMINING_APPEARANCE)) {
-	            	zildo.setAppearance(ControllablePerso.PRINCESS_BUNNY);
-	            }
-
             }
             String heroName = URLDecoder.decode(p_buffer.readString(), "UTF-8");
             heroName = heroName.replaceAll(System.getProperty("line.separator"), "");

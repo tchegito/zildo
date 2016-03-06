@@ -69,6 +69,7 @@ import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
+import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -536,6 +537,9 @@ public class ActionExecutor extends RuntimeExecutor {
                 		zildo.beingWounded(null, damage);
                 		zildo.stopBeingWounded();
                 		break;
+                	case 6:
+    	            	zildo.setAppearance(ControllablePerso.PRINCESS_BUNNY);
+    	            	break;
                 	}
                 	achieved = true;
                 	break;
@@ -548,9 +552,9 @@ public class ActionExecutor extends RuntimeExecutor {
                 		if (p_action.reverse != null) {
                 			entity.reverse = Reverse.fromInt(p_action.reverse.evaluateInt());
                 		}
-                	}
-                	if (entity.getEntityType().isElement()) {
-                		applyCommonAndPhysicAttributes((Element) entity, p_action);
+	                	if (entity.getEntityType().isElement()) {
+	                		applyCommonAndPhysicAttributes((Element) entity, p_action);
+	                	}
                 	}
 
                 	achieved=true;

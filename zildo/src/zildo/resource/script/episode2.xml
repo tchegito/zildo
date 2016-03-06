@@ -1725,6 +1725,13 @@
 	   <fadeOut value="0"/>
 	   <speak what="camera" text="ep2.ending.4"/>
 	   <music/>
+	   <!-- 
+	   <exec script="ep2_realClosure"/>
+	   -->
+	   <exec script="intro_episode3"/>
+	</scene>
+	
+	<scene id="ep2_realClosure">
 	   <speak what="camera" text="ep2.ending.cut.0"/>
 	   <music name="Voleurs"/>
 	   <speak what="camera" text="ep2.ending.cut.1"/>

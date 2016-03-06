@@ -22,6 +22,12 @@
         </action>
     </quest>
     
+    <quest name="hero_princess">
+        <history>
+            <herospecial value="6"/>
+        </history>
+    </quest>
+    
     <quest name="removeNailForMoonStone">
         <trigger>
             <location name="sousbois3" tilePos="12,32" immediate="false"/>
@@ -129,6 +135,24 @@
 	   	</condition>
 	</mapScript>
 	    
+    <scene id="intro_episode3">
+    	<speak what="camera" text="ep3.beginning.0"/>    
+    	<speak what="camera" text="ep3.beginning.1"/>
+    	<music name="Squirrel"/>    
+    	<speak what="camera" text="ep3.beginning.2"/>
+    	<markQuest name="hero_princess" value="true"/>
+    	<map name="sousbois1"/>
+    	<pos what="camera" pos="240,81" />
+   		<fadeIn value="0"/>
+   		<wait value="50"/>
+   		<moveTo what="camera" pos="330,0" />
+    	<focus who="zildo"/>
+   		<pos who="zildo" pos="655,89"/>
+    	<moveTo who="zildo" pos="571,145" unstoppable="true"/>
+    	<speak who="synthe" text="info.episode3"/>
+    	<herospecial value="3"/>	<!-- Save game -->
+    </scene>
+    
     <scene id="meetIsidore">
         <!--  Remember that Roxy's character when she's a squirrel, is 'zildo' ( ... ) -->
         <angle who="zildo" value="1"/>
@@ -361,6 +385,7 @@
     
     <!-- Spawn some stars vanishing quickly -->
     <scene id="starSparkle">
+        <sound name="Sort"/>
         <spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
         <wait value="3"/>
         <spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
@@ -421,7 +446,7 @@
 		<sound name="ZildoFall"/>
 		<wait value="50"/>
 		<sound name="ZildoSecret"/>
-		<wait value="70"/>
+		<wait value="130"/>
 		<fadeOut type="5"/>
 		<wait value="200"/>
 		<fadeIn type="5"/>
