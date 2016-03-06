@@ -138,6 +138,9 @@ public class ActionElement extends LanguageElement {
 			impact = readAttribute("impact");
 		case animation:
 			location = IPoint.fromString(strPos);
+			if (!"".equals(strAngle)) {
+				val = Integer.valueOf(strAngle);
+			}
 		case perso:
 			text = readAttribute("type");
 			String strInfo = readAttribute("info");
