@@ -123,7 +123,9 @@ public class BackgroundPanel extends JPanel {
 				} else {
 					newMode = previous;
 				}
-				manager.getZildoCanvas().setMode(newMode);
+				if (newMode != null) {
+					manager.getZildoCanvas().setMode(newMode);
+				}
 			}
 		};
 		radioDraw = new JRadioButton("Draw");
