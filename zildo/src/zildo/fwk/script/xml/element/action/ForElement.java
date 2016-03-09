@@ -35,6 +35,9 @@ public class ForElement extends LoopElement {
 		if (actions.isEmpty()) {
 			throw new RuntimeException("For is empty !");
 		}
+		if (varName == null || nbIterations == 0) {
+			throw new RuntimeException("A variable name and a number of iterations must be provided in For element !");
+		}
 		
 		whileCondition = new FloatExpression(varName+"!="+nbIterations);
 

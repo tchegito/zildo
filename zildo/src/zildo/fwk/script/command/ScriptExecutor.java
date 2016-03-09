@@ -172,7 +172,7 @@ public class ScriptExecutor {
 			subScriptsEnded.add(process);
 		}
 		process.terminate();
-		if (!isScripting()) {
+		if (!isScripting() && rootScript) {
 			// Get back to life the involved characters
 			for (Perso p : involved) {
 				p.setGhost(p.getFollowing() != null);	// Cancel 'ghost' except if character is following someone
@@ -222,9 +222,9 @@ public class ScriptExecutor {
 		}
 	}
 	
-	private void renderVariable(ScriptProcess process, RuntimeAction p_elem) {
+	private void renderVariable(ScriptProcess process, RuntimeAction p_elem, boolean moveCursor) {
 		boolean achieved = process.varExec.render(p_elem);
-		if (achieved) {
+		if (moveCursor && achieved) {
 			process.cursor++;
 		}
 	}
@@ -235,7 +235,7 @@ public class ScriptExecutor {
 		if (!currentNode.var) {
 			renderAction(process, currentNode, moveCursor);
 		} else {
-			renderVariable(process, currentNode);
+			renderVariable(process, currentNode, moveCursor);
 		}		
 	}
 	

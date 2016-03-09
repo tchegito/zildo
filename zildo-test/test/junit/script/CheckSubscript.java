@@ -61,11 +61,22 @@ public class CheckSubscript extends EngineScriptUT {
 
 	@Test
 	public void checkFor() {
+		checkForScript("builtInFor");
+	}
+
+	@Test
+	public void checkNestedFor() {
+		checkForScript("forInActions");
+		// Make sure following actions after 'for' have been executed
+		Assert.assertEquals("1.0", EngineZildo.scriptManagement.getVarValue("goodToGo"));
+	}
+
+	private void checkForScript(String scriptName) {
 		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/loops"));
 		
 		waitEndOfScripting();
 		int nbSprites = countSprites();
-		scriptMgmt.execute("builtInFor", true, new SceneContext(), null);
+		scriptMgmt.execute(scriptName, true, new SceneContext(), null);
 		waitEndOfScripting();
 
 		// Check that "spawn" has been called 16 times

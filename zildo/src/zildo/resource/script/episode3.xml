@@ -373,11 +373,10 @@
 	<!-- Spawn some stars vanishing quickly -->
 	<scene id="starSparkle">
 		<sound name="Sort"/>
-		<spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
-		<wait value="3"/>
-		<spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
-		<wait value="3"/>
-		<spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
+		<for var="loc:i" value="3">
+			<spawn impact="STAR_YELLOW" pos="x,y" vy="-0.8" vx="-0.5+random" alphaA="-1"/>
+			<wait value="3"/>
+		</for>
 	</scene>
 	
 	<scene id="openNatureRoxy">
@@ -388,19 +387,17 @@
 		   	<perso who="zildo" az="-0.1" vz="3.4"/>
 			<script who="zildo" text="TOMBE" />
 		</actions>
-		<var name="loc:i" value="0"/>
 		<actions>
 			<remove what="leaves"/>
 			<spawn what="holeStump" type="HOLE_STUMP" pos="832, 192"/>
 		</actions>
 		<actions>
-	   		<moveTo who="zildo" pos="831, 195"  unblock="true"/>
+	   		<moveTo who="zildo" pos="831, 195"/>
 			<sound name="Gas"/>
-	   		<loop when="loc:i!=16">
+			<for var="loc:i" value="16">
    				<spawn what="loc:leaf" pos="830+random*10,185+random*8" type="LEAF_GREEN" reverse="dice10>4:128,0" 
 					vz="3.2+random*2" vx="random*2-1" az="-0.1" alphaA="-0.05"/>
-				<var name="loc:i" value="loc:i+1"/>
-			</loop>
+			</for>
 		</actions>
 		<sound name="Gas"/>
 		<perso who="zildo" az="-0.1" vz="1.4"/>

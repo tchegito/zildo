@@ -133,13 +133,12 @@ public enum ElementDescription implements SpriteDescription {
 	// 243
 	PURPLE_FIREFLY, BLUE_FIREFLY,
 	// 245
-	FIRE_BALL;	// Fireball for dragon
-	/**
+	FIRE_BALL,	// Fireball for dragon
 	// 246
 	WILL_O_WIST, WILL_O_REFLECT,
 	// 248
 	BUNCH_LEAVES, HOLE_STUMP;
-	**/
+
 	Boolean damage;
 	
 	public int getBank() {

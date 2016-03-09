@@ -12,4 +12,14 @@
         	<spawn what="loc:coucou" type="BUSHES" pos="100,100+16*loc:i"/>
 		</for>
 	</scene>
+	
+	<scene id='forInActions'>
+	    <actions>
+	        <sound name="Gas"/>
+			<for var="loc:i" value="16">
+	        	<spawn what="loc:coucou" type="BUSHES" pos="100,100+16*loc:i"/>
+			</for>
+	    </actions>
+	    <var name="goodToGo" value="1"/>
+	</scene>
 </adventure>
