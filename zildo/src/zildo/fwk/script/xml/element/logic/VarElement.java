@@ -112,4 +112,11 @@ public class VarElement extends LanguageElement {
 	public String toString() {
 		return kind.toString()+ " "+(name == null ? "" : (name+"="))+value;
 	}
+	
+	public static VarElement createVarAction(String var, String expr) {
+		VarElement elem = new VarElement(VarKind.var);
+		elem.name = var;
+		elem.value = new FloatExpression(expr);
+		return elem;
+	}
 }

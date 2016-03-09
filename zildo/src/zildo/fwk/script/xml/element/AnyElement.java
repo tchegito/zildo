@@ -20,10 +20,13 @@
 
 package zildo.fwk.script.xml.element;
 
+import java.util.List;
+
 import org.w3c.dom.Element;
 
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.element.action.ActionsElement;
+import zildo.fwk.script.xml.element.action.ForElement;
 import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.LoopElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
@@ -44,18 +47,22 @@ public abstract class AnyElement {
 		tileaction(ContextualActionElement.class),
 		timer(TimerElement.class),
 		loop(LoopElement.class),
+		_for(ForElement.class),
 		lookfor(LookforElement.class),
 		var(VarElement.class);
 		
 		Class<? extends AnyElement> clazz;
+		final String realName;
 		
 		private XmlElementKind(Class<? extends AnyElement> p_clazz) {
 			clazz = p_clazz;
+			String s = name();
+			realName = s.startsWith("_") ? s.substring(1) : s;
 		}
 		
 		public static XmlElementKind fromString(String p_name) {
 			for (XmlElementKind x : values()) {
-				if (x.name().equalsIgnoreCase(p_name)) {
+				if (x.realName.equalsIgnoreCase(p_name)) {
 					return x;
 				}
 			}
@@ -192,4 +199,12 @@ public abstract class AnyElement {
 	        throw new RuntimeException("Unable to find class " + kind.toString());
 	    }
     }
+    
+    /** Here we provide a way of inserting element before another one, to introduce syntaxic sugar.
+     * For example a 'for' statement need a variable in its context.
+     * @return
+     */
+	public List<AnyElement> addSyntaxicSugarBefore() {
+		return null;
+	}
 }

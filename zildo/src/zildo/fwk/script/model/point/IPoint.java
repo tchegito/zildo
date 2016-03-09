@@ -49,6 +49,7 @@ public abstract class IPoint {
 	 * @return IPoint
 	 */
 	public static IPoint fromString(String p_text) {
+		//TODO: program by exception is ugly. Maybe search for an alphanumeric character or - / * +. Maybe any FloatOperator defined
     	try {
     		return new PointFixed(p_text);
     	} catch (NumberFormatException e) {

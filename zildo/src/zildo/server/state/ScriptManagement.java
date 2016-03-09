@@ -158,7 +158,7 @@ public class ScriptManagement {
      * @param p_locked TRUE=default:blocking scene / FALSE=non blocking scene
      */
     public void execute(String p_name, boolean p_locked) {
-    	execute(p_name, p_locked, null, null);
+    	execute(p_name, p_locked, new SceneContext(), null);
     }
     
     public void execute(String p_name, boolean p_locked, IEvaluationContext p_context, ScriptProcess p_caller) {

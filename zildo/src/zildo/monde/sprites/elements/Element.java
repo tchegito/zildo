@@ -209,7 +209,7 @@ public class Element extends SpriteEntity {
 				case BROWNSPHERE1:
 				case SEWER_SMOKE1:
 				case SEWER_SMOKE2:
-				case WILL_O_WIST:
+				//case WILL_O_WIST:
 					return false;
 				default:
 			}

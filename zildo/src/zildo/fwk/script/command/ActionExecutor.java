@@ -626,6 +626,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 	}
                 	break;
                 case loop:	// 'end' condition is checked at the end of a loop execution
+                case _for:
                		executeSubProcess( ((LoopElement)p_action).actions);
                 	break;
                 case lookFor: // Look for a character/element around another inside a given radius
@@ -741,6 +742,7 @@ public class ActionExecutor extends RuntimeExecutor {
             	}
             	break;
             case loop:
+            case _for:
             	LoopElement loop = (LoopElement) p_action;
         		if (loop.whileCondition.evaluate(context) == 1) {
         			// Restart

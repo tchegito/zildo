@@ -35,12 +35,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import zildo.fwk.script.xml.element.AnyElement;
+import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionKind;
 import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.fwk.script.xml.element.logic.VarElement.VarKind;
-import zildo.fwk.script.xml.element.AnyElement;
-import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.quest.QuestEvent;
 
 public class ScriptReader {
@@ -86,7 +86,10 @@ public class ScriptReader {
 		Document document = sxb.parse(p_stream);
 		Element racine = document.getDocumentElement();
 
-		AnyElement root = createNode(racine);
+		List<AnyElement> roots = createNode(racine);
+		// We shouldn't have more than one here
+		assert roots.size() == 1;
+		AnyElement root = roots.get(0);
 		return root;
 	}
 	
@@ -95,13 +98,13 @@ public class ScriptReader {
      * @param p_element
      * @return AnyElement
      */
-    private static AnyElement createNode(Element p_element) {
+    private static List<AnyElement> createNode(Element p_element) {
         String name = p_element.getNodeName();
         AnyElement s = null;
         // Check for ActionElement
         ActionKind kind=ActionKind.fromString(name);
         // Exclude specific actions
-        if (kind != null && kind != ActionKind.actions && kind != ActionKind.timer && kind != ActionKind.loop && kind != ActionKind.lookFor) { 
+        if (kind != null && kind != ActionKind.actions && kind != ActionKind.timer && kind != ActionKind.loop && kind != ActionKind.lookFor && kind != ActionKind._for) { 
         	s=new ActionElement(kind);
         } else {
             QuestEvent event=QuestEvent.fromString(name);
@@ -120,7 +123,13 @@ public class ScriptReader {
             }
         }
         s.parseAndClean(p_element);
-        return s;
+        List<AnyElement> result = new ArrayList<AnyElement>(2);
+        result.add(s);
+        List<AnyElement> before = s.addSyntaxicSugarBefore();
+        if (before !=null) {
+        	result.addAll(0, before);
+        }
+        return result;
     }
 
     /**
@@ -146,7 +155,7 @@ public class ScriptReader {
             if (node != null && node.getNodeType() == Node.ELEMENT_NODE) {
                 String nodeNameUpper = node.getNodeName().toUpperCase();
                 if (acceptables.size() == 0 || acceptables.contains(nodeNameUpper)) {
-                    elements.add(createNode((Element) node));
+                    elements.addAll(createNode((Element) node));
                 }
             }
         }

@@ -24,6 +24,8 @@ import org.junit.Test;
 
 import zildo.fwk.script.context.SceneContext;
 import zildo.fwk.script.xml.ScriptReader;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.server.EngineZildo;
 
 /**
@@ -68,6 +70,15 @@ public class CheckSubscript extends EngineScriptUT {
 
 		// Check that "spawn" has been called 16 times
 		Assert.assertEquals(16,  countSprites() - nbSprites);
+		
+		// Check that spawned entities are at the right place, depending on local variable
+		int firstY = 100;
+		for (SpriteEntity entity : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+			if (entity.getDesc() == ElementDescription.BUSHES) {
+				Assert.assertEquals(firstY, (int) entity.y);
+				firstY += 16;
+			}
+		}
 	}
 
 	private int countSprites() {
