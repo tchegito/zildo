@@ -540,6 +540,9 @@ public class ActionExecutor extends RuntimeExecutor {
                 	case 6:
     	            	zildo.setAppearance(ControllablePerso.PRINCESS_BUNNY);
     	            	break;
+                	case 7:
+    	            	zildo.setAppearance(ControllablePerso.ZILDO);
+    	            	break;
                 	}
                 	achieved = true;
                 	break;

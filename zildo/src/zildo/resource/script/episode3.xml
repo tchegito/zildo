@@ -432,7 +432,52 @@
 		<sound name="ZildoSecret"/>
 		<wait value="130"/>
 		<fadeOut type="5"/>
-		<wait value="200"/>
-		<fadeIn type="5"/>
+		<wait value="20"/>
+		
+		<!-- Fall in Palace of Nature -->
+		<map name="nature1"/>
+		<for var="loc:l" value="16">
+			<spawn what="loc:leaf1" type="dice10>4:LEAF_GREEN,LEAF" pos="164+20*random,113+random*8" z="80-random*10"
+			    reverse="dice10>4:128,0"
+			    alphaA="-0.005" 
+			    vz="-0.1-random*0.5" vx="-0.2+random*0.4" fx="-0.001" az="0"/>
+		</for>
+		<perso who="zildo" az="0" vz="0"/>
+		<zoom who="zildo" value="255"/>
+		<pos who="zildo" pos="174,113"/>
+		<exec script="endFallPit"/>
+		
+		<wait value="20"/>
+		<angle who="zildo" value="1"/>
+		<wait value="10"/>
+		<angle who="zildo" value="3"/>
+		<speak who="zildo" text="endRoxyQuest.0"/>
+		<wait value="15"/>
+		<moveTo who="zildo" pos="-24,0" delta="true"/>
+		<wait value="20"/>
+		<speak who="zildo" text="endRoxyQuest.1"/>
+		<moveTo who="zildo" pos="157,92"/>
+		<angle who="zildo" value="0"/>
+		<wait value="30"/>
+		<moveTo who="zildo" pos="0,32" delta="true"/>
+		<wait value="10"/>
+		<angle who="zildo" value="3"/>
+		<wait value="20"/>
+		<angle who="zildo" value="1"/>
+		<wait value="30"/>
+		<moveTo who="zildo" pos="316,119" unblock="true"/>
+		<wait value="60"/>
+		<fadeOut value="0"/>
+		<speak what="camera" text="endRoxyQuest.2"/>
+		<speak what="camera" text="endRoxyQuest.3"/>
+		<wait value="50"/>
+		<speak what="camera" text="endRoxyQuest.4"/>
+		
+		<markQuest name="hero_princess" value="false"/>
+		<herospecial value="7"/>
+		
+		<map name="d4m9"/>
+		<pos who="zildo" pos="181,151"/>
+		<fadeIn value="0"/>
 	</scene>
 </adventure>
