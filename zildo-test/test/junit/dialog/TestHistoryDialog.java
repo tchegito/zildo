@@ -5,15 +5,19 @@ import java.util.List;
 import junit.perso.EngineUT;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import zildo.fwk.ZUtils;
+import zildo.fwk.ui.UIText;
 import zildo.monde.Game;
 import zildo.monde.dialog.HistoryRecord;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.quest.actions.ScriptAction;
+import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -30,16 +34,17 @@ public class TestHistoryDialog extends EngineUT {
 	// TODO: Tester les phrases qui redirigent vers les autres
 	// TODO: Check if we need to remove repeated sentences
 
-	private void prepare() {
+	PersoPlayer hero;
+	
+	@Before
+	public void prepare() {
 		// Load any map but 'preintro', because we filter dialog on this one
 		mapUtils.loadMap("coucou");
-		spawnZildo(160, 100);
+		hero = spawnZildo(160, 100);
 	}
 
 	@Test
 	public void archive() {
-		prepare();
-
 		// Make people talking
 		String sentence = "hello";
 		String who = "Roger";
@@ -71,8 +76,6 @@ public class TestHistoryDialog extends EngineUT {
 
 	@Test
 	public void overflow() {
-		prepare();
-		
 		// Simulate a lot of talk (exceeds the limit)
 		String sentence = "key.";
 		for (int i=0;i<Constantes.NB_MAX_DIALOGS_HISTORY*2;i++) {
@@ -84,13 +87,27 @@ public class TestHistoryDialog extends EngineUT {
 	
 	@Test
 	public void repeat() {
-		prepare();
 		String sentence = "key.0";
 		for (int i=0;i<2;i++) {
 			EngineZildo.dialogManagement.launchDialog(clientState, null, new ScriptAction(sentence, "roger"));
 		}
 		// Check that same sentence isn't recorded twice in succession
 		assertDialog(1, null, null);
+	}
+	
+	/** Check that hero's name change according to his appearance **/
+	@Test
+	public void rightPersoTalking() {
+		String sentence = "key.0";
+		UIText.setCharacterName("hero");	// Change default name
+		EngineZildo.dialogManagement.launchDialog(clientState, null, new ScriptAction(sentence, "zildo"));
+		assertDialog(1, "hero", sentence);
+    	hero.setAppearance(ControllablePerso.PRINCESS_BUNNY);
+		EngineZildo.dialogManagement.launchDialog(clientState, null, new ScriptAction(sentence, "zildo"));
+		assertDialog(2, "roxy", sentence);
+    	hero.setAppearance(ControllablePerso.ZILDO);
+		EngineZildo.dialogManagement.launchDialog(clientState, null, new ScriptAction(sentence, "zildo"));
+		assertDialog(3, "hero", sentence);
 	}
 	
 	/**

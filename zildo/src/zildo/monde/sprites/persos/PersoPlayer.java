@@ -1488,11 +1488,13 @@ public class PersoPlayer extends Perso {
 		switch (who) {
 		case ZILDO:
 			shadow.setDesc(ElementDescription.SHADOW);
+			UIText.setCharacterName(EngineZildo.game.heroName);
 			feet.zoom=255;
 			defaultSize = new Point(8, 4);
 			break;
 		case PRINCESS_BUNNY:
 			shadow.setDesc(ElementDescription.SHADOW_SMALL);
+			UIText.setCharacterName("Roxy");
 			feet.zoom=100;
 			defaultSize = new Point(2, 2);
 			break;
