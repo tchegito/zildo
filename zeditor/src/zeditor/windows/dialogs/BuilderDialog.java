@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 import zeditor.tools.builder.Modifier;
 import zeditor.tools.ui.SizedGridPanel;
 import zeditor.windows.managers.MasterFrameManager;
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.sprites.SpriteStore;
 
@@ -63,6 +64,10 @@ public class BuilderDialog extends JDialog {
 				String bankName = (String) comboTileBank.getSelectedItem();
 
 				new Modifier().saveNamedTileBank(bankName);
+				
+				// Reload all banks
+				reloadTiles();
+
 				info("Tile bank "+bankName+" has been builded !");
 			}
 		});
@@ -74,6 +79,10 @@ public class BuilderDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					new Modifier().saveAllMotifBank();
+
+					// Reload all banks
+					reloadTiles();
+
 					info("All tile banks builded successfully !");
 				} catch (RuntimeException ex) {
 					error("Error building all tile banks !", ex);
@@ -130,6 +139,15 @@ public class BuilderDialog extends JDialog {
 		}), BorderLayout.SOUTH);
 		
 		pack();
+	}
+	
+	private void reloadTiles() {
+		// Reload DEC files
+		ClientEngineZildo.tileEngine.loadAllTileBanks();
+		// Ask image in background panel to rebuild, even current one
+		manager.reloadTileBanks();
+		// Ask graphic card to reload its current textures
+		manager.getZildoCanvas().askReloadTexture();
 	}
 	
 	private void info(String message) {

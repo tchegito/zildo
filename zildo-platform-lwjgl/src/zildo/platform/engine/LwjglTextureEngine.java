@@ -88,6 +88,10 @@ public class LwjglTextureEngine extends TextureEngine {
         return buf.get(0);
     }
     
+    public void deleteTexture(int id) {
+        GL11.glDeleteTextures(id);
+    }
+    
     @Override
 	public void getTextureImage(int p_nthTex) {
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, getNthTexture(p_nthTex));
@@ -130,6 +134,16 @@ public class LwjglTextureEngine extends TextureEngine {
     	
     }
     
+    @Override
+    public void init() {
+    	if (n_Texture != 0) {
+    		// Case where texture already exists (only in ZEditor for reload)
+    		for (int i=0;i<textureTab.length;i++) {
+    			deleteTexture(textureTab[i]);
+    		}
+    	}
+    	super.init();
+    }
     @Override
 	protected void saveImage(String filename, boolean alpha) {
     	GLUtils.saveBufferAsPNG("c:\\kikoo\\textures\\"+filename, scratch, 256, 256, alpha);

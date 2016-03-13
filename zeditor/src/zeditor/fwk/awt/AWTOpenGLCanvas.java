@@ -81,6 +81,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	protected boolean changeMap = false;
 	protected boolean changeSprites = false;
 	protected boolean buildTexture = false;
+	protected boolean reloadTexture = false;
 	
 	private int sizeX;
 	private int sizeY;
@@ -152,6 +153,10 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			ClientEngineZildo.tileEngine.saveTextures();
 			ClientEngineZildo.spriteEngine.saveTextures();
 			buildTexture=false;
+		}
+		if (reloadTexture) {
+			ClientEngineZildo.tileEngine.loadTextures();
+			reloadTexture = false;
 		}
 		if (changeMap) {
 			Area map = EngineZildo.mapManagement.getCurrentMap();
@@ -462,5 +467,9 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	
 	public void askBuildTexture() {
 		buildTexture = true;
+	}
+	
+	public void askReloadTexture() {
+		reloadTexture = true;
 	}
 }

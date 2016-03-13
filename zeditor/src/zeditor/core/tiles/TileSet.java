@@ -90,6 +90,17 @@ public class TileSet extends ImageSet {
 
 	ImageObserver imgObserver = new CallbackImageObserver();
 
+    
+    public void clearTiles() {
+    	// Clear all tiles, and reload current one
+    	tiles.clear();
+    	try {
+    		changeTile(tileName);
+    	} catch (ZeditorException e) {
+    		
+    	}
+    }
+    
 	/**
 	 * Méthode de changement du tile
 	 * 

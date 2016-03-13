@@ -550,4 +550,8 @@ public class MasterFrameManager {
 		currentFloor = floor;
 		ClientEngineZildo.tileEngine.setAreaAccessor(new SpecificFloorAreaAccesor(currentFloor));
 	}
+	
+	public void reloadTileBanks() {
+		masterFrame.getBackgroundPanel().getTileSetPanel().clearTiles();
+	}
 }
