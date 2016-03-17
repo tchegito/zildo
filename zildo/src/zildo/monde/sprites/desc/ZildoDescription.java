@@ -91,7 +91,9 @@ public enum ZildoDescription implements SpriteDescription {
 	
 	ZILDO_FLUT,
 	
-	SLEEPING, WAKINGUP, WAKEUP, TURNRIGHT;
+	SLEEPING, WAKINGUP, WAKEUP, TURNRIGHT,
+	
+	MSWORD0, MSWORD1, MSWORD2, MSWORD3;
 	
 	
 	public int getBank() {

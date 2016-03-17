@@ -232,6 +232,7 @@ public class PersoPlayer extends Perso {
 		String sentence;
 		switch (weapon.kind) {
 		case SWORD:
+		case MIDSWORD:
 			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAttaque, this);
 			setMouvement(MouvementZildo.ATTAQUE_EPEE);
 			setAttente(6 * 2);
@@ -368,13 +369,13 @@ public class PersoPlayer extends Perso {
 				cx = cx - 4;
 				break;
 			}
+			int swordRadius = 12;
 			if (angle.isHorizontal()) {
-				cx = cx + 16 * Math.cos(beta);
-				cy = cy + 16 * Math.sin(beta);
-			} else {
-				cx = cx + 12 * Math.cos(beta);
-				cy = cy + 12 * Math.sin(beta);
+				swordRadius = 16;
 			}
+			if (weapon != null && weapon.kind == ItemKind.MIDSWORD) swordRadius += 3;
+			cx = cx + swordRadius * Math.cos(beta);
+			cy = cy + swordRadius * Math.sin(beta);
 
 			// Add this collision record to collision engine
 			// Damage type: blunt at start, and then : cutting front
@@ -765,9 +766,15 @@ public class PersoPlayer extends Perso {
 				shield.setVisible(false);
 				sword.setVisible(true);
 				v = pos_seqsprite;
+				boolean midSword = weapon.kind == ItemKind.MIDSWORD;
 				if (v>=0 && v<6) {
 					xx += decalxSword[angle.value][v];
 					sword.setSpr(swordSequence.getSpr(angle, v));
+					if (midSword) {
+						sword.setAddSpr(ZildoDescription.MSWORD0.ordinal() - ZildoDescription.SWORD0.ordinal());
+					} else {
+						sword.setAddSpr(0);
+					}
 					Point p = swordSequence.getOffset(angle, v);
 					sword.setX(xx - 4 + p.x);
 					sword.setY(yy + 1 - p.y);
@@ -777,7 +784,11 @@ public class PersoPlayer extends Perso {
 					// Sword must be over Zildo
 					sword.setZ(15);
 					sword.setY(sword.getY() + 15);
+					if (midSword) sword.setY(sword.getY() + 3);
 					break;
+				case OUEST:
+					if (midSword) sword.setX(sword.getX() - 3);
+					// Important to follow on default (no break)
 				default:
 					sword.setZ(0);
 				}

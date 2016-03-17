@@ -137,7 +137,9 @@ public enum ElementDescription implements SpriteDescription {
 	// 246
 	WILL_O_WIST, WILL_O_REFLECT,
 	// 248
-	BUNCH_LEAVES, HOLE_STUMP;
+	BUNCH_LEAVES, HOLE_STUMP,
+	// 250
+	MIDDLE_SWORD;
 
 	Boolean damage;
 	

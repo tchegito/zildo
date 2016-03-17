@@ -328,9 +328,11 @@ public class ElementsPlus extends SpriteBanque {
 			    //new Zone(298,2, 11, 13)
 				new Zone(298, 16, 8, 10),
 				new Zone(307, 19, 5, 6),
-				// Bunch of leaves
+				// Bunch of leaves (248)
 				new Zone(288, 52, 24, 14),
-				new Zone(288, 66, 10, 6)	// Hole under the leaves
+				new Zone(288, 66, 10, 6),	// Hole under the leaves
+				// Middle sword
+				new Zone(122, 85, 15, 16)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -347,6 +349,7 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem", 243, 0),
 				new GraphChange("dragonpal", 245, 0, true),
 				new GraphChange("elem", 248, 0),
+				new GraphChange("objets", 250, 0)
 				});
 	}
 }
