@@ -204,7 +204,9 @@ public class Modifier {
      
      private Banque getTileBankClass(String bankName) {
 		 try {
-			 
+			if (bankName.equals("lavacave")) {
+				bankName = "LavaCave";
+			}
 			Class<?> clazz = Class.forName("zeditor.tools.banque."+StringUtils.capitalize(bankName));
 			 if (Banque.class.isAssignableFrom(clazz)) {
 				 Banque b = (Banque) clazz.newInstance();
@@ -219,7 +221,11 @@ public class Modifier {
      
      private SpriteBanque getSpriteBankClass(String bankName) {
 		 try {
-			 
+			 if ("elem".equals(bankName)) {
+				 bankName = "elementsPlus";
+			 } else if ("zildo".equals(bankName)) {
+				 bankName = "PjZildo";
+			 }
 			Class<?> clazz = Class.forName("zeditor.tools.sprites."+StringUtils.capitalize(bankName));
 			 if (SpriteBanque.class.isAssignableFrom(clazz)) {
 				 SpriteBanque b = (SpriteBanque) clazz.newInstance();
@@ -228,7 +234,7 @@ public class Modifier {
 				 throw new RuntimeException("Class "+bankName+" should be a sprite bank !");
 			 }
 		} catch (Exception e) {
-			throw new RuntimeException("Can't instantiate class "+bankName);
+			throw new RuntimeException("Can't instantiate class "+bankName, e);
 		}
      }
      

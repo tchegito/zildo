@@ -161,7 +161,8 @@ public abstract class TileEngine {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Load every tile banks (but doesn't create any texture)
 	// /////////////////////////////////////////////////////////////////////////////////////
-	void loadAllTileBanks() {
+	public void loadAllTileBanks() {
+		motifBanks.clear();
 		for (String bankName : tileBankNames) {
 			loadTileBank(bankName.toLowerCase());
 		}
