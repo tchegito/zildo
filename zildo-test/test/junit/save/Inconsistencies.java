@@ -53,13 +53,13 @@ public class Inconsistencies extends EngineUT {
 		
 		// Go to Igor's cell, and wait for guard stand still
 		simulateDirection(new Vector2f(-1,0.01f));
-		renderFrames(40);
+		renderFrames(60);
 		simulateDirection(new Vector2f(0, 0));
 		while (guard.deltaMoveX != 0 || guard.deltaMoveY != 0) {
 			renderFrames(5);
 		}
 		// Check door is open
-		Assert.assertTrue(igorDoor.isOpen());
+		Assert.assertTrue("Igor's door should have been opened !", igorDoor.isOpen());
 		// Wait for guard returning to his location, and his dialog over
 		while (!clientState.dialogState.dialoguing) {
 			renderFrames(5);
@@ -96,7 +96,7 @@ public class Inconsistencies extends EngineUT {
 		PersoPlayer zildo = spawnZildo(672,237);
 		EngineZildo.scriptManagement.accomplishQuest("foretg_button_trig", false);
 		simulateDirection(new Vector2f(0, -1f));
-		renderFrames(100);
+		renderFrames(140);
 		
 		waitEndOfScripting();
 		Assert.assertEquals("foretg", EngineZildo.mapManagement.getCurrentMap().getName());

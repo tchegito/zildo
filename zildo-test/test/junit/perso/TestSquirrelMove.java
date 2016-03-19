@@ -7,6 +7,7 @@ import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Vector2f;
+import zildo.resource.Constantes;
 
 public class TestSquirrelMove extends EngineUT {
 
@@ -15,7 +16,9 @@ public class TestSquirrelMove extends EngineUT {
 	private void init(String mapName, int x, int y) {
 		mapUtils.loadMap(mapName);
 		squirrel = spawnZildo(x, y);
+		Assert.assertEquals(Constantes.ZILDO_SPEED, squirrel.getSpeed(), 0f);
 		squirrel.setAppearance(ControllablePerso.PRINCESS_BUNNY);
+		Assert.assertEquals(Constantes.ROXY_SPEED, squirrel.getSpeed(), 0f);
 		waitEndOfScripting();
 	}
 	
