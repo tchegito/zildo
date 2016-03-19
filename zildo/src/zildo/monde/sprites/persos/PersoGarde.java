@@ -20,6 +20,8 @@
 
 package zildo.monde.sprites.persos;
 
+import java.util.List;
+
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.EngineFX;
 import zildo.monde.collision.Collision;
@@ -97,7 +99,8 @@ public class PersoGarde extends PersoNJ {
 	 */
 	@Override
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
-		if (EngineFX.GUARD_BLACK.equals(getSpecialEffect()) && p_damage == 1) {
+		boolean blackGuard = EngineFX.GUARD_BLACK.equals(getSpecialEffect());
+		if (blackGuard && p_damage == 1) {
 			// No strength enough to wound (is it the right place to check this ???)
 			EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
 			EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null));
@@ -105,6 +108,17 @@ public class PersoGarde extends PersoNJ {
 		} else {
 			super.beingWounded(cx, cy, p_shooter, p_damage);
 			starAura.setSpecialEffect(EngineFX.STAR);
+		}
+		if (blackGuard) {
+			setQuel_deplacement(MouvementPerso.ZONE, false);
+			setAlerte(true);
+			// Detect other reachable enemy to help fighting
+    		List<Perso> found = EngineZildo.persoManagement.lookFor(this, 7, PersoInfo.ENEMY, false);
+    		if (found != null) {
+    			for (Perso p : found) {
+    				p.setAlerte(true);
+    			}
+    		}
 		}
 	}
 	

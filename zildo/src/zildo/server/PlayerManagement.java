@@ -40,7 +40,6 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
-import zildo.resource.Constantes;
 import zildo.resource.KeysConfiguration;
 import zildo.server.state.ClientState;
 import zildo.server.state.DialogState;
@@ -145,7 +144,7 @@ public class PlayerManagement {
 	 * Zildo is in ghost mode. It provides scripting moves.
 	 */
 	public void automaticMove() {
-		Pointf pos=heros.reachDestination(Constantes.ZILDO_SPEED);
+		Pointf pos=heros.reachDestination();
 	 	
 		adjustMovement(pos.x - heros.x, pos.y - heros.y);
 		//heros.finaliseComportement(EngineZildo.compteur_animation);
@@ -190,7 +189,7 @@ public class PlayerManagement {
 	
 		boolean needMovementAdjustment=true;
 		
-		float zildoSpeed=Constantes.ZILDO_SPEED * (heros.getAcceleration() / 10 ) * EngineZildo.extraSpeed;
+		float zildoSpeed=heros.getSpeed() * (heros.getAcceleration() / 10 ) * EngineZildo.extraSpeed;
 		
 		if (heros.getMouvement() == MouvementZildo.SAUTE) {
 	    	// Zildo's jumping ! Then he's inactive for player

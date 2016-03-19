@@ -67,7 +67,7 @@ public class PathFinder {
 	
     /**
      * Shouldn't modify mobile location ! But update his angle.
-     * @param p_speed
+     * @param p_speed 0 means we take default pathfinder's speed
      * @return Pointf
      */
     public Pointf reachDestination(float p_speed) {

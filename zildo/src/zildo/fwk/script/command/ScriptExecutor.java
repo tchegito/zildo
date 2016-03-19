@@ -36,6 +36,7 @@ import zildo.fwk.script.xml.element.action.runtime.RuntimeAction;
 import zildo.fwk.script.xml.element.action.runtime.RuntimeScene;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -178,7 +179,8 @@ public class ScriptExecutor {
 				p.setGhost(p.getFollowing() != null);	// Cancel 'ghost' except if character is following someone
 				if (p.isZildo()) {
 					p.setOpen(true);
-					p.setSpeed(Constantes.ZILDO_SPEED);
+					PersoPlayer zildo = (PersoPlayer) p;
+					zildo.setAppearance(null);
 				}
 				p.setUnstoppable(false);	// Reset this status
 			}

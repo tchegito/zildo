@@ -55,7 +55,7 @@ public class TestFollowPerso extends EngineUT {
 
 		simulateDirection(new Vector2f(0, -1f));
 		
-		renderFrames(50);
+		renderFrames(60);
 		waitEndOfScripting();
 		
 		// Ensure that hero has changed room

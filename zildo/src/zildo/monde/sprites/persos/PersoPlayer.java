@@ -99,8 +99,6 @@ public class PersoPlayer extends Perso {
 
 	private int moonHalf;
 
-	ControllablePerso appearance;
-	
 	// Linked elements
 	Element shield;
 	Element sword;
@@ -402,7 +400,7 @@ public class PersoPlayer extends Perso {
 		// Do we have to cancel the wound ?
 		switch (mouvement) {
 			case TOMBE: // Used when hero jumps from hill, and when squirrel make regular jump
-				if (appearance == ControllablePerso.PRINCESS_BUNNY && p_shooter != null && p_shooter.getDesc() == PersoDescription.BRAMBLE) {
+				if (who == ControllablePerso.PRINCESS_BUNNY && p_shooter != null && p_shooter.getDesc() == PersoDescription.BRAMBLE) {
 					if (z > p_shooter.getDesc().getSizeZ()) {
 						// Squirrel is above the shooter ==> no damage
 						return;
@@ -673,7 +671,6 @@ public class PersoPlayer extends Perso {
 			shadow.setX(x);
 			shadow.setY(y);
 			shadow.setZ(tileBottomZ);
-			Constantes.ZILDO_SPEED = 1f;
 			int seqPos = 0;
 			
 			shiftWetFeet = -1 + 3;
@@ -1495,23 +1492,29 @@ public class PersoPlayer extends Perso {
         return new Collision((int) x, zildoY, size, null, this, null, null);		
 	}
 	
+	/** Set hero's appearance.
+	 * @param who ZILDO or PRINCESS_BUNNY. NULL means we reinitialize current appearance
+	 */
 	public void setAppearance(ControllablePerso who) {
-		this.who = who;
-		switch (who) {
+		if (who != null) {
+			this.who = who;
+		}
+		switch (this.who) {
 		case ZILDO:
 			shadow.setDesc(ElementDescription.SHADOW);
 			UIText.setCharacterName(EngineZildo.game.heroName);
 			feet.zoom=255;
 			defaultSize = new Point(8, 4);
+			setSpeed(Constantes.ZILDO_SPEED);
 			break;
 		case PRINCESS_BUNNY:
 			shadow.setDesc(ElementDescription.SHADOW_SMALL);
 			UIText.setCharacterName("Roxy");
 			feet.zoom=100;
 			defaultSize = new Point(2, 2);
+			setSpeed(Constantes.ROXY_SPEED);
 			break;
 		}
-		appearance = who;
 	}
 	
 	@Override
@@ -1520,7 +1523,7 @@ public class PersoPlayer extends Perso {
 			Angle angleJump = super.tryJump(loc);
 			if (angleJump != null) {
 				Point landingPoint = angleJump.getLandingPoint().translate((int) x, (int) y);
-				if (appearance == ControllablePerso.PRINCESS_BUNNY) {
+				if (who == ControllablePerso.PRINCESS_BUNNY) {
 					// Check if squirrel can go on this tile
 					int z = EngineZildo.mapManagement.getTileBottomZ(landingPoint.x, landingPoint.y);
 					if (z != 0) {

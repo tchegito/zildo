@@ -292,10 +292,12 @@ public class PersoManagement {
 	/**
 	 * Return the first discoverd character inside a circular zone around a given character.
 	 * @param p_looker Looking character
-	 * @param radius radius of the circular zone
+	 * @param radius radius of the circular zone (in tile coordinates)
+	 * @param sight TRUE=found character must look in the target direction
 	 * @return Perso
 	 */
-	public Perso lookFor(Perso p_looker, int radius, PersoInfo p_info, boolean sight) {
+	private List<Perso> lookFor(Perso p_looker, int radius, PersoInfo p_info, boolean sight, boolean justOne) {
+		List<Perso> persos = null;
 		if (p_looker != null) {
 			for (Perso p : tab_perso) {
 				if (p != p_looker && (p_info == null || p.getInfo() == p_info) && p.visible && p.getPv()>0) {
@@ -303,10 +305,40 @@ public class PersoManagement {
 					if (distance < radius * 16) {
 						// Check sight (if needed)
 						if (sight && !p_looker.isFacing(p)) continue;
-						return p;
+						if (persos == null) persos = new ArrayList<Perso>();
+						persos.add(p);
+						if (justOne) break;
 					}
 				}
 			}
+		}
+		return persos;
+	}
+	
+	/**
+	 * Look for just one character
+	 * @param p_looker Looking character
+	 * @param radius radius of the circular zone (in tile coordinates)
+	 * @param p_info category of character looked for
+	 * @param sight TRUE=found character must look in the target direction
+	 * @return
+	 */
+	public List<Perso> lookFor(Perso p_looker, int radius, PersoInfo p_info, boolean sight) {
+		return lookFor(p_looker, radius, p_info, sight, false);
+	}
+	
+	/**
+	 * Look for just one character
+	 * @param p_looker Looking character
+	 * @param radius radius of the circular zone (in tile coordinates)
+	 * @param p_info category of character looked for
+	 * @param sight TRUE=found character must look in the target direction
+	 * @return
+	 */
+	public Perso lookForOne(Perso p_looker, int radius, PersoInfo p_info, boolean sight) {
+		List<Perso> persos = lookFor(p_looker, radius, p_info, sight, true);
+		if (persos != null) {
+			return persos.get(0);
 		}
 		return null;
 	}

@@ -56,7 +56,7 @@ public class PersoSpider extends PersoShadowed {
 				opposite = false;
 			} else {
 				// Look for Zildo
-				Perso zildo = EngineZildo.persoManagement.lookFor(this, 5, PersoInfo.ZILDO, false);
+				Perso zildo = EngineZildo.persoManagement.lookForOne(this, 5, PersoInfo.ZILDO, false);
 				if (zildo != null) {
 					attackAngle = Trigo.getAngleRadian(x, y, zildo.x, zildo.y);
 					attackAngle += EngineZildo.hasard.intervalle((float) (Math.PI / 4f));

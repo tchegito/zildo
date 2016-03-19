@@ -897,6 +897,10 @@ public abstract class Perso extends Element {
 		}
 	}
 
+	public float getSpeed() {
+		return pathFinder.speed;
+	}
+	
 	public void setForward(boolean p_forward) {
 		pathFinder.backward = p_forward;
 	}
@@ -910,8 +914,8 @@ public abstract class Perso extends Element {
 		return pathFinder.open;
 	}
 
-	public Pointf reachDestination(float p_speed) {
-		return pathFinder.reachDestination(p_speed);
+	public Pointf reachDestination() {
+		return pathFinder.reachDestination(0);
 	}
 
 	public String getEffect() {
