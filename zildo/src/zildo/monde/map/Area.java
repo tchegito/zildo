@@ -59,6 +59,7 @@ import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
@@ -697,7 +698,7 @@ public class Area implements EasySerializable {
 			if (desc != null) {
 				boolean questTrigger = false;
 				if (desc == ElementDescription.KEY) {
-					if (EngineZildo.scriptManagement.isTakenItem(name, tileLocation.x, tileLocation.y, desc)) {
+					if (EngineZildo.scriptManagement.isTakenItem(name, tileLocation, null, desc)) {
 						return;	// Don't spawn item because player has already taken it
 					} else {
 						questTrigger = true;
@@ -1019,6 +1020,7 @@ public class Area implements EasySerializable {
 
 		int floor;
 		// Les sprites
+		List<SpriteEntity> addedEntities = new ArrayList<SpriteEntity>();
 		if (n_sprites != 0) {
 			for (int i = 0; i < n_sprites; i++) {
 				int x = p_buffer.readInt();
@@ -1083,6 +1085,7 @@ public class Area implements EasySerializable {
 						}
 						entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse),
 								false);
+						addedEntities.add(entity);
 						if (desc instanceof GearDescription && ((GearDescription)desc).isExplodable()) {	// Exploded wall ?
 							if (EngineZildo.scriptManagement.isExplodedWall(map.getName(), new Point(ax, ay))) {
 								map.explodeTile(new Point(x, y), false, (Element) entity);
@@ -1176,6 +1179,19 @@ public class Area implements EasySerializable {
 
 					spriteManagement.spawnPerso(perso);
 					perso.setFloor(floor);
+					
+					if (!zeditor) { // Check if a sprite is located on this character
+						for (SpriteEntity entity : addedEntities) {
+							if (Point.distance(entity.x, entity.y, perso.x, perso.y) < 8) {
+								// This object should be carried by character
+								ElementDescription elemDesc = (ElementDescription) entity.getDesc();
+								if (!EngineZildo.scriptManagement.isTakenItem(p_name, null, perso.getName(), elemDesc)) {
+									((PersoNJ)perso).setCarriedItem(elemDesc);
+								}
+								EngineZildo.spriteManagement.deleteSprite(entity);
+							}
+						}
+					}
 				}
 			}
 		}

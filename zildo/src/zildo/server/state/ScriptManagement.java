@@ -554,8 +554,17 @@ public class ScriptManagement {
 		accomplishQuest(keyQuest.buildKeyDoor(p_mapName, p_ch), true);
 	}
 	
-	public boolean isTakenItem(String p_mapName, int p_x, int p_y, ElementDescription p_desc) {
-		return isQuestDone(keyQuest.buildKeyItem(p_mapName, p_x, p_y, p_desc));
+	public boolean isTakenItem(String p_mapName, Point p_location, String p_persoName, ElementDescription p_desc) {
+		if (p_location == null && p_persoName == null) {
+			throw new RuntimeException("Location or character's name should be provided on map "+p_mapName+" for element "+p_desc+" !");
+		}
+		String questName;
+		if (p_location != null) {
+			questName = keyQuest.buildKeyItem(p_mapName, p_location, null, p_desc);
+		} else {
+			questName = keyQuest.buildKeyItem(p_mapName, null, p_persoName, p_desc);
+		}
+		return isQuestDone(questName);
 	}
 	
 	public void explodeWall(String p_mapName, Point p_location) {
@@ -573,8 +582,8 @@ public class ScriptManagement {
 	 * @param p_y
 	 * @param p_desc
 	 */
-	public void takeItem(String p_mapName, int p_x, int p_y, ElementDescription p_desc) {
-		accomplishQuest(keyQuest.buildKeyItem(p_mapName, p_x, p_y, p_desc), false);
+	public void takeItem(String p_mapName, Point p_location, String p_persoName, ElementDescription p_desc) {
+		accomplishQuest(keyQuest.buildKeyItem(p_mapName, p_location, p_persoName, p_desc), false);
 	}
 
 	public void execMapScript(String p_mapName, Atmosphere p_atmo, boolean p_scroll) {

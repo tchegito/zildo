@@ -20,12 +20,14 @@
 
 package zildo.monde.sprites.elements;
 
+import zildo.fwk.ZUtils;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 
@@ -71,6 +73,7 @@ public class ElementGoodies extends Element {
 			case WATER:
 				fall();
 				dying = true;
+			default:
 				break;
 		}
 		super.animate();
@@ -153,9 +156,20 @@ public class ElementGoodies extends Element {
 		return true;
 	}
 
-	public void markTaken() {
+	@Override
+	public void beingTaken() {
 		taken = true;
 		alphaA = -1;	// Make it disappear smoothly
 		alphaV = -2;
+		if (questTrigger && desc instanceof ElementDescription) {	// Only for bank ELEMENTS now
+			// Activate a quest if we're asked for
+			String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
+			ElementDescription elemDesc = (ElementDescription) desc;
+			if (!ZUtils.isEmpty(name)) {
+				EngineZildo.scriptManagement.takeItem(mapName, null, name, elemDesc);
+			} else {
+				EngineZildo.scriptManagement.takeItem(mapName, new Point(x/16, y/16), null, elemDesc);
+			}
+		}
 	}
 }

@@ -54,8 +54,17 @@ public class KeyQuest {
 	 * Build a quest's keyname about a taken item.
 	 * @return String
 	 */
-	public String buildKeyItem(String p_mapName, int p_x, int p_y, ElementDescription p_desc) {
-		return p_mapName + p_x + p_y + p_desc.toString();
+	public String buildKeyItem(String p_mapName, Point p_location, String p_persoName, ElementDescription p_desc) {
+		String ident = "";
+		if (p_location != null) {
+			ident += p_location.x;
+			ident += p_location.y; 
+		} else if (p_persoName != null) {
+			ident += p_persoName;
+		} else {
+			throw new RuntimeException("Location or character's name should be provided on map "+p_mapName+" for element "+p_desc+" !");
+		}
+		return p_mapName + ident + p_desc.toString();
 	}
 	
 	public String buildExplosion(String p_mapName, Point p_loc) {

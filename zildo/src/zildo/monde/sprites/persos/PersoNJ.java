@@ -32,6 +32,7 @@ import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementGuardWeapon;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
 import zildo.monde.sprites.elements.ElementImpact;
@@ -915,31 +916,36 @@ public class PersoNJ extends Perso {
 
 		if (info == PersoInfo.ENEMY) {
 			// Monster just died. We check, a bonus may appear.
-			int k, m;
+			int m = 0;
 			SpriteAnimation anim = null;
-			k = hasard.de6();
-			m = 0;
 			
 			ElementDescription itemDesc = carriedItem;
 			if (carriedItem != null) {
+				// Item is configured to show up when he dies
 				anim = SpriteAnimation.FROMGROUND;
-			}
-			switch (k) {
-			case 5:
-			case 6:
-				anim = SpriteAnimation.BLUE_DROP;
-				break;
-			case 3:
-			case 4:
-				anim = SpriteAnimation.GOLDCOIN;
-				break;
-			case 1:
-				anim = SpriteAnimation.GOLDCOIN;
-				m = 2;
-				break;
+			} else {
+				int k = hasard.de6();
+				switch (k) {
+				case 5:
+				case 6:
+					anim = SpriteAnimation.BLUE_DROP;
+					break;
+				case 3:
+				case 4:
+					anim = SpriteAnimation.GOLDCOIN;
+					break;
+				case 1:
+					anim = SpriteAnimation.GOLDCOIN;
+					m = 2;
+					break;
+				}
 			}
 			if (anim != null) {
-				EngineZildo.spriteManagement.spawnSpriteGeneric(anim, (int) x, (int) y, floor, m, null, itemDesc);
+				Element elem = EngineZildo.spriteManagement.spawnSpriteGeneric(anim, (int) x, (int) y, floor, m, null, itemDesc);
+				if (carriedItem != null) {
+					elem.setName(name); // Propagate character's name to carried item, in order to identify him in quests
+					elem.setTrigger(true);
+				}
 			}
 		}
 	}
@@ -985,5 +991,9 @@ public class PersoNJ extends Perso {
 			default:
 			
 		}
+	}
+	
+	public void setCarriedItem(ElementDescription p_desc) {
+		carriedItem = p_desc;
 	}
 }

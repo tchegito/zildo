@@ -60,7 +60,7 @@ public class PathFinder {
 		mobile=p_mobile;
 		backward=false;
 		open=p_mobile.isZildo();
-		speed = 0.5f;
+		speed = p_mobile.isZildo() ? Constantes.ZILDO_SPEED : 0.5f;
 		unstoppable = false;
 		alwaysReach = false;
 	}

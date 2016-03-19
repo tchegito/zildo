@@ -70,7 +70,7 @@ public class Element extends SpriteEntity {
 
 	protected Element burningFire;
 	
-	private boolean questTrigger;	// TRUE=taking this element leads to a quest accomplishment
+	protected boolean questTrigger;	// TRUE=taking this element leads to a quest accomplishment
 	
 	protected Element shadow;
 	protected boolean pushable;
@@ -625,10 +625,6 @@ public class Element extends SpriteEntity {
 							ax=0;
 							return false;
 						}
-					}
-					if (questTrigger) {	// Only for bank ELEMENTS now
-						// Activate a quest if we're asked for
-						EngineZildo.scriptManagement.takeItem(area.getName(), cx, cy, d);
 					}
 				} else if (entityType.isPerso()) {
 					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);

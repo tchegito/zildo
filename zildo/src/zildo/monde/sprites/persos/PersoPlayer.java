@@ -1061,7 +1061,7 @@ public class PersoPlayer extends Perso {
 			}
 		}
 		if (p_element != null) {
-			p_element.markTaken();
+			p_element.beingTaken();
 		}
 		return true;
 	}

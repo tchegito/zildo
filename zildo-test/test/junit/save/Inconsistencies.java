@@ -53,7 +53,7 @@ public class Inconsistencies extends EngineUT {
 		
 		// Go to Igor's cell, and wait for guard stand still
 		simulateDirection(new Vector2f(-1,0.01f));
-		renderFrames(60);
+		renderFrames(40);
 		simulateDirection(new Vector2f(0, 0));
 		while (guard.deltaMoveX != 0 || guard.deltaMoveY != 0) {
 			renderFrames(5);
@@ -96,7 +96,8 @@ public class Inconsistencies extends EngineUT {
 		PersoPlayer zildo = spawnZildo(672,237);
 		EngineZildo.scriptManagement.accomplishQuest("foretg_button_trig", false);
 		simulateDirection(new Vector2f(0, -1f));
-		renderFrames(140);
+		Assert.assertEquals(1.5f, zildo.getSpeed(), 0f);
+		renderFrames(100);
 		
 		waitEndOfScripting();
 		Assert.assertEquals("foretg", EngineZildo.mapManagement.getCurrentMap().getName());
