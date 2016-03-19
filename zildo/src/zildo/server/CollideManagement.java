@@ -30,6 +30,7 @@ import zildo.client.sound.BankSound;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.collision.Rectangle;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.Perso;
@@ -224,7 +225,10 @@ public class CollideManagement {
 	        			PersoPlayer zildo=(PersoPlayer) attacker;
 	        			if (zildo.isAffectedBy(AffectionKind.QUAD_DAMAGE)) {
 	        				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamaging, zildo);
-	        				dmg*=4;
+	        				dmg *= 4;
+	        			}
+	        			if (zildo.getWeapon().kind == ItemKind.MIDSWORD) {
+	        				dmg += 1;
 	        			}
 	        		}
 	        		perso.beingWounded(p_collider.cx, p_collider.cy, p_collider.perso, dmg);

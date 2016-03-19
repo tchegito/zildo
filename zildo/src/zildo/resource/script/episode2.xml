@@ -817,11 +817,11 @@
 			<remove who="hector"/>
    		</condition>
    		<condition name="prisonext" exp="retour_trion">
-   		    <perso who="gardenord" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
-   		    <perso who="gard2" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
-   		    <perso who="gard3" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
-   		    <perso who="gard4" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
-   		    <perso who="gard5" type="GARDE_CANARD" effect="noir" info="ENEMY"/>
+   		    <perso who="gardenord" type="GARDE_CANARD" effect="noir" info="ENEMY" pv="4"/>
+   		    <perso who="gard2" type="GARDE_CANARD" effect="noir" info="ENEMY" pv="4"/>
+   		    <perso who="gard3" type="GARDE_CANARD" effect="noir" info="ENEMY" pv="4"/>
+   		    <perso who="gard4" type="GARDE_CANARD" effect="noir" info="ENEMY" pv="4"/>
+   		    <perso who="gard5" type="GARDE_CANARD" effect="noir" info="ENEMY" pv="4"/>
    		    <script who="gardenord" value="3"/>
    		    <script who="gard2" value="3"/>
    		    <script who="gard3" value="3"/>

@@ -373,6 +373,7 @@ public class PersoPlayer extends Perso {
 			if (angle.isHorizontal()) {
 				swordRadius = 16;
 			}
+			// Middle sword hits farther
 			if (weapon != null && weapon.kind == ItemKind.MIDSWORD) swordRadius += 3;
 			cx = cx + swordRadius * Math.cos(beta);
 			cy = cy + swordRadius * Math.sin(beta);

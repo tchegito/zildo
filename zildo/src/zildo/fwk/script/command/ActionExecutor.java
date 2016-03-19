@@ -614,6 +614,9 @@ public class ActionExecutor extends RuntimeExecutor {
             			if (p_action.addSpr != -1) {
             				perso.setAddSpr(p_action.addSpr);
             			}
+            			if (p_action.pv != -1) {
+            				perso.setPv(p_action.pv);
+            			}
             			applyCommonAndPhysicAttributes((Element) perso, p_action);
                 	}
                 	achieved = true;

@@ -120,6 +120,9 @@
 	   	<condition name="sousbois6">
 	   		<tile pos="51,11" action="willOWist" unblock="true"/>
 	   	</condition>
+	   	<condition name="prison">
+	   	    <perso who="noir" pv="6"/>"
+	   	</condition>
 	</mapScript>
 		
 	<scene id="intro_episode3">

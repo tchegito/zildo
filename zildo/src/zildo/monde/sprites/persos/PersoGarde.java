@@ -104,6 +104,15 @@ public class PersoGarde extends PersoNJ {
 			p_shooter.project(cx, cy, 1);
 		} else {
 			super.beingWounded(cx, cy, p_shooter, p_damage);
+			starAura.setSpecialEffect(EngineFX.STAR);
+		}
+	}
+	
+	@Override
+	public void stopBeingWounded() {
+		super.stopBeingWounded();
+		if (pv == 0) {
+			starAura.setSpecialEffect(EngineFX.STAR);
 		}
 	}
 	

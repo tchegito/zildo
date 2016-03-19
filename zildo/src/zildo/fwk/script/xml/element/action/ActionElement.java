@@ -73,6 +73,7 @@ public class ActionElement extends LanguageElement {
 	public FloatExpression zoom;	// Used in 'moveTo'
 	public int alpha;
 	public int deltaFloor;	// Only for 'perso' action
+	public int pv;
 	
 	public int back, back2, fore; // just for Tile action
 
@@ -154,6 +155,7 @@ public class ActionElement extends LanguageElement {
 			alphaA = getFloatExpr("alphaA");
 			deltaFloor = readInt("deltaFloor", 0);
 			addSpr = readInt("addSpr", 0);
+			pv = readInt("pv", -1);
 			break;
 		case speak:
 			text = readAttribute("text");
