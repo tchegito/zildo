@@ -77,6 +77,7 @@ public class SpritePanel extends JPanel {
 	JSpinner repeatX;
 	JSpinner repeatY;
 	JLabel entityType;
+	JLabel floor;
 	JTextField elementName;
 	JScrollPane scrollPane;
 	
@@ -141,7 +142,7 @@ public class SpritePanel extends JPanel {
 		panelForegroundPushable.add(new JLabel("Foreground")); 
 		panelForegroundPushable.add(pushable);
 		panelForegroundPushable.add(new JLabel("Pushable")); 
-		panel.addComp(new JLabel(""), panelForegroundPushable);
+		panel.addComp(floor = new JLabel("Floor: "), panelForegroundPushable);
 		
 		spinX = new JSpinner(new SpinnerNumberModel(0, -1, 16, -1));
 		spinY = new JSpinner(new SpinnerNumberModel(0, -1, 16, -1));
@@ -235,6 +236,7 @@ public class SpritePanel extends JPanel {
 			repeatX.setValue(1);
 			repeatY.setValue(1);
 			elementName.setText("");
+			floor.setText("Floor:");
 		} else {
 			EntityType kind = p_entity.getEntityType();
 			entityType.setText(kind.toString());
@@ -254,6 +256,7 @@ public class SpritePanel extends JPanel {
 				pushable.setSelected(elem.isPushable());
 			}
 			elementName.setText(name);
+			floor.setText("Floor:"+p_entity.getFloor());
 		}
 		updatingUI = false;
 		entity = p_entity;

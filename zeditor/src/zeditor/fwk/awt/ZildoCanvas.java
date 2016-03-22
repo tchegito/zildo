@@ -502,7 +502,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 			location.x+=model.getTaille_x() / 2;
 			location.y+=model.getTaille_y();
 		}
-		p_sel.place(location);
+		p_sel.place(location, manager.getCurrentFloor());
 		manager.setSpriteSelection(p_sel);
 		changeSprites=true;
 	}

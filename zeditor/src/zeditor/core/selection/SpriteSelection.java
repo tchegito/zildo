@@ -178,9 +178,11 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 		}
 	}
 	
-	public void place(Point p_point) {
+	/** Put the whole current sprite selection on the map, taking selected floor into account **/
+	public void place(Point p_point, int floor) {
 		boolean first=true;
 		Point delta = new Point(0,0);
+
 		for (SpriteEntity elem : sprites) {
         		// Note the delta
         		if (first) {
@@ -207,6 +209,7 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
         				entity.setAjustedY( (int) entity.y - (sprModel.getTaille_y() >> 1) );
         			}
         		}
+        		elem.setFloor(floor);
 		}
 		calculateOriginAndSize();
 	}

@@ -47,6 +47,7 @@ public class ZPersoLibrary extends ArrayList<SpriteDescription> {
 		case FLYINGSERPENT:
 		case BRAMBLE:
 		case BITEY:
+		case STONE_SPIDER:
 			info=PersoInfo.ENEMY;
 			break;
 		default:

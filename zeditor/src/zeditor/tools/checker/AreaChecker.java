@@ -5,6 +5,7 @@ import java.util.List;
 
 import zeditor.tools.checker.ErrorDescription.Action;
 import zildo.client.sound.Ambient.Atmosphere;
+import zildo.fwk.collection.IntSet;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.map.AnimatedTiles;
 import zildo.monde.map.Area;
@@ -104,11 +105,30 @@ public class AreaChecker {
 		String mess="";
 		final List<Case> errorCases = new ArrayList<Case>();
 		for (ChainingPoint ch : area.getChainingPoints()) {
-			Point[] mustBeMasked;
+			Point[] mustBeMasked = null;
 			int x = ch.getPx() / 2;
 			int y = ch.getPy() / 2;
 			if (ch.isBorder()) {
-				continue;
+				// Check doors on border chaining point
+				if (ch.isVertical()) {
+					IntSet doorHorizontalRight = new IntSet(192 + 256*3);
+					IntSet doorHorizontalLeft = new IntSet(197 + 256*3);
+					for (int xx = x;xx < x+3;xx++) {
+						for (int i=0;i<area.getDim_y();i++) {
+							Case c = area.get_mapcase(xx,  i);
+							if (c != null) {
+								Tile t = c.getBackTile();
+								if (doorHorizontalRight.contains(t.getValue()) || doorHorizontalLeft.contains(t.getValue())) {
+									mustBeMasked = horizontal_mustBeMasked;
+									y = i;
+									break;
+								}
+							}
+						}
+					}
+				} else {
+					continue;
+				}
 			} else if (ch.isVertical()) {
 				mustBeMasked = horizontal_mustBeMasked;
 				x -= 3;
@@ -129,19 +149,26 @@ public class AreaChecker {
 
 			// Check all expected tiles
 			
-			for (Point p : vertical_mustBeMasked) {
-				Point toCheck = new Point(ch.getPx()/2 + p.x, ch.getPy()/2 + p.y
-						* factor);
-				if (!area.isOutside(toCheck.x << 4, toCheck.y << 4)) {
-					Case c = area.get_mapcase(toCheck.x, toCheck.y);
-					Tile t = c.getForeTile();
-					if (t == null) {
-						errorCases.add(c);
-						mess+="ERROR: tile at " + toCheck+ " should be masked !\n";
+			if (mustBeMasked != null) {
+				for (Point p : mustBeMasked) {
+					Point toCheck = new Point(x + p.x, y + p.y
+							* factor);
+					if (!area.isOutside(toCheck.x << 4, toCheck.y << 4)) {
+						Case c = area.get_mapcase(toCheck.x, toCheck.y);
+						Tile t = c.getForeTile();
+						if (t == null) {
+							errorCases.add(c);
+							mess+="ERROR: tile at " + toCheck+ " should be masked !\n";
+						}
 					}
 				}
 			}
 		}
+		
+
+
+
+		
 		if (mess.length() != 0) {
 			addList(new ErrorDescription(CheckError.CHAINING_POINT_UNCOVERED, mess, new Action() {
 				@Override
