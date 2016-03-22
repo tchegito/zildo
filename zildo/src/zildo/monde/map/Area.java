@@ -894,7 +894,7 @@ public class Area implements EasySerializable {
 				p_file.put((int) entity.x);
 				p_file.put((int) entity.y);
 				if (nbFloors > 1) {
-					p_file.put((byte) 1);	// Default floor
+					p_file.put((byte) entity.floor);	// Default floor
 				}
 				int foreground = entity.isForeground() ? SpriteEntity.FOREGROUND : 0;
 				int repeated = (entity.repeatX > 1 || entity.repeatY > 1 || entity.rotation != Rotation.NOTHING) ? SpriteEntity.REPEATED_OR_ROTATED : 0;
