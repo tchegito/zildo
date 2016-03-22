@@ -589,6 +589,7 @@ public class MapManagement {
 				onMap = area.readmap(cx - 1, cy);
 				if (onMap == 17 || onMap == 15 || onMap == 841 || onMap == 19 || onMap == 18 || onMap == 20 || onMap == 0 || onMap == 7
 						|| onMapCurrent == 15 ||
+						onMap == 256 * 3 + 132 ||	// Cave grey wall
 						// Water border
 						onMap == 135)
 					result = angle;

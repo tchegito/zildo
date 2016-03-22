@@ -20,8 +20,10 @@
 
 package zildo.monde.sprites.elements;
 
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
 /**
@@ -36,6 +38,8 @@ public class ElementLauncher extends Element {
 	int count = 0;
 	int firing = 0;
 	
+	Zone areaToShoot = null;
+	
 	public ElementLauncher(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -43,14 +47,17 @@ public class ElementLauncher extends Element {
 	
 	@Override
 	public void animate() {
+		if (areaToShoot == null) {
+			areaToShoot = new Zone((int) x + (reverse == Reverse.HORIZONTAL ? -RANGEX : 0), (int) y, RANGEX, RANGEY);
+		}
+		
 		if (firing != 0) {
 			prepareFire();
 		} else if (count == 0) {
 			// Look for Zildo
 			PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
 			if (zildo != null) {
-				if (zildo.x > x && zildo.x <= x+RANGEX &&
-					zildo.y >= (y-RANGEY / 2) && zildo.y <= (y+RANGEY)) {
+				if (areaToShoot.isInto((int) zildo.x, (int) zildo.y)) {
 					firing = DELAY;
 				}
 			}
@@ -77,9 +84,11 @@ public class ElementLauncher extends Element {
 	}
 	
 	private void fire() {
-		int xx = (int) x + 4;
+		// Which direction ?
+		int factor = (reverse == Reverse.HORIZONTAL) ? -1 : 0;
+		int xx = (int) x + 4 * factor;
 		int yy = (int) y + 12;
-		EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.ROCKBALL, xx, yy, floor, 0, null, null);
+		EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.ROCKBALL, xx, yy, floor, factor, null, null);
 		count = 30;
 	}
 }

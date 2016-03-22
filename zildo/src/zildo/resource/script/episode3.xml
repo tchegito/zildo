@@ -96,6 +96,26 @@
 		</action>
 	</quest>
 
+	<quest name="killGard1" locked="false">
+	    <trigger>
+	        <location name="prison8"/>
+	        <dead who="noir"/>
+	    </trigger>
+	    <action>
+	        <activate what="door" value="true"/>
+	    </action>
+	</quest>
+	
+	<quest name="isKillGard1">
+	    <trigger>
+		    <location name="prison8"/>
+		    <questDone name="killGard1"/>
+	    </trigger>
+	    <action>
+	        <activate what="door" value="true"/>
+	    </action>
+	</quest>
+	
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -122,6 +142,12 @@
 	   	</condition>
 	   	<condition name="prison">
 	   	    <perso who="noir" pv="6"/>"
+	   	</condition>
+	   	<condition name="prison8">
+	   	    <perso who="noir" pv="4"/>
+	   	</condition>
+	   	<condition name="prison9">
+	   	    <markQuest name="isKillGard1" value="false"/>
 	   	</condition>
 	</mapScript>
 		

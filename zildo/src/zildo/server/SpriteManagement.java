@@ -398,7 +398,7 @@ public class SpriteManagement extends SpriteStore {
 				element = new ElementHearts(x, y);
 				break;
 			case ROCKBALL:
-				element = new ElementThrown(Angle.EST, x, y, 15, 2.9f, null) {
+				element = new ElementThrown(misc == 0 ? Angle.EST : Angle.OUEST, x, y, 15, 2.9f, null) {
 				    @Override
 				    public void animate() {
 				        super.animate();
