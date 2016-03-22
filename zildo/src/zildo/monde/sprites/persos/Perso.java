@@ -745,17 +745,30 @@ public abstract class Perso extends Element {
 				}
 				slowDown = true;
 				break;
+			case 7*256+133: case 7*256+134:
+				if (!isGhost() && isZildo()) {
+					EngineZildo.scriptManagement.execute("miniStairsDownReverse", true);
+				}
+				slowDown = true;
+				break;
 			case 859:
 			case 860:
 			case 863:
 			case 864:	// Cave stairs
-			case 7*256+131: case 7*256+132:
+			case 7*256+131: case 7*256+132:	// Palace1 stairs
 			case 768 + 248:	// Rock on back2 for stairs (careful with this !!!)
 				if (!isGhost() && isZildo()) {
 					EngineZildo.scriptManagement.execute("miniStairsUp", true);
 				}
 				slowDown = true;
 				break;
+			case 7*256+135: case 7*256+136:
+				if (!isGhost() && isZildo()) {
+					EngineZildo.scriptManagement.execute("miniStairsUpReverse", true);
+				}
+				slowDown = true;
+				break;
+
 			case 256*2 + 200: case 256 * 2 + 198:	// Wood stairs going up
 			case 256*2 + 201:	// Wood stairs going down (on the right)
 				slowDown = true;

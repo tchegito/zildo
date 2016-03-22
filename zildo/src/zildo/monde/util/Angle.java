@@ -41,7 +41,7 @@ public enum Angle {
 	final double squareRoot2 = 0.8f;
 	
 	static final Point[] saut_angle={
-		new Point(0,-40), new Point(48,16),new Point(0,56),  new Point(-48,16),
+		new Point(0,-40), new Point(46,16),new Point(0,56),  new Point(-46,16),
 		new Point(32,48), new Point(32,-32),new Point(-32,48),new Point(-32,-32)};
 	
 	private Angle(int value, Point coords) {

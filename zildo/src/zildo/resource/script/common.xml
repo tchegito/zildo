@@ -16,6 +16,22 @@
         <perso who="zildo" deltaFloor="-1"/>
 	</scene>
 	
+	<scene id="miniStairsUpReverse">
+        <herospecial value="1"/>
+        <perso who="zildo" deltaFloor="-1"/>
+        <sound name="ZildoDescend"/>
+		<moveTo who="zildo" pos="0,-32" speed="1" unstoppable="true" delta="true"/>
+        <herospecial value="2"/>
+	</scene>
+	
+	<scene id="miniStairsDownReverse">
+        <herospecial value="1"/>
+	    <sound name="ZildoMonte"/>
+		<moveTo who="zildo" pos="0,34" speed="1" unstoppable="true" delta="true"/>
+		<herospecial value="2"/>
+        <perso who="zildo" deltaFloor="1"/>
+	</scene>
+	
 	<scene id="stairsUp">
         <herospecial value="1"/>
         <sound name="ZildoMonte" />
