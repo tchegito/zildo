@@ -116,6 +116,12 @@
 	    </action>
 	</quest>
 	
+	<quest name="prison10Button" locked="false">
+		<trigger>
+		    <location name="prison10" tilePos="17,23" gear="BUTTON"/>
+		</trigger>
+	</quest>
+	
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -148,6 +154,9 @@
 	   	</condition>
 	   	<condition name="prison9">
 	   	    <markQuest name="isKillGard1" value="false"/>
+	   	</condition>
+	   	<condition name="prison9" exp="prison10Button">
+	   	    <activate what="grey" value="true" unblock="true"/>
 	   	</condition>
 	</mapScript>
 		
