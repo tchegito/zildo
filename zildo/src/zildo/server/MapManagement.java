@@ -722,7 +722,7 @@ public class MapManagement {
 				} else if (chPointTarget.isVertical()) {
 					// Vertical chaining point
 					zildo.setX(zx - 8);
-					zildo.setY(zy + 8);
+					zildo.setY(zy + 8 + 8);
 				}
 				Angle a = chPointTarget.getComingAngle();
 				if (a == Angle.NULL) {
