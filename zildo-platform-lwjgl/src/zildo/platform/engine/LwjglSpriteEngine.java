@@ -89,14 +89,15 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		
 		int phase=(backGround)?0:1;
 		while (!endSequence) {
-			int numBank=bankOrder[floor][phase][posBankOrder*4];
+			int numBank=bankOrder[floor][phase][posBankOrder*5];
 			if (numBank == -1) {
 				endSequence=true;
 			} else {
 				// Render the n sprites from this bank
-				int nbQuads=bankOrder[floor][phase][posBankOrder*4 + 1];
-				int iCurrentFX=bankOrder[floor][phase][posBankOrder*4 + 2];
-				int alpha=bankOrder[floor][phase][posBankOrder*4 + 3];
+				int nbQuads=bankOrder[floor][phase][posBankOrder*5 + 1];
+				int iCurrentFX=bankOrder[floor][phase][posBankOrder*5 + 2];
+				int alpha=bankOrder[floor][phase][posBankOrder*5 + 3];
+				int light=bankOrder[floor][phase][posBankOrder*5 + 4];
 				EngineFX currentFX=EngineFX.values()[iCurrentFX];
 				int texId=textureEngine.getNthTexture(numBank);
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
@@ -179,11 +180,18 @@ public class LwjglSpriteEngine extends SpriteEngine {
 	                	textureEngine.graphicStuff.setCurrentColor(color);
 	                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 }
+                if (light != 0x00ffffff) {
+                	byte lightRed = (byte) (light >> 16);
+                	byte lightGreen = (byte) ((light >> 8) & 255);
+                	byte lightBlue = (byte) (light & 255);
+            		GL11.glColor4ub(lightRed, lightGreen, lightBlue, (byte) (255.0f));
+            		//GL11.glColor4ub((byte)255, (byte)1, (byte)1, (byte) (255.0f));
+            		//GL11.glColor4f(1f, 1f, 0f, 1f);
+                }
 				meshSprites[numBank].render(nbQuads);
 				posBankOrder++;
 			}
 		}
-
 		// Deactivate pixel shader
 		if (pixelShaderSupported) {
 			ARBShaderObjects.glUseProgramObjectARB(0);

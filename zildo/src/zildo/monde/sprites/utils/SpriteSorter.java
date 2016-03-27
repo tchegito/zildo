@@ -188,6 +188,7 @@ public class SpriteSorter {
 				int currentBank=-1;
 				int nbQuadFromSameBank=0;
 				int currentAlpha=0;
+				int currentLight=0;
 				EngineFX currentFX=EngineFX.NO_EFFECT;
 				for (int i=0;i<SORTY_REALMAX;i++) {
 					int position=0;
@@ -208,18 +209,22 @@ public class SpriteSorter {
 							// Check if we need a special effect
 							EngineFX persoFX=entity.getSpecialEffect();
 		
-							if ((currentBank != entity.getNBank() || persoFX != currentFX || entity.getAlpha() != currentAlpha) && currentBank != -1) {
+							if ((currentBank != entity.getNBank() || persoFX != currentFX 
+									|| entity.getAlpha() != currentAlpha || entity.getLight() != currentLight) && currentBank != -1) {
 								// We got a break into sprite sequence display on the bank level
-								bankOrder[floor][phase][bankOrderPosition*4]  =currentBank;
-								bankOrder[floor][phase][bankOrderPosition*4+1]=nbQuadFromSameBank;
-								bankOrder[floor][phase][bankOrderPosition*4+2]=currentFX.ordinal();
-								bankOrder[floor][phase][bankOrderPosition*4+3]=currentAlpha;
+								bankOrder[floor][phase][bankOrderPosition*5]  =currentBank;
+								bankOrder[floor][phase][bankOrderPosition*5+1]=nbQuadFromSameBank;
+								bankOrder[floor][phase][bankOrderPosition*5+2]=currentFX.ordinal();
+								bankOrder[floor][phase][bankOrderPosition*5+3]=currentAlpha;
+								bankOrder[floor][phase][bankOrderPosition*5+4]=currentLight;
+								
 								bankOrderPosition++;
 								nbQuadFromSameBank=0;
 							}
 							currentBank = entity.getNBank();
 							currentFX = persoFX;
 							currentAlpha = entity.getAlpha();
+							currentLight = entity.getLight();
 							nbQuadFromSameBank+=nbEntity;
 						}
 		
@@ -227,12 +232,13 @@ public class SpriteSorter {
 					}
 				}
 				// Save the last build sequence
-				bankOrder[floor][phase][bankOrderPosition*4]  =currentBank;
-				bankOrder[floor][phase][bankOrderPosition*4+1]=nbQuadFromSameBank;
-				bankOrder[floor][phase][bankOrderPosition*4+2]=currentFX.ordinal();
-				bankOrder[floor][phase][bankOrderPosition*4+3]=currentAlpha;
+				bankOrder[floor][phase][bankOrderPosition*5]  =currentBank;
+				bankOrder[floor][phase][bankOrderPosition*5+1]=nbQuadFromSameBank;
+				bankOrder[floor][phase][bankOrderPosition*5+2]=currentFX.ordinal();
+				bankOrder[floor][phase][bankOrderPosition*5+3]=currentAlpha;
+				bankOrder[floor][phase][bankOrderPosition*5+4]=currentLight;
 				// Mark the end of sequences
-				bankOrder[floor][phase][bankOrderPosition*4+4]=-1;
+				bankOrder[floor][phase][bankOrderPosition*5+5]=-1;
 			}
 		}
 		for (int b=0;b<Constantes.NB_SPRITEBANK;b++) {

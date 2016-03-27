@@ -84,6 +84,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	private EngineFX specialEffect; // Utilisé pour changer la couleur d'un
 									// garde par exemple
 	protected float alpha = 255; // 0..255 alpha channel (we use float for speed/acceleration calculation)
+	public int light = 0xffffff;	/// 0x0RGB where each color is on 8 bits
 	public int zoom = 255;	//0..255 zoom factor : 255=full size
 	
 	public byte repeatX=1, repeatY=1;
@@ -103,6 +104,14 @@ public class SpriteEntity extends Identified implements Cloneable,
 
 	public void setAlpha(float alpha) {
 		this.alpha = alpha;
+	}
+	
+	public int getLight() {
+		return light;
+	}
+	
+	public void setLight(int light) {
+		this.light = light;
 	}
 	
 	public int getScrX() {

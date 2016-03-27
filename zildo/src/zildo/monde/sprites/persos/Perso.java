@@ -694,12 +694,38 @@ public abstract class Perso extends Element {
 		inDirt = false;
 		BankSound snd = null;
 		nature = area.getCaseNature((int) x, (int) y);
+		int coeffWhiteLight = 15;
 		
 		if (!flying && isZildo() && nature == TileNature.WATER) {
 			// Water
 			diveAndWound();
 		} else {
 			switch (onmap) {
+			// Diminushing light under horizontal doors
+			case 97 + 256*3:
+			case 99 + 256*3:
+				coeffWhiteLight = Math.min(16 - (int) x % 16, 15);
+				break;
+			case 98 + 256*3:
+			case 100 + 256*3:
+				setLight(0x111111);
+				break;
+			case 191 + 256*3:
+			case 193 + 256*3:
+				coeffWhiteLight = Math.min(8 + 16 - (int) x % 16, 15);
+				break;
+			case 192 + 256*3:
+			case 194 + 256*3:
+				coeffWhiteLight = 8 - ((int) x % 16) / 2;
+				break;
+			case 197 + 256*3:
+			case 199 + 256*3:
+				coeffWhiteLight = 8 + Math.min((int) x % 16, 7);
+				break;
+			case 196 + 256*3:
+			case 198 + 256*3:
+				coeffWhiteLight = ((int) x % 16) / 2;
+				break;
 			case 256 + 22: case 256*5 + 214:
 				if (pathFinder.open) {
 					area.writemap(cx, cy, 314);
@@ -811,6 +837,8 @@ public abstract class Perso extends Element {
 				}
 			}
 		}
+		setLight(coeffWhiteLight * 0x111111);
+
 		if (fall) {
 			stopBeingWounded();	// Stop potential projection
 			setCompte_dialogue(0);	// Stop Zildo blink
