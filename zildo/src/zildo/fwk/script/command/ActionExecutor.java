@@ -600,10 +600,13 @@ public class ActionExecutor extends RuntimeExecutor {
             				if (newFloor >= 0 && newFloor < Constantes.TILEENGINE_FLOOR) {
             					// Upper : just check if there's an upper floor on the map
             					boolean itsOk = false;
-            					if (p_action.deltaFloor > 0 && newFloor <= EngineZildo.mapManagement.getCurrentMap().getHighestFloor()) {
+            					area = EngineZildo.mapManagement.getCurrentMap();
+            					if (p_action.deltaFloor > 0 && newFloor <= area.getHighestFloor() &&
+            							// Check if there's really a tile at upper floor at this place
+            							area.readmap((int) perso.getX() / 16, (int) perso.getY() / 16, false, newFloor) != null) {
             						itsOk = true;
-            					} else if (p_action.deltaFloor < 0 && EngineZildo.mapManagement.getCurrentMap().readmap((int) perso.getX() / 16, (int) perso.getY() / 16, false, newFloor) != null ) {
-            						// Lower : we check if there's really a tile at lower floor a this place
+            					} else if (p_action.deltaFloor < 0 && area.readmap((int) perso.getX() / 16, (int) perso.getY() / 16, false, newFloor) != null ) {
+            						// Lower : we check if there's really a tile at lower floor at this place
             						itsOk = true;
             					}
             					if (itsOk) {
