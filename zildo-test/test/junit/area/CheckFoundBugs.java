@@ -28,6 +28,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.map.Case;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
@@ -108,5 +109,36 @@ public class CheckFoundBugs extends EngineUT {
 		Assert.assertFalse(zildo.isGhost());
 		renderFrames(10);
 		Assert.assertEquals("voleursm2", EngineZildo.mapManagement.getCurrentMap().getName());
+	}
+	
+	@Test
+	public void npeRestoreFirstTime() {	// Issue 84 (NPE)
+		mapUtils.loadMap("coucou");
+		waitEndOfScripting();
+		// Spawn hero near a coast, and send him to the water 
+		PersoPlayer zildo = spawnZildo(581, 902);
+		EngineZildo.scriptManagement.execute("intro", true);
+		waitEndOfScriptingPassingDialog();
+		
+		Assert.assertFalse("Dialog should be over !", EngineZildo.getClientState().dialogState.isDialoguing());
+		
+		// Intro is over, so place hero near a coast, and send him to the water
+		zildo.setPos(new Vector2f(581, 902));
+		zildo.setPv(1);
+		simulateDirection(0, -1);
+		renderFrames(40);
+		waitEndOfScripting();
+		Assert.assertEquals(MouvementZildo.SAUTE, zildo.getMouvement());
+		renderFrames(40);
+		Assert.assertEquals(MouvementZildo.VIDE, zildo.getMouvement());
+		// Player has fallen into water
+		boolean error = false;
+		try {
+			waitEndOfScriptingPassingDialog();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			error = true;
+		}
+		Assert.assertFalse(error);
 	}
 }

@@ -587,6 +587,7 @@
 	    <moveTo who="zildo" pos="970,292"/>
 	    <angle who="roxy" value="2"/>
 	    <focus who="zildo" unblock="true" delta="true"/>
+	    <herospecial value="3"/>
 	</scene>
 	
 	<scene id="echange">
