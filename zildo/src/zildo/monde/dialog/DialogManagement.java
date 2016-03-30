@@ -84,7 +84,7 @@ public class DialogManagement {
 				// After this automatic dialog, he should get back to the conversation.
 				p_client.dialogState.continuing = true;
 			}
-	        p_client.dialogState.dialoguing = true;
+	        p_client.dialogState.setDialoguing(true);
 	    }
 
 	}
@@ -203,7 +203,7 @@ public class DialogManagement {
 	 * @param p_brutal TRUE=Zildo leaves brutally his interlocutor
 	 */
 	public void stopDialog(ClientState p_client, boolean p_brutal) {
-		p_client.dialogState.dialoguing=false;
+		p_client.dialogState.setDialoguing(false);
 		PersoPlayer zildo=p_client.zildo;
 		Perso perso=p_client.zildo.getDialoguingWith();
 		zildo.setDialoguingWith(null);

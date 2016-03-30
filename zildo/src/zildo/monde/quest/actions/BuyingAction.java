@@ -73,7 +73,7 @@ public class BuyingAction extends ActionDialog {
 		}
 		zildo.lookItems(new Inventory(items), 0, seller, sellDescription);
 		
-		p_clientState.dialogState.dialoguing=true;
+		p_clientState.dialogState.setDialoguing(true);
 	}
 
 }

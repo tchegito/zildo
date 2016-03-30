@@ -86,7 +86,7 @@ public class PlayerManagement {
 			gamePhase=GamePhase.SCRIPT;
 		} else if (client.event.mapChange) {
 			gamePhase=GamePhase.MAPCHANGE;
-		} else if (dialogState.dialoguing) {
+		} else if (dialogState.isDialoguing()) {
 			if (heros.isInventoring()) {
 				gamePhase=GamePhase.BUYING;
 			} else {
@@ -98,7 +98,7 @@ public class PlayerManagement {
 
 		// Specific for touchscreen : "touch frame" is equivalent to "touch Action key"
 		// Except for BUYING action ! 
-		if (dialogState.dialoguing && gamePhase != GamePhase.BUYING && PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
+		if (dialogState.isDialoguing() && gamePhase != GamePhase.BUYING && PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
 			instant.setKeyMerged(KeysConfiguration.PLAYERKEY_ACTION, 
 					KeysConfiguration.PLAYERKEY_DIALOG, 
 					KeysConfiguration.PLAYERKEY_ATTACK,
@@ -123,7 +123,7 @@ public class PlayerManagement {
 			// User move
 			handleCommon();
 			
-			if (dialogState.dialoguing) {
+			if (dialogState.isDialoguing()) {
 				// Conversation
 				handleConversation();
 				if (heros.isInventoring()) {
@@ -538,7 +538,7 @@ public class PlayerManagement {
 			} else if (heros.who.canFreeJump && heros.getMouvement() != MouvementZildo.TOMBE) {
 				// Controlled character can jump with Y KEY
 				heros.jump();
-			} else if (gamePhase.moves && heros.getEn_bras() == null && !client.dialogState.dialoguing && !heros.isInventoring()) {
+			} else if (gamePhase.moves && heros.getEn_bras() == null && !client.dialogState.isDialoguing() && !heros.isInventoring()) {
 				// Set Zildo in attack stance
 				heros.attack();
 			}

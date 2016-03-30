@@ -55,7 +55,7 @@ public class EngineZildo {
     
     public static Game game;
     public static Hasard hasard = new Hasard();	// Could be overwrited for UT
-    public static EasyBuffering backedUpGame;	// When hero dies, we restore this game
+    private static EasyBuffering backedUpGame;	// When hero dies, we restore this game
     public static int compteur_animation;
 	
     public static ClientState spClientState;	// Single player client state
