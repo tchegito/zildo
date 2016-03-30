@@ -168,15 +168,17 @@ public class TouchListener implements OnTouchListener {
 	}
 	
 	public void pressGameButton(KeyLocation k, boolean press) {
-		if (press) {
-			infos.pressButton(k);
-			Menu menu = client.getCurrentMenu();
-			if (menu != null) {
-				// Inside a menu, activate current item
-				item = menu.items.get(menu.getSelected());
+		if (infos != null) {
+			if (press) {
+				infos.pressButton(k);
+				Menu menu = client.getCurrentMenu();
+				if (menu != null) {
+					// Inside a menu, activate current item
+					item = menu.items.get(menu.getSelected());
+				}
+			} else {
+				infos.releaseButton(k);
 			}
-		} else {
-			infos.releaseButton(k);
 		}
 	}
 	
