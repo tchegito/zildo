@@ -149,14 +149,14 @@ public class FreezeTest extends EngineUT {
 			// Stuck because of DialogDisplay, part of GUIDisplay, that we mock ! How reach it from here ?
 			// Check that gameover dialog is over
 			boolean toggle = true;
-			while (clientState.dialogState.dialoguing) { 
+			while (clientState.dialogState.isDialoguing()) { 
 				// Simulate press/release action key to pass dialog
 				instant.setKey(KeysConfiguration.PLAYERKEY_ACTION, toggle);
 				renderFrames(1);
 				toggle = !toggle;
 			}
 			zildo = EngineZildo.persoManagement.getZildo();
-			Assert.assertFalse(clientState.dialogState.dialoguing);
+			Assert.assertFalse(clientState.dialogState.isDialoguing());
 		}
 	}
 	

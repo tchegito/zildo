@@ -61,12 +61,12 @@ public class Inconsistencies extends EngineUT {
 		// Check door is open
 		Assert.assertTrue("Igor's door should have been opened !", igorDoor.isOpen());
 		// Wait for guard returning to his location, and his dialog over
-		while (!clientState.dialogState.dialoguing) {
+		while (!clientState.dialogState.isDialoguing()) {
 			renderFrames(5);
 		}
 		simulatePressButton(Keys.Q, 5);
 		simulatePressButton(Keys.Q, 40);
-		while (clientState.dialogState.dialoguing) {
+		while (clientState.dialogState.isDialoguing()) {
 			renderFrames(5);
 		}
 

@@ -33,6 +33,8 @@ import junit.FreezeMonitor;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.mockito.ArgumentMatcher;
+import org.mockito.Matchers;
 
 import zildo.Zildo;
 import zildo.client.Client;
@@ -57,6 +59,7 @@ import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.monde.Game;
+import zildo.monde.Hasard;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -69,6 +72,7 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
+import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.state.ClientState;
@@ -318,13 +322,55 @@ public class EngineUT {
 	/** Useful to pass a cutscene **/
 	public void waitEndOfScriptingPassingDialog() {
 		waitEndOfScripting(new ScriptAction(null) {
+			int timeToWait = 0;
 			@Override
 			public void launchAction(ClientState p_clientState) {
-				EngineZildo.scriptManagement.userEndAction();
+				//if (p_clientState.dialogState.isDialoguing()) {
+					if (timeToWait == 0) {
+						simulateKeyPressed(KeysConfiguration.PLAYERKEY_ACTION.code);
+						timeToWait = 1;
+					} else {
+						timeToWait--;
+						if (timeToWait == 0) {
+							//simulateKeyPressed(KeysConfiguration.PLAYERKEY_ACTION.code);
+							simulateKeyPressed(null);
+						}
+					}
+				//}
 			}
 		});
 	}
 
+	/** Useful to pass a cutscene **/
+	public void waitEndOfScriptingRandomlyPressingButtons() {
+		waitEndOfScripting(new ScriptAction(null) {
+			int timeToWait = 0;
+			@Override
+			public void launchAction(ClientState p_clientState) {
+				//if (p_clientState.dialogState.isDialoguing()) {
+					if (timeToWait == 0) {
+						int a = new Hasard().de6();
+						if (a > 4) {
+							simulateKeyPressed(KeysConfiguration.PLAYERKEY_ACTION.code, KeysConfiguration.PLAYERKEY_ATTACK.code);
+						} else if (a > 2) {
+							simulateKeyPressed(KeysConfiguration.PLAYERKEY_ACTION.code);
+						} else {
+							simulateKeyPressed(KeysConfiguration.PLAYERKEY_ATTACK.code);
+						}
+						simulateKeyPressed(KeysConfiguration.PLAYERKEY_DIALOG.code, KeysConfiguration.PLAYERKEY_ACTION.code);
+						//simulateKeyPressed(KeysConfiguration.PLAYERKEY_ATTACK.code);
+						timeToWait = 4;
+					} else {
+						timeToWait--;
+						if (timeToWait == 0) {
+							//simulateKeyPressed(KeysConfiguration.PLAYERKEY_ACTION.code);
+							simulateKeyPressed(null);
+						}
+					}
+				//}
+			}
+		});
+	}
 	public void simulateDirection(int x, int y) {
 		simulateDirection(new Vector2f(x, y));
 	}
@@ -335,14 +381,28 @@ public class EngineUT {
 		instant.update();
 	}
 
-	public void simulateKeyPressed(Keys key) {
+	public void simulateKeyPressed(Keys... keys) {
 		reset(fakedKbHandler);
-		if (key == null) {
+		if (keys == null) {
 			doReturn(false).when(fakedKbHandler).isKeyDown(anyInt());
 		} else {
-			doReturn(true).when(fakedKbHandler).isKeyDown(key);
+			if (keys.length == 1) {
+				doReturn(true).when(fakedKbHandler).isKeyDown(keys[0]);
+			} else {
+				// Multiple value matching
+				doReturn(true).when(fakedKbHandler).isKeyDown(Matchers.argThat(new ArgumentMatcher<Keys>() {
+					@Override
+					public boolean matches(Object argument) {
+						for (Keys k : keys) {
+							if (argument == k) {
+								return true;
+							}
+						}
+						return false;
+					}
+				}));
+			}
 		}
-		//when(fakedKbHandler.isKeyPressed(key)).thenReturn(true);
 		instant.update();
 	}
 	
