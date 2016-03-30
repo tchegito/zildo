@@ -1536,6 +1536,7 @@
 		<angle who="jaune" value="2"/>
 		<angle who="igor" value="0"/>
 		<moveTo who="zildo" pos="0,10" delta="true"/>
+		<angle who="zildo" value="2"/>
 		<if expQuest="igor_promise_sword">
 			<speak who="zildo" text="freeIgor.zildo.0"/>
 			<sound name="ZildoAccomplishQuest"/>
