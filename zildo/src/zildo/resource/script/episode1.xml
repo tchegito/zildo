@@ -569,7 +569,7 @@
 	    <wait value="200" />
 	    <actions>
 	    	<moveTo what="camera" pos="640,150" />
-	        <moveTo who="zildo" speed="1" pos="830,270"/>
+	        <moveTo who="zildo" speed="0.75" pos="830,270"/>
 	        <moveTo who="roxy" pos="830,290"/>
 	    </actions>
 	    <angle who="roxy" value="0" />
