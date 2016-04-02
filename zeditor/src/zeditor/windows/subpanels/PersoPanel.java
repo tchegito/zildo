@@ -134,6 +134,7 @@ public class PersoPanel extends JPanel {
 					int val = (Integer) spinner.getValue();
 					behavior.replique[val] = 0;
 					updateDialog();
+					manager.setUnsavedChanges(true);
 				}
 			}
 		}), BorderLayout.EAST);
@@ -272,6 +273,7 @@ public class PersoPanel extends JPanel {
 						currentPerso.setInfo(i);
 					}
 				}
+				manager.setUnsavedChanges(true);
 				manager.getZildoCanvas().setChangeSprites(true);
 			}
 		}
@@ -320,7 +322,10 @@ public class PersoPanel extends JPanel {
 							PersoNJ pnj = (PersoNJ) currentPerso;
 							pnj.setDialogSwitch(txt);
 						}
+					} else {
+						return;	// Doesn't notify changes
 					}
+					manager.setUnsavedChanges(true);
 				} catch (BadLocationException e) {
 
 				}

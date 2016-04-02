@@ -83,6 +83,7 @@ public class ChainingPointPanel extends JPanel {
 						EngineZildo.mapManagement.getCurrentMap()
 								.addChainingPoint(ch);
 						manager.updateChainingPoints(null);
+						manager.setUnsavedChanges(true);
 					}
 				});
 		add(creer, BorderLayout.SOUTH);
@@ -141,7 +142,7 @@ public class ChainingPointPanel extends JPanel {
 	public void updateList(ChainingPoint[] p_points) {
 
 		// Set the model
-		model = new ChainingPointTableModel(p_points, columnNames);
+		model = new ChainingPointTableModel(manager, p_points, columnNames);
 		pointsList.setModel(model);
 
 		// Set angle combo
@@ -175,6 +176,7 @@ public class ChainingPointPanel extends JPanel {
 						EngineZildo.mapManagement.getCurrentMap()
 								.removeChainingPoint(ch);
 						manager.updateChainingPoints(null);
+						manager.setUnsavedChanges(true);
 					}
 				}));
 
@@ -244,7 +246,7 @@ public class ChainingPointPanel extends JPanel {
 		private static final long serialVersionUID = 104055182615089183L;
 
 		ChainingPoint[] points;
-
+		
 		/**
 		 * Very important : to get the boolean value represented par JCheckBox
 		 * automatically
@@ -265,7 +267,7 @@ public class ChainingPointPanel extends JPanel {
 			return super.isCellEditable(i, j);
 		}
 
-		public ChainingPointTableModel(ChainingPoint[] data,
+		public ChainingPointTableModel(final MasterFrameManager manager, ChainingPoint[] data,
 				String[] columnNames) {
 
 			super(transformObjectArray(data), columnNames);
@@ -302,6 +304,8 @@ public class ChainingPointPanel extends JPanel {
 						ch.setTransitionAnim(FilterEffect.valueOf((String) o));
 						break;
 					}
+					manager.setUnsavedChanges(true);
+
 				}
 			});
 

@@ -54,6 +54,8 @@ public class MasterFrameManager {
 
 	private String currentMapFile;
 
+	boolean unsavedChanges = false;
+	
 	private byte currentFloor = 1;	// Default floor
 	
 	public final static int MESSAGE_ERROR = 1;
@@ -66,6 +68,14 @@ public class MasterFrameManager {
 	 */
 	public MasterFrameManager(MasterFrame p_frame) {
 		masterFrame = p_frame;
+		masterFrame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				if (!unsavedChanges || confirmAbandonChanges()) {
+					System.exit(0);
+				}
+			}
+		});
 	}
 
 	/**
@@ -143,8 +153,17 @@ public class MasterFrameManager {
 
 	}
 
+	private boolean confirmAbandonChanges() {
+		int answer = JOptionPane.showConfirmDialog(null, "You have unsaved changes on current map. Are you sure to loose them ?",
+				"Zeditor", JOptionPane.YES_NO_OPTION);
+		return answer == 0;
+	}
+	
 	public void loadMap(String p_mapName, ChainingPoint p_fromChainingPoint) {
 
+		if (unsavedChanges && !confirmAbandonChanges()) {
+			return;	// Stay on current map
+		}
 		display("Ouverture du fichier : " + p_mapName, MESSAGE_INFO);
 		try {
 			ChainingPoint ch = zildoCanvas.loadMap(p_mapName,
@@ -155,6 +174,7 @@ public class MasterFrameManager {
 			updateTitle();
 			updateChainingPoints(ch);
 			masterFrame.getStatsPanel().updateStats();
+			setUnsavedChanges(false);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			display("Probleme !", MESSAGE_ERROR);
@@ -171,6 +191,9 @@ public class MasterFrameManager {
 			sb.append(map.getDim_x() + " x " + map.getDim_y());
 		} else {
 			sb.append("Nouvelle carte");
+		}
+		if (unsavedChanges) {
+			sb.append(" *");
 		}
 		masterFrame.setTitle(sb.toString());
 	}
@@ -276,6 +299,7 @@ public class MasterFrameManager {
 			}
 
 			public void windowClosing(WindowEvent arg0) {
+
 			}
 
 			public void windowDeactivated(WindowEvent arg0) {
@@ -553,5 +577,14 @@ public class MasterFrameManager {
 	
 	public void reloadTileBanks() {
 		masterFrame.getBackgroundPanel().getTileSetPanel().clearTiles();
+	}
+	
+	/** Inform that users have made changes on the current map **/
+	public void setUnsavedChanges(boolean value) {
+		boolean needToUpdate = value != unsavedChanges;
+		unsavedChanges = value;
+		if (needToUpdate) {
+			updateTitle();
+		}
 	}
 }

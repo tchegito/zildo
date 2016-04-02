@@ -29,6 +29,8 @@ import zildo.server.EngineZildo;
 @SuppressWarnings("serial")
 public class StatsPanel extends JPanel {
 
+	MasterFrameManager manager;
+	
 	JLabel dim;
 	JLabel nSpr;
 	JLabel nPerso;
@@ -39,7 +41,10 @@ public class StatsPanel extends JPanel {
 	JSpinner spinLimitY;
 	JComboBox atmosphere;
 
-	public StatsPanel() {
+	boolean updatingUI; // To know wether user or UI ask for update
+
+	public StatsPanel(MasterFrameManager manager) {
+		this.manager = manager;
 		setLayout(new GridLayout(10, 2));
 
 		add(new JLabel("Dimension"));
@@ -84,6 +89,7 @@ public class StatsPanel extends JPanel {
 	}
 
 	public void updateStats() {
+		updatingUI = true;
 		Area map = EngineZildo.mapManagement.getCurrentMap();
 		int nbPerso = EngineZildo.persoManagement.tab_perso.size();
 		int nbSpr = EngineZildo.spriteManagement.getSpriteEntities(null).size();
@@ -101,6 +107,7 @@ public class StatsPanel extends JPanel {
 		atmosphere.setSelectedIndex(map.getAtmosphere().ordinal());
 		spinLimitX.setValue(map.getDim_x());
 		spinLimitY.setValue(map.getDim_y());
+		updatingUI = false;
 	}
 
 	private String getPersoNames() {
@@ -126,29 +133,34 @@ public class StatsPanel extends JPanel {
 
 		@Override
 		public void stateChanged(ChangeEvent changeevent) {
-
-			// If we are focusing on an existing sprite, then update his
-			// attributes
-			Component comp = (Component) changeevent.getSource();
-			if (comp instanceof JSpinner) {
-				int val = (Integer) ((JSpinner) comp).getValue();
-				Area map = EngineZildo.mapManagement.getCurrentMap();
-				if (comp == spinLimitX) {
-					map.setDim_x(val);
-				} else if (comp == spinLimitY) {
-					map.setDim_y(val);
+			if (!updatingUI) {
+				// If we are focusing on an existing sprite, then update his
+				// attributes
+				Component comp = (Component) changeevent.getSource();
+				if (comp instanceof JSpinner) {
+					int val = (Integer) ((JSpinner) comp).getValue();
+					Area map = EngineZildo.mapManagement.getCurrentMap();
+					if (comp == spinLimitX) {
+						map.setDim_x(val);
+					} else if (comp == spinLimitY) {
+						map.setDim_y(val);
+					}
+					manager.setUnsavedChanges(true);
 				}
 			}
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent changeevent) {
-			Component comp = (Component) changeevent.getSource();
-			Area map = EngineZildo.mapManagement.getCurrentMap();
-			if (comp == atmosphere) {
-				String val = (String) ((JComboBox) comp).getSelectedItem();
-				Atmosphere a = ZUtils.getField(val, Atmosphere.class);
-				map.setAtmosphere(a);
+			if (!updatingUI) {
+				Component comp = (Component) changeevent.getSource();
+				Area map = EngineZildo.mapManagement.getCurrentMap();
+				if (comp == atmosphere) {
+					String val = (String) ((JComboBox) comp).getSelectedItem();
+					Atmosphere a = ZUtils.getField(val, Atmosphere.class);
+					map.setAtmosphere(a);
+					manager.setUnsavedChanges(true);
+				}
 			}
 		}
 	}

@@ -112,6 +112,7 @@ public class SpritePanel extends JPanel {
 			public void actionPerformed(ActionEvent actionevent) {
 				if (sel != null) {
 					sel.toggleForeground();
+					manager.setUnsavedChanges(true);
 				}
 			}
 		});
@@ -204,6 +205,7 @@ public class SpritePanel extends JPanel {
 		sel.reverse(p_horizontal);
 		// Ask a sprite visual update
 		manager.getZildoCanvas().setChangeSprites(true);
+		manager.setUnsavedChanges(true);
 	}
 
 	private void togglePushable(boolean p_pushable) {
@@ -211,6 +213,7 @@ public class SpritePanel extends JPanel {
 			if (ent.getEntityType().isElement()) {
 				Element elem = (Element) ent;
 				elem.setPushable(!elem.isPushable());
+				manager.setUnsavedChanges(true);
 			}
 		}
 	}
@@ -309,6 +312,7 @@ public class SpritePanel extends JPanel {
 						}
 					}
 					manager.getZildoCanvas().setChangeSprites(true);
+					manager.setUnsavedChanges(true);
 				}
 			}
 		}
@@ -325,6 +329,7 @@ public class SpritePanel extends JPanel {
 					entity.rotation = rot;
 				}
 				manager.getZildoCanvas().setChangeSprites(true);
+				manager.setUnsavedChanges(true);
 			}
 		}
 
@@ -351,6 +356,7 @@ public class SpritePanel extends JPanel {
 			try {
 				String txt = doc.getText(0, doc.getLength());
 				entity.setName(txt);
+				manager.setUnsavedChanges(true);
 			} catch (Exception ex) {
 				
 			}

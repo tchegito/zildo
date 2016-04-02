@@ -125,12 +125,14 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 					break;
 			}
 		}
+		manager.setUnsavedChanges(true);
 	}
 
 	private void drawBrush(Point p, TileSelection p_sel) {
 		// Apply selected brush to the map
 		if (p_sel.getElement() != null) {
 			p_sel.draw(makeAreaWrapper(), new zildo.monde.util.Point(p.x / 16, p.y / 16), mask);
+			manager.setUnsavedChanges(true);
 		}
 	}
 

@@ -158,6 +158,8 @@ public class MasterFrame extends javax.swing.JFrame {
 	public MasterFrame() {
 		super();
 		initGUI();
+		// Exit will be conditioned by unsaved changes presence
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
 	private void initGUI() {
@@ -759,7 +761,7 @@ public class MasterFrame extends javax.swing.JFrame {
 
 	public StatsPanel getStatsPanel() {
 		if (statsPanel == null) {
-			statsPanel = new StatsPanel();
+			statsPanel = new StatsPanel(manager);
 		}
 		return statsPanel;
 	}
