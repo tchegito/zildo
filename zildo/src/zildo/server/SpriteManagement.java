@@ -227,7 +227,7 @@ public class SpriteManagement extends SpriteStore {
 			case ARROW :
 			case FROMGROUND:
 			case BLUE_DROP:
-				if (EngineZildo.mapManagement.collide(x, y, miscPerso)) {
+				if (EngineZildo.mapManagement.collide(x, y, miscPerso) && desc == null) {
 					return null;
 				}
 			default:
