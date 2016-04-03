@@ -126,6 +126,7 @@ public class MasterFrameManager {
 	public void save() {
 		zildoCanvas.saveMapFile(currentMapFile);
 		display("Sauvegarde effectuée.", MESSAGE_INFO);
+		setUnsavedChanges(false);
 	}
 
 	public void saveAs(String newMapFile) {
