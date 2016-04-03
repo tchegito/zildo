@@ -710,6 +710,10 @@ public abstract class Perso extends Element {
 			case 100 + 256*3:
 				setLight(0x111111);
 				break;
+			case 159 + 256*3: case 163 + 256*3:
+			case 160 + 256*3: case 164 + 256*3:
+				setLight(0xc2fbca); coeffWhiteLight = -1;
+				break; //b2ebba ou 79ba92
 			case 191 + 256*3:
 			case 193 + 256*3:
 				coeffWhiteLight = Math.min(8 + 16 - (int) x % 16, 15);
@@ -725,6 +729,23 @@ public abstract class Perso extends Element {
 			case 196 + 256*3:
 			case 198 + 256*3:
 				coeffWhiteLight = ((int) x % 16) / 2;
+				break;
+				// Vertical doors
+			case 175 + 256*3:
+			case 176 + 256*3:
+				coeffWhiteLight = ((int) y % 16) / 2;
+				break;
+			case 177 + 256*3:
+			case 178 + 256*3:
+				coeffWhiteLight = 8 + Math.min((int) y % 16, 7);
+				break;
+			case 179 + 256*3:
+			case 180 + 256*3:
+				coeffWhiteLight = 15 - Math.max((int)y % 16 - 8, 0);
+				break;
+			case 181 + 256*3:
+			case 182 + 256*3:
+				coeffWhiteLight = 8 - ((int) y % 16) / 4;
 				break;
 			case 256 + 22: case 256*5 + 214:
 				if (pathFinder.open) {
@@ -837,8 +858,16 @@ public abstract class Perso extends Element {
 				}
 			}
 		}
-		setLight(coeffWhiteLight * 0x111111);
-
+		if (coeffWhiteLight != -1) {
+			setLight(coeffWhiteLight * 0x111111);
+		}
+		Tile foreTile = area.readmap(cx, cy, true);
+		if (foreTile != null && foreTile.getValue() == (256*3 + 126)) {
+			// Particular case: really ugly, but how handle it properly ? When hero is under a foretile masking him
+			// For example, when he crosses vertical door.
+			setLight(0);
+		}
+		
 		if (fall) {
 			stopBeingWounded();	// Stop potential projection
 			setCompte_dialogue(0);	// Stop Zildo blink
