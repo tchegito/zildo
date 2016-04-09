@@ -477,6 +477,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 		List<Perso> elems=p_sel.getElement();
 		boolean first=true;
 		Point delta = new Point(0,0);
+		int floor = manager.getCurrentFloor();
 		for (Perso perso : elems) {
         		if (first) {
         		    delta.x = (int) perso.x - p_point.x;
@@ -491,6 +492,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
         		if (!EngineZildo.spriteManagement.isSpawned(perso)) {
         			EngineZildo.spriteManagement.spawnPerso(perso);
         		}
+        		perso.setFloor(floor);
 		}
 		changeSprites=true;	// Ask for sprites updating
 	}

@@ -77,7 +77,7 @@ public class PersoPanel extends JPanel {
 	JComboBox script;
 	JComboBox angle;
 	JComboBox persoType;
-	JTextField object;
+	JTextField floor;
 	JComboBox info;
 	JSpinner spinner;
 	JTextField dialogZone;
@@ -113,8 +113,8 @@ public class PersoPanel extends JPanel {
 		angle = new JComboBox(ZUtils.getValues(Angle.class));
 		southPanel.addComp(new JLabel("Angle"), angle);
 
-		object = new JTextField();
-		southPanel.addComp(new JLabel("Objet"), object);
+		floor = new JTextField();
+		southPanel.addComp(new JLabel("Floor"), floor);
 
 		info = new JComboBox(ZUtils.getValues(PersoInfo.class));
 		southPanel.addComp(new JLabel("Info"), info);
@@ -159,7 +159,7 @@ public class PersoPanel extends JPanel {
 		persoType.addActionListener(listener);
 		script.addActionListener(listener);
 		angle.addActionListener(listener);
-		object.addActionListener(listener);
+		floor.addActionListener(listener);
 		info.addActionListener(listener);
 		spinner.addChangeListener(listener);
 		dialogSwitch.getDocument().addDocumentListener(listener);
@@ -182,7 +182,7 @@ public class PersoPanel extends JPanel {
 			script.setSelectedIndex(0);
 			angle.setSelectedIndex(0);
 			info.setSelectedIndex(0);
-			object.setText("0");
+			floor.setText("0");
 			dialogSwitch.setText("");
 			behavior = null;
 		} else {
@@ -192,7 +192,7 @@ public class PersoPanel extends JPanel {
 			angle.setSelectedIndex(p_perso.getAngle().value);
 			info.setSelectedIndex(p_perso.getInfo().ordinal());
 			dialogSwitch.setText(p_perso.getDialogSwitch());
-			object.setText("0");
+			floor.setText(""+p_perso.getFloor());
 
 			MapDialog mapDialog = EngineZildo.mapManagement.getCurrentMap()
 					.getMapDialog();
