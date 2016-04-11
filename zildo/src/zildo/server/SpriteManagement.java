@@ -357,6 +357,7 @@ public class SpriteManagement extends SpriteStore {
 					e.setFx(0.04f);
 					e.setFy(0.04f);
 					e.setNSpr(ElementDescription.TINY_ROCK.ordinal());
+					e.setFloor(floor);
 					if (j % 2 == 1) {
 						e.rotation = Rotation.UPSIDEDOWN;
 					}

@@ -965,6 +965,14 @@ public class Element extends SpriteEntity {
 		return linkedPerso.isLinkedToZildo();
 	}
 
+	// Set element's floor and its shadow (if exists)
+	public void setFloor(int fl) {
+		super.setFloor(fl);
+		if (shadow != null) {
+			shadow.setFloor(fl);
+		}
+	}
+	
 	public void setTrigger(boolean p_trigger) {
 		questTrigger = p_trigger;
 	}
