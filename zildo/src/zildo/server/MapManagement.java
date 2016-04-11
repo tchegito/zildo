@@ -286,7 +286,7 @@ public class MapManagement {
 				if (currentMap.isCaseBottomLess(cx, cy)) {
 					return false;
 				}
-				Tile tile = currentMap.readmap(cx, cy, false);
+				Tile tile = currentMap.readmap(cx, cy, false, quelElement.floor);
 				if (tile == null) {
 					return false;
 				}
@@ -483,7 +483,13 @@ public class MapManagement {
 			}
 			Case mapCase = currentMap.get_mapcase(scaledX, scaledY, floor);
 			if (mapCase == null) {
-				continue;
+				if (floor > 0) {
+					mapCase = currentMap.get_mapcase(scaledX, scaledY, floor - 1);
+				}
+				if (mapCase == null) {
+				//return true;
+					continue;
+				}
 			}
 			
 			// HACK: add nonZildo condition because Squirrel falls on the hill from a higher stump. Indeed, we chose to get squirrel FOREGROUND when he's

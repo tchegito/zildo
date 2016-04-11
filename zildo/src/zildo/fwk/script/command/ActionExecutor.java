@@ -208,6 +208,17 @@ public class ActionExecutor extends RuntimeExecutor {
                         if (p_action.foreground != null) {
                         	perso.setForeground(p_action.foreground);
                         }
+	                	if (p_action.deltaFloor > 0) {	
+	                		// Need to update floor BEFORE movement if higher, because hero would be hidden otherwise
+	                		int newFloor = perso.floor + p_action.deltaFloor;
+	                		Area area = EngineZildo.mapManagement.getCurrentMap();
+	                		int cx = location.x / 16;
+	                		int cy = location.y / 16;
+	                		if (newFloor <= area.getHighestFloor() && area.readmap(cx, cy, false, newFloor) != null) {
+       							// Check if there's really a tile at upper floor at this place
+             					perso.setFloor(newFloor);
+	                		}
+	                	}
                     } else if ("camera".equals(p_action.what)) {
                         ClientEngineZildo.mapDisplay.setTargetCamera(location);
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
@@ -594,26 +605,6 @@ public class ActionExecutor extends RuntimeExecutor {
                     		//guardWeapon and weapon attributes.
                     		((PersoNJ)perso).setActiveWeapon(GuardWeapon.valueOf(p_action.weapon));
                     	}
-            			if (p_action.deltaFloor != 0) {
-            				int newFloor = perso.getFloor() + p_action.deltaFloor;
-            				// Try to reach higher/lower floor if exists
-            				if (newFloor >= 0 && newFloor < Constantes.TILEENGINE_FLOOR) {
-            					// Upper : just check if there's an upper floor on the map
-            					boolean itsOk = false;
-            					area = EngineZildo.mapManagement.getCurrentMap();
-            					if (p_action.deltaFloor > 0 && newFloor <= area.getHighestFloor() &&
-            							// Check if there's really a tile at upper floor at this place
-            							area.readmap((int) perso.getX() / 16, (int) perso.getY() / 16, false, newFloor) != null) {
-            						itsOk = true;
-            					} else if (p_action.deltaFloor < 0 && area.readmap((int) perso.getX() / 16, (int) perso.getY() / 16, false, newFloor) != null ) {
-            						// Lower : we check if there's really a tile at lower floor at this place
-            						itsOk = true;
-            					}
-            					if (itsOk) {
-            						perso.setFloor(newFloor);
-            					}
-            				}
-            			}
             			if (p_action.addSpr != -1) {
             				perso.setAddSpr(p_action.addSpr);
             			}
@@ -704,6 +695,20 @@ public class ActionExecutor extends RuntimeExecutor {
 	                	}
 	                	perso.setPos_seqsprite(0);
 	                	perso.setTarget(null);
+	                	if (p_action.deltaFloor < 0) {
+	                		// Need to update floor AFTER movement if lower
+            				int newFloor = perso.getFloor() + p_action.deltaFloor;
+            				if (newFloor >= 0 && newFloor < Constantes.TILEENGINE_FLOOR) {
+                				// Try to reach higher/lower floor if exists
+            					Area area = EngineZildo.mapManagement.getCurrentMap();
+            					int cx = (int) perso.x / 16;
+            					int cy = (int) perso.y / 16;
+            					if (area.readmap(cx, cy, false, newFloor) != null ) {
+            						// Lower : we check if there's really a tile at lower floor at this place
+            						perso.setFloor(newFloor);
+            					}
+            				}
+            			}
 	                }
             	} else if ("camera".equals(p_action.what)) {
             		achieved=ClientEngineZildo.mapDisplay.getTargetCamera() == null;

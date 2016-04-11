@@ -745,7 +745,7 @@ public abstract class Perso extends Element {
 				break;
 			case 181 + 256*3:
 			case 182 + 256*3:
-				coeffWhiteLight = 8 - ((int) y % 16) / 4;
+				coeffWhiteLight = 8 - ((int) y % 16) / 2;
 				break;
 			case 256 + 22: case 256*5 + 214:
 				if (pathFinder.open) {

@@ -122,6 +122,15 @@
 		</trigger>
 	</quest>
 	
+	<quest name="prison12Locked">
+	    <trigger>
+	        <dead who="noir,noir"/>
+	    </trigger>
+	    <action>
+	        <activate what="locked" value="true"/>
+	    </action>
+	</quest>
+	
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -157,6 +166,9 @@
 	   	</condition>
 	   	<condition name="prison9" exp="prison10Button">
 	   	    <activate what="grey" value="true" unblock="true"/>
+	   	</condition>
+	   	<condition name="prison12">
+	   	    <perso who="noir" pv="4"/>
 	   	</condition>
 	</mapScript>
 		

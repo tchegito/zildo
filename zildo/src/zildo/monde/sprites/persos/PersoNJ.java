@@ -286,7 +286,7 @@ public class PersoNJ extends Perso {
 					} // Sinon elle agit comme les scripts de zone
 					break;
 				case ZONEARC:
-					if (!isWounded() && isAlerte() && zildo.isAlive()) {
+					if (!isWounded() && isAlerte() && zildo.isAlive() && attente == 0) {
 						// Get the enemy aligned with Zildo to draw arrows
 						int xx = (int) getX();
 						int yy = (int) getY();

@@ -128,6 +128,7 @@ public class PersoManagement {
         return collidePerso(x, y, quelPerso, rayon);
     }
 	
+    // TODO:Handle cases where characters have same name (for example "noir" on a map)
     public Perso getNamedPerso(String p_name) {
         if (p_name != null && !"".equals(p_name)) {
         	// Iterate in reverse order => useful when map is scrolling

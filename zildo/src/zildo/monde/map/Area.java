@@ -920,7 +920,7 @@ public class Area implements EasySerializable {
 				p_file.put((int) perso.y);
 				p_file.put((int) perso.z);
 				if (nbFloors > 1) {
-					p_file.put((byte) 1);	// Default floor
+					p_file.put((byte) perso.getFloor());	// Default floor
 				}
 				PersoDescription desc = perso.getDesc();
 				p_file.put((byte) desc.getBank());

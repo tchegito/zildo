@@ -24,6 +24,7 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
+import zildo.monde.map.Area;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
@@ -97,10 +98,12 @@ public class ElementArrow extends ElementThrown  {
         		shadow.x +=1;
         } 
         // Shadow effect
-		int altitude=EngineZildo.mapManagement.getCurrentMap().readAltitude((int) x/16, (int) y/16);
-		if (altitude == relativeZ-1) {
+        Area area = EngineZildo.mapManagement.getCurrentMap();
+		int altitude=area.readAltitude((int) x/16, (int) y/16);
+		boolean highFlying = area.readmap((int)x, (int)y, false, floor) == null;
+		if (!highFlying && altitude == relativeZ-1) {
 			// The arrow seems to fly under a high place
-			int secondAltitude=EngineZildo.mapManagement.getCurrentMap().readAltitude((int) x/16,1+(int) (y/16));
+			int secondAltitude=area.readAltitude((int) x/16,1+(int) (y/16));
 			if (secondAltitude == altitude) {
 				shadow.y+=10;
 				z+=10;
@@ -108,7 +111,10 @@ public class ElementArrow extends ElementThrown  {
 				relativeZ=altitude;
 			}
 		}
-        super.animate();
+		super.animate();
+		if (highFlying) {
+			shadow.y+=10;
+		}
     }
     	
     @Override
