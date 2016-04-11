@@ -128,7 +128,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 | map         | text     | -       | -        | -           | Load the given map |
 | mapReplace  | text     | -       | V        | -           | Replace map indicated by 'what' by the one named by 'name'  |
 | markQuest   | text     | -       | -        | -           | Accomplish/reset a quest identified by 'name' attribute, according to the 'value' attribute (0=cancel / 1=accomplish) |
-| moveTo      | position | V       | V        | V           | Move character or camera's location, progressively. Can indicate a way of moving among "physic", "arc", and "circular". Default is rectilinear movement. |
+| moveTo      | position | V       | V        | V           | Move character or camera's location, progressively. Can indicate a way of moving among "physic", "arc", and "circular". Default is rectilinear movement. Accept 'deltaFloor' (-1 or 1) for stairs transitions. |
 | music       | text     | V       | V        | V           | Play a given music|
 | perso       | text     | -       | -        | -           | Change some character's attributes : type, info, fx. 'action' attribute is available to set a PersoAction. |
 | pos         | position | V       | V        | -           | Set character or camera's location |
