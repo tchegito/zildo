@@ -238,7 +238,7 @@ public enum ElementDescription implements SpriteDescription {
 			switch (this) {
 				case JAR:
 				case BUSHES:
-				case SHADOW:		// ???
+				//case SHADOW:		// ???
 				case STONE:
 				case STONE_HEAVY:
 				case DEATH_ANIM6:	// ???

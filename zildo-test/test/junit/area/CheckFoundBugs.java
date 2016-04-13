@@ -19,16 +19,24 @@
 
 package junit.area;
 
+import java.util.List;
+
 import junit.perso.EngineUT;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Case;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementZildo;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
@@ -140,5 +148,68 @@ public class CheckFoundBugs extends EngineUT {
 			error = true;
 		}
 		Assert.assertFalse(error);
+	}
+	
+	private List<SpriteEntity> sprites() {
+		return EngineZildo.spriteManagement.getSpriteEntities(null);
+	}
+	// Issue 86
+	@Test
+	public void checkProjectileHit() {
+		mapUtils.loadMap("igorlily");
+		PersoPlayer zildo = spawnZildo(102, 153);
+		zildo.setWeapon(new Item(ItemKind.SWORD));
+		waitEndOfScripting();
+		
+		// Get snakes
+		Perso snake = null;
+		int nbSnake = 0;
+		for (SpriteEntity entity : sprites()) {
+			if (entity.getDesc() == PersoDescription.FLYINGSERPENT) {
+				int distance = (int) Point.distance(entity.x, entity.y, zildo.x, zildo.y);
+				if (distance < 160) {
+					Assert.assertNull(snake);
+					snake = (Perso) entity;
+				}
+				nbSnake++;
+			}
+		}
+		Assert.assertEquals(nbSnake, EngineZildo.collideManagement.getTabColli().size());
+		
+		int initialSnakePv = snake.getPv();
+		int initialHeroPv = zildo.getPv();
+		
+		// Wait for snake to launch some projectile
+		SpriteEntity projectile = null;
+		while (projectile == null) {
+			for (SpriteEntity entity : sprites()) {
+				if (entity.getDesc() == ElementDescription.BROWNSPHERE1 && entity.isVisible()) {
+					projectile = entity;
+					break;
+				}
+			}
+			renderFrames(1);
+		}
+	
+		zildo.setPos(new Vector2f(102, 162));
+		// Now we wait for projectile to be just in front of hero
+		Assert.assertNotNull(projectile);
+		zildo.setAngle(Angle.NORD);
+		boolean closeToHero = false;
+		while (!closeToHero && !projectile.dying) {
+			int distance = (int)Point.distance(zildo.x, zildo.y, projectile.x, projectile.y);
+			System.out.println(projectile.x+","+projectile.y+" =>  "+distance);
+			if (distance < 20) {
+				closeToHero = true;
+			}
+			renderFrames(1);
+		}
+		zildo.attack();
+		while (!projectile.dying) {
+			//Assert.assertFalse(zildo.isWounded());
+			renderFrames(1);
+		}
+		Assert.assertEquals("Snake should not have lost any HP !", initialSnakePv, snake.getPv());
+		Assert.assertEquals(initialHeroPv,  zildo.getPv());
 	}
 }

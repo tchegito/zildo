@@ -416,10 +416,8 @@ public class Element extends SpriteEntity {
 		} else {
 			// Check if this is a real weapon
     		ItemKind kind = ItemKind.fromDesc(desc);
-    		if (kind == null || !kind.isWeapon()) {
+    		if (!desc.isDamageable() && (kind == null || !kind.isWeapon())) {
     			weapon = null;
-    		} else {
-    			System.out.println("yes !");
     		}
 		}
 		SpriteModel model = getSprModel();
