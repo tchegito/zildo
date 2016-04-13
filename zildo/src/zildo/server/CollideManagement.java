@@ -189,7 +189,11 @@ public class CollideManagement {
      */
     public void checkEnemyWound(Collision p_collider, Collision p_collided) {
         if (checkColli(p_collided, p_collider)) {
-            hit(p_collider, p_collided);
+        	// Check that collision doesn't happen on a projectile (not inside persoSprites)
+        	List<Element> persoSprites = p_collided.perso.getPersoSprites();
+        	if (p_collided.weapon == null || persoSprites == null || persoSprites.contains(p_collided.weapon)) {
+        		hit(p_collider, p_collided);
+        	}
         }
     }
 
@@ -267,6 +271,7 @@ public class CollideManagement {
         }
     }
 
+    // Returns TRUE if both collision collapses
     public boolean checkColli(Collision p_collider, Collision p_collided) {
 		int x1=p_collider.cx;
 		int y1=p_collider.cy;

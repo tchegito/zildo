@@ -171,9 +171,9 @@ public class ElementArrow extends ElementThrown  {
     		perso=(Perso) getLinkedPerso();
     	}
     	if (angle.isHorizontal()) {
-    		return new Collision(pos, sizeHorizontal, perso, DamageType.PIERCING, null);
+    		return new Collision(pos, sizeHorizontal, perso, DamageType.PIERCING, this);
 	    } else {
-	    	return new Collision(pos, sizeVertical, perso, DamageType.PIERCING, null);
+	    	return new Collision(pos, sizeVertical, perso, DamageType.PIERCING, this);
 	    }
     }
 }
