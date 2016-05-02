@@ -39,7 +39,7 @@ public class Zildo {
 	public static boolean infoDebug=false;
 	public static boolean infoDebugCollision=false;	// infoDebug should be activated
 	public static boolean infoDebugCase=false;
-	public static boolean infoDebugScript=true;	// Information about accomplished quests
+	public static boolean infoDebugScript=false;	// Information about accomplished quests
 	public static boolean infoDebugScriptVerbose=false;	// Display information about running script 
 	public static boolean log=false;
 	public static boolean logNetwork=true;
