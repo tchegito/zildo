@@ -172,7 +172,14 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	                	break;
 	                default:
 	                	color[3]=alpha / 255.0f;
-	                	shaders.setColor(color[0], color[1], color[2], color[3]);
+	                    if (light != 0x00ffffff) {
+	                    	int lightRed = (int) (light >> 16);
+	                    	int lightGreen = (int) ((light >> 8) & 255);
+	                    	int lightBlue = (int) (light & 255);
+		                	shaders.setColor(lightRed / 255.0f, lightGreen / 255.0f, lightBlue / 255.0f, color[3]);
+	                    } else {
+	                    	shaders.setColor(color[0], color[1], color[2], color[3]);
+	                    }
 	                	GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
                 }
 
