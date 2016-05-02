@@ -100,17 +100,19 @@ public class PlayerManagement {
 		// Except for BUYING action ! 
 		if (dialogState.isDialoguing() && gamePhase != GamePhase.BUYING && PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
 			instant.setKeyMerged(KeysConfiguration.PLAYERKEY_ACTION, 
-					KeysConfiguration.PLAYERKEY_DIALOG, 
-					KeysConfiguration.PLAYERKEY_ATTACK,
-					KeysConfiguration.PLAYERKEY_ACTION);
+					KeysConfiguration.PLAYERKEY_DIALOG
+					//KeysConfiguration.PLAYERKEY_ATTACK,
+					//KeysConfiguration.PLAYERKEY_ACTION
+					);
 		}
 		if (heros.isInventoring()) {
 			instant.setKeyMerged(KeysConfiguration.PLAYERKEY_INVENTORY,
 					KeysConfiguration.PLAYERKEY_UP, 
 					KeysConfiguration.PLAYERKEY_INVENTORY,
-					KeysConfiguration.PLAYERKEY_DOWN,
-					KeysConfiguration.PLAYERKEY_ACTION,
-					KeysConfiguration.PLAYERKEY_ATTACK);			
+					KeysConfiguration.PLAYERKEY_DOWN
+					//KeysConfiguration.PLAYERKEY_ACTION,	// These keys was added for gamepad support, but ruins game experience (see Issue 81)
+					//KeysConfiguration.PLAYERKEY_ATTACK
+					);			
 		}
 		
 		

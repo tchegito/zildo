@@ -381,6 +381,7 @@ public class EngineUT {
 		instant.update();
 	}
 
+	/** Simulate 1 or many key pressed **/
 	public void simulateKeyPressed(final Keys... keys) {
 		reset(fakedKbHandler);
 		if (keys == null) {

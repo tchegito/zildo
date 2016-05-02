@@ -26,6 +26,10 @@ import junit.perso.EngineUT;
 import org.junit.Assert;
 import org.junit.Test;
 
+import zildo.client.ClientEventNature;
+import zildo.client.PlatformDependentPlugin;
+import zildo.client.PlatformDependentPlugin.KnownPlugin;
+import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Case;
@@ -211,5 +215,60 @@ public class CheckFoundBugs extends EngineUT {
 		}
 		Assert.assertEquals("Snake should not have lost any HP !", initialSnakePv, snake.getPv());
 		Assert.assertEquals(initialHeroPv,  zildo.getPv());
+	}
+	
+	@Test
+	public void buttonsConflict() {
+		mapUtils.loadMap("igorvillage");
+		PersoPlayer zildo = spawnZildo(546,221);
+		waitEndOfScripting();
+		
+		simulateDirection(-1, 0);
+		while (true) {
+			renderFrames(4);
+			if (zildo.deltaMoveX == 0) break;
+		}
+		// Hero must be in front of Bilel
+		simulatePressButton(Keys.Q, 1);	// Q => Action button (see KeysConfiguration)
+		Perso bilel = zildo.getDialoguingWith();
+		Assert.assertNotNull(bilel);
+		Assert.assertEquals("bilel", bilel.getName());
+		while (zildo.getDialoguingWith() != null && !zildo.isInventoring()) {
+			simulatePressButton(Keys.Q, 1);
+			simulatePressButton(Keys.DIALOG_FRAME, 1);
+		}
+		// Wait SEMIFADE out
+		renderFrames(1);
+		Assert.assertEquals(ClientEventNature.FADING_OUT, clientState.event.nature);
+		while (clientState.event.nature != ClientEventNature.NOEVENT) {
+			renderFrames(1);
+		}
+		// Hero should be in "buying" screen
+		Assert.assertTrue(zildo.isInventoring());
+		// Press a key to buy ==> stay on same screen
+		simulatePressButton(Keys.Q, 1);
+		Assert.assertEquals(ClientEventNature.NOEVENT, clientState.event.nature);
+		// Press a key to quit ==> semifade should happen
+		simulatePressButton(Keys.X, 1);
+		// Wait SEMIFADE in
+		Assert.assertEquals(ClientEventNature.FADING_IN, clientState.event.nature);
+		while (clientState.event.nature != ClientEventNature.NOEVENT) {
+			renderFrames(1);
+		}
+		Assert.assertFalse(zildo.isInventoring());
+		Assert.assertFalse(clientState.dialogState.isDialoguing());
+		zildo.setPos(new Vector2f(624,240));
+		simulateDirection(0, -1);
+		renderFrames(50);
+		Assert.assertTrue(EngineZildo.mapManagement.isChangingMap(zildo));
+		renderFrames(50);
+		Assert.assertEquals("igorv2", EngineZildo.mapManagement.getCurrentMap().getName());
+	}
+	
+	@Test
+	public void buttonsConflictAndroid() {
+		// Same for Android
+		PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;
+		buttonsConflict();
 	}
 }
