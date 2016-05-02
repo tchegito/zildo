@@ -170,6 +170,12 @@
 	   	<condition name="prison12">
 	   	    <perso who="noir" pv="4"/>
 	   	</condition>
+	   	<condition name="prison12" exp="fromPrison13">
+	   	    <activate what="locked" value="true" unblock="true"/>
+	   	</condition>
+	   	<condition name="prison13">
+	   	    <markQuest name="fromPrison13" value="true"/>
+	   	</condition>
 	</mapScript>
 		
 	<scene id="intro_episode3">
