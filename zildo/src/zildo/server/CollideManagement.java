@@ -176,7 +176,7 @@ public class CollideManagement {
     public void checkZildoWound(PersoPlayer p_zildo, Collision p_colli) {
         Collision zildoCollision = p_zildo.getCollision();
 
-        if (checkColli(p_colli, zildoCollision)) {
+        if ((p_colli.perso == null || !p_colli.perso.isWounded()) && checkColli(p_colli, zildoCollision)) {
             // Zildo gets wounded
         	hit(p_colli, zildoCollision);
         }

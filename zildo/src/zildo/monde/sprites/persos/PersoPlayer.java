@@ -1174,6 +1174,7 @@ public class PersoPlayer extends Perso {
 		elem.setVisible(true);
 		elem.flying = false;
 		elem.setForeground(true);
+		elem.setFloor(floor);
 		
 		elem.setLinkedPerso(this); // Link to Zildo
 
@@ -1337,6 +1338,7 @@ public class PersoPlayer extends Perso {
 			elem.x = x + 5;
 			elem.y = y + 1;
 			elem.z = 20f;
+			elem.floor = floor;
 			setEn_bras(elem);
 			EngineZildo.soundManagement.playSound(BankSound.ZildoTrouve, this);
 
