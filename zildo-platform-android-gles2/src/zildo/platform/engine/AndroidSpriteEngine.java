@@ -88,14 +88,15 @@ public class AndroidSpriteEngine extends SpriteEngine {
 		
 		int phase=(backGround)?0:1;
 		while (!endSequence) {
-			int numBank=bankOrder[floor][phase][posBankOrder*4];
+			int numBank=bankOrder[floor][phase][posBankOrder*5];
 			if (numBank == -1) {
 				endSequence=true;
 			} else {
 				// Render the n sprites from this bank
-				int nbQuads=bankOrder[floor][phase][posBankOrder*4 + 1];
-				int iCurrentFX=bankOrder[floor][phase][posBankOrder*4 + 2];
-				int alpha=bankOrder[floor][phase][posBankOrder*4 + 3];
+				int nbQuads=bankOrder[floor][phase][posBankOrder*5 + 1];
+				int iCurrentFX=bankOrder[floor][phase][posBankOrder*5 + 2];
+				int alpha=bankOrder[floor][phase][posBankOrder*5 + 3];
+				int light=bankOrder[floor][phase][posBankOrder*5 + 4];
 				EngineFX currentFX=EngineFX.values()[iCurrentFX];
 				int texId=textureEngine.getNthTexture(numBank);
 				GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
