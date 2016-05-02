@@ -919,7 +919,7 @@ public class Element extends SpriteEntity {
 		this.angle = angle;
 	}
 
-	public void addShadow(ElementDescription p_typeShadow) {
+	public Element addShadow(ElementDescription p_typeShadow) {
 		// Add a shadow
 		shadow = new Element();
 		shadow.x = x;
@@ -930,6 +930,7 @@ public class Element extends SpriteEntity {
 		shadow.setSprModel(p_typeShadow);
 		shadow.linkedPerso = this;
 		EngineZildo.spriteManagement.spawnSprite(shadow);
+		return shadow;
 	}
 
 	@Override

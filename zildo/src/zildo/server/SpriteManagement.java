@@ -411,6 +411,8 @@ public class SpriteManagement extends SpriteStore {
 				//element.fx = 0.01f;
 				element.setDesc(ElementDescription.ROCK_BALL);
 				element.setForeground(true);
+				Element sh = element.addShadow(ElementDescription.SHADOW_MINUS);
+				sh.z = 0;
 				break;
 			case STAFF_POUM:
 			    	element = new ElementStaffs(x, y);
