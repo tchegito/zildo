@@ -1,6 +1,6 @@
 /**
  * The Land of Alembrum
- * Copyright (C) 2006-2013 Evariste Boussaton
+ * Copyright (C) 2006-2016 Evariste Boussaton
  * 
  *
  * This program is free software: you can redistribute it and/or modify
