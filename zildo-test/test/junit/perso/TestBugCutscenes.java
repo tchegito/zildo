@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.monde.dialog.HistoryRecord;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -115,5 +116,30 @@ public class TestBugCutscenes extends EngineUT {
 		renderFrames(2);
 		Assert.assertEquals("No dialog should have popped !", 0, EngineZildo.game.getLastDialog().size());
 		waitEndOfScriptingPassingDialog();
+	}
+	
+	// At a given time, gard and hero was colliding so cutscene was blocked.
+	@Test
+	public void castlePolaky() {
+		mapUtils.loadMap("polaky");
+		Perso p = EngineZildo.persoManagement.getNamedPerso("g1");
+		EngineZildo.spriteManagement.deleteSprite(p);
+		p = EngineZildo.persoManagement.getNamedPerso("g2");
+		EngineZildo.spriteManagement.deleteSprite(p);
+		PersoPlayer hero = spawnZildo(615, 138);
+		EngineZildo.scriptManagement.accomplishQuest("zildo_polaky_killguards", true);
+		waitEndOfScripting();
+
+		Assert.assertFalse(EngineZildo.scriptManagement.isScripting());
+
+		simulateDirection(0, -1);
+		renderFrames(80);
+		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
+		while (EngineZildo.scriptManagement.isScripting()) {
+			simulatePressButton(Keys.Q, 2);
+			renderFrames(1);
+		}
+		// Verify scene is over
+		Assert.assertTrue(hero.y > 500);
 	}
 }
