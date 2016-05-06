@@ -607,7 +607,6 @@ public class Element extends SpriteEntity {
 					case ROCK_BALL:
 						EngineZildo.spriteManagement.spawnSpriteGeneric(
 								SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, floor, 0, null, null);
-						EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, this);
 						break;
 					case DYNAMITE:
 						break;

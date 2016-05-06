@@ -50,7 +50,7 @@ public class IdGenerator {
 			}
 			cursor = (cursor+1) % buffer.length;
 			if (startCursor == cursor) {	// One turn => no room left !
-				throw new RuntimeException("Can't allow another ID !");
+				throw new RuntimeException("Can't allow another ID ! (maybe increase @MaxId in relative class)");
 			}
 		}
 		return cursor;

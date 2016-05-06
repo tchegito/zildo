@@ -48,7 +48,7 @@ public class Gears extends SpriteBanque {
 				/* Boulder on a hill */
 				new Zone(80, 505, 16, 20),
 
-				/* Cave - Closed door */
+				/* Cave - Closed door (7)*/
 				new Zone(96, 505, 24, 16),
 				new Zone(120, 505, 24, 16),	// Master key
 				new Zone(144, 505, 24, 16),  // Regular key
@@ -70,9 +70,11 @@ public class Gears extends SpriteBanque {
 				
 				/* Hidden door */
 				new Zone(51, 538, 19, 24), new Zone(71, 538, 19, 24)
+			
+
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
-		new GraphChange("interia3", 7, 0)});
+				new GraphChange("interia3", 0, 0)});
 	}
 }

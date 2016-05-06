@@ -45,7 +45,8 @@ public class SpriteStore {
 											  "font.spr", 
 											  "pnj2.spr",
 											  "gear.spr",
-											  "pnj3.spr"};
+											  "pnj3.spr",
+											  "pnj4.spr"};
 
 	public SpriteStore() {
 		

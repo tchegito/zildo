@@ -611,6 +611,9 @@ public class ActionExecutor extends RuntimeExecutor {
             			if (p_action.pv != -1) {
             				perso.setPv(p_action.pv);
             			}
+                		if (p_action.z != null) {
+                			perso.z = p_action.z.evaluate(context);
+                		}
             			applyCommonAndPhysicAttributes((Element) perso, p_action);
                 	}
                 	achieved = true;
@@ -651,11 +654,11 @@ public class ActionExecutor extends RuntimeExecutor {
                 	location = p_action.target.getPoint();
                 	// Turn character in the right direction
                 	perso.sight(EngineZildo.persoManagement.getZildo(), true);
+        			// Normalize speed vector
+        			float distance = Point.distance(elem.x, elem.y, location.x, location.y);
+        			elem.vx = p_action.speed * (location.x - elem.x) / distance;
+        			elem.vy = p_action.speed * (location.y - elem.y) / distance;
                 	if ("BELL".equals(p_action.way)) {
-            			// Normalize speed vector
-            			float distance = Point.distance(elem.x, elem.y, location.x, location.y);
-            			elem.vx = p_action.speed * (location.x - elem.x) / distance;
-            			elem.vy = p_action.speed * (location.y - elem.y) / distance;
             			// calculate z
             			float finalT = distance / p_action.speed;
             			elem.vz = -(finalT * elem.az) / 2;
@@ -813,12 +816,18 @@ public class ActionExecutor extends RuntimeExecutor {
 	    		perso.setEffect(p_action.effect);
 	    		perso.setFloor(p_action.floor);
 	    		perso.setAddSpr(p_action.addSpr);
+        		if (p_action.reverse != null) {
+        			perso.reverse = Reverse.fromInt(p_action.reverse.evaluateInt());
+        		}
 	    		perso.initPersoFX();
 	        	if (p_action.weapon != null) {
 	        		//TODO: not very clever ! setActiveWeapon and setWeapon should merge. So as
 	        		//guardWeapon and weapon attributes.
 	        		((PersoNJ)perso).setActiveWeapon(GuardWeapon.valueOf(p_action.weapon));
 	        	}
+        		if (p_action.z != null) {
+        			perso.z = p_action.z.evaluate(context);
+        		}
 	            EngineZildo.spriteManagement.spawnPerso(perso);
     		}
     	} else {	// Spawn a new element

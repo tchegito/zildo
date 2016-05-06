@@ -366,6 +366,8 @@ public class SpriteManagement extends SpriteStore {
 
 					temp = temp.rotate(1);
 				}
+				EngineZildo.soundManagement.broadcastSound(BankSound.CassePierre, new Point(x, y));
+
 				break;
 
 			case FROM_CHEST :

@@ -122,14 +122,11 @@ public class ActionElement extends LanguageElement {
 				reverse = ZSSwitch.parseForDialog(strReverse);
 			}
 			rotation = readInt("rotation");
-			String temp = readAttribute("z");
-			if (temp != null) {
-				z = new FloatExpression(temp);
-			}
+
 			shadow = readAttribute("shadow");
 			addSpr = readInt("addSpr", 0);
 			// Chained
-			temp = readAttribute("chained");
+			String temp = readAttribute("chained");
 			if (temp != null) {	// Expect well-formed content
 				int virgulePos = temp.indexOf(",");
 				chainCount = Integer.parseInt(temp.substring(0,  virgulePos));
@@ -153,7 +150,11 @@ public class ActionElement extends LanguageElement {
 			weapon = readAttribute("weapon");
 			alpha = readInt("alpha", -1);
 			alphaA = getFloatExpr("alphaA");
-			addSpr = readInt("addSpr", 0);
+			if (kind == ActionKind.perso) addSpr = readInt("addSpr", -1);
+			temp = readAttribute("z");
+			if (temp != null) {
+				z = new FloatExpression(temp);
+			}
 			pv = readInt("pv", -1);
 			break;
 		case speak:

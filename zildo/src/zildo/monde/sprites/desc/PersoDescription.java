@@ -117,6 +117,8 @@ public enum PersoDescription implements SpriteDescription {
 			354, 355, 356, 357,	358, 359, 360, 
 			361, 362, 363, 364, 365, 366, 367),
 	FIREFLY(255),
+	// Pnj4
+	TURRET(368, 369, 370, 371, 372),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
@@ -153,7 +155,9 @@ public enum PersoDescription implements SpriteDescription {
 	 */
 	public int nth(int p_nth) {
 		int f = sprUsed.get(p_nth).intValue();
-		if (f > 258) {
+		if (f > 367) {
+			f-=368;
+		} else if (f > 258) {
 			f-=259;
 		} else if (f > 127) {
 			f-=128;
@@ -174,8 +178,10 @@ public enum PersoDescription implements SpriteDescription {
 			return SpriteBank.BANK_PNJ;
 		} else if (s < 259) {
 			return SpriteBank.BANK_PNJ2;
-		} else {
+		} else if (s < 368) {
 			return SpriteBank.BANK_PNJ3;
+		} else {
+			return SpriteBank.BANK_PNJ4;
 		}
 	}
 

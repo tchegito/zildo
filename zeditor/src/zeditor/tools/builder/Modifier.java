@@ -225,6 +225,8 @@ public class Modifier {
 				 bankName = "elementsPlus";
 			 } else if ("zildo".equals(bankName)) {
 				 bankName = "PjZildo";
+			 } else if ("gear".equals(bankName)) {
+				 bankName = "Gears";
 			 }
 			Class<?> clazz = Class.forName("zeditor.tools.sprites."+StringUtils.capitalize(bankName));
 			 if (SpriteBanque.class.isAssignableFrom(clazz)) {
