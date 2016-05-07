@@ -337,7 +337,7 @@
 		</trigger>
 	</quest>
 	
-	<quest name="zildo_polaky_killguards">
+	<quest name="zildo_polaky_killguards" locked="false">
 	    <trigger>
 	        <location name="polaky"/>
 		    <dead who="g1,g2"/>
