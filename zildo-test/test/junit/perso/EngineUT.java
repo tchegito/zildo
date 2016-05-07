@@ -40,7 +40,9 @@ import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
+import zildo.client.PlatformDependentPlugin;
 import zildo.client.SpriteDisplay;
+import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.ScreenConstant;
 import zildo.client.sound.SoundPlay;
@@ -94,6 +96,8 @@ public class EngineUT {
 	
 	FreezeMonitor freezeMonitor;
 
+	static final boolean debugInfosPersos = true;
+	
 	public volatile int nFrame = 0;
 	
 	protected Perso spawnTypicalPerso(String name, int x, int y) {
@@ -185,8 +189,12 @@ public class EngineUT {
 	        clientEngine.renderFrame(false);
 			ClientEngineZildo.filterCommand.doFilter();
 			if (debugInfos) {
-				for (Perso perso : EngineZildo.persoManagement.tab_perso) {
-					System.out.println(nFrame+": Perso: "+perso.getName()+" at "+perso.x+","+perso.y);
+				if (!debugInfosPersos) {
+					System.out.println("frame:"+nFrame);
+				} else {
+					for (Perso perso : EngineZildo.persoManagement.tab_perso) {
+						System.out.println(nFrame+": Perso: "+perso.getName()+" at "+perso.x+","+perso.y);
+					}
 				}
 			}
 			nFrame++;
@@ -418,6 +426,8 @@ public class EngineUT {
 	@SuppressWarnings("deprecation")
 	@After
 	public void tearDown() {
+		// Reset render platform to LWJGL
+		PlatformDependentPlugin.currentPlugin = KnownPlugin.Lwjgl;
 		// Reset input
 		simulateDirection(new Vector2f(0, 0));
 		// Deprecated, but we're not concerned by limitations here

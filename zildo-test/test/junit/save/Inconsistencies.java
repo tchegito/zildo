@@ -157,7 +157,7 @@ public class Inconsistencies extends EngineUT {
 		// Check that a bat at floor 1 dying on a case where floor is at 0, drop an item on floor 0
 		// So player can reach it
 		mapUtils.loadMap("voleursg5");
-		ElementGoodies goodies = enemyDieAndDropWithFakeHasard("new", 503, 358, 6);
+		ElementGoodies goodies = enemyDieAndDropWithFakeHasard("new", 495, 358, 6);
 		Assert.assertNotNull(goodies);
 		Assert.assertEquals(0, goodies.getFloor());
 		

@@ -124,6 +124,7 @@
 	
 	<quest name="prison12Locked">
 	    <trigger>
+	        <location name="prison12"/>
 	        <dead who="noir,noir"/>
 	    </trigger>
 	    <action>
