@@ -846,7 +846,7 @@ public class ActionExecutor extends RuntimeExecutor {
 	        		elem = null;
 	        		// Chained
 	        		if (ElementDescription.isPlatform(desc)) {
-	        			entity = EngineZildo.spriteManagement.spawnSprite(desc, location.x, location.y, Boolean.TRUE == p_action.foreground, rev, false);
+	        			entity = EngineZildo.spriteManagement.createSprite(desc, location.x, location.y, Boolean.TRUE == p_action.foreground, rev, false);
 	            		if (entity.getEntityType().isElement()) {
 	            			elem = (Element) entity;
 	            		}

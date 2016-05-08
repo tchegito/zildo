@@ -478,13 +478,20 @@ public class SpriteManagement extends SpriteStore {
 	 */
 	public SpriteEntity spawnSprite(SpriteDescription desc, int x, int y,
 			boolean p_foreground, Reverse p_reverse, boolean p_adjustPos) {
+		SpriteEntity sprite = createSprite(desc, x, y, p_foreground, p_reverse, p_adjustPos);
+		spawnSprite(sprite);
+		return sprite;
+	}
+	
+	public SpriteEntity createSprite(SpriteDescription desc, int x, int y,
+			boolean p_foreground, Reverse p_reverse, boolean p_adjustPos) {
 
 		int nBank=desc.getBank();
 		int nSpr=desc.getNSpr();
 
 		if (desc.isPushable()) { // || nSpr == 179) {
 			// Particular sprite (Block that Zildo can move, chest...)
-			return spawnElement(nBank, nSpr, x, y, 0, Reverse.NOTHING, Rotation.NOTHING); // + spr.getTaille_y() / 2 - 3,
+			return createElement(nBank, nSpr, x, y, 0, Reverse.NOTHING, Rotation.NOTHING); // + spr.getTaille_y() / 2 - 3,
 					//0);
 		}
 
@@ -534,8 +541,6 @@ public class SpriteManagement extends SpriteStore {
 
 		entity.reverse=p_reverse;
 		
-		spawnSprite(entity);
-
 		// Store walkable entities
 		if (ElementDescription.isPlatform(desc)) {
 			entity.initMover();
