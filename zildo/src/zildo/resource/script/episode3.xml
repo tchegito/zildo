@@ -146,8 +146,11 @@
 	        <spawn who="turret2" pos="200,100" type="TURRET" alpha="128" reverse="128"/>
   	        <spawn who="turret3" pos="100,180" type="TURRET" alpha="128" reverse="64"/>
    	        <spawn who="turret4" pos="200,180" type="TURRET" alpha="128" reverse="192"/>
-  	        <perso who="turret1" action="bossTurret"/>
-	    </action>
+  	        <perso who="turret1" action="bossTurret(200, 150, 0, 0)"/>
+   	        <perso who="turret2" action="bossTurret(100, 150, 1, 0)"/>
+  	        <perso who="turret3" action="bossTurret(200, 100, 0, 1)"/>
+   	        <perso who="turret4" action="bossTurret(100, 100, 1, 1)"/>
+   	    </action>
 	</quest>
 	
 	<mapScript>
@@ -559,31 +562,46 @@
 		<fadeIn value="0"/>
 	</scene>
 	
-	<persoAction id="bossTurret">
-		<moveTo who="turret1" pos="200, 150" way="arc"/>
-		<perso who="turret1" alphaA="0.1"/>
+	<persoAction id="bossTurret"> <!-- argument: (arg0,arg1)=>location to go, arg2=>reverseH, arg3=>reverseV -->
+	     <!-- 
+		<moveTo who="self" pos="loc:arg0,loc:arg1" way="arc"/>
+		-->
+		<perso who="self" alphaA="0.1"/>
 		<wait value="30"/>
 		<animation type="BREAKING_ROCK" pos="x-12,y-4"/>
 		<wait value="1"/>
 		<animation type="BREAKING_ROCK" pos="x,y"/>
 		<wait value="2"/>
 		<animation type="BREAKING_ROCK" pos="x+10,y+6"/>
-		<perso who="turret1" addSpr="1" alpha="255"/>
+		<var name="loc:turretSpr" value="1"/>
+		<if exp="loc:arg3=1">
+		    <var name="loc:turretSpr" value="5"/>
+		</if>
+		<actions>
+			<perso who="self" addSpr="loc:turretSpr" alpha="255"/>
+			<var name="loc:posX" value="x+7"/>
+			<perso who="self" reverse="0"/>
+			<if exp="loc:arg2=1">
+			    <var name="loc:posX" value="x-7"/>
+			    <perso who="self" reverse="128"/>
+			</if>
+		</actions>
 		<wait value="50"/>
 		<sound name="ZildoPousse"/>
-		<spawn who="loc:subSubHead" type="TURRET" addSpr="2" pos="x+7,y-1" z="17"/>
+
+		<spawn who="loc:subSubHead" type="TURRET" addSpr="2" pos="loc:posX,y-1" z="17"/>
 		<wait value="4"/>
 		<perso who="loc:subSubHead" z="18"/>
 		<wait value="4"/>
 		<perso who="loc:subSubHead" z="19"/>
 		<wait value="4"/>
-		<spawn who="loc:subHead" type="TURRET" addSpr="3" pos="x+7,y-2" z="19"/>
+		<spawn who="loc:subHead" type="TURRET" addSpr="3" pos="loc:posX,y-2" z="19"/>
 		<wait value="4"/>
 		<perso who="loc:subHead" z="20"/>
 		<wait value="4"/>
 		<perso who="loc:subHead" z="22"/>
 		<wait value="8"/>
-		<spawn who="loc:canon" type="TURRET" addSpr="4" pos="x+7,y-3" z="27"/>
+		<spawn who="loc:canon" type="TURRET" addSpr="4" pos="loc:posX,y-3" z="27"/>
 		<wait value="2"/>
 		<perso who="loc:canon" z="28"/>
 		<wait value="2"/>
@@ -591,7 +609,7 @@
 		
 		<loop>
 		    <for var="loc:i" value="5">
-			    <throw who="self" pos="x+7, y-6" to="zildo.x+random*4-2,zildo.y+random*4-2" speed="2.4"
+			    <throw who="self" pos="loc:posX, y-6" to="zildo.x+random*4-2,zildo.y+random*4-2" speed="2.4"
 		      		 	   type="BROWNSPHERE1" z="22" vz="-0.2" zoom="90"/>
 			    <wait value="4"/>
 			</for>

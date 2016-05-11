@@ -58,7 +58,7 @@ public class ActionElement extends LanguageElement {
 	public String shadow; // Only used in "spawn"
 	public String weapon; // For 'perso' and 'spawn'
 	public String impact;	// For 'spawn' => describe a ImpactKind element
-	public int addSpr;	// For 'perso' and 'spawn'
+	public FloatExpression addSpr;	// For 'perso' and 'spawn' (never a float value, but we can use context variables)
 	
 	// Only used for 'spawn' on 'chained' attribute
 	public int chainCount = -1;
@@ -124,7 +124,7 @@ public class ActionElement extends LanguageElement {
 			rotation = readInt("rotation");
 
 			shadow = readAttribute("shadow");
-			addSpr = readInt("addSpr", 0);
+			addSpr = getFloatExpr("addSpr", "0");
 			// Chained
 			String temp = readAttribute("chained");
 			if (temp != null) {	// Expect well-formed content
@@ -150,10 +150,13 @@ public class ActionElement extends LanguageElement {
 			weapon = readAttribute("weapon");
 			alpha = readInt("alpha", -1);
 			alphaA = getFloatExpr("alphaA");
-			if (kind == ActionKind.perso) addSpr = readInt("addSpr", -1);
+			if (kind == ActionKind.perso) addSpr = getFloatExpr("addSpr", "-1");
 			temp = readAttribute("z");
 			if (temp != null) {
 				z = new FloatExpression(temp);
+			}
+			if (strReverse != null) {
+				reverse = ZSSwitch.parseForDialog(strReverse);
 			}
 			pv = readInt("pv", -1);
 			break;
@@ -279,6 +282,13 @@ public class ActionElement extends LanguageElement {
 		return new FloatExpression(expr);
 	}
 
+	private FloatExpression getFloatExpr(String attName, String defaultValue) {
+		String expr = readAttribute(attName);
+		if (expr == null || expr.length() == 0) {
+			expr = defaultValue;
+		}
+		return new FloatExpression(expr);
+	}
 	/**
 	 * Update attribute's value. (used only for ZEditor)
 	 * 

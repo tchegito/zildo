@@ -591,6 +591,9 @@ public class ActionExecutor extends RuntimeExecutor {
                 		if (p_action.attente != -1) {
                 			perso.setAttente(p_action.attente);
                 		}
+                		if (p_action.reverse != null) {
+                			perso.reverse = Reverse.fromInt(p_action.reverse.evaluateInt());
+                		}
                 		if (p_action.action != null) {
                 			if (p_action.action.length() == 0) {
                 				EngineZildo.scriptManagement.stopPersoAction(perso);
@@ -605,8 +608,9 @@ public class ActionExecutor extends RuntimeExecutor {
                     		//guardWeapon and weapon attributes.
                     		((PersoNJ)perso).setActiveWeapon(GuardWeapon.valueOf(p_action.weapon));
                     	}
-            			if (p_action.addSpr != -1) {
-            				perso.setAddSpr(p_action.addSpr);
+                    	int addSpr = (int) p_action.addSpr.evaluate(context);
+            			if (addSpr != -1) {
+            				perso.setAddSpr(addSpr);
             			}
             			if (p_action.pv != -1) {
             				perso.setPv(p_action.pv);
@@ -815,7 +819,7 @@ public class ActionExecutor extends RuntimeExecutor {
 	    		perso.setSpeed(p_action.speed);
 	    		perso.setEffect(p_action.effect);
 	    		perso.setFloor(p_action.floor);
-	    		perso.setAddSpr(p_action.addSpr);
+	    		perso.setAddSpr((int) p_action.addSpr.evaluate(context));
         		if (p_action.reverse != null) {
         			perso.reverse = Reverse.fromInt(p_action.reverse.evaluateInt());
         		}
