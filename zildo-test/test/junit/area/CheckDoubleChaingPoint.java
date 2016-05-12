@@ -21,14 +21,18 @@ package junit.area;
 
 import junit.perso.EngineUT;
 
+import org.junit.Assert;
 import org.junit.Test;
 
+import zildo.client.ClientEventNature;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
-import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.ia.mover.Mover;
 import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
 
@@ -39,7 +43,7 @@ import zildo.server.EngineZildo;
 public class CheckDoubleChaingPoint extends EngineUT {
 
 	SpriteEntity waterLily;
-	Perso zildo;
+	PersoPlayer zildo;
 	
 	private void init(int x, int y) {
 		mapUtils.loadMap("igorvillage");
@@ -68,14 +72,27 @@ public class CheckDoubleChaingPoint extends EngineUT {
 
 		zildo.setWeapon(new Item(ItemKind.SWORD));
 		zildo.setAngle(Angle.EST);
+		zildo.setPv(4);
 		zildo.attack();
 
 		int frame = 0;
 
-		renderFrames(4);
+		renderFrames(12);
+		Assert.assertNotNull(waterLily.getMover());
+		Mover mover = waterLily.getMover();
+		Element placeHolder = mover.getPlaceHolder();
+		Assert.assertNotNull(placeHolder);
+		
+		//System.out.println(zildo.getDelta() + " - " + placeHolder.getDelta());
+		Assert.assertEquals("igorlily", EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertEquals(ClientEventNature.CHANGINGMAP_SCROLL, clientState.event.nature);
+		waitEndOfScripting();
+		Assert.assertEquals("igorlily", EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertTrue(waterLily.isVisible());
 		System.out.println("Suite");
 		zildo.attack();
-
-		renderFrames(1000);
+		renderFrames(10);
+		Assert.assertTrue(zildo.getPv() == 4);
+		System.out.println(waterLily.x);
 	}
 }
