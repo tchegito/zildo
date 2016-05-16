@@ -69,7 +69,7 @@ public class CircularMoveOrder extends MoveOrder {
 	}
 
 	@Override
-	protected Pointf move() {
+	public Pointf move() {
 		double angle = factor * iota;
 		mobileElement.vx = (float) ( radius.x * Math.cos(angle) * pasX * factor);
 		mobileElement.vy = (float) (-radius.y * Math.sin(angle) * pasY * factor);
@@ -93,10 +93,10 @@ public class CircularMoveOrder extends MoveOrder {
 	}
 	
 	@Override
-	void init(Mover p_wrapper) {
+	public void init(Mover p_wrapper) {
 		super.init(p_wrapper);
 		
-		if (mobile.getEntityType().isElement()) {
+		if (mobile.getEntityType().isElement() || mobile.getEntityType().isPerso()) {
 			mobileElement = (Element) mobile;
 		}
 		center = new Pointf(target.x, mobile.y);

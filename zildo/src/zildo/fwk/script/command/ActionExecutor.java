@@ -74,6 +74,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.persos.action.ScriptedPersoAction;
+import zildo.monde.sprites.persos.ia.PathFinderArc;
 import zildo.monde.sprites.persos.ia.mover.BasicMoveOrder;
 import zildo.monde.sprites.persos.ia.mover.CircularMoveOrder;
 import zildo.monde.sprites.persos.ia.mover.PhysicMoveOrder;
@@ -125,13 +126,7 @@ public class ActionExecutor extends RuntimeExecutor {
             achieved = p_runtimeAction.done;
         } else {
         	PersoPlayer zildo;
-        	Perso perso;
-        	if (context != null && "self".equals(p_action.who)) {
-        		// Reserved word : perso himself, in case of a contextual script
-        		perso = (Perso) context.getActor();
-        	} else {
-        		perso = getNamedPerso(p_action.who);
-        	}
+        	Perso perso = getNamedPersoInContext(p_action.who);
         	// Set context for runtime evaluation
         	if (p_action.location != null) {
         		p_action.location.setContext(context);
@@ -219,10 +214,13 @@ public class ActionExecutor extends RuntimeExecutor {
              					perso.setFloor(newFloor);
 	                		}
 	                	}
+	                	if ("arc".equals(p_action.text)) {
+	                		perso.setPathFinder(new PathFinderArc(perso));
+	                	}
                     } else if ("camera".equals(p_action.what)) {
                         ClientEngineZildo.mapDisplay.setTargetCamera(location);
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
-                    } else {
+                    } else {	// Element/entity
                     	SpriteEntity entity;
                    		entity = getNamedEntity(p_action.what);
                     	if (entity != null) {
@@ -594,6 +592,11 @@ public class ActionExecutor extends RuntimeExecutor {
                 		if (p_action.reverse != null) {
                 			perso.reverse = Reverse.fromInt(p_action.reverse.evaluateInt());
                 		}
+                		if (p_action.parent != null) {
+                			// Link character to their parent
+                			Perso persoParent = EngineZildo.persoManagement.getNamedPerso(p_action.parent);
+                			persoParent.addPersoSprites(perso);
+                		}
                 		if (p_action.action != null) {
                 			if (p_action.action.length() == 0) {
                 				EngineZildo.scriptManagement.stopPersoAction(perso);
@@ -688,7 +691,7 @@ public class ActionExecutor extends RuntimeExecutor {
     private void waitForEndAction(RuntimeAction p_runtimeAction) {
     	ActionElement p_action = (ActionElement) p_runtimeAction.action;
         String who = p_action.who;
-        Perso perso = getNamedPerso(who);
+    	Perso perso = getNamedPersoInContext(who);
         boolean achieved = false;
         switch (p_action.kind) {
             case moveTo:
@@ -937,5 +940,19 @@ public class ActionExecutor extends RuntimeExecutor {
     		// Unregister each variable name, because it only existed in this executor scope => wipe out
     		context.terminate();
     	}
+    }
+    
+    /**
+     * Get character from his name, or 'self' if we're in a character's context.
+     */
+    private Perso getNamedPersoInContext(String name) {
+    	Perso perso;
+    	if (context != null && "self".equals(name)) {
+    		// Reserved word : perso himself, in case of a contextual script
+    		perso = (Perso) context.getActor();
+    	} else {
+    		perso = getNamedPerso(name);
+    	}
+    	return perso;
     }
 }

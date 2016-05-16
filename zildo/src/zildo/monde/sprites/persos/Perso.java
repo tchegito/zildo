@@ -899,7 +899,7 @@ public abstract class Perso extends Element {
 	}
 
 	public boolean linkedSpritesContains(SpriteEntity entity) {
-		return persoSprites.contains(entity) || en_bras == entity;
+		return (persoSprites != null && persoSprites.contains(entity)) || en_bras == entity;
 	}
 
 	@Override

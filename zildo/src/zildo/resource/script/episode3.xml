@@ -147,9 +147,9 @@
   	        <spawn who="turret3" pos="100,180" type="TURRET" alpha="128" reverse="64"/>
    	        <spawn who="turret4" pos="200,180" type="TURRET" alpha="128" reverse="192"/>
   	        <perso who="turret1" action="bossTurret(200, 150, 0, 0)"/>
-   	        <perso who="turret2" action="bossTurret(100, 150, 1, 0)"/>
-  	        <perso who="turret3" action="bossTurret(200, 100, 0, 1)"/>
-   	        <perso who="turret4" action="bossTurret(100, 100, 1, 1)"/>
+   	        <perso who="turret2" action="bossTurret(100, 150, 1, 0)" parent="turret1"/>
+  	        <perso who="turret3" action="bossTurret(200, 100, 0, 1)" parent="turret1"/>
+   	        <perso who="turret4" action="bossTurret(100, 100, 1, 1)" parent="turret1"/>
    	    </action>
 	</quest>
 	
@@ -563,9 +563,9 @@
 	</scene>
 	
 	<persoAction id="bossTurret"> <!-- argument: (arg0,arg1)=>location to go, arg2=>reverseH, arg3=>reverseV -->
-	     <!-- 
+	     
 		<moveTo who="self" pos="loc:arg0,loc:arg1" way="arc"/>
-		-->
+		
 		<perso who="self" alphaA="0.1"/>
 		<wait value="30"/>
 		<animation type="BREAKING_ROCK" pos="x-12,y-4"/>
@@ -580,6 +580,7 @@
 		<actions>
 			<perso who="self" addSpr="loc:turretSpr" alpha="255"/>
 			<var name="loc:posX" value="x+7"/>
+			<!-- Cancel reverse vertical, but keep horizontal one -->
 			<perso who="self" reverse="0"/>
 			<if exp="loc:arg2=1">
 			    <var name="loc:posX" value="x-7"/>

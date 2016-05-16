@@ -26,6 +26,12 @@ import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
+/**
+ * Jumping squirrel, in random direction.
+ * 
+ * @author Tchegito
+ *
+ */
 public class PathFinderSquirrel extends PathFinder {
 
     final static int jumpDistance = 20;

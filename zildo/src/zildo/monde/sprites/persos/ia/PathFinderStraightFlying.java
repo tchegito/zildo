@@ -28,6 +28,9 @@ import zildo.server.EngineZildo;
 /**
  * This path finder is always unstoppable.
  * 
+ * It represents a bird flying on a regular horizontal line, swinging on z coordinate.
+ * 
+ * 
  * @author Tchegito
  * 
  */

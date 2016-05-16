@@ -205,11 +205,20 @@ public class PersoCollision {
         if (colli) {
             if (perso != null && perso.isZildo() && perso.linkedSpritesContains(quelPerso)) {
                 // Collision entre Zildo et l'objet qu'il porte dans les mains => on laisse
+            } else if (perso != null && quelPerso != null && parentPerso(perso) == parentPerso(quelPerso)) {
+            	// Collision between same character's body part
             } else if (quelElement == null || quelElement.getLinkedPerso() != quelPerso) {
                 return true;
             }
         }
 		// No collision
 		return false;
+	}
+	
+	/** Returns linked perso or himself. Useful for detecting a character's body part, especially for bosses **/
+	private Element parentPerso(Perso p) {
+		Element e = p.getLinkedPerso();
+		if (e == null) e = p;
+		return e;
 	}
 }

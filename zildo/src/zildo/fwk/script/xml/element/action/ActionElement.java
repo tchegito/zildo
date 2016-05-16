@@ -57,6 +57,7 @@ public class ActionElement extends LanguageElement {
 	public String action; // To run a PersoAction, with "perso" ActionKind
 	public String shadow; // Only used in "spawn"
 	public String weapon; // For 'perso' and 'spawn'
+	public String parent;	// For 'perso'
 	public String impact;	// For 'spawn' => describe a ImpactKind element
 	public FloatExpression addSpr;	// For 'perso' and 'spawn' (never a float value, but we can use context variables)
 	
@@ -141,6 +142,7 @@ public class ActionElement extends LanguageElement {
 			}
 		case perso:
 			text = readAttribute("type");
+			parent = readAttribute("parent");
 			String strInfo = readAttribute("info");
 			if (strInfo != null) {
 				info = PersoInfo.valueOf(strInfo);
