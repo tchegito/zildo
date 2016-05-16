@@ -96,7 +96,7 @@ public class EngineUT {
 	
 	FreezeMonitor freezeMonitor;
 
-	static final boolean debugInfosPersos = true;
+	public static boolean debugInfosPersos = true;
 	
 	public volatile int nFrame = 0;
 	

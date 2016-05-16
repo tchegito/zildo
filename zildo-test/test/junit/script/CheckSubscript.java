@@ -19,6 +19,8 @@
 
 package junit.script;
 
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -71,6 +73,42 @@ public class CheckSubscript extends EngineScriptUT {
 		Assert.assertEquals("1.0", EngineZildo.scriptManagement.getVarValue("goodToGo"));
 	}
 
+	// Try to find a bug occuring with turret boss, when 'for' loops variable exceeds its limit. Consequence was
+	// turret always shooting bullets on hero, without waiting between a burst.
+	@Test
+	public void checkForInLoop() {
+		debugInfosPersos = false;
+		
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/loops"));
+		
+		waitEndOfScripting();
+		scriptMgmt.execute("forInLoop", true, new SceneContext(), null);
+		Map<String, String> vars = scriptMgmt.getVariables();
+		int startLength = vars.size();
+		boolean waitForResetI = false;
+		int nbCycle = 0;
+		while (true) {
+			renderFrames(1);
+
+			vars = scriptMgmt.getVariables();
+			Assert.assertTrue(vars.size() <= startLength + 2);
+			String s = vars.get("loc:0");
+			if (s != null) {
+				int i = (int) Float.parseFloat(s);
+				if (waitForResetI) {
+					if (i == 0) {
+						System.out.println("Cycle over: "+nbCycle);
+						waitForResetI = false;
+						nbCycle++;
+					}
+				}
+			}
+			String forOver = scriptMgmt.getVarValue("forOver");
+			if ("1.0".equals(forOver)) {
+				waitForResetI = true;
+			}
+		}
+	}
 	private void checkForScript(String scriptName) {
 		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/loops"));
 		

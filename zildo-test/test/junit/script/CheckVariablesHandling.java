@@ -29,6 +29,8 @@ import zildo.server.EngineZildo;
 import zildo.server.state.ScriptManagement;
 
 /**
+ * Test about global variables.
+ * 
  * @author Tchegito
  *
  */
