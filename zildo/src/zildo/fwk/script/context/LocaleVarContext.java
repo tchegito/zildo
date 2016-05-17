@@ -39,7 +39,7 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 	static private IdGenerator localVariableNaming = new IdGenerator(256);
 
 	// Local variables declared in this context only
-    public final Set<String> involvedVariables = new HashSet<String>();
+    public Set<String> involvedVariables = new HashSet<String>();
     
 	// Map <"Asked Variable name", "Assigned variable name">
 	Map<String, String> locales = new HashMap<String, String>();
@@ -96,7 +96,7 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 			if (locales.size() > 0) {
 				LocaleVarContext cloned = (LocaleVarContext) super.clone();
 				// Following line allows us to separate inherited and new variables
-				cloned.involvedVariables.clear();
+				cloned.involvedVariables = new HashSet<String>();
 				cloned.cloneLocales(this);
 				return cloned;
 			} else {
