@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import zildo.fwk.collection.IdGenerator;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -41,7 +42,6 @@ public abstract class LocaleVarContext implements IEvaluationContext {
     public final Set<String> involvedVariables = new HashSet<String>();
     
 	// Map <"Asked Variable name", "Assigned variable name">
-    // TODO: there's chance that this map and prior set could merge into one single variable
 	Map<String, String> locales = new HashMap<String, String>();
 	
 	public String registerVariable(String name) {
@@ -65,10 +65,17 @@ public abstract class LocaleVarContext implements IEvaluationContext {
     		unregisterVariable(varName);
     	}
 	}
+	
 	/** Called when an executor comes to an end => local would never be use **/
 	public void unregisterVariable(String name) {
-		unregisterId(locales.get(name));
+		String transco = locales.get(name);
+		unregisterId(transco);
 		locales.remove(name);
+		
+		// Remove variable value from global container
+		//String value = EngineZildo.scriptManagement.getVarValue(transco);
+		//System.out.println("Removing "+transco+" for "+name+" valued with "+value);
+		EngineZildo.scriptManagement.getVariables().remove(transco);
 	}
 	
 	public static void clean() {
@@ -88,6 +95,8 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 		try {
 			if (locales.size() > 0) {
 				LocaleVarContext cloned = (LocaleVarContext) super.clone();
+				// Following line allows us to separate inherited and new variables
+				cloned.involvedVariables.clear();
 				cloned.cloneLocales(this);
 				return cloned;
 			} else {

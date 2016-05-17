@@ -28,21 +28,20 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 
-import junit.FreezeMonitor;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Matchers;
 
+import junit.FreezeMonitor;
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
 import zildo.client.PlatformDependentPlugin;
-import zildo.client.SpriteDisplay;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
+import zildo.client.SpriteDisplay;
 import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.ScreenConstant;
 import zildo.client.sound.SoundPlay;
@@ -111,7 +110,10 @@ public class EngineUT {
 	}
 	
 	protected PersoPlayer spawnZildo(int x, int y) {
-		PersoPlayer perso = spy(new PersoPlayer(x, y, ZildoOutfit.Zildo));
+		PersoPlayer perso = new PersoPlayer(x, y, ZildoOutfit.Zildo);
+		if (doesSpyZildo()) {
+			perso = spy(perso);
+		}
 		// As we spy the object with Mockito, pathFinder's reference becomes wrong. So, we recreate it
 		perso.setPathFinder(new PathFinder(perso));
 		
@@ -215,6 +217,11 @@ public class EngineUT {
 	
 	protected boolean doesSpyMapManagement() {
 		return false;
+	}
+	
+	/** A way to save memory: do not spy on Zildo, so Mockito doesn't create a lot of watchers. Default is TRUE. **/
+	protected boolean doesSpyZildo() {
+		return true;
 	}
 	
 	@Before

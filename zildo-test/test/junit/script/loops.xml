@@ -37,4 +37,22 @@
 			<wait value="90"/>
 	    </loop>
 	</scene>
+	
+	<persoAction id='actionForInLoop'>
+	    <loop>
+			<var name="loc:forOver" value="0"/>
+	        <for var="loc:i" value="5">
+		        <!-- 
+			    <throw who="self" pos="10, 20" to="160, 100" speed="2.4"
+		      		 	   type="BROWNSPHERE1" z="22" vz="-0.2" zoom="90"/>
+		      	-->
+		      	<!--
+		      	<speak who="debug" text="loc:i"/>
+		      	-->
+		      	<wait value="4"/>
+			</for>
+			<var name="loc:forOver" value="1"/>
+			<wait value="90"/>
+	    </loop>
+	</persoAction>
 </adventure>

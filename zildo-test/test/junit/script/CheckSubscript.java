@@ -19,6 +19,8 @@
 
 package junit.script;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -28,6 +30,9 @@ import zildo.fwk.script.context.SceneContext;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.server.EngineZildo;
 
 /**
@@ -36,6 +41,11 @@ import zildo.server.EngineZildo;
  */
 public class CheckSubscript extends EngineScriptUT {
 
+	/** Save memory **/
+	protected boolean doesSpyZildo() {
+		return false;
+	}
+	
 	/** Check that each subscript is fully executed before returning to caller **/
 	@Test
 	public void oneSubCall() {
@@ -87,7 +97,7 @@ public class CheckSubscript extends EngineScriptUT {
 		int startLength = vars.size();
 		boolean waitForResetI = false;
 		int nbCycle = 0;
-		while (true) {
+		while (nFrame < 5000) {
 			renderFrames(1);
 
 			vars = scriptMgmt.getVariables();
@@ -109,6 +119,40 @@ public class CheckSubscript extends EngineScriptUT {
 			}
 		}
 	}
+	
+	@Test
+	public void checkPersoActionForInLoop() {
+		// TODO: annotations for debugInfosPerso=FALSE and spyZildo=TRUE
+		debugInfosPersos = false;
+
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/loops"));
+		final int NB_PERSOS = 1;
+		
+		waitEndOfScripting();
+		
+		List<Perso> persos = new ArrayList<>();
+		for (int i=0;i<NB_PERSOS;i++) {
+			Perso perso = spawnPerso(PersoDescription.TURRET, "turret"+i, 16 + 20 * (i%8), 16 + 20 * (i / 8));
+			perso.setAction(new ScriptedPersoAction(perso, "actionForInLoop"));
+			persos.add(perso);
+		}
+
+		
+		Map<String, String> vars = scriptMgmt.getVariables();
+		// We have 2 local variables per character. So calculate the max and we'll check it's never exceeded
+		final int initialSize = vars.size();
+		final int maxVariables = initialSize + (2 * NB_PERSOS);
+		
+		while (nFrame < 5000) {
+			renderFrames(1);
+			vars = scriptMgmt.getVariables();
+			System.out.println(initialSize+" ==> "+vars.size());
+			
+			Assert.assertTrue("We should not have more than "+maxVariables+" !", vars.size() <= maxVariables);
+			
+		}
+	}
+	
 	private void checkForScript(String scriptName) {
 		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/loops"));
 		
