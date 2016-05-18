@@ -119,9 +119,9 @@ public class EngineUT {
 		PersoPlayer perso = new PersoPlayer(x, y, ZildoOutfit.Zildo);
 		if (spyHero) {
 			perso = spy(perso);
+			// As we spy the object with Mockito, pathFinder's reference becomes wrong. So, we recreate it
+			perso.setPathFinder(new PathFinder(perso));
 		}
-		// As we spy the object with Mockito, pathFinder's reference becomes wrong. So, we recreate it
-		perso.setPathFinder(new PathFinder(perso));
 		
 		perso.x = x;
 		perso.y = y;
@@ -398,7 +398,7 @@ public class EngineUT {
 	/** Simulate 1 or many key pressed **/
 	public void simulateKeyPressed(final Keys... keys) {
 		reset(fakedKbHandler);
-		if (keys == null) {
+		if (keys == null || keys.length == 0) {
 			doReturn(false).when(fakedKbHandler).isKeyDown(anyInt());
 		} else {
 			if (keys.length == 1) {

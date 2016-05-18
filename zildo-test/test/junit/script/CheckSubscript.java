@@ -117,7 +117,7 @@ public class CheckSubscript extends EngineScriptUT {
 	@Test
 	public void checkPersoActionForInLoop() {
 		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/loops"));
-		final int NB_PERSOS = 1;
+		final int NB_PERSOS = 10;
 		
 		waitEndOfScripting();
 		

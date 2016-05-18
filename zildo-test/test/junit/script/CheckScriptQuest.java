@@ -83,6 +83,10 @@ public class CheckScriptQuest extends EngineUT {
 	private void goInsideHouseAndLiftJar() {
 		mapUtils.loadMap("bosquetm");
 
+		if (zildo != null) {
+			// Do not create hero twice
+			EngineZildo.persoManagement.clearPersos(true);
+		}
 		zildo = spawnZildo(119, 108);
 		zildo.setAngle(Angle.SUD);
 

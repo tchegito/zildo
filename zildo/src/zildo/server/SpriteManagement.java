@@ -479,7 +479,9 @@ public class SpriteManagement extends SpriteStore {
 	public SpriteEntity spawnSprite(SpriteDescription desc, int x, int y,
 			boolean p_foreground, Reverse p_reverse, boolean p_adjustPos) {
 		SpriteEntity sprite = createSprite(desc, x, y, p_foreground, p_reverse, p_adjustPos);
-		spawnSprite(sprite);
+		if (sprite != null) {	// It can be null just with QUAD1 on multiplayer map (see if we can get rid of this)
+			spawnSprite(sprite);
+		}
 		return sprite;
 	}
 	
