@@ -2,12 +2,11 @@ package junit.dialog;
 
 import java.util.List;
 
-import junit.perso.EngineUT;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.fwk.ZUtils;
 import zildo.fwk.ui.UIText;
 import zildo.monde.Game;

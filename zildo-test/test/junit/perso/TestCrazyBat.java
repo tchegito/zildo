@@ -23,6 +23,7 @@ import org.junit.Assert;
 
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.monde.sprites.persos.PersoBat;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Anticiper;

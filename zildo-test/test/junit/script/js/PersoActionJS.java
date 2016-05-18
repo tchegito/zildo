@@ -23,10 +23,9 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-import junit.perso.EngineUT;
-
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoSpider;
 import zildo.server.EngineZildo;

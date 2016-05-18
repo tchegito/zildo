@@ -17,7 +17,7 @@
  *
  */
 
-package junit.perso;
+package tools;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.doReturn;
@@ -31,10 +31,11 @@ import java.util.Collections;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Matchers;
 
-import junit.FreezeMonitor;
+import junit.perso.MapUtils;
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
@@ -82,6 +83,7 @@ import zildo.server.state.ClientState;
  * @author Tchegito
  *
  */
+@RunWith(ZildoJUnit.class)	// This annotation makes runner aware of our custom ones
 public class EngineUT {
 
 	protected EngineZildo engine;
@@ -95,7 +97,11 @@ public class EngineUT {
 	
 	FreezeMonitor freezeMonitor;
 
-	public static boolean debugInfosPersos = true;
+	boolean debugInfosPersos = false;
+	/** A way to save memory: do not spy on Zildo, so Mockito doesn't create a lot of watchers. Default is TRUE. **/
+	boolean spyHero = false;
+	boolean spyMapManagement = false;
+	boolean disableFreezeMonitor = false;
 	
 	public volatile int nFrame = 0;
 	
@@ -111,7 +117,7 @@ public class EngineUT {
 	
 	protected PersoPlayer spawnZildo(int x, int y) {
 		PersoPlayer perso = new PersoPlayer(x, y, ZildoOutfit.Zildo);
-		if (doesSpyZildo()) {
+		if (spyHero) {
 			perso = spy(perso);
 		}
 		// As we spy the object with Mockito, pathFinder's reference becomes wrong. So, we recreate it
@@ -215,15 +221,6 @@ public class EngineUT {
 		engine = new EngineZildo(game);
 	}
 	
-	protected boolean doesSpyMapManagement() {
-		return false;
-	}
-	
-	/** A way to save memory: do not spy on Zildo, so Mockito doesn't create a lot of watchers. Default is TRUE. **/
-	protected boolean doesSpyZildo() {
-		return true;
-	}
-	
 	@Before
 	public void setUp() {
 		Game game = new Game(null, "hero");
@@ -233,7 +230,7 @@ public class EngineUT {
 		//EngineZildo.soundManagement.setForceMusic(true);
 		// Prepare mock for later
 		MapManagement mm = new MapManagement();
-		if (doesSpyMapManagement()) {
+		if (spyMapManagement) {
 			mm = spy(mm);
 		}
 		EngineZildo.mapManagement = mm;
@@ -315,8 +312,10 @@ public class EngineUT {
 		Zildo.pdPlugin.kbHandler = fakedKbHandler;
 		
 		// Create a thread wich monitors any freeze
-		freezeMonitor = new FreezeMonitor(this);
-		freezeMonitor.start();
+		if (!disableFreezeMonitor) {
+			freezeMonitor = new FreezeMonitor(this);
+			freezeMonitor.start();
+		}
 
 	}
 	
@@ -348,7 +347,7 @@ public class EngineUT {
 						timeToWait--;
 						if (timeToWait == 0) {
 							//simulateKeyPressed(KeysConfiguration.PLAYERKEY_ACTION.code);
-							simulateKeyPressed(null);
+							simulateKeyPressed();
 						}
 					}
 				//}
@@ -379,7 +378,7 @@ public class EngineUT {
 						timeToWait--;
 						if (timeToWait == 0) {
 							//simulateKeyPressed(KeysConfiguration.PLAYERKEY_ACTION.code);
-							simulateKeyPressed(null);
+							simulateKeyPressed();
 						}
 					}
 				//}
@@ -426,7 +425,7 @@ public class EngineUT {
 	public void simulatePressButton(Keys key, int time) {
 		simulateKeyPressed(key);
 		renderFrames(1);
-		simulateKeyPressed(null);
+		simulateKeyPressed();
 		renderFrames(time);		
 	}
 	
@@ -437,19 +436,17 @@ public class EngineUT {
 		PlatformDependentPlugin.currentPlugin = KnownPlugin.Lwjgl;
 		// Reset input
 		simulateDirection(new Vector2f(0, 0));
-		// Deprecated, but we're not concerned by limitations here
-		freezeMonitor.cutItOut();
-		try {
-			freezeMonitor.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		freezeMonitor.stop();
-	}
+		if (freezeMonitor != null) {
+			freezeMonitor.cutItOut();
 	
-	public void disableFreezeMonitor() {
-		freezeMonitor.cutItOut();
+			try {
+				freezeMonitor.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			freezeMonitor.stop();
+		}
 	}
 	
 	private void initCounters() {

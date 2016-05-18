@@ -26,6 +26,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
+import tools.EngineScriptUT;
 import zildo.fwk.script.context.SceneContext;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.sprites.SpriteEntity;
@@ -40,11 +41,6 @@ import zildo.server.EngineZildo;
  *
  */
 public class CheckSubscript extends EngineScriptUT {
-
-	/** Save memory **/
-	protected boolean doesSpyZildo() {
-		return false;
-	}
 	
 	/** Check that each subscript is fully executed before returning to caller **/
 	@Test
@@ -87,8 +83,6 @@ public class CheckSubscript extends EngineScriptUT {
 	// turret always shooting bullets on hero, without waiting between a burst.
 	@Test
 	public void checkForInLoop() {
-		debugInfosPersos = false;
-		
 		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/loops"));
 		
 		waitEndOfScripting();
@@ -122,9 +116,6 @@ public class CheckSubscript extends EngineScriptUT {
 	
 	@Test
 	public void checkPersoActionForInLoop() {
-		// TODO: annotations for debugInfosPerso=FALSE and spyZildo=TRUE
-		debugInfosPersos = false;
-
 		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/loops"));
 		final int NB_PERSOS = 1;
 		

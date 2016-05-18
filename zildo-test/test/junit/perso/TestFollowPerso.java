@@ -3,6 +3,7 @@ package junit.perso;
 import org.junit.Assert;
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;

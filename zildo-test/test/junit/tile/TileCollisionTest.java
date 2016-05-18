@@ -20,9 +20,11 @@
 package junit.tile;
 
 import org.junit.Test;
+
+import tools.EngineUT;
+
 import org.junit.Assert;
 
-import junit.perso.EngineUT;
 import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;

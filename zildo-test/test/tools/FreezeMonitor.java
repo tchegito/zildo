@@ -1,6 +1,5 @@
-package junit;
+package tools;
 
-import junit.perso.EngineUT;
 import zildo.fwk.ZUtils;
 
 public class FreezeMonitor extends Thread {

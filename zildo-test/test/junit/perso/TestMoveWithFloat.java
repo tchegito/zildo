@@ -26,6 +26,7 @@ import static org.mockito.Mockito.mock;
 import junit.framework.TestCase;
 
 import org.junit.Assert;
+import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -44,6 +45,7 @@ public class TestMoveWithFloat extends TestCase {
 
 	Perso heros;
 	
+	@Test
 	public void testMoveWithFloat() {
 		heros = new PersoNJ();
 		heros.setX(20.2f);
@@ -51,9 +53,9 @@ public class TestMoveWithFloat extends TestCase {
 		
 		MapManagement fakeMm = mock(MapManagement.class);
 		EngineZildo.mapManagement = fakeMm; 
-		doAnswer(new Answer() {
+		doAnswer(new Answer<Boolean>() {
 			@Override
-			public Object answer(InvocationOnMock invocation) throws Throwable {
+			public Boolean answer(InvocationOnMock invocation) throws Throwable {
 				Object[] args = invocation.getArguments();
 				float x = (Float) args[0];
 				float y = (Float) args[1];
@@ -94,13 +96,13 @@ public class TestMoveWithFloat extends TestCase {
 		System.out.println("in with:"+Math.round(x)+" ,"+Math.round(y));
 		return collide(16*Math.round(x / 16f), 16 * Math.round(y / 16f));
 	}
-	
+	/*
 	private void checkDivideBy16(float n) {
 		int one = Math.round(n) / 16;
 		int two = Math.round(n / 16f);
 		Assert.assertEquals(one, two);
 	}
-	
+	*/
 	// line equation : y = -x + 150
 	boolean collide(int x, int y) {
 		System.out.println("check collide with "+x+","+y);

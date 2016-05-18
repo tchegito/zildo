@@ -23,6 +23,7 @@ import org.junit.Assert;
 
 import org.junit.Test;
 
+import tools.EngineScriptUT;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Game;
 import zildo.server.EngineZildo;

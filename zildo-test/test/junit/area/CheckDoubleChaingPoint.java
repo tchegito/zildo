@@ -19,11 +19,10 @@
 
 package junit.area;
 
-import junit.perso.EngineUT;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.client.ClientEventNature;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -74,8 +73,6 @@ public class CheckDoubleChaingPoint extends EngineUT {
 		zildo.setAngle(Angle.EST);
 		zildo.setPv(4);
 		zildo.attack();
-
-		int frame = 0;
 
 		renderFrames(12);
 		Assert.assertNotNull(waterLily.getMover());

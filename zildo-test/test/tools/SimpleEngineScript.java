@@ -17,12 +17,10 @@
  *
  */
 
-package junit.script;
+package tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-
-import junit.perso.EngineUT;
 
 import org.junit.Before;
 
@@ -39,7 +37,7 @@ import zildo.server.state.ScriptManagement;
  */
 public class SimpleEngineScript extends EngineUT {
 
-	ScriptManagement scriptMgmt;
+	protected ScriptManagement scriptMgmt;
 	
 	@Override
 	@Before

@@ -1,9 +1,7 @@
-package junit.script;
+package tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-
-import junit.perso.EngineUT;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,7 +20,7 @@ import zildo.server.state.ScriptManagement;
  */
 public class EngineScriptUT extends EngineUT {
 
-		ScriptManagement scriptMgmt;
+		protected ScriptManagement scriptMgmt;
 		
 		@Override
 		@Before

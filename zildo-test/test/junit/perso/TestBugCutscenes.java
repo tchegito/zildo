@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.monde.dialog.HistoryRecord;
 import zildo.monde.items.Item;

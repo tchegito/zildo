@@ -2,11 +2,10 @@ package junit.fwk.display;
 
 import java.lang.reflect.Field;
 
-import junit.perso.EngineUT;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.client.ClientEngineZildo;
 import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.GUISpriteSequence;

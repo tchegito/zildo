@@ -19,10 +19,10 @@
 
 package junit.area;
 
-import junit.perso.EngineUT;
-
 import org.junit.Test;
 
+import tools.EngineUT;
+import tools.annotations.DisableFreezeMonitor;
 import zeditor.tools.builder.WorldmapBuilder;
 import zeditor.tools.builder.WorldmapBuilder.WorldMap;
 
@@ -48,10 +48,9 @@ public class CheckWorldmapBuilder extends EngineUT {
 		}
 	}
 	
-	@Test
+	// Disable freeze monitor, cause this can take a while (6 seconds ?)
+	@Test @DisableFreezeMonitor
 	public void assembleImages() {
-		// Disable freeze monitor, cause this can take a while (6 seconds ?)
-		disableFreezeMonitor();
 		String firstMap = "coucou";
 		WorldmapBuilder wmb = new WorldmapBuilder(firstMap, null);
 		wmb.savePng();

@@ -22,6 +22,7 @@ package junit.perso;
 import org.junit.Assert;
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;

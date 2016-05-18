@@ -1,10 +1,9 @@
 package junit.area;
 
-import junit.perso.EngineUT;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Trigo;

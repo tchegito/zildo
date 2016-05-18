@@ -1,11 +1,11 @@
 package junit.script;
 
 import static zildo.server.EngineZildo.spriteManagement;
-import junit.perso.EngineUT;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
@@ -92,7 +92,7 @@ public class CheckScriptQuest extends EngineUT {
 		Assert.assertEquals(239 + 256*2, mapUtils.area.readmap(7, 7));
 		simulateKeyPressed(Keys.Q);	// Press ACTION
 		renderFrames(1);
-		simulateKeyPressed(null);	// Hold ACTION
+		simulateKeyPressed();	// Hold ACTION
 		renderFrames(1);
 		Assert.assertEquals(240 + 256*2, mapUtils.area.readmap(7, 7));
 	}

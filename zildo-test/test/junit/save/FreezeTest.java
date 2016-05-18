@@ -7,12 +7,13 @@ import static org.mockito.Mockito.verify;
 
 import java.nio.ByteBuffer;
 
-import junit.perso.EngineUT;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import tools.EngineUT;
+import tools.annotations.SpyHero;
+import tools.annotations.SpyMapManagement;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Game;
 import zildo.monde.map.Tile.TileNature;
@@ -54,13 +55,13 @@ public class FreezeTest extends EngineUT {
 	}
 	
 	/** Place hero in the cave of flames, on 0th floor, and pushes him to death in lava **/
-	@Test
+	@Test @SpyHero @SpyMapManagement
 	public void sameFloor() {
 		dieInLava();
 		dieInLava();
 	}
 	
-	@Test 
+	@Test  @SpyHero @SpyMapManagement
 	public void differentFloor() {
 		zildo.setX(168);
 		zildo.setY(215);

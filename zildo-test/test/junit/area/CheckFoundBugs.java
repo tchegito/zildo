@@ -21,11 +21,10 @@ package junit.area;
 
 import java.util.List;
 
-import junit.perso.EngineUT;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.client.ClientEventNature;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;

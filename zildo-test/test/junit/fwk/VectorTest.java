@@ -19,10 +19,9 @@
 
 package junit.fwk;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
+import org.junit.Assert;
 import zildo.monde.util.Vector2f;
 
 /**

@@ -20,10 +20,9 @@
 package junit.area;
 
 import org.junit.Assert;
-import junit.perso.EngineUT;
-
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;

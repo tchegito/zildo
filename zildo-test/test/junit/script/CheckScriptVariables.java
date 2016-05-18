@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
+import tools.SimpleEngineScript;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.server.EngineZildo;
 
