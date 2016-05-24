@@ -946,7 +946,11 @@ public abstract class Perso extends Element {
 	}
 
 	public void askVisible(boolean p_visible) {
+		if (!askedVisible && p_visible) {	// Gets out of his invisibility
+			setVisible(true);
+		}
 		askedVisible = p_visible;
+
 	}
 	
 	public Point getTarget() {

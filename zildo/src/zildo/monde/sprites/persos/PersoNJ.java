@@ -173,20 +173,20 @@ public class PersoNJ extends Perso {
 		if (action != null) {
 			blinkIfWounded();
 			move();
-			return;
-		}
-
-		if ((getPv() == 0 && !isWounded() )|| getDialoguingWith() != null) {
-			return;
-		}
-
-
-		if (mouvement == MouvementZildo.SAUTE) {
-			moveJump();
 		} else {
-			blinkIfWounded();
-
-			move();
+	
+			if ((getPv() == 0 && !isWounded() )|| getDialoguingWith() != null) {
+				return;
+			}
+	
+	
+			if (mouvement == MouvementZildo.SAUTE) {
+				moveJump();
+			} else {
+				blinkIfWounded();
+	
+				move();
+			}
 		}
 		if (!askedVisible) {
 			setVisible(false);

@@ -40,6 +40,14 @@ public class EngineScriptUT extends EngineUT {
 			scriptMgmt.getAdventure().merge(ScriptReader.loadStream(stream));		
 		}
 		
+		/** Process frames waiting for a variable to the expected value **/
+		protected void synchroVariable(String name, int value) {
+			String strValue = value + ".0";
+			while (!strValue.equals(scriptMgmt.getVarValue(name))) {
+				renderFrames(1);
+			}
+		}
+		
 		@Override
 		@After
 		public void tearDown() {
