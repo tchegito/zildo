@@ -8,6 +8,7 @@ import org.junit.Before;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
+import zildo.fwk.script.context.SceneContext;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.server.EngineZildo;
 import zildo.server.state.ScriptManagement;
@@ -46,6 +47,10 @@ public class EngineScriptUT extends EngineUT {
 			while (!strValue.equals(scriptMgmt.getVarValue(name))) {
 				renderFrames(1);
 			}
+		}
+		
+		public void executeScene(String name) {
+			scriptMgmt.execute(name, true, new SceneContext(), null);
 		}
 		
 		@Override

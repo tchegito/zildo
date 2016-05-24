@@ -27,7 +27,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineScriptUT;
-import zildo.fwk.script.context.SceneContext;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -48,7 +47,7 @@ public class CheckSubscript extends EngineScriptUT {
 		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/subscript"));
 
 		waitEndOfScripting();
-		scriptMgmt.execute("caller", true);
+		executeScene("caller");
 		waitEndOfScripting();
 		
 		Assert.assertEquals("3.0", scriptMgmt.getVariables().get("state"));
@@ -60,7 +59,7 @@ public class CheckSubscript extends EngineScriptUT {
 		
 		waitEndOfScripting();
 		int nbSprites = countSprites();
-		scriptMgmt.execute("handMadeFor", true);
+		executeScene("handMadeFor");
 		waitEndOfScripting();
 
 		// Check that "spawn" has been called 16 times
@@ -86,7 +85,7 @@ public class CheckSubscript extends EngineScriptUT {
 		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/loops"));
 		
 		waitEndOfScripting();
-		scriptMgmt.execute("forInLoop", true, new SceneContext(), null);
+		executeScene("forInLoop");
 		Map<String, String> vars = scriptMgmt.getVariables();
 		int startLength = vars.size();
 		boolean waitForResetI = false;
@@ -149,7 +148,7 @@ public class CheckSubscript extends EngineScriptUT {
 		
 		waitEndOfScripting();
 		int nbSprites = countSprites();
-		scriptMgmt.execute(scriptName, true, new SceneContext(), null);
+		executeScene(scriptName);
 		waitEndOfScripting();
 
 		// Check that "spawn" has been called 16 times

@@ -66,7 +66,7 @@ public class CheckVariablesHandling extends EngineScriptUT {
 		
 		loadXMLAsString(basicXML);
 		
-		scriptMgmt.execute("test1", false);
+		executeScene("test1");
 		while (scriptMgmt.isScripting()) {
 			scriptMgmt.render();
 		}
@@ -80,7 +80,7 @@ public class CheckVariablesHandling extends EngineScriptUT {
 	public void saveVariables() throws Exception {
 		loadXMLAsString(basicXML);
 		
-		scriptMgmt.execute("test1", false);
+		executeScene("test1");
 		while (scriptMgmt.isScripting()) {
 			scriptMgmt.render();
 		}
@@ -102,12 +102,12 @@ public class CheckVariablesHandling extends EngineScriptUT {
 		loadXMLAsString(basicXML);
 		loadXMLAsString(secondXML);
 		
-		scriptMgmt.execute("test1", true);
+		executeScene("test1");
 		while (scriptMgmt.isScripting()) {
 			scriptMgmt.render();
 		}
 		
-		scriptMgmt.execute("test2", true);
+		executeScene("test2");
 		while (scriptMgmt.isScripting()) {
 			scriptMgmt.render();
 		}
@@ -129,7 +129,7 @@ public class CheckVariablesHandling extends EngineScriptUT {
 	public void testIncrementAndTest() throws Exception {
 		loadXMLAsString(thirdXML);
 		
-		scriptMgmt.execute("test3", true);
+		executeScene("test3");
 		while (scriptMgmt.isScripting()) {
 			scriptMgmt.render();
 		}
