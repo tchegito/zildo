@@ -78,6 +78,7 @@ public class Client {
 	NetClient netClient;
 	boolean multiplayer;
 	boolean music = Zildo.soundEnabled;
+	boolean fullscreen = Zildo.fullScreen;
 	// touchpad parameters
 	boolean leftHanded;	// For touch screen
 	boolean movingCross; // For touch screen
@@ -445,7 +446,14 @@ public class Client {
 	public boolean isMusic() {
 		return music && Zildo.soundEnabled;
 	}
+	
+	public boolean isFullscreen() {
+		return fullscreen;
+	}
 
+	public void setFullscreen(boolean value) {
+		fullscreen = value;
+	}
 	public void setMusic(boolean music) {
 		this.music = music;
 		if (!music) {

@@ -30,12 +30,6 @@ public class ZildoJUnit extends BlockJUnit4ClassRunner {
 		super(klass);
 		System.out.println("youhou !");
 	}
-
-	@Override
-	protected Object createTest() throws Exception {
-		// TODO Auto-generated method stub
-		return super.createTest();
-	}
 	
 	@Override
 	protected Statement withBefores(FrameworkMethod method, Object target, Statement statement) {

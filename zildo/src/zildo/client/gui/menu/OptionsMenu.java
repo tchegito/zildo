@@ -37,7 +37,7 @@ import zildo.fwk.ui.UIText;
 public class OptionsMenu extends Menu {
 
 	boolean music = client.isMusic();
-	boolean fullScreen = Zildo.fullScreen;
+	boolean fullScreen = client.isFullscreen();;
 	boolean leftHanded = client.isLeftHanded();
 	boolean movingCross = client.isMovingCross();
 	
@@ -66,6 +66,7 @@ public class OptionsMenu extends Menu {
 				@Override
 				public void run() {
 					fullScreen = !fullScreen;
+					client.setFullscreen(fullScreen);
 					ClientEngineZildo.openGLGestion.switchFullscreen(fullScreen);
 					setText(getFullscreenString());
 					client.handleMenu(currentMenu);

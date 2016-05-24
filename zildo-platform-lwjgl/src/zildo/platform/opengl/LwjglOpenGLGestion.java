@@ -47,7 +47,7 @@ public class LwjglOpenGLGestion extends OpenGLGestion {
 
 	final static String title = "Zildo OpenGL";
 
-	private DisplayMode displayMode = null;
+	private DisplayMode displayMode;
 
 	KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
 	
