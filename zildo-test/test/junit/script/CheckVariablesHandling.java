@@ -20,12 +20,18 @@
 package junit.script;
 
 import org.junit.Assert;
-
 import org.junit.Test;
 
 import tools.EngineScriptUT;
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.script.context.IEvaluationContext;
+import zildo.fwk.script.context.LocaleVarContext;
+import zildo.fwk.script.context.SpriteEntityContext;
+import zildo.fwk.script.logic.FloatExpression;
+import zildo.fwk.script.logic.FloatVariable.NoContextException;
+import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.Game;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.server.EngineZildo;
 import zildo.server.state.ScriptManagement;
 
@@ -136,5 +142,35 @@ public class CheckVariablesHandling extends EngineScriptUT {
 		
 		Assert.assertEquals("3.0", scriptMgmt.getVariables().get("fishWater"));
 		Assert.assertEquals("1.0", scriptMgmt.getVariables().get("result"));
+	}
+	
+	
+	@Test 
+	public void compareSwitchAndFloatExpression() {
+		// 1) first expression
+		String expr = "dice10>5:128,0";
+		FloatExpression fExpr = new FloatExpression(expr);
+		ZSSwitch zsExpr = ZSSwitch.parseForDialog(expr);
+		int result = zsExpr.evaluateInt();
+		Assert.assertTrue(result == 0 || result == 128);
+		boolean error = false;
+		try {
+			// "dice10" is forbidden with FloatExpression
+			fExpr.evaluate(null);
+		} catch (NoContextException e) {
+			error = true;
+		}
+		Assert.assertTrue(error);
+		
+		// 2) Give it a try with another expression
+		String varName = LocaleVarContext.VAR_IDENTIFIER + "val";
+		expr = "(" + varName + ">2) *128";
+		fExpr = new FloatExpression(expr);
+		//zsExpr = ZSSwitch.parseForDialog(expr);
+		IEvaluationContext ctx = new SpriteEntityContext(new SpriteEntity());
+		String idxName = ctx.registerVariable(varName);
+		scriptMgmt.getVariables().put(idxName, "3");
+		Assert.assertEquals(128, (int) fExpr.evaluate(ctx));
+		zsExpr.evaluateInt();
 	}
 }

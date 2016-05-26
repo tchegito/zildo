@@ -71,6 +71,7 @@ public class ActionElement extends LanguageElement {
 	public FloatExpression[] a;
 	public FloatExpression[] f;
 	public FloatExpression alphaA;
+	public FloatExpression alphaV;
 	public FloatExpression zoom;	// Used in 'moveTo'
 	public int alpha;
 	public int deltaFloor;	// Only for 'moveTo' action
@@ -152,6 +153,7 @@ public class ActionElement extends LanguageElement {
 			weapon = readAttribute("weapon");
 			alpha = readInt("alpha", -1);
 			alphaA = getFloatExpr("alphaA");
+			alphaV = getFloatExpr("alphaV");
 			if (kind == ActionKind.perso) addSpr = getFloatExpr("addSpr", "-1");
 			temp = readAttribute("z");
 			if (temp != null) {

@@ -33,7 +33,7 @@ import zildo.server.EngineZildo;
 public class FloatVariable implements FloatASTNode {
 
 	@SuppressWarnings("serial")
-	class NoContextException extends RuntimeException {
+	public class NoContextException extends RuntimeException {
 		
 	}
 	String variable;

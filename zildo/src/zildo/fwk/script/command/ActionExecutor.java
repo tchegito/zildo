@@ -926,6 +926,9 @@ public class ActionExecutor extends RuntimeExecutor {
 		if (p_action.alphaA != null) {
 			elem.alphaA = p_action.alphaA.evaluate(context);
 		}
+		if (p_action.alphaV != null) {
+			elem.alphaV = p_action.alphaV.evaluate(context);
+		}
 		if (p_action.alpha != -1) {
 			elem.setAlpha(p_action.alpha);
 		}
