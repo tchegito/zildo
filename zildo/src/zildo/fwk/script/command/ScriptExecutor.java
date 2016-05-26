@@ -37,7 +37,6 @@ import zildo.fwk.script.xml.element.action.runtime.RuntimeScene;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
-import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
 public class ScriptExecutor {
@@ -58,7 +57,7 @@ public class ScriptExecutor {
 	 * @param p_finalEvent
 	 * @param p_topPriority TRUE=this script will be executed before all others
 	 * @param p_context context (optional)
-	 * @param p_caller process calling a new one
+	 * @param p_caller process calling this new one
 	 */
 	public void execute(RuntimeScene p_script, boolean p_finalEvent, boolean p_topPriority, IEvaluationContext p_context, ScriptProcess p_caller) {
 		// TODO: attempt to duplicate context, need to refactor cleanly
@@ -232,8 +231,6 @@ public class ScriptExecutor {
 	}
 	
 	private void renderElement(ScriptProcess process, RuntimeAction currentNode, boolean moveCursor) {
-		// TODO: We can differentiate Action and Var in RuntimeAction with 2 fields
-		// So as we don't need to check class, and cast
 		if (!currentNode.var) {
 			renderAction(process, currentNode, moveCursor);
 		} else {

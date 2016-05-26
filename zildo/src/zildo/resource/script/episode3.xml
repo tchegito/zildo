@@ -142,25 +142,18 @@
 	        <wait value="40"/>
 	        <moveTo who="zildo" pos="0,40" delta="true"/>
 	        <activate what="doorUp" value="false"/>
-	        <spawn who="turret1" pos="100,100" type="TURRET" alpha="128"/>
-	        <spawn who="turret2" pos="200,100" type="TURRET" alpha="128" reverse="128"/>
-  	        <spawn who="turret3" pos="100,180" type="TURRET" alpha="128" reverse="64"/>
-   	        <spawn who="turret4" pos="200,180" type="TURRET" alpha="128" reverse="192"/>
-   	        <var name="BOSS_turret_phase" value="0"/>
-  	        <perso who="turret1" action="bossTurret(200, 150, 0, 0)"/>
-   	        <perso who="turret2" action="bossTurret(100, 150, 1, 0)" parent="turret1"/>
-  	        <perso who="turret3" action="bossTurret(200, 100, 0, 1)" parent="turret1"/>
-   	        <perso who="turret4" action="bossTurret(100, 100, 1, 1)" parent="turret1"/>
-   	        <loop when="BOSS_turret_phase=0">
-   	            <wait value="10"/>
-   	        </loop>
-  	        <perso who="turret1" action="bossTurret(250, 100, 0, 0)"/>
-   	        <perso who="turret2" action="bossTurret(150, 200, 1, 0)"/>
-  	        <perso who="turret3" action="bossTurret(150, 50, 0, 1)"/>
-   	        <perso who="turret4" action="bossTurret(50, 150, 1, 1)"/>
+	        <!-- Delegate to another quest, with 'locked' attribute at false to unlock player -->
+	        <markQuest name="fightBossTurret1" value="true"/>
    	    </action>
 	</quest>
-	
+
+	<quest name="fightBossTurret1" locked="false">
+	    <action>
+			<!-- Let the boss fight -->
+	    	<exec script="scriptBossTurret1" unblock="true"/>
+	    </action>
+	</quest>
+		
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -663,4 +656,35 @@
 
 	</persoAction>
 
+	<scene id="scriptBossTurret1">
+        <spawn who="turret1" pos="100,100" type="TURRET" alpha="128"/>
+        <spawn who="turret2" pos="200,100" type="TURRET" alpha="128" reverse="128"/>
+        <spawn who="turret3" pos="100,180" type="TURRET" alpha="128" reverse="64"/>
+	    <spawn who="turret4" pos="200,180" type="TURRET" alpha="128" reverse="192"/>
+
+   	    <var name="BOSS_turret_phase" value="0"/>
+        <perso who="turret1" action="bossTurret(200, 150, 0, 0)"/>
+	    <perso who="turret2" action="bossTurret(100, 150, 1, 0)" parent="turret1"/>
+        <perso who="turret3" action="bossTurret(200, 100, 0, 1)" parent="turret1"/>
+	    <perso who="turret4" action="bossTurret(100, 100, 1, 1)" parent="turret1"/>
+	    <loop when="BOSS_turret_phase=0">
+	        <wait value="10"/>
+	    </loop>
+
+   	    <var name="BOSS_turret_phase" value="0"/>
+        <perso who="turret1" action="bossTurret(160, 95, 0, 0)"/>
+	    <perso who="turret2" action="bossTurret(130, 125, 1, 0)"/>
+        <perso who="turret3" action="bossTurret(190, 125, 0, 1)"/>
+	    <perso who="turret4" action="bossTurret(160, 155, 1, 1)"/>
+	    <loop when="BOSS_turret_phase=0">
+	        <wait value="10"/>
+	    </loop>   
+	     
+   	    <var name="BOSS_turret_phase" value="0"/>
+	    <perso who="turret1" action="bossTurret(250, 100, 0, 0)"/>
+	    <perso who="turret2" action="bossTurret(150, 200, 1, 0)"/>
+        <perso who="turret3" action="bossTurret(150, 50, 0, 1)"/>
+	    <perso who="turret4" action="bossTurret(50, 150, 1, 1)"/>
+	</scene>
+	
 </adventure>
