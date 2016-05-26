@@ -8,6 +8,7 @@ import org.junit.Before;
 
 import zildo.client.ClientEngineZildo;
 import zildo.client.MapDisplay;
+import zildo.fwk.script.context.SceneContext;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.server.EngineZildo;
 import zildo.server.state.ScriptManagement;
@@ -38,6 +39,18 @@ public class EngineScriptUT extends EngineUT {
 		protected void loadXMLAsString(String string) throws Exception {
 			InputStream stream = new ByteArrayInputStream(string.getBytes());
 			scriptMgmt.getAdventure().merge(ScriptReader.loadStream(stream));		
+		}
+		
+		/** Process frames waiting for a variable to the expected value **/
+		protected void synchroVariable(String name, int value) {
+			String strValue = value + ".0";
+			while (!strValue.equals(scriptMgmt.getVarValue(name))) {
+				renderFrames(1);
+			}
+		}
+		
+		public void executeScene(String name) {
+			scriptMgmt.execute(name, true, new SceneContext(), null);
 		}
 		
 		@Override

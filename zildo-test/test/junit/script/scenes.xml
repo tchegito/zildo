@@ -1,0 +1,40 @@
+<adventure>
+	<scene id="testVisibility">
+		<spawn who="man" type="BANDIT_CHAPEAU" pos="160,100"/>
+		<visible who="man" value="false"/>
+		<var name="phase" value="1"/>
+		<wait value="10"/>
+		<visible who="man" value="true"/>
+		<var name="phase" value="2"/>
+		<wait value="10"/>
+		
+		<visible who="man" value="false"/>
+		<var name="phase" value="3"/>
+		<wait value="10"/>
+		<visible who="man" value="true"/>
+		<var name="phase" value="4"/>
+		<wait value="10"/>
+		
+	</scene>
+	
+	<scene id="launchPersoTest">
+		<spawn who="ben" type="BANDIT_CHAPEAU" pos="160,100"/>
+		<perso who="ben" action="persoTestVisibility"/>
+	</scene>
+	
+	<persoAction id="persoTestVisibility">
+		<visible who="self" value="false"/>
+		<var name="phase" value="1"/>
+		<wait value="10"/>
+		<visible who="self" value="true"/>
+		<var name="phase" value="2"/>
+		<wait value="10"/>
+		
+		<visible who="self" value="false"/>
+		<var name="phase" value="3"/>
+		<wait value="10"/>
+		<visible who="self" value="true"/>
+		<var name="phase" value="4"/>
+		<wait value="10"/>
+	</persoAction>
+</adventure>
