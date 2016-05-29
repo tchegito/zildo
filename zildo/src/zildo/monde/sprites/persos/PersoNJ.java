@@ -734,6 +734,13 @@ public class PersoNJ extends Perso {
 			}
 			break;
 		case TURRET:
+			if (addSpr == 7) {
+				if (shadow == null) addShadow(ElementDescription.SHADOW_LARGE);
+				shadow.setVisible(true);
+				shadow.setY(y+4);
+			} else if (shadow != null) {
+				shadow.setVisible(false);
+			}
 			break;
 		default:
 			add_spr = angle.value * 2 + computeSeq(2) % 2;

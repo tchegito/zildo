@@ -139,7 +139,9 @@ public enum ElementDescription implements SpriteDescription {
 	// 248
 	BUNCH_LEAVES, HOLE_STUMP,
 	// 250
-	MIDDLE_SWORD;
+	MIDDLE_SWORD,
+	// 251
+	BULLET;
 
 	Boolean damage;
 	
@@ -257,7 +259,8 @@ public enum ElementDescription implements SpriteDescription {
 				case FIRE_BALL:
 				case EXPLO1: case EXPLO2: case EXPLO3:
 				case SEWER_SMOKE1: case SEWER_SMOKE2:
-				case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:					
+				case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:
+				case BULLET:
 					damage = true;
 				default:
 					break;
@@ -309,6 +312,7 @@ public enum ElementDescription implements SpriteDescription {
 		case WATERWAVE1: case WATERWAVE2: case WATERWAVE3:
 		case SWORD: case FIRE_RING:
 		case BLUE_FIREFLY: case PURPLE_FIREFLY:
+		case BULLET:
 			return true;
 		default:
 			return false;

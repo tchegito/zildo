@@ -196,7 +196,7 @@ public class Element extends SpriteEntity {
 	}
 
 	/**
-	 * Renvoie TRUE si l'élément est solide.
+	 * Returns TRUE if element is considered to collide with environment.
 	 * 
 	 * @return boolean
 	 */
@@ -312,7 +312,11 @@ public class Element extends SpriteEntity {
 				// On calcule sa nouvelle position absolue
 				colli = physicMoveWithCollision();
 	
-				if (nSpr >= 44 && nSpr <= 47) { // Sprite d'animation
+				// Specific animations
+				if (desc == ElementDescription.BULLET) {
+					// Rotate the bullet
+					rotation = rotation.succ();
+				} else 	if (nSpr >= 44 && nSpr <= 47) { // Sprite d'animation
 					// Morceaux de pierres
 					z = z - vz; // On revient en arrière
 					vz = vz - az;
@@ -614,6 +618,10 @@ public class Element extends SpriteEntity {
 						EngineZildo.soundManagement.broadcastSound(BankSound.PeebleFloor, this);
 						EngineZildo.spriteManagement.spawnSpriteGeneric(
 								SpriteAnimation.DUST, (int) x, (int) y, floor,	0, null, null);
+						break;
+					case BULLET:
+						EngineZildo.spriteManagement.spawnSprite(new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null));
+						EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
 						break;
 					case LEAF:
 						if (alpha > 0)	{// Leaf stay on the floor until it's totally disappeared
