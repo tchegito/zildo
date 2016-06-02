@@ -458,7 +458,7 @@
     </quest>
 
     <quest name="visit_gpprison_over" repeat="true">
-        <trigger>
+        <trigger>	<!-- hero's leaving the prison -->
             <location name="prison" pos="228,270" radius="1"/>
             <questDone name="visit_gpprison"/>
         </trigger>
@@ -468,7 +468,7 @@
     </quest>
     
     <quest name="visit_gpprison_over_2" repeat="true">
-        <trigger>
+        <trigger> <!-- hero's leaving the cell -->
             <location name="prison" pos="228,138" radius="3"/>
             <questDone name="visit_gpprison"/>
         </trigger>
@@ -1477,6 +1477,7 @@
         <markQuest name="visit_gpprison" value="0"/>
         <markQuest name="visiting_gpprison" value="0"/>
         <script who="zildo" text="VIDE"/>
+        <moveTo who="zildo" pos="10,0" delta="true"/>
         <moveTo who="jaune" pos="0,10" delta="true"/> 
         <angle who="jaune" value="3"/>
 	    <actions>
