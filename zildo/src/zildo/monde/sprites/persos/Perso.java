@@ -1266,6 +1266,17 @@ public abstract class Perso extends Element {
 		}
 	}
 	
+	@Override
+	public void setLight(int light) {
+		// Set perso's light and all of his linked elements
+		if (persoSprites != null) {
+			for (Element e : persoSprites) {
+				e.setLight(light);
+			}
+		}
+		super.setLight(light);
+	}
+	
 	// Returns the 'z' coordinates of the tile under the character's feet
 	public int getBottomZ() {
 		return EngineZildo.mapManagement.getPersoBottomZ(this);
