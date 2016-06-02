@@ -231,7 +231,7 @@ public class CollideManagement {
 	        				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamaging, zildo);
 	        				dmg *= 4;
 	        			}
-	        			if (zildo.getWeapon().kind == ItemKind.MIDSWORD) {
+	        			if (zildo.getWeapon() != null && zildo.getWeapon().kind == ItemKind.MIDSWORD) {
 	        				dmg += 1;
 	        			}
 	        		}

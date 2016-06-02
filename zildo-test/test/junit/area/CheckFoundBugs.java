@@ -270,4 +270,22 @@ public class CheckFoundBugs extends EngineUT {
 		PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;
 		buttonsConflict();
 	}
+	
+	// Hero take a bush and throw it on enemy
+	@Test
+    public void hitEnemyWithBushes() {
+        mapUtils.loadMap("voleursg5");
+        PersoPlayer zildo = spawnZildo(891, 143);
+        zildo.setAngle(Angle.OUEST);
+        waitEndOfScripting();
+        zildo.takeSomething((int) zildo.x-8, (int) zildo.y, ElementDescription.BUSHES, null);
+        Assert.assertNotNull("Hero should have a bush raised in its hands !", zildo.getEn_bras());
+        while (zildo.getAttente() != 0) {
+            renderFrames(1);
+        }
+        Assert.assertNotNull("Hero should have a bush raised in its hands !", zildo.getEn_bras());
+        zildo.throwSomething();
+        // We had an NPE when projectile hit the enemy
+        renderFrames(50);
+    }
 }
