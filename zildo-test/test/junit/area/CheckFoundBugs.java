@@ -271,7 +271,7 @@ public class CheckFoundBugs extends EngineUT {
 		buttonsConflict();
 	}
 	
-	// Hero take a bush and throw it on enemy
+	// Hero take a bush and throw it on enemy (Issue 87)
 	@Test
     public void hitEnemyWithBushes() {
         mapUtils.loadMap("voleursg5");
