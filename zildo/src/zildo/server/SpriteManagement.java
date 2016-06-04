@@ -580,6 +580,12 @@ public class SpriteManagement extends SpriteStore {
 		super.deleteSprite(entity);
 	}
 	
+	/** Update collision buffers for sprites and characters **/
+	public void updateCollisions() {
+		sprColli.initFrame(spriteEntities);
+		persoColli.initFrame(EngineZildo.persoManagement.tab_perso);		
+	}
+	
 	/**
 	 * Do sprite's stuff<ul>
 	 * <li>animate sprites & persos<li>
@@ -598,8 +604,7 @@ public class SpriteManagement extends SpriteStore {
 			}
 		}
 
-		sprColli.initFrame(spriteEntities);
-		persoColli.initFrame(EngineZildo.persoManagement.tab_perso);
+		updateCollisions();
 
 		boolean blockNPC = p_blockMoves || temporaryBlocked;
 		
