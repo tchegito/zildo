@@ -82,10 +82,15 @@ public class CheckSubscript extends EngineScriptUT {
 	// turret always shooting bullets on hero, without waiting between a burst.
 	@Test
 	public void checkForInLoop() {
+		checkNumberVariablesWithScene("forInLoop", 2);
+	}
+	
+	private void checkNumberVariablesWithScene(String sceneName,int nbAuthorized) {
+		
 		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/loops"));
 		
 		waitEndOfScripting();
-		executeScene("forInLoop");
+		executeScene(sceneName);
 		Map<String, String> vars = scriptMgmt.getVariables();
 		int startLength = vars.size();
 		boolean waitForResetI = false;
@@ -94,7 +99,7 @@ public class CheckSubscript extends EngineScriptUT {
 			renderFrames(1);
 
 			vars = scriptMgmt.getVariables();
-			Assert.assertTrue(vars.size() <= startLength + 2);
+			Assert.assertTrue("Variables size shouldn't expect to exceed "+nbAuthorized+" !", vars.size() <= startLength + nbAuthorized);
 			String s = vars.get("loc:0");
 			if (s != null) {
 				int i = (int) Float.parseFloat(s);
@@ -141,6 +146,11 @@ public class CheckSubscript extends EngineScriptUT {
 			Assert.assertTrue("We should not have more than "+maxVariables+" !", vars.size() <= maxVariables);
 			
 		}
+	}
+	
+	@Test
+	public void checkSceneWithParameters() {
+		checkNumberVariablesWithScene("loopExecParameters", 20);
 	}
 	
 	private void checkForScript(String scriptName) {

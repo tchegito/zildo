@@ -288,4 +288,24 @@ public class CheckFoundBugs extends EngineUT {
         // We had an NPE when projectile hit the enemy
         renderFrames(50);
     }
+	
+	// During a refactor on persoAction, we lose the SpriteEntityContext, so 'self' leaded to NULL => NPE
+	@Test
+	public void playFlut() {
+		mapUtils.loadMap("coucou");
+        PersoPlayer zildo = spawnZildo(891, 143);
+        zildo.setWeapon(new Item(ItemKind.FLUT));
+        zildo.attack();
+        renderFrames(50);
+	}
+	
+	// Still during this refactor, we broke the turtle's arise, by NPE again.
+	@Test
+	public void turtleRise() {
+		mapUtils.loadMap("sousbois7");
+        spawnZildo(116, 407);
+        waitEndOfScripting();
+        simulateDirection(-1, 0);
+        renderFrames(80);
+	}
 }

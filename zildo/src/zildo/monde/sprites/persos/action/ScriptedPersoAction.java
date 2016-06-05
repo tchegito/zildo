@@ -19,6 +19,7 @@
 
 package zildo.monde.sprites.persos.action;
 
+import zildo.fwk.script.context.IEvaluationContext;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 
@@ -29,21 +30,15 @@ import zildo.server.EngineZildo;
 public class ScriptedPersoAction implements PersoAction {
 
 	Perso perso;
-	String actionName;
 	
 	public ScriptedPersoAction(Perso p_perso, String p_actionName) {
+		this(p_perso, p_actionName, null);
+	}
+	
+	public ScriptedPersoAction(Perso p_perso, String p_actionName, IEvaluationContext context) {
 		perso = p_perso;
-		// Parse action name for arguments
-		int posParenthese = p_actionName.indexOf('(');
-		String[] argVals = null;
-		if (posParenthese != -1) {
-			actionName = p_actionName.substring(0, posParenthese);
-			String argStr= p_actionName.substring(posParenthese+1, p_actionName.indexOf(')'));
-			argVals = argStr.split(",");
-		} else {
-			actionName = p_actionName;
-		}
-		EngineZildo.scriptManagement.runPersoAction(perso, actionName, argVals);
+		
+		EngineZildo.scriptManagement.runPersoAction(perso, p_actionName, context);
 	}
 	
 	@Override

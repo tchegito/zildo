@@ -55,4 +55,18 @@
 			<wait value="90"/>
 	    </loop>
 	</persoAction>
+	
+	<scene id='loopExecParameters'>
+	    <spawn who="titan" type="BANDIT_CHAPEAU" pos="160,100"/>
+		<for var="loc:i" value="20">
+			<exec script="sceneWithParameters(210, 160, 110, 160, 210, 110, 110, 110)"/>
+		</for>
+	</scene>
+	
+	<scene id='sceneWithParameters'>
+	    <var name="globI" value="loc:arg0"/>
+	    <perso who="titan" action="actionForInLoop"/>
+	    <wait value="50"/>
+	    <perso who="titan" action=""/>
+	</scene>
 </adventure>

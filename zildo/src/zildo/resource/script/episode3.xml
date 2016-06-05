@@ -660,49 +660,51 @@
 	</persoAction>
 
 	<scene id="scriptBossTurret1">
+	    <!-- Create turrets -->
         <spawn who="turret1" pos="110,100" type="TURRET" alpha="128"/>
         <spawn who="turret2" pos="210,100" type="TURRET" alpha="128" reverse="128"/>
         <spawn who="turret3" pos="110,180" type="TURRET" alpha="128" reverse="64"/>
 	    <spawn who="turret4" pos="210,180" type="TURRET" alpha="128" reverse="192"/>
 		<spawn who="turretH" pos="160,125" type="TURRET" alpha="128" addSpr="6"/>
-		
-   	    <var name="BOSS_turret_phase" value="0"/>
-        <perso who="turret1" action="bossTurret(210, 160, 0, 0)"/>
-	    <perso who="turret2" action="bossTurret(110, 160, 1, 0)" parent="turret1"/>
-        <perso who="turret3" action="bossTurret(210, 110, 0, 1)" parent="turret1"/>
-	    <perso who="turret4" action="bossTurret(110, 110, 1, 1)" parent="turret1"/>
-	    <loop when="BOSS_turret_phase!=1">
-	        <wait value="10"/>
-	    </loop>
-	    <!-- Make vulnerable part out of the ground -->
-	    <perso who="turretH" alphaA="0.1"/>
+		<!-- Link them (to avoid collision between different parts)-->
+	    <perso who="turret2" parent="turret1"/>
+        <perso who="turret3" parent="turret1"/>
+	    <perso who="turret4" parent="turret1"/>
+       	<perso who="turretH" parent="turret1"/>
+	    				
+		<!-- Cycles -->
+		<loop>
+			<exec script="turretCycle(210, 160, 110, 160, 210, 110, 110, 110)"/>
+			<exec script="turretCycle(160, 105, 130, 135, 190, 135, 160, 165)"/>
+			<exec script="turretCycle(250, 100, 160, 180, 155, 80, 65, 150)"/>
+		</loop>
+	</scene>
+	
+	<scene id="turretCycle">
+		<!-- Cycle -->
+		<!-- 0/3 : move under ground-->
+		<var name="BOSS_turret_phase" value="0"/>
+		<perso who="turret1" action="bossTurret(loc:arg0, loc:arg1, 0, 0)"/>
+		<perso who="turret2" action="bossTurret(loc:arg2, loc:arg3, 1, 0)"/>
+	    <perso who="turret3" action="bossTurret(loc:arg4, loc:arg5, 0, 1)"/>
+		<perso who="turret4" action="bossTurret(loc:arg6, loc:arg7, 1, 1)"/>
+		<loop when="BOSS_turret_phase!=1">
+			<wait value="10"/>
+		</loop>
+		<!-- 1/3 : make vulnerable part out of the ground -->
+		<perso who="turretH" alphaA="0.1"/>
 		<wait value="20"/>
 		<animation type="BREAKING_ROCK" pos="150,125"/>
 		<animation type="BREAKING_ROCK" pos="165,128"/>
 		<perso who="turretH" addSpr="7"/>
-		    
+			    
 		<loop when="BOSS_turret_phase!=2">
-	        <wait value="10"/>
-	    </loop>
-	    <!-- Vulnerable part crouch back -->
+			<wait value="10"/>
+		</loop>
+		<!-- 2/3 : Vulnerable part crouch back -->
 		<animation type="BREAKING_ROCK" pos="160,125"/>
 		<wait value="4"/>
 		<perso who="turretH" addSpr="6" alpha="128"/>
-		
-   	    <var name="BOSS_turret_phase" value="0"/>
-        <perso who="turret1" action="bossTurret(160, 105, 0, 0)"/>
-	    <perso who="turret2" action="bossTurret(130, 135, 1, 0)"/>
-        <perso who="turret3" action="bossTurret(190, 135, 0, 1)"/>
-	    <perso who="turret4" action="bossTurret(160, 165, 1, 1)"/>
-	    <loop when="BOSS_turret_phase!=2">
-	        <wait value="10"/>
-	    </loop>   
-	     
-   	    <var name="BOSS_turret_phase" value="0"/>
-	    <perso who="turret1" action="bossTurret(250, 100, 0, 0)"/>
-	    <perso who="turret2" action="bossTurret(150, 190, 1, 0)"/>
-        <perso who="turret3" action="bossTurret(150, 70, 0, 1)"/>
-	    <perso who="turret4" action="bossTurret(65, 150, 1, 1)"/>
-	</scene>
-	
+		<!-- End of cycle -->
+	</scene>	
 </adventure>

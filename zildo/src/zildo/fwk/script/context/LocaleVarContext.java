@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import zildo.Zildo;
 import zildo.fwk.collection.IdGenerator;
 import zildo.server.EngineZildo;
 
@@ -49,6 +50,9 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 		int id = localVariableNaming.pop();
 		String varName = VAR_IDENTIFIER + id;
 		locales.put(name, varName);
+		if (Zildo.infoDebugScriptVerbose) {
+			System.out.println("Registering variable "+name + " with name "+varName);
+		}
 		return varName;
 	}
 	
@@ -64,6 +68,7 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 		for (String varName : involvedVariables) {
     		unregisterVariable(varName);
     	}
+		involvedVariables.clear();
 	}
 	
 	/** Called when an executor comes to an end => local would never be use **/
@@ -73,9 +78,18 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 		locales.remove(name);
 		
 		// Remove variable value from global container
-		//String value = EngineZildo.scriptManagement.getVarValue(transco);
-		//System.out.println("Removing "+transco+" for "+name+" valued with "+value);
-		EngineZildo.scriptManagement.getVariables().remove(transco);
+		String value = EngineZildo.scriptManagement.getVarValue(transco);
+		if (Zildo.infoDebugScriptVerbose) {
+			System.out.println("Removing "+transco+" for "+name+" valued with "+value);
+		}
+		if (value != null) {	// local value created with 'spawn' are not in scriptManagement.variables (see why)
+			EngineZildo.scriptManagement.getVariables().remove(transco);
+		}
+	}
+	
+	/** Returns TRUE if there's at least 1 local variable in this context. Just for optimization purpose **/
+	public boolean hasVariables() {
+		return !locales.isEmpty();
 	}
 	
 	public static void clean() {
@@ -90,6 +104,7 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 		locales = new HashMap<String, String>(original.locales);
 	}
 	
+	/** Returns a context of same nature with unherited variables **/
 	@Override
 	public LocaleVarContext clone() {
 		try {

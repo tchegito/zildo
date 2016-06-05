@@ -33,6 +33,7 @@ import java.util.Map.Entry;
 
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
+import zildo.fwk.script.context.LocaleVarContext;
 import zildo.fwk.script.xml.element.AdventureElement;
 import zildo.fwk.script.xml.element.QuestElement;
 import zildo.monde.dialog.HistoryRecord;
@@ -290,7 +291,10 @@ public class Game implements EasySerializable {
 	                savePos = p_buffer.getAll().position();
 	            	String key = p_buffer.readString();
 	            	String value = p_buffer.readString();
-	            	EngineZildo.scriptManagement.getVariables().put(key, value);
+	            	// TODO: remove this workaround, and clean saved games once for all => add a verification to not save "loc:" variables
+	            	if (key != null && !key.startsWith((LocaleVarContext.VAR_IDENTIFIER))) {
+	            		EngineZildo.scriptManagement.putVarValue(key, value);
+	            	}
 	            	nbVariables--;
 	            }
             } catch (BufferUnderflowException e) {

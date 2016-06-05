@@ -165,13 +165,14 @@ public class ScriptManagement {
     	if (Zildo.infoDebugScript) {
     		System.out.println("Execute scene "+p_name);
     	}
-    	SceneElement scene=adventure.getSceneNamed(p_name);
+    	ScriptCall call = new ScriptCall(p_name, null);
+    	SceneElement scene=adventure.getSceneNamed(call.actionName);
     	if (scene != null) {
-    		 if (!scriptExecutor.isProcessing(p_name)) {
-    			 scriptExecutor.execute(new RuntimeScene(scene, p_locked), true, false, p_context, p_caller);
+    		 if (!scriptExecutor.isProcessing(call.actionName)) {
+				scriptExecutor.execute(new RuntimeScene(scene, p_locked, call), true, false, p_context, p_caller);
     		 }
     	} else {
-    		throw new RuntimeException("Scene "+p_name+" doesn't exist !");
+    		throw new RuntimeException("Scene "+call.actionName+" doesn't exist !");
     	}
     }
 
@@ -192,16 +193,9 @@ public class ScriptManagement {
     public void execute(List<LanguageElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority, 
     		IEvaluationContext p_context, boolean p_locked, ScriptProcess p_caller) {
     	// Create a RuntimeScene from the given actions
-		RuntimeScene scene=new RuntimeScene(p_actions, p_quest, p_locked);
+		RuntimeScene scene=new RuntimeScene(p_actions, p_quest, p_locked, null);
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context, p_caller);
-    }
-    
-    public void execute(List<RuntimeAction> p_actions, boolean p_finalEvent, boolean p_topPriority, IEvaluationContext p_context, boolean p_locked) {
-    	// Create a RuntimeScene from the given actions
-		RuntimeScene scene=new RuntimeScene(p_actions, p_locked);
-		// And execute this list
-		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context, null);
     }
     
     /**
@@ -472,20 +466,14 @@ public class ScriptManagement {
     	}
 	}
 	
-	public void runPersoAction(Perso perso, String name, String[] args) {
-		ContextualActionElement action = adventure.getPersoActionNamed(name);
+	public void runPersoAction(Perso perso, String name, IEvaluationContext p_callerContext) {
+		ScriptCall call = new ScriptCall(name, new SpriteEntityContext(perso));
+		
+		ContextualActionElement action = adventure.getPersoActionNamed(call.actionName);
 		if (action != null) {
-			SpriteEntityContext context = new SpriteEntityContext(perso);
 			// Register action argument(s)
-			if (args != null) {
-				int nVar = 0;
-				for (String arg : args) {
-					String varName = context.registerVariable(LocaleVarContext.VAR_IDENTIFIER + "arg"+nVar);
-					EngineZildo.scriptManagement.getVariables().put(varName, arg);
-					nVar++;
-				}
-			}
-			execute(action.actions, true, null, false, context, false);
+			RuntimeScene scene=new RuntimeScene(action.actions, null, false, call);
+			scriptExecutor.execute(scene, true, false, p_callerContext, null);
 			perso.setAttente(action.duration);
 		}
 	}
@@ -618,6 +606,11 @@ public class ScriptManagement {
 			return null;
 		}
 		return variables.get(p_varName);
+	}
+	
+	/** Semantic method, to differentiate get/set into variables map. **/
+	public void putVarValue(String p_varName, String p_value) {
+		variables.put(p_varName, p_value);
 	}
 	
 	/**

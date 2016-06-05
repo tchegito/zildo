@@ -21,9 +21,11 @@ package zildo.fwk.script.xml.element.action.runtime;
 
 import java.util.List;
 
+import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.QuestElement;
 import zildo.fwk.script.xml.element.SceneElement;
+import zildo.server.state.ScriptCall;
 
 /**
  * Runtime representation of a scene, because {@link SceneElement} is the model, thus unmodifiable.
@@ -38,12 +40,12 @@ public class RuntimeScene extends RuntimeModifiableElement {
 	public final List<RuntimeAction> actions;
 	public final SceneElement model;
 	public boolean restoreZildo;
-	
+	public final ScriptCall call;	// origin of this scene's call (contains arguments if they exist)
     
     // Marker to identify that a scene is created from an 'action' quest's tag
     public final static String MARQUER_SCENE = "@scene@";
     
-	public RuntimeScene(List<LanguageElement> p_actions, QuestElement p_quest, boolean p_locked) {
+	public RuntimeScene(List<LanguageElement> p_actions, QuestElement p_quest, boolean p_locked, ScriptCall p_call) {
 		actions = createActions(p_actions);
 		if (p_quest != null) {
 			id = MARQUER_SCENE+p_quest.name;
@@ -54,22 +56,31 @@ public class RuntimeScene extends RuntimeModifiableElement {
 		}
 		model = null;
 		restoreZildo = false;
+		call = p_call;
 	}
 	
-	public RuntimeScene(SceneElement scene, boolean p_locked) {
+	public RuntimeScene(SceneElement scene, boolean p_locked, ScriptCall p_call) {
 		id = scene.id;
 		actions = createActions(scene.actions);
 		locked = p_locked;
 		model = scene;
 		restoreZildo = scene.restoreZildo;
+		call = p_call;
 	}
 
-	public RuntimeScene(List<RuntimeAction> p_actions, boolean p_locked) {
+	public RuntimeScene(List<RuntimeAction> p_actions, boolean p_locked, ScriptCall p_call) {
 		actions = p_actions;
 		id = "fromActions";
 		locked = p_locked;
 		model = null;
 		restoreZildo = false;
+		call = p_call;
+	}
+	
+	public void registerVariables(IEvaluationContext context, IEvaluationContext callerContext) {
+		if (call != null) {
+			call.registerVariables(context, callerContext);
+		}
 	}
 	
 	@Override

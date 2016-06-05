@@ -20,6 +20,7 @@ public interface IEvaluationContext extends Cloneable {
 	public String registerVariable(String name);
 	public void unregisterVariable(String name);
 	public void terminate();
+	public boolean hasVariables();
 	
 	public String getString(String key);
 	

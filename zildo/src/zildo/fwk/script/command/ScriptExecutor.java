@@ -58,12 +58,20 @@ public class ScriptExecutor {
 	 * @param p_topPriority TRUE=this script will be executed before all others
 	 * @param p_context context (optional)
 	 * @param p_caller process calling this new one
-	 */
+	 */    
 	public void execute(RuntimeScene p_script, boolean p_finalEvent, boolean p_topPriority, IEvaluationContext p_context, ScriptProcess p_caller) {
 		// TODO: attempt to duplicate context, need to refactor cleanly
-		IEvaluationContext ctx = p_context;
-		if (p_context != null) {
-			ctx = ctx.clone();
+		IEvaluationContext ctx = p_context;           
+ 		if (p_context != null) {
+ 			if (p_script.call != null && p_script.call.futureContext != null) {
+ 				ctx = p_script.call.futureContext;
+ 			} else {
+ 				ctx = ctx.clone();
+ 			}
+			p_script.registerVariables(ctx, p_context);
+		} else if (p_script.call != null) {
+			ctx = p_script.call.futureContext;
+			p_script.registerVariables(ctx, p_context);
 		}
 		ScriptProcess sp = new ScriptProcess(p_script, this, p_finalEvent, p_topPriority, ctx, p_caller);
 		if (p_caller != null) {

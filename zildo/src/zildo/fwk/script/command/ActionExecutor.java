@@ -603,7 +603,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 				perso.setAction(null);
                 				//perso.setGhost(false);
                 			} else {
-                				perso.setAction(new ScriptedPersoAction(perso, p_action.action));
+                				perso.setAction(new ScriptedPersoAction(perso, p_action.action, context));
                 			}
                 		}
                     	if (p_action.weapon != null) {
@@ -939,10 +939,12 @@ public class ActionExecutor extends RuntimeExecutor {
     
     public void terminate() {
     	// We don't have to terminate, if this script has called a new one (lookFor, timer, actions...) : context should be preserved !
-    	if (!uniqueAction && context != null) {
+    	// TODO:See if it's ok, but previous remarks isn't taken into account anymore. We removed the condition.
+    	if (/** !uniqueAction && **/ context != null) {
     		// Unregister each variable name, because it only existed in this executor scope => wipe out
     		context.terminate();
     	}
+    	//System.out.println("Variables size:"+EngineZildo.scriptManagement.getVariables().size());
     }
     
     /**

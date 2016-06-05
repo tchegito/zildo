@@ -66,7 +66,7 @@ public class VariableExecutor extends RuntimeExecutor {
 						name = handleLocalVariable(p_elem.name);	// We define it
 					}
 				}
-				EngineZildo.scriptManagement.getVariables().put(name, objToSave);
+				EngineZildo.scriptManagement.putVarValue(name, objToSave);
 				achieved = true;
 				break;
 			case _if:
