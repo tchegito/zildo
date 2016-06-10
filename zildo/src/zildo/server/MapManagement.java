@@ -1017,7 +1017,7 @@ public class MapManagement {
 		Angle a = Angle.NORD;
 		float testX = p.x;
 		float testY = p.y;
-		int shift = 8;
+		int shift = 4;
 		EngineZildo.spriteManagement.updateCollisions();
 		while (collide(testX, testY, p) && shift < MAX_SHIFT) {
 			// Second try: check increasing radius around hero for better location

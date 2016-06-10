@@ -308,4 +308,14 @@ public class CheckFoundBugs extends EngineUT {
         simulateDirection(-1, 0);
         renderFrames(80);
 	}
+	
+	// Issue 91 : we had an exception triyng to replace a hero at a very specific location !
+	@Test
+	public void replaceHeroAtLoading() {
+		mapUtils.loadMap("coucou");
+		// 120, 384
+		Perso zildo = spawnZildo(120, 384);
+		EngineZildo.mapManagement.arrangeLocation(zildo);
+		// This shouldn't lead to an exception
+	}
 }
