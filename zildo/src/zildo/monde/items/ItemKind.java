@@ -27,8 +27,8 @@ import zildo.monde.sprites.desc.ZildoDescription;
 
 public enum ItemKind {
 
-	SWORD(true, ElementDescription.SWORD, 20), 
-	MIDSWORD(true, ElementDescription.MIDDLE_SWORD, 100),
+	SWORD(true, ElementDescription.SWORD, 20), 				// Do 1 damage
+	MIDSWORD(true, ElementDescription.MIDDLE_SWORD, 100),	// Do 1+1 damage
 	BOOMERANG(true, ElementDescription.BOOMERANG1, 40), 
 	// Uncomment following line with appropriate description, when whip will be ready
 	//WHIP(true, ElementDescription.BAR_HORIZONTAL, 50), 

@@ -36,6 +36,7 @@ import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 
@@ -61,7 +62,7 @@ public class CollideManagement {
     }
     
     /**
-     * Add collision in the way.
+     * Add collision in the way: from a Perso or Element.
      * @param p_colli
      */
     public void addCollision(Collision p_colli) {
@@ -210,7 +211,9 @@ public class CollideManagement {
         // Character gets wounded, if he isn't yet
     	Perso perso=p_collided.perso;
     	Element weapon=p_collided.weapon;
-        if (perso != null && !perso.isWounded()) {
+    	// Hurt perso if isn't already wounded, is visible, is not immaterial, and if he hasn't -1 as HP.
+        if (perso != null && !perso.isWounded() && perso.getPv() != -1 
+        		&& perso.isVisible() && perso.getQuel_deplacement() != MouvementPerso.IMMATERIAL) {
         	boolean persoResisting = perso.getDesc() == null ? false : perso.getDesc().resistToDamageType(p_collider.damageType);
         	
         	if (weapon != null) {

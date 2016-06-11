@@ -118,8 +118,8 @@ public enum PersoDescription implements SpriteDescription {
 			361, 362, 363, 364, 365, 366, 367),
 	FIREFLY(255),
 	// Pnj4
-	TURRET(368, 369, 370, 371, 372, 373, /* vulnerable part */374, 375),
-	
+	TURRET(368, 369, 370, 371, 372, 373),
+	TURRET_HEART(374, 375),		/* turret vulnerable part */
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
 	IntSet sprUsed;
@@ -244,6 +244,18 @@ public enum PersoDescription implements SpriteDescription {
 	
 	public boolean isTakable() {
 		return this == CANARD || this == POULE || this == FISH;
+	}
+	
+	/** Returns TRUE if character is projected when wound **/
+	public boolean isProjectable() {
+		switch (this) {
+		case TURRET:
+		case TURRET_HEART:
+		case BRAMBLE:
+			return false;
+			default:
+				return true;
+		}
 	}
 	
 	// Height of the character, to allow jump

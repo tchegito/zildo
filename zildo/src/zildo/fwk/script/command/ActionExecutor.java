@@ -823,7 +823,13 @@ public class ActionExecutor extends RuntimeExecutor {
 	    		perso.setEffect(p_action.effect);
 	    		perso.setFloor(p_action.floor);
 	    		perso.setAddSpr((int) p_action.addSpr.evaluate(context));
-        		if (p_action.reverse != null) {
+        		if (p_action.info != null) {
+        			perso.setInfo(p_action.info);
+        		}
+    			if (p_action.pv != -1) {
+    				perso.setPv(p_action.pv);
+    			}
+   				if (p_action.reverse != null) {
         			perso.reverse = Reverse.fromInt(p_action.reverse.evaluateInt());
         		}
 	    		perso.initPersoFX();

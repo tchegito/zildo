@@ -43,8 +43,9 @@ public enum MouvementPerso {
 	CAT(14),
 	SLEEPING(15),
 	FOLLOW(16),
-	MOBILE_WAIT(17);	// Character will wait if something is on his way (contrary to default mode, where target becomes NULL when he's blocked)
+	MOBILE_WAIT(17),	// Character will wait if something is on his way (contrary to default mode, where target becomes NULL when he's blocked)
 						// Plus: he ask blocking people to leave, except if it's the hero
+	IMMATERIAL(18);	// No collision and untouchable
 	
 	public int valeur;
 	
@@ -105,6 +106,7 @@ public enum MouvementPerso {
 	 */
 	public boolean isMobileZone() {
 		return this != IMMOBILE &&
+		this != IMMATERIAL &&
 		this != OBSERVE &&
 		this != WAKEUP &&
 		this != INVOKE &&
@@ -116,6 +118,6 @@ public enum MouvementPerso {
 	 * @return TRUE = he look for / FALSE = he can't be in alert
 	 */
 	public boolean isAlertable() {
-		return this != RAT && this != ELECTRIC && this != BEE && this != IMMOBILE;
+		return this != RAT && this != ELECTRIC && this != BEE && this != IMMOBILE && this != IMMATERIAL;
 	}
 }

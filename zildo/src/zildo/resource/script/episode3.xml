@@ -660,18 +660,28 @@
 	</persoAction>
 
 	<scene id="scriptBossTurret1">
-	    <!-- Create turrets -->
-        <spawn who="turret1" pos="110,100" type="TURRET" alpha="128"/>
-        <spawn who="turret2" pos="210,100" type="TURRET" alpha="128" reverse="128"/>
-        <spawn who="turret3" pos="110,180" type="TURRET" alpha="128" reverse="64"/>
-	    <spawn who="turret4" pos="210,180" type="TURRET" alpha="128" reverse="192"/>
-		<spawn who="turretH" pos="160,125" type="TURRET" alpha="128" addSpr="6"/>
+	    <!-- Create turrets (turret0 is just the father of all, but invisible)-->
+	    <spawn who="turret0" pos="0,0" type="TURRET" alpha="0"/>
+        <spawn who="turret1" pos="110,100" type="TURRET" info="ENEMY" alpha="128"/>
+        <spawn who="turret2" pos="210,100" type="TURRET" info="ENEMY" alpha="128" reverse="128"/>
+        <spawn who="turret3" pos="110,180" type="TURRET" info="ENEMY" alpha="128" reverse="64"/>
+	    <spawn who="turret4" pos="210,180" type="TURRET" info="ENEMY" alpha="128" reverse="192"/>
+		<spawn who="turretH" pos="160,125" type="TURRET_HEART" info="ENEMY" alpha="128" addSpr="1"/>
 		<!-- Link them (to avoid collision between different parts)-->
-	    <perso who="turret2" parent="turret1"/>
-        <perso who="turret3" parent="turret1"/>
-	    <perso who="turret4" parent="turret1"/>
-       	<perso who="turretH" parent="turret1"/>
-	    				
+		<!-- turret0 permits us to avoid setting alpha/visible to impact everyone -->
+		<perso who="turret1" parent="turret0" pv="-1"/>
+	    <perso who="turret2" parent="turret0" pv="-1"/>
+        <perso who="turret3" parent="turret0" pv="-1"/>
+	    <perso who="turret4" parent="turret0" pv="-1"/>
+       	<perso who="turretH" parent="turret0" pv="8"/>
+       	<!--  Declare turret IMMATERIAL because it's underground -->
+       	<actions>
+		    <script who="turret1" value="18"/>
+		    <script who="turret2" value="18"/>
+   		    <script who="turret3" value="18"/>
+   		    <script who="turret4" value="18"/>
+   		    <script who="turretH" value="18"/>
+   		</actions>
 		<!-- Cycles -->
 		<loop>
 			<exec script="turretCycle(210, 160, 110, 160, 210, 110, 110, 110)"/>
@@ -694,17 +704,21 @@
 		<!-- 1/3 : make vulnerable part out of the ground -->
 		<perso who="turretH" alphaA="0.1"/>
 		<wait value="20"/>
+		<!--  Declare heart IMMOBILE to stop IMMATERIAL -->
+	    <script who="turretH" value="3"/>
 		<animation type="BREAKING_ROCK" pos="150,125"/>
 		<animation type="BREAKING_ROCK" pos="165,128"/>
-		<perso who="turretH" addSpr="7"/>
-			    
+		<perso who="turretH" addSpr="0"/>
+	    
+		<!-- Wait for turret finishing its shoot -->
 		<loop when="BOSS_turret_phase!=2">
 			<wait value="10"/>
 		</loop>
 		<!-- 2/3 : Vulnerable part crouch back -->
+	    <script who="turretH" value="18"/> <!-- IMMATERIAL again -->
 		<animation type="BREAKING_ROCK" pos="160,125"/>
 		<wait value="4"/>
-		<perso who="turretH" addSpr="6" alpha="128"/>
+		<perso who="turretH" addSpr="1" alpha="128"/>
 		<!-- End of cycle -->
 	</scene>	
 </adventure>

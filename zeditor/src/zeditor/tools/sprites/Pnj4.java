@@ -16,7 +16,7 @@ public class Pnj4 extends SpriteBanque {
 			new Zone(80, 11, 10, 8), new Zone(80, 21, 3, 3),
 			new Zone(35, 27, 32, 21),
 			// Vulnerable part
-			new Zone(1,28,15,15), new Zone(2,45,19,12)
+			new Zone(2,45,19,12), new Zone(1,28,15,15), 
 			// Bitey
 			/*
 		    new Zone(0, 3, 21, 24), new Zone(25, 5, 21, 22), new Zone(50, 5, 21, 22),

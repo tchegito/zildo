@@ -109,13 +109,13 @@ public class PersoNJ extends Perso {
 	@Override
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 		project(cx, cy, 6);
-		this.setMouvement(MouvementZildo.TOUCHE);
-		this.setWounded(true);
+		setMouvement(MouvementZildo.TOUCHE);
+		setWounded(true);
 		if (quel_deplacement.isAlertable()) {
-			this.setAlerte(true); // Zildo is detected, if it wasn't done !
+			setAlerte(true); // Zildo is detected, if it wasn't done !
 		}
-		this.setPv(getPv() - p_damage);
-		this.setSpecialEffect(EngineFX.PERSO_HURT);
+		setPv(getPv() - p_damage);
+		setSpecialEffect(EngineFX.PERSO_HURT);
 
 		EngineZildo.soundManagement.broadcastSound(BankSound.MonstreTouche, this);
 		
@@ -196,7 +196,7 @@ public class PersoNJ extends Perso {
 	private void blinkIfWounded() {
 		if (px != 0.0f || py != 0.0f) {
 			// Character gets hurt !
-			if (desc != PersoDescription.BRAMBLE) {	// Don't project bramble !
+			if (desc == null || ((PersoDescription)desc).isProjectable()) {	// Don't project bramble or turret !
 				Pointf location = tryMove(px, py);
 				x = location.x;
 				y = location.y;
@@ -327,7 +327,8 @@ public class PersoNJ extends Perso {
 					pathFinder.setTarget(null);
 					destinationReached();
 				}
-				if (!isGhost() && info == PersoInfo.ENEMY && !isAlerte() && quel_deplacement != MouvementPerso.IMMOBILE) {
+				if (!isGhost() && info == PersoInfo.ENEMY && !isAlerte() && 
+						(quel_deplacement == null || quel_deplacement.isAlertable())) {
 					setAlerte(lookForZildo(angle));
 				}
 				if (this.getAttente() > 0) {
@@ -733,12 +734,15 @@ public class PersoNJ extends Perso {
 				shadow.setVisible(false);
 			}
 			break;
-		case TURRET:
-			if (addSpr == 7) {
+		case TURRET_HEART:
+			if (addSpr == 0) {
 				if (shadow == null) addShadow(ElementDescription.SHADOW_LARGE);
 				shadow.setVisible(true);
 				shadow.setY(y+4);
-			} else if (shadow != null) {
+				break;
+			}	// No break is intentional
+		case TURRET:
+			if (shadow != null) {
 				shadow.setVisible(false);
 			}
 			break;
