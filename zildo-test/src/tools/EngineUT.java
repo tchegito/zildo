@@ -432,6 +432,7 @@ public class EngineUT {
 	@SuppressWarnings("deprecation")
 	@After
 	public void tearDown() {
+		reset(fakedKbHandler);
 		// Reset render platform to LWJGL
 		PlatformDependentPlugin.currentPlugin = KnownPlugin.Lwjgl;
 		// Reset input
