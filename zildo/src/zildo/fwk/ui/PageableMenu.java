@@ -24,9 +24,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import zildo.Zildo;
+import zildo.fwk.input.KeyboardHandler;
+import zildo.fwk.input.KeyboardHandler.Keys;
+
 /**
  * @author Tchegito
  *
+ * On PC version, player can press PAGEUP/PAGEDOWN to switch between pages.
  */
 public class PageableMenu extends Menu {
 
@@ -34,6 +39,9 @@ public class PageableMenu extends Menu {
 	
 	List<ItemMenu> completeItems;
 	int currentPage;
+	
+	ItemMenu itemPreviousPage;
+	ItemMenu itemNextPage;
 	
 	final static int NB_PER_PAGE = 10;
 	
@@ -71,28 +79,26 @@ public class PageableMenu extends Menu {
 		int indexEnd = Math.min(indexStart + NB_PER_PAGE, completeItems.size());
 		items.addAll(completeItems.subList(indexStart, indexEnd));
 		// 'Next' button, if we have too much items on this page
+		itemNextPage = null;
 		if (indexEnd < completeItems.size()) {
-			items.add(new ItemMenu("global.next") {
+			itemNextPage = new ItemMenu("global.next") {
 				@Override
 				public void run() {
-					currentPage++;
-					initCurrentPage();
-					selected = 0;
-					client.handleMenu(currentPageableMenu);
+					nextPage();
 				}
-			});
+			};
+			items.add(itemNextPage);
 		}
 		// 'Prec' button, if we aren't on the first page
+		itemPreviousPage = null;
 		if (currentPage > 0) {
-			items.add(new ItemMenu("global.prec") {
+			itemPreviousPage = new ItemMenu("global.prec") {
 				@Override
 				public void run() {
-					currentPage--;
-					initCurrentPage();
-					selected = 0;
-					client.handleMenu(currentPageableMenu);
+					previousPage();
 				}
-			});
+			};
+			items.add(itemPreviousPage);
 		}
 		
 		// Back button
@@ -105,5 +111,31 @@ public class PageableMenu extends Menu {
 		
 		init();
 
+	}
+    
+    protected ItemMenu handleKey(ItemMenu item, int key) {
+        KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
+    	if (key == kbHandler.getCode(Keys.PAGEUP) && itemPreviousPage != null) {
+			return itemPreviousPage;
+		} else if (key == kbHandler.getCode(Keys.PAGEDOWN)) {
+			return itemNextPage;
+		}
+    	return super.handleKey(item, key);
+    }
+    
+	private void changePage() {
+		initCurrentPage();
+		selected = 0;
+		client.handleMenu(currentPageableMenu);
+		
+	}
+	private void nextPage() {
+		currentPage++;
+		changePage();
+	}
+	
+	private void previousPage() {
+		currentPage--;
+		changePage();
 	}
 }

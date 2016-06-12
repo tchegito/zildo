@@ -48,6 +48,7 @@ public interface KeyboardHandler {
 	public Vector2f getDirection();
 	
 	public enum Keys {Q, W, X, E, UP, DOWN, RIGHT, LEFT, TAB, RETURN, BACK, ESCAPE, LSHIFT,
+		PAGEUP, PAGEDOWN,	// For PC Only
 		// Specific for touch screen
 		DIALOG_FRAME, TOUCH_MENU, TOUCH_BACK, COMPASS};
 	public int getCode(Keys k);

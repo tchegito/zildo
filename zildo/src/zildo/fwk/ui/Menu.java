@@ -118,33 +118,41 @@ public class Menu {
         
         if (key != -1 && keyPressed != key) {
             item = items.get(selected);
-
-        	if (key == kbHandler.getCode(Keys.UP)) {
-                move(false);
-        	} else if (key == kbHandler.getCode(Keys.DOWN)) {
-                move(true);
-        	} else if (key == kbHandler.getCode(Keys.RETURN)) {
-                return item;
-        	} else {
+            ItemMenu retItem = handleKey(item, key);
+            if (retItem == null) {
             	// Does this item is editable ?
-	        	if (item instanceof EditableItemMenu) {
-	        		EditableItemMenu editableItem=(EditableItemMenu) item;
-	        		if (key == kbHandler.getCode(Keys.BACK)) {
-		                editableItem.removeLastChar();
-		                displayed=false;
-	        		} else {
-		        		if (EditableItemMenu.acceptableChar.indexOf(upperKey) != -1) {
-		                    editableItem.addText(charKey);
-		                    displayed = false;
-		        		}
-		        	}
-		        }
-        	}
+    	    	if (item instanceof EditableItemMenu) {
+    	    		EditableItemMenu editableItem=(EditableItemMenu) item;
+    	    		if (key == kbHandler.getCode(Keys.BACK)) {
+    	                editableItem.removeLastChar();
+    	                displayed=false;
+    	    		} else {
+    	        		if (EditableItemMenu.acceptableChar.indexOf(upperKey) != -1) {
+    	                    editableItem.addText(charKey);
+    	                    displayed = false;
+    	        		}
+    	        	}
+    	        }            	
+            } else {
+            	return retItem;
+            }
         	keyPressed=key;
         } else {
         	keyPressed=0;
         }
         return null;
+    }
+    
+    protected ItemMenu handleKey(ItemMenu item, int key) {
+        KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
+		if (key == kbHandler.getCode(Keys.UP)) {
+	        move(false);
+		} else if (key == kbHandler.getCode(Keys.DOWN)) {
+	        move(true);
+		} else if (key == kbHandler.getCode(Keys.RETURN)) {
+	        return item;
+		}
+		return null;
     }
     
     /**

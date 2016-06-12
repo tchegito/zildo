@@ -51,7 +51,9 @@ public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 	private static final int KEY_R               = 0x13;
 	private static final int KEY_T               = 0x14;
 	private static final int KEY_2				= 40; //253;
-	
+	private static final int KEY_PAGEUP			= 201;
+	private static final int KEY_PAGEDOWN		= 209;
+		
 	Vector2f v = new Vector2f(0, 0);	// Just to avoid declaring a new one at each time
 	
 	static {
@@ -72,6 +74,8 @@ public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 		platformKeys.put(Keys.TOUCH_MENU, KEY_R);	// Nonsense without touch screen
 		platformKeys.put(Keys.TOUCH_BACK, KEY_T);	// Nonsense without touch screen
 		platformKeys.put(Keys.COMPASS, KEY_2);
+		platformKeys.put(Keys.PAGEUP, KEY_PAGEUP);
+		platformKeys.put(Keys.PAGEDOWN, KEY_PAGEDOWN);
 	}
 
 	public boolean isKeyDown(int p_code) {
