@@ -25,6 +25,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.InfoPersos;
 import zildo.client.ClientEventNature;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
@@ -313,9 +314,45 @@ public class CheckFoundBugs extends EngineUT {
 	@Test
 	public void replaceHeroAtLoading() {
 		mapUtils.loadMap("coucou");
-		// 120, 384
+		// There's bushes on the right and hill on the left: 120, 384
 		Perso zildo = spawnZildo(120, 384);
 		EngineZildo.mapManagement.arrangeLocation(zildo);
 		// This shouldn't lead to an exception
+	}
+	
+	// Issue 90 : hero can pass without triggering a mandatory quest !
+	@Test @InfoPersos
+	public void passUnderThievesBridge() {
+		mapUtils.loadMap("voleurs");
+		// Assure quest isn't done
+		Assert.assertFalse(EngineZildo.scriptManagement.isQuestDone("vert_seen"));
+		spawnZildo(550, 860);
+		waitEndOfScripting();
+		simulateDirection(new Vector2f(0.4, -1));
+		renderFrames(100);
+		// Controls quest has been triggered
+		// isScripting returns FALSE because we're running action inside of an IF clause. And it's unblocking.
+		//Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
+		Assert.assertFalse(EngineZildo.scriptManagement.isQuestProcessing("vert_seen"));
+	}
+	
+	// Issue 90: second part. Before this issue was fixed, player could pass without triggering "vert_seen" quest.
+	// Then, when hero reach this spot later, and "vert" character no longer exists, we had an NPE.
+	@Test @InfoPersos
+	public void passUnderThievesBridge2() {
+		EngineZildo.scriptManagement.accomplishQuest("attaque_voleurs", false);
+		EngineZildo.scriptManagement.accomplishQuest("beanCaveFlames", false);
+		mapUtils.loadMap("voleurs");
+		// Assure quest isn't done
+		Assert.assertFalse(EngineZildo.scriptManagement.isQuestDone("vert_seen"));
+		spawnZildo(550, 860);
+		waitEndOfScripting();
+		Assert.assertNull(EngineZildo.persoManagement.getNamedPerso("vert"));
+		// Move hero so as to trigger the quest
+		simulateDirection(new Vector2f(0.4, -1));
+		renderFrames(100);
+		Assert.assertFalse(EngineZildo.scriptManagement.isScripting());
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("vert_seen"));
+
 	}
 }

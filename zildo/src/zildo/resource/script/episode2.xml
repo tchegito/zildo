@@ -50,11 +50,13 @@
 
     <quest name="vert_seen">
     	<trigger>
-    	    <location name="voleurs" pos="612,830" radius="2"/>
+    	    <location name="voleurs" pos="600,812" radius="2"/>
     	</trigger>
     	<action>
-    	    <moveTo who="vert" pos="-30,0" delta="true"/>
-    	    <moveTo who="vert" pos="-2,-60" delta="true" unblock="true"/>
+    	    <if expQuest="P#vert">
+	    	    <moveTo who="vert" pos="-30,0" delta="true"/>
+	    	    <moveTo who="vert" pos="-2,-60" delta="true" unblock="true"/>
+    	    </if>
     	</action>    
     </quest>
     
