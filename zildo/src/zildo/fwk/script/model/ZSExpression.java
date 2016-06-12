@@ -94,6 +94,9 @@ public class ZSExpression {
 			// Expression could be a map name, to match current map
 			String mapName = questName.substring(2);
 			result = mapName.equals(EngineZildo.mapManagement.getCurrentMap().getName());
+		} else if (questName.startsWith("P#")) {
+			String persoName = questName.substring(2);
+			result = EngineZildo.persoManagement.getNamedPerso(persoName) != null;
 		} else {
 			// Default case : expression is the quest name
 			result = EngineZildo.scriptManagement.isQuestOver(questName);
