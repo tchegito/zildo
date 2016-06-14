@@ -31,6 +31,7 @@ public class CustomizableElementChained extends ElementChained {
 		// Report on matrix attributes received by this virtual chain object
 		newOne.setSpecialEffect(getSpecialEffect());
 		//setSpecialEffect(EngineFX.NO_EFFECT);
+		// Customized effect which should be in script (because here we expect behavior to be generic)
 		matrix.setAlpha(0.6f * matrix.getAlpha());
 		nbSpawned++;
 		if (nbSpawned == nbToSpawn) { // Stop the animation when chain has reach its desired length

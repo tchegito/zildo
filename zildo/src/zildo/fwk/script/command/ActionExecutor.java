@@ -868,6 +868,9 @@ public class ActionExecutor extends RuntimeExecutor {
 	        			entity = elem;
 	        		}
     			}
+        		if (p_action.z != null) {
+        			entity.z = p_action.z.evaluate(context);
+        		}
         		if (p_action.chainCount > 0) {
         			// With chained elements, we must not spawn the "matrix" element. It will be spawned by
         			// ChainedElement#animate()
@@ -889,9 +892,7 @@ public class ActionExecutor extends RuntimeExecutor {
         		if (p_action.effect != null) {
         			entity.setSpecialEffect(EngineFX.valueOf(p_action.effect));
         		}
-        		if (p_action.z != null) {
-        			entity.z = p_action.z.evaluate(context);
-        		}
+
         		if (p_action.foreground != null) {
         			entity.setForeground(p_action.foreground);
         		}

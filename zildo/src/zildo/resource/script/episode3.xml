@@ -298,7 +298,7 @@
 	<tileAction id="willOWist">
 		<!-- Le feu follet pourra émettre un petit scintillement lorsque l'écureuil le suivra comme il faut des yeux, ça aidera le joueur à savoir s'il
 			est sur la bonne voie -->
-		<spawn what="wow" type="WILL_O_WIST" pos="x*16+8,y*16-20" chained="3, 4" />
+		<spawn what="wow" type="WILL_O_WIST" pos="x*16+8,y*16-10" z="10" chained="3, 4" />
 		<spawn what="wowReflect" type="WILL_O_REFLECT" pos="x*16+8,y*16-20+16" zoom="128" alpha="64"/>
 		<loop>
 			<actions>
@@ -518,6 +518,7 @@
 		
 		<!-- Fall in Palace of Nature -->
 		<map name="nature1"/>
+		<music name="Nature"/>
 		<for var="loc:l" value="16">
 			<spawn what="loc:leaf1" type="dice10>4:LEAF_GREEN,LEAF" pos="164+20*random,113+random*8" z="80-random*10"
 			    reverse="dice10>4:128,0"
@@ -550,17 +551,18 @@
 		<moveTo who="zildo" pos="316,119" unblock="true"/>
 		<wait value="60"/>
 		<fadeOut value="0"/>
+		<herospecial value="7"/>
 		<speak what="camera" text="endRoxyQuest.2"/>
 		<speak what="camera" text="endRoxyQuest.3"/>
 		<wait value="50"/>
 		<speak what="camera" text="endRoxyQuest.4"/>
 		
 		<markQuest name="hero_princess" value="false"/>
-		<herospecial value="7"/>
 		
 		<map name="d4m9"/>
 		<pos who="zildo" pos="181,151"/>
 		<fadeIn value="0"/>
+		<music name="Village"/>
 	</scene>
 	
 	<persoAction id="bossTurret"> <!-- argument: (arg0,arg1)=>location to go, arg2=>reverseH, arg3=>reverseV -->
