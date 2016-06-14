@@ -99,10 +99,7 @@ public class ScriptExecutor {
 				System.out.println("}");
 			}
 			// 0) Terminate scripts asked by external methods (#stopFromContext for example)
-			for (ScriptProcess process : toTerminate) {
-				terminate(process);
-			}
-			toTerminate.clear();
+			terminateIfNeeded();
 			
 			// 1) Render current scripts
 			for (ScriptProcess process : scripts) {
@@ -149,10 +146,7 @@ public class ScriptExecutor {
 			}
 			
 			// 2) Terminate those who are waiting
-			for (ScriptProcess process : toTerminate) {
-				terminate(process);
-			}
-			toTerminate.clear();
+			terminateIfNeeded();
 			
 			// 3) Create the awaiting one
 			for (ScriptProcess process : toExecute) {
@@ -169,6 +163,13 @@ public class ScriptExecutor {
 		}
 	}
 
+	private void terminateIfNeeded() {
+		for (ScriptProcess process : toTerminate) {
+			terminate(process);
+		}
+		toTerminate.clear();
+	}
+	
 	/**
 	 * Script just terminated.
 	 * @param process
@@ -295,6 +296,15 @@ public class ScriptExecutor {
 			ScriptProcess process = it.next();
 			if (!process.scene.locked) {
 				it.remove();
+			}
+		}
+	}
+	
+	/** Stop a running scene **/
+	public void stopScene(String p_name) {
+		for (ScriptProcess process : scripts) {
+			if (process.isNameProcessing(p_name)) {
+				toTerminate.add(process);
 			}
 		}
 	}

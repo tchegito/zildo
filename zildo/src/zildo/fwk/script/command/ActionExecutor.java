@@ -20,6 +20,7 @@
 package zildo.fwk.script.command;
 
 import java.util.Collections;
+import java.util.List;
 
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
@@ -250,7 +251,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 case script:
                     if (p_action.text != null) {
                         perso.setMouvement(MouvementZildo.valueOf(p_action.text));
-                    } else {
+                    } else if (perso != null) {	// Perso may have died during the script
 	                	MouvementPerso script = MouvementPerso.fromInt(p_action.val);
 	                    String param = p_action.effect;
 	                    switch (script) {
@@ -373,6 +374,10 @@ public class ActionExecutor extends RuntimeExecutor {
             		String sceneName = getVariableValue(text);	// Check for 'loc:...' as scene name
                 	EngineZildo.scriptManagement.execute(sceneName, locked && !p_action.unblock, context, caller);
                 	break;
+                case stop:
+                	EngineZildo.scriptManagement.stopScene(text);
+                	achieved = true;
+                	break;
                 case music:
                 	BankMusic musicSnd = null;
                 	if (text != null) { // Stop music ?
@@ -394,6 +399,15 @@ public class ActionExecutor extends RuntimeExecutor {
                 		ChainingPoint ch = area.getNamedChainingPoint(p_action.text);
                 		if (ch != null) {	// Doesn't crash if chaining point can't be found
                 			area.removeChainingPoint(ch);
+                		}
+                	} else if (p_action.way != null) {
+                		// Remove every character of given type
+                		PersoDescription desc = PersoDescription.valueOf(p_action.way);
+                		if (desc != null) {
+                			List<Perso> persos = EngineZildo.persoManagement.getTypedPerso(desc);
+                			for (Perso p : persos) {
+                				EngineZildo.spriteManagement.deleteSprite(p);
+                			}
                 		}
                 	} else if (p_action.what == null && p_action.who == null) {
                 		EngineZildo.persoManagement.clearPersos(false);
@@ -657,22 +671,24 @@ public class ActionExecutor extends RuntimeExecutor {
                 	}
                 	break;
                 case _throw:
-                	Element elem = actionSpawn(p_action, location, true);	// Ignore 'who' because it's for the throw
-                	location = p_action.target.getPoint();
-                	// Turn character in the right direction
-                	perso.sight(EngineZildo.persoManagement.getZildo(), true);
-        			// Normalize speed vector
-        			float distance = Point.distance(elem.x, elem.y, location.x, location.y);
-        			elem.vx = p_action.speed * (location.x - elem.x) / distance;
-        			elem.vy = p_action.speed * (location.y - elem.y) / distance;
-                	if ("BELL".equals(p_action.way)) {
-            			// calculate z
-            			float finalT = distance / p_action.speed;
-            			elem.vz = -(finalT * elem.az) / 2;
+                	if (perso != null) {	// If thrower has been killed => don't throw NPE
+	                	Element elem = actionSpawn(p_action, location, true);	// Ignore 'who' because it's for the throw
+	                	location = p_action.target.getPoint();
+	                	// Turn character in the right direction
+	                	perso.sight(EngineZildo.persoManagement.getZildo(), true);
+	        			// Normalize speed vector
+	        			float distance = Point.distance(elem.x, elem.y, location.x, location.y);
+	        			elem.vx = p_action.speed * (location.x - elem.x) / distance;
+	        			elem.vy = p_action.speed * (location.y - elem.y) / distance;
+	                	if ("BELL".equals(p_action.way)) {
+	            			// calculate z
+	            			float finalT = distance / p_action.speed;
+	            			elem.vz = -(finalT * elem.az) / 2;
+	                	}
+	                	elem.setLinkedPerso(perso);
+	                	elem.flying = true;
+	                	elem.setAngle(Angle.EST);
                 	}
-                	elem.setLinkedPerso(perso);
-                	elem.flying = true;
-                	elem.setAngle(Angle.EST);
         			achieved = true;
         		default:
                 	break;

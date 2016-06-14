@@ -538,7 +538,7 @@ public abstract class Perso extends Element {
 	 * an NPC block.
 	 * @param compteur_animation
 	 */
-	public  void finaliseComportement(int compteur_animation) {
+	public void finaliseComportement(int compteur_animation) {
 		feet.setVisible(pv > 0 && (inWater || inDirt));
 		if (inWater || inDirt) {
 			feet.setX(x);

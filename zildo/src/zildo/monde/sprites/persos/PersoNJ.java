@@ -960,6 +960,9 @@ public class PersoNJ extends Perso {
 					elem.setTrigger(true);
 				}
 			}
+			if (shadow != null) {
+				shadow.dying = true;
+			}
 		}
 	}
 

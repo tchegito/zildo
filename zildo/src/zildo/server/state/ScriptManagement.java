@@ -44,7 +44,6 @@ import zildo.fwk.script.xml.element.MapscriptElement;
 import zildo.fwk.script.xml.element.QuestElement;
 import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.TriggerElement;
-import zildo.fwk.script.xml.element.action.runtime.RuntimeAction;
 import zildo.fwk.script.xml.element.action.runtime.RuntimeScene;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -487,6 +486,10 @@ public class ScriptManagement {
 	
 	public void stopPersoAction(Perso perso) {
 		scriptExecutor.stopFromContext(perso);
+	}
+	
+	public void stopScene(String name) {
+		scriptExecutor.stopScene(name);
 	}
 	
 	/**

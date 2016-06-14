@@ -111,8 +111,12 @@ public class CollideManagement {
             	if (dmgType.isCutting()) {
 	            	Set<Point> tilesCollided=getTilesCollided(collider);
 	    			// And ask 'map' object to react
+	            	int floor = EngineZildo.mapManagement.getCurrentMap().getHighestFloor();
+            		if (collider.perso != null) {
+            			floor = collider.perso.floor;
+            		}
 	            	for (Point location : tilesCollided) {
-	            		EngineZildo.mapManagement.getCurrentMap().attackTile(collider.perso.floor, location, null);
+	            		EngineZildo.mapManagement.getCurrentMap().attackTile(floor, location, null);
 	            	}
             	} else if (dmgType == DamageType.SMASH) {
 	            	Set<Point> tilesCollided=getTilesCollided(collider);
@@ -210,10 +214,12 @@ public class CollideManagement {
     public void hit(Collision p_collider, Collision p_collided) {
         // Character gets wounded, if he isn't yet
     	Perso perso=p_collided.perso;
+		Perso attacker=p_collider.perso;
     	Element weapon=p_collided.weapon;
-    	// Hurt perso if isn't already wounded, is visible, is not immaterial, and if he hasn't -1 as HP.
+    	// Hurt perso if isn't already wounded, is visible, is not immaterial (attacker too), and if he hasn't -1 as HP.
         if (perso != null && !perso.isWounded() && perso.getPv() != -1 
-        		&& perso.isVisible() && perso.getQuel_deplacement() != MouvementPerso.IMMATERIAL) {
+        		&& perso.isVisible() && perso.getQuel_deplacement() != MouvementPerso.IMMATERIAL
+        		&& (attacker == null || attacker.getQuel_deplacement() != MouvementPerso.IMMATERIAL)) {
         	boolean persoResisting = perso.getDesc() == null ? false : perso.getDesc().resistToDamageType(p_collider.damageType);
         	
         	if (weapon != null) {
@@ -227,7 +233,7 @@ public class CollideManagement {
         		// And is the collided immaterial ? (ex: poison => we can't hurt poison !)
         		boolean material = p_collided.damageType == null ? true : !p_collided.damageType.isImmaterial();
         		if (!persoResisting && material && dmg > 0) {
-	        		Perso attacker=p_collider.perso;
+
 	        		if (attacker != null && p_collider.perso.isZildo()) {
 	        			PersoPlayer zildo=(PersoPlayer) attacker;
 	        			if (zildo.isAffectedBy(AffectionKind.QUAD_DAMAGE)) {

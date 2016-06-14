@@ -34,6 +34,7 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.server.EngineZildo;
+import zildo.server.PersoManagement;
 
 /**
  * @author Tchegito
@@ -151,6 +152,30 @@ public class CheckSubscript extends EngineScriptUT {
 	@Test
 	public void checkSceneWithParameters() {
 		checkNumberVariablesWithScene("loopExecParameters", 20);
+	}
+	
+	@Test
+	public void checkStopScene() {
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/subscript"));
+		
+		waitEndOfScripting();
+		
+		executeScene("monScript");
+		
+		PersoManagement pm = EngineZildo.persoManagement;
+		Assert.assertEquals(1,  pm.tab_perso.size());	// 2 + hero
+		renderFrames(20);
+		Assert.assertNotNull(pm.getNamedPerso("bandit"));
+		Assert.assertNotNull(pm.getNamedPerso("hector"));
+		Assert.assertEquals(4,  pm.tab_perso.size());	// 2 + hero
+		
+		executeScene("terminator");	// This scene will kill previous one
+		renderFrames(3);
+		// Check script are correctly stopped, and expected characters removed
+		Assert.assertFalse(EngineZildo.scriptManagement.isScripting());
+		Assert.assertNotNull(pm.getNamedPerso("bandit"));
+		Assert.assertNotNull(pm.getNamedPerso("hector"));
+		Assert.assertEquals(3,  pm.tab_perso.size());
 	}
 	
 	private void checkForScript(String scriptName) {

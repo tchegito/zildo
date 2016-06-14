@@ -150,10 +150,36 @@
 	<quest name="fightBossTurret1" locked="false">
 	    <action>
 			<!-- Let the boss fight -->
-	    	<exec script="scriptBossTurret1" unblock="true"/>
+	    	<exec script="spawnBossTurret1" unblock="true"/>
 	    </action>
 	</quest>
 		
+	<quest name="killBossTurret" locked="false">
+	    <trigger>
+	        <location name="prison14"/>
+	        <dead who="turretH"/>
+	    </trigger>
+	    <action>
+	        <stop script="spawnBossTurret1"/>
+	        <perso who="turret0" action=""/>
+   	        <perso who="turretH" action=""/>
+	       	<perso who="turret1" action=""/>
+	        <perso who="turret2" action=""/>
+	        <perso who="turret3" action=""/>
+	        <perso who="turret4" action=""/>
+	        
+   	        <perso who="turretH" action="explodeBoss"/>
+	       	<perso who="turret1" action="explodeBoss"/>
+	        <perso who="turret2" action="explodeBoss"/>
+	        <perso who="turret3" action="explodeBoss"/>
+	        <perso who="turret4" action="explodeBoss"/>
+	        
+	        <wait value="20"/>
+	        <remove type="TURRET_HEART"/>
+	        <remove type="TURRET"/>
+	    </action>
+	</quest>
+	
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -565,6 +591,7 @@
 		<music name="Village"/>
 	</scene>
 	
+	<!-- Move a turret underground, then breaks the floor, and shot bullets on hero. After that, crouch back into the ground -->
 	<persoAction id="bossTurret"> <!-- argument: (arg0,arg1)=>location to go, arg2=>reverseH, arg3=>reverseV -->
 	     
 		<moveTo who="self" pos="loc:arg0,loc:arg1" way="arc"/>
@@ -580,10 +607,12 @@
 		<if exp="loc:arg3=1">
 		    <var name="loc:turretSpr" value="5"/>
 		</if>
+		<script who="self" value="3"/>
 		<actions>
 		    <visible who="self" value="false"/>
 		    <spawn who="loc:turretOut" type="TURRET" addSpr="loc:turretSpr" pos="x,y"/>
-			<perso who="loc:turretOut" addSpr="loc:turretSpr" alpha="255"/>
+			<perso who="loc:turretOut" addSpr="loc:turretSpr" info="ENEMY" alpha="255"/>
+			<script who="loc:turretOut" value="18"/>	<!-- Turret is invulnerable -->
 			<var name="loc:posX" value="x+7"/>
 			<!-- Cancel reverse vertical, but keep horizontal one -->
 			<perso who="loc:turretOut" reverse="0"/>
@@ -653,6 +682,7 @@
 		<animation type="BREAKING_ROCK" pos="x+10,y+6"/>
 		<actions>
 			<remove who="loc:turretOut"/>
+			<script who="self" value="18"/>	<!-- Underground ==> back immaterial -->
 			<perso who="self" alpha="128" alphaA="0" alphaV="0" addSpr="0"/>
 		    <visible who="self" value="true"/>		    
 		</actions>
@@ -661,7 +691,7 @@
 
 	</persoAction>
 
-	<scene id="scriptBossTurret1">
+	<scene id="spawnBossTurret1">
 	    <!-- Create turrets (turret0 is just the father of all, but invisible)-->
 	    <spawn who="turret0" pos="0,0" type="TURRET" alpha="0"/>
         <spawn who="turret1" pos="110,100" type="TURRET" info="ENEMY" alpha="128"/>
@@ -722,5 +752,20 @@
 		<wait value="4"/>
 		<perso who="turretH" addSpr="1" alpha="128"/>
 		<!-- End of cycle -->
-	</scene>	
+	</scene>
+
+	<!-- Many random explosions on given character and hide him at the middle of the show -->
+	<!-- TODO:make explosions coming from Zildo, so as he doesn't take damage from it -->
+	<persoAction id="explodeBoss">
+	    <for var="loc:i" value="10">
+			<spawn impact="EXPLOSION" pos="x-10+random*20,y-10+random*20"/>
+			<wait value="2"/> 
+	    </for>
+	    <visible who="self" value="false"/>
+	    <for var="loc:i" value="10">
+			<spawn impact="EXPLOSION" pos="x-10+random*20,y-10+random*20"/>
+			<wait value="2"/> 
+	    </for>
+   	</persoAction>
+	
 </adventure>

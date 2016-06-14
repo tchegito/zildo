@@ -144,6 +144,17 @@ public class PersoManagement {
         return null;
     }
     
+    /** Returns all characters of given type **/
+    public List<Perso> getTypedPerso(PersoDescription desc) {
+    	List<Perso> persos = new ArrayList<Perso>();
+    	for (Perso p : tab_perso) {
+    		if (p.getDesc() == desc) {
+    			persos.add(p);
+    		}
+    	}
+    	return persos;
+    }
+    
     public Perso getFollower(Perso p_perso) {
     	for (Perso p : tab_perso) {
     		if (p.getFollowing() == p_perso) {

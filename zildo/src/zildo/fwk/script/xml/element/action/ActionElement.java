@@ -213,7 +213,8 @@ public class ActionElement extends LanguageElement {
 		case attack:
 			text = readAttribute("item");
 			break;
-		case exec:
+		case exec:	// Execute a script (scene)
+		case stop:	// Stop a script
 			text = p_elem.getAttribute("script");
 			break;
 		case mapReplace:
@@ -241,6 +242,7 @@ public class ActionElement extends LanguageElement {
 			break;
 		case remove:
 			text = readAttribute("chaining");
+			way = readAttribute("type");	// To remove any entites of given type
 			break;
 		case herospecial:			
 			text = readAttribute("arg");

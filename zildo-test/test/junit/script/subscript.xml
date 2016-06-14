@@ -13,4 +13,21 @@
 		    <var name='state' value='2'/>
 		</if>
 	</scene>
+	
+	<!-- Infinite loop script with 2 characters -->
+	<scene id='monScript'>
+	    <spawn who="bandit" type="BANDIT_CHAPEAU" pos="160,100"/>
+	    <spawn who="hector" type="HECTOR" pos="200,120"/>
+	    <!-- spawn local one, who should be removed after script being stopped -->
+	    <spawn who="loc:gerard" type="GARCON_BRUN" pos="100,120"/>
+	    
+	    <loop>
+	        <wait value="10"/>
+	    </loop>
+	</scene>
+	
+	<scene id='terminator'>
+	    <stop script='monScript'/>
+	    <remove type="GARCON_BRUN"/>
+	</scene>
 </adventure>
