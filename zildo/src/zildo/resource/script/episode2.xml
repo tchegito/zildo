@@ -271,6 +271,13 @@
         </action>
     </quest>
 
+    <quest name="cheapDynamite">
+        <trigger>
+            <location name="igorv4"/>
+            <dialog name="boris" num="3"/>
+        </trigger>
+    </quest>
+    
     <quest name="takeSawdust">
         <trigger>
             <location name="d5m2" pos="93,115" radius="2"/>

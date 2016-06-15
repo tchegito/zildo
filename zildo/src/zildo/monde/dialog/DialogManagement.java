@@ -131,7 +131,8 @@ public class DialogManagement {
 			int compteDial = persoToTalk.getCompte_dialogue();
 
 			// Dialog switch : adjust sentence according to quest elements
-			if (persoToTalk.getDialogSwitch() != null) {
+			// Do not evaluate if we're in a continuing sentence
+			if (persoToTalk.getDialogSwitch() != null && !p_client.dialogState.continuing) {
 				ZSSwitch swi = ZSSwitch.parseForDialog(persoToTalk.getDialogSwitch());
 				int posSentence = swi.evaluateInt();
 				if (posSentence > compteDial) {
