@@ -140,6 +140,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 | spawn       | text     | V       | V        | -           | Spawn a new character/sprite. Supports as attributes : who/what, delta, reverse, rotation, shadow, x, y, z, vx, vy, vz, ax, ay, az, fx, fy, fz, alpha, alphaA, pos, angle, type, info, attente, action, weapon, zoom. Can spawn a chained element with "chained" attribute expecting "n, delay" where 'n' is the number of trailing sprites, and 'delay' the number of frames between each one. |
 | speak       | text     | V       | V        | V           | Launch a dialog |
 | sprite      | text     | -       | -        | -           | Change a sprite's ("what") attribute ("type" or "reverse"). |
+| stop        | text     | -       | -        | -           | Stop a scene started with an 'exec' command. |
 | take        | text     | V       | V        | -           | A character (Zildo for example) takes an object or money. Could be negative value, if Zildo buy something. |
 | tile        | text     | -       | -        | -           | Change a map tile. Used with attributes 'back', 'back2' and fore. Set to -1 to remove one of these tiles. 'action' attribute is available to set a TileAction. |
 | timer       | text     | -       | -        | -           | Do a repetition of actions on a desired rate. |
