@@ -154,7 +154,7 @@
 	    </action>
 	</quest>
 		
-	<quest name="killBossTurret" locked="false">
+	<quest name="killBossTurret1" locked="false">
 	    <trigger>
 	        <location name="prison14"/>
 	        <dead who="turretH"/>
@@ -177,6 +177,12 @@
 	        <wait value="20"/>
 	        <remove type="TURRET_HEART"/>
 	        <remove type="TURRET"/>
+	        
+	        <wait value="100"/>
+	        <activate what="doorDown" value="true"/>
+	        <activate what="doorUp" value="true"/>
+	       	<animation type="BLUE_DROP" pos="164, 125" angle="1"/>
+	       	<music name=""/>
 	    </action>
 	</quest>
 	
@@ -227,6 +233,9 @@
 	   	</condition>
 	   	<condition name="prison14">
 	   	    <activate what="doorUp" value="true" unblock="true"/>
+	   	    <if expQuest="killBossTurret1">
+			   	<activate what="doorDown" value="true" unblock="true"/>
+	   	    </if>
 	   	</condition>
 	</mapScript>
 		
@@ -337,10 +346,10 @@
 	<tileAction id="blueRain">
 		<timer each="10+random*30">
 			<action>
-			 <spawn what="loc:drop" type="DROP_SMALL" pos="x*16+random*16,y*16+random*8" z="60"
-				 az="-0.01" vx="-0.1-random*0.1" alpha="200" alphaA="0.1" vy="0.1"/>
-			 <wait value="50"/>
-			 <sprite what="loc:drop" type="DROP_MEDIUM"/>
+				 <spawn what="loc:drop" type="DROP_SMALL" pos="x*16+random*16,y*16+random*8" z="60"
+					 az="-0.01" vx="-0.1-random*0.1" alpha="200" alphaA="0.1" vy="0.1"/>
+				 <wait value="50"/>
+				 <sprite what="loc:drop" type="DROP_MEDIUM"/>
 			</action>
 		 </timer>
 	</tileAction>
@@ -755,15 +764,15 @@
 	</scene>
 
 	<!-- Many random explosions on given character and hide him at the middle of the show -->
-	<!-- TODO:make explosions coming from Zildo, so as he doesn't take damage from it -->
+	<!-- Zildo doesn't take damage from it -->
 	<persoAction id="explodeBoss">
 	    <for var="loc:i" value="10">
-			<spawn impact="EXPLOSION" pos="x-10+random*20,y-10+random*20"/>
+			<spawn impact="EXPLOSION_UNDAMAGE" pos="x-10+random*20,y-10+random*20"/>
 			<wait value="2"/> 
 	    </for>
 	    <visible who="self" value="false"/>
 	    <for var="loc:i" value="10">
-			<spawn impact="EXPLOSION" pos="x-10+random*20,y-10+random*20"/>
+			<spawn impact="EXPLOSION_UNDAMAGE" pos="x-10+random*20,y-10+random*20"/>
 			<wait value="2"/> 
 	    </for>
    	</persoAction>

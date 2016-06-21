@@ -217,9 +217,10 @@ public class CollideManagement {
 		Perso attacker=p_collider.perso;
     	Element weapon=p_collided.weapon;
     	// Hurt perso if isn't already wounded, is visible, is not immaterial (attacker too), and if he hasn't -1 as HP.
+    	// Note that an immaterial character can throw REAL projectile and hurt (see condition about collider.weapon)
         if (perso != null && !perso.isWounded() && perso.getPv() != -1 
         		&& perso.isVisible() && perso.getQuel_deplacement() != MouvementPerso.IMMATERIAL
-        		&& (attacker == null || attacker.getQuel_deplacement() != MouvementPerso.IMMATERIAL)) {
+        		&& (attacker == null || attacker.getQuel_deplacement() != MouvementPerso.IMMATERIAL || p_collider.weapon != null)) {
         	boolean persoResisting = perso.getDesc() == null ? false : perso.getDesc().resistToDamageType(p_collider.damageType);
         	
         	if (weapon != null) {

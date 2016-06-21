@@ -35,6 +35,7 @@ public class ElementImpact extends Element {
 	public enum ImpactKind {
 		SIMPLEHIT(ElementDescription.IMPACT1, 4,1), 
 		EXPLOSION(ElementDescription.EXPLO1, new int[] {0,0,0,1,1,2,2,1,1,2,2,3}, 2), 
+		EXPLOSION_UNDAMAGE(EXPLOSION),	// Same as explosion but without damage (used when boss are killed)
 		FIRESMOKE(ElementDescription.EXPLOSMOKE1, 3,8),
 		SMOKE(ElementDescription.SMOKE, new int[] {0,1,52,53,54}, 8),
 		STAR_YELLOW(ElementDescription.STAR1, new int[] {0,1,2,1,0}, 8),
@@ -44,10 +45,10 @@ public class ElementImpact extends Element {
 		WATER_SPLASH(ElementDescription.WATER_ANIM1, 4, 3),
 		WAVE(ElementDescription.WATERWAVE1, new int[] {2,2,2,1,1,1,1,0,0,0,0,0}, 3);
 		
-		ElementDescription desc;
-		int seqLong;	// Size of the sequence of the sprite's life
-		int speed;	// Number of frame during each sprite animation
-		int[] seq=null;
+		final ElementDescription desc;
+		final int seqLong;	// Size of the sequence of the sprite's life
+		final int speed;	// Number of frame during each sprite animation
+		final int[] seq;
 		
 		/**
 		 * Default constructor : create a linear sprite sequence (1,2,3,...)
@@ -60,6 +61,10 @@ public class ElementImpact extends Element {
 			for (int i=0;i<seqLong;i++) {
 				seq[i]=i;
 			}
+		}
+		
+		private ImpactKind(ImpactKind k) {	// Copy constructor
+			this(k.desc, k.seq, k.speed);
 		}
 		
 		/**
@@ -99,6 +104,7 @@ public class ElementImpact extends Element {
 				setSprModel(kind.desc);
 				break;
 			case EXPLOSION:
+			case EXPLOSION_UNDAMAGE:
 				setSprModel(ElementDescription.EXPLO1);
 				y+=getSprModel().getTaille_y()/2;
 				composite=new CompositeElement(this);
@@ -165,6 +171,7 @@ public class ElementImpact extends Element {
         		
         		break;
 			case EXPLOSION:
+			case EXPLOSION_UNDAMAGE:
 				if (valCounter == kind.seq.length) {	// End of the sequence
 					composite.die(false);
 					// Create the ending smoke fog
