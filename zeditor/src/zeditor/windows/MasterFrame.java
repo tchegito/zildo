@@ -431,23 +431,10 @@ public class MasterFrame extends javax.swing.JFrame {
 		}
 		return actionSpriteGrid;
 	}
-	
-	
-	private AbstractAction getActionNewMapTool() {
-		if (actionNewMapTool == null) {
-			actionNewMapTool = new AbstractAction(null) {
-				@Override
-				public void actionPerformed(ActionEvent evt) {
-					zildoPanel.getCanvas().clearMap();
-				}
-			};
-		}
-		return actionNewMapTool;
-	}
 
 	private AbstractAction getActionNew() {
 		if (actionNew == null) {
-			actionNew = new AbstractAction("Nouveau", null) {
+			actionNew = new AbstractAction("", null) {
 				private static final long serialVersionUID = -5578117368337210024L;
 
 				@Override
@@ -668,7 +655,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		if (newMapTool == null) {
 			newMapTool = new JButton();
 			newMapTool.setToolTipText("Nouvelle carte");
-			newMapTool.setAction(getActionNewMapTool());
+			newMapTool.setAction(getActionNew());
 			newMapTool.setIcon(new ImageIcon(getClass().getClassLoader()
 					.getResource("zeditor/images/page.png")));
 		}
@@ -822,8 +809,8 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JMenuItem getNewItem() {
 		if (newItem == null) {
 			newItem = new JMenuItem();
-			newItem.setText("Nouveau");
 			newItem.setAction(getActionNew());
+			newItem.setText("Nouveau");
 			newItem.setIcon(new ImageIcon(getClass().getClassLoader()
 					.getResource("zeditor/images/page_white.png")));
 		}

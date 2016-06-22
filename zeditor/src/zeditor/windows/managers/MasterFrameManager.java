@@ -217,6 +217,7 @@ public class MasterFrameManager {
 		zildoCanvas.clearMap();
 		updateTitle();
 		masterFrame.getStatsPanel().updateStats();
+		updateChainingPoints(null);
 	}
 
 	/**
