@@ -630,6 +630,13 @@ public class Element extends SpriteEntity {
 							ax=0;
 							return false;
 						}
+						break;
+					case STAFF_POUM:
+						Element e = new ElementImpact((int) x, (int) y, ImpactKind.STAFF_TURNING, null);
+						e.z = z;
+						EngineZildo.spriteManagement.spawnSprite(e);
+						EngineZildo.soundManagement.broadcastSound(BankSound.FlechePlante, this);
+						break;
 					}
 				} else if (entityType.isPerso()) {
 					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);

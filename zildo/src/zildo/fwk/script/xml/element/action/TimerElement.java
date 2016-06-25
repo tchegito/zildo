@@ -33,6 +33,16 @@ import zildo.fwk.script.xml.element.LanguageElement;
  * Consists of a set of actions to run every 'each' frame, a stop condition, and another set of actions
  * to execute when end condition is reached.
  * 
+ * <pre>
+ * <b>&lt;timer</b> each="FLOAT_EXPRESSION"&gt;
+ *   <b>&lt;action&gt;
+ *      ...
+ *   &lt;/action&gt;</b>
+ *   &lt;end when="FLOAT_EXPRESSION"&gt;
+ *      ...
+ *   &lt;/end&gt;
+ * &lt;/timer&gt;
+ * </pre>
  * @author Tchegito
  *
  */

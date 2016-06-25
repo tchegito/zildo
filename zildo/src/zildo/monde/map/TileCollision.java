@@ -52,7 +52,7 @@ public class TileCollision {
     public int getBottomZ(int p_posX, int p_posY, int p_nTile, boolean blocked) {
     	int z = blocked ? 160 : 0;
     	int bank = p_nTile >> 8;
-    	if (bank == 0 || bank == 6) {
+    	if (bank == 0 || bank == 6 || bank == 3) {
     		switch (p_nTile) {
     		// On the 4 tiles of regular stump, we consider upper region is at z=1 (to get the fall smoother)
     		case Tile.T_STUMP: case Tile.T_STUMP+1:
@@ -65,6 +65,9 @@ public class TileCollision {
     		case Tile.T_HSTUMP+2: case Tile.T_HSTUMP+3:
     		case Tile.T_PLOT:
     			z = 8;
+    			break;
+    		case Tile.T_BONES1: case Tile.T_BONES2: 	//Bones
+    			z = 4;
     			break;
     		case Tile.T_WATER_MUD:
     			if (tileInfos[p_nTile].collide(p_posX, p_posY)) {

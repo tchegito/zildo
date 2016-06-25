@@ -293,7 +293,8 @@ public class ScriptManagement {
 			// For each quest undone yet :
     		if (quest.getTriggers() != null) {
 				for (TriggerElement trig : quest.getTriggers()) {
-					if (!quest.done && trig.isLocationSpecific() && trig.mapNameMatch(p_mapName)) {
+					// Add trigger whatever quest status (done or not)
+					if (/*!quest.done &&*/ trig.isLocationSpecific() && trig.mapNameMatch(p_mapName)) {
 						locationTriggerOnMap.add(trig);
 						break;
 					}

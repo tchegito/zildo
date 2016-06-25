@@ -646,7 +646,8 @@ public class ActionExecutor extends RuntimeExecutor {
                 		achieved=true;
                 	} else {
                 		count = 0;
-                		nextStep = (int) ((TimerElement)p_action).each.evaluate(context);
+                		// On timer's first run, don't wait <each> frames but execute actions at once
+                		nextStep = 0; //(int) ((TimerElement)p_action).each.evaluate(context);
                 	}
                 	break;
                 case loop:	// 'end' condition is checked at the end of a loop execution

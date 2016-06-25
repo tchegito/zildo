@@ -186,6 +186,42 @@
 	    </action>
 	</quest>
 	
+	<!-- Prison 15 staffs launcher -->
+	<quest name="prison15_trigger1Launch1" locked="false">
+	    <trigger> <location name="prison15" pos="159,120" radius="1"/> </trigger>
+	    <action> <exec script="prison15_launch1"/> </action>
+	</quest>
+	<quest name="prison15_trigger2Launch1" locked="false">
+	    <trigger> <location name="prison15" pos="319,186" radius="1"/> </trigger>
+	    <action> <exec script="prison15_launch1"/> </action>
+	</quest>
+		
+	<quest name="prison15_trigger1Launch2" locked="false">
+	    <trigger> <location name="prison15" pos="319,248" radius="1"/> </trigger>
+	    <action> <exec script="prison15_launch2"/></action>
+	</quest>
+	<quest name="prison15_trigger2Launch2" locked="false">
+	    <trigger> <location name="prison15" pos="56,314" radius="1"/> </trigger>
+	    <action> <exec script="prison15_launch2"/> </action>
+	</quest>
+	
+	<quest name="prison15_trigger1Launch3" locked="false">
+	    <trigger> <location name="prison15" pos="207,438" radius="1"/> </trigger>
+	    <action> <exec script="prison15_launch3"/></action>
+	</quest>
+	<quest name="prison15_trigger2Launch3" locked="false">
+	    <trigger> <location name="prison15" pos="207,504" radius="1"/> </trigger>
+	    <action> <exec script="prison15_launch3"/> </action>
+	</quest>
+	
+	<quest name="prison15_trigger1Launch4" locked="false">
+	    <trigger> <location name="prison15" pos="207,582" radius="1"/> </trigger>
+	    <action> <exec script="prison15_launch4"/></action>
+	</quest>
+	<quest name="prison15_trigger2Launch4" locked="false">
+	    <trigger> <location name="prison15" pos="207,648" radius="1"/> </trigger>
+	    <action> <exec script="prison15_launch4"/> </action>
+	</quest>
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -234,9 +270,19 @@
 	   	<condition name="prison14">
 	   	    <activate what="doorUp" value="true" unblock="true"/>
 	   	    <if expQuest="killBossTurret1">
-			   	<activate what="doorDown" value="true" unblock="true"/>
+			   	<remove what="doorDown"/>
 	   	    </if>
 	   	</condition>
+	   	<condition name="prison15">
+	   	    <markQuest name="prison15_trigger1Launch1" value="false"/>
+	   	    <markQuest name="prison15_trigger2Launch1" value="false"/>
+	   	    <markQuest name="prison15_trigger1Launch2" value="false"/>
+	   	    <markQuest name="prison15_trigger2Launch2" value="false"/>
+	   	    <markQuest name="prison15_trigger1Launch3" value="false"/>
+	   	    <markQuest name="prison15_trigger2Launch3" value="false"/>
+	   	    <markQuest name="prison15_trigger1Launch4" value="false"/>
+	   	    <markQuest name="prison15_trigger2Launch4" value="false"/>
+   	   	</condition>
 	</mapScript>
 		
 	<scene id="intro_episode3">
@@ -763,6 +809,63 @@
 		<!-- End of cycle -->
 	</scene>
 
+	<scene id="prison15_launch1">
+        <timer each="60">
+            <action>
+                <sound name="FlecheTir"/>
+	        	<spawn type="STAFF_POUM" pos="129,156" shadow="SHADOW_SMALL" z="4" vz="0.2" az="-0.005" vx="2.3"/>
+            </action>
+            <end when="zildo.y > 192 | zildo.y &lt; 100">
+        		<markQuest name="prison15_trigger1Launch1" value="false"/>
+        		<markQuest name="prison15_trigger2Launch1" value="false"/>
+			</end>
+        </timer>
+	</scene>
+	
+	<scene id="prison15_launch2">
+        <timer each="60">
+            <action>
+                <sound name="FlecheTir"/>
+	        	<spawn type="STAFF_POUM" reverse="128" pos="350,285" shadow="SHADOW_SMALL" z="4" vz="0.29" az="-0.005" vx="-2.3"/>
+            </action>
+            <end when="zildo.y > 320 | zildo.y &lt; 228">
+        		<markQuest name="prison15_trigger1Launch2" value="false"/>
+        		<markQuest name="prison15_trigger2Launch2" value="false"/>
+			</end>
+        </timer>
+	</scene>
+	
+	<scene id="prison15_launch3">
+        <timer each="60">
+            <action>
+                <sound name="FlecheTir"/>
+	        	<spawn type="STAFF_POUM" pos="74,476" shadow="SHADOW_SMALL" z="4" vz="0.2" az="-0.005" vx="2.3"/>
+	        	<wait value="20"/>
+                <sound name="FlecheTir"/>
+	        	<spawn type="STAFF_POUM" reverse="128" pos="323,476" shadow="SHADOW_SMALL" z="4" vz="0.2" az="-0.005" vx="-2.3"/>
+        	</action>
+            <end when="zildo.y > 512 | zildo.y &lt; 421">
+        		<markQuest name="prison15_trigger1Launch3" value="false"/>
+        		<markQuest name="prison15_trigger2Launch3" value="false"/>
+			</end>
+        </timer>
+	</scene>
+	
+	<scene id="prison15_launch4">
+        <timer each="60">
+            <action>
+                <sound name="FlecheTir"/>
+	        	<spawn type="STAFF_POUM" reverse="128" pos="515,620" shadow="SHADOW_SMALL" z="4" vz="0.27" az="-0.005" vx="-3"/>
+	        	<wait value="10"/>
+	        	<sound name="FlecheTir"/>
+	        	<spawn type="STAFF_POUM" pos="74,620" shadow="SHADOW_SMALL" z="4" vz="0.2" az="-0.005" vx="2.3"/>
+        	</action>
+            <end when="zildo.y > 656 | zildo.y &lt; 575">
+        		<markQuest name="prison15_trigger1Launch4" value="false"/>
+        		<markQuest name="prison15_trigger2Launch4" value="false"/>
+			</end>
+        </timer>
+	</scene>
 	<!-- Many random explosions on given character and hide him at the middle of the show -->
 	<!-- Zildo doesn't take damage from it -->
 	<persoAction id="explodeBoss">
