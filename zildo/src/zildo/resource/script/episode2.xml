@@ -406,7 +406,7 @@
 		    <angle who="zildo" value="0"/>
    		    <actions>
 		        <moveTo who="jaune" pos="190,81"/>
-		        <moveTo who="zildo" pos="0,28" delta="true"/>
+		        <moveTo who="zildo" pos="188,108"/>
 		    </actions>
 		    <angle who="zildo" value="0"/>
 		    <actions>
@@ -442,7 +442,7 @@
 		    <angle who="zildo" value="0"/>
 		    <actions>
 		        <moveTo who="jaune" pos="190,193"/>
-		        <moveTo who="zildo" pos="0,28" delta="true"/>
+		        <moveTo who="zildo" pos="188,220"/>
 		    </actions>
 		    <angle who="zildo" value="0"/>
 		    <actions>
