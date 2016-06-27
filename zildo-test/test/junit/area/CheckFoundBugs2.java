@@ -17,6 +17,8 @@ import zildo.server.EngineZildo;
 /**
  * Another set of UT about found bugs, from Nash and Emile especially.
  * 
+ * About Boris and dynamite quest.
+ * 
  * @author Tchegito
  *
  */
