@@ -31,6 +31,7 @@ import zildo.Zildo;
 import zildo.client.stage.SinglePlayer;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
+import zildo.fwk.ui.ConfirmMenu;
 import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
@@ -77,11 +78,22 @@ public class SaveGameMenu extends PageableMenu {
 					@Override
 					public void run() {
 						int number = getSavegameNumber(s);
-						String filename = getSavegameFilename(number);
+						final String filename = getSavegameFilename(number);
 						if (!load) {
-							saveGame(filename);
-							client.handleMenu(new InfoMenu("m8.info.ok",
-									previousMenu));
+							// Ask player to confirm saved game overwrite
+							client.handleMenu(new ConfirmMenu("m8.confirmOverwrite", new ItemMenu("global.yes") {
+								@Override
+								public void run() {	// He accepts
+									saveGame(filename);
+									client.handleMenu(new InfoMenu("m8.info.ok",
+											previousMenu));
+								}
+							}, new ItemMenu("global.no") {	// He refuses
+								@Override
+								public void run() {
+									client.handleMenu(currentMenu);
+								}
+							}));
 						} else {
 							if (!loadGame(filename, false)) {
                             	// Load failed !
