@@ -206,22 +206,66 @@
 	</quest>
 	
 	<quest name="prison15_trigger1Launch3" locked="false">
-	    <trigger> <location name="prison15" pos="207,438" radius="1"/> </trigger>
+	    <trigger> <location name="prison15" pos="159,438" radius="1"/> </trigger>
 	    <action> <exec script="prison15_launch3"/></action>
 	</quest>
 	<quest name="prison15_trigger2Launch3" locked="false">
-	    <trigger> <location name="prison15" pos="207,504" radius="1"/> </trigger>
+	    <trigger> <location name="prison15" pos="159,504" radius="1"/> </trigger>
 	    <action> <exec script="prison15_launch3"/> </action>
 	</quest>
 	
 	<quest name="prison15_trigger1Launch4" locked="false">
-	    <trigger> <location name="prison15" pos="207,582" radius="1"/> </trigger>
+	    <trigger> <location name="prison15" pos="159,582" radius="1"/> </trigger>
 	    <action> <exec script="prison15_launch4"/></action>
 	</quest>
 	<quest name="prison15_trigger2Launch4" locked="false">
-	    <trigger> <location name="prison15" pos="207,648" radius="1"/> </trigger>
+	    <trigger> <location name="prison15" pos="159,648" radius="1"/> </trigger>
 	    <action> <exec script="prison15_launch4"/> </action>
 	</quest>
+	
+	<quest name="prison15Interrogation">
+	    <trigger>
+	        <location name="prison15" pos="158,46" radius="5"/>
+	    </trigger>
+	    <action>
+	        <moveTo who="zildo" pos="159,63"/>
+	        <wait value="30"/>
+	        <angle who="zildo" value="3"/>
+	        <wait value="20"/>
+	        <angle who="zildo" value="1"/>
+	        <wait value="30"/>
+	        <speak who="zildo" text="prison16.zildo.0"/>
+	        <angle who="zildo" value="2"/>
+	        <speak who="zildo" text="prison16.zildo.1"/>
+	    </action>
+	</quest>
+	
+	<quest name="metKingPrison">
+	    <trigger>
+	        <location name="prison17"/>
+	    </trigger>
+	    <action>
+	        <exec script="meetingKingPrison"/>
+	    </action>
+	</quest>
+	
+	<quest name="killKingGuards" locked="false">
+	    <trigger>
+	        <location name="prison16"/>
+	        <dead who="noir,noir"/>
+	    </trigger>
+	</quest>
+	
+	<quest name="metKingPrison2">
+	    <trigger>
+	        <location name="prison17" pos="240,74" radius="2"/>
+	        <questDone name="metKingPrison"/>
+	    </trigger>
+	    <action>
+	        <exec script="meetingKingPrisonSuite"/>
+	    </action>
+	</quest>
+	
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -282,6 +326,10 @@
 	   	    <markQuest name="prison15_trigger2Launch3" value="false"/>
 	   	    <markQuest name="prison15_trigger1Launch4" value="false"/>
 	   	    <markQuest name="prison15_trigger2Launch4" value="false"/>
+   	   	</condition>
+   	   	<condition name="prison16" exp="killKingGuards">
+   	   	   	<remove who="noir"/>
+   	   	   	<remove who="noir"/>
    	   	</condition>
 	</mapScript>
 		
@@ -839,7 +887,7 @@
         <timer each="60">
             <action>
                 <sound name="FlecheTir"/>
-	        	<spawn type="STAFF_POUM" pos="74,476" shadow="SHADOW_SMALL" z="4" vz="0.2" az="-0.005" vx="2.3"/>
+	        	<spawn type="STAFF_POUM" pos="42,476" shadow="SHADOW_SMALL" z="4" vz="0.2" az="-0.005" vx="2.3"/>
 	        	<wait value="20"/>
                 <sound name="FlecheTir"/>
 	        	<spawn type="STAFF_POUM" reverse="128" pos="323,476" shadow="SHADOW_SMALL" z="4" vz="0.2" az="-0.005" vx="-2.3"/>
@@ -858,7 +906,7 @@
 	        	<spawn type="STAFF_POUM" reverse="128" pos="515,620" shadow="SHADOW_SMALL" z="4" vz="0.27" az="-0.005" vx="-3"/>
 	        	<wait value="10"/>
 	        	<sound name="FlecheTir"/>
-	        	<spawn type="STAFF_POUM" pos="74,620" shadow="SHADOW_SMALL" z="4" vz="0.2" az="-0.005" vx="2.3"/>
+	        	<spawn type="STAFF_POUM" pos="42,620" shadow="SHADOW_SMALL" z="4" vz="0.2" az="-0.005" vx="2.3"/>
         	</action>
             <end when="zildo.y > 656 | zildo.y &lt; 575">
         		<markQuest name="prison15_trigger1Launch4" value="false"/>
@@ -866,6 +914,50 @@
 			</end>
         </timer>
 	</scene>
+
+	<scene id="meetingKingPrison">
+	    <moveTo who="zildo" pos="55,80"/>
+	    <music name=""/>
+	    <wait value="30"/>
+	    <speak who="zildo" text="prison.saveKing.zildo.0"/>
+	    <moveTo who="zildo" pos="229,80" unblock="true"/>
+	    <wait value="60"/>
+	    <perso who="trion" addSpr="1"/>
+	    <wait value="20"/>
+   	    <perso who="trion" addSpr="0"/>
+	    <wait value="20"/>
+	    <perso who="trion" addSpr="1"/>
+	    <wait value="20"/>
+   	    <perso who="trion" addSpr="0"/>
+	    <wait value="20"/>
+   	    <speak who="trion" text="prison.saveKing.trion.0" unblock="true"/>
+	    <perso who="trion" addSpr="1"/>
+	    <wait value="20"/>
+	    <perso who="trion" addSpr="2"/>
+	    <wait value="150"/>
+	    <speak who="trion" text="prison.saveKing.trion.1"/>
+	    <speak who="trion" text="prison.saveKing.zildo.1"/>
+	    <speak who="trion" text="prison.saveKing.trion.2"/>
+   	    <!-- Back to the music -->
+	    <music name="Chateau"/>
+   	</scene>
+   	
+	<scene id="meetingKingPrisonSuite">
+	    <speak who="zildo" text="prison.saveKing.trion.3"/>
+	    <angle who="zildo" value="1"/>
+   	    <if expQuest="killKingGuards">
+   	        <speak who="zildo" text="prison.saveKing.zildo.b3"/>
+			<speak who="trion" text="prison.saveKing.trion.b4"/>
+   	    </if>
+   	    <if expQuest="!killKingGuards">
+   	        <speak who="zildo" text="prison.saveKing.zildo.a1"/>
+			<speak who="trion" text="prison.saveKing.trion.a4"/>
+			<speak who="zildo" text="prison.saveKing.zildo.a2"/>
+			<moveTo who="zildo" pos="208,152"/>
+			<markQuest name="metKingPrison2" value="false"/>
+   	    </if>
+   	</scene>
+	
 	<!-- Many random explosions on given character and hide him at the middle of the show -->
 	<!-- Zildo doesn't take damage from it -->
 	<persoAction id="explodeBoss">

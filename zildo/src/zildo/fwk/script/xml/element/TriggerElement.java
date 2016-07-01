@@ -27,6 +27,7 @@ import java.util.List;
 import org.w3c.dom.Element;
 
 import zildo.client.sound.BankSound;
+import zildo.fwk.ZUtils;
 import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.items.ItemKind;
@@ -136,6 +137,9 @@ public class TriggerElement extends AnyElement {
 			break;
 		case DEAD:
 			String persos = p_elem.getAttribute("who");
+			if (ZUtils.isEmpty(persos)) {
+				throw new RuntimeException("<dead> trigger implies a 'who' attribute !");
+			}
 			deadPersos = new ArrayList<String>();
 			deadPersos.addAll(Arrays.asList(persos.split(",")));
 			break;
