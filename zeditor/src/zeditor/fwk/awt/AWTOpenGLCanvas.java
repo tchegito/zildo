@@ -156,6 +156,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		}
 		if (reloadTexture) {
 			ClientEngineZildo.tileEngine.loadTextures();
+			ClientEngineZildo.spriteEngine.loadTextures(ClientEngineZildo.spriteDisplay);
 			reloadTexture = false;
 		}
 		if (changeMap) {

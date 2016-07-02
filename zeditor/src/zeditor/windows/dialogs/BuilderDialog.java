@@ -68,7 +68,7 @@ public class BuilderDialog extends JDialog {
 				// Reload all banks
 				reloadTiles();
 
-				info("Tile bank "+bankName+" has been builded !");
+				MasterFrameManager.display("Tile bank "+bankName+" has been builded !");
 			}
 		});
 		panel.addComp(comboTileBank, buttonBuildTileBank);
@@ -83,7 +83,7 @@ public class BuilderDialog extends JDialog {
 					// Reload all banks
 					reloadTiles();
 
-					info("All tile banks builded successfully !");
+					MasterFrameManager.display("All tile banks builded successfully !");
 				} catch (RuntimeException ex) {
 					error("Error building all tile banks !", ex);
 				}
@@ -104,7 +104,10 @@ public class BuilderDialog extends JDialog {
 
 				try {
 					new Modifier().saveNamedSpriteBank(bankName);
-					info("Sprite bank "+bankName+" has been builded !");
+					// Reload all sprites
+					reloadSprites();
+					
+					MasterFrameManager.display("Sprite bank "+bankName+" has been builded !");
 				} catch (RuntimeException ex) {
 					error("Error building bank "+bankName, ex);
 				}
@@ -119,7 +122,7 @@ public class BuilderDialog extends JDialog {
 					// Save all textures
 					manager.getZildoCanvas().askBuildTexture();
 
-					info("Texture have been builded !");
+					MasterFrameManager.display("Texture have been builded !");
 				} catch (Exception ex) {
 					error("Error building textures !\n\nCause : ", ex);
 				}
@@ -146,12 +149,15 @@ public class BuilderDialog extends JDialog {
 		ClientEngineZildo.tileEngine.loadAllTileBanks();
 		// Ask image in background panel to rebuild, even current one
 		manager.reloadTileBanks();
+		//manager.reload
 		// Ask graphic card to reload its current textures
 		manager.getZildoCanvas().askReloadTexture();
 	}
 	
-	private void info(String message) {
-		JOptionPane.showMessageDialog(getParent(), message, "Builder", JOptionPane.INFORMATION_MESSAGE);		
+	private void reloadSprites() {
+		ClientEngineZildo.spriteDisplay.loadAllBanks();
+		// Ask graphic card to reload its current textures
+		manager.getZildoCanvas().askReloadTexture();
 	}
 	
 	private void error(String message, Exception ex) {
