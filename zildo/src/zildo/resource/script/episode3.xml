@@ -276,6 +276,18 @@
 	    </action>
 	</quest>
 	
+	<quest name="getMidSword" locked="false">
+	    <trigger>
+	        <location name="d4m9"/>
+	        <questDone name="jump_stumpNature3"/>
+	        <dialog name="igor" num="1"/>
+	    </trigger>
+	    <action>
+	        <take item="midsword"/>
+	        <putDown item="sword" />
+	    </action>
+	</quest>
+	
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -340,6 +352,9 @@
    	   	<condition name="prison16" exp="killKingGuards">
    	   	   	<remove who="noir"/>
    	   	   	<remove who="noir"/>
+   	   	</condition>
+   	   	<condition name="d4m9" exp="!jump_stumpNature3">
+   	   		<remove who="igor"/>
    	   	</condition>
 	</mapScript>
 		
@@ -667,6 +682,7 @@
 		<perso who="zildo" az="0" vz="0"/>
 		<zoom who="zildo" value="255"/>
 		<pos who="zildo" pos="174,113"/>
+		<spawn type="LEAF_GREEN" pos="140,113" az="-0.001" z="30"/>
 		<exec script="endFallPit"/>
 		
 		<wait value="20"/>
@@ -698,10 +714,61 @@
 		
 		<markQuest name="hero_princess" value="false"/>
 		
-		<map name="d4m9"/>
-		<pos who="zildo" pos="181,151"/>
-		<fadeIn value="0"/>
-		<music name="Village"/>
+		<!-- hero at the library -->
+		<music name=""/>
+		<map name="d4m2"/>
+		<pos who="maltus" pos="190,33"/>
+		<angle who="maltus" value="0"/>
+		<pos who="zildo" pos="140,47"/>
+		<fadeIn value="0" unblock="true"/>
+		<moveTo who="zildo" pos="140,134" speed="0.5"/>
+		<wait value="20"/>
+		<angle who="zildo" value="0"/>
+		<speak who="zildo" text="episode3.zildo.0"/>
+		<speak who="anselme" text="episode3.anselme.0"/>
+		<angle who="maltus" value="2"/>
+		<speak who="maltus" text="episode3.maltus.0"/>
+		<angle who="hector" value="3"/>
+		<speak who="hector" text="episode3.hector.0"/>
+		<speak who="zildo" text="episode3.zildo.1"/>
+		<sound name="MenuMove"/><wait value="20"/>
+		<sound name="MenuMove"/><wait value="20"/>
+		<sound name="MenuMove"/><wait value="40"/>
+		<sound name="MenuMove"/><wait value="20"/>
+		<sound name="MenuMove"/><wait value="10"/>
+		<sound name="MenuMove"/><wait value="10"/>
+		<speak who="maltus" text="episode3.maltus.1"/>
+		<speak who="hector" text="episode3.hector.1"/>
+		<sound name="OuvrePorte"/>
+		<spawn who="petula" type="RITASKY" pos="225,169" alpha="0" alphaA="2"/>
+		<angle who="zildo" value="1"/>
+		<angle who="hector" value="2"/>
+		<wait value="50"/>
+		<speak who="petula" text="episode3.girl.0"/>
+		<speak who="hector" text="episode3.hector.2"/>
+		<angle who="petula" value="2"/>
+		<perso who="petula" alphaA="-2"/>
+	    <wait value="30"/>
+	    <remove who="petula"/>
+	    <moveTo who="zildo" pos="32,0" delta="true"/>
+	    <speak who="zildo" text="episode3.zildo.2"/>
+		<speak who="hector" text="episode3.hector.3"/>
+		<speak who="maltus" text="episode3.maltus.2"/>
+		<angle who="zildo" value="0"/>
+	    <speak who="zildo" text="episode3.zildo.3"/>
+	    <moveTo who="zildo" pos="16,0" speed="1" delta="true" unblock="true"/>
+	    <wait value="8"/>
+	    <speak who="hector" text="episode3.hector.4"/>
+	    <angle who="zildo" value="0"/>
+	    <speak who="hector" text="episode3.hector.5"/>
+	    <speak who="zildo" text="episode3.zildo.4"/>
+	    <moveTo who="maltus" pos="190,56"/>
+		<speak who="maltus" text="episode3.maltus.3"/>
+		<angle who="zildo" value="0"/>
+		<wait value="5"/>
+		<speak who="maltus" text="episode3.maltus.4"/>
+		<speak who="zildo" text="episode3.zildo.5"/>
+   	    <music name="Village"/>
 	</scene>
 	
 	<!-- Move a turret underground, then breaks the floor, and shot bullets on hero. After that, crouch back into the ground -->
