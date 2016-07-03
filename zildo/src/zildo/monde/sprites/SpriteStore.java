@@ -53,17 +53,21 @@ public class SpriteStore {
 		// Load sprite banks
 		if (banque_spr == null) {
 			banque_spr=new ArrayList<SpriteBank>();
-			n_bankspr=0;
-			Identified.resetCounter(SpriteModel.class);
-			for (int b=0;b<sprBankName.length;b++) {
-				charge_sprites(sprBankName[b]);
-			}
+			loadAllBanks();
 		}
 		
 		// Initialize entities list
 		spriteEntities=new ArrayList<SpriteEntity>();
 	}
 	
+	public void loadAllBanks() {
+		banque_spr.clear();
+		n_bankspr=0;
+		Identified.resetCounter(SpriteModel.class);
+		for (int b=0;b<sprBankName.length;b++) {
+			charge_sprites(sprBankName[b]);
+		}
+	}
 	///////////////////////////////////////////////////////////////////////////////////////
 	// charge_sprites
 	///////////////////////////////////////////////////////////////////////////////////////
