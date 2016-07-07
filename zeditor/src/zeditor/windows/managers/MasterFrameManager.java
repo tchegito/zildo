@@ -217,6 +217,7 @@ public class MasterFrameManager {
 		zildoCanvas.clearMap();
 		updateTitle();
 		masterFrame.getStatsPanel().updateStats();
+		updateChainingPoints(null);
 	}
 
 	/**
@@ -276,6 +277,10 @@ public class MasterFrameManager {
 		}
 	}
 
+	public static void display(String p_msg) {
+		display(p_msg, MESSAGE_INFO);
+	}
+	
 	public static void displayCaseInfo(String p_msg) {
 		if (caseInfoDisplay != null) {
 			caseInfoDisplay.setText(" " + p_msg);
@@ -578,6 +583,7 @@ public class MasterFrameManager {
 	
 	public void reloadTileBanks() {
 		masterFrame.getBackgroundPanel().getTileSetPanel().clearTiles();
+		//masterFrame.getPersoPanel().reloadGraphics();
 	}
 	
 	/** Inform that users have made changes on the current map **/

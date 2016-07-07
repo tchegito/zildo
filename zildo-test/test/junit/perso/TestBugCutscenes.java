@@ -143,4 +143,17 @@ public class TestBugCutscenes extends EngineUT {
 		// Verify scene is over
 		Assert.assertTrue(hero.y > 500);
 	}
+	
+	@Test
+	public void freezeVisitingPrisoners() {
+		mapUtils.loadMap("prison");
+		spawnZildo(213, 69);
+		// Do as hero has already ask to visit prisoners
+		EngineZildo.scriptManagement.accomplishQuest("ask_visitprison", false);
+		waitEndOfScripting();
+		simulateDirection(-1, 0);
+		renderFrames(20);
+		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
+		waitEndOfScriptingPassingDialog();
+	}
 }

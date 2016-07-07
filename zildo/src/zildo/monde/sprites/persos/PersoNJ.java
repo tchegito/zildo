@@ -683,6 +683,7 @@ public class PersoNJ extends Perso {
 		case STONE_SPIDER:
 		case FOX:
 		case FALCOR:
+		case SLEEPING_KING:
 			add_spr = 0;
 			break;
 		case FLYINGSERPENT:

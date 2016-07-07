@@ -25,6 +25,8 @@ import zildo.client.sound.BankSound;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
+import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.utils.CompositeElement;
@@ -35,6 +37,7 @@ public class ElementImpact extends Element {
 	public enum ImpactKind {
 		SIMPLEHIT(ElementDescription.IMPACT1, 4,1), 
 		EXPLOSION(ElementDescription.EXPLO1, new int[] {0,0,0,1,1,2,2,1,1,2,2,3}, 2), 
+		EXPLOSION_UNDAMAGE(EXPLOSION),	// Same as explosion but without damage (used when boss are killed)
 		FIRESMOKE(ElementDescription.EXPLOSMOKE1, 3,8),
 		SMOKE(ElementDescription.SMOKE, new int[] {0,1,52,53,54}, 8),
 		STAR_YELLOW(ElementDescription.STAR1, new int[] {0,1,2,1,0}, 8),
@@ -42,12 +45,13 @@ public class ElementImpact extends Element {
 		LAVA_DROP(ElementDescription.LAVADROP1, 4, 2),
 		DUST(ElementDescription.DUST1, 3, 3),
 		WATER_SPLASH(ElementDescription.WATER_ANIM1, 4, 3),
-		WAVE(ElementDescription.WATERWAVE1, new int[] {2,2,2,1,1,1,1,0,0,0,0,0}, 3);
+		WAVE(ElementDescription.WATERWAVE1, new int[] {2,2,2,1,1,1,1,0,0,0,0,0}, 3),
+		STAFF_TURNING(ElementDescription.STAFF_POUM, 8, 4);
 		
-		ElementDescription desc;
-		int seqLong;	// Size of the sequence of the sprite's life
-		int speed;	// Number of frame during each sprite animation
-		int[] seq=null;
+		final ElementDescription desc;
+		final int seqLong;	// Size of the sequence of the sprite's life
+		final int speed;	// Number of frame during each sprite animation
+		final int[] seq;
 		
 		/**
 		 * Default constructor : create a linear sprite sequence (1,2,3,...)
@@ -60,6 +64,10 @@ public class ElementImpact extends Element {
 			for (int i=0;i<seqLong;i++) {
 				seq[i]=i;
 			}
+		}
+		
+		private ImpactKind(ImpactKind k) {	// Copy constructor
+			this(k.desc, k.seq, k.speed);
 		}
 		
 		/**
@@ -96,9 +104,11 @@ public class ElementImpact extends Element {
 			case LAVA_DROP:
 			case WATER_SPLASH:
 			case WAVE:
+			case STAFF_TURNING:
 				setSprModel(kind.desc);
 				break;
 			case EXPLOSION:
+			case EXPLOSION_UNDAMAGE:
 				setSprModel(ElementDescription.EXPLO1);
 				y+=getSprModel().getTaille_y()/2;
 				composite=new CompositeElement(this);
@@ -112,9 +122,15 @@ public class ElementImpact extends Element {
 				composite=new CompositeElement(this);
 				composite.squareShape(0,0);
 				alpha = 255;
+				break;
 			default:
 				break;
 		}
+    	if (kind == ImpactKind.STAFF_TURNING) {
+    		az=-0.01f;
+    		vz=0.35f;
+    	}
+
 		addSpr=0;
         setLinkedPerso(p_shooter);
         if (p_shooter != null) {
@@ -140,15 +156,31 @@ public class ElementImpact extends Element {
         	case SMOKE:
         	case DUST:
         	case WATER_SPLASH:
+        	case STAFF_TURNING:
 				if (valCounter >= kind.seqLong) {
 					dying=true;
 					visible=false;
 				} else {
-					addSpr=kind.seq[valCounter];
-					setSprModel(kind.desc, addSpr);
+					if (kind == ImpactKind.STAFF_TURNING) {
+						// Physic job to handle z, vz, and az
+						super.animate();
+						// Rotate, blink and reduce alpha channel
+						rotation = Rotation.values()[valCounter % 4];
+						visible = counter % 2 == 0;
+						alpha-=4;
+					} else {
+						addSpr=kind.seq[valCounter];
+						setSprModel(kind.desc, addSpr);
+					}
+				}
+				// Adjust sprite model taking rotation state into account
+				SpriteModel sprModel = getSprModel();
+				int ty = sprModel.getTaille_y();
+				if (rotation.isWidthHeightSwitched() ) {
+					ty = sprModel.getTaille_x();
 				}
 				setAjustedX((int) x);
-				setAjustedY((int) y+getSprModel().getTaille_y()/2);
+				setAjustedY((int) y+ty/2);
 				break;
         	case DROP_ENERGY:
         		if (counter >= 2*255) {	// End of the animation
@@ -165,6 +197,7 @@ public class ElementImpact extends Element {
         		
         		break;
 			case EXPLOSION:
+			case EXPLOSION_UNDAMAGE:
 				if (valCounter == kind.seq.length) {	// End of the sequence
 					composite.die(false);
 					// Create the ending smoke fog

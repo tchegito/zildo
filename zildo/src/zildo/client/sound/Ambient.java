@@ -95,6 +95,7 @@ public class Ambient {
 		switch (p_map.getAtmosphere()) {
 			case OUTSIDE:
 			case CASTLE:
+			case UNDERGROWTH:
 				return Weather.CLOUD;
 			default:
 				return Weather.USUAL;

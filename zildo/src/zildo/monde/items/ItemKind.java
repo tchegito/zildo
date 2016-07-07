@@ -50,7 +50,8 @@ public enum ItemKind {
 	FLASK_YELLOW(false, ElementDescription.FLASK_YELLOW, 100),
 	EMPTY_BAG(false, ElementDescription.EMPTY_BAG, 20),
 	FULL_BAG(false, ElementDescription.FULL_BAG, 20),
-	FIRE_RING(false, ElementDescription.FIRE_RING, 800, 5000);
+	FIRE_RING(false, ElementDescription.FIRE_RING, 800, 5000),
+	CUREPOTION(false, ElementDescription.FLASK_BLUE, 100);
 	
 	final public SpriteDescription representation;
 	final public int price;

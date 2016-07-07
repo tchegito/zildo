@@ -172,10 +172,10 @@ public class Maison extends Banque {
 				new Point(128, 176), new Point(304, 96), new Point(304, 112),
 				new Point(288, 80), new Point(304, 80), new Point(304, 160),
 				new Point(304, 176), new Point(208, 64), new Point(224, 64),
-				/* Tableau */
+				/* Caisses 224*/
 				new Point(288, 48), new Point(304, 48), new Point(288, 64),
 				new Point(304, 64),
-				/* Escalier */
+				/* Escalier 228 */
 				new Point(64, 144), new Point(80, 144), new Point(96, 144),
 				/* Objets */
 				new Point(80, 112), new Point(128, 64), new Point(272, 48),

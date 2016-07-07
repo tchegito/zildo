@@ -58,6 +58,8 @@ public class Tile implements Cloneable {
     public final static int T_SWAMP = 118 + 256;
     public final static int T_NETTLE = 6*256 + 231;
     public final static int T_NETTLE_CUT = 6*256 + 232;
+    public final static int T_BONES1 = 256*3+249;
+    public final static int T_BONES2 = 256*3+250;
     
 	public Tile(int p_bank, int p_index, Case p_parent) {
 		bank = (byte) (p_bank & 15);

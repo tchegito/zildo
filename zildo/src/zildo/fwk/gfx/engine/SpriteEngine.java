@@ -79,7 +79,7 @@ public abstract class SpriteEngine {
 		textureEngine.cleanTextures();
 	}
 
-	protected abstract void loadTextures(SpriteStore p_spriteStore);
+	public abstract void loadTextures(SpriteStore p_spriteStore);
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// prepareSprites
