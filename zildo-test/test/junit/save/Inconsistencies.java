@@ -89,6 +89,58 @@ public class Inconsistencies extends EngineUT {
 		Assert.assertTrue(igorDoor.isOpen());
 	}
 	
+	// Issue 93: talk to the guard. He let you in, then save. Reload and BAM ! you're stuck if you have less than 10GP.
+	@Test
+	public void stuckInPrison() {
+		mapUtils.loadMap("prison");
+		PersoPlayer zildo = spawnZildo(230, 242);
+		zildo.setMoney(10);
+		waitEndOfScripting();
+		
+		// Make character go down and talk
+		simulateDirection(0, 1);
+		renderFrames(20);
+		simulatePressButton(Keys.Q, 2);
+		int nbGP = zildo.getMoney();
+		Assert.assertNotNull(zildo.getDialoguingWith());
+		System.out.println(zildo.getY());
+		goOnDialog();
+		Assert.assertNull(zildo.getDialoguingWith());
+		// Talk again to pay 10 GP
+		simulatePressButton(Keys.Q, 2);
+		goOnDialog();
+		System.out.println(dials().get(0).key);
+		Assert.assertEquals(nbGP - 10, zildo.getMoney());
+		waitEndOfScripting();
+		
+		// Save the game and reload
+		EasyBuffering buffer = new EasyBuffering(5000);
+		EngineZildo.game.serialize(buffer);
+		simulateDirection(0, 1);
+		renderFrames(30);
+		// Check that hero can get out
+		Assert.assertTrue(zildo.getY() > 280);
+		
+		// 2) Reload this game
+    	SaveGameMenu.loadGameFromBuffer(buffer, false);
+    	renderFrames(1);	// Permits to trigger mapscript
+    	waitEndOfScripting();
+    	Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("paid_gard"));
+    	Perso gard = EngineZildo.persoManagement.getNamedPerso("gard2");
+    	System.out.println(gard.getX()+","+gard.getY());
+    	// Check money is still the same
+		Assert.assertEquals(nbGP - 10, zildo.getMoney());
+    	// Talk to the guard
+		simulatePressButton(Keys.Q, 2);
+		goOnDialog();
+		Assert.assertNull(zildo.getDialoguingWith());
+		simulateDirection(0, 1);
+		renderFrames(30);
+		// Check that hero can get out
+		Assert.assertTrue("Zildo is stuck in prison ! (y="+zildo.getY()+")", zildo.getY() > 280);
+		
+	}
+	
 	@Test
 	public void freezeInLugduniaCave() {
 		mapUtils.loadMap("foret");

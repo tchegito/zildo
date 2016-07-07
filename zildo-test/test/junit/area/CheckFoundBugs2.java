@@ -82,17 +82,5 @@ public class CheckFoundBugs2 extends EngineUT {
 		// Dialog should be over
 		Assert.assertTrue(zildo.getDialoguingWith() == null);
 	}
-	
-	private void goOnDialog() {
-		simulatePressButton(Keys.Q, 2);	// Skip
-		simulatePressButton(Keys.Q, 2);	// Go on next
-	}
 
-	private void checkNextDialog(int number, String key) {
-		Assert.assertEquals(number, dials().size());
-		Assert.assertEquals(key, dials().get(number-1).key);
-	}
-	private List<HistoryRecord> dials() {
-		return EngineZildo.game.getLastDialog();
-	}
 }

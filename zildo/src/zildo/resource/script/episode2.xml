@@ -860,6 +860,8 @@
 		    <tile pos="26,43" back2="180"/>
    		    <tile pos="27,43" back2="182"/>
    		    <tile pos="25,44" back2="34+256"/>
+   		    <!-- Make gard asking money to hero in order to visit prisoners -->
+   		    <markQuest name="paid_gard" value="false"/>
    		</condition>
 		<condition name="prisonext" exp="retour_trion-!hector_call3">
 		    <!-- Repeat Pssst if player hasn't seen Hector yet -->
@@ -1005,7 +1007,12 @@
    		</condition>
    		<condition name="prison">
    		    <perso who="gard2" effect="jaune"/>	<!--  workaround because effect is not editable yet in ZEditor-->
-   		    <markQuest name="paid_gard" value="false"/>
+   		    <if expQuest="paid_gard">
+   		    	<pos who="gard2" pos="16,-14" delta="true"/>
+   		    	<angle who="gard2" value="3"/>
+   		    </if>
+   		    <!-- 
+   		    -->
    		</condition>
    		<condition name="prison" exp="zildoAccessIgor">
    		    <remove who="igor"/>

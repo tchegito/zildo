@@ -27,6 +27,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -62,6 +63,7 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.monde.Game;
 import zildo.monde.Hasard;
+import zildo.monde.dialog.HistoryRecord;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -427,6 +429,21 @@ public class EngineUT {
 		renderFrames(1);
 		simulateKeyPressed();
 		renderFrames(time);		
+	}
+	
+	// Specific for dialogs
+	public void goOnDialog() {
+		simulatePressButton(Keys.Q, 2);	// Skip
+		simulatePressButton(Keys.Q, 2);	// Go on next
+	}
+
+	public List<HistoryRecord> dials() {
+		return EngineZildo.game.getLastDialog();
+	}
+	
+	public void checkNextDialog(int number, String key) {
+		Assert.assertEquals(number, dials().size());
+		Assert.assertEquals(key, dials().get(number-1).key);
 	}
 	
 	@SuppressWarnings("deprecation")
