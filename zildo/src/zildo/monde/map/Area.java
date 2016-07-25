@@ -394,7 +394,7 @@ public class Area implements EasySerializable {
 			}
 			break;
 		}
-		tile.set(quoi, rot);
+		tile.set(quoi, rot, Reverse.NOTHING);
 
 		changes.add(new Point(x, y));
 	}
@@ -996,14 +996,20 @@ public class Area implements EasySerializable {
 								spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, fl, 0,
 										null, null);
 							}
-							Tile tile = temp.getOneValued(512 + 231, 512 + 49, 512 + 59, 512 + 61);
-							// Is this chest already opened ?
-							if (tile != null ) {
-								if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
-									tile.index = Tile.getOpenedChest(tile.getValue()) & 255;
+							if (temp.getBackTile().getValue() == 256*9 + 53) {
+								Element hearth = new ElementImpact(j*16+14, i*16+6 - 4, ImpactKind.HEARTH, null);
+								hearth.z = 0;	// Default is z=4 for ElementImpact
+								spriteManagement.spawnSprite(hearth);
+							} else {
+								Tile tile = temp.getOneValued(512 + 231, 512 + 49, 512 + 59, 512 + 61);
+								// Is this chest already opened ?
+								if (tile != null ) {
+									if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
+										tile.index = Tile.getOpenedChest(tile.getValue()) & 255;
+									}
 								}
 							}
-						}
+						} 
 					}
 				}
 			}

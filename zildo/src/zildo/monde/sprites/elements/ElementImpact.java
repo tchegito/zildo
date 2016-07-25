@@ -32,6 +32,9 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.utils.CompositeElement;
 import zildo.server.EngineZildo;
 
+/** Sequence of animating sprites. 
+ * 
+ * Sprite dies at the end of the sequence, except if 'segLong' is negative. **/
 public class ElementImpact extends Element {
 
 	public enum ImpactKind {
@@ -46,10 +49,11 @@ public class ElementImpact extends Element {
 		DUST(ElementDescription.DUST1, 3, 3),
 		WATER_SPLASH(ElementDescription.WATER_ANIM1, 4, 3),
 		WAVE(ElementDescription.WATERWAVE1, new int[] {2,2,2,1,1,1,1,0,0,0,0,0}, 3),
-		STAFF_TURNING(ElementDescription.STAFF_POUM, 8, 4);
+		STAFF_TURNING(ElementDescription.STAFF_POUM, 8, 4),	// Staff falling on the floor, or hitting a wall
+		HEARTH(ElementDescription.HEARTH1, -6, 6);	// Fire in nature palace's hearth
 		
 		final ElementDescription desc;
-		final int seqLong;	// Size of the sequence of the sprite's life
+		final int seqLong;	// Size of the sequence of the sprite's life (negative value means infinite loop)
 		final int speed;	// Number of frame during each sprite animation
 		final int[] seq;
 		
@@ -60,8 +64,8 @@ public class ElementImpact extends Element {
 			desc=p_desc;
 			seqLong=p_seqLong;
 			speed=p_speed;
-			seq=new int[seqLong];
-			for (int i=0;i<seqLong;i++) {
+			seq=new int[Math.abs(seqLong)];
+			for (int i=0;i<seq.length;i++) {
 				seq[i]=i;
 			}
 		}
@@ -105,6 +109,7 @@ public class ElementImpact extends Element {
 			case WATER_SPLASH:
 			case WAVE:
 			case STAFF_TURNING:
+			case HEARTH:
 				setSprModel(kind.desc);
 				break;
 			case EXPLOSION:
@@ -157,9 +162,14 @@ public class ElementImpact extends Element {
         	case DUST:
         	case WATER_SPLASH:
         	case STAFF_TURNING:
-				if (valCounter >= kind.seqLong) {
-					dying=true;
-					visible=false;
+        	case HEARTH:
+				if (valCounter >= kind.seq.length) {
+					if (kind.seqLong < 0) {	// Infinite loop
+						counter = 0;
+					} else {	// Remove entity
+						dying=true;
+						visible=false;
+					}
 				} else {
 					if (kind == ImpactKind.STAFF_TURNING) {
 						// Physic job to handle z, vz, and az

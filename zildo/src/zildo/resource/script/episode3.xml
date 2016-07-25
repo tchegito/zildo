@@ -356,6 +356,9 @@
    	   	<condition name="d4m9" exp="!jump_stumpNature3">
    	   		<remove who="igor"/>
    	   	</condition>
+   	   	<condition name="prison16">
+   	   		<perso who="noir" pv="4"/>"
+   	   	</condition>
 	</mapScript>
 		
 	<scene id="intro_episode3">

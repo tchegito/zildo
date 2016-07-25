@@ -68,7 +68,7 @@ public class Tile implements Cloneable {
 	}
 
 	public Tile(int p_value, Case p_parent) {
-		set(p_value, Rotation.NOTHING);
+		set(p_value, Rotation.NOTHING, Reverse.NOTHING);
 		parent = p_parent;
 	}
 	
@@ -77,11 +77,12 @@ public class Tile implements Cloneable {
 		reverse = p_rev;
 	}
 	
-	public void set(int p_value, Rotation rot) {
+	public void set(int p_value, Rotation rot, Reverse rev) {
 		previousBank = bank;
 		index = p_value & 255;
 		bank = (byte) ((p_value >> 8) & 15);
 		rotation = rot;
+		reverse = rev;
 	}
 	
 	@Override

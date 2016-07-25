@@ -601,6 +601,15 @@ public class PersoNJ extends Perso {
 				reverse = Reverse.HORIZONTAL;
 			}
 			break;
+			// 2-sprites character (south, and side)
+		case ELEORIC:
+			add_spr = angle == Angle.EST || angle == Angle.OUEST ? 1 : 0;
+			if (angle == Angle.OUEST) {
+				reverse = Reverse.HORIZONTAL;
+			} else {
+				reverse = Reverse.NOTHING;
+			}
+			break;
 		case CURE:
 		case GARDE_BOUCLIER:
 			// Persos à 4 sprites : prêtre,garde bouclier

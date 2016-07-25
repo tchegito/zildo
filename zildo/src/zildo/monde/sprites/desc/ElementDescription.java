@@ -115,7 +115,7 @@ public enum ElementDescription implements SpriteDescription {
 	BROWNSPHERE1, BROWNSPHERE2, BROWNSPHERE3,
 	REDSPHERE1, REDSPHERE2, REDSPHERE3,
 	// 220
-	ANCHOR_BAN, EATEN_FISH, EATEN_FISH2,
+	ANCHOR_BAN, EATEN_FISH, PRIEST_SIGN,
 	// 223
 	WATER_ANIM1, WATER_ANIM2, WATER_ANIM3, WATER_ANIM4,
 	// 227
@@ -141,8 +141,12 @@ public enum ElementDescription implements SpriteDescription {
 	// 250
 	MIDDLE_SWORD,
 	// 251
-	BULLET;
-
+	BULLET, //,	PRIEST_SIGN;
+	// 252
+	CREEPER1, CREEPER2, CREEPER3A, CREEPER3B,
+	// 256
+	HEARTH1, HEARTH2, HEARTH3, HEARTH4, HEARTH5, HEARTH6; 
+	
 	Boolean damage;
 	
 	public int getBank() {

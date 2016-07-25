@@ -9,6 +9,7 @@ public enum AnimatedTiles {
 	FLOWERSBLUE(TileGFXBank.Foret4, 215, 216, 217),
 	FLOWERSBLUE_PACK(TileGFXBank.Foret4, 218, 219, 220),
 	FLOWERSRED(TileGFXBank.Foret4, 221, 222, 223),
+	FLOWERSORANGE(TileGFXBank.Foret4, 0, 1, 2),
 	WATER(TileGFXBank.Foret1, 108, new Repeat(128), 208, 231),
 	WATER_BIS(TileGFXBank.Foret1, 130, 230, 253),
 	// Blacksmith hoven
@@ -26,6 +27,7 @@ public enum AnimatedTiles {
 			case FLOWERSBLUE:
 			case FLOWERSBLUE_PACK:
 			case FLOWERSRED:
+			case FLOWERSORANGE:
 				return true;
 			default:
 				return false;

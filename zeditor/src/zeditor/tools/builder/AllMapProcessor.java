@@ -36,6 +36,8 @@ import zildo.server.Server;
 /**
  * Class providing a repetitive action to proceed on every single map.
  * 
+ * You just have to implements a {@link #run} method and it will be called for each map.
+ * 
  * @author Tchegito
  *
  */
@@ -44,6 +46,8 @@ public abstract class AllMapProcessor {
 	protected String mapName;
 	
 	protected abstract boolean run();
+	
+	List<String> modifiedMaps = new ArrayList<String>();
 	
 	/**
 	 * For each map : load, call run method, and save.
@@ -66,7 +70,10 @@ public abstract class AllMapProcessor {
 		for (File f : mapsFile) {
 			mapName=f.getName();
 			modifyOneMap(mapName);
-		}		
+		}
+		
+		// Sumup
+		System.out.println("Modified maps: "+modifiedMaps);
 	}
 	
 	public void modifyOneMap(String p_mapName) {
@@ -82,6 +89,7 @@ public abstract class AllMapProcessor {
 		
 		if (shouldSave) {
 			mapManagement.saveMapFile(mapName);
+			modifiedMaps.add(mapName);
 		}
 	}
 }

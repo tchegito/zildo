@@ -292,7 +292,7 @@ public class ElementsPlus extends SpriteBanque {
 		        // Carpet border
 		        new Zone(146,71, 16, 8),
 		        // Water lily flower
-		        new Zone(146, 57, 18, 13),
+		        new Zone(146, 57, 18, 13), 
 		        // Bottles
 		        new Zone(165, 57, 8, 11), new Zone(174, 57, 6, 11),
 				// Water lily leaf
@@ -302,7 +302,7 @@ public class ElementsPlus extends SpriteBanque {
 		        new Zone(146, 80, 5, 5), new Zone(152, 80, 5, 5), new Zone(158, 80, 5, 5),
 				// Anchors (226)
 				new Zone(65, 190, 20,22),new Zone(86, 186, 26, 19),
-				new Zone(65, 190, 16, 16), //, new Zone(82, 190, 16, 16),
+				new Zone(0, 248, 32, 16), //, new Zone(82, 190, 16, 16),
 				// Fall in water animation
 				new Zone(238, 35, 24, 16), new Zone(263, 35, 24, 16),
 				new Zone(288, 35, 24, 16), new Zone(238,52, 24, 16),
@@ -334,7 +334,14 @@ public class ElementsPlus extends SpriteBanque {
 				// Middle sword
 				new Zone(122, 85, 15, 16),
 				// Turret's bullet
-				new Zone(152, 98, 5, 5)
+				new Zone(152, 98, 5, 5),
+				// Lianes
+				new Zone(64, 64, 34, 18), new Zone(64, 83, 32, 16), 
+				new Zone(64, 113, 25, 25), new Zone(89, 99, 21, 39),
+				// Fire animation
+				new Zone(272, 0, 13, 11), new Zone(272, 11, 13, 11), new Zone(272, 22, 13, 11),
+				new Zone(272, 33, 13, 11), new Zone(272, 44, 13, 11), new Zone(272, 55, 13, 11),
+				
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -353,6 +360,7 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem", 248, 0),
 				new GraphChange("objets", 250, 0),
 				new GraphChange("elem", 251, 0),
+				new GraphChange("palace1", 252, 0)
 				});
 	}
 }

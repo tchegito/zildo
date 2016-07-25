@@ -14,7 +14,8 @@ public class Foret4 extends Banque {
 		/* Ruines */
 
 		/* Bordures de collines */
-		new Point(0, 0), new Point(16, 0), new Point(32, 0), new Point(48, 0),
+				// Orange flower
+		new Point(0, 0), new Point(16, 0), new Point(32, 0),  new Point(48, 0),
 				new Point(0, 16), new Point(16, 16), new Point(32, 16),
 				new Point(48, 16), new Point(0, 32), new Point(32, 32),
 				new Point(48, 32), new Point(0, 48), new Point(16, 48),
@@ -120,11 +121,11 @@ public class Foret4 extends Banque {
 				new Point(0, 320), new Point(16, 320), new Point(32, 320), new Point(48, 320),
 				new Point(0, 336), new Point(16, 336), new Point(32, 336), new Point(48, 336),
 				new Point(0, 352), new Point(16, 352), new Point(32, 352), new Point(48, 352),
-				// Flowers
+				// Flowers (215)
 				new Point(208, 112), new Point(224, 112), new Point(240, 112),	// Blue
 				new Point(208, 128), new Point(224, 128), new Point(240, 128),	// Blue pack
 				new Point(176, 128), new Point(192, 144), new Point(208, 144),	// Red flower
-				// Water mud
+				// Water mud (224)
 				new Point(224, 144),
 				// Higher stump
 				new Point(144, 176), new Point(160, 176), new Point(144, 192), new Point(160, 192),
@@ -133,11 +134,18 @@ public class Foret4 extends Banque {
 				// Nettle
 				new Point(160, 48), new Point(176, 48),
 				// Higher stump top
-				new Point(144, 208), new Point(160, 208)
-		
+				new Point(144, 208), new Point(160, 208),
+				// Birch (bouleau) 235
+				new Point(0, 208), new Point(16, 208), new Point(32, 208), new Point(48, 208),
+				new Point(0, 224), new Point(16, 224), new Point(32, 224), new Point(48, 224),
+				new Point(0, 240), new Point(16, 240), new Point(32, 240), new Point(48, 240),
+				new Point(0, 256), new Point(16, 256), new Point(32, 256), new Point(48, 256),
+				new Point(0, 272), new Point(16, 272), new Point(32, 272), new Point(48, 272)
 		};
 
-		pkmChanges = Arrays.asList(new GraphChange[] {new GraphChange("exteria8", 0, 0),
-				new GraphChange("exteria1", 214, 80)});
+		pkmChanges = Arrays.asList(new GraphChange[] { 
+				new GraphChange("exteria8", 0, 0),
+				new GraphChange("exteria1", 214, 80),
+				new GraphChange("exteria1", 235, -80)});
 	}
 }

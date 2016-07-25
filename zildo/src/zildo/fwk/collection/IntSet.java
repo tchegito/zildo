@@ -26,11 +26,6 @@ import java.util.List;
 public class IntSet {
 
 	List<Integer> backed;
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	public IntSet(int... startSet) {
 		backed = new ArrayList<Integer>(startSet.length);
@@ -49,6 +44,10 @@ public class IntSet {
 	// Wrapped method
 	public boolean contains(Integer i) {
 		return backed.contains(i);
+	}
+	
+	public int indexOf(Integer i) {
+		return backed.indexOf(i);
 	}
 	
 	public Integer get(int nth) {

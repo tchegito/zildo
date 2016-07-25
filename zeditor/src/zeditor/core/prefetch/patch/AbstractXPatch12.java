@@ -26,6 +26,7 @@ import zeditor.tools.AreaWrapper;
 import zildo.fwk.collection.MultiMap;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.util.Point;
 
@@ -100,7 +101,7 @@ public abstract class AbstractXPatch12 extends AbstractPatch12 {
 		XTile xtile = toGraphicalValueXtile(val);
 		
 		// Be careful to 256*9 offset for nature palace bank
-		t.set(xtile.tile + 256*9, xtile.rot);
+		t.set(xtile.tile + 256*9, xtile.rot, Reverse.NOTHING);
 	}
 	
 	@Override

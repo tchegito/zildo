@@ -44,6 +44,8 @@ public enum Region {
 	Polaky("polaky", "polaky1", "polaky2", "polaky3", "polakym", "bosquetm", "bosquetm2"),
 	PolakyCave("polaky4", "polaky5", "polakyg*"),
 	Sousbois("sousbois*"),
+	ForetBouleaux("eleo*"),
+	NaturePalace("nature*"),
 	Special("preintro");
 	
 	String[] mapNames;

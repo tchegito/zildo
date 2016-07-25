@@ -38,7 +38,7 @@ public enum Prefetch {
 	CollineGauche(PrefKind.Drop), CollineDroite(PrefKind.Drop), CollineBordure(PrefKind.Colour),
 	CollineMarron(PrefKind.Colour), PetitChemin(PrefKind.TraceDrop), GrandChemin(PrefKind.TraceDrop), Eau(PrefKind.TraceDrop),
 	
-	Arbre(PrefKind.Drop), ArbreMalade(PrefKind.Drop), 
+	Arbre(PrefKind.Drop), ArbreMalade(PrefKind.Drop), Bouleau(PrefKind.Drop),
 	Souche(PrefKind.Drop), Statue(PrefKind.Drop), ArcheVillage(PrefKind.Drop), GrossePierre(PrefKind.Drop),
 	MaisonRouge(PrefKind.TraceDrop), MaisonBleue(PrefKind.Colour), MaisonVerte(PrefKind.Colour),
 	ArbreRouge(PrefKind.Drop), ArbreJaune(PrefKind.Drop),

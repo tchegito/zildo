@@ -32,6 +32,7 @@ import zildo.monde.util.Zone;
 public class SpriteBanque {
 
 	Zone[] zones;
+	/** List of all picture where sprites should be grabbed **/
 	List<GraphChange> pkmChanges;
 	
 	public Zone[] getZones() {
