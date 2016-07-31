@@ -525,6 +525,7 @@ public class PersoNJ extends Perso {
 		case INVENTOR:
 		case COOK:
 		case HECTOR:
+		case ELEORIC:
 			reverse = seq2 == 0 ? Reverse.NOTHING : Reverse.HORIZONTAL;
 			switch (angle) {
 			case NORD:
@@ -599,15 +600,6 @@ public class PersoNJ extends Perso {
 			if (add_spr == 2) {
 				add_spr = 1;
 				reverse = Reverse.HORIZONTAL;
-			}
-			break;
-			// 2-sprites character (south, and side)
-		case ELEORIC:
-			add_spr = angle == Angle.EST || angle == Angle.OUEST ? 1 : 0;
-			if (angle == Angle.OUEST) {
-				reverse = Reverse.HORIZONTAL;
-			} else {
-				reverse = Reverse.NOTHING;
 			}
 			break;
 		case CURE:

@@ -359,6 +359,10 @@
    	   	<condition name="prison16">
    	   		<perso who="noir" pv="4"/>"
    	   	</condition>
+   	   	<condition name="eleom1">
+   	   	    <spawn impact="CAULDRON" pos="88,42"/>
+   	   	    <tile pos="5,2" action="bubbleCauldron" unblock="true"/>
+   	   	</condition>
 	</mapScript>
 		
 	<scene id="intro_episode3">
@@ -1076,4 +1080,12 @@
 	    </for>
    	</persoAction>
 	
+	<tileAction id="bubbleCauldron">
+		<timer each="25+45*random">
+	    	<action>
+		    	<spawn type="GREEN_BUBBLE" pos="x*16+5+7*random,y*16+7" 
+		    	    vz="0.1" z="4" alphaA="-0.1" foreground="true" zoom="254+dice10/5"/>
+	    	</action>
+		</timer>
+	</tileAction>
 </adventure>
