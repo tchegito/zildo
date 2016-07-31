@@ -341,7 +341,9 @@ public class ElementsPlus extends SpriteBanque {
 				// Fire animation
 				new Zone(272, 0, 13, 11), new Zone(272, 11, 13, 11), new Zone(272, 22, 13, 11),
 				new Zone(272, 33, 13, 11), new Zone(272, 44, 13, 11), new Zone(272, 55, 13, 11),
-				
+				// Cauldron
+				new Zone(32,216, 20, 16), new Zone(32, 232, 20, 16), new Zone(32, 248, 20, 16),
+				new Zone(165, 69, 5, 5)	// Bubble
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -360,7 +362,8 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem", 248, 0),
 				new GraphChange("objets", 250, 0),
 				new GraphChange("elem", 251, 0),
-				new GraphChange("palace1", 252, 0)
+				new GraphChange("palace1", 252, 0),
+				new GraphChange("elem", 262, 0),
 				});
 	}
 }

@@ -22,7 +22,7 @@ public class FloatExpression {
 	
 	protected static final String RESERVED_WORD_BELL = "bell";
 	protected static final String RESERVED_WORD_RANDOM = "random";
-	protected static final String RESERVED_WORD_DICE10 = "dice10";
+	protected static final String RESERVED_WORD_DICE10 = "dice10";	// number between 1 and 10
 	protected static final String RESERVED_WORD_ZILDO = "zildo";
 	protected static final String RESERVED_WORD_ZILDOX = "zildo.x";
 	protected static final String RESERVED_WORD_ZILDOY = "zildo.y";

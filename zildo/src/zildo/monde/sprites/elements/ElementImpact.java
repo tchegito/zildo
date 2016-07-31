@@ -50,7 +50,8 @@ public class ElementImpact extends Element {
 		WATER_SPLASH(ElementDescription.WATER_ANIM1, 4, 3),
 		WAVE(ElementDescription.WATERWAVE1, new int[] {2,2,2,1,1,1,1,0,0,0,0,0}, 3),
 		STAFF_TURNING(ElementDescription.STAFF_POUM, 8, 4),	// Staff falling on the floor, or hitting a wall
-		HEARTH(ElementDescription.HEARTH1, -6, 6);	// Fire in nature palace's hearth
+		HEARTH(ElementDescription.HEARTH1, -6, 6),	// Fire in nature palace's hearth
+		CAULDRON(ElementDescription.CAULDRON1, -3, 6);
 		
 		final ElementDescription desc;
 		final int seqLong;	// Size of the sequence of the sprite's life (negative value means infinite loop)
@@ -110,6 +111,7 @@ public class ElementImpact extends Element {
 			case WAVE:
 			case STAFF_TURNING:
 			case HEARTH:
+			case CAULDRON:
 				setSprModel(kind.desc);
 				break;
 			case EXPLOSION:
@@ -163,6 +165,7 @@ public class ElementImpact extends Element {
         	case WATER_SPLASH:
         	case STAFF_TURNING:
         	case HEARTH:
+        	case CAULDRON:
 				if (valCounter >= kind.seq.length) {
 					if (kind.seqLong < 0) {	// Infinite loop
 						counter = 0;

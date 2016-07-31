@@ -521,6 +521,9 @@ public class SpriteManagement extends SpriteStore {
 		} else if (desc == ElementDescription.QUAD1) {
 			EngineZildo.multiplayerManagement.spawnQuad(x, y);
 			return null;
+		} else if (desc == ElementDescription.CAULDRON1) {
+			entity = new ElementImpact(x, y - 4, ImpactKind.CAULDRON, null);
+			entity.z = 0;	// Default is z=4 for ElementImpact
 		} else {
 		    entity = new SpriteEntity(x, y, true);
 		    int adjustX = 0;
