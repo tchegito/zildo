@@ -20,7 +20,8 @@ public class Pnj4 extends SpriteBanque {
 			// Sleeping king (8)
 			new Zone(0, 474, 18, 20), new Zone(19, 474, 18, 20), new Zone(38, 474, 18, 20),
 			// Druid
-			new Zone(69, 469, 16, 27), new Zone(86, 470, 14, 26)
+			new Zone(69, 469, 16, 27), new Zone(86, 470, 14, 26),
+			new Zone(101, 469, 13, 27), new Zone(115, 470, 16, 26)
 			// Bitey
 			/*
 		    new Zone(0, 3, 21, 24), new Zone(25, 5, 21, 22), new Zone(50, 5, 21, 22),
