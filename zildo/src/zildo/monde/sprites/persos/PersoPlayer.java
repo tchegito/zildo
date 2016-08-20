@@ -91,6 +91,8 @@ public class PersoPlayer extends Perso {
 	private boolean buying = false;
 	private String storeDescription;// Name of the store description (inventory of selling items)
 	
+	protected int countNettleLeaf = -1;	// >=0 means hero is gathering nettle
+
 	public ItemCircle guiCircle;
 	private List<Item> inventory;
 	private ShieldEffect shieldEffect;
@@ -1108,6 +1110,9 @@ public class PersoPlayer extends Perso {
 		case BOMBS3:
 			countBomb += p_value == 0 ? 3 : p_value;
 			break;
+		case NETTLE_LEAF:
+			countNettleLeaf++;
+			break;
 		case KEY:
 			countKey++;
 			break;
@@ -1442,6 +1447,10 @@ public class PersoPlayer extends Perso {
 		this.touch = touch;
 	}
 
+	public int getCountNettleLeaf() {
+		return countNettleLeaf;
+	}
+	
 	public boolean isAlive() {
 		return getPv() > 0;
 	}

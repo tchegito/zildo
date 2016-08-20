@@ -254,7 +254,12 @@ public class SpriteManagement extends SpriteStore {
 
 			case BUSHES :
 				for (j = 0; j < 8; j++) {
-					Element e = new Element();
+					Element e;
+					if (misc == 1) {	// Nettle's considered as a goodies
+						e = new ElementGoodies();
+					} else {
+						e = new Element();
+					}
 					e.setX((float) (x + Math.random() * 10 - 5));
 					e.setY((float) (y + Math.random() * 6 - 2));
 					e.setZ((float) (7 + Math.random() * 10));

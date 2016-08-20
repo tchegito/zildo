@@ -535,6 +535,8 @@ public class Area implements EasySerializable {
 		switch (onmap) {
 		case Tile.T_NETTLE:
 			spe = 1;	// Will blow the nettle with different leaf sprite
+			// Remember that nettle has been cut
+			EngineZildo.scriptManagement.actOnTile(getName(), tileLocation);
 		case Tile.T_BUSH: // Bushes
 			Point spriteLocation = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
 			EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES, spriteLocation.x, spriteLocation.y,
@@ -1000,11 +1002,15 @@ public class Area implements EasySerializable {
 								Element hearth = new ElementImpact(j*16+14, i*16+6 - 4, ImpactKind.HEARTH, null);
 								hearth.z = 0;	// Default is z=4 for ElementImpact
 								spriteManagement.spawnSprite(hearth);
+							} else if (temp.getOneValued(256*6 + 231) != null) {
+								if (EngineZildo.scriptManagement.isTileDone(map.getName(), new Point(j, i))) {
+									temp.getBackTile2().index = 232;
+								}
 							} else {
 								Tile tile = temp.getOneValued(512 + 231, 512 + 49, 512 + 59, 512 + 61);
 								// Is this chest already opened ?
 								if (tile != null ) {
-									if (EngineZildo.scriptManagement.isOpenedChest(map.getName(), new Point(j, i))) {
+									if (EngineZildo.scriptManagement.isTileDone(map.getName(), new Point(j, i))) {
 										tile.index = Tile.getOpenedChest(tile.getValue()) & 255;
 									}
 								}

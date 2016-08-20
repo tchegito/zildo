@@ -93,9 +93,8 @@ public abstract class Perso extends Element {
 	protected int money;
 	protected int countArrow;
 	protected int countBomb;
-	protected int countKey; // How many keys have perso ? (for PNJ, he gives it
-							// when he dies)
-
+	protected int countKey; // How many keys have perso ? (for PNJ, he gives it when he dies)
+	
 	protected Perso shooter;	// Last perso who shoot this one
 	
 	// Jump

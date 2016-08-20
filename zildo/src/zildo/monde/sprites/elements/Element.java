@@ -624,8 +624,9 @@ public class Element extends SpriteEntity {
 						EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
 						break;
 					case LEAF:
+					case NETTLE_LEAF:
 						if (alpha > 0)	{// Leaf stay on the floor until it's totally disappeared
-							alphaV = -1;
+							alphaV = d == ElementDescription.NETTLE_LEAF ? -0.5f : -1;
 							vx=0;
 							ax=0;
 							return false;

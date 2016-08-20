@@ -505,7 +505,7 @@ public class PlayerManagement {
 								EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
                                 map.takeSomethingOnTile(new Point(newx, newy), false, heros, true);
 								// Mark this event : chest opened
-								EngineZildo.scriptManagement.openChest(map.getName(), new Point(newx, newy));
+								EngineZildo.scriptManagement.actOnTile(map.getName(), new Point(newx, newy));
 							} else if (on_map >= 0 && !EngineZildo.mapManagement.isWalkable(on_map)) {
 								heros.setMouvement(MouvementZildo.TIRE);
 							}

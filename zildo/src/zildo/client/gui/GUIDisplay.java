@@ -53,6 +53,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.FontDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -900,6 +901,11 @@ public class GUIDisplay {
 				guiSpritesSequence.addSprite(FontDescription.GUI_KEY, 211, GUI_Y + 2);
 				displayNumber(zildo.getCountKey(), 1, 201, GUI_Y);
 			}
+
+			if (zildo.getCountNettleLeaf() >= 0) {
+				guiSpritesSequence.addSprite(ElementDescription.NETTLE_LEAF, 241, GUI_Y + 1);
+				displayNumber(zildo.getCountNettleLeaf(), 2, 231, GUI_Y);
+			}
 			
 			// Current weapon
 			guiSpritesSequence.addSprite(FontDescription.GUI_WEAPONFRAME, WEAPON_X, 0, Reverse.NOTHING, alphaPad);
@@ -974,6 +980,7 @@ public class GUIDisplay {
 
 	/** Display numeric representation as digit sprites **/
 	private void displayNumber(int p_number, int p_numDigit, int p_x, int p_y) {
+		if (p_number < 0) return;	// Silently exit, but this should never happen !
 		int lastPos = p_x + 2;
 		for (int i = 0; i < p_numDigit; i++) {
 			int j = p_number;
