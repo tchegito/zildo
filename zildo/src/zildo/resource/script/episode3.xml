@@ -288,6 +288,15 @@
 	    </action>
 	</quest>
 	
+	<quest name="startGatherNettle" locked="false">
+	    <trigger>
+	        <dialog name="eleoric" num="0"/>
+	    </trigger>
+	    <action>
+	        <herospecial value="8" arg="0"/>
+	    </action>
+	</quest>
+	
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>

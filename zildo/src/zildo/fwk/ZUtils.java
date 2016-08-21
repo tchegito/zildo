@@ -180,6 +180,15 @@ public class ZUtils {
     	return s == null || "".equals(s);
     }
     
+    /** Transforms string into integer, and returns -1 if something goes wrong **/
+    public static int safeValueOf(String s) {
+    	try {
+    		return Integer.valueOf(s);
+    	} catch (NumberFormatException e) {
+    		return -1;
+    	}
+    }
+    
     public static class Reversed<T> implements Iterable<T> {
         private final List<T> original;
 

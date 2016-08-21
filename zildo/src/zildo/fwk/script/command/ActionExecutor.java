@@ -566,6 +566,10 @@ public class ActionExecutor extends RuntimeExecutor {
                 	case 7:
     	            	zildo.setAppearance(ControllablePerso.ZILDO);
     	            	break;
+                	case 8:	// Set count of nettle leaves
+                		int count = Integer.valueOf(p_action.text);
+                		zildo.setCountNettleLeaf(count);
+                		break;
                 	}
                 	achieved = true;
                 	break;

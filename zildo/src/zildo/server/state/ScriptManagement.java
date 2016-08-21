@@ -530,12 +530,14 @@ public class ScriptManagement {
 		return scriptExecutor.isProcessing(p_questName);
 	}
 	
-	public boolean isOpenedChest(String p_mapName, Point p_location) {
-		return isQuestDone(keyQuest.buildChest(p_mapName, p_location));
+	/** Is an action already done on this tile ? **/
+	public boolean isTileDone(String p_mapName, Point p_location) {
+		return isQuestDone(keyQuest.buildTileLoc(p_mapName, p_location));
 	}
 	
-	public void openChest(String p_mapName, Point p_location) {
-		accomplishQuest(keyQuest.buildChest(p_mapName, p_location), true);
+	/** Do an action on a tile: opens a chest, or take nettle **/
+	public void actOnTile(String p_mapName, Point p_location) {
+		accomplishQuest(keyQuest.buildTileLoc(p_mapName, p_location), true);
 	}
 	
 	public boolean isOpenedDoor(String p_mapName, ChainingPoint p_ch) {

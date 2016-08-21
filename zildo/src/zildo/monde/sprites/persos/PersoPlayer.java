@@ -1111,7 +1111,9 @@ public class PersoPlayer extends Perso {
 			countBomb += p_value == 0 ? 3 : p_value;
 			break;
 		case NETTLE_LEAF:
-			countNettleLeaf++;
+			if (countNettleLeaf >= 0) {
+				countNettleLeaf++;
+			}
 			break;
 		case KEY:
 			countKey++;
@@ -1447,6 +1449,10 @@ public class PersoPlayer extends Perso {
 		this.touch = touch;
 	}
 
+	public void setCountNettleLeaf(int number) {
+		countNettleLeaf = number;
+	}
+	
 	public int getCountNettleLeaf() {
 		return countNettleLeaf;
 	}

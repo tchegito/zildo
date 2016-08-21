@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.script.context.LocaleVarContext;
@@ -162,6 +163,7 @@ public class Game implements EasySerializable {
         p_buffer.put((byte) EngineZildo.mapManagement.getStartFloor());
         
         // 7: variables
+       	EngineZildo.scriptManagement.putVarValue("nettleCount",  "" + zildo.getCountNettleLeaf());
         Map<String, String> vars = EngineZildo.scriptManagement.getVariables();
         p_buffer.put(vars.size());
         for (Entry<String, String> entry : vars.entrySet()) {
@@ -303,6 +305,11 @@ public class Game implements EasySerializable {
             	// at what it is : a floor.
             	p_buffer.getAll().position(savePos);
             }
+           	String s = EngineZildo.scriptManagement.getVarValue("nettleCount");
+           	if (s != null) {
+           		int count = ZUtils.safeValueOf(s);
+           		zildo.setCountNettleLeaf(count);
+           	}
             
             // 8: floor (added at 2.09)
             if (!p_buffer.eof()) {

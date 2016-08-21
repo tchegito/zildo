@@ -46,7 +46,7 @@ public class KeyQuest {
 		return key;
 	}
 	
-	public String buildChest(String p_mapName, Point p_location) {
+	public String buildTileLoc(String p_mapName, Point p_location) {
 		return p_mapName+p_location.toString();
 	}
 
