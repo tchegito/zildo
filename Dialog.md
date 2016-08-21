@@ -40,7 +40,9 @@ There's some extra possibilities to trigger some sentences, depending on various
   * **moon** : same with moonstone pieces carried by hero
   * **item** : followed by an item name, in hero's possession to trigger
   * **init** : triggered first time hero meet character since he entered the room
-
+  * **M#** : followed by a map name. Triggered when hero's on this map
+  * **P#** : followed by a character name. Triggered if this character is present
+  
 ## Sentence ##
 
 Sentences are the values stored in properties file. There is some predefined special signs to customize dialog process.
