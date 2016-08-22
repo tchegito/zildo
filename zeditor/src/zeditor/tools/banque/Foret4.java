@@ -145,7 +145,7 @@ public class Foret4 extends Banque {
 
 		pkmChanges = Arrays.asList(new GraphChange[] { 
 				new GraphChange("exteria8", 0, 0),
-				new GraphChange("exteria1", 214, 80),
+				new GraphChange("exteria1", 215, 80),
 				new GraphChange("exteria1", 235, -80)});
 	}
 }

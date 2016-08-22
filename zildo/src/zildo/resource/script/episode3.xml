@@ -372,6 +372,9 @@
    	   	    <spawn impact="CAULDRON" pos="88,42"/>
    	   	    <tile pos="5,2" action="bubbleCauldron" unblock="true"/>
    	   	</condition>
+   	   	<condition name="chateausud">
+			<tile pos="32,10" action="illTree"/> <tile pos="42,10" action="illTree"/>
+		</condition>
 	</mapScript>
 		
 	<scene id="intro_episode3">

@@ -122,6 +122,7 @@ public enum PersoDescription implements SpriteDescription {
 	TURRET_HEART(374, 375),		/* turret vulnerable part */
 	SLEEPING_KING(376, 377, 378),
 	ELEORIC(379, 382, 380, 381),
+	VIEILLE_BANC(383, 384),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 

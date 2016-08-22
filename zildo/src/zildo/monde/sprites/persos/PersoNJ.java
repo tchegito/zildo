@@ -519,6 +519,12 @@ public class PersoNJ extends Perso {
 			}
 			add_spr = getPos_seqsprite();
 			break;
+		case VIEILLE_BANC:
+			if ((int) (Math.random() * 30) == 2) {
+				setPos_seqsprite(Math.random() > 0.5 ? 0 : 1);
+			}
+			add_spr = getPos_seqsprite();
+			break;
 		case MOUSTACHU:
 		case FISHER:
 		case MINSK:

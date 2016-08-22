@@ -38,7 +38,7 @@
 			<location who="zildo" name="ferme" pos="618,791"/>
 		</trigger>
 	</quest>
-	<quest name="enlevebuissons_win">
+	<quest name="enlevebuissons_win" locked="false">
 		<trigger>
 			<dialog name="christa" num="3"/>
 		</trigger>
