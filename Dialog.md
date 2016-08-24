@@ -36,12 +36,13 @@ chateau_ask:7,enlevement:4,roxy:8,0<br>
 It means that this character will say the 7th sentence if the quest "chateau\_ask" is one. Otherwise, the 4th if quest "enlevement" is done. Or 8th if "roxy" is done, or 0 in any other case.
 
 There's some extra possibilities to trigger some sentences, depending on various parameters:
-  * **money** : followed by a money amount. Triggered if hero has more.
+  * **money** : followed by a money amount. Triggered if hero has equals or more
   * **moon** : same with moonstone pieces carried by hero
   * **item** : followed by an item name, in hero's possession to trigger
   * **init** : triggered first time hero meet character since he entered the room
   * **M#** : followed by a map name. Triggered when hero's on this map
   * **P#** : followed by a character name. Triggered if this character is present
+  * **ooo** : 'Out of order' followed by a character name. Triggered if character is a seller and out of items
   
 ## Sentence ##
 
