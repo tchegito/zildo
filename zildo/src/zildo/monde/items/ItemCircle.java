@@ -261,6 +261,9 @@ public class ItemCircle {
 	public void close() {
 		phase=CirclePhase.REDUCTION;
 		EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_IN, FilterEffect.SEMIFADE));
+		// Remove item description
+		ClientState clState = Server.getClientFromZildo(client);
+		EngineZildo.dialogManagement.actOnDialog(clState!=null ? clState.location : null, CommandDialog.ACTION);
 	}
 	
 	public StoredItem getItemSelected() {
@@ -279,7 +282,7 @@ public class ItemCircle {
 			seq.remove(itemSelected*2);
 			seq.remove(itemSelected*2);
 			if (items.size() == 0) {
-				kill();
+				close();
 			} else if (itemSelected == items.size()) {
 				itemSelected--;
 			}

@@ -570,7 +570,6 @@ public class PlayerManagement {
 				heros.lookInventory();
 			} else {
 				heros.closeInventory();
-				EngineZildo.dialogManagement.actOnDialog(client.location, CommandDialog.ACTION);
 			}
 			keysState.key_inventoryPressed=true;
 		}

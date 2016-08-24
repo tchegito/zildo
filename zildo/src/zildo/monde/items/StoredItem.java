@@ -35,8 +35,9 @@ public class StoredItem {
 		while (true) {
 			Item it = Item.fromStrings(scan.next(), scan.next());
 			StoredItem item = new StoredItem(it, scan.nextInt(), scan.nextInt());
-			items.add(item);
-			
+			if (item.quantity > 0) {
+				items.add(item);
+			}
 			if (!scan.hasNext()) {
 				break;
 			}
@@ -45,7 +46,7 @@ public class StoredItem {
 			
 		return items;
 	}
-	
+
 	public void decrements() {
 		if (quantity > 0) {
 			quantity --;

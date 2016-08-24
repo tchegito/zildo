@@ -375,6 +375,9 @@
    	   	<condition name="chateausud">
 			<tile pos="32,10" action="illTree"/> <tile pos="42,10" action="illTree"/>
 		</condition>
+		<condition name="eleom2">
+		    <perso who="carlo" z="12"/>
+		</condition>
 	</mapScript>
 		
 	<scene id="intro_episode3">

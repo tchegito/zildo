@@ -1288,6 +1288,10 @@ public class PersoPlayer extends Perso {
 				useItem((ElementDescription) d, 0);
 			}
 			guiCircle.decrementSelected();
+			if (guiCircle.isReduced()) {
+				inventoring = false;
+				buying = false;
+			}
 			EngineZildo.scriptManagement.sellItem(storeDescription, item);
 			EngineZildo.soundManagement.playSound(BankSound.ZildoGagneArgent, this);
 		}

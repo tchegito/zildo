@@ -32,6 +32,7 @@ public enum ItemKind {
 	BOOMERANG(true, ElementDescription.BOOMERANG1, 40), 
 	// Uncomment following line with appropriate description, when whip will be ready
 	//WHIP(true, ElementDescription.BAR_HORIZONTAL, 50), 
+	MOON(false, ElementDescription.HEART_FRAGMENT, 200),
 	BOW(true, ElementDescription.ENEMYARC_RIGHT1, 40),
 	DYNAMITE(true, ElementDescription.DYNAMITE, 10),
 	HAMMER(true, ElementDescription.SPADE, 10),	// TODO: replace by 'HAMMER' description

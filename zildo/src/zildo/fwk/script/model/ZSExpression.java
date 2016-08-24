@@ -25,6 +25,7 @@ import java.util.List;
 
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.monde.items.ItemKind;
+import zildo.monde.items.StoredItem;
 import zildo.server.EngineZildo;
 
 /**
@@ -97,6 +98,10 @@ public class ZSExpression {
 		} else if (questName.startsWith("P#")) {
 			String persoName = questName.substring(2);
 			result = EngineZildo.persoManagement.getNamedPerso(persoName) != null;
+		} else if (questName.startsWith("ooo")) {
+			String persoName = questName.substring(3);
+			String itemsAsString = EngineZildo.scriptManagement.getVarValue(persoName);
+			return StoredItem.fromString(itemsAsString).isEmpty(); 
 		} else {
 			// Default case : expression is the quest name
 			result = EngineZildo.scriptManagement.isQuestOver(questName);
