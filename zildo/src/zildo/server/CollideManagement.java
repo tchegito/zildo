@@ -88,19 +88,21 @@ public class CollideManagement {
             } else if (infoDamager == PersoInfo.ZILDO) { // ZILDO -> he attacks PNJ or another Zildo
                 // 2) For each collision, check wether a monster/zildo gets wounded
                 for (int j = 0; j < tab_colli.size(); j++) {
-                    Collision collided = tab_colli.get(j);
-                    Perso damaged = collided.perso;
-                    if (damaged != null) { // No one to damage : it's a bushes or rock
-                    	PersoInfo infoDamaged = damaged.getInfo();
-
-                        if (j != i && !damaged.equals(damager)) {
-                            if (infoDamaged == PersoInfo.ENEMY || infoDamaged == PersoInfo.SHOOTABLE_NEUTRAL) { // Zildo hit an enemy
-                                checkEnemyWound(collider, collided);
-                            } else if (infoDamaged == PersoInfo.ZILDO) {
-                                checkZildoWound((PersoPlayer) damaged, collider);
-                            }
-                        }
-                    }
+                	if (j != i) { 
+	                    Collision collided = tab_colli.get(j);
+	                    Perso damaged = collided.perso;
+	                    if (damaged != null) { // No one to damage : it's a bushes or rock
+	                    	PersoInfo infoDamaged = damaged.getInfo();
+	
+	                        if (!damaged.equals(damager)) {
+	                            if (infoDamaged == PersoInfo.ENEMY || infoDamaged == PersoInfo.SHOOTABLE_NEUTRAL) { // Zildo hit an enemy
+	                                checkEnemyWound(collider, collided);
+	                            } else if (infoDamaged == PersoInfo.ZILDO) {
+	                                checkZildoWound((PersoPlayer) damaged, collider);
+	                            }
+	                        }
+	                    }
+                	}
                 }
                 // Check if any Zildo is hurt
                 checkAllZildoWound(p_states, collider);
