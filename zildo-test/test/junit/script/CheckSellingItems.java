@@ -41,11 +41,21 @@ public class CheckSellingItems {
 	}
 	
 	@Test
+	public void listeObjetsMissingDeserialize() {
+		String entry = "[[DYNAMITE,8],15,0], [[ROCK_BAG,3],12,7]";
+		
+		List<StoredItem> items = StoredItem.fromString(entry);
+
+		// Dynamite should not be included, because stock is out of order
+		Assert.assertSame(1, items.size());
+	}
+	
+	@Test
 	public void commandeComplete() {
 		String entry = 
 		""
 		+"                    [[SWORD, 1], 100, 2],\n"
-		+"                    [[FLASK_RED, 1], 15, -1],\n"
+		+"                    [[FLASK_RED, 1], 15, 1],\n"
 		+"                    [[DYNAMITE, 1], 60, 2]\n"
 		+"                   ";
 		
