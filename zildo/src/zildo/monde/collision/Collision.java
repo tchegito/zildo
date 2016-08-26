@@ -73,4 +73,29 @@ public class Collision {
     	this.damageType=p_type;
     	this.weapon=p_weapon;
     }
+    
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("HitBox(x="+cx+",y="+cy);
+    	if (size != null) {
+    		sb.append(" - size="+size);
+    	} else {
+    		sb.append(" - radius="+cr);
+    	}
+    	sb.append(")");
+    	return sb.toString();
+    }
+    
+    @Override
+    public int hashCode() {
+    	int n = cx << 20;
+    	n |= cy << 10;
+    	if (size != null) {
+    		n |= size.hashCode();
+    	} else {
+    		n |= cr;
+    	}
+    	return n;
+    }
 }
