@@ -774,7 +774,7 @@ public class SpriteManagement extends SpriteStore {
         }
 
         for (SpriteEntity entity : spriteEntities) {
-        	if (entity.getEntityType().isElement()) {
+        	if (entity.getEntityType().isElement() && !entity.dying) {
 	            if (entity != quelElement) {
 	                int tx = (int) entity.x;
 	                int ty = (int) entity.y;
@@ -782,7 +782,7 @@ public class SpriteManagement extends SpriteStore {
 	                    if (perso != null && perso.isZildo() && perso.linkedSpritesContains(entity)) {
 	                    	// Collision between hero and object he's carrying => let it go
 	                    } else if (quelElement == null || quelElement.getLinkedPerso() != entity) {
-	                    	// Check that found element is one of expected ones
+	                    	// Check that found element is one of expected ones (and it's not dying)
 	                    	if (expectedDesc != null && expectedDesc.length > 0) {
 	                    		for (SpriteDescription sDesc : expectedDesc) {
 	                    			if (sDesc == entity.getDesc()) {

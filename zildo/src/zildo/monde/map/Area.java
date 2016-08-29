@@ -577,6 +577,9 @@ public class Area implements EasySerializable {
 			}
 			int onmap = readmap(tileLoc.x, tileLoc.y);
 			switch (onmap) {
+			case 3:
+				TilePattern.explodedSouthHill.apply(tileLoc.x, tileLoc.y, this, rotated);
+				break;
 			case 12:
 				tileLoc.y--;
 			case 31:	// Hill
@@ -592,6 +595,9 @@ public class Area implements EasySerializable {
 				break;
 			case 285:
 				TilePattern.explodedHouseWall.apply(tileLoc.x, tileLoc.y, this, rotated);
+				break;
+			case 256 * 3 + 22:
+				TilePattern.explodedRockCave.apply(tileLoc.x, tileLoc.y, this, rotated);
 				break;
 			}
 			// Play secret sound

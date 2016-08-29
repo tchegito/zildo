@@ -297,6 +297,24 @@
 	    </action>
 	</quest>
 	
+	<quest name="eleog(13, 6)" locked="false">
+        <!-- When the hero explodes the wall in the cave, we set the other one, on farm's side opened -->
+        <action>
+            <sound name="ZildoSecret"/>
+            <markQuest name="ferme(15, 59)" value="true"/>
+        </action>
+    </quest>
+	
+	<quest name="secretEleog">
+		<trigger>
+		    <dead who="fire1,fire2"/>
+		</trigger>	    
+		<action>
+		    <activate what="door"/>
+		    <sound name="ZildoSecret"/>
+		</action>
+	</quest>
+	
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -377,6 +395,9 @@
 		</condition>
 		<condition name="eleom2">
 		    <perso who="carlo" z="12"/>
+		</condition>
+		<condition name="eleog" exp="secretEleog">
+		    <activate what="door" value="false" unblock="true"/>
 		</condition>
 	</mapScript>
 		

@@ -37,6 +37,15 @@ public class TilePattern {
 			new TilePart(0, 1, 222 + 256*5, TileLevel.BACK),
 			new TilePart(1, 1, 223 + 256*5, TileLevel.BACK));
 	
+	public static TilePattern explodedSouthHill = new TilePattern(
+			new TilePart(0, 0, 256*5 + 227),
+			new TilePart(1, 0, 256*5 + 228),
+			new TilePart(0, 1, 256*5 + 232),
+			new TilePart(1, 1, 256*5 + 232),
+			new TilePart(0, 1, 256*5 + 229, TileLevel.FORE),
+			new TilePart(1, 1, 256*5 + 230, TileLevel.FORE)
+			);
+	
 	public static TilePattern explodedCave = new TilePattern(
 			new TilePart(0, 0, 187 + 256*3),	// Just for collision
 			new TilePart(0, 0, 256*2, TileLevel.BACK2),	// Black wall
@@ -46,6 +55,11 @@ public class TilePattern {
 			new TilePart(1, 0, 217 + 256*5, TileLevel.FORE),
 			new TilePart(0, 1, 218 + 256*5, TileLevel.BACK),
 			new TilePart(1, 1, 219 + 256*5, TileLevel.BACK));
+	
+	public static TilePattern explodedRockCave = new TilePattern(
+			new TilePart(0, 0, 256*5 + 232),
+			new TilePart(0, 0, 256*5 + 231, TileLevel.FORE)
+			);
 	
 	public static TilePattern explodedHouseWall = new TilePattern(
 			new TilePart(0, 0, 256*2),

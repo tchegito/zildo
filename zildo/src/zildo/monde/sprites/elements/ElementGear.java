@@ -173,6 +173,7 @@ public class ElementGear extends Element {
 					switch (count) {
 					case 20:
 						acting=false;
+						if (pasY != 0) { z+=32; y+=32; }	// For vertical door put there above characters to correctly render
 					case 10:
 						EngineZildo.soundManagement.broadcastSound(BankSound.ZildoPousse, this);
 						x+=pasX;

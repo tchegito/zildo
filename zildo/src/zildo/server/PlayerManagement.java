@@ -426,7 +426,7 @@ public class PlayerManagement {
 							// Check that any obstacle isn't on the way
 							Point middle = Point.middle((int) heros.x, (int) heros.y, locX, locY);
 							if (!EngineZildo.mapManagement.collideTile(middle.x, middle.y, false, new Point(2, 2), persoToTalk)) {
-								heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, ElementDescription.HEN, persoToTalk);
+								heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, null, persoToTalk);
 							}
 						} else if (persoToTalk.getDialoguingWith() == null) {
 							// On vérifie que Zildo regarde la personne
