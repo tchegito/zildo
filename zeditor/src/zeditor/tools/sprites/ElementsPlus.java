@@ -84,8 +84,8 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(168, 32, 7, 7),
 				new Zone(168, 39, 16, 8),
 				new Zone(184, 32, 8, 16),
-				// Poule - 32
-				new Zone(0, 87, 17, 16),
+				// Etai - 32
+				new Zone(249, 69, 32, 16),
 
 				// Mort d'un ennemi
 				new Zone(45, 0, 8, 8),
@@ -134,7 +134,8 @@ public class ElementsPlus extends SpriteBanque {
 				// Poutre d'entrée de grotte
 				new Zone(168, 48, 16, 8),
 				new Zone(192, 32, 8, 8),
-				new Zone(192, 40, 8, 8),
+				// Etai - suite
+				new Zone(239, 69, 9, 30),
 
 				// Rocher et ombre (64)
 				new Zone(24, 95, 31, 31),
