@@ -1077,12 +1077,15 @@ public class PersoPlayer extends Perso {
 		switch (d) {
 		case GOLDCOIN1:
 			money ++;
+    		EngineZildo.scriptManagement.runTileAction(new Point((int)x >> 4, (int)y>>4), "getMoney", false);
 			break;
 		case THREEGOLDCOINS1:
 			money += 3;
+    		EngineZildo.scriptManagement.runTileAction(new Point((int)x >> 4, (int)y>>4), "getMoney", false);
 			break;
 		case GOLDPURSE1:
 			money += 20;
+    		EngineZildo.scriptManagement.runTileAction(new Point((int)x >> 4, (int)y>>4), "getMoney", false);
 			break;
 		case DROP_FLOOR:
 		case DROP_SMALL:
@@ -1113,6 +1116,7 @@ public class PersoPlayer extends Perso {
 		case NETTLE_LEAF:
 			if (countNettleLeaf >= 0) {
 				countNettleLeaf++;
+	    		EngineZildo.scriptManagement.runTileAction(new Point((int)x >> 4, (int)y>>4), "getNettle", false);
 			}
 			break;
 		case KEY:

@@ -78,7 +78,11 @@ public interface SpriteDescription {
 				try {
 					desc = GearDescription.valueOf(val);
 				} catch (IllegalArgumentException e2) {
-					desc = PersoDescription.valueOf(val);
+					try {
+						desc = PersoDescription.valueOf(val);
+					} catch (IllegalArgumentException e3) {
+						desc =FontDescription.valueOf(val);
+					}
 				}
 			}
 			return desc;

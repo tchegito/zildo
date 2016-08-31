@@ -43,6 +43,7 @@ public class ActionElement extends LanguageElement {
 	public ActionKind kind;
 	public IPoint location;
 	public IPoint target; // For 'launch' action
+	public int light = -1;
 	public String text;
 	public String way; // For 'launch' action
 	public int val;
@@ -136,6 +137,10 @@ public class ActionElement extends LanguageElement {
 			}
 			zoom = getFloatExpr("zoom");
 			impact = readAttribute("impact");
+			temp = readAttribute("light");
+			if (temp != null && temp.startsWith("#")) {
+				light = Integer.parseInt(temp.substring(1), 16);
+			}
 		case animation:
 			location = IPoint.fromString(strPos);
 			if (!"".equals(strAngle)) {

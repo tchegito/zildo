@@ -22,6 +22,7 @@ package zildo.monde.sprites.persos.ia.mover;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.fwk.script.logic.FloatExpression;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.util.Pointf;
 
@@ -96,7 +97,8 @@ public class CircularMoveOrder extends MoveOrder {
 	public void init(Mover p_wrapper) {
 		super.init(p_wrapper);
 		
-		if (mobile.getEntityType().isElement() || mobile.getEntityType().isPerso()) {
+		EntityType entTyp = mobile.getEntityType();
+		if (entTyp.isElement() || entTyp.isPerso() || entTyp.isFont()) {
 			mobileElement = (Element) mobile;
 		}
 		center = new Pointf(target.x, mobile.y);

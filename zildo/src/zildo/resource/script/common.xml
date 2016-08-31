@@ -295,4 +295,14 @@
 		</timer>
 	</persoAction>
 	
+	<!-- UI animations when hero gets items -->
+	<tileAction id="getNettle">
+	    <spawn what="loc:s" type="TOUCH_AURA" light="#287930" pos="zildo.scrX,zildo.scrY" zoom="60" alpha="180" alphaA="-0.03"/>
+	    <moveTo what="loc:s" pos="241,-140" way="circular" zoom="60-40*bell"/>
+	</tileAction>
+	<tileAction id="getMoney">
+	    <spawn what="loc:s" type="TOUCH_AURA" light="#b2ba30" pos="zildo.scrX,zildo.scrY" zoom="60" alpha="180" alphaA="-0.03"/>
+	    <moveTo what="loc:s" pos="77,-140" way="circular" zoom="60-40*bell"/>
+	</tileAction>
+	
 </adventure>

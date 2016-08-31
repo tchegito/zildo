@@ -655,6 +655,11 @@ public class SpriteManagement extends SpriteStore {
 				toDelete.add(entity);
 			} else if (entity.getEntityType().isEntity()) {
 				entity.animate();
+			} else if (entity.getEntityType().isFont()) {
+				// Particular case: animate and set screen coordinates
+				entity.animate();
+				entity.setScrX((int) entity.x);
+				entity.setScrY((int) entity.y);
 			} else if (entity.getEntityType().isElement()) {
 				// X, vX, aX, ...
 				element = (Element) entity;

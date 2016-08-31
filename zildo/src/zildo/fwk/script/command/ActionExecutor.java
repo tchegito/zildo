@@ -61,6 +61,8 @@ import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.EntityType;
+import zildo.monde.sprites.desc.FontDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
@@ -887,6 +889,11 @@ public class ActionExecutor extends RuntimeExecutor {
 	        		} else {
 	        			elem = EngineZildo.spriteManagement.createElement(desc, location.x, location.y, 0, rev, rot);
 	        			entity = elem;
+	            		if (desc instanceof FontDescription) {
+	            			// Particular case=> animation on GUI
+	            			entity.setDesc(desc);
+	            			entity.setEntityType(EntityType.FONT);
+	            		}
 	        		}
     			}
         		if (p_action.z != null) {
@@ -962,6 +969,9 @@ public class ActionExecutor extends RuntimeExecutor {
 		}
 		if (p_action.zoom != null) {
 			elem.zoom = (int) p_action.zoom.evaluate(context);
+		}
+		if (p_action.light != -1) {
+			elem.light = p_action.light;
 		}
     }
     
