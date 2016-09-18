@@ -69,12 +69,15 @@ public class Gears extends SpriteBanque {
 				new Zone(24, 537, 13, 28), new Zone(37, 537, 13, 28),
 				
 				/* Hidden door */
-				new Zone(51, 538, 19, 24), new Zone(71, 538, 19, 24)
+				new Zone(51, 538, 19, 24), new Zone(71, 538, 19, 24),
 			
+				/* Lava artefacts */
+				new Zone(2, 215, 31, 19), new Zone(3, 235, 29, 14), new Zone(1, 250, 32, 24), new Zone(1, 275, 68, 27)
 
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
-				new GraphChange("interia3", 0, 0)});
+				new GraphChange("interia3", 0, 0),
+				new GraphChange("interia7", 19, 0)});
 	}
 }

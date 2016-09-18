@@ -175,6 +175,7 @@ public class MasterFrameManager {
 			updateTitle();
 			updateChainingPoints(ch);
 			masterFrame.getStatsPanel().updateStats();
+			masterFrame.getPersoPanel().focusPerso(null);
 			setUnsavedChanges(false);
 		} catch (RuntimeException e) {
 			e.printStackTrace();

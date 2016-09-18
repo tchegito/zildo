@@ -159,7 +159,7 @@ public class PersoPanel extends JPanel {
 		persoType.addActionListener(listener);
 		script.addActionListener(listener);
 		angle.addActionListener(listener);
-		floor.addActionListener(listener);
+		floor.getDocument().addDocumentListener(listener);
 		info.addActionListener(listener);
 		spinner.addChangeListener(listener);
 		dialogSwitch.getDocument().addDocumentListener(listener);
@@ -317,6 +317,12 @@ public class PersoPanel extends JPanel {
 							behaves.remove(currentPerso.getName());
 						}
 						currentPerso.setName(txt);
+					} else if (comp == floor) {
+						int newFloor = 1;
+						if (txt.length() > 0) {
+							newFloor = Integer.valueOf(txt);
+						}
+						currentPerso.setFloor(newFloor);
 					} else if (comp == dialogSwitch) {
 						if (!currentPerso.isZildo()) {
 							PersoNJ pnj = (PersoNJ) currentPerso;

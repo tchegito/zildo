@@ -326,6 +326,15 @@ public class TileSelection extends CaseSelection {
 			}
 		}
 	}
+	
+	public void remove(AreaWrapper map, Point p) {
+		int px = p.x / 16;
+		int py = p.y / 16;
+		Case c = map.get_mapcase(px, py);
+		if (c != null) {
+			map.set_mapcase(px, py, null);
+		}
+	}
 	@Override
 	public List<Case> getElement() {
 		return items;

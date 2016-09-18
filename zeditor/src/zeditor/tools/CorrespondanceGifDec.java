@@ -112,7 +112,14 @@ public class CorrespondanceGifDec {
         	i+=256;
         }
         i+=nTile;
-        return tileCollision.getTileInfo(i);
+        TileInfo tileInfo = tileCollision.getTileInfo(i);
+        try {
+        	tileInfo.collide(0,  0);
+        } catch (RuntimeException e) {
+        	System.out.println("Unable to get collision for tile "+nTile);
+        	tileInfo = TileInfo.fromInt(0);
+        }
+        return tileInfo;
 	}
 
 	public CorrespondanceGifDec() {
