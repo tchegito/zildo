@@ -47,7 +47,7 @@ public class PersoDragon extends PersoNJ {
 	
 	double gamma;
 	
-	int cnt = 0;
+	int cnt = 1;
 	
 	// 4, 5, 6, 7 : wing
 	int[] seq = {3, 3, 2, 2, 1, 0, 4, 5, 6, 7, 4, 5, 6, 7};
@@ -58,8 +58,11 @@ public class PersoDragon extends PersoNJ {
 	final static int HEAD_ELONGATION = 30;
 	
 	ElementProjectile fireBalls;
+	boolean shapeInitialized = false;
 	
 	boolean spittingFire = true;
+	
+	Perso focusedEnemy;
 	
 	public PersoDragon(int x, int y) {
 		//this.x = x;
@@ -69,11 +72,20 @@ public class PersoDragon extends PersoNJ {
 		
 		desc = PersoDescription.DRAGON;
 		neck = new CompositeElement(this);
-		neck.lineShape(seq.length);
 	}
 	
 	@Override
 	public void animate(int compteur_animation) {
+		if (!shapeInitialized) {
+			neck.lineShape(seq.length);
+			shapeInitialized = true;
+			// Make head and upper wing parts higher
+			neck.elems.get(6).floor++;
+			neck.elems.get(7).floor++;
+			neck.elems.get(8).floor++;
+			neck.elems.get(11).floor++;
+			neck.elems.get(12).floor++;
+		}
 		super.animate(compteur_animation);
 		
 		int nth=0;
@@ -98,6 +110,7 @@ public class PersoDragon extends PersoNJ {
 				headPoint.add(new Vector2f(2, 0)); //dist.mul(ratio));
 				System.out.println(headPoint);
 			}
+			focusedEnemy = zildo;
 		}
 		
 		Bezier3 bz = new Bezier3(new Pointf(x, 0), neckPoint, headPoint);
@@ -142,26 +155,32 @@ public class PersoDragon extends PersoNJ {
 					*/
 					//e.setForeground(true);
 					// Mesure distance with center
-					float shiftHead = neck.elems.get(0).x - e.x;
-					if (shiftHead > 6) {	// Head looking left
+					float shiftHead = neck.elems.get(2).x - e.x;
+					if (focusedEnemy != null) {
+						shiftHead = focusedEnemy.x - e.x;
+					}
+					System.out.println(shiftHead);
+					if (shiftHead < -12) {	// Head looking left
 						e.setAddSpr(0);
 						e.reverse = Reverse.NOTHING;
 						headAngle = Angle.OUEST;
-					} else if (shiftHead > -6) {
-						e.setAddSpr(8);
-						yy+=10;
-						headAngle = Angle.SUD;
-					} else {	// Head looking right
+					} else if (shiftHead > 12) {	// Head looking right
 						e.setAddSpr(0);
 						e.reverse = Reverse.HORIZONTAL; 
 							//neckPoint.x < headPoint.x ? Reverse.HORIZONTAL : Reverse.NOTHING;
 						headAngle = Angle.EST;
+					} else  {
+						e.setAddSpr(9);
+						yy+=10;
+						headAngle = Angle.SUD;
 					}
 					if (spittingFire) {
 						if (e.getAddSpr() == 0) {
-							e.setAddSpr(7);
+							e.setAddSpr(8);
+						} else if (e.getAddSpr() == 9) {
+							e.setAddSpr(10);
 						} else {
-							e.setAddSpr(9);
+							e.setAddSpr(8);
 						}
 					}
 				}
@@ -196,10 +215,20 @@ public class PersoDragon extends PersoNJ {
 			// Spits fire !
 			// Target hero
 			if (zildo != null) {
-				
+				Point offset = new Point(0, -45);	// Offset between mouth and fireball
+				switch (headAngle) {
+				case OUEST:
+					offset.x -=10;
+					break;
+				case EST:
+					offset.x +=10;
+				default:
+					break;
+				}
 				fireBalls = new ElementProjectile(ElementDescription.FIRE_BALL,
-						ProjectileKind.FIREBALLS, neck.elems.get(6), zildo, this);
-						
+						ProjectileKind.FIREBALLS, neck.elems.get(6), zildo, this, offset);
+				fireBalls.y += 60;
+				
 				EngineZildo.spriteManagement.spawnSprite(fireBalls);
 				EngineZildo.soundManagement.broadcastSound(BankSound.SerpentSpit, new Point(x, y));
 				

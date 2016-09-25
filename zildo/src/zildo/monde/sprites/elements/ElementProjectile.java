@@ -23,6 +23,7 @@ import zildo.monde.Trigo;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 
 /**
@@ -57,6 +58,7 @@ public class ElementProjectile extends ElementChained {
 	final ProjectileKind kind;
 	Element shootingSpot;
 	Element shootedSpot;
+	Point offsetSpot;
 	
 	public ElementProjectile(ElementDescription desc, ProjectileKind kind, float x, float y, float z, float vx, float vy, Perso shooter) {
 		super((int) x, (int) (y - z));
@@ -70,11 +72,14 @@ public class ElementProjectile extends ElementChained {
 		this.linkedPerso = shooter;
 	}
 	
-	public ElementProjectile(ElementDescription desc, ProjectileKind kind, Element shootingOne, Element shootedOne, Perso shooter) {
+	/** Create a projectile from a moving character, and target a moving one **/
+	public ElementProjectile(ElementDescription desc, ProjectileKind kind, Element shootingOne, 
+			Element shootedOne, Perso shooter, Point offset) {
 		this(desc, kind, shootingOne.x, shootingOne.y, shootingOne.z, 0, 0, shooter);
 		
 		shootingSpot = shootingOne;
 		shootedSpot = shootedOne;
+		offsetSpot = offset;
 	}
 	
 	@Override
@@ -85,8 +90,8 @@ public class ElementProjectile extends ElementChained {
 			Vector2f speedVect = Trigo.vect(zDirection, 1.8f);
 			vx = speedVect.x;
 			vy = speedVect.y;
-			x = shootingSpot.x;
-			y = shootingSpot.y-70;
+			x = shootingSpot.x + offsetSpot.x;
+			y = shootingSpot.y + offsetSpot.y;
 			z = shootingSpot.z;
 		}
 		Element e = new Element();

@@ -143,6 +143,7 @@ public class Element extends SpriteEntity {
 		this.foreground = original.foreground;
 		this.setDesc(original.desc);
 		this.alpha = original.alpha;
+		this.floor = original.floor;
 		
 		this.entityType = EntityType.ELEMENT;
 		// logger.log(Level.INFO, "Copying Element");
