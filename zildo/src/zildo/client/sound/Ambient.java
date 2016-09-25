@@ -49,7 +49,8 @@ public class Ambient {
 		CASTLEINSIDE(false, BankMusic.Chateau),
 		DANGERINSIDE(false, BankMusic.Surprise),
 		UNDERGROWTH(true, BankMusic.Squirrel),
-		NATUREPALACE(false, BankMusic.Nature);
+		NATUREPALACE(false, BankMusic.Nature),
+		LAVACAVE(false, BankMusic.Grotte);
 		
 		public boolean outside;
 		public BankMusic music;
@@ -71,6 +72,8 @@ public class Ambient {
 			    return 256*5 + 59;
 			case CASTLEINSIDE:
 				return 256*7 + 96;
+			case LAVACAVE:
+				return 256*10 + 34;
 			}
 		}
 	}

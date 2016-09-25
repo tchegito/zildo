@@ -22,13 +22,17 @@ public class Pnj4 extends SpriteBanque {
 			// Druid
 			new Zone(69, 469, 16, 27), new Zone(86, 470, 14, 26),
 			new Zone(101, 469, 13, 27), new Zone(115, 470, 16, 26),
-			new Zone(113, 189, 16, 26), new Zone(130, 189, 16, 26)
+			new Zone(113, 189, 16, 26), new Zone(130, 189, 16, 26),
 			// Bitey
 			/*
 		    new Zone(0, 3, 21, 24), new Zone(25, 5, 21, 22), new Zone(50, 5, 21, 22),
 		    new Zone(75, 3, 21, 24), new Zone(100, 2, 21, 25), new Zone(125, 1, 21, 26),
 		    new Zone(150, 0, 21, 27),
 		    */
+			// Vacto
+			new Zone(0, 3, 16, 26), new Zone(16, 2, 16, 27),
+			new Zone(33, 4, 13, 25), new Zone(48, 3, 13, 26),
+			new Zone(64, 3, 14, 26), new Zone(79, 2, 16, 27)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("turret", 0, 0),

@@ -103,8 +103,12 @@ public class SpriteSet extends ImageSet {
 			if (bank.getName().equals("pnj2.spr")) {
 				//nSpr = nSpr - 128;
 			}
-			SpriteModel model = bank.get_sprite(nSpr);
-
+			SpriteModel model = null;
+			try {
+				model = bank.get_sprite(nSpr);
+			} catch (IndexOutOfBoundsException e) {
+				throw new RuntimeException("Unable to display sprite "+sprite.getClass().getSimpleName()+"."+sprite, e);
+			}
 			int sizeX = model.getTaille_x();
 			if (posX + sizeX > width) {
 				posX = 0;

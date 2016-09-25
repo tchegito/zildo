@@ -773,10 +773,22 @@ public class PersoNJ extends Perso {
 		case SOFIASKY:
 		case FERMIERE:
 		case LOUISE:
+		case VACTO:
 			reverse = Reverse.NOTHING;
 			if (add_spr >= 6) {
 				add_spr -= 4;
 				reverse = Reverse.HORIZONTAL;
+			}
+			if (angle == Angle.NORD || angle == Angle.SUD) {
+				// 3-sprites sequence from 2 with reverse
+				add_spr = computeSeq(2) % 4;
+				if (add_spr == 3) {
+					add_spr = 1;
+					reverse = Reverse.HORIZONTAL;
+				} else if (add_spr == 2) {
+					add_spr = 0;
+				}
+				add_spr += angle.value * 2;
 			}
 			break;
 		case MOUSTACHU_ASSIS:

@@ -123,6 +123,7 @@ public enum PersoDescription implements SpriteDescription {
 	SLEEPING_KING(376, 377, 378),
 	ELEORIC(379, 382, 380, 381),
 	VIEILLE_BANC(383, 384),
+	VACTO(389, 390, 387, 388, 385, 386),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
