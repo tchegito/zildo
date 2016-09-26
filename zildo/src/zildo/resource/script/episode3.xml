@@ -288,12 +288,30 @@
 	    </action>
 	</quest>
 	
+	<quest name="eleoSpeak" locked="false">
+	    <trigger>
+	        <location name="eleom1"/>
+	        <dialog name="eleoric" num="2"/>
+	    </trigger>
+	    <action>
+	        <wait value="1000"/>
+	        <markQuest name="eleoWaitForVacto" value="true"/>
+	    </action>
+	</quest>
+
+	<quest name="eleoWaitForVacto">
+	    <action>
+	        <!-- TODO: we must be sure that hero isn't dialoguing ==> BUG ! -->
+	        <exec script="vactoComeIn"/>
+	    </action>
+	</quest>
 	<quest name="startGatherNettle" locked="false">
 	    <trigger>
-	        <dialog name="eleoric" num="0"/>
+	        <dialog name="eleoric" num="6"/>
 	    </trigger>
 	    <action>
 	        <herospecial value="8" arg="0"/>
+	        <sound name="ZildoAccomplishQuest"/>
 	    </action>
 	</quest>
 	
@@ -389,6 +407,10 @@
    	   	<condition name="eleom1">
    	   	    <spawn impact="CAULDRON" pos="88,42"/>
    	   	    <tile pos="5,2" action="bubbleCauldron" unblock="true"/>
+   	   	    <script who="eleoric" value="0" effect="2"/> <!-- small zone, with 2 radius -->
+   	   	    <if expQuest="!eleoWaitForVacto">
+   	   	        <markQuest name="eleoSpeak" value="false"/>
+   	   	    </if>
    	   	</condition>
    	   	<condition name="chateausud">
 			<tile pos="32,10" action="illTree"/> <tile pos="42,10" action="illTree"/>
@@ -1098,8 +1120,46 @@
 	        <speak who="zildo" text="prison.saveKing.zildo.4"/>
 
     		<moveTo who="zildo" pos="208,152"/>
-			<markQuest name="metKingPrison3" value="false"/>
+			<markQuest name="metKingPrison3" value="false"/>q
 	    </if>
+	</scene>
+	
+	<scene id="vactoComeIn">
+  	    <sound name="MenuMove"/><wait value="15"/>
+       	<sound name="MenuMove"/><wait value="15"/>
+    	<sound name="MenuMove"/><wait value="15"/>
+    	<script who="eleoric" value="3"/> <!--  She stands still -->
+   		<angle who="eleoric" value="2"/>
+   		<speak who="eleoric" text="eleom1.e.3b"/>
+   		<spawn who="vacto" type="VACTO" pos="161,219" alpha="0" alphaA="2"/>
+   		<sound name="OuvrePorte"/>
+   		<wait value="80"/>
+   		<actions>
+	   		<moveTo who="vacto" pos="161,135"/>
+   			<speak who="vacto" text="eleom1.vacto.0"/>"
+   		</actions>
+   		<angle who="eleoric" value="1"/>
+   		<!-- She introduces Vacto to hero -->
+   		<speak who="eleoric" text="eleom1.e.4"/>
+   		<script who="vacto" value="2" effect="zildo"/>
+   		<wait value="20"/>
+   		<speak who="vacto" text="eleom1.vacto.1"/>
+   		<wait value="20"/>
+   		<script who="vacto" value="3"/>
+   		<angle who="vacto" value="3"/>
+   		<moveTo who="eleoric" pos="117,98" unblock="true"/>
+   		<speak who="eleoric" text="eleom1.e.5"/>
+   		<angle who="vacto" value="3"/>
+   		<speak who="vacto" text="eleom1.vacto.2"/>
+   		<speak who="eleoric" text="eleom1.e.6"/>
+   		<speak who="eleoric" text="eleom1.e.7"/>
+   		<speak who="vacto" text="eleom1.vacto.3"/>
+   		<moveTo who="vacto" pos="161,225"/>
+   		<perso who="vacto" alphaA="-2"/>
+   		<wait value="80"/>
+   		<moveTo who="eleoric" pos="88,80"/>
+   		<script who="eleoric" value="0" effect="2"/>
+   		<remove who="vacto"/>
 	</scene>
 	
 	<!-- Many random explosions on given character and hide him at the middle of the show -->

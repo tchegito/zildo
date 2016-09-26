@@ -258,10 +258,11 @@ public class ActionExecutor extends RuntimeExecutor {
 	                    String param = p_action.effect;
 	                    switch (script) {
 	                    case ZONE:
-	        				perso.setZone_deplacement(EngineZildo.mapManagement.range(perso.getX() - 16 * 5, 
-	        																	perso.getY() - 16 * 5,
-	        																	perso.getX() + 16 * 5, 
-	        																	perso.getY() + 16 * 5));
+	                    	int size = param == null ? 5 : Integer.valueOf(param);
+	        				perso.setZone_deplacement(EngineZildo.mapManagement.range(perso.getX() - 16 * size, 
+	        																	perso.getY() - 16 * size,
+	        																	perso.getX() + 16 * size, 
+	        																	perso.getY() + 16 * size));
 	        				break;
 	                    case OBSERVE:
 	                    case FOLLOW:
