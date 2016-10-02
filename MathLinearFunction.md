@@ -1,7 +1,7 @@
 
 # Define linear function in Pixel Shader #
 
-In order to clip text display in the Dialog Hystory, we wanted to use pixel shader. Basically, the idea was using the 'y' coordinate to return alpha channel attribute.
+In order to clip text display in the Dialog History, we wanted to use pixel shader. Basically, the idea was using the 'y' coordinate to return alpha channel attribute.
 Then the higher part could be hidden smoothly, so as the lower part, and we'll get a great render.
 
 All we need is a function, taking 'y' coordinate as input, and returns an alpha channel value in float range [0..1], like in the following graphic:
