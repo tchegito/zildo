@@ -14,5 +14,5 @@ Interesting docs:
    * [Advanced scripting](https://github.com/tchegito/zildo/blob/wiki/AdvancedScripting.md)
  * Math:
    *  [Movement anticipation and Bezier curves](https://github.com/tchegito/zildo/blob/wiki/Maths.md)
-   *  Clipping function for Shader (soon)
+   *  [Clipping function for Shader](https://github.com/tchegito/zildo/blob/wiki/MathLinearFunction.md)
  
