@@ -23,7 +23,7 @@ In both context, special variables are allowed:
 
 <p>We can use local variables in scripts, defined with a name starting with "<code>loc:</code>".</p>
 A local variable is visible in its own scope, and sub sets, as in any classic language. For example:
-```
+```xml
     <tileAction id="fireflies">
         <spawn what="loc:firefly" type="PURPLE_FIREFLY" pos="x*16, y*16"
                z="4" alpha="180" foreground="true" />
