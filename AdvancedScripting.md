@@ -15,7 +15,7 @@ In both context, special variables are allowed:
   * **self** : name of the character
   * **zildo.x** and **zildo.y** : hero's coordinates
   * **zildo.z** : hero's *z* coordinate
-  * **zildo.scrX** and **zildo.scrY** : hero's screen coordinate
+  * **zildo.scrX** and **zildo.scrY** : hero's screen coordinates
   * **zildo.money** : hero's gold pieces amount
   * **zildo.angle.x** and **zildo.angle.y** : hero's angle coordinate (example: [0, -1] for north, [1, 0] for east)
 
