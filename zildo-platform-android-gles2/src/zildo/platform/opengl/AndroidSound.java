@@ -28,6 +28,7 @@ public class AndroidSound extends Sound {
 
 	private final int soundId;
 	private final MediaPlayer music;
+	private boolean loop;
 	
 	private int streamId;
 	
@@ -40,8 +41,12 @@ public class AndroidSound extends Sound {
 		this.soundId = soundId;
 		this.music = music;
 	}
-	
 
+	@Override
+	public void setLoop(boolean loop) {
+		this.loop = loop;
+	}
+	
 	@Override
 	public void play() {
 		float volume = 1f;
@@ -54,8 +59,8 @@ public class AndroidSound extends Sound {
 			music.start();
 			AndroidSoundEngine.currentMusic = music;
 		} else {
-			int loop = 0;	// No loop
-			streamId = AndroidSoundEngine.soundPool.play(soundId, volume, volume, 1, loop, 1f);
+			int soundLoop = loop ? -1 : 0;	// No loop
+			streamId = AndroidSoundEngine.soundPool.play(soundId, volume, volume, 1, soundLoop, 1f);
 		}
 	}
 

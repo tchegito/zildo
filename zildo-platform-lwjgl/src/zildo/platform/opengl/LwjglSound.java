@@ -39,6 +39,7 @@ public class LwjglSound extends Sound {
 	Audio snd = null;
 
 	boolean music;
+	boolean loop = false;
 	
 	@Override
 	public void finalize() {
@@ -49,6 +50,11 @@ public class LwjglSound extends Sound {
 		loadALData(p_filename);
 	}
 
+	@Override
+	public void setLoop(boolean loop) {
+		this.loop = loop;
+	}
+	
 	private int loadALData(String p_filename) {
 		String format = p_filename.substring(p_filename.length() - 3).toUpperCase();
 		File file=new File(Constantes.DATA_PATH + p_filename);
@@ -79,7 +85,7 @@ public class LwjglSound extends Sound {
 		if (music) {
 			snd.playAsMusic(1.0f, 1.0f, true);
 		} else {
-			snd.playAsSoundEffect(1.0f, 1.0f, false);
+			snd.playAsSoundEffect(1.0f, 1.0f, loop);
 		}
 	}
 
@@ -88,7 +94,7 @@ public class LwjglSound extends Sound {
 		if (music) {
 			play();
 		} else {
-			snd.playAsSoundEffect(1.0f, 1.0f, false, x, y, 0);
+			snd.playAsSoundEffect(1.0f, 1.0f, loop, x, y, 0);
 		}
 	}
 	

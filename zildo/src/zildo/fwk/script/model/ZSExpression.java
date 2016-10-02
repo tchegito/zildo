@@ -26,6 +26,7 @@ import java.util.List;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.monde.items.ItemKind;
 import zildo.monde.items.StoredItem;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.EngineZildo;
 
 /**
@@ -36,6 +37,16 @@ import zildo.server.EngineZildo;
  */
 public class ZSExpression {
 
+	// Reserved words
+	private static final String RW_MONEY = "money";
+	private static final String RW_MOON = "moon";
+	private static final String RW_NETTLE = "nettle";
+	private static final String RW_ITEM = "item";
+	private static final String RW_INIT = "init";
+	private static final String RW_MAP = "M#";
+	private static final String RW_PERSO = "P#";
+	private static final String RW_STORE = "ooo";
+	
 	String questName;
 	boolean done;	// True if predicate is prefixed by a '!'
 
@@ -77,29 +88,34 @@ public class ZSExpression {
 
 		if (floatExpr != null) {
 			result = floatExpr.evaluate(null) == 1;
-		} else if (questName.startsWith("money")) {
-			int price=Integer.valueOf(questName.substring("money".length()));
-			int zildoMoney = EngineZildo.persoManagement.getZildo().getMoney();
+		} else if (questName.startsWith(RW_MONEY)) {
+			int price=Integer.valueOf(questName.substring(RW_MONEY.length()));
+			int zildoMoney = zildo().getMoney();
 			result = price<=zildoMoney;
-		} else if (questName.startsWith("moon")) {
-			int moonFragment=Integer.valueOf(questName.substring("moon".length()));
-			int currentFragmentNb = EngineZildo.persoManagement.getZildo().getMoonHalf();
+		} else if (questName.startsWith(RW_MOON)) {
+			int moonFragment=Integer.valueOf(questName.substring(RW_MOON.length()));
+			int currentFragmentNb = zildo().getMoonHalf();
 			result = currentFragmentNb >= moonFragment;
-		} else if (questName.startsWith("item")) {
-			String itemName=questName.substring("item".length());
+		} else if (questName.startsWith(RW_NETTLE)) {
+			int nettleAmount=Integer.valueOf(questName.substring(RW_NETTLE.length()));
+			int currentAmount = zildo().getCountNettleLeaf();
+			result = currentAmount >= nettleAmount;
+		} else if (questName.startsWith(RW_ITEM)) {
+			String itemName=questName.substring(RW_ITEM.length());
 			ItemKind kind = ItemKind.fromString(itemName);
-			result = EngineZildo.persoManagement.getZildo().hasItem(kind);
-		} else if (questName.equals("init")) {
-			result = EngineZildo.persoManagement.getZildo().getDialoguingWith().getCompte_dialogue() == 0;
-		} else if (questName.startsWith("M#")) {
+			result = zildo().hasItem(kind);
+		} else if (questName.equals(RW_INIT)) {
+			result = zildo().getDialoguingWith().getCompte_dialogue() == 0;
+		} else if (questName.startsWith(RW_MAP)) {
 			// Expression could be a map name, to match current map
-			String mapName = questName.substring(2);
+			String mapName = questName.substring(RW_MAP.length());
 			result = mapName.equals(EngineZildo.mapManagement.getCurrentMap().getName());
-		} else if (questName.startsWith("P#")) {
-			String persoName = questName.substring(2);
+		} else if (questName.startsWith(RW_PERSO)) {
+			String persoName = questName.substring(RW_PERSO.length());
 			result = EngineZildo.persoManagement.getNamedPerso(persoName) != null;
-		} else if (questName.startsWith("ooo")) {
-			String persoName = questName.substring(3);
+		} else if (questName.startsWith(RW_STORE)) {
+			// Does merchant's store is empty ?
+			String persoName = questName.substring(RW_STORE.length());
 			String itemsAsString = EngineZildo.scriptManagement.getVarValue(persoName);
 			return StoredItem.fromString(itemsAsString).isEmpty(); 
 		} else {
@@ -112,6 +128,12 @@ public class ZSExpression {
 		return result;
 	}
 
+	
+	/** Convenience method to reduce code **/
+	private PersoPlayer zildo() {
+		return EngineZildo.persoManagement.getZildo();
+	}
+	
 	@Override
 	public String toString() {
 		return (!done ? "!" : "") + questName;

@@ -137,6 +137,7 @@ public enum BankSound implements AudioBank {
 	Sort("sort"),
 	Switch("switch"),
 	LavaDrop("lavadrop"),
+	Boiling("boiling"),
 	PeebleFloor("peeble"),
 	PoisonCloud("poison"),
 	

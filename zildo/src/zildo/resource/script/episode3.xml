@@ -325,12 +325,54 @@
 	
 	<quest name="secretEleog">
 		<trigger>
+		    <location name="eleog"/>
 		    <dead who="fire1,fire2"/>
 		</trigger>	    
 		<action>
 		    <activate what="door"/>
 		    <sound name="ZildoSecret"/>
 		</action>
+	</quest>
+	
+	<quest name="completeNettle1" locked="false"> <!-- Just for sound -->
+	    <trigger>
+	        <location name="eleom1"/>
+	        <dialog name="eleoric" num="7"/>
+	    </trigger>
+	    <action>
+	        <sound name="ZildoAccomplishQuest"/>
+	    </action>
+	</quest>
+	
+	<quest name="completeNettle2" locked="false"> <!-- Remove nettle count -->
+	    <trigger>
+	        <location name="eleom1"/>
+	        <dialog name="eleoric" num="8"/>
+	    </trigger>
+	    <action>
+	        <herospecial value="8" arg="-1"/>
+	    </action>
+	</quest>
+	
+	<quest name="prepareAntidote">
+	    <trigger>
+	        <location name="eleom1" pos="87,82" radius="4"/>
+	        <questDone name="completeNettle2"/>
+	    </trigger>
+	    <action>
+	        <exec script="EleoPrepareAntidote"/>
+	    </action>
+	</quest>
+	
+	<!-- TODO: invent an attribute like 'repeat' but to be reset at each map switch -->
+	<quest name="boilingEleoric" locked="false">
+	    <trigger>
+	        <location name="eleom1"/>
+	    </trigger>
+	    <action>
+	        <!-- TODO: add location, and 'off' to cut it off -->
+   	   	    <sound name="Boiling"/>
+	    </action>
 	</quest>
 	
 	<mapScript>
@@ -411,6 +453,7 @@
    	   	    <if expQuest="!eleoWaitForVacto">
    	   	        <markQuest name="eleoSpeak" value="false"/>
    	   	    </if>
+   	   	    <markQuest name="boilingEleoric" value="false"/>
    	   	</condition>
    	   	<condition name="chateausud">
 			<tile pos="32,10" action="illTree"/> <tile pos="42,10" action="illTree"/>
@@ -1161,6 +1204,40 @@
    		<script who="eleoric" value="0" effect="2"/>
    		<remove who="vacto"/>
 	</scene>
+	
+	<scene id="EleoPrepareAntidote">
+	    <script who="eleoric" value="3"/>
+	    <moveTo who="eleoric" pos="88,58" unstoppable="true"/>
+	    <angle who="eleoric" value="0"/>
+	    <wait value="80"/>
+	    <for var="loc:j" value="2">
+		    <for var="loc:i" value="3">
+			    <sound name="PeebleFloor"/>
+			    <wait value="8"/>
+		    	<spawn type="GREEN_BUBBLE" pos="85+7*random,39" light="#2255bb"
+		    	    vz="0.1" z="4" alphaA="-0.1" foreground="true" zoom="240"/>
+	   	    </for>
+	   	    <spawn impact="STAR_YELLOW" pos="85+7*random,39" vy="-0.4" vx="-0.5+random" alphaA="-1"/>
+		    <wait value="20"/>
+	   	    <spawn impact="STAR_YELLOW" pos="85+7*random,39" vy="-0.4" vx="-0.5+random" alphaA="-1"/>
+	    	<spawn type="GREEN_BUBBLE" pos="85+7*random,39" light="#ff5533"
+	    	    vz="0.1" z="4" alphaA="-0.1" foreground="true" zoom="250"/>
+	   	    <sound name="LavaDrop"/>
+		    <for var="loc:i" value="4">
+			    <sound name="PeebleFloor"/>
+			    <wait value="9"/>
+		    	<spawn type="GREEN_BUBBLE" pos="85+7*random,39" light="#66ff33"
+		    	    vz="0.1" z="4" alphaA="-0.1" foreground="true" zoom="240"/>
+	   	    </for>
+	   	    <spawn impact="STAR_YELLOW" pos="85+7*random,39" vy="-0.4" vx="-0.5+random" alphaA="-1"/>
+	   	   	<sound name="LavaDrop"/>
+	   	   	<wait value="30"/>
+	   	    <sound name="LavaDrop"/>
+	    </for>
+	    <speak who="eleoric" text="eleom1.e.13"/>
+	    <angle who="eleoric" value="2"/>
+	    <speak who="eleoric" text="eleom1.e.14"/>
+   	</scene>
 	
 	<!-- Many random explosions on given character and hide him at the middle of the show -->
 	<!-- Zildo doesn't take damage from it -->
