@@ -14,9 +14,10 @@ In both context, special variables are allowed:
   * **attente** : value of character's 'attente' field (only for character context)
   * **self** : name of the character
   * **zildo.x** and **zildo.y** : hero's coordinates
+  * **zildo.y** : hero's *z* coordinate
+  * **zildo.scrX** and **zildo.scrY** : hero's screen coordinate
   * **zildo.money** : hero's gold pieces amount
   * **zildo.angle.x** and **zildo.angle.y** : hero's angle coordinate (example: [0, -1] for north, [1, 0] for east)
-
 
 ## Local variables ##
 
