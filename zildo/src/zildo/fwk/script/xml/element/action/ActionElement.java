@@ -173,6 +173,9 @@ public class ActionElement extends LanguageElement {
 			text = readAttribute("text");
 			break;
 		case sound:
+			if (!strPos.isEmpty()) {
+				location = IPoint.fromString(strPos);
+			}
 		case map:
 		case music:
 			// String

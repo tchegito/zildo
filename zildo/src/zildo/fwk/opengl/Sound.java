@@ -32,4 +32,5 @@ public abstract class Sound {
 	public abstract void playAt(float x, float y);
 	public abstract void stop();
 	public abstract void setLoop(boolean loop);
+	public abstract void setPosition(float x, float y);
 }

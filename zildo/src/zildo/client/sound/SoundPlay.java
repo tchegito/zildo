@@ -21,6 +21,7 @@
 package zildo.client.sound;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +37,8 @@ import zildo.monde.util.Point;
 /**
  * SoundPlay : common engine for all platforms.
  * 
- * Note: it seems that there is too much methods to do the same thing (playSoundFX, playMusic,
- * playMapMusic ...). Maybe a small refactor should be planned.
+ * Note: we can handle looping sounds, and recalculate their distance to the camera, to enhance player immersion
+ * when he moves.
  * 
  * @author Tchegito
  *
@@ -46,6 +47,8 @@ public class SoundPlay {
 
 	private Map<AudioBank, Sound> tabSounds = new HashMap<AudioBank, Sound>();
 
+	private List<WaitingSound> currentlyLoopingSounds = new ArrayList<WaitingSound>();
+	
 	// ////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	// ////////////////////////////////////////////////////////////////////
@@ -104,7 +107,7 @@ public class SoundPlay {
 			chemin += p_sound.getSuffix();
 
 			Sound newSound = soundEngine.createSound(chemin);
-
+			newSound.setLoop(p_sound.isLooping());
 			// Store it into the sound's tab
 			tabSounds.put(p_sound, newSound);
 		}
@@ -162,12 +165,31 @@ public class SoundPlay {
 		}
 	}
 
+	/** Called each frame **/
 	public void playSounds(List<WaitingSound> p_sounds) {
+		// Every sound will be heard from the center of the screen
+		// That means we don't follow hero if camera is fixed.
 		Point camera = ClientEngineZildo.mapDisplay.getCamera();
 		Point listeningPoint = new Point(Zildo.viewPortX >> 1, Zildo.viewPortY >> 1);	// / 2 (middle)
+		/**
+		 * With this code, we follow hero, and sound is calculated around him => but that doesn't suit the gameplay
+		SpriteEntity p = ClientEngineZildo.spriteDisplay.getZildo();
+		listeningPoint = new Point(p.getScrX(), p.getScrY());
+		**/
 		if (camera != null) {
 			listeningPoint.x = camera.x + listeningPoint.x;
 			listeningPoint.y = camera.y + listeningPoint.y;
+		}
+		// Set new position for every currently looping sounds
+		for (WaitingSound sound : currentlyLoopingSounds) {
+			float dx = 0f;
+			float dy = 0f;
+			if (sound.location != null) {
+				dx = (sound.location.x - listeningPoint.x) / 16f / 16f;
+				dy = (sound.location.y - listeningPoint.y) / 16f / 8f;
+			}
+			Sound snd = tabSounds.get(sound.name);
+			snd.setPosition(dx, dy);
 		}
 		for (WaitingSound sound : p_sounds) {
 			if (sound.broadcast || sound.client == null) {
@@ -183,6 +205,10 @@ public class SoundPlay {
 						if (sound.location != null) {
 							dx = (sound.location.x - listeningPoint.x) / 16f / 16f;
 							dy = (sound.location.y - listeningPoint.y) / 16f / 8f;
+						}
+						if (sound.isSoundFX && ((BankSound)sound.name).isLooping()) {
+							// Keep track of this looping sound if location is fixed
+							currentlyLoopingSounds.add(sound);
 						}
 						playSoundFX(sound.name, dx, dy);
 					}

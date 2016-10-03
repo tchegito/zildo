@@ -64,6 +64,15 @@ public class AndroidSound extends Sound {
 		}
 	}
 
+	@Override
+	public void setPosition(float x, float y) {
+		float distLeft = left.distance(x, y);
+		float distRight = right.distance(x, y);
+		float volumeLeft = Math.max(1 - 0.1f * distLeft * distLeft, 0f);
+		float volumeRight = Math.max(1 - 0.1f * distRight * distRight, 0f);
+		AndroidSoundEngine.soundPool.setVolume(streamId, volumeLeft, volumeRight);
+	}
+	
 	final static Pointf left = new Pointf(-1f, 0f);
 	final static Pointf right = new Pointf(1f, 0f);
 	

@@ -60,4 +60,9 @@ public enum BankMusic implements AudioBank {
 	public String getSuffix() {
 		return "ogg";
 	}
+	
+	@Override
+	public boolean isLooping() {
+		return true;
+	}
 }

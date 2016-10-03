@@ -33,11 +33,11 @@ import zildo.monde.util.Point;
  */
 
 public class WaitingSound implements EasySerializable {
-	public AudioBank name;
-	public boolean isSoundFX; // TRUE=soundFX / FALSE=music
-	public Point location; // (0..64, 0..64) coordinates
-	public TransferObject client;
-	public boolean broadcast; // TRUE=this sound is for all clients / FALSE=just
+	public final AudioBank name;
+	public final boolean isSoundFX; // TRUE=soundFX / FALSE=music
+	public final Point location; // (0..64, 0..64) coordinates
+	public final TransferObject client;
+	public final boolean broadcast; // TRUE=this sound is for all clients / FALSE=just
 								// one client (GUI sound)
 
 	private static EasyBuffering buf = new EasyBuffering(40);
@@ -53,7 +53,6 @@ public class WaitingSound implements EasySerializable {
 
 	@Override
 	public void serialize(EasyBuffering p_buffer) {
-		isSoundFX = name instanceof BankSound;
 		p_buffer.clear();
 		p_buffer.put(isSoundFX);
 		p_buffer.put(name.ordinal());

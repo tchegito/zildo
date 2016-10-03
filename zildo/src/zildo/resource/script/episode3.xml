@@ -371,7 +371,7 @@
 	    </trigger>
 	    <action>
 	        <!-- TODO: add location, and 'off' to cut it off -->
-   	   	    <sound name="Boiling"/>
+   	   	    <sound name="Boiling" pos="85,39"/>
 	    </action>
 	</quest>
 	
@@ -1220,7 +1220,7 @@
 	   	    <spawn impact="STAR_YELLOW" pos="85+7*random,39" vy="-0.4" vx="-0.5+random" alphaA="-1"/>
 		    <wait value="20"/>
 	   	    <spawn impact="STAR_YELLOW" pos="85+7*random,39" vy="-0.4" vx="-0.5+random" alphaA="-1"/>
-	    	<spawn type="GREEN_BUBBLE" pos="85+7*random,39" light="#ff5533"
+	    	<spawn type="GREEN_BUBBLE" pos="85+7*random,39" light="#ff55aa"
 	    	    vz="0.1" z="4" alphaA="-0.1" foreground="true" zoom="250"/>
 	   	    <sound name="LavaDrop"/>
 		    <for var="loc:i" value="4">
@@ -1253,6 +1253,7 @@
 	    </for>
    	</persoAction>
 	
+	<!-- Green bubble coming out of a cauldron -->
 	<tileAction id="bubbleCauldron">
 		<timer each="25+45*random">
 	    	<action>

@@ -78,6 +78,15 @@ public class SoundManagement {
 	}
 	
 	/**
+	 * Send to one client a sound from given location
+	 * @param p_soundName
+	 * @param x,y
+	 */
+	public void playSound(AudioBank p_soundName, int x, int y) {
+	    addSound(p_soundName, x, y, false, null);
+	}
+	
+	/**
 	 * Send to one client a sound from given entity's location
 	 * @param p_soundName
 	 * @param p_zildo

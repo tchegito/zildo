@@ -29,4 +29,5 @@ public interface AudioBank {
 	public int ordinal();
 	public String getFilename();
 	public String getSuffix();
+	public boolean isLooping();
 }

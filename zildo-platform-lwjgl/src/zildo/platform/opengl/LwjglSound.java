@@ -24,7 +24,9 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.FloatBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.newdawn.slick.openal.Audio;
@@ -40,6 +42,8 @@ public class LwjglSound extends Sound {
 
 	boolean music;
 	boolean loop = false;
+	
+	int soundId;
 	
 	@Override
 	public void finalize() {
@@ -85,7 +89,7 @@ public class LwjglSound extends Sound {
 		if (music) {
 			snd.playAsMusic(1.0f, 1.0f, true);
 		} else {
-			snd.playAsSoundEffect(1.0f, 1.0f, loop);
+			soundId = snd.playAsSoundEffect(1.0f, 1.0f, loop);
 		}
 	}
 
@@ -94,10 +98,19 @@ public class LwjglSound extends Sound {
 		if (music) {
 			play();
 		} else {
-			snd.playAsSoundEffect(1.0f, 1.0f, loop, x, y, 0);
+			soundId = snd.playAsSoundEffect(1.0f, 1.0f, loop, x, y, 0);
 		}
 	}
 	
+	public void setPosition(float x, float y) {
+		// TODO:handle master volume
+		FloatBuffer sourcePos = BufferUtils.createFloatBuffer(3);
+	    sourcePos.clear();
+		sourcePos.put(new float[] { x, y, 0 });
+	    sourcePos.flip();
+	    AL10.alSource(soundId, AL10.AL_POSITION, sourcePos);
+		//AL10.alSourcef(soundId, AL10.AL_GAIN, volume); 
+	}
 	@Override
 	public void stop() {
 		snd.stop();

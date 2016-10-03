@@ -164,6 +164,10 @@ public enum BankSound implements AudioBank {
 		return "wav";
 	}
 	
+	public boolean isLooping() {
+		return this == BankSound.Boiling;
+	}
+	
 	public BankSound next() {
 		return values()[this.ordinal() + 1];
 	}
