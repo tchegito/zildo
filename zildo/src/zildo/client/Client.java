@@ -545,6 +545,7 @@ public class Client {
 		
 		ClientEngineZildo.guiDisplay.clearGui();
 		ClientEngineZildo.spriteDisplay.clearSprites();
+		ClientEngineZildo.soundPlay.stopLooping();
 		ClientEngineZildo.ortho.setFilteredColor(new Vector3f(1, 1, 1));
 		ClientEngineZildo.ortho.setAmbientColor(new Vector3f(1, 1, 1));
 		ClientEngineZildo.filterCommand.restoreFilters();

@@ -47,8 +47,8 @@ public class SoundManagement {
 	List<WaitingSound> soundQueue=new ArrayList<WaitingSound>();
 	boolean forceMusic=false;	// TRUE if music is forced by script (ex:Angoisse) / FALSE if music is automatic with map
 	
-	private void addSound(AudioBank p_name, int p_x, int p_y, boolean p_broadcast, TransferObject p_object) {
-		soundQueue.add(new WaitingSound(p_name, new Point(p_x, p_y), p_broadcast, p_object));
+	private void addSound(AudioBank p_name, int p_x, int p_y, boolean p_broadcast, TransferObject p_object, boolean mute) {
+		soundQueue.add(new WaitingSound(p_name, new Point(p_x, p_y), p_broadcast, p_object, mute));
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class SoundManagement {
 	 * @param p_location (in pixel coordinates)
 	 */
 	public void broadcastSound(AudioBank p_name, Point p_location) {
-		soundQueue.add(new WaitingSound(p_name, p_location, true, null));
+		soundQueue.add(new WaitingSound(p_name, p_location, true, null, false));
 	}
 	
 	public List<WaitingSound> getQueue() {
@@ -74,7 +74,7 @@ public class SoundManagement {
 	 * @param p_source (in pixel coordinates)
 	 */
 	public void broadcastSound(AudioBank p_soundName, SpriteEntity p_source) {
-	    addSound(p_soundName, (int) p_source.x, (int) p_source.y, true, null);
+	    addSound(p_soundName, (int) p_source.x, (int) p_source.y, true, null, false);
 	}
 	
 	/**
@@ -83,15 +83,23 @@ public class SoundManagement {
 	 * @param x,y
 	 */
 	public void playSound(AudioBank p_soundName, int x, int y) {
-	    addSound(p_soundName, x, y, false, null);
+	    addSound(p_soundName, x, y, false, null, false);
+	}
+	
+	public void playSound(AudioBank p_soundName, int x, int y, boolean mute) {
+	    addSound(p_soundName, x, y, false, null, mute);
 	}
 	
 	/**
-	 * Send to one client a sound from given entity's location
+	 * Send to one client a sound from given entity's location (default max volume)
 	 * @param p_soundName
 	 * @param p_zildo
 	 */
 	public void playSound(AudioBank p_soundName, PersoPlayer p_zildo) {
+		playSound(p_soundName, p_zildo, false);
+	}
+
+	public void playSound(AudioBank p_soundName, PersoPlayer p_zildo, boolean mute) {
 		TransferObject obj=null;
 		int x=0, y=0;
 		if (p_zildo != null) {
@@ -100,9 +108,9 @@ public class SoundManagement {
 			x = (int) p_zildo.x;
 			y = (int) p_zildo.y;
 		}
-	    addSound(p_soundName, x, y, false, obj);
+	    addSound(p_soundName, x, y, false, obj, mute);
 	}
-
+	
 	public boolean isForceMusic() {
 		return forceMusic;
 	}

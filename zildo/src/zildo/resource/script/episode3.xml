@@ -364,17 +364,6 @@
 	    </action>
 	</quest>
 	
-	<!-- TODO: invent an attribute like 'repeat' but to be reset at each map switch -->
-	<quest name="boilingEleoric" locked="false">
-	    <trigger>
-	        <location name="eleom1"/>
-	    </trigger>
-	    <action>
-	        <!-- TODO: add location, and 'off' to cut it off -->
-   	   	    <sound name="Boiling" pos="85,39"/>
-	    </action>
-	</quest>
-	
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -453,7 +442,8 @@
    	   	    <if expQuest="!eleoWaitForVacto">
    	   	        <markQuest name="eleoSpeak" value="false"/>
    	   	    </if>
-   	   	    <markQuest name="boilingEleoric" value="false"/>
+   	   	    <!-- Ambient sound -->
+   	   	    <sound name="Boiling" pos="85,39"/>
    	   	</condition>
    	   	<condition name="chateausud">
 			<tile pos="32,10" action="illTree"/> <tile pos="42,10" action="illTree"/>

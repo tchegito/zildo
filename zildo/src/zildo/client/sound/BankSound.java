@@ -164,6 +164,7 @@ public enum BankSound implements AudioBank {
 		return "wav";
 	}
 	
+	/** Actually, looping is decided at sound definition itself, and can't be overriden in script **/
 	public boolean isLooping() {
 		return this == BankSound.Boiling;
 	}

@@ -393,10 +393,10 @@ public class ActionExecutor extends RuntimeExecutor {
                 case sound:
                 	BankSound snd=BankSound.valueOf(text);
                 	if (location != null) {
-                    	EngineZildo.soundManagement.playSound(snd, location.x, location.y);
+                    	EngineZildo.soundManagement.playSound(snd, location.x, location.y, !p_action.activate);
                 	} else {
                 		zildo=EngineZildo.persoManagement.getZildo();
-                		EngineZildo.soundManagement.playSound(snd, zildo);
+                		EngineZildo.soundManagement.playSound(snd, zildo, !p_action.activate);
                 	}
                 	achieved=true;
                 	break;

@@ -147,14 +147,15 @@ public class SinglePlayer extends GameStage {
             states.addAll(server.getClientStates());
         }
         
-        // Render events (1: server and 2: client)
+    	EngineZildo.soundManagement.resetQueue();
+
+    	// Render events (1: server and 2: client)
         state.event = engineZildo.renderEvent(state.event);
         state.event = clientEngineZildo.renderEvent(state.event);
             
     	EngineZildo.dialogManagement.resetQueue();
         //if (state.event.nature == ClientEventNature.NOEVENT) {
             // Reset queues
-        	EngineZildo.soundManagement.resetQueue();
         //}
         // Read keyboard
         instant.update();

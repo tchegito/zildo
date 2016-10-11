@@ -176,6 +176,7 @@ public class ActionElement extends LanguageElement {
 			if (!strPos.isEmpty()) {
 				location = IPoint.fromString(strPos);
 			}
+			activate = !isTrue("mute");
 		case map:
 		case music:
 			// String

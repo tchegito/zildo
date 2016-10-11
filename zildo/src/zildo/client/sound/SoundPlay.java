@@ -199,7 +199,9 @@ public class SoundPlay {
 					if (!sound.isSoundFX) {
 						currentMusic = (BankMusic) sound.name;
 					}
-					if (sound.isSoundFX || musicEnabled) {
+					if (sound.mute) {
+						stopSoundFX(sound.name);
+					} else if (sound.isSoundFX || musicEnabled) {
 						float dx = 0f;
 						float dy = 0f;
 						if (sound.location != null) {
@@ -248,5 +250,12 @@ public class SoundPlay {
 		BankMusic mus = ClientEngineZildo.ambient.getCurrentMusic();
 		stopSoundFX(mus);
 		ClientEngineZildo.ambient.setCurrentMusic(null);
+	}
+	
+	/** Remove all looping sounds. Mandatory for map change, or game quit **/
+	public void stopLooping() {
+		for (WaitingSound sound : currentlyLoopingSounds) {
+			stopSoundFX(sound.name);
+		}
 	}
 }

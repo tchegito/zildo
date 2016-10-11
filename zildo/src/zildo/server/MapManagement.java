@@ -815,7 +815,9 @@ public class MapManagement {
 		// Adjust map at Zildo's location
 		if (zildo != null) {
 			zildo.walkTile(false);
-		}	
+		}
+		// Cut any looping sound, ambient for previous map
+		ClientEngineZildo.soundPlay.stopLooping();
 	}
 	
 	/**
