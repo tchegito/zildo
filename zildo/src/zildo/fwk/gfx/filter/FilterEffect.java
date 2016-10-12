@@ -38,7 +38,8 @@ public enum FilterEffect {
 	ZOOM(ZoomFilter.class),
 	CIRCLE(CircleFilter.class),
 	CLOUD(CloudFilter.class),
-	STATIC(FitToScreenFilter.class);
+	STATIC(FitToScreenFilter.class),
+	BLACKBLUR(BlackBlurFilter.class);
 
 	// RedFilter isn't declared here because it doesn't need
 	// to be platform-specific. It's just a red box on whole screen.

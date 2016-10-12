@@ -1,6 +1,5 @@
 // from https://www.shadertoy.com/view/XsXSWS
 
-uniform vec4 iResolution;
 uniform vec4 iGlobalTime;
 
 // procedural noise from IQ

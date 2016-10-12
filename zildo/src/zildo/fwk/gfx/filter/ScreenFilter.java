@@ -120,6 +120,7 @@ public abstract class ScreenFilter extends QuadPrimitive {
 		
 	}
 	
+	/** Called when filter is just being activated **/
 	public void doOnActive(FilterEffect effect) {
 		
 	}

@@ -28,6 +28,7 @@ import zildo.client.Client;
 import zildo.client.Client.ClientType;
 import zildo.client.ClientEngineZildo;
 import zildo.client.gui.menu.PlayerNameMenu;
+import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.monde.Game;
 import zildo.monde.map.Area;
@@ -97,6 +98,9 @@ public class SinglePlayer extends GameStage {
         // Clear potential messages (version display)
         ClientEngineZildo.guiDisplay.clearMessages();
         
+        // Smooth filter
+		ClientEngineZildo.filterCommand.fadeIn(FilterEffect.BLACKBLUR);
+
         // Initialize map
         Area map=EngineZildo.mapManagement.getCurrentMap();
         if (map != null) {

@@ -795,7 +795,8 @@ public class MapManagement {
 	/**
 	 * Do some post-initialization:<ul>
 	 * <li>Clear the way around Zildo (open door for example)</li>
-	 * <li>Init Zildo's followers location and behavior</li></ul>
+	 * <li>Init Zildo's followers location and behavior</li>
+	 * <li>Remove looping sounds</li></ul>
 	 */
 	public void postLoadMap(boolean p_scroll) {
 		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();

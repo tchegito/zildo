@@ -50,7 +50,9 @@ public class LwjglPixelShaders extends PixelShaders {
 		star,
 		fire,
 		// Clipping shader
-		clip;
+		clip,
+		// Fade rotation
+		blackBlur;
 	}
 	
 	@Override

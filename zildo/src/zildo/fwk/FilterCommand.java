@@ -35,6 +35,7 @@ import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.FitToScreenFilter;
 import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
+import zildo.fwk.gfx.filter.BlackBlurFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
 import zildo.resource.Constantes;
 
@@ -132,6 +133,10 @@ public class FilterCommand {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void fadeIn(FilterEffect... p_effects)
 	{
+		if (fadeLevel == 0) {
+			// Allow a fade in to be launched, even if fade out hasn't been done
+			fadeLevel = 255;
+		}
 		asked_FadeIn  = true;
 		asked_FadeOut = false;
 		fadeStarted = true;
@@ -271,6 +276,7 @@ public class FilterCommand {
 		addFilter(Zildo.pdPlugin.getFilter(CircleFilter.class));
 		addFilter(new RedFilter(Zildo.pdPlugin.gfxStuff));
 		addFilter(new LightningFilter(Zildo.pdPlugin.gfxStuff));
+		addFilter(Zildo.pdPlugin.getFilter(BlackBlurFilter.class));
 		addFilter(Zildo.pdPlugin.getFilter(BilinearFilter.class));
 		active(BilinearFilter.class, true, null);		
 	}	
