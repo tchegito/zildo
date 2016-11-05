@@ -26,8 +26,9 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.junit.Assert;
-
 import org.junit.Test;
+
+import zildo.monde.dialog.Behavior;
 
 /**
  * @author Tchegito
@@ -102,6 +103,19 @@ public class CheckDialogs {
 		}
 	}
 	
+	/** Just basic test about {@link Behavior#getLength} class. **/
+	@Test
+	public void behaviors() {
+		Behavior behav = new Behavior("nanie");
+		Assert.assertEquals(0, behav.getLength());
+		
+		behav.replique[0] = 2;
+		Assert.assertEquals(1, behav.getLength());
+		
+		behav.replique[4] = 3;
+		Assert.assertEquals(5, behav.getLength());
+		
+	}
 	private boolean charIdem(String s1, String s2, char a) {
 		return (s1.indexOf(a) * s2.indexOf(a)) > 0;
 	}
