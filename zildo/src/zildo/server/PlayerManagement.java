@@ -219,7 +219,9 @@ public class PlayerManagement {
 					deltaX = zildoSpeed * direction.x;
 					deltaY = zildoSpeed * direction.y;
 					heros.increaseAcceleration();
-					heros.setAngle(Angle.fromDelta(deltaX, deltaY));
+					if (deltaX != 0 || deltaY != 0) {
+						heros.setAngle(Angle.fromDelta(deltaX, deltaY));
+					}
 				}/*
 				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_LEFT)) {
 					deltaX-=zildoSpeed;

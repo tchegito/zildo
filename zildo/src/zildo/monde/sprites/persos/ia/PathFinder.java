@@ -88,14 +88,14 @@ public class PathFinder {
         if (x < target.x - 0.5f) {
             delta.x = velocity;
         	move++;
-            if (pos.x + delta.x > target.x + 0.5f) {
+            if (pos.x + delta.x >= target.x + 0.5f) {
                 delta.x = target.x - mobile.x;
             }
             a=Angle.EST;
         } else if (x > target.x + 0.5f) {
             delta.x = -velocity;
             move++;
-            if (pos.x + delta.x < target.x - 0.5f) {
+            if (pos.x + delta.x <= target.x - 0.5f) {
                 delta.x = target.x - mobile.x;
             }
             a=Angle.OUEST;
