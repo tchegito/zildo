@@ -22,13 +22,22 @@ package zildo.monde.dialog;
 
 public class Behavior {
 
-    public String persoName;	// max length=8
-    public int[] replique=new int[10];
-    
-    public Behavior(String p_persoName) {
-    	persoName = p_persoName;
-    	for (int i=0;i<replique.length;i++) {
-    		replique[i]=0;
-    	}
-    }
+	public String persoName; // max length=8
+	public int[] replique = new int[15];
+
+	public Behavior(String p_persoName) {
+		persoName = p_persoName;
+		for (int i = 0; i < replique.length; i++) {
+			replique[i] = 0;
+		}
+	}
+
+	/** Returns the number of occupied rooms in 'replique' array **/
+	public int getLength() {
+		int i = replique.length - 1;
+		while (i >= 0 && replique[i] == 0) {
+			i--;
+		}
+		return i + 1;
+	}
 }

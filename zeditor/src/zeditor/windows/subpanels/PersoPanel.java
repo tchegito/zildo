@@ -121,7 +121,7 @@ public class PersoPanel extends JPanel {
 
 		// Spinner for the dialogs
 		spinner = new JSpinner();
-		spinner.setPreferredSize(new Dimension(40, 12));
+		spinner.setPreferredSize(new Dimension(50, 12));
 		initSpinner();
 		JPanel subPanel = new JPanel();
 		subPanel.setLayout(new BorderLayout());
@@ -217,7 +217,7 @@ public class PersoPanel extends JPanel {
 					break;
 				}
 			}
-			max = 9;
+			max = behavior.replique.length - 1;
 		}
 		spinner.setModel(new SpinnerNumberModel(0, 0, max, -1)); // -1 to get
 																	// next

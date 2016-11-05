@@ -956,8 +956,10 @@ public class Area implements EasySerializable {
 				for (Entry<String, Behavior> entry : behaviors.entrySet()) {
 					p_file.put(entry.getKey());
 					Behavior behav = entry.getValue();
-					for (int i : behav.replique) {
-						p_file.put((byte) i);
+					int len = behav.getLength();
+					p_file.put((byte) len);
+					for (int i=0;i<len;i++) {
+						p_file.put((byte) behav.replique[i]);
 					}
 				}
 			}
@@ -1230,8 +1232,12 @@ public class Area implements EasySerializable {
 						// On lit le nom
 						String nomPerso = p_buffer.readString();
 						// On lit le comportement
-						short[] comportement = new short[10];
-						p_buffer.readUnsignedBytes(comportement, 0, 10);
+						short[] comportement = new short[15];
+						for (int i=0;i<comportement.length;i++) {
+							comportement[i] = 0;
+						}
+						int lenComp = p_buffer.readByte();
+						p_buffer.readUnsignedBytes(comportement, 0, lenComp);
 						map.dialogs.addBehavior(nomPerso, comportement);
 					}
 				}
