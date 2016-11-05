@@ -32,11 +32,19 @@ public class Pnj4 extends SpriteBanque {
 			// Vacto
 			new Zone(0, 3, 16, 26), new Zone(16, 2, 16, 27),
 			new Zone(33, 4, 13, 25), new Zone(48, 3, 13, 26),
-			new Zone(64, 3, 14, 26), new Zone(79, 2, 16, 27)
+			new Zone(64, 3, 14, 26), new Zone(79, 2, 16, 27),
+			
+		    // Dying squirrel
+		    new Zone(1, 48, 14, 12),
+		    new Zone(17, 48, 14, 12), 
+		    new Zone(32, 47, 14, 13),
+		    new Zone(48, 47, 14, 13), new Zone(64, 49, 18, 11), new Zone(84, 54, 24, 6)
+
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("turret", 0, 0),
-				new GraphChange("pnj2", 8, 0)
+				new GraphChange("pnj2", 8, 0),
+				new GraphChange("squirrel", 23, 0)
 		});
 	}
 }

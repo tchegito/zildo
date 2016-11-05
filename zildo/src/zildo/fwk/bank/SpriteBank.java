@@ -150,7 +150,7 @@ public class SpriteBank {
 	}
 	
 	public int whichPalette(int nSpr) {
-		if (name.equals("pnj3.spr") && ((nSpr >= 66))) {	// Dragon => Decroded palette
+		if (name.equals("pnj3.spr") && nSpr >= 66) {	// Dragon => Decroded palette
 			return 2;
 		} else if (name.equals("elem.spr") && (nSpr == 245 || nSpr == 246 || nSpr == 247)) {
 			return 2;

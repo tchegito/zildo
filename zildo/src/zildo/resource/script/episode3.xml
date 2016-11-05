@@ -364,6 +364,16 @@
 	    </action>
 	</quest>
 	
+	<quest name="giveAntidote">
+	    <trigger>
+	        <location name="eleom1"/>
+	        <dialog name="eleoric" num="9"/>
+	    </trigger>
+	    <action>
+	        <take item="CUREPOTION"/>
+	    </action>
+	</quest>
+	
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -476,6 +486,7 @@
 	
 	<scene id="meetIsidore">
 		<!--  Remember that Roxy's character when she's a squirrel, is 'zildo' ( ... ) -->
+		<music name="Isidore"/>
 		<angle who="zildo" value="1"/>
 		<focus who="isidore" delta="true"/>
 		<wait value="60"/>
@@ -525,8 +536,10 @@
 		<moveTo who="zildo" pos="491,643" unblocked="true"/>
 		<moveTo who="isidore" pos="452,580"/>
 		<wait value="20"/>
+		<music/>
 		<angle who="zildo" value="2"/>
 		<speak text="sousbois.roxy.8" who="zildo"/>				
+		<music name="Squirrel"/>
 	</scene>
 	
 	<tileAction id="fireflies">

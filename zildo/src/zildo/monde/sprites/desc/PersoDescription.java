@@ -79,7 +79,10 @@ public enum PersoDescription implements SpriteDescription {
 	PRINCESS_BUNNY(203, 204, 
 			313, 314, 315, 316, 
 			317, 318, 319, 320, 
-			321, 322, 323, 324),
+			321, 322, 323, 324,
+			// Dying +44
+			391, 392, 393, 394, 395, 396
+			),
 	GARCON_BLEU(205, 206),
 	GARCON_JAUNE(207, 208),
 	FERMIERE(209, 210, 211, 212, 213, 214),

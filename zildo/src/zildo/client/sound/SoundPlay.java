@@ -189,7 +189,9 @@ public class SoundPlay {
 				dy = (sound.location.y - listeningPoint.y) / 16f / 8f;
 			}
 			Sound snd = tabSounds.get(sound.name);
-			snd.setPosition(dx, dy);
+			if (snd != null) {
+				snd.setPosition(dx, dy);
+			}
 		}
 		for (WaitingSound sound : p_sounds) {
 			if (sound.broadcast || sound.client == null) {

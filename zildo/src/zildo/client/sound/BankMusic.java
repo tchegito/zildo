@@ -35,6 +35,7 @@ public enum BankMusic implements AudioBank {
 	 Voleurs("Voleurs"),
 	 Attaque("Attaque"),
 	 Squirrel("Roxyforest"),
+	 Isidore("Squirrel"),
 	 Story("Story"),
 	 Nature("Nature");
 	 

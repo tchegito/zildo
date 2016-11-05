@@ -223,6 +223,7 @@ public class PersoPlayer extends Perso {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// attack
 	// /////////////////////////////////////////////////////////////////////////////////////
+	/** When hero uses item he has in hand: attack/drink **/
 	@Override
 	public void attack() {
 		boolean outOfOrder = false;
@@ -320,6 +321,10 @@ public class PersoPlayer extends Perso {
 			} else {
 				affections.toggle(AffectionKind.FIRE_DAMAGE_REDUCED, weapon);
 			}
+			break;
+		case CUREPOTION:
+			sentence = UIText.getGameText("curepotion.action");
+			EngineZildo.dialogManagement.launchDialog(EngineZildo.getClientState(), null, new ScriptAction(sentence));
 			break;
 		}
 		if (outOfOrder) {
@@ -708,11 +713,27 @@ public class PersoPlayer extends Perso {
 				shadow.setX(x+1);	// adjust shadow
 				break;
 			}
-			xx -= 7 -3;
-			yy -= sprModel.getTaille_y()-1; //21;
-			shadow.setZ(shadow.z - 1);	// Display shadow under character => else, this would be weird ;)
-			setAjustedX((int) xx);
-			setAjustedY((int) yy);
+			switch (mouvement) {
+			case MORT:
+				int dyingSprite = PersoDescription.PRINCESS_BUNNY.nth(14);
+				setNSpr(dyingSprite);
+				setNBank(SpriteBank.BANK_PNJ4);
+				sprModel = EngineZildo.spriteManagement.getSpriteBank(getNBank()).get_sprite(dyingSprite + addSpr);
+				setAjustedX((int) xx - sprModel.getTaille_x() / 2);
+				setAjustedY((int) yy - sprModel.getTaille_y());
+				shadow.setVisible(false);
+				break;
+			default:
+				xx -= 7 -3;
+				yy -= sprModel.getTaille_y()-1; //21;
+				shadow.setZ(shadow.z - 1);	// Display shadow under character => else, this would be weird ;)
+				setAjustedX((int) xx);
+				setAjustedY((int) yy);
+				break;
+			}
+			
+			if (mouvement == MouvementZildo.MORT) {
+			}
 		} else {
 			// Appearance : Hero
 			if (isAffectedBy(AffectionKind.FIRE_DAMAGE_REDUCED)) {

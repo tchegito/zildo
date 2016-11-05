@@ -169,7 +169,20 @@
 		<angle who="zildo" value="1"/>
 		<wait value="4"/>
 		<angle who="zildo" value="2"/>
+		<perso who="zildo" addSpr="0"/>	<!-- for squirrel -->
 		<script who="zildo" text="MORT"/>
+		<!-- Do this sequence ONLY when Roxy is on stage -->
+		<wait value="5"/>
+		<perso who="zildo" addSpr="1"/>
+		<wait value="5"/>
+		<perso who="zildo" addSpr="2"/>
+		<wait value="20"/>
+		<perso who="zildo" addSpr="3"/>
+		<wait value="20"/>
+		<perso who="zildo" addSpr="4"/>
+		<wait value="7"/>
+		<perso who="zildo" addSpr="5"/>
+		
 		<wait value="59"/>
 		<fadeOut type="0"/>
 		<end type="1"/>
