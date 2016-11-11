@@ -259,5 +259,6 @@ public class SoundPlay {
 		for (WaitingSound sound : currentlyLoopingSounds) {
 			stopSoundFX(sound.name);
 		}
+		currentlyLoopingSounds.clear();
 	}
 }

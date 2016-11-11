@@ -344,27 +344,18 @@
 	    </action>
 	</quest>
 	
-	<quest name="completeNettle2" locked="false"> <!-- Remove nettle count -->
+	<quest name="completeNettle2"> <!-- Remove nettle count -->
 	    <trigger>
 	        <location name="eleom1"/>
 	        <dialog name="eleoric" num="8"/>
 	    </trigger>
 	    <action>
 	        <herospecial value="8" arg="-1"/>
-	    </action>
-	</quest>
-	
-	<quest name="prepareAntidote">
-	    <trigger>
-	        <location name="eleom1" pos="87,82" radius="4"/>
-	        <questDone name="completeNettle2"/>
-	    </trigger>
-	    <action>
 	        <exec script="EleoPrepareAntidote"/>
 	    </action>
 	</quest>
-	
-	<quest name="giveAntidote">
+
+	<quest name="giveAntidote" locked="false">
 	    <trigger>
 	        <location name="eleom1"/>
 	        <dialog name="eleoric" num="9"/>
@@ -1209,6 +1200,7 @@
 	</scene>
 	
 	<scene id="EleoPrepareAntidote">
+	    <music name=""/>
 	    <script who="eleoric" value="3"/>
 	    <moveTo who="eleoric" pos="88,58" unstoppable="true"/>
 	    <angle who="eleoric" value="0"/>
@@ -1240,6 +1232,7 @@
 	    <speak who="eleoric" text="eleom1.e.13"/>
 	    <angle who="eleoric" value="2"/>
 	    <speak who="eleoric" text="eleom1.e.14"/>
+	    <markQuest name="antidotePrepared" value="true"/>
    	</scene>
 	
 	<!-- Many random explosions on given character and hide him at the middle of the show -->
