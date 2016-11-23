@@ -135,8 +135,8 @@ public class BackgroundPanel extends JPanel {
 			}
 		};
 		radioDraw = new JRadioButton("Draw");
-		radioReverse = new JRadioButton("Reverse");
-		radioRotate = new JRadioButton("Rotation");
+		radioReverse = new JRadioButton("Rev");
+		radioRotate = new JRadioButton("Rot");
 		radioRaise =new JRadioButton("Raise");
 		radioLower =new JRadioButton("Lower");
 		radioRemove =new JRadioButton("Remove");

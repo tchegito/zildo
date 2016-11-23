@@ -35,7 +35,7 @@ public enum GearDescription implements SpriteDescription {
 	
 	BOULDER,
 	
-	CAVE_SIMPLEDOOR, CAVE_MASTERDOOR, CAVE_KEYDOOR(true),
+	CAVE_SIMPLEDOOR, CAVE_MASTERDOOR(true), CAVE_KEYDOOR(true),
 	CAVE_KEYDOOR_OPENING(false),
 
 	BOULDER2,
@@ -62,6 +62,7 @@ public enum GearDescription implements SpriteDescription {
 				d.closedDoor = GearDescription.values()[d.ordinal() - 1];
 			}
 		}
+		CAVE_MASTERDOOR.openingDoor = CAVE_KEYDOOR_OPENING;
 	}
 	
 	private GearDescription() {

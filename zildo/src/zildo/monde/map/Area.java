@@ -1097,7 +1097,8 @@ public class Area implements EasySerializable {
 					default: // else, show it as a regular element
 						SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
 						if (desc == GearDescription.GREEN_DOOR ||	// Opened door ?
-							desc == GearDescription.CAVE_KEYDOOR) {
+							desc == GearDescription.CAVE_KEYDOOR ||
+							desc == GearDescription.CAVE_MASTERDOOR) {
 							ChainingPoint ch = map.getCloseChainingPoint(ax, ay);
 							if (ch != null && EngineZildo.scriptManagement.isOpenedDoor(map.getName(), ch)) {
 								break;

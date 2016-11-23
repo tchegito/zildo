@@ -93,6 +93,7 @@ public class ZSpriteLibrary {
 			case REDSPHERE1: case REDSPHERE2: case REDSPHERE3:
 			case BROWNSPHERE1: case BROWNSPHERE2: case BROWNSPHERE3:
 			case CANDLE2: case CANDLE3:
+			case CAULDRON2: case CAULDRON3:
 			//case LAUNCHER2:
 			case BULLET:
 			case HEARTH2: case HEARTH3: case HEARTH4: case HEARTH5: case HEARTH6:

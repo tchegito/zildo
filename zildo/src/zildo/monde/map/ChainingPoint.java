@@ -44,6 +44,9 @@ public class ChainingPoint implements EasySerializable {
 		STAIRS_CORNER_RIGHT("stairsUpCornerRight", "stairsUpCornerRightEnd"),
 		STAIRS_CORNER_DOWN_LEFT("stairsDownCornerLeft", "stairsDownCornerLeftEnd"), 
 		STAIRS_CORNER_DOWN_RIGHT("stairsDownCornerRight", "stairsUpCornerRightEnd"),
+		// Stairs at the lower of the tile
+		STAIRS_SHORT_CORNER_LEFT("stairsShortUpCornerLeft", "stairsShortUpCornerLeftEnd"), 
+		STAIRS_SHORT_CORNER_RIGHT("stairsShortUpCornerRight", "stairsShortUpCornerRightEnd"),
 
 		PIT("fallPit", ""),
 		WOODSTAIRS_CORNER_LEFT("woodStairsUpCornerLeft", "woodStairsDownEnd"),
@@ -130,6 +133,7 @@ public class ChainingPoint implements EasySerializable {
 		return orderY;
 	}
 
+	/** Get transition kind based on graphic tile **/
 	public MapLink getLinkType() {
 		int infomap = EngineZildo.mapManagement.getCurrentMap().readmap(px/2, py/2 + (py % 2));
 		switch (infomap) {
@@ -151,6 +155,13 @@ public class ChainingPoint implements EasySerializable {
 			return MapLink.WOODSTAIRS_CORNER_LEFT;
 		case 512 + 201:
 			return MapLink.WOODSTAIRS_END;
+		// Lavacave stairs
+		case 10*256 + 125:
+		case 10*256 + 126:
+			return MapLink.STAIRS_SHORT_CORNER_LEFT;
+		case 10*256 + 129:
+		case 10*256 + 130:
+			return MapLink.STAIRS_SHORT_CORNER_RIGHT;
 		default:
 			return MapLink.REGULAR;
 		}
