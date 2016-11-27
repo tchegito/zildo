@@ -1490,6 +1490,12 @@ public class PersoPlayer extends Perso {
 		return getPv() > 0;
 	}
 
+	@Override
+	public void setAngle(Angle angle) {
+		super.setAngle(angle);
+		this.sightAngle = angle;
+	}
+	
 	public void setSightAngle(Angle sightAngle) {
 		this.sightAngle = sightAngle;
 	}
