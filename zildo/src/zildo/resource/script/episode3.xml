@@ -9,6 +9,7 @@
 		</action>
 	</quest>
 	
+	<!-- If this quest is done, hero would appear as a squirrel -->
 	<quest name="hero_princess">
 		<history>
 			<herospecial value="6"/>
