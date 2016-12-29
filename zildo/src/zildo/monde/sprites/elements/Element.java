@@ -372,13 +372,15 @@ public class Element extends SpriteEntity {
 					 * //spawnsprite_generic(SPR_ECLATEPIERRE,round(x),round(y),0);
 					 * }
 					 */
-					// I added 'isNotFixe' condition, because collision is already added in "physicMoveWithCollision" on this case
-				} else if (!isGoodies() && desc.isDamageable() && !desc.isNotFixe()) {
-					// Collision avec les ennemis (uniquement dans le cas où l'objet
-					// est en mouvement)
-					Collision collision = getCollision();
-					if (vx != 0 || vy != 0 || vz != 0 || collision != null) {
-						manageCollision();
+				} else if (!isGoodies() && desc.isDamageable()) {
+					if (desc.isNotFixe() && isSolid() && !desc.isPushable()) {
+						// Collision already handled in physicMoveWithCollision (OPTIMIZATION)
+					} else {
+						// Collision with enemies (only when object is moving)
+						Collision collision = getCollision();
+						if (vx != 0 || vy != 0 || vz != 0 || collision != null) {
+							manageCollision();
+						}
 					}
 				}
 			}

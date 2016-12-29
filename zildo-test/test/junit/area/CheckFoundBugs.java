@@ -184,16 +184,7 @@ public class CheckFoundBugs extends EngineUT {
 		int initialHeroPv = zildo.getPv();
 		
 		// Wait for snake to launch some projectile
-		SpriteEntity projectile = null;
-		while (projectile == null) {
-			for (SpriteEntity entity : sprites()) {
-				if (entity.getDesc() == ElementDescription.BROWNSPHERE1 && entity.isVisible()) {
-					projectile = entity;
-					break;
-				}
-			}
-			renderFrames(1);
-		}
+		SpriteEntity projectile = waitForProjectile(ElementDescription.BROWNSPHERE1);
 	
 		zildo.setPos(new Vector2f(102, 162));
 		// Now we wait for projectile to be just in front of hero
@@ -215,6 +206,30 @@ public class CheckFoundBugs extends EngineUT {
 		}
 		Assert.assertEquals("Snake should not have lost any HP !", initialSnakePv, snake.getPv());
 		Assert.assertEquals(initialHeroPv,  zildo.getPv());
+	}
+	
+	@Test
+	public void projectileStillHitHero() {
+		mapUtils.loadMap("igorlily");
+		PersoPlayer zildo = spawnZildo(102, 153);
+		waitEndOfScripting();
+		
+		int pv = zildo.getPv();
+		
+		// Wait serpent to throw a projectile
+		SpriteEntity projectile = waitForProjectile(ElementDescription.BROWNSPHERE1);
+		boolean touchHero = false;
+		// Wait for projectile to hit hero
+		int previousDist = 10000;
+		while (!touchHero && !projectile.dying) {
+			int distance = (int)Point.distance(zildo.x, zildo.y, projectile.x, projectile.y);
+			touchHero = distance > previousDist;
+			previousDist = distance;
+			renderFrames(1);
+			if (touchHero) System.out.println(distance);
+		}
+		// Check that hero has been wounded
+		Assert.assertEquals("Hero should have been hit by the serpent's projectile !", pv-1, zildo.getPv());
 	}
 	
 	@Test
@@ -354,5 +369,20 @@ public class CheckFoundBugs extends EngineUT {
 		Assert.assertFalse(EngineZildo.scriptManagement.isScripting());
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("vert_seen"));
 
+	}
+	
+	/** Wait for a specific projectile to be thrown. Be careful, because wait is unlimited. **/
+	private SpriteEntity waitForProjectile(ElementDescription desc) {
+		SpriteEntity projectile = null;
+		while (projectile == null) {
+			for (SpriteEntity entity : sprites()) {
+				if (entity.getDesc() == desc && entity.isVisible()) {
+					projectile = entity;
+					break;
+				}
+			}
+			renderFrames(1);
+		}
+		return projectile;
 	}
 }

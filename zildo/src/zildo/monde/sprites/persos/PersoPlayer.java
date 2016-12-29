@@ -731,9 +731,6 @@ public class PersoPlayer extends Perso {
 				setAjustedY((int) yy);
 				break;
 			}
-			
-			if (mouvement == MouvementZildo.MORT) {
-			}
 		} else {
 			// Appearance : Hero
 			if (isAffectedBy(AffectionKind.FIRE_DAMAGE_REDUCED)) {
