@@ -141,7 +141,7 @@ public class Tile implements Cloneable {
 	}
 	
 	public static boolean isBottomLess(int value) {
-		return (value == 256 * 3 + 217 || value == 41 + 256 * 9);
+		return (value == 256 * 3 + 217 || value == 41 + 256 * 9 || value == 256*10 + 34);
 	}
 	
 	/** Returns TRUE if given tile value could raise/lower hero from one floor to another (ex:ladder)

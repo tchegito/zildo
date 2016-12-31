@@ -45,6 +45,7 @@ public abstract class AllMapProcessor {
 
 	protected String mapName;
 	
+	/** Method called for each map. If it returns TRUE, map will be actually saved. **/
 	protected abstract boolean run();
 	
 	List<String> modifiedMaps = new ArrayList<String>();
