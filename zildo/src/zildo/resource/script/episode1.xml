@@ -1,6 +1,6 @@
 <adventure>
 
-	<quest name="flut_ask">
+	<quest name="flut_ask" locked="false">
 		<trigger>
 			<dialog name="papy" num="1"/>
 		</trigger>

@@ -39,6 +39,8 @@ public class ElementGoodies extends Element {
 	private int timeToAcquire;	// Untakeable. Zildo has just to wait to have it (for chest)
 	protected boolean volatil=true;	// TRUE=goodies disappear after a delay
 	protected boolean taken = false;
+	protected boolean delegateTaken = false;
+	
 	/**
 	 * Common goodies : volatil
 	 */
@@ -158,18 +160,24 @@ public class ElementGoodies extends Element {
 
 	@Override
 	public void beingTaken() {
-		taken = true;
-		alphaA = -1;	// Make it disappear smoothly
-		alphaV = -2;
-		if (questTrigger && desc instanceof ElementDescription) {	// Only for bank ELEMENTS now
-			// Activate a quest if we're asked for
-			String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
-			ElementDescription elemDesc = (ElementDescription) desc;
-			if (!ZUtils.isEmpty(name)) {
-				EngineZildo.scriptManagement.takeItem(mapName, null, name, elemDesc);
-			} else {
-				EngineZildo.scriptManagement.takeItem(mapName, new Point(x/16, y/16), null, elemDesc);
+		if (!delegateTaken) {
+			taken = true;
+			alphaA = -1;	// Make it disappear smoothly
+			alphaV = -2;
+			if (questTrigger && desc instanceof ElementDescription) {	// Only for bank ELEMENTS now
+				// Activate a quest if we're asked for
+				String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
+				ElementDescription elemDesc = (ElementDescription) desc;
+				if (!ZUtils.isEmpty(name)) {
+					EngineZildo.scriptManagement.takeItem(mapName, null, name, elemDesc);
+				} else {
+					EngineZildo.scriptManagement.takeItem(mapName, new Point(x/16, y/16), null, elemDesc);
+				}
 			}
 		}
+	}
+	
+	public void setDelegateTaken(boolean value) {
+		delegateTaken = value;
 	}
 }

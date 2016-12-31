@@ -1075,7 +1075,7 @@ public class PersoPlayer extends Perso {
 				return false;
 			} else {
 				// Automatic behavior (presentation text, ammos adjustments)
-				EngineZildo.scriptManagement.automaticBehavior(this, null, d);
+				EngineZildo.scriptManagement.automaticBehavior(this, p_element);
 
 				useItem(d, p_value);
 			}
@@ -1376,7 +1376,7 @@ public class PersoPlayer extends Perso {
 			EngineZildo.soundManagement.playSound(BankSound.ZildoTrouve, this);
 
 			// Automatic behavior (presentation text, ammos adjustments)
-			EngineZildo.scriptManagement.automaticBehavior(this, p_kind, null);
+			EngineZildo.scriptManagement.automaticBehavior(this, elem);
 
 			// Adventure trigger
 			if (!EngineZildo.game.multiPlayer) {

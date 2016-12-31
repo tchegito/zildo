@@ -23,7 +23,6 @@ package zildo.monde.items;
 import zildo.fwk.ui.UIText;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
-import zildo.monde.sprites.desc.ZildoDescription;
 
 public enum ItemKind {
 
@@ -37,11 +36,11 @@ public enum ItemKind {
 	DYNAMITE(true, ElementDescription.DYNAMITE, 10),
 	HAMMER(true, ElementDescription.SPADE, 10),	// TODO: replace by 'HAMMER' description
 	FLUT(false, ElementDescription.FLUT, 1),
-	GLOVE(false, ElementDescription.GLOVE, 20),
-	GLOVE_IRON(false, ElementDescription.SUPER_GLOVE, 40),
-	SHIELD(true, ZildoDescription.SHIELD_DOWN, 60),
-	SHIELD_MEDIUM(true, ElementDescription.SHIELD_RED, 60),
-	SHIELD_LARGE(true, ElementDescription.SHIELD_YELLOW, 60),
+	GLOVE(true, ElementDescription.GLOVE, 20),
+	GLOVE_IRON(true, ElementDescription.SUPER_GLOVE, 40),
+	SHIELD(true, ElementDescription.SHIELD_BLUE, 60),
+	SHIELD_MEDIUM(true, ElementDescription.SHIELD_YELLOW, 60),
+	//SHIELD_LARGE(true, ElementDescription.SHIELD_YELLOW, 60),
 	FLASK_RED(false, ElementDescription.FLASK_RED, 10),
 	SCEPTER(false, ElementDescription.SCEPTER, 0),
 	MILK(false, ElementDescription.MILK, 0),
@@ -94,8 +93,8 @@ public enum ItemKind {
 		return UIText.getGameText("item."+name());
 	}
 	
-	public String getFoundSentence() {
-    	String label=UIText.getGameText("automatic."+name());
+	public String getFoundSentence(String add) {
+    	String label=UIText.getGameText("automatic."+name()+add);
     	if (label.startsWith("automatic.")) {
     		return null;	// Label doesn't exist (security but this shouldn't occur)
     	}
@@ -104,7 +103,7 @@ public enum ItemKind {
 	
 	/** Returns TRUE if we should call 'useItem()' when hero buys it **/
 	public boolean canBeInInventory() {
-		return this != BLUEDROP;
+		return isWeapon() || (this != BLUEDROP && this != MOON);
 	}
 	
 	/** Returns TRUE if item can be multiple in the inventory. Typically, dynamites aren't. **/
@@ -112,6 +111,7 @@ public enum ItemKind {
 		return this != DYNAMITE; // && this != FLASK_RED;
 	}
 	
+	/** TRUE means that item can be counted in inventory, with a small digit below it. **/
 	public boolean isStackable() {
 		return this == FLASK_RED || this == FLASK_YELLOW || this == EMPTY_BAG || this == FULL_BAG;
 	}
