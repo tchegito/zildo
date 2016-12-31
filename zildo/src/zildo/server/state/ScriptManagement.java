@@ -50,8 +50,9 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.items.StoredItem;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.quest.StringReplacement;
-import zildo.monde.quest.actions.ScriptAction;
+import zildo.monde.quest.actions.TakingItemAction;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
@@ -431,38 +432,42 @@ public class ScriptManagement {
 	 * @param p_zildo
 	 * @param p_kind
 	 */
-	public void automaticBehavior(PersoPlayer p_zildo, ItemKind p_kind, ElementDescription p_desc) {
+	public void automaticBehavior(PersoPlayer p_zildo, Element p_element) { //ItemKind p_kind, ElementDescription p_desc) {
 		if (isScripting()) {
 			return;	// Go away, because a script has already taken the lead
 		}
+		ElementDescription p_desc = (ElementDescription) p_element.getDesc();
+		ItemKind p_kind = p_desc.getItem();
 		String label;
+		String add="";
 		if (p_kind == null) {
-			String add="";
-	    	if (p_desc == ElementDescription.HEART_FRAGMENT || p_desc == ElementDescription.HEART_FRAGMENT2) {
-	    		// Specific for moon fragment
-	    		if (!p_zildo.hasItem(ItemKind.NECKLACE)) {
-	    			add="0";
-	    		} else if (p_zildo.getMoonHalf() >= 2) {
-	    			add="3";
-	    		} else if (p_zildo.getMoonHalf() == 1) {
-	    			add="2";
-	    		} 
-	    	}
 			label = p_desc.getFoundSentence(add);
 		} else {
-	        switch (p_kind) {
-	        case BOW:
-	        	p_zildo.setCountArrow(p_zildo.getCountArrow() + 5);	// Bow comes with 5 arrows
-	        case DYNAMITE:
-	        	p_zildo.setCountBomb(p_zildo.getCountBomb() + 5);	// 5 bombs at start
-	        default:
-	        	break;
-	        }
-	    	label=p_kind.getFoundSentence();
+			switch (p_kind) {
+				// TODO:check if heart_fragment2 is a possibility
+		    	//if (p_desc == ElementDescription.HEART_FRAGMENT || p_desc == ElementDescription.HEART_FRAGMENT2) {
+				case MOON:
+		    		// Specific for moon fragment
+		    		if (!p_zildo.hasItem(ItemKind.NECKLACE)) {
+		    			add="0";
+		    		} else if (p_zildo.getMoonHalf() >= 2) {
+		    			add="3";
+		    		} else if (p_zildo.getMoonHalf() == 1) {
+		    			add="2";
+		    		}
+		    		break;
+		        case BOW:
+		        	p_zildo.setCountArrow(p_zildo.getCountArrow() + 5);	// Bow comes with 5 arrows
+		        case DYNAMITE:
+		        	p_zildo.setCountBomb(p_zildo.getCountBomb() + 5);	// 5 bombs at start
+		        default:
+		        	break;
+		    }
+	    	label=p_kind.getFoundSentence(add);
 		}
     	if (label != null) {
     		ClientState client = Server.getClientFromZildo(p_zildo);
-    		EngineZildo.dialogManagement.launchDialog(client, null, new ScriptAction(label));
+    		EngineZildo.dialogManagement.launchDialog(client, null, new TakingItemAction(label, p_element));
     	}
 	}
 	
