@@ -48,6 +48,9 @@ public class CheckScriptQuest extends EngineUT {
 		renderFrames(40);
 		Assert.assertEquals(1, zildo.getCountKey());
 		
+		simulatePressButton(Keys.Q, 2);	// Press to skip dialog
+		simulatePressButton(Keys.Q, 2);	// Press to close dialog frame
+				
 		goInsideHouseAndLiftJar();
 		Assert.assertNull("A key shouldn't have show up !", spriteManagement.lookFor(zildo, 2, ElementDescription.KEY, true));
 	}

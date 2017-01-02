@@ -160,8 +160,8 @@ public class ElementGoodies extends Element {
 
 	@Override
 	public void beingTaken() {
+		taken = true;
 		if (!delegateTaken) {
-			taken = true;
 			alphaA = -1;	// Make it disappear smoothly
 			alphaV = -2;
 			if (questTrigger && desc instanceof ElementDescription) {	// Only for bank ELEMENTS now
