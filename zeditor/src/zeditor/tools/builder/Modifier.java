@@ -54,6 +54,7 @@ import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.gui.GUIDisplay;
+import zildo.fwk.ZUtils;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.bank.TileBank;
 import zildo.fwk.gfx.engine.SpriteEngine;
@@ -207,7 +208,7 @@ public class Modifier {
 			if (bankName.equals("lavacave")) {
 				bankName = "LavaCave";
 			}
-			Class<?> clazz = Class.forName("zeditor.tools.banque."+StringUtils.capitalize(bankName));
+			Class<?> clazz = Class.forName("zeditor.tools.banque."+ZUtils.capitalize(bankName));
 			 if (Banque.class.isAssignableFrom(clazz)) {
 				 Banque b = (Banque) clazz.newInstance();
 				 return b;

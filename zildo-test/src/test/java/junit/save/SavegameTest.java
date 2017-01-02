@@ -7,8 +7,12 @@ import tools.EngineUT;
 import tools.annotations.DisableFreezeMonitor;
 import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasyWritingFile;
 import zildo.monde.Game;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.desc.ZildoOutfit;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.EngineZildo;
 
 // Disable freeze monitor, cause we're gonna sleep 4 seconds in each script
@@ -59,5 +63,15 @@ public class SavegameTest extends EngineUT {
 		int timeSpent = EngineZildo.game.getTimeSpent();
 		Assert.assertTrue("Time measured at the end ("+timeSpent+") should have been greater than starting time ("+savedTime+")", 
 				timeSpent > savedTime);
+	}
+	
+	@Test
+	public void createSavedGame() {
+		mapUtils.loadMap("voleurs");
+		PersoPlayer zildo = spawnZildo(137, 942);
+		zildo.getInventory().add(new Item(ItemKind.MIDSWORD));
+		EasyWritingFile buffer = new EasyWritingFile(new EasyBuffering());
+		EngineZildo.game.serialize(buffer);
+		buffer.saveFile("save.z69");
 	}
 }

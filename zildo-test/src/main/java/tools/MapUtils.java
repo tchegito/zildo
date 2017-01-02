@@ -17,7 +17,7 @@
  *
  */
 
-package junit.perso;
+package tools;
 
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;

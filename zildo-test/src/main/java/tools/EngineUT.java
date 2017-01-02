@@ -36,7 +36,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Matchers;
 
-import junit.perso.MapUtils;
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
