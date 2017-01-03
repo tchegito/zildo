@@ -147,14 +147,14 @@ public class CheckMapSave extends TestCase {
 			if (!compareEntity(e1, e2)) {
 				System.out.println(e1);
 			}
-			assertTrue(msg("entity n°"+i+" is different."), compareEntity(e1, e2));
+			assertTrue(msg("entity nÂ°"+i+" is different."), compareEntity(e1, e2));
 		}
 		
 		// Perso arrays are same sized too
 		for (int i=0;i<originalPersos.size();i++) {
 			Perso p1=originalPersos.get(i);
 			Perso p2=copiedPersos.get(i);
-			assertTrue(msg("perso n°"+i+" is different."), comparePerso(p1, p2));
+			assertTrue(msg("perso nÂ°"+i+" is different."), comparePerso(p1, p2));
 		}
 	}
 

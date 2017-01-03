@@ -26,6 +26,7 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -75,6 +76,7 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
+import zildo.resource.Constantes;
 import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
@@ -224,6 +226,15 @@ public class EngineUT {
 	
 	@Before
 	public void setUp() {
+		// Check if environment variable is provided to get data folder
+		String dataFolder = System.getProperty("ZILDO_DATA");
+		if (dataFolder != null) {
+			if (!dataFolder.endsWith(File.separator)) {
+				dataFolder += File.separator;
+			}
+			Constantes.DATA_PATH = dataFolder;
+		}
+		
 		Game game = new Game(null, "hero");
 		initServer(game);
 		
