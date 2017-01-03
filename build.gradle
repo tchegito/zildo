@@ -9,6 +9,9 @@
 
 // Apply the java plugin to add support for Java
 allprojects {
+	tasks.withType(JavaCompile) {
+		options.encoding = 'UTF-8'
+	}
 }
 
 subprojects {
