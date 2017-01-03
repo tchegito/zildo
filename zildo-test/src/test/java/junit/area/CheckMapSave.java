@@ -98,8 +98,8 @@ public class CheckMapSave extends TestCase {
 	 */
 	public void testBinary() {
         // Now compare files
-        EasyReadingFile original=new EasyReadingFile("maps\\"+MAP_ORIGINAL);
-        EasyReadingFile copied=new EasyReadingFile("maps\\"+MAP_TEST);
+        EasyReadingFile original=new EasyReadingFile("maps"+File.separator+MAP_ORIGINAL);
+        EasyReadingFile copied=new EasyReadingFile("maps"+File.separator+MAP_TEST);
         
         String message="Size1="+original.getSize()+" / Size2="+copied.getSize();
 
