@@ -60,7 +60,7 @@ public class VBOSoftware implements VBO {
 	@Override
 	public void endInitialization(VBOBuffers p_bufs) {
 		if (p_bufs.vertices.position() != 0) {
-			// On se repositionne ‡ zÈro uniquement si on y est pas dÈj‡
+			// On se repositionne √† z√©ro uniquement si on y est pas d√©j√†
 			p_bufs.vertices.flip();
 		}
 		if (p_bufs.textures.position() != 0) {

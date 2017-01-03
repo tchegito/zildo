@@ -102,6 +102,7 @@ public class LwjglSound extends Sound {
 		}
 	}
 	
+	@Override
 	public void setPosition(float x, float y) {
 		// TODO:handle master volume
 		FloatBuffer sourcePos = BufferUtils.createFloatBuffer(3);

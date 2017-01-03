@@ -58,7 +58,7 @@ public class FBOHardware implements FBO {
 
 	@Override
 	public void bindToTexture(int myTextureId, int myFBOId) {
-		// On bind le FBO à la texture
+		// On bind le FBO Ã  la texture
 		EXTFramebufferObject.glBindFramebufferEXT(
 				EXTFramebufferObject.GL_FRAMEBUFFER_EXT, myFBOId);
 		EXTFramebufferObject.glFramebufferTexture2DEXT(
@@ -66,7 +66,7 @@ public class FBOHardware implements FBO {
 				EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT,
 				GL11.GL_TEXTURE_2D, myTextureId, 0);
 
-		// Puis on détache la texture de la vue
+		// Puis on dÃ©tache la texture de la vue
 		EXTFramebufferObject.glBindFramebufferEXT(
 				EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
 	}

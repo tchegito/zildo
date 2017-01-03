@@ -201,7 +201,7 @@ public class LwjglOrtho extends Ortho {
 	@Override
 	public void endDraw() {
 		GL11.glEnd();
-		// On se remet où on était et on réactive le texturing
+		// On se remet oÃ¹ on Ã©tait et on rÃ©active le texturing
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glColor3f(1.0f, 1.0f, 1.0f); // , 1.0f);
 		GL11.glPopMatrix();

@@ -120,7 +120,11 @@ public class LwjglTileEngine extends TileEngine {
 		// Display tiles on it
 		int x = 0, y = 0;
 		
-		for (int n = 0; n < mBank.getNb_motifs(); n++)
+		int nbTiles = mBank.getNb_motifs();
+		if (nbTiles > 256) {
+			throw new RuntimeException("Unable to record +256 tiles in a bank ! ("+nbTiles+" for "+mBank.getName()+")");
+		}
+		for (int n = 0; n < nbTiles; n++)
 		{
 			short[] motif = mBank.get_motif(n);
 			int i,j;
