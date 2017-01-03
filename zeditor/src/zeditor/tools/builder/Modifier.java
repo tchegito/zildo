@@ -75,8 +75,6 @@ import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.Server;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
 /**
  * Test class, doesn't apart to real project.<br/>
  * 
