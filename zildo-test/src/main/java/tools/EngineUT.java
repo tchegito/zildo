@@ -229,7 +229,7 @@ public class EngineUT {
 	public void setUp() {
 		// Check if environment variable is provided to get data folder
 		String dataFolder = System.getProperty("ZILDO_DATA");
-		Logger.getLogger(EngineUT.class.getSimpleName()).info("On a comme variable d'environnement ZILDO_DATA => "+dataFolder);
+		System.out.println("On a comme variable d'environnement ZILDO_DATA => "+dataFolder);
 		if (dataFolder != null) {
 			if (!dataFolder.endsWith(File.separator)) {
 				dataFolder += File.separator;

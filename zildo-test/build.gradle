@@ -7,6 +7,11 @@ version = '1.0'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+// Accept environment variable to define DATA folder
+test {
+	systemProperty "ZILDO_DATA", System.getProperty("ZILDO_DATA")
+}
+
 dependencies {
 	compile project(':zildo'), project(':zeditor')
 	compile "junit:junit:4.12",
