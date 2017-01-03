@@ -50,7 +50,7 @@ public class EasyWritingFile extends EasyBuffering {
             fileOut.write(data.array(), 0, data.limit());
             fileOut.close();
         } catch (IOException e) {
-            throw new RuntimeException("Unable to write " + p_fileName + " !");
+            throw new RuntimeException("Unable to write " + p_fileName + " !", e);
         }
     }
 
