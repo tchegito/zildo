@@ -1,0 +1,18 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+version = '1.0'
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	compile "org.lwjgl.lwjgl:lwjgl:2.9.3",
+			"org.jcraft:jorbis:0.0.17",	// This JAR contains both JOGG and JORBIS functionalities
+		    files('lib/slick-util.jar'),
+		    project(':zildo')
+	
+}
