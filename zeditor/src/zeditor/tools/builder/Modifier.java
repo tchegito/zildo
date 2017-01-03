@@ -229,7 +229,7 @@ public class Modifier {
 			 } else if ("gear".equals(bankName)) {
 				 bankName = "Gears";
 			 }
-			Class<?> clazz = Class.forName("zeditor.tools.sprites."+StringUtils.capitalize(bankName));
+			Class<?> clazz = Class.forName("zeditor.tools.sprites."+ZUtils.capitalize(bankName));
 			 if (SpriteBanque.class.isAssignableFrom(clazz)) {
 				 SpriteBanque b = (SpriteBanque) clazz.newInstance();
 				 return b;
