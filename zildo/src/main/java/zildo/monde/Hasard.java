@@ -33,7 +33,7 @@ public class Hasard {
 	public final int hazardBushes_Bombs = 9;
 
 	/**
-	 * Renvoie VRAI si un lancer de dé à 10 faces fait plus de 'p_number'
+	 * Renvoie VRAI si un lancer de dÃ© Ã  10 faces fait plus de 'p_number'
 	 * 
 	 * @param p_number
 	 */

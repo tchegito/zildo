@@ -43,7 +43,7 @@ public class TileSet extends ImageSet {
 	boolean blockSet = false; // If we are on a map region selected by user
 
 	/**
-	 * Constructeur avec paramètres
+	 * Constructeur avec paramÃ¨tres
 	 * 
 	 * @param p_tileName
 	 *            : Nom du set de tuiles en cours
@@ -102,10 +102,10 @@ public class TileSet extends ImageSet {
     }
     
 	/**
-	 * Méthode de changement du tile
+	 * MÃ©thode de changement du tile
 	 * 
 	 * @param p_url
-	 *            chemin de l'image du Tile à charger
+	 *            chemin de l'image du Tile Ã  charger
 	 * @author Drakulo
 	 * @throws ZeditorException
 	 */
@@ -118,24 +118,24 @@ public class TileSet extends ImageSet {
 			repaint();
 			return;
 		}
-		// On supprime les points de sélection précédents
+		// On supprime les points de sÃ©lection prÃ©cÃ©dents
 		startPoint = null;
 		stopPoint = null;
 
 		currentTile = getTileNamed(p_name);
 
-		// Récupération de la taille de l'image
+		// RÃ©cupÃ©ration de la taille de l'image
 		if (currentTile != null) {
 			tileWidth = currentTile.getWidth(imgObserver);
 			tileHeight = currentTile.getHeight(imgObserver);
 			// Si la hauteur n'est pas un multiple de 16, on tronque la taille
-			// au multiple inférieur
+			// au multiple infÃ©rieur
 			if (tileHeight % 16 != 0) {
 				tileHeight -= tileHeight % 16;
 			}
 		}
 
-		// On repaint pour afficher le résultat
+		// On repaint pour afficher le rÃ©sultat
 		repaint();
 
 		blockSet = false;
@@ -175,7 +175,7 @@ public class TileSet extends ImageSet {
 	 * @author Drakulo
 	 */
 	public Object[] getTiles() {
-		// Récupération des fichiers du dossier de tiles
+		// RÃ©cupÃ©ration des fichiers du dossier de tiles
 		List<String> list = new ArrayList<String>();
 
 		for (String bankName : TileEngine.tileBankNames) {
@@ -188,7 +188,7 @@ public class TileSet extends ImageSet {
 	@Override
 	protected void specificPaint(Graphics2D p_g2d) {
 		if (currentTile != null && bridge != null && !blockSet) {
-			// Selon le paramétrage :
+			// Selon le paramÃ©trage :
 			if (Boolean.parseBoolean(OptionHelper
 					.loadOption(Options.SHOW_TILES_UNMAPPED.getValue()))) {
 				showUnmappedTiles(p_g2d);
@@ -205,10 +205,10 @@ public class TileSet extends ImageSet {
 	}
 
 	/**
-	 * Méthode privée d'affichage des tuiles non mappées
+	 * MÃ©thode privÃ©e d'affichage des tuiles non mappÃ©es
 	 * 
 	 * @param g
-	 *            le Graphics concerné
+	 *            le Graphics concernÃ©
 	 * @author Drakulo
 	 */
 	private void showUnmappedTiles(Graphics g) {
@@ -217,7 +217,7 @@ public class TileSet extends ImageSet {
 				if (bridge.getMotifParPoint(tileName, i, j) < 0) {
 					g.setColor(Color.red);
 
-					// Lignes obliques montantes de gauche à droite (/)
+					// Lignes obliques montantes de gauche Ã  droite (/)
 					g.drawLine(i + 4, j, i, j + 4);
 					g.drawLine(i + 8, j, i, j + 8);
 					g.drawLine(i + 12, j, i, j + 12);
@@ -226,7 +226,7 @@ public class TileSet extends ImageSet {
 					g.drawLine(i + 16, j + 8, i + 8, j + 16);
 					g.drawLine(i + 16, j + 12, i + 12, j + 16);
 
-					// Lignes obliques descendantes de gauche à droite (\)
+					// Lignes obliques descendantes de gauche Ã  droite (\)
 					g.drawLine(i, j, i + 16, j + 16);
 					g.drawLine(i + 4, j, i + 16, j + 12);
 					g.drawLine(i + 8, j, i + 16, j + 8);
@@ -241,10 +241,10 @@ public class TileSet extends ImageSet {
 	}
 
 	/**
-	 * Méthode privée d'affichage de la grille sur le TileSet
+	 * MÃ©thode privÃ©e d'affichage de la grille sur le TileSet
 	 * 
 	 * @param g
-	 *            le Graphics concerné
+	 *            le Graphics concernÃ©
 	 * @author Drakulo
 	 */
 	private void showGrid(Graphics g) {
@@ -278,7 +278,7 @@ public class TileSet extends ImageSet {
 	}
 
 	/**
-	 * Méthode privée de construction de la sélection
+	 * MÃ©thode privÃ©e de construction de la sÃ©lection
 	 */
 	@Override
 	protected void buildSelection() {
@@ -309,7 +309,7 @@ public class TileSet extends ImageSet {
 							tileName, j, i), c));
 					list.add(c);
 				}
-				// On ne compte la largeur que pour la première ligne
+				// On ne compte la largeur que pour la premiÃ¨re ligne
 				if (height == 0) {
 					width++;
 				}
@@ -388,9 +388,9 @@ public class TileSet extends ImageSet {
 	}
 
 	/**
-	 * Getter de la sélection courante sur le TileSet
+	 * Getter de la sÃ©lection courante sur le TileSet
 	 * 
-	 * @return la sélection courante
+	 * @return la sÃ©lection courante
 	 */
 	public TileSelection getCurrentSelection() {
 		return (TileSelection) currentSelection;

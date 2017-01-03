@@ -41,18 +41,18 @@ public class Foret4 extends Banque {
 				new Point(256, 16), new Point(272, 16), new Point(208, 32),
 				new Point(224, 32), new Point(272, 32), new Point(208, 48),
 				new Point(224, 48),
-				/* Déco de palais */
+				/* DÃ©co de palais */
 				new Point(64, 0), new Point(64, 16), new Point(64, 32),
 				new Point(80, 0), new Point(80, 16), new Point(80, 32),
 				new Point(192, 32), new Point(0, 96), new Point(16, 96),
 				new Point(0, 112), new Point(16, 112), new Point(32, 112),
 				new Point(48, 112),
 
-				/* Forˆt enchant‚e */
+				/* ForË†t enchantâ€še */
 
 				/* Sols bosquet */
 				new Point(240, 80), new Point(240, 96), new Point(240, 112),
-				/* Bordures forˆt */
+				/* Bordures forË†t */
 				new Point(224, 64), new Point(240, 64), new Point(256, 64),
 				new Point(224, 80), new Point(256, 80), new Point(208, 96),
 				new Point(272, 96), new Point(208, 112), new Point(224, 112),
@@ -78,7 +78,7 @@ public class Foret4 extends Banque {
 				new Point(128, 96), new Point(144, 96), new Point(128, 112),
 				new Point(144, 112), new Point(128, 128), new Point(144, 128),
 
-				/* Clairière */
+				/* ClairiÃ¨re */
 
 				/* Feuillage */
 				new Point(0, 128), new Point(16, 128), new Point(32, 128),
@@ -103,7 +103,7 @@ public class Foret4 extends Banque {
 				new Point(192, 160), new Point(176, 176), new Point(192, 176),
 				new Point(208, 176), new Point(224, 176), new Point(240, 176),
 				new Point(256, 176), new Point(272, 176), new Point(288, 176),
-				/* Piédestal */
+				/* PiÃ©destal */
 				new Point(272, 144), new Point(288, 144), new Point(272, 160),
 				new Point(288, 160),
 				/* Close trees */

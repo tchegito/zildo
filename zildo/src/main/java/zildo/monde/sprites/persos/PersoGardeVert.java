@@ -27,11 +27,11 @@ import zildo.monde.sprites.elements.Element;
 /**
  * Perso garde vert.
  * 
- * La particularité est qu'il est constitué de deux sprites:
+ * La particularitÃ© est qu'il est constituÃ© de deux sprites:
  * -un pour le corps
- * -un pour la tête
+ * -un pour la tÃªte
  * 
- * Il est possible d'effectuer des combinaisons, comme par exemple le corps de la princesse et la tête de garde.
+ * Il est possible d'effectuer des combinaisons, comme par exemple le corps de la princesse et la tÃªte de garde.
  * @author tchegito
  *
  */
@@ -43,7 +43,7 @@ public class PersoGardeVert extends PersoNJ {
 	
 	public PersoGardeVert() {
 		super();
-		// On crée la tête du garde
+		// On crÃ©e la tÃªte du garde
 		teteGarde=new Element();
 		teteGarde.setX(getX());
 		teteGarde.setY(getY()-12);

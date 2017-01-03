@@ -36,7 +36,7 @@ public class Foret3 extends Banque {
 				new Point(0, 96), new Point(16, 96), new Point(32, 96),
 				new Point(0, 112), new Point(16, 112), new Point(32, 112),
 				new Point(0, 128), new Point(16, 128),
-				/* D‚sert - 59 */
+				/* Dâ€šsert - 59 */
 				new Point(256, 112), new Point(272, 96), new Point(288, 96),
 				new Point(304, 96), new Point(272, 112), new Point(256, 96),
 				new Point(208, 64), new Point(224, 64), new Point(240, 64),
@@ -81,10 +81,10 @@ public class Foret3 extends Banque {
 				/* Rocher */
 				new Point(176, 0), new Point(192, 0), new Point(176, 16),
 				new Point(192, 16),
-				/* Entr‚e de grotte */
+				/* Entrâ€še de grotte */
 				new Point(192, 32), new Point(208, 32), new Point(192, 48),
 				new Point(208, 48),
-				/* 2e Entr‚e de grotte */
+				/* 2e Entrâ€še de grotte */
 				new Point(0, 128), new Point(16, 128), new Point(0, 144),
 				new Point(16, 144), new Point(0, 160), new Point(16, 160),
 				/* Echelle */

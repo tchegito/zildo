@@ -184,8 +184,8 @@ public class GUIDisplay {
 	// OUT:given character's font position in the FONTES.PNJ sprite bank
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public static final String transcoChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-			+ "-.,<>!?()'#$çéêèàûîâôüöäïëù" + "abcdefghijklmnopqrstuvwxyz"
-			+ "0123456789~£§/:%";
+			+ "-.,<>!?()'#$Ã§Ã©ÃªÃ¨Ã Ã»Ã®Ã¢Ã´Ã¼Ã¶Ã¤Ã¯Ã«Ã¹" + "abcdefghijklmnopqrstuvwxyz"
+			+ "0123456789~Â£Â§/:%";
 	final Map<Character, Integer> mapTranscoChar = new HashMap<Character, Integer>();
 
 	public static final int[] scriptLegibility = new int[transcoChar.length() + 6];
@@ -197,7 +197,7 @@ public class GUIDisplay {
 		}
 		// Extra characters
 		mapTranscoChar.put('^', FontDescription.GUI_BLUEDROP.getNSpr() - transcoChar.length());
-		mapTranscoChar.put('¤', FontDescription.GUI_RUPEE.getNSpr() - transcoChar.length());
+		mapTranscoChar.put('Â¤', FontDescription.GUI_RUPEE.getNSpr() - transcoChar.length());
 		
 		mapTranscoChar.put(' ', -1);
 		

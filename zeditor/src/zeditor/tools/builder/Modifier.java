@@ -325,8 +325,8 @@ public class Modifier {
 		bankFont.fillNSprite(GUIDisplay.transcoChar.length());
 		bankFont.loadImage("fontes5", COLOR_BLUE);
 
-		String fontOrder = "KRWXMLNQFDAUTYHBVG." + "EOPwCZJSmIfnd7?xüuvûyù40pq-k%"
-				+ "9a6z£àâ5oceghj~$23çèéêë8r§#bsi!>ïtl1)</:" + "',(äîôö";
+		String fontOrder = "KRWXMLNQFDAUTYHBVG." + "EOPwCZJSmIfnd7?xÃ¼uvÃ»yÃ¹40pq-k%"
+				+ "9a6zÂ£Ã Ã¢5oceghj~$23Ã§Ã¨Ã©ÃªÃ«8rÂ§#bsi!>Ã¯tl1)</:" + "',(Ã¤Ã®Ã´Ã¶";
 
 		bankFont.captureFonts(156, 22, fontOrder, 0, 0);
 		bankFont.captureFonts(261, 16, null, 0, 0);

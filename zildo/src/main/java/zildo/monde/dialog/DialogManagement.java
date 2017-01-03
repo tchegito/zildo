@@ -156,7 +156,7 @@ public class DialogManagement {
 				sentence = sentence.substring(0, posDollar);
 				p_client.dialogState.actionDialog = new BuyingAction(p_client.zildo, persoToTalk, sellDescription);
 			} else if (compteDial < 9 && behav.replique[compteDial + 1] != 0) {
-				// On passe à la suivante, puisqu'elle existe
+				// On passe Ã  la suivante, puisqu'elle existe
 				persoToTalk.setCompte_dialogue(compteDial + 1);
 			}
 

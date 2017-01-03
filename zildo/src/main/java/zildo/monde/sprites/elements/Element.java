@@ -59,7 +59,7 @@ public class Element extends SpriteEntity {
 	public float vx, vy, vz;
 	public float fx, fy, fz; // Frottements
 	public float alphaV, alphaA;	// Speed and acceleration for alpha
-	protected int spe; // Spe est utilisé selon l'usage
+	protected int spe; // Spe est utilisÃ© selon l'usage
 	protected Angle angle;
 	public boolean flying;
 
@@ -309,7 +309,7 @@ public class Element extends SpriteEntity {
 			
 			// Si ce sprite est valide, est-il un sprite fixe ?
 			if (desc.isNotFixe()) {
-				// On a trouvé un sprite valide non fixe
+				// On a trouvÃ© un sprite valide non fixe
 				// On calcule sa nouvelle position absolue
 				colli = physicMoveWithCollision();
 	
@@ -319,14 +319,14 @@ public class Element extends SpriteEntity {
 					rotation = rotation.succ();
 				} else 	if (nSpr >= 44 && nSpr <= 47) { // Sprite d'animation
 					// Morceaux de pierres
-					z = z - vz; // On revient en arrière
+					z = z - vz; // On revient en arriÃ¨re
 					vz = vz - az;
 					az = az - 1;
 					if (az == 0) {
 						dying = true;
 					}
 				}
-				// Débordement
+				// DÃ©bordement
 				if (x < -4 || y < -4 || x > 64 * 16 || (y-z) > 64 * 16) {
 					if (!isOutsidemapAllowed() && !isLinkedToZildo()) {
 						die();
@@ -360,7 +360,7 @@ public class Element extends SpriteEntity {
 				}
 			}
 			if (isSolid() || flying) {// Tous les sprites n'entrent pas en collision
-				// On teste la collision avec le décor
+				// On teste la collision avec le dÃ©cor
 				if (false && nSpr == 42) {
 					// Collision avec Zildo}
 					z = z - vz;

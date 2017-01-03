@@ -30,7 +30,7 @@ public class ElementAnimMort extends Element {
 	int count;
 	
 	/**
-	 * Crée un sprite de mort lié au personnage
+	 * CrÃ©e un sprite de mort liÃ© au personnage
 	 * @param perso
 	 */
     public ElementAnimMort(Perso perso) {

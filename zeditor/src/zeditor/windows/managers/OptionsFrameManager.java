@@ -10,7 +10,7 @@ import zeditor.core.Options;
 import zeditor.windows.OptionHelper;
 
 /**
- * Manager de la fenêtre OptionsFrame, la fenêtre d'options de Zeditor
+ * Manager de la fenÃªtre OptionsFrame, la fenÃªtre d'options de Zeditor
  * @author Drakulo
  *
  */
@@ -49,10 +49,10 @@ public class OptionsFrameManager {
 	}
 	
 	/**
-	 * Initialisation de la fenêtre
+	 * Initialisation de la fenÃªtre
 	 */
 	public void init(){
-		// Récupération du paramétrage
+		// RÃ©cupÃ©ration du paramÃ©trage
 		Map<String, String> config = OptionHelper.load();
 
 		// Initialisation des champs
@@ -61,7 +61,7 @@ public class OptionsFrameManager {
 	}
 	
 	/**
-	 * Clic sur le bouton Annuler (fermeture de la fenêtre sans sauvegarde)
+	 * Clic sur le bouton Annuler (fermeture de la fenÃªtre sans sauvegarde)
 	 */
 	public void cancel(){
 		masterFrame.dispose();

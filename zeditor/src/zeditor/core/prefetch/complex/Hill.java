@@ -36,7 +36,7 @@ public class Hill extends TraceDelegateDraw {
 			0, 0, 30, 0, 0, 0, 33, 0, 0, // 32--39}
 			0, 2, 0, 0, 0, 4, 0, 0 }; // 40--47}
 
-	// Les angles codés ( * 32 )}
+	// Les angles codÃ©s ( * 32 )}
 	final int angle0 = 0;
 	final int angle1 = 4;
 	final int angle2 = 8;
@@ -100,7 +100,7 @@ public class Hill extends TraceDelegateDraw {
 						mapetage[y][x] += angle_to_compare;
 					} else {
 						// On doit choisir le bon angle sur les 2}
-						// Pour ça, on repère une case adjacente de même
+						// Pour Ã§a, on repÃ¨re une case adjacente de mÃªme
 						// hauteur}
 						int cur_angle = -2;
 						while (true) {
@@ -112,12 +112,12 @@ public class Hill extends TraceDelegateDraw {
 								break;
 							}
 						}
-						if (cur_etage != etage) { // ProblŠme, ‡a ne doit pas
+						if (cur_etage != etage) { // ProblÅ me, â€¡a ne doit pas
 													// arriver !}
 							mapetage[y][x] += angle_to_compare;
 						} else {
-							// On a trouv‚ cette case de mˆme hauteur, on
-							// v‚rifie que les
+							// On a trouvâ€š cette case de mË†me hauteur, on
+							// vâ€šrifie que les
 							// angles sont compatibles}
 							if (angle_to_compare < angle8) {
 								value = (angle_to_compare / 4) % 2;
@@ -129,7 +129,7 @@ public class Hill extends TraceDelegateDraw {
 								mapetage[y][x] += angle_to_compare;
 							} else {
 								if (angle > angle7 && (mapetage[y][x] & 3) == 2) {
-									// On a un angle spécial
+									// On a un angle spÃ©cial
 									if (angle == angle8) {
 										angle = angle3;
 									} else if (angle == angle9) {
@@ -147,7 +147,7 @@ public class Hill extends TraceDelegateDraw {
 				}
 			}
 
-			// On dessine à titre indicatif sur la vraie map
+			// On dessine Ã  titre indicatif sur la vraie map
 			p_map.writemap(xx, yy, 56);
 		}
 	}
@@ -159,14 +159,14 @@ public class Hill extends TraceDelegateDraw {
 		for (int i = 0; i < dy - 1; i++) {
 			for (int j = 0; j < dx - 1; j++) {
 				if (mapetage[i][j] != 0) {
-					// On est au 1er etage, alors on coordonne les décors
+					// On est au 1er etage, alors on coordonne les dÃ©cors
 					int temp = mapetage[i][j];
 					if ((temp & 128) != 0) {
 						temp = temp & 127;
 						temp = conv_etage_to_map[temp];
 
 						int temp2 = 0; // Le bas des collines prend un motif de
-										// plus que les autres côtés
+										// plus que les autres cÃ´tÃ©s
 						if (temp == 10 || temp == 28 || temp == 30) {
 							temp2 = 11;
 						} else if (temp == 31) {
@@ -177,7 +177,7 @@ public class Hill extends TraceDelegateDraw {
 						if (temp2 != 0) {
 							map.writemap(j, i + 1, temp2);
 						}
-						temp2 = 0; // Un motif de plus sur le côté haut des
+						temp2 = 0; // Un motif de plus sur le cÃ´tÃ© haut des
 									// collines
 						if (temp == 0) {
 							temp2 = 1;

@@ -70,12 +70,12 @@ public abstract class Perso extends Element {
 	private String effect; // String containing desired effect ("noir", "jaune",
 							// ...)
 	protected PersoInfo info; // 0=Neutre 1=Ennemi 2=Zildo
-	protected boolean alerte; // True=Zildo est reperé (Pieds dans l'eau si
+	protected boolean alerte; // True=Zildo est reperÃ© (Pieds dans l'eau si
 								// c'est Zildo)
 	protected MouvementPerso quel_deplacement; // Script
 	protected int attente; // =0 => pas d'attente
 	protected PathFinder pathFinder; // Destination
-	protected float px, py; // Quand le perso est propulsé (touché)
+	protected float px, py; // Quand le perso est propulsÃ© (touchÃ©)
 	protected float prevX, prevY;	// Previous location (to calculate a delta)
 	public float deltaMoveX, deltaMoveY;	// Previous location (to calculate a delta)
 	protected int pos_seqsprite;
@@ -84,7 +84,7 @@ public abstract class Perso extends Element {
 	Element feet;
 
 	protected MouvementZildo mouvement; // Situation du
-										// perso:debout,couché,attaque...
+										// perso:debout,couchÃ©,attaque...
 	protected int cptMouvement; // Un compteur pour les mouvements des PNJ
 	private int coming_map; // 1 si Zildo entre sur une map,sinon 255
 	protected int pv, maxpv; // Points de vie du perso
@@ -145,7 +145,7 @@ public abstract class Perso extends Element {
 		this.following = following;
 	}
 
-	// Liste des sprites complémentaires du perso (ex:bouclier+casque pour
+	// Liste des sprites complÃ©mentaires du perso (ex:bouclier+casque pour
 	// zildo)
 	List<Element> persoSprites;
 

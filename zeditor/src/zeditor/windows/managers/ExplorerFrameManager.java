@@ -23,7 +23,7 @@ public class ExplorerFrameManager {
 	}
 
 	/**
-	 * Constructeur avec paramètres
+	 * Constructeur avec paramÃ¨tres
 	 * 
 	 * @param p_frame
 	 */
@@ -36,7 +36,7 @@ public class ExplorerFrameManager {
 	 * Initialisation de certains champs en fonction du mode d'ouverture (OPEN ou SAVE)
 	 * 
 	 * @param p_mode
-	 *            est le mode d'ouverture de la fenêtre
+	 *            est le mode d'ouverture de la fenÃªtre
 	 */
 	public void init(int p_mode) {
 		this.mode = p_mode;
@@ -49,7 +49,7 @@ public class ExplorerFrameManager {
 	}
 
 	/**
-	 * Exécute l'action en fonction du mode d'ouverture : sauvegarde ou ouverture
+	 * ExÃ©cute l'action en fonction du mode d'ouverture : sauvegarde ou ouverture
 	 */
 	public void doAction() {
 		if (mode == SAVE) {
@@ -60,13 +60,13 @@ public class ExplorerFrameManager {
 	}
 
 	/**
-	 * Ouvre la carte sélectionnée
+	 * Ouvre la carte sÃ©lectionnÃ©e
 	 */
 	public void open() {
 		File f = fileChooser.getSelectedFile();
 		// On teste la nature du fichier (si c'est un *.MAP)
 		if (!f.getName().endsWith(".map")) {
-			// TODO Fenêtre d'erreur
+			// TODO FenÃªtre d'erreur
 			return;
 		}
 		// Apply "toLowerCase" to avoid a bug when use double clicks on a file, instead of click on "Open"
@@ -77,7 +77,7 @@ public class ExplorerFrameManager {
 	}
 
 	/**
-	 * Sauvegarde la carte en cours dans le fichier sélectionné
+	 * Sauvegarde la carte en cours dans le fichier sÃ©lectionnÃ©
 	 */
 	public void save() {
 		if (fileChooser.getSelectedFile() == null) {

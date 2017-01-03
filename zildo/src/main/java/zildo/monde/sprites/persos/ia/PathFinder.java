@@ -172,7 +172,7 @@ public class PathFinder {
 		while (true) {
 			target=new Point(x, y);
 	
-			// On déplace le perso soit horizontalement, soit verticalement,
+			// On dÃ©place le perso soit horizontalement, soit verticalement,
 			// ou les 2 si c'est une poule. Car les poules ont la bougeotte.
 			if (j%2==0 || mvt.isDiagonal() )
 				target.x+= (16*Math.random()*j) - 8*j;
@@ -180,7 +180,7 @@ public class PathFinder {
 			if (!mvt.isOnlyHorizontal() && (j%2==1 || mvt.isDiagonal()) )
 				target.y+= (16*Math.random()*j) - 8*j;
 	
-			j--; // On diminue le rayon jusqu'à être dans la zone
+			j--; // On diminue le rayon jusqu'Ã  Ãªtre dans la zone
 	
 			if ((target.x>=zone.x1 && target.y>=zone.y1 &&
 				 target.x<=zone.x2 && target.y<=zone.y2) ||
@@ -188,7 +188,7 @@ public class PathFinder {
 				break;
 		}
 	
-	    if (j==-1) {  // En cas de pépin
+	    if (j==-1) {  // En cas de pÃ©pin
 			target.x=zone.x1;
 			target.y=zone.y1;
 	    }

@@ -68,7 +68,7 @@ public class EngineZildo {
 	private void initializeServer(Game p_game) {
         setGame(p_game);
 
-        // Inits de départ
+        // Inits de dÃ©part
 		spriteManagement=new SpriteManagement();
 		mapManagement=new MapManagement();
 		persoManagement=new PersoManagement();

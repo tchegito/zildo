@@ -75,7 +75,7 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(178, 53, 18, 16), new Zone (196, 53, 26, 15),
 			          new Zone(222, 53, 14, 16), new Zone (236, 53, 16, 15),
 			          new Zone(252, 53, 18, 16), new Zone (270, 53, 24, 14),
-			          // Princesse couchée (60)
+			          // Princesse couchÃ©e (60)
 			          new Zone(0, 182, 24, 15), new Zone(24, 182, 22, 16),
 			          new Zone(98, 173, 24, 15), new Zone(122, 173, 24, 15),
 			          // Arbuste mouvant
@@ -92,11 +92,11 @@ public class Pnj2 extends SpriteBanque {
 			          //new Zone(293, 4, 14, 12), new Zone(307, 4, 12, 16),
 			          // Princess bunny
 			          new Zone(69, 91, 13, 8), new Zone(82, 89, 11, 10),
-			          // Garçon aux cheveux bleus
+			          // GarÃ§on aux cheveux bleus
 			          new Zone(210, 73, 16, 24), new Zone(226, 73, 14, 24),
-			          // Garçon jaune
+			          // GarÃ§on jaune
 			          new Zone(241, 73, 16, 24), new Zone(257, 73, 14, 24),
-			          // Fermière (villageoise rose) (81)
+			          // FermiÃ¨re (villageoise rose) (81)
 			          new Zone(147, 175, 16, 24), new Zone(163, 175, 16, 24),
 			          new Zone(179, 175, 14, 24), new Zone(193, 174, 13, 25),
 			          new Zone(206, 174, 16, 25), new Zone(222, 174, 16, 25),

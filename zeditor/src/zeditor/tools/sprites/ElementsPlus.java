@@ -45,10 +45,10 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(32, 9, 7, 9),	// Drop on the floor
 				//new Zone(32, 7, 8, 11),	
 				//new Zone(16, 21, 8, 8),
-				// Fumée
+				// FumÃ©e
 				new Zone(0, 34, 14, 14),
 				new Zone(14, 34, 12, 12),
-				// Brique cassée
+				// Brique cassÃ©e
 				new Zone(0, 48, 8, 8),
 				// Feuille d'ortie
 				new Zone(16, 21, 8, 8),
@@ -70,7 +70,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(152, 24, 8, 8),
 				new Zone(160, 24, 16, 8),
 				new Zone(176, 24, 8, 8),
-				// Séparation de hauteur dans les grottes (pointu!)
+				// SÃ©paration de hauteur dans les grottes (pointu!)
 				new Zone(184, 0, 6, 6),
 				new Zone(190, 0, 6, 6),
 				new Zone(184, 6, 6, 6),
@@ -102,7 +102,7 @@ public class ElementsPlus extends SpriteBanque {
 				//new Zone(20, 4, 8, 7),
 				//new Zone(24, 11, 8, 7),
 
-				// Boule en pierre,ombre et éclats (42)
+				// Boule en pierre,ombre et Ã©clats (42)
 				new Zone(16, 46, 8, 8),
 				new Zone(12, 30, 8, 4),
 				new Zone(20, 56, 6, 7),
@@ -123,7 +123,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(8, 131, 8, 14),
 				new Zone(16, 131, 8, 14),
 
-				// Fumée (57)
+				// FumÃ©e (57)
 				new Zone(17, 87, 8, 8),
 				new Zone(25, 87, 7, 7),
 				new Zone(17, 95, 5, 5),
@@ -131,7 +131,7 @@ public class ElementsPlus extends SpriteBanque {
 				// Petite ombre (abeille)
 				new Zone(20, 30, 6, 4),
 
-				// Poutre d'entrée de grotte
+				// Poutre d'entrÃ©e de grotte
 				new Zone(168, 48, 16, 8),
 				new Zone(192, 32, 8, 8),
 				// Etai - suite
@@ -148,7 +148,7 @@ public class ElementsPlus extends SpriteBanque {
 				// Pilier de bois
 				new Zone(26, 48, 8, 16),
 
-				// Blocs à bouger (69)
+				// Blocs Ã  bouger (69)
 				new Zone(0, 145, 16, 16),
 				new Zone(0, 161, 16, 16),
 

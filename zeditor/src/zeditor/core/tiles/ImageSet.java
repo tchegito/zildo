@@ -66,7 +66,7 @@ public abstract class ImageSet extends JPanel {
     protected MasterFrameManager manager;
     
     /**
-     * Constructeur avec paramètres
+     * Constructeur avec paramÃ¨tres
      * @param p_tileName : Nom du set de tuiles en cours
      * @author tchegito
      */
@@ -75,7 +75,7 @@ public abstract class ImageSet extends JPanel {
     	
     	manager=p_manager;
     	
-        // Définition du layout afin d'afficher le Tile en haut du conteneur
+        // DÃ©finition du layout afin d'afficher le Tile en haut du conteneur
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         tileName = p_tileName;
@@ -130,7 +130,7 @@ public abstract class ImageSet extends JPanel {
 	                        if(startPoint != null){
 	                            // On trie les points si le startPoint est valide
 	                            sortPoints();
-	                            // On construit la nouvelle sélection
+	                            // On construit la nouvelle sÃ©lection
 	                            buildSelection();
 	                        }
 	                        repaint();
@@ -175,13 +175,13 @@ public abstract class ImageSet extends JPanel {
     }
     
     /**
-     * Méthode privée de tri des Points de sélection. Le point en haut à gauche devient
-     * le point de départ et le point en bas à droite devient le point de fin.
+     * MÃ©thode privÃ©e de tri des Points de sÃ©lection. Le point en haut Ã  gauche devient
+     * le point de dÃ©part et le point en bas Ã  droite devient le point de fin.
      */
     private void sortPoints(){
-        // A partir des points de début et de fin, on recrée deux nouveaux
-        // points afin d'avoir le point de début en haut à gauche et le point
-        // de fin en bas à droite
+        // A partir des points de dÃ©but et de fin, on recrÃ©e deux nouveaux
+        // points afin d'avoir le point de dÃ©but en haut Ã  gauche et le point
+        // de fin en bas Ã  droite
     	int x1=Math.min(startPoint.x, stopPoint.x);
     	int y1=Math.min(startPoint.y, stopPoint.y);
     	int x2=Math.max(startPoint.x, stopPoint.x);
@@ -211,7 +211,7 @@ public abstract class ImageSet extends JPanel {
         	ZUtils.sleep(100);
         }
         
-        // On dessine un cadre autour des tuiles sélectionnées en dernier pour qu'il soit au dessus
+        // On dessine un cadre autour des tuiles sÃ©lectionnÃ©es en dernier pour qu'il soit au dessus
         if(stopPoint == null){
             // Le point stopDrag est null donc on met le cadre sur une simple case
             drawRectangle(g2d, Color.black, Color.white, startPoint, startPoint);
@@ -227,11 +227,11 @@ public abstract class ImageSet extends JPanel {
     }
     
 
-    /**     * Méthode de tracé du cadre autour des tuiles sélectionnées
+    /**     * MÃ©thode de tracÃ© du cadre autour des tuiles sÃ©lectionnÃ©es
      * @param g : Graphics sur lequel on va dessiner
-     * @param outer : Couleur de l'extérieur de cadre
-     * @param inner : Couleur de l'intérieur de cadre
-     * @param p_startPoint : Point de départ du cadre
+     * @param outer : Couleur de l'extÃ©rieur de cadre
+     * @param inner : Couleur de l'intÃ©rieur de cadre
+     * @param p_startPoint : Point de dÃ©part du cadre
      * @param p_stopPoint : Point de fin du cadre
      * @author Drakulo
      */

@@ -11,7 +11,7 @@ public class Grotte extends Banque {
 	// Grotte.dec = Interia3 + Interia2 (203 tiles)
 	public Grotte() {
 		coords = new Point[] {
-		/* Murs étage 2 */
+		/* Murs Ã©tage 2 */
 		new Point(0, 0), new Point(16, 0), new Point(64, 0), new Point(0, 16),
 				new Point(16, 16), new Point(32, 16), new Point(48, 16),
 				new Point(64, 16), new Point(16, 32), new Point(32, 32),
@@ -19,20 +19,20 @@ public class Grotte extends Banque {
 				new Point(48, 48), new Point(0, 64), new Point(16, 64),
 				new Point(64, 64),
 
-				/* Coins étage 2 */
+				/* Coins Ã©tage 2 */
 				new Point(160, 32), new Point(176, 32), new Point(160, 48),
 				new Point(176, 48),
 
-				/* Tour étage 2 */
+				/* Tour Ã©tage 2 */
 				new Point(64, 112), new Point(80, 112), new Point(96, 112),
 				new Point(64, 128), new Point(96, 128), new Point(64, 144),
 				new Point(80, 144), new Point(96, 144),
 
-				/* Virage étage2 */
+				/* Virage Ã©tage2 */
 				new Point(112, 112), new Point(128, 112), new Point(112, 128),
 				new Point(128, 128),
 
-				/* Murs étage 1 */
+				/* Murs Ã©tage 1 */
 				new Point(80, 0), new Point(96, 0), new Point(144, 0),
 				new Point(80, 16), new Point(96, 16), new Point(112, 16),
 				new Point(128, 16), new Point(144, 16), new Point(96, 32),
@@ -40,7 +40,7 @@ public class Grotte extends Banque {
 				new Point(112, 48), new Point(128, 48), new Point(80, 64),
 				new Point(96, 64), new Point(144, 64),
 
-				/* Coins étage 1 */
+				/* Coins Ã©tage 1 */
 				new Point(192, 32), new Point(208, 32), new Point(192, 48),
 				new Point(208, 48),
 
@@ -52,7 +52,7 @@ public class Grotte extends Banque {
 				new Point(0, 160), new Point(16, 160), new Point(32, 160),
 				new Point(48, 160),
 
-				/* S‚paration */
+				/* Sâ€šparation */
 				new Point(112, 144), new Point(128, 144), new Point(144, 144),
 				new Point(112, 160), new Point(144, 160), new Point(112, 176),
 				new Point(128, 176), new Point(144, 176),
@@ -86,7 +86,7 @@ public class Grotte extends Banque {
 				new Point(256, 80),
 				new Point(272, 80),
 
-				/* Porte … casser */
+				/* Porte â€¦ casser */
 				new Point(64, 160),
 				new Point(80, 160),
 				new Point(64, 176),
@@ -124,7 +124,7 @@ public class Grotte extends Banque {
 				new Point(192, 80), new Point(192, 96),
 				//new Point(112, 80),	new Point(128, 80), 
 				new Point(112, 96), new Point(128, 96),
-				/* Fenˆtre */
+				/* FenË†tre */
 				new Point(80, 0), new Point(96, 0), new Point(80, 16),
 				new Point(96, 16), new Point(80, 80), new Point(96, 80),
 				new Point(80, 96), new Point(96, 96),

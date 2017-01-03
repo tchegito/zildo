@@ -250,8 +250,8 @@ public class PlayerManagement {
 			}
 	
 			if (heros.getMouvement()==MouvementZildo.TIRE) {
-				if (heros.getAngle()!=sauvangle && heros.getAngle().rotate(sauvangle.value).isVertical()) {	 // A Vérifier !
-					heros.setPos_seqsprite(1);	// Zildo recule sa tête pour tirer
+				if (heros.getAngle()!=sauvangle && heros.getAngle().rotate(sauvangle.value).isVertical()) {	 // A VÃ©rifier !
+					heros.setPos_seqsprite(1);	// Zildo recule sa tÃªte pour tirer
 				} else {
 					heros.setPos_seqsprite(0);
 				}
@@ -319,11 +319,11 @@ public class PlayerManagement {
 				heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512); // Sinon on augmente (Zildo pousse)
 			
 		} else if (!heros.getMouvement().equals(MouvementZildo.SAUTE)) {
-            // Pas d'obstacles ? Mais peut-être une porte !
+            // Pas d'obstacles ? Mais peut-Ãªtre une porte !
             boolean ralentit = heros.walkTile(true);
 
 			// -. Yes
-		    heros.setTouch(0);                          // Zildo n'est pas bloqué => 0
+		    heros.setTouch(0);                          // Zildo n'est pas bloquÃ© => 0
 			if (heros.getMouvement()==MouvementZildo.POUSSE)
 				heros.setMouvement(MouvementZildo.VIDE);
 
@@ -431,7 +431,7 @@ public class PlayerManagement {
 								heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, null, persoToTalk);
 							}
 						} else if (persoToTalk.getDialoguingWith() == null) {
-							// On vérifie que Zildo regarde la personne
+							// On vÃ©rifie que Zildo regarde la personne
 							cx=(int) persoToTalk.getX();
 							cy=(int) persoToTalk.getY();
 							cestbon=false;

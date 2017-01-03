@@ -209,9 +209,9 @@ public class EasyBuffering {
 	
 	/**
 	 * 
-	 * @param sh tableau à remplir
-	 * @param pos position dans sh à partir de laquelle on doit écrire
-	 * @param size nombre d'octets à lire
+	 * @param sh tableau Ã  remplir
+	 * @param pos position dans sh Ã  partir de laquelle on doit Ã©crire
+	 * @param size nombre d'octets Ã  lire
 	 */
 	public void readUnsignedBytes(short[] sh, int pos, int size) {
 		int posInitiale=data.position();

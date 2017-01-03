@@ -192,7 +192,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			panel.add(zildoPanel, BorderLayout.EAST);
 			getContentPane().add(panel, BorderLayout.CENTER);
 
-			// Initialisation de la fenêtre par le manager
+			// Initialisation de la fenÃªtre par le manager
 			manager.init();
 
 			pack();
@@ -524,7 +524,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	public JToggleButton getUnmappedTool() {
 		if (unmappedTool == null) {
 			unmappedTool = new JToggleButton();
-			unmappedTool.setToolTipText("Afficher les tuiles non mappées.");
+			unmappedTool.setToolTipText("Afficher les tuiles non mappÃ©es.");
 			unmappedTool.setAction(getActionUnmappedTool());
 			unmappedTool.setSelected(Boolean.parseBoolean(getManager()
 					.loadOption(Options.SHOW_TILES_UNMAPPED.getValue())));
@@ -568,7 +568,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	public JToggleButton getToggleBackDisplayTool() {
 		if (backTileTool == null) {
 			backTileTool = new JToggleButton();
-			backTileTool.setToolTipText("Tiles d'arrière plan");
+			backTileTool.setToolTipText("Tiles d'arriÃ¨re plan");
 			backTileTool.setAction(getActionDisplayBackTileTool());
 			backTileTool.setIcon(new ImageIcon(getClass().getClassLoader()
 					.getResource("zeditor/images/backGround.PNG")));
@@ -590,7 +590,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	public JToggleButton getToggleBackSpriteDisplayTool() {
 		if (backSpriteTool == null) {
 			backSpriteTool = new JToggleButton();
-			backSpriteTool.setToolTipText("Sprites d'arrière plan");
+			backSpriteTool.setToolTipText("Sprites d'arriÃ¨re plan");
 			backSpriteTool.setAction(getActionDisplayBackSpriteTool());
 			backSpriteTool.setIcon(new ImageIcon(getClass().getClassLoader()
 					.getResource("zeditor/images/backGroundSprite.PNG")));
@@ -612,7 +612,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	public JToggleButton getToggleFilterFloorDisplayTool() {
 		if (filterFloorTool == null) {
 			filterFloorTool = new JToggleButton();
-			filterFloorTool.setToolTipText("Afficher un étage unique");
+			filterFloorTool.setToolTipText("Afficher un Ã©tage unique");
 			filterFloorTool.setAction(new AbstractAction("", null) {
 				@Override
 				public void actionPerformed(ActionEvent evt) {
@@ -692,7 +692,7 @@ public class MasterFrame extends javax.swing.JFrame {
 		if (tabsPane == null) {
 			tabsPane = new JTabbedPane(JTabbedPane.TOP,
 					JTabbedPane.WRAP_TAB_LAYOUT);
-			tabsPane.addTab("Décors", null, getBackgroundPanel(), null);
+			tabsPane.addTab("DÃ©cors", null, getBackgroundPanel(), null);
 			tabsPane.addTab("Prefetch", null, getPrefetchPanel(), null);
 			tabsPane.addTab("Sprites", null, getSpritePanel(), null);
 			tabsPane.addTab("Personnages", null, getPersoPanel(), null);
@@ -864,7 +864,7 @@ public class MasterFrame extends javax.swing.JFrame {
 	private JMenu getParametersMenu() {
 		if (parametersMenu == null) {
 			parametersMenu = new JMenu();
-			parametersMenu.setText("Paramètres");
+			parametersMenu.setText("ParamÃ¨tres");
 			parametersMenu.setIcon(new ImageIcon(getClass().getClassLoader()
 					.getResource("zeditor/images/cog.png")));
 			parametersMenu.add(getOptionsItem());

@@ -22,17 +22,17 @@ import org.w3c.dom.Node;
 import zeditor.core.Options;
 
 /**
- * Classe de gesstion des paramètres et options de Zeditor
+ * Classe de gesstion des paramÃ¨tres et options de Zeditor
  * @author Drakulo
  */
 public class OptionHelper {
 	/**
-	 * Méthode statique de chargement des paramètres.
-	 * @return Map <String, String> : une Map contenant les paramètres
+	 * MÃ©thode statique de chargement des paramÃ¨tres.
+	 * @return Map <String, String> : une Map contenant les paramÃ¨tres
 	 * @author Drakulo
 	 */
 	public static Map<String, String> load() {
-		// On crée une instance de SAXBuilder
+		// On crÃ©e une instance de SAXBuilder
 		Document document;
 		Element racine;
 		Map<String, String> map = new HashMap<String, String>();
@@ -44,14 +44,14 @@ public class OptionHelper {
 				save(new HashMap<String, String>());
 				return load();
 			}
-			// On crée un nouveau document JDOM avec en argument le fichier XML
+			// On crÃ©e un nouveau document JDOM avec en argument le fichier XML
 			document = sxb.parse(config);
 
-			// On initialise un nouvel élément racine avec l'élément racine du
+			// On initialise un nouvel Ã©lÃ©ment racine avec l'Ã©lÃ©ment racine du
 			// document.
 			racine = document.getDocumentElement();
 
-			// Mantenant qu'on a la racine, on récupère les infos
+			// Mantenant qu'on a la racine, on rÃ©cupÃ¨re les infos
 			if(racine.getChildNodes() != null || racine.getChildNodes().getLength()!=0){
 				for(Options item : Options.values()){
 					Node node=racine.getElementsByTagName(item.getValue()).item(0);
@@ -75,7 +75,7 @@ public class OptionHelper {
 	}
 
 	/**
-	 * Méthode statique de sauvegarde des paramétrages (appelée dans la fenêtre
+	 * MÃ©thode statique de sauvegarde des paramÃ©trages (appelÃ©e dans la fenÃªtre
 	 * d'options)
 	 * @param p_params
 	 * @author Drakulo
@@ -86,12 +86,12 @@ public class OptionHelper {
 			DocumentBuilder constructeur;
 			constructeur = fabrique.newDocumentBuilder();
 			Document document = constructeur.newDocument();
-			// Création du noeud racine
+			// CrÃ©ation du noeud racine
 			Element racine = document.createElement("config");
 			// Affectation du noeud racine au document
 			document.appendChild(racine);
 
-			// On crée maintenant chacun des éléments de paramétrage
+			// On crÃ©e maintenant chacun des Ã©lÃ©ments de paramÃ©trage
 			for(Options name : Options.values()){
 				Element modele = document.createElement(name.getValue());
 				String item = (p_params.get(name.getValue()) != null) ? p_params.get(name.getValue()) : "";
@@ -109,17 +109,17 @@ public class OptionHelper {
 	}
 
 	/**
-	 * Méthode privée de sauvegarde du fichier de configuration
-	 * @param document Document : le document à sauvegarder
+	 * MÃ©thode privÃ©e de sauvegarde du fichier de configuration
+	 * @param document Document : le document Ã  sauvegarder
 	 * @param fichier String : le chemin du fichier dans lequel on va sauvegarder les informations
 	 * @author Drakulo
 	 */
 	private static void saveXml(Document document, String fichier) {
 		try {
-			// On crée le source DOM
+			// On crÃ©e le source DOM
 			Source source = new DOMSource(document);
 
-			// On crée le fichier XML
+			// On crÃ©e le fichier XML
 			Result resultat = new StreamResult(new File(fichier));
 
 			// On configure le transformeur
@@ -136,9 +136,9 @@ public class OptionHelper {
 	}
 
 	/**
-	 * Méthode de chargement du paramètre passé en paramètres
-	 * @param p_option : Entrée de l'énumétation Options à charger
-	 * @return String : Valeur du paramètre
+	 * MÃ©thode de chargement du paramÃ¨tre passÃ© en paramÃ¨tres
+	 * @param p_option : EntrÃ©e de l'Ã©numÃ©tation Options Ã  charger
+	 * @return String : Valeur du paramÃ¨tre
 	 * @author Drakulo
 	 */
 	public static String loadOption(String p_option) {
@@ -151,9 +151,9 @@ public class OptionHelper {
 	}
 	
 	/**
-	 * Méthode de sauvegarde unitaire d'une option
-	 * @param p_option : Entrée de l'énumétation Options à modifier
-	 * @param p_value : Valeur à sauvegarder
+	 * MÃ©thode de sauvegarde unitaire d'une option
+	 * @param p_option : EntrÃ©e de l'Ã©numÃ©tation Options Ã  modifier
+	 * @param p_value : Valeur Ã  sauvegarder
 	 * @author Drakulo
 	 */
 	public static void saveOption(Options p_option, String p_value){

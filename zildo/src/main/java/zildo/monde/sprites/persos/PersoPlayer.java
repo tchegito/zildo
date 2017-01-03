@@ -348,7 +348,7 @@ public class PersoPlayer extends Perso {
 	@Override
 	public void manageCollision() {
 		if (getMouvement() == MouvementZildo.ATTAQUE_EPEE) {
-			// La collision avec l'épée de Zildo}
+			// La collision avec l'Ã©pÃ©e de Zildo}
 			double cx, cy, beta;
 			int rayon;
 			cx = getX();
@@ -499,7 +499,7 @@ public class PersoPlayer extends Perso {
 	{
 		setMouvement(MouvementZildo.VIDE);
 		if (isWounded()) {
-			setCompte_dialogue(64); // Temps d'invulnerabilité de Zildo
+			setCompte_dialogue(64); // Temps d'invulnerabilitÃ© de Zildo
 		}
 		setPx(0.0f);
 		setPy(0.0f);
@@ -753,7 +753,7 @@ public class PersoPlayer extends Perso {
 				shieldEffect.animate();
 			}
 	
-			// Corrections , décalages du sprite
+			// Corrections , dÃ©calages du sprite
 			if (angle == Angle.EST) {
 				xx -= 2;
 			} else if (angle == Angle.OUEST) {
@@ -822,7 +822,7 @@ public class PersoPlayer extends Perso {
 			
 				break;
 			case SAUTE:
-				// Zildo est en train de sauter, on affiche l'ombre à son arrivée
+				// Zildo est en train de sauter, on affiche l'ombre Ã  son arrivÃ©e
 	
 				shadow.setX(posShadowJump.x); // (float) (xx-ax)); //-6;)
 				shadow.setY(posShadowJump.y); // (float) (yy-ay)-3);
@@ -936,7 +936,7 @@ public class PersoPlayer extends Perso {
 					//en_bras.setY(objY);
 					en_bras.setZ(objZ - variation);
 					
-					// Corrections , décalages du sprite
+					// Corrections , dÃ©calages du sprite
 					float xxx = x;
 					float yyy = y;
 					if (angle == Angle.EST) {
@@ -1211,7 +1211,7 @@ public class PersoPlayer extends Perso {
 			EngineZildo.spriteManagement.spawnSprite(elem);
 		}
 
-		// On passe en position "soulève", et on attend 20 frames
+		// On passe en position "soulÃ¨ve", et on attend 20 frames
 		setMouvement(MouvementZildo.SOULEVE);
 		setAttente(20);
 		setEn_bras(elem);

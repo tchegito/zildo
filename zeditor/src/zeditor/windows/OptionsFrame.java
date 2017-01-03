@@ -92,11 +92,11 @@ public class OptionsFrame extends javax.swing.JFrame {
 			getContentPane().add(getTabbedPane());
 			getContentPane().add(getButtonsGroupPanel());
 
-			// On recrée le manager avec les champs
+			// On recrÃ©e le manager avec les champs
 			manager = new OptionsFrameManager(this, getUnmappedCheckBox(),
 					getGridCheckBox());
 
-			// On initialise la fenêtre avec le paramétrage actuel
+			// On initialise la fenÃªtre avec le paramÃ©trage actuel
 			manager.init();
 
 			pack();
@@ -143,7 +143,7 @@ public class OptionsFrame extends javax.swing.JFrame {
 	private JTabbedPane getTabbedPane() {
 		if (TabbedPane == null) {
 			TabbedPane = new JTabbedPane();
-			TabbedPane.addTab("Décors", null, getTilesOptions(), null);
+			TabbedPane.addTab("DÃ©cors", null, getTilesOptions(), null);
 			TabbedPane.addTab("Sprites", null, getSpritesOptions(), null);
 			TabbedPane
 					.addTab("Personnages", null, getCHaractersOptions(), null);
@@ -205,7 +205,7 @@ public class OptionsFrame extends javax.swing.JFrame {
 	private JCheckBox getUnmappedCheckBox() {
 		if (unmappedCheckBox == null) {
 			unmappedCheckBox = new JCheckBox();
-			unmappedCheckBox.setText("Afficher les tuiles non mappées");
+			unmappedCheckBox.setText("Afficher les tuiles non mappÃ©es");
 		}
 		return unmappedCheckBox;
 	}
@@ -279,7 +279,7 @@ public class OptionsFrame extends javax.swing.JFrame {
 	private JLabel getInfos() {
 		if (infos == null) {
 			infos = new JLabel();
-			infos.setText(" * : Nécéssite un redémarrage de Zeditor pour être pris en compte");
+			infos.setText(" * : NÃ©cÃ©ssite un redÃ©marrage de Zeditor pour Ãªtre pris en compte");
 		}
 		return infos;
 	}

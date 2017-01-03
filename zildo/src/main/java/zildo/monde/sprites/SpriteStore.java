@@ -169,9 +169,9 @@ public class SpriteStore {
 			if (entity.getEntityType().isElement()) {
 				Element element=(Element)entity;
 				SpriteEntity linkedEntity=element.getLinkedPerso();
-				// On regarde si cet élément est lié à un autre élément
+				// On regarde si cet Ã©lÃ©ment est liÃ© Ã  un autre Ã©lÃ©ment
 				if (linkedEntity != null && linkedEntity.getEntityType().isElement()) {
-					// Oui c'est le cas donc on supprime aussi l'autre élément
+					// Oui c'est le cas donc on supprime aussi l'autre Ã©lÃ©ment
 					deleteSprite(element.getLinkedPerso());
 				}
 				element.finalize();

@@ -6,8 +6,8 @@ import java.util.List;
 import zeditor.core.tiles.TileSelection;
 import zildo.monde.map.Case;
 /**
- * Cette classe représente une sélection dans Zeditor. Elle est abstraite et ne
- * peut pas être utilisée comme telle. Il faut utiliser l'une des classes filles
+ * Cette classe reprÃ©sente une sÃ©lection dans Zeditor. Elle est abstraite et ne
+ * peut pas Ãªtre utilisÃ©e comme telle. Il faut utiliser l'une des classes filles
  * suivantes :
  * <p>
  * <ul>
@@ -20,7 +20,7 @@ import zildo.monde.map.Case;
  */
 public abstract class CaseSelection extends Selection {
 	/**
-	 * Liste des éléments de la sélection
+	 * Liste des Ã©lÃ©ments de la sÃ©lection
 	 */
 	protected List<Case> items;
 
@@ -32,20 +32,20 @@ public abstract class CaseSelection extends Selection {
 	}
 
 	/**
-	 * Constructeur à partir d'une liste
+	 * Constructeur Ã  partir d'une liste
 	 * 
 	 * @param l
-	 *            est la liste des éléments de la sélection
+	 *            est la liste des Ã©lÃ©ments de la sÃ©lection
 	 */
 	public CaseSelection(List<Case> l) {
 		items = l;
 	}
 
 	/**
-	 * Setter de la liste d'éléments
+	 * Setter de la liste d'Ã©lÃ©ments
 	 * 
 	 * @param l
-	 *            est la liste des éléments
+	 *            est la liste des Ã©lÃ©ments
 	 */
 	public void setItems(List<Case> l) {
 		items = l;

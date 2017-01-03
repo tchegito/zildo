@@ -111,10 +111,10 @@ public class NetServer extends NetSend {
 					source=clientConnect.getSource();
 					if (in) {
 					    if (conPacket.getVersion() != Constantes.CURRENT_VERSION) {
-						log("Serveur:Le client n'a pas la même version que le serveur ("+Constantes.CURRENT_VERSION+") : impossible de l'accepter");
+						log("Serveur:Le client n'a pas la mÃªme version que le serveur ("+Constantes.CURRENT_VERSION+") : impossible de l'accepter");
 					    } else {
 						// Client is coming
-						log("Serveur:Un client est arrivé !"+source.address.getHostName()+" port:"+source.address.getPort()+" named "+conPacket.getPlayerName());
+						log("Serveur:Un client est arrivÃ© !"+source.address.getHostName()+" port:"+source.address.getPort()+" named "+conPacket.getPlayerName());
 	
 						int zildoId=server.connectClient(source, conPacket.getPlayerName());
 	

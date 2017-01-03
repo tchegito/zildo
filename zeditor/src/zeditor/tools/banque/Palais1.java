@@ -11,7 +11,7 @@ public class Palais1 extends Banque {
 	// Palais1 = interia4 (179 tiles)
 	public Palais1() {
 		coords = new Point[] {
-		/* Murs étage 2 */
+		/* Murs Ã©tage 2 */
 		new Point(0, 0), new Point(16, 0), new Point(64, 0), new Point(0, 16),
 				new Point(16, 16), new Point(32, 16), new Point(48, 16),
 				new Point(64, 16), new Point(16, 32), new Point(32, 32),
@@ -19,20 +19,20 @@ public class Palais1 extends Banque {
 				new Point(48, 48), new Point(0, 64), new Point(16, 64),
 				new Point(64, 64),
 
-				/* Coins étage 2 */
+				/* Coins Ã©tage 2 */
 				new Point(160, 32), new Point(176, 32), new Point(160, 48),
 				new Point(176, 48),
 
-				/* Tour étage 2 */
+				/* Tour Ã©tage 2 */
 				new Point(64, 112), new Point(80, 112), new Point(96, 112),
 				new Point(64, 128), new Point(96, 128), new Point(64, 144),
 				new Point(80, 144), new Point(96, 144),
 
-				/* Virage étage2 */
+				/* Virage Ã©tage2 */
 				new Point(112, 112), new Point(128, 112), new Point(112, 128),
 				new Point(128, 128),
 
-				/* Murs étage 1 */
+				/* Murs Ã©tage 1 */
 				new Point(80, 0), new Point(96, 0), new Point(144, 0),
 				new Point(80, 16), new Point(96, 16), new Point(112, 16),
 				new Point(128, 16), new Point(144, 16), new Point(96, 32),
@@ -40,7 +40,7 @@ public class Palais1 extends Banque {
 				new Point(112, 48), new Point(128, 48), new Point(80, 64),
 				new Point(96, 64), new Point(144, 64),
 
-				/* Coins étage 1 - 2 */
+				/* Coins Ã©tage 1 - 2 */
 				new Point(192, 32), new Point(208, 32), new Point(192, 48),
 				new Point(208, 48), new Point(256, 32), new Point(272, 32),
 				new Point(256, 48), new Point(272, 48),
@@ -70,7 +70,7 @@ public class Palais1 extends Banque {
 				new Point(64, 96), new Point(80, 96), new Point(128, 160),
 				new Point(96, 96),
 
-				/* Fenêtres */
+				/* FenÃªtres */
 				new Point(128, 80), new Point(144, 80), new Point(128, 96),
 				new Point(144, 96), new Point(176, 112), new Point(192, 112),
 				new Point(176, 128), new Point(192, 128),
@@ -104,7 +104,7 @@ public class Palais1 extends Banque {
 				/* Tasse */
 				new Point(288, 64), new Point(304, 64), new Point(288, 80),
 				new Point(304, 80),
-				/* Porte à escaliers */
+				/* Porte Ã  escaliers */
 				new Point(224, 64), new Point(240, 64), new Point(224, 80),
 				new Point(240, 80), new Point(256, 64), new Point(272, 64),
 				new Point(256, 80), new Point(272, 80), new Point(224, 96),

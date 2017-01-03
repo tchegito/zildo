@@ -10,7 +10,7 @@ public class Maison extends Banque {
 
 	// 249 tiles
 	public Maison() {
-		// maison.dec = interia1.pkm + interia2.pkm à partir de la tile 239
+		// maison.dec = interia1.pkm + interia2.pkm Ã  partir de la tile 239
 		/* Vide */
 		coords = new Point[] { new Point(16, 16),
 		/* Bords */
@@ -21,7 +21,7 @@ public class Maison extends Banque {
 				new Point(80, 16), new Point(80, 32), new Point(64, 32),
 				new Point(48, 32), new Point(48, 16), /* 9--15 */
 
-				/* Pr‚sols */
+				/* Prâ€šsols */
 				new Point(0, 48), new Point(16, 48), new Point(32, 48),
 				new Point(32, 64), new Point(32, 80), new Point(16, 80),
 				new Point(0, 80), new Point(0, 64), /* 16--23 */
@@ -43,7 +43,7 @@ public class Maison extends Banque {
 																		 * 42--44
 																		 */
 
-				/* Fenˆtres} {0--3 +41 */
+				/* FenË†tres} {0--3 +41 */
 				new Point(32, 96), new Point(48, 96), new Point(32, 112),
 				new Point(48, 112), /* 4--9 +41 */
 				new Point(0, 128), new Point(16, 128), new Point(0, 144),
@@ -69,7 +69,7 @@ public class Maison extends Banque {
 				new Point(192, 160), new Point(208, 160), new Point(192, 176),
 				new Point(208, 176),
 
-				/* D‚cors */
+				/* Dâ€šcors */
 				/* Tapis */
 				new Point(192, 80), new Point(208, 80), new Point(224, 80),
 				new Point(192, 96), new Point(208, 96), new Point(224, 96),/*
@@ -84,7 +84,7 @@ public class Maison extends Banque {
 																				 * +
 																				 * 65
 																				 */
-				/* D‚cors bord */
+				/* Dâ€šcors bord */
 				new Point(96, 0), new Point(112, 0), new Point(128, 0),
 				new Point(144, 0), /* 9--12 +65 */
 				/* Tables */
@@ -105,7 +105,7 @@ public class Maison extends Banque {
 																			 */
 				/* Tabouret */
 				new Point(144, 16), new Point(144, 32), /* 26--27 +65 */
-				/* BibliothŠque */
+				/* BibliothÅ que */
 				new Point(192, 16), new Point(208, 16), new Point(224, 16),
 				new Point(192, 32), new Point(208, 32), new Point(224, 32),/*
 																			 * 28--

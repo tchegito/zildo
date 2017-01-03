@@ -31,7 +31,7 @@ public enum PersoDescription implements SpriteDescription {
 	BAS_GARDEVERT(8, 9, 10, 11, 12, 13, 14, 15),
 	HAUT_GARDEVERT(16, 17, 18, 19),
 	GARDE_CANARD(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34),
-	POULE(35, 36), //, 37, 38, 76, 77, 78, 79), // 4 à gauche et 4 à droite
+	POULE(35, 36), //, 37, 38, 76, 77, 78, 79), // 4 Ã  gauche et 4 Ã  droite
 	CANARD(37, 38),
 	ENFANT(39, 40, 41),
 	VOYANT(42, 43),

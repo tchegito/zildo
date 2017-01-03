@@ -275,7 +275,7 @@ public class SpriteManagement extends SpriteStore {
 						e.reverse = Reverse.HORIZONTAL;
 					}
 					spawnSprite(e);
-					// Peut-être qu'un diamant va apparaitre !
+					// Peut-Ãªtre qu'un diamant va apparaitre !
 				}
 				break;
 
@@ -667,7 +667,7 @@ public class SpriteManagement extends SpriteStore {
 					element.animate();
 					if (element.dying) {
 						SpriteEntity linkedOne = element.getLinkedPerso();
-						// L'élément est arrivé au terme de son existence : on le supprime de la liste
+						// L'Ã©lÃ©ment est arrivÃ© au terme de son existence : on le supprime de la liste
 						if (linkedOne != null && EntityType.ELEMENT == linkedOne.getEntityType()) {
 							toDelete.add(linkedOne);
 						}

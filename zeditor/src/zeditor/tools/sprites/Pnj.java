@@ -84,7 +84,7 @@ public class Pnj extends SpriteBanque {
 				new Zone(48, 2, 15, 17),
 				new Zone(63, 4, 15, 14),
 				new Zone(78, 4, 15, 14),
-				// Garçon - 39
+				// GarÃ§on - 39
 				new Zone(33, 20, 14, 22),
 				new Zone(47, 20, 14, 22),
 				new Zone(61, 20, 14, 22),
@@ -105,7 +105,7 @@ public class Pnj extends SpriteBanque {
 				new Zone(46, 158, 13, 25),
 				new Zone(59, 158, 16, 25),
 				new Zone(75, 158, 16, 25),
-				// Garçon brun - 55
+				// GarÃ§on brun - 55
 				new Zone(177, 70, 16, 28),
 				new Zone(193, 70, 16, 28),
 				// Villageoise jaune - 57
@@ -123,7 +123,7 @@ public class Pnj extends SpriteBanque {
 				// Vieille sans balai - 67
 				new Zone(121, 133, 16, 25),
 				new Zone(137, 134, 16, 24),
-				// Prêtre - 69
+				// PrÃªtre - 69
 				new Zone(121, 159, 16, 24),
 				new Zone(137, 159, 14, 24),
 				new Zone(151, 159, 16, 24),

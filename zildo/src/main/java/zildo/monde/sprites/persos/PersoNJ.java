@@ -275,7 +275,7 @@ public class PersoNJ extends Perso {
 								break;
 							}
 						}
-						// On se déplace en courbe
+						// On se dÃ©place en courbe
 						pathFinder.reachDestination(0); // Speed is unused
 						cptMouvement++;
 					}
@@ -347,9 +347,9 @@ public class PersoNJ extends Perso {
 					attente--;
 					// Stop hen's movements when it's flying (TODO : this isn't very clean, idem for fish !)
 				} else if (quel_deplacement != MouvementPerso.HEN || z == 0 || (desc == PersoDescription.FISH && !flying)) {
-					// On déplace le PNJ
+					// On dÃ©place le PNJ
 					if (pathFinder.getTarget() == null && quel_deplacement.isMobileZone()) {
-						// Pas de destination, donc on en fixe une dans la zone de déplacement
+						// Pas de destination, donc on en fixe une dans la zone de dÃ©placement
 						cptMouvement = 0;
 
 						pathFinder.determineDestination();
@@ -365,7 +365,7 @@ public class PersoNJ extends Perso {
 							pos_seqsprite = 8 * Constantes.speed;
 							EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.ROCKBALL, (int) x,
 									(int) y,
-									(int) (angle.value + Math.random() * 4) // Attention : math.random() était 'i'
+									(int) (angle.value + Math.random() * 4) // Attention : math.random() Ã©tait 'i'
 																			// en pascal
 									, null, null);
 							attente = (int) (Math.random() * 5);
@@ -513,7 +513,7 @@ public class PersoNJ extends Perso {
 			}
 			break;
 		case VIEUX:
-			// Vieux saoul à 3 sprites
+			// Vieux saoul Ã  3 sprites
 			if ((int) (Math.random() * 30) == 2) {
 				setPos_seqsprite((int) (Math.random() * 3));
 			}
@@ -557,7 +557,7 @@ public class PersoNJ extends Perso {
 		case MOUSTACHU_ASSIS:
 		case BUCHERON_DEBOUT:
 		case KING:
-			// Persos à 1 seul sprite
+			// Persos Ã  1 seul sprite
 			add_spr = 0;
 			break;
 		case BANDIT_CHAPEAU:
@@ -577,7 +577,7 @@ public class PersoNJ extends Perso {
 		case ALCOOLIQUE:
 		case SORCIER_CAGOULE:
 		case VIEUX_SAGE2:
-			// Persos toujours de face, à 2 sprites seulement
+			// Persos toujours de face, Ã  2 sprites seulement
 			add_spr = (compteur_animation / 30) % 2;
 			break;
 		case SORCERER:
@@ -595,7 +595,7 @@ public class PersoNJ extends Perso {
 		case ENFANT:
 		case VOLEUR:
 		case BANDIT:
-			// Persos à 3 angles
+			// Persos Ã  3 angles
 			add_spr = seqp[angle.value];
 			break;
 		case GARCON_BRUN:
@@ -610,20 +610,20 @@ public class PersoNJ extends Perso {
 			break;
 		case CURE:
 		case GARDE_BOUCLIER:
-			// Persos à 4 sprites : prêtre,garde bouclier
+			// Persos Ã  4 sprites : prÃªtre,garde bouclier
 			add_spr = angle.value;
 			break;
 		case VAUTOUR:
-			// Persos à 3 sprite et 1 angle
+			// Persos Ã  3 sprite et 1 angle
 			add_spr = seqv[(compteur_animation / 20) % 4];
 			break;
 		case SPECTRE:
-			// Perso à 2 sprites (gauche/droite)
+			// Perso Ã  2 sprites (gauche/droite)
 			add_spr = angle.value;
 			break;
 		case CORBEAU:
 		case CRABE:
-			// Persos à 3 sprites par angle
+			// Persos Ã  3 sprites par angle
 			add_spr = angle.value * 3 + computeSeq(4) % 3;
 			break;
 		case ABEILLE:
@@ -834,7 +834,7 @@ public class PersoNJ extends Perso {
 		}
 		setPos_seqsprite((getPos_seqsprite() + 1) % 512);
 		if (EngineZildo.mapManagement.collide((int) x, (int) y, this)) {
-			// Le monstre est gêné par un obstacle
+			// Le monstre est gÃªnÃ© par un obstacle
 			if (!EngineZildo.mapManagement.collide((int) sx, (int) y, this)) {
 				setX(sx);
 			} else if (!EngineZildo.mapManagement.collide((int) x, (int) sy, this)) {
@@ -846,7 +846,7 @@ public class PersoNJ extends Perso {
 				pathFinder.setTarget(null);
 				setAlerte(false);
 				setAttente(10);
-				// On replace la zone de déplacement autour de l'ennemi
+				// On replace la zone de dÃ©placement autour de l'ennemi
 				setZone_deplacement(EngineZildo.mapManagement.range(x - 16 * 5, y - 16 * 5, x + 16 * 5, y + 16 * 5));
 			}
 		}

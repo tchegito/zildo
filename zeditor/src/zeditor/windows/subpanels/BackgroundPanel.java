@@ -161,7 +161,7 @@ public class BackgroundPanel extends JPanel {
 	}
 	
 	/**
-	 * Charge la liste des TileSets pour la combo de décors
+	 * Charge la liste des TileSets pour la combo de dÃ©cors
 	 * 
 	 * @return Un tableau de String des titres des TileSets
 	 * @author Drakulo

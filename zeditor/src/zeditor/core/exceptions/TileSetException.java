@@ -13,7 +13,7 @@ public class TileSetException extends ZeditorException {
 	}
 
 	/**
-	 * Constructeur avec paramètre (le message d'erreur)
+	 * Constructeur avec paramÃ¨tre (le message d'erreur)
 	 * 
 	 * @param s
 	 *            String : message d'erreur

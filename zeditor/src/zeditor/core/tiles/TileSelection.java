@@ -14,18 +14,18 @@ import zildo.monde.util.Point;
 import zildo.resource.Constantes;
 
 /**
- * Cette classe représente une sélection du TileSet. Elle est composée de :
+ * Cette classe reprÃ©sente une sÃ©lection du TileSet. Elle est composÃ©e de :
  * <p>
  * <ul>
- * <li>La liste des éléments sélectionnés héritée de la classe
+ * <li>La liste des Ã©lÃ©ments sÃ©lectionnÃ©s hÃ©ritÃ©e de la classe
  * {@link CaseSelection}</li>
- * <li>La largeur de la sélection en nombre de cases</li>
- * <li>La hauteur de la sélection en nombre de cases</li>
+ * <li>La largeur de la sÃ©lection en nombre de cases</li>
+ * <li>La hauteur de la sÃ©lection en nombre de cases</li>
  * </ul>
  * </p>
  * <p>
- * Un élément de la liste représente l'id de la tuile. La liste <u>doit</u> être
- * remplie de cette manière :
+ * Un Ã©lÃ©ment de la liste reprÃ©sente l'id de la tuile. La liste <u>doit</u> Ãªtre
+ * remplie de cette maniÃ¨re :
  * </p>
  * <b>TileSet</b>
  * <table border="solid">
@@ -64,12 +64,12 @@ import zildo.resource.Constantes;
  */
 public class TileSelection extends CaseSelection {
 	/**
-	 * Largeur de la sélection en nombre de cases
+	 * Largeur de la sÃ©lection en nombre de cases
 	 */
 	public int width;
 
 	/**
-	 * Hauteur de la sélection en nombre de cases
+	 * Hauteur de la sÃ©lection en nombre de cases
 	 */
 	public int height;
 
@@ -87,11 +87,11 @@ public class TileSelection extends CaseSelection {
 	 * Constructeur
 	 * 
 	 * @param w
-	 *            est la largeur de la sélection (en nombre de cases)
+	 *            est la largeur de la sÃ©lection (en nombre de cases)
 	 * @param h
-	 *            est la hauteur de la sélection (en nombre de cases)
+	 *            est la hauteur de la sÃ©lection (en nombre de cases)
 	 * @param l
-	 *            est la liste contenant les éléments
+	 *            est la liste contenant les Ã©lÃ©ments
 	 */
 	public TileSelection(Integer w, Integer h, List<Case> l) {
 		super(l);
@@ -110,9 +110,9 @@ public class TileSelection extends CaseSelection {
 	}
 
 	/**
-	 * Surcharge de la méthode toString afin de renvoyer une chaine contenant
-	 * tous les items séparés par des virgules sans afficher les tiles non
-	 * mappés qui ont été sélectionnés.
+	 * Surcharge de la mÃ©thode toString afin de renvoyer une chaine contenant
+	 * tous les items sÃ©parÃ©s par des virgules sans afficher les tiles non
+	 * mappÃ©s qui ont Ã©tÃ© sÃ©lectionnÃ©s.
 	 */
 	@Override
 	public String toString() {

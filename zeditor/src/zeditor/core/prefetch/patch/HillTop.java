@@ -31,7 +31,7 @@ import zildo.monde.util.Point;
  */
 public class HillTop extends AbstractPatch12 {
 
-	// Cases équivalents :
+	// Cases Ã©quivalents :
 	// 16 = 34
 	// 26 = 29
 	// 28 = 30

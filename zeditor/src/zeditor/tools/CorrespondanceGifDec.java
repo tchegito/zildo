@@ -82,14 +82,14 @@ public class CorrespondanceGifDec {
 	}
 	
 	/**
-	 * Renvoie le numéro de la tile correspondant à la banque et à la position
-	 * passées en paramètre
+	 * Renvoie le numÃ©ro de la tile correspondant Ã  la banque et Ã  la position
+	 * passÃ©es en paramÃ¨tre
 	 * 
 	 * @param bankName
 	 *            Nom de la banque (correspond aux noms des fichiers .DEC)
 	 * @param x
 	 * @param y
-	 * @return int (-1 si aucune tile trouvée à cet endroit)
+	 * @return int (-1 si aucune tile trouvÃ©e Ã  cet endroit)
 	 */
 	public int getMotifParPoint(String bankName, int x, int y) {
 		return getBanque(bankName).getNumTile(x, y);

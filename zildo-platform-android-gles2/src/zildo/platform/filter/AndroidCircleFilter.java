@@ -37,7 +37,7 @@ import zildo.platform.opengl.AndroidPixelShaders;
  * Mathematical explanation:<p/>
  * 
  * Each point respecting following equation must be shown :<br/>
- * (x - a)² + (y - b)² > r² <p/>
+ * (x - a)Â² + (y - b)Â² > rÂ² <p/>
  * 
  * So the screen is divided vertically into 3 areas :<ol>
  * <li>before circle : all is black</li>
@@ -45,15 +45,15 @@ import zildo.platform.opengl.AndroidPixelShaders;
  * <li>after circle : all is black again</li>
  * </ol>
  * 
- * In order to calculate the derived equation, let's set a variable Y = (y - b)² <br/>
+ * In order to calculate the derived equation, let's set a variable Y = (y - b)Â² <br/>
  * So we have: <br/>
- * (x - a)² + Y > r² <br/>
+ * (x - a)Â² + Y > rÂ² <br/>
  * wich gives : <br/>
- * x² - 2ax + a² + Y - r² > 0 <p/>
+ * xÂ² - 2ax + aÂ² + Y - rÂ² > 0 <p/>
  * 
  * If we calculate the delta : <br/>
- * D = (-2a)² - 4 * (a² + Y - r²) <br/>
- * D = 4 * (a² - r²)<p>
+ * D = (-2a)Â² - 4 * (aÂ² + Y - rÂ²) <br/>
+ * D = 4 * (aÂ² - rÂ²)<p>
  * 
  * So we deduce the 2 roots of the equation : <br/>
  * x1 = (2 * a - sqrt(D)) / 2 <br/>

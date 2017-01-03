@@ -56,7 +56,7 @@ public class Champion {
 						"" + 25 * half;
 			}
 			ret = playerName + " - ";
-			ret += getTimeSpentToString((int) timeSpent) + " - "+strHq+"^ "+money+"¤";
+			ret += getTimeSpentToString((int) timeSpent) + " - "+strHq+"^ "+money+"Â¤";
 		}
 		return ret;
 	}

@@ -33,7 +33,7 @@ public class ExplorerFrame {
 
 	public ExplorerFrame(MasterFrame frame, int mode) {
 		int status;
-		// Recréation du manager avec les objets en paramètre
+		// RecrÃ©ation du manager avec les objets en paramÃ¨tre
 		fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(new FileNameExtensionFilter(
 				"Cartes Zildo", "MAP"));

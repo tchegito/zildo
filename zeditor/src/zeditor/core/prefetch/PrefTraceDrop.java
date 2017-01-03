@@ -79,7 +79,7 @@ public enum PrefTraceDrop {
 				return p;
 			}
 		}
-		throw new RuntimeException("Impossible de trouver le PrefDrop associé à "+p_pref.name());
+		throw new RuntimeException("Impossible de trouver le PrefDrop associÃ© Ã  "+p_pref.name());
 	}
 	
 }

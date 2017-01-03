@@ -53,14 +53,14 @@ public class FBOHardware implements FBO {
 
 	@Override
 	public void bindToTexture(int myTextureId, int myFBOId) {
-		// On bind le FBO à la texture
+		// On bind le FBO Ã  la texture
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, myFBOId);
 
 		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, 
 				GL11ExtensionPack.GL_COLOR_ATTACHMENT0_OES,
 				GLES20.GL_TEXTURE_2D, myTextureId, 0);
 
-		// Puis on détache la texture de la vue
+		// Puis on dÃ©tache la texture de la vue
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
 	}
 

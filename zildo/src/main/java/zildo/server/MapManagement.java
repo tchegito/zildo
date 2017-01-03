@@ -238,7 +238,7 @@ public class MapManagement {
 	 * another to move.**/
 	public boolean collide(int tx, int ty, Element quelElement, boolean loopingCheck) {
 		int modx, mody;
-		int on_map; // La case où se déplace le joueur
+		int on_map; // La case oÃ¹ se dÃ©place le joueur
 
 		if (currentMap == null) {
 			return false;
@@ -570,7 +570,7 @@ public class MapManagement {
 			result = angle;	// Bed
 		break;
 		default:
-			// Saut latéral}
+			// Saut latÃ©ral}
 			switch (angle) {
 			case NORD:
 				onMap = area.readmap(cx, cy - 1);

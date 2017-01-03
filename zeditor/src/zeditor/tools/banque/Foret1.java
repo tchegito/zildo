@@ -130,10 +130,10 @@ public class Foret1 extends Banque {
 				/* Souche */
 				new Point(144, 112), new Point(160, 112), new Point(144, 128),
 				new Point(160, 128),/* 20--23 +139 */
-				/* Fleurs anim‚s */
+				/* Fleurs animâ€šs */
 				new Point(128, 48), new Point(192, 128), /* 24--25 +139 */
 
-				/* D‚cors */
+				/* Dâ€šcors */
 				/******* Buisson */
 				new Point(144, 80), new Point(192, 96), /* 0--1 +165 */
 				new Point(160, 80), new Point(176, 112), new Point(192, 112), /*
@@ -163,13 +163,13 @@ public class Foret1 extends Banque {
 																		 * +181
 																		 */
 				new Point(32, 0), new Point(48, 0), new Point(32, 16),
-				new Point(48, 16), /* Entr‚e de grotte {6--9 +181 */
+				new Point(48, 16), /* Entrâ€še de grotte {6--9 +181 */
 
 				/* Grosse pierre */
 				new Point(128, 64), new Point(144, 64), new Point(128, 80),
 				new Point(144, 80), /* 10--13 +181 */
 
-				/* Entr‚e dans une forˆt */
+				/* Entrâ€še dans une forË†t */
 				new Point(48, 112), new Point(64, 112), new Point(80, 112),
 				new Point(48, 128), new Point(64, 128), new Point(80, 128), /*
 																			 * 14--
@@ -181,7 +181,7 @@ public class Foret1 extends Banque {
 				/* Echelle */
 				new Point(160, 112), new Point(176, 112), /* 20--21 +181 */
 
-				/* Eau anim‚e} {0--22 +209 */
+				/* Eau animâ€še} {0--22 +209 */
 				new Point(112, 0), new Point(0, 96), new Point(0, 112),
 				new Point(192, 0), new Point(192, 16), new Point(192, 32),
 				new Point(16, 96), new Point(48, 112), new Point(112, 32),

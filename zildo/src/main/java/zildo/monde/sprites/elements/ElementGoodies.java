@@ -90,11 +90,11 @@ public class ElementGoodies extends Element {
 			if (vx<=-0.15) {
 				ax=0.01f;
 				reverse = Reverse.NOTHING;
-				addSpr=0;	// Coeur tourné vers la gauche
+				addSpr=0;	// Coeur tournÃ© vers la gauche
 			} else if (vx>=0.15) {
 				ax=-0.01f;
 				reverse = Reverse.HORIZONTAL;
-				addSpr=1;	// Coeur tourné vers la droite
+				addSpr=1;	// Coeur tournÃ© vers la droite
 			}
 			if (z<=4) {
 				nSpr=ElementDescription.DROP_FLOOR.ordinal();
@@ -115,7 +115,7 @@ public class ElementGoodies extends Element {
 			if (eff<33 && spr!=ElementDescription.DROP_FLOOR) {		// Les diamants brillent
 				addSpr=(eff / 10) % 3;
 			}
-			// 2) s'arrête sur le sol
+			// 2) s'arrÃªte sur le sol
 			if (z<4) {
 				z=4;
 			}

@@ -18,7 +18,7 @@ public class ZeditorException extends Exception {
 	}
 
 	/**
-	 * Constructeur avec paramètre (le message d'erreur)
+	 * Constructeur avec paramÃ¨tre (le message d'erreur)
 	 * 
 	 * @param s
 	 *            String : message d'erreur

@@ -38,7 +38,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 
 /**
- * Classe de management de la fenêtre principale de Zeditor (MasterFrame.class)
+ * Classe de management de la fenÃªtre principale de Zeditor (MasterFrame.class)
  * 
  * @author Drakulo
  */
@@ -79,10 +79,10 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Constructeur avec une liste d'objets correspondant aux différents objets de la MasterFrame
+	 * Constructeur avec une liste d'objets correspondant aux diffÃ©rents objets de la MasterFrame
 	 * 
 	 * @param p_sys
-	 *            Le JLabel Système de la MasterFrame
+	 *            Le JLabel SystÃ¨me de la MasterFrame
 	 * @author Drakulo
 	 */
 	public void initialize(JLabel p_sys, JLabel p_caseInfo, JPanel p_master,
@@ -107,25 +107,25 @@ public class MasterFrameManager {
 	}
 	
 	/**
-	 * Ferme la fenêtre de Zeditor
+	 * Ferme la fenÃªtre de Zeditor
 	 * 
 	 * @author Drakulo
 	 */
 	public void exit() {
-		// TODO Ajouter un test de vérification s'il y a eu une modification et
-		// demander une sauvegarde le cas échéant.
+		// TODO Ajouter un test de vÃ©rification s'il y a eu une modification et
+		// demander une sauvegarde le cas Ã©chÃ©ant.
 		System.exit(0);
 	}
 
 	/**
-	 * Sauve la carte en cours dans la carte en cours. Si la carte en cours n'a pas encore été sauvegardée, on appelle
-	 * la méthode {@link MasterPanelManager.saveAs saveAs()}
+	 * Sauve la carte en cours dans la carte en cours. Si la carte en cours n'a pas encore Ã©tÃ© sauvegardÃ©e, on appelle
+	 * la mÃ©thode {@link MasterPanelManager.saveAs saveAs()}
 	 * 
 	 * @author Drakulo
 	 */
 	public void save() {
 		zildoCanvas.saveMapFile(currentMapFile);
-		display("Sauvegarde effectuée.", MESSAGE_INFO);
+		display("Sauvegarde effectuÃ©e.", MESSAGE_INFO);
 		setUnsavedChanges(false);
 	}
 
@@ -137,7 +137,7 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Ouvre l'explorateur afin de sélectionner le nom du fichier à sauvegarder pui lance (ou annule) la sauvegarde
+	 * Ouvre l'explorateur afin de sÃ©lectionner le nom du fichier Ã  sauvegarder pui lance (ou annule) la sauvegarde
 	 */
 	public void saveAs() {
 		display("Enregistrer sous...", MESSAGE_ERROR);
@@ -169,7 +169,7 @@ public class MasterFrameManager {
 		try {
 			ChainingPoint ch = zildoCanvas.loadMap(p_mapName,
 					p_fromChainingPoint);
-			display("Chargement effectué.", MESSAGE_INFO);
+			display("Chargement effectuÃ©.", MESSAGE_INFO);
 			currentMapFile = p_mapName;
 
 			updateTitle();
@@ -209,7 +209,7 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Crée une nouvelle carte
+	 * CrÃ©e une nouvelle carte
 	 * 
 	 * @author Drakulo
 	 */
@@ -222,7 +222,7 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Charge le tileSet dont le nom est passé en paramètres
+	 * Charge le tileSet dont le nom est passÃ© en paramÃ¨tres
 	 * 
 	 * @param name
 	 * @author Drakulo
@@ -231,7 +231,7 @@ public class MasterFrameManager {
 		try {
 			masterFrame.getBackgroundPanel().getTileSetPanel()
 					.changeTile(p_name);
-			display("TileSet '" + p_name + "' chargé.", MESSAGE_INFO);
+			display("TileSet '" + p_name + "' chargÃ©.", MESSAGE_INFO);
 		} catch (ZeditorException e) {
 			display(e.getMessage(), MESSAGE_ERROR);
 		}
@@ -255,10 +255,10 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Affiche un message dans le label Système
+	 * Affiche un message dans le label SystÃ¨me
 	 * 
 	 * @param p_msg
-	 *            est le message à afficher
+	 *            est le message Ã  afficher
 	 * @param p_type
 	 *            est le type de message
 	 * @author Drakulo
@@ -290,7 +290,7 @@ public class MasterFrameManager {
 	}
 	
 	/**
-	 * Ouvre la fenêtre de paramétrage des options
+	 * Ouvre la fenÃªtre de paramÃ©trage des options
 	 * 
 	 * @author Drakulo
 	 */
@@ -334,16 +334,16 @@ public class MasterFrameManager {
 	public void reloadConfig() {
 		updateTools();
 		masterPanel.repaint();
-		display("Petite configuration rechargée.", MESSAGE_INFO);
+		display("Petite configuration rechargÃ©e.", MESSAGE_INFO);
 	}
 
 	/**
 	 * Changement d'une option avec sauvegarde
 	 * 
 	 * @param p_option
-	 *            : Entrée de l'énumération Options
+	 *            : EntrÃ©e de l'Ã©numÃ©ration Options
 	 * @param p_value
-	 *            : Valeur à attribuer
+	 *            : Valeur Ã  attribuer
 	 * @author Drakulo
 	 */
 	public void saveOption(Options p_option, String p_value) {
@@ -355,8 +355,8 @@ public class MasterFrameManager {
 	 * Chargement d'une option
 	 * 
 	 * @param p_option
-	 *            : Entrée de l'énumération Options
-	 * @return La valeur paramétrée de l'option
+	 *            : EntrÃ©e de l'Ã©numÃ©ration Options
+	 * @return La valeur paramÃ©trÃ©e de l'option
 	 * @author Drakulo
 	 */
 	public String loadOption(String p_option) {
@@ -364,13 +364,13 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Met à jours les boutons de la ToolBar. Cette méthode est dépendante de la structure de la fenêtre. MasterPanel >>
+	 * Met Ã  jours les boutons de la ToolBar. Cette mÃ©thode est dÃ©pendante de la structure de la fenÃªtre. MasterPanel >>
 	 * ToolbarContainer >> ToolBar
 	 * 
 	 * @author Drakulo
 	 */
 	public void updateTools() {
-		// Bouton des tuiles non mappées
+		// Bouton des tuiles non mappÃ©es
 		JToggleButton unmapped = masterFrame.getUnmappedTool();
 		unmapped.setSelected(Boolean.valueOf(OptionHelper
 				.loadOption(Options.SHOW_TILES_UNMAPPED.getValue())));
@@ -387,7 +387,7 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Change le titre de la fenêtre Zildo avec le texte : "Zeditor - [TITLE]"
+	 * Change le titre de la fenÃªtre Zildo avec le texte : "Zeditor - [TITLE]"
 	 * 
 	 * @param title
 	 * @author Drakulo
@@ -397,7 +397,7 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Affiche ou masque la grille sur le TileSet suivant le paramètre
+	 * Affiche ou masque la grille sur le TileSet suivant le paramÃ¨tre
 	 * 
 	 * @param flag
 	 *            true : afficher, false : masquer
@@ -406,23 +406,23 @@ public class MasterFrameManager {
 	public void showTileSetGrid(boolean flag) {
 		saveOption(Options.SHOW_TILES_GRID, String.valueOf(flag));
 		if (flag) {
-			display("Grille affichée.", MESSAGE_INFO);
+			display("Grille affichÃ©e.", MESSAGE_INFO);
 		} else {
-			display("Grille masquée.", MESSAGE_INFO);
+			display("Grille masquÃ©e.", MESSAGE_INFO);
 		}
 	}
 
 	public void showCollision(boolean flag) {
 		saveOption(Options.SHOW_COLLISION, String.valueOf(flag));
 		if (flag) {
-			display("Collision activée.", MESSAGE_INFO);
+			display("Collision activÃ©e.", MESSAGE_INFO);
 		} else {
-			display("Collision desactivée.", MESSAGE_INFO);
+			display("Collision desactivÃ©e.", MESSAGE_INFO);
 		}
 	}
 
 	/**
-	 * Affiche ou masque les tuiles non mappées sur le TileSet suivant le paramètre
+	 * Affiche ou masque les tuiles non mappÃ©es sur le TileSet suivant le paramÃ¨tre
 	 * 
 	 * @param flag
 	 *            true : afficher, false : masquer
@@ -431,14 +431,14 @@ public class MasterFrameManager {
 	public void showTileSetUnmapped(boolean flag) {
 		saveOption(Options.SHOW_TILES_UNMAPPED, String.valueOf(flag));
 		if (flag) {
-			display("Tuiles non mappées mises en évidence.", MESSAGE_INFO);
+			display("Tuiles non mappÃ©es mises en Ã©vidence.", MESSAGE_INFO);
 		} else {
-			display("Tuiles non mappées ignorées.", MESSAGE_INFO);
+			display("Tuiles non mappÃ©es ignorÃ©es.", MESSAGE_INFO);
 		}
 	}
 
 	/**
-	 * Ouvre l'explorateur de fichier avec les paramètres
+	 * Ouvre l'explorateur de fichier avec les paramÃ¨tres
 	 * 
 	 * @param mode
 	 *            est les mode (ouverture / sauvegarde) :
@@ -451,7 +451,7 @@ public class MasterFrameManager {
 	}
 
 	/**
-	 * Initialisation de la fenêtre
+	 * Initialisation de la fenÃªtre
 	 */
 	public void init() {
 		updateTools();

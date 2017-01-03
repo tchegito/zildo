@@ -32,7 +32,7 @@ import zildo.monde.util.Vector4f;
 /**
  * Classe qui permet de dessiner sur un buffer.
  * 
- * On ne pourra pas l'utiliser pour dessiner à l'écran directement. Pour ça,
+ * On ne pourra pas l'utiliser pour dessiner Ã  l'Ã©cran directement. Pour Ã§a,
  * voir (@link Ortho).
  * 
  * @author tchegito

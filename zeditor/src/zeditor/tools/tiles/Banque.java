@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 
-//Regexps à appliquer:
+//Regexps Ã  appliquer:
 ///////////////////////
 //1) commentaires
 //find:    \{(.*)\}
@@ -17,18 +17,18 @@ import java.util.Map;
 
 public abstract class Banque {
 
-	// Données d'entrée
+	// DonnÃ©es d'entrÃ©e
 	protected Point[] coords;
 	
 	protected List<GraphChange> pkmChanges;
-	// Données construites par {@link GenereCorrespondanceDec#doTheJob()}
+	// DonnÃ©es construites par {@link GenereCorrespondanceDec#doTheJob()}
 	Map<Point, Integer> motifParPoint;
 	Map<Integer, Point> pointParMotif;
 	
 	public static final String PKM_PATH = "F:\\Code\\Projets Pascal\\Zildo\\Developpement\\Graph\\";
 	public static final String PNG_PATH = PKM_PATH + "../FreeGraph/";
 	
-	// Ensemble des points correspondant à la position haute-gauche de chaque
+	// Ensemble des points correspondant Ã  la position haute-gauche de chaque
 	// tile
 	public Point[] getCoords() {
 		if (coords == null) {
@@ -42,8 +42,8 @@ public abstract class Banque {
 		return coords;
 	}
 
-	// List des numéros de tile où on change de PKM
-	// Dans point on a: x=numéro de tile / y=offset Y pour la page suivante
+	// List des numÃ©ros de tile oÃ¹ on change de PKM
+	// Dans point on a: x=numÃ©ro de tile / y=offset Y pour la page suivante
 	public List<GraphChange> getPkmChanges() {
 		return pkmChanges;
 	}
@@ -54,8 +54,8 @@ public abstract class Banque {
 	}
 
 	/**
-	 * Renvoie le numéro de la tile à la position donnée. Renvoie -1 si il n'y a
-	 * pas de tile à cet endroit.
+	 * Renvoie le numÃ©ro de la tile Ã  la position donnÃ©e. Renvoie -1 si il n'y a
+	 * pas de tile Ã  cet endroit.
 	 * 
 	 * @param x
 	 * @param y

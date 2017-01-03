@@ -40,7 +40,7 @@ public class Village extends Banque {
 				new Point(240, 32), new Point(240, 48), new Point(192, 112),
 				new Point(208, 112), /* 34--37 */
 
-				/* Maison de sorciŠre */
+				/* Maison de sorciÅ re */
 				new Point(160, 128), new Point(176, 128), new Point(192, 128),
 				new Point(208, 128), new Point(224, 128), new Point(240, 128), /*
 																				 * 0--
@@ -64,7 +64,7 @@ public class Village extends Banque {
 																				 */
 				new Point(160, 176), new Point(176, 176), new Point(192, 176),
 				new Point(208, 176), new Point(240, 176), /* 18--22 +37 */
-				/* Statuette de la maison de sorciŠre */
+				/* Statuette de la maison de sorciÅ re */
 				new Point(256, 128), new Point(256, 144), /* 23--24 +37 */
 
 				/* Haies */
@@ -80,7 +80,7 @@ public class Village extends Banque {
 																		 */
 				new Point(32, 80), new Point(32, 96), /* 12--13 +62 */
 
-				/* Routes pav‚es */
+				/* Routes pavâ€šes */
 				new Point(32, 32), new Point(48, 32), new Point(64, 32),
 				new Point(80, 32), new Point(96, 32), new Point(48, 48), /*
 																		 * 0--5
@@ -107,7 +107,7 @@ public class Village extends Banque {
 																			 * +
 																			 * 89
 																			 */
-				/* Chemin‚e */
+				/* Cheminâ€še */
 				new Point(272, 112), new Point(288, 112), new Point(272, 128),
 				new Point(288, 128), /* 9--12 +89 */
 				/* Armes murs_rouge */
@@ -126,7 +126,7 @@ public class Village extends Banque {
 																			 * +
 																			 * 104
 																			 */
-				/* Entr‚e du village (5x3 - 4 motifs) */
+				/* Entrâ€še du village (5x3 - 4 motifs) */
 				new Point(48, 64), new Point(64, 64), new Point(80, 64),
 				new Point(96, 64), new Point(112, 64), /* 15--19 +104 */
 				new Point(48, 80), new Point(64, 80), new Point(80, 80),

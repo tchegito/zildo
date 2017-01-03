@@ -75,7 +75,7 @@ public class PersoGreenBlob extends PersoShadowed {
 			delay = Math.max(0, --delay);
 
 		} else {
-			// Persos à 3 sprite et 1 angle
+			// Persos Ã  3 sprite et 1 angle
 			add_spr = seqStill[posSequence];
 		}
 		// TODO: enhance that

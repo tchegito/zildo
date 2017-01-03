@@ -34,7 +34,7 @@ public class Gears extends SpriteBanque {
 	public Gears() {
 		zones=new Zone[] {
 				new Zone(0, 505, 16, 32),
-				/* Idem à demi ouverte */
+				/* Idem Ã  demi ouverte */
 				new Zone(16, 505, 16, 32),
 				
 				/* Grey door without knob */

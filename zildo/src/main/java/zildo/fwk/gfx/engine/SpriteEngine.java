@@ -101,7 +101,7 @@ public abstract class SpriteEngine {
 	// OUT: Quad indice from the added entity
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Ajoute un sprite dans les IB/VB
-	// *On considËre que StartInitialization a dÈj‡ ÈtÈ appelÈ*
+	// *On consid√®re que StartInitialization a d√©j√† √©t√© appel√©*
 	public void addSprite(SpriteEntity entity) {
 		float z=0.0f;
 		if (entity.getEntityType().isElement())
@@ -122,7 +122,7 @@ public abstract class SpriteEngine {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// IN:  Entity to synchronize into the primitive
 	///////////////////////////////////////////////////////////////////////////////////////
-	// *On considËre que StartInitialization a dÈj‡ ÈtÈ appelÈ*
+	// *On consid√®re que StartInitialization a d√©j√† √©t√© appel√©*
 	public void synchronizeSprite(SpriteEntity entity) {
 	
 		float z=0.0f;

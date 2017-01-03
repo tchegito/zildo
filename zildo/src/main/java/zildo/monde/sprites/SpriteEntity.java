@@ -63,7 +63,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	private int ajustedX, ajustedY;
 	private int scrX, scrY; // Screen position (so with camera adjustment)
 	protected SpriteModel sprModel; // Reference to the sprite being rendered
-	public int nSpr; // Pour les perso devient une interprétation de 'angle' et 'pos_seqsprite'
+	public int nSpr; // Pour les perso devient une interprÃ©tation de 'angle' et 'pos_seqsprite'
 	public int nBank;
 	protected SpriteDescription desc; // Interpretation of nSpr and nBank
 	private int linkVertices; // Index on VertexBuffer's position about quad
@@ -81,7 +81,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	protected boolean ghost = false; // TRUE=script control it (here because of Mover things, but
 	// isn't apart the basic structure needed to display on client side
 
-	private EngineFX specialEffect; // Utilisé pour changer la couleur d'un
+	private EngineFX specialEffect; // UtilisÃ© pour changer la couleur d'un
 									// garde par exemple
 	protected float alpha = 255; // 0..255 alpha channel (we use float for speed/acceleration calculation)
 	public int light = 0xffffff;	/// 0x0RGB where each color is on 8 bits

@@ -11,7 +11,7 @@ public class Foret2 extends Banque {
 
 	public Foret2() {
 		coords = new Point[] {
-		/* Décors3 */
+		/* DÃ©cors3 */
 		new Point(0, 0), new Point(16, 0), new Point(0, 16), new Point(16, 16),
 				new Point(0, 32), new Point(16, 32), new Point(0, 48),
 				new Point(16, 48), new Point(32, 0), new Point(48, 0),
@@ -32,7 +32,7 @@ public class Foret2 extends Banque {
 				new Point(16, 32), new Point(32, 32), new Point(48, 32),
 				new Point(0, 48), new Point(16, 48), new Point(32, 48),
 				new Point(48, 48),
-				/* Maison de sorciŠre - 50 */
+				/* Maison de sorciÅ re - 50 */
 				new Point(64, 0), new Point(80, 0), new Point(96, 0),
 				new Point(112, 0), new Point(64, 16), new Point(80, 16),
 				new Point(96, 16), new Point(112, 16), new Point(64, 32),
@@ -107,7 +107,7 @@ public class Foret2 extends Banque {
 				new Point(48, 112), new Point(64, 112), new Point(16, 128),
 				new Point(0, 144), new Point(16, 144), new Point(32, 144),
 				new Point(16, 160), /* Croix */
-				new Point(208, 144), new Point(208, 160), /* Porte ferm‚e */
+				new Point(208, 144), new Point(208, 160), /* Porte fermâ€še */
 
 				/* Pont en bois */
 				new Point(208, 176), new Point(224, 176), new Point(240, 176),
@@ -116,7 +116,7 @@ public class Foret2 extends Banque {
 				new Point(112, 176), new Point(128, 176), new Point(144, 176),
 				new Point(160, 176), new Point(144, 160),
 
-				/* Cave secrête ! */
+				/* Cave secrÃªte ! */
 				new Point(96, 128), new Point(96, 144), new Point(112, 144),
 				new Point(96, 160), new Point(112, 160),
 				

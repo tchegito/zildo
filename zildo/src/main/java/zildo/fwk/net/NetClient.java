@@ -98,7 +98,7 @@ public class NetClient extends NetSend {
 		Packet p=packets.getUniqueTyped(PacketType.SERVER);
 		if (p!=null) {
 			server=p.getSource();
-			log("Serveur trouvé"+server.address.getHostName());
+			log("Serveur trouvÃ©"+server.address.getHostName());
 			
 			serverFound=true;
 			ConnectPacket connectPacket=new ConnectPacket(true, playerName, Constantes.CURRENT_VERSION);
@@ -123,7 +123,7 @@ public class NetClient extends NetSend {
 					AcceptPacket packet=(AcceptPacket) p;
 					ClientEngineZildo.spriteDisplay.setZildoId(packet.zildoId);
 					client.registerClient(new PlayerState(playerName, packet.zildoId));
-					log("Le serveur a accepté");
+					log("Le serveur a acceptÃ©");
 					serverAccepted=true;
 				} else {
 					delayConnect++;

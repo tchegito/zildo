@@ -1002,7 +1002,7 @@ public class Area implements EasySerializable {
 						if (p_spawn && !EngineZildo.game.editing) {
 							
 							if (temp.getOneValued(256 + 99) != null) {
-								// Fumée de cheminée
+								// FumÃ©e de cheminÃ©e
 								spriteManagement.spawnSpriteGeneric(SpriteAnimation.CHIMNEY_SMOKE, j * 16, i * 16 - 4, fl, 0,
 										null, null);
 							}

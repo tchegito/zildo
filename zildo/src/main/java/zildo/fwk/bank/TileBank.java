@@ -67,7 +67,7 @@ public class TileBank {
 	}
 	
 	public void charge_motifs(String filename) {
-		// On récupère la taille du fichier .DEC
+		// On rÃ©cupÃ¨re la taille du fichier .DEC
 		EasyBuffering file=Zildo.pdPlugin.openFile(filename+".dec");
 		int size=file.getSize();
 		
