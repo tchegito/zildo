@@ -25,7 +25,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -50,7 +50,7 @@ public class CheckWorldmapBuilder extends EngineUT {
 	@Rule
 	public TemporaryFolder folder= new TemporaryFolder();
 	
-	@Before
+	@BeforeClass
 	public void createTempFolders() throws IOException {
 		File createdFolder = folder.newFolder("maps");
 		Constantes.PATH_MAPS = createdFolder.getAbsolutePath();
