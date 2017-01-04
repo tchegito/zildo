@@ -70,7 +70,7 @@ public class CheckWorldmapBuilder extends EngineUT {
 		new WorldmapBuilder(firstMap, getMapCapturer());
 	}
 
-	@Test
+	@Test @DisableFreezeMonitor
 	public void advanced() {
 		String firstMap = "sousbois4";
 		WorldmapBuilder wmb = new WorldmapBuilder(firstMap, getMapCapturer());
