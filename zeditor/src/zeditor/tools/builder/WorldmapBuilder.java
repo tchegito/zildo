@@ -101,7 +101,7 @@ public class WorldmapBuilder {
 		try {
 			for (WorldMap wm : worldMaps.values()) {
 				// Load image
-				String filename = Constantes.pathCapturedMaps()+"\\"+wm.theMap.getName()+".png";
+				String filename = Constantes.pathCapturedMaps()+File.separator+wm.theMap.getName()+".png";
 				System.out.println("Loading "+filename+"... to "+wm.location.x+","+wm.location.y);
 				BufferedImage img1 = ImageIO.read(new File(filename));
 				ImageUtils.joinBufferedImage(img1, wm.location.x, wm.location.y, joinedImg);
