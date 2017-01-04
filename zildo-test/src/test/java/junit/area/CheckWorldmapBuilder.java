@@ -27,6 +27,7 @@ import javax.imageio.ImageIO;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -48,11 +49,11 @@ import zildo.server.EngineZildo;
 public class CheckWorldmapBuilder extends EngineUT {
 
 	
-	@Rule
-	public TemporaryFolder folder= new TemporaryFolder();
+	@ClassRule
+	public static TemporaryFolder folder= new TemporaryFolder();
 	
-	@Before
-	public synchronized void createTempFolders() throws IOException {
+	@BeforeClass
+	public static void createTempFolders() throws IOException {
 		File createdFolder = folder.newFolder("maps");
 		Constantes.PATH_MAPS = createdFolder.getAbsolutePath();
 		System.out.println("Folder="+Constantes.PATH_MAPS);
