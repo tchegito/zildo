@@ -29,7 +29,6 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -229,7 +228,7 @@ public class EngineUT {
 	public void setUp() {
 		// Check if environment variable is provided to get data folder
 		String dataFolder = System.getProperty("ZILDO_DATA");
-		System.out.println("On a comme variable d'environnement ZILDO_DATA => "+dataFolder);
+		//System.out.println("On a comme variable d'environnement ZILDO_DATA => "+dataFolder);
 		if (dataFolder != null) {
 			if (!dataFolder.endsWith(File.separator)) {
 				dataFolder += File.separator;

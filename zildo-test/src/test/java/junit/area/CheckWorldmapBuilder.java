@@ -19,12 +19,26 @@
 
 package junit.area;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import tools.EngineUT;
 import tools.annotations.DisableFreezeMonitor;
+import zeditor.core.Constantes;
+import zeditor.fwk.awt.MapCapturer;
 import zeditor.tools.builder.WorldmapBuilder;
 import zeditor.tools.builder.WorldmapBuilder.WorldMap;
+import zildo.monde.map.Area;
+import zildo.monde.map.ChainingPoint;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -32,6 +46,16 @@ import zeditor.tools.builder.WorldmapBuilder.WorldMap;
  */
 public class CheckWorldmapBuilder extends EngineUT {
 
+	
+	@Rule
+	public TemporaryFolder folder= new TemporaryFolder();
+	
+	@Before
+	public void createTempFolders() throws IOException {
+		File createdFolder = folder.newFolder("maps");
+		Constantes.PATH_MAPS = createdFolder.getAbsolutePath();
+	}
+	
 	@Test
 	public void basic() {
 		String firstMap = "coucou";
@@ -47,12 +71,45 @@ public class CheckWorldmapBuilder extends EngineUT {
 			System.out.println(wm + " ("+16*wm.theMap.getDim_x()+" x "+16*wm.theMap.getDim_y()+")");
 		}
 	}
-	
+
 	// Disable freeze monitor, cause this can take a while (6 seconds ?)
 	@Test @DisableFreezeMonitor
 	public void assembleImages() {
 		String firstMap = "coucou";
-		WorldmapBuilder wmb = new WorldmapBuilder(firstMap, null);
+		MapCapturer junitCanvas = new MapCapturer() {
+			
+			@Override
+			public ChainingPoint loadMap(String p_mapName, ChainingPoint p_fromChangingPoint) {
+				EngineZildo.mapManagement.loadMap(p_mapName, false);
+				return null;
+			}
+			
+			@Override
+			public void askCapture() {
+				// Create fake image entirely black
+				Area area = EngineZildo.mapManagement.getCurrentMap();
+				String name = area.getName().replace(".map", "");
+				System.out.println("Saving image "+name);
+				File path = new File(Constantes.pathCapturedMaps());
+				path.mkdirs();
+				String filename = path+File.separator+name;
+				int totalWidth = area.getDim_x() * 16;
+				int totalHeight = area.getDim_y() * 16;
+		    	BufferedImage bufImage = new BufferedImage(totalWidth, totalHeight, BufferedImage.TYPE_INT_RGB);
+				try {
+					ImageIO.write(bufImage, "png", new File(filename+".png"));
+				} catch (IOException e) {
+					throw new RuntimeException("Unable to write image !", e);
+				}
+				System.out.println("Capture finished");
+			}
+
+			@Override
+			public boolean isCaptureDone() {
+				return true;
+			}
+		};
+		WorldmapBuilder wmb = new WorldmapBuilder(firstMap, junitCanvas);
 		wmb.savePng();
 	}
 }

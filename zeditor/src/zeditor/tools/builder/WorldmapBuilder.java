@@ -28,7 +28,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import zeditor.core.Constantes;
-import zeditor.fwk.awt.ZildoCanvas;
+import zeditor.fwk.awt.MapCapturer;
 import zeditor.tools.ImageUtils;
 import zildo.fwk.ZUtils;
 import zildo.monde.map.Area;
@@ -60,10 +60,10 @@ public class WorldmapBuilder {
 	
 	final Map<String, WorldMap> worldMaps;
 	Point size;	// Size of the full image, containing all connected maps
-	ZildoCanvas canvas;	// Not null means we really want to capture images / NULL=unit test (dry run)
+	MapCapturer canvas;	// ZildoCanvas means we really want to capture images / another one means unit test
 	String firstMap;
 	
-	public WorldmapBuilder(String firstMapName, ZildoCanvas canvas) {
+	public WorldmapBuilder(String firstMapName, MapCapturer canvas) {
 		worldMaps = new HashMap<String, WorldMap>();
 		this.canvas = canvas;
 		this.firstMap = firstMapName;
@@ -98,14 +98,15 @@ public class WorldmapBuilder {
 		try {
 			for (WorldMap wm : worldMaps.values()) {
 				// Load image
-				String filename = Constantes.PATH_CAPTUREDMAPS+"\\"+wm.theMap.getName()+".png";
+				String filename = Constantes.pathCapturedMaps()+"\\"+wm.theMap.getName()+".png";
 				System.out.println("Loading "+filename+"... to "+wm.location.x+","+wm.location.y);
 				BufferedImage img1 = ImageIO.read(new File(filename));
 				ImageUtils.joinBufferedImage(img1, wm.location.x, wm.location.y, joinedImg);
 			}
 			
-			String finalPNGName = Constantes.PATH_WORLDMAP+"\\joined_from"+firstMap+".png";
-			new File(Constantes.PATH_WORLDMAP).mkdirs();
+			String path = Constantes.pathWorldMaps();
+			String finalPNGName = path + File.separator + "joined_from" + firstMap+".png";
+			new File(path).mkdirs();
 			return ImageIO.write(joinedImg, "png", new File(finalPNGName));
 		} catch (IOException e) {
 			throw new RuntimeException("Unable to assemble all images into one !", e);
@@ -118,22 +119,16 @@ public class WorldmapBuilder {
 		// If this map is already in the world, leave it
 		if (worldMaps.get(mapName) == null) {
 			
-			if ("promenade".equals(mapName)) {
-				System.out.println(mapName);
-			}
 			// Load asked map
 			Area area = currentMap;
 			if (area == null) {
 				area = EngineZildo.mapManagement.getCurrentMap();
 			}
-			if (canvas == null) {
-				EngineZildo.mapManagement.loadMap(mapName, true);
-			} else {
-				canvas.loadMap(mapName, null);
-				canvas.askCapture();
-				while (!canvas.isCaptureDone()) {
-					ZUtils.sleep(200);
-				}
+			// Load the map and capture image
+			canvas.loadMap(mapName, null);
+			canvas.askCapture();
+			while (!canvas.isCaptureDone()) {
+				ZUtils.sleep(200);
 			}
 
 			Area nextMap = EngineZildo.mapManagement.getCurrentMap();

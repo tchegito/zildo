@@ -271,6 +271,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 				    	break;
 				    case TILE_ROTATE_EDIT:
 				    	ortho.drawText(start.x + 2, start.y + 6, "Rot", colCursorText);
+				    default:
 				    	break;
 				    }
 			    }
@@ -427,9 +428,9 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			y += pas;
 		}
 		String name = area.getName().replace(".map", "");
-		File path = new File(Constantes.PATH_CAPTUREDMAPS);
+		File path = new File(Constantes.pathCapturedMaps());
 		path.mkdirs();
-		GLUtils.saveBufferAsPNG(path+"\\"+name, bigOne, totalWidth, totalHeight, false);
+		GLUtils.saveBufferAsPNG(path+File.separator+name, bigOne, totalWidth, totalHeight, false);
 		System.out.println("Capture finished");
 		// Reset camera and zoom
 		ClientEngineZildo.mapDisplay.setCamera(camera);

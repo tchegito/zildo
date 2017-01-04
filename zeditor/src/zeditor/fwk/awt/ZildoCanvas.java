@@ -59,7 +59,7 @@ import zildo.server.MapManagement;
  * @author tchegito
  * 
  */
-public class ZildoCanvas extends AWTOpenGLCanvas {
+public class ZildoCanvas extends AWTOpenGLCanvas implements MapCapturer {
 
 	public enum ZEditMode {
 	    NORMAL, COPY, COPY_DRAG, TILE_REVERSE_EDIT, TILE_ROTATE_EDIT, TILE_RAISE_EDIT, TILE_LOWER_EDIT, TILE_REMOVE_EDIT;
@@ -109,6 +109,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas {
 								break;
 							case TILE_REMOVE_EDIT:
 								removeTile(p);
+							default:
 								break;
 							}
 						break;

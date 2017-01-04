@@ -19,12 +19,22 @@
 
 package zeditor.core;
 
+import java.io.File;
+
 /**
  * @author Tchegito
  *
  */
 public class Constantes {
 
-	final static public String PATH_CAPTUREDMAPS = "c:\\kikoo\\captureMaps";
-	final static public String PATH_WORLDMAP = "c:\\kikoo\\worldMap";
+	// Overridable in Unit tests
+	static public String PATH_MAPS = "c:\\kikoo\\";
+	
+	static public String pathCapturedMaps() {
+		return PATH_MAPS + File.separator + "captureMaps";
+	}
+	
+	static public String pathWorldMaps() {
+		return PATH_MAPS + File.separator + "worldMap";
+	}
 }
