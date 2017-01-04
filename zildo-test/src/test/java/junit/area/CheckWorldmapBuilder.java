@@ -25,10 +25,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
@@ -49,14 +47,21 @@ import zildo.server.EngineZildo;
 public class CheckWorldmapBuilder extends EngineUT {
 
 	
+	// Because Gradle executes test in parallel, we can use multi folder by test method. Otherwise, we get this:
+	// Process 'Gradle Test Executor 1' finished with non-zero exit value 1
+	
 	@ClassRule
 	public static TemporaryFolder folder= new TemporaryFolder();
 	
 	@BeforeClass
-	public static void createTempFolders() throws IOException {
-		File createdFolder = folder.newFolder("maps");
-		Constantes.PATH_MAPS = createdFolder.getAbsolutePath();
-		System.out.println("Folder="+Constantes.PATH_MAPS);
+	public static void createTempFolders() {
+		try {
+			File createdFolder = folder.newFolder("maps");
+			Constantes.PATH_MAPS = createdFolder.getAbsolutePath();
+			System.out.println("Folder="+Constantes.PATH_MAPS);
+		} catch (IOException e) {
+			throw new RuntimeException("Unable to create temp folder !", e);
+		}
 	}
 	
 	@Test
