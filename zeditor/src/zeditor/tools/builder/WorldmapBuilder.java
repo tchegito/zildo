@@ -125,6 +125,7 @@ public class WorldmapBuilder {
 			// Load asked map
 			Area area = currentMap;
 			if (area == null) {
+				System.out.println("mapMgmt="+EngineZildo.mapManagement);
 				area = EngineZildo.mapManagement.getCurrentMap();
 			}
 			// Load the map and capture image

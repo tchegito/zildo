@@ -54,6 +54,7 @@ public class CheckWorldmapBuilder extends EngineUT {
 	public void createTempFolders() throws IOException {
 		File createdFolder = folder.newFolder("maps");
 		Constantes.PATH_MAPS = createdFolder.getAbsolutePath();
+		System.out.println("Folder="+Constantes.PATH_MAPS);
 	}
 	
 	@Test

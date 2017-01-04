@@ -28,7 +28,7 @@ import java.io.File;
 public class Constantes {
 
 	// Overridable in Unit tests
-	static public String PATH_MAPS = "c:\\kikoo\\";
+	static public String PATH_MAPS = "c:\\kikoo";
 	
 	static public String pathCapturedMaps() {
 		return PATH_MAPS + File.separator + "captureMaps";
