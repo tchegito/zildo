@@ -59,13 +59,13 @@ public class CheckWorldmapBuilder extends EngineUT {
 	@Test
 	public void basic() {
 		String firstMap = "coucou";
-		new WorldmapBuilder(firstMap, null);
+		new WorldmapBuilder(firstMap, getMapCapturer());
 	}
 
 	@Test
 	public void advanced() {
 		String firstMap = "sousbois4";
-		WorldmapBuilder wmb = new WorldmapBuilder(firstMap, null);
+		WorldmapBuilder wmb = new WorldmapBuilder(firstMap, getMapCapturer());
 		
 		for (WorldMap wm : wmb.getWorldMap().values()) {
 			System.out.println(wm + " ("+16*wm.theMap.getDim_x()+" x "+16*wm.theMap.getDim_y()+")");
@@ -76,7 +76,13 @@ public class CheckWorldmapBuilder extends EngineUT {
 	@Test @DisableFreezeMonitor
 	public void assembleImages() {
 		String firstMap = "coucou";
-		MapCapturer junitCanvas = new MapCapturer() {
+		
+		WorldmapBuilder wmb = new WorldmapBuilder(firstMap, getMapCapturer());
+		wmb.savePng();
+	}
+	
+	private MapCapturer getMapCapturer() {
+		return new MapCapturer() {
 			
 			@Override
 			public ChainingPoint loadMap(String p_mapName, ChainingPoint p_fromChangingPoint) {
@@ -109,7 +115,5 @@ public class CheckWorldmapBuilder extends EngineUT {
 				return true;
 			}
 		};
-		WorldmapBuilder wmb = new WorldmapBuilder(firstMap, junitCanvas);
-		wmb.savePng();
 	}
 }

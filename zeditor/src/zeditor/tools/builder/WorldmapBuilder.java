@@ -64,6 +64,9 @@ public class WorldmapBuilder {
 	String firstMap;
 	
 	public WorldmapBuilder(String firstMapName, MapCapturer canvas) {
+		if (canvas == null) {
+			throw new RuntimeException("Canvas can't be null !");
+		}
 		worldMaps = new HashMap<String, WorldMap>();
 		this.canvas = canvas;
 		this.firstMap = firstMapName;
