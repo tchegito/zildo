@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.InfoPersos;
 import zildo.client.gui.menu.SaveGameMenu;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.input.KeyboardHandler.Keys;
@@ -141,14 +142,14 @@ public class Inconsistencies extends EngineUT {
 		
 	}
 	
-	@Test
+	@Test @InfoPersos
 	public void freezeInLugduniaCave() {
 		mapUtils.loadMap("foret");
 		PersoPlayer zildo = spawnZildo(672,237);
 		EngineZildo.scriptManagement.accomplishQuest("foretg_button_trig", false);
 		simulateDirection(new Vector2f(0, -1f));
 		Assert.assertEquals(1.5f, zildo.getSpeed(), 0f);
-		renderFrames(100);
+		renderFrames(110);
 		
 		waitEndOfScripting();
 		Assert.assertEquals("foretg", EngineZildo.mapManagement.getCurrentMap().getName());
