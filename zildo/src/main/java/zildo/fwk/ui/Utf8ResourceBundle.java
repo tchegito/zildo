@@ -30,8 +30,7 @@ import java.util.ResourceBundle;
 import java.util.ResourceBundle.Control;
 
 /**
- * Class inspired by http://www.thoughtsabout.net/blog/archives/000044.html, allowing resources bundles to be 
- * read in UTF8.
+ * Class allowing resources bundles to be stored in UTF-8.
  * 
  * For Android compatibility, we can use this tweek class, or no, depending on the default charset of the machine.
  * @author tchegito
@@ -39,18 +38,18 @@ import java.util.ResourceBundle.Control;
  */
 public abstract class Utf8ResourceBundle {
 
-	static Boolean noUtf;
-	
 	public static final ResourceBundle getBundle(String baseName) {
+		// With this approach, we read the file once for all (better than previous one, from here:
+		// http://www.thoughtsabout.net/blog/archives/000044.html
 	  ResourceBundle bundle = ResourceBundle.getBundle(baseName, new UTF8Control());
 	  
-	  noUtf = true;
 	  // Since properties file are now in UTF-8, we shouldn't need a conversion anymore
 	  // If current machine isn't UTF8 friendly, convert each value from the bundle
 	  return bundle;
 	}
 
-	// Allow to load a properties file encoded in UTF-8 (by default, it considers it as ISO-8859-15)
+	// Allow to load a properties file encoded1 in UTF-8 (by default, it considers it as ISO-8859-15)
+	// Credits from there: http://stackoverflow.com/questions/4659929/how-to-use-utf-8-in-resource-properties-with-resourcebundle
 	static class UTF8Control extends Control {
 	    public ResourceBundle newBundle
 	        (String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
