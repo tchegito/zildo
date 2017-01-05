@@ -19,11 +19,15 @@
  */
 package zildo.fwk.ui;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.util.Enumeration;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import java.util.ResourceBundle.Control;
 
 /**
  * Class inspired by http://www.thoughtsabout.net/blog/archives/000044.html, allowing resources bundles to be 
@@ -38,49 +42,49 @@ public abstract class Utf8ResourceBundle {
 	static Boolean noUtf;
 	
 	public static final ResourceBundle getBundle(String baseName) {
-	  ResourceBundle bundle = ResourceBundle.getBundle(baseName);
-	  if (noUtf == null) {	// Read once
-		  noUtf = !Charset.defaultCharset().toString().contains("UTF");
-	  }
+	  ResourceBundle bundle = ResourceBundle.getBundle(baseName, new UTF8Control());
+	  
+	  noUtf = true;
+	  // Since properties file are now in UTF-8, we shouldn't need a conversion anymore
 	  // If current machine isn't UTF8 friendly, convert each value from the bundle
-	  if (noUtf) {
-		  return createUtf8PropertyResourceBundle(bundle);
-	  } else {
-		  return bundle;
-	  }
+	  return bundle;
 	}
 
-	private static ResourceBundle createUtf8PropertyResourceBundle(ResourceBundle bundle) {
-	  if (!(bundle instanceof PropertyResourceBundle)) return bundle;
-
-	  return new Utf8PropertyResourceBundle((PropertyResourceBundle)bundle);
+	// Allow to load a properties file encoded in UTF-8 (by default, it considers it as ISO-8859-15)
+	static class UTF8Control extends Control {
+	    public ResourceBundle newBundle
+	        (String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
+	            throws IllegalAccessException, InstantiationException, IOException
+	    {
+	        // The below is a copy of the default implementation.
+	        String bundleName = toBundleName(baseName, locale);
+	        String resourceName = toResourceName(bundleName, "properties");
+	        ResourceBundle bundle = null;
+	        InputStream stream = null;
+	        // Workaround for Android, because provided one (BootClassLoader) never find any resources
+	        ClassLoader workingLoader = Utf8ResourceBundle.class.getClassLoader();
+	        if (reload) {
+	            URL url = workingLoader.getResource(resourceName);
+	            if (url != null) {
+	                URLConnection connection = url.openConnection();
+	                if (connection != null) {
+	                    connection.setUseCaches(false);
+	                    stream = connection.getInputStream();
+	                }
+	            }
+	        } else {
+	            stream = workingLoader.getResourceAsStream(resourceName);
+	        }
+	        if (stream != null) {
+	            try {
+	                // Only this line is changed to make it to read properties files as UTF-8.
+	                bundle = new PropertyResourceBundle(new InputStreamReader(stream, "UTF-8"));
+	            } finally {
+	                stream.close();
+	            }
+	        }
+	        return bundle;
+	    }
 	}
 	
-	
-	private static class Utf8PropertyResourceBundle extends ResourceBundle {
-		PropertyResourceBundle bundle;
-
-		private Utf8PropertyResourceBundle(PropertyResourceBundle bundle) {
-			this.bundle = bundle;
-		}
-
-		@Override
-		public Enumeration<String> getKeys() {
-			return bundle.getKeys();
-		}
-
-		@Override
-		protected Object handleGetObject(String key) {
-			String value = (String) bundle.handleGetObject(key);
-			if (value == null) {
-				return null;
-			}
-			try {
-				return new String(value.getBytes("ISO-8859-1"), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				throw new RuntimeException("Unable to read "+key+" from resource bundle.");
-			}
-		}
-
-	}
 }
