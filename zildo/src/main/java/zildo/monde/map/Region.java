@@ -39,14 +39,15 @@ public enum Region {
 	LugduniaPrison("prison*"),
 	ClearingOaks("promenade2"),
 	ThievesCamp("voleursm*", "voleurscave"),
-	CaveFlames("voleursg*"),
+	CaveFlames("voleursg*", "cavef*"),
 	CaveFlamesDragon("dragon*"),
 	Polaky("polaky", "polaky1", "polaky2", "polaky3", "polakym", "bosquetm", "bosquetm2"),
 	PolakyCave("polaky4", "polaky5", "polakyg*"),
 	Sousbois("sousbois*"),
 	ForetBouleaux("eleo*"),
 	NaturePalace("nature*"),
-	Special("preintro");
+	Special("preintro"),
+	NeedToBeRemoved("lavacave", "maptest"); // Design purpose=> need to be removed
 	
 	String[] mapNames;
 	
