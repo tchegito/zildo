@@ -19,7 +19,7 @@ public class TestThrow extends EngineUT {
 	@Test
 	public void peebles() {
 		mapUtils.loadMap("cavef2");
-		PersoPlayer zildo = spawnZildo(232, 72);
+		PersoPlayer zildo = spawnZildo(232, 111);
 		waitEndOfScripting();
 		zildo.setAngle(Angle.OUEST);
 		zildo.setWeapon(new Item(ItemKind.ROCK_BAG));
@@ -37,6 +37,7 @@ public class TestThrow extends EngineUT {
 		// Wait for peeble to disappear
 		while (!peeble.dying) {
 			renderFrames(1);
+			System.out.println(peeble.x);
 		}
 		// Check its location => must be in lava
 		Assert.assertTrue("Peeble should have been landed in lava ! But x="+peeble.x, peeble.x < 198);
