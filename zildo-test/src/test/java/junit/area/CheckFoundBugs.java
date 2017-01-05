@@ -58,7 +58,6 @@ public class CheckFoundBugs extends EngineUT {
 		Assert.assertTrue(c.getForeTile() != null);
 		c.setForeTile(null);
 		Assert.assertTrue(c.getForeTile() == null);
-		EngineZildo.mapManagement.saveMapFile("voleursBackup.map");
 		
 		// Reload and check
 		mapUtils.loadMap("voleurs");
