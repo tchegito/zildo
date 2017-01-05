@@ -19,8 +19,8 @@ public class TestTexter extends EngineUT {
 		String[] characters = new String[] {"Nanie", "Oli", "Bebe", "Eliette", "Canelle"};
 		
 		for (int i=0;i<amount;i++) {
-			String character = characters[(int) (Math.random() * characters.length)];
-			String key = "preintro." + (int) (Math.random() * 10);
+			String character = characters[i % characters.length];
+			String key = "preintro." + i;
 			EngineZildo.game.recordDialog(key, character, "coucou");
 		}
 		
@@ -38,16 +38,19 @@ public class TestTexter extends EngineUT {
 		GUISpriteSequence seq = getPrivateMember(guiDisplay, "creditSequence");
 		int nbSprites = seq.size();
 		int nbVisible = countVisible(seq);
-		// Assert that some of them are hidden
-
 		System.out.println(nbVisible+"/"+nbSprites);
+
+		// Assert that some of them are hidden
 		Assert.assertTrue("All sprites shouldn't be visible !", nbVisible < nbSprites);
 		Assert.assertTrue("Some sprites should be visible !", nbVisible > 0);
 		
 		// Move cursor and check visibility again
 		ClientEngineZildo.guiDisplay.displayTexter(text, 16);
-		Assert.assertTrue("We should have more visible sprites after a line scrolled down !", countVisible(seq) > nbVisible);
-		System.out.println(countVisible(seq));
+		nbSprites = seq.size();
+		int nbVisibleAfter = countVisible(seq);
+		System.out.println(nbVisibleAfter+"/"+nbSprites);
+		Assert.assertTrue("We should have less visible sprites after a line scrolled down ! ("+nbVisibleAfter+" <= "+nbVisible+")",
+				nbVisibleAfter < nbVisible);
 		
 	}
 	
