@@ -99,17 +99,22 @@ public class MapDisplay {
         }
 		// Overflow tests
 		if (scrollingAngle == null) {
-			if (camera.x > (16*currentMap.getDim_x() - (CENTER_X << 1))) {
-				camera.x=16*currentMap.getDim_x() - (CENTER_X << 1);
+			Point so = currentMap.getScrollOffset();
+			int minX = 16 * so.x;
+			int minY = 16 * so.y;
+			int maxX = 16 * currentMap.getOriginalDim().x + minX;
+			int maxY = 16 * currentMap.getOriginalDim().y + minY;
+			if (camera.x > (maxX - (CENTER_X << 1))) {
+				camera.x=maxX - (CENTER_X << 1);
 			}
-			if (camera.y > (16*currentMap.getDim_y() - (CENTER_Y << 1) )) {	// marche avec 17
-				camera.y=16*currentMap.getDim_y() - (CENTER_Y << 1) ;
+			if (camera.y > (maxY - (CENTER_Y << 1) )) {	// marche avec 17
+				camera.y=maxY - (CENTER_Y << 1) ;
 			}
-			if (camera.x < 0) {
-				camera.x=0;
+			if (camera.x < minX) {
+				camera.x=minX;
 			}
-	        if (camera.y < 0) {
-	            camera.y = 0;
+	        if (camera.y < minY) {
+	            camera.y = minY;
 	        }
 		}
         
