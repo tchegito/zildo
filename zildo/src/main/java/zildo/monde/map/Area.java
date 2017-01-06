@@ -20,6 +20,8 @@
 
 package zildo.monde.map;
 
+import static zildo.server.EngineZildo.hasard;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
@@ -39,7 +41,6 @@ import zildo.fwk.collection.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.script.xml.element.TriggerElement;
-import static zildo.server.EngineZildo.hasard;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.items.ItemKind;
@@ -110,6 +111,8 @@ public class Area implements EasySerializable {
 	private Case[][][] mapdata;	// Floor x ordinate x abscissa
 	private List<ChainingPoint> listChainingPoint;
 	private MapDialog dialogs;
+	private Point scrollOffset;	// Set in ZEditor to place the map when in-game
+	private Point originalDim;	// In case scrollOffset is filled, we will change dimension, so keep it the original
 
 	private Atmosphere atmosphere;
 
@@ -131,6 +134,10 @@ public class Area implements EasySerializable {
 	}
 
 	public Area() {
+		this(64, 64);
+	}
+	
+	public Area(int dimX, int dimY) {
 		mapdata = new Case[Constantes.TILEENGINE_FLOOR][Constantes.TILEENGINE_HEIGHT][Constantes.TILEENGINE_HEIGHT];
 		listChainingPoint = new ArrayList<ChainingPoint>();
 
@@ -141,12 +148,14 @@ public class Area implements EasySerializable {
 		respawnPoints = new ArrayList<Point>();
 
 		offset = new Point(0, 0);
+		scrollOffset = new Point(0, 0);
+		originalDim = new Point(dimX, dimY);
+		dim_x = dimX;
+		dim_y = dimY;
 	}
 
 	public Area(Atmosphere p_atmo) {
-		this();
-		dim_x = 64;
-		dim_y = 64;
+		this(64, 64);
 		int empty = p_atmo.getEmptyTile();
 		for (int i = 0; i < dim_x * dim_y; i++) {
 			int x = i % dim_x;
@@ -865,6 +874,9 @@ public class Area implements EasySerializable {
 		p_file.put((byte) persos.size());
 		p_file.put((byte) n_sprites);
 		p_file.put((byte) n_pe);
+		
+		p_file.put((byte) scrollOffset.x);
+		p_file.put((byte) scrollOffset.y);
 
 		// 2) Save the map cases
 		
@@ -984,16 +996,24 @@ public class Area implements EasySerializable {
 		map.setAtmosphere(Atmosphere.values()[p_buffer.readUnsignedByte()]);
 		map.setDim_x(p_buffer.readUnsignedByte());
 		map.setDim_y(p_buffer.readUnsignedByte());
+		map.originalDim = new Point(map.dim_x, map.dim_y);
 		int nbFloors = p_buffer.readUnsignedByte();
 		int n_persos = p_buffer.readUnsignedByte();
 		int n_sprites = p_buffer.readUnsignedByte();
 		int n_pe = p_buffer.readUnsignedByte();
+		Point scrollOffset = new Point(p_buffer.readUnsignedByte(), p_buffer.readUnsignedByte());
+		map.scrollOffset = scrollOffset; 
 
+		if (zeditor) {	// If we're in the editor, we don't want map to be shifted
+			scrollOffset = new Point(0, 0);
+		}
 		// La map
 		for (int n=nbFloors; n>0; n--) {
 			byte fl = (byte) p_buffer.readUnsignedByte();
-			for (int i = 0; i < map.getDim_y(); i++) {
-				for (int j = 0; j < map.getDim_x(); j++) {
+			for (int ii = 0; ii < map.getDim_y(); ii++) {
+				int i = ii + scrollOffset.y;
+				for (int jj = 0; jj < map.getDim_x(); jj++) {
+					int j = jj + scrollOffset.x;
 					Case temp = Case.deserialize(p_buffer);
 	
 					if (temp != null) {
@@ -1043,8 +1063,8 @@ public class Area implements EasySerializable {
 		List<SpriteEntity> addedEntities = new ArrayList<SpriteEntity>();
 		if (n_sprites != 0) {
 			for (int i = 0; i < n_sprites; i++) {
-				int x = p_buffer.readInt();
-				int y = p_buffer.readInt();
+				int x = p_buffer.readInt() + scrollOffset.x * 16;
+				int y = p_buffer.readInt() + scrollOffset.y * 16;
 				floor = 1;
 				if (nbFloors > 1) {
 					floor = p_buffer.readByte();
@@ -1135,8 +1155,8 @@ public class Area implements EasySerializable {
 		// Characters (Persos)
 		if (n_persos != 0) {
 			for (int i = 0; i < n_persos; i++) {
-				int x = p_buffer.readInt();
-				int y = p_buffer.readInt();
+				int x = p_buffer.readInt() + scrollOffset.x * 16;
+				int y = p_buffer.readInt() + scrollOffset.y * 16;
 				int z = p_buffer.readInt();
 				
 				floor = 1;
@@ -1217,6 +1237,14 @@ public class Area implements EasySerializable {
 			}
 		}
 
+		// Modify map dimension in-game only
+		if (scrollOffset.x > 0) {
+			map.dim_x = 64;
+		}
+		if (scrollOffset.y > 0) {
+			map.dim_y = 64;
+		}
+		
 		// Les Phrases
 		int n_phrases = 0;
 		map.dialogs = new MapDialog();
@@ -1602,6 +1630,14 @@ public class Area implements EasySerializable {
 		EngineZildo.spriteManagement.shiftAllEntities(shiftX*16, shiftY*16);
 	}
 
+	public Point getScrollOffset() {
+		return scrollOffset;
+	}
+	
+	public Point getOriginalDim() {
+		return originalDim;
+	}
+	
 	public Point getNextMapOffset(Area nextMap, Angle p_mapScrollAngle) {
 		Angle angleShift = p_mapScrollAngle.opposite();
 		Point coords = angleShift.coords;

@@ -38,9 +38,7 @@ import zildo.server.SpriteManagement;
 public class CheckShift {
 
 	private Area createBasicArea() {
-		Area area = new Area();
-		area.setDim_x(10);
-		area.setDim_y(10);
+		Area area = new Area(10, 10);
 		area.setAtmosphere(Atmosphere.OUTSIDE);
 
 		// Fill 2 cases

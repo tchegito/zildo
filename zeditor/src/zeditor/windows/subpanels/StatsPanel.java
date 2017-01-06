@@ -37,15 +37,15 @@ public class StatsPanel extends JPanel {
 	JLabel nChainingPoint;
 	JLabel nDialogs;
 	JLabel nFloors;
-	JSpinner spinLimitX;
-	JSpinner spinLimitY;
+	JSpinner spinLimitX, spinLimitY;
+	JSpinner spinOffsetX, spinOffsetY;
 	JComboBox atmosphere;
 
 	boolean updatingUI; // To know wether user or UI ask for update
 
 	public StatsPanel(MasterFrameManager manager) {
 		this.manager = manager;
-		setLayout(new GridLayout(10, 2));
+		setLayout(new GridLayout(12, 2));
 
 		add(new JLabel("Dimension"));
 		add(dim = new JLabel(""));
@@ -69,9 +69,16 @@ public class StatsPanel extends JPanel {
 
 		add(new JLabel("Taille X"));
 		add(spinLimitX);
-
 		add(new JLabel("Taille Y"));
 		add(spinLimitY);
+
+		spinOffsetX = new JSpinner(new SpinnerNumberModel(0, 0, 64, -1));
+		spinOffsetY = new JSpinner(new SpinnerNumberModel(0, 0, 64, -1));
+
+		add(new JLabel("Offset X"));
+		add(spinOffsetX);
+		add(new JLabel("Offset Y"));
+		add(spinOffsetY);
 
 		add(new JLabel(""));
 		add(new JButton(new AbstractAction("Change origin") {
@@ -85,6 +92,8 @@ public class StatsPanel extends JPanel {
 		ChangeListener listener = new StatsFieldsListener();
 		spinLimitX.addChangeListener(listener);
 		spinLimitY.addChangeListener(listener);
+		spinOffsetX.addChangeListener(listener);
+		spinOffsetY.addChangeListener(listener);
 		atmosphere.addActionListener((ActionListener) listener);
 	}
 
@@ -107,6 +116,8 @@ public class StatsPanel extends JPanel {
 		atmosphere.setSelectedIndex(map.getAtmosphere().ordinal());
 		spinLimitX.setValue(map.getDim_x());
 		spinLimitY.setValue(map.getDim_y());
+		spinOffsetX.setValue(map.getScrollOffset().x);
+		spinOffsetY.setValue(map.getScrollOffset().y);
 		updatingUI = false;
 	}
 
@@ -144,6 +155,10 @@ public class StatsPanel extends JPanel {
 						map.setDim_x(val);
 					} else if (comp == spinLimitY) {
 						map.setDim_y(val);
+					} else if (comp == spinOffsetX) {
+						map.getScrollOffset().x = val;
+					} else if (comp == spinOffsetY) {
+						map.getScrollOffset().y = val;
 					}
 					manager.setUnsavedChanges(true);
 				}

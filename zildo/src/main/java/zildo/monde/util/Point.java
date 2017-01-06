@@ -111,6 +111,10 @@ public class Point {
         return (float) Math.sqrt(c);
     }
     
+    public float norme() {
+    	return distance(new Point(0, 0));
+    }
+    
     public static float distance(float ax, float ay, float bx, float by) {
     	return new Pointf(ax, ay).distance(bx, by);
     }
