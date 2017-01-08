@@ -293,6 +293,9 @@ public class Area implements EasySerializable {
 		
 		// 1: bottom less (we have to read the BACK tile
 		int val = temp.getBackTile().getValue();
+		if (Tile.isBottomFloor(val)) {
+			return TileNature.BOTTOMFLOOR;
+		}
 		if (Tile.isBottomLess(val)) {
 			return TileNature.BOTTOMLESS;
 		}
@@ -1052,7 +1055,10 @@ public class Area implements EasySerializable {
 		// Chaining points
 		if (n_pe != 0) {
 			for (int i = 0; i < n_pe; i++) {
-				map.addChainingPoint(ChainingPoint.deserialize(p_buffer));
+				ChainingPoint ch = ChainingPoint.deserialize(p_buffer);
+				ch.setPx((short) (ch.getPx() + scrollOffset.x * 2));
+				ch.setPy((short) (ch.getPy() + scrollOffset.y * 2));
+				map.addChainingPoint(ch);
 			}
 		}
 		// Compute chaining points

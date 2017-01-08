@@ -237,13 +237,15 @@
 	    <wait value="30"/>
 	    <zoom who="zildo" value="200"/>
 	    <wait value="20"/>
+	    <perso who="zildo" vx="zildo.vx*7" vy="zildo.vy*7"/>
 	    <zoom who="zildo" value="170"/>
 	    <wait value="10"/>
 	    <zoom who="zildo" value="140"/>
 	    <wait value="10"/>
 	    <zoom who="zildo" value="100"/>
+	    <perso who="zildo" vx="0" vy="0"/>
 	    <wait value="10"/>
-	   	<visible who="zildo" value="false"/>
+	    <visible who="zildo" value="false"/>
 	    <animation who="zildo" pos="-3,2" type="STAR_SHINE" />
 	    <!-- 
 	   	<animation who="zildo" pos="0,5" type="STAR_SHINE" />

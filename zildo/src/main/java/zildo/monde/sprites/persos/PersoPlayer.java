@@ -612,6 +612,8 @@ public class PersoPlayer extends Perso {
 			break;
 		case TOMBE:	// Character is falling
 			z+=vz; 
+			y+=vy;
+			x+=vx;
 			// Animate character when he jumps
 			if (pos_seqsprite == -1) pos_seqsprite = 1;
 			if (z > bottomZ) {

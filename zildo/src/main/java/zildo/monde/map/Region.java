@@ -32,7 +32,8 @@ import zildo.fwk.ui.UIText;
 public enum Region {
 
 	Lugdunia("coucou", "d4m*", "ferme*", "bucherons", "d5*"),
-	LugduniaForest("foret", "foretb", "bosquet", "voleurs", "promenade", "buchforet", "igorlily"),
+	Voleurs("voleurs"),
+	LugduniaForest("foret", "foretb", "bosquet", "promenade", "buchforet", "igorlily"),
 	LugduniaCastle("prisonext", "chateaucoucou1", "chateaucoucou2", "chateausud"),
 	LugduniaCave("foretg", "foretg2", "lugduniag", "bucheronsg"),
 	Fishermen("igorvillage", "igorv*"),

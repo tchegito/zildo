@@ -147,7 +147,7 @@ public class EngineZildo {
 			state.keys=null;
 			
 			// Look for map change (only in single player for now)
-			if (askedEvent == null && !game.multiPlayer && zildo != null && state.event.nature==ClientEventNature.NOEVENT && mapManagement.isChangingMap(state.zildo) ) {
+			if (askedEvent == null && !game.multiPlayer && zildo != null && !state.event.mapChange && /*state.event.nature==ClientEventNature.NOEVENT*/ mapManagement.isChangingMap(state.zildo) ) {
 				ChainingPoint ch=mapManagement.getChainingPoint();
 				if (ch.isBorder()) {
 					state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_SCROLL_ASKED);
@@ -158,6 +158,12 @@ public class EngineZildo {
 						state.event=new ClientEvent(ClientEventNature.CHANGINGMAP_ASKED, ch.getTransitionAnim());
 					} else {
 						String scriptName = linkType.scriptIn;
+						if (linkType == MapLink.PIT) {
+							// Center hero on the chaining point
+							Point middle = ch.getZone(null).getCenter();
+							zildo.setX(middle.x+2);
+							zildo.setY(middle.y+2);
+						}
 						EngineZildo.scriptManagement.execute(scriptName, true);
 
 						state.event.nature=ClientEventNature.SCRIPT;

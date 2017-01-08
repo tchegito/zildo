@@ -279,14 +279,10 @@ public abstract class Perso extends Element {
 		this.mouvement = mouvement;
 		// Handle particular cases
 		switch (mouvement) {
-		case TOMBE:
-			// Center Zildo on his tile
-			x = 16 * (int) (x/16) + 8;
-			y = 16 * (int) (y/16) + 8;
-			break;
 		case VIDE:
 			addSpr = 0;
 			pos_seqsprite = 0;
+		default:
 			break;
 		}
 	}
@@ -848,6 +844,8 @@ public abstract class Perso extends Element {
 					snd = footOnSqueak.getSingleSound();
 				}
 				break;
+			case 256*3 + 125:	// Hole with a floor on map below
+				break;
 			default:
 				if (isZildo() && bottomLess) {
 					// Make hero fall if he reach the border of the hill
@@ -869,6 +867,9 @@ public abstract class Perso extends Element {
 		}
 		
 		if (fall) {
+			// Fall slipping forward
+			vx =deltaMoveX / 20;
+			vy =deltaMoveY / 20;
 			stopBeingWounded();	// Stop potential projection
 			setCompte_dialogue(0);	// Stop Zildo blink
 			EngineZildo.scriptManagement.execute("dieInPit", true);

@@ -38,6 +38,7 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
+import zildo.monde.map.Tile.TileNature;
 import zildo.monde.map.TileCollision;
 import zildo.monde.map.accessor.HighestFloorAccessor;
 import zildo.monde.sprites.SpriteEntity;
@@ -283,7 +284,8 @@ public class MapManagement {
 					return true; // Obstacle
 				}
 	
-				if (currentMap.isCaseBottomLess(cx, cy)) {
+				TileNature nature = currentMap.getCaseNature(tx, ty);
+				if (nature == TileNature.BOTTOMFLOOR || nature == TileNature.BOTTOMLESS) {
 					return false;
 				}
 				Tile tile = currentMap.readmap(cx, cy, false, quelElement.floor);
@@ -478,7 +480,9 @@ public class MapManagement {
 			int scaledX = mx / 16;
 			int scaledY = my / 16;
 			// Don't collide if case is bottom less (example: lava tile)
-			if (currentMap.isCaseBottomLess(scaledX, scaledY) && allowOverBottomLess) {
+			TileNature nature = currentMap.getCaseNature(mx, my);
+			if (allowOverBottomLess &&
+					(nature == TileNature.BOTTOMFLOOR || nature == TileNature.BOTTOMLESS)) {
 				continue;
 			}
 			Case mapCase = currentMap.get_mapcase(scaledX, scaledY, floor);

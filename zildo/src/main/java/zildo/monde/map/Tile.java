@@ -41,6 +41,7 @@ public class Tile implements Cloneable {
 	
 	public enum TileNature {
 		BOTTOMLESS,	// Lava
+		BOTTOMFLOOR, // Fall but there's a floor under
 		WATER,	// Deep water, where character has to swim
 		WATER_MUD,	// Little mud, where character can walk
 		BUSH,	// A bushes (falling on it will cause it to blow)
@@ -141,7 +142,13 @@ public class Tile implements Cloneable {
 	}
 	
 	public static boolean isBottomLess(int value) {
+		// Means that hero fall and have to lost HP
 		return (value == 256 * 3 + 217 || value == 41 + 256 * 9 || value == 256*10 + 34 || value == 256*10 + 7 || value == 256*10 + 6);
+	}
+	
+	public static boolean isBottomFloor(int value) {
+		// Means that hero will fall on another map's floor
+		return value == 256*3 + 125;
 	}
 	
 	/** Returns TRUE if given tile value could raise/lower hero from one floor to another (ex:ladder)
