@@ -193,11 +193,11 @@ public class ZildoMouseKeyListener implements MouseListener,
 
 		// Display case info
 		Case c = canvas.makeAreaWrapper().get_mapcase(p.x/16, p.y/16);
+		message.setLength(0);
 		if (c != null) {
-			message.setLength(0);
 			caseToString(message, c);
-			MasterFrameManager.displayCaseInfo(message.toString());
 		}
+		MasterFrameManager.displayCaseInfo(message.toString());
 		if (focusOnCursor) {
 			canvas.setObjectOnCursor(p);
 		}

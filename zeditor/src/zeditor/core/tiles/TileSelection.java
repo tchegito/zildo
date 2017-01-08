@@ -235,6 +235,29 @@ public class TileSelection extends CaseSelection {
 			}
 	}
 	
+	private void rotateTile(Case item, int p_mask) {
+		Tile tile;
+		switch (p_mask) {
+		case 0:
+			tile = item.getBackTile();
+			break;
+		case 1:
+			tile = item.getBackTile2();
+			break;
+		case 2:
+			tile = item.getForeTile();
+			break;
+		default:
+			throw new RuntimeException("Value "+p_mask+" is wrong for mask !");
+		}
+		if (tile != null) {
+			if (tile.rotation == null) {
+				tile.rotation = Rotation.NOTHING;
+			}
+			tile.rotation = tile.rotation.succ();
+		}
+		item.setModified(true);
+	}
 	/**
 	 * Modifiy 'rotate' attribute for a set of tile, at 'p' location, with the current size.
 	 * @param map
@@ -246,27 +269,21 @@ public class TileSelection extends CaseSelection {
 				for (int w = 0; w < width; w++) {
 					Case item =  map.get_mapcase(p.x/16 + w, p.y/16 + h);
 					if (item != null) {
-						Tile tile;
 						switch (p_mask) {
 						case 0:
-							tile = item.getBackTile();
+							rotateTile(item, 0);
+							rotateTile(item, 1);
+							rotateTile(item, 2);
 							break;
 						case 1:
-							tile = item.getBackTile2();
+							rotateTile(item, 1);
 							break;
 						case 2:
-							tile = item.getForeTile();
+							rotateTile(item, 2);
 							break;
 						default:
 							throw new RuntimeException("Value "+p_mask+" is wrong for mask !");
 						}
-						if (tile != null) {
-							if (tile.rotation == null) {
-								tile.rotation = Rotation.NOTHING;
-							}
-							tile.rotation = tile.rotation.succ();
-						}
-						item.setModified(true);
 					}
 				}
 			}
