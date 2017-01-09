@@ -199,6 +199,32 @@ public class CheckSubscript extends EngineScriptUT {
 		}
 	}
 
+	/** Particular bug noticed 09/01/2017:
+	 * -we have a character, with a persoAction executed
+	 * -in this persoAction, we call a script
+	 * -in this script, we create a local variable, and we have an 'if' clause
+	 * -after this latter script, the local variable wasn't removed from context
+	 * NOTE: if no 'if' clause is in the script, this works
+	 */
+	@Test
+	public void checkVariablesRemoved() {
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/subscript"));
+		waitEndOfScripting();
+		
+		int numVariables = scriptMgmt.getVariables().size();
+
+		EngineZildo.scriptManagement.execute("checkVariablesRemovedLaunch", false);
+		
+		renderFrames(5);
+		Perso perso = EngineZildo.persoManagement.getNamedPerso("elemental");
+		while (perso.visible) {
+			renderFrames(1);
+		}
+		
+		// Check that all local variables have been removed
+		Assert.assertEquals(numVariables, scriptMgmt.getVariables().size());
+	}
+	
 	private int countSprites() {
 		return EngineZildo.spriteManagement.getSpriteEntities(null).size();
 	}

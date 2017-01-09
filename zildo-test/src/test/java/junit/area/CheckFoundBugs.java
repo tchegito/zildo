@@ -345,9 +345,9 @@ public class CheckFoundBugs extends EngineUT {
 		simulateDirection(new Vector2f(0.4, -1));
 		renderFrames(100);
 		// Controls quest has been triggered
-		// isScripting returns FALSE because we're running action inside of an IF clause. And it's unblocking.
-		//Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
-		Assert.assertFalse(EngineZildo.scriptManagement.isQuestProcessing("vert_seen"));
+		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("vert_seen"));
+		waitEndOfScripting();
 	}
 	
 	// Issue 90: second part. Before this issue was fixed, player could pass without triggering "vert_seen" quest.

@@ -1,1 +1,3 @@
-*.dec
+bin/*
+.project
+/bin/
