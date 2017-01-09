@@ -40,7 +40,7 @@ import zildo.fwk.db.MaxId;
 //-------------
 //* Contains informations about sprite location on the bank's texture.
 
-@MaxId(n=1024)
+@MaxId(n=2048)
 public class SpriteModel extends Identified {
 	static public final int TEXTER_BORDGAUCHE = 50;
 	static public final int TEXTER_BORDDROIT = 270;
