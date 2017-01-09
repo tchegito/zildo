@@ -754,6 +754,8 @@ public class PersoNJ extends Perso {
 				shadow.setVisible(false);
 			}
 			break;
+		case FIRE_ELEMENTAL:
+			break;
 		default:
 			add_spr = angle.value * 2 + computeSeq(2) % 2;
 			break;

@@ -147,7 +147,9 @@ public enum ElementDescription implements SpriteDescription {
 	// 256
 	HEARTH1, HEARTH2, HEARTH3, HEARTH4, HEARTH5, HEARTH6,
 	// 262	==> we store a byte so 262 means 5=SMOKE
-	CAULDRON1, CAULDRON2, CAULDRON3, GREEN_BUBBLE;
+	CAULDRON1, CAULDRON2, CAULDRON3, GREEN_BUBBLE,
+	// Wind sucking from fire elemental
+	FIREWIND1, FIREWIND2, FIREWIND3;
 	
 	Boolean damage;
 	
@@ -319,6 +321,7 @@ public enum ElementDescription implements SpriteDescription {
 		case SWORD: case FIRE_RING:
 		case BLUE_FIREFLY: case PURPLE_FIREFLY:
 		case BULLET: case GREEN_BUBBLE:
+		case FIREWIND1: case FIREWIND2: case FIREWIND3:
 			return true;
 		default:
 			return false;

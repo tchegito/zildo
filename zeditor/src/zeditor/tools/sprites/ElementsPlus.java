@@ -332,19 +332,22 @@ public class ElementsPlus extends SpriteBanque {
 				// Bunch of leaves (248)
 				new Zone(288, 52, 24, 14),
 				new Zone(288, 66, 10, 6),	// Hole under the leaves
-				// Middle sword
+				// Middle sword (250)
 				new Zone(122, 85, 15, 16),
 				// Turret's bullet
 				new Zone(152, 98, 5, 5),
-				// Lianes
+				// Lianes (252)
 				new Zone(64, 64, 34, 18), new Zone(64, 83, 32, 16), 
 				new Zone(64, 113, 25, 25), new Zone(89, 99, 21, 39),
 				// Fire animation
 				new Zone(272, 0, 13, 11), new Zone(272, 11, 13, 11), new Zone(272, 22, 13, 11),
 				new Zone(272, 33, 13, 11), new Zone(272, 44, 13, 11), new Zone(272, 55, 13, 11),
-				// Cauldron
+				// Cauldron (262)
 				new Zone(32,216, 20, 16), new Zone(32, 232, 20, 16), new Zone(32, 248, 20, 16),
-				new Zone(165, 69, 5, 5)	// Bubble
+				new Zone(165, 69, 5, 5),	// Bubble
+				// Blow from elemental
+				new Zone(268, 201, 7, 9), new Zone(268, 211, 4, 13), new Zone(276, 201, 2, 15)
+
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -365,6 +368,7 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem", 251, 0),
 				new GraphChange("palace1", 252, 0),
 				new GraphChange("elem", 262, 0),
+				new GraphChange("dragonpal", 266, 0, true)
 				});
 	}
 }
