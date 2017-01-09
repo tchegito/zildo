@@ -456,6 +456,9 @@
 		<condition name="eleog" exp="secretEleog">
 		    <activate what="door" value="false" unblock="true"/>
 		</condition>
+		<condition name="cavef9">
+		    <perso who="elemental" action="elemBehav"/>
+		</condition>
 	</mapScript>
 		
 	<scene id="intro_episode3">
@@ -1259,4 +1262,75 @@
 	    	</action>
 		</timer>
 	</tileAction>
+	
+	<persoAction id="elemBehav">
+	    <loop>
+   			<var name="loc:found" value="0"/>
+   			<!-- Look for hero around him -->
+   	        <lookFor who="self" info="ZILDO" sight="true" radius="6">
+				<var name="loc:found" value="1"/>
+	        </lookFor>
+			<if exp="loc:found=1">
+			    <!-- Blink and get to life -->
+			    <for var="loc:i" value="5">
+				    <perso who="self" addSpr="0"/>
+				    <wait value="0"/>
+				 	<perso who="self" addSpr="1"/>
+				    <wait value="0"/>
+			    </for>
+				<perso who="self" addSpr="2"/>
+			    <wait value="20"/>
+			    <perso who="self" addSpr="3"/>
+			    <wait value="10"/>
+			    <!-- Attract hero to the elemental -->
+			    <var name="loc:seq" value="0"/>
+			    <loop when="loc:found=1">
+				    <var name="loc:deltaX" value="x-zildo.x"/>
+				    <var name="loc:deltaY" value="y-zildo.y"/>
+	   			    <perso who="zildo" vx="loc:deltaX/60" vy="loc:deltaY/60"/>
+	   			    
+	   			    <for var="loc:j" value="5">
+	   			        <actions>
+			   			    <exec script="suckOut(x,y,loc:seq)"/>
+			   			    <var name="loc:seq" value="(loc:seq+1) % 3"/>
+	   			        </actions>
+   	   			    </for>
+	   			   	<!-- If hero is out of sight, stop sucking out and declare it -->		    	   			    	   			    	   			    
+				    <lookFor who="self" info="ZILDO" sight="true" radius="6" negative="true">
+						<var name="loc:found" value="0"/>
+			        </lookFor>
+   			    </loop>
+	   	        <wait value="20"/>
+   			    <perso who="zildo" vx="0" vy="0"/>
+		        <!-- Hero is out of sight, elemental rest in peace -->
+   				<perso who="self" addSpr="2"/>
+			    <wait value="20"/>
+			    <perso who="self" addSpr="1"/>
+			    <wait value="10"/>
+			    <perso who="self" addSpr="0"/>
+    		</if>
+		    <wait value="5"/>
+	    </loop>
+	</persoAction>
+	
+	<scene id="suckOut"> <!-- Arguments: x,y, seq -->
+	    <if exp="loc:arg2 = 0">
+	        <actions>
+			    <spawn what="loc:air" type="FIREWIND1" pos="loc:arg0-3-6,loc:arg1+2+8" alpha="130+80*random" alphaA="-1" vx="1" fx="0.1" fz="0.1" vz="8/6" z="6"/>
+		    	<spawn what="loc:air2" type="FIREWIND1" pos="loc:arg0+3+6,loc:arg1+2+8" alpha="130+80*random" alphaA="-1" vx="-1" fx="0.1" fz="0.1" vz="8/6" z="6" reverse="128"/>
+	        </actions>
+		</if>
+	    <if exp="loc:arg2 = 1">
+	        <actions>
+     	   		<spawn what="loc:air" type="FIREWIND2" pos="loc:arg0+1-4,loc:arg1+2+12" alpha="130+80*random" alphaA="-1" vx="2/3" fx="0.1" fz="0.1" vz="2" z="3"/>
+			    <spawn what="loc:air2" type="FIREWIND2" pos="loc:arg0+1+4,loc:arg1+2+12" alpha="130+80*random" alphaA="-1" vx="-2/3" fx="0.1" fz="0.1" vz="2" z="3" reverse="128"/>
+			</actions>
+	   	</if>
+	    <if exp="loc:arg2 = 2">
+	        <actions>
+		    	<spawn what="loc:air" type="FIREWIND3" pos="loc:arg0-1-2,loc:arg1+2+18" alpha="130+80*random" alphaA="-1" vx="1/3" fx="0.1" fz="0.1" vz="15/6" z="3"/>
+		    	<spawn what="loc:air2" type="FIREWIND3" pos="loc:arg0+1+2,loc:arg1+2+18" alpha="130+80*random" alphaA="-1" vx="-1/3" fx="0.1" fz="0.1" vz="15/6" z="3" reverse="128"/>
+	        </actions>
+	    </if>
+	</scene>
 </adventure>
