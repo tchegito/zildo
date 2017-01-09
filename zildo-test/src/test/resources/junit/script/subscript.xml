@@ -30,4 +30,31 @@
 	    <stop script='monScript'/>
 	    <remove type="GARCON_BRUN"/>
 	</scene>
+	
+	<scene id='checkVariablesRemovedLaunch'>
+	    <spawn who="elemental" type="FIRE_ELEMENTAL" pos="160,100"/>
+	    <perso who="elemental" action="charac"/>
+	    <wait value="50"/>
+	    <remove who="elemental"/>
+	</scene>
+	
+	<persoAction id='charac' locked='true'>
+	    <for var="loc:i" value="2">
+	    	<exec script='checkVarRemoved_withIfInside'/>
+	    	<exec script='checkVarRemoved_without'/>
+	    </for>
+	</persoAction>
+	
+	<scene id='checkVarRemoved_withIfInside'>
+	    <var name="loc:k" value="dice10"/>
+	    <if exp="loc:k &gt; -1">
+	    	<spawn what="loc:air2" type="FIREWIND1" pos="3+6,loc:arg1+2+8" alpha="130+80*random" alphaA="-1"/>
+	    </if>
+	</scene>
+
+	<scene id='checkVarRemoved_without'>
+	    <var name="loc:l" value="dice10"/>
+	    <spawn what="loc:air" type="FIREWIND1" pos="3-6,loc:arg1+2+8" alpha="130+80*random" alphaA="-1"/>
+	</scene>
+	
 </adventure>
