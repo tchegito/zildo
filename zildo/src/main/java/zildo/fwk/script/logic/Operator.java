@@ -25,7 +25,7 @@ enum Operator {
 	// a=4 + a=5 : means "a==4 || a==5"
 	// a=3 * b=1 : means "a==3 && b==1"
 	PLUS('+'), MINUS('-'), MULTIPLY('*'), DIVIDE('/'), OR('|'), AND('&'), EQUALS('='), NOT_EQUALS('!'), 
-	LESSER('<'), GREATER('>');
+	LESSER('<'), GREATER('>'), MODULO('%');
 	
 	
 	char symbol;
