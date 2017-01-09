@@ -88,6 +88,7 @@ public class CheckConsistentMap {
 					case BRAMBLE:
 					case BIG_RAT:
 					case DRAGON:
+					case FIRE_ELEMENTAL:
 						shouldBeEnemy = true;
 					default:
 						break;
