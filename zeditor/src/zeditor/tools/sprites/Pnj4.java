@@ -49,7 +49,7 @@ public class Pnj4 extends SpriteBanque {
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("turret", 0, 0),
 				new GraphChange("pnj2", 8, 0),
 				new GraphChange("squirrel", 23, 0),
-				new GraphChange("dragonpal", 29, 0),
+				new GraphChange("dragonpal", 29, 0, true),
 		});
 	}
 }
