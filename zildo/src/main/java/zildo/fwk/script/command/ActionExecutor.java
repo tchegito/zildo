@@ -969,8 +969,11 @@ public class ActionExecutor extends RuntimeExecutor {
 		if (p_action.alphaV != null) {
 			elem.alphaV = p_action.alphaV.evaluate(context);
 		}
-		if (p_action.alpha != -1) {
-			elem.setAlpha(p_action.alpha);
+		if (p_action.alpha != null) {
+			float fAlpha = p_action.alpha.evaluate(context);
+			if (fAlpha != -1) {
+				elem.setAlpha(fAlpha);
+			}
 		}
 		if (p_action.zoom != null) {
 			elem.zoom = (int) p_action.zoom.evaluate(context);

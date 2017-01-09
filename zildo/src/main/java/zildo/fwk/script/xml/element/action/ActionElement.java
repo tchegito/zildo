@@ -74,7 +74,7 @@ public class ActionElement extends LanguageElement {
 	public FloatExpression alphaA;
 	public FloatExpression alphaV;
 	public FloatExpression zoom;	// Used in 'moveTo'
-	public int alpha;
+	public FloatExpression alpha;
 	public int deltaFloor;	// Only for 'moveTo' action
 	public int pv;
 	
@@ -156,7 +156,7 @@ public class ActionElement extends LanguageElement {
 			attente = readInt("attente", -1);
 			action = readAttribute("action"); // Empty string means "no action"
 			weapon = readAttribute("weapon");
-			alpha = readInt("alpha", -1);
+			alpha = getFloatExpr("alpha", "-1");
 			alphaA = getFloatExpr("alphaA");
 			alphaV = getFloatExpr("alphaV");
 			if (kind == ActionKind.perso) addSpr = getFloatExpr("addSpr", "-1");
@@ -271,7 +271,7 @@ public class ActionElement extends LanguageElement {
 			a = read3Coordinates("a");
 			f = read3Coordinates("f");
 			alphaA = getFloatExpr("alphaA");
-			alpha = readInt("alpha", -1);
+			alpha = getFloatExpr("alpha", "-1");
 		}
 	}
 
