@@ -366,6 +366,41 @@
 	    </action>
 	</quest>
 	
+	<quest name="cavef6_lev1" locked="false">
+		<trigger>
+			<location name="cavef6"/>
+			<tileattack tilePos="11,6"/>
+		</trigger>
+		<action>
+		    <sound name="Switch"/>
+   		    <tile pos="11,6" back2="128+256*10"/>
+		    <wait value="5"/>
+		    <tile pos="11,6" back2="135+256*10"/>
+		    <markQuest name="cavef6_lev2" value="false"/>
+		    <wait value="20"/>
+		    <moveTo what="platef1" pos="0,140" delta="true"/>
+		    <wait value="5"/>
+		    <moveTo what="platef1" pos="290,0" delta="true"/>
+		    <wait value="50"/>
+		    <moveTo what="platef1" pos="-290,0" delta="true"/>
+		    <wait value="5"/>
+   		    <moveTo what="platef1" pos="0,-140" delta="true"/>
+   		</action>
+	</quest>
+	
+	<quest name="cavef6_lev2" locked="false">
+		<trigger>
+			<location name="cavef6"/>
+			<tileattack tilePos="11,6"/>
+		</trigger>
+		<action>
+		    <sound name="Switch"/>
+		    <tile pos="11,6" back2="128+256*10"/>
+		    <wait value="5"/>
+		    <tile pos="11,6" back2="127+256*10"/>
+		    <markQuest name="cavef6_lev1" value="false"/>
+   		</action>
+	</quest>
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -458,6 +493,10 @@
 		</condition>
 		<condition name="cavef9">
 		    <perso who="elemental" action="elemBehav"/>
+		</condition>
+		<condition name="cavef6">
+			<markQuest name="cavef6_lev2" value="true"/>
+		    <perso who="fire1" action="elemBehav"/>
 		</condition>
 	</mapScript>
 		
@@ -1317,27 +1356,27 @@
 	    </loop>
 	</persoAction>
 	
-	<scene id="suckOut"> <!-- Arguments: x,y, seq -->
+	<!-- Blow wind sprites in 6 directions under fire elemental -->
+	<scene id="suckOut"> <!-- Arguments: x,y, seq (=position in sprite sequence [0..2] -->
 	    <actions>
-	        
-	    <if exp="loc:arg2 = 0">
-	        <actions>
-			    <spawn what="loc:air" type="FIREWIND1" pos="loc:arg0-3-6,loc:arg1+2+8" alpha="130+80*random" alphaA="-1" vx="1" fx="0.1" fz="0.1" vz="8/6" z="6"/>
-		    	<spawn what="loc:air2" type="FIREWIND1" pos="loc:arg0+3+6,loc:arg1+2+8" alpha="130+80*random" alphaA="-1" vx="-1" fx="0.1" fz="0.1" vz="8/6" z="6" reverse="128"/>
-	        </actions>
-		</if>
-	    <if exp="loc:arg2 = 1">
-	        <actions>
-     	   		<spawn what="loc:air" type="FIREWIND2" pos="loc:arg0+1-4,loc:arg1+2+12" alpha="130+80*random" alphaA="-1" vx="2/3" fx="0.1" fz="0.1" vz="2" z="3"/>
-			    <spawn what="loc:air2" type="FIREWIND2" pos="loc:arg0+1+4,loc:arg1+2+12" alpha="130+80*random" alphaA="-1" vx="-2/3" fx="0.1" fz="0.1" vz="2" z="3" reverse="128"/>
-			</actions>
-	   	</if>
-	    <if exp="loc:arg2 = 2">
-	        <actions>
-		    	<spawn what="loc:air" type="FIREWIND3" pos="loc:arg0-1-2,loc:arg1+2+20" alpha="130+80*random" alphaA="-1" vx="1/3" fx="0.1" fz="0.1" vz="15/6" z="3"/>
-		    	<spawn what="loc:air2" type="FIREWIND3" pos="loc:arg0+1+2,loc:arg1+2+20" alpha="130+80*random" alphaA="-1" vx="-1/3" fx="0.1" fz="0.1" vz="15/6" z="3" reverse="128"/>
-	        </actions>
-	    </if>
+		    <if exp="loc:arg2 = 0">
+		        <actions>
+				    <spawn what="loc:air" type="FIREWIND1" pos="loc:arg0-3-6,loc:arg1+2+8" alpha="130+80*random" alphaA="-1" vx="1" fx="0.1" fz="0.1" vz="8/6" z="6"/>
+			    	<spawn what="loc:air2" type="FIREWIND1" pos="loc:arg0+3+6,loc:arg1+2+8" alpha="130+80*random" alphaA="-1" vx="-1" fx="0.1" fz="0.1" vz="8/6" z="6" reverse="128"/>
+		        </actions>
+			</if>
+		    <if exp="loc:arg2 = 1">
+		        <actions>
+	     	   		<spawn what="loc:air" type="FIREWIND2" pos="loc:arg0+1-4,loc:arg1+2+12" alpha="130+80*random" alphaA="-1" vx="2/3" fx="0.1" fz="0.1" vz="2" z="3"/>
+				    <spawn what="loc:air2" type="FIREWIND2" pos="loc:arg0+1+4,loc:arg1+2+12" alpha="130+80*random" alphaA="-1" vx="-2/3" fx="0.1" fz="0.1" vz="2" z="3" reverse="128"/>
+				</actions>
+		   	</if>
+		    <if exp="loc:arg2 = 2">
+		        <actions>
+			    	<spawn what="loc:air" type="FIREWIND3" pos="loc:arg0-1-2,loc:arg1+2+20" alpha="130+80*random" alphaA="-1" vx="1/3" fx="0.1" fz="0.1" vz="15/6" z="3"/>
+			    	<spawn what="loc:air2" type="FIREWIND3" pos="loc:arg0+1+2,loc:arg1+2+20" alpha="130+80*random" alphaA="-1" vx="-1/3" fx="0.1" fz="0.1" vz="15/6" z="3" reverse="128"/>
+		        </actions>
+		    </if>
 	    </actions>
    	</scene>
 </adventure>

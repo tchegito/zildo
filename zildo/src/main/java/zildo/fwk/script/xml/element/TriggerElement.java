@@ -153,6 +153,9 @@ public class TriggerElement extends AnyElement {
 		case FALL:
 			tileNature = TileNature.valueOf(readAttribute("nature"));
 			desc = SpriteDescription.Locator.findNamedSpr(readAttribute("type"));
+		case TILEATTACK:
+			tileLocation = readPoint("tilePos");
+			break;
 		default:
 			break;
 		}
@@ -236,6 +239,8 @@ public class TriggerElement extends AnyElement {
 			return item == p_another.item;
 		case FALL:
 			return desc == p_another.desc && tileNature == p_another.tileNature;
+		case TILEATTACK:
+			return tileLocation.equals(p_another.tileLocation);
 		default:
 		}
 		return false;
@@ -403,6 +408,17 @@ public class TriggerElement extends AnyElement {
 		TriggerElement elem = new TriggerElement(QuestEvent.FALL);
 		elem.desc = desc;
 		elem.tileNature = nature;
+		return elem;
+	}
+	
+	/**
+	 * Ingame method to check that a given tile has been attacked
+	 * @param p_item
+	 * @return TriggerElement
+	 */
+	public static TriggerElement createTileAttackTrigger(Point tilePos) {
+		TriggerElement elem = new TriggerElement(QuestEvent.TILEATTACK);
+		elem.tileLocation = tilePos;
 		return elem;
 	}
 	

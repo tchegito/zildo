@@ -561,6 +561,8 @@ public class Area implements EasySerializable {
 			writemap(tileLocation.x, tileLocation.y, 375);
 			break;
 		}
+		TriggerElement attackTrigger = TriggerElement.createTileAttackTrigger(tileLocation);
+		EngineZildo.scriptManagement.trigger(attackTrigger);
 	}
 	
 	/**
