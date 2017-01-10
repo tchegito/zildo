@@ -50,7 +50,7 @@ public enum BankSound implements AudioBank {
 	ZildoUnlock("doorUnlock"),
 	ZildoUnlockDouble("doorDouble"),
 	ZildoAccomplishQuest("queteEpuree"),
-	ZildoElectric("electric"),
+	ZildoElectric("electric"),	// To replace
 	ZildoDying("dying"),
 	ZildoFall("chute"),
 	
@@ -126,6 +126,8 @@ public enum BankSound implements AudioBank {
 	BossSand2("sand2"),
 	Fuite("fuite"),
 	Whip("whip"),
+	Wind("windsuck"),
+	ElementalSleep("elementalSleep"),
 	
 	SlipWater1("slipwater1"),
 	SlipWater2("slipwater2"),
@@ -166,7 +168,7 @@ public enum BankSound implements AudioBank {
 	
 	/** Actually, looping is decided at sound definition itself, and can't be overriden in script **/
 	public boolean isLooping() {
-		return this == BankSound.Boiling;
+		return this == BankSound.Boiling || this == BankSound.Wind;
 	}
 	
 	public BankSound next() {

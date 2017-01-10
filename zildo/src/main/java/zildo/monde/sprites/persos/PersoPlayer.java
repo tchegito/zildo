@@ -602,6 +602,10 @@ public class PersoPlayer extends Perso {
 		}
 		
 		switch (mouvement) {
+		case VIDE:
+			x += vx;
+			y += vy;
+			break;
 		case ATTAQUE_ARC:
 			if (attente == 2 * 8) {
 				EngineZildo.soundManagement.broadcastSound(BankSound.FlecheTir, this);
