@@ -570,6 +570,7 @@ public class Element extends SpriteEntity {
 		switch (d) {
 		case SEWER_SMOKE1: case SEWER_SMOKE2:
 		case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:
+		case FIREWIND1: case FIREWIND2: case FIREWIND3:
 			return true;
 		}
 		
@@ -654,9 +655,13 @@ public class Element extends SpriteEntity {
 		if (desc == null && isZildo()) {
 			currentDesc = ((PersoPlayer) this).who == ControllablePerso.PRINCESS_BUNNY ? PersoDescription.PRINCESS_BUNNY : PersoDescription.ZILDO;
 		}
+		// Trigger both a fallen object, and an attack on the tile
 		TriggerElement trigger = TriggerElement.createFallTrigger(currentDesc, nature);
 		EngineZildo.scriptManagement.trigger(trigger);
 		
+		trigger = TriggerElement.createTileAttackTrigger(new Point(cx, cy));
+		EngineZildo.scriptManagement.trigger(trigger);
+
 		// Unregister this element locale variable name, if any
 		LocaleVarContext.unregisterId(name);
 		return true;

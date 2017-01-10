@@ -222,6 +222,8 @@ public enum PersoDescription implements SpriteDescription {
 				default:
 					return false;
 			}
+		} else if (this == FIRE_ELEMENTAL) {
+			return true;
 		}
 		return false;
 	}
