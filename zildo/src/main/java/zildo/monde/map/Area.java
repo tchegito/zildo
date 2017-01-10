@@ -1654,8 +1654,11 @@ public class Area implements EasySerializable {
 			mapReference = this;
 		default:
 		}
-		return new Point(coords.x * 16 * mapReference.getDim_x(),
+		Point ret = new Point(coords.x * 16 * mapReference.getDim_x(),
 						 coords.y * 16 * mapReference.getDim_y());
+		// Place the map accordingly to the scroll offset defined in ZEditor props
+		ret.sub(mapReference.getScrollOffset().multiply(16));
+		return ret;
 	}
 	
 	@Override
