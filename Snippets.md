@@ -30,4 +30,6 @@ Here are some useful examples to edit scripts.
 	        <markQuest name="cavef6_platef6_forward" value="false"/>
    	    </action>
 	</quest>
+	
+	<quest name="cavef6_platef6_up"/>
   ```
