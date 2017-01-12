@@ -330,7 +330,7 @@
 		    <dead who="fire1,fire2"/>
 		</trigger>	    
 		<action>
-		    <activate what="door"/>
+		    <activate what="door" value="true"/>
 		    <sound name="ZildoSecret"/>
 		</action>
 	</quest>
@@ -372,12 +372,9 @@
 			<tileattack tilePos="11,6"/>
 		</trigger>
 		<action>
-		    <sound name="Switch"/>
-   		    <tile pos="11,6" back2="128+256*10"/>
-		    <wait value="5"/>
-		    <tile pos="11,6" back2="135+256*10"/>
-		    <markQuest name="cavef6_lev2" value="false"/>
+		    <exec script="activeLever(11,6)"/>
 		    <wait value="20"/>
+		    <!-- Move plateform -->
 		    <moveTo what="platef1" pos="0,140" delta="true"/>
 		    <wait value="5"/>
 		    <moveTo what="platef1" pos="290,0" delta="true"/>
@@ -385,22 +382,99 @@
 		    <moveTo what="platef1" pos="-290,0" delta="true"/>
 		    <wait value="5"/>
    		    <moveTo what="platef1" pos="0,-140" delta="true"/>
-   		</action>
-	</quest>
-	
-	<quest name="cavef6_lev2" locked="false">
-		<trigger>
-			<location name="cavef6"/>
-			<tileattack tilePos="11,6"/>
-		</trigger>
-		<action>
-		    <sound name="Switch"/>
-		    <tile pos="11,6" back2="128+256*10"/>
-		    <wait value="5"/>
-		    <tile pos="11,6" back2="127+256*10"/>
+   		    <exec script="resetLever(11,6)"/>
 		    <markQuest name="cavef6_lev1" value="false"/>
    		</action>
 	</quest>
+	
+	<quest name="cavef6_button1" locked="false">
+	    <trigger>
+	   	    <location name="cavef6" tilePos="13,19" gear="TIMED_BUTTON"/>
+	   	    <questDone name="!cavef6_plat2"/>
+	    </trigger>
+	    <action>
+	        <moveTo what="platef2" pos="-270,0" delta="true"/>
+	    </action>
+   	</quest>
+
+	<quest name="cavef6_button2" locked="false">
+	    <trigger>
+	   	    <location name="cavef6" tilePos="13,22" gear="TIMED_BUTTON"/>
+	    </trigger>
+	    <action>
+	        <moveTo what="platef3" pos="0,-32" delta="true"/>
+	        <wait value="50"/>
+	        <moveTo what="platef3" pos="0,32" delta="true"/>
+	    </action>
+   	</quest>
+   	
+	<quest name="cavef6_lever2" locked="false">
+	    <trigger>
+	        <location name="cavef6"/>
+	        <tileattack tilePos="3,36"/>
+	    </trigger>
+	    <action>
+	        <exec script="activeLever(3,36)"/>
+	        <moveTo what="platef5" pos="-224,0" delta="true"/>
+	        <wait value="50"/>
+	        <moveTo what="platef5" pos="224,0" delta="true"/>
+	        <exec script="resetLever(3,36)"/>
+	        <markQuest name="cavef6_lever2" value="false"/>
+	    </action>
+	</quest>
+
+	<quest name="cavef6_lever3" locked="false">
+	    <trigger>
+	        <location name="cavef6"/>
+	        <tileattack tilePos="29,28"/>
+	    </trigger>
+	    <action>
+	        <exec script="activeLever(29,28)"/>
+	        <wait value="250"/>
+	        <moveTo what="platef4" pos="0,-128" delta="true"/>
+	        <wait value="50"/>
+	        <moveTo what="platef4" pos="0,128" delta="true"/>
+	        <exec script="resetLever(29,28)"/>
+	        <markQuest name="cavef6_lever3" value="false"/>
+	    </action>
+	</quest>
+	
+	<!-- When plateform is on the left -->
+	<quest name="cavef6_plat2" locked="false">
+	    <trigger>
+	        <location name="cavef6" mover="platef2"/>
+	    </trigger>
+	    <action>
+	        <wait value="10"/>
+	        <moveTo what="platef2" pos="270,0" delta="true"/>
+	        <markQuest name="cavef6_plat2"/>
+	    </action>
+    </quest>
+    
+	<quest name="cavef7_lever">
+	    <trigger>
+	        <location name="cavef7"/>
+	        <tileattack tilePos="15,39"/>
+	    </trigger>
+	    <action>
+	        <exec script="activeLever(15,39)"/>
+	        <activate what="door1" value="true"/>
+	        <activate what="door2" value="true"/>
+	    </action>
+	</quest>
+	
+	<quest name="cavef6_platef6_forward" locked="false">
+	    <trigger>
+	        <location name="cavef6" mover="platef6"/>
+	    </trigger>
+	    <action>
+	        <moveTo what="platef6" pos="-56,-56" delta="true"/>
+	        <wait value="50"/>
+	        <moveTo what="platef6" pos="56,56" delta="true"/>
+	        <markQuest name="cavef6_platef6_forward" value="false"/>
+   	    </action>
+	</quest>
+		
 	<mapScript>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
@@ -495,8 +569,15 @@
 		    <perso who="elemental" action="elemBehav"/>
 		</condition>
 		<condition name="cavef6">
-			<markQuest name="cavef6_lev2" value="true"/>
 		    <perso who="fire1" action="elemBehav"/>
+		    <perso who="fire2" action="elemBehav"/>
+	        <markQuest name="cavef6_lev1" value="false"/>
+   		</condition>
+		<condition name="cavef7" exp="cavef7_lever">
+		    <tile pos="15,39" back2="135+256*10"/>
+		    <activate what="door1" value="true" unblock="true"/>
+	        <activate what="door2" value="true" unblock="true"/>
+			<markQuest name="cavef6_platef6_forward" value="false"/>
 		</condition>
 	</mapScript>
 		
@@ -1328,7 +1409,7 @@
 			    <loop when="loc:found=1">
 				    <var name="loc:deltaX" value="x-zildo.x"/>
 				    <var name="loc:deltaY" value="y-zildo.y"/>
-	   			    <perso who="zildo" vx="loc:deltaX/60" vy="loc:deltaY/60"/>
+	   			    <perso who="zildo" vx="loc:deltaX/70" vy="loc:deltaY/70"/>
 	   			    	   			    
 	   			    <for var="loc:j" value="5">
 	   			        <actions>
@@ -1379,4 +1460,19 @@
 		    </if>
 	    </actions>
    	</scene>
+   	
+	<scene id="activeLever">
+	    <sound name="Switch"/>
+	    <tile pos="loc:arg0,loc:arg1" back2="128+256*10"/>
+	    <wait value="5"/>
+	    <tile pos="loc:arg0,loc:arg1" back2="135+256*10"/>
+	</scene>
+
+	<scene id="resetLever">
+	    <sound name="Switch"/>
+	    <tile pos="loc:arg0,loc:arg1" back2="128+256*10"/>
+	    <wait value="5"/>
+	    <tile pos="loc:arg0,loc:arg1" back2="127+256*10"/>
+	</scene>
+			    	
 </adventure>

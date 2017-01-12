@@ -832,7 +832,7 @@ public class MapManagement {
 	 * @param p_translateZildo TRUE=Zildo will be shifted too
 	 */
 	private void shiftPreviousMap(Angle p_mapScrollAngle, boolean p_translateZildo) {
-		Point offset = previousMap.getNextMapOffset(currentMap, p_mapScrollAngle);
+		Point offset = previousMap.getNextMapOffset(currentMap, p_mapScrollAngle, false);
 		previousMap.setOffset(offset);
 
 		// And shift all entities (except Zildo) with same offset

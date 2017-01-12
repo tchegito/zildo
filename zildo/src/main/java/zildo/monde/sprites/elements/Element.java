@@ -659,9 +659,11 @@ public class Element extends SpriteEntity {
 		TriggerElement trigger = TriggerElement.createFallTrigger(currentDesc, nature);
 		EngineZildo.scriptManagement.trigger(trigger);
 		
-		trigger = TriggerElement.createTileAttackTrigger(new Point(cx, cy));
-		EngineZildo.scriptManagement.trigger(trigger);
-
+		if (desc != ElementDescription.TINY_ROCK) {
+			// Tiny rock shouldn't trigger tileattack
+			trigger = TriggerElement.createTileAttackTrigger(new Point(cx, cy));
+			EngineZildo.scriptManagement.trigger(trigger);
+		}
 		// Unregister this element locale variable name, if any
 		LocaleVarContext.unregisterId(name);
 		return true;

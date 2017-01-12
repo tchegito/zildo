@@ -603,8 +603,19 @@ public class PersoPlayer extends Perso {
 		
 		switch (mouvement) {
 		case VIDE:
-			x += vx;
-			y += vy;
+			if (vx != 0 || vy != 0) {
+				Pointf newLoc = tryMove(vx, vy);
+				x = newLoc.x;
+				y = newLoc.y;
+				System.out.println(vx+" , "+vy);
+				/*
+				x += vx;
+				y += vy;
+				*/
+				if (x != prevX || y != prevY) {
+					walkTile(false);	// Make hero fall if he has to !
+				}
+			}
 			break;
 		case ATTAQUE_ARC:
 			if (attente == 2 * 8) {

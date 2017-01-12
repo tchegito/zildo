@@ -36,7 +36,7 @@ public class ScriptCall {
 		futureContext = p_futureContext;
 	}
 	
-	/** Register arguments passed to this call. Can be optionnaly resolved from a caller context. **/
+	/** Register arguments passed to this call. Can be optionally resolved from a caller context. **/
 	public void registerVariables(IEvaluationContext context, IEvaluationContext p_callerContext) {
 		if (args != null) {
 			int nVar = 0;

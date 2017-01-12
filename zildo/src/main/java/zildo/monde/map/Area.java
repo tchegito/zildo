@@ -1066,6 +1066,14 @@ public class Area implements EasySerializable {
 		// Compute chaining points
 		map.addChainingContextInfos();
 
+		// Modify map dimension in-game only
+		if (scrollOffset.x > 0) {
+			map.dim_x = 64;
+		}
+		if (scrollOffset.y > 0) {
+			map.dim_y = 64;
+		}
+		
 		int floor;
 		// Les sprites
 		List<SpriteEntity> addedEntities = new ArrayList<SpriteEntity>();
@@ -1243,14 +1251,6 @@ public class Area implements EasySerializable {
 					}
 				}
 			}
-		}
-
-		// Modify map dimension in-game only
-		if (scrollOffset.x > 0) {
-			map.dim_x = 64;
-		}
-		if (scrollOffset.y > 0) {
-			map.dim_y = 64;
 		}
 		
 		// Les Phrases
@@ -1646,20 +1646,25 @@ public class Area implements EasySerializable {
 		return originalDim;
 	}
 	
-	public Point getNextMapOffset(Area nextMap, Angle p_mapScrollAngle) {
+	public Point getNextMapOffset(Area nextMap, Angle p_mapScrollAngle, boolean mapBuilder) {
 		Angle angleShift = p_mapScrollAngle.opposite();
 		Point coords = angleShift.coords;
 		Area mapReference = nextMap;
+		Point scrollOffset = new Point(0,0);
+		scrollOffset = mapReference.getScrollOffset().multiply(16);
 		switch (angleShift) {
 		case OUEST:
 		case NORD:
 			mapReference = this;
 		default:
 		}
+		if (!mapBuilder) {
+			scrollOffset = mapReference.getScrollOffset().multiply(16);
+		}
 		Point ret = new Point(coords.x * 16 * mapReference.getDim_x(),
-						 coords.y * 16 * mapReference.getDim_y());
+						 	  coords.y * 16 * mapReference.getDim_y());
 		// Place the map accordingly to the scroll offset defined in ZEditor props
-		ret.sub(mapReference.getScrollOffset().multiply(16));
+		ret.sub(scrollOffset);
 		return ret;
 	}
 	
