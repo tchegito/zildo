@@ -443,11 +443,13 @@
 	<quest name="cavef6_plat2" locked="false">
 	    <trigger>
 	        <location name="cavef6" mover="platef2"/>
+	        <questDone name="cavef6_button1"/>
 	    </trigger>
 	    <action>
 	        <wait value="10"/>
 	        <moveTo what="platef2" pos="270,0" delta="true"/>
 	        <markQuest name="cavef6_plat2"/>
+	        <markQuest name="cavef6_button1"/>
 	    </action>
     </quest>
     
@@ -578,6 +580,10 @@
 		    <activate what="door1" value="true" unblock="true"/>
 	        <activate what="door2" value="true" unblock="true"/>
 			<markQuest name="cavef6_platef6_forward" value="false"/>
+		</condition>
+		<condition name="cavef6" exp="cavef6_button1">
+		    <!-- Replace immediately the plateform (note that 'pos' action doesn't work here) -->
+		    <moveTo what="platef2" pos="-270,0" delta="true" speed="270" unblock="true"/>
 		</condition>
 	</mapScript>
 		
