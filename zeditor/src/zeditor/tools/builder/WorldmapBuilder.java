@@ -140,7 +140,7 @@ public class WorldmapBuilder {
 			// Shift map if we have an angle
 			Point mapLoc = new Point(loc);
 			if (angle != null) {
-				Point shifted = area.getNextMapOffset(nextMap, angle);
+				Point shifted = area.getNextMapOffset(nextMap, angle, true);
 				mapLoc.sub(shifted);
 			}
 			

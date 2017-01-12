@@ -178,7 +178,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas implements MapCapturer {
 	public void removeTile(Point p) {
 		TileSelection sel = getTileSelection();
 		if (sel != null) {
-			sel.remove(makeAreaWrapper(), new zildo.monde.util.Point(p.x, p.y));
+			sel.remove(makeAreaWrapper(), new zildo.monde.util.Point(p.x, p.y), mask);
 		}
 	}
 	

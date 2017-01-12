@@ -168,6 +168,50 @@ public class TileSelection extends CaseSelection {
 		}
 	}
 
+	private Reverse reverseTile(Case item, int p_mask, Reverse p_ref) {
+		Tile tile;
+		Reverse ref = p_ref;
+		switch (p_mask) {
+		case 0:
+			tile = item.getBackTile();
+			break;
+		case 1:
+			tile = item.getBackTile2();
+			break;
+		case 2:
+			tile = item.getForeTile();
+			break;
+		default:
+			throw new RuntimeException("Value "+p_mask+" is wrong for mask !");
+		}
+		if (tile != null) {
+			if (tile.reverse == null) {
+				tile.reverse = Reverse.NOTHING;
+			}
+			if (p_ref == null) {
+				ref = tile.reverse; // Keep a reference reverse value
+			}
+			boolean flipH = false;
+			if (ref == Reverse.HORIZONTAL || ref == Reverse.NOTHING) {
+				flipH = true;
+			}
+			if (p_ref == null && flipH) {
+				ref = Reverse.HORIZONTAL;
+			}
+			if (tile.rotation.isWidthHeightSwitched()) {
+				flipH = !flipH;
+			}
+			if (flipH) {
+				tile.reverse = tile.reverse.flipHorizontal();
+			} else {
+				tile.reverse = tile.reverse.flipVertical();
+			}
+
+
+		}
+		item.setModified(true);
+		return ref;
+	}
 	/**
 	 * Modifiy 'reverse' attribute for a set of tile, at 'p' location, with the current size.
 	 * @param map
@@ -180,30 +224,21 @@ public class TileSelection extends CaseSelection {
 				for (int w = 0; w < width; w++) {
 					Case item =  map.get_mapcase(p.x/16 + w, p.y/16 + h);
 					if (item != null) {
-						Tile tile;
 						switch (p_mask) {
 						case 0:
-							tile = item.getBackTile();
+							ref = reverseTile(item, 0, ref);
+							ref = reverseTile(item, 1, ref);
+							ref = reverseTile(item, 2, ref);
 							break;
 						case 1:
-							tile = item.getBackTile2();
+							ref = reverseTile(item, 1, ref);
 							break;
 						case 2:
-							tile = item.getForeTile();
+							ref = reverseTile(item, 2, ref);
 							break;
 						default:
 							throw new RuntimeException("Value "+p_mask+" is wrong for mask !");
 						}
-						if (tile != null) {
-							if (tile.reverse == null) {
-								tile.reverse = Reverse.NOTHING;
-							}
-							tile.reverse = tile.reverse.succ();
-							if (ref == null) {
-								ref = tile.reverse; // Keep a reference reverse value
-							}
-						}
-						item.setModified(true);
 					}
 				}
 			}
@@ -218,9 +253,9 @@ public class TileSelection extends CaseSelection {
 					for (int w = 0; w < width; w++) {
 						switch (ref) {
 						case ALL: case HORIZONTAL:
-							revW = width - w - 1; revH = h; break;
+							revW = width - w - 1; revH = h; break;	// Symetry around the Y axis
 						case VERTICAL:
-							revW = w; revH = height - h - 1; break;
+							revW = w; revH = height - h - 1; break;	// Symetry around the X axis
 						case NOTHING:
 							revW = width - w - 1; revH = height - h - 1;break;
 						}
@@ -258,6 +293,7 @@ public class TileSelection extends CaseSelection {
 		}
 		item.setModified(true);
 	}
+	
 	/**
 	 * Modifiy 'rotate' attribute for a set of tile, at 'p' location, with the current size.
 	 * @param map
@@ -344,14 +380,27 @@ public class TileSelection extends CaseSelection {
 		}
 	}
 	
-	public void remove(AreaWrapper map, Point p) {
+	/** Remove a complete case, or only tile, when mask is different than 0. **/
+	public void remove(AreaWrapper map, Point p, int p_mask) {
 		int px = p.x / 16;
 		int py = p.y / 16;
 		Case c = map.get_mapcase(px, py);
 		if (c != null) {
-			map.set_mapcase(px, py, null);
+			switch (p_mask) {
+			case 0:
+			default:
+				map.set_mapcase(px, py, null);
+				break;
+			case 1:
+				c.setBackTile2(null);
+				break;
+			case 2:
+				c.setForeTile(null);
+				break;
+			}
 		}
 	}
+	
 	@Override
 	public List<Case> getElement() {
 		return items;
