@@ -399,7 +399,7 @@
 
 	<quest name="cavef6_button2" locked="false">
 	    <trigger>
-	   	    <location name="cavef6" tilePos="13,22" gear="TIMED_BUTTON"/>
+	   	    <location name="cavef6" tilePos="13,21" gear="TIMED_BUTTON"/>
 	    </trigger>
 	    <action>
 	        <moveTo what="platef3" pos="0,-32" delta="true"/>
@@ -574,6 +574,8 @@
 		    <perso who="fire1" action="elemBehav"/>
 		    <perso who="fire2" action="elemBehav"/>
 	        <markQuest name="cavef6_lev1" value="false"/>
+	        <markQuest name="cavef6_button2" value="false"/>
+	        <markQuest name="cavef6_lever2" value="false"/>
    		</condition>
 		<condition name="cavef7" exp="cavef7_lever">
 		    <tile pos="15,39" back2="135+256*10"/>
