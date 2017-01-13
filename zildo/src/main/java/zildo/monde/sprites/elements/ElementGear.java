@@ -63,7 +63,7 @@ public class ElementGear extends Element {
 			case CAVE_KEYDOOR:
 			case CAVE_MASTERDOOR:
 				int keys = p_perso.getCountKey();
-				if (true || keys != 0) {
+				if (keys != 0) {
 					// Get the map coordinates in front of Zildo (with his
 					// angle)
 					int axx = (int) p_perso.x / 16 + p_perso.angle.coords.x;

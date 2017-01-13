@@ -32,6 +32,7 @@ import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
 import zildo.monde.map.Tile.TileNature;
 import zildo.monde.map.TileCollision;
+import zildo.monde.map.TileLight;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
@@ -120,6 +121,8 @@ public abstract class Perso extends Element {
 	private static SoundGetter footOnSqueak = new SoundGetter(BankSound.Squeak1, BankSound.Squeak2, 800, true);
 
 	private static TileCollision tileCollision = TileCollision.getInstance();
+	
+	private static TileLight tileLight = new TileLight();
 	
 	PersoAffections affections;
 
@@ -709,38 +712,47 @@ public abstract class Perso extends Element {
 			case 160 + 256*3: case 164 + 256*3:
 				setLight(0xc2fbca); coeffWhiteLight = -1;
 				break; //b2ebba ou 79ba92
-			case 191 + 256*3:
+			case 191 + 256*3:	// Access to the right 1
 			case 193 + 256*3:
-				coeffWhiteLight = Math.min(8 + 16 - (int) x % 16, 15);
+				coeffWhiteLight = tileLight.right(1, x, y);
 				break;
-			case 192 + 256*3:
+			case 192 + 256*3:	// Access to the right 2
 			case 194 + 256*3:
-				coeffWhiteLight = 8 - ((int) x % 16) / 2;
+				coeffWhiteLight = tileLight.right(2, x, y);
 				break;
-			case 197 + 256*3:
+			case 197 + 256*3:	// Access to the left 1
 			case 199 + 256*3:
-				coeffWhiteLight = 8 + Math.min((int) x % 16, 7);
+				coeffWhiteLight = tileLight.left(1, x, y);
 				break;
-			case 196 + 256*3:
+			case 196 + 256*3:	// Access to the left 2
 			case 198 + 256*3:
-				coeffWhiteLight = ((int) x % 16) / 2;
+				coeffWhiteLight = tileLight.left(2, x, y);
 				break;
 				// Vertical doors
-			case 175 + 256*3:
+			case 175 + 256*3:	// Access the north 1
 			case 176 + 256*3:
-				coeffWhiteLight = ((int) y % 16) / 2;
+				coeffWhiteLight = tileLight.north(2, x, y);
 				break;
-			case 177 + 256*3:
+			case 177 + 256*3:	// Access to the north 2
 			case 178 + 256*3:
-				coeffWhiteLight = 8 + Math.min((int) y % 16, 7);
+				coeffWhiteLight = tileLight.north(1, x, y);
 				break;
-			case 179 + 256*3:
+			case 179 + 256*3:	// Access to the south 2
 			case 180 + 256*3:
-				coeffWhiteLight = 15 - Math.max((int)y % 16 - 8, 0);
+				coeffWhiteLight = tileLight.south(1, x, y);
 				break;
-			case 181 + 256*3:
+			case 181 + 256*3:	// Access to the south 1
 			case 182 + 256*3:
-				coeffWhiteLight = 8 - ((int) y % 16) / 2;
+				coeffWhiteLight = tileLight.south(2, x, y);
+				break;
+			// Tile used on different rotated value: light coeff will follow
+			case 9 + 256*10:
+			case 10 + 256*10:
+				coeffWhiteLight = tileLight.forRotatedTile(2, x, y, tile.rotation);
+				break;
+			case 13 + 256*10:
+			case 14 + 256*10:
+				coeffWhiteLight = tileLight.forRotatedTile(1, x, y, tile.rotation);
 				break;
 			case 256 + 22: case 256*5 + 214:
 				if (pathFinder.open) {
@@ -860,10 +872,13 @@ public abstract class Perso extends Element {
 			setLight(coeffWhiteLight * 0x111111);
 		}
 		Tile foreTile = area.readmap(cx, cy, true);
-		if (foreTile != null && foreTile.getValue() == (256*3 + 126)) {
-			// Particular case: really ugly, but how handle it properly ? When hero is under a foretile masking him
-			// For example, when he crosses vertical door.
-			setLight(0);
+		if (foreTile != null) {
+			int val = foreTile.getValue();
+			if (val == (256*3 + 126) || val == 256*2) {
+				// Particular case: really ugly, but how handle it properly ? When hero is under a foretile masking him
+				// For example, when he crosses vertical door.
+				setLight(0);
+			}
 		}
 		
 		if (fall) {
