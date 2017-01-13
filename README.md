@@ -12,6 +12,7 @@ Interesting docs:
  * Script:
    * [Scripting](https://github.com/tchegito/zildo/blob/wiki/Scripting.md)
    * [Advanced scripting](https://github.com/tchegito/zildo/blob/wiki/AdvancedScripting.md)
+   * [Snippets](https://github.com/tchegito/zildo/blob/wiki/Snippets.md)
  * Math:
    *  [Movement anticipation and Bezier curves](https://github.com/tchegito/zildo/blob/wiki/Maths.md)
    *  [Clipping function for Shader](https://github.com/tchegito/zildo/blob/wiki/MathLinearFunction.md)
