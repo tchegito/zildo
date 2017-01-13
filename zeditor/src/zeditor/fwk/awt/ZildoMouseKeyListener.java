@@ -34,6 +34,8 @@ import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
+import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
 
 public class ZildoMouseKeyListener implements MouseListener,
 		MouseMotionListener, KeyListener, MouseWheelListener {
@@ -285,5 +287,11 @@ public class ZildoMouseKeyListener implements MouseListener,
 	
 	private void tileToString(StringBuilder sb, Tile t) {
 		sb.append(TileEngine.tileBankNames[t.bank]).append("(").append(t.index+")");
+		if (t.reverse != Reverse.NOTHING) {
+			sb.append(t.reverse);
+		}
+		if (t.rotation != Rotation.NOTHING) {
+			sb.append(t.rotation);
+		}
 	}
 }
