@@ -1070,13 +1070,19 @@ public class PersoPlayer extends Perso {
 	 */
 	public boolean pickGoodies(ElementGoodies p_element, int p_value) {
 		// Effect on perso
-		if (p_value != 0 && (p_element == null || p_element.getDesc() == ElementDescription.GOLDPURSE1)) { 
-			// Zildo gets/looses some money
-			setMoney(money + p_value);
-			if (p_value > 0) {
+		SpriteDescription desc = p_element == null ? null : p_element.getDesc();
+		if (p_value != 0 && (p_element == null || desc == ElementDescription.GOLDPURSE1 || desc == ElementDescription.BOMBS3)) {
+			if (desc == ElementDescription.BOMBS3) {
+				setCountBomb(countBomb + p_value);
 				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupItem, this);
 			} else {
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoGagneArgent, this);
+				// Zildo gets/looses some money
+				setMoney(money + p_value);
+				if (p_value > 0) {
+					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupItem, this);
+				} else {
+					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoGagneArgent, this);
+				}
 			}
 		} else {
 			int elemNSpr=p_element.getNSpr();

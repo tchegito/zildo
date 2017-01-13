@@ -31,6 +31,8 @@ public class ElementFireballs extends ElementChained {
 		    int p_startZ, float p_speed, Perso p_shooter) {
 		super(p_angle, p_startX, p_startY, p_startZ, p_speed, p_shooter);
 	        setDesc(ElementDescription.BIG_FIRE_BALL);
+	        alpha = 0;
+			alphaA=1;
 	        //setSpecialEffect(EngineFX.QUAD);
 	    }
 	    
