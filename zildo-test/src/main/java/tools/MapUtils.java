@@ -22,6 +22,8 @@ package tools;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
+import zildo.monde.map.TileCollision;
+import zildo.monde.map.TileInfo;
 import zildo.server.EngineZildo;
 
 public class MapUtils {
@@ -76,6 +78,29 @@ public class MapUtils {
 			}
 			System.out.println();
 		}		
+	}
+	
+	public void displayCollision() {
+		for (int y=0;y<area.getDim_y();y++) {
+			System.out.print("y="+String.format("%02d",y)+" ");
+			for (int x=0;x<area.getDim_x();x++) {
+				int tile = area.readmap(x, y);
+				String display = " ";
+				if (tile != -1) {
+					TileInfo tileInfo = TileCollision.getInstance().getTileInfo(tile);
+					switch (tileInfo.template) {
+					case WALKABLE:
+						display=".";
+						break;
+						default:
+							display = tileInfo.template.name().substring(0,1);
+					}
+				}
+				System.out.print(display);
+			}
+			System.out.println();
+		}		
+		
 	}
 }
 

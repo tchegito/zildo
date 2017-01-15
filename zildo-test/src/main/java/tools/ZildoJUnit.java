@@ -28,7 +28,6 @@ public class ZildoJUnit extends BlockJUnit4ClassRunner {
 
 	public ZildoJUnit(Class<?> klass) throws org.junit.runners.model.InitializationError {
 		super(klass);
-		System.out.println("youhou !");
 	}
 	
 	@Override
