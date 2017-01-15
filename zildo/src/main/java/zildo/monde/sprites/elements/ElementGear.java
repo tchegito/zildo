@@ -21,6 +21,7 @@
 package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
+import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.sprites.Reverse;
@@ -63,7 +64,19 @@ public class ElementGear extends Element {
 			case CAVE_KEYDOOR:
 			case CAVE_MASTERDOOR:
 				int keys = p_perso.getCountKey();
-				if (keys > 0) {
+				boolean openBySpecificKey = false;
+				ItemKind keyItem = null;
+				// Name of gear object can indicate the need of specific item
+				if (name != null && name.startsWith("item")) {
+					String itemStr = name.substring(4);
+					keyItem = ItemKind.fromString(itemStr);
+					openBySpecificKey = p_perso.hasItem(keyItem);
+					// This door must be opened by a specific key. But if hero doesn't have it ==> nothing happens
+					if (!openBySpecificKey) {
+						break;
+					}
+				}
+				if (keys > 0 || openBySpecificKey) {
 					// Get the map coordinates in front of Zildo (with his
 					// angle)
 					int axx = (int) p_perso.x / 16 + p_perso.angle.coords.x;
@@ -74,7 +87,11 @@ public class ElementGear extends Element {
 						acting = true;
 						EngineZildo.soundManagement.broadcastSound(
 								BankSound.ZildoUnlock, this);
-						p_perso.setCountKey(--keys);
+						if (openBySpecificKey) {
+							p_perso.removeItem(keyItem);
+						} else {
+							p_perso.setCountKey(--keys);
+						}
 	
 						// Trigger door
 						String mapName = map.getName();
