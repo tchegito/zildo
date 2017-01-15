@@ -25,7 +25,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
-import tools.annotations.InfoPersos;
 import zildo.client.ClientEventNature;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
@@ -335,7 +334,7 @@ public class CheckFoundBugs extends EngineUT {
 	}
 	
 	// Issue 90 : hero can pass without triggering a mandatory quest !
-	@Test @InfoPersos
+	@Test
 	public void passUnderThievesBridge() {
 		mapUtils.loadMap("voleurs");
 		// Assure quest isn't done
@@ -352,7 +351,7 @@ public class CheckFoundBugs extends EngineUT {
 	
 	// Issue 90: second part. Before this issue was fixed, player could pass without triggering "vert_seen" quest.
 	// Then, when hero reach this spot later, and "vert" character no longer exists, we had an NPE.
-	@Test @InfoPersos
+	@Test
 	public void passUnderThievesBridge2() {
 		EngineZildo.scriptManagement.accomplishQuest("attaque_voleurs", false);
 		EngineZildo.scriptManagement.accomplishQuest("beanCaveFlames", false);

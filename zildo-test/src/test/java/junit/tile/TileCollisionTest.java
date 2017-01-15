@@ -61,11 +61,35 @@ public class TileCollisionTest extends EngineUT {
 	public void halfCorner() {
 		tileCollision = TileCollision.getInstance();
 		
-		checkValues(256 + 37, halfCorner, Reverse.NOTHING);
-		checkValues(256 + 36, halfCorner, Reverse.HORIZONTAL);
+		checkValues(256 + 37, halfCorner, Reverse.NOTHING, Rotation.NOTHING);
+		checkValues(256 + 36, halfCorner, Reverse.HORIZONTAL, Rotation.NOTHING);
+	}
+	
+	private String[] halfAngle = { 
+			 "1111111111111111",
+			 "1111111111111111",
+			 "1111111111111111",
+			 "1111111111111111",
+			 "1111111111111111",
+			 "1111111111111111",
+			 "1111111111111111",
+			 "1111111111111111",
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000000000000"};
+	
+	@Test
+	public void halfAngle() {
+		tileCollision = TileCollision.getInstance();
+		checkValues(256*10 + 13, halfAngle, Reverse.NOTHING, Rotation.CLOCKWISE);
 	}
 
-	private void checkValues(int nTile, String[] value, Reverse rev) {
+	private void checkValues(int nTile, String[] value, Reverse rev, Rotation rot) {
 		for (int y=0;y<16;y++) {
 			String i = value[y];
 			System.out.println("Checking collision for "+i);
@@ -75,7 +99,7 @@ public class TileCollisionTest extends EngineUT {
 					xx = 15-x;
 				}
 				boolean result = '1' == i.charAt(xx);
-				boolean col = tileCollision.collide(x, y, nTile, Reverse.NOTHING, Rotation.NOTHING, 0);
+				boolean col = tileCollision.collide(x, y, nTile, Reverse.NOTHING, rot, 0);
 				Assert.assertTrue("collision should have been "+result+" for ("+x+", "+y+")", result == col);
 			}
 		}
