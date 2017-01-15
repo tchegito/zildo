@@ -1297,6 +1297,71 @@
     		<moveTo who="zildo" pos="208,152"/>
 			<markQuest name="metKingPrison3" value="false"/>q
 	    </if>
+	    <if expQuest="itemCUREPOTION">
+	        <!-- Hero brought the cure potion -->
+	        <speak who="zildo" text="prison.saveKing.zildo.6"/>
+       	    <perso who="king" addSpr="1"/>
+	        <moveTo who="zildo" pos="234,70"/>
+       	    <wait value="10" />
+    	    <animation pos="255,60" type="STAR_CIRCLE" />
+    	    <wait value="140" />
+       	    <perso who="king" addSpr="2"/>
+  	        <speak who="king" text="prison.saveKing.trion.4"/>
+	        <spawn who="maltus" pos="11,84" type="BANDIT_CHAPEAU" angle="1"/>
+	        <actions>
+	            <music/>
+	        	<speak who="maltus" text="prison.saveKing.maltus.1"/>
+	           	<angle who="zildo" value="3"/>
+	        </actions>
+	        <moveTo who="maltus" pos="206,83" unblock="true"/>
+	        <speak who="maltus" text="prison.saveKing.maltus.2"/>
+	        <speak who="king" text="prison.saveKing.trion.5"/>
+	        <speak who="maltus" text="prison.saveKing.maltus.3"/>
+	        <speak who="king" text="prison.saveKing.trion.6"/>
+	        <angle who="zildo" value="1"/>
+	        <wait value="20"/>
+	        <speak who="zildo" text="prison.saveKing.zildo.7"/>
+	        <music name="Story"/>
+	        <speak who="king" text="prison.saveKing.trion.7"/>
+   	        <speak who="zildo" text="prison.saveKing.zildo.8"/>
+	        <speak who="king" text="prison.saveKing.trion.8"/>
+	        <speak who="king" text="prison.saveKing.trion.9"/>
+   	        <speak who="zildo" text="prison.saveKing.zildo.9"/>
+	        <speak who="king" text="prison.saveKing.trion.10"/>
+   	        <speak who="zildo" text="prison.saveKing.zildo.10"/>
+	        <speak who="maltus" text="prison.saveKing.maltus.4"/>
+	        <angle who="zildo" value="3"/>
+   	        <wait value="60"/>
+   	        <angle who="zildo" value="1"/>
+	        <speak who="king" text="prison.saveKing.trion.11"/>
+   	        <speak who="zildo" text="prison.saveKing.zildo.11"/>
+   	        <actions>
+		        <take item="DRAGON_KEY"/>
+		        <animation type="STAR_SHINE" pos="240,46"/>
+   	        </actions>
+   	        <speak who="king" text="prison.saveKing.trion.12"/>
+		    <animation type="STAR_SHINE" pos="237,49"/>
+   	        <speak who="king" text="prison.saveKing.trion.13"/>
+	        <speak who="king" text="prison.saveKing.trion.14"/>
+	        <actions>
+			    <speak who="maltus" text="prison.saveKing.maltus.5"/>
+			    <moveTo who="maltus" pos="4,0" delta="true"/>
+	        </actions>
+	        <wait value="50"/>
+	        <fadeOut type="3"/>
+	        <fadeOut type="0"/>
+	        <wait value="50"/>
+	        <music />
+	        <wait value="50"/>
+	        <script who="zildo" text="VIDE"/>
+	        <map name="prisonext"/>
+	        <pos who="zildo" pos="743,192"/>
+	        <fadeIn type="0" unblock="true"/>
+	        <moveTo who="zildo" speed="0.5" pos="0,32" delta="true"/>
+	        <speak who="zildo" text="prison.saveKing.zildo.12"/>
+	        <speak who="zildo" text="prison.saveKing.zildo.13"/>
+	        <music name="Chateau"/>
+   	    </if>
 	</scene>
 	
 	<scene id="vactoComeIn">

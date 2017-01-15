@@ -149,7 +149,8 @@ public enum ElementDescription implements SpriteDescription {
 	// 262	==> we store a byte so 262 means 5=SMOKE
 	CAULDRON1, CAULDRON2, CAULDRON3, GREEN_BUBBLE,
 	// Wind sucking from fire elemental
-	FIREWIND1, FIREWIND2, FIREWIND3;
+	FIREWIND1, FIREWIND2, FIREWIND3,
+	DRAGON_KEY;
 	
 	Boolean damage;
 	

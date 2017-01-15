@@ -161,6 +161,7 @@ public class FilterCommand {
 		asked_FadeIn  = false;
 		asked_FadeOut = true;
 		fadeStarted = true;
+		fadeLevel = 0;
 		active(BilinearFilter.class, false, null);
 		for (FilterEffect effect : p_effects) {
 			for (Class<? extends ScreenFilter> clazz : effect.getFilterClass()) {

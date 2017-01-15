@@ -346,8 +346,9 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(32,216, 20, 16), new Zone(32, 232, 20, 16), new Zone(32, 248, 20, 16),
 				new Zone(165, 69, 5, 5),	// Bubble
 				// Blow from elemental
-				new Zone(268, 201, 7, 9), new Zone(268, 211, 4, 13), new Zone(276, 201, 2, 15)
-
+				new Zone(268, 201, 7, 9), new Zone(268, 211, 4, 13), new Zone(276, 201, 2, 15),
+				// Dragon key
+				new Zone(138, 85, 16, 16)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -368,7 +369,8 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem", 251, 0),
 				new GraphChange("palace1", 252, 0),
 				new GraphChange("elem", 262, 0),
-				new GraphChange("dragonpal", 266, 0, true)
+				new GraphChange("dragonpal", 266, 0, true),
+				new GraphChange("objets", 269, 0)
 				});
 	}
 }
