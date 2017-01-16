@@ -868,19 +868,28 @@ public abstract class Perso extends Element {
 				}
 			}
 		}
-		if (coeffWhiteLight != -1) {
-			setLight(coeffWhiteLight * 0x111111);
-		}
+
 		Tile foreTile = area.readmap(cx, cy, true);
 		if (foreTile != null) {
 			int val = foreTile.getValue();
-			if (val == (256*3 + 126) || val == 256*2) {
+			switch (val) {
+			case 256*3 + 126:
+			case 256*2:
 				// Particular case: really ugly, but how handle it properly ? When hero is under a foretile masking him
 				// For example, when he crosses vertical door.
-				setLight(0);
+				coeffWhiteLight = 0;
+				break;
+			case 256*3 + 195:
+				coeffWhiteLight = tileLight.forRotatedTile(2, x, y, foreTile.rotation.succ());
+				break;
+			case 256*3 + 200:
+				coeffWhiteLight = tileLight.forRotatedTile(2, x, y, foreTile.rotation.prec());
+				break;
 			}
 		}
-		
+		if (coeffWhiteLight != -1) {
+			setLight(coeffWhiteLight * 0x111111);
+		}
 		if (fall) {
 			// Fall slipping forward
 			vx =deltaMoveX / 20;

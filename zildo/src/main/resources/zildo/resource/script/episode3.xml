@@ -97,10 +97,26 @@
 		</action>
 	</quest>
 
+	<!-- Roxy discovers the ruin from the other side -->
+	<quest name="sousbois4">
+	    <trigger>
+	        <location name="sousbois4" pos="645,648" radius="3"/>
+	    </trigger>
+	    <action>
+	        <wait value="50"/>
+	        <angle who="zildo" value="0"/>
+	        <wait value="20"/>
+	        <moveTo what="camera" pos="0,-32" delta="true"/>
+	        <speak who="zildo" text="sousbois4.roxy.scene.0"/>
+   	        <speak who="zildo" text="sousbois4.roxy.scene.1"/>
+   	        <moveTo what="camera" pos="0,32" delta="true"/>
+	    </action>
+	</quest>
+	
 	<quest name="killGard1" locked="false">
 	    <trigger>
 	        <location name="prison8"/>
-	        <dead who="noir"/>
+	        <dead who="noirg"/>
 	    </trigger>
 	    <action>
 	        <activate what="door" value="true"/>
@@ -126,7 +142,7 @@
 	<quest name="prison12Locked">
 	    <trigger>
 	        <location name="prison12"/>
-	        <dead who="noir,noir"/>
+	        <dead who="noir1,noir2"/>
 	    </trigger>
 	    <action>
 	        <activate what="locked" value="true"/>
@@ -253,7 +269,7 @@
 	<quest name="killKingGuards" locked="false">
 	    <trigger>
 	        <location name="prison16"/>
-	        <dead who="noir,noir"/>
+	        <dead who="noir1,noir2"/>
 	    </trigger>
 	</quest>
 	
@@ -486,11 +502,14 @@
 	   		<perso who="sacher2" action="sacherTortue(tortueSousbois7_2)"/>
 		</condition>
 		<condition name="sousbois4">
-			<tile pos="26,11" action="fireflies"/>
-			<tile pos="52,7" action="fireflies"/>
-			<tile pos="34,26" action="fireflies"/>
-			<tile pos="42,26" action="fireflies"/>
-			<tile pos="41,4" action="fireflies"/>
+			<if expQuest="hero_princess">
+		        <!-- Only for Roxy, display fireflies -->
+				<tile pos="26,11" action="fireflies"/>
+				<tile pos="52,7" action="fireflies"/>
+				<tile pos="34,26" action="fireflies"/>
+				<tile pos="42,26" action="fireflies"/>
+				<tile pos="41,4" action="fireflies"/>
+			</if>
 			<!-- Hide notes, so player will only see fireflies -->
 			<visible who="arsinoe" value="false"/>
    			<visible who="archibald" value="false"/>
@@ -505,7 +524,7 @@
 	   	    <perso who="noir" pv="6"/>"
 	   	</condition>
 	   	<condition name="prison8">
-	   	    <perso who="noir" pv="4"/>
+	   	    <perso who="noirg" pv="4"/>
 	   	</condition>
 	   	<condition name="prison9">
 	   	    <markQuest name="isKillGard1" value="false"/>
@@ -514,8 +533,9 @@
 	   	    <activate what="grey" value="true" unblock="true"/>
 	   	</condition>
 	   	<condition name="prison12">
-	   	    <perso who="noir" pv="4"/>
-	   	</condition>
+	   	    <perso who="noir1" pv="6"/>
+	   	    <perso who="noir2" pv="6"/>
+   	   	</condition>
 	   	<condition name="prison12" exp="fromPrison13">
 	   	    <activate what="locked" value="true" unblock="true"/>
 	   	</condition>
@@ -539,14 +559,15 @@
 	   	    <markQuest name="prison15_trigger2Launch4" value="false"/>
    	   	</condition>
    	   	<condition name="prison16" exp="killKingGuards">
-   	   	   	<remove who="noir"/>
-   	   	   	<remove who="noir"/>
+   	   	   	<remove who="noir1"/>
+   	   	   	<remove who="noir2"/>
    	   	</condition>
    	   	<condition name="d4m9" exp="!jump_stumpNature3">
    	   		<remove who="igor"/>
    	   	</condition>
    	   	<condition name="prison16">
-   	   		<perso who="noir" pv="4"/>"
+   	   		<perso who="noir1" pv="6"/>"
+   	   		<perso who="noir2" pv="6"/>"
    	   	</condition>
    	   	<condition name="eleom1">
    	   	    <spawn impact="CAULDRON" pos="88,42"/>
@@ -987,6 +1008,7 @@
 		<speak who="petula" text="episode3.girl.0"/>
 		<speak who="hector" text="episode3.hector.2"/>
 		<angle who="petula" value="2"/>
+		<wait value="30"/>
 		<perso who="petula" alphaA="-2"/>
 	    <wait value="30"/>
 	    <remove who="petula"/>
@@ -1125,7 +1147,7 @@
 	    <perso who="turret2" parent="turret0" pv="-1"/>
         <perso who="turret3" parent="turret0" pv="-1"/>
 	    <perso who="turret4" parent="turret0" pv="-1"/>
-       	<perso who="turretH" parent="turret0" pv="8"/>
+       	<perso who="turretH" parent="turret0" pv="10"/>	<!-- Hero must hit 5 times (2*5 = 10) -->
        	<!--  Declare turret IMMATERIAL because it's underground -->
        	<actions>
 		    <script who="turret1" value="18"/>

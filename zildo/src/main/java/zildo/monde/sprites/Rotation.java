@@ -37,6 +37,10 @@ public enum Rotation {
 		this.value = value;
 	}
 	
+	public Rotation prec() {
+		return values()[(ordinal()+3) % 4];
+	}
+	
 	public Rotation succ() {
 		return values()[(ordinal()+1) % 4];
 	}

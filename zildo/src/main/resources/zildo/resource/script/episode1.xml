@@ -14,7 +14,7 @@
 			<take item="flut"/>
 		</action>
 	</quest>
-	<quest name="chateau_ask">
+	<quest name="chateau_ask" locked="false">
 		<trigger>
 			<dialog name="papy" num="8"/>
 		</trigger>
@@ -47,7 +47,7 @@
 			<take item="milk"/>
 		</action>
 	</quest>
-	<quest name="fermierperdu_ask">
+	<quest name="fermierperdu_ask" locked="false">
 		<trigger>
 		    <location name="fermem1"/>
 			<dialog name="laura" num="1"/>
@@ -85,8 +85,9 @@
 			<take item="FLASK_RED"/>
 		</action>
 	</quest>
-	<quest name="gardelaitier">
+	<quest name="gardelaitier" locked="false">
 		<trigger>
+		    <location name="d4m4"/>
 			<dialog name="roby" num="2"/>
 		</trigger>
 		<action>
@@ -95,6 +96,7 @@
 	</quest>
 	<quest name="gardelaitier_win">
 		<trigger>
+		    <location name="coucou"/>
 			<dialog name="garde" num="2"/>
 		</trigger>
 		<action>
@@ -105,7 +107,7 @@
 			<putDown item="milk"/>
 		</action>
 	</quest>
-	<quest name="ritou_bar">
+	<quest name="ritou_bar" locked="false">
 		<trigger>
 			<dialog name="ritou" num="2"/>
 			<questDone name="!gardelaitier"/>
@@ -373,6 +375,7 @@
 		</history>
 	</quest>
 	
+	<!-- 
 	<quest name="promenade_block" repeat="true">
 	    <trigger>
 	        <location name="promenade" pos="70,40" radius="1"/>
@@ -383,7 +386,7 @@
 	        <moveTo who="zildo" pos="0,32" delta="true"/>
 	    </action>
 	</quest>
-	
+	-->
 	<quest name="trig_echange">
 		<trigger>
 			<location name="promenade2" pos="492,251" radius="4"/>

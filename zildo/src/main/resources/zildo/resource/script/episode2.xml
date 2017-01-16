@@ -486,7 +486,7 @@
         </action>
     </quest>
     
-    <quest name="igor_promise_sword">
+    <quest name="igor_promise_sword" locked="false">
         <trigger>
             <location name="prison"/>
             <dialog name="igor" num="7"/>
@@ -868,7 +868,7 @@
 		    <markQuest name="hector_call1" value="false"/>
 		    <markQuest name="hector_call2" value="false"/>
 		</condition>
-		<condition name="prisonext" exp="freedIgor">
+		<condition name="prisonext" exp="freedIgor-!getBackIgor">
 		    <spawn who="igor" pos="670,228" angle="2" type="IGOR"/>
 		</condition>
 		<condition name="voleursm1">
@@ -1493,7 +1493,7 @@
         <markQuest name="visit_gpprison" value="0"/>
         <markQuest name="visiting_gpprison" value="0"/>
         <script who="zildo" text="VIDE"/>
-        <moveTo who="zildo" pos="10,0" delta="true"/>
+        <moveTo who="zildo" pos="230,256"/>
         <moveTo who="jaune" pos="0,10" delta="true"/> 
         <angle who="jaune" value="3"/>
 	    <actions>
@@ -1693,7 +1693,7 @@
   	    <angle who="hector" value="2"/>
 	    <speak who="hector" text="lugduniag.hector.6"/>
 	    <script who="zildo" value="3"/>
-	    <moveTo who="zildo" pos="0,4" delta="true"/>
+	    <moveTo who="zildo" pos="0,4" delta="true" unstoppable="true"/>
 	    <angle who="zildo" value="0"/>
 	    <moveTo who="hector" pos="917,664"/>
 	    <angle who="hector" value="1"/>
@@ -1759,10 +1759,10 @@
 	   <fadeOut value="0"/>
 	   <speak what="camera" text="ep2.ending.4"/>
 	   <music/>
-	   <exec script="ep2_realClosure"/>
 	   <!-- 
-	   <exec script="intro_episode3"/>
+	   <exec script="ep2_realClosure"/>
 	   -->
+	   <exec script="intro_episode3"/>
 	</scene>
 	
 	<scene id="ep2_realClosure">

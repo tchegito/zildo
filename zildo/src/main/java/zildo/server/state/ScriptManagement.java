@@ -49,6 +49,7 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.items.StoredItem;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.quest.QuestEvent;
 import zildo.monde.quest.StringReplacement;
 import zildo.monde.quest.actions.TakingItemAction;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -650,5 +651,15 @@ public class ScriptManagement {
 	public void initForNewMap() {
 		// Reinit counters
 		LocaleVarContext.clean();
+		// Reinit all trigger with 'dead' because it only counts on the current map
+    	for (QuestElement quest : adventure.getQuests()) {
+    		if (!quest.done) {
+    			for (TriggerElement trig : quest.getTriggers()) {
+    				if (trig.kind == QuestEvent.DEAD) {
+    					trig.done = false;
+    				}
+    			}
+    		}
+    	}
 	}
 }

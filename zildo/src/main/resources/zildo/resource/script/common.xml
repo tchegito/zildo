@@ -282,6 +282,7 @@
 	    <moveTo what="moon1" pos="2,0" delta="true"/>
 	   	<moveTo what="moon2" pos="2,0" delta="true"/>
 	    	    	    
+	   	<sound name="Wind"/>
 	    <actions>
 	        <moveTo what="moon1" pos="0,160" delta="true"/>
 	        <moveTo what="moon2" pos="160,0" delta="true"/>
@@ -289,6 +290,7 @@
 	    <wait value="20"/>
 	    <animation who="zildo" pos="6,-20" type="STAR_SHINE" />
 	    <filter type="4"/>
+	    <sound name="Wind" mute="true"/>
    		<sound name="MoonFusion"/>
 	    <actions>
 	    	<remove what="moon1"/>
