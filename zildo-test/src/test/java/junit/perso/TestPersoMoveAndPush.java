@@ -24,6 +24,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.InfoPersos;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
@@ -65,7 +66,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 	}
 	
 	/** Proves that turtle can't push hero. Instead, it has to wait for him to move by himself. **/
-	@Test
+	@Test @InfoPersos
 	public void turtleCantPushHero() {
 		// Spawn a character A
 		Point targetTurtle = new Point(200, 80);
@@ -77,7 +78,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 		Perso hero = spawnZildo(150, 80);
 		
 		// Let's rock !
-		renderFrames(400);
+		renderFrames(100);
 
 		// Check that turtle hasn't lost its target
 		Assert.assertTrue("Turtle should still have a target !", turtle.getTarget() != null);
@@ -85,7 +86,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 
 		
 		// Now we move hero to let turtle pass
-		hero.setTarget(new Point(150,60));
+		hero.setTarget(new Point(190,60));
 		hero.setGhost(true);
 		
 		renderFrames(400);
