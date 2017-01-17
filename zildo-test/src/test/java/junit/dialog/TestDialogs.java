@@ -27,7 +27,7 @@ public class TestDialogs {
 			"Lwjgl.key.weapon", "Lwjgl.key.action", "Lwjgl.key.dialog", "Lwjgl.key.inventory", 
 			"enlev.p4", "people.rouge", "Android.key.menu", "foret.zildo.2", "polaky.sofiasky.4",
 			"voleursm4.falcor1", "pext.scr.hector.0", "pext.scr.hector.1", "visit1.king.4",
-			"REGION_Polaky", "REGION_Lugdunia"
+			"REGION_Polaky", "REGION_Lugdunia", "sousbois.isidore.0", "sousbois.isidore.2"
 			);
 	
 	final static List<String> noNeedToTranslate=Arrays.asList("people.jack", "people.citizen");
