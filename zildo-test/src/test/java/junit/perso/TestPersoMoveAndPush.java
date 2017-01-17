@@ -20,6 +20,7 @@
 package junit.perso;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import tools.EngineUT;
@@ -39,8 +40,10 @@ import zildo.server.EngineZildo;
  */
 public class TestPersoMoveAndPush extends EngineUT {
 
+	
 	/** Proves that turtle can push any blocking character when he's on its way **/
 	@Test
+	@Ignore // This usecase has been canceled: turtle doesn't push anyone
 	public void turtlePushPerso() {
 		// Spawn a character A
 		Point targetA = new Point(100, 190);
@@ -61,37 +64,35 @@ public class TestPersoMoveAndPush extends EngineUT {
 		assertLocation(persoA, targetA, true);
 	}
 	
-	/** Proves that turtle can't push hero. Instead, it has to wait him to move by himself. **/
+	/** Proves that turtle can't push hero. Instead, it has to wait for him to move by himself. **/
 	@Test
 	public void turtleCantPushHero() {
 		// Spawn a character A
-		Point targetA = new Point(200, 80);
-		Perso persoA = spawnPerso(PersoDescription.TURTLE, "Turtle", 100, 80);
-		persoA.setQuel_deplacement(MouvementPerso.MOBILE_WAIT, true);
-		persoA.setTarget(targetA);
-		
-		// Spawn hero
-		Perso hero = spawnZildo(150, 90);
+		Point targetTurtle = new Point(200, 80);
+		Perso turtle = spawnPerso(PersoDescription.TURTLE, "Turtle", 100, 80);
+		turtle.setQuel_deplacement(MouvementPerso.MOBILE_WAIT, true);
+		turtle.setTarget(targetTurtle);
 
+		// Spawn hero
+		Perso hero = spawnZildo(150, 80);
 		
 		// Let's rock !
 		renderFrames(400);
 
-		// Check that turtle hasn't loosed its target
-		Assert.assertTrue(persoA.getTarget() != null);
-		assertLocation((Element) persoA, targetA, false);
+		// Check that turtle hasn't lost its target
+		Assert.assertTrue("Turtle should still have a target !", turtle.getTarget() != null);
+		assertLocation((Element) turtle, targetTurtle, false);
 
-		Assert.assertTrue("Character A should still have a target !", persoA.getTarget() != null);
 		
-		// Now we move hero
-		hero.setTarget(new Point(150,120));
+		// Now we move hero to let turtle pass
+		hero.setTarget(new Point(150,60));
 		hero.setGhost(true);
 		
 		renderFrames(400);
 		
 		// And now, check that turtle is arrived
-		Assert.assertTrue(persoA.getTarget() == null);
-		assertLocation(persoA, targetA, true);
+		Assert.assertTrue(turtle.getTarget() == null);
+		assertLocation(turtle, targetTurtle, true);
 	}
 	
 	@Test
