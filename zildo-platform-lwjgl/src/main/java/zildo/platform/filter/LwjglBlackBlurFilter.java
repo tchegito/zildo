@@ -10,11 +10,8 @@ import zildo.monde.util.Vector4f;
 
 public class LwjglBlackBlurFilter extends BlackBlurFilter {
 
-	LwjglBilinearFilter filter;
-	
 	public LwjglBlackBlurFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
-		filter = new LwjglBilinearFilter(graphicStuff);
 	}
 
 	@Override
@@ -26,6 +23,7 @@ public class LwjglBlackBlurFilter extends BlackBlurFilter {
 		ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(6));
 		ClientEngineZildo.pixelShaders.setParameter(6, "iFrame", new Vector4f((float) getFadeLevel(), 0, 0, 1));
 		
+		// End render on buffered texture, and draw it on screen using blackBlur shader
 		filter.renderFilter();
 		
 		return true;
@@ -33,6 +31,7 @@ public class LwjglBlackBlurFilter extends BlackBlurFilter {
 	
 	@Override
 	public void preFilter() {
+		// Start to render on a buffered texture
 		filter.preFilter();
 	}
 }

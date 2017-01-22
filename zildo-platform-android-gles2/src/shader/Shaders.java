@@ -50,7 +50,9 @@ public class Shaders {
 		// Gold (for invincibility)
 		goldFilter,
 		// Star (aura for black guards)
-		star;
+		star,
+		// Blur with fade (used on game loading)
+		blackBlur;
 		
 		public int id;	// program id
 		// One map for all shaders
@@ -230,7 +232,7 @@ public class Shaders {
 	}
 
 	/** Convenient method to pass a float via an uniform. **/
-	private void uniform1f(String uniformName, float f) {
+	public void uniform1f(String uniformName, float f) {
 		GLES20.glUniform1f(uniformId(uniformName), f);
 	}
 	

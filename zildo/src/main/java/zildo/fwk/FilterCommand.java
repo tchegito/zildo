@@ -133,10 +133,8 @@ public class FilterCommand {
 	///////////////////////////////////////////////////////////////////////////////////////
 	public void fadeIn(FilterEffect... p_effects)
 	{
-		if (fadeLevel == 0) {
-			// Allow a fade in to be launched, even if fade out hasn't been done
-			fadeLevel = 255;
-		}
+		// Allow a fade in to be launched, even if fade out hasn't been done
+		fadeLevel = 255;
 		asked_FadeIn  = true;
 		asked_FadeOut = false;
 		fadeStarted = true;
