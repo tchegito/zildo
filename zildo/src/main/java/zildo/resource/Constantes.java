@@ -37,8 +37,7 @@ import zildo.monde.sprites.desc.ZildoOutfit;
 public class Constantes {
 
 	// File system data
-	//public static String DATA_PATH = "."+File.separator+"Data"+File.separator;	// Pour livraison
-	public static String DATA_PATH = "E:\\ZildoDist\\Version 1.096\\Data\\";
+	public static String DATA_PATH = "."+File.separator+"Data"+File.separator;	// Pour livraison
 
 	public static String MAP_PATH = "maps"+File.separator;
 	public static String INI_DIR = "ini"+File.separator;
@@ -106,4 +105,15 @@ public class Constantes {
 	public static final int MAX_SOUNDS = 49;
 	
 	public static final int NB_MAX_DIALOGS_HISTORY = 20;
+	
+	static {
+		// Check if environment variable is provided to get data folder
+		String dataFolder = System.getProperty("ZILDO_DATA");
+		if (dataFolder != null) {
+			if (!dataFolder.endsWith(File.separator)) {
+				dataFolder += File.separator;
+			}
+			Constantes.DATA_PATH = dataFolder;
+		}
+	}
 }

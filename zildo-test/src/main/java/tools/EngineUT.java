@@ -226,16 +226,6 @@ public class EngineUT {
 	
 	@Before
 	public void setUp() {
-		// Check if environment variable is provided to get data folder
-		String dataFolder = System.getProperty("ZILDO_DATA");
-		//System.out.println("On a comme variable d'environnement ZILDO_DATA => "+dataFolder);
-		if (dataFolder != null) {
-			if (!dataFolder.endsWith(File.separator)) {
-				dataFolder += File.separator;
-			}
-			Constantes.DATA_PATH = dataFolder;
-		}
-		
 		Game game = new Game(null, "hero");
 		initServer(game);
 		
