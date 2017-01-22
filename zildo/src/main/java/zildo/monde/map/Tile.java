@@ -143,7 +143,7 @@ public class Tile implements Cloneable {
 	
 	public static boolean isBottomLess(int value) {
 		// Means that hero fall and have to lost HP
-		return (value == 256 * 3 + 217 || value == 41 + 256 * 9 || value == 256*10 + 34 || value == 256*10 + 7 || value == 256*10 + 6);
+		return (value == 256 * 3 + 217 || value == 41 + 256 * 9 || value == 256*10 + 34 || value == 256*10 + 7 || value == 256*10 + 6 || value == 108);
 	}
 	
 	public static boolean isBottomFloor(int value) {
