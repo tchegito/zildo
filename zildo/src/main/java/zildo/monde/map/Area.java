@@ -547,8 +547,10 @@ public class Area implements EasySerializable {
 		switch (onmap) {
 		case Tile.T_NETTLE:
 			spe = 1;	// Will blow the nettle with different leaf sprite
-			// Remember that nettle has been cut
-			EngineZildo.scriptManagement.actOnTile(getName(), tileLocation);
+			// Remember that nettle has been cut (only if nettle quest is started ! thanks Ruben ;))
+			if (EngineZildo.persoManagement.getZildo().getCountNettleLeaf() > 0) {
+				EngineZildo.scriptManagement.actOnTile(getName(), tileLocation);
+			}
 		case Tile.T_BUSH: // Bushes
 			Point spriteLocation = new Point(tileLocation.x * 16 + 8, tileLocation.y * 16 + 8);
 			EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.BUSHES, spriteLocation.x, spriteLocation.y,
