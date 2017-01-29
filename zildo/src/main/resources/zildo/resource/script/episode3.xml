@@ -1419,9 +1419,9 @@
    		<moveTo who="vacto" pos="161,225"/>
    		<perso who="vacto" alphaA="-2"/>
    		<wait value="80"/>
+   		<remove who="vacto"/>
    		<moveTo who="eleoric" pos="88,80"/>
    		<script who="eleoric" value="0" effect="2"/>
-   		<remove who="vacto"/>
 	</scene>
 	
 	<scene id="EleoPrepareAntidote">
