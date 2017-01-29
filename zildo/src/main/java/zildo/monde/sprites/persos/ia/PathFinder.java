@@ -205,6 +205,9 @@ public class PathFinder {
 			    y >= target.y - 0.5f && y <= target.y + 0.5f);
 	}
 	
+	/** Character collides into another one. We'll see if we must stop his movement, and determine a new target. Or we may
+	 * ask the blocker one to move, if we're into a scripting scene.
+	 */
 	public void collide() {
 		switch (mobile.getQuel_deplacement()) {
 			case HEN:
@@ -228,7 +231,7 @@ public class PathFinder {
 							mobile.setAlerte(false);
 							nbShock=0;
 						}
-					} else {
+					} else if (mobile.getQuel_deplacement() != MouvementPerso.FOLLOW){
 						// Freeze during a scene (because moving character is 'ghost')
 						nbShock=0;
 						
