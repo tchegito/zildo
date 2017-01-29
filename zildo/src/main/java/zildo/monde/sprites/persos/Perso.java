@@ -731,18 +731,26 @@ public abstract class Perso extends Element {
 				// Vertical doors
 			case 175 + 256*3:	// Access the north 1
 			case 176 + 256*3:
+			case 109 + 256*3:
+			case 110 + 256*3:
 				coeffWhiteLight = tileLight.north(2, x, y);
 				break;
 			case 177 + 256*3:	// Access to the north 2
 			case 178 + 256*3:
+			case 111 + 256*3:
+			case 112 + 256*3:
 				coeffWhiteLight = tileLight.north(1, x, y);
 				break;
 			case 179 + 256*3:	// Access to the south 2
 			case 180 + 256*3:
+			case 105 + 256*3:
+			case 106 + 256*3:
 				coeffWhiteLight = tileLight.south(1, x, y);
 				break;
 			case 181 + 256*3:	// Access to the south 1
 			case 182 + 256*3:
+			case 107 + 256*3:
+			case 108 + 256*3:
 				coeffWhiteLight = tileLight.south(2, x, y);
 				break;
 			// Tile used on different rotated value: light coeff will follow

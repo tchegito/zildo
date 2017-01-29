@@ -25,6 +25,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -173,7 +174,7 @@ public class ElementGear extends Element {
 					break;
 				case CAVE_SIMPLEDOOR:
 					int pas = activate ? -6 : 6;	// Closing or opening ?
-					if (reverse == Reverse.VERTICAL) {
+					if (reverse == Reverse.VERTICAL || rotation == Rotation.UPSIDEDOWN) {
 						pas = -pas;
 					}
 					int pasX = 0;
@@ -198,7 +199,7 @@ public class ElementGear extends Element {
 						x+=pasX;
 						y+=pasY;
 						Perso perso = EngineZildo.persoManagement.collidePerso((int)x, getCenter().y, this, 6);
-						if (perso != null) {
+						if (perso != null && !perso.isZildo()) {
 							// A character will be blocked by the gear => push him with same vector
 							perso.x+=pasX;
 							perso.y+=pasY;

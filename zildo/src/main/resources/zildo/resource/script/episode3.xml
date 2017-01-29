@@ -586,7 +586,7 @@
 		    <perso who="carlo" z="12"/>
 		</condition>
 		<condition name="eleog" exp="secretEleog">
-		    <activate what="door" value="false" unblock="true"/>
+		    <activate what="door" value="true" unblock="true"/>
 		</condition>
 		<condition name="cavef9">
 		    <perso who="elemental" action="elemBehav"/>

@@ -637,9 +637,6 @@ public class PersoPlayer extends Perso {
 			}
 			break;
 		}
-		//System.out.println(z);
-
-
 	}
 
 	final int[] seqWakeUp = { 0, 1, 0, 1, 2, 2, 3 };
