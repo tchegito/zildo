@@ -230,14 +230,9 @@ public class MapManagement {
 		return collide(Math.round(tx), Math.round(ty), quelElement);
 	}
 
-	public boolean collide(int tx, int ty, Element quelElement) {
-		return collide(tx, ty, quelElement, false);
-	}
 	/** Returns TRUE if there's a collision at given map coordinates, except for the given element. 
-	 * We suppose it is the moving element.
-	 * Note:'loopingCheck' at TRUE means we are calling recursively this method for a character asking
-	 * another to move.**/
-	public boolean collide(int tx, int ty, Element quelElement, boolean loopingCheck) {
+	 * We suppose it is the moving element. **/
+	public boolean collide(int tx, int ty, Element quelElement) {
 		int modx, mody;
 		int on_map; // La case où se déplace le joueur
 
@@ -351,24 +346,7 @@ public class MapManagement {
 			if (collidingPerso.isOnPlatform() && p != null && p.getMover() != null && p.getMover().isOnIt(collidingPerso)) {
 				return false;	// Ok => character is above the "vehicle"
 			}
-			// If moving character is able to ask colliding one to leave (and hero's not the one blocking) => ask him !
-			if (!loopingCheck && p != null && p.getQuel_deplacement() == MouvementPerso.MOBILE_WAIT &&!collidingPerso.isZildo()) {
-				// Determine free location for other character
-				Angle a = p.getAngle();
-				// First : lateral
-				Point nonBlockingPos = new Point();
-				Angle[] angles = new Angle[] {a.rotate(1), Angle.rotate(a,-1), a};
-				for (Angle chkAngle : angles) {
-					nonBlockingPos.x = (int) (collidingPerso.x + chkAngle.coordf.x * 12);
-					nonBlockingPos.y = (int) (collidingPerso.y + chkAngle.coordf.y * 12);
-					
-					if (!collide(nonBlockingPos.x, nonBlockingPos.y, collidingPerso, true)) {
-						break;
-					}
-				}
-				collidingPerso.setTarget(nonBlockingPos);
-				collidingPerso.setGhost(true);
-			}
+			
 			return true;
 		}
 		

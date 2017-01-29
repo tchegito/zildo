@@ -31,6 +31,7 @@ import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
+import zildo.server.EngineZildo;
 
 /**
  * Deals with AI for characters.<p/>
@@ -219,10 +220,39 @@ public class PathFinder {
 				if (mobile.isGhost()) {
 					mobile.tryJump(new Pointf(mobile.x, mobile.y));
 				}
-				if (!alwaysReach && nbShock++ >= 3 && !mobile.isGhost()) {
-					target=null;
-					mobile.setAlerte(false);
-					nbShock=0;
+				if (!alwaysReach) {
+					nbShock++;
+					if (!mobile.isGhost()) {
+						if (nbShock >= 3) {
+							target=null;
+							mobile.setAlerte(false);
+							nbShock=0;
+						}
+					} else {
+						// Freeze during a scene (because moving character is 'ghost')
+						nbShock=0;
+						
+                		Perso collidingPerso = EngineZildo.persoManagement.lookForOne(mobile, 1, null, false);
+
+						Angle a = mobile.getAngle();
+						// First : lateral
+						Point nonBlockingPos = new Point();
+						Angle[] angles = new Angle[] {a.rotate(1), Angle.rotate(a,-1), a};
+						for (Angle chkAngle : angles) {
+							nonBlockingPos.x = (int) (collidingPerso.x + chkAngle.coordf.x * 12);
+							nonBlockingPos.y = (int) (collidingPerso.y + chkAngle.coordf.y * 12);
+							
+							if (!EngineZildo.mapManagement.collide(nonBlockingPos.x, nonBlockingPos.y, collidingPerso)) {
+								break;
+							}
+						}
+						collidingPerso.setTarget(nonBlockingPos);
+						mobile.setAttente(10);
+						collidingPerso.setSpeed(1.1f);
+						if (collidingPerso.isZildo()) {	// If hero isn't declared "ghost", he won't move
+							collidingPerso.setGhost(true);
+						}
+					}
 				}
 		}
 	}
