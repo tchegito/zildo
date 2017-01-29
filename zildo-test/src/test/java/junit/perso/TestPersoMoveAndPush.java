@@ -65,6 +65,31 @@ public class TestPersoMoveAndPush extends EngineUT {
 		assertLocation(persoA, targetA, true);
 	}
 	
+	/** Proves that a character can push any blocking character when he's on its way **/
+	@Test @InfoPersos
+	public void persoPushPerso() {
+		// Spawn a character A
+		mapUtils.loadMap("eleom1");
+		EngineZildo.persoManagement.clearPersos(true);
+		waitEndOfScripting();
+		Point targetA = new Point(78, 80);
+		Perso eleo = spawnPerso(PersoDescription.ELEORIC, "eleoric", 78, 115);
+		eleo.setTarget(targetA);
+		eleo.setGhost(true);
+		
+		// Spawn character (non-hero)
+		Perso blocker = spawnTypicalPerso("non-hero", 78, 96);
+		
+		// Let's rock !
+		renderFrames(500);
+		
+		Assert.assertNull("Eleoric shouldn't have a target !", eleo.getTarget());
+		// Check that persoB has moved, to let turtle pass
+		assertLocation(blocker, new Point(100, 150), false);
+		// Check that turtle is arrived
+		assertLocation(eleo, targetA, true);
+	}
+	
 	/** Proves that turtle can't push hero. Instead, it has to wait for him to move by himself. **/
 	@Test @InfoPersos
 	public void turtleCantPushHero() {

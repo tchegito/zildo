@@ -233,25 +233,26 @@ public class PathFinder {
 						nbShock=0;
 						
                 		Perso collidingPerso = EngineZildo.persoManagement.lookForOne(mobile, 1, null, false);
-
-						Angle a = mobile.getAngle();
-						// First : lateral
-						Point nonBlockingPos = new Point();
-						Angle[] angles = new Angle[] {a.rotate(1), Angle.rotate(a,-1), a};
-						for (Angle chkAngle : angles) {
-							nonBlockingPos.x = (int) (collidingPerso.x + chkAngle.coordf.x * 12);
-							nonBlockingPos.y = (int) (collidingPerso.y + chkAngle.coordf.y * 12);
-							
-							if (!EngineZildo.mapManagement.collide(nonBlockingPos.x, nonBlockingPos.y, collidingPerso)) {
-								break;
+                		if (collidingPerso != null) {
+							Angle a = mobile.getAngle();
+							// First : lateral
+							Point nonBlockingPos = new Point();
+							Angle[] angles = new Angle[] {a.rotate(1), Angle.rotate(a,-1), a};
+							for (Angle chkAngle : angles) {
+								nonBlockingPos.x = (int) (collidingPerso.x + chkAngle.coordf.x * 12);
+								nonBlockingPos.y = (int) (collidingPerso.y + chkAngle.coordf.y * 12);
+								
+								if (!EngineZildo.mapManagement.collide(nonBlockingPos.x, nonBlockingPos.y, collidingPerso)) {
+									break;
+								}
 							}
-						}
-						collidingPerso.setTarget(nonBlockingPos);
-						mobile.setAttente(10);
-						collidingPerso.setSpeed(1.1f);
-						if (collidingPerso.isZildo()) {	// If hero isn't declared "ghost", he won't move
-							collidingPerso.setGhost(true);
-						}
+							collidingPerso.setTarget(nonBlockingPos);
+							mobile.setAttente(10);
+							collidingPerso.setSpeed(1.1f);
+							if (collidingPerso.isZildo()) {	// If hero isn't declared "ghost", he won't move
+								collidingPerso.setGhost(true);
+							}
+                		}
 					}
 				}
 		}
