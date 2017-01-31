@@ -877,7 +877,7 @@ public abstract class Perso extends Element {
 			}
 		}
 
-		Tile foreTile = area.readmap(cx, cy, true);
+		Tile foreTile = area.readForeTile(cx, cy);
 		if (foreTile != null) {
 			int val = foreTile.getValue();
 			switch (val) {

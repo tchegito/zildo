@@ -1404,10 +1404,12 @@
    		<!-- She introduces Vacto to hero -->
    		<speak who="eleoric" text="eleom1.e.4"/>
    		<script who="vacto" value="2" effect="zildo"/>
+   		<script who="zildo" value="2" effect="vacto"/>
    		<wait value="20"/>
    		<speak who="vacto" text="eleom1.vacto.1"/>
    		<wait value="20"/>
    		<script who="vacto" value="3"/>
+   		<script who="zildo" value="3"/>
    		<angle who="vacto" value="3"/>
    		<moveTo who="eleoric" pos="117,98" unblock="true"/>
    		<speak who="eleoric" text="eleom1.e.5"/>
@@ -1416,9 +1418,9 @@
    		<speak who="eleoric" text="eleom1.e.6"/>
    		<speak who="eleoric" text="eleom1.e.7"/>
    		<speak who="vacto" text="eleom1.vacto.3"/>
-   		<moveTo who="vacto" pos="161,225"/>
+   		<moveTo who="vacto" pos="161,219"/>
    		<perso who="vacto" alphaA="-2"/>
-   		<wait value="80"/>
+   		<wait value="30"/>
    		<remove who="vacto"/>
    		<moveTo who="eleoric" pos="88,80"/>
    		<script who="eleoric" value="0" effect="2"/>

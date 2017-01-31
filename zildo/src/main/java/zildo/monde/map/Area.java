@@ -245,6 +245,14 @@ public class Area implements EasySerializable {
 		return readmap(x, y, p_foreground, -1);
 	}
 	
+	public Tile readForeTile(int x, int y) {
+		Case c = get_mapcase(x, y);
+		if (c != null) {
+			return c.getForeTile();
+		}
+		return null;
+	}
+
 	public Tile readmap(int x, int y, boolean p_foreground, int floor) {
 		Case temp;
 		if (floor == -1) {	// No floor, so we take the highest
