@@ -53,4 +53,28 @@ public class CheckMapScroll extends EngineUT {
 		renderFrames(10);
 		Assert.assertEquals(Angle.EST, zildo.getAngle());
 	}
+	
+	@Test
+	public void scrollUnblock() {
+		mapUtils.loadMap("sousbois3");
+		EngineZildo.scriptManagement.accomplishQuest("hero_princess", false);
+		PersoPlayer hero = spawnZildo(682, 8);
+		waitEndOfScripting();
+		// Goes up and wait for map change
+		simulateDirection(0, -1);
+		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
+			renderFrames(1);
+		}
+		simulateDirection(0, 0);
+		renderFrames(5);
+		waitEndOfScripting();
+		renderFrames(5);
+		Assert.assertEquals("sousbois4", EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertNull("Hero should have been arrived to his target ! But he seems blocked.", hero.getTarget());
+		/*
+		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
+			renderFrames(1);
+		}
+		renderFrames(50); */
+	}
 }

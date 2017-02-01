@@ -21,6 +21,7 @@
 package zildo.monde.sprites.persos.ia;
 
 import static zildo.server.EngineZildo.hasard;
+import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
@@ -249,12 +250,10 @@ public class PathFinder {
 									break;
 								}
 							}
-							collidingPerso.setTarget(nonBlockingPos);
+							// Ask blocking character to move with a script
+							SpriteEntityContext context = new SpriteEntityContext(collidingPerso);
+							EngineZildo.scriptManagement.runPersoAction(collidingPerso, "moveCharacter("+nonBlockingPos.x+","+nonBlockingPos.y+")", context);
 							mobile.setAttente(10);
-							collidingPerso.setSpeed(1.1f);
-							if (collidingPerso.isZildo()) {	// If hero isn't declared "ghost", he won't move
-								collidingPerso.setGhost(true);
-							}
                 		}
 					}
 				}

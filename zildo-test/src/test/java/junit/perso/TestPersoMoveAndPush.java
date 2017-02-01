@@ -86,8 +86,10 @@ public class TestPersoMoveAndPush extends EngineUT {
 		Assert.assertNull("Eleoric shouldn't have a target !", eleo.getTarget());
 		// Check that persoB has moved, to let turtle pass
 		assertLocation(blocker, new Point(100, 150), false);
-		// Check that turtle is arrived
+		// Check that character is arrived
 		assertLocation(eleo, targetA, true);
+		// Check that ScriptExecutor has set ghost at false, because 'blocker' has been declared as 'involved'
+		Assert.assertFalse(blocker.isGhost());
 	}
 	
 	/** Proves that turtle can't push hero. Instead, it has to wait for him to move by himself. **/

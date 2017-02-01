@@ -365,4 +365,7 @@
 	    <moveTo what="loc:s" pos="77,-140" way="circular" zoom="60-40*bell"/>
 	</tileAction>
 	
+	<persoAction id="moveCharacter">
+	    <moveTo who="self" pos="loc:arg0,loc:arg1" speed="1.1"/>
+	</persoAction>
 </adventure>
