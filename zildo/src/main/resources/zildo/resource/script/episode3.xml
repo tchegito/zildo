@@ -614,6 +614,9 @@
 		    	<animation type="BIG_FIREBALL" what="fireb3" angle="1" pos="16,339"/>
 		    	<animation type="BIG_FIREBALL" what="fireb4" angle="1" pos="16,244"/>
 		</condition>
+		<condition name="dragon">
+		    <perso who="dragon" action="bossDragon"/>
+		</condition>
 	</mapScript>
 		
 	<scene id="intro_episode3">
@@ -1564,6 +1567,7 @@
 	    </actions>
    	</scene>
    	
+	<!-- Scene with 2 parameters: (x,y) of the map tile containg the lever -->
 	<scene id="activeLever">
 	    <sound name="Switch"/>
 	    <tile pos="loc:arg0,loc:arg1" back2="128+256*10"/>
@@ -1577,5 +1581,19 @@
 	    <wait value="5"/>
 	    <tile pos="loc:arg0,loc:arg1" back2="127+256*10"/>
 	</scene>
+	
+	<persoAction id="bossDragon">
+	    <perso who="dragon" az="-1"/>
+	    <timer each="150">
+	        <action>
+			    <sound name="SerpentSpit"/>
+   	            <for var="loc:i" value="5">
+				    <throw who="self" pos="x, y-60" to="zildo.x,zildo.y" speed="1.8"
+					      		 	   type="FIRE_BALL" zoom="127" foreground="true"/>
+   				    <wait value="3"/>
+	            </for>
+   	        </action>
+   	    </timer>
+   	</persoAction>
 			    	
 </adventure>
