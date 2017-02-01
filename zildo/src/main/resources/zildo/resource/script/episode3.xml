@@ -301,7 +301,6 @@
 	    </trigger>
 	    <action>
 	        <take item="midsword"/>
-	        <putDown item="sword" />
 	    </action>
 	</quest>
 	
@@ -509,19 +508,27 @@
 				<tile pos="34,26" action="fireflies"/>
 				<tile pos="42,26" action="fireflies"/>
 				<tile pos="41,4" action="fireflies"/>
+				<!-- Hide notes, so player will only see fireflies -->
+				<visible who="arsinoe" value="false"/>
+	   			<visible who="archibald" value="false"/>
+	   			<visible who="crystallion" value="false"/>
+	   			<visible who="porphyre" value="false"/>
+	   			<visible who="neptune" value="false"/>
 			</if>
-			<!-- Hide notes, so player will only see fireflies -->
-			<visible who="arsinoe" value="false"/>
-   			<visible who="archibald" value="false"/>
-   			<visible who="crystallion" value="false"/>
-   			<visible who="porphyre" value="false"/>
-   			<visible who="neptune" value="false"/>
-   	   	</condition>
+			<if expQuest="!hero_princess">
+			    <remove who="arsinoe"/>
+			    <remove who="archibald"/>
+			    <remove who="crystallion"/>
+			    <remove who="porphyre"/>
+			    <remove who="neptune"/>
+   			</if>
+		</condition>
 	   	<condition name="sousbois6">
 	   		<tile pos="51,11" action="willOWist" unblock="true"/>
 	   	</condition>
 	   	<condition name="prison">
 	   	    <perso who="noir" pv="6"/>"
+	   	    <markQuest name="isKillGard1" value="false"/>
 	   	</condition>
 	   	<condition name="prison8">
 	   	    <perso who="noirg" pv="4"/>
@@ -634,6 +641,8 @@
 		<pos who="zildo" pos="655,89"/>
 		<moveTo who="zildo" pos="571,145" unstoppable="true"/>
 		<speak who="synthe" text="info.episode3"/>
+		<!-- Remove old sword -->
+		<putDown item="sword" />
 		<herospecial value="3"/>	<!-- Save game -->
 	</scene>
 	
