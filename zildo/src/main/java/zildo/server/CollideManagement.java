@@ -243,7 +243,8 @@ public class CollideManagement {
 	        				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamaging, zildo);
 	        				dmg *= 4;
 	        			}
-	        			if (zildo.getWeapon() != null && zildo.getWeapon().kind == ItemKind.MIDSWORD) {
+	        			// Check if collider is something else than current hero's weapon
+	        			if (p_collider.weapon == null && zildo.getWeapon() != null && zildo.getWeapon().kind == ItemKind.MIDSWORD) {
 	        				dmg += 1;
 	        			}
 	        		}
