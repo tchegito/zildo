@@ -423,7 +423,7 @@ public class PlayerManagement {
 					Perso persoToTalk=EngineZildo.persoManagement.collidePerso(locX, locY, heros, 4);
 					
 					if (heros.who.canTalk &&  persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY && !persoToTalk.isZildo()) {
-					 // Check that this perso can be picked up
+					 // Check that this perso can be picked up (hen, duck for example)
 						if (persoToTalk.getDesc().isTakable()) {
 							// Check that any obstacle isn't on the way
 							Point middle = Point.middle((int) heros.x, (int) heros.y, locX, locY);
