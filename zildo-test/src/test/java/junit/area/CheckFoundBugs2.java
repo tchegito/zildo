@@ -44,7 +44,7 @@ public class CheckFoundBugs2 extends EngineUT {
 	
 	@Test
 	public void borisAfterMetIgor() {
-		EngineZildo.scriptManagement.accomplishQuest("igorAsk", false);
+		EngineZildo.scriptManagement.accomplishQuest("igor_promise_sword", false);
 		checkInit();
 		// Talk again
 		simulatePressButton(Keys.Q, 2);

@@ -67,7 +67,7 @@ public class TestPersoFloor extends EngineUT {
 	public void testMoveCharacterHighFloor() {
 		mapUtils.loadMap("prison12");
 		waitEndOfScripting();
-		Perso perso = EngineZildo.persoManagement.getNamedPerso("noir");
+		Perso perso = EngineZildo.persoManagement.getNamedPerso("noir2");
 		// There's 2 characters named "noir" on this map : check we got expected one
 		Assert.assertTrue(perso.x > 251);
 		perso.setTarget(new Point(200, perso.y));
