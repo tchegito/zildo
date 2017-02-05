@@ -150,35 +150,8 @@ public class FilterCommand {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// When lights comes back
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void fadeIn(FilterEffect p_effect)
-	{
-		if (p_effect == FilterEffect.BLACKBLUR || activeFade == null) {
-			fadeEnd();
-			// Allow a fade in to be launched, even if fade out hasn't been done
-			fadeLevel = 255;
-		}
-		if (p_effect == activeFade) {	// Same fade ?
-			asked_FadeIn = false;
-			asked_FadeOut = false;
-		}
-		if (!isFadeOver()) {
-			// A fade is currently on => wait for it to finish
-			scheduled = p_effect;
-			wayScheduled = true;
-		} else {
-			scheduled = null;
-			asked_FadeIn  = true;
-			asked_FadeOut = false;
-			fadeStarted = true;
-			// Disable all filters
-			restoreFilters();	
-			// Even bilinear
-			active(BilinearFilter.class, false, null);
-			for (Class<? extends ScreenFilter> clazz : p_effect.getFilterClass()) {
-				active(clazz, true, p_effect);
-			}
-			activeFade = p_effect;
-		}
+	public void fadeIn(FilterEffect p_effect) {
+		fade(true, p_effect);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -186,12 +159,19 @@ public class FilterCommand {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// When lights goes out
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void fadeOut(FilterEffect p_effect)
-	{
+	public void fadeOut(FilterEffect p_effect) {
+		fade(false, p_effect);
+	}
+	
+	private void fade(boolean way, FilterEffect p_effect) {
 		if (p_effect == FilterEffect.BLACKBLUR || activeFade == null) {
 			fadeEnd();
 			// Allow a fade in to be launched, even if fade out hasn't been done
-			fadeLevel = 0;
+			if (!way) {
+				fadeLevel = 0;
+			} else {
+				fadeLevel = 255;
+			}
 		}
 		if (p_effect == activeFade) {	// Same fade ?
 			asked_FadeIn = false;
@@ -199,11 +179,11 @@ public class FilterCommand {
 		}
 		if (!isFadeOver()) {
 			scheduled = p_effect;
-			wayScheduled = false;
+			wayScheduled = way;
 		} else {
 			scheduled = null;
-			asked_FadeIn  = false;
-			asked_FadeOut = true;
+			asked_FadeIn  = way;
+			asked_FadeOut = !way;
 			fadeStarted = true;
 			active(BilinearFilter.class, false, null);
 			for (Class<? extends ScreenFilter> clazz : p_effect.getFilterClass()) {
