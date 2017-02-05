@@ -124,7 +124,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
                 	case CLIP:
 	                case FONT_PEOPLENAME:
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(5));
-						ClientEngineZildo.pixelShaders.setParameter(5, "curColor", new Vector4f(1f, 1f, 1f, 1f));
+						ClientEngineZildo.pixelShaders.setParameter(5, "curColor", ambient4f); //new Vector4f(1f, 1f, 1f, 1f));
 						break;
                 	case FIRE:
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(4));
