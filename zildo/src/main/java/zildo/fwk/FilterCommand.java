@@ -96,14 +96,14 @@ public class FilterCommand {
 		}
 	}
 
+	String previous = "";
+	
 	/**
 	 * Calculate fade level, and render active filters.
 	 */
 	public void doFilter() {
-		System.out.println(activeFade+" - "+fadeLevel + displayActive());
 		// Is a fade scheduled ?
 		if (scheduled != null) {
-			System.out.println(scheduled);
 			if (wayScheduled && fadeLevel >= 255) {
 				fadeLevel = 255;
 				fadeIn( scheduled);
@@ -165,7 +165,7 @@ public class FilterCommand {
 	}
 	
 	private void fade(boolean way, FilterEffect p_effect) {
-		if (p_effect == FilterEffect.BLACKBLUR || activeFade == null) {
+		if (p_effect.canBeForced()) {
 			fadeEnd();
 			// Allow a fade in to be launched, even if fade out hasn't been done
 			if (!way) {

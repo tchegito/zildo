@@ -112,4 +112,28 @@ public class TestFade extends EngineUT {
     			currentFadeLevel < instantFadeLevel);
 	}
 	
+	/** Players loads a game, goes into inventory, and leaves it before semifade is over. **/
+	@Test
+	public void noFlicker2() {
+		// Fade in like when player loads a game
+    	Assert.assertEquals(0, fc.getFadeLevel());
+    	EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_IN, FilterEffect.BLACKBLUR));
+    	renderFrames(22);
+    	zildo.lookInventory();
+    	renderFrames(5);
+    	// check that semifade hasn't been started => it should be scheduled
+    	Assert.assertEquals(FilterEffect.BLACKBLUR, fc.getActiveFade());
+    	Assert.assertTrue("fade should have started !", fc.getFadeLevel() > 0);
+    	renderFrames(numberFramesCompleteFade/4);
+    	int instantFadeLevel = fc.getFadeLevel();
+    	zildo.closeInventory();
+    	renderFrames(10);
+    	// We should stay in semifade, but on the other direction
+    	Assert.assertEquals(FilterEffect.BLACKBLUR, fc.getActiveFade());
+    	int currentFadeLevel = fc.getFadeLevel();
+    	Assert.assertTrue("fade level should have been decrease ! "+currentFadeLevel+" > "+instantFadeLevel, 
+    			currentFadeLevel < instantFadeLevel);
+    	renderFrames(numberFramesCompleteFade);
+    	System.out.println(fc.getFadeLevel());
+	}
 }

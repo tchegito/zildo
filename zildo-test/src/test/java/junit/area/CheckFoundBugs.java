@@ -97,7 +97,7 @@ public class CheckFoundBugs extends EngineUT {
 		Assert.assertFalse(zildo.isGhost());
 	}
 	
-	/** At a moment, we had a game freeze (opposition direction than previous one) **/
+	/** At a moment, we had a game freeze (opposite direction than previous one) **/
 	@Test
 	public void freezeChainingPoint2() {
 		mapUtils.loadMap("voleursm2u");

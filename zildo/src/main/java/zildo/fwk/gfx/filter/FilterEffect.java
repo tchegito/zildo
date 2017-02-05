@@ -57,4 +57,10 @@ public enum FilterEffect {
 	public static FilterEffect fromInt(int p_int) {
 		return values()[p_int];
 	}
+	
+	/** This filter effect can force fadelevel to be reset when launched.
+	 * For example, Blackblur when game is loaded, and beginning fade need this. But semifade absolutely doesn't ! **/
+	public boolean canBeForced() {
+		return (this == BLACKBLUR || this == FADE);
+	}
 }
