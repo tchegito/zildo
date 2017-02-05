@@ -129,6 +129,7 @@ public class FilterCommand {
 				} else {
 					fadeLevel=255;
 					fadeStarted=false;
+					activeFade = null;
 				}
 			}
 			if (asked_FadeIn) {
@@ -176,8 +177,9 @@ public class FilterCommand {
 		if (p_effect == activeFade) {	// Same fade ?
 			asked_FadeIn = false;
 			asked_FadeOut = false;
+			activeFade = null;
 		}
-		if (!isFadeOver()) {
+		if (activeFade != null) {
 			scheduled = p_effect;
 			wayScheduled = way;
 		} else {
@@ -210,10 +212,9 @@ public class FilterCommand {
 	// Returns TRUE wether fade operation is over
 	///////////////////////////////////////////////////////////////////////////////////////
 	public boolean isFadeOver() {
-		/*
 		if (!fadeStarted) {
 			return false;
-		} */
+		}
 		if (asked_FadeIn) {
 			return fadeLevel < 0;
 		} else if (asked_FadeOut) {
