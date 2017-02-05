@@ -35,6 +35,7 @@ import zildo.client.PlatformDependentPlugin;
 import zildo.client.SpriteDisplay;
 import zildo.client.gui.menu.CompassMenu;
 import zildo.client.gui.menu.HallOfFameMenu;
+import zildo.client.gui.menu.StartMenu;
 import zildo.client.sound.BankSound;
 import zildo.client.stage.CreditStage;
 import zildo.client.stage.MenuStage;
@@ -78,19 +79,39 @@ import zildo.server.state.PlayerState;
 
 public class GUIDisplay {
 
+	/** There's different rendering on menus: for example, opening menu is subject to fade.
+	 * Other ones don't, because ingame menus should always been highlighted, even if there's a nightfilter, or player is inventoring,
+	 * causing a semifade.
+	 */
 	public enum DialogMode {
-		CLASSIC, MENU, CREDITS, HALLOFFAME, INFO, BUY, ADVENTURE_MENU, TEXTER;
+		CLASSIC, OPENING_MENU, MENU, CREDITS, HALLOFFAME, INFO, BUY, ADVENTURE_MENU, TEXTER;
 		
 		public boolean isScript() {
 			return true; //this == CLASSIC || this == CREDITS;
 		}
 		
 		public boolean isBig() {
-			return this == MENU || this == INFO || this == BUY;
+			switch (this) {
+			case MENU:
+			case INFO:
+			case BUY:
+			case OPENING_MENU:
+				return true;
+			default:
+				return false;
+			}
 		}
 		
 		public boolean isMenu() {
-			return this == MENU || this == HALLOFFAME || this == ADVENTURE_MENU;
+			switch (this) {
+			case MENU:
+			case HALLOFFAME:
+			case ADVENTURE_MENU:
+			case OPENING_MENU:
+				return true;
+			default:
+				return false;
+			}
 		}
 	}
 	
@@ -388,6 +409,8 @@ public class GUIDisplay {
 			visibleFont = true;
 			center = true;
 			break;
+		case OPENING_MENU:
+			fx = EngineFX.NO_EFFECT;
 		case MENU:
 		case HALLOFFAME:
 			seq = textMenuSequence;
@@ -784,6 +807,8 @@ public class GUIDisplay {
 				setToDisplay_dialogMode(DialogMode.HALLOFFAME);
 			} else if (p_menu instanceof CompassMenu) {
 				setToDisplay_dialogMode(DialogMode.ADVENTURE_MENU);
+			} else if (p_menu instanceof StartMenu) {
+				setToDisplay_dialogMode(DialogMode.OPENING_MENU);
 			} else {
 				setToDisplay_dialogMode(DialogMode.MENU);
 			}

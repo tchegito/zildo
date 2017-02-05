@@ -25,6 +25,7 @@ import java.util.List;
 
 import zildo.Zildo;
 import zildo.fwk.gfx.filter.BilinearFilter;
+import zildo.fwk.gfx.filter.BlackBlurFilter;
 import zildo.fwk.gfx.filter.BlendFilter;
 import zildo.fwk.gfx.filter.BlurFilter;
 import zildo.fwk.gfx.filter.CircleFilter;
@@ -35,7 +36,6 @@ import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.FitToScreenFilter;
 import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
-import zildo.fwk.gfx.filter.BlackBlurFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
 import zildo.resource.Constantes;
 
@@ -58,12 +58,18 @@ public class FilterCommand {
 	protected boolean asked_FadeOut;
 	private boolean fadeStarted;
 	
+	FilterEffect activeFade;
+
+	FilterEffect scheduled;
+	boolean wayScheduled;	// TRUE=in / FALSE=out
+	
 	public FilterCommand() {
 		filters=new ArrayList<ScreenFilter>();
 
 		fadeLevel=0;
 		asked_FadeIn = false;
 		asked_FadeOut =false;
+		activeFade = null;
 	}
 	
     private void addFilter(ScreenFilter filter) {
@@ -94,7 +100,20 @@ public class FilterCommand {
 	 * Calculate fade level, and render active filters.
 	 */
 	public void doFilter() {
-		//System.out.println(displayActive());
+		System.out.println(activeFade+" - "+fadeLevel + displayActive());
+		// Is a fade scheduled ?
+		if (scheduled != null) {
+			System.out.println(scheduled);
+			if (wayScheduled && fadeLevel >= 255) {
+				fadeLevel = 255;
+				fadeIn( scheduled);
+			} else if (!wayScheduled && fadeLevel <= 0) {
+				fadeLevel = 0;
+				fadeEnd();
+				fadeOut(scheduled);
+			}
+		}
+		
 		boolean progressFadeLevel=true;
 		for (ScreenFilter filter : filters) {
 			if (filter.isActive()) {
@@ -131,21 +150,34 @@ public class FilterCommand {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// When lights comes back
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void fadeIn(FilterEffect... p_effects)
+	public void fadeIn(FilterEffect p_effect)
 	{
-		// Allow a fade in to be launched, even if fade out hasn't been done
-		fadeLevel = 255;
-		asked_FadeIn  = true;
-		asked_FadeOut = false;
-		fadeStarted = true;
-		// Disable all filters
-		restoreFilters();	
-		// Even bilinear
-		active(BilinearFilter.class, false, null);
-		for (FilterEffect effect : p_effects) {
-			for (Class<? extends ScreenFilter> clazz : effect.getFilterClass()) {
-				active(clazz, true, effect);
+		if (p_effect == FilterEffect.BLACKBLUR || activeFade == null) {
+			fadeEnd();
+			// Allow a fade in to be launched, even if fade out hasn't been done
+			fadeLevel = 255;
+		}
+		if (p_effect == activeFade) {	// Same fade ?
+			asked_FadeIn = false;
+			asked_FadeOut = false;
+		}
+		if (!isFadeOver()) {
+			// A fade is currently on => wait for it to finish
+			scheduled = p_effect;
+			wayScheduled = true;
+		} else {
+			scheduled = null;
+			asked_FadeIn  = true;
+			asked_FadeOut = false;
+			fadeStarted = true;
+			// Disable all filters
+			restoreFilters();	
+			// Even bilinear
+			active(BilinearFilter.class, false, null);
+			for (Class<? extends ScreenFilter> clazz : p_effect.getFilterClass()) {
+				active(clazz, true, p_effect);
 			}
+			activeFade = p_effect;
 		}
 	}
 	
@@ -154,17 +186,30 @@ public class FilterCommand {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// When lights goes out
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void fadeOut(FilterEffect... p_effects)
+	public void fadeOut(FilterEffect p_effect)
 	{
-		asked_FadeIn  = false;
-		asked_FadeOut = true;
-		fadeStarted = true;
-		fadeLevel = 0;
-		active(BilinearFilter.class, false, null);
-		for (FilterEffect effect : p_effects) {
-			for (Class<? extends ScreenFilter> clazz : effect.getFilterClass()) {
-				active(clazz, true, effect);
+		if (p_effect == FilterEffect.BLACKBLUR || activeFade == null) {
+			fadeEnd();
+			// Allow a fade in to be launched, even if fade out hasn't been done
+			fadeLevel = 0;
+		}
+		if (p_effect == activeFade) {	// Same fade ?
+			asked_FadeIn = false;
+			asked_FadeOut = false;
+		}
+		if (!isFadeOver()) {
+			scheduled = p_effect;
+			wayScheduled = false;
+		} else {
+			scheduled = null;
+			asked_FadeIn  = false;
+			asked_FadeOut = true;
+			fadeStarted = true;
+			active(BilinearFilter.class, false, null);
+			for (Class<? extends ScreenFilter> clazz : p_effect.getFilterClass()) {
+				active(clazz, true, p_effect);
 			}
+			activeFade = p_effect;
 		}
 	}
 	
@@ -182,19 +227,19 @@ public class FilterCommand {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// isFadeOver
 	///////////////////////////////////////////////////////////////////////////////////////
-	// Returns TRUE wether fade operation is over, and set the 'ask' boolean to FALSE when
-	// it's done.
+	// Returns TRUE wether fade operation is over
 	///////////////////////////////////////////////////////////////////////////////////////
 	public boolean isFadeOver() {
+		/*
 		if (!fadeStarted) {
 			return false;
+		} */
+		if (asked_FadeIn) {
+			return fadeLevel < 0;
+		} else if (asked_FadeOut) {
+			return fadeLevel == 255;
 		}
-		if (asked_FadeIn && fadeLevel < 0) {
-			return true;
-		} else if (asked_FadeOut && fadeLevel == 255) {
-			return true;
-		}
-		return false;
+		return true;
 	}
 
 	public boolean isFading() {
@@ -203,6 +248,10 @@ public class FilterCommand {
 	
 	public int getFadeLevel() {
 		return fadeLevel;
+	}
+	
+	public FilterEffect getActiveFade() {
+		return activeFade;
 	}
 	
 	/**
@@ -240,6 +289,7 @@ public class FilterCommand {
 			}
 		}
 		active(BilinearFilter.class, true, null);
+		activeFade = null;
 	}
 	
 	public void cleanUp() {

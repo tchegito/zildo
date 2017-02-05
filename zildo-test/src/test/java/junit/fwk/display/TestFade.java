@@ -49,9 +49,10 @@ public class TestFade extends EngineUT {
     	renderFrames(numberFramesCompleteFade);
     	Assert.assertEquals(0, fc.getFadeLevel());
 	}
-	
+
+	/** Test: player loads a game, and he press Inventory key before Blackblur filter was over. **/
 	@Test
-	public void differentFadesTogether() {
+	public void differentFadesOutTogether() {
 		// Fade in like when player loads a game
     	EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_IN, FilterEffect.BLACKBLUR));
     	// Wait in the middle of the fade
@@ -62,9 +63,53 @@ public class TestFade extends EngineUT {
     	Assert.assertNotEquals(255, fc.getFadeLevel());
     	// Then ask for another one
     	zildo.lookInventory();
-    	System.out.println(fc.displayActive());
+    	Assert.assertEquals(FilterEffect.BLACKBLUR, fc.getActiveFade());
+    	// Inventory requests for SEMIFADE filter, but it should be delayed when BLACKBLUR is finished
 		renderFrames(2);
-    	System.out.println(fc.displayActive());
+    	Assert.assertEquals(FilterEffect.BLACKBLUR, fc.getActiveFade());
+    	int i = numberFramesCompleteFade;
+    	boolean done = false;
+    	while (i>0) {
+    		renderFrames(1);
+    		done = fc.getActiveFade() == FilterEffect.SEMIFADE;
+    		if (done) break;
+    		i--;
+    	}
+    	Assert.assertTrue("Semifade should have started !", done);
+    	System.out.println(fc.getActiveFade());
+	}
+	
+	/** Player loads a game before opening game's fade isn't over yet.
+	 * Test a FADE in and a BLACKBLUR in **/
+	@Test
+	public void differentWayFade() {
+		Assert.assertEquals(0, fc.getFadeLevel());
+    	EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_IN, FilterEffect.FADE));
+    	renderFrames(numberFramesCompleteFade/2);
+    	Assert.assertEquals(FilterEffect.FADE, fc.getActiveFade());
+    	EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_IN, FilterEffect.BLACKBLUR));
+    	renderFrames(2);
+    	// BlackBlur should have priority on other ones
+    	Assert.assertEquals(FilterEffect.BLACKBLUR, fc.getActiveFade());
+	}
+	
+	/** Players goes into inventory, and leaves it before semifade is over. **/
+	@Test
+	public void noFlicker() {
+    	Assert.assertEquals(0, fc.getFadeLevel());
+    	zildo.lookInventory();
+    	renderFrames(2);
+    	Assert.assertEquals(FilterEffect.SEMIFADE, fc.getActiveFade());
+    	Assert.assertTrue("fade should have started !", fc.getFadeLevel() > 0);
+    	renderFrames(numberFramesCompleteFade/4);
+    	int instantFadeLevel = fc.getFadeLevel();
+    	zildo.closeInventory();
+    	renderFrames(4);
+    	// We should stay in semifade, but on the other direction
+    	Assert.assertEquals(FilterEffect.SEMIFADE, fc.getActiveFade());
+    	int currentFadeLevel = fc.getFadeLevel();
+    	Assert.assertTrue("fade level should have been decrease ! "+currentFadeLevel+" > "+instantFadeLevel, 
+    			currentFadeLevel < instantFadeLevel);
 	}
 	
 }
