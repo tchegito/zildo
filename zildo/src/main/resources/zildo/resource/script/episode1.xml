@@ -375,7 +375,6 @@
 		</history>
 	</quest>
 	
-	<!-- 
 	<quest name="promenade_block" repeat="true">
 	    <trigger>
 	        <location name="promenade" pos="70,40" radius="1"/>
@@ -386,7 +385,7 @@
 	        <moveTo who="zildo" pos="0,32" delta="true"/>
 	    </action>
 	</quest>
-	-->
+
 	<quest name="trig_echange">
 		<trigger>
 			<location name="promenade2" pos="492,251" radius="4"/>

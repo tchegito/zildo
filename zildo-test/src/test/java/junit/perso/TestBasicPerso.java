@@ -20,11 +20,13 @@
 package junit.perso;
 
 import org.junit.Assert;
-
 import org.junit.Test;
 
 import tools.EngineUT;
+import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 
 /**
@@ -56,6 +58,38 @@ public class TestBasicPerso extends EngineUT {
 		Assert.assertFalse(hero.isFacing(willOWist));
 		hero.setAngle(Angle.SUD);
 		Assert.assertTrue(hero.isFacing(willOWist));
+		
+	}
+	
+	// Check that hero can't have more than 999 gold coins
+	@Test
+	public void maxMoney() {
+		PersoPlayer hero = spawnZildo(160, 100);
+		hero.setMoney(990);
+		ElementGoodies money = new ElementGoodies();
+		money.setDesc(ElementDescription.GOLDPURSE1);
+		// Take 5 gold (=>995)
+		hero.pickGoodies(money, 5);
+		renderFrames(2);
+		Assert.assertEquals(995, hero.getMoney());
+		// Again (=>999)
+		hero.pickGoodies(money, 5);
+		renderFrames(2);
+		Assert.assertEquals(999, hero.getMoney());
+		// Again (still)
+		hero.pickGoodies(money, 5);
+		renderFrames(2);
+		Assert.assertEquals(999, hero.getMoney());
+	}
+	
+	@Test
+	public void stealMoney() {
+		PersoPlayer hero = spawnZildo(160, 100);
+		hero.setMoney(400);
+		hero.pickGoodies(null, -999);
+		renderFrames(2);
+		Assert.assertEquals(0, hero.getMoney());
+		
 		
 	}
 }

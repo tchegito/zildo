@@ -304,6 +304,13 @@
 	    </action>
 	</quest>
 	
+	<quest name="meetEleo" locked="false">
+	    <trigger>
+	        <location name="eleom1"/>
+	        <dialog name="eleoric" num="0"/>
+	    </trigger>
+	</quest>
+	
 	<quest name="eleoSpeak" locked="false">
 	    <trigger>
 	        <location name="eleom1"/>
