@@ -571,6 +571,7 @@ public class Element extends SpriteEntity {
 		case SEWER_SMOKE1: case SEWER_SMOKE2:
 		case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:
 		case FIREWIND1: case FIREWIND2: case FIREWIND3:
+		case NOTE: case NOTE2:
 			return true;
 		}
 		
