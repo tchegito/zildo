@@ -247,6 +247,12 @@ public class CollideManagement {
 	        			if (p_collider.weapon == null && zildo.getWeapon() != null && zildo.getWeapon().kind == ItemKind.MIDSWORD) {
 	        				dmg += 1;
 	        			}
+	        			// If collider is damageable (thrown pots for example), break it
+		        		if (p_collider.weapon != null && p_collider.weapon.getDesc().isDamageable()) {
+		        			if (p_collider.weapon.fall()) {
+		        				p_collider.weapon.die();
+		        			}
+		        		}
 	        		}
 	        		perso.beingWounded(p_collider.cx, p_collider.cy, p_collider.perso, dmg);
         		}

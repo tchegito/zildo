@@ -30,7 +30,7 @@ public enum DamageType {
 	// Interesting to have another scale of damage depending on the weapon. We could add or multiply such damages scores.
 	
 	HARMLESS,	// Useful for peebles
-	BLUNT, // Boomerang
+	BLUNT, // Thrown object (pots, boomerang, ...)
 	PEEBLE, // From peeble
 	PIERCING, // Arrow
 	CUTTING, // Sword
