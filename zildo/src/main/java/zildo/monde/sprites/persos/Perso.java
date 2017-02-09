@@ -319,7 +319,7 @@ public abstract class Perso extends Element {
 	}
 
 	public void setMoney(int money) {
-		this.money = Math.max(0, money);
+		this.money = Math.min(999, Math.max(0, money));
 	}
 
 	public String getDialogSwitch() {
