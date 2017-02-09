@@ -88,4 +88,18 @@ public class TestSquirrelMove extends EngineUT {
 
 		Assert.assertEquals(0, (int) squirrel.z);
 	}
+	
+	/** Check that squirrel can jump on get back on the same floor (B17 from Ruben's list) **/
+	@Test
+	public void jumpOnBridge() {
+		init("sousbois7", 751, 266);
+		squirrel.floor = 1;
+		
+		squirrel.jump();
+		renderFrames(1);
+		while (squirrel.z > 0) {
+			renderFrames(1);
+		}
+		Assert.assertEquals(1,  squirrel.floor);
+	}
 }

@@ -1149,9 +1149,15 @@ public abstract class Perso extends Element {
 
 	public void landOnGround() {
 		fall();
-		if (floor > 0 &&	// Check if a lower floor exists
-			EngineZildo.mapManagement.getCurrentMap().readmap((int) x / 16, (int) y / 16, false, floor-1) != null ) {
-			//setFloor(floor-1);
+		if (floor > 0) {	// Check if a lower floor exists (and current one doesn't anymore)
+			Area map = EngineZildo.mapManagement.getCurrentMap();
+			int xx = (int) x / 16;
+			int yy = (int) y / 16;
+			if (map.readmap(xx, yy, false, floor-1) != null ) {
+				if (map.readmap(xx, yy, false, floor) == null) {
+					setFloor(floor-1);
+				}
+			}
 		}
 	}
 	
