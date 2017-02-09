@@ -19,17 +19,24 @@
 
 package junit.area;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.ia.mover.PhysicMoveOrder;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
+import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
 /**
@@ -52,7 +59,8 @@ public class CheckLargeObjectCollision extends EngineUT{
 				ElementDescription.WATER_LEAF,
 				x, y,
 				false, Reverse.NOTHING, false); // 113,259
-
+		waterLily.setName("leaf");
+		
 		zildo = spawnZildo(x, y);
 		zildo.walkTile(false);
 		
@@ -106,4 +114,80 @@ public class CheckLargeObjectCollision extends EngineUT{
 		runAndCheck();
 	}
 	// 15,232
+	
+	@Test //@InfoPersos
+	public void testAttackingOnLeaf() {
+		Map<Integer, Angle> swingSword = new HashMap<>();
+		//swingSword.put(166, Angle.SUD);
+		swingSword.put(474, Angle.EST);
+		swingSword.put(496, Angle.EST);
+		swingSword.put(508, Angle.EST);
+		swingSword.put(519, Angle.EST);
+		swingSword.put(534, Angle.EST);
+		swingSword.put(546, Angle.EST);
+		swingSword.put(557, Angle.EST);
+		swingSword.put(569, Angle.EST);
+		swingSword.put(581, Angle.EST);
+		swingSword.put(593, Angle.EST);
+		swingSword.put(605, Angle.EST);
+		swingSword.put(616, Angle.EST);
+		swingSword.put(628, Angle.EST);
+		swingSword.put(641, Angle.EST);
+		swingSword.put(653, Angle.EST);
+		swingSword.put(664, Angle.EST);
+		swingSword.put(688, Angle.SUD);
+		swingSword.put(720, Angle.EST);
+		swingSword.put(731, Angle.EST);
+		swingSword.put(746, Angle.EST);
+		swingSword.put(758, Angle.EST);
+		swingSword.put(768, Angle.EST);
+
+		mapUtils.loadMap("igorvillage");
+		EngineZildo.persoManagement.clearPersos(true);
+		
+		zildo = spawnZildo(420, 340);
+		waitEndOfScripting();
+		EngineZildo.scriptManagement.accomplishQuest("summonLeafVillage", true);
+		renderFrames(1);
+		while (EngineZildo.scriptManagement.isQuestProcessing("summonLeafVillage")) {
+			renderFrames(1);
+		}
+		//init(424, 373);
+		
+		waterLily = EngineZildo.spriteManagement.getNamedEntity("leaf");
+		Assert.assertNotNull(waterLily);
+		zildo.setPos(new Vector2f(428.78207, 354.8249));
+		zildo.walkTile(false);
+		Assert.assertTrue(zildo.isOnPlatform());
+		zildo.setWeapon(new Item(ItemKind.SWORD));
+		// 428.78207, 354.8249
+		// 402.94287, 365.159
+		// 365.06693, 380.09702
+		// 336.0619, 386.22623
+		/*
+		253.86432, 394.37418
+		295.67825, 391.41193
+		211.97682, 395.99316
+		172.51932, 394.28925
+		148.21982, 383.89236
+		116.04435, 366.01883
+		98.565636, 334.6214 au lieu de 333.87143 dans ce Test
+		93.50435, 284.65945
+		59.647255, 256.21683
+		21.716417, 241.4188
+		*/
+		for (int i=474;i<800;i++) {
+			//System.out.println(waterLily.x+","+waterLily.y);
+			renderFrames(1);
+			Angle a = swingSword.get(i);
+			if (a != null) {
+				zildo.setAngle(a);
+				//simulateKeyPressed(KeysConfiguration.PLAYERKEY_ATTACK.code);
+				zildo.attack();
+			}
+		}
+		
+		System.out.println(zildo.getAngle());
+		Assert.assertEquals("igorlily", EngineZildo.mapManagement.getCurrentMap().getName());
+	}
 }
