@@ -539,7 +539,7 @@ public class PlayerManagement {
 			// Y KEY is used to attack (use selected item from inventory)
 			if (gamePhase == GamePhase.DIALOG || gamePhase == GamePhase.SCRIPT) {
 				EngineZildo.dialogManagement.goOnDialog(client);
-			} else if (heros.who.canFreeJump && heros.getMouvement() != MouvementZildo.TOMBE) {
+			} else if (heros.who.canFreeJump && heros.getMouvement() != MouvementZildo.TOMBE && heros.getMouvement() != MouvementZildo.SAUTE) {
 				// Controlled character can jump with Y KEY
 				heros.jump();
 			} else if (gamePhase.moves && heros.getEn_bras() == null && !client.dialogState.isDialoguing() && !heros.isInventoring()) {

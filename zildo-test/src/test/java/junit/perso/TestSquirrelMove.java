@@ -9,6 +9,7 @@ import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Vector2f;
 import zildo.resource.Constantes;
+import zildo.resource.KeysConfiguration;
 
 public class TestSquirrelMove extends EngineUT {
 
@@ -101,5 +102,19 @@ public class TestSquirrelMove extends EngineUT {
 			renderFrames(1);
 		}
 		Assert.assertEquals(1,  squirrel.floor);
+	}
+
+	/** Player could be "jumped" because of a ledge, and would still be able to jump on its own. No way ! Ruben's list B26 **/
+	@Test
+	public void doubleJump() {
+		init("sousbois7", 682, 110);
+		simulateDirection(0, 1);
+		renderFrames(50);
+		// Make sure squirrel is jumping
+		Assert.assertEquals(MouvementZildo.SAUTE, squirrel.getMouvement());
+		simulateDirection(0, 0);
+		simulateKeyPressed(KeysConfiguration.PLAYERKEY_ATTACK.code);
+		renderFrames(5);
+		Assert.assertEquals(MouvementZildo.SAUTE, squirrel.getMouvement());
 	}
 }
