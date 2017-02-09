@@ -271,7 +271,7 @@
         </action>
     </quest>
 
-    <quest name="cheapDynamite">
+    <quest name="cheapDynamite" locked="false">
         <trigger>
             <location name="igorv4"/>
             <dialog name="boris" num="3"/>
