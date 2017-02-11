@@ -108,12 +108,7 @@ public class TilePrimitive extends QuadPrimitive {
     	addSprite(x, y, xTex, yTex, sizeX, sizeY, rotation, 255, false);
     	
         // Get the highest indices
-        if (nIndices-6 < startCamera || startCamera == -1) {
-        	startCamera = nIndices-6;
-        }
-    	if (nIndices > endCamera) {
-    		endCamera = nIndices;
-    	}
+        adjustCamera();
     }
 
 
@@ -185,6 +180,11 @@ public class TilePrimitive extends QuadPrimitive {
 				// Notify that it is no longer displayed
 				displayed.set(i, -1);
 				setIndexBuffer(gridX, gridY, -1);
+
+				// Really remove the tile concerning vertices/textures informations (Ruben bug B1)
+				bufs.vertices.position(index*2);
+				bufs.textures.position(index*2);
+				addSprite(0, -32, 0, 0, 16, 16, Rotation.NOTHING, 255, false);
     		}
     	}
     	freeIndex.rewind();
@@ -249,12 +249,16 @@ public class TilePrimitive extends QuadPrimitive {
         nIndices += 6;
 
         // Get the highest indices
-        if ((nIndices-6) < startCamera || startCamera == -1) {
-        	startCamera = nIndices-6;
-        }
-    	if (nIndices > endCamera) {
-    		endCamera = nIndices;
-    	}
+        adjustCamera();
+    }
+
+    private void adjustCamera() {
+	    if ((nIndices-6) < startCamera || startCamera == -1) {
+	    	startCamera = nIndices - 6;
+	    }
+		if (nIndices > endCamera) {
+			endCamera = nIndices;
+		}
     }
     
     /**
@@ -262,7 +266,6 @@ public class TilePrimitive extends QuadPrimitive {
      */
     @Override
 	public void render() {
-
         // Indices buffer contains indices for 4096 tiles. We have to limit it to the real number of used tiles.
         vbo.draw(bufs, startCamera, endCamera-startCamera);
     }
