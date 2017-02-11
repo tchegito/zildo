@@ -213,7 +213,6 @@ public class EngineUT {
 	}
 	
 	private void updateGame() {
-		engine.renderEvent(clientState.event);
 		clientState.event = engine.renderEvent(clientState.event);
 		clientState.event = clientEngine.renderEvent(clientState.event);
     	EngineZildo.dialogManagement.resetQueue();

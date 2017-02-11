@@ -371,7 +371,7 @@ public class ScriptManagement {
 	    	TriggerElement trig=TriggerElement.createQuestDoneTrigger(p_quest.name);
 	    	trigger(trig);
 			// Execute the corresponding actions
-			execute(p_quest.getActions(), true, p_quest, false, new SceneContext(), true);
+			execute(p_quest.getActions(), p_quest.locked, p_quest, false, new SceneContext(), true);
     	}
 
     	// 2) note the history events (mapReplace ...)

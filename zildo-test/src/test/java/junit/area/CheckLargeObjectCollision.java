@@ -113,12 +113,13 @@ public class CheckLargeObjectCollision extends EngineUT{
 
 		runAndCheck();
 	}
-	// 15,232
 	
-	@Test //@InfoPersos
+	/** Check that hero can scroll map when he's on the leaf, attacking with the sword. (Ruben's list: B9) **/
+	@Test
 	public void testAttackingOnLeaf() {
+		// To reproduce this, we used a "recorded" sequence of sword swinging at precise time, in certain angles
+		// The cause of the bug was an "askedEvent" send with finalEvent. We disabled it when scene has "locked='false'" attribute
 		Map<Integer, Angle> swingSword = new HashMap<>();
-		//swingSword.put(166, Angle.SUD);
 		swingSword.put(474, Angle.EST);
 		swingSword.put(496, Angle.EST);
 		swingSword.put(508, Angle.EST);
@@ -152,7 +153,6 @@ public class CheckLargeObjectCollision extends EngineUT{
 		while (EngineZildo.scriptManagement.isQuestProcessing("summonLeafVillage")) {
 			renderFrames(1);
 		}
-		//init(424, 373);
 		
 		waterLily = EngineZildo.spriteManagement.getNamedEntity("leaf");
 		Assert.assertNotNull(waterLily);
@@ -160,34 +160,26 @@ public class CheckLargeObjectCollision extends EngineUT{
 		zildo.walkTile(false);
 		Assert.assertTrue(zildo.isOnPlatform());
 		zildo.setWeapon(new Item(ItemKind.SWORD));
-		// 428.78207, 354.8249
-		// 402.94287, 365.159
-		// 365.06693, 380.09702
-		// 336.0619, 386.22623
-		/*
-		253.86432, 394.37418
-		295.67825, 391.41193
-		211.97682, 395.99316
-		172.51932, 394.28925
-		148.21982, 383.89236
-		116.04435, 366.01883
-		98.565636, 334.6214 au lieu de 333.87143 dans ce Test
-		93.50435, 284.65945
-		59.647255, 256.21683
-		21.716417, 241.4188
-		*/
+
+		String currentMapName = EngineZildo.mapManagement.getCurrentMap().getName();
+		int nbChangeMaps = 0;
 		for (int i=474;i<800;i++) {
-			//System.out.println(waterLily.x+","+waterLily.y);
 			renderFrames(1);
 			Angle a = swingSword.get(i);
 			if (a != null) {
 				zildo.setAngle(a);
-				//simulateKeyPressed(KeysConfiguration.PLAYERKEY_ATTACK.code);
 				zildo.attack();
+			}
+
+			// Detect if map has changed
+			String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
+			if (!mapName.equals(currentMapName)) {
+				currentMapName = mapName;
+				nbChangeMaps++;
 			}
 		}
 		
-		System.out.println(zildo.getAngle());
+		Assert.assertEquals(1, nbChangeMaps);
 		Assert.assertEquals("igorlily", EngineZildo.mapManagement.getCurrentMap().getName());
 	}
 }
