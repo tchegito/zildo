@@ -98,6 +98,8 @@ public class ZildoMouseKeyListener implements MouseListener,
 			canvas.endCopy();
 			break;
 		}
+		Point p = getPosition(mouseevent);
+		displayCaseInfo(p);
 	}
 
 	@Override
@@ -190,16 +192,11 @@ public class ZildoMouseKeyListener implements MouseListener,
 		message.append("    y: ");
 		message.append(p.y);
 
-		MasterFrameManager.display(message.toString(),
-				MasterFrameManager.MESSAGE_INFO);
+		MasterFrameManager.display(message.toString(), MasterFrameManager.MESSAGE_INFO);
 
 		// Display case info
-		Case c = canvas.makeAreaWrapper().get_mapcase(p.x/16, p.y/16);
-		message.setLength(0);
-		if (c != null) {
-			caseToString(message, c);
-		}
-		MasterFrameManager.displayCaseInfo(message.toString());
+		displayCaseInfo(p);
+		
 		if (focusOnCursor) {
 			canvas.setObjectOnCursor(p);
 		}
@@ -210,6 +207,15 @@ public class ZildoMouseKeyListener implements MouseListener,
 
 		// In order to user can press keys when mouse is under the canvas
 		canvas.requestFocusInWindow();
+	}
+
+	private void displayCaseInfo(Point p) {
+		Case c = canvas.makeAreaWrapper().get_mapcase(p.x/16, p.y/16);
+		StringBuilder message = new StringBuilder();
+		if (c != null) {
+			caseToString(message, c);
+		}
+		MasterFrameManager.displayCaseInfo(message.toString());
 	}
 
 	@Override
