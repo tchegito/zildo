@@ -113,6 +113,17 @@
 	    </action>
 	</quest>
 	
+	<quest name="sousbois2_blueRain" locked="false">
+	    <trigger>
+	        <location name="sousbois2" tilePos="20,6"/>
+	    </trigger>
+	    <action>
+	        <take item="BLUEDROP"/>
+	        <wait value="50"/>
+	        <markQuest name="sousbois2_blueRain" value="false"/>
+	    </action>
+	</quest>
+	
 	<quest name="killGard1" locked="false">
 	    <trigger>
 	        <location name="prison8"/>
@@ -499,6 +510,9 @@
 	</quest>
 		
 	<mapScript>
+	    <condition name="sousbois2">
+	        <tile pos="21,6" action="blueRain" unblock="true"/>
+	    </condition>
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
 		</condition>

@@ -1014,7 +1014,7 @@ public class SpriteManagement extends SpriteStore {
     }
     
 	/**
-	 * Return the first discoverd character inside a circular zone around a given character.
+	 * Return the first discovered character inside a circular zone around a given character.
 	 * @param p_looker Looking character
 	 * @param radius radius of the circular zone
 	 * @return Perso

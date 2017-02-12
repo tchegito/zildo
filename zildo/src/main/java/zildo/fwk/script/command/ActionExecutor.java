@@ -69,6 +69,7 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.CustomizableElementChained;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementGear;
+import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
@@ -345,7 +346,15 @@ public class ActionExecutor extends RuntimeExecutor {
                 		if (p_action.val != 0) {
                 			zildo.pickGoodies(null, p_action.val);
                 		} else {
-                			zildo.pickItem(ItemKind.fromString(text), null);
+                			ItemKind kind = ItemKind.fromString(text);
+                			if (kind.canBeInInventory()) {	// Item ?
+                				zildo.pickItem(kind, null);
+                			} else {	// or goodies ?
+                				ElementDescription desc = (ElementDescription) kind.representation;
+                				// If this provokes a ClassCastException, that means that XML script is wrong !
+                				ElementGoodies elem = (ElementGoodies) desc.createElement();
+                				zildo.pickGoodies(elem, 0);
+                			}
                 		}
                 	} else if (perso != null) {
                 		// This is somebody else

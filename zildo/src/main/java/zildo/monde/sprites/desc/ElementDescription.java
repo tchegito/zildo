@@ -205,15 +205,19 @@ public enum ElementDescription implements SpriteDescription {
 	}
 
 	public Element createElement() {
+		Element elem = null;
 		switch (this) {
 		case DROP_FLOOR:
 		case BOMBS3:
 		case ARROW_UP:
 		case HEART_FRAGMENT:
-			return new ElementGoodies();
+			elem =  new ElementGoodies();
+			break;
 		default:
-			return new Element();
+			elem =new Element();
 		}
+		elem.setDesc(this);
+		return elem;
 	}
 
 	public boolean isShadow() {
