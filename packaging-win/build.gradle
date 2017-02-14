@@ -1,0 +1,66 @@
+apply plugin:'distribution'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    nativeLibs
+	zildoJars
+}
+dependencies {
+    nativeLibs "org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-windows"
+	zildoJars project(":zildo"),project(":zildo-platform-lwjgl")
+}
+
+// Extract LWJGL natives jar into lib folder
+task copyLwjglNatives(type:Sync) {
+    dependsOn configurations.nativeLibs
+    from configurations.nativeLibs.collect {
+        zipTree(it)
+    }
+    into "$buildDir/lwjgl"
+}
+
+task copyZildoJars(type:Copy) {
+	from configurations.zildoJars
+	rename {
+		// Strip artifact's versions
+		it.replaceAll("-([0-9]+\\.)+", ".")
+	}
+	into "$buildDir/lib"
+}
+
+task copyData(type:Copy) {
+	String path = System.getProperty("ZILDO_DATA")
+	if (path == null)
+			throw new GradleException("ZILDO_DATA should be defined !")
+	from path
+	into "$buildDir/Data"
+}
+
+distributions {
+    main {
+        baseName="Alembrume"
+        contents {
+            into('lwjgl') {
+                from copyLwjglNatives
+            }
+			into('lib') {
+				from copyZildoJars
+			}
+			into('Data') {
+				from copyData
+			}
+            // Default copy src/main/dist into the distribution
+        }
+    }
+}
+
+
+build {
+    dependsOn copyLwjglNatives
+    dependsOn copyData
+	dependsOn copyZildoJars
+    dependsOn distZip
+}

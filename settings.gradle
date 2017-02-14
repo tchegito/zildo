@@ -16,5 +16,6 @@ include 'zildo-android-gles2'
 include 'zildo-platform-lwjgl'
 include 'zildo-platform-android-gles2'
 include 'zeditor'
+include "packaging-win"
 
 rootProject.name = 'alembrume'
