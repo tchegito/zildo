@@ -40,7 +40,7 @@ public class ActionElement extends LanguageElement {
 	public boolean unstoppable = false; // TRUE=no collision for this movement
 										// (for 'moveTo')
 	public Boolean foreground = false; // Is sprite/perso on foreground?
-	public ActionKind kind;
+	public final ActionKind kind;
 	public IPoint location;
 	public IPoint target; // For 'launch' action
 	public int light = -1;
@@ -98,7 +98,6 @@ public class ActionElement extends LanguageElement {
 		who = readAttribute("who");
 		what = readAttribute("what");
 		effect = readAttribute("effect");
-		unblock = isTrue("unblock");
 		speed = Float.valueOf("0" + p_elem.getAttribute("speed"));
 		unstoppable = isTrue("unstoppable");
 		foreground = readBoolean("foreground");

@@ -19,7 +19,7 @@ public class ForElement extends LoopElement {
 	LanguageElement incrementation;
 	
 	public ForElement() {
-		kind = ActionKind._for;
+		super(ActionKind._for);
 	}
 	
 	@Override

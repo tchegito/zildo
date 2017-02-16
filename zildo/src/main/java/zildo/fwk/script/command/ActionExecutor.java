@@ -801,6 +801,7 @@ public class ActionExecutor extends RuntimeExecutor {
             	} else {
             		count++;
             	}
+            	achieved |= p_action.unblock;
             	break;
             case loop:
             case _for:

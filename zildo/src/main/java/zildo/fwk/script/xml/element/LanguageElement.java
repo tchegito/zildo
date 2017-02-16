@@ -32,5 +32,6 @@ public abstract class LanguageElement extends AnyElement {
 	@Override
 	public void parse(Element p_elem) {
 		xmlElement = p_elem;
+		unblock = isTrue("unblock");
 	}
 }

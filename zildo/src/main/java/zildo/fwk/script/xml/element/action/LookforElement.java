@@ -41,8 +41,7 @@ public class LookforElement extends ActionElement {
 	public String desc;	// Not null means we look for sprite entity with given type. Otherwise, we consider only Perso
 	
 	public LookforElement() {
-    	super(null);
-    	kind = ActionKind.lookFor;
+    	super(ActionKind.lookFor);
     }
 	
 	@Override

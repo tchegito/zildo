@@ -1620,17 +1620,24 @@
 	</scene>
 	
 	<persoAction id="bossDragon">
-	    <perso who="dragon" az="-1"/>
-	    <timer each="150">
-	        <action>
+	    <loop>
+		    <for var="loc:j" value="1">
 			    <sound name="SerpentSpit"/>
    	            <for var="loc:i" value="5">
 				    <throw who="self" pos="x, y-60" to="zildo.x,zildo.y" speed="1.8"
 					      		 	   type="FIRE_BALL" zoom="127" foreground="true"/>
    				    <wait value="3"/>
 	            </for>
-   	        </action>
-   	    </timer>
+	            <wait value="140"/>
+	   	    </for>
+	   	    <perso who="self" az="-0.01"/>
+	   	    <wait value="200"/>
+	   	    <perso who="self" az="0.1"/>
+	   	    <wait value="20"/>
+	   	    <perso who="self" az="0.01"/>
+	   	    <wait value="150"/>
+   	   	    <perso who="self" az="0"/>
+	    </loop>
    	</persoAction>
 			    	
 </adventure>

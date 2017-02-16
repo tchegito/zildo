@@ -55,8 +55,7 @@ public class TimerElement extends ActionElement {
 	public List<LanguageElement> end;
 
 	public TimerElement() {
-    	super(null);
-    	kind = ActionKind.timer;
+    	super(ActionKind.timer);
     }
 	
 	@Override
@@ -64,7 +63,9 @@ public class TimerElement extends ActionElement {
 	public void parse(Element p_elem) {
 		xmlElement = p_elem;
 		
-			//TimerElement(int each, List<ActionElement> actions, String endCondition, List<ActionElement> end) {
+		unblock = isTrue("unblock");
+		
+		//TimerElement(int each, List<ActionElement> actions, String endCondition, List<ActionElement> end) {
 		Element actionsContainer = ScriptReader.getChildNamed(p_elem, "action");
 		Element endContainer = ScriptReader.getChildNamed(p_elem, "end");
 

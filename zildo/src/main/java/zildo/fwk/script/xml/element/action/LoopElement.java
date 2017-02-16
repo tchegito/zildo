@@ -39,9 +39,12 @@ public class LoopElement extends ActionElement {
 	public List<LanguageElement> actions;
 
 	public LoopElement() {
-    	super(null);
-    	kind = ActionKind.loop;
+    	super(ActionKind.loop);
     }
+	
+	public LoopElement(ActionKind kind) {
+		super(kind);
+	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
