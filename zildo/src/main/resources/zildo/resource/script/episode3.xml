@@ -426,7 +426,8 @@
 	    </trigger>
 	    <action>
 	        <moveTo what="platef2" pos="-270,0" delta="true"/>
-	    </action>
+	        <markQuest name="cavef6_button1" value="false"/>
+   	    </action>
    	</quest>
 
 	<quest name="cavef6_button2" locked="false">
@@ -437,6 +438,7 @@
 	        <moveTo what="platef3" pos="0,-32" delta="true"/>
 	        <wait value="50"/>
 	        <moveTo what="platef3" pos="0,32" delta="true"/>
+	        <markQuest name="cavef6_button2" value="false"/>
 	    </action>
    	</quest>
    	

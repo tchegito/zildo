@@ -202,7 +202,7 @@ public class TriggerElement extends AnyElement {
 						if (gearType != null) {
 							switch (gearType) {
 							case TIMED_BUTTON:
-								EngineZildo.mapManagement.getCurrentMap().addSpawningTile(tileLocation, questName, 0, false, floor);
+								EngineZildo.mapManagement.getCurrentMap().addSpawningTile(tileLocation, questName, 0, false, p_another.floor);
 							case BUTTON:
 								EngineZildo.soundManagement.broadcastSound(BankSound.Switch, location);
 								EngineZildo.mapManagement.getCurrentMap().writemap(gridX,  gridY, 256 * 3+212);
