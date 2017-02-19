@@ -1357,11 +1357,12 @@
 	        <speak who="zildo" text="prison.saveKing.zildo.4"/>
 
     		<moveTo who="zildo" pos="208,152"/>
-			<markQuest name="metKingPrison3" value="false"/>q
+			<markQuest name="metKingPrison3" value="false"/>
 	    </if>
 	    <if expQuest="itemCUREPOTION">
 	        <!-- Hero brought the cure potion -->
 	        <speak who="zildo" text="prison.saveKing.zildo.6"/>
+	        <putDown item="CUREPOTION"/>
        	    <perso who="king" addSpr="1"/>
 	        <moveTo who="zildo" pos="234,70"/>
        	    <wait value="10" />
