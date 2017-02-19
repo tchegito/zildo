@@ -899,12 +899,19 @@ public abstract class Perso extends Element {
 			setLight(coeffWhiteLight * 0x111111);
 		}
 		if (fall && !EngineZildo.scriptManagement.isScripting()) {	// Don't redo the same scene
-			// Fall slipping forward
-			vx =deltaMoveX / 20;
-			vy =deltaMoveY / 20;
-			stopBeingWounded();	// Stop potential projection
-			setCompte_dialogue(0);	// Stop Zildo blink
-			EngineZildo.scriptManagement.execute("dieInPit", true);
+			// Dirty case: bridge over water. We use collision by back2 data, but instead of falling in a pit
+			// We want player to splash
+			onmap = area.get_mapcase(cx, cy).getBackTile().getValue();
+			if (onmap == 108) {
+				diveAndWound();
+			} else {
+				// Fall slipping forward
+				vx =deltaMoveX / 20;
+				vy =deltaMoveY / 20;
+				stopBeingWounded();	// Stop potential projection
+				setCompte_dialogue(0);	// Stop Zildo blink
+				EngineZildo.scriptManagement.execute("dieInPit", true);
+			}
 		}
 		if (repeatSound) {
 			if (count > 15) {

@@ -291,6 +291,7 @@ public class Area implements EasySerializable {
 	final IntSet waterDeep = new IntSet().addRange(108, 138).addRange(208, 222)
 			.addRange(224, 228).addRange(230, 245).addRange(247, 253);
 
+	// TODO: test one day if a precalculated array will be faster than this long 'if' process
 	public TileNature getCaseNature(int xx, int yy) {
 		int x = xx / 16;
 		int y = yy / 16;
@@ -318,13 +319,9 @@ public class Area implements EasySerializable {
 			// Make double check with following 'if' clause
 		} else {
 			// 2: water (could be on back or back2)
-			Tile tile;
 			if (temp.getBackTile2() != null) {
-				tile = temp.getBackTile2();
-			} else {
-				tile = temp.getBackTile();
+				val = temp.getBackTile2().getValue();
 			}
-			val = tile.getValue();
 		}
 		
 		if (val == Tile.T_WATER_MUD) {
