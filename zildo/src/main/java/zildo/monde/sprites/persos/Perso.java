@@ -898,7 +898,7 @@ public abstract class Perso extends Element {
 		if (coeffWhiteLight != -1) {
 			setLight(coeffWhiteLight * 0x111111);
 		}
-		if (fall) {
+		if (fall && !EngineZildo.scriptManagement.isScripting()) {	// Don't redo the same scene
 			// Fall slipping forward
 			vx =deltaMoveX / 20;
 			vy =deltaMoveY / 20;
