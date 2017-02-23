@@ -26,7 +26,6 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -72,6 +71,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.persos.ia.PathFinder;
+import zildo.monde.sprites.utils.SpriteSorter;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -267,12 +267,13 @@ public class EngineUT {
 			clientEngine = new ClientEngineZildo(null, false, fakeClient);
 			//ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
 			//ClientEngineZildo.spriteDisplay = new SpriteDisplay();
+			
 			ClientEngineZildo.soundPlay = mock(SoundPlay.class);
 			ClientEngineZildo.filterCommand = new FilterCommand();
 			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
 			ClientEngineZildo.openGLGestion = mock(OpenGLGestion.class);
 			ClientEngineZildo.spriteEngine = mock(SpriteEngine.class);
-			ClientEngineZildo.spriteDisplay = spy(new SpriteDisplay(ClientEngineZildo.spriteEngine));
+			ClientEngineZildo.spriteDisplay = new SpriteDisplayMocked(ClientEngineZildo.spriteEngine);
 			ClientEngineZildo.guiDisplay = spy(new GUIDisplay());
 			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.screenX, Zildo.screenY);
 			when(ClientEngineZildo.guiDisplay.skipDialog()).thenReturn(true);
@@ -476,5 +477,34 @@ public class EngineUT {
 		}
 		Identified.resetCounter(SpriteEntity.class);
 		Identified.clearAll();
+	}
+	
+	// All the following is just to avoid to transform a "private" method into a "public"
+	private class SpriteSorterMocked extends SpriteSorter {
+		public SpriteSorterMocked(int p_sortYMax, int p_sortYRealMax) {
+			super(p_sortYMax, p_sortYRealMax);
+		}
+
+		public SpriteEntity[][] getTabTri() {
+			return tab_tri;
+		}
+	}
+	
+	protected class SpriteDisplayMocked extends SpriteDisplay {
+		public SpriteDisplayMocked(SpriteEngine spriteEngine) {
+			super(spriteEngine);
+			
+			spriteSorter=new SpriteSorterMocked(Constantes.SORTY_MAX, Constantes.SORTY_REALMAX);
+		}
+
+		@Override
+		public void setEntities(List<SpriteEntity> p_entities) {
+			spriteEntities.clear();
+			spriteEntities.addAll(p_entities);
+		}
+		
+		public SpriteEntity[][] getTabTri() {
+			return ((SpriteSorterMocked)spriteSorter).getTabTri();
+		}
 	}
 }

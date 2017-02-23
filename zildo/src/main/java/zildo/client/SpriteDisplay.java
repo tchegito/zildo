@@ -49,7 +49,7 @@ public class SpriteDisplay extends SpriteStore {
 
 	SpriteEngine spriteEngine;
 	
-	private SpriteSorter spriteSorter;
+	protected SpriteSorter spriteSorter;
 
 	public int zildoId;
 	

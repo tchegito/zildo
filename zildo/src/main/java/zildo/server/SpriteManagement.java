@@ -869,8 +869,8 @@ public class SpriteManagement extends SpriteStore {
 	 * @return List<SpriteEntity>
 	 */
 	public List<SpriteEntity> getSpriteEntities(ClientState p_cl) {
-		// Filter the entities to keep only the common and those from given
-		// client
+		// Filter the entities to keep only the common and those from given client
+		// TODO: parameter isn't used anymore, but this should cause problem in multiplayer maybe. We keep it until we get through this.
 		List<SpriteEntity> entities = new ArrayList<SpriteEntity>();
 		for (SpriteEntity entity : spriteEntities) {
 			if (!entity.clientSpecific) {

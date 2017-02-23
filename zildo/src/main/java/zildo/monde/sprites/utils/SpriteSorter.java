@@ -44,7 +44,7 @@ public class SpriteSorter {
 	private int[][][] bankOrder;   // Reference to an int array from SpriteManagement
 	
 	// For Y-sorting
-	private SpriteEntity[][] tab_tri;
+	protected SpriteEntity[][] tab_tri;
 	private int[] num_spritesByLine;
 	private int quadOrder[][];
 	private int lastInBank[];
@@ -130,7 +130,7 @@ public class SpriteSorter {
 				// just for filling the sort array
 				int height = sprite.rotation.isWidthHeightSwitched() ? spr.getTaille_x() : spr.getTaille_y();
 				y+=height - 3 + 2;
-				y+=sprite.z*2;
+				//y+=sprite.z*2;
 			} else {
 				// Entity : make its always UNDER Zildo and other characters, at the same level
 				// as the map tiles in fact.
