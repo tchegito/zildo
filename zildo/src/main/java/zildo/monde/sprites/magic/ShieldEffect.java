@@ -52,6 +52,7 @@ public class ShieldEffect {
 	                ball.setNSpr(ElementDescription.REDBALL3.ordinal());
 	                ball.setNBank(SpriteBank.BANK_ELEMENTS);
 	                ball.setSpecialEffect(EngineFX.SHINY);
+	                ball.setLinkedPerso(affected);
 	        		EngineZildo.spriteManagement.spawnSprite(ball);
 	                CompositeElement composite=new CompositeElement(ball);
 	                composite.followShape();
@@ -59,7 +60,6 @@ public class ShieldEffect {
 	                ball.x = affected.x;
 	                ball.y = affected.y;
 	                ball.z = affected.z;
-	                ball.setLinkedPerso(affected);
 	                //ball.zoom = 200;
             	}
                 break;
@@ -97,5 +97,12 @@ public class ShieldEffect {
 		for (CompositeElement composite : composites) {
 			composite.die(false);
 		}    	
+    }
+    
+    public void setVisible(boolean vis) {
+    	for (CompositeElement composite : composites) {
+            Element elem=composite.getRefElement();
+            elem.setVisible(vis);
+    	}
     }
 }

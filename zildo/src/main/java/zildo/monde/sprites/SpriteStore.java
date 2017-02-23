@@ -180,7 +180,7 @@ public class SpriteStore {
 				EngineZildo.persoManagement.removePerso(perso);
 				perso.finalize();
 			}
-			entity.visible=false;
+			entity.setVisible(false);
 			Identified.remove(SpriteEntity.class, entity.getId());
 		}
 	}

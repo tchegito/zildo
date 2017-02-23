@@ -283,6 +283,7 @@ public class PlayerManagement {
 		}
 	
 		// Interpret animation paramaters to get the real sprite to display
+		// TODO: this is already done in SpriteManagement#updateSprites
 		heros.finaliseComportement(EngineZildo.compteur_animation);
 	}
 	
