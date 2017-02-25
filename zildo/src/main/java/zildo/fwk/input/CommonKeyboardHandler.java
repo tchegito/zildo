@@ -43,7 +43,7 @@ public abstract class CommonKeyboardHandler implements KeyboardHandler{
 	 * call should return FALSE (unless player is not human ;) )
 	 */
 	public final boolean isKeyPressed(Keys key) {
-		boolean down = isKeyDown(getCode(key));
+		boolean down = isKeyDown(key);
 		int value = key.ordinal();
 		boolean pressed = down && !keyPressed[value];
 		keyPressed[value] = down;

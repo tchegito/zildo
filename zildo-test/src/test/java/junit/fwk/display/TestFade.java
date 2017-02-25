@@ -5,14 +5,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.ClientMainLoop;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -135,5 +139,44 @@ public class TestFade extends EngineUT {
     			currentFadeLevel < instantFadeLevel);
     	renderFrames(numberFramesCompleteFade);
     	System.out.println(fc.getFadeLevel());
+	}
+	
+	@Test @ClientMainLoop
+	public void hangOnLavaFall() {
+		// Place hero near an edge, and make him fall
+		mapUtils.loadMap("cavef6");
+		EngineZildo.mapManagement.setStartLocation(new Point(552,376), Angle.NORD, 1);
+		zildo.setX(552);
+		zildo.setY(376);
+		waitEndOfScripting();
+		simulateDirection(1, 0);
+		while (!EngineZildo.scriptManagement.isQuestProcessing("dieInPit")) {
+			renderFrames(1);
+		}
+		simulateDirection(0, 0);
+		// Ok, hero is falling
+		while (!EngineZildo.scriptManagement.isQuestProcessing("fallPit")) {
+			renderFrames(1);
+		}
+		// Now, we wait for fade to be started
+		FilterCommand fc = ClientEngineZildo.filterCommand;
+		while (true) {
+			FilterEffect fade = fc.getActiveFade();
+			if (fade != null) break;
+			renderFrames(1);
+		}
+		renderFrames(10);
+		simulatePressButton(Keys.ESCAPE, 2);
+		renderFrames(45);
+		// Check that ingame menu is displayed (need ClientMainLoop)
+		Assert.assertNotNull(ClientEngineZildo.client.getCurrentMenu());
+		simulatePressButton(Keys.ESCAPE, 2);
+		waitEndOfScripting();
+		// We shouldn't have a deadlock, if fade is well written ;)
+		while (true) {
+			// 	Check that hero has respawned
+			if (552 == (int) zildo.x) break;
+			renderFrames(1);
+		}
 	}
 }

@@ -6,6 +6,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
+import tools.annotations.ClientMainLoop;
 import tools.annotations.DisableFreezeMonitor;
 import tools.annotations.InfoPersos;
 import tools.annotations.SpyHero;
@@ -19,6 +20,7 @@ import tools.annotations.SpyMapManagement;
  * <li>{@link InfoPersos}</li>
  * <li>{@link SpyHero}</li>
  * <li>{@link SpyMapManagement}</li>
+ * <li>{@link ClientMainLoop}</li>
  * </ul>
  * 
  * @author tchegito
@@ -56,6 +58,8 @@ public class ZildoJUnit extends BlockJUnit4ClassRunner {
 				testClass.debugInfosPersos = true;
 			} else if (clazz == DisableFreezeMonitor.class) {
 				testClass.disableFreezeMonitor = true;
+			} else if (clazz == ClientMainLoop.class) {
+				testClass.clientMainLoop = true;
 			}
 		}
 	}

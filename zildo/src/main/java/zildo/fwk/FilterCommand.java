@@ -212,13 +212,13 @@ public class FilterCommand {
 	// Returns TRUE wether fade operation is over
 	///////////////////////////////////////////////////////////////////////////////////////
 	public boolean isFadeOver() {
-		if (!fadeStarted) {
-			return false;
-		}
 		if (asked_FadeIn) {
 			return fadeLevel < 0;
 		} else if (asked_FadeOut) {
 			return fadeLevel == 255;
+		}
+		if (!fadeStarted) {
+			return false;
 		}
 		return true;
 	}

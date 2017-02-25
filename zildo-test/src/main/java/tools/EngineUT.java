@@ -20,6 +20,7 @@
 package tools;
 
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -105,6 +106,7 @@ public class EngineUT {
 	boolean spyHero = false;
 	boolean spyMapManagement = false;
 	boolean disableFreezeMonitor = false;
+	boolean clientMainLoop = false;
 	
 	public volatile int nFrame = 0;
 	
@@ -197,6 +199,10 @@ public class EngineUT {
 	        	EngineZildo.dialogManagement.stopDialog(clientState, false);
 	        }
 	        
+	        if (clientMainLoop) {
+	        	ClientEngineZildo.client.mainLoop();
+	        }
+	        
 	        clientEngine.renderFrame(false);
 			ClientEngineZildo.filterCommand.doFilter();
 			if (debugInfos) {
@@ -268,6 +274,7 @@ public class EngineUT {
 			//ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
 			//ClientEngineZildo.spriteDisplay = new SpriteDisplay();
 			
+			Zildo.soundEnabled = false;
 			ClientEngineZildo.soundPlay = mock(SoundPlay.class);
 			ClientEngineZildo.filterCommand = new FilterCommand();
 			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
@@ -277,7 +284,10 @@ public class EngineUT {
 			ClientEngineZildo.guiDisplay = spy(new GUIDisplay());
 			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.screenX, Zildo.screenY);
 			when(ClientEngineZildo.guiDisplay.skipDialog()).thenReturn(true);
-
+			doNothing().when(ClientEngineZildo.guiDisplay).endMenu();
+			
+			fakeClient.setOpenGLGestion(ClientEngineZildo.openGLGestion);
+			//fakeClient.askStage(stage);
 			// Load default map and initialize map utils
 			EngineZildo.mapManagement.loadMap("preintro", false);
 			mapUtils = new MapUtils();
@@ -310,7 +320,42 @@ public class EngineUT {
 		// Initialize keyboard to simulate input
 		instant = new KeyboardInstant();
 		if (fakedKbHandler == null) {
-			fakedKbHandler = org.mockito.Mockito.mock(CommonKeyboardHandler.class);
+			fakedKbHandler = org.mockito.Mockito.spy(new CommonKeyboardHandler() {
+				
+				@Override
+				public void poll() {
+				}
+				
+				@Override
+				public boolean next() {
+					return false;
+				}
+				
+				@Override
+				public boolean isKeyDown(int p_code) {
+					return false;
+				}
+				
+				@Override
+				public boolean getEventKeyState() {
+					return false;
+				}
+				
+				@Override
+				public int getEventKey() {
+					return 0;
+				}
+				
+				@Override
+				public char getEventCharacter() {
+					return 0;
+				}
+				
+				@Override
+				public int getCode(Keys k) {
+					return 0;
+				}
+			});
 		}
 		Zildo.pdPlugin.kbHandler = fakedKbHandler;
 		
