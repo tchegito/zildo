@@ -49,6 +49,7 @@ public class TriggerElement extends AnyElement {
 	public final QuestEvent kind;
 	String name; // dialog, map, item and questDone
 	String mover;
+	boolean negateMover = false;
 	int numSentence;
 	Point location;
 	Point tileLocation;
@@ -111,6 +112,10 @@ public class TriggerElement extends AnyElement {
 				name = null;
 			}
 			mover = readAttribute("mover");
+			if (mover != null && mover.startsWith("!")) {
+				mover.substring(1);
+				negateMover = true;
+			}
 			radius = readInt("radius");
 			String gear = readAttribute("gear");
 			if (gear != null) {
@@ -193,7 +198,7 @@ public class TriggerElement extends AnyElement {
 				} else if (tileValue != -1) {
 					return tileValue == p_another.tileValue;
 				} else if (mover != null) {
-					return mover.equals(p_another.mover);
+					return mover.equals(p_another.mover) ^ negateMover;
 				} else if (tileLocation != null && p_another.location != null) {
 					int gridX = p_another.location.x / 16;
 					int gridY = p_another.location.y / 16;
@@ -272,7 +277,7 @@ public class TriggerElement extends AnyElement {
 					ok = false;
 					for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
 						if (entity.getMover().isOnIt(hero)) {
-							ok = true;
+							ok = mover.contains("!");
 						}
 					}
 				}
