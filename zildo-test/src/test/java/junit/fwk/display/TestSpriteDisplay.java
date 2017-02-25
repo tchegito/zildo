@@ -1,6 +1,5 @@
 package junit.fwk.display;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -48,7 +47,6 @@ public class TestSpriteDisplay extends EngineUT {
 		sd.updateSpritesClient(new Point(704, 297));
 		// Check that goodie is displayed behind hero
 		checkOrder(goodie);
-		sd.setEntities(Collections.emptyList());
 
 		// Wait goodies is on the floor
 		while (goodie.z > 4) {
@@ -103,6 +101,5 @@ public class TestSpriteDisplay extends EngineUT {
 		Assert.assertNotEquals("Hero isn't on the displayed area !", -1, posZildo);
 		Assert.assertNotEquals("Other entity ("+other+") isn't on the displayed area !", -1, posOther);
 		Assert.assertTrue("Hero should have been after entity to be displayed correctly !", posZildo > posOther);
-
 	}
 }
