@@ -277,7 +277,7 @@ public class TriggerElement extends AnyElement {
 					ok = false;
 					for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
 						if (entity.getMover().isOnIt(hero)) {
-							ok = mover.contains("!");
+							ok = !mover.contains("!");
 						}
 					}
 				}
