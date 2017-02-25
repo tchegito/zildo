@@ -426,7 +426,6 @@
 	    </trigger>
 	    <action>
 	        <moveTo what="platef2" pos="-270,0" delta="true"/>
-	        <markQuest name="cavef6_button1" value="false"/>
    	    </action>
    	</quest>
 
@@ -500,17 +499,34 @@
 	</quest>
 	
 	<quest name="cavef6_platef6_forward" locked="false">
-	    <trigger>
-	        <location name="cavef6" mover="platef6"/>
-	    </trigger>
-	    <action>
-	        <moveTo what="platef6" pos="-56,-56" delta="true"/>
-	        <wait value="50"/>
-	        <moveTo what="platef6" pos="56,56" delta="true"/>
-	        <markQuest name="cavef6_platef6_forward" value="false"/>
-   	    </action>
-	</quest>
-		
+        <trigger>
+            <location name="cavef6" mover="platef6"/>
+            <questDone name="!cavef6_platef6_up"/>
+        </trigger>
+        <action>
+            <moveTo what="platef6" pos="-56,-56" delta="true"/>
+            <wait value="50"/>
+            <markQuest name="cavef6_platef6_up" value="true"/>
+            <markQuest name="cavef6_platef6_back" value="false"/>
+        </action>
+    </quest>
+
+	<!-- Plateform going as soon as hero left it -->
+    <quest name="cavef6_platef6_back" locked="false">
+        <trigger>
+            <location name="cavef6" mover="!platef6"/>
+            <questDone name="cavef6_platef6_up"/>
+        </trigger>
+        <action>
+            <moveTo what="platef6" pos="56,56" delta="true"/>
+            <wait value="50"/>
+          <markQuest name="cavef6_platef6_up" value="false"/>
+            <markQuest name="cavef6_platef6_forward" value="false"/>
+        </action>
+    </quest>
+
+    <quest name="cavef6_platef6_up" locked="false"/>
+	
 	<mapScript>
 	    <condition name="sousbois2">
 	        <tile pos="21,6" action="blueRain" unblock="true"/>
