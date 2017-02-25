@@ -33,3 +33,8 @@ Here are some useful examples to edit scripts.
 	
 	<quest name="cavef6_platef6_up"/>
   ```
+  
+  It's also possible to trigger the event "hero leaves platform", by using a "!" notation:
+ ```xml
+ <location name="cavef6" mover="!platef6"/>
+  ```
