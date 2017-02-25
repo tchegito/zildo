@@ -8,9 +8,7 @@ import org.junit.Test;
 import tools.EngineUT;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.items.ItemKind;
-import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
-import zildo.monde.sprites.desc.ZildoDescription;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.EngineZildo;
@@ -31,9 +29,12 @@ public class TestInteractionObject extends EngineUT {
 			
 			SpriteDescription desc = kind.representation;
 			System.out.println(kind);
+			
+			/*
 			boolean before = !(kind.isWeapon() || desc == ElementDescription.FLASK_RED || desc == ElementDescription.NECKLACE
 					|| desc == ElementDescription.FLUT || desc != ZildoDescription.SHIELD_DOWN);
-			boolean pick = pick(desc);
+					*/
+			pick(desc);
 			// If automatic sentece is planned, check it
 			if (kind.getFoundSentence("") != null) {
 				Assert.assertNotNull(dialog(kind));

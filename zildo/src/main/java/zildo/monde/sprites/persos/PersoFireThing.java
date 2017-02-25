@@ -118,8 +118,9 @@ public class PersoFireThing extends PersoNJ {
 		middle.manageCollision();
 	}
 	
+	/** Order elements so that main one is at z=0 **/
 	private void orderElements(Element... elements) {
-		int startZ = 0;
+		int startZ = 10 * - 2;
 		for (Element e : elements) {
 			e.z = startZ;
 			e.y = e.y + startZ;

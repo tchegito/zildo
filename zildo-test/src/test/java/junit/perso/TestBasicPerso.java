@@ -89,7 +89,5 @@ public class TestBasicPerso extends EngineUT {
 		hero.pickGoodies(null, -999);
 		renderFrames(2);
 		Assert.assertEquals(0, hero.getMoney());
-		
-		
 	}
 }

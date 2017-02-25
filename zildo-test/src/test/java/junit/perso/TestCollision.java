@@ -24,6 +24,8 @@ import org.junit.Test;
 
 import tools.EngineUT;
 import tools.MapUtils;
+import zildo.fwk.file.EasyBuffering;
+import zildo.monde.map.Area;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
@@ -254,6 +256,25 @@ public class TestCollision extends EngineUT {
 		assertNotBlocked(zildo);
 		renderFrames(30);
 		Assert.assertTrue("Hero shouldn't have passed through brambles !", zildo.getY() < 365);
-
+	}
+	
+	// Check that firething doesn't get stucked, after save+load on the same map
+	@Test
+	public void enemyNeverStucked() {
+		mapUtils.loadMap("eleog");
+		waitEndOfScripting();
+		Perso fire1 = EngineZildo.persoManagement.getNamedPerso("fire1");
+		assertPersoInLand(fire1);
+		renderFrames(1);
+		System.out.println(fire1);
+		EasyBuffering buffer = new EasyBuffering();
+		EngineZildo.mapManagement.getCurrentMap().serialize(buffer);
+		Area.deserialize(buffer, "eleog_2", true);
+		fire1 = EngineZildo.persoManagement.getNamedPerso("fire1");
+		assertPersoInLand(fire1);
+	}
+	
+	private void assertPersoInLand(Perso p) {
+		Assert.assertFalse(EngineZildo.mapManagement.collide(p.x, p.y, p));
 	}
 }
