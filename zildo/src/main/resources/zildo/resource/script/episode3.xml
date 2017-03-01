@@ -1640,19 +1640,28 @@
 	
 	<persoAction id="bossDragon">
 	    <loop>
-		    <for var="loc:j" value="1">
+		    <for var="loc:j" value="2">
 			    <sound name="SerpentSpit"/>
+			    <script who="self" value="19"/>
    	            <for var="loc:i" value="5">
+   	                <!-- Remains to reverse fireball sprites, if targeted on the left -->
 				    <throw who="self" pos="x, y-60" to="zildo.x,zildo.y" speed="1.8"
 					      		 	   type="FIRE_BALL" zoom="127" foreground="true"/>
    				    <wait value="3"/>
 	            </for>
+	            <script who="self" value="3"/>
 	            <wait value="140"/>
 	   	    </for>
+	   	    <!-- Maybe blow smoke before diving ? -->
 	   	    <perso who="self" az="-0.01"/>
-	   	    <wait value="200"/>
+	   	    <wait value="40"/>
+	   	    <perso who="self" az="-0.02"/>
+	   	    <wait value="20"/>
+	   	    <script who="self" value="20"/>	<!-- Retract arms -->
+	   	    <wait value="150"/>
 	   	    <perso who="self" az="0.1"/>
 	   	    <wait value="20"/>
+	   	    <script who="self" value="3"/>
 	   	    <perso who="self" az="0.01"/>
 	   	    <wait value="150"/>
    	   	    <perso who="self" az="0"/>
