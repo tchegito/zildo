@@ -1625,10 +1625,7 @@ public class Area implements EasySerializable {
 					for (int x=0;x<movedX;x++) {
 						int xx = x+shiftX;
 						if (xx >=0 && xx < dim_x) {
-							Case c = mapdataCloned[f][y][x];
-							if (c != null) {
-								mapdata[f][yy][xx] = c;
-							}
+							mapdata[f][yy][xx] = mapdataCloned[f][y][x];
 						}
 					}
 				}
