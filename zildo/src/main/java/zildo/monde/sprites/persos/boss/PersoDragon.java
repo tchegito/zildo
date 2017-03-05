@@ -128,9 +128,9 @@ public class PersoDragon extends PersoNJ {
 		
 		//System.out.println("az="+az+" vz="+vz+"z="+z);
 		
-		int addX =0;
+		int wingAddX =0;
 		if (getQuel_deplacement() == MouvementPerso.RETRACTED) {
-			addX += 20;
+			wingAddX += 20;
 		}
 		for (int i=0;i<neck.elems.size()-1;i++) {
 			Element e = neck.elems.get(i+1);
@@ -148,21 +148,21 @@ public class PersoDragon extends PersoNJ {
 				if (i == 6 || i == 10) {
 					e.x += 9;
 					if (i == 10) e.x -= 19;
-					e.x += addX * factor;
+					e.x += wingAddX * factor;
 				} else if (i==7 || i == 11) {
 					e.y += 50;
 					e.x -= 7 * factor;
-					e.x += addX * factor;
+					e.x += wingAddX * factor;
 				} else if (i == 8 || i == 12) {
 					e.y += 50+29;
 					e.x -= 14 * factor;
-					e.x += addX * factor;
+					e.x += wingAddX * factor;
 				} else if (i==9 || i == 13) {
 					e.y += 50 + 29 + 60;
 					// Shift Y and Z so that dragon's arm is displayed before head
 					e.y -= 30;
 					e.z -= 30;
-					e.x += addX * factor;
+					e.x += wingAddX * factor;
 				}
 			} else {
 				Pointf interpolated = bz.interpol(i / 5f);
@@ -193,18 +193,24 @@ public class PersoDragon extends PersoNJ {
 						e.setAddSpr(9);
 						yy+=10;
 					}
-					if (quel_deplacement == MouvementPerso.SPITFIRE) {
-						if (e.getAddSpr() == 0) {
-							e.setAddSpr(8);
-						} else if (e.getAddSpr() == 9) {
-							e.setAddSpr(10);
-						} else {
-							e.setAddSpr(8);
-						}
+					switch (quel_deplacement) {
+						case SPITFIRE:
+							if (e.getAddSpr() == 0) {
+								e.setAddSpr(8);
+							} else if (e.getAddSpr() == 9) {
+								e.setAddSpr(10);
+							} else {
+								e.setAddSpr(8);
+							}
+							break;
+						case RETRACTED:	// Make wings above the head during the arm's retractation
+							yy -= 70;
+							e.z -= 70;
+						default:
+							break;
 					}
 				}
 				e.y = yy;
-				//e.z = zz + 6;
 			}
 			xx = e.x;
 			yy = e.y;
