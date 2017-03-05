@@ -68,6 +68,8 @@ public class CheckShift {
 	public void negative() {
 		Area area = createBasicArea();
 		
+		int oldValue = area.readmap(2, 1);
+		
 		area.shift(-2, -1);
 		
 		// 1st: dimension
@@ -75,8 +77,8 @@ public class CheckShift {
 		Assert.assertEquals(9, area.getDim_y());
 		// 2nd: data
 		Assert.assertEquals(256*3 + 15, area.readmap(8 - 2, 3 - 1));
-		// 3nd: removed cases
-		Assert.assertEquals(Atmosphere.OUTSIDE.getEmptyTile(), area.readmap(0, 0));
+		// 3nd: untouched cases
+		Assert.assertEquals(oldValue, area.readmap(0, 0));
 		
 	}
 }
