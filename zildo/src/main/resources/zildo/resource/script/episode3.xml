@@ -527,8 +527,25 @@
 
     <quest name="cavef6_platef6_up" locked="false"/>
 	
+    <quest name="dragonShouldMove1" locked="false">
+        <trigger>
+            <location name="dragon" pos="149,376" radius="9"/>
+        </trigger>
+        <action>
+            <markQuest name="dragonShouldMove2" value="false"/>
+        </action>
+    </quest>
+    <quest name="dragonShouldMove2" locked="false">
+        <trigger>
+            <location name="dragon" pos="423,151" radius="9"/>
+        </trigger>
+        <action>
+            <markQuest name="dragonShouldMove1" value="false"/>
+        </action>
+    </quest>
+    
 	<mapScript>
-	    <condition name="sousbois2">
+	    <condition name="sousbois2" locked="false">
 	        <tile pos="21,6" action="blueRain" unblock="true"/>
 	    </condition>
 		<condition name="sousbois3">
@@ -1545,6 +1562,7 @@
 		</timer>
 	</tileAction>
 	
+	<!-- fire elemental -->
 	<persoAction id="elemBehav">
 	    <loop>
    			<var name="loc:found" value="0"/>
@@ -1639,6 +1657,7 @@
 	</scene>
 	
 	<persoAction id="bossDragon">
+        <var name="loc:dragonPos" value="2"/>
 	    <loop>
 		    <for var="loc:j" value="2">
 			    <sound name="SerpentSpit"/>
@@ -1651,21 +1670,42 @@
 	            </for>
 	            <script who="self" value="3"/>
 	            <wait value="140"/>
-	   	    </for>
-	   	    <!-- Maybe blow smoke before diving ? -->
-	   	    <perso who="self" az="-0.01"/>
-	   	    <wait value="40"/>
-	   	    <perso who="self" az="-0.02"/>
-	   	    <wait value="20"/>
-	   	    <script who="self" value="20"/>	<!-- Retract arms -->
-	   	    <wait value="150"/>
-	   	    <perso who="self" az="0.1"/>
-	   	    <wait value="20"/>
-	   	    <script who="self" value="3"/>
-	   	    <perso who="self" az="0.01"/>
-	   	    <wait value="150"/>
-   	   	    <perso who="self" az="0"/>
+	            
+	            <!-- Check if dragon has to move -->
+	            <if expQuest="dragonShouldMove1">
+	                <if exp="loc:dragonPos!=1">
+		                <var name="loc:dragonPos" value="1"/>
+		                <markQuest name="dragonShouldMove2" value="false"/>
+		                <exec script="dragonDiveAndReappear(230,439)"/>
+	                </if>
+	            </if>
+	            <if expQuest="dragonShouldMove2">
+	                <if exp="loc:dragonPos!=2">
+		                <var name="loc:dragonPos" value="2"/>
+		                <markQuest name="dragonShouldMove1" value="false"/>
+		                <exec script="dragonDiveAndReappear(451,261)"/>
+	                </if>
+	            </if>
+   	   	    </for>
 	    </loop>
    	</persoAction>
+   	
+	<!-- Parameters: newLocation=(arg0, arg1) -->
+	<scene id="dragonDiveAndReappear">
+    	<!-- Maybe blow smoke before diving ? -->
+   	    <perso who="dragon" az="-0.01"/>
+   	    <wait value="40"/>
+   	    <perso who="dragon" az="-0.02"/>
+   	    <wait value="20"/>
+   	    <script who="dragon" value="20"/>	<!-- Retract arms -->
+   	    <wait value="150"/>
+   	    <perso who="dragon" vz="0" az="0.02" z="-150"/>	<!-- Lift up -->
+   	    <pos who="dragon" pos="loc:arg0,loc:arg1"/>
+   	    <wait value="80"/>
+   	    <script who="dragon" value="3"/>
+   	    <perso who="dragon" az="0.01"/>
+   	    <wait value="35"/>
+   	    <perso who="dragon" z="0" az="0" vz="0"/>
+	</scene>
 			    	
 </adventure>
