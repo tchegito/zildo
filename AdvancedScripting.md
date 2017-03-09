@@ -39,24 +39,29 @@ Here, variable `loc:firefly` is visible everywhere inside this `tileAction` beca
 
 ## Conditions ##
 
-<p>The "<code>if</code>" tag is available to check some conditions about two sides:
- * variables value
- * quests state
+The "<code>if</code>" tag is available to check some conditions about two sides:
+  * variables value
+  * quests state
 
 On each one, we can combine using operators, for example with variables:
 ```xml
     <if exp="loc:duration=7 | loc:duration=14">
-	
+        actions
     </if> 
 ```
 
 And with quests state:
 ```xml
     <if expQuest="!igor_promise_sword">
-	
+        actions
     </if> 
 ```
-
+It is possible to use both attributes <code>exp</code> and <code>expQuest</code>. In this case, a "OR" operator is implicit between them.
+```xml
+    <if expQuest="dragonShouldMove1" exp="loc:dragonPos!">
+        actions
+    </if>
+```
 ## Built-in functions ##
 
 <p>There is several useful built-in functions which an be used in any scripts:</p>
