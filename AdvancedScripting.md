@@ -37,6 +37,26 @@ A local variable is visible in its own scope, and sub sets, as in any classic la
 ```
 Here, variable `loc:firefly` is visible everywhere inside this `tileAction` because it's defined at its top level. So inside the `timer` scope, we can access it, as we do in the `moveTo` action.
 
+## Conditions ##
+
+<p>The "<code>if</code>" tag is available to check some conditions about two sides:
+ * variables value
+ * quests state
+
+On each one, we can combine using operators, for example with variables:
+```xml
+    <if exp="loc:duration=7 | loc:duration=14">
+	
+    </if> 
+```
+
+And with quests state:
+```xml
+    <if expQuest="!igor_promise_sword">
+	
+    </if> 
+```
+
 ## Built-in functions ##
 
 <p>There is several useful built-in functions which an be used in any scripts:</p>
