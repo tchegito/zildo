@@ -1664,7 +1664,7 @@
 			    <script who="self" value="19"/>
    	            <for var="loc:i" value="5">
    	                <!-- Remains to reverse fireball sprites, if targeted on the left -->
-				    <throw who="self" pos="x, y-60" to="zildo.x,zildo.y" speed="1.8"
+				    <throw who="self" pos="x, y-60" to="zildo.x,zildo.y" speed="1.8" floor="2"
 					      		 	   type="FIRE_BALL" zoom="127" foreground="true"/>
    				    <wait value="3"/>
 	            </for>
@@ -1683,7 +1683,7 @@
 	                <if exp="loc:dragonPos!=2">
 		                <var name="loc:dragonPos" value="2"/>
 		                <markQuest name="dragonShouldMove1" value="false"/>
-		                <exec script="dragonDiveAndReappear(451,261)"/>
+		                <exec script="dragonDiveAndReappear(451,266)"/>
 	                </if>
 	            </if>
    	   	    </for>
@@ -1702,9 +1702,10 @@
    	    <perso who="dragon" vz="0" az="0.02" z="-150"/>	<!-- Lift up -->
    	    <pos who="dragon" pos="loc:arg0,loc:arg1"/>
    	    <wait value="80"/>
-   	    <script who="dragon" value="3"/>
    	    <perso who="dragon" az="0.01"/>
-   	    <wait value="35"/>
+   	    <wait value="15"/>
+   	    <script who="dragon" value="3"/>
+   	    <wait value="20"/>
    	    <perso who="dragon" z="0" az="0" vz="0"/>
 	</scene>
 			    	

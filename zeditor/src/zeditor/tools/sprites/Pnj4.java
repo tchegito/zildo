@@ -42,7 +42,11 @@ public class Pnj4 extends SpriteBanque {
 		    
 		    // Fire elemental
 		    new Zone(167, 201, 23, 27), new Zone(193, 201, 23, 27),
-		    new Zone(218, 201, 23, 27), new Zone(242, 201, 25, 27)
+		    new Zone(218, 201, 23, 27), new Zone(242, 201, 25, 27),
+		    
+		    // Coal
+		    new Zone(0, 372, 26, 24), new Zone(27, 372, 26, 24),
+		    new Zone(54, 377, 31, 19), new Zone(86, 383, 31, 13)
 
 		};
 		

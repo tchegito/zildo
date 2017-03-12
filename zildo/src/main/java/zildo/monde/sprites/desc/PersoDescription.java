@@ -128,6 +128,7 @@ public enum PersoDescription implements SpriteDescription {
 	VIEILLE_BANC(383, 384),
 	VACTO(389, 390, 387, 388, 385, 386),
 	FIRE_ELEMENTAL(397, 398, 399, 400),
+	COAL(401, 402, 403, 404),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
