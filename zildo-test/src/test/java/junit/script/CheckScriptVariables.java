@@ -51,6 +51,16 @@ public class CheckScriptVariables extends SimpleEngineScript {
 		globalVariables.put("b", "6");
 		expr = new FloatExpression("a=9 | b=6");
 		Assert.assertEquals(1, (int) expr.evaluate(null));
+		
+		// 4.1: a!=8
+		expr = new FloatExpression("a!=8");
+		Assert.assertEquals(1, (int) expr.evaluate(null));
+
+		// 4.2: a!=9
+		expr = new FloatExpression("a!=9");
+		Assert.assertEquals("NOT_EQUALS(a, 9.0)", expr.toString());
+		Assert.assertEquals(0, (int) expr.evaluate(null));
+
 	}
 	
 	@Override
