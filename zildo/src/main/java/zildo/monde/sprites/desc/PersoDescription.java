@@ -129,6 +129,7 @@ public enum PersoDescription implements SpriteDescription {
 	VACTO(389, 390, 387, 388, 385, 386),
 	FIRE_ELEMENTAL(397, 398, 399, 400),
 	COAL(401, 402, 403, 404),
+	COAL_COLD(404),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
@@ -204,6 +205,10 @@ public enum PersoDescription implements SpriteDescription {
 		case POULE:
 		case CRABE:
 			return 5;
+		case COAL:
+			return 10;
+		case COAL_COLD:
+			return 0;
 		default:
 			return 6;
 		}

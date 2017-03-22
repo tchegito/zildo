@@ -98,7 +98,7 @@ public class CollideManagement {
 	                            if (infoDamaged == PersoInfo.ENEMY || infoDamaged == PersoInfo.SHOOTABLE_NEUTRAL) { // Zildo hit an enemy
 	                                checkEnemyWound(collider, collided);
 	                            } else if (infoDamaged == PersoInfo.ZILDO) {
-	                                checkZildoWound((PersoPlayer) damaged, collider);
+	                                checkZildoWound(damaged, collider);
 	                            }
 	                        }
 	                    }
@@ -131,13 +131,20 @@ public class CollideManagement {
     }
 
     private void checkAllZildoWound(Collection<ClientState> p_states, Collision p_colli) {
+        Perso damager = p_colli.perso;
         for (ClientState state : p_states) {
             PersoPlayer zildo = state.zildo;
-            Perso damager = p_colli.perso;
             // Zildo can't damage himself, excepted with explosion
             if (zildo != null && (damager == null || !damager.equals(zildo) || p_colli.damageType == DamageType.EXPLOSION)) {
                 checkZildoWound(state.zildo, p_colli);
             }
+        }
+        // Check collision for characters woundable by enemies
+        // Same side than hero, but not him (exemple: coal)
+        for (Perso p : EngineZildo.persoManagement.tab_perso) {
+        	if (p.getInfo() == PersoInfo.ZILDO && !p.isZildo()) {
+                checkZildoWound(p, p_colli);
+        	}
         }
     }
 
@@ -180,7 +187,7 @@ public class CollideManagement {
      * @param p_zildo
      * @param p_colli
      */
-    public void checkZildoWound(PersoPlayer p_zildo, Collision p_colli) {
+    public void checkZildoWound(Perso p_zildo, Collision p_colli) {
         Collision zildoCollision = p_zildo.getCollision();
 
         if ((p_colli.perso == null || !p_colli.perso.isWounded()) && checkColli(p_colli, zildoCollision)) {

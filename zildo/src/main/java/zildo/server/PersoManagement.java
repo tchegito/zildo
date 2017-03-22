@@ -32,6 +32,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoBat;
+import zildo.monde.sprites.persos.PersoCoal;
 import zildo.monde.sprites.persos.PersoFireThing;
 import zildo.monde.sprites.persos.PersoFish;
 import zildo.monde.sprites.persos.PersoFlyingSerpent;
@@ -269,6 +270,9 @@ public class PersoManagement {
 				break;
 			case DRAGON:
 				perso = new PersoDragon(x, y);
+				break;
+			case COAL:
+				perso = new PersoCoal();
 				break;
 			default:
 				//throw new RuntimeException("Desc should be defined for any character !");

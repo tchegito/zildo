@@ -63,7 +63,10 @@ import zildo.server.EngineZildo;
 public abstract class Perso extends Element {
 
 	public enum PersoInfo {
-		NEUTRAL, ENEMY, ZILDO, SHOOTABLE_NEUTRAL;
+		NEUTRAL,			// Hero can talk to 
+		ENEMY, 				// Hero can attack
+		ZILDO,				// Enemy can attack (hero or damageable entity, like coal) 
+		SHOOTABLE_NEUTRAL;	// Hero can attack (hen, duck)
 	}
 
 	protected Zone zone_deplacement;
