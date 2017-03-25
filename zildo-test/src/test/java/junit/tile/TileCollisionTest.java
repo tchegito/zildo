@@ -19,6 +19,7 @@
 
 package junit.tile;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import tools.EngineUT;
@@ -28,11 +29,13 @@ import org.junit.Assert;
 import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
 import zildo.monde.map.TileCollision;
+import zildo.monde.map.TileInfo;
 import zildo.monde.map.Case.TileLevel;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
 
 public class TileCollisionTest extends EngineUT {
@@ -57,10 +60,13 @@ public class TileCollisionTest extends EngineUT {
 			 "0000000000000000",
 			 "0000000000000000"};
 
+	@Before
+	public void init() {
+		tileCollision = TileCollision.getInstance();
+	}
+	
 	@Test
 	public void halfCorner() {
-		tileCollision = TileCollision.getInstance();
-		
 		checkValues(256 + 37, halfCorner, Reverse.NOTHING, Rotation.NOTHING);
 		checkValues(256 + 36, halfCorner, Reverse.HORIZONTAL, Rotation.NOTHING);
 	}
@@ -83,12 +89,64 @@ public class TileCollisionTest extends EngineUT {
 			 "0000000000000000",
 			 "0000000000000000"};
 	
+	private String[] corner = { 
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000000000000",
+			 "0000000011111111",
+			 "0000000011111111",
+			 "0000000011111111",
+			 "0000000011111111",
+			 "0000000011111111",
+			 "0000000011111111",
+			 "0000000011111111",
+			 "0000000011111111"};
+	
 	@Test
 	public void halfAngle() {
-		tileCollision = TileCollision.getInstance();
 		checkValues(256*10 + 13, halfAngle, Reverse.NOTHING, Rotation.CLOCKWISE);
 	}
 
+	@Test
+	public void border() {
+		TileInfo ti = new TileInfo();
+		ti.template = TileInfo.Template.QUARTER;
+		ti.inverse = true;
+		ti.blockAngle = Angle.NORD;
+		System.out.println(ti.hashCode());
+		
+		Assert.assertEquals(ti, TileInfo.fromInt(ti.hashCode()));
+		draw(ti);
+		
+		ti = new TileInfo();
+		ti.template = TileInfo.Template.CORNER;
+		ti.blockAngle = Angle.SUDEST;
+		ti.inverse = true;
+		System.out.println(ti.hashCode());
+		Assert.assertEquals(ti, TileInfo.fromInt(ti.hashCode()));
+		draw(ti);
+	}
+	
+	private void draw(TileInfo ti) {
+		for (int y=0;y<16;y++) {
+			for (int x=0;x<16;x++) {
+				System.out.print(ti.collide(x, y) ? "1" : "0");
+			}
+			System.out.println();
+		}
+	}
+	
+	@Test
+	public void corner() {
+		TileInfo ti = tileCollision.getTileInfo(1005);
+		checkValues(1005, corner, Reverse.VERTICAL, Rotation.NOTHING);
+	}
+	
 	private void checkValues(int nTile, String[] value, Reverse rev, Rotation rot) {
 		for (int y=0;y<16;y++) {
 			String i = value[y];

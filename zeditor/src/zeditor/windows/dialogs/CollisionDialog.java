@@ -53,15 +53,15 @@ public class CollisionDialog extends JDialog {
 
 	final MasterFrameManager manager;
 
-	// Py every collision template at a user-friendly' location
+	// Put every collision template at a user-friendly' location
 	final int[][] disposition = {
-			{ -1, -1, -1, -1, 6, -1,- 1, -1, -1},
+			{ -1, -1, -1, -1, 6, 14,- 1, -1, -1},
 			{ -1, 90, 115, 117, 4, 69, 67, 106, -1 },
 			{ -1, 98, 116, 91, 7, 107, 68, 82, -1 },
 			{ 54, 52, 125, 109, 1, 77, 93, 20, 22 },
-			{ -1, 114, 100, 75, 0, 123, 84, 66, -1 },
+			{ 62, 114, 100, 75, 0, 123, 84, 66, 30 },
 			{ -1, 74, 99, 101, 36, 85, 83, 122, -1 },
-			{ -1, -1, -1, -1, 38, -1,- 1, -1, -1}};
+			{ -1, -1, -1, -1, 38, 46,- 1, -1, -1}};
 
 	public CollisionDialog(MasterFrameManager p_manager, TileSelection p_tileSel, Image p_img) {
 		setLayout(new BorderLayout());

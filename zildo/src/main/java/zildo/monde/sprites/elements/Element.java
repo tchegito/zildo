@@ -253,6 +253,8 @@ public class Element extends SpriteEntity {
 				manageCollision();
 			}
 			int subY = getSprModel().getTaille_y() >> 1;
+			// TODO: it would be good to squeeze collision check for element not involved into, like sewer smoke
+			// or any animation sprite
 			if (!partOfPerso && EngineZildo.mapManagement.collide(x, y-subY, this)) {
 				if (desc.isSliping()) {
 					float movedX = x; float movedY = y-subY;

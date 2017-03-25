@@ -40,12 +40,19 @@ public class Tile implements Cloneable {
 	public Rotation rotation = Rotation.NOTHING;
 	
 	public enum TileNature {
-		BOTTOMLESS,	// Lava
-		BOTTOMFLOOR, // Fall but there's a floor under
-		WATER,	// Deep water, where character has to swim
-		WATER_MUD,	// Little mud, where character can walk
-		BUSH,	// A bushes (falling on it will cause it to blow)
-		SWAMP,	// Swamp (squirrel can jump lower than on regular tiles)
+		/** Lava **/ 
+		BOTTOMLESS,	
+		/** Fall but there's a floor under, on another map **/ 
+		BOTTOMFLOOR, 
+		BOTTOMJUMP,
+		/** Deep water, where character has to swim**/ 
+		WATER,	
+		/** Little mud, where character can walk **/ 
+		WATER_MUD,	
+		/** A bushes (falling on it will cause it to blow) **/
+		BUSH,	
+		/** Swamp (squirrel can jump lower than on regular tiles) **/
+		SWAMP, 
 		REGULAR;
 	};
 
@@ -143,12 +150,27 @@ public class Tile implements Cloneable {
 	
 	public static boolean isBottomLess(int value) {
 		// Means that hero fall and have to lost HP
-		return (value == 256 * 3 + 217 || value == 41 + 256 * 9 || value == 256*10 + 34 || value == 256*10 + 7 || value == 256*10 + 6 || value == 108);
+		switch (value) {
+		case 256 * 3 + 217:
+		case 41 + 256 * 9:
+		case 256*10 + 34:
+		case 256*10 + 7:
+		case 256*10 + 6:
+		case 108:
+			return true;
+		default:
+			return false;
+		}
 	}
 	
 	public static boolean isBottomFloor(int value) {
 		// Means that hero will fall on another map's floor
 		return value == 256*3 + 125;
+	}
+	
+	public static boolean isBottomJump(int value) {
+		// Means that hero will fall on another map's floor
+		return value == 256 * 6 + 35;
 	}
 	
 	/** Returns TRUE if given tile value could raise/lower hero from one floor to another (ex:ladder)

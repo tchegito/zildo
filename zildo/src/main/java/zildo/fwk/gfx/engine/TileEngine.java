@@ -32,6 +32,7 @@ import zildo.monde.map.Tile;
 import zildo.monde.map.Case.TileLevel;
 import zildo.monde.map.accessor.AreaAccessor;
 import zildo.monde.map.accessor.OneFloorAreaAccessor;
+import zildo.monde.map.accessor.SpecificFloorAreaAccesor;
 import zildo.monde.map.accessor.AreaAccessor.AccessedCase;
 import zildo.monde.util.Point;
 import zildo.resource.Constantes;
@@ -238,6 +239,10 @@ public abstract class TileEngine {
 					dy = offset.y >> 4;
 				}
 
+				// AreaAccessor will get only the highest floor, in game rendering
+				// In ZEditor, we allow specific floor to be rendered, to allow a good editing XP
+				// But for each tile, only 1 floor will be rendered, considering BACK tile override the one
+				// for previous floor. There's an exception with tileValue=256+251 (see Dragon cave)
 				areaAccessor.setArea(theMap);
 				
 				for (int ay = 0; ay < sizeY; ay++)
@@ -258,7 +263,9 @@ public abstract class TileEngine {
 						int n_motif = 0;
 						// Get corresponding case on the map
 
-						AccessedCase accCase = areaAccessor.get_mapcase((x+dx) % dx, (y+dy) % dy);
+						int mapX = (x+dx) % dx;
+						int mapY = (y+dy) % dy;
+						AccessedCase accCase = areaAccessor.get_mapcase(mapX, mapY);
 						Case mapCase = accCase.c;
 						int floor = accCase.floor;
 						
@@ -270,7 +277,14 @@ public abstract class TileEngine {
 								changed = true;
 								back.renderedIndex = n_motif;
 							}
-							meshBACK.updateTile(back, x, y, floor, n_motif, changed);
+							// Only in game (SpecificFloorAccessor is for ZEditor), we exclude BACK tile from an upper floor
+							// This allows us to draw floor above the lower one
+							if (back.getValue() == 256 * 6 + 35 && !(areaAccessor instanceof SpecificFloorAreaAccesor)) {
+								back = theMap.get_mapcase(mapX, mapY, floor-1).getBackTile();
+								meshBACK.updateTile(back, x, y, floor-1, back.getValue(), changed);
+							} else {
+								meshBACK.updateTile(back, x, y, floor, n_motif, changed);
+							}
 							
 							Tile back2 = mapCase.getBackTile2();
 							if (back2 != null) {

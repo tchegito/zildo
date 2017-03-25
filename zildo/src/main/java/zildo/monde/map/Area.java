@@ -308,7 +308,9 @@ public class Area implements EasySerializable {
 		if (Tile.isBottomLess(val)) {
 			return TileNature.BOTTOMLESS;
 		}
-		
+		if (Tile.isBottomJump(val)) {
+			return TileNature.BOTTOMJUMP;
+		}
 		if (val == Tile.T_BUSH) {
 			return TileNature.BUSH;
 		} else if (val == Tile.T_WATER_FEW) {

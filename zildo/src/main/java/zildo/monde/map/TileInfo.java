@@ -117,7 +117,11 @@ public class TileInfo {
 			return result;
 
 		case QUARTER:
-			return collideQuarter(blockAngle, p_posX, p_posY);
+			result =  collideQuarter(blockAngle, p_posX, p_posY);
+			if (inverse) {
+				result = !result;
+			}
+			return result;
 			
 		case CUSTOM:
 			return collideCustom(blockAngle, p_posX, p_posY);
@@ -261,7 +265,7 @@ public class TileInfo {
 				t.template = Template.values()[p_value & 7];
 				t.inverse = (p_value & 8) != 0 ? true : false;
 				t.blockAngle = Angle.fromInt(p_value >> 4);
-				if (t.template == Template.QUARTER && (t.inverse || t.blockAngle.value > 3)) {
+				if (t.template == Template.QUARTER && t.blockAngle.value > 3) {
 					return null;
 				}
 				if ((t.template == Template.CORNER || t.template == Template.CORNER_DIAGONAL) && !t.blockAngle.isDiagonal()) {

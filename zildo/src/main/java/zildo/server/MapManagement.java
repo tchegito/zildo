@@ -527,6 +527,10 @@ public class MapManagement {
 	public Angle getAngleJump(Angle angle, int cx, int cy) {
 		Area area = getCurrentMap();
 		int onMapCurrent = area.readmap(cx, cy);
+		// Allow jump with nature "BOTTOMJUMP" (see Dragon cave)
+		if (area.getCaseNature(cx*16, cy*16) == TileNature.BOTTOMJUMP) {
+			return angle;
+		}
 		int onMap = 0;
 		Angle result = null;
 		switch (onMapCurrent) {
