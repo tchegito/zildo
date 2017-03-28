@@ -160,7 +160,7 @@
 		</action>
 	</quest>
 	
-	<quest name="start_defi1">
+	<quest name="start_defi1" locked="false">
 		<trigger>
 			<location name="prisonext" pos="647,455" radius="2"/>
 		</trigger>
@@ -169,7 +169,7 @@
 		</action>
 	</quest>
 	
-	<quest name="stop_defi1">
+	<quest name="stop_defi1" locked="false">
 		<trigger>
 		    <location name="prisonext"/>
 			<inventory item="SWORD"/>
