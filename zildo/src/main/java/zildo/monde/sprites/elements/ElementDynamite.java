@@ -26,6 +26,7 @@ import zildo.monde.collision.Collision;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
@@ -63,6 +64,19 @@ public class ElementDynamite extends Element {
 					(int) y, ImpactKind.EXPLOSION, shooter));
 			// Detection of explodable walls
 			EngineZildo.mapManagement.getCurrentMap().explodeTile(new Point(x, y), true, null);
+			
+			// Detection of explodable boulders
+			Element boulder = EngineZildo.spriteManagement.collideElement((int) x, (int) y, null, 12, 
+					ElementDescription.STONE_HEAVY);
+			if (boulder != null) {
+				boulder.vx = 1.2f;
+				boulder.vy = 1.1f;
+				boulder.az = -0.08f;
+				boulder.vz = 2.8f;
+				boulder.z = 2;
+				boulder.flying = true;	// Flying object need angle
+				boulder.angle = Angle.EST;
+			}
 		} else if (counter < 30) {
 			setSpecialEffect(EngineFX.PERSO_HURT);
 		}

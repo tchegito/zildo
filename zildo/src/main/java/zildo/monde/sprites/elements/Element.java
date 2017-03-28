@@ -795,6 +795,10 @@ public class Element extends SpriteEntity {
 	public DamageType getDamageType() {
 		if (desc == ElementDescription.PEEBLE) {
 			return DamageType.PEEBLE;
+		} else if (desc == ElementDescription.SEWER_VOLUT1) {
+			return DamageType.POISON;
+		} else if (desc == ElementDescription.STONE_HEAVY) {
+			return DamageType.BIG_BLUNT;
 		}
 		return DamageType.BLUNT;	// Default
 	}

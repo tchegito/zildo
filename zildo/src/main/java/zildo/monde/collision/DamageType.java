@@ -30,10 +30,10 @@ public enum DamageType {
 	// Interesting to have another scale of damage depending on the weapon. We could add or multiply such damages scores.
 	
 	HARMLESS,	// Useful for peebles
-	BLUNT, // Thrown object (pots, boomerang, ...)
+	BLUNT, // Thrown object (pots, boomerang, ...) and beginning of hero's sword attack
+	BIG_BLUNT,	// Big stones (to hurt dragon)
 	PEEBLE, // From peeble
 	PIERCING, // Arrow
-	CUTTING, // Sword
 	CUTTING_FRONT, // Sword just in front of character
 	EXPLOSION, // Bomb
 	SMASH, // Hammer
@@ -41,7 +41,7 @@ public enum DamageType {
 	POISON;
 	
 	public boolean isCutting() {
-		return CUTTING==this || CUTTING_FRONT==this || EXPLOSION==this; 
+		return CUTTING_FRONT==this || EXPLOSION==this; 
 	}
 	
 	// Calculate the right HP loss, considering character's affections

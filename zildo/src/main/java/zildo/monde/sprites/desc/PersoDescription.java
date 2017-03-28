@@ -230,6 +230,8 @@ public enum PersoDescription implements SpriteDescription {
 			}
 		} else if (this == FIRE_ELEMENTAL) {
 			return true;
+		} else if (this == PersoDescription.DRAGON) {
+			return dmgType != DamageType.BIG_BLUNT;	// Only a big rock can hurt dragon
 		}
 		return false;
 	}
@@ -269,6 +271,7 @@ public enum PersoDescription implements SpriteDescription {
 		case TURRET:
 		case TURRET_HEART:
 		case BRAMBLE:
+		case DRAGON:
 			return false;
 			default:
 				return true;

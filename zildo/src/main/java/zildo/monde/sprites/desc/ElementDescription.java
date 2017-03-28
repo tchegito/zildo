@@ -233,6 +233,7 @@ public enum ElementDescription implements SpriteDescription {
 		}
 	}
 
+	/** Note: a sprite will be considered as {@link Element} if this method returns TRUE. Otherwise, it will be a {@link SpriteEntity}. **/
 	public boolean isPushable() {
 		switch (this) {
 		case CUBE_BLUE:

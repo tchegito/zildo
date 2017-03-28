@@ -19,6 +19,8 @@
 
 package zildo.monde.sprites.persos.boss;
 
+import zildo.client.sound.BankSound;
+import zildo.fwk.gfx.EngineFX;
 import zildo.monde.Bezier3;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -57,8 +59,6 @@ public class PersoDragon extends PersoNJ {
 	ElementProjectile fireBalls;
 	boolean shapeInitialized = false;
 	
-	boolean spittingFire = true;
-	
 	Perso focusedEnemy;
 	
 	public PersoDragon(int x, int y) {
@@ -77,13 +77,13 @@ public class PersoDragon extends PersoNJ {
 			neck.lineShape(seq.length);
 			shapeInitialized = true;
 			// Make head and upper wing parts higher
-			/*
+			
 			neck.elems.get(6).floor++;
 			neck.elems.get(7).floor++;
 			neck.elems.get(8).floor++;
 			neck.elems.get(11).floor++;
 			neck.elems.get(12).floor++;
-			*/
+			
 			// Name each part (to be able to use them in scripts)
 			int nbSprite = 0;
 			/*
@@ -91,6 +91,11 @@ public class PersoDragon extends PersoNJ {
 				element.setName("s" + (nbSprite++) );
 			}
 			*/
+			for (Element e : neck.elems) {
+				if (e != this) {	// Element 0 is the dragon itself
+					addPersoSprites(e);
+				}
+			}
 		}
 
 		super.animate(compteur_animation);
@@ -101,10 +106,16 @@ public class PersoDragon extends PersoNJ {
 		float xx=x, yy=y, zz=z; 
 		
 		
+		float addYWounded = 0f;
+		float addXWounded = 0f;
+		if (isWounded()) {
+			addYWounded = (float) (10+20*Math.cos(gamma));
+			addXWounded = (float) (10*Math.sin(gamma));
+		}
 		Pointf neckPoint = new Pointf((float) (x + 10*Math.cos(gamma/5)), 
-										(float) ( 60 + 4*Math.sin(gamma*2)) );
-		Pointf headPoint = new Pointf((float) (x + 0*10*Math.sin(gamma)),
-									(float) (neckPoint.y + 5*0 + 0*5*Math.cos(gamma)) );
+										(float) ( 60 + 4*Math.sin(gamma*2)) - addYWounded );
+		Pointf headPoint = new Pointf((float) (x + 0*10*Math.sin(gamma)) + addXWounded,
+									(float) (neckPoint.y + 5*0 + 0*5*Math.cos(gamma)) +addYWounded*1.5f);
 		
 		// 1) Detect Zildo every FOCUS_TIME
 		Perso zildo = null;
@@ -129,9 +140,17 @@ public class PersoDragon extends PersoNJ {
 		//System.out.println("az="+az+" vz="+vz+"z="+z);
 		
 		int wingAddX =0;
+		int floorHead = 1;
 		if (getQuel_deplacement() == MouvementPerso.RETRACTED) {
 			wingAddX += 20;
+			floorHead = 0;
 		}
+		neck.elems.get(6).floor = floorHead;
+		neck.elems.get(7).floor = floorHead;
+		neck.elems.get(8).floor = floorHead;
+		neck.elems.get(11).floor = floorHead;
+		neck.elems.get(12).floor = floorHead;
+		
 		for (int i=0;i<neck.elems.size()-1;i++) {
 			Element e = neck.elems.get(i+1);
 			e.setAddSpr(seq[i]);
@@ -221,16 +240,16 @@ public class PersoDragon extends PersoNJ {
 		}
 		neck.elems.get(1).visible = false;
 		//refElement.setAddSpr(1);
-		visible = false;
-		
-		spittingFire = (cnt % 150) < 20;
+		//visible = false;
+		alpha = 0;
 		
 		if (cnt++ % 150 == 0) {
 			Element h = neck.elems.get(6);
 			Element elem = EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SEWER_SMOKE,
-					(int) h.x, (int) h.y,
+					(int) h.x, (int) (h.y + z),
 					0, 2, this, null);
 			elem.z = h.z + 10;
+			elem.setLinkedPerso(this);
 			elem.setForeground(true);
 		}
 		gamma += 0.08;
@@ -238,7 +257,12 @@ public class PersoDragon extends PersoNJ {
 	
 	@Override
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
-		// For now, no collision can hit the dragon
-		// super.beingWounded(cx, cy, p_shooter, p_damage);
+		super.beingWounded(cx, cy, p_shooter, p_damage);
+		// Extend wounded duration
+		px *= 40000;
+		// Doesn't blink for 'main' invisible sprite
+		specialEffect = EngineFX.NO_EFFECT;
+		EngineZildo.soundManagement.broadcastSound(BankSound.BigRat, this);
+		quel_deplacement = MouvementPerso.SPITFIRE;
 	}
 }

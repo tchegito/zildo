@@ -905,7 +905,7 @@ public abstract class Perso extends Element {
 			// Dirty case: bridge over water. We use collision by back2 data, but instead of falling in a pit
 			// We want player to splash
 			onmap = area.get_mapcase(cx, cy).getBackTile().getValue();
-			if (onmap == 108) {
+			if (onmap == 108) {	// Ponton
 				diveAndWound();
 			} else {
 				// Fall slipping forward

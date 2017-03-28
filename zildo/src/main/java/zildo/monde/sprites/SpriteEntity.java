@@ -81,7 +81,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	protected boolean ghost = false; // TRUE=script control it (here because of Mover things, but
 	// isn't apart the basic structure needed to display on client side
 
-	private EngineFX specialEffect; // Utilisé pour changer la couleur d'un
+	protected EngineFX specialEffect; // Utilisé pour changer la couleur d'un
 									// garde par exemple
 	protected float alpha = 255; // 0..255 alpha channel (we use float for speed/acceleration calculation)
 	public int light = 0xffffff;	/// 0x0RGB where each color is on 8 bits
