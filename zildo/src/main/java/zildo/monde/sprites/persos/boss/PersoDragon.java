@@ -109,8 +109,9 @@ public class PersoDragon extends PersoNJ {
 		float addYWounded = 0f;
 		float addXWounded = 0f;
 		if (isWounded()) {
-			addYWounded = (float) (10+20*Math.cos(gamma));
-			addXWounded = (float) (10*Math.sin(gamma));
+			addYWounded = (float) (10+20*Math.cos(gamma*2));
+			addXWounded = (float) (10*Math.sin(gamma*2));
+			quel_deplacement = MouvementPerso.SPITFIRE;
 		}
 		Pointf neckPoint = new Pointf((float) (x + 10*Math.cos(gamma/5)), 
 										(float) ( 60 + 4*Math.sin(gamma*2)) - addYWounded );
@@ -259,10 +260,9 @@ public class PersoDragon extends PersoNJ {
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 		super.beingWounded(cx, cy, p_shooter, p_damage);
 		// Extend wounded duration
-		px *= 40000;
+		px *= 4000000;
 		// Doesn't blink for 'main' invisible sprite
 		specialEffect = EngineFX.NO_EFFECT;
 		EngineZildo.soundManagement.broadcastSound(BankSound.BigRat, this);
-		quel_deplacement = MouvementPerso.SPITFIRE;
 	}
 }

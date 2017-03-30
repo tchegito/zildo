@@ -533,6 +533,7 @@
         </trigger>
         <action>
             <markQuest name="dragonShouldMove2" value="false"/>
+            <markQuest name="dragonShouldMove3" value="false"/>
         </action>
     </quest>
     <quest name="dragonShouldMove2" locked="false">
@@ -541,7 +542,17 @@
         </trigger>
         <action>
             <markQuest name="dragonShouldMove1" value="false"/>
+            <markQuest name="dragonShouldMove3" value="false"/>
         </action>
+    </quest>
+    <quest name="dragonShouldMove3" locked="false">
+        <trigger>
+            <location name="dragon" pos="792,167" radius="9"/>
+        </trigger>
+        <action>
+            <markQuest name="dragonShouldMove1" value="false"/>
+            <markQuest name="dragonShouldMove2" value="false"/>
+       	</action>
     </quest>
     
 	<mapScript>
@@ -1676,16 +1687,27 @@
 	                <if exp="loc:dragonPos!=1">
 		                <var name="loc:dragonPos" value="1"/>
 		                <markQuest name="dragonShouldMove2" value="false"/>
-		                <exec script="dragonDiveAndReappear(230,439)"/>
+		                <markQuest name="dragonShouldMove3" value="false"/>
+		               	<exec script="dragonDiveAndReappear(230,439)"/>
 	                </if>
 	            </if>
 	            <if expQuest="dragonShouldMove2">
 	                <if exp="loc:dragonPos!=2">
 		                <var name="loc:dragonPos" value="2"/>
 		                <markQuest name="dragonShouldMove1" value="false"/>
+		                <markQuest name="dragonShouldMove2" value="false"/>
 		                <exec script="dragonDiveAndReappear(451,266)"/>
 	                </if>
 	            </if>
+	           	<if expQuest="dragonShouldMove3">
+	                <if exp="loc:dragonPos!=3">
+		                <var name="loc:dragonPos" value="3"/>
+		                <markQuest name="dragonShouldMove1" value="false"/>
+		                <markQuest name="dragonShouldMove2" value="false"/>
+		                <exec script="dragonDiveAndReappear(724,282)"/>
+	                </if>
+	            </if>
+	            
    	   	    </for>
 	    </loop>
    	</persoAction>
