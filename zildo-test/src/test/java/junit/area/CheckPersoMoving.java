@@ -75,6 +75,5 @@ public class CheckPersoMoving extends EngineUT {
 		verify(zildo, times(1)).diveAndWound();
 		// Check that according script has been launched
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("dieInWater"));
-		// Save during jump ?
 	}
 }
