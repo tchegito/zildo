@@ -148,7 +148,7 @@ public class Tile implements Cloneable {
 		}
 	}
 	
-	public static boolean isBottomLess(int value) {
+	public static boolean isBottomLess(int value, int back2Value) {
 		// Means that hero fall and have to lost HP
 		switch (value) {
 		case 256 * 3 + 217:
@@ -156,8 +156,9 @@ public class Tile implements Cloneable {
 		case 256*10 + 34:
 		case 256*10 + 7:
 		case 256*10 + 6:
-		case 108:
 			return true;
+		case 108:	// 'Ponton' case: consider bottomless only if 'back2' tile exists
+			return back2Value != -1;
 		default:
 			return false;
 		}

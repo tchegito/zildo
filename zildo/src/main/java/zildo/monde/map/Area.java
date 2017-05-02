@@ -302,10 +302,12 @@ public class Area implements EasySerializable {
 		
 		// 1: bottom less (we have to read the BACK tile
 		int val = temp.getBackTile().getValue();
+		Tile back2 = temp.getBackTile2();
+		int back2Val = back2 == null ? -1 : back2.getValue();
 		if (Tile.isBottomFloor(val)) {
 			return TileNature.BOTTOMFLOOR;
 		}
-		if (Tile.isBottomLess(val)) {
+		if (Tile.isBottomLess(val, back2Val)) {
 			return TileNature.BOTTOMLESS;
 		}
 		if (Tile.isBottomJump(val)) {
@@ -321,9 +323,7 @@ public class Area implements EasySerializable {
 			// Make double check with following 'if' clause
 		} else {
 			// 2: water (could be on back or back2)
-			if (temp.getBackTile2() != null) {
-				val = temp.getBackTile2().getValue();
-			}
+			val = back2Val == -1 ? val : back2Val;
 		}
 		
 		if (val == Tile.T_WATER_MUD) {
@@ -349,7 +349,7 @@ public class Area implements EasySerializable {
 		}
 		int val = temp.getBackTile().getValue();
 		// As a temporary feature : 108 means water coast, to allow smarter 'ponton' collision
-		if (Tile.isBottomLess(val) || val == 108) {
+		if (Tile.isBottomLess(val, -1) || val == 108) {
 			return true;
 		}
 		return false;
