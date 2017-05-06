@@ -104,7 +104,7 @@ public class Game implements EasySerializable {
 				nbQuest++;
 			}
 		}
-		p_buffer.put(nbQuest | 0x800);	// Signal version 2.19 minimum
+		p_buffer.put(nbQuest | 0x1800);	// Signal version 2.19 minimum && 2.29
 		for (QuestElement quest : quests) {
 			if (quest.done) {
 				p_buffer.put(quest.name);
@@ -180,6 +180,9 @@ public class Game implements EasySerializable {
         	record.serialize(p_buffer);
         }
         
+        // 10: hero's Z coordinate
+        p_buffer.put((int) zildo.getZ()); 
+        
         // Backup quest state to restore if hero dies
         EngineZildo.setBackedUpGame(p_buffer);
 	}
@@ -197,6 +200,7 @@ public class Game implements EasySerializable {
             // 1: quest diary
             int questNumber = p_buffer.readInt();
             boolean version2x19 = (questNumber & 0x800) != 0;	// Flag indicating version post 2.18
+            boolean version2x29 = (questNumber & 0x1000) != 0;	// Flag indicating version post 2.29
             questNumber = questNumber & 0x7ff;
             for (int i = 0; i < questNumber; i++) {
                 String questName = p_buffer.readString();
@@ -324,6 +328,11 @@ public class Game implements EasySerializable {
             		HistoryRecord record = HistoryRecord.deserialize(p_buffer);
             		game.lastDialog.add(record);
         		}
+        	}
+        	
+        	// 10: hero's Z coordinate
+        	if (version2x29) {
+        		zildo.setZ(p_buffer.readInt());
         	}
         	
             EngineZildo.mapManagement.setStartLocation(loc, a, startFloor);

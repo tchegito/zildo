@@ -66,6 +66,23 @@ public class SavegameTest extends EngineUT {
 	}
 	
 	@Test
+	public void preserveZ() {
+		mapUtils.loadMap("sousbois6");
+		PersoPlayer zildo = spawnZildo(244, 171);
+		zildo.z = 8;
+		// Save
+		EasyBuffering buffer = new EasyBuffering(5000);
+		EngineZildo.game.serialize(buffer);
+		
+		// Remove characters (including hero)
+		EngineZildo.persoManagement.clearPersos(true);
+		
+		// Reload
+		Game reloaded = Game.deserialize(buffer, false);
+		Assert.assertEquals(8,  (int) EngineZildo.persoManagement.getZildo().getZ());
+	}
+	
+	@Test
 	public void createSavedGame() {
 		mapUtils.loadMap("voleurs");
 		PersoPlayer zildo = spawnZildo(137, 942);
