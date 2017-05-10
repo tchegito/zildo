@@ -121,7 +121,7 @@ public class PersoDragon extends PersoNJ {
 		// 1) Detect Zildo every FOCUS_TIME
 		Perso zildo = null;
 		if (cnt % FOCUS_TIME == 0) {
-			zildo = EngineZildo.persoManagement.lookForOne(this, 10, PersoInfo.ZILDO, false);
+			zildo = EngineZildo.persoManagement.lookForOne(this, 18, PersoInfo.ZILDO, false);
 			if (zildo != null) {
 				Vector2f dist = new Vector2f(headPoint, new Pointf(zildo.x, zildo.y));
 				float norme = dist.norm();
@@ -259,10 +259,20 @@ public class PersoDragon extends PersoNJ {
 	@Override
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 		super.beingWounded(cx, cy, p_shooter, p_damage);
+		// Cut dragon actions, especially when he spits fire
+		EngineZildo.scriptManagement.stopPersoAction(this);
 		// Extend wounded duration
 		px *= 4000000;
 		// Doesn't blink for 'main' invisible sprite
 		specialEffect = EngineFX.NO_EFFECT;
 		EngineZildo.soundManagement.broadcastSound(BankSound.BigRat, this);
+	}
+	
+	@Override
+	public void stopBeingWounded() {
+		super.stopBeingWounded();
+		// Restart his behavior
+		EngineZildo.scriptManagement.runPersoAction(this, "bossDragon", null);
+		
 	}
 }

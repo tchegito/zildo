@@ -85,7 +85,9 @@ public class LavaCave extends Banque {
 				// Corner rock walls
 				{80, 96},{96, 96}, {80, 112}, {96, 112},
 				// Lever on left
-				{256, 32}
+				{256, 32},
+				// Special tile for back2-fore misconception reason
+				{48, 80}
 		};
 				
 		coordsInt = c;

@@ -76,6 +76,12 @@ public class ElementDynamite extends Element {
 				boulder.z = 2;
 				boulder.flying = true;	// Flying object need angle
 				boulder.angle = Angle.EST;
+				// Inverse angle if dynamite is on the opposite
+				if (boulder.x < x) {
+					boulder.vx = -boulder.vx;
+					boulder.angle = Angle.OUEST;
+				}
+				
 			}
 		} else if (counter < 30) {
 			setSpecialEffect(EngineFX.PERSO_HURT);

@@ -534,15 +534,17 @@
         <action>
             <markQuest name="dragonShouldMove2" value="false"/>
             <markQuest name="dragonShouldMove3" value="false"/>
+            <markQuest name="dragonShouldMove4" value="false"/>
         </action>
     </quest>
     <quest name="dragonShouldMove2" locked="false">
         <trigger>
-            <location name="dragon" pos="423,279" radius="9"/>
+            <location name="dragon" pos="423,279" radius="7"/>	<!--  9 -->
         </trigger>
         <action>
             <markQuest name="dragonShouldMove1" value="false"/>
             <markQuest name="dragonShouldMove3" value="false"/>
+            <markQuest name="dragonShouldMove4" value="false"/>
         </action>
     </quest>
     <quest name="dragonShouldMove3" locked="false">
@@ -552,6 +554,17 @@
         <action>
             <markQuest name="dragonShouldMove1" value="false"/>
             <markQuest name="dragonShouldMove2" value="false"/>
+            <markQuest name="dragonShouldMove4" value="false"/>
+       	</action>
+    </quest>
+    <quest name="dragonShouldMove4" locked="false">
+        <trigger>
+            <location name="dragon" pos="167,183" radius="9"/>
+        </trigger>
+        <action>
+            <markQuest name="dragonShouldMove1" value="false"/>
+            <markQuest name="dragonShouldMove2" value="false"/>
+            <markQuest name="dragonShouldMove3" value="false"/>
        	</action>
     </quest>
     
@@ -560,83 +573,7 @@
             <location name="cavef8" pos="159,226" radius="1"/>
         </trigger>
         <action>
-            <script who="zildo" text="VIDE"/>
-            <speak what="zildo" text="cavef8.beforeDragon"/>
-            <script who="zildo" value="0"/>
-            <music/>
-            <wait value="50"/>
-            <moveTo who="zildo" pos="0,24" delta="true" speed="0.5" unblock="true"/>
-            <wait value="10"/>
-            <fadeOut type="0"/>
-            <wait value="100"/>
-            <map name="dragon"/>
-            <pos who="dragon" pos="230,567"/>
-            <pos who="zildo" pos="496,23"/>
-            <fadeIn type="0"/>
-            <moveTo who="zildo" pos="0,32" delta="true"/>
-            <wait value="30"/>
-            <moveTo who="zildo" pos="496,125" speed="1.5"/>
-            <wait value="20"/>
-            <angle who="zildo" value="3"/>
-            <wait value="30"/>
-            <angle who="zildo" value="1"/>
-            <wait value="20"/>
-            <angle who="zildo" value="2"/>
-            <wait value="30"/>
-            <moveTo who="zildo" pos="496,185" unstoppable="true"/>
-            <music name="Voleurs"/>
-            <sound name="ZildoPousse"/>
-            <filter type="4"/>
-            <wait value="20"/>
-            <sound name="ZildoPousse"/>
-            <filter type="0"/>
-            <spawn type="STONE_HEAVY" pos="450,185" z="80" az="-0.1"/>
-            <wait value="20"/>
-            <sound name="BigRat"/>
-            <spawn type="STONE_HEAVY" pos="598,124" z="90" az="-0.1"/>
-            <wait value="5"/>
-            <spawn type="STONE_HEAVY" pos="467,116" z="80" az="-0.1"/>
-            <tile pos="0,0" action="makeCloudsDragon"/>
-            <tile pos="0,0" action="fallRocks"/>
-            <wait value="5"/>
-            <spawn type="STONE_HEAVY" pos="496,195" z="80" az="-0.1"/> <!-- Rock falls on hero -->
-            <sound name="BigRat"/>
-            <moveTo who="zildo" pos="-40,12" speed="2.2" delta="true"/>
-            <angle who="zildo" value="0"/>
-            <wait value="20"/>
-            <moveTo who="zildo" pos="0,16" speed="0.8" delta="true" backward="true"/>
-            
-            <wait value="50"/>
-            <!-- Remove the first rock platform, to block hero's exit -->
-            <actions>
-	           <spawn type="SMOKE" pos="497,116" zoom="800" alphaA="-0.1"/>
-	           <spawn type="SMOKE" pos="457,126" zoom="810" alphaA="-0.1"/>
-	           <spawn type="SMOKE" pos="527,130" zoom="830" alphaA="-0.1"/>
-	           <spawn type="SMOKE" pos="500,150" zoom="850" alphaA="-0.1"/>
-           </actions>
-            
-            <!-- Remove platform -->
-            <for var="loc:j" value="3">
-	        	<for var="loc:i" value="6">
-	           		<tile pos="28+loc:i,6+loc:j" back="256*10 + 34" back2="-1"/>
-	        	</for>
-            </for>
-            <actions>
-	            <tile pos="28,9" back2="-1"/>
-	            <tile pos="29,9" back2="-1"/>
-	            <tile pos="30,9" back="256*10+34"/>
-	            <tile pos="31,9" back="256*10+34"/>
-	            <tile pos="32,9" back2="-1"/>
-	            <tile pos="33,9" back2="-1"/>
-	        </actions>
-   		    <perso who="dragon" action="bossDragon"/>
-	        <for var="loc:i" value="40">
-			    <animation type="LAVA_DROP" pos="451 + random*80, 100 + random*48"/>
-			    <if exp="dice10>4">
-			        <wait value="1"/>
-			    </if>
-	        </for>
-            <exec script="dragonDiveAndReappear(451,394)"/>
+            <exec script="heroMeetDragon"/>
         </action>
     </quest>
 
@@ -805,6 +742,9 @@
 		    <remove chaining="dragon"/>
 		</condition>
 		<condition name="dragon">
+		<!--
+		    <perso who="dragon" action="bossDragon"/>
+		-->
 		</condition>
 	</mapScript>
 		
@@ -1780,14 +1720,19 @@
 	    <loop>
 		    <for var="loc:j" value="2">
 			    <sound name="SerpentSpit"/>
-			    <script who="self" value="19"/>
-   	            <for var="loc:i" value="5">
-   	                <!-- Remains to reverse fireball sprites, if targeted on the left -->
-				    <throw who="self" pos="x, y-60" to="zildo.x,zildo.y" speed="1.8" floor="2"
-					      		 	   type="FIRE_BALL" zoom="127" foreground="true"/>
-   				    <wait value="3"/>
-	            </for>
-	            <script who="self" value="3"/>
+			    <!-- Save dragon location, because in 'lookFor' block, x and y vars means hero's location -->
+			    <var name="loc:dragonX" value="x"/>
+			    <var name="loc:dragonY" value="y"/>
+  				<lookFor who="self" info="ZILDO" radius="18">
+				    <script who="self" value="19"/>
+   	   	            <for var="loc:i" value="5">
+	   	                <!-- Remains to reverse fireball sprites, if targeted on the left -->
+					    <throw who="self" pos="loc:dragonX, loc:dragonY-60" to="zildo.x,zildo.y" speed="1.8" floor="2"
+						      		 	   type="FIRE_BALL" zoom="127" foreground="true"/>
+	   				    <wait value="3"/>
+		            </for>
+	   	            <script who="self" value="3"/>
+   				</lookFor>
 	            <wait value="140"/>
 	            
 	            <!-- Check if dragon has to move -->
@@ -1796,15 +1741,17 @@
 		                <var name="loc:dragonPos" value="1"/>
 		                <markQuest name="dragonShouldMove2" value="false"/>
 		                <markQuest name="dragonShouldMove3" value="false"/>
-		               	<exec script="dragonDiveAndReappear(230,567)"/>
+		                <markQuest name="dragonShouldMove4" value="false"/>
+   		               	<exec script="dragonDiveAndReappear(230,567)"/>
 	                </if>
 	            </if>
 	            <if expQuest="dragonShouldMove2">
 	                <if exp="loc:dragonPos!=2">
 		                <var name="loc:dragonPos" value="2"/>
 		                <markQuest name="dragonShouldMove1" value="false"/>
-		                <markQuest name="dragonShouldMove2" value="false"/>
-		                <exec script="dragonDiveAndReappear(451,394)"/>
+		                <markQuest name="dragonShouldMove3" value="false"/>
+		                <markQuest name="dragonShouldMove4" value="false"/>
+   		                <exec script="dragonDiveAndReappear(451,394)"/>
 	                </if>
 	            </if>
 	           	<if expQuest="dragonShouldMove3">
@@ -1812,10 +1759,19 @@
 		                <var name="loc:dragonPos" value="3"/>
 		                <markQuest name="dragonShouldMove1" value="false"/>
 		                <markQuest name="dragonShouldMove2" value="false"/>
+		                <markQuest name="dragonShouldMove4" value="false"/>
 		                <exec script="dragonDiveAndReappear(724,410)"/>
 	                </if>
 	            </if>
-	            
+	            <if expQuest="dragonShouldMove4">
+	                <if exp="loc:dragonPos!=4">
+		                <var name="loc:dragonPos" value="4"/>
+		                <markQuest name="dragonShouldMove1" value="false"/>
+		                <markQuest name="dragonShouldMove2" value="false"/>
+		                <markQuest name="dragonShouldMove3" value="false"/>
+		                <exec script="dragonDiveAndReappear(215,280)"/>
+	                </if>
+	            </if>
    	   	    </for>
 	    </loop>
    	</persoAction>
@@ -1838,5 +1794,84 @@
    	    <wait value="20"/>
    	    <perso who="dragon" z="0" az="0" vz="0"/>
 	</scene>
-			    	
+			
+	<scene id="heroMeetDragon">
+	    <script who="zildo" text="VIDE"/>
+	    <speak what="zildo" text="cavef8.beforeDragon"/>
+	    <script who="zildo" value="0"/>
+	    <music/>
+	    <wait value="50"/>
+	    <moveTo who="zildo" pos="0,24" delta="true" speed="0.5" unblock="true"/>
+	    <wait value="10"/>
+	    <fadeOut type="0"/>
+	    <wait value="100"/>
+	    <map name="dragon"/>
+	    <pos who="dragon" pos="230,567"/>
+	    <pos who="zildo" pos="496,23"/>
+	    <fadeIn type="0"/>
+	    <moveTo who="zildo" pos="0,32" delta="true"/>
+	    <wait value="30"/>
+	    <moveTo who="zildo" pos="496,125" speed="1.5"/>
+	    <wait value="20"/>
+	    <angle who="zildo" value="3"/>
+	    <wait value="30"/>
+	    <angle who="zildo" value="1"/>
+	    <wait value="20"/>
+	    <angle who="zildo" value="2"/>
+	    <wait value="30"/>
+	    <moveTo who="zildo" pos="496,185" unstoppable="true"/>
+	    <music name="Voleurs"/>
+	    <sound name="ZildoPousse"/>
+	    <filter type="4"/>
+	    <wait value="20"/>
+	    <sound name="ZildoPousse"/>
+	    <filter type="0"/>
+	    <spawn type="STONE_HEAVY" pos="450,185" z="80" az="-0.1"/>
+	    <wait value="20"/>
+	    <sound name="BigRat"/>
+	    <spawn type="STONE_HEAVY" pos="598,124" z="90" az="-0.1"/>
+	    <wait value="5"/>
+	    <spawn type="STONE_HEAVY" pos="467,116" z="80" az="-0.1"/>
+	    <tile pos="0,0" action="makeCloudsDragon"/>
+	    <tile pos="0,0" action="fallRocks"/>
+	    <wait value="5"/>
+	    <spawn type="STONE_HEAVY" pos="496,195" z="80" az="-0.1"/> <!-- Rock falls on hero -->
+	    <sound name="BigRat"/>
+	    <moveTo who="zildo" pos="-40,12" speed="2.2" delta="true"/>
+	    <angle who="zildo" value="0"/>
+	    <wait value="20"/>
+	    <moveTo who="zildo" pos="0,16" speed="0.8" delta="true" backward="true"/>
+	     
+	    <wait value="50"/>
+	    <!-- Remove the first rock platform, to block hero's exit -->
+	    <actions>
+		    <spawn type="SMOKE" pos="497,116" zoom="800" alphaA="-0.1"/>
+		    <spawn type="SMOKE" pos="457,126" zoom="810" alphaA="-0.1"/>
+		    <spawn type="SMOKE" pos="527,130" zoom="830" alphaA="-0.1"/>
+		    <spawn type="SMOKE" pos="500,150" zoom="850" alphaA="-0.1"/>
+	    </actions>
+	     
+	    <!-- Remove platform -->
+	    <for var="loc:j" value="3">
+		  	<for var="loc:i" value="6">
+		    	<tile pos="28+loc:i,6+loc:j" back="256*10 + 34" back2="-1"/>
+		  	</for>
+     	</for>
+	    <actions>
+	    	<tile pos="28,9" back2="-1"/>
+			<tile pos="29,9" back2="-1"/>
+			<tile pos="30,9" back="256*10+34"/>
+			<tile pos="31,9" back="256*10+34"/>
+			<tile pos="32,9" back2="-1"/>
+			<tile pos="33,9" back2="-1"/>
+		</actions>
+		<perso who="dragon" action="bossDragon"/>
+		<for var="loc:i" value="40">
+			<animation type="LAVA_DROP" pos="451 + random*80, 100 + random*48"/>
+			<if exp="dice10>4">
+			    <wait value="1"/>
+			</if>
+		</for>
+	  <exec script="dragonDiveAndReappear(451,394)"/>
+	</scene>	
 </adventure>
