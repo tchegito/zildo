@@ -280,8 +280,11 @@ public abstract class TileEngine {
 							// Only in game (SpecificFloorAccessor is for ZEditor), we exclude BACK tile from an upper floor
 							// This allows us to draw floor above the lower one
 							if (back.getValue() == 256 * 6 + 35 && !(areaAccessor instanceof SpecificFloorAreaAccesor)) {
-								back = theMap.get_mapcase(mapX, mapY, floor-1).getBackTile();
-								meshBACK.updateTile(back, x, y, floor-1, back.getValue(), changed);
+								Case c = theMap.get_mapcase(mapX, mapY, floor-1);
+								if (c != null) {
+									back = c.getBackTile();
+									meshBACK.updateTile(back, x, y, floor-1, back.getValue(), changed);
+								}
 							} else {
 								meshBACK.updateTile(back, x, y, floor, n_motif, changed);
 							}

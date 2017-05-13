@@ -10,9 +10,9 @@ import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.map.AnimatedTiles;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
+import zildo.monde.map.Case.TileLevel;
 import zildo.monde.map.ChainingPoint;
 import zildo.monde.map.Tile;
-import zildo.monde.map.Case.TileLevel;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
@@ -40,6 +40,7 @@ public class AreaChecker {
 		checkOutOfBoundsEntities();
 		checkChainingPointsUncovered();
 		checkWrongAnimatedTiles();
+		checkUnexistentFloor();
 		
 		return errors;
 	}
@@ -213,6 +214,31 @@ public class AreaChecker {
 		if (found) {
 			String message="Wrong animated tiles !";
 			addList(new ErrorDescription(CheckError.WRONG_ANIMATED_TILE, message, true));
+		}
+	}
+	
+	private void checkUnexistentFloor() {
+		boolean found = false;
+		for (int floor = 0;floor<=2;floor++) {
+			for (int y = 0; y<area.getDim_y(); y++) {
+				for (int x = 0; x<area.getDim_x(); x++) {
+					Case c = area.get_mapcase(x, y, floor);
+					if (c != null) {
+						Tile back = c.getBackTile();
+						if (floor > 0 && back.getValue() == 256 * 6 + 35) {
+							Case c2 = area.get_mapcase(x, y, floor-1);
+							if (c2 == null) {		
+								found = true;
+								area.set_mapcase(x, y, (byte) (floor-1), new Case()); 
+							}
+						}
+					}
+				}
+			}
+		}
+		if (found) {
+			String message="Tile with special value needed a tile at lower floor !";
+			addList(new ErrorDescription(CheckError.FLOOR_UNEXISTING, message, true));
 		}
 	}
 }
