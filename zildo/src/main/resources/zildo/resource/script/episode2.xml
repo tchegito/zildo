@@ -422,14 +422,7 @@
 		    <script who="igor" value="3"/>
 		</action>        
     </quest>
-
-    <quest name="visit_igorprison_over">
-        <action>
-            <markQuest name="visit_igorprison" value="0"/>
-            <script who="igor" value="0"/>
-        </action>
-    </quest>
-    
+   
     <quest name="visit_gpprison">
 		<trigger>
 		    <location name="prison" pos="175,206" radius="1"/>
@@ -462,6 +455,7 @@
             <questDone name="visit_igorprison"/>
         </trigger>
         <action>
+            <script who="igor" value="0"/>
 			<exec script="closePrisonIgorDoor"/>
         </action>
     </quest>
@@ -472,6 +466,7 @@
             <questDone name="visit_gpprison"/>
         </trigger>
         <action>
+            <markQuest name="visit_gpprison" value="0"/>
             <exec script="closePrisonGpDoor"/>
         </action>
     </quest>

@@ -8,7 +8,6 @@ import zildo.fwk.file.EasySerializable;
 import zildo.fwk.ui.UIText;
 import zildo.monde.map.Region;
 import zildo.server.EngineZildo;
-
 import static zildo.client.gui.GUIDisplay.TXT_CHANGE_COLOR;
 
 public class HistoryRecord implements EasySerializable {
@@ -72,5 +71,10 @@ public class HistoryRecord implements EasySerializable {
 		return r.key.equals(key) &&
 			   r.who.equals(who) &&
 			   r.mapName.equals(mapName);
+	}
+	
+	@Override
+	public String toString() {
+		return key;
 	}
 }

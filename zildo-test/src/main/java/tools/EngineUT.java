@@ -48,6 +48,7 @@ import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.ScreenConstant;
 import zildo.client.sound.SoundPlay;
 import zildo.fwk.FilterCommand;
+import zildo.fwk.ZUtils;
 import zildo.fwk.bank.TileBank;
 import zildo.fwk.db.Identified;
 import zildo.fwk.gfx.Ortho;
@@ -401,6 +402,9 @@ public class EngineUT {
 				//}
 			}
 		});
+		// Release buttons
+		simulateKeyPressed();
+		renderFrames(1);
 	}
 
 	/** Useful to pass a cutscene **/
@@ -487,9 +491,14 @@ public class EngineUT {
 		return EngineZildo.game.getLastDialog();
 	}
 	
+	/** Check that dialog history records has an expected size, and last one was with expected key **/
 	public void checkNextDialog(int number, String key) {
 		Assert.assertEquals(number, dials().size());
 		Assert.assertEquals(key, dials().get(number-1).key);
+	}
+
+	public void checkNextDialog(String key) {
+		Assert.assertEquals(key, ZUtils.listTail(dials()).key);
 	}
 	
 	@SuppressWarnings("deprecation")

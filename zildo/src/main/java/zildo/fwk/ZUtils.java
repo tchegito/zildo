@@ -155,6 +155,10 @@ public class ZUtils {
 		return sb.toString();
     }
     
+    public static <T> T listTail(List<T> elements) {
+    	return elements.get(elements.size() - 1);
+    }
+    
     static byte[] buffer = new byte[10];
     
     /** Returns an array containing decomposition of POSITIVE value in base 10. **/
