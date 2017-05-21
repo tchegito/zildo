@@ -1,17 +1,15 @@
 package junit.dialog;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import tools.EngineUT;
-import tools.annotations.InfoPersos;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
-import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
@@ -102,6 +100,9 @@ public class CheckDialogChain extends EngineUT {
 	@Test
 	public void prisonGard() {
 		mapUtils.loadMap("prison");
+		EngineZildo.persoManagement.removePerso(EngineZildo.persoManagement.getNamedPerso("new"));
+		EngineZildo.persoManagement.removePerso(EngineZildo.persoManagement.getNamedPerso("new"));
+		EngineZildo.persoManagement.removePerso(EngineZildo.persoManagement.getNamedPerso("noir"));
 		zildo = spawnZildo(221,72);
 		waitEndOfScripting();
 		visitCell("igor", new Vector2f(196, 72));
@@ -113,10 +114,8 @@ public class CheckDialogChain extends EngineUT {
 		
 		Assert.assertNotNull(EngineZildo.persoManagement.collidePerso(221, 64, zildo, 4));
 
-		simulatePressButton(Keys.Q, 2);
-		renderFrames(5);
-		checkNextDialog("prison.gard.0");
-		goOnDialog();
+		talkAndCheck("prison.gard.0");
+
 		Assert.assertTrue(zildo.getDialoguingWith() == null);
 		// Go toward the Igor's cell
 		simulateDirection(0, 1);
@@ -124,37 +123,30 @@ public class CheckDialogChain extends EngineUT {
 		renderFrames(2);
 		// Check that scene has been triggered (hero's visiting Igor cell)
 		simulateDirection(null);
-		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
-		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("visit_"+who+"prison"));
+		checkScriptRunning("visit_"+who+"prison");
 		waitEndOfScriptingPassingDialog();
 		checkNextDialog("prison.gard.script");	// Said during cutscene
 		// Talk when guard is waiting
 		int gardY = (int) EngineZildo.persoManagement.getNamedPerso("jaune").getY();
 		zildo.setPos(new Vector2f(190, gardY+12));
-		simulatePressButton(Keys.Q, 2);
-		renderFrames(5);
-		Assert.assertTrue(zildo.getDialoguingWith() != null);
-		checkNextDialog("prison.gard.1");
-		goOnDialog();
+		talkAndCheck("prison.gard.1");
 
 		// Move around for guard to close the cell
 		simulateDirection(new Vector2f(1f,0.8f));
 		zildo.setPos(new Vector2f(247, nearCell.y + 60));
 		renderFrames(1);
-		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
-		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("visit_"+who+"prison_over"));
+		checkScriptRunning("visit_"+who+"prison_over");
 		simulateDirection(null);
 		waitEndOfScriptingPassingDialog();
 		// Talk to gard
 		Assert.assertTrue(zildo.getDialoguingWith() == null);
+		Perso pnj = EngineZildo.persoManagement.getNamedPerso("jaune");
+		Assert.assertEquals(223, (int) pnj.x);
+		Assert.assertEquals(60,  (int) pnj.y);
 		zildo.setPos(new Vector2f(221, 72));
 		zildo.setAngle(Angle.NORD);
 		simulateDirection(0,-1);
 		renderFrames(10);
-		simulatePressButton(Keys.Q, 2);
-		renderFrames(5);
-		Assert.assertTrue(zildo.getDialoguingWith() != null);
-		checkNextDialog("prison.gard.0");
-		goOnDialog();
+		talkAndCheck("prison.gard.0");
 	}
 }

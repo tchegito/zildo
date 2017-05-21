@@ -481,6 +481,23 @@ public abstract class EngineUT {
 		renderFrames(time);		
 	}
 	
+	/** Check that a given quest name is running **/
+	public void checkScriptRunning(String name) {
+		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing(name));
+	}
+
+	/** Make hero talkin by pressing action button, and check that given dialog has been said. Then go on dialog. **/
+	public void talkAndCheck(String key) {
+		simulatePressButton(Keys.Q, 2);
+		PersoPlayer hero = EngineZildo.persoManagement.getZildo();
+		System.out.println(hero);
+		System.out.println(EngineZildo.persoManagement.getNamedPerso("jaune"));
+		Assert.assertTrue(hero.getDialoguingWith() != null);
+		checkNextDialog(key);
+		goOnDialog();
+	}
+
 	// Specific for dialogs
 	public void goOnDialog() {
 		simulatePressButton(Keys.Q, 2);	// Skip
