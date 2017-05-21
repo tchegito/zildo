@@ -403,8 +403,8 @@ public abstract class EngineUT {
 			}
 		});
 		// Release buttons
-		//simulateKeyPressed();
-		//renderFrames(1);
+		simulateKeyPressed();
+		renderFrames(1);
 	}
 
 	/** Useful to pass a cutscene **/
@@ -510,6 +510,7 @@ public abstract class EngineUT {
 	
 	/** Check that dialog history records has an expected size, and last one was with expected key **/
 	public void checkNextDialog(int number, String key) {
+		System.out.println(dials());
 		Assert.assertEquals(number, dials().size());
 		Assert.assertEquals(key, dials().get(number-1).key);
 	}
