@@ -35,7 +35,7 @@ import zildo.server.state.ScriptManagement;
  * @author Tchegito
  *
  */
-public class SimpleEngineScript extends EngineUT {
+public abstract class SimpleEngineScript extends EngineUT {
 
 	protected ScriptManagement scriptMgmt;
 	

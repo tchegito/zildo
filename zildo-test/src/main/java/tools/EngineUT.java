@@ -89,7 +89,7 @@ import zildo.server.state.ClientState;
  *
  */
 @RunWith(ZildoJUnit.class)	// This annotation makes runner aware of our custom ones
-public class EngineUT {
+public abstract class EngineUT {
 
 	protected EngineZildo engine;
 	protected ClientEngineZildo clientEngine;

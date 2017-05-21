@@ -19,7 +19,7 @@ import zildo.server.state.ScriptManagement;
  * @author evariste.boussaton
  *
  */
-public class EngineScriptUT extends EngineUT {
+public abstract class EngineScriptUT extends EngineUT {
 
 		protected ScriptManagement scriptMgmt;
 		
