@@ -403,8 +403,8 @@ public abstract class EngineUT {
 			}
 		});
 		// Release buttons
-		simulateKeyPressed();
-		renderFrames(1);
+		//simulateKeyPressed();
+		//renderFrames(1);
 	}
 
 	/** Useful to pass a cutscene **/
