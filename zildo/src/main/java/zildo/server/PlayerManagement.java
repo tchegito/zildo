@@ -408,7 +408,6 @@ public class PlayerManagement {
 	
 	
 		if (!keysState.key_actionPressed) {
-			System.out.println("press action ==> gamephase="+gamePhase);
 			if (gamePhase == GamePhase.BUYING) {
 				heros.buyItem();
 			} else if (gamePhase == GamePhase.DIALOG || gamePhase == GamePhase.SCRIPT) {
@@ -517,7 +516,7 @@ public class PlayerManagement {
 					}
 				}
 			}
-		} else System.out.println("action already pressed");
+		}
 		keysState.key_actionPressed=true;
 	}
 	

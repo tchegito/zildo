@@ -221,8 +221,6 @@ public class DialogManagement {
 	}
 
 	public void goOnDialog(ClientState p_client) {
-		System.out.println("dialog "+p_client.dialogState.continuing+" "+currentSentenceFullDisplayed);
-
 	    if (p_client.dialogState.continuing && currentSentenceFullDisplayed) {
 	    	continueDialog(p_client);
 	    } else {

@@ -233,6 +233,8 @@ public abstract class EngineUT {
 	
 	@Before
 	public void setUp() {
+		// Reset plugin state, because some tests change it
+		PlatformDependentPlugin.currentPlugin = KnownPlugin.Lwjgl;
 		Game game = new Game(null, "hero");
 		initServer(game);
 		
