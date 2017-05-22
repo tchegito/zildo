@@ -96,6 +96,7 @@ public abstract class EngineUT {
 	
 	protected ClientState clientState;
 	protected MapUtils mapUtils;	// To easily manipulate the map
+	protected PersoUtils persoUtils;	// To easily manipulate the characters
 	
 	protected KeyboardInstant instant;
 	static KeyboardHandler fakedKbHandler;	// Will be reused all along
@@ -292,6 +293,7 @@ public abstract class EngineUT {
 			// Load default map and initialize map utils
 			EngineZildo.mapManagement.loadMap("preintro", false);
 			mapUtils = new MapUtils();
+			persoUtils = new PersoUtils();
 
 			ClientEngineZildo.mapDisplay = spy(new MapDisplay(mapUtils.area));
 			//doNothing().when(ClientEngineZildo.mapDisplay).centerCamera();
@@ -489,8 +491,9 @@ public abstract class EngineUT {
 
 	/** Make hero talkin by pressing action button, and check that given dialog has been said. Then go on dialog. **/
 	public void talkAndCheck(String key) {
-		simulatePressButton(Keys.Q, 2);
 		PersoPlayer hero = EngineZildo.persoManagement.getZildo();
+		Assert.assertTrue(hero.getDialoguingWith() == null);
+		simulatePressButton(Keys.Q, 2);
 		System.out.println(hero);
 		System.out.println(EngineZildo.persoManagement.getNamedPerso("jaune"));
 		Assert.assertTrue(hero.getDialoguingWith() != null);
