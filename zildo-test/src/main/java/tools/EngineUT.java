@@ -515,12 +515,12 @@ public abstract class EngineUT {
 	
 	/** Check that dialog history records has an expected size, and last one was with expected key **/
 	public void checkNextDialog(int number, String key) {
-		System.out.println(dials());
 		Assert.assertEquals(number, dials().size());
-		Assert.assertEquals(key, dials().get(number-1).key);
+		checkNextDialog(key);
 	}
 
 	public void checkNextDialog(String key) {
+		System.out.println(dials());
 		Assert.assertEquals(key, ZUtils.listTail(dials()).key);
 	}
 	
