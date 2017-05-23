@@ -408,6 +408,7 @@ public class PlayerManagement {
 	
 	
 		if (!keysState.key_actionPressed) {
+			System.out.println("Action pressed gamephase="+gamePhase+" inventoring="+heros.isInventoring()+" attente="+heros.getAttente());
 			if (gamePhase == GamePhase.BUYING) {
 				heros.buyItem();
 			} else if (gamePhase == GamePhase.DIALOG || gamePhase == GamePhase.SCRIPT) {
@@ -422,7 +423,7 @@ public class PlayerManagement {
 					int locY = (int) heros.y + heros.getAngle().coords.y * 8;
 					
 					Perso persoToTalk=EngineZildo.persoManagement.collidePerso(locX, locY, heros, 4);
-					
+					System.out.println("Character nearby: ("+locX+","+locY+" = "+persoToTalk);
 					if (heros.who.canTalk &&  persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY && !persoToTalk.isZildo()) {
 					 // Check that this perso can be picked up (hen, duck for example)
 						if (persoToTalk.getDesc().isTakable()) {
