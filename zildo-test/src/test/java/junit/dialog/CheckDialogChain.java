@@ -145,6 +145,8 @@ public class CheckDialogChain extends EngineUT {
 		int gardY = (int) persoUtils.persoByName("jaune").getY();
 		zildo.setPos(new Vector2f(190, gardY+12));
 		zildo.setAngle(Angle.NORD);
+		System.out.println("check colli at " + EngineZildo.persoManagement.collidePerso(190, gardY+4, zildo, 4));
+
 		talkAndCheck("prison.gard.1");
 
 		// Move around for guard to close the cell

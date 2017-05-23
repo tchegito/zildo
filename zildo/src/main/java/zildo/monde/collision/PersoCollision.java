@@ -62,7 +62,7 @@ public class PersoCollision {
 	
 	public void initFrame(List<Perso> persos) {
 		for (Perso p : persos) {
-			System.out.println("update collision for perso "+p);
+			System.out.println("Collision: update collision for perso "+p);
 			if (p.getPv() > 0) {
 				int gridX = (int) p.getX() >> 4;
 				int gridY = (int) p.getY() >> 4;
@@ -78,6 +78,7 @@ public class PersoCollision {
 	}
 
 	public void notifyDeletion(Perso removedPerso) {
+		System.out.println("Collision: remove "+removedPerso);
 		int id = removedPerso.getId();
 		if (removedPerso.isForeground()) {
 			buffers[0].remove(id);
