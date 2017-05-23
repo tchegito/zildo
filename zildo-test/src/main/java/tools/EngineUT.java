@@ -496,8 +496,6 @@ public abstract class EngineUT {
 		PersoPlayer hero = EngineZildo.persoManagement.getZildo();
 		Assert.assertTrue(hero.getDialoguingWith() == null);
 		simulatePressButton(Keys.Q, 2);
-		System.out.println(hero);
-		System.out.println(EngineZildo.persoManagement.getNamedPerso("jaune"));
 		Assert.assertTrue(hero.getDialoguingWith() != null);
 		checkNextDialog(key);
 		goOnDialog();
@@ -520,13 +518,14 @@ public abstract class EngineUT {
 	}
 
 	public void checkNextDialog(String key) {
-		System.out.println(dials());
 		Assert.assertEquals(key, ZUtils.listTail(dials()).key);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@After
 	public void tearDown() {
+		EngineZildo.spriteManagement.clearSprites(true);
+
 		reset(fakedKbHandler);
 		// Reset render platform to LWJGL
 		PlatformDependentPlugin.currentPlugin = KnownPlugin.Lwjgl;
