@@ -1,13 +1,15 @@
 package junit.dialog;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
+
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.fwk.ui.UIText;
 
-public class TestBundlePlatformSpecific extends TestCase {
+public class TestBundlePlatformSpecific {
 
+	@Test
 	public void testPlatformSpecificMessages() {
 		for (KnownPlugin plugin : KnownPlugin.values()) {
 			PlatformDependentPlugin.currentPlugin = plugin;

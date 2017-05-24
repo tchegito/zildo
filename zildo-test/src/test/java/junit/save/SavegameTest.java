@@ -7,10 +7,7 @@ import tools.EngineUT;
 import tools.annotations.DisableFreezeMonitor;
 import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
-import zildo.fwk.file.EasyWritingFile;
 import zildo.monde.Game;
-import zildo.monde.items.Item;
-import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.EngineZildo;
@@ -78,17 +75,7 @@ public class SavegameTest extends EngineUT {
 		EngineZildo.persoManagement.clearPersos(true);
 		
 		// Reload
-		Game reloaded = Game.deserialize(buffer, false);
+		Game.deserialize(buffer, false);
 		Assert.assertEquals(8,  (int) EngineZildo.persoManagement.getZildo().getZ());
-	}
-	
-	@Test
-	public void createSavedGame() {
-		mapUtils.loadMap("voleurs");
-		PersoPlayer zildo = spawnZildo(137, 942);
-		zildo.getInventory().add(new Item(ItemKind.MIDSWORD));
-		EasyWritingFile buffer = new EasyWritingFile(new EasyBuffering());
-		EngineZildo.game.serialize(buffer);
-		buffer.saveFile("save.z69");
 	}
 }

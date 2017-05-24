@@ -9,6 +9,7 @@ import javax.swing.JApplet;
 
 import zildo.monde.util.Zone;
 
+@SuppressWarnings("serial")
 public class OccluderApplet extends JApplet {
 
 	List<Zone> availableZones;

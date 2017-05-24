@@ -143,7 +143,7 @@ public class TileCollisionTest extends EngineUT {
 	
 	@Test
 	public void corner() {
-		TileInfo ti = tileCollision.getTileInfo(1005);
+		tileCollision.getTileInfo(1005);
 		checkValues(1005, corner, Reverse.VERTICAL, Rotation.NOTHING);
 	}
 	
