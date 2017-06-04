@@ -667,8 +667,8 @@ public abstract class Perso extends Element {
 		int cx = (int) (x / 16);
 		int cy = (int) (y / 16);
 		Area area = EngineZildo.mapManagement.getCurrentMap();
-		boolean bottomLess = area.isCaseBottomLess(cx,  cy);
-		Tile tile = area.readmap(cx, cy, false);
+		boolean bottomLess = area.isCaseBottomLess(cx,  cy, floor);
+		Tile tile = area.readmap(cx, cy, false, floor);
 		if (tile == null) {
 			return false;
 		}
@@ -694,7 +694,7 @@ public abstract class Perso extends Element {
 		inWater = false;
 		inDirt = false;
 		BankSound snd = null;
-		nature = area.getCaseNature((int) x, (int) y);
+		nature = area.getCaseNature((int) x, (int) y, floor);
 		int coeffWhiteLight = 15;
 		
 		if (!flying && isZildo() && nature == TileNature.WATER) {

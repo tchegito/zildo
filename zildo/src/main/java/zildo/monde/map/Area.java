@@ -292,10 +292,15 @@ public class Area implements EasySerializable {
 			.addRange(224, 228).addRange(230, 245).addRange(247, 253);
 
 	// TODO: test one day if a precalculated array will be faster than this long 'if' process
-	public TileNature getCaseNature(int xx, int yy) {
+	public TileNature getCaseNature(int xx, int yy, int floor) {
 		int x = xx / 16;
 		int y = yy / 16;
-		Case temp = this.get_mapcase(x, y);
+		Case temp;
+		if (floor != -1) {
+			temp = this.get_mapcase(x, y, floor);
+		} else {
+			temp = this.get_mapcase(x, y);
+		}
 		if (temp == null) {
 			return null;
 		}
@@ -337,13 +342,25 @@ public class Area implements EasySerializable {
 			return TileNature.WATER;
 		}
 		return TileNature.REGULAR;
+		
+	}
+	public TileNature getCaseNature(int xx, int yy) {
+		return getCaseNature(xx, yy, -1);
 	}
 	
+	public boolean isCaseBottomLess(int x, int y) {
+		return isCaseBottomLess(x,  y, -1);
+	}
 	/**
 	 * Returns TRUE if case is bottom less (example: lava or void)
 	 */
-	public boolean isCaseBottomLess(int x, int y) {
-		Case temp = this.get_mapcase(x, y);
+	public boolean isCaseBottomLess(int x, int y, int floor) {
+		Case temp;
+		if (floor != -1) {
+			temp = this.get_mapcase(x, y, floor);
+		} else {
+			temp = get_mapcase(x, y);
+		}
 		if (temp == null) {
 			return false;
 		}
