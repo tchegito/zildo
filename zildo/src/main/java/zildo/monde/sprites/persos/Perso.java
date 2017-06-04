@@ -852,6 +852,7 @@ public abstract class Perso extends Element {
 			// Falls
 			case 768+217:	// grotte
 			//case 1536+198: // foret4
+			case 256*10 + 34:
 				if (isZildo()) {
 					fall = true;
 				}

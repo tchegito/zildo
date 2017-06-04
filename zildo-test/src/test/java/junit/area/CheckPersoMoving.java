@@ -76,4 +76,26 @@ public class CheckPersoMoving extends EngineUT {
 		// Check that according script has been launched
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("dieInWater"));
 	}
+	
+	@Test
+	public void fallInLava1() {
+		mapUtils.loadMap("voleursg5");
+		waitEndOfScripting();
+		// Spawn hero in middle of lava
+		PersoPlayer zildo = spawnZildo(218, 133);
+		simulateDirection(1,0);
+		renderFrames(2);
+		checkScriptRunning("dieInPit");
+	}
+	
+	@Test
+	public void fallInLava2() {
+		mapUtils.loadMap("cavef6");
+		waitEndOfScripting();
+		// Spawn hero in middle of lava
+		PersoPlayer zildo = spawnZildo(87, 215);
+		simulateDirection(1,0);
+		renderFrames(2);
+		checkScriptRunning("dieInPit");
+	}
 }
