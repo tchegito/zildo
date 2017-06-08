@@ -97,5 +97,18 @@ public class CheckPersoMoving extends EngineUT {
 		simulateDirection(1,0);
 		renderFrames(2);
 		checkScriptRunning("dieInPit");
-	}
+	} 
+	
+	@Test
+	public void fallInLava3() {
+		mapUtils.loadMap("dragon");
+		waitEndOfScripting();
+		// Spawn hero in middle of lava
+		PersoPlayer zildo = spawnZildo(163,204);
+		zildo.floor = 0;	// With floor at 1 it doesn't work but that's fair ==> no tile at floor 1
+		simulateDirection(1,0);
+		renderFrames(2);
+		checkScriptRunning("dieInPit");
+	} 
+	
 }
