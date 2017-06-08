@@ -852,7 +852,7 @@ public abstract class Perso extends Element {
 			// Falls
 			case 768+217:	// grotte
 			//case 1536+198: // foret4
-			case 256*10 + 34:
+			case 256*10 + 34:	// lava
 				if (isZildo()) {
 					fall = true;
 				}
@@ -1160,16 +1160,6 @@ public abstract class Perso extends Element {
 
 	public void landOnGround() {
 		fall();
-		if (floor > 0) {	// Check if a lower floor exists (and current one doesn't anymore)
-			Area map = EngineZildo.mapManagement.getCurrentMap();
-			int xx = (int) x / 16;
-			int yy = (int) y / 16;
-			if (map.readmap(xx, yy, false, floor-1) != null ) {
-				if (map.readmap(xx, yy, false, floor) == null) {
-					setFloor(floor-1);
-				}
-			}
-		}
 	}
 	
 	protected void land() {
@@ -1186,15 +1176,33 @@ public abstract class Perso extends Element {
 		vz=0;
 		setMouvement(MouvementZildo.VIDE); // Jump is over, get back to regular movement
 		
+		// Check if a lower floor exists (and current one doesn't anymore)
+		if (floor > 0) {	
+			Area map = EngineZildo.mapManagement.getCurrentMap();
+			int xx = (int) x / 16;
+			int yy = (int) y / 16;
+			if (map.readmap(xx, yy, false, floor-1) != null ) {
+				if (map.readmap(xx, yy, false, floor) == null) {
+					setFloor(floor-1);
+				}
+			}
+		}
+		
 		boolean platformUnder = checkPlatformUnder();
 
-		if (!platformUnder && nature == TileNature.WATER) {
-			// Character is fallen in the water !
-			diveAndWound();
-		} else {
-			if (nature == TileNature.WATER_MUD) {
-				inWater = true;
+		switch (nature) {
+		case WATER:
+			if (!platformUnder) {
+				// Character is fallen in the water !
+				diveAndWound();
 			}
+			break;
+		case BOTTOMLESS:
+			walkTile(false);	// Make hero fall if his feet are not feeling the ground
+			break;
+		case WATER_MUD:
+			inWater = true;	// no break => we want explicitly that player lands on ground
+		default:
 			landOnGround();
 		}
 	}

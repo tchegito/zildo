@@ -82,7 +82,7 @@ public class CheckPersoMoving extends EngineUT {
 		mapUtils.loadMap("voleursg5");
 		waitEndOfScripting();
 		// Spawn hero in middle of lava
-		PersoPlayer zildo = spawnZildo(218, 133);
+		spawnZildo(218, 133);
 		simulateDirection(1,0);
 		renderFrames(2);
 		checkScriptRunning("dieInPit");
@@ -93,7 +93,7 @@ public class CheckPersoMoving extends EngineUT {
 		mapUtils.loadMap("cavef6");
 		waitEndOfScripting();
 		// Spawn hero in middle of lava
-		PersoPlayer zildo = spawnZildo(87, 215);
+		spawnZildo(87, 215);
 		simulateDirection(1,0);
 		renderFrames(2);
 		checkScriptRunning("dieInPit");
@@ -110,5 +110,24 @@ public class CheckPersoMoving extends EngineUT {
 		renderFrames(2);
 		checkScriptRunning("dieInPit");
 	} 
-	
+
+	@Test
+	public void jumpInLava() {
+		mapUtils.loadMap("dragon");
+		waitEndOfScripting();
+		// Spawn hero in middle of lava
+		PersoPlayer zildo = spawnZildo(583,536);
+		zildo.floor = 2;
+		// Hero goes forward and should reach an edge
+		simulateDirection(0,-1);
+		renderFrames(30);
+		// Now he should be jumping in lava
+		Assert.assertEquals(MouvementZildo.SAUTE, zildo.getMouvement());
+		while (MouvementZildo.VIDE != zildo.getMouvement()) {
+			renderFrames(1);
+		}
+		// Check that falling is automatically ran
+		checkScriptRunning("dieInPit");
+		
+	}
 }
