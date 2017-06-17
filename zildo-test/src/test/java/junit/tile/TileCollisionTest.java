@@ -142,6 +142,14 @@ public class TileCollisionTest extends EngineUT {
 	}
 	
 	@Test
+	public void diagonalHalf() {
+		TileInfo ti = tileCollision.getTileInfo(2595);
+		System.out.println(ti);
+		Assert.assertTrue(tileCollision.collide(0,  10,  2595, Reverse.NOTHING, Rotation.NOTHING, 0));
+		Assert.assertFalse(tileCollision.collide(0,  10,  2595, Reverse.HORIZONTAL, Rotation.NOTHING, 0));
+	}
+	
+	@Test
 	public void corner() {
 		tileCollision.getTileInfo(1005);
 		checkValues(1005, corner, Reverse.VERTICAL, Rotation.NOTHING);

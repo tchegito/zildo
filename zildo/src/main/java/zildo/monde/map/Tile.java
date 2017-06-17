@@ -156,6 +156,12 @@ public class Tile implements Cloneable {
 		case 256*10 + 34:
 		case 256*10 + 7:
 		case 256*10 + 6:
+		case 256*10 + 77:
+		case 256*10 + 78:
+		case 256*10 + 79:
+		case 256*10 + 80:
+		case 256*10 + 81:
+		case 256*10 + 82:
 			return true;
 		case 108:	// 'Ponton' case: consider bottomless only if 'back2' tile exists
 			return back2Value != -1;

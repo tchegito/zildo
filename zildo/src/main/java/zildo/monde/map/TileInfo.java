@@ -281,4 +281,9 @@ public class TileInfo {
 		}
 		return t;
 	}
+	
+	@Override
+	public String toString() {
+		return template+" "+blockAngle+ (inverse ? " inversed" : "");
+	}
 }

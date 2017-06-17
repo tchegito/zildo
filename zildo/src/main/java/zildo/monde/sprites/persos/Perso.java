@@ -873,7 +873,7 @@ public abstract class Perso extends Element {
 			default:
 				if (isZildo() && bottomLess) {
 					// Make hero fall if he reach the border of the hill
-					if (tileCollision.collide((int) x % 16, (int) y % 16, onmap, Reverse.NOTHING, Rotation.NOTHING, 0)) {
+					if (tileCollision.collide((int) x % 16, (int) y % 16, onmap, tile.reverse, Rotation.NOTHING, 0)) {
 						fall = true;
 					}
 					break;
