@@ -567,6 +567,17 @@
             <markQuest name="dragonShouldMove3" value="false"/>
        	</action>
     </quest>
+    <quest name="dragonShouldMove5" locked="false">
+        <trigger>
+            <location name="dragon" pos="742,663" radius="11"/>
+        </trigger>
+        <action>
+            <markQuest name="dragonShouldMove1" value="false"/>
+            <markQuest name="dragonShouldMove2" value="false"/>
+            <markQuest name="dragonShouldMove3" value="false"/>
+            <markQuest name="dragonShouldMove4" value="false"/>
+       	</action>
+    </quest>
     
     <quest name="meetDragon">
         <trigger>
@@ -577,6 +588,17 @@
         </action>
     </quest>
 
+    <quest name="killDragon" locked="false">
+	    <trigger>
+	        <location name="dragon"/>
+	        <dead who="dragon"/>
+	    </trigger>
+	    <action>
+	        <perso who="dragon" action=""/>
+   	        <perso who="dragon" action="explodeBoss"/>
+	    </action>
+	</quest>
+	
     <!-- Show up some clouds on dragon's map -->
     <tileAction id="makeCloudsDragon">
 	    <for var="loc:j" value="30">
@@ -1742,6 +1764,7 @@
 		                <markQuest name="dragonShouldMove2" value="false"/>
 		                <markQuest name="dragonShouldMove3" value="false"/>
 		                <markQuest name="dragonShouldMove4" value="false"/>
+		                <markQuest name="dragonShouldMove5" value="false"/>
    		               	<exec script="dragonDiveAndReappear(230,567)"/>
 	                </if>
 	            </if>
@@ -1751,6 +1774,7 @@
 		                <markQuest name="dragonShouldMove1" value="false"/>
 		                <markQuest name="dragonShouldMove3" value="false"/>
 		                <markQuest name="dragonShouldMove4" value="false"/>
+		                <markQuest name="dragonShouldMove5" value="false"/>
    		                <exec script="dragonDiveAndReappear(451,394)"/>
 	                </if>
 	            </if>
@@ -1760,7 +1784,8 @@
 		                <markQuest name="dragonShouldMove1" value="false"/>
 		                <markQuest name="dragonShouldMove2" value="false"/>
 		                <markQuest name="dragonShouldMove4" value="false"/>
-		                <exec script="dragonDiveAndReappear(724,410)"/>
+		                <markQuest name="dragonShouldMove5" value="false"/>
+		             	<exec script="dragonDiveAndReappear(724,410)"/>
 	                </if>
 	            </if>
 	            <if expQuest="dragonShouldMove4">
@@ -1769,7 +1794,18 @@
 		                <markQuest name="dragonShouldMove1" value="false"/>
 		                <markQuest name="dragonShouldMove2" value="false"/>
 		                <markQuest name="dragonShouldMove3" value="false"/>
-		                <exec script="dragonDiveAndReappear(215,280)"/>
+		                <markQuest name="dragonShouldMove5" value="false"/>
+   		                <exec script="dragonDiveAndReappear(215,280)"/>
+	                </if>
+	            </if>
+	            <if expQuest="dragonShouldMove5">
+	                <if exp="loc:dragonPos!=5">
+		                <var name="loc:dragonPos" value="5"/>
+		                <markQuest name="dragonShouldMove1" value="false"/>
+		                <markQuest name="dragonShouldMove2" value="false"/>
+		                <markQuest name="dragonShouldMove3" value="false"/>
+		                <markQuest name="dragonShouldMove4" value="false"/>
+   		                <exec script="dragonDiveAndReappear(720,697)"/> <!--  736 -->
 	                </if>
 	            </if>
    	   	    </for>

@@ -669,6 +669,10 @@ public abstract class Perso extends Element {
 		Area area = EngineZildo.mapManagement.getCurrentMap();
 		boolean bottomLess = area.isCaseBottomLess(cx,  cy, floor);
 		Tile tile = area.readmap(cx, cy, false, floor);
+		if (tile == null && floor > 0) {
+			// To handle properly collision in dragon's cave (juste on the dragon's edge)
+			tile = area.readmap(cx, cy, false, floor - 1);
+		}
 		if (tile == null) {
 			return false;
 		}
@@ -897,6 +901,11 @@ public abstract class Perso extends Element {
 			case 256*3 + 200:
 				coeffWhiteLight = tileLight.forRotatedTile(2, x, y, foreTile.rotation.prec());
 				break;
+			default:
+				// In dragon cave, we use foretile on bottomless tiles (this game need to reach an end one day, too much workarounds !)
+				if (isZildo() && bottomLess) {
+					fall = (tileCollision.collide((int) x % 16, (int) y % 16, val, foreTile.reverse, Rotation.NOTHING, 0));
+				}
 			}
 		}
 		if (coeffWhiteLight != -1) {
@@ -1138,7 +1147,7 @@ public abstract class Perso extends Element {
 	public Angle tryJump(Pointf loc) {
 		int cx=(int) (loc.x / 16);
 		int cy=(int) (loc.y / 16);
-		Angle angleResult=EngineZildo.mapManagement.getAngleJump(angle, cx, cy);
+		Angle angleResult=EngineZildo.mapManagement.getAngleJump(angle, cx, cy, floor);
 
 		if (angleResult!=null) {
 			// Is there a sprite colliding on the jump ? (example: bar blocking jump, in polaky4)

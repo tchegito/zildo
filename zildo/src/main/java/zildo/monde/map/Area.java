@@ -361,6 +361,10 @@ public class Area implements EasySerializable {
 		} else {
 			temp = get_mapcase(x, y);
 		}
+		// Added because in dragon cave, we display tiles on lower floor, between dragon and edge
+		if (temp == null && floor < highestFloor) {
+			temp = get_mapcase(x, y, floor - 1);
+		}
 		if (temp == null) {
 			return false;
 		}

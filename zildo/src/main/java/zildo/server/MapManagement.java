@@ -273,7 +273,7 @@ public class MapManagement {
 				mody = ty % 16;
 				if (caseZ < elemAltitude) { // We are too high => no collision
 					return false;
-				} else if (caseZ == elemAltitude && getAngleJump(angleFlying, cx, cy) != null) {
+				} else if (caseZ == elemAltitude && getAngleJump(angleFlying, cx, cy, -1) != null) {
 					return false; // Same altitude but under the cliff => no collision
 				} else if (caseZ > elemAltitude) {
 					return true; // Obstacle
@@ -524,11 +524,11 @@ public class MapManagement {
 		return false;
 	}
 
-	public Angle getAngleJump(Angle angle, int cx, int cy) {
+	public Angle getAngleJump(Angle angle, int cx, int cy, int floor) {
 		Area area = getCurrentMap();
 		int onMapCurrent = area.readmap(cx, cy);
 		// Allow jump with nature "BOTTOMJUMP" (see Dragon cave)
-		if (area.getCaseNature(cx*16, cy*16) == TileNature.BOTTOMJUMP) {
+		if (area.getCaseNature(cx*16, cy*16, floor) == TileNature.BOTTOMJUMP) {
 			return angle;
 		}
 		int onMap = 0;

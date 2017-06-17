@@ -519,7 +519,7 @@ public class SpriteManagement extends SpriteStore {
 			entity = new ElementLauncher(x, y);
 			entity.setAjustedX(x);
 			entity.setAjustedY(y);
-		} else if (desc.getBank() == SpriteBank.BANK_GEAR) {
+		} else if (desc.getBank() == SpriteBank.BANK_GEAR && desc.isBlocking()) {
 			entity = new ElementGear(x, y);
 			entity.setAjustedX(x);
 			entity.setAjustedY(y);
