@@ -38,3 +38,19 @@ Here are some useful examples to edit scripts.
  ```xml
  <location name="cavef6" mover="!platef6"/>
   ```
+  
+  ## 2) Create characters in tileAction
+  
+  Consider following script, which has a singularity:
+ ```xml
+	<tileAction id="regenSpider">
+	  <timer each="50">
+	    <action>
+	      <lookFor info="ENEMY" pos="x*16,y*16" tile="4" negative="true">
+	        <spawn type="STONE_SPIDER" pos="x*16,y*16" />
+	      </lookFor>
+	    </action>
+	  </timer>
+	</tileAction>
+```
+Actually, 'tileAction' induces a specific context around a given tile (TileLocationContext). Indeed, the 'lookFor' action will generate a new context around found entity ONLY if entity has been found. Nested actions are executed only if condition is evaluated to 'true', but in this case, we have the 'negative' attribute. Thus, we execute nested action without any entity found. So in this particular case, we keep the original context.
