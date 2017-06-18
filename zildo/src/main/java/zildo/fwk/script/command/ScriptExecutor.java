@@ -47,6 +47,8 @@ public class ScriptExecutor {
 	Set<Perso> involved=new HashSet<Perso>();	// All characters involved in script
 	public boolean userEndedAction;				// TRUE if user has ended last action with ACTION keypressed
 	
+	boolean PROCESSING_SCRIPTS;	// TRUE if we're iterating over running scripts
+	
 	List<ScriptProcess> subScriptsEnded = new ArrayList<ScriptProcess>();
 	List<ScriptProcess> toTerminate = new ArrayList<ScriptProcess>();
 	List<ScriptProcess> toExecute = new ArrayList<ScriptProcess>();
@@ -78,7 +80,7 @@ public class ScriptExecutor {
 		if (p_caller != null) {
 			p_caller.setSubProcess(sp);
 		} else {
-			if (scripts.size() == 0) {
+			if (!PROCESSING_SCRIPTS) {
 				scripts.add(sp);
 			} else {
 				// Scripts are actually processing, so keep it ready to be added during the #render method.
@@ -103,6 +105,7 @@ public class ScriptExecutor {
 			terminateIfNeeded();
 			
 			// 1) Render current scripts
+			PROCESSING_SCRIPTS = true;
 			for (ScriptProcess process : scripts) {
 				
 				// Does this process have a sub process ? Check recursively
@@ -145,6 +148,7 @@ public class ScriptExecutor {
 					break;
 				}
 			}
+			PROCESSING_SCRIPTS = false;
 			
 			// 2) Terminate those who are waiting
 			terminateIfNeeded();

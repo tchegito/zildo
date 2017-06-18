@@ -275,9 +275,11 @@ public class TriggerElement extends AnyElement {
 				if (mover != null) {
 					PersoPlayer hero = EngineZildo.persoManagement.getZildo();
 					ok = false;
-					for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
-						if (entity.getMover().isOnIt(hero)) {
-							ok = !mover.contains("!");
+					if (hero != null) {
+						for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
+							if (entity.getMover().isOnIt(hero)) {
+								ok = !mover.contains("!");
+							}
 						}
 					}
 				}
