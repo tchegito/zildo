@@ -276,6 +276,11 @@ public enum ZildoDescription implements SpriteDescription {
 	}
 	
 	@Override
+	public boolean isOnGround() {
+		return false;
+	}
+	
+	@Override
 	public boolean isSliping() {
 		return true;
 	}

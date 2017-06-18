@@ -100,5 +100,9 @@ public interface SpriteDescription {
 	 */
 	public boolean isSliping();
 	
+	/** Returns TRUE if element must be displayed as an entity => non blocking and drawn before elements.
+	 * Useful for lava patch **/
+	public boolean isOnGround();
+	
 	public int getRadius();
 }

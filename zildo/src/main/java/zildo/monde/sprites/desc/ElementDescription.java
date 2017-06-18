@@ -348,6 +348,11 @@ public enum ElementDescription implements SpriteDescription {
 		return 7;
 	}
 	
+	@Override
+	public boolean isOnGround() {
+		return false;
+	}
+	
 	/** Allow to find a desc even if it's a string containing NULL, for scripting purpose. **/
 	static public ElementDescription safeValueOf(String s) {
 		if (s == null || "NULL".equals(s.toUpperCase())) {

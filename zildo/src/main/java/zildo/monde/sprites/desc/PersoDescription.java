@@ -278,6 +278,11 @@ public enum PersoDescription implements SpriteDescription {
 		}
 	}
 	
+	@Override
+	public boolean isOnGround() {
+		return false;
+	}
+	
 	// Height of the character, to allow jump
 	public int getSizeZ() {
 		switch (this) {

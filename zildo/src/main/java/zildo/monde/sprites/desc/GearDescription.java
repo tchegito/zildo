@@ -113,6 +113,19 @@ public enum GearDescription implements SpriteDescription {
 
 	}
 	
+	@Override
+	public boolean isOnGround() {
+		switch (this) {
+		case LAVA1:
+		case LAVA2:
+		case LAVA3:
+		case LAVASPIKE:
+			return true;
+		default:
+			return false;
+		}
+	}
+	
 	public boolean isExplodable() {
 		switch (this) {
 		case CRACK1:
