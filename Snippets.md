@@ -53,4 +53,4 @@ Here are some useful examples to edit scripts.
 	  </timer>
 	</tileAction>
 ```
-Actually, 'tileAction' induces a specific context around a given tile (TileLocationContext). Indeed, the 'lookFor' action will generate a new context around found entity ONLY if entity has been found. Nested actions are executed only if condition is evaluated to 'true', but in this case, we have the 'negative' attribute. Thus, we execute nested action without any entity found. So in this particular case, we keep the original context.
+Actually, 'tileAction' induces a specific context around a given tile (a [TileLocationContext](https://github.com/tchegito/zildo/blob/master/zildo/src/main/java/zildo/fwk/script/context/TileLocationContext.java)). Indeed, the 'lookFor' action will generate a new context around found entity ONLY if entity has been found. Nested actions are executed only if condition is evaluated to 'true', but in this case, we have the 'negative' attribute. Thus, we execute nested action without any entity found. So in this particular case, we keep the original context.
