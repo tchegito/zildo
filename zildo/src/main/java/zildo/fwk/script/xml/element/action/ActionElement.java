@@ -58,6 +58,7 @@ public class ActionElement extends LanguageElement {
 	public String action; // To run a PersoAction, with "perso" ActionKind
 	public String shadow; // Only used in "spawn"
 	public String weapon; // For 'perso' and 'spawn'
+	public ZSSwitch carried;	// carried item character will give when he dies
 	public String parent;	// For 'perso'
 	public String impact;	// For 'spawn' => describe a ImpactKind element
 	public FloatExpression addSpr;	// For 'perso' and 'spawn' (never a float value, but we can use context variables)
@@ -139,6 +140,10 @@ public class ActionElement extends LanguageElement {
 			temp = readAttribute("light");
 			if (temp != null && temp.startsWith("#")) {
 				light = Integer.parseInt(temp.substring(1), 16);
+			}
+			String strCarried = readAttribute("carried");
+			if (strCarried != null) {
+				carried = ZSSwitch.parseForDialog(strCarried);
 			}
 		case animation:
 			location = IPoint.fromString(strPos);

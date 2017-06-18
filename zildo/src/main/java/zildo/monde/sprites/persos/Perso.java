@@ -33,9 +33,9 @@ import zildo.monde.map.Tile;
 import zildo.monde.map.Tile.TileNature;
 import zildo.monde.map.TileCollision;
 import zildo.monde.map.TileLight;
-import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
@@ -1355,6 +1355,8 @@ public abstract class Perso extends Element {
 		 	(pos_seqsprite / (factor * Constantes.speed));
 	}
 
+	public void setCarriedItem(ElementDescription desc) { }
+	
 	@Override
 	public int getFloorForSort() {
 		// When a character is on a transition (=ladder) he should be drawn OVER the tiles,

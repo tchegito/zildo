@@ -620,7 +620,19 @@
         </for>
 	</tileAction>
     
-    <mapScript>
+    <tileAction id="regenSpider">
+    	<!-- For now, a bug imposes to add an useless action, just to avoid 'uniqueAction' detected in timer execution -->
+        <var name="a" value="r"/>
+        <timer each="500">
+            <action>
+		    	<lookFor info="ENEMY" pos="x*16,y*16" radius="6" negative="true">
+					<spawn who="loc:spider" type="STONE_SPIDER" info="ENEMY" pos="x*16+8,y*16+8" carried="dice10>6:BOMBS3,NULL"/>
+				</lookFor>
+	    	</action>
+    	</timer>
+   	</tileAction>
+    	
+   	<mapScript>
 	    <condition name="sousbois2" locked="false">
 	        <tile pos="21,6" action="blueRain" unblock="true"/>
 	    </condition>
@@ -764,6 +776,7 @@
 		    <remove chaining="dragon"/>
 		</condition>
 		<condition name="dragon">
+		    <tile pos="9,3" action="regenSpider"/>
 		<!--
 		    <perso who="dragon" action="bossDragon"/>
 		-->

@@ -347,4 +347,14 @@ public enum ElementDescription implements SpriteDescription {
 	public int getRadius() {
 		return 7;
 	}
+	
+	/** Allow to find a desc even if it's a string containing NULL, for scripting purpose. **/
+	static public ElementDescription safeValueOf(String s) {
+		if (s == null || "NULL".equals(s.toUpperCase())) {
+			return null;
+		} else {
+			return valueOf(s);
+		}
+	}
+	
 }

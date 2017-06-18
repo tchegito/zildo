@@ -677,6 +677,12 @@ public class ActionExecutor extends RuntimeExecutor {
                 case lookFor: // Look for a character/element around another inside a given radius
                 	LookforElement lookFor = (LookforElement) p_action;
                 	SpriteEntity found;
+                	if (perso == null && location != null) {
+                		// If no character is specified, we could look around a given location anyway
+                		perso = new PersoNJ();
+                		perso.x = location.x;
+                		perso.y = location.y;
+                	}
                 	if (lookFor.desc != null) {
                 		ElementDescription desc = ElementDescription.valueOf(lookFor.desc);
                 		found = EngineZildo.spriteManagement.lookFor(perso, lookFor.radius, desc, lookFor.sight);
@@ -684,9 +690,14 @@ public class ActionExecutor extends RuntimeExecutor {
                 		found = EngineZildo.persoManagement.lookForOne(perso, lookFor.radius, p_action.info, lookFor.sight);
                 	}
                 	if (found != null ^ lookFor.negative) {	// XOR !
-                		IEvaluationContext persoContext = new SpriteEntityContext(found, context);
+                		IEvaluationContext lookForContext;
+                		if (found == null) {
+                			lookForContext = context;
+                		} else {
+                			lookForContext = new SpriteEntityContext(found, context);
+                		}
                 		// Specificity here: we create a subprocess with a different context: upon found character
-                		executeSubProcess(lookFor.actions, persoContext);
+                		executeSubProcess(lookFor.actions, lookForContext);
                 	} else {
                 		achieved = true;
                 	}
@@ -852,7 +863,7 @@ public class ActionExecutor extends RuntimeExecutor {
     	String name = null;
     	if (!p_ignoreWho && p_action.who != null) {
     		name = handleLocalVariable(p_action.who);
-    		if (getNamedPerso(p_action.who) == null) {
+    		if (getNamedPerso(name) == null) {
 	    		// Spawn the character only if no one with the same name exists yet
 	    		PersoDescription desc = PersoDescription.valueOf(p_action.getSpawnType());
 	    		elem = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, name, p_action.val);
@@ -878,6 +889,13 @@ public class ActionExecutor extends RuntimeExecutor {
 	        	}
         		if (p_action.z != null) {
         			perso.z = p_action.z.evaluate(context);
+        		}
+        		if (p_action.carried != null) {
+        			// Set item carried by the spawned character (dropped when he dies)
+        			ElementDescription carriedDesc = ElementDescription.safeValueOf(p_action.carried.evaluate());
+        			if (carriedDesc != null) {
+        				perso.setCarriedItem(carriedDesc);
+        			}
         		}
 	            EngineZildo.spriteManagement.spawnPerso(perso);
     		}

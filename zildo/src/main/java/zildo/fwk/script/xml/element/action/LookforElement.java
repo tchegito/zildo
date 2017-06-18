@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+import zildo.fwk.script.model.point.IPoint;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
@@ -57,6 +58,14 @@ public class LookforElement extends ActionElement {
 		String strInfo = readAttribute("info");
 		if (strInfo != null) {
 			info = PersoInfo.valueOf(strInfo);
+		}
+		String strPos = p_elem.getAttribute("pos");
+		if (!strPos.isEmpty()) {
+			location = IPoint.fromString(strPos);
+		}
+		
+		if (who == null && location == null) {
+			throw new RuntimeException("'lookFor' action need either 'who' or 'pos' attribute to work !");
 		}
 		
 		actions = (List<LanguageElement>) ScriptReader.parseNodes(xmlElement);
