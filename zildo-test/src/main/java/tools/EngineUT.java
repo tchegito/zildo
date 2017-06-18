@@ -375,11 +375,15 @@ public abstract class EngineUT {
 	public void waitEndOfScripting() {
 		waitEndOfScripting(null);
 	}
-	/** Wait until initialization scripts are over. **/
+	/** Wait until initialization scripts are over 
+	 * (at least 1 frame ==> in order to init things like PersoCollision#initFrame). **/
 	public void waitEndOfScripting(ScriptAction action) {
 		// Wait end of scripts
-		while (EngineZildo.scriptManagement.isScripting()) {
+		while (true) {
 			renderFrames(1);
+			if (!EngineZildo.scriptManagement.isScripting()) {
+				break;
+			}
 			if (action != null) {
 				action.launchAction(clientState);
 			}
