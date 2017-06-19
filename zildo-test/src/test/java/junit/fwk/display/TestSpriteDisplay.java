@@ -65,9 +65,10 @@ public class TestSpriteDisplay extends EngineUT {
 		waitEndOfScripting();
 
 		// Transmit entities and place camera
+		ClientEngineZildo.mapDisplay.setCamera(new Point(308, 470));
 		List<SpriteEntity> entities = EngineZildo.spriteManagement.getSpriteEntities(null);
 		sd.setEntities(entities);
-		sd.updateSpritesClient(new Point(308, 470));
+		renderFrames(1);
 		
 		squirrel.jump();
 		simulateDirection(0, -1);
