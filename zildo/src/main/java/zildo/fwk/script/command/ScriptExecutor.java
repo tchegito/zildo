@@ -82,7 +82,7 @@ public class ScriptExecutor {
 		} else {
 			if (!PROCESSING_SCRIPTS) {
 				if (sp.topPriority) {	// Add priority scripts first
-					scripts.add(0, sp);
+					toExecute.add(sp);
 				} else {
 					scripts.add(sp);
 				}

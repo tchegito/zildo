@@ -753,7 +753,7 @@
     <mapScript>
 	    <!--  , means OR  -->
 	    <!--  - means AND -->
-	    <condition>
+	    <condition name="!prison">
 	    	<var name="allowedDynamite" value="yes"/>
 	    </condition>
 	    <condition name="prison">
