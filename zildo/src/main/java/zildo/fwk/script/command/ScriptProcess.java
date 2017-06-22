@@ -107,6 +107,6 @@ public class ScriptProcess {
 	
 	@Override
 	public String toString() {
-		return "["+cursor+" on "+scene.toString()+"]";
+		return (topPriority ? "priority" : "") + "["+cursor+" on "+scene.toString()+"]";
 	}
 }

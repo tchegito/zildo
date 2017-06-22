@@ -81,7 +81,11 @@ public class ScriptExecutor {
 			p_caller.setSubProcess(sp);
 		} else {
 			if (!PROCESSING_SCRIPTS) {
-				scripts.add(sp);
+				if (sp.topPriority) {	// Add priority scripts first
+					scripts.add(0, sp);
+				} else {
+					scripts.add(sp);
+				}
 			} else {
 				// Scripts are actually processing, so keep it ready to be added during the #render method.
 				toExecute.add(sp);
