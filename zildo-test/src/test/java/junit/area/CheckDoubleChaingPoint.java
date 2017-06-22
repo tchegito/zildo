@@ -49,9 +49,7 @@ public class CheckDoubleChaingPoint extends EngineUT {
 		EngineZildo.persoManagement.clearPersos(true);
 
 		// Wait end of scripts
-		while (EngineZildo.scriptManagement.isScripting()) {
-			renderFrames(1);
-		}
+		waitEndOfScripting();
 
 		// Spawn water lily
 		waterLily = EngineZildo.spriteManagement.spawnSprite(
@@ -74,7 +72,7 @@ public class CheckDoubleChaingPoint extends EngineUT {
 		zildo.setPv(4);
 		zildo.attack();
 
-		renderFrames(12);
+		renderFrames(14);
 		Assert.assertNotNull(waterLily.getMover());
 		Mover mover = waterLily.getMover();
 		Element placeHolder = mover.getPlaceHolder();
