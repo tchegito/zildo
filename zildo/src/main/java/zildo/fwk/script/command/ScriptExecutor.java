@@ -156,20 +156,20 @@ public class ScriptExecutor {
 			
 			// 2) Terminate those who are waiting
 			terminateIfNeeded();
-			
-			// 3) Create the awaiting one
-			for (ScriptProcess process : toExecute) {
-				int i=0;
-				for (;i<scripts.size();i++) {
-					if (!scripts.get(i).topPriority) {
-						break;
-					}
-				}
-				scripts.add(i, process);
-			}
-			toExecute.clear();
-
 		}
+
+		// 3) Create the awaiting one
+		for (ScriptProcess process : toExecute) {
+			int i=0;
+			for (;i<scripts.size();i++) {
+				if (!scripts.get(i).topPriority) {
+					break;
+				}
+			}
+			scripts.add(i, process);
+		}
+		toExecute.clear();
+
 	}
 
 	private void terminateIfNeeded() {

@@ -92,9 +92,9 @@ public class TestBugCutscenes extends EngineUT {
 	// Issue 83
 	@Test
 	public void checkForbiddenDynamitePlantInIgorCell() {
-		waitEndOfScripting();
 		mapUtils.loadMap("prison");
 		PersoPlayer zildo = spawnZildo(104, 45);
+		waitEndOfScripting();
 		zildo.setWeapon(new Item(ItemKind.DYNAMITE));
 		zildo.setCountBomb(4);
 		zildo.attack();
@@ -103,7 +103,14 @@ public class TestBugCutscenes extends EngineUT {
 		Assert.assertEquals("Player should have been warned by a dialog !", 1, EngineZildo.game.getLastDialog().size());
 		waitEndOfScriptingPassingDialog();
 	}
-	
+
+	@Test
+	public void checkForbiddenDynamitePlantInIgorCell2() {
+		// Same but starts with another map before (that was a failed test when refactoring script executor processes)
+		mapUtils.loadMap("prison2");
+		waitEndOfScripting();
+	}
+
 	@Test
 	public void checkAllowedDynamitePlanting() {
 		// Check somewhere else
