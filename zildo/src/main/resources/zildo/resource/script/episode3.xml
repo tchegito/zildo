@@ -535,6 +535,7 @@
             <markQuest name="dragonShouldMove2" value="false"/>
             <markQuest name="dragonShouldMove3" value="false"/>
             <markQuest name="dragonShouldMove4" value="false"/>
+            <markQuest name="dragonShouldMove5" value="false"/>
         </action>
     </quest>
     <quest name="dragonShouldMove2" locked="false">
@@ -545,6 +546,7 @@
             <markQuest name="dragonShouldMove1" value="false"/>
             <markQuest name="dragonShouldMove3" value="false"/>
             <markQuest name="dragonShouldMove4" value="false"/>
+            <markQuest name="dragonShouldMove5" value="false"/>
         </action>
     </quest>
     <quest name="dragonShouldMove3" locked="false">
@@ -555,6 +557,7 @@
             <markQuest name="dragonShouldMove1" value="false"/>
             <markQuest name="dragonShouldMove2" value="false"/>
             <markQuest name="dragonShouldMove4" value="false"/>
+            <markQuest name="dragonShouldMove5" value="false"/>
        	</action>
     </quest>
     <quest name="dragonShouldMove4" locked="false">
@@ -565,6 +568,7 @@
             <markQuest name="dragonShouldMove1" value="false"/>
             <markQuest name="dragonShouldMove2" value="false"/>
             <markQuest name="dragonShouldMove3" value="false"/>
+            <markQuest name="dragonShouldMove5" value="false"/>
        	</action>
     </quest>
     <quest name="dragonShouldMove5" locked="false">
@@ -631,6 +635,15 @@
 	    	</action>
     	</timer>
    	</tileAction>
+    	
+    <tileAction id="lavaBubbles">
+    	<for var="loc:i" value="40">
+			<animation type="LAVA_DROP" pos="x*16 + random*80, y*16 + random*48"/>
+			<if exp="dice10>4">
+			    <wait value="1"/>
+			</if>
+		</for>
+    </tileAction>
     	
    	<mapScript>
 	    <condition name="sousbois2" locked="false">
@@ -1758,16 +1771,16 @@
 			    <!-- Save dragon location, because in 'lookFor' block, x and y vars means hero's location -->
 			    <var name="loc:dragonX" value="x"/>
 			    <var name="loc:dragonY" value="y"/>
-  				<lookFor who="self" info="ZILDO" radius="18">
-				    <script who="self" value="19"/>
+			    <script who="self" value="19"/>
+   				<lookFor who="self" info="ZILDO" radius="18">
    	   	            <for var="loc:i" value="5">
 	   	                <!-- Remains to reverse fireball sprites, if targeted on the left -->
 					    <throw who="self" pos="loc:dragonX, loc:dragonY-60" to="zildo.x,zildo.y" speed="1.8" floor="2"
 						      		 	   type="FIRE_BALL" zoom="127" foreground="true"/>
 	   				    <wait value="3"/>
 		            </for>
-	   	            <script who="self" value="3"/>
    				</lookFor>
+   	            <script who="self" value="3"/>
 	            <wait value="140"/>
 	            
 	            <!-- Check if dragon has to move -->
@@ -1834,7 +1847,7 @@
    	    <wait value="20"/>
    	    <script who="dragon" value="20"/>	<!-- Retract arms -->
    	    <wait value="150"/>
-   	    <perso who="dragon" vz="0" az="0.02" z="-150"/>	<!-- Lift up -->
+   	    <perso who="dragon" alpha="255" vz="0" az="0.02" z="-150"/>	<!-- Lift up -->
    	    <pos who="dragon" pos="loc:arg0,loc:arg1"/>
    	    <wait value="80"/>
    	    <perso who="dragon" az="0.01"/>
@@ -1914,13 +1927,9 @@
 			<tile pos="32,9" back2="-1"/>
 			<tile pos="33,9" back2="-1"/>
 		</actions>
-		<perso who="dragon" action="bossDragon"/>
-		<for var="loc:i" value="40">
-			<animation type="LAVA_DROP" pos="451 + random*80, 100 + random*48"/>
-			<if exp="dice10>4">
-			    <wait value="1"/>
-			</if>
-		</for>
-	  <exec script="dragonDiveAndReappear(451,394)"/>
+		<tile pos="28,6" action="lavaBubbles"/>
+	    <var name="loc:dragonPos" value="4"/>
+  	    <exec script="dragonDiveAndReappear(215,280)"/>
+  		<perso who="dragon" action="bossDragon"/>
 	</scene>	
 </adventure>
