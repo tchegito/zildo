@@ -34,9 +34,9 @@ public enum Angle {
 	NORDOUEST(7, new Point(-1,-1)),
 	NULL(8, new Point(0, 0));	// A null angle, but serializable
 
-	public int value;
-	public Point coords;
-	public Pointf coordf;
+	public final int value;
+	public final Point coords;
+	public final Pointf coordf;
 
 	final double squareRoot2 = 0.8f;
 	
@@ -51,7 +51,7 @@ public enum Angle {
 		if (coordf.x != 0 && coordf.y != 0) {
 			coordf.x *= squareRoot2;
 			coordf.y *= squareRoot2;
-		}
+		} 
 	}
 	
 	public boolean isVertical() {

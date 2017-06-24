@@ -603,6 +603,81 @@
 	    </action>
 	</quest>
 	
+    <!-- 3 rocks in dragon cave : respawn only if given one hasn't wounded dragon -->
+    <quest name="fallRockA" locked="false" repeat="true">
+	    <trigger>
+	        <location name="dragon"/>
+		    <fall type="STONE_HEAVY" name="rockA" nature="BOTTOMLESS"/>
+	    </trigger>
+	    <action>
+	        <if exp="dragonPos!=1">	<!-- Dragon wasn't there ? -->
+	            <markQuest name="needToRespawnRockA" value="true"/>
+	        </if>
+	    </action>
+	</quest>
+	
+	<quest name="needToRespawnRockA" />
+	<quest name="reappearRockA" repeat="true" locked="false">
+	    <trigger>
+	        <questDone name="needToRespawnRockA"/>
+	        <location name="dragon" pos="149,438" radius="-20"/>	<!-- if hero is away from 20 tiles -->
+	    </trigger>
+	    <action>
+	   		<spawn type="STONE_HEAVY" what="rockA" pos="149,438" floor="2" z="0"/>
+	   		<markQuest name="needToRespawnRockA" value="false"/>
+	    </action>
+   	</quest>
+   	
+	<!-- Rock 2/3 B -->
+	 <quest name="fallRockB" locked="false" repeat="true">
+	    <trigger>
+	        <location name="dragon"/>
+		    <fall type="STONE_HEAVY" name="rockB" nature="BOTTOMLESS"/>
+	    </trigger>
+	    <action>
+	        <if exp="dragonPos!=3">	<!-- Dragon wasn't there ? -->
+	            <markQuest name="needToRespawnRockB" value="true"/>
+	        </if>
+	    </action>
+	</quest>
+	
+	<quest name="needToRespawnRockB" />
+	<quest name="reappearRockB" repeat="true" locked="false">
+	    <trigger>
+	        <questDone name="needToRespawnRockB"/>
+	        <location name="dragon" pos="840,271" radius="-20"/>	<!-- if hero is away from 20 tiles -->
+	    </trigger>
+	    <action>
+	   		<spawn type="STONE_HEAVY" what="rockB" pos="840,271" floor="2" z="0"/>
+	   		<markQuest name="needToRespawnRockB" value="false"/>
+	    </action>
+   	</quest>
+   	
+	<!-- Rock 3/3 C -->
+    <quest name="fallRockC" locked="false" repeat="true">
+	    <trigger>
+	        <location name="dragon"/>
+		    <fall type="STONE_HEAVY" name="rockC" nature="BOTTOMLESS"/>
+	    </trigger>
+	    <action>
+	        <if exp="dragonPos!=5">
+	            <markQuest name="needToRespawnRockC" value="true"/>
+	        </if>
+	    </action>
+	</quest>
+	
+	<quest name="needToRespawnRockC" />
+	<quest name="reappearRockC" repeat="true" locked="false">
+	    <trigger>
+	        <questDone name="needToRespawnRockC"/>
+	        <location name="dragon" pos="637,542" radius="-20"/>	<!-- if hero is away from 20 tiles -->
+	    </trigger>
+	    <action>
+	   		<spawn type="STONE_HEAVY" what="rockC" pos="637,539" floor="2" z="0"/>
+	   		<markQuest name="needToRespawnRockC" value="false"/>
+	    </action>
+   	</quest>
+   	
     <!-- Show up some clouds on dragon's map -->
     <tileAction id="makeCloudsDragon">
 	    <for var="loc:j" value="30">
@@ -1764,7 +1839,7 @@
 	</scene>
 	
 	<persoAction id="bossDragon">
-        <var name="loc:dragonPos" value="2"/>
+        <var name="dragonPos" value="2"/>
 	    <loop>
 		    <for var="loc:j" value="2">
 			    <sound name="SerpentSpit"/>
@@ -1785,28 +1860,28 @@
 	            
 	            <!-- Check if dragon has to move -->
 	            <if expQuest="dragonShouldMove1">
-	                <if exp="loc:dragonPos!=1">
-		                <var name="loc:dragonPos" value="1"/>
+	                <if exp="dragonPos!=1">
 		                <markQuest name="dragonShouldMove2" value="false"/>
 		                <markQuest name="dragonShouldMove3" value="false"/>
 		                <markQuest name="dragonShouldMove4" value="false"/>
 		                <markQuest name="dragonShouldMove5" value="false"/>
    		               	<exec script="dragonDiveAndReappear(230,567)"/>
+		                <var name="dragonPos" value="1"/>
 	                </if>
 	            </if>
 	            <if expQuest="dragonShouldMove2">
-	                <if exp="loc:dragonPos!=2">
-		                <var name="loc:dragonPos" value="2"/>
+	                <if exp="dragonPos!=2">
 		                <markQuest name="dragonShouldMove1" value="false"/>
 		                <markQuest name="dragonShouldMove3" value="false"/>
 		                <markQuest name="dragonShouldMove4" value="false"/>
 		                <markQuest name="dragonShouldMove5" value="false"/>
    		                <exec script="dragonDiveAndReappear(451,394)"/>
-	                </if>
+		                <var name="dragonPos" value="2"/>
+   	                </if>
 	            </if>
 	           	<if expQuest="dragonShouldMove3">
-	                <if exp="loc:dragonPos!=3">
-		                <var name="loc:dragonPos" value="3"/>
+	                <if exp="dragonPos!=3">
+		                <var name="dragonPos" value="3"/>
 		                <markQuest name="dragonShouldMove1" value="false"/>
 		                <markQuest name="dragonShouldMove2" value="false"/>
 		                <markQuest name="dragonShouldMove4" value="false"/>
@@ -1815,23 +1890,23 @@
 	                </if>
 	            </if>
 	            <if expQuest="dragonShouldMove4">
-	                <if exp="loc:dragonPos!=4">
-		                <var name="loc:dragonPos" value="4"/>
+	                <if exp="dragonPos!=4">
 		                <markQuest name="dragonShouldMove1" value="false"/>
 		                <markQuest name="dragonShouldMove2" value="false"/>
 		                <markQuest name="dragonShouldMove3" value="false"/>
 		                <markQuest name="dragonShouldMove5" value="false"/>
    		                <exec script="dragonDiveAndReappear(215,280)"/>
-	                </if>
+		                <var name="dragonPos" value="4"/>
+   	                </if>
 	            </if>
 	            <if expQuest="dragonShouldMove5">
-	                <if exp="loc:dragonPos!=5">
-		                <var name="loc:dragonPos" value="5"/>
+	                <if exp="dragonPos!=5">
 		                <markQuest name="dragonShouldMove1" value="false"/>
 		                <markQuest name="dragonShouldMove2" value="false"/>
 		                <markQuest name="dragonShouldMove3" value="false"/>
 		                <markQuest name="dragonShouldMove4" value="false"/>
    		                <exec script="dragonDiveAndReappear(720,697)"/> <!--  736 -->
+		                <var name="dragonPos" value="5"/>
 	                </if>
 	            </if>
    	   	    </for>
@@ -1928,7 +2003,7 @@
 			<tile pos="33,9" back2="-1"/>
 		</actions>
 		<tile pos="28,6" action="lavaBubbles"/>
-	    <var name="loc:dragonPos" value="4"/>
+	    <var name="dragonPos" value="4"/>
   	    <exec script="dragonDiveAndReappear(215,280)"/>
   		<perso who="dragon" action="bossDragon"/>
 	</scene>	

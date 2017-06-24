@@ -659,7 +659,7 @@ public class Element extends SpriteEntity {
 			currentDesc = ((PersoPlayer) this).who == ControllablePerso.PRINCESS_BUNNY ? PersoDescription.PRINCESS_BUNNY : PersoDescription.ZILDO;
 		}
 		// Trigger both a fallen object, and an attack on the tile
-		TriggerElement trigger = TriggerElement.createFallTrigger(currentDesc, nature);
+		TriggerElement trigger = TriggerElement.createFallTrigger(currentDesc, nature, name);
 		EngineZildo.scriptManagement.trigger(trigger);
 		
 		if (desc != ElementDescription.TINY_ROCK) {

@@ -79,7 +79,7 @@ public class FloatVariable implements FloatASTNode {
 			// Local variables
 			String realName = context.getString(variable);
 			if (realName != null) {
-				String val = EngineZildo.scriptManagement.getVarValue(context.getString(variable));
+				String val = EngineZildo.scriptManagement.getVarValue(realName);
 				return Float.parseFloat(val);
 			}
 			return 0;

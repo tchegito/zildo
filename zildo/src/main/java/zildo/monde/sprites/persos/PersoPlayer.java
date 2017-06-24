@@ -336,7 +336,7 @@ public class PersoPlayer extends Perso {
 
 		walkTile(false);	// To activate any location trigger
 		// Trigger the USE one
-		TriggerElement trigger = TriggerElement.createUseTrigger(weapon.kind, new Point(x, y) );
+		TriggerElement trigger = TriggerElement.createUseTrigger(weapon.kind);
 		EngineZildo.scriptManagement.trigger(trigger);
 	}
 
