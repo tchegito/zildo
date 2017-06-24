@@ -7,6 +7,8 @@ The scripting module in Zildo is divided into two essentials sections :
   * scenes
   * quests
 
+There's some particular scenes, that we'll discuss later, with a specific context: tileAction and persoAction.
+
 ## Main elements ##
 
 All is described in a set of XML files, each one containing an ADVENTURE root. The division of files is only intended to separate adventure in episodes, to enhance understanding.
@@ -19,6 +21,12 @@ A scene is a cinematic sequence, where player can't act. He just has to show eve
 
 Basically, it's a list of mini-actions which are launched sequentially. Some can be launched simultaneously. (see the 'Misc' section)
 
+#### Contextual scenes ####
+
+A scene can be around a specific context:
+ * **tileAction** : executed for a given tile. That means that relative variables will be accessible: "x" and "y" for tile coordinates (0..64)
+ * **persoAction** : executed for a specific character: "x" and "y" for character (0..64*16), and "self" for his name
+ 
 ### Quests ###
 
 A quest is an objective for the player. It has 3 parts:
@@ -83,7 +91,8 @@ A trigger can be of 10 different kinds : (corresponding to [QuestEvent](https://
   * **use** : does hero use one of his items ?
   * **fall** : does an element/character falls on the floor ? (water, lava, or any ground)
   * **chainingPoint** : means that this quest is a chaining point acceptance (can accept/reject current point)
-
+  * **tileAttack** : means that a tile has been hit (useful for lever)
+  
 #### Particular cases ####
 
 To handle some automatic events, like "hero opens a chest", or "hero unlocks a door", we need to remember that players did it. So it's represented as a quest in the savegame.
