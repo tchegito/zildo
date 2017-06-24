@@ -12,6 +12,12 @@
  * **tilePos** : 
  * **tileValue** : value of a tile
  
+ Example:
+  ```xml
+             <location name="promenade2" pos="422,230" radius="2"/>
+             <location name="voleursg5" tilePos="52,26" gear="TIMED_BUTTON"/>
+             <location name="voleursg5" mover="platform2"/>
+ ```
 ## dialog ##
 
  When a character speak one of its planned sentence.
