@@ -74,7 +74,7 @@ A trigger can be of 10 different kinds : (corresponding to [QuestEvent](https://
 
 #### Types ####
 
-  * **location** : when a character reach a given location
+  * [**location**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#location) : when a character reach a given location
     * name: map name
     * pos: location, in pixel coordinates
     * radius: radius around the point indicated by 'pos' (in tile coordinates)
@@ -82,15 +82,15 @@ A trigger can be of 10 different kinds : (corresponding to [QuestEvent](https://
     * gear: mechanism type (BUTTON, TIMED\_BUTTON)
     * mover: name of a moving platform
     * tileValue: a value for a given tile (bank\*256 + index)
-  * **dialog** : when a specific character say a given sentence
-  * **inventory** : does Zildo have a given item ?
-  * **questDone** : has Zildo achieved a given quest ?
-  * **dead** : does a set of creatures died ?
-  * **push** : is someone pushing an element ?
-  * **lift** : is hero taking some jar/bush ?
-  * **use** : does hero use one of his items ?
-  * **fall** : does an element/character falls on the floor ? (water, lava, or any ground)
-  * **chainingPoint** : means that this quest is a chaining point acceptance (can accept/reject current point)
+  * [**dialog**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#dialog) : when a specific character say a given sentence
+  * [**inventory**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#inventory) : does Zildo have a given item ?
+  * [**questDone**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#questdone) : has Zildo achieved a given quest ?
+  * [**dead**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#dead) : does a set of creatures died ?
+  * [**push**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#push) : is someone pushing an element ?
+  * [**lift**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#lift) : is hero taking some jar/bush ?
+  * [**use**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#use) : does hero use one of his items ?
+  * [**fall**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#fall) : does an element/character falls on the floor ? (water, lava, or any ground)
+  * [**chainingPoint**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#chainingpoint) : means that this quest is a chaining point acceptance (can accept/reject current point)
   * [**tileAttack**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#tileattack) : means that a tile has been hit (useful for lever)
   
 #### Particular cases ####
