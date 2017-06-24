@@ -91,7 +91,7 @@ A trigger can be of 10 different kinds : (corresponding to [QuestEvent](https://
   * **use** : does hero use one of his items ?
   * **fall** : does an element/character falls on the floor ? (water, lava, or any ground)
   * **chainingPoint** : means that this quest is a chaining point acceptance (can accept/reject current point)
-  * **tileAttack** : means that a tile has been hit (useful for lever)
+  * [**tileAttack**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#tileattack) : means that a tile has been hit (useful for lever)
   
 #### Particular cases ####
 
