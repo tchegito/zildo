@@ -158,6 +158,7 @@ public class TriggerElement extends AnyElement {
 		case FALL:
 			tileNature = TileNature.valueOf(readAttribute("nature"));
 			desc = SpriteDescription.Locator.findNamedSpr(readAttribute("type"));
+			name = readAttribute("name");
 		case TILEATTACK:
 			tileLocation = readPoint("tilePos");
 			break;
@@ -222,7 +223,11 @@ public class TriggerElement extends AnyElement {
 				} else if (p_another.location != null && location != null) {
 					float dist = p_another.location.distance(location);
 					// System.out.println(dist + "   <   "+(8f + 16*radius));
-					return dist < (8f + 16 * radius);
+					if (radius >= 0) {
+						return dist < (8f + 16 * radius);
+					} else {
+						return dist > (8f + 16 * -radius);
+					}
 				}
 			}
 			break;
@@ -243,7 +248,8 @@ public class TriggerElement extends AnyElement {
 		case USE:
 			return item == p_another.item;
 		case FALL:
-			return desc == p_another.desc && tileNature == p_another.tileNature;
+			return desc == p_another.desc && tileNature == p_another.tileNature &&
+			(name == null || name.equals(p_another.name));
 		case TILEATTACK:
 			return tileLocation.equals(p_another.tileLocation);
 		default:
@@ -400,7 +406,7 @@ public class TriggerElement extends AnyElement {
 	 * @param p_item
 	 * @return TriggerElement
 	 */
-	public static TriggerElement createUseTrigger(ItemKind p_item, Point p_pos) {
+	public static TriggerElement createUseTrigger(ItemKind p_item) {
 		TriggerElement elem = new TriggerElement(QuestEvent.USE);
 		elem.item = p_item;
 		return elem;
@@ -408,13 +414,15 @@ public class TriggerElement extends AnyElement {
 	
 	/**
 	 * Ingame method to check that element just died
+	 * @param name name of fallen element
 	 * @param p_item
 	 * @return TriggerElement
 	 */
-	public static TriggerElement createFallTrigger(SpriteDescription desc, TileNature nature) {
+	public static TriggerElement createFallTrigger(SpriteDescription desc, TileNature nature, String name) {
 		TriggerElement elem = new TriggerElement(QuestEvent.FALL);
 		elem.desc = desc;
 		elem.tileNature = nature;
+		elem.name = name;
 		return elem;
 	}
 	
