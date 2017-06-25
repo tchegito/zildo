@@ -6,7 +6,7 @@
  
  * **name** : map name
  * **mover** : name of the mover (optional)
- * **radius** : radius in tile units (optional)
+ * **radius** : radius in tile units, can be negative (optional)
  * **gear** : gear
  * **pos** : location in pixel coordinates
  * **tilePos** : 
@@ -18,6 +18,11 @@
              <location name="voleursg5" tilePos="52,26" gear="TIMED_BUTTON"/>
              <location name="voleursg5" mover="platform2"/>
  ```
+ 
+ About radius:
+ - a positive one means "match if hero is inside a X-tiles circle"
+ - a negative one means "match if hero is away at least from a abs(X)-tiles circle"           
+ 
 ## dialog ##
 
  When a character speak one of its planned sentence.
@@ -65,10 +70,11 @@
  
 ## fall ##
 
- When an elements falls on a tile.
+ When an element falls on a tile.
  
  * **type** : member of ElementDescription
  * **nature** : member of TileNature
+ * **name** : name of fallen element
  
 ## chainingpoint ##
 
