@@ -21,4 +21,9 @@ public class TestableIdGenerator extends IdGenerator {
 		}
 		return size;
 	}
+	
+	@Override
+	public int pop() {
+		return super.pop();
+	}
 }

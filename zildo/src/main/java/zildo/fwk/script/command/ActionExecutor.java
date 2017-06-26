@@ -679,7 +679,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 	SpriteEntity found;
                 	if (perso == null && location != null) {
                 		// If no character is specified, we could look around a given location anyway
-                		perso = new PersoNJ();
+                		perso = new PersoNJ(-2);
                 		perso.x = location.x;
                 		perso.y = location.y;
                 	}

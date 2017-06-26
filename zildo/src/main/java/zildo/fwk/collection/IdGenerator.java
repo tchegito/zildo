@@ -29,7 +29,7 @@ package zildo.fwk.collection;
  */
 public class IdGenerator {
 
-	boolean[] buffer;
+	protected boolean[] buffer;
 	int cursor;
 	
 	final int maxId;

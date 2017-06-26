@@ -61,6 +61,11 @@ public class PersoNJ extends Perso {
 		pv = 1;
 	}
 
+	/** Special constructor for 'ghost' character => rarely used. See ActionExecutor#render for lookFor **/
+	public PersoNJ(int id) {
+		super(id);
+	}
+	
 	@Override
 	public void attack() {
 		if (weapon != null) {
