@@ -69,19 +69,16 @@ public class ElementDynamite extends Element {
 			Element boulder = EngineZildo.spriteManagement.collideElement((int) x, (int) y, null, 12, 
 					ElementDescription.STONE_HEAVY);
 			if (boulder != null) {
-				boulder.vx = 1.2f;
-				boulder.vy = 1.1f;
+				boulder.angle = Angle.fromDelta(boulder.x - x, boulder.y - y);
+				boulder.vx = boulder.angle.coordf.x * 1.2f;
+				boulder.vy = boulder.angle.coordf.y * 1.1f;
+				if (boulder.angle.isHorizontal()) {
+					boulder.vy = 1.1f;
+				}
 				boulder.az = -0.08f;
 				boulder.vz = 2.8f;
 				boulder.z = 2;
 				boulder.flying = true;	// Flying object need angle
-				boulder.angle = Angle.EST;
-				// Inverse angle if dynamite is on the opposite
-				if (boulder.x < x) {
-					boulder.vx = -boulder.vx;
-					boulder.angle = Angle.OUEST;
-				}
-				
 			}
 		} else if (counter < 30) {
 			setSpecialEffect(EngineFX.PERSO_HURT);
