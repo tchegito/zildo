@@ -86,6 +86,7 @@ public class PersoManagement {
 		return null;
 	}
 	
+	/** Remove any character, including running scripts issued by a 'persoAction' **/
 	public void clearPersos(boolean includingZildo)
 	{
 		Iterator<Perso> it=tab_perso.iterator();
@@ -99,6 +100,7 @@ public class PersoManagement {
 			Perso perso=it.next();
 			if (perso != null && (!perso.isZildo() || includingZildo)) {
 				persoToRemove.add(perso);
+				EngineZildo.scriptManagement.stopPersoAction(perso);
 				it.remove();
 			}
 		}
