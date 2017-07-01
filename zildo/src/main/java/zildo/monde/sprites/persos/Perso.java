@@ -809,15 +809,11 @@ public abstract class Perso extends Element {
 			case 861:
 			case 862:
 			case 7*256+129: case 7*256+130:
-				if (!isGhost() && isZildo()) {
-					EngineZildo.scriptManagement.execute("miniStairsDown", true);
-				}
+				handleStairsScene("miniStairsDown");
 				slowDown = true;
 				break;
 			case 7*256+133: case 7*256+134:
-				if (!isGhost() && isZildo()) {
-					EngineZildo.scriptManagement.execute("miniStairsDownReverse", true);
-				}
+				handleStairsScene("miniStairsDownReverse");
 				slowDown = true;
 				break;
 			case 859:
@@ -826,15 +822,11 @@ public abstract class Perso extends Element {
 			case 864:	// Cave stairs
 			case 7*256+131: case 7*256+132:	// Palace1 stairs
 			case 768 + 248:	// Rock on back2 for stairs (careful with this !!!)
-				if (!isGhost() && isZildo()) {
-					EngineZildo.scriptManagement.execute("miniStairsUp", true);
-				}
+				handleStairsScene("miniStairsUp");
 				slowDown = true;
 				break;
 			case 7*256+135: case 7*256+136:
-				if (!isGhost() && isZildo()) {
-					EngineZildo.scriptManagement.execute("miniStairsUpReverse", true);
-				}
+				handleStairsScene("miniStairsUpReverse");
 				slowDown = true;
 				break;
 
@@ -951,6 +943,19 @@ public abstract class Perso extends Element {
 		return slowDown;
 	}
 
+	private void handleStairsScene(String scene) {
+		if (!isGhost() && isZildo()) {
+			if (mouvement == MouvementZildo.TOUCHE) {
+				// Cancel projection movement if hero is wounded (maybe if this isn't good, we may think to consider blocking
+				// all tiles leading to this method: stairs tiles)
+				x -= px;
+				y -= py;
+			} else {
+				EngineZildo.scriptManagement.execute(scene, true);
+			}
+		}
+	}
+	
 	public boolean linkedSpritesContains(SpriteEntity entity) {
 		return (persoSprites != null && persoSprites.contains(entity)) || en_bras == entity;
 	}
