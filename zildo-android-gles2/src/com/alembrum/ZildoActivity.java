@@ -254,6 +254,7 @@ public class ZildoActivity extends Activity {
     	return false;
     }
     
+    // Since HONEYCOMB, we can use motion events
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 	@Override
     public boolean dispatchGenericMotionEvent(MotionEvent event) {

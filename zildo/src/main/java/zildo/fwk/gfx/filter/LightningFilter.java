@@ -25,6 +25,8 @@ import zildo.fwk.gfx.GraphicStuff;
 import zildo.monde.util.Vector4f;
 
 /**
+ * Filter which blinks with a big white square all over the screen.
+ * 
  * @author Tchegito
  *
  */

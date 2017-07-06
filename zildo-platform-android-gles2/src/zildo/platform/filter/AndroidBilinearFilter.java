@@ -24,6 +24,8 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BilinearFilter;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.util.Pointf;
+import zildo.monde.util.Vector2f;
 import zildo.monde.util.Vector3f;
 import zildo.platform.opengl.AndroidPixelShaders;
 import android.opengl.GLES20;
@@ -56,6 +58,10 @@ public class AndroidBilinearFilter extends BilinearFilter {
 		// Change all screen colors
 		Vector3f col = ClientEngineZildo.ortho.getFilteredColor();
 		AndroidPixelShaders.shaders.setColor(col);
+		
+		// Earthquake filter
+		Pointf offset = ClientEngineZildo.ortho.getOffsetScreen();
+		AndroidPixelShaders.shaders.setTranslation(new Vector2f(offset.x, offset.y));
 		
 		// Draw texture
 		super.render();

@@ -25,6 +25,7 @@ import org.lwjgl.opengl.GL11;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.BilinearFilter;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector3f;
 
 
@@ -43,11 +44,14 @@ public class LwjglBilinearFilter extends BilinearFilter {
         // Disable blend
 		GL11.glDisable(GL11.GL_BLEND);
 
+		Pointf offset = ClientEngineZildo.ortho.getOffsetScreen();
+		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
     	GL11.glLoadIdentity();
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glPushMatrix();
-		GL11.glTranslatef(0,-sizeY,1);
+		// Translate (0,-sizeY) + offset
+		GL11.glTranslatef(0 + offset.x,offset.y-sizeY,1);
 
 		// This filter is in charge to alter all screen colors
 		Vector3f v = ClientEngineZildo.ortho.getFilteredColor();

@@ -1850,7 +1850,7 @@
    				<lookFor who="self" info="ZILDO" radius="18">
    	   	            <for var="loc:i" value="5">
 	   	                <!-- Remains to reverse fireball sprites, if targeted on the left -->
-					    <throw who="self" pos="loc:dragonX, loc:dragonY-60" to="zildo.x,zildo.y" speed="1.8" floor="2"
+					    <throw who="dragon" pos="loc:dragonX, loc:dragonY-60" to="zildo.x,zildo.y" speed="1.8" floor="2"
 						      		 	   type="FIRE_BALL" zoom="127" foreground="true"/>
 	   				    <wait value="3"/>
 		            </for>
@@ -1963,6 +1963,8 @@
 	    <wait value="20"/>
 	    <sound name="ZildoPousse"/>
 	    <filter type="0"/>
+	    <!-- Start earthquake -->
+	    <filter type="5"/>
 	    <spawn type="STONE_HEAVY" pos="450,185" z="80" az="-0.1"/>
 	    <wait value="20"/>
 	    <sound name="BigRat"/>
@@ -2004,6 +2006,7 @@
 		</actions>
 		<tile pos="28,6" action="lavaBubbles"/>
 	    <var name="dragonPos" value="4"/>
+	    <filter type="0"/>
   	    <exec script="dragonDiveAndReappear(215,280)"/>
   		<perso who="dragon" action="bossDragon"/>
 	</scene>	

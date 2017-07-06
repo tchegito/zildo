@@ -36,6 +36,7 @@ import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.filter.BilinearFilter;
 import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
+import zildo.fwk.gfx.filter.EarthQuakeFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
@@ -486,6 +487,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 		ClientEngineZildo.ortho.setFilteredColor(new Vector3f(1, 1, 1));
                 		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
                 		ClientEngineZildo.filterCommand.active(LightningFilter.class, false, null);
+                		ClientEngineZildo.filterCommand.active(EarthQuakeFilter.class, false, null);
                 		break;
                 	case 1: // NIGHT
                 		ClientEngineZildo.ortho.setFilteredColor(Ortho.NIGHT_FILTER);
@@ -501,6 +503,9 @@ public class ActionExecutor extends RuntimeExecutor {
                 	case 4: // LIGHTNING
                 		ClientEngineZildo.filterCommand.active(CloudFilter.class, false, null);
                 		ClientEngineZildo.filterCommand.active(LightningFilter.class, true, null);
+                		break;
+                	case 5: // EARTH QUAKE
+                		ClientEngineZildo.filterCommand.active(EarthQuakeFilter.class, true, null);
                 		break;
                 	}
                 	achieved = true;

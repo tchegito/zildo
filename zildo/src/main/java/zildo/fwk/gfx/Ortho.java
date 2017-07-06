@@ -23,6 +23,7 @@ package zildo.fwk.gfx;
 import zildo.Zildo;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
 
@@ -112,7 +113,8 @@ public abstract class Ortho {
 
 	protected Vector3f ambientColor; // Current ambient color (could be null)
 	protected Vector3f filteredColor; // Filtered color (never null, at least 1,1,1)
-
+	protected Pointf offsetScreen = new Pointf(0, 0);	// Offset to display screen (with bilinear)
+	
 	public final static Vector3f SEMI_NIGHT_FILTER = new Vector3f(0.75f, 0.85f, 1f);
 	public final static Vector3f NIGHT_FILTER = new Vector3f(0.5f, 0.6f, 1f);
 
@@ -291,6 +293,14 @@ public abstract class Ortho {
 		this.filteredColor = filtered;
 	}
 	
+	public Pointf getOffsetScreen() {
+		return offsetScreen;
+	}
+
+	public void setOffsetScreen(Pointf offsetScreen) {
+		this.offsetScreen = offsetScreen;
+	}
+
 	public boolean isNight() {
 		return filteredColor == Ortho.NIGHT_FILTER;
 	}

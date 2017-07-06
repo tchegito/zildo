@@ -30,6 +30,7 @@ import zildo.fwk.gfx.filter.BlendFilter;
 import zildo.fwk.gfx.filter.BlurFilter;
 import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
+import zildo.fwk.gfx.filter.EarthQuakeFilter;
 import zildo.fwk.gfx.filter.FadeFilter;
 import zildo.fwk.gfx.filter.FadeScreenFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
@@ -306,8 +307,10 @@ public class FilterCommand {
 		addFilter(Zildo.pdPlugin.getFilter(CircleFilter.class));
 		addFilter(new RedFilter(Zildo.pdPlugin.gfxStuff));
 		addFilter(new LightningFilter(Zildo.pdPlugin.gfxStuff));
+		addFilter(new EarthQuakeFilter(Zildo.pdPlugin.gfxStuff));
 		addFilter(Zildo.pdPlugin.getFilter(BlackBlurFilter.class));
 		addFilter(Zildo.pdPlugin.getFilter(BilinearFilter.class));
 		active(BilinearFilter.class, true, null);		
+		active(EarthQuakeFilter.class, true, null);		
 	}	
 }
