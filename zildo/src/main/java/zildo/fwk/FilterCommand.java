@@ -311,6 +311,5 @@ public class FilterCommand {
 		addFilter(Zildo.pdPlugin.getFilter(BlackBlurFilter.class));
 		addFilter(Zildo.pdPlugin.getFilter(BilinearFilter.class));
 		active(BilinearFilter.class, true, null);		
-		active(EarthQuakeFilter.class, true, null);		
 	}	
 }

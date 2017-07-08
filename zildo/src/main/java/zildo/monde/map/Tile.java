@@ -156,6 +156,10 @@ public class Tile implements Cloneable {
 		case 256*10 + 34:
 		case 256*10 + 7:
 		case 256*10 + 6:
+		case 256*10 + 66:
+		case 256*10 + 67:
+		case 256*10 + 68:
+		case 256*10 + 69:
 		case 256*10 + 77:
 		case 256*10 + 78:
 		case 256*10 + 79:
