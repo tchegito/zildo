@@ -383,4 +383,28 @@ public class CheckFoundBugs extends EngineUT {
 		}
 		return projectile;
 	}
+	
+	/**After some regression, hero went upstairs, but was blocked behind a crate. 
+	 * Executed scripts: woodStairsUpCornerLeft then woodStairsUpEnd**/
+	@Test
+	public void cantGoUpstairs() {
+		mapUtils.loadMap("voleursm2");
+		PersoPlayer zildo = spawnZildo(264, 86);
+		waitEndOfScripting();
+		
+		simulateDirection(new Vector2f(0, -1));
+		
+		renderFrames(50);
+
+		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
+		Assert.assertNotNull(EngineZildo.mapManagement.getChainingPoint());
+		waitEndOfScripting();
+		
+		Assert.assertFalse(zildo.isGhost());
+		renderFrames(10);
+		Assert.assertEquals("voleursm2u", EngineZildo.mapManagement.getCurrentMap().getName());
+		
+		assertNotBlocked(zildo);
+		Assert.assertTrue(zildo.x < 240);
+	}
 }

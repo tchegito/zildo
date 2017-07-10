@@ -705,6 +705,7 @@ public class MapManagement {
 				}
 				zildo.setGhost(true);
 			} else {
+				zildo.setTarget(null);
 				zildo.setX(chPointTarget.getPx() * 8 + 16);
 				zildo.setY(chPointTarget.getPy() * 8 + 8);
 				float zx = zildo.getX();
