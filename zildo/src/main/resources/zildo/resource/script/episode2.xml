@@ -762,11 +762,12 @@
 	    <condition name="!chateaucoucou1-!chateaucoucou2" exp="trig_echange-!zildoDream">
 	        <filter type="1"/>
 	    </condition>
-	    <condition name="chateaucoucou1,chateaucoucou2,voleursg1,voleursg2,voleursg3,voleursg4,voleursg5,voleursg6">
+	    <condition name="chateaucoucou1,chateaucoucou2,voleursg1,voleursg2,voleursg3,voleursg4,voleursg5,voleursg6,voleursg7">
 	        <filter type="0"/>
 	    </condition>
 	    <condition name="voleursg5">
 	        <markQuest name="vg5_back" value="0"/>
+	        <markQuest name="vg5_but2" value="0"/>
 	    </condition>
 	    <condition name="promenade" exp="trig_echange-!fuite_tony1">
 	        <spawn type="BANDIT_VERT" speed="1.3" pos="935,369" angle="0" who="tony"/>
@@ -1169,7 +1170,7 @@
 	</scene>
 	<scene id="move_vg5_plat2">
 	    <moveTo what="platform2" pos="0,128" delta="true" speed="1"/>
-	    <wait value="130"/>
+	    <wait value="180"/>
 	    <moveTo what="platform2" pos="0,-128" delta="true" speed="1"/>
 	    <wait value="10"/>
 	</scene>
