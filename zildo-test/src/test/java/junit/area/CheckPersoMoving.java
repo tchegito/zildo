@@ -46,7 +46,7 @@ public class CheckPersoMoving extends EngineUT {
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("dieInWater"));		
 	}
 	@Test
-	public void fallInWater2() {
+	public void doesntFallInWater_igorLily() {
 		mapUtils.loadMap("igorlily");
 		PersoPlayer zildo = spawnZildo(143,260);
 		waitEndOfScripting();
@@ -55,6 +55,25 @@ public class CheckPersoMoving extends EngineUT {
 		Assert.assertFalse(EngineZildo.scriptManagement.isScripting());
 	}
 	
+	@Test
+	public void doesntFallInWater_igorVillage() {
+		mapUtils.loadMap("igorvillage");
+		PersoPlayer zildo = spawnZildo(415, 340);
+		waitEndOfScripting();
+		zildo.walkTile(false);
+		Assert.assertFalse("Hero is still on the bridge ! He shouldn't have dived !", EngineZildo.scriptManagement.isQuestProcessing("dieInWater"));
+		Assert.assertFalse(EngineZildo.scriptManagement.isScripting());
+	}
+	
+	@Test
+	public void doesntFallInWater_sousbois4() {
+		mapUtils.loadMap("sousbois4");
+		PersoPlayer zildo = spawnZildo(911, 580);
+		waitEndOfScripting();
+		zildo.walkTile(false);
+		Assert.assertFalse("Hero is still on the bridge ! He shouldn't have dived !", EngineZildo.scriptManagement.isQuestProcessing("dieInWater"));
+		Assert.assertFalse(EngineZildo.scriptManagement.isScripting());
+	}
 	/** To ensure no regression has been caused with 'ponton' feature, check that regular case is still ok.
 	 * When hero falls into water, jumping from a hill.
 	 */

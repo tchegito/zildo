@@ -4,8 +4,8 @@ apply plugin: 'eclipse'
 version = '1.0'
 
 // We allow Java 7 in tests, because we have no Android or whatever constraints here
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 // Accept environment variable to define DATA folder
 test {
