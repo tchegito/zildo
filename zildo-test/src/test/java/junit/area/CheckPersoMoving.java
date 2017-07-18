@@ -10,6 +10,7 @@ import tools.EngineUT;
 import tools.annotations.SpyHero;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementZildo;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 public class CheckPersoMoving extends EngineUT {
@@ -47,33 +48,28 @@ public class CheckPersoMoving extends EngineUT {
 	}
 	@Test
 	public void doesntFallInWater_igorLily() {
-		mapUtils.loadMap("igorlily");
-		PersoPlayer zildo = spawnZildo(143,260);
-		waitEndOfScripting();
-		zildo.walkTile(false);
-		Assert.assertFalse("Hero is still on the bridge ! He shouldn't have dived !", EngineZildo.scriptManagement.isQuestProcessing("dieInWater"));
-		Assert.assertFalse(EngineZildo.scriptManagement.isScripting());
+		doesntFallInWater("igorlily", new Point(143,260));
 	}
 	
 	@Test
 	public void doesntFallInWater_igorVillage() {
-		mapUtils.loadMap("igorvillage");
-		PersoPlayer zildo = spawnZildo(415, 340);
+		doesntFallInWater("igorvillage", new Point(415, 340));
+	}
+	
+	@Test
+	public void doesntFallInWater_sousbois4() {
+		doesntFallInWater("sousbois4", new Point(911, 580));
+	}
+	
+	private void doesntFallInWater(String mapName, Point heroPos) {
+		mapUtils.loadMap(mapName);
+		PersoPlayer zildo = spawnZildo(heroPos.x, heroPos.y);
 		waitEndOfScripting();
 		zildo.walkTile(false);
 		Assert.assertFalse("Hero is still on the bridge ! He shouldn't have dived !", EngineZildo.scriptManagement.isQuestProcessing("dieInWater"));
 		Assert.assertFalse(EngineZildo.scriptManagement.isScripting());
 	}
 	
-	@Test
-	public void doesntFallInWater_sousbois4() {
-		mapUtils.loadMap("sousbois4");
-		PersoPlayer zildo = spawnZildo(911, 580);
-		waitEndOfScripting();
-		zildo.walkTile(false);
-		Assert.assertFalse("Hero is still on the bridge ! He shouldn't have dived !", EngineZildo.scriptManagement.isQuestProcessing("dieInWater"));
-		Assert.assertFalse(EngineZildo.scriptManagement.isScripting());
-	}
 	/** To ensure no regression has been caused with 'ponton' feature, check that regular case is still ok.
 	 * When hero falls into water, jumping from a hill.
 	 */
