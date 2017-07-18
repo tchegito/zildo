@@ -577,12 +577,12 @@ public class PersoPlayer extends Perso {
 			// Fix projection and reduce movement
 			px = delta.x * 0.8f;
 			py = delta.y * 0.8f;
+			x = p.x;
+			y = p.y;
 			walkTile(false);
 			if (Math.abs(px) + Math.abs(py) < 0.2f) {
 				stopBeingWounded();
 			}
-			x = p.x;
-			y = p.y;
 		} else if (getMouvement() == MouvementZildo.POUSSE && pushedEntity != null) {
 			// Zildo est en train de pousser : obstacle bidon ou bloc ?
 
