@@ -188,6 +188,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 	public void leafReachTheBridge() {
 		init(414, 378);
 		waterLily.setMover(new PhysicMoveOrder(0, -8));
+		renderFrames(16);
 		Assert.assertTrue(waterLily.y < 368);
 	}
 }
