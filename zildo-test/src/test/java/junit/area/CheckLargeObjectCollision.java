@@ -182,4 +182,12 @@ public class CheckLargeObjectCollision extends EngineUT{
 		Assert.assertEquals(1, nbChangeMaps);
 		Assert.assertEquals("igorlily", EngineZildo.mapManagement.getCurrentMap().getName());
 	}
+	
+	/** After some regression about BOTTOMLESS waterlily couldn't reach the bridge **/
+	@Test
+	public void leafReachTheBridge() {
+		init(414, 378);
+		waterLily.setMover(new PhysicMoveOrder(0, -8));
+		Assert.assertTrue(waterLily.y < 368);
+	}
 }

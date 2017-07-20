@@ -433,6 +433,9 @@ public class MapManagement {
 			if (quelElement.getEntityType() == EntityType.PERSO) {
 				perso = (Perso) quelElement;
 				allowOverBottomLess = quelElement.flying || quelElement.isZildo();
+			} else if (quelElement.getEntityType() == EntityType.ELEMENT) {
+				// allow water leaf to reach the bridges
+				allowOverBottomLess = quelElement.getDesc().isSliping();
 			}
 		}
 
