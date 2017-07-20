@@ -458,7 +458,7 @@ public class PersoPlayer extends Perso {
 		
 		setMouvement(MouvementZildo.TOUCHE);
 		setWounded(true);
-		pv -= p_damage;
+		pv = Math.max(0, pv - p_damage);	// Don't allow HP < 0
 
 		if (guiCircle != null) {
 			guiCircle.kill();

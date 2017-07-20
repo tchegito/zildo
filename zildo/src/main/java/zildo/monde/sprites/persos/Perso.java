@@ -512,7 +512,7 @@ public abstract class Perso extends Element {
 
 	public void stopBeingWounded() { 
 		boolean died = (getPv() <= 0);
-		if (died) {
+		if (died && !EngineZildo.scriptManagement.isScripting()) {
 			die(true, shooter);
 		}			
 	}

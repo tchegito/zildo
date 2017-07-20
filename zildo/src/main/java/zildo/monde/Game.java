@@ -223,6 +223,7 @@ public class Game implements EasySerializable {
             if (!p_minimal) {
                 EngineZildo.spawnClient(ZildoOutfit.Zildo);
                 zildo = EngineZildo.persoManagement.getZildo();
+                if (pv < 0) pv = 1;	// Fix gamed smashed because of an old bug
                 zildo.setPv(pv);
 	            zildo.setMaxpv(maxPvHeartQuarter & 255);
 	            zildo.setMoonHalf(maxPvHeartQuarter >> 8);
