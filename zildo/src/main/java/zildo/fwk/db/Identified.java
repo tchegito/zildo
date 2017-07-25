@@ -132,7 +132,7 @@ public abstract class Identified {
 		System.out.println("Remove "+p_clazz+" with id="+p_id);
 		if (p_id == 63 || p_id == 64 || p_id == 48) {
             for (StackTraceElement traceElement : Thread.currentThread().getStackTrace())
-                System.out.println("\tat " + traceElement);
+                System.out.println(traceElement);
 		}
 		if (p_id != -1) {
 			Key p_key=new Key(p_id, p_clazz);
