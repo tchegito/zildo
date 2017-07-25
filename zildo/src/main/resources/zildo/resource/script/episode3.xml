@@ -869,6 +869,10 @@
 		    <perso who="dragon" action="bossDragon"/>
 		-->
 		</condition>
+		<condition name="sousbois3" exp="removeNailForMoonStone">
+			<tile pos="11,28" back2="-1"/>
+			<tile pos="12,28" back2="-1"/>
+		</condition>
 	</mapScript>
 		
 	<scene id="intro_episode3">
