@@ -1234,6 +1234,9 @@
 		<wait value="50"/>
 		<speak what="camera" text="endRoxyQuest.4"/>
 		
+		<!-- Now music in undergrowth will be  -->
+		<zikReplace what="UNDERGROWTH" name="Nuit"/> <!--  Keep Squirrel music for the squirrel, replaced by night for hero -->
+		
 		<markQuest name="hero_princess" value="false"/>
 		
 		<!-- hero at the library -->
