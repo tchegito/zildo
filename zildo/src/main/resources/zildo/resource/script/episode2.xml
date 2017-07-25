@@ -1055,7 +1055,6 @@
    		</condition>
    		<condition name="d4m2" exp="secretDoorRevealed">
 	    	<activate what="hiddendoor" value="true" unblock="true"/>
-	    	<sound name="ZildoSecret"/>
    		</condition>
    		<condition name="d4m2" exp="!hector_call3">
    		    <remove who="hector"/>

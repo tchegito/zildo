@@ -82,6 +82,7 @@ import zildo.resource.Constantes;
 import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
+import zildo.server.SoundManagement;
 import zildo.server.state.ClientState;
 
 /**
@@ -109,6 +110,7 @@ public abstract class EngineUT {
 	boolean spyMapManagement = false;
 	boolean disableFreezeMonitor = false;
 	boolean clientMainLoop = false;
+	boolean soundEnabled = false;
 	
 	public volatile int nFrame = 0;
 	
@@ -278,7 +280,10 @@ public abstract class EngineUT {
 			//ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
 			//ClientEngineZildo.spriteDisplay = new SpriteDisplay();
 			
-			Zildo.soundEnabled = false;
+			Zildo.soundEnabled = soundEnabled;
+			if (soundEnabled) {
+				EngineZildo.soundManagement = mock(SoundManagement.class);
+			}
 			ClientEngineZildo.soundPlay = mock(SoundPlay.class);
 			ClientEngineZildo.filterCommand = new FilterCommand();
 			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);

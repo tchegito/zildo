@@ -9,6 +9,7 @@ import org.junit.runners.model.Statement;
 import tools.annotations.ClientMainLoop;
 import tools.annotations.DisableFreezeMonitor;
 import tools.annotations.InfoPersos;
+import tools.annotations.SoundEnabled;
 import tools.annotations.SpyHero;
 import tools.annotations.SpyMapManagement;
 
@@ -32,6 +33,7 @@ public class ZildoJUnit extends BlockJUnit4ClassRunner {
 		super(klass);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected Statement withBefores(FrameworkMethod method, Object target, Statement statement) {
 		// Check if test method has any custom annotations
@@ -60,6 +62,8 @@ public class ZildoJUnit extends BlockJUnit4ClassRunner {
 				testClass.disableFreezeMonitor = true;
 			} else if (clazz == ClientMainLoop.class) {
 				testClass.clientMainLoop = true;
+			} else if (clazz == SoundEnabled.class) {
+				testClass.soundEnabled = true;
 			}
 		}
 	}
