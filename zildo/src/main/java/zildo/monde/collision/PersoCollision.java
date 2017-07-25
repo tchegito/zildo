@@ -145,7 +145,6 @@ public class PersoCollision {
 			SpriteEntity entity = Identified.fromId(SpriteEntity.class, id);
 			if (entity == null || !entity.getEntityType().isPerso()) {
 				// This entity is not a Perso, and shouldn't have been here. This could happen in a very rare case (not completely identified)
-				System.out.println("Remove entity from PersoCollision#locatePerso");
 				Identified.remove(SpriteEntity.class, id);
 				buffers[foreGround ? 0 : 1].resetId(gridX, gridY, id);
 				return null;
