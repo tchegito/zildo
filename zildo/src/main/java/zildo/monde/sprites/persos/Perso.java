@@ -86,7 +86,8 @@ public abstract class Perso extends Element {
 	private Element en_bras; // If this is Zildo, what he holds. If any perso,
 								// his weapon
 	Element feet;
-
+	boolean dieSceneLaunched = false;
+	
 	protected MouvementZildo mouvement; // Situation du
 										// perso:debout,couché,attaque...
 	protected int cptMouvement; // Un compteur pour les mouvements des PNJ
@@ -512,9 +513,12 @@ public abstract class Perso extends Element {
 
 	public void stopBeingWounded() { 
 		boolean died = (getPv() <= 0);
-		if (died && !EngineZildo.scriptManagement.isScripting()) {
+		if (died && !dieSceneLaunched) {	// Don't run the scene twice !
 			die(true, shooter);
-		}			
+		}
+		if (!died) {
+			dieSceneLaunched = false;
+		}
 	}
 
 	public abstract void attack();
@@ -532,6 +536,7 @@ public abstract class Perso extends Element {
 		TriggerElement trig = TriggerElement.createDeathTrigger(name);
 		EngineZildo.scriptManagement.trigger(trig);
 		setSpecialEffect(EngineFX.PERSO_HURT);
+		dieSceneLaunched = true;
 	}
 
 	/** Method designed for Perso rendering. Called every frame, whatever game state is. So this is the
