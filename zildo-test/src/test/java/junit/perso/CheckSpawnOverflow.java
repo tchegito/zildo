@@ -23,6 +23,8 @@ public class CheckSpawnOverflow extends EngineUT {
 	
 	@Test 
 	public void sewer() {
+		System.gc();
+		System.runFinalization();
 		retrieveCounter();
 
 		countEntities();
