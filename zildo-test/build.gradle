@@ -11,6 +11,7 @@ targetCompatibility = 1.8
 test {
 	systemProperty "ZILDO_DATA", System.getProperty("ZILDO_DATA")
 	maxParallelForks = 1
+	maxHeapSize = "1024m"
 }
 
 dependencies {
