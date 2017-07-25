@@ -136,6 +136,7 @@ public class SpriteStore {
 	// -add resulted entity to the sprite engine
 	public void spawnSprite(SpriteEntity entity)
 	{
+		System.out.println("Spawn "+entity.desc+" at "+entity.x+","+entity.y);
 		int nBank=entity.getNBank();
 		int nSpr=entity.getNSpr();
 	
