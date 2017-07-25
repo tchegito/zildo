@@ -11,6 +11,10 @@ import org.junit.Test;
 import tools.EngineUT;
 import tools.annotations.SoundEnabled;
 import zildo.client.sound.BankSound;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.EngineZildo;
 
@@ -40,5 +44,49 @@ public class ScenesBugFixes extends EngineUT {
 		mapUtils.loadMap("sousbois3");
 		waitEndOfScripting();
 		Assert.assertEquals("Nails should have been removed !", 54, mapUtils.area.readmap(11, 28));
+	}
+	
+	@Test
+	public void blowFarmMountain() {
+		mapUtils.loadMap("eleog");
+		PersoPlayer zildo = spawnZildo(215, 49);
+		waitEndOfScripting();
+		
+		// Plant dynamite
+		zildo.setWeapon(new Item(ItemKind.DYNAMITE));
+		zildo.setCountBomb(20);
+		zildo.attack();
+		Assert.assertEquals(19, zildo.getCountBomb());
+		Assert.assertNotNull(findByDesc(ElementDescription.DYNAMITE));
+		zildo.setY(zildo.y+30);	// Move hero to escape from dynamite fire
+		
+		// Wait for dynamite to blow
+		renderFrames(120);
+		Assert.assertNull(findByDesc(ElementDescription.DYNAMITE));
+		// Check that related quest has been triggered
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("eleog(13, 3)"));
+		
+		// Wait for map change (going to "ferme")
+		simulateDirection(0, -2);
+		while (!EngineZildo.mapManagement.isChangingMap(zildo)) {
+			renderFrames(1);
+		}
+		while (EngineZildo.mapManagement.isChangingMap(zildo)) {
+			renderFrames(1);
+		}
+		waitEndOfScripting();
+		Assert.assertEquals("ferme", EngineZildo.mapManagement.getCurrentMap().getName());
+		renderFrames(20);
+		Assert.assertFalse(EngineZildo.mapManagement.isChangingMap(zildo));
+		System.out.println(zildo);
+	}
+	
+	private SpriteEntity findByDesc(ElementDescription desc) {
+		for (SpriteEntity e : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+			if (e.getDesc() == desc) {
+				return e;
+			}
+		}
+		return null;
 	}
 }
