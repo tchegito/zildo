@@ -129,13 +129,6 @@ public abstract class Identified {
 	 * @param p_id
 	 */
 	public static <E extends Identified> void remove(Class<E> p_clazz, int p_id) {
-		System.out.println("Remove "+p_clazz+" with id="+p_id);
-		if (p_id == 63 || p_id == 64 || p_id == 48) {
-			StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-			System.out.println("this is my id ! size="+traces.length);
-            for (StackTraceElement traceElement : traces)
-                System.out.println(traceElement);
-		}
 		if (p_id != -1) {
 			Key p_key=new Key(p_id, p_clazz);
 			objects.remove(p_key);
