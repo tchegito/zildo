@@ -61,6 +61,9 @@ public abstract class CloudFilter extends ScreenFilter {
 
 		// Blow the wind
 		move.add(wind);
+		// Avoid too big numbers (fix for Android dirty moves)
+		move.x = move.x % textureSizeX;
+		move.y = move.y % textureSizeY;
 		u+=move.x;
 		v+=move.y;
 	}
