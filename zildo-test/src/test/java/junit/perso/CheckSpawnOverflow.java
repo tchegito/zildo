@@ -41,7 +41,7 @@ public class CheckSpawnOverflow extends EngineUT {
 		SpriteEntityContext context = new SpriteEntityContext(dragon);
 		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", context);
 		
-		for (int i=0;i<200;i++) {
+		for (int i=0;i<100;i++) {
 			zildo.setPv(40);
 			renderFrames(150);
 			System.out.println(countEntities()+ " hero: "+zildo.getPv()+"HP");
