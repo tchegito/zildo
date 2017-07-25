@@ -38,6 +38,7 @@ import org.lwjgl.opengl.GL11;
 
 import zildo.Zildo;
 import zildo.fwk.ZUtils;
+import zildo.fwk.gfx.GFXBasics;
 
 /**
  * @author eboussaton
@@ -124,6 +125,44 @@ public class GLUtils {
 				bufImage.setRGB(x,  y, argb);
 	   		}
     	}
+    	try {
+			ImageIO.write(bufImage, "png", new File(filename+".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}    	
+    }
+    
+    /**
+     * Save an int buffer as a PNG file, with given parameters.
+     * @param filename file name with full path, without ".png"
+     * @param scratch byte buffer containing data to save
+     * @param width
+     * @param height
+     */
+    public static void saveBufferAsPNG(String filename, int[] buf, int width, int height) {
+    	int format = BufferedImage.TYPE_INT_RGB;
+    	BufferedImage bufImage = new BufferedImage(width, height, format);
+    	int a = 0;
+    	for (int y = 0;y<height;y++) {
+    		for (int x = 0;x<width;x++) {
+				bufImage.setRGB(x,  y, GFXBasics.getIntColor(buf[a++]));
+	   		}
+    	}
+    	try {
+			ImageIO.write(bufImage, "png", new File(filename+".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}    	
+    }
+    /**
+     * Save a ByteBuffer as a PNG file, with given parameters.
+     * @param filename file name with full path, without ".png"
+     * @param scratch byte buffer containing data to save
+     * @param width
+     * @param height
+     * @param alpha
+     */
+    public static void saveBufferAsPNG(String filename, BufferedImage bufImage) {
     	try {
 			ImageIO.write(bufImage, "png", new File(filename+".png"));
 		} catch (IOException e) {
