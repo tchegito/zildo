@@ -479,7 +479,7 @@ public class ScriptManagement {
 		if (action != null) {
 			// Register action argument(s)
 			RuntimeScene scene=new RuntimeScene(action.actions, null, false, call);
-			scriptExecutor.execute(scene, true, false, p_callerContext, null);
+			scriptExecutor.execute(scene, true, true, p_callerContext, null);
 			perso.setAttente(action.duration);
 		}
 	}

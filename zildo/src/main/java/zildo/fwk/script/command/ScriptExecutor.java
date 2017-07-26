@@ -196,6 +196,7 @@ public class ScriptExecutor {
 				p.setGhost(p.getFollowing() != null);	// Cancel 'ghost' except if character is following someone
 				if (p.isZildo()) {
 					p.setOpen(true);
+					p.setAttente(0);
 					PersoPlayer zildo = (PersoPlayer) p;
 					zildo.setAppearance(null);
 				}
