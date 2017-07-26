@@ -201,31 +201,46 @@ public class Element extends SpriteEntity {
 	 * 
 	 * @return boolean
 	 */
+	@Override
 	public boolean isSolid() {
-		if (desc instanceof ElementDescription) {
-			// Volatile elements (need to be refactored, with a real attribute on Descriptions)
-			switch ((ElementDescription) desc) {
-				case REDSPHERE1:
-				case FIRE_BALL:
-				case BROWNSPHERE1:
-				case SEWER_SMOKE1:
-				case SEWER_SMOKE2:
-				//case WILL_O_WIST:
-					return false;
-				default:
-			}
+		if (cacheIsSolid == null) {
+			cacheIsSolid = computeIsSolid();
 		}
-		if (desc.isDamageable()) {
+		return cacheIsSolid.booleanValue();
+	}
+	
+	/** Compute once for all the 'isSolid' attribute for this element. We assume that he won't change its nature
+	 * altering this attribute. Small optimization, I know.
+	 * @return
+	 */
+	@Override
+	protected boolean computeIsSolid() {
+		boolean entitySolid = super.computeIsSolid();
+		if (entitySolid) {
 			return true;
+		}
+		if (desc != null) {
+			if (desc instanceof ElementDescription) {
+				// Volatile elements (need to be refactored, with a real attribute on Descriptions)
+				switch ((ElementDescription) desc) {
+					case REDSPHERE1:
+					case FIRE_BALL:
+					case BROWNSPHERE1:
+					case SEWER_SMOKE1:
+					case SEWER_SMOKE2:
+					//case WILL_O_WIST:
+						return false;
+					case WATER_LEAF:
+						return true;
+					default:
+				}
+			}
+			if (desc.isDamageable()) {
+				return true;
+			}
 		}
 		// S'il s'agit d'un personnage
 		if (entityType.isPerso()) {
-			return true;
-		}
-		if (desc.isBlocking()) {
-			return true;
-		}
-		if (desc == ElementDescription.WATER_LEAF) {
 			return true;
 		}
 		return false;
@@ -310,7 +325,7 @@ public class Element extends SpriteEntity {
 		} else {
 			
 			// Si ce sprite est valide, est-il un sprite fixe ?
-			if (desc.isNotFixe()) {
+			if (getDesc().isNotFixe()) {
 				// On a trouvé un sprite valide non fixe
 				// On calcule sa nouvelle position absolue
 				colli = physicMoveWithCollision();

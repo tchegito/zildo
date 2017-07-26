@@ -68,7 +68,8 @@ public class Tile implements Cloneable {
     public final static int T_NETTLE_CUT = 6*256 + 232;
     public final static int T_BONES1 = 256*3+249;
     public final static int T_BONES2 = 256*3+250;
-    
+    public final static int T_LAVA = 256*10 + 34; 
+    		
 	public Tile(int p_bank, int p_index, Case p_parent) {
 		bank = (byte) (p_bank & 15);
 		index = p_index;
@@ -153,7 +154,7 @@ public class Tile implements Cloneable {
 		switch (value) {
 		case 256 * 3 + 217:
 		case 41 + 256 * 9:
-		case 256*10 + 34:
+		case T_LAVA:
 		case 256*10 + 7:
 		case 256*10 + 6:
 		case 256*10 + 66:

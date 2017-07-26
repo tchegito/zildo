@@ -81,7 +81,7 @@ public class SpriteCollision {
 			boolean isElement = entity.getEntityType().isElement();
 			if ((isElement || entity.getEntityType().isEntity()) 
 					&& !entity.dying) {
-				boolean isBlockable = entity.getDesc().isBlocking();
+				boolean isBlockable = entity.isSolid();
 				boolean isGoodies = entity.isGoodies();
 
 				if (isGoodies || isBlockable) {

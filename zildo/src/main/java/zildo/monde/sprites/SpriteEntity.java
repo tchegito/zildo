@@ -25,6 +25,8 @@ import zildo.fwk.db.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.gfx.EngineFX;
+import zildo.monde.map.Area;
+import zildo.monde.map.Tile;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
@@ -480,6 +482,29 @@ public class SpriteEntity extends Identified implements Cloneable,
 
 	public void setGhost(boolean p_ghost) {
 		ghost = p_ghost;
+	}
+	
+	protected Boolean cacheIsSolid = null;
+	
+	public boolean isSolid() {
+		// A sprite entity is never blocking ! That's the rule ;)
+		// Except for ROCK_PILLAR outside of lava.
+		if (cacheIsSolid == null) {
+			cacheIsSolid = computeIsSolid();
+		}
+		return cacheIsSolid.booleanValue();
+	}
+	
+	protected boolean computeIsSolid() {
+		if (getDesc().isBlocking()) {
+			// Special case: ROCK_PILLAR => no collision if it stands in lava
+			Area map = EngineZildo.mapManagement.getCurrentMap();
+			if (Tile.T_LAVA == map.readmap((int)x>>4, (int)y>>4)) {
+				return false;
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public Zone getZone() {
