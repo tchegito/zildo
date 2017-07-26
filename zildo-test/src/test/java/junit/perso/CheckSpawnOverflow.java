@@ -39,7 +39,7 @@ public class CheckSpawnOverflow extends EngineUT {
 		Perso dragon = EngineZildo.persoManagement.getNamedPerso("dragon");
 		Assert.assertNotNull(dragon);
 		SpriteEntityContext context = new SpriteEntityContext(dragon);
-		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", context);
+		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", context, false);
 		
 		for (int i=0;i<100;i++) {
 			zildo.setPv(40);

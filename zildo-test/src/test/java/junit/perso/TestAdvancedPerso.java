@@ -20,7 +20,7 @@ public class TestAdvancedPerso extends EngineUT {
 		waitEndOfScripting();
 		PersoPlayer zildo = spawnZildo(769, 684);
 		Perso dragon = EngineZildo.persoManagement.getNamedPerso("dragon");
-		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", null);
+		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", null, false);
 		
 		// Wait for dragon to dive
 		waitForScriptRunning("dragonDiveAndReappear");

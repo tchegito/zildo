@@ -144,6 +144,9 @@ public class SpriteStore {
 	
 		entity.setSprModel(spr);
 	
+		// Just to initialize "desc" field
+		entity.getDesc();
+		
 		addSpriteEntities(entity);
 	}
 	

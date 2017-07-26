@@ -472,14 +472,14 @@ public class ScriptManagement {
     	}
 	}
 	
-	public void runPersoAction(Perso perso, String name, IEvaluationContext p_callerContext) {
+	public void runPersoAction(Perso perso, String name, IEvaluationContext p_callerContext, boolean p_topPriority) {
 		ScriptCall call = new ScriptCall(name, new SpriteEntityContext(perso));
 		
 		ContextualActionElement action = adventure.getPersoActionNamed(call.actionName);
 		if (action != null) {
 			// Register action argument(s)
 			RuntimeScene scene=new RuntimeScene(action.actions, null, false, call);
-			scriptExecutor.execute(scene, true, true, p_callerContext, null);
+			scriptExecutor.execute(scene, true, p_topPriority, p_callerContext, null);
 			perso.setAttente(action.duration);
 		}
 	}

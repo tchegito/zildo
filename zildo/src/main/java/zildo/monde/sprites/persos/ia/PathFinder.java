@@ -250,9 +250,9 @@ public class PathFinder {
 									break;
 								}
 							}
-							// Ask blocking character to move with a script
+							// Ask blocking character to move with a script (with priority on running scene)
 							SpriteEntityContext context = new SpriteEntityContext(collidingPerso);
-							EngineZildo.scriptManagement.runPersoAction(collidingPerso, "moveCharacter("+nonBlockingPos.x+","+nonBlockingPos.y+")", context);
+							EngineZildo.scriptManagement.runPersoAction(collidingPerso, "moveCharacter("+nonBlockingPos.x+","+nonBlockingPos.y+")", context, true);
 							mobile.setAttente(10);
                 		}
 					}

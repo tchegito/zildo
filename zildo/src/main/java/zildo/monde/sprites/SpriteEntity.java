@@ -484,18 +484,18 @@ public class SpriteEntity extends Identified implements Cloneable,
 		ghost = p_ghost;
 	}
 	
-	protected Boolean cacheIsSolid = null;
+	protected Boolean cacheIsBlocking = null;
 	
-	public boolean isSolid() {
+	public boolean isBlocking() {
 		// A sprite entity is never blocking ! That's the rule ;)
 		// Except for ROCK_PILLAR outside of lava.
-		if (cacheIsSolid == null) {
-			cacheIsSolid = computeIsSolid();
+		if (cacheIsBlocking == null) {
+			cacheIsBlocking = computeIsBlocking();
 		}
-		return cacheIsSolid.booleanValue();
+		return cacheIsBlocking.booleanValue();
 	}
 	
-	protected boolean computeIsSolid() {
+	protected boolean computeIsBlocking() {
 		if (getDesc().isBlocking()) {
 			// Special case: ROCK_PILLAR => no collision if it stands in lava
 			Area map = EngineZildo.mapManagement.getCurrentMap();

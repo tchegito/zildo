@@ -38,7 +38,7 @@ public class ScriptedPersoAction implements PersoAction {
 	public ScriptedPersoAction(Perso p_perso, String p_actionName, IEvaluationContext context) {
 		perso = p_perso;
 		
-		EngineZildo.scriptManagement.runPersoAction(perso, p_actionName, context);
+		EngineZildo.scriptManagement.runPersoAction(perso, p_actionName, context, false);
 	}
 	
 	@Override

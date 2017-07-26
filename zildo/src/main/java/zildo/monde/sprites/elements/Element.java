@@ -201,21 +201,8 @@ public class Element extends SpriteEntity {
 	 * 
 	 * @return boolean
 	 */
-	@Override
 	public boolean isSolid() {
-		if (cacheIsSolid == null) {
-			cacheIsSolid = computeIsSolid();
-		}
-		return cacheIsSolid.booleanValue();
-	}
-	
-	/** Compute once for all the 'isSolid' attribute for this element. We assume that he won't change its nature
-	 * altering this attribute. Small optimization, I know.
-	 * @return
-	 */
-	@Override
-	protected boolean computeIsSolid() {
-		boolean entitySolid = super.computeIsSolid();
+		boolean entitySolid = super.isBlocking();
 		if (entitySolid) {
 			return true;
 		}
