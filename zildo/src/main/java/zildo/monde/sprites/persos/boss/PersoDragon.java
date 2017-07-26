@@ -64,7 +64,7 @@ public class PersoDragon extends PersoNJ {
 	public PersoDragon(int x, int y) {
 		//this.x = x;
 		//this.y = y;
-		pv = 5;
+		pv = 3;
 		setInfo(PersoInfo.ENEMY);
 		
 		desc = PersoDescription.DRAGON;
@@ -272,7 +272,7 @@ public class PersoDragon extends PersoNJ {
 	public void stopBeingWounded() {
 		super.stopBeingWounded();
 		// Restart his behavior
-		EngineZildo.scriptManagement.runPersoAction(this, "bossDragon", null);
+		EngineZildo.scriptManagement.runPersoAction(this, "bossDragon", null, false);
 		
 	}
 }
