@@ -336,7 +336,7 @@ public class Game implements EasySerializable {
         		zildo.setZ(p_buffer.readInt());
         	}
         	
-            EngineZildo.mapManagement.setStartLocation(loc, a, startFloor);
+            EngineZildo.mapManagement.setStartLocation(game.mapName, loc, a, startFloor);
             return game;
         } catch (Exception e) {
         	throw new RuntimeException("Unable to deserialize the game !", e);

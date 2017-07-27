@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import zildo.Zildo;
+import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.Ambient.Atmosphere;
 import zildo.client.sound.Ambient.Weather;
@@ -71,6 +72,7 @@ public class MapManagement {
 	
 	// Keep the location/angle Zildo had when entering on this map
 	Angle startAngle;
+	String startMap;
 	Point startLocation;
 	int startFloor;
 	
@@ -951,18 +953,27 @@ public class MapManagement {
 	 */
 	public void respawn(boolean relocate, int damage) {
 		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
-		if (relocate) {
-			zildo.setX(startLocation.x);
-			zildo.setY(startLocation.y);
-			if (startFloor == -1) {
-				// Before 2.19, startFloor wasn't saved, so we determine here, taking the highest at location
-				startFloor = new HighestFloorAccessor().setArea(currentMap)
-						.get_mapcase(startLocation.x >> 4, startLocation.y >> 4).floor;
+		if (startMap != null && !startMap.equals(getCurrentMap().getName())) {
+			// Last location was from another map. So we back up last game
+			// TODO: Why we don't back up last game every time ? We could wipe out all these startThing and ALWAYS back up game. Episode 4 ;)
+			Client client = ClientEngineZildo.getClientForMenu();
+			client.quitGame();
+    		EngineZildo.mapManagement.deleteCurrentMap();
+			EngineZildo.restoreBackedUpGame();
+		} else {
+			if (relocate) {
+				zildo.setX(startLocation.x);
+				zildo.setY(startLocation.y);
+				if (startFloor == -1) {
+					// Before 2.19, startFloor wasn't saved, so we determine here, taking the highest at location
+					startFloor = new HighestFloorAccessor().setArea(currentMap)
+							.get_mapcase(startLocation.x >> 4, startLocation.y >> 4).floor;
+				}
+				zildo.setFloor(startFloor);
+				zildo.setAngle(startAngle);
+				zildo.beingWounded(null, damage);
+				zildo.stopBeingWounded();
 			}
-			zildo.setFloor(startFloor);
-			zildo.setAngle(startAngle);
-			zildo.beingWounded(null, damage);
-			zildo.stopBeingWounded();
 		}
 		zildo.setForeground(false);
 		zildo.askVisible(true);	// Set him back to visible
@@ -1040,7 +1051,8 @@ public class MapManagement {
 		}
 	}
 
-	public void setStartLocation(Point loc, Angle a, int floor) {
+	public void setStartLocation(String mapName, Point loc, Angle a, int floor) {
+		startMap = mapName;
 		startLocation = new Point(loc);
 		startAngle = a;
 		startFloor = floor;

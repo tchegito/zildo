@@ -42,7 +42,10 @@ public class CheckSpawnOverflow extends EngineUT {
 		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", context, false);
 		
 		for (int i=0;i<100;i++) {
+			// Give hero full life, and avoid him to be projected because of fire balls (px,py)
 			zildo.setPv(40);
+			zildo.setPx(0);
+			zildo.setPy(0);
 			renderFrames(150);
 			System.out.println(countEntities()+ " hero: "+zildo.getPv()+"HP");
 		}

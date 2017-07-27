@@ -633,7 +633,8 @@ public class ScriptManagement {
 	public boolean isAllowedToSave() {
 		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
 		boolean onPlatform = zildo != null && zildo.isOnPlatform();
-		return !isScripting() && !onPlatform;
+		boolean isBossFighting = "true".equals(EngineZildo.scriptManagement.getVarValue("bossFighting"));
+		return !isScripting() && !onPlatform && isBossFighting;
 	}
 	
 	public void sellItem(String storeName, Item item) {

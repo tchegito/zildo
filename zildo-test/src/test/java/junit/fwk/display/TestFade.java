@@ -145,7 +145,7 @@ public class TestFade extends EngineUT {
 	public void hangOnLavaFall() {
 		// Place hero near an edge, and make him fall
 		mapUtils.loadMap("cavef6");
-		EngineZildo.mapManagement.setStartLocation(new Point(552,376), Angle.NORD, 1);
+		EngineZildo.mapManagement.setStartLocation(mapUtils.area.getName(), new Point(552,376), Angle.NORD, 1);
 		zildo.setX(552);
 		zildo.setY(376);
 		waitEndOfScripting();

@@ -155,8 +155,13 @@ public class Tile implements Cloneable {
 		case 256 * 3 + 217:
 		case 41 + 256 * 9:
 		case T_LAVA:
+			// Rock forming moutains on top of lava
 		case 256*10 + 7:
 		case 256*10 + 6:
+		case 256*10 + 60:
+		case 256*10 + 61:
+		case 256*10 + 62:
+
 		case 256*10 + 66:
 		case 256*10 + 67:
 		case 256*10 + 68:

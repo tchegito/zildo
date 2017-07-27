@@ -563,7 +563,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 		break;
                 	case 4:
                 		// Replace hero at the last backed up game and update his HP
-                		int heroPv = zildo.getPv();
+                		int heroPv = Math.max(0, zildo.getPv());	// At least 1 HP
                 		EngineZildo.mapManagement.deleteCurrentMap();
                 		Client client = ClientEngineZildo.getClientForMenu();
                 		client.quitGame();

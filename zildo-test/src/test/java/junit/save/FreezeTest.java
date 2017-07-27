@@ -40,12 +40,12 @@ public class FreezeTest extends EngineUT {
 	@Before
 	public void commonInit() {
 		// Load map and place hero at specific location with right floor
-		EngineZildo.mapManagement.loadMap("voleursg5", false);
+		mapUtils.loadMap("voleursg5");
 		zildo = spawnZildo(422, 360);
 		zildo.setPv(2);
 		zildo.floor = 0;
 		savedFloor = 0;
-		EngineZildo.mapManagement.setStartLocation(new Point(422, 360), Angle.NORD, zildo.floor);
+		EngineZildo.mapManagement.setStartLocation(mapUtils.area.getName(), new Point(422, 360), Angle.NORD, zildo.floor);
 		
 		// Prepare backed up game
 		EngineZildo.backUpGame();

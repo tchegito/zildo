@@ -194,6 +194,7 @@ public class SinglePlayer extends GameStage {
         
 		EngineZildo.persoManagement.clearPersos(true);
         EngineZildo.spriteManagement.clearSprites(true);
+		EngineZildo.scriptManagement.clearUnlockingScripts();
         engineZildo.cleanUp();
         done = true;
     }

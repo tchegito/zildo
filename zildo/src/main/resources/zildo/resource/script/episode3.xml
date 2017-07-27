@@ -188,6 +188,8 @@
 	        <dead who="turretH"/>
 	    </trigger>
 	    <action>
+	        <var name="bossFighting" value="false"/>
+	        
 	        <stop script="spawnBossTurret1"/>
 	        <perso who="turret0" action=""/>
    	        <perso who="turretH" action=""/>
@@ -598,6 +600,7 @@
 	        <dead who="dragon"/>
 	    </trigger>
 	    <action>
+	        <var name="bossFighting" value="false" />
 	        <perso who="dragon" action=""/>
    	        <perso who="dragon" action="explodeBoss"/>
 	    </action>
@@ -1420,6 +1423,7 @@
    		    <script who="turret4" value="18"/>
    		    <script who="turretH" value="18"/>
    		</actions>
+   		<var name="bossFighting" value="true"/>
 		<!-- Cycles -->
 		<loop>
 			<exec script="turretCycle(210, 160, 110, 160, 210, 110, 110, 110)"/>
@@ -2020,5 +2024,7 @@
 	    <exec script="dragonDiveAndReappear(215,280)"/>
 		<angle who="zildo" value="3"/>
 	    <perso who="dragon" action="bossDragon"/>
+	    
+	    <var name="bossFighting" value="true"/>
 	</scene>	
 </adventure>
