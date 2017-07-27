@@ -26,4 +26,9 @@ public class EarthQuakeFilter extends ScreenFilter {
 		toggle = !toggle;
 		return true;
 	}
+	
+	public void doOnInactive(FilterEffect effect) {
+		toggle = false;
+		renderFilter();
+	}
 }

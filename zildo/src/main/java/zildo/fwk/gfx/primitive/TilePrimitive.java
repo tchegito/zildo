@@ -184,7 +184,7 @@ public class TilePrimitive extends QuadPrimitive {
 				// Really remove the tile concerning vertices/textures informations (Ruben bug B1)
 				bufs.vertices.position(index*2);
 				bufs.textures.position(index*2);
-				addSprite(0, -32, 0, 0, 16, 16, Rotation.NOTHING, 255, false);
+				addSprite(-32, -32, 0, 0, 16, 16, Rotation.NOTHING, 0, false);
     		}
     	}
     	freeIndex.rewind();
