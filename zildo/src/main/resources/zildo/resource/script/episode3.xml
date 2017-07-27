@@ -2012,10 +2012,13 @@
 			<tile pos="32,9" back2="-1"/>
 			<tile pos="33,9" back2="-1"/>
 		</actions>
+		<angle who="zildo" value="3"/>
 		<tile pos="28,6" action="lavaBubbles"/>
 	    <var name="dragonPos" value="4"/>
 	    <filter type="0"/>
-  	    <exec script="dragonDiveAndReappear(215,280)"/>
-  		<perso who="dragon" action="bossDragon"/>
+		<angle who="zildo" value="0"/>
+	    <exec script="dragonDiveAndReappear(215,280)"/>
+		<angle who="zildo" value="3"/>
+	    <perso who="dragon" action="bossDragon"/>
 	</scene>	
 </adventure>

@@ -28,6 +28,7 @@ import zildo.fwk.gfx.EngineFX;
 import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
 import zildo.monde.sprites.desc.EntityType;
+import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -96,6 +97,8 @@ public class SpriteEntity extends Identified implements Cloneable,
 	public Rotation rotation = Rotation.NOTHING;
 	public boolean clientSpecific; // TRUE if this entity should not appear on all client's screen
 
+	private double iota;
+	
 	// To identify which type of entity we're dealing with
 	protected EntityType entityType;
 	
@@ -325,6 +328,17 @@ public class SpriteEntity extends Identified implements Cloneable,
 			ajustedX = (int) x + dx;
 			ajustedY = (int) y + dy;
 			return;
+		} else if (desc instanceof GearDescription) {
+			switch ((GearDescription) desc) {
+				case LAVA1:
+				case LAVA2:
+				case LAVA3:
+					zoom = 230 + (int) (25 * Math.sin(iota*0.8));
+					iota += 0.1;
+					alpha = 200 + (int) (55 * Math.cos(iota/3));
+			default:
+				break;
+			}
 		}
 	}
 
