@@ -123,21 +123,26 @@ public class SpriteManagement extends SpriteStore {
 		// delete quadOrder;
 	}
 
-	public Element createElement(int nBank, int nSpr, int x, int y, int z, Reverse reverse, Rotation rotation) {
+	public Element createElement(SpriteDescription desc, int x, int y, int z, Reverse reverse, Rotation rotation) {
 		// SpriteEntity informations
 		Element element;
+		int nBank = desc.getBank();
 		if (nBank == SpriteBank.BANK_GEAR) {
 			element = new ElementGear(x, y);
 			element.setAjustedX(x);
 			element.setAjustedY(y);
 		} else {
-			element = new Element();
+    		if (desc == ElementDescription.DRAGON_KEY) {
+    			// Handle this in a more generic way
+    			element = new ElementGoodies();
+    		} else {
+    			element = new Element();
+    		}
 		}
+		element.setDesc(desc);
 		element.setX(x);
 		element.setY(y);
 		element.setZ(z);
-		element.setNSpr(nSpr);
-		element.setNBank(nBank);
 		element.reverse = reverse;
 		element.rotation = rotation;
 		
@@ -151,28 +156,10 @@ public class SpriteManagement extends SpriteStore {
 	// Spawn an element with minimal requirements
 	// -build an element with given parameters
 	// -add it to the sprite engine
-	public Element spawnElement(int nBank, int nSpr, int x, int y, int z, Reverse reverse, Rotation rotation) {
-		Element element = createElement(nBank, nSpr, x, y, z, reverse, rotation);
+	public Element spawnElement(SpriteDescription desc, int x, int y, int z, Reverse reverse, Rotation rotation) {
+		Element element = createElement(desc, x, y, z, reverse, rotation);
 		spawnSprite(element);
 		return element;
-	}
-	
-	public Element createElement(SpriteDescription desc, int x, int y, int z, Reverse reverse, Rotation rotation) {
-		return createElement(desc.getBank(), desc.getNSpr(), x, y, z, reverse, rotation);
-	}
-	
-	/**
-	 * convenience method
-	 * @param desc
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param reverse TODO
-	 * @param rotation TODO
-	 * @return Element
-	 */
-	public Element spawnElement(SpriteDescription desc, int x, int y, int z, Reverse reverse, Rotation rotation) {
-		return spawnElement(desc.getBank(), desc.getNSpr(), x, y, z, reverse, rotation);
 	}
 
 	/**
@@ -217,7 +204,6 @@ public class SpriteManagement extends SpriteStore {
 	public Element spawnSpriteGeneric(SpriteAnimation typeSprite, int x, int y, int floor,
 			int misc, Perso miscPerso, ElementDescription desc) {
 		Element element = null;
-		Element element2 = null;
 		ElementDescription elemDesc = null;
 		int j;
 
@@ -256,7 +242,9 @@ public class SpriteManagement extends SpriteStore {
 				for (j = 0; j < 8; j++) {
 					Element e;
 					if (misc == 1) {	// Nettle's considered as a goodies
-						e = new ElementGoodies();
+						ElementGoodies goodies = new ElementGoodies();
+						goodies.setShadowDesc(ElementDescription.SHADOW_MINUS);
+						e = goodies;
 					} else {
 						e = new Element();
 					}
@@ -309,14 +297,7 @@ public class SpriteManagement extends SpriteStore {
 					element.setSprModel(ElementDescription.ARROW_UP);
 					element.setY(y - 3);
 				}
-				// Ombre
-				element2 = new Element();
-				element2.setX(x);
-				element2.setY(y - 2);
-				element2.setSprModel(shadow);
-				element2.floor = floor;
-				spawnSprite(element2);
-				element.setLinkedPerso(element2);
+				((ElementGoodies)element).setShadowDesc(shadow);
 				break;
 
 			case BLUE_DROP :
@@ -337,6 +318,7 @@ public class SpriteManagement extends SpriteStore {
 						//element.setAx(-0.01f);
 						element.setSprModel(ElementDescription.DROP_SMALL);
 					}
+					((ElementGoodies)element).setShadowDesc(ElementDescription.SHADOW_MINUS);
 				}
 				break;
 
@@ -454,8 +436,7 @@ public class SpriteManagement extends SpriteStore {
 					f--;
 				}
 			}
-			element.floor = f;
-			if (element2 != null) element2.floor = f;
+			element.setFloor(f);
 			spawnSprite(element);
 		}
 		
@@ -493,12 +474,9 @@ public class SpriteManagement extends SpriteStore {
 	public SpriteEntity createSprite(SpriteDescription desc, int x, int y,
 			boolean p_foreground, Reverse p_reverse, boolean p_adjustPos) {
 
-		int nBank=desc.getBank();
-		int nSpr=desc.getNSpr();
-
 		if (desc.isPushable() || desc == ElementDescription.STONE_HEAVY) { // || nSpr == 179) {
 			// Particular sprite (Block that Zildo can move, chest...)
-			return createElement(nBank, nSpr, x, y, 0, Reverse.NOTHING, Rotation.NOTHING); // + spr.getTaille_y() / 2 - 3,
+			return createElement(desc, x, y, 0, Reverse.NOTHING, Rotation.NOTHING); // + spr.getTaille_y() / 2 - 3,
 					//0);
 		}
 
@@ -533,7 +511,7 @@ public class SpriteManagement extends SpriteStore {
 		    entity = new SpriteEntity(x, y, true);
 		    int adjustX = 0;
 		    int adjustY = 0;
-		    SpriteModel spr = getSpriteBank(desc.getBank()).get_sprite(nSpr);
+		    SpriteModel spr = getSpriteBank(desc.getBank()).get_sprite(desc.getNSpr());
 		    adjustX = -(spr.getTaille_x() >> 1);
 		    if (p_adjustPos) {
 		    	adjustY = -(spr.getTaille_y() >> 1);
@@ -544,8 +522,7 @@ public class SpriteManagement extends SpriteStore {
 		    entity.setAjustedY(y + adjustY);
 		}
 		
-		entity.setNSpr(nSpr);
-		entity.setNBank(nBank);
+		entity.setDesc(desc);
 		entity.setForeground(p_foreground);
 
 

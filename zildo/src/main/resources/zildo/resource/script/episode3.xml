@@ -602,7 +602,11 @@
 	    <action>
 	        <var name="bossFighting" value="false" />
 	        <perso who="dragon" action=""/>
+	        <music/>
    	        <perso who="dragon" action="explodeBigBoss(0,-90)"/>
+   	        <perso who="dragon" action="dropKey"/>
+   	        <wait value="60"/>
+  	        <remove who="dragon"/>
 	    </action>
 	</quest>
 	
@@ -1024,6 +1028,13 @@
 		</loop>
    	</persoAction>
    	
+	<!-- Dragon drop his key when he dies -->
+	<persoAction id="dropKey">
+	    <wait value="100"/>
+	    <sound name="ZildoRamasse"/>
+	    <spawn type="DRAGON_KEY" pos="x,y-40" z="40" vy="0.5" vz="1.5" az="-0.1"/>
+	</persoAction>
+	
 	<scene id="turtleAwake">
 		<perso who="self" addSpr="1"/>
 		<wait value="6"/>

@@ -25,12 +25,14 @@ import zildo.fwk.script.logic.FloatExpression;
 import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 
+/** Special element, coming with a shadow, disappearing after a while (given by 'spe' attribute) if 'volatil' field is TRUE **/
 public class ElementGoodies extends Element {
 
 	// Coeur : nSpr=40
@@ -47,8 +49,29 @@ public class ElementGoodies extends Element {
 	public ElementGoodies() {
 		super();
 		spe=540;	// Goodies life duration, in frames (generally about 60FPS : 540==9sec)
+		shadow = new Element();
+		shadow.setSprModel(ElementDescription.SHADOW);
+		setLinkedPerso(shadow);
+		EngineZildo.spriteManagement.spawnSprite(shadow);
+	}
+
+	@Override
+	public void setDesc(SpriteDescription p_desc) {
+		super.setDesc(p_desc);
+		// TODO: Handle this in a more specific way
+		if (p_desc == ElementDescription.DRAGON_KEY) {
+			volatil = false;
+		}
 	}
 	
+	public void setShadowDesc(ElementDescription desc) {
+		if (desc == null) {
+			shadow = null;
+			EngineZildo.spriteManagement.deleteSprite(shadow);
+		} else {
+			shadow.setDesc(desc);
+		}
+	}
 	/**
 	 * Constructor for object coming from a chest. He's designed for Zildo.
 	 * @param p_zildo
@@ -70,15 +93,22 @@ public class ElementGoodies extends Element {
 			// If nature is null (probably out of the map), consider it's bottomless, to make the goodies disappear
 			nature = TileNature.BOTTOMLESS;
 		}
-		switch (nature) {
-			case BOTTOMLESS:
-			case WATER:
-				fall();
-				dying = true;
-			default:
-				break;
+		if (z < 4) {
+			switch (nature) {
+				case BOTTOMLESS:
+				case WATER:
+					fall();
+					dying = true;
+				default:
+					break;
+			}
 		}
 		super.animate();
+		
+		if (shadow != null) {
+			shadow.x = x;
+			shadow.y = y-2;
+		}
 		
 		if (volatil) {
 			spe--;
@@ -107,6 +137,12 @@ public class ElementGoodies extends Element {
 			}
 		}
 		
+		if (spr == ElementDescription.DRAGON_KEY) {
+			if (z <= 4) {
+				vx = 0;
+				vy = 0;
+			}
+		}
 		
 		if (spr==ElementDescription.DROP_FLOOR || spr.isMoney()) {
 			// Il s'agit d'un diamant ou du coeur (10)

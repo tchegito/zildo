@@ -329,6 +329,7 @@ public enum ElementDescription implements SpriteDescription {
 		case BLUE_FIREFLY: case PURPLE_FIREFLY:
 		case BULLET: case GREEN_BUBBLE:
 		case FIREWIND1: case FIREWIND2: case FIREWIND3:
+		case DRAGON_KEY:
 			return true;
 		default:
 			return false;
