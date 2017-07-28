@@ -22,7 +22,9 @@ package zildo.monde.sprites.persos.boss;
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.EngineFX;
 import zildo.monde.Bezier3;
+import zildo.monde.collision.Collision;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.Element;
@@ -31,6 +33,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.utils.CompositeElement;
 import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
@@ -274,5 +277,18 @@ public class PersoDragon extends PersoNJ {
 		// Restart his behavior
 		EngineZildo.scriptManagement.runPersoAction(this, "bossDragon", null, false);
 		
+	}
+
+	@Override
+	public void manageCollision() {
+		// Manage collision specifically to the dragon, in order to have only a pertinent part hitting hero
+		Element body = neck.elems.get(3);
+		SpriteModel model = body.getSprModel();
+		int radius = (model.getTaille_x() + model.getTaille_y()) / 4;
+		Collision collision = new Collision((int) body.x, (int) body.y, radius, Angle.NORD, this, getDamageType(), null);
+		
+		collision.cy -= model.getTaille_y() / 2;
+		collision.cy -= body.z;
+		EngineZildo.collideManagement.addCollision(collision);
 	}
 }
