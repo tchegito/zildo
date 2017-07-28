@@ -602,7 +602,7 @@
 	    <action>
 	        <var name="bossFighting" value="false" />
 	        <perso who="dragon" action=""/>
-   	        <perso who="dragon" action="explodeBoss"/>
+   	        <perso who="dragon" action="explodeBigBoss(0,-90)"/>
 	    </action>
 	</quest>
 	
@@ -868,9 +868,9 @@
 		</condition>
 		<condition name="dragon">
 		    <tile pos="9,3" action="regenSpider"/>
-		<!--
+		
 		    <perso who="dragon" action="bossDragon"/>
-		-->
+		
 		</condition>
 		<condition name="sousbois3" exp="removeNailForMoonStone">
 			<tile pos="11,28" back2="-1"/>
@@ -1736,12 +1736,24 @@
 	<!-- Zildo doesn't take damage from it -->
 	<persoAction id="explodeBoss">
 	    <for var="loc:i" value="10">
-			<spawn impact="EXPLOSION_UNDAMAGE" pos="x-10+random*20,y-10+random*20"/>
+			<spawn impact="EXPLOSION_UNDAMAGE" pos="x-10+random*20,y-10 + random*20"/>
 			<wait value="2"/> 
 	    </for>
 	    <visible who="self" value="false"/>
 	    <for var="loc:i" value="10">
-			<spawn impact="EXPLOSION_UNDAMAGE" pos="x-10+random*20,y-10+random*20"/>
+			<spawn impact="EXPLOSION_UNDAMAGE" pos="x-10+random*20,y-10 + random*20"/>
+			<wait value="2"/> 
+	    </for>
+   	</persoAction>
+   	
+	<persoAction id="explodeBigBoss">
+	    <for var="loc:i" value="30">
+			<spawn impact="EXPLOSION_UNDAMAGE" pos="x-10+random*20 + loc:arg0,y-10 + loc:arg1 + random*70"/>
+			<wait value="2"/> 
+	    </for>
+	    <visible who="self" value="false"/>
+	    <for var="loc:i" value="20">
+			<spawn impact="EXPLOSION_UNDAMAGE" pos="x-10+random*20 + loc:arg0,y-10 + loc:arg1 + random*70"/>
 			<wait value="2"/> 
 	    </for>
    	</persoAction>

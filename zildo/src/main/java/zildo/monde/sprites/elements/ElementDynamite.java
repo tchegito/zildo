@@ -70,7 +70,7 @@ public class ElementDynamite extends Element {
 					ElementDescription.STONE_HEAVY);
 			if (boulder != null) {
 				boulder.angle = Angle.fromDelta(boulder.x - x, boulder.y - y);
-				boulder.vx = boulder.angle.coordf.x * 1.2f;
+				boulder.vx = boulder.angle.coordf.x * 1.4f;
 				boulder.vy = boulder.angle.coordf.y * 1.1f;
 				if (boulder.angle.isHorizontal()) {
 					boulder.vy = 1.1f;
