@@ -113,6 +113,22 @@
 	    </action>
 	</quest>
 	
+	<quest name="sousbois4SeeFireflies">
+		<trigger>
+		    <location name="sousbois4" pos="286,207" radius="2"/>
+		</trigger>
+		<action>
+		    <moveTo who="zildo" pos="375,269"/>
+		    <wait value="40"/>
+		    <angle who="zildo" value="0"/>
+		    <wait value="30"/>
+		    <angle who="zildo" value="1"/>
+		    <wait value="30"/>
+		    <speak who="zildo" text="sousbois4.roxy.meet.0"/>
+		    <speak who="zildo" text="sousbois4.roxy.meet.1"/>
+		</action>
+	</quest>
+	
 	<quest name="sousbois2_blueRain" locked="false">
 	    <trigger>
 	        <location name="sousbois2" tilePos="20,6"/>
@@ -872,9 +888,9 @@
 		</condition>
 		<condition name="dragon">
 		    <tile pos="9,3" action="regenSpider"/>
-		
+<!--		
 		    <perso who="dragon" action="bossDragon"/>
-		
+-->	
 		</condition>
 		<condition name="sousbois3" exp="removeNailForMoonStone">
 			<tile pos="11,28" back2="-1"/>
