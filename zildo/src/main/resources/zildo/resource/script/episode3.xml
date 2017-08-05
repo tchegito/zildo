@@ -643,8 +643,8 @@
 	<quest name="reappearRockA" repeat="true" locked="false">
 	    <trigger>
 	        <questDone name="needToRespawnRockA"/>
-	        <location name="dragon" pos="149,438" radius="-20"/>	<!-- if hero is away from 20 tiles -->
-	    </trigger>
+	        <location name="dragon" pos="149,438" radius="-10"/>	<!-- if hero is away from 20 tiles -->
+   	    </trigger>
 	    <action>
 	   		<spawn type="STONE_HEAVY" what="rockA" pos="149,438" floor="2" z="0"/>
 	   		<markQuest name="needToRespawnRockA" value="false"/>
@@ -668,7 +668,7 @@
 	<quest name="reappearRockB" repeat="true" locked="false">
 	    <trigger>
 	        <questDone name="needToRespawnRockB"/>
-	        <location name="dragon" pos="840,271" radius="-20"/>	<!-- if hero is away from 20 tiles -->
+	        <location name="dragon" pos="840,271" radius="-10"/>	<!-- if hero is away from 20 tiles -->
 	    </trigger>
 	    <action>
 	   		<spawn type="STONE_HEAVY" what="rockB" pos="840,271" floor="2" z="0"/>
@@ -693,7 +693,7 @@
 	<quest name="reappearRockC" repeat="true" locked="false">
 	    <trigger>
 	        <questDone name="needToRespawnRockC"/>
-	        <location name="dragon" pos="637,542" radius="-20"/>	<!-- if hero is away from 20 tiles -->
+	        <location name="dragon" pos="637,542" radius="-10"/>	<!-- if hero is away from 20 tiles -->
 	    </trigger>
 	    <action>
 	   		<spawn type="STONE_HEAVY" what="rockC" pos="637,539" floor="2" z="0"/>

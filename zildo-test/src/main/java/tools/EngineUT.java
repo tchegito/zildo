@@ -124,6 +124,10 @@ public abstract class EngineUT {
 		return perso;
 	}
 	
+	protected PersoPlayer spawnZildo(Vector2f v) {
+		return spawnZildo((int) v.x, (int) v.y);
+	}
+	
 	protected PersoPlayer spawnZildo(int x, int y) {
 		PersoPlayer perso = new PersoPlayer(x, y, ZildoOutfit.Zildo);
 		if (spyHero) {

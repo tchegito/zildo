@@ -1,6 +1,7 @@
 package junit.perso;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import tools.EngineUT;
@@ -12,6 +13,15 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
+/** Check that dragon scene is working the way it should:
+ * <ul>
+ * <li>rock should hit the dragon when exploded</li>
+ * <li>rock should reappear if they miss their target</li>
+ * <li>coal should not be damageable by sword</li>
+ * </ul>
+ * @author Tchegito
+ *
+ */
 public class TestDragonBoss extends EngineUT {
 
 	final static Vector2f NEAR_ROCK1 = new Vector2f(139, 435);
@@ -34,12 +44,17 @@ public class TestDragonBoss extends EngineUT {
 		attackAndCheckWound(NEAR_ROCK3, 5);
 	}
 	
-	private void attackAndCheckWound(Vector2f nearRock, int dragonPos) {
+	@Before
+	public void init() {
 		mapUtils.loadMap("dragon");
-		PersoPlayer hero = spawnZildo((int) nearRock.x, (int) nearRock.y);
+	}
+	
+	private void attackAndCheckWound(Vector2f nearRock, int dragonPos) {
+		PersoPlayer hero = spawnZildo(nearRock);
 		hero.setFloor(2);
 		hero.setWeapon(new Item(ItemKind.DYNAMITE));
 		hero.setCountBomb(20);
+		hero.setPv(12);
 		waitEndOfScripting();
 		
 		// Animate dragon
@@ -74,7 +89,6 @@ public class TestDragonBoss extends EngineUT {
 	
 	@Test
 	public void coalCantBeHitBySword() {
-		mapUtils.loadMap("dragon");
 		PersoPlayer hero = spawnZildo(250,369);
 		Item sword = new Item(ItemKind.MIDSWORD);
 		hero.getInventory().add(sword);
@@ -89,5 +103,39 @@ public class TestDragonBoss extends EngineUT {
 		renderFrames(18*2);	// Wait for the sword to swing
 		// Check that sprite hasn't changed
 		Assert.assertEquals("Coal shouldn't be hit by hero's sword !", 0, coal.getAddSpr());
+	}
+	
+	@Test
+	public void rockRespawnA() {
+		rockRespawn("A", NEAR_ROCK1, new Vector2f(376, 549));
+	}
+	@Test
+	public void rockRespawnB() {
+		rockRespawn("B", NEAR_ROCK2, new Vector2f(582, 376));
+	}
+	@Test
+	public void rockRespawnC() {
+		rockRespawn("C", NEAR_ROCK3, new Vector2f(969, 436));
+	}
+	
+	private void rockRespawn(String which, Vector2f startLoc, Vector2f farLoc) {
+		PersoPlayer hero = spawnZildo(startLoc);
+		hero.setFloor(2);
+		hero.setWeapon(new Item(ItemKind.DYNAMITE));
+		hero.setCountBomb(20);
+		waitEndOfScripting();
+
+		// Plant dynamite, and wait for boulder to fall in lava
+		hero.attack();
+		renderFrames(200);
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("needToRespawnRock"+which));
+		Assert.assertFalse(EngineZildo.scriptManagement.isQuestDone("reappearRock"+which));
+		
+		// Move hero at another location, and check distance is > 10 tiles
+		Assert.assertTrue(farLoc.distance(NEAR_ROCK1) > 16 * 10);
+		hero.setPos(farLoc);
+		hero.walkTile(false);
+		renderFrames(1);
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("reappearRock"+which));
 	}
 }
