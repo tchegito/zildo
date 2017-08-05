@@ -59,7 +59,7 @@ public class ElementGoodies extends Element {
 	public void setDesc(SpriteDescription p_desc) {
 		super.setDesc(p_desc);
 		// TODO: Handle this in a more specific way
-		if (p_desc == ElementDescription.DRAGON_KEY) {
+		if (p_desc == ElementDescription.PORTAL_KEY) {
 			volatil = false;
 		}
 	}
@@ -137,7 +137,7 @@ public class ElementGoodies extends Element {
 			}
 		}
 		
-		if (spr == ElementDescription.DRAGON_KEY) {
+		if (spr == ElementDescription.PORTAL_KEY) {
 			if (z <= 4) {
 				vx = 0;
 				vy = 0;

@@ -132,7 +132,7 @@ public class SpriteManagement extends SpriteStore {
 			element.setAjustedX(x);
 			element.setAjustedY(y);
 		} else {
-    		if (desc == ElementDescription.DRAGON_KEY) {
+    		if (desc == ElementDescription.PORTAL_KEY) {
     			// Handle this in a more generic way
     			element = new ElementGoodies();
     		} else {

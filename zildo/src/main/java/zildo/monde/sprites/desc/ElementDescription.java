@@ -150,7 +150,7 @@ public enum ElementDescription implements SpriteDescription {
 	CAULDRON1, CAULDRON2, CAULDRON3, GREEN_BUBBLE,
 	// Wind sucking from fire elemental
 	FIREWIND1, FIREWIND2, FIREWIND3,
-	DRAGON_KEY;
+	DRAGON_KEY, PORTAL_KEY;
 	
 	Boolean damage;
 	
@@ -329,7 +329,7 @@ public enum ElementDescription implements SpriteDescription {
 		case BLUE_FIREFLY: case PURPLE_FIREFLY:
 		case BULLET: case GREEN_BUBBLE:
 		case FIREWIND1: case FIREWIND2: case FIREWIND3:
-		case DRAGON_KEY:
+		case DRAGON_KEY: case PORTAL_KEY:
 			return true;
 		default:
 			return false;

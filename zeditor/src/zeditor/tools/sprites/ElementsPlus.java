@@ -348,7 +348,9 @@ public class ElementsPlus extends SpriteBanque {
 				// Blow from elemental
 				new Zone(268, 201, 7, 9), new Zone(268, 211, 4, 13), new Zone(276, 201, 2, 15),
 				// Dragon key
-				new Zone(138, 85, 16, 16)
+				new Zone(138, 85, 16, 16),
+				// Portal key
+				new Zone(155, 85, 9, 16)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 

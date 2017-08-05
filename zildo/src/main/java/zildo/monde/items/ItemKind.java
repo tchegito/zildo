@@ -52,7 +52,8 @@ public enum ItemKind {
 	FULL_BAG(false, ElementDescription.FULL_BAG, 20),
 	FIRE_RING(false, ElementDescription.FIRE_RING, 800, 5000),
 	CUREPOTION(false, ElementDescription.FLASK_BLUE, 100),
-	DRAGON_KEY(false, ElementDescription.DRAGON_KEY, 10);
+	DRAGON_KEY(false, ElementDescription.DRAGON_KEY, 10),
+	PORTAL_KEY(false, ElementDescription.PORTAL_KEY, 10);
 	
 	final public SpriteDescription representation;
 	final public int price;
