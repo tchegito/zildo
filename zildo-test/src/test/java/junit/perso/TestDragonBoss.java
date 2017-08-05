@@ -8,6 +8,7 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
@@ -69,5 +70,24 @@ public class TestDragonBoss extends EngineUT {
 		renderFrames(200);	// Wait for dragon to stop screaming from his wound
 		Assert.assertFalse(dragon.isWounded());
 		Assert.assertEquals(dragonPv - 1, dragon.getPv());
+	}
+	
+	@Test
+	public void coalCantBeHitBySword() {
+		mapUtils.loadMap("dragon");
+		PersoPlayer hero = spawnZildo(250,369);
+		Item sword = new Item(ItemKind.MIDSWORD);
+		hero.getInventory().add(sword);
+		hero.setWeapon(sword);
+		hero.setAngle(Angle.NORD);
+		hero.setFloor(1);
+		waitEndOfScripting();
+		
+		// Hit the coal
+		Perso coal = EngineZildo.persoManagement.getNamedPerso("coal1");
+		hero.attack();
+		renderFrames(18*2);	// Wait for the sword to swing
+		// Check that sprite hasn't changed
+		Assert.assertEquals("Coal shouldn't be hit by hero's sword !", 0, coal.getAddSpr());
 	}
 }

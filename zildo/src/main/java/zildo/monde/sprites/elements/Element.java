@@ -801,6 +801,8 @@ public class Element extends SpriteEntity {
 			return DamageType.POISON;
 		} else if (desc == ElementDescription.STONE_HEAVY) {
 			return DamageType.BIG_BLUNT;
+		} else if (desc == ElementDescription.FIRE_BALL) {
+			return DamageType.FIRE;
 		}
 		return DamageType.BLUNT;	// Default
 	}

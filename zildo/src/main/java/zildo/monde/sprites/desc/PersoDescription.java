@@ -230,6 +230,8 @@ public enum PersoDescription implements SpriteDescription {
 			}
 		} else if (this == FIRE_ELEMENTAL) {
 			return true;
+		} else if (this == COAL) {
+			return dmgType != DamageType.FIRE && dmgType != DamageType.EXPLOSION;
 		} else if (this == PersoDescription.DRAGON) {
 			return dmgType != DamageType.BIG_BLUNT;	// Only a big rock can hurt dragon
 		}
