@@ -701,6 +701,18 @@
 	    </action>
    	</quest>
    	
+	<quest name="stopFireBalls" locked="false">
+	    <trigger>
+		    <location name="cavef10" pos="161,119" radius="1"/>
+	    </trigger>
+	    <action>
+	        <remove what="fireb1"/>
+	        <remove what="fireb2"/>
+   	        <remove what="fireb3"/>
+   	        <remove what="fireb4"/>
+   	    </action>
+	</quest>
+	
     <!-- Show up some clouds on dragon's map -->
     <tileAction id="makeCloudsDragon">
 	    <for var="loc:j" value="30">
@@ -878,10 +890,10 @@
 		    <moveTo what="platef2" pos="-270,0" delta="true" speed="270" unblock="true"/>
 		</condition>
 		<condition name="cavef10">
-		    	<animation type="BIG_FIREBALL" what="fireb1" angle="3" pos="304,387"/>
-		    	<animation type="BIG_FIREBALL" what="fireb2" angle="3" pos="304,291"/>
-		    	<animation type="BIG_FIREBALL" what="fireb3" angle="1" pos="16,339"/>
-		    	<animation type="BIG_FIREBALL" what="fireb4" angle="1" pos="16,244"/>
+		    <animation type="BIG_FIREBALL" what="fireb1" angle="3" pos="304,387"/>
+		    <animation type="BIG_FIREBALL" what="fireb2" angle="3" pos="304,291"/>
+		    <animation type="BIG_FIREBALL" what="fireb3" angle="1" pos="16,339"/>
+		    <animation type="BIG_FIREBALL" what="fireb4" angle="1" pos="16,244"/>
 		</condition>
 		<condition name="cavef8">
 		    <remove chaining="dragon"/>
