@@ -713,6 +713,16 @@
    	    </action>
 	</quest>
 	
+	<quest name="findDragonPortalKey">
+	    <trigger>
+	        <location name="dragon"/>
+	        <inventory item="PORTAL_KEY"/>
+	    </trigger>
+	    <action>
+	        <exec script="ep3_closure"/>
+	    </action>
+	</quest>
+	
     <!-- Show up some clouds on dragon's map -->
     <tileAction id="makeCloudsDragon">
 	    <for var="loc:j" value="30">
@@ -903,6 +913,8 @@
 <!--		
 		    <perso who="dragon" action="bossDragon"/>
 -->	
+   	        <perso who="dragon" action="dropKey"/>
+
 		</condition>
 		<condition name="sousbois3" exp="removeNailForMoonStone">
 			<tile pos="11,28" back2="-1"/>
@@ -1059,8 +1071,8 @@
 	<!-- Dragon drop his key when he dies -->
 	<persoAction id="dropKey">
 	    <wait value="100"/>
-	    <sound name="ZildoRamasse"/>
-	    <spawn type="PORTAL_KEY" pos="x,y-40" z="40" vy="0.5" vz="1.5" az="-0.1"/>
+	    <sound name="ZildoTombe"/>
+	    <spawn type="PORTAL_KEY" pos="x,y-40" z="40" vy="0.5" vz="1.5" az="-0.04"/>
 	</persoAction>
 	
 	<scene id="turtleAwake">
@@ -2077,5 +2089,15 @@
 	    <perso who="dragon" action="bossDragon"/>
 	    
 	    <var name="bossFighting" value="1"/>
-	</scene>	
+	</scene>
+	
+	<scene id="ep3_closure">
+	    <speak what="camera" text="ep3.end.0"/>
+	    <speak what="camera" text="ep3.end.1"/>
+	    <speak what="camera" text="ep3.end.2"/>
+	    <fadeOut value="0"/>
+	    <speak what="camera" text="ep3.end.3"/>
+	    <speak what="camera" text="ep2.ending.cut.1"/>
+	   	<end type="0"/>
+	</scene>
 </adventure>
