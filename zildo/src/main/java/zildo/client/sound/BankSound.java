@@ -33,7 +33,6 @@ public enum BankSound implements AudioBank {
 	ZildoPatauge("eau"),
 	ZildoPatauge2("eau2"),
 	ZildoGadou("vase"),
-	ZildoRecupVie("vie"),
 	ZildoRecupCoeur("coeur"),
 	ZildoRecupItem("item"),
 	ZildoGagneArgent("argent"),

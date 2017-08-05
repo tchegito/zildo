@@ -21,6 +21,8 @@
 package zildo.monde.sprites.persos.action;
 
 import zildo.client.sound.BankSound;
+import zildo.monde.sprites.elements.ElementImpact;
+import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 
@@ -50,8 +52,10 @@ public class HealAction implements PersoAction {
 					perso.setPv(pv+1);
 				}
 				numPv--;
-				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupVie, perso);
-				perso.setAttente(8 * 2);
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRecupCoeur, perso);
+				ElementImpact energy = new ElementImpact((int) perso.x, (int) perso.y, ImpactKind.DROP_ENERGY, perso);
+				EngineZildo.spriteManagement.spawnSprite(energy);
+				perso.setAttente(8 * 3);
 			}
 		}
 		return false;
