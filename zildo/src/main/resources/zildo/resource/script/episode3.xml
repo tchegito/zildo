@@ -2093,11 +2093,17 @@
 	
 	<scene id="ep3_closure">
 	    <speak what="camera" text="ep3.end.0"/>
+	    <music name="Triste"/>
 	    <speak what="camera" text="ep3.end.1"/>
-	    <speak what="camera" text="ep3.end.2"/>
 	    <fadeOut value="0"/>
-	    <speak what="camera" text="ep3.end.3"/>
-	    <speak what="camera" text="ep2.ending.cut.1"/>
+	    <speak what="camera" text="ep3.end.2"/>
+	    <if expQuest="vactoChrista">
+		    <speak what="camera" text="ep3.end.2b"/>
+	    </if>
+   	    <speak what="camera" text="ep3.end.3"/>
+	    <speak what="camera" text="ep3.end.4"/>
+   	    <speak what="camera" text="ep3.end.5"/>
+  	    <speak what="camera" text="ep2.ending.cut.1"/>
 	   	<end type="0"/>
 	</scene>
 </adventure>

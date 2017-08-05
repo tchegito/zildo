@@ -795,6 +795,8 @@ public class Element extends SpriteEntity {
 	 * @return DamageType
 	 */
 	public DamageType getDamageType() {
+		// NOTE: can't do a proper switch/case because "desc" field could be any implementation of SpriteDescription
+		// which itself isn't an enum class, allowing "switch"
 		if (desc == ElementDescription.PEEBLE) {
 			return DamageType.PEEBLE;
 		} else if (desc == ElementDescription.SEWER_VOLUT1) {

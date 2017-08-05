@@ -20,6 +20,7 @@
 
 package zildo.monde.sprites.elements;
 
+import zildo.client.sound.BankSound;
 import zildo.fwk.ZUtils;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.monde.map.Tile.TileNature;
@@ -138,9 +139,10 @@ public class ElementGoodies extends Element {
 		}
 		
 		if (spr == ElementDescription.PORTAL_KEY) {
-			if (z <= 4) {
+			if (z <= 4 && (vx != 0 || vy != 0)) {
 				vx = 0;
 				vy = 0;
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
 			}
 		}
 		
