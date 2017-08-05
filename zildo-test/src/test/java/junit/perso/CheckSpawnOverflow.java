@@ -7,8 +7,6 @@ import testable.TestableIdGenerator;
 import tools.EngineUT;
 import zildo.fwk.db.Identified;
 import zildo.fwk.script.context.SpriteEntityContext;
-import zildo.monde.items.Item;
-import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;

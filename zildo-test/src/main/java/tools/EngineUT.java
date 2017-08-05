@@ -500,7 +500,7 @@ public abstract class EngineUT {
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing(name));
 	}
 
-	/** Check that a given quest name is running **/
+	/** Wait for a given quest name to run **/
 	public void waitForScriptRunning(String name) {
 		while (true) {
 			renderFrames(1);
@@ -510,6 +510,16 @@ public abstract class EngineUT {
 		}
 	}
 	
+	/** Wait for a given quest to finish **/
+	public void waitForScriptFinish(String name) {
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing(name));
+		while (true) {
+			renderFrames(1);
+			if (!EngineZildo.scriptManagement.isQuestProcessing(name)) {
+				break;
+			}
+		}
+	}
 	/** Make hero talkin by pressing action button, and check that given dialog has been said. Then go on dialog. **/
 	public void talkAndCheck(String key) {
 		PersoPlayer hero = EngineZildo.persoManagement.getZildo();

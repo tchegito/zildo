@@ -1048,7 +1048,7 @@
 	<persoAction id="dropKey">
 	    <wait value="100"/>
 	    <sound name="ZildoRamasse"/>
-	    <spawn type="DRAGON_KEY" pos="x,y-40" z="40" vy="0.5" vz="1.5" az="-0.1"/>
+	    <spawn type="PORTAL_KEY" pos="x,y-40" z="40" vy="0.5" vz="1.5" az="-0.1"/>
 	</persoAction>
 	
 	<scene id="turtleAwake">
