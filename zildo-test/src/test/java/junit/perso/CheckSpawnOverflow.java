@@ -7,6 +7,8 @@ import testable.TestableIdGenerator;
 import tools.EngineUT;
 import zildo.fwk.db.Identified;
 import zildo.fwk.script.context.SpriteEntityContext;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -42,11 +44,13 @@ public class CheckSpawnOverflow extends EngineUT {
 		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", context, false);
 		
 		for (int i=0;i<100;i++) {
-			// Give hero full life, and avoid him to be projected because of fire balls (px,py)
-			zildo.setPv(40);
-			zildo.setPx(0);
-			zildo.setPy(0);
-			renderFrames(150);
+			for (int j=0;j<150;j++) {
+				// Give hero full life, and avoid him to be projected because of fire balls (px,py)
+				renderFrames(1);
+				zildo.setPv(40);
+				zildo.setPx(0);
+				zildo.setPy(0);
+			}
 			System.out.println(countEntities()+ " hero: "+zildo.getPv()+"HP");
 		}
 	}
