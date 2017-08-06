@@ -143,12 +143,6 @@ public class ScriptManagement {
     	return scriptExecutor.isScripting(true);
     }
     
-    private void execAllPrioritiesScript() {
-    	while (scriptExecutor.isScripting(true)) {
-    		render();
-    	}
-    }
-    
     public void userEndAction() {
     	scriptExecutor.userEndAction();
     }
@@ -595,8 +589,6 @@ public class ScriptManagement {
 				}
 			}
 		}
-		// Wait for all executions over
-		execAllPrioritiesScript();
 	}
 	
 	/**

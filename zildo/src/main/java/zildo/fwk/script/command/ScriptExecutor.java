@@ -147,8 +147,9 @@ public class ScriptExecutor {
 					toTerminate.add(process);
 				}
 				
-				// end condition
-				if (process.scene.locked) {
+				// end condition: quit if this scene locks everything, unless it's a top priority one
+				// In this case, there is surely another one top priority after it, and we must execute it
+				if (process.scene.locked && !process.topPriority) {
 					break;
 				}
 			}

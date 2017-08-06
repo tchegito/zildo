@@ -371,6 +371,7 @@
         <!-- When the hero explodes the wall in the cave, we set the other one, on farm's side opened -->
         <action>
             <sound name="ZildoSecret"/>
+            <markQuest name="ferme(15, 59)" value="true"/>
         </action>
     </quest>
 	
@@ -871,13 +872,8 @@
 		<condition name="eleog" exp="secretEleog">
 		    <activate what="door" value="true" unblock="true"/>
 		</condition>
-		<condition name="ferme" exp="eleog(13, 3)">
-		    <tile pos="14,58" back="256*5+227"/>
-		    <tile pos="15,58" back="256*5+228"/>
-	  	    <tile pos="14,59" back="256*5+232"/>
-	 	    <tile pos="15,59" back="256*5+232"/>
-	  	    <tile pos="14,59" fore="256*5+229"/>
-	  	    <tile pos="15,59" fore="256*5+230"/>
+		<condition name="ferme" exp="!eleog(13, 3)">
+		    <remove what="crack"/>
 		</condition>
 		<condition name="cavef9">
 		    <perso who="elemental" action="elemBehav"/>
