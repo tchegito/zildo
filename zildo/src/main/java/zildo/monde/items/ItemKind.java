@@ -34,7 +34,7 @@ public enum ItemKind {
 	MOON(false, ElementDescription.HEART_FRAGMENT, 200),
 	BOW(true, ElementDescription.ENEMYARC_RIGHT1, 40),
 	DYNAMITE(true, ElementDescription.DYNAMITE, 10),
-	HAMMER(true, ElementDescription.SPADE, 10),	// TODO: replace by 'HAMMER' description
+	HAMMER(true, ElementDescription.HAMMER, 10),
 	FLUT(false, ElementDescription.FLUT, 1),
 	GLOVE(true, ElementDescription.GLOVE, 20),
 	GLOVE_IRON(true, ElementDescription.SUPER_GLOVE, 40),

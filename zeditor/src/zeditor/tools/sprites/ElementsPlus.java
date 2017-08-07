@@ -196,7 +196,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(48, 0, 16, 16),
 				new Zone(16, 85, 19, 19),	// FULL_MOON
 				new Zone(35, 85, 9, 16),	 // MOON_FRAGMENT1
-				new Zone(96, 0, 16, 16),
+				new Zone(99, 0, 10, 16),
 				new Zone(114, 0, 12, 16),
 				new Zone(130, 0, 12, 16),
 				new Zone(144, 0, 16, 16),
