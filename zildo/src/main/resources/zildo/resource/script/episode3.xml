@@ -417,6 +417,22 @@
 	    </action>
 	</quest>
 	
+	<quest name="vactoTriste" locked="false">
+	    <trigger>
+	        <location name="eleom3"/>
+	        <dialog name="vacto" num="3"/>
+	    </trigger>
+	</quest>
+	<quest name="vactoToTheFarm" locked="false">
+	    <trigger>
+	        <location name="eleom3"/>
+	        <dialog name="vacto" num="5"/>
+	    </trigger>
+	    <action>
+	        <sound name="ZildoAccomplishQuest"/>
+	    </action>
+	</quest>
+	
 	<quest name="cavef6_lev1" locked="false">
 		<trigger>
 			<location name="cavef6"/>
@@ -915,6 +931,9 @@
 		<condition name="sousbois3" exp="removeNailForMoonStone">
 			<tile pos="11,28" back2="-1"/>
 			<tile pos="12,28" back2="-1"/>
+		</condition>
+		<condition name="eleom3" exp="vactoToTheFarm">
+		    <remove who="vacto"/>
 		</condition>
 	</mapScript>
 		
@@ -1724,6 +1743,7 @@
    		<wait value="20"/>
    		<speak who="vacto" text="eleom1.vacto.1"/>
    		<spawn what="bag" pos="161,113" type="EMPTY_BAG"/>
+   		<sound name="ZildoAtterit"/>
    		<wait value="20"/>
    		<script who="vacto" value="3"/>
    		<script who="zildo" value="3"/>
