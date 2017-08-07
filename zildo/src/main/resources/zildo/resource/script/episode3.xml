@@ -433,6 +433,30 @@
 	    </action>
 	</quest>
 	
+	<quest name="christaAccept">
+	    <trigger>
+	        <location name="fermem2"/>
+	        <dialog name="christa" num="3"/>
+	    </trigger>
+	    <action>
+	        <sound name="ZildoAccomplishQuest"/>
+	        <focus who="christa"/>
+	        <moveTo who="christa" pos="174,199" speed="1"/>
+	        <moveTo who="christa" pos="208,295"/>
+	        <perso who="christa" alphaA="-2"/>
+	       	<wait value="80"/>
+	       	<focus who="zildo" delta="true"/>
+	       	<remove who="christa"/>
+	    </action>
+	</quest>
+	
+	<quest name="vactoRequest">
+	    <trigger>
+	        <location name="ferme"/>
+	        <dialog name="vacto" num="1"/>
+	    </trigger>
+	</quest>
+	
 	<quest name="cavef6_lev1" locked="false">
 		<trigger>
 			<location name="cavef6"/>
@@ -890,6 +914,15 @@
 		</condition>
 		<condition name="ferme" exp="!eleog(13, 3)">
 		    <remove what="crack"/>
+		</condition>
+		<condition name="ferme" exp="!vactoToTheFarm,christaAccept">
+		    <remove who="vacto"/>
+		</condition>
+		<condition name="ferme" exp="vactoToTheFarm">
+		    <remove who="christa"/>
+		</condition>
+		<condition name="fermem2" exp="!vactoToTheFarm,christaAccept">
+		    <remove who="christa"/>
 		</condition>
 		<condition name="cavef9">
 		    <perso who="elemental" action="elemBehav"/>

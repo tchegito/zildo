@@ -24,6 +24,7 @@
 	</quest>
 	<quest name="enlevebuissons_ask" repeat="true">
 		<trigger>
+		    <location name="ferme"/>
 			<dialog name="christa" num="1"/>
 		</trigger>
 		<action>
