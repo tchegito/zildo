@@ -368,4 +368,7 @@
 	<persoAction id="moveCharacter">
 	    <moveTo who="self" pos="loc:arg0,loc:arg1" speed="1.1"/>
 	</persoAction>
+	<persoAction id="moveCharacterUnstoppable">
+	    <moveTo who="self" pos="loc:arg0,loc:arg1" speed="1.1" unstoppable="true"/>
+	</persoAction>
 </adventure>

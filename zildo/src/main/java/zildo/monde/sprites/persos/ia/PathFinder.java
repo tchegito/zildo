@@ -22,6 +22,7 @@ package zildo.monde.sprites.persos.ia;
 
 import static zildo.server.EngineZildo.hasard;
 import zildo.fwk.script.context.SpriteEntityContext;
+import zildo.monde.Trigo;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
@@ -238,25 +239,35 @@ public class PathFinder {
 						
                 		Perso collidingPerso = EngineZildo.persoManagement.lookForOne(mobile, 1, null, false);
                 		if (collidingPerso != null) {
+                			 if (collidingPerso.getTarget() != null && collidingPerso.isUnstoppable()) {
+                				 break;
+                			 }
 							Angle a = mobile.getAngle();
 							// First : lateral
 							Point nonBlockingPos = null;
-							Angle[] angles = new Angle[] {a.rotate(1), Angle.rotate(a,-1), a, a.opposite()};
+							Angle[] angles = new Angle[] {a.rotate(1), Angle.rotate(a,-1), a, a.opposite(), Angle.SUDEST, Angle.SUDOUEST};
 							int dist = 12;
-							for (Angle chkAngle : angles) {
-								Point testPos = new Point();
-								testPos.x = (int) (collidingPerso.x + chkAngle.coordf.x * dist);
-								testPos.y = (int) (collidingPerso.y + chkAngle.coordf.y * dist);
-								
-								if (!EngineZildo.mapManagement.collide(testPos.x, testPos.y, collidingPerso)) {
-									nonBlockingPos = testPos;
-									break;
+							for ( ; dist < 30;dist+=12) {	// We try with 2 range of distance [12, 24]
+								for (Angle chkAngle : angles) {
+									Point testPos = new Point();
+									double coeff = chkAngle.isDiagonal() ? 1/Trigo.SQUARE_2 : 1f;
+									testPos.x = (int) (collidingPerso.x + chkAngle.coordf.x * dist * coeff);
+									testPos.y = (int) (collidingPerso.y + chkAngle.coordf.y * dist * coeff);
+									
+									if (!EngineZildo.mapManagement.collide(testPos.x, testPos.y, collidingPerso)) {
+										nonBlockingPos = testPos;
+										break;
+									}
 								}
+								if (nonBlockingPos != null) break;
 							}
 							// Ask blocking character to move with a script (with priority on running scene)
 							if (nonBlockingPos != null) {
 								SpriteEntityContext context = new SpriteEntityContext(collidingPerso);
-								EngineZildo.scriptManagement.runPersoAction(collidingPerso, "moveCharacter("+nonBlockingPos.x+","+nonBlockingPos.y+")", context, true);
+								// If the first distance tried isn't free, assume that our colliding perso will be unstoppable
+								// That means we will move regardless of colliding things on his way. At least, its target is okay.
+								String scriptName=dist == 12 ? "moveCharacter" : "moveCharacterUnstoppable";
+								EngineZildo.scriptManagement.runPersoAction(collidingPerso, scriptName + "("+nonBlockingPos.x+","+nonBlockingPos.y+")", context, true);
 							}
 							mobile.setAttente(10);
                 		}

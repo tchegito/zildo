@@ -104,6 +104,23 @@ public class ScenesBugFixes extends EngineUT {
 		// If we reach this point, we can conclude that script has worked without any blocking character !
 	}
 	
+	@Test
+	public void sceneUnblockable2() {
+		// Spawn a character A
+		mapUtils.loadMap("eleom1");
+		Perso eleo = EngineZildo.persoManagement.getNamedPerso("eleoric");
+		eleo.setPos(new Vector2f(101, 102));
+		spawnZildo(123, 108);
+		waitEndOfScripting();
+
+		EngineZildo.scriptManagement.execute("vactoComeIn", true);
+		
+		// Wait for the end of scene
+		waitEndOfScriptingPassingDialog();
+		
+		// If we reach this point, we can conclude that script has worked without any blocking character !
+	}
+	
 	private SpriteEntity findByDesc(ElementDescription desc) {
 		for (SpriteEntity e : EngineZildo.spriteManagement.getSpriteEntities(null)) {
 			if (e.getDesc() == desc) {
