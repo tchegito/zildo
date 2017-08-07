@@ -240,19 +240,24 @@ public class PathFinder {
                 		if (collidingPerso != null) {
 							Angle a = mobile.getAngle();
 							// First : lateral
-							Point nonBlockingPos = new Point();
-							Angle[] angles = new Angle[] {a.rotate(1), Angle.rotate(a,-1), a};
+							Point nonBlockingPos = null;
+							Angle[] angles = new Angle[] {a.rotate(1), Angle.rotate(a,-1), a, a.opposite()};
+							int dist = 12;
 							for (Angle chkAngle : angles) {
-								nonBlockingPos.x = (int) (collidingPerso.x + chkAngle.coordf.x * 12);
-								nonBlockingPos.y = (int) (collidingPerso.y + chkAngle.coordf.y * 12);
+								Point testPos = new Point();
+								testPos.x = (int) (collidingPerso.x + chkAngle.coordf.x * dist);
+								testPos.y = (int) (collidingPerso.y + chkAngle.coordf.y * dist);
 								
-								if (!EngineZildo.mapManagement.collide(nonBlockingPos.x, nonBlockingPos.y, collidingPerso)) {
+								if (!EngineZildo.mapManagement.collide(testPos.x, testPos.y, collidingPerso)) {
+									nonBlockingPos = testPos;
 									break;
 								}
 							}
 							// Ask blocking character to move with a script (with priority on running scene)
-							SpriteEntityContext context = new SpriteEntityContext(collidingPerso);
-							EngineZildo.scriptManagement.runPersoAction(collidingPerso, "moveCharacter("+nonBlockingPos.x+","+nonBlockingPos.y+")", context, true);
+							if (nonBlockingPos != null) {
+								SpriteEntityContext context = new SpriteEntityContext(collidingPerso);
+								EngineZildo.scriptManagement.runPersoAction(collidingPerso, "moveCharacter("+nonBlockingPos.x+","+nonBlockingPos.y+")", context, true);
+							}
 							mobile.setAttente(10);
                 		}
 					}

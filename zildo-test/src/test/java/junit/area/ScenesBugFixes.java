@@ -15,7 +15,9 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
 public class ScenesBugFixes extends EngineUT {
@@ -79,6 +81,27 @@ public class ScenesBugFixes extends EngineUT {
 		renderFrames(20);
 		Assert.assertFalse(EngineZildo.mapManagement.isChangingMap(zildo));
 		System.out.println(zildo);
+	}
+	
+	
+	/** Check that particular bug found one day is ok now.
+	 * Problem was about pathfinder's strategy to move a blocking character. He was trying to reach
+	 * a default location, which was impossible. **/
+	@Test
+	public void sceneUnblockable() {
+		// Spawn a character A
+		mapUtils.loadMap("eleom1");
+		Perso eleo = EngineZildo.persoManagement.getNamedPerso("eleoric");
+		eleo.setPos(new Vector2f(101, 102));
+		spawnZildo(107, 113);
+		waitEndOfScripting();
+
+		EngineZildo.scriptManagement.execute("vactoComeIn", true);
+		
+		// Wait for the end of scene
+		waitEndOfScriptingPassingDialog();
+		
+		// If we reach this point, we can conclude that script has worked without any blocking character !
 	}
 	
 	private SpriteEntity findByDesc(ElementDescription desc) {
