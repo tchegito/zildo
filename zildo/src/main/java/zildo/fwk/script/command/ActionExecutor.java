@@ -46,6 +46,7 @@ import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionKind;
+import zildo.fwk.script.xml.element.action.ListenElement;
 import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.LoopElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
@@ -707,6 +708,19 @@ public class ActionExecutor extends RuntimeExecutor {
                 		achieved = true;
                 	}
                 	break;
+                case listen:	// Hear if an alert is done around character
+                	Point here = null;
+                	if (perso != null) {
+                		here = new Point(perso.x, perso.y);
+                	} else if (location != null) {
+                		here = location;
+                	}
+                	if (EngineZildo.mapManagement.getCurrentMap().isAnAlertAtLocation(here.x, here.y)) {
+                		ListenElement listen = (ListenElement) p_action;
+                		executeSubProcessInParallel(listen.actions);
+                	}
+                	achieved = true;
+                	break;
                 case _throw:
                 	if (perso != null) {	// If thrower has been killed => don't throw NPE
 	                	Element elem = actionSpawn(p_action, location, true);	// Ignore 'who' because it's for the throw
@@ -777,7 +791,7 @@ public class ActionExecutor extends RuntimeExecutor {
             		achieved=ClientEngineZildo.mapDisplay.getTargetCamera() == null;
             	} else {
             		SpriteEntity entity = getNamedEntity(p_action.what);
-            		achieved = (entity != null && entity.getMover() != null && !entity.getMover().isActive());
+            		achieved = entity == null || (entity != null && entity.getMover() != null && !entity.getMover().isActive());
             	}
                 break;
             case focus:

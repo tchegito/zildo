@@ -19,24 +19,19 @@
 
 package zildo.fwk.script.xml.element.action;
 
-import java.util.List;
-
 import org.w3c.dom.Element;
 
 import zildo.fwk.ZUtils;
 import zildo.fwk.script.logic.FloatExpression;
-import zildo.fwk.script.xml.ScriptReader;
-import zildo.fwk.script.xml.element.LanguageElement;
 
 /**
  * @author Tchegito
  *
  */
-public class LoopElement extends ActionElement {
+public class LoopElement extends ActionsNestedElement {
 
 	public FloatExpression whileCondition;	// default: infinite loop
 
-	public List<LanguageElement> actions;
 
 	public LoopElement() {
     	super(ActionKind.loop);
@@ -47,11 +42,8 @@ public class LoopElement extends ActionElement {
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
-		xmlElement = p_elem;
-
-		actions = (List<LanguageElement>) ScriptReader.parseNodes(xmlElement);
+		super.parse(p_elem);
 		
 		String whenValue = xmlElement.getAttribute("when");
 		whileCondition = ZUtils.isEmpty(whenValue) ? new FloatExpression(1) : new FloatExpression(whenValue);

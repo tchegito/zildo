@@ -813,7 +813,11 @@
 		<condition name="sousbois3">
 			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
 		</condition>
-	   	<condition name="sousbois7">
+		<condition name="sousbois5">
+			<perso who="tortue1" action="sacherTortue(tortueSousbois5_1)"/>
+			<perso who="tortue2" action="sacherTortue(tortueSousbois5_2,1)"/>
+		</condition>
+		<condition name="sousbois7">
 			<perso who="sacher" action="sacherTortue(tortueSousbois7)"/>
 	   		<perso who="sacher2" action="sacherTortue(tortueSousbois7_2)"/>
 		</condition>
@@ -906,6 +910,10 @@
    	   	<condition name="chateausud">
 			<tile pos="32,10" action="illTree"/> <tile pos="42,10" action="illTree"/>
 		</condition>
+   	   	<condition name="chateausud" exp="!christaAccept">
+   	   		<remove who="christa"/>
+   	   		<remove who="vacto"/>
+   	   	</condition>
 		<condition name="eleom2">
 		    <perso who="carlo" z="12"/>
 		</condition>
@@ -1090,14 +1098,22 @@
 		 </timer>
 	</tileAction>
 	
-	<persoAction id="sacherTortue"> <!-- argument: scene name for turtle movements -->
+	<!-- Turtle script: awaken when someone walks near her, then falls asleep. -->
+	<!-- arguments: arg0=scene name for turtle movements,
+	                arg1=1 if turtle is awaken by sound around her / 0 otherwise-->
+	<persoAction id="sacherTortue"> 
 		<script who="self" value="17"/> <!-- MOBILE_WAIT: sure to reach its target -->
 		<angle who="self" value="1"/>
 		<loop>
 			<var name="loc:found" value="0"/>
-			<lookFor who="self" info="ZILDO" radius="3">
+			<lookFor who="self" radius="3">
 				<var name="loc:found" value="1"/>
 			</lookFor>
+			<if exp="loc:arg1=1">
+				<listen who="self">
+					<var name="loc:found" value="1"/>
+				</listen>
+			</if>
 			<if exp="loc:found=1">
 				<!-- Turtles arise if hero's is around -->
 				<exec script="turtleAwake"/>
@@ -1178,6 +1194,24 @@
 		<wait value="4"/>
 		<moveTo who="sacher" pos="40,0" delta="true"/>
 		<wait value="100"/>
+	</scene>
+	
+	<scene id="tortueSousbois5_1">
+	    <moveTo who="tortue1" pos="-130,0" delta="true"/>
+	    <wait value="100"/>
+	    <moveTo who="tortue1" pos="130,0" delta="true"/>"/>
+	    <wait value="100"/>
+	</scene>
+	
+	<scene id="tortueSousbois5_2">
+	    <moveTo who="tortue2" pos="0,68" delta="true"/>
+	    <wait value="5"/>
+	    <moveTo who="tortue2" pos="-150,0" delta="true"/>
+	    <wait value="5"/>
+	    <moveTo who="tortue2" pos="150,0" delta="true"/>
+	    <wait value="5"/>
+  	    <moveTo who="tortue2" pos="0,-68" delta="true"/>"/>
+	    <wait value="100"/>
 	</scene>
 	
 	<scene id="tortueSousbois7">

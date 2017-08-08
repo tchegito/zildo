@@ -19,13 +19,9 @@
 
 package zildo.fwk.script.xml.element.action;
 
-import java.util.List;
-
 import org.w3c.dom.Element;
 
 import zildo.fwk.script.model.point.IPoint;
-import zildo.fwk.script.xml.ScriptReader;
-import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 
 
@@ -33,9 +29,8 @@ import zildo.monde.sprites.persos.Perso.PersoInfo;
  * @author Tchegito
  *
  */
-public class LookforElement extends ActionElement {
+public class LookforElement extends ActionsNestedElement {
 
-	public List<LanguageElement> actions;
 	public int radius;
 	public boolean negative;	// TRUE=execute nested actions if 'lookFor' fails
 	public boolean sight;	// TRUE=consider only character's sight (=depending on his angle) / FALSE=consider the whole area around him
@@ -46,10 +41,9 @@ public class LookforElement extends ActionElement {
     }
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
-		xmlElement = p_elem;
-
+		super.parse(p_elem);
+		
 		who = readAttribute("who");
 		radius = readInt("radius");
 		negative = Boolean.TRUE == readBoolean("negative");
@@ -67,8 +61,6 @@ public class LookforElement extends ActionElement {
 		if (who == null && location == null) {
 			throw new RuntimeException("'lookFor' action need either 'who' or 'pos' attribute to work !");
 		}
-		
-		actions = (List<LanguageElement>) ScriptReader.parseNodes(xmlElement);
 	}
 	
 }

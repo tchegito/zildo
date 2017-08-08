@@ -6,7 +6,6 @@ import java.util.List;
 import org.w3c.dom.Element;
 
 import zildo.fwk.script.logic.FloatExpression;
-import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.AnyElement;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.logic.VarElement;
@@ -23,11 +22,8 @@ public class ForElement extends LoopElement {
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
-		xmlElement = p_elem;
-
-		actions = (List<LanguageElement>) ScriptReader.parseNodes(xmlElement);
+		super.parse(p_elem);
 
 		varName = readAttribute("var");
 		nbIterations = readInt("value");

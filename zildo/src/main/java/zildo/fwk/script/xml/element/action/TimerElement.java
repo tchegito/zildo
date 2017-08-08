@@ -46,30 +46,26 @@ import zildo.fwk.script.xml.element.LanguageElement;
  * @author Tchegito
  *
  */
-public class TimerElement extends ActionElement {
+public class TimerElement extends ActionsNestedElement {
 
 	public FloatExpression each;
 	public FloatExpression endCondition;
 
-	public List<LanguageElement> actions;
 	public List<LanguageElement> end;
 
 	public TimerElement() {
-    	super(ActionKind.timer);
+    	super(ActionKind.timer, "action");
     }
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void parse(Element p_elem) {
-		xmlElement = p_elem;
+		super.parse(p_elem);
 		
 		unblock = isTrue("unblock");
 		
-		//TimerElement(int each, List<ActionElement> actions, String endCondition, List<ActionElement> end) {
-		Element actionsContainer = ScriptReader.getChildNamed(p_elem, "action");
 		Element endContainer = ScriptReader.getChildNamed(p_elem, "end");
 
-		actions = (List<LanguageElement>) ScriptReader.parseNodes(actionsContainer);
 		end = (List<LanguageElement>) ScriptReader.parseNodes(endContainer);
 		
 		each = new FloatExpression(readAttribute("each"));

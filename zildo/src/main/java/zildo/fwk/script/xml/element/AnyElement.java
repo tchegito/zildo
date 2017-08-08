@@ -27,6 +27,7 @@ import org.w3c.dom.Element;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.element.action.ActionsElement;
 import zildo.fwk.script.xml.element.action.ForElement;
+import zildo.fwk.script.xml.element.action.ListenElement;
 import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.LoopElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
@@ -49,7 +50,8 @@ public abstract class AnyElement {
 		loop(LoopElement.class),
 		_for(ForElement.class),
 		lookfor(LookforElement.class),
-		var(VarElement.class);
+		var(VarElement.class),
+		listen(ListenElement.class);
 		
 		Class<? extends AnyElement> clazz;
 		final String realName;

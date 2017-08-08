@@ -587,6 +587,8 @@ public class Element extends SpriteEntity {
 		TileNature nature = getCurrentTileNature();
 		
 		if (nature != null) {
+			EngineZildo.mapManagement.getCurrentMap().alertAtLocation(new Point(x, y));
+
 			switch (nature) {
 			case BOTTOMLESS:	// Means LAVA, actually
 				EngineZildo.soundManagement.broadcastSound(BankSound.LavaDrop, this);

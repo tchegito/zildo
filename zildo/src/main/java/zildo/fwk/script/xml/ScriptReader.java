@@ -104,7 +104,9 @@ public class ScriptReader {
         // Check for ActionElement
         ActionKind kind=ActionKind.fromString(name);
         // Exclude specific actions
-        if (kind != null && kind != ActionKind.actions && kind != ActionKind.timer && kind != ActionKind.loop && kind != ActionKind.lookFor && kind != ActionKind._for) { 
+        if (kind != null && kind != ActionKind.actions && kind != ActionKind.timer
+        		&&   		kind != ActionKind.loop && kind != ActionKind.lookFor && kind != ActionKind._for
+        		&& 			kind != ActionKind.listen) { 
         	s=new ActionElement(kind);
         } else {
             QuestEvent event=QuestEvent.fromString(name);
