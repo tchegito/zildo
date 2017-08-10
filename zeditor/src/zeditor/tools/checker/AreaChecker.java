@@ -103,7 +103,7 @@ public class AreaChecker {
 	private void checkChainingPointsUncovered() {
 		MapManagement mapManagement = EngineZildo.mapManagement;
 		// Chaining points
-		String mess="";
+		List<String> messageLines=new ArrayList<String>();
 		final List<Case> errorCases = new ArrayList<Case>();
 		for (ChainingPoint ch : area.getChainingPoints()) {
 			Point[] mustBeMasked = null;
@@ -159,7 +159,7 @@ public class AreaChecker {
 						Tile t = c.getForeTile();
 						if (t == null) {
 							errorCases.add(c);
-							mess+="ERROR: tile at " + toCheck+ " should be masked !\n";
+							messageLines.add("ERROR: tile at " + toCheck+ " should be masked !");
 						}
 					}
 				}
@@ -170,7 +170,13 @@ public class AreaChecker {
 
 
 		
-		if (mess.length() != 0) {
+		if (!messageLines.isEmpty()) {
+			int size = messageLines.size();
+			if (size > 20) {
+				messageLines = messageLines.subList(0, 20);
+				messageLines.add("( still "+(size - 20)+" same kind)");
+			}
+			String mess = join(messageLines, "\n");
 			addList(new ErrorDescription(CheckError.CHAINING_POINT_UNCOVERED, mess, new Action() {
 				@Override
 				public void run() {
@@ -186,6 +192,14 @@ public class AreaChecker {
 				}
 			}));
 		}
+	}
+	
+	private String join(List<String> list, String character) {
+		StringBuilder s = new StringBuilder("");
+		for (String elem : list) {
+			s.append(elem).append(character);
+		}
+		return s.toString();
 	}
 	
 	private void checkWrongAnimatedTiles() {
