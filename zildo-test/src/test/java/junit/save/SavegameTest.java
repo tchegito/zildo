@@ -85,6 +85,7 @@ public class SavegameTest extends EngineUT {
 		Assert.assertEquals(8,  (int) EngineZildo.persoManagement.getZildo().getZ());
 	}
 	
+	/** Check that regression about bombs3,moon fragment disappeared from chest is fixed **/
 	@Test
 	public void dynamiteKept() {
 		mapUtils.loadMap("chateausud");
