@@ -125,6 +125,8 @@ public class ElementPoison extends Element {
 			dying = true;
 		}
 
+		// Make poison damage hero
+		manageCollision();
 		super.animate();
 	}
 	
