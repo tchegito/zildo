@@ -42,6 +42,7 @@ import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.sprites.utils.SoundGetter;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -77,6 +78,9 @@ public class Element extends SpriteEntity {
 	
 	public Point defaultSize = new Point(8, 4);
 	
+	// Soud shuffle for drops
+	private static final SoundGetter waterDropSound = new SoundGetter(BankSound.Goutte1, BankSound.Goutte3, 100, true);
+
 	public Element() {
 		super();
 		this.initialize();
@@ -562,6 +566,7 @@ public class Element extends SpriteEntity {
 			return null;
 		}
 	}
+	
 	/**
 	 * Called when the object fall on the floor, whatever kind of floor.
 	 * This method handles behavior when element/perso hits the floor, but doesn't remove it. For this, call {@link #die()}.
@@ -597,9 +602,15 @@ public class Element extends SpriteEntity {
 				break;
 			case WATER:
 			case WATER_MUD:
-				EngineZildo.soundManagement.broadcastSound(BankSound.FallWater, this);
-				EngineZildo.spriteManagement.spawnSpriteGeneric(
+				Element splash = EngineZildo.spriteManagement.spawnSpriteGeneric(
 						SpriteAnimation.WATER_SPLASH, (int) x, (int) y, floor,	0, null, null);
+				if (desc == ElementDescription.DROP_SMALL) {
+					// If a small drop falls in water, reduce the splash animation, and renders a small sound
+					EngineZildo.soundManagement.broadcastSound(waterDropSound.getSound(), this);
+					splash.zoom = 128;
+				} else {
+					EngineZildo.soundManagement.broadcastSound(BankSound.FallWater, this);
+				}
 				break;
 			case BUSH:
 				if (isZildo()) {

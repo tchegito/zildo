@@ -909,6 +909,11 @@
    	   	</condition>
    	   	<condition name="chateausud">
 			<tile pos="32,10" action="illTree"/> <tile pos="42,10" action="illTree"/>
+			<tile pos="7,10" action="fountain"/>
+			<tile pos="20,10" action="fountain"/>
+			<tile pos="7,16" action="fountain"/>
+			<tile pos="20,16" action="fountain"/>
+			<sound name="Fountain" pos="217,215"/>
 		</condition>
    	   	<condition name="chateausud" exp="!christaAccept">
    	   		<remove who="christa"/>
@@ -2189,4 +2194,13 @@
   	    <speak what="camera" text="ep2.ending.cut.1"/>
 	   	<end type="0"/>
 	</scene>
+	
+	<tileAction id="fountain">
+	    <var name="loc:a" value="1" />
+	    <timer each="1+random*1">s
+	        <action>
+		        <spawn type="DROP_SMALL" pos="x*16,y*16+12" vx="random*0.6-0.3" vy="random*2-1" z="4" vz="2.4" az="-0.1" alpha="255" alphaA="-0.3"/>
+	        </action>
+   	    </timer>
+	</tileAction>
 </adventure>

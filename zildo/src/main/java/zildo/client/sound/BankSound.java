@@ -131,6 +131,10 @@ public enum BankSound implements AudioBank {
 	SlipWater1("slipwater1"),
 	SlipWater2("slipwater2"),
 	FallWater("eau"),
+	Fountain("fountain"),
+	Goutte1("goutte1"),
+	Goutte2("goutte2"),
+	Goutte3("goutte3"),
 	
 	ChestAppears("appear"),
 	
@@ -167,7 +171,7 @@ public enum BankSound implements AudioBank {
 	
 	/** Actually, looping is decided at sound definition itself, and can't be overriden in script **/
 	public boolean isLooping() {
-		return this == BankSound.Boiling || this == BankSound.Wind;
+		return this == BankSound.Boiling || this == BankSound.Wind || this == BankSound.Fountain;
 	}
 	
 	public BankSound next() {

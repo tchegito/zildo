@@ -290,6 +290,7 @@ public class Area implements EasySerializable {
 	final IntSet waterBank = new IntSet(154, 156, 188, 189, 190, 255);
 	final IntSet waterDeep = new IntSet().addRange(108, 138).addRange(208, 222)
 			.addRange(224, 228).addRange(230, 245).addRange(247, 253);
+	final IntSet waterFountain = new IntSet().addRange(105, 106);
 
 	// TODO: test one day if a precalculated array will be faster than this long 'if' process
 	public TileNature getCaseNature(int xx, int yy, int floor) {
@@ -340,6 +341,15 @@ public class Area implements EasySerializable {
 		}
 		if ( waterBank.contains(val - 256*2) || waterDeep.contains(val)) {
 			return TileNature.WATER;
+		}
+		if (waterFountain.contains(val-256)) {
+			int mx = xx % 16;
+			int my = yy % 16;
+			if (my > 7) {
+				if ((val == (256+105) && mx > 7) || (val == 256+106 && mx < 8)) {
+					return TileNature.WATER;
+				}
+			}
 		}
 		return TileNature.REGULAR;
 		
