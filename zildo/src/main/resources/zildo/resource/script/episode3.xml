@@ -971,8 +971,6 @@
 <!--		
 		    <perso who="dragon" action="bossDragon"/>
 -->	
-   	        <perso who="dragon" action="dropKey"/>
-
 		</condition>
 		<condition name="sousbois3" exp="removeNailForMoonStone">
 			<tile pos="11,28" back2="-1"/>

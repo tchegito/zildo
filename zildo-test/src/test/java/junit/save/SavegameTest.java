@@ -8,8 +8,13 @@ import tools.annotations.DisableFreezeMonitor;
 import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Game;
+import zildo.monde.map.Area;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
 // Disable freeze monitor, cause we're gonna sleep 4 seconds in each script
@@ -62,6 +67,7 @@ public class SavegameTest extends EngineUT {
 				timeSpent > savedTime);
 	}
 	
+	// Save game then check if hero'z is well preserved
 	@Test
 	public void preserveZ() {
 		mapUtils.loadMap("sousbois6");
@@ -77,5 +83,36 @@ public class SavegameTest extends EngineUT {
 		// Reload
 		Game.deserialize(buffer, false);
 		Assert.assertEquals(8,  (int) EngineZildo.persoManagement.getZildo().getZ());
+	}
+	
+	@Test
+	public void dynamiteKept() {
+		mapUtils.loadMap("chateausud");
+		mapUtils.writemap(2,  5,  54,  256*2 + 49 , -1);
+		Element dynamites = ElementDescription.BOMBS3.createElement();
+		EngineZildo.spriteManagement.spawnSprite(dynamites);
+		System.out.println("class="+dynamites.getClass());
+		dynamites.setName("retrieve");
+		dynamites.setPos(new Vector2f(2*16+8, 5*16+8));
+
+		// save
+		EngineZildo.game.editing = true;	// In order to retrieve goodies planned in chests
+		EasyBuffering buffer = new EasyBuffering(8000);
+		mapUtils.area.serialize(buffer);
+		buffer.getAll().flip();
+		
+		EngineZildo.mapManagement.clearMap();
+
+		Area area = Area.deserialize(buffer, "chateausud", true);
+		
+		System.out.println(area.readmap(2, 5));
+		// reload
+		SpriteEntity retrieved = EngineZildo.spriteManagement.getNamedEntity("retrieve");
+		Assert.assertEquals(ElementDescription.BOMBS3, retrieved.getDesc());
+		Assert.assertTrue(retrieved.isVisible());
+		System.out.println(retrieved.x);
+		System.out.println(retrieved.y);
+		Assert.assertEquals(ElementDescription.BOMBS3, area.getCaseItem(2, 5).desc);
+		System.out.println(retrieved.getEntityType()+" "+retrieved.getClass());
 	}
 }

@@ -52,7 +52,6 @@ public class ElementGoodies extends Element {
 		spe=540;	// Goodies life duration, in frames (generally about 60FPS : 540==9sec)
 		shadow = new Element();
 		shadow.setSprModel(ElementDescription.SHADOW);
-		setLinkedPerso(shadow);
 		EngineZildo.spriteManagement.spawnSprite(shadow);
 	}
 

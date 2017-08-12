@@ -1446,17 +1446,6 @@ public class Area implements EasySerializable {
 			alertDuration--;
 		}
 	}
-
-	/** Represents an item with information in a string, usually for an item coming out of a map case. **/
-	static class CaseItem {
-		ElementDescription desc;
-		String name;			// Name is used for example to store the quantity of gold in a purse
-		
-		public CaseItem(ElementDescription desc, String name) {
-			this.desc = desc;
-			this.name = name;
-		}
-	}
 	
 	/**
 	 * Link a tile with an item description. (useful for chest)
