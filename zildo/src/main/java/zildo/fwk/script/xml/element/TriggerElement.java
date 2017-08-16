@@ -36,6 +36,7 @@ import zildo.monde.map.Tile.TileNature;
 import zildo.monde.quest.QuestEvent;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.SpriteDescription;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -49,7 +50,7 @@ public class TriggerElement extends AnyElement {
 	public final QuestEvent kind;
 	String name; // dialog, map, item and questDone
 	String mover;
-	boolean negateMover = false;
+	boolean negate = false;
 	int numSentence;
 	Point location;
 	Point tileLocation;
@@ -113,8 +114,8 @@ public class TriggerElement extends AnyElement {
 			}
 			mover = readAttribute("mover");
 			if (mover != null && mover.startsWith("!")) {
-				mover.substring(1);
-				negateMover = true;
+				mover = mover.substring(1);
+				negate = true;
 			}
 			radius = readInt("radius");
 			String gear = readAttribute("gear");
@@ -143,10 +144,17 @@ public class TriggerElement extends AnyElement {
 		case DEAD:
 			String persos = p_elem.getAttribute("who");
 			if (ZUtils.isEmpty(persos)) {
-				throw new RuntimeException("<dead> trigger implies a 'who' attribute !");
+				throw new RuntimeException("<dead> and <wound> triggers imply a 'who' attribute !");
 			}
 			deadPersos = new ArrayList<String>();
 			deadPersos.addAll(Arrays.asList(persos.split(",")));
+			break;
+		case WOUND:
+			name = p_elem.getAttribute("who");
+			if (name.startsWith("!")) {
+				negate = true;
+				name = name.substring(1);
+			}
 			break;
 		case LIFT:
 			tileLocation = readPoint("tilePos");
@@ -199,7 +207,7 @@ public class TriggerElement extends AnyElement {
 				} else if (tileValue != -1) {
 					return tileValue == p_another.tileValue;
 				} else if (mover != null) {
-					return mover.equals(p_another.mover) ^ negateMover;
+					return mover.equals(p_another.mover) ^ negate;
 				} else if (tileLocation != null && p_another.location != null) {
 					int gridX = p_another.location.x / 16;
 					int gridY = p_another.location.y / 16;
@@ -239,6 +247,10 @@ public class TriggerElement extends AnyElement {
 		case DEAD:
 			deadPersos.remove(p_another.name);
 			return deadPersos.size() == 0;
+		case WOUND:
+			boolean matchWound = name.equals(p_another.name);
+			boolean value = matchWound ^ negate;
+			return value;
 		case PUSH:
 			boolean nameGood = name.equals(p_another.name);
 			boolean angleGood = angle == null || angle == p_another.angle;
@@ -293,6 +305,10 @@ public class TriggerElement extends AnyElement {
 			}
 		default:
 			return done;
+		case WOUND:
+			Perso perso = EngineZildo.persoManagement.getNamedPerso(name);
+			if (perso == null) return false;
+			return perso.isWounded() ^ negate;
 		}
 	}
 
@@ -375,6 +391,16 @@ public class TriggerElement extends AnyElement {
 		return elem;
 	}
 
+	/**
+	 * Ingame method to check if a character is wounded on precise moment.
+	 * @param p_name
+	 * @return TriggerElement
+	 */
+	public static TriggerElement createWoundTrigger(String p_name) {
+		TriggerElement elem = new TriggerElement(QuestEvent.WOUND);
+		elem.name = p_name;
+		return elem;
+	}
 	/**
 	 * Ingame method to check an object being pushed
 	 * @param p_name

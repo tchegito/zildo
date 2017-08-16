@@ -58,13 +58,8 @@ public class TestDragonBoss extends EngineUT {
 		waitEndOfScripting();
 		
 		// Animate dragon
-		Perso dragon = EngineZildo.persoManagement.getNamedPerso("dragon");
+		Perso dragon = animateDragon();
 		int dragonPv = dragon.getPv();
-		Assert.assertNotNull(dragon);
-		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", null, false);
-		
-		waitForScriptRunning("dragonDiveAndReappear");
-		waitForScriptFinish("dragonDiveAndReappear");
 		hero.setPos(nearRock);
 		renderFrames(2);
 		Assert.assertEquals(dragonPos+".0", EngineZildo.scriptManagement.getVarValue("dragonPos"));
@@ -105,37 +100,93 @@ public class TestDragonBoss extends EngineUT {
 		Assert.assertEquals("Coal shouldn't be hit by hero's sword !", 0, coal.getAddSpr());
 	}
 	
+	/** Project dynamite on dragon when he isn't on the right spot **/
 	@Test
 	public void rockRespawnA() {
-		rockRespawn("A", NEAR_ROCK1, new Vector2f(376, 549));
+		plantDynamiteAndGoAway("A", NEAR_ROCK1, new Vector2f(376, 549), false, true);
 	}
+	
+	/** Project dynamite on dragon when he is on the right spot ==> he should take damage and rock doesn't respawn**/
+	@Test
+	public void rockDoesntRespawnA() {
+		plantDynamiteAndGoAway("A", NEAR_ROCK1, new Vector2f(376, 549), true, false);
+	}
+	
+	@Test
+	public void rockRespawnA_fromDown() {
+		// Shoot dynamite in the wrong direction
+		plantDynamiteAndGoAway("A", new Vector2f(147,444), new Vector2f(376, 549), true, true);
+	}
+	
 	@Test
 	public void rockRespawnB() {
-		rockRespawn("B", NEAR_ROCK2, new Vector2f(582, 376));
+		plantDynamiteAndGoAway("B", NEAR_ROCK2, new Vector2f(582, 376), false, true);
 	}
 	@Test
 	public void rockRespawnC() {
-		rockRespawn("C", NEAR_ROCK3, new Vector2f(969, 436));
+		plantDynamiteAndGoAway("C", NEAR_ROCK3, new Vector2f(969, 436), false, true);
 	}
 	
-	private void rockRespawn(String which, Vector2f startLoc, Vector2f farLoc) {
+	/** Plant dynamite and put hero away, to trigger the rock respawn **/
+	private void plantDynamiteAndGoAway(String which, Vector2f startLoc, Vector2f farLoc, boolean dragonRightSpot, boolean shouldRespawn) {
 		PersoPlayer hero = spawnZildo(startLoc);
 		hero.setFloor(2);
 		hero.setWeapon(new Item(ItemKind.DYNAMITE));
 		hero.setCountBomb(20);
 		waitEndOfScripting();
 
+		// Place the dragon in the right spot
+		if (dragonRightSpot) {
+			animateDragon();
+		}
+		
 		// Plant dynamite, and wait for boulder to fall in lava
+		hero.setPos(startLoc);
 		hero.attack();
 		renderFrames(200);
-		Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("needToRespawnRock"+which));
+		if (shouldRespawn) {
+			Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("needToRespawnRock"+which));
+		} else {
+			Assert.assertFalse(EngineZildo.scriptManagement.isQuestDone("needToRespawnRock"+which));
+		}
+
 		Assert.assertFalse(EngineZildo.scriptManagement.isQuestDone("reappearRock"+which));
 		
 		// Move hero at another location, and check distance is > 10 tiles
-		Assert.assertTrue(farLoc.distance(NEAR_ROCK1) > 16 * 10);
+		Assert.assertTrue(farLoc.distance(startLoc) > 16 * 10);
 		hero.setPos(farLoc);
 		hero.walkTile(false);
 		renderFrames(1);
+		
+		if (shouldRespawn) {
+			checkRockRespawn(which);
+		} else {
+			checkRockDoesntRespawn(which);
+		}
+	}
+	
+	private void checkRockRespawn(String which) {
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("reappearRock"+which));
+		renderFrames(2);
+		Assert.assertNotNull(EngineZildo.spriteManagement.getNamedEntity("rock"+which));
+	}
+	
+	private void checkRockDoesntRespawn(String which) {
+		Assert.assertFalse(EngineZildo.scriptManagement.isQuestDone("reappearRock"+which));
+		renderFrames(2);
+		Assert.assertNull(EngineZildo.spriteManagement.getNamedEntity("rock"+which));
+		
+	}
+	
+	private Perso animateDragon() {
+		// Animate dragon
+		Perso dragon = EngineZildo.persoManagement.getNamedPerso("dragon");
+		Assert.assertNotNull(dragon);
+		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", null, false);
+		
+		waitForScriptRunning("dragonDiveAndReappear");
+		waitForScriptFinish("dragonDiveAndReappear");
+		
+		return dragon;
 	}
 }

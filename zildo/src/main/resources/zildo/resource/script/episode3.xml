@@ -672,15 +672,14 @@
 	    <trigger>
 	        <location name="dragon"/>
 		    <fall type="STONE_HEAVY" name="rockA" nature="BOTTOMLESS"/>
+  		    <wound who="!dragon"/>
 	    </trigger>
 	    <action>
-	        <if exp="dragonPos!=1">	<!-- Dragon wasn't there ? -->
-	            <markQuest name="needToRespawnRockA" value="true"/>
-	        </if>
+            <markQuest name="needToRespawnRockA" value="true"/>
 	    </action>
 	</quest>
 	
-	<quest name="needToRespawnRockA" />
+	<quest name="needToRespawnRockA" locked="false"/>
 	<quest name="reappearRockA" repeat="true" locked="false">
 	    <trigger>
 	        <questDone name="needToRespawnRockA"/>
@@ -697,15 +696,14 @@
 	    <trigger>
 	        <location name="dragon"/>
 		    <fall type="STONE_HEAVY" name="rockB" nature="BOTTOMLESS"/>
+		    <wound who="!dragon"/>
 	    </trigger>
 	    <action>
-	        <if exp="dragonPos!=3">	<!-- Dragon wasn't there ? -->
-	            <markQuest name="needToRespawnRockB" value="true"/>
-	        </if>
+            <markQuest name="needToRespawnRockB" value="true"/>
 	    </action>
 	</quest>
 	
-	<quest name="needToRespawnRockB" />
+	<quest name="needToRespawnRockB" locked="false"/>
 	<quest name="reappearRockB" repeat="true" locked="false">
 	    <trigger>
 	        <questDone name="needToRespawnRockB"/>
@@ -730,7 +728,7 @@
 	    </action>
 	</quest>
 	
-	<quest name="needToRespawnRockC" />
+	<quest name="needToRespawnRockC" locked="false"/>
 	<quest name="reappearRockC" repeat="true" locked="false">
 	    <trigger>
 	        <questDone name="needToRespawnRockC"/>

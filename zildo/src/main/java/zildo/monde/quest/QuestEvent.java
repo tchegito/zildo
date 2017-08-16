@@ -32,7 +32,8 @@ public enum QuestEvent {
     USE,		// Hero uses an object (flut for example)
     FALL,		// An Element/Perso hit the floor (it could be water,lava,...)
     CHAININGPOINT,	// Means that this quest is a chaining point acceptance (can accept/reject current point)
-    TILEATTACK;	// When a particular tile is attacked (by sword, or touched by projectile=> lever)
+    TILEATTACK,	// When a particular tile is attacked (by sword, or touched by projectile=> lever)
+    WOUND;
     
     public static QuestEvent fromString(String p_name) {
     	for (QuestEvent kind : values()) {

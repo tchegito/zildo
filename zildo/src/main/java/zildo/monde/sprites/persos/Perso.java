@@ -226,6 +226,7 @@ public abstract class Perso extends Element {
 				break;
 			case MOBILE_WAIT:
 				pathFinder.alwaysReach = true;
+			default:
 				break;
 			}
 		}
@@ -506,6 +507,9 @@ public abstract class Perso extends Element {
 	 */
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 		shooter = p_shooter;
+		TriggerElement trig = TriggerElement.createWoundTrigger(name);
+		EngineZildo.scriptManagement.trigger(trig);
+
 	}
 
 	public void parry(float cx, float cy, Perso p_shooter) {
@@ -613,6 +617,7 @@ public abstract class Perso extends Element {
 			if (observed != null) {
 				sight(observed, true);
 			}
+		default:
 			break;
 		}
 	}
