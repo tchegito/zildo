@@ -720,11 +720,10 @@
 	    <trigger>
 	        <location name="dragon"/>
 		    <fall type="STONE_HEAVY" name="rockC" nature="BOTTOMLESS"/>
-	    </trigger>
+		    <wound who="!dragon"/>
+   	    </trigger>
 	    <action>
-	        <if exp="dragonPos!=5">
-	            <markQuest name="needToRespawnRockC" value="true"/>
-	        </if>
+            <markQuest name="needToRespawnRockC" value="true"/>
 	    </action>
 	</quest>
 	

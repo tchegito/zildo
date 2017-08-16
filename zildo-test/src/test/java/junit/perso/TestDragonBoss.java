@@ -28,6 +28,10 @@ public class TestDragonBoss extends EngineUT {
 	final static Vector2f NEAR_ROCK2 = new Vector2f(847, 275);
 	final static Vector2f NEAR_ROCK3 = new Vector2f(614, 546);
 	
+	final static Vector2f FAR_FROM_ROCK1 = new Vector2f(376, 549);
+	final static Vector2f FAR_FROM_ROCK2 = new Vector2f(582, 376);
+	final static Vector2f FAR_FROM_ROCK3 = new Vector2f(969, 436);
+	
 	/** Ensure that a rock projected by hero's dynamite will hit dragon **/
 	@Test
 	public void attackDragonWithRock1() {
@@ -103,28 +107,41 @@ public class TestDragonBoss extends EngineUT {
 	/** Project dynamite on dragon when he isn't on the right spot **/
 	@Test
 	public void rockRespawnA() {
-		plantDynamiteAndGoAway("A", NEAR_ROCK1, new Vector2f(376, 549), false, true);
+		plantDynamiteAndGoAway("A", NEAR_ROCK1, FAR_FROM_ROCK1, false, true);
 	}
 	
 	/** Project dynamite on dragon when he is on the right spot ==> he should take damage and rock doesn't respawn**/
 	@Test
 	public void rockDoesntRespawnA() {
-		plantDynamiteAndGoAway("A", NEAR_ROCK1, new Vector2f(376, 549), true, false);
+		plantDynamiteAndGoAway("A", NEAR_ROCK1, FAR_FROM_ROCK1, true, false);
 	}
 	
 	@Test
 	public void rockRespawnA_fromDown() {
 		// Shoot dynamite in the wrong direction
-		plantDynamiteAndGoAway("A", new Vector2f(147,444), new Vector2f(376, 549), true, true);
+		plantDynamiteAndGoAway("A", new Vector2f(147,444), FAR_FROM_ROCK1, true, true);
 	}
 	
 	@Test
 	public void rockRespawnB() {
-		plantDynamiteAndGoAway("B", NEAR_ROCK2, new Vector2f(582, 376), false, true);
+		plantDynamiteAndGoAway("B", NEAR_ROCK2, FAR_FROM_ROCK2, false, true);
 	}
+	
+	/** Project dynamite on dragon when he is on the right spot ==> he should take damage and rock doesn't respawn**/
+	@Test
+	public void rockDoesntRespawnB() {
+		plantDynamiteAndGoAway("B", NEAR_ROCK2, FAR_FROM_ROCK2, true, false);
+	}
+	
 	@Test
 	public void rockRespawnC() {
-		plantDynamiteAndGoAway("C", NEAR_ROCK3, new Vector2f(969, 436), false, true);
+		plantDynamiteAndGoAway("C", NEAR_ROCK3, FAR_FROM_ROCK3, false, true);
+	}
+	
+	/** Project dynamite on dragon when he is on the right spot ==> he should take damage and rock doesn't respawn**/
+	@Test
+	public void rockDoesntRespawnC() {
+		plantDynamiteAndGoAway("C", NEAR_ROCK3, FAR_FROM_ROCK3, true, false);
 	}
 	
 	/** Plant dynamite and put hero away, to trigger the rock respawn **/
