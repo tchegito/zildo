@@ -823,8 +823,7 @@ public class Element extends SpriteEntity {
 	}
 
 	/**
-	 * Called when element is disappearing (in case of out of bounds, for
-	 * example)
+	 * Called when element is disappearing (in case of out of bounds, for example)
 	 */
 	public void die() {
 		dying = true;

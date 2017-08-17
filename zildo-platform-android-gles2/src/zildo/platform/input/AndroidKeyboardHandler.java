@@ -294,6 +294,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 					keyStates[KEY_RIGHT] = true;
 					simulatedKeyCode = KEY_RIGHT;
 				}
+			default:
 				break;
 			}
 
