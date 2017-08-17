@@ -52,7 +52,9 @@ public class Shaders {
 		// Star (aura for black guards)
 		star,
 		// Blur with fade (used on game loading)
-		blackBlur;
+		blackBlur,
+		// Fire
+		fire;
 		
 		public int id;	// program id
 		// One map for all shaders
@@ -91,6 +93,7 @@ public class Shaders {
 	Vector4f woundedColor = new Vector4f(1, 1, 1, 1);
 	float goldFactor;
 	Vector2f starNoise;
+	Vector4f fireTime;
 	
 	GLShaders current = GLShaders.textured;	// Default is 'textured'
 	
@@ -209,6 +212,9 @@ public class Shaders {
 			case star:
 				uniform2f("noise", starNoise);
 				break;
+			case fire:
+				uniform4f("iGlobalTime", fireTime);
+				break;
 			default:
 				uniform4f("CurColor", curColor);
 				uniform2f("vTranslate", translation);
@@ -316,7 +322,11 @@ public class Shaders {
 	public void setStarNoise(float f, float g) {
 		starNoise = new Vector2f(f, g);
 	}
-	
+
+	public void setFireTime(Vector4f time) {
+		 fireTime = time;
+	}
+
 	public void setGoldFactor(float f) {
 		goldFactor = f;
 	}

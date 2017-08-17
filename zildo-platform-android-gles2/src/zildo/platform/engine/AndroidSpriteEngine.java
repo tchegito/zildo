@@ -133,6 +133,10 @@ public class AndroidSpriteEngine extends SpriteEngine {
 	                	shaders.setCurrentShader(GLShaders.star);
 	                	shaders.setStarNoise(gamma, (float) Math.random());
 	                	break;
+	                case FIRE:
+	                	shaders.setCurrentShader(GLShaders.fire);
+	                	shaders.setFireTime(new Vector4f(gamma, 0, 0, 0));
+	                	break;
 					default:
 						if (currentFX.needPixelShader()) {
 							// This is a color replacement, so get the right ones
