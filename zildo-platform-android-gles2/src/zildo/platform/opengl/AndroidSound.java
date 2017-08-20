@@ -59,7 +59,7 @@ public class AndroidSound extends Sound {
 			music.start();
 			AndroidSoundEngine.currentMusic = music;
 		} else {
-			int soundLoop = loop ? -1 : 0;	// No loop
+			int soundLoop = loop ? -1 : 0;	// -1 means loop forever
 			streamId = AndroidSoundEngine.soundPool.play(soundId, volume, volume, 1, soundLoop, 1f);
 		}
 	}
@@ -86,9 +86,8 @@ public class AndroidSound extends Sound {
 			float volumeLeft = Math.max(1 - 0.1f * distLeft * distLeft, 0f);
 			float volumeRight = Math.max(1 - 0.1f * distRight * distRight, 0f);
 
-			int loop = 0;	// No loop
-			streamId = AndroidSoundEngine.soundPool.play(soundId, volumeLeft, volumeRight, 1, loop, 1f);
-
+			int soundLoop = loop ? -1 : 0;	// -1 means loop forever
+			streamId = AndroidSoundEngine.soundPool.play(soundId, volumeLeft, volumeRight, 1, soundLoop, 1f);
 		}
 	}
 	
