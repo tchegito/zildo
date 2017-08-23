@@ -39,5 +39,6 @@ public abstract class SoundEngine {
 	
 	public abstract void cleanUp();
 	
+	/** Load sound file, either music or SFX **/
 	public abstract Sound createSound(String path);
 }
