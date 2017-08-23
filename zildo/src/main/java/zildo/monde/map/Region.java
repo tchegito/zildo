@@ -47,7 +47,7 @@ public enum Region {
 	Sousbois("sousbois*"),
 	ForetBouleaux("eleo*"),
 	NaturePalace("nature*"),
-	Special("preintro"),
+	Special("preintro", "sudouest", "sudest", "sudsudest"),
 	NeedToBeRemoved("lavacave", "maptest"); // Design purpose=> need to be removed
 	
 	String[] mapNames;
