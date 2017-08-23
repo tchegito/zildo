@@ -110,7 +110,9 @@ public class PersoGarde extends PersoNJ {
 			starAura.setSpecialEffect(EngineFX.STAR);
 		}
 		if (blackGuard) {
-			setQuel_deplacement(MouvementPerso.ZONE, false);
+			if (MouvementPerso.IMMOBILE == getQuel_deplacement()) {	// Wake him  up if necessary
+				setQuel_deplacement(MouvementPerso.ZONE, false);
+			}
 			setAlerte(true);
 			// Detect other reachable enemy to help fighting
     		List<Perso> found = EngineZildo.persoManagement.lookFor(this, 7, PersoInfo.ENEMY, false);

@@ -211,7 +211,15 @@ public class PlayerManagement {
 			Angle sauvangle=heros.getAngle();
 			// ATTACK key
 	
-			if (heros.getAttente() == 0 && heros.getMouvement()!=MouvementZildo.ATTAQUE_EPEE && heros.getMouvement()!=MouvementZildo.ATTAQUE_ARC) {
+			boolean busy = false;
+			switch (heros.getMouvement()) {
+				case PLAYING_FLUT:
+				case ATTAQUE_ARC:
+				case ATTAQUE_EPEE:
+					busy = true;
+				default:
+			}
+			if (heros.getAttente() == 0 && !busy) {
 				// Zildo can move ONLY if he isn't attacking
 				// LEFT/RIGHT key
 				Vector2f direction = instant.getDirection();

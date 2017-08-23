@@ -5,8 +5,14 @@ import org.junit.Test;
 
 import tools.EngineUT;
 import tools.annotations.InfoPersos;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.sprites.utils.MouvementZildo;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
 public class TestAdvancedPerso extends EngineUT {
@@ -46,4 +52,48 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertTrue(zildo.y >= 205);
 	}
 	
+	/** During Episode 3 tests, we saw that hero can move during he's playing flut => that leads to blocking behavior **/
+	@Test
+	public void movingDuringFlut() {
+		PersoPlayer zildo = spawnZildo(861,214);
+		waitEndOfScripting();
+		Item flut = new Item(ItemKind.FLUT);
+		zildo.getInventory().add(flut);
+		zildo.setWeapon(flut);
+		zildo.attack();
+		renderFrames(10);
+		
+		// Check that he's playing flut
+		Assert.assertEquals(MouvementZildo.PLAYING_FLUT, zildo.getMouvement());
+		float sameX = zildo.x;
+		System.out.println(zildo.x);
+		// Ask him to move: he should be busy by his flut playing
+		simulateDirection(1, 0);
+		renderFrames(5);
+		Assert.assertEquals(sameX, zildo.x, 0.1);
+	}
+	
+	/** during same campaign, we saw that a black guard holding a bow was switching to sword when wounded **/
+	@Test
+	public void bowGardWoundedSwitchWeapon() {
+		
+		Perso bowGuard = spawnPerso(PersoDescription.GARDE_CANARD, "noir", 160, 100);
+		bowGuard.setQuel_deplacement(MouvementPerso.ZONEARC, true);
+		bowGuard.setZone_deplacement(new Zone());
+		bowGuard.initPersoFX();
+		
+		Perso zildo = spawnZildo(100, 100);
+		waitEndOfScripting();
+	
+		Assert.assertEquals(ItemKind.BOW, bowGuard.getWeapon().kind);
+		bowGuard.beingWounded(bowGuard.x+2, bowGuard.y, zildo, 2);
+		while (bowGuard.isWounded()) {
+			renderFrames(1);
+		}
+		renderFrames(5);
+		System.out.println(bowGuard.getQuel_deplacement());
+		Assert.assertEquals(ItemKind.BOW, bowGuard.getWeapon().kind);
+		Assert.assertEquals(MouvementPerso.ZONEARC, bowGuard.getQuel_deplacement());
+		
+	}
 }
