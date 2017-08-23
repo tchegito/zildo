@@ -69,13 +69,14 @@ public class AndroidSoundEngine extends SoundEngine {
 	@Override
 	public void detectAndInitSoundEngine() {
 		if (!initialized) {
-			soundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
+			soundPool = new SoundPool(8, AudioManager.STREAM_MUSIC, 0);
 			currentMusic = null;
 			initialized = true;
 		}
 	}
 	
 
+	/** No means here, MediaPlayer handles it for us **/
 	@Override
 	public void pollMusic(int delta) {
 	}
