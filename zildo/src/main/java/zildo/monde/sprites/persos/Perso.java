@@ -756,6 +756,7 @@ public abstract class Perso extends Element {
 			case 178 + 256*3:
 			case 111 + 256*3:
 			case 112 + 256*3:
+			case 224 + 256*4:
 				coeffWhiteLight = tileLight.north(1, x, y);
 				break;
 			case 179 + 256*3:	// Access to the south 2
@@ -897,6 +898,8 @@ public abstract class Perso extends Element {
 				// For example, when he crosses vertical door.
 				coeffWhiteLight = 0;
 				break;
+			case 256*4 + 219:
+				coeffWhiteLight = tileLight.north(1, x, y);
 			case 256*3 + 195:
 				coeffWhiteLight = tileLight.forRotatedTile(2, x, y, foreTile.rotation.succ());
 				break;
