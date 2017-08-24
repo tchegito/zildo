@@ -457,6 +457,16 @@
 	    </trigger>
 	</quest>
 	
+	<quest name="cavef2Hot">
+	    <trigger>
+	        <location name="cavef2"/>
+	    </trigger>
+	    <action>
+	        <wait value="40"/>
+	        <speak who="zildo" text="cavef2.hot"/>
+	    </action>
+	</quest>
+	
 	<quest name="cavef6_lev1" locked="false">
 		<trigger>
 			<location name="cavef6"/>
