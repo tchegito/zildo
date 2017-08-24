@@ -199,6 +199,7 @@ public enum ElementDescription implements SpriteDescription {
 		case STONE:
 		case STONE_HEAVY:
 		case ROCK_PILLAR:
+		case FORESTAY_PILLAR:
 			return true;
 		default:
 			return false;
