@@ -114,6 +114,8 @@ public abstract class EngineUT {
 	
 	public volatile int nFrame = 0;
 	
+	final static int MAX_WAIT_FRAMES = 1500;
+	
 	protected Perso spawnTypicalPerso(String name, int x, int y) {
 		return spawnPerso(PersoDescription.BANDIT_CHAPEAU, name, x, y);
 	}
@@ -398,8 +400,8 @@ public abstract class EngineUT {
 				action.launchAction(clientState);
 			}
 			safetyCheckFrame++;
-			if (safetyCheckFrame > 1000) {
-				throw new RuntimeException("Test seems blocked there ! After 1000 frames, nothing happened !");
+			if (safetyCheckFrame > MAX_WAIT_FRAMES) {
+				throw new RuntimeException("Test seems blocked there ! After " + MAX_WAIT_FRAMES + " frames, nothing happened !");
 			}
 		}
 	}
