@@ -1782,7 +1782,6 @@
 			    <moveTo who="maltus" pos="4,0" delta="true"/>
 	        </actions>
 	        <wait value="50"/>
-	        <fadeOut type="3"/>
 	        <fadeOut type="0"/>
 	        <wait value="50"/>
 	        <music />
