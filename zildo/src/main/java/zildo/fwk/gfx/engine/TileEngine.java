@@ -232,6 +232,10 @@ public abstract class TileEngine {
 				int sizeY = theMap.getDim_y();
 				int dx = sizeX;
 				int dy = sizeY;
+				if (offset.x < 0 && offset.y != 0) {
+					// On transition between "cavef3" and "cavef4", right border of cavef3 was not rendered
+					sizeX += -(offset.x) >> 4;
+				}
 				if (offset.x > 0) {
 					dx = offset.x >> 4; 
 				}

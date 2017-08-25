@@ -20,7 +20,7 @@ public class TestThrow extends EngineUT {
 	public void peebles() {
 		mapUtils.loadMap("cavef2");
 		PersoPlayer zildo = spawnZildo(232, 111);
-		waitEndOfScripting();
+		waitEndOfScriptingPassingDialog();
 		zildo.setAngle(Angle.OUEST);
 		zildo.setWeapon(new Item(ItemKind.ROCK_BAG));
 		// Throw a peeble on the west
