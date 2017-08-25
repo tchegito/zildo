@@ -388,6 +388,7 @@ public abstract class EngineUT {
 	 * (at least 1 frame ==> in order to init things like PersoCollision#initFrame). **/
 	public void waitEndOfScripting(ScriptAction action) {
 		// Wait end of scripts
+		int safetyCheckFrame = 0;
 		while (true) {
 			renderFrames(1);
 			if (!EngineZildo.scriptManagement.isScripting()) {
@@ -395,6 +396,10 @@ public abstract class EngineUT {
 			}
 			if (action != null) {
 				action.launchAction(clientState);
+			}
+			safetyCheckFrame++;
+			if (safetyCheckFrame > 1000) {
+				throw new RuntimeException("Test seems blocked there ! After 1000 frames, nothing happened !");
 			}
 		}
 	}
