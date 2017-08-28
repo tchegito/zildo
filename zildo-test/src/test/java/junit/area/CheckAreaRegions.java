@@ -20,9 +20,9 @@
 package junit.area;
 
 import org.junit.Assert;
-
 import org.junit.Test;
 
+import zildo.fwk.ui.UIText;
 import zildo.monde.map.Region;
 
 /**
@@ -41,8 +41,17 @@ public class CheckAreaRegions {
 		Assert.assertSame(Region.ThievesCamp, Region.fromMapName("voleursm2"));
 		Assert.assertSame(Region.LugduniaForest, Region.fromMapName("igorlily"));
 		Assert.assertSame(Region.ClearingOaks, Region.fromMapName("promenade2"));
+		Assert.assertSame(Region.ThievesCamp, Region.fromMapName("voleurs"));
 		Assert.assertSame(Region.CaveFlames, Region.fromMapName("voleursg5"));
 		Assert.assertSame(Region.Fishermen, Region.fromMapName("igorv3b"));
 		Assert.assertSame(Region.CaveFlames, Region.fromMapName("voleursg1"));
+		Assert.assertSame(Region.Sousbois, Region.fromMapName("sousbois3"));
+	}
+	
+	@Test
+	public void labels() {
+		for (Region r : Region.values()) {
+			Assert.assertNotNull(UIText.getGameText(r.getName()));
+		}
 	}
 }
