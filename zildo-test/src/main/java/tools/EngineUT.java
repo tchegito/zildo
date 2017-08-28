@@ -112,6 +112,8 @@ public abstract class EngineUT {
 	boolean clientMainLoop = false;
 	boolean soundEnabled = false;
 	
+	boolean displayNFrame = false;	// To enable "frame: x" display ==> very disk consuming !
+	
 	public volatile int nFrame = 0;
 	
 	final static int MAX_WAIT_FRAMES = 1500;
@@ -216,12 +218,12 @@ public abstract class EngineUT {
 	        clientEngine.renderFrame(false);
 			ClientEngineZildo.filterCommand.doFilter();
 			if (debugInfos) {
-				if (!debugInfosPersos) {
-					System.out.println("frame:"+nFrame);
-				} else {
+				if (debugInfosPersos) {
 					for (Perso perso : EngineZildo.persoManagement.tab_perso) {
 						System.out.println(nFrame+": Perso: "+perso.getName()+" at "+perso.x+","+perso.y);
 					}
+				} else if (displayNFrame) {
+					System.out.println("frame:"+nFrame);
 				}
 			}
 			nFrame++;
@@ -381,6 +383,10 @@ public abstract class EngineUT {
 			freezeMonitor.start();
 		}
 
+		// To activate "frame: x" display => set DISPLAY_NFRAME to "true"
+		if ("true".equals(System.getProperty("DISPLAY_NFRAME"))) {
+			displayNFrame = true;
+		}
 	}
 	
 	public void waitEndOfScripting() {
