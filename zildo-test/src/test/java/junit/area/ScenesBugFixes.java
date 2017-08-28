@@ -110,7 +110,7 @@ public class ScenesBugFixes extends EngineUT {
 		mapUtils.loadMap("eleom1");
 		Perso eleo = EngineZildo.persoManagement.getNamedPerso("eleoric");
 		eleo.setPos(new Vector2f(101, 102));
-		spawnZildo(123, 108);
+		PersoPlayer zildo = spawnZildo(123, 108);
 		waitEndOfScripting();
 
 		EngineZildo.scriptManagement.execute("vactoComeIn", true);
@@ -119,6 +119,8 @@ public class ScenesBugFixes extends EngineUT {
 		waitEndOfScriptingPassingDialog();
 		
 		// If we reach this point, we can conclude that script has worked without any blocking character !
+		// Anyway, check that hero can move == attente equals 0
+		Assert.assertEquals(0,  zildo.getAttente());
 	}
 	
 	private SpriteEntity findByDesc(ElementDescription desc) {

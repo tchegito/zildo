@@ -310,7 +310,11 @@ public class CheckFoundBugs extends EngineUT {
         PersoPlayer zildo = spawnZildo(891, 143);
         zildo.setWeapon(new Item(ItemKind.FLUT));
         zildo.attack();
-        renderFrames(50);
+        for (int i=0;i<130;i++) {
+        	renderFrames(1);
+        }
+        // Check that player can move again (after episode 3 release, he can't ! Shaaaaaaaaame !)
+        Assert.assertEquals(MouvementZildo.VIDE, zildo.getMouvement());
 	}
 	
 	// Still during this refactor, we broke the turtle's arise, by NPE again.
