@@ -77,9 +77,10 @@ public class EngineZildo {
 		soundManagement=new SoundManagement();
 		playerManagement=new PlayerManagement();
         multiplayerManagement = new MultiplayerManagement();
-        scriptManagement = null;	// Mandatory, because next script read could use previous context values
-        scriptManagement = new ScriptManagement();  
-        
+        synchronized (this) {	// See Issue 102
+	        scriptManagement = null;	// Mandatory, because next script read could use previous context values
+	        scriptManagement = new ScriptManagement();  
+        }
 		// Charge une map
 		String mapName=p_game.mapName;
 		if (mapName != null) {
