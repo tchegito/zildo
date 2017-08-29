@@ -904,6 +904,9 @@
    	   		<perso who="noir1" pv="6"/>"
    	   		<perso who="noir2" pv="6"/>"
    	   	</condition>
+   	   	<condition name="prison17" exp="metKingPrison3">
+   	   	    <remove who="king"/>
+   	   	</condition>
    	   	<condition name="eleom1">
    	   	    <spawn impact="CAULDRON" pos="88,42"/>
    	   	    <tile pos="5,2" action="bubbleCauldron" unblock="true"/>

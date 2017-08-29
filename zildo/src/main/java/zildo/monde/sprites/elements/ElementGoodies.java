@@ -175,6 +175,7 @@ public class ElementGoodies extends Element {
 		if (spe==0) {
 			// Le sprite doit mourir
 			dying=true;
+			shadow.dying = true;
 		} else if (spe<120) {
 			visible=(spe%4>1);
 		} else if (spe<60) {

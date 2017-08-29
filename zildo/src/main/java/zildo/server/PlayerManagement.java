@@ -30,6 +30,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -430,7 +431,8 @@ public class PlayerManagement {
 					int locY = (int) heros.y + heros.getAngle().coords.y * 8;
 					
 					Perso persoToTalk=EngineZildo.persoManagement.collidePerso(locX, locY, heros, 4);
-					if (heros.who.canTalk &&  persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY && !persoToTalk.isZildo()) {
+					if (heros.who.canTalk &&  persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY 
+							&& !persoToTalk.isZildo() && persoToTalk.getDesc() != PersoDescription.TURTLE ) {
 					 // Check that this perso can be picked up (hen, duck for example)
 						if (persoToTalk.getDesc().isTakable()) {
 							// Check that any obstacle isn't on the way
