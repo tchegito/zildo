@@ -273,7 +273,9 @@ public class Client {
 		if (kbHandler.isKeyPressed(Keys.ESCAPE)) {
 			// Escape is pressed and no fade is running
 			if (connected) {
-				handleMenu(ingameMenu);
+				if (!EngineZildo.spriteManagement.isBlockedNonHero()) {
+					handleMenu(ingameMenu);
+				}
 			} else if (compassMenu) {
 				askForItemMenu(END_MENU_ITEM);
 			} else if (currentMenu != ingameMenu) {

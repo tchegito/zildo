@@ -149,7 +149,12 @@ public class PlayerManagement {
 	public void automaticMove() {
 		Pointf pos=heros.reachDestination();
 	 	
-		adjustMovement(pos.x - heros.x, pos.y - heros.y);
+		float deltaX = pos.x - heros.x;
+		float deltaY = pos.y - heros.y;
+		
+		if (deltaX != 0 || deltaY != 0) {
+			adjustMovement(deltaX, deltaY);
+		}
 		//heros.finaliseComportement(EngineZildo.compteur_animation);
 	}
 	

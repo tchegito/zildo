@@ -630,7 +630,7 @@ public class SpriteManagement extends SpriteStore {
 			// Calcul physique du sprite
 			if (entity.dying) {
 				toDelete.add(entity);
-			} else if (entity.getEntityType().isEntity()) {
+			} else if (entity.getEntityType().isEntity() && !p_blockMoves) {
 				entity.animate();
 			} else if (entity.getEntityType().isFont()) {
 				// Particular case: animate and set screen coordinates
@@ -1023,6 +1023,10 @@ public class SpriteManagement extends SpriteStore {
     	temporaryBlocked = false;
     }
 
+    public boolean isBlockedNonHero() {
+    	return temporaryBlocked;
+    }
+    
     /**
      * Called just after map has been loaded.
      */
