@@ -441,6 +441,17 @@
 	    </action>
 	</quest>
 	
+	<quest name="findRewardBarrel" locked="false">
+	    <trigger>
+	        <location name="eleom3"/>
+	        <dialog name="pano" num="0"/>
+	    </trigger>
+	    <action>
+	        <take value="70"/>
+	        <remove who="pano"/>
+	    </action>
+	</quest>
+	
 	<quest name="christaAccept">
 	    <trigger>
 	        <location name="fermem2"/>
@@ -458,10 +469,17 @@
 	    </action>
 	</quest>
 	
-	<quest name="vactoRequest">
+	<quest name="vactoRequest" locked="false">
 	    <trigger>
 	        <location name="ferme"/>
 	        <dialog name="vacto" num="1"/>
+	    </trigger>
+	</quest>
+	
+	<quest name="grandMotherTold" locked="false">
+	    <trigger>
+	        <location name="chateausud"/>
+	        <dialog name="irma" num="6"/>
 	    </trigger>
 	</quest>
 	
@@ -996,6 +1014,12 @@
 		</condition>
 		<condition name="eleom3" exp="vactoToTheFarm">
 		    <remove who="vacto"/>
+		</condition>
+		<condition name="eleom3" exp="!grandMotherTold,findRewardBarrel">
+		    <remove who="pano"/>
+		</condition>
+		<condition name="lugduniag" exp="getBackIgor">
+		    <remove who="hector"/>
 		</condition>
 	</mapScript>
 		
@@ -1853,7 +1877,7 @@
 	<scene id="EleoPrepareAntidote">
 	    <music name=""/>
 	    <script who="eleoric" value="3"/>
-	    <moveTo who="eleoric" pos="88,58" unstoppable="true"/>
+	    <moveTo who="eleoric" pos="88,58"/>
 	    <angle who="eleoric" value="0"/>
 	    <wait value="80"/>
 	    <for var="loc:j" value="2">

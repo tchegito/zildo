@@ -1109,15 +1109,15 @@ public class PersoPlayer extends Perso {
 		BankSound toPlay = null;
 		switch (d) {
 		case GOLDCOIN1:
-			money ++;
+			setMoney(money + 1);
     		EngineZildo.scriptManagement.runTileAction(new Point((int)x >> 4, (int)y>>4), "getMoney", false);
 			break;
 		case THREEGOLDCOINS1:
-			money += 3;
+			setMoney(money + 3);
     		EngineZildo.scriptManagement.runTileAction(new Point((int)x >> 4, (int)y>>4), "getMoney", false);
 			break;
 		case GOLDPURSE1:
-			money += 20;
+			setMoney(money + 20);
     		EngineZildo.scriptManagement.runTileAction(new Point((int)x >> 4, (int)y>>4), "getMoney", false);
 			break;
 		case DROP_FLOOR:
