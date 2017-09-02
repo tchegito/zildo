@@ -52,7 +52,7 @@ public class WorldRegister extends Thread {
 	public static String url = "http://alembrume.fr/php/www/index.php";
 	private final static String displayServerServlet = "displayServers";
 	private final static String displayChampionServlet = "command=LIST_CH";
-	private final static String charset = "UTF-8";
+	public final static String charset = "UTF-8";
 
 	static Charset utf8 = Charset.forName(charset);
 	
@@ -186,15 +186,7 @@ public class WorldRegister extends Thread {
 				}
 				request.append("&nbPlayers=").append(p_serverInfo.nbPlayers);
 			}
-			URL objUrl = new URL(request.toString());
-			URLConnection urlConnect = objUrl.openConnection();
-
-			// Add server infos
-			InputStream in = urlConnect.getInputStream();
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(in));
-			int result = reader.read();
-			in.close();
+			int result = new AlembrumeHttpRequest(request.toString()).send();
 
 			return result == 48; // ASCII code of '0'
 		} catch (IOException e) {
@@ -222,15 +214,7 @@ public class WorldRegister extends Thread {
 			request.append("&timeSpent=").append(ch.timeSpent);
 			request.append("&appVersion=").append(Constantes.CURRENT_VERSION_DISPLAYED);
 			
-			URL objUrl = new URL(request.toString());
-			URLConnection urlConnect = objUrl.openConnection();
-			
-			// Add server infos
-			InputStream in = urlConnect.getInputStream();
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(in));
-			int result = reader.read();
-			in.close();
+			int result = new AlembrumeHttpRequest(request.toString()).send();
 
 			return result == 48; // ASCII code of '0'
 		} catch (IOException e) {

@@ -64,7 +64,7 @@ public class AndroidReadingFile extends EasyBuffering {
 
 		    }
 		} catch (Exception e) {
-			throw new RuntimeException("Unable to read "+path);
+			throw new RuntimeException("Unable to read "+path, e);
 		} finally {
 			if (stream != null)
 				try {

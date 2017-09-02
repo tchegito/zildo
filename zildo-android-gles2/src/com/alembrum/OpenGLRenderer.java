@@ -28,6 +28,7 @@ import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
 import zildo.fwk.gfx.engine.TileEngine;
+import zildo.fwk.net.www.CrashReporter;
 import zildo.platform.opengl.AndroidPixelShaders;
 import zildo.platform.opengl.utils.GLUtils;
 import android.opengl.GLES20;
@@ -102,7 +103,14 @@ public class OpenGLRenderer implements Renderer {
 				t1 = ZUtils.getTime();
 			}
 			*/
-			client.mainLoop();
+			try {
+				client.mainLoop();
+			} catch (RuntimeException e) {
+				// Send a more detailed report than Google one
+				new CrashReporter(e).sendReport();
+				// Throw exception even though
+				throw e;
+			}
 	
 			/*
 			if (i%50 == 0) {
