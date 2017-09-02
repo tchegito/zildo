@@ -12,6 +12,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
+import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
@@ -95,5 +96,30 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertEquals(ItemKind.BOW, bowGuard.getWeapon().kind);
 		Assert.assertEquals(MouvementPerso.ZONEARC, bowGuard.getQuel_deplacement());
 		
+	}
+	
+	@Test
+	public void moveAndJump() {
+		mapUtils.loadMap("foret");
+		PersoPlayer zildo = spawnZildo(700, 376);
+		zildo.setTarget(new Point(700, 280));
+		zildo.setGhost(true);
+		renderFrames(60);
+		
+		Assert.assertTrue(zildo.getY() < 350);
+	}
+	
+	@Test @InfoPersos
+	public void moveAndStop() {
+		mapUtils.loadMap("sousbois4");
+		EngineZildo.scriptManagement.accomplishQuest("hero_princess", false);
+		PersoPlayer zildo = spawnZildo(302, 714);
+		waitEndOfScripting();
+		EngineZildo.backUpGame();
+		int startPv = zildo.getPv();
+		simulateDirection(0, -1);
+		renderFrames(20);
+		waitEndOfScriptingPassingDialog();
+		Assert.assertEquals("Hero shouldn't have during this cutscene !", startPv, zildo.getPv());
 	}
 }

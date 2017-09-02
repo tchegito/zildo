@@ -152,10 +152,9 @@ public class PlayerManagement {
 		float deltaX = pos.x - heros.x;
 		float deltaY = pos.y - heros.y;
 		
-		if (deltaX != 0 || deltaY != 0) {
+		if (deltaX != 0 || deltaY != 0 || heros.getTarget() != null) {
 			adjustMovement(deltaX, deltaY);
 		}
-		//heros.finaliseComportement(EngineZildo.compteur_animation);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
