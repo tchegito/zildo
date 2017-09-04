@@ -98,6 +98,7 @@ public class TestAdvancedPerso extends EngineUT {
 		
 	}
 	
+	// Hero moves to the NORTH and jump
 	@Test
 	public void moveAndJump() {
 		mapUtils.loadMap("foret");
@@ -124,7 +125,8 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertEquals("Hero shouldn't have during this cutscene !", startPv, zildo.getPv());
 	}
 	
-	@Test @InfoPersos
+	// Hero is in his bed and jump on the EAST
+	@Test
 	public void jumpFromBed() {
 		mapUtils.loadMap("d4m12");
 		spawnZildo(160,100);	// No matter where => he will be replaced in the script

@@ -145,7 +145,7 @@ public class PathFinder {
         	if (delta.x !=0 || delta.y != 0) {
         		a = Angle.fromDelta(delta.x, delta.y);
         	} else {
-        		a = Angle.fromDelta(target.x, target.y);	// Calculate angle from target
+        		a = Angle.fromDelta(target.x-x, target.y-y);	// Calculate angle from target
         	}
         }
 
