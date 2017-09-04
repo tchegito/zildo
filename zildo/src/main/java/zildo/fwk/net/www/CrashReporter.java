@@ -5,9 +5,19 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import zildo.server.EngineZildo;
+
+/** Object able to send a detailed exception report to Alembrume site.
+ * As Google limits information in a stacktrace from now on, we need to reach these precious one by another way.
+ * 
+ * @author Tchegito
+ *
+ */
 public class CrashReporter {
 
 	String fullStack;
+	
+	StringBuilder details = new StringBuilder();
 	
 	public CrashReporter(Throwable t) {
 		// Try to send report if player has any communication enabled (3G or Wifi)
@@ -16,9 +26,27 @@ public class CrashReporter {
 		t.printStackTrace(pw);
 		fullStack = errorMessage.toString();
 	}
+
+	public CrashReporter addContext() {
+		try {
+			// Add contextual infos
+			addDetail("map", EngineZildo.mapManagement.getCurrentMap());
+			addDetail("sprites", EngineZildo.spriteManagement.getSpriteEntities(null));
+			addDetail("persos", EngineZildo.persoManagement.tab_perso);
+			addDetail("variables", EngineZildo.scriptManagement.getVariables());
+		} catch (Exception e) {
+			// Don't let us fail because of something here !
+			addDetail("special", "We have an additional failure here !" + e.getMessage());
+		}
+		return this;	// Fluent ;)
+	}
+	
+	private void addDetail(String kind, Object o) {
+		details.append(kind).append("=").append(o).append("\n");
+	}
 	
 	public String getMessage() {
-		return fullStack;
+		return details.toString() + "\n\n\n" + fullStack;
 	}
 	
 	public void sendReport() {

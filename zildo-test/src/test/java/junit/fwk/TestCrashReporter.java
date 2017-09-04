@@ -4,10 +4,12 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import tools.EngineUT;
 import zildo.fwk.net.www.CrashReporter;
 
-public class TestCrashReporter {
+public class TestCrashReporter extends EngineUT {
 
+	// This test doesn't need EngineUT, but that's better to have all crash-related tests in the same class
 	@Test
 	public void ensureCompleteStack() {
 		Throwable t = new RuntimeException("That Zorglub should have worked !");
@@ -20,7 +22,8 @@ public class TestCrashReporter {
 	
 	@Test @Ignore	// This test works, but may overwhelm the database !
 	public void transmitReport() {
+		mapUtils.loadMap("polakyg");
 		Throwable t = new RuntimeException("I want that Olivioh message !");
-		new CrashReporter(t).sendReport();
+		new CrashReporter(t).addContext().sendReport();
 	}
 }

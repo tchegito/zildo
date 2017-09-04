@@ -107,7 +107,7 @@ public class OpenGLRenderer implements Renderer {
 				client.mainLoop();
 			} catch (RuntimeException e) {
 				// Send a more detailed report than Google one
-				new CrashReporter(e).sendReport();
+				new CrashReporter(e).addContext().sendReport();
 				// Throw exception even though
 				throw e;
 			}
