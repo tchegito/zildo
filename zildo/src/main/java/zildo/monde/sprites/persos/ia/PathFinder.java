@@ -144,6 +144,8 @@ public class PathFinder {
         	delta.y = pos.y - mobile.y;
         	if (delta.x !=0 || delta.y != 0) {
         		a = Angle.fromDelta(delta.x, delta.y);
+        	} else {
+        		a = mobile.getAngle();	// Keep original angle if no movement can be made
         	}
         }
 

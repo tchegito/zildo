@@ -109,7 +109,8 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertTrue(zildo.getY() < 350);
 	}
 	
-	@Test @InfoPersos
+	// Bug from Trish => scene about hero's dream was blocked, because hero couldn't jump out of his bed
+	@Test
 	public void moveAndStop() {
 		mapUtils.loadMap("sousbois4");
 		EngineZildo.scriptManagement.accomplishQuest("hero_princess", false);
@@ -121,5 +122,13 @@ public class TestAdvancedPerso extends EngineUT {
 		renderFrames(20);
 		waitEndOfScriptingPassingDialog();
 		Assert.assertEquals("Hero shouldn't have during this cutscene !", startPv, zildo.getPv());
+	}
+	
+	@Test @InfoPersos
+	public void jumpFromBed() {
+		mapUtils.loadMap("d4m12");
+		spawnZildo(160,100);	// No matter where => he will be replaced in the script
+		EngineZildo.scriptManagement.execute("zildoDreams", true);
+		waitEndOfScriptingPassingDialog();
 	}
 }
