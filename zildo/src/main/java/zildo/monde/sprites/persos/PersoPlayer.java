@@ -1598,4 +1598,11 @@ public class PersoPlayer extends Perso {
 		}
 		return null;
 	}
+	
+	@Override
+	public String toString() {
+		String s = super.toString();
+		s += " weapon="+getWeapon()+" name="+UIText.getCharacterName();
+		return s;
+	}
 }

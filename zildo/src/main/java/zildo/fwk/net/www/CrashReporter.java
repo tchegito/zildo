@@ -4,7 +4,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 
+import zildo.monde.dialog.HistoryRecord;
 import zildo.server.EngineZildo;
 
 /** Object able to send a detailed exception report to Alembrume site.
@@ -34,6 +36,9 @@ public class CrashReporter {
 			addDetail("sprites", EngineZildo.spriteManagement.getSpriteEntities(null));
 			addDetail("persos", EngineZildo.persoManagement.tab_perso);
 			addDetail("variables", EngineZildo.scriptManagement.getVariables());
+			List<HistoryRecord> records = EngineZildo.game.getLastDialog();
+			String wholeText = HistoryRecord.getDisplayString(records);
+			addDetail("lastdialog", wholeText);
 		} catch (Exception e) {
 			// Don't let us fail because of something here !
 			addDetail("special", "We have an additional failure here !" + e.getMessage());
