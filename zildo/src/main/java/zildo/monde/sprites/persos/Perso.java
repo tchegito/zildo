@@ -1217,19 +1217,23 @@ public abstract class Perso extends Element {
 		
 		boolean platformUnder = checkPlatformUnder();
 
-		switch (nature) {
-		case WATER:
-			if (!platformUnder) {
-				// Character is fallen in the water !
-				diveAndWound();
+		if (nature != null) {
+			switch (nature) {
+			case WATER:
+				if (!platformUnder) {
+					// Character is fallen in the water !
+					diveAndWound();
+				}
+				break;
+			case BOTTOMLESS:
+				walkTile(false);	// Make hero fall if his feet are not feeling the ground
+				break;
+			case WATER_MUD:
+				inWater = true;	// no break => we want explicitly that player lands on ground
+			default:
+				landOnGround();
 			}
-			break;
-		case BOTTOMLESS:
-			walkTile(false);	// Make hero fall if his feet are not feeling the ground
-			break;
-		case WATER_MUD:
-			inWater = true;	// no break => we want explicitly that player lands on ground
-		default:
+		} else {
 			landOnGround();
 		}
 	}
