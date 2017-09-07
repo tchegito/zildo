@@ -430,6 +430,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 	} else if (p_action.what == null && p_action.who == null) {
                 		EngineZildo.persoManagement.clearPersos(false);
                 		EngineZildo.spriteManagement.clearSprites(false);
+                		EngineZildo.scriptManagement.clearUnlockingScripts();
                 	} else {
 	                	SpriteEntity toRemove;
 	                	if (p_action.what != null) {

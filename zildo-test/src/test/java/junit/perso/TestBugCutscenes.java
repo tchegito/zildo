@@ -163,4 +163,58 @@ public class TestBugCutscenes extends EngineUT {
 		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
 		waitEndOfScriptingPassingDialog();
 	}
+	
+	/** Issue 45 (1): Exception reported by CrashReporter : when hero is wounded on a map, he's pushed to another one.
+	 * If he dies there, 'remove' action clear all sprites and mapScripts try to reach unexisting entities ==> NPE  **/
+	@Test
+	public void barrelException() {
+		EngineZildo.scriptManagement.accomplishQuest("tonneau_polakyg",false);
+		mapUtils.loadMap("polakyg3");
+		PersoPlayer hero = spawnZildo(156, 252);
+		hero.setPv(1);
+		waitEndOfScripting();
+		EngineZildo.backUpGame();
+		
+		EngineZildo.persoManagement.getNamedPerso("bleu").setAlerte(true);
+		Assert.assertEquals("polakyg3", EngineZildo.mapManagement.getCurrentMap().getName());
+		while (!hero.isWounded()) {
+			renderFrames(1);
+		}
+		// Hero is wounded by a guard. Wait for him to be projected toward the exit
+		waitEndOfScriptingPassingDialog();
+		
+		while (EngineZildo.persoManagement.getZildo().isWounded()) {
+			waitEndOfScriptingPassingDialog();
+		}
+		System.out.println(hero.isWounded());
+		System.out.println(hero.getPv());
+		Assert.assertEquals("polakyg3", EngineZildo.mapManagement.getCurrentMap().getName());
+	}
+	
+	/** Issue 45 (2):Found by CrashReporter: when squirrel jumps into water on a map with tileAction and dies,
+	 * loops inside tileAction was still executing and trying to find unexisting entities ==> NPE
+	 */
+	@Test
+	public void sousbois6Exception() {
+		EngineZildo.scriptManagement.accomplishQuest("hero_princess", false);
+		mapUtils.loadMap("sousbois6");
+		PersoPlayer hero = spawnZildo(678, 309);
+
+		hero.setPv(1);
+		waitEndOfScripting();
+		renderFrames(10);
+		EngineZildo.backUpGame();
+		
+		simulateDirection(0,1);
+		renderFrames(20);
+		
+		while (hero.isAlive()) {
+			renderFrames(1);
+		}
+		// Hero is fallen into water
+		while (EngineZildo.persoManagement.getZildo().isWounded()) {
+			waitEndOfScriptingPassingDialog();
+		}
+		waitEndOfScripting();
+	}
 }
