@@ -1,5 +1,7 @@
 package junit.perso;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -132,5 +134,28 @@ public class TestAdvancedPerso extends EngineUT {
 		spawnZildo(160,100);	// No matter where => he will be replaced in the script
 		EngineZildo.scriptManagement.execute("zildoDreams", true);
 		waitEndOfScriptingPassingDialog();
+	}
+	
+	@Test
+	public void attackWithoutWeapon() {
+		PersoPlayer hero = spawnZildo(522, 636);
+		Item item = new Item(ItemKind.FLASK_RED);
+		hero.setPv(hero.getMaxpv() - 1);
+		hero.getInventory().add(item);
+		hero.setWeapon(item);
+		hero.attack();
+	}
+	
+	@Test
+	public void attackAndSwitchWeapon() {
+		PersoPlayer hero = spawnZildo(522, 636);
+		Item item = new Item(ItemKind.FLASK_RED);
+		Item item2 = new Item(ItemKind.NECKLACE);
+		hero.setPv(hero.getMaxpv() - 1);
+		hero.getInventory().addAll(Arrays.asList(item, item2));
+		hero.setWeapon(item);
+		hero.attack();
+		Assert.assertEquals(ItemKind.NECKLACE,  hero.getWeapon().kind);
+		hero.attack();
 	}
 }

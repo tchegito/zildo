@@ -231,7 +231,8 @@ public class PersoPlayer extends Perso {
 			return; // No weapon ? No attack
 		}
 		String sentence;
-		switch (weapon.kind) {
+		ItemKind usedWeapon = weapon.kind;
+		switch (usedWeapon) {
 		case SWORD:
 		case MIDSWORD:
 			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAttaque, this);
@@ -326,17 +327,19 @@ public class PersoPlayer extends Perso {
 			sentence = UIText.getGameText("curepotion.action");
 			EngineZildo.dialogManagement.launchDialog(EngineZildo.getClientState(), null, new ScriptAction(sentence));
 			break;
+		case EMPTY_BAG:
+			outOfOrder = true;
+		default:
 		}
 		if (outOfOrder) {
 			EngineZildo.soundManagement.playSound(BankSound.MenuOutOfOrder, this);
 		}
-		if (weapon == null) {
-			weapon = inventory.get(0);
-		}
+		// Switch to next weapon, if current should disappear (red flask for example)
+		getWeapon();
 
 		walkTile(false);	// To activate any location trigger
 		// Trigger the USE one
-		TriggerElement trigger = TriggerElement.createUseTrigger(weapon.kind);
+		TriggerElement trigger = TriggerElement.createUseTrigger(usedWeapon);
 		EngineZildo.scriptManagement.trigger(trigger);
 	}
 
