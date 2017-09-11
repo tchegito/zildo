@@ -26,7 +26,7 @@ public class DialogState {
 
     boolean dialoguing;
     public ActionDialog actionDialog;
-    public boolean continuing;	// TRUE=character has another sentence to come (indicated by '@' in sentence)
+    private boolean continuing;	// TRUE=character has another sentence to come (indicated by '@' in sentence)
     
 	public DialogState() {
 		dialoguing=false;
@@ -38,5 +38,13 @@ public class DialogState {
 	
 	public void setDialoguing(boolean value) {
 		dialoguing = value;
+	}
+	
+	public void setContinuing(boolean value) {
+		continuing = value;
+	}
+	
+	public boolean isContinuing() {
+		return continuing;
 	}
 }

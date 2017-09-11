@@ -72,7 +72,7 @@ public class DialogManagement {
 	    WaitingDialog even = createWaitingDialog(p_client, persoToTalk, p_actionDialog);
 
 	    if (even != null) {
-			p_client.dialogState.continuing = even.sentence.indexOf("@") != -1;
+			p_client.dialogState.setContinuing(even.sentence.indexOf("@") != -1);
 			even.sentence = even.sentence.trim().replaceAll("@", "");
 			even.sentence = even.sentence;
 			
@@ -82,7 +82,7 @@ public class DialogManagement {
 			if (persoToTalk == null && p_client.zildo.getDialoguingWith() != null) {
 				// Zildo is talking with someone, and an automatic behavior happens (he takes an item).
 				// After this automatic dialog, he should get back to the conversation.
-				p_client.dialogState.continuing = true;
+				p_client.dialogState.setContinuing(true);
 			}
 	        p_client.dialogState.setDialoguing(true);
 	    }
@@ -132,7 +132,7 @@ public class DialogManagement {
 
 			// Dialog switch : adjust sentence according to quest elements
 			// Do not evaluate if we're in a continuing sentence
-			if (persoToTalk.getDialogSwitch() != null && !p_client.dialogState.continuing) {
+			if (persoToTalk.getDialogSwitch() != null && !p_client.dialogState.isContinuing()) {
 				ZSSwitch swi = ZSSwitch.parseForDialog(persoToTalk.getDialogSwitch());
 				int posSentence = swi.evaluateInt();
 				if (posSentence > compteDial) {
@@ -195,7 +195,7 @@ public class DialogManagement {
 			even.action = CommandDialog.CONTINUE;
 			dialogQueue.add(even);
 	    }
-	    p_client.dialogState.continuing = continuing;
+	    p_client.dialogState.setContinuing(continuing);
 	}
 	
 	/**
@@ -221,7 +221,7 @@ public class DialogManagement {
 	}
 
 	public void goOnDialog(ClientState p_client) {
-	    if (p_client.dialogState.continuing && currentSentenceFullDisplayed) {
+	    if (p_client.dialogState.isContinuing() && currentSentenceFullDisplayed) {
 	    	continueDialog(p_client);
 	    } else {
 	    	actOnDialog(p_client.location, CommandDialog.ACTION);
