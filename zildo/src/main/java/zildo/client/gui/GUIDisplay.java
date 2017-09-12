@@ -985,7 +985,8 @@ public class GUIDisplay {
 			guiSpritesSequence.addSprite(FontDescription.BUTTON_Y, x2, Zildo.viewPortY-70 - 3, curAlpha);
 			guiSpritesSequence.addSprite(FontDescription.BUTTON_X, x3, Zildo.viewPortY-40 + 8, curAlpha);
 		}
-		guiSpritesSequence.addSprite(FontDescription.COMPASS, 48, 0);
+		// Display compass with low alpha if it isn't available
+		guiSpritesSequence.addSprite(FontDescription.COMPASS, 48, 0, !isToDisplay_compassItem() ? 50 : 255);
 	}
 
 	private int computeForLeftHanded(int x, FontDescription desc) {
@@ -1064,6 +1065,17 @@ public class GUIDisplay {
 		toDisplay_dialoguing = p_active;
 	}
 
+	/** Forbid compass access in two cases:
+	 * -dialog frame is displayed
+	 * -hero is dialoguing with someone (transition to buy action removes frame for a short period)
+	 */
+	public boolean isToDisplay_compassItem() {
+		if (isToDisplay_dialoguing())
+			return false;
+		PersoPlayer hero = (PersoPlayer) ClientEngineZildo.spriteDisplay.getZildo();
+		return hero != null && hero.getDialoguingWith() == null;
+	}
+	
 	public boolean isToRemove_dialoguing() {
 		return toRemove_dialoguing;
 	}

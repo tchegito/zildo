@@ -29,7 +29,7 @@ public class TestSpriteDisplay extends EngineUT {
 	@Test
 	public void goodiesBehindHero() {
 		mapUtils.loadMap("prisonext");
-		spawnZildo(57*16,  417);
+		PersoPlayer hero = spawnZildo(57*16,  417);
 		waitEndOfScripting();
 		EngineZildo.mapManagement.getCurrentMap().attackTile(1, new Point(57, 25), null);
 		renderFrames(5);
@@ -44,6 +44,7 @@ public class TestSpriteDisplay extends EngineUT {
 		Assert.assertNotNull(goodie);
 		
 		sd.setEntities(entities);
+		sd.setZildoId(hero.getId());
 		sd.updateSpritesClient(new Point(704, 297));
 		// Check that goodie is displayed behind hero
 		checkOrder(goodie);
@@ -68,6 +69,7 @@ public class TestSpriteDisplay extends EngineUT {
 		ClientEngineZildo.mapDisplay.setCamera(new Point(308, 470));
 		List<SpriteEntity> entities = EngineZildo.spriteManagement.getSpriteEntities(null);
 		sd.setEntities(entities);
+		sd.setZildoId(squirrel.getId());
 		renderFrames(1);
 		
 		squirrel.jump();

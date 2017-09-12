@@ -621,12 +621,17 @@ public abstract class EngineUT {
 
 		@Override
 		public void setEntities(List<SpriteEntity> p_entities) {
-			spriteEntities.clear();
-			spriteEntities.addAll(p_entities);
+			super.setEntities(p_entities);
+			//spriteEntities.clear();
+			//spriteEntities.addAll(p_entities);
 		}
 		
 		public SpriteEntity[][] getTabTri() {
 			return ((SpriteSorterMocked)spriteSorter).getTabTri();
 		}
+		public int[][] getQuadOrder() {
+			return ((SpriteSorterMocked)spriteSorter).getQuadOrder();
+		}
+		
 	}
 }

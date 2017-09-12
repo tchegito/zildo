@@ -315,7 +315,10 @@ public class Client {
 		if (kbHandler.isKeyPressed(Keys.COMPASS) && 
 				connected &&	// Inside the game, not in main menu
 				ClientEngineZildo.guiDisplay.isToDisplay_generalGui() && 
-				ClientEngineZildo.guiDisplay.getToDisplay_dialogMode() != DialogMode.TEXTER) {
+				ClientEngineZildo.guiDisplay.getToDisplay_dialogMode() != DialogMode.TEXTER &&
+				// Forbid access when dialoguing => too much characters on screen (issue 109)
+				ClientEngineZildo.guiDisplay.isToDisplay_compassItem()
+				) {
 			if (currentMenu instanceof CompassMenu) {
 				askForItemMenu(END_MENU_ITEM);
 			} else {
