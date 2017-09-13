@@ -284,7 +284,8 @@ public class ActionExecutor extends RuntimeExecutor {
                     achieved = true;
                     break;
                 case angle:
-                	if (perso.getTarget() != null) {
+                	// We allow NULL perso here (see Issue 110)
+                	if (perso == null || perso.getTarget() != null) {
                 		return false;
                 	}
                     perso.setAngle(Angle.fromInt(p_action.val));
