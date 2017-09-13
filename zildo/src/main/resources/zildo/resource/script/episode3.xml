@@ -879,6 +879,7 @@
 		</condition>
 	   	<condition name="sousbois6">
 	   		<tile pos="51,11" action="willOWist" unblock="true"/>
+	   		<markQuest name="goOnStump" value="false"/>
 	   	</condition>
 	   	<condition name="prison">
 	   	    <perso who="noir" pv="6"/>"
