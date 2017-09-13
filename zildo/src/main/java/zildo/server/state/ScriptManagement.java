@@ -189,6 +189,9 @@ public class ScriptManagement {
     		IEvaluationContext p_context, boolean p_locked, ScriptProcess p_caller) {
     	// Create a RuntimeScene from the given actions
 		RuntimeScene scene=new RuntimeScene(p_actions, p_quest, p_locked, null);
+		if (p_caller != null) {	// Sub process locking should match with main one
+			scene.locked = p_caller.scene.locked;
+		}
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context, p_caller);
     }

@@ -53,6 +53,9 @@ public abstract class EngineScriptUT extends EngineUT {
 			scriptMgmt.execute(name, true, new SceneContext(), null);
 		}
 		
+		public void executeSceneNonBlocking(String name) {
+			scriptMgmt.execute(name, false, new SceneContext(), null);
+		}
 		@Override
 		@After
 		public void tearDown() {

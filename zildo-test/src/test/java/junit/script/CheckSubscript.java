@@ -160,17 +160,17 @@ public class CheckSubscript extends EngineScriptUT {
 		
 		waitEndOfScripting();
 		
-		executeScene("monScript");
+		executeSceneNonBlocking("monScript");
 		
 		PersoManagement pm = EngineZildo.persoManagement;
-		Assert.assertEquals(1,  pm.tab_perso.size());	// 2 + hero
+		Assert.assertEquals(1,  pm.tab_perso.size());	// hero
 		renderFrames(20);
 		Assert.assertNotNull(pm.getNamedPerso("bandit"));
 		Assert.assertNotNull(pm.getNamedPerso("hector"));
-		Assert.assertEquals(4,  pm.tab_perso.size());	// 2 + hero
+		Assert.assertEquals(4,  pm.tab_perso.size());	// 3 + hero
 		
 		executeScene("terminator");	// This scene will kill previous one
-		renderFrames(3);
+		renderFrames(3+3);
 		// Check script are correctly stopped, and expected characters removed
 		Assert.assertFalse(EngineZildo.scriptManagement.isScripting());
 		Assert.assertNotNull(pm.getNamedPerso("bandit"));
