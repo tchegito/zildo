@@ -67,10 +67,12 @@ public class Fontes extends SpriteBanque {
 				//new Zone(0, 524, 24, 25), new Zone(26, 524, 24, 25),
 				//new Zone(0, 551, 24, 25), new Zone(26, 551, 24, 25)
 				//Touch aura
-				new Zone(308, 33, 31, 31)
+				new Zone(308, 33, 31, 31),
+				// Squirrel for menu
+				new Zone(185,43,9,16)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
-				new GraphChange("fontes", 0, 0)});
+				new GraphChange("fontes5", 0, 0)});
 	}
 }

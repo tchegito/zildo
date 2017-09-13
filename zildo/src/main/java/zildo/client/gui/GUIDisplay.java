@@ -210,7 +210,7 @@ public class GUIDisplay {
 	final Map<Character, Integer> mapTranscoChar = new HashMap<Character, Integer>();
 
 	public static final int[] scriptLegibility = new int[transcoChar.length() + 6];
-	public static final int[] scriptBigLegibility = new int[transcoChar.length()];
+	public static final int[] scriptBigLegibility = new int[218]; //transcoChar.length() + 50];
 	
 	private void initTransco() {
 		for (int i = 0; i < transcoChar.length(); i++) {
@@ -219,6 +219,7 @@ public class GUIDisplay {
 		// Extra characters
 		mapTranscoChar.put('^', FontDescription.GUI_BLUEDROP.getNSpr() - transcoChar.length());
 		mapTranscoChar.put('¤', FontDescription.GUI_RUPEE.getNSpr() - transcoChar.length());
+		mapTranscoChar.put('µ', FontDescription.SQUIRREL.getNSpr());
 		
 		mapTranscoChar.put(' ', -1);
 		
@@ -235,7 +236,7 @@ public class GUIDisplay {
 		scriptLegibility[transcoChar.indexOf("d")] = 1;
 		scriptLegibility[transcoChar.indexOf("l")] = 1;
 		scriptLegibility[transcoChar.indexOf("A")] = 1;
-		for (int i=0;i<scriptBigLegibility.length;i++) {
+		for (int i=0;i<scriptLegibility.length;i++) {
 			scriptBigLegibility[i] = scriptLegibility[i] * 2;
 		}
 		scriptBigLegibility[transcoChar.indexOf("Q")]--;
@@ -263,7 +264,7 @@ public class GUIDisplay {
 		scriptBigLegibility[transcoChar.indexOf("x")] = 1;
 		scriptBigLegibility[transcoChar.indexOf("a")] = 2;
 		scriptBigLegibility[transcoChar.indexOf("v")] = 1;
-		
+
 		arrowSprite = transcoChar.length() + mapTranscoChar.get('~');
 	}
 
@@ -484,6 +485,9 @@ public class GUIDisplay {
 			} else if (a == TXT_CHANGE_COLOR) {
 				nSpr[nLettre] = TXT_CHANGE_COLOR;
 			} else { // Regular character
+				if (a == 'µ') {
+					System.out.println("r");
+				}
 				// Store sprite's index to display for this letter
 				nSpr[nLettre] = getIndexCharacter(a);
 				// Get sprite model to obtain horizontal size

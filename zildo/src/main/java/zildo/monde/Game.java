@@ -43,6 +43,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
+import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -70,6 +71,8 @@ public class Game implements EasySerializable {
     private Date startPlay;
     
     private List<HistoryRecord> lastDialog;
+    
+    private boolean heroAsSquirrel;
     
     public Game(String p_mapName, boolean p_editing) {
         mapName = p_mapName;
@@ -201,12 +204,17 @@ public class Game implements EasySerializable {
             int questNumber = p_buffer.readInt();
             boolean version2x19 = (questNumber & 0x800) != 0;	// Flag indicating version post 2.18
             boolean version2x29 = (questNumber & 0x1000) != 0;	// Flag indicating version post 2.29
+            boolean squirrel = false;
             questNumber = questNumber & 0x7ff;
             for (int i = 0; i < questNumber; i++) {
                 String questName = p_buffer.readString();
                 boolean questDone = p_buffer.readBoolean();
-                if (questDone && !p_minimal) {
-                    EngineZildo.scriptManagement.accomplishQuest(questName, false);
+                if (questDone) {
+                	if (!p_minimal) {
+                        EngineZildo.scriptManagement.accomplishQuest(questName, false);
+                	} else if (ControllablePerso.QUEST_DETERMINING_APPEARANCE.equals(questName)) {
+                		squirrel = true;
+                	}
                 }
             }
             
@@ -241,6 +249,7 @@ public class Game implements EasySerializable {
             //zildo.setCountBomb(10);
             
             Game game = new Game(null, heroName);
+           game.heroAsSquirrel = squirrel;
            
             // 3: Inventory
             int itemNumber = p_buffer.readInt();
@@ -375,5 +384,9 @@ public class Game implements EasySerializable {
 
 	public List<HistoryRecord> getLastDialog() {
     	return Collections.unmodifiableList(lastDialog);
+	}
+	
+	public boolean isHeroAsSquirrel() {
+		return heroAsSquirrel;
 	}
 }

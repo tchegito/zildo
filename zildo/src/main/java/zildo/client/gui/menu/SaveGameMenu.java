@@ -243,6 +243,9 @@ public class SaveGameMenu extends PageableMenu {
 		String name = p_file.getName().replace(Constantes.SAVEGAME_FILE, "");
 		Region reg = Region.fromMapName(p_game.mapName);
 		String regionName = reg.getName();
+		if (p_game.isHeroAsSquirrel()) {
+			regionName += "µ";
+		}
 		name += " " + regionName; //+ " (" + Champion.getTimeSpentToString(p_game.getTimeSpent())+ ")";
 //				+ new SimpleDateFormat("dd.MM.yyyy HH-mm").format(new Date(
 //						p_file.lastModified()));
