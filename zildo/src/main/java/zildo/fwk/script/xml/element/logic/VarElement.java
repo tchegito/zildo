@@ -110,7 +110,14 @@ public class VarElement extends LanguageElement {
 
 	@Override
 	public String toString() {
-		return kind.toString()+ " "+(name == null ? "" : (name+"="))+value;
+		StringBuilder sb = new StringBuilder(kind.toString());
+		sb.append(" ");
+		if (name == null) {
+			sb.append(expression);
+		} else {
+			sb.append(name).append("=").append(value);
+		}
+		return sb.toString();
 	}
 	
 	public static VarElement createVarAction(String var, String expr) {
