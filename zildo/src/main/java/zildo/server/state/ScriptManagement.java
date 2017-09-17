@@ -492,6 +492,9 @@ public class ScriptManagement {
 		scriptExecutor.stopFromContext(perso);
 	}
 	
+	public boolean isPersoActing(Perso perso) {
+		return scriptExecutor.isPersoActing(perso);
+	}
 	public void stopScene(String name) {
 		scriptExecutor.stopScene(name);
 	}

@@ -29,6 +29,7 @@ import zildo.monde.collision.Rectangle;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -139,5 +140,36 @@ public class TestPersoMoveAndPush extends EngineUT {
 		Assert.assertFalse( new Rectangle(turtle.getMover().getZone()).isCrossingCircle(new Point(hero.x, hero.y), 7) );
 		
 		Assert.assertFalse(EngineZildo.mapManagement.collide(hero.x, hero.y, hero));
+	}
+	
+	/** Found a specific location during christa's scene in the farm, where player meets an exception in 
+	/* IdGenerator, because of PathFinder algorithm was failing. It tried to move a blocking character, but never
+	 * succeeded to find a good spot to go. So it turned in an infinite loop.
+	 * To fix this test, we select a good position according to the fact that blocking character will cross the first one or not.
+	 */
+	@Test
+	public void characterCanPushHero() {
+		EngineZildo.scriptManagement.accomplishQuest("vactoToTheFarm", false);
+		EngineZildo.scriptManagement.accomplishQuest("vactoRequest", false);
+		
+		mapUtils.loadMap("fermem2");
+		PersoPlayer zildo = spawnZildo(new Vector2f(289,53.5));
+		Perso christa = EngineZildo.persoManagement.getNamedPerso("christa");
+		Assert.assertNotNull(christa);
+		Assert.assertFalse(EngineZildo.mapManagement.collide(christa.x, christa.y, christa));
+		zildo.setAngle(Angle.NORD);
+		waitEndOfScripting();
+		
+		assertNotBlocked(zildo);
+		assertNotBlocked(christa);
+
+		talkAndCheck("fermem2.c.0");
+		talkAndCheck("fermem2.c.2");
+		goOnDialog();
+		// Dialog shoud have triggered following quest
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("christaAccept"));
+		
+		waitEndOfScriptingPassingDialog();
+		Assert.assertNull(EngineZildo.persoManagement.getNamedPerso("christa"));
 	}
 }

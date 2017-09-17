@@ -341,4 +341,18 @@ public class ScriptExecutor {
 			}
 		}
 	}
+	
+	/** Returns TRUE if this character has a running PersoAction **/
+	public boolean isPersoActing(SpriteEntity entity) {
+		for (ScriptProcess sp : scripts) {
+			IEvaluationContext ctx = sp.actionExec.context;
+			if (ctx != null && ctx instanceof SpriteEntityContext) {
+				Perso perso = (Perso) ctx.getActor();
+				if ( perso != null && perso.getId() == entity.getId()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

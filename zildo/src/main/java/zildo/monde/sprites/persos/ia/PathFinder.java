@@ -21,6 +21,10 @@
 package zildo.monde.sprites.persos.ia;
 
 import static zildo.server.EngineZildo.hasard;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.monde.Trigo;
 import zildo.monde.sprites.desc.EntityType;
@@ -31,6 +35,7 @@ import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
+import zildo.monde.util.Segment;
 import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -246,8 +251,8 @@ public class PathFinder {
                 			 }
 							Angle a = mobile.getAngle();
 							// First : lateral
-							Point nonBlockingPos = null;
-							Angle[] angles = new Angle[] {a.rotate(1), Angle.rotate(a,-1), a, a.opposite(), Angle.SUDEST, Angle.SUDOUEST};
+							List<Point> candidatesPos = new ArrayList<Point>(8);
+							Angle[] angles = new Angle[] {a.rotate(1), Angle.rotate(a,-1), a, a.opposite()}; //, Angle.SUDEST, Angle.SUDOUEST};
 							int dist = 12;
 							for ( ; dist < 30;dist+=12) {	// We try with 2 range of distance [12, 24]
 								for (Angle chkAngle : angles) {
@@ -257,18 +262,35 @@ public class PathFinder {
 									testPos.y = (int) (collidingPerso.y + chkAngle.coordf.y * dist * coeff);
 									
 									if (!EngineZildo.mapManagement.collide(testPos.x, testPos.y, collidingPerso)) {
-										nonBlockingPos = testPos;
-										break;
+										// Check if characters would cross each other with this location
+										Segment we = new Segment(new Pointf(mobile.x, mobile.y), 
+												new Pointf(target.x, target.y));
+										Segment them = new Segment(new Pointf(collidingPerso.x, collidingPerso.y), 
+												new Pointf(testPos.x, testPos.y));
+										if (we.cross(them) == null) {
+											// No crossing, so we put in on top of the list
+											candidatesPos.add(0, testPos);
+										} else {	// Crossing, but it's a good spot anyway => on the end
+											candidatesPos.add(testPos);
+										}
 									}
 								}
-								if (nonBlockingPos != null) break;
+								// Skip farther locations if we already found one
+								if (!candidatesPos.isEmpty()) break;
 							}
 							// Ask blocking character to move with a script (with priority on running scene)
-							if (nonBlockingPos != null) {
+							if (!candidatesPos.isEmpty()) {
 								SpriteEntityContext context = new SpriteEntityContext(collidingPerso);
 								// If the first distance tried isn't free, assume that our colliding perso will be unstoppable
 								// That means we will move regardless of colliding things on his way. At least, its target is okay.
-								String scriptName=dist == 12 ? "moveCharacter" : "moveCharacterUnstoppable";
+								
+								Point nonBlockingPos = candidatesPos.get(0);
+								// FIXED: if character has already asked to move, then we switch to the unstoppable fashion this time
+								boolean alreadyMoving = EngineZildo.scriptManagement.isPersoActing(collidingPerso) 
+														&& collidingPerso.getTarget() != null;
+								String scriptName=dist == 12 && !alreadyMoving ? "moveCharacter" : "moveCharacterUnstoppable";
+								System.out.println("move");
+								
 								EngineZildo.scriptManagement.runPersoAction(collidingPerso, scriptName + "("+nonBlockingPos.x+","+nonBlockingPos.y+")", context, true);
 							}
 							mobile.setAttente(10);
