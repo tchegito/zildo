@@ -42,6 +42,7 @@
 	<quest name="enlevebuissons_win" locked="false">
 		<trigger>
 			<dialog name="christa" num="3"/>
+			<location name="ferme"/>
 		</trigger>
 		<action>
 		    <music name="Village"/>
