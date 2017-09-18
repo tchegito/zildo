@@ -261,7 +261,7 @@ public class ScriptExecutor {
 	}
 	
 	public boolean isScripting() {
-		return isScripting(false);
+		return isScripting(false) || !toExecute.isEmpty();
 	}
 	
 	/**
