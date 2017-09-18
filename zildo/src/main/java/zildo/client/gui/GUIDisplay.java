@@ -485,9 +485,6 @@ public class GUIDisplay {
 			} else if (a == TXT_CHANGE_COLOR) {
 				nSpr[nLettre] = TXT_CHANGE_COLOR;
 			} else { // Regular character
-				if (a == 'µ') {
-					System.out.println("r");
-				}
 				// Store sprite's index to display for this letter
 				nSpr[nLettre] = getIndexCharacter(a);
 				// Get sprite model to obtain horizontal size
