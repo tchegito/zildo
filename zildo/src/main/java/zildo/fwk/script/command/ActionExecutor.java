@@ -891,7 +891,7 @@ public class ActionExecutor extends RuntimeExecutor {
 	    		Perso perso = (Perso) elem;
 	    		perso.setSpeed(p_action.speed);
 	    		perso.setEffect(p_action.effect);
-	    		perso.setFloor(p_action.floor);
+	    		perso.setFloor((int) p_action.floor.evaluate(context));
 	    		perso.setAddSpr((int) p_action.addSpr.evaluate(context));
         		if (p_action.info != null) {
         			perso.setInfo(p_action.info);
@@ -968,7 +968,7 @@ public class ActionExecutor extends RuntimeExecutor {
         			EngineZildo.spriteManagement.spawnSprite(entity);
         		}
         		
-        		entity.setFloor(p_action.floor);
+        		entity.setFloor((int) p_action.floor.evaluate(context));
         		entity.rotation = rot;
         		entity.setName(name);
         		if (p_action.effect != null) {

@@ -50,7 +50,7 @@ public class ActionElement extends LanguageElement {
 	public ZSSwitch reverse;
 	public int rotation;
 	public int attente;
-	public int floor;
+	public FloatExpression floor;
 	public FloatExpression z; // Z coordinate for location
 	public PersoInfo info; // PersoInfo
 	public float speed;
@@ -102,7 +102,7 @@ public class ActionElement extends LanguageElement {
 		speed = Float.valueOf("0" + p_elem.getAttribute("speed"));
 		unstoppable = isTrue("unstoppable");
 		foreground = readBoolean("foreground");
-		floor = readInt("floor", 1);
+		floor = getFloatExpr("floor", "1.0");
 		String strReverse = readAttribute("reverse");
 		// Read less common ones
 		String strPos = p_elem.getAttribute("pos");

@@ -73,6 +73,8 @@ public class FloatVariable implements FloatASTNode {
 				return p.getAngle().coords.x;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOANGLEY.equals(variable)) {
 				return p.getAngle().coords.y;
+			} else if (FloatExpression.RESERVED_WORD_ZILDOFLOOR.equals(variable)) {
+				return p.getFloor();
 			}
 			return 0;	// Not understood variable
 		} else if (context != null && variable.startsWith(LocaleVarContext.VAR_IDENTIFIER)) {
