@@ -342,7 +342,7 @@ public class MapManagement {
 				}
 			}
 			// Character able to carry someone else (turtle)
-			if (collidingPerso.getMover() != null && quelElement.z >= collidingPerso.getMover().getFlatZ()) {
+			if (collidingPerso.getMover() != null && quelElement != null && quelElement.z >= collidingPerso.getMover().getFlatZ()) {
 				return false;	// Ok => character is above the "vehicle"
 			}
 			if (collidingPerso.isOnPlatform() && p != null && p.getMover() != null && p.getMover().isOnIt(collidingPerso)) {
