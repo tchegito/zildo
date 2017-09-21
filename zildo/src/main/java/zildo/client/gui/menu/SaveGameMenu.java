@@ -95,6 +95,8 @@ public class SaveGameMenu extends PageableMenu {
 								}
 							}));
 						} else {
+							// Issue 120: avoid another saved game to be launched !
+							client.handleMenu(null);
 							if (!loadGame(filename, false)) {
                             	// Load failed !
                                 client.handleMenu(new InfoMenu("m8.info.nok", currentMenu));

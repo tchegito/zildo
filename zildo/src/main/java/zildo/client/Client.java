@@ -32,6 +32,7 @@ import zildo.client.gui.menu.CompassMenu;
 import zildo.client.gui.menu.InGameMenu;
 import zildo.client.stage.GameStage;
 import zildo.client.stage.MenuStage;
+import zildo.client.stage.SinglePlayer;
 import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.FitToScreenFilter;
@@ -196,8 +197,15 @@ public class Client {
 		// Is there a new stage being requested during the updating ?
 		if (ongoingStages.size() > 0) {	
 			for (GameStage stage : ongoingStages) {
+				// Issue 120: double security to avoid this kind of hazardous case
+				if (stage instanceof SinglePlayer && !stages.isEmpty())	{
+					for (GameStage ss : stages) {
+						if (ss instanceof SinglePlayer)
+							throw new RuntimeException("Impossible to have 2 singleplayer stages !");
+					}
+				}
 				stages.add(stage);
-			}
+ 			}
 			ongoingStages.clear();
 		}
 		// Is there still  menu stage ?
@@ -525,7 +533,9 @@ public class Client {
 	}
 	
 	public void setAction(ItemMenu action) {
-		this.action = action;
+		if (currentMenu != null) {	// Issue 120: Disallow action if no menu is displayed
+			this.action = action;
+		}
 	}
 	
 	public void setMenuListener(MenuListener p_menuListener) {

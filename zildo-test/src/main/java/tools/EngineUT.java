@@ -260,7 +260,7 @@ public abstract class EngineUT {
 		initCounters();
 
 		// Cheat to have a client
-		Client fakeClient = spy(new Client(true));
+		Client fakeClient = new Client(true);
 		ClientEngineZildo.client = fakeClient; 
 		// Fake a client state list
         Assert.assertEquals(0, EngineZildo.persoManagement.tab_perso.size());

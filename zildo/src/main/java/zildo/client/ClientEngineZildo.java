@@ -140,7 +140,7 @@ public class ClientEngineZildo {
 	 */
 	public ClientEngineZildo(OpenGLGestion p_openGLGestion, boolean p_selfInitialization,
 			Client p_client) {
-		// Lien avec DirectX
+		// Lien avec OpenGL
 		ClientEngineZildo.openGLGestion = p_openGLGestion;
 
 		if (p_selfInitialization) {
@@ -435,9 +435,6 @@ public class ClientEngineZildo {
 	 * @return Client
 	 */
 	public static Client getClientForGame() {
-		if (client == null) {
-			client = new Client(false);
-		}
 		guiDisplay.setToDisplay_generalGui(true);
 		return client;
 	}
