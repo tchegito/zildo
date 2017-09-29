@@ -40,6 +40,7 @@ import org.mockito.Matchers;
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
+import zildo.client.ClientEventNature;
 import zildo.client.MapDisplay;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
@@ -392,6 +393,13 @@ public abstract class EngineUT {
 	public void waitEndOfScripting() {
 		waitEndOfScripting(null);
 	}
+	
+	public void waitEndOfScroll() {
+		while (clientState.event.nature == ClientEventNature.CHANGINGMAP_SCROLL) {
+			renderFrames(1);
+		}
+	}
+	
 	/** Wait until initialization scripts are over 
 	 * (at least 1 frame ==> in order to init things like PersoCollision#initFrame). **/
 	public void waitEndOfScripting(ScriptAction action) {

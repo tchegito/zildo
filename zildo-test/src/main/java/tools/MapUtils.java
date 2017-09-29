@@ -19,6 +19,8 @@
 
 package tools;
 
+import org.junit.Assert;
+
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
@@ -101,6 +103,10 @@ public class MapUtils {
 			System.out.println();
 		}		
 		
+	}
+	
+	public void assertCurrent(String mapName) {
+		Assert.assertEquals(mapName, EngineZildo.mapManagement.getCurrentMap().getName());
 	}
 }
 

@@ -200,8 +200,8 @@ public class Client {
 				// Issue 120: double security to avoid this kind of hazardous case
 				if (stage instanceof SinglePlayer && !stages.isEmpty())	{
 					for (GameStage ss : stages) {
-						if (ss instanceof SinglePlayer)
-							throw new RuntimeException("Impossible to have 2 singleplayer stages !");
+						if (ss instanceof SinglePlayer && !ss.isDone())
+							throw new RuntimeException("Impossible to have 2 unfinished singleplayer stages !");
 					}
 				}
 				stages.add(stage);

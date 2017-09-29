@@ -157,7 +157,6 @@ public class Element extends SpriteEntity {
 	@Override
 	public void finalize() {
 		linkedPerso = null;
-
 	}
 
 	public void setPos(Vector2f v) {

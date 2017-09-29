@@ -167,7 +167,7 @@ public class ElementArrow extends ElementThrown  {
 	public Collision getCollision() {
     	Point pos=new Point(x, y);
     	Perso perso=null;
-    	if (EntityType.PERSO == getLinkedPerso().getEntityType()) {
+    	if (getLinkedPerso() != null && EntityType.PERSO == getLinkedPerso().getEntityType()) {
     		perso=(Perso) getLinkedPerso();
     	}
     	if (angle.isHorizontal()) {
