@@ -282,7 +282,7 @@ public class ZildoActivity extends Activity {
     	@Override
 		public void run() {
     		while (!client.isReady() || handler == null) {
-    			ZUtils.sleep(500);
+    			ZUtils.sleep(200);
     		}
     		
     		// Game is loaded => ask to remove the splashscreen
