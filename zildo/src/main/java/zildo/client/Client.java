@@ -533,11 +533,24 @@ public class Client {
 	}
 	
 	public void setAction(ItemMenu action) {
-		if (currentMenu != null) {	// Issue 120: Disallow action if no menu is displayed
+		if (isMenuDisplayed()) {	// Issue 120: Disallow action if no menu is displayed
 			this.action = action;
 		}
 	}
 	
+	private boolean isMenuDisplayed() {
+		if (currentMenu != null) {
+			return true;
+		}
+		// Check if a menu is still active, iterating over stages
+		// Because with Android, we use threads and this introduces different behavior than PC
+		for (GameStage stage : stages) {
+			if (stage instanceof MenuStage) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public void setMenuListener(MenuListener p_menuListener) {
 		menuListener = p_menuListener;
 	}
