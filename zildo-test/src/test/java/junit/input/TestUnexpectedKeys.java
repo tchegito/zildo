@@ -46,23 +46,25 @@ public class TestUnexpectedKeys extends EngineWithMenuUT {
 		Menu currentMenu = client.getCurrentMenu();
 		Assert.assertNotNull(currentMenu);
 		// Press "quit" button
-		pickItem("m7.quit");
+		pickItemAndCheckDifferentMenu("m7.quit");
 		// Confirm
-		pickItem("global.yes");
+		pickItemAndCheckDifferentMenu("global.yes");
 		// Choose "single player" in StartMenu
-		pickItem("m1.single");
+		pickItemAndCheckDifferentMenu("m1.single");
 		// Choose "load" in SinglePlayerMenu
-		pickItem("m6.load");
+		pickItemAndCheckDifferentMenu("m6.load");
 		// Choose any saved game
 		currentMenu = client.getCurrentMenu();
 		ItemMenu save1 = currentMenu.items.get(0);
 		ItemMenu save2 = currentMenu.items.get(1);
-		System.out.println(save1);
 		// Load a game
-		client.setAction(save1);
+		pickItem(save1.getKey());
+		//client.setAction(save1);
 		renderFrames(5);
-		// Load a second one
+		// Load a second one ? Check that no menu is displayed
+		Assert.assertNull(client.getCurrentMenu());
+		// Try to activate item anyway
 		client.setAction(save2);
-		renderFrames(2);
+		// If we reach here, that means we hadn't any RuntimeException !
 	}
 }
