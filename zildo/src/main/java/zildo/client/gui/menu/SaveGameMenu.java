@@ -53,6 +53,8 @@ public class SaveGameMenu extends PageableMenu {
 
 	final boolean load;
 
+	static final String CORRUPT_NAME = "corrupt";
+	
 	/**
 	 * Constructor for save game menu.
 	 * 
@@ -85,8 +87,7 @@ public class SaveGameMenu extends PageableMenu {
 								@Override
 								public void run() {	// He accepts
 									saveGame(filename);
-									client.handleMenu(new InfoMenu("m8.info.ok",
-											previousMenu));
+									client.handleMenu(new InfoMenu("m8.info.ok", previousMenu));
 								}
 							}, new ItemMenu("global.no") {	// He refuses
 								@Override
@@ -97,13 +98,18 @@ public class SaveGameMenu extends PageableMenu {
 						} else {
 							// Issue 120: avoid another saved game to be launched !
 							client.handleMenu(null);
-							if (!loadGame(filename, false)) {
-                            	// Load failed !
-                                client.handleMenu(new InfoMenu("m8.info.nok", currentMenu));
-                            } else {
-                            	// Game has been loaded in legacy (previous version) without name
-                            	// ==> can't display message for now !
-                            }
+							// Issue 126: don't load a corrupt saved game
+							if (getKey().endsWith(CORRUPT_NAME)) {
+								client.handleMenu(new InfoMenu("m14.info", currentMenu));
+							} else {
+								if (!loadGame(filename, false)) {
+	                            	// Load failed !
+	                                client.handleMenu(new InfoMenu("m8.info.nok", currentMenu));
+	                            } else {
+	                            	// Game has been loaded in legacy (previous version) without name
+	                            	// ==> can't display message for now !
+	                            }
+							}
 						}
 					}
 				});
@@ -207,9 +213,15 @@ public class SaveGameMenu extends PageableMenu {
 		if (savegames != null && savegames.length > 0) { // Is there any savegames ?
 			for (File f : savegames) {
 				String filename = Constantes.SAVEGAME_DIR + f.getName();
-				EasyBuffering buf = Zildo.pdPlugin.openPrivateFile(filename);
-				Game miniGame = Game.deserialize(buf, true);
-				filenames.add(getSavegameDisplayTitle(f, miniGame));
+				String number = f.getName().replace(Constantes.SAVEGAME_FILE, "");
+				try {
+					EasyBuffering buf = Zildo.pdPlugin.openPrivateFile(filename);
+					Game miniGame = Game.deserialize(buf, true);
+					filenames.add(getSavegameDisplayTitle(number, miniGame));
+				} catch (RuntimeException e) {
+					// Issue 126: saved game is corrupt. Mark it to avoid a crash at loading
+					filenames.add(number+" "+CORRUPT_NAME);
+				}
 			}
 		}
 		// Sort filenames by savegame number
@@ -241,14 +253,13 @@ public class SaveGameMenu extends PageableMenu {
 	 * @param p_file
 	 * @return
 	 */
-	public static String getSavegameDisplayTitle(File p_file, Game p_game) {
-		String name = p_file.getName().replace(Constantes.SAVEGAME_FILE, "");
+	public static String getSavegameDisplayTitle(String p_number, Game p_game) {
 		Region reg = Region.fromMapName(p_game.mapName);
 		String regionName = reg.getName();
 		if (p_game.isHeroAsSquirrel()) {
 			regionName += "µ";
 		}
-		name += " " + regionName; //+ " (" + Champion.getTimeSpentToString(p_game.getTimeSpent())+ ")";
+		String name = p_number + " " + regionName; //+ " (" + Champion.getTimeSpentToString(p_game.getTimeSpent())+ ")";
 //				+ new SimpleDateFormat("dd.MM.yyyy HH-mm").format(new Date(
 //						p_file.lastModified()));
 		return name;
