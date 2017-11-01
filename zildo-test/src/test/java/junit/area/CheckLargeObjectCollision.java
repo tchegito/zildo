@@ -20,7 +20,9 @@
 package junit.area;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -181,6 +183,34 @@ public class CheckLargeObjectCollision extends EngineUT{
 		
 		Assert.assertEquals(1, nbChangeMaps);
 		Assert.assertEquals("igorlily", EngineZildo.mapManagement.getCurrentMap().getName());
+	}
+	
+	/** Issue 125 (not the NPE, but close issue: hero scrolls map several times:
+	 * On the leaf floating in the water, hero could swing his sword to make it touch the map border. Then he walks on the leaf to switch maps,
+	 * and that leads to double-scroll back and forth.**/
+	@Test
+	public void stillLeafAndScrollProblem() {
+		Vector2f initial = new Vector2f(50, 235);
+		init((int) initial.x, (int) initial.y);
+		zildo.setWeapon(new Item(ItemKind.SWORD));
+		zildo.setPos(new Vector2f(198, 224));
+		EngineZildo.backUpGame();
+		zildo.setPos(initial);
+		Assert.assertTrue(zildo.isOnPlatform());
+		zildo.setAngle(Angle.EST);
+		zildo.attack();
+		renderFrames(50);
+		simulateDirection(1, 1);
+		// Wait for changing map
+		renderFrames(10 + 50 + 5);
+		Assert.assertEquals("igorlily", EngineZildo.mapManagement.getCurrentMap().getName());
+		simulateDirection(-1,0);
+		Set<String> mapNames = new HashSet<String>();
+		for (int i=0;i<80*4;i++) {
+			mapNames.add(EngineZildo.mapManagement.getCurrentMap().getName());
+			renderFrames(1);
+		}
+		Assert.assertTrue("Hero shouldn't have travelled to more than 2 maps ! ["+mapNames+"]", mapNames.size() <= 2);
 	}
 	
 	/** After some regression about BOTTOMLESS waterlily couldn't reach the bridge **/

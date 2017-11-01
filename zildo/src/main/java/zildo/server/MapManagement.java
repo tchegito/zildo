@@ -703,7 +703,8 @@ public class MapManagement {
 					Point dest = mapScrollAngle.coords.multiply(16);
 					for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
 						if (entity.getMover().isOnIt(zildo)) {
-							entity.setMover(new PhysicMoveOrder(dest.x/16, dest.y/16));
+							// Movement amplitude should be enough in order to avoid back and forth map switch
+							entity.setMover(new PhysicMoveOrder(dest.x/8, dest.y/8));
 							entity.setGhost(true);
 						}
 					}

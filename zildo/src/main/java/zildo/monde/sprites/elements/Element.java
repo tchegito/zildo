@@ -285,7 +285,7 @@ public class Element extends SpriteEntity {
 		}
 		// Out of the map
 		Area map = EngineZildo.mapManagement.getCurrentMap();
-		if (map.isOutside((int) x, (int) y)) {
+		if (map.isOutside((int) x, (int) y) && !isOutsidemapAllowed()) {
 			return true;
 		}
 		return false;
