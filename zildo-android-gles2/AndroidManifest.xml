@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.alembrum"
-      android:versionCode="49"
-      android:versionName="2.39"
+      android:versionCode="51"
+      android:versionName="2.41"
       android:launchMode = "singleInstance">
     <uses-sdk android:targetSdkVersion="12" android:minSdkVersion="10" />
 
