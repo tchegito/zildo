@@ -46,6 +46,7 @@ import zeditor.tools.sprites.PjZildo;
 import zeditor.tools.sprites.Pnj;
 import zeditor.tools.sprites.Pnj2;
 import zeditor.tools.sprites.Pnj3;
+import zeditor.tools.sprites.Pnj4;
 import zeditor.tools.sprites.SpriteBankEdit;
 import zeditor.tools.sprites.SpriteBanque;
 import zeditor.tools.tiles.Banque;
@@ -105,7 +106,8 @@ public class Modifier {
         // Exteria1 is the reference picture for palette
         // ***IMPORTANT ***
         
-        if (true) {
+        new Modifier().saveFontes2();
+        if (false) {
         new Modifier().savePalette();
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
@@ -136,6 +138,14 @@ public class Modifier {
         }
         
         //new AdjustRotations().modifyAllMaps();
+
+		new ReverseSpriteBank(new ElementsPlus(), EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS))
+		.rebuildImages();
+
+		new ReverseSpriteBank(new Pnj3(), EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ3))
+			.rebuildImages();
+		new ReverseSpriteBank(new Pnj4(), EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ4))
+		.rebuildImages();
     }
      
      public void generateImg() {
@@ -226,6 +236,8 @@ public class Modifier {
 				 bankName = "PjZildo";
 			 } else if ("gear".equals(bankName)) {
 				 bankName = "Gears";
+			 } else if ("font".equals(bankName)) {
+				 bankName = "Fontes";
 			 }
 			Class<?> clazz = Class.forName("zeditor.tools.sprites."+ZUtils.capitalize(bankName));
 			 if (SpriteBanque.class.isAssignableFrom(clazz)) {
@@ -324,7 +336,7 @@ public class Modifier {
 		bankFont.loadImage("fontes5", COLOR_BLUE);
 
 		String fontOrder = "KRWXMLNQFDAUTYHBVG." + "EOPwCZJSmIfnd7?xüuvûyù40pq-k%"
-				+ "9a6z£àâ5oceghj~$23çèéêë8r§#bsi!>ïtl1)</:" + "',(äîôö";
+				+ "9a6z£àâ5oceghj~$23çèéêë8r§#bsi!>ïtl1)<;:" + "',(äîôö/";
 
 		bankFont.captureFonts(156, 22, fontOrder, 0, 0);
 		bankFont.captureFonts(261, 16, null, 0, 0);

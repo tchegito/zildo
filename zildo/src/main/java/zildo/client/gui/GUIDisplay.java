@@ -206,11 +206,11 @@ public class GUIDisplay {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public static final String transcoChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 			+ "-.,<>!?()'#$çéêèàûîâôüöäïëù" + "abcdefghijklmnopqrstuvwxyz"
-			+ "0123456789~£§/:%";
+			+ "0123456789~£§/:%;";
 	final Map<Character, Integer> mapTranscoChar = new HashMap<Character, Integer>();
 
 	public static final int[] scriptLegibility = new int[transcoChar.length() + 6];
-	public static final int[] scriptBigLegibility = new int[218]; //transcoChar.length() + 50];
+	public static final int[] scriptBigLegibility = new int[220]; //transcoChar.length() + 50];
 	
 	private void initTransco() {
 		for (int i = 0; i < transcoChar.length(); i++) {
