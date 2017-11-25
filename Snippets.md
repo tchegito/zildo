@@ -54,3 +54,10 @@ Here are some useful examples to edit scripts.
 	</tileAction>
 ```
 Actually, 'tileAction' induces a specific context around a given tile (a [TileLocationContext](https://github.com/tchegito/zildo/blob/master/zildo/src/main/java/zildo/fwk/script/context/TileLocationContext.java)). Indeed, the 'lookFor' action will generate a new context around found entity ONLY if entity has been found. Nested actions are executed only if condition is evaluated to 'true', but in this case, we have the 'negative' attribute. Thus, we execute nested action without any entity found. So in this particular case, we keep the original context.
+
+## 3) Enemy looks in hero's direction
+
+ ```xml
+	<perso who="self" reverse="zildo.x &gt; x : 128, 0"/>
+```
+Condition is "zildo.x < x" (we have to escape the minus operator because we're inside XML (bad choice, I know ...))
