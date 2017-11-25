@@ -106,7 +106,7 @@ public class ScriptReader {
         // Exclude specific actions
         if (kind != null && kind != ActionKind.actions && kind != ActionKind.timer
         		&&   		kind != ActionKind.loop && kind != ActionKind.lookFor && kind != ActionKind._for
-        		&& 			kind != ActionKind.listen) { 
+        		&& 			kind != ActionKind.listen && kind != ActionKind.seq) { 
         	s=new ActionElement(kind);
         } else {
             QuestEvent event=QuestEvent.fromString(name);
@@ -126,7 +126,9 @@ public class ScriptReader {
         }
         s.parseAndClean(p_element);
         List<AnyElement> result = new ArrayList<AnyElement>(2);
-        result.add(s);
+        if (!s.isPlaceHolder()) {
+        	result.add(s);
+        }
         List<AnyElement> before = s.addSyntaxicSugarBefore();
         if (before !=null) {
         	result.addAll(0, before);

@@ -49,7 +49,7 @@ public class ActionElement extends LanguageElement {
 	public int val;
 	public ZSSwitch reverse;
 	public int rotation;
-	public int attente;
+	public int attente = DEFAULT_ATTENTE;
 	public FloatExpression floor;
 	public FloatExpression z; // Z coordinate for location
 	public PersoInfo info; // PersoInfo
@@ -77,10 +77,13 @@ public class ActionElement extends LanguageElement {
 	public FloatExpression zoom;	// Used in 'moveTo'
 	public FloatExpression alpha;
 	public int deltaFloor;	// Only for 'moveTo' action
-	public int pv;
+	public int pv = DEFAULT_PV;
 	
 	public int back, back2, fore; // just for Tile action
 
+	private static final int DEFAULT_ATTENTE = -1;
+	private static final int DEFAULT_PV = -1;
+	
 	public ActionElement(ActionKind p_kind) {
 		kind = p_kind;
 	}
@@ -157,7 +160,7 @@ public class ActionElement extends LanguageElement {
 			if (strInfo != null) {
 				info = PersoInfo.valueOf(strInfo);
 			}
-			attente = readInt("attente", -1);
+			attente = readInt("attente", DEFAULT_ATTENTE);
 			action = readAttribute("action"); // Empty string means "no action"
 			weapon = readAttribute("weapon");
 			alpha = getFloatExpr("alpha", "-1");
@@ -171,7 +174,7 @@ public class ActionElement extends LanguageElement {
 			if (strReverse != null) {
 				reverse = ZSSwitch.parseForDialog(strReverse);
 			}
-			pv = readInt("pv", -1);
+			pv = readInt("pv", DEFAULT_PV);
 			break;
 		case speak:
 			text = readAttribute("text");
@@ -333,6 +336,12 @@ public class ActionElement extends LanguageElement {
 		}
 		if (text != null) {
 			sb.append(text).append(" ");
+		}
+		if (addSpr != null) {
+			sb.append("addSpr=").append(addSpr).append(" ");
+		}
+		if (val != 0) {
+			sb.append(val).append(" ");
 		}
 		return sb.toString();
 	}

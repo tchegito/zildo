@@ -30,6 +30,7 @@ import zildo.fwk.script.xml.element.action.ForElement;
 import zildo.fwk.script.xml.element.action.ListenElement;
 import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.LoopElement;
+import zildo.fwk.script.xml.element.action.SeqElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
 import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.monde.util.Point;
@@ -51,7 +52,8 @@ public abstract class AnyElement {
 		_for(ForElement.class),
 		lookfor(LookforElement.class),
 		var(VarElement.class),
-		listen(ListenElement.class);
+		listen(ListenElement.class),
+		seq(SeqElement.class);
 		
 		Class<? extends AnyElement> clazz;
 		final String realName;
@@ -208,5 +210,13 @@ public abstract class AnyElement {
      */
 	public List<AnyElement> addSyntaxicSugarBefore() {
 		return null;
+	}
+	
+	/** If this method returns TRUE, current element won't be inserted. It's useful when an element actually defines a combination of many others.
+	 * For example <seq> leads to blocks of [<perso>, <wait>]
+	 * @return
+	 */
+	public boolean isPlaceHolder() {
+		return false;
 	}
 }

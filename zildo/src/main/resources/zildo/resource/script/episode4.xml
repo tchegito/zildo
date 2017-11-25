@@ -1,0 +1,32 @@
+<adventure>
+    
+   	<mapScript>
+   	    <!-- 
+	    <condition name="sousbois3" locked="false">
+	    	<spawn who="bitey" pos="220,118" type="BITEY"/>
+	    	<perso who="bitey" action="bitey"/> 
+   	    </condition>
+   	    -->
+	</mapScript>
+    
+    <persoAction id="bitey">
+        <loop>
+            <var name="loc:found" value="0"/>
+			<lookFor who="self" radius="6">
+				<var name="loc:found" value="1"/>
+			</lookFor>
+			<if exp="loc:found=1">
+			    <perso who="self" reverse="zildo.x &gt; x : 128, 0"/>
+			    <for var="loc:i" value="3">
+		            <!-- Idle near -->
+		            <seq who="self" addSpr="1,2,3,4,5,6,0" wait="4"/>
+			    </for>
+			</if>
+			<if exp="loc:found=0">
+		        <!-- Idle far -->
+				<seq who="self" addSpr="7,8,9,10,9,8" wait="10"/>
+			</if>
+   	        
+        </loop>
+   	</persoAction>    
+</adventure>

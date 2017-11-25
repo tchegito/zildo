@@ -1189,18 +1189,10 @@
 	</persoAction>
 	
 	<scene id="turtleAwake">
-		<perso who="self" addSpr="1"/>
-		<wait value="6"/>
-		<perso who="self" addSpr="2"/>
-		<wait value="6"/>
-		<perso who="self" addSpr="3"/>
-		<wait value="20"/>
+	    <seq who="self" addSpr="1,2,3" wait="6"/>
+		<wait value="14"/>
 		<spawn who="loc:head" type="TURTLE" angle="1" pos="x+11,y-5" addSpr="8"/>
-		<wait value="2"/>
-		<perso who="loc:head" addSpr="9"/>
-		<wait value="2"/>
-		<perso who="loc:head" addSpr="10"/>
-		<wait value="2"/>
+	    <seq who="loc:head" addSpr="8,9,10" wait="2"/>
 		<actions>
 			<perso who="self" addSpr="4"/>
 			<pos who="self" pos="x+3,y"/>
@@ -1216,18 +1208,10 @@
 			<pos who="self" pos="x-3,y"/>
 			<spawn who="loc:head" type="TURTLE" angle="1" pos="x+11,y-5" addSpr="10"/>
 		</actions>
-		<wait value="2"/>
-		<perso who="loc:head" addSpr="9"/>
-		<wait value="2"/>
-		<perso who="loc:head" addSpr="8"/>
-		<wait value="2"/>
+		<seq who="loc:head" addSpr="10,9,8" wait="2"/>
 		<remove who="loc:head"/>
-		<perso who="self" addSpr="2"/>
-		<wait value="6"/>
-		<perso who="self" addSpr="1"/>
-		<wait value="6"/>
-		<perso who="self" addSpr="0"/>
-		<wait value="20"/>
+		<seq who="self" addSpr="2,1,0" wait="6"/>
+		<wait value="14"/>
 	</scene>
 	
 	<scene id="tortueSousbois3">
@@ -1711,19 +1695,10 @@
 	    <speak who="zildo" text="prison.saveKing.zildo.0"/>
 	    <moveTo who="zildo" pos="229,80" unblock="true"/>
 	    <wait value="60"/>
-	    <perso who="king" addSpr="1"/>
-	    <wait value="20"/>
-   	    <perso who="king" addSpr="0"/>
-	    <wait value="20"/>
-	    <perso who="king" addSpr="1"/>
-	    <wait value="20"/>
-   	    <perso who="king" addSpr="0"/>
-	    <wait value="20"/>
+	    <seq who="king" addSpr="1,0,1,0" wait="20"/>
    	    <speak who="king" text="prison.saveKing.trion.0" unblock="true"/>
-	    <perso who="king" addSpr="1"/>
-	    <wait value="20"/>
-	    <perso who="king" addSpr="2"/>
-	    <wait value="150"/>
+	    <seq who="king" addSpr="1,2" wait="20"/>
+	    <wait value="130"/>
 	    <speak who="king" text="prison.saveKing.trion.1"/>
 	    <speak who="zildo" text="prison.saveKing.zildo.1"/>
 	    <speak who="king" text="prison.saveKing.trion.2"/>
@@ -1971,10 +1946,7 @@
 			    <!-- Blink and get to life -->
 			    <sound name="MenuSelectGame"/>
 			    <for var="loc:i" value="5">
-				    <perso who="self" addSpr="0"/>
-				    <wait value="0"/>
-				 	<perso who="self" addSpr="1"/>
-				    <wait value="0"/>
+			        <seq who="self" addSpr="0,1" wait="0"/>
 			    </for>
 				<perso who="self" addSpr="2"/>
 			    <wait value="20"/>

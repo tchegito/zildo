@@ -23,6 +23,8 @@ package zildo.fwk.script.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.fwk.script.context.IEvaluationContext;
+
 /**
  * Zildo Script Switch.
  * <p/>
@@ -132,15 +134,19 @@ public class ZSSwitch {
 		return this;
 	}
 
+	public String evaluate() {
+		return evaluate(null);
+	}
+	
 	/**
 	 * Evalute ordered conditions, and return corresponding value.
 	 * 
 	 * @return int
 	 */
-	public String evaluate() {
+	public String evaluate(IEvaluationContext context) {
 		String result;
 		for (ZSCondition cond : conditions) {
-			result = cond.evaluate();
+			result = cond.evaluate(context);
 			if (result != ZSCondition.FALSE) {
 				return result;
 			}
@@ -149,8 +155,12 @@ public class ZSSwitch {
 	}
 
 	public int evaluateInt() {
-		String str = evaluate();
-		return Integer.valueOf(str);
+		return evaluateInt(null);
+	}
+	
+	public int evaluateInt(IEvaluationContext context) {
+		String str = evaluate(context);
+		return Integer.valueOf(str.trim());
 	}
 	
 	@Override

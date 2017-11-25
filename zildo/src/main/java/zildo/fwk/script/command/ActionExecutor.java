@@ -469,7 +469,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 	// Change tile on map
                 	Area area = EngineZildo.mapManagement.getCurrentMap();
                 	Case c = area.get_mapcase(location.x, location.y);
-            		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : Reverse.fromInt(p_action.reverse.evaluateInt());
+            		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : reverseFromAction(p_action);
                 	if (p_action.back != -2) {
                 		c.setBackTile(p_action.back == -1 ? null : new Tile(p_action.back, rev, c));
                 	}
@@ -604,7 +604,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 			entity.setDesc(SpriteDescription.Locator.findNamedSpr(p_action.text));
                 		}
                 		if (p_action.reverse != null) {
-                			entity.reverse = Reverse.fromInt(p_action.reverse.evaluateInt());
+                			entity.reverse = reverseFromAction(p_action);
                 		}
 	                	if (entity.getEntityType().isElement()) {
 	                		applyCommonAndPhysicAttributes((Element) entity, p_action);
@@ -632,7 +632,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 			perso.setAttente(p_action.attente);
                 		}
                 		if (p_action.reverse != null) {
-                			perso.reverse = Reverse.fromInt(p_action.reverse.evaluateInt());
+                			perso.reverse = reverseFromAction(p_action);
                 		}
                 		if (p_action.parent != null) {
                 			// Link character to their parent
@@ -900,7 +900,7 @@ public class ActionExecutor extends RuntimeExecutor {
     				perso.setPv(p_action.pv);
     			}
    				if (p_action.reverse != null) {
-        			perso.reverse = Reverse.fromInt(p_action.reverse.evaluateInt());
+        			perso.reverse = reverseFromAction(p_action);
         		}
 	    		perso.initPersoFX();
 	        	if (p_action.weapon != null) {
@@ -932,7 +932,7 @@ public class ActionExecutor extends RuntimeExecutor {
     				entity = elem;
     			} else {
 	        		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
-	        		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : Reverse.fromInt(p_action.reverse.evaluateInt());
+	        		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : reverseFromAction(p_action);
 	        		elem = null;
 	        		// Chained
 	        		if (ElementDescription.isPlatform(desc)) {
@@ -1054,5 +1054,9 @@ public class ActionExecutor extends RuntimeExecutor {
     		perso = getNamedPerso(name);
     	}
     	return perso;
+    }
+    
+    private Reverse reverseFromAction(ActionElement p_action) {
+    	return Reverse.fromInt(p_action.reverse.evaluateInt(context));
     }
 }

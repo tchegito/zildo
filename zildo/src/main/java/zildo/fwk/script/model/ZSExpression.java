@@ -23,6 +23,7 @@ package zildo.fwk.script.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.monde.items.ItemKind;
 import zildo.monde.items.StoredItem;
@@ -83,11 +84,14 @@ public class ZSExpression {
 		return expressions;
 	}
 
-	public boolean isTrue() {
+	/** Returns TRUE if given expression is evaluated to TRUE. A lot of predefined expressions are permitted.
+	 * We used context only for floatExpr evaluation.
+	 */
+	public boolean isTrue(IEvaluationContext context) {
 		boolean result = false;
 
 		if (floatExpr != null) {
-			result = floatExpr.evaluate(null) == 1;
+			result = floatExpr.evaluate(context) == 1;
 		} else if (questName.startsWith(RW_MONEY)) {
 			int price=Integer.valueOf(questName.substring(RW_MONEY.length()));
 			int zildoMoney = zildo().getMoney();

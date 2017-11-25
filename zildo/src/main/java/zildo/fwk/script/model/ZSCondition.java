@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import zildo.fwk.script.context.IEvaluationContext;
+
 /**
  * Zildo-Script Condition.
  * 
@@ -79,8 +81,12 @@ public class ZSCondition {
 	}
 
 	public String evaluate() {
+		return evaluate(null);
+	}
+	
+	public String evaluate(IEvaluationContext context) {
 		for (ZSExpression expr : expressions) {
-			if (!expr.isTrue()) {
+			if (!expr.isTrue(context)) {
 				return FALSE;
 			}
 		}
