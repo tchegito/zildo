@@ -47,7 +47,7 @@ import zildo.monde.util.Zone;
  */
 public class SpriteBankEdit extends SpriteBank {
 
-	BankEdit bankEdit;
+	protected BankEdit bankEdit;
 	
     public SpriteBankEdit(SpriteBank p_bank) {
         models=p_bank.getModels();

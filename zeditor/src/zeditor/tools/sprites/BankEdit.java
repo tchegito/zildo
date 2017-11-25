@@ -30,6 +30,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import zildo.fwk.gfx.GFXBasics;
+import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 
 /**
@@ -44,8 +45,8 @@ public class BankEdit {
 
     public List<short[]> gfxs;
     
-    BufferedImage img;
-    int[] imgPixels;    // Parallel image which is a source for inserting new sprites into this bank
+    public BufferedImage img;
+    public int[] imgPixels;    // Parallel image which is a source for inserting new sprites into this bank
    
     public BankEdit() {
         gfxs=new ArrayList<short[]>();
@@ -75,8 +76,7 @@ public class BankEdit {
 				if ((imgPixels[offset] & 0xffffff) == p_transparentColor) {
 					imgPixels[offset] = 255;
 				} else {
-					imgPixels[offset] = GFXBasics
-							.getPalIndex(imgPixels[offset]);
+					imgPixels[offset] = GFXBasics.getPalIndex(imgPixels[offset]);
 				}
 			}
 		}
@@ -95,6 +95,15 @@ public class BankEdit {
 		
 		return sprite;
 	}
+    
+    public void setRectFromImage(Zone location, short[] sprite) {
+		for (int j = 0; j < location.y2; j++) {
+			for (int i = 0; i < location.x2; i++) {
+				int offsetImg = (location.y1 + j) * img.getWidth() + location.x1 + i;
+				imgPixels[offsetImg] = sprite[j * location.x2 + i];
+			}
+		}
+    }
     
     /**
      * Returns TRUE if there's something on a vertical line (useful for fonts).
@@ -115,5 +124,9 @@ public class BankEdit {
     
     public int getImageWidth() {
     	return img.getWidth();
+    }
+    
+    public int getImageHeight() {
+    	return img.getHeight();
     }
 }

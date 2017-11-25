@@ -33,6 +33,11 @@ import zeditor.tools.ImageUtils;
 import zildo.fwk.ZUtils;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
@@ -130,6 +135,22 @@ public class WorldmapBuilder {
 			}
 			// Load the map and capture image
 			canvas.loadMap(mapName, null);
+			// Hide character (except signs)
+			for (Perso perso : EngineZildo.persoManagement.tab_perso) {
+				if (perso.getDesc() != PersoDescription.PANNEAU) {
+					perso.setVisible(false);
+				}
+			}
+			// Hide objects from chest
+			for (SpriteEntity entity : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+				SpriteDescription desc = entity.getDesc();
+				if (desc instanceof ElementDescription) {
+					ElementDescription elemDesc = (ElementDescription) desc;
+					if (elemDesc.isMoney() || elemDesc.getItem() != null) {
+						entity.setVisible(false);
+					}
+				}
+			}
 			canvas.askCapture();
 			while (!canvas.isCaptureDone()) {
 				ZUtils.sleep(200);
