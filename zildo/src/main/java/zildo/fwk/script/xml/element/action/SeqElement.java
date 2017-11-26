@@ -10,15 +10,16 @@ import zildo.fwk.script.xml.element.AnyElement;
 import zildo.fwk.script.xml.element.LanguageElement;
 
 /**
- * 			<seq who="self" addSpr="7,8,9,10,9,8" value="10"/>
+ * Placeholder element, allowing to save some pairs of following sequence:<pre>
+ * &lt;perso who='boby' addSpr='1'&gt;
+ * &lt;wait value='4'&gt;
+ * (...)</pre>
+ * Instead, we just have to write this:<pre>
+ * &lt;seq who='boby' addSpr='1,2,3,4,3,2,1' wait='4'&gt;</pre>
  * @author Tchegito
  *
  */
 public class SeqElement extends LanguageElement {
-
-	public SeqElement() {
-		//kind = p_kind;
-	}
 
 	private List<AnyElement> actions;
 	
