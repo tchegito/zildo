@@ -44,9 +44,13 @@ public class Pnj4 extends SpriteBanque {
 		    new Zone(54, 377, 31, 19), new Zone(86, 383, 31, 13),
 			
 			// Bitey (37)
+		    // Idle (near)
 		    new Zone(0, 3, 21, 24), new Zone(25, 5, 21, 22), new Zone(50, 5, 21, 22),
 		    new Zone(75, 3, 21, 24), new Zone(100, 2, 21, 25), new Zone(125, 1, 21, 26),
 		    new Zone(150, 0, 21, 27),
+		    // Idle (far)
+		    new Zone(0, 55, 21, 23), new Zone(25, 54, 21, 24),
+		    new Zone(50, 54, 21, 24), new Zone(75, 55, 21, 23)
 
 		};
 		
@@ -54,7 +58,7 @@ public class Pnj4 extends SpriteBanque {
 				new GraphChange("pnj2", 8, 0),
 				new GraphChange("squirrel", 23, 0),
 				new GraphChange("dragonpal", 29, 0, true),
-				new GraphChange("bitey", 37, 0)
+				new GraphChange("bitey", 37, 0, true)
 		});
 	}
 }
