@@ -42,6 +42,7 @@ import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
@@ -921,6 +922,7 @@ public class SpriteManagement extends SpriteStore {
 	    }
 	}
 	
+	/** Called twice around the map loading process. Once with FALSE, and second time with TRUE, when map is fully loaded. **/
 	public void notifyLoadingMap(boolean p_loading) {
 		spriteUpdating=p_loading;
 		if (!p_loading) {
@@ -928,7 +930,9 @@ public class SpriteManagement extends SpriteStore {
 			// them at the end of the scroll.
 			// Except those are currently manipulated by script (ghost is TRUE)
 			for (SpriteEntity entity : spriteEntities) {
-				if (entity.isGhost()) {
+				// Actually poor fix, because we can't find a sure way to discard only relevant characters
+				// Bug was seen with turtles, so we exclude them. But that could occur with some others ?
+				if (entity.isGhost() && entity.getDesc() != PersoDescription.TURTLE) {
 					continue;
 				} else {
 					suspendedEntities.add(entity);
@@ -956,6 +960,12 @@ public class SpriteManagement extends SpriteStore {
 			}
 		}
 		suspendedEntities.clear();
+		Area map = EngineZildo.mapManagement.getCurrentMap();
+		for (SpriteEntity entity : spriteEntities) {
+			if (map.isOutside((int) entity.x >> 4, (int) entity.y >> 4)) {
+				System.out.println(entity.getDesc());
+			}
+		}
 	}
 	
 	/**
