@@ -23,10 +23,12 @@ package zildo.client.gui;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Stack;
 
 import zildo.Zildo;
@@ -1118,7 +1120,11 @@ public class GUIDisplay {
 	 * @return item (or NULL)
 	 */
 	public ItemMenu getItemOnLocation(int x, int y) {
-		for (Entry<ItemMenu, Zone> e : itemsOnScreen.entrySet()) {
+		// Duplicate entries because 'displayMenu' method may modify it during our iteration
+		// This avoids to add a 'synchronized' which cause slow down the process (what's worse ?)
+		Set<Entry<ItemMenu, Zone>> entries = new HashSet<Map.Entry<ItemMenu,Zone>>(itemsOnScreen.entrySet());
+		
+		for (Entry<ItemMenu, Zone> e : entries) {
 			if (e.getValue().isInto(x, y)) {
 				return e.getKey();
 			}
