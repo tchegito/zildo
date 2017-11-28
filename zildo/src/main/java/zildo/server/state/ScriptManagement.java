@@ -126,6 +126,11 @@ public class ScriptManagement {
     	keyQuest = new KeyQuest();
     }
     
+    /** Returns an instant photography of running scripts, with cursor positions, for CrashReporter **/
+    public String verbose() {
+    	return scriptExecutor.verbose();
+    }
+    
     public void render() {
     	scriptExecutor.render();
     	

@@ -93,17 +93,22 @@ public class ScriptExecutor {
 		}
 	}
 	
+	public String verbose() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(scripts.size()).append(" scripts running {[");
+		for (ScriptProcess s : scripts) {
+			sb.append(s.scene.id).append(s).append(",");
+		}
+		sb.append("}");
+		return sb.toString();
+	}
 	/**
 	 * Execute a frame inside the current locking script, and all non locking ones.
 	 */
 	public void render() {
 		if (!scripts.isEmpty()) {
 			if (Zildo.infoDebugScriptVerbose) {
-				System.out.print(scripts.size() + " scripts running {[");
-				for (ScriptProcess s : scripts) {
-					System.out.print(s.scene.id+":"+s+",");
-				}
-				System.out.println("}");
+				System.out.println(verbose());
 			}
 			// 0) Terminate scripts asked by external methods (#stopFromContext for example)
 			terminateIfNeeded();
