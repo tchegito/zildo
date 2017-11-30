@@ -246,7 +246,7 @@ public enum PersoDescription implements SpriteDescription {
 
 	@Override
 	public boolean isDamageable() {
-		return this == ARME_EPEE;
+		return this == ARME_EPEE || this == ARME_LANCE;
 	}
 	
 	@Override

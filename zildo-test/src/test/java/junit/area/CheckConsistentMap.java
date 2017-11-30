@@ -24,6 +24,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import zeditor.tools.builder.AllMapProcessor;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
@@ -60,7 +62,12 @@ public class CheckConsistentMap {
 			
 			@Override
 			public boolean run() {
-				for (Perso p : EngineZildo.persoManagement.tab_perso) {
+				//for (Perso p : EngineZildo.persoManagement.tab_perso) {
+				for (SpriteEntity entity : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+					if (!entity.getEntityType().isPerso()) {
+						continue;
+					}
+					Perso p = (Perso) entity;
 					boolean realEnemy = p.getInfo() == PersoInfo.ENEMY;
 					boolean shouldBeEnemy = false;
 					
@@ -68,6 +75,7 @@ public class CheckConsistentMap {
 					case ABEILLE:
 						continue;	// Both are tolerated
 					case BAS_GARDEVERT:
+					case HAUT_GARDEVERT:
 					case CHAUVESOURIS:
 					case CORBEAU:
 					case CRABE:

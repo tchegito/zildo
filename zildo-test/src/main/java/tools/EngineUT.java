@@ -426,7 +426,7 @@ public abstract class EngineUT {
 			int timeToWait = 0;
 			@Override
 			public void launchAction(ClientState p_clientState) {
-				//if (p_clientState.dialogState.isDialoguing()) {
+				if (p_clientState.dialogState.isDialoguing()) {
 					if (timeToWait == 0) {
 						simulateKeyPressed(KeysConfiguration.PLAYERKEY_ACTION.code);
 						timeToWait = 1;
@@ -437,7 +437,7 @@ public abstract class EngineUT {
 							simulateKeyPressed();
 						}
 					}
-				//}
+				}
 			}
 		});
 		// Release buttons

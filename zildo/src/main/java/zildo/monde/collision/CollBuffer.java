@@ -130,7 +130,7 @@ public class CollBuffer {
 			int a = presences[gridY][gridX][0];
 			int b = presences[gridY][gridX][1];
 			if (a == id) {
-				presences[gridY][gridX][0] = b;
+				presences[gridY][gridX][0] = b == id ? -1 : b;
 				if (b != -1) {
 					presences[gridY][gridX][1] = -1;
 				}

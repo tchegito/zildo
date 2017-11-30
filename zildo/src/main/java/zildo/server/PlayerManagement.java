@@ -438,13 +438,15 @@ public class PlayerManagement {
 					if (heros.who.canTalk &&  persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY 
 							&& !persoToTalk.isZildo() && persoToTalk.getDesc() != PersoDescription.TURTLE ) {
 					 // Check that this perso can be picked up (hen, duck for example)
-						if (persoToTalk.getDesc().isTakable()) {
+						PersoDescription desc = persoToTalk.getDesc();
+						if (desc.isTakable()) {
 							// Check that any obstacle isn't on the way
 							Point middle = Point.middle((int) heros.x, (int) heros.y, locX, locY);
 							if (!EngineZildo.mapManagement.collideTile(middle.x, middle.y, false, new Point(2, 2), persoToTalk)) {
 								heros.takeSomething((int)persoToTalk.x, (int)persoToTalk.y, null, persoToTalk);
 							}
-						} else if (persoToTalk.getDialoguingWith() == null) {
+						} else if (persoToTalk.getDialoguingWith() == null && 
+								!desc.isDamageable()) {
 							// On vérifie que Zildo regarde la personne
 							cx=(int) persoToTalk.getX();
 							cy=(int) persoToTalk.getY();

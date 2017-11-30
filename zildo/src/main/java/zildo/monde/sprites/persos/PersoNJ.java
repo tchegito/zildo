@@ -696,6 +696,13 @@ public class PersoNJ extends Perso {
 		case FOX:
 		case FALCOR:
 		case SLEEPING_KING:
+		case FIREFLY:
+		case BRAMBLE:
+		case VOLANT_BLEU:
+		case ECTOPLASME:
+		case ARBUSTE_VIVANT:
+		case SINGER:
+		case HAUT_GARDEVERT:
 			add_spr = 0;
 			break;
 		case FLYINGSERPENT:
