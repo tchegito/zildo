@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.InfoPersos;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.monde.dialog.HistoryRecord;
 import zildo.monde.items.Item;
@@ -13,6 +14,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
@@ -183,9 +185,11 @@ public class TestBugCutscenes extends EngineUT {
 		// Hero is wounded by a guard. Wait for him to be projected toward the exit
 		waitEndOfScriptingPassingDialog();
 		
+		// He should be dead, so pass the "game over" dialog
 		while (EngineZildo.persoManagement.getZildo().isWounded()) {
 			waitEndOfScriptingPassingDialog();
 		}
+		hero = EngineZildo.persoManagement.getZildo();
 		System.out.println(hero.isWounded());
 		System.out.println(hero.getPv());
 		Assert.assertEquals("polakyg3", EngineZildo.mapManagement.getCurrentMap().getName());
@@ -217,4 +221,40 @@ public class TestBugCutscenes extends EngineUT {
 		}
 		waitEndOfScripting();
 	}
+	
+	/** Issue 127: hero is leaving an area, and during the fade, he's pushed by a gard.
+	 * If he dies there, 'remove' action clear all sprites and mapScripts try to reach unexisting entities ==> NPE  **/
+	@Test
+	public void barrelException2() {
+		EngineZildo.scriptManagement.accomplishQuest("tonneau_polakyg",false);
+		mapUtils.loadMap("polakyg3");
+		PersoPlayer hero = spawnZildo(156, 242);
+		hero.setPv(1);
+		waitEndOfScripting();
+		EngineZildo.backUpGame();
+		
+		persoUtils.persoByName("bleu").die();
+		renderFrames(1);
+		Perso bleu = EngineZildo.persoManagement.getNamedPerso("bleu");
+		bleu.setTarget(new Point(hero.x, hero.y));
+		Assert.assertEquals("polakyg3", EngineZildo.mapManagement.getCurrentMap().getName());
+		while (bleu.getY() < 220) {
+			renderFrames(1);
+		}
+		simulateDirection(0,1);
+		
+		// Wait for hero to be on the chaining point
+		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
+			renderFrames(1);
+		}
+		// Ensure that he isn't wounded now (but gard still really close to hurt him)
+		Assert.assertFalse(hero.isWounded());
+		while (!"polakyg".equals(EngineZildo.mapManagement.getCurrentMap().getName()) && hero.getPv() > 0) {
+			renderFrames(1);
+		}
+		hero = EngineZildo.persoManagement.getZildo();
+		System.out.println(hero.isWounded());
+		System.out.println(hero.getPv());
+	}
+	
 }
