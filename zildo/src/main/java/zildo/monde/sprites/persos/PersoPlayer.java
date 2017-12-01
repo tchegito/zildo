@@ -115,6 +115,8 @@ public class PersoPlayer extends Perso {
 	static int seq_1[] = { 0, 1, 2, 1 };
 	static int seq_2[] = { 0, 1, 2, 1, 0, 3, 4, 3 };
 
+	String lastHit;
+	
 	// ////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	// ////////////////////////////////////////////////////////////////////
@@ -440,6 +442,10 @@ public class PersoPlayer extends Perso {
 		}
 		beingWounded(p_shooter, p_damage);
 		super.beingWounded(cx, cy, p_shooter, p_damage);
+		
+		if (p_shooter != null) {
+			lastHit = "last hit by "+p_shooter.toString()+" on "+EngineZildo.mapManagement.getCurrentMap().getName();
+		}
 	}
 
 	/**
@@ -1605,7 +1611,7 @@ public class PersoPlayer extends Perso {
 	@Override
 	public String toString() {
 		String s = super.toString();
-		s += " weapon="+getWeapon()+" name="+UIText.getCharacterName();
+		s += " weapon="+getWeapon()+" name="+UIText.getCharacterName()+" lasthit="+lastHit;
 		return s;
 	}
 }

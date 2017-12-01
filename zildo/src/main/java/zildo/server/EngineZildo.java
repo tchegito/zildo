@@ -127,6 +127,7 @@ public class EngineZildo {
 		// 1) Players
 		boolean block=false;
 		boolean blockKeyboard=false;
+		boolean blockCollision = false;
 		PersoPlayer zildo = persoManagement.getZildo();
 		for (ClientState 
 				state : p_clientStates) {
@@ -137,8 +138,14 @@ public class EngineZildo {
 				multiplayerManagement.render();
 			} else {	// Block everything in single player
 				block = blockKeyboard;
-				block |= state.event.nature == ClientEventNature.CHANGINGMAP_SCROLL;
+				block |= state.event.nature == ClientEventNature.CHANGINGMAP_SCROLL; 
 				block |= (zildo != null && zildo.isInventoring());
+
+				// We'll block collision checking during map fade (see Issue 127)
+				blockCollision = block;
+				blockCollision |= state.event.nature == ClientEventNature.FADING_OUT; 
+				blockCollision |= state.event.nature == ClientEventNature.FADING_IN; 
+
 			}
 			
 			// If client has pressed keys and he's not blocked, we manage them, then clear.
@@ -199,7 +206,7 @@ public class EngineZildo {
 		
 		// 2) Rest of the world
 		spriteManagement.updateSprites(block);
-		if (!block) {
+		if (!blockCollision) {
 			collideManagement.manageCollisions(p_clientStates);
 		}
 		mapManagement.updateMap();
