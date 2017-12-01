@@ -474,7 +474,7 @@ public abstract class Perso extends Element {
 			Point p = pathFinder.getTarget();
 			sb.append(" ==> ("+p.x+","+p.y+")");
 		}
-		sb.append("\ninfo=" + info + "\nmvt=" + mouvement);
+		sb.append("\ninfo=" + info + "\nmvt=" + mouvement+" pv="+pv);
 		return sb.toString();
 	}
 
