@@ -183,8 +183,10 @@ public class TouchListener implements OnTouchListener {
 	}
 	
 	public void setGamePadDirection(float x, float y) {
-		infos.gamePadDirection.x = x;
-		infos.gamePadDirection.y = y;
+		if (infos != null) {
+			infos.gamePadDirection.x = x;
+			infos.gamePadDirection.y = y;
+		}
 	}
 	
 	public ItemMenu popItem() {
