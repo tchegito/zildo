@@ -197,7 +197,16 @@
 	        <exec script="moveLeaf"/>
 	    </action>
 	</quest>
-
+    <quest name="lilyMidSword" repeat="true" locked="false">
+		<trigger>
+	    	<location name="igorlily|igorvillage" mover="leaf"/>
+	    	<use item="midsword"/>
+	    </trigger>
+	    <action>
+	        <exec script="moveLeaf"/>
+	    </action>
+	</quest>
+	
     <quest name="summonLeafVillage" locked="false">
         <trigger>
             <location name="igorvillage" pos="420,282" radius="5"/>
@@ -215,7 +224,7 @@
     </quest>	
     <quest name="summonLeaf" locked="false">
         <trigger>
-            <location name="igorlily"/>
+            <location name="igorlily" mover="!leaf"/>
             <use item="flut"/>
         </trigger>
         <action>
@@ -1313,6 +1322,8 @@
 	    <moveTo what="leaf" pos="-2*zildo.angle.x,-2*zildo.angle.y" way="physic" unblock="true"/>
 	    <wait value="5"/>
 	    <sound name="SlipWater1"/>
+	   	<markQuest name="summonLeaf" value="1"/>
+	   	<markQuest name="summonLeafVillage" value="1"/>
 	</scene>
 	
 	<scene id="zildoCrossCoucouNight">

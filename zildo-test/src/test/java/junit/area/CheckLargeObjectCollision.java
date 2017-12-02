@@ -28,6 +28,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.InfoPersos;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
@@ -220,5 +221,43 @@ public class CheckLargeObjectCollision extends EngineUT{
 		waterLily.setMover(new PhysicMoveOrder(0, -8));
 		renderFrames(16);
 		Assert.assertTrue(waterLily.y < 368);
+	}
+	
+	// Issue 130#2 swinging midsword didn't move the leaf.
+	@Test
+	public void moveLeafWithMidSword() {
+		init(133, 381);
+		Assert.assertTrue(zildo.isOnPlatform());
+		zildo.setWeapon(new Item(ItemKind.MIDSWORD));
+		zildo.setAngle(Angle.NORD);
+		zildo.attack();
+		renderFrames(10);
+		Assert.assertTrue(zildo.deltaMoveY != 0);
+	}
+	
+	// Issue 130#3 playing flut on igorlily
+	@Test @InfoPersos
+	public void playFlutOnLeaf() {
+		init(20, 249);
+		Assert.assertTrue(zildo.isOnPlatform());
+		zildo.walkTile(false);
+		zildo.setWeapon(new Item(ItemKind.SWORD));
+		zildo.setAngle(Angle.EST);
+		zildo.attack();
+		renderFrames(20);
+		waitEndOfScroll();
+		mapUtils.assertCurrent("igorlily");
+		// Wait for leaf to stop
+		while (zildo.deltaMoveX != 0) {
+			renderFrames(1);
+		}
+		zildo.setWeapon(new Item(ItemKind.FLUT));
+		zildo.attack();
+		// Wait flut playing is over
+		while (zildo.isDoingAction()) {
+			renderFrames(1);
+		}
+		// Check that flut playing hasn't triggered the leaf to move
+		Assert.assertTrue(zildo.deltaMoveX == 0);
 	}
 }
