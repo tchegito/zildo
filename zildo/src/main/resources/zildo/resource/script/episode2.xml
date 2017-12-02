@@ -1321,9 +1321,11 @@
 	<scene id="moveLeaf">
 	    <moveTo what="leaf" pos="-2*zildo.angle.x,-2*zildo.angle.y" way="physic" unblock="true"/>
 	    <wait value="5"/>
-	    <sound name="SlipWater1"/>
-	   	<markQuest name="summonLeaf" value="1"/>
-	   	<markQuest name="summonLeafVillage" value="1"/>
+	    <actions> <!-- All action in 1 frame to avoid wasting time -->
+		    <sound name="SlipWater1"/>
+		   	<markQuest name="summonLeaf" value="1"/>
+		   	<markQuest name="summonLeafVillage" value="1"/>
+	    </actions>
 	</scene>
 	
 	<scene id="zildoCrossCoucouNight">
