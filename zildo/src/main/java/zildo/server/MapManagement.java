@@ -965,6 +965,8 @@ public class MapManagement {
 			if (relocate) {
 				zildo.setX(startLocation.x);
 				zildo.setY(startLocation.y);
+				zildo.setVx(0);
+				zildo.setVy(0);
 				if (startFloor == -1) {
 					// Before 2.19, startFloor wasn't saved, so we determine here, taking the highest at location
 					startFloor = new HighestFloorAccessor().setArea(currentMap)

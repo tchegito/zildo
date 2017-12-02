@@ -9,12 +9,15 @@ import tools.EngineUT;
 import tools.annotations.InfoPersos;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Vector2f;
 import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
@@ -157,5 +160,30 @@ public class TestAdvancedPerso extends EngineUT {
 		hero.attack();
 		Assert.assertEquals(ItemKind.NECKLACE,  hero.getWeapon().kind);
 		hero.attack();
+	}
+	
+	// Issue 130: #1
+	@Test
+	public void suckedInPitThenRespawn() {
+		mapUtils.loadMap("cavef6");
+		PersoPlayer hero = spawnZildo(203, 124);
+		int startPv = hero.getPv();
+		waitEndOfScripting();
+		// Back up game, then set hero just in front of fire elemental
+		EngineZildo.backUpGame();
+		EngineZildo.mapManagement.setStartLocation(mapUtils.area.getName(), new Point(203,124), Angle.NORD, 1);
+
+		SpriteEntity plateform = EngineZildo.spriteManagement.getNamedEntity("platef1");
+		plateform.x=318f; plateform.y= 278f;
+		hero.setPos(new Vector2f(318, 278));
+		hero.walkTile(false);
+		// Wait for hero to fall in lava, sucked out by the elemental
+		waitForScriptRunning("fallPit");
+		Assert.assertTrue(hero.vx != 0);
+		// Wait hero being respawned
+		waitEndOfScripting();
+		
+		Assert.assertEquals(startPv-1, hero.getPv());
+		Assert.assertTrue(hero.vx == 0);
 	}
 }
