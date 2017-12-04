@@ -78,8 +78,13 @@ public class Mover {
 				p.x = result.x;
 				p.y = result.y;
 			} else {
-				entity.x += delta.x;
-				entity.y += delta.y;
+				// Move entity on platform according to the integer part of the platform delta
+				int feltX = (int) (Math.floor(mobile.x) - Math.floor(mobile.x-delta.x));
+				int feltY = (int) (Math.floor(mobile.y) - Math.floor(mobile.y-delta.y));
+				entity.x += feltX;
+				entity.y += feltY;
+				entity.setAjustedX(entity.getAjustedX() + feltX);
+				entity.setAjustedY(entity.getAjustedY() + feltY);
 			}
 		}
 	}
