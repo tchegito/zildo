@@ -37,4 +37,50 @@ public class Trigo {
 				speed * Math.cos(angle),
 			    speed * Math.sin(angle) );
 	}
+	
+	public static Function easeInOut(int distance, float speed) {
+		float fixedSpeed = speed * EASE_SPEED_FACTOR;
+		final int totalTime = (int) (distance / fixedSpeed);
+		Function func = new Function() {
+			
+			double a = Math.PI / totalTime;
+			double b = Math.PI * 0.5f;
+			@Override
+			public float apply(float x) {
+				return (float) (Math.sin(a * x - b) + 1) /2;
+			}
+		}; 
+		return func;
+	}
+	
+	public static Function easePolynomial(int distance, float speed) {
+		final int totalTime = (int) (distance / speed);
+		return new Function() {
+			public float apply(float x) {
+				float ts = (x/=totalTime) * x;
+				float tc = (ts * x);
+				return -1.5975f*tc*ts + 3.9975f*ts*ts + -4.8f*tc + 3.2f*ts + 0.2f*x;
+			}
+		};
+	}
+	
+	// With 0.66f as a value, we ensure to have a maximal speed as the one provided
+	// But global time to go from point A to point B is way too long. So for now, w
+	public static final float EASE_SPEED_FACTOR = 1; //0.66f;
+	
+	public static Function easeInOutDerivee(int distance, float speed) {
+		float fixedSpeed = speed * EASE_SPEED_FACTOR;
+		final int totalTime = (int) (distance / fixedSpeed);
+		Function func = new Function() {
+			
+			double a = Math.PI / totalTime;
+			double b = Math.PI * 0.5f;
+			@Override
+			public float apply(float x) {
+				return (float) ((a/2) * Math.cos(a * x - b ));
+			}
+		}; 
+		return func;
+	}
+
 }

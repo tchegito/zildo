@@ -1172,15 +1172,15 @@
    	</scene>
    	
 	<scene id="move_vg5_plat1">
-	    <moveTo what="platform" pos="-220,0" delta="true" speed="1"/>
+	    <moveTo what="platform" pos="-220,0" delta="true" way="easein"/>
 	    <wait value="60"/>
-	    <moveTo what="platform" pos="220,0" delta="true" speed="1"/>
+	    <moveTo what="platform" pos="220,0" delta="true" way="easein"/>
 	    <wait value="10"/>
 	</scene>
 	<scene id="move_vg5_plat2">
-	    <moveTo what="platform2" pos="0,128" delta="true" speed="1"/>
+	    <moveTo what="platform2" pos="0,128" delta="true" way="easein"/>
 	    <wait value="180"/>
-	    <moveTo what="platform2" pos="0,-128" delta="true" speed="1"/>
+	    <moveTo what="platform2" pos="0,-128" delta="true" way="easein"/>
 	    <wait value="10"/>
 	</scene>
 	

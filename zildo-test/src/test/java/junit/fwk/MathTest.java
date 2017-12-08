@@ -22,7 +22,7 @@ package junit.fwk;
 import org.junit.Assert;
 import org.junit.Test;
 
-import zildo.fwk.ZUtils;
+import zildo.fwk.ZMaths;
 import zildo.monde.collision.Line;
 import zildo.monde.util.Point;
 
@@ -35,14 +35,14 @@ public class MathTest {
 	@Test
 	public void decompose10() {
 		// Nominal cases
-		Assert.assertArrayEquals(new byte[] {1, 3, 6}, ZUtils.decomposeBase10(136));
-		Assert.assertArrayEquals(new byte[] {7}, ZUtils.decomposeBase10(7));
-		Assert.assertArrayEquals(new byte[] {2, 9, 0, 2, 4, 0}, ZUtils.decomposeBase10(290240));
+		Assert.assertArrayEquals(new byte[] {1, 3, 6}, ZMaths.decomposeBase10(136));
+		Assert.assertArrayEquals(new byte[] {7}, ZMaths.decomposeBase10(7));
+		Assert.assertArrayEquals(new byte[] {2, 9, 0, 2, 4, 0}, ZMaths.decomposeBase10(290240));
 		
 		// Boundaries cases
-		Assert.assertArrayEquals(new byte[] {0}, ZUtils.decomposeBase10(0));
-		Assert.assertArrayEquals(new byte[] {2,1,4,7,4,8,3,6,4,7}, ZUtils.decomposeBase10(0x7fffffff)); //1234567890));
-		Assert.assertArrayEquals(new byte[] {-1}, ZUtils.decomposeBase10(-1)); //1234567890));
+		Assert.assertArrayEquals(new byte[] {0}, ZMaths.decomposeBase10(0));
+		Assert.assertArrayEquals(new byte[] {2,1,4,7,4,8,3,6,4,7}, ZMaths.decomposeBase10(0x7fffffff)); //1234567890));
+		Assert.assertArrayEquals(new byte[] {-1}, ZMaths.decomposeBase10(-1)); //1234567890));
 	}
 	
 	@Test
@@ -52,5 +52,11 @@ public class MathTest {
 		
 		Point inter=a.intersect(b);
 		Assert.assertEquals(new Point(5, 2), inter);
+	}
+	
+	@Test
+	public void integer() {
+		Assert.assertEquals(1, (int) 1.1f);
+		Assert.assertEquals(1, (int) 1.9f);
 	}
 }

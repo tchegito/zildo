@@ -32,8 +32,10 @@ public class BasicMoveOrder extends MoveOrder {
 		mobile.x += delta.x;
 		mobile.y += delta.y;
 	
-		if ((int) mobile.x == target.x && (int) mobile.y == target.y) {
-			// Mover has accomplished his duty
+		if (Math.round(mobile.x) == target.x && Math.round(mobile.y) == target.y) {
+			// Mover has accomplished his duty. Fix float problems
+			mobile.x = target.x;
+			mobile.y = target.y;
 			active = false;
 		}
 		return delta;

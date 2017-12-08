@@ -83,6 +83,7 @@ import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.monde.sprites.persos.ia.PathFinderArc;
 import zildo.monde.sprites.persos.ia.mover.BasicMoveOrder;
 import zildo.monde.sprites.persos.ia.mover.CircularMoveOrder;
+import zildo.monde.sprites.persos.ia.mover.EasinMoveOrder;
 import zildo.monde.sprites.persos.ia.mover.PhysicMoveOrder;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
@@ -236,6 +237,8 @@ public class ActionExecutor extends RuntimeExecutor {
                     			entity.setMover(new CircularMoveOrder(location.x, location.y, p_action.zoom, false));
                     		} else if ("circular".equals(p_action.text)) {
                     			entity.setMover(new CircularMoveOrder(location.x, location.y, p_action.zoom, true));
+                    		} else if ("easein".equals(p_action.text)) {
+                    			entity.setMover(new EasinMoveOrder(location.x, location.y, p_action.speed));
                     		} else {
                     			entity.setMover(new BasicMoveOrder(location.x, location.y, p_action.speed));
                     		}

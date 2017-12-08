@@ -28,7 +28,7 @@ import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.client.gui.GUISpriteSequence;
 import zildo.client.sound.BankSound;
-import zildo.fwk.ZUtils;
+import zildo.fwk.ZMaths;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.filter.FilterEffect;
@@ -111,7 +111,7 @@ public class ItemCircle {
             guiSprites.add(e);
 
             int xx = 0;
-            byte[] quantityBase10 = ZUtils.decomposeBase10(item.quantity);
+            byte[] quantityBase10 = ZMaths.decomposeBase10(item.quantity);
             for (int i=0;i<2;i++) {
             	int digit = 0;
             	if (quantityBase10.length > i) {
@@ -170,7 +170,7 @@ public class ItemCircle {
 				} else {
 					entity.setSpecialEffect(EngineFX.NO_EFFECT);
 				}
-                byte[] quantityBase10 = ZUtils.decomposeBase10(item.quantity);
+                byte[] quantityBase10 = ZMaths.decomposeBase10(item.quantity);
                 
                 int xx= 0;
                 for (int i=0;i<2;i++) {

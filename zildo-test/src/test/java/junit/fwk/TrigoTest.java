@@ -25,6 +25,9 @@ import static zildo.monde.Trigo.getAngleRadian;
 import org.junit.Assert;
 import org.junit.Test;
 
+import zildo.monde.Function;
+import zildo.monde.Trigo;
+
 /**
  * @author Tchegito
  *
@@ -43,5 +46,95 @@ public class TrigoTest {
 		Assert.assertEquals(abs(getAngleRadian(5, 5)), abs(getAngleRadian(1, 1)), 0.0001d);
 		Assert.assertEquals(Math.PI / 4d, abs(getAngleRadian(1, 1)), 0.0001d);
 		Assert.assertEquals(Math.PI, getAngleRadian(-38, 1), 0.1d);
+	}
+	
+	// Easing functions
+	@Test
+	public void ease() {
+		int distance = 60;
+		Function func = Trigo.easeInOut(distance, 1);
+		int[] values = new int[distance];
+		for (int i=0;i<distance;i++) {
+			int pos = Math.round(func.apply(i) * distance);
+			values[i] = pos;
+			System.out.println(pos);
+		}
+		Assert.assertEquals(0, values[0]);
+		Assert.assertEquals(distance, values[distance-1]);
+	}
+	
+	@Test
+	public void easePolynomial() {
+		int distance = 60;
+		Function func = Trigo.easePolynomial(distance, 1);
+		int[] values = new int[distance];
+		for (int i=0;i<distance;i++) {
+			int pos = Math.round(func.apply(i) * distance);
+			values[i] = pos;
+			System.out.println(pos);
+		}
+		Assert.assertEquals(0, values[0]);
+		Assert.assertEquals(distance, values[distance-1]);
+	}
+	
+	@Test
+	public void easeDerivee() {
+		checkEaseDerivee(140, 1);
+	}
+	
+	@Test
+	public void easeDeriveeSpeed() {
+		checkEaseDerivee(2200, 2f);
+	}
+	
+	// Check that easeInOutDerivee is really the derivee of easeInOut
+	@Test
+	public void compareFunctionAndDerivee() {
+		int distance = 140;
+		Function func = Trigo.easeInOut(distance, 1);
+		Function derivee = Trigo.easeInOutDerivee(distance, 1);
+		float val = 0;
+		float funcVal = 0;
+		for (int i=0;i<distance;i++) {
+			val += derivee.apply(i) * distance;
+			funcVal = func.apply(i)*distance;
+			System.out.println(funcVal+"\t\t"+val);
+		}
+		Assert.assertEquals((int) val, (int) funcVal);
+	}
+	
+	@Test
+	public void compareSpeed() {
+		// Compare number of frames needed to reach one point, with each movement: linear and easing.
+		// We try to get gap as close as possible (less than 5%).
+		int distance = 140;
+		Function func = Trigo.easeInOut(distance, 1);
+		int i=0;
+		// Go forward until function value reach the target
+		while (Math.round(func.apply(i) * distance) < distance) {
+			i++;
+		}
+		float ratio = ((float) distance - i) / i * 100;
+		System.out.println(i+" frames with easing");
+		System.out.println(distance+" frames with constant speed ("+(int) ratio+"%)");
+		Assert.assertTrue("Ratio should have been less than 5 ! Value Trigo.EASE_SPEED_FACTOR should be ajusted to 1.", (int) ratio < 5);
+	}
+	
+	
+	private void checkEaseDerivee(int distance, float speed) {
+		int iterations = (int) (distance / speed / Trigo.EASE_SPEED_FACTOR);
+		Function funcDerivee = Trigo.easeInOutDerivee(distance, speed);
+		int[] values = new int[iterations];
+		float val = 0;
+		for (int i=0;i<iterations;i++) {
+			float funcVal = funcDerivee.apply(i) * distance;
+			float delta = funcVal * Math.signum(1f);
+			val += delta; //funcVal;
+			values[i] = Math.round(val);
+			System.out.println(val+"\t\t"+funcVal);
+		}
+		Assert.assertEquals(0, values[0]);
+		Assert.assertEquals(distance, values[iterations-1]);
+		System.out.println("max="+distance*Function.FunctionUtils.max(funcDerivee, distance));		
 	}
 }

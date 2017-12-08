@@ -158,24 +158,7 @@ public class ZUtils {
     public static <T> T listTail(List<T> elements) {
     	return elements.get(elements.size() - 1);
     }
-    
-    static byte[] buffer = new byte[10];
-    
-    /** Returns an array containing decomposition of POSITIVE value in base 10. **/
-    public static byte[] decomposeBase10(int value) {
-    	int n = value;
-    	int numDecimal = 0;
-    	while ( n > 0 || numDecimal == 0) {
-    		buffer[ numDecimal++ ] = (byte) (n % 10);
-    		n = n/10;
-    	}
-    	byte[] result = new byte[numDecimal];
-    	for (int i=0;i<numDecimal;i++) {
-    		result[i] = buffer[numDecimal - i - 1];
-    	}
-    	return result;
-    }
-    
+
     public static <T> List<T> arrayList() {
     	return new ArrayList<T>();
     }

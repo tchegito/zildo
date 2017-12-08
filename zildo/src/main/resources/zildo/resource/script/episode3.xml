@@ -502,13 +502,13 @@
 		    <exec script="activeLever(11,6)"/>
 		    <wait value="20"/>
 		    <!-- Move plateform -->
-		    <moveTo what="platef1" pos="0,140" delta="true"/>
+	    	<moveTo what="platef1" pos="0,140" delta="true" way="easein"/>
 		    <wait value="5"/>
-		    <moveTo what="platef1" pos="290,0" delta="true"/>
+		    <moveTo what="platef1" pos="290,0" delta="true" way="easein"/>
 		    <wait value="50"/>
-		    <moveTo what="platef1" pos="-290,0" delta="true"/>
+		    <moveTo what="platef1" pos="-290,0" delta="true" way="easein"/>
 		    <wait value="5"/>
-   		    <moveTo what="platef1" pos="0,-140" delta="true"/>
+   		    <moveTo what="platef1" pos="0,-140" delta="true" way="easein"/>
    		    <exec script="resetLever(11,6)"/>
 		    <markQuest name="cavef6_lev1" value="false"/>
    		</action>
@@ -520,7 +520,7 @@
 	   	    <questDone name="!cavef6_plat2"/>
 	    </trigger>
 	    <action>
-	        <moveTo what="platef2" pos="-270,0" delta="true"/>
+	        <moveTo what="platef2" pos="-270,0" delta="true" way="easein"/>
    	    </action>
    	</quest>
 
@@ -529,9 +529,9 @@
 	   	    <location name="cavef6" tilePos="13,21" gear="TIMED_BUTTON"/>
 	    </trigger>
 	    <action>
-	        <moveTo what="platef3" pos="0,-32" delta="true"/>
+	        <moveTo what="platef3" pos="0,-32" delta="true" way="easein"/>
 	        <wait value="50"/>
-	        <moveTo what="platef3" pos="0,32" delta="true"/>
+	        <moveTo what="platef3" pos="0,32" delta="true" way="easein"/>
 	        <markQuest name="cavef6_button2" value="false"/>
 	    </action>
    	</quest>
@@ -543,9 +543,9 @@
 	    </trigger>
 	    <action>
 	        <exec script="activeLever(3,36)"/>
-	        <moveTo what="platef5" pos="-224,0" delta="true"/>
+	        <moveTo what="platef5" pos="-224,0" delta="true" way="easein"/>
 	        <wait value="50"/>
-	        <moveTo what="platef5" pos="224,0" delta="true"/>
+	        <moveTo what="platef5" pos="224,0" delta="true" way="easein"/>
 	        <exec script="resetLever(3,36)"/>
 	        <markQuest name="cavef6_lever2" value="false"/>
 	    </action>
@@ -559,9 +559,9 @@
 	    <action>
 	        <exec script="activeLever(29,28)"/>
 	        <wait value="250"/>
-	        <moveTo what="platef4" pos="0,-128" delta="true"/>
+	        <moveTo what="platef4" pos="0,-128" delta="true" way="easein"/>
 	        <wait value="50"/>
-	        <moveTo what="platef4" pos="0,128" delta="true"/>
+	        <moveTo what="platef4" pos="0,128" delta="true" way="easein"/>
 	        <exec script="resetLever(29,28)"/>
 	        <markQuest name="cavef6_lever3" value="false"/>
 	    </action>
@@ -575,7 +575,7 @@
 	    </trigger>
 	    <action>
 	        <wait value="10"/>
-	        <moveTo what="platef2" pos="270,0" delta="true"/>
+	        <moveTo what="platef2" pos="270,0" delta="true" way="easein"/>
 	        <markQuest name="cavef6_plat2"/>
 	        <markQuest name="cavef6_button1"/>
 	    </action>
@@ -599,7 +599,7 @@
             <questDone name="!cavef6_platef6_up"/>
         </trigger>
         <action>
-            <moveTo what="platef6" pos="-56,-56" delta="true"/>
+            <moveTo what="platef6" pos="-56,-56" delta="true" way="easein"/>
             <wait value="50"/>
             <markQuest name="cavef6_platef6_up" value="true"/>
             <markQuest name="cavef6_platef6_back" value="false"/>
