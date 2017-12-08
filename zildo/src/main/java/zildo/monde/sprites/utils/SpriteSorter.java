@@ -133,6 +133,8 @@ public class SpriteSorter {
 				// Adjustment for turtle: if squirrel jumps on it, it must be displayed before turtle
 				// See TestSpriteDisplay unit tests for further information
 				if (sprite.isZildo()) y+=sprite.z*2;
+				// Adjustment so hero is displayed UNDER platform when he falls into pit/lava
+				if (sprite.isZildo() && sprite.zoom < 250) y = 0;
 			} else {
 				// Entity : make its always UNDER Zildo and other characters, at the same level
 				// as the map tiles in fact.
