@@ -81,8 +81,10 @@ public class CheckLargeObjectCollision extends EngineUT{
 		Pointf relativeZildoLoc = new Pointf(zildo.x - waterLily.x, zildo.y - waterLily.y);
 		while (frame++<500) {
 			renderFrames(1);
-			Assert.assertTrue("Zildo relative location has changed !! It should not happen !",
-					relativeZildoLoc.x == zildo.x - waterLily.x && relativeZildoLoc.y == zildo.y - waterLily.y);
+			Assert.assertEquals("Zildo relative location has changed !! It should not happen !",
+					(int) relativeZildoLoc.x, (int) (zildo.x - waterLily.x));
+			Assert.assertEquals("Zildo relative location has changed !! It should not happen !",
+					(int) relativeZildoLoc.y, (int) (zildo.y - waterLily.y));
 			
 		}
 	}
