@@ -101,4 +101,26 @@ public class TestFollowPerso extends EngineUT {
 		assertLocation(red, target, true);
 		Assert.assertEquals(1, red.floor);
 	}
+	
+	/** Check that after map has scrolled, character that follow hero is still there. **/
+	@Test
+	public void mapScroll() {
+		EngineZildo.scriptManagement.accomplishQuest("zildoAccessIgor", false);
+		mapUtils.loadMap("prison6");
+		PersoPlayer zildo = spawnZildo(403, 527);
+		waitEndOfScripting();
+		
+		Perso igor = EngineZildo.persoManagement.getNamedPerso("igor");
+		Assert.assertNotNull(igor);
+		
+		simulateDirection(2, 0);
+		while (!EngineZildo.mapManagement.isChangingMap(zildo)) {
+			renderFrames(1);
+		}
+		renderFrames(30);
+		waitEndOfScroll();
+		mapUtils.assertCurrent("prison5");
+		waitEndOfScripting();
+		Assert.assertNotNull(persoUtils.persoByName("igor"));
+	}
 }

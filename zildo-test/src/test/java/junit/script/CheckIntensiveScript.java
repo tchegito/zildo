@@ -62,6 +62,8 @@ public class CheckIntensiveScript extends EngineUT {
 		countTurtles();
 	}
 	
+	// Check a cutscene where a character (Maltus) follows hero during a map scroll
+	// We ensure that he isn't removed during the scroll
 	@Test
 	public void sceneWithSwitchingMap() {
 		mapUtils.loadMap("foretg2");

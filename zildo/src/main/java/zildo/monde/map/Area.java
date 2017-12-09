@@ -1528,7 +1528,7 @@ public class Area implements EasySerializable {
 	}
 
 	/**
-	 * Returns TRUE if the given point (in map coordinates : 0..64,0..64) is outside the map.
+	 * Returns TRUE if the given point (in pixel coordinates : 0..16*64, 0..16*64) is outside the map.
 	 * 
 	 * @param tx
 	 * @param ty

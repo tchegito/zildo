@@ -42,7 +42,6 @@ import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
-import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
@@ -918,6 +917,14 @@ public class SpriteManagement extends SpriteStore {
 	    		entity.y+=p_offset.y;
 	    		entity.setAjustedX(entity.getAjustedX() + p_offset.x);
 	    		entity.setAjustedY(entity.getAjustedY() + p_offset.y);
+	    		
+	    		// Shift also the target of the character, if any
+	    		if (entity.getEntityType().isPerso()) {
+	    			Perso perso = (Perso) entity;
+	    			if (perso.getTarget() != null) {
+	    				perso.getTarget().add(p_offset);
+	    			}
+	    		}
 	    	}
 	    }
 	}
@@ -930,9 +937,9 @@ public class SpriteManagement extends SpriteStore {
 			// them at the end of the scroll.
 			// Except those are currently manipulated by script (ghost is TRUE)
 			for (SpriteEntity entity : spriteEntities) {
-				// Actually poor fix, because we can't find a sure way to discard only relevant characters
-				// Bug was seen with turtles, so we exclude them. But that could occur with some others ?
-				if (entity.isGhost() && entity.getDesc() != PersoDescription.TURTLE) {
+				// Keep entity which are moving with running scripts
+				// If they belong to the previous map, they will be removed when scroll is over
+				if (entity.isGhost()) {
 					continue;
 				} else {
 					suspendedEntities.add(entity);
@@ -943,27 +950,40 @@ public class SpriteManagement extends SpriteStore {
 		}
 	}
 	
+	/** Called when map scroll is over: to remove all entities from previous map **/
 	public void clearSuspendedEntities() {
+		List<SpriteEntity> toRemove = new ArrayList<SpriteEntity>();
 		for (SpriteEntity entity : suspendedEntities) {
 			if (entity != null && !entity.isZildo()) {
-				// Check if this entity is an element linked to Zildo
-				if (entity.getEntityType().isElement() && ((Element)entity).isLinkedToZildo()) {
-					continue;
-				}
-				if (entity.getEntityType().isPerso()) {
-					EngineZildo.scriptManagement.stopPersoAction((Perso) entity);
-				}
-				deleteSprite(entity);
-				if (walkableEntities.contains(entity)) {
-					walkableEntities.remove(entity);
-				}
+				toRemove.add(entity);
 			}
 		}
 		suspendedEntities.clear();
+		// Now check all entities out of the current map (exception those following someone on current map)
 		Area map = EngineZildo.mapManagement.getCurrentMap();
 		for (SpriteEntity entity : spriteEntities) {
-			if (map.isOutside((int) entity.x >> 4, (int) entity.y >> 4)) {
-				System.out.println(entity.getDesc());
+			if (!entity.isZildo() && map.isOutside((int) entity.x, (int) entity.y)) {
+				if (entity.getEntityType().isPerso()) {
+					Perso p = (Perso) entity;
+					Point target = p.getTarget();
+					if (p.getTarget() == null || map.isOutside(target.x, target.y)) {
+						toRemove.add(entity);
+					}
+				}
+			}
+		}
+		// Now remove all gathered entities, taking care of walkable ones
+		for (SpriteEntity entity : toRemove) {
+			// Check if this entity is an element linked to Zildo
+			if (entity.getEntityType().isElement() && ((Element)entity).isLinkedToZildo()) {
+				continue;
+			}
+			if (entity.getEntityType().isPerso()) {
+				EngineZildo.scriptManagement.stopPersoAction((Perso) entity);
+			}
+			deleteSprite(entity);
+			if (walkableEntities.contains(entity)) {
+				walkableEntities.remove(entity);
 			}
 		}
 	}
