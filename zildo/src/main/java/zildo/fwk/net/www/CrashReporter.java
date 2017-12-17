@@ -23,10 +23,7 @@ public class CrashReporter {
 	
 	public CrashReporter(Throwable t) {
 		// Try to send report if player has any communication enabled (3G or Wifi)
-		StringWriter errorMessage = new StringWriter();
-		PrintWriter pw = new PrintWriter(errorMessage);
-		t.printStackTrace(pw);
-		fullStack = errorMessage.toString();
+		fullStack = stackTrace(t);
 	}
 
 	public CrashReporter addContext() {
@@ -42,9 +39,17 @@ public class CrashReporter {
 			addDetail("lastdialog", wholeText);
 		} catch (Exception e) {
 			// Don't let us fail because of something here !
-			addDetail("special", "We have an additional failure here !" + e.getMessage());
+			
+			addDetail("special", "We have an additional failure here !" + stackTrace(e));
 		}
 		return this;	// Fluent ;)
+	}
+	
+	private String stackTrace(Throwable t) {
+		StringWriter errorMessage = new StringWriter();
+		PrintWriter pw = new PrintWriter(errorMessage);
+		t.printStackTrace(pw);
+		return errorMessage.toString();
 	}
 	
 	private void addDetail(String kind, Object o) {
