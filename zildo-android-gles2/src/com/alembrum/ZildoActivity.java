@@ -8,6 +8,7 @@ import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.gui.menu.StartMenu;
 import zildo.fwk.ZUtils;
+import zildo.fwk.net.www.CrashReporter;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.platform.input.AndroidKeyboardHandler.KeyLocation;
 import zildo.platform.opengl.AndroidSoundEngine;
@@ -76,84 +77,92 @@ public class ZildoActivity extends Activity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-		
-        
-        // Enable fullscreen
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        setContentView(R.layout.main);
-       	view = (OpenGLES20SurfaceView) findViewById(R.id.glsurfaceview);
+    	try {
+	        super.onCreate(savedInstanceState);
+			
+	        
+	        // Enable fullscreen
+	        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+	            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+	        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	
+	        setContentView(R.layout.main);
+	       	view = (OpenGLES20SurfaceView) findViewById(R.id.glsurfaceview);
+		    
+	        if (clientThread == null) {
+	        	clientThread = new ClientThread();
+		    	// Display splash screen
+	        	if ("fr".equals(Locale.getDefault().getLanguage())) {
+	        		view.setBackgroundResource(R.drawable.splash480320_fr);
+	        	} else {
+	        		view.setBackgroundResource(R.drawable.splash480320_en);
+	        	}
+	        }
+	
+	        String versionName = "0.00";
+	        try {
+	        	versionName = getPackageManager().getPackageInfo("com.alembrum", 0).versionName;
+	        } catch (NameNotFoundException e) {
+	        	
+	        }
+	        Constantes.CURRENT_VERSION_DISPLAYED = versionName;
+	        
+	        // Initialize platform dependent
+	        PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;
+	        
+	        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+	        
+	        AssetManager assetManager = getAssets();
+	        AndroidReadingFile.assetManager = assetManager;
+	        AndroidReadingFile.context = getBaseContext();
+	
+	    	client = clientThread.getClient();
 	    
-        if (clientThread == null) {
-        	clientThread = new ClientThread();
-	    	// Display splash screen
-        	if ("fr".equals(Locale.getDefault().getLanguage())) {
-        		view.setBackgroundResource(R.drawable.splash480320_fr);
-        	} else {
-        		view.setBackgroundResource(R.drawable.splash480320_en);
-        	}
-        }
-
-        String versionName = "0.00";
-        try {
-        	versionName = getPackageManager().getPackageInfo("com.alembrum", 0).versionName;
-        } catch (NameNotFoundException e) {
-        	
-        }
-        Constantes.CURRENT_VERSION_DISPLAYED = versionName;
-        
-        // Initialize platform dependent
-        PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;
-        
-        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        
-        AssetManager assetManager = getAssets();
-        AndroidReadingFile.assetManager = assetManager;
-        AndroidReadingFile.context = getBaseContext();
-
-    	client = clientThread.getClient();
-    
-    	if (touchListener == null) {
-    		touchListener = new TouchListener(client);
+	    	if (touchListener == null) {
+	    		touchListener = new TouchListener(client);
+	    	}
+	    	
+	     // Get phone resolution
+	        DisplayMetrics metrics = new DisplayMetrics();
+	        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+	        Zildo.screenX = metrics.widthPixels;
+	        Zildo.screenY = metrics.heightPixels;
+	        
+	        client.setLeftHanded(getPreferences(MODE_PRIVATE).getBoolean(PARAM_LEFTHANDED, false));
+	        client.setMovingCross(getPreferences(MODE_PRIVATE).getBoolean(PARAM_MOVINGCROSS, false));
+	        
+	        if (renderer == null) {
+	        	renderer = new OpenGLRenderer(client, touchListener);
+	        }
+	        
+	   		view.setViewRenderer(renderer);
+	   		view.setOnTouchListener(touchListener);
+	   		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+	   	    	gamePadListener = new GamePadListener(touchListener);
+	   		}
+	
+	   		if (!clientThread.isAlive()) {
+	   			clientThread.start();
+	   		}	    
+	        
+	        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+	        
+	        
+	        if (zd == null) {
+	        	createDialogs();
+	        }
+	        if (handler == null) {
+	        	handler = new SplashHandler(view, zd);
+	        }
+    	} catch (RuntimeException t) {
+			// Send a more detailed report than Google one
+			new CrashReporter(t).addContext().sendReport();
+			// Throw exception even though
+			throw t;
     	}
-    	
-     // Get phone resolution
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        Zildo.screenX = metrics.widthPixels;
-        Zildo.screenY = metrics.heightPixels;
-        
-        client.setLeftHanded(getPreferences(MODE_PRIVATE).getBoolean(PARAM_LEFTHANDED, false));
-        client.setMovingCross(getPreferences(MODE_PRIVATE).getBoolean(PARAM_MOVINGCROSS, false));
-        
-        if (renderer == null) {
-        	renderer = new OpenGLRenderer(client, touchListener);
-        }
-        
-   		view.setViewRenderer(renderer);
-   		view.setOnTouchListener(touchListener);
-   		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-   	    	gamePadListener = new GamePadListener(touchListener);
-   		}
-
-   		if (!clientThread.isAlive()) {
-   			clientThread.start();
-   		}	    
-        
-        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        
-        
-        if (zd == null) {
-        	createDialogs();
-        }
-        if (handler == null) {
-        	handler = new SplashHandler(view, zd);
-        }
     }
+    
     /*
     private void placeSavegame() {
     	OutputStream fileOut = Zildo.pdPlugin.prepareSaveFile(Constantes.SAVEGAME_DIR + Constantes.SAVEGAME_FILE + "2");
