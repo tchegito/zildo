@@ -24,6 +24,7 @@ import zildo.Zildo;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
 import zildo.fwk.ui.EditableItemMenu;
+import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.fwk.ui.UnselectableItemMenu;
@@ -49,13 +50,17 @@ public class PlayerNameMenu extends Menu {
             		client.handleMenu(previousMenu);
             	} else {
 	            	// Save playername on disk
-	            	savePlayerName(p_playerName.toString());
-	            	if (runnable != null) {
-	            		runnable.run();
-	            	} else {
-	            		// Back to previous menu
-	            		client.handleMenu(previousMenu);
-	            	}
+            		try {
+            			savePlayerName(p_playerName.toString());
+	            		if (runnable != null) {
+		            		runnable.run();
+		            	} else {
+		            		// Back to previous menu
+		            		client.handleMenu(previousMenu);
+		            	}
+            		} catch (RuntimeException e) {
+						client.handleMenu(new InfoMenu("m15.info", currentMenu));
+            		}
             	}
             }
         };
