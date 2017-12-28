@@ -898,6 +898,9 @@
 	   	    <perso who="noir1" pv="6"/>
 	   	    <perso who="noir2" pv="6"/>
    	   	</condition>
+   	   	<condition name="prison9">
+	   	    <markQuest name="prison12Locked" value="false" />
+	   	</condition>
 	   	<condition name="prison12" exp="fromPrison13">
 	   	    <activate what="locked" value="true" unblock="true"/>
 	   	</condition>

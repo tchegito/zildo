@@ -35,6 +35,8 @@ import zildo.monde.map.Case;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementZildo;
@@ -410,5 +412,44 @@ public class CheckFoundBugs extends EngineUT {
 		
 		assertNotBlocked(zildo);
 		Assert.assertTrue(zildo.x < 240);
+	}
+	
+	/** Issue 134 **/
+	@Test
+	public void closedDoorsAfterKill() {
+		mapUtils.loadMap("prison12");
+		PersoPlayer hero = spawnZildo(159, 43);
+		waitEndOfScripting();
+		
+		Element elemDoor = EngineZildo.spriteManagement.getNamedElement("locked");
+		Assert.assertNotNull(elemDoor);
+		ElementGear lockedDoor = (ElementGear) elemDoor;
+		Assert.assertFalse(((ElementGear) lockedDoor).isOpen());
+		
+		// Kill both guards
+		persoUtils.persoByName("noir1").beingWounded(0,  0, hero, 6);
+		persoUtils.persoByName("noir2").beingWounded(0,  0, hero, 6);
+		waitForScriptRunning("prison12Locked");
+		
+		// Wait for door being opened
+		renderFrames(30);
+		Assert.assertTrue(((ElementGear) lockedDoor).isOpen());
+		
+		// Leave the room
+		simulateDirection(0, -1);
+		renderFrames(50);
+		waitEndOfScroll();
+		mapUtils.assertCurrent("prison9");
+		
+		// And come back
+		simulateDirection(0, 1);
+		renderFrames(50);
+		waitEndOfScroll();
+		mapUtils.assertCurrent("prison12");
+		
+		// Kill again both guards
+		persoUtils.persoByName("noir1").beingWounded(0,  0, hero, 6);
+		persoUtils.persoByName("noir2").beingWounded(0,  0, hero, 6);
+		waitForScriptRunning("prison12Locked");
 	}
 }
