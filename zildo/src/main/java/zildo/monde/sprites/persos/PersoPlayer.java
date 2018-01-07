@@ -639,7 +639,8 @@ public class PersoPlayer extends Perso {
 				if (checkPlatformUnder()) {	// Maybe character hit someone under him
 					land();
 				}
-				vz+=az;
+				// Cheat but game was too hard with real physics. We can say that squirrel's tail slow its fall ;)
+				vz+=az*0.85;
 			} else if (az != 0) {
 				// Fix character on the ground, and cancel movement
 				land();
@@ -702,7 +703,7 @@ public class PersoPlayer extends Perso {
 
 			// When squirrel is on a top of a high stump, he have to be foregound
 			// Idem when it's on the turtle
-			setForeground(z > 7 || isOnPlatform());
+			setForeground(z >= 8 || isOnPlatform());
 
 			switch (angle) {
 			case NORD:
