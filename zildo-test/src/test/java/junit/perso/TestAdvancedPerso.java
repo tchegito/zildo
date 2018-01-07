@@ -19,6 +19,7 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 import zildo.monde.util.Zone;
+import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 
 public class TestAdvancedPerso extends EngineUT {
@@ -185,5 +186,34 @@ public class TestAdvancedPerso extends EngineUT {
 		
 		Assert.assertEquals(startPv-1, hero.getPv());
 		Assert.assertTrue(hero.vx == 0);
+	}
+	
+	/** Issue 108: NPE when player was dialoguing, then hit, then he presses ACTION **/
+	@Test
+	public void npeInDialog() {
+		EngineZildo.scriptManagement.accomplishQuest("foretg_apres_grotte",false);
+		mapUtils.loadMap("bosquet");
+		PersoPlayer hero = spawnZildo(92, 370);
+		waitEndOfScripting();
+		
+		Assert.assertNotNull(persoUtils.persoByName("maltus"));
+		hero.setAngle(Angle.SUD);
+		talkAndCheck("bosquet.maltus.2", false);
+		Assert.assertTrue(hero.getDialoguingWith() != null);
+		persoUtils.persoByName("g1").setAlerte(true);
+		while (!hero.isWounded()) {
+			renderFrames(1);
+		}
+		System.out.println(persoUtils.persoByName("g1"));
+		System.out.println(hero.getPv());
+		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
+		// Wait for hero to be hitten
+		while (hero.getPv() != 5) {
+			renderFrames(1);
+		}
+		Assert.assertTrue(hero.getDialoguingWith() == null);
+		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
+		// Before, we had an NPE just after the line under
+		simulatePressButton(KeysConfiguration.PLAYERKEY_ACTION.code, 2);
 	}
 }

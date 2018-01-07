@@ -45,6 +45,6 @@ public class DialogState {
 	}
 	
 	public boolean isContinuing() {
-		return continuing;
+		return continuing && dialoguing;
 	}
 }
