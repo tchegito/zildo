@@ -1121,12 +1121,12 @@ public class GUIDisplay {
 	 */
 	public ItemMenu getItemOnLocation(int x, int y) {
 		// Duplicate entries because 'displayMenu' method may modify it during our iteration
-		// This avoids to add a 'synchronized' which cause slow down the process (what's worse ?)
-		Set<Entry<ItemMenu, Zone>> entries = new HashSet<Map.Entry<ItemMenu,Zone>>(itemsOnScreen.entrySet());
-		
-		for (Entry<ItemMenu, Zone> e : entries) {
-			if (e.getValue().isInto(x, y)) {
-				return e.getKey();
+		// We add a synchronize block, because another set creation would also trigger concurrentmodificationexception
+		synchronized (itemsOnScreen) {
+			for (Entry<ItemMenu, Zone> e : itemsOnScreen.entrySet()) {
+				if (e.getValue().isInto(x, y)) {
+					return e.getKey();
+				}
 			}
 		}
 		return null;
