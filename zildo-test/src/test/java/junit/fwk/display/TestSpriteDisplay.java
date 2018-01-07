@@ -73,6 +73,7 @@ public class TestSpriteDisplay extends EngineUT {
 		renderFrames(1);
 		
 		squirrel.jump();
+		renderFrames(5);
 		simulateDirection(0, -1);
 		Perso turtle = EngineZildo.persoManagement.getNamedPerso("sacher");
 		checkOrder(turtle);
