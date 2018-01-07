@@ -545,14 +545,20 @@ public abstract class EngineUT {
 			}
 		}
 	}
-	/** Make hero talkin by pressing action button, and check that given dialog has been said. Then go on dialog. **/
+	
 	public void talkAndCheck(String key) {
+		talkAndCheck(key, true);
+	}
+	/** Make hero talkin by pressing action button, and check that given dialog has been said. Then go on dialog, if given paramter is TRUE. **/
+	public void talkAndCheck(String key, boolean goOn) {
 		PersoPlayer hero = EngineZildo.persoManagement.getZildo();
 		Assert.assertTrue(hero.getDialoguingWith() == null);
 		simulatePressButton(Keys.Q, 2);
 		Assert.assertTrue(hero.getDialoguingWith() != null);
 		checkNextDialog(key);
-		goOnDialog();
+		if (goOn) {
+			goOnDialog();
+		}
 	}
 
 	// Specific for dialogs
