@@ -110,9 +110,18 @@ public class Case implements EasySerializable {
 		modified = value;
 	}
 	
+	private static int[] seqWater={0, 100, 123, 100};
+	private static int[] seqFlower={0, 111, 3};
+	private static int[] seqForge={142, 194, 178};
+	private static int[] seqForge2={144, 195, 179};
+	private static int[] seqRotate={0, 1, 2, 1};
+	private static int[] seqForward={0, 1, 2};
+	
 	public static int getAnimatedMotif(TileLevel level, Tile t, int compteur_animation) {
 		int motif = t.index;
 		int bank = t.bank;
+		int comptModulo3 = (compteur_animation / 20) % 3;
+		int comptModulo4 = (compteur_animation / 20) % 4;
 		switch (level) {	// Some animation works only on back2 (because of mask color, indeed)
 			case BACK:
 			switch (bank) {
@@ -120,74 +129,51 @@ public class Case implements EasySerializable {
 				case 0:
 				// Water
 					if (motif>=108 && motif<=130 && motif !=129) {
-						if (compteur_animation > 40)
-							motif+=100;
-						else if (compteur_animation > 20)
-							motif+=100+23;
+						motif += seqWater[comptModulo4];
 					} else if (motif==52 || motif==53) {
-						// Flowers
-						if (compteur_animation > 40)
-							motif+=3;
-						else if (compteur_animation > 20)
-							motif+=111;
+						motif += seqFlower[comptModulo3];
 					}
 					break;
 		
 		
 				case 1:
 					if (motif>=235 && motif<=237)
-						motif+=(compteur_animation / 20)*3;
+						motif+=seqForward[comptModulo3] * 3;
 					break;
 		
 				case 2:
 					switch (motif) 
 					{
 						case 174:    
-							if (compteur_animation>=20)
-								motif=175+(compteur_animation / 20);
+							if (comptModulo3>=20)
+								motif=175+(comptModulo3 / 20);
 							break;
-						case 142:
-							if (compteur_animation>=40)
-								motif=178;
-							else if (compteur_animation>=20)
-								motif=194;
+						case 142:	// Forge
+							motif = seqForge[comptModulo3];
 							break;
 						case 144:
-							if (compteur_animation>=40)
-								motif=179;
-							else if (compteur_animation>=20)
-								motif=195;
+							motif = seqForge2[comptModulo3];
 							break;
 					    case 235:
-							motif=235+(compteur_animation / 20);
+							motif=235+seqRotate[comptModulo4];
 					}
 					break;
 				case 3:
 				// L'eau dans les grottes/palais
 					if (motif==78)
-						motif=78+(compteur_animation / 20);
+						motif=78+(comptModulo3 / 20);
 					else if (motif == 217) {	// Lava
-						if (compteur_animation >=40) {
-							motif = 219;
-						} else if (compteur_animation >=20) {
-							motif = 218;
-						}
+						motif = 217 + seqForward[comptModulo3];
 					} else if( motif == 230) {
-						if (compteur_animation >=40) {
-							motif = 232;
-						} else if (compteur_animation >=20) {
-							motif = 231;
-						}
+						motif = 230 + seqForward[comptModulo3];
 					}
 					break;
 					
 		
 				case 5:
 					// FORET3.DEC animation d'eau supplémentaire
-					if (motif>=96 && motif<=104)
-						motif+=(compteur_animation / 20)*3;
-					else if (motif == 211) {
-						motif+=(compteur_animation / 20)%3;
+					if ((motif>=96 && motif<=104) || motif == 211) {
+						motif+=seqRotate[comptModulo4];
 					}
 					break;
 			}
@@ -195,16 +181,9 @@ public class Case implements EasySerializable {
 			case BACK2:
 				switch (bank) {
 					case 6:	// FORET4.DEC
-						if (motif == 215 || motif == 218 || motif == 221) {
-							if (compteur_animation > 40)
-								motif+=1;
-							else if (compteur_animation > 20)
-								motif+=2;
-						} else if (motif >= 0 && motif <= 2) {
-							if (compteur_animation > 40)
-								motif+=1;
-							else if (compteur_animation > 20)
-								motif+=2;
+						if (motif == 215 || motif == 218 || motif == 221 ||
+							(motif >= 0 && motif <= 2) ) {
+							motif += seqForward[2 - comptModulo3];
 						}
 						break;
 				}

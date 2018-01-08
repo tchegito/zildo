@@ -144,7 +144,7 @@ public class MapDisplay {
 	}
 
 	public int getCompteur_animation() {
-        compteur_animation = (byte) ((compteur_animation + 1) % (3 * 20));
+        compteur_animation = compteur_animation + 1;
         return compteur_animation;
 	}
 
