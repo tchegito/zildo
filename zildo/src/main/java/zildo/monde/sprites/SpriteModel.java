@@ -23,6 +23,7 @@ package zildo.monde.sprites;
 import zildo.Zildo;
 import zildo.fwk.db.Identified;
 import zildo.fwk.db.MaxId;
+import zildo.monde.util.Zone;
 
 
 
@@ -47,38 +48,28 @@ public class SpriteModel extends Identified {
 
 	private	int taille_x,taille_y;
 	private int texPos_x,texPos_y;			// Position sur la texture de sprite
-
-	private	int offset;
+	// Borders are offsets to display sprite (empty columns on the left and right of the sprite)
+	private Zone emptyBorders; // (x1=>left, x2=>right, y1=>y, y2 unused)
 	
 	private static SpriteModel screenSized=null;
 	
 	static final SpriteModel getScreenSized() {
 		if (screenSized == null) {
-			screenSized=new SpriteModel();
-			screenSized.taille_x=320; //Zildo.viewPortX*2;
-			screenSized.taille_y=-Zildo.viewPortY;
+			screenSized=new SpriteModel(320, -Zildo.viewPortY);
 			screenSized.texPos_x=0;
 			screenSized.texPos_y=0;
 		}
 		return screenSized;
 	}
 	
-	public SpriteModel() {
-		
+	public SpriteModel(int taille_x, int taille_y) {
+		this(taille_x, taille_y, null);
 	}
 	
-	public SpriteModel(int taille_x, int taille_y, int offset) {
+	public SpriteModel(int taille_x, int taille_y, Zone emptyBorders) {
 		this.taille_x=taille_x;
 		this.taille_y=taille_y;
-		this.offset=offset;
-		initializeId();
-	}
-	
-	public SpriteModel(int taille_x, int taille_y, int texPos_x, int texPos_y) {
-		this.taille_x=taille_x;
-		this.taille_y=taille_y;
-		this.texPos_x=texPos_x;
-		this.texPos_y=texPos_y;
+		this.emptyBorders = emptyBorders;
 		initializeId();
 	}
 	
@@ -86,16 +77,8 @@ public class SpriteModel extends Identified {
 		return taille_x;
 	}
 
-	public void setTaille_x(int taille_x) {
-		this.taille_x = taille_x;
-	}
-
 	public int getTaille_y() {
 		return taille_y;
-	}
-
-	public void setTaille_y(int taille_y) {
-		this.taille_y = taille_y;
 	}
 
 	public int getTexPos_x() {
@@ -113,13 +96,9 @@ public class SpriteModel extends Identified {
 	public void setTexPos_y(int texPos_y) {
 		this.texPos_y = texPos_y;
 	}
-
-	public int getOffset() {
-		return offset;
-	}
-
-	public void setOffset(int offset) {
-		this.offset = offset;
+	
+	public Zone getEmptyBorders() {
+		return emptyBorders;
 	}
 	
 	@Override

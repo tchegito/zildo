@@ -30,6 +30,6 @@ public class ElementFire extends Element {
 
 	public ElementFire(int x, int y) {
 		setSpecialEffect(EngineFX.FIRE);
-		setSprModel(new SpriteModel(32, 64, 0));
+		setSprModel(new SpriteModel(32, 64));
 	}
 }

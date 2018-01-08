@@ -40,7 +40,7 @@ import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.sprites.SpriteStore;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "unchecked", "rawtypes"})
 public class BuilderDialog extends JDialog {
 
 	JComboBox comboTileBank;
@@ -50,7 +50,7 @@ public class BuilderDialog extends JDialog {
 	
 	public BuilderDialog(MasterFrameManager pManager) {
 		manager = pManager;
-		SizedGridPanel panel = new SizedGridPanel(4, 5);
+		SizedGridPanel panel = new SizedGridPanel(5, 5);
 
 		// Tile bank combo
 		List<String> listTileBanks = new ArrayList<String>();
@@ -115,6 +115,24 @@ public class BuilderDialog extends JDialog {
 		});
 		panel.addComp(comboSpriteBank, buttonBuildSpriteBank);
 
+		// All motif bank
+		JButton buttonAllSpriteBanks = new JButton(new AbstractAction("Build all sprite banks") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					new Modifier().saveAllSpriteBank();
+
+					// Reload all banks
+					reloadSprites();
+
+					MasterFrameManager.display("All sprite banks builded successfully !");
+				} catch (RuntimeException ex) {
+					error("Error building all sprite banks !", ex);
+				}
+			}
+		});
+		panel.add(buttonAllSpriteBanks);
+		
 		panel.add(new JButton(new AbstractAction("Build textures") {
 			@Override
 			public void actionPerformed(ActionEvent e) {

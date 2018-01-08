@@ -96,7 +96,7 @@ public class Modifier {
      public static void main(String[] args) {
          // Intialize game engine
     	 Zildo.soundEnabled = false;
-    	 new Modifier().textureBuilder();
+    	 //new Modifier().textureBuilder();
     	 //if (true) System.exit(0);
         Game g=new Game(null, true);
         new EngineZildo(g);
@@ -106,9 +106,10 @@ public class Modifier {
         // Exteria1 is the reference picture for palette
         // ***IMPORTANT ***
         
-        new Modifier().saveFontes2();
+        //new Modifier().saveFontes2();
+        //new Modifier().savePalette();
+        new Modifier().saveAllSpriteBank();
         if (false) {
-        new Modifier().savePalette();
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
         new Modifier().saveElements();
@@ -211,6 +212,16 @@ public class Modifier {
     	 }
      }
      
+     public void saveAllSpriteBank() {
+    	 for (String name : SpriteStore.sprBankName) {
+    		 if ("font.spr".equals(name)) {
+    			 saveFontes2();	// Particular case for fontes
+    		 } else {
+    			 saveNamedSpriteBank(name);
+    		 }
+    	 }
+     }
+     
      private Banque getTileBankClass(String bankName) {
 		 try {
 			if (bankName.equals("lavacave")) {
@@ -258,7 +269,7 @@ public class Modifier {
          int nSpr=bankElem.getNSprite();
          Zone[] elements=new ElementsPlus().getZones();
          for (Zone z : elements) {
-         	bankElem.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
+         	bankElem.addSprFromImage(nSpr, z);
          	nSpr++;
          }
          bankElem.setName("elements2.spr");
@@ -287,7 +298,7 @@ public class Modifier {
     	 int nSpr=123;
     	 for (Zone z : zones) {
     		 if (bankElem.getNSprite() <= nSpr) {
-    			 bankElem.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
+    			 bankElem.addSprFromImage(nSpr, z);
     		 }
     		 nSpr++;
     		 if (nSpr == 161) {
@@ -344,7 +355,7 @@ public class Modifier {
 		int nSpr = bankFont.getNSprite();
 		Zone[] elements = new Fontes().getZones();
 		for (Zone z : elements) {
-			bankFont.addSprFromImage(nSpr, z.x1, z.y1, z.x2, z.y2);
+			bankFont.addSprFromImage(nSpr, z);
 			nSpr++;
 		}
 		bankFont.saveBank();
@@ -411,7 +422,7 @@ public class Modifier {
             int nSprOriginal=PersoDescription.VOLANT_BLEU.getNSpr() + i;
             SpriteModel model=bankIn.get_sprite(nSprOriginal);
             System.out.println("On copie le sprite no"+nSprOriginal);
-            bankOut.addSpr(fin+i, model.getTaille_x(), model.getTaille_y(), bankIn.getSpriteGfx(nSprOriginal));
+            bankOut.addSpr(fin+i, model.getTaille_x(), model.getTaille_y(), null, bankIn.getSpriteGfx(nSprOriginal));
         }
         bankIn.removeSpr(124);
         bankIn.removeSpr(124);
@@ -427,9 +438,9 @@ public class Modifier {
         SpriteBankEdit bankIn=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ZILDO));
         bankIn.loadImage("link3b", COLOR_BLUE);
         int pos=bankIn.getNSprite();
-        bankIn.addSprFromImage(pos,   67, 70, 16, 8);
-        bankIn.addSprFromImage(pos+1, 67, 79, 16, 9);
-        bankIn.addSprFromImage(pos+2, 67, 89, 16, 8);
+        bankIn.addSprFromImage(pos,   new Zone(67, 70, 16, 8));
+        bankIn.addSprFromImage(pos+1, new Zone(67, 79, 16, 9));
+        bankIn.addSprFromImage(pos+2, new Zone(67, 89, 16, 8));
         bankIn.saveBank();
     }
 

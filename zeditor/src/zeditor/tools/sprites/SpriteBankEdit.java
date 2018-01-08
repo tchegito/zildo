@@ -66,15 +66,15 @@ public class SpriteBankEdit extends SpriteBank {
         Identified.resetCounter(SpriteModel.class);
     }
     
-    public void addSpr(int p_position, int p_tailleX, int p_tailleY, short[] p_gfx) {
-        SpriteModel model=new SpriteModel(p_tailleX, p_tailleY, 0);    // don't care about 'offset'
+    public void addSpr(int p_position, int p_tailleX, int p_tailleY, Zone borders, short[] p_gfx) {
+        SpriteModel model=new SpriteModel(p_tailleX, p_tailleY, borders);
         bankEdit.gfxs.add(p_position, p_gfx);
         models.add(p_position, model);
         nSprite++;
     }
     
-    public void setSpr(int p_position, int p_tailleX, int p_tailleY, short[] p_gfx) {
-        SpriteModel model=new SpriteModel(p_tailleX, p_tailleY, 0);    // don't care about 'offset'
+    public void setSpr(int p_position, int p_tailleX, int p_tailleY, Zone borders, short[] p_gfx) {
+        SpriteModel model=new SpriteModel(p_tailleX, p_tailleY, borders);
         bankEdit.gfxs.set(p_position, p_gfx);
         models.set(p_position, model);
         nSprite++;
@@ -95,23 +95,29 @@ public class SpriteBankEdit extends SpriteBank {
     public void fillNSprite(int number) {
     	for (int i=0;i<number;i++) {
 	    	bankEdit.gfxs.add(new short[] {});
-	    	models.add(new SpriteModel());
+	    	models.add(new SpriteModel(0, 0));
     	}
     }
     
-    public void addSprFromImage(int p_position, int p_startX, int p_startY,
-			int p_tailleX, int p_tailleY) {
+    public void addSprFromImage(int p_position, Zone z) {
 		// Extract sprite from image
-		short[] sprite = bankEdit.getRectFromImage(p_startX, p_startY, p_tailleX, p_tailleY);
-		addSpr(p_position, p_tailleX, p_tailleY, sprite);
+		short[] sprite = bankEdit.getRectFromImage(z.x1, z.y1, z.x2, z.y2);
+		addSpr(p_position, z.x2, z.y2, zoneBorders(z), sprite);
 	}
    
-    public void setSprFromImage(int p_position, int p_startX, int p_startY,
-			int p_tailleX, int p_tailleY) {
+    public void setSprFromImage(int p_position, Zone z) {
 		// Extract sprite from image
-		short[] sprite = bankEdit.getRectFromImage(p_startX, p_startY, p_tailleX, p_tailleY);
-		setSpr(p_position, p_tailleX, p_tailleY, sprite);
+		short[] sprite = bankEdit.getRectFromImage(z.x1, z.y1, z.x2, z.y2);
+		setSpr(p_position, z.x2, z.y2, zoneBorders(z), sprite);
 	}
+    
+    private Zone zoneBorders(Zone z) {
+    	if (z instanceof ZoneO) {
+    		ZoneO zo = (ZoneO) z;
+    		return zo.getOffsetZone();
+    	}
+    	return null;
+    }
     
     public void loadImage(String p_filename, int p_transparentColor) {
 		String imageName=Banque.PKM_PATH;
@@ -132,6 +138,14 @@ public class SpriteBankEdit extends SpriteBank {
             SpriteModel model=models.get(i);
             buffer.put((byte) model.getTaille_x());
             buffer.put((byte) model.getTaille_y());
+            Zone offsets = model.getEmptyBorders();
+            if (offsets == null) {
+            	buffer.put((byte) 0);
+            } else {
+                buffer.put((byte) (offsets.y1 | 128));
+                buffer.put((byte) offsets.x1);
+                buffer.put((byte) offsets.x2);
+            }
             for (short s : bankEdit.gfxs.get(i)) {
                 buffer.put((byte) s);
             }
@@ -174,7 +188,7 @@ public class SpriteBankEdit extends SpriteBank {
     		 }
     	 }
     	 try {
-    		 addSprFromImage(startSpr + i, z.x1, z.y1, z.x2, z.y2);
+    		 addSprFromImage(startSpr + i, z);
     	 } catch (Exception e) {
     		 throw new RuntimeException("Unable to insert sprite "+i+"/"+elements.length+" on bank "+p_bank, e);
     	 }
@@ -199,17 +213,15 @@ public class SpriteBankEdit extends SpriteBank {
 				width = getWidth(startX, startY, fontHeight);
 			}
 			int offsetFont = i;	// Default i-nth font
-			char c = GUIDisplay.transcoChar.charAt(i);
 			if (chars != null) {
-				c = chars.charAt(i);
 				offsetFont = GUIDisplay.transcoChar.indexOf(chars.charAt(i));
 			}
 			if (width > 1) {
 				//System.out.println(c);
 				if (chars == null) {
-					addSprFromImage(offsetnSprite + offsetFont, startX, startY, width, fontHeight);
+					addSprFromImage(offsetnSprite + offsetFont, new Zone(startX, startY, width, fontHeight));
 				} else {
-					setSprFromImage(offsetnSprite + offsetFont, startX, startY, width, fontHeight);
+					setSprFromImage(offsetnSprite + offsetFont, new Zone(startX, startY, width, fontHeight));
 				}
 
 				//System.out.println(startX + " , " + startY + " size=" + width);

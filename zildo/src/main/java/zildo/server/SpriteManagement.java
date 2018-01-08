@@ -65,6 +65,7 @@ import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 import zildo.server.state.ClientState;
 
 public class SpriteManagement extends SpriteStore {
@@ -614,7 +615,15 @@ public class SpriteManagement extends SpriteStore {
 				
 				if (!perso.isZildo()) {
 					// Non-zildo sprite haven't same way to display correctly (bad...)
-					perso.setAjustedX(perso.getAjustedX() - (spr.getTaille_x() / 2));
+					int ajX = perso.getAjustedX();
+					ajX -= spr.getTaille_x() / 2;
+					if (spr.getEmptyBorders() != null) {
+						Zone offsets = spr.getEmptyBorders();
+						ajX -= offsets.x1;
+					} else {
+						ajX -= spr.getTaille_x() / 2;
+					}
+					perso.setAjustedX(ajX);
 					perso.setAjustedY(perso.getAjustedY() - (spr.getTaille_y() - 3));
 				}
 			}

@@ -42,6 +42,7 @@ import zeditor.tools.ui.SizedGridPanel;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
 /**
@@ -104,19 +105,30 @@ public class ViewSpritesDialog extends JDialog {
 	}
 	
 	private void display() {
+		int scale = 3;
 		int nBank = comboBank.getSelectedIndex();
 		int nSpr = (Integer) spriteSpinner.getValue();
 		SpriteBank bank = EngineZildo.spriteManagement.getSpriteBank(nBank);
 		SpriteModel model = bank.getModels().get(nSpr);
-		Image img = new BufferedImage(model.getTaille_x()*2, model.getTaille_y()*2, BufferedImage.TYPE_INT_RGB);
+		int tx = model.getTaille_x();
+		Zone z = model.getEmptyBorders();
+		if (z != null) {
+			tx += z.x1 + z.x2;
+		}
+		Image img = new BufferedImage(tx*scale, model.getTaille_y()*scale, BufferedImage.TYPE_INT_RGB);
 		Graphics2D gfx2d = (Graphics2D) img.getGraphics();
-		// Double size
-		gfx2d.scale(2, 2);
+		// Multiply size by scale
+		gfx2d.scale(scale, scale);
 		SpriteSet.drawSprite(0, 0, bank, nSpr, gfx2d);
 		ImageIcon icon = new ImageIcon(img);
 		spriteImgLabel.setIcon(icon);
 		// Display width/height
-		sizeLabel.setText(model.getTaille_x()+" x "+model.getTaille_y());
+		String display = model.getTaille_x()+" x "+model.getTaille_y();
+		Zone borders = model.getEmptyBorders();
+		if (borders != null) {
+			display += " offXLeft="+borders.x1+" offXRight="+borders.x2+" offY="+borders.y1;
+		}
+		sizeLabel.setText(display);
 	}
 	
 	class ViewSpritesListener implements ActionListener, ChangeListener {

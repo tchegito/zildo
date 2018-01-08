@@ -26,6 +26,7 @@ import java.util.List;
 import zildo.Zildo;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.util.Zone;
 
 /**
 //////////////////////////////////////////////////////////////////////
@@ -52,6 +53,7 @@ public class SpriteBank {
 	protected List<SpriteModel> models;
 
 	protected short[] sprites_buf;
+	private int[] offsets;	// Location of each sprite in sprites_buf
 	protected int nSprite;
 	protected String name;
 	
@@ -62,26 +64,7 @@ public class SpriteBank {
 		this.nSprite=0;
 		models=new ArrayList<SpriteModel>();
 		this.sprites_buf=null;
-	}
-	
-	@Override
-	public void finalize()
-	{
-		// No need to do that in Java
-		
-		// sprites_buf is already deleted in SpriteManagement
-		//delete sprites_buf;
-	/*
-		std::list<Sprite*>::iterator  it=tab_sprite.begin();
-		for (it;it!=tab_sprite.end();)
-		{
-			Sprite* sprite=*it;
-			delete sprite;
-			nSprite--;
-			it++;
-		}
-	*/
-		//models.clear();
+		offsets=new int[300];	// Max sprites=300
 	}
 	
 	// Load a sprites bank into memory
@@ -93,24 +76,34 @@ public class SpriteBank {
 	
 		k=0;
 	
-		// Theoretically, max size will be 256x256 = 65535
+		// Theoretically, max size will be 256x256 -1 = 65535
 		sprites_buf=new short[65535];
 		name=filename;
 	
 		while (!file.eof()) {
 			a=file.readUnsignedByte();
 			b=file.readUnsignedByte();
-	
+			int offY=file.readUnsignedByte();
+			Zone emptyBorders = null;
+			// If bit 7 is on, so we have 2 offset available for this sprite
+			
+			if ((offY & 128) != 0) {
+				int offXLeft=file.readUnsignedByte();
+				int offXRight=file.readUnsignedByte();
+				emptyBorders = new Zone(offXLeft, offY & 127, offXRight, 0);
+			}
+			
 			// Still theory : 256 won't fit in a byte, so 0 means probably 256
 			if (a == 0) a = 256;
 			if (b == 0) b = 256;
 			// Build a temporary sprite and add it to the list
-			SpriteModel spr=new SpriteModel(a, b, k);
+			SpriteModel spr=new SpriteModel(a, b, emptyBorders);
 			models.add(spr);
 	
 			int taille=b*a;
 			file.readUnsignedBytes(sprites_buf, k, taille);
 	
+			offsets[nSprite] = k;
 			k+=taille;
 			nSprite++;
 		}
@@ -171,17 +164,9 @@ public class SpriteBank {
 		
 		int size=spr.getTaille_x() * spr.getTaille_y();
 		short[] coupe=new short[size];
-		int a=spr.getOffset();
+		int a=offsets[nSpr]; //spr.getOffset();
 		System.arraycopy(sprites_buf, a, coupe, 0, size);
 		return coupe;
-	}
-	
-	public void addSpriteReference(int texPosX, int texPosY, int sizeX, int sizeY)
-	{
-		SpriteModel spr=new SpriteModel(sizeX, sizeY, texPosX, texPosY);
-		models.add(spr);
-	
-		nSprite++;
 	}
 
 	public List<SpriteModel> getModels() {

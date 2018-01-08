@@ -149,15 +149,32 @@ public class SpriteSet extends ImageSet {
 		SpriteModel model = pnjBank.get_sprite(nSpr);
 		short[] data = pnjBank.getSpriteGfx(nSpr);
 
+		// Use the right palette
+		int newPalNum = pnjBank.whichPalette(nSpr);
+		GFXBasics.switchPalette(newPalNum);
+		
+		Zone borders = model.getEmptyBorders();
+		int offXLeft = 0;
+		int offXRight = 0;
+		if (borders != null) {
+			offXLeft = borders.x1;
+			offXRight = borders.x2;
+		}
+		int a = 255;
+		int tx = model.getTaille_x();
 		for (int y = 0; y < model.getTaille_y(); y++) {
-			for (int x = 0; x < model.getTaille_x(); x++) {
-				int offset = y * model.getTaille_x() + x;
-				int a = data[offset];
-				if (a != 255) {
+			for (int x = 0-offXLeft; x < tx + offXRight; x++) {
+				if (x >= 0 && x < tx) {
+					int offset = y * tx + x;
+					a = data[offset];
+				} else {
+					a = 255;
+				}
+				if (a != 255 || true) {
 					Vector4f col = GFXBasics.getColor(a);
 					gfx2d.setColor(new Color(col.x / 256, col.y / 256,
 							col.z / 256));
-					gfx2d.drawLine(x + i, y + j, x + i, y + j);
+					gfx2d.drawLine(x + offXLeft + i, y + j, x + offXLeft + i, y + j);
 				}
 			}
 		}
