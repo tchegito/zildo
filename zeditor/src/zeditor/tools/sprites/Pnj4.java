@@ -53,12 +53,12 @@ public class Pnj4 extends SpriteBanque {
 		    new Zone(0, 55, 21, 23), new Zone(25, 54, 21, 24),
 		    new Zone(50, 54, 21, 24), new Zone(75, 55, 21, 23),
 			// Attacking (48) (we use offsets here)
-			new ZoneO(4, 105, 16, 22, /*offset*/4, 1,0),new ZoneO(25, 105, 21, 22, 1, 0, 0), new ZoneO(50, 105, 22, 22, /* */1, 0, 0), 
-			new ZoneO(75, 106, 22, 21, 1, 0, 0), new ZoneO(101, 106, 20, 21, 1, 0, 0),new ZoneO(121, 105, 24, 22, 0, 4, 0),
-			new Zone(1, 130, 38, 18), new Zone(40, 129, 40, 21), new Zone(81, 129, 41, 21),
-			new Zone(123, 129, 43, 21), new Zone(1,152, 55, 22), new Zone(57, 159, 55, 12),
-			new Zone(113, 157, 52, 14), new Zone(166, 158, 51, 13), new Zone(218, 159, 48, 12),
-			new Zone(1, 189, 45, 12), new Zone(48, 187, 41, 13), new Zone(92, 178, 23, 22)
+			new ZoneO(4, 105, 16, 22, /*offset*/4, 1,0),new ZoneO(28, 105, 18, 22, 3, 0, 0), new ZoneO(52, 105, 20, 22, /* */3, 0, 0), 
+			new ZoneO(75, 106, 22, 21, 1, 0, 0), new ZoneO(101, 106, 20, 21, 1, 0, 0),new ZoneO(121, 105, 24, 22, 0, 5, 0),
+			new ZoneO(1, 130, 38, 18, 0, 33, 0), new ZoneO(40, 129, 40, 21, 0, 35, 2), new ZoneO(81, 129, 41, 21, 0, 36, 2),
+			new ZoneO(123, 129, 43, 21, 0, 38, 2), new ZoneO(1,152, 55, 22, 0, 50, 3), new ZoneO(57, 159, 55, 12, 0, 50, 0),
+			new ZoneO(113, 157, 52, 14, 0, 47, 0), new ZoneO(166, 158, 51, 13, 0, 46, 0), new ZoneO(218, 159, 48, 12, 0, 43, 0),
+			new ZoneO(1, 189, 45, 12, 0, 40, 1), new ZoneO(48, 187, 41, 13, 0, 36, 0), new ZoneO(92, 178, 23, 22, 0, 10, 0)
 			
 			
 		};

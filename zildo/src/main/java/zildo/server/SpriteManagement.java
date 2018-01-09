@@ -616,15 +616,21 @@ public class SpriteManagement extends SpriteStore {
 				if (!perso.isZildo()) {
 					// Non-zildo sprite haven't same way to display correctly (bad...)
 					int ajX = perso.getAjustedX();
-					ajX -= spr.getTaille_x() / 2;
+					int ajY = perso.getAjustedY() - (spr.getTaille_y() - 3);
 					if (spr.getEmptyBorders() != null) {
 						Zone offsets = spr.getEmptyBorders();
-						ajX -= offsets.x1;
+						if (!perso.reverse.isHorizontal()) {
+							ajX -= (spr.getTaille_x()+offsets.x1 +offsets.x2 )/2;
+							ajX += offsets.x1;	// Shift because between [x,x1] this is an empty border
+						} else {
+							ajX -= (spr.getTaille_x()-offsets.x2+offsets.x1)/2;
+						}
+						ajY += offsets.y1;
 					} else {
 						ajX -= spr.getTaille_x() / 2;
 					}
 					perso.setAjustedX(ajX);
-					perso.setAjustedY(perso.getAjustedY() - (spr.getTaille_y() - 3));
+					perso.setAjustedY(ajY);
 				}
 			}
 		}
