@@ -97,22 +97,7 @@ public class BuilderDialog extends JDialog {
 			listSpriteBanks.add(bankName);
 		}
 		comboSpriteBank = new JComboBox(listSpriteBanks.toArray(new String[]{}));
-		JButton buttonBuildSpriteBank = new JButton(new AbstractAction("Build sprite bank") {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String bankName = (String) comboSpriteBank.getSelectedItem();
-
-				try {
-					new Modifier().saveNamedSpriteBank(bankName);
-					// Reload all sprites
-					reloadSprites();
-					
-					MasterFrameManager.display("Sprite bank "+bankName+" has been builded !");
-				} catch (RuntimeException ex) {
-					error("Error building bank "+bankName, ex);
-				}
-			}
-		});
+		JButton buttonBuildSpriteBank = new JButton(buildSpriteBankAction(comboSpriteBank));
 		panel.addComp(comboSpriteBank, buttonBuildSpriteBank);
 
 		// All motif bank
@@ -195,5 +180,24 @@ public class BuilderDialog extends JDialog {
 				inst.setVisible(true);
 			}
 		});
+	}
+	
+	public AbstractAction buildSpriteBankAction(final JComboBox comboSpriteBank) {
+		return new AbstractAction("Build sprite bank") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int idx = comboSpriteBank.getSelectedIndex();
+				String bankName = (String) SpriteStore.sprBankName[idx]; 
+				try {
+					new Modifier().saveNamedSpriteBank(bankName);
+					// Reload all sprites
+					reloadSprites();
+					
+					MasterFrameManager.display("Sprite bank "+bankName+" has been builded !");
+				} catch (RuntimeException ex) {
+					error("Error building bank "+bankName, ex);
+				}
+			}
+		};
 	}
 }

@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -39,6 +40,7 @@ import javax.swing.event.ChangeListener;
 
 import zeditor.core.tiles.SpriteSet;
 import zeditor.tools.ui.SizedGridPanel;
+import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
@@ -58,8 +60,11 @@ public class ViewSpritesDialog extends JDialog {
 	JLabel sizeLabel;
 	JSpinner spriteSpinner;
 	
+	MasterFrameManager manager;
 	
-	public ViewSpritesDialog() {
+	public ViewSpritesDialog(MasterFrameManager manager) {
+		this.manager = manager;
+		
 		setLayout(new BorderLayout());
 		setTitle("Sprites collection");
 	
@@ -84,17 +89,20 @@ public class ViewSpritesDialog extends JDialog {
 		add(selPanel, BorderLayout.NORTH);
 		
 		sizeLabel = new JLabel();
-		add(sizeLabel);
 		
-		JPanel visuPanel = new JPanel();
-		visuPanel.setPreferredSize(new Dimension(200, 200));
+		JPanel visuPanel = new JPanel(new BorderLayout());
+		visuPanel.setPreferredSize(new Dimension(300, 200));
+		visuPanel.add(sizeLabel, BorderLayout.NORTH);
 		spriteImgLabel = new JLabel();
-		visuPanel.add(spriteImgLabel);
-
+		spriteImgLabel.setHorizontalAlignment(JLabel.CENTER);
+		visuPanel.add(spriteImgLabel, BorderLayout.CENTER);
+		BuilderDialog bd = new BuilderDialog(manager);
+		add(new JButton(bd.buildSpriteBankAction(comboBank)), BorderLayout.SOUTH);
+		
 		updateSpinner();
 		display();
 
-		add(visuPanel, BorderLayout.SOUTH);
+		add(visuPanel, BorderLayout.CENTER);
 		
 		pack();
 	}
@@ -105,7 +113,7 @@ public class ViewSpritesDialog extends JDialog {
 	}
 	
 	private void display() {
-		int scale = 3;
+		int scale = 4;
 		int nBank = comboBank.getSelectedIndex();
 		int nSpr = (Integer) spriteSpinner.getValue();
 		SpriteBank bank = EngineZildo.spriteManagement.getSpriteBank(nBank);
@@ -119,6 +127,7 @@ public class ViewSpritesDialog extends JDialog {
 		Graphics2D gfx2d = (Graphics2D) img.getGraphics();
 		// Multiply size by scale
 		gfx2d.scale(scale, scale);
+		gfx2d.translate(0.5, 0.5);
 		SpriteSet.drawSprite(0, 0, bank, nSpr, gfx2d);
 		ImageIcon icon = new ImageIcon(img);
 		spriteImgLabel.setIcon(icon);

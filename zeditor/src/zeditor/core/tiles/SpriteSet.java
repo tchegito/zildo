@@ -172,8 +172,7 @@ public class SpriteSet extends ImageSet {
 				}
 				if (a != 255 || true) {
 					Vector4f col = GFXBasics.getColor(a);
-					gfx2d.setColor(new Color(col.x / 256, col.y / 256,
-							col.z / 256));
+					gfx2d.setColor(new Color(col.x / 256, col.y / 256, col.z / 256));
 					gfx2d.drawLine(x + offXLeft + i, y + j, x + offXLeft + i, y + j);
 				}
 			}
