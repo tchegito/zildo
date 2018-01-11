@@ -120,7 +120,7 @@ public enum BankSound implements AudioBank {
 	Hammer("marteau"),
 	CannonBall("cannonball"),
 	
-	BossHit("bosshit"),
+	Bitey("bitey"),
 	BossSand1("sand1"),
 	BossSand2("sand2"),
 	Fuite("fuite"),

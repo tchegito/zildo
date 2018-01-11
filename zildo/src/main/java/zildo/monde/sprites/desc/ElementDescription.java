@@ -150,7 +150,9 @@ public enum ElementDescription implements SpriteDescription {
 	CAULDRON1, CAULDRON2, CAULDRON3, GREEN_BUBBLE,
 	// Wind sucking from fire elemental
 	FIREWIND1, FIREWIND2, FIREWIND3,
-	DRAGON_KEY, PORTAL_KEY;
+	DRAGON_KEY, PORTAL_KEY,
+	// Bitey's GNAP (when the plant shut her tooth)
+	GNAP1, GNAP2, GNAP3, GNAP4, GNAP5;
 	
 	Boolean damage;
 	

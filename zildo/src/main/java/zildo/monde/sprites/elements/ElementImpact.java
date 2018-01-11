@@ -34,7 +34,7 @@ import zildo.server.EngineZildo;
 
 /** Sequence of animating sprites. 
  * 
- * Sprite dies at the end of the sequence, except if 'segLong' is negative. **/
+ * Sprite dies at the end of the sequence, except if 'seqLong' is negative. **/
 public class ElementImpact extends Element {
 
 	public enum ImpactKind {
@@ -51,7 +51,8 @@ public class ElementImpact extends Element {
 		WAVE(ElementDescription.WATERWAVE1, new int[] {2,2,2,1,1,1,1,0,0,0,0,0}, 3),
 		STAFF_TURNING(ElementDescription.STAFF_POUM, 8, 4),	// Staff falling on the floor, or hitting a wall
 		HEARTH(ElementDescription.HEARTH1, -6, 6),	// Fire in nature palace's hearth
-		CAULDRON(ElementDescription.CAULDRON1, -3, 6);
+		CAULDRON(ElementDescription.CAULDRON1, -3, 6),
+		GNAP(ElementDescription.GNAP1, 5, 4);
 		
 		final ElementDescription desc;
 		final int seqLong;	// Size of the sequence of the sprite's life (negative value means infinite loop)
@@ -166,6 +167,7 @@ public class ElementImpact extends Element {
         	case STAFF_TURNING:
         	case HEARTH:
         	case CAULDRON:
+        	case GNAP:
 				if (valCounter >= kind.seq.length) {
 					if (kind.seqLong < 0) {	// Infinite loop
 						counter = 0;

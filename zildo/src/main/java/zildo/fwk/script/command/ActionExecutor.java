@@ -929,13 +929,14 @@ public class ActionExecutor extends RuntimeExecutor {
     			// Spawn only if doesn't exist yet
         		SpriteEntity entity = null;
         		Rotation rot = Rotation.fromInt(p_action.rotation);
+        		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : reverseFromAction(p_action);
     			if (p_action.impact != null) {
     				ImpactKind impactKind = ImpactKind.valueOf(p_action.impact);
     				elem = new ElementImpact(location.x, location.y, impactKind, null);
+    				elem.reverse = rev;
     				entity = elem;
     			} else {
 	        		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
-	        		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : reverseFromAction(p_action);
 	        		elem = null;
 	        		// Chained
 	        		if (ElementDescription.isPlatform(desc)) {
