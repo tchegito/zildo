@@ -278,10 +278,11 @@ public class Client {
 	 */
 	private void handleKeys() {
 		boolean compassMenu = currentMenu instanceof CompassMenu;
+		DialogMode dm = ClientEngineZildo.guiDisplay.getToDisplay_dialogMode();
 		if (kbHandler.isKeyPressed(Keys.ESCAPE)) {
 			// Escape is pressed and no fade is running
 			if (connected) {
-				if (!EngineZildo.spriteManagement.isBlockedNonHero()) {
+				if (!EngineZildo.spriteManagement.isBlockedNonHero() && dm != DialogMode.INFO) {
 					handleMenu(ingameMenu);
 				}
 			} else if (compassMenu) {
@@ -295,7 +296,7 @@ public class Client {
 		
 		if (kbHandler.isKeyPressed(Keys.TOUCH_MENU)) {
 			// Don't allow in game menu when player is in texter (it would make too much overlapping text on screen)
-			if (connected && !isIngameMenu() && ClientEngineZildo.guiDisplay.getToDisplay_dialogMode() != DialogMode.TEXTER) {
+			if (connected && !isIngameMenu() && dm != DialogMode.TEXTER && dm != DialogMode.INFO) {
 				handleMenu(ingameMenu);
 			}
 		}
@@ -315,7 +316,7 @@ public class Client {
 				} else {
 					askForItemMenu(ingameMenu, "m7.quit");
 				}
-			} else {
+			} else if (dm != DialogMode.INFO) {
 				handleMenu(ingameMenu);
 				askForItemMenu(ingameMenu, "m7.quit");
 			}
@@ -323,7 +324,8 @@ public class Client {
 		if (kbHandler.isKeyPressed(Keys.COMPASS) && 
 				connected &&	// Inside the game, not in main menu
 				ClientEngineZildo.guiDisplay.isToDisplay_generalGui() && 
-				ClientEngineZildo.guiDisplay.getToDisplay_dialogMode() != DialogMode.TEXTER &&
+				dm != DialogMode.TEXTER &&
+				dm != DialogMode.INFO &&
 				// Forbid access when dialoguing => too much characters on screen (issue 109)
 				ClientEngineZildo.guiDisplay.isToDisplay_compassItem()
 				) {

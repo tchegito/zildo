@@ -98,9 +98,11 @@ public class TitleStage extends GameStage {
 			} else {
 				endGame();
 			}
-				
+		
 		}
-		ClientEngineZildo.guiDisplay.displayInfo(currentLine * 16 + centerY, sentence, action);
+		if (!done) {
+			ClientEngineZildo.guiDisplay.displayInfo(currentLine * 16 + centerY, sentence, action);
+		}
 	}
 
 	@Override

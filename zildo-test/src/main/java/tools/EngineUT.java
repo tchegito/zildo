@@ -27,6 +27,8 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,6 +65,7 @@ import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
+import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.Game;
 import zildo.monde.Hasard;
 import zildo.monde.dialog.HistoryRecord;
@@ -85,6 +88,7 @@ import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.SoundManagement;
 import zildo.server.state.ClientState;
+import zildo.server.state.ScriptManagement;
 
 /**
  * @author Tchegito
@@ -99,6 +103,7 @@ public abstract class EngineUT {
 	protected ClientState clientState;
 	protected MapUtils mapUtils;	// To easily manipulate the map
 	protected PersoUtils persoUtils;	// To easily manipulate the characters
+	protected ScriptManagement scriptMgmt; // Just a shortcut
 	
 	protected KeyboardInstant instant;
 	static KeyboardHandler fakedKbHandler;	// Will be reused all along
@@ -388,6 +393,8 @@ public abstract class EngineUT {
 		if ("true".equals(System.getProperty("DISPLAY_NFRAME"))) {
 			displayNFrame = true;
 		}
+		
+		scriptMgmt = EngineZildo.scriptManagement;
 	}
 	
 	public void waitEndOfScripting() {
@@ -475,6 +482,12 @@ public abstract class EngineUT {
 			}
 		});
 	}
+
+	protected void loadXMLAsString(String string) throws Exception {
+		InputStream stream = new ByteArrayInputStream(string.getBytes());
+		EngineZildo.scriptManagement.getAdventure().merge(ScriptReader.loadStream(stream));
+	}
+	
 	public void simulateDirection(int x, int y) {
 		simulateDirection(new Vector2f(x, y));
 	}
@@ -525,10 +538,15 @@ public abstract class EngineUT {
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing(name));
 	}
 
-	/** Wait for a given quest name to run **/
 	public void waitForScriptRunning(String name) {
+		waitForScriptRunning(name, null);
+	}
+	
+	/** Wait for a given quest name to run **/
+	public void waitForScriptRunning(String name, Runnable run) {
 		while (true) {
 			renderFrames(1);
+			if (run != null) run.run();
 			if (EngineZildo.scriptManagement.isQuestProcessing(name)) {
 				break;
 			}

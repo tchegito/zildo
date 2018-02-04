@@ -86,7 +86,7 @@ public class GUIDisplay {
 	 * causing a semifade.
 	 */
 	public enum DialogMode {
-		CLASSIC, OPENING_MENU, MENU, CREDITS, HALLOFFAME, INFO, BUY, ADVENTURE_MENU, TEXTER;
+		CLASSIC, OPENING_MENU, MENU, CREDITS, HALLOFFAME, INFO /*TitleStage*/, BUY, ADVENTURE_MENU /*CompassMenu*/ , TEXTER;
 		
 		public boolean isScript() {
 			return true; //this == CLASSIC || this == CREDITS;
@@ -1203,6 +1203,7 @@ public class GUIDisplay {
 				break;
 			case INFO:
 				infoSequence.clear();
+				toDisplay_dialogMode = DialogMode.CLASSIC;
 				break;
 			}
 		}
