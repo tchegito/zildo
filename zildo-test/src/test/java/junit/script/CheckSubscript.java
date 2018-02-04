@@ -142,7 +142,7 @@ public class CheckSubscript extends EngineScriptUT {
 		while (nFrame < 5000) {
 			renderFrames(1);
 			vars = scriptMgmt.getVariables();
-			System.out.println(initialSize+" ==> "+vars.size());
+			//System.out.println(initialSize+" ==> "+vars.size());
 			
 			Assert.assertTrue("We should not have more than "+maxVariables+" !", vars.size() <= maxVariables);
 			
