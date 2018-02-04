@@ -27,7 +27,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
-import zildo.fwk.input.KeyboardHandler.Keys;
+import zildo.monde.dialog.Behavior;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.ElementGoodies;
@@ -118,7 +118,9 @@ public class TestBasicPerso extends EngineUT {
 			System.out.println(desc);
 			String persoName = "test"+desc;
 			Perso perso = spawnPerso(desc, persoName, 180, 100);
-			perso.setZone_deplacement(new Zone((int) perso.x, (int) perso.y, 50, 50)); 
+			perso.setZone_deplacement(new Zone((int) perso.x, (int) perso.y, 50, 50));
+			// Create fake dialog for our character
+			mapUtils.area.getMapDialog().addBehavior(new Behavior(persoName));
 			renderFrames(1);
 			
 			if (perso.getInfo() == PersoInfo.ENEMY || perso.isZildo()) {

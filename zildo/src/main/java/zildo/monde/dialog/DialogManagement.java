@@ -85,6 +85,14 @@ public class DialogManagement {
 				p_client.dialogState.setContinuing(true);
 			}
 	        p_client.dialogState.setDialoguing(true);
+	        
+	        if (p_client.zildo.getDialoguingWith() == null && even.who != null) {
+	        	Perso character = EngineZildo.persoManagement.getNamedPerso(even.who);
+	        	p_client.zildo.setDialoguingWith(character);
+	        }
+	    } else {
+	    	// Character has nothing to say
+			p_client.zildo.setDialoguingWith(null);
 	    }
 
 	}
