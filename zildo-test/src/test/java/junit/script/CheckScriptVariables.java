@@ -6,11 +6,11 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
-import tools.EngineUT;
+import tools.SimpleEngineScript;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.server.EngineZildo;
 
-public class CheckScriptVariables extends EngineUT {
+public class CheckScriptVariables extends SimpleEngineScript {
 
 	/** Check combination test operator "|" and "&" respectively "OR" and "AND" operators. **/ 
 	@Test

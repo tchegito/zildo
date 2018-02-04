@@ -29,7 +29,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
-import tools.EngineUT;
+import tools.SimpleEngineScript;
 import zildo.fwk.script.logic.FloatVariable;
 import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
@@ -48,7 +48,7 @@ import zildo.server.PersoManagement;
  * @author Tchegito
  *
  */
-public class CheckSimpleScript extends EngineUT {
+public class CheckSimpleScript extends SimpleEngineScript {
 
 	@Test
 	public void simpleSwitch() {
