@@ -1584,9 +1584,6 @@
 	</scene>
 	
 	<scene id="meetingLibrary">
-	    <!--  A enlever de toute URGENCE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-  	    <!--  A enlever de toute URGENCE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-  	    <!--  A enlever de toute URGENCE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 	    <wait value="60"/>
 	    <speak who="hector" text="d4m2.hector.0"/>
 	    <angle who="maltus" value="2"/>
