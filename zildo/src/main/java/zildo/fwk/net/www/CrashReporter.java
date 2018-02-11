@@ -7,6 +7,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import zildo.monde.dialog.HistoryRecord;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
 /** Object able to send a detailed exception report to Alembrume site.
@@ -29,6 +30,7 @@ public class CrashReporter {
 	public CrashReporter addContext() {
 		try {
 			// Add contextual infos
+			addDetail("version", "v" + Constantes.CURRENT_VERSION_DISPLAYED);
 			addDetail("map", EngineZildo.mapManagement.getCurrentMap());
 			addDetail("sprites", EngineZildo.spriteManagement.getSpriteEntities(null));
 			addDetail("persos", EngineZildo.persoManagement.tab_perso);
