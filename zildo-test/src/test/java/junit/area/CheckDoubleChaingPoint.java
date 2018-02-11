@@ -26,6 +26,7 @@ import tools.EngineUT;
 import zildo.client.ClientEventNature;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.map.ChainingPoint;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -89,5 +90,16 @@ public class CheckDoubleChaingPoint extends EngineUT {
 		renderFrames(10);
 		Assert.assertTrue(zildo.getPv() == 4);
 		System.out.println(waterLily.x);
+	}
+	
+	@Test
+	public void simple() {
+		ChainingPoint ch = new ChainingPoint();
+		ch.setPx((short) 0);
+		ch.setPy((short) 0);
+		ch.setVertical(true);
+		ch.setBorder(true);
+		Assert.assertTrue(ch.isCollide(0, 0, true));
+		Assert.assertFalse(ch.isCollide(8, 0, true));
 	}
 }

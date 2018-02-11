@@ -198,7 +198,9 @@ public class ChainingPoint implements EasySerializable {
 			}
 		} else if (p_border) {
 			// Map's border
-			if ( (ax == px || ax == px+1) || (ay == py || ay == py+1) ) {
+			if ( vertical && (ax == px || ax == px+1)) {
+				return true;
+			} else if (!vertical && (ay == py || ay == py+1) ) {
 				return true;
 			}
 		}
