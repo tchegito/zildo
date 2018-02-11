@@ -34,6 +34,7 @@ public class CrashReporter {
 			addDetail("persos", EngineZildo.persoManagement.tab_perso);
 			addDetail("variables", EngineZildo.scriptManagement.getVariables());
 			addDetail("scripts", EngineZildo.scriptManagement.verbose());
+			addDetail("quests", EngineZildo.scriptManagement.getAccomplishedQuests());
 			List<HistoryRecord> records = EngineZildo.game.getLastDialog();
 			String wholeText = HistoryRecord.getDisplayString(records);
 			addDetail("lastdialog", wholeText);

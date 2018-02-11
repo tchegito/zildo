@@ -666,4 +666,14 @@ public class ScriptManagement {
     		}
     	}
 	}
+	
+	public List<String> getAccomplishedQuests() {
+		List<String> quests = new ArrayList<String>();
+		for (QuestElement quest : adventure.getQuests()) {
+			if (quest.done) {
+				quests.add(quest.name);
+			}
+		}
+		return quests;
+	}
 }

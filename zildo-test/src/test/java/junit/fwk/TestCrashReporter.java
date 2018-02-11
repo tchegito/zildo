@@ -22,6 +22,15 @@ public class TestCrashReporter extends EngineUT {
 	}
 	
 	@Test
+	public void ensureContext() {
+		String QUEST_NAME = "nonexistentQuest";
+		CrashReporter cr = new CrashReporter(new IllegalArgumentException());
+		EngineZildo.scriptManagement.accomplishQuest(QUEST_NAME, false);
+		cr.addContext();
+		Assert.assertTrue(cr.getMessage().contains(QUEST_NAME));
+	}
+	
+	@Test
 	public void checkErrorInGeneration() {
 		Throwable t = new RuntimeException("That Zorglub should have worked !");
 		CrashReporter cr = new CrashReporter(t);
