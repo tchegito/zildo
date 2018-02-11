@@ -943,6 +943,10 @@ public class Area implements EasySerializable {
 		// 3) Chaining points
 		if (n_pe != 0) {
 			for (ChainingPoint ch : this.getChainingPoints()) {
+				// Calculate the area concerned by this chaining point and set 'vertical' attribute correctly
+				if (ch.isBorder() && ch.getZone(this).y2 > 4) {
+					ch.setVertical(true);
+				}
 				ch.serialize(p_file);
 			}
 		}

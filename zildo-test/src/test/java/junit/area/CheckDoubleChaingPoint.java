@@ -94,12 +94,24 @@ public class CheckDoubleChaingPoint extends EngineUT {
 	
 	@Test
 	public void simple() {
+		// Load any map in 64x64 size
+		mapUtils.loadMap("foret");
 		ChainingPoint ch = new ChainingPoint();
 		ch.setPx((short) 0);
 		ch.setPy((short) 0);
 		ch.setVertical(true);
 		ch.setBorder(true);
+		ch.getZone(mapUtils.area);
+
 		Assert.assertTrue(ch.isCollide(0, 0, true));
 		Assert.assertFalse(ch.isCollide(8, 0, true));
+		
+		ch= new ChainingPoint();
+		ch.setPx((short) 58);
+		ch.setPy((short) 28);
+		ch.setBorder(true);
+		ch.setVertical(true);
+		ch.getZone(mapUtils.area);
+		Assert.assertTrue(ch.isCollide(58, 65, true));
 	}
 }
