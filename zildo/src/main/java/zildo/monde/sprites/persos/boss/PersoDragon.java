@@ -124,7 +124,7 @@ public class PersoDragon extends PersoNJ {
 		// 1) Detect Zildo every FOCUS_TIME
 		Perso zildo = null;
 		if (cnt % FOCUS_TIME == 0) {
-			zildo = EngineZildo.persoManagement.lookForOne(this, 18, PersoInfo.ZILDO, false);
+			zildo = EngineZildo.persoManagement.lookForOne(this, 18, PersoInfo.ZILDO, false, -1, -1);
 			if (zildo != null) {
 				Vector2f dist = new Vector2f(headPoint, new Pointf(zildo.x, zildo.y));
 				float norme = dist.norm();

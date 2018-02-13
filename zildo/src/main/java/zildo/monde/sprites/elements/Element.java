@@ -47,6 +47,7 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 
@@ -440,6 +441,24 @@ public class Element extends SpriteEntity {
 			int radius = (model.getTaille_x() + model.getTaille_y()) / 4;
 			collision = new Collision((int) x, (int) y, radius, Angle.NORD,
 					(Perso) linked, getDamageType(), weapon);
+			
+
+			if ("bitey".equals(getName())) {
+				Point pos = new Point(x,y);
+				Zone borders = model.getEmptyBorders();
+				//pos.x += model.getTaille_x()/4;
+				if (borders != null) {
+//					pos.x += borders.x1*2;
+					if (!reverse.isHorizontal()) {
+						pos.x -= (borders.x1 +borders.x2 )/2;
+						pos.x += borders.x1;	// Shift because between [x,x1] this is an empty border
+					} else {
+						pos.x -= (-borders.x2+borders.x1)/2;
+					}
+					pos.y += borders.y1;
+				}
+				collision = new Collision(pos, new Point(model.getTaille_x(), model.getTaille_y()), (Perso) this, DamageType.BLUNT, null);
+			}
 		}
 		collision.cy -= model.getTaille_y() / 2;
 		collision.cy -= z;

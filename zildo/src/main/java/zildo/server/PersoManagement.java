@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import zildo.monde.Trigo;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.PersoCollision;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -54,6 +55,8 @@ import zildo.monde.sprites.persos.ia.PathFinderBee;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
+import zildo.monde.util.Vector2f;
 
 //////////////////////////////////////////////////////////////////////
 // PersoManagement
@@ -314,7 +317,8 @@ public class PersoManagement {
 	 * @param sight TRUE=found character must look in the target direction
 	 * @return Perso
 	 */
-	private List<Perso> lookFor(Perso p_looker, int radius, PersoInfo p_info, boolean sight, boolean justOne) {
+	private List<Perso> lookFor(Perso p_looker, int radius, PersoInfo p_info, boolean sight, boolean justOne, int angle,
+			int anticipate) {
 		List<Perso> persos = null;
 		if (p_looker != null) {
 			for (Perso p : tab_perso) {
@@ -323,8 +327,24 @@ public class PersoManagement {
 					if (distance < radius * 16) {
 						// Check sight (if needed)
 						if (sight && !p_looker.isFacing(p)) continue;
+						// Anticipation
+						Pointf anticipated = new Pointf(p.x, p.y);
+						if (anticipate > -1) {
+							System.out.println("evaluate anticipation");
+							double speed = Pointf.pythagore(p.vx, p.vy);
+							
+							anticipated.add(new Vector2f(p.vx, p.vy).mul(anticipate));
+						}
+						// Check angle
+						if (angle != -1) {
+							double angleRadian = Trigo.getAngleRadian(anticipated.x - p_looker.x, p_looker.y - anticipated.y);
+							if (angleRadian > Trigo.PI_SUR_4/2 || angleRadian < -Trigo.PI_SUR_4/2) continue;
+							System.out.println(angleRadian + "       "+Trigo.PI_SUR_4/2);
+						}
+
 						if (persos == null) persos = new ArrayList<Perso>();
 						persos.add(p);
+						if (anticipate > -1) System.out.println("found !");
 						if (justOne) break;
 					}
 				}
@@ -342,7 +362,7 @@ public class PersoManagement {
 	 * @return
 	 */
 	public List<Perso> lookFor(Perso p_looker, int radius, PersoInfo p_info, boolean sight) {
-		return lookFor(p_looker, radius, p_info, sight, false);
+		return lookFor(p_looker, radius, p_info, sight, false, -1, -1);
 	}
 	
 	/**
@@ -351,10 +371,12 @@ public class PersoManagement {
 	 * @param radius radius of the circular zone (in tile coordinates)
 	 * @param p_info category of character looked for
 	 * @param sight TRUE=found character must look in the target direction
+	 * @param angle TODO
 	 * @return
 	 */
-	public Perso lookForOne(Perso p_looker, int radius, PersoInfo p_info, boolean sight) {
-		List<Perso> persos = lookFor(p_looker, radius, p_info, sight, true);
+	public Perso lookForOne(Perso p_looker, int radius, PersoInfo p_info, boolean sight, int angle,
+			int anticipate) {
+		List<Perso> persos = lookFor(p_looker, radius, p_info, sight, true, angle, anticipate);
 		if (persos != null) {
 			return persos.get(0);
 		}

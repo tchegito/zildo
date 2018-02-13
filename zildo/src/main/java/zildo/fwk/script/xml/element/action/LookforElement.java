@@ -35,6 +35,8 @@ public class LookforElement extends ActionsNestedElement {
 	public boolean negative;	// TRUE=execute nested actions if 'lookFor' fails
 	public boolean sight;	// TRUE=consider only character's sight (=depending on his angle) / FALSE=consider the whole area around him
 	public String desc;	// Not null means we look for sprite entity with given type. Otherwise, we consider only Perso
+	public int angle;
+	public int anticipate;	// Number of frames we should anticipate
 	
 	public LookforElement() {
     	super(ActionKind.lookFor);
@@ -49,6 +51,9 @@ public class LookforElement extends ActionsNestedElement {
 		negative = Boolean.TRUE == readBoolean("negative");
 		sight = Boolean.TRUE == readBoolean("sight");
 		desc = readAttribute("type");
+		angle = readInt("angle", -1);
+		anticipate = readInt("anticipate", -1);
+		
 		String strInfo = readAttribute("info");
 		if (strInfo != null) {
 			info = PersoInfo.valueOf(strInfo);

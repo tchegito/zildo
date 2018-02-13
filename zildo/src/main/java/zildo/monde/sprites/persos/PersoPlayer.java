@@ -28,6 +28,7 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.filter.CircleFilter;
+import zildo.fwk.net.www.CrashReporter;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.fwk.ui.UIText;
 import zildo.monde.collision.Collision;
@@ -543,6 +544,10 @@ public class PersoPlayer extends Perso {
 	@Override
 	public void animate(int compteur_animation)
 	{
+		if (false) {
+			CrashReporter cr = new CrashReporter(new RuntimeException("Coucou !")).addContext();
+			System.out.println(cr);
+		}
 		super.animate(compteur_animation);
 		
 		// Initialization of convenient variables
@@ -1120,15 +1125,12 @@ public class PersoPlayer extends Perso {
 		switch (d) {
 		case GOLDCOIN1:
 			setMoney(money + 1);
-    		EngineZildo.scriptManagement.runTileAction(new Point((int)x >> 4, (int)y>>4), "getMoney", false);
 			break;
 		case THREEGOLDCOINS1:
 			setMoney(money + 3);
-    		EngineZildo.scriptManagement.runTileAction(new Point((int)x >> 4, (int)y>>4), "getMoney", false);
 			break;
 		case GOLDPURSE1:
 			setMoney(money + 20);
-    		EngineZildo.scriptManagement.runTileAction(new Point((int)x >> 4, (int)y>>4), "getMoney", false);
 			break;
 		case DROP_FLOOR:
 		case DROP_SMALL:
@@ -1166,8 +1168,13 @@ public class PersoPlayer extends Perso {
 			countKey++;
 			break;
 		}
-		// Sound
+		// Sound and animation
 		switch (d) {
+		case GOLDCOIN1:
+		case THREEGOLDCOINS1:
+		case GOLDPURSE1:
+    		EngineZildo.scriptManagement.runTileAction(new Point((int)x >> 4, (int)y>>4), "getMoney", false);
+    		break;
 		/*
 		case GREENMONEY1:
 		case BLUEMONEY1:

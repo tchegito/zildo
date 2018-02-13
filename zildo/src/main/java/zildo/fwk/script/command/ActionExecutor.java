@@ -698,7 +698,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 		ElementDescription desc = ElementDescription.valueOf(lookFor.desc);
                 		found = EngineZildo.spriteManagement.lookFor(perso, lookFor.radius, desc, lookFor.sight);
                 	} else {
-                		found = EngineZildo.persoManagement.lookForOne(perso, lookFor.radius, p_action.info, lookFor.sight);
+                		found = EngineZildo.persoManagement.lookForOne(perso, lookFor.radius, p_action.info, lookFor.sight, lookFor.angle, lookFor.anticipate);
                 	}
                 	if (found != null ^ lookFor.negative) {	// XOR !
                 		IEvaluationContext lookForContext;

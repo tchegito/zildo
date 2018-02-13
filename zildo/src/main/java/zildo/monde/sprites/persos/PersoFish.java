@@ -73,7 +73,7 @@ public class PersoFish extends PersoShadowed {
 					}
 					double attackSpeed = 0.5f + Math.random() * 0.1f;
 
-					Perso zildo = EngineZildo.persoManagement.lookForOne(this, 5, PersoInfo.ZILDO, false);
+					Perso zildo = EngineZildo.persoManagement.lookForOne(this, 5, PersoInfo.ZILDO, false, -1, -1);
 					if (zildo != null) {
 						// Run away from him
 						double angAlpha = Trigo.getAngleRadian(x, y, zildo.x, zildo.y);

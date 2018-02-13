@@ -244,7 +244,7 @@ public class PathFinder {
 						// Freeze during a scene (because moving character is 'ghost')
 						nbShock=0;
 						
-                		Perso collidingPerso = EngineZildo.persoManagement.lookForOne(mobile, 1, null, false);
+                		Perso collidingPerso = EngineZildo.persoManagement.lookForOne(mobile, 1, null, false, -1, -1);
                 		if (collidingPerso != null) {
                 			 if (collidingPerso.getTarget() != null && collidingPerso.isUnstoppable()) {
                 				 break;
