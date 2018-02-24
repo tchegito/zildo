@@ -67,7 +67,8 @@ public class ClassicFileUtil implements FileUtil {
 	}
 
 	@Override
-	public void openLink(String url) {
+	public boolean openLink(String url) {
 		// Never called on this device
+		return true;
 	}
 }

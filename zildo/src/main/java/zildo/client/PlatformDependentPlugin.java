@@ -143,8 +143,8 @@ public class PlatformDependentPlugin {
 	}
 	
 	/** Opens an URL (only used in Android version, now) **/
-	public void openLink(String url) {
-		fileUtil.openLink(url);
+	public boolean openLink(String url) {
+		return fileUtil.openLink(url);
 	}
 	
 	/**

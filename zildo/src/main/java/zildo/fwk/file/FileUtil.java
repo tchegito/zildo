@@ -40,5 +40,6 @@ public interface FileUtil {
 	Object openFd(String path);
 	
 	// Used to open a link in current device (is FileUtil the best place to do this ?)
-	void openLink(String url);
+	// Returns FALSE in any error case
+	boolean openLink(String url);
 }

@@ -73,8 +73,7 @@ public class StartMenu extends Menu {
     		theItems.add(new ItemMenu("m1.website") {
     			@Override
     			public void run() {
-    				Zildo.pdPlugin.openLink("http://www.alembrume.fr");
-    				client.handleMenu(currentMenu);
+    				openLink("http://www.alembrume.fr");
     			};
     		});
     		theItems.add(new ItemMenu("m1.donate") {
@@ -83,8 +82,7 @@ public class StartMenu extends Menu {
     				client.handleMenu(new ConfirmMenu("info.donate", new ItemMenu("global.yes") {
     					@Override
     					public void run() {
-    	    				Zildo.pdPlugin.openLink("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UJ4DYC583FMRY");
-    	    				client.handleMenu(currentMenu);
+    	    				openLink("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UJ4DYC583FMRY");
     					}
     				}, new ItemMenu("global.no") {
     					@Override
@@ -188,5 +186,14 @@ public class StartMenu extends Menu {
         
         setMenu(theItems);
         setTitle("m1.title");
+	}
+	
+	void openLink(String url) {
+		if (Zildo.pdPlugin.openLink(url)) {
+			client.handleMenu(currentMenu);
+		} else {
+			client.handleMenu(new InfoMenu("mess.nobrowser", currentMenu));
+		}
+
 	}
 }
