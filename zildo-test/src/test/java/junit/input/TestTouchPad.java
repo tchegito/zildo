@@ -2,6 +2,7 @@ package junit.input;
 
 import static zildo.fwk.input.DPadMovement.compute;
 import static zildo.fwk.input.DPadMovement.moveCenter;
+import static zildo.fwk.input.DPadMovement.forces;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,8 +14,8 @@ import zildo.monde.util.Vector2f;
 
 public class TestTouchPad {
 
-	final float FACTOR_MIDDLE = 0.6f;
-	final float FACTOR_SMALL = 0.2f;
+	final float FACTOR_MIDDLE = forces[1];
+	final float FACTOR_SMALL = forces[0];
 	
 	@Test
 	public void basic() {

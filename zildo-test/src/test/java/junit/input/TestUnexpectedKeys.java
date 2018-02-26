@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import tools.EngineWithMenuUT;
 import tools.annotations.ClientMainLoop;
-import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.input.KeyboardHandler.Keys;

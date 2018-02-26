@@ -82,6 +82,9 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
+import zildo.platform.input.AndroidInputInfos;
+import zildo.platform.input.AndroidKeyboardHandler;
+import zildo.platform.input.TouchPoints;
 import zildo.resource.Constantes;
 import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
@@ -106,7 +109,7 @@ public abstract class EngineUT {
 	protected ScriptManagement scriptMgmt; // Just a shortcut
 	
 	protected KeyboardInstant instant;
-	static KeyboardHandler fakedKbHandler;	// Will be reused all along
+	protected static KeyboardHandler fakedKbHandler;	// Will be reused all along
 	
 	FreezeMonitor freezeMonitor;
 
@@ -344,7 +347,7 @@ public abstract class EngineUT {
 		// Initialize keyboard to simulate input
 		instant = new KeyboardInstant();
 		if (fakedKbHandler == null) {
-			fakedKbHandler = org.mockito.Mockito.spy(new CommonKeyboardHandler() {
+			fakedKbHandler = spy(new CommonKeyboardHandler() {
 				
 				@Override
 				public void poll() {
@@ -665,5 +668,23 @@ public abstract class EngineUT {
 			return ((SpriteSorterMocked)spriteSorter).getQuadOrder();
 		}
 		
+	}
+	
+	// TODO: check if annotation wouldn't be more appropriate (it would avoid to create twice fakedKbHandler)
+	protected TouchPoints enableAndroidTouch() {
+		TouchPoints touchedPoints = new TouchPoints();
+
+		PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;
+		
+		// Paste from TouchListener class
+		AndroidKeyboardHandler kbHandler = spy(new AndroidKeyboardHandler()); // 'Spy' to avoid crash in tearDown
+		AndroidInputInfos infos = new AndroidInputInfos();
+		infos.liveTouchedPoints = touchedPoints;
+		kbHandler.setAndroidInputInfos(infos);
+		
+		fakedKbHandler = kbHandler;
+		Zildo.pdPlugin.kbHandler = fakedKbHandler;
+		
+		return touchedPoints;
 	}
 }

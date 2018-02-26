@@ -15,7 +15,7 @@ test {
 }
 
 dependencies {
-	compile project(':zildo'), project(':zeditor')
+	compile project(':zildo'), project(':zeditor'), project(':zildo-platform-android-gles2')
 	compile "junit:junit:4.12",
 				"org.mockito:mockito-all:1.9.5"
 }

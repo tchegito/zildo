@@ -6,7 +6,6 @@ import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.stage.GameStage;
 import zildo.client.stage.MenuStage;
-import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 

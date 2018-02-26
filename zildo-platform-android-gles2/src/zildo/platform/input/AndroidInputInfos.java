@@ -37,6 +37,7 @@ public class AndroidInputInfos {
 	public boolean backPressed;
 	public boolean menuPressed;
 	public Point movingCrossCenter;
+	int idxPointCrossCenter;
 	PersoPlayer zildo;
 	Point zildoPos;
 	int nGamePadButtonsPressed;
@@ -54,6 +55,7 @@ public class AndroidInputInfos {
 		for (int i=0;i<MAX_BUTTONS_PRESSED;i++) {
 			gamePadButtons[i] = false;
 		}
+		idxPointCrossCenter = -1;
 	}
 	
 	public Point getZildoPos() {

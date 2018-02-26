@@ -20,11 +20,8 @@
 
 package zildo.platform.input;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Arrays;
 
-import android.util.Log;
 import zildo.monde.util.Point;
 
 /**
@@ -34,39 +31,42 @@ import zildo.monde.util.Point;
  */
 public class TouchPoints {
 
-	List<Point> points;
+	static final int MAX_TOUCH_POINTS = 10;
+	
+	Point[] points;
+	int nonNullValue;
 	
 	public TouchPoints() {
-		points = new ArrayList<Point>();
+		points = new Point[MAX_TOUCH_POINTS];
 	}
 	
-	public Collection<Point> getAll() {
+	public Point[] getAll() {
 		return points;
 	}
 	
 	public void set(int i, Point p) {
-		if (p == null) {
-			points.remove(i);
-		} else if (i < points.size()){
-			points.set(i, p);
+		if (i > MAX_TOUCH_POINTS) {
+			// Can't handle it : too much touch !
 		} else {
-			Log.d("TOUCH", "Unable to set "+i+"-nth point "+p+" into the list");
+			points[i] = p;
 		}
 	}
 
-	public void add(int i, Point p) {
-		points.add(i, p);
-	}
-
 	public void clear() {
-		points.clear();
+		Arrays.fill(points, null);
 	}
 	
-	public void addAll(TouchPoints tp) {
-		points.addAll(tp.points);
+	// Copy given array in current one
+	public void copy(TouchPoints tp) {
+		for (int idx = 0; idx < tp.points.length; idx++) {
+			points[idx] = tp.points[idx];
+		}
 	}
 	
-	public int size() {
-		return points.size();
+	public boolean isEmpty() {
+		for (Point p : points) {
+			if (p != null) return false;
+		}
+		return true;
 	}
 }

@@ -31,7 +31,6 @@ import zildo.platform.input.AndroidKeyboardHandler;
 import zildo.platform.input.AndroidKeyboardHandler.KeyLocation;
 import zildo.platform.input.TouchPoints;
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -106,55 +105,61 @@ public class TouchListener implements OnTouchListener {
 	
 	private void interpretEvent(MotionEvent event) {
 		int actionMasked = event.getActionMasked();
-		
 		int index;
-		if (actionMasked == MotionEvent.ACTION_MOVE && activePointerId != INACTIVE_POINTER) {
-			index = event.findPointerIndex(activePointerId);
-		} else {
-			index = event.getActionIndex();
-		}
-		float xx = event.getX(index);
-		float yy = event.getY(index);
-		int pointerId = event.getPointerId(index);
-		int x = (int) (xx * ratioX);
-		int y = (int) (yy * ratioY);
-
-		Point p = new Point(x,y);
+		
 		switch (actionMasked) {
 		case MotionEvent.ACTION_DOWN:
+			activePointerId = event.getPointerId(0);
+			touchedPoints.set(activePointerId, extractPoint(event, 0));
+			break;
 		case MotionEvent.ACTION_POINTER_DOWN:
-			//Log.d("TOUCH", "down ("+actionMasked+") at index "+index+" id="+pointerId+" pos="+x+","+y);
-			touchedPoints.add(index, p);
+			index = event.getActionIndex();
 			activePointerId = event.getPointerId(index);
+			touchedPoints.set(activePointerId, extractPoint(event, index));
 			break;
 		case MotionEvent.ACTION_MOVE:
-			//Log.d("TOUCH", "move ("+actionMasked+") at index "+index+" id="+pointerId+" pos="+x+","+y);
-			touchedPoints.set(index, p);
+			int pointerCount = event.getPointerCount();
+			// Move all recorded point currently on screen
+	        for(int i = 0; i < pointerCount; ++i) {
+	            int pointerId = event.getPointerId(i);
+	            index = event.findPointerIndex(pointerId);
+	            touchedPoints.set(pointerId, extractPoint(event, index));
+	        }
 			break;
-		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_UP: // Only 1 index
+			touchedPoints.set(activePointerId, null);
 			activePointerId = INACTIVE_POINTER;
-		case MotionEvent.ACTION_POINTER_UP:
+			break;
+		case MotionEvent.ACTION_POINTER_UP:	// when there's more than 1 index
+			index = event.getActionIndex();
+			int pointerId = event.getPointerId(index);
+			touchedPoints.set(pointerId, null);
 	        if (pointerId == activePointerId) {
 	            // This was our active pointer going up. Choose a new
 	            // active pointer and adjust accordingly.
 	            final int newIndex = index == 0 ? 1 : 0;
 	            activePointerId = event.getPointerId(newIndex);
 	        }
-			//Log.d("TOUCH", "up ("+actionMasked+") at index "+index+" id="+pointerId+" pos="+x+","+y);
-			touchedPoints.set(index, null);
-
 			break;
 		case MotionEvent.ACTION_CANCEL:
-			Log.d("touch", "on clear => CANCEL");
 			touchedPoints.clear();	// VERY important ! Otherwise, moves would have continue
 			activePointerId = INACTIVE_POINTER;
-			//Log.d("TOUCH", "ends up gesture");
 			break;
 		default:
-			//Log.d("TOUCH", "undetected action "+actionMasked);
 		}
 	}
 	
+	private Point extractPoint(MotionEvent event, int index) {
+		if (index >= 0 && index < event.getPointerCount()) {
+			float xx = event.getX(index);
+			float yy = event.getY(index);
+			int x = (int) (xx * ratioX);
+			int y = (int) (yy * ratioY);
+	
+			return new Point(x,y);
+		}		
+		return null;
+	}
 	public void pressBackButton(boolean pressed) {
 		if (infos != null) {
 			infos.backPressed = pressed;
