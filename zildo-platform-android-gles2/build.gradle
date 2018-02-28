@@ -1,0 +1,28 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+version = '1.0'
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+ 
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        resources {
+            srcDirs = ['src']
+        }
+    }
+}
+
+dependencies {
+	compile project(':zildo')
+	compile "com.google.android:android:2.3.3"
+}
+
+jar.archiveName = "ZildoPlatformAndroidGles2.jar"
