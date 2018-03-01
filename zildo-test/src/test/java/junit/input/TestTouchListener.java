@@ -16,6 +16,14 @@ import zildo.monde.util.Zone;
 import zildo.platform.input.AndroidKeyboardHandler.KeyLocation;
 import zildo.platform.input.TouchPoints;
 
+/** Check several aspects of touch listening:<ul>
+ * <li>a crash about concurrent modification</li>
+ * <li>mobile cross behavior</li>
+ * <li>fixed cross behavior</li>
+ * </ul>
+ * @author Tchegito
+ *
+ */
 public class TestTouchListener extends EngineUT {
 
 	
@@ -37,7 +45,7 @@ public class TestTouchListener extends EngineUT {
 	
 	Zone xButtonLoc = KeyLocation.VP_BUTTON_X.z;
 	Zone yButtonLoc = KeyLocation.VP_BUTTON_Y.z;
-	
+	Zone padDownLoc = KeyLocation.VP_DOWN.z;
 	
 	@Test
 	public void buttons() {
@@ -113,5 +121,20 @@ public class TestTouchListener extends EngineUT {
 		tp.set(2, new Point(xButtonLoc.x1+8, xButtonLoc.y1+8));
 		fakedKbHandler.poll();
 		Assert.assertTrue(fakedKbHandler.isKeyDown(Keys.Q));
+	}
+	
+	@Test
+	public void lockedCross() {
+		ClientEngineZildo.client.setMovingCross(false);
+		
+		TouchPoints tp = enableAndroidTouch();
+
+		// Press DOWN button
+		tp.set(0, new Point(padDownLoc.x1+4, padDownLoc.y1+4));
+		fakedKbHandler.poll();
+		Vector2f dir = fakedKbHandler.getDirection();
+		// Now check that direction is accordingly set
+		Assert.assertNotNull(dir);
+		Assert.assertEquals(Angle.SUD, Angle.fromDelta(dir.x, dir.y));
 	}
 }
