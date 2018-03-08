@@ -32,11 +32,13 @@ import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Case;
+import zildo.monde.map.Tile;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementGear;
+import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementZildo;
@@ -451,5 +453,20 @@ public class CheckFoundBugs extends EngineUT {
 		persoUtils.persoByName("noir1").beingWounded(0,  0, hero, 6);
 		persoUtils.persoByName("noir2").beingWounded(0,  0, hero, 6);
 		waitForScriptRunning("prison12Locked");
+	}
+	
+	// Issue 140 : hero as a squirrel can be stuck all around him. If a bush is present, then remove it
+	@Test
+	public void respawnBlockedLocation() {
+		mapUtils.loadMap("sousbois6");
+		// There's bushes on the right and hill on the left: 120, 384
+		Point start = new Point(462, 263);
+		PersoPlayer hero = spawnZildo(start.x, start.y);
+		hero.setAppearance(ControllablePerso.PRINCESS_BUNNY);
+
+		EngineZildo.mapManagement.arrangeLocation(hero);
+		// Check character hasn't moved, and bush is removed
+		Assert.assertEquals(start, new Point(hero.x, hero.y));
+		Assert.assertEquals(Tile.T_BUSH_CUT, EngineZildo.mapManagement.getCurrentMap().readmap(28, 17));
 	}
 }

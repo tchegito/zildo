@@ -45,6 +45,7 @@ import zildo.monde.map.accessor.HighestFloorAccessor;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -1012,7 +1013,7 @@ public class MapManagement {
 	
 	static final int MAX_SHIFT = 40;
 	
-	/** Try to replace character without colliding something. Moves him for his initial location, if neede. **/
+	/** Try to replace character without colliding something. Moves him for his initial location, if needed. **/
 	public void arrangeLocation(Perso p) {
 		// First try: if the tile has a jar/bush on it => remove it
 		int xx = (int) (p.x / 16);
@@ -1041,6 +1042,33 @@ public class MapManagement {
 		} else {
 			p.x = testX;
 			p.y = testY;
+		}
+		
+		if (p.isZildo()) {
+			PersoPlayer hero = (PersoPlayer) p;
+			if (hero.who == ControllablePerso.PRINCESS_BUNNY) {
+				// Special case with squirrel:
+				// 1) check if hero can't move in any direction (and detect bushes)
+				Angle[] cardinals = new Angle[]{Angle.NORD, Angle.EST, Angle.SUD, Angle.OUEST};
+				boolean locked = true;
+				Point bushLocation = null;
+				for (Angle ang : cardinals) {
+					Point delta = ang.coords.multiply(16);
+					Point translated = new Point(p.x + delta.x, p.y + delta.y);
+					locked &= collide(translated.x, translated.y, p);
+					Point areaCoords = new Point(translated.x >> 4, translated.y >> 4);
+					System.out.println(areaCoords);
+					int val = currentMap.readmap(areaCoords.x, areaCoords.y);
+					if (val == Tile.T_BUSH) {
+						bushLocation = areaCoords;
+					}
+				}
+				if (locked && bushLocation != null) {
+					// 2) remove the bushes
+					currentMap.attackTile(p.floor, bushLocation, p);
+				}
+				
+			}
 		}
 	}
 
