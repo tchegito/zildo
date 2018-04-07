@@ -1,6 +1,9 @@
 package junit.fwk.display;
 
 import java.lang.reflect.Field;
+import java.util.ConcurrentModificationException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,6 +12,7 @@ import tools.EngineUT;
 import zildo.client.ClientEngineZildo;
 import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.GUISpriteSequence;
+import zildo.fwk.ZUtils;
 import zildo.monde.dialog.HistoryRecord;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.server.EngineZildo;
@@ -121,5 +125,35 @@ public class TestTexter extends EngineUT {
 		}
 		return value;
 		
+	}
+	
+	
+	/** Issue 147 : concurrentmodificationException on display console message **/
+	@Test
+	public void concurrentModification() {
+		GUIDisplay gui = ClientEngineZildo.guiDisplay;
+		gui.displayMessage("Try to crash");
+		final Set<String> anyFailure = new HashSet<>();
+		new Thread() {
+			@Override
+			public void run() {
+				for (int i=0;i<500;i++) {
+					try {
+						gui.drawConsoleMessages();
+					} catch (ConcurrentModificationException e) {
+						e.printStackTrace();
+						anyFailure.add("ko");
+					}
+					ZUtils.sleep(1);
+				}
+			}
+		}.start();
+		ZUtils.sleep(50);
+		gui.displayMessage("Try to crash");
+		ZUtils.sleep(50);
+		gui.clearMessages();
+		ZUtils.sleep(50);
+		
+		Assert.assertEquals("Thread has crashed !", anyFailure.size(), 0);
 	}
 }

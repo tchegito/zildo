@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Stack;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
@@ -154,7 +154,7 @@ public class GUIDisplay {
 	private int arrowSprite;
 	private float alpha;
 	
-	Stack<GameMessage> messageQueue;
+	List<GameMessage> messageQueue;
 
 	final int padSizeX;
 	final int buttonSizeX;
@@ -182,7 +182,7 @@ public class GUIDisplay {
 		
 		countMoney = 0;
 
-		messageQueue = new Stack<GameMessage>();
+		messageQueue = new CopyOnWriteArrayList<GameMessage>();
 		
 		initTransco();
 		
