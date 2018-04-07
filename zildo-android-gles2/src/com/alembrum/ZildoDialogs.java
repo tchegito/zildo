@@ -27,6 +27,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -43,14 +44,17 @@ public class ZildoDialogs {
 	private EditableItemMenu item;
 	final EditText editText;
 	
+	// Those characters would cause a crash because they are used in properties file as well
+	String blockCharacterSet = "@#$";
+	
 	public ZildoDialogs(AlertDialog.Builder builder, Context context) {
 
         builder.setTitle(UIText.getMenuText("m11.title"));  
         builder.setMessage(UIText.getMenuText("m11.mess"));  
         
         editText = new EditText(context);
-        // 10 characters max for name
-        editText.getText().setFilters(new InputFilter[] {new InputFilter.LengthFilter(10) });
+        // 10 characters max for name + forbidden characters check
+        editText.getText().setFilters(new InputFilter[] {new InputFilter.LengthFilter(10), new FilterForbiddenCharacter() });
         builder.setView(editText);
         
         builder.setCancelable(false)	// No back button
@@ -65,6 +69,16 @@ public class ZildoDialogs {
 
 	}
 	
+	class FilterForbiddenCharacter implements InputFilter {
+		@Override
+		public CharSequence filter(CharSequence source, int start, int end,
+				Spanned dest, int dstart, int dend) {
+			if (source != null && blockCharacterSet.contains(("" + source))) {
+		         return "";
+		        }
+		        return null;
+		}
+	}
 	class CustomListener implements OnClickListener {
         private final Dialog dialog;
         public CustomListener(Dialog dialog) {
