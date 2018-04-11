@@ -486,6 +486,18 @@ public abstract class EngineUT {
 		});
 	}
 
+	/** Wait for map switch, then check that new map is the expected one **/
+	protected void assertMapIsChangingToward(String mapName) {
+		String current = EngineZildo.mapManagement.getCurrentMap().getName();
+		while (!EngineZildo.mapManagement.isChangingMap(clientState.zildo)) {
+			renderFrames(1);
+		}
+		while (current.equals(EngineZildo.mapManagement.getCurrentMap().getName())) {
+			renderFrames(1);
+		}
+		Assert.assertEquals("Map has changed but to the wrong one !", mapName, EngineZildo.mapManagement.getCurrentMap().getName());
+	}
+
 	protected void loadXMLAsString(String string) throws Exception {
 		InputStream stream = new ByteArrayInputStream(string.getBytes());
 		EngineZildo.scriptManagement.getAdventure().merge(ScriptReader.loadStream(stream));

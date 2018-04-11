@@ -27,10 +27,7 @@ public class TestUnexpectedKeys extends EngineWithMenuUT {
 		Item item = new Item(ItemKind.FIRE_RING);
 		hero.getInventory().add(item);
 		hero.setWeapon(item);
-		
-		while (hero.isInventoring()) {
-			simulatePressButton(KeysConfiguration.PLAYERKEY_INVENTORY.code, 1);
-		}
+
 		simulatePressButton(KeysConfiguration.PLAYERKEY_INVENTORY.code, 1);
 		Assert.assertFalse(hero.isInventoring());
 	}

@@ -19,12 +19,17 @@
 
 package junit.area;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.InfoPersos;
 import zildo.client.ClientEventNature;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
@@ -468,5 +473,40 @@ public class CheckFoundBugs extends EngineUT {
 		// Check character hasn't moved, and bush is removed
 		Assert.assertEquals(start, new Point(hero.x, hero.y));
 		Assert.assertEquals(Tile.T_BUSH_CUT, EngineZildo.mapManagement.getCurrentMap().readmap(28, 17));
+	}
+	
+	@Test @InfoPersos
+	public void stuckWithMinsk() {
+		for (String q : new String[] {"allFishMinsk", "rewardMinsk", "minsk_fishes"}) {
+			EngineZildo.scriptManagement.accomplishQuest(q, false);
+		}
+		mapUtils.loadMap("igorv3b");
+		PersoPlayer hero = spawnZildo(231, 69);
+		waitEndOfScripting();
+		
+		// Go upstairs
+		simulateDirection(0, -3);
+		assertMapIsChangingToward("igorv3");
+		waitEndOfScripting();
+		
+		assertNotBlocked(hero);
+		
+		// Go out
+		EngineZildo.game = spy(EngineZildo.game);
+		hero.setPos(new Vector2f(143, 182));
+		simulateDirection(0, 1);
+		assertMapIsChangingToward("igorvillage");
+		
+		// check that game has been backed up
+		// It should be at each map change, except few special cases: platform...
+		verify(EngineZildo.game).serialize(any());
+		
+		// Die in water to reload backed up game
+		hero.diveAndWound();
+		waitEndOfScripting();
+
+		// Check that hero isn't stuck with anyone
+		hero = EngineZildo.persoManagement.getZildo();
+		assertNotBlocked(hero);
 	}
 }
