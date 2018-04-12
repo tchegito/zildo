@@ -468,6 +468,18 @@
 		<condition name="foret" exp="!suite_visit1_weapon,maltus_foret_zildo_defeat">
 			<remove who="maltus"/>
 		</condition>
+		<condition name="foret" exp="maltus_foret-!maltus_foret_zildo_defeat">
+		    <music name="Surprise"/>
+		    <actions>
+			    <spawn who="rabbit1" pos="790,260" type="RABBIT"/>
+				<spawn who="rabbit2" pos="650,280" type="RABBIT"/>
+				<spawn who="rabbit3" pos="760,290" type="RABBIT"/>
+		    </actions>
+			<spawn what="caveDoor" type="CAVE_SIMPLEDOOR" pos="673,216"/>
+			<script who="rabbit1" value="0"/>
+			<script who="rabbit2" value="0"/>
+			<script who="rabbit3" value="0"/>
+		</condition>
 		<condition name="prisonext" exp="start_defi1-!stop_defi1">
 		    <markQuest name="start_defi1" value="0"/>
 		</condition>
