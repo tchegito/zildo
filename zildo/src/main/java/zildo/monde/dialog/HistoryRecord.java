@@ -1,5 +1,7 @@
 package zildo.monde.dialog;
 
+import static zildo.client.gui.GUIDisplay.TXT_CHANGE_COLOR;
+
 import java.util.List;
 
 import zildo.fwk.ZUtils;
@@ -7,8 +9,6 @@ import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.ui.UIText;
 import zildo.monde.map.Region;
-import zildo.server.EngineZildo;
-import static zildo.client.gui.GUIDisplay.TXT_CHANGE_COLOR;
 
 public class HistoryRecord implements EasySerializable {
 
