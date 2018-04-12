@@ -114,4 +114,17 @@ public class CheckDoubleChaingPoint extends EngineUT {
 		ch.getZone(mapUtils.area);
 		Assert.assertTrue(ch.isCollide(58, 65, true));
 	}
+
+	// At at time, we had a problem with this room being unwalkable
+	// (because of 'vertical' flag refactor on chaining points)
+	@Test
+	public void horizontalSimple() {
+		EngineZildo.scriptManagement.accomplishQuest("killBossTurret1", false);
+		mapUtils.loadMap("prison14");
+		spawnZildo(160, 55);
+		waitEndOfScripting();
+		simulateDirection(0, -1);
+		assertMapIsChangingToward("prison13");
+	}
+	
 }
