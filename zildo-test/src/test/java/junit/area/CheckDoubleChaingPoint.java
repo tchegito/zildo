@@ -23,6 +23,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.InfoPersos;
 import zildo.client.ClientEventNature;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -117,8 +118,9 @@ public class CheckDoubleChaingPoint extends EngineUT {
 
 	// At at time, we had a problem with this room being unwalkable
 	// (because of 'vertical' flag refactor on chaining points)
-	@Test
+	@Test @InfoPersos
 	public void horizontalSimple() {
+		EngineZildo.scriptManagement.accomplishQuest("boss_turret", false);
 		EngineZildo.scriptManagement.accomplishQuest("killBossTurret1", false);
 		mapUtils.loadMap("prison14");
 		spawnZildo(160, 55);
