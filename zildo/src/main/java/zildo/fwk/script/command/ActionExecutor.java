@@ -597,6 +597,9 @@ public class ActionExecutor extends RuntimeExecutor {
                 		int count = Integer.valueOf(p_action.text);
                 		zildo.setCountNettleLeaf(count);
                 		break;
+                	case 9:
+                		EngineZildo.mapManagement.arrangeLocation(zildo);
+                		break;
                 	}
                 	achieved = true;
                 	break;

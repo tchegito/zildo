@@ -270,7 +270,7 @@
         </action>
     </quest>
     
-    <quest name="rewardMinsk">
+    <quest name="rewardMinsk" locked="false">
         <trigger>
             <location name="igorv3"/>
             <dialog name="minsk" num="4"/>
@@ -922,6 +922,7 @@
 		<condition name="igorv3" exp="minsk_fishes">
 		    <pos who="minsk" pos="-14,12" delta="true"/>
 		    <angle who="minsk" value="2"/>
+		    <herospecial value="9"/>
 		</condition>
 		<condition name="igorvillage">
 		    <markQuest name="summonLeafVillage" value="0"/>
