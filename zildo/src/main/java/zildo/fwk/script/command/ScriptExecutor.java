@@ -196,7 +196,7 @@ public class ScriptExecutor {
 			subScriptsEnded.add(process);
 		}
 		process.terminate();
-		if (!isScripting() && rootScript) {
+		if (!isScripting(false) && rootScript) {
 			// Get back to life the involved characters
 			for (Perso p : involved) {
 				p.setGhost(p.getFollowing() != null);	// Cancel 'ghost' except if character is following someone

@@ -758,7 +758,7 @@ public class PersoNJ extends Perso {
 			if (addSpr == 0) {
 				if (shadow == null) addShadow(ElementDescription.SHADOW_LARGE);
 				shadow.setVisible(true);
-				shadow.setY(y+4);
+				shadow.setY(y+2);
 				break;
 			}	// No break is intentional
 		case TURRET:

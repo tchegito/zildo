@@ -118,7 +118,7 @@ public class CheckDoubleChaingPoint extends EngineUT {
 
 	// At at time, we had a problem with this room being unwalkable
 	// (because of 'vertical' flag refactor on chaining points)
-	@Test @InfoPersos
+	@Test
 	public void horizontalSimple() {
 		EngineZildo.scriptManagement.accomplishQuest("boss_turret", false);
 		EngineZildo.scriptManagement.accomplishQuest("killBossTurret1", false);
