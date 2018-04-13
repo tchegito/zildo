@@ -61,7 +61,6 @@ public class ElementGear extends Element {
 			GearDescription gearDesc = (GearDescription) desc;
 			switch (gearDesc) {
 			case GREEN_DOOR:
-			case CAVE_SIMPLEDOOR:
 			case CAVE_KEYDOOR:
 			case CAVE_MASTERDOOR:
 				int keys = p_perso.getCountKey();
@@ -78,16 +77,14 @@ public class ElementGear extends Element {
 					}
 				}
 				if (keys > 0 || openBySpecificKey) {
-					// Get the map coordinates in front of Zildo (with his
-					// angle)
+					// Get the map coordinates in front of Zildo (with his angle)
 					int axx = (int) p_perso.x / 16 + p_perso.angle.coords.x;
 					int ayy = (int) p_perso.y / 16 + p_perso.angle.coords.y;
 					Area map = EngineZildo.mapManagement.getCurrentMap();
 					ChainingPoint ch = map.getCloseChainingPoint(axx, ayy);
 					if (ch != null) {
 						acting = true;
-						EngineZildo.soundManagement.broadcastSound(
-								BankSound.ZildoUnlock, this);
+						EngineZildo.soundManagement.broadcastSound(BankSound.ZildoUnlock, this);
 						if (openBySpecificKey) {
 							p_perso.removeItem(keyItem);
 						} else {

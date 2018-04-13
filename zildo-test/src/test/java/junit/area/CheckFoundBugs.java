@@ -20,6 +20,8 @@
 package junit.area;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -30,9 +32,11 @@ import org.junit.Test;
 
 import tools.EngineUT;
 import tools.annotations.InfoPersos;
+import tools.annotations.SoundEnabled;
 import zildo.client.ClientEventNature;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
+import zildo.client.sound.BankSound;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -508,5 +512,34 @@ public class CheckFoundBugs extends EngineUT {
 		// Check that hero isn't stuck with anyone
 		hero = EngineZildo.persoManagement.getZildo();
 		assertNotBlocked(hero);
+	}
+	
+	@Test @SoundEnabled
+	public void lugduniaCaveDoors() {
+		EngineZildo.scriptManagement.accomplishQuest("foretg_button_trig", false);
+		EngineZildo.scriptManagement.accomplishQuest("foretg_apres_grotte", false);
+		
+		mapUtils.loadMap("foret");
+		PersoPlayer hero = spawnZildo(671,228);
+		hero.setCountKey(1);
+		waitEndOfScripting();
+		simulateDirection(0, -1);
+		assertMapIsChangingToward("foretg");
+		
+		// 1) assert hero is not blocked and door is closed
+		waitEndOfScripting();
+		assertNotBlocked(hero);
+		Assert.assertNotNull(EngineZildo.spriteManagement.getNamedElement("outDoor"));
+		
+		// 2) push door => no sound should be heard
+		simulateDirection(0, 1);
+		renderFrames(100);
+		verify(EngineZildo.soundManagement, never()).broadcastSound(eq(BankSound.ZildoUnlock), any(PersoPlayer.class));
+
+		// 3) press button => no sound should be heard
+		hero.setPos(new Vector2f(87, 453));
+		simulateDirection(0, -1);
+		renderFrames(20);
+		verify(EngineZildo.soundManagement, never()).broadcastSound(eq(BankSound.Switch), any(Point.class));
 	}
 }

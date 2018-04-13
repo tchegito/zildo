@@ -214,12 +214,16 @@ public class TriggerElement extends AnyElement {
 					boolean onIt = tileLocation.x == gridX && tileLocation.y == gridY;
 					if (onIt && !pressed) {
 						if (gearType != null) {
+							Area area = EngineZildo.mapManagement.getCurrentMap();
 							switch (gearType) {
 							case TIMED_BUTTON:
-								EngineZildo.mapManagement.getCurrentMap().addSpawningTile(tileLocation, questName, 0, false, p_another.floor);
+								area.addSpawningTile(tileLocation, questName, 0, false, p_another.floor);
 							case BUTTON:
-								EngineZildo.soundManagement.broadcastSound(BankSound.Switch, location);
-								EngineZildo.mapManagement.getCurrentMap().writemap(gridX,  gridY, 256 * 3+212);
+								if (area.readmap(gridX, gridY) != 256*3 + 212) {
+									// Activate button ONLY if isn't yet
+									EngineZildo.soundManagement.broadcastSound(BankSound.Switch, location);
+									area.writemap(gridX,  gridY, 256 * 3+212);
+								}
 							}
 						}
 						pressed = true;
@@ -287,7 +291,7 @@ public class TriggerElement extends AnyElement {
 			return zildo != null && zildo.hasItem(ItemKind.fromString(name)) == !not;
 		case LOCATION:
 			Area map = EngineZildo.mapManagement.getCurrentMap();
-			if (map != null && !isLocationSpecific() && mapNameMatch(EngineZildo.mapManagement.getCurrentMap().getName())) {
+			if (map != null && !isLocationSpecific() && mapNameMatch(map.getName())) {
 				// Mover ?
 				boolean ok = true;
 				if (mover != null) {
