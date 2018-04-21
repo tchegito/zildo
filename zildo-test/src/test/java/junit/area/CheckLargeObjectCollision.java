@@ -51,6 +51,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 	SpriteEntity waterLily;
 	Perso zildo;
 	
+	/** Init the water leaf at given position. Hero will be at the same location **/
 	private void init(int x, int y) {
 		mapUtils.loadMap("igorvillage");
 		EngineZildo.persoManagement.clearPersos(true);
@@ -261,5 +262,37 @@ public class CheckLargeObjectCollision extends EngineUT{
 		}
 		// Check that flut playing hasn't triggered the leaf to move
 		Assert.assertTrue(zildo.deltaMoveX == 0);
+	}
+	
+	/** Issue 143 **/
+	@Test
+	public void npeWhenDyingAfterLeafDisappear() {
+		mapUtils.loadMap("igorlily");
+		EngineZildo.persoManagement.clearPersos(true);
+		EngineZildo.spriteManagement.getNamedEntity("leaf").dying = true;
+
+		// Spawn water lily
+		waterLily = EngineZildo.spriteManagement.spawnSprite(
+				ElementDescription.WATER_LEAF,
+				1021, 282,
+				false, Reverse.NOTHING, false); // 113,259
+		waterLily.setName("leaf");
+		
+		zildo = spawnZildo(1009, 268);
+		zildo.walkTile(false);
+		
+		// Wait end of scripts
+		waitEndOfScripting();
+		
+		zildo.setPos(new Vector2f(1009.40137,268.50507));
+		zildo.walkTile(false);
+		
+		zildo.setWeapon(new Item(ItemKind.SWORD));
+		Assert.assertTrue(zildo.isOnPlatform());
+		zildo.setAngle(Angle.SUD);
+		zildo.attack();
+		renderFrames(5);
+		simulateDirection(1,0);
+		renderFrames(50*2*2*8);
 	}
 }

@@ -54,6 +54,7 @@ import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
@@ -705,7 +706,17 @@ public class MapManagement {
 					for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
 						if (entity.getMover().isOnIt(zildo)) {
 							// Movement amplitude should be enough in order to avoid back and forth map switch
-							entity.setMover(new PhysicMoveOrder(dest.x/8, dest.y/8));
+							int coeff = 1;
+							Element placeHolder = entity.getMover().getPlaceHolder();
+							if (placeHolder != null) {
+								double platformSpeed = Pointf.pythagore(placeHolder.vx, placeHolder.vy);
+								if (platformSpeed < 0.1f) {
+									coeff = 3;
+								} else if (platformSpeed < 0.5f) {
+									coeff = 2;
+								} 
+							}
+							entity.setMover(new PhysicMoveOrder(coeff * dest.x / 16, coeff * dest.y / 16));
 							entity.setGhost(true);
 						}
 					}

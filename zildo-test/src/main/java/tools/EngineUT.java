@@ -405,7 +405,8 @@ public abstract class EngineUT {
 	}
 	
 	public void waitEndOfScroll() {
-		while (clientState.event.nature == ClientEventNature.CHANGINGMAP_SCROLL) {
+		while (clientState.event.nature == ClientEventNature.CHANGINGMAP_SCROLL ||
+				clientState.event.nature == ClientEventNature.CHANGINGMAP_WAITSCRIPT) {
 			renderFrames(1);
 		}
 	}
