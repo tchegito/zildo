@@ -54,6 +54,7 @@ import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
+import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 
 /**
@@ -541,5 +542,22 @@ public class CheckFoundBugs extends EngineUT {
 		simulateDirection(0, -1);
 		renderFrames(20);
 		verify(EngineZildo.soundManagement, never()).broadcastSound(eq(BankSound.Switch), any(Point.class));
+	}
+	
+	/** Issue 144: hero passed the spike with invulnerability flask, but couldn't come back. **/
+	@Test
+	public void spikesBlockingScenario() {
+		mapUtils.loadMap("sousbois3");
+		spawnZildo(327, 597);
+		waitEndOfScripting();
+		int spikesOnMap = EngineZildo.mapManagement.getCurrentMap().readmap(11,28);
+		simulateDirection(0, -1);
+		renderFrames(10);
+		// Opens chest
+		simulatePressButton(KeysConfiguration.PLAYERKEY_ACTION.code, 2);
+		// Check that quest linked to the chest is done
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("sousbois3(20, 36)"));
+		waitEndOfScriptingPassingDialog();
+		Assert.assertNotEquals("Spikes should have disappeared as soon as hero opened the chest !", spikesOnMap, EngineZildo.mapManagement.getCurrentMap().readmap(11,28));
 	}
 }

@@ -31,6 +31,12 @@
 		</action>
 	</quest>
 	
+	<quest name="sousbois3(20, 36)">
+	    <action>
+	        <markQuest name="removeNailForMoonStone" value="true"/>
+	    </action>
+	</quest>
+	
 	<!-- Will'o'wist quests -->
 	<quest name="wow_1" locked="false">
 		<trigger>
