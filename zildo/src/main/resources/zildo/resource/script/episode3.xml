@@ -992,7 +992,8 @@
 	        <markQuest name="cavef6_lev1" value="false"/>
 	        <markQuest name="cavef6_button2" value="false"/>
 	        <markQuest name="cavef6_lever2" value="false"/>
-			<markQuest name="cavef6_platef6_forward" value="false"/>
+	        <markQuest name="cavef6_lever3" value="false"/>
+	        <markQuest name="cavef6_platef6_forward" value="false"/>
 			<markQuest name="cavef6_platef6_back" value="false"/>
 			<markQuest name="cavef6_platef6_up" value="false"/>
 	    </condition>
