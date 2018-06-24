@@ -80,7 +80,6 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	// because we can use OpenGL outside of the paint process
 	protected boolean changeMap = false;
 	protected boolean changeSprites = false;
-	protected boolean buildTexture = false;
 	protected boolean reloadTexture = false;
 	
 	private int sizeX;
@@ -149,11 +148,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		if (blockPaint) {
 			return;
 		}
-		if (buildTexture) {
-			ClientEngineZildo.tileEngine.saveTextures();
-			ClientEngineZildo.spriteEngine.saveTextures();
-			buildTexture=false;
-		}
+
 		if (reloadTexture) {
 			ClientEngineZildo.tileEngine.loadTextures();
 			ClientEngineZildo.spriteEngine.loadTextures(ClientEngineZildo.spriteDisplay);
@@ -465,10 +460,6 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	public void askCapture() {
 		needCapture = true;
 		captureDone = false;
-	}
-	
-	public void askBuildTexture() {
-		buildTexture = true;
 	}
 	
 	public void askReloadTexture() {

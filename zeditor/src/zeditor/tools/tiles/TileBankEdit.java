@@ -28,6 +28,7 @@ import java.awt.image.DataBufferInt;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
+import zeditor.tools.builder.texture.TileTexture;
 import zeditor.tools.sprites.BankEdit;
 import zildo.fwk.bank.TileBank;
 import zildo.fwk.file.EasyBuffering;
@@ -74,17 +75,18 @@ public class TileBankEdit extends TileBank {
 	public TileBankEdit(TileBank p_motifBank, Banque p_bank) {
 		this(p_bank);
 		
-		motifs_map = p_motifBank.getMotifs_map();
 		setName(p_motifBank.getName());
 		
 		bankOrder = TileEngine.getBankFromName(getName());
 
+		/*
 		for (int i=0;i<p_motifBank.getNb_motifs();i++) {
 			addSpr(i, p_motifBank.get_motif(i));
 		}
+		*/
 	}
 	
-    public void addSpr(int p_position, short[] p_gfx) {
+    public void addSpr(int p_position, int[] p_gfx) {
         bankEdit.gfxs.add(p_position, p_gfx);
         nb_motifs++;
     }
@@ -96,7 +98,7 @@ public class TileBankEdit extends TileBank {
    
     public void addSprFromImage(int p_position, int p_startX, int p_startY) {
 		// Extract sprite from image
-		short[] sprite = bankEdit.getRectFromImage(p_startX, p_startY, 16, 16);
+		int[] sprite = bankEdit.getRectFromImage(p_startX, p_startY, 16, 16);
 		addSpr(p_position, sprite);
 	}
     
@@ -113,13 +115,16 @@ public class TileBankEdit extends TileBank {
     	}
 	}
     
+    /** This has to save GFX into texture, and only collision data into DEC file **/
     public void saveBank() {
         EasyBuffering buffer=new EasyBuffering(bankEdit.gfxs.size() * TileBank.motifSize);
         for (int i=0;i<nb_motifs;i++) {
         	// Put the image
+        	/* NOT ANYMORE !
             for (short s : bankEdit.gfxs.get(i)) {
                 buffer.put((byte) s);
             }
+            */
         	// Put the collision info
             TileInfo info = infosCollision.getTileInfo(256 * bankOrder + i);
             byte hash = (byte) TileInfo.Template.FULL.hashCode();
@@ -130,6 +135,9 @@ public class TileBankEdit extends TileBank {
         }
         EasyWritingFile file=new EasyWritingFile(buffer);
         file.saveFile(getName()+".DEC");
+        
+        // Create texture
+        new TileTexture(bankEdit.gfxs).createTextureFromMotifBank(getName(), nb_motifs);
     }
     
     
@@ -146,7 +154,9 @@ public class TileBankEdit extends TileBank {
     	// Draw the tiles as they are predefined
     	int tile=0;
     	for (Point p : bank.coords) {
+    		/*
     		drawImage(img, p.x, p.y, get_motif(tile++));
+    		*/
     	}
     	    	
     	img.flush();

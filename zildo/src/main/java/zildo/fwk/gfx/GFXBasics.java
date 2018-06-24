@@ -359,6 +359,13 @@ public class GFXBasics {
 		return getPalIndex(r, g, b);
 	}
 
+	public static Vector4f splitRGB(int value) {
+		int r = (value >> 16) & 0xff;
+		int g = (value >> 8) & 0xff;
+		int b = (value) & 0xff;
+		return new Vector4f(r, g, b, (value >> 24) & 0xff);
+	}
+	
 	final static Map<Integer, Integer> palIndexes = new HashMap<Integer, Integer>();
 	
 	private static int getPalIndex(int r, int g, int b) {

@@ -40,11 +40,10 @@ import zildo.monde.map.TileInfo;
  */
 public class TileBank {
 
-	protected short[] motifs_map; // Pointeur sur nos graphs
 	private String name;				// Max length should be 12
 	protected int nb_motifs;		// Nombre de motifs dans la banque
 
-	public final static int motifSize = 16*16 + 1; // 1 byte for collision and 256 for graphic
+	public final static int motifSize = 16*16 + 1; // 1 byte for collision
 
 	
 	public String getName() {
@@ -66,6 +65,7 @@ public class TileBank {
 	public TileBank() {
 	}
 	
+	/** Read a DEC file: contains only collision data about tiles **/
 	public void charge_motifs(String filename) {
 		// On récupère la taille du fichier .DEC
 		EasyBuffering file=Zildo.pdPlugin.openFile(filename+".dec");
@@ -73,9 +73,9 @@ public class TileBank {
 		
 		name=filename;
 		nb_motifs=size / motifSize;
-	
+
 		// Load the mini-pictures
-		motifs_map=file.readUnsignedBytes();
+		short[] motifs_map=file.readUnsignedBytes();
 		
 		List<Integer> infoCollisions = new ArrayList<Integer>();
 		for (int i=0;i<nb_motifs;i++) {
@@ -85,18 +85,12 @@ public class TileBank {
 		TileCollision.getInstance().updateInfoCollision(name, infoCollisions);
 	}
 	
+	/*
 	public short[] get_motif(int quelmotif) {
 		short[] coupe=new short[motifSize-1];
 		int a=quelmotif * motifSize;
 		System.arraycopy(motifs_map, a, coupe, 0, motifSize - 1);	// Doesn't copy collision info
 		return coupe;
 	}
-
-	public short[] getMotifs_map() {
-		return motifs_map;
-	}
-	
-	public void freeTempBuffer() {
-		//motifs_map = null;	// Optim for android but wrong for zeditor
-	}
+*/
 }

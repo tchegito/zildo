@@ -144,8 +144,9 @@ public class LwjglTextureEngine extends TextureEngine {
     	}
     	super.init();
     }
+    
     @Override
-	protected void saveImage(String filename, boolean alpha) {
+	public void saveImage(String filename, boolean alpha) {
     	GLUtils.saveBufferAsPNG("c:\\kikoo\\textures\\"+filename, scratch, 256, 256, alpha);
     }
     

@@ -207,6 +207,11 @@ public abstract class SpriteEngine {
 		}
 	}
 	
+	public void saveTextures() {
+		// Default : do nothing. Only LWJGL version can do that.
+	}
+	
+	public abstract void render(int floor, boolean backGround);
 	
 	/**
 	 * Fills the {@link SpriteModel} objects with real texture coordinates (in range 0..256, 0..256) based on
@@ -267,10 +272,5 @@ public abstract class SpriteEngine {
 			}
 		}
 	}
-	
-	public void saveTextures() {
-		// Default : do nothing. Only LWJGL version can do that.
-	}
-	
-	public abstract void render(int floor, boolean backGround);
+
 }

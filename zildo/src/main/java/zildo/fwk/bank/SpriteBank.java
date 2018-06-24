@@ -49,10 +49,16 @@ public class SpriteBank {
 	public static final int BANK_PNJ4 = 7;
 	public static final int BANK_ZILDOOUTFIT = 8;
 	
+	private static final int COLOR_GARD1 = 178 << 16 | 146 << 8 | 251;
+	private static final int COLOR_GARD2 = 81 << 16 | 113 << 8 | 203;
+
+	private static final int COLOR_THIEF1 = 81 << 16 | 105 << 8 | 170;
+	private static final int COLOR_THIEF2 = 146 << 16 | 170 << 8 | 235;
+
+	
 		// Class variables
 	protected List<SpriteModel> models;
 
-	protected short[] sprites_buf;
 	private int[] offsets;	// Location of each sprite in sprites_buf
 	protected int nSprite;
 	protected String name;
@@ -63,7 +69,6 @@ public class SpriteBank {
 	{
 		this.nSprite=0;
 		models=new ArrayList<SpriteModel>();
-		this.sprites_buf=null;
 		offsets=new int[300];	// Max sprites=300
 	}
 	
@@ -77,7 +82,6 @@ public class SpriteBank {
 		k=0;
 	
 		// Theoretically, max size will be 256x256 -1 = 65535
-		sprites_buf=new short[65535];
 		name=filename;
 	
 		while (!file.eof()) {
@@ -101,8 +105,7 @@ public class SpriteBank {
 			models.add(spr);
 	
 			int taille=b*a;
-			file.readUnsignedBytes(sprites_buf, k, taille);
-	
+			
 			offsets[nSprite] = k;
 			k+=taille;
 			nSprite++;
@@ -117,56 +120,30 @@ public class SpriteBank {
 		return models.get(nspr);
 	}
 	
-	public long modifyPixel(int nSpr, int color)
+	public int modifyPixel(int nSpr, int color)
 	{
-		long toaff=-1;
+		int toaff=color;
 		if (toModif) {
+			int col = color & 0xffffff;
 			if (name.equals("pnj.spr")) {
 				if (nSpr>=20 && nSpr<=34) {
-					if (color == 198) {
+					if (col == COLOR_GARD1) {
 						toaff = 0xff + (127 << 24);
-					} else if (color == 199) {
+					} else if (col == COLOR_GARD2) {
 						toaff = 0xff00 + (127 << 24);
 					}
 				}
 			} else { // name = pnj2.spr
 				if ((nSpr>=(244-128) && nSpr<=(249-128)) || (nSpr >= 256-128 && nSpr <= 258-128)) {
-					if (color == 172) {
+					if (col == COLOR_THIEF2) {
 						toaff = 0xff + (127 << 24);
-					} else if (color == 171) {
+					} else if (col == COLOR_THIEF1) {
 						toaff = 0xff00 + (127 << 24);
 					}
 				}
 			}
 		}
 		return toaff;
-	}
-	
-	public int whichPalette(int nSpr) {
-		if (name.equals("pnj3.spr") && nSpr >= 66) {	// Dragon => Decroded palette
-			return 2;
-		} else if (name.equals("pnj4.spr") && nSpr >= 29) {
-			return 2;
-		} else if (name.equals("elem.spr") && (nSpr == 245 || nSpr == 246 || nSpr == 247)) {
-			return 2;
-		} else {
-			return 1;
-		}
-	}
-	
-	/**
-	 * Return a short[] representing the sprite bitmap
-	 * @param nSpr nth sprite in the bank
-	 * @return short[]
-	 */
-	public short[] getSpriteGfx(int nSpr) {
-		SpriteModel spr=get_sprite(nSpr);
-		
-		int size=spr.getTaille_x() * spr.getTaille_y();
-		short[] coupe=new short[size];
-		int a=offsets[nSpr]; //spr.getOffset();
-		System.arraycopy(sprites_buf, a, coupe, 0, size);
-		return coupe;
 	}
 
 	public List<SpriteModel> getModels() {
@@ -183,13 +160,5 @@ public class SpriteBank {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public short[] getSprites_buf() {
-		return sprites_buf;
-	}
-	
-	public void freeTempBuffer() {
-		//sprites_buf = null;		// Optim for android but wrong for zeditor
 	}
 }

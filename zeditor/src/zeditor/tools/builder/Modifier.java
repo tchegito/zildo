@@ -106,10 +106,19 @@ public class Modifier {
         // Exteria1 is the reference picture for palette
         // ***IMPORTANT ***
         
+   	 // To enable OpenGL
+		Client cl = new Client(false);
+		new Modifier().saveAllMotifBank();
+		new Modifier().saveAllSpriteBank();
+		/*
+        new Modifier().saveNamedTileBank("lavacave");
+
+        new Modifier().saveNamedSpriteBank("pnj3.spr");
+*/
         //new Modifier().saveFontes2();
-        //new Modifier().savePalette();
-        new Modifier().saveAllSpriteBank();
+        //new Modifier().saveAllSpriteBank();
         if (false) {
+            new Modifier().savePalette();
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
         new Modifier().saveElements();
@@ -139,7 +148,7 @@ public class Modifier {
         }
         
         //new AdjustRotations().modifyAllMaps();
-
+/*
 		new ReverseSpriteBank(new ElementsPlus(), EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_ELEMENTS))
 		.rebuildImages();
 
@@ -147,6 +156,7 @@ public class Modifier {
 			.rebuildImages();
 		new ReverseSpriteBank(new Pnj4(), EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ4))
 		.rebuildImages();
+		*/
     }
      
      public void generateImg() {
@@ -422,7 +432,7 @@ public class Modifier {
             int nSprOriginal=PersoDescription.VOLANT_BLEU.getNSpr() + i;
             SpriteModel model=bankIn.get_sprite(nSprOriginal);
             System.out.println("On copie le sprite no"+nSprOriginal);
-            bankOut.addSpr(fin+i, model.getTaille_x(), model.getTaille_y(), null, bankIn.getSpriteGfx(nSprOriginal));
+            //bankOut.addSpr(fin+i, model.getTaille_x(), model.getTaille_y(), null, bankIn.getSpriteGfx(nSprOriginal));
         }
         bankIn.removeSpr(124);
         bankIn.removeSpr(124);
@@ -534,16 +544,6 @@ public class Modifier {
 	
 	public void temporaryFixPolakym() {
 		new AdjustBackTiles().modifyOneMap("polakym.map");
-	}
-	
-	public void textureBuilder() {
-		Client cl = new Client(false);
-
-		// Save all textures
-		TileEngine tileEngine = ClientEngineZildo.tileEngine;
-		SpriteEngine spriteEngine = ClientEngineZildo.spriteEngine;
-		tileEngine.saveTextures();
-		spriteEngine.saveTextures();
 	}
 	
 }

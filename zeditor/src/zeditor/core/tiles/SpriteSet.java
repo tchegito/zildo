@@ -147,12 +147,9 @@ public class SpriteSet extends ImageSet {
 
 	public static void drawSprite(int i, int j, SpriteBank pnjBank, int nSpr, Graphics2D gfx2d) {
 		SpriteModel model = pnjBank.get_sprite(nSpr);
-		short[] data = pnjBank.getSpriteGfx(nSpr);
+		int[] data = new int[] {}; //pnjBank.getSpriteGfx(nSpr);
 
 		// Use the right palette
-		int newPalNum = pnjBank.whichPalette(nSpr);
-		GFXBasics.switchPalette(newPalNum);
-		
 		Zone borders = model.getEmptyBorders();
 		int offXLeft = 0;
 		int offXRight = 0;
@@ -162,6 +159,7 @@ public class SpriteSet extends ImageSet {
 		}
 		int a = 255;
 		int tx = model.getTaille_x();
+		if (false) {
 		for (int y = 0; y < model.getTaille_y(); y++) {
 			for (int x = 0-offXLeft; x < tx + offXRight; x++) {
 				if (x >= 0 && x < tx) {
@@ -176,6 +174,7 @@ public class SpriteSet extends ImageSet {
 					gfx2d.drawLine(x + offXLeft + i, y + j, x + offXLeft + i, y + j);
 				}
 			}
+		}
 		}
 	}
 

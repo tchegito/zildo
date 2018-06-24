@@ -32,7 +32,6 @@ import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TextureEngine;
-import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.desc.Outfit;
 import zildo.monde.util.Point;
@@ -209,11 +208,14 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		for (int i = 0; i < SpriteManagement.sprBankName.length; i++) {
 			SpriteBank sprBank = p_spriteStore.getSpriteBank(i);
 
+			// TODO:This could be done once when saving the texture
+			// And coordinates could be set in SPR file
+			// Or at least factorized in a single class
 			createModelsFromSpriteBank(sprBank);
 
 			// Create a DirectX9 texture based on the current tiles
-			createTextureFromSpriteBank(sprBank);
-			//textureEngine.loadTexture("sprite"+i);
+			//createTextureFromSpriteBank(sprBank);
+			textureEngine.loadTexture("sprite"+i);
 		}
 
 		// Create Zildo with all outfits
@@ -239,6 +241,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
 	// calculated as the highest sprite on the line. And so on.
 	// Here we use a GFXBasics object to gain in readability and comfort. This one will be deleted
 	// at the end, indeed. So we can say this is a beautiful method.
+	/*
 	private void createTextureFromSpriteBank(SpriteBank sBank) {
 	
 		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
@@ -287,7 +290,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
 
 		textureEngine.generateTexture();
 	}
-
+*/
 	/**
      * Create a new texture from a given one, and replace colors as specified by
      * the {@link Outfit} class.<br/>

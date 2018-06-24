@@ -92,6 +92,7 @@ public abstract class Banque {
     			}
     		}
     		
+    		// Copy image region to texture
     		bankEdit.addSprFromImage(nTile++, p.x, p.y);
 
     	}

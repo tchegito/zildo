@@ -23,6 +23,7 @@ package zeditor.tools.sprites;
 import java.util.Iterator;
 
 import zeditor.tools.builder.Modifier;
+import zeditor.tools.builder.texture.TileTexture;
 import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.GraphChange;
 import zildo.client.gui.GUIDisplay;
@@ -49,31 +50,31 @@ public class SpriteBankEdit extends SpriteBank {
 
 	protected BankEdit bankEdit;
 	
+	protected SpriteBank bank;
+	
     public SpriteBankEdit(SpriteBank p_bank) {
+    	bank = p_bank;
         models=p_bank.getModels();
         name=p_bank.getName();
         nSprite=p_bank.getNSprite();
-        sprites_buf=p_bank.getSprites_buf();
         
         bankEdit = new BankEdit();
-
+        
         // Build all graphics into a single list
         for (int i=0;i<nSprite;i++) {
-            short[] gfx=p_bank.getSpriteGfx(i);
-            bankEdit.gfxs.add(gfx);
+            bankEdit.gfxs.add(new int[] {});
         }
-        
         Identified.resetCounter(SpriteModel.class);
     }
     
-    public void addSpr(int p_position, int p_tailleX, int p_tailleY, Zone borders, short[] p_gfx) {
+    public void addSpr(int p_position, int p_tailleX, int p_tailleY, Zone borders, int[] p_gfx) {
         SpriteModel model=new SpriteModel(p_tailleX, p_tailleY, borders);
         bankEdit.gfxs.add(p_position, p_gfx);
         models.add(p_position, model);
         nSprite++;
     }
     
-    public void setSpr(int p_position, int p_tailleX, int p_tailleY, Zone borders, short[] p_gfx) {
+    public void setSpr(int p_position, int p_tailleX, int p_tailleY, Zone borders, int[] p_gfx) {
         SpriteModel model=new SpriteModel(p_tailleX, p_tailleY, borders);
         bankEdit.gfxs.set(p_position, p_gfx);
         models.set(p_position, model);
@@ -87,27 +88,27 @@ public class SpriteBankEdit extends SpriteBank {
     }
    
     public void clear() {
-    	while (nSprite != 0) {
+    	while (nSprite != 0 && bankEdit.gfxs.size() > 0) {
     		removeSpr(0);
     	}
     }
     
     public void fillNSprite(int number) {
     	for (int i=0;i<number;i++) {
-	    	bankEdit.gfxs.add(new short[] {});
+	    	bankEdit.gfxs.add(new int[] {});
 	    	models.add(new SpriteModel(0, 0));
     	}
     }
     
     public void addSprFromImage(int p_position, Zone z) {
 		// Extract sprite from image
-		short[] sprite = bankEdit.getRectFromImage(z.x1, z.y1, z.x2, z.y2);
+		int[] sprite = bankEdit.getRectFromImage(z.x1, z.y1, z.x2, z.y2);
 		addSpr(p_position, z.x2, z.y2, zoneBorders(z), sprite);
 	}
    
     public void setSprFromImage(int p_position, Zone z) {
 		// Extract sprite from image
-		short[] sprite = bankEdit.getRectFromImage(z.x1, z.y1, z.x2, z.y2);
+		int[] sprite = bankEdit.getRectFromImage(z.x1, z.y1, z.x2, z.y2);
 		setSpr(p_position, z.x2, z.y2, zoneBorders(z), sprite);
 	}
     
@@ -146,12 +147,16 @@ public class SpriteBankEdit extends SpriteBank {
                 buffer.put((byte) offsets.x1);
                 buffer.put((byte) offsets.x2);
             }
-            for (short s : bankEdit.gfxs.get(i)) {
+            /*
+            for (int s : bankEdit.gfxs.get(i)) {
                 buffer.put((byte) s);
             }
+            */
         }
         EasyWritingFile file=new EasyWritingFile(buffer);
         file.saveFile(getName());
+        
+        new TileTexture(bankEdit.gfxs).createTextureFromSpriteBank(bank);
     }
     
     /**
@@ -166,6 +171,9 @@ public class SpriteBankEdit extends SpriteBank {
 		int width = 0;
 		while (p_startX < bankEdit.getImageWidth() && bankEdit.isLineFilled(p_startX + width, p_startY, p_height)) {
 			width++;
+			if (width == 420) {
+				System.out.println("rate");
+			}
 		}
 		return width;
 	}
