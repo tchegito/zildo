@@ -23,8 +23,6 @@ package zildo.platform.engine;
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
-import zildo.fwk.bank.TileBank;
-import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.effect.CloudGenerator;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
@@ -128,12 +126,5 @@ public class LwjglTileEngine extends TileEngine {
 		texBackMenuId = textureEngine.loadTexture("menuBack256");
 		//texBackMenuId = textureEngine.generateTexture();
 	}
-	
-	@Override
-	public void saveTextures() {
-		// Default : do nothing. Only LWJGL version can do that.
-		textureEngine.saveAllTextures("tile");
-	}
 
-	
 }

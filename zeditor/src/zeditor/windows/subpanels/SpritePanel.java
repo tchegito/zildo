@@ -85,16 +85,20 @@ public class SpritePanel extends JPanel {
 
 	SpriteSelection<SpriteEntity> sel;
 
+	SpriteSet spriteSet;
+	
 	SpriteEntity entity;
 	List<SpriteEntity> entities; // We can modify a global list of entities
 
 	final List<SpriteDescription> spriteLib = ZSpriteLibrary.getList();
 
 	public SpritePanel(MasterFrameManager p_manager) {
+		spriteSet = new SpriteSet(false, p_manager);
+		
 		setLayout(new BorderLayout());
 		scrollPane = new JScrollPane();
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-		scrollPane.setViewportView(new SpriteSet(false, p_manager));
+		scrollPane.setViewportView(spriteSet);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBar(new TweekedScrollbar());
 		add(scrollPane, BorderLayout.CENTER);
@@ -361,5 +365,9 @@ public class SpritePanel extends JPanel {
 				
 			}
 		}
+	}
+	
+	public SpriteSet getSpriteSet() {
+		return spriteSet;
 	}
 }

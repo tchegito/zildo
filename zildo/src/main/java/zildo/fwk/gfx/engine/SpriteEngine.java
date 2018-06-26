@@ -20,6 +20,7 @@
 
 package zildo.fwk.gfx.engine;
 
+import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -271,6 +272,12 @@ public abstract class SpriteEngine {
 					highestLine = longY;
 			}
 		}
+	}
+	
+	public ByteBuffer getTextureImage(int nTexture) {
+		textureEngine.getTextureImage(nTexture);
+		System.out.println(textureEngine.scratch);
+		return textureEngine.scratch;
 	}
 
 }

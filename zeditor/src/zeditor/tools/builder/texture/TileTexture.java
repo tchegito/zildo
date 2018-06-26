@@ -15,10 +15,13 @@ import zildo.monde.util.Point;
 import zildo.monde.util.Vector4f;
 import zildo.monde.util.Zone;
 import zildo.platform.engine.LwjglTextureEngine;
+import zildo.platform.opengl.GLUtils;
 import zildo.platform.opengl.LwjglGraphicStuff;
 
 public class TileTexture {
 
+	final static String TEXTURE_OUTPUT_PATH = "c:\\kikoo\\textures\\";
+	
 	LwjglTextureEngine textureEngine;
 	
 	List<int[]> gfxs;
@@ -30,7 +33,8 @@ public class TileTexture {
 	
 	public void createTextureFromMotifBank(String bankName, int nbTiles) {
 
-		GFXBasics surface = textureEngine.prepareSurfaceForTexture(true);
+		final boolean alpha = true;
+		GFXBasics surface = textureEngine.prepareSurfaceForTexture(alpha);
 
 		// Display tiles on it
 		int x = 0, y = 0;
@@ -59,7 +63,7 @@ public class TileTexture {
 		}
 
 		int idx = Arrays.asList(TileEngine.tileBankNames).indexOf(bankName.toLowerCase());
-		textureEngine.saveImage("tile"+idx, true);
+    	GLUtils.saveBufferAsPNG(TEXTURE_OUTPUT_PATH+"tile"+idx, textureEngine.getBuffer(), 256, 256, alpha);
 	}
 
 	/**
@@ -123,10 +127,10 @@ public class TileTexture {
 	}
 	
 	public void createTextureFromSpriteBank(SpriteBank sBank) {
-		
 		createModelsFromSpriteBank(sBank);
 		
-		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
+		final boolean alpha = true;
+		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(alpha);
 
 		surfaceGfx.StartRendering();
 
@@ -161,7 +165,7 @@ public class TileTexture {
 			}
 		}
 		int idx = Arrays.asList(SpriteStore.sprBankName).indexOf(sBank.getName());
-		textureEngine.saveImage("sprite" + idx, true);
+    	GLUtils.saveBufferAsPNG(TEXTURE_OUTPUT_PATH+"sprite"+idx, textureEngine.getBuffer(), 256, 256, alpha);
 	}
 	
 }

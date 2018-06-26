@@ -23,6 +23,7 @@ package zeditor.core.tiles;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -97,12 +98,8 @@ public class SpriteSet extends ImageSet {
 		int maxY = 0;
 		for (SpriteDescription sprite : p_list) {
 
-			SpriteBank bank = EngineZildo.spriteManagement.getSpriteBank(sprite
-					.getBank());
+			SpriteBank bank = EngineZildo.spriteManagement.getSpriteBank(sprite.getBank());
 			int nSpr = sprite.getNSpr();
-			if (bank.getName().equals("pnj2.spr")) {
-				//nSpr = nSpr - 128;
-			}
 			SpriteModel model = null;
 			try {
 				model = bank.get_sprite(nSpr);
@@ -122,8 +119,7 @@ public class SpriteSet extends ImageSet {
 			drawPerso(posX, posY, bank, nSpr);
 
 			// Store this zone into the list
-			Zone z = new Zone(posX, posY, model.getTaille_x(),
-					model.getTaille_y());
+			Zone z = new Zone(posX, posY, model.getTaille_x(), model.getTaille_y());
 			selectables.add(z);
 			objectsFromZone.put(z, sprite);
 			posX += sizeX;
@@ -142,39 +138,38 @@ public class SpriteSet extends ImageSet {
 	private void drawPerso(int i, int j, SpriteBank pnjBank, int nSpr) {
 
 		Graphics2D gfx2d = (Graphics2D) currentTile.getGraphics();
-		drawSprite(i, j, pnjBank, nSpr, gfx2d);
+		manager.enqueueWhenCanvasReady(
+				() -> manager.getZildoCanvas().askGrabTexture(pnjBank.getIndex(), (ByteBuffer b) -> drawSprite(i, j, pnjBank, nSpr, gfx2d, b))
+		);
 	}
 
-	public static void drawSprite(int i, int j, SpriteBank pnjBank, int nSpr, Graphics2D gfx2d) {
+	public void drawSprite(int i, int j, SpriteBank pnjBank, int nSpr, Graphics2D gfx2d, ByteBuffer buffer) {
 		SpriteModel model = pnjBank.get_sprite(nSpr);
-		int[] data = new int[] {}; //pnjBank.getSpriteGfx(nSpr);
 
-		// Use the right palette
 		Zone borders = model.getEmptyBorders();
+		int tx = model.getTaille_x();
+
 		int offXLeft = 0;
 		int offXRight = 0;
 		if (borders != null) {
-			offXLeft = borders.x1;
-			offXRight = borders.x2;
+			offXLeft += borders.x1;
+			offXRight += borders.x2;
 		}
+		int texSizeX = 256;
 		int a = 255;
-		int tx = model.getTaille_x();
-		if (false) {
+		int ps = 3;
 		for (int y = 0; y < model.getTaille_y(); y++) {
 			for (int x = 0-offXLeft; x < tx + offXRight; x++) {
 				if (x >= 0 && x < tx) {
-					int offset = y * tx + x;
-					a = data[offset];
-				} else {
-					a = 255;
+					int offset = (y+model.getTexPos_y()) * texSizeX + x + model.getTexPos_x();
+					a =   (buffer.get(offset*ps) & 0xff) << 16 
+						| (buffer.get(offset*ps+1) & 0xff) << 8 
+						|  buffer.get(offset*ps+2) & 0xff;
 				}
-				if (a != 255 || true) {
-					Vector4f col = GFXBasics.getColor(a);
-					gfx2d.setColor(new Color(col.x / 256, col.y / 256, col.z / 256));
-					gfx2d.drawLine(x + offXLeft + i, y + j, x + offXLeft + i, y + j);
-				}
+				Vector4f col = GFXBasics.splitRGB(a);
+				gfx2d.setColor(new Color(col.x / 256, col.y / 256, col.z / 256));
+				gfx2d.drawLine(x + offXLeft + i, y + j, x + offXLeft + i, y + j);
 			}
-		}
 		}
 	}
 

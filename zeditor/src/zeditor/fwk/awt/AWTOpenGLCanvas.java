@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -167,6 +168,11 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 					.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null));
 			changeSprites=false;
 		}
+		
+		if (callbackForTexture != null) {
+			grabTexture();
+			callbackForTexture = null;
+		}
 		if (!initialize) {
 			initRenderThread();
 			initOpenGL();
@@ -177,6 +183,10 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			renderer.setInitialized(true);
 			manager.init();
 			initialize = true;
+		}
+		if (!manager.canvasWaitingCall.isEmpty()) {
+			manager.canvasWaitingCall.get(0).run();
+			manager.canvasWaitingCall.remove(0);
 		}
 		try {
 			makeCurrent();
@@ -465,4 +475,19 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	public void askReloadTexture() {
 		reloadTexture = true;
 	}
+	
+	Consumer<ByteBuffer> callbackForTexture;
+	int textureToGrab;
+	
+	public void askGrabTexture(int nTexture, Consumer<ByteBuffer> r) {
+		callbackForTexture = r;
+		textureToGrab = nTexture;
+	}
+	
+	private void grabTexture() {
+		ByteBuffer buffer = ClientEngineZildo.spriteEngine.getTextureImage(textureToGrab);
+		//ByteBuffer cloned = buffer.duplicate()
+		callbackForTexture.accept(buffer);
+	}
+	
 }

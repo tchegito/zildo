@@ -231,66 +231,6 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		// n_Texture++;
 	}
 	
-	///////////////////////////////////////////////////////////////////////////////////////
-	// createTextureFromSpriteBank
-	///////////////////////////////////////////////////////////////////////////////////////
-	// IN: Bank to transform into texture
-	///////////////////////////////////////////////////////////////////////////////////////
-	// Create a Direct3DTexture9 object from a sprite bank. Every sprite is added at the
-	// right side of the previous one. If it is too long, we shift to next line, which is
-	// calculated as the highest sprite on the line. And so on.
-	// Here we use a GFXBasics object to gain in readability and comfort. This one will be deleted
-	// at the end, indeed. So we can say this is a beautiful method.
-	/*
-	private void createTextureFromSpriteBank(SpriteBank sBank) {
-	
-		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
-
-		surfaceGfx.StartRendering();
-
-		// Default place on classic palette
-		GFXBasics.switchPalette(1);
-
-		int palNum = 1;
-		for (int n=0;n<sBank.getNSprite();n++)
-		{
-			SpriteModel spr=sBank.get_sprite(n);
-			int longX=spr.getTaille_x();
-			int longY=spr.getTaille_y();
-			int x = spr.getTexPos_x();
-			int y = spr.getTexPos_y();
-			// On place le sprite sur la texture
-			short[] motif=sBank.getSpriteGfx(n);
-			Vector4f replacedColor;
-			for (int j=0;j< longY;j++) {
-				
-				for (int i=0;i< longX;i++)
-				{
-					int a=motif[i+j*longX];
-					if (a!=255)
-					{
-						// Regular size
-						long modifiedColor=-1;
-						if (pixelShaderSupported) {
-							modifiedColor=sBank.modifyPixel(n,a);
-						}
-						int newPalNum = sBank.whichPalette(n);
-						if (newPalNum != palNum) {
-							GFXBasics.switchPalette(newPalNum);
-							palNum = newPalNum;
-						}
-						replacedColor=modifiedColor==-1?null:textureEngine.graphicStuff.createColor(modifiedColor);
-						surfaceGfx.pset(i+x, j+y, a, replacedColor);
-					}
-				}
-			}
-		}
-		//sBank.freeTempBuffer();
-		GFXBasics.switchPalette(1);
-
-		textureEngine.generateTexture();
-	}
-*/
 	/**
      * Create a new texture from a given one, and replace colors as specified by
      * the {@link Outfit} class.<br/>
@@ -347,11 +287,6 @@ public class LwjglSpriteEngine extends SpriteEngine {
 			textureEngine.generateTexture();
 			textureReady = false;
 		}
-	}
-	
-	@Override
-	public void saveTextures() {
-		textureEngine.saveAllTextures("sprite");
 	}
 
 }
