@@ -10,8 +10,9 @@ import java.awt.GraphicsDevice;
 import java.awt.Point;
 import java.io.File;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -29,8 +30,10 @@ import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.IRenderable;
 import zildo.fwk.gfx.Ortho;
+import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.sprites.SpriteStore;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
@@ -169,9 +172,9 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			changeSprites=false;
 		}
 		
-		if (callbackForTexture != null) {
+		if (!isTextureLoaded() && !loadingTexture && ClientEngineZildo.spriteEngine != null) {
 			grabTexture();
-			callbackForTexture = null;
+			loadingTexture = true;
 		}
 		if (!initialize) {
 			initRenderThread();
@@ -184,7 +187,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			manager.init();
 			initialize = true;
 		}
-		if (!manager.canvasWaitingCall.isEmpty()) {
+		if (!manager.canvasWaitingCall.isEmpty() && isTextureLoaded()) {
 			manager.canvasWaitingCall.get(0).run();
 			manager.canvasWaitingCall.remove(0);
 		}
@@ -476,18 +479,39 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		reloadTexture = true;
 	}
 	
-	Consumer<ByteBuffer> callbackForTexture;
-	int textureToGrab;
+	// TODO: externalize this
+	boolean loadingTexture = false;
+	Map<Integer, ByteBuffer> grabbedSpriteTextures = new HashMap<>();
+	Map<Integer, ByteBuffer> grabbedTileTextures = new HashMap<>();
 	
-	public void askGrabTexture(int nTexture, Consumer<ByteBuffer> r) {
-		callbackForTexture = r;
-		textureToGrab = nTexture;
+	public ByteBuffer getSpriteTexture(int nTexture) {
+		return grabbedSpriteTextures.get(nTexture);
 	}
 	
+	public ByteBuffer getTileTexture(int nTexture) {
+		return grabbedTileTextures.get(nTexture);
+	}
 	private void grabTexture() {
-		ByteBuffer buffer = ClientEngineZildo.spriteEngine.getTextureImage(textureToGrab);
-		//ByteBuffer cloned = buffer.duplicate()
-		callbackForTexture.accept(buffer);
+		ByteBuffer texture = null;
+		// Sprites
+		for (int i=0;i<SpriteStore.sprBankName.length;i++) {
+			texture = ClientEngineZildo.spriteEngine.getTextureImage(i);
+			ByteBuffer copied = ByteBuffer.allocateDirect(texture.limit());
+			copied.put(texture);
+			grabbedSpriteTextures.put(i, copied);
+		}
+		// Tiles
+		for (int i=0;i<TileEngine.tileBankNames.length;i++) {
+			texture = ClientEngineZildo.tileEngine.getTextureImage(i);
+			ByteBuffer copied = ByteBuffer.allocateDirect(texture.limit());
+			copied.put(texture);
+			grabbedTileTextures.put(i, copied);
+		}
+		loadingTexture = false;
+	}
+	
+	public boolean isTextureLoaded() {
+		return grabbedSpriteTextures.size() > 7 && grabbedTileTextures.size() > 5;
 	}
 	
 }

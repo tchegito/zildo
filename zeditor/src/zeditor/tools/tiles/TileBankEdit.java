@@ -27,7 +27,9 @@ import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.nio.ByteBuffer;
 
+import zeditor.tools.Transparency;
 import zeditor.tools.builder.texture.TileTexture;
 import zeditor.tools.sprites.BankEdit;
 import zildo.fwk.bank.TileBank;
@@ -141,7 +143,7 @@ public class TileBankEdit extends TileBank {
     }
     
     
-    public Image generateImg() {
+    public Image generateImg(ByteBuffer texture) {
     	// Determine dimension
     	int maxX=0;
     	int maxY=0;
@@ -153,10 +155,14 @@ public class TileBankEdit extends TileBank {
     	
     	// Draw the tiles as they are predefined
     	int tile=0;
+
+    	Point texPos = new Point(0, 0);
+    	int idxTile = 0;
     	for (Point p : bank.coords) {
-    		/*
-    		drawImage(img, p.x, p.y, get_motif(tile++));
-    		*/
+    		texPos.x = (idxTile % 16) * 16;
+    		texPos.y = (idxTile / 16) * 16;
+    		drawImage(img, p.x, p.y, texture, texPos);
+    		idxTile++;
     	}
     	    	
     	img.flush();
@@ -164,14 +170,23 @@ public class TileBankEdit extends TileBank {
     	return img;
     }
 
-    private void drawImage(Image img, int x, int y, short[] data) {
-
-    	int[] intData=new int[data.length];
-    	for (int i=0;i<data.length;i++) {
-    		intData[i] = GFXBasics.getIntColor(data[i]);
+    private void drawImage(Image img, int x, int y, ByteBuffer texture, Point texPos) {
+    	
+    	int size = 16 * 16;
+    	int[] intData=new int[size];
+    	int offset = texPos.y * (256*3) + texPos.x*3;
+    	for (int i=0;i<size;i++) {
+			int pixel = GFXBasics.readColor(texture,  i*3 + offset);
+    		if (pixel == 0) {
+    			pixel = Transparency.TRANSPARENCY_COLOR;
+    		}
+    		intData[i] = pixel;
+    		if (i % 16 ==15) {
+    			offset += 256*3 - 16*3;
+    		}
     	}
     	
-    	DataBuffer buffer = new DataBufferInt(intData, data.length);
+    	DataBuffer buffer = new DataBufferInt(intData, intData.length);
     	BufferedImage tempImg=new BufferedImage(16,16, BufferedImage.TYPE_INT_RGB);
     	WritableRaster raster = Raster.createWritableRaster(tempImg.getSampleModel(), buffer, null);
     	tempImg.setData(raster);

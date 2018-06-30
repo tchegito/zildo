@@ -88,7 +88,8 @@ public class SpriteSet extends ImageSet {
 				BufferedImage.TYPE_INT_RGB);
 		currentTile.getGraphics();
 
-		displayListSprites(p_bankDesc);
+		// Wait for all texture to be loaded
+		manager.doWhenTextureLoaded( () -> displayListSprites(p_bankDesc));
 	}
 
 	private void displayListSprites(List<SpriteDescription> p_list) {
@@ -138,9 +139,8 @@ public class SpriteSet extends ImageSet {
 	private void drawPerso(int i, int j, SpriteBank pnjBank, int nSpr) {
 
 		Graphics2D gfx2d = (Graphics2D) currentTile.getGraphics();
-		manager.enqueueWhenCanvasReady(
-				() -> manager.getZildoCanvas().askGrabTexture(pnjBank.getIndex(), (ByteBuffer b) -> drawSprite(i, j, pnjBank, nSpr, gfx2d, b))
-		);
+		
+		drawSprite(i, j, pnjBank, nSpr, gfx2d, manager.getSpriteTexture(pnjBank.getIndex()));
 	}
 
 	public void drawSprite(int i, int j, SpriteBank pnjBank, int nSpr, Graphics2D gfx2d, ByteBuffer buffer) {
@@ -162,9 +162,7 @@ public class SpriteSet extends ImageSet {
 			for (int x = 0-offXLeft; x < tx + offXRight; x++) {
 				if (x >= 0 && x < tx) {
 					int offset = (y+model.getTexPos_y()) * texSizeX + x + model.getTexPos_x();
-					a =   (buffer.get(offset*ps) & 0xff) << 16 
-						| (buffer.get(offset*ps+1) & 0xff) << 8 
-						|  buffer.get(offset*ps+2) & 0xff;
+					a = GFXBasics.readColor(buffer, offset*ps);
 				}
 				Vector4f col = GFXBasics.splitRGB(a);
 				gfx2d.setColor(new Color(col.x / 256, col.y / 256, col.z / 256));

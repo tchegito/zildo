@@ -190,7 +190,6 @@ public class SpriteBankEdit extends SpriteBank {
     	 }
     	 if (current != null) {
     		 if (current.nTile == i) {
-   				 GFXBasics.switchPalette(current.decrodedPalette ? 2 : 1);
     			 loadImage(current.imageName, Modifier.COLOR_BLUE);
     			 current = null;
     		 }
@@ -202,7 +201,6 @@ public class SpriteBankEdit extends SpriteBank {
     	 }
     		 i++;
       }
-	 GFXBasics.switchPalette(1);
 	}
 	
 	public void captureFonts(int posY, int fontHeight, String chars, int constantWidth, int heightSpace) {

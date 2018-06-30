@@ -134,9 +134,6 @@ public class TileTexture {
 
 		surfaceGfx.StartRendering();
 
-		// Default place on classic palette
-		GFXBasics.switchPalette(1);
-
 		int palNum = 1;
 		for (int n=0;n<sBank.getNSprite();n++)
 		{

@@ -27,7 +27,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
-import java.util.function.Consumer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -64,10 +63,6 @@ public class ViewSpritesDialog extends JDialog {
 	
 	MasterFrameManager manager;
 	SpriteSet spriteSet;
-	
-	ByteBuffer currentTexture = null;
-	int currentBank = -1;
-	
 	
 	public ViewSpritesDialog(MasterFrameManager manager, SpriteSet spriteSet) {
 		this.manager = manager;
@@ -127,38 +122,28 @@ public class ViewSpritesDialog extends JDialog {
 		SpriteBank bank = EngineZildo.spriteManagement.getSpriteBank(nBank);
 		SpriteModel model = bank.getModels().get(nSpr);
 		
-		// Define a lambda which display sprite given a texture contained in ByteBuffer
-		Consumer<ByteBuffer> displaySprite=(ByteBuffer buffer) -> {
-			currentTexture = buffer;
-			int tx = model.getTaille_x();
-			Zone z = model.getEmptyBorders();
-			if (z != null) {
-				tx += z.x1 + z.x2;
-			}
-			Image img = new BufferedImage(tx*scale, model.getTaille_y()*scale, BufferedImage.TYPE_INT_RGB);
-			Graphics2D gfx2d = (Graphics2D) img.getGraphics();
-			// Multiply size by scale
-			gfx2d.scale(scale, scale);
-			gfx2d.translate(0.5, 0.5);
-			spriteSet.drawSprite(0, 0, bank, nSpr, gfx2d, buffer);
-			ImageIcon icon = new ImageIcon(img);
-			spriteImgLabel.setIcon(icon);
-			// Display width/height
-			String display = model.getTaille_x()+" x "+model.getTaille_y();
-			Zone borders = model.getEmptyBorders();
-			if (borders != null) {
-				display += " offXLeft="+borders.x1+" offXRight="+borders.x2+" offY="+borders.y1;
-			}
-			sizeLabel.setText(display);
-		};
 
-		// No need to grab texture again if we are on the same bank than before
-		if (currentBank != nBank || currentTexture == null) {
-			manager.getZildoCanvas().askGrabTexture(nBank, displaySprite);
-			currentBank = nBank;
-		} else {
-			displaySprite.accept(currentTexture);
+		int tx = model.getTaille_x();
+		Zone z = model.getEmptyBorders();
+		if (z != null) {
+			tx += z.x1 + z.x2;
 		}
+		ByteBuffer buffer = manager.getSpriteTexture(nBank);
+		Image img = new BufferedImage(tx*scale, model.getTaille_y()*scale, BufferedImage.TYPE_INT_RGB);
+		Graphics2D gfx2d = (Graphics2D) img.getGraphics();
+		// Multiply size by scale
+		gfx2d.scale(scale, scale);
+		gfx2d.translate(0.5, 0.5);
+		spriteSet.drawSprite(0, 0, bank, nSpr, gfx2d, buffer);
+		ImageIcon icon = new ImageIcon(img);
+		spriteImgLabel.setIcon(icon);
+		// Display width/height
+		String display = model.getTaille_x()+" x "+model.getTaille_y();
+		Zone borders = model.getEmptyBorders();
+		if (borders != null) {
+			display += " offXLeft="+borders.x1+" offXRight="+borders.x2+" offY="+borders.y1;
+		}
+		sizeLabel.setText(display);
 	}
 	
 	class ViewSpritesListener implements ActionListener, ChangeListener {

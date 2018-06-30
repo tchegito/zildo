@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import zeditor.tools.Transparency;
 import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 
@@ -41,9 +42,6 @@ import zildo.resource.Constantes;
  */
 public class BankEdit {
 
-
-	static final int TRANSPARENCY_COLOR = 195 << 16 | 130 << 8 | 243;
-	
     public List<int[]> gfxs;
     
     public BufferedImage img;
@@ -75,7 +73,7 @@ public class BankEdit {
 			for (int i = 0; i < img.getWidth(); i++) {
 				int offset = i + (j * img.getWidth());
 				int v = imgPixels[offset];
-				if ((v & 0xffffff) == TRANSPARENCY_COLOR) {
+				if ((v & 0xffffff) == Transparency.TRANSPARENCY_COLOR) {
 					imgPixels[offset] = 0 << 24;
 				} else {
 					// No transparency at all => 0xff as ALPHA value
