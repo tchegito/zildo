@@ -360,7 +360,6 @@ public abstract class TileEngine {
 	
 	public ByteBuffer getTextureImage(int nTexture) {
 		textureEngine.getTextureImage(nTexture);
-		System.out.println(textureEngine.scratch);
 		return textureEngine.scratch;
 	}
 }

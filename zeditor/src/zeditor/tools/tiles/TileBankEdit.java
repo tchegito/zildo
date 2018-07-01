@@ -121,12 +121,6 @@ public class TileBankEdit extends TileBank {
     public void saveBank() {
         EasyBuffering buffer=new EasyBuffering(bankEdit.gfxs.size() * TileBank.motifSize);
         for (int i=0;i<nb_motifs;i++) {
-        	// Put the image
-        	/* NOT ANYMORE !
-            for (short s : bankEdit.gfxs.get(i)) {
-                buffer.put((byte) s);
-            }
-            */
         	// Put the collision info
             TileInfo info = infosCollision.getTileInfo(256 * bankOrder + i);
             byte hash = (byte) TileInfo.Template.FULL.hashCode();

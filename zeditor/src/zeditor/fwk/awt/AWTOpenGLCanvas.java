@@ -29,6 +29,7 @@ import zeditor.windows.subpanels.SelectionKind;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.IRenderable;
+import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.Area;
@@ -479,39 +480,34 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		reloadTexture = true;
 	}
 	
-	// TODO: externalize this
+	// Texture load from OpenGL Video buffer has to be here, because we need the OpenGL thread to access it.
 	boolean loadingTexture = false;
-	Map<Integer, ByteBuffer> grabbedSpriteTextures = new HashMap<>();
-	Map<Integer, ByteBuffer> grabbedTileTextures = new HashMap<>();
+	Map<Integer, ByteBuffer> spriteTextures = new HashMap<>();
+	Map<Integer, ByteBuffer> tileTextures = new HashMap<>();
 	
 	public ByteBuffer getSpriteTexture(int nTexture) {
-		return grabbedSpriteTextures.get(nTexture);
+		return spriteTextures.get(nTexture);
 	}
 	
 	public ByteBuffer getTileTexture(int nTexture) {
-		return grabbedTileTextures.get(nTexture);
+		return tileTextures.get(nTexture);
 	}
 	private void grabTexture() {
-		ByteBuffer texture = null;
 		// Sprites
 		for (int i=0;i<SpriteStore.sprBankName.length;i++) {
-			texture = ClientEngineZildo.spriteEngine.getTextureImage(i);
-			ByteBuffer copied = ByteBuffer.allocateDirect(texture.limit());
-			copied.put(texture);
-			grabbedSpriteTextures.put(i, copied);
+			spriteTextures.put(i, ZUtils.duplicateBuffer(
+					ClientEngineZildo.spriteEngine.getTextureImage(i)));
 		}
 		// Tiles
 		for (int i=0;i<TileEngine.tileBankNames.length;i++) {
-			texture = ClientEngineZildo.tileEngine.getTextureImage(i);
-			ByteBuffer copied = ByteBuffer.allocateDirect(texture.limit());
-			copied.put(texture);
-			grabbedTileTextures.put(i, copied);
+			tileTextures.put(i, ZUtils.duplicateBuffer(
+					ClientEngineZildo.tileEngine.getTextureImage(i)));
 		}
 		loadingTexture = false;
 	}
 	
 	public boolean isTextureLoaded() {
-		return grabbedSpriteTextures.size() > 7 && grabbedTileTextures.size() > 5;
+		return spriteTextures.size() > 7 && tileTextures.size() > 5;
 	}
 	
 }

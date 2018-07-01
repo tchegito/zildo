@@ -21,11 +21,14 @@
 package zildo.fwk.bank;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import zildo.Zildo;
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.SpriteStore;
 import zildo.monde.util.Zone;
 
 /**
@@ -160,5 +163,9 @@ public class SpriteBank {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public int getIndex() {
+		return Arrays.asList(SpriteStore.sprBankName).indexOf(name);
 	}
 }

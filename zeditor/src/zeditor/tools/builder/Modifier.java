@@ -28,16 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.LogManager;
 
-import zeditor.tools.banque.Foret1;
-import zeditor.tools.banque.Foret2;
-import zeditor.tools.banque.Foret3;
-import zeditor.tools.banque.Foret4;
-import zeditor.tools.banque.Grotte;
 import zeditor.tools.banque.LavaCave;
-import zeditor.tools.banque.Maison;
-import zeditor.tools.banque.Palais1;
-import zeditor.tools.banque.Palais3;
-import zeditor.tools.banque.Village;
 import zeditor.tools.palette.PaletteExtractor;
 import zeditor.tools.sprites.ElementsPlus;
 import zeditor.tools.sprites.Fontes;
@@ -46,19 +37,15 @@ import zeditor.tools.sprites.PjZildo;
 import zeditor.tools.sprites.Pnj;
 import zeditor.tools.sprites.Pnj2;
 import zeditor.tools.sprites.Pnj3;
-import zeditor.tools.sprites.Pnj4;
 import zeditor.tools.sprites.SpriteBankEdit;
 import zeditor.tools.sprites.SpriteBanque;
 import zeditor.tools.tiles.Banque;
-import zeditor.tools.tiles.TileBankEdit;
 import zildo.Zildo;
 import zildo.client.Client;
-import zildo.client.ClientEngineZildo;
 import zildo.client.gui.GUIDisplay;
 import zildo.fwk.ZUtils;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.bank.TileBank;
-import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.Game;
 import zildo.monde.dialog.Behavior;
@@ -109,7 +96,7 @@ public class Modifier {
    	 // To enable OpenGL
 		Client cl = new Client(false);
 		new Modifier().saveAllMotifBank();
-		new Modifier().saveAllSpriteBank();
+		//new Modifier().saveAllSpriteBank();
 		/*
         new Modifier().saveNamedTileBank("lavacave");
 
@@ -124,7 +111,6 @@ public class Modifier {
         new Modifier().saveElements();
         new Modifier().saveFontes2();
         //new Modifier().saveAllMotifBank();
-        new Modifier().saveBanque();
         //new ReplaceAllMapsWindows().modifyAllMaps();
         //new AdjustGrotte().modifyAllMaps();
         new Modifier().saveZildo();
@@ -158,43 +144,6 @@ public class Modifier {
 		.rebuildImages();
 		*/
     }
-     
-     public void generateImg() {
-    	 TileBankEdit bankEdit=new TileBankEdit(new Grotte());
-    	 bankEdit.charge_motifs(bankEdit.getName()+".dec");
-    	 bankEdit.generateImg();
-     }
-     
-     public void saveBanque() {
-    	 new TileBank().charge_motifs("foret1");
-    	 new Foret1().save();
-    	 
-    	 new TileBank().charge_motifs("foret2");
-    	 new Foret2().save();
-
-    	 new TileBank().charge_motifs("foret3");
-    	 new Foret3().save();
-
-    	 new TileBank().charge_motifs("foret4");
-    	 new Foret4().save();
-
-    	 new TileBank().charge_motifs("village");
-    	 new Village().save();
-
-    	 new TileBank().charge_motifs("maison");
-    	 new Maison().save();
-    	 
-    	 new TileBank().charge_motifs("palais1");
-    	 new Palais1().save();
-    	 
-    	 new TileBank().charge_motifs("grotte");
-    	 new Grotte().save();
-    	 
-    	 new TileBank().charge_motifs("palais3");
-    	 new Palais3().save();
-    	 
-    	 saveElements();
-     }
      
      public void saveNamedTileBank(String tileBankName) {
     	 new TileBank().charge_motifs(tileBankName);

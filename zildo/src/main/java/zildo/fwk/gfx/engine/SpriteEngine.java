@@ -276,7 +276,6 @@ public abstract class SpriteEngine {
 	
 	public ByteBuffer getTextureImage(int nTexture) {
 		textureEngine.getTextureImage(nTexture);
-		System.out.println(textureEngine.scratch);
 		return textureEngine.scratch;
 	}
 

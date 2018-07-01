@@ -596,15 +596,7 @@ public class MasterFrameManager {
 			updateTitle();
 		}
 	}
-	/*
-	public void enqueueWhenCanvasReady(Runnable sideEffect) {
-		if (zildoCanvas != null) {
-			sideEffect.run();
-		} else {
-			canvasWaitingCall.add(sideEffect);
-		}
-	}
-	*/
+
 	public void doWhenTextureLoaded(Runnable sideEffect) {
 		if (zildoCanvas != null && zildoCanvas.isTextureLoaded()) {
 			sideEffect.run();
