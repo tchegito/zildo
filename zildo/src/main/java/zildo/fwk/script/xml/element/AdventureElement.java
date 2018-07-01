@@ -20,28 +20,43 @@
 
 package zildo.fwk.script.xml.element;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.Element;
-
-import zildo.fwk.script.xml.ScriptReader;
+import org.xml.sax.Attributes;
 
 public class AdventureElement extends AnyElement {
 
-	List<SceneElement> scenes;
-	List<QuestElement> quests;
-	List<MapscriptElement> mapScripts;
-	List<ContextualActionElement> persoActions;
-	List<ContextualActionElement> tileActions;
+	List<SceneElement> scenes = new ArrayList<SceneElement>();
+	List<QuestElement> quests = new ArrayList<QuestElement>();
+	List<MapscriptElement> mapScripts = new ArrayList<MapscriptElement>();
+	List<ContextualActionElement> persoActions = new ArrayList<ContextualActionElement>();
+	List<ContextualActionElement> tileActions = new ArrayList<ContextualActionElement>();
+	
 	
 	@Override
-	@SuppressWarnings("unchecked")
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
+		/*
 		scenes = (List<SceneElement>) ScriptReader.parseNodes(p_elem, "scene");
 		quests = (List<QuestElement>) ScriptReader.parseNodes(p_elem, "quest");
 		mapScripts = (List<MapscriptElement>) ScriptReader.parseNodes(p_elem, "mapScript");
 		persoActions = (List<ContextualActionElement>) ScriptReader.parseNodes(p_elem, "persoAction"); 
-		tileActions = (List<ContextualActionElement>) ScriptReader.parseNodes(p_elem, "tileAction"); 
+		tileActions = (List<ContextualActionElement>) ScriptReader.parseNodes(p_elem, "tileAction");
+		*/ 
+	}
+	
+	public void add(String node, AnyElement elem) {
+		if ("scene".equals(node)) {
+			scenes.add((SceneElement) elem);
+		} else if ("quest".equals(node)) {
+			quests.add((QuestElement) elem);
+		} else if ("mapScript".equals(node)) {
+			mapScripts.add((MapscriptElement) elem);
+		} else if ("persoAction".equals(node)) {
+			persoActions.add((ContextualActionElement) elem);
+		} else if ("tileAction".equals(node)) {
+			tileActions.add((ContextualActionElement) elem);
+		}
 	}
 
 	/**

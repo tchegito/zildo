@@ -21,10 +21,10 @@ package zildo.fwk.script.xml.element.action;
 
 import java.util.List;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 import zildo.fwk.script.logic.FloatExpression;
-import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.script.xml.element.AnyElement;
 import zildo.fwk.script.xml.element.LanguageElement;
 
 /**
@@ -58,21 +58,29 @@ public class TimerElement extends ActionsNestedElement {
     }
 	
 	@Override
-	@SuppressWarnings("unchecked")
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		super.parse(p_elem);
 		
 		unblock = isTrue("unblock");
 		
-		Element endContainer = ScriptReader.getChildNamed(p_elem, "end");
-
-		end = (List<LanguageElement>) ScriptReader.parseNodes(endContainer);
-		
 		each = new FloatExpression(readAttribute("each"));
+		/* TODO: how get this with SAX ???
 		if (endContainer != null) {
 			endCondition = new FloatExpression(endContainer.getAttribute("when"));
 		}
-		
+		*/
+	}
+	
+	@Override
+	public void add(String node, AnyElement elem) {
+		super.add(node, elem);
+		if ("end".equals(node)) {
+			end.add((LanguageElement) elem);
+		}
+	}
+
+	@Override
+	public void validate() {
 		if (actions.isEmpty()) {
 			throw new RuntimeException("Timer is empty !");
 		}

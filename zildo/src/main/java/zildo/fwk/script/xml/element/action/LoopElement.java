@@ -19,7 +19,7 @@
 
 package zildo.fwk.script.xml.element.action;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 import zildo.fwk.ZUtils;
 import zildo.fwk.script.logic.FloatExpression;
@@ -42,12 +42,15 @@ public class LoopElement extends ActionsNestedElement {
 	}
 	
 	@Override
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		super.parse(p_elem);
 		
-		String whenValue = xmlElement.getAttribute("when");
+		String whenValue = readOrEmpty("when");
 		whileCondition = ZUtils.isEmpty(whenValue) ? new FloatExpression(1) : new FloatExpression(whenValue);
-		
+	}
+	
+	@Override
+	public void validate() {
 		if (actions.isEmpty()) {
 			throw new RuntimeException("Loop is empty !");
 		}

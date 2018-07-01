@@ -20,7 +20,7 @@
 
 package zildo.fwk.script.xml.element.action;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.model.ZSSwitch;
@@ -89,7 +89,7 @@ public class ActionElement extends LanguageElement {
 	}
 
 	@Override
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		if (kind == null) {
 			throw new RuntimeException("Action kind is unknown !");
 		}
@@ -102,14 +102,14 @@ public class ActionElement extends LanguageElement {
 		who = readAttribute("who");
 		what = readAttribute("what");
 		effect = readAttribute("effect");
-		speed = Float.valueOf("0" + p_elem.getAttribute("speed"));
+		speed = Float.valueOf("0" + readOrEmpty("speed"));
 		unstoppable = isTrue("unstoppable");
 		foreground = readBoolean("foreground");
 		floor = getFloatExpr("floor", "1.0");
 		String strReverse = readAttribute("reverse");
 		// Read less common ones
-		String strPos = p_elem.getAttribute("pos");
-		String strAngle = p_elem.getAttribute("angle");
+		String strPos = readOrEmpty("pos");
+		String strAngle = readOrEmpty("angle");
 		switch (kind) {
 		case sprite:
 			text = readAttribute("type");
@@ -231,12 +231,12 @@ public class ActionElement extends LanguageElement {
 			break;
 		case exec:	// Execute a script (scene)
 		case stop:	// Stop a script
-			text = p_elem.getAttribute("script");
+			text = readOrEmpty("script");
 			break;
 		case mapReplace:
 		case zikReplace:
 		case nameReplace:
-			text = p_elem.getAttribute("name");
+			text = readOrEmpty("name");
 			break;
 		case markQuest:
 			text = readAttribute("name");
@@ -318,7 +318,8 @@ public class ActionElement extends LanguageElement {
 	 * @param p_value
 	 */
 	public void setAttribute(String p_name, String p_value) {
-		xmlElement.setAttribute(p_name, p_value);
+		throw new RuntimeException("Unable to do this since SAX refactor in order replace DOM !");
+		//xmlElement.setAttribute(p_name, p_value);
 	}
 
 	@Override

@@ -19,7 +19,7 @@
 
 package zildo.fwk.script.xml.element.action;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 import zildo.fwk.script.model.point.IPoint;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
@@ -41,7 +41,7 @@ public class LookforElement extends ActionsNestedElement {
     }
 	
 	@Override
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		super.parse(p_elem);
 		
 		who = readAttribute("who");
@@ -53,7 +53,7 @@ public class LookforElement extends ActionsNestedElement {
 		if (strInfo != null) {
 			info = PersoInfo.valueOf(strInfo);
 		}
-		String strPos = p_elem.getAttribute("pos");
+		String strPos = readOrEmpty("pos");
 		if (!strPos.isEmpty()) {
 			location = IPoint.fromString(strPos);
 		}

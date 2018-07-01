@@ -1,6 +1,6 @@
 package zildo.fwk.script.xml.element.action;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 
 public class ListenElement extends ActionsNestedElement {
@@ -10,7 +10,7 @@ public class ListenElement extends ActionsNestedElement {
 	}
 	
 	@Override
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		super.parse(p_elem);
 
 		who = readAttribute("who");

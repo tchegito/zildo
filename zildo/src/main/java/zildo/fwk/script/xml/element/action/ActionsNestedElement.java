@@ -2,9 +2,10 @@ package zildo.fwk.script.xml.element.action;
 
 import java.util.List;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
-import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.ZUtils;
+import zildo.fwk.script.xml.element.AnyElement;
 import zildo.fwk.script.xml.element.LanguageElement;
 
 /** Simple action element, containing a list of actions.
@@ -26,19 +27,16 @@ public class ActionsNestedElement extends ActionElement {
 		this.containerName = containerName;
 	}
 
-	public List<LanguageElement> actions;
+	public List<LanguageElement> actions = ZUtils.arrayList();
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		xmlElement = p_elem;
-
-		Element container = xmlElement;
-		if (containerName != null) {
-			container = ScriptReader.getChildNamed(p_elem, containerName);
-		}
-
-		actions = (List<LanguageElement>) ScriptReader.parseNodes(container);
 	}
 	
+	public void add(String node, AnyElement elem) {
+		if ("action".equals(node)) {
+			actions.add((LanguageElement) elem);
+		}
+	}
 }

@@ -23,22 +23,29 @@ package zildo.fwk.script.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
+import zildo.fwk.script.xml.element.AdventureElement;
 import zildo.fwk.script.xml.element.AnyElement;
+import zildo.fwk.script.xml.element.ConditionElement;
+import zildo.fwk.script.xml.element.ContextualActionElement;
+import zildo.fwk.script.xml.element.QuestElement;
+import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionKind;
+import zildo.fwk.script.xml.element.action.ActionsElement;
+import zildo.fwk.script.xml.element.action.TriggersElement;
 import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.fwk.script.xml.element.logic.VarElement.VarKind;
 import zildo.monde.quest.QuestEvent;
@@ -63,7 +70,7 @@ public class ScriptReader {
 	            		stream = ScriptReader.class.getClassLoader().getResourceAsStream(scriptName+".xml");
 	            	}
 	            }
-	            
+	            System.out.println("Loading stream "+filename);
 	            AnyElement root = loadStream(stream);
 	            
 	            if (ret == null) {
@@ -81,25 +88,86 @@ public class ScriptReader {
     }
 
 	public static AnyElement loadStream(InputStream p_stream) throws ParserConfigurationException, IOException, SAXException {
-		DocumentBuilder sxb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		//DocumentBuilder sxb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
+		SAXParserFactory _f = SAXParserFactory.newInstance();
+		SAXParser _p = _f.newSAXParser();
+		//XMLReader reader = _p.getXMLReader();
+		AdventureHandler handler = new AdventureHandler();
+		_p.parse(p_stream, handler);
+		//reader.setContentHandler(handler);
+		//reader.parse(p_stream);
+		/*
 		Document document = sxb.parse(p_stream);
 		Element racine = document.getDocumentElement();
-
-		List<AnyElement> roots = createNode(racine);
-		// We shouldn't have more than one here
-		assert roots.size() == 1;
-		AnyElement root = roots.get(0);
+*/
+		AnyElement root = handler.getRoot();
 		return root;
 	}
 	
+	static class AdventureHandler extends DefaultHandler {
+
+		AdventureElement root;
+		List<AnyElement> currentNodes;
+		
+		LinkedList<AnyElement> depth = new LinkedList<AnyElement>();
+		
+		String node;
+		
+		public AdventureElement getRoot() {
+			return root;
+		}
+		@Override
+		public void startElement(String namespaceURI, String lname,
+				String qname, Attributes attrs) throws SAXException {
+			node = qname;
+			// Cette dernière contient la liste des attributs du nœud
+			currentNodes = createNode(qname, attrs);
+			depth.addFirst(currentNodes.get(0));
+			
+			if (qname.equalsIgnoreCase("adventure")) {
+				root = (AdventureElement) currentNodes.get(0);
+			}
+		}
+		
+		@Override
+		public void endElement(String uri, String localName, String qName) {
+			if (Arrays.asList("quest", "scene", "mapScript", "persoAction", "tileAction").contains(qName)) {
+				root.add(qName, depth.getFirst());
+			}
+			// Container end
+			if ("condition".equalsIgnoreCase(qName)) {
+				currentNodes.clear();
+				currentNodes.add(depth.getFirst());
+			}
+			if ("trigger".equalsIgnoreCase(qName)) {
+				currentNodes.clear();
+				currentNodes.add(depth.getFirst());
+			}
+			depth.removeFirst();
+			if (!depth.isEmpty()) {
+				// TODO: Why not do that in all cases ?
+				if (depth.getFirst() instanceof SceneElement ||
+						depth.getFirst() instanceof ConditionElement ||
+						depth.getFirst() instanceof ContextualActionElement ||
+						depth.getFirst() instanceof QuestElement ||
+						depth.getFirst() instanceof ActionsElement ||
+						depth.getFirst() instanceof TriggersElement) {
+					depth.getFirst().add(qName, currentNodes.get(0));
+				}
+				if (Arrays.asList("action", "history", "condition").contains(qName)) {
+					depth.getFirst().add(qName, currentNodes.get(0));
+				}
+			}
+			currentNodes.get(0).validate();
+		}
+	}
     /**
      * Create an understandable element from the given node.
      * @param p_element
      * @return AnyElement
      */
-    private static List<AnyElement> createNode(Element p_element) {
-        String name = p_element.getNodeName();
+    private static List<AnyElement> createNode(String name, Attributes p_element) {
         AnyElement s = null;
         // Check for ActionElement
         ActionKind kind=ActionKind.fromString(name);
@@ -111,7 +179,9 @@ public class ScriptReader {
         } else {
             QuestEvent event=QuestEvent.fromString(name);
         	if (event != null) {	// Trigger ?
-	        	String questName = ((Element)p_element.getParentNode().getParentNode()).getAttribute("name");
+        		// TODO: implement this with SAX
+	        	//String questName = ((Element)p_element.getParentNode().getParentNode()).getAttribute("name");
+        		String questName="todo";
 	        	s=new TriggerElement(event, questName);
 	        } else {
 	            VarKind varKind=VarKind.fromString(name);
@@ -136,49 +206,4 @@ public class ScriptReader {
         return result;
     }
 
-    /**
-     * Returns a list of every child node, which name is contained in the provided ones.
-     * @param p_element
-     * @param p_nodeName all acceptable node names (can be null => all childs will be taken)
-     * @return List
-     */
-    public static List<? extends AnyElement> parseNodes(Element p_element, String... p_nodeName) {
-        List<AnyElement> elements = new ArrayList<AnyElement>();
-        if (p_element == null) {	// No child ? Returns an empty list.
-        	return elements;
-        }
-        NodeList list = p_element.getChildNodes();
-        List<String> acceptables = new ArrayList<String>();
-        if (p_nodeName != null) {
-            for (String s : p_nodeName) {
-                acceptables.add(s.toUpperCase());
-            }
-        }
-        for (int i = 0; i < list.getLength(); i++) {
-            Node node = list.item(i);
-            if (node != null && node.getNodeType() == Node.ELEMENT_NODE) {
-                String nodeNameUpper = node.getNodeName().toUpperCase();
-                if (acceptables.size() == 0 || acceptables.contains(nodeNameUpper)) {
-                    elements.addAll(createNode((Element) node));
-                }
-            }
-        }
-        return elements;
-    }
-    
-    public static Element getChildNamed(Element p_element, String p_nodeName) {
-        NodeList list = p_element.getChildNodes();
-        Element returnElement=null;
-        for (int i = 0; i < list.getLength(); i++) {
-            Node node = list.item(i);
-            if (node != null && node.getNodeType() == Node.ELEMENT_NODE) {
-                String nodeNameUpper = node.getNodeName().toUpperCase();
-                
-                if (p_nodeName.equalsIgnoreCase(nodeNameUpper)) {
-                	returnElement=(Element) node;
-                }
-            }
-        }
-        return returnElement;
-    }
 }

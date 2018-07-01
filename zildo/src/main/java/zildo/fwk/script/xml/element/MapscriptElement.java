@@ -2,20 +2,24 @@ package zildo.fwk.script.xml.element;
 
 import java.util.List;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
-import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.ZUtils;
 
 public class MapscriptElement extends AnyElement {
 
-	List<ConditionElement> conditions;
+	List<ConditionElement> conditions = ZUtils.arrayList();
 	
 	@Override
-	@SuppressWarnings("unchecked")
-	public void parse(Element p_elem) {
-		conditions = (List<ConditionElement>) ScriptReader.parseNodes(p_elem);
+	public void parse(Attributes p_elem) {
 	}
 
+	@Override
+	public void add(String name, AnyElement elem) {
+		if ("condition".equals(name)) {
+			conditions.add((ConditionElement) elem);
+		}
+	}
 	public List<ConditionElement> getConditions() {
 		return conditions;
 	}

@@ -21,11 +21,12 @@ package zildo.fwk.script.xml.element.logic;
 
 import java.util.List;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
+import zildo.fwk.ZUtils;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.model.ZSSwitch;
-import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.script.xml.element.AnyElement;
 import zildo.fwk.script.xml.element.LanguageElement;
 
 /**
@@ -67,7 +68,7 @@ public class VarElement extends LanguageElement {
 	public String strValue;	// Set only for non-float values
 	public ZSSwitch expression;
 	public ValueType typ = ValueType._float;
-	public List<LanguageElement> ifThenClause;
+	public List<LanguageElement> ifThenClause = ZUtils.arrayList();
 	
 	public VarElement(VarKind p_kind) {
 		kind = p_kind;
@@ -75,7 +76,7 @@ public class VarElement extends LanguageElement {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		super.parse(p_elem);
 		
 		name = readAttribute("name");
@@ -93,7 +94,6 @@ public class VarElement extends LanguageElement {
 			if (strValue != null) {
 				value = new FloatExpression(strValue);
 			}
-			ifThenClause = (List<LanguageElement>) ScriptReader.parseNodes(xmlElement); 
 			break;
 		default:
 		case var:
@@ -106,6 +106,11 @@ public class VarElement extends LanguageElement {
 				break;
 			}
 		}
+	}
+
+	@Override
+	public void add(String node, AnyElement elem) {
+		ifThenClause.add((LanguageElement) elem); 
 	}
 
 	@Override

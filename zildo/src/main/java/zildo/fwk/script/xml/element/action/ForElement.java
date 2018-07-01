@@ -3,7 +3,7 @@ package zildo.fwk.script.xml.element.action;
 import java.util.Arrays;
 import java.util.List;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.element.AnyElement;
@@ -22,18 +22,11 @@ public class ForElement extends LoopElement {
 	}
 	
 	@Override
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		super.parse(p_elem);
 
 		varName = readAttribute("var");
 		nbIterations = readInt("value");
-		
-		if (actions.isEmpty()) {
-			throw new RuntimeException("For is empty !");
-		}
-		if (varName == null || nbIterations == 0) {
-			throw new RuntimeException("A variable name and a number of iterations must be provided in For element !");
-		}
 		
 		whileCondition = new FloatExpression(varName+"!="+nbIterations);
 
@@ -41,7 +34,16 @@ public class ForElement extends LoopElement {
 		incrementation = VarElement.createVarAction(varName, varName+"+1");
 		actions.add(incrementation);
 	}
-	
+
+	@Override
+	public void validate() {
+		if (actions.isEmpty()) {
+			throw new RuntimeException("For is empty !");
+		}
+		if (varName == null || nbIterations == 0) {
+			throw new RuntimeException("A variable name and a number of iterations must be provided in For element !");
+		}
+	}
 	@Override
 	public List<AnyElement> addSyntaxicSugarBefore() {
 		// Create a variable before the 'for' statement

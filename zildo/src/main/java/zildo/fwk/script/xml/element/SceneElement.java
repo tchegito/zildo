@@ -22,25 +22,28 @@ package zildo.fwk.script.xml.element;
 
 import java.util.List;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
-import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.ZUtils;
 
 public class SceneElement extends AnyElement {
 
     public String id;
     public boolean restoreZildo;	// TRUE=at the end of the scene, we should restore the previous zildo's state
     //public boolean locked = true;	// FALSE=game isn't blocked during scene / TRUE=default behavior (blocked)
-    public List<LanguageElement> actions;
+    public List<LanguageElement> actions = ZUtils.arrayList();
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void parse(Element p_elem) {
+    public void parse(Attributes p_elem) {
 		xmlElement = p_elem;
 		
         id = readAttribute("id");
         restoreZildo = isTrue("restoreZildo");
-        actions = (List<LanguageElement>) ScriptReader.parseNodes(p_elem);
+    }
+    
+    @Override
+    public void add(String node, AnyElement elem) {
+    	actions.add((LanguageElement) elem);
     }
     
     @Override
