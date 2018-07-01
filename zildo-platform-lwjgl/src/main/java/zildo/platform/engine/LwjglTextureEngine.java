@@ -92,7 +92,7 @@ public class LwjglTextureEngine extends TextureEngine {
     }
     
     @Override
-	public synchronized void getTextureImage(int p_nthTex) {
+	public void getTextureImage(int p_nthTex) {
     	if (scratch == null) {
     		prepareSurfaceForTexture(false);
     	}

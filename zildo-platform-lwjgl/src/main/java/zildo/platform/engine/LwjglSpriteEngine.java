@@ -253,8 +253,10 @@ public class LwjglSpriteEngine extends SpriteEngine {
 			for (i = 0; i < 256; i++) {
 				Vector4f color = surfaceGfx.getPixel(i, j);
 				if (color.w != 0) {
+					/*
 					colorIndexes
 							.put(j * 256 + i, surfaceGfx.getPalIndex(color));
+							*/
 				}
 			}
 		}
