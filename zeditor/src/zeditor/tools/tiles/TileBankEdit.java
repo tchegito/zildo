@@ -81,11 +81,7 @@ public class TileBankEdit extends TileBank {
 		
 		bankOrder = TileEngine.getBankFromName(getName());
 
-		/*
-		for (int i=0;i<p_motifBank.getNb_motifs();i++) {
-			addSpr(i, p_motifBank.get_motif(i));
-		}
-		*/
+		nb_motifs = p_motifBank.nb_motifs;
 	}
 	
     public void addSpr(int p_position, int[] p_gfx) {
@@ -119,7 +115,7 @@ public class TileBankEdit extends TileBank {
     
     /** This has to save GFX into texture, and only collision data into DEC file **/
     public void saveBank() {
-        EasyBuffering buffer=new EasyBuffering(bankEdit.gfxs.size() * TileBank.motifSize);
+        EasyBuffering buffer=new EasyBuffering(nb_motifs * TileBank.motifSize);
         for (int i=0;i<nb_motifs;i++) {
         	// Put the collision info
             TileInfo info = infosCollision.getTileInfo(256 * bankOrder + i);
