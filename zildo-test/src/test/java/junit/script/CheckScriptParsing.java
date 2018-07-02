@@ -1,5 +1,7 @@
 package junit.script;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -7,9 +9,14 @@ import zildo.fwk.script.xml.ScriptReader;
 import zildo.fwk.script.xml.element.AdventureElement;
 import zildo.fwk.script.xml.element.ConditionElement;
 import zildo.fwk.script.xml.element.ContextualActionElement;
+import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.MapscriptElement;
 import zildo.fwk.script.xml.element.QuestElement;
 import zildo.fwk.script.xml.element.SceneElement;
+import zildo.fwk.script.xml.element.action.ActionElement;
+import zildo.fwk.script.xml.element.action.ActionKind;
+import zildo.fwk.script.xml.element.action.ActionsElement;
+import zildo.fwk.script.xml.element.action.ForElement;
 import zildo.monde.Game;
 import zildo.monde.quest.QuestEvent;
 import zildo.server.EngineZildo;
@@ -21,7 +28,7 @@ public class CheckScriptParsing {
 		EngineZildo.game = new Game(false);
 		AdventureElement adventure = (AdventureElement) ScriptReader.loadScript("junit/script/parsing");
 		
-		Assert.assertEquals(2, adventure.getScenes().size());
+		Assert.assertEquals(3, adventure.getScenes().size());
 		Assert.assertEquals(1, adventure.getPersoActions().size());
 		Assert.assertEquals(1,  adventure.getQuests().size());
 		
@@ -44,12 +51,34 @@ public class CheckScriptParsing {
 		ContextualActionElement tileAction = adventure.getTileActionNamed("myTileAction");
 		Assert.assertEquals(3,  tileAction.actions.size());
 		
-		// Quest
+		// Quest (trigger + action + history)
 		QuestElement quest = adventure.getQuests().get(0);
 		Assert.assertEquals("vg5_back", quest.name);
 		Assert.assertEquals(2,  quest.getTriggers().size());
 		Assert.assertEquals(QuestEvent.LOCATION, quest.getTriggers().get(0).kind);
 		Assert.assertEquals(QuestEvent.QUESTDONE, quest.getTriggers().get(1).kind);
-		Assert.assertEquals(3,  quest.getActions().size());
+		// We should have our 3 actions + 1 bonus because quest has 'repeat' attribute set to TRUE
+		Assert.assertEquals(4,  quest.getActions().size());
+		Assert.assertEquals(2, quest.getHistory().size());
+		
+		// For & actions
+		scene = adventure.getSceneNamed("doStuff");
+		List<LanguageElement> actions = scene.actions;
+		Assert.assertEquals(3, actions.size());
+		Assert.assertTrue(actions.get(0) instanceof ActionsElement);
+		Assert.assertEquals(1, ((ActionsElement)actions.get(0)).actions.size());
+		Assert.assertTrue(actions.get(1) instanceof ActionsElement);
+		ActionsElement acs = (ActionsElement) actions.get(1);
+		// We got 2 actions + 1 bonus added by syntaxic sugar (ForElement#addSyntaxicSugarBefore)
+		Assert.assertEquals(3,  acs.actions.size());
+		Assert.assertEquals(ActionKind.sound, ((ActionElement)acs.actions.get(0)).kind);
+		Assert.assertEquals(ActionKind._for, ((ActionElement)acs.actions.get(2)).kind);
+		ForElement forElement = (ForElement) acs.actions.get(2);
+		// Here we still have a bonus action, added as incrementor for our 'for' loop
+		Assert.assertEquals(2, forElement.actions.size());
+		
+		// Seq
+		scene = adventure.getSceneNamed("testSeq");
+		Assert.assertEquals(6, scene.actions.size());
 	}
 }

@@ -27,7 +27,6 @@ import org.xml.sax.Attributes;
 import zildo.fwk.ZUtils;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionKind;
-import zildo.fwk.script.xml.element.action.TriggersElement;
 
 public class QuestElement extends AnyElement {
 
@@ -49,20 +48,13 @@ public class QuestElement extends AnyElement {
 		xmlElement = p_elem;
 		
 		name = readOrEmpty("name");
-/*
-		Element triggerContainer = ScriptReader.getChildNamed(p_elem, "trigger");
-		Element actionContainer = ScriptReader.getChildNamed(p_elem, "action");
-		Element historyContainer = ScriptReader.getChildNamed(p_elem, "history");
-		triggers = (List<TriggerElement>) ScriptReader.parseNodes(triggerContainer);
-		actions = (List<LanguageElement>) ScriptReader.parseNodes(actionContainer);
-		if (historyContainer != null) {
-			history = (List<LanguageElement>) ScriptReader.parseNodes(historyContainer);
-		}
-*/
+
 		both = isTrue("both");
 		repeat = isTrue("repeat");
 		locked = !"false".equals(readAttribute("locked"));	// Default is false
-		
+	}
+
+	public void validate() {
 		if (repeat) {
 			// Add a final action to reset this quest (it must be "repeatable")
 			ActionElement actionResetQuest = new ActionElement(ActionKind.markQuest);
@@ -71,15 +63,13 @@ public class QuestElement extends AnyElement {
 			actions.add(actionResetQuest);
 		}
 	}
-
 	public void add(String node, AnyElement elem) {
 		if ("action".equals(node)) {
-			actions.add((ActionElement) elem);
+			actions.add((LanguageElement) elem);
 		} else if ("trigger".equals(node)) {
-			TriggersElement actions = (TriggersElement) elem;
-			triggers.addAll(actions.elements);
+			triggers.add((TriggerElement) elem);
 		} else if ("history".equals(node)) {
-			history.add((ActionElement) elem);
+			history.add((LanguageElement) elem);
 		}
 	}
 	public List<TriggerElement> getTriggers() {

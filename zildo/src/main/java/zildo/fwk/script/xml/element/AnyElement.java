@@ -32,7 +32,6 @@ import zildo.fwk.script.xml.element.action.LookforElement;
 import zildo.fwk.script.xml.element.action.LoopElement;
 import zildo.fwk.script.xml.element.action.SeqElement;
 import zildo.fwk.script.xml.element.action.TimerElement;
-import zildo.fwk.script.xml.element.action.TriggersElement;
 import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
@@ -56,9 +55,9 @@ public abstract class AnyElement {
 		listen(ListenElement.class),
 		seq(SeqElement.class),
 		// Containers
-		trigger(TriggersElement.class),
-		action(ActionsElement.class),
-		history(ActionsElement.class);
+		trigger(EmptyGlueElement.class),
+		action(EmptyGlueElement.class),
+		history(EmptyGlueElement.class);
 		
 		Class<? extends AnyElement> clazz;
 		final String realName;
@@ -88,7 +87,7 @@ public abstract class AnyElement {
     protected abstract void parse(Attributes p_elem);
     
 	public void add(String node, AnyElement elem) {
-		throw new RuntimeException("This method should have been implemented by "+getClass()+" !");
+		//throw new RuntimeException("This method should have been implemented by "+getClass()+" !");
 	}
 	
 	/** This method is called once element is fully initialized, in order to validate **/
@@ -225,5 +224,13 @@ public abstract class AnyElement {
 	 */
 	public boolean isPlaceHolder() {
 		return false;
+	}
+	
+	/** Some elements in the XML tree are only containers to distinguish data **/
+	public boolean isGlue() {
+		return false;
+	}
+	public void setGlueFor(String glueFor) {
+		
 	}
 }

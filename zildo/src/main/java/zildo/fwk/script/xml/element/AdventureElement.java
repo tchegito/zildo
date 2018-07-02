@@ -20,29 +20,23 @@
 
 package zildo.fwk.script.xml.element;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.xml.sax.Attributes;
 
+import zildo.fwk.ZUtils;
+
 public class AdventureElement extends AnyElement {
 
-	List<SceneElement> scenes = new ArrayList<SceneElement>();
-	List<QuestElement> quests = new ArrayList<QuestElement>();
-	List<MapscriptElement> mapScripts = new ArrayList<MapscriptElement>();
-	List<ContextualActionElement> persoActions = new ArrayList<ContextualActionElement>();
-	List<ContextualActionElement> tileActions = new ArrayList<ContextualActionElement>();
+	List<SceneElement> scenes = ZUtils.arrayList();
+	List<QuestElement> quests = ZUtils.arrayList();
+	List<MapscriptElement> mapScripts = ZUtils.arrayList();
+	List<ContextualActionElement> persoActions = ZUtils.arrayList();
+	List<ContextualActionElement> tileActions = ZUtils.arrayList();
 	
 	
 	@Override
 	public void parse(Attributes p_elem) {
-		/*
-		scenes = (List<SceneElement>) ScriptReader.parseNodes(p_elem, "scene");
-		quests = (List<QuestElement>) ScriptReader.parseNodes(p_elem, "quest");
-		mapScripts = (List<MapscriptElement>) ScriptReader.parseNodes(p_elem, "mapScript");
-		persoActions = (List<ContextualActionElement>) ScriptReader.parseNodes(p_elem, "persoAction"); 
-		tileActions = (List<ContextualActionElement>) ScriptReader.parseNodes(p_elem, "tileAction");
-		*/ 
 	}
 	
 	public void add(String node, AnyElement elem) {

@@ -11,6 +11,13 @@
         <actions>
             <speak who="zildo" text="a1"/>
         </actions>
+       	<actions>
+	        <sound name="Gas"/>
+			<for var="loc:i" value="16">
+	        	<spawn what="loc:coucou" type="BUSHES" pos="100,100+16*loc:i"/>
+			</for>
+	    </actions>
+	    <var name="goodToGo" value="1"/>
     </scene>
     
     <mapScript>
@@ -44,5 +51,13 @@
    	        <exec script="move_vg5_plat2"/>
 	        <exec script="move_vg5_plat2"/>
    	    </action>
-    </quest>
+   	    <history>
+   	        <var name="a" value="12"/>
+   	        <var name="b" value="99"/>
+   	    </history>
+   	</quest>
+   	
+    <scene id="testSeq">
+   	   	<seq who="self" addSpr="1,2,3" wait="6"/>
+    </scene>
 </adventure>

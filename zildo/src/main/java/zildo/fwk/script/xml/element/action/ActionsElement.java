@@ -47,4 +47,9 @@ public class ActionsElement extends ActionElement {
     public void add(String node, AnyElement elem) {
     	actions.add((LanguageElement) elem);
     }
+    
+    @Override
+    public String toString() {
+    	return "actions:"+ actions.toString();
+    }
 }

@@ -35,8 +35,6 @@ public class ActionsNestedElement extends ActionElement {
 	}
 	
 	public void add(String node, AnyElement elem) {
-		if ("action".equals(node)) {
-			actions.add((LanguageElement) elem);
-		}
+		actions.add((LanguageElement) elem);
 	}
 }

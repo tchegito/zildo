@@ -37,15 +37,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import zildo.fwk.script.xml.element.AdventureElement;
 import zildo.fwk.script.xml.element.AnyElement;
-import zildo.fwk.script.xml.element.ConditionElement;
-import zildo.fwk.script.xml.element.ContextualActionElement;
-import zildo.fwk.script.xml.element.QuestElement;
-import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionKind;
-import zildo.fwk.script.xml.element.action.ActionsElement;
-import zildo.fwk.script.xml.element.action.TriggersElement;
 import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.fwk.script.xml.element.logic.VarElement.VarKind;
 import zildo.monde.quest.QuestEvent;
@@ -92,15 +86,8 @@ public class ScriptReader {
 
 		SAXParserFactory _f = SAXParserFactory.newInstance();
 		SAXParser _p = _f.newSAXParser();
-		//XMLReader reader = _p.getXMLReader();
 		AdventureHandler handler = new AdventureHandler();
 		_p.parse(p_stream, handler);
-		//reader.setContentHandler(handler);
-		//reader.parse(p_stream);
-		/*
-		Document document = sxb.parse(p_stream);
-		Element racine = document.getDocumentElement();
-*/
 		AnyElement root = handler.getRoot();
 		return root;
 	}
@@ -121,9 +108,18 @@ public class ScriptReader {
 		public void startElement(String namespaceURI, String lname,
 				String qname, Attributes attrs) throws SAXException {
 			node = qname;
-			// Cette dernière contient la liste des attributs du nœud
+			// Create node and add it to its parent if possible
 			currentNodes = createNode(qname, attrs);
-			depth.addFirst(currentNodes.get(0));
+			if (!depth.isEmpty()) {
+				for (AnyElement e : currentNodes) {
+					if (e.isGlue()) {	// Declare parent
+						e.add("parent", depth.getFirst());
+					} else {
+						depth.getFirst().add(null, e);
+					}
+				}
+			}
+			depth.addFirst(currentNodes.get(currentNodes.size()-1));
 			
 			if (qname.equalsIgnoreCase("adventure")) {
 				root = (AdventureElement) currentNodes.get(0);
@@ -140,26 +136,13 @@ public class ScriptReader {
 				currentNodes.clear();
 				currentNodes.add(depth.getFirst());
 			}
-			if ("trigger".equalsIgnoreCase(qName)) {
-				currentNodes.clear();
-				currentNodes.add(depth.getFirst());
-			}
+			depth.getFirst().validate();
 			depth.removeFirst();
-			if (!depth.isEmpty()) {
-				// TODO: Why not do that in all cases ?
-				if (depth.getFirst() instanceof SceneElement ||
-						depth.getFirst() instanceof ConditionElement ||
-						depth.getFirst() instanceof ContextualActionElement ||
-						depth.getFirst() instanceof QuestElement ||
-						depth.getFirst() instanceof ActionsElement ||
-						depth.getFirst() instanceof TriggersElement) {
-					depth.getFirst().add(qName, currentNodes.get(0));
-				}
-				if (Arrays.asList("action", "history", "condition").contains(qName)) {
+			if (!depth.isEmpty() && !currentNodes.isEmpty()) {
+				if (Arrays.asList("condition").contains(qName)) {
 					depth.getFirst().add(qName, currentNodes.get(0));
 				}
 			}
-			currentNodes.get(0).validate();
 		}
 	}
     /**
@@ -189,12 +172,13 @@ public class ScriptReader {
 	            	s = new VarElement(varKind);
 	            } else {
 		        	// General case
-			        name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length()).toLowerCase();
-		            s = AnyElement.newInstanceFromString(name);
+			        String capitalizedName = name.substring(0, 1).toUpperCase() + name.substring(1, name.length()).toLowerCase();
+		            s = AnyElement.newInstanceFromString(capitalizedName);
 	            }
             }
         }
         s.parseAndClean(p_element);
+        if (s.isGlue()) s.setGlueFor(name);
         List<AnyElement> result = new ArrayList<AnyElement>(2);
         if (!s.isPlaceHolder()) {
         	result.add(s);

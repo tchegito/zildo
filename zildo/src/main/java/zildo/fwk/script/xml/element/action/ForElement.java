@@ -32,7 +32,6 @@ public class ForElement extends LoopElement {
 
 		// Create a language element incrementing the variable
 		incrementation = VarElement.createVarAction(varName, varName+"+1");
-		actions.add(incrementation);
 	}
 
 	@Override
@@ -40,6 +39,7 @@ public class ForElement extends LoopElement {
 		if (actions.isEmpty()) {
 			throw new RuntimeException("For is empty !");
 		}
+		actions.add(incrementation);
 		if (varName == null || nbIterations == 0) {
 			throw new RuntimeException("A variable name and a number of iterations must be provided in For element !");
 		}
