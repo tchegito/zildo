@@ -67,7 +67,9 @@ public class QuestElement extends AnyElement {
 		if ("action".equals(node)) {
 			actions.add((LanguageElement) elem);
 		} else if ("trigger".equals(node)) {
-			triggers.add((TriggerElement) elem);
+			TriggerElement trigger = (TriggerElement) elem;
+			trigger.questName = name;
+			triggers.add(trigger);
 		} else if ("history".equals(node)) {
 			history.add((LanguageElement) elem);
 		}

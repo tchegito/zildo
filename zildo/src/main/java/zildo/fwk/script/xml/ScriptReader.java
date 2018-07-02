@@ -162,10 +162,7 @@ public class ScriptReader {
         } else {
             QuestEvent event=QuestEvent.fromString(name);
         	if (event != null) {	// Trigger ?
-        		// TODO: implement this with SAX
-	        	//String questName = ((Element)p_element.getParentNode().getParentNode()).getAttribute("name");
-        		String questName="todo";
-	        	s=new TriggerElement(event, questName);
+	        	s=new TriggerElement(event);
 	        } else {
 	            VarKind varKind=VarKind.fromString(name);
 	            if (varKind != null) {	// Var ?

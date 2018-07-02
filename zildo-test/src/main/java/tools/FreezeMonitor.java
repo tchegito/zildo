@@ -1,5 +1,7 @@
 package tools;
 
+import java.lang.management.ManagementFactory;
+
 import zildo.fwk.ZUtils;
 
 public class FreezeMonitor extends Thread {
@@ -15,7 +17,7 @@ public class FreezeMonitor extends Thread {
 	public FreezeMonitor(EngineUT engine) {
 		this.engine = engine;
 		// Determine if we're in a debugging process
-		isDebug = java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().toString()
+		isDebug = ManagementFactory.getRuntimeMXBean().getInputArguments().toString()
 				.indexOf("-agentlib:jdwp") > 0;
 	}
 

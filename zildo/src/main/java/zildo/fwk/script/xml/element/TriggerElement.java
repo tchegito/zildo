@@ -86,11 +86,6 @@ public class TriggerElement extends AnyElement {
 		kind = p_kind;
 	}
 
-	public TriggerElement(QuestEvent p_kind, String p_questName) {
-		this(p_kind);
-		questName = p_questName;
-	}
-
 	//
 	@Override
 	public void parse(Attributes p_elem) {
