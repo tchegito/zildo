@@ -588,7 +588,7 @@ public abstract class EngineUT {
 		PersoPlayer hero = EngineZildo.persoManagement.getZildo();
 		Assert.assertTrue(hero.getDialoguingWith() == null);
 		simulatePressButton(Keys.Q, 2);
-		Assert.assertTrue(hero.getDialoguingWith() != null);
+		Assert.assertTrue("Hero should have been talking with someone !", hero.getDialoguingWith() != null);
 		checkNextDialog(key);
 		if (goOn) {
 			goOnDialog();
