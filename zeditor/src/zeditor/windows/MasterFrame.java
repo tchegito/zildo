@@ -918,7 +918,7 @@ public class MasterFrame extends javax.swing.JFrame {
 			viewSpritesItem.setAction(new AbstractAction("View sprites", null) {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JDialog dialog = new ViewSpritesDialog(manager);
+					JDialog dialog = new ViewSpritesDialog(manager, spritePanel.getSpriteSet());
 					JMenuItem item = (JMenuItem) e.getSource();
 					dialog.setLocationRelativeTo(item.getParent().getParent());
 					dialog.setModal(true);

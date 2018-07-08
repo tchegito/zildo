@@ -214,11 +214,10 @@ public class EasyBuffering {
 	 * @param size nombre d'octets à lire
 	 */
 	public void readUnsignedBytes(short[] sh, int pos, int size) {
-		int posInitiale=data.position();
-		for (int i=posInitiale;i<posInitiale+size;i++) {
+		for (int i=0;i<size;i++) {
 			byte b=data.get();
 			// See http://darksleep.com/player/JavaAndUnsignedTypes.html
-			sh[i-posInitiale+pos]=(short) (0xFF & b);	// Remove sign bit
+			sh[i+pos]=(short) (0xFF & b);	// Remove sign bit
 		}
 	}
 

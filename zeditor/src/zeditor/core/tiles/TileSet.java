@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -69,11 +70,22 @@ public class TileSet extends ImageSet {
 			}
 			int nBank = TileEngine.getBankFromName(p_name);
 			TileBank bank = ClientEngineZildo.tileEngine.getMotifBank(nBank);
-			tile = bridge.generateImg(bank);
-
-			// tile = Transparency.makeColorTransparent(tile,
-			// Transparency.BANK_TRANSPARENCY);
+			
+			ByteBuffer texture = manager.getTileTexture(nBank);
+			tile = bridge.generateImg(bank, texture);
+			//tile = Transparency.makeColorTransparent(tile, Transparency.BANK_TRANSPARENCY);
 			tiles.put(p_name, tile);
+			
+			/*
+			manager.enqueueWhenCanvasReady(
+					() -> manager.getZildoCanvas().askGrabTexture(nBank, (ByteBuffer b) -> {
+						// tile = Transparency.makeColorTransparent(tile,
+						// Transparency.BANK_TRANSPARENCY);
+						tiles.put(p_name, bridge.generateImg(bank, b));
+					}
+			));
+*/
+
 		}
 		return tile;
 	}
@@ -122,6 +134,7 @@ public class TileSet extends ImageSet {
 		startPoint = null;
 		stopPoint = null;
 
+		manager.doWhenTextureLoaded( () -> {
 		currentTile = getTileNamed(p_name);
 
 		// Récupération de la taille de l'image
@@ -137,6 +150,7 @@ public class TileSet extends ImageSet {
 
 		// On repaint pour afficher le résultat
 		repaint();
+		});
 
 		blockSet = false;
 	}

@@ -51,7 +51,7 @@ public abstract class TextureEngine {
     protected boolean[] alphaTab;	// TRUE=nth texture has alpha channel
     protected boolean alphaChannel;	// Current texture's format (TRUE=RGBA / FALSE=RGB)
     protected ByteBuffer scratch;
-
+    
     public GraphicStuff graphicStuff;
     
     public TextureEngine(GraphicStuff graphStuff) {
@@ -112,10 +112,6 @@ public abstract class TextureEngine {
         return textureTab[n_Texture-1];
     }
     
-    protected void saveImage(String filename, boolean alpha) {
-    	// Default : nothing, because only LWJGL has to do that.
-    }
-    
     public int getNthTexture(int nth) {
     	return textureTab[nth];
     }
@@ -133,13 +129,6 @@ public abstract class TextureEngine {
     
     public void init() {
     	n_Texture = 0;
-    }
-    
-    public void saveAllTextures(String name) {
-		for (int i=0;i<n_Texture;i++) {
-			getTextureImage(i);
-			saveImage(name+i, alphaTab[i]);
-		}
     }
     
     /**

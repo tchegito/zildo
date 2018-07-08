@@ -115,7 +115,12 @@ public class ZUtils {
     {
         return createByteBuffer(size << 1).asShortBuffer();
     }
-    
+    	
+	public static ByteBuffer duplicateBuffer(ByteBuffer buf) {
+		ByteBuffer copied = ByteBuffer.allocateDirect(buf.limit());
+		copied.put(buf);
+		return copied;
+	}
     
     /**
      * OpenGL likes "adjusted" size for texture. We take multiple of 256.

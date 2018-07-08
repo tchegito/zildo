@@ -10,7 +10,9 @@ import java.awt.GraphicsDevice;
 import java.awt.Point;
 import java.io.File;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -27,9 +29,12 @@ import zeditor.windows.subpanels.SelectionKind;
 import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.IRenderable;
+import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.Ortho;
+import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.map.Area;
 import zildo.monde.map.ChainingPoint;
+import zildo.monde.sprites.SpriteStore;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
@@ -80,7 +85,6 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	// because we can use OpenGL outside of the paint process
 	protected boolean changeMap = false;
 	protected boolean changeSprites = false;
-	protected boolean buildTexture = false;
 	protected boolean reloadTexture = false;
 	
 	private int sizeX;
@@ -149,11 +153,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		if (blockPaint) {
 			return;
 		}
-		if (buildTexture) {
-			ClientEngineZildo.tileEngine.saveTextures();
-			ClientEngineZildo.spriteEngine.saveTextures();
-			buildTexture=false;
-		}
+
 		if (reloadTexture) {
 			ClientEngineZildo.tileEngine.loadTextures();
 			ClientEngineZildo.spriteEngine.loadTextures(ClientEngineZildo.spriteDisplay);
@@ -172,6 +172,11 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 					.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null));
 			changeSprites=false;
 		}
+		
+		if (!isTextureLoaded() && !loadingTexture && ClientEngineZildo.spriteEngine != null) {
+			grabTexture();
+			loadingTexture = true;
+		}
 		if (!initialize) {
 			initRenderThread();
 			initOpenGL();
@@ -182,6 +187,10 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			renderer.setInitialized(true);
 			manager.init();
 			initialize = true;
+		}
+		if (!manager.canvasWaitingCall.isEmpty() && isTextureLoaded()) {
+			manager.canvasWaitingCall.get(0).run();
+			manager.canvasWaitingCall.remove(0);
 		}
 		try {
 			makeCurrent();
@@ -467,11 +476,38 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 		captureDone = false;
 	}
 	
-	public void askBuildTexture() {
-		buildTexture = true;
-	}
-	
 	public void askReloadTexture() {
 		reloadTexture = true;
 	}
+	
+	// Texture load from OpenGL Video buffer has to be here, because we need the OpenGL thread to access it.
+	boolean loadingTexture = false;
+	Map<Integer, ByteBuffer> spriteTextures = new HashMap<>();
+	Map<Integer, ByteBuffer> tileTextures = new HashMap<>();
+	
+	public ByteBuffer getSpriteTexture(int nTexture) {
+		return spriteTextures.get(nTexture);
+	}
+	
+	public ByteBuffer getTileTexture(int nTexture) {
+		return tileTextures.get(nTexture);
+	}
+	private void grabTexture() {
+		// Sprites
+		for (int i=0;i<SpriteStore.sprBankName.length;i++) {
+			spriteTextures.put(i, ZUtils.duplicateBuffer(
+					ClientEngineZildo.spriteEngine.getTextureImage(i)));
+		}
+		// Tiles
+		for (int i=0;i<TileEngine.tileBankNames.length;i++) {
+			tileTextures.put(i, ZUtils.duplicateBuffer(
+					ClientEngineZildo.tileEngine.getTextureImage(i)));
+		}
+		loadingTexture = false;
+	}
+	
+	public boolean isTextureLoaded() {
+		return spriteTextures.size() > 7 && tileTextures.size() > 5;
+	}
+	
 }

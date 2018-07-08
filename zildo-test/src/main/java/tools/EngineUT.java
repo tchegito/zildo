@@ -695,7 +695,7 @@ public abstract class EngineUT {
 		infos.liveTouchedPoints = touchedPoints;
 		kbHandler.setAndroidInputInfos(infos);
 		
-		fakedKbHandler = kbHandler;
+		fakedKbHandler = (KeyboardHandler) kbHandler;
 		Zildo.pdPlugin.kbHandler = fakedKbHandler;
 		
 		return touchedPoints;

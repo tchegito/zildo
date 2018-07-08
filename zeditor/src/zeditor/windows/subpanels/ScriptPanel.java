@@ -26,17 +26,17 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import zeditor.tools.script.ScriptWriter;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.ZUtils;
-import zildo.fwk.script.xml.ScriptWriter;
+import zildo.fwk.gfx.filter.FilterEffect;
+import zildo.fwk.script.xml.element.SceneElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionKind;
-import zildo.fwk.script.xml.element.SceneElement;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
-import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.server.EngineZildo;
 
 @SuppressWarnings("serial")

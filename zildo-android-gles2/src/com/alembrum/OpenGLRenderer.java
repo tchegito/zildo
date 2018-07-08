@@ -74,6 +74,9 @@ public class OpenGLRenderer implements Renderer {
 		} else {
 			// Recreate context by reloading all textures and shaders
 			Log.d("openglrenderer", "recreating context");
+			// Issue 139: recalculate ratio if screen was different last time
+    		touchListener.calculateRatios();
+
 			GLUtils.resetTexId();
 			SpriteDisplay spriteDisplay = ClientEngineZildo.spriteDisplay;
 			TileEngine tileEngine = ClientEngineZildo.tileEngine;

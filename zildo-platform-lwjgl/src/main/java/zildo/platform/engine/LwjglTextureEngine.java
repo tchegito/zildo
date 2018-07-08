@@ -31,7 +31,6 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.engine.TextureEngine;
-import zildo.platform.opengl.GLUtils;
 import zildo.resource.Constantes;
 
 /**
@@ -94,9 +93,11 @@ public class LwjglTextureEngine extends TextureEngine {
     
     @Override
 	public void getTextureImage(int p_nthTex) {
+    	if (scratch == null) {
+    		prepareSurfaceForTexture(false);
+    	}
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, getNthTexture(p_nthTex));
 	    scratch.position(0);
-	    alphaChannel = alphaTab[p_nthTex]; 
 	    GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, getTextureFormat(), GL11.GL_UNSIGNED_BYTE, scratch);
     }
     
@@ -121,13 +122,13 @@ public class LwjglTextureEngine extends TextureEngine {
 	 
 	        
 	        // Store texture id
-	        textureTab[n_Texture] = tex.getTextureID();
+	        textureTab[n_Texture] = id;
 	        alphaTab[n_Texture] = true;
 	        
 	        // Ready for next one
 	        n_Texture++;
 	        
-			return tex.getTextureID();
+			return id;
 		} catch (Exception e) {
 			throw new RuntimeException("Can't load texture "+name, e.getCause());
 		}
@@ -143,10 +144,6 @@ public class LwjglTextureEngine extends TextureEngine {
     		}
     	}
     	super.init();
-    }
-    @Override
-	protected void saveImage(String filename, boolean alpha) {
-    	GLUtils.saveBufferAsPNG("c:\\kikoo\\textures\\"+filename, scratch, 256, 256, alpha);
     }
     
     /**

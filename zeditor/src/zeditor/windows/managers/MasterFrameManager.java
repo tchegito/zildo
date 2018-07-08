@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -595,4 +596,22 @@ public class MasterFrameManager {
 			updateTitle();
 		}
 	}
+
+	public void doWhenTextureLoaded(Runnable sideEffect) {
+		if (zildoCanvas != null && zildoCanvas.isTextureLoaded()) {
+			sideEffect.run();
+		} else {
+			canvasWaitingCall.add(sideEffect);
+		}
+	}
+	
+	public ByteBuffer getSpriteTexture(int nTexture) {
+		return zildoCanvas.getSpriteTexture(nTexture);
+	}
+	
+	public ByteBuffer getTileTexture(int nTexture) {
+		return zildoCanvas.getTileTexture(nTexture);
+	}
+	
+	public final List<Runnable> canvasWaitingCall = new ArrayList<>();
 }

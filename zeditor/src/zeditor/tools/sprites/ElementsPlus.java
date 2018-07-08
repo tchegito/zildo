@@ -365,13 +365,13 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem", 230, 0),
 				new GraphChange("objets", 242, 0),
 				new GraphChange("elem", 243, 0),
-				new GraphChange("dragonpal", 245, 0, true),
+				new GraphChange("dragonpal", 245, 0),
 				new GraphChange("elem", 248, 0),
 				new GraphChange("objets", 250, 0),
 				new GraphChange("elem", 251, 0),
 				new GraphChange("palace1", 252, 0),
 				new GraphChange("elem", 262, 0),
-				new GraphChange("dragonpal", 266, 0, true),
+				new GraphChange("dragonpal", 266, 0),
 				new GraphChange("objets", 269, 0)
 				});
 	}

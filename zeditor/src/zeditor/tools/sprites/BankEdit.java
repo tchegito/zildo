@@ -29,7 +29,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import zildo.fwk.gfx.GFXBasics;
+import zeditor.tools.Transparency;
 import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 
@@ -42,14 +42,13 @@ import zildo.resource.Constantes;
  */
 public class BankEdit {
 
-
-    public List<short[]> gfxs;
+    public List<int[]> gfxs;
     
     public BufferedImage img;
     public int[] imgPixels;    // Parallel image which is a source for inserting new sprites into this bank
    
     public BankEdit() {
-        gfxs=new ArrayList<short[]>();
+        gfxs=new ArrayList<int[]>();
     }
     
     public void loadImage(String p_filename, int p_transparentColor) {
@@ -73,30 +72,32 @@ public class BankEdit {
 		for (int j = 0; j < img.getHeight(); j++) {
 			for (int i = 0; i < img.getWidth(); i++) {
 				int offset = i + (j * img.getWidth());
-				if ((imgPixels[offset] & 0xffffff) == p_transparentColor) {
-					imgPixels[offset] = 255;
+				int v = imgPixels[offset];
+				if ((v & 0xffffff) == Transparency.TRANSPARENCY_COLOR) {
+					imgPixels[offset] = 0 << 24;
 				} else {
-					imgPixels[offset] = GFXBasics.getPalIndex(imgPixels[offset]);
+					// No transparency at all => 0xff as ALPHA value
+					imgPixels[offset] = v & 0xffffff | 0xff000000;
 				}
 			}
 		}
 	}
     
-    public short[] getRectFromImage(int p_startX, int p_startY,
+    public int[] getRectFromImage(int p_startX, int p_startY,
 			int p_tailleX, int p_tailleY) {
 		// Extract sprite from image
-		short[] sprite = new short[p_tailleX * p_tailleY];
+		int[] sprite = new int[p_tailleX * p_tailleY];
 		for (int j = 0; j < p_tailleY; j++) {
 			for (int i = 0; i < p_tailleX; i++) {
 				int offsetImg = (p_startY + j) * img.getWidth() + p_startX + i;
-				sprite[j * p_tailleX + i] = (short) imgPixels[offsetImg];
+				sprite[j * p_tailleX + i] = imgPixels[offsetImg];
 			}
 		}
 		
 		return sprite;
 	}
     
-    public void setRectFromImage(Zone location, short[] sprite) {
+    public void setRectFromImage(Zone location, int[] sprite) {
 		for (int j = 0; j < location.y2; j++) {
 			for (int i = 0; i < location.x2; i++) {
 				int offsetImg = (location.y1 + j) * img.getWidth() + location.x1 + i;
@@ -115,7 +116,7 @@ public class BankEdit {
     protected boolean isLineFilled(int p_startX, int p_startY, int p_height) {
     	for (int i=0;i<p_height;i++) {
 			int offsetImg = (p_startY + i) * img.getWidth() + p_startX;
-    		if (imgPixels[offsetImg] != 255) {
+    		if (imgPixels[offsetImg] != 0) {
     			return true;
     		}
     	}

@@ -22,18 +22,18 @@ package zildo.fwk.script.xml.element;
 
 import java.util.List;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
-import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.ZUtils;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionKind;
 
 public class QuestElement extends AnyElement {
 
 	public String name;
-	List<TriggerElement> triggers;
-	List<LanguageElement> actions;
-	List<LanguageElement> history;
+	List<TriggerElement> triggers = ZUtils.arrayList();
+	List<LanguageElement> actions = ZUtils.arrayList();
+	List<LanguageElement> history = ZUtils.arrayList();
 
 	boolean both; // TRUE=each trigger element must be done AT THE SAME TIME to
 					// launch the actions
@@ -44,25 +44,17 @@ public class QuestElement extends AnyElement {
 	public boolean done = false;	// Only runtime modifiable field
 	
 	@Override
-	@SuppressWarnings("unchecked")
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		xmlElement = p_elem;
 		
-		name = p_elem.getAttribute("name");
-
-		Element triggerContainer = ScriptReader.getChildNamed(p_elem, "trigger");
-		Element actionContainer = ScriptReader.getChildNamed(p_elem, "action");
-		Element historyContainer = ScriptReader.getChildNamed(p_elem, "history");
-		triggers = (List<TriggerElement>) ScriptReader.parseNodes(triggerContainer);
-		actions = (List<LanguageElement>) ScriptReader.parseNodes(actionContainer);
-		if (historyContainer != null) {
-			history = (List<LanguageElement>) ScriptReader.parseNodes(historyContainer);
-		}
+		name = readOrEmpty("name");
 
 		both = isTrue("both");
 		repeat = isTrue("repeat");
 		locked = !"false".equals(readAttribute("locked"));	// Default is false
-		
+	}
+
+	public void validate() {
 		if (repeat) {
 			// Add a final action to reset this quest (it must be "repeatable")
 			ActionElement actionResetQuest = new ActionElement(ActionKind.markQuest);
@@ -71,7 +63,17 @@ public class QuestElement extends AnyElement {
 			actions.add(actionResetQuest);
 		}
 	}
-
+	public void add(String node, AnyElement elem) {
+		if ("action".equals(node)) {
+			actions.add((LanguageElement) elem);
+		} else if ("trigger".equals(node)) {
+			TriggerElement trigger = (TriggerElement) elem;
+			trigger.questName = name;
+			triggers.add(trigger);
+		} else if ("history".equals(node)) {
+			history.add((LanguageElement) elem);
+		}
+	}
 	public List<TriggerElement> getTriggers() {
 		return triggers;
 	}

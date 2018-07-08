@@ -3,7 +3,7 @@ package zildo.fwk.script.xml.element.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.element.AnyElement;
@@ -24,7 +24,7 @@ public class SeqElement extends LanguageElement {
 	private List<AnyElement> actions;
 	
 	@Override
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		super.parse(p_elem);
 		
 		String addSpr = readAttribute("addSpr");

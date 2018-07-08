@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.ZUtils;
@@ -86,14 +86,9 @@ public class TriggerElement extends AnyElement {
 		kind = p_kind;
 	}
 
-	public TriggerElement(QuestEvent p_kind, String p_questName) {
-		this(p_kind);
-		questName = p_questName;
-	}
-
 	//
 	@Override
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		if (kind == null) {
 			throw new RuntimeException("Trigger kind is unknown !");
 		}
@@ -103,7 +98,7 @@ public class TriggerElement extends AnyElement {
 		
 		switch (kind) {
 		case DIALOG:
-			numSentence = Integer.valueOf(p_elem.getAttribute("num"));
+			numSentence = Integer.valueOf(readOrEmpty("num"));
 		case LOCATION:
 			name = readAttribute("name");
 			if (name.contains("|")) {
@@ -137,12 +132,12 @@ public class TriggerElement extends AnyElement {
 			break;
 		case INVENTORY:
 			// TODO: replace this by a switch => most complete
-			name = p_elem.getAttribute("item");
+			name = readOrEmpty("item");
 			not = name.indexOf("!") != -1;
 			name = name.replaceAll("!", "");
 			break;
 		case DEAD:
-			String persos = p_elem.getAttribute("who");
+			String persos = readOrEmpty("who");
 			if (ZUtils.isEmpty(persos)) {
 				throw new RuntimeException("<dead> and <wound> triggers imply a 'who' attribute !");
 			}
@@ -150,7 +145,7 @@ public class TriggerElement extends AnyElement {
 			deadPersos.addAll(Arrays.asList(persos.split(",")));
 			break;
 		case WOUND:
-			name = p_elem.getAttribute("who");
+			name = readOrEmpty("who");
 			if (name.startsWith("!")) {
 				negate = true;
 				name = name.substring(1);

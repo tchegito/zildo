@@ -9,9 +9,9 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
+import zeditor.tools.script.ScriptWriter;
 import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.filter.FilterEffect;
-import zildo.fwk.script.xml.ScriptWriter;
 import zildo.fwk.script.xml.element.LanguageElement;
 import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionKind;

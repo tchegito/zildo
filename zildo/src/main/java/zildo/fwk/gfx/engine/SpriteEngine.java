@@ -20,6 +20,7 @@
 
 package zildo.fwk.gfx.engine;
 
+import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -207,6 +208,11 @@ public abstract class SpriteEngine {
 		}
 	}
 	
+	public void saveTextures() {
+		// Default : do nothing. Only LWJGL version can do that.
+	}
+	
+	public abstract void render(int floor, boolean backGround);
 	
 	/**
 	 * Fills the {@link SpriteModel} objects with real texture coordinates (in range 0..256, 0..256) based on
@@ -268,9 +274,9 @@ public abstract class SpriteEngine {
 		}
 	}
 	
-	public void saveTextures() {
-		// Default : do nothing. Only LWJGL version can do that.
+	public ByteBuffer getTextureImage(int nTexture) {
+		textureEngine.getTextureImage(nTexture);
+		return textureEngine.scratch;
 	}
-	
-	public abstract void render(int floor, boolean backGround);
+
 }

@@ -23,8 +23,6 @@ package zildo.platform.engine;
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
-import zildo.fwk.bank.TileBank;
-import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.effect.CloudGenerator;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
@@ -106,47 +104,13 @@ public class LwjglTileEngine extends TileEngine {
 		// Create a texture based on the current tiles
 		textureEngine.init();
 		for (int i = 0; i < tileBankNames.length; i++) {
-			TileBank motifBank = getMotifBank(i);
-			//textureEngine.loadTexture("tile"+i);
-			createTextureFromMotifBank(motifBank);
+			//TileBank motifBank = getMotifBank(i);
+			textureEngine.loadTexture("tile"+i);
+			//createTextureFromMotifBank(motifBank);
 			//motifBank.freeTempBuffer();
 		}
 	}
 	
-	private void createTextureFromMotifBank(TileBank mBank) {
-
-		GFXBasics surface = textureEngine.prepareSurfaceForTexture(true);
-
-		// Display tiles on it
-		int x = 0, y = 0;
-		
-		int nbTiles = mBank.getNb_motifs();
-		if (nbTiles > 256) {
-			throw new RuntimeException("Unable to record +256 tiles in a bank ! ("+nbTiles+" for "+mBank.getName()+")");
-		}
-		for (int n = 0; n < nbTiles; n++)
-		{
-			short[] motif = mBank.get_motif(n);
-			int i,j;
-			for (int ij = 0 ; ij < 256; ij++) {
-				i = ij & 0xf;
-				j = ij >> 4;
-				int a = motif[i + j * 16];
-				if (a != 255) {
-					surface.pset(i + x, j + y, a, null);
-				}
-			}
-			// Next position
-			x += 16;
-			if (x >= 256) {
-				x = 0;
-				y += 16;
-			}
-		}
-
-		textureEngine.generateTexture();
-	}
-
 	private void createCloudTexture() {
 		textureEngine.prepareSurfaceForTexture(false);
 
@@ -162,12 +126,5 @@ public class LwjglTileEngine extends TileEngine {
 		texBackMenuId = textureEngine.loadTexture("menuBack256");
 		//texBackMenuId = textureEngine.generateTexture();
 	}
-	
-	@Override
-	public void saveTextures() {
-		// Default : do nothing. Only LWJGL version can do that.
-		textureEngine.saveAllTextures("tile");
-	}
 
-	
 }

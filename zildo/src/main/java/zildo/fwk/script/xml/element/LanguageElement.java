@@ -19,7 +19,7 @@
 
 package zildo.fwk.script.xml.element;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 /**
  * @author Tchegito
@@ -30,7 +30,7 @@ public abstract class LanguageElement extends AnyElement {
 	public boolean unblock; // Default: FALSE meaning action is waiting to be over before next one
 
 	@Override
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		xmlElement = p_elem;
 		unblock = isTrue("unblock");
 	}

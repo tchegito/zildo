@@ -22,7 +22,7 @@ package zildo.fwk.script.xml.element;
 
 import java.util.List;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.element.action.ActionsElement;
@@ -53,7 +53,11 @@ public abstract class AnyElement {
 		lookfor(LookforElement.class),
 		var(VarElement.class),
 		listen(ListenElement.class),
-		seq(SeqElement.class);
+		seq(SeqElement.class),
+		// Containers
+		trigger(EmptyGlueElement.class),
+		action(EmptyGlueElement.class),
+		history(EmptyGlueElement.class);
 		
 		Class<? extends AnyElement> clazz;
 		final String realName;
@@ -74,15 +78,24 @@ public abstract class AnyElement {
 		}
 	}
 	
-	protected Element xmlElement;
+	protected Attributes xmlElement;
 
     /**
      * This method should set the "xmlElement" member variable, in order to have readAttribute, isTrue... get working.
      * @param p_elem
      */
-    protected abstract void parse(Element p_elem);
+    protected abstract void parse(Attributes p_elem);
     
-    public void parseAndClean(Element p_elem) {
+	public void add(String node, AnyElement elem) {
+		//throw new RuntimeException("This method should have been implemented by "+getClass()+" !");
+	}
+	
+	/** This method is called once element is fully initialized, in order to validate, or create additional elements  **/
+	public void validate() {
+		
+	}
+	
+    public void parseAndClean(Attributes p_elem) {
     	parse(p_elem);
     	// Parsing is over so we won't need any DOM element now : free some memory
 		if (!EngineZildo.game.editing) {
@@ -92,15 +105,15 @@ public abstract class AnyElement {
     
     // Useful operations
     public boolean isTrue(String p_attrName) {
-    	String str=xmlElement.getAttribute(p_attrName);
-    	return str.equalsIgnoreCase("true");
+    	String str=xmlElement.getValue(p_attrName);
+    	return "true".equalsIgnoreCase(str);
     }
     
     public Boolean readBoolean(String p_attrName) {
-    	String str=xmlElement.getAttribute(p_attrName);
-    	if (str.equalsIgnoreCase("true")) {
+    	String str=xmlElement.getValue(p_attrName);
+    	if ("true".equalsIgnoreCase(str)) {
     		return true;
-    	} else if (str.equalsIgnoreCase("false")) {
+    	} else if ("false".equalsIgnoreCase(str)) {
     		return false;
     	}
     	return null;
@@ -112,11 +125,16 @@ public abstract class AnyElement {
      * @return String
      */
     public String readAttribute(String p_attrName) {
-    	if (!xmlElement.hasAttribute(p_attrName)) {
+    	if (xmlElement.getValue(p_attrName) == null) {
     		return null;
     	}
-    	String value = xmlElement.getAttribute(p_attrName);
+    	String value = xmlElement.getValue(p_attrName);
     	return value;
+    }
+
+    public String readOrEmpty(String p_name) {
+    	String val = xmlElement.getValue(p_name);
+    	return val == null ? "" : val;
     }
     
     /**
@@ -125,7 +143,7 @@ public abstract class AnyElement {
      * @return String
      */
     public String readNonEmptyAttribute(String p_attrName) {
-    	String value = xmlElement.getAttribute(p_attrName);
+    	String value = xmlElement.getValue(p_attrName);
     	return "".equals(value) ? null : value;
     }
     
@@ -145,18 +163,6 @@ public abstract class AnyElement {
 		} else {
 			return Integer.valueOf(strValue);
 		}
-    }
-    
-    /**
-     * Convenience method, when we want to read a different XML element.
-     * @return int
-     */
-    protected int readInt(Element p_xmlElement, String p_attrName, int... defaultValue) {
-    	Element save = xmlElement;
-    	xmlElement = p_xmlElement;
-    	int result = readInt(p_attrName, defaultValue);
-    	this.xmlElement = save;
-    	return result;
     }
     
     protected Point readPoint(String p_attrName) {
@@ -218,5 +224,13 @@ public abstract class AnyElement {
 	 */
 	public boolean isPlaceHolder() {
 		return false;
+	}
+	
+	/** Some elements in the XML tree are only containers to distinguish data **/
+	public boolean isGlue() {
+		return false;
+	}
+	public void setGlueFor(String glueFor) {
+		
 	}
 }

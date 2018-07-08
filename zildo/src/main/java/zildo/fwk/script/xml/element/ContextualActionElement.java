@@ -21,9 +21,9 @@ package zildo.fwk.script.xml.element;
 
 import java.util.List;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
-import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.ZUtils;
 import zildo.fwk.script.xml.element.action.ActionElement;
 
 /**
@@ -44,17 +44,17 @@ public class ContextualActionElement extends AnyElement {
 	public int endAttente;
 	public int duration;
 	
-	public List<LanguageElement> actions;
+	public List<LanguageElement> actions = ZUtils.arrayList();
 	
 	@Override
-	@SuppressWarnings("unchecked")
-	public void parse(Element p_elem) {
+	public void parse(Attributes p_elem) {
 		xmlElement = p_elem;
 		
 		id = readAttribute("id");
 		duration = readInt("duration", -1);	// Default is -1, which means infinite
-		
-		actions = (List<LanguageElement>) ScriptReader.parseNodes(xmlElement);
 	}
 
+	public void add(String node, AnyElement elem) {
+		actions.add((LanguageElement) elem);
+	}
 }

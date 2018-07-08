@@ -117,20 +117,6 @@ public class BuilderDialog extends JDialog {
 			}
 		});
 		panel.add(buttonAllSpriteBanks);
-		
-		panel.add(new JButton(new AbstractAction("Build textures") {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					// Save all textures
-					manager.getZildoCanvas().askBuildTexture();
-
-					MasterFrameManager.display("Texture have been builded !");
-				} catch (Exception ex) {
-					error("Error building textures !\n\nCause : ", ex);
-				}
-			}
-		}));
 	
 		setTitle("ZEditor builder");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);

@@ -59,7 +59,11 @@ public class TouchListener implements OnTouchListener {
 		infos = new AndroidInputInfos();
 		infos.liveTouchedPoints = touchedPoints;
 		kbHandler.setAndroidInputInfos(infos);
-		
+
+		calculateRatios();
+	}
+	
+	public void calculateRatios() {
 		ratioX = (float) Zildo.viewPortX / (float) Zildo.screenX;
 		ratioY = (float) Zildo.viewPortY / (float) Zildo.screenY;
 	}

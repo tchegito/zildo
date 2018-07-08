@@ -22,26 +22,35 @@ package zildo.fwk.script.xml.element;
 
 import java.util.List;
 
-import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
-import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.ZUtils;
 
 public class AdventureElement extends AnyElement {
 
-	List<SceneElement> scenes;
-	List<QuestElement> quests;
-	List<MapscriptElement> mapScripts;
-	List<ContextualActionElement> persoActions;
-	List<ContextualActionElement> tileActions;
+	List<SceneElement> scenes = ZUtils.arrayList();
+	List<QuestElement> quests = ZUtils.arrayList();
+	List<MapscriptElement> mapScripts = ZUtils.arrayList();
+	List<ContextualActionElement> persoActions = ZUtils.arrayList();
+	List<ContextualActionElement> tileActions = ZUtils.arrayList();
+	
 	
 	@Override
-	@SuppressWarnings("unchecked")
-	public void parse(Element p_elem) {
-		scenes = (List<SceneElement>) ScriptReader.parseNodes(p_elem, "scene");
-		quests = (List<QuestElement>) ScriptReader.parseNodes(p_elem, "quest");
-		mapScripts = (List<MapscriptElement>) ScriptReader.parseNodes(p_elem, "mapScript");
-		persoActions = (List<ContextualActionElement>) ScriptReader.parseNodes(p_elem, "persoAction"); 
-		tileActions = (List<ContextualActionElement>) ScriptReader.parseNodes(p_elem, "tileAction"); 
+	public void parse(Attributes p_elem) {
+	}
+	
+	public void add(String node, AnyElement elem) {
+		if ("scene".equals(node)) {
+			scenes.add((SceneElement) elem);
+		} else if ("quest".equals(node)) {
+			quests.add((QuestElement) elem);
+		} else if ("mapScript".equals(node)) {
+			mapScripts.add((MapscriptElement) elem);
+		} else if ("persoAction".equals(node)) {
+			persoActions.add((ContextualActionElement) elem);
+		} else if ("tileAction".equals(node)) {
+			tileActions.add((ContextualActionElement) elem);
+		}
 	}
 
 	/**

@@ -20,6 +20,7 @@
 
 package zildo.fwk.gfx.engine;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -352,12 +353,13 @@ public abstract class TileEngine {
 		return tileBankNames[nBank];
 	}
 	
-	public void saveTextures() {
-		// Default : do nothing. Only LWJGL version can do that.
-	}
-	
 	public void setAreaAccessor(AreaAccessor aa) {
 		areaAccessor = aa;
 		prepareTiles();
+	}
+	
+	public ByteBuffer getTextureImage(int nTexture) {
+		textureEngine.getTextureImage(nTexture);
+		return textureEngine.scratch;
 	}
 }

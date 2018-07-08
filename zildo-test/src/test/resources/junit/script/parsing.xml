@@ -1,0 +1,63 @@
+<adventure>
+    <scene id='caller'>
+ 		<var name='state' value='1'/>
+		<exec script='doStuff'/>
+		<if exp='state=2'>
+			<var name='state' value='3'/>
+		</if>
+	</scene>
+	
+    <scene id='doStuff'>
+        <actions>
+            <speak who="zildo" text="a1"/>
+        </actions>
+       	<actions>
+	        <sound name="Gas"/>
+			<for var="loc:i" value="16">
+	        	<spawn what="loc:coucou" type="BUSHES" pos="100,100+16*loc:i"/>
+			</for>
+	    </actions>
+	    <var name="goodToGo" value="1"/>
+    </scene>
+    
+    <mapScript>
+        <condition name="coucou">
+            <var name='test' value='8'/>
+        </condition>
+        <condition name="lala">
+            <var name='test' value='4'/>
+            <speak who="maltus" text="a2"/>
+        </condition>
+    </mapScript>
+    
+    <persoAction id='myAction'>
+        <pos who="zildo" pos="12,23"/>
+        <pos who="zildo" pos="45,67"/>
+    </persoAction>
+    
+    <tileAction id='myTileAction'>
+        <pos who="maltus" pos="1,2"/>
+        <speak who="zildo" text="a3"/>
+        <var name='val' value='38'/>
+    </tileAction>
+    
+    <quest name="vg5_back" repeat="true" locked="false">
+	    <trigger>
+	        <location name="voleursg5" mover="platform2"/>
+	        <questDone name="!move_vg5_plat2"/>
+	    </trigger>
+	    <action>
+	        <exec script="move_vg5_plat2"/>
+   	        <exec script="move_vg5_plat2"/>
+	        <exec script="move_vg5_plat2"/>
+   	    </action>
+   	    <history>
+   	        <var name="a" value="12"/>
+   	        <var name="b" value="99"/>
+   	    </history>
+   	</quest>
+   	
+    <scene id="testSeq">
+   	   	<seq who="self" addSpr="1,2,3" wait="6"/>
+    </scene>
+</adventure>

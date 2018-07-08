@@ -31,7 +31,7 @@ public class ReverseSpriteBank extends SpriteBankEdit {
 	   	 GraphChange current = null;
 		 int startSpr=getNSprite();
 		 int i=0;
-		 Iterator<short[]> buffers = bankEdit.gfxs.iterator();
+		 Iterator<int[]> buffers = bankEdit.gfxs.iterator();
 		 String imageName = null;
 	     for (Zone z : elements) {
 	    	 if (current == null && itChanges.hasNext()) {
@@ -39,8 +39,6 @@ public class ReverseSpriteBank extends SpriteBankEdit {
 	    	 }
 	    	 if (current != null) {
 				if (current.nTile == i) {
-					GFXBasics.switchPalette(current.decrodedPalette ? 2 : 1);
-
 					saveImage(imageName);
 					
 					imageName = current.imageName + current.nTile;
@@ -56,7 +54,6 @@ public class ReverseSpriteBank extends SpriteBankEdit {
 	    		 i++;
 	      }
 		saveImage(imageName);
-		 GFXBasics.switchPalette(1);
 	}
 	
 	private void saveImage(String imageName) {

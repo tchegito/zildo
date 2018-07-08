@@ -2,6 +2,7 @@ package zeditor.tools;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -76,9 +77,9 @@ public class CorrespondanceGifDec {
 		return bank;
 	}
 	
-	public Image generateImg(TileBank bank) {
+	public Image generateImg(TileBank bank, ByteBuffer texture) {
 		Banque b=getBanque(bank.getName());
-		return new TileBankEdit(bank, b).generateImg();
+		return new TileBankEdit(bank, b).generateImg(texture);
 	}
 	
 	/**

@@ -26,6 +26,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -61,9 +62,11 @@ public class ViewSpritesDialog extends JDialog {
 	JSpinner spriteSpinner;
 	
 	MasterFrameManager manager;
+	SpriteSet spriteSet;
 	
-	public ViewSpritesDialog(MasterFrameManager manager) {
+	public ViewSpritesDialog(MasterFrameManager manager, SpriteSet spriteSet) {
 		this.manager = manager;
+		this.spriteSet = spriteSet;
 		
 		setLayout(new BorderLayout());
 		setTitle("Sprites collection");
@@ -118,17 +121,20 @@ public class ViewSpritesDialog extends JDialog {
 		int nSpr = (Integer) spriteSpinner.getValue();
 		SpriteBank bank = EngineZildo.spriteManagement.getSpriteBank(nBank);
 		SpriteModel model = bank.getModels().get(nSpr);
+		
+
 		int tx = model.getTaille_x();
 		Zone z = model.getEmptyBorders();
 		if (z != null) {
 			tx += z.x1 + z.x2;
 		}
+		ByteBuffer buffer = manager.getSpriteTexture(nBank);
 		Image img = new BufferedImage(tx*scale, model.getTaille_y()*scale, BufferedImage.TYPE_INT_RGB);
 		Graphics2D gfx2d = (Graphics2D) img.getGraphics();
 		// Multiply size by scale
 		gfx2d.scale(scale, scale);
 		gfx2d.translate(0.5, 0.5);
-		SpriteSet.drawSprite(0, 0, bank, nSpr, gfx2d);
+		spriteSet.drawSprite(0, 0, bank, nSpr, gfx2d, buffer);
 		ImageIcon icon = new ImageIcon(img);
 		spriteImgLabel.setIcon(icon);
 		// Display width/height

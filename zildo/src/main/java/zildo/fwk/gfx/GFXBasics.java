@@ -21,8 +21,6 @@
 package zildo.fwk.gfx;
 
 import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
 
 import zildo.Zildo;
 import zildo.fwk.file.EasyBuffering;
@@ -45,8 +43,6 @@ public class GFXBasics {
 	private ByteBuffer pBackBuffer;
 	
 	private static Vector4f[] palette;
-	private static final Vector4f[] paletteClassic; // Palette from Zildo
-	private static final Vector4f[] paletteDecroded;	// Palette from Decroded's GFX
 	
 	private int pitch;
 	private int width;
@@ -63,10 +59,7 @@ public class GFXBasics {
 
 	static {
 		// Default palette	(Is it really useful on Android to load palettes ???)
-		paletteClassic = loadPalette("game1.pal");
-		paletteDecroded = loadPalette("game2.pal");
-		
-		palette = paletteClassic;
+		palette = loadPalette("game1.pal");
 	}
 
 	public GFXBasics(boolean alpha) {
@@ -345,60 +338,19 @@ public class GFXBasics {
 		return (int) v.x << 16 | (int) v.y << 8 | (int) v.z;
 	}
 
-	public int getPalIndex(Vector4f p_color) {
-		int r = (int) (p_color.x * 1f);
-		int g = (int) (p_color.y * 1f);
-		int b = (int) (p_color.z * 1f);
-		return getPalIndex(r, g, b);
+	public static int readColor(ByteBuffer buffer, int offset) {
+		return (buffer.get(offset) & 0xff) << 16 
+			| (buffer.get(offset+1) & 0xff) << 8 
+			|  buffer.get(offset+2) & 0xff;
 	}
 
-	public static int getPalIndex(int value) {
+	public static Vector4f splitRGB(int value) {
 		int r = (value >> 16) & 0xff;
 		int g = (value >> 8) & 0xff;
 		int b = (value) & 0xff;
-		return getPalIndex(r, g, b);
-	}
-
-	final static Map<Integer, Integer> palIndexes = new HashMap<Integer, Integer>();
-	
-	private static int getPalIndex(int r, int g, int b) {
-		// Optimization with using a index cache
-		int key= b | g<<8 | r<<16;
-		Integer result = palIndexes.get(key);
-		if (result != null) {
-			return result.intValue();
-		}
-		
-		Vector2f min = new Vector2f(10000, 1); // X=minimal distance /
-												// Y=corresponding color index
-		for (int i = 0; i < palette.length; i++) {
-			Vector4f col = palette[i];
-			double dist = Math.pow(col.x - r, 2) + Math.pow(col.y - g, 2) + Math.pow(col.z - b, 2);
-			if (dist < min.x) {
-				min.x = (float) dist;
-				min.y = i;
-				if (dist == 0) {
-					break;
-				}
-			}
-		}
-		// return the closest color's index (and update the map)
-		palIndexes.put(key, (int) min.y);
-		return (int) min.y;
+		return new Vector4f(r, g, b, (value >> 24) & 0xff);
 	}
 	
-	public static void switchPalette(int num) {
-		switch (num) {
-		case 1:
-			palette = paletteClassic;
-			break;
-		case 2:
-			palette = paletteDecroded;
-			break;
-		}
-		palIndexes.clear();
-	}
-
     public static Vector4f createColor256(float r, float g, float b) {
         return new Vector4f(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
     }
