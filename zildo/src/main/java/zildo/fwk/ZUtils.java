@@ -168,6 +168,14 @@ public class ZUtils {
     	return new ArrayList<T>();
     }
     
+    public static <T> List<T> addOrCreate(List<T> list, T elem) {
+    	List<T> output = list;
+    	if (list == null) {
+    		output = arrayList();
+    	}
+    	output.add(elem);
+    	return output;
+    }
     public static boolean isEmpty(String s) {
     	return s == null || "".equals(s);
     }

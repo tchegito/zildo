@@ -1646,10 +1646,10 @@
                 <sound name="FlecheTir"/>
 	        	<spawn type="STAFF_POUM" pos="129,156" shadow="SHADOW_SMALL" z="4" vz="0.2" az="-0.005" vx="2.3"/>
             </action>
-            <end when="zildo.y > 192 | zildo.y &lt; 100">
+            <exit when="zildo.y > 192 | zildo.y &lt; 100">
         		<markQuest name="prison15_trigger1Launch1" value="false"/>
         		<markQuest name="prison15_trigger2Launch1" value="false"/>
-			</end>
+			</exit>
         </timer>
 	</scene>
 	
@@ -1659,10 +1659,10 @@
                 <sound name="FlecheTir"/>
 	        	<spawn type="STAFF_POUM" reverse="128" pos="350,285" shadow="SHADOW_SMALL" z="4" vz="0.29" az="-0.005" vx="-2.3"/>
             </action>
-            <end when="zildo.y > 320 | zildo.y &lt; 228">
+            <exit when="zildo.y > 320 | zildo.y &lt; 228">
         		<markQuest name="prison15_trigger1Launch2" value="false"/>
         		<markQuest name="prison15_trigger2Launch2" value="false"/>
-			</end>
+			</exit>
         </timer>
 	</scene>
 	
@@ -1675,10 +1675,10 @@
                 <sound name="FlecheTir"/>
 	        	<spawn type="STAFF_POUM" reverse="128" pos="323,476" shadow="SHADOW_SMALL" z="4" vz="0.2" az="-0.005" vx="-2.3"/>
         	</action>
-            <end when="zildo.y > 512 | zildo.y &lt; 421">
+            <exit when="zildo.y > 512 | zildo.y &lt; 421">
         		<markQuest name="prison15_trigger1Launch3" value="false"/>
         		<markQuest name="prison15_trigger2Launch3" value="false"/>
-			</end>
+			</exit>
         </timer>
 	</scene>
 	
@@ -1691,10 +1691,10 @@
 	        	<sound name="FlecheTir"/>
 	        	<spawn type="STAFF_POUM" pos="42,620" shadow="SHADOW_SMALL" z="4" vz="0.2" az="-0.005" vx="2.3"/>
         	</action>
-            <end when="zildo.y > 656 | zildo.y &lt; 575">
+            <exit when="zildo.y > 656 | zildo.y &lt; 575">
         		<markQuest name="prison15_trigger1Launch4" value="false"/>
         		<markQuest name="prison15_trigger2Launch4" value="false"/>
-			</end>
+			</exit>
         </timer>
 	</scene>
 
@@ -2231,7 +2231,7 @@
 	
 	<tileAction id="fountain">
 	    <var name="loc:a" value="1" />
-	    <timer each="1+random*1">s
+	    <timer each="1+random*1">
 	        <action>
 		        <spawn type="DROP_SMALL" pos="x*16,y*16+12" vx="random*0.6-0.3" vy="random*2-1" z="4" vz="2.4" az="-0.1" alpha="255" alphaA="-0.3"/>
 	        </action>

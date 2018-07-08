@@ -33,8 +33,23 @@
     <persoAction id='myAction'>
         <pos who="zildo" pos="12,23"/>
         <pos who="zildo" pos="45,67"/>
-    </persoAction>
-    
+   		<timer each="40">
+			<action>
+				<spawn  type="dice10 > 5:NOTE2,NOTE"
+						foreground="true"
+						floor="zildo.floor"
+						pos="x-6,y" z="4" 
+						vx="0.2+0.1*random" vz="0.1" 
+						ax="-0.01" az="0.011"
+						fx="0.04 * random"
+						alphaA="-0.06"/>
+			</action>
+			<exit when="attente=2">
+				<script who="self" text="VIDE"/> 
+			</exit>
+		</timer>
+	</persoAction>
+
     <tileAction id='myTileAction'>
         <pos who="maltus" pos="1,2"/>
         <speak who="zildo" text="a3"/>

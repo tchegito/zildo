@@ -33,7 +33,7 @@ public class QuestElement extends AnyElement {
 	public String name;
 	List<TriggerElement> triggers = ZUtils.arrayList();
 	List<LanguageElement> actions = ZUtils.arrayList();
-	List<LanguageElement> history = ZUtils.arrayList();
+	List<LanguageElement> history = null;
 
 	boolean both; // TRUE=each trigger element must be done AT THE SAME TIME to
 					// launch the actions
@@ -71,7 +71,7 @@ public class QuestElement extends AnyElement {
 			trigger.questName = name;
 			triggers.add(trigger);
 		} else if ("history".equals(node)) {
-			history.add((LanguageElement) elem);
+			history = ZUtils.addOrCreate(history,  (LanguageElement) elem);
 		}
 	}
 	public List<TriggerElement> getTriggers() {

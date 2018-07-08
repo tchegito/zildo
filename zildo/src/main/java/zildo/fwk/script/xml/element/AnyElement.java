@@ -57,7 +57,8 @@ public abstract class AnyElement {
 		// Containers
 		trigger(EmptyGlueElement.class),
 		action(EmptyGlueElement.class),
-		history(EmptyGlueElement.class);
+		history(EmptyGlueElement.class),
+		exit(EmptyGlueElement.class);
 		
 		Class<? extends AnyElement> clazz;
 		final String realName;
@@ -86,6 +87,11 @@ public abstract class AnyElement {
      */
     protected abstract void parse(Attributes p_elem);
     
+	
+	protected void parseSubElement(String glueFor, Attributes p_elem) {
+		
+	}
+	
 	public void add(String node, AnyElement elem) {
 		//throw new RuntimeException("This method should have been implemented by "+getClass()+" !");
 	}

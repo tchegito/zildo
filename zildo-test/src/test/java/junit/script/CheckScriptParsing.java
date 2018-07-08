@@ -17,9 +17,11 @@ import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.ActionKind;
 import zildo.fwk.script.xml.element.action.ActionsElement;
 import zildo.fwk.script.xml.element.action.ForElement;
+import zildo.fwk.script.xml.element.action.TimerElement;
 import zildo.monde.Game;
 import zildo.monde.quest.QuestEvent;
 import zildo.server.EngineZildo;
+import zildo.server.state.ScriptManagement;
 
 public class CheckScriptParsing {
 
@@ -45,7 +47,15 @@ public class CheckScriptParsing {
 		
 		// Perso action
 		ContextualActionElement persoAction = adventure.getPersoActions().get(0);
-		Assert.assertEquals(2, persoAction.actions.size());
+		Assert.assertEquals(3, persoAction.actions.size());
+		
+		// Timer
+		ActionElement act = (ActionElement) persoAction.actions.get(2);
+		Assert.assertTrue(act.kind == ActionKind.timer);
+		TimerElement timerAction = (TimerElement) act;
+		Assert.assertEquals(1, timerAction.actions.size());
+		Assert.assertEquals(1, timerAction.end.size());
+		Assert.assertEquals("EQUALS(attente, 2.0)",  timerAction.endCondition.toString());
 		
 		// Tile action
 		ContextualActionElement tileAction = adventure.getTileActionNamed("myTileAction");
@@ -80,5 +90,12 @@ public class CheckScriptParsing {
 		// Seq
 		scene = adventure.getSceneNamed("testSeq");
 		Assert.assertEquals(6, scene.actions.size());
+	}
+	
+	@Test
+	public void scene() {
+		EngineZildo.game = new Game(false);
+		ScriptManagement sm = new ScriptManagement();
+		Assert.assertNotNull(sm.getAdventure().getSceneNamed("dieInPit"));
 	}
 }

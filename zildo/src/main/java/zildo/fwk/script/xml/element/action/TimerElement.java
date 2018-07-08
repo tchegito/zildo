@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.xml.sax.Attributes;
 
+import zildo.fwk.ZUtils;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.element.AnyElement;
 import zildo.fwk.script.xml.element.LanguageElement;
@@ -51,7 +52,7 @@ public class TimerElement extends ActionsNestedElement {
 	public FloatExpression each;
 	public FloatExpression endCondition;
 
-	public List<LanguageElement> end;
+	public List<LanguageElement> end = ZUtils.arrayList();
 
 	public TimerElement() {
     	super(ActionKind.timer, "action");
@@ -64,18 +65,22 @@ public class TimerElement extends ActionsNestedElement {
 		unblock = isTrue("unblock");
 		
 		each = new FloatExpression(readAttribute("each"));
-		/* TODO: how get this with SAX ???
-		if (endContainer != null) {
-			endCondition = new FloatExpression(endContainer.getAttribute("when"));
+	}
+	
+	@Override
+	public void parseSubElement(String nodeName, Attributes p_elem) {
+		if ("exit".equals(nodeName)) {
+			super.parse(p_elem);
+			endCondition = new FloatExpression(readOrEmpty("when"));
 		}
-		*/
 	}
 	
 	@Override
 	public void add(String node, AnyElement elem) {
-		super.add(node, elem);
-		if ("end".equals(node)) {
+		if ("exit".equals(node)) {
 			end.add((LanguageElement) elem);
+		} else {
+			super.add(node, elem);
 		}
 	}
 
@@ -83,6 +88,9 @@ public class TimerElement extends ActionsNestedElement {
 	public void validate() {
 		if (actions.isEmpty()) {
 			throw new RuntimeException("Timer is empty !");
+		}
+		if (!end.isEmpty()) {
+			//endCondition = new FloatExpression(endContainer.getAttribute("when"));
 		}
 	}
 }

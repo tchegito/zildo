@@ -7,15 +7,18 @@ public class EmptyGlueElement extends AnyElement {
 
 	AnyElement parent;
 	String glueFor;
+	Attributes att;
 	
 	@Override
 	protected void parse(Attributes p_elem) {
+		att = p_elem;
 	}
 
 	@Override
 	public void add(String node, AnyElement elem) {
 		if ("parent".equals(node)) {	// 1) set parent node
 			parent = elem;
+			parent.parseSubElement(glueFor, att);
 		} else if (parent != null) {	// 2) add child node to parent
 			parent.add(glueFor, elem);
 		}

@@ -350,9 +350,9 @@
 						fx="0.04 * random"
 						alphaA="-0.06"/>
 			</action>
-			<end when="attente=2">
+			<exit when="attente=2">
 				<script who="self" text="VIDE"/> 
-			</end>
+			</exit>
 		</timer>
 	</persoAction>
 	
