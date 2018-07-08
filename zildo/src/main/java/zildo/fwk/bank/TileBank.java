@@ -42,7 +42,7 @@ import zildo.monde.map.TileInfo;
 public class TileBank {
 
 	private String name;				// Max length should be 12
-	protected int nb_motifs;		// Nombre de motifs dans la banque
+	public int nb_motifs;		// Nombre de motifs dans la banque
 
 	public final static int motifSize = 1; // 1 byte for collision
 
