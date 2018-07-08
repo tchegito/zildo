@@ -90,7 +90,7 @@ public abstract class AnyElement {
 		//throw new RuntimeException("This method should have been implemented by "+getClass()+" !");
 	}
 	
-	/** This method is called once element is fully initialized, in order to validate **/
+	/** This method is called once element is fully initialized, in order to validate, or create additional elements  **/
 	public void validate() {
 		
 	}

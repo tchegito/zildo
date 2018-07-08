@@ -127,7 +127,7 @@ public class AndroidTileEngine extends TileEngine {
 	@Override
 	public void loadTextures() {
 		textureEngine.init();
-	    for (int i=0;i<tileBankNames.length + 1;i++) {
+	    for (int i=0;i<tileBankNames.length;i++) {
 		    ((AndroidTextureEngine)textureEngine).loadTexture("tile"+i);
 	    }
 	    texCloudId = textureEngine.loadTexture("tile11");
