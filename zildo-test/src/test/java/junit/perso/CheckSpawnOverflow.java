@@ -49,7 +49,7 @@ public class CheckSpawnOverflow extends EngineUT {
 				zildo.setPx(0);
 				zildo.setPy(0);
 			}
-			System.out.println(countEntities()+ " hero: "+zildo.getPv()+"HP");
+			//System.out.println(countEntities()+ " hero: "+zildo.getPv()+"HP");
 		}
 	}
 	

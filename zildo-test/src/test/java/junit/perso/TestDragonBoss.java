@@ -73,7 +73,6 @@ public class TestDragonBoss extends EngineUT {
 		renderFrames(120);	// Wait for dynamite to explode
 		boolean wounded = false;
 		for (int j=0;j<100;j++) {
-			System.out.println(dragon.z);
 			if (dragon.isWounded()) {
 				wounded = true;
 				break;

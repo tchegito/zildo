@@ -480,7 +480,7 @@ public class CheckFoundBugs extends EngineUT {
 		Assert.assertEquals(Tile.T_BUSH_CUT, EngineZildo.mapManagement.getCurrentMap().readmap(28, 17));
 	}
 	
-	@Test @InfoPersos
+	@Test
 	public void stuckWithMinsk() {
 		for (String q : new String[] {"allFishMinsk", "rewardMinsk", "minsk_fishes"}) {
 			EngineZildo.scriptManagement.accomplishQuest(q, false);

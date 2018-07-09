@@ -269,6 +269,7 @@ public abstract class EngineUT {
 		initCounters();
 
 		// Cheat to have a client
+		Zildo.pdPlugin.kbHandler = null;
 		Client fakeClient = new Client(true);
 		ClientEngineZildo.client = fakeClient; 
 		// Fake a client state list
@@ -346,44 +347,43 @@ public abstract class EngineUT {
 		
 		// Initialize keyboard to simulate input
 		instant = new KeyboardInstant();
-		if (fakedKbHandler == null) {
-			fakedKbHandler = spy(new CommonKeyboardHandler() {
-				
-				@Override
-				public void poll() {
-				}
-				
-				@Override
-				public boolean next() {
-					return false;
-				}
-				
-				@Override
-				public boolean isKeyDown(int p_code) {
-					return false;
-				}
-				
-				@Override
-				public boolean getEventKeyState() {
-					return false;
-				}
-				
-				@Override
-				public int getEventKey() {
-					return 0;
-				}
-				
-				@Override
-				public char getEventCharacter() {
-					return 0;
-				}
-				
-				@Override
-				public int getCode(Keys k) {
-					return 0;
-				}
-			});
-		}
+		// We have to neutralize pdPlugin.kbHandler, then recreate a handle. Because reset() is not satisfying
+		fakedKbHandler = spy(new CommonKeyboardHandler() {
+			
+			@Override
+			public void poll() {
+			}
+			
+			@Override
+			public boolean next() {
+				return false;
+			}
+			
+			@Override
+			public boolean isKeyDown(int p_code) {
+				return false;
+			}
+			
+			@Override
+			public boolean getEventKeyState() {
+				return false;
+			}
+			
+			@Override
+			public int getEventKey() {
+				return 0;
+			}
+			
+			@Override
+			public char getEventCharacter() {
+				return 0;
+			}
+			
+			@Override
+			public int getCode(Keys k) {
+				return 0;
+			}
+		});
 		Zildo.pdPlugin.kbHandler = fakedKbHandler;
 		
 		// Create a thread wich monitors any freeze

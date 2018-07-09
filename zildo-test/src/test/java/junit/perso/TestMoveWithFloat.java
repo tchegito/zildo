@@ -105,7 +105,7 @@ public class TestMoveWithFloat extends TestCase {
 	*/
 	// line equation : y = -x + 150
 	boolean collide(int x, int y) {
-		System.out.println("check collide with "+x+","+y);
+		//System.out.println("check collide with "+x+","+y);
 		int fx = -x + 150;
 		return y >= fx;
 	}
