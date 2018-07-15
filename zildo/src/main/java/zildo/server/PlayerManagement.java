@@ -176,7 +176,8 @@ public class PlayerManagement {
 				keyReleaseAttack();
 			}
 			
-			if (heros.who.canInventory) {	// Does controlled character have an inventory ? 
+			// Dialog state can possibly be updated by script action (Issue 146)
+			if (heros.who.canInventory && !dialogState.isDialoguing()) {	// Does controlled character have an inventory ? 
 				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
 					keyPressInventory();
 				} else {

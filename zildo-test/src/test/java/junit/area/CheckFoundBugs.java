@@ -31,7 +31,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
-import tools.annotations.InfoPersos;
 import tools.annotations.SoundEnabled;
 import zildo.client.ClientEventNature;
 import zildo.client.PlatformDependentPlugin;
@@ -559,5 +558,31 @@ public class CheckFoundBugs extends EngineUT {
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("sousbois3(20, 36)"));
 		waitEndOfScriptingPassingDialog();
 		Assert.assertNotEquals("Spikes should have disappeared as soon as hero opened the chest !", spikesOnMap, EngineZildo.mapManagement.getCurrentMap().readmap(11,28));
+	}
+	
+	/** Issue 146: NPE when selling items with a non-vendor character !**/
+	@Test
+	public void npeSellingItems() {
+		PlatformDependentPlugin.currentPlugin = KnownPlugin.Android;
+		mapUtils.loadMap("d5m1");
+		EngineZildo.scriptManagement.accomplishQuest("flut_ask", false);
+		PersoPlayer zildo = spawnZildo(125,83);
+		zildo.setAngle(Angle.NORD);
+		Item milk = new Item(ItemKind.MILK);
+		zildo.getInventory().add(milk);
+		zildo.setWeapon(milk);
+		waitEndOfScripting();
+		
+		// Case: player press INVENTORY and ATTACK key at the same time
+		// So he enters in inventory, and dialog about milk is displaying. So he is in both inventory, and dialog, which is forbidden.
+		
+		PersoPlayer hero = EngineZildo.persoManagement.getZildo();
+		Assert.assertTrue(hero.getDialoguingWith() == null);
+		simulateKeyPressed(KeysConfiguration.PLAYERKEY_INVENTORY.code, KeysConfiguration.PLAYERKEY_ATTACK.code);
+		renderFrames(1);
+		Assert.assertFalse(zildo.isInventoring());
+		simulatePressButton(KeysConfiguration.PLAYERKEY_ACTION.code, 2);
+		simulatePressButton(KeysConfiguration.PLAYERKEY_ACTION.code, 2);
+		simulateKeyPressed();
 	}
 }
