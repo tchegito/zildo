@@ -167,7 +167,7 @@ public class ElementImpact extends Element {
         	case STAFF_TURNING:
         	case HEARTH:
         	case CAULDRON:
-        	case GNAP:
+        	//case GNAP:
 				if (valCounter >= kind.seq.length) {
 					if (kind.seqLong < 0) {	// Infinite loop
 						counter = 0;

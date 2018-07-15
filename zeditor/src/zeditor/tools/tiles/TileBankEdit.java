@@ -144,8 +144,6 @@ public class TileBankEdit extends TileBank {
     	Image img=new BufferedImage(maxX, maxY, BufferedImage.TYPE_INT_RGB);
     	
     	// Draw the tiles as they are predefined
-    	int tile=0;
-
     	Point texPos = new Point(0, 0);
     	int idxTile = 0;
     	for (Point p : bank.coords) {

@@ -63,12 +63,14 @@ public class BuilderDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				String bankName = (String) comboTileBank.getSelectedItem();
 
-				new Modifier().saveNamedTileBank(bankName);
-				
-				// Reload all banks
-				reloadTiles();
-
-				MasterFrameManager.display("Tile bank "+bankName+" has been builded !");
+				manager.canvasWaitingCall.add( () -> {
+					new Modifier().saveNamedTileBank(bankName);
+					
+					// Reload all banks
+					reloadTiles();
+	
+					MasterFrameManager.display("Tile bank "+bankName+" has been builded !");
+				});
 			}
 		});
 		panel.addComp(comboTileBank, buttonBuildTileBank);
@@ -77,16 +79,18 @@ public class BuilderDialog extends JDialog {
 		JButton buttonAllTileBanks = new JButton(new AbstractAction("Build all tile banks") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					new Modifier().saveAllMotifBank();
-
-					// Reload all banks
-					reloadTiles();
-
-					MasterFrameManager.display("All tile banks builded successfully !");
-				} catch (RuntimeException ex) {
-					error("Error building all tile banks !", ex);
-				}
+				manager.canvasWaitingCall.add( () -> {
+					try {
+						new Modifier().saveAllMotifBank();
+	
+						// Reload all banks
+						reloadTiles();
+	
+						MasterFrameManager.display("All tile banks builded successfully !");
+					} catch (RuntimeException ex) {
+						error("Error building all tile banks !", ex);
+					}
+				});
 			}
 		});
 		panel.add(buttonAllTileBanks);
@@ -104,16 +108,18 @@ public class BuilderDialog extends JDialog {
 		JButton buttonAllSpriteBanks = new JButton(new AbstractAction("Build all sprite banks") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					new Modifier().saveAllSpriteBank();
-
-					// Reload all banks
-					reloadSprites();
-
-					MasterFrameManager.display("All sprite banks builded successfully !");
-				} catch (RuntimeException ex) {
-					error("Error building all sprite banks !", ex);
-				}
+				manager.canvasWaitingCall.add( () -> {
+					try {
+						new Modifier().saveAllSpriteBank();
+	
+						// Reload all banks
+						reloadSprites();
+	
+						MasterFrameManager.display("All sprite banks builded successfully !");
+					} catch (RuntimeException ex) {
+						error("Error building all sprite banks !", ex);
+					}
+				});
 			}
 		});
 		panel.add(buttonAllSpriteBanks);
@@ -173,16 +179,18 @@ public class BuilderDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int idx = comboSpriteBank.getSelectedIndex();
-				String bankName = (String) SpriteStore.sprBankName[idx]; 
-				try {
-					new Modifier().saveNamedSpriteBank(bankName);
-					// Reload all sprites
-					reloadSprites();
-					
-					MasterFrameManager.display("Sprite bank "+bankName+" has been builded !");
-				} catch (RuntimeException ex) {
-					error("Error building bank "+bankName, ex);
-				}
+				String bankName = (String) SpriteStore.sprBankName[idx];
+				manager.canvasWaitingCall.add( () -> {
+					try {
+						new Modifier().saveNamedSpriteBank(bankName);
+						// Reload all sprites
+						reloadSprites();
+						
+						MasterFrameManager.display("Sprite bank "+bankName+" has been builded !");
+					} catch (RuntimeException ex) {
+						error("Error building bank "+bankName, ex);
+					}
+				});
 			}
 		};
 	}

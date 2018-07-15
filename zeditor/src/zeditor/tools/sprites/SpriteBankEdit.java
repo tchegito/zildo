@@ -31,7 +31,6 @@ import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.db.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
-import zildo.fwk.gfx.GFXBasics;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.util.Zone;
 

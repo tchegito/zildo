@@ -33,7 +33,6 @@ import zildo.monde.map.TileInfo;
  * Load a DEC file.<br/>
  * 
  * Such file is modelized by a sequence of following buffers:<ul>
- * <li>16*16 bytes (values between 0..255 corresponding to a palette index)</li>
  * <li>1 byte : collision value (represents a {@link TileInfo} element)</li>
  * </ul>
  * @author evariste.boussaton

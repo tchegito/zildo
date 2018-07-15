@@ -17,11 +17,10 @@ import zildo.monde.util.Zone;
 import zildo.platform.engine.LwjglTextureEngine;
 import zildo.platform.opengl.GLUtils;
 import zildo.platform.opengl.LwjglGraphicStuff;
+import zildo.resource.Constantes;
 
 public class TileTexture {
 
-	final static String TEXTURE_OUTPUT_PATH = "c:\\kikoo\\textures\\";
-	
 	LwjglTextureEngine textureEngine;
 	
 	List<int[]> gfxs;
@@ -63,7 +62,7 @@ public class TileTexture {
 		}
 
 		int idx = Arrays.asList(TileEngine.tileBankNames).indexOf(bankName.toLowerCase());
-    	GLUtils.saveBufferAsPNG(TEXTURE_OUTPUT_PATH+"tile"+idx, textureEngine.getBuffer(), 256, 256, alpha);
+    	GLUtils.saveBufferAsPNG(Constantes.DATA_PATH+"\\textures\\tile"+idx, textureEngine.getBuffer(), 256, 256, alpha);
 	}
 
 	/**
@@ -134,7 +133,6 @@ public class TileTexture {
 
 		surfaceGfx.StartRendering();
 
-		int palNum = 1;
 		for (int n=0;n<sBank.getNSprite();n++)
 		{
 			SpriteModel spr=sBank.get_sprite(n);
@@ -144,25 +142,20 @@ public class TileTexture {
 			int y = spr.getTexPos_y();
 			// On place le sprite sur la texture
 			int[] motif=gfxs.get(n);
-			Vector4f replacedColor;
 			for (int j=0;j< longY;j++) {
 				
 				for (int i=0;i< longX;i++) {
 					int a=motif[i+j*longX];
 					// Regular size
-					long modifiedColor=-1;
-					
 					a=sBank.modifyPixel(n,a);
 
-					//replacedColor=modifiedColor==-1?null:textureEngine.graphicStuff.createColor(modifiedColor);
-					//surfaceGfx.pset(i+x, j+y, a, replacedColor);
 					Vector4f color = GFXBasics.splitRGB(a);
 					surfaceGfx.pset(i+x, j+y, color);
 				}
 			}
 		}
 		int idx = Arrays.asList(SpriteStore.sprBankName).indexOf(sBank.getName());
-    	GLUtils.saveBufferAsPNG(TEXTURE_OUTPUT_PATH+"sprite"+idx, textureEngine.getBuffer(), 256, 256, alpha);
+    	GLUtils.saveBufferAsPNG(Constantes.DATA_PATH+"\\textures\\sprite"+idx, textureEngine.getBuffer(), 256, 256, alpha);
 	}
 	
 }
