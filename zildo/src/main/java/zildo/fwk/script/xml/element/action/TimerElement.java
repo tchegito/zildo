@@ -39,7 +39,7 @@ import zildo.fwk.script.xml.element.LanguageElement;
  *   <b>&lt;action&gt;
  *      ...
  *   &lt;/action&gt;</b>
- *   &lt;end when="FLOAT_EXPRESSION"&gt;
+ *   &lt;exit when="FLOAT_EXPRESSION"&gt;
  *      ...
  *   &lt;/end&gt;
  * &lt;/timer&gt;
@@ -88,9 +88,6 @@ public class TimerElement extends ActionsNestedElement {
 	public void validate() {
 		if (actions.isEmpty()) {
 			throw new RuntimeException("Timer is empty !");
-		}
-		if (!end.isEmpty()) {
-			//endCondition = new FloatExpression(endContainer.getAttribute("when"));
 		}
 	}
 }
