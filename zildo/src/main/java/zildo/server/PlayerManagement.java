@@ -176,8 +176,7 @@ public class PlayerManagement {
 				keyReleaseAttack();
 			}
 			
-			// Dialog state can possibly be updated by script action (Issue 146)
-			if (heros.who.canInventory && !dialogState.isDialoguing()) {	// Does controlled character have an inventory ? 
+			if (heros.who.canInventory) {	// Does controlled character have an inventory ? 
 				if (instant.isKeyDown(KeysConfiguration.PLAYERKEY_INVENTORY)) {
 					keyPressInventory();
 				} else {
@@ -585,8 +584,11 @@ public class PlayerManagement {
 	void keyPressInventory() {
 		if (!keysState.key_inventoryPressed && gamePhase != GamePhase.MAPCHANGE && gamePhase != GamePhase.DIALOG && gamePhase != GamePhase.SCRIPT 
 				&& heros.getMouvement()==MouvementZildo.VIDE && heros.getAttente() == 0) {
+			// Dialog state can possibly be updated by script action (Issue 146)
 			if (!heros.isInventoring()) {
-				heros.lookInventory();
+				if (!dialogState.isDialoguing()) {
+					heros.lookInventory();
+				}
 			} else {
 				heros.closeInventory();
 			}

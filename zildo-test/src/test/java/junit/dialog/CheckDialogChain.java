@@ -13,6 +13,7 @@ import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
+import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 
 /**
@@ -60,6 +61,7 @@ public class CheckDialogChain extends EngineUT {
 	
 	@Test
 	public void borisAfterMetIgor() {
+		Assert.assertEquals(0, dials().size());
 		initIgor();
 		EngineZildo.scriptManagement.accomplishQuest("igor_promise_sword", false);
 		checkInit();
@@ -165,5 +167,28 @@ public class CheckDialogChain extends EngineUT {
 		zildo.setAngle(Angle.NORD);
 		talkAndCheck("prison.gard.0");
 		
+	}
+	
+	// Verify that hero can get into selling process, and that he can leave it too
+	@Test
+	public void buy() {
+		mapUtils.loadMap("igorv4");
+		EngineZildo.scriptManagement.accomplishQuest("borisWait", false);
+		Perso boris = persoUtils.persoByName("boris");
+		boris.setQuel_deplacement(MouvementPerso.IMMOBILE, true);
+		PersoPlayer zildo = spawnZildo(147, 114);
+		zildo.setAngle(Angle.NORD);
+		waitEndOfScripting();
+		talkAndCheck("igorv4.boris.0");
+		goOnDialog();
+		goOnDialog();
+		// Talk to trigger the sell (sentence contains '$sell')
+		talkAndCheck("igorv4.boris.8");
+		Assert.assertTrue(zildo.getDialoguingWith() != null);
+		Assert.assertTrue(clientState.dialogState.isDialoguing());
+		// Check that hero is in 'buying' phase = dialog + inventory
+		Assert.assertTrue(zildo.isInventoring());
+		simulatePressButton(KeysConfiguration.PLAYERKEY_INVENTORY.code, 2);
+		Assert.assertFalse(zildo.isInventoring());
 	}
 }
