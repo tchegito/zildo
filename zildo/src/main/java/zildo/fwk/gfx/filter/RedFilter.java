@@ -42,7 +42,7 @@ public class RedFilter extends ScreenFilter {
 	@Override
 	public void preFilter() {
 		Vector3f v = ClientEngineZildo.ortho.getAmbientColor();
-		ClientEngineZildo.ortho.box(0, 0, Zildo.viewPortX, Zildo.viewPortY, 0, new Vector4f(1*v.x, 0, 0, 1));
+		ClientEngineZildo.ortho.box(0, 0, Zildo.viewPortX, Zildo.viewPortY, new Vector4f(1*v.x, 0, 0, 1));
 	}
 
 	@Override

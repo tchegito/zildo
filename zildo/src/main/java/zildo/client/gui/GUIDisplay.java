@@ -60,6 +60,7 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
+import zildo.monde.util.Vector3i;
 import zildo.monde.util.Vector4f;
 import zildo.monde.util.Zone;
 import zildo.server.MultiplayerManagement;
@@ -599,7 +600,14 @@ public class GUIDisplay {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Draw frame around displayed text
 	// /////////////////////////////////////////////////////////////////////////////////////
+	Vector3i[] couleur_cadre = new Vector3i[] {
+			new Vector3i(32, 32, 24), // 48
+			new Vector3i(219, 162, 65), // 149
+			new Vector3i(251, 203, 32), // 150
+	};
+	/*
 	private final int couleur_cadre[] = {48, 149, 150, 149, 48};
+	*/
 	//private final int couleur_cadre[] = {48, 239, 238, 239, 48}; //{ 3, 203, 204, 203, 3 };
 
 	void drawFrame() {
@@ -626,15 +634,15 @@ public class GUIDisplay {
 		Ortho ortho = ClientEngineZildo.ortho;
 		ortho.initDrawBox(false);
 		for (int i = 0; i < 5; i++) {
-			int col = couleur_cadre[i];
-			ortho.boxOpti(x+7, y + i, width+4, 1, col, null);
-			ortho.boxOpti(x+6, y2+6 - i, width+4, 1, col, null);
-			ortho.boxOpti(x + i, y+7, 1, height+3, col, null);
-			ortho.boxOpti(x2+6 - i, y+7, 1, height+3, col, null);
+			Vector3i col = couleur_cadre[i];
+			ortho.boxOpti(x+7, y + i, width+4, 1, col.normalize());
+			ortho.boxOpti(x+6, y2+6 - i, width+4, 1, col.normalize());
+			ortho.boxOpti(x + i, y+7, 1, height+3, col.normalize());
+			ortho.boxOpti(x2+6 - i, y+7, 1, height+3, col.normalize());
 		}
 		ortho.endDraw();
 		ortho.enableBlend();
-		ortho.box(x+5, y+5, width+7, height+7, 0, new Vector4f(0.4f, 0.2f, 0.1f, 0.7f));
+		ortho.box(x+5, y+5, width+7, height+7, new Vector4f(0.4f, 0.2f, 0.1f, 0.7f));
 		ortho.disableBlend();
 		
 		// Draw corner frame
@@ -1160,10 +1168,10 @@ public class GUIDisplay {
 		}
 		// Draw a transparent box
 		ClientEngineZildo.ortho.enableBlend();
-		ClientEngineZildo.ortho.box(posX, posY, sizeX, sizeY, 0, new Vector4f(0.3f, 0.2f, 0.4f, 0.2f));
+		ClientEngineZildo.ortho.box(posX, posY, sizeX, sizeY, new Vector4f(0.3f, 0.2f, 0.4f, 0.2f));
 		ClientEngineZildo.ortho.disableBlend();
-		ClientEngineZildo.ortho.boxv(posX, posY, sizeX, sizeY, 4, new Vector4f(0.9f, 0.7f, 0.4f, 0.4f));
-		ClientEngineZildo.ortho.boxv(posX - 1, posY - 1, sizeX + 2, sizeY + 2, 4, new Vector4f(0.8f, 0.6f, 0.4f, 0.4f));
+		ClientEngineZildo.ortho.boxv(posX, posY, sizeX, sizeY, new Vector4f(0.9f, 0.7f, 0.4f, 0.4f));
+		ClientEngineZildo.ortho.boxv(posX - 1, posY - 1, sizeX + 2, sizeY + 2, new Vector4f(0.8f, 0.6f, 0.4f, 0.4f));
 
 	}
 	

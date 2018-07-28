@@ -47,6 +47,7 @@ import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
+import zildo.monde.util.Vector3i;
 import zildo.monde.util.Vector4f;
 import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
@@ -381,29 +382,30 @@ public class ClientEngineZildo {
 			for (Collision c : EngineZildo.collideManagement.getTabColli()) {
 				if (c != null) {
 					int rayon = c.cr;
-					int color = 15;
+					Vector4f brown = new Vector3i(130,81,81).normalize();
 					Perso damager = c.perso;
 					Vector4f alphaColor = new Vector4f(0.2f, 0.4f, 0.9f, 16.0f);
 					if (damager != null && damager.getInfo() == PersoInfo.ENEMY) {
-						color = 20;
+						brown = new Vector3i(97, 97, 105).normalize();
 					}
 					if (c.size == null) {
 						ortho
 								.box(c.cx - rayon - camera.x, c.cy - rayon
-										- camera.y, rayon * 2, rayon * 2, 0,
+										- camera.y, rayon * 2, rayon * 2, 
 										alphaColor);
 					} else {
 						Point center = new Point(c.cx - camera.x, c.cy
 								- camera.y);
 						Rectangle rect = new Rectangle(center, c.size);
-						ortho.box(rect, color, null);
+						ortho.box(rect, brown);
 					}
 				}
 			}
 			// -7, -10
 			int x = (int) zildo.x - 4;
 			int y = (int) zildo.y - 10;
-			ortho.box(x - 3 - camera.x, y - camera.y, 16, 16, 12, null);
+			Vector4f otherBrown = new Vector3i(121,89,65).normalize();
+			ortho.box(x - 3 - camera.x, y - camera.y, 16, 16, otherBrown);
 		}
 
 		if (Zildo.infoDebugCase) {

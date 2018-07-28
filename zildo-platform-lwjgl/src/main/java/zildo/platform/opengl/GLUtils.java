@@ -38,7 +38,6 @@ import org.lwjgl.opengl.GL11;
 
 import zildo.Zildo;
 import zildo.fwk.ZUtils;
-import zildo.fwk.gfx.GFXBasics;
 
 /**
  * @author eboussaton
@@ -131,7 +130,6 @@ public class GLUtils {
 			e.printStackTrace();
 		}    	
     }
-    
     /**
      * Save an int buffer as a PNG file, with given parameters.
      * @param filename file name with full path, without ".png"
@@ -139,6 +137,7 @@ public class GLUtils {
      * @param width
      * @param height
      */
+    /*
     public static void saveBufferAsPNG(String filename, int[] buf, int width, int height) {
     	int format = BufferedImage.TYPE_INT_RGB;
     	BufferedImage bufImage = new BufferedImage(width, height, format);
@@ -154,6 +153,7 @@ public class GLUtils {
 			e.printStackTrace();
 		}    	
     }
+    */
     /**
      * Save a ByteBuffer as a PNG file, with given parameters.
      * @param filename file name with full path, without ".png"

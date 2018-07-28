@@ -110,7 +110,8 @@ public abstract class TileEngine {
 	
 	protected TextureEngine textureEngine;
 	
-	static public String[] tileBankNames = { "foret1",
+	static public String[] tileBankNames = { "grass"};
+	/*
 			"village",
 			"maison",
 			"grotte",
@@ -121,7 +122,7 @@ public abstract class TileEngine {
 			"palais2",
 			"palais3",
 			"lavacave"};
-
+*/
 	// ////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	// ////////////////////////////////////////////////////////////////////

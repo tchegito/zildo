@@ -16,7 +16,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import zeditor.windows.MasterFrame;
 import zeditor.windows.dialogs.ChangeOriginDialog;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.sound.Ambient.Atmosphere;
@@ -102,22 +101,24 @@ public class StatsPanel extends JPanel {
 		Area map = EngineZildo.mapManagement.getCurrentMap();
 		int nbPerso = EngineZildo.persoManagement.tab_perso.size();
 		int nbSpr = EngineZildo.spriteManagement.getSpriteEntities(null).size();
-		int nbChPoint = map.getChainingPoints().size();
-		MapDialog dialogs = map.getMapDialog();
-		int nbDial = dialogs == null ? 0 : dialogs.getN_phrases();
-		dim.setText(map.getDim_x() + " x " + map.getDim_y());
-		nFloors.setText("" + (map.getHighestFloor()+1));
-		nPerso.setText(String.valueOf(nbPerso));
-		nPerso.setToolTipText( "<html>" + getPersoNames() + "</html>");
-		nSpr.setText(String.valueOf(nbSpr - nbPerso));
-		nChainingPoint.setText(String.valueOf(nbChPoint));
-		nDialogs.setText(String.valueOf(nbDial));
-
-		atmosphere.setSelectedIndex(map.getAtmosphere().ordinal());
-		spinLimitX.setValue(map.getDim_x());
-		spinLimitY.setValue(map.getDim_y());
-		spinOffsetX.setValue(map.getScrollOffset().x);
-		spinOffsetY.setValue(map.getScrollOffset().y);
+		if (map != null) {
+			int nbChPoint = map.getChainingPoints().size();
+			MapDialog dialogs = map.getMapDialog();
+			int nbDial = dialogs == null ? 0 : dialogs.getN_phrases();
+			dim.setText(map.getDim_x() + " x " + map.getDim_y());
+			nFloors.setText("" + (map.getHighestFloor()+1));
+			nPerso.setText(String.valueOf(nbPerso));
+			nPerso.setToolTipText( "<html>" + getPersoNames() + "</html>");
+			nSpr.setText(String.valueOf(nbSpr - nbPerso));
+			nChainingPoint.setText(String.valueOf(nbChPoint));
+			nDialogs.setText(String.valueOf(nbDial));
+	
+			atmosphere.setSelectedIndex(map.getAtmosphere().ordinal());
+			spinLimitX.setValue(map.getDim_x());
+			spinLimitY.setValue(map.getDim_y());
+			spinOffsetX.setValue(map.getScrollOffset().x);
+			spinOffsetY.setValue(map.getScrollOffset().y);
+		}
 		updatingUI = false;
 	}
 

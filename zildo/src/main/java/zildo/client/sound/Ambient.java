@@ -62,7 +62,7 @@ public class Ambient {
 		public int getEmptyTile() {
 			switch (this) {
 			default:
-				return 54;	// Green herb;
+				return 34;	// Green herb;
 			case HOUSE:
 			case BAR:
 			case CAVE:

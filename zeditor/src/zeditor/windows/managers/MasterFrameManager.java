@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
+import sun.misc.Cleaner;
 import zeditor.core.Options;
 import zeditor.core.exceptions.ZeditorException;
 import zeditor.core.prefetch.Prefetch;
@@ -193,6 +194,7 @@ public class MasterFrameManager {
 			sb.append(" - ");
 			sb.append(map.getDim_x() + " x " + map.getDim_y());
 		} else {
+			create();
 			sb.append("Nouvelle carte");
 		}
 		if (unsavedChanges) {
@@ -247,10 +249,12 @@ public class MasterFrameManager {
 			return new ChainingPoint[] {};
 		}
 		List<ChainingPoint> names = new ArrayList<ChainingPoint>();
-		List<ChainingPoint> points = EngineZildo.mapManagement.getCurrentMap()
-				.getChainingPoints();
-		for (ChainingPoint chp : points) {
-			names.add(chp);
+		Area map = EngineZildo.mapManagement.getCurrentMap();
+		if (map != null) {
+			List<ChainingPoint> points = map.getChainingPoints();
+			for (ChainingPoint chp : points) {
+				names.add(chp);
+			}
 		}
 		return names.toArray(new ChainingPoint[] {});
 	}

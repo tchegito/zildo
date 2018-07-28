@@ -123,7 +123,7 @@ public class SpriteBankEdit extends SpriteBank {
 		String imageName=Banque.PKM_PATH;
     	// New engine with free tiles
     	// 1) Try with folder containing free tiles
-    	String completeName = imageName + "../FreeGraph/" + p_filename + ".png";
+    	String completeName = imageName + "../FreeGraph/notAlembrume" + p_filename + ".png";
     	try {
     		bankEdit.loadImage(completeName, p_transparentColor);
     	} catch (Exception e) {

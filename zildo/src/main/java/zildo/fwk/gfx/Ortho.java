@@ -198,10 +198,10 @@ public abstract class Ortho {
 	
 	public abstract void setColor(float r, float g, float b);
 	
-	public void box(Rectangle p_rect, int palColor, Vector4f color) {
+	public void box(Rectangle p_rect, Vector4f color) {
 		Point cornerTopLeft = p_rect.getCornerTopLeft();
 		Point size = p_rect.getSize();
-		box(cornerTopLeft.x, cornerTopLeft.y, size.x, size.y, palColor, color);
+		box(cornerTopLeft.x, cornerTopLeft.y, size.x, size.y, color);
 	}
 
 	/**
@@ -217,9 +217,9 @@ public abstract class Ortho {
 	 * @param color
 	 *            real color
 	 */
-	public void box(int x, int y, int p_w, int p_h, int palColor, Vector4f color) {
+	public void box(int x, int y, int p_w, int p_h, Vector4f color) {
 		initDrawBox(false);
-		boxOpti(x, y, p_w, p_h, palColor, color);
+		boxOpti(x, y, p_w, p_h, color);
 		endDraw();
 	}
 
@@ -233,7 +233,7 @@ public abstract class Ortho {
 	 * @param palColor
 	 * @param color
 	 */
-	public abstract void boxOpti(int x, int y, int p_w, int p_h, int palColor, Vector4f color);
+	public abstract void boxOpti(int x, int y, int p_w, int p_h, Vector4f color);
 
 	/**
 	 * Just draw a textured box, without managing glBegin/glEnd
@@ -271,7 +271,7 @@ public abstract class Ortho {
 	 * @param palColor
 	 * @param color
 	 */
-	public abstract void boxv(int x, int y, int p_w, int p_h, int palColor, Vector4f color);
+	public abstract void boxv(int x, int y, int p_w, int p_h, Vector4f color);
 
 	public abstract void enableBlend();
 

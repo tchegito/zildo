@@ -22,7 +22,6 @@ package zildo.platform.opengl;
 
 import shader.Shaders;
 import zildo.Zildo;
-import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
@@ -140,16 +139,12 @@ public class AndroidOrtho extends Ortho {
 	 * @param color
 	 */
 	@Override
-	public void boxOpti(int x, int y, int p_w, int p_h, int palColor, Vector4f color) {
-		fourDots(x, y, p_w, p_h, palColor, color, GLES20.GL_TRIANGLE_FAN);
+	public void boxOpti(int x, int y, int p_w, int p_h, Vector4f color) {
+		fourDots(x, y, p_w, p_h, color, GLES20.GL_TRIANGLE_FAN);
 	}
 
-	private void fourDots(int x, int y, int p_w, int p_h, int palColor, Vector4f color, int mode) {
+	private void fourDots(int x, int y, int p_w, int p_h, Vector4f color, int mode) {
 		Vector4f col = color;
-		if (color == null) {
-			col = new Vector4f(GFXBasics.getColor(palColor));
-			col.scale(1.0f / 256.0f);
-		}
 		shaders.setColor(col);
 		
 		int[] vertices = {x,  y,
@@ -285,8 +280,8 @@ public class AndroidOrtho extends Ortho {
 	 * @param color
 	 */
 	@Override
-	public void boxv(int x, int y, int p_w, int p_h, int palColor, Vector4f color) {
-		fourDots(x, y, p_w, p_h, palColor, color, GLES20.GL_LINE_LOOP);
+	public void boxv(int x, int y, int p_w, int p_h, Vector4f color) {
+		fourDots(x, y, p_w, p_h, color, GLES20.GL_LINE_LOOP);
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class LightningFilter extends ScreenFilter {
 	public boolean renderFilter() {
 		toggle = !toggle;
 		if (toggle) {
-			ClientEngineZildo.ortho.box(0, 0, Zildo.viewPortX, Zildo.viewPortY, 0, new Vector4f(1, 1, 1, 1));
+			ClientEngineZildo.ortho.box(0, 0, Zildo.viewPortX, Zildo.viewPortY, new Vector4f(1, 1, 1, 1));
 		}
 		return true;
 	}

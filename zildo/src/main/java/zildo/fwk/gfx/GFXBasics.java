@@ -40,9 +40,7 @@ public class GFXBasics {
 
 	// Variables
 	private ByteBuffer pBackBuffer;
-	
-	private static Vector4f[] palette;
-	
+		
 	private int pitch;
 	private int width;
 	private int height;
@@ -55,11 +53,6 @@ public class GFXBasics {
 	// ////////////////////////////////////////////////////////////////////
 
 	// private static java.awt.Font[] fonts;
-
-	static {
-		// Default palette	(Is it really useful on Android to load palettes ???)
-		palette = loadPalette("game1.pal");
-	}
 
 	public GFXBasics(boolean alpha) {
 		this.alpha = alpha;
@@ -120,13 +113,11 @@ public class GFXBasics {
 	// colorIndex : (index in the palette [0..256]
 	// colorValue : Vector (R, G, B)
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void box(int xx, int yy, int wx, int wy, int colorIndex, Vector4f colorValue) {
+	public void box(int xx, int yy, int wx, int wy, Vector4f colorValue) {
 
 		int a = yy * width * pitch + xx * pitch;
 		Vector4f color = colorValue;
-		if (colorValue == null) {
-			color = palette[colorIndex];
-		}
+
 		for (int i = 0; i < wy; i++) {
 			for (int j = 0; j < wx; j++) {
 				pBackBuffer.put(a, (byte) color.x);
@@ -158,13 +149,11 @@ public class GFXBasics {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Draw an empty box.
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void boxv(int xx, int yy, int wx, int wy, int colorIndex, Vector4f colorValue) {
+	public void boxv(int xx, int yy, int wx, int wy, Vector4f colorValue) {
 
 		int a = yy * width * pitch + xx * pitch;
 		Vector4f color = colorValue;
-		if (colorValue == null) {
-			color = palette[colorIndex];
-		}
+
 		for (int i = 0; i < wy; i++) {
 			if (i == 0 || i == wy - 1) {
 				for (int j = 0; j < wx; j++) {
@@ -213,17 +202,7 @@ public class GFXBasics {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// -outline a zone
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public void outlineBox(int xx, int yy, int wx, int wy, int colorIndex1, int colorIndex2, Vector4f colorValue1,
-			Vector4f colorValue2) {
-		Vector4f col1;
-		Vector4f col2;
-		if (colorValue1 == null) {
-			col1 = palette[colorIndex1];
-			col2 = palette[colorIndex2]; // + (255 << 24); ==> on met A=255
-		} else {
-			col1 = colorValue1; // & 0xffffff; ==> on supprime le membre A
-			col2 = colorValue2;
-		}
+	public void outlineBox(int xx, int yy, int wx, int wy, Vector4f col1, Vector4f col2) {
 		for (int i = 0; i < wy; i++) {
 			if (i > 0 && i < (wy - 1)) {
 				for (int j = 0; j < wx; j++) {
@@ -264,11 +243,6 @@ public class GFXBasics {
 		if (xx >= 0 && xx <= width && yy >= 0 && yy <= height) {
 			if (colorValue != null) {
 				colPset.set(colorValue);
-			} else {
-				// if (colorIndex!=255)
-				// Enable mask display with alpha key = 0
-				colPset.set(palette[colorIndex]);
-				colPset.w = 255.0f; // color.x; //|=(255 << 24);
 			}
 			pset(xx, yy, colPset);
 		}
@@ -298,15 +272,6 @@ public class GFXBasics {
 			bytes[i] = (byte) floats[i];
 		}
 		pBackBuffer.put(bytes);
-	}
-	
-	public static Vector4f getColor(int palIndex) {
-		return palette[palIndex];
-	}
-
-	public static int getIntColor(int palIndex) {
-		Vector4f v = getColor(palIndex);
-		return (int) v.x << 16 | (int) v.y << 8 | (int) v.z;
 	}
 
 	public static int readColor(ByteBuffer buffer, int offset) {

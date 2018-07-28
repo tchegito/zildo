@@ -23,7 +23,6 @@ package zildo.platform.opengl;
 import org.lwjgl.opengl.GL11;
 
 import zildo.Zildo;
-import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.Ortho;
 import zildo.monde.util.Vector4f;
 
@@ -141,12 +140,8 @@ public class LwjglOrtho extends Ortho {
 	 * @param color
 	 */
 	@Override
-	public void boxOpti(int x, int y, int p_w, int p_h, int palColor, Vector4f color) {
+	public void boxOpti(int x, int y, int p_w, int p_h, Vector4f color) {
 		Vector4f col = color;
-		if (color == null) {
-			col = new Vector4f(GFXBasics.getColor(palColor));
-			col.scale(1.0f / 256.0f);
-		}
 		GL11.glColor4f(col.x, col.y, col.z, col.w);
 		GL11.glVertex2d(x, y);
 		GL11.glVertex2d(x + p_w, y);
@@ -218,9 +213,9 @@ public class LwjglOrtho extends Ortho {
 	 * @param color
 	 */
 	@Override
-	public void boxv(int x, int y, int p_w, int p_h, int palColor, Vector4f color) {
+	public void boxv(int x, int y, int p_w, int p_h, Vector4f color) {
 		GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
-		box(x, y, p_w, p_h, palColor, color);
+		box(x, y, p_w, p_h,  color);
 		GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
 
 	}

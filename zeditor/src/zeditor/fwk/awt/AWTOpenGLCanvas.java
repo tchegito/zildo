@@ -159,7 +159,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			ClientEngineZildo.spriteEngine.loadTextures(ClientEngineZildo.spriteDisplay);
 			reloadTexture = false;
 		}
-		if (changeMap) {
+		if (changeMap && initialize) {
 			Area map = EngineZildo.mapManagement.getCurrentMap();
 			ClientEngineZildo.mapDisplay.setCurrentMap(map);
 			changeMap = false;
@@ -228,11 +228,11 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			for (ChainingPoint ch : chaining) {
 				Zone p=ch.getZone(map);
 			    ortho.boxv(p.x1 - shift.x, p.y1 - shift.y, 
-			    		   p.x2,                p.y2, 0, colChainingPoint);
+			    		   p.x2,                p.y2, colChainingPoint);
 				if (selected != null && selected ==ch) {
 					ortho.enableBlend();
 				    ortho.box(p.x1 - shift.x+1, p.y1 - shift.y+1, 
-				    		  p.x2-2,                p.y2-2, 0, col);
+				    		  p.x2-2,                p.y2-2, col);
 				    ortho.disableBlend();
 				}
 				// Draw coming angle
@@ -242,10 +242,10 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 				if (coming != Angle.NULL) {
 					int arrowX = 1 + coming.coords.x * 32;
 					int arrowY = 1 + coming.coords.y * 32;
-					ortho.box(centerX - shift.x - 1, centerY - shift.y -1, arrowX + 1, arrowY + 1, 0, col);
+					ortho.box(centerX - shift.x - 1, centerY - shift.y -1, arrowX + 1, arrowY + 1, col);
 				} else {
 					// Angle is null => chaining point is a landing position
-					ortho.boxv(centerX - shift.x - 24, centerY - shift.y - 12, 48, 24, 0, col);
+					ortho.boxv(centerX - shift.x - 24, centerY - shift.y - 12, 48, 24, col);
 				}
 			}
 
@@ -266,11 +266,11 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 					size.y-=startBlock.y;
 					size.translate(-camera.x, -camera.y);
 			    }
-			    ortho.boxv(start.x, start.y, size.x, size.y, 0, colCursor);
+			    ortho.boxv(start.x, start.y, size.x, size.y, colCursor);
 			    if (mask > 0) {
-				    ortho.boxv(start.x + 2, start.y + 2, size.x - 4, size.y - 4, 0, colCursor);
+				    ortho.boxv(start.x + 2, start.y + 2, size.x - 4, size.y - 4, colCursor);
 				    if (mask > 1) {
-					    ortho.boxv(start.x + 4, start.y + 4, size.x - 8, size.y - 8, 0, colCursorFore);
+					    ortho.boxv(start.x + 4, start.y + 4, size.x - 8, size.y - 8, colCursorFore);
 				    }
 			    }
 			    if (mode != null) {
@@ -289,8 +289,8 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			// Draw map limits
 			int limitX=map.getDim_x()*16 - shift.x;
 			int limitY=map.getDim_y()*16 - shift.y;
-			ortho.box(limitX, 0, 1, sizeY, 0, colCursor);
-			ortho.box(0, limitY, sizeX, 1, 0, colCursor);
+			ortho.box(limitX, 0, 1, sizeY, colCursor);
+			ortho.box(0, limitY, sizeX, 1, colCursor);
 			
 			swapBuffers();
 		} catch (LWJGLException lwjgle) {
@@ -507,7 +507,7 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 	}
 	
 	public boolean isTextureLoaded() {
-		return spriteTextures.size() > 7 && tileTextures.size() > 5;
+		return spriteTextures.size() > 7 && tileTextures.size() > 0;
 	}
 	
 }

@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.LogManager;
 
-import zeditor.tools.banque.LavaCave;
 import zeditor.tools.palette.PaletteExtractor;
 import zeditor.tools.sprites.ElementsPlus;
 import zeditor.tools.sprites.Fontes;
@@ -123,7 +122,6 @@ public class Modifier {
         new Modifier().savePnj();
         new Modifier().savePnj2();
         new Modifier().savePnj3();
-        new Modifier().saveLavaCave();
         //new Modifier().modifyAllMaps();
         //new Modifier().adjustSpritePositionOnAllMaps();
         //new Modifier().generateImg();
@@ -331,11 +329,7 @@ public class Modifier {
     	 bank.setName("gear.spr");
     	 bank.saveBank();
      }
-     
-     public void saveLavaCave() {
-    	 new LavaCave().save();
-     }
-     
+
      public void savePnj3() {
          SpriteBankEdit bank=new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_PNJ3));
          bank.clear();

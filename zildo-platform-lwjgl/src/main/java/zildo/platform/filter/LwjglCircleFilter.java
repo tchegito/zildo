@@ -28,6 +28,8 @@ import zildo.fwk.gfx.GraphicStuff;
 import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.monde.util.Vector3f;
+import zildo.monde.util.Vector3i;
+import zildo.monde.util.Vector4f;
 
 /**
  * Draws a circle around a specific center (Zildo !).<br/>
@@ -90,17 +92,17 @@ public class LwjglCircleFilter extends CircleFilter {
 		GL11.glBegin(GL11.GL_QUADS);
 		int radius = (int) (coeffLevel * (255 - getFadeLevel())); // + 20;
 		int radiusSquare = (int) Math.pow(radius, 2);
-		int col = 0;
+		Vector4f green = new Vector3i(73, 154, 73).normalize();
 		
 		int sizeA = center.y - radius;
 		int sizeB = Zildo.viewPortY - (center.y + radius);
 
 		// 1) Draw the two areas outside the circle
 		if (sizeA > 0) {
-			ClientEngineZildo.ortho.boxOpti(0, 0, Zildo.viewPortX, sizeA, col, null);
+			ClientEngineZildo.ortho.boxOpti(0, 0, Zildo.viewPortX, sizeA, green);
 		}
 		if (sizeB > 0) {
-			ClientEngineZildo.ortho.boxOpti(0, center.y + radius, Zildo.viewPortX, sizeB, col, null);
+			ClientEngineZildo.ortho.boxOpti(0, center.y + radius, Zildo.viewPortX, sizeB, green);
 		}
 		
 		// 2) Draw the circle area
@@ -115,8 +117,8 @@ public class LwjglCircleFilter extends CircleFilter {
 			double squareRootDelta = Math.sqrt(delta);
 			int x1 = (int) (center.x - squareRootDelta / 2);
 			int x2 = (int) (center.x + squareRootDelta / 2);
-			ClientEngineZildo.ortho.boxOpti(0, i, x1, 1, col, null);
-			ClientEngineZildo.ortho.boxOpti(x2, i, Zildo.viewPortX - x2, 1, col, null);
+			ClientEngineZildo.ortho.boxOpti(0, i, x1, 1, green);
+			ClientEngineZildo.ortho.boxOpti(x2, i, Zildo.viewPortX - x2, 1, green);
 		}
 		GL11.glEnd();
 		GL11.glPopMatrix();

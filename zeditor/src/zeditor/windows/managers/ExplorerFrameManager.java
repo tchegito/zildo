@@ -70,7 +70,15 @@ public class ExplorerFrameManager {
 			return;
 		}
 		// Apply "toLowerCase" to avoid a bug when use double clicks on a file, instead of click on "Open"
-		String relativeFilename = f.getAbsolutePath().toLowerCase().replace((Constantes.DATA_PATH + Constantes.MAP_PATH).toLowerCase(), "");
+		// UPDATED/ remove toLowerCase because it bugs !
+		// TODO: remove all these System.out
+		System.out.println("file="+f.getAbsolutePath());
+		String dataPath = new File((Constantes.DATA_PATH + Constantes.MAP_PATH)).getAbsolutePath();
+		System.out.println("datapath="+dataPath);
+		dataPath = dataPath.replace("."+File.separator, "");
+		System.out.println("replaced="+dataPath);
+		String relativeFilename = f.getAbsolutePath().replace(dataPath, "");
+		System.out.println("relative="+relativeFilename);
 
 		masterFrame.getManager().loadMap(relativeFilename, null);
 

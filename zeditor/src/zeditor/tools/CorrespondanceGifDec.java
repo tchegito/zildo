@@ -8,17 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import zeditor.tools.banque.Foret1;
-import zeditor.tools.banque.Foret2;
-import zeditor.tools.banque.Foret3;
-import zeditor.tools.banque.Foret4;
-import zeditor.tools.banque.Grotte;
-import zeditor.tools.banque.LavaCave;
-import zeditor.tools.banque.Maison;
-import zeditor.tools.banque.Palais1;
-import zeditor.tools.banque.Palais2;
-import zeditor.tools.banque.Palais3;
-import zeditor.tools.banque.Village;
+import zeditor.tools.banque.Grass;
 import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.GraphChange;
 import zeditor.tools.tiles.TileBankEdit;
@@ -125,16 +115,6 @@ public class CorrespondanceGifDec {
 
 	public CorrespondanceGifDec() {
 		banks = new HashMap<String, Banque>();
-		banks.put("FORET1", doTheJob(new Foret1()));
-		banks.put("FORET2", doTheJob(new Foret2()));
-		banks.put("FORET3", doTheJob(new Foret3()));
-		banks.put("FORET4", doTheJob(new Foret4()));
-		banks.put("MAISON", doTheJob(new Maison()));
-		banks.put("VILLAGE", doTheJob(new Village()));
-		banks.put("GROTTE", doTheJob(new Grotte()));
-		banks.put("PALAIS1", doTheJob(new Palais1()));
-		banks.put("PALAIS2", doTheJob(new Palais2()));
-		banks.put("PALAIS3", doTheJob(new Palais3()));
-		banks.put("LAVACAVE", doTheJob(new LavaCave()));
+		banks.put("GRASS", doTheJob(new Grass()));
 	}
 }
