@@ -110,7 +110,7 @@ public abstract class TileEngine {
 	
 	protected TextureEngine textureEngine;
 	
-	static public String[] tileBankNames = { "grass"};
+	static public String[] tileBankNames = { "grass", "city"};
 	/*
 			"village",
 			"maison",

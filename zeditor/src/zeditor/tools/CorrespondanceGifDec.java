@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import zeditor.tools.banque.City;
 import zeditor.tools.banque.Grass;
 import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.GraphChange;
@@ -116,5 +117,6 @@ public class CorrespondanceGifDec {
 	public CorrespondanceGifDec() {
 		banks = new HashMap<String, Banque>();
 		banks.put("GRASS", doTheJob(new Grass()));
+		banks.put("CITY", doTheJob(new City()));
 	}
 }
