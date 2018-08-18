@@ -58,7 +58,7 @@ public class LwjglCloudFilter extends CloudFilter {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_ONE_MINUS_SRC_COLOR, GL11.GL_SRC_ALPHA); // ONE_MINUS_SRC_COLOR);
 */
-		float colorFactor=0.2f;
+		float colorFactor=0.1f;
 		GL11.glColor4f(colorFactor, colorFactor, colorFactor, 0.1f);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE_MINUS_SRC_COLOR);

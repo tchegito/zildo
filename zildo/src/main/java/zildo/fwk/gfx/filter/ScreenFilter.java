@@ -62,9 +62,13 @@ public abstract class ScreenFilter extends QuadPrimitive {
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
-	public ScreenFilter(GraphicStuff graphicStuff)
-	{
-		super(4,ZUtils.adjustTexSize(sizeX), ZUtils.adjustTexSize(sizeY));
+	public ScreenFilter(GraphicStuff graphicStuff) {
+		this(graphicStuff, -1, -1);
+	}
+	
+	public ScreenFilter(GraphicStuff graphicStuff, int overrideSizeX, int overrideSizeY) {
+		super(4,ZUtils.adjustTexSize(defaultOrOverride(sizeX, overrideSizeX)), 
+				ZUtils.adjustTexSize(defaultOrOverride(sizeY, overrideSizeY)));
 		
 		this.graphicStuff = graphicStuff;
 		
@@ -79,6 +83,9 @@ public abstract class ScreenFilter extends QuadPrimitive {
 		setActive(false, null);
 	}
 
+	private static int defaultOrOverride(int value, int overriden) {
+		return overriden == -1 ? value : overriden;
+	}
 	///////////////////////////////////////////////////////////////////////////////////////
 	// renderFilter
 	///////////////////////////////////////////////////////////////////////////////////////

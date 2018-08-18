@@ -33,7 +33,7 @@ public abstract class CloudFilter extends ScreenFilter {
 	 * @param graphicStuff
 	 */
 	public CloudFilter(GraphicStuff graphicStuff) {
-		super(graphicStuff);
+		super(graphicStuff, 256, 256);
 	}
 
 	protected float u=0;
