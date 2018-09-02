@@ -86,8 +86,13 @@ public class SaveGameMenu extends PageableMenu {
 							client.handleMenu(new ConfirmMenu("m8.confirmOverwrite", new ItemMenu("global.yes") {
 								@Override
 								public void run() {	// He accepts
-									saveGame(filename);
-									client.handleMenu(new InfoMenu("m8.info.ok", previousMenu));
+									try {
+										saveGame(filename);
+										client.handleMenu(new InfoMenu("m8.info.ok", previousMenu));
+									} catch (RuntimeException e) {
+										// Issue 157: unable to write game (no space left on device, for example)
+										client.handleMenu(new InfoMenu("m15.info", previousMenu));
+									}
 								}
 							}, new ItemMenu("global.no") {	// He refuses
 								@Override
@@ -262,6 +267,8 @@ public class SaveGameMenu extends PageableMenu {
 		String name = p_number + " " + regionName; //+ " (" + Champion.getTimeSpentToString(p_game.getTimeSpent())+ ")";
 //				+ new SimpleDateFormat("dd.MM.yyyy HH-mm").format(new Date(
 //						p_file.lastModified()));
+		
+		name += "("+p_game.getNbQuestsDone()+")";
 		return name;
 	}
 
