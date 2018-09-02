@@ -527,78 +527,11 @@
 	</mapScript>
 	
 	<scene id="preintro">
-		<music name="Story"/>
-		<fadeOut type="0"/>
-		<map name="preintro"/>
- 	    <fadeIn type="0"/>
-		<speak what="camera" text="preintro.0"/> 
-		<speak what="camera" text="preintro.1"/> 
-		<speak what="camera" text="preintro.2"/> 
-		<speak what="camera" text="preintro.3"/>
-		<pos what="camera" pos="0,0"/>
-		<pos who="zildo" pos="320,120"/>
-		<moveTo who="zildo" pos="160,120"/>
-		<angle who="zildo" value="2"/>
-		<speak what="camera" text="preintro.4"/> 
-		<speak what="camera" text="preintro.5"/>
-		<actions>
-			<animation pos="220,120" type="CLOUD_FOG" />
-			<spawn who="grandpere" pos="220,119" type="VIEUX_SAGE"/>
-			<angle who="zildo" value="1"/>
-		</actions>
-		<speak what="camera" text="preintro.6"/> 
-		<speak what="camera" text="preintro.7"/> 
-		<actions>
-			<animation pos="100,120" type="CLOUD_FOG" />
-			<spawn who="roxy" pos="100,119" type="PRINCESSE" angle="2"/>
-			<angle who="zildo" value="3"/>
-		</actions>
-		<wait value="100"/>
-		<angle who="roxy" value="1"/>
-		<animation type="HEARTS" pos="160,120"/>
-		<animation type="HEARTS" pos="100,120"/>
-		<speak what="camera" text="preintro.8"/> 
-		<speak what="camera" text="preintro.9"/> 
-		<speak what="camera" text="preintro.10"/> 
-		<exec script="intro"/>
-	</scene>
-	
-	<scene id="intro">
-	    <fadeOut type="0"/>
-	    <music name="Village"/>
-	    <map name="coucou"/>
-	    <pos who="zildo" pos="830,200" />
-	    <pos who="roxy" pos="890,340" />
-	    <script who="roxy" value="3" />
-	    <pos what="camera" pos="100,400" />
-	    <fadeIn type="0"/>
-	    <speak who="synthe" text="info.episode1"/>
-	    <speak what="camera" text="intro.p1"/>
-	    <wait value="90" />
-	    <moveTo what="camera" pos="500,150" unblock="true"/>
-	    <wait value="200" />
-	    <actions>
-	    	<moveTo what="camera" pos="640,150" />
-	        <moveTo who="zildo" speed="0.75" pos="830,270"/>
-	        <moveTo who="roxy" pos="830,290"/>
-	    </actions>
-	    <angle who="roxy" value="0" />
-	    <speak who="zildo" text="intro.p2" />
-	    <speak who="roxy" text="intro.p3" />
-	    <speak who="zildo" text="intro.p4" />
-	    <moveTo who="roxy" pos="945,370" unblock="true"/>
-	    <speak who="roxy" text="intro.p5" />
-	    <moveTo what="camera" pos="700,170" unblock="true"/>
-	    <wait value="100"/>
-	    <moveTo who="zildo" pos="830,300"/>
-	    <moveTo who="zildo" pos="920,370"/>
-	    <moveTo who="roxy" pos="950,274" unstoppable="true" unblock="true"/>
-	    <moveTo who="zildo" pos="970,370"/>
-	    <moveTo who="zildo" pos="970,292"/>
-	    <angle who="roxy" value="2"/>
-	    <focus who="zildo" unblock="true" delta="true"/>
+	    <map name="first"/>
+	   	<pos who="zildo" pos="145,197" />
 	    <herospecial value="3"/>
 	</scene>
+	
 	
 	<scene id="echange">
 	    <pos who="zildo" pos="880,368"/>
