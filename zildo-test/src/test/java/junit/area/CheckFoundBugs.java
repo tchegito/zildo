@@ -591,7 +591,6 @@ public class CheckFoundBugs extends EngineUT {
 	@Test
 	public void unexistingCharacter() {
 		EngineZildo.hasard = new Hasard() {
-			// We adjust hazard to make 'timer' action run a sub process EXACTLY when characters are removed in death scene
 			public double rand() {
 				return 8.44f;
 			}
@@ -599,7 +598,7 @@ public class CheckFoundBugs extends EngineUT {
 		EngineZildo.scriptManagement.accomplishQuest("retour_trion",  false);
 		waitEndOfScripting();
 		mapUtils.loadMap("prisonext");
-		//spawnZildo(470, 359);
+
 		PersoPlayer zildo = spawnZildo(362, 62);
 		waitEndOfScripting();
 		Perso hector = persoUtils.persoByName("hector");

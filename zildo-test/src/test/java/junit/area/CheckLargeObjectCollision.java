@@ -34,6 +34,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.ia.mover.PhysicMoveOrder;
 import zildo.monde.util.Angle;
@@ -267,19 +268,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 	/** Issue 143 **/
 	@Test
 	public void npeWhenDyingAfterLeafDisappear() {
-		mapUtils.loadMap("igorlily");
-		EngineZildo.persoManagement.clearPersos(true);
-		EngineZildo.spriteManagement.getNamedEntity("leaf").dying = true;
-
-		// Spawn water lily
-		waterLily = EngineZildo.spriteManagement.spawnSprite(
-				ElementDescription.WATER_LEAF,
-				1021, 282,
-				false, Reverse.NOTHING, false); // 113,259
-		waterLily.setName("leaf");
-		
-		zildo = spawnZildo(1009, 268);
-		zildo.walkTile(false);
+		initIgorLily(new Point(1021, 282));
 		
 		// Wait end of scripts
 		waitEndOfScripting();
@@ -294,5 +283,55 @@ public class CheckLargeObjectCollision extends EngineUT{
 		renderFrames(5);
 		simulateDirection(1,0);
 		renderFrames(50*2*2*8);
+		
+		waitEndOfScroll();
+		mapUtils.assertCurrent("igorvillage");
+	}
+	
+	// Initialize a game on map 'igorlily', and place waterlily at given pos, with hero on it
+	private void initIgorLily(Point waterLilyLoc) {
+		mapUtils.loadMap("igorlily");
+		EngineZildo.persoManagement.clearPersos(true);
+		EngineZildo.spriteManagement.getNamedEntity("leaf").dying = true;
+		
+		// Spawn water lily
+		waterLily = EngineZildo.spriteManagement.spawnSprite(
+				ElementDescription.WATER_LEAF,
+				waterLilyLoc.x, waterLilyLoc.y,
+				false, Reverse.NOTHING, false); // 113,259
+		waterLily.setName("leaf");
+		Element wl = waterLily.getMover().getPlaceHolder();
+		wl.x = 977.3744f;
+		wl.y = 267.75107f;
+		
+		zildo = spawnZildo(waterLilyLoc.x-12, waterLilyLoc.y-14);
+		zildo.walkTile(false);
+	}
+	
+	/** Issue 159 **/
+	@Test
+	public void npeOnceAgainOnLeafWithDoubleMapScroll() {
+		initIgorLily(new Point(977, 267));
+		Element wl = waterLily.getMover().getPlaceHolder();
+		wl.x = 977.3744f;
+		wl.y = 267.75107f;
+		
+		zildo.walkTile(false);
+		
+		// Wait end of scripts
+		waitEndOfScripting();
+		wl.vx = -0.14947365f;
+		wl.vy = 0.12370436f;
+
+		zildo.setPos(new Vector2f(967.1378, 251.79767));
+		zildo.walkTile(false);
+		
+		zildo.setWeapon(new Item(ItemKind.SWORD));
+		Assert.assertTrue(zildo.isOnPlatform());
+		zildo.setAngle(Angle.OUEST);
+		zildo.attack();
+		renderFrames(50*2*2*8);
+		waitEndOfScroll();
+		mapUtils.assertCurrent("igorvillage");
 	}
 }

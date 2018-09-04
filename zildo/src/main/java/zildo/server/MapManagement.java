@@ -710,7 +710,7 @@ public class MapManagement {
 							Element placeHolder = entity.getMover().getPlaceHolder();
 							if (placeHolder != null) {
 								double platformSpeed = Pointf.pythagore(placeHolder.vx, placeHolder.vy);
-								if (platformSpeed < 0.1f) {
+								if (platformSpeed < 0.2f) {
 									coeff = 3;
 								} else if (platformSpeed < 0.5f) {
 									coeff = 2;
