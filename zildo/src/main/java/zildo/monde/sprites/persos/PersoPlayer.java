@@ -488,6 +488,9 @@ public class PersoPlayer extends Perso {
 	 */
 	@Override
 	public void die(boolean p_link, Perso p_shooter) {
+		if (Zildo.recordMovements) {
+			EngineZildo.game.saveMovementRecord();
+		}
 		affections.clear();
 		setMouvement(MouvementZildo.TOUCHE);
 		if (EngineZildo.game.multiPlayer) {

@@ -22,12 +22,14 @@ package zildo.server;
 
 import java.util.Collection;
 
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.client.gui.GUIDisplay.DialogMode;
 import zildo.client.gui.menu.SaveGameMenu;
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.input.MovementRecord;
 import zildo.monde.Game;
 import zildo.monde.Hasard;
 import zildo.monde.dialog.DialogManagement;
@@ -37,6 +39,7 @@ import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.resource.KeysConfiguration;
 import zildo.server.state.ClientState;
 import zildo.server.state.ScriptManagement;
 
@@ -56,7 +59,7 @@ public class EngineZildo {
     public static Game game;
     public static Hasard hasard = new Hasard();	// Could be overwrited for UT
     private static EasyBuffering backedUpGame;	// When hero dies, we restore this game
-    public static int compteur_animation;
+    public static int nFrame;
 	
     public static ClientState spClientState;	// Single player client state
     
@@ -86,6 +89,8 @@ public class EngineZildo {
 		if (mapName != null) {
 			mapManagement.loadMap(mapName, false);
 		}
+		
+		nFrame = 0;
 	}
 
 	static public int spawnClient(ZildoOutfit p_outfit) {
@@ -123,6 +128,21 @@ public class EngineZildo {
 	//TODO: confuse between state.zildo and persoManagement.getZildo ==> one should be removed
 	//TODO: client.isIngameMenu should be replaced by an attribute in ClientState
 	public void renderFrame(Collection<ClientState> p_clientStates) {
+		
+		// Demo replay
+		if (Zildo.replayMovements) {
+			ClientState state = p_clientStates.iterator().next();
+			for (KeysConfiguration k : KeysConfiguration.values()) {
+				state.keys.setKey(k, false);
+			}
+			for (MovementRecord rec : game.getMovements()) {
+				if (rec.frame > nFrame) break;
+				if (rec.frame == nFrame) {
+					KeysConfiguration key = KeysConfiguration.values()[rec.key];
+					state.keys.setKey(key, true);
+				}
+			}
+		}
 		// Animate the world
 		// 1) Players
 		boolean block=false;
@@ -211,7 +231,7 @@ public class EngineZildo {
 		}
 		mapManagement.updateMap();
 		
-		compteur_animation++;
+		nFrame++;
 	}
 	
     public ClientEvent renderEvent(ClientEvent p_event) {

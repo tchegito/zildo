@@ -776,7 +776,7 @@ public class MapManagement {
 				
 				zildo.walkTile(false);
 			}
-			zildo.finaliseComportement(EngineZildo.compteur_animation);
+			zildo.finaliseComportement(EngineZildo.nFrame);
 
 			// Save starting location
 			startAngle = zildo.getAngle();

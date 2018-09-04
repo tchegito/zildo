@@ -81,8 +81,10 @@ public class KeyboardInstant implements EasySerializable {
 		if (kbHandler == null) {
 			kbHandler = Zildo.pdPlugin.kbHandler;
 		}
-		for (KeysConfiguration key : KeysConfiguration.values()) {
-			kbdInstant.put(key, kbHandler.isKeyDown(key.code));
+		if (!Zildo.replayMovements) {
+			for (KeysConfiguration key : KeysConfiguration.values()) {
+				kbdInstant.put(key, kbHandler.isKeyDown(key.code));
+			}
 		}
 		currentDirection = kbHandler.getDirection();
 	}

@@ -595,6 +595,9 @@ public class ScriptManagement {
 		for (MapscriptElement mapScript : adventure.getMapScripts()) {
 			for (ConditionElement condi : mapScript.getConditions()) {
 				if (condi.match(p_mapName, p_scroll)) {
+			    	if (Zildo.infoDebugScript) {
+			    		System.out.println(condi);
+			    	}
 					// Execute the 'mapscript' before all, with topPriority=TRUE
 					execute(condi.getActions(), false, null, true, null, true);
 				}

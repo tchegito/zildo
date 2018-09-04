@@ -344,6 +344,9 @@ public class ActionElement extends LanguageElement {
 		if (val != 0) {
 			sb.append(val).append(" ");
 		}
+		if (action != null) {
+			sb.append(action).append(" ");
+		}
 		return sb.toString();
 	}
 

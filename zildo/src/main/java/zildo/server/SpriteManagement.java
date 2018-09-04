@@ -597,7 +597,7 @@ public class SpriteManagement extends SpriteStore {
 		// Do perso animations
 		// Mandatory to do that first, because one perso can be connected to
 		// other sprites
-		int compt=EngineZildo.compteur_animation; // % (3 * 20);
+		int compt=EngineZildo.nFrame; // % (3 * 20);
 		for (SpriteEntity entity : spriteEntities) {
 			if (entity.getEntityType().isPerso()) {
 				Perso perso = (Perso) entity;

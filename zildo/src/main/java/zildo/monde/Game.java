@@ -31,9 +31,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import zildo.Zildo;
 import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
+import zildo.fwk.file.EasyReadingFile;
 import zildo.fwk.file.EasySerializable;
+import zildo.fwk.file.EasyWritingFile;
+import zildo.fwk.input.MovementRecord;
 import zildo.fwk.script.context.LocaleVarContext;
 import zildo.fwk.script.xml.element.AdventureElement;
 import zildo.fwk.script.xml.element.QuestElement;
@@ -47,7 +51,9 @@ import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Vector2f;
 import zildo.resource.Constantes;
+import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 
 /**
@@ -70,9 +76,11 @@ public class Game implements EasySerializable {
     
     private Date startPlay;
     
-    private List<HistoryRecord> lastDialog;
+    public List<HistoryRecord> lastDialog;
+    private List<MovementRecord> lastMovements;
     
     private boolean heroAsSquirrel;
+    private int nbQuestsDone;
     
     public Game(String p_mapName, boolean p_editing) {
         mapName = p_mapName;
@@ -80,6 +88,10 @@ public class Game implements EasySerializable {
         multiPlayer = false;
         brandNew = true;
         lastDialog = new ArrayList<HistoryRecord>(Constantes.NB_MAX_DIALOGS_HISTORY +1);
+        lastMovements = new ArrayList<MovementRecord>();
+        if (Zildo.replayMovements) {
+        	loadMovementRecord();
+        }
     }
 
     public Game(String p_mapName, String p_playerName) {
@@ -205,6 +217,7 @@ public class Game implements EasySerializable {
             boolean version2x19 = (questNumber & 0x800) != 0;	// Flag indicating version post 2.18
             boolean version2x29 = (questNumber & 0x1000) != 0;	// Flag indicating version post 2.29
             boolean squirrel = false;
+            int nbQuestsDone = 0;
             questNumber = questNumber & 0x7ff;
             for (int i = 0; i < questNumber; i++) {
                 String questName = p_buffer.readString();
@@ -212,8 +225,11 @@ public class Game implements EasySerializable {
                 if (questDone) {
                 	if (!p_minimal) {
                         EngineZildo.scriptManagement.accomplishQuest(questName, false);
-                	} else if (ControllablePerso.QUEST_DETERMINING_APPEARANCE.equals(questName)) {
-                		squirrel = true;
+                	} else {
+                		nbQuestsDone++;
+                		if (ControllablePerso.QUEST_DETERMINING_APPEARANCE.equals(questName)) {
+                			squirrel = true;
+                		}
                 	}
                 }
             }
@@ -250,6 +266,7 @@ public class Game implements EasySerializable {
             
             Game game = new Game(null, heroName);
            game.heroAsSquirrel = squirrel;
+           game.nbQuestsDone = nbQuestsDone;
            
             // 3: Inventory
             int itemNumber = p_buffer.readInt();
@@ -381,12 +398,49 @@ public class Game implements EasySerializable {
     		lastDialog.remove(0);
 		}
 	}
+	
+	public void recordMovement(Vector2f direction, KeysConfiguration key) {
+		int keyCode = key == null ? -1 : key.ordinal();
+		MovementRecord move = new MovementRecord(EngineZildo.nFrame, (byte) keyCode, direction);
+		lastMovements.add(move);
+		//System.out.println(lastMovements);
+	}
+	
+	public void loadMovementRecord() {
+		EasyReadingFile reader = new EasyReadingFile("demo/issue159.mvt");
+		while (!reader.eof()) {
+			MovementRecord record = MovementRecord.deserialize(reader);
+			lastMovements.add(record);
+		}
+		// Adjust frames to start at 0
+		long minimalFrame = lastMovements.get(0).frame;
+		for (MovementRecord record : lastMovements) {
+			record.frame -= (minimalFrame - 50);
+		}
+	}
+	
+	public void saveMovementRecord() {
+		EasyBuffering buffer = new EasyBuffering();
+		for (MovementRecord record : lastMovements) {
+			record.serialize(buffer);
+		}
+		EasyWritingFile file = new EasyWritingFile(buffer);
+		file.saveFile("demo/issue.mvt");
+	}
 
 	public List<HistoryRecord> getLastDialog() {
     	return Collections.unmodifiableList(lastDialog);
 	}
 	
+	public List<MovementRecord> getMovements() {
+    	return lastMovements;
+	}
+	
 	public boolean isHeroAsSquirrel() {
 		return heroAsSquirrel;
+	}
+	
+	public int getNbQuestsDone() {
+		return nbQuestsDone;
 	}
 }

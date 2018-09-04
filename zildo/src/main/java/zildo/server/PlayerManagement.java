@@ -20,6 +20,7 @@
 
 package zildo.server;
 
+import zildo.Zildo;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.sound.BankSound;
@@ -97,6 +98,19 @@ public class PlayerManagement {
 			gamePhase=GamePhase.INGAME;
 		} 
 
+		if (Zildo.recordMovements) {
+			boolean oneKeyPressed = false;
+			Vector2f dir = instant.getDirection();
+			for (KeysConfiguration key : KeysConfiguration.values()) {
+				if (instant.isKeyDown(key)) {
+					EngineZildo.game.recordMovement(dir, key);
+					oneKeyPressed = true;
+				}
+			}
+			if (!oneKeyPressed && dir != null) {
+				EngineZildo.game.recordMovement(dir, null);
+			}
+		}
 		// Specific for touchscreen : "touch frame" is equivalent to "touch Action key"
 		// Except for BUYING action ! 
 		if (dialogState.isDialoguing() && gamePhase != GamePhase.BUYING && PlatformDependentPlugin.currentPlugin == KnownPlugin.Android) {
@@ -297,7 +311,7 @@ public class PlayerManagement {
 	
 		// Interpret animation paramaters to get the real sprite to display
 		// TODO: this is already done in SpriteManagement#updateSprites
-		heros.finaliseComportement(EngineZildo.compteur_animation);
+		heros.finaliseComportement(EngineZildo.nFrame);
 	}
 	
 	/**

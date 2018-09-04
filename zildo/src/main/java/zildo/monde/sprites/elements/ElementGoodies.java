@@ -147,7 +147,7 @@ public class ElementGoodies extends Element {
 		
 		if (spr==ElementDescription.DROP_FLOOR || spr.isMoney()) {
 			// Il s'agit d'un diamant ou du coeur (10)
-			int eff=EngineZildo.compteur_animation % 100;
+			int eff=EngineZildo.nFrame % 100;
 			// 1) brillance
 			if (eff<33 && spr!=ElementDescription.DROP_FLOOR) {		// Les diamants brillent
 				addSpr=(eff / 10) % 3;
