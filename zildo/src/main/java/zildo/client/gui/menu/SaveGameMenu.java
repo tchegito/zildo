@@ -268,7 +268,7 @@ public class SaveGameMenu extends PageableMenu {
 //				+ new SimpleDateFormat("dd.MM.yyyy HH-mm").format(new Date(
 //						p_file.lastModified()));
 		
-		name += "("+p_game.getNbQuestsDone()+")";
+		//name += "("+p_game.getNbQuestsDone()+")";
 		return name;
 	}
 
