@@ -37,6 +37,7 @@ import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.sound.BankSound;
 import zildo.fwk.input.KeyboardHandler.Keys;
+import zildo.monde.Hasard;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Case;
@@ -584,5 +585,34 @@ public class CheckFoundBugs extends EngineUT {
 		simulatePressButton(KeysConfiguration.PLAYERKEY_ACTION.code, 2);
 		simulatePressButton(KeysConfiguration.PLAYERKEY_ACTION.code, 2);
 		simulateKeyPressed();
+	}
+	
+	/** Issue 138 **/
+	@Test
+	public void unexistingCharacter() {
+		EngineZildo.hasard = new Hasard() {
+			// We adjust hazard to make 'timer' action run a sub process EXACTLY when characters are removed in death scene
+			public double rand() {
+				return 8.44f;
+			}
+		};
+		EngineZildo.scriptManagement.accomplishQuest("retour_trion",  false);
+		waitEndOfScripting();
+		mapUtils.loadMap("prisonext");
+		//spawnZildo(470, 359);
+		PersoPlayer zildo = spawnZildo(362, 62);
+		waitEndOfScripting();
+		Perso hector = persoUtils.persoByName("hector");
+		Assert.assertNotNull(hector);
+		simulateDirection(new Vector2f(-1.1f, 0));
+		while (!zildo.isWounded()) {
+			renderFrames(1);
+		}
+		persoUtils.persoByName("gardenord").setAlerte(true);
+		simulateDirection(0,0);
+		// Dying
+		waitForScriptRunning("death");
+		renderFrames(255/15 + 50);	// time to reach the "remove" action in death scene
+		// Exception was thrown during that time. If we haven't anything, bug is solved !
 	}
 }

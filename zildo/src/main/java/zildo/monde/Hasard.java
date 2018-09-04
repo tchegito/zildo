@@ -70,6 +70,10 @@ public class Hasard {
 		return (int) (Math.random() * max);
 	}
 	
+	// Just to isolate the hazard functionality and make it mockable
+	public double rand() {
+		return Math.random();
+	}
 	/**
 	 * Returns an integer x as start <= x <= end
 	 * @param start

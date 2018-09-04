@@ -316,6 +316,9 @@ public class ScriptExecutor {
 				it.remove();
 			}
 		}
+		if (!toExecute.isEmpty()) {
+			toExecute.clear();
+		}
 	}
 	
 	/** Stop a running scene **/

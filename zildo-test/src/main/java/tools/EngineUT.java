@@ -700,4 +700,13 @@ public abstract class EngineUT {
 		
 		return touchedPoints;
 	}
+	
+	/** Convenience method to reproduce quests achievements from a crash report **/
+	protected void accomplishQuest(String questsFromReport) {
+		String[] quests = questsFromReport.split(", ");
+		System.out.println(quests.length+" quests");
+		for (String quest : quests) {
+			EngineZildo.scriptManagement.accomplishQuest(quest,  false);
+		}
+	}
 }

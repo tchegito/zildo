@@ -46,7 +46,7 @@ public class FloatVariable implements FloatASTNode {
 	public float evaluate(IEvaluationContext context) {
 		// Built-in functions
 		if (FloatExpression.RESERVED_WORD_RANDOM.equals(variable)) {
-			return (float) Math.random();
+			return (float) hasard.rand();
 		} else if (FloatExpression.RESERVED_WORD_DICE10.equals(variable)) {
 			return hasard.rand(10);
 		} else if (variable.startsWith(FloatExpression.RESERVED_WORD_ZILDO)) {
