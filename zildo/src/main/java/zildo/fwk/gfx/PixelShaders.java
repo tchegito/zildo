@@ -100,8 +100,8 @@ public abstract class PixelShaders {
 
 	private static Vector4f darkColor=new Vector4f(0,0,0,0);
 	private static Vector4f brightColor=new Vector4f(0,0,0,0);
-	private static Vector4f colorReplace1=new Vector4f(1,0,0.0f,0.5f);
-	private static Vector4f colorReplace2=new Vector4f(0,1.0f,0,0.5f);
+	private static Vector4f colorReplace1=new Vector4f(0f,0,1f,0.5f);
+	private static Vector4f colorReplace2=new Vector4f(0,1f,0,0.5f);
 
 	Vector4f coeffedDark = new Vector4f(1, 1, 1, 1);
 	Vector4f coeffedBright = new Vector4f(1, 1, 1, 1);

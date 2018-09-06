@@ -26,7 +26,6 @@ import java.util.List;
 
 import zildo.Zildo;
 import zildo.fwk.file.EasyBuffering;
-import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.util.Zone;
