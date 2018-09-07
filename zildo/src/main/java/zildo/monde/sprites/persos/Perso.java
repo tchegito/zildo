@@ -721,6 +721,10 @@ public abstract class Perso extends Element {
 			case 99 + 256*3:
 				coeffWhiteLight = Math.min(16 - (int) x % 16, 15);
 				break;
+			case 102 + 256*3:
+			case 104 + 256*3:
+				coeffWhiteLight = Math.min((int) x % 16, 15);
+				break;
 			case 98 + 256*3:
 			case 100 + 256*3:
 				setLight(0x111111);
@@ -902,6 +906,10 @@ public abstract class Perso extends Element {
 				coeffWhiteLight = tileLight.north(1, x, y);
 			case 256*3 + 195:
 				coeffWhiteLight = tileLight.forRotatedTile(2, x, y, foreTile.rotation.succ());
+				break;
+			case 256*3 + 98: case 256*3 + 100:
+			case 256*3 + 101: case 256*3 + 103:
+				coeffWhiteLight = 0;
 				break;
 			case 256*3 + 200:
 				coeffWhiteLight = tileLight.forRotatedTile(2, x, y, foreTile.rotation.prec());

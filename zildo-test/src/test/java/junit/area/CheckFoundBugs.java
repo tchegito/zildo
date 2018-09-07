@@ -544,6 +544,30 @@ public class CheckFoundBugs extends EngineUT {
 		verify(EngineZildo.soundManagement, never()).broadcastSound(eq(BankSound.Switch), any(Point.class));
 	}
 	
+	/** Issue 160 **/
+	@Test
+	public void lugduniaCaveDoorNorth() {
+		EngineZildo.scriptManagement.accomplishQuest("foretg_button_trig", false);
+		EngineZildo.scriptManagement.accomplishQuest("foretg_apres_grotte", false);
+		
+		mapUtils.loadMap("foretg");
+		PersoPlayer hero = spawnZildo(81, 304);
+		waitEndOfScripting();
+		// Go to the west map
+		simulateDirection(-1, 0);
+		while (!"foretg2".equals(EngineZildo.mapManagement.getCurrentMap().getName())) {
+			renderFrames(1);
+		}
+		waitEndOfScroll();
+		simulateDirection(1, 0);
+		while (!"foretg".equals(EngineZildo.mapManagement.getCurrentMap().getName())) {
+			renderFrames(1);
+		}
+		waitEndOfScroll();
+		waitEndOfScripting();
+		assertNotBlocked(hero);
+		
+	}
 	/** Issue 144: hero passed the spike with invulnerability flask, but couldn't come back. **/
 	@Test
 	public void spikesBlockingScenario() {
@@ -613,5 +637,45 @@ public class CheckFoundBugs extends EngineUT {
 		waitForScriptRunning("death");
 		renderFrames(255/15 + 50);	// time to reach the "remove" action in death scene
 		// Exception was thrown during that time. If we haven't anything, bug is solved !
+	}
+	
+	/** Issue 149 : at a time, when a door closed, collision was wrongly handled and character could walk through **/
+	@Test
+	public void transparentDoor() {
+		EngineZildo.scriptManagement.accomplishQuest("suite_visit1_weapon", false);
+		mapUtils.loadMap("foret");
+		PersoPlayer zildo = spawnZildo(692, 585);
+		waitEndOfScripting();
+		Assert.assertNotNull(persoUtils.persoByName("maltus"));
+		
+		// Walk to Maltus and wait for the end of cutting scene
+		simulateDirection(0,-1);
+		waitForScriptRunning("maltus_foret1");
+		waitEndOfScriptingPassingDialog();
+		
+		Assert.assertNotNull(persoUtils.persoByName("rabbit1"));
+		// Neutralize rabbits, without killing them
+		for (int i=0;i<3;i++) {
+			Perso rabbit = persoUtils.persoByName("rabbit" + (i+1));
+			rabbit.setPos(new Vector2f(872 + i*24, 520));
+		}
+		// Try to walk through the door
+		zildo.setPos(new Vector2f(696, 226));
+		simulateDirection(-1, -1);
+		renderFrames(50);
+		Assert.assertFalse(EngineZildo.mapManagement.isChangingMap(zildo));
+		
+		// Now kill the rabbits
+		simulateDirection(0, 0);
+		for (int i=0;i<3;i++) {
+			Perso rabbit = persoUtils.persoByName("rabbit" + (i+1));
+			rabbit.die(false, zildo);
+		}
+		// Then hero must be able to pass now
+		waitForQuestDone("maltus_foret_zildo_defeat");
+		waitEndOfScripting();
+		simulateDirection(-1, -1);
+		renderFrames(50);
+		Assert.assertTrue(EngineZildo.mapManagement.isChangingMap(zildo));
 	}
 }

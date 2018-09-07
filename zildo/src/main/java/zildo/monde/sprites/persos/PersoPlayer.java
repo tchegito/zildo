@@ -408,7 +408,6 @@ public class PersoPlayer extends Perso {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
-
 		// Do we have to cancel the wound ?
 		switch (mouvement) {
 			case TOMBE: // Used when hero jumps from hill, and when squirrel make regular jump

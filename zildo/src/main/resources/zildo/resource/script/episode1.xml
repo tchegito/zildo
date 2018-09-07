@@ -485,10 +485,12 @@
 		</condition>
 		<condition name="foretg" exp="foretg_button_trig">
 		    <exec script="foretg_button" unblock="true"/>
-		    <if expQuest="foretg_apres_grotte">
-		        <pos who="zildo" pos="0,-10" delta="true"/>
-		    </if>
-		    <tile pos="5,27" back="256*3+212"/>
+		    <lookFor pos="127,528" info="ZILDO" radius="1">
+			    <if expQuest="foretg_apres_grotte">
+			        <pos who="zildo" pos="0,-10" delta="true"/>
+			    </if>
+		    </lookFor>
+   		    <tile pos="5,27" back="256*3+212"/>
 		</condition>
 		<condition name="bosquet" exp="!bosquet_free_way-foretg_apres_grotte">
 		    <spawn who="maltus" pos="97,382" type="BANDIT_CHAPEAU"/>
