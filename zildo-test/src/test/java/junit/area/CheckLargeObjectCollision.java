@@ -285,7 +285,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 		renderFrames(50*2*2*8);
 		
 		waitEndOfScroll();
-		mapUtils.assertCurrent("igorvillage");
+		mapUtils.assertCurrent("igorlily");
 	}
 	
 	// Initialize a game on map 'igorlily', and place waterlily at given pos, with hero on it
@@ -300,9 +300,6 @@ public class CheckLargeObjectCollision extends EngineUT{
 				waterLilyLoc.x, waterLilyLoc.y,
 				false, Reverse.NOTHING, false); // 113,259
 		waterLily.setName("leaf");
-		Element wl = waterLily.getMover().getPlaceHolder();
-		wl.x = 977.3744f;
-		wl.y = 267.75107f;
 		
 		zildo = spawnZildo(waterLilyLoc.x-12, waterLilyLoc.y-14);
 		zildo.walkTile(false);

@@ -558,6 +558,12 @@ public abstract class EngineUT {
 		waitForScriptRunning(name, null);
 	}
 	
+	public void waitForQuestDone(String name) {
+		while (!EngineZildo.scriptManagement.isQuestDone(name)) {
+			renderFrames(1);
+		}
+	}
+	
 	/** Wait for a given quest name to run **/
 	public void waitForScriptRunning(String name, Runnable run) {
 		while (true) {

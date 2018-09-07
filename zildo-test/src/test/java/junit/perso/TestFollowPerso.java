@@ -122,5 +122,10 @@ public class TestFollowPerso extends EngineUT {
 		mapUtils.assertCurrent("prison5");
 		waitEndOfScripting();
 		Assert.assertNotNull(persoUtils.persoByName("igor"));
+		
+		// Igor is right here, but can he pass the chaining point ?
+		renderFrames(50);
+		Assert.assertTrue("Igor should have joined hero !", igor.x > 5);
+		System.out.println(igor);
 	}
 }

@@ -67,7 +67,7 @@ public class PersoFireThing extends PersoNJ {
 			float yy=keepy + (float) (speed * Math.sin(direction));
 			pos = new Pointf(xx, yy);
 			if (EngineZildo.mapManagement.collide((int) xx, (int) yy, this)) {
-				direction+=Math.PI/2 + Math.random()*Math.PI/16;
+				direction+=Math.PI/2 + EngineZildo.hasard.rand()*Math.PI/16;
 				pos.x = x;
 				pos.y = keepy;
 				y = keepy;

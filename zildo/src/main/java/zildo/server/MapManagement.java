@@ -358,10 +358,18 @@ public class MapManagement {
 		if (EngineZildo.spriteManagement.collideSprite(tx, ty, quelElement))
 			return true;
 
+		// 4) Collision with chaining point for NPC (aka PNJ in french)
+		if (p !=null && !p.isZildo()) {
+			// Allow for characters involved in running script (Maltus or Igor following)
+			if (!ghost && currentMap.isChangingMap(tx, ty, p.getAngle()) != null) {
+				return true;
+			}
+		}
+		
 		// Returns computed result
 		return false;
 	}
-
+	
 	/** Doors and stairs **/
 	private final static IntSet particularTiles = 
 		new IntSet(256 + 22, 256+23)

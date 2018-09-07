@@ -25,15 +25,18 @@ import org.junit.Test;
 import tools.EngineUT;
 import tools.MapUtils;
 import zildo.fwk.file.EasyBuffering;
+import zildo.monde.Hasard;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementZildo;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
+import zildo.server.MapManagement;
 
 /**
  * @author Tchegito
@@ -277,4 +280,30 @@ public class TestCollision extends EngineUT {
 	private void assertPersoInLand(Perso p) {
 		Assert.assertFalse(EngineZildo.mapManagement.collide(p.x, p.y, p));
 	}
+	
+	/** Issue 161: monster was passing through door and reached map's outside **/
+	@Test
+	public void monsterOutside() {
+		// Load the cave in Lugdunia and remove the north door
+		waitEndOfScripting();
+		mapUtils.loadMap("foretg");
+		EngineZildo.spriteManagement.getNamedElement("inDoor").dying=true;
+		waitEndOfScripting();
+		
+		// Force the hazard
+		EngineZildo.hasard = new Hasard() {
+			public double rand() { return 0.16f; }
+		};
+		
+		EngineZildo.spriteManagement.deleteSprite(persoUtils.persoByName("new"));
+		Perso fireThing = persoUtils.persoByName("new");
+		fireThing.setPos(new Vector2f(68 + 30, 303 -30 + 1));
+		fireThing.setAngle(Angle.OUEST);
+		for (int i=0;i<300;i++) {
+			renderFrames(1);
+			Assert.assertTrue("Monster should not be able to pass through that chaining point !", fireThing.getX() > 30);
+			System.out.println(fireThing);
+		}
+	}
+	
 }
