@@ -67,6 +67,10 @@ public class GUISpriteSequence extends ArrayList<SpriteEntity> {
 		entity.setAlpha(alpha);
 		entity.setSpecialEffect(EngineFX.FOCUSED);
 		
+		// Set initial location for font entity (to allow shift)
+		entity.setAjustedX(x);
+		entity.setAjustedY(y);
+		
 		this.add(entity);
 		sequenceDrawn = true;
 

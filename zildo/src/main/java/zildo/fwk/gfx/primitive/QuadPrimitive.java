@@ -211,8 +211,8 @@ public class QuadPrimitive {
         }
         
         for (int i = 0; i < 4; i++) {
-        	vertices[orders[rotation.value][i]][0] = (short) (startX + pixSizeX * (i % 2));	// x
-        	vertices[orders[rotation.value][i]][1] = (short) (startY + pixSizeY * (i / 2));	// y
+        	vertices[orders[rotation.value][i]][0] = (short) Math.round(startX + pixSizeX * (i % 2));	// x
+        	vertices[orders[rotation.value][i]][1] = (short) Math.round(startY + pixSizeY * (i / 2));	// y
         }
         
         bufs.vertices.put(vertices[0][0]).put(vertices[0][1]);

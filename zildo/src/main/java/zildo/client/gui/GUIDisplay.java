@@ -175,7 +175,6 @@ public class GUIDisplay {
 		textMenuSequence = new GUISpriteSequence();
 		frameDialogSequence = new GUISpriteSequence();
 		guiSpritesSequence = new GUISpriteSequence();
-		menuSequence = new GUISpriteSequence();
 		creditSequence = new GUISpriteSequence();
 		infoSequence = new GUISpriteSequence();
 		adventureSequence = new GUISpriteSequence();
@@ -802,6 +801,7 @@ public class GUIDisplay {
 		int titleSize = p_menu.title == null ? 4 : 2;
 		int sizeY = (p_menu.items.size() + titleSize) * sc.TEXTER_MENU_SIZEY;
 		int startY = (Zildo.viewPortY - sizeY) / 2;
+
 		if (!p_menu.displayed) {
 			// Display menu's text
 			if (p_menu instanceof HallOfFameMenu) {
@@ -839,21 +839,35 @@ public class GUIDisplay {
 			}
 			p_menu.displayed = true;
 		}
-		menuSequence.clear();
 		int y = startY + (p_menu.getSelected() + 2) * sc.TEXTER_MENU_SIZEY;
 		alpha += 0.1f;
-		int wave = (int) (10.0f * Math.sin(alpha));
-		menuSequence.addSprite(FontDescription.GUI_BLUEDROP, 40 + wave, y + 5);
-		menuSequence.addSprite(FontDescription.GUI_BLUEDROP, Zildo.viewPortX
-				- 40 - wave, y + 5, Reverse.HORIZONTAL);
 		
+		GUISpriteSequence seq = textMenuSequence;
+		if (p_menu instanceof CompassMenu) {
+			seq = adventureSequence;
+		}
+		// Zoom the selected item
+		for (SpriteEntity se : seq) {
+			if (se.getScrY() == y) {
+				//se.setScrY(y + (int) (5f*Math.sin(alpha)));
+				int variation = (int) (20f*Math.sin(1.6f*alpha));
+				se.zoom = 255 + variation;
+				int distFromCenter = se.getAjustedX() - Zildo.viewPortX / 2;
+				se.setScrX(Zildo.viewPortX / 2 + (int) (distFromCenter * (1f + variation / 500f)) );
+				se.light=0xff0000;
+				se.setSpecialEffect(EngineFX.YELLOW_HALO);
+			} else {
+				se.setSpecialEffect(EngineFX.FOCUSED);
+				se.light=0xffffff;
+				se.zoom = 255;
+			}
+		}
 		if (p_menu instanceof CompassMenu) {
 			setToDisplay_adventureMenu(true);
 		}
 	}
 
 	public void endMenu() {
-		menuSequence.clear();
 		removePreviousTextInFrame();
 		// Put back in default mode
 		toDisplay_dialogMode = DialogMode.CLASSIC;
@@ -1192,9 +1206,6 @@ public class GUIDisplay {
 				break;
 			case GUI:
 				guiSpritesSequence.clear();
-				break;
-			case MENU:
-				menuSequence.clear();
 				break;
 			case CREDIT:
 				creditSequence.clear();

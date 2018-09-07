@@ -500,7 +500,7 @@
         </action>
     </quest>
     
-    <quest name="prison4_doors">
+    <quest name="prison4_doors" locked="false">
         <trigger>
             <location name="prison4"/>
             <dead who="s1,s2"/>
@@ -575,7 +575,7 @@
         </action>
     </quest>
     
-    <quest name="prison5_bigrat2kill"> <!-- Optional quest to solve a deadlock, shown by Travis -->
+    <quest name="prison5_bigrat2kill" locked="false"> <!-- Optional quest to solve a deadlock, shown by Travis -->
         <trigger>
             <location name="prison5"/>
             <dead who="bigrat2"/>
