@@ -24,9 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -47,16 +44,9 @@ public class ScriptReader {
      */
     public static AnyElement loadScript(String... p_scriptNames) {
     	List<AnyElement> parsedXmls = new ArrayList<AnyElement>();
-        ExecutorService es = Executors.newFixedThreadPool(p_scriptNames.length);
     	for (String scriptName : p_scriptNames) {
-    		es.execute(new ThreadLoadScript(scriptName, parsedXmls));
+    		parsedXmls.add(new ScriptParser(scriptName).parse());
     	}
-    	es.shutdown();
-    	try {
-			es.awaitTermination(1, TimeUnit.MINUTES);
-		} catch (InterruptedException e) {
-			throw new RuntimeException("Unable to parse script !",e);
-		}
     	AnyElement ret = null;
     	for (AnyElement parsedXml : parsedXmls) {
 	    	 if (ret == null) {
@@ -69,17 +59,15 @@ public class ScriptReader {
     	return ret;
     }
 
-    static class ThreadLoadScript extends Thread {
+    static class ScriptParser {
     	
     	final String scriptName;
-    	final List<AnyElement> parsedXmls;
     	
-    	public ThreadLoadScript(String scriptName, List<AnyElement> parsedXmls) {
+    	public ScriptParser(String scriptName) {
     		this.scriptName = scriptName;
-    		this.parsedXmls = parsedXmls;
     	}
     	
-    	public void run() {
+    	public AnyElement parse() {
     		try {
 	            // Load the stream
 	            String filename = "zildo/resource/script/"+scriptName+".xml";
@@ -90,7 +78,7 @@ public class ScriptReader {
 	            		stream = ScriptReader.class.getClassLoader().getResourceAsStream(scriptName+".xml");
 	            	}
 	            }
-	            parsedXmls.add(loadStream(stream));
+	            return loadStream(stream);
 	           
 	        } catch (Exception e) {
 	            throw new RuntimeException("Unable to parse " + scriptName, e);
