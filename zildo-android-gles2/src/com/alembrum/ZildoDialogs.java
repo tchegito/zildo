@@ -74,6 +74,7 @@ public class ZildoDialogs {
 		public CharSequence filter(CharSequence source, int start, int end,
 				Spanned dest, int dstart, int dend) {
 			if (source != null) {
+				// block direct type, and copy/paste (source will be more than 1-sized)
 				for (int i=0;i<source.length();i++) {
 					if (blockCharacterSet.contains(("" + source.charAt(i)))) {
 				         return "";
