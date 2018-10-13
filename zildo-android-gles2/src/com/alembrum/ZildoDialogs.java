@@ -73,10 +73,14 @@ public class ZildoDialogs {
 		@Override
 		public CharSequence filter(CharSequence source, int start, int end,
 				Spanned dest, int dstart, int dend) {
-			if (source != null && blockCharacterSet.contains(("" + source))) {
-		         return "";
-		        }
-		        return null;
+			if (source != null) {
+				for (int i=0;i<source.length();i++) {
+					if (blockCharacterSet.contains(("" + source.charAt(i)))) {
+				         return "";
+				    }
+				}
+			}
+		    return null;
 		}
 	}
 	class CustomListener implements OnClickListener {
