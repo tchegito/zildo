@@ -720,9 +720,10 @@ public class MapManagement {
 								double platformSpeed = Pointf.pythagore(placeHolder.vx, placeHolder.vy);
 								if (platformSpeed < 0.2f) {
 									coeff = 3;
-								} else if (platformSpeed < 0.5f) {
+								} else if (platformSpeed < 0.6f) {
 									coeff = 2;
-								} 
+								}
+								//System.out.println(platformSpeed+" ==> coeff="+coeff);
 							}
 							entity.setMover(new PhysicMoveOrder(coeff * dest.x / 16, coeff * dest.y / 16));
 							entity.setGhost(true);

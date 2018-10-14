@@ -34,7 +34,6 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
-import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.ia.mover.PhysicMoveOrder;
 import zildo.monde.util.Angle;
@@ -44,6 +43,8 @@ import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
 /**
+ *Issues 125, 149, 153 and 159 are about same moment: exception on waterlily during map switch.
+ *
  * @author Tchegito
  *
  */
@@ -303,32 +304,5 @@ public class CheckLargeObjectCollision extends EngineUT{
 		
 		zildo = spawnZildo(waterLilyLoc.x-12, waterLilyLoc.y-14);
 		zildo.walkTile(false);
-	}
-	
-	/** Issue 159 **/
-	@Test
-	public void npeOnceAgainOnLeafWithDoubleMapScroll() {
-		initIgorLily(new Point(977, 267));
-		Element wl = waterLily.getMover().getPlaceHolder();
-		wl.x = 977.3744f;
-		wl.y = 267.75107f;
-		
-		zildo.walkTile(false);
-		
-		// Wait end of scripts
-		waitEndOfScripting();
-		wl.vx = -0.14947365f;
-		wl.vy = 0.12370436f;
-
-		zildo.setPos(new Vector2f(967.1378, 251.79767));
-		zildo.walkTile(false);
-		
-		zildo.setWeapon(new Item(ItemKind.SWORD));
-		Assert.assertTrue(zildo.isOnPlatform());
-		zildo.setAngle(Angle.OUEST);
-		zildo.attack();
-		renderFrames(50*2*2*8);
-		waitEndOfScroll();
-		mapUtils.assertCurrent("igorvillage");
 	}
 }
