@@ -126,23 +126,8 @@ public class SaveGameMenu extends PageableMenu {
 				@Override
 				public void run() {
 					// Save the game
-					int i = 1;
-					int temp;
-					while (true) { // Find a filename which doesn't exist yet
-						temp = i++;
-						boolean found = false;
-						for (String name : savegames) {
-							int number = getSavegameNumber(name);
-							if (!found && number == temp) {
-								found = true;
-							}
-						}
-						if (!found) {
-							break;
-						}
-					}
-					String filename = Constantes.SAVEGAME_DIR
-							+ Constantes.SAVEGAME_FILE + temp;
+					int saveSlot = findEmptySlot(savegames);
+					String filename = Constantes.SAVEGAME_DIR + Constantes.SAVEGAME_FILE + saveSlot;
 					saveGame(filename);
 					client.handleMenu(new InfoMenu("m8.info.ok", previousMenu));
 				}
@@ -153,16 +138,50 @@ public class SaveGameMenu extends PageableMenu {
 		setMenu(items.toArray(new ItemMenu[] {}));
 	}
 
+	private static int findEmptySlot(List<String> savegames) {
+		int i = 1;
+		int slot;
+		while (true) { // Find a filename which doesn't exist yet
+			slot = i++;
+			boolean found = false;
+			for (String name : savegames) {
+				int number = getSavegameNumber(name);
+				if (!found && number == slot) {
+					found = true;
+				}
+			}
+			if (!found) {
+				break;
+			}
+		}
+		return slot;
+	}
+	
 	/**
 	 * Save the game
 	 */
-	private void saveGame(String p_filename) {
+	private static void saveGame(String p_filename) {
 		EasyBuffering buffer = new EasyBuffering();
 		EngineZildo.game.serialize(buffer);
 		EasyWritingFile file = new EasyWritingFile(buffer);
 		file.saveFile(p_filename);
 	}
 
+	/** Issue 153: try to save game on a crash, if possible **/
+	public static int saveOnCrash() {
+		int savedAtSlot = -1;
+		if (EngineZildo.scriptManagement != null && EngineZildo.scriptManagement.isAllowedToSave()) {
+			
+			final List<String> savegames = SaveGameMenu.findSavegame();
+			int slot = findEmptySlot(savegames);
+			String filename = Constantes.SAVEGAME_DIR + Constantes.SAVEGAME_FILE + slot;
+	
+			saveGame(filename);
+			savedAtSlot = slot;
+		}
+		return savedAtSlot;
+	}
+	
 	private boolean loadGame(String p_filename, boolean p_legacy) {
 		EasyBuffering file=Zildo.pdPlugin.openPrivateFile(p_filename);
 
@@ -268,7 +287,7 @@ public class SaveGameMenu extends PageableMenu {
 //				+ new SimpleDateFormat("dd.MM.yyyy HH-mm").format(new Date(
 //						p_file.lastModified()));
 		
-		//name += "("+p_game.getNbQuestsDone()+")";
+		//name += " ("+p_game.getNbQuestsDone()+")";
 		return name;
 	}
 

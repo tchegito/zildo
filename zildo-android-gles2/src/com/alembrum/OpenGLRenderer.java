@@ -27,24 +27,30 @@ import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.SpriteDisplay;
+import zildo.client.gui.menu.SaveGameMenu;
+import zildo.client.gui.menu.StartMenu;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.net.www.CrashReporter;
 import zildo.platform.opengl.AndroidPixelShaders;
 import zildo.platform.opengl.utils.GLUtils;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 public class OpenGLRenderer implements Renderer {
 	
 	Client client;
 	TouchListener touchListener;
+	Handler handler;
 	
 	boolean initialized = false;
 	
-	public OpenGLRenderer(Client client, TouchListener touchListener) {
+	public OpenGLRenderer(Client client, TouchListener touchListener, Handler handler) {
 		this.client = client;
 		this.touchListener = touchListener;
+		this.handler = handler;
 
 		// When this class is recreated and there was a previous context, we need to reinitialize the ID
 		//GLUtils.resetTexId();
@@ -111,8 +117,20 @@ public class OpenGLRenderer implements Renderer {
 			} catch (RuntimeException e) {
 				// Send a more detailed report than Google one
 				new CrashReporter(e).addContext().sendReport();
-				// Throw exception even though
-				throw e;
+				// Try to save on crash
+				int slot = SaveGameMenu.saveOnCrash();
+				if (slot != -1) {
+		    		Message message = new Message();
+		    		message.what = ZildoActivity.TOAST;
+		    		message.arg1 = slot;
+		    		handler.sendMessage(message);
+				}
+				// End this game and return to main menu
+				client.quitGame();
+				client.handleMenu(new StartMenu());
+				
+				// Now we don't throw exception anymore
+
 			}
 	
 			/*

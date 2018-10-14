@@ -17,6 +17,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
@@ -31,6 +32,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 @SuppressLint("ClickableViewAccessibility")
 public class ZildoActivity extends Activity {
@@ -46,17 +48,20 @@ public class ZildoActivity extends Activity {
 	
 	final static int RESET_SPLASHSCREEN = 99;
 	final static int PLAYERNAME_DIALOG = 98;
-
+	final static int TOAST = 97;
+	
 	final static String PARAM_LEFTHANDED = "leftHanded";
 	final static String PARAM_MOVINGCROSS = "movingCross";
 	
 	static class SplashHandler extends Handler {
 			OpenGLES20SurfaceView view;
 			ZildoDialogs zds;
+			Context appContext;	// This context is global to the whole application, depends not on activity lifecycle
 			
-		public SplashHandler(OpenGLES20SurfaceView view, ZildoDialogs zd) {
+		public SplashHandler(OpenGLES20SurfaceView view, ZildoDialogs zd, Context ctx) {
 			this.view = view;
 			this.zds = zd;
+			this.appContext = ctx;
 		}
 		
     	@Override
@@ -68,6 +73,10 @@ public class ZildoActivity extends Activity {
     	            break;
     	     case PLAYERNAME_DIALOG:
     	    	 zd.askPlayerName((EditableItemMenu) msg.obj);
+    	    	 break;
+    	     case TOAST:
+    	    	 int slot = msg.arg1;
+				 Toast.makeText(appContext, "Game has been saved before crash on "+slot, Toast.LENGTH_LONG).show();
     	    	 break;
     	   }
     	}
@@ -132,8 +141,16 @@ public class ZildoActivity extends Activity {
 	        client.setLeftHanded(getPreferences(MODE_PRIVATE).getBoolean(PARAM_LEFTHANDED, false));
 	        client.setMovingCross(getPreferences(MODE_PRIVATE).getBoolean(PARAM_MOVINGCROSS, false));
 	        
+	        
+	        
+	        if (zd == null) {
+	        	createDialogs();
+	        }
+	        if (handler == null) {
+	        	handler = new SplashHandler(view, zd, getApplicationContext());
+	        }
 	        if (renderer == null) {
-	        	renderer = new OpenGLRenderer(client, touchListener);
+	        	renderer = new OpenGLRenderer(client, touchListener, handler);
 	        }
 	        
 	   		view.setViewRenderer(renderer);
@@ -147,14 +164,7 @@ public class ZildoActivity extends Activity {
 	   		}	    
 	        
 	        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-	        
-	        
-	        if (zd == null) {
-	        	createDialogs();
-	        }
-	        if (handler == null) {
-	        	handler = new SplashHandler(view, zd);
-	        }
+
     	} catch (RuntimeException t) {
 			// Send a more detailed report than Google one
 			new CrashReporter(t).addContext().sendReport();
