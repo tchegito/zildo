@@ -837,6 +837,7 @@ public class ActionExecutor extends RuntimeExecutor {
             		nextStep = (int) timer.each.evaluate(context);
             		executeSubProcessInParallel(timer.actions);
             	} else {
+            		//System.out.println(count + " / "+nextStep);
             		count++;
             	}
             	achieved |= p_action.unblock;

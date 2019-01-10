@@ -91,7 +91,9 @@ public class TileTexture {
 		
 		Occluder occ = new Occluder(256, 256);
 		boolean withOccluder = false;
+		int indSprite = 0;
 		for (SpriteModel spr : modelSorted) {
+			System.out.println(indSprite++);
 			int longX=spr.getTaille_x();
 			int longY=spr.getTaille_y();
 			// check for outer boundaries
@@ -103,13 +105,19 @@ public class TileTexture {
 
 			if (withOccluder || (y + longY) > 256) {
 				// Needs occlusion to find some space inside the texture !
-				Point p = occ.allocate(longX, longY);
-				if (p == null) {
-					//return;
-					throw new RuntimeException("Unable to allocate "+longX+" x "+longY+" for "+sBank.getName()+" !");
+				try {
+					Point p = occ.allocate(longX, longY);
+					if (p == null) {
+						//return;
+						throw new RuntimeException("Unable to allocate "+longX+" x "+longY+" for "+sBank.getName()+" !");
+					}
+					x = p.x ; y = p.y;
+					withOccluder = true;
+				} catch (RuntimeException e) {
+					break;
 				}
-				x = p.x ; y = p.y;
-				withOccluder = true;
+
+
 			}
 			occ.remove(new Zone(x, y, longX, longY));
 			// Store sprite location on texture
@@ -125,7 +133,7 @@ public class TileTexture {
 		}
 	}
 	
-	public void createTextureFromSpriteBank(SpriteBank sBank) {
+	public void createTextureFromSpriteBank(SpriteBank sBank, int height) {
 		createModelsFromSpriteBank(sBank);
 		
 		final boolean alpha = true;
@@ -145,7 +153,7 @@ public class TileTexture {
 			for (int j=0;j< longY;j++) {
 				
 				for (int i=0;i< longX;i++) {
-					int a=motif[i+j*longX];
+					int a=motif[i+ j *longX];
 					// Regular size
 					a=sBank.modifyPixel(n,a);
 
@@ -155,7 +163,7 @@ public class TileTexture {
 			}
 		}
 		int idx = Arrays.asList(SpriteStore.sprBankName).indexOf(sBank.getName());
-    	GLUtils.saveBufferAsPNG(Constantes.DATA_PATH+"\\textures\\sprite"+idx, textureEngine.getBuffer(), 256, 256, alpha);
+    	GLUtils.saveBufferAsPNG(Constantes.DATA_PATH+"\\textures\\sprite"+idx, textureEngine.getBuffer(), 256, height, alpha);
 	}
 	
 }

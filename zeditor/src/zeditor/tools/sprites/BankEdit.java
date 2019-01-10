@@ -123,6 +123,23 @@ public class BankEdit {
     	return false;
     }
     
+    // Find the first non empty-line on image, going down or up, following the boolean value
+    protected int firstNonEmptyLine(int p_startX, int p_startY, int width, boolean toDown) {
+    	int currentY = p_startY;
+		boolean found = false;
+    	for (int i=0;i<50 && !found;i++) {	// 50 is max vlue
+    		currentY = p_startY + i * (toDown ? 1 : -1);
+			int offsetImg = currentY * img.getWidth() + p_startX;
+			for (int j=0;j<width && !found;j++) {
+	    		if (imgPixels[offsetImg + j] != 0) {
+	    			found = true;
+	    		}
+			}
+			
+    	}
+    	return currentY;
+    }
+    
     public int getImageWidth() {
     	return img.getWidth();
     }

@@ -99,6 +99,12 @@ public class SpriteBankEdit extends SpriteBank {
     	}
     }
     
+    public void addSprFromImage(int p_position, ZoneO z) {
+		// Extract sprite from image
+		int[] sprite = bankEdit.getRectFromImage(z.x1, z.y1, z.x2, z.y2);
+		addSpr(p_position, z.x2, z.y2, z, sprite);
+	}
+    
     public void addSprFromImage(int p_position, Zone z) {
 		// Extract sprite from image
 		int[] sprite = bankEdit.getRectFromImage(z.x1, z.y1, z.x2, z.y2);
@@ -107,7 +113,11 @@ public class SpriteBankEdit extends SpriteBank {
    
     public void setSprFromImage(int p_position, Zone z) {
 		// Extract sprite from image
-		int[] sprite = bankEdit.getRectFromImage(z.x1, z.y1, z.x2, z.y2);
+    	int offY = 0;
+    	if (z instanceof ZoneO) {
+    		offY = ((ZoneO)z).offY;
+    	}
+		int[] sprite = bankEdit.getRectFromImage(z.x1, z.y1 + offY, z.x2, z.y2);
 		setSpr(p_position, z.x2, z.y2, zoneBorders(z), sprite);
 	}
     
@@ -153,9 +163,9 @@ public class SpriteBankEdit extends SpriteBank {
             */
         }
         EasyWritingFile file=new EasyWritingFile(buffer);
-        file.saveFile(getName());
         
-        new TileTexture(bankEdit.gfxs).createTextureFromSpriteBank(bank);
+        new TileTexture(bankEdit.gfxs).createTextureFromSpriteBank(this, 256);
+        file.saveFile(getName());
     }
     
     /**
@@ -175,6 +185,15 @@ public class SpriteBankEdit extends SpriteBank {
 			}
 		}
 		return width;
+	}
+	
+	// We already know that font is well cropped on left/right borders. But here we'll remove up and down empty parts
+	private ZoneO optimizeZone(int startX, int startY, int width, int fontHeight) {
+		int realStartY = bankEdit.firstNonEmptyLine(startX, startY, width, true);
+		int realEndY = bankEdit.firstNonEmptyLine(startX, startY + fontHeight-1, width, false) + 1;
+		int economie = (realStartY - startY) + (startY + fontHeight - realEndY);
+		System.out.println("economie = "+economie);
+		return new ZoneO(startX, startY, width, realEndY - realStartY, 0, 0, realStartY - startY);
 	}
 	
 	public void addSpritesFromBank(SpriteBanque p_bank) {
@@ -211,6 +230,7 @@ public class SpriteBankEdit extends SpriteBank {
 		final int offsetnSprite = nSprite;
 		int width;
 		for (int i = 0; i < GUIDisplay.transcoChar.length(); i++) {
+			System.out.print(GUIDisplay.transcoChar.charAt(i));
 			// Get size
 			if (constantWidth != 0) {
 				width = constantWidth;
@@ -221,12 +241,13 @@ public class SpriteBankEdit extends SpriteBank {
 			if (chars != null) {
 				offsetFont = GUIDisplay.transcoChar.indexOf(chars.charAt(i));
 			}
+			System.out.println(GUIDisplay.transcoChar.charAt(offsetFont)+" ==> "+startX+","+startY);
 			if (width > 1) {
 				//System.out.println(c);
 				if (chars == null) {
 					addSprFromImage(offsetnSprite + offsetFont, new Zone(startX, startY, width, fontHeight));
 				} else {
-					setSprFromImage(offsetnSprite + offsetFont, new Zone(startX, startY, width, fontHeight));
+					setSprFromImage(offsetnSprite + offsetFont, optimizeZone(startX, startY, width, fontHeight));
 				}
 
 				//System.out.println(startX + " , " + startY + " size=" + width);

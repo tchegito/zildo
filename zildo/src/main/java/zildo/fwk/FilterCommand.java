@@ -190,7 +190,7 @@ public class FilterCommand {
 			fadeStarted = true;
 			active(BilinearFilter.class, false, null);
 			for (Class<? extends ScreenFilter> clazz : p_effect.getFilterClass()) {
-				active(clazz, true, p_effect);
+				//active(clazz, true, p_effect);
 			}
 			activeFade = p_effect;
 		}
@@ -270,7 +270,7 @@ public class FilterCommand {
 				active(filter.getClass(), false, null);
 			}
 		}
-		active(BilinearFilter.class, true, null);
+		//active(BilinearFilter.class, true, null);
 		activeFade = null;
 	}
 	
@@ -310,6 +310,6 @@ public class FilterCommand {
 		addFilter(new EarthQuakeFilter(Zildo.pdPlugin.gfxStuff));
 		addFilter(Zildo.pdPlugin.getFilter(BlackBlurFilter.class));
 		addFilter(Zildo.pdPlugin.getFilter(BilinearFilter.class));
-		active(BilinearFilter.class, true, null);		
+		//active(BilinearFilter.class, true, null);		
 	}	
 }

@@ -43,7 +43,8 @@ public enum FontDescription implements SpriteDescription {
 	GUI_GAUGE, GUI_AMOUNT, GUI_WEAPONFRAME,
 	
 	// Android
-	VIRTUAL_PAD, BUTTON_X, BUTTON_Y,
+	//VIRTUAL_PAD, 
+	BUTTON_X, BUTTON_Y,
 	// Compass
 	COMPASS, TOUCH_AURA, SQUIRREL;
 	
@@ -54,7 +55,7 @@ public enum FontDescription implements SpriteDescription {
 
 	@Override
 	public int getNSpr() {
-		return ordinal() + 2 * GUIDisplay.transcoChar.length();
+		return ordinal() + 1 * GUIDisplay.transcoChar.length();
 	}
 
 	// All the following methods are nonsense for this kind of SpriteDescription

@@ -29,6 +29,7 @@ import zildo.fwk.gfx.EngineFX;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -108,8 +109,6 @@ public class SpriteStore {
 	
 		// SpriteEntity informations
 		SpriteEntity entity=new SpriteEntity(x,y, false);
-		entity.setScrX(x);
-		entity.setScrY(y);
 		entity.setNSpr(nSpr);
 		entity.setNBank(nBank);
 		entity.setForeground(true);	// Fonts are in front of the scene
@@ -122,7 +121,15 @@ public class SpriteStore {
 		entity.setSpecialEffect(EngineFX.NO_EFFECT);
 	
 		spawnSprite(entity);
-	
+		// Shift if crop is done
+		Zone z = entity.getSprModel().getEmptyBorders();
+		if (z != null) {
+			System.out.println(z);
+			//entity.y += z.y1;
+		}
+		entity.setScrX((int) entity.x);
+		entity.setScrY((int) entity.y);
+
 		return entity;
 	}
 
@@ -139,8 +146,7 @@ public class SpriteStore {
 		int nBank=entity.getNBank();
 		int nSpr=entity.getNSpr();
 	
-		SpriteModel spr;
-		spr=getSpriteBank(nBank).get_sprite(nSpr);
+		SpriteModel spr = getSpriteBank(nBank).get_sprite(nSpr);
 	
 		entity.setSprModel(spr);
 	

@@ -68,7 +68,7 @@ public class GUISpriteSequence extends ArrayList<SpriteEntity> {
 		entity.setSpecialEffect(EngineFX.FOCUSED);
 		
 		// Set initial location for font entity (to allow shift)
-		entity.setAjustedX(x);
+		entity.setAjustedX((int) entity.x);
 		entity.setAjustedY(y);
 		
 		this.add(entity);
@@ -106,6 +106,8 @@ public class GUISpriteSequence extends ArrayList<SpriteEntity> {
 	public void clear() {
 		SpriteDisplay spriteDisplay = ClientEngineZildo.spriteDisplay;
 		for (SpriteEntity entity : this) {
+			if (entity.getId() != -1)
+				System.out.println(entity.getId());
 			spriteDisplay.deleteSprite(entity);
 		}
 		super.clear();

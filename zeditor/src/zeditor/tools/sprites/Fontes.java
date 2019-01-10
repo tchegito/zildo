@@ -59,7 +59,7 @@ public class Fontes extends SpriteBanque {
 				//new Zone(201, 0, 22, 22),
 				
 				// 	Virtual pad
-				new Zone(223, 0, 80, 80),
+				//new Zone(223, 0, 80, 80),
 				// Buttons (X and Y)
 				new Zone(0, 577, 24, 24), new Zone(24, 577, 24, 24),
 				// Compass

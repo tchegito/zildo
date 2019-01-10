@@ -141,7 +141,6 @@ public class GUIDisplay {
 	private GUISpriteSequence textMenuSequence; // All fonts displayed in menu
 	private GUISpriteSequence frameDialogSequence; // Yellow frame for display dialog
 	private GUISpriteSequence guiSpritesSequence; // All sprites designing the GUI
-	private GUISpriteSequence menuSequence; // Cursors for menu
 	private GUISpriteSequence creditSequence; // Credits
 	private GUISpriteSequence infoSequence; // For displaying infos	(see TitleStage)
 	private GUISpriteSequence adventureSequence; // For displaying adventure menu
@@ -156,7 +155,7 @@ public class GUIDisplay {
 	
 	List<GameMessage> messageQueue;
 
-	final int padSizeX;
+	//final int padSizeX;
 	final int buttonSizeX;
 	
 	int texterHeight;	// Max Y coordinates in texter frame
@@ -193,7 +192,7 @@ public class GUIDisplay {
 		
 		// Get icon size, to handle left handed symetry
 		SpriteBank fntBank = ClientEngineZildo.spriteDisplay.getSpriteBank(SpriteBank.BANK_FONTES);
-		padSizeX = fntBank.get_sprite(FontDescription.VIRTUAL_PAD.getNSpr()).getTaille_x();
+		//padSizeX = fntBank.get_sprite(FontDescription.VIRTUAL_PAD.getNSpr()).getTaille_x();
 		buttonSizeX = fntBank.get_sprite(FontDescription.BUTTON_X.getNSpr()).getTaille_x();
 	}
 
@@ -488,12 +487,14 @@ public class GUIDisplay {
 				nSpr[nLettre] = getIndexCharacter(a);
 				// Get sprite model to obtain horizontal size
 				spr = ClientEngineZildo.spriteDisplay.getSpriteBank(nBank).get_sprite(nSpr[nLettre] + offsetNSpr);
-				sizeCurrentWord += (spr.getTaille_x() + 1);
+				int shiftX = (spr.getTaille_x() + 1);
 				
 				if (toDisplay_dialogMode.isScript()) { // && i < nLettre && texte.charAt(i+1) != ' ') {
-					sizeCurrentWord--;
-					sizeCurrentWord-= getLegibility(nSpr[nLettre]);
+					shiftX--;
+					System.out.println("Legibility of "+a+" = "+getLegibility(nSpr[nLettre]));
+					shiftX-= getLegibility(nSpr[nLettre]);
 				}
+				sizeCurrentWord += shiftX;
 			}
 			if (increase) nLettre++;
 		}
@@ -542,13 +543,14 @@ public class GUIDisplay {
 						visibleFont, 255);
 				lettre.setSpecialEffect(fx);
 				spr = lettre.getSprModel();
-				offsetX += (spr.getTaille_x() + 1);
+				int shiftX =(spr.getTaille_x() + 1);
 				
 				if (toDisplay_dialogMode.isScript()) {// && i < nLettre && nSpr[i+1] >= 0) { 
 					// Special fonts with legibility (and no space after)
-					offsetX--;
-					offsetX-= getLegibility(indexSpr);
+					shiftX--;
+					shiftX-= getLegibility(indexSpr);
 				}
+				offsetX += shiftX;
 			}
 		}
 		filledZone.x2 = x + offsetX - filledZone.x1;
@@ -569,7 +571,7 @@ public class GUIDisplay {
 
 	private int getLegibility(int indexSpr) {
 		if (toDisplay_dialogMode.isBig()) {
-			return scriptBigLegibility[indexSpr];
+			return scriptBigLegibility[indexSpr] * 2;
 		} else {
 			return scriptLegibility[indexSpr];
 		}
@@ -847,19 +849,27 @@ public class GUIDisplay {
 			seq = adventureSequence;
 		}
 		// Zoom the selected item
+		int baseZoom = 127;
 		for (SpriteEntity se : seq) {
-			if (se.getScrY() == y) {
+			if (se.getAjustedY() == y) {
 				//se.setScrY(y + (int) (5f*Math.sin(alpha)));
-				int variation = (int) (20f*Math.sin(1.6f*alpha));
-				se.zoom = 255 + variation;
+				int variation = (int) (20f*Math.sin(1.1f*alpha));
+				//variation = -8; // (int) (100f*Math.sin(1.6f*alpha));
+				//variation = 0;
+				//variation = 128;
+				se.zoom = Math.min(255, baseZoom + variation);
 				int distFromCenter = se.getAjustedX() - Zildo.viewPortX / 2;
-				se.setScrX(Zildo.viewPortX / 2 + (int) (distFromCenter * (1f + variation / 500f)) );
+				float factor = (se.zoom / 255f);
+				se.setScrX(Zildo.viewPortX / 2 + (int) (distFromCenter * (factor*1.0f)) );
+				placeWithZoom(se);
 				se.light=0xff0000;
 				se.setSpecialEffect(EngineFX.YELLOW_HALO);
 			} else {
 				se.setSpecialEffect(EngineFX.FOCUSED);
 				se.light=0xffffff;
-				se.zoom = 255;
+				se.zoom = baseZoom;
+				//se.setScrX(se.getAjustedX());
+				placeWithZoom(se);
 			}
 		}
 		if (p_menu instanceof CompassMenu) {
@@ -867,6 +877,26 @@ public class GUIDisplay {
 		}
 	}
 
+	/** As font are cropped, we have to replace it correctly to get a correct zoom effect */
+	private void placeWithZoom(SpriteEntity se) {
+		SpriteModel model = se.getSprModel();
+
+		Zone z = model.getEmptyBorders();
+		if (z != null) {
+			int height = 43;
+			float factor = (se.zoom / 255f);
+			// Calculate distance between center and sprite middle
+			int delta = (int) (model.getTaille_y()/2 *  (1-factor) );
+
+			float py = z.y1 -height / 2;
+			
+			float halfSizeTexture = model.getTaille_y() / 2;
+			se.setScrY(se.getAjustedY() + (int) (py * factor) - delta);
+			
+			se.setScrY(se.getAjustedY() + (int) (factor* (z.y1 - height/2 + halfSizeTexture) - halfSizeTexture));
+		}
+	}
+	
 	public void endMenu() {
 		removePreviousTextInFrame();
 		// Put back in default mode
@@ -991,9 +1021,9 @@ public class GUIDisplay {
 			if (crossCenter != null) {
 				int x1 = crossCenter.x - (80/2);
 				if (!movingCross) {
-					x1 = computeForLeftHanded(x1, FontDescription.VIRTUAL_PAD);
+					//x1 = computeForLeftHanded(x1, FontDescription.VIRTUAL_PAD);
 				}
-				guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, x1, crossCenter.y -(80/2), curAlpha);
+				//guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, x1, crossCenter.y -(80/2), curAlpha);
 			}
 			int x2 = computeForLeftHanded(Zildo.viewPortX - 24 - 16 + 2, FontDescription.BUTTON_Y);
 			int x3 = computeForLeftHanded(Zildo.viewPortX - 48 - 16 - 1, FontDescription.BUTTON_X);
@@ -1007,8 +1037,8 @@ public class GUIDisplay {
 	private int computeForLeftHanded(int x, FontDescription desc) {
 		if (ClientEngineZildo.client.isLeftHanded()) {
 			switch (desc) {
-			case VIRTUAL_PAD:
-				return Zildo.viewPortX - x - padSizeX;
+			//case VIRTUAL_PAD:
+			//	return Zildo.viewPortX - x - padSizeX;
 			case BUTTON_X:
 			case BUTTON_Y:
 				return Zildo.viewPortX - x - buttonSizeX;

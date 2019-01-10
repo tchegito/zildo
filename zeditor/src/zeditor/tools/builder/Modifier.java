@@ -95,7 +95,7 @@ public class Modifier {
         
    	 // To enable OpenGL
 		Client cl = new Client(false);
-		new Modifier().saveAllMotifBank();
+		//new Modifier().saveAllMotifBank();
 		//new Modifier().saveAllSpriteBank();
 		/*
         new Modifier().saveNamedTileBank("lavacave");
@@ -104,26 +104,28 @@ public class Modifier {
 */
         //new Modifier().saveFontes2();
         //new Modifier().saveAllSpriteBank();
-        if (false) {
-            new Modifier().savePalette();
+        //if (false) {
+        //    new Modifier().savePalette();
         //new Modifier().saveAllMaps();
         //new Modifier().fixPnj2();
-        new Modifier().saveElements();
+        //new Modifier().saveElements();
         new Modifier().saveFontes2();
         //new Modifier().saveAllMotifBank();
         //new ReplaceAllMapsWindows().modifyAllMaps();
         //new AdjustGrotte().modifyAllMaps();
-        new Modifier().saveZildo();
+        //new Modifier().saveZildo();
         //new ReplaceSpritesModel().modifyAllMaps();
         //new AdjustChestBackTiles().modifyAllMaps();
         //new AdjustBackTiles().modifyAllMaps();
         //new ReplaceAllMapsFloor().modifyAllMaps();
-        new Modifier().saveGears();
+        //new Modifier().saveGears();
         //new Modifier().saveZildo();
+        /*
         new Modifier().savePnj();
         new Modifier().savePnj2();
         new Modifier().savePnj3();
         new Modifier().saveLavaCave();
+        */
         //new Modifier().modifyAllMaps();
         //new Modifier().adjustSpritePositionOnAllMaps();
         //new Modifier().generateImg();
@@ -131,7 +133,7 @@ public class Modifier {
        //new Modifier().ripDialogFromAllMaps();
         
         //new Modifier().temporaryFixPolakym();
-        }
+        //}
         
         //new AdjustRotations().modifyAllMaps();
 /*
@@ -303,13 +305,19 @@ public class Modifier {
 		SpriteBankEdit bankFont = new SpriteBankEdit(EngineZildo.spriteManagement.getSpriteBank(SpriteBank.BANK_FONTES));
 		bankFont.clear();
 		bankFont.fillNSprite(GUIDisplay.transcoChar.length());
-		bankFont.loadImage("fontes5", COLOR_BLUE);
+		bankFont.loadImage("fontes6", COLOR_BLUE);
 
+		String fontOrder = "KRWMX'" + "NLQTDAt" + "UVYBHPO,"+ "EwSZJmCId" + "fü?7uxûùv£y#"+
+		"4np%qa65-zàâ2" + "39r~hjk0o§$8ce" + "gçèéêëbs!>iïl1<.)(" + ":;äîôö/FG";
+		/*
 		String fontOrder = "KRWXMLNQFDAUTYHBVG." + "EOPwCZJSmIfnd7?xüuvûyù40pq-k%"
 				+ "9a6z£àâ5oceghj~$23çèéêë8r§#bsi!>ïtl1)<;:" + "',(äîôö/";
+				*/
 
-		bankFont.captureFonts(156, 22, fontOrder, 0, 0);
-		bankFont.captureFonts(261, 16, null, 0, 0);
+		// bankFont.captureFonts(156, 22, fontOrder, 0, 0);	// Small fonts
+		bankFont.captureFonts(0, 43, fontOrder, 0, 0);
+		bankFont.loadImage("fontes5", COLOR_BLUE);
+		//bankFont.captureFonts(261, 16, null, 0, 0);
 
 		int nSpr = bankFont.getNSprite();
 		Zone[] elements = new Fontes().getZones();
