@@ -214,66 +214,6 @@ public abstract class SpriteEngine {
 	
 	public abstract void render(int floor, boolean backGround);
 	
-	/**
-	 * Fills the {@link SpriteModel} objects with real texture coordinates (in range 0..256, 0..256) based on
-	 * sizes from {@link SpriteBank} objects.
-	 * @param sBank
-	 */
-	protected void createModelsFromSpriteBank(SpriteBank sBank) {
-		int x=0,y=0,highestLine=0;
-
-
-		// First pass to sort sprites on lower heights
-		List<SpriteModel> modelSorted = new java.util.ArrayList<SpriteModel>();
-		int n;
-		for (n=0;n<sBank.getNSprite();n++) {
-			SpriteModel spr=sBank.get_sprite(n);
-			modelSorted.add(spr);
-		}
-		Collections.sort(modelSorted, new Comparator<SpriteModel>() {
-
-			@Override
-			public int compare(SpriteModel o1, SpriteModel o2) {
-				return -Integer.valueOf(o1.getTaille_y()).compareTo(o2.getTaille_y());
-			}
-		});
-		
-		Occluder occ = new Occluder(256, 256);
-		boolean withOccluder = false;
-		for (SpriteModel spr : modelSorted) {
-			int longX=spr.getTaille_x();
-			int longY=spr.getTaille_y();
-			// check for outer boundaries
-			if ( (x+longX) > 256 ) {
-				x=0;
-				y+=highestLine;
-				highestLine=0;
-			}
-
-			if (withOccluder || (y + longY) > 256) {
-				// Needs occlusion to find some space inside the texture !
-				Point p = occ.allocate(longX, longY);
-				if (p == null) {
-					//return;
-					throw new RuntimeException("Unable to allocate "+longX+" x "+longY+" for "+sBank.getName()+" !");
-				}
-				x = p.x ; y = p.y;
-				withOccluder = true;
-			}
-			occ.remove(new Zone(x, y, longX, longY));
-			// Store sprite location on texture
-			spr.setTexPos_x(x);
-			spr.setTexPos_y(y); //+1);
-
-			// Next position
-			if (!withOccluder) {
-				x+=longX;
-				if (longY > highestLine)	// Mark the highest sprite on the row
-					highestLine = longY;
-			}
-		}
-	}
-	
 	public ByteBuffer getTextureImage(int nTexture) {
 		textureEngine.getTextureImage(nTexture);
 		return textureEngine.scratch;

@@ -51,12 +51,17 @@ public class SpriteBankEdit extends SpriteBank {
 	
 	protected SpriteBank bank;
 	
+    public SpriteBankEdit() {
+    	this(null);
+    }
     public SpriteBankEdit(SpriteBank p_bank) {
     	bank = p_bank;
-        models=p_bank.getModels();
-        name=p_bank.getName();
-        nSprite=p_bank.getNSprite();
-        
+    	if (p_bank != null) {
+	        models=p_bank.getModels();
+	        name=p_bank.getName();
+	        nSprite=p_bank.getNSprite();
+    	}
+    	
         bankEdit = new BankEdit();
         
         // Build all graphics into a single list
@@ -133,11 +138,17 @@ public class SpriteBankEdit extends SpriteBank {
 	}
     
     public void saveBank() {
+    	// Calculate texture position for each sprite
+        TileTexture tt = new TileTexture(bankEdit.gfxs);
+		tt.createModelsFromSpriteBank(this);
+		
         EasyBuffering buffer=new EasyBuffering(80000);
         for (int i=0;i<nSprite;i++) {
             SpriteModel model=models.get(i);
             buffer.put((byte) model.getTaille_x());
             buffer.put((byte) model.getTaille_y());
+            buffer.put((byte) model.getTexPos_x());
+            buffer.put((byte) model.getTexPos_y());
             Zone offsets = model.getEmptyBorders();
             if (offsets == null) {
             	buffer.put((byte) 0);
@@ -146,16 +157,12 @@ public class SpriteBankEdit extends SpriteBank {
                 buffer.put((byte) offsets.x1);
                 buffer.put((byte) offsets.x2);
             }
-            /*
-            for (int s : bankEdit.gfxs.get(i)) {
-                buffer.put((byte) s);
-            }
-            */
         }
         EasyWritingFile file=new EasyWritingFile(buffer);
         file.saveFile(getName());
         
-        new TileTexture(bankEdit.gfxs).createTextureFromSpriteBank(bank);
+        // Save texture
+        tt.createTextureFromSpriteBank(this);
     }
     
     /**

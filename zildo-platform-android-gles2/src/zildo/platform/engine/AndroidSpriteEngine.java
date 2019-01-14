@@ -23,7 +23,6 @@ package zildo.platform.engine;
 import shader.Shaders;
 import shader.Shaders.GLShaders;
 import zildo.client.ClientEngineZildo;
-import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TextureEngine;
@@ -211,9 +210,6 @@ public class AndroidSpriteEngine extends SpriteEngine {
 		
 		for (int i = 0; i < SpriteManagement.sprBankName.length; i++) {
 		    ((AndroidTextureEngine)textureEngine).loadTexture("sprite"+i);
-		    SpriteBank sprBank = p_spriteStore.getSpriteBank(i);
-		    // Calculate sprite locations on texture
-			createModelsFromSpriteBank(sprBank);
 	    }
 		
 	}

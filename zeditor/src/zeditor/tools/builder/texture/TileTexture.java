@@ -70,7 +70,7 @@ public class TileTexture {
 	 * sizes from {@link SpriteBank} objects.
 	 * @param sBank
 	 */
-	private void createModelsFromSpriteBank(SpriteBank sBank) {
+	public void createModelsFromSpriteBank(SpriteBank sBank) {
 		int x=0,y=0,highestLine=0;
 
 
@@ -126,8 +126,6 @@ public class TileTexture {
 	}
 	
 	public void createTextureFromSpriteBank(SpriteBank sBank) {
-		createModelsFromSpriteBank(sBank);
-		
 		final boolean alpha = true;
 		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(alpha);
 

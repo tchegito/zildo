@@ -61,7 +61,6 @@ public class SpriteBank {
 		// Class variables
 	protected List<SpriteModel> models;
 
-	private int[] offsets;	// Location of each sprite in sprites_buf
 	protected int nSprite;
 	protected String name;
 	
@@ -71,7 +70,6 @@ public class SpriteBank {
 	{
 		this.nSprite=0;
 		models=new ArrayList<SpriteModel>();
-		offsets=new int[300];	// Max sprites=300
 	}
 	
 	// Load a sprites bank into memory
@@ -79,16 +77,17 @@ public class SpriteBank {
 	{
 		EasyBuffering file=Zildo.pdPlugin.openFile(filename);
 		short a,b;
-	    int k;
-	
-		k=0;
-	
+		int texX=0, texY=0;
+		
 		// Theoretically, max size will be 256x256 -1 = 65535
 		name=filename;
 	
 		while (!file.eof()) {
 			a=file.readUnsignedByte();
 			b=file.readUnsignedByte();
+			texX = file.readUnsignedByte();
+			texY = file.readUnsignedByte();
+			
 			int offY=file.readUnsignedByte();
 			Zone emptyBorders = null;
 			// If bit 7 is on, so we have 2 offset available for this sprite
@@ -104,12 +103,9 @@ public class SpriteBank {
 			if (b == 0) b = 256;
 			// Build a temporary sprite and add it to the list
 			SpriteModel spr=new SpriteModel(a, b, emptyBorders);
+			spr.setTexPos_x(texX);
+			spr.setTexPos_y(texY);
 			models.add(spr);
-	
-			int taille=b*a;
-			
-			offsets[nSprite] = k;
-			k+=taille;
 			nSprite++;
 		}
 		

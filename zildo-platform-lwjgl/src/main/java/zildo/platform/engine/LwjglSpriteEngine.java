@@ -27,7 +27,6 @@ import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
-import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.engine.SpriteEngine;
@@ -206,15 +205,6 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		// Load sprite banks
 		textureEngine.init();
 		for (int i = 0; i < SpriteManagement.sprBankName.length; i++) {
-			SpriteBank sprBank = p_spriteStore.getSpriteBank(i);
-
-			// TODO:This could be done once when saving the texture
-			// And coordinates could be set in SPR file
-			// Or at least factorized in a single class
-			createModelsFromSpriteBank(sprBank);
-
-			// Create a DirectX9 texture based on the current tiles
-			//createTextureFromSpriteBank(sprBank);
 			textureEngine.loadTexture("sprite"+i);
 		}
 
