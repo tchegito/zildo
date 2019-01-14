@@ -21,6 +21,7 @@ import zeditor.tools.banque.Palais3;
 import zeditor.tools.banque.Village;
 import zeditor.tools.tiles.Banque;
 import zeditor.tools.tiles.GraphChange;
+import zeditor.tools.tiles.PyxelBanque;
 import zeditor.tools.tiles.TileBankEdit;
 import zildo.fwk.bank.TileBank;
 import zildo.fwk.gfx.engine.TileEngine;
@@ -71,6 +72,11 @@ public class CorrespondanceGifDec {
 	private Banque getBanque(String bankName) {
 		Banque bank = banks.get(bankName.toUpperCase());
 		if (bank == null) {
+			if (bankName.equals("pyxel")) {
+				bank = new PyxelBanque();
+				return bank;
+				
+			}
 			throw new RuntimeException("La banque " + bankName
 					+ " n'existe pas !");
 		}
@@ -93,7 +99,11 @@ public class CorrespondanceGifDec {
 	 * @return int (-1 si aucune tile trouvée à cet endroit)
 	 */
 	public int getMotifParPoint(String bankName, int x, int y) {
-		return getBanque(bankName).getNumTile(x, y);
+		if (bankName.equals("pyxel")) {
+			return x / 16;
+		} else {
+			return getBanque(bankName).getNumTile(x, y);
+		}
 	}
 	
 	public Point getPointParMotif(String bankName, int nMotif) {

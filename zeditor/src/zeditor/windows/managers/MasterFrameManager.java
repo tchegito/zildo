@@ -61,7 +61,8 @@ public class MasterFrameManager {
 	
 	public final static int MESSAGE_ERROR = 1;
 	public final static int MESSAGE_INFO = 2;
-
+	public final static int MESSAGE_SUCCESS = 3;
+	
 	/**
 	 * Constructeur vide
 	 * 
@@ -267,15 +268,20 @@ public class MasterFrameManager {
 	public static void display(String p_msg, int p_type) {
 		if (systemDisplay != null) {
 			systemDisplay.setText(" " + p_msg);
+			Color c = null;
 			switch (p_type) {
 			case MESSAGE_ERROR:
-				systemDisplay.setForeground(Color.red);
+				c = Color.red;
+				break;
+			case MESSAGE_SUCCESS:
+				c = Color.green;
 				break;
 			case MESSAGE_INFO:
 			default:
-				systemDisplay.setForeground(Color.black);
+				c = Color.black;
 				break;
 			}
+			systemDisplay.setForeground(c);
 		}
 	}
 

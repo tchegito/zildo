@@ -21,7 +21,9 @@
 package zeditor.windows.dialogs;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,16 +31,21 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import zeditor.tools.builder.Modifier;
+import zeditor.tools.builder.PyxelReader;
 import zeditor.tools.ui.SizedGridPanel;
+import zeditor.windows.managers.ExplorerFrameManager;
 import zeditor.windows.managers.MasterFrameManager;
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.monde.sprites.SpriteStore;
+import zildo.resource.Constantes;
 
 @SuppressWarnings({"serial", "unchecked", "rawtypes"})
 public class BuilderDialog extends JDialog {
@@ -50,7 +57,7 @@ public class BuilderDialog extends JDialog {
 	
 	public BuilderDialog(MasterFrameManager pManager) {
 		manager = pManager;
-		SizedGridPanel panel = new SizedGridPanel(5, 5);
+		SizedGridPanel panel = new SizedGridPanel(6, 5);
 
 		// Tile bank combo
 		List<String> listTileBanks = new ArrayList<String>();
@@ -123,6 +130,30 @@ public class BuilderDialog extends JDialog {
 			}
 		});
 		panel.add(buttonAllSpriteBanks);
+		
+		// Button for PYXEL
+		JButton buttonImportPyxel =new JButton(new AbstractAction("Import PYXEL") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Open file explorer
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setFileFilter(new FileNameExtensionFilter(
+						"PYXEL file", "pyxel"));
+				fileChooser.setCurrentDirectory(new File(Constantes.DATA_PATH
+						+ Constantes.MAP_PATH));
+				fileChooser.setAcceptAllFileFilterUsed(false);
+				fileChooser.setPreferredSize(new Dimension(600, 600));
+				int status = fileChooser.showOpenDialog(panel);
+				if (status == JFileChooser.APPROVE_OPTION) {
+					File f = fileChooser.getSelectedFile();
+					manager.canvasWaitingCall.add( () -> {
+						new PyxelReader().importPyxel(f.getAbsolutePath());
+						MasterFrameManager.display(f.getName()+" has been imported successfully !", MasterFrameManager.MESSAGE_SUCCESS);
+					});
+				}
+			}
+		});
+		panel.add(buttonImportPyxel);
 	
 		setTitle("ZEditor builder");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);

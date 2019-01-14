@@ -64,10 +64,17 @@ public class TileBankEdit extends TileBank {
 		
 		if (p_bank != null) {
 			String name=p_bank.getClass().getSimpleName().toUpperCase();
+			if (name.equals(PyxelBanque.class.getSimpleName().toUpperCase())) {
+				name = "pyxel";
+			}
 			setName(name);
 			bankOrder = TileEngine.getBankFromName(getName());
 		}
 		
+	}
+	
+	public TileBankEdit() {
+		this(null);
 	}
 	
 	/**
@@ -152,7 +159,6 @@ public class TileBankEdit extends TileBank {
     		drawImage(img, p.x, p.y, texture, texPos);
     		idxTile++;
     	}
-    	    	
     	img.flush();
     	
     	return img;
