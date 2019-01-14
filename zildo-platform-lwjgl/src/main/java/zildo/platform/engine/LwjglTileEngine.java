@@ -20,6 +20,8 @@
 
 package zildo.platform.engine;
 
+import java.io.File;
+
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
@@ -29,6 +31,7 @@ import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.primitive.TileGroupPrimitive.ActionNthRunner;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
+import zildo.resource.Constantes;
 
 /**
  * LWJGL customisation for tile engine.<p/>
@@ -104,10 +107,15 @@ public class LwjglTileEngine extends TileEngine {
 		// Create a texture based on the current tiles
 		textureEngine.init();
 		for (int i = 0; i < tileBankNames.length; i++) {
-			//TileBank motifBank = getMotifBank(i);
-			textureEngine.loadTexture("tile"+i);
-			//createTextureFromMotifBank(motifBank);
-			//motifBank.freeTempBuffer();
+			String filename = "tile"+i;
+			boolean optional = false;
+			if (tileBankNames[i].equals("pyxel")) {
+				File f = new File(Constantes.DATA_PATH+"textures/"+filename+".png");
+				optional |= (!f.exists());
+			}
+			if (!optional) {
+				textureEngine.loadTexture(filename);
+			}
 		}
 	}
 	
