@@ -74,17 +74,21 @@ public abstract class TextureEngine {
     }
     
     public GFXBasics prepareSurfaceForTexture(boolean p_alpha) {
+    	return prepareSurfaceForTexture(p_alpha, 256);
+    }
+    
+    public GFXBasics prepareSurfaceForTexture(boolean p_alpha, int height) {
         // Create image
     	if (scratch == null) {	// Allocate only once
 	    	if (p_alpha) {
-	    		scratch = ByteBuffer.allocateDirect(256 * 256 * 4);
+	    		scratch = ByteBuffer.allocateDirect(256 * height * 4);
 	    	} else {
-	    		scratch = ByteBuffer.allocateDirect(256 * 256 * 3);
+	    		scratch = ByteBuffer.allocateDirect(256 * height * 3);
 	    	}
     	}
     	alphaChannel = p_alpha;
 		GFXBasics surface=new GFXBasics(true);
-		surface.setBackBuffer(scratch, 256, 256, alphaChannel);
+		surface.setBackBuffer(scratch, 256, height, alphaChannel);
     	
         // Reset bytebuffer scratch
 		scratch.clear();

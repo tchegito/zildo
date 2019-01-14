@@ -69,7 +69,7 @@ public class Ambient {
 			case DANGERINSIDE:
 				return 512;
 			case DESERT:
-			    return 256*5 + 59;
+			    return 256*5 + 2;
 			case CASTLEINSIDE:
 				return 256*7 + 96;
 			case LAVACAVE:

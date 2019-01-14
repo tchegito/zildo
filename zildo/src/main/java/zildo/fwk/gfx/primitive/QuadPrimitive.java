@@ -138,15 +138,22 @@ public class QuadPrimitive {
 
     static final float[][] normalizedTex = { {0,0}, {1,0}, {0,1}, {1,1} };
     
+    // Actually, this HALF_TEXEL addition is disabled, because it ruins the standard display
+    // when a tile is reversed
+    static float _HALF_TEXEL_SIZE = 0.5f / 256f;
+    
     private void putTexture(float xTex, float yTex, float sizeX, float sizeY, boolean normalizeTex) {
         float texStartX=xTex;
         float texStartY=yTex;
         float[][] pTexCoords = texCoords;
         
+        float HALF_TEXEL_SIZE = 0 * _HALF_TEXEL_SIZE;
+        
         if (normalizeTex) {
         	xTex = 0; yTex = 0;
         	pTexCoords = normalizedTex;
         } else {
+        	// Handle Reverse
 	        if (sizeX < 0) {
 	        	texStartX-=sizeX;
 	        }
@@ -158,16 +165,17 @@ public class QuadPrimitive {
 	            float texPosX = texStartX + sizeX * (i % 2);
 	            float texPosY = texStartY + sizeY * (i / 2);
 	
+	            // As OpenGL samples pixel as texel's center, we have to add this extra value
 	            pTexCoords[i][0] = texPosX / textureSizeX;
-	            pTexCoords[i][1] = texPosY / textureSizeY;
+	            pTexCoords[i][1] = texPosY / textureSizeY + HALF_TEXEL_SIZE;
 	        }
         }
-        bufs.textures.put(pTexCoords[0][0]).put(pTexCoords[0][1]);
-        bufs.textures.put(pTexCoords[1][0]).put(pTexCoords[1][1]);
-        bufs.textures.put(pTexCoords[2][0]).put(pTexCoords[2][1]);
-        bufs.textures.put(pTexCoords[1][0]).put(pTexCoords[1][1]);
-        bufs.textures.put(pTexCoords[3][0]).put(pTexCoords[3][1]);
-        bufs.textures.put(pTexCoords[2][0]).put(pTexCoords[2][1]);
+        bufs.textures.put(pTexCoords[0][0] + HALF_TEXEL_SIZE).put(pTexCoords[0][1] + HALF_TEXEL_SIZE);
+        bufs.textures.put(pTexCoords[1][0] - HALF_TEXEL_SIZE).put(pTexCoords[1][1] + HALF_TEXEL_SIZE);
+        bufs.textures.put(pTexCoords[2][0] + HALF_TEXEL_SIZE).put(pTexCoords[2][1] - HALF_TEXEL_SIZE);
+        bufs.textures.put(pTexCoords[1][0] - HALF_TEXEL_SIZE).put(pTexCoords[1][1] + HALF_TEXEL_SIZE);
+        bufs.textures.put(pTexCoords[3][0] - HALF_TEXEL_SIZE).put(pTexCoords[3][1] - HALF_TEXEL_SIZE);
+        bufs.textures.put(pTexCoords[2][0] + HALF_TEXEL_SIZE).put(pTexCoords[2][1] - HALF_TEXEL_SIZE);
     }
 
     // Return the quad position in Vertex Buffer
@@ -199,7 +207,6 @@ public class QuadPrimitive {
         		pixSizeY = siz;
         	}
         }
-        //float zoom = (float) (0.8f + 0.5f * Math.cos(al));
         float startX = x;
         float startY = y;
         if (zoom != 255) {
