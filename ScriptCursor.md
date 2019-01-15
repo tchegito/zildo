@@ -44,4 +44,4 @@ But if a blocking action is inside the loop, cursor will wait at each iteration:
       <perso who="zildo" addSpr="a"/>
    </for>
 ```
-Then complete script execution will take 10 frames.
+Then complete script execution will take 11 frames (10 + 1 extra to close the 'for' loop).
