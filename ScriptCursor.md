@@ -2,9 +2,11 @@
 
 When a script is running in Alembrume's engine, it is executed line by line with a cursor iterating over it. But the cursor doesn't go 1 line per frame. It did before Episode 4, but now there are rules, in order to speed up some processing.
 
+Basically script is intended for cutscenes, so we need a cursor followng a timeline. But sometimes, we need to render some actions in one frame. Note that we could already do this with 'actions' tag, to gather several action in the same time. But that didn't work for loop/conditional tags, like 'for', 'loop' or 'if'.
+
 ## Var ##
 
-As a function altering a variable, this is not necessary to block the cursor. So, following code is running in a single frame:
+As this function is just altering a variable, this is not necessary to block the cursor. So, following code is running in a single frame:
 ```
     <var name="truc" value="1"/>
     <var name="machin" value="2"/>
