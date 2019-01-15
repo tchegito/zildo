@@ -1,4 +1,4 @@
-#Cursor on script#
+# Cursor on script #
 
 When a script is running in Alembrume's engine, it is executed line by line with a cursor iterating over it. But the cursor doesn't go 1 line per frame. It did before Episode 4, but now there are rules, in order to speed up some processing.
 
