@@ -32,8 +32,16 @@ Even if 'for' statements are nested, this is still going in a single frame:
 ```
    <for var="j" value="3">
       <for var="i" value="6">
-	       <tile pos="28+i,6+j" back="256*10 + 34" back2="-1"/>
-		  </for>
+         <tile pos="28+i,6+j" back="256*10 + 34" back2="-1"/>
+      </for>
    </for>
 ```
 This is the same if 'for' statements are nested inside 'loop'.
+
+But if a blocking action is inside the loop, cursor will wait at each iteration:
+```
+   <for var="a" value="10">
+      <perso who="zildo" addSpr="a"/>
+   </for>
+```
+Then complete script execution will take 10 frames.
