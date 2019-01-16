@@ -6,51 +6,58 @@
 	    	<spawn who="bitey" pos="220,118" type="BITEY"/>
 	    	<perso who="bitey" action="bitey"/> 
    	    </condition>
-	    <condition name="sousbois7" locked="false">
+    -->
+	    <condition name="canyon" locked="false">
 	    	<spawn who="bitey" pos="699,187" type="BITEY" info="ENEMY"/>
 	    	<perso who="bitey" action="bitey"/>
 	    </condition> 
-    -->
    	</mapScript>
     
     <persoAction id="bitey">
         <loop>
             <var name="loc:found" value="0"/>
-			<lookFor who="self" info="ZILDO" radius="6">
+			<lookFor who="self" info="ZILDO" radius="7">
 				<var name="loc:found" value="1"/>
 			</lookFor>
-			<if exp="loc:found=1">
-			    <!-- Set angle and reverse -->
-			    <if exp="zildo.x &gt; x">
-				    <perso who="self" reverse="128"/>
-				    <angle who="self" value="1"/>
-			    </if>
-			    <if exp="zildo.x &lt; x">
-				    <perso who="self" reverse="0"/>
-				    <angle who="self" value="3"/>
-			    </if>
-			    <!-- "Idle near" animation and bite if character is really close -->
-			    <for var="loc:i" value="3">
+			<actions>
+				<if exp="loc:found=1">
+				    <!-- Set angle and reverse -->
+				    <actions>
+					    <if exp="zildo.x &gt; x">
+						    <perso who="self" reverse="128"/>
+						    <angle who="self" value="1"/>
+					    </if>
+					    <if exp="zildo.x &lt; x">
+						    <perso who="self" reverse="0"/>
+						    <angle who="self" value="3"/>
+					    </if>
+				    </actions>
+				    <!-- "Idle near" animation and bite if character is really close -->
 		            <!-- Idle near -->
-		            <seq who="self" addSpr="1,2,3,4,5,6,0" wait="4"/>
+		            <seq who="self" addSpr="1,2,3,4,5,6,0,1,2" wait="4"/>
 		            <sound name="Wind"/>
+		            <!-- Extension to the victim -->
 	            	<seq who="self" addSpr="11,12,13,14,15,16,17,18,19,20,21" wait="1"/>
+	            	<actions>
+		            	<if exp="angle=1">
+							<spawn impact="GNAP" pos="x+55,y+4" reverse="128"/>	
+		            	</if>
+		            	<if exp="angle=3">
+							<spawn impact="GNAP" pos="x-55,y+4"/>
+						</if>
+					</actions>	
 	            	<sound name="Wind" mute="true"/>
-	            	<if exp="angle=1">
-						<spawn impact="GNAP" pos="x+55,y+4" reverse="128"/>	
-	            	</if>
-	            	<if exp="angle=3">
-						<spawn impact="GNAP" pos="x-55,y+4"/>
-					</if>	
-   					<sound name="Bitey"/>		    					    
+	            	<sound name="Bitey"/>		    	
+	            	<!-- Back to origin -->				    
 	            	<seq who="self" addSpr="22,23,24,25,26,27" wait="1"/>
-			    </for>
-			</if>
-			<if exp="loc:found=0">
-		        <!-- Idle far -->
-				<seq who="self" addSpr="7,8,9,10,9,8" wait="10"/>
-			</if>
-   	        
+	            	<perso who="self" addSpr="28"/>
+				</if>
+				<if exp="loc:found=0">
+			        <!-- Idle far -->
+					<seq who="self" addSpr="7,8,9,10,9,8" wait="10"/>
+				</if>
+			</actions>
+				        
         </loop>
    	</persoAction>    
 </adventure>

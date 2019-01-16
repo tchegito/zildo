@@ -121,7 +121,7 @@ public class CheckFoundBugs extends EngineUT {
 		
 		waitEndOfScripting();
 		
-		simulateDirection(new Vector2f(1, 0));
+		simulateDirection(1, 0);
 		
 		renderFrames(50);
 

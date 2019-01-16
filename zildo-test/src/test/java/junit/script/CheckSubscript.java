@@ -42,6 +42,8 @@ import zildo.server.PersoManagement;
  */
 public class CheckSubscript extends EngineScriptUT {
 	
+	final static int GREAT_NUMBER_OF_FRAME = 500;
+	
 	/** Check that each subscript is fully executed before returning to caller **/
 	@Test
 	public void oneSubCall() {
@@ -96,7 +98,7 @@ public class CheckSubscript extends EngineScriptUT {
 		int startLength = vars.size();
 		boolean waitForResetI = false;
 		int nbCycle = 0;
-		while (nFrame < 5000) {
+		while (nFrame < GREAT_NUMBER_OF_FRAME) {
 			renderFrames(1);
 
 			vars = scriptMgmt.getVariables();
@@ -139,7 +141,7 @@ public class CheckSubscript extends EngineScriptUT {
 		final int initialSize = vars.size();
 		final int maxVariables = initialSize + (2 * NB_PERSOS);
 		
-		while (nFrame < 5000) {
+		while (nFrame < GREAT_NUMBER_OF_FRAME) {
 			renderFrames(1);
 			vars = scriptMgmt.getVariables();
 			//System.out.println(initialSize+" ==> "+vars.size());

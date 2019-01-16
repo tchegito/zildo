@@ -1,0 +1,97 @@
+<adventure>
+	<scene id='caller'>
+ 		<var name='stateA' value='1'/>
+ 		<var name='stateB' value='2'/>
+ 		<var name='stateC' value='3'/>
+ 		<var name='stateD' value='4'/>
+ 		
+ 		<music name=""/>
+ 		
+ 		<!-- First stop -->
+ 		
+ 		<if exp="stateA=1">
+ 		    <var name='stateE' value='5'/>
+ 		</if>
+ 		
+ 		<!-- Second stop -->
+ 		
+ 		<loop when="stateA=9">
+ 		    <var name='stateF' value='6'/>
+ 		</loop>
+ 		
+ 		<!-- Third stop -->
+ 		
+ 		<loop when="stateA=9">
+ 		    <for var="loc:i" value="1">
+ 		        <var name='stateG' value='7'/>
+ 		    </for>
+ 		</loop>
+	</scene>
+	
+	<scene id='forAndTile'>
+	    <for var="j" value="3">
+	    	<tile pos="28,6+j" back="256*10 + 34" back2="-1"/>
+     	</for>
+	</scene>
+
+	<scene id='blockingFor'>
+	    <for var="j" value="10">
+	    	<perso who="zildo" addSpr="j"/>
+     	</for>
+	</scene>
+	
+	<scene id='doubleForAndTile'>
+	    <for var="j" value="3">
+		  	<for var="i" value="6">
+		    	<tile pos="28+i,6+j" back="256*10 + 34" back2="-1"/>
+		  	</for>
+     	</for>
+	</scene>
+		
+	<scene id='moreComplicated'>
+		<loop>
+            <var name="loc:found" value="0"/>
+			<lookFor who="self" info="ZILDO" radius="6">
+				<var name="loc:found" value="1"/>
+			</lookFor>
+			<actions>
+				<if exp="loc:found=1">
+				    <!-- Set angle and reverse -->
+				    <actions>
+					    <if exp="zildo.x &gt; x">
+						    <perso who="zildo" reverse="128"/>
+						    <angle who="zildo" value="1"/>
+					    </if>
+					    <if exp="zildo.x &lt; x">
+						    <perso who="zildo" reverse="0"/>
+						    <angle who="zildo" value="3"/>
+					    </if>
+				    </actions>
+				    <!-- "Idle near" animation and bite if character is really close -->
+				    <for var="loc:i" value="1">
+			            <!-- Idle near -->
+			            <sound name="Wind"/>
+			            <!-- Extension to the victim -->
+		            	<actions>
+			            	<if exp="angle=1">
+								<spawn impact="GNAP" pos="x+55,y+4" reverse="128"/>	
+			            	</if>
+			            	<if exp="angle=3">
+								<spawn impact="GNAP" pos="x-55,y+4"/>
+							</if>
+						</actions>	
+		            	<sound name="Wind" mute="true"/>
+		            	<sound name="Bitey"/>		    	
+		            	<!-- Back to origin -->				    
+		            	<music name=""/>
+				    </for>
+				</if>
+				<if exp="loc:found=0">
+			        <!-- Idle far -->
+					<angle who="zildo" value="2"/>
+				</if>
+			</actions>
+				        
+        </loop>	    
+	</scene>
+</adventure>

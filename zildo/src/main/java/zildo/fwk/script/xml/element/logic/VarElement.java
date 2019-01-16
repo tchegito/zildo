@@ -75,7 +75,6 @@ public class VarElement extends LanguageElement {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void parse(Attributes p_elem) {
 		super.parse(p_elem);
 		
@@ -118,7 +117,11 @@ public class VarElement extends LanguageElement {
 		StringBuilder sb = new StringBuilder(kind.toString());
 		sb.append(" ");
 		if (name == null) {
-			sb.append(expression);
+			if (expression != null) {
+				sb.append(expression);
+			} else {
+				sb.append(strValue);
+			}
 		} else {
 			sb.append(name).append("=").append(value);
 		}

@@ -1971,10 +1971,8 @@
 	   			    <perso who="zildo" vx="loc:deltaX/70" vy="loc:deltaY/70"/>
 	   			    	   			    
 	   			    <for var="loc:j" value="5">
-	   			        <actions>
-			   			    <exec script="suckOut(x,y,loc:seq)"/>
-			   			    <var name="loc:seq" value="(loc:seq+1) % 3"/>
-	   			        </actions>
+		   			    <var name="loc:seq" value="(loc:seq+1) % 3"/>
+		   			    <exec script="suckOut(x,y,loc:seq)"/>
    	   			    </for>
 	   			   	<!-- If hero is out of sight, stop sucking out and declare it -->		    	   			    	   			    	   			    
 				    <lookFor who="self" info="ZILDO" sight="true" radius="6" negative="true">

@@ -98,9 +98,6 @@ import zildo.server.EngineZildo;
  * </p>
  * This class has just to render one action.<br/>
  * <br/>
- * <b>PROBLEM</b>:This class has a critical problem, based upon repetition. If more than one script is running the same sequence of actions,
- * we won't be able to distinguish wich process is done or not. Because the 'done' state is marked inside the ActionElement, which is
- * the descriptor AND the statefull script. This should be two distinct objects.
  * 
  * @author tchegito
  */
@@ -828,6 +825,7 @@ public class ActionExecutor extends RuntimeExecutor {
             	achieved=true; //p_action.unblock; // || !scriptExec.isProcessing(p_action.text);
             	break;
             case timer:
+            	System.out.println(count+" / "+nextStep);
             	TimerElement timer = (TimerElement) p_action;
             	if (timer.endCondition != null && timer.endCondition.evaluate(context) == 1) {
             		achieved = true;

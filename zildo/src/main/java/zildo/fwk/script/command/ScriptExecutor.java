@@ -32,8 +32,10 @@ import zildo.client.ClientEvent;
 import zildo.client.ClientEventNature;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.SpriteEntityContext;
+import zildo.fwk.script.xml.element.action.ActionElement;
 import zildo.fwk.script.xml.element.action.runtime.RuntimeAction;
 import zildo.fwk.script.xml.element.action.runtime.RuntimeScene;
+import zildo.fwk.script.xml.element.logic.VarElement;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -50,7 +52,7 @@ public class ScriptExecutor {
 	boolean PROCESSING_SCRIPTS;	// TRUE if we're iterating over running scripts
 	
 	List<ScriptProcess> subScriptsEnded = new ArrayList<ScriptProcess>();
-	List<ScriptProcess> toTerminate = new ArrayList<ScriptProcess>();
+	Set<ScriptProcess> toTerminate = new HashSet<ScriptProcess>();
 	List<ScriptProcess> toExecute = new ArrayList<ScriptProcess>();
 	
 	/**
@@ -115,37 +117,15 @@ public class ScriptExecutor {
 			
 			// 1) Render current scripts
 			PROCESSING_SCRIPTS = true;
+			//System.out.print("Frame:");
 			for (ScriptProcess process : scripts) {
-				
-				// Does this process have a sub process ? Check recursively
-				while (process.subProcess != null) {
-					if (subScriptsEnded.contains(process.subProcess)) {
-						// This sub process has recently ended, so we cut the link from the parent
-						subScriptsEnded.remove(process.subProcess);
-						process.subProcess = null;
-						break;
-					}
-					process = process.subProcess;
+
+				boolean shouldGoOn = true;
+				shouldGoOn = renderProcess(process);
+				while (shouldGoOn) { // || process.subProcess != null) {
+					shouldGoOn = renderProcess(process);
 				}
-				
-				RuntimeAction currentNode=process.getCurrentNode();
-				if (currentNode == null) {
-					if (process.currentActions.isEmpty()) { // Is there some actions waiting (those with attribute 'unblocked' at TRUE)
-						// We reach the end of the script
-						toTerminate.add(process);
-					}
-				} else {
-					renderElement(process, currentNode, true);
-				}
-				// Render current actions too
-				for (Iterator<RuntimeAction> it=process.currentActions.iterator();it.hasNext();) {
-					RuntimeAction action=it.next();
-					if (action.done) {	// It's done, so remove the action
-						it.remove();
-					} else {
-						renderElement(process, action, false);
-					}
-				}
+
 				
 				// Did the last action finished ? So we'll avoid GUI blinking with 1-frame long script. (issue 28)
 				if (process.getCurrentNode() == null && process.currentActions.isEmpty()) {
@@ -175,9 +155,74 @@ public class ScriptExecutor {
 			scripts.add(i, process);
 		}
 		toExecute.clear();
+		//System.out.println();
 
 	}
 
+	// TODO: don't modify input variable
+	private boolean renderProcess(ScriptProcess process) {
+		
+		// Does this process have a sub process ? Check recursively
+		ScriptProcess parent = null;
+		while (process.subProcess != null) {
+			if (subScriptsEnded.contains(process.subProcess)) {
+				// This sub process has recently ended, so we cut the link from the parent
+				process.subProcess.terminate();
+				subScriptsEnded.remove(process.subProcess);
+				process.subProcess = null;
+				break;
+			}
+			parent = process;
+			process = process.subProcess;
+		}
+		
+		boolean shouldGoOn = false;
+		RuntimeAction currentNode=process.getCurrentNode();
+		if (currentNode == null) {
+			if (process.currentActions.isEmpty()) { // Is there some actions waiting (those with attribute 'unblocked' at TRUE)
+				// We reach the end of the script
+				toTerminate.add(process);
+			}
+		} else {
+			shouldGoOn = renderElement(process, currentNode, true);
+		}
+
+		// Render current actions too
+		for (Iterator<RuntimeAction> it=process.currentActions.iterator();it.hasNext();) {
+			RuntimeAction action=it.next();
+			if (action.done) {	// It's done, so remove the action
+				it.remove();
+			} else {
+				renderElement(process, action, false);
+			}
+		}
+		
+		if (process.getCurrentNode() == null) {
+			if (parent != null) {
+				// TODO: isn't parent.subProcess supposed to be equals to process ??? 
+				if (parent.subProcess.currentActions.isEmpty() && parent.subProcess.subProcess == null) {
+					parent.subProcess.terminate();
+					parent.subProcess = null;
+					subScriptsEnded.add(process);
+				}
+			} else if (process.currentActions.isEmpty()){
+				toTerminate.add(process);
+			}
+		}
+		/*
+		while (process.subProcess != null) {
+			// TODO: pass only process to this sub function
+			process = process.subProcess;
+			//renderElement(process, process.getCurrentNode(), true);
+			// Special case of process with just one line
+			if (process.getCurrentNode() == null) {
+				toTerminate.add(process);
+			}
+		} */
+	
+		return shouldGoOn;
+	}
+	
 	private void terminateIfNeeded() {
 		for (ScriptProcess process : toTerminate) {
 			terminate(process);
@@ -257,12 +302,66 @@ public class ScriptExecutor {
 		}
 	}
 	
-	private void renderElement(ScriptProcess process, RuntimeAction currentNode, boolean moveCursor) {
-		if (!currentNode.var) {
-			renderAction(process, currentNode, moveCursor);
-		} else {
-			renderVariable(process, currentNode, moveCursor);
-		}		
+	/** Render an element, wether it's an action or a variable execution. Both should make the cursor go forward **/
+	private boolean renderElement(ScriptProcess process, RuntimeAction currentNode, boolean moveCursor) {
+		// TODO: careful to 'actions' tag, where currentNode is not the process.currentNode
+		RuntimeAction node = currentNode;
+		boolean shouldGoOn = true;
+		while (node != null) {
+			boolean hadSubprocess = process.subProcess != null;
+			if (!node.var) {
+				//System.out.print("action => "+node);
+				renderAction(process, node, moveCursor);
+			} else {
+				//System.out.print("var => "+node+", ");
+				renderVariable(process, node, moveCursor);
+			}
+			
+			if (node != null && node.var) {
+				VarElement var = (VarElement)node.action;
+				switch (var.kind) {
+					case var:
+						node = process.getCurrentNode();
+						break;
+					case _if:
+						if (node.done) {
+							node = process.getCurrentNode();
+							
+							//break;
+						}
+					default:
+						shouldGoOn = false;
+				}
+			} else if (node != null && !node.var && node.action != null) {
+				ActionElement act = (ActionElement)node.action;
+				switch (act.kind) {
+					case loop:
+						if (node.done) {
+							node = process.getCurrentNode();
+							shouldGoOn = false;
+							break;
+						}
+					case _for:
+					case tile:
+					case nameReplace:
+						if (node.done) {
+							node = process.getCurrentNode();
+							break;
+						}
+					default:
+						shouldGoOn = false;
+				}
+			} else {
+				shouldGoOn = false;
+			}
+			if (!shouldGoOn) {
+				if (!hadSubprocess && process.subProcess != null) {
+					shouldGoOn = true;
+				}
+				break;
+			}
+		}
+		return shouldGoOn;
 	}
 	
 	public boolean isScripting() {
