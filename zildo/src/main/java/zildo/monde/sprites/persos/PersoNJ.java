@@ -28,6 +28,7 @@ import zildo.monde.collision.DamageType;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
@@ -43,6 +44,7 @@ import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
+import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -104,6 +106,26 @@ public class PersoNJ extends Perso {
 		}
 	}
 
+	public Collision getCollision() {
+		if (desc == PersoDescription.BITEY) {
+			// Bitey need a special collision (but this could be appended for someone else too)
+			SpriteModel model = getSprModel();
+			Zone borders = model.getEmptyBorders();
+			int offX = 0;
+			if (borders != null) {
+				if (!reverse.isHorizontal()) {
+					offX -= (borders.x1 +borders.x2 )/2;
+					offX += borders.x1;	// Shift because between [x,x1] this is an empty border
+				} else {
+					offX -= (borders.x1-borders.x2)/2;
+				}
+			}
+			
+			return new Collision(new Point(x+offX, y), new Point(model.getTaille_x(), model.getTaille_y()), this, DamageType.BLUNT, null);
+		}
+		return super.getCollision();
+	};
+	
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// beingWounded
 	// /////////////////////////////////////////////////////////////////////////////////////

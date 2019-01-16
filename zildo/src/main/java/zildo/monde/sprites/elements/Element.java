@@ -437,6 +437,7 @@ public class Element extends SpriteEntity {
 		}
 		SpriteModel model = getSprModel();
 		if (collision == null) {
+			// Default collision: heuristic with a radius of (sizeX + sizeY) / 4
 			int radius = (model.getTaille_x() + model.getTaille_y()) / 4;
 			collision = new Collision((int) x, (int) y, radius, Angle.NORD,
 					(Perso) linked, getDamageType(), weapon);
