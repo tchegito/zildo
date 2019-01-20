@@ -227,6 +227,23 @@ public class CheckSubscript extends EngineScriptUT {
 		Assert.assertEquals(numVariables, scriptMgmt.getVariables().size());
 	}
 	
+	/** We used to have same value for a timer in all actions executed in a ActionExecutor. But this was wrong. **/
+	@Test
+	public void separatedTimers() {
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/subscript"));
+		waitEndOfScripting();
+		
+		scriptMgmt.execute("doubleTimers", false);
+		
+		renderFrames(1);
+		Assert.assertEquals("0.0", scriptMgmt.getVarValue("varA"));
+		renderFrames(3);
+		Assert.assertEquals("1.0", scriptMgmt.getVarValue("varA"));
+		renderFrames(5);
+		Assert.assertEquals("2.0", scriptMgmt.getVarValue("varA"));
+		Assert.assertEquals("1.0", scriptMgmt.getVarValue("varB"));
+	}
+	
 	private int countSprites() {
 		return EngineZildo.spriteManagement.getSpriteEntities(null).size();
 	}

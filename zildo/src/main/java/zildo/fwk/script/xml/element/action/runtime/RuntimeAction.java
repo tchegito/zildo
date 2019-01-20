@@ -43,6 +43,8 @@ public class RuntimeAction extends RuntimeModifiableElement {
 
 	public final boolean unblock;
 
+    public int count, nextStep;	// Used for 'timer' and 'wait'
+    
 	public LanguageElement action;
 	
 	// For case that a list of action must be used (actions, lookFor, ...)

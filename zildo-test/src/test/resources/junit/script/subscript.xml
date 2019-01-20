@@ -57,4 +57,20 @@
 	    <spawn what="loc:air" type="FIREWIND1" pos="3-6,loc:arg1+2+8" alpha="130+80*random" alphaA="-1"/>
 	</scene>
 	
+	<scene id='doubleTimers'>
+	    <var name="varA" value="0"/>
+	    <var name="varB" value="0"/>
+	    <actions>
+            <timer each="4">
+                <action>
+	                <var name="varA" value="varA+1"/>
+	            </action>
+            </timer>
+            <timer each="8">
+                <action>
+	                <var name="varB" value="varB+1"/>
+	            </action>
+            </timer>
+	    </actions>
+	</scene>
 </adventure>

@@ -105,7 +105,6 @@ import zildo.server.EngineZildo;
 public class ActionExecutor extends RuntimeExecutor {
 
     ScriptExecutor scriptExec;
-    int count, nextStep;
     boolean locked;
     boolean uniqueAction;	// TRUE means unique action is executing (useful for timer)
 	
@@ -292,7 +291,7 @@ public class ActionExecutor extends RuntimeExecutor {
                     achieved = true;
                     break;
                 case wait:
-                	count=p_action.val;
+                	p_runtimeAction.count=p_action.val;
                 	break;
                 case fadeIn:
                 	EngineZildo.askEvent(new ClientEvent(ClientEventNature.FADE_IN, FilterEffect.fromInt(p_action.val)));
@@ -676,9 +675,9 @@ public class ActionExecutor extends RuntimeExecutor {
                 		executeSubProcessInParallel(Collections.singletonList((LanguageElement) p_action));
                 		achieved=true;
                 	} else {
-                		count = 0;
+                		p_runtimeAction.count = 0;
                 		// On timer's first run, don't wait <each> frames but execute actions at once
-                		nextStep = 0; //(int) ((TimerElement)p_action).each.evaluate(context);
+                		p_runtimeAction.nextStep = 0; //(int) ((TimerElement)p_action).each.evaluate(context);
                 	}
                 	break;
                 case loop:	// 'end' condition is checked at the end of a loop execution
@@ -807,7 +806,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 achieved = scriptExec.userEndedAction;
                 break;
             case wait:
-            	achieved = (count-- <= 0);
+            	achieved = (p_runtimeAction.count-- <= 0);
             	break;
             case fadeIn:
             case fadeOut:
@@ -825,17 +824,16 @@ public class ActionExecutor extends RuntimeExecutor {
             	achieved=true; //p_action.unblock; // || !scriptExec.isProcessing(p_action.text);
             	break;
             case timer:
-            	System.out.println(count+" / "+nextStep);
             	TimerElement timer = (TimerElement) p_action;
             	if (timer.endCondition != null && timer.endCondition.evaluate(context) == 1) {
             		achieved = true;
             		executeSubProcessInParallel(timer.end);
-            	} else if (count == nextStep) {
-            		count = 0;
-            		nextStep = (int) timer.each.evaluate(context);
+            	} else if (p_runtimeAction.count == p_runtimeAction.nextStep) {
+            		p_runtimeAction.count = 0;
+            		p_runtimeAction.nextStep = (int) timer.each.evaluate(context);
             		executeSubProcessInParallel(timer.actions);
             	} else {
-            		count++;
+            		p_runtimeAction.count++;
             	}
             	achieved |= p_action.unblock;
             	break;
