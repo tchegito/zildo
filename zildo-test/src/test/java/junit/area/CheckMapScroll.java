@@ -1,10 +1,15 @@
 package junit.area;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
 import tools.annotations.InfoPersos;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
@@ -97,5 +102,74 @@ public class CheckMapScroll extends EngineUT {
 		}
 		mapUtils.assertCurrent("polaky");
 		System.out.println(hero);
+	}
+	
+	/** Issue 169: scroll left to right leaded to entities removal too early **/
+	@Test
+	public void entitiesDisappearAtRightTime() {
+		mapUtils.loadMap("prison4r");
+		PersoPlayer hero = spawnZildo(40, 146);
+		waitEndOfScripting();
+		
+		// Get barrels
+		List<SpriteEntity> barrels = findBarrels();
+		Assert.assertTrue(barrels.size() > 1);
+		
+		// 1) transition to the left
+		System.out.println(EngineZildo.spriteManagement.getSpriteEntities(null).size());
+		simulateDirection(-1, 0);
+		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
+			renderFrames(1);
+		}
+		simulateDirection(0, 0);
+		
+		// Check that sprites are still there
+		Assert.assertTrue(checkSpritesPresence(barrels));
+		
+		renderFrames(5);
+		waitEndOfScroll();
+		Assert.assertTrue(checkSpritesPresence(barrels));
+
+		renderFrames(5);
+		mapUtils.assertCurrent("prison4");
+		Assert.assertFalse(checkSpritesPresence(barrels));
+		
+		// 2) transition to the right
+		barrels = findBarrels();
+		simulateDirection(1, 0);
+		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
+			renderFrames(1);
+		}
+		simulateDirection(0, 0);
+		
+		// Check that sprites are still there
+		Assert.assertTrue(checkSpritesPresence(barrels));
+		
+		renderFrames(5);
+		waitEndOfScroll();
+		Assert.assertTrue(checkSpritesPresence(barrels));
+
+		renderFrames(5);
+		mapUtils.assertCurrent("prison4r");
+		Assert.assertFalse(checkSpritesPresence(barrels));
+	}
+	
+	private boolean checkSpritesPresence(List<SpriteEntity> candidates) {
+		int found = 0;
+		for (SpriteEntity entity : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+			if (candidates.contains(entity))
+				found++;
+		}
+		return found == candidates.size();
+	}
+	
+	private List<SpriteEntity> findBarrels() {
+		List<SpriteEntity> barrels = new ArrayList<>();
+		for (SpriteEntity entity : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+			if (entity.getDesc() == ElementDescription.BARREL) {
+				barrels.add(entity);
+			}
+		}
+		return barrels;
 	}
 }

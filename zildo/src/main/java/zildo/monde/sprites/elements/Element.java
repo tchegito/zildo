@@ -334,7 +334,8 @@ public class Element extends SpriteEntity {
 					}
 				}
 				// Débordement
-				if (x < -4 || y < -4 || x > 64 * 16 || (y-z) > 64 * 16) {
+				Area area = EngineZildo.mapManagement.getCurrentMap();
+				if (x < -4 || y < -4 || x > 16 * (area.getDim_x()) || (y-z) > 16 * (area.getDim_y())) {
 					if (!isOutsidemapAllowed() && !isLinkedToZildo()) {
 						die();
 						dying = true;

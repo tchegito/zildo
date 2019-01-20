@@ -636,9 +636,8 @@ public class SpriteManagement extends SpriteStore {
 		}
 
 		List<SpriteEntity> toDelete = new ArrayList<SpriteEntity>();
-		for (Iterator<SpriteEntity> it = spriteEntities.iterator(); it.hasNext();) {
-			SpriteEntity entity = it.next();
-			if (toDelete.contains(entity)) {
+		for (SpriteEntity entity : spriteEntities) {
+			if (toDelete.contains(entity) || suspendedEntities.contains(entity)) {
 				continue; // It's a dead one
 			}
 			Element element = null;
