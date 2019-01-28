@@ -5,6 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import tools.EngineUT;
+import zildo.client.gui.menu.SaveGameMenu;
 import zildo.fwk.net.www.CrashReporter;
 import zildo.server.EngineZildo;
 
@@ -45,5 +46,13 @@ public class TestCrashReporter extends EngineUT {
 		mapUtils.loadMap("polakyg");
 		Throwable t = new RuntimeException("I want that Olivioh message !");
 		new CrashReporter(t).addContext().sendReport();
+	}
+	
+	/** Issue 171: exception when anti-crash feature tries to save although there isn't any hero present **/
+	@Test
+	public void saveOnCrash() {
+		waitEndOfScripting();
+		SaveGameMenu.saveOnCrash();
+		// If we don't get an NPE at this point, we're good !
 	}
 }

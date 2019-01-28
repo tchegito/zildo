@@ -634,10 +634,12 @@ public class ScriptManagement {
 	/**
 	 * Returns TRUE if player can save his game.<br/>
 	 * This is forbidden in two cases : when a script is running, and when hero is on a platform.
+	 * An extra case has been added: when hero doesn't exist yet.
 	 * @return boolean
 	 */
 	public boolean isAllowedToSave() {
 		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
+		if (zildo == null) return false;
 		boolean onPlatform = zildo != null && zildo.isOnPlatform();
 		boolean isBossFighting = "1.0".equals(EngineZildo.scriptManagement.getVarValue("bossFighting"));
 		return !scriptExecutor.isScripting(false) && !onPlatform && !isBossFighting;
