@@ -39,6 +39,7 @@ public class PageableMenu extends Menu {
 	
 	List<ItemMenu> completeItems;
 	int currentPage;
+	int maxPage;
 	
 	ItemMenu itemPreviousPage;
 	ItemMenu itemNextPage;
@@ -57,6 +58,7 @@ public class PageableMenu extends Menu {
 		if (p_items.length > NB_PER_PAGE) {
 			// Too much items => get a sublist, and add a 'next page' item
 			currentPage = 0;
+			maxPage = completeItems.size() / NB_PER_PAGE;
 			initCurrentPage();
 			
 			// Display number of items in title
@@ -130,12 +132,12 @@ public class PageableMenu extends Menu {
 		
 	}
 	private void nextPage() {
-		currentPage++;
+		currentPage = Math.min(maxPage, currentPage + 1);
 		changePage();
 	}
 	
 	private void previousPage() {
-		currentPage--;
+		currentPage = Math.max(0, currentPage - 1);
 		changePage();
 	}
 }
