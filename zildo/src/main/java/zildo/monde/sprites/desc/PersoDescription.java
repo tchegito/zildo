@@ -278,6 +278,7 @@ public enum PersoDescription implements SpriteDescription {
 		case TURRET_HEART:
 		case BRAMBLE:
 		case DRAGON:
+		case BITEY:
 			return false;
 			default:
 				return true;

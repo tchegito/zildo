@@ -1022,6 +1022,7 @@ public class PersoNJ extends Perso {
 			if (shadow != null) {
 				shadow.dying = true;
 			}
+			EngineZildo.scriptManagement.stopPersoAction(this);
 		}
 	}
 
