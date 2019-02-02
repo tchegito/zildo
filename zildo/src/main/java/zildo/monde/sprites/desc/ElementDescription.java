@@ -152,7 +152,9 @@ public enum ElementDescription implements SpriteDescription {
 	FIREWIND1, FIREWIND2, FIREWIND3,
 	DRAGON_KEY, PORTAL_KEY,
 	// Bitey's GNAP (when the plant shut her tooth)
-	GNAP1, GNAP2, GNAP3, GNAP4, GNAP5;
+	GNAP1, GNAP2, GNAP3, GNAP4, GNAP5,
+	// Catapult
+	CATAPULT_CRATE, CATAPULT_BRANCH;
 	
 	Boolean damage;
 	

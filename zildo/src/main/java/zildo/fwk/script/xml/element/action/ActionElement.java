@@ -116,6 +116,10 @@ public class ActionElement extends LanguageElement {
 			if (strReverse != null) {
 				reverse = ZSSwitch.parseForDialog(strReverse);
 			}
+			String temp = readAttribute("z");
+			if (temp != null) {
+				z = new FloatExpression(temp);
+			}
 			break;
 		case _throw:
 			target = IPoint.fromString(readAttribute("to"));
@@ -132,7 +136,7 @@ public class ActionElement extends LanguageElement {
 			shadow = readAttribute("shadow");
 			addSpr = getFloatExpr("addSpr", "0");
 			// Chained
-			String temp = readAttribute("chained");
+			temp = readAttribute("chained");
 			if (temp != null) {	// Expect well-formed content
 				int virgulePos = temp.indexOf(",");
 				chainCount = Integer.parseInt(temp.substring(0,  virgulePos));

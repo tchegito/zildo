@@ -47,6 +47,7 @@ import zildo.monde.sprites.magic.PersoAffections;
 import zildo.monde.sprites.persos.action.PersoAction;
 import zildo.monde.sprites.persos.ia.PathFinder;
 import zildo.monde.sprites.persos.ia.PathFinderFollow;
+import zildo.monde.sprites.persos.ia.PathFinderFreeFlying;
 import zildo.monde.sprites.persos.ia.PathFinderSquirrel;
 import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 import zildo.monde.sprites.persos.ia.mover.Mover;
@@ -223,6 +224,9 @@ public abstract class Perso extends Element {
 				float prevSpeed = pathFinder == null ? 0.5f: pathFinder.speed;
 				pathFinder = new PathFinderFollow(this, following);
 				pathFinder.speed = prevSpeed;
+				break;
+			case FREEFLY:
+				pathFinder = new PathFinderFreeFlying(this);
 				break;
 			case MOBILE_WAIT:
 				pathFinder.alwaysReach = true;
@@ -1035,13 +1039,21 @@ public abstract class Perso extends Element {
 	public Point getTarget() {
 		return pathFinder.getTarget();
 	}
+	
+	public Integer getTargetZ() {
+		return pathFinder.getTargetZ();
+	}
 
 	public void setTarget(Point target) {
 		pathFinder.setTarget(target);
 	}
+	
+	public void setTargetZ(Integer targetZ) {
+		pathFinder.setTargetZ(targetZ);
+	}
 
 	public boolean hasReachedTarget() {
-		return pathFinder.getTarget() == null || pathFinder.hasReachedTarget();
+		return pathFinder.hasReachedTarget();
 	}
 
 	public void setSpeed(float p_speed) {

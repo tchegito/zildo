@@ -47,7 +47,8 @@ public enum MouvementPerso {
 						// Plus: he ask blocking people to leave, except if it's the hero
 	IMMATERIAL(18),	// No collision and untouchable
 	SPITFIRE(19),	// For dragon
-	RETRACTED(20);	// For dragon too, when he's diving into lava
+	RETRACTED(20),	// For dragon too, when he's diving into lava
+	FREEFLY(21);	// For vulture, with z as target
 	
 	public int valeur;
 	
@@ -69,7 +70,7 @@ public enum MouvementPerso {
 	 * @return TRUE = no collision / FALSE = collision with background
 	 */
 	public boolean isFlying() {
-		return this == VOLESPECTRE || this == BEE || this == BIRD;
+		return this == VOLESPECTRE || this == BEE || this == BIRD || this == FREEFLY;
 	}
 	
 	public static String[] getValues() {
@@ -114,7 +115,8 @@ public enum MouvementPerso {
 		this != INVOKE &&
 		this != MOBILE_WAIT &&
 		this != SPITFIRE &&
-		this != RETRACTED;
+		this != RETRACTED &&
+		this != FREEFLY;
 	}
 	
 	/**

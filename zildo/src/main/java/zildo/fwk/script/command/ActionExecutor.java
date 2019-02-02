@@ -199,6 +199,10 @@ public class ActionExecutor extends RuntimeExecutor {
                     if (perso != null) {
                         perso.setGhost(true);
                         perso.setTarget(location);
+                        int zzz = (int) p_action.z.evaluate(context);
+                        if (zzz != -1) {
+                        	perso.setTargetZ(zzz);
+                        }
                         perso.setForward(p_action.backward);
                         perso.setSpeed(p_action.speed);
                         perso.setOpen(p_action.open);
@@ -402,12 +406,16 @@ public class ActionExecutor extends RuntimeExecutor {
                 	achieved=true;
                 	break;
                 case sound:
-                	BankSound snd=BankSound.valueOf(text);
-                	if (location != null) {
-                    	EngineZildo.soundManagement.playSound(snd, location.x, location.y, !p_action.activate);
+                	if (text == null) {
+                		ClientEngineZildo.soundPlay.stopLooping();
                 	} else {
-                		zildo=EngineZildo.persoManagement.getZildo();
-                		EngineZildo.soundManagement.playSound(snd, zildo, !p_action.activate);
+		            	BankSound snd=BankSound.valueOf(text);
+		            	if (location != null) {
+		                	EngineZildo.soundManagement.playSound(snd, location.x, location.y, !p_action.activate);
+		            	} else if (snd != null) {
+		            		zildo=EngineZildo.persoManagement.getZildo();
+		            		EngineZildo.soundManagement.playSound(snd, zildo, !p_action.activate);
+		            	}
                 	}
                 	achieved=true;
                 	break;
@@ -608,6 +616,9 @@ public class ActionExecutor extends RuntimeExecutor {
                 		if (p_action.reverse != null) {
                 			entity.reverse = reverseFromAction(p_action);
                 		}
+	                	if (p_action.z != null) {
+	                		entity.z = p_action.z.evaluate(context);
+	                	}
 	                	if (entity.getEntityType().isElement()) {
 	                		applyCommonAndPhysicAttributes((Element) entity, p_action);
 	                	}
@@ -776,6 +787,7 @@ public class ActionExecutor extends RuntimeExecutor {
 	                	}
 	                	perso.setPos_seqsprite(0);
 	                	perso.setTarget(null);
+	                	perso.setTargetZ(null);
 	                	if (p_action.deltaFloor < 0) {
 	                		// Need to update floor AFTER movement if lower
             				int newFloor = perso.getFloor() + p_action.deltaFloor;
@@ -1032,6 +1044,11 @@ public class ActionExecutor extends RuntimeExecutor {
 		}
 		if (p_action.light != -1) {
 			elem.light = p_action.light;
+		}
+		// If element has not-null speed and high z, declare it as 'flying' one
+		if (!elem.flying && elem.getEntityType() == EntityType.ELEMENT && (elem.vx != 0 || elem.vy != 0) && elem.z >= 4) {
+			elem.flying = true;
+			elem.setAngle(Angle.fromDelta(elem.vx, elem.vy));
 		}
     }
     

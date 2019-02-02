@@ -349,9 +349,9 @@ public class PersoNJ extends Perso {
 			if (quel_deplacement != MouvementPerso.OBSERVE &&
 					quel_deplacement != MouvementPerso.VOLESPECTRE &&
 					quel_deplacement != MouvementPerso.SLEEPING) {
-				if (pathFinder.getTarget() != null && this.getX() == pathFinder.getTarget().x
-						&& this.getY() == pathFinder.getTarget().y) {
+				if (pathFinder.hasReachedTarget()) {
 					pathFinder.setTarget(null);
+					pathFinder.setTargetZ(null);
 					destinationReached();
 				}
 				if (!isGhost() && info == PersoInfo.ENEMY && !isAlerte() && 
@@ -375,7 +375,7 @@ public class PersoNJ extends Perso {
 					// Stop hen's movements when it's flying (TODO : this isn't very clean, idem for fish !)
 				} else if (quel_deplacement != MouvementPerso.HEN || z == 0 || (desc == PersoDescription.FISH && !flying)) {
 					// On déplace le PNJ
-					if (pathFinder.getTarget() == null && quel_deplacement.isMobileZone()) {
+					if (pathFinder.hasNoTarget() && quel_deplacement.isMobileZone()) {
 						// Pas de destination, donc on en fixe une dans la zone de déplacement
 						cptMouvement = 0;
 
@@ -401,7 +401,7 @@ public class PersoNJ extends Perso {
 						vitesse = 0.2f;
 					}
 */
-					if (pathFinder.getTarget() != null) { // Move character if he has a target
+					if (!pathFinder.hasNoTarget()) { // Move character if he has a target
 						Pointf loc = pathFinder.reachDestination(vitesse);
 						// Check for infinite movement (A => B => A => B ...)
 						boolean hasCollided = loc.x == x && loc.y == y;
@@ -429,7 +429,7 @@ public class PersoNJ extends Perso {
 							angle = Angle.fromInt(angle.value & 2);
 						}
 						// Does character reach his destination ?
-						if (pathFinder.getTarget() == null) {
+						if (pathFinder.hasNoTarget()) {
 							destinationReached();
 							pos_seqsprite = 0;
 						}
@@ -643,6 +643,8 @@ public class PersoNJ extends Perso {
 		case VAUTOUR:
 			// Persos à 3 sprite et 1 angle
 			add_spr = seqv[(compteur_animation / 20) % 4];
+			shadow.setDesc(ElementDescription.SHADOW);
+			shadow.setVisible(true);
 			break;
 		case SPECTRE:
 			// Perso à 2 sprites (gauche/droite)

@@ -10,9 +10,32 @@
 	    <condition name="canyon" locked="false">
 	    	<spawn who="bitey" pos="699,187" type="BITEY" info="ENEMY"/>
 	    	<perso who="bitey" action="bitey"/>
+	    	<!-- Place catapult TODO: plan quest to set each catapult state -->
+	    	<spawn what="catcrate1" pos="551,280" type="CATAPULT_CRATE"/>
+	    	<spawn what="catbranch1" pos="551,280" reverse="128" z="3" type="CATAPULT_BRANCH"/>
+	    	<remove what="stone1"/>
+	    	<spawn what="stone1" pos="566,281" type="STONE_HEAVY"/>
 	    </condition> 
    	</mapScript>
     
+   	<quest name="catap1" locked="false">
+   	    <trigger>
+   	        <location name="canyon" pos="562,338" radius="2"/>
+   	    </trigger>
+   	    <action>
+   	       	<script who="vulture1" value="21" />
+   	       	<moveTo who="vulture1" z="30" pos="541,273"/>
+   	       	<wait value="20"/>
+   	       	<moveTo what="stone1" pos="0,0" delta="true" unstoppable="true"/>
+   	       	<moveTo who="vulture1" z="6"/>
+   	       	<actions>
+				<sprite what="stone1" vy="1" vx="0.2+random*0.1" az="-0.08" vz="2.8" z="4"/>   	       	    
+	   	       	<sprite what="catbranch1" reverse="0"/>
+   	       	</actions>
+   	       	<moveTo who="vulture1" z="0"/>
+   	    </action>
+   	</quest>
+   	
     <persoAction id="bitey">
         <loop>
             <var name="loc:found" value="0"/>

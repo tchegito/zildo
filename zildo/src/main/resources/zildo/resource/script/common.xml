@@ -185,6 +185,7 @@
 		<music name="ZildoMort"/>
 		<fadeOut type="5"/>
 		<remove/>
+		<sound mute="true"/>	<!-- Mute all looping sounds -->
 		<filter type="3"/>
 		<fadeIn type="0" unblock="true"/>
 		<sound name="ZildoDying"/>

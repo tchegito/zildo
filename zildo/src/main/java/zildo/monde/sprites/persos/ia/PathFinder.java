@@ -57,6 +57,7 @@ public class PathFinder {
 
 	Perso mobile;
 	protected Point target;
+	protected Integer targetZ;
 	public float speed;	// Should be used if different of 0
 	public boolean backward;	// Default FALSE. TRUE means character is stepping back
 	public boolean open;	// Default FALSE. TRUE means character can open doors.
@@ -161,7 +162,7 @@ public class PathFinder {
         
         return pos;
     }
-    
+
     /**
      * Set a location target(x,y) in the current perso, inside the movement area (zone_deplacement). 
      * This is where we assign a new position, horizontally and/or vertically depending on the 
@@ -205,6 +206,9 @@ public class PathFinder {
 	}
 
 	public boolean hasReachedTarget() {
+		if (target == null) {
+			return false;
+		}
 		float x=mobile.x;
 		float y=mobile.y;
 		if (x == target.x && y == target.y) {
@@ -212,6 +216,10 @@ public class PathFinder {
 		}
 		return (x >= target.x - 0.5f && x <= target.x + 0.5f && 
 			    y >= target.y - 0.5f && y <= target.y + 0.5f);
+	}
+	
+	public boolean hasNoTarget() {
+		return target == null;
 	}
 	
 	/** Character collides into another one. We'll see if we must stop his movement, and determine a new target. Or we may
@@ -341,12 +349,19 @@ public class PathFinder {
 		return target;
 	}
 
+	public Integer getTargetZ() {
+		return targetZ;
+	}
 	/**
 	 * Overridable method, in order to do something special when the character gets a target.
 	 * @param target
 	 */
 	public void setTarget(Point target) {
 		this.target = target;
+	}
+	
+	public void setTargetZ(Integer targetZ) {
+		this.targetZ = targetZ;
 	}
 	
 	/**

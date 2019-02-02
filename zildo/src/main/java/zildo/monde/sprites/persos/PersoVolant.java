@@ -32,7 +32,7 @@ import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
 
-public class PersoVolant extends PersoNJ {
+public class PersoVolant extends PersoShadowed {
 
 	final static Map<PersoDescription, Point> grabPoint = new HashMap<PersoDescription, Point>();
 
@@ -47,11 +47,9 @@ public class PersoVolant extends PersoNJ {
 		setForeground(true);
 		setSpeed(2.0f);
 
-		Element ombre = new Element();
-		ombre.setX(x);
-		ombre.setY(y - 12);
-		ombre.setSprModel(ElementDescription.SHADOW_SMALL);
-		addPersoSprites(ombre);
+		shadow.setX(x);
+		shadow.setY(y - 12);
+		shadow.setSprModel(ElementDescription.SHADOW_SMALL);
 
 		switch (p_desc) {
 		case OISEAU_VERT:
@@ -68,11 +66,10 @@ public class PersoVolant extends PersoNJ {
 	@Override
 	public void finaliseComportement(int compteur_animation) {
 		// Move character's shadow
-		if (persoSprites.size() > 0) {
-			Element ombre = persoSprites.get(0);
-			ombre.setX(x);
-			ombre.setY(y + 6);
-			ombre.setVisible(z > 0);
+		if (shadow != null) {
+			shadow.setX(x);
+			shadow.setY(y + 6);
+			shadow.setVisible(z > 0);
 		}
 		super.finaliseComportement(compteur_animation);
 	}
