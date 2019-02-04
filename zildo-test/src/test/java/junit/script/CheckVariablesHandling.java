@@ -30,6 +30,7 @@ import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.logic.FloatVariable.NoContextException;
 import zildo.fwk.script.model.ZSSwitch;
+import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.Game;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.server.EngineZildo;
@@ -172,5 +173,19 @@ public class CheckVariablesHandling extends EngineScriptUT {
 		scriptMgmt.getVariables().put(idxName, "3");
 		Assert.assertEquals(128, (int) fExpr.evaluate(ctx));
 		zsExpr.evaluateInt();
+	}
+	
+	@Test
+	public void execPassingVariables() {
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/subscript"));
+		
+		executeScene("executioner");
+		waitEndOfScripting();
+
+		Assert.assertEquals("1.0", scriptMgmt.getVarValue("monArg0"));
+		Assert.assertEquals("3.0", scriptMgmt.getVarValue("monArg1"));
+		Assert.assertEquals("pinpin", scriptMgmt.getVarValue("monArg2"));
+		
+		Assert.assertNotNull("We should have a character named 'pinpin' !", persoUtils.persoByName("pinpin"));
 	}
 }

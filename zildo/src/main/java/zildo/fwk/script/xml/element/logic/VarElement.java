@@ -54,7 +54,7 @@ public class VarElement extends LanguageElement {
 	}
 	
 	public enum ValueType {
-		sellingItems, _float;
+		_string, _float;
 		
 		@Override
 		public String toString() {
@@ -101,7 +101,7 @@ public class VarElement extends LanguageElement {
 			default:
 				value = new FloatExpression(strValue);
 				break;
-			case sellingItems:
+			case _string:
 				break;
 			}
 		}
@@ -123,7 +123,7 @@ public class VarElement extends LanguageElement {
 				sb.append(strValue);
 			}
 		} else {
-			sb.append(name).append("=").append(value);
+			sb.append(name).append("=").append(expression == null ? strValue : expression);
 		}
 		return sb.toString();
 	}

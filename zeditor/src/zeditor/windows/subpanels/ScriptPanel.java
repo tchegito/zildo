@@ -5,8 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -57,15 +59,15 @@ public class ScriptPanel extends JPanel {
 			FilterEffect.class, MouvementPerso.class };
 
 	JScrollPane listScroll;
-	final List<SceneElement> scenes = EngineZildo.scriptManagement
-			.getAdventure().getScenes();
+	final Set<SceneElement> scenes = new HashSet<>(EngineZildo.scriptManagement
+			.getAdventure().getScenes());
 	SceneElement focused;
 
 	@SuppressWarnings("unchecked")
 	public <T extends Enum<T>> ScriptPanel(MasterFrameManager p_manager) {
 
 		// Initialize the needed objects
-		focused = scenes != null && scenes.size() > 0 ? scenes.get(0) : null;
+		focused = scenes != null && scenes.size() > 0 ? scenes.iterator().next() : null;
 		scriptCombo = getCombo();
 		scriptList = getScriptList();
 		listScroll = getScrollPaneList();

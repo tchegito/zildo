@@ -58,7 +58,9 @@ public class Pnj4 extends SpriteBanque {
 			new ZoneO(1, 130, 38, 18, 0, 33, 0), new ZoneO(40, 129, 40, 21, 0, 35, 2), new ZoneO(81, 129, 41, 21, 0, 36, 2),
 			new ZoneO(123, 129, 43, 21, 0, 38, 2), new ZoneO(1,152, 55, 22, 0, 50, 3), new ZoneO(57, 159, 55, 12, 0, 50, 0),
 			new ZoneO(113, 157, 52, 14, 0, 47, 0), new ZoneO(166, 158, 51, 13, 0, 46, 0), new ZoneO(218, 159, 48, 12, 0, 43, 0),
-			new ZoneO(1, 189, 45, 12, 0, 40, 1), new ZoneO(48, 187, 41, 13, 0, 36, 0), new ZoneO(92, 178, 23, 22, 0, 10, 0)
+			new ZoneO(1, 189, 45, 12, 0, 40, 1), new ZoneO(48, 187, 41, 13, 0, 36, 0), new ZoneO(92, 178, 23, 22, 0, 10, 0),
+			// Cactus (66)
+			new Zone(0, 233, 24, 29)
 			
 			
 		};
@@ -67,7 +69,8 @@ public class Pnj4 extends SpriteBanque {
 				new GraphChange("pnj2", 8, 0),
 				new GraphChange("squirrel", 23, 0),
 				new GraphChange("dragonpal", 29, 0),
-				new GraphChange("bitey", 37, 0)
+				new GraphChange("bitey", 37, 0),
+				new GraphChange("exteria10",66, 0)
 		});
 	}
 }

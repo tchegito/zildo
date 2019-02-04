@@ -778,7 +778,7 @@ public class ActionExecutor extends RuntimeExecutor {
         switch (p_action.kind) {
             case moveTo:
             	if (perso != null) {
-	                achieved=perso.hasReachedTarget();
+	                achieved=(perso.getTarget() == null && perso.getTargetZ() == null) || perso.hasReachedTarget();
 	                if (achieved) {
 	                	// Make sure character is EXACTLY on desired target
 	                	if (perso.getTarget() != null) {

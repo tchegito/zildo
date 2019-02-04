@@ -26,9 +26,13 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 
 public class ZUtils {
 
@@ -166,6 +170,14 @@ public class ZUtils {
 
     public static <T> List<T> arrayList() {
     	return new ArrayList<T>();
+    }
+    
+    public static <T> Set<T> hashSet() {
+    	return new HashSet<T>();
+    }
+    
+    public static <K, V> Map<K, V> hashMap() {
+    	return new HashMap<K, V>();
     }
     
     public static <T> List<T> addOrCreate(List<T> list, T elem) {

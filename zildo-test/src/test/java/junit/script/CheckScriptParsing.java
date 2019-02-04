@@ -98,4 +98,10 @@ public class CheckScriptParsing {
 		ScriptManagement sm = new ScriptManagement();
 		Assert.assertNotNull(sm.getAdventure().getSceneNamed("dieInPit"));
 	}
+	
+	/** Ensures that 2 scenes with the same name are forbidden **/
+	@Test(expected=RuntimeException.class)
+	public void doubleSceneName() {
+		ScriptReader.loadScript("junit/script/error");
+	}
 }

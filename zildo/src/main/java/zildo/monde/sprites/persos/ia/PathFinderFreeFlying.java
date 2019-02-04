@@ -22,7 +22,11 @@ public class PathFinderFreeFlying extends PathFinder {
 
 		// Reach z target too
 		if (targetZ != null && targetZ != (int) mobile.z) {
-			mobile.z += speed * Math.signum(targetZ - mobile.z);
+			if (targetZ > mobile.z) {
+				mobile.z = Math.min(mobile.z + speed, targetZ);
+			} else {
+				mobile.z = Math.max(mobile.z - speed, targetZ);
+			}
 		}
 
 		return p;

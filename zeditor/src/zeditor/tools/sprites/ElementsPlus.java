@@ -351,9 +351,11 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(138, 85, 16, 16),
 				// Portal key
 				new Zone(155, 85, 9, 16),
-				// Bitey GNAP
+				// Bitey GNAP (271)
 				new Zone(196, 18, 16, 22), new Zone(213, 18, 16, 22),
-				new Zone(230, 18, 16, 22), new Zone(247, 18, 16, 22), new Zone(264, 18, 16, 22)
+				new Zone(230, 18, 16, 22), new Zone(247, 18, 16, 22), new Zone(264, 18, 16, 22),
+				// Wood catapult
+				new Zone(24, 233, 11, 12), new Zone(0, 223, 29, 10)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -376,7 +378,8 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem", 262, 0),
 				new GraphChange("dragonpal", 266, 0),
 				new GraphChange("objets", 269, 0),
-				new GraphChange("bitey", 271, 0)
+				new GraphChange("bitey", 271, 0),
+				new GraphChange("exteria10", 276,  0)
 		});
 	}
 }

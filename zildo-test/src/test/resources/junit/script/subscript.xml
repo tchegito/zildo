@@ -73,4 +73,16 @@
             </timer>
 	    </actions>
 	</scene>
+	
+	<scene id='executioner'>
+	    <exec script="valuateVar(1, 3.0, 'pinpin')" />
+	</scene>
+	
+	<scene id='valuateVar'>
+	    <var name="monArg0" value="loc:arg0"/>
+	    <var name="monArg1" value="loc:arg1"/>
+	    <var name="monArg2" type="_string" value="loc:arg2"/>
+	    <!-- Will spawn a rabbit whith the name received by call (here 'pinpin') -->
+	    <spawn who="loc:arg2" type="RABBIT" pos="100,100" />
+	</scene>
 </adventure>

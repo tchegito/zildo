@@ -1,7 +1,7 @@
 package zeditor.tools.script;
 
 import java.io.File;
-import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -42,7 +42,7 @@ public class ScriptWriter {
 	file = new File(p_filename);
     }
     
-    public void create(List<SceneElement> p_scenes) {
+    public void create(Set<SceneElement> p_scenes) {
         try {
 
 	    

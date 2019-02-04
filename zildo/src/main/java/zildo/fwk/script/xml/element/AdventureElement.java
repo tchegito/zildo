@@ -20,7 +20,9 @@
 
 package zildo.fwk.script.xml.element;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.xml.sax.Attributes;
 
@@ -28,7 +30,7 @@ import zildo.fwk.ZUtils;
 
 public class AdventureElement extends AnyElement {
 
-	List<SceneElement> scenes = ZUtils.arrayList();
+	Map<String, SceneElement> scenes = ZUtils.hashMap();
 	List<QuestElement> quests = ZUtils.arrayList();
 	List<MapscriptElement> mapScripts = ZUtils.arrayList();
 	List<ContextualActionElement> persoActions = ZUtils.arrayList();
@@ -40,8 +42,10 @@ public class AdventureElement extends AnyElement {
 	}
 	
 	public void add(String node, AnyElement elem) {
+		boolean success = false;
 		if ("scene".equals(node)) {
-			scenes.add((SceneElement) elem);
+			SceneElement scene = (SceneElement) elem;
+			success = scenes.put(scene.id, scene) == null;
 		} else if ("quest".equals(node)) {
 			quests.add((QuestElement) elem);
 		} else if ("mapScript".equals(node)) {
@@ -51,6 +55,10 @@ public class AdventureElement extends AnyElement {
 		} else if ("tileAction".equals(node)) {
 			tileActions.add((ContextualActionElement) elem);
 		}
+		System.out.println("Add elem"+elem);
+		if ("scene".equals(node) && !success) {
+			throw new RuntimeException("Impossible to add "+node+" because that name already exists for a "+elem.getClass().getSimpleName());
+		}
 	}
 
 	/**
@@ -59,20 +67,15 @@ public class AdventureElement extends AnyElement {
 	 * @return SceneElement
 	 */
 	public SceneElement getSceneNamed(String p_name) {
-		for (SceneElement scene : scenes) {
-			if (scene.id.equalsIgnoreCase(p_name)) {
-				return scene;
-			}
-		}
-		return null;
+		return scenes.get(p_name);
 	}
 	
 	public List<QuestElement> getQuests() {
 		return quests;
 	}
 	
-	public List<SceneElement> getScenes() {
-	    return scenes;
+	public Collection<SceneElement> getScenes() {
+	    return scenes.values();
 	}
 	
 	public List<MapscriptElement> getMapScripts() {
@@ -124,7 +127,7 @@ public class AdventureElement extends AnyElement {
     		AdventureElement toMerge = (AdventureElement) elem;
     		mapScripts.addAll(toMerge.mapScripts);
     		quests.addAll(toMerge.quests);
-    		scenes.addAll(toMerge.scenes);
+    		scenes.putAll(toMerge.scenes);
     		persoActions.addAll(toMerge.persoActions);
     		tileActions.addAll(toMerge.tileActions);
     	}

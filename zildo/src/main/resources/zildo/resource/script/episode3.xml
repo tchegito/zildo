@@ -850,15 +850,15 @@
 	        <tile pos="21,6" action="blueRain" unblock="true"/>
 	    </condition>
 		<condition name="sousbois3">
-			<perso who="sacher" action="sacherTortue(tortueSousbois3)"/>
+			<perso who="sacher" action="sacherTortue('tortueSousbois3')"/>
 		</condition>
 		<condition name="sousbois5">
-			<perso who="tortue1" action="sacherTortue(tortueSousbois5_1)"/>
-			<perso who="tortue2" action="sacherTortue(tortueSousbois5_2,1)"/>
+			<perso who="tortue1" action="sacherTortue('tortueSousbois5_1')"/>
+			<perso who="tortue2" action="sacherTortue('tortueSousbois5_2',1)"/>
 		</condition>
 		<condition name="sousbois7">
-			<perso who="sacher" action="sacherTortue(tortueSousbois7)"/>
-	   		<perso who="sacher2" action="sacherTortue(tortueSousbois7_2)"/>
+			<perso who="sacher" action="sacherTortue('tortueSousbois7')"/>
+	   		<perso who="sacher2" action="sacherTortue('tortueSousbois7_2')"/>
 		</condition>
 		<condition name="sousbois4">
 			<if expQuest="hero_princess">

@@ -37,17 +37,20 @@ public class ScriptCall {
 	}
 	
 	/** Register arguments passed to this call. Can be optionally resolved from a caller context. **/
-	public void registerVariables(IEvaluationContext context, IEvaluationContext p_callerContext) {
+	public void registerVariables(IEvaluationContext context) {
 		if (args != null) {
 			int nVar = 0;
 			for (String arg : args) { 
 				String varName = context.registerVariable(LocaleVarContext.VAR_IDENTIFIER + "arg"+nVar);
-				String value = arg;
-				if (p_callerContext != null && p_callerContext.hasVariables()) {
-					// If variable was local to the caller context, resolve it
-					value = "" + new FloatExpression(arg).evaluate(p_callerContext);
+				String value = arg.trim();
+				// If variable was local to the caller context, resolve it
+				
+				// 1) alphanumeric => store as string
+				if (value.startsWith("'") && value.endsWith("'")) {
+					value = value.substring(1, value.length()-1);
+				} else {
+					value = "" + new FloatExpression(arg).evaluate(context);
 				}
-
 				EngineZildo.scriptManagement.putVarValue(varName, value);
 				nVar++;
 			}

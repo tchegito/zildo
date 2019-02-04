@@ -1,0 +1,11 @@
+<adventure>
+    <!-- Just a simple script with 2 scenes with the same name, in order to check that an error must be raised -->
+    <scene id='caller'>
+ 		<var name='state' value='1'/>
+	</scene>
+
+    <scene id='caller'>
+ 		<var name='state' value='1'/>
+	</scene>
+    
+</adventure>

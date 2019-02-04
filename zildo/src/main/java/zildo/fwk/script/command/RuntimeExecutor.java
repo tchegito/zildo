@@ -47,6 +47,13 @@ public abstract class RuntimeExecutor {
 	/** Returns a previously assigned variable's ID, or same if it isn't one local. **/
     protected String getVariableName(String name) {
     	String searchName = name;
+    	if (name == null) {
+    		return null;
+    	}
+    	if (name.startsWith(LocaleVarContext.VAR_FUNC_IDENTIFIER)) {
+    		String associated = context.getString(name);
+    		return EngineZildo.scriptManagement.getVarValue(associated);
+    	}
     	if (isLocal(name)) {
     		searchName = context.getString(name);
     	}
@@ -55,16 +62,18 @@ public abstract class RuntimeExecutor {
     
     /** Returns local variable value, of given name if it doesn't exist. **/
     protected String getVariableValue(String name) {
-    	String varName = getVariableName(name);
-    	
-    	if (!varName.equals(name)) {
-    		return EngineZildo.scriptManagement.getVarValue(varName);
-    	}
-    	return name;
+    	return getVariableName(name);
     }
     
     /** Assigns and return variable ID **/
     protected String handleLocalVariable(String name) {
+    	if (name == null) {
+    		return null;
+    	}
+    	if (name.startsWith(LocaleVarContext.VAR_FUNC_IDENTIFIER)) {
+    		String associated = context.getString(name);
+    		return EngineZildo.scriptManagement.getVarValue(associated);
+    	}
     	String result = name;
     	if (isLocal(name)) {
     		result = context.registerVariable(name);

@@ -34,7 +34,8 @@ import zildo.server.EngineZildo;
  */
 public abstract class LocaleVarContext implements IEvaluationContext {
 
-	public final static String VAR_IDENTIFIER = "loc:";
+	public final static String VAR_IDENTIFIER = "loc:";	// Prefix for local variables
+	public final static String VAR_FUNC_IDENTIFIER = "loc:arg";	// Prefix for variables received in an execution
 	
 	// Global container for all local variables mapping
 	static private IdGenerator localVariableNaming = new IdGenerator(256);

@@ -50,9 +50,15 @@ public class VariableExecutor extends RuntimeExecutor {
 			switch (p_elem.kind) {
 			case var:
 				String objToSave;
-				if (p_elem.typ == ValueType.sellingItems) {
-					objToSave = p_elem.strValue;
+				if (p_elem.typ == ValueType._string) {
+					// STRING variables
+					if (isLocal(p_elem.strValue)) {	// This variable could be local "loc:...", defined or undefined yet
+						objToSave = getVariableName(p_elem.strValue);
+					}  else {
+						objToSave = p_elem.strValue;
+					}
 				} else {
+					// FLOAT variables (default)
 					if (context == null) {	// In mapscript, we have no context, but variable assignment is allowed though
 						objToSave = p_elem.value.toString();
 					} else {

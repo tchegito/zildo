@@ -50,4 +50,17 @@ public class SceneElement extends AnyElement {
 	public String toString() {
     	return id+"\n"+actions.toString();
     }
+    
+    @Override
+    public int hashCode() {
+    	return id.hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+    	if (obj == null || !(obj instanceof SceneElement)) {
+    		return false;
+    	}
+    	return hashCode() == ((SceneElement)obj).hashCode();
+    }
 }
