@@ -8,8 +8,6 @@
    	    </condition>
     -->
 	    <condition name="canyon" locked="false">
-	    	<spawn who="bitey" pos="699,187" type="BITEY" info="ENEMY"/>
-	    	<perso who="bitey" action="bitey"/>
 	    	<!-- Place catapult TODO: plan quest to set each catapult state -->
 	    	<spawn what="catcrate1" pos="551,280" type="CATAPULT_CRATE"/>
 	    	<spawn what="catbranch1" pos="551,280" reverse="128" z="3" type="CATAPULT_BRANCH"/>
@@ -19,8 +17,18 @@
 	    	<spawn what="catbranch2" pos="738,263" reverse="128" z="3" type="CATAPULT_BRANCH"/>
 	    	<spawn what="stone2" pos="753,264" type="STONE"/>
 	    	
+	    	<spawn what="catcrate3" pos="848,153" type="CATAPULT_CRATE"/>
+	    	<spawn what="catbranch3" pos="848,153" reverse="0" z="3" type="CATAPULT_BRANCH"/>
+	    	<spawn what="stone3" pos="833,154" type="STONE"/>
+	    	
+	    	<spawn what="catcrate4" pos="731,71" type="CATAPULT_CRATE"/>
+	    	<spawn what="catbranch4" pos="731,71" reverse="128" z="3" type="CATAPULT_BRANCH"/>
+	    	<spawn what="stone4" pos="746,72" type="STONE_HEAVY"/>
+	    	
 	    	<markQuest name="catap1" value="false"/>
 	    	<markQuest name="catap2" value="false"/>
+	    	<markQuest name="catap3" value="false"/>
+	    	<markQuest name="catap4" value="false"/>
 	    </condition> 
    	</mapScript>
     
@@ -44,7 +52,25 @@
    	    </action>
    	</quest>
    	
-    <persoAction id="bitey">
+   	<quest name="catap3" locked="false">
+   	    <trigger>
+   	        <location name="canyon" pos="790,233" radius="2"/>
+   	    </trigger>
+   	    <action>
+   	        <exec script="vultureCatap(870, 68, 833-25+25+25, 154-8, 'stone3', 'catbranch3')"/>
+   	    </action>
+   	</quest>
+   	
+   	<quest name="catap4" locked="false">
+   	    <trigger>
+   	        <location name="canyon" pos="790,148" radius="2"/>
+   	    </trigger>
+   	    <action>
+   	        <exec script="vultureCatap(711, 7, 746-25, 72-8, 'stone4', 'catbranch4')"/>
+   	    </action>
+   	</quest>
+
+   	<persoAction id="bitey">
         <loop>
             <var name="loc:found" value="0"/>
 			<lookFor who="self" info="ZILDO" radius="7">
@@ -94,7 +120,7 @@
    	
     <scene id="vultureCatap">
         <!-- (arg0,arg1) origin of vulture -->
-        <!-- (arg2,arg3) locatin of the vulture target -->
+        <!-- (arg2,arg3) location of the vulture's target -->
         <!-- arg4: stone ; arg5: branch -->
 		<spawn who="loc:vulture" pos="loc:arg0,loc:arg1" type="VAUTOUR" info="ENEMY"/>
 		<script who="loc:vulture" value="21" />
@@ -104,10 +130,19 @@
 		<moveTo what="loc:arg4" pos="0,0" delta="true" unstoppable="true"/>
 		-->
        	<moveTo who="loc:vulture" speed="3" z="6"/>
-       	<actions>
-			<sprite what="loc:arg4" vy="1" vx="0.2+random*0.1" az="-0.08" vz="2.8" z="4"/>   	       	    
-	       	<sprite what="loc:arg5" reverse="0"/>
-       	</actions>
+       	<sound name="FlechePlante" />
+       	<if exp="loc:arg0 &lt; loc:arg2"> <!-- Rock jumps to the right -->
+	       	<actions>
+				<sprite what="loc:arg4" vy="1" vx="0.4+random*0.3" az="-0.08" vz="2.8" z="4"/>   	       	    
+		       	<sprite what="loc:arg5" reverse="0"/>
+	       	</actions>
+       	</if>
+       	<if exp="loc:arg0 &gt; loc:arg2">
+	       	<actions>
+				<sprite what="loc:arg4" vy="1" vx="-0.4-random*0.3" az="-0.08" vz="2.8" z="4"/>   	       	    
+		       	<sprite what="loc:arg5" reverse="128"/>
+	       	</actions>
+       	</if>
        	<moveTo who="loc:vulture" speed="1.5" z="0"/>
        	<wait value="5"/>
        	<moveTo who="loc:vulture" pos="loc:arg0,loc:arg1" z="20" unblock="true"/>

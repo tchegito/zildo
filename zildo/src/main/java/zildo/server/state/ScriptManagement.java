@@ -168,7 +168,8 @@ public class ScriptManagement {
     	ScriptCall call = new ScriptCall(p_name, null);
     	SceneElement scene=adventure.getSceneNamed(call.actionName);
     	if (scene != null) {
-    		 if (!scriptExecutor.isProcessing(call.actionName)) {
+    		// Allow a script with arguments to be launched even if same name is already processing
+    		 if (call.args != null || !scriptExecutor.isProcessing(call.actionName)) {
 				scriptExecutor.execute(new RuntimeScene(scene, p_locked, call), true, false, p_context, p_caller);
     		 }
     	} else {
