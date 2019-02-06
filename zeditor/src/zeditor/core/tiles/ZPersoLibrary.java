@@ -46,6 +46,7 @@ public class ZPersoLibrary extends ArrayList<SpriteDescription> {
 		case DRAGON:
 		case FLYINGSERPENT:
 		case BRAMBLE:
+		case CACTUS:
 		case BITEY:
 		case STONE_SPIDER:
 		case CHAUVESOURIS:
