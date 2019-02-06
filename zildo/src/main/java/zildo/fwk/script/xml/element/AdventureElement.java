@@ -55,7 +55,6 @@ public class AdventureElement extends AnyElement {
 		} else if ("tileAction".equals(node)) {
 			tileActions.add((ContextualActionElement) elem);
 		}
-		System.out.println("Add elem"+elem);
 		if ("scene".equals(node) && !success) {
 			throw new RuntimeException("Impossible to add "+node+" because that name already exists for a "+elem.getClass().getSimpleName());
 		}

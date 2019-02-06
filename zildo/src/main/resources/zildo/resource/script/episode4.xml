@@ -15,10 +15,12 @@
 	    	<spawn what="catbranch1" pos="551,280" reverse="128" z="3" type="CATAPULT_BRANCH"/>
 	    	<spawn what="stone1" pos="566,281" type="STONE_HEAVY"/>
 	    	
-	    	<spawn what="catcrate2" pos="728,253" type="CATAPULT_CRATE"/>
-	    	<spawn what="catbranch2" pos="728,253" reverse="128" z="3" type="CATAPULT_BRANCH"/>
-	    	<spawn what="stone2" pos="743,254" type="STONE"/>
+	    	<spawn what="catcrate2" pos="738,263" type="CATAPULT_CRATE"/>
+	    	<spawn what="catbranch2" pos="738,263" reverse="128" z="3" type="CATAPULT_BRANCH"/>
+	    	<spawn what="stone2" pos="753,264" type="STONE"/>
 	    	
+	    	<markQuest name="catap1" value="false"/>
+	    	<markQuest name="catap2" value="false"/>
 	    </condition> 
    	</mapScript>
     
@@ -26,19 +28,19 @@
    	
    	<quest name="catap1" locked="false">
    	    <trigger>
-   	        <location name="canyon" pos="562,338" radius="2"/>
+   	        <location name="canyon" pos="452,338" radius="2"/>
    	    </trigger>
    	    <action>
-   	        <exec script="vultureCatap(520, 184, 566-25, 281-8, 'stone1', 'branch1')"/>
+   	        <exec script="vultureCatap(520, 184, 566-25, 281-8, 'stone1', 'catbranch1')"/>
    	    </action>
    	</quest>
    	
    	<quest name="catap2" locked="false">
    	    <trigger>
-   	        <location name="canyon" pos="774,326" radius="2"/>
+   	        <location name="canyon" pos="704,339" radius="2"/>
    	    </trigger>
    	    <action>
-   	        <exec script="vultureCatap(700, 154, 743-25, 254-8, 'stone2', 'branch2')"/>
+   	        <exec script="vultureCatap(710, 164, 753-25, 264-8, 'stone2', 'catbranch2')"/>
    	    </action>
    	</quest>
    	
@@ -101,17 +103,18 @@
 		<!-- 
 		<moveTo what="loc:arg4" pos="0,0" delta="true" unstoppable="true"/>
 		-->
-       	<moveTo who="loc:vulture" z="6"/>
+       	<moveTo who="loc:vulture" speed="3" z="6"/>
        	<actions>
 			<sprite what="loc:arg4" vy="1" vx="0.2+random*0.1" az="-0.08" vz="2.8" z="4"/>   	       	    
 	       	<sprite what="loc:arg5" reverse="0"/>
        	</actions>
-       	<moveTo who="loc:vulture" z="0"/>
+       	<moveTo who="loc:vulture" speed="1.5" z="0"/>
        	<wait value="5"/>
        	<moveTo who="loc:vulture" pos="loc:arg0,loc:arg1" z="20" unblock="true"/>
-       	<remove who="loc:vulture"/>
        	<sprite what="loc:arg4" reverse="64"/>
        	<wait value="20"/>
        	<sprite what="loc:arg4" reverse="0"/>
+       	<wait value="20"/>
+       	<remove who="loc:vulture"/>
     </scene>
 </adventure>

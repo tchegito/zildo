@@ -98,6 +98,7 @@ public class CheckConsistentMap {
 					case DRAGON:
 					case FIRE_ELEMENTAL:
 					case BITEY:
+					case CACTUS:
 						shouldBeEnemy = true;
 					default:
 						break;
