@@ -305,6 +305,9 @@ public class Element extends SpriteEntity {
 		// Alpha channel evolution
 		alphaV += alphaA;
 		alpha += alphaV;
+		if (shadow != null) {
+			shadow.alpha = alpha;
+		}
 		
 		if (alpha < 0 && fall()) {
 			die();
