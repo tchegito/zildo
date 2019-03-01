@@ -35,6 +35,8 @@ public enum ItemKind {
 	BOW(true, ElementDescription.ENEMYARC_RIGHT1, 40),
 	DYNAMITE(true, ElementDescription.DYNAMITE, 10),
 	HAMMER(true, ElementDescription.HAMMER, 10),
+	SPADE_GROUND(true, ElementDescription.SPADE, 10),
+	SPADE(true, ElementDescription.FORK_HIGH, 10),
 	FLUT(false, ElementDescription.FLUT, 1),
 	GLOVE(true, ElementDescription.GLOVE, 20),
 	GLOVE_IRON(true, ElementDescription.SUPER_GLOVE, 40),

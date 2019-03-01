@@ -42,6 +42,7 @@ import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
@@ -104,16 +105,21 @@ public class PersoPlayer extends Perso {
 	// Linked elements
 	Element shield;
 	Element sword;
+	Element arm;
 
 	ZildoSprSequence swordSequence = new ZildoSprSequence();
 	
 	public ControllablePerso who;
 	
 	private SpriteEntity boomerang;
+	private Element fork;
+	private Element elementForked;	// Element that hero grabbed on his fork
 
 	// Sequence for sprite animation
 	static int seq_1[] = { 0, 1, 2, 1 };
 	static int seq_2[] = { 0, 1, 2, 1, 0, 3, 4, 3 };
+	static int[] seq_attackFork = new int[]{4, 6, 9};
+	static int[] seq_putAwayFork = new int[]{8,8,5};
 
 	String lastHit;
 	
@@ -174,12 +180,21 @@ public class PersoPlayer extends Perso {
 		sword.setNBank(SpriteBank.BANK_ZILDO);
 		sword.setNSpr(ZildoDescription.SWORD0.getNSpr());
 		
+		arm = new Element(this);
+		arm.setNBank(SpriteBank.BANK_ZILDO);
+		arm.setNSpr(ZildoDescription.ARM.getNSpr());
+		
+		fork = new Element(this);
+		fork.setDesc(ZildoDescription.FORK0);
+		
 		shieldEffect = null;
 
 		addPersoSprites(shield);
 		addPersoSprites(shadow);
 		addPersoSprites(sword);
-
+		addPersoSprites(arm);
+		addPersoSprites(fork);
+		
 		// weapon=new Item(ItemKind.SWORD);
 		inventory = new ArrayList<Item>();
 		affections = new PersoAffections(this);
@@ -329,6 +344,43 @@ public class PersoPlayer extends Perso {
 			sentence = UIText.getGameText("curepotion.action");
 			EngineZildo.dialogManagement.launchDialog(EngineZildo.getClientState(), null, new ScriptAction(sentence));
 			break;
+		case SPADE:
+			if (mouvement == MouvementZildo.HOLD_FORK) {
+				boolean allowed = true;
+				if (elementForked != null) {
+					allowed = !EngineZildo.mapManagement.collide(elementForked.x, elementForked.y, elementForked);
+					System.out.println("collide="+allowed);
+				}
+				if (!allowed) {
+					// dzoing
+					outOfOrder = true;
+				} else {
+					// Hero throw away what is on the fork
+					mouvement = MouvementZildo.PUTAWAY_FORK;
+					EngineZildo.soundManagement.broadcastSound(BankSound.FlecheTir, this);
+					setAttente(3 * 2);
+				}
+			} else {
+				EngineZildo.soundManagement.broadcastSound(BankSound.ZildoLance, this);
+				setMouvement(MouvementZildo.ATTACK_FORK);
+				setAttente(3 * 2);
+				fork.setVisible(true);
+				fork.setAngle(sightAngle == null ? Angle.NORD : sightAngle);
+				fork.x = (int) x; fork.y = (int) y;
+				fork.reverse=Reverse.NOTHING;
+				fork.y -= 2; // For EAST and WEST
+				switch (angle) {
+					case EST:
+						fork.x +=6;
+						break;
+					case OUEST:
+						fork.x -=5;
+						fork.reverse=Reverse.HORIZONTAL;
+					default:
+						break;
+				}
+			}
+			break;
 		case EMPTY_BAG:
 			outOfOrder = true;
 		default:
@@ -352,50 +404,67 @@ public class PersoPlayer extends Perso {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void manageCollision() {
-		if (getMouvement() == MouvementZildo.ATTAQUE_EPEE) {
-			// La collision avec l'épée de Zildo}
-			double cx, cy, beta;
-			int rayon;
-			cx = getX();
-			cy = getY();
-			rayon = 4;
-			beta = (2.0f * Math.PI * this.getAttente()) / (7 * Constantes.speed);
-
-			switch (this.getAngle()) {
-			case NORD:
-				beta = beta + Math.PI;
-				cy = cy - 16;
+		switch (mouvement) {
+			case ATTAQUE_EPEE:
+				// La collision avec l'épée de Zildo}
+				double cx, cy, beta;
+				int rayon;
+				cx = getX();
+				cy = getY();
+				rayon = 4;
+				beta = (2.0f * Math.PI * this.getAttente()) / (7 * Constantes.speed);
+	
+				switch (angle) {
+				case NORD:
+					beta = beta + Math.PI;
+					cy = cy - 16;
+					break;
+				case EST:
+					beta = -beta + Math.PI / 2;
+					cy = cy - 4;
+					break;
+				case SUD:
+					cy = cy - 4;
+					break;
+				case OUEST:
+					beta = beta + Math.PI / 2;
+					cy = cy - 4;
+					cx = cx - 4;
+					break;
+				}
+				int swordRadius = 12;
+				if (angle.isHorizontal()) {
+					swordRadius = 16;
+				}
+				// Middle sword hits farther
+				if (weapon != null && weapon.kind == ItemKind.MIDSWORD) swordRadius += 3;
+				cx = cx + swordRadius * Math.cos(beta);
+				cy = cy + swordRadius * Math.sin(beta);
+	
+				// Add this collision record to collision engine
+				// Damage type: blunt at start, and then : cutting front
+				DamageType dmgType = DamageType.BLUNT;
+				if (attente < 6) {
+					dmgType = DamageType.CUTTING_FRONT;
+				}
+				Collision c = new Collision((int) cx, (int) cy, rayon, Angle.NORD, this, dmgType, null);
+				EngineZildo.collideManagement.addCollision(c);
 				break;
-			case EST:
-				beta = -beta + Math.PI / 2;
-				cy = cy - 4;
+			case ATTACK_FORK:
+				if (elementForked == null) {	// Unable to fork two item at once
+					rayon = 8;
+					dmgType = DamageType.FORKING;
+					SpriteModel model = fork.getSprModel();
+					cx = fork.x;
+					cy = fork.y - fork.z - model.getTaille_y() / 2;
+					if (angle == Angle.SUD) {
+						cy += 8;
+					}
+					Point size = new Point(model.getTaille_x(), model.getTaille_y());
+					c = new Collision(new Point((int)cx, (int)cy), size, this, dmgType, null);
+					EngineZildo.collideManagement.addCollision(c);
+				}
 				break;
-			case SUD:
-				cy = cy - 4;
-				break;
-			case OUEST:
-				beta = beta + Math.PI / 2;
-				cy = cy - 4;
-				cx = cx - 4;
-				break;
-			}
-			int swordRadius = 12;
-			if (angle.isHorizontal()) {
-				swordRadius = 16;
-			}
-			// Middle sword hits farther
-			if (weapon != null && weapon.kind == ItemKind.MIDSWORD) swordRadius += 3;
-			cx = cx + swordRadius * Math.cos(beta);
-			cy = cy + swordRadius * Math.sin(beta);
-
-			// Add this collision record to collision engine
-			// Damage type: blunt at start, and then : cutting front
-			DamageType dmgType = DamageType.BLUNT;
-			if (attente < 6) {
-				dmgType = DamageType.CUTTING_FRONT;
-			}
-			Collision c = new Collision((int) cx, (int) cy, rayon, Angle.NORD, this, dmgType, null);
-			EngineZildo.collideManagement.addCollision(c);
 		}
 	}
 
@@ -408,6 +477,10 @@ public class PersoPlayer extends Perso {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
+		if (EngineZildo.scriptManagement.isQuestProcessing("fallPit")) {
+			// Hero is already falling => no collision on this case
+			return;
+		}
 		// Do we have to cancel the wound ?
 		switch (mouvement) {
 			case TOMBE: // Used when hero jumps from hill, and when squirrel make regular jump
@@ -684,6 +757,7 @@ public class PersoPlayer extends Perso {
 		shadow.setVisible(false);
 		shield.setVisible(false);
 		sword.setVisible(false);
+		arm.setVisible(false);
 
 		// Wet feet are displayed differently for each appearance
 		int shiftWetFeet = angle.isVertical() || angle == Angle.OUEST ? 1 : 0;
@@ -840,8 +914,8 @@ public class PersoPlayer extends Perso {
 					yy += decalyBow[angle.value][v];
 				}
 				shield.setVisible(false);
-			
 				break;
+
 			case SAUTE:
 				// Zildo est en train de sauter, on affiche l'ombre à son arrivée
 	
@@ -898,7 +972,7 @@ public class PersoPlayer extends Perso {
 			switch (getMouvement())
 			{
 			case VIDE:
-				setSpr(ZildoDescription.getMoving(angle, computeSeq(1) % 8));
+				setSpr(ZildoDescription.getMoving(angle, computeSeq(1) % 8, false));
 				// Shield
 				if (hasItem(ItemKind.SHIELD)) {
 					shield.setForeground(false);
@@ -951,11 +1025,11 @@ public class PersoPlayer extends Perso {
 				if (en_bras != null) {
 					int objZ = (int) en_bras.getZ();
 	
-					int variation = seq_1[((getPos_seqsprite() % (4 * Constantes.speed)) / Constantes.speed)];
+					int variationY = seq_1[((getPos_seqsprite() % (4 * Constantes.speed)) / Constantes.speed)];
 	
 					//en_bras.setX(objX);
 					//en_bras.setY(objY);
-					en_bras.setZ(objZ - variation);
+					en_bras.setZ(objZ - variationY);
 					
 					// Corrections , décalages du sprite
 					float xxx = x;
@@ -968,7 +1042,7 @@ public class PersoPlayer extends Perso {
 	
 					en_bras.setX(xxx + 1);
 					en_bras.setY(yyy); // + 3);
-					en_bras.setZ(17 - 3 - variation);
+					en_bras.setZ(17 - 3 - variationY);
 				}
 				setSpr(ZildoDescription.getArmraisedMoving(angle, (pos_seqsprite % (8 * Constantes.speed)) / Constantes.speed));
 				break;
@@ -995,11 +1069,101 @@ public class PersoPlayer extends Perso {
 				setNSpr(ZildoDescription.WOUND_UP.getNSpr() + angle.value);
 				break;
 			case POUSSE:
-				setSpr(ZildoDescription.getPushing(angle, pos_seqsprite/2));
+				setSpr(ZildoDescription.getPushing(angle, pos_seqsprite));
 				break;
 			case ATTAQUE_EPEE:
 				pos_seqsprite = (((6 * 2 - getAttente() - 1) % (6 * 2)) / 2);
 				setSpr(ZildoDescription.getSwordAttacking(angle, pos_seqsprite));
+				break;
+			case ATTACK_FORK:
+				pos_seqsprite = (((3 * 2 - getAttente() - 1) % (3 * 2)) / 2);
+				setSpr(ZildoDescription.getForkAttacking(angle, pos_seqsprite));
+				fork.x = x+4;
+				placeElementForked(0, 0);
+				fork.setDesc(ZildoDescription.FORK0);
+				switch (angle) {
+					case NORD:
+						fork.setDesc(ZildoDescription.FORK1);
+						fork.y = y - 8 - (int) (seq_attackFork[pos_seqsprite] * 0.6f);
+						fork.x = x + 5;
+						break;
+					case SUD:
+						fork.setDesc(ZildoDescription.FORK1);
+						fork.reverse = Reverse.VERTICAL;
+						fork.y =y + (int) (seq_attackFork[pos_seqsprite] * 0.6f);
+						fork.x = x-3;
+						break;
+					case EST:
+						fork.x = x + seq_attackFork[pos_seqsprite];
+						break;
+					case OUEST:
+						fork.x = x +1- seq_attackFork[pos_seqsprite];
+						break;
+				}
+				break;
+			case HOLD_FORK:
+				int factor = 1;
+				setSpr(ZildoDescription.getMovingFork(angle, computeSeq(factor) % 8));
+				fork.x = x + 4;
+				fork.y = y - 2;
+				
+				int seq_armY[] = { 0, 0, 1, 1, 0, 0, 1, 1, 0  };
+				int variationY = seq_armY[computeSeqPositive(factor) % 8];
+
+				int seq_armX[] = { 0, 0, 1, 1, 0, 0, -1, -1, 0};
+				int variationX = seq_armX[computeSeqPositive(factor) % 8];
+				
+				arm.setVisible(true);
+				arm.x = x;
+				arm.y = y+4;
+				arm.z = 7 + variationY;
+				fork.z = variationY;
+				
+				fork.reverse = Reverse.NOTHING;
+				arm.reverse = Reverse.NOTHING;
+				fork.setDesc(ZildoDescription.FORK0);
+				placeElementForked(variationX, variationY);
+				switch (angle) {
+					case SUD:
+						fork.reverse = Reverse.VERTICAL;
+						fork.y = y+12;
+						fork.x = x-3;
+					case NORD:
+						fork.setDesc(ZildoDescription.FORK1);
+						fork.y -= 8;
+						arm.setVisible(false);
+						break;
+					case EST:
+						arm.x = x + variationX;
+						fork.x += variationX;
+						break;
+					case OUEST:
+						fork.reverse = Reverse.HORIZONTAL;
+						arm.reverse = Reverse.HORIZONTAL;
+						fork.x -= 8+variationX;
+						arm.x = x + 2 - variationX;
+						break;
+				}
+
+				break;
+
+			case PUTAWAY_FORK:
+				pos_seqsprite = (((3 * 2 - getAttente() - 1) % (3 * 2)) / 2);
+				setSpr(ZildoDescription.getForkAttacking(angle, pos_seqsprite));
+				switch (angle) {
+					case NORD:
+						fork.y = y - 8 - (int) (seq_putAwayFork[pos_seqsprite] * 0.6f);
+						break;
+					case EST:
+						fork.x = x + seq_putAwayFork[pos_seqsprite];
+						break;
+					case OUEST:
+						fork.x = x - seq_putAwayFork[pos_seqsprite];
+						break;
+					case SUD:
+						fork.y = y + 3 + (int) (seq_putAwayFork[pos_seqsprite] * 0.6f);
+						break;
+				}
 				break;
 			case ATTAQUE_ROCKBAG:
 				pos_seqsprite = (((2 * 6 - getAttente() - 1) % (2 * 6)) / 6);
@@ -1068,6 +1232,31 @@ public class PersoPlayer extends Perso {
 		feet.setY(y + 9 + 1);
 	}
 
+	private void placeElementForked(int variationX, int variationY) {
+		Point loc = new Point(fork.x, fork.y);
+		switch (angle) {
+			case SUD:
+				loc.x -= 9;
+				loc.y += 15;
+				break;
+			case NORD:
+				loc.x += 2;
+				loc.y -= 5;
+				break;
+			case EST:
+				loc.x += 9;
+				loc.y += 5+variationY - 2;
+				break;
+			case OUEST:
+				loc.x -= 15;
+				loc.y += 5+variationY;
+				break;
+		}
+		if (elementForked != null) {
+			elementForked.x = loc.x;
+			elementForked.y = loc.y;
+		}		
+	}
 	/**
 	 * Zildo take some goodies. It could be a heart, an arrow, or a weapon...
 	 * 
@@ -1221,7 +1410,7 @@ public class PersoPlayer extends Perso {
 			elem.setNSpr(d.getNSpr());
 			elem.addShadow(ElementDescription.SHADOW);
 		}
-		elem.beingTaken();
+
 		elem.setScrX(objX);
 		elem.setScrY(objY);
 		elem.setX(objX);
@@ -1232,6 +1421,8 @@ public class PersoPlayer extends Perso {
 		elem.setForeground(true);
 		elem.setFloor(floor);
 		
+		
+		elem.beingTaken();
 		elem.setLinkedPerso(this); // Link to Zildo
 
 		if (object == null) {
@@ -1275,9 +1466,22 @@ public class PersoPlayer extends Perso {
         case ATTAQUE_ARC:
         case ATTAQUE_BOOMERANG:
         case ATTAQUE_ROCKBAG:
+        	if (fork != null) fork.setVisible(false);
 			setMouvement(MouvementZildo.VIDE);		// Awaiting for key pressed
 			break;
-	}
+        case ATTACK_FORK:
+        	setMouvement(MouvementZildo.HOLD_FORK);
+        	break;
+        case PUTAWAY_FORK:
+        	setMouvement(MouvementZildo.VIDE);
+			if (fork != null) fork.setVisible(false);
+			if (elementForked != null) {
+				elementForked.fall();
+				elementForked.die();
+			}
+			elementForked = null;
+        	break;
+		}
 		
 	}
 	/**
@@ -1359,6 +1563,17 @@ public class PersoPlayer extends Perso {
 		}
 	}
 
+	public boolean canFork() {
+		return elementForked == null;
+	}
+	
+	public void grabWithFork(Element elem) {
+		elementForked = elem;
+		elementForked.setLinkedPerso(this);
+		elementForked.setAjustedX((int) elem.x); 
+		elementForked.setAjustedY((int) elem.y); 
+	}
+	
 	/**
 	 * Directly add an item to the inventory
 	 * 
@@ -1385,7 +1600,6 @@ public class PersoPlayer extends Perso {
 	 */
 	public void pickItem(ItemKind p_kind, Element p_element) {
 		if (getEn_bras() == null) { // Doesn't take 2 items at 1 time
-			addInventory(new Item(p_kind));
 			attente = 40;
 			mouvement = MouvementZildo.FIERTEOBJET;
 			Element elem = p_element;
@@ -1393,7 +1607,11 @@ public class PersoPlayer extends Perso {
 				elem = EngineZildo.spriteManagement.spawnElement(p_kind.representation,
 						(int) x,
 						(int) y, 0, Reverse.NOTHING, Rotation.NOTHING);
+			} else if (p_kind == ItemKind.SPADE_GROUND) {
+				p_element.setDesc(ElementDescription.FORK_HIGH);
+				p_kind = ItemKind.SPADE;
 			}
+			addInventory(new Item(p_kind));
 			// Place item right above Zildo
 			elem.x = x + 5;
 			elem.y = y + 1;

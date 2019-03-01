@@ -45,6 +45,7 @@ import zeditor.windows.managers.MasterFrameManager;
 import zildo.fwk.bank.SpriteBank;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
@@ -143,6 +144,7 @@ public class ViewSpritesDialog extends JDialog {
 		if (borders != null) {
 			display += " offXLeft="+borders.x1+" offXRight="+borders.x2+" offY="+borders.y1;
 		}
+		display += " " +SpriteDescription.Locator.findSpr(nBank, nSpr);
 		sizeLabel.setText(display);
 	}
 	

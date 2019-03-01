@@ -223,22 +223,25 @@ public enum PersoDescription implements SpriteDescription {
 	 * Returns TRUE if this character resists to a given type of damage.
 	 */
 	public boolean resistToDamageType(DamageType dmgType) {
-		if (this == BRAMBLE) {
-			switch (dmgType) {
-				case SMASH:
-				case PIERCING:
-				case BLUNT:
-				case PEEBLE:
-					return true;
-				default:
-					return false;
-			}
-		} else if (this == FIRE_ELEMENTAL) {
-			return true;
-		} else if (this == COAL) {
-			return dmgType != DamageType.FIRE && dmgType != DamageType.EXPLOSION;
-		} else if (this == PersoDescription.DRAGON) {
-			return dmgType != DamageType.BIG_BLUNT;	// Only a big rock can hurt dragon
+		switch (this) {
+			case CACTUS:
+				return true;
+			case BRAMBLE:
+				switch (dmgType) {
+					case SMASH:
+					case PIERCING:
+					case BLUNT:
+					case PEEBLE:
+						return true;
+					default:
+						return false;
+				}
+			case FIRE_ELEMENTAL:
+				return true;
+			case COAL:
+				return dmgType != DamageType.FIRE && dmgType != DamageType.EXPLOSION;
+			case DRAGON:
+				return dmgType != DamageType.BIG_BLUNT;	// Only a big rock can hurt dragon
 		}
 		return false;
 	}

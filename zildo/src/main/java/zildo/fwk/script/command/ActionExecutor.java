@@ -1045,10 +1045,14 @@ public class ActionExecutor extends RuntimeExecutor {
 		if (p_action.light != -1) {
 			elem.light = p_action.light;
 		}
-		// If element has not-null speed and high z, declare it as 'flying' one
+		// If element has not-null speed and high z, declare it as 'flying' one (see Element#beingThrown)
 		if (!elem.flying && elem.getEntityType() == EntityType.ELEMENT && (elem.vx != 0 || elem.vy != 0) && elem.z >= 4) {
 			elem.flying = true;
 			elem.setAngle(Angle.fromDelta(elem.vx, elem.vy));
+			elem.relativeZ = EngineZildo.mapManagement.getCurrentMap().readAltitude((int) elem.x / 16, (int) elem.y / 16);
+			if (!elem.hasShadow()) {
+				elem.addShadow(ElementDescription.SHADOW_SMALL);
+			}
 		}
     }
     

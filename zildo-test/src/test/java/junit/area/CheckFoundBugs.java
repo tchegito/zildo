@@ -31,6 +31,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.InfoPersos;
 import tools.annotations.SoundEnabled;
 import zildo.client.ClientEventNature;
 import zildo.client.PlatformDependentPlugin;
@@ -57,7 +58,7 @@ import zildo.monde.util.Vector2f;
 import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 
-/**
+/** (14 secondes)
  * @author Tchegito
  *
  */
@@ -640,7 +641,7 @@ public class CheckFoundBugs extends EngineUT {
 	}
 	
 	/** Issue 149 : at a time, when a door closed, collision was wrongly handled and character could walk through **/
-	@Test
+	@Test @InfoPersos
 	public void transparentDoor() {
 		EngineZildo.scriptManagement.accomplishQuest("suite_visit1_weapon", false);
 		mapUtils.loadMap("foret");

@@ -72,6 +72,7 @@ import zildo.monde.dialog.HistoryRecord;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -686,7 +687,10 @@ public abstract class EngineUT {
 		public int[][] getQuadOrder() {
 			return ((SpriteSorterMocked)spriteSorter).getQuadOrder();
 		}
-		
+		public List<SpriteEntity> getEntities() {
+			return spriteEntities;
+		}
+		 
 	}
 	
 	// TODO: check if annotation wouldn't be more appropriate (it would avoid to create twice fakedKbHandler)
@@ -714,5 +718,22 @@ public abstract class EngineUT {
 		for (String quest : quests) {
 			EngineZildo.scriptManagement.accomplishQuest(quest,  false);
 		}
+	}
+
+	/** Return all entities matching given description **/
+	protected List<SpriteEntity> findEntitiesByDesc(SpriteDescription desc) {
+		List<SpriteEntity> found = ZUtils.arrayList();
+		for (SpriteEntity e : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+			if (e.getDesc() == desc) {
+				found.add(e);
+			}
+		}
+		return found;
+	}
+	
+	/** Return first entity matching description **/
+	protected SpriteEntity findEntityByDesc(SpriteDescription desc) {
+		List<SpriteEntity> entities = findEntitiesByDesc(desc);
+		return entities.isEmpty() ? null : entities.get(0);
 	}
 }

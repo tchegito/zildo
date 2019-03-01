@@ -15,6 +15,7 @@ import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.ui.Menu;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -42,7 +43,7 @@ public class CheckOverflow extends EngineUT {
 	@Test @ClientMainLoop
 	public void spriteSorterOverflow_dialog() {
 		mapUtils.loadMap("sousbois4");
-		PersoPlayer hero = spawnZildo(830, 136);
+		hero = spawnZildo(830, 136);
 		ClientEngineZildo.mapDisplay.setCamera(new Point(690, 0));
 		ClientEngineZildo.mapDisplay.setCurrentMap(EngineZildo.mapManagement.getCurrentMap());
 		System.out.println(ClientEngineZildo.mapDisplay.getCamera());
@@ -88,7 +89,7 @@ public class CheckOverflow extends EngineUT {
 	@Test @ClientMainLoop
 	public void anotherOverflow_synthe() throws Exception {
 		mapUtils.loadMap("sousbois1");
-		PersoPlayer hero = spawnZildo(830, 136);
+		hero = spawnZildo(830, 136);
 		sd.setZildoId(hero.getId());
 		loadXMLAsString(syntheScript);
 		waitEndOfScripting();
@@ -116,6 +117,55 @@ public class CheckOverflow extends EngineUT {
 		Assert.assertNull(pressAndGetMenu(Keys.TOUCH_BACK));
 		Assert.assertNull(pressAndGetMenu(Keys.TOUCH_MENU));
 		Assert.assertNull(pressAndGetMenu(Keys.DIALOG_FRAME));
+	}
+	
+	/** Before, removed entities in server (SpriteManagement) weren't reported in client side (SpriteDisplay).
+	 * To resolve that, we marked entity as 'dying' (already done) and remove them at the next frame. So as, SpriteDisplay could
+	 * get the moment where entity need to be removed in its own data.
+	 */
+	@Test
+	public void entitiesNotRemoved() {
+		mapUtils.loadMap("ferme");
+		hero = spawnZildo(459, 373);
+		waitEndOfScripting();
+		
+		sd.setZildoId(hero.getId());
+		
+		renderFrameDisplayingSprite(1);
+		
+		// There is a delta between client and server entities: entities with ID=-1 in the GUI
+		int delta = deltaEntities();
+		
+		EngineZildo.mapManagement.getCurrentMap().attackTile(1, new Point(30, 25), hero);
+		EngineZildo.mapManagement.getCurrentMap().attackTile(1, new Point(31, 25), hero);
+		EngineZildo.mapManagement.getCurrentMap().attackTile(1, new Point(30, 26), hero);
+		EngineZildo.mapManagement.getCurrentMap().attackTile(1, new Point(31, 26), hero);
+		
+		renderFrameDisplayingSprite(400);
+
+		// Check that there isn't any 'died' entity in SpriteDisplay (client render)
+		for (SpriteEntity entity : sd.getEntities()) {
+			Assert.assertFalse("It shouldn't be any died entity in client rendering entities !", entity.dying);
+		}
+		
+		Assert.assertEquals(delta,  deltaEntities());
+	}
+	
+	private int deltaEntities() {
+		return sd.getEntities().size() - EngineZildo.spriteManagement.getSpriteEntities(null).size();
+	}
+	
+	private PersoPlayer hero;
+	
+	private void renderFrameDisplayingSprite(int nbFrames) {
+		for (int i=0;i<nbFrames;i++) {
+			sd.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null));
+			sd.setZildoId(hero.getId());
+			renderFrames(1);
+	
+			//System.out.println("sizeServer=" + EngineZildo.spriteManagement.getSpriteEntities(null).size());
+			//System.out.println("sizeClient=" + sd.getEntities().size());
+		}
 	}
 	
 	private Menu pressAndGetMenu(Keys key) {

@@ -61,6 +61,8 @@ public class ElementGoodies extends Element {
 		// TODO: Handle this in a more specific way
 		if (p_desc == ElementDescription.PORTAL_KEY) {
 			volatil = false;
+		} else if (p_desc == ElementDescription.SPADE) {
+			shadow = null;
 		}
 	}
 	

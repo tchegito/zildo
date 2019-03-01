@@ -424,28 +424,41 @@ public class Area implements EasySerializable {
 			temp.setModified(true);
 		}
 		Tile tile;
-		switch (level) {
-		case BACK:
-			default:
-			tile = temp.getBackTile();
-			break;
-		case BACK2:
-			tile = temp.getBackTile2();
-			if (tile == null) {
-				tile = new Tile(0, temp);
-				temp.setBackTile2(tile);
+		if (quoi == -1) {
+			switch (level) {
+			case BACK:
+				temp.setBackTile(null);
+				break;
+			case BACK2:
+				temp.setBackTile2(null);
+				break;
+			case FORE:
+				temp.setForeTile(null);
+				break;
 			}
-			break;
-		case FORE:
-			tile = temp.getForeTile();
-			if (tile == null) {
-				tile = new Tile(0, temp);
-				temp.setForeTile(tile);
+		} else {
+			switch (level) {
+			case BACK:
+				default:
+				tile = temp.getBackTile();
+				break;
+			case BACK2:
+				tile = temp.getBackTile2();
+				if (tile == null) {
+					tile = new Tile(0, temp);
+					temp.setBackTile2(tile);
+				}
+				break;
+			case FORE:
+				tile = temp.getForeTile();
+				if (tile == null) {
+					tile = new Tile(0, temp);
+					temp.setForeTile(tile);
+				}
+				break;
 			}
-			break;
+			tile.set(quoi, rot, Reverse.NOTHING);
 		}
-		tile.set(quoi, rot, Reverse.NOTHING);
-
 		changes.add(new Point(x, y));
 	}
 
@@ -604,6 +617,43 @@ public class Area implements EasySerializable {
 		TriggerElement attackTrigger = TriggerElement.createTileAttackTrigger(tileLocation);
 		EngineZildo.scriptManagement.trigger(attackTrigger);
 	}
+	
+	/** When the tile receives a fork blow **/
+	public void forkTile(Perso attacker,Point pos) {
+		int onmap = readmap(pos.x, pos.y);
+		ElementDescription desc = null;
+		switch (onmap) {
+		case Tile.T_BUSH:
+			int resultTile = Tile.T_BUSH_CUT;
+			writemap(pos.getX(), pos.getY(), resultTile);
+			desc = ElementDescription.BUSHES;
+			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRamasse, attacker);
+
+			break;
+		case 256+224:	// Bottom (last)
+			writemap(pos.getX(), pos.getY(), 256 + 209, TileLevel.BACK2);
+			desc = ElementDescription.STRAW;
+			break;
+		case 256+108:	// Bottom
+			writemap(pos.getX(), pos.getY(), -1, TileLevel.BACK2);
+			writemap(pos.getX(), pos.getY()+1, 256 + 224, TileLevel.BACK2);
+			desc = ElementDescription.STRAW;
+			break;
+		case 250+256: case 252+256:
+			writemap(pos.getX(), pos.getY(), 256 + 108, TileLevel.BACK2);
+		case 253+256:
+			desc = ElementDescription.STRAW;
+			break;
+		}
+		if (desc != null) {
+			Element bush = EngineZildo.spriteManagement.spawnElement(desc, pos.getX()*16+8, pos.getY()*16+8, 
+					2, Reverse.NOTHING, Rotation.NOTHING);
+			bush.addShadow(ElementDescription.SHADOW_SMALL);
+			if (attacker.isZildo()) {
+				((PersoPlayer)attacker).grabWithFork(bush);
+			}
+		}
+}
 	
 	/**
 	 * Explode a wall at a given location, looking for a crack sprite. 

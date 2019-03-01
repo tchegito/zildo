@@ -12,7 +12,6 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
@@ -101,30 +100,19 @@ public class TestInteractionObject extends EngineUT {
 		zildo.setCountBomb(4);
 		zildo.attack();
 		Assert.assertEquals(3,  zildo.getCountBomb());	// Be sure dynamite is planted
-		Element dynamite = findByDesc(ElementDescription.DYNAMITE);
+		Element dynamite = (Element) findEntityByDesc(ElementDescription.DYNAMITE);
 		Assert.assertNotNull(dynamite);
 		//.forEach(k -> System.out.println(k));;
 
 		// Wait for dynamite to explode
 		while (true) {
 			renderFrames(1);
-			if (findByDesc(ElementDescription.DYNAMITE) == null) {
+			if (findEntityByDesc(ElementDescription.DYNAMITE) == null) {
 				break;
 			}
 		}
 		// Check that boulder is projected to the right side
 		Assert.assertTrue(boulder.flying);
 		Assert.assertTrue("Boulder should have been projected on the "+message, predicate.test(boulder));
-	}
-	
-	/** Find an element from his description. Returns the first one found, or NULL if there isn't any of this kind. **/
-	private Element findByDesc(ElementDescription desc) {
-		for (SpriteEntity e : EngineZildo.spriteManagement.getSpriteEntities(null)) {
-			if (e.getDesc() == desc) {
-				return (Element) e;
-			}
-		}
-		return null;
-		
 	}
 }

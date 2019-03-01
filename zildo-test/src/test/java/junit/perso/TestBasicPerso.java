@@ -22,6 +22,7 @@ package junit.perso;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -111,6 +112,7 @@ public class TestBasicPerso extends EngineUT {
 	public void speakEachAngle() {
 		PersoPlayer hero = spawnZildo(160,100);
 		waitEndOfScripting();
+		
 		
 		List<Angle> interestingAngles = Arrays.asList(Angle.NORD, Angle.EST, Angle.OUEST, Angle.SUD);
 		List<PersoDescription> erreurs = new ArrayList<>();

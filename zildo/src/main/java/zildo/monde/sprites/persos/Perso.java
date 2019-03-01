@@ -1397,6 +1397,11 @@ public abstract class Perso extends Element {
 		 	(pos_seqsprite / (factor * Constantes.speed));
 	}
 
+	public int computeSeqPositive(int factor) {
+		 return pos_seqsprite == -1 ? 0 :
+		 	(pos_seqsprite / (factor * Constantes.speed));
+	}
+	
 	public void setCarriedItem(ElementDescription desc) { }
 	
 	@Override

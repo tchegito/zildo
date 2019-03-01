@@ -23,6 +23,7 @@ package zildo.monde.sprites.elements;
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.script.context.LocaleVarContext;
+import zildo.fwk.script.context.SceneContext;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.Trigo;
 import zildo.monde.collision.Collision;
@@ -305,8 +306,13 @@ public class Element extends SpriteEntity {
 		// Alpha channel evolution
 		alphaV += alphaA;
 		alpha += alphaV;
-		if (shadow != null) {
-			shadow.alpha = alpha;
+		if (shadow != null) {	
+			if (z > 10) {
+				// Enhancement: display shadow with reduced alpha if element is very high (z > 10)
+				shadow.alpha = 255 - Math.max(0, (z-10) * 3);
+			} else {
+				shadow.alpha = alpha;
+			}
 		}
 		
 		if (alpha < 0 && fall()) {
@@ -598,6 +604,11 @@ public class Element extends SpriteEntity {
 		if (nature != null) {
 			EngineZildo.mapManagement.getCurrentMap().alertAtLocation(new Point(x, y));
 
+			// Exception: for bushes, no matter what is on the floor, it should scatter its leaves
+			if (desc == ElementDescription.BUSHES) {
+				nature = TileNature.REGULAR;
+			}
+			
 			switch (nature) {
 			case BOTTOMLESS:	// Means LAVA, actually
 				EngineZildo.soundManagement.broadcastSound(BankSound.LavaDrop, this);
@@ -632,6 +643,10 @@ public class Element extends SpriteEntity {
 										(int) y, floor, 0, null, null);
 						EngineZildo.soundManagement.broadcastSound(BankSound.CasseBuisson, this);
 						break;
+					case STRAW:
+						Point dir = getLinkedPerso().angle.coords;
+						EngineZildo.scriptManagement.execute("throwStraw("+x+","+y+","+dir.x+","+dir.y+")", false, new SceneContext(), null);
+						break;
 					case JAR:
 					case STONE:
 					case STONE_HEAVY:
@@ -651,10 +666,11 @@ public class Element extends SpriteEntity {
 						EngineZildo.soundManagement.broadcastSound(BankSound.BoomerangTape, this);
 						break;
 					case LEAF:
+					case STRAWF1: case STRAWF2: case STRAWF3:
 					case NETTLE_LEAF:
 						if (alpha > 0)	{// Leaf stay on the floor until it's totally disappeared
 							alphaV = d == ElementDescription.NETTLE_LEAF ? -0.5f : -1;
-							vx=0;
+							vx=0; vy =0;
 							ax=0;
 							return false;
 						}
@@ -988,6 +1004,10 @@ public class Element extends SpriteEntity {
 		return shadow;
 	}
 
+	public boolean hasShadow() {
+		return shadow != null;
+	}
+	
 	@Override
 	public boolean isGhost() {
 		if (linkedPerso != null && linkedPerso.getEntityType().isPerso()) {

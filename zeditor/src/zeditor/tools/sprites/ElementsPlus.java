@@ -52,8 +52,8 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(0, 48, 8, 8),
 				// Feuille d'ortie
 				new Zone(16, 21, 8, 8),
-				// Master Key
-				new Zone(0, 56, 14, 16),
+				// Fork
+				new Zone(0, 264, 11, 24),
 				// Coeur
 				new Zone(12, 4, 8, 9),
 				// Pierres
@@ -355,7 +355,12 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(196, 18, 16, 22), new Zone(213, 18, 16, 22),
 				new Zone(230, 18, 16, 22), new Zone(247, 18, 16, 22), new Zone(264, 18, 16, 22),
 				// Wood catapult
-				new Zone(24, 233, 11, 12), new Zone(0, 223, 29, 10)
+				new Zone(24, 233, 11, 12), new Zone(0, 223, 29, 10),
+				// Straw on the fork
+				new Zone(0, 288, 19, 15),
+				// Flying straw
+				new Zone(12, 278, 8, 6), new Zone(21, 278, 10, 7),new Zone(32, 278, 14, 7)
+				//new Zone(11, 264, 21, 14)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -379,7 +384,8 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("dragonpal", 266, 0),
 				new GraphChange("objets", 269, 0),
 				new GraphChange("bitey", 271, 0),
-				new GraphChange("exteria10", 276,  0)
+				new GraphChange("exteria10", 276,  0),
+				new GraphChange("elem", 278, 0)
 		});
 	}
 }

@@ -47,6 +47,9 @@ public enum MouvementZildo {
 	TOMBE,	// Falling in a pit
 	PLAYING_FLUT,
 	SLEEPING,
-	WAKEUP;
+	WAKEUP,
+	ATTACK_FORK,	// Player draw the fork
+	HOLD_FORK,	// Player is holding the fork
+	PUTAWAY_FORK;	// Player is putting his fork away
 
 }

@@ -184,6 +184,10 @@ public class Rectangle {
 		return coordinates[0];
 	}
 
+	public Point getCornerBottomRight() {
+		return coordinates[3];
+	}
+	
 	@Override
 	public String toString() {
 		return coordinates[0].toString() + " - " + coordinates[3].toString();

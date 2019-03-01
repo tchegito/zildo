@@ -34,11 +34,7 @@ public enum ZildoDescription implements SpriteDescription {
 	RIGHT1, RIGHT2, RIGHT3, RIGHT4, RIGHT5, RIGHT6, RIGHT7,
 	DOWN_FIXED,
 	DOWN1, DOWN2, DOWN3, DOWN4, DOWN5, DOWN6, DOWN7,
-	/* all LEFT are now unused */
-	/*
-	LEFT_FIXED,
-	LEFT1, LEFT2, LEFT3, LEFT4, LEFT5, LEFT6, LEFT7,	
-	*/
+
 	HANDSUP_UP_FIXED,	//20
 	HANDSUP_UP1, HANDSUP_UP2, HANDSUP_UP3, HANDSUP_UP4,
 	HANDSUP_RIGHT_FIXED,
@@ -46,29 +42,22 @@ public enum ZildoDescription implements SpriteDescription {
 	HANDSUP_DOWN_FIXED,
 	HANDSUP_DOWN1, HANDSUP_DOWN2, HANDSUP_DOWN3, HANDSUP_DOWN4,
 
-	/* all LEFT are now unused */
-	//HANDSUP_LEFT_FIXED,
-	//HANDSUP_LEFT1, HANDSUP_LEFT2,	// 43
-	
 	PULL_UP1, PULL_UP2,	//33
 	PULL_RIGHT1, PULL_RIGHT2,
 	PULL_DOWN1, PULL_DOWN2,
-	//PULL_LEFT1, PULL_LEFT2,
-	
+
 	LIFT_RIGHT, LIFT_LEFT,	//39
 	
 	ATTACK_UP1, ATTACK_UP2, ATTACK_UP3, ATTACK_UP4, ATTACK_UP5, //ATTACK_UP6,
 	ATTACK_RIGHT1, ATTACK_RIGHT2, ATTACK_RIGHT3, ATTACK_RIGHT4, ATTACK_RIGHT5, //ATTACK_RIGHT6,
 	ATTACK_DOWN1, ATTACK_DOWN2, ATTACK_DOWN3, ATTACK_DOWN4, ATTACK_DOWN5, //ATTACK_DOWN6,
-	//ATTACK_LEFT1, ATTACK_LEFT2, ATTACK_LEFT3, ATTACK_LEFT4, ATTACK_LEFT5, ATTACK_LEFT6,
-	
+
 	WOUND_UP, WOUND_RIGHT, WOUND_DOWN, WOUND_LEFT,	// 56
 	
 	PUSH_UP1, PUSH_UP2, PUSH_UP3, PUSH_UP4, PUSH_UP5,
 	PUSH_RIGHT1, PUSH_RIGHT2, PUSH_RIGHT3,
 	PUSH_DOWN1, PUSH_DOWN2, PUSH_DOWN3,
-	//PUSH_LEFT1, PUSH_LEFT2, PUSH_LEFT3,
-	
+
 	JUMP_UP, JUMP_RIGHT, JUMP_DOWN, JUMP_LEFT,	//71
 	
 	WATFEET1, WATFEET2, WATFEET3, // 75 (Feet in the water)
@@ -80,8 +69,7 @@ public enum ZildoDescription implements SpriteDescription {
 	BOW_UP1, BOW_UP2, BOW_UP3,
 	BOW_RIGHT1, BOW_RIGHT2, BOW_RIGHT3,
 	BOW_DOWN1, BOW_DOWN2, BOW_DOWN3,
-	//BOW_LEFT1, BOW_LEFT2, BOW_LEFT3,
-	
+
 	// 92
 	DIRT1, DIRT2, DIRT3,	// feet in dirt
 	
@@ -93,7 +81,9 @@ public enum ZildoDescription implements SpriteDescription {
 	
 	SLEEPING, WAKINGUP, WAKEUP, TURNRIGHT,
 	
-	MSWORD0, MSWORD1, MSWORD2, MSWORD3;
+	MSWORD0, MSWORD1, MSWORD2, MSWORD3,
+	
+	FORK0, ARM, FORK1, HOLDINGFORK1, HOLDINGFORK2, HOLDINGFORK3;
 	
 	
 	public int getBank() {
@@ -103,15 +93,17 @@ public enum ZildoDescription implements SpriteDescription {
 	static final int[][] seq_zildoDeplacement={
 		{1,2,3,4,7,5, 6, 8} ,{0,1,2,3,7,6,4,5},
 		{1,2,3,4, 5, 2,6,7},{0,1,2,3,7,6,4,5}};
-	//	{1,2,3,4,-1,5, 6,-2} ,{0,1,2,3,7,6,4,5},
-	//	{1,2,3,4,-1,2,-3,-4},{0,1,2,3,7,6,4,5}};
+	
+	static final int[][] seq_zildoDeplacement_slow={
+			{1,1,2,2,3,3, 4, 4} ,{0,0,1,1,7,7,6,6},
+			{0,0,1,1, 2, 2,1,1},{0,0,1,1,7,7,6,6}};
 	
 	static int seq_1[] = { 0, 1, 2, 1 };
 	static int seq_2[] = { 0, 1, 2, 1, 0, 3, 4, 3 };
 	
 	static final int[] seq_zildoBow = { 0, 1, 2, 1 };
 
-	public static Sprite getMoving(Angle p_angle, int p_seq) {
+	public static Sprite getMoving(Angle p_angle, int p_seq, boolean slow) {
 		// 1) Fixed position
 		ZildoDescription desc=ZildoDescription.UP_FIXED;
 		Reverse reverse=Reverse.NOTHING;
@@ -130,7 +122,14 @@ public enum ZildoDescription implements SpriteDescription {
 		// 2) Moving
 		int n=0;
 		if (p_seq != -1) {
-			n=seq_zildoDeplacement[p_angle.value][p_seq];
+			if (slow) {
+				if (p_angle == Angle.SUD) {
+					desc = ZildoDescription.HOLDINGFORK1;
+				}
+				n=seq_zildoDeplacement_slow[p_angle.value][p_seq];
+			} else {
+				n=seq_zildoDeplacement[p_angle.value][p_seq];
+			}
 		}
 		return fillSprite(desc, Math.abs(n), reverse);
 	}
@@ -200,7 +199,52 @@ public enum ZildoDescription implements SpriteDescription {
 		}
 		return fillSprite(desc, p_seq, reverse);
 	}
+	
+	/** Hero is walking, holding his fork **/
+	public static Sprite getMovingFork(Angle p_angle, int p_seq) {
+		switch (p_angle) {
+			case EST:
+			case OUEST:
+			default:
+				return getMoving(p_angle, p_seq, true);
+		case NORD:
+			if (p_seq == -1) {
+				return fillSprite(ZildoDescription.ATTACK_UP1, 0, Reverse.NOTHING);
+			} else {
+				Sprite s = getMoving(p_angle, p_seq, true);
+				s.reverse = Reverse.NOTHING;
+				return s;
+			}
+		case SUD:
+			if (p_seq == -1) {
+				return fillSprite(ZildoDescription.ATTACK_DOWN1, 0, Reverse.NOTHING);
+			} else {
+				Sprite s = getMoving(p_angle, p_seq, true);
+				s.reverse = Reverse.NOTHING;
+				return s;
+			}
+		}
+	}
 
+	public static Sprite getForkAttacking(Angle p_angle, int p_seq) {
+		int[] sequence = new int[] {0, 0, 0};
+		Reverse r = Reverse.NOTHING;
+		ZildoDescription desc = ZildoDescription.ATTACK_RIGHT1;
+		switch (p_angle) {
+			case OUEST:
+				r = Reverse.HORIZONTAL;
+			default:
+				break;
+			case NORD:
+				desc = ZildoDescription.ATTACK_UP1;
+				break;
+			case SUD:
+				desc = ZildoDescription.ATTACK_DOWN1;
+				break;
+		}
+		return fillSprite(desc, sequence[p_seq], r);
+	}
+	
 	public static Sprite getPushing(Angle p_angle, int p_seq) {
 		ZildoDescription desc = ZildoDescription.PUSH_UP1;
 		Reverse reverse = Reverse.NOTHING;

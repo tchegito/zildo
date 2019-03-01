@@ -128,7 +128,14 @@ public class PjZildo extends SpriteBanque {
 				
 				// Sword 2
 				new Zone(69, 161, 15, 6), new Zone(85, 161, 13, 15),
-				new Zone(99, 161, 15, 14), new Zone(115, 161, 8, 13)
+				new Zone(99, 161, 15, 14), new Zone(115, 161, 8, 13),
+				
+				// Fork
+				new Zone(75, 134, 19, 10),
+				new Zone(96, 134, 8, 6), new Zone(65, 137, 9, 12),
+				
+				// Hero holding fork
+				new Zone(303, 24, 15, 23), new Zone(303, 48, 15, 24), new Zone(303, 73, 15, 23)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{

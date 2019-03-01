@@ -6,7 +6,6 @@ import org.junit.Test;
 import tools.EngineUT;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -27,7 +26,7 @@ public class TestThrow extends EngineUT {
 		// Throw a peeble on the west
 		zildo.attack();
 		// Find the sprite
-		Element peeble = findEntityByDesc(ElementDescription.PEEBLE);
+		Element peeble = (Element) findEntityByDesc(ElementDescription.PEEBLE);
 		Assert.assertNotNull(peeble);
 		// Wait for peeble to disappear
 		while (!peeble.dying) {
@@ -64,21 +63,13 @@ public class TestThrow extends EngineUT {
 		renderFrames(10);
 		simulateDirection(new Vector2f(-0.5f, 0f));
 		renderFrames(30 + 20);
-		Element arrow = findEntityByDesc(ElementDescription.ARROW_LEFT);
+		Element arrow = (Element) findEntityByDesc(ElementDescription.ARROW_LEFT);
 		Assert.assertNotNull(arrow);
 		simulateDirection(-1,0);
 		renderFrames(80);
 		waitEndOfScripting();
 		mapUtils.assertCurrent("prison13");
 	}
-	
-	private Element findEntityByDesc(ElementDescription desc) {
-		for (SpriteEntity entity : EngineZildo.spriteManagement.getSpriteEntities(null)) {
-			if (entity.getDesc() == desc) {
-				return (Element) entity;
-			}
-		}
-		return null;
-	}
+
 
 }

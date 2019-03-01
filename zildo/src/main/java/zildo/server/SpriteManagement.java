@@ -23,11 +23,11 @@ package zildo.server;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import zildo.client.sound.BankSound;
+import zildo.fwk.ZUtils;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.collection.ListMerger;
 import zildo.fwk.file.EasyBuffering;
@@ -70,7 +70,10 @@ import zildo.server.state.ClientState;
 
 public class SpriteManagement extends SpriteStore {
 
+	// Items that hero can pick up and throw
 	EnumSet<ElementDescription> pickableSprites = EnumSet.of(ElementDescription.DYNAMITE);
+	// Items that hero can take into his inventory
+	EnumSet<ElementDescription> takableSprites = EnumSet.of(ElementDescription.SPADE);
 	
 	boolean spriteUpdating;	// TRUE=new sprites are added to SpriteEntitiesToAdd / FALSE=regular list
 
@@ -88,6 +91,8 @@ public class SpriteManagement extends SpriteStore {
 	// Multiplayer: To identify entities which have been modified in the current frame
 	Map<Integer, SpriteEntity> backupEntities; 
 
+	private List<SpriteEntity> toDelete = ZUtils.arrayList();
+	
 	SpriteCollision sprColli;
 	public PersoCollision persoColli;
 	
@@ -526,7 +531,6 @@ public class SpriteManagement extends SpriteStore {
 		entity.setDesc(desc);
 		entity.setForeground(p_foreground);
 
-
 		entity.reverse=p_reverse;
 		
 		// Store walkable entities
@@ -635,7 +639,12 @@ public class SpriteManagement extends SpriteStore {
 			}
 		}
 
-		List<SpriteEntity> toDelete = new ArrayList<SpriteEntity>();
+		// Remove entities marked as 'dying' in previous frame
+		for (SpriteEntity entity : toDelete) {
+			deleteSprite(entity);
+		}
+		
+		toDelete.clear();
 		for (SpriteEntity entity : spriteEntities) {
 			if (toDelete.contains(entity) || suspendedEntities.contains(entity)) {
 				continue; // It's a dead one
@@ -672,9 +681,8 @@ public class SpriteManagement extends SpriteStore {
 			}
 		}
 
-		// Remove what need to
+		// Notify collision engine (and entities will be really removed next frame, in order to notify SpriteDisplay)
 		for (SpriteEntity entity : toDelete) {
-			deleteSprite(entity);
 			if (entity.getEntityType().isPerso()) {
 				persoColli.notifyDeletion((Perso) entity);
 			} else {

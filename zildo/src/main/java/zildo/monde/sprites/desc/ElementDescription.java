@@ -30,7 +30,7 @@ public enum ElementDescription implements SpriteDescription {
 
 	// Elem.spr
 	// 0
-	JAR, BUSHES, SHADOW, LEAF_GREEN, DROP_FLOOR, SMOKE, SMOKE_SMALL, TINY_ROCK, NETTLE_LEAF, BIG_KEY, HEART, STONE_HEAVY, STONE,
+	JAR, BUSHES, SHADOW, LEAF_GREEN, DROP_FLOOR, SMOKE, SMOKE_SMALL, TINY_ROCK, NETTLE_LEAF, FORK_HIGH, HEART, STONE_HEAVY, STONE,
 	// 13
 	BLUE1, BLUE2, BLUE3, BLUE4, BLUE5, BLUE6, BLUE7, BLUE8, ANGLE1, ANGLE2, ANGLE3, ANGLE4,
 	// 25
@@ -154,7 +154,9 @@ public enum ElementDescription implements SpriteDescription {
 	// Bitey's GNAP (when the plant shut her tooth)
 	GNAP1, GNAP2, GNAP3, GNAP4, GNAP5,
 	// Catapult
-	CATAPULT_CRATE, CATAPULT_BRANCH;
+	CATAPULT_CRATE, CATAPULT_BRANCH,
+	// Straw on the fork, and flying
+	STRAW, STRAWF1, STRAWF2, STRAWF3;
 	
 	Boolean damage;
 	
@@ -306,10 +308,10 @@ public enum ElementDescription implements SpriteDescription {
 	 */
 	public boolean isNotFixe() {
 		switch (this) {
-		case JAR: case BUSHES: case LEAF:
+		case JAR: case BUSHES: case LEAF: case STRAWF1: case STRAWF2: case STRAWF3:
 		case LEAF_GREEN: case DROP_FLOOR: case SMOKE:
 		case SMOKE_SMALL: case TINY_ROCK: case NETTLE_LEAF:
-		case BIG_KEY: case HEART: case STONE_HEAVY: case STONE:
+		case HEART: case STONE_HEAVY: case STONE:
 		case BARREL:
 		case DROP_SMALL: case DROP_MEDIUM: case ROCK_BALL:
 		case SPARK_LEFT: case SPARK_RIGHT: case SPARK_UPLEFT: case SPARK_UPRIGHT:

@@ -212,10 +212,13 @@ public class PlayerManagement {
 		
 		float zildoSpeed=heros.getSpeed() * (heros.getAcceleration() / 10 ) * EngineZildo.extraSpeed;
 		
-		if (heros.getMouvement() == MouvementZildo.SAUTE) {
-	    	// Zildo's jumping ! Then he's inactive for player
-			
-		} else {
+		switch (heros.getMouvement()) {
+			case SAUTE:
+		    	// Zildo's jumping ! Then he's inactive for player
+				break;
+			case HOLD_FORK:
+				zildoSpeed /= 2f;
+			default:
 			if (heros.getAttente()!=0) {
 				heros.setAttente(heros.getAttente()-1);
 				if (heros.getMouvement()!=MouvementZildo.ATTAQUE_EPEE) {
@@ -343,9 +346,7 @@ public class PlayerManagement {
 				}	//if touch=15
 				heros.setPos_seqsprite(-1);
 				heros.setTouch(heros.getTouch()+1);
-			} else
-				heros.setPos_seqsprite((heros.getPos_seqsprite()+1) % 512); // Sinon on augmente (Zildo pousse)
-			
+			}
 		} else if (!heros.getMouvement().equals(MouvementZildo.SAUTE)) {
             // Pas d'obstacles ? Mais peut-être une porte !
             boolean ralentit = heros.walkTile(true);
@@ -497,6 +498,9 @@ public class PlayerManagement {
 							// Zildo can take a non-flying pickable sprite (ex: bomb)
 							if (EngineZildo.spriteManagement.pickableSprites.contains(desc) && !elem.flying) {
 								heros.takeSomething((int) elem.x, (int) elem.y, null, elem);
+							}
+							if (EngineZildo.spriteManagement.takableSprites.contains(desc)) {
+								heros.pickItem(ItemKind.fromDesc(desc), elem);
 							}
 						} else {
 							// Check for special tile on the map

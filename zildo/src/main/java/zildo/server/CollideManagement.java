@@ -31,6 +31,7 @@ import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.items.ItemKind;
+import zildo.monde.map.Area;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.Perso;
@@ -110,21 +111,33 @@ public class CollideManagement {
         	// Check if any tile is damaged (only with cutting/exploding damage)
             DamageType dmgType=collider.damageType;
             if (dmgType != null) {
-            	if (dmgType.isCutting()) {
-	            	Set<Point> tilesCollided=getTilesCollided(collider);
-	    			// And ask 'map' object to react
-	            	int floor = EngineZildo.mapManagement.getCurrentMap().getHighestFloor();
-            		if (collider.perso != null) {
-            			floor = collider.perso.floor;
-            		}
-	            	for (Point location : tilesCollided) {
-	            		EngineZildo.mapManagement.getCurrentMap().attackTile(floor, location, null);
-	            	}
-            	} else if (dmgType == DamageType.SMASH) {
-	            	Set<Point> tilesCollided=getTilesCollided(collider);
-            		for (Point location : tilesCollided) {
-            			EngineZildo.mapManagement.getCurrentMap().smashTile(location);
-            		}
+            	Area area = EngineZildo.mapManagement.getCurrentMap();
+            	Set<Point> tilesCollided=getTilesCollided(collider);
+
+            	// TODO: maybe merge all 'for' tilesCollided
+            	switch (dmgType) {
+	            	case CUTTING_FRONT:
+	            	case EXPLOSION:
+		    			// And ask 'map' object to react
+		            	int floor = area.getHighestFloor();
+		        		if (collider.perso != null) {
+		        			floor = collider.perso.floor;
+		        		}
+		            	for (Point location : tilesCollided) {
+		            		area.attackTile(floor, location, null);
+		            	}
+		            	break;
+	            	case SMASH:
+	            		for (Point location : tilesCollided) {
+	            			area.smashTile(location);
+	            		}
+	            		break;
+	            	case FORKING:
+		            	for (Point location : tilesCollided) {
+		            		if (damager.isZildo() && ((PersoPlayer)damager).canFork()) {
+		            			area.forkTile(damager, location);
+		            		}	
+		            	}
             	}
             }
         }
@@ -169,10 +182,9 @@ public class CollideManagement {
 	    	}
 	    	Rectangle rect=new Rectangle(center, size);
 	    	
-	    	//rect.scale(1-(16f / size.x), 1-(16f / size.y));
 	    	rect.multiply(1/16f);	// Adapt tile coordinate (one tile is 16x16 sized)
 	    	Point cornerTopLeft=rect.getCornerTopLeft();
-	    	Point cornerBottomRight=cornerTopLeft.translate(rect.getSize());
+	    	Point cornerBottomRight=rect.getCornerBottomRight();
 	    	for (int j=cornerTopLeft.y;j<=cornerBottomRight.y;j++) {
 	    		for (int i=cornerTopLeft.x;i<=cornerBottomRight.x;i++) {
 	    			tilesLocation.add(new Point(i,j));

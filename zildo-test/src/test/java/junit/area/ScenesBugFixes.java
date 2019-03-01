@@ -13,7 +13,6 @@ import tools.annotations.SoundEnabled;
 import zildo.client.sound.BankSound;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -59,12 +58,12 @@ public class ScenesBugFixes extends EngineUT {
 		zildo.setCountBomb(20);
 		zildo.attack();
 		Assert.assertEquals(19, zildo.getCountBomb());
-		Assert.assertNotNull(findByDesc(ElementDescription.DYNAMITE));
+		Assert.assertNotNull(findEntityByDesc(ElementDescription.DYNAMITE));
 		zildo.setY(zildo.y+30);	// Move hero to escape from dynamite fire
 		
 		// Wait for dynamite to blow
 		renderFrames(120);
-		Assert.assertNull(findByDesc(ElementDescription.DYNAMITE));
+		Assert.assertNull(findEntityByDesc(ElementDescription.DYNAMITE));
 		// Check that related quest has been triggered
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("eleog(13, 3)"));
 		
@@ -121,14 +120,5 @@ public class ScenesBugFixes extends EngineUT {
 		// If we reach this point, we can conclude that script has worked without any blocking character !
 		// Anyway, check that hero can move == attente equals 0
 		Assert.assertEquals(0,  zildo.getAttente());
-	}
-	
-	private SpriteEntity findByDesc(ElementDescription desc) {
-		for (SpriteEntity e : EngineZildo.spriteManagement.getSpriteEntities(null)) {
-			if (e.getDesc() == desc) {
-				return e;
-			}
-		}
-		return null;
 	}
 }
