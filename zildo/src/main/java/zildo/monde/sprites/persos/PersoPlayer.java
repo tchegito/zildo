@@ -499,6 +499,8 @@ public class PersoPlayer extends Perso {
 				}
 		}
 		// Project Zildo away from the enemy
+		arm.setVisible(false);
+		fork.setVisible(false);
 		project(cx, cy, 8);
 
 		if (p_shooter != null && p_shooter.getQuel_deplacement().isAlertable()) {
