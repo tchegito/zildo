@@ -35,7 +35,7 @@ public class PhysicMoveOrder extends MoveOrder {
 	 * @param x
 	 * @param y
 	 */
-	public PhysicMoveOrder(int x, int y) {
+	public PhysicMoveOrder(float x, float y) {
 		super(x, y);
 	}
 

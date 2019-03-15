@@ -17,6 +17,7 @@ import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
 import zildo.monde.util.Zone;
 import zildo.resource.KeysConfiguration;
@@ -109,7 +110,7 @@ public class TestAdvancedPerso extends EngineUT {
 	public void moveAndJump() {
 		mapUtils.loadMap("foret");
 		PersoPlayer zildo = spawnZildo(700, 376);
-		zildo.setTarget(new Point(700, 280));
+		zildo.setTarget(new Pointf(700, 280));
 		zildo.setGhost(true);
 		renderFrames(60);
 		

@@ -62,7 +62,7 @@ public class ScenesBugFixes extends EngineUT {
 		zildo.setY(zildo.y+30);	// Move hero to escape from dynamite fire
 		
 		// Wait for dynamite to blow
-		renderFrames(120);
+		renderFrames(120+1);
 		Assert.assertNull(findEntityByDesc(ElementDescription.DYNAMITE));
 		// Check that related quest has been triggered
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("eleog(13, 3)"));

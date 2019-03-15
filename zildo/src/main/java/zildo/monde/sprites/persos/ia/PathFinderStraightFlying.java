@@ -21,7 +21,6 @@
 package zildo.monde.sprites.persos.ia;
 
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
@@ -54,7 +53,7 @@ public class PathFinderStraightFlying extends PathFinder {
 	@Override
 	public void determineDestination() {
 		// A simple bird flying straight toward the map's border.
-		target = new Point(mobile.x, mobile.y);
+		target = new Pointf(mobile.x, mobile.y);
 		switch (mobile.getAngle()) {
 		case EST:
 		case SUD:

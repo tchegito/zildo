@@ -690,7 +690,7 @@ public class MapManagement {
 				// chPointTarget should never be null !
 				// But there is a map (polaky, left border) which fails...
 				if (!zildo.isOnPlatform()) {
-					Point dest = new Point(zildo.x, zildo.y);
+					Pointf dest = new Pointf(zildo.x, zildo.y);
 					zildo.y = (int) zildo.y;
 					if (zildo.y > previousDimY * 16 - 16) {
 						zildo.setY(8 - 8);
@@ -794,7 +794,7 @@ public class MapManagement {
 			startLocation = new Point(zildo.x, zildo.y);
 			startFloor = zildo.getFloor();
 			if (zildo.getTarget() != null) {
-				startLocation = zildo.getTarget();
+				startLocation = zildo.getTarget().toPoint();
 			}
 			// If hero is along a border, the game will be backed up when scroll will be over
 			if (!isAlongBorder && EngineZildo.scriptManagement.isAllowedToSave()) {
@@ -821,7 +821,7 @@ public class MapManagement {
 		Perso follower = EngineZildo.persoManagement.getFollower(zildo);
 		if (follower != null) {
 			if (p_scroll) {	// If map is scrolling, moves smoothly the character
-				follower.setTarget(new Point(zildo.x, zildo.y));
+				follower.setTarget(new Pointf(zildo.x, zildo.y));
 			} else {
 				follower.setX(zildo.x);
 				follower.setY(zildo.y);

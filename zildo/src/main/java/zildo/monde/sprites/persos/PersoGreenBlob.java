@@ -30,6 +30,7 @@ import zildo.monde.sprites.elements.ElementPoison;
 import zildo.monde.sprites.persos.ia.PathFinderGreenBlob;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
 /**
@@ -96,8 +97,8 @@ public class PersoGreenBlob extends PersoShadowed {
 				double gamma = Trigo.getAngleRadian(x, y, enemy.x, enemy.y);
 				gamma += hasard.intervalle((float) (Math.PI / 4f));
 				gamma += correctAngle;
-				Point p = new Point((int) (x + 12 * Math.cos(gamma)),
-					     			(int) (y + 12 * Math.sin(gamma)) );
+				Pointf p = new Pointf(x + 12 * Math.cos(gamma),
+					     			 y + 12 * Math.sin(gamma) );
 				pathFinder.setTarget(p);
 				approaching = true;
 			} else if (approaching ) {

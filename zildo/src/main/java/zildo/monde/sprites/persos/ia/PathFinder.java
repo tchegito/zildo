@@ -56,7 +56,7 @@ import zildo.server.EngineZildo;
 public class PathFinder {
 
 	Perso mobile;
-	protected Point target;
+	protected Pointf target;
 	protected Integer targetZ;
 	public float speed;	// Should be used if different of 0
 	public boolean backward;	// Default FALSE. TRUE means character is stepping back
@@ -181,7 +181,7 @@ public class PathFinder {
         Zone zone=mobile.getZone_deplacement();
         
 		while (true) {
-			target=new Point(x, y);
+			target=new Pointf(x, y);
 	
 			// On déplace le perso soit horizontalement, soit verticalement,
 			// ou les 2 si c'est une poule. Car les poules ont la bougeotte.
@@ -316,7 +316,7 @@ public class PathFinder {
 		Pointf p =new Pointf(mobile.x, mobile.y);
 		if (target != null) {
 	    	float velocity=speed == 0f ? p_speed : speed;
-			float hypothenuse = target.distance(new Point(Math.round(mobile.x), Math.round(mobile.y)));
+			float hypothenuse = target.distance(mobile.x, mobile.y);
 			if (hypothenuse == 0f || hypothenuse < p_speed) {
 				target = null;
 			} else {
@@ -345,7 +345,7 @@ public class PathFinder {
 		return p;
 	}
 
-	public Point getTarget() {
+	public Pointf getTarget() {
 		return target;
 	}
 
@@ -356,7 +356,7 @@ public class PathFinder {
 	 * Overridable method, in order to do something special when the character gets a target.
 	 * @param target
 	 */
-	public void setTarget(Point target) {
+	public void setTarget(Pointf target) {
 		this.target = target;
 	}
 	

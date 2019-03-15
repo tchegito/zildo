@@ -89,6 +89,7 @@ import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector3f;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -137,9 +138,9 @@ public class ActionExecutor extends RuntimeExecutor {
             if (perso != null) {
                 scriptExec.involved.add(perso); // Note that this perso is concerned
             }
-            Point location = null;
+            Pointf location = null;
             if (p_action.location != null) {
-            	location = p_action.location.getPoint();
+            	location = new Pointf(p_action.location.getPoint());
             }
             if (p_action.delta && location != null) {
             	Point currentPos = null;
@@ -179,7 +180,7 @@ public class ActionExecutor extends RuntimeExecutor {
                         }
                         perso.beingMoved();
                     } else if ("camera".equals(p_action.what)) {
-                        ClientEngineZildo.mapDisplay.setCamera(location);
+                        ClientEngineZildo.mapDisplay.setCamera(location.toPoint());
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
                     } else {
                     	SpriteEntity entity = getNamedEntity(p_action.what);
@@ -214,8 +215,8 @@ public class ActionExecutor extends RuntimeExecutor {
 	                		// Need to update floor BEFORE movement if higher, because hero would be hidden otherwise
 	                		int newFloor = perso.floor + p_action.deltaFloor;
 	                		Area area = EngineZildo.mapManagement.getCurrentMap();
-	                		int cx = location.x / 16;
-	                		int cy = location.y / 16;
+	                		int cx = (int) (location.x / 16);
+	                		int cy = (int) (location.y / 16);
 	                		if (newFloor <= area.getHighestFloor() && area.readmap(cx, cy, false, newFloor) != null) {
        							// Check if there's really a tile at upper floor at this place
              					perso.setFloor(newFloor);
@@ -225,7 +226,7 @@ public class ActionExecutor extends RuntimeExecutor {
 	                		perso.setPathFinder(new PathFinderArc(perso));
 	                	}
                     } else if ("camera".equals(p_action.what)) {
-                        ClientEngineZildo.mapDisplay.setTargetCamera(location);
+                        ClientEngineZildo.mapDisplay.setTargetCamera(location.toPoint());
                         ClientEngineZildo.mapDisplay.setFocusedEntity(null);
                     } else {	// Element/entity
                     	SpriteEntity entity;
@@ -329,12 +330,12 @@ public class ActionExecutor extends RuntimeExecutor {
                     achieved = !p_action.delta || p_action.unblock;
                     break;
                 case spawn:	// Spawn a new character or element
-                	actionSpawn(p_action, location, false);
+                	actionSpawn(p_action, location.toPoint(), false);
                 	achieved = true;
                     break;
                 case animation:
                 	SpriteAnimation anim = SpriteAnimation.valueOf(p_action.text);
-                	Point loc = new Point(location);
+                	Point loc = location.toPoint();
                 	if (perso != null) {
                 		loc.x+=perso.x;
                 		loc.y+=perso.y;
@@ -411,7 +412,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 	} else {
 		            	BankSound snd=BankSound.valueOf(text);
 		            	if (location != null) {
-		                	EngineZildo.soundManagement.playSound(snd, location.x, location.y, !p_action.activate);
+		                	EngineZildo.soundManagement.playSound(snd, (int) location.x, (int) location.y, !p_action.activate);
 		            	} else if (snd != null) {
 		            		zildo=EngineZildo.persoManagement.getZildo();
 		            		EngineZildo.soundManagement.playSound(snd, zildo, !p_action.activate);
@@ -475,7 +476,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 case tile:
                 	// Change tile on map
                 	Area area = EngineZildo.mapManagement.getCurrentMap();
-                	Case c = area.get_mapcase(location.x, location.y);
+                	Case c = area.get_mapcase((int) location.x, (int) location.y);
             		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : reverseFromAction(p_action);
                 	if (p_action.back != -2) {
                 		c.setBackTile(p_action.back == -1 ? null : new Tile(p_action.back, rev, c));
@@ -728,7 +729,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 	if (perso != null) {
                 		here = new Point(perso.x, perso.y);
                 	} else if (location != null) {
-                		here = location;
+                		here = location.toPoint();
                 	}
                 	if (EngineZildo.mapManagement.getCurrentMap().isAnAlertAtLocation(here.x, here.y)) {
                 		ListenElement listen = (ListenElement) p_action;
@@ -738,8 +739,8 @@ public class ActionExecutor extends RuntimeExecutor {
                 	break;
                 case _throw:
                 	if (perso != null) {	// If thrower has been killed => don't throw NPE
-	                	Element elem = actionSpawn(p_action, location, true);	// Ignore 'who' because it's for the throw
-	                	location = p_action.target.getPoint();
+	                	Element elem = actionSpawn(p_action, location.toPoint(), true);	// Ignore 'who' because it's for the throw
+	                	location = new Pointf(p_action.target.getPoint());
 	                	// Turn character in the right direction
 	                	perso.sight(EngineZildo.persoManagement.getZildo(), true);
 	        			// Normalize speed vector

@@ -17,7 +17,7 @@ public class EasinMoveOrder extends BasicMoveOrder {
 
 	Function easeFunc;
 	
-	public EasinMoveOrder(int x, int y, float speed) {
+	public EasinMoveOrder(float x, float y, float speed) {
 		super(x, y, speed);
 		timeCounter = 0;
 	}

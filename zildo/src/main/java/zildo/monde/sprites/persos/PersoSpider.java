@@ -24,7 +24,7 @@ import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.ia.MoveAlgo;
 import zildo.monde.sprites.persos.ia.PathFinder;
-import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
 /**
@@ -65,8 +65,8 @@ public class PersoSpider extends PersoShadowed {
 					attackAngle = Math.random() * 2 * Math.PI;
 				}
 			}
-			Point target = new Point((int) (x + 6 * attackSpeed * Math.cos(attackAngle)),
-								     (int) (y + 6 * attackSpeed * Math.sin(attackAngle)) );
+			Pointf target = new Pointf(x + 6 * attackSpeed * Math.cos(attackAngle),
+								       y + 6 * attackSpeed * Math.sin(attackAngle) );
 			pathFinder.setTarget(target);
 		} else {
 			if (pathFinder.move((float) attackSpeed, MoveAlgo.APPROACH)) {

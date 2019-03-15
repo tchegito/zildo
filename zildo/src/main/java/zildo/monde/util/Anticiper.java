@@ -40,7 +40,7 @@ public class Anticiper {
 	 * @param victim
 	 * @return Point
 	 */
-	public Point anticipeTarget(Perso attacker, Perso victim) {
+	public Pointf anticipeTarget(Perso attacker, Perso victim) {
 		float locX = victim.x;
 		float locY = victim.y;
 		// Is victim moving ?
@@ -71,10 +71,10 @@ public class Anticiper {
 			}
 		}
 		
-		return new Point(locX, locY);
+		return new Pointf(locX, locY);
 	}
 	
 	private double square(double x) {
-		return Math.pow(x, 2);
+		return x * x; //Math.pow(x, 2);
 	}
 }

@@ -33,10 +33,9 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
-import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
-import zildo.server.MapManagement;
 
 /**
  * @author Tchegito
@@ -50,7 +49,7 @@ public class TestCollision extends EngineUT {
 		// Add closed door tile
 		mapUtils.createClosedDoor(10,4);
 		// Spawn a character below
-		Point target = new Point(160 + 16, 30);
+		Pointf target = new Pointf(160 + 16, 30);
 		Perso perso = spawnTypicalPerso("A", 160 + 16, 160);
 		perso.setTarget(target);
 		perso.setOpen(true);
@@ -69,7 +68,7 @@ public class TestCollision extends EngineUT {
 		// Add opened door tile
 		mapUtils.createOpenedDoor(10,4);
 		// Spawn a character below
-		Point target = new Point(160 + 16, 30);
+		Pointf target = new Pointf(160 + 16, 30);
 		Perso perso = spawnTypicalPerso("A", 160 + 16, 160);
 		perso.setTarget(target);
 		
@@ -91,7 +90,7 @@ public class TestCollision extends EngineUT {
 		EngineZildo.mapManagement.getCurrentMap().writemap(10, 4, 256*3 + 89);
 		EngineZildo.mapManagement.getCurrentMap().writemap(11, 4, 256*3 + 90);
 		// Spawn a character below
-		Point target = new Point(160 + 16, 30);
+		Pointf target = new Pointf(160 + 16, 30);
 		Perso perso = spawnTypicalPerso("A", 160 + 16, 160);
 		perso.setTarget(target);
 		
@@ -105,7 +104,7 @@ public class TestCollision extends EngineUT {
 	@Test
 	public void crossing() {
 		// Spawn a character A
-		Point targetA = new Point(300, 80);
+		Pointf targetA = new Pointf(300, 80);
 		Perso persoA = spawnTypicalPerso("A", 100, 80);
 		persoA.setTarget(targetA);
 		
@@ -117,7 +116,7 @@ public class TestCollision extends EngineUT {
 		
 		assertLocation(persoA, targetA, false);
 		
-		targetA = new Point(persoA.getX(), 20);
+		targetA = new Pointf(persoA.getX(), 20);
 		persoA.setTarget(targetA);
 		
 		// Let's rock !
@@ -137,7 +136,7 @@ public class TestCollision extends EngineUT {
 		map.createClosedDoor(59, 35);
 		// Spawn a character below
 		Perso perso = spawnTypicalPerso("A", 16 * 60+8, 617);
-		Point target = new Point(16 *60 + 8, 550);
+		Pointf target = new Pointf(16 *60 + 8, 550);
 		perso.x += 0.49786f; 
 		perso.y += 0.3603f;
 		perso.setTarget(target);
@@ -161,12 +160,12 @@ public class TestCollision extends EngineUT {
 	//@Test
 	public void crossingZildo() {
 		// Spawn a character A
-		Point targetA = new Point(300, 80);
+		Pointf targetA = new Pointf(300, 80);
 		Perso persoA = spawnTypicalPerso("A", 100, 80);
 		persoA.setTarget(targetA);
 		
 		// Spawn a character A
-		Point targetB = new Point(160 + 16, 30);
+		Pointf targetB = new Pointf(160 + 16, 30);
 		Perso persoB = new PersoPlayer(200, 80, ZildoOutfit.Zildo);
 		clientState.zildoId = persoB.getId();
 		
@@ -175,7 +174,7 @@ public class TestCollision extends EngineUT {
 		
 		assertLocation(persoA, targetA, false);
 		
-		targetA = new Point(persoA.getX(), 20);
+		targetA = new Pointf(persoA.getX(), 20);
 		persoA.setTarget(targetA);
 		
 		// Let's rock !
@@ -184,7 +183,7 @@ public class TestCollision extends EngineUT {
 		assertLocation(persoA, targetA, true);
 
 		// Block with Zildo
-		targetB = new Point(persoA.getX(), persoA.getY());
+		targetB = new Pointf(persoA.getX(), persoA.getY());
 		persoB.setTarget(targetB);
 
 		// Let's rock !
@@ -193,7 +192,7 @@ public class TestCollision extends EngineUT {
 		assertLocation(persoB, targetB, false);
 		
 		// And try to move blocked character
-		targetA = new Point(persoA.getX()+100, persoA.getY());
+		targetA = new Pointf(persoA.getX()+100, persoA.getY());
 		persoA.setTarget(targetA);
 		
 		// Let's rock !

@@ -22,7 +22,7 @@ package zildo.monde.sprites.persos;
 import zildo.monde.Trigo;
 import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.desc.ElementDescription;
-import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -82,8 +82,8 @@ public class PersoFish extends PersoShadowed {
 					} else {					
 						moveAngle += Math.PI/4;
 					}
-					Point targetPoint = new Point((int) (x + radius * attackSpeed * Math.cos(moveAngle)),
-						     					  (int) (y + radius * attackSpeed * Math.sin(moveAngle)) );
+					Pointf targetPoint = new Pointf(x + radius * attackSpeed * Math.cos(moveAngle),
+						     					    y + radius * attackSpeed * Math.sin(moveAngle) );
 					pathFinder.setTarget(targetPoint);
 					pathFinder.speed = (float) (attackSpeed + Math.random() * 0.3);
 					if (zildo != null) {

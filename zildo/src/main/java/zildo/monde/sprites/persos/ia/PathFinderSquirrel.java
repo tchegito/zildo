@@ -22,7 +22,6 @@ package zildo.monde.sprites.persos.ia;
 
 import zildo.monde.Trigo;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
@@ -51,11 +50,11 @@ public class PathFinderSquirrel extends PathFinder {
 	    		correctAlpha();
 	        	nbJump = (int) (1 + Math.random() * 4);
 	    	}
-	        Point tempTarget = new Point((int) (mobile.x + Math.cos(alpha) * jumpDistance),
-	                    (int) (mobile.y + Math.sin(alpha) * jumpDistance));
+	        Pointf tempTarget = new Pointf(mobile.x + Math.cos(alpha) * jumpDistance,
+	                    mobile.y + Math.sin(alpha) * jumpDistance);
 	        nbJump--;
 	        if (EngineZildo.mapManagement.collide(tempTarget.x, tempTarget.y, mobile) ||
-	        		EngineZildo.persoManagement.collidePerso(tempTarget.x, tempTarget.y, mobile, 50) != null) {
+	        		EngineZildo.persoManagement.collidePerso(Math.round(tempTarget.x), Math.round(tempTarget.y), mobile, 50) != null) {
 	        	tempTarget = null;
 	        	alpha+= Math.PI/2;
 	    		correctAlpha();
@@ -67,7 +66,7 @@ public class PathFinderSquirrel extends PathFinder {
     }
 
     @Override
-    public void setTarget(Point p_target) {
+    public void setTarget(Pointf p_target) {
     	if (p_target != null) {
     		mobile.az = -0.1f;
     		mobile.vz = 1.2f;

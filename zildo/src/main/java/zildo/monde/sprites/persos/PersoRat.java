@@ -20,11 +20,11 @@
 
 package zildo.monde.sprites.persos;
 
-import zildo.client.sound.BankSound;
 import static zildo.server.EngineZildo.hasard;
+import zildo.client.sound.BankSound;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.desc.PersoDescription;
-import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -75,11 +75,11 @@ public class PersoRat extends PersoShadowed {
 						float dy = y - zildo.y;
 						if (dy > dx || dx < BITE_DISTANCE) {	// Rat runs quickly on Zildo
 							goBiting = false;
-							pathFinder.setTarget(new Point(zildo.x, zildo.y));
+							pathFinder.setTarget(new Pointf(zildo.x, zildo.y));
 						} else {
 							// Runs just in front of him to bite
 							goBiting = true;
-							Point front = new Point(zildo.x + BITE_DISTANCE * Math.signum(dx), zildo.y);
+							Pointf front = new Pointf(zildo.x + BITE_DISTANCE * Math.signum(dx), zildo.y);
 							pathFinder.setTarget(front);
 						}
 					}

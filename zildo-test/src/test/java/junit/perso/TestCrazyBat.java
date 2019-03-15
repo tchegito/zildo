@@ -20,7 +20,6 @@
 package junit.perso;
 
 import org.junit.Assert;
-
 import org.junit.Test;
 
 import tools.EngineUT;
@@ -28,6 +27,7 @@ import zildo.monde.sprites.persos.PersoBat;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Anticiper;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 
 /**
  * @author Tchegito
@@ -41,7 +41,7 @@ public class TestCrazyBat extends EngineUT {
 		PersoBat bat = new PersoBat();
 		bat.setX(671f);
 		bat.setY(385f);
-		PersoPlayer zildo = new PersoPlayer(0);
+		PersoPlayer zildo = spawnZildo(660, 341);
 		zildo.setX(660.0062f);
 		zildo.setY(341.06696f);
 		zildo.deltaMoveX = -2.121338f;
@@ -49,8 +49,8 @@ public class TestCrazyBat extends EngineUT {
 		
 		float delta = Point.distance(bat.x, bat.y, zildo.x, zildo.y);
 		System.out.println("Distance entre les 2: " + delta);
-		Point t = anticiper.anticipeTarget(bat, zildo);
+		Pointf t = anticiper.anticipeTarget(bat, zildo);
 		System.out.println(t);
-		Assert.assertTrue(t.x == 0 && t.y == 0);
+		Assert.assertTrue(Float.isNaN(t.x) && Float.isNaN(t.y));
 	}
 }

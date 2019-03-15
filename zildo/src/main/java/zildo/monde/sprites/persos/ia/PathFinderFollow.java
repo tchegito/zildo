@@ -21,7 +21,6 @@ package zildo.monde.sprites.persos.ia;
 
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 
 /**
@@ -42,7 +41,7 @@ public class PathFinderFollow extends PathFinder {
 		// Detect if followed element has moved
 		Pointf prev = followed.getDelta();
 		if (prev.x != 0 || prev.y != 0) {
-			target = new Point(followed.x, followed.y);
+			target = new Pointf(followed.x, followed.y);
 		}
 	}
 	

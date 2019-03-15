@@ -13,7 +13,7 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
-import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
@@ -233,9 +233,9 @@ public class TestBugCutscenes extends EngineUT {
 		EngineZildo.backUpGame();
 		
 		persoUtils.persoByName("bleu").die();
-		renderFrames(1);
+		renderFrames(2);
 		Perso bleu = EngineZildo.persoManagement.getNamedPerso("bleu");
-		bleu.setTarget(new Point(hero.x, hero.y));
+		bleu.setTarget(new Pointf(hero.x, hero.y));
 		Assert.assertEquals("polakyg3", EngineZildo.mapManagement.getCurrentMap().getName());
 		while (bleu.getY() < 220) {
 			renderFrames(1);

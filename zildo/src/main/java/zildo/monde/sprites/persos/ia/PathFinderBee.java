@@ -22,7 +22,6 @@ package zildo.monde.sprites.persos.ia;
 
 import static zildo.server.EngineZildo.hasard;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 
 /**
@@ -45,11 +44,9 @@ public class PathFinderBee extends PathFinder {
 	public void determineDestination() {
 		float x = mobile.x;
 		float y = mobile.y;
-		target = new Point();
-		target.x = (int) (x + (5.0f + Math.random() * 10.0f)
-				* Math.cos(2.0f * Math.PI * Math.random()));
-		target.y = (int) (y + (5.0f + Math.random() * 10.0f)
-				* Math.sin(2.0f * Math.PI * Math.random()));
+		target = new Pointf(
+				x + (5.0f + Math.random() * 10.0f) * Math.cos(2.0f * Math.PI * Math.random()),
+				y + (5.0f + Math.random() * 10.0f) * Math.sin(2.0f * Math.PI * Math.random()) );
 	}
 
 	@Override

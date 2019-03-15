@@ -65,6 +65,7 @@ import zildo.monde.sprites.elements.ElementWeapon;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Zone;
 import zildo.server.state.ClientState;
 
@@ -987,8 +988,8 @@ public class SpriteManagement extends SpriteStore {
 			if (!entity.isZildo() && map.isOutside((int) entity.x, (int) entity.y)) {
 				if (entity.getEntityType().isPerso()) {
 					Perso p = (Perso) entity;
-					Point target = p.getTarget();
-					if (p.getTarget() == null || map.isOutside(target.x, target.y)) {
+					Pointf target = p.getTarget();
+					if (p.getTarget() == null || map.isOutside((int) target.x, (int) target.y)) {
 						toRemove.add(entity);
 					}
 				}

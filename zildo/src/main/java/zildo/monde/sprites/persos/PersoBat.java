@@ -40,7 +40,7 @@ public class PersoBat extends PersoShadowed {
 					Area area = EngineZildo.mapManagement.getCurrentMap();
 					if (area.isAnAlertAtLocation(x, y)) {
 						currentSpeed = 1.4f + 0.2f * Math.random();
-						Point p = area.getAlertLocation();
+						Pointf p = new Pointf(area.getAlertLocation());
 						p.x += hasard.intervalle(12);
 						p.y += hasard.intervalle(12);
 						pathFinder.setTarget(p);
@@ -60,8 +60,8 @@ public class PersoBat extends PersoShadowed {
 					z=0;
 				} else {
 					// Set a target by guessing future Zildo's location
-					Point t = anticiper.anticipeTarget(this, zildo);
-					if (t.x != 0 || t.y != 0) {	// If returned point is (0,0) => do nothing
+					Pointf t = anticiper.anticipeTarget(this, zildo);
+					if (!Float.isNaN(t.x) && !Float.isNaN(t.y)) {	// If returned point is (NaN, NaN) => do nothing
 						pathFinder.setTarget(t);
 						currentSpeed = 1.4f + 0.2f * Math.random();
 						quel_deplacement = MouvementPerso.VOLESPECTRE;

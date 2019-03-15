@@ -6,7 +6,7 @@ import org.junit.Test;
 import tools.EngineUT;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
-import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
 public class TestPersoFloor extends EngineUT {
@@ -70,7 +70,7 @@ public class TestPersoFloor extends EngineUT {
 		Perso perso = EngineZildo.persoManagement.getNamedPerso("noir2");
 		// There's 2 characters named "noir" on this map : check we got expected one
 		Assert.assertTrue(perso.x > 251);
-		perso.setTarget(new Point(200, perso.y));
+		perso.setTarget(new Pointf(200, perso.y));
 		renderFrames(50);
 		System.out.println(perso.floor);
 		Assert.assertTrue("Character should have been blocked by higher floor interruption ! ("+perso.x+")", perso.x > 264);

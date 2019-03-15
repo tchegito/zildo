@@ -11,6 +11,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
@@ -87,11 +88,11 @@ public class TestFollowPerso extends EngineUT {
 		
 		waitEndOfScripting();
 		
-		red.setTarget(new Point(red.x - 32, red.y + 2));
+		red.setTarget(new Pointf(red.x - 32, red.y + 2));
 		red.setGhost(true);
 		renderFrames(60);
 		
-		Point target = new Point(red.x, red.y + 70);
+		Pointf target = new Pointf(red.x, red.y + 70);
         red.setGhost(true);
 		red.setTarget(target);
 		

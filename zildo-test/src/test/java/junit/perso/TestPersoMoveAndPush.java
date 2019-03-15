@@ -33,6 +33,7 @@ import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
@@ -48,7 +49,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 	@Ignore // This usecase has been canceled: turtle doesn't push anyone
 	public void turtlePushPerso() {
 		// Spawn a character A
-		Point targetA = new Point(100, 190);
+		Pointf targetA = new Pointf(100, 190);
 		Perso persoA = spawnPerso(PersoDescription.TURTLE, "Turtle", 100, 80);
 		persoA.setQuel_deplacement(MouvementPerso.MOBILE_WAIT, true);
 		persoA.setTarget(targetA);
@@ -61,7 +62,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 		
 		Assert.assertNull("Character A shouldn't have a target !", persoA.getTarget());
 		// Check that persoB has moved, to let turtle pass
-		assertLocation(persoB, new Point(100, 150), false);
+		assertLocation(persoB, new Pointf(100, 150), false);
 		// Check that turtle is arrived
 		assertLocation(persoA, targetA, true);
 	}
@@ -73,7 +74,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 		mapUtils.loadMap("eleom1");
 		EngineZildo.persoManagement.clearPersos(true);
 		waitEndOfScripting();
-		Point targetA = new Point(78, 80);
+		Pointf targetA = new Pointf(78, 80);
 		Perso eleo = spawnPerso(PersoDescription.ELEORIC, "eleoric", 78, 115);
 		eleo.setTarget(targetA);
 		eleo.setGhost(true);
@@ -86,7 +87,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 		
 		Assert.assertNull("Eleoric shouldn't have a target !", eleo.getTarget());
 		// Check that persoB has moved, to let turtle pass
-		assertLocation(blocker, new Point(100, 150), false);
+		assertLocation(blocker, new Pointf(100, 150), false);
 		// Check that character is arrived
 		assertLocation(eleo, targetA, true);
 		// Check that ScriptExecutor has set ghost at false, because 'blocker' has been declared as 'involved'
@@ -97,7 +98,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 	@Test @InfoPersos
 	public void turtleCantPushHero() {
 		// Spawn a character A
-		Point targetTurtle = new Point(200, 80);
+		Pointf targetTurtle = new Pointf(200, 80);
 		Perso turtle = spawnPerso(PersoDescription.TURTLE, "Turtle", 100, 80);
 		turtle.setQuel_deplacement(MouvementPerso.MOBILE_WAIT, true);
 		turtle.setTarget(targetTurtle);
@@ -114,7 +115,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 
 		
 		// Now we move hero to let turtle pass
-		hero.setTarget(new Point(190,60));
+		hero.setTarget(new Pointf(190,60));
 		hero.setGhost(true);
 		
 		renderFrames(400);

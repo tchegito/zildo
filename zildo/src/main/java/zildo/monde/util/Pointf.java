@@ -29,15 +29,30 @@ public class Pointf {
 		y = b;
 	}
 	
+	public Pointf(double a, double b) {
+		x = (float) a;
+		y = (float) b;
+	}
+	
 	public Pointf(Pointf source) {
 		x = source.x;
 		y = source.y;
 	}
+	
+	public Pointf(Point source) {
+		x = source.x;
+		y = source.y;
+	}
+	
 	public void add(Vector2f v) {
 		add(v.x, v.y);
 	}
 	
     public void add(Pointf p_point) {
+    	add(p_point.x, p_point.y);
+    }
+    
+    public void add(Point p_point) {
     	add(p_point.x, p_point.y);
     }
     
@@ -92,5 +107,12 @@ public class Pointf {
     public boolean isSame(Pointf other) {
     	return Math.abs((x-other.x)) < 0.001 && Math.abs((y-other.y)) < 0.001; 
     }
+    
+    public Point toPoint() {
+    	return new Point(Math.round(x), Math.round(y));
+    }
 
+    public Pointf translate(float addX, float addY) {
+        return new Pointf(x + addX, y + addY);
+    }
 }

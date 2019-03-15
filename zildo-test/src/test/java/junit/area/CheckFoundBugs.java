@@ -679,4 +679,24 @@ public class CheckFoundBugs extends EngineUT {
 		renderFrames(50);
 		Assert.assertTrue(EngineZildo.mapManagement.isChangingMap(zildo));
 	}
+	
+	/** Issue 173: game freezes during death scene **/
+	@Test
+	public void freezeDeath() {
+		mapUtils.loadMap("canyon");
+		PersoPlayer zildo = spawnZildo(771, 20);
+		zildo.x = 771.5f;	// Exact location for test, because (771, 20) is not walkable on this map
+		waitEndOfScripting();
+		simulateDirection(0, -1);
+		while (!EngineZildo.mapManagement.isChangingMap(zildo)) {
+			renderFrames(1);
+		}
+		renderFrames(2);
+		// Check that player is switching map
+		System.out.println(zildo);
+		Assert.assertNotNull(zildo.getTarget());
+		waitEndOfScroll();
+		System.out.println(zildo);
+		Assert.assertNull(zildo.getTarget());
+	}
 }

@@ -196,7 +196,7 @@ public abstract class Perso extends Element {
 	public void setQuel_deplacement(MouvementPerso p_script, boolean p_updatePathFinder) {
 		quel_deplacement = p_script;
 		if (p_updatePathFinder) {
-			Point target = pathFinder.getTarget();
+			Pointf target = pathFinder.getTarget();
 			switch (p_script) {
 			case IMMOBILE:
 				setAlerte(false);
@@ -475,7 +475,7 @@ public abstract class Perso extends Element {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Perso=" + name + "\nCoords:(" + x + ", " + y + " " + z+")");
 		if (pathFinder != null && pathFinder.getTarget() != null) {
-			Point p = pathFinder.getTarget();
+			Pointf p = pathFinder.getTarget();
 			sb.append(" ==> ("+p.x+","+p.y+")");
 		}
 		sb.append("\ninfo=" + info + "\nmvt=" + mouvement+" pv="+pv);
@@ -1036,7 +1036,7 @@ public abstract class Perso extends Element {
 
 	}
 	
-	public Point getTarget() {
+	public Pointf getTarget() {
 		return pathFinder.getTarget();
 	}
 	
@@ -1044,7 +1044,7 @@ public abstract class Perso extends Element {
 		return pathFinder.getTargetZ();
 	}
 
-	public void setTarget(Point target) {
+	public void setTarget(Pointf target) {
 		pathFinder.setTarget(target);
 	}
 	

@@ -327,9 +327,9 @@ public class PersoNJ extends Perso {
 						}
 						// Gets on a right position to shoot Zildo
 						if (deltaX <= deltaY) {
-							pathFinder.setTarget(new Point(zildo.x, yy));
+							pathFinder.setTarget(new Pointf(zildo.x, yy));
 						} else {
-							pathFinder.setTarget(new Point(xx, zildo.y));
+							pathFinder.setTarget(new Pointf(xx, zildo.y));
 						}
 					} else if (lookForZildo(angle)) {
 						setAlerte(true);
@@ -670,6 +670,7 @@ public class PersoNJ extends Perso {
 		case PRINCESS_BUNNY:
 			addSpr = pathFinder.getTarget() == null ? 0 : 1;
 		case RABBIT:
+		case CACTUS:
 			reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
 			break;
 		case PRINCESSE_COUCHEE:
@@ -722,7 +723,6 @@ public class PersoNJ extends Perso {
 		case SLEEPING_KING:
 		case FIREFLY:
 		case BRAMBLE:
-		case CACTUS:
 		case VOLANT_BLEU:
 		case ECTOPLASME:
 		case ARBUSTE_VIVANT:

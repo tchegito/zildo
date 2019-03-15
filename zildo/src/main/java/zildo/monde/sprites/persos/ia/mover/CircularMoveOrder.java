@@ -59,13 +59,13 @@ public class CircularMoveOrder extends MoveOrder {
 	 * @param y
 	 * @complete TRUE=complete circle FALSE=arc of circle (PI/2)
 	 */
-	public CircularMoveOrder(int x, int y, FloatExpression zoomExpr, boolean complete) {
+	public CircularMoveOrder(float x, float y, FloatExpression zoomExpr, boolean complete) {
 		super(x, y);
 		this.zoomExpr = zoomExpr;
 		this.nbArcs = complete ? 4 : 1;
 	}
 	
-	public CircularMoveOrder(int x, int y) {
+	public CircularMoveOrder(float x, float y) {
 		this(x, y, null, false);
 	}
 

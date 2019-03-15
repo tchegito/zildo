@@ -171,13 +171,13 @@ public abstract class EngineUT {
 	 * @param target
 	 * @param isAt TRUE=he should be at / FALSE=he shouldn't be at
 	 */
-	protected void assertLocation(Perso perso, Point target, boolean isAt) {
+	protected void assertLocation(Perso perso, Pointf target, boolean isAt) {
 		Assert.assertTrue("Perso's target should have been null !", perso.getTarget() == null);
 		assertLocation((Element) perso, target, isAt);
 	}
 	
 	/** Check an element location if it is/isn't at a given location, with 0.5 tolerance **/
-	protected void assertLocation(Element elem, Point target, boolean isAt) {
+	protected void assertLocation(Element elem, Pointf target, boolean isAt) {
 		String entityType = elem.getEntityType().toString();
 		String name = entityType + (elem.getName() != null ? (" " + elem.getName()) : "");
 		String endMessage = target+" but is at ("+elem.x+","+elem.y+")";

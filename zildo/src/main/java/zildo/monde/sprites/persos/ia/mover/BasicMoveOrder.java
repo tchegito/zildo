@@ -15,7 +15,7 @@ public class BasicMoveOrder extends MoveOrder {
 		active = false;
 	}
 	
-	public BasicMoveOrder(int x, int y, float speed) {
+	public BasicMoveOrder(float x, float y, float speed) {
 		super(x, y);
 		if (speed != 0) {
 			this.speed = speed;

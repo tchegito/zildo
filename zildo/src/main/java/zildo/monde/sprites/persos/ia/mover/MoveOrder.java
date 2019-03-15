@@ -1,18 +1,17 @@
 package zildo.monde.sprites.persos.ia.mover;
 
 import zildo.monde.sprites.SpriteEntity;
-import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 
 public abstract class MoveOrder {
 
 	Mover wrapper;
 	SpriteEntity mobile;
-	Point target;
+	Pointf target;
 	boolean active;
 	
-	public MoveOrder(int x, int y) {
-		this.target = new Point(x, y);
+	public MoveOrder(float x, float y) {
+		this.target = new Pointf(x, y);
 		this.active = true;
 	}
 	
