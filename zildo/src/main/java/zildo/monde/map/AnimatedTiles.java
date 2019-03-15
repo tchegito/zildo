@@ -18,7 +18,7 @@ public enum AnimatedTiles {
 	BIG_CHANDLER(TileGFXBank.Maison, 174, 176, 177),
 	CANDLE(TileGFXBank.Maison, 235, 236, 237),
 	CAVE_WATER(TileGFXBank.Grotte, 78, 79, 80),
-	WATER_TER(TileGFXBank.Foret3, 96, new Repeat(98), 99, 102),
+	//WATER_TER(TileGFXBank.Foret3, 96, new Repeat(98), 99, 102),
 	LAVA(TileGFXBank.Grotte, 217, 218, 219),
 	TORCH(TileGFXBank.Grotte, 230, 231, 232);
 	

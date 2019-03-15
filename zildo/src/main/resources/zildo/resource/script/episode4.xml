@@ -1,12 +1,12 @@
 <adventure>
     
    	<mapScript>
-   	<!--
-	    <condition name="sousbois3" locked="false">
-	    	<spawn who="bitey" pos="220,118" type="BITEY"/>
-	    	<perso who="bitey" action="bitey"/> 
+   	
+	    <condition name="valori" locked="false">
+	    	<!--  <spawn who="bitey" pos="220,118" type="BITEY"/> -->
+	    	<perso who="bitey1" action="bitey"/> 
    	    </condition>
-    -->
+    
 	    <condition name="canyon" locked="false">
 	    	<!-- Place catapult TODO: plan quest to set each catapult state -->
 	    	<spawn what="catcrate1" pos="551,280" type="CATAPULT_CRATE"/>
@@ -90,7 +90,7 @@
 				    <!-- "Idle near" animation and bite if character is really close -->
 		            <!-- Idle near -->
 		            <seq who="self" addSpr="1,2,3,4,5,6,0,1,2" wait="4"/>
-		            <sound name="Wind"/>
+		            <sound name="WindNoLoop"/>
 		            <!-- Extension to the victim -->
 	            	<seq who="self" addSpr="11,12,13,14,15,16,17,18,19,20,21" wait="1"/>
 	            	<actions>

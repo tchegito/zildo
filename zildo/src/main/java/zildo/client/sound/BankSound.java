@@ -126,6 +126,7 @@ public enum BankSound implements AudioBank {
 	Fuite("fuite"),
 	Whip("whip"),
 	Wind("windsuck"),
+	WindNoLoop("windsuck"),
 	ElementalSleep("elementalSleep"),
 	
 	SlipWater1("slipwater1"),
