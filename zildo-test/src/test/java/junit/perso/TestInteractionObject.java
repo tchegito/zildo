@@ -17,8 +17,10 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
+import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 
 public class TestInteractionObject extends EngineUT {
@@ -43,7 +45,7 @@ public class TestInteractionObject extends EngineUT {
 					|| desc == ElementDescription.FLUT || desc != ZildoDescription.SHIELD_DOWN);
 					*/
 			pick(desc);
-			// If automatic sentece is planned, check it
+			// If automatic sentence is planned, check it
 			if (kind.getFoundSentence("") != null) {
 				Assert.assertNotNull(dialog(kind));
 			}
@@ -114,5 +116,20 @@ public class TestInteractionObject extends EngineUT {
 		// Check that boulder is projected to the right side
 		Assert.assertTrue(boulder.flying);
 		Assert.assertTrue("Boulder should have been projected on the "+message, predicate.test(boulder));
+	}
+	
+	@Test
+	public void takeFork() {
+		mapUtils.loadMap("ferme");
+		PersoPlayer hero = spawnZildo(858, 668);
+		hero.setAngle(Angle.OUEST);
+		waitEndOfScripting();
+		
+		// Take the fork
+		Assert.assertEquals(0, hero.getInventory().size());
+		simulatePressButton(KeysConfiguration.PLAYERKEY_ACTION.code, 1);
+		Assert.assertEquals("Hero should have an item now in his inventory !", 1, hero.getInventory().size());
+		Item item = hero.getInventory().get(0);
+		Assert.assertEquals(ItemKind.SPADE, item.kind);
 	}
 }
