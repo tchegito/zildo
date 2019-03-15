@@ -56,7 +56,7 @@ public class CheckWorldmapBuilder extends EngineUT {
 		Constantes.PATH_MAPS = createdFolder.getAbsolutePath();
 	}
 	
-	@Test
+	@Test @DisableFreezeMonitor
 	public void basic() {
 		String firstMap = "coucou";
 		new WorldmapBuilder(firstMap, getMapCapturer());
