@@ -80,7 +80,7 @@ public class TestMoveWithFloat extends TestCase {
 			}
 			//checkDivideBy16(xx);
 			//checkDivideBy16(yy);
-			System.out.println("location"+heros.getX()+","+heros.getY());
+			//System.out.println("location"+heros.getX()+","+heros.getY());
 		}
 	}
 	

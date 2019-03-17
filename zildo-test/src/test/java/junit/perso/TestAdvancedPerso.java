@@ -45,7 +45,7 @@ public class TestAdvancedPerso extends EngineUT {
 		renderFrames(250);
 	}
 	
-	@Test @InfoPersos
+	@Test //@InfoPersos
 	public void dieStoppingAutomaticScenes() {
 		mapUtils.loadMap("dragon");
 		PersoPlayer zildo = spawnZildo(861,214);

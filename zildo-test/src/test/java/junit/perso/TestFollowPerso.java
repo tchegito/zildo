@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
-import tools.annotations.InfoPersos;
-import tools.annotations.SpyHero;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -51,7 +49,7 @@ public class TestFollowPerso extends EngineUT {
 	
 	// TODO: if SpyHero isn't present, this test fails, because Igor can't follow hero.
 	// But actually, this is kind of nonsense. We must understand why one day.
-	@Test @InfoPersos @SpyHero
+	@Test //@InfoPersos @SpyHero
 	public void walkStairs() {
 		// Make sure Igor appears on map where hero comes from a stair
 		EngineZildo.scriptManagement.accomplishQuest("zildoAccessIgor", false);

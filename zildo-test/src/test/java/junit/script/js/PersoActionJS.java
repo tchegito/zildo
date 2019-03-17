@@ -72,9 +72,13 @@ public class PersoActionJS extends EngineUT {
 	
 	@Test
 	public void addProto() throws Exception {
+		System.out.println("addProto");
 		ScriptEngineManager scriptManager = new ScriptEngineManager();
+		System.out.println("manager created");
 	    ScriptEngine engineJS = scriptManager.getEngineByName("JavaScript");
+		System.out.println("js, will evaluate "+addProto);
 	    engineJS.eval(addProto);
+	    System.out.println("done");
 	    
 	}
 }
