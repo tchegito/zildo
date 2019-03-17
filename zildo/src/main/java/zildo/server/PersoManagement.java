@@ -212,6 +212,7 @@ public class PersoManagement {
 			case SPECTRE:
 			case OISEAU_VERT:
 			case VAUTOUR:
+			case VOLANT_BLEU:
 				perso = new PersoVolant(p_desc);
 				break;
 			case LAPIN:
