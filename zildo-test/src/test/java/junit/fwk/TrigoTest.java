@@ -57,7 +57,7 @@ public class TrigoTest {
 		for (int i=0;i<distance;i++) {
 			int pos = Math.round(func.apply(i) * distance);
 			values[i] = pos;
-			System.out.println(pos);
+			//System.out.println(pos);
 		}
 		Assert.assertEquals(0, values[0]);
 		Assert.assertEquals(distance, values[distance-1]);
@@ -71,7 +71,7 @@ public class TrigoTest {
 		for (int i=0;i<distance;i++) {
 			int pos = Math.round(func.apply(i) * distance);
 			values[i] = pos;
-			System.out.println(pos);
+			//System.out.println(pos);
 		}
 		Assert.assertEquals(0, values[0]);
 		Assert.assertEquals(distance, values[distance-1]);
@@ -98,7 +98,7 @@ public class TrigoTest {
 		for (int i=0;i<distance;i++) {
 			val += derivee.apply(i) * distance;
 			funcVal = func.apply(i)*distance;
-			System.out.println(funcVal+"\t\t"+val);
+			//System.out.println(funcVal+"\t\t"+val);
 		}
 		Assert.assertEquals((int) val, (int) funcVal);
 	}
@@ -131,7 +131,7 @@ public class TrigoTest {
 			float delta = funcVal * Math.signum(1f);
 			val += delta; //funcVal;
 			values[i] = Math.round(val);
-			System.out.println(val+"\t\t"+funcVal);
+			//System.out.println(val+"\t\t"+funcVal);
 		}
 		Assert.assertEquals(0, values[0]);
 		Assert.assertEquals(distance, values[iterations-1]);

@@ -206,7 +206,7 @@ public class CheckFoundBugs extends EngineUT {
 		boolean closeToHero = false;
 		while (!closeToHero && !projectile.dying) {
 			int distance = (int)Point.distance(zildo.x, zildo.y, projectile.x, projectile.y);
-			System.out.println(projectile.x+","+projectile.y+" =>  "+distance);
+			//System.out.println(projectile.x+","+projectile.y+" =>  "+distance);
 			if (distance < 20) {
 				closeToHero = true;
 			}

@@ -301,7 +301,7 @@ public class TestCollision extends EngineUT {
 		for (int i=0;i<300;i++) {
 			renderFrames(1);
 			Assert.assertTrue("Monster should not be able to pass through that chaining point !", fireThing.getX() > 30);
-			System.out.println(fireThing);
+			//System.out.println(fireThing);
 		}
 	}
 	
