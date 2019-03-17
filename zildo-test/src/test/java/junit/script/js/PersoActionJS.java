@@ -26,6 +26,7 @@ import javax.script.ScriptEngineManager;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.DisableFreezeMonitor;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoSpider;
 import zildo.server.EngineZildo;
@@ -70,7 +71,7 @@ public class PersoActionJS extends EngineUT {
 	    System.out.println(result);
 	}
 	
-	@Test
+	@Test @DisableFreezeMonitor
 	public void addProto() throws Exception {
 		System.out.println("addProto");
 		ScriptEngineManager scriptManager = new ScriptEngineManager();

@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
-import tools.annotations.InfoPersos;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
@@ -19,7 +18,7 @@ import zildo.server.EngineZildo;
 public class CheckMapScroll extends EngineUT {
 
 	/** Check that hero faces the right direction after a scroll **/
-	@Test @InfoPersos
+	@Test //@InfoPersos
 	public void heroFaceRight() {
 		mapUtils.loadMap("chateausud");
 		PersoPlayer zildo = spawnZildo(6, 338);
