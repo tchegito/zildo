@@ -795,6 +795,7 @@ public class PersoNJ extends Perso {
 		case COAL:
 		case COAL_COLD:
 		case BITEY:
+		case SCORPION:
 			break;
 		default:
 			add_spr = angle.value * 2 + computeSeq(2) % 2;

@@ -357,10 +357,7 @@ public class Area implements EasySerializable {
 	public TileNature getCaseNature(int xx, int yy) {
 		return getCaseNature(xx, yy, -1);
 	}
-	
-	public boolean isCaseBottomLess(int x, int y) {
-		return isCaseBottomLess(x,  y, -1);
-	}
+
 	/**
 	 * Returns TRUE if case is bottom less (example: lava or void)
 	 */

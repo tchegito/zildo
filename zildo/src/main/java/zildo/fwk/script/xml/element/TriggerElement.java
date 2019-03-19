@@ -120,6 +120,7 @@ public class TriggerElement extends AnyElement {
 			location = readPoint("pos");
 			tileLocation = readPoint("tilePos");
 			tileValue = readInt("tileValue", -1);
+			floor = readInt("floor", -1);
 			break;
 		case PUSH:
 			name = readAttribute("name");	// Name of element to push
@@ -196,7 +197,7 @@ public class TriggerElement extends AnyElement {
 			}
 			break;
 		case LOCATION:
-			if (mapNameMatch(p_another.name)) {
+			if (mapNameMatch(p_another.name) && (floor == -1 || floor == p_another.floor)) {
 				if (p_another.location == null && tileValue == -1 && mover == null && location == null && tileLocation == null) {
 					return true;
 				} else if (tileValue != -1) {

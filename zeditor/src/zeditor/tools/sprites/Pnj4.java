@@ -60,8 +60,9 @@ public class Pnj4 extends SpriteBanque {
 			new ZoneO(113, 157, 52, 14, 0, 47, 0), new ZoneO(166, 158, 51, 13, 0, 46, 0), new ZoneO(218, 159, 48, 12, 0, 43, 0),
 			new ZoneO(1, 189, 45, 12, 0, 40, 1), new ZoneO(48, 187, 41, 13, 0, 36, 0), new ZoneO(92, 178, 23, 22, 0, 10, 0),
 			// Cactus (66)
-			new Zone(0, 233, 24, 29)
-			
+			new Zone(0, 233, 24, 29),
+			// Scorpion (67)
+			new Zone(242, 1, 28, 31), new Zone(271, 0, 28, 32)
 			
 		};
 		

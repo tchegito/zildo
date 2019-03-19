@@ -42,9 +42,12 @@ public class Tile implements Cloneable {
 	public enum TileNature {
 		/** Lava **/ 
 		BOTTOMLESS,	
-		/** Fall but there's a floor under, on another map **/ 
-		BOTTOMFLOOR, 
+		/** Fall but there's a floor under, on another map (need chaining point, see cavef9 for example) **/ 
+		BOTTOMFLOOR,
+		/** Fall but hero can jump on the floor (in dragon's cave for example)**/
 		BOTTOMJUMP,
+		/** Another floor below, but hero can't jump (rope on the bridge for example)**/
+		BOTTOMNOJUMP,
 		/** Deep water, where character has to swim**/ 
 		WATER,	
 		/** Little mud, where character can walk **/ 
@@ -188,6 +191,11 @@ public class Tile implements Cloneable {
 	public static boolean isBottomJump(int value) {
 		// Means that hero will fall on another map's floor
 		return value == 256 * 6 + 35;
+	}
+	
+	public static boolean isBottomNoJump(int value) {
+		// Means that hero will fall on another map's floor
+		return value == 256 * 6 + 36;
 	}
 	
 	/** Returns TRUE if given tile value could raise/lower hero from one floor to another (ex:ladder)

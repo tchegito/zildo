@@ -135,6 +135,7 @@ public enum PersoDescription implements SpriteDescription {
 	COAL(401, 402, 403, 404),
 	COAL_COLD(404),
 	CACTUS(434),
+	SCORPION(435, 436),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
