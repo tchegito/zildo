@@ -1602,6 +1602,12 @@ public class PersoPlayer extends Perso {
 	 */
 	public void pickItem(ItemKind p_kind, Element p_element) {
 		if (getEn_bras() == null) { // Doesn't take 2 items at 1 time
+			
+			// Is hero allowed to take the fork ? (really special case)
+		    if (p_kind == ItemKind.SPADE_GROUND && "no".equals(EngineZildo.scriptManagement.getVarValue("allowedTakeFork"))) {
+		    	return;
+		    }
+
 			attente = 40;
 			mouvement = MouvementZildo.FIERTEOBJET;
 			Element elem = p_element;

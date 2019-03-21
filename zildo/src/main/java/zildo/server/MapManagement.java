@@ -677,7 +677,7 @@ public class MapManagement {
 			int previousDimY = currentMap.getDim_y();
 			boolean isAlongBorder = p_changingMapPoint.isBorder() && currentMap.isAlongBorder((int) zildo.getX(), (int) zildo.getY());
 
-			EngineZildo.spriteManagement.notifyLoadingMap(true);
+			EngineZildo.spriteManagement.notifyLoadingMap(true, isAlongBorder);
 			
 			loadMap(newMapName, isAlongBorder);
 
@@ -803,7 +803,7 @@ public class MapManagement {
 
 			postLoadMap(isAlongBorder);
 			
-			EngineZildo.spriteManagement.notifyLoadingMap(false);
+			EngineZildo.spriteManagement.notifyLoadingMap(false, isAlongBorder);
 		}
 		return false;
 	}

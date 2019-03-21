@@ -20,5 +20,6 @@
 	    <var name="BilelIgorVillage" type="_string" value="[[EMPTY_BAG, 1], 100, 2], [[BLUEDROP, 1], 15, -1], [[DYNAMITE, 1], 100, 2]"/>
 	    <var name="Dizzie" type="_string" value="[[DYNAMITE, 1], 15, 20]"/>
 	    <var name="Carlo" type="_string" value="[[MOON, 1], 800, 1]"/>
+	    <var name="allowedTakeFork" type="_string" value="no"/>
     </scene>
 </adventure>

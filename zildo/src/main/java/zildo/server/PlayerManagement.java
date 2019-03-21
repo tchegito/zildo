@@ -446,8 +446,9 @@ public class PlayerManagement {
 				} else if (heros.getMouvement()!=MouvementZildo.BRAS_LEVES && 
 						heros.getMouvement()!=MouvementZildo.SOULEVE && !heros.isDoingAction()) {
 					// Get a spot reachable in hero's direction
-					int locX = (int) heros.x + heros.getAngle().coords.x * 8;
-					int locY = (int) heros.y + heros.getAngle().coords.y * 8;
+					Point coords = heros.getAngle().coords;
+					int locX = (int) heros.x + coords.x * 8;
+					int locY = (int) heros.y + coords.y * 8;
 					
 					Perso persoToTalk=EngineZildo.persoManagement.collidePerso(locX, locY, heros, 4);
 					if (heros.who.canTalk &&  persoToTalk!=null && persoToTalk.getInfo() != PersoInfo.ENEMY 

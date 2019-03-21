@@ -953,7 +953,7 @@ public class SpriteManagement extends SpriteStore {
 	}
 	
 	/** Called twice around the map loading process. Once with FALSE, and second time with TRUE, when map is fully loaded. **/
-	public void notifyLoadingMap(boolean p_loading) {
+	public void notifyLoadingMap(boolean p_loading, boolean p_scroll) {
 		spriteUpdating=p_loading;
 		if (!p_loading) {
 			// Loading is over. We have to keep all current entities in order to delete
@@ -964,7 +964,7 @@ public class SpriteManagement extends SpriteStore {
 				// If they belong to the previous map, they will be removed when scroll is over
 				if (entity.isGhost()) {
 					continue;
-				} else {
+				} else if (p_scroll) {
 					suspendedEntities.add(entity);
 				}
 			}
