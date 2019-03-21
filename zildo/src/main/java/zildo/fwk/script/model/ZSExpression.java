@@ -104,7 +104,7 @@ public class ZSExpression {
 			int nettleAmount=Integer.valueOf(questName.substring(RW_NETTLE.length()));
 			int currentAmount = zildo().getCountNettleLeaf();
 			result = currentAmount >= nettleAmount;
-		} else if (questName.startsWith(RW_ITEM)) {
+		} else if (questName.startsWith(RW_ITEM) && zildo() != null) {
 			String itemName=questName.substring(RW_ITEM.length());
 			ItemKind kind = ItemKind.fromString(itemName);
 			result = zildo().hasItem(kind);
