@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import zeditor.tools.builder.AllMapProcessor;
 import zildo.monde.sprites.SpriteEntity;
-import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
@@ -99,6 +98,7 @@ public class CheckConsistentMap {
 					case FIRE_ELEMENTAL:
 					case BITEY:
 					case CACTUS:
+					case SCORPION:
 						shouldBeEnemy = true;
 					default:
 						break;

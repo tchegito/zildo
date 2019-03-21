@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
-import tools.annotations.InfoPersos;
 import zildo.client.gui.menu.SaveGameMenu;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.input.KeyboardHandler.Keys;
@@ -142,7 +141,7 @@ public class Inconsistencies extends EngineUT {
 		
 	}
 	
-	@Test @InfoPersos
+	@Test //@InfoPersos
 	public void freezeInLugduniaCave() {
 		mapUtils.loadMap("foret");
 		PersoPlayer zildo = spawnZildo(672,237);

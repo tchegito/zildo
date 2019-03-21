@@ -1,5 +1,6 @@
 package junit.area;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,6 +152,38 @@ public class CheckMapScroll extends EngineUT {
 		renderFrames(5);
 		mapUtils.assertCurrent("prison4r");
 		Assert.assertFalse(checkSpritesPresence(barrels));
+	}
+	
+	// Ensure that any suspended entities are not kept after a map change (without scroll)
+	@Test
+	public void checkEmptySuspendedEntities(){
+		mapUtils.loadMap("fermem1");
+		spawnZildo(208, 269);
+		waitEndOfScripting();
+		simulateDirection(0, 1);
+		Assert.assertEquals(0, hackSuspendedEntities( ).size());
+		while (!"ferme".equals(EngineZildo.mapManagement.getCurrentMap().getName())) {
+			renderFrames(1);
+		}
+		Assert.assertEquals(0, hackSuspendedEntities().size());
+
+	}
+	
+	// Get a package protected field from SpriteManagement
+	@SuppressWarnings("unchecked")
+	private List<SpriteEntity> hackSuspendedEntities() {
+		try {
+		Field[] fields = EngineZildo.spriteManagement.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if ("suspendedEntities".equals(field.getName())) {
+        	   field.setAccessible(true);
+        	   return (List<SpriteEntity>) field.get(EngineZildo.spriteManagement);
+            }
+        }
+		} catch (IllegalAccessException e) {
+			// Exception will be thrown just below
+		}
+        throw new RuntimeException("Unable to find 'suspendedEntities' field from SpriteManagement instance");
 	}
 	
 	private boolean checkSpritesPresence(List<SpriteEntity> candidates) {
