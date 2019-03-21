@@ -124,6 +124,7 @@ public class TestInteractionObject extends EngineUT {
 		PersoPlayer hero = spawnZildo(858, 668);
 		hero.setAngle(Angle.OUEST);
 		waitEndOfScripting();
+		EngineZildo.scriptManagement.putVarValue("allowedTakeFork", "yes");
 		
 		// Take the fork
 		Assert.assertEquals(0, hero.getInventory().size());
