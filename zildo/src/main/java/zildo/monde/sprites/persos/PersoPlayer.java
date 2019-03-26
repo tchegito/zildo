@@ -760,7 +760,8 @@ public class PersoPlayer extends Perso {
 		shield.setVisible(false);
 		sword.setVisible(false);
 		arm.setVisible(false);
-
+		fork.setVisible(false);
+		
 		// Wet feet are displayed differently for each appearance
 		int shiftWetFeet = angle.isVertical() || angle == Angle.OUEST ? 1 : 0;
 		if (who == ControllablePerso.PRINCESS_BUNNY) {
@@ -1080,6 +1081,7 @@ public class PersoPlayer extends Perso {
 			case ATTACK_FORK:
 				pos_seqsprite = (((3 * 2 - getAttente() - 1) % (3 * 2)) / 2);
 				setSpr(ZildoDescription.getForkAttacking(angle, pos_seqsprite));
+				fork.setVisible(true);
 				fork.x = x+4;
 				placeElementForked(0, 0);
 				fork.setDesc(ZildoDescription.FORK0);
@@ -1105,6 +1107,7 @@ public class PersoPlayer extends Perso {
 				break;
 			case HOLD_FORK:
 				int factor = 1;
+				fork.setVisible(true);
 				setSpr(ZildoDescription.getMovingFork(angle, computeSeq(factor) % 8));
 				fork.x = x + 4;
 				fork.y = y - 2;
@@ -1150,6 +1153,7 @@ public class PersoPlayer extends Perso {
 				break;
 
 			case PUTAWAY_FORK:
+				fork.setVisible(true);
 				pos_seqsprite = (((3 * 2 - getAttente() - 1) % (3 * 2)) / 2);
 				setSpr(ZildoDescription.getForkAttacking(angle, pos_seqsprite));
 				switch (angle) {
