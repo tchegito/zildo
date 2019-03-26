@@ -291,6 +291,7 @@ public class PersoManagement {
 			case CREATURE:
 				perso.setPv(2);
 				perso.setSpeed(1.5f);
+				break;
 			case TURTLE:
 				perso.setSpeed(0.25f);
 			default:

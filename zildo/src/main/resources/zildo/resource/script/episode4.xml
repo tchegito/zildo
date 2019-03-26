@@ -32,6 +32,15 @@
 	    	<markQuest name="catap3" value="false"/>
 	    	<markQuest name="catap4" value="false"/>
 	    </condition> 
+	    
+	    <condition name="valorig">
+	        <if expQuest="valorig_lever1">
+	        	<activate what="doorRight" value="true" unblock="true"/>
+	        </if>
+	       	<if expQuest="valorig_lever2">
+	        	<activate what="doorUp" value="true" unblock="true"/>
+	        </if>
+	    </condition>
    	</mapScript>
     
    	<quest name="charles_fork" locked="false">
@@ -109,7 +118,29 @@
    	    </action>
    	</quest>
 
-   	<persoAction id="bitey">
+   	<quest name="valorig_lever1" locked="false">
+	    <trigger>
+	        <location name="valorig"/>
+	        <tileattack tilePos="54,17"/>
+	    </trigger>
+	    <action>
+	        <exec script="activeLever(54,17)"/>
+	        <activate what="doorRight" value="true"/>
+	    </action>
+	</quest>   	    
+
+   	<quest name="valorig_lever2" locked="false">
+	    <trigger>
+	        <location name="valorig"/>
+	        <tileattack tilePos="38,4"/>
+	    </trigger>
+	    <action>
+	        <exec script="activeLever(38,4)"/>
+	        <activate what="doorUp" value="true"/>
+	    </action>
+	</quest>  
+	
+	<persoAction id="bitey">
         <loop>
             <var name="loc:found" value="0"/>
 			<lookFor who="self" info="ZILDO" radius="7">

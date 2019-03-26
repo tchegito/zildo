@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
-import tools.annotations.InfoPersos;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;

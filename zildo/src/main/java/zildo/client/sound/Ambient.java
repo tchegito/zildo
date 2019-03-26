@@ -44,7 +44,7 @@ public class Ambient {
 		CAVE(false, BankMusic.Grotte), // 1
 		HOUSE(false, BankMusic.Village), // 2
 		BAR(false, BankMusic.PianoBar),	// 3
-		DESERT(false, BankMusic.Village), // 4
+		DESERT(false, BankMusic.Valori), // 4
 		CASTLE(false, BankMusic.Chateau),
 		CASTLEINSIDE(false, BankMusic.Chateau),
 		DANGERINSIDE(false, BankMusic.Surprise),
@@ -99,6 +99,7 @@ public class Ambient {
 			case OUTSIDE:
 			case CASTLE:
 			case UNDERGROWTH:
+			case DESERT:
 				return Weather.CLOUD;
 			default:
 				return Weather.USUAL;

@@ -361,7 +361,7 @@ public class MapManagement {
 		// 4) Collision with chaining point for NPC (aka PNJ in french)
 		if (p !=null && !p.isZildo()) {
 			// Allow for characters involved in running script (Maltus or Igor following)
-			if (!ghost && currentMap.isChangingMap(tx, ty, p.getAngle()) != null) {
+			if (!ghost && currentMap.isChangingMap(tx, ty, p.getAngle(), p.floor) != null) {
 				return true;
 			}
 		}
@@ -576,7 +576,8 @@ public class MapManagement {
 			case NORD:
 				onMap = area.readmap(cx, cy - 1);
 				if (onMap == 21 || onMap == 3 || onMap == 839 || onMap == 19 || onMap == 18 || onMap == 20 || onMap == 0 || onMap == 7 ||
-						onMap == 256 * 3 + 135)	// Cave grey wall
+						onMap == 256 * 3 + 135 ||
+						onMap == 256*5 + 65 || onMap == 256*5 + 66 || onMap == 256*5 + 67)	// Cave grey wall
 					result = angle;
 				break;
 			case EST:
@@ -599,8 +600,11 @@ public class MapManagement {
 				if (onMap == 17 || onMap == 15 || onMap == 841 || onMap == 19 || onMap == 18 || onMap == 20 || onMap == 0 || onMap == 7
 						|| onMapCurrent == 15 ||
 						onMap == 256 * 3 + 132 ||	// Cave grey wall
+						onMap == 256 * 3 + 40 ||
 						// Water border
-						onMap == 135)
+						onMap == 135 ||
+						// Desert hill
+						onMap == 256*5 + 57 || onMap == 256*5 + 59)
 					result = angle;
 				break;
 			}
@@ -623,7 +627,7 @@ public class MapManagement {
 			if (p_zildo.isProjected()) {
 				ang = ang.rotate(2);	// Zildo is stepping back, so inverse his angle
 			}
-			changingMapPoint = currentMap.isChangingMap(x, y, ang);
+			changingMapPoint = currentMap.isChangingMap(x, y, ang, p_zildo.floor);
 			if (changingMapPoint != null) {
 				if (!alreadyChanging && !EngineZildo.scriptManagement.acceptChainingPoint()) {
 					// Ensure that hero hasn't to wait for someone following him

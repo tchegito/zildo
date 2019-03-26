@@ -501,7 +501,7 @@ public class Area implements EasySerializable {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// Return ChainingPoint if Zildo's crossing one (door, or Area's border)
 	// /////////////////////////////////////////////////////////////////////////////////////
-	public ChainingPoint isChangingMap(float x, float y, Angle p_angle) {
+	public ChainingPoint isChangingMap(float x, float y, Angle p_angle, int fromFloor) {
 		// On parcourt les points d'enchainements
 		int ax = (int) (x / 8);
 		int ay = (int) (y / 8);
@@ -514,7 +514,7 @@ public class Area implements EasySerializable {
 				}
 				// Area's borders
 				border = isAlongBorder((int) x, (int) y);
-				if (chPoint.isCollide(ax, ay, border)) {
+				if (chPoint.isCollide(ax, ay, border) && chPoint.getFloor() == fromFloor) {
 					candidates.add(chPoint);
 				}
 			}

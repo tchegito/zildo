@@ -161,7 +161,7 @@ public class Case implements EasySerializable {
 				case 3:
 				// L'eau dans les grottes/palais
 					if (motif==78)
-						motif=78+(comptModulo3 / 20);
+						motif=78+comptModulo3;
 					else if (motif == 217) {	// Lava
 						motif = 217 + seqForward[comptModulo3];
 					} else if( motif == 230) {
