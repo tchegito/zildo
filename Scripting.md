@@ -82,6 +82,7 @@ A trigger can be of 10 different kinds : (corresponding to [QuestEvent](https://
     * gear: mechanism type (BUTTON, TIMED\_BUTTON)
     * mover: name of a moving platform
     * tileValue: a value for a given tile (bank\*256 + index)
+    * floor: optional integer requiring hero to be at given floor
   * [**dialog**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#dialog) : when a specific character say a given sentence
   * [**inventory**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#inventory) : does Zildo have a given item ?
   * [**questDone**](https://github.com/tchegito/zildo/blob/wiki/triggerDetails.md#questdone) : has Zildo achieved a given quest ?
