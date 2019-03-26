@@ -283,7 +283,7 @@ public class ChainingPointPanel extends JPanel {
 					Object o = getValueAt(row, col);
 					switch (col) {
 					case 0: // floor
-						
+						ch.setFloor((Short) o); 
 						break;
 					case 1: // mapname
 						ch.setMapname((String) o);

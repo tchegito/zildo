@@ -185,8 +185,11 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(212, 16, 8, 8),
 				// Flut and sword (113)
 				new Zone(210, 16, 15, 15), new Zone(225, 16, 15, 15),
-				// Quad (115)
-				new Zone(0, 35, 17, 23), new Zone(17, 35, 17, 23),
+				// Wood stones (115)
+				new Zone(1, 303, 16, 8), new Zone(1, 312, 8, 16),
+
+				// Quad (117)	// Phase of removing (this shouldn't stay in the Android version)
+				//new Zone(0, 35, 17, 23), new Zone(17, 35, 17, 23),
 				new Zone(34, 35, 17, 23), new Zone(51, 35, 17, 23),
 				new Zone(68, 35, 17, 23), new Zone(85, 35, 17, 23),
 				new Zone(102, 35, 17, 23), new Zone(119, 35, 17, 23),
@@ -249,7 +252,7 @@ public class ElementsPlus extends SpriteBanque {
 				// Door
 				new Zone(55, 151, 16, 16), new Zone(55, 167, 16, 5),
 				// Cemetery's door
-				new Zone(42, 39, 8, 22),
+				new Zone(51, 72, 16, 8), //42, 39, 8, 22),
 				// Carpet
 				new Zone(16, 145, 8, 8),
 				// Thief Launcher
@@ -365,6 +368,8 @@ public class ElementsPlus extends SpriteBanque {
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
 				new GraphChange("elem2", 71, 0), 
+				new GraphChange("interia7", 115, 0),
+				new GraphChange("elem2", 117, 0),
 				new GraphChange("objets", 123, 0),
 				new GraphChange("elem", 156, 0),
 				new GraphChange("objets", 181, 0),
