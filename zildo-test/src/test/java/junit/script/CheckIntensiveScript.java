@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.DisableFreezeMonitor;
 import zildo.fwk.script.context.LocaleVarContext;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -21,7 +22,7 @@ public class CheckIntensiveScript extends EngineUT {
 	
 	// We had a bug when turtles were kept after a map has scrolled if turtle were currently moving.
 	// Because we choose to keep entity with 'ghost' attribute at TRUE.
-	@Test
+	@Test @DisableFreezeMonitor
 	public void switchMapAndCountTurtles() {
 		mapUtils.loadMap("sousbois5");
 		hero = spawnZildo(374, 37);
