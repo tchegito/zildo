@@ -10,6 +10,7 @@
 	    <nameReplace who="vk" name="oldMan"/>
 	    <nameReplace who="vipere" name="viper"/>
 	    <nameReplace who="pano,note,barrel" name=""/>
+	    <nameReplace who="pied1,pied2,pied3" name=""/>
 	    <nameReplace who="grandmere" name="oldLady"/>
 	    <nameReplace who="barmasky" name="barman"/>
 	    <nameReplace who="falcor" name="???"/>

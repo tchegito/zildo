@@ -249,7 +249,9 @@ public class ScriptManagement {
     			// For each quest undone yet :
     			boolean achieved = quest.getTriggers().size() != 0;
     			for (TriggerElement trig : quest.getTriggers()) {
-    				achieved&=trig.isDone();
+    				boolean trigDone = trig.isDone();
+    				achieved&=trigDone;
+    				if (!trigDone) break;	// No need to continue on current quest's triggers
     			}
     			// Particular case : no triggers at all IS NOT considered as achieved
     			if (achieved) {
@@ -283,6 +285,7 @@ public class ScriptManagement {
     			}
     		}
     	}
+		//System.out.println(cntIsDone+" passages dans trig.isDone");
     }
 
     /**

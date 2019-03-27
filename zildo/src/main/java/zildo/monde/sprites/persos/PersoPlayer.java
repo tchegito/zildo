@@ -1465,7 +1465,7 @@ public class PersoPlayer extends Perso {
 			break;
         case FIERTEOBJET:
         	if (getEn_bras() != null) {
-        		getEn_bras().dying=true;
+        		getEn_bras().die();
         	}
         	setAngle(Angle.SUD);
         case ATTAQUE_EPEE:

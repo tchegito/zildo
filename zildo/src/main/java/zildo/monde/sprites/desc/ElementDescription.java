@@ -194,7 +194,7 @@ public enum ElementDescription implements SpriteDescription {
 		case BAR_HORIZONTAL: case SEWER_BARH:
 		case BAR_VERTICAL: case SEWER_BARV:
 		case BARREL:
-		case STONEWALL1: case STONEWALL2:
+		case STONEWALL1: case STONEWALL2: case STONEWALL:
 		case WOOD_BAR:
 		case CUBE_BLUE:
 		case CUBE_ORANGE:

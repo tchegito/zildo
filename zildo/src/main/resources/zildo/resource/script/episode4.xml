@@ -7,7 +7,30 @@
 	    	<perso who="bitey1" action="bitey"/> 
 	    	<spawn who="scorp" pos="831, 717" type="SCORPION" />
 	    	<perso who="scorp" action="scorpion"/>
-   	    </condition>
+	    	<visible who="pied1" value="false"/>
+	    	<visible who="pied2" value="false"/>
+	       	<visible who="pied3" value="false"/>
+	       	
+	       	<!-- TO REMOVE -->
+	       	<spawn type="PORTAL_KEY" pos="285,169" z="40" vy="0.5" vz="1.5" az="-0.04"/>
+	       	<spawn type="PORTAL_KEY" pos="285,199" z="40" vy="0.5" vz="1.5" az="-0.04"/>
+	       		       	<spawn type="PORTAL_KEY" pos="285,239" z="40" vy="0.5" vz="1.5" az="-0.04"/>
+	       		       	
+	       	<if expQuest="valori_key1">
+	       		<tile pos="16,9" back2="256*5+150"/>
+	       	</if>
+	       	<if expQuest="valori_key2">
+	       		<tile pos="18,8" back2="256*5+150"/>
+	       	</if>
+	       	<if expQuest="valori_key3">
+	       		<tile pos="20,9" back2="256*5+150"/>
+	       	</if>
+	       	<!-- Element used to create a collision about tile which aren't usually -->
+	       	<visible what="tohide1" value="false"/>
+	       	<visible what="tohide2" value="false"/>
+	       	<visible what="tohide3" value="false"/>
+	       	<visible what="tohide4" value="false"/>
+	    </condition>
     
 	    <condition name="canyon" locked="false">
 	    	<!-- Place catapult TODO: plan quest to set each catapult state -->
@@ -140,7 +163,54 @@
 	    </action>
 	</quest>  
 	
-	<persoAction id="bitey">
+   	<quest name="valori_key1" locked="false">
+   	    <trigger>
+   	        <location name="valori"/>
+   	        <dialog name="pied1" num="1"/>
+   	    </trigger>
+   	    <action>
+   	        <exec script="insertPortalKey(16,9)"/>
+   	    </action>
+   	</quest> 
+   	
+   	<quest name="valori_key2" locked="false">
+   	    <trigger>
+   	        <location name="valori"/>
+   	        <dialog name="pied2" num="1"/>
+   	    </trigger>
+   	    <action>
+   	        <exec script="insertPortalKey(18,8)"/>
+   	    </action>
+   	</quest> 
+   	
+   	<quest name="valori_key3" locked="false">
+   	    <trigger>
+   	        <location name="valori"/>
+   	        <dialog name="pied3" num="1"/>
+   	    </trigger>
+   	    <action>
+   	        <exec script="insertPortalKey(20,9)"/>
+   	    </action>
+   	</quest>
+
+   	<quest name="valori_allKeys">
+   	    <trigger>
+   	        <!-- 'pos' attribute is important to be sure that this quest is triggered AFTER all three others. It ensures player moves before triggering. -->
+   	        <location name="valori" pos="291,151" radius="16"/>
+   	        <questDone name="valori_key1-valori_key2-valori_key3"/>
+   	    </trigger>
+   	    <action>
+   	        <speak text="zildo.fini"/>
+   	    </action>
+   	</quest>	
+
+   	<scene id="insertPortalKey">
+   		<putDown item="PORTAL_KEY"/>
+   		<tile pos="loc:arg0,loc:arg1" back2="256*5+150"/>
+   		<sound name="MoonFusion"/>
+  	</scene>
+   	
+   	<persoAction id="bitey">
         <loop>
             <var name="loc:found" value="0"/>
 			<lookFor who="self" info="ZILDO" radius="7">

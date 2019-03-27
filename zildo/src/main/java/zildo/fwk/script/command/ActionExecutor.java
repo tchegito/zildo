@@ -542,9 +542,9 @@ public class ActionExecutor extends RuntimeExecutor {
                 		// So we can't just set them invisible, because it would be unefficient.
                 		perso.askVisible(p_action.activate);
                 	} else if (p_action.what != null) {
-                    	Element elem = getNamedElement(p_action.what);
-                		if (elem != null) {
-                			elem.setVisible(p_action.activate);
+                    	SpriteEntity entity = getNamedEntity(p_action.what);
+                		if (entity != null) {
+                			entity.setVisible(p_action.activate);
                 		}
                 	}
                 	achieved = true;
