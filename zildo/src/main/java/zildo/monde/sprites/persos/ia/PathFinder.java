@@ -297,7 +297,6 @@ public class PathFinder {
 								boolean alreadyMoving = EngineZildo.scriptManagement.isPersoActing(collidingPerso) 
 														&& collidingPerso.getTarget() != null;
 								String scriptName=dist == 12 && !alreadyMoving ? "moveCharacter" : "moveCharacterUnstoppable";
-								System.out.println("move");
 								
 								EngineZildo.scriptManagement.runPersoAction(collidingPerso, scriptName + "("+nonBlockingPos.x+","+nonBlockingPos.y+")", context, true);
 							}
