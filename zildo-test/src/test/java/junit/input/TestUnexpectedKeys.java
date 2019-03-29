@@ -30,7 +30,7 @@ import zildo.resource.KeysConfiguration;
 
 public class TestUnexpectedKeys extends EngineWithMenuUT {
 
-	// Issue 114
+	// Issue 119
 	@Test
 	public void stuckInInventory() {
 		waitEndOfScripting();
