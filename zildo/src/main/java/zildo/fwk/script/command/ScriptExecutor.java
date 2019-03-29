@@ -397,6 +397,20 @@ public class ScriptExecutor {
 		}
 		return false;
 	}
+	
+	// As we allow sometimes top priority scripts without considering game is blocked, this function is useful.
+	public boolean isNonPriorityScripting() {
+		if (scripts.isEmpty()) {
+			return false;
+		}
+		for (ScriptProcess process : scripts) {
+			// Is this script unblocking ?
+			if (!process.topPriority && process.scene.locked) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Returns TRUE if given name is in the processing queue (i.e. the quest are unfinished)

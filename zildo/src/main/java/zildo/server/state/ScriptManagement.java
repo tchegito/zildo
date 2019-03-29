@@ -647,7 +647,7 @@ public class ScriptManagement {
 		if (zildo == null) return false;
 		boolean onPlatform = zildo != null && zildo.isOnPlatform();
 		boolean isBossFighting = "1.0".equals(EngineZildo.scriptManagement.getVarValue("bossFighting"));
-		return !scriptExecutor.isScripting(false) && !onPlatform && !isBossFighting;
+		return !scriptExecutor.isNonPriorityScripting() && !onPlatform && !isBossFighting;
 	}
 	
 	public void sellItem(String storeName, Item item) {
