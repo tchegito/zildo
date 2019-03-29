@@ -273,11 +273,17 @@ public class ActionExecutor extends RuntimeExecutor {
 	        				break;
 	                    case OBSERVE:
 	                    case FOLLOW:
+	                    case CHAIN_FOLLOW:
 		                    if (param != null) {
-		                    	SpriteEntity entity = getNamedEntity(param);
-		                    	if (entity != null && !entity.getEntityType().isEntity()) {
-		                    		Element elemToObserve =  (Element) entity;
-		                    		perso.setFollowing(elemToObserve);
+		                    	Perso p = getNamedPersoInContext(param);
+		                    	if (p != null) {
+		                    		perso.setFollowing(p);
+		                    	} else {
+		                    		SpriteEntity entity = getNamedEntity(param);
+			                    	if (entity != null && !entity.getEntityType().isEntity()) {
+			                    		Element elemToObserve =  (Element) entity;
+			                    		perso.setFollowing(elemToObserve);
+			                    	}
 		                    	}
 		                    }
 		                default:
@@ -650,8 +656,11 @@ public class ActionExecutor extends RuntimeExecutor {
                 		}
                 		if (p_action.parent != null) {
                 			// Link character to their parent
-                			Perso persoParent = EngineZildo.persoManagement.getNamedPerso(p_action.parent);
+                			Perso persoParent = getNamedPersoInContext(p_action.parent);
                 			persoParent.addPersoSprites(perso);
+                		}
+                		if (p_action.speed != 0) {
+                			perso.setSpeed(p_action.speed);
                 		}
                 		if (p_action.action != null) {
                 			if (p_action.action.length() == 0) {

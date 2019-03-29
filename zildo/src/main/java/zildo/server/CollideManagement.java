@@ -203,8 +203,10 @@ public class CollideManagement {
         Collision zildoCollision = p_zildo.getCollision();
 
         if ((p_colli.perso == null || !p_colli.perso.isWounded()) && checkColli(p_colli, zildoCollision)) {
-            // Zildo gets wounded
-        	hit(p_colli, zildoCollision);
+        	if (p_colli.perso == null || p_zildo.floor == p_colli.perso.floor) {
+        		// Zildo gets wounded
+        		hit(p_colli, zildoCollision);
+        	}
         }
     }
 

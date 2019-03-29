@@ -230,6 +230,7 @@ public class PathFinder {
 			case HEN:
 			case BEE:
 			case SQUIRREL:
+			case MOLE:
 				target=null;
 				break;
 			case CAT:
@@ -242,13 +243,14 @@ public class PathFinder {
 				}
 				if (!alwaysReach) {
 					nbShock++;
+					MouvementPerso dep = mobile.getQuel_deplacement();
 					if (!mobile.isGhost()) {
 						if (nbShock >= 3) {
 							target=null;
 							mobile.setAlerte(false);
 							nbShock=0;
 						}
-					} else if (mobile.getQuel_deplacement() != MouvementPerso.FOLLOW){
+					} else if (dep != MouvementPerso.FOLLOW && dep != MouvementPerso.CHAIN_FOLLOW){
 						// Freeze during a scene (because moving character is 'ghost')
 						nbShock=0;
 						

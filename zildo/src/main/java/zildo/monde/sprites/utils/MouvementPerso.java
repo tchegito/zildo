@@ -48,7 +48,9 @@ public enum MouvementPerso {
 	IMMATERIAL(18),	// No collision and untouchable
 	SPITFIRE(19),	// For dragon
 	RETRACTED(20),	// For dragon too, when he's diving into lava
-	FREEFLY(21);	// For vulture, with z as target
+	FREEFLY(21),	// For vulture, with z as target
+	CHAIN_FOLLOW(22),	// Get target from the followed one 
+	MOLE(23);
 	
 	public int valeur;
 	
@@ -125,6 +127,6 @@ public enum MouvementPerso {
 	 */
 	public boolean isAlertable() {
 		return this != RAT && this != ELECTRIC && this != BEE && this != IMMOBILE && this != IMMATERIAL && 
-				this != SPITFIRE && this != RETRACTED;
+				this != SPITFIRE && this != RETRACTED && this != MOLE;
 	}
 }

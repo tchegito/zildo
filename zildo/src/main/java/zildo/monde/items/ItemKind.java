@@ -44,7 +44,7 @@ public enum ItemKind {
 	SHIELD_MEDIUM(true, ElementDescription.SHIELD_YELLOW, 60),
 	//SHIELD_LARGE(true, ElementDescription.SHIELD_YELLOW, 60),
 	FLASK_RED(false, ElementDescription.FLASK_RED, 10),
-	SCEPTER(false, ElementDescription.SCEPTER, 0),
+	ITEM_SCEPTER(false, ElementDescription.ITEM_SCEPTER, 0),
 	MILK(false, ElementDescription.MILK, 0),
 	NECKLACE(false, ElementDescription.NECKLACE, 0),
 	ROCK_BAG(true, ElementDescription.ROCK_BAG, 0),

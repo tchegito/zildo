@@ -10,11 +10,6 @@
 	    	<visible who="pied1" value="false"/>
 	    	<visible who="pied2" value="false"/>
 	       	<visible who="pied3" value="false"/>
-	       	
-	       	<!-- TO REMOVE -->
-	       	<spawn type="PORTAL_KEY" pos="285,169" z="40" vy="0.5" vz="1.5" az="-0.04"/>
-	       	<spawn type="PORTAL_KEY" pos="285,199" z="40" vy="0.5" vz="1.5" az="-0.04"/>
-	       		       	<spawn type="PORTAL_KEY" pos="285,239" z="40" vy="0.5" vz="1.5" az="-0.04"/>
 	       		       	
 	       	<if expQuest="valori_key1">
 	       		<tile pos="16,9" back2="256*5+150"/>
@@ -30,6 +25,16 @@
 	       	<visible what="tohide2" value="false"/>
 	       	<visible what="tohide3" value="false"/>
 	       	<visible what="tohide4" value="false"/>
+	       	<!-- Reveal secret pit if needed -->
+	       	<if expQuest="valori_allKeys">
+		       	<tile pos="28,3" back="256*6+86" back2="-1"/>
+	   	        <tile pos="29,3" back="256*6+86" reverse="128" />
+	   	        <tile pos="28,4" back="256*6+197" />
+	   	        <tile pos="29,4" back="256*6+197" reverse="128" />
+	       	</if>
+
+	       	<perso who="taupe" action="mole"/>
+
 	    </condition>
     
 	    <condition name="canyon" locked="false">
@@ -63,6 +68,11 @@
 	       	<if expQuest="valorig_lever2">
 	        	<activate what="doorUp" value="true" unblock="true"/>
 	        </if>
+	    </condition>
+	    
+	    <condition name="valorig2">
+		    <spawn what="scepter" pos="208,99" type="SCEPTER"/>
+	        <visible who="pano" value="false"/>
 	    </condition>
    	</mapScript>
     
@@ -200,9 +210,68 @@
    	        <questDone name="valori_key1-valori_key2-valori_key3"/>
    	    </trigger>
    	    <action>
-   	        <speak text="zildo.fini"/>
+   	        <music />
+   	        <wait value="50"/>
+   	        <moveTo what="camera" pos="300,0"/>
+   	        <wait value="50"/>
+   	        <sound name="ZildoPousse"/>
+		   	<animation type="CLOUD_FOG" pos="450,72"/>
+
+		   	<!-- Reveals secret pit -->
+   	        <tile pos="28,3" back="256*6+86" back2="256*5+38"/>
+   	        <tile pos="29,3" back="256*6+86" back2="256*5+38" reverse="128" />
+   	        <tile pos="28,4" back="256*6+197" back2="256*5+38" />
+   	        <tile pos="29,4" back="256*6+197" back2="256*5+38" reverse="128" />
+   	        <wait value="10"/>
+		   	<animation type="CLOUD_FOG" pos="476,64"/>
+   	        <tile pos="28,4" back2="256*5+175" />
+   	        <tile pos="29,4" back2="256*5+187" />
+   	        <wait value="10"/>
+   	        <tile pos="28,4" back2="256*5+185" />
+   	        <tile pos="29,4" back2="256*5+185" />
+   	        <wait value="10"/>
+   	        <tile pos="28,3" back2="256*5+175" />
+   	        <tile pos="29,3" back2="256*5+187" />
+   	        <wait value="10"/>
+   	        <tile pos="28,3" back2="256*5+185" />
+   	        <tile pos="29,3" back2="256*5+185" />
+   	        <tile pos="28,4" back2="-1" />
+   	        <tile pos="29,4" back2="-1" />
+   	        <wait value="10"/>
+   	        <tile pos="28,3" back2="-1" />
+   	        <tile pos="29,3" back2="-1" />
+   	       	<wait value="50"/>
+   	       	<sound name="ZildoSecret"/>
+   	       	<animation type="STAR_SHINE" pos="465,58"/>
+   	       	<wait value="200"/>
+   	        <focus who="zildo" delta="true"/>
+   	        <wait value="100"/>
+   	        <music name="Valori"/>
    	    </action>
    	</quest>	
+
+   	<!-- Disable chaining point if secret cave isn't revealed yet -->
+   	<quest name="pitChaining" locked="false">
+        <trigger>
+            <location name="valori" pos="458,56" radius="2"/>
+            <chainingPoint/>
+            <questDone name="!valori_allKeys"/>                     
+        </trigger>
+        <action>
+           	<markQuest name="pitChaining" value="false"/>
+        </action>
+    </quest>
+
+   	<quest name="findScepter" locked="false">
+   	    <trigger>
+   	        <location name="valorig2"/>
+   	        <dialog name="pano" num="0"/>
+   	    </trigger>
+   	    <action>
+   	        <remove what="scepter"/>
+   	        <take item="ITEM_SCEPTER"/>
+   	    </action>
+   	</quest>
 
    	<scene id="insertPortalKey">
    		<putDown item="PORTAL_KEY"/>
@@ -264,6 +333,31 @@
    	        <perso who="self" addSpr="1"/>
    	        <wait value="100"/>
    	    </loop>
+   	</persoAction>
+   	
+   	<persoAction id="mole">
+   	    <script who="self" value="23"/>
+   	    <perso who="self" speed="2"/>	<!-- Speed should be initialized AFTER mouvement 23 -->
+   	    <spawn who="loc:m2" type="MOLE" info="ENEMY" pos="x,y-5" speed="2" />
+       	<spawn who="loc:m3" type="MOLE" info="ENEMY" pos="x,y-10" speed="2"/>
+       	<spawn who="loc:m4" type="MOLE" info="ENEMY" pos="x,y-15" speed="2"/>
+       	<perso who="loc:m2" parent="self" pv="-1"/>
+       	<perso who="loc:m3" parent="self" pv="-1"/>
+       	<perso who="loc:m4" parent="self" pv="-1"/>
+       	<script who="loc:m2" value="22" effect="self"/>
+       	<script who="loc:m3" value="22" effect="loc:m2"/>
+       	<script who="loc:m4" value="22" effect="loc:m3"/>
+	       		       		       			
+       	<loop>
+       		<moveTo who="self" pos="80,0" delta="true"/>
+       		<wait value="10"/>
+       		<moveTo who="self" pos="0,50" delta="true" />
+       		<wait value="10"/>
+			<moveTo who="self" pos="-80,0" delta="true" />
+       		<wait value="10"/>
+			<moveTo who="self" pos="0,-50" delta="true" />
+       		<wait value="10"/>
+		</loop>
    	</persoAction>
    	
     <scene id="vultureCatap">

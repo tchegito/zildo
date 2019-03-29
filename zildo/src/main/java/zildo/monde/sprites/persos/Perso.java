@@ -46,6 +46,7 @@ import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.magic.PersoAffections;
 import zildo.monde.sprites.persos.action.PersoAction;
 import zildo.monde.sprites.persos.ia.PathFinder;
+import zildo.monde.sprites.persos.ia.PathFinderChainFollow;
 import zildo.monde.sprites.persos.ia.PathFinderFollow;
 import zildo.monde.sprites.persos.ia.PathFinderFreeFlying;
 import zildo.monde.sprites.persos.ia.PathFinderSquirrel;
@@ -199,6 +200,7 @@ public abstract class Perso extends Element {
 			Pointf target = pathFinder.getTarget();
 			switch (p_script) {
 			case IMMOBILE:
+			case MOLE:
 				setAlerte(false);
 			case ZONE:
 				setFollowing(null);
@@ -224,6 +226,9 @@ public abstract class Perso extends Element {
 				float prevSpeed = pathFinder == null ? 0.5f: pathFinder.speed;
 				pathFinder = new PathFinderFollow(this, following);
 				pathFinder.speed = prevSpeed;
+				break;
+			case CHAIN_FOLLOW:
+				pathFinder = new PathFinderChainFollow(this, ((Perso) following).pathFinder);
 				break;
 			case FREEFLY:
 				pathFinder = new PathFinderFreeFlying(this);
@@ -848,7 +853,10 @@ public abstract class Perso extends Element {
 				handleStairsScene("miniStairsUpReverse");
 				slowDown = true;
 				break;
-
+			case 6*256+197:	// Secret stairs in Valori
+				handleStairsScene("miniStairsDownCave");
+				slowDown = true;
+				break;
 			case 256*2 + 200: case 256 * 2 + 198:	// Wood stairs going up
 			case 256*2 + 201:	// Wood stairs going down (on the right)
 			case 256*2 + 213:

@@ -20,6 +20,14 @@
 		<moveTo who="zildo" pos="0,-32" speed="1" unstoppable="true" delta="true" deltaFloor="-1"/>
         <herospecial value="2"/>
 	</scene>
+	<scene id="miniStairsDownCave">
+        <herospecial value="1"/>
+        <sound name="ZildoDescend"/>
+		<moveTo who="zildo" pos="0,-10" speed="0.4" unstoppable="true" delta="true"/>
+		<moveTo who="zildo" pos="0,-6" speed="0.2" unstoppable="true" delta="true"/>
+		<herospecial value="2"/>
+	</scene>
+	
 	
 	<scene id="miniStairsDownReverse">
         <herospecial value="1"/>

@@ -342,13 +342,19 @@ public class PersoNJ extends Perso {
 				case FOLLOW:
 					pathFinder.determineDestination();
 					break;
+				case CHAIN_FOLLOW:
+					Pointf p = pathFinder.reachDestination(0);
+					x=p.x;
+					y=p.y;
+					break;
 				default:
 					break;
 				}
 			}
 			if (quel_deplacement != MouvementPerso.OBSERVE &&
 					quel_deplacement != MouvementPerso.VOLESPECTRE &&
-					quel_deplacement != MouvementPerso.SLEEPING) {
+					quel_deplacement != MouvementPerso.SLEEPING &&
+					quel_deplacement != MouvementPerso.CHAIN_FOLLOW) {
 				if (pathFinder.hasReachedTarget()) {
 					pathFinder.setTarget(null);
 					pathFinder.setTargetZ(null);
@@ -796,6 +802,7 @@ public class PersoNJ extends Perso {
 		case COAL_COLD:
 		case BITEY:
 		case SCORPION:
+		case MOLE:
 			break;
 		default:
 			add_spr = angle.value * 2 + computeSeq(2) % 2;
