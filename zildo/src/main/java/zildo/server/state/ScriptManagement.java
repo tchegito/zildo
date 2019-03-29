@@ -144,6 +144,11 @@ public class ScriptManagement {
     	return scriptExecutor.isScripting();
     }
     
+    /** Is any script blocking (except top priority ones) **/
+    public boolean isBlockedScripting() {
+    	return scriptExecutor.isScripting(false);
+    }
+    
     public boolean isPriorityScripting() {
     	return scriptExecutor.isScripting(true);
     }
@@ -607,7 +612,6 @@ public class ScriptManagement {
 				}
 			}
 		}
-		scriptExecutor.addPendingScripts();
 	}
 	
 	/**
@@ -647,7 +651,7 @@ public class ScriptManagement {
 		if (zildo == null) return false;
 		boolean onPlatform = zildo != null && zildo.isOnPlatform();
 		boolean isBossFighting = "1.0".equals(EngineZildo.scriptManagement.getVarValue("bossFighting"));
-		return !scriptExecutor.isNonPriorityScripting() && !onPlatform && !isBossFighting;
+		return !scriptExecutor.isScripting(false) && !onPlatform && !isBossFighting;
 	}
 	
 	public void sellItem(String storeName, Item item) {

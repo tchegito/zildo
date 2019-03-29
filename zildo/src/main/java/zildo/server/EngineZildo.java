@@ -305,7 +305,7 @@ public class EngineZildo {
 	        	break;
         }
 
-        retEvent.script=scriptManagement.isScripting();
+        retEvent.script=scriptManagement.isBlockedScripting();
         
         return retEvent;
     }

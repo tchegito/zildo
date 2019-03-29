@@ -145,10 +145,6 @@ public class ScriptExecutor {
 		}
 
 		// 3) Create the awaiting one
-		addPendingScripts();
-	}
-	
-	public void addPendingScripts() {
 		for (ScriptProcess process : toExecute) {
 			int i=0;
 			for (;i<scripts.size();i++) {
@@ -159,8 +155,6 @@ public class ScriptExecutor {
 			scripts.add(i, process);
 		}
 		toExecute.clear();
-		//System.out.println();
-
 	}
 
 	// TODO: don't modify input variable
@@ -369,7 +363,7 @@ public class ScriptExecutor {
 	}
 	
 	public boolean isScripting() {
-		return isScripting(false);
+		return isScripting(false) || !toExecute.isEmpty();
 	}
 	
 	/**
