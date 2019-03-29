@@ -62,7 +62,9 @@ public class Pnj4 extends SpriteBanque {
 			// Cactus (66)
 			new Zone(0, 233, 24, 29),
 			// Scorpion (67)
-			new Zone(242, 1, 28, 31), new Zone(271, 0, 28, 32)
+			new Zone(242, 1, 28, 31), new Zone(271, 0, 28, 32),
+			// Taupe (69)
+			new Zone(0, 263, 20, 18), new Zone(21, 263, 24, 17)
 			
 		};
 		

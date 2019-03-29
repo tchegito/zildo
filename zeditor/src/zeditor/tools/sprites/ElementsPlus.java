@@ -203,7 +203,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(114, 0, 12, 16),
 				new Zone(130, 0, 12, 16),
 				new Zone(144, 0, 16, 16),
-				new Zone(144, 17, 16, 16),
+				new Zone(144, 17, 17, 17),	// Item scepter
 				// Excalibur (133)
 				new Zone(163, 0, 10, 22), new Zone(178, 0, 13, 16),
 				new Zone(193, 0, 15, 16), new Zone(209, 0, 14, 16),
