@@ -36,3 +36,4 @@ But the offsetY field can be negative. Here is an example with the sand popping 
 ![Sand and negative offsetY](https://raw.githubusercontent.com/tchegito/zildo/wiki/sandOffset.png)
 
 Purple area represents the surface of the sprite which has not to be rendered. As we don't want to record this whole blank area for each sprite in the texture, we use a negative offsetY, and the height of the sprite will be only the efficient part (without the pink one).
+For example, for the sand, offsetY values will be (0, -2, -5, -7).
