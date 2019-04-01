@@ -156,7 +156,9 @@ public enum ElementDescription implements SpriteDescription {
 	// Catapult
 	CATAPULT_CRATE, CATAPULT_BRANCH,
 	// Straw on the fork, and flying
-	STRAW, STRAWF1, STRAWF2, STRAWF3;
+	STRAW, STRAWF1, STRAWF2, STRAWF3,
+	// Sand projection
+	SAND1, SAND2, SAND3, SAND4, SAND5;
 	
 	Boolean damage;
 	

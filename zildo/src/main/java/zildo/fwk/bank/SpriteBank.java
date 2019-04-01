@@ -95,7 +95,9 @@ public class SpriteBank {
 			if ((offY & 128) != 0) {
 				int offXLeft=file.readUnsignedByte();
 				int offXRight=file.readUnsignedByte();
-				emptyBorders = new Zone(offXLeft, offY & 127, offXRight, 0);
+				int valOffY = offY & 127;
+				if (valOffY > 64) valOffY = valOffY-128;	// Consider negative offset if > 64
+				emptyBorders = new Zone(offXLeft, valOffY, offXRight, 0);
 			}
 			
 			// Still theory : 256 won't fit in a byte, so 0 means probably 256

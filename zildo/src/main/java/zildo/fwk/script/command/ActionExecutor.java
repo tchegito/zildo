@@ -397,7 +397,11 @@ public class ActionExecutor extends RuntimeExecutor {
                 	// Note : we can sequence scripts in an action tag.
                 	// If 'unblock' attribute is set on 'exec' action, given scene won't lock the game
             		String sceneName = getVariableValue(text);	// Check for 'loc:...' as scene name
-                	EngineZildo.scriptManagement.execute(sceneName, locked && !p_action.unblock, context, caller);
+            		ScriptProcess whosTheCaller = caller;
+            		if (p_action.unblock) {
+            			whosTheCaller = null;
+            		}
+                	EngineZildo.scriptManagement.execute(sceneName, locked && !p_action.unblock, context, whosTheCaller);
                 	break;
                 case stop:
                 	EngineZildo.scriptManagement.stopScene(text);
@@ -653,6 +657,9 @@ public class ActionExecutor extends RuntimeExecutor {
                 		}
                 		if (p_action.reverse != null) {
                 			perso.reverse = reverseFromAction(p_action);
+                		}
+                		if (p_action.rotation != -1) {
+                			perso.rotation = Rotation.fromInt(p_action.rotation);
                 		}
                 		if (p_action.parent != null) {
                 			// Link character to their parent
@@ -949,7 +956,7 @@ public class ActionExecutor extends RuntimeExecutor {
     		if (getNamedElement(name) == null) {
     			// Spawn only if doesn't exist yet
         		SpriteEntity entity = null;
-        		Rotation rot = Rotation.fromInt(p_action.rotation);
+        		Rotation rot = Rotation.fromInt(p_action.rotation == -1 ? 0 : p_action.rotation);
         		Reverse rev = p_action.reverse == null ? Reverse.NOTHING : reverseFromAction(p_action);
     			if (p_action.impact != null) {
     				ImpactKind impactKind = ImpactKind.valueOf(p_action.impact);

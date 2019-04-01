@@ -48,6 +48,8 @@ public class ScriptCall {
 				// 1) alphanumeric => store as string
 				if (value.startsWith("'") && value.endsWith("'")) {
 					value = value.substring(1, value.length()-1);
+				} else if (value.startsWith("*")) {
+					value = context.getString(value.substring(1));
 				} else {
 					value = "" + new FloatExpression(arg).evaluate(context);
 				}

@@ -228,7 +228,7 @@ public abstract class Perso extends Element {
 				pathFinder.speed = prevSpeed;
 				break;
 			case CHAIN_FOLLOW:
-				pathFinder = new PathFinderChainFollow(this, ((Perso) following).pathFinder);
+				pathFinder = new PathFinderChainFollow(this, ((Perso) following).pathFinder, 8);
 				break;
 			case FREEFLY:
 				pathFinder = new PathFinderFreeFlying(this);

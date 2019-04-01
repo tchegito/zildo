@@ -606,6 +606,9 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : spriteEntities) {
 			if (entity.getEntityType().isPerso()) {
 				Perso perso = (Perso) entity;
+				// TODO: actually we allow moving for character following (Igor or mole) JUST in purpose
+				// of moving map: so Igor can move during map is scrolling. But this shouldn't happen during
+				// in-game menu
 				boolean allowedToMoveAndCollide = !blockNPC || /*perso.getInfo() == PersoInfo.ZILDO ||*/ perso.getFollowing() != null;
 				if (allowedToMoveAndCollide) {
 					// Animate persos
@@ -702,10 +705,10 @@ public class SpriteManagement extends SpriteStore {
 		element.setSprModel(spr);		
 	}
 	
-	public void updateSprModel(SpriteEntity element) {
-		SpriteModel spr = getSpriteBank(element.getNBank())
-			.get_sprite(element.getNSpr());
-		element.setSprModel(spr);		
+	public void updateSprModel(SpriteEntity entity) {
+		SpriteModel spr = getSpriteBank(entity.getNBank())
+			.get_sprite(entity.getNSpr());
+		entity.setSprModel(spr);		
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////

@@ -410,6 +410,7 @@ public abstract class EngineUT {
 				clientState.event.nature == ClientEventNature.CHANGINGMAP_WAITSCRIPT) {
 			renderFrames(1);
 		}
+		renderFrames(1);
 	}
 	
 	/** Wait until initialization scripts are over 

@@ -52,7 +52,8 @@ public class ElementImpact extends Element {
 		STAFF_TURNING(ElementDescription.STAFF_POUM, 8, 4),	// Staff falling on the floor, or hitting a wall
 		HEARTH(ElementDescription.HEARTH1, -6, 6),	// Fire in nature palace's hearth
 		CAULDRON(ElementDescription.CAULDRON1, -3, 6),
-		GNAP(ElementDescription.GNAP1, 5, 4);
+		GNAP(ElementDescription.GNAP1, 5, 4),
+		SAND_POPOUT(ElementDescription.SAND1, 5, 4);	// A sand projection for buried monsters
 		
 		final ElementDescription desc;
 		final int seqLong;	// Size of the sequence of the sprite's life (negative value means infinite loop)
@@ -131,6 +132,9 @@ public class ElementImpact extends Element {
 				composite.squareShape(0,0);
 				alpha = 255;
 				break;
+			case SAND_POPOUT:
+				alphaA = -0.5f;
+				break;
 			default:
 				break;
 		}
@@ -168,6 +172,9 @@ public class ElementImpact extends Element {
         	case HEARTH:
         	case CAULDRON:
         	case GNAP:
+        	case SAND_POPOUT:
+        		alphaV += alphaA;
+        		alpha += alphaV;
 				if (valCounter >= kind.seq.length) {
 					if (kind.seqLong < 0) {	// Infinite loop
 						counter = 0;

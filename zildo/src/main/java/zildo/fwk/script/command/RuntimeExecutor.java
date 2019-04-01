@@ -93,7 +93,7 @@ public abstract class RuntimeExecutor {
     	EngineZildo.scriptManagement.execute(actions, false, null, false, ctx, false, caller);  
     }
     
-    /** Executes a script without waiting for its end **/
+    /** Executes a script without waiting for its end (mainly because Caller parameter is null) **/
     public void executeSubProcessInParallel(List<LanguageElement> actions) {
     	EngineZildo.scriptManagement.execute(actions, false, null, false, context, false, null);    	
     }

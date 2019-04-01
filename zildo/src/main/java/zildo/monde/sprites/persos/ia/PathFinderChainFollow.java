@@ -22,13 +22,15 @@ public class PathFinderChainFollow extends PathFinderFollow {
 	
 	FIFOBuffer followedLocations;
 	
-	static int DISTANCE = 10;
+	final int DISTANCE;
 	
 	/** Note that 'followed' has to be a Perso, it's a restriction compared to superclass **/
-	public PathFinderChainFollow(Perso p_mobile, PathFinder p_followed) {
+	public PathFinderChainFollow(Perso p_mobile, PathFinder p_followed, int distance) {
 		super(p_mobile, null);
 		speed = p_followed.speed;
 		pfFollowed = p_followed;
+		
+		DISTANCE = distance;
 		
 		followedLocations = new FIFOBuffer(DISTANCE);
 	}

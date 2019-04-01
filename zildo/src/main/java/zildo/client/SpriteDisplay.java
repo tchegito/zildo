@@ -30,6 +30,7 @@ import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.utils.SpriteSorter;
 import zildo.monde.util.Point;
+import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 
 /**
@@ -138,8 +139,25 @@ public class SpriteDisplay extends SpriteStore {
 						tx = spr.getTaille_y();
 						ty = spr.getTaille_x();
 					}
-					entity.setScrX(entity.getAjustedX() - cameraNew.x - (tx >> 1));
-					entity.setScrY(entity.getAjustedY() - cameraNew.y - ty);
+					
+					// Offset tricks
+					int ajX = 0;
+					int ajY = 0;
+					if (spr.getEmptyBorders() != null) {
+						Zone offsets = spr.getEmptyBorders();
+						// Offset X are not adressed now
+						/*
+						if (!entity.reverse.isHorizontal()) {
+							ajX -= (offsets.x1 +offsets.x2 )/2;
+							ajX += offsets.x1;	// Shift because between [x,x1] this is an empty border
+						} else {
+							ajX -= (spr.getTaille_x()-offsets.x2+offsets.x1)/2;
+						}
+						*/
+						ajY += offsets.y1;
+					}
+					entity.setScrX(entity.getAjustedX() + ajX - cameraNew.x - (tx >> 1));
+					entity.setScrY(entity.getAjustedY() + ajY - cameraNew.y - ty);
 				}
 			}
 		}

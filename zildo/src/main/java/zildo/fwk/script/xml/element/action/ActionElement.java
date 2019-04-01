@@ -48,7 +48,7 @@ public class ActionElement extends LanguageElement {
 	public String way; // For 'launch' action
 	public int val;
 	public ZSSwitch reverse;
-	public int rotation;
+	public int rotation = -1;
 	public int attente = DEFAULT_ATTENTE;
 	public FloatExpression floor;
 	public FloatExpression z; // Z coordinate for location
@@ -131,7 +131,6 @@ public class ActionElement extends LanguageElement {
 			} else {
 				reverse = ZSSwitch.parseForDialog(strReverse);
 			}
-			rotation = readInt("rotation");
 
 			shadow = readAttribute("shadow");
 			addSpr = getFloatExpr("addSpr", "0");
@@ -179,6 +178,7 @@ public class ActionElement extends LanguageElement {
 				reverse = ZSSwitch.parseForDialog(strReverse);
 			}
 			pv = readInt("pv", DEFAULT_PV);
+			rotation = readInt("rotation", -1);
 			break;
 		case speak:
 			text = readAttribute("text");

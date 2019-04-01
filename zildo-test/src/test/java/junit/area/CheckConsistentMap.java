@@ -99,6 +99,7 @@ public class CheckConsistentMap {
 					case BITEY:
 					case CACTUS:
 					case SCORPION:
+					case MOLE:
 						shouldBeEnemy = true;
 					default:
 						break;
