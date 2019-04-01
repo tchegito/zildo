@@ -36,6 +36,7 @@ public class TestAdvancedPerso extends EngineUT {
 		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", null, false);
 		
 		// Wait for dragon to dive
+		zildo.walkTile(false);
 		waitForScriptRunning("dragonDiveAndReappear");
 		
 		zildo.beingWounded(4, 4, dragon, zildo.getPv());

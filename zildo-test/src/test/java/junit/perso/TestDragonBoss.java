@@ -53,8 +53,10 @@ public class TestDragonBoss extends EngineUT {
 		mapUtils.loadMap("dragon");
 	}
 	
+	PersoPlayer hero;
+	
 	private void attackAndCheckWound(Vector2f nearRock, int dragonPos) {
-		PersoPlayer hero = spawnZildo(nearRock);
+		hero = spawnZildo(nearRock);
 		hero.setFloor(2);
 		hero.setWeapon(new Item(ItemKind.DYNAMITE));
 		hero.setCountBomb(20);
@@ -87,7 +89,7 @@ public class TestDragonBoss extends EngineUT {
 	
 	@Test
 	public void coalCantBeHitBySword() {
-		PersoPlayer hero = spawnZildo(250,369);
+		hero = spawnZildo(250,369);
 		Item sword = new Item(ItemKind.MIDSWORD);
 		hero.getInventory().add(sword);
 		hero.setWeapon(sword);
@@ -143,9 +145,19 @@ public class TestDragonBoss extends EngineUT {
 		plantDynamiteAndGoAway("C", NEAR_ROCK3, FAR_FROM_ROCK3, true, false);
 	}
 	
+	/** Dragon's flames should light the coal **/
+	@Test
+	public void dragonLightCoal() {
+		Perso dragon = EngineZildo.persoManagement.getNamedPerso("dragon");
+		Assert.assertNotNull(dragon);
+		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", null, false);
+		
+		hero.walkTile(false);
+	}
+	
 	/** Plant dynamite and put hero away, to trigger the rock respawn **/
 	private void plantDynamiteAndGoAway(String which, Vector2f startLoc, Vector2f farLoc, boolean dragonRightSpot, boolean shouldRespawn) {
-		PersoPlayer hero = spawnZildo(startLoc);
+		hero = spawnZildo(startLoc);
 		hero.setFloor(2);
 		hero.setWeapon(new Item(ItemKind.DYNAMITE));
 		hero.setCountBomb(20);
@@ -200,6 +212,7 @@ public class TestDragonBoss extends EngineUT {
 		Assert.assertNotNull(dragon);
 		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", null, false);
 		
+		hero.walkTile(false);
 		waitForScriptRunning("dragonDiveAndReappear");
 		waitForScriptFinish("dragonDiveAndReappear");
 		
