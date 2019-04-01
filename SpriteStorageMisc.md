@@ -25,8 +25,14 @@ We need to separate offsetX1 and offsetX2 because of reverse possibility. If spr
 ``` 
     screenX = x - (width + offsetX1 - offsetX2) / 2
 ```
-** Y particularity **
+** offset X **
 
 Here is an example of a sprite with an offsetY:
+![Bitey and offsetY](https://raw.githubusercontent.com/tchegito/zildo/wiki/image.png)
 
-The offsetY field can be negative.
+We can see the orange line marking the spot where Bitey has to be planted. As the sprite on the left has an overflow on the bottom, we have to display it with an offset.
+
+But the offsetY field can be negative. Here is an example with the sand popping out animation:
+![Sand and negative offsetY](https://raw.githubusercontent.com/tchegito/zildo/wiki/sandOffset.png)
+
+Purple area represents the surface of the sprite which has not to be rendered. As we don't want to record this whole blank area for each sprite in the texture, we use a negative offsetY, and the height of the sprite will be only the efficient part (without the pink one).
