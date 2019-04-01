@@ -18,7 +18,7 @@ Each X offset are about the blank on the left and on the right of the sprite. Be
 
 Note that these formulas are different depending on the nature of the sprite (Element or Perso). Anyway, with the offset, we can complete this formula recreating the blank spaces:
 ``` 
-    screenX = x - (width + offsetX1 + offsetX2) / 2
+    screenX = x - (width + offsetX1 + offsetX2) / 2 + offsetX1
     screenY = y - height + offsetY
 ```
 We need to separate offsetX1 and offsetX2 because of reverse possibility. If sprite must be displayed with an horizontal symetry, the x formula becomes:
