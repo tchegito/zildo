@@ -17,4 +17,5 @@ Interesting docs:
  * Math:
    *  [Movement anticipation and Bezier curves](https://github.com/tchegito/zildo/blob/wiki/Maths.md)
    *  [Clipping function for Shader](https://github.com/tchegito/zildo/blob/wiki/MathLinearFunction.md)
- 
+ * Sprites:
+   *  [Storage specifics](https://github.com/tchegito/zildo/blob/wiki/SpriteStorageMisc.md)
