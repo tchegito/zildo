@@ -125,6 +125,7 @@ Every action is a parametered command. Here is an exhaustive list of all existin
 | angle       | int      | V       | -        | -           | Set character's angle |
 | animation   | text     | -       | -        | -           | Spawn an animation from the enum [SpriteAnimation](https://github.com/tchegito/zildo/tree/master/zildo/src/zildo/monde/sprites/desc/SpriteAnimation.java). _what_ attribute permits to name the future animation element. _who_ attribute allow to localize animation on a specific character. |
 | attack      | text     | V       | -        | -           | Make a given character attacking in front of him |
+| clear       | text     | -       | -        | -           | Disable all fades and clear current map |
 | end         | text     | -       | -        | -           | For game over, depending on type attribute : 0=player wins / 1=player dies |
 | exec        | text     | -       | -        | -           | Execute a named script |
 | fadeIn      | int      | -       | -        | V           | Start a fade in, with given effect |
