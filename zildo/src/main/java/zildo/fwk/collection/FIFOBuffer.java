@@ -2,6 +2,9 @@ package zildo.fwk.collection;
 
 import zildo.monde.util.Point;
 
+/** Implementation of a circular buffer.
+ * We add value in it via pushAndPop, and when buffer is full, we get the first entered.
+ * Consecutive values are not allowed. **/
 public class FIFOBuffer {
 
 	Point[] followedLocations;
@@ -23,7 +26,7 @@ public class FIFOBuffer {
 		if (fill == distance) {
 			ret = followedLocations[idx];
 		}
-		if (fill < distance || !followedLocations[(idx+distance-1 ) % distance].equals(p)) {
+		if (fill < 1 || !followedLocations[(idx+distance-1 ) % distance].equals(p)) {
 			followedLocations[idx] = p;
 			fill = Math.min(distance,  fill+1);
 			idx = (idx+1) % distance;
