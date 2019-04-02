@@ -161,6 +161,7 @@ public class CheckDialogChain extends EngineUT {
 		// Talk to gard
 		Assert.assertTrue(zildo.getDialoguingWith() == null);
 		Perso pnj = persoUtils.persoByName("jaune");
+		renderFrames(170);
 		Assert.assertEquals(223, (int) pnj.x);
 		Assert.assertEquals(60,  (int) pnj.y);
 		zildo.setPos(new Vector2f(221, 71));

@@ -7,6 +7,8 @@ import org.junit.Test;
 import tools.EngineUT;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
@@ -148,11 +150,35 @@ public class TestDragonBoss extends EngineUT {
 	/** Dragon's flames should light the coal **/
 	@Test
 	public void dragonLightCoal() {
+		hero = spawnZildo(173, 375);
 		Perso dragon = EngineZildo.persoManagement.getNamedPerso("dragon");
 		Assert.assertNotNull(dragon);
 		EngineZildo.scriptManagement.runPersoAction(dragon, "bossDragon", null, false);
 		
 		hero.walkTile(false);
+		
+		// Wait for flames to be thrown
+		SpriteEntity flame = null;
+		while (flame == null) {
+			renderFrames(1);
+			for (SpriteEntity entity : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+				if (entity.getDesc() == ElementDescription.FIRE_BALL) {
+					flame = entity;
+				}
+			}
+		}
+		// Wait for the flame to touch the coal
+		while (flame.x > 260) {
+			renderFrames(1);
+		}
+		
+		// Ensure that coal are lighted
+		int sumAddSpr=0;
+		for (int i=1;i<=3;i++) {
+			Perso coal = persoUtils.persoByName("coal"+i);
+			sumAddSpr += coal.getAddSpr();
+		}
+		Assert.assertNotEquals("Coal should have been lighted by the dragon flame !", 0, sumAddSpr);
 	}
 	
 	/** Plant dynamite and put hero away, to trigger the rock respawn **/
