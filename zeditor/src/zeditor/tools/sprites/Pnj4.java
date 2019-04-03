@@ -64,7 +64,11 @@ public class Pnj4 extends SpriteBanque {
 			// Scorpion (67)
 			new Zone(242, 1, 28, 31), new Zone(271, 0, 28, 32),
 			// Taupe (69)
-			new Zone(0, 263, 20, 18), new Zone(21, 263, 24, 17), new Zone(/**46**/ 61, 263, 14, 15) 
+			new Zone(0, 263, 7, 6), new Zone(8, 263, 18, 15), new Zone(/**46**/ 61, 263, 14, 15),
+			new Zone(27, 263, 18, 16),	// Attack
+			new Zone(78, 263, 8, 4),	// Hole
+			new Zone(46, 263, 8, 8),	// Head popping out
+			new Zone(46, 263, 8, 14)	// Head popping out
 			
 		};
 		

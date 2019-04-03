@@ -47,6 +47,7 @@ public class ActionElement extends LanguageElement {
 	public String text;
 	public String way; // For 'launch' action
 	public int val;
+	public int flag = -1;	// Only for 'perso' action
 	public ZSSwitch reverse;
 	public int rotation = -1;
 	public int attente = DEFAULT_ATTENTE;
@@ -179,6 +180,8 @@ public class ActionElement extends LanguageElement {
 			}
 			pv = readInt("pv", DEFAULT_PV);
 			rotation = readInt("rotation", -1);
+			zoom = getFloatExpr("zoom");
+			flag = readInt("flag", -1);
 			break;
 		case speak:
 			text = readAttribute("text");
@@ -235,7 +238,8 @@ public class ActionElement extends LanguageElement {
 			break;
 		case exec:	// Execute a script (scene)
 		case stop:	// Stop a script
-			text = readOrEmpty("script");
+			text = readAttribute("script");
+			if (text == null) throw new RuntimeException("'script' attribute can't be null for exec/stop command !");
 			break;
 		case mapReplace:
 		case zikReplace:

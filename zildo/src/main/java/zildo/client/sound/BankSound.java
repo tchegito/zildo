@@ -154,7 +154,11 @@ public enum BankSound implements AudioBank {
 	
 	BigRat("bigrat"),
 	
-	Gas("gas");
+	Gas("gas"),
+	
+	MoleBuried1("moleBuried1"),
+	MoleBuried2("moleBuried2"),
+	MoleOut("moleOut");
 	
 	String filename;
 	

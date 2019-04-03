@@ -23,6 +23,7 @@ package zildo.monde.sprites.utils;
 import zildo.fwk.gfx.EngineFX;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.persos.Perso;
 import zildo.resource.Constantes;
 
 /**
@@ -135,6 +136,13 @@ public class SpriteSorter {
 				if (sprite.isZildo()) y+=sprite.z*2;
 				// Adjustment so hero is displayed UNDER platform when he falls into pit/lava
 				if (sprite.isZildo() && sprite.zoom < 250) y = 0;
+				
+				if (sprite.getEntityType().isPerso()) {
+					Perso perso = (Perso) sprite;
+					if ((perso.getFlagBehavior() & FlagPerso.F_UNDERGROUND) != 0) {
+						y = 0;	// Underground sprites are displayed first (ex: buried mole)
+					}
+				}
 			} else {
 				// Entity : make its always UNDER Zildo and other characters, at the same level
 				// as the map tiles in fact.

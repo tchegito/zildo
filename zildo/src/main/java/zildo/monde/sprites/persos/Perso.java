@@ -93,7 +93,6 @@ public abstract class Perso extends Element {
 	protected MouvementZildo mouvement; // Situation du
 										// perso:debout,couché,attaque...
 	protected int cptMouvement; // Un compteur pour les mouvements des PNJ
-	private int coming_map; // 1 si Zildo entre sur une map,sinon 255
 	protected int pv, maxpv; // Points de vie du perso
 	private boolean onPlatform = false;	// TRUE=character is on a platform
 
@@ -115,7 +114,9 @@ public abstract class Perso extends Element {
 	protected boolean inWater = false;	// Feet in water
 	protected boolean underWater = false;
 	protected boolean inDirt = false;
-
+	/** Linked to flags defined in {@link FlagPerso} **/
+	protected int flagBehavior = 0;	
+	
 	protected boolean askedVisible = true;	// FALSE=a script ask this character to be invisible
 	
 	private boolean wounded;
@@ -302,14 +303,6 @@ public abstract class Perso extends Element {
 		default:
 			break;
 		}
-	}
-
-	public int getComing_map() {
-		return coming_map;
-	}
-
-	public void setComing_map(int coming_map) {
-		this.coming_map = coming_map;
 	}
 
 	public int getPv() {
@@ -1427,4 +1420,14 @@ public abstract class Perso extends Element {
 		// Other people could climb on him at a z-coordinate of 5
 		mover = new Mover(this, 5);
 	}
+
+	public int getFlagBehavior() {
+		return flagBehavior;
+	}
+
+	public void setFlagBehavior(int flagBehavior) {
+		this.flagBehavior = flagBehavior;
+	}
+	
+	
 }

@@ -585,7 +585,8 @@ public class MapManagement {
 				if (onMap == 25 || onMap == 9 || onMap == 842 || onMap == 134
 						|| onMapCurrent == 9 ||
 						onMap == 22 || onMap == 23 || onMap == 24 ||
-						onMap == 27+256*5)
+						// Desert hills
+						onMap == 27+256*5 || onMap == 113+256*5)
 					result = angle;
 				break;
 			case SUD:

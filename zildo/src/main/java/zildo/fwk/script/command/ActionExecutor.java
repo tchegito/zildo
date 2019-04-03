@@ -693,6 +693,9 @@ public class ActionExecutor extends RuntimeExecutor {
                 		if (p_action.z != null) {
                 			perso.z = p_action.z.evaluate(context);
                 		}
+                		if (p_action.flag != -1) {
+                			perso.setFlagBehavior(p_action.flag);
+                		}
             			applyCommonAndPhysicAttributes((Element) perso, p_action);
                 	}
                 	achieved = true;

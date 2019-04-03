@@ -37,7 +37,7 @@ import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoPlayer;
-import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.sprites.utils.FlagPerso;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 
@@ -241,9 +241,9 @@ public class CollideManagement {
     	Element weapon=p_collided.weapon;
     	// Hurt perso if isn't already wounded, is visible, is not immaterial (attacker too), and if he hasn't -1 as HP.
     	// Note that an immaterial character can throw REAL projectile and hurt (see condition about collider.weapon)
-        if (perso != null && !perso.isWounded() && perso.getPv() != -1 
-        		&& perso.isVisible() && perso.getQuel_deplacement() != MouvementPerso.IMMATERIAL
-        		&& (attacker == null || attacker.getQuel_deplacement() != MouvementPerso.IMMATERIAL || p_collider.weapon != null)) {
+        if (perso != null && !perso.isWounded() && (perso.getFlagBehavior() & FlagPerso.F_INVULNERABLE ) == 0
+        		&& perso.isVisible() && (perso.getFlagBehavior() & FlagPerso.F_IMMATERIAL) == 0
+        		&& (attacker == null || (attacker.getFlagBehavior() & FlagPerso.F_IMMATERIAL) == 0 || p_collider.weapon != null)) {
         	boolean persoResisting = perso.getDesc() == null ? false : perso.getDesc().resistToDamageType(p_collider.damageType);
         	
         	if (weapon != null) {

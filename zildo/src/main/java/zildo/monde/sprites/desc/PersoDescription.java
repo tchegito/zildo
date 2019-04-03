@@ -136,7 +136,7 @@ public enum PersoDescription implements SpriteDescription {
 	COAL_COLD(404),
 	CACTUS(434),
 	SCORPION(435, 436),
-	MOLE(437, 438, 439),
+	MOLE(437, 438, 439, 440, 441, 442, 443),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
@@ -285,6 +285,7 @@ public enum PersoDescription implements SpriteDescription {
 		case BRAMBLE:
 		case DRAGON:
 		case BITEY:
+		case MOLE:
 			return false;
 			default:
 				return true;

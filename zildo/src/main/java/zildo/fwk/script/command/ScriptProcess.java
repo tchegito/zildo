@@ -94,7 +94,9 @@ public class ScriptProcess {
 	
 	/** Returns TRUE if the given name match this process, or its subprocess **/
 	public boolean isNameProcessing(String p_name) {
-		if (p_name.equals(scene.id)) {
+		if (scene.call != null) {	// Try with original name, if parameters exist
+			return p_name.equals(scene.call.name);
+		} else if (p_name.equals(scene.id)) {
 			return true;
 		} else if ((RuntimeScene.MARQUER_SCENE + p_name).equals(scene.id)) {
 			return true;

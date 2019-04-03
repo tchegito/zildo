@@ -13,6 +13,7 @@ import zildo.server.EngineZildo;
  */
 public class ScriptCall {
 
+	public final String name;	// Origin name = <scene name>(<arguments separated by comma>)
 	public final String actionName;
 	public final String[] args;
 	// A script could be a "scene", "persoAction" or "tileAction". Last ones are focused on Perso and Tile
@@ -20,7 +21,7 @@ public class ScriptCall {
 	public final IEvaluationContext futureContext;	
 	
 	public ScriptCall(String p_call, IEvaluationContext p_futureContext) {
-		String name = p_call;
+		name = p_call;	// Origin name will be kept, to be able to stop on demand
 
 		// Parse action name for arguments
 		int posParenthese = name.indexOf('(');

@@ -84,7 +84,13 @@ public class RuntimeAction extends RuntimeModifiableElement {
 	
 	@Override
 	public String toString() {
-		return action != null ? action.toString() : "actions";
+		if (action == null) {
+			return "actions";
+		} else {
+			String str = action.toString();
+			if (actions != null) str += "{"+actions+"}";
+			return str;
+		}
 	}
 	
 

@@ -39,6 +39,7 @@ import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.action.ShotArrowAction;
+import zildo.monde.sprites.utils.FlagPerso;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
@@ -336,8 +337,6 @@ public class PersoNJ extends Perso {
 					}
 					break;
 				case WAKEUP:
-				case INVOKE:
-					pos_seqsprite++;
 					break;
 				case FOLLOW:
 					pathFinder.determineDestination();
@@ -503,8 +502,14 @@ public class PersoNJ extends Perso {
 	 * the 'addSpr' set, a sprite could be badly rendered, with the wrong graphics ... (arg)
 	 */
 	@Override
-	public void finaliseComportement(int compteur_animation) {
+	public void finaliseComportement(int animationCounter) {
 
+		int compteur_animation = animationCounter;
+		
+		if ((flagBehavior & FlagPerso.F_STATIC) != 0) {
+			compteur_animation = 0;
+		}
+		
 		this.setAjustedX((int) x);
 		this.setAjustedY((int) y);
 
@@ -614,15 +619,10 @@ public class PersoNJ extends Perso {
 			add_spr = (compteur_animation / 30) % 2;
 			break;
 		case SORCERER:
-			if (quel_deplacement == MouvementPerso.INVOKE) {
-				reverse = Reverse.NOTHING;
-				add_spr = 1;
+			if (((compteur_animation / 30) % 2) == 0) {
+				reverse = Reverse.HORIZONTAL;
 			} else {
-				if (((compteur_animation / 30) % 2) == 0) {
-					reverse = Reverse.HORIZONTAL;
-				} else {
-					reverse = Reverse.NOTHING;
-				}
+				reverse = Reverse.NOTHING;
 			}
 			break;
 		case ENFANT:

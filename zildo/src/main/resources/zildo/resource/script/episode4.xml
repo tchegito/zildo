@@ -336,31 +336,33 @@
    	</persoAction>
    	
    	<persoAction id="mole">
-   	    <script who="self" value="23"/>
-   	    <perso who="self" speed="1" alpha="255" addSpr="2"/>	<!-- Speed should be initialized AFTER mouvement 23 -->
+
+   	    <perso who="self" pv="2"/>	<!-- Speed should be initialized AFTER mouvement 23 -->
    	    <spawn who="loc:m2" type="MOLE" info="ENEMY" pos="x,y-5" alpha="255" speed="1" />
-       	<spawn who="loc:m3" type="MOLE" info="ENEMY" pos="x,y-10" alpha="255" zoom="200" speed="1"/>
-       	<spawn who="loc:m4" type="MOLE" info="ENEMY" pos="x,y-15" alpha="255" zoom="160" speed="1"/>
-       <!-- 	<spawn who="loc:m5" type="MOLE" info="ENEMY" pos="x,y-15" alpha="255" zoom="220" speed="1"/> -->
-   		<perso who="loc:m2" parent="self" addSpr="2" pv="-1"/>
-       	<perso who="loc:m3" parent="self" addSpr="2" pv="-1"/>
-       	<perso who="loc:m4" parent="self" addSpr="2" pv="-1"/> 
-       	<!-- <perso who="loc:m5" parent="self" addSpr="2" pv="-1"/> -->
-   		<script who="loc:m2" value="22" effect="self"/>
-       	<script who="loc:m3" value="22" effect="loc:m2"/>
-       	<script who="loc:m4" value="22" effect="loc:m3"/>
-       	<!-- <script who="loc:m5" value="22" effect="loc:m4"/> -->
-   	    <exec script="rotate(*loc:m2)" unblock="true" />"
-   	    <exec script="rotate(*loc:m3)" unblock="true" />"
-   	    <exec script="rotate(*loc:m4)" unblock="true" />"
-   	    <!-- <exec script="rotate(loc:m5)" unblock="true" />" -->
-       			       		       		       			
+       	<spawn who="loc:m3" type="MOLE" info="ENEMY" pos="x,y-10" alpha="255" speed="1"/>
+       	<spawn who="loc:m4" type="MOLE" info="ENEMY" pos="x,y-15" alpha="255" speed="1"/>
+
        	<loop>
+			<!-- Bury -->
+	   	    <script who="self" value="23"/>
+   	    	<perso who="self" speed="1" flag="9" alpha="255" addSpr="2"/>	<!-- Speed should be initialized AFTER mouvement 23 -->
+	   	    <perso who="loc:m2" parent="self" flag="13" addSpr="2" />
+	       	<perso who="loc:m3" parent="self" flag="13" addSpr="2" zoom="200" />
+	       	<perso who="loc:m4" parent="self" flag="13" addSpr="2" zoom="160" />
+	   		<script who="loc:m2" value="22" effect="self"/>
+	       	<script who="loc:m3" value="22" effect="loc:m2"/>
+	       	<script who="loc:m4" value="22" effect="loc:m3"/>
+	   	    <exec script="rotate(*loc:m2,1.0)" unblock="true" />
+	   	    <exec script="rotate(*loc:m3)" unblock="true" />
+	   	    <exec script="rotate(*loc:m4)" unblock="true" />
+	   	    <!-- 
+       		<perso who="self" flag="2"/>	 Should propagate 'immaterial' to every sprites of the mole -->
+       		   		       			
        	    <exec script="popSand(x,y)"/>
        		<moveTo who="self" pos="80,0" delta="true"/>
        		<wait value="10"/>
        	    <exec script="popSand(x,y)"/>
-			<moveTo who="self" pos="0,50" delta="true" />
+			<moveTo who="self" pos="0,80" delta="true" />
        		<wait value="10"/>
        	    <exec script="popSand(x,y)"/>
 			<moveTo who="self" pos="-80,0" delta="true" />
@@ -368,16 +370,100 @@
        	    <exec script="popSand(x,y)"/>
 			<moveTo who="self" pos="0,-50" delta="true" />
        		<wait value="10"/>
+       		
+       		<!-- Stop rotate scripts -->
+       		<stop script="rotate(*loc:m2,1.0)"/>
+       		<stop script="rotate(*loc:m3)"/>
+       		<stop script="rotate(*loc:m4)"/>
+
+       		<!-- Popping out -->
+       		<sound name="MoleOut" pos="x,y"/>
+       		<!--  1) hole (m4) -->
+       		<actions>
+       		    <perso who="self" alpha="0"/> 
+       		    <perso who="loc:m2" alpha="0"/>
+	       		<perso who="loc:m3" alpha="0"/>
+	       		<script who="loc:m4" value="3"/>
+	       		<perso who="loc:m4" zoom="255" rotation="0" alpha="255" addSpr="4"/>
+	       		<pos who="loc:m4" pos="x,y-1"/>
+	       		<script who="self" value="3"/>
+	       		<script who="loc:m2" value="3"/>
+	       		<script who="loc:m3" value="3"/>
+       		</actions>
+       		<wait value="10"/>
+       		<!-- 2) claws -->
+       		<pos who="loc:m2" pos="x-8,y+2"/>
+       		<pos who="loc:m3" pos="x+7,y+2"/>
+       		<perso who="loc:m2" flag="4" alpha="255" addSpr="0" zoom="255" rotation="0"/>
+       		<perso who="loc:m3" flag="4" alpha="255" addSpr="0" zoom="255" rotation="0" reverse="128"/>
+       		<wait value="8"/>
+       		<exec script="popSand(x-4,y)"/>
+       		<exec script="popSand(x+4,y)"/>
+       		<!-- 3) head -->
+       		<actions>
+       		    <perso who="loc:m4" alpha="0"/>
+	       		<perso who="self" flag="0" alpha="255" addSpr="5"/>
+			</actions>
+       		<wait value="2"/>
+       		<pos who="self" pos="x,y-1"/>
+       		<wait value="1"/>
+       		<pos who="self" pos="x,y-1"/>
+       		<wait value="1"/>
+       		<pos who="self" pos="x,y-2"/>
+       		<wait value="2"/>
+       		<perso who="self" addSpr="6"/>
+       		<wait value="3"/>
+       		<actions>
+       		    <pos who="self" pos="x,y+4"/>
+       			<perso who="self" flag="0" alpha="255" addSpr="1"/>
+       		</actions>
+			<wait value="10"/>
+       		<!-- Attack -->
+       		<sound name="BigRat" pos="x,y"/>
+       		<perso who="self" alpha="255" addSpr="3"/>
+       		<wait value="20"/>
+       		<perso who="self" addSpr="1"/>
+       		<wait value="20"/>
+       		
+       		<!-- Head lower -->
+       		<actions>
+       			<perso who="self" addSpr="6"/>
+       			<pos who="loc:m2" pos="x-6,y+2"/>
+       			<pos who="loc:m3" pos="x+5,y+2"/>
+       		</actions>
+   			<wait value="3"/>
+       		
+       		<!-- Prepare to bury -->
+       		<actions>
+	       		<perso who="self" alpha="0"/>
+	       		<perso who="loc:m2" addSpr="2" flag="13" alpha="255"/>
+		       	<perso who="loc:m3" addSpr="2" flag="13" alpha="255"/>
+		       	<perso who="loc:m4" addSpr="2" flag="13" alpha="255"/>
+		       	<pos who="loc:m2" pos="x,y"/>
+		       	<pos who="loc:m3" pos="x,y"/>
+		       	<pos who="loc:m4" pos="x,y"/>
+		    </actions>
+   			<wait value="10"/>
+       		<perso who="loc:m4" alpha="0"/>
+       		<perso who="self" addSpr="2" flag="5"/>
+			<wait value="10"/>
+
 		</loop>
    	</persoAction>
 
    	<scene id="rotate">
    	    <loop>
+   	        <if exp="loc:arg1=1.0">
+   	        	<sound name="MoleBuried1" pos="x,y"/>
+   	        </if>
    	        <perso who="loc:arg0" rotation="0"/>
    	        <wait value="4"/>
    	        <exec script="popSand(x,y)"/>
    	        <perso who="loc:arg0" rotation="1"/>
    	        <wait value="4"/>
+   	        <if exp="loc:arg1=1">
+   	        	<sound name="MoleBuried2" pos="x,y"/>
+   	        </if>
    	        <perso who="loc:arg0" rotation="2"/>
    	        <wait value="4"/>
        	    <exec script="popSand(x,y)"/>

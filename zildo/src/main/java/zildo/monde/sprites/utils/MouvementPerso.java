@@ -39,13 +39,13 @@ public enum MouvementPerso {
 	BIRD(10),
 	SQUIRREL(11),
 	WAKEUP(12),
-	INVOKE(13),	// addSpr = 1
+	//INVOKE(13),	// addSpr = 1
 	CAT(14),
 	SLEEPING(15),
 	FOLLOW(16),
 	MOBILE_WAIT(17),	// Character will wait if something is on his way (contrary to default mode, where target becomes NULL when he's blocked)
 						// Plus: he ask blocking people to leave, except if it's the hero
-	IMMATERIAL(18),	// No collision and untouchable
+	//IMMATERIAL(18),	// No collision and untouchable
 	SPITFIRE(19),	// For dragon
 	RETRACTED(20),	// For dragon too, when he's diving into lava
 	FREEFLY(21),	// For vulture, with z as target
@@ -111,10 +111,8 @@ public enum MouvementPerso {
 	 */
 	public boolean isMobileZone() {
 		return this != IMMOBILE &&
-		this != IMMATERIAL &&
 		this != OBSERVE &&
 		this != WAKEUP &&
-		this != INVOKE &&
 		this != MOBILE_WAIT &&
 		this != SPITFIRE &&
 		this != RETRACTED &&
@@ -126,7 +124,7 @@ public enum MouvementPerso {
 	 * @return TRUE = he look for / FALSE = he can't be in alert
 	 */
 	public boolean isAlertable() {
-		return this != RAT && this != ELECTRIC && this != BEE && this != IMMOBILE && this != IMMATERIAL && 
+		return this != RAT && this != ELECTRIC && this != BEE && this != IMMOBILE && 
 				this != SPITFIRE && this != RETRACTED && this != MOLE;
 	}
 }
