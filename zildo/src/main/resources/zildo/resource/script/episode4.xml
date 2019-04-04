@@ -34,7 +34,8 @@
 	       	</if>
 
 	       	<perso who="taupe" action="mole"/>
-
+	       	<perso who="taupe2" action="mole"/>
+	       	
 	    </condition>
     
 	    <condition name="canyon" locked="false">
@@ -346,9 +347,9 @@
 			<!-- Bury -->
 	   	    <script who="self" value="23"/>
    	    	<perso who="self" speed="1" flag="9" alpha="255" addSpr="2"/>	<!-- Speed should be initialized AFTER mouvement 23 -->
-	   	    <perso who="loc:m2" parent="self" flag="13" addSpr="2" />
-	       	<perso who="loc:m3" parent="self" flag="13" addSpr="2" zoom="200" />
-	       	<perso who="loc:m4" parent="self" flag="13" addSpr="2" zoom="160" />
+	   	    <perso who="loc:m2" parent="self" flag="12" addSpr="2" />
+	       	<perso who="loc:m3" parent="self" flag="12" addSpr="2" zoom="200" />
+	       	<perso who="loc:m4" parent="self" flag="12" addSpr="2" zoom="160" />
 	   		<script who="loc:m2" value="22" effect="self"/>
 	       	<script who="loc:m3" value="22" effect="loc:m2"/>
 	       	<script who="loc:m4" value="22" effect="loc:m3"/>
@@ -358,17 +359,30 @@
 	   	    <!-- 
        		<perso who="self" flag="2"/>	 Should propagate 'immaterial' to every sprites of the mole -->
        		   		       			
-       	    <exec script="popSand(x,y)"/>
-       		<moveTo who="self" pos="80,0" delta="true"/>
+			<!-- Move around hero (if he's not too far away) -->
+			<var name="loc:dx" value="8"/>
+			<if exp="zildo.x > x">
+			    <var name="loc:dx" value="1.8*(zildo.x-x) min 50"/>
+			</if>
+       		<moveTo who="self" pos="loc:dx,0" delta="true"/>
        		<wait value="10"/>
-       	    <exec script="popSand(x,y)"/>
-			<moveTo who="self" pos="0,80" delta="true" />
+       		<var name="loc:dy" value="8"/>
+			<if exp="zildo.y > y">
+			    <var name="loc:dy" value="1.8*(zildo.y-y) min 50"/>
+			</if>
+			<moveTo who="self" pos="0,loc:dy" delta="true" />
        		<wait value="10"/>
-       	    <exec script="popSand(x,y)"/>
-			<moveTo who="self" pos="-80,0" delta="true" />
+       		<var name="loc:dx" value="8"/>
+			<if exp="x > zildo.x">
+			    <var name="loc:dx" value="1.8*(x-zildo.x) min 50"/>
+			</if>
+			<moveTo who="self" pos="-loc:dx,0" delta="true" />
        		<wait value="10"/>
-       	    <exec script="popSand(x,y)"/>
-			<moveTo who="self" pos="0,-50" delta="true" />
+       		<var name="loc:dy" value="-8"/>
+			<if exp="y > zildo.y">
+			    <var name="loc:dy" value="1.8*(y-zildo.y) min 50"/>
+			</if>
+			<moveTo who="self" pos="0,-loc:dy" delta="true" />
        		<wait value="10"/>
        		
        		<!-- Stop rotate scripts -->
@@ -436,9 +450,9 @@
        		<!-- Prepare to bury -->
        		<actions>
 	       		<perso who="self" alpha="0"/>
-	       		<perso who="loc:m2" addSpr="2" flag="13" alpha="255"/>
-		       	<perso who="loc:m3" addSpr="2" flag="13" alpha="255"/>
-		       	<perso who="loc:m4" addSpr="2" flag="13" alpha="255"/>
+	       		<perso who="loc:m2" addSpr="2" flag="12" alpha="255"/>
+		       	<perso who="loc:m3" addSpr="2" flag="12" alpha="255"/>
+		       	<perso who="loc:m4" addSpr="2" flag="12" alpha="255"/>
 		       	<pos who="loc:m2" pos="x,y"/>
 		       	<pos who="loc:m3" pos="x,y"/>
 		       	<pos who="loc:m4" pos="x,y"/>
@@ -451,6 +465,7 @@
 		</loop>
    	</persoAction>
 
+   	<!-- Rotate a mole sprite named loc:arg0, doing sound if loc:arg1 is set to 1 -->
    	<scene id="rotate">
    	    <loop>
    	        <if exp="loc:arg1=1.0">

@@ -7,7 +7,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.SimpleEngineScript;
+import zildo.fwk.script.context.LocaleVarContext;
+import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.fwk.script.logic.FloatExpression;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.PersoNJ;
 import zildo.server.EngineZildo;
 
 public class CheckScriptVariables extends SimpleEngineScript {
@@ -20,7 +24,7 @@ public class CheckScriptVariables extends SimpleEngineScript {
 		FloatExpression expr = new FloatExpression("a=7 | a=14");
 		Assert.assertEquals("OR(EQUALS(a, 7.0), EQUALS(a, 14.0))", expr.toString());
 		
-		Map<String, String> globalVariables = EngineZildo.scriptManagement.getVariables();
+		Map<String, String> globalVariables = scriptMgmt.getVariables();
 
 		// 1.1: a=0
 		globalVariables.put("a", "0");
@@ -61,6 +65,25 @@ public class CheckScriptVariables extends SimpleEngineScript {
 		Assert.assertEquals("NOT_EQUALS(a, 9.0)", expr.toString());
 		Assert.assertEquals(0, (int) expr.evaluate(null));
 
+		// 5: minus first
+		expr = new FloatExpression("-a");
+		Assert.assertEquals("MINUS(0.0, a)", expr.toString());
+		Assert.assertEquals(-9, (int) expr.evaluate(null));
+	}
+		
+	@Test
+	public void localVariables() {
+		FloatExpression expr = new FloatExpression("loc:arg0");
+		Perso p = new PersoNJ();
+		LocaleVarContext c = new SpriteEntityContext(p);
+		String key = c.registerVariable("loc:arg0");
+		scriptMgmt.putVarValue(key, "138");
+		Assert.assertEquals(138f, expr.evaluate(c), 0);
+		
+		// Same with minus sign before
+		expr = new FloatExpression("-loc:arg0");
+		Assert.assertEquals(-138f, expr.evaluate(c), 0);
+		
 	}
 	
 	@Override

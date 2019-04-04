@@ -20,7 +20,6 @@
 package junit.script.evaluator;
 
 import org.junit.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -212,6 +211,15 @@ public class CheckFloatEvaluator {
 	}
 	
 	@Test
+	public void minMax() {
+		assertExpr("4 min 3", 3f);
+		assertExpr("-12 min 3", -12f);
+
+		assertExpr("4 max 3", 4f);
+		assertExpr("-12 max 3", 3);
+	}
+
+	@Test
 	public void optimized() {
 		FloatExpression expr;
 		
@@ -227,7 +235,7 @@ public class CheckFloatEvaluator {
 		expr = new FloatExpression("1+8*random");
 		Assert.assertTrue(!expr.isImmediate());
 	}
-	
+
 	@Before
 	public void setup() {
 		FloatExpression.OPTIMIZE = true;		

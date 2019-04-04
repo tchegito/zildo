@@ -24,17 +24,16 @@ enum Operator {
 	// We can combine test operation like this
 	// a=4 + a=5 : means "a==4 || a==5"
 	// a=3 * b=1 : means "a==3 && b==1"
-	PLUS('+'), MINUS('-'), MULTIPLY('*'), DIVIDE('/'), OR('|'), AND('&'), EQUALS('='), NOT_EQUALS('!'), 
-	LESSER('<'), GREATER('>'), MODULO('%');
+	MIN("min"), MAX("max"), PLUS("+"), MINUS("-"), MULTIPLY("*"), DIVIDE("/"), OR("|"), AND("&"), EQUALS("="), NOT_EQUALS("!"), 
+	LESSER("<"), GREATER(">"), MODULO("%") ;
 	
-	
-	char symbol;
-	
-	private Operator(char s) {
+	String symbol;
+
+	private Operator(String s) {
 		symbol = s;
 	}
 	
-	public char getChar() {
+	public String getSymbol() {
 		return symbol;
 	}
 	
@@ -43,14 +42,5 @@ enum Operator {
 	 */
 	public boolean hasPriority(Operator o) {
 		return this.ordinal() > o.ordinal();
-	}
-	
-	public static boolean isOneOfThem(char c) {
-		for (Operator o : values()) {
-			if (o.symbol == c) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

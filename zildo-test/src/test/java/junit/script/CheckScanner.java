@@ -52,11 +52,11 @@ public class CheckScanner {
 		for (int i=0;i<5;i++) {
 			values[i] = scan.next();
 		}
-		Assert.assertTrue("1".equals(values[0]));
-		Assert.assertTrue("+".equals(values[1]));
-		Assert.assertTrue("2".equals(values[2]));
-		Assert.assertTrue("+".equals(values[3]));
-		Assert.assertTrue("4".equals(values[4]));
+		Assert.assertEquals("1", values[0]);
+		Assert.assertEquals("+", values[1]);
+		Assert.assertEquals("2", values[2]);
+		Assert.assertEquals("+", values[3]);
+		Assert.assertEquals("4", values[4]);
 		
 		Assert.assertFalse(scan.hasNext());
 	}
@@ -79,6 +79,27 @@ public class CheckScanner {
 		Assert.assertTrue(")".equals(values[8]));
 		Assert.assertTrue("+".equals(values[9]));
 		Assert.assertTrue("6".equals(values[10]));
+	}
+	
+	@Test
+	public void minusFirst() {
+		ExprScanner scan = new ExprScanner("-486");
+		Assert.assertEquals("-", scan.next());
+		Assert.assertEquals("486", scan.next());
+	}
+	
+	@Test
+	public void minMax() {
+		ExprScanner scan = new ExprScanner("12 min 3");
+		Assert.assertEquals("12", scan.next());
+		Assert.assertEquals("min", scan.next());
+		Assert.assertEquals("3", scan.next());
+		
+		scan = new ExprScanner("-12 min 3");
+		Assert.assertEquals("-", scan.next());
+		Assert.assertEquals("12", scan.next());
+		Assert.assertEquals("min", scan.next());
+		Assert.assertEquals("3", scan.next());
 	}
 
 }

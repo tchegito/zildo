@@ -23,6 +23,12 @@ import zildo.monde.quest.QuestEvent;
 import zildo.server.EngineZildo;
 import zildo.server.state.ScriptManagement;
 
+/**
+ * Unit test written during the DOM => SAX transition to ensure nothing was overlooked.
+ * 
+ * @author Tchegito
+ *
+ */
 public class CheckScriptParsing {
 
 	@Test

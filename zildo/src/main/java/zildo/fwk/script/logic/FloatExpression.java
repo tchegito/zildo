@@ -11,7 +11,9 @@ import zildo.fwk.script.logic.FloatVariable.NoContextException;
  * <li>Val = [-] a</li> 
  * <li>Op = [+|-|*|/|=|<|>]</li>
  * <li>Predicate = [(]* [Val | Predicate Op Predicate] [)]*</li>
-
+ *
+ * Handles only binary operators. Ternary are not supported. But it is with {@link ZSSwitch}.
+ *
  * @author evariste.boussaton
  *
  */
@@ -46,7 +48,7 @@ public class FloatExpression {
 	
 	public FloatExpression(String p_expression) {
 		ExprScanner scan = new ExprScanner(p_expression);
-		entireExp = parse(scan, null, false, false);
+		entireExp = parse(scan, null, false);
 		
 		// Optimization : if all predicates are immediate values (means that no context is necessary to evaluate)
 		// So we simplify all predicates into one single value
@@ -71,7 +73,7 @@ public class FloatExpression {
 		return entireExp == null ? ""+value : entireExp.toString();
 	}
 	
-	private FloatASTNode parse(ExprScanner scan, Operator previous, boolean parenthese, boolean negative) {
+	private FloatASTNode parse(ExprScanner scan, Operator previous, boolean parenthese) {
 		
 		FloatASTNode leftNode = null;
 		while (scan.hasNext()) {
@@ -83,10 +85,11 @@ public class FloatExpression {
 			if (op != null) {
 				if (leftNode == null) {
 					if (op == Operator.MINUS) {
-						negative = !negative;
+						FloatASTNode rightNode = parse(scan, op, false);
+						leftNode = new FloatOperator(op, new FloatValue(0f), rightNode);
 						continue;
 					} else if (previous == Operator.NOT_EQUALS) {
-						return parse(scan, previous, false, negative);
+						return parse(scan, previous, false);
 					} else {
 						throw new RuntimeException("MISSING_LEFT_OP "+ op.toString()+" at "+ startPos);
 					}
@@ -97,14 +100,14 @@ public class FloatExpression {
 						return leftNode;
 					}
 				}
-				FloatASTNode rightNode = parse(scan, op, false, negative);
+				FloatASTNode rightNode = parse(scan, op, false);
 				if (rightNode == null) {
 					throw new RuntimeException("MISSING_RIGHT_OP "+op.toString()+" at "+ scan.position());
 				}
 				leftNode = new FloatOperator(op, leftNode, rightNode);
 			// Look for parentheses
 			} else if ("(".equals(val)) {
-				leftNode = parse(scan, null, true, negative);
+				leftNode = parse(scan, null, true);
 			} else if (")".equals(val)) {
 				if (!parenthese) {
 					scan.goBack();
@@ -114,10 +117,6 @@ public class FloatExpression {
 				// Not an operator ==> consider it as a value
 				if (leftNode != null) {
 					throw new RuntimeException("MISSING_OPERATOR at "+startPos);
-				}
-				if (negative) {
-					val = "-"+val;
-					negative = !negative;
 				}
 				leftNode = getFloatValue(val);
 			}
@@ -131,9 +130,9 @@ public class FloatExpression {
 	 * @return Operator
 	 */
 	private Operator whichOperator(String s) {
-		if (s != null && s.length() == 1) {
+		if (s != null) {
 			for (Operator op : Operator.values()) {
-				if (s.charAt(0) == op.getChar()) {
+				if (s.equals(op.getSymbol())) {
 					return op;
 				}
 			}

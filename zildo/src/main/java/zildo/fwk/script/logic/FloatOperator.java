@@ -66,6 +66,10 @@ public class FloatOperator implements FloatASTNode{
 				return (int)f1 == 1 || (int)f2 == 1 ? 1 : 0;
 			case AND:
 				return f1 == 1 && f2 == 1 ? 1 : 0;
+			case MIN:
+				return Math.min(f1,  f2);
+			case MAX:
+				return Math.max(f1,  f2);
 
 		}
 	}

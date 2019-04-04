@@ -116,7 +116,8 @@ public enum MouvementPerso {
 		this != MOBILE_WAIT &&
 		this != SPITFIRE &&
 		this != RETRACTED &&
-		this != FREEFLY;
+		this != FREEFLY &&
+		this != MOLE;
 	}
 	
 	/**
@@ -125,6 +126,6 @@ public enum MouvementPerso {
 	 */
 	public boolean isAlertable() {
 		return this != RAT && this != ELECTRIC && this != BEE && this != IMMOBILE && 
-				this != SPITFIRE && this != RETRACTED && this != MOLE;
+				this != SPITFIRE && this != RETRACTED && this != MOLE && this != CHAIN_FOLLOW;
 	}
 }

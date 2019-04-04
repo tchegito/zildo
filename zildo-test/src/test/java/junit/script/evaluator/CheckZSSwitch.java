@@ -45,6 +45,9 @@ import zildo.server.PersoManagement;
 
 /**
  * Checks the {@link ZSSwitch} and linked classes.
+ * 
+ * Basically, it's a ternary operator, supporting quest query, and all special property described in ZSExpression.
+ * 
  * @author Tchegito
  *
  */

@@ -50,6 +50,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.persos.ia.mover.PhysicMoveOrder;
+import zildo.monde.sprites.utils.FlagPerso;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
@@ -327,33 +328,34 @@ public class MapManagement {
 			return true;
 		}
 		
-		// 2) Collision with characters
-		Perso collidingPerso = EngineZildo.persoManagement.collidePerso(tx, ty, quelElement);
-		if (collidingPerso != null) {
-			if (p != null) {
-				// If zildo crosses an enemy, this is not a collision, but a wound ! (except if he's blinking)
-				if (p.isZildo() && collidingPerso.getInfo() == PersoInfo.ENEMY) {
-					return p.isBlinking() || p.isWounded();
+		// 2) Collision with characters (excepted for underground characters)
+		if (p != null && (p.getFlagBehavior() & FlagPerso.F_UNDERGROUND) == 0) {
+			Perso collidingPerso = EngineZildo.persoManagement.collidePerso(tx, ty, quelElement);
+			if (collidingPerso != null) {
+				if (p != null) {
+					// If zildo crosses an enemy, this is not a collision, but a wound ! (except if he's blinking)
+					if (p.isZildo() && collidingPerso.getInfo() == PersoInfo.ENEMY) {
+						return p.isBlinking() || p.isWounded();
+					}
+					if (p.getInfo() == PersoInfo.ENEMY && collidingPerso.isZildo() && !collidingPerso.isBlinking()) {
+						return false;
+					}
+					// Allow following character to be on same position than his leader
+					if (collidingPerso.getQuel_deplacement() == MouvementPerso.FOLLOW && collidingPerso.getFollowing() == quelElement) {
+						return false;
+					}
 				}
-				if (p.getInfo() == PersoInfo.ENEMY && collidingPerso.isZildo() && !collidingPerso.isBlinking()) {
-					return false;
+				// Character able to carry someone else (turtle)
+				if (collidingPerso.getMover() != null && quelElement != null && quelElement.z >= collidingPerso.getMover().getFlatZ()) {
+					return false;	// Ok => character is above the "vehicle"
 				}
-				// Allow following character to be on same position than his leader
-				if (collidingPerso.getQuel_deplacement() == MouvementPerso.FOLLOW && collidingPerso.getFollowing() == quelElement) {
-					return false;
+				if (collidingPerso.isOnPlatform() && p != null && p.getMover() != null && p.getMover().isOnIt(collidingPerso)) {
+					return false;	// Ok => character is above the "vehicle"
 				}
+				
+				return true;
 			}
-			// Character able to carry someone else (turtle)
-			if (collidingPerso.getMover() != null && quelElement != null && quelElement.z >= collidingPerso.getMover().getFlatZ()) {
-				return false;	// Ok => character is above the "vehicle"
-			}
-			if (collidingPerso.isOnPlatform() && p != null && p.getMover() != null && p.getMover().isOnIt(collidingPerso)) {
-				return false;	// Ok => character is above the "vehicle"
-			}
-			
-			return true;
 		}
-		
 		// 3) Collision with sprites
 		if (EngineZildo.spriteManagement.collideSprite(tx, ty, quelElement))
 			return true;

@@ -14,7 +14,7 @@ public class ExprScanner {
 	int cursor;
 	StringBuilder value;
 	
-	Character nextValue = null;
+	String nextValue = null;
 	
 	public ExprScanner(String expression) {
 		if (expression == null) {
@@ -31,7 +31,7 @@ public class ExprScanner {
 		
 		if (nextValue != null) {
 			value.append(nextValue);
-			if (nextValue != ')') {
+			if (!nextValue.equals(')')) {
 				nextValue = null;
 			}
 			return value.toString();
@@ -39,14 +39,25 @@ public class ExprScanner {
 		
 		while (exp.length() > cursor) {
 			char a = exp.charAt(cursor);
-			cursor++;
-			if ( isDelimiter(a)) {
-				if (value.length() > 0) {
-					nextValue = a;
+			Operator o = isDelimiter(exp, cursor);
+			if ( o != null) {
+				lastPas = o.symbol.length();	// Remember for goBack method
+				cursor += lastPas;
+				if (o.symbol.length() > 1) {
+					if (value.length() == 0) {
+						value.append(o.symbol);
+					} else {
+						nextValue = o.symbol;
+					}
+					break;
+				} else if (value.length() > 0) {
+					nextValue = ""+a;
 					break;
 				}
 				return ""+a;
 			} else {
+				cursor++;
+				lastPas = 1;
 				boolean parenthese = (a == '(' || a ==')');
 				if (parenthese && value.length() > 0) {	// Parenthese after
 //					nextValue = a;
@@ -74,12 +85,25 @@ public class ExprScanner {
 		return cursor;
 	}
 	
-	private boolean isDelimiter(char a) {
-		return Operator.isOneOfThem(a);
+	// Return an operator found in given string at given position
+	private Operator isDelimiter(String exp, int cursor) {
+		for (Operator o: Operator.values()) {
+			String s = o.symbol;
+			int idx = 0;
+			for ( ; idx < s.length() && cursor+idx < exp.length() && s.charAt(idx) == exp.charAt(cursor+idx); idx++) {
+				
+			}
+			if (idx == s.length()) {
+				return o;
+			}
+		}
+		return null;
 	}
 	
+	int lastPas;
+	
 	public void goBack() {
-		cursor--;
+		cursor -= lastPas;
 	}
 
 }
