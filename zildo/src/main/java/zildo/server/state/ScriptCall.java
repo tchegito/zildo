@@ -38,18 +38,22 @@ public class ScriptCall {
 	}
 	
 	/** Register arguments passed to this call. Can be optionally resolved from a caller context. **/
-	public void registerVariables(IEvaluationContext context) {
+	public void registerVariables(IEvaluationContext context, IEvaluationContext callerContext) {
 		if (args != null) {
 			int nVar = 0;
 			for (String arg : args) { 
 				String varName = context.registerVariable(LocaleVarContext.VAR_IDENTIFIER + "arg"+nVar);
 				String value = arg.trim();
 				// If variable was local to the caller context, resolve it
+				if (value.startsWith(LocaleVarContext.VAR_IDENTIFIER) && callerContext != null && callerContext.hasVariables()) {
+					// If variable was local to the caller context, resolve it
+					value = "" + new FloatExpression(value).evaluate(callerContext);
+				} else 
 				
 				// 1) alphanumeric => store as string
 				if (value.startsWith("'") && value.endsWith("'")) {
 					value = value.substring(1, value.length()-1);
-				} else if (value.startsWith("*")) {
+				} else if (value.startsWith("*")) {	// TODO: check if it's still useful, with 'callerContext' getting back
 					value = context.getString(value.substring(1));
 				} else {
 					value = "" + new FloatExpression(arg).evaluate(context);

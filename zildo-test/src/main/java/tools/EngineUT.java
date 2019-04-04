@@ -69,6 +69,8 @@ import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.Game;
 import zildo.monde.Hasard;
 import zildo.monde.dialog.HistoryRecord;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -162,6 +164,14 @@ public abstract class EngineUT {
 		clientState.keys = instant;	// Simulate keypressed if we have a hero
 		
 		return perso;
+	}
+	
+	protected PersoPlayer spawnZildoWithItem(int x, int y, ItemKind kind) {
+		PersoPlayer hero = spawnZildo(x, y);
+		Item item = new Item(kind);
+		hero.getInventory().add(item);
+		hero.setWeapon(item);
+		return hero;
 	}
 	
 	/**

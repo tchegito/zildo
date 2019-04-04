@@ -443,10 +443,10 @@
 		       	<pos who="loc:m3" pos="x,y"/>
 		       	<pos who="loc:m4" pos="x,y"/>
 		    </actions>
-   			<wait value="10"/>
+   			<wait value="2"/>
        		<perso who="loc:m4" alpha="0"/>
        		<perso who="self" addSpr="2" flag="5"/>
-			<wait value="10"/>
+			<wait value="2"/>
 
 		</loop>
    	</persoAction>

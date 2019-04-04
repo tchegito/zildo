@@ -1,0 +1,30 @@
+<adventure>
+	<scene id="spawnBossTurret1">
+        <spawn who="turret1" pos="110,100" type="TURRET" info="ENEMY" alpha="128"/>
+        <spawn who="turret2" pos="210,100" type="TURRET" info="ENEMY" alpha="128" reverse="128"/>
+        <spawn who="turret3" pos="110,180" type="TURRET" info="ENEMY" alpha="128" reverse="64"/>
+	    <spawn who="turret4" pos="210,180" type="TURRET" info="ENEMY" alpha="128" reverse="192"/>
+		<exec script="turretCycle(210, 160, 110, 160, 210, 110, 110, 110)" />
+	</scene>
+	
+	<scene id="turretCycle">
+		<perso who="turret1" action="bossTurret(loc:arg0, loc:arg1, 0, 0)" />
+		<perso who="turret2" action="bossTurret(loc:arg2, loc:arg3, 1, 0)"/>
+	    <perso who="turret3" action="bossTurret(loc:arg4, loc:arg5, 0, 1)"/>
+		<perso who="turret4" action="bossTurret(loc:arg6, loc:arg7, 1, 1)"/>
+	</scene>
+
+	<persoAction id="bossTurret"> <!-- argument: (arg0,arg1)=>location to go, arg2=>reverseH, arg3=>reverseV -->
+		<moveTo who="self" pos="loc:arg0,loc:arg1" way="arc" />
+	</persoAction>
+	
+	<scene id="sceneWithStars">
+	    <spawn who="loc:m2" type="MOLE" pos="160,100"/>
+	    <exec script="rotateMe(*loc:m2,1.0)" unblock="true" />
+	</scene>
+	
+	<scene id="rotateMe">
+	    <perso who="loc:arg0" rotation="3"/>
+	</scene>
+	
+</adventure>

@@ -1,4 +1,4 @@
-package junit.perso;
+package junit.perso.bosses;
 
 import org.junit.Assert;
 import org.junit.Before;

@@ -18,7 +18,7 @@
  *
  */
 
-package junit.script;
+package junit.script.evaluator;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -48,7 +48,7 @@ import zildo.server.PersoManagement;
  * @author Tchegito
  *
  */
-public class CheckSimpleScript extends SimpleEngineScript {
+public class CheckZSSwitch extends SimpleEngineScript {
 
 	@Test
 	public void simpleSwitch() {

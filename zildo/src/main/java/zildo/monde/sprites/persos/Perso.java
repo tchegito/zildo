@@ -1385,6 +1385,9 @@ public abstract class Perso extends Element {
 				e.setLight(light);
 			}
 		}
+		if (en_bras != null) {
+			en_bras.setLight(light);
+		}
 		super.setLight(light);
 	}
 	

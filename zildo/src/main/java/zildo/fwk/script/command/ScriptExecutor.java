@@ -72,11 +72,11 @@ public class ScriptExecutor {
  			} else {
  				ctx = ctx.clone();
  			}
-			p_script.registerVariables(ctx);
+			p_script.registerVariables(ctx, p_context);
 		} else if (p_script.call != null) {
 			ctx = p_script.call.futureContext;
 			// We may have an NPE in the call right here, if a script is executed from 'mapscript' section
-			p_script.registerVariables(ctx);
+			p_script.registerVariables(ctx, null);
 		}
 		ScriptProcess sp = new ScriptProcess(p_script, this, p_finalEvent, p_topPriority, ctx, p_caller);
 		if (p_caller != null) {

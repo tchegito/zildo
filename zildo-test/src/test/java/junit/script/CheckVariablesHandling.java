@@ -32,7 +32,11 @@ import zildo.fwk.script.logic.FloatVariable.NoContextException;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.Game;
+import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 import zildo.server.state.ScriptManagement;
 
@@ -187,5 +191,40 @@ public class CheckVariablesHandling extends EngineScriptUT {
 		Assert.assertEquals("pinpin", scriptMgmt.getVarValue("monArg2"));
 		
 		Assert.assertNotNull("We should have a character named 'pinpin' !", persoUtils.persoByName("pinpin"));
+	}
+	
+	@Test
+	public void localPassedVariables() {
+		// A scene calls another scene, who calls a PersoAction. Every call has local arguments.
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/advanced"));
+		executeScene("spawnBossTurret1");
+		renderFrames(10);
+		
+		int[] expected = {210, 160, 110, 160, 210, 110, 110, 110};
+
+		// Assert that every perso are targeted to the expected points
+		for (int i=1;i<=4;i++) {
+			Perso turret = persoUtils.persoByName("turret"+i);
+			Point target = turret.getTarget().toPoint();
+			Assert.assertEquals(expected[2*i-2], target.x);
+			Assert.assertEquals(expected[2*i-1], target.y);
+		}
+	}
+	
+	@Test
+	public void localPassedCharacterNames() {
+		// A scene create a character with local name, then pass its name to another script
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/advanced"));
+		executeScene("sceneWithStars");
+		renderFrames(10);
+		
+		Perso mole = null;
+		for (Perso p : EngineZildo.persoManagement.tab_perso) {
+			if (p.getDesc() == PersoDescription.MOLE) {
+				mole = p;
+				break;
+			}
+		}
+		Assert.assertEquals(Rotation.COUNTERCLOCKWISE, mole.rotation);
 	}
 }

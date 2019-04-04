@@ -180,7 +180,7 @@
 		</trigger>
 	</quest>
 	
-	<quest name="prison12Locked">
+	<quest name="prison12Locked" locked="false">
 	    <trigger>
 	        <location name="prison12"/>
 	        <dead who="noir1,noir2"/>
@@ -1496,8 +1496,8 @@
 		<actions>
 		    <visible who="self" value="false"/>
 		    <spawn who="loc:turretOut" type="TURRET" addSpr="loc:turretSpr" pos="x,y"/>
-			<perso who="loc:turretOut" addSpr="loc:turretSpr" info="ENEMY" alpha="255"/>
-			<script who="loc:turretOut" value="18"/>	<!-- Turret is invulnerable -->
+			<!-- Turret is invulnerable (flag 4) -->
+		    <perso who="loc:turretOut" addSpr="loc:turretSpr" flag="4" info="ENEMY" alpha="255"/>
 			<var name="loc:posX" value="x+7"/>
 			<!-- Cancel reverse vertical, but keep horizontal one -->
 			<perso who="loc:turretOut" reverse="0"/>
@@ -1567,8 +1567,8 @@
 		<animation type="BREAKING_ROCK" pos="x+10,y+6"/>
 		<actions>
 			<remove who="loc:turretOut"/>
-			<script who="self" value="18"/>	<!-- Underground ==> back immaterial -->
-			<perso who="self" alpha="128" alphaA="0" alphaV="0" addSpr="0"/>
+			<!-- Underground ==> back immaterial -->
+			<perso who="self" alpha="128" flag="9" alphaA="0" alphaV="0" addSpr="0"/>
 		    <visible who="self" value="true"/>		    
 		</actions>
 		<wait value="30"/>
@@ -1593,11 +1593,11 @@
        	<perso who="turretH" parent="turret0" pv="10"/>	<!-- Hero must hit 5 times (2*5 = 10) -->
        	<!--  Declare turret IMMATERIAL because it's underground -->
        	<actions>
-		    <script who="turret1" value="18"/>
-		    <script who="turret2" value="18"/>
-   		    <script who="turret3" value="18"/>
-   		    <script who="turret4" value="18"/>
-   		    <script who="turretH" value="18"/>
+		    <perso who="turret1" flag="9"/>
+		    <perso who="turret2" flag="9"/>
+   		    <perso who="turret3" flag="9"/>
+   		    <perso who="turret4" flag="9"/>
+   		    <perso who="turretH" flag="9"/>
    		</actions>
    		<var name="bossFighting" value="1"/>
 		<!-- Cycles -->
@@ -1622,8 +1622,8 @@
 		<!-- 1/3 : make vulnerable part out of the ground -->
 		<perso who="turretH" alphaA="0.1"/>
 		<wait value="20"/>
-		<!--  Declare heart IMMOBILE to stop IMMATERIAL -->
-	    <script who="turretH" value="3"/>
+		<!--  Stop IMMATERIAL for turret heart -->
+	    <perso who="turretH" flag="0"/>
 		<animation type="BREAKING_ROCK" pos="150,125"/>
 		<animation type="BREAKING_ROCK" pos="165,128"/>
 		<perso who="turretH" addSpr="0"/>
@@ -1633,7 +1633,7 @@
 			<wait value="10"/>
 		</loop>
 		<!-- 2/3 : Vulnerable part crouch back -->
-	    <script who="turretH" value="18"/> <!-- IMMATERIAL again -->
+	    <perso who="turretH" flag="1"/> <!-- IMMATERIAL again -->
 		<animation type="BREAKING_ROCK" pos="160,125"/>
 		<wait value="4"/>
 		<perso who="turretH" addSpr="1" alpha="128"/>

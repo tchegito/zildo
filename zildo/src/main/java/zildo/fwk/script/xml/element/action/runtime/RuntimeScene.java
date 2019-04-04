@@ -77,9 +77,9 @@ public class RuntimeScene extends RuntimeModifiableElement {
 		call = p_call;
 	}
 	
-	public void registerVariables(IEvaluationContext context) {
+	public void registerVariables(IEvaluationContext context, IEvaluationContext callerContext) {
 		if (call != null) {
-			call.registerVariables(context);
+			call.registerVariables(context, callerContext);
 		}
 	}
 	
