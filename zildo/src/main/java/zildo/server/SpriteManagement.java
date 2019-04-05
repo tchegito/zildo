@@ -436,7 +436,7 @@ public class SpriteManagement extends SpriteStore {
 			int f = floor;
 			// Find the highest existent floor (for bat dropping their item on an inaccessible floor for player)
 			Area area = EngineZildo.mapManagement.getCurrentMap();
-			if (area != null && !element.isForeground()) {	// Don't modify floor for 'foreground' element, like smoke
+			if (area != null && !element.isForeground() && (miscPerso == null || !miscPerso.isZildo())) {	// Don't modify floor for 'foreground' element, like smoke
 				// Be careful about the 'currentMap'. If we come from Area.deserialize, currentMap is not updated yet
 				while (f > 0) {
 					if (EngineZildo.mapManagement.getCurrentMap().get_mapcase(x >> 4, y >> 4, f) != null) break;

@@ -368,7 +368,7 @@
        		<wait value="10"/>
        		<var name="loc:dy" value="8"/>
 			<if exp="zildo.y > y">
-			    <var name="loc:dy" value="1.8*(zildo.y-y) min 50"/>
+			    <var name="loc:dy" value="(random*5+1.8*(zildo.y-y)) min 50"/>
 			</if>
 			<moveTo who="self" pos="0,loc:dy" delta="true" />
        		<wait value="10"/>
@@ -406,13 +406,13 @@
        		</actions>
        		<wait value="10"/>
        		<!-- 2) claws -->
-       		<pos who="loc:m2" pos="x-8,y+2"/>
-       		<pos who="loc:m3" pos="x+7,y+2"/>
+       		<pos who="loc:m2" pos="x-7,y+2"/>
+       		<pos who="loc:m3" pos="x+6,y+2"/>
        		<perso who="loc:m2" flag="4" alpha="255" addSpr="0" zoom="255" rotation="0"/>
        		<perso who="loc:m3" flag="4" alpha="255" addSpr="0" zoom="255" rotation="0" reverse="128"/>
        		<wait value="8"/>
-       		<exec script="popSand(x-4,y)"/>
-       		<exec script="popSand(x+4,y)"/>
+       		<exec script="popSand(x-3,y)"/>
+       		<exec script="popSand(x+3,y)"/>
        		<!-- 3) head -->
        		<actions>
        		    <perso who="loc:m4" alpha="0"/>
@@ -433,7 +433,7 @@
        		</actions>
 			<wait value="10"/>
        		<!-- Attack -->
-       		<sound name="BigRat" pos="x,y"/>
+       		<sound name="MoleCry" pos="x,y"/>
        		<perso who="self" alpha="255" addSpr="3"/>
        		<wait value="20"/>
        		<perso who="self" addSpr="1"/>
@@ -442,8 +442,8 @@
        		<!-- Head lower -->
        		<actions>
        			<perso who="self" addSpr="6"/>
-       			<pos who="loc:m2" pos="x-6,y+2"/>
-       			<pos who="loc:m3" pos="x+5,y+2"/>
+       			<pos who="loc:m2" pos="x-4,y+2"/>
+       			<pos who="loc:m3" pos="x+3,y+2"/>
        		</actions>
    			<wait value="3"/>
        		

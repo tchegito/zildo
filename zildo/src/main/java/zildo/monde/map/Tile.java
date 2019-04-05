@@ -211,6 +211,7 @@ public class Tile implements Cloneable {
 		case 167:
 		case 169:
 		case 751:
+		case 256*5+195:
 			return true;
 		default:
 			return false;

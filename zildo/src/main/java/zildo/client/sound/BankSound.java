@@ -158,7 +158,8 @@ public enum BankSound implements AudioBank {
 	
 	MoleBuried1("moleBuried1"),
 	MoleBuried2("moleBuried2"),
-	MoleOut("moleOut");
+	MoleOut("moleOut"),
+	MoleCry("molecry");
 	
 	String filename;
 	

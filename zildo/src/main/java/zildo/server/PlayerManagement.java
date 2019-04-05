@@ -532,6 +532,7 @@ public class PlayerManagement {
 									}
 									break;
 								case 751:objDesc=ElementDescription.JAR;break;
+								case 256*5+195:objDesc=ElementDescription.AMPHORA;break;
 								}
 	                            if (objDesc != null) {
 	                                heros.takeSomething(newx * 16 + 8, newy * 16 + 14, objDesc, null);

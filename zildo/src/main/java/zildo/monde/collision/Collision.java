@@ -20,7 +20,6 @@
 
 package zildo.monde.collision;
 
-import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
@@ -77,7 +76,14 @@ public class Collision {
     
     // Special case: dragon cause damage whatever the floor is
     public boolean isMultifloor() {
-    	return perso != null && perso.getDesc() == PersoDescription.DRAGON;
+    	if (perso != null) {
+	    	switch (perso.getDesc()) {
+	    	case CHAUVESOURIS:
+	    	case DRAGON:
+	    		return true;
+	    	}
+    	}
+    	return false;
     }
     
     @Override

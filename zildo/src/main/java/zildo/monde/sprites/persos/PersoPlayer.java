@@ -116,7 +116,7 @@ public class PersoPlayer extends Perso {
 	private Element elementForked;	// Element that hero grabbed on his fork
 
 	// Sequence for sprite animation
-	static int seq_1[] = { 0, 1, 2, 1 };
+	static int seq_1[] = { 0, 1, 1, 1 };
 	static int seq_2[] = { 0, 1, 2, 1, 0, 3, 4, 3 };
 	static int[] seq_attackFork = new int[]{4, 6, 9};
 	static int[] seq_putAwayFork = new int[]{8,8,5};
@@ -621,7 +621,7 @@ public class PersoPlayer extends Perso {
 	public void animate(int compteur_animation)
 	{
 		super.animate(compteur_animation);
-		
+
 		// Initialization of convenient variables
 		bottomZ = getBottomZ();
 		nature = getCurrentTileNature();
@@ -1028,10 +1028,13 @@ public class PersoPlayer extends Perso {
 				if (en_bras != null) {
 					int objZ = (int) en_bras.getZ();
 	
-					int variationY = seq_1[((getPos_seqsprite() % (4 * Constantes.speed)) / Constantes.speed)];
-	
-					//en_bras.setX(objX);
-					//en_bras.setY(objY);
+					int variationY = 0;
+					if (angle.isVertical()) {;
+						variationY = seq_1[((getPos_seqsprite() % (4 * Constantes.speed)) / Constantes.speed)];
+					} else {
+						variationY = seq_2[((getPos_seqsprite() % (4 * Constantes.speed)) / Constantes.speed)];
+					}
+					
 					en_bras.setZ(objZ - variationY);
 					
 					// Corrections , décalages du sprite

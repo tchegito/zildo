@@ -756,6 +756,9 @@ public class Area implements EasySerializable {
 			case 169: // Heavy rock
 				resultTile = 168;
 				break;
+			case 256*5+195:
+				resultTile = -1;
+				break;
 			case 751: // Jar
 				resultTile = 752;
 				break;
@@ -821,14 +824,15 @@ public class Area implements EasySerializable {
 				if (spawnGoodies) {
 					PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
 	
+					int floor = zildo.floor;
 					if ((multiPlayer || zildo.hasItem(ItemKind.BOW) && hasard.lanceDes(hasard.hazardBushes_Arrow))) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, 1, 0, zildo, null);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.ARROW, p.x, p.y + 5, floor, 0, zildo, null);
 					} else if (hasard.lanceDes(hasard.hazardBushes_GoldCoin)) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, p.x, p.y + 5, 1, 0, zildo, null);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN, p.x, p.y + 5, floor, 0, zildo, null);
 					} else if (hasard.lanceDes(hasard.hazardBushes_BlueDrop)) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, p.x + 3, p.y + 5, 1, p_destroy ? 0 : 1, zildo, null);
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.BLUE_DROP, p.x + 3, p.y + 5, floor, p_destroy ? 0 : 1, zildo, null);
 					} else if (multiPlayer && hasard.lanceDes(hasard.hazardBushes_Bombs)) {
-						sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, 1, 0,
+						sprMgt.spawnSpriteGeneric(SpriteAnimation.FROMGROUND, p.x + 3, p.y + 5, floor, 0,
 								zildo, ElementDescription.BOMBS3);
 					}
 				}
@@ -1217,6 +1221,7 @@ public class Area implements EasySerializable {
 					case 167: // Stone
 					case 169: // Heavy stone
 					case 751: // Jar
+					case 256*5+195:	// Amphora
 						map.setCaseItem(ax, ay, nSpr, entName);
 						if (!zeditor) { // We have to see the sprites in ZEditor
 							break;

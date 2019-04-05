@@ -651,6 +651,7 @@ public class Element extends SpriteEntity {
 					case STONE:
 					case STONE_HEAVY:
 					case ROCK_BALL:
+					case AMPHORA:
 						EngineZildo.spriteManagement.spawnSpriteGeneric(
 								SpriteAnimation.BREAKING_ROCK, (int) x, (int) y, floor, 0, null, null);
 						break;
@@ -1095,5 +1096,15 @@ public class Element extends SpriteEntity {
 			}
 		}
 		return size;
+	}
+	
+	@Override
+	public int getFloorForSort() {
+		if (linkedPerso!=null) {
+			// For example, if hero is carrying an object above his head, they should be displayed at the same floor
+			return linkedPerso.getFloorForSort();
+		} else {
+			return super.getFloorForSort();
+		}
 	}
 }

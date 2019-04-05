@@ -823,8 +823,6 @@ public abstract class Perso extends Element {
 				break;
 			case 857:
 			case 858:
-			case 861:
-			case 862:
 			case 7*256+129: case 7*256+130:
 				handleStairsScene("miniStairsDown");
 				slowDown = true;
@@ -833,10 +831,8 @@ public abstract class Perso extends Element {
 				handleStairsScene("miniStairsDownReverse");
 				slowDown = true;
 				break;
-			case 859:
+			case 859:	// cave stairs
 			case 860:
-			case 863:
-			case 864:	// Cave stairs
 			case 7*256+131: case 7*256+132:	// Palace1 stairs
 			case 768 + 248:	// Rock on back2 for stairs (careful with this !!!)
 				handleStairsScene("miniStairsUp");
@@ -1365,6 +1361,9 @@ public abstract class Perso extends Element {
 		// Set every entities linked to this perso at the same floor
 		for (SpriteEntity entity : persoSprites) {
 			entity.setFloor(p_floor);
+		}
+		if (en_bras != null) {
+			en_bras.setFloor(p_floor);
 		}
 	}
 

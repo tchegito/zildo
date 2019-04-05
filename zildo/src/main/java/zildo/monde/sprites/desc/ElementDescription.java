@@ -158,7 +158,8 @@ public enum ElementDescription implements SpriteDescription {
 	// Straw on the fork, and flying
 	STRAW, STRAWF1, STRAWF2, STRAWF3,
 	// Sand projection
-	SAND1, SAND2, SAND3, SAND4, SAND5;
+	SAND1, SAND2, SAND3, SAND4, SAND5,
+	AMPHORA;
 	
 	Boolean damage;
 	
@@ -265,6 +266,7 @@ public enum ElementDescription implements SpriteDescription {
 			switch (this) {
 				case JAR:
 				case BUSHES:
+				case AMPHORA:
 				//case SHADOW:		// ???
 				case STONE:
 				case STONE_HEAVY:
@@ -311,7 +313,7 @@ public enum ElementDescription implements SpriteDescription {
 	 */
 	public boolean isNotFixe() {
 		switch (this) {
-		case JAR: case BUSHES: case LEAF: case STRAWF1: case STRAWF2: case STRAWF3:
+		case JAR: case AMPHORA: case BUSHES: case LEAF: case STRAWF1: case STRAWF2: case STRAWF3:
 		case LEAF_GREEN: case DROP_FLOOR: case SMOKE:
 		case SMOKE_SMALL: case TINY_ROCK: case NETTLE_LEAF:
 		case HEART: case STONE_HEAVY: case STONE:
