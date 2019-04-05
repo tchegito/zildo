@@ -24,7 +24,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import tools.EngineUT;
-import tools.annotations.InfoPersos;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
@@ -68,7 +67,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 	}
 	
 	/** Proves that a character can push any blocking character when he's on its way **/
-	@Test @InfoPersos
+	@Test
 	public void persoPushPerso() {
 		// Spawn a character A
 		mapUtils.loadMap("eleom1");
@@ -95,7 +94,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 	}
 	
 	/** Proves that turtle can't push hero. Instead, it has to wait for him to move by himself. **/
-	@Test @InfoPersos
+	@Test
 	public void turtleCantPushHero() {
 		// Spawn a character A
 		Pointf targetTurtle = new Pointf(200, 80);

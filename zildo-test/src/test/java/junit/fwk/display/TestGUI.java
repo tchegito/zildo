@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
-import tools.annotations.InfoPersos;
 import zildo.client.ClientEngineZildo;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Pointf;
@@ -12,7 +11,7 @@ import zildo.monde.util.Pointf;
 public class TestGUI extends EngineUT {
 
 	/** Before, a GUI blink was observed when a character was moved in PathFinder#collide. That is not right. **/ 
-	@Test @InfoPersos
+	@Test
 	public void dontBlink() {
 		mapUtils.loadMap("d4m8");
 		waitEndOfScripting();
