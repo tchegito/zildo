@@ -221,6 +221,7 @@
 		<angle who="zildo" value="2"/>
 		<perso who="zildo" addSpr="0"/>	<!-- for squirrel -->
 		<script who="zildo" text="MORT"/>
+		<sound name="ZildoAtterit"/>
 		<if expQuest="hero_princess">
 			<!-- Do this sequence ONLY when Roxy is on stage -->
 			<wait value="5"/>

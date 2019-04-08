@@ -201,7 +201,6 @@ public class ScriptExecutor {
 				if (parent.subProcess.currentActions.isEmpty() && parent.subProcess.subProcess == null) {
 					parent.subProcess.terminate();
 					parent.subProcess = null;
-					subScriptsEnded.add(process);
 				}
 			} else if (process.currentActions.isEmpty()){
 				toTerminate.add(process);

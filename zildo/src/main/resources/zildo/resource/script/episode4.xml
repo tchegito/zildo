@@ -5,7 +5,7 @@
 	    <condition name="valori" locked="false">
 	    	<!--  <spawn who="bitey" pos="220,118" type="BITEY"/> -->
 	    	<perso who="bitey1" action="bitey"/> 
-	    	<spawn who="scorp" pos="831, 717" type="SCORPION" />
+	    	<spawn who="scorp" pos="831, 717" type="SCORPION" floor="2" info="ENEMY"/>
 	    	<perso who="scorp" action="scorpion"/>
 	    	<visible who="pied1" value="false"/>
 	    	<visible who="pied2" value="false"/>
