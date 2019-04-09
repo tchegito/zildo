@@ -25,7 +25,7 @@ We need to separate offsetX1 and offsetX2 because of reverse possibility. If spr
 ``` 
     screenX = x - (width + offsetX1 - offsetX2) / 2
 ```
-** offset X **
+## offset Y ##
 
 Here is an example of a sprite with an offsetY:
 ![Bitey and offsetY](https://raw.githubusercontent.com/tchegito/zildo/wiki/image.png)
