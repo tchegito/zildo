@@ -46,7 +46,7 @@ Here are some useful examples to edit scripts.
 	<tileAction id="regenSpider">
 	  <timer each="50">
 	    <action>
-	      <lookFor info="ENEMY" pos="x*16,y*16" tile="4" negative="true">
+	      <lookFor info="ENEMY" pos="x*16,y*16" radius="4" negative="true">
 	        <spawn type="STONE_SPIDER" pos="x*16,y*16" />
 	      </lookFor>
 	    </action>
