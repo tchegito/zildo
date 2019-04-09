@@ -15,7 +15,7 @@ Here are some useful examples to edit scripts.
 			<wait value="50"/>
 			<markQuest name="cavef6_platef6_up" value="true"/>
 			<markQuest name="cavef6_platef6_back" value="false"/>
-  		</action>
+  	</action>
 	</quest>
 
 	<quest name="cavef6_platef6_back" locked="false">
@@ -26,9 +26,9 @@ Here are some useful examples to edit scripts.
 		<action>
 			<moveTo what="platef6" pos="56,56" delta="true"/>
 			<wait value="50"/>
-   			<markQuest name="cavef6_platef6_up" value="false"/>
+   		<markQuest name="cavef6_platef6_up" value="false"/>
 			<markQuest name="cavef6_platef6_forward" value="false"/>
-   		</action>
+   	</action>
 	</quest>
 	
 	<quest name="cavef6_platef6_up"/>
