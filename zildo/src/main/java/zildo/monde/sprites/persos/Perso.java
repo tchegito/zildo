@@ -27,6 +27,7 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.script.xml.element.TriggerElement;
+import zildo.monde.collision.Collision;
 import zildo.monde.items.Item;
 import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
@@ -756,14 +757,16 @@ public abstract class Perso extends Element {
 			case 176 + 256*3:
 			case 109 + 256*3:
 			case 110 + 256*3:
+			case 87 +256*5: case 148+256*5:	// Desert cave entrance
 				coeffWhiteLight = tileLight.north(2, x, y);
 				break;
 			case 177 + 256*3:	// Access to the north 2
 			case 178 + 256*3:
 			case 111 + 256*3:
 			case 112 + 256*3:
+			case 192 + 256*5: case 193 + 256*5:	// Desert cave
 			case 224 + 256*4:
-				coeffWhiteLight = tileLight.north(1, x, y);
+				coeffWhiteLight = tileLight.north(2, x, y);
 				break;
 			case 179 + 256*3:	// Access to the south 2
 			case 180 + 256*3:
@@ -950,7 +953,6 @@ public abstract class Perso extends Element {
 			}
 		}
 		if (snd != null && p_sound) {
-
 			EngineZildo.soundManagement.broadcastSound(snd, this);
 		}
 
@@ -1348,6 +1350,13 @@ public abstract class Perso extends Element {
 
 	public boolean isAffectedBy(AffectionKind kind) {
 		return affections != null && affections.isAffectedBy(kind);
+	}
+	
+	public void affect(AffectionKind kind) {
+		if (affections == null) {
+			affections = new PersoAffections(this);
+		}
+		affections.add(kind);
 	}
 	
 	@Override

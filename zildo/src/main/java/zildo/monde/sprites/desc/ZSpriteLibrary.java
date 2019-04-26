@@ -31,8 +31,8 @@ public class ZSpriteLibrary {
 			case HEART:
 			case DROP_SMALL:
 			case DROP_MEDIUM:
-			case SPARK_LEFT:
-			case SPARK_RIGHT:
+			case POISONBALL:
+			case POISONGOOP:
 			case SPARK_UPLEFT:
 			case SPARK_UPRIGHT:
 			case GOLDCOIN2:

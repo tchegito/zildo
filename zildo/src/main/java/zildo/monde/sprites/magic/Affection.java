@@ -20,8 +20,10 @@
 package zildo.monde.sprites.magic;
 
 import zildo.client.sound.BankSound;
+import zildo.fwk.ZUtils;
 import zildo.monde.items.Item;
 import zildo.monde.sprites.persos.Perso;
+import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 import zildo.server.MultiplayerManagement;
 
@@ -37,7 +39,8 @@ public class Affection {
 	public enum AffectionKind {
 		QUAD_DAMAGE(MultiplayerManagement.QUAD_TIME_DURATION),
 		INVINCIBILITY(500),
-		FIRE_DAMAGE_REDUCED(5000);
+		FIRE_DAMAGE_REDUCED(5000),
+		SLOWNESS(100);
 
 		int duration;
 
@@ -80,6 +83,33 @@ public class Affection {
 			if ( (kind.duration - duration) % 100 == 0) {
 				EngineZildo.soundManagement.broadcastSound(BankSound.Invincible, perso);
 			}
+			break;
+		case SLOWNESS:
+			if (duration == 1) {
+				perso.walkTile(false);	// Restore the expected light
+				perso.setSpeed(Constantes.ZILDO_SPEED);
+			} else {
+				int[] poisonColor = {0x30, 0xd5, 0xc8}; // {0x44, 0xff, 0x33};
+				int color = (poisonColor[0] << 16) + (poisonColor[1] << 8) + poisonColor[2];
+				float factor = 1;
+				// Manual easing-in-out
+				if (duration > kind.duration - 16) {
+					factor = (kind.duration - duration) / 16f;
+				} else if (duration < 16) {
+					factor = duration / 16f;
+				}
+				
+				if (factor != 1) {
+					color =   ((int) (255-(255-poisonColor[0]) * factor) << 16)
+							+ ((int) (255-(255-poisonColor[1]) * factor) << 8)
+							+ ((int) (255-(255-poisonColor[2]) * factor));
+
+					System.out.println("Factor="+factor + ZUtils.hexa(color));
+				}
+				perso.setLight(color);
+				perso.setSpeed(0.5f);
+			}
+			break;
 		}
 		duration--;
 

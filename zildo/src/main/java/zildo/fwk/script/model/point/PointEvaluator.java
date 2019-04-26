@@ -40,14 +40,7 @@ public class PointEvaluator extends IPoint {
 		exprX = new FloatExpression(strCoords[0]);
 		exprY = new FloatExpression(strCoords[1]);
 	}
-	
-	@Override
-	public void setContextFromEntity(SpriteEntity p_entity) {
-		if (context == null) {
-			context = new SpriteEntityContext(p_entity);
-		}
-	}
-	
+		
 	@Override
 	public void setContext(IEvaluationContext p_context) {
 		context = p_context;

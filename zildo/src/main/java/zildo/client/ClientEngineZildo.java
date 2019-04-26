@@ -375,6 +375,8 @@ public class ClientEngineZildo {
 				1.0f));
 		ortho.drawText(43, 86, "" + zildo.y, new Vector3f(1.0f, 0.0f, 1.0f));
 
+		ortho.enableBlend();
+
 		// Debug collision
 		Point camera = mapDisplay.getCamera();
 		if (EngineZildo.collideManagement != null && Zildo.infoDebugCollision) {
@@ -383,27 +385,30 @@ public class ClientEngineZildo {
 					int rayon = c.cr;
 					int color = 15;
 					Perso damager = c.perso;
-					Vector4f alphaColor = new Vector4f(0.2f, 0.4f, 0.9f, 16.0f);
+					Vector4f alphaColor = new Vector4f(0.2f, 0.4f, 0.9f, 0.1f);
 					if (damager != null && damager.getInfo() == PersoInfo.ENEMY) {
 						color = 20;
 					}
 					if (c.size == null) {
-						ortho
-								.box(c.cx - rayon - camera.x, c.cy - rayon
+						ortho.box(c.cx - rayon - camera.x, c.cy - rayon
 										- camera.y, rayon * 2, rayon * 2, 0,
 										alphaColor);
 					} else {
 						Point center = new Point(c.cx - camera.x, c.cy
 								- camera.y);
 						Rectangle rect = new Rectangle(center, c.size);
-						ortho.box(rect, color, null);
+						ortho.box(rect, color, alphaColor);
 					}
 				}
 			}
 			// -7, -10
-			int x = (int) zildo.x - 4;
-			int y = (int) zildo.y - 10;
-			ortho.box(x - 3 - camera.x, y - camera.y, 16, 16, 12, null);
+			int x = (int) zildo.x; // - 4;
+			int y = (int) zildo.y; // - 10;
+			ortho.box(x - 7 -camera.x, y - 17 - camera.y, 14, 14, 12, new Vector4f(0.2f, 0.4f, 0.9f, 0.1f));
+
+			// Feet
+			ortho.box(x - 4 -camera.x, y - 2 - camera.y, 8, 4, 12, new Vector4f(0.6f, 0.4f, 0.3f, 0.1f));
+
 		}
 
 		if (Zildo.infoDebugCase) {

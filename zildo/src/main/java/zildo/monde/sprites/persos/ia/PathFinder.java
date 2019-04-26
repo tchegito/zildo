@@ -30,6 +30,7 @@ import zildo.monde.Trigo;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
+import zildo.monde.sprites.utils.FlagPerso;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
@@ -155,6 +156,11 @@ public class PathFinder {
         	}
         }
 
+        // Most of the characters can face up to 4 angles, but some can face 8 (scorpion for example)
+        if (mobile.getDesc().is8Angles()) {
+        	a = Angle.fromDirection((int) Math.signum(delta.x),  (int) Math.signum(delta.y));
+        }
+        
         if (backward && a!= null) {
         	a = a.rotate(2);
         }
@@ -241,7 +247,9 @@ public class PathFinder {
 				if (mobile.isGhost()) {
 					mobile.tryJump(new Pointf(mobile.x, mobile.y));
 				}
-				if (!alwaysReach) {
+				if ((mobile.getFlagBehavior() & FlagPerso.F_NOWAIT) != 0) {
+					target=null;
+				} else if (!alwaysReach) {
 					nbShock++;
 					MouvementPerso dep = mobile.getQuel_deplacement();
 					if (!mobile.isGhost()) {
@@ -250,7 +258,7 @@ public class PathFinder {
 							mobile.setAlerte(false);
 							nbShock=0;
 						}
-					} else if (dep != MouvementPerso.FOLLOW && dep != MouvementPerso.CHAIN_FOLLOW){
+					} else if (dep != MouvementPerso.FOLLOW && dep != MouvementPerso.CHAIN_FOLLOW) {
 						// Freeze during a scene (because moving character is 'ghost')
 						nbShock=0;
 						

@@ -801,8 +801,40 @@ public class PersoNJ extends Perso {
 		case COAL:
 		case COAL_COLD:
 		case BITEY:
-		case SCORPION:
 		case MOLE:
+			break;
+		case SCORPION:
+			Reverse r = Reverse.NOTHING;
+			switch (angle) {
+			case NORD:
+				add_spr = 5;
+				break;
+			case NORDEST:
+				add_spr = 4;
+				break;
+			case EST:
+				add_spr = 3;
+				break;
+			case SUDEST:
+				add_spr = 0;	// 1 for animation
+				r = Reverse.HORIZONTAL;
+				break;
+			case SUD:
+				add_spr = 2;
+				break;
+			case SUDOUEST:
+				add_spr = 0;
+				break;
+			case OUEST:
+				add_spr = 3;
+				r = Reverse.HORIZONTAL;
+				break;
+			case NORDOUEST:
+				add_spr = 4;
+				r = Reverse.HORIZONTAL;
+				break;
+			}
+			reverse = r;
 			break;
 		default:
 			add_spr = angle.value * 2 + computeSeq(2) % 2;

@@ -32,6 +32,7 @@ import zildo.monde.collision.DamageType;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.Perso;
@@ -44,13 +45,15 @@ import zildo.server.state.ClientState;
 public class CollideManagement {
 
     private List<Collision> tab_colli; // Zones d'aggression des monstres
-
+    private List<Collision> tab_floorColli;	// Collision on the ground (issued from SpriteEntity)
+    
     // ////////////////////////////////////////////////////////////////////
     // Construction/Destruction
     // ////////////////////////////////////////////////////////////////////
 
     public CollideManagement() {
         tab_colli = new ArrayList<Collision>();
+        tab_floorColli = new ArrayList<Collision>();
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////
@@ -60,6 +63,7 @@ public class CollideManagement {
     // /////////////////////////////////////////////////////////////////////////////////////
     public void initFrame() {
         tab_colli.clear();
+        tab_floorColli.clear();
     }
     
     /**
@@ -70,6 +74,10 @@ public class CollideManagement {
     	tab_colli.add(p_colli);
     }
 
+    public void addFloorCollision(Collision p_colli) {
+    	tab_floorColli.add(p_colli);
+    }
+    
     // /////////////////////////////////////////////////////////////////////////////////////
     // manageCollisions
     // /////////////////////////////////////////////////////////////////////////////////////
@@ -138,6 +146,25 @@ public class CollideManagement {
 		            			area.forkTile(damager, location);
 		            		}	
 		            	}
+            	}
+            }
+        }
+        
+        // Break with the client/server paradigm: we deal with a single hero, as multiplayer isn't supported anymore
+        PersoPlayer hero = p_states.iterator().next().zildo;
+        Collision zildoFeetCollision = new Collision(new Point(hero.x, hero.y), new Point(6,4), hero, null, null);	
+
+        
+        for (int i = 0; i < tab_floorColli.size(); i++) {
+            // We know that we only deal with collision on the ground damaging the hero
+            Collision collider = tab_floorColli.get(i);
+
+            Perso damager = collider.perso;
+
+            if ((collider.perso == null || !collider.perso.isWounded()) && checkColli(collider, zildoFeetCollision)) {
+            	if (collider.perso == null || (collider.isMultifloor() || hero.floor == collider.perso.floor)) {
+            		// Zildo gets wounded
+            		hit(collider, zildoFeetCollision);
             	}
             }
         }
@@ -246,7 +273,12 @@ public class CollideManagement {
         		&& (attacker == null || (attacker.getFlagBehavior() & FlagPerso.F_IMMATERIAL) == 0 || p_collider.weapon != null)) {
         	boolean persoResisting = perso.getDesc() == null ? false : perso.getDesc().resistToDamageType(p_collider.damageType);
         	
-        	if (weapon != null) {
+        	// Does this an affection ?
+        	if (!persoResisting && p_collider.damageType == DamageType.SLOWNESS) {
+        		p_collided.perso.affect(AffectionKind.SLOWNESS);
+        	} else if (p_collider.weapon != null && p_collider.weapon.getDesc() == ElementDescription.POISONBALL) {
+        		p_collided.perso.affect(AffectionKind.SLOWNESS);
+        	} else if (weapon != null) {
         		// Only parry with another weapon
        			perso.parry(p_collider.cx, p_collider.cy, perso);
         	} else {

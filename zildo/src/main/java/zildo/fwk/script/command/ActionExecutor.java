@@ -135,6 +135,9 @@ public class ActionExecutor extends RuntimeExecutor {
         	if (p_action.location != null) {
         		p_action.location.setContext(context);
         	}
+        	if (p_action.target != null) {
+        		p_action.target.setContext(context);
+        	}
             if (perso != null) {
                 scriptExec.involved.add(perso); // Note that this perso is concerned
             }

@@ -105,8 +105,8 @@ public class ElementsPlus extends SpriteBanque {
 				// Boule en pierre,ombre et éclats (42)
 				new Zone(16, 46, 8, 8),
 				new Zone(12, 30, 8, 4),
-				new Zone(20, 56, 6, 7),
-				new Zone(14, 56, 6, 7),
+				new Zone(20, 56, 6, 6),
+				new Zone(14, 65, 8, 6),
 				new Zone(20, 63, 6, 7),
 				new Zone(14, 63, 6, 7),
 
@@ -367,7 +367,9 @@ public class ElementsPlus extends SpriteBanque {
 				// Sand projection
 				new Zone(0, 292, 6, 11), new ZoneO(11, 285, 7, 16, 0, 0, -2),
 				new ZoneO(23, 282, 11, 16, 0, 0, -5), new ZoneO(38, 287, 16, 9, 0, 0, -7),
-				new ZoneO(55, 286, 26, 9, 0, 0, -8)
+				new ZoneO(55, 286, 26, 9, 0, 0, -8),
+				// Amphora
+				new Zone(82, 144, 12, 16)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 

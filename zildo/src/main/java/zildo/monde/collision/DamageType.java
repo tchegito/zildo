@@ -39,6 +39,7 @@ public enum DamageType {
 	SMASH, // Hammer
 	FIRE,	// Fire (big damage)
 	POISON,
+	SLOWNESS,
 	FORKING;	// Hero picks with his fork
 	
 	public boolean isCutting() {

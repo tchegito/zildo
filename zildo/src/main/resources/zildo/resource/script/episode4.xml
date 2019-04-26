@@ -35,7 +35,9 @@
 
 	       	<perso who="taupe" action="mole"/>
 	       	<perso who="taupe2" action="mole"/>
-	       	
+	       	<perso who="mole3" action="mole"/>
+	       	<perso who="mole4" action="mole"/>
+	       		       	
 	    </condition>
     
 	    <condition name="canyon" locked="false">
@@ -69,6 +71,7 @@
 	       	<if expQuest="valorig_lever2">
 	        	<activate what="doorUp" value="true" unblock="true"/>
 	        </if>
+	        <perso who="scorp" action="scorpion"/>
 	    </condition>
 	    
 	    <condition name="valorig2">
@@ -328,11 +331,37 @@
    	</persoAction>
    	
    	<persoAction id="scorpion">
+   	    <perso who="self" pv="4" flag="16"/>
    	    <loop>
-   	        <perso who="self" addSpr="0"/>
-   	        <wait value="10"/>
-   	        <perso who="self" addSpr="1"/>
-   	        <wait value="100"/>
+   	        <var name="loc:found" value="1"/>
+   	        <lookFor who="self" info="ZILDO" negative="true" radius="5">
+   	            <!-- Hero is too far, move in a reduced zone -->
+   	            <moveTo who="self" pos="x+random*20-10, y+random*20-10"/>
+   	            <var name="loc:found" value="0"/>
+   	        </lookFor>
+   	        
+   	        <if exp="loc:found=1">
+   	            <!-- Move closer to hero, but not in his direction -->
+   	            <moveTo who="self" pos="(3*x+zildo.x)/4, (y+zildo.y)/2"/>
+   	            
+   	            <if expQuest="!affSLOWNESS">
+	   	            <!-- If hero isn't already affected, throw a poison ball with 2 followers -->
+	   	            <sound name="SerpentSpit"/>
+	   	            <var name="loc:zx" value="zildo.x"/>
+	   	            <var name="loc:zy" value="zildo.y"/>
+	   	            <var name="loc:r" value="0.5 + random*0.2"/>
+	   	            <throw who="self" pos="x,y" to="loc:zx,loc:zy" 
+					    type="POISONBALL" z="16" vz="loc:r" speed="1.5" az="-0.04"/>
+					<wait value="1"/>	     
+					<throw who="self" pos="x,y" to="loc:zx,loc:zy"
+					    type="POISONBALL" z="16" vz="loc:r" speed="1.5" az="-0.04" alpha="127" />	        
+					<wait value="1"/>	     
+					<throw who="self" pos="x,y" to="loc:zx,loc:zy" 
+					    type="POISONBALL" z="16" vz="loc:r" speed="1.5" az="-0.04" alpha="50" />	
+   	            </if>
+								    
+				
+	        </if>
    	    </loop>
    	</persoAction>
    	

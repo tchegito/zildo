@@ -27,6 +27,7 @@ import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.monde.items.ItemKind;
 import zildo.monde.items.StoredItem;
+import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.server.EngineZildo;
 
@@ -47,6 +48,7 @@ public class ZSExpression {
 	private static final String RW_MAP = "M#";
 	private static final String RW_PERSO = "P#";
 	private static final String RW_STORE = "ooo";
+	private static final String RW_AFFECT = "aff";
 	
 	String questName;
 	boolean done;	// True if predicate is prefixed by a '!'
@@ -122,6 +124,9 @@ public class ZSExpression {
 			String persoName = questName.substring(RW_STORE.length());
 			String itemsAsString = EngineZildo.scriptManagement.getVarValue(persoName);
 			return StoredItem.fromString(itemsAsString).isEmpty(); 
+		} else if (questName.startsWith(RW_AFFECT)) {
+			String expected = questName.substring(RW_AFFECT.length());
+			result = zildo().isAffectedBy(AffectionKind.valueOf(expected));
 		} else {
 			// Default case : expression is the quest name
 			result = EngineZildo.scriptManagement.isQuestOver(questName);

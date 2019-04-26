@@ -31,6 +31,7 @@ import zildo.monde.collision.DamageType;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.map.Tile.TileNature;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -48,6 +49,7 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 
@@ -60,7 +62,6 @@ public class Element extends SpriteEntity {
 	public float ax, ay, az;
 	public float vx, vy, vz;
 	public float fx, fy, fz; // Frottements
-	public float alphaV, alphaA;	// Speed and acceleration for alpha
 	protected int spe; // Spe est utilisé selon l'usage
 	protected Angle angle;
 	public boolean flying;
@@ -333,7 +334,7 @@ public class Element extends SpriteEntity {
 				if (desc == ElementDescription.BULLET) {
 					// Rotate the bullet
 					rotation = rotation.succ();
-				} else 	if (nSpr >= 44 && nSpr <= 47) { // Sprite d'animation
+				} /*else 	if (nSpr >= 44 && nSpr <= 47) { // Sprite d'animation
 					// Morceaux de pierres
 					z = z - vz; // On revient en arrière
 					vz = vz - az;
@@ -341,7 +342,7 @@ public class Element extends SpriteEntity {
 					if (az == 0) {
 						dying = true;
 					}
-				}
+				} */
 				// Débordement
 				Area area = EngineZildo.mapManagement.getCurrentMap();
 				if (x < -4 || y < -4 || x > 16 * (area.getDim_x()) || (y-z) > 16 * (area.getDim_y())) {
@@ -448,8 +449,15 @@ public class Element extends SpriteEntity {
 		SpriteModel model = getSprModel();
 		if (collision == null) {
 			// Default collision: heuristic with a radius of (sizeX + sizeY) / 4
+			// We integrate sprite offset too with emptyBorders
+			int cx = (int) x;
+			int cy = (int) y;
+			Zone z = model.getEmptyBorders();
+			if (z != null) {
+				cy += z.y1;
+			}
 			int radius = (model.getTaille_x() + model.getTaille_y()) / 4;
-			collision = new Collision((int) x, (int) y, radius, Angle.NORD,
+			collision = new Collision(cx, cy, radius, Angle.NORD,
 					(Perso) linked, getDamageType(), weapon);
 		}
 		collision.cy -= model.getTaille_y() / 2;
@@ -646,6 +654,15 @@ public class Element extends SpriteEntity {
 					case STRAW:
 						Point dir = getLinkedPerso().angle.coords;
 						EngineZildo.scriptManagement.execute("throwStraw("+x+","+y+","+dir.x+","+dir.y+")", false, new SceneContext(), null);
+						break;
+					case POISONBALL:
+						if (alpha == 255 && z < 4) {
+							Reverse rev = EngineZildo.hasard.de6() > 3 ? Reverse.HORIZONTAL : Reverse.NOTHING;
+							SpriteEntity goop = EngineZildo.spriteManagement.spawnSprite(ElementDescription.POISONGOOP, (int) x, (int) y, false, rev,
+									false);
+							goop.alphaV = -0.5f;
+							goop.floor = linkedPerso.floor;
+						}
 						break;
 					case JAR:
 					case STONE:

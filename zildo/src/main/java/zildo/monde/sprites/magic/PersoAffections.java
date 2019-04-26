@@ -23,9 +23,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import zildo.client.sound.BankSound;
 import zildo.monde.items.Item;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.persos.Perso;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -41,10 +43,14 @@ public class PersoAffections {
 	}
 	
 	public void add(AffectionKind kind) {
-		affections.add(new Affection(perso, kind));
+		if (!isAffectedBy(kind)) {
+			affections.add(new Affection(perso, kind));
+    		EngineZildo.soundManagement.broadcastSound(BankSound.PoisonCloud, perso);
+		}
 	}
-	
+
 	public void render() {
+
 		for (Iterator<Affection> it = affections.iterator(); it.hasNext();) {
 			if (it.next().render()) {
 				it.remove();

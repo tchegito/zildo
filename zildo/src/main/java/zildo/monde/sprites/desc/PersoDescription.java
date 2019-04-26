@@ -135,8 +135,8 @@ public enum PersoDescription implements SpriteDescription {
 	COAL(401, 402, 403, 404),
 	COAL_COLD(404),
 	CACTUS(434),
-	SCORPION(435, 436),
-	MOLE(437, 438, 439, 440, 441, 442, 443),
+	SCORPION(435, 436, 437, 438, 439, 440),
+	MOLE(441, 442, 443, 444, 445, 446, 447),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
@@ -228,6 +228,8 @@ public enum PersoDescription implements SpriteDescription {
 		switch (this) {
 			case CACTUS:
 				return true;
+			case SCORPION:
+				return dmgType == DamageType.SLOWNESS;
 			case BRAMBLE:
 				switch (dmgType) {
 					case SMASH:
@@ -290,6 +292,10 @@ public enum PersoDescription implements SpriteDescription {
 			default:
 				return true;
 		}
+	}
+	
+	public boolean is8Angles() {
+		return this == SCORPION;
 	}
 	
 	@Override

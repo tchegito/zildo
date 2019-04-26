@@ -25,8 +25,11 @@ import zildo.fwk.db.Identified;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.gfx.EngineFX;
+import zildo.monde.collision.Collision;
+import zildo.monde.collision.DamageType;
 import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
@@ -90,6 +93,8 @@ public class SpriteEntity extends Identified implements Cloneable,
 	public int light = 0xffffff;	/// 0x0RGB where each color is on 8 bits
 	public int zoom = 255;	//0..255 zoom factor : 255=full size
 	
+	public float alphaV, alphaA;	// Speed and acceleration for alpha
+
 	public byte repeatX=1, repeatY=1;
 
 
@@ -319,6 +324,17 @@ public class SpriteEntity extends Identified implements Cloneable,
 	 * Basically, an entity doesn't move. Except for specific sprites on which hero can walk (moving platform for example).
 	 */
 	public void animate() {
+		alphaV += alphaA;
+		alpha += alphaV;
+		if (alpha < 0 && fall()) {
+			dying = true;
+		}
+		
+		Collision floorColli = getFloorCollision();
+		if (floorColli != null) {
+			EngineZildo.collideManagement.addFloorCollision(floorColli);
+		}
+		
 		if (mover != null && mover.isActive()) {
 			// Moving is delegated to another object
 			int dx = ajustedX - (int) x;
@@ -568,5 +584,12 @@ public class SpriteEntity extends Identified implements Cloneable,
 	
 	public void setFloor(int fl) {
 		floor = fl;
+	}
+	
+	public Collision getFloorCollision() {
+		if (desc == ElementDescription.POISONGOOP) {
+			return new Collision(new Point(x, y), new Point(5, 3), null, DamageType.SLOWNESS, null);
+		}
+		return null;
 	}
 }

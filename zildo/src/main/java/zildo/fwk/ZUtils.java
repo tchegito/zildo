@@ -222,4 +222,8 @@ public class ZUtils {
             return new Reversed<T>(original);
         }
     }
+    
+    public static String hexa(long v) {
+    	return String.format("0x%08X", v);
+    }
 }

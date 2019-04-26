@@ -595,7 +595,8 @@ public class MapManagement {
 				onMap = area.readmap(cx, cy + 1);
 				if (onMap == 32 || onMap == 31 || onMap == 3*256 + 76 || onMap == 3*256 + 5 ||
 						onMap == 256 * 3 + 129  || onMap == 256*3 + 34 ||// Cave grey wall
-						onMap == 8+256*5 || onMap == 12+256*5 || onMap == 13+256*5) // Desert hill from Decroded
+						onMap == 8+256*5 || onMap == 12+256*5 || onMap == 13+256*5||
+						onMap == 87+256*5 || onMap == 88+256*5) // Desert hill from Decroded
 					result = angle;
 				break;
 			case OUEST:
